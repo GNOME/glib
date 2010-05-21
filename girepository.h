@@ -309,9 +309,9 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
  * GIInfoType:
  * @GI_INFO_TYPE_INVALID: invalid type
  * @GI_INFO_TYPE_FUNCTION: function, see #GIFunctionInfo
- * @GI_INFO_TYPE_CALLBACK: callback, see #GICallbackInfo
+ * @GI_INFO_TYPE_CALLBACK: callback, see #GIFunctionInfo
  * @GI_INFO_TYPE_STRUCT: struct, see #GIStructInfo
- * @GI_INFO_TYPE_BOXED: boxed, see #GIBoxedInfo
+ * @GI_INFO_TYPE_BOXED: boxed, see #GIStructInfo or #GIUnionInfo
  * @GI_INFO_TYPE_ENUM: enum, see #GIEnumInfo
  * @GI_INFO_TYPE_FLAGS: flags, see #GIEnumInfo
  * @GI_INFO_TYPE_OBJECT: object, see #GIObjectInfo

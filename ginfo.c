@@ -249,7 +249,7 @@ g_base_info_unref (GIBaseInfo *info)
  * g_base_info_get_type:
  * @info: a #GIBaseInfo
  *
- * Obtains the info type of the GIBaseInfo.
+ * Obtain the info type of the GIBaseInfo.
  *
  * Returns: the info type of @info
  */
@@ -264,7 +264,7 @@ g_base_info_get_type (GIBaseInfo *info)
  * g_base_info_get_name:
  * @info: a #GIBaseInfo
  *
- * Obtains the name of the @info. What the name represents depends on
+ * Obtain the name of the @info. What the name represents depends on
  * the #GIInfoType of the @info. For instance for #GIFunctionInfo it is
  * the name of the function.
  *
@@ -362,7 +362,7 @@ g_base_info_get_name (GIBaseInfo *info)
  * g_base_info_get_namespace:
  * @info: a #GIBaseInfo
  *
- * Obtains the namespace of @info.
+ * Obtain the namespace of @info.
  *
  * Returns: the namespace
  */
@@ -388,7 +388,7 @@ g_base_info_get_namespace (GIBaseInfo *info)
  * g_base_info_is_deprecated:
  * @info: a #GIBaseInfo
  *
- * Obtains whether the @info is represents a metadata which is
+ * Obtain whether the @info is represents a metadata which is
  * deprecated or not.
  *
  * Returns: %TRUE if deprecated
@@ -581,7 +581,7 @@ g_base_info_iterate_attributes (GIBaseInfo       *info,
  * g_base_info_get_container:
  * @info: a #GIBaseInfo
  *
- * Obtains the container of the @info. The container is the parent
+ * Obtain the container of the @info. The container is the parent
  * GIBaseInfo. For instance, the parent of a #GIFunctionInfo is an
  * #GIObjectInfo or #GIInterfaceInfo.
  *
@@ -597,7 +597,7 @@ g_base_info_get_container (GIBaseInfo *info)
  * g_base_info_get_typelib:
  * @info: a #GIBaseInfo
  *
- * Obtains the typelib this @info belongs to
+ * Obtain the typelib this @info belongs to
  *
  * Returns: (transfer none): the typelib.
  */
@@ -648,7 +648,7 @@ g_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
  * g_function_info_get_symbol:
  * @info: a #GIFunctionInfo
  *
- * Obtains the symbol of the function. The symbol is the name of the
+ * Obtain the symbol of the function. The symbol is the name of the
  * exported function, suitable to be used as an argument to
  * g_module_symbol().
  *
@@ -667,7 +667,7 @@ g_function_info_get_symbol (GIFunctionInfo *info)
  * g_function_info_get_flags:
  * @info: a #GIFunctionInfo
  *
- * Obtains the #GIFunctionInfoFlags for the @info.
+ * Obtain the #GIFunctionInfoFlags for the @info.
  *
  * Returns: the flags
  */
@@ -706,7 +706,7 @@ g_function_info_get_flags (GIFunctionInfo *info)
  * g_function_info_get_property:
  * @info: a #GIFunctionInfo
  *
- * Obtains the property associated with this #GIFunctionInfo.
+ * Obtain the property associated with this #GIFunctionInfo.
  * Only #GIFunctionInfo with the flag %GI_FUNCTION_IS_GETTER or
  * %GI_FUNCTION_IS_SETTER have a property set. For other cases,
  * %NULL will be returned.
@@ -728,7 +728,7 @@ g_function_info_get_property (GIFunctionInfo *info)
  * g_function_info_get_vfunc:
  * @info: a #GIFunctionInfo
  *
- * Obtains the virtual function associated with this #GIFunctionInfo.
+ * Obtain the virtual function associated with this #GIFunctionInfo.
  * Only #GIFunctionInfo with the flag %GI_FUNCTION_WRAPS_VFUNC has
  * a virtual function set. For other cases, %NULL will be returned.
  *
@@ -746,6 +746,20 @@ g_function_info_get_vfunc (GIFunctionInfo *info)
 }
 
 /* GICallableInfo functions */
+
+/**
+ * SECTION:gicallableinfo
+ * @Short_description: Struct representing a callable
+ * @Title: GICallableInfo
+ *
+ * GICallableInfo represents an entity which is callable.
+ * Currently a function (#GIFunctionInfo), virtual function,
+ * (#GIVirtualFunc) or callback (#GICallbackInfo).
+ *
+ * A callable has a list of arguments (#GIArgInfo), a return type,
+ * direction and a flag which decides if it returns null.
+ *
+ */
 static guint32
 signature_offset (GICallableInfo *info)
 {
@@ -800,7 +814,7 @@ g_type_info_init (GIBaseInfo *info,
  * g_callable_info_get_return_type:
  * @info: a #GICallableInfo
  *
- * Get the return type of a callable item as a #GITypeInfo.
+ * Obtain the return type of a callable item as a #GITypeInfo.
  *
  * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
  * g_base_info_unref() when done.
@@ -822,7 +836,7 @@ g_callable_info_get_return_type (GICallableInfo *info)
  * @info: a #GICallableInfo
  * @type: (out caller-allocates): Initialized with return type of @info
  *
- * Get information about a return value of callable; this
+ * Obtain information about a return value of callable; this
  * function is a variant of g_callable_info_get_return_type() designed for stack
  * allocation.
  *
@@ -861,8 +875,8 @@ g_callable_info_may_return_null (GICallableInfo *info)
  * g_callable_info_get_caller_owns:
  * @info: a #GICallableInfo
  *
- * See whether the caller owns the return value
- * of this callable.
+ * See whether the caller owns the return value of this callable.
+ * #GITransfer contains a list of possible transfer values.
  *
  * Returns: %TRUE if the caller owns the return value, %FALSE otherwise.
  */
@@ -884,7 +898,7 @@ g_callable_info_get_caller_owns (GICallableInfo *info)
  * g_callable_info_get_n_args:
  * @info: a #GICallableInfo
  *
- * Get the number of arguments (both IN and OUT) for this callable.
+ * Obtain the number of arguments (both IN and OUT) for this callable.
  *
  * Returns: The number of arguments this callable expects.
  */
@@ -906,14 +920,14 @@ g_callable_info_get_n_args (GICallableInfo *info)
  * @info: a #GICallableInfo
  * @n: the argument index to fetch
  *
- * Get information about a particular argument of this callable.
+ * Obtain information about a particular argument of this callable.
  *
  * Returns: (transfer full): the #GIArgInfo. Free it with
  * g_base_info_unref() when done.
  */
 GIArgInfo *
 g_callable_info_get_arg (GICallableInfo *info,
-			 gint           n)
+			 gint            n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -931,7 +945,7 @@ g_callable_info_get_arg (GICallableInfo *info,
  * @n: the argument index to fetch
  * @arg: (out caller-allocates): Initialize with argument number @n
  *
- * Get information about a particular argument of this callable; this
+ * Obtain information about a particular argument of this callable; this
  * function is a variant of g_callable_info_get_arg() designed for stack
  * allocation.
  *
@@ -940,7 +954,7 @@ g_callable_info_get_arg (GICallableInfo *info,
 void
 g_callable_info_load_arg (GICallableInfo *info,
                           gint            n,
-                          GIArgInfo     *arg)
+                          GIArgInfo      *arg)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -953,6 +967,27 @@ g_callable_info_load_arg (GICallableInfo *info,
 }
 
 /* GIArgInfo function */
+
+/**
+ * SECTION:giarginfo
+ * @Short_description: Struct representing an argument
+ * @Title: GIArgInfo
+ *
+ * GIArgInfo represents an argument. An argument is always
+ * part of a #GICallableInfo.
+ *
+ *
+ */
+
+/**
+ * g_arg_info_get_direction:
+ * @info: a #GIArgInfo
+ *
+ * Obtain the direction of the argument. Check #GIDirection for possible
+ * direction values.
+ *
+ * Returns: the direction
+ */
 GIDirection
 g_arg_info_get_direction (GIArgInfo *info)
 {
@@ -967,6 +1002,15 @@ g_arg_info_get_direction (GIArgInfo *info)
     return GI_DIRECTION_IN;
 }
 
+/**
+ * g_arg_info_is_return_value:
+ * @info: a #GIArgInfo
+ *
+ * Obtain if the argument is a return value. It can either be a
+ * parameter or a return value.
+ *
+ * Returns: %TRUE if it is a return value
+ */
 gboolean
 g_arg_info_is_return_value (GIArgInfo *info)
 {
@@ -976,6 +1020,15 @@ g_arg_info_is_return_value (GIArgInfo *info)
   return blob->return_value;
 }
 
+/**
+ * g_arg_info_is_dipper:
+ * @info: a #GIArgInfo
+ *
+ * Obtain if the argument is a pointer to a struct or object that will
+ * receive an output of a function.
+ *
+ * Returns: %TRUE if it is a dipper argument
+ */
 gboolean
 g_arg_info_is_dipper (GIArgInfo *info)
 {
@@ -985,6 +1038,14 @@ g_arg_info_is_dipper (GIArgInfo *info)
   return blob->dipper;
 }
 
+/**
+ * g_arg_info_is_optional:
+ * @info: a #GIArgInfo
+ *
+ * Obtain if the argument is optional.
+ *
+ * Returns: %TRUE if it is an optional argument
+ */
 gboolean
 g_arg_info_is_optional (GIArgInfo *info)
 {
@@ -994,6 +1055,14 @@ g_arg_info_is_optional (GIArgInfo *info)
   return blob->optional;
 }
 
+/**
+ * g_arg_info_may_be_null:
+ * @info: a #GIArgInfo
+ *
+ * Obtain if the argument accepts %NULL.
+ *
+ * Returns: %TRUE if it accepts %NULL
+ */
 gboolean
 g_arg_info_may_be_null (GIArgInfo *info)
 {
@@ -1003,6 +1072,15 @@ g_arg_info_may_be_null (GIArgInfo *info)
   return blob->allow_none;
 }
 
+/**
+ * g_arg_info_get_ownership_transfer:
+ * @info: a #GIArgInfo
+ *
+ * Obtain the ownership transfer for this argument.
+ * #GITransfer contains a list of possible values.
+ *
+ * Returns: the transfer
+ */
 GITransfer
 g_arg_info_get_ownership_transfer (GIArgInfo *info)
 {
@@ -1017,6 +1095,17 @@ g_arg_info_get_ownership_transfer (GIArgInfo *info)
     return GI_TRANSFER_NOTHING;
 }
 
+/**
+ * g_arg_info_get_scope:
+ * @info: a #GIArgInfo
+ *
+ * Obtain the scope type for this argument. The scope type explains
+ * how a callback is going to be invoked, most importantly when
+ * the resources required to invoke it can be freed.
+ * #GIScopeType contains a list of possible values.
+ *
+ * Returns: the scope type
+ */
 GIScopeType
 g_arg_info_get_scope (GIArgInfo *info)
 {
@@ -1026,6 +1115,15 @@ g_arg_info_get_scope (GIArgInfo *info)
   return blob->scope;
 }
 
+/**
+ * g_arg_info_get_closure:
+ * @info: a #GIArgInfo
+ *
+ * Obtains the index of the user data argument. This is only valid
+ * for arguments which are callbacks.
+ *
+ * Returns: index of the user data argument or -1 if there is none
+ */
 gint
 g_arg_info_get_closure (GIArgInfo *info)
 {
@@ -1035,6 +1133,15 @@ g_arg_info_get_closure (GIArgInfo *info)
   return blob->closure;
 }
 
+/**
+ * g_arg_info_get_destroy:
+ * @info: a #GIArgInfo
+ *
+ * Obtains the index of the #GDestroyNotify argument. This is only valid
+ * for arguments which are callbacks.
+ *
+ * Returns: index of the #GDestroyNotify argument or -1 if there is none
+ */
 gint
 g_arg_info_get_destroy (GIArgInfo *info)
 {
@@ -1048,7 +1155,7 @@ g_arg_info_get_destroy (GIArgInfo *info)
  * g_arg_info_get_type:
  * @info: a #GIArgInfo
  *
- * Obtains the type information for @info.
+ * Obtain the type information for @info.
  *
  * Returns: (transfer full): the #GIArgInfo, free it with
  * g_base_info_unref() when done.
