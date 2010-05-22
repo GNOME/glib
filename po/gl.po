@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-20 21:30+0200\n"
-"PO-Revision-Date: 2010-05-20 21:51+0200\n"
+"POT-Creation-Date: 2010-05-23 00:18+0200\n"
+"PO-Revision-Date: 2010-05-23 00:18+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome@g11.net>\n"
 "MIME-Version: 1.0\n"
@@ -1264,12 +1264,12 @@ msgstr ""
 #: ../gio/gdbusaddress.c:178
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr ""
+msgstr "Combinación de par chave/valor sen sentido na entrada do enderezo «%s»"
 
 #: ../gio/gdbusaddress.c:241 ../gio/gdbusaddress.c:315
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
-msgstr ""
+msgstr "Erro no enderezo «%s»  o atributo do porto está mal formado"
 
 #: ../gio/gdbusaddress.c:252 ../gio/gdbusaddress.c:326
 #, c-format
@@ -1296,11 +1296,13 @@ msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 msgstr ""
+"Erro no enderezo «%s» - o transporte unix require que se estabeleza "
+"exactamente unha das chaves «path» ou «abstract»"
 
 #: ../gio/gdbusaddress.c:559
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr ""
+msgstr "Erro no enderezo «%s» - falta o atributo do equipo ou está mal formado"
 
 #: ../gio/gdbusaddress.c:573
 #, c-format
@@ -1337,14 +1339,14 @@ msgid ""
 "Cannot determine session bus address (TODO: run dbus-launch to find out)"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1002 ../gio/gdbusconnection.c:5203
+#: ../gio/gdbusaddress.c:1002 ../gio/gdbusconnection.c:5211
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1011 ../gio/gdbusconnection.c:5212
+#: ../gio/gdbusaddress.c:1011 ../gio/gdbusconnection.c:5220
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1450,7 +1452,7 @@ msgstr "Produciuse un erro ao abrir o anel de chaves «%s» para escribir:"
 #: ../gio/gdbusauthmechanismsha1.c:873
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr ""
+msgstr "(Ademais, a liberación do bloqueo para «%s» tamén fallou: %s) "
 
 #: ../gio/gdbusconnection.c:1001 ../gio/gdbusconnection.c:1311
 msgid "The connection is closed"
@@ -1482,12 +1484,12 @@ msgstr "Non existe a propiedade «%s»"
 #: ../gio/gdbusconnection.c:3261
 #, c-format
 msgid "Property `%s' is not readable"
-msgstr "Non é posíbel escribir a chave %s\n"
+msgstr "Non é posíbel escribir a chave %s"
 
 #: ../gio/gdbusconnection.c:3272
 #, c-format
 msgid "Property `%s' is not writable"
-msgstr "Non é posíbel escribir a chave %s\n"
+msgstr "Non é posíbel escribir a chave %s"
 
 #: ../gio/gdbusconnection.c:3340 ../gio/gdbusconnection.c:4670
 #, c-format
@@ -1527,6 +1529,11 @@ msgstr "Xa se exportou un subárbore para %s"
 #, c-format
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: %s"
+
+#: ../gio/gdbusconnection.c:5161
+#, fuzzy, c-format
+msgid "No such interface `%s' on object at path %s"
+msgstr "Non existe a interface «%s»"
 
 #: ../gio/gdbusmessage.c:723
 msgid "Wanted to read %"
@@ -1577,15 +1584,17 @@ msgstr ""
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
+"Encontrouse a cabeceira de sinatura coa sinatura «%s» máis o corpo da mensaxe "
+"está baleiro"
 
 #: ../gio/gdbusmessage.c:1353
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr ""
+msgstr "O valor analizado «%s» non é unha sinatura D-Bus válida (para o corpo)"
 
 #: ../gio/gdbusmessage.c:1382
 msgid "No signature header in message but the message body is %"
-msgstr ""
+msgstr "Non hai unha cabeceira da sinatura pero o corpo da mensaxe é %"
 
 #: ../gio/gdbusmessage.c:1694
 #, c-format
@@ -1602,6 +1611,8 @@ msgstr "A mensaxe ten %d fds pero o campo da cabeceira indica %d fds"
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
+"O corpo da mensaxe ten a sinatura «%s» máis non está presente a cabeceira de "
+"sinatura"
 
 #: ../gio/gdbusmessage.c:1879
 #, c-format
@@ -1614,11 +1625,12 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
+"O corpo da mensaxe está baleiro máis a sinatura do campo da cabeceira é «(%s)»"
 
 #: ../gio/gdbusmessage.c:2448
 #, c-format
 msgid "Error return with body of type `%s'"
-msgstr "Produciuse un erro ao escribir no ficheiro: %s"
+msgstr ""
 
 #: ../gio/gdbusmessage.c:2456
 msgid "Error return with empty body"
@@ -1638,6 +1650,7 @@ msgstr "Produciuse un erro ao enviar a mensaxe: %s"
 #: ../gio/gdbusprivate.c:775
 msgid "Error writing first 16 bytes of message to socket: "
 msgstr ""
+"Produciuse un erro ao escribir os primeiros 16 bytes da mensaxe no socket:"
 
 #: ../gio/gdbusproxy.c:633
 #, c-format
@@ -1645,11 +1658,13 @@ msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
 msgstr ""
+"Tentouse estabelecer a propiedade %s do tipo %s pero segundo á interface "
+"esperada o tipo é %s"
 
 #: ../gio/gdbusproxy.c:1438
 #, c-format
 msgid "Method `%s' returned signature `%s', but expected `%s'"
-msgstr ""
+msgstr "O método «%s» devolveu a sinatura «%s» máis esperábase «%s»"
 
 #: ../gio/gdbusserver.c:669
 msgid "Abstract name space not supported"
@@ -1662,17 +1677,17 @@ msgstr ""
 #: ../gio/gdbusserver.c:836
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
-msgstr "Produciuse un erro ao escribir no ficheiro: %s"
+msgstr ""
 
 #: ../gio/gdbusserver.c:988
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "«%s» non é un nome válido"
+msgstr "A cadea «%s» non é un GUID de D-BUS válida"
 
 #: ../gio/gdbusserver.c:1028
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
-msgstr ""
+msgstr "Non é posíbel escoitar nun transporte «%s» non admitido"
 
 #: ../gio/gdbus-tool.c:87 ../gio/gsettings-tool.c:38
 msgid "COMMAND"
@@ -1712,7 +1727,7 @@ msgstr "Erro: o tipo do resultado é «%s», esperábase «(s)»\n"
 #: ../gio/gdbus-tool.c:177 ../gio/gdbus-tool.c:241 ../gio/gdbus-tool.c:1363
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr "Produciuse un erro ao analizar a opción %s"
+msgstr ""
 
 #: ../gio/gdbus-tool.c:305 ../gio/gdbus-tool.c:334
 #, c-format
@@ -1736,18 +1751,19 @@ msgid "Connection Endpoint Options:"
 msgstr "Conexión en marcha"
 
 #: ../gio/gdbus-tool.c:381
+#, fuzzy
 msgid "Options specifying the connection endpoint"
-msgstr ""
+msgstr "Opción que especifica o punto final da conexión"
 
 #: ../gio/gdbus-tool.c:401
 #, c-format
 msgid "No connection endpoint specified"
-msgstr ""
+msgstr "Non se especificou o punto final da conexión"
 
 #: ../gio/gdbus-tool.c:411
 #, c-format
 msgid "Multiple connection endpoints specified"
-msgstr ""
+msgstr "Especificáronse varios puntos finais da conexión"
 
 #: ../gio/gdbus-tool.c:488
 #, c-format
@@ -1761,6 +1777,8 @@ msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
 msgstr ""
+"Aviso: segundo os datos de introspección o método «%s» non existe na "
+"interface «%s»\n"
 
 #: ../gio/gdbus-tool.c:559
 msgid "Destination name to invoke method on"
@@ -1811,12 +1829,12 @@ msgstr "Erro: o nome do método «%s» é inválido\n"
 #: ../gio/gdbus-tool.c:807
 #, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Produciuse un erro ao abrir o directorio «%s»: %s"
+msgstr "Produciuse un erro ao abrir o directorio «%s»: %s\n"
 
 #: ../gio/gdbus-tool.c:815
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "Produciuse un erro ao analizar a opción %s"
+msgstr "Produciuse un erro ao analizar a opción %s\n"
 
 #: ../gio/gdbus-tool.c:1187
 msgid "Destination name to introspect"
