@@ -1829,12 +1829,12 @@ msgstr "Erro: o nome do método «%s» é inválido\n"
 #: ../gio/gdbus-tool.c:807
 #, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Produciuse un erro ao abrir o directorio «%s»: %s\n"
+msgstr "Produciuse un erro ao analizar o parámetro %d do tipo «%s»: %s\n"
 
 #: ../gio/gdbus-tool.c:815
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "Produciuse un erro ao analizar a opción %s\n"
+msgstr "Produciuse un erro ao analizar a opción %d: %s\n"
 
 #: ../gio/gdbus-tool.c:1187
 msgid "Destination name to introspect"
