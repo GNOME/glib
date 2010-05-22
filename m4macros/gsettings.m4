@@ -34,6 +34,8 @@ all-am: $(gsettings_SCHEMAS:.xml=.valid)
 uninstall-am: uninstall-gsettings-schemas
 install-data-am: install-gsettings-schemas
 
+.SECONDARY: $(gsettings_SCHEMAS)
+
 gsettings__base_list = \
   sed "$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g" | \
   sed "$$!N;$$!N;$$!N;$$!N;s/\n/ /g"
