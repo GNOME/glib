@@ -93,18 +93,32 @@ man_MANS =		  	\
 	glib-gettextize.1 	\
 	gtester.1		\
 	gtester-report.1
+
 if ENABLE_MAN
 
-%.1 : %.xml 
-	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+.xml.1:
+	XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+
+dist-local-check-mans-enabled:
+	if grep "Man generation disabled" $(man_MANS) >/dev/null; then $(RM) $(man_MANS); fi
+
+else
+
+$(man_MANS):
+	echo Man generation disabled.  Creating dummy $@.  Configure with --enable-man to enable it.
+	echo Man generation disabled.  Remove this file, configure with --enable-man, and rebuild > $@
+
+dist-local-check-mans-enabled:
+	echo "*** --enable-man must be used in order to make dist"
+	false
 
 endif
 
-BUILT_EXTRA_DIST = $(man_MANS)
+MAINTAINERCLEANFILES = $(man_MANS) $(BUILT_SOURCES)
 
-dist-hook-local: $(BUILT_EXTRA_DIST)
-	files='$(BUILT_EXTRA_DIST)';				\
-	for f in $$files; do					\
-	  if test -f $$f; then d=.; else d=$(srcdir); fi;	\
-	  cp $$d/$$f $(distdir) || exit 1; done
+EXTRA_DIST += $(man_MANS)
 
+dist-hook-local: dist-local-check-mans-enabled glib-docs-clean all-local
+
+glib-docs-clean: clean
+	cd $(srcdir) && rm -rf xml html

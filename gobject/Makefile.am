@@ -235,9 +235,7 @@ EXTRA_DIST += 			\
 	makefile.msc.in 	\
 	gobject.rc.in		\
 	libgobject-gdb.py.in	\
-	glib-genmarshal.1	\
 	glib-mkenums.in		\
-	glib-mkenums.1		\
 	abicheck.sh		\
 	pltcheck.sh
 
