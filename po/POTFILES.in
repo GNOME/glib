@@ -117,6 +117,8 @@ gio/gvfs.c
 gio/gvolume.c
 gio/gvolumemonitor.c
 gio/gwin32appinfo.c
+gio/gwin32inputstream.c
+gio/gwin32outputstream.c
 gio/gzlibcompressor.c
 gio/gzlibdecompressor.c
 gio/win32/gwinhttpfile.c
