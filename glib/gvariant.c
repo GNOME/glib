@@ -3891,8 +3891,7 @@ g_variant_get_va (GVariant     *value,
  *   GVariantBuilder *builder;
  *   int i;
  *
- *   builder = g_variant_builder_new (G_VARIANT_TYPE_CLASS_ARRAY,
- *                                    NULL);
+ *   builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
  *   for (i = 0; i < 16; i++)
  *     {
  *       gchar buf[3];
