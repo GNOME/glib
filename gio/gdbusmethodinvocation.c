@@ -340,29 +340,27 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
   g_return_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation));
   g_return_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
 
-  if (parameters != NULL)
-    g_variant_ref_sink (parameters);
+  if (parameters == NULL)
+    parameters = g_variant_new_tuple (NULL, 0);
 
   /* if we have introspection data, check that the signature of @parameters is correct */
   if (invocation->priv->method_info != NULL)
     {
-      gchar *signature;
-      const gchar *type_string;
+      GVariantType *type;
 
-      type_string = "()";
-      if (parameters != NULL)
-        type_string = g_variant_get_type_string (parameters);
-      signature = _g_dbus_compute_complete_signature (invocation->priv->method_info->out_args, TRUE);
+      type = _g_dbus_compute_complete_signature (invocation->priv->method_info->out_args);
 
-      if (g_strcmp0 (type_string, signature) != 0)
+      if (!g_variant_is_of_type (parameters, type))
         {
-          g_warning (_("Type of return value is incorrect, got `%s', expected  `%s'"),
-                     type_string,
-                     signature);
-          g_free (signature);
+          gchar *type_string = g_variant_type_dup_string (type);
+
+          g_warning (_("Type of return value is incorrect, got `%s', expected `%s'"),
+                     g_variant_get_type_string (parameters), type_string);
+          g_variant_type_free (type);
+          g_free (type_string);
           goto out;
         }
-      g_free (signature);
+      g_variant_type_free (type);
     }
 
   reply = g_dbus_message_new_method_reply (invocation->priv->message);
@@ -377,8 +375,6 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
 
  out:
   g_object_unref (invocation);
-  if (parameters != NULL)
-    g_variant_unref (parameters);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

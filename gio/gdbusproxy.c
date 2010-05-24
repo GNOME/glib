@@ -845,6 +845,7 @@ initable_init (GInitable     *initable,
                                             "org.freedesktop.DBus.Properties",
                                             "GetAll",
                                             g_variant_new ("(s)", proxy->priv->interface_name),
+                                            G_VARIANT_TYPE ("(a{sv})"),
                                             G_DBUS_CALL_FLAGS_NONE,
                                             -1,           /* timeout */
                                             cancellable,
@@ -927,6 +928,7 @@ async_initable_init_async (GAsyncInitable      *initable,
                               "org.freedesktop.DBus.Properties",
                               "GetAll",
                               g_variant_new ("(s)", proxy->priv->interface_name),
+                              G_VARIANT_TYPE ("(a{sv})"),
                               G_DBUS_CALL_FLAGS_NONE,
                               -1,           /* timeout */
                               cancellable,
@@ -1408,45 +1410,6 @@ lookup_method_info_or_warn (GDBusProxy  *proxy,
   return info;
 }
 
-static gboolean
-validate_method_return (const char             *method_name,
-                        GVariant               *value,
-                        const GDBusMethodInfo  *expected_method_info,
-                        GError                **error)
-{
-  const gchar *type_string;
-  gchar *signature;
-  gboolean ret;
-
-  ret = TRUE;
-  signature = NULL;
-
-  if (value == NULL || expected_method_info == NULL)
-    goto out;
-
-  /* Shouldn't happen... */
-  if (g_variant_classify (value) != G_VARIANT_CLASS_TUPLE)
-    goto out;
-
-  type_string = g_variant_get_type_string (value);
-  signature = _g_dbus_compute_complete_signature (expected_method_info->out_args, TRUE);
-  if (g_strcmp0 (type_string, signature) != 0)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Method `%s' returned signature `%s', but expected `%s'"),
-                   method_name,
-                   type_string,
-                   signature);
-      ret = FALSE;
-    }
-
- out:
-  g_free (signature);
-  return ret;
-}
-
 /**
  * g_dbus_proxy_call:
  * @proxy: A #GDBusProxy.
@@ -1514,6 +1477,7 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
   const GDBusMethodInfo *expected_method_info;
   const gchar *target_method_name;
   const gchar *target_interface_name;
+  GVariantType *reply_type;
 
   g_return_if_fail (G_IS_DBUS_PROXY (proxy));
   g_return_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name));
@@ -1534,17 +1498,26 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
   /* Just warn here */
   expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
 
+  if (expected_method_info)
+    reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
+  else
+    reply_type = NULL;
+
   g_dbus_connection_call (proxy->priv->connection,
                           proxy->priv->unique_bus_name,
                           proxy->priv->object_path,
                           target_interface_name,
                           target_method_name,
                           parameters,
+                          reply_type,
                           flags,
                           timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
                           cancellable,
                           (GAsyncReadyCallback) reply_cb,
                           simple);
+
+  if (reply_type != NULL)
+    g_variant_type_free (reply_type);
 
   g_free (split_interface_name);
 }
@@ -1570,7 +1543,6 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   GVariant *value;
   const char *method_name;
-  const GDBusMethodInfo *expected_method_info;
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
@@ -1585,17 +1557,6 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
 
   value = g_simple_async_result_get_op_res_gpointer (simple);
   method_name = g_object_get_data (G_OBJECT (simple), "-gdbus-proxy-method-name");
-
-  /* We may not have a method name for internally-generated proxy calls like GetAll */
-  if (value && method_name && proxy->priv->expected_interface)
-    {
-      expected_method_info = g_dbus_interface_info_lookup_method (proxy->priv->expected_interface, method_name);
-      if (!validate_method_return (method_name, value, expected_method_info, error))
-        {
-          g_variant_unref (value);
-          value = NULL;
-        }
-    }
 
  out:
   return value;
@@ -1663,6 +1624,7 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
   const GDBusMethodInfo *expected_method_info;
   const gchar *target_method_name;
   const gchar *target_interface_name;
+  GVariantType *reply_type;
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
   g_return_val_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name), NULL);
@@ -1689,21 +1651,25 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
       expected_method_info = NULL;
     }
 
+  if (expected_method_info)
+    reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
+  else
+    reply_type = NULL;
+
   ret = g_dbus_connection_call_sync (proxy->priv->connection,
                                      proxy->priv->unique_bus_name,
                                      proxy->priv->object_path,
                                      target_interface_name,
                                      target_method_name,
                                      parameters,
+                                     reply_type,
                                      flags,
                                      timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
                                      cancellable,
                                      error);
-  if (!validate_method_return (target_method_name, ret, expected_method_info, error))
-    {
-      g_variant_unref (ret);
-      ret = NULL;
-    }
+
+  if (reply_type != NULL)
+    g_variant_type_free (reply_type);
 
   g_free (split_interface_name);
 

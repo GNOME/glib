@@ -150,6 +150,7 @@ print_methods (GDBusConnection *c,
                                         "org.freedesktop.DBus.Introspectable",
                                         "Introspect",
                                         NULL,
+                                        G_VARIANT_TYPE ("(s)"),
                                         G_DBUS_CALL_FLAGS_NONE,
                                         3000, /* 3 secs */
                                         NULL,
@@ -158,13 +159,6 @@ print_methods (GDBusConnection *c,
     {
       g_printerr (_("Error: %s\n"), error->message);
       g_error_free (error);
-      goto out;
-    }
-  if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(s)")))
-    {
-      g_printerr (_("Error: Result is type `%s', expected `(s)'\n"),
-                  g_variant_get_type_string (result));
-      g_variant_unref (result);
       goto out;
     }
   g_variant_get (result, "(&s)", &xml_data);
@@ -212,6 +206,7 @@ print_paths (GDBusConnection *c,
                                         "org.freedesktop.DBus.Introspectable",
                                         "Introspect",
                                         NULL,
+                                        G_VARIANT_TYPE ("(s)"),
                                         G_DBUS_CALL_FLAGS_NONE,
                                         3000, /* 3 secs */
                                         NULL,
@@ -220,13 +215,6 @@ print_paths (GDBusConnection *c,
     {
       g_printerr (_("Error: %s\n"), error->message);
       g_error_free (error);
-      goto out;
-    }
-  if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(s)")))
-    {
-      g_printerr (_("Error: Result is type `%s', expected `(s)'\n"),
-                  g_variant_get_type_string (result));
-      g_variant_unref (result);
       goto out;
     }
   g_variant_get (result, "(&s)", &xml_data);
@@ -290,6 +278,7 @@ print_names (GDBusConnection *c,
                                         "org.freedesktop.DBus",
                                         "ListNames",
                                         NULL,
+                                        G_VARIANT_TYPE ("(as)"),
                                         G_DBUS_CALL_FLAGS_NONE,
                                         3000, /* 3 secs */
                                         NULL,
@@ -298,12 +287,6 @@ print_names (GDBusConnection *c,
     {
       g_printerr (_("Error: %s\n"), error->message);
       g_error_free (error);
-      goto out;
-    }
-  if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(as)")))
-    {
-      g_printerr (_("Error: Result is type `%s', expected `(as)'\n"), g_variant_get_type_string (result));
-      g_variant_unref (result);
       goto out;
     }
   g_variant_get (result, "(as)", &iter);
@@ -319,6 +302,7 @@ print_names (GDBusConnection *c,
                                         "org.freedesktop.DBus",
                                         "ListActivatableNames",
                                         NULL,
+                                        G_VARIANT_TYPE ("(as)"),
                                         G_DBUS_CALL_FLAGS_NONE,
                                         3000, /* 3 secs */
                                         NULL,
@@ -327,12 +311,6 @@ print_names (GDBusConnection *c,
     {
       g_printerr (_("Error: %s\n"), error->message);
       g_error_free (error);
-      goto out;
-    }
-  if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(as)")))
-    {
-      g_printerr (_("Error: Result is type `%s', expected `(as)'\n"), g_variant_get_type_string (result));
-      g_variant_unref (result);
       goto out;
     }
   g_variant_get (result, "(as)", &iter);
@@ -461,20 +439,13 @@ call_helper_get_method_in_signature (GDBusConnection  *c,
                                         "org.freedesktop.DBus.Introspectable",
                                         "Introspect",
                                         NULL,
+                                        G_VARIANT_TYPE ("(s)"),
                                         G_DBUS_CALL_FLAGS_NONE,
                                         3000, /* 3 secs */
                                         NULL,
                                         error);
   if (result == NULL)
     goto out;
-
-  if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(s)")))
-    {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED,
-                   _("Error: Result is type `%s', expected `(s)'\n"),
-                   g_variant_get_type_string (result));
-      goto out;
-    }
 
   g_variant_get (result, "(&s)", &xml_data);
   node_info = g_dbus_node_info_new_for_xml (xml_data, error);
@@ -833,6 +804,7 @@ handle_call (gint        *argc,
                                         interface_name,
                                         method_name,
                                         parameters,
+                                        NULL,
                                         G_DBUS_CALL_FLAGS_NONE,
                                         -1,
                                         NULL,
@@ -1056,6 +1028,7 @@ dump_interface (GDBusConnection          *c,
                                             "org.freedesktop.DBus.Properties",
                                             "GetAll",
                                             g_variant_new ("(s)", o->name),
+                                            NULL,
                                             G_DBUS_CALL_FLAGS_NONE,
                                             3000,
                                             NULL,
@@ -1094,6 +1067,7 @@ dump_interface (GDBusConnection          *c,
                                                     "org.freedesktop.DBus.Properties",
                                                     "Get",
                                                     g_variant_new ("(ss)", o->name, o->properties[n]->name),
+                                                    G_VARIANT_TYPE ("(v)"),
                                                     G_DBUS_CALL_FLAGS_NONE,
                                                     3000,
                                                     NULL,
@@ -1338,6 +1312,7 @@ handle_introspect (gint        *argc,
                                         "org.freedesktop.DBus.Introspectable",
                                         "Introspect",
                                         NULL,
+                                        G_VARIANT_TYPE ("(s)"),
                                         G_DBUS_CALL_FLAGS_NONE,
                                         3000, /* 3 sec */
                                         NULL,
@@ -1346,12 +1321,6 @@ handle_introspect (gint        *argc,
     {
       g_printerr (_("Error: %s\n"), error->message);
       g_error_free (error);
-      goto out;
-    }
-  if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(s)")))
-    {
-      g_printerr (_("Error: Result is type `%s', expected `(s)'\n"),
-                  g_variant_get_type_string (result));
       goto out;
     }
   g_variant_get (result, "(&s)", &xml_data);

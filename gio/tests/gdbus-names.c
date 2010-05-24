@@ -176,6 +176,7 @@ test_bus_own_name (void)
                                         "org.freedesktop.DBus",  /* interface name */
                                         "NameHasOwner",          /* method name */
                                         g_variant_new ("(s)", name),
+                                        G_VARIANT_TYPE ("(b)"),
                                         G_DBUS_CALL_FLAGS_NONE,
                                         -1,
                                         NULL,
@@ -201,6 +202,7 @@ test_bus_own_name (void)
                                         "org.freedesktop.DBus",  /* interface name */
                                         "NameHasOwner",          /* method name */
                                         g_variant_new ("(s)", name),
+                                        G_VARIANT_TYPE ("(b)"),
                                         G_DBUS_CALL_FLAGS_NONE,
                                         -1,
                                         NULL,

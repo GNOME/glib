@@ -280,6 +280,7 @@ main (int argc, char *argv[])
                                            "org.gtk.GDBus.TestPeerInterface",
                                            "HelloWorld",
                                            g_variant_new ("(s)", greeting),
+                                           G_VARIANT_TYPE ("(s)"),
                                            G_DBUS_CALL_FLAGS_NONE,
                                            -1,
                                            NULL,

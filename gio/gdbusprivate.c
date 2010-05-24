@@ -1035,25 +1035,29 @@ _g_dbus_initialize (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-gchar *
-_g_dbus_compute_complete_signature (GDBusArgInfo **args,
-                                    gboolean       include_parentheses)
+GVariantType *
+_g_dbus_compute_complete_signature (GDBusArgInfo **args)
 {
-  GString *s;
+  const GVariantType *arg_types[256];
   guint n;
 
-  if (include_parentheses)
-    s = g_string_new ("(");
-  else
-    s = g_string_new ("");
-  if (args != NULL)
+  if (args)
     for (n = 0; args[n] != NULL; n++)
-      g_string_append (s, args[n]->signature);
+      {
+        /* DBus places a hard limit of 255 on signature length.
+         * therefore number of args must be less than 256.
+         */
+        g_assert (n < 256);
 
-  if (include_parentheses)
-    g_string_append_c (s, ')');
+        arg_types[n] = G_VARIANT_TYPE (args[n]->signature);
 
-  return g_string_free (s, FALSE);
+        if G_UNLIKELY (arg_types[n] == NULL)
+          return NULL;
+      }
+  else
+    n = 0;
+
+  return g_variant_type_new_tuple (arg_types, n);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

@@ -73,8 +73,7 @@ gboolean _g_dbus_address_parse_entry (const gchar  *address_entry,
                                       GHashTable  **out_key_value_pairs,
                                       GError      **error);
 
-gchar * _g_dbus_compute_complete_signature (GDBusArgInfo **args,
-                                            gboolean       include_parentheses);
+GVariantType * _g_dbus_compute_complete_signature (GDBusArgInfo **args);
 
 /* ---------------------------------------------------------------------------------------------------- */
 

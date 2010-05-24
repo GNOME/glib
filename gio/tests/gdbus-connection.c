@@ -234,7 +234,7 @@ test_connection_send (void)
                           "/org/freedesktop/DBus", /* object path */
                           "org.freedesktop.DBus",  /* interface name */
                           "GetId",                 /* method name */
-                          NULL,
+                          NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           ca,
@@ -251,7 +251,7 @@ test_connection_send (void)
                           "/org/freedesktop/DBus", /* object path */
                           "org.freedesktop.DBus",  /* interface name */
                           "GetId",                 /* method name */
-                          NULL,
+                          NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           NULL,
@@ -267,7 +267,7 @@ test_connection_send (void)
                           "/org/freedesktop/DBus", /* object path */
                           "org.freedesktop.DBus",  /* interface name */
                           "NonExistantMethod",     /* method name */
-                          NULL,
+                          NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           NULL,
@@ -284,7 +284,7 @@ test_connection_send (void)
                           "/org/freedesktop/DBus", /* object path */
                           "org.freedesktop.DBus",  /* interface name */
                           "GetId",                 /* method name */
-                          NULL,
+                          NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           ca,
@@ -307,7 +307,7 @@ test_connection_send (void)
                           "/org/freedesktop/DBus", /* object path */
                           "org.freedesktop.DBus",  /* interface name */
                           "GetId",                 /* method name */
-                          NULL,
+                          NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           NULL,
@@ -462,6 +462,7 @@ test_connection_signals (void)
                                         "org.freedesktop.DBus",  /* interface name */
                                         "GetId",                 /* method name */
                                         NULL,                    /* parameters */
+                                        NULL,                    /* return type */
                                         G_DBUS_CALL_FLAGS_NONE,
                                         -1,
                                         NULL,

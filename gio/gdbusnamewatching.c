@@ -368,6 +368,7 @@ invoke_get_name_owner (Client *client)
                           "org.freedesktop.DBus",  /* interface name */
                           "GetNameOwner",          /* method name */
                           g_variant_new ("(s)", client->name),
+                          G_VARIANT_TYPE ("(s)"),
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           NULL,
@@ -459,6 +460,7 @@ has_connection (Client *client)
                               "org.freedesktop.DBus",  /* interface name */
                               "StartServiceByName",    /* method name */
                               g_variant_new ("(su)", client->name, 0),
+                              G_VARIANT_TYPE ("(u)"),
                               G_DBUS_CALL_FLAGS_NONE,
                               -1,
                               NULL,

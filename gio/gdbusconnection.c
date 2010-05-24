@@ -1845,6 +1845,7 @@ initable_init (GInitable     *initable,
                                                   "org.freedesktop.DBus", /* interface */
                                                   "Hello",
                                                   NULL, /* parameters */
+                                                  G_VARIANT_TYPE ("(s)"),
                                                   G_DBUS_CALL_FLAGS_NONE,
                                                   -1,
                                                   NULL, /* TODO: cancellable */
@@ -3730,7 +3731,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
   GVariant *parameters;
   GSource *idle_source;
   gboolean handled;
-  gchar *in_signature;
+  GVariantType *in_type;
 
   handled = FALSE;
 
@@ -3752,27 +3753,6 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
       goto out;
     }
 
-  /* Check that the incoming args are of the right type - if they are not, return
-   * the org.freedesktop.DBus.Error.InvalidArgs error to the caller
-   *
-   * TODO: might also be worth caching the combined signature.
-   */
-  in_signature = _g_dbus_compute_complete_signature (method_info->in_args, FALSE);
-  if (g_strcmp0 (g_dbus_message_get_signature (message), in_signature) != 0)
-    {
-      reply = g_dbus_message_new_method_error (message,
-                                               "org.freedesktop.DBus.Error.InvalidArgs",
-                                               _("Signature of message, `%s', does not match expected signature `%s'"),
-                                               g_dbus_message_get_signature (message),
-                                               in_signature);
-      g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
-      g_object_unref (reply);
-      g_free (in_signature);
-      handled = TRUE;
-      goto out;
-    }
-  g_free (in_signature);
-
   parameters = g_dbus_message_get_body (message);
   if (parameters == NULL)
     {
@@ -3783,6 +3763,31 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
     {
       g_variant_ref (parameters);
     }
+
+  /* Check that the incoming args are of the right type - if they are not, return
+   * the org.freedesktop.DBus.Error.InvalidArgs error to the caller
+   */
+  in_type = _g_dbus_compute_complete_signature (method_info->in_args);
+  if (!g_variant_is_of_type (parameters, in_type))
+    {
+      gchar *type_string;
+
+      type_string = g_variant_type_dup_string (in_type);
+
+      reply = g_dbus_message_new_method_error (message,
+                                               "org.freedesktop.DBus.Error.InvalidArgs",
+                                               _("Type of message, `%s', does not match expected type `%s'"),
+                                               g_variant_get_type_string (parameters),
+                                               type_string);
+      g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+      g_variant_type_free (in_type);
+      g_variant_unref (parameters);
+      g_object_unref (reply);
+      g_free (type_string);
+      handled = TRUE;
+      goto out;
+    }
+  g_variant_type_free (in_type);
 
   /* schedule the call in idle */
   invocation = g_dbus_method_invocation_new (g_dbus_message_get_sender (message),
@@ -4131,6 +4136,105 @@ add_call_flags (GDBusMessage           *message,
     g_dbus_message_set_flags (message, G_DBUS_MESSAGE_FLAGS_NO_AUTO_START);
 }
 
+static GVariant *
+decode_method_reply (GDBusMessage        *reply,
+                     const gchar         *method_name,
+                     const GVariantType  *reply_type,
+                     GError             **error)
+{
+  GVariant *result;
+
+  result = NULL;
+  switch (g_dbus_message_get_message_type (reply))
+    {
+    case G_DBUS_MESSAGE_TYPE_METHOD_RETURN:
+      result = g_dbus_message_get_body (reply);
+      if (result == NULL)
+        {
+          result = g_variant_new ("()");
+          g_variant_ref_sink (result);
+        }
+      else
+        {
+          g_variant_ref (result);
+        }
+
+      if (!g_variant_is_of_type (result, reply_type))
+        {
+          gchar *type_string = g_variant_type_dup_string (reply_type);
+
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Method `%s' returned type `%s', but expected `%s'"),
+                       method_name, g_variant_get_type_string (result), type_string);
+
+          g_variant_unref (result);
+          g_free (type_string);
+          result = NULL;
+        }
+      break;
+
+    case G_DBUS_MESSAGE_TYPE_ERROR:
+      g_dbus_message_to_gerror (reply, error);
+      break;
+
+    default:
+      g_assert_not_reached ();
+      break;
+    }
+
+  return result;
+}
+
+
+typedef struct
+{
+  GSimpleAsyncResult *simple;
+  GVariantType *reply_type;
+  gchar *method_name; /* for error message */
+} CallState;
+
+static void
+g_dbus_connection_call_done (GObject      *source,
+                             GAsyncResult *result,
+                             gpointer      user_data)
+{
+  GDBusConnection *connection = G_DBUS_CONNECTION (source);
+  CallState *state = user_data;
+  GError *error = NULL;
+  GDBusMessage *reply;
+  GVariant *value;
+
+  reply = g_dbus_connection_send_message_with_reply_finish (connection,
+                                                            result, &error);
+
+  if (reply != NULL)
+    {
+      value = decode_method_reply (reply, state->method_name,
+                                   state->reply_type, &error);
+      g_object_unref (reply);
+    }
+  else
+    value = NULL;
+
+  if (value == NULL)
+    {
+      g_simple_async_result_set_from_error (state->simple, error);
+      g_error_free (error);
+    }
+  else
+    g_simple_async_result_set_op_res_gpointer (state->simple, value,
+                                               (GDestroyNotify) g_variant_unref);
+
+  g_simple_async_result_complete (state->simple);
+  g_variant_type_free (state->reply_type);
+  g_object_unref (state->simple);
+  g_free (state->method_name);
+
+  g_slice_free (CallState, state);
+}
+
 /**
  * g_dbus_connection_call:
  * @connection: A #GDBusConnection.
@@ -4139,6 +4243,7 @@ add_call_flags (GDBusMessage           *message,
  * @interface_name: D-Bus interface to invoke method on.
  * @method_name: The name of the method to invoke.
  * @parameters: A #GVariant tuple with parameters for the method or %NULL if not passing parameters.
+ * @reply_type: The expected type of the reply, or %NULL.
  * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
  * @cancellable: A #GCancellable or %NULL.
@@ -4156,6 +4261,10 @@ add_call_flags (GDBusMessage           *message,
  * not compatible with the D-Bus protocol, the operation fails with
  * %G_IO_ERROR_INVALID_ARGUMENT.
  *
+ * If @reply_type is non-%NULL then the reply will be checked for having this type and an
+ * error will be raised if it does not match.  Said another way, if you give a @reply_type
+ * then any non-%NULL return value will be of this type.
+ *
  * If the @parameters #GVariant is floating, it is consumed. This allows
  * convenient 'inline' use of g_variant_new(), e.g.:
  * |[
@@ -4167,6 +4276,7 @@ add_call_flags (GDBusMessage           *message,
  *                          g_variant_new ("(ss)",
  *                                         "Thing One",
  *                                         "Thing Two"),
+ *                          NULL,
  *                          G_DBUS_CALL_FLAGS_NONE,
  *                          -1,
  *                          NULL,
@@ -4190,6 +4300,7 @@ g_dbus_connection_call (GDBusConnection        *connection,
                         const gchar            *interface_name,
                         const gchar            *method_name,
                         GVariant               *parameters,
+                        const GVariantType     *reply_type,
                         GDBusCallFlags          flags,
                         gint                    timeout_msec,
                         GCancellable           *cancellable,
@@ -4197,6 +4308,7 @@ g_dbus_connection_call (GDBusConnection        *connection,
                         gpointer                user_data)
 {
   GDBusMessage *message;
+  CallState *state;
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail (bus_name == NULL || g_dbus_is_name (bus_name));
@@ -4205,6 +4317,17 @@ g_dbus_connection_call (GDBusConnection        *connection,
   g_return_if_fail (method_name != NULL && g_dbus_is_member_name (method_name));
   g_return_if_fail (timeout_msec >= 0 || timeout_msec == -1);
   g_return_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
+
+  state = g_slice_new (CallState);
+  state->simple = g_simple_async_result_new (G_OBJECT (connection),
+                                             callback, user_data,
+                                             g_dbus_connection_call);
+  state->method_name = g_strjoin (".", interface_name, method_name, NULL);
+
+  if (reply_type == NULL)
+    reply_type = G_VARIANT_TYPE_ANY;
+
+  state->reply_type = g_variant_type_copy (reply_type);
 
   message = g_dbus_message_new_method_call (bus_name,
                                             object_path,
@@ -4219,45 +4342,11 @@ g_dbus_connection_call (GDBusConnection        *connection,
                                              timeout_msec,
                                              NULL, /* volatile guint32 *out_serial */
                                              cancellable,
-                                             callback,
-                                             user_data);
+                                             g_dbus_connection_call_done,
+                                             state);
 
   if (message != NULL)
     g_object_unref (message);
-}
-
-static GVariant *
-decode_method_reply (GDBusMessage  *reply,
-                     GError       **error)
-{
-  GVariant *result;
-
-  result = NULL;
-  switch (g_dbus_message_get_message_type (reply))
-    {
-    case G_DBUS_MESSAGE_TYPE_METHOD_RETURN:
-      result = g_dbus_message_get_body (reply);
-      if (result == NULL)
-        {
-          result = g_variant_new ("()");
-          g_variant_ref_sink (result);
-        }
-      else
-        {
-          g_variant_ref (result);
-        }
-      break;
-
-    case G_DBUS_MESSAGE_TYPE_ERROR:
-      g_dbus_message_to_gerror (reply, error);
-      break;
-
-    default:
-      g_assert_not_reached ();
-      break;
-    }
-
-  return result;
 }
 
 /**
@@ -4278,25 +4367,19 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
                                GAsyncResult     *res,
                                GError          **error)
 {
-  GDBusMessage *reply;
-  GVariant *result;
+  GSimpleAsyncResult *simple;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
+  g_return_val_if_fail (g_simple_async_result_is_valid (res, G_OBJECT (connection),
+                                                        g_dbus_connection_call), NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
-  result = NULL;
+  simple = G_SIMPLE_ASYNC_RESULT (res);
 
-  reply = g_dbus_connection_send_message_with_reply_finish (connection, res, error);
-  if (reply == NULL)
-    goto out;
+  if (g_simple_async_result_propagate_error (simple, error))
+    return FALSE;
 
-  result = decode_method_reply (reply, error);
-
-  g_object_unref (reply);
-
- out:
-  return result;
+  return g_variant_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -4309,6 +4392,7 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * @interface_name: D-Bus interface to invoke method on.
  * @method_name: The name of the method to invoke.
  * @parameters: A #GVariant tuple with parameters for the method or %NULL if not passing parameters.
+ * @reply_type: The expected type of the reply, or %NULL.
  * @flags: Flags from the #GDBusCallFlags enumeration.
  * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
  * @cancellable: A #GCancellable or %NULL.
@@ -4323,6 +4407,11 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * operation will fail with %G_IO_ERROR_CANCELLED. If @parameters
  * contains a value not compatible with the D-Bus protocol, the operation
  * fails with %G_IO_ERROR_INVALID_ARGUMENT.
+
+ * If @reply_type is non-%NULL then the reply will be checked for having
+ * this type and an error will be raised if it does not match.  Said
+ * another way, if you give a @reply_type then any non-%NULL return
+ * value will be of this type.
  *
  * If the @parameters #GVariant is floating, it is consumed.
  * This allows convenient 'inline' use of g_variant_new(), e.g.:
@@ -4335,6 +4424,7 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  *                               g_variant_new ("(ss)",
  *                                              "Thing One",
  *                                              "Thing Two"),
+ *                               NULL,
  *                               G_DBUS_CALL_FLAGS_NONE,
  *                               -1,
  *                               NULL,
@@ -4357,6 +4447,7 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
                              const gchar             *interface_name,
                              const gchar             *method_name,
                              GVariant                *parameters,
+                             const GVariantType      *reply_type,
                              GDBusCallFlags           flags,
                              gint                     timeout_msec,
                              GCancellable            *cancellable,
@@ -4378,6 +4469,9 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
   g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), NULL);
 
+  if (reply_type == NULL)
+    reply_type = G_VARIANT_TYPE_ANY;
+
   message = g_dbus_message_new_method_call (bus_name,
                                             object_path,
                                             interface_name,
@@ -4396,7 +4490,7 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
   if (reply == NULL)
     goto out;
 
-  result = decode_method_reply (reply, error);
+  result = decode_method_reply (reply, method_name, reply_type, error);
 
  out:
   if (message != NULL)

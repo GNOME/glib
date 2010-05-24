@@ -230,7 +230,7 @@ handle_set (gint   *argc,
     session = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
     g_dbus_connection_call_sync (session, "org.gtk.DoesNotExist", "/",
                                  "org.gtk.DoesNotExist", "Workaround",
-                                 g_variant_new ("()"), 0, -1, NULL, NULL);
+                                 g_variant_new ("()"), NULL, 0, -1, NULL, NULL);
   }
 
  out:

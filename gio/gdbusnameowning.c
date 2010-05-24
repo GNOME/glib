@@ -403,6 +403,7 @@ has_connection (Client *client)
                           g_variant_new ("(su)",
                                          client->name,
                                          client->flags),
+                          G_VARIANT_TYPE ("(u)"),
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           NULL,
@@ -681,6 +682,7 @@ g_bus_unown_name (guint owner_id)
                                                 "org.freedesktop.DBus",  /* interface name */
                                                 "ReleaseName",           /* method name */
                                                 g_variant_new ("(s)", client->name),
+                                                G_VARIANT_TYPE ("(u)"),
                                                 G_DBUS_CALL_FLAGS_NONE,
                                                 -1,
                                                 NULL,

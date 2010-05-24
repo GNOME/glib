@@ -136,7 +136,7 @@ test_delivery_in_thread_func (gpointer _data)
                           "/org/freedesktop/DBus", /* object path */
                           "org.freedesktop.DBus",  /* interface name */
                           "GetId",                 /* method name */
-                          NULL,
+                          NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           NULL,
@@ -156,7 +156,7 @@ test_delivery_in_thread_func (gpointer _data)
                           "/org/freedesktop/DBus", /* object path */
                           "org.freedesktop.DBus",  /* interface name */
                           "GetId",                 /* method name */
-                          NULL,
+                          NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           ca,
@@ -174,7 +174,7 @@ test_delivery_in_thread_func (gpointer _data)
                           "/org/freedesktop/DBus", /* object path */
                           "org.freedesktop.DBus",  /* interface name */
                           "GetId",                 /* method name */
-                          NULL,
+                          NULL, NULL,
                           G_DBUS_CALL_FLAGS_NONE,
                           -1,
                           ca,
