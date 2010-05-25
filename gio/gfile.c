@@ -3445,19 +3445,20 @@ g_file_make_directory_with_parents (GFile         *file,
 
 /**
  * g_file_make_symbolic_link:
- * @file: input #GFile.
- * @symlink_value: a string with the value of the new symlink.
+ * @file: a #GFile with the name of the symlink to create
+ * @symlink_value: a string with the path for the target of the new symlink
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError. 
- * 
- * Creates a symbolic link.
+ * @error: a #GError.
+ *
+ * Creates a symbolic link named @file which contains the string
+ * @symlink_value.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
- * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
+ * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
+ *
  * Returns: %TRUE on the creation of a new symlink, %FALSE otherwise.
- **/
+ */
 gboolean
 g_file_make_symbolic_link (GFile         *file,
 			   const char    *symlink_value,
