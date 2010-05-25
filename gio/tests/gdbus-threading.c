@@ -445,7 +445,7 @@ on_proxy_appeared (GDBusConnection *connection,
 
       /* elapsed_msec should be 4000 msec +/- change for overhead/inaccuracy */
       g_assert_cmpint (elapsed_msec, >=, 3950);
-      g_assert_cmpint (elapsed_msec,  <, 5000);
+      g_assert_cmpint (elapsed_msec,  <, 6000);
 
       g_print (" ");
     }

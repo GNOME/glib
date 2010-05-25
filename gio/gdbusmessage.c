@@ -1195,8 +1195,12 @@ g_dbus_message_bytes_needed (guchar                *blob,
     }
   else if (blob[0] == 'B')
     {
-      /* TODO */
-      g_assert_not_reached ();
+      /* core header (12 bytes) + ARRAY of STRUCT of (BYTE,VARIANT) */
+      ret = 12 + 4 + GUINT32_FROM_BE (((guint32 *) blob)[3]);
+      /* round up so it's a multiple of 8 */
+      ret = 8 * ((ret + 7)/8);
+      /* finally add the body size */
+      ret += GUINT32_FROM_BE (((guint32 *) blob)[1]);
     }
   else
     {
