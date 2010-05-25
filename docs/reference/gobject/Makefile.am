@@ -75,7 +75,7 @@ man_MANS = 			\
 if ENABLE_MAN
 
 .xml.1:
-	XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
+	@XSLTPROC@ -nonet http://docbook.sourceforge.net/release/xsl/current/manpages/docbook.xsl $<
 
 dist-local-check-mans-enabled:
 	if grep "Man generation disabled" $(man_MANS) >/dev/null; then $(RM) $(man_MANS); fi
