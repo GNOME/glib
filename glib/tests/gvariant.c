@@ -22,6 +22,17 @@
 #define INVALIDS "cefjklpwz&@^$"
 #define N_INVALIDS (G_N_ELEMENTS (INVALIDS) - 1)
 
+/* see comment in gvariant-serialiser.c about this madness.
+ *
+ * we use this to get testing of non-strictly-aligned GVariant instances
+ * on machines that can tolerate it.  it is necessary to support this
+ * because some systems have malloc() that returns non-8-aligned
+ * pointers.  it is necessary to have special support in the tests
+ * because on most machines malloc() is 8-aligned.
+ */
+#define ALIGN_BITS (sizeof (struct { char a; union {                       \
+                      guint64 x; void *y; gdouble z; } b; }) - 9)
+
 static gboolean
 randomly (gdouble prob)
 {
@@ -1138,7 +1149,7 @@ random_instance_write (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
 
   rand = g_rand_new_with_seed (instance->seed);
   for (i = 0; i < instance->size; i++)
@@ -1165,7 +1176,7 @@ random_instance_assert (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
   g_assert_cmpint (size, ==, instance->size);
 
   rand = g_rand_new_with_seed (instance->seed);
@@ -1188,7 +1199,7 @@ random_instance_check (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
 
   if (size != instance->size)
     return FALSE;
@@ -1255,9 +1266,10 @@ flavoured_malloc (gsize size, gsize flavour)
 }
 
 static void
-flavoured_free (gpointer data)
+flavoured_free (gpointer data,
+                gsize flavour)
 {
-  g_free ((gpointer) (((gsize) data) & ~7));
+  g_free (((gchar *) data) - flavour);
 }
 
 static void
@@ -1342,7 +1354,7 @@ test_maybe (void)
     guint alignment;
     guint flavour;
 
-    alignment = instance->alignment + 1;
+    alignment = (instance->alignment & ALIGN_BITS) + 1;
 
     for (flavour = 0; flavour < 8; flavour += alignment)
       {
@@ -1360,7 +1372,7 @@ test_maybe (void)
         g_assert (child.type_info == instance->type_info);
         random_instance_assert (instance, child.data, child.size);
         g_variant_type_info_unref (child.type_info);
-        flavoured_free (serialised.data);
+        flavoured_free (serialised.data, flavour);
       }
   }
 
@@ -1465,7 +1477,7 @@ test_array (void)
     guint i;
 
     g_variant_type_info_query (array_info, &alignment, NULL);
-    alignment++;
+    alignment = (alignment & ALIGN_BITS) + 1;
 
     for (flavour = 0; flavour < 8; flavour += alignment)
       {
@@ -1491,7 +1503,7 @@ test_array (void)
             g_variant_type_info_unref (child.type_info);
           }
 
-        flavoured_free (serialised.data);
+        flavoured_free (serialised.data, flavour);
       }
   }
 
@@ -1626,7 +1638,7 @@ test_tuple (void)
     gsize flavour;
     guint i;
 
-    alignment++;
+    alignment = (alignment & ALIGN_BITS) + 1;
 
     for (flavour = 0; flavour < 8; flavour += alignment)
       {
@@ -1652,7 +1664,7 @@ test_tuple (void)
             g_variant_type_info_unref (child.type_info);
           }
 
-        flavoured_free (serialised.data);
+        flavoured_free (serialised.data, flavour);
       }
   }
 
@@ -1714,26 +1726,34 @@ test_variant (void)
   }
 
   {
-    /* variants are 8-aligned, so no extra flavouring */
-    GVariantSerialised serialised;
-    GVariantSerialised child;
+    gsize alignment;
+    gsize flavour;
 
-    serialised.type_info = type_info;
-    serialised.data = flavoured_malloc (needed_size, 0);
-    serialised.size = needed_size;
+    /* variants are always 8-aligned */
+    alignment = ALIGN_BITS + 1;
 
-    g_variant_serialiser_serialise (serialised, random_instance_filler,
-                                    (gpointer *) &instance, 1);
+    for (flavour = 0; flavour < 8; flavour += alignment)
+      {
+        GVariantSerialised serialised;
+        GVariantSerialised child;
 
-    g_assert (memcmp (serialised.data, data, serialised.size) == 0);
-    g_assert (g_variant_serialised_n_children (serialised) == 1);
+        serialised.type_info = type_info;
+        serialised.data = flavoured_malloc (needed_size, flavour);
+        serialised.size = needed_size;
 
-    child = g_variant_serialised_get_child (serialised, 0);
-    g_assert (child.type_info == instance->type_info);
-    random_instance_check (instance, child.data, child.size);
+        g_variant_serialiser_serialise (serialised, random_instance_filler,
+                                        (gpointer *) &instance, 1);
 
-    g_variant_type_info_unref (child.type_info);
-    flavoured_free (serialised.data);
+        g_assert (memcmp (serialised.data, data, serialised.size) == 0);
+        g_assert (g_variant_serialised_n_children (serialised) == 1);
+
+        child = g_variant_serialised_get_child (serialised, 0);
+        g_assert (child.type_info == instance->type_info);
+        random_instance_check (instance, child.data, child.size);
+
+        g_variant_type_info_unref (child.type_info);
+        flavoured_free (serialised.data, flavour);
+      }
   }
 
   g_variant_type_info_unref (type_info);
