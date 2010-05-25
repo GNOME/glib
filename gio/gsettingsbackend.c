@@ -269,7 +269,7 @@ g_settings_backend_watch (GSettingsBackend                        *backend,
    * All access to the list holds a mutex.  We have some strategies to
    * avoid some of the pain that would be associated with that.
    */
-  
+
   watch = g_slice_new (GSettingsBackendWatch);
   watch->context = context;
   watch->target = target;
