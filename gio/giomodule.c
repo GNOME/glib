@@ -32,6 +32,8 @@
 #include "gnativevolumemonitor.h"
 #include "gproxyresolver.h"
 #include "gproxy.h"
+#include "gsocks4proxy.h"
+#include "gsocks4aproxy.h"
 #include "gsocks5proxy.h"
 #include "gvfs.h"
 #ifdef G_OS_UNIX
@@ -603,6 +605,8 @@ _g_io_modules_ensure_loaded (void)
 #endif
       _g_local_vfs_get_type ();
       _g_dummy_proxy_resolver_get_type ();
+      _g_socks4a_proxy_get_type ();
+      _g_socks4_proxy_get_type ();
       _g_socks5_proxy_get_type ();
     }
 

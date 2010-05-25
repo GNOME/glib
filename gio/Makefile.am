@@ -160,6 +160,10 @@ local_sources = \
 	glocalfileiostream.h		\
 	glocalvfs.c 			\
 	glocalvfs.h 			\
+	gsocks4proxy.c			\
+	gsocks4proxy.h			\
+	gsocks4aproxy.c			\
+	gsocks4aproxy.h			\
 	gsocks5proxy.c			\
 	gsocks5proxy.h			\
 	$(NULL)
