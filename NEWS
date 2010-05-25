@@ -1,3 +1,37 @@
+Overview of Changes from GLib 2.25.6 to GLib 2.25.7
+===================================================
+
+* NOTE: API/ABI breaks since 2.25.6 release:
+  - g_dbus_connection_sync{,_sync} takes a new 'reply_type' argument
+  - GSettingsBackendClass 'list' virtual function changed
+
+  GSettings backends and things using GDBus may need to be rebuilt.
+
+* GDBus: many build-related fixes
+
+* GDBus (service): return a DBus error when receiving a method call for
+  an unknown interface.
+
+* GSettings: fix 'make install' bug in gsettings.m4 for generated schema
+  files
+
+* GSettings: avoid non-portable use of LC_MESSAGES
+
+* better approach to handling man pages
+
+
+* Bugs fixed:
+ 619527 please improve docs on g_file_make_symlink
+ 619391 send-with-reply should have expected result signature
+ 618616 Use stack-allocated GVariantBuilders
+ 617004 Build with "--disable-nls" fails under MinGW/Win32
+ 619142 Build fixes (GDBus)
+
+* Updated translations:
+ Estonian
+ Galician
+ Norwegian bokmål
+
 Overview of Changes from GLib 2.25.5 to GLib 2.25.6
 ===================================================
 

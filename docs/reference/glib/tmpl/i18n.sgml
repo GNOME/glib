@@ -163,6 +163,17 @@ Intltool has support for the NC_() macro since version 0.40.1.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_dcgettext ##### -->
+<para>
+
+</para>
+
+@domain: 
+@msgid: 
+@category: 
+@Returns: 
+
+
 <!-- ##### FUNCTION g_dngettext ##### -->
 <para>
 

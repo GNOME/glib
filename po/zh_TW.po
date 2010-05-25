@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.24.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-19 16:22-0400\n"
+"POT-Creation-Date: 2010-05-24 22:45-0400\n"
 "PO-Revision-Date: 2010-03-27 14:14+0800\n"
 "Last-Translator: Chao-Hsiung Liao <j_h_liau@yahoo.com.tw>\n"
 "Language-Team: Chinese (traditional)\n"
@@ -1161,196 +1161,196 @@ msgstr ""
 msgid "Unexpected early end-of-stream"
 msgstr "未預期的串流過早結束"
 
-#: gio/gdbusaddress.c:129 gio/gdbusaddress.c:220 gio/gdbusaddress.c:294
+#: gio/gdbusaddress.c:135 gio/gdbusaddress.c:226 gio/gdbusaddress.c:300
 #, fuzzy, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "不支援的 socket 位址"
 
-#: gio/gdbusaddress.c:159
+#: gio/gdbusaddress.c:165
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys"
 msgstr ""
 
-#: gio/gdbusaddress.c:172
+#: gio/gdbusaddress.c:178
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr ""
 
-#: gio/gdbusaddress.c:235 gio/gdbusaddress.c:309
+#: gio/gdbusaddress.c:241 gio/gdbusaddress.c:315
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr ""
 
-#: gio/gdbusaddress.c:246 gio/gdbusaddress.c:320
+#: gio/gdbusaddress.c:252 gio/gdbusaddress.c:326
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr ""
 
-#: gio/gdbusaddress.c:422
+#: gio/gdbusaddress.c:428
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr ""
 
-#: gio/gdbusaddress.c:443
+#: gio/gdbusaddress.c:449
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr ""
 
-#: gio/gdbusaddress.c:517
+#: gio/gdbusaddress.c:523
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 msgstr ""
 
-#: gio/gdbusaddress.c:553
+#: gio/gdbusaddress.c:559
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr ""
 
-#: gio/gdbusaddress.c:567
+#: gio/gdbusaddress.c:573
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr ""
 
-#: gio/gdbusaddress.c:581
+#: gio/gdbusaddress.c:587
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 
-#: gio/gdbusaddress.c:595
+#: gio/gdbusaddress.c:601
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr ""
 
-#: gio/gdbusaddress.c:629
+#: gio/gdbusaddress.c:635
 #, fuzzy, c-format
 msgid "Error reading nonce file `%s':"
 msgstr "讀取檔案‘%s’時發生錯誤：%s"
 
-#: gio/gdbusaddress.c:640
+#: gio/gdbusaddress.c:646
 msgid "The nonce-file `%s' was %"
 msgstr ""
 
-#: gio/gdbusaddress.c:656
+#: gio/gdbusaddress.c:662
 #, c-format
 msgid "Error write contents of nonce file `%s' to stream:"
 msgstr ""
 
-#: gio/gdbusaddress.c:972
+#: gio/gdbusaddress.c:978
 #, c-format
 msgid ""
 "Cannot determine session bus address (TODO: run dbus-launch to find out)"
 msgstr ""
 
-#: gio/gdbusaddress.c:996 gio/gdbusconnection.c:5208
+#: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5305
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
 
-#: gio/gdbusaddress.c:1005 gio/gdbusconnection.c:5217
+#: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5314
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
 
-#: gio/gdbusaddress.c:1015
+#: gio/gdbusaddress.c:1021
 #, fuzzy, c-format
 msgid "Unknown bus type %d"
 msgstr "不明的類型"
 
-#: gio/gdbusauth.c:287
+#: gio/gdbusauth.c:289
 msgid "Unexpected lack of content trying to read a line"
 msgstr ""
 
-#: gio/gdbusauth.c:331
+#: gio/gdbusauth.c:333
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr ""
 
-#: gio/gdbusauth.c:502
+#: gio/gdbusauth.c:504
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
 
-#: gio/gdbusauth.c:1144
+#: gio/gdbusauth.c:1146
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:263
+#: gio/gdbusauthmechanismsha1.c:264
 #, fuzzy, c-format
 msgid "Error statting directory `%s': %s"
 msgstr "開啟目錄‘%s’時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:275
+#: gio/gdbusauthmechanismsha1.c:276
 #, c-format
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:294
+#: gio/gdbusauthmechanismsha1.c:295
 #, fuzzy, c-format
 msgid "Error creating directory `%s': %s"
 msgstr "建立目錄發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:377
+#: gio/gdbusauthmechanismsha1.c:378
 #, fuzzy, c-format
 msgid "Error opening keyring `%s' for reading: "
 msgstr "開啟檔案「%s」時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:401 gio/gdbusauthmechanismsha1.c:710
+#: gio/gdbusauthmechanismsha1.c:402 gio/gdbusauthmechanismsha1.c:711
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:415 gio/gdbusauthmechanismsha1.c:724
+#: gio/gdbusauthmechanismsha1.c:416 gio/gdbusauthmechanismsha1.c:725
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:429 gio/gdbusauthmechanismsha1.c:738
+#: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:739
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:453
+#: gio/gdbusauthmechanismsha1.c:454
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at `%s'"
 msgstr ""
 
-#: gio/gdbusauthmechanismsha1.c:530
+#: gio/gdbusauthmechanismsha1.c:531
 #, fuzzy, c-format
 msgid "Error deleting stale lock-file `%s': %s"
 msgstr "讀取檔案‘%s’時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:561
+#: gio/gdbusauthmechanismsha1.c:562
 #, fuzzy, c-format
 msgid "Error creating lock-file `%s': %s"
 msgstr "讀取檔案‘%s’時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:591
-#, fuzzy, c-format
-msgid "Error unlinking lock-file `%s': %s"
-msgstr "開啟檔案「%s」時發生錯誤：%s"
-
-#: gio/gdbusauthmechanismsha1.c:601
+#: gio/gdbusauthmechanismsha1.c:592
 #, fuzzy, c-format
 msgid "Error closing (unlinked) lock-file `%s': %s"
 msgstr "關閉檔案時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:677
+#: gio/gdbusauthmechanismsha1.c:602
+#, fuzzy, c-format
+msgid "Error unlinking lock-file `%s': %s"
+msgstr "開啟檔案「%s」時發生錯誤：%s"
+
+#: gio/gdbusauthmechanismsha1.c:678
 #, fuzzy, c-format
 msgid "Error opening keyring `%s' for writing: "
 msgstr "開啟檔案「%s」時發生錯誤：%s"
 
-#: gio/gdbusauthmechanismsha1.c:872
+#: gio/gdbusauthmechanismsha1.c:873
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr ""
@@ -1369,43 +1369,43 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 
-#: gio/gdbusconnection.c:3155
+#: gio/gdbusconnection.c:3158
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:3247
+#: gio/gdbusconnection.c:3250
 #, c-format
 msgid "No such property `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:3259
+#: gio/gdbusconnection.c:3262
 #, fuzzy, c-format
 msgid "Property `%s' is not readable"
 msgstr "類型 %s 尚未歸類"
 
-#: gio/gdbusconnection.c:3270
+#: gio/gdbusconnection.c:3273
 #, fuzzy, c-format
 msgid "Property `%s' is not writable"
 msgstr "類型 %s 尚未歸類"
 
-#: gio/gdbusconnection.c:3338 gio/gdbusconnection.c:4675
+#: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4764
 #, c-format
 msgid "No such interface `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:3508
+#: gio/gdbusconnection.c:3504
 msgid "No such interface"
 msgstr ""
 
-#: gio/gdbusconnection.c:3752
+#: gio/gdbusconnection.c:3748
 #, c-format
 msgid "No such method `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:3770
+#: gio/gdbusconnection.c:3779
 #, c-format
-msgid "Signature of message, `%s', does not match expected signature `%s'"
+msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr ""
 
 #: gio/gdbusconnection.c:3989
@@ -1413,19 +1413,29 @@ msgstr ""
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:4773
+#: gio/gdbusconnection.c:4169
+#, c-format
+msgid "Method `%s' returned type `%s', but expected `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:4862
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 
-#: gio/gdbusconnection.c:4888
+#: gio/gdbusconnection.c:4977
 #, fuzzy, c-format
 msgid "A subtree is already exported for %s"
 msgstr "聽取程式已經關閉"
 
-#: gio/gdbusconnection.c:4996
+#: gio/gdbusconnection.c:5085
 #, c-format
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
+msgstr ""
+
+#: gio/gdbusconnection.c:5255
+#, c-format
+msgid "No such interface `%s' on object at path %s"
 msgstr ""
 
 #: gio/gdbusmessage.c:723
@@ -1523,17 +1533,17 @@ msgstr "寫入至檔案時發生錯誤：%s"
 msgid "Error return with empty body"
 msgstr ""
 
-#: gio/gdbusmethodinvocation.c:359
+#: gio/gdbusmethodinvocation.c:357
 #, c-format
-msgid "Type of return value is incorrect, got `%s', expected  `%s'"
+msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr ""
 
-#: gio/gdbusmethodinvocation.c:373 gio/gsocket.c:2859 gio/gsocket.c:2940
+#: gio/gdbusmethodinvocation.c:371 gio/gsocket.c:2859 gio/gsocket.c:2940
 #, c-format
 msgid "Error sending message: %s"
 msgstr "傳送訊息時發生錯誤：%s"
 
-#: gio/gdbusprivate.c:768
+#: gio/gdbusprivate.c:775
 msgid "Error writing first 16 bytes of message to socket: "
 msgstr ""
 
@@ -1544,31 +1554,26 @@ msgid ""
 "the type is %s"
 msgstr ""
 
-#: gio/gdbusproxy.c:1438
-#, c-format
-msgid "Method `%s' returned signature `%s', but expected `%s'"
-msgstr ""
-
-#: gio/gdbusserver.c:662
+#: gio/gdbusserver.c:669
 #, fuzzy
 msgid "Abstract name space not supported"
 msgstr "不支援回收筒"
 
-#: gio/gdbusserver.c:752
+#: gio/gdbusserver.c:759
 msgid "Cannot specify nonce file when creating a server"
 msgstr ""
 
-#: gio/gdbusserver.c:829
+#: gio/gdbusserver.c:836
 #, fuzzy, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "寫入至檔案時發生錯誤：%s"
 
-#: gio/gdbusserver.c:981
+#: gio/gdbusserver.c:988
 #, fuzzy, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "「%s」不是一個有效的名稱"
 
-#: gio/gdbusserver.c:1021
+#: gio/gdbusserver.c:1028
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr ""
@@ -1589,150 +1594,139 @@ msgid ""
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
 
-#: gio/gdbus-tool.c:159 gio/gdbus-tool.c:221 gio/gdbus-tool.c:299
-#: gio/gdbus-tool.c:328 gio/gdbus-tool.c:842 gio/gdbus-tool.c:1347
+#: gio/gdbus-tool.c:160 gio/gdbus-tool.c:216 gio/gdbus-tool.c:288
+#: gio/gdbus-tool.c:312 gio/gdbus-tool.c:814 gio/gdbus-tool.c:1322
 #, fuzzy, c-format
 msgid "Error: %s\n"
 msgstr "第 %d 行發生錯誤：%s"
 
-#: gio/gdbus-tool.c:165 gio/gdbus-tool.c:227 gio/gdbus-tool.c:474
-#: gio/gdbus-tool.c:1353
-#, c-format
-msgid "Error: Result is type `%s', expected `(s)'\n"
-msgstr ""
-
-#: gio/gdbus-tool.c:177 gio/gdbus-tool.c:241 gio/gdbus-tool.c:1363
+#: gio/gdbus-tool.c:171 gio/gdbus-tool.c:229 gio/gdbus-tool.c:1332
 #, fuzzy, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "解析 %s 選項時發生錯誤"
 
-#: gio/gdbus-tool.c:305 gio/gdbus-tool.c:334
-#, c-format
-msgid "Error: Result is type `%s', expected `(as)'\n"
-msgstr ""
-
-#: gio/gdbus-tool.c:368
+#: gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
 msgstr ""
 
-#: gio/gdbus-tool.c:369
+#: gio/gdbus-tool.c:347
 msgid "Connect to the session bus"
 msgstr ""
 
-#: gio/gdbus-tool.c:370
+#: gio/gdbus-tool.c:348
 #, fuzzy
 msgid "Connect to given D-Bus address"
 msgstr "連線進行中"
 
-#: gio/gdbus-tool.c:380
+#: gio/gdbus-tool.c:358
 #, fuzzy
 msgid "Connection Endpoint Options:"
 msgstr "連線進行中"
 
-#: gio/gdbus-tool.c:381
+#: gio/gdbus-tool.c:359
 msgid "Options specifying the connection endpoint"
 msgstr ""
 
-#: gio/gdbus-tool.c:401
+#: gio/gdbus-tool.c:379
 #, c-format
 msgid "No connection endpoint specified"
 msgstr ""
 
-#: gio/gdbus-tool.c:411
+#: gio/gdbus-tool.c:389
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr ""
 
-#: gio/gdbus-tool.c:488
+#: gio/gdbus-tool.c:459
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
 
-#: gio/gdbus-tool.c:497
+#: gio/gdbus-tool.c:468
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
 msgstr ""
 
-#: gio/gdbus-tool.c:559
+#: gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
 msgstr ""
 
-#: gio/gdbus-tool.c:560
+#: gio/gdbus-tool.c:531
 msgid "Object path to invoke method on"
 msgstr ""
 
-#: gio/gdbus-tool.c:561
+#: gio/gdbus-tool.c:532
 msgid "Method and interface name"
 msgstr ""
 
-#: gio/gdbus-tool.c:600
+#: gio/gdbus-tool.c:571
 msgid "Invoke a method on a remote object."
 msgstr ""
 
-#: gio/gdbus-tool.c:655 gio/gdbus-tool.c:1269 gio/gdbus-tool.c:1526
+#: gio/gdbus-tool.c:626 gio/gdbus-tool.c:1243 gio/gdbus-tool.c:1495
 #, fuzzy, c-format
 msgid "Error connecting: %s\n"
 msgstr "連線錯誤：%s"
 
-#: gio/gdbus-tool.c:675 gio/gdbus-tool.c:1288 gio/gdbus-tool.c:1545
+#: gio/gdbus-tool.c:646 gio/gdbus-tool.c:1262 gio/gdbus-tool.c:1514
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr ""
 
-#: gio/gdbus-tool.c:696 gio/gdbus-tool.c:1307
+#: gio/gdbus-tool.c:667 gio/gdbus-tool.c:1281
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr ""
 
-#: gio/gdbus-tool.c:716 gio/gdbus-tool.c:1327 gio/gdbus-tool.c:1585
+#: gio/gdbus-tool.c:687 gio/gdbus-tool.c:1301 gio/gdbus-tool.c:1554
 #, fuzzy, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "「%s」不是一個有效的名稱"
 
-#: gio/gdbus-tool.c:731
+#: gio/gdbus-tool.c:702
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr ""
 
-#: gio/gdbus-tool.c:742
+#: gio/gdbus-tool.c:713
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
 msgstr ""
 
-#: gio/gdbus-tool.c:807
+#: gio/gdbus-tool.c:778
 #, fuzzy, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
 msgstr "開啟目錄‘%s’時發生錯誤：%s"
 
-#: gio/gdbus-tool.c:815
+#: gio/gdbus-tool.c:786
 #, fuzzy, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "解析 %s 選項時發生錯誤"
 
-#: gio/gdbus-tool.c:1187
+#: gio/gdbus-tool.c:1161
 msgid "Destination name to introspect"
 msgstr ""
 
-#: gio/gdbus-tool.c:1188
+#: gio/gdbus-tool.c:1162
 msgid "Object path to introspect"
 msgstr ""
 
-#: gio/gdbus-tool.c:1221
+#: gio/gdbus-tool.c:1195
 msgid "Introspect a remote object."
 msgstr ""
 
-#: gio/gdbus-tool.c:1444
+#: gio/gdbus-tool.c:1413
 msgid "Destination name to monitor"
 msgstr ""
 
-#: gio/gdbus-tool.c:1445
+#: gio/gdbus-tool.c:1414
 msgid "Object path to monitor"
 msgstr ""
 
-#: gio/gdbus-tool.c:1478
+#: gio/gdbus-tool.c:1447
 #, fuzzy
 msgid "Monitor a remote object."
 msgstr "損毀的物件"
@@ -1819,10 +1813,10 @@ msgstr "預期為 GEmblemedIcon 的 GEmblem"
 #: gio/gfile.c:871 gio/gfile.c:1101 gio/gfile.c:1236 gio/gfile.c:1472
 #: gio/gfile.c:1526 gio/gfile.c:1583 gio/gfile.c:1666 gio/gfile.c:1721
 #: gio/gfile.c:1781 gio/gfile.c:1835 gio/gfile.c:3304 gio/gfile.c:3358
-#: gio/gfile.c:3489 gio/gfile.c:3529 gio/gfile.c:3856 gio/gfile.c:4258
-#: gio/gfile.c:4344 gio/gfile.c:4433 gio/gfile.c:4531 gio/gfile.c:4618
-#: gio/gfile.c:4711 gio/gfile.c:5041 gio/gfile.c:5321 gio/gfile.c:5390
-#: gio/gfile.c:6981 gio/gfile.c:7071 gio/gfile.c:7157
+#: gio/gfile.c:3490 gio/gfile.c:3530 gio/gfile.c:3857 gio/gfile.c:4259
+#: gio/gfile.c:4345 gio/gfile.c:4434 gio/gfile.c:4532 gio/gfile.c:4619
+#: gio/gfile.c:4712 gio/gfile.c:5042 gio/gfile.c:5322 gio/gfile.c:5391
+#: gio/gfile.c:6982 gio/gfile.c:7072 gio/gfile.c:7158
 #: gio/win32/gwinhttpfile.c:441
 msgid "Operation not supported"
 msgstr "不支援的操作"
@@ -1869,24 +1863,24 @@ msgstr "拼接檔案時發生錯誤：%s"
 msgid "Can't copy special file"
 msgstr "不能複製特殊的檔案"
 
-#: gio/gfile.c:3479
+#: gio/gfile.c:3480
 msgid "Invalid symlink value given"
 msgstr "提供了無效的符號連結值"
 
-#: gio/gfile.c:3572
+#: gio/gfile.c:3573
 msgid "Trash not supported"
 msgstr "不支援回收筒"
 
-#: gio/gfile.c:3621
+#: gio/gfile.c:3622
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "檔案名稱不能包含「%c」"
 
-#: gio/gfile.c:6038 gio/gvolume.c:331
+#: gio/gfile.c:6039 gio/gvolume.c:331
 msgid "volume doesn't implement mount"
 msgstr "儲存區尚未實作掛載功能"
 
-#: gio/gfile.c:6149
+#: gio/gfile.c:6150
 msgid "No application is registered as handling this file"
 msgstr "沒有應用程式註冊為用以處理這個檔案"
 
@@ -2016,9 +2010,9 @@ msgid "Can't rename file, filename already exist"
 msgstr "不能重新命名檔案，該檔案名稱已存在"
 
 #: gio/glocalfile.c:1148 gio/glocalfile.c:2132 gio/glocalfile.c:2161
-#: gio/glocalfile.c:2321 gio/glocalfileoutputstream.c:557
-#: gio/glocalfileoutputstream.c:610 gio/glocalfileoutputstream.c:655
-#: gio/glocalfileoutputstream.c:1137
+#: gio/glocalfile.c:2321 gio/glocalfileoutputstream.c:570
+#: gio/glocalfileoutputstream.c:623 gio/glocalfileoutputstream.c:668
+#: gio/glocalfileoutputstream.c:1150
 msgid "Invalid filename"
 msgstr "無效的檔案名稱"
 
@@ -2089,9 +2083,9 @@ msgstr "移動檔案時發生錯誤：%s"
 msgid "Can't move directory over directory"
 msgstr "不能將目錄移動至目錄上"
 
-#: gio/glocalfile.c:2281 gio/glocalfileoutputstream.c:935
-#: gio/glocalfileoutputstream.c:949 gio/glocalfileoutputstream.c:964
-#: gio/glocalfileoutputstream.c:980 gio/glocalfileoutputstream.c:994
+#: gio/glocalfile.c:2281 gio/glocalfileoutputstream.c:948
+#: gio/glocalfileoutputstream.c:962 gio/glocalfileoutputstream.c:977
+#: gio/glocalfileoutputstream.c:993 gio/glocalfileoutputstream.c:1007
 msgid "Backup file creation failed"
 msgstr "建立備份檔案失敗"
 
@@ -2121,7 +2115,7 @@ msgstr "無效的延伸屬性名稱"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "設定延伸屬性「%s」時發生錯誤：%s"
 
-#: gio/glocalfileinfo.c:1479 gio/glocalfileoutputstream.c:819
+#: gio/glocalfileinfo.c:1479 gio/glocalfileoutputstream.c:832
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "取得檔案「%s」狀態時發生錯誤：%s"
@@ -2198,20 +2192,20 @@ msgstr "SELinux 在這個系統上並未啟用"
 msgid "Setting attribute %s not supported"
 msgstr "不支援設定屬性 %s"
 
-#: gio/glocalfileinputstream.c:171 gio/glocalfileoutputstream.c:708
+#: gio/glocalfileinputstream.c:184 gio/glocalfileoutputstream.c:721
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "從檔案讀取時發生錯誤：%s"
 
-#: gio/glocalfileinputstream.c:202 gio/glocalfileinputstream.c:214
-#: gio/glocalfileinputstream.c:326 gio/glocalfileoutputstream.c:456
-#: gio/glocalfileoutputstream.c:1012
+#: gio/glocalfileinputstream.c:215 gio/glocalfileinputstream.c:227
+#: gio/glocalfileinputstream.c:339 gio/glocalfileoutputstream.c:469
+#: gio/glocalfileoutputstream.c:1025
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "在檔案中搜尋時發生錯誤：%s"
 
-#: gio/glocalfileinputstream.c:247 gio/glocalfileoutputstream.c:242
-#: gio/glocalfileoutputstream.c:337
+#: gio/glocalfileinputstream.c:260 gio/glocalfileoutputstream.c:255
+#: gio/glocalfileoutputstream.c:350
 #, c-format
 msgid "Error closing file: %s"
 msgstr "關閉檔案時發生錯誤：%s"
@@ -2220,52 +2214,52 @@ msgstr "關閉檔案時發生錯誤：%s"
 msgid "Unable to find default local file monitor type"
 msgstr "無法找到預設的本地端檔案監視器類型"
 
-#: gio/glocalfileoutputstream.c:188 gio/glocalfileoutputstream.c:221
-#: gio/glocalfileoutputstream.c:729
+#: gio/glocalfileoutputstream.c:201 gio/glocalfileoutputstream.c:234
+#: gio/glocalfileoutputstream.c:742
 #, c-format
 msgid "Error writing to file: %s"
 msgstr "寫入至檔案時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:269
+#: gio/glocalfileoutputstream.c:282
 #, c-format
 msgid "Error removing old backup link: %s"
 msgstr "移除舊備份連結時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:283 gio/glocalfileoutputstream.c:296
+#: gio/glocalfileoutputstream.c:296 gio/glocalfileoutputstream.c:309
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "建立備份複本時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:314
+#: gio/glocalfileoutputstream.c:327
 #, c-format
 msgid "Error renaming temporary file: %s"
 msgstr "重新命名暫存檔案時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:502 gio/glocalfileoutputstream.c:1063
+#: gio/glocalfileoutputstream.c:515 gio/glocalfileoutputstream.c:1076
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "截短檔案時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:563 gio/glocalfileoutputstream.c:616
-#: gio/glocalfileoutputstream.c:661 gio/glocalfileoutputstream.c:801
-#: gio/glocalfileoutputstream.c:1044 gio/glocalfileoutputstream.c:1143
+#: gio/glocalfileoutputstream.c:576 gio/glocalfileoutputstream.c:629
+#: gio/glocalfileoutputstream.c:674 gio/glocalfileoutputstream.c:814
+#: gio/glocalfileoutputstream.c:1057 gio/glocalfileoutputstream.c:1156
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "開啟檔案「%s」時發生錯誤：%s"
 
-#: gio/glocalfileoutputstream.c:832
+#: gio/glocalfileoutputstream.c:845
 msgid "Target file is a directory"
 msgstr "目標檔案是一個目錄"
 
-#: gio/glocalfileoutputstream.c:837
+#: gio/glocalfileoutputstream.c:850
 msgid "Target file is not a regular file"
 msgstr "目標檔案不是正規的檔案"
 
-#: gio/glocalfileoutputstream.c:849
+#: gio/glocalfileoutputstream.c:862
 msgid "The file was externally modified"
 msgstr "該檔案已被外部程式修改過"
 
-#: gio/glocalfileoutputstream.c:1028
+#: gio/glocalfileoutputstream.c:1041
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "移除舊檔案時發生錯誤：%s"
@@ -2729,6 +2723,21 @@ msgstr "關聯變更在 win32 上不支援"
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "關聯建立在 win32 上不支援"
+
+#: gio/gwin32inputstream.c:319
+#, fuzzy, c-format
+msgid "Error reading from handle: %s"
+msgstr "從檔案讀取時發生錯誤：%s"
+
+#: gio/gwin32inputstream.c:349 gio/gwin32outputstream.c:349
+#, fuzzy, c-format
+msgid "Error closing handle: %s"
+msgstr "關閉檔案時發生錯誤：%s"
+
+#: gio/gwin32outputstream.c:319
+#, fuzzy, c-format
+msgid "Error writing to handle: %s"
+msgstr "寫入至檔案時發生錯誤：%s"
 
 #: gio/gzlibcompressor.c:279 gio/gzlibdecompressor.c:250
 msgid "Not enough memory"
