@@ -3929,6 +3929,10 @@ obj_message_func (GDBusConnection *connection,
  * If an existing callback is already registered at @object_path and
  * @interface_name, then @error is set to #G_IO_ERROR_EXISTS.
  *
+ * Note that @vtable is not copied, so the struct you pass must exist until
+ * the path is unregistered. One possibility is to free @vtable at the
+ * same time as @user_data when @user_data_free_func is called.
+ *
  * GDBus automatically implements the standard D-Bus interfaces
  * org.freedesktop.DBus.Properties, org.freedesktop.DBus.Introspectable
  * and org.freedesktop.Peer, so you don't have to implement those for
