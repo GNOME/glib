@@ -548,7 +548,6 @@ typedef enum {
 } GIScopeType;
 
 GIDirection            g_arg_info_get_direction          (GIArgInfo *info);
-gboolean               g_arg_info_is_dipper              (GIArgInfo *info);
 gboolean               g_arg_info_is_return_value        (GIArgInfo *info);
 gboolean               g_arg_info_is_optional            (GIArgInfo *info);
 gboolean               g_arg_info_is_caller_allocates    (GIArgInfo *info);
