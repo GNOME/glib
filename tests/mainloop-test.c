@@ -158,13 +158,13 @@ adder_thread (gpointer data)
   addr_data.count = 0;
 
   adder_source = g_io_create_watch (channels[0], G_IO_IN | G_IO_HUP);
-  g_source_set_name (source, "Adder I/O");
+  g_source_set_name (adder_source, "Adder I/O");
   g_source_set_callback (adder_source, (GSourceFunc)adder_callback, &addr_data, NULL);
   g_source_attach (adder_source, context);
   g_source_unref (adder_source);
 
   timeout_source = g_timeout_source_new (10);
-  g_source_set_name (source, "Adder timeout");
+  g_source_set_name (timeout_source, "Adder timeout");
   g_source_set_callback (timeout_source, (GSourceFunc)timeout_callback, &addr_data, NULL);
   g_source_set_priority (timeout_source, G_PRIORITY_HIGH);
   g_source_attach (timeout_source, context);
