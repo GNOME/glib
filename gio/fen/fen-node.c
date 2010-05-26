@@ -417,9 +417,24 @@ node_adjust_deleted(node_t* f)
 
     FN_W ("%s %s\n", __func__, NODE_NAME(f));
 
-    for (ancestor = node_find_accessible_ancestor(f);
-         !NODE_HAS_STATE(ancestor, NODE_STATE_ASSOCIATED) && port_add(ancestor) != 0;
-         ancestor = node_find_accessible_ancestor(ancestor)) { /* Empty */ }
+    for (ancestor = NODE_PARENT(f);
+         ancestor != NULL;
+         ancestor = NODE_PARENT(ancestor)) {
+        /* Stop if we find a node which been already associated or is existed
+         * and can be associated.
+         */
+        if (NODE_HAS_STATE(ancestor, NODE_STATE_ASSOCIATED) ||
+          (node_lstat(ancestor) == 0 && port_add(ancestor) == 0)) {
+            break;
+        }
+    }
+
+    /* We assume we shouldn't reach here, because Root is always existed and
+     * associated. But given bugster#6955199, if PORT FS has problems on root,
+     * we may reach here. So just return ROOT and the whole GIO fen backend will
+     * fail.
+     */
+    /* g_assert(ancestor != NULL); */
 }
 
 
