@@ -1149,7 +1149,7 @@ random_instance_write (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
 
   rand = g_rand_new_with_seed (instance->seed);
   for (i = 0; i < instance->size; i++)
@@ -1176,7 +1176,7 @@ random_instance_assert (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
   g_assert_cmpint (size, ==, instance->size);
 
   rand = g_rand_new_with_seed (instance->seed);
@@ -1199,7 +1199,7 @@ random_instance_check (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
 
   if (size != instance->size)
     return FALSE;
@@ -1274,6 +1274,31 @@ flavoured_free (gpointer data,
   g_free (((gchar *) data) - flavour);
 }
 
+static gpointer
+align_malloc (gsize size)
+{
+  gpointer mem;
+
+#ifdef HAVE_POSIX_MEMALIGN
+  if (posix_memalign (&mem, 8, size))
+    g_error ("posix_memalign failed");
+#else
+  /* NOTE: there may be platforms that lack posix_memalign() and also
+   * have malloc() that returns non-8-aligned.  if so, we need to try
+   * harder here.
+   */
+  mem = malloc (size);
+#endif
+
+  return mem;
+}
+
+static void
+align_free (gpointer mem)
+{
+  free (mem);
+}
+
 static void
 append_offset (guchar **offset_ptr,
                gsize    offset,
@@ -1343,7 +1368,7 @@ test_maybe (void)
   {
     guchar *ptr;
 
-    ptr = data = g_malloc (needed_size);
+    ptr = data = align_malloc (needed_size);
     append_instance_data (instance, &ptr);
 
     if (!instance->is_fixed_sized)
@@ -1380,7 +1405,7 @@ test_maybe (void)
 
   g_variant_type_info_unref (type_info);
   random_instance_free (instance);
-  g_free (data);
+  align_free (data);
 }
 
 static void
@@ -1460,7 +1485,7 @@ test_array (void)
     guchar *offset_ptr, *body_ptr;
     guint i;
 
-    body_ptr = data = g_malloc (needed_size);
+    body_ptr = data = align_malloc (needed_size);
     offset_ptr = body_ptr + needed_size - offset_size * n_children;
 
     for (i = 0; i < n_children; i++)
@@ -1519,7 +1544,7 @@ test_array (void)
 
   g_variant_type_info_unref (element_info);
   g_variant_type_info_unref (array_info);
-  g_free (data);
+  align_free (data);
 }
 
 static void
@@ -1610,7 +1635,7 @@ test_tuple (void)
     guchar *ofs_ptr;
     guint i;
 
-    body_ptr = data = g_malloc (needed_size);
+    body_ptr = data = align_malloc (needed_size);
     ofs_ptr = body_ptr + needed_size;
 
     for (i = 0; i < n_children; i++)
@@ -1679,7 +1704,7 @@ test_tuple (void)
   }
 
   g_variant_type_info_unref (type_info);
-  g_free (data);
+  align_free (data);
 }
 
 static void
@@ -1718,7 +1743,7 @@ test_variant (void)
   {
     guchar *ptr;
 
-    ptr = data = g_malloc (needed_size);
+    ptr = data = align_malloc (needed_size);
     append_instance_data (instance, &ptr);
     *ptr++ = '\0';
     memcpy (ptr, type_string, len);
@@ -1760,7 +1785,7 @@ test_variant (void)
 
   g_variant_type_info_unref (type_info);
   random_instance_free (instance);
-  g_free (data);
+  align_free (data);
 }
 
 static void
