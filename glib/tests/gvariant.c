@@ -1269,6 +1269,8 @@ static void
 flavoured_free (gpointer data,
                 gsize flavour)
 {
+  if (!data)
+    return;
   g_free (((gchar *) data) - flavour);
 }
 
