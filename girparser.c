@@ -920,14 +920,9 @@ start_parameter (GMarkupParseContext *context,
       param->in = FALSE;
       param->out = TRUE;
       if (caller_allocates == NULL)
-        {
-          g_set_error (error,
-		       G_MARKUP_ERROR,
-                       G_MARKUP_ERROR_INVALID_CONTENT,
-                       "caller-allocates attribute required on out parameters");
-          return FALSE;
-        }
-      param->caller_allocates = strcmp (caller_allocates, "1") == 0;
+	param->caller_allocates = FALSE;
+      else
+	param->caller_allocates = strcmp (caller_allocates, "1") == 0;
     }
   else if (direction && strcmp (direction, "inout") == 0)
     {
