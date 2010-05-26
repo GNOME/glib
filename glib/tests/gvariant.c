@@ -11,6 +11,8 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include <glib/gvariant-internal.h>
 #include <string.h>
 #include <stdlib.h>
