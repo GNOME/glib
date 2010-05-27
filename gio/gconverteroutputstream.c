@@ -418,6 +418,10 @@ g_converter_output_stream_write (GOutputStream *stream,
   converted_bytes = 0;
   while (!priv->finished && converted_bytes < to_convert_size)
     {
+      /* Ensure we have *some* target space */
+      if (buffer_tailspace (&priv->converted_buffer) == 0)
+	grow_buffer (&priv->converted_buffer);
+
       /* Try to convert to our buffer */
       my_error = NULL;
       res = g_converter_convert (priv->converter,
@@ -529,6 +533,10 @@ g_converter_output_stream_flush (GOutputStream  *stream,
   flushed = FALSE;
   while (!priv->finished && !flushed)
     {
+      /* Ensure we have *some* target space */
+      if (buffer_tailspace (&priv->converted_buffer) == 0)
+	grow_buffer (&priv->converted_buffer);
+
       /* Try to convert to our buffer */
       my_error = NULL;
       res = g_converter_convert (priv->converter,
