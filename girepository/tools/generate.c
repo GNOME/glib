@@ -221,8 +221,28 @@ write_type_info (const gchar *namespace,
   else if (tag == GI_TYPE_TAG_ARRAY)
     {
       gint length, size;
+      char *name = NULL;
 
       xml_start_element (file, "array");
+
+      switch (g_type_info_get_array_type (info)) {
+        case GI_ARRAY_TYPE_C:
+            break;
+        case GI_ARRAY_TYPE_ARRAY:
+            name = "GLib.Array";
+            break;
+        case GI_ARRAY_TYPE_PTR_ARRAY:
+            name = "GLib.PtrArray";
+            break;
+        case GI_ARRAY_TYPE_BYTE_ARRAY:
+            name = "GLib.ByteArray";
+            break;
+        default:
+            break;
+      }
+
+      if (name)
+        xml_printf (file, " name=\"%s\"", name);
 
       type = g_type_info_get_param_type (info, 0);
 
