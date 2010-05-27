@@ -129,7 +129,7 @@ static void
 g_variant_serialised_check (GVariantSerialised serialised)
 {
   gsize fixed_size;
-  guint alignment;
+  gsize alignment;
 
   g_assert (serialised.type_info != NULL);
   g_variant_type_info_query (serialised.type_info, &alignment, &fixed_size);
@@ -156,6 +156,16 @@ g_variant_serialised_check (GVariantSerialised serialised)
                          } b;
                        }
                       ) - 9;
+
+  /* Some OSes (FreeBSD is a known example) have a malloc() that returns
+   * unaligned memory if you request small sizes.  'malloc (1);', for
+   * example, has been seen to return pointers aligned to 6 mod 16.
+   *
+   * Check if this is a small allocation and return without enforcing
+   * the alignment assertion if this is the case.
+   */
+  if (serialised.size <= alignment)
+    return;
 
   g_assert_cmpint (alignment & (gsize) serialised.data, ==, 0);
 }
