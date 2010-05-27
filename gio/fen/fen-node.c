@@ -167,19 +167,6 @@ node_find(node_t* node, const gchar* filename, gboolean create_on_missing)
     return child;
 }
 
-node_t*
-node_find_accessible_ancestor(node_t* node)
-{
-    for (node = NODE_PARENT(node); node != ROOT; node = NODE_PARENT(node)) {
-        if (NODE_HAS_STATE(node, NODE_STATE_ASSOCIATED) || node_lstat(node) == 0) {
-            return node;
-        }
-        /* else it isn't existing or not accessible */
-    }
-    g_assert(node);
-    return node;
-}
-
 gint
 node_lstat(node_t *f)
 {
