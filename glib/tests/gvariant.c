@@ -1151,7 +1151,7 @@ random_instance_write (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
 
   rand = g_rand_new_with_seed (instance->seed);
   for (i = 0; i < instance->size; i++)
@@ -1178,7 +1178,7 @@ random_instance_assert (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
   g_assert_cmpint (size, ==, instance->size);
 
   rand = g_rand_new_with_seed (instance->seed);
@@ -1201,7 +1201,7 @@ random_instance_check (RandomInstance *instance,
   GRand *rand;
   gint i;
 
-  g_assert_cmpint ((gsize) buffer & instance->alignment, ==, 0);
+  g_assert_cmpint ((gsize) buffer & ALIGN_BITS & instance->alignment, ==, 0);
 
   if (size != instance->size)
     return FALSE;
