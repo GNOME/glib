@@ -248,6 +248,16 @@ gsettings_SCHEMAS = my.app.gschema.xml
       </para>
 
       <para>
+        This is not sufficient on its own.  You need to mention what the source
+        of the <filename>my.app.gschema.xml</filename> file is.  If the schema
+        file is distributed directly with your project's tarball then a mention
+        in <varname>EXTRA_DIST</varname> is appropriate.  If the schema file is
+        generated from another source then you will need the appropriate rule
+        for that, plus probably an item in <varname>EXTRA_DIST</varname> for the
+        source files used by that rule.
+      </para>
+
+      <para>
         One possible pitfall in doing schema conversion is that the default
         values in GSettings schemas are parsed by the #GVariant parser.
         This means that strings need to include quotes in the XML.  Also note
