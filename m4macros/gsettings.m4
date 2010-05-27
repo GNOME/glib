@@ -28,7 +28,7 @@ AC_DEFUN([GLIB_GSETTINGS],
 mostlyclean-am: clean-gsettings-schemas
 
 %.gschema.valid: %.gschema.xml
-	$(AM_V_GEN) $(GLIB_COMPILE_SCHEMAS) --dry-run --schema-file=$^ && touch [$]@
+	$(AM_V_GEN) if test -f "$^"; then d=; else d="$(srcdir)/"; fi; $(GLIB_COMPILE_SCHEMAS) --dry-run --schema-file=$${d}$^ && touch [$]@
 
 all-am: $(gsettings_SCHEMAS:.xml=.valid)
 uninstall-am: uninstall-gsettings-schemas
