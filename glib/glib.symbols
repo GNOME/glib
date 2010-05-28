@@ -323,6 +323,57 @@ g_date_valid_year G_GNUC_CONST
 #endif
 #endif
 
+#if IN_HEADER(__G_DATE_TIME_H__)
+#if IN_FILE(__G_DATE_TIME_C__)
+g_date_time_add
+g_date_time_add_days
+g_date_time_add_full
+g_date_time_add_hours
+g_date_time_add_milliseconds
+g_date_time_add_minutes
+g_date_time_add_months
+g_date_time_add_seconds
+g_date_time_add_weeks
+g_date_time_add_years
+g_date_time_compare
+g_date_time_copy
+g_date_time_day
+g_date_time_difference
+g_date_time_equal
+g_date_time_get_day_of_month
+g_date_time_get_day_of_week
+g_date_time_get_day_of_year
+g_date_time_get_dmy
+g_date_time_get_hour
+g_date_time_get_julian
+g_date_time_get_microsecond
+g_date_time_get_millisecond
+g_date_time_get_minute
+g_date_time_get_month
+g_date_time_get_second
+g_date_time_get_timezone_name
+g_date_time_get_utc_offset
+g_date_time_get_year
+g_date_time_hash
+g_date_time_is_daylight_savings
+g_date_time_is_leap_year
+g_date_time_new_from_date
+g_date_time_new_from_epoch
+g_date_time_new_from_timeval
+g_date_time_new_full
+g_date_time_new_now
+g_date_time_new_today
+g_date_time_new_utc_now
+g_date_time_printf G_GNUC_MALLOC
+g_date_time_ref
+g_date_time_to_local
+g_date_time_to_epoch
+g_date_time_to_timeval
+g_date_time_to_utc
+g_date_time_unref
+#endif
+#endif
+
 #if IN_HEADER(__G_DIR_H__)
 #if IN_FILE(__G_DIR_C__)
 g_dir_close

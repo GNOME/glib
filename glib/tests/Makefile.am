@@ -9,7 +9,6 @@ INCLUDES = 				\
 noinst_PROGRAMS = $(TEST_PROGS)
 progs_ldadd     = $(top_builddir)/glib/libglib-2.0.la 
 
-
 TEST_PROGS       += testing
 testing_SOURCES	  = testing.c
 testing_LDADD	  = $(progs_ldadd)
@@ -144,6 +143,10 @@ error_LDADD         = $(progs_ldadd)
 
 TEST_PROGS         += bookmarkfile
 bookmarkfile_LDADD  = $(progs_ldadd)
+
+TEST_PROGS          += gdatetime
+gdatetime_SOURCES    = gdatetime.c
+gdatetime_LDADD      = $(progs_ldadd)
 
 if OS_UNIX
 

@@ -134,7 +134,8 @@ libglib_2_0_la_SOURCES = 	\
 	gconvert.c		\
 	gdataset.c		\
 	gdatasetprivate.h	\
-	gdate.c         	\
+	gdate.c	 		\
+	gdatetime.c	 	\
 	gdir.c			\
 	gerror.c		\
 	gfileutils.c		\
@@ -142,11 +143,11 @@ libglib_2_0_la_SOURCES = 	\
 	ghook.c			\
 	ghostutils.c		\
 	giochannel.c    	\
-	gkeyfile.c        	\
+	gkeyfile.c		\
 	glibintl.h		\
 	glib_trace.h		\
 	glist.c			\
-	gmain.c         	\
+	gmain.c	 		\
 	gmappedfile.c		\
 	gmarkup.c		\
 	gmem.c			\
@@ -233,6 +234,7 @@ glibsubinclude_HEADERS =   \
 	gconvert.h	\
 	gdataset.h	\
 	gdate.h		\
+	gdatetime.h     \
 	gdir.h		\
 	gerror.h	\
 	gfileutils.h	\
@@ -277,7 +279,7 @@ glibsubinclude_HEADERS =   \
 	gtree.h		\
 	gtypes.h	\
 	gunicode.h	\
-	gurifuncs.h 		\
+	gurifuncs.h 	\
 	gutils.h	\
 	gvarianttype.h	\
 	gvariant.h	\
@@ -289,7 +291,7 @@ install-data-local: install-ms-lib install-def-file
 	  echo "*** Old headers found in $(glibincludedir). You should remove the" ;	\
 	  echo "*** contents of this directory and type 'make install' again." ;	\
 	  false ;									\
-        fi
+	fi
 
 uninstall-local: uninstall-ms-lib uninstall-def-file
 
@@ -400,8 +402,8 @@ bin_SCRIPTS = ${auto_config_binscripts}
 EXTRA_DIST += ${auto_config_binscripts}
 
 CONFIGVARS = \
-        "bindir"    	: "${bindir}",		\
-        "glib-version"  : "${GLIB_VERSION}"
+	"bindir"    	: "${bindir}",		\
+	"glib-version"  : "${GLIB_VERSION}"
 
 install-exec-hook:
 	for sf in ${auto_config_binscripts} ; do \
