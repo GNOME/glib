@@ -388,14 +388,18 @@ GIBaseInfo *           g_base_info_get_container    (GIBaseInfo   *info);
 GTypelib *             g_base_info_get_typelib      (GIBaseInfo   *info);
 gboolean               g_base_info_equal            (GIBaseInfo   *info1,
                                                      GIBaseInfo   *info2);
+gboolean               g_base_info_is_a             (GIBaseInfo   *info,
+                                                     GIInfoType    type);
 
 GIBaseInfo *           g_info_new                   (GIInfoType    type,
 						     GIBaseInfo   *container,
 						     GTypelib     *typelib,
 						     guint32       offset);
 
-
 /* GIFunctionInfo */
+
+#define GI_IS_FUNCTION_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FUNCTION)
 
 /**
  * GIFunctionInfoFlags:
@@ -481,6 +485,12 @@ gboolean              g_function_info_invoke         (GIFunctionInfo *info,
 
 /* GICallableInfo */
 
+#define GI_IS_CALLABLE_INFO(info) \
+    ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FUNCTION) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_CALLBACK) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_SIGNAL) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_VFUNC))
+
 /**
  * GITransfer:
  * @GI_TRANSFER_NOTHING: transfer nothing to the caller
@@ -510,6 +520,9 @@ void                   g_callable_info_load_arg        (GICallableInfo *info,
                                                         GIArgInfo      *arg);
 
 /* GIArgInfo */
+
+#define GI_IS_ARG_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ARG)
 
 /**
  * GIDirection:
@@ -560,6 +573,10 @@ GITypeInfo *           g_arg_info_get_type               (GIArgInfo *info);
 void                   g_arg_info_load_type              (GIArgInfo *info,
                                                           GITypeInfo *type);
 
+/* GITypeInfo */
+
+#define GI_IS_TYPE_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_TYPE)
 
 /**
  * GITypeTag:
@@ -670,16 +687,25 @@ GIErrorDomainInfo     *g_type_info_get_error_domain    (GITypeInfo *info,
 
 /* GIErrorDomainInfo */
 
+#define GI_IS_ERROR_DOMAIN_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ERROR_DOMAIN)
+
 const gchar *          g_error_domain_info_get_quark   (GIErrorDomainInfo *info);
 GIInterfaceInfo *           g_error_domain_info_get_codes (GIErrorDomainInfo *info);
 
 
 /* GIValueInfo */
 
+#define GI_IS_VALUE_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VALUE)
+
 glong                  g_value_info_get_value      (GIValueInfo *info);
 
 
 /* GIFieldInfo */
+
+#define GI_IS_FIELD_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FIELD)
 
 /**
  * GIFieldInfoFlags:
@@ -708,6 +734,10 @@ gboolean g_field_info_set_field (GIFieldInfo     *field_info,
 				 const GArgument *value);
 
 /* GIUnionInfo */
+
+#define GI_IS_UNION_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_UNION)
+
 gint                   g_union_info_get_n_fields  (GIUnionInfo *info);
 GIFieldInfo *          g_union_info_get_field     (GIUnionInfo *info,
 					           gint         n);
@@ -726,6 +756,10 @@ gsize                  g_union_info_get_alignment  (GIUnionInfo *info);
 
 
 /* GIStructInfo */
+
+#define GI_IS_STRUCT_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_STRUCT)
+
 gint                   g_struct_info_get_n_fields  (GIStructInfo *info);
 GIFieldInfo *          g_struct_info_get_field     (GIStructInfo *info,
 						    gint         n);
@@ -741,11 +775,21 @@ gboolean               g_struct_info_is_foreign    (GIStructInfo *info);
 
 /* GIRegisteredTypeInfo */
 
+#define GI_IS_REGISTERED_TYPE_INFO(info) \
+    ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_ENUM) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_INTERFACE) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_OBJECT) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_STRUCT) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_UNION))
+
 const gchar *          g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
 const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);
 GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
 
 /* GIEnumInfo */
+
+#define GI_IS_ENUM_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ENUM)
 
 gint                   g_enum_info_get_n_values             (GIEnumInfo      *info);
 GIValueInfo  *         g_enum_info_get_value                (GIEnumInfo      *info,
@@ -753,6 +797,9 @@ GIValueInfo  *         g_enum_info_get_value                (GIEnumInfo      *in
 GITypeTag              g_enum_info_get_storage_type         (GIEnumInfo      *info);
 
 /* GIObjectInfo */
+
+#define GI_IS_OBJECT_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_OBJECT)
 
 const gchar *          g_object_info_get_type_name	    (GIObjectInfo    *info);
 const gchar *          g_object_info_get_type_init	    (GIObjectInfo    *info);
@@ -788,6 +835,9 @@ GIStructInfo *         g_object_info_get_class_struct       (GIObjectInfo    *in
 
 /* GIInterfaceInfo */
 
+#define GI_IS_INTERFACE_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_INTERFACE)
+
 gint                   g_interface_info_get_n_prerequisites (GIInterfaceInfo *info);
 GIBaseInfo *           g_interface_info_get_prerequisite    (GIInterfaceInfo *info,
 							     gint        n);
@@ -816,11 +866,17 @@ GIStructInfo *         g_interface_info_get_iface_struct    (GIInterfaceInfo *in
 
 /* GIPropertyInfo  */
 
+#define GI_IS_PROPERTY_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_PROPERTY)
+
 GParamFlags             g_property_info_get_flags                (GIPropertyInfo         *info);
 GITypeInfo *            g_property_info_get_type                 (GIPropertyInfo         *info);
 
 
 /* GISignalInfo */
+
+#define GI_IS_SIGNAL_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_SIGNAL)
 
 GSignalFlags            g_signal_info_get_flags                  (GISignalInfo           *info);
 GIVFuncInfo *           g_signal_info_get_class_closure          (GISignalInfo           *info);
@@ -828,6 +884,9 @@ gboolean                g_signal_info_true_stops_emit            (GISignalInfo  
 
 
 /* GIVFuncInfo */
+
+#define GI_IS_VFUNC_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VFUNC)
 
 /**
  * GIVFuncInfoFlags:
@@ -851,6 +910,9 @@ GIFunctionInfo *        g_vfunc_info_get_invoker                 (GIVFuncInfo   
 
 
 /* GIConstantInfo */
+
+#define GI_IS_CONSTANT_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_CONSTANT)
 
 GITypeInfo *            g_constant_info_get_type                 (GIConstantInfo         *info);
 gint                    g_constant_info_get_value                (GIConstantInfo         *info,
