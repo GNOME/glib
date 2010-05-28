@@ -1209,7 +1209,7 @@ g_arg_info_get_scope (GIArgInfo *info)
  * g_arg_info_get_closure:
  * @info: a #GIArgInfo
  *
- * Obtains the index of the user data argument. This is only valid
+ * Obtain the index of the user data argument. This is only valid
  * for arguments which are callbacks.
  *
  * Returns: index of the user data argument or -1 if there is none
@@ -1276,7 +1276,7 @@ g_arg_info_get_type (GIArgInfo *info)
  * @info: a #GIArgInfo
  * @type: (out caller-allocates): Initialized with information about type of @info
  *
- * Get information about a the type of given argument @info; this
+ * Obtain information about a the type of given argument @info; this
  * function is a variant of g_arg_info_get_type() designed for stack
  * allocation.
  *
@@ -1295,11 +1295,42 @@ g_arg_info_load_type (GIArgInfo *info,
 }
 
 /* GITypeInfo functions */
+
+/**
+ * SECTION:gitypeinfo
+ * @Short_description: Struct representing a type
+ * @Title: GITypeInfo
+ *
+ * GITypeInfo represents a type. You can retrieve a type info from
+ * an argument (see #GIArgInfo), a functions return value (see #GIFunctionInfo),
+ * a field (see #GIFieldInfo), a property (see #GIPropertyInfo), a constant
+ * (see #GIConstantInfo) or for a union discriminator (see #GIUnionInfo).
+ *
+ * A type can either be a of a basic type which is a standard C primitive
+ * type or an interface type. For interface types you need to call
+ * g_type_info_get_interface() to get a reference to the base info for that
+ * interface.
+ *
+ */
+
+/**
+ * g_type_info_is_pointer:
+ * @info: a #GITypeInfo
+ *
+ * Obtain if the type is passed as a reference.
+ *
+ * Returns: %TRUE if it is a pointer
+ */
 gboolean
 g_type_info_is_pointer (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), FALSE);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (type->flags.reserved == 0 && type->flags.reserved2 == 0)
     return type->flags.pointer;
@@ -1311,11 +1342,25 @@ g_type_info_is_pointer (GITypeInfo *info)
     }
 }
 
+/**
+ * g_type_info_get_tag:
+ * @info: a #GITypeInfo
+ *
+ * Obtain the type tag for the type. See #GITypeTag for a list
+ * of type tags.
+ *
+ * Returns: the type tag
+ */
 GITypeTag
 g_type_info_get_tag (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, GI_TYPE_TAG_BOOLEAN);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), GI_TYPE_TAG_BOOLEAN);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (rinfo->type_is_embedded)
     return GI_TYPE_TAG_INTERFACE;
@@ -1329,12 +1374,26 @@ g_type_info_get_tag (GITypeInfo *info)
     }
 }
 
+/**
+ * g_type_info_get_param_type:
+ * @info: a #GITypeInfo
+ * @n: index of the parameter
+ *
+ * Obtain the parameter type @n.
+ *
+ * Returns: the param type info
+ */
 GITypeInfo *
 g_type_info_get_param_type (GITypeInfo *info,
                             gint       n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), NULL);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
@@ -1375,6 +1434,9 @@ g_type_info_get_interface (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), NULL);
+
   /* For embedded types, the given offset is a pointer to the actual blob,
    * after the end of the field.  In that case we know it's a "subclass" of
    * CommonBlob, so use that to determine the info type.
@@ -1411,11 +1473,25 @@ g_type_info_get_interface (GITypeInfo *info)
   return NULL;
 }
 
+/**
+ * g_type_info_get_array_length:
+ * @info: a #GITypeInfo
+ *
+ * Obtain the array length of the type. The type tag must be a
+ * #GI_TYPE_TAG_ARRAY or -1 will returned.
+ *
+ * Returns: the array length, or -1 if the type is not an array
+ */
 gint
 g_type_info_get_array_length (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, -1);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), -1);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
@@ -1431,11 +1507,25 @@ g_type_info_get_array_length (GITypeInfo *info)
   return -1;
 }
 
+/**
+ * g_type_info_get_array_fixed_size:
+ * @info: a #GITypeInfo
+ *
+ * Obtain the fixed array size of the type. The type tag must be a
+ * #GI_TYPE_TAG_ARRAY or -1 will returned.
+ *
+ * Returns: the size or -1 if it's not an array
+ */
 gint
 g_type_info_get_array_fixed_size (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), 0);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
@@ -1451,11 +1541,25 @@ g_type_info_get_array_fixed_size (GITypeInfo *info)
   return -1;
 }
 
+/**
+ * g_type_info_is_zero_terminated:
+ * @info: a #GITypeInfo
+ *
+ * Obtain if the last element of the array is %NULL. The type tag must be a
+ * #GI_TYPE_TAG_ARRAY or %FALSE will returned.
+ *
+ * Returns: %TRUE if zero terminated
+ */
 gboolean
 g_type_info_is_zero_terminated (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), FALSE);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
@@ -1468,11 +1572,26 @@ g_type_info_is_zero_terminated (GITypeInfo *info)
   return FALSE;
 }
 
+/**
+ * g_type_info_get_array_type:
+ * @info: a #GITypeInfo
+ *
+ * Obtain the array type for this type. See #GIArrayType for a list of
+ * possible values. If the type tag of this type is not array, -1 will be
+ * returned.
+ *
+ * Returns: the array type or -1
+ */
 GIArrayType
 g_type_info_get_array_type (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, -1);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), -1);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
@@ -1485,11 +1604,25 @@ g_type_info_get_array_type (GITypeInfo *info)
   return -1;
 }
 
+/**
+ * g_type_info_get_n_error_domains:
+ * @info: a #GITypeInfo
+ *
+ * Obtain the number of error domains for this type. The type tag
+ * must be a #GI_TYPE_TAG_ERROR or -1 will be returned.
+ *
+ * Returns: number of error domains or -1
+ */
 gint
 g_type_info_get_n_error_domains (GITypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), 0);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
@@ -1502,12 +1635,28 @@ g_type_info_get_n_error_domains (GITypeInfo *info)
   return 0;
 }
 
+/**
+ * g_type_info_get_error_domain:
+ * @info: a #GITypeInfo
+ * @n: index of error domain
+ *
+ * Obtain the error domains at index @n for this type. The type tag
+ * must be a #GI_TYPE_TAG_ERROR or -1 will be returned.
+ *
+ * Returns: (transfer full): the error domain or %NULL if type tag is wrong,
+ * free the struct withg_base_info_unref() when done.
+ */
 GIErrorDomainInfo *
 g_type_info_get_error_domain (GITypeInfo *info,
                               gint        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  SimpleTypeBlob *type;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_TYPE_INFO (info), NULL);
+
+  type = (SimpleTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (!(type->flags.reserved == 0 && type->flags.reserved2 == 0))
     {
