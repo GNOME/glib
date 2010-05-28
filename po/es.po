@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-05-26 16:10+0000\n"
-"PO-Revision-Date: 2010-05-26 18:12+0200\n"
+"PO-Revision-Date: 2010-05-28 19:45+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1771,38 +1771,38 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:532
 msgid "Method and interface name"
-msgstr ""
+msgstr "Nombre de la interfaz y método"
 
 #: ../gio/gdbus-tool.c:571
 msgid "Invoke a method on a remote object."
-msgstr ""
+msgstr "Invocar un método en un objeto remoto."
 
 #: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1243 ../gio/gdbus-tool.c:1495
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error connecting: %s"
 msgid "Error connecting: %s\n"
-msgstr "Error al conectar: %s"
+msgstr "Error al conectar: %s\n"
 
 #: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1262 ../gio/gdbus-tool.c:1514
 #, c-format
 msgid "Error: Destination is not specified\n"
-msgstr ""
+msgstr "Error: el destino no está especificado\n"
 
 #: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1281
 #, c-format
 msgid "Error: Object path is not specified\n"
-msgstr ""
+msgstr "Error: no se especificó la ruta del objeto\n"
 
 #: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1301 ../gio/gdbus-tool.c:1554
-#, fuzzy, c-format
+#, c-format
 #| msgid "'%s' is not a valid name "
 msgid "Error: %s is not a valid object path\n"
-msgstr "«%s» no es un nombre válido "
+msgstr "Error: %s no es una ruta de objeto válida\n"
 
 #: ../gio/gdbus-tool.c:702
 #, c-format
 msgid "Error: Method name is not specified\n"
-msgstr ""
+msgstr "Error: no se especificó el nombre del método\n"
 
 #: ../gio/gdbus-tool.c:713
 #, c-format
@@ -1810,16 +1810,16 @@ msgid "Error: Method name `%s' is invalid\n"
 msgstr "Error: el nombre del método «%s» no es válido\n"
 
 #: ../gio/gdbus-tool.c:778
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error opening directory '%s': %s"
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Falló al abrir el directorio «%s»: %s"
+msgstr "Error al analizar el parámetro %d del tipo «%s»: %s\n"
 
 #: ../gio/gdbus-tool.c:786
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error parsing option %s"
 msgid "Error parsing parameter %d: %s\n"
-msgstr "Error al analizar la opción: %s"
+msgstr "Error al analizar el parámetro %d: %s\n"
 
 #: ../gio/gdbus-tool.c:1161
 msgid "Destination name to introspect"
