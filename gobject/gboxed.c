@@ -140,6 +140,8 @@ G_DEFINE_BOXED_TYPE (GVariantType, g_variant_type, g_variant_type_copy, g_varian
 
 G_DEFINE_BOXED_TYPE (GError, g_error, g_error_copy, g_error_free)
 
+G_DEFINE_BOXED_TYPE (GDateTime, g_date_time, g_date_time_ref, g_date_time_unref);
+
 /* This one can't use G_DEFINE_BOXED_TYPE (GStrv, g_strv, g_strdupv, g_strfreev) */
 GType
 g_strv_get_type (void)

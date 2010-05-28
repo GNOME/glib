@@ -202,7 +202,14 @@ GType	g_boxed_type_register_static		(const gchar	*name,
  * Since: 2.26
  */
 #define	G_TYPE_ERROR (g_error_get_type ())
-
+/**
+ * G_TYPE_DATE_TIME
+ *
+ * The #GType for a boxed type holding a #GDateTime.
+ *
+ * Since: 2.26
+ */
+#define G_TYPE_DATE_TIME (g_date_time_get_type ())
 
 void    g_value_take_boxed      (GValue		*value,
 				 gconstpointer	 v_boxed);
@@ -223,6 +230,7 @@ GType   g_ptr_array_get_type    (void)  G_GNUC_CONST;
 GType   g_variant_type_get_gtype(void)  G_GNUC_CONST;
 GType   g_regex_get_type        (void)  G_GNUC_CONST;
 GType   g_error_get_type        (void)  G_GNUC_CONST;
+GType   g_date_time_get_type    (void)  G_GNUC_CONST;
 
 #ifndef G_DISABLE_DEPRECATED
 GType   g_variant_get_gtype     (void)  G_GNUC_CONST;
