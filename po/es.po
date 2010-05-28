@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-05-26 16:10+0000\n"
-"PO-Revision-Date: 2010-05-28 19:45+0200\n"
+"PO-Revision-Date: 2010-05-28 20:20+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1259,17 +1259,17 @@ msgstr ""
 #: ../gio/gdbusaddress.c:241 ../gio/gdbusaddress.c:315
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
-msgstr ""
+msgstr "Error en la dirección «%s»; el atributo de puerto está mal formado"
 
 #: ../gio/gdbusaddress.c:252 ../gio/gdbusaddress.c:326
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
-msgstr ""
+msgstr "Error en la dirección «%s»; el atributo de familia está mal formado"
 
 #: ../gio/gdbusaddress.c:428
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
-msgstr ""
+msgstr "El elemento de dirección «%s» no contiene dos puntos (:)"
 
 #: ../gio/gdbusaddress.c:449
 #, c-format
@@ -1345,7 +1345,7 @@ msgstr "Tipo de bus %d desconocido"
 
 #: ../gio/gdbusauth.c:289
 msgid "Unexpected lack of content trying to read a line"
-msgstr ""
+msgstr "Falta de contenido inesperada al intentar leer una línea"
 
 #: ../gio/gdbusauth.c:333
 msgid "Unexpected lack of content trying to (safely) read a line"
@@ -1372,6 +1372,8 @@ msgstr "Falló al abrir el directorio «%s»: %s"
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
+"Los permisos del directorio «%s» están mal formados. Se esperaba el modo "
+"0700, se obtuvo 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:295
 #, c-format
@@ -1430,10 +1432,10 @@ msgid "Error unlinking lock-file `%s': %s"
 msgstr "Error al abrir el archivo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:678
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error opening file '%s': %s"
 msgid "Error opening keyring `%s' for writing: "
-msgstr "Error al abrir el archivo «%s»: %s"
+msgstr "Error al abrir el depósito de claves «%s» para su escritura:"
 
 #: ../gio/gdbusauthmechanismsha1.c:873
 #, c-format
