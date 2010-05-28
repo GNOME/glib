@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-05-24 22:45-0400\n"
-"PO-Revision-Date: 2010-05-28 16:54+0200\n"
+"PO-Revision-Date: 2010-05-28 16:57+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1198,7 +1198,7 @@ msgstr "Unexpected early end-of-stream"
 #: gio/gdbusaddress.c:135 gio/gdbusaddress.c:226 gio/gdbusaddress.c:300
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Unsupported socket address"
+msgstr "Unsupported key `%s' in address entry `%s'"
 
 #: gio/gdbusaddress.c:165
 #, c-format
@@ -1659,7 +1659,7 @@ msgstr ""
 #: gio/gdbus-tool.c:312 gio/gdbus-tool.c:814 gio/gdbus-tool.c:1322
 #, c-format
 msgid "Error: %s\n"
-msgstr "Error on line %d: %s"
+msgstr "Error: %s\n"
 
 #: gio/gdbus-tool.c:171 gio/gdbus-tool.c:229 gio/gdbus-tool.c:1332
 #, c-format
@@ -1746,7 +1746,7 @@ msgstr "Error: Object path is not specified\n"
 #: gio/gdbus-tool.c:687 gio/gdbus-tool.c:1301 gio/gdbus-tool.c:1554
 #, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr "'%s' is not a valid name "
+msgstr "Error: %s is not a valid object path\n"
 
 #: gio/gdbus-tool.c:702
 #, c-format
@@ -1761,12 +1761,12 @@ msgstr "Error: Method name `%s' is invalid\n"
 #: gio/gdbus-tool.c:778
 #, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Error opening directory '%s': %s"
+msgstr "Error parsing parameter %d of type `%s': %s\n"
 
 #: gio/gdbus-tool.c:786
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "Error parsing option %s"
+msgstr "Error parsing parameter %d: %s\n"
 
 #: gio/gdbus-tool.c:1161
 msgid "Destination name to introspect"
@@ -2561,7 +2561,7 @@ msgstr ""
 #: gio/gsettings-tool.c:212
 #, c-format
 msgid "Key %s is not writable\n"
-msgstr "Type %s is not classed"
+msgstr "Key %s is not writable\n"
 
 #: gio/gsettings-tool.c:262
 msgid "Find out whether KEY is writable"
@@ -2578,7 +2578,7 @@ msgstr ""
 #: gio/gsettings-tool.c:399
 #, c-format
 msgid "Unknown command '%s'\n"
-msgstr "Unknown option %s"
+msgstr "Unknown command '%s'\n"
 
 #: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
@@ -2831,7 +2831,7 @@ msgstr "out of memory"
 #: gio/gzlibcompressor.c:286 gio/gzlibdecompressor.c:257
 #, c-format
 msgid "Internal error: %s"
-msgstr "internal error"
+msgstr "Internal error: %s"
 
 #: gio/gzlibcompressor.c:299 gio/gzlibdecompressor.c:271
 msgid "Need more input"
