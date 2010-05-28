@@ -1,7 +1,3 @@
-include $(top_srcdir)/gcov.mak
-
-GCOVSOURCES = $(libgirepository_1_0_la_SOURCES)
-
 girepodir = $(includedir)/gobject-introspection-1.0/
 girepo_HEADERS = girepository.h girffi.h
 
