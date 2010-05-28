@@ -357,6 +357,14 @@ start_over:
 
     } else if (errno == ENOENT) {
         /* File is not exist */
+    } else if (errno == ENOTSUP) {
+        /* FS is not supported. Currently we think it no longer make sense to
+         * monitor it, so clean the stat info and return 0 to ignore this
+         * node. If there are requirement, we can consider to add polling
+         * method.
+         */
+        NODE_CLE_FLAG(f, NODE_FLAG_STAT_UPDATED);
+        return 0;
     } else {
         FK_W ("PORT_ASSOCIATE 0x%p %s\n", f, g_strerror (errno));
     }
