@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-05-26 16:10+0000\n"
-"PO-Revision-Date: 2010-05-28 20:20+0200\n"
+"POT-Creation-Date: 2010-05-28 18:21+0000\n"
+"PO-Revision-Date: 2010-05-29 12:05+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -108,8 +108,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "No se pudo abrir el conversor de «%s» a «%s»"
 
 #: ../glib/gconvert.c:638 ../glib/gconvert.c:1031 ../glib/giochannel.c:1576
-#: ../glib/giochannel.c:1618 ../glib/giochannel.c:2462 ../glib/gutf8.c:981
-#: ../glib/gutf8.c:1436 ../gio/gcharsetconverter.c:346
+#: ../glib/giochannel.c:1618 ../glib/giochannel.c:2462 ../glib/gutf8.c:989
+#: ../glib/gutf8.c:1444 ../gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 
@@ -119,8 +119,8 @@ msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 msgid "Error during conversion: %s"
 msgstr "Falló durante la conversión: %s"
 
-#: ../glib/gconvert.c:678 ../glib/gutf8.c:977 ../glib/gutf8.c:1187
-#: ../glib/gutf8.c:1328 ../glib/gutf8.c:1432
+#: ../glib/gconvert.c:678 ../glib/gutf8.c:985 ../glib/gutf8.c:1195
+#: ../glib/gutf8.c:1336 ../glib/gutf8.c:1440
 msgid "Partial character sequence at end of input"
 msgstr "Hay una secuencia parcial de caracteres en el final de la entrada"
 
@@ -985,16 +985,16 @@ msgstr "Falló desconocido al ejecutar el proceso hijo «%s»"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Falló al leer suficientes datos desde el conducto del pid hijo (%s)"
 
-#: ../glib/gutf8.c:1055
+#: ../glib/gutf8.c:1063
 msgid "Character out of range for UTF-8"
 msgstr "El carácter se sale del rango para UTF-8"
 
-#: ../glib/gutf8.c:1155 ../glib/gutf8.c:1164 ../glib/gutf8.c:1296
-#: ../glib/gutf8.c:1305 ../glib/gutf8.c:1446 ../glib/gutf8.c:1542
+#: ../glib/gutf8.c:1163 ../glib/gutf8.c:1172 ../glib/gutf8.c:1304
+#: ../glib/gutf8.c:1313 ../glib/gutf8.c:1454 ../glib/gutf8.c:1550
 msgid "Invalid sequence in conversion input"
 msgstr "Secuencia inválida en la entrada de conversión"
 
-#: ../glib/gutf8.c:1457 ../glib/gutf8.c:1553
+#: ../glib/gutf8.c:1465 ../glib/gutf8.c:1561
 msgid "Character out of range for UTF-16"
 msgstr "El carácter se sale del rango para UTF-16"
 
@@ -1231,7 +1231,6 @@ msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials no está implementado en este SO"
 
 #: ../gio/gcredentials.c:296
-#| msgid "There no GCredentials support for your your platform"
 msgid "There is no GCredentials support for your platform"
 msgstr "No existe soporte de GCredentials para su plataforma"
 
@@ -1324,6 +1323,8 @@ msgstr ""
 msgid ""
 "Cannot determine session bus address (TODO: run dbus-launch to find out)"
 msgstr ""
+"No se puede determinar la dirección del bus de sesión (Tarea: ejecutar dbus-"
+"launch para averiguarlo)"
 
 #: ../gio/gdbusaddress.c:1002 ../gio/gdbusconnection.c:5309
 #, c-format
@@ -1331,12 +1332,16 @@ msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
+"No se puede determinar la dirección del bus desde la variable de entorno "
+"DBUS_STARTER_BUS_TYPE; variable «%s» desconocida"
 
 #: ../gio/gdbusaddress.c:1011 ../gio/gdbusconnection.c:5318
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
+"No se puede determinar la dirección del bus porque la variable de entorno "
+"DBUS_STARTER_BUS_TYPE no está establecida"
 
 #: ../gio/gdbusaddress.c:1021
 #, c-format
@@ -1350,6 +1355,7 @@ msgstr "Falta de contenido inesperada al intentar leer una línea"
 #: ../gio/gdbusauth.c:333
 msgid "Unexpected lack of content trying to (safely) read a line"
 msgstr ""
+"Falta de contenido inesperada al intentar leer (de forma segura) una línea"
 
 #: ../gio/gdbusauth.c:504
 #, c-format
@@ -1389,6 +1395,7 @@ msgstr "Error al abrir el depósito de claves «%s» para su lectura: "
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
+"La línea %d del depósito de claves en «%s» con contenido «%s» está mal formada"
 
 #: ../gio/gdbusauthmechanismsha1.c:416 ../gio/gdbusauthmechanismsha1.c:725
 #, c-format
@@ -1433,7 +1440,6 @@ msgstr "Error al abrir el archivo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:678
 #, c-format
-#| msgid "Error opening file '%s': %s"
 msgid "Error opening keyring `%s' for writing: "
 msgstr "Error al abrir el depósito de claves «%s» para su escritura:"
 
@@ -1510,10 +1516,10 @@ msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 
 #: ../gio/gdbusconnection.c:4981
-#, fuzzy, c-format
+#, c-format
 #| msgid "Listener is already closed"
 msgid "A subtree is already exported for %s"
-msgstr "El «listener» ya está cerrado"
+msgstr "Ya se ha exportado un subárbol para %s"
 
 #: ../gio/gdbusconnection.c:5089
 #, c-format
@@ -1521,10 +1527,10 @@ msgid "Unable to load /var/lib/dbus/machine-id: %s"
 msgstr ""
 
 #: ../gio/gdbusconnection.c:5259
-#, fuzzy, c-format
+#, c-format
 #| msgid "No such interface `%s'"
 msgid "No such interface `%s' on object at path %s"
-msgstr "La interfaz «%s» no existe"
+msgstr "No existe la interfaz «%s» en el objeto en la ruta %s"
 
 #: ../gio/gdbusmessage.c:723
 msgid "Wanted to read %"
@@ -1635,7 +1641,7 @@ msgstr "Error al enviar el mensaje: %s"
 
 #: ../gio/gdbusprivate.c:775
 msgid "Error writing first 16 bytes of message to socket: "
-msgstr ""
+msgstr "Error al escribir los primeros 16 bytes del mensaje en el socket: "
 
 #: ../gio/gdbusproxy.c:633
 #, c-format
@@ -1668,7 +1674,7 @@ msgstr "La cadena «%s» no es un GUID válido de D-Bus"
 #: ../gio/gdbusserver.c:1028
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
-msgstr ""
+msgstr "No se puede escuchar en un transporte no soportado «%s»"
 
 #: ../gio/gdbus-tool.c:87 ../gio/gsettings-tool.c:38
 msgid "COMMAND"
@@ -1694,7 +1700,7 @@ msgid ""
 "\n"
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
-"Comadnos:\n"
+"Comandos:\n"
 "  help        Mostrar esta información\n"
 "  get         Obtener el valor de una clave\n"
 "  set         Establecer el valor de una clave\n"
@@ -1705,10 +1711,10 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
 #: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1322
-#, fuzzy, c-format
+#, c-format
 #| msgid "Error on line %d: %s"
 msgid "Error: %s\n"
-msgstr "Error en la línea %d: %s"
+msgstr "Error: %s\n"
 
 #: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1332
 #, fuzzy, c-format
@@ -1718,27 +1724,25 @@ msgstr "Error al analizar la opción: %s"
 
 #: ../gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
-msgstr ""
+msgstr "Conectar con el bus del sistema"
 
 #: ../gio/gdbus-tool.c:347
 msgid "Connect to the session bus"
-msgstr ""
+msgstr "Conectar con el bus de sesión"
 
 #: ../gio/gdbus-tool.c:348
-#, fuzzy
 #| msgid "Connection in progress"
 msgid "Connect to given D-Bus address"
-msgstr "Conexión en progreso"
+msgstr "Conectar con la dirección de D-Bus proporcionada"
 
 #: ../gio/gdbus-tool.c:358
-#, fuzzy
 #| msgid "Connection in progress"
 msgid "Connection Endpoint Options:"
-msgstr "Conexión en progreso"
+msgstr "Opciones de conexión del extremo:"
 
 #: ../gio/gdbus-tool.c:359
 msgid "Options specifying the connection endpoint"
-msgstr ""
+msgstr "Opciones para especificar la conexión del extremo:"
 
 #: ../gio/gdbus-tool.c:379
 #, c-format
@@ -1781,7 +1785,6 @@ msgstr "Invocar un método en un objeto remoto."
 
 #: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1243 ../gio/gdbus-tool.c:1495
 #, c-format
-#| msgid "Error connecting: %s"
 msgid "Error connecting: %s\n"
 msgstr "Error al conectar: %s\n"
 
@@ -1797,7 +1800,6 @@ msgstr "Error: no se especificó la ruta del objeto\n"
 
 #: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1301 ../gio/gdbus-tool.c:1554
 #, c-format
-#| msgid "'%s' is not a valid name "
 msgid "Error: %s is not a valid object path\n"
 msgstr "Error: %s no es una ruta de objeto válida\n"
 
@@ -1813,13 +1815,11 @@ msgstr "Error: el nombre del método «%s» no es válido\n"
 
 #: ../gio/gdbus-tool.c:778
 #, c-format
-#| msgid "Error opening directory '%s': %s"
 msgid "Error parsing parameter %d of type `%s': %s\n"
 msgstr "Error al analizar el parámetro %d del tipo «%s»: %s\n"
 
 #: ../gio/gdbus-tool.c:786
 #, c-format
-#| msgid "Error parsing option %s"
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Error al analizar el parámetro %d: %s\n"
 
@@ -1844,7 +1844,6 @@ msgid "Object path to monitor"
 msgstr "Ruta objeto para monitorizar"
 
 #: ../gio/gdbus-tool.c:1447
-#| msgid "corrupted object"
 msgid "Monitor a remote object."
 msgstr "Monitorizar un objeto remoto."
 
@@ -2535,7 +2534,6 @@ msgid "Do not write the gschema.compiled file"
 msgstr "No escribir el archivo gschemas.compiled"
 
 #: ../gio/gschema-compile.c:649
-#| msgid "Can't move directory over directory"
 msgid "Do not give error for empty directory"
 msgstr "No proporcionar error para un directorio vacío"
 
@@ -2891,19 +2889,16 @@ msgstr "La creación de asociación no está soportada en win32"
 
 #: ../gio/gwin32inputstream.c:319
 #, c-format
-#| msgid "Error reading from file: %s"
 msgid "Error reading from handle: %s"
 msgstr "Error al leer del manejador: %s"
 
 #: ../gio/gwin32inputstream.c:349 ../gio/gwin32outputstream.c:349
 #, c-format
-#| msgid "Error closing file: %s"
 msgid "Error closing handle: %s"
 msgstr "Error al cerrar el manejador: %s"
 
 #: ../gio/gwin32outputstream.c:319
 #, c-format
-#| msgid "Error writing to file: %s"
 msgid "Error writing to handle: %s"
 msgstr "Error al escribir en el manejador: %s"
 
