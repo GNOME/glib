@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-25 09:55+0200\n"
-"PO-Revision-Date: 2010-05-25 09:55+0200\n"
+"POT-Creation-Date: 2010-05-30 17:41+0200\n"
+"PO-Revision-Date: 2010-05-30 17:43+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome@g11.net>\n"
 "MIME-Version: 1.0\n"
@@ -112,8 +112,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Non foi posíbel abrir o conversor de «%s» a «%s»"
 
 #: ../glib/gconvert.c:638 ../glib/gconvert.c:1031 ../glib/giochannel.c:1576
-#: ../glib/giochannel.c:1618 ../glib/giochannel.c:2462 ../glib/gutf8.c:981
-#: ../glib/gutf8.c:1436 ../gio/gcharsetconverter.c:346
+#: ../glib/giochannel.c:1618 ../glib/giochannel.c:2462 ../glib/gutf8.c:989
+#: ../glib/gutf8.c:1444 ../gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "A secuencia de bytes non é válida na entrada da conversión"
 
@@ -123,8 +123,8 @@ msgstr "A secuencia de bytes non é válida na entrada da conversión"
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversión: %s"
 
-#: ../glib/gconvert.c:678 ../glib/gutf8.c:977 ../glib/gutf8.c:1187
-#: ../glib/gutf8.c:1328 ../glib/gutf8.c:1432
+#: ../glib/gconvert.c:678 ../glib/gutf8.c:985 ../glib/gutf8.c:1195
+#: ../glib/gutf8.c:1336 ../glib/gutf8.c:1440
 msgid "Partial character sequence at end of input"
 msgstr "Hai unha secuencia de carácter parcial ao final da entrada"
 
@@ -997,16 +997,16 @@ msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
 "Fallo de lectura de suficientes datos desde a canalización filla co PID (%s)"
 
-#: ../glib/gutf8.c:1055
+#: ../glib/gutf8.c:1063
 msgid "Character out of range for UTF-8"
 msgstr "Carácter fóra do intervalo para UTF-8"
 
-#: ../glib/gutf8.c:1155 ../glib/gutf8.c:1164 ../glib/gutf8.c:1296
-#: ../glib/gutf8.c:1305 ../glib/gutf8.c:1446 ../glib/gutf8.c:1542
+#: ../glib/gutf8.c:1163 ../glib/gutf8.c:1172 ../glib/gutf8.c:1304
+#: ../glib/gutf8.c:1313 ../glib/gutf8.c:1454 ../glib/gutf8.c:1550
 msgid "Invalid sequence in conversion input"
 msgstr "Secuencia non válida na entrada da conversión"
 
-#: ../glib/gutf8.c:1457 ../glib/gutf8.c:1553
+#: ../glib/gutf8.c:1465 ../glib/gutf8.c:1561
 msgid "Character out of range for UTF-16"
 msgstr "Carácter fóra de intervalo para UTF-16"
 
@@ -1341,7 +1341,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (TODO: executar dbus-"
 "launch para encontralo)"
 
-#: ../gio/gdbusaddress.c:1002 ../gio/gdbusconnection.c:5305
+#: ../gio/gdbusaddress.c:1002 ../gio/gdbusconnection.c:5309
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1350,7 +1350,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1011 ../gio/gdbusconnection.c:5314
+#: ../gio/gdbusaddress.c:1011 ../gio/gdbusconnection.c:5318
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1365,11 +1365,11 @@ msgstr "Tipo de bus %d descoñecido"
 
 #: ../gio/gdbusauth.c:289
 msgid "Unexpected lack of content trying to read a line"
-msgstr ""
+msgstr "Falta o contido inesperada ao tentar ler unha liña"
 
 #: ../gio/gdbusauth.c:333
 msgid "Unexpected lack of content trying to (safely) read a line"
-msgstr ""
+msgstr "Falta de contido inesperada ao tentar ler (de forma segura) unha liña"
 
 #: ../gio/gdbusauth.c:504
 #, c-format
@@ -1497,7 +1497,7 @@ msgstr "Non é posíbel escribir a chave %s"
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3341 ../gio/gdbusconnection.c:4764
+#: ../gio/gdbusconnection.c:3341 ../gio/gdbusconnection.c:4768
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
@@ -1516,39 +1516,39 @@ msgstr "Non existe o método «%s»"
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "O tipo da mensaxe, «%s», non coincide co tipo «%s» esperado"
 
-#: ../gio/gdbusconnection.c:3989
+#: ../gio/gdbusconnection.c:3993
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 
-#: ../gio/gdbusconnection.c:4169
+#: ../gio/gdbusconnection.c:4173
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "O método «%s» devolveu un tipo «%s» máis esperábase «%s»"
 
-#: ../gio/gdbusconnection.c:4862
+#: ../gio/gdbusconnection.c:4866
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:4977
+#: ../gio/gdbusconnection.c:4981
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
 
-#: ../gio/gdbusconnection.c:5085
+#: ../gio/gdbusconnection.c:5089
 #, c-format
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: %s"
 
-#: ../gio/gdbusconnection.c:5255
+#: ../gio/gdbusconnection.c:5259
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Non existe a interface «%s» no obxecto co camiño %s"
 
 #: ../gio/gdbusmessage.c:723
 msgid "Wanted to read %"
-msgstr ""
+msgstr "Quíxose ler %"
 
 #: ../gio/gdbusmessage.c:744
 #, c-format
@@ -1581,52 +1581,52 @@ msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1282
+#: ../gio/gdbusmessage.c:1286
 #, c-format
 msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1296
+#: ../gio/gdbusmessage.c:1300
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Versión maior do protocolo inválida. Esperábase 1 pero encontrouse a %d"
 
-#: ../gio/gdbusmessage.c:1339
+#: ../gio/gdbusmessage.c:1343
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 "Encontrouse a cabeceira de sinatura coa sinatura «%s» máis o corpo da mensaxe "
 "está baleiro"
 
-#: ../gio/gdbusmessage.c:1353
+#: ../gio/gdbusmessage.c:1357
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "O valor analizado «%s» non é unha sinatura D-Bus válida (para o corpo)"
 
-#: ../gio/gdbusmessage.c:1382
+#: ../gio/gdbusmessage.c:1386
 msgid "No signature header in message but the message body is %"
 msgstr "Non hai unha cabeceira da sinatura pero o corpo da mensaxe é %"
 
-#: ../gio/gdbusmessage.c:1694
+#: ../gio/gdbusmessage.c:1698
 #, c-format
 msgid ""
 "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1823
+#: ../gio/gdbusmessage.c:1827
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
 msgstr "A mensaxe ten %d fds pero o campo da cabeceira indica %d fds"
 
-#: ../gio/gdbusmessage.c:1869
+#: ../gio/gdbusmessage.c:1873
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 "O corpo da mensaxe ten a sinatura «%s» máis non está presente a cabeceira de "
 "sinatura"
 
-#: ../gio/gdbusmessage.c:1879
+#: ../gio/gdbusmessage.c:1883
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `%"
@@ -1635,18 +1635,18 @@ msgstr ""
 "O corpo da mensaxe ten a sinatura de tipo «%s» pero a sintura no campo da "
 "cabeceira é «%s»"
 
-#: ../gio/gdbusmessage.c:1895
+#: ../gio/gdbusmessage.c:1899
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 "O corpo da mensaxe está baleiro máis a sinatura do campo da cabeceira é «(%s)»"
 
-#: ../gio/gdbusmessage.c:2448
+#: ../gio/gdbusmessage.c:2452
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2456
+#: ../gio/gdbusmessage.c:2460
 msgid "Error return with empty body"
 msgstr ""
 
@@ -1749,9 +1749,8 @@ msgid "Connection Endpoint Options:"
 msgstr "Conexión en marcha"
 
 #: ../gio/gdbus-tool.c:359
-#, fuzzy
 msgid "Options specifying the connection endpoint"
-msgstr "Opción que especifica o punto final da conexión"
+msgstr "Opción para especificar a conexión do extremo:"
 
 #: ../gio/gdbus-tool.c:379
 #, c-format
@@ -2899,19 +2898,19 @@ msgid "Association creation not supported on win32"
 msgstr "A creación de asociación non é compatíbel con win32"
 
 #: ../gio/gwin32inputstream.c:319
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from handle: %s"
-msgstr "Produciuse un erro ao ler do ficheiro: %s"
+msgstr "Produciuse un erro ao ler do manexador: %s"
 
 #: ../gio/gwin32inputstream.c:349 ../gio/gwin32outputstream.c:349
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing handle: %s"
-msgstr "Produciuse un erro ao pechar o ficheiro: %s"
+msgstr "Produciuse un erro ao pechar o manexador: %s"
 
 #: ../gio/gwin32outputstream.c:319
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to handle: %s"
-msgstr "Produciuse un erro ao escribir no ficheiro: %s"
+msgstr "Produciuse un erro ao escribir no manexador: %s"
 
 #: ../gio/gzlibcompressor.c:279 ../gio/gzlibdecompressor.c:250
 msgid "Not enough memory"
