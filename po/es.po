@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-05-28 18:21+0000\n"
-"PO-Revision-Date: 2010-05-29 12:05+0200\n"
+"POT-Creation-Date: 2010-05-29 10:06+0000\n"
+"PO-Revision-Date: 2010-05-30 18:22+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1517,7 +1517,6 @@ msgstr ""
 
 #: ../gio/gdbusconnection.c:4981
 #, c-format
-#| msgid "Listener is already closed"
 msgid "A subtree is already exported for %s"
 msgstr "Ya se ha exportado un subárbol para %s"
 
@@ -1528,7 +1527,6 @@ msgstr ""
 
 #: ../gio/gdbusconnection.c:5259
 #, c-format
-#| msgid "No such interface `%s'"
 msgid "No such interface `%s' on object at path %s"
 msgstr "No existe la interfaz «%s» en el objeto en la ruta %s"
 
@@ -1649,6 +1647,8 @@ msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
 msgstr ""
+"Intentando establecer la propiedad %s del tipo %s pero según la interfaz "
+"esperada el tipo es %s"
 
 #: ../gio/gdbusserver.c:669
 #, fuzzy
@@ -1712,7 +1712,6 @@ msgstr ""
 #: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
 #: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1322
 #, c-format
-#| msgid "Error on line %d: %s"
 msgid "Error: %s\n"
 msgstr "Error: %s\n"
 
@@ -1731,12 +1730,10 @@ msgid "Connect to the session bus"
 msgstr "Conectar con el bus de sesión"
 
 #: ../gio/gdbus-tool.c:348
-#| msgid "Connection in progress"
 msgid "Connect to given D-Bus address"
 msgstr "Conectar con la dirección de D-Bus proporcionada"
 
 #: ../gio/gdbus-tool.c:358
-#| msgid "Connection in progress"
 msgid "Connection Endpoint Options:"
 msgstr "Opciones de conexión del extremo:"
 
@@ -1747,12 +1744,12 @@ msgstr "Opciones para especificar la conexión del extremo:"
 #: ../gio/gdbus-tool.c:379
 #, c-format
 msgid "No connection endpoint specified"
-msgstr ""
+msgstr "No se especificó ningún punto de conexión extremo"
 
 #: ../gio/gdbus-tool.c:389
 #, c-format
 msgid "Multiple connection endpoints specified"
-msgstr ""
+msgstr "Se especificaron varios puntos de conexión extremos"
 
 #: ../gio/gdbus-tool.c:459
 #, c-format
@@ -1769,11 +1766,11 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
-msgstr ""
+msgstr "Nombre del detino sobre el que invocar elmétodo"
 
 #: ../gio/gdbus-tool.c:531
 msgid "Object path to invoke method on"
-msgstr ""
+msgstr "Ruta del objeto sobre la que invocar el método"
 
 #: ../gio/gdbus-tool.c:532
 msgid "Method and interface name"
