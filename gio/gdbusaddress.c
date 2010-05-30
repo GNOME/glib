@@ -162,7 +162,7 @@ is_valid_unix (const gchar  *address_entry,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys"),
+                   _("Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"),
                    address_entry);
       goto out;
     }
