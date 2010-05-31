@@ -33,7 +33,7 @@
 #include "girmodule.h"
 #include "girnode.h"
 #include "girparser.h"
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 
 gboolean code = FALSE;
 gboolean no_init = FALSE;
