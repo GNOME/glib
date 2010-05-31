@@ -22,8 +22,12 @@
 #ifndef __G_IREPOSITORY_H__
 #define __G_IREPOSITORY_H__
 
+#define __GIREPOSITORY_H_INSIDE__
+
 #include <glib-object.h>
 #include <gmodule.h>
+#include <girepository/gibaseinfo.h>
+#include <girepository/gitypelib.h>
 
 G_BEGIN_DECLS
 
@@ -37,156 +41,6 @@ G_BEGIN_DECLS
 typedef struct _GIRepository         GIRepository;
 typedef struct _GIRepositoryClass    GIRepositoryClass;
 typedef struct _GIRepositoryPrivate  GIRepositoryPrivate;
-
-typedef struct _GIBaseInfoStub       GIBaseInfo;
-
-struct _GIBaseInfoStub {
-  /* <private> */
-  gint32 dummy1;
-  gint32 dummy2;
-  gpointer dummy3;
-  gpointer dummy4;
-  gpointer dummy5;
-  guint32  dummy6;
-  guint32  dummy7;
-  gpointer padding[4];
-};
-
-/**
- * GICallableInfo:
- *
- * Represents a callable, either #GIFunctionInfo, #GICallbackInfo or
- * #GIVFuncInfo.
- */
-typedef GIBaseInfo GICallableInfo;
-
-/**
- * GIFunctionInfo:
- *
- * Represents a function, eg arguments and return value.
- */
-typedef GIBaseInfo GIFunctionInfo;
-
-/**
- * GICallbackInfo:
- *
- * Represents a callback, eg arguments and return value.
- */
-typedef GIBaseInfo GICallbackInfo;
-
-/**
- * GIRegisteredTypeInfo:
- *
- * Represent a registered type.
- */
-typedef GIBaseInfo GIRegisteredTypeInfo;
-
-/**
- * GIStructInfo:
- *
- * Represents a struct.
- */
-typedef GIBaseInfo GIStructInfo;
-
-/**
- * GIUnionInfo:
- *
- * Represents a union.
- */
-typedef GIBaseInfo GIUnionInfo;
-
-/**
- * GIEnumInfo:
- *
- * Represents an enum or a flag.
- */
-typedef GIBaseInfo GIEnumInfo;
-
-/**
- * GIObjectInfo:
- *
- * Represents an object.
- */
-typedef GIBaseInfo GIObjectInfo;
-
-/**
- * GIInterfaceInfo:
- *
- * Represents an interface.
- */
-typedef GIBaseInfo GIInterfaceInfo;
-
-/**
- * GIConstantInfo:
- *
- * Represents a constant.
- */
-typedef GIBaseInfo GIConstantInfo;
-
-/**
- * GIValueInfo:
- *
- * Represents a enum value of a #GIEnumInfo.
- */
-typedef GIBaseInfo GIValueInfo;
-
-/**
- * GISignalInfo:
- *
- * Represents a signal.
- */
-typedef GIBaseInfo GISignalInfo;
-
-/**
- * GIVFuncInfo
- *
- * Represents a virtual function.
- */
-typedef GIBaseInfo GIVFuncInfo;
-
-/**
- * GIPropertyInfo:
- *
- * Represents a property of a #GIObjectInfo or a #GIInterfaceInfo.
- */
-typedef GIBaseInfo GIPropertyInfo;
-
-/**
- * GIFieldInfo:
- *
- * Represents a field of a #GIStructInfo or a #GIUnionInfo.
- */
-typedef GIBaseInfo GIFieldInfo;
-
-/**
- * GIArgInfo:
- *
- * Represents an argument.
- */
-typedef GIBaseInfo GIArgInfo;
-
-/**
- * GITypeInfo:
- *
- * Represents type information, direction, transfer etc.
- */
-typedef GIBaseInfo GITypeInfo;
-
-/**
- * GIErrorDomainInfo:
- *
- * Represents a #GError error domain.
- */
-typedef GIBaseInfo GIErrorDomainInfo;
-
-/**
- * GIUnresolvedInfo:
- *
- * Represents a unresolved type in a typelib.
- */
-typedef struct _GIUnresolvedInfo GIUnresolvedInfo;
-
-typedef struct _GTypelib GTypelib;
 
 struct _GIRepository
 {
@@ -257,20 +111,6 @@ GOptionGroup * g_irepository_get_option_group (void);
 
 gboolean       g_irepository_dump  (const char *arg, GError **error);
 
-/* Typelib */
-
-GTypelib *   g_typelib_new_from_memory       (guchar       *memory,
-                                                gsize         len);
-GTypelib *   g_typelib_new_from_const_memory (const guchar *memory,
-                                                gsize         len);
-GTypelib *   g_typelib_new_from_mapped_file  (GMappedFile  *mfile);
-void          g_typelib_free                  (GTypelib    *typelib);
-
-gboolean      g_typelib_symbol                (GTypelib    *typelib,
-                                               const gchar *symbol_name,
-                                               gpointer    *symbol);
-const gchar * g_typelib_get_namespace         (GTypelib    *typelib);
-
 /**
  * GIRepositoryError:
  * @G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND: the typelib could not be found.
@@ -302,96 +142,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   const GValue   *param_values,
                                   gpointer        invocation_hint,
                                   gpointer        marshal_data);
-
-/* Types of objects registered in the repository */
-
-/**
- * GIInfoType:
- * @GI_INFO_TYPE_INVALID: invalid type
- * @GI_INFO_TYPE_FUNCTION: function, see #GIFunctionInfo
- * @GI_INFO_TYPE_CALLBACK: callback, see #GIFunctionInfo
- * @GI_INFO_TYPE_STRUCT: struct, see #GIStructInfo
- * @GI_INFO_TYPE_BOXED: boxed, see #GIStructInfo or #GIUnionInfo
- * @GI_INFO_TYPE_ENUM: enum, see #GIEnumInfo
- * @GI_INFO_TYPE_FLAGS: flags, see #GIEnumInfo
- * @GI_INFO_TYPE_OBJECT: object, see #GIObjectInfo
- * @GI_INFO_TYPE_INTERFACE: interface, see #GIInterfaceInfo
- * @GI_INFO_TYPE_CONSTANT: contant, see #GIConstantInfo
- * @GI_INFO_TYPE_ERROR_DOMAIN: error domain for a #GError, see #GIErrorDomainInfo
- * @GI_INFO_TYPE_UNION: union, see #GIUnionInfo
- * @GI_INFO_TYPE_VALUE: enum value, see #GIValueInfo
- * @GI_INFO_TYPE_SIGNAL: signal, see #GISignalInfo
- * @GI_INFO_TYPE_VFUNC: virtual function, see #GIVFuncInfo
- * @GI_INFO_TYPE_PROPERTY: GObject property, see #GIPropertyInfo
- * @GI_INFO_TYPE_FIELD: struct or union field, see #GIFieldInfo
- * @GI_INFO_TYPE_ARG: argument of a function or callback, see #GIArgInfo
- * @GI_INFO_TYPE_TYPE: type information, see #GITypeInfo
- * @GI_INFO_TYPE_UNRESOLVED: unresolved type, a type which is not present in
- * the typelib, or any of its dependencies.
- *
- * The type of a GIBaseInfo struct.
- */
-typedef enum
-{
-  GI_INFO_TYPE_INVALID,
-  GI_INFO_TYPE_FUNCTION,
-  GI_INFO_TYPE_CALLBACK,
-  GI_INFO_TYPE_STRUCT,
-  GI_INFO_TYPE_BOXED,
-  GI_INFO_TYPE_ENUM,         /*  5 */
-  GI_INFO_TYPE_FLAGS,
-  GI_INFO_TYPE_OBJECT,
-  GI_INFO_TYPE_INTERFACE,
-  GI_INFO_TYPE_CONSTANT,
-  GI_INFO_TYPE_ERROR_DOMAIN, /* 10 */
-  GI_INFO_TYPE_UNION,
-  GI_INFO_TYPE_VALUE,
-  GI_INFO_TYPE_SIGNAL,
-  GI_INFO_TYPE_VFUNC,
-  GI_INFO_TYPE_PROPERTY,     /* 15 */
-  GI_INFO_TYPE_FIELD,
-  GI_INFO_TYPE_ARG,
-  GI_INFO_TYPE_TYPE,
-  GI_INFO_TYPE_UNRESOLVED
-} GIInfoType;
-
-
-/* GIBaseInfo */
-
-/**
- * GIAttributeIter:
- *
- * An opaque structure used to iterate over attributes
- * in a #GIBaseInfo struct.
- */
-typedef struct {
-  /* <private> */
-  gpointer data;
-  gpointer data2;
-  gpointer data3;
-  gpointer data4;
-} GIAttributeIter;
-
-GIBaseInfo *           g_base_info_ref              (GIBaseInfo   *info);
-void                   g_base_info_unref            (GIBaseInfo   *info);
-GIInfoType             g_base_info_get_type         (GIBaseInfo   *info);
-const gchar *          g_base_info_get_name         (GIBaseInfo   *info);
-const gchar *          g_base_info_get_namespace    (GIBaseInfo   *info);
-gboolean               g_base_info_is_deprecated    (GIBaseInfo   *info);
-const gchar *          g_base_info_get_attribute    (GIBaseInfo   *info,
-                                                     const gchar  *name);
-gboolean               g_base_info_iterate_attributes (GIBaseInfo      *info,
-                                                       GIAttributeIter *iterator,
-                                                       char           **name,
-                                                       char          **value);
-GIBaseInfo *           g_base_info_get_container    (GIBaseInfo   *info);
-GTypelib *             g_base_info_get_typelib      (GIBaseInfo   *info);
-gboolean               g_base_info_equal            (GIBaseInfo   *info1,
-                                                     GIBaseInfo   *info2);
-GIBaseInfo *           g_info_new                   (GIInfoType    type,
-						     GIBaseInfo   *container,
-						     GTypelib     *typelib,
-						     guint32       offset);
 
 /* GIFunctionInfo */
 
@@ -918,6 +668,7 @@ gint                    g_constant_info_get_value                (GIConstantInfo
 
 
 G_END_DECLS
+
 
 #endif  /* __G_IREPOSITORY_H__ */
 
