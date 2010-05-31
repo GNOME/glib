@@ -29,7 +29,7 @@
 #include <glib/gstdio.h>
 
 #include "girepository.h"
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 
 /* FIXME: Avoid global */
 static gchar *output = NULL;
