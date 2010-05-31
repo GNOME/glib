@@ -786,7 +786,8 @@ GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInf
 /* GIEnumInfo */
 
 #define GI_IS_ENUM_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ENUM)
+    ((g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ENUM) || \
+     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FLAGS))
 
 gint                   g_enum_info_get_n_values             (GIEnumInfo      *info);
 GIValueInfo  *         g_enum_info_get_value                (GIEnumInfo      *info,
