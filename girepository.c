@@ -29,7 +29,7 @@
 #include <glib/gprintf.h>
 #include <gmodule.h>
 #include "girepository.h"
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 #include "ginfo.h"
 #include "glib-compat.h"
 

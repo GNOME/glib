@@ -25,7 +25,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 #include "ginfo.h"
 #include "girepository-private.h"
 

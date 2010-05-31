@@ -25,7 +25,7 @@
 
 #include "girepository.h"
 #include "girffi.h"
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 #include "config.h"
 
 GQuark

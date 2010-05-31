@@ -25,7 +25,7 @@
 #include <glib.h>
 
 #include "config.h"
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 #include "glib-compat.h"
 
 typedef struct {

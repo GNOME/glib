@@ -22,7 +22,7 @@
 #define __G_IR_MODULE_H__
 
 #include <glib.h>
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 
 G_BEGIN_DECLS
 

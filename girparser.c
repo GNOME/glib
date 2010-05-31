@@ -26,7 +26,7 @@
 #include "girparser.h"
 #include "girmodule.h"
 #include "girnode.h"
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 #include "config.h"
 
 #if defined(HAVE_BACKTRACE) && defined(HAVE_BACKTRACE_SYMBOLS)

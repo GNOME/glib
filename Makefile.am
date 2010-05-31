@@ -22,8 +22,8 @@ libgirepository_1_0_la_SOURCES =		\
 	girffi.h                                \
 	girffi-private.h                        \
 	glib-compat.h                           \
-	gtypelib.c				\
-	gtypelib.h
+	gitypelib.c				\
+	gitypelib-internal.h
 
 libgirepository_1_0_la_CPPFLAGS = $(GIREPO_CFLAGS)
 libgirepository_1_0_la_LIBADD = $(GIREPO_LIBS)

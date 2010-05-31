@@ -25,7 +25,7 @@
 
 #include "girmodule.h"
 #include "girnode.h"
-#include "gtypelib.h"
+#include "gitypelib-internal.h"
 
 static gulong string_count = 0;
 static gulong unique_string_count = 0;
