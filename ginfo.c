@@ -550,10 +550,10 @@ find_first_attribute (GIRealInfo *rinfo)
  * Returns: %TRUE if there are more attributes
  */
 gboolean
-g_base_info_iterate_attributes (GIBaseInfo       *info,
-                                 GIAttributeIter *iterator,
-                                 gchar           **name,
-                                 gchar           **value)
+g_base_info_iterate_attributes (GIBaseInfo      *info,
+                                GIAttributeIter *iterator,
+                                gchar           **name,
+                                gchar           **value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   Header *header = (Header *)rinfo->typelib->data;
@@ -1283,7 +1283,7 @@ g_arg_info_get_type (GIArgInfo *info)
  * The initialized @type must not be referenced after @info is deallocated.
  */
 void
-g_arg_info_load_type (GIArgInfo *info,
+g_arg_info_load_type (GIArgInfo  *info,
                       GITypeInfo *type)
 {
   GIRealInfo *rinfo = (GIRealInfo*) info;
@@ -1385,7 +1385,7 @@ g_type_info_get_tag (GITypeInfo *info)
  */
 GITypeInfo *
 g_type_info_get_param_type (GITypeInfo *info,
-                            gint       n)
+                            gint        n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   SimpleTypeBlob *type;
