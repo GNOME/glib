@@ -1734,17 +1734,132 @@ g_error_domain_info_get_codes (GIErrorDomainInfo *info)
 }
 
 
-/* GIValueInfo functions */
+/* GIEnumInfo and GIValueInfo functions */
+
+/**
+ * SECTION:gienuminfo
+ * @Short_description: Structs representing an enumeration and its values
+ * @Title: GIEnumInfo
+ *
+ * A GIEnumInfo represents an enumeration and a GIValueInfo struct represents a value
+ * of an enumeration. The GIEnumInfo contains a set of values and a type
+ * The GIValueInfo is fetched by calling g_enum_info_get_value() on a #GIEnumInfo.
+ */
+
+/**
+* g_enum_info_get_n_values:
+* @info: a #GIEnumInfo
+*
+* Obtain the number of values this enumeration contains.
+*
+* Returns: the number of enumeration values
+*/
+gint
+g_enum_info_get_n_values (GIEnumInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  EnumBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_ENUM_INFO (info), 0);
+
+  blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  return blob->n_values;
+}
+
+/**
+ * g_enum_info_get_value:
+ * @info: a #GIEnumInfo
+ * @n: index of value to fetch
+ *
+ * Obtain a value for this enumeration.
+ *
+ * Returns: (transfer full): the enumeration value or %NULL if type tag is wrong,
+ * free the struct with g_base_info_unref() when done.
+ */
+GIValueInfo *
+g_enum_info_get_value (GIEnumInfo *info,
+		       gint        n)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header;
+  gint offset;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_ENUM_INFO (info), NULL);
+
+  header = (Header *)rinfo->typelib->data;
+  offset = rinfo->offset + header->enum_blob_size
+    + n * header->value_blob_size;
+
+  return (GIValueInfo *) g_info_new (GI_INFO_TYPE_VALUE, (GIBaseInfo*)info, rinfo->typelib, offset);
+}
+
+/**
+ * g_enum_info_get_storage_type:
+ * @info: a #GIEnumInfo
+ *
+ * Obtain the tag of the type used for the enum in the C ABI. This will
+ * will be a signed or unsigned integral type.
+
+ * Note that in the current implementation the width of the type is
+ * computed correctly, but the signed or unsigned nature of the type
+ * may not match the sign of the type used by the C compiler.
+ *
+ * Return Value: the storage type for the enumeration
+ */
+GITypeTag
+g_enum_info_get_storage_type (GIEnumInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  EnumBlob *blob;
+
+  g_return_val_if_fail (info != NULL, GI_TYPE_TAG_BOOLEAN);
+  g_return_val_if_fail (GI_IS_ENUM_INFO (info), GI_TYPE_TAG_BOOLEAN);
+
+  blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  return blob->storage_type;
+}
+
+/**
+ * g_value_info_get_value:
+ * @info: a #GIValueInfo
+ *
+ * Obtain the enumeration value of the #GIValueInfo.
+ *
+ * Returns: the enumeration value
+ */
 glong
 g_value_info_get_value (GIValueInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  ValueBlob *blob = (ValueBlob *)&rinfo->typelib->data[rinfo->offset];
+  ValueBlob *blob;
+
+  g_return_val_if_fail (info != NULL, -1);
+  g_return_val_if_fail (GI_IS_VALUE_INFO (info), -1);
+
+  blob = (ValueBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return (glong)blob->value;
 }
 
 /* GIFieldInfo functions */
+
+/**
+ * SECTION:gifieldinfo
+ * @Short_description: Struct representing a struct or union field
+ * @Title: GIFieldInfo
+ *
+ * A GIFieldInfo struct represents a field of a struct (see #GIStructInfo),
+ * union (see #GIUnionInfo) or an object (see #GIObjectInfo). The GIFieldInfo
+ * is fetched by calling g_struct_info_get_field(), g_union_info_get_field()
+ * or g_object_info_get_value().
+ * A field has a size, type and a struct offset asssociated and a set of flags,
+ * which is currently #GI_FIELD_IS_READABLE or #GI_FIELD_IS_WRITABLE.
+ */
+
 GIFieldInfoFlags
 g_field_info_get_flags (GIFieldInfo *info)
 {
@@ -2000,50 +2115,6 @@ g_struct_info_is_gtype_struct (GIStructInfo *info)
   StructBlob *blob = (StructBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->is_gtype_struct;
-}
-
-gint
-g_enum_info_get_n_values (GIEnumInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  EnumBlob *blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
-
-  return blob->n_values;
-}
-
-GIValueInfo *
-g_enum_info_get_value (GIEnumInfo *info,
-		       gint            n)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header = (Header *)rinfo->typelib->data;
-  gint offset;
-
-  offset = rinfo->offset + header->enum_blob_size
-    + n * header->value_blob_size;
-  return (GIValueInfo *) g_info_new (GI_INFO_TYPE_VALUE, (GIBaseInfo*)info, rinfo->typelib, offset);
-}
-
-/**
- * g_enum_info_get_storage_type:
- * @info: a #GIEnumInfo
- *
- * Gets the tag of the type used for the enum in the C ABI. This will
- * will be a signed or unsigned integral type.
-
- * Note that in the current implementation the width of the type is
- * computed correctly, but the signed or unsigned nature of the type
- * may not match the sign of the type used by the C compiler.
- *
- * Return Value: the storage type for the enumeration
- */
-GITypeTag
-g_enum_info_get_storage_type (GIEnumInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  EnumBlob *blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
-
-  return blob->storage_type;
 }
 
 /* GIObjectInfo functions */
