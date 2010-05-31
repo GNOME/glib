@@ -166,6 +166,31 @@ typedef GIBaseInfo GIErrorDomainInfo;
  */
 typedef struct _GIUnresolvedInfo GIUnresolvedInfo;
 
+typedef union
+{
+  gboolean v_boolean;
+  gint8    v_int8;
+  guint8   v_uint8;
+  gint16   v_int16;
+  guint16  v_uint16;
+  gint32   v_int32;
+  guint32  v_uint32;
+  gint64   v_int64;
+  guint64  v_uint64;
+  gfloat   v_float;
+  gdouble  v_double;
+  gshort   v_short;
+  gushort  v_ushort;
+  gint     v_int;
+  guint    v_uint;
+  glong    v_long;
+  gulong   v_ulong;
+  gssize   v_ssize;
+  gsize    v_size;
+  gchar *  v_string;
+  gpointer v_pointer;
+} GArgument;
+
 /* Types of objects registered in the repository */
 
 /**

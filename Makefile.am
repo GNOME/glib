@@ -1,6 +1,7 @@
 girepodir = $(includedir)/gobject-introspection-1.0/
 girepo_HEADERS =				\
     gibaseinfo.h				\
+    gifunctioninfo.h				\
     girepository.h				\
     girffi.h					\
     gitypelib.h					\
@@ -12,7 +13,8 @@ noinst_LTLIBRARIES = libgirepository-parser.la
 libgirepository_1_0_la_SOURCES =		\
 	gdump.c					\
 	gfield.c				\
-	gibaseinfo.c                            \
+	gibaseinfo.c				\
+	gifunctioninfo.c			\
 	ginfo.c                                 \
 	ginfo.h                                 \
 	ginvoke.c				\
