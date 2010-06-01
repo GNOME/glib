@@ -26,7 +26,7 @@
 #error "Only <girepository.h> can be included directly."
 #endif
 
-#include <girepository/gibaseinfo.h>
+#include <gibaseinfo.h>
 
 G_BEGIN_DECLS
 

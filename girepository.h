@@ -26,10 +26,10 @@
 
 #include <glib-object.h>
 #include <gmodule.h>
-#include <girepository/gibaseinfo.h>
-#include <girepository/gifunctioninfo.h>
-#include <girepository/gitypelib.h>
-#include <girepository/gitypes.h>
+#include <gibaseinfo.h>
+#include <gifunctioninfo.h>
+#include <gitypelib.h>
+#include <gitypes.h>
 
 G_BEGIN_DECLS
 
