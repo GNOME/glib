@@ -1804,7 +1804,6 @@ g_settings_set_boolean (GSettings  *settings,
  * g_settings_get_strv:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @length: return location for the length of the result, or %NULL
  * @returns: a newly-allocated, %NULL-terminated array of strings
  *
  * Gets the value that is stored at @key in @settings.
@@ -1818,14 +1817,13 @@ g_settings_set_boolean (GSettings  *settings,
  */
 gchar **
 g_settings_get_strv (GSettings   *settings,
-                     const gchar *key,
-                     gsize       *length)
+                     const gchar *key)
 {
   GVariant *value;
   gchar **result;
 
   value = g_settings_get_value (settings, key);
-  result = g_variant_dup_strv (value, length);
+  result = g_variant_dup_strv (value, NULL);
   g_variant_unref (value);
 
   return result;
@@ -1836,7 +1834,6 @@ g_settings_get_strv (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: the name of the key to set
  * @value: the value to set it to
- * @length: the length of the @value array, or -1
  * @returns: %TRUE if setting the key succeeded,
  *     %FALSE if the key was not writable
  *
@@ -1852,10 +1849,9 @@ g_settings_get_strv (GSettings   *settings,
 gboolean
 g_settings_set_strv (GSettings           *settings,
                      const gchar         *key,
-                     const gchar * const *value,
-                     gssize               length)
+                     const gchar * const *value)
 {
-  return g_settings_set_value (settings, key, g_variant_new_strv (value, length));
+  return g_settings_set_value (settings, key, g_variant_new_strv (value, -1));
 }
 
 #define __G_SETTINGS_C__

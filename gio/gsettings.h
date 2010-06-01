@@ -113,12 +113,10 @@ gboolean                g_settings_set_double                           (GSettin
                                                                          const gchar        *key,
                                                                          gdouble             value);
 gchar **                g_settings_get_strv                             (GSettings          *settings,
-                                                                         const gchar        *key,
-                                                                         gsize              *length);
+                                                                         const gchar        *key);
 gboolean                g_settings_set_strv                             (GSettings          *settings,
                                                                          const gchar        *key,
-                                                                         const gchar *const *value,
-                                                                         gssize              length);
+                                                                         const gchar *const *value);
 
 GSettings *             g_settings_get_child                            (GSettings          *settings,
                                                                          const gchar        *name);
