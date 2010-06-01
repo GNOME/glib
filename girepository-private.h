@@ -25,7 +25,7 @@
 #include <glib.h>
 
 #include <girepository/gibaseinfo.h>
-#include <girepository/girepository.h>
+#include <girepository.h>
 #include <girepository/gitypelib.h>
 
 typedef struct _GIRealInfo GIRealInfo;
