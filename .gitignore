@@ -14,6 +14,7 @@ Makefile
 *.gcda
 *.gcov
 *.sourcefiles
+*.stp
 
 # autofoo stuff here
 compile
