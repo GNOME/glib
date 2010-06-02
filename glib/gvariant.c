@@ -1244,7 +1244,7 @@ g_variant_get_byte_array (GVariant *value,
  * g_variant_new_strv:
  * @strv: an array of strings
  * @length: the length of @strv, or -1
- * @returns: a new floating #GVariant instance
+ * @returns: (array length=length): a new floating #GVariant instance
  *
  * Constructs an array of strings #GVariant from the given array of
  * strings.
@@ -1277,8 +1277,8 @@ g_variant_new_strv (const gchar * const *strv,
 /**
  * g_variant_get_strv:
  * @value: an array of strings #GVariant
- * @length: the length of the result, or %NULL
- * @returns: an array of constant strings
+ * @length: (allow-none): the length of the result, or %NULL
+ * @returns: (array length=length): an array of constant strings
  *
  * Gets the contents of an array of strings #GVariant.  This call
  * makes a shallow copy; the return result should be released with
@@ -1329,8 +1329,8 @@ g_variant_get_strv (GVariant *value,
 /**
  * g_variant_dup_strv:
  * @value: an array of strings #GVariant
- * @length: the length of the result, or %NULL
- * @returns: an array of constant strings
+ * @length: (allow-none): the length of the result, or %NULL
+ * @returns: (array length=length): an array of constant strings
  *
  * Gets the contents of an array of strings #GVariant.  This call
  * makes a deep copy; the return result should be released with
