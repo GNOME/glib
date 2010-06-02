@@ -1833,13 +1833,14 @@ g_settings_get_strv (GSettings   *settings,
  * g_settings_set_strv:
  * @settings: a #GSettings object
  * @key: the name of the key to set
- * @value: the value to set it to
+ * @value: the value to set it to, or %NULL
  * @returns: %TRUE if setting the key succeeded,
  *     %FALSE if the key was not writable
  *
  * Sets @key in @settings to @value.
  *
- * A convenience variant of g_settings_set() for string arrays.
+ * A convenience variant of g_settings_set() for string arrays.  If
+ * @value is %NULL, then @key is set to be the empty array.
  *
  * It is a programmer error to pass a @key that isn't valid for
  * @settings or is not of type 'string array'.
@@ -1851,7 +1852,14 @@ g_settings_set_strv (GSettings           *settings,
                      const gchar         *key,
                      const gchar * const *value)
 {
-  return g_settings_set_value (settings, key, g_variant_new_strv (value, -1));
+  GVariant *array;
+
+  if (value)
+    array = g_variant_new_strv (value, -1);
+  else
+    array = g_variant_new_strv (NULL, 0);
+
+  return g_settings_set_value (settings, key, array);
 }
 
 #define __G_SETTINGS_C__
