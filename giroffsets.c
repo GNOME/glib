@@ -232,7 +232,11 @@ get_type_size_alignment (GIrNodeType *type,
 {
   ffi_type *type_ffi;
 
-  if (type->tag == GI_TYPE_TAG_ARRAY)
+  if (type->is_pointer)
+    {
+      type_ffi = &ffi_type_pointer;
+    }
+  else if (type->tag == GI_TYPE_TAG_ARRAY)
     {
       gint elt_size, elt_alignment;
 
@@ -249,10 +253,6 @@ get_type_size_alignment (GIrNodeType *type,
       *alignment = elt_alignment;
 
       return TRUE;
-    }
-  else if (type->is_pointer)
-    {
-      type_ffi = &ffi_type_pointer;
     }
   else
     {

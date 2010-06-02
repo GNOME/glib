@@ -1745,6 +1745,9 @@ start_type (GMarkupParseContext *context,
           else
             /* If neither zero-terminated nor length nor fixed-size is given, assume zero-terminated. */
             typenode->zero_terminated = !(typenode->has_length || typenode->has_size);
+
+          if (typenode->has_size && ctx->current_typed->type == G_IR_NODE_FIELD)
+            typenode->is_pointer = FALSE;
         } else {
           typenode->zero_terminated = FALSE;
           typenode->has_length = FALSE;
