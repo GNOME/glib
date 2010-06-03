@@ -197,6 +197,9 @@ void                            g_variant_builder_add_value             (GVarian
 void                            g_variant_builder_add                   (GVariantBuilder      *builder,
                                                                          const gchar          *format_string,
                                                                          ...);
+void                            g_variant_builder_add_parsed            (GVariantBuilder      *builder,
+                                                                         const gchar          *format,
+                                                                         ...);
 
 GVariant *                      g_variant_new                           (const gchar          *format_string,
                                                                          ...);

@@ -2900,6 +2900,7 @@ g_variant_builder_init
 g_variant_builder_clear
 g_variant_builder_add_value
 g_variant_builder_add
+g_variant_builder_add_parsed
 g_variant_builder_end
 g_variant_builder_open
 g_variant_builder_close

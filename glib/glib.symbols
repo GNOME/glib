@@ -1811,6 +1811,7 @@ g_variant_byteswap
 #if IN_FILE(__G_VARIANT_PARSER_C__)
 g_variant_new_parsed
 g_variant_new_parsed_va
+g_variant_builder_add_parsed
 g_variant_parse
 g_variant_parser_get_error_quark
 #endif

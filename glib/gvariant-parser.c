@@ -2248,5 +2248,49 @@ g_variant_new_parsed (const gchar *format,
   return result;
 }
 
+/**
+ * g_variant_builder_add_parsed:
+ * @builder: a #GVariantBuilder
+ * @format: a text format #GVariant
+ * @...: arguments as per @format
+ *
+ * Adds to a #GVariantBuilder.
+ *
+ * This call is a convenience wrapper that is exactly equivalent to
+ * calling g_variant_new_parsed() followed by
+ * g_variant_builder_add_value().
+ *
+ * This function might be used as follows:
+ *
+ * <programlisting>
+ * GVariant *
+ * make_pointless_dictionary (void)
+ * {
+ *   GVariantBuilder *builder;
+ *   int i;
+ *
+ *   builder = g_variant_builder_new (G_VARIANT_TYPE_ARRAY);
+ *   g_variant_builder_add_parsed (builder, "{'width', <%i>}", 600);
+ *   g_variant_builder_add_parsed (builder, "{'title', <%s>}", "foo");
+ *   g_variant_builder_add_parsed (builder, "{'transparency', <0.5>}");
+ *   return g_variant_builder_end (builder);
+ * }
+ * </programlisting>
+ *
+ * Since: 2.26
+ **/
+void
+g_variant_builder_add_parsed (GVariantBuilder *builder,
+                              const gchar     *format,
+                              ...)
+{
+  va_list ap;
+
+  va_start (ap, format);
+  g_variant_builder_add_value (builder, g_variant_new_parsed_va (format, ap));
+  va_end (ap);
+}
+
+
 #define __G_VARIANT_PARSER_C__
 #include "galiasdef.c"
