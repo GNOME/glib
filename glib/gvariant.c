@@ -1716,15 +1716,66 @@ g_variant_print_string (GVariant *value,
     case G_VARIANT_CLASS_STRING:
       {
         const gchar *str = g_variant_get_string (value, NULL);
-        gchar *escaped = g_strescape (str, NULL);
+        gunichar quote = strchr (str, '\'') ? '"' : '\'';
 
-        /* use double quotes only if a ' is in the string */
-        if (strchr (str, '\''))
-          g_string_append_printf (string, "\"%s\"", escaped);
-        else
-          g_string_append_printf (string, "'%s'", escaped);
+        g_string_append_c (string, quote);
 
-        g_free (escaped);
+        while (*str)
+          {
+            gunichar c = g_utf8_get_char (str);
+
+            if (c == quote || c == '\\')
+              g_string_append_c (string, '\\');
+
+            if (g_unichar_isprint (c))
+              g_string_append_unichar (string, c);
+
+            else
+              {
+                g_string_append_c (string, '\\');
+                if (c < 0x10000)
+                  switch (c)
+                    {
+                    case '\a':
+                      g_string_append_c (string, 'a');
+                      break;
+
+                    case '\b':
+                      g_string_append_c (string, 'b');
+                      break;
+
+                    case '\f':
+                      g_string_append_c (string, 'f');
+                      break;
+
+                    case '\n':
+                      g_string_append_c (string, 'n');
+                      break;
+
+                    case '\r':
+                      g_string_append_c (string, 'r');
+                      break;
+
+                    case '\t':
+                      g_string_append_c (string, 't');
+                      break;
+
+                    case '\v':
+                      g_string_append_c (string, 'v');
+                      break;
+
+                    default:
+                      g_string_append_printf (string, "u%04x", c);
+                      break;
+                    }
+                 else
+                   g_string_append_printf (string, "U%08x", c);
+              }
+
+            str = g_utf8_next_char (str);
+          }
+
+        g_string_append_c (string, quote);
       }
       break;
 

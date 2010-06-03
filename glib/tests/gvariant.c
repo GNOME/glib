@@ -3589,18 +3589,20 @@ test_parses (void)
 
   /* mini test */
   {
-    gchar str[256];
+    GError *error = NULL;
+    gchar str[128];
     GVariant *val;
     gchar *p, *p2;
 
-    for (i = 0; i < 256; i++)
+    for (i = 0; i < 127; i++)
       str[i] = i + 1;
+    str[i] = 0;
 
     val = g_variant_new_string (str);
     p = g_variant_print (val, FALSE);
     g_variant_unref (val);
 
-    val = g_variant_parse (NULL, p, NULL, NULL, NULL);
+    val = g_variant_parse (NULL, p, NULL, NULL, &error);
     p2 = g_variant_print (val, FALSE);
 
     g_assert_cmpstr (str, ==, g_variant_get_string (val, NULL));
@@ -3621,6 +3623,24 @@ test_parses (void)
     /* make sure endptr returning works */
     g_assert_cmpstr (end, ==, " 2 3");
     g_variant_unref (value);
+  }
+
+  /* unicode mini test */
+  {
+    /* ał𝄞 */
+    const gchar orig[] = "a\xc5\x82\xf0\x9d\x84\x9e \t\n";
+    GVariant *value;
+    gchar *printed;
+
+    value = g_variant_new_string (orig);
+    printed = g_variant_print (value, FALSE);
+    g_variant_unref (value);
+
+    g_assert_cmpstr (printed, ==, "'a\xc5\x82\xf0\x9d\x84\x9e \\t\\n'");
+    value = g_variant_parse (NULL, printed, NULL, NULL, NULL);
+    g_assert_cmpstr (g_variant_get_string (value, NULL), ==, orig);
+    g_variant_unref (value);
+    g_free (printed);
   }
 
   g_variant_type_info_assert_no_infos ();

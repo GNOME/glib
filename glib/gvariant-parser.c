@@ -1409,6 +1409,42 @@ string_free (AST *ast)
   g_slice_free (String, string);
 }
 
+static gboolean
+unicode_unescape (const gchar  *src,
+                  gint         *src_ofs,
+                  gchar        *dest,
+                  gint         *dest_ofs,
+                  gint          length,
+                  SourceRef    *ref,
+                  GError      **error)
+{
+  gchar buffer[9];
+  guint64 value;
+  gchar *end;
+
+  (*src_ofs)++;
+
+  g_assert (length < sizeof (buffer));
+  strncpy (buffer, src + *src_ofs, length);
+  buffer[length] = '\0';
+
+  value = g_ascii_strtoull (buffer, &end, 0x10);
+
+  if (value == 0 || end != buffer + length)
+    {
+      parser_set_error (error, ref, NULL,
+                        "invalid %d-character unicode escape", length);
+      return FALSE;
+    }
+
+  g_assert (value <= G_MAXUINT32);
+
+  *dest_ofs += g_unichar_to_utf8 (value, dest + *dest_ofs);
+  *src_ofs += length;
+
+  return TRUE;
+}
+
 static AST *
 string_parse (TokenStream  *stream,
               va_list      *app,
@@ -1455,27 +1491,29 @@ string_parse (TokenStream  *stream,
             g_free (token);
             return NULL;
 
-          case '0': case '1': case '2': case '3':
-          case '4': case '5': case '6': case '7':
-            {
-              /* up to 3 characters */
-              guchar val = token[i++] - '0';
-
-              if ('0' <= token[i] && token[i] < '8')
-                val = (val << 3) | (token[i++] - '0');
-
-              if ('0' <= token[i] && token[i] < '8')
-                val = (val << 3) | (token[i++] - '0');
-
-              str[j++] = val;
-            }
+          case 'u':
+            if (!unicode_unescape (token, &i, str, &j, 4, &ref, error))
+              {
+                g_free (token);
+                return NULL;
+              }
             continue;
 
+          case 'U':
+            if (!unicode_unescape (token, &i, str, &j, 8, &ref, error))
+              {
+                g_free (token);
+                return NULL;
+              }
+            continue;
+
+          case 'a': str[j++] = '\a'; i++; continue;
           case 'b': str[j++] = '\b'; i++; continue;
           case 'f': str[j++] = '\f'; i++; continue;
           case 'n': str[j++] = '\n'; i++; continue;
           case 'r': str[j++] = '\r'; i++; continue;
           case 't': str[j++] = '\t'; i++; continue;
+          case 'v': str[j++] = '\v'; i++; continue;
           case '\n': i++; continue;
           }
 
