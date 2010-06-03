@@ -100,17 +100,48 @@ does not include <function>string.h</function> for you.
 <!-- ##### MACRO G_STRINGIFY ##### -->
 <para>
 Accepts a macro or a string and converts it into a string after
-preprocessor argument expansion.
+preprocessor argument expansion. For example, the following code:
 </para>
+
+<informalexample><programlisting>
+#define AGE 27
+const gchar *greeting = G_STRINGIFY (AGE) " today!";
+</programlisting></informalexample>
+
+<para>
+is transformed by the preprocessor into (code equivalent to):
+</para>
+
+<informalexample><programlisting>
+const gchar *greeting = "27 today!";
+</programlisting></informalexample>
 
 @macro_or_string: a macro or a string.
 
 
 <!-- ##### MACRO G_PASTE ##### -->
 <para>
-Yields a new preprocessor pasted identifier 'identifier1identifier2'
-from its expanded arguments 'identifier1' and 'identifier2'.
+Yields a new preprocessor pasted identifier <code>identifier1identifier2</code>
+from its expanded arguments @identifier1 and @identifier2. For example, the
+following code:
 </para>
+
+<informalexample><programlisting>
+#define GET(traveller,method) G_PASTE(traveller_get_, method) (traveller)
+const gchar *name = GET (traveller, name);
+const gchar *quest = GET (traveller, quest);
+GdkColor *favourite = GET (traveller, favourite_colour);
+</programlisting></informalexample>
+
+<para>
+is transformed by the preprocessor into:
+</para>
+
+<informalexample><programlisting>
+const gchar *name = traveller_get_name (traveller);
+const gchar *quest = traveller_get_quest (traveller);
+GdkColor *favourite = traveller_get_favourite_colour (traveller);
+</programlisting></informalexample>
 
 @identifier1: an identifier
 @identifier2: an identifier
