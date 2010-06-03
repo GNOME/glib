@@ -250,6 +250,19 @@ See the GNU C documentation for details.
 @Since: 2.2
 
 
+<!-- ##### MACRO G_GNUC_DEPRECATED_FOR ##### -->
+<para>
+Like %G_GNUC_DEPRECATED, but names the intended replacement for the
+deprecated symbol if the version of <command>gcc</command> in use is
+new enough to support custom deprecation messages.
+See the GNU C documentation for details.
+</para>
+
+@f: the intended replacement for the deprecated symbol, such as the name of a
+    function
+@Since: 2.25.3
+
+
 <!-- ##### MACRO G_GNUC_NORETURN ##### -->
 <para>
 Expands to the GNU C <literal>noreturn</literal> function attribute if the 
