@@ -86,7 +86,6 @@ _ih_startup (void)
   result = _ip_startup (ih_event_callback);
   if (!result)
     {
-      g_warning ("Could not initialize inotify\n");
       G_UNLOCK (inotify_lock);
       return FALSE;
     }
