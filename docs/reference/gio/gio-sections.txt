@@ -2590,3 +2590,24 @@ g_dbus_node_info_get_type
 g_dbus_property_info_get_type
 g_dbus_signal_info_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gpermission</FILE>
+GPermission
+g_permission_get_allowed
+g_permission_get_can_acquire
+g_permission_get_can_release
+<SUBSECTION>
+g_permission_acquire
+g_permission_acquire_async
+g_permission_acquire_finish
+g_permission_release
+g_permission_release_async
+g_permission_release_finish
+<SUBSECTION>
+g_permission_impl_update
+<SUBSECTION Standard>
+g_permission_get_type
+GPermissionPrivate
+GPermissionClass
+</SECTION>

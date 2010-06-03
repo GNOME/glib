@@ -74,6 +74,7 @@
 #include <gio/gnetworkaddress.h>
 #include <gio/gnetworkservice.h>
 #include <gio/goutputstream.h>
+#include <gio/gpermission.h>
 #include <gio/gresolver.h>
 #include <gio/gseekable.h>
 #include <gio/gsettings.h>

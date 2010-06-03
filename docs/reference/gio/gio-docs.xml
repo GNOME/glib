@@ -155,6 +155,10 @@
         <xi:include href="xml/gsettings.xml"/>
         <xi:include href="xml/gsettingsbackend.xml"/>
     </chapter>
+    <chapter id='permissions'>
+        <title>Permissions</title>
+        <xi:include href="xml/gpermission.xml"/>
+    </chapter>
     <chapter id="extending">
         <title>Extending GIO</title>
         <xi:include href="xml/gvfs.xml"/>

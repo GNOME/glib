@@ -1730,3 +1730,19 @@ g_unix_credentials_message_is_supported
 #endif
 #endif
 #endif
+
+#if IN_HEADER(__G_PERMISSION_H__)
+#if IN_FILE(__G_PERMISSION_C__)
+g_permission_acquire
+g_permission_acquire_async
+g_permission_acquire_finish
+g_permission_get_allowed
+g_permission_get_can_acquire
+g_permission_get_can_release
+g_permission_get_type
+g_permission_impl_update
+g_permission_release
+g_permission_release_async
+g_permission_release_finish
+#endif
+#endif

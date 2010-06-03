@@ -327,6 +327,7 @@ libgio_2_0_la_SOURCES =		\
 	gnetworkingprivate.h	\
 	gnetworkservice.c	\
 	goutputstream.c 	\
+	gpermission.c 		\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
 	gresolver.c		\
@@ -473,6 +474,7 @@ gio_headers =			\
 	gnetworkaddress.h	\
 	gnetworkservice.h	\
 	goutputstream.h 	\
+	gpermission.h 		\
 	gresolver.h		\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
