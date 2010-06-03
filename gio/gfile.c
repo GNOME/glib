@@ -3828,6 +3828,9 @@ g_file_query_writable_namespaces (GFile         *file,
  * @error: a #GError, or %NULL
  * 
  * Sets an attribute in the file with attribute name @attribute to @value.
+ *
+ * Some attributes can be unset by setting @attribute to
+ * %G_FILE_ATTRIBUTE_TYPE_INVALID and @value to %NULL.
  * 
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
