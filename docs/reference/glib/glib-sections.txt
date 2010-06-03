@@ -400,6 +400,7 @@ G_HAVE___INLINE__
 G_HAVE_GNUC_VARARGS
 G_HAVE_ISO_VARARGS
 G_HAVE_GROWING_STACK
+G_VA_COPY_AS_ARRAY
 </SECTION>
 
 <SECTION>
@@ -523,6 +524,9 @@ g_source_get_priority
 g_source_set_can_recurse
 g_source_get_can_recurse
 g_source_get_id
+g_source_get_name
+g_source_set_name
+g_source_set_name_by_id
 g_source_get_context
 g_source_set_callback
 GSourceFunc
@@ -538,12 +542,19 @@ g_source_remove_by_user_data
 GLIB_HAVE_SYS_POLL_H
 GLIB_HAVE_ALLOCA_H
 alloca
+GLIB_USING_SYSTEM_PRINTF
 GLIB_SYSDEF_POLLERR
 GLIB_SYSDEF_POLLHUP
 GLIB_SYSDEF_POLLIN
 GLIB_SYSDEF_POLLNVAL
 GLIB_SYSDEF_POLLOUT
 GLIB_SYSDEF_POLLPRI
+GLIB_SYSDEF_AF_INET
+GLIB_SYSDEF_AF_INET6
+GLIB_SYSDEF_AF_UNIX
+GLIB_SYSDEF_MSG_DONTROUTE
+GLIB_SYSDEF_MSG_OOB
+GLIB_SYSDEF_MSG_PEEK
 G_WIN32_MSG_HANDLE
 g_idle_funcs
 g_timeout_funcs
@@ -2848,6 +2859,7 @@ g_variant_get_string
 g_variant_dup_string
 g_variant_get_variant
 g_variant_new_byte_array
+g_variant_get_byte_array
 g_variant_get_strv
 g_variant_dup_strv
 

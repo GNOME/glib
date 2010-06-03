@@ -969,6 +969,33 @@ functions for managing callback objects.
 @Returns: 
 
 
+<!-- ##### FUNCTION g_source_get_name ##### -->
+<para>
+
+</para>
+
+@source: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_source_set_name ##### -->
+<para>
+
+</para>
+
+@source: 
+@name: 
+
+
+<!-- ##### FUNCTION g_source_set_name_by_id ##### -->
+<para>
+
+</para>
+
+@tag: 
+@name: 
+
+
 <!-- ##### FUNCTION g_source_get_context ##### -->
 <para>
 
