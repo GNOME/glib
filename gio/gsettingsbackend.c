@@ -25,6 +25,7 @@
 
 #include "gsettingsbackendinternal.h"
 #include "gnullsettingsbackend.h"
+#include "gsimplepermission.h"
 #include "giomodule-priv.h"
 #include "gio-marshal.h"
 
@@ -1154,6 +1155,30 @@ g_settings_backend_supports_context (const gchar *context)
     }
 
   return FALSE;
+}
+
+/*< private >
+ * g_settings_backend_get_permission:
+ * @backend: a #GSettingsBackend
+ * @path: a path
+ * @returns: a non-%NULL #GPermission
+ *
+ * Gets the permission object associated with writing to keys below
+ * @path on @backend.
+ *
+ * If this is not implemented in the backend, then a %TRUE
+ * #GSimplePermission is returned.
+ */
+GPermission *
+g_settings_backend_get_permission (GSettingsBackend *backend,
+                                   const gchar      *path)
+{
+  GSettingsBackendClass *class = G_SETTINGS_BACKEND_GET_CLASS (backend);
+
+  if (class->get_permission)
+    return class->get_permission (backend, path);
+
+  return g_simple_permission_new (TRUE);
 }
 
 /**

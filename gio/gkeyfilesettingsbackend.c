@@ -34,6 +34,7 @@
 #include "gfile.h"
 #include "gfileinfo.h"
 #include "gfilemonitor.h"
+#include "gsimplepermission.h"
 
 #include "gioalias.h"
 
@@ -242,6 +243,13 @@ g_keyfile_settings_backend_get_writable (GSettingsBackend *backend,
   GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
 
   return kf_backend->priv->writable;
+}
+
+static GPermission *
+g_keyfile_settings_backend_get_permission (GSettingsBackend *backend,
+                                           const gchar      *path)
+{
+  return g_simple_permission_new (TRUE);
 }
 
 static void
@@ -499,6 +507,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
   backend_class->reset = g_keyfile_settings_backend_reset;
   backend_class->reset_path = g_keyfile_settings_backend_reset_path;
   backend_class->get_writable = g_keyfile_settings_backend_get_writable;
+  backend_class->get_permission = g_keyfile_settings_backend_get_permission;
   /* No need to implement subscribed/unsubscribe: the only point would be to
    * stop monitoring the file when there's no GSettings anymore, which is no
    * big win. */

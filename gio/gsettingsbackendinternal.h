@@ -99,6 +99,9 @@ G_GNUC_INTERNAL
 void                            g_settings_backend_subscribe            (GSettingsBackend                     *backend,
                                                                          const char                           *name);
 G_GNUC_INTERNAL
+GPermission *                   g_settings_backend_get_permission       (GSettingsBackend                     *backend,
+                                                                         const gchar                          *path);
+G_GNUC_INTERNAL
 GMainContext *                  g_settings_backend_get_active_context   (void);
 
 #endif  /* __G_SETTINGS_BACKEND_INTERNAL_H__ */

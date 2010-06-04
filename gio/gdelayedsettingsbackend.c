@@ -202,6 +202,16 @@ g_delayed_settings_backend_unsubscribe (GSettingsBackend *backend,
   g_settings_backend_unsubscribe (delayed->priv->backend, name);
 }
 
+static GPermission *
+g_delayed_settings_backend_get_permission (GSettingsBackend *backend,
+                                           const gchar      *path)
+{
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
+
+  return g_settings_backend_get_permission (delayed->priv->backend, path);
+}
+
+
 /* method calls */
 gboolean
 g_delayed_settings_backend_get_has_unapplied (GDelayedSettingsBackend *delayed)
@@ -419,6 +429,7 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
   backend_class->get_writable = g_delayed_settings_backend_get_writable;
   backend_class->subscribe = g_delayed_settings_backend_subscribe;
   backend_class->unsubscribe = g_delayed_settings_backend_unsubscribe;
+  backend_class->get_permission = g_delayed_settings_backend_get_permission;
 
   object_class->finalize = g_delayed_settings_backend_finalize;
 }

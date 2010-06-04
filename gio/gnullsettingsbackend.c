@@ -22,6 +22,7 @@
 #include "config.h"
 
 #include "gnullsettingsbackend.h"
+#include "gsimplepermission.h"
 
 #include "gioalias.h"
 
@@ -81,9 +82,16 @@ g_null_settings_backend_reset_path (GSettingsBackend *backend,
 
 static gboolean
 g_null_settings_backend_get_writable (GSettingsBackend *backend,
-                                        const gchar      *name)
+                                      const gchar      *name)
 {
   return FALSE;
+}
+
+static GPermission *
+g_null_settings_backend_get_permission (GSettingsBackend *backend,
+                                        const gchar      *path)
+{
+  return g_simple_permission_new (FALSE);
 }
 
 static void
@@ -102,6 +110,7 @@ g_null_settings_backend_class_init (GNullSettingsBackendClass *class)
   backend_class->reset = g_null_settings_backend_reset;
   backend_class->reset_path = g_null_settings_backend_reset_path;
   backend_class->get_writable = g_null_settings_backend_get_writable;
+  backend_class->get_permission = g_null_settings_backend_get_permission;
 }
 
 GSettingsBackend *
