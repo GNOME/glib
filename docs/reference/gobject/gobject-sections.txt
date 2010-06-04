@@ -839,3 +839,26 @@ g_closure_get_type
 g_io_channel_get_type
 g_io_condition_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gbinding</FILE>
+GBinding
+GBindingFlags
+g_binding_get_source
+g_binding_get_source_property
+g_binding_get_target
+g_binding_get_target_property
+g_binding_get_flags
+<SUBSECTION>
+g_object_bind_property
+GBindingTransformFunc
+g_object_bind_property_full
+<SUBSECTION Standard>
+G_TYPE_BINDING
+G_TYPE_BINDING_FLAGS
+G_BINDING
+G_IS_BINDING
+<SUBSECTION Private>
+g_binding_flags_get_type
+g_binding_get_type
+</SECTION>

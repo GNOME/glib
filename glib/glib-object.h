@@ -22,6 +22,7 @@
 #define __GLIB_GOBJECT_H_INSIDE__
 
 /* topmost include file for GObject header files */
+#include        <gobject/gbinding.h>
 #include	<gobject/gboxed.h>
 #include	<gobject/genums.h>
 #include	<gobject/gobject.h>

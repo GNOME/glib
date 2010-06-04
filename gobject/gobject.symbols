@@ -11,6 +11,21 @@
 #define IN_FILE(x) 1
 #define IN_HEADER(x) 1
 #endif
+
+#if IN_HEADER(__G_BINDING_H__)
+#if IN_FILE(__G_BINDING_C__)
+g_binding_flags_get_type G_GNUC_CONST
+g_binding_get_type G_GNUC_CONST
+g_binding_get_flags
+g_binding_get_source
+g_binding_get_target
+g_binding_get_source_property
+g_binding_get_target_property
+g_object_bind_property
+g_object_bind_property_full
+#endif
+#endif
+
 #if IN_HEADER(__G_BOXED_H__)
 #if IN_FILE(__G_BOXED_C__)
 g_boxed_copy
