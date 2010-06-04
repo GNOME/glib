@@ -2611,3 +2611,11 @@ g_permission_get_type
 GPermissionPrivate
 GPermissionClass
 </SECTION>
+
+<SECTION>
+<FILE>gsimplepermission</FILE>
+GSimplePermission
+g_simple_permission_new
+<SUBSECTION Standard>
+g_simple_permission_get_type
+</SECTION>

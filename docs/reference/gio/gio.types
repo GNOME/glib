@@ -77,6 +77,7 @@ g_seekable_get_type
 g_settings_get_type
 g_settings_backend_get_type
 g_simple_async_result_get_type
+g_simple_permission_get_type
 g_socket_address_enumerator_get_type
 g_socket_address_get_type
 g_socket_client_get_type

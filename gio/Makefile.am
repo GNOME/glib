@@ -333,6 +333,7 @@ libgio_2_0_la_SOURCES =		\
 	gresolver.c		\
 	gseekable.c 		\
 	gsimpleasyncresult.c 	\
+	gsimplepermission.c 	\
 	gsocket.c		\
 	gsocketaddress.c	\
 	gsocketaddressenumerator.c \
@@ -478,6 +479,7 @@ gio_headers =			\
 	gresolver.h		\
 	gseekable.h 		\
 	gsimpleasyncresult.h 	\
+	gsimplepermission.h 	\
 	gsocket.h		\
 	gsocketaddress.h	\
 	gsocketaddressenumerator.h \

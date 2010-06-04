@@ -158,6 +158,7 @@
     <chapter id='permissions'>
         <title>Permissions</title>
         <xi:include href="xml/gpermission.xml"/>
+        <xi:include href="xml/gsimplepermission.xml"/>
     </chapter>
     <chapter id="extending">
         <title>Extending GIO</title>
