@@ -195,7 +195,7 @@ typedef enum {
  * @G_FILE_CREATE_REPLACE_DESTINATION: Replace the destination
  *    as if it didn't exist before. Don't try to keep any old
  *    permissions, replace instead of following links. This
- *    is generally useful if you're doing a "copy over" 
+ *    is generally useful if you're doing a "copy over"
  *    rather than a "save new version of" replace operation.
  *    You can think of it as "unlink destination" before
  *    writing to it, although the implementation may not
@@ -420,10 +420,10 @@ typedef enum {
  * @G_IO_ERROR_WOULD_BLOCK: Operation would block.
  * @G_IO_ERROR_HOST_NOT_FOUND: Host couldn't be found (remote operations).
  * @G_IO_ERROR_WOULD_MERGE: Operation would merge files.
- * @G_IO_ERROR_FAILED_HANDLED: Operation failed and a helper program has 
+ * @G_IO_ERROR_FAILED_HANDLED: Operation failed and a helper program has
  *     already interacted with the user. Do not display any error dialog.
- * @G_IO_ERROR_TOO_MANY_OPEN_FILES: The current process has too many files 
- *     open and can't open any more. Duplicate descriptors do count toward 
+ * @G_IO_ERROR_TOO_MANY_OPEN_FILES: The current process has too many files
+ *     open and can't open any more. Duplicate descriptors do count toward
  *     this limit. Since 2.20
  * @G_IO_ERROR_NOT_INITIALIZED: The object has not been initialized. Since 2.22
  * @G_IO_ERROR_ADDRESS_IN_USE: The requested address is already in use. Since 2.22
@@ -770,7 +770,7 @@ typedef enum
 {
   G_BUS_NAME_OWNER_FLAGS_NONE = 0,                    /*< nick=none >*/
   G_BUS_NAME_OWNER_FLAGS_ALLOW_REPLACEMENT = (1<<0),  /*< nick=allow-replacement >*/
-  G_BUS_NAME_OWNER_FLAGS_REPLACE = (1<<1),            /*< nick=replace >*/
+  G_BUS_NAME_OWNER_FLAGS_REPLACE = (1<<1)            /*< nick=replace >*/
 } GBusNameOwnerFlags;
 
 /**
@@ -804,7 +804,7 @@ typedef enum
 {
   G_DBUS_PROXY_FLAGS_NONE = 0,                        /*< nick=none >*/
   G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES = (1<<0), /*< nick=do-not-load-properties >*/
-  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS = (1<<1), /*< nick=do-not-connect-signals >*/
+  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS = (1<<1) /*< nick=do-not-connect-signals >*/
 } GDBusProxyFlags;
 
 /**
@@ -949,7 +949,7 @@ typedef enum
   G_DBUS_ERROR_INVALID_FILE_CONTENT,             /* org.freedesktop.DBus.Error.InvalidFileContent */
   G_DBUS_ERROR_SELINUX_SECURITY_CONTEXT_UNKNOWN, /* org.freedesktop.DBus.Error.SELinuxSecurityContextUnknown */
   G_DBUS_ERROR_ADT_AUDIT_DATA_UNKNOWN,           /* org.freedesktop.DBus.Error.AdtAuditDataUnknown */
-  G_DBUS_ERROR_OBJECT_PATH_IN_USE,               /* org.freedesktop.DBus.Error.ObjectPathInUse */
+  G_DBUS_ERROR_OBJECT_PATH_IN_USE                /* org.freedesktop.DBus.Error.ObjectPathInUse */
 } GDBusError;
 /* Remember to update g_dbus_error_quark() in gdbuserror.c if you extend this enumeration */
 
@@ -988,7 +988,7 @@ typedef enum {
  */
 typedef enum {
   G_DBUS_CAPABILITY_FLAGS_NONE = 0,
-  G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING = (1<<0),
+  G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING = (1<<0)
 } GDBusCapabilityFlags;
 
 /**
@@ -1004,7 +1004,7 @@ typedef enum {
  */
 typedef enum {
   G_DBUS_CALL_FLAGS_NONE = 0,
-  G_DBUS_CALL_FLAGS_NO_AUTO_START = (1<<0),
+  G_DBUS_CALL_FLAGS_NO_AUTO_START = (1<<0)
 } GDBusCallFlags;
 
 /**
@@ -1088,7 +1088,7 @@ typedef enum
 {
   G_DBUS_PROPERTY_INFO_FLAGS_NONE = 0,
   G_DBUS_PROPERTY_INFO_FLAGS_READABLE = (1<<0),
-  G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE = (1<<1),
+  G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE = (1<<1)
 } GDBusPropertyInfoFlags;
 
 /**
@@ -1105,7 +1105,7 @@ typedef enum
 typedef enum
 {
   G_DBUS_SUBTREE_FLAGS_NONE = 0,
-  G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES = (1<<0),
+  G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES = (1<<0)
 } GDBusSubtreeFlags;
 
 /**
