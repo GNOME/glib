@@ -28,7 +28,9 @@
 #error "You must define G_SETTINGS_ENABLE_BACKEND before including <gio/gsettingsbackend.h>."
 #endif
 
-#include <glib-object.h>
+#define __GIO_GIO_H_INSIDE__
+#include <gio/giotypes.h>
+#undef __GIO_GIO_H_INSIDE__
 
 G_BEGIN_DECLS
 
