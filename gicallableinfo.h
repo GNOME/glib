@@ -1,4 +1,4 @@
-/* GObject introspection: Functions
+/* GObject introspection: Callable
  *
  * Copyright (C) 2005 Matthias Clasen
  * Copyright (C) 2008,2009 Red Hat, Inc.
@@ -50,5 +50,5 @@ void                   g_callable_info_load_arg        (GICallableInfo *info,
 G_END_DECLS
 
 
-#endif  /* __G_IREPOSITORY_H__ */
+#endif  /* __GICALLABLEINFO_H__ */
 

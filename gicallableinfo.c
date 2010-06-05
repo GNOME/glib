@@ -1,4 +1,4 @@
-/* GObject introspection: Repository implementation
+/* GObject introspection: Callable implementation
  *
  * Copyright (C) 2005 Matthias Clasen
  * Copyright (C) 2008,2009 Red Hat, Inc.
