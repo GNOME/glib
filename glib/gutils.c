@@ -2131,8 +2131,14 @@ g_init_user_config_dir (void)
  *
  * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
- * XDG Base Directory Specification</ulink>
- * 
+ * XDG Base Directory Specification</ulink>.
+ * In this case the directory retrieved will be XDG_CONFIG_HOME.
+ *
+ * On Windows is the directory that serves as a common repository for
+ * application-specific data. A typical path is
+ * C:\Documents and Settings\username\Application. See documentation for
+ * CSIDL_APPDATA.
+ *
  * Return value: a string owned by GLib that must not be modified 
  *               or freed.
  * Since: 2.6
