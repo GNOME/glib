@@ -152,95 +152,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
 #define GI_IS_TYPE_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_TYPE)
 
-/**
- * GITypeTag:
- * @GI_TYPE_TAG_VOID: void
- * @GI_TYPE_TAG_BOOLEAN: boolean
- * @GI_TYPE_TAG_INT8: 8-bit signed integer
- * @GI_TYPE_TAG_UINT8: 8-bit unsigned integer
- * @GI_TYPE_TAG_INT16: 16-bit signed integer
- * @GI_TYPE_TAG_UINT16: 16-bit unsigned integer
- * @GI_TYPE_TAG_INT32: 32-bit signed integer
- * @GI_TYPE_TAG_UINT32: 32-bit unsigned integer
- * @GI_TYPE_TAG_INT64: 64-bit signed integer
- * @GI_TYPE_TAG_UINT64: 64-bit unsigned integer
- * @GI_TYPE_TAG_SHORT: signed short
- * @GI_TYPE_TAG_USHORT: unsigned hosrt
- * @GI_TYPE_TAG_INT: signed integer
- * @GI_TYPE_TAG_UINT: unsigned integer
- * @GI_TYPE_TAG_LONG: signed long
- * @GI_TYPE_TAG_ULONG: unsigned long
- * @GI_TYPE_TAG_SSIZE: ssize_t
- * @GI_TYPE_TAG_SIZE: size_t
- * @GI_TYPE_TAG_FLOAT: float
- * @GI_TYPE_TAG_DOUBLE: double floating point
- * @GI_TYPE_TAG_TIME_T: time_t
- * @GI_TYPE_TAG_GTYPE: a #GType
- * @GI_TYPE_TAG_UTF8: a UTF-8 encoded string
- * @GI_TYPE_TAG_FILENAME: a filename, encoded in the same encoding
- * as the native filesystem is using.
- * @GI_TYPE_TAG_ARRAY: an array
- * @GI_TYPE_TAG_INTERFACE: an extended interface object
- * @GI_TYPE_TAG_GLIST: a #GList
- * @GI_TYPE_TAG_GSLIST: a #GSList
- * @GI_TYPE_TAG_GHASH: a #GHashTable
- * @GI_TYPE_TAG_ERROR: a #GError
- *
- * The type tag of a #GITypeInfo.
- */
-typedef enum {
-  /* Basic types */
-  GI_TYPE_TAG_VOID      =  0,
-  GI_TYPE_TAG_BOOLEAN   =  1,
-  GI_TYPE_TAG_INT8      =  2,
-  GI_TYPE_TAG_UINT8     =  3,
-  GI_TYPE_TAG_INT16     =  4,
-  GI_TYPE_TAG_UINT16    =  5,
-  GI_TYPE_TAG_INT32     =  6,
-  GI_TYPE_TAG_UINT32    =  7,
-  GI_TYPE_TAG_INT64     =  8,
-  GI_TYPE_TAG_UINT64    =  9,
-  GI_TYPE_TAG_SHORT     = 10,
-  GI_TYPE_TAG_USHORT    = 11,
-  GI_TYPE_TAG_INT       = 12,
-  GI_TYPE_TAG_UINT      = 13,
-  GI_TYPE_TAG_LONG      = 14,
-  GI_TYPE_TAG_ULONG     = 15,
-  GI_TYPE_TAG_SSIZE     = 16,
-  GI_TYPE_TAG_SIZE      = 17,
-  GI_TYPE_TAG_FLOAT     = 18,
-  GI_TYPE_TAG_DOUBLE    = 19,
-  GI_TYPE_TAG_TIME_T    = 20,
-  GI_TYPE_TAG_GTYPE     = 21,
-  GI_TYPE_TAG_UTF8      = 22,
-  GI_TYPE_TAG_FILENAME  = 23,
-  /* Non-basic types */
-  GI_TYPE_TAG_ARRAY     = 24,
-  GI_TYPE_TAG_INTERFACE = 25,
-  GI_TYPE_TAG_GLIST     = 26,
-  GI_TYPE_TAG_GSLIST    = 27,
-  GI_TYPE_TAG_GHASH     = 28,
-  GI_TYPE_TAG_ERROR     = 29
-  /* Note - there is only room currently for 32 tags.
-   * See docs/typelib-format.txt SimpleTypeBlob definition */
-} GITypeTag;
-
-/**
- * GIArrayType:
- * @GI_ARRAY_TYPE_C: a C array, char[] for instance
- * @GI_ARRAY_TYPE_ARRAY: a @GArray array
- * @GI_ARRAY_TYPE_PTR_ARRAY: a #GPtrArray array
- * @GI_ARRAY_TYPE_BYTE_ARRAY: a #GByteArray array
- *
- * The type of array in a #GITypeInfo.
- */
-typedef enum {
-  GI_ARRAY_TYPE_C,
-  GI_ARRAY_TYPE_ARRAY,
-  GI_ARRAY_TYPE_PTR_ARRAY,
-  GI_ARRAY_TYPE_BYTE_ARRAY
-} GIArrayType;
-
 #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
 
 const gchar*           g_type_tag_to_string            (GITypeTag   type);
@@ -280,20 +191,6 @@ glong                  g_value_info_get_value      (GIValueInfo *info);
 
 #define GI_IS_FIELD_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FIELD)
-
-/**
- * GIFieldInfoFlags:
- * @GI_FIELD_IS_READABLE: field is readable.
- * @GI_FIELD_IS_WRITABLE: field is writable.
- *
- * Flags for a #GIFieldInfo.
- */
-
-typedef enum
-{
-  GI_FIELD_IS_READABLE = 1 << 0,
-  GI_FIELD_IS_WRITABLE = 1 << 1
-} GIFieldInfoFlags;
 
 GIFieldInfoFlags       g_field_info_get_flags      (GIFieldInfo *info);
 gint                   g_field_info_get_size       (GIFieldInfo *info);
@@ -462,21 +359,6 @@ gboolean                g_signal_info_true_stops_emit            (GISignalInfo  
 
 #define GI_IS_VFUNC_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VFUNC)
-
-/**
- * GIVFuncInfoFlags:
- * @GI_VFUNC_MUST_CHAIN_UP: chains up to the parent type
- * @GI_VFUNC_MUST_OVERRIDE: overrides
- * @GI_VFUNC_MUST_NOT_OVERRIDE: does not override
- *
- * Flags of a #GIVFuncInfo struct.
- */
-typedef enum
-{
-  GI_VFUNC_MUST_CHAIN_UP     = 1 << 0,
-  GI_VFUNC_MUST_OVERRIDE     = 1 << 1,
-  GI_VFUNC_MUST_NOT_OVERRIDE = 1 << 2
-} GIVFuncInfoFlags;
 
 GIVFuncInfoFlags        g_vfunc_info_get_flags                   (GIVFuncInfo            *info);
 gint                    g_vfunc_info_get_offset                  (GIVFuncInfo            *info);
