@@ -26,8 +26,6 @@
 #error "Only <girepository.h> can be included directly."
 #endif
 
-#include <gibaseinfo.h>
-
 G_BEGIN_DECLS
 
 typedef struct _GIBaseInfoStub GIBaseInfo;
