@@ -243,6 +243,22 @@ typedef enum
   GI_INFO_TYPE_UNRESOLVED
 } GIInfoType;
 
+/**
+ * GITransfer:
+ * @GI_TRANSFER_NOTHING: transfer nothing to the caller
+ * @GI_TRANSFER_CONTAINER: transfer the container (eg list, array,
+ * hashtable), but no the contents to the caller.
+ * @GI_TRANSFER_EVERYTHING: transfer everything to the caller.
+ *
+ * Represent the transfer ownership information of a #GICallableInfo or
+ * a #GIArgInfo.
+ */
+typedef enum {
+  GI_TRANSFER_NOTHING,
+  GI_TRANSFER_CONTAINER,
+  GI_TRANSFER_EVERYTHING
+} GITransfer;
+
 
 G_END_DECLS
 

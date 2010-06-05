@@ -30,7 +30,7 @@
 #include <gmodule.h>
 #include "girepository.h"
 #include "gitypelib-internal.h"
-#include "ginfo.h"
+#include "girepository-private.h"
 #include "glib-compat.h"
 
 #include "config.h"
@@ -606,9 +606,9 @@ find_interface (gpointer key,
   if (index != 0)
     {
       entry = g_typelib_get_dir_entry (typelib, index);
-      iface_data->iface = g_info_new_full (entry->blob_type,
-					   iface_data->repo,
-					   NULL, typelib, entry->offset);
+      iface_data->iface = _g_info_new_full (entry->blob_type,
+				 	    iface_data->repo,
+					    NULL, typelib, entry->offset);
     }
 }
 

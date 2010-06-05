@@ -81,7 +81,6 @@ GIBaseInfo *           g_info_new                   (GIInfoType    type,
 						     GTypelib     *typelib,
 						     guint32       offset);
 
-
 G_END_DECLS
 
 #endif  /* __GIBASEINFO_H__ */

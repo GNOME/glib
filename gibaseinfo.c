@@ -26,18 +26,17 @@
 #include <glib-object.h>
 
 #include "gitypelib-internal.h"
-#include "ginfo.h"
 #include "girepository-private.h"
 
 #define INVALID_REFCOUNT 0x7FFFFFFF
 
 /* info creation */
 GIBaseInfo *
-g_info_new_full (GIInfoType     type,
-                 GIRepository  *repository,
-                 GIBaseInfo    *container,
-                 GTypelib      *typelib,
-                 guint32        offset)
+_g_info_new_full (GIInfoType     type,
+                  GIRepository  *repository,
+                  GIBaseInfo    *container,
+                  GTypelib      *typelib,
+                  guint32        offset)
 {
   GIRealInfo *info;
 
@@ -62,7 +61,7 @@ g_info_new (GIInfoType     type,
             GTypelib      *typelib,
             guint32        offset)
 {
-  return g_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
+  return _g_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
 }
 
 void
@@ -98,7 +97,7 @@ _g_info_from_entry (GIRepository *repository,
   DirEntry *entry = g_typelib_get_dir_entry (typelib, index);
 
   if (entry->local)
-    result = g_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
+    result = _g_info_new_full (entry->blob_type, repository, NULL, typelib, entry->offset);
   else
     {
       const gchar *namespace = g_typelib_get_string (typelib, entry->offset);
@@ -125,6 +124,31 @@ _g_info_from_entry (GIRepository *repository,
 
   return (GIBaseInfo *)result;
 }
+
+GITypeInfo *
+_g_type_info_new (GIBaseInfo    *container,
+                 GTypelib      *typelib,
+		 guint32        offset)
+{
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
+
+  return (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, typelib,
+                                    (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
+}
+
+void
+_g_type_info_init (GIBaseInfo *info,
+                   GIBaseInfo *container,
+                   GTypelib   *typelib,
+                   guint32     offset)
+{
+  GIRealInfo *rinfo = (GIRealInfo*)container;
+  SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
+
+  _g_info_init ((GIRealInfo*)info, GI_INFO_TYPE_TYPE, rinfo->repository, container, typelib,
+                (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
+}
+
 
 /* GIBaseInfo functions */
 
@@ -588,4 +612,5 @@ g_base_info_equal (GIBaseInfo *info1, GIBaseInfo *info2)
   GIRealInfo *rinfo2 = (GIRealInfo*)info2;
   return rinfo1->typelib->data + rinfo1->offset == rinfo2->typelib->data + rinfo2->offset;
 }
+
 

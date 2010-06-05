@@ -27,6 +27,7 @@
 #include <glib-object.h>
 #include <gmodule.h>
 #include <gibaseinfo.h>
+#include <gicallableinfo.h>
 #include <gifunctioninfo.h>
 #include <gitypelib.h>
 #include <gitypes.h>
@@ -145,41 +146,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   gpointer        invocation_hint,
                                   gpointer        marshal_data);
 
-/* GICallableInfo */
-
-#define GI_IS_CALLABLE_INFO(info) \
-    ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FUNCTION) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_CALLBACK) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_SIGNAL) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_VFUNC))
-
-/**
- * GITransfer:
- * @GI_TRANSFER_NOTHING: transfer nothing to the caller
- * @GI_TRANSFER_CONTAINER: transfer the container (eg list, array,
- * hashtable), but no the contents to the caller.
- * @GI_TRANSFER_EVERYTHING: transfer everything to the caller.
- *
- * Represent the transfer ownership information of a #GICallableInfo or
- * a #GIArgInfo.
- */
-typedef enum {
-  GI_TRANSFER_NOTHING,
-  GI_TRANSFER_CONTAINER,
-  GI_TRANSFER_EVERYTHING
-} GITransfer;
-
-GITypeInfo *           g_callable_info_get_return_type (GICallableInfo *info);
-void                   g_callable_info_load_return_type (GICallableInfo *info,
-                                                         GITypeInfo     *type);
-GITransfer             g_callable_info_get_caller_owns (GICallableInfo *info);
-gboolean               g_callable_info_may_return_null (GICallableInfo *info);
-gint                   g_callable_info_get_n_args      (GICallableInfo *info);
-GIArgInfo *            g_callable_info_get_arg         (GICallableInfo *info,
-                                                        gint            n);
-void                   g_callable_info_load_arg        (GICallableInfo *info,
-                                                        gint            n,
-                                                        GIArgInfo      *arg);
 
 /* GIArgInfo */
 

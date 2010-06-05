@@ -1,6 +1,7 @@
 girepodir = $(includedir)/gobject-introspection-1.0/
 girepo_HEADERS =				\
     gibaseinfo.h				\
+    gicallableinfo.h				\
     gifunctioninfo.h				\
     girepository.h				\
     girffi.h					\
@@ -15,8 +16,8 @@ libgirepository_1_0_la_SOURCES =		\
 	gfield.c				\
 	gibaseinfo.c				\
 	gifunctioninfo.c			\
+	gicallableinfo.c			\
 	ginfo.c                                 \
-	ginfo.h                                 \
 	ginvoke.c				\
 	girepository.c				\
 	girepository-private.h			\

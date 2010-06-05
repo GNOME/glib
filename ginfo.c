@@ -26,256 +26,8 @@
 #include <glib-object.h>
 
 #include "gitypelib-internal.h"
-#include "ginfo.h"
 #include "girepository-private.h"
 
-/* GICallableInfo functions */
-
-/**
- * SECTION:gicallableinfo
- * @Short_description: Struct representing a callable
- * @Title: GICallableInfo
- *
- * GICallableInfo represents an entity which is callable.
- * Currently a function (#GIFunctionInfo), virtual function,
- * (#GIVirtualFunc) or callback (#GICallbackInfo).
- *
- * A callable has a list of arguments (#GIArgInfo), a return type,
- * direction and a flag which decides if it returns null.
- *
- */
-static guint32
-signature_offset (GICallableInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo*)info;
-  int sigoff = -1;
-
-  switch (rinfo->type)
-    {
-    case GI_INFO_TYPE_FUNCTION:
-      sigoff = G_STRUCT_OFFSET (FunctionBlob, signature);
-      break;
-    case GI_INFO_TYPE_VFUNC:
-      sigoff = G_STRUCT_OFFSET (VFuncBlob, signature);
-      break;
-    case GI_INFO_TYPE_CALLBACK:
-      sigoff = G_STRUCT_OFFSET (CallbackBlob, signature);
-      break;
-    case GI_INFO_TYPE_SIGNAL:
-      sigoff = G_STRUCT_OFFSET (SignalBlob, signature);
-      break;
-    }
-  if (sigoff >= 0)
-    return *(guint32 *)&rinfo->typelib->data[rinfo->offset + sigoff];
-  return 0;
-}
-
-GITypeInfo *
-g_type_info_new (GIBaseInfo    *container,
-                 GTypelib      *typelib,
-		 guint32        offset)
-{
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
-
-  return (GITypeInfo *) g_info_new (GI_INFO_TYPE_TYPE, container, typelib,
-                                    (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
-}
-
-static void
-g_type_info_init (GIBaseInfo *info,
-                  GIBaseInfo *container,
-                  GTypelib   *typelib,
-                  guint32     offset)
-{
-  GIRealInfo *rinfo = (GIRealInfo*)container;
-  SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
-
-  _g_info_init ((GIRealInfo*)info, GI_INFO_TYPE_TYPE, rinfo->repository, container, typelib,
-                (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
-}
-
-/**
- * g_callable_info_get_return_type:
- * @info: a #GICallableInfo
- *
- * Obtain the return type of a callable item as a #GITypeInfo.
- *
- * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
- * g_base_info_unref() when done.
- */
-GITypeInfo *
-g_callable_info_get_return_type (GICallableInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  guint32 offset;
-
-  g_return_val_if_fail (info != NULL, NULL);
-  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), NULL);
-
-  offset = signature_offset (info);
-
-  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, offset);
-}
-
-
-/**
- * g_callable_info_load_return_type:
- * @info: a #GICallableInfo
- * @type: (out caller-allocates): Initialized with return type of @info
- *
- * Obtain information about a return value of callable; this
- * function is a variant of g_callable_info_get_return_type() designed for stack
- * allocation.
- *
- * The initialized @type must not be referenced after @info is deallocated.
- */
-void
-g_callable_info_load_return_type (GICallableInfo *info,
-                                  GITypeInfo     *type)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  guint32 offset;
-
-  g_return_if_fail (info != NULL);
-  g_return_if_fail (GI_IS_CALLABLE_INFO (info));
-
-  offset = signature_offset (info);
-
-  g_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, offset);
-}
-
-/**
- * g_callable_info_may_return_null:
- * @info: a #GICallableInfo
- *
- * See if a callable could return %NULL.
- *
- * Returns: %TRUE if callable could return %NULL
- */
-gboolean
-g_callable_info_may_return_null (GICallableInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  SignatureBlob *blob;
-
-  g_return_val_if_fail (info != NULL, FALSE);
-  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), FALSE);
-
-  blob = (SignatureBlob *)&rinfo->typelib->data[signature_offset (info)];
-
-  return blob->may_return_null;
-}
-
-/**
- * g_callable_info_get_caller_owns:
- * @info: a #GICallableInfo
- *
- * See whether the caller owns the return value of this callable.
- * #GITransfer contains a list of possible transfer values.
- *
- * Returns: %TRUE if the caller owns the return value, %FALSE otherwise.
- */
-GITransfer
-g_callable_info_get_caller_owns (GICallableInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo*) info;
-  SignatureBlob *blob;
-
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), -1);
-
-  blob = (SignatureBlob *)&rinfo->typelib->data[signature_offset (info)];
-
-  if (blob->caller_owns_return_value)
-    return GI_TRANSFER_EVERYTHING;
-  else if (blob->caller_owns_return_container)
-    return GI_TRANSFER_CONTAINER;
-  else
-    return GI_TRANSFER_NOTHING;
-}
-
-/**
- * g_callable_info_get_n_args:
- * @info: a #GICallableInfo
- *
- * Obtain the number of arguments (both IN and OUT) for this callable.
- *
- * Returns: The number of arguments this callable expects.
- */
-gint
-g_callable_info_get_n_args (GICallableInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  gint offset;
-  SignatureBlob *blob;
-
-  g_return_val_if_fail (info != NULL, -1);
-  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), -1);
-
-  offset = signature_offset (info);
-  blob = (SignatureBlob *)&rinfo->typelib->data[offset];
-
-  return blob->n_arguments;
-}
-
-/**
- * g_callable_info_get_arg:
- * @info: a #GICallableInfo
- * @n: the argument index to fetch
- *
- * Obtain information about a particular argument of this callable.
- *
- * Returns: (transfer full): the #GIArgInfo. Free it with
- * g_base_info_unref() when done.
- */
-GIArgInfo *
-g_callable_info_get_arg (GICallableInfo *info,
-			 gint            n)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header;
-  gint offset;
-
-  g_return_val_if_fail (info != NULL, NULL);
-  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), NULL);
-
-  offset = signature_offset (info);
-  header = (Header *)rinfo->typelib->data;
-
-  return (GIArgInfo *) g_info_new (GI_INFO_TYPE_ARG, (GIBaseInfo*)info, rinfo->typelib,
-				   offset + header->signature_blob_size + n * header->arg_blob_size);
-}
-
-/**
- * g_callable_info_load_arg:
- * @info: a #GICallableInfo
- * @n: the argument index to fetch
- * @arg: (out caller-allocates): Initialize with argument number @n
- *
- * Obtain information about a particular argument of this callable; this
- * function is a variant of g_callable_info_get_arg() designed for stack
- * allocation.
- *
- * The initialized @arg must not be referenced after @info is deallocated.
- */
-void
-g_callable_info_load_arg (GICallableInfo *info,
-                          gint            n,
-                          GIArgInfo      *arg)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header;
-  gint offset;
-
-  g_return_if_fail (info != NULL);
-  g_return_if_fail (GI_IS_CALLABLE_INFO (info));
-
-  offset = signature_offset (info);
-  header = (Header *)rinfo->typelib->data;
-
-  _g_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
-                offset + header->signature_blob_size + n * header->arg_blob_size);
-}
 
 /* GIArgInfo function */
 
@@ -526,7 +278,7 @@ g_arg_info_get_type (GIArgInfo *info)
   g_return_val_if_fail (info != NULL, NULL);
   g_return_val_if_fail (GI_IS_ARG_INFO (info), NULL);
 
-  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+  return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
 }
 
 /**
@@ -549,7 +301,7 @@ g_arg_info_load_type (GIArgInfo  *info,
   g_return_if_fail (info != NULL);
   g_return_if_fail (GI_IS_ARG_INFO (info));
 
-  g_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
+  _g_type_info_init (type, (GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (ArgBlob, arg_type));
 }
 
 /* GITypeInfo functions */
@@ -663,7 +415,7 @@ g_type_info_get_param_type (GITypeInfo *info,
           case GI_TYPE_TAG_GLIST:
           case GI_TYPE_TAG_GSLIST:
           case GI_TYPE_TAG_GHASH:
-            return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib,
+            return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib,
                                     rinfo->offset + sizeof (ParamTypeBlob)
                                     + sizeof (SimpleTypeBlob) * n);
             break;
@@ -1171,7 +923,7 @@ g_field_info_get_type (GIFieldInfo *info)
       type_info->type_is_embedded = TRUE;
     }
   else
-    return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (FieldBlob, type));
+    return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (FieldBlob, type));
 
   return (GIBaseInfo*)type_info;
 }
@@ -1964,7 +1716,7 @@ g_property_info_get_type (GIPropertyInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
-  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (PropertyBlob, type));
+  return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (PropertyBlob, type));
 }
 
 
@@ -2107,7 +1859,7 @@ g_constant_info_get_type (GIConstantInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
-  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 8);
+  return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 8);
 }
 
 gint
@@ -2257,7 +2009,7 @@ g_union_info_get_discriminator_type (GIUnionInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
-  return g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 24);
+  return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 24);
 }
 
 GIConstantInfo *

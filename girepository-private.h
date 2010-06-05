@@ -80,5 +80,21 @@ GIBaseInfo * _g_info_from_entry (GIRepository *repository,
                                  GTypelib     *typelib,
                                  guint16       index);
 
+GIBaseInfo * _g_info_new_full   (GIInfoType    type,
+				 GIRepository *repository,
+				 GIBaseInfo   *container,
+				 GTypelib     *typelib,
+				 guint32       offset);
+
+GITypeInfo * _g_type_info_new   (GIBaseInfo   *container,
+				 GTypelib     *typelib,
+				 guint32       offset);
+
+void         _g_type_info_init  (GIBaseInfo   *info,
+				 GIBaseInfo   *container,
+				 GTypelib     *typelib,
+				 guint32       offset);
+
+
 
 #endif /* __GIREPOSITORY_PRIVATE_H__ */
