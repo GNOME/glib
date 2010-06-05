@@ -257,6 +257,41 @@ typedef enum {
   GI_TRANSFER_EVERYTHING
 } GITransfer;
 
+/**
+ * GIDirection:
+ * @GI_DIRECTION_IN: in argument.
+ * @GI_DIRECTION_OUT: out argument.
+ * @GI_DIRECTION_INOUT: in and out argument.
+ *
+ * The direction of a #GIArgInfo.
+ */
+typedef enum  {
+  GI_DIRECTION_IN,
+  GI_DIRECTION_OUT,
+  GI_DIRECTION_INOUT
+} GIDirection;
+
+/**
+ * GIScopeType:
+ * @GI_SCOPE_TYPE_INVALID: The argument is not of callback type.
+ * @GI_SCOPE_TYPE_CALL: The callback and associated user_data is only
+ * used during the call to this function.
+ * @GI_SCOPE_TYPE_ASYNC: The callback and associated user_data is
+ * only used until the callback is invoked, and the callback.
+ * is invoked always exactly once.
+ * @GI_SCOPE_TYPE_NOTIFIED: The callback and and associated
+ * user_data is used until the caller is notfied via the destroy_notify.
+ *
+ * Scope type of a #GIArgInfo representing callback, determines how the
+ * callback is invoked and is used to decided when the invoke structs
+ * can be freed.
+ */
+typedef enum {
+  GI_SCOPE_TYPE_INVALID,
+  GI_SCOPE_TYPE_CALL,
+  GI_SCOPE_TYPE_ASYNC,
+  GI_SCOPE_TYPE_NOTIFIED
+} GIScopeType;
 
 G_END_DECLS
 

@@ -26,6 +26,7 @@
 
 #include <glib-object.h>
 #include <gmodule.h>
+#include <giarginfo.h>
 #include <gibaseinfo.h>
 #include <gicallableinfo.h>
 #include <gifunctioninfo.h>
@@ -145,61 +146,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   const GValue   *param_values,
                                   gpointer        invocation_hint,
                                   gpointer        marshal_data);
-
-
-/* GIArgInfo */
-
-#define GI_IS_ARG_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ARG)
-
-/**
- * GIDirection:
- * @GI_DIRECTION_IN: in argument.
- * @GI_DIRECTION_OUT: out argument.
- * @GI_DIRECTION_INOUT: in and out argument.
- *
- * The direction of a #GIArgInfo.
- */
-typedef enum  {
-  GI_DIRECTION_IN,
-  GI_DIRECTION_OUT,
-  GI_DIRECTION_INOUT
-} GIDirection;
-
-/**
- * GIScopeType:
- * @GI_SCOPE_TYPE_INVALID: The argument is not of callback type.
- * @GI_SCOPE_TYPE_CALL: The callback and associated user_data is only
- * used during the call to this function.
- * @GI_SCOPE_TYPE_ASYNC: The callback and associated user_data is
- * only used until the callback is invoked, and the callback.
- * is invoked always exactly once.
- * @GI_SCOPE_TYPE_NOTIFIED: The callback and and associated
- * user_data is used until the caller is notfied via the destroy_notify.
- *
- * Scope type of a #GIArgInfo representing callback, determines how the
- * callback is invoked and is used to decided when the invoke structs
- * can be freed.
- */
-typedef enum {
-  GI_SCOPE_TYPE_INVALID,
-  GI_SCOPE_TYPE_CALL,
-  GI_SCOPE_TYPE_ASYNC,
-  GI_SCOPE_TYPE_NOTIFIED
-} GIScopeType;
-
-GIDirection            g_arg_info_get_direction          (GIArgInfo *info);
-gboolean               g_arg_info_is_return_value        (GIArgInfo *info);
-gboolean               g_arg_info_is_optional            (GIArgInfo *info);
-gboolean               g_arg_info_is_caller_allocates    (GIArgInfo *info);
-gboolean               g_arg_info_may_be_null            (GIArgInfo *info);
-GITransfer             g_arg_info_get_ownership_transfer (GIArgInfo *info);
-GIScopeType            g_arg_info_get_scope              (GIArgInfo *info);
-gint                   g_arg_info_get_closure            (GIArgInfo *info);
-gint                   g_arg_info_get_destroy            (GIArgInfo *info);
-GITypeInfo *           g_arg_info_get_type               (GIArgInfo *info);
-void                   g_arg_info_load_type              (GIArgInfo *info,
-                                                          GITypeInfo *type);
 
 /* GITypeInfo */
 
