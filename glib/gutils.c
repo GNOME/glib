@@ -2753,7 +2753,8 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)())
  * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>
- * 
+ * In this case the list of directories retrieved will be XDG_DATA_DIRS.
+ *
  * On Windows the first elements in the list are the Application Data
  * and Documents folders for All Users. (These can be determined only
  * on Windows 2000 or later and are not present in the list on other
