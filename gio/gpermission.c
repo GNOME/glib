@@ -381,7 +381,7 @@ g_permission_class_init (GPermissionClass *class)
    */
    g_object_class_install_property (object_class, PROP_ALLOWED,
      g_param_spec_boolean ("allowed",
-                           P(("Is allowed"),
+                           P_("Is allowed"),
                            P_("If the caller is allowed to perform the action"),
                            FALSE,
                            G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
