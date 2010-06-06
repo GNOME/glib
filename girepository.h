@@ -29,6 +29,7 @@
 #include <giarginfo.h>
 #include <gibaseinfo.h>
 #include <gicallableinfo.h>
+#include <gierrordomaininfo.h>
 #include <gifunctioninfo.h>
 #include <gitypeinfo.h>
 #include <gitypelib.h>
@@ -147,15 +148,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   const GValue   *param_values,
                                   gpointer        invocation_hint,
                                   gpointer        marshal_data);
-
-/* GIErrorDomainInfo */
-
-#define GI_IS_ERROR_DOMAIN_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ERROR_DOMAIN)
-
-const gchar *          g_error_domain_info_get_quark   (GIErrorDomainInfo *info);
-GIInterfaceInfo *           g_error_domain_info_get_codes (GIErrorDomainInfo *info);
-
 
 /* GIValueInfo */
 

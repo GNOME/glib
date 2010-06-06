@@ -29,68 +29,6 @@
 #include "girepository-private.h"
 
 
-/* GIErrorDomainInfo functions */
-
-/**
- * SECTION:gierrordomaininfo
- * @Short_description: Struct representing an error domain
- * @Title: GIErrorDomainInfo
- *
- * A GIErrorDomainInfo struct represents a domain of a #GError.
- * An error domain is associated with a #GQuark and contains a pointer
- * to an enum with all the error codes.
- */
-
-/**
- * g_error_domain_info_get_quark:
- * @info: a #GIErrorDomainInfo
- *
- * Obtain a string representing the quark for this error domain.
- * %NULL will be returned if the type tag is wrong or if a quark is
- * missing in the typelib.
- *
- * Returns: the quark represented as a string or %NULL
- */
-const gchar *
-g_error_domain_info_get_quark (GIErrorDomainInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  ErrorDomainBlob *blob;
-
-  g_return_val_if_fail (info != NULL, NULL);
-  g_return_val_if_fail (GI_IS_ERROR_DOMAIN_INFO (info), NULL);
-
-  blob = (ErrorDomainBlob *)&rinfo->typelib->data[rinfo->offset];
-
-  return g_typelib_get_string (rinfo->typelib, blob->get_quark);
-}
-
-/**
- * g_error_domain_info_get_codes:
- * @info: a #GIErrorDomainInfo
- *
- * Obtain the enum containing all the error codes for this error domain.
- * The return value will have a #GIInfoType of %GI_INFO_TYPE_ERROR_DOMAIN
- *
- * Returns: (transfer full): the error domain or %NULL if type tag is wrong,
- * free the struct with g_base_info_unref() when done.
- */
-GIInterfaceInfo *
-g_error_domain_info_get_codes (GIErrorDomainInfo *info)
-{
-  GIRealInfo *rinfo = (GIRealInfo *)info;
-  ErrorDomainBlob *blob;
-
-  g_return_val_if_fail (info != NULL, NULL);
-  g_return_val_if_fail (GI_IS_ERROR_DOMAIN_INFO (info), NULL);
-
-  blob = (ErrorDomainBlob *)&rinfo->typelib->data[rinfo->offset];
-
-  return (GIInterfaceInfo *) _g_info_from_entry (rinfo->repository,
-                                                 rinfo->typelib, blob->error_codes);
-}
-
-
 /* GIEnumInfo and GIValueInfo functions */
 
 /**

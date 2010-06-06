@@ -3,6 +3,7 @@ girepo_HEADERS =				\
     giarginfo.h					\
     gibaseinfo.h				\
     gicallableinfo.h				\
+    gierrordomaininfo.h				\
     gifunctioninfo.h				\
     girepository.h				\
     girffi.h					\
@@ -18,8 +19,9 @@ libgirepository_1_0_la_SOURCES =		\
 	gfield.c				\
 	giarginfo.c				\
 	gibaseinfo.c				\
-	gifunctioninfo.c			\
 	gicallableinfo.c			\
+	gierrordomaininfo.c			\
+	gifunctioninfo.c			\
 	ginfo.c                                 \
 	ginvoke.c				\
 	girepository.c				\
