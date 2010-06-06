@@ -18,7 +18,6 @@ noinst_LTLIBRARIES = libgirepository-parser.la
 
 libgirepository_1_0_la_SOURCES =		\
 	gdump.c					\
-	gfield.c				\
 	giarginfo.c				\
 	gibaseinfo.c				\
 	gicallableinfo.c			\
