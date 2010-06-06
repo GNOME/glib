@@ -19,6 +19,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <string.h>
+
 #include <glib.h>
 
 #include <girepository.h>
@@ -38,6 +40,32 @@
  * See also #GICallableInfo for information on how to retreive arguments and
  * other metadata.
  */
+
+GIFunctionInfo *
+_g_base_info_find_method (GIBaseInfo   *base,
+			  guint32       offset,
+			  gint          n_methods,
+			  const gchar  *name)
+{
+  /* FIXME hash */
+  GIRealInfo *rinfo = (GIRealInfo*)base;
+  Header *header = (Header *)rinfo->typelib->data;
+  gint i;
+
+  for (i = 0; i < n_methods; i++)
+    {
+      FunctionBlob *fblob = (FunctionBlob *)&rinfo->typelib->data[offset];
+      const gchar *fname = (const gchar *)&rinfo->typelib->data[fblob->name];
+
+      if (strcmp (name, fname) == 0)
+        return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, base,
+			                      rinfo->typelib, offset);
+
+      offset += header->function_blob_size;
+    }
+
+  return NULL;
+}
 
 /**
  * g_function_info_get_symbol:

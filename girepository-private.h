@@ -95,6 +95,14 @@ void         _g_type_info_init  (GIBaseInfo   *info,
 				 GTypelib     *typelib,
 				 guint32       offset);
 
+GIFunctionInfo * _g_base_info_find_method (GIBaseInfo   *base,
+					   guint32       offset,
+					   gint          n_methods,
+					   const gchar  *name);
 
+GIVFuncInfo * _g_base_info_find_vfunc (GIRealInfo   *rinfo,
+				       guint32       offset,
+				       gint          n_vfuncs,
+				       const gchar  *name);
 
 #endif /* __GIREPOSITORY_PRIVATE_H__ */

@@ -29,14 +29,22 @@
 #include <giarginfo.h>
 #include <gibaseinfo.h>
 #include <gicallableinfo.h>
+#include <giconstantinfo.h>
 #include <gienuminfo.h>
 #include <gierrordomaininfo.h>
 #include <gifieldinfo.h>
 #include <gifunctioninfo.h>
+#include <giinterfaceinfo.h>
+#include <giobjectinfo.h>
+#include <gipropertyinfo.h>
 #include <giregisteredtypeinfo.h>
+#include <gisignalinfo.h>
+#include <gistructinfo.h>
 #include <gitypeinfo.h>
 #include <gitypelib.h>
 #include <gitypes.h>
+#include <giunioninfo.h>
+#include <givfuncinfo.h>
 
 G_BEGIN_DECLS
 
@@ -151,154 +159,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   const GValue   *param_values,
                                   gpointer        invocation_hint,
                                   gpointer        marshal_data);
-
-/* GIUnionInfo */
-
-#define GI_IS_UNION_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_UNION)
-
-gint                   g_union_info_get_n_fields  (GIUnionInfo *info);
-GIFieldInfo *          g_union_info_get_field     (GIUnionInfo *info,
-					           gint         n);
-gint                   g_union_info_get_n_methods (GIUnionInfo *info);
-GIFunctionInfo *       g_union_info_get_method    (GIUnionInfo *info,
-						   gint         n);
-gboolean               g_union_info_is_discriminated (GIUnionInfo *info);
-gint                   g_union_info_get_discriminator_offset (GIUnionInfo *info);
-GITypeInfo *           g_union_info_get_discriminator_type (GIUnionInfo *info);
-GIConstantInfo *       g_union_info_get_discriminator      (GIUnionInfo *info,
-					                    gint         n);
-GIFunctionInfo *       g_union_info_find_method    (GIUnionInfo *info,
-                                                    const gchar *name);
-gsize                  g_union_info_get_size       (GIUnionInfo *info);
-gsize                  g_union_info_get_alignment  (GIUnionInfo *info);
-
-
-/* GIStructInfo */
-
-#define GI_IS_STRUCT_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_STRUCT)
-
-gint                   g_struct_info_get_n_fields  (GIStructInfo *info);
-GIFieldInfo *          g_struct_info_get_field     (GIStructInfo *info,
-						    gint         n);
-gint                   g_struct_info_get_n_methods (GIStructInfo *info);
-GIFunctionInfo *       g_struct_info_get_method    (GIStructInfo *info,
-						    gint         n);
-GIFunctionInfo *       g_struct_info_find_method   (GIStructInfo *info,
-						    const gchar *name);
-gsize                  g_struct_info_get_size      (GIStructInfo *info);
-gsize                  g_struct_info_get_alignment (GIStructInfo *info);
-gboolean               g_struct_info_is_gtype_struct (GIStructInfo *info);
-gboolean               g_struct_info_is_foreign    (GIStructInfo *info);
-
-/* GIObjectInfo */
-
-#define GI_IS_OBJECT_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_OBJECT)
-
-const gchar *          g_object_info_get_type_name	    (GIObjectInfo    *info);
-const gchar *          g_object_info_get_type_init	    (GIObjectInfo    *info);
-gboolean               g_object_info_get_abstract           (GIObjectInfo    *info);
-GIObjectInfo *         g_object_info_get_parent             (GIObjectInfo    *info);
-gint                   g_object_info_get_n_interfaces       (GIObjectInfo    *info);
-GIInterfaceInfo *      g_object_info_get_interface          (GIObjectInfo    *info,
-							     gint            n);
-gint                   g_object_info_get_n_fields           (GIObjectInfo    *info);
-GIFieldInfo *          g_object_info_get_field              (GIObjectInfo    *info,
-							     gint            n);
-gint                   g_object_info_get_n_properties       (GIObjectInfo    *info);
-GIPropertyInfo *       g_object_info_get_property           (GIObjectInfo    *info,
-							     gint            n);
-gint                   g_object_info_get_n_methods          (GIObjectInfo    *info);
-GIFunctionInfo *       g_object_info_get_method             (GIObjectInfo    *info,
-							     gint            n);
-GIFunctionInfo *       g_object_info_find_method            (GIObjectInfo *info,
-							     const gchar *name);
-gint                   g_object_info_get_n_signals          (GIObjectInfo    *info);
-GISignalInfo *         g_object_info_get_signal             (GIObjectInfo    *info,
-							     gint            n);
-gint                   g_object_info_get_n_vfuncs           (GIObjectInfo    *info);
-GIVFuncInfo *          g_object_info_get_vfunc              (GIObjectInfo    *info,
-							     gint            n);
-GIVFuncInfo *          g_object_info_find_vfunc             (GIObjectInfo *info,
-                                                             const gchar *name);
-gint                   g_object_info_get_n_constants        (GIObjectInfo    *info);
-GIConstantInfo *       g_object_info_get_constant           (GIObjectInfo    *info,
-							     gint            n);
-GIStructInfo *         g_object_info_get_class_struct       (GIObjectInfo    *info);
-
-
-/* GIInterfaceInfo */
-
-#define GI_IS_INTERFACE_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_INTERFACE)
-
-gint                   g_interface_info_get_n_prerequisites (GIInterfaceInfo *info);
-GIBaseInfo *           g_interface_info_get_prerequisite    (GIInterfaceInfo *info,
-							     gint        n);
-gint                   g_interface_info_get_n_properties    (GIInterfaceInfo *info);
-GIPropertyInfo *       g_interface_info_get_property        (GIInterfaceInfo *info,
-							     gint        n);
-gint                   g_interface_info_get_n_methods       (GIInterfaceInfo *info);
-GIFunctionInfo *       g_interface_info_get_method          (GIInterfaceInfo *info,
-							     gint        n);
-GIFunctionInfo *       g_interface_info_find_method         (GIInterfaceInfo *info,
-						             const gchar *name);
-gint                   g_interface_info_get_n_signals       (GIInterfaceInfo *info);
-GISignalInfo *         g_interface_info_get_signal          (GIInterfaceInfo *info,
-							     gint        n);
-gint                   g_interface_info_get_n_vfuncs        (GIInterfaceInfo *info);
-GIVFuncInfo *          g_interface_info_get_vfunc           (GIInterfaceInfo *info,
-							     gint        n);
-GIVFuncInfo *          g_interface_info_find_vfunc          (GIInterfaceInfo *info,
-                                                             const gchar *name);
-gint                   g_interface_info_get_n_constants     (GIInterfaceInfo *info);
-GIConstantInfo *       g_interface_info_get_constant        (GIInterfaceInfo *info,
-							     gint        n);
-
-GIStructInfo *         g_interface_info_get_iface_struct    (GIInterfaceInfo *info);
-
-
-/* GIPropertyInfo  */
-
-#define GI_IS_PROPERTY_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_PROPERTY)
-
-GParamFlags             g_property_info_get_flags                (GIPropertyInfo         *info);
-GITypeInfo *            g_property_info_get_type                 (GIPropertyInfo         *info);
-
-
-/* GISignalInfo */
-
-#define GI_IS_SIGNAL_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_SIGNAL)
-
-GSignalFlags            g_signal_info_get_flags                  (GISignalInfo           *info);
-GIVFuncInfo *           g_signal_info_get_class_closure          (GISignalInfo           *info);
-gboolean                g_signal_info_true_stops_emit            (GISignalInfo           *info);
-
-
-/* GIVFuncInfo */
-
-#define GI_IS_VFUNC_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VFUNC)
-
-GIVFuncInfoFlags        g_vfunc_info_get_flags                   (GIVFuncInfo            *info);
-gint                    g_vfunc_info_get_offset                  (GIVFuncInfo            *info);
-GISignalInfo *          g_vfunc_info_get_signal                  (GIVFuncInfo            *info);
-GIFunctionInfo *        g_vfunc_info_get_invoker                 (GIVFuncInfo            *info);
-
-
-/* GIConstantInfo */
-
-#define GI_IS_CONSTANT_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_CONSTANT)
-
-GITypeInfo *            g_constant_info_get_type                 (GIConstantInfo         *info);
-gint                    g_constant_info_get_value                (GIConstantInfo         *info,
-								  GArgument             *value);
-
 
 G_END_DECLS
 

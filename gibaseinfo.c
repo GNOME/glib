@@ -149,7 +149,6 @@ _g_type_info_init (GIBaseInfo *info,
                 (type->flags.reserved == 0 && type->flags.reserved2 == 0) ? offset : type->offset);
 }
 
-
 /* GIBaseInfo functions */
 
 /**

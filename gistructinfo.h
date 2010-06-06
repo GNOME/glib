@@ -1,0 +1,52 @@
+/* GObject introspection: Struct
+ *
+ * Copyright (C) 2005 Matthias Clasen
+ * Copyright (C) 2008,2009 Red Hat, Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+
+#ifndef __GISTRUCTINFO_H__
+#define __GISTRUCTINFO_H__
+
+#if !defined (__GIREPOSITORY_H_INSIDE__) && !defined (GI_COMPILATION)
+#error "Only <girepository.h> can be included directly."
+#endif
+
+#include <gitypes.h>
+
+G_BEGIN_DECLS
+
+#define GI_IS_STRUCT_INFO(info) \
+    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_STRUCT)
+
+gint             g_struct_info_get_n_fields    (GIStructInfo *info);
+GIFieldInfo *    g_struct_info_get_field       (GIStructInfo *info,
+						gint          n);
+gint             g_struct_info_get_n_methods   (GIStructInfo *info);
+GIFunctionInfo * g_struct_info_get_method      (GIStructInfo *info,
+						gint          n);
+GIFunctionInfo * g_struct_info_find_method     (GIStructInfo *info,
+						const gchar  *name);
+gsize            g_struct_info_get_size        (GIStructInfo *info);
+gsize            g_struct_info_get_alignment   (GIStructInfo *info);
+gboolean         g_struct_info_is_gtype_struct (GIStructInfo *info);
+gboolean         g_struct_info_is_foreign      (GIStructInfo *info);
+
+G_END_DECLS
+
+
+#endif  /* __GISTRUCTINFO_H__ */
