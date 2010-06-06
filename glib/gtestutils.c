@@ -1390,7 +1390,7 @@ g_assertion_message_error (const char     *domain,
 			   int             line,
 			   const char     *func,
 			   const char     *expr,
-			   GError         *error,
+			   const GError   *error,
 			   GQuark          error_domain,
 			   int             error_code)
 {
