@@ -6,6 +6,7 @@ girepo_HEADERS =				\
     gifunctioninfo.h				\
     girepository.h				\
     girffi.h					\
+    gitypeinfo.h				\
     gitypelib.h					\
     gitypes.h
 
@@ -27,6 +28,7 @@ libgirepository_1_0_la_SOURCES =		\
 	girffi.h                                \
 	girffi-private.h                        \
 	glib-compat.h                           \
+	gitypeinfo.c				\
 	gitypelib.c				\
 	gitypelib-internal.h
 

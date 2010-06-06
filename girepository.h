@@ -30,6 +30,7 @@
 #include <gibaseinfo.h>
 #include <gicallableinfo.h>
 #include <gifunctioninfo.h>
+#include <gitypeinfo.h>
 #include <gitypelib.h>
 #include <gitypes.h>
 
@@ -146,29 +147,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   const GValue   *param_values,
                                   gpointer        invocation_hint,
                                   gpointer        marshal_data);
-
-/* GITypeInfo */
-
-#define GI_IS_TYPE_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_TYPE)
-
-#define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
-
-const gchar*           g_type_tag_to_string            (GITypeTag   type);
-
-gboolean               g_type_info_is_pointer          (GITypeInfo *info);
-GITypeTag              g_type_info_get_tag             (GITypeInfo *info);
-GITypeInfo *           g_type_info_get_param_type      (GITypeInfo *info,
-						        gint       n);
-GIBaseInfo *           g_type_info_get_interface       (GITypeInfo *info);
-gint                   g_type_info_get_array_length    (GITypeInfo *info);
-gint                   g_type_info_get_array_fixed_size(GITypeInfo *info);
-gboolean               g_type_info_is_zero_terminated  (GITypeInfo *info);
-GIArrayType            g_type_info_get_array_type      (GITypeInfo *info);
-
-gint                   g_type_info_get_n_error_domains (GITypeInfo *info);
-GIErrorDomainInfo     *g_type_info_get_error_domain    (GITypeInfo *info,
-							gint       n);
 
 /* GIErrorDomainInfo */
 
