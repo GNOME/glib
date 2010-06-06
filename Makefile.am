@@ -7,6 +7,7 @@ girepo_HEADERS =				\
     gierrordomaininfo.h				\
     gifieldinfo.h				\
     gifunctioninfo.h				\
+    giregisteredtypeinfo.h			\
     girepository.h				\
     girffi.h					\
     gitypeinfo.h				\
@@ -27,15 +28,16 @@ libgirepository_1_0_la_SOURCES =		\
 	gifunctioninfo.c			\
 	ginfo.c                                 \
 	ginvoke.c				\
+	giregisteredtypeinfo.c			\
 	girepository.c				\
 	girepository-private.h			\
 	girffi.c                                \
 	girffi.h                                \
 	girffi-private.h                        \
-	glib-compat.h                           \
 	gitypeinfo.c				\
 	gitypelib.c				\
-	gitypelib-internal.h
+	gitypelib-internal.h			\
+	glib-compat.h
 
 libgirepository_1_0_la_CPPFLAGS = $(GIREPO_CFLAGS)
 libgirepository_1_0_la_LIBADD = $(GIREPO_LIBS)

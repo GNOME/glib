@@ -33,6 +33,7 @@
 #include <gierrordomaininfo.h>
 #include <gifieldinfo.h>
 #include <gifunctioninfo.h>
+#include <giregisteredtypeinfo.h>
 #include <gitypeinfo.h>
 #include <gitypelib.h>
 #include <gitypes.h>
@@ -190,19 +191,6 @@ gsize                  g_struct_info_get_size      (GIStructInfo *info);
 gsize                  g_struct_info_get_alignment (GIStructInfo *info);
 gboolean               g_struct_info_is_gtype_struct (GIStructInfo *info);
 gboolean               g_struct_info_is_foreign    (GIStructInfo *info);
-
-/* GIRegisteredTypeInfo */
-
-#define GI_IS_REGISTERED_TYPE_INFO(info) \
-    ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_ENUM) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_INTERFACE) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_OBJECT) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_STRUCT) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_UNION))
-
-const gchar *          g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
-const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);
-GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
 
 /* GIObjectInfo */
 
