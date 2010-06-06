@@ -29,6 +29,7 @@
 #include <giarginfo.h>
 #include <gibaseinfo.h>
 #include <gicallableinfo.h>
+#include <gienuminfo.h>
 #include <gierrordomaininfo.h>
 #include <gifunctioninfo.h>
 #include <gitypeinfo.h>
@@ -149,13 +150,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   gpointer        invocation_hint,
                                   gpointer        marshal_data);
 
-/* GIValueInfo */
-
-#define GI_IS_VALUE_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_VALUE)
-
-glong                  g_value_info_get_value      (GIValueInfo *info);
-
 
 /* GIFieldInfo */
 
@@ -226,17 +220,6 @@ gboolean               g_struct_info_is_foreign    (GIStructInfo *info);
 const gchar *          g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
 const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);
 GType                  g_registered_type_info_get_g_type    (GIRegisteredTypeInfo *info);
-
-/* GIEnumInfo */
-
-#define GI_IS_ENUM_INFO(info) \
-    ((g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_ENUM) || \
-     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FLAGS))
-
-gint                   g_enum_info_get_n_values             (GIEnumInfo      *info);
-GIValueInfo  *         g_enum_info_get_value                (GIEnumInfo      *info,
-							     gint            n);
-GITypeTag              g_enum_info_get_storage_type         (GIEnumInfo      *info);
 
 /* GIObjectInfo */
 
