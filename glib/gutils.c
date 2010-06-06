@@ -2049,8 +2049,12 @@ g_set_application_name (const gchar *application_name)
  *
  * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
- * XDG Base Directory Specification</ulink>
- * 
+ * XDG Base Directory Specification</ulink>.
+ * In this case the directory retrieved will be XDG_DATA_HOME.
+ *
+ * On Windows is the virtual folder that represents the My Documents
+ * desktop item. See documentation for CSIDL_PERSONAL.
+ *
  * Return value: a string owned by GLib that must not be modified 
  *               or freed.
  * Since: 2.6
