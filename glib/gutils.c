@@ -2819,8 +2819,16 @@ g_get_system_data_dirs (void)
  *
  * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
- * XDG Base Directory Specification</ulink>
- * 
+ * XDG Base Directory Specification</ulink>.
+ * In this case the list of directories retrieved will be XDG_CONFIG_DIRS.
+ *
+ * On Windows is the directory that contains application data for all users.
+ * A typical path is C:\Documents and Settings\All Users\Application Data.
+ * This folder is used for application data that is not user specific.
+ * For example, an application can store a spell-check dictionary, a database
+ * of clip art, or a log file in the CSIDL_COMMON_APPDATA folder.
+ * This information will not roam and is available to anyone using the computer.
+ *
  * Return value: a %NULL-terminated array of strings owned by GLib that must 
  *               not be modified or freed.
  * Since: 2.6
