@@ -84,6 +84,7 @@ gio/gnativevolumemonitor.c
 gio/gnetworkaddress.c
 gio/gnetworkservice.c
 gio/goutputstream.c
+gio/gpermission.c
 gio/gpollfilemonitor.c
 gio/gresolver.c
 gio/gschema-compile.c

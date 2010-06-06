@@ -19,7 +19,10 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include "gpermission.h"
+#include "glibintl.h"
 
 #include "gioalias.h"
 
@@ -91,7 +94,9 @@ enum  {
  * This call is blocking, likely for a very long time (in the case that
  * user interaction is required).  See g_permission_acquire_async() for
  * the non-blocking version.
- **/
+ *
+ * Since: 2.26
+ */
 gboolean
 g_permission_acquire (GPermission   *permission,
                       GCancellable  *cancellable,
@@ -112,6 +117,8 @@ g_permission_acquire (GPermission   *permission,
  *
  * This is the first half of the asynchronous version of
  * g_permission_acquire().
+ *
+ * Since: 2.26
  **/
 void
 g_permission_acquire_async (GPermission         *permission,
@@ -135,6 +142,8 @@ g_permission_acquire_async (GPermission         *permission,
  *
  * This is the second half of the asynchronous version of
  * g_permission_acquire().
+ *
+ * Since: 2.26
  **/
 gboolean
 g_permission_acquire_finish (GPermission   *permission,
@@ -167,6 +176,8 @@ g_permission_acquire_finish (GPermission   *permission,
  * This call is blocking, likely for a very long time (in the case that
  * user interaction is required).  See g_permission_release_async() for
  * the non-blocking version.
+ *
+ * Since: 2.26
  **/
 gboolean
 g_permission_release (GPermission   *permission,
@@ -188,6 +199,8 @@ g_permission_release (GPermission   *permission,
  *
  * This is the first half of the asynchronous version of
  * g_permission_release().
+ *
+ * Since: 2.26
  **/
 void
 g_permission_release_async (GPermission         *permission,
@@ -211,6 +224,8 @@ g_permission_release_async (GPermission         *permission,
  *
  * This is the second half of the asynchronous version of
  * g_permission_release().
+ *
+ * Since: 2.26
  **/
 gboolean
 g_permission_release_finish (GPermission   *permission,
@@ -229,6 +244,8 @@ g_permission_release_finish (GPermission   *permission,
  * Gets the value of the 'allowed' property.  This property is %TRUE if
  * the caller currently has permission to perform the action that
  * @permission represents the permission to perform.
+ *
+ * Since: 2.26
  **/
 gboolean
 g_permission_get_allowed (GPermission *permission)
@@ -244,6 +261,8 @@ g_permission_get_allowed (GPermission *permission)
  * Gets the value of the 'can-acquire' property.  This property is %TRUE
  * if it is generally possible to acquire the permission by calling
  * g_permission_acquire().
+ *
+ * Since: 2.26
  **/
 gboolean
 g_permission_get_can_acquire (GPermission *permission)
@@ -259,6 +278,8 @@ g_permission_get_can_acquire (GPermission *permission)
  * Gets the value of the 'can-release' property.  This property is %TRUE
  * if it is generally possible to release the permission by calling
  * g_permission_release().
+ *
+ * Since: 2.26
  **/
 gboolean
 g_permission_get_can_release (GPermission *permission)
@@ -278,6 +299,8 @@ g_permission_get_can_release (GPermission *permission)
  * function except from a #GPermission implementation.
  *
  * GObject notify signals are generated, as appropriate.
+ *
+ * Since: 2.26
  **/
 void
 g_permission_impl_update (GPermission *permission,
@@ -357,9 +380,11 @@ g_permission_class_init (GPermissionClass *class)
    * @permission represents the permission to perform.
    */
    g_object_class_install_property (object_class, PROP_ALLOWED,
-     g_param_spec_boolean ("allowed", "is allowed",
-                           "if the caller is allowed to perform the action",
-                           FALSE, G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
+     g_param_spec_boolean ("allowed",
+                           P(("Is allowed"),
+                           P_("If the caller is allowed to perform the action"),
+                           FALSE,
+                           G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
 
   /**
    * GPermission:can-acquire:
@@ -368,9 +393,11 @@ g_permission_class_init (GPermissionClass *class)
    * g_permission_acquire().
    */
    g_object_class_install_property (object_class, PROP_CAN_ACQUIRE,
-     g_param_spec_boolean ("can-acquire", "can acquire",
-                           "if calling g_permission_acquire() makes sense",
-                           FALSE, G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
+     g_param_spec_boolean ("can-acquire",
+                           P_("Can acquire"),
+                           P_("If calling g_permission_acquire() makes sense"),
+                           FALSE,
+                           G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
 
   /**
    * GPermission:can-release:
@@ -379,9 +406,11 @@ g_permission_class_init (GPermissionClass *class)
    * g_permission_release().
    */
    g_object_class_install_property (object_class, PROP_CAN_RELEASE,
-     g_param_spec_boolean ("can-release", "can release",
-                           "if calling g_permission_release() makes sense",
-                           FALSE, G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
+     g_param_spec_boolean ("can-release",
+                           P_("Can release"),
+                           P_("If calling g_permission_release() makes sense"),
+                           FALSE,
+                           G_PARAM_STATIC_STRINGS | G_PARAM_READABLE));
 
   g_type_class_add_private (class, sizeof (GPermissionPrivate));
 }

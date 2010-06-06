@@ -19,6 +19,8 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include "gsimplepermission.h"
 #include "gpermission.h"
 
@@ -27,7 +29,7 @@
 /**
  * SECTION:gsimplepermission
  * @title: GSimplePermission
- * @short_description: a #GPermission that doesn't change value
+ * @short_description: a GPermission that doesn't change value
  *
  * #GSimplePermission is a trivial implementation of #GPermission that
  * represents a permission that is either always or never allowed.  The
@@ -69,6 +71,8 @@ g_simple_permission_class_init (GSimplePermissionClass *class)
  *
  * Creates a new #GPermission instance that represents an action that is
  * either always or never allowed.
+ *
+ * Since: 2.26
  **/
 GPermission *
 g_simple_permission_new (gboolean allowed)
