@@ -31,6 +31,7 @@
 #include <gicallableinfo.h>
 #include <gienuminfo.h>
 #include <gierrordomaininfo.h>
+#include <gifieldinfo.h>
 #include <gifunctioninfo.h>
 #include <gitypeinfo.h>
 #include <gitypelib.h>
@@ -149,24 +150,6 @@ void gi_cclosure_marshal_generic (GClosure       *closure,
                                   const GValue   *param_values,
                                   gpointer        invocation_hint,
                                   gpointer        marshal_data);
-
-
-/* GIFieldInfo */
-
-#define GI_IS_FIELD_INFO(info) \
-    (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_FIELD)
-
-GIFieldInfoFlags       g_field_info_get_flags      (GIFieldInfo *info);
-gint                   g_field_info_get_size       (GIFieldInfo *info);
-gint                   g_field_info_get_offset     (GIFieldInfo *info);
-GITypeInfo *           g_field_info_get_type       (GIFieldInfo *info);
-
-gboolean g_field_info_get_field (GIFieldInfo     *field_info,
-				 gpointer         mem,
-				 GArgument       *value);
-gboolean g_field_info_set_field (GIFieldInfo     *field_info,
-				 gpointer         mem,
-				 const GArgument *value);
 
 /* GIUnionInfo */
 
