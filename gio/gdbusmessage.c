@@ -1331,8 +1331,7 @@ g_dbus_message_new_from_blob (guchar                *blob,
       const gchar *signature_str;
       gsize signature_str_len;
 
-      signature_str = g_variant_get_string (signature, NULL);
-      signature_str_len = strlen (signature_str);
+      signature_str = g_variant_get_string (signature, &signature_str_len);
 
       /* signature but no body */
       if (message_body_len == 0 && signature_str_len > 0)
@@ -1531,9 +1530,8 @@ append_value_to_blob (GVariant             *value,
       padding_added = ensure_output_padding (mos, dos, 4);
       if (value != NULL)
         {
-          const gchar *v = g_variant_get_string (value, NULL);
           gsize len;
-          len = strlen (v);
+          const gchar *v = g_variant_get_string (value, &len);
           g_data_output_stream_put_uint32 (dos, len, NULL, NULL);
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
@@ -1545,9 +1543,8 @@ append_value_to_blob (GVariant             *value,
       if (value != NULL)
         {
           /* TODO: validate object path */
-          const gchar *v = g_variant_get_string (value, NULL);
           gsize len;
-          len = strlen (v);
+          const gchar *v = g_variant_get_string (value, &len);
           g_data_output_stream_put_uint32 (dos, len, NULL, NULL);
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
@@ -1558,9 +1555,8 @@ append_value_to_blob (GVariant             *value,
       if (value != NULL)
         {
           /* TODO: validate signature (including max len being 255) */
-          const gchar *v = g_variant_get_string (value, NULL);
           gsize len;
-          len = strlen (v);
+          const gchar *v = g_variant_get_string (value, &len);
           g_data_output_stream_put_byte (dos, len, NULL, NULL);
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
