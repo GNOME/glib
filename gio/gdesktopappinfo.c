@@ -879,6 +879,7 @@ typedef struct
 {
   char *display;
   char *sn_id;
+  char *desktop_file;
 } ChildSetupData;
 
 static void
@@ -891,6 +892,16 @@ child_setup (gpointer user_data)
 
   if (data->sn_id)
     g_setenv ("DESKTOP_STARTUP_ID", data->sn_id, TRUE);
+
+  if (data->desktop_file)
+    {
+      gchar pid[20];
+
+      g_setenv ("GIO_LAUNCHED_DESKTOP_FILE", data->desktop_file, TRUE);
+
+      g_snprintf (pid, 20, "%d", getpid ());
+      g_setenv ("GIO_LAUNCHED_DESKTOP_FILE_PID", pid, TRUE);
+    }
 }
 
 static gboolean
@@ -927,6 +938,7 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 
       data.display = NULL;
       data.sn_id = NULL;
+      data.desktop_file = info->filename;
 
       if (launch_context)
 	{

@@ -268,6 +268,8 @@ SUBDIRS += tests
 
 libgio_2_0_la_SOURCES =		\
 	gappinfo.c 		\
+	gapplication.c		\
+	gapplication.h		\
 	gasynchelper.c 		\
 	gasynchelper.h 		\
 	gasyncinitable.c	\
@@ -374,6 +376,8 @@ libgio_2_0_la_SOURCES =		\
 	$(marshal_sources) 	\
 	$(NULL)
 
+EXTRA_DIST += gnullapplication.c gdbusapplication.c
+
 $(libgio_2_0_la_OBJECTS): $(marshal_sources)
 
 libgio_2_0_la_LIBADD = \
@@ -427,6 +431,7 @@ gio-win32-res.o: gio.rc
 
 gio_headers =			\
 	gappinfo.h 		\
+	gapplication.h		\
 	gasyncinitable.h	\
 	gasyncresult.h 		\
 	gbufferedinputstream.h 	\

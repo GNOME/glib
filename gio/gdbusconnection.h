@@ -434,7 +434,7 @@ gboolean         g_dbus_connection_unregister_subtree         (GDBusConnection  
  * @connection: A #GDBusConnection.
  * @sender_name: The unique bus name of the sender of the signal.
  * @object_path: The object path that the signal was emitted on.
- * @interface_name: The name of the signal.
+ * @interface_name: The name of the interface.
  * @signal_name: The name of the signal.
  * @parameters: A #GVariant tuple with parameters for the signal.
  * @user_data: User data passed when subscribing to the signal.

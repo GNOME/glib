@@ -54,6 +54,9 @@ TEST_PROGS +=			\
 	gdbus-error		\
 	gdbus-peer		\
 	gdbus-exit-on-close	\
+	application		\
+	testapps		\
+	appinfo			\
 	$(NULL)
 endif
 
@@ -73,6 +76,8 @@ SAMPLE_PROGS = 				\
 	gdbus-example-subtree		\
 	gdbus-example-peer		\
 	gdbus-example-proxy-subclass	\
+	testapp				\
+	appinfo-test			\
 	$(NULL)
 
 
@@ -247,6 +252,21 @@ gdbus_example_proxy_subclass_LDADD   = $(progs_ldadd)
 
 gdbus_example_export_SOURCES = gdbus-example-export.c
 gdbus_example_export_LDADD   = $(progs_ldadd)
+
+application_SOURCES = application.c
+application_LDADD   = $(progs_ldadd)
+
+appinfo_SOURCES = appinfo.c
+appinfo_LDADD   = $(progs_ldadd)
+
+appinfo_test_SOURCES = appinfo-test.c
+appinfo_test_LDADD   = $(progs_ldadd)
+
+testapp_SOURCES = testapp.c
+testapp_LDADD   = $(progs_ldadd)
+
+testapps_SOURCES = testapps.c
+testapps_LDADD   = $(progs_ldadd)
 
 EXTRA_DIST += \
 	socket-common.c						\

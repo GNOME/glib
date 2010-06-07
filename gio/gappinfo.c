@@ -33,7 +33,7 @@
  * @short_description: Application information and launch contexts
  * @include: gio/gio.h
  * 
- * #GAppInfo and #GAppLaunchContext are used for describing and launching 
+ * #GAppInfo and #GAppLaunchContext are used for describing and launching
  * applications installed on the system.
  *
  * As of GLib 2.20, URIs will always be converted to POSIX paths
@@ -117,9 +117,9 @@ g_app_info_dup (GAppInfo *appinfo)
 
 /**
  * g_app_info_equal:
- * @appinfo1: the first #GAppInfo.  
+ * @appinfo1: the first #GAppInfo.
  * @appinfo2: the second #GAppInfo.
- * 
+ *
  * Checks if two #GAppInfo<!-- -->s are equal.
  *
  * Returns: %TRUE if @appinfo1 is equal to @appinfo2. %FALSE otherwise.
@@ -461,7 +461,7 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * @launch_context: a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
- * Launches the application. Passes @files to the launched application 
+ * Launches the application. Passes @files to the launched application
  * as arguments, using the optional @launch_context to get information
  * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
@@ -476,8 +476,17 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * unsupported uris with strange formats like mailto:), so if you have
  * a textual uri you want to pass in as argument, consider using
  * g_app_info_launch_uris() instead.
- * 
- * Returns: %TRUE on successful launch, %FALSE otherwise. 
+ *
+ * On UNIX, this function sets the <envvar>GIO_LAUNCHED_DESKTOP_FILE</envvar>
+ * environment variable with the path of the launched desktop file and
+ * <envvar>GIO_LAUNCHED_DESKTOP_FILE_PID</envvar> to the process
+ * id of the launched process. This can be used to ignore
+ * <envvar>GIO_LAUNCHED_DESKTOP_FILE</envvar>, should it be inherited
+ * by further processes. The <envvar>DISPLAY</envvar> and
+ * <envvar>DESKTOP_STARTUP_ID</envvar> environment variables are also
+ * set, based on information provided in @launch_context.
+ *
+ * Returns: %TRUE on successful launch, %FALSE otherwise.
  **/
 gboolean
 g_app_info_launch (GAppInfo           *appinfo,
@@ -540,11 +549,11 @@ g_app_info_supports_files (GAppInfo *appinfo)
 /**
  * g_app_info_launch_uris:
  * @appinfo: a #GAppInfo
- * @uris: a #GList containing URIs to launch. 
+ * @uris: a #GList containing URIs to launch.
  * @launch_context: a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
- * Launches the application. Passes @uris to the launched application 
+ * Launches the application. Passes @uris to the launched application
  * as arguments, using the optional @launch_context to get information
  * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
@@ -555,7 +564,7 @@ g_app_info_supports_files (GAppInfo *appinfo)
  * can fail to start if it runs into problems during startup. There is
  * no way to detect this.
  *
- * Returns: %TRUE on successful launch, %FALSE otherwise. 
+ * Returns: %TRUE on successful launch, %FALSE otherwise.
  **/
 gboolean
 g_app_info_launch_uris (GAppInfo           *appinfo,
@@ -600,7 +609,7 @@ g_app_info_should_show (GAppInfo *appinfo)
  * @launch_context: an optional #GAppLaunchContext.
  * @error: a #GError.
  *
- * Utility function that launches the default application 
+ * Utility function that launches the default application
  * registered to handle the specified uri. Synchronous I/O
  * is done on the uri to detect the type of the file if
  * required.
@@ -726,10 +735,10 @@ g_app_launch_context_init (GAppLaunchContext *launch_context)
  * @info: a #GAppInfo
  * @files: a #GList of #GFile objects
  *
- * Gets the display string for the display. This is used to ensure new
- * applications are started on the same display as the launching 
- * application.
- * 
+ * Gets the display string for the @context. This is used to ensure new
+ * applications are started on the same display as the launching
+ * application, by setting the <envvar>DISPLAY</envvar> environment variable.
+ *
  * Returns: a display string for the display.
  **/
 char *
@@ -757,13 +766,14 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * @files: a #GList of of #GFile objects
  * 
  * Initiates startup notification for the application and returns the
- * DESKTOP_STARTUP_ID for the launched operation, if supported.
+ * <envvar>DESKTOP_STARTUP_ID</envvar> for the launched operation,
+ * if supported.
  *
  * Startup notification IDs are defined in the <ulink
  * url="http://standards.freedesktop.org/startup-notification-spec/startup-notification-latest.txt">
  * FreeDesktop.Org Startup Notifications standard</ulink>.
  *
- * Returns: a startup notification ID for the application, or %NULL if 
+ * Returns: a startup notification ID for the application, or %NULL if
  *     not supported.
  **/
 char *
