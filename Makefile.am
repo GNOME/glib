@@ -1,26 +1,26 @@
 girepodir = $(includedir)/gobject-introspection-1.0/
 girepo_HEADERS =				\
-    giarginfo.h					\
-    gibaseinfo.h				\
-    gicallableinfo.h				\
-    giconstantinfo.h				\
-    gienuminfo.h				\
-    gierrordomaininfo.h				\
-    gifieldinfo.h				\
-    gifunctioninfo.h				\
-    giinterfaceinfo.h				\
-    giobjectinfo.h				\
-    gipropertyinfo.h				\
-    giregisteredtypeinfo.h			\
-    girepository.h				\
-    girffi.h					\
-    gisignalinfo.h				\
-    gistructinfo.h				\
-    gitypeinfo.h				\
-    gitypelib.h					\
-    gitypes.h					\
-    giunioninfo.h				\
-    givfuncinfo.h
+	giarginfo.h				\
+	gibaseinfo.h				\
+	gicallableinfo.h			\
+	giconstantinfo.h			\
+	gienuminfo.h				\
+	gierrordomaininfo.h			\
+	gifieldinfo.h				\
+	gifunctioninfo.h			\
+	giinterfaceinfo.h			\
+	giobjectinfo.h				\
+	gipropertyinfo.h			\
+	giregisteredtypeinfo.h			\
+	girepository.h				\
+	girffi.h				\
+	gisignalinfo.h				\
+	gistructinfo.h				\
+	gitypeinfo.h				\
+	gitypelib.h				\
+	gitypes.h				\
+	giunioninfo.h				\
+	givfuncinfo.h
 
 lib_LTLIBRARIES = libgirepository-1.0.la
 noinst_LTLIBRARIES = libgirepository-parser.la
