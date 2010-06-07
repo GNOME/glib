@@ -39,6 +39,15 @@
  * which is currently #GI_FIELD_IS_READABLE or #GI_FIELD_IS_WRITABLE.
  */
 
+/**
+ * g_field_info_get_flags:
+ * @info: a #GIFieldInfo
+ *
+ * Obtain the flags for this #GIFieldInfo. See #GIFieldInfoFlags for possible
+ * flag values.
+ *
+ * Returns: the flags
+ */
 GIFieldInfoFlags
 g_field_info_get_flags (GIFieldInfo *info)
 {
@@ -110,6 +119,7 @@ g_field_info_get_offset (GIFieldInfo *info)
 
 /**
  * g_field_info_get_type:
+ * @info: a #GIFieldInfo
  *
  * Obtain the type of a field as a #GITypeInfo.
  *
