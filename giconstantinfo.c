@@ -26,20 +26,59 @@
 #include "gitypelib-internal.h"
 #include "girffi.h"
 
+/**
+ * SECTION:giconstantinfo
+ * @Short_description: Struct representing a constant
+ * @Title: GIConstantInfo
+ *
+ * GIConstantInfo represents a constant. A constant has a type associated
+ * which can be obtained by calling g_constant_info_get_type() and a value,
+ * which can be obtained by calling g_constant_info_get_value().
+ */
+
+
+/**
+ * g_constant_info_get_type:
+ * @info: a #GIConstantInfo
+ *
+ * Obtain the type of the constant as a #GITypeInfo.
+ *
+ * Returns: (transfer full): the #GITypeInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
 GITypeInfo *
 g_constant_info_get_type (GIConstantInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_CONSTANT_INFO (info), NULL);
+
   return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 8);
 }
 
+/**
+ * g_constant_info_get_value:
+ * @info: a #GIConstantInfo
+ * @value: (out): an argument
+ *
+ * Obtain the value associated with the #GIConstantInfo and store it in the
+ * @value parameter. @argument needs to be allocated before passing it in.
+ * The size of the constant value stored in @argument will be returned.
+ *
+ * Returns: size of the constant
+ */
 gint
 g_constant_info_get_value (GIConstantInfo *info,
 			   GArgument      *value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  ConstantBlob *blob = (ConstantBlob *)&rinfo->typelib->data[rinfo->offset];
+  ConstantBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_CONSTANT_INFO (info), 0);
+
+  blob = (ConstantBlob *)&rinfo->typelib->data[rinfo->offset];
 
   /* FIXME non-basic types ? */
   if (blob->type.flags.reserved == 0 && blob->type.flags.reserved2 == 0)
