@@ -31,14 +31,10 @@
 #include "girepository.h"
 #include "gitypelib-internal.h"
 
-/* FIXME: Avoid global */
-static gchar *output = NULL;
-gchar **includedirs = NULL;
-static gboolean show_all = FALSE;
-
 typedef struct {
   FILE *file;
   GSList *stack;
+  gboolean show_all;
 } Xml;
 
 typedef struct {
@@ -411,7 +407,7 @@ write_field_info (const gchar *namespace,
       xml_printf (file, "\"");
     }
 
-  if (show_all)
+  if (file->show_all)
     {
       if (offset >= 0)
         xml_printf (file, "offset=\"%d\"", offset);
@@ -659,7 +655,7 @@ write_struct_info (const gchar  *namespace,
   write_attributes (file, (GIBaseInfo*) info);
 
   size = g_struct_info_get_size (info);
-  if (show_all && size >= 0)
+  if (file->show_all && size >= 0)
     xml_printf (file, " size=\"%d\"", size);
 
   foreign = g_struct_info_is_foreign (info);
@@ -1215,7 +1211,7 @@ write_union_info (const gchar *namespace,
     xml_printf (file, " deprecated=\"1\"");
 
   size = g_union_info_get_size (info);
-  if (show_all && size >= 0)
+  if (file->show_all && size >= 0)
     xml_printf (file, " size=\"%d\"", size);
 
   write_attributes (file, (GIBaseInfo*) info);
@@ -1256,8 +1252,10 @@ write_union_info (const gchar *namespace,
 }
 
 static void
-write_repository (const char   *namespace,
-		  gboolean      needs_prefix)
+write_repository (const char *filename,
+		  const char *namespace,
+		  gboolean    needs_prefix,
+		  gboolean    show_all)
 {
   FILE *ofile;
   gint i, j;
@@ -1267,32 +1265,32 @@ write_repository (const char   *namespace,
 
   repository = g_irepository_get_default ();
 
-  if (output == NULL)
+  if (filename == NULL)
     ofile = stdout;
   else
     {
-      gchar *filename;
+      gchar *full_filename;
 
       if (needs_prefix)
-	filename = g_strdup_printf ("%s-%s", namespace, output);
+	full_filename = g_strdup_printf ("%s-%s", namespace, filename);
       else
-	filename = g_strdup (output);
+	full_filename = g_strdup (filename);
       ofile = g_fopen (filename, "w");
 
       if (ofile == NULL)
 	{
 	  g_fprintf (stderr, "failed to open '%s': %s\n",
-		     filename, g_strerror (errno));
-	  g_free (filename);
+		     full_filename, g_strerror (errno));
+	  g_free (full_filename);
 
 	  return;
 	}
 
-      g_free (filename);
+      g_free (full_filename);
     }
 
   xml = xml_open (ofile);
-
+  xml->show_all = show_all;
   xml_printf (xml, "<?xml version=\"1.0\"?>\n");
   xml_start_element (xml, "repository");
   xml_printf (xml, " version=\"1.0\"\n"
@@ -1433,6 +1431,9 @@ int
 main (int argc, char *argv[])
 {
   gboolean shlib = FALSE;
+  gchar *output = NULL;
+  gchar **includedirs = NULL;
+  gboolean show_all = FALSE;
   gchar **input = NULL;
   GOptionContext *context;
   GError *error = NULL;
@@ -1520,7 +1521,7 @@ main (int argc, char *argv[])
 	  return 1;
 	}
 
-      write_repository (namespace, needs_prefix);
+      write_repository (output, namespace, needs_prefix, show_all);
 
       if (dlhandle)
 	{
