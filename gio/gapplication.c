@@ -140,9 +140,10 @@
  * exported actions change (i.e. an action is added, removed, enabled,
  * disabled, or otherwise changed).
  * </para>
+ * <para>
+ * #GApplication is supported since Gio 2.26.
+ * </para>
  * </refsect2>
- *
- * Since: 2.24
  */
 
 G_DEFINE_TYPE (GApplication, g_application, G_TYPE_OBJECT);
