@@ -57,6 +57,7 @@ static const SchemaTest tests[] = {
   { "default-not-in-choices",       NULL, "*<default> contains string not in <choices>*"        },
   { "array-default-not-in-choices", NULL, "*<default> contains string not in <choices>*"        },
   { "bad-key",                      NULL, "*invalid name*"                                      },
+  { "invalid-path",                 NULL, "*must begin and end with a slash*"                   },
   { "bad-key",                      "--allow-any-name", NULL                                    },
   { "bad-key2",                     NULL, "*invalid name*"                                      },
   { "bad-key2",                     "--allow-any-name", NULL                                    },

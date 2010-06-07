@@ -232,8 +232,20 @@ start_element (GMarkupParseContext  *context,
                   state->schema_root = gvdb_hash_table_insert (state->schema, "");
 
                   if (path != NULL)
-                    gvdb_hash_table_insert_string (state->schema,
-                                                   ".path", path);
+                    {
+                      if (!g_str_has_prefix (path, "/") ||
+                          !g_str_has_suffix (path, "/"))
+                        {
+                          g_set_error (error, G_MARKUP_ERROR,
+                                       G_MARKUP_ERROR_INVALID_CONTENT,
+                                       "a path, if given, must begin and "
+                                       "end with a slash");
+                          return;
+                        }
+
+                      gvdb_hash_table_insert_string (state->schema,
+                                                     ".path", path);
+                    }
                 }
               else
                 g_set_error (error, G_MARKUP_ERROR,
