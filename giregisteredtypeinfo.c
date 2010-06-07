@@ -28,11 +28,40 @@
 #include "gitypelib-internal.h"
 #include "girffi.h"
 
+/**
+ * SECTION:giregisteredtypeinfo
+ * @Short_description: Struct representing a struct with a GType
+ * @Title: GIRegisteredTypeInfo
+ *
+ * GIRegisteredTypeInfo represents an entity with a GType associated. Could
+ * be either a #GIEnumInfo, #GIInterfaceInfo, #GIObjectInfo, #GIStructInfo or a
+ * #GIUnionInfo.
+ *
+ * A registered type info struct has a name and a type function.
+ * To get the name call g_registered_type_info_get_type_name().
+ * Most users want to call g_registered_type_info_get_g_type() and don't worry
+ * about the rest of the details.
+ */
+
+/**
+ * g_registered_type_info_get_type_name:
+ * @info: a #GIRegisteredTypeInfo
+ *
+ * Obtain the type name of the struct within the GObject type system.
+ * This type can be passed to g_type_name() to get a #GType.
+ *
+ * Returns: the type name
+ */
 const gchar *
 g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  RegisteredTypeBlob *blob = (RegisteredTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  RegisteredTypeBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_REGISTERED_TYPE_INFO (info), NULL);
+
+  blob = (RegisteredTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_name)
     return g_typelib_get_string (rinfo->typelib, blob->gtype_name);
@@ -40,11 +69,28 @@ g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info)
   return NULL;
 }
 
+/**
+ * g_registered_type_info_get_type_init:
+ * @info: a #GIRegisteredTypeInfo
+ *
+ * Obtain the type init function for @info. The type init function is the
+ * function which will register the GType within the GObject type system.
+ * Usually this is not called by langauge bindings or applications, use
+ * g_registered_type_info_get_g_type() directly instead.
+ *
+ * Returns: the symbol name of the type init function, suitable for
+ * passing into g_module_symbol().
+ */
 const gchar *
 g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  RegisteredTypeBlob *blob = (RegisteredTypeBlob *)&rinfo->typelib->data[rinfo->offset];
+  RegisteredTypeBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_REGISTERED_TYPE_INFO (info), NULL);
+
+  blob = (RegisteredTypeBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_init)
     return g_typelib_get_string (rinfo->typelib, blob->gtype_init);
@@ -52,12 +98,23 @@ g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
   return NULL;
 }
 
+/**
+ * g_registered_type_info_get_g_type:
+ * @info: a #GIRegisteredTypeInfo
+ *
+ * Obtain the #GType for this registered type.
+ *
+ * Returns: the #GType.
+ */
 GType
 g_registered_type_info_get_g_type (GIRegisteredTypeInfo *info)
 {
   const char *type_init;
   GType (* get_type_func) (void);
   GIRealInfo *rinfo = (GIRealInfo*)info;
+
+  g_return_val_if_fail (info != NULL, G_TYPE_INVALID);
+  g_return_val_if_fail (GI_IS_REGISTERED_TYPE_INFO (info), G_TYPE_INVALID);
 
   type_init = g_registered_type_info_get_type_init (info);
 
