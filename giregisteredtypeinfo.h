@@ -31,10 +31,9 @@
 
 G_BEGIN_DECLS
 
-/* GIRegisteredTypeInfo */
-
 #define GI_IS_REGISTERED_TYPE_INFO(info) \
     ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_ENUM) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FLAGS) ||	\
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_INTERFACE) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_OBJECT) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_STRUCT) || \
