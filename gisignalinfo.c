@@ -24,7 +24,6 @@
 #include <girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
-#include "girffi.h"
 
 GSignalFlags
 g_signal_info_get_flags (GISignalInfo *info)

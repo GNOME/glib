@@ -24,7 +24,6 @@
 #include <girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
-#include "girffi.h"
 
 gint
 g_interface_info_get_n_prerequisites (GIInterfaceInfo *info)

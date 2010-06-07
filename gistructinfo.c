@@ -24,7 +24,6 @@
 #include <girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
-#include "girffi.h"
 
 gint
 g_struct_info_get_n_fields (GIStructInfo *info)

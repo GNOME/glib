@@ -24,7 +24,6 @@
 #include <girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
-#include "girffi.h"
 
 gint
 g_union_info_get_n_fields  (GIUnionInfo *info)

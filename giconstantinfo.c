@@ -24,7 +24,6 @@
 #include <girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
-#include "girffi.h"
 
 /**
  * SECTION:giconstantinfo

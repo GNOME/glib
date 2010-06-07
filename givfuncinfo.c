@@ -26,7 +26,6 @@
 #include <girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
-#include "girffi.h"
 
 GIVFuncInfo *
 _g_base_info_find_vfunc (GIRealInfo   *rinfo,

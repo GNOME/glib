@@ -24,7 +24,6 @@
 #include <girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
-#include "girffi.h"
 
 GParamFlags
 g_property_info_get_flags (GIPropertyInfo *info)
