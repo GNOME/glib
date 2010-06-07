@@ -30,8 +30,6 @@
 
 G_BEGIN_DECLS
 
-/* GIObjectInfo */
-
 #define GI_IS_OBJECT_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_OBJECT)
 

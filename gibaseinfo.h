@@ -44,8 +44,6 @@ struct _GIBaseInfoStub {
   gpointer padding[4];
 };
 
-/* GIBaseInfo */
-
 /**
  * GIAttributeIter:
  *
