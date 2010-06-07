@@ -22,7 +22,10 @@
 #ifndef __GIREPOSITORY_PRIVATE_H__
 #define __GIREPOSITORY_PRIVATE_H__
 
+#include <ffi.h>
 #include <glib.h>
+
+#define __GIREPOSITORY_H_INSIDE__
 
 #include <gibaseinfo.h>
 #include <girepository.h>
@@ -104,5 +107,7 @@ GIVFuncInfo * _g_base_info_find_vfunc (GIRealInfo   *rinfo,
 				       guint32       offset,
 				       gint          n_vfuncs,
 				       const gchar  *name);
+
+ffi_type *    _gi_type_tag_get_ffi_type (GITypeTag type_tag, gboolean is_pointer);
 
 #endif /* __GIREPOSITORY_PRIVATE_H__ */

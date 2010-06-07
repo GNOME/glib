@@ -44,7 +44,6 @@ libgirepository_1_0_la_SOURCES =		\
 	girepository-private.h			\
 	girffi.c                                \
 	girffi.h                                \
-	girffi-private.h                        \
 	gisignalinfo.c				\
 	gistructinfo.c				\
 	gitypeinfo.c				\

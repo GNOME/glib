@@ -22,10 +22,11 @@
 #ifndef __G_IREPOSITORY_H__
 #define __G_IREPOSITORY_H__
 
-#define __GIREPOSITORY_H_INSIDE__
-
 #include <glib-object.h>
 #include <gmodule.h>
+
+#define __GIREPOSITORY_H_INSIDE__
+
 #include <giarginfo.h>
 #include <gibaseinfo.h>
 #include <gicallableinfo.h>

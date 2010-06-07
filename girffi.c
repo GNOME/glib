@@ -27,12 +27,12 @@
 #include <string.h>
 #include <unistd.h>
 #include "girffi.h"
-#include "girffi-private.h"
 #include "girepository.h"
+#include "girepository-private.h"
 
 ffi_type *
-g_ir_ffi_get_ffi_type (GITypeTag   tag,
-                       gboolean    is_pointer)
+_gi_type_tag_get_ffi_type (GITypeTag   tag,
+			   gboolean    is_pointer)
 {
   switch (tag)
     {
@@ -125,7 +125,7 @@ g_ir_ffi_get_ffi_type (GITypeTag   tag,
 ffi_type *
 g_type_info_get_ffi_type (GITypeInfo *info)
 {
-  return g_ir_ffi_get_ffi_type (g_type_info_get_tag (info), g_type_info_is_pointer (info));
+  return _gi_type_tag_get_ffi_type (g_type_info_get_tag (info), g_type_info_is_pointer (info));
 }
 
 /**
