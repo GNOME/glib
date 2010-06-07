@@ -64,6 +64,8 @@ libgirepository_parser_la_SOURCES =		\
 	girnode.h				\
 	giroffsets.c				\
 	girparser.c				\
-	girparser.h
+	girparser.h				\
+	girwriter.c				\
+	girwriter.h
 libgirepository_parser_la_CFLAGS = $(GIREPO_CFLAGS)
 

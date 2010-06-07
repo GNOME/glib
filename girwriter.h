@@ -18,9 +18,12 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#ifndef __G_IDL_WRITER_H__
-#define __G_IDL_WRITER_H__
+#ifndef __GIRWRITER_H__
+#define __GIRWRITER_H__
 
-void g_idl_writer_save_file (GIdlModule *module, const gchar *filename);
+void gir_writer_write (const char *filename,
+		       const char *namespace,
+		       gboolean    needs_prefix,
+		       gboolean    show_all);
 
-#endif  /* __G_IDL_WRITER_H__ */
+#endif  /* __GIRWRITER_H__ */
