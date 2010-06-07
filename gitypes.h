@@ -189,8 +189,6 @@ typedef union
   gpointer v_pointer;
 } GArgument;
 
-/* Types of objects registered in the repository */
-
 /**
  * GIInfoType:
  * @GI_INFO_TYPE_INVALID: invalid type
@@ -292,8 +290,6 @@ typedef enum {
   GI_SCOPE_TYPE_ASYNC,
   GI_SCOPE_TYPE_NOTIFIED
 } GIScopeType;
-
-G_END_DECLS
 
 /**
  * GITypeTag:
@@ -433,6 +429,8 @@ typedef enum
   GI_FUNCTION_WRAPS_VFUNC    = 1 << 4,
   GI_FUNCTION_THROWS         = 1 << 5
 } GIFunctionInfoFlags;
+
+G_END_DECLS
 
 #endif  /* __GITYPES_H__ */
 
