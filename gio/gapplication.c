@@ -168,14 +168,14 @@ enum
 static guint application_signals[LAST_SIGNAL] = { 0 };
 
 typedef struct {
-  char *name;
-  char *description;
+  gchar *name;
+  gchar *description;
   guint enabled : 1;
 } GApplicationAction;
 
 struct _GApplicationPrivate
 {
-  char *appid;
+  gchar *appid;
   GHashTable *actions; /* name -> GApplicationAction */
   GMainLoop *mainloop;
 
@@ -185,7 +185,7 @@ struct _GApplicationPrivate
   guint actions_changed_id;
 
 #ifdef G_OS_UNIX
-  char *dbus_path;
+  gchar *dbus_path;
   GDBusConnection *session_bus;
 #endif
 };
@@ -197,7 +197,7 @@ static void     _g_application_platform_init                    (GApplication  *
 static gboolean _g_application_platform_acquire_single_instance (GApplication  *app,
                                                                  GError       **error);
 static void     _g_application_platform_remote_invoke_action    (GApplication  *app,
-                                                                 const char    *action,
+                                                                 const gchar   *action,
                                                                  guint          timestamp);
 static void     _g_application_platform_remote_quit             (GApplication  *app,
                                                                  guint          timestamp);
@@ -366,7 +366,7 @@ g_application_action_free (gpointer data)
  * Since: 2.26
  */
 GApplication *
-g_application_new (const char  *appid)
+g_application_new (const gchar *appid)
 {
   g_type_init ();
 
@@ -395,8 +395,8 @@ g_application_new (const char  *appid)
  */
 void
 g_application_register_with_data (GApplication  *application,
-                                  int            argc,
-                                  char         **argv,
+                                  gint           argc,
+                                  gchar        **argv,
                                   GVariant      *platform_data)
 {
   g_return_if_fail (application->priv->appid != NULL);
@@ -427,9 +427,9 @@ g_application_register_with_data (GApplication  *application,
  * with g_application_register_with_data().
  */
 GApplication *
-g_application_new_and_register (const char  *appid,
-                                int          argc,
-                                char       **argv)
+g_application_new_and_register (const gchar  *appid,
+                                gint          argc,
+                                gchar       **argv)
 {
   GApplication *app = g_application_new (appid);
   g_application_register_with_data (app, argc, argv, NULL);
@@ -534,7 +534,7 @@ g_application_remove_action (GApplication *application,
  */
 void
 g_application_invoke_action (GApplication *application,
-                             const char   *name,
+                             const gchar  *name,
                              guint         timestamp)
 {
   GApplicationPrivate *priv;
@@ -797,7 +797,7 @@ g_application_get_instance (void)
  *
  * Since: 2.26
  */
-G_CONST_RETURN char *
+G_CONST_RETURN gchar *
 g_application_get_id (GApplication *application)
 {
   g_return_val_if_fail (G_IS_APPLICATION (application), NULL);

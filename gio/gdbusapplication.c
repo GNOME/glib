@@ -256,10 +256,10 @@ static GDBusInterfaceVTable application_dbus_vtable =
   NULL
 };
 
-static char *
-application_path_from_appid (const char *appid)
+static gchar *
+application_path_from_appid (const gchar *appid)
 {
-  char *appid_path, *iter;
+  gchar *appid_path, *iter;
 
 
   appid_path = g_strconcat ("/", appid, NULL);
@@ -363,7 +363,7 @@ _g_application_platform_on_actions_changed (GApplication *app)
 
 static void
 _g_application_platform_remote_invoke_action (GApplication  *app,
-                                              const char    *action,
+                                              const gchar   *action,
                                               guint          timestamp)
 {
   GVariant *result;

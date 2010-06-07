@@ -105,35 +105,35 @@ struct _GApplicationClass
 };
 GType                   g_application_get_type                  (void) G_GNUC_CONST;
 
-GApplication *          g_application_new                       (const char               *appid);
+GApplication *          g_application_new                       (const gchar              *appid);
 
 void                    g_application_register_with_data        (GApplication      *application,
-                                                                 int                argc,
-                                                                 char             **argv,
+                                                                 gint               argc,
+                                                                 gchar            **argv,
                                                                  GVariant          *platform_data);
 
-GApplication *          g_application_new_and_register           (const char       *appid,
-                                                                  int               argc,
-                                                                  char            **argv);
+GApplication *          g_application_new_and_register           (const gchar      *appid,
+                                                                  gint              argc,
+                                                                  gchar           **argv);
 
 GApplication *          g_application_get_instance              (void);
 G_CONST_RETURN gchar *  g_application_get_id                    (GApplication      *application);
 
 void                    g_application_add_action                (GApplication      *application,
-                                                                 const char        *name,
-                                                                 const char        *description);
+                                                                 const gchar       *name,
+                                                                 const gchar       *description);
 void                    g_application_remove_action             (GApplication      *application,
-                                                                 const char        *name);
+                                                                 const gchar       *name);
 gchar **                g_application_list_actions              (GApplication      *application);
 void                    g_application_set_action_enabled        (GApplication      *application,
-                                                                 const char        *name,
+                                                                 const gchar       *name,
                                                                  gboolean           enabled);
 gboolean                g_application_get_action_enabled        (GApplication      *application,
-                                                                 const char        *name);
+                                                                 const gchar       *name);
 G_CONST_RETURN gchar *  g_application_get_action_description    (GApplication *application,
-                                                                 const char *name);
+                                                                 const gchar  *name);
 void                    g_application_invoke_action             (GApplication      *application,
-                                                                 const char        *name,
+                                                                 const gchar       *name,
                                                                  guint              timestamp);
 
 void                    g_application_run                       (GApplication      *application);
