@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <libintl.h>
-#include <gio.h>
+#include <gio/gio.h>
 #include <gstdio.h>
 #define G_SETTINGS_ENABLE_BACKEND
 #include <gio/gsettingsbackend.h>
