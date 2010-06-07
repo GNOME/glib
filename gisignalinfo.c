@@ -25,14 +25,38 @@
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 
+/**
+ * SECTION:gisignalinfo
+ * @Short_description: Struct representing a signal
+ * @Title: GISignalInfo
+ *
+ * GISignalInfo represents a signal. It's a sub-struct of #GICallableInfo
+ * and contains a set of flags and a class closure.
+ *
+ * See #GICallableInfo for information on how to retreive arguments
+ * and other metadata from the signal.
+ */
+
+/**
+ * g_signal_info_get_flags:
+ * @info: a #GISignalInfo
+ *
+ * Obtain the flags for this signal info. See #GSignalFlags for
+ * more information about possible flag values.
+ *
+ * Returns: the flags
+ */
 GSignalFlags
 g_signal_info_get_flags (GISignalInfo *info)
 {
   GSignalFlags flags;
-
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
+  SignalBlob *blob;
 
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_SIGNAL_INFO (info), 0);
+
+  blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
   flags = 0;
 
   if (blob->run_first)
@@ -59,11 +83,26 @@ g_signal_info_get_flags (GISignalInfo *info)
   return flags;
 }
 
+/**
+ * g_signal_info_get_class_closure:
+ * @info: a #GISignalInfo
+ *
+ * Obtain the class closure for this signal if one is set. The class
+ * closure is a virtual function on the type that the signal belongs to.
+ * If the signal lacks a closure %NULL will be returned.
+ *
+ * Returns: the class closure or %NULL
+ */
 GIVFuncInfo *
 g_signal_info_get_class_closure (GISignalInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
+  SignalBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_SIGNAL_INFO (info), 0);
+
+  blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->has_class_closure)
     return g_interface_info_get_vfunc ((GIInterfaceInfo *)rinfo->container, blob->class_closure);
@@ -71,11 +110,25 @@ g_signal_info_get_class_closure (GISignalInfo *info)
   return NULL;
 }
 
+/**
+ * g_signal_info_true_stops_emit:
+ * @info: a #GISignalInfo
+ *
+ * Obtain if the returning true in the signal handler will
+ * stop the emission of the signal.
+ *
+ * Returns: %TRUE if returning true stops the signal emission
+ */
 gboolean
 g_signal_info_true_stops_emit (GISignalInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  SignalBlob *blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
+  SignalBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_SIGNAL_INFO (info), 0);
+
+  blob = (SignalBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->true_stops_emit;
 }
