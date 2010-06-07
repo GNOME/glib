@@ -958,6 +958,20 @@ g_application_class_init (GApplicationClass *klass)
   klass->run = g_application_default_run;
   klass->quit = g_application_default_quit;
 
+  /**
+   * GApplication::quit:
+   * @application: the object on which the signal is emitted
+   * @timestamp: Platform-specific event timestamp, may be 0 for default
+   *
+   * This signal is emitted when the Quit action is invoked on the
+   * application.
+   *
+   * The default handler for this signal exits the mainloop of the
+   * application.
+   *
+   * Returns: %TRUE if the signal has been handled, %FALSE to continue
+   *   signal emission
+   */
   application_signals[QUIT] =
     g_signal_new (g_intern_static_string ("quit"),
                   G_OBJECT_CLASS_TYPE (klass),
@@ -968,6 +982,18 @@ g_application_class_init (GApplicationClass *klass)
                   G_TYPE_BOOLEAN, 1,
                   G_TYPE_UINT);
 
+  /**
+   * GApplication::action:
+   * @application: the object on which the signal is emitted
+   * @name: The name of the activated action
+   * @timestamp: Platform-specific event timestamp, may be 0 for default
+   *
+   * This signal is emitted when an action is activated. The action name
+   * is passed as the first argument, but also as signal detail, so it
+   * is possible to connect to this signal for individual actions.
+   *
+   * The signal is never emitted for disabled actions.
+   */
   application_signals[ACTION] =
     g_signal_new (g_intern_static_string ("action"),
                   G_OBJECT_CLASS_TYPE (klass),
@@ -981,6 +1007,7 @@ g_application_class_init (GApplicationClass *klass)
 
    /**
    * GApplication::prepare-activation:
+   * @application: the object on which the signal is emitted
    * @arguments: A #GVariant with the signature "aay"
    * @platform_data: A #GVariant with the signature "a{sv}"
    *
@@ -991,7 +1018,6 @@ g_application_class_init (GApplicationClass *klass)
    * @arguments variant.  Additional platform-dependent data is
    * stored in @platform_data.
    */
-
   application_signals[PREPARE_ACTIVATION] =
     g_signal_new (g_intern_static_string ("prepare-activation"),
                   G_OBJECT_CLASS_TYPE (klass),
