@@ -15,6 +15,7 @@ girepo_HEADERS =				\
     girepository.h				\
     girffi.h					\
     gisignalinfo.h				\
+    gistructinfo.h				\
     gitypeinfo.h				\
     gitypelib.h					\
     gitypes.h					\
