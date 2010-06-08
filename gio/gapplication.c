@@ -152,7 +152,7 @@ enum
 {
   PROP_0,
 
-  PROP_APPID,
+  PROP_APPLICATION_ID,
   PROP_DEFAULT_QUIT,
   PROP_IS_REMOTE
 };
@@ -371,7 +371,7 @@ g_application_new (const gchar *appid)
 {
   g_type_init ();
 
-  return G_APPLICATION (g_object_new (G_TYPE_APPLICATION, "appid", appid, NULL));
+  return G_APPLICATION (g_object_new (G_TYPE_APPLICATION, "application-id", appid, NULL));
 }
 
 /**
@@ -844,7 +844,7 @@ g_application_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_APPID:
+    case PROP_APPLICATION_ID:
       g_value_set_string (value, g_application_get_id (app));
       break;
 
@@ -871,7 +871,7 @@ g_application_set_property (GObject      *object,
 
   switch (prop_id)
     {
-    case PROP_APPID:
+    case PROP_APPLICATION_ID:
       g_return_if_fail (_g_application_validate_id (g_value_get_string (value)));
       app->priv->appid = g_value_dup_string (value);
       break;
@@ -898,7 +898,7 @@ g_application_constructor (GType                  type,
   for (i = 0; i < n_construct_properties; i++)
     {
       GObjectConstructParam *param = &construct_params[i];
-      if (strcmp (param->pspec->name, "appid") == 0)
+      if (strcmp (param->pspec->name, "application-id") == 0)
         appid = g_value_get_string (param->value);
     }
 
@@ -1030,15 +1030,15 @@ g_application_class_init (GApplicationClass *klass)
                   G_TYPE_VARIANT);
 
    /**
-   * GApplication:appid:
+   * GApplication:application-id:
    *
    * The unique identifier for this application.  See the documentation for
    * #GApplication for more information about this property.
    *
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_APPID,
-                                   g_param_spec_string ("appid",
+                                   PROP_APPLICATION_ID,
+                                   g_param_spec_string ("application-id",
                                                         P_("Application ID"),
                                                         P_("Identifier for this application"),
                                                         NULL,
