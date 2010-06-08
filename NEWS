@@ -1,3 +1,54 @@
+Overview of Changes from GLib 2.25.7 to GLib 2.25.8
+===================================================
+
+* Initial support for dtrace and systemtap profiling:
+ - mainloop sources can be named
+ - probes for memory allocation with g_malloc and gslice
+ - gquark name tracking
+ - type creation
+ - object life-cyle (creation, finalization, ref, unref)
+ - signal creation and emission
+
+* GVariant
+ - has been fixed to work with the FreeBSD malloc
+ - added introspection annotations
+ - new function: g_variant_builder_add_parsed
+
+* GSettings:
+ - g_settings_set/get_strv functions have lost their length parameter
+ - g_settings_set_strv accepts NULL
+ - added introspection annotiations
+
+* GPermission: an abstract interface for representing permissions,
+  with a minimal implementation named GSimplePermission
+
+* GApplication: a basic application support class, with a D-Bus based
+  implementation
+
+* Bugs fixed:
+ 619585 glib-compile-schemas asserts on FreeBSD
+ 620384 Annotate GVariant and GSettings _strv() functions
+ 606044 Add support for dtrace/systemtap static markers
+ 620350 add g_variant_builder_add_parsed() API
+ 620349 utf8ify GVariant printer
+ 620767 Typo in GSettings documentation: "INTLTOOL_NOMERGE_RULE"
+ 620312 Fix g_settings_[gs]et_strv() API
+ 620519 GPermission
+ 620582 GPermission needs a simple implementation
+ 620496 GSettings schema compiler should reject invalid paths
+ 620173 missing single header inclusion guards
+ 620265 g_assertion_message_error should take const GError *
+
+* Translation updates:
+ Esperanto
+ Galician
+ Hebrew
+ Indonesian
+ Norwegian bokmål
+ Slovenian
+ Spanish
+
+
 Overview of Changes from GLib 2.25.6 to GLib 2.25.7
 ===================================================
 
