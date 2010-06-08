@@ -375,7 +375,7 @@ g_application_new (const gchar *appid)
 }
 
 /**
- * g_application_register:
+ * g_application_register_with_data:
  * @application: A #GApplication
  * @argc: System argument count
  * @argv: (array length=argc): System argument vector
