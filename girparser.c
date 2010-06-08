@@ -847,13 +847,16 @@ parse_property_transfer (GIrNodeProperty *property,
 {
   if (transfer == NULL)
   {
+#if 0
     GIrNodeInterface *iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 
-    g_warning ("required attribute 'transfer-ownership' for property '%s' in "
-               "type '%s.%s'", property->node.name, ctx->namespace,
-               iface->node.name);
+    g_debug ("required attribute 'transfer-ownership' is missing from "
+             "property '%s' in type '%s.%s'. Assuming 'none'\n",
+             property->node.name, ctx->namespace, iface->node.name);
+#endif
+    transfer = "none";
   }
-  else if (strcmp (transfer, "none") == 0)
+  if (strcmp (transfer, "none") == 0)
     {
       property->transfer = FALSE;
       property->shallow_transfer = FALSE;
