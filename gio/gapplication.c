@@ -794,6 +794,7 @@ g_application_get_instance (void)
 
 /**
  * g_application_get_id:
+ * @application: a #GApplication
  *
  * Retrieves the platform-specific identifier for the #GApplication.
  *
