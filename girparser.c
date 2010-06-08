@@ -1,5 +1,6 @@
 /* GObject introspection: A parser for the XML GIR format
  *
+ * Copyright (C) 2005 Matthias Clasen
  * Copyright (C) 2008 Philip Van Hoof
  *
  * This library is free software; you can redistribute it and/or
