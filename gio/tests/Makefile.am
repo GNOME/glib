@@ -298,6 +298,8 @@ EXTRA_DIST += \
 	schema-tests/range-missing-min.gschema.xml		\
 	schema-tests/range-wrong-type.gschema.xml		\
 	schema-tests/wrong-category.gschema.xml 		\
+	schema-tests/invalid-path.gschema.xml 			\
+	appinfo-test.desktop					\
 	gdbus-testserver.py
  
 MISC_STUFF = gschemas.compiled test.mo
