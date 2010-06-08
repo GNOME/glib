@@ -39,12 +39,15 @@ application_dbus_method_call (GDBusConnection       *connection,
 
   if (strcmp (method_name, "Quit") == 0)
     {
-      guint32 timestamp;
-      g_variant_get (parameters, "(u)", &timestamp);
+      GVariant *platform_data;
+
+      g_variant_get (parameters, "(@a{sv})", &platform_data);
 
       g_dbus_method_invocation_return_value (invocation, NULL);
 
-      g_application_quit (app, timestamp);
+      g_application_quit_with_data (app, platform_data);
+
+      g_variant_unref (platform_data);
     }
   else if (strcmp (method_name, "ListActions") == 0)
     {
@@ -68,10 +71,10 @@ application_dbus_method_call (GDBusConnection       *connection,
   else if (strcmp (method_name, "InvokeAction") == 0)
     {
       const char *action_name;
-      guint32 timestamp;
+      GVariant *platform_data;
       GApplicationAction *action;
 
-      g_variant_get (parameters, "(&su)", &action_name, &timestamp);
+      g_variant_get (parameters, "(&s@a{sv})", &action_name, &platform_data);
 
       action = g_hash_table_lookup (app->priv->actions, action_name);
 
@@ -80,12 +83,15 @@ application_dbus_method_call (GDBusConnection       *connection,
           char *errmsg  = g_strdup_printf ("Invalid action: %s", action_name);
           g_dbus_method_invocation_return_dbus_error (invocation, G_APPLICATION_IFACE ".InvalidAction", errmsg);
           g_free (errmsg);
+	  g_variant_unref (platform_data);
           return;
         }
 
-      g_signal_emit (app, application_signals[ACTION], g_quark_from_string (action_name), action_name, (guint)timestamp);
+      g_signal_emit (app, application_signals[ACTION_WITH_DATA],
+		     g_quark_from_string (action_name), action_name, platform_data);
 
       g_dbus_method_invocation_return_value (invocation, NULL);
+      g_variant_unref (platform_data);
     }
   else if (strcmp (method_name, "Activate") == 0)
     {
@@ -107,8 +113,8 @@ static const GDBusArgInfo application_quit_in_args[] =
 {
   {
     -1,
-    "timestamp",
-    "u",
+    "platform_data",
+    "a{sv}",
     NULL
   }
 };
@@ -143,8 +149,8 @@ static const GDBusArgInfo application_invoke_action_in_args[] =
   },
   {
     -1,
-    "timestamp",
-    "u",
+    "platform_data",
+    "a{sv}",
     NULL
   }
 };
@@ -252,6 +258,15 @@ static GDBusInterfaceVTable application_dbus_vtable =
   NULL,
   NULL
 };
+
+static GVariant *
+create_empty_vardict ()
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  return g_variant_builder_end (&builder);
+}
 
 static gchar *
 application_path_from_appid (const gchar *appid)
@@ -368,7 +383,7 @@ _g_application_platform_on_actions_changed (GApplication *app)
 static void
 _g_application_platform_remote_invoke_action (GApplication  *app,
                                               const gchar   *action,
-                                              guint          timestamp)
+                                              GVariant      *platform_data)
 {
   GVariant *result;
 
@@ -379,9 +394,9 @@ _g_application_platform_remote_invoke_action (GApplication  *app,
                                         app->priv->dbus_path,
                                         G_APPLICATION_IFACE,
                                         "InvokeAction",
-                                        g_variant_new ("(su)",
+                                        g_variant_new ("(s@a{sv})",
                                                        action,
-                                                       timestamp),
+                                                       platform_data || create_empty_vardict ()),
                                         NULL, 0, -1, NULL, NULL);
   if (result)
     g_variant_unref (result);
@@ -389,7 +404,7 @@ _g_application_platform_remote_invoke_action (GApplication  *app,
 
 static void
 _g_application_platform_remote_quit (GApplication *app,
-                                     guint         timestamp)
+                                     GVariant     *platform_data)
 {
   GVariant *result;
 
@@ -400,8 +415,8 @@ _g_application_platform_remote_quit (GApplication *app,
                                         app->priv->dbus_path,
                                         G_APPLICATION_IFACE,
                                         "Quit",
-                                        g_variant_new ("(u)",
-                                                       timestamp),
+                                        g_variant_new ("(@a{sv})",
+                                                       platform_data || create_empty_vardict ()),
                                         NULL, 0, -1, NULL, NULL);
   if (result)
     g_variant_unref (result);

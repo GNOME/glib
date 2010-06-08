@@ -21,18 +21,58 @@ static gboolean action_invoked = FALSE;
 static void
 on_app_action (GApplication *application,
                const gchar  *action_name,
-               guint         action_timestamp)
+               GVariant     *platform_data)
 {
+  gboolean found_timestamp;
+  GVariantIter *iter;
+  const char *key;
+  guint action_timestamp;
+  GVariant *value;
+  
   if (g_test_verbose ())
-    g_print ("Action '%s' invoked (timestamp: %u, expected: %u)\n",
-             action_name,
-             action_timestamp,
-             timestamp);
+    {
+      char *str = g_variant_print (platform_data, FALSE);
+      g_print ("Action '%s' invoked (data: %s, expected: %u)\n",
+	       action_name,
+	       str,
+	       timestamp);
+      g_free (str);
+    }
 
   g_assert_cmpstr (action_name, ==, "About");
-  g_assert_cmpint (action_timestamp, ==, timestamp);
+
+  g_variant_get (platform_data, "a{sv}", &iter);
+  found_timestamp = FALSE;
+  while (g_variant_iter_next (iter, "{&sv}",
+			      &key, &value))
+    {
+      if (g_strcmp0 ("timestamp", key) == 0)
+	{
+	  found_timestamp = TRUE;
+	  g_variant_get (value, "u", &action_timestamp);
+	  break;
+	}
+    }
+
+  g_variant_iter_free (iter);
+
+  g_assert_cmpuint (timestamp, ==, action_timestamp);
 
   action_invoked = TRUE;
+}
+
+static GVariant *
+create_timestamp_data ()
+{
+  GVariantBuilder builder;
+
+  timestamp = 42 + timestamp;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  g_variant_builder_add (&builder, "{sv}",
+			 "timestamp", g_variant_new ("u", timestamp));
+  
+  return g_variant_builder_end (&builder);
 }
 
 static gboolean
@@ -42,12 +82,11 @@ check_invoke_action (gpointer data)
 
   if (state == INVOKE_ACTION)
     {
-      timestamp = (guint) time (NULL);
-
       if (g_test_verbose ())
         g_print ("Invoking About...\n");
 
-      g_application_invoke_action (application, "About", timestamp);
+      g_application_invoke_action (application, "About", create_timestamp_data ());
+      
       state = CHECK_ACTION;
       return TRUE;
     }
@@ -78,7 +117,7 @@ check_invoke_action (gpointer data)
       if (g_test_verbose ())
         g_print ("Invoking disabled About action...\n");
 
-      g_application_invoke_action (application, "About", (guint) time (NULL));
+      g_application_invoke_action (application, "About", create_timestamp_data ());
       state = CHECK_DISABLED_ACTION;
       return TRUE;
     }
@@ -98,7 +137,7 @@ check_invoke_action (gpointer data)
       if (g_test_verbose ())
         g_print ("Test complete\n");
 
-      g_application_quit (application, (guint) time (NULL));
+      g_application_quit_with_data (application, create_timestamp_data ());
       return FALSE;
     }
 
@@ -113,7 +152,7 @@ test_basic (void)
   app = g_application_new_and_register ("org.gtk.TestApplication", 0, NULL);
   g_application_add_action (app, "About", "Print an about message");
 
-  g_signal_connect (app, "action::About", G_CALLBACK (on_app_action), NULL);
+  g_signal_connect (app, "action-with-data::About", G_CALLBACK (on_app_action), NULL);
 
   state = INVOKE_ACTION;
   g_timeout_add (100, check_invoke_action, app);

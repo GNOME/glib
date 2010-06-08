@@ -106,7 +106,7 @@
  *     <void/>
  *     <methodname>InvokeAction</methodname>
  *     <methodparam><modifier>in</modifier><type>s</type><parameter>action</parameter></methodparam>
- *     <methodparam><modifier>in</modifier><type>u</type><parameter>timestamp</parameter></methodparam>
+ *     <methodparam><modifier>in</modifier><type>a{sv}</type><parameter>data</parameter></methodparam>
  *   </methodsynopsis>
  *   <methodsynopsis>
  *     <type>a{s(sb)}</type>
@@ -116,7 +116,7 @@
  *   <methodsynopsis>
  *     <void/>
  *     <methodname>Quit</methodname>
- *     <methodparam><modifier>in</modifier><type>u</type><parameter>timestamp</parameter></methodparam>
+ *     <methodparam><modifier>in</modifier><type>a{sv}</type><parameter>data</parameter></methodparam>
  *   </methodsynopsis>
  *   <methodsynopsis>
  *     <modifier>Signal</modifier>
@@ -129,14 +129,13 @@
  * The <methodname>Activate</methodname> function is called on the existing
  * application instance when a second instance fails to take the bus name.
  * @arguments contains the commandline arguments given to the second instance
- * and @data contains platform-specific additional data, see
- * g_application_format_activation_data().
+ * and @data contains platform-specific additional data.
  * </para>
  * <para>
- * The <methodname>InvokeAction</methodname> function can be called to invoke
- * one of the actions exported by the application. The @timestamp parameter
- * should be taken from the user event that triggered the method call (e.g.
- * a button press event).
+ * The <methodname>InvokeAction</methodname> function can be called to
+ * invoke one of the actions exported by the application.  On X11
+ * platforms, the platform_data argument should have a "timestamp"
+ * parameter of type "u" with the server time of the initiating event.
  * </para>
  * <para>
  * The <methodname>ListActions</methodname> function returns a dictionary
@@ -145,9 +144,11 @@
  * for the action and a boolean that represents if the action is enabled or not.
  * </para>
  * <para>
- * The <methodname>Quit</methodname> function can be called to terminate
- * the application. The @timestamp parameter should be taken from the user
- * event that triggered the method call (e.g. a button press event).
+ * The <methodname>Quit</methodname> function can be called to
+ * terminate the application. The @data parameter contains
+ * platform-specific data.  On X11 platforms, the platform_data
+ * argument should have a "timestamp" parameter of type "u" with the
+ * server time of the initiating event.
  * </para>
  * <para>
  * The <methodname>ActionsChanged</methodname> signal is emitted when the
@@ -173,8 +174,8 @@ enum
 
 enum
 {
-  QUIT,
-  ACTION,
+  QUIT_WITH_DATA,
+  ACTION_WITH_DATA,
   PREPARE_ACTIVATION,
 
   LAST_SIGNAL
@@ -213,9 +214,9 @@ static gboolean _g_application_platform_acquire_single_instance (GApplication  *
                                                                  GError       **error);
 static void     _g_application_platform_remote_invoke_action    (GApplication  *app,
                                                                  const gchar   *action,
-                                                                 guint          timestamp);
+                                                                 GVariant      *platform_data);
 static void     _g_application_platform_remote_quit             (GApplication  *app,
-                                                                 guint          timestamp);
+                                                                 GVariant      *platform_data);
 static void     _g_application_platform_activate                (GApplication  *app,
                                                                  GVariant      *data) G_GNUC_NORETURN;
 static void     _g_application_platform_on_actions_changed      (GApplication  *app);
@@ -269,8 +270,8 @@ application_for_appid (const char *appid)
 }
 
 static gboolean
-g_application_default_quit (GApplication *application,
-                            guint         timestamp)
+g_application_default_quit_with_data (GApplication *application,
+				      GVariant     *platform_data)
 {
   g_return_val_if_fail (application->priv->mainloop != NULL, FALSE);
   g_main_loop_quit (application->priv->mainloop);
@@ -534,8 +535,7 @@ g_application_remove_action (GApplication *application,
  * g_application_invoke_action:
  * @application: a #GApplication
  * @name: the name of the action to invoke
- * @timestamp: the timestamp that is going to be passed to
- *   the #GApplication::action signal
+ * @platform_data: (allow-none): platform-specific event data
  *
  * Invokes the action @name of the passed #GApplication.
  *
@@ -555,19 +555,21 @@ g_application_remove_action (GApplication *application,
 void
 g_application_invoke_action (GApplication *application,
                              const gchar  *name,
-                             guint         timestamp)
+                             GVariant     *platform_data)
 {
   GApplicationPrivate *priv;
   GApplicationAction *action;
 
   g_return_if_fail (G_IS_APPLICATION (application));
   g_return_if_fail (name != NULL);
+  g_return_if_fail (platform_data == NULL
+                    || g_variant_is_of_type (platform_data, "a{sv}"));
 
   priv = application->priv;
 
   if (priv->is_remote)
     {
-      _g_application_platform_remote_invoke_action (application, name, timestamp);
+      _g_application_platform_remote_invoke_action (application, name, platform_data);
       return;
     }
 
@@ -576,10 +578,10 @@ g_application_invoke_action (GApplication *application,
   if (!action->enabled)
     return;
 
-  g_signal_emit (application, application_signals[ACTION],
+  g_signal_emit (application, application_signals[ACTION_WITH_DATA],
                  g_quark_from_string (name),
                  name,
-                 timestamp);
+                 platform_data);
 }
 
 /**
@@ -751,9 +753,9 @@ g_application_run (GApplication *application)
 }
 
 /**
- * g_application_quit:
+ * g_application_quit_with_data:
  * @application: a #GApplication
- * @timestamp: Platform-specific event timestamp, may be 0 for default
+ * @platform_data: (allow-none): platform-specific data
  *
  * Request that the application quits.
  *
@@ -770,20 +772,22 @@ g_application_run (GApplication *application)
  * Since: 2.26
  */
 gboolean
-g_application_quit (GApplication *application,
-                    guint         timestamp)
+g_application_quit_with_data (GApplication *application,
+			      GVariant     *platform_data)
 {
   gboolean retval = FALSE;
 
   g_return_val_if_fail (G_IS_APPLICATION (application), FALSE);
+  g_return_val_if_fail (platform_data == NULL
+			|| g_variant_is_of_type (platform_data, "a{sv}"), FALSE);
 
   if (application->priv->is_remote)
     {
-       _g_application_platform_remote_quit (application, timestamp);
+       _g_application_platform_remote_quit (application, platform_data);
        retval = TRUE;
     }
   else
-    g_signal_emit (application, application_signals[QUIT], 0, timestamp, &retval);
+    g_signal_emit (application, application_signals[QUIT_WITH_DATA], 0, platform_data, &retval);
 
   return retval;
 }
@@ -976,12 +980,12 @@ g_application_class_init (GApplicationClass *klass)
   gobject_class->finalize = g_application_finalize;
 
   klass->run = g_application_default_run;
-  klass->quit = g_application_default_quit;
+  klass->quit_with_data = g_application_default_quit_with_data;
 
   /**
-   * GApplication::quit:
+   * GApplication::quit-with-data:
    * @application: the object on which the signal is emitted
-   * @timestamp: Platform-specific event timestamp, may be 0 for default
+   * @platform_data: Platform-specific data, or %NULL
    *
    * This signal is emitted when the Quit action is invoked on the
    * application.
@@ -992,21 +996,21 @@ g_application_class_init (GApplicationClass *klass)
    * Returns: %TRUE if the signal has been handled, %FALSE to continue
    *   signal emission
    */
-  application_signals[QUIT] =
-    g_signal_new (g_intern_static_string ("quit"),
+  application_signals[QUIT_WITH_DATA] =
+    g_signal_new (g_intern_static_string ("quit-with-data"),
                   G_OBJECT_CLASS_TYPE (klass),
                   G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GApplicationClass, quit),
+                  G_STRUCT_OFFSET (GApplicationClass, quit_with_data),
                   g_signal_accumulator_true_handled, NULL,
-                  _gio_marshal_BOOLEAN__UINT,
+                  _gio_marshal_BOOLEAN__BOXED,
                   G_TYPE_BOOLEAN, 1,
-                  G_TYPE_UINT);
+                  G_TYPE_VARIANT);
 
   /**
-   * GApplication::action:
+   * GApplication::action-with-data:
    * @application: the object on which the signal is emitted
    * @name: The name of the activated action
-   * @timestamp: Platform-specific event timestamp, may be 0 for default
+   * @platform_data: Platform-specific data, or %NULL
    *
    * This signal is emitted when an action is activated. The action name
    * is passed as the first argument, but also as signal detail, so it
@@ -1014,22 +1018,22 @@ g_application_class_init (GApplicationClass *klass)
    *
    * The signal is never emitted for disabled actions.
    */
-  application_signals[ACTION] =
-    g_signal_new (g_intern_static_string ("action"),
+  application_signals[ACTION_WITH_DATA] =
+    g_signal_new (g_intern_static_string ("action-with-data"),
                   G_OBJECT_CLASS_TYPE (klass),
                   G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED,
-                  G_STRUCT_OFFSET (GApplicationClass, action),
+                  G_STRUCT_OFFSET (GApplicationClass, action_with_data),
                   NULL, NULL,
-                  _gio_marshal_VOID__STRING_UINT,
+                  _gio_marshal_VOID__STRING_BOXED,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
-                  G_TYPE_UINT);
+                  G_TYPE_VARIANT);
 
    /**
    * GApplication::prepare-activation:
    * @application: the object on which the signal is emitted
    * @arguments: A #GVariant with the signature "aay"
-   * @platform_data: A #GVariant with the signature "a{sv}"
+   * @platform_data: A #GVariant with the signature "a{sv}", or %NULL
    *
    * This signal is emitted when a non-primary process for a given
    * application is invoked while your application is running; for

@@ -290,6 +290,15 @@ on_name_disappeared_quit (GDBusConnection *connection,
   g_main_loop_quit (loop);
 }
 
+static GVariant *
+create_empty_vardict ()
+{
+  GVariantBuilder builder;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  return g_variant_builder_end (&builder);
+}
+
 static gboolean
 call_quit (gpointer data)
 {
@@ -303,8 +312,8 @@ call_quit (gpointer data)
                                      "/org/gtk/test/app",
                                      "org.gtk.Application",
                                      "Quit",
-                                     g_variant_new ("(u)", 0),
-                                     NULL,
+                                     g_variant_new ("(@a{sv})", create_empty_vardict ()),
+				     NULL,
                                      G_DBUS_CALL_FLAGS_NONE,
                                      -1,
                                      NULL,
@@ -447,9 +456,9 @@ invoke_action (gpointer user_data)
                                      "/org/gtk/test/app",
                                      "org.gtk.Application",
                                      "InvokeAction",
-                                     g_variant_new ("(su)",
+                                     g_variant_new ("(s@a{sv})",
                                                     action,
-                                                    0),
+                                                    create_empty_vardict ()),
                                      NULL,
                                      G_DBUS_CALL_FLAGS_NONE,
                                      -1,

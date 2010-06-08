@@ -66,7 +66,6 @@ struct _GApplication
  * @quit: class handler for the #GApplication::quit signal
  * @prepare_activation: class handler for the #GApplication::prepare-activation signal
  * @run: virtual function, called by g_application_run()
- * @format_activation_data: virtual function, called by g_application_format_activation_data()
  *
  * The <structname>GApplicationClass</structname> structure contains
  * private data only
@@ -80,19 +79,17 @@ struct _GApplicationClass
 
   /*< public >*/
   /* signals */
-  void        (* action) (GApplication *application,
-                          const gchar  *action_name,
-                          guint         timestamp);
-  gboolean    (* quit)   (GApplication *application,
-                          guint         timestamp);
+  void        (* action_with_data) (GApplication *application,
+				    const gchar  *action_name,
+				    GVariant     *platform_data);
+  gboolean    (* quit_with_data)   (GApplication *application,
+				    GVariant     *platform_data);
   void        (* prepare_activation)   (GApplication  *application,
                                         GVariant      *arguments,
                                         GVariant      *platform_data);
 
   /* vfuncs */
   void        (* run)    (GApplication *application);
-  void        (*format_activation_data) (GApplication    *application,
-                                         GVariantBuilder *builder);
 
   /*< private >*/
   /* Padding for future expansion */
@@ -130,21 +127,17 @@ void                    g_application_set_action_enabled        (GApplication   
                                                                  gboolean           enabled);
 gboolean                g_application_get_action_enabled        (GApplication      *application,
                                                                  const gchar       *name);
-G_CONST_RETURN gchar *  g_application_get_action_description    (GApplication *application,
-                                                                 const gchar  *name);
+G_CONST_RETURN gchar *  g_application_get_action_description    (GApplication      *application,
+                                                                 const gchar       *name);
 void                    g_application_invoke_action             (GApplication      *application,
                                                                  const gchar       *name,
-                                                                 guint              timestamp);
+                                                                 GVariant          *platform_data);
 
 void                    g_application_run                       (GApplication      *application);
-gboolean                g_application_quit                      (GApplication      *app,
-                                                                 guint              timestamp);
+gboolean                g_application_quit_with_data            (GApplication      *app,
+                                                                 GVariant          *platform_data);
 
 gboolean                g_application_is_remote                 (GApplication      *application);
-
-void                    g_application_format_activation_data    (GApplication      *app,
-                                                                 GVariantBuilder   *builder);
-
 
 G_END_DECLS
 

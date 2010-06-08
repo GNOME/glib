@@ -12,7 +12,7 @@ static gboolean action3_added = FALSE;
 static void
 on_app_action (GApplication *application,
                const gchar  *action_name,
-               guint         action_timestamp)
+               GVariant     *platform_data)
 {
   if (strcmp (action_name, "action1") == 0)
     exit (1);
@@ -72,7 +72,7 @@ main (int argc, char *argv[])
     {
       g_application_add_action (app, "action1", "Action1");
       g_application_add_action (app, "action2", "Action2");
-      g_signal_connect (app, "action",
+      g_signal_connect (app, "action-with-data",
                         G_CALLBACK (on_app_action), NULL);
       g_signal_connect (app, "prepare-activation",
                         G_CALLBACK (on_app_activated), NULL);
