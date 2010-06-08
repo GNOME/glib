@@ -1882,53 +1882,9 @@ initable_iface_init (GInitableIface *initable_iface)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-async_init_thread (GSimpleAsyncResult *res,
-                   GObject            *object,
-                   GCancellable       *cancellable)
-{
-  GError *error = NULL;
-
-  if (!g_initable_init (G_INITABLE (object), cancellable, &error))
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
-}
-
-static void
-async_initable_init_async (GAsyncInitable      *initable,
-                           gint                 io_priority,
-                           GCancellable        *cancellable,
-                           GAsyncReadyCallback  callback,
-                           gpointer             user_data)
-{
-  GSimpleAsyncResult *res;
-
-  g_return_if_fail (G_IS_INITABLE (initable));
-
-  res = g_simple_async_result_new (G_OBJECT (initable), callback, user_data,
-                                   async_initable_init_async);
-  g_simple_async_result_run_in_thread (res, async_init_thread,
-                                       io_priority, cancellable);
-  g_object_unref (res);
-}
-
-static gboolean
-async_initable_init_finish (GAsyncInitable  *initable,
-                            GAsyncResult    *res,
-                            GError         **error)
-{
-  return TRUE; /* Errors handled by base impl */
-}
-
-static void
 async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
 {
-  /* We basically just want to use GIO's default implementation - though that one is
-   * unfortunately broken, see #615111. So we copy-paste a fixed-up version.
-   */
-  async_initable_iface->init_async = async_initable_init_async;
-  async_initable_iface->init_finish = async_initable_init_finish;
+  /* Use default */
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
