@@ -407,7 +407,7 @@ g_application_register_with_data (GApplication  *application,
   g_return_if_fail (application->priv->appid != NULL);
   g_return_if_fail (application->priv->is_remote);
   g_return_if_fail (platform_data == NULL
-                    || g_variant_is_of_type (platform_data, G_VARIANT_TYPE ("a{sv}")) == 0);
+                    || g_variant_is_of_type (platform_data, G_VARIANT_TYPE ("a{sv}")));
 
   if (!_g_application_platform_acquire_single_instance (application, NULL))
     {
