@@ -178,6 +178,8 @@ struct _GIrNodeProperty
   gboolean writable;
   gboolean construct;
   gboolean construct_only;
+  gboolean transfer;
+  gboolean shallow_transfer;
 
   GIrNodeType *type;
 };

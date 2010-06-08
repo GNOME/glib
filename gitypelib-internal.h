@@ -815,17 +815,25 @@ typedef struct {
  * @writable:
  * @construct:
  * @construct_only: The ParamFlags used when registering the property.
+ * @transfer_ownership: When writing, the type containing the property takes
+ * ownership of the value. When reading, the returned value needs to be released
+ * by the caller.
+ * @transfer_container_ownership: For container types indicates that the
+ * ownership of the container, but not of its contents, is transferred. This is
+ * typically the case when reading lists of statically allocated things.
  * @type: Describes the type of the property.
  */
 typedef struct {
   guint32        name;
 
-  guint32        deprecated     : 1;
-  guint32        readable       : 1;
-  guint32        writable       : 1;
-  guint32        construct      : 1;
-  guint32        construct_only : 1;
-  guint32        reserved       :27;
+  guint32        deprecated                   : 1;
+  guint32        readable                     : 1;
+  guint32        writable                     : 1;
+  guint32        construct                    : 1;
+  guint32        construct_only               : 1;
+  guint32        transfer_ownership           : 1;
+  guint32        transfer_container_ownership : 1;
+  guint32        reserved                     :25;
 
   guint32        reserved2;
 

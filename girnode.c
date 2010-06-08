@@ -1648,6 +1648,8 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->writable = prop->writable;
 	blob->construct = prop->construct;
 	blob->construct_only = prop->construct_only;
+	blob->transfer_ownership = prop->transfer;
+	blob->transfer_container_ownership = prop->shallow_transfer;
 	blob->reserved = 0;
 
         g_ir_node_build_typelib ((GIrNode *)prop->type,

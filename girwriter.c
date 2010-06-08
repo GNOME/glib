@@ -187,6 +187,26 @@ write_type_name_attribute (const gchar *namespace,
   xml_printf (file, "\"");
 }
 
+ static void
+write_ownership_transfer (GITransfer transfer,
+                          Xml       *file)
+{
+  switch (transfer)
+    {
+    case GI_TRANSFER_NOTHING:
+      xml_printf (file, " transfer-ownership=\"none\"");
+      break;
+    case GI_TRANSFER_CONTAINER:
+      xml_printf (file, " transfer-ownership=\"container\"");
+      break;
+    case GI_TRANSFER_EVERYTHING:
+      xml_printf (file, " transfer-ownership=\"full\"");
+      break;
+    default:
+      g_assert_not_reached ();
+    }
+}
+
 static void
 write_type_info (const gchar *namespace,
 		 GITypeInfo  *info,
@@ -443,20 +463,7 @@ write_callable_info (const gchar    *namespace,
 
   xml_start_element (file, "return-value");
 
-  switch (g_callable_info_get_caller_owns (info))
-    {
-    case GI_TRANSFER_NOTHING:
-      xml_printf (file, " transfer-ownership=\"none\"");
-      break;
-    case GI_TRANSFER_CONTAINER:
-      xml_printf (file, " transfer-ownership=\"container\"");
-      break;
-    case GI_TRANSFER_EVERYTHING:
-      xml_printf (file, " transfer-ownership=\"full\"");
-      break;
-    default:
-      g_assert_not_reached ();
-    }
+  write_ownership_transfer (g_callable_info_get_caller_owns (info), file);
 
   if (g_callable_info_may_return_null (info))
     xml_printf (file, " allow-none=\"1\"");
@@ -477,20 +484,7 @@ write_callable_info (const gchar    *namespace,
       xml_printf (file, " name=\"%s\"",
                   g_base_info_get_name ((GIBaseInfo *) arg));
 
-      switch (g_arg_info_get_ownership_transfer (arg))
-	{
-	case GI_TRANSFER_NOTHING:
-	  xml_printf (file, " transfer-ownership=\"none\"");
-	  break;
-	case GI_TRANSFER_CONTAINER:
-	  xml_printf (file, " transfer-ownership=\"container\"");
-	  break;
-	case GI_TRANSFER_EVERYTHING:
-	  xml_printf (file, " transfer-ownership=\"full\"");
-	  break;
-	default:
-	  g_assert_not_reached ();
-	}
+      write_ownership_transfer (g_arg_info_get_ownership_transfer (arg), file);
 
       switch (g_arg_info_get_direction (arg))
 	{
@@ -967,6 +961,8 @@ write_property_info (const gchar    *namespace,
 
   if (flags & G_PARAM_CONSTRUCT_ONLY)
     xml_printf (file, " construct-only=\"1\"");
+
+  write_ownership_transfer (g_property_info_get_ownership_transfer (info), file);
 
   write_attributes (file, (GIBaseInfo*) info);
 

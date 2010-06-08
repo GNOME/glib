@@ -57,3 +57,30 @@ g_property_info_get_type (GIPropertyInfo *info)
   return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (PropertyBlob, type));
 }
 
+/**
+ * g_property_info_get_ownership_transfer:
+ * @info: a #GIPropertyInfo
+ *
+ * Obtain the ownership transfer for this property. See #GITransfer for more
+ * information about transfer values.
+ *
+ * Returns: the transfer
+ */
+GITransfer
+g_property_info_get_ownership_transfer (GIPropertyInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  PropertyBlob *blob;
+
+  g_return_val_if_fail (info != NULL, -1);
+  g_return_val_if_fail (GI_IS_PROPERTY_INFO (info), -1);
+
+  blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (blob->transfer_ownership)
+    return GI_TRANSFER_EVERYTHING;
+  else if (blob->transfer_container_ownership)
+    return GI_TRANSFER_CONTAINER;
+  else
+    return GI_TRANSFER_NOTHING;
+}

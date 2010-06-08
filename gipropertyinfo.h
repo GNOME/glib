@@ -35,6 +35,7 @@ G_BEGIN_DECLS
 
 GParamFlags  g_property_info_get_flags (GIPropertyInfo *info);
 GITypeInfo * g_property_info_get_type  (GIPropertyInfo *info);
+GITransfer   g_property_info_get_ownership_transfer (GIPropertyInfo *info);
 
 G_END_DECLS
 

@@ -841,6 +841,44 @@ start_function (GMarkupParseContext *context,
 }
 
 static void
+parse_property_transfer (GIrNodeProperty *property,
+                         const gchar     *transfer,
+                         ParseContext    *ctx)
+{
+  if (transfer == NULL)
+  {
+    GIrNodeInterface *iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
+
+    g_warning ("required attribute 'transfer-ownership' for property '%s' in "
+               "type '%s.%s'", property->node.name, ctx->namespace,
+               iface->node.name);
+  }
+  else if (strcmp (transfer, "none") == 0)
+    {
+      property->transfer = FALSE;
+      property->shallow_transfer = FALSE;
+    }
+  else if (strcmp (transfer, "container") == 0)
+    {
+      property->transfer = FALSE;
+      property->shallow_transfer = TRUE;
+    }
+  else if (strcmp (transfer, "full") == 0)
+    {
+      property->transfer = TRUE;
+      property->shallow_transfer = FALSE;
+    }
+  else
+    {
+      GIrNodeInterface *iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
+
+      g_warning ("Unknown transfer-ownership value: '%s' for property '%s' in "
+                 "type '%s.%s'", transfer, property->node.name, ctx->namespace,
+                 iface->node.name);
+    }
+}
+
+static void
 parse_param_transfer (GIrNodeParam *param, const gchar *transfer, const gchar *name)
 {
   if (transfer == NULL)
@@ -1237,12 +1275,14 @@ start_property (GMarkupParseContext *context,
       const gchar *writable;
       const gchar *construct;
       const gchar *construct_only;
+      const gchar *transfer;
 
       name = find_attribute ("name", attribute_names, attribute_values);
       readable = find_attribute ("readable", attribute_names, attribute_values);
       writable = find_attribute ("writable", attribute_names, attribute_values);
       construct = find_attribute ("construct", attribute_names, attribute_values);
       construct_only = find_attribute ("construct-only", attribute_names, attribute_values);
+      transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
 
       if (name == NULL)
 	MISSING_ATTRIBUTE (context, error, element_name, "name");
@@ -1273,6 +1313,8 @@ start_property (GMarkupParseContext *context,
 	    property->construct_only = TRUE;
 	  else
 	    property->construct_only = FALSE;
+
+          parse_property_transfer (property, transfer, ctx);
 
 	  iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	  iface->members = g_list_append (iface->members, property);
