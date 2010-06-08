@@ -332,7 +332,7 @@ _g_application_platform_acquire_single_instance (GApplication  *app,
   if (request_result == NULL)
     return FALSE;
 
-  if (strcmp (g_variant_get_type_string (request_result), "(u)") == 0)
+  if (g_variant_is_of_type (request_result, G_VARIANT_TYPE ("(u)")))
     g_variant_get (request_result, "(u)", &request_status);
   else
     request_status = 0;
