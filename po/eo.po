@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"POT-Creation-Date: 2010-06-07 21:37-0400\n"
 "PO-Revision-Date: 2010-06-03 16:07+0000\n"
 "Last-Translator: Kristjan <kristjan.schmidt@googlemail.com>\n"
 "Language-Team: Esperanto <ubuntu-l10n-eo@lists.launchpad.net>\n"
@@ -101,8 +101,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Ne povis malfermi konvertilon de '%s' al '%s'"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
-#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
-#: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:989
+#: glib/gutf8.c:1444 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "Nevalida bitokosekvenco en konverta enigo"
 
@@ -112,8 +112,8 @@ msgstr "Nevalida bitokosekvenco en konverta enigo"
 msgid "Error during conversion: %s"
 msgstr "Eraro dum konverto: %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:977 glib/gutf8.c:1187 glib/gutf8.c:1328
-#: glib/gutf8.c:1432
+#: glib/gconvert.c:678 glib/gutf8.c:985 glib/gutf8.c:1195 glib/gutf8.c:1336
+#: glib/gutf8.c:1440
 msgid "Partial character sequence at end of input"
 msgstr "Parta signosekvenco je enigofino"
 
@@ -189,8 +189,7 @@ msgstr "Malsukcesis malfermi dosieron '%s': %s"
 #: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr ""
-"Malsukcesis ricevi atributojn de dosiero '%s': fstat() malsukcesis: %s"
+msgstr "Malsukcesis ricevi atributojn de dosiero '%s': fstat() malsukcesis: %s"
 
 #: glib/gfileutils.c:750
 #, c-format
@@ -375,8 +374,7 @@ msgstr "Signoreferenco '%-.*s' ne kodas permesatan signon"
 #: glib/gmarkup.c:654
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Malplena ero '&;'; validaj eroj estas : &amp; &quot; &lt; &gt; &apos;"
+msgstr "Malplena ero '&;'; validaj eroj estas : &amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:662
 #, c-format
@@ -388,8 +386,8 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Ero ne finis kun punktokomo; vi eble uzis kaj-signo sen voli komenci "
-"eron.Eskapu kaj-signon kiel &amp;"
+"Ero ne finis kun punktokomo; vi eble uzis kaj-signo sen voli komenci eron."
+"Eskapu kaj-signon kiel &amp;"
 
 #: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
@@ -407,8 +405,8 @@ msgstr ""
 #: glib/gmarkup.c:1122
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 
 #: glib/gmarkup.c:1206
@@ -524,8 +522,7 @@ msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Dokumento neatendite finis en la fermetikedo por elemento '%s'"
 
 #: glib/gmarkup.c:1730
-msgid ""
-"Document ended unexpectedly inside a comment or processing instruction"
+msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokumento neatendite finis en komento aŭ komputanta instrukcio"
 
 #: glib/gregex.c:131
@@ -554,8 +551,7 @@ msgstr "interna eraro"
 
 #: glib/gregex.c:162
 msgid "back references as conditions are not supported for partial matching"
-msgstr ""
-"retroreferencoj kiel kondiĉoj estas ne subtenitaj por parta kongruado"
+msgstr "retroreferencoj kiel kondiĉoj estas ne subtenitaj por parta kongruado"
 
 #: glib/gregex.c:171
 msgid "recursion limit reached"
@@ -639,7 +635,7 @@ msgstr ") sen komenca ("
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
-#. 
+#.
 #: glib/gregex.c:258
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R aŭ (?[+-]ciferoj devas esti postirita de )"
@@ -825,8 +821,7 @@ msgstr "nekonata kodŝanĝa signo"
 #: glib/gregex.c:2244
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr ""
-"Eraro dum sintakse analizi anstataŭan tekston \"%s\" ĉe signo %lu: %s"
+msgstr "Eraro dum sintakse analizi anstataŭan tekston \"%s\" ĉe signo %lu: %s"
 
 #: glib/gshell.c:92
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -843,8 +838,7 @@ msgstr "Teksto finis post '\\' signon. (La teksto estis '%s')"
 
 #: glib/gshell.c:567
 #, c-format
-msgid ""
-"Text ended before matching quote was found for %c. (The text was '%s')"
+msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr "Teksto finis antaŭ konvenan citilon por %c. (La teksto estis '%s')"
 
 #: glib/gshell.c:579
@@ -952,16 +946,16 @@ msgstr "Nekonata eraro dum la lanĉando de la procezido \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Malsukcesis legi sufiĉe datumon de ida pid-dukto (%s)"
 
-#: glib/gutf8.c:1055
+#: glib/gutf8.c:1063
 msgid "Character out of range for UTF-8"
 msgstr "Signo ne estas en la UTF-8 intervalo"
 
-#: glib/gutf8.c:1155 glib/gutf8.c:1164 glib/gutf8.c:1296 glib/gutf8.c:1305
-#: glib/gutf8.c:1446 glib/gutf8.c:1542
+#: glib/gutf8.c:1163 glib/gutf8.c:1172 glib/gutf8.c:1304 glib/gutf8.c:1313
+#: glib/gutf8.c:1454 glib/gutf8.c:1550
 msgid "Invalid sequence in conversion input"
 msgstr "Nevalida sekvenco en konverta enigo"
 
-#: glib/gutf8.c:1457 glib/gutf8.c:1553
+#: glib/gutf8.c:1465 glib/gutf8.c:1561
 msgid "Character out of range for UTF-16"
 msgstr "Signo ne estas en la UTF-16 intervalo"
 
@@ -1083,8 +1077,7 @@ msgstr ""
 
 #: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
-msgid ""
-"Key file contains key '%s' which has value that cannot be interpreted."
+msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Ŝlosilodosiero enhavas ŝlosilon '%s' kiu havas neinterpreteblan valoron."
 
@@ -1185,9 +1178,587 @@ msgstr "%s dosierotipo"
 msgid "%s type"
 msgstr "%s tipo"
 
+#: gio/gcredentials.c:203 gio/gcredentials.c:338
+msgid "GCredentials is not implemented on this OS"
+msgstr ""
+
+#: gio/gcredentials.c:296
+msgid "There is no GCredentials support for your platform"
+msgstr ""
+
 #: gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
 msgstr "Neatendita frua flufino"
+
+#: gio/gdbusaddress.c:135 gio/gdbusaddress.c:226 gio/gdbusaddress.c:300
+#, c-format
+msgid "Unsupported key `%s' in address entry `%s'"
+msgstr ""
+
+#: gio/gdbusaddress.c:165
+#, c-format
+msgid ""
+"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+msgstr ""
+
+#: gio/gdbusaddress.c:178
+#, c-format
+msgid "Meaningless key/value pair combination in address entry `%s'"
+msgstr ""
+
+#: gio/gdbusaddress.c:241 gio/gdbusaddress.c:315
+#, c-format
+msgid "Error in address `%s' - the port attribute is malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:252 gio/gdbusaddress.c:326
+#, c-format
+msgid "Error in address `%s' - the family attribute is malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:428
+#, c-format
+msgid "Address element `%s', does not contain a colon (:)"
+msgstr ""
+
+#: gio/gdbusaddress.c:449
+#, c-format
+msgid ""
+"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
+"sign"
+msgstr ""
+
+#: gio/gdbusaddress.c:523
+#, c-format
+msgid ""
+"Error in address `%s' - the unix transport requires exactly one of the keys "
+"`path' or `abstract' to be set"
+msgstr ""
+
+#: gio/gdbusaddress.c:559
+#, c-format
+msgid "Error in address `%s' - the host attribute is missing or malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:573
+#, c-format
+msgid "Error in address `%s' - the port attribute is missing or malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:587
+#, c-format
+msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
+msgstr ""
+
+#: gio/gdbusaddress.c:601
+#, c-format
+msgid "Unknown or unsupported transport `%s' for address `%s'"
+msgstr ""
+
+#: gio/gdbusaddress.c:635
+#, fuzzy, c-format
+msgid "Error reading nonce file `%s':"
+msgstr "Eraro dum legado de dosiero '%s': %s"
+
+#: gio/gdbusaddress.c:646
+msgid "The nonce-file `%s' was %"
+msgstr ""
+
+#: gio/gdbusaddress.c:662
+#, c-format
+msgid "Error write contents of nonce file `%s' to stream:"
+msgstr ""
+
+#: gio/gdbusaddress.c:978
+#, c-format
+msgid ""
+"Cannot determine session bus address (TODO: run dbus-launch to find out)"
+msgstr ""
+
+#: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5309
+#, c-format
+msgid ""
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
+"- unknown value `%s'"
+msgstr ""
+
+#: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5318
+msgid ""
+"Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
+"variable is not set"
+msgstr ""
+
+#: gio/gdbusaddress.c:1021
+#, fuzzy, c-format
+msgid "Unknown bus type %d"
+msgstr "Nekonata tipo"
+
+#: gio/gdbusauth.c:289
+msgid "Unexpected lack of content trying to read a line"
+msgstr ""
+
+#: gio/gdbusauth.c:333
+msgid "Unexpected lack of content trying to (safely) read a line"
+msgstr ""
+
+#: gio/gdbusauth.c:504
+#, c-format
+msgid ""
+"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
+msgstr ""
+
+#: gio/gdbusauth.c:1146
+msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:264
+#, fuzzy, c-format
+msgid "Error statting directory `%s': %s"
+msgstr "Eraro dum malfermado de dosierujo '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:276
+#, c-format
+msgid ""
+"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:295
+#, fuzzy, c-format
+msgid "Error creating directory `%s': %s"
+msgstr "Eraro dum kreo de dosierujo: %s"
+
+#: gio/gdbusauthmechanismsha1.c:378
+#, fuzzy, c-format
+msgid "Error opening keyring `%s' for reading: "
+msgstr "Eraro dum malfermi dosieron '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:402 gio/gdbusauthmechanismsha1.c:711
+#, c-format
+msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:416 gio/gdbusauthmechanismsha1.c:725
+#, c-format
+msgid ""
+"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:739
+#, c-format
+msgid ""
+"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:454
+#, c-format
+msgid "Didn't find cookie with id %d in the keyring at `%s'"
+msgstr ""
+
+#: gio/gdbusauthmechanismsha1.c:531
+#, fuzzy, c-format
+msgid "Error deleting stale lock-file `%s': %s"
+msgstr "Eraro dum legado de dosiero '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:562
+#, fuzzy, c-format
+msgid "Error creating lock-file `%s': %s"
+msgstr "Eraro dum legado de dosiero '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:592
+#, fuzzy, c-format
+msgid "Error closing (unlinked) lock-file `%s': %s"
+msgstr "Eraro dum fermado de dosiero: %s"
+
+#: gio/gdbusauthmechanismsha1.c:602
+#, fuzzy, c-format
+msgid "Error unlinking lock-file `%s': %s"
+msgstr "Eraro dum malfermi dosieron '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:678
+#, fuzzy, c-format
+msgid "Error opening keyring `%s' for writing: "
+msgstr "Eraro dum malfermi dosieron '%s': %s"
+
+#: gio/gdbusauthmechanismsha1.c:873
+#, c-format
+msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
+msgstr ""
+
+#: gio/gdbusconnection.c:1001 gio/gdbusconnection.c:1311
+#, fuzzy
+msgid "The connection is closed"
+msgstr "Enumeraciilo estas fermita"
+
+#: gio/gdbusconnection.c:1256
+msgid "Timeout was reached"
+msgstr ""
+
+#: gio/gdbusconnection.c:1757
+msgid ""
+"Unsupported flags encountered when constructing a client-side connection"
+msgstr ""
+
+#: gio/gdbusconnection.c:3158
+#, c-format
+msgid "Error setting property `%s': Expected type `%s' but got `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3250
+#, c-format
+msgid "No such property `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3262
+#, c-format
+msgid "Property `%s' is not readable"
+msgstr ""
+
+#: gio/gdbusconnection.c:3273
+#, c-format
+msgid "Property `%s' is not writable"
+msgstr ""
+
+#: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4768
+#, c-format
+msgid "No such interface `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3504
+msgid "No such interface"
+msgstr ""
+
+#: gio/gdbusconnection.c:3748
+#, c-format
+msgid "No such method `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3779
+#, c-format
+msgid "Type of message, `%s', does not match expected type `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:3993
+#, c-format
+msgid "An object is already exported for the interface %s at %s"
+msgstr ""
+
+#: gio/gdbusconnection.c:4173
+#, c-format
+msgid "Method `%s' returned type `%s', but expected `%s'"
+msgstr ""
+
+#: gio/gdbusconnection.c:4866
+#, c-format
+msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
+msgstr ""
+
+#: gio/gdbusconnection.c:4981
+#, fuzzy, c-format
+msgid "A subtree is already exported for %s"
+msgstr "Fluo estas jam fermita"
+
+#: gio/gdbusconnection.c:5089
+#, c-format
+msgid "Unable to load /var/lib/dbus/machine-id: %s"
+msgstr ""
+
+#: gio/gdbusconnection.c:5259
+#, c-format
+msgid "No such interface `%s' on object at path %s"
+msgstr ""
+
+#: gio/gdbusmessage.c:723
+msgid "Wanted to read %"
+msgstr ""
+
+#: gio/gdbusmessage.c:744
+#, c-format
+msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
+msgstr ""
+
+#: gio/gdbusmessage.c:927
+#, c-format
+msgid "Parsed value `%s' is not a valid D-Bus object path"
+msgstr ""
+
+#: gio/gdbusmessage.c:953
+#, fuzzy, c-format
+msgid "Parsed value `%s' is not a valid D-Bus signature"
+msgstr "'%s' ne estas valida nomo "
+
+#: gio/gdbusmessage.c:979
+msgid "Encountered array of length %"
+msgstr ""
+
+#: gio/gdbusmessage.c:1116
+#, c-format
+msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
+msgstr ""
+
+#: gio/gdbusmessage.c:1141
+#, c-format
+msgid ""
+"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
+msgstr ""
+
+#: gio/gdbusmessage.c:1286
+#, c-format
+msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
+msgstr ""
+
+#: gio/gdbusmessage.c:1300
+#, c-format
+msgid "Invalid major protocol version. Expected 1 but found %d"
+msgstr ""
+
+#: gio/gdbusmessage.c:1342
+#, c-format
+msgid "Signature header with signature `%s' found but message body is empty"
+msgstr ""
+
+#: gio/gdbusmessage.c:1356
+#, c-format
+msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
+msgstr ""
+
+#: gio/gdbusmessage.c:1385
+msgid "No signature header in message but the message body is %"
+msgstr ""
+
+#: gio/gdbusmessage.c:1694
+#, c-format
+msgid ""
+"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+msgstr ""
+
+#: gio/gdbusmessage.c:1823
+#, c-format
+msgid "Message has %d fds but the header field indicates %d fds"
+msgstr ""
+
+#: gio/gdbusmessage.c:1869
+#, c-format
+msgid "Message body has signature `%s' but there is no signature header"
+msgstr ""
+
+#: gio/gdbusmessage.c:1879
+#, c-format
+msgid ""
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
+msgstr ""
+
+#: gio/gdbusmessage.c:1895
+#, c-format
+msgid "Message body is empty but signature in the header field is `(%s)'"
+msgstr ""
+
+#: gio/gdbusmessage.c:2448
+#, fuzzy, c-format
+msgid "Error return with body of type `%s'"
+msgstr "Eraro dum skribado de dosiero: %s"
+
+#: gio/gdbusmessage.c:2456
+msgid "Error return with empty body"
+msgstr ""
+
+#: gio/gdbusmethodinvocation.c:357
+#, c-format
+msgid "Type of return value is incorrect, got `%s', expected `%s'"
+msgstr ""
+
+#: gio/gdbusmethodinvocation.c:371 gio/gsocket.c:2859 gio/gsocket.c:2940
+#, c-format
+msgid "Error sending message: %s"
+msgstr ""
+
+#: gio/gdbusprivate.c:775
+msgid "Error writing first 16 bytes of message to socket: "
+msgstr ""
+
+#: gio/gdbusproxy.c:633
+#, c-format
+msgid ""
+"Trying to set property %s of type %s but according to the expected interface "
+"the type is %s"
+msgstr ""
+
+#: gio/gdbusserver.c:669
+#, fuzzy
+msgid "Abstract name space not supported"
+msgstr "Rubujo ne subtenita"
+
+#: gio/gdbusserver.c:759
+msgid "Cannot specify nonce file when creating a server"
+msgstr ""
+
+#: gio/gdbusserver.c:836
+#, fuzzy, c-format
+msgid "Error writing nonce file at `%s': %s"
+msgstr "Eraro dum skribado de dosiero: %s"
+
+#: gio/gdbusserver.c:988
+#, fuzzy, c-format
+msgid "The string `%s' is not a valid D-Bus GUID"
+msgstr "'%s' ne estas valida nomo "
+
+#: gio/gdbusserver.c:1028
+#, c-format
+msgid "Cannot listen on unsupported transport `%s'"
+msgstr ""
+
+#: gio/gdbus-tool.c:87 gio/gsettings-tool.c:38
+msgid "COMMAND"
+msgstr ""
+
+#: gio/gdbus-tool.c:92
+#, c-format
+msgid ""
+"Commands:\n"
+"  help         Shows this information\n"
+"  introspect   Introspect a remote object\n"
+"  monitor      Monitor a remote object\n"
+"  call         Invoke a method on a remote object\n"
+"\n"
+"Use \"%s COMMAND --help\" to get help on each command.\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:160 gio/gdbus-tool.c:216 gio/gdbus-tool.c:288
+#: gio/gdbus-tool.c:312 gio/gdbus-tool.c:814 gio/gdbus-tool.c:1322
+#, fuzzy, c-format
+msgid "Error: %s\n"
+msgstr "Eraro ĉe linio %d: %s"
+
+#: gio/gdbus-tool.c:171 gio/gdbus-tool.c:229 gio/gdbus-tool.c:1332
+#, fuzzy, c-format
+msgid "Error parsing introspection XML: %s\n"
+msgstr "Eraro dum sintakse analizi opcion %s"
+
+#: gio/gdbus-tool.c:346
+msgid "Connect to the system bus"
+msgstr ""
+
+#: gio/gdbus-tool.c:347
+msgid "Connect to the session bus"
+msgstr ""
+
+#: gio/gdbus-tool.c:348
+#, fuzzy
+msgid "Connect to given D-Bus address"
+msgstr "Farata konektado"
+
+#: gio/gdbus-tool.c:358
+#, fuzzy
+msgid "Connection Endpoint Options:"
+msgstr "Farata konektado"
+
+#: gio/gdbus-tool.c:359
+msgid "Options specifying the connection endpoint"
+msgstr ""
+
+#: gio/gdbus-tool.c:379
+#, c-format
+msgid "No connection endpoint specified"
+msgstr ""
+
+#: gio/gdbus-tool.c:389
+#, c-format
+msgid "Multiple connection endpoints specified"
+msgstr ""
+
+#: gio/gdbus-tool.c:459
+#, c-format
+msgid ""
+"Warning: According to introspection data, interface `%s' does not exist\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:468
+#, c-format
+msgid ""
+"Warning: According to introspection data, method `%s' does not exist on "
+"interface `%s'\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:530
+msgid "Destination name to invoke method on"
+msgstr ""
+
+#: gio/gdbus-tool.c:531
+msgid "Object path to invoke method on"
+msgstr ""
+
+#: gio/gdbus-tool.c:532
+msgid "Method and interface name"
+msgstr ""
+
+#: gio/gdbus-tool.c:571
+msgid "Invoke a method on a remote object."
+msgstr ""
+
+#: gio/gdbus-tool.c:626 gio/gdbus-tool.c:1243 gio/gdbus-tool.c:1495
+#, fuzzy, c-format
+msgid "Error connecting: %s\n"
+msgstr "Konektad-eraro: "
+
+#: gio/gdbus-tool.c:646 gio/gdbus-tool.c:1262 gio/gdbus-tool.c:1514
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:667 gio/gdbus-tool.c:1281
+#, c-format
+msgid "Error: Object path is not specified\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:687 gio/gdbus-tool.c:1301 gio/gdbus-tool.c:1554
+#, fuzzy, c-format
+msgid "Error: %s is not a valid object path\n"
+msgstr "'%s' ne estas valida nomo "
+
+#: gio/gdbus-tool.c:702
+#, c-format
+msgid "Error: Method name is not specified\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:713
+#, c-format
+msgid "Error: Method name `%s' is invalid\n"
+msgstr ""
+
+#: gio/gdbus-tool.c:778
+#, fuzzy, c-format
+msgid "Error parsing parameter %d of type `%s': %s\n"
+msgstr "Eraro dum malfermado de dosierujo '%s': %s"
+
+#: gio/gdbus-tool.c:786
+#, fuzzy, c-format
+msgid "Error parsing parameter %d: %s\n"
+msgstr "Eraro dum sintakse analizi opcion %s"
+
+#: gio/gdbus-tool.c:1161
+msgid "Destination name to introspect"
+msgstr ""
+
+#: gio/gdbus-tool.c:1162
+msgid "Object path to introspect"
+msgstr ""
+
+#: gio/gdbus-tool.c:1195
+msgid "Introspect a remote object."
+msgstr ""
+
+#: gio/gdbus-tool.c:1413
+msgid "Destination name to monitor"
+msgstr ""
+
+#: gio/gdbus-tool.c:1414
+msgid "Object path to monitor"
+msgstr ""
+
+#: gio/gdbus-tool.c:1447
+#, fuzzy
+msgid "Monitor a remote object."
+msgstr "difektita objekto"
 
 #: gio/gdesktopappinfo.c:468 gio/gwin32appinfo.c:222
 msgid "Unnamed"
@@ -1197,26 +1768,26 @@ msgstr "Sennoma"
 msgid "Desktop file didn't specify Exec field"
 msgstr "Labortabla dosiero ne specifis Exec-kampon"
 
-#: gio/gdesktopappinfo.c:924
+#: gio/gdesktopappinfo.c:935
 msgid "Unable to find terminal required for application"
 msgstr "Ne povis trovi terminalon bezonata por aplikaĵo"
 
-#: gio/gdesktopappinfo.c:1132
+#: gio/gdesktopappinfo.c:1144
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Ne povas krei uzantan aplikaĵan agordodosierujon %s: %s"
 
-#: gio/gdesktopappinfo.c:1136
+#: gio/gdesktopappinfo.c:1148
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Ne povas krei uzantan MIME-an agordodosierujon %s: %s"
 
-#: gio/gdesktopappinfo.c:1544
+#: gio/gdesktopappinfo.c:1556
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Ne povas krei uzantan labortablan dosiero %s"
 
-#: gio/gdesktopappinfo.c:1658
+#: gio/gdesktopappinfo.c:1670
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Propra difino por %s"
@@ -1843,6 +2414,118 @@ msgstr ""
 msgid "Error resolving '%s'"
 msgstr ""
 
+#: gio/gschema-compile.c:659
+msgid "where to store the gschemas.compiled file"
+msgstr ""
+
+#: gio/gschema-compile.c:659 gio/gschema-compile.c:671
+msgid "DIRECTORY"
+msgstr ""
+
+#: gio/gschema-compile.c:660
+msgid "Do not write the gschema.compiled file"
+msgstr ""
+
+#: gio/gschema-compile.c:661
+#, fuzzy
+msgid "Do not give error for empty directory"
+msgstr "Ne povas anstataŭigi dosierujon per movago"
+
+#: gio/gschema-compile.c:662
+msgid "Do not enforce key name restrictions"
+msgstr ""
+
+#: gio/gschema-compile.c:674
+msgid ""
+"Compile all GSettings schema files into a schema cache.\n"
+"Schema files are required to have the extension .gschema.xml,\n"
+"and the cache file is called gschemas.compiled."
+msgstr ""
+
+#: gio/gschema-compile.c:690
+#, c-format
+msgid "You should give exactly one directory name\n"
+msgstr ""
+
+#: gio/gschema-compile.c:729
+#, c-format
+msgid "No schema files found\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:41
+#, c-format
+msgid ""
+"Commands:\n"
+"  help        Show this information\n"
+"  get         Get the value of a key\n"
+"  set         Set the value of a key\n"
+"  monitor     Monitor a key for changes\n"
+"  writable    Check if a key is writable\n"
+"\n"
+"Use '%s COMMAND --help' to get help for individual commands.\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:252
+#: gio/gsettings-tool.c:325
+msgid "Specify the path for the schema"
+msgstr ""
+
+#: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:252
+#: gio/gsettings-tool.c:325
+msgid "PATH"
+msgstr ""
+
+#: gio/gsettings-tool.c:110 gio/gsettings-tool.c:260 gio/gsettings-tool.c:333
+msgid "SCHEMA KEY"
+msgstr ""
+
+#: gio/gsettings-tool.c:112
+msgid "Get the value of KEY"
+msgstr ""
+
+#: gio/gsettings-tool.c:114 gio/gsettings-tool.c:264 gio/gsettings-tool.c:340
+msgid ""
+"Arguments:\n"
+"  SCHEMA      The id of the schema\n"
+"  KEY         The name of the key\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:169
+msgid "SCHEMA KEY VALUE"
+msgstr ""
+
+#: gio/gsettings-tool.c:171
+msgid "Set the value of KEY"
+msgstr ""
+
+#: gio/gsettings-tool.c:173
+msgid ""
+"Arguments:\n"
+"  SCHEMA      The id of the schema\n"
+"  KEY         The name of the key\n"
+"  VALUE       The value to set key to, as a serialized GVariant\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:212
+#, c-format
+msgid "Key %s is not writable\n"
+msgstr ""
+
+#: gio/gsettings-tool.c:262
+msgid "Find out whether KEY is writable"
+msgstr ""
+
+#: gio/gsettings-tool.c:336
+msgid ""
+"Monitor KEY for changes and print the changed values.\n"
+"Monitoring will continue until the process is terminated."
+msgstr ""
+
+#: gio/gsettings-tool.c:399
+#, fuzzy, c-format
+msgid "Unknown command '%s'\n"
+msgstr "Nekonata opcio %s"
+
 #: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr ""
@@ -1854,6 +2537,10 @@ msgstr ""
 
 #: gio/gsocket.c:290
 msgid "Socket is already closed"
+msgstr ""
+
+#: gio/gsocket.c:298 gio/gsocket.c:2609 gio/gsocket.c:2653
+msgid "Socket I/O timed out"
 msgstr ""
 
 #: gio/gsocket.c:420
@@ -1933,11 +2620,6 @@ msgstr ""
 msgid "Waiting for socket condition: %s"
 msgstr ""
 
-#: gio/gdbusmethodinvocation.c:371 gio/gsocket.c:2859 gio/gsocket.c:2940
-#, c-format
-msgid "Error sending message: %s"
-msgstr ""
-
 #: gio/gsocket.c:2884
 msgid "GSocketControlMessage not supported on windows"
 msgstr ""
@@ -1980,6 +2662,38 @@ msgstr ""
 
 #: gio/gunixconnection.c:212
 msgid "Received invalid fd"
+msgstr ""
+
+#: gio/gunixconnection.c:359
+#, fuzzy
+msgid "Error sending credentials: "
+msgstr "Eraro dum serĉi en dosiero: %s"
+
+#: gio/gunixconnection.c:436
+#, c-format
+msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
+msgstr ""
+
+#: gio/gunixconnection.c:445
+#, c-format
+msgid ""
+"Unexpected option length while checking if SO_PASSCRED is enabled for "
+"socket. Expected %d bytes, got %d"
+msgstr ""
+
+#: gio/gunixconnection.c:462
+#, fuzzy, c-format
+msgid "Error enabling SO_PASSCRED: %s"
+msgstr "Eraro dum renomi dosieron: %s"
+
+#: gio/gunixconnection.c:492
+msgid ""
+"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgstr ""
+
+#: gio/gunixconnection.c:535
+#, c-format
+msgid "Error while disabling SO_PASSCRED: %s"
 msgstr ""
 
 #: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
@@ -2038,6 +2752,21 @@ msgstr "asociigaj ŝanĝoj ne subtenitaj en vin32"
 #: gio/gwin32appinfo.c:370
 msgid "Association creation not supported on win32"
 msgstr "Asociiga kreado ne subtenita en vin32"
+
+#: gio/gwin32inputstream.c:319
+#, fuzzy, c-format
+msgid "Error reading from handle: %s"
+msgstr "Eraro dum legado de dosiero: %s"
+
+#: gio/gwin32inputstream.c:349 gio/gwin32outputstream.c:349
+#, fuzzy, c-format
+msgid "Error closing handle: %s"
+msgstr "Eraro dum fermado de dosiero: %s"
+
+#: gio/gwin32outputstream.c:319
+#, fuzzy, c-format
+msgid "Error writing to handle: %s"
+msgstr "Eraro dum skribado de dosiero: %s"
 
 #: gio/gzlibcompressor.c:279 gio/gzlibdecompressor.c:250
 msgid "Not enough memory"

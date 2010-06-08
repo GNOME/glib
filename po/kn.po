@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master.kn\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-24 22:45-0400\n"
+"POT-Creation-Date: 2010-06-07 21:37-0400\n"
 "PO-Revision-Date: 2010-04-22 16:09+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: kn-IN <>\n"
@@ -99,8 +99,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "'%s' ನಿಂದ '%s'ಗೆ ಪರಿವರ್ತಕವನ್ನು ತೆರೆಯಲಾಗುತ್ತಿಲ್ಲ"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
-#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
-#: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:989
+#: glib/gutf8.c:1444 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "ಪರಿವರ್ತಿತ ಆದಾನದಲ್ಲಿನ ಬೈಟ್ ಅನುಕ್ರಮ ಅಮಾನ್ಯವಾಗಿದೆ"
 
@@ -110,8 +110,8 @@ msgstr "ಪರಿವರ್ತಿತ ಆದಾನದಲ್ಲಿನ ಬೈಟ್ 
 msgid "Error during conversion: %s"
 msgstr "ಪರಿವರ್ತಿಸುವಾಗ ದೋಷ: %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:977 glib/gutf8.c:1187 glib/gutf8.c:1328
-#: glib/gutf8.c:1432
+#: glib/gconvert.c:678 glib/gutf8.c:985 glib/gutf8.c:1195 glib/gutf8.c:1336
+#: glib/gutf8.c:1440
 msgid "Partial character sequence at end of input"
 msgstr "ಆದಾನದ ಕೊನೆಯಲ್ಲಿ ಆಂಶಿಕ ಅಕ್ಷರ ಅನುಕ್ರಮಣೆ"
 
@@ -953,16 +953,16 @@ msgstr "child ಪ್ರಕ್ರಿಯೆ \"%s\" ಅನ್ನು ಕಾರ್ಯ
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "child pid pipe (%s) ಇಂದ ಸಾಕಷ್ಟು ದತ್ತಾಂಶವನ್ನು ಓದುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ"
 
-#: glib/gutf8.c:1055
+#: glib/gutf8.c:1063
 msgid "Character out of range for UTF-8"
 msgstr "ಅಕ್ಷರವು UTF-8 ನ ವ್ಯಾಪ್ತಿ ಇಂದ ಹೊರಗಿದೆ"
 
-#: glib/gutf8.c:1155 glib/gutf8.c:1164 glib/gutf8.c:1296 glib/gutf8.c:1305
-#: glib/gutf8.c:1446 glib/gutf8.c:1542
+#: glib/gutf8.c:1163 glib/gutf8.c:1172 glib/gutf8.c:1304 glib/gutf8.c:1313
+#: glib/gutf8.c:1454 glib/gutf8.c:1550
 msgid "Invalid sequence in conversion input"
 msgstr "ಆದಾನ ಪರಿವರ್ತನೆಯಲ್ಲಿ ಅಮಾನ್ಯ ಅನುಕ್ರಮ"
 
-#: glib/gutf8.c:1457 glib/gutf8.c:1553
+#: glib/gutf8.c:1465 glib/gutf8.c:1561
 msgid "Character out of range for UTF-16"
 msgstr "ಅಕ್ಷರವು UTF-16 ನ ವ್ಯಾಪ್ತಿ ಇಂದ ಹೊರಗಿದೆ"
 
@@ -1206,7 +1206,7 @@ msgstr "ಬೆಂಬಲವಿರದ ಸಾಕೆಟ್ ವಿಳಾಸ"
 #: gio/gdbusaddress.c:165
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys"
+"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 
 #: gio/gdbusaddress.c:178
@@ -1283,14 +1283,14 @@ msgid ""
 "Cannot determine session bus address (TODO: run dbus-launch to find out)"
 msgstr ""
 
-#: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5305
+#: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5309
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
 
-#: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5314
+#: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5318
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1426,7 +1426,7 @@ msgstr "ಪ್ರಕಾರ %s ಅನ್ನು ವರ್ಗವಾಗಿಸಿಲ�
 msgid "Property `%s' is not writable"
 msgstr "ಪ್ರಕಾರ %s ಅನ್ನು ವರ್ಗವಾಗಿಸಿಲ್ಲ"
 
-#: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4764
+#: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4768
 #, c-format
 msgid "No such interface `%s'"
 msgstr ""
@@ -1445,32 +1445,32 @@ msgstr ""
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:3989
+#: gio/gdbusconnection.c:3993
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:4169
+#: gio/gdbusconnection.c:4173
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:4862
+#: gio/gdbusconnection.c:4866
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 
-#: gio/gdbusconnection.c:4977
+#: gio/gdbusconnection.c:4981
 #, fuzzy, c-format
 msgid "A subtree is already exported for %s"
 msgstr "ಆಲಿಸುವುವುದನ್ನು ಈಗಾಗಲೆ ಮುಚ್ಚಲಾಗಿದೆ"
 
-#: gio/gdbusconnection.c:5085
+#: gio/gdbusconnection.c:5089
 #, c-format
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:5255
+#: gio/gdbusconnection.c:5259
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr ""
@@ -1509,27 +1509,27 @@ msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
 msgstr ""
 
-#: gio/gdbusmessage.c:1282
+#: gio/gdbusmessage.c:1286
 #, c-format
 msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
 msgstr ""
 
-#: gio/gdbusmessage.c:1296
+#: gio/gdbusmessage.c:1300
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 
-#: gio/gdbusmessage.c:1339
+#: gio/gdbusmessage.c:1342
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 
-#: gio/gdbusmessage.c:1353
+#: gio/gdbusmessage.c:1356
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 
-#: gio/gdbusmessage.c:1382
+#: gio/gdbusmessage.c:1385
 msgid "No signature header in message but the message body is %"
 msgstr ""
 
@@ -1776,26 +1776,26 @@ msgstr "ಹೆಸರಿಸಲಾಗದ"
 msgid "Desktop file didn't specify Exec field"
 msgstr "ಗಣಕತೆರೆ ಕಡತವು Exec ಕ್ಷೇತ್ರವನ್ನು ಸೂಚಿಸಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:924
+#: gio/gdesktopappinfo.c:935
 msgid "Unable to find terminal required for application"
 msgstr "ಅನ್ವಯಕ್ಕೆ ಅಗತ್ಯವಿರುವ ಟರ್ಮಿನಲ್‍ ಅನ್ನು ಪತ್ತೆಮಾಡಲಾಗಲಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1132
+#: gio/gdesktopappinfo.c:1144
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ ಅನ್ವಯ ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/gdesktopappinfo.c:1136
+#: gio/gdesktopappinfo.c:1148
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "ಬಳಕೆದಾರ MIME ಸಂರಚನಾ ಫೋಲ್ಡರ್ %s ಅನ್ನು ರಚಿಸಲಾಗಿಲ್ಲ: %s"
 
-#: gio/gdesktopappinfo.c:1544
+#: gio/gdesktopappinfo.c:1556
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "ಬಳಕೆದಾರನ ಡೆಸ್ಕ್‍ಟಾಪ್ ಕಡತ %s ಅನ್ನು ತೆರೆಯಲಾಗಿಲ್ಲ"
 
-#: gio/gdesktopappinfo.c:1658
+#: gio/gdesktopappinfo.c:1670
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s ಗಾಗಿನ ಕಸ್ಟಮ್ ವಿವರಣೆ"
@@ -2426,40 +2426,40 @@ msgstr "'%s' ಅನ್ನು ಪರಿಹರಿಸುವಲ್ಲಿ ತಾತ�
 msgid "Error resolving '%s'"
 msgstr "'%s' ಅನ್ನು ಪರಿಹರಿಸುವಲ್ಲಿ ದೋಷ"
 
-#: gio/gschema-compile.c:647
+#: gio/gschema-compile.c:659
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:647 gio/gschema-compile.c:659
+#: gio/gschema-compile.c:659 gio/gschema-compile.c:671
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
-#: gio/gschema-compile.c:648
+#: gio/gschema-compile.c:660
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:649
+#: gio/gschema-compile.c:661
 #, fuzzy
 msgid "Do not give error for empty directory"
 msgstr "ಕೋಶವನ್ನು ಇನ್ನೊಂದು ಕೋಶಕ್ಕೆ ಸ್ಥಳಾಂತರಿಸಲಾಗುವುದಿಲ್ಲ"
 
-#: gio/gschema-compile.c:650
+#: gio/gschema-compile.c:662
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:662
+#: gio/gschema-compile.c:674
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:678
+#: gio/gschema-compile.c:690
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:717
+#: gio/gschema-compile.c:729
 #, c-format
 msgid "No schema files found\n"
 msgstr ""

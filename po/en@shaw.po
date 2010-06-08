@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-24 22:45-0400\n"
+"POT-Creation-Date: 2010-06-07 21:37-0400\n"
 "PO-Revision-Date: 2010-05-12 18:36 -0400\n"
 "Last-Translator: Thomas Thurman <tthurman@gnome.org>\n"
 "Language-Team: Shavian <ubuntu-l10n-en-shaw@launchpad.net>\n"
@@ -98,8 +98,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "𐑒𐑫𐑛 𐑯𐑪𐑑 𐑴𐑐𐑩𐑯 𐑒𐑩𐑯𐑝𐑻𐑑𐑻 𐑓𐑮𐑪𐑥 '%s' 𐑑 '%s'"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
-#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
-#: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:989
+#: glib/gutf8.c:1444 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑚𐑲𐑑 𐑕𐑰𐑒𐑢𐑩𐑯𐑕 𐑦𐑯 𐑒𐑩𐑯𐑝𐑻𐑖𐑩𐑯 𐑦𐑯𐑐𐑫𐑑"
 
@@ -109,8 +109,8 @@ msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑚𐑲𐑑 𐑕𐑰𐑒𐑢𐑩𐑯𐑕 �
 msgid "Error during conversion: %s"
 msgstr "𐑻𐑼 𐑛𐑘𐑫𐑼𐑦𐑙 𐑒𐑩𐑯𐑝𐑻𐑖𐑩𐑯: %s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:977 glib/gutf8.c:1187 glib/gutf8.c:1328
-#: glib/gutf8.c:1432
+#: glib/gconvert.c:678 glib/gutf8.c:985 glib/gutf8.c:1195 glib/gutf8.c:1336
+#: glib/gutf8.c:1440
 msgid "Partial character sequence at end of input"
 msgstr "𐑐𐑸𐑑𐑦𐑨𐑤 𐑒𐑨𐑮𐑩𐑒𐑑𐑼 𐑕𐑰𐑒𐑢𐑩𐑯𐑕 𐑨𐑑 𐑧𐑯𐑛 𐑝 𐑦𐑯𐑐𐑫𐑑"
 
@@ -938,16 +938,16 @@ msgstr "𐑳𐑯𐑴𐑯 𐑻𐑼 𐑧𐑒𐑕𐑩𐑒𐑿𐑑𐑦𐑙 𐑗𐑲�
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "𐑓𐑱𐑤𐑛 𐑑 𐑮𐑰𐑛 𐑦𐑯𐑳𐑓 𐑛𐑱𐑑𐑩 𐑓𐑮𐑪𐑥 𐑗𐑲𐑤𐑛 pid 𐑐𐑲𐑐 (%s)"
 
-#: glib/gutf8.c:1055
+#: glib/gutf8.c:1063
 msgid "Character out of range for UTF-8"
 msgstr "𐑒𐑨𐑮𐑩𐑒𐑑𐑼 𐑬𐑑 𐑝 𐑮𐑱𐑯𐑡 𐑓𐑹 UTF-8"
 
-#: glib/gutf8.c:1155 glib/gutf8.c:1164 glib/gutf8.c:1296 glib/gutf8.c:1305
-#: glib/gutf8.c:1446 glib/gutf8.c:1542
+#: glib/gutf8.c:1163 glib/gutf8.c:1172 glib/gutf8.c:1304 glib/gutf8.c:1313
+#: glib/gutf8.c:1454 glib/gutf8.c:1550
 msgid "Invalid sequence in conversion input"
 msgstr "𐑦𐑯𐑝𐑨𐑤𐑦𐑛 𐑕𐑰𐑒𐑢𐑩𐑯𐑕 𐑦𐑯 𐑒𐑩𐑯𐑝𐑻𐑖𐑩𐑯 𐑦𐑯𐑐𐑫𐑑"
 
-#: glib/gutf8.c:1457 glib/gutf8.c:1553
+#: glib/gutf8.c:1465 glib/gutf8.c:1561
 msgid "Character out of range for UTF-16"
 msgstr "𐑒𐑨𐑮𐑩𐑒𐑑𐑼 𐑬𐑑 𐑝 𐑮𐑱𐑯𐑡 𐑓𐑹 UTF-16"
 
@@ -1185,7 +1185,7 @@ msgstr "𐑳𐑯𐑕𐑩𐑐𐑹𐑑𐑩𐑛 𐑕𐑪𐑒𐑩𐑑 𐑩𐑛𐑮�
 #: gio/gdbusaddress.c:165
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys"
+"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 
 #: gio/gdbusaddress.c:178
@@ -1262,14 +1262,14 @@ msgid ""
 "Cannot determine session bus address (TODO: run dbus-launch to find out)"
 msgstr ""
 
-#: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5305
+#: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5309
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
 
-#: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5314
+#: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5318
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1405,7 +1405,7 @@ msgstr "𐑒𐑰 %s 𐑦𐑟 𐑯𐑪𐑑 𐑮𐑲𐑑𐑩𐑚𐑩𐑤\n"
 msgid "Property `%s' is not writable"
 msgstr "𐑒𐑰 %s 𐑦𐑟 𐑯𐑪𐑑 𐑮𐑲𐑑𐑩𐑚𐑩𐑤\n"
 
-#: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4764
+#: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4768
 #, c-format
 msgid "No such interface `%s'"
 msgstr ""
@@ -1424,32 +1424,32 @@ msgstr ""
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:3989
+#: gio/gdbusconnection.c:3993
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:4169
+#: gio/gdbusconnection.c:4173
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:4862
+#: gio/gdbusconnection.c:4866
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 
-#: gio/gdbusconnection.c:4977
+#: gio/gdbusconnection.c:4981
 #, fuzzy, c-format
 msgid "A subtree is already exported for %s"
 msgstr "𐑤𐑦𐑕𐑩𐑯𐑻 𐑦𐑟 𐑷𐑤𐑮𐑧𐑛𐑦 𐑒𐑤𐑴𐑟𐑛"
 
-#: gio/gdbusconnection.c:5085
+#: gio/gdbusconnection.c:5089
 #, c-format
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:5255
+#: gio/gdbusconnection.c:5259
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr ""
@@ -1488,27 +1488,27 @@ msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
 msgstr ""
 
-#: gio/gdbusmessage.c:1282
+#: gio/gdbusmessage.c:1286
 #, c-format
 msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
 msgstr ""
 
-#: gio/gdbusmessage.c:1296
+#: gio/gdbusmessage.c:1300
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 
-#: gio/gdbusmessage.c:1339
+#: gio/gdbusmessage.c:1342
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 
-#: gio/gdbusmessage.c:1353
+#: gio/gdbusmessage.c:1356
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 
-#: gio/gdbusmessage.c:1382
+#: gio/gdbusmessage.c:1385
 msgid "No signature header in message but the message body is %"
 msgstr ""
 
@@ -1763,26 +1763,26 @@ msgstr "𐑩𐑯𐑯𐑱𐑥𐑛"
 msgid "Desktop file didn't specify Exec field"
 msgstr "𐑛𐑧𐑕𐑒𐑑𐑪𐑐 𐑓𐑲𐑤 𐑛𐑦𐑛𐑯𐑑 𐑕𐑐𐑧𐑕𐑦𐑓𐑲 Exec 𐑓𐑰𐑤𐑛"
 
-#: gio/gdesktopappinfo.c:924
+#: gio/gdesktopappinfo.c:935
 msgid "Unable to find terminal required for application"
 msgstr "𐑳𐑯𐑱𐑚𐑩𐑤 𐑑 𐑓𐑲𐑯𐑛 𐑑𐑻𐑥𐑦𐑯𐑩𐑤 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑓𐑹 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯"
 
-#: gio/gdesktopappinfo.c:1132
+#: gio/gdesktopappinfo.c:1144
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "𐑒𐑨𐑯𐑑 𐑒𐑮𐑦𐑱𐑑 𐑿𐑟𐑼 𐑩𐑐𐑤𐑦𐑒𐑱𐑕𐑩𐑯 𐑒𐑩𐑯𐑓𐑦𐑜𐑘𐑼𐑱𐑖𐑩𐑯 𐑓𐑴𐑤𐑛𐑼 %s: %s"
 
-#: gio/gdesktopappinfo.c:1136
+#: gio/gdesktopappinfo.c:1148
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "𐑒𐑨𐑯𐑑 𐑒𐑮𐑦𐑱𐑑 𐑿𐑟𐑼 MIME 𐑒𐑩𐑯𐑓𐑦𐑜𐑘𐑼𐑱𐑖𐑩𐑯 𐑓𐑴𐑤𐑛𐑼 %s: %s"
 
-#: gio/gdesktopappinfo.c:1544
+#: gio/gdesktopappinfo.c:1556
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "𐑒𐑨𐑯𐑑 𐑒𐑮𐑦𐑱𐑑 𐑿𐑟𐑼 𐑛𐑧𐑕𐑒𐑑𐑪𐑐 𐑓𐑲𐑤 %s"
 
-#: gio/gdesktopappinfo.c:1658
+#: gio/gdesktopappinfo.c:1670
 #, c-format
 msgid "Custom definition for %s"
 msgstr "𐑒𐑳𐑕𐑑𐑩𐑥 𐑛𐑧𐑓𐑩𐑯𐑦𐑖𐑩𐑯 𐑓𐑹 %s"
@@ -2409,28 +2409,28 @@ msgstr "𐑑𐑧𐑥𐑐𐑼𐑼𐑦𐑤𐑦 𐑳𐑯𐑱𐑚𐑩𐑤 𐑑 𐑮�
 msgid "Error resolving '%s'"
 msgstr "𐑻𐑼 𐑮𐑦𐑟𐑪𐑤𐑝𐑦𐑙 '%s'"
 
-#: gio/gschema-compile.c:647
+#: gio/gschema-compile.c:659
 msgid "where to store the gschemas.compiled file"
 msgstr "𐑢𐑺 𐑑 𐑕𐑑𐑹 𐑞 gschemas.compiled 𐑓𐑲𐑤"
 
-#: gio/gschema-compile.c:647 gio/gschema-compile.c:659
+#: gio/gschema-compile.c:659 gio/gschema-compile.c:671
 msgid "DIRECTORY"
 msgstr "𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦"
 
-#: gio/gschema-compile.c:648
+#: gio/gschema-compile.c:660
 msgid "Do not write the gschema.compiled file"
 msgstr "𐑛𐑵 𐑯𐑪𐑑 𐑮𐑲𐑑 𐑞 gschema.compiled 𐑓𐑲𐑤"
 
-#: gio/gschema-compile.c:649
+#: gio/gschema-compile.c:661
 #, fuzzy
 msgid "Do not give error for empty directory"
 msgstr "𐑒𐑨𐑯𐑑 𐑥𐑵𐑝 𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦 𐑴𐑝𐑼 𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦"
 
-#: gio/gschema-compile.c:650
+#: gio/gschema-compile.c:662
 msgid "Do not enforce key name restrictions"
 msgstr "𐑛𐑵 𐑯𐑪𐑑 𐑧𐑯𐑓𐑪𐑮𐑕 𐑒𐑰 𐑯𐑱𐑥 𐑮𐑰𐑕𐑑𐑮𐑦𐑒𐑖𐑩𐑯𐑟"
 
-#: gio/gschema-compile.c:662
+#: gio/gschema-compile.c:674
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2440,12 +2440,12 @@ msgstr ""
 "𐑕𐑒𐑰𐑥𐑩 𐑓𐑲𐑤𐑟 𐑸 𐑮𐑦𐑒𐑢𐑲𐑼𐑛 𐑑 𐑣𐑨𐑝 𐑞 𐑩𐑒𐑕𐑑𐑧𐑯𐑖𐑩𐑯 .gschema.xml,\n"
 "𐑯 𐑞 𐑒𐑨𐑖 𐑓𐑲𐑤 𐑦𐑟 𐑒𐑷𐑤𐑛 gschemas.compiled."
 
-#: gio/gschema-compile.c:678
+#: gio/gschema-compile.c:690
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "𐑿 𐑖𐑫𐑛 𐑜𐑦𐑝 𐑦𐑜𐑟𐑨𐑒𐑑𐑤𐑦 𐑢𐑳𐑯 𐑛𐑲𐑮𐑧𐑒𐑑𐑼𐑦 𐑯𐑱𐑥\n"
 
-#: gio/gschema-compile.c:717
+#: gio/gschema-compile.c:729
 #, c-format
 msgid "No schema files found\n"
 msgstr "𐑯𐑴 𐑕𐑒𐑰𐑥𐑩 𐑓𐑲𐑤𐑟 𐑓𐑬𐑯𐑛\n"

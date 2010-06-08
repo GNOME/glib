@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-24 22:45-0400\n"
+"POT-Creation-Date: 2010-06-07 21:37-0400\n"
 "PO-Revision-Date: 2009-09-09 20:48+0800\n"
 "Last-Translator: Hinker <hinkerliu@gmail.com>\n"
 "Language-Team: Chinese/Simplified <i18n-translation@lists.linux.net.cn>\n"
@@ -102,8 +102,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "无法打开从“%s”到“%s”的转换器"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
-#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:981
-#: glib/gutf8.c:1436 gio/gcharsetconverter.c:346
+#: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:989
+#: glib/gutf8.c:1444 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
 msgstr "转换输入中出现无效字符序列"
 
@@ -113,8 +113,8 @@ msgstr "转换输入中出现无效字符序列"
 msgid "Error during conversion: %s"
 msgstr "转换过程中出错：%s"
 
-#: glib/gconvert.c:678 glib/gutf8.c:977 glib/gutf8.c:1187 glib/gutf8.c:1328
-#: glib/gutf8.c:1432
+#: glib/gconvert.c:678 glib/gutf8.c:985 glib/gutf8.c:1195 glib/gutf8.c:1336
+#: glib/gutf8.c:1440
 msgid "Partial character sequence at end of input"
 msgstr "输入末尾出现未尽字符序列"
 
@@ -923,16 +923,16 @@ msgstr "执行子进程“%s”时出现未知错误"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "从子进程管道中读取足够的数据失败(%s)"
 
-#: glib/gutf8.c:1055
+#: glib/gutf8.c:1063
 msgid "Character out of range for UTF-8"
 msgstr "字符超出 UTF-8 范围"
 
-#: glib/gutf8.c:1155 glib/gutf8.c:1164 glib/gutf8.c:1296 glib/gutf8.c:1305
-#: glib/gutf8.c:1446 glib/gutf8.c:1542
+#: glib/gutf8.c:1163 glib/gutf8.c:1172 glib/gutf8.c:1304 glib/gutf8.c:1313
+#: glib/gutf8.c:1454 glib/gutf8.c:1550
 msgid "Invalid sequence in conversion input"
 msgstr "转换输入中出现无效序列"
 
-#: glib/gutf8.c:1457 glib/gutf8.c:1553
+#: glib/gutf8.c:1465 glib/gutf8.c:1561
 msgid "Character out of range for UTF-16"
 msgstr "字符超出 UTF-16 范围"
 
@@ -1172,7 +1172,7 @@ msgstr "不支持的套接字地址"
 #: gio/gdbusaddress.c:165
 #, c-format
 msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys"
+"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 
 #: gio/gdbusaddress.c:178
@@ -1249,14 +1249,14 @@ msgid ""
 "Cannot determine session bus address (TODO: run dbus-launch to find out)"
 msgstr ""
 
-#: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5305
+#: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5309
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
 
-#: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5314
+#: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5318
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1392,7 +1392,7 @@ msgstr "类型 %s 不是类"
 msgid "Property `%s' is not writable"
 msgstr "类型 %s 不是类"
 
-#: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4764
+#: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4768
 #, c-format
 msgid "No such interface `%s'"
 msgstr ""
@@ -1411,32 +1411,32 @@ msgstr ""
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:3989
+#: gio/gdbusconnection.c:3993
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:4169
+#: gio/gdbusconnection.c:4173
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr ""
 
-#: gio/gdbusconnection.c:4862
+#: gio/gdbusconnection.c:4866
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 
-#: gio/gdbusconnection.c:4977
+#: gio/gdbusconnection.c:4981
 #, fuzzy, c-format
 msgid "A subtree is already exported for %s"
 msgstr "监听器已关闭"
 
-#: gio/gdbusconnection.c:5085
+#: gio/gdbusconnection.c:5089
 #, c-format
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
 msgstr ""
 
-#: gio/gdbusconnection.c:5255
+#: gio/gdbusconnection.c:5259
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr ""
@@ -1475,27 +1475,27 @@ msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
 msgstr ""
 
-#: gio/gdbusmessage.c:1282
+#: gio/gdbusmessage.c:1286
 #, c-format
 msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
 msgstr ""
 
-#: gio/gdbusmessage.c:1296
+#: gio/gdbusmessage.c:1300
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 
-#: gio/gdbusmessage.c:1339
+#: gio/gdbusmessage.c:1342
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 
-#: gio/gdbusmessage.c:1353
+#: gio/gdbusmessage.c:1356
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 
-#: gio/gdbusmessage.c:1382
+#: gio/gdbusmessage.c:1385
 msgid "No signature header in message but the message body is %"
 msgstr ""
 
@@ -1742,26 +1742,26 @@ msgstr "未命名"
 msgid "Desktop file didn't specify Exec field"
 msgstr "桌面文件未指定 Exec 区域"
 
-#: gio/gdesktopappinfo.c:924
+#: gio/gdesktopappinfo.c:935
 msgid "Unable to find terminal required for application"
 msgstr "无法找到应用程序需要的终端"
 
-#: gio/gdesktopappinfo.c:1132
+#: gio/gdesktopappinfo.c:1144
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "无法创建用户应用程序配置文件夹 %s：%s"
 
-#: gio/gdesktopappinfo.c:1136
+#: gio/gdesktopappinfo.c:1148
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "无法创建用户 MIME 配置文件夹 %s：%s"
 
-#: gio/gdesktopappinfo.c:1544
+#: gio/gdesktopappinfo.c:1556
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "无法创建用户桌面文件 %s"
 
-#: gio/gdesktopappinfo.c:1658
+#: gio/gdesktopappinfo.c:1670
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s 的自制定定义"
@@ -2397,40 +2397,40 @@ msgstr "暂时无法解析 “%s”"
 msgid "Error resolving '%s'"
 msgstr "错误解析 “%s”"
 
-#: gio/gschema-compile.c:647
+#: gio/gschema-compile.c:659
 msgid "where to store the gschemas.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:647 gio/gschema-compile.c:659
+#: gio/gschema-compile.c:659 gio/gschema-compile.c:671
 msgid "DIRECTORY"
 msgstr ""
 
-#: gio/gschema-compile.c:648
+#: gio/gschema-compile.c:660
 msgid "Do not write the gschema.compiled file"
 msgstr ""
 
-#: gio/gschema-compile.c:649
+#: gio/gschema-compile.c:661
 #, fuzzy
 msgid "Do not give error for empty directory"
 msgstr "无法将目录移动到目录"
 
-#: gio/gschema-compile.c:650
+#: gio/gschema-compile.c:662
 msgid "Do not enforce key name restrictions"
 msgstr ""
 
-#: gio/gschema-compile.c:662
+#: gio/gschema-compile.c:674
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
 
-#: gio/gschema-compile.c:678
+#: gio/gschema-compile.c:690
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr ""
 
-#: gio/gschema-compile.c:717
+#: gio/gschema-compile.c:729
 #, c-format
 msgid "No schema files found\n"
 msgstr ""
