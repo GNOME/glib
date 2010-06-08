@@ -323,6 +323,7 @@ g_dbus_method_invocation_new (const gchar           *sender,
  * @parameters: A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
  *
  * Finishes handling a D-Bus method call by returning @parameters.
+ * If the @parameters GVariant is floating, it is consumed.
  *
  * It is an error if @parameters is not of the right format.
  *
