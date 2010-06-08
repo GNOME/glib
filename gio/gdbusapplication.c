@@ -51,22 +51,19 @@ application_dbus_method_call (GDBusConnection       *connection,
       GHashTableIter iter;
       GApplicationAction *value;
       GVariantBuilder builder;
-      GVariant *return_args;
-      GVariant *result;
 
-      g_variant_builder_init (&builder, G_VARIANT_TYPE_ARRAY);
+      g_variant_builder_init (&builder, G_VARIANT_TYPE ("(a{s(sb)})"));
+      g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{s(sb)}"));
       g_hash_table_iter_init (&iter, app->priv->actions);
       while (g_hash_table_iter_next (&iter, NULL, (gpointer *)&value))
         g_variant_builder_add (&builder, "{s(sb)}",
                                value->name,
                                value->description ? value->description : "",
                                value->enabled);
+      g_variant_builder_close (&builder);
 
-      result = g_variant_builder_end (&builder);
-      return_args = g_variant_new_tuple (&result, 1);
-      g_dbus_method_invocation_return_value (invocation, return_args);
-      g_variant_unref (return_args);
-      g_variant_unref (result);
+      g_dbus_method_invocation_return_value (invocation,
+                                             g_variant_builder_end (&builder));
     }
   else if (strcmp (method_name, "InvokeAction") == 0)
     {
