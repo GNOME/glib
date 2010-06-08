@@ -2620,6 +2620,8 @@ g_simple_permission_new
 g_simple_permission_get_type
 </SECTION>
 
+<SECTION>
+<FILE>gsimplepermission</FILE>
 <FILE>gapplication</FILE>
 GApplication
 GApplicationClass
