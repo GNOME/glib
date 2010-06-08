@@ -74,7 +74,7 @@ application_dbus_method_call (GDBusConnection       *connection,
       guint32 timestamp;
       GApplicationAction *action;
 
-      g_variant_get (parameters, "(su)", &action_name, &timestamp);
+      g_variant_get (parameters, "(&su)", &action_name, &timestamp);
 
       action = g_hash_table_lookup (app->priv->actions, action_name);
 
