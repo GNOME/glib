@@ -393,6 +393,10 @@ g_application_new (const gchar *appid)
  * may be initiated.  After that, the current process will terminate.
  * If %FALSE, then the application remains in the #GApplication:is-remote
  * state, and you can e.g. call g_application_invoke_action().
+ *
+ * This function may do synchronous I/O to obtain unique ownership
+ * of the application id, and will block the calling thread in this
+ * case.
  */
 void
 g_application_register_with_data (GApplication  *application,
@@ -425,7 +429,8 @@ g_application_register_with_data (GApplication  *application,
  * @argv: (array length=argc): System argument vector
  *
  * This is a convenience function which combines g_application_new()
- * with g_application_register_with_data().
+ * with g_application_register_with_data(). Therefore, it may block
+ * the calling thread just like g_application_register_with_data().
  */
 GApplication *
 g_application_new_and_register (const gchar  *appid,
@@ -1000,10 +1005,10 @@ g_application_class_init (GApplicationClass *klass)
                   G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GApplicationClass, action),
                   NULL, NULL,
-                  _gio_marshal_VOID__STRING_INT,
+                  _gio_marshal_VOID__STRING_UINT,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
-                  G_TYPE_INT);
+                  G_TYPE_UINT);
 
    /**
    * GApplication::prepare-activation:
