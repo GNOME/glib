@@ -828,10 +828,10 @@ g_file_resolve_relative_path (GFile      *file,
  * is a #GFileEnumerator object that will give out #GFileInfo objects for
  * all the files in the directory.
  *
- * The @attribute value is a string that specifies the file attributes that
+ * The @attributes value is a string that specifies the file attributes that
  * should be gathered. It is not an error if it's not possible to read a particular
- * requested attribute from a file - it just won't be set. @attribute should
- * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
+ * requested attribute from a file - it just won't be set. @attributes should
+ * be a comma-separated list of attributes or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "standard::*" means all attributes in the standard
  * namespace. An example attribute query be "standard::*,owner::user".
  * The standard attributes are available as defines, like #G_FILE_ATTRIBUTE_STANDARD_NAME.
@@ -1053,10 +1053,10 @@ g_file_query_file_type (GFile *file,
  * is a #GFileInfo object that contains key-value attributes (such as 
  * the type or size of the file).
  *
- * The @attribute value is a string that specifies the file attributes that
+ * The @attributes value is a string that specifies the file attributes that
  * should be gathered. It is not an error if it's not possible to read a particular
- * requested attribute from a file - it just won't be set. @attribute should
- * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
+ * requested attribute from a file - it just won't be set. @attributes should
+ * be a comma-separated list of attributes or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "standard::*" means all attributes in the standard
  * namespace. An example attribute query be "standard::*,owner::user".
  * The standard attributes are available as defines, like #G_FILE_ATTRIBUTE_STANDARD_NAME.
@@ -1194,10 +1194,10 @@ g_file_query_info_finish (GFile         *file,
  * For instance the amount of space available and the type of
  * the filesystem.
  *
- * The @attribute value is a string that specifies the file attributes that
+ * The @attributes value is a string that specifies the file attributes that
  * should be gathered. It is not an error if it's not possible to read a particular
- * requested attribute from a file - it just won't be set. @attribute should
- * be a comma-separated list of attribute or attribute wildcards. The wildcard "*"
+ * requested attribute from a file - it just won't be set. @attributes should
+ * be a comma-separated list of attributes or attribute wildcards. The wildcard "*"
  * means all attributes, and a wildcard like "fs:*" means all attributes in the fs
  * namespace. The standard namespace for filesystem attributes is "fs".
  * Common attributes of interest are #G_FILE_ATTRIBUTE_FILESYSTEM_SIZE
