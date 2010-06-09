@@ -863,7 +863,11 @@ initable_init (GInitable     *initable,
            * fact that GetAll() failed
            */
           //g_debug ("error: %d %d %s", error->domain, error->code, error->message);
-          g_error_free (error);
+          if (error != NULL)
+            {
+              g_error_free (*error);
+              *error = NULL;
+            }
           ret = TRUE;
           goto out;
         }
