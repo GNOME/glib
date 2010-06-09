@@ -851,7 +851,22 @@ initable_init (GInitable     *initable,
                                             cancellable,
                                             error);
       if (result == NULL)
-        goto out;
+        {
+          /* We just ignore if GetAll() is failing. Because this might happen
+           * if the object has no properties at all. Or if the caller is
+           * not authorized to see the properties.
+           *
+           * Either way, apps can know about this by using
+           * get_cached_property_names() or get_cached_property().
+           *
+           * TODO: handle G_DBUS_DEBUG flag 'proxy' and, if enabled, log the
+           * fact that GetAll() failed
+           */
+          //g_debug ("error: %d %d %s", error->domain, error->code, error->message);
+          g_error_free (error);
+          ret = TRUE;
+          goto out;
+        }
 
       process_get_all_reply (proxy, result);
 
@@ -888,7 +903,17 @@ get_all_cb (GDBusConnection *connection,
                                           &error);
   if (result == NULL)
     {
-      g_simple_async_result_set_from_error (simple, error);
+      /* We just ignore if GetAll() is failing. Because this might happen
+       * if the object has no properties at all. Or if the caller is
+       * not authorized to see the properties.
+       *
+       * Either way, apps can know about this by using
+       * get_cached_property_names() or get_cached_property().
+       *
+       * TODO: handle G_DBUS_DEBUG flag 'proxy' and, if enabled, log the
+       * fact that GetAll() failed
+       */
+      //g_debug ("error: %d %d %s", error->domain, error->code, error->message);
       g_error_free (error);
     }
   else
@@ -954,16 +979,11 @@ async_initable_init_finish (GAsyncInitable  *initable,
 
   ret = FALSE;
 
+  if (g_simple_async_result_propagate_error (simple, error))
+    goto out;
+
   result = g_simple_async_result_get_op_res_gpointer (simple);
-  if (result == NULL)
-    {
-      if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES))
-        {
-          g_simple_async_result_propagate_error (simple, error);
-          goto out;
-        }
-    }
-  else
+  if (result != NULL)
     {
       process_get_all_reply (proxy, result);
     }
