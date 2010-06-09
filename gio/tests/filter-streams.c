@@ -79,6 +79,7 @@ gpointer expected_obj;
 gpointer expected_data;
 gboolean callback_happened;
 
+#if 0
 static void
 in_cb (GObject      *object,
        GAsyncResult *result,
@@ -167,7 +168,6 @@ out_cb (GObject      *object,
   callback_happened = TRUE;
 }
 
-
 static void
 test_output_async (void)
 {
@@ -221,7 +221,7 @@ test_output_async (void)
   g_assert (g_output_stream_is_closed (base));
   g_object_unref (base);
 }
-
+#endif
 
 int
 main (int argc, char **argv)
