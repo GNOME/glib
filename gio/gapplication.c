@@ -45,18 +45,32 @@
  * @title: GApplication
  * @short_description: Core application class
  *
- * A #GApplication is the foundation of an application, unique for
- * a given application identifier.  The #GApplication wraps some
- * low-level platform-specific services; it's expected that most
- * software will use a higher-level application class such as
- * #GtkApplication or #MxApplication.
+ * A #GApplication is the foundation of an application, unique for a
+ * given application identifier.  The #GApplication wraps some
+ * low-level platform-specific services and is intended to act as the
+ * foundation for higher-level application classes such as
+ * #GtkApplication or #MxApplication.  In general, you should not use
+ * this class outside of a higher level framework.  By default,
+ * g_application_register_with_data() will invoke g_error() if it is
+ * run in a context where it cannot support its core features.  Note
+ * that g_error() is by default fatal.
  *
- * In addition to single-instance-ness, #GApplication provides support
- * for 'actions', which can be presented to the user in a platform-specific
- * way (e.g. Windows 7 jump lists). Note that these are just simple actions
- * without parameters. For more flexible scriptability, implementing a
- * a separate D-Bus interface is recommended, see e.g.
+ * One of the core features that #GApplication provides is process
+ * uniqueness, in the context of a "session".  The session concept is
+ * platform-dependent, but corresponds roughly to a graphical desktop
+ * login.  When your application is launched again, its arguments
+ * are passed through platform communication to the already running
+ * program.
+ *
+ * In addition, #GApplication provides support for 'actions', which
+ * can be presented to the user in a platform-specific way
+ * (e.g. Windows 7 jump lists). Note that these are just simple
+ * actions without parameters. For more flexible scriptability,
+ * implementing a a separate D-Bus interface is recommended, see e.g.
  * <xref linkend="gdbus-convenience"/>.
+ * 
+ * Finally, #GApplication acts as a basic lifecycle root; see the
+ * g_application_run() and g_application_quit_with_data() methods.
  *
  * Before using #GApplication, you must choose an "application identifier".
  * The expected form of an application identifier is very close to that of
