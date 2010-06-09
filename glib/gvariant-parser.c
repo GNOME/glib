@@ -2287,7 +2287,7 @@ g_variant_builder_add_parsed (GVariantBuilder *builder,
   va_list ap;
 
   va_start (ap, format);
-  g_variant_builder_add_value (builder, g_variant_new_parsed_va (format, ap));
+  g_variant_builder_add_value (builder, g_variant_new_parsed_va (format, &ap));
   va_end (ap);
 }
 
