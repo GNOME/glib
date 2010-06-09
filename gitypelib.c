@@ -832,13 +832,16 @@ validate_function_blob (ValidateContext *ctx,
       iface_type = get_type_blob (typelib, simple, error);
       if (!iface_type)
 	return FALSE;
-      if (!(iface_type->tag == GI_TYPE_TAG_INTERFACE))
+      if (iface_type->tag != GI_TYPE_TAG_INTERFACE &&
+          (container_type == BLOB_TYPE_OBJECT ||
+           container_type == BLOB_TYPE_INTERFACE))
 	{
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,
 		       G_TYPELIB_ERROR_INVALID,
-		       "Invalid return type %d for constructor",
-		       iface_type->tag);
+		       "Invalid return type '%s' for constructor '%s'",
+		       g_type_tag_to_string (iface_type->tag),
+		       get_string_nofail (typelib, blob->symbol));
 	  return FALSE;
 	}
     }
