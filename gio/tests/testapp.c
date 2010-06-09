@@ -1,7 +1,11 @@
-#include <stdlib.h>
 #include <gio.h>
 #include <gstdio.h>
 #include <string.h>
+
+#ifdef G_OS_UNIX
+#include <stdlib.h>
+#include <fcntl.h>
+#endif
 
 static gboolean action3_added = FALSE;
 
@@ -22,37 +26,39 @@ on_app_action (GApplication *application,
     }
 }
 
-static gboolean
-invoke_action1 (gpointer data)
-{
-  GApplication *app = data;
-
-  g_application_invoke_action (app, "action1", 0);
-
-  return FALSE;
-}
-
 static void
 on_app_activated (GApplication  *application,
 		  GVariant      *args,
 		  GVariant      *platform_data)
 {
-  char *str;
+}
 
-  g_print ("got args: ");
-  str = g_variant_print (args, TRUE);
-  g_print ("%s ", str);
-  g_free (str);
-  str = g_variant_print (platform_data, TRUE);
-  g_print ("%s\n", str);
-  g_free (str);
+static gboolean
+on_monitor_fd_io (GIOChannel *source,
+		  GIOCondition condition,
+		  gpointer data)
+{
+  exit (0);
+  return FALSE;
 }
 
 int
 main (int argc, char *argv[])
 {
   GApplication *app;
-  GMainLoop *loop;
+
+#ifdef G_OS_UNIX
+  {
+    const char *slave_fd_env = g_getenv ("_G_TEST_SLAVE_FD");
+    if (slave_fd_env)
+      {
+	int slave_fd = atoi (slave_fd_env);
+	fcntl (slave_fd, F_SETFD, FD_CLOEXEC);
+	g_io_add_watch (g_io_channel_unix_new (slave_fd), G_IO_HUP | G_IO_ERR,
+			on_monitor_fd_io, NULL);
+      }
+  }
+#endif
 
   app = g_application_new ("org.gtk.test.app");
   if (!(argc > 1 && strcmp (argv[1], "--non-unique") == 0))
@@ -60,9 +66,7 @@ main (int argc, char *argv[])
 
   if (g_application_is_remote (app))
     {
-      g_timeout_add (1000, invoke_action1, app);
-      loop = g_main_loop_new (NULL, FALSE);
-      g_main_loop_run (loop);
+      g_application_invoke_action (app, "action1", 0);
     }
   else
     {
