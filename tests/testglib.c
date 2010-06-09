@@ -1255,7 +1255,7 @@ various_string_tests (void)
   GTimeVal ref_date, date;
   gchar *tmp_string = NULL, *tmp_string_2, *string, *date_str;
   guint i;
-  gchar *tz;
+  const gchar *tz;
 
   if (g_test_verbose())
     g_print ("checking string chunks...");

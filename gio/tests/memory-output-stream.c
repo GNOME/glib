@@ -115,7 +115,7 @@ test_properties (void)
   gpointer data_fun = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
   gpointer data_prop;
   g_object_get (mo, "data", &data_prop, NULL);
-  g_assert_cmphex (data_fun, ==, data_prop);
+  g_assert_cmphex ((guint) data_fun, ==, (guint) data_prop);
 
   g_object_unref (o);
   g_object_unref (mo);

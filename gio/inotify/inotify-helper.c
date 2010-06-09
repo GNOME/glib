@@ -182,7 +182,7 @@ ih_event_callback (ik_event_t  *event,
 
   if (ih_event_is_paired_move (event) && sub->pair_moves)
     {
-      char *parent_dir = _ip_get_path_for_wd (event->pair->wd);
+      char *parent_dir = (char *) _ip_get_path_for_wd (event->pair->wd);
       fullpath = _ih_fullpath_from_event (event->pair, parent_dir);
       other = g_file_new_for_path (fullpath);
       g_free (fullpath);
