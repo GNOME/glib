@@ -650,6 +650,155 @@ guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
   return client->id;
 }
 
+typedef struct {
+  GClosure *name_appeared_closure;
+  GClosure *name_vanished_closure;
+} WatchNameData;
+
+static void
+watch_with_closures_on_name_appeared (GDBusConnection *connection,
+                                      const gchar     *name,
+                                      const gchar     *name_owner,
+                                      gpointer         user_data)
+{
+  WatchNameData *data = user_data;
+  GValue params[3] = { { 0, }, { 0, }, { 0, } };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], name);
+
+  g_value_init (&params[2], G_TYPE_STRING);
+  g_value_set_string (&params[2], name_owner);
+
+  g_closure_invoke (data->name_appeared_closure, NULL, 3, params, NULL);
+}
+
+static void
+watch_with_closures_on_name_vanished (GDBusConnection *connection,
+                                      const gchar     *name,
+                                      gpointer         user_data)
+{
+  WatchNameData *data = user_data;
+  GValue params[2] = { { 0, }, { 0, } };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], name);
+
+  g_closure_invoke (data->name_vanished_closure, NULL, 2, params, NULL);
+}
+
+static void
+bus_watch_name_free_func (gpointer user_data)
+{
+  WatchNameData *data = user_data;
+
+  if (data->name_appeared_closure != NULL)
+    g_closure_unref (data->name_appeared_closure);
+
+  if (data->name_vanished_closure != NULL)
+    g_closure_unref (data->name_vanished_closure);
+
+  g_free (data);
+}
+
+/**
+ * g_bus_watch_name_with_closures:
+ * @bus_type: The type of bus to watch a name on.
+ * @name: The name (well-known or unique) to watch.
+ * @flags: Flags from the #GBusNameWatcherFlags enumeration.
+ * @name_appeared_closure: (allow-none): #GClosure to invoke when @name is known
+ * to exist or %NULL.
+ * @name_vanished_closure: (allow-none): #GClosure to invoke when @name is known
+ * to not exist or %NULL.
+ *
+ * Version of g_bus_watch_name() using closures instead of callbacks for
+ * easier binding in other languages.
+ *
+ * Returns: An identifier (never 0) that an be used with
+ * g_bus_unwatch_name() to stop watching the name.
+ *
+ * Rename to: g_bus_watch_name
+ *
+ * Since: 2.26
+ */
+guint
+g_bus_watch_name_with_closures (GBusType                 bus_type,
+                                const gchar             *name,
+                                GBusNameWatcherFlags     flags,
+                                GClosure                *name_appeared_closure,
+                                GClosure                *name_vanished_closure)
+{
+  WatchNameData *data;
+
+  data = g_new0 (WatchNameData, 1);
+
+  if (name_appeared_closure != NULL)
+    data->name_appeared_closure = g_closure_ref (name_appeared_closure);
+
+  if (name_vanished_closure != NULL)
+    data->name_vanished_closure = g_closure_ref (name_vanished_closure);
+
+  return g_bus_watch_name (bus_type,
+          name,
+          flags,
+          name_appeared_closure != NULL ? watch_with_closures_on_name_appeared : NULL,
+          name_vanished_closure != NULL ? watch_with_closures_on_name_vanished : NULL,
+          data,
+          bus_watch_name_free_func);
+}
+
+/**
+ * g_bus_watch_name_on_connection_with_closures:
+ * @connection: A #GDBusConnection that is not closed.
+ * @name: The name (well-known or unique) to watch.
+ * @flags: Flags from the #GBusNameWatcherFlags enumeration.
+ * @name_appeared_closure: (allow-none): #GClosure to invoke when @name is known
+ * to exist or %NULL.
+ * @name_vanished_closure: (allow-none): #GClosure to invoke when @name is known
+ * to not exist or %NULL.
+ *
+ * Version of g_bus_watch_name_on_connection() using closures instead of callbacks for
+ * easier binding in other languages.
+ *
+ * Returns: An identifier (never 0) that an be used with
+ * g_bus_unwatch_name() to stop watching the name.
+ *
+ * Rename to: g_bus_watch_name_on_connection
+ *
+ * Since: 2.26
+ */
+guint g_bus_watch_name_on_connection_with_closures (
+                                      GDBusConnection          *connection,
+                                      const gchar              *name,
+                                      GBusNameWatcherFlags      flags,
+                                      GClosure                 *name_appeared_closure,
+                                      GClosure                 *name_vanished_closure)
+{
+  WatchNameData *data;
+
+  data = g_new0 (WatchNameData, 1);
+
+  if (name_appeared_closure != NULL)
+    data->name_appeared_closure = g_closure_ref (name_appeared_closure);
+
+  if (name_vanished_closure != NULL)
+    data->name_vanished_closure = g_closure_ref (name_vanished_closure);
+
+  return g_bus_watch_name_on_connection (connection,
+          name,
+          flags,
+          name_appeared_closure != NULL ? watch_with_closures_on_name_appeared : NULL,
+          name_vanished_closure != NULL ? watch_with_closures_on_name_vanished : NULL,
+          data,
+          bus_watch_name_free_func);
+}
+
 /**
  * g_bus_unwatch_name:
  * @watcher_id: An identifier obtained from g_bus_watch_name()

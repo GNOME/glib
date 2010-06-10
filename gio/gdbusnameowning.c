@@ -628,6 +628,179 @@ g_bus_own_name (GBusType                  bus_type,
   return client->id;
 }
 
+typedef struct {
+  GClosure *bus_acquired_closure;
+  GClosure *name_acquired_closure;
+  GClosure *name_lost_closure;
+} OwnNameData;
+
+static void
+own_with_closures_on_bus_acquired (GDBusConnection *connection,
+                                   const gchar     *name,
+                                   gpointer         user_data)
+{
+  OwnNameData *data = user_data;
+  GValue params[2] = { { 0, }, { 0, } };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], name);
+
+  g_closure_invoke (data->bus_acquired_closure, NULL, 2, params, NULL);
+}
+
+static void
+own_with_closures_on_name_acquired (GDBusConnection *connection,
+                                    const gchar     *name,
+                                    gpointer         user_data)
+{
+  OwnNameData *data = user_data;
+  GValue params[2] = { { 0, }, { 0, } };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], name);
+
+  g_closure_invoke (data->name_acquired_closure, NULL, 2, params, NULL);
+}
+
+static void
+own_with_closures_on_name_lost (GDBusConnection *connection,
+                                const gchar     *name,
+                                gpointer         user_data)
+{
+  OwnNameData *data = user_data;
+  GValue params[2] = { { 0, }, { 0, } };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], name);
+
+  g_closure_invoke (data->name_lost_closure, NULL, 2, params, NULL);
+}
+
+static void
+bus_own_name_free_func (gpointer user_data)
+{
+  OwnNameData *data = user_data;
+
+  if (data->bus_acquired_closure != NULL)
+    g_closure_unref (data->bus_acquired_closure);
+
+  if (data->name_acquired_closure != NULL)
+    g_closure_unref (data->name_acquired_closure);
+
+  if (data->name_lost_closure != NULL)
+    g_closure_unref (data->name_lost_closure);
+
+  g_free (data);
+}
+
+/**
+ * g_bus_own_name_with_closures:
+ * @bus_type: The type of bus to own a name on.
+ * @name: The well-known name to own.
+ * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
+ * @bus_acquired_closure: (allow-none): #GClosure to invoke when connected to
+ * the bus of type @bus_type or %NULL.
+ * @name_acquired_closure: (allow-none): #GClosure to invoke when @name is
+ * acquired or %NULL.
+ * @name_lost_closure: (allow-none): #GClosure to invoke when @name is lost or
+ * %NULL.
+ *
+ * Version of g_bus_own_name() using closures instead of callbacks for
+ * easier binding in other languages.
+ *
+ * Returns: An identifier (never 0) that an be used with
+ * g_bus_unown_name() to stop owning the name.
+ *
+ * Rename to: g_bus_own_name
+ *
+ * Since: 2.26
+ */
+guint
+g_bus_own_name_with_closures (GBusType                  bus_type,
+                              const gchar              *name,
+                              GBusNameOwnerFlags        flags,
+                              GClosure                 *bus_acquired_closure,
+                              GClosure                 *name_acquired_closure,
+                              GClosure                 *name_lost_closure)
+{
+  OwnNameData *data;
+
+  data = g_new0 (OwnNameData, 1);
+
+  if (bus_acquired_closure != NULL)
+    data->bus_acquired_closure = g_closure_ref (bus_acquired_closure);
+
+  if (name_acquired_closure != NULL)
+    data->name_acquired_closure = g_closure_ref (name_acquired_closure);
+
+  if (name_lost_closure != NULL)
+    data->name_lost_closure = g_closure_ref (name_lost_closure);
+
+  return g_bus_own_name (bus_type,
+          name,
+          flags,
+          bus_acquired_closure != NULL ? own_with_closures_on_bus_acquired : NULL,
+          name_acquired_closure != NULL ? own_with_closures_on_name_acquired : NULL,
+          name_lost_closure != NULL ? own_with_closures_on_name_lost : NULL,
+          data,
+          bus_own_name_free_func);
+}
+
+/**
+ * g_bus_own_name_on_connection_with_closures:
+ * @connection: A #GDBusConnection that is not closed.
+ * @name: The well-known name to own.
+ * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
+ * @name_acquired_closure: (allow-none): #GClosure to invoke when @name is
+ * acquired or %NULL.
+ * @name_lost_closure: (allow-none): #GClosure to invoke when @name is lost or
+ * %NULL.
+ *
+ * Version of g_bus_own_name_on_connection() using closures instead of callbacks for
+ * easier binding in other languages.
+ *
+ * Returns: An identifier (never 0) that an be used with
+ * g_bus_unown_name() to stop owning the name.
+ *
+ * Rename to: g_bus_own_name_on_connection
+ *
+ * Since: 2.26
+ */
+guint
+g_bus_own_name_on_connection_with_closures (GDBusConnection          *connection,
+                                            const gchar              *name,
+                                            GBusNameOwnerFlags        flags,
+                                            GClosure                 *name_acquired_closure,
+                                            GClosure                 *name_lost_closure)
+{
+  OwnNameData *data;
+
+  data = g_new0 (OwnNameData, 1);
+
+  if (name_acquired_closure != NULL)
+    data->name_acquired_closure = g_closure_ref (name_acquired_closure);
+
+  if (name_lost_closure != NULL)
+    data->name_lost_closure = g_closure_ref (name_lost_closure);
+
+  return g_bus_own_name_on_connection (connection,
+          name,
+          flags,
+          name_acquired_closure != NULL ? own_with_closures_on_name_acquired : NULL,
+          name_lost_closure != NULL ? own_with_closures_on_name_lost : NULL,
+          data,
+          bus_own_name_free_func);
+}
+
 /**
  * g_bus_unown_name:
  * @owner_id: An identifier obtained from g_bus_own_name()

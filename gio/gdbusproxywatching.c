@@ -445,6 +445,183 @@ g_bus_watch_proxy_on_connection (GDBusConnection           *connection,
   return client->id;
 }
 
+typedef struct {
+  GClosure *proxy_appeared_closure;
+  GClosure *proxy_vanished_closure;
+} WatchProxyData;
+
+static void
+watch_with_closures_on_proxy_appeared (GDBusConnection *connection,
+                                       const gchar     *name,
+                                       const gchar     *name_owner,
+                                       GDBusProxy      *proxy,
+                                       gpointer         user_data)
+{
+  WatchProxyData *data = user_data;
+  GValue params[4] = { { 0, }, { 0, }, { 0, }, { 0, } };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], name);
+
+  g_value_init (&params[2], G_TYPE_STRING);
+  g_value_set_string (&params[2], name_owner);
+
+  g_value_init (&params[3], G_TYPE_DBUS_PROXY);
+  g_value_set_object (&params[3], proxy);
+
+  g_closure_invoke (data->proxy_appeared_closure, NULL, 4, params, NULL);
+}
+
+static void
+watch_with_closures_on_proxy_vanished (GDBusConnection *connection,
+                                       const gchar     *name,
+                                       gpointer         user_data)
+{
+  WatchProxyData *data = user_data;
+  GValue params[2] = { { 0, }, { 0, } };
+
+  g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
+  g_value_set_object (&params[0], connection);
+
+  g_value_init (&params[1], G_TYPE_STRING);
+  g_value_set_string (&params[1], name);
+
+  g_closure_invoke (data->proxy_vanished_closure, NULL, 2, params, NULL);
+}
+
+static void
+bus_watch_proxy_free_func (gpointer user_data)
+{
+  WatchProxyData *data = user_data;
+
+  if (data->proxy_appeared_closure != NULL)
+    g_closure_unref (data->proxy_appeared_closure);
+
+  if (data->proxy_vanished_closure != NULL)
+    g_closure_unref (data->proxy_vanished_closure);
+
+  g_free (data);
+}
+
+/**
+ * g_bus_watch_proxy_with_closures:
+ * @bus_type: The type of bus to watch a name on.
+ * @name: The name (well-known or unique) to watch.
+ * @flags: Flags from the #GBusNameWatcherFlags enumeration.
+ * @object_path: The object path of the remote object to watch.
+ * @interface_name: The D-Bus interface name for the proxy.
+ * @interface_type: The #GType for the kind of proxy to create. This must be a #GDBusProxy derived type.
+ * @proxy_flags: Flags from #GDBusProxyFlags to use when constructing the proxy.
+ * @proxy_appeared_closure: (allow-none): #GClosure to invoke when @name is
+ * known to exist and the requested proxy is available.
+ * @proxy_vanished_closure: (allow-none): #GClosure to invoke when @name is
+ * known to not exist and the previously created proxy is no longer available.
+ *
+ * Version of g_bus_watch_proxy() using closures instead of callbacks for
+ * easier binding in other languages.
+ *
+ * Returns: An identifier (never 0) that can be used with
+ * g_bus_unwatch_proxy() to stop watching the remote object.
+ *
+ * Rename to: g_bus_watch_proxy
+ *
+ * Since: 2.26
+ */
+guint
+g_bus_watch_proxy_with_closures (GBusType                   bus_type,
+                                 const gchar               *name,
+                                 GBusNameWatcherFlags       flags,
+                                 const gchar               *object_path,
+                                 const gchar               *interface_name,
+                                 GType                      interface_type,
+                                 GDBusProxyFlags            proxy_flags,
+                                 GClosure                  *proxy_appeared_closure,
+                                 GClosure                  *proxy_vanished_closure)
+{
+  WatchProxyData *data;
+
+  data = g_new0 (WatchProxyData, 1);
+
+  if (proxy_appeared_closure != NULL)
+    data->proxy_appeared_closure = g_closure_ref (proxy_appeared_closure);
+
+  if (proxy_vanished_closure != NULL)
+    data->proxy_vanished_closure = g_closure_ref (proxy_vanished_closure);
+
+  return g_bus_watch_proxy (bus_type,
+          name,
+          flags,
+          object_path,
+          interface_name,
+          interface_type,
+          proxy_flags,
+          proxy_appeared_closure != NULL ? watch_with_closures_on_proxy_appeared : NULL,
+          proxy_vanished_closure != NULL ? watch_with_closures_on_proxy_vanished : NULL,
+          data,
+          bus_watch_proxy_free_func);
+}
+
+/**
+ * g_bus_watch_proxy_on_connection_with_closures:
+ * @connection: A #GDBusConnection that is not closed.
+ * @name: The name (well-known or unique) to watch.
+ * @flags: Flags from the #GBusNameWatcherFlags enumeration.
+ * @object_path: The object path of the remote object to watch.
+ * @interface_name: The D-Bus interface name for the proxy.
+ * @interface_type: The #GType for the kind of proxy to create. This must be a #GDBusProxy derived type.
+ * @proxy_flags: Flags from #GDBusProxyFlags to use when constructing the proxy.
+ * @proxy_appeared_closure: (allow-none): #GClosure to invoke when @name is
+ * known to exist and the requested proxy is available.
+ * @proxy_vanished_closure: (allow-none): #GClosure to invoke when @name is
+ * known to not exist and the previously created proxy is no longer available.
+ *
+ * Version of g_bus_watch_proxy_on_connection() using closures instead of
+ * callbacks for easier binding in other languages.
+ *
+ * Returns: An identifier (never 0) that can be used with
+ * g_bus_unwatch_proxy() to stop watching the remote object.
+ *
+ * Rename to: g_bus_watch_proxy_on_connection
+ *
+ * Since: 2.26
+ */
+guint
+g_bus_watch_proxy_on_connection_with_closures (
+                                 GDBusConnection           *connection,
+                                 const gchar               *name,
+                                 GBusNameWatcherFlags       flags,
+                                 const gchar               *object_path,
+                                 const gchar               *interface_name,
+                                 GType                      interface_type,
+                                 GDBusProxyFlags            proxy_flags,
+                                 GClosure                  *proxy_appeared_closure,
+                                 GClosure                  *proxy_vanished_closure)
+{
+  WatchProxyData *data;
+
+  data = g_new0 (WatchProxyData, 1);
+
+  if (proxy_appeared_closure != NULL)
+    data->proxy_appeared_closure = g_closure_ref (proxy_appeared_closure);
+
+  if (proxy_vanished_closure != NULL)
+    data->proxy_vanished_closure = g_closure_ref (proxy_vanished_closure);
+
+  return g_bus_watch_proxy_on_connection (connection,
+          name,
+          flags,
+          object_path,
+          interface_name,
+          interface_type,
+          proxy_flags,
+          proxy_appeared_closure != NULL ? watch_with_closures_on_proxy_appeared : NULL,
+          proxy_vanished_closure != NULL ? watch_with_closures_on_proxy_vanished : NULL,
+          data,
+          bus_watch_proxy_free_func);
+}
 
 /**
  * g_bus_unwatch_proxy:

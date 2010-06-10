@@ -1673,6 +1673,8 @@ g_dbus_method_invocation_return_value
 g_bus_own_name
 g_bus_own_name_on_connection
 g_bus_unown_name
+g_bus_own_name_with_closures
+g_bus_own_name_on_connection_with_closures
 #endif
 #endif
 
@@ -1681,6 +1683,8 @@ g_bus_unown_name
 g_bus_watch_name
 g_bus_watch_name_on_connection
 g_bus_unwatch_name
+g_bus_watch_name_with_closures
+g_bus_watch_name_on_connection_with_closures
 #endif
 #endif
 
@@ -1713,6 +1717,8 @@ g_dbus_proxy_call_sync
 g_bus_watch_proxy
 g_bus_watch_proxy_on_connection
 g_bus_unwatch_proxy
+g_bus_watch_proxy_with_closures
+g_bus_watch_proxy_on_connection_with_closures
 #endif
 #endif
 

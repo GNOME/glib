@@ -89,6 +89,25 @@ guint g_bus_watch_proxy_on_connection (GDBusConnection           *connection,
                                        GBusProxyVanishedCallback  proxy_vanished_handler,
                                        gpointer                   user_data,
                                        GDestroyNotify             user_data_free_func);
+guint g_bus_watch_proxy_with_closures (GBusType                   bus_type,
+                                       const gchar               *name,
+                                       GBusNameWatcherFlags       flags,
+                                       const gchar               *object_path,
+                                       const gchar               *interface_name,
+                                       GType                      interface_type,
+                                       GDBusProxyFlags            proxy_flags,
+                                       GClosure                  *proxy_appeared_closure,
+                                       GClosure                  *proxy_vanished_closure);
+guint g_bus_watch_proxy_on_connection_with_closures (
+                                       GDBusConnection           *connection,
+                                       const gchar               *name,
+                                       GBusNameWatcherFlags       flags,
+                                       const gchar               *object_path,
+                                       const gchar               *interface_name,
+                                       GType                      interface_type,
+                                       GDBusProxyFlags            proxy_flags,
+                                       GClosure                  *proxy_appeared_closure,
+                                       GClosure                  *proxy_vanished_closure);
 void  g_bus_unwatch_proxy             (guint                      watcher_id);
 
 G_END_DECLS
