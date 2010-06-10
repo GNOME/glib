@@ -422,7 +422,6 @@ gvdb_table_value_from_item (GvdbTable                   *table,
  * gvdb_table_get_value:
  * @file: a #GvdbTable
  * @key: a string
- * @options: a pointer to a #GVariant, or %NULL
  * @returns: a #GVariant, or %NULL
  *
  * Looks up a value named @key in @file.
@@ -431,46 +430,19 @@ gvdb_table_value_from_item (GvdbTable                   *table,
  * #GVariant instance is returned.  The #GVariant does not depend on the
  * continued existence of @file.
  *
- * If @options is non-%NULL then it will be set either to %NULL in the
- * case of no options or a #GVariant containing a dictionary mapping
- * strings to variants.
- *
  * You should call g_variant_unref() on the return result when you no
  * longer require it.
  **/
 GVariant *
 gvdb_table_get_value (GvdbTable    *file,
-                      const gchar  *key,
-                      GVariant    **options)
+                      const gchar  *key)
 {
   const struct gvdb_hash_item *item;
-  GVariant *value;
 
   if ((item = gvdb_table_lookup (file, key, 'v')) == NULL)
     return NULL;
 
-  value = gvdb_table_value_from_item (file, item);
-
-  if (options != NULL)
-    {
-      gconstpointer data;
-      gsize size;
-
-      data = gvdb_table_dereference (file, &item->options, 8, &size);
-
-      if (data != NULL && size > 0)
-        {
-          *options = g_variant_new_from_data (G_VARIANT_TYPE ("a{sv}"),
-                                              data, size, file->trusted,
-                                              (GDestroyNotify) g_mapped_file_unref,
-                                              g_mapped_file_ref (file->mapped));
-          g_variant_ref_sink (*options);
-        }
-      else
-        *options = NULL;
-    }
-
-  return value;
+  return gvdb_table_value_from_item (file, item);
 }
 
 /**

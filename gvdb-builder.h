@@ -42,9 +42,6 @@ G_GNUC_INTERNAL
 void                    gvdb_item_set_value                             (GvdbItem      *item,
                                                                          GVariant      *value);
 G_GNUC_INTERNAL
-void                    gvdb_item_set_options                           (GvdbItem      *item,
-                                                                         GVariant      *options);
-G_GNUC_INTERNAL
 void                    gvdb_item_set_hash_table                        (GvdbItem      *item,
                                                                          GHashTable    *table);
 G_GNUC_INTERNAL

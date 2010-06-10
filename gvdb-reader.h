@@ -43,8 +43,7 @@ GvdbTable *             gvdb_table_get_table                            (GvdbTab
                                                                          const gchar  *key);
 G_GNUC_INTERNAL
 GVariant *              gvdb_table_get_value                            (GvdbTable    *table,
-                                                                         const gchar  *key,
-                                                                         GVariant    **options);
+                                                                         const gchar  *key);
 
 G_GNUC_INTERNAL
 gboolean                gvdb_table_has_value                            (GvdbTable    *table,

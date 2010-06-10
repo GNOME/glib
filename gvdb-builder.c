@@ -36,7 +36,6 @@ struct _GvdbItem
   GvdbItem *parent;
   GvdbItem *sibling;
   GvdbItem *next;
-  GVariant *options;
 
   /* one of:
    * this:
@@ -59,9 +58,6 @@ gvdb_item_free (gpointer data)
 
   if (item->value)
     g_variant_unref (item->value);
-
-  if (item->options)
-    g_variant_unref (item->options);
 
   if (item->table)
     g_hash_table_unref (item->table);
@@ -133,15 +129,6 @@ gvdb_item_set_value (GvdbItem *item,
   g_return_if_fail (!item->value && !item->table && !item->child);
 
   item->value = g_variant_ref_sink (value);
-}
-
-void
-gvdb_item_set_options (GvdbItem *item,
-                       GVariant *options)
-{
-  g_return_if_fail (!item->options);
-
-  item->options = g_variant_ref_sink (options);
 }
 
 void
@@ -282,33 +269,6 @@ file_builder_add_value (FileBuilder         *fb,
 }
 
 static void
-file_builder_add_options (FileBuilder         *fb,
-                          GVariant            *options,
-                          struct gvdb_pointer *pointer)
-{
-  GVariant *normal;
-  gpointer data;
-  gsize size;
-
-  if (options)
-    {
-      if (fb->byteswap)
-        {
-          options = g_variant_byteswap (options);
-          normal = g_variant_get_normal_form (options);
-          g_variant_unref (options);
-        }
-      else
-        normal = g_variant_get_normal_form (options);
-
-      size = g_variant_get_size (normal);
-      data = file_builder_allocate (fb, 8, size, pointer);
-      g_variant_store (normal, data);
-      g_variant_unref (normal);
-    }
-}
-
-static void
 file_builder_add_string (FileBuilder *fb,
                          const gchar *string,
                          guint32_le  *start,
@@ -424,7 +384,6 @@ file_builder_add_hash (FileBuilder         *fb,
               g_assert (item->child == NULL && item->table == NULL);
 
               file_builder_add_value (fb, item->value, &entry->value.pointer);
-              file_builder_add_options (fb, item->options, &entry->options);
               entry->type = 'v';
             }
 

@@ -51,8 +51,6 @@ struct gvdb_hash_item {
     struct gvdb_pointer pointer;
     gchar direct[8];
   } value;
-
-  struct gvdb_pointer options;
 };
 
 struct gvdb_header {
