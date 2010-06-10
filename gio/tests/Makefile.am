@@ -253,7 +253,7 @@ gdbus_example_proxy_subclass_LDADD   = $(progs_ldadd)
 gdbus_example_export_SOURCES = gdbus-example-export.c
 gdbus_example_export_LDADD   = $(progs_ldadd)
 
-application_SOURCES = application.c
+application_SOURCES = application.c gdbus-sessionbus.c gdbus-sessionbus.h
 application_LDADD   = $(progs_ldadd)
 
 appinfo_SOURCES = appinfo.c
@@ -265,7 +265,7 @@ appinfo_test_LDADD   = $(progs_ldadd)
 testapp_SOURCES = testapp.c
 testapp_LDADD   = $(progs_ldadd)
 
-testapps_SOURCES = testapps.c
+testapps_SOURCES = testapps.c gdbus-sessionbus.c gdbus-sessionbus.h
 testapps_LDADD   = $(progs_ldadd)
 
 EXTRA_DIST += \

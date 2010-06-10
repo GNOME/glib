@@ -3,6 +3,8 @@
 #include <sys/wait.h>
 #include <signal.h>
 
+#include "gdbus-sessionbus.h"
+
 static gint appeared;
 static gint disappeared;
 static gint changed;
@@ -518,8 +520,15 @@ test_change_action (void)
 int
 main (int argc, char *argv[])
 {
+  gint ret;
+
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
+
+  g_unsetenv ("DISPLAY");
+  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+
+  session_bus_up ();
 
   g_test_add_func ("/application/unique", test_unique);
   g_test_add_func ("/application/quit", test_quit);
@@ -528,6 +537,10 @@ main (int argc, char *argv[])
   g_test_add_func ("/application/remote", test_remote);
   g_test_add_func ("/application/change-action", test_change_action);
 
-  return g_test_run ();
+  ret = g_test_run ();
+
+  session_bus_down ();
+
+  return ret;
 }
 

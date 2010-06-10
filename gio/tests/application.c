@@ -2,6 +2,8 @@
 #include <gio.h>
 #include <gstdio.h>
 
+#include "gdbus-sessionbus.h"
+
 enum
 {
   INVOKE_ACTION,
@@ -125,10 +127,21 @@ test_basic (void)
 int
 main (int argc, char *argv[])
 {
+  gint ret;
+
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
+  g_unsetenv ("DISPLAY");
+  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+
+  session_bus_up ();
+
   g_test_add_func ("/application/basic", test_basic);
 
-  return g_test_run ();
+  ret = g_test_run ();
+
+  session_bus_down ();
+
+  return ret;
 }
