@@ -43,12 +43,27 @@ GvdbTable *             gvdb_table_get_table                            (GvdbTab
                                                                          const gchar  *key);
 G_GNUC_INTERNAL
 GVariant *              gvdb_table_get_value                            (GvdbTable    *table,
-                                                                         const gchar  *key,
-                                                                         GVariant    **options);
+                                                                         const gchar  *key);
 
 G_GNUC_INTERNAL
 gboolean                gvdb_table_has_value                            (GvdbTable    *table,
                                                                          const gchar  *key);
+
+typedef void          (*GvdbWalkValueFunc)                              (const gchar       *name,
+                                                                         gsize              name_len,
+                                                                         GVariant          *value,
+                                                                         gpointer           user_data);
+typedef gboolean      (*GvdbWalkOpenFunc)                               (const gchar       *name,
+                                                                         gsize              name_len,
+                                                                         gpointer           user_data);
+typedef void          (*GvdbWalkCloseFunc)                              (gpointer           user_data);
+
+void                    gvdb_table_walk                                 (GvdbTable         *table,
+                                                                         const gchar       *key,
+                                                                         GvdbWalkOpenFunc   open_func,
+                                                                         GvdbWalkValueFunc  value_func,
+                                                                         GvdbWalkCloseFunc  close_func,
+                                                                         gpointer           user_data);
 
 
 #endif /* __gvdb_reader_h__ */

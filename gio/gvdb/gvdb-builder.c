@@ -36,7 +36,6 @@ struct _GvdbItem
   GvdbItem *parent;
   GvdbItem *sibling;
   GvdbItem *next;
-  GVariant *options;
 
   /* one of:
    * this:
@@ -59,9 +58,6 @@ gvdb_item_free (gpointer data)
 
   if (item->value)
     g_variant_unref (item->value);
-
-  if (item->options)
-    g_variant_unref (item->options);
 
   if (item->table)
     g_hash_table_unref (item->table);
@@ -136,15 +132,6 @@ gvdb_item_set_value (GvdbItem *item,
 }
 
 void
-gvdb_item_set_options (GvdbItem *item,
-                       GVariant *options)
-{
-  g_return_if_fail (!item->options);
-
-  item->options = g_variant_ref_sink (options);
-}
-
-void
 gvdb_item_set_hash_table (GvdbItem   *item,
                           GHashTable *table)
 {
@@ -178,7 +165,7 @@ typedef struct
   gint n_buckets;
 } HashTable;
 
-HashTable *
+static HashTable *
 hash_table_new (gint n_buckets)
 {
   HashTable *table;
@@ -279,33 +266,6 @@ file_builder_add_value (FileBuilder         *fb,
   data = file_builder_allocate (fb, 8, size, pointer);
   g_variant_store (normal, data);
   g_variant_unref (normal);
-}
-
-static void
-file_builder_add_options (FileBuilder         *fb,
-                          GVariant            *options,
-                          struct gvdb_pointer *pointer)
-{
-  GVariant *normal;
-  gpointer data;
-  gsize size;
-
-  if (options)
-    {
-      if (fb->byteswap)
-        {
-          options = g_variant_byteswap (options);
-          normal = g_variant_get_normal_form (options);
-          g_variant_unref (options);
-        }
-      else
-        normal = g_variant_get_normal_form (options);
-
-      size = g_variant_get_size (normal);
-      data = file_builder_allocate (fb, 8, size, pointer);
-      g_variant_store (normal, data);
-      g_variant_unref (normal);
-    }
 }
 
 static void
@@ -424,13 +384,12 @@ file_builder_add_hash (FileBuilder         *fb,
               g_assert (item->child == NULL && item->table == NULL);
 
               file_builder_add_value (fb, item->value, &entry->value.pointer);
-              file_builder_add_options (fb, item->options, &entry->options);
               entry->type = 'v';
             }
 
           if (item->child != NULL)
             {
-              guint32 children = 0;
+              guint32 children = 0, i = 0;
               guint32_le *offsets;
               GvdbItem *child;
 
@@ -444,9 +403,9 @@ file_builder_add_hash (FileBuilder         *fb,
               entry->type = 'L';
 
               for (child = item->child; child; child = child->sibling)
-                offsets[--children] = child->assigned_index;
+                offsets[i++] = child->assigned_index;
 
-              g_assert (children == 0);
+              g_assert (children == i);
             }
 
           if (item->table != NULL)
