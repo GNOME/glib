@@ -438,11 +438,23 @@ gvdb_table_get_value (GvdbTable    *file,
                       const gchar  *key)
 {
   const struct gvdb_hash_item *item;
+  GVariant *value;
 
   if ((item = gvdb_table_lookup (file, key, 'v')) == NULL)
     return NULL;
 
-  return gvdb_table_value_from_item (file, item);
+  value = gvdb_table_value_from_item (file, item);
+
+  if (value && file->byteswapped)
+    {
+      GVariant *tmp;
+
+      tmp = g_variant_byteswap (value);
+      g_variant_unref (value);
+      value = tmp;
+    }
+
+  return value;
 }
 
 /**
@@ -579,6 +591,15 @@ gvdb_table_walk (GvdbTable         *table,
 
                   if (value != NULL)
                     {
+                      if (table->byteswapped)
+                        {
+                          GVariant *tmp;
+
+                          tmp = g_variant_byteswap (value);
+                          g_variant_unref (value);
+                          value = tmp;
+                        }
+
                       value_func (name, name_len, value, user_data);
                       g_variant_unref (value);
                     }
