@@ -551,10 +551,9 @@ end_element (GMarkupParseContext  *context,
           state->choices = NULL;
         }
 
-      gvdb_item_set_value (state->key, state->value);
-      gvdb_item_set_options (state->key,
-                             g_variant_builder_end (&state->key_options));
-
+      gvdb_item_set_value (state->key,
+                           g_variant_new ("(*a{sv})", state->value,
+                                                   &state->key_options));
       state->value = NULL;
     }
 

@@ -70,6 +70,9 @@ gboolean                g_settings_schema_has_key                       (GSettin
 G_GNUC_INTERNAL
 const GQuark *          g_settings_schema_list                          (GSettingsSchema  *schema,
                                                                          gint             *n_items);
+G_GNUC_INTERNAL
+const gchar *           g_settings_schema_get_string                    (GSettingsSchema  *schema,
+                                                                         const gchar      *key);
 
 G_END_DECLS
 

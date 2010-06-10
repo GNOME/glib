@@ -112,14 +112,14 @@ g_settings_schema_class_init (GSettingsSchemaClass *class)
   g_type_class_add_private (class, sizeof (GSettingsSchemaPrivate));
 }
 
-static const gchar *
+const gchar *
 g_settings_schema_get_string (GSettingsSchema *schema,
                               const gchar     *key)
 {
   const gchar *result = NULL;
   GVariant *value;
 
-  if ((value = gvdb_table_get_value (schema->priv->table, key, NULL)))
+  if ((value = gvdb_table_get_value (schema->priv->table, key)))
     {
       result = g_variant_get_string (value, NULL);
       g_variant_unref (value);
@@ -167,10 +167,11 @@ g_settings_schema_get_value (GSettingsSchema  *schema,
                              const gchar      *key,
                              GVariant        **options)
 {
+  GVariant *variant, *value;
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  GVariant *variant, *tmp;
+  GVariant *tmp;
 
-  tmp = gvdb_table_get_value (schema->priv->table, key, options);
+  tmp = gvdb_table_get_value (schema->priv->table, key);
 
   if (tmp)
     {
@@ -179,13 +180,19 @@ g_settings_schema_get_value (GSettingsSchema  *schema,
     }
   else
     variant = NULL;
-
-  /* NOTE: no options have byteswapped data in them at the moment */
-
-  return variant;
 #else
-  return gvdb_table_get_value (schema->priv->table, key, options);
+  variant = gvdb_table_get_value (schema->priv->table, key);
 #endif
+
+  if (variant == NULL)
+    return NULL;
+
+  value = g_variant_get_child_value (variant, 0);
+  if (options != NULL)
+    *options = g_variant_get_child_value (variant, 1);
+  g_variant_unref (variant);
+
+  return value;
 }
 
 const gchar *

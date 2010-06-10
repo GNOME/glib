@@ -991,7 +991,7 @@ GSettings *
 g_settings_get_child (GSettings   *settings,
                       const gchar *name)
 {
-  GVariant *child_schema;
+  const gchar *child_schema;
   gchar *child_path;
   gchar *child_name;
   GSettings *child;
@@ -999,19 +999,17 @@ g_settings_get_child (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
 
   child_name = g_strconcat (name, "/", NULL);
-  child_schema = g_settings_schema_get_value (settings->priv->schema,
-                                              child_name, NULL);
-  if (child_schema == NULL ||
-      !g_variant_is_of_type (child_schema, G_VARIANT_TYPE_STRING))
+  child_schema = g_settings_schema_get_string (settings->priv->schema,
+                                               child_name);
+  if (child_schema == NULL)
     g_error ("Schema '%s' has no child '%s'",
              settings->priv->schema_name, name);
 
   child_path = g_strconcat (settings->priv->path, child_name, NULL);
   child = g_object_new (G_TYPE_SETTINGS,
-                        "schema", g_variant_get_string (child_schema, NULL),
+                        "schema", child_schema,
                         "path", child_path,
                         NULL);
-  g_variant_unref (child_schema);
   g_free (child_path);
   g_free (child_name);
 
