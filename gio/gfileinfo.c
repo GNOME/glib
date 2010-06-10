@@ -618,7 +618,7 @@ g_file_info_has_namespace (GFileInfo  *info,
  * 
  * Lists the file info structure's attributes.
  * 
- * Returns: a null-terminated array of strings of all of the 
+ * Returns: (array zero-terminated=1) (transfer full): a null-terminated array of strings of all of the 
  * possible attribute types for the given @name_space, or 
  * %NULL on error.
  **/
@@ -709,13 +709,13 @@ g_file_info_remove_attribute (GFileInfo  *info,
  * g_file_info_get_attribute_data:
  * @info: a #GFileInfo
  * @attribute: a file attribute key
- * @type: return location for the attribute type, or %NULL
- * @value_pp: return location for the attribute value, or %NULL
- * @status: return location for the attribute status, or %NULL
+ * @type: (out) (allow-none): return location for the attribute type, or %NULL
+ * @value_pp: (out) (allow-none): return location for the attribute value, or %NULL
+ * @status: (out) (allow-none): return location for the attribute status, or %NULL
  *
  * Gets the attribute type, value and status for an attribute key.
  *
- * Returns: %TRUE if @info has an attribute named @attribute, 
+ * Returns: (transfer none): %TRUE if @info has an attribute named @attribute, 
  *      %FALSE otherwise.
  */
 gboolean
@@ -850,7 +850,7 @@ g_file_info_get_attribute_as_string (GFileInfo  *info,
  * Gets the value of a #GObject attribute. If the attribute does 
  * not contain a #GObject, %NULL will be returned.
  * 
- * Returns: a #GObject associated with the given @attribute, or
+ * Returns: (transfer none): a #GObject associated with the given @attribute, or
  * %NULL otherwise.
  **/
 GObject *
@@ -1604,7 +1604,7 @@ g_file_info_get_edit_name (GFileInfo *info)
  * 
  * Gets the icon for a file.
  * 
- * Returns: #GIcon for the given @info.
+ * Returns: (transfer none): #GIcon for the given @info.
  **/
 GIcon *
 g_file_info_get_icon (GFileInfo *info)

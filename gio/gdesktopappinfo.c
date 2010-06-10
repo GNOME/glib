@@ -1620,7 +1620,7 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
 /**
  * g_app_info_create_from_commandline:
  * @commandline: the commandline to use
- * @application_name: the application name, or %NULL to use @commandline
+ * @application_name: (allow-none): the application name, or %NULL to use @commandline
  * @flags: flags that can specify details of the created #GAppInfo
  * @error: a #GError location to store the error occuring, %NULL to ignore.
  *
@@ -1718,7 +1718,7 @@ app_info_in_list (GAppInfo *info,
  * 
  * Gets a list of all #GAppInfo<!-- -->s for a given content type.
  *
- * Returns: #GList of #GAppInfo<!-- -->s for given @content_type
+ * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfo<!-- -->s for given @content_type
  *    or %NULL on error.
  **/
 GList *
@@ -1957,7 +1957,7 @@ get_apps_from_dir (GHashTable *apps,
  * The returned list does not include applications which have
  * the <literal>Hidden</literal> key set. 
  * 
- * Returns: a newly allocated #GList of references to #GAppInfo<!---->s.
+ * Returns: (element-type GAppInfo) (transfer full): a newly allocated #GList of references to #GAppInfo<!---->s.
  **/
 GList *
 g_app_info_get_all (void)

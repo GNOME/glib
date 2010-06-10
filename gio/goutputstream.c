@@ -149,7 +149,7 @@ g_output_stream_init (GOutputStream *stream)
 /**
  * g_output_stream_write:
  * @stream: a #GOutputStream.
- * @buffer: the buffer containing the data to write. 
+ * @buffer: (array length=count) (element-type uint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
  * @cancellable: optional cancellable object
  * @error: location to store the error occuring, or %NULL to ignore
@@ -227,7 +227,7 @@ g_output_stream_write (GOutputStream  *stream,
 /**
  * g_output_stream_write_all:
  * @stream: a #GOutputStream.
- * @buffer: the buffer containing the data to write. 
+ * @buffer: (array length=count) (element-type uint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
  * @bytes_written: location to store the number of bytes that was 
  *     written to the stream
@@ -651,7 +651,7 @@ async_ready_close_flushed_callback_wrapper (GObject      *source_object,
 /**
  * g_output_stream_write_async:
  * @stream: A #GOutputStream.
- * @buffer: the buffer containing the data to write. 
+ * @buffer: (array length=count) (element-type uint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
  * @io_priority: the io priority of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore.

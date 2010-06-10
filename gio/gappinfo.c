@@ -439,7 +439,7 @@ g_app_info_remove_supports_type (GAppInfo    *appinfo,
  * 
  * Gets the icon for the application.
  *
- * Returns: the default #GIcon for @appinfo.
+ * Returns: (transfer none): the default #GIcon for @appinfo.
  **/
 GIcon *
 g_app_info_get_icon (GAppInfo *appinfo)
@@ -457,8 +457,8 @@ g_app_info_get_icon (GAppInfo *appinfo)
 /**
  * g_app_info_launch:
  * @appinfo: a #GAppInfo
- * @files: a #GList of #GFile objects
- * @launch_context: a #GAppLaunchContext or %NULL
+ * @files: (element-type GFile): a #GList of #GFile objects
+ * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
  * Launches the application. Passes @files to the launched application
@@ -549,8 +549,8 @@ g_app_info_supports_files (GAppInfo *appinfo)
 /**
  * g_app_info_launch_uris:
  * @appinfo: a #GAppInfo
- * @uris: a #GList containing URIs to launch.
- * @launch_context: a #GAppLaunchContext or %NULL
+ * @uris: (element-type char*): a #GList containing URIs to launch.
+ * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
  * Launches the application. Passes @uris to the launched application

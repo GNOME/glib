@@ -141,7 +141,7 @@ g_volume_get_name (GVolume *volume)
  * 
  * Gets the icon for @volume.
  * 
- * Returns: a #GIcon.
+ * Returns: (transfer full): a #GIcon.
  *     The returned object should be unreffed with g_object_unref()
  *     when no longer needed.
  **/
@@ -188,7 +188,7 @@ g_volume_get_uuid (GVolume *volume)
  * 
  * Gets the drive for the @volume.
  * 
- * Returns: a #GDrive or %NULL if @volume is not associated with a drive.
+ * Returns: (transfer full): a #GDrive or %NULL if @volume is not associated with a drive.
  *     The returned object should be unreffed with g_object_unref()
  *     when no longer needed.
  **/
@@ -210,7 +210,7 @@ g_volume_get_drive (GVolume *volume)
  * 
  * Gets the mount for the @volume.
  * 
- * Returns: a #GMount or %NULL if @volume isn't mounted.
+ * Returns: (transfer full): a #GMount or %NULL if @volume isn't mounted.
  *     The returned object should be unreffed with g_object_unref()
  *     when no longer needed.
  **/
@@ -301,7 +301,7 @@ g_volume_should_automount (GVolume *volume)
  * g_volume_mount:
  * @volume: a #GVolume.
  * @flags: flags affecting the operation
- * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
+ * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid user interaction.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data that gets passed to @callback

@@ -195,7 +195,7 @@ g_filter_input_stream_init (GFilterInputStream *stream)
  * 
  * Gets the base stream for the filter stream.
  *
- * Returns: a #GInputStream.
+ * Returns: (transfer none): a #GInputStream.
  **/
 GInputStream *
 g_filter_input_stream_get_base_stream (GFilterInputStream *stream)

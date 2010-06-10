@@ -1590,7 +1590,7 @@ g_file_create (GFile             *file,
 /**
  * g_file_replace:
  * @file: input #GFile.
- * @etag: an optional <link linkend="gfile-etag">entity tag</link> for the 
+ * @etag: (allow-none): an optional <link linkend="gfile-etag">entity tag</link> for the 
  *     current #GFile, or #NULL to ignore.
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
@@ -1788,7 +1788,7 @@ g_file_create_readwrite (GFile             *file,
 /**
  * g_file_replace_readwrite:
  * @file: a #GFile
- * @etag: an optional <link linkend="gfile-etag">entity tag</link> for the
+ * @etag: (allow-none): an optional <link linkend="gfile-etag">entity tag</link> for the
  *     current #GFile, or #NULL to ignore
  * @make_backup: %TRUE if a backup should be created
  * @flags: a set of #GFileCreateFlags
@@ -2056,7 +2056,7 @@ g_file_create_finish (GFile         *file,
 /**
  * g_file_replace_async:
  * @file: input #GFile.
- * @etag: an <link linkend="gfile-etag">entity tag</link> for the 
+ * @etag: (allow-none): an <link linkend="gfile-etag">entity tag</link> for the 
  *     current #GFile, or NULL to ignore.
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
@@ -2288,7 +2288,7 @@ g_file_create_readwrite_finish (GFile         *file,
 /**
  * g_file_replace_readwrite_async:
  * @file: input #GFile.
- * @etag: an <link linkend="gfile-etag">entity tag</link> for the
+ * @etag: (allow-none): an <link linkend="gfile-etag">entity tag</link> for the
  *     current #GFile, or NULL to ignore.
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
@@ -3999,7 +3999,7 @@ g_file_set_attributes_async (GFile               *file,
  * g_file_set_attributes_finish:
  * @file: input #GFile.
  * @result: a #GAsyncResult.
- * @info: a #GFileInfo.
+ * @info: (out) (transfer full): a #GFileInfo.
  * @error: a #GError, or %NULL
  * 
  * Finishes setting an attribute started in g_file_set_attributes_async().
@@ -6159,10 +6159,10 @@ g_file_query_default_handler (GFile                  *file,
  * g_file_load_contents:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @contents: a location to place the contents of the file.
- * @length: a location to place the length of the contents of the file,
+ * @contents: (out) (transfer full): a location to place the contents of the file.
+ * @length: (out) (allow-none): a location to place the length of the contents of the file,
  *    or %NULL if the length is not needed
- * @etag_out: a location to place the current entity tag for the file,
+ * @etag_out: (out) (allow-none): a location to place the current entity tag for the file,
  *    or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  *
@@ -6467,10 +6467,10 @@ g_file_load_partial_contents_async (GFile                 *file,
  * g_file_load_partial_contents_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @contents: a location to place the contents of the file.
- * @length: a location to place the length of the contents of the file,
+ * @contents: (out) (transfer full): a location to place the contents of the file.
+ * @length: (out) (allow-none): a location to place the length of the contents of the file,
  *     or %NULL if the length is not needed
- * @etag_out: a location to place the current entity tag for the file,
+ * @etag_out: (out) (allow-none): a location to place the current entity tag for the file,
  *     or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  * 
@@ -6573,10 +6573,10 @@ g_file_load_contents_async (GFile               *file,
  * g_file_load_contents_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @contents: a location to place the contents of the file.
- * @length: a location to place the length of the contents of the file,
+ * @contents: (out) (transfer full): a location to place the contents of the file.
+ * @length: (out) (allow-none): a location to place the length of the contents of the file,
  *     or %NULL if the length is not needed
- * @etag_out: a location to place the current entity tag for the file,
+ * @etag_out: (out) (allow-none): a location to place the current entity tag for the file,
  *     or %NULL if the entity tag is not needed
  * @error: a #GError, or %NULL
  * 
@@ -6610,7 +6610,7 @@ g_file_load_contents_finish (GFile         *file,
  * @file: input #GFile.
  * @contents: a string containing the new contents for @file.
  * @length: the length of @contents in bytes.
- * @etag: the old <link linkend="gfile-etag">entity tag</link> 
+ * @etag: (allow-none): the old <link linkend="gfile-etag">entity tag</link> 
  *     for the document, or %NULL
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
@@ -6824,7 +6824,7 @@ replace_contents_open_callback (GObject      *obj,
  * @file: input #GFile.
  * @contents: string of contents to replace the file with.
  * @length: the length of @contents in bytes.
- * @etag: a new <link linkend="gfile-etag">entity tag</link> for the @file, or %NULL
+ * @etag: (allow-none): a new <link linkend="gfile-etag">entity tag</link> for the @file, or %NULL
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
@@ -6887,7 +6887,7 @@ g_file_replace_contents_async  (GFile               *file,
  * g_file_replace_contents_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @new_etag: a location of a new <link linkend="gfile-etag">entity tag</link> 
+ * @new_etag: (out) (allow-none): a location of a new <link linkend="gfile-etag">entity tag</link> 
  *     for the document. This should be freed with g_free() when it is no 
  *     longer needed, or %NULL
  * @error: a #GError, or %NULL 

@@ -196,7 +196,7 @@ g_filter_output_stream_init (GFilterOutputStream *stream)
  * 
  * Gets the base stream for the filter stream.
  *
- * Returns: a #GOutputStream.
+ * Returns: (transfer none): a #GOutputStream.
  **/
 GOutputStream *
 g_filter_output_stream_get_base_stream (GFilterOutputStream *stream)
