@@ -3086,9 +3086,12 @@ guess_category_value (const gchar *category_name)
    * by Windows and the Microsoft C runtime (in the "English_United
    * States" format) translated into the Unixish format.
    */
-  retval = g_win32_getlocale ();
-  if ((retval != NULL) && (retval[0] != '\0'))
+  {
+    char *locale = g_win32_getlocale ();
+    retval = g_intern_string (locale);
+    g_free (locale);
     return retval;
+  }
 #endif  
 
   return NULL;
