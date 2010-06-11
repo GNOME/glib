@@ -27,6 +27,15 @@
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 
+/**
+ * SECTION:givfuncinfo
+ * @Short_description: Struct representing a virtual function
+ * @Title: GIVFuncInfo
+ *
+ * GIVfuncInfo represents a virtual function. A property belongs to
+ * either a #GIObjectInfo or a #GIInterfaceInfo.
+ */
+
 GIVFuncInfo *
 _g_base_info_find_vfunc (GIRealInfo   *rinfo,
 			 guint32       offset,
@@ -52,13 +61,26 @@ _g_base_info_find_vfunc (GIRealInfo   *rinfo,
   return NULL;
 }
 
+/**
+ * g_vfunc_info_get_flags:
+ * @info: a #GIVFuncInfo
+ *
+ * Obtain the flags for this virtual function info. See #GIVFuncInfoFlags for
+ * more information about possible flag values.
+ *
+ * Returns: the flags
+ */
 GIVFuncInfoFlags
 g_vfunc_info_get_flags (GIVFuncInfo *info)
 {
   GIVFuncInfoFlags flags;
-
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
+  VFuncBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_VFUNC_INFO (info), 0);
+
+  blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
   flags = 0;
 
@@ -74,20 +96,49 @@ g_vfunc_info_get_flags (GIVFuncInfo *info)
   return flags;
 }
 
+/**
+ * g_vfunc_info_get_offset:
+ * @info: a #GIVFuncInfo
+ *
+ * Obtain the offset of the function pointer in the class struct. The value
+ * 0xFFFF indicates that the struct offset is unknown.
+ *
+ * Returns: the struct offset or 0xFFFF if it's unknown
+ */
 gint
 g_vfunc_info_get_offset (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
+  VFuncBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_VFUNC_INFO (info), 0);
+
+  blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->struct_offset;
 }
 
+/**
+ * g_vfunc_info_get_signal:
+ * @info: a #GIVFuncInfo
+ *
+ * Obtain the signal for the virtual function if one is set.
+ * The signal comes from the object or interface to which
+ * this virtual function belongs.
+ *
+ * Returns: the signal or %NULL if none set
+ */
 GISignalInfo *
 g_vfunc_info_get_signal (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
+  VFuncBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_VFUNC_INFO (info), 0);
+
+  blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->class_closure)
     return g_interface_info_get_signal ((GIInterfaceInfo *)rinfo->container, blob->signal);
@@ -111,14 +162,20 @@ GIFunctionInfo *
 g_vfunc_info_get_invoker (GIVFuncInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  VFuncBlob *blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
-  GIBaseInfo *container = rinfo->container;
+  VFuncBlob *blob;
+  GIBaseInfo *container;
   GIInfoType parent_type;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_VFUNC_INFO (info), 0);
+
+  blob = (VFuncBlob *)&rinfo->typelib->data[rinfo->offset];
 
   /* 1023 = 0x3ff is the maximum of the 10 bits for invoker index */
   if (blob->invoker == 1023)
     return NULL;
 
+  container = rinfo->container;
   parent_type = g_base_info_get_type (container);
   if (parent_type == GI_INFO_TYPE_OBJECT)
     return g_object_info_get_method ((GIObjectInfo*)container, blob->invoker);
