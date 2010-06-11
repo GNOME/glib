@@ -211,7 +211,7 @@ g_converter_input_stream_new (GInputStream *base_stream,
 }
 
 static gsize
-buffer_available (Buffer *buffer)
+buffer_data_size (Buffer *buffer)
 {
   return buffer->end - buffer->start;
 }
@@ -251,7 +251,7 @@ compact_buffer (Buffer *buffer)
 {
   gsize in_buffer;
 
-  in_buffer = buffer_available (buffer);
+  in_buffer = buffer_data_size (buffer);
   memmove (buffer->data,
 	   buffer->data + buffer->start,
 	   in_buffer);
@@ -271,7 +271,7 @@ grow_buffer (Buffer *buffer)
     size = buffer->size * 2;
 
   data = g_malloc (size);
-  in_buffer = buffer_available (buffer);
+  in_buffer = buffer_data_size (buffer);
 
   memcpy (data,
 	  buffer->data + buffer->start,
@@ -283,13 +283,15 @@ grow_buffer (Buffer *buffer)
   buffer->size = size;
 }
 
+/* Ensures that the buffer can fit at_least_size bytes,
+ * *including* the current in-buffer data */
 static void
 buffer_ensure_space (Buffer *buffer,
 		     gsize at_least_size)
 {
   gsize in_buffer, left_to_fill;
 
-  in_buffer = buffer_available (buffer);
+  in_buffer = buffer_data_size (buffer);
 
   if (in_buffer >= at_least_size)
     return;
@@ -364,7 +366,7 @@ g_converter_input_stream_read (GInputStream *stream,
   cstream = G_CONVERTER_INPUT_STREAM (stream);
   priv = cstream->priv;
 
-  available = buffer_available (&priv->converted_buffer);
+  available = buffer_data_size (&priv->converted_buffer);
 
   if (available > 0 &&
       count <= available)
@@ -384,7 +386,7 @@ g_converter_input_stream_read (GInputStream *stream,
 
   /* If there is no data to convert, and no pre-converted data,
      do some i/o for more input */
-  if (buffer_available (&priv->input_buffer) == 0 &&
+  if (buffer_data_size (&priv->input_buffer) == 0 &&
       total_bytes_read == 0 &&
       !priv->at_input_end)
     {
@@ -401,7 +403,7 @@ g_converter_input_stream_read (GInputStream *stream,
       my_error = NULL;
       res = g_converter_convert (priv->converter,
 				 buffer_data (&priv->input_buffer),
-				 buffer_available (&priv->input_buffer),
+				 buffer_data_size (&priv->input_buffer),
 				 buffer, count,
 				 priv->at_input_end ? G_CONVERTER_INPUT_AT_END : 0,
 				 &bytes_read,
@@ -438,7 +440,7 @@ g_converter_input_stream_read (GInputStream *stream,
   /* If there is no more to convert, return EOF */
   if (priv->finished)
     {
-      g_assert (buffer_available (&priv->converted_buffer) == 0);
+      g_assert (buffer_data_size (&priv->converted_buffer) == 0);
       return 0;
     }
 
@@ -458,7 +460,7 @@ g_converter_input_stream_read (GInputStream *stream,
       my_error = NULL;
       res = g_converter_convert (priv->converter,
 				 buffer_data (&priv->input_buffer),
-				 buffer_available (&priv->input_buffer),
+				 buffer_data_size (&priv->input_buffer),
 				 buffer_data (&priv->converted_buffer),
 				 buffer_tailspace (&priv->converted_buffer),
 				 priv->at_input_end ? G_CONVERTER_INPUT_AT_END : 0,
@@ -471,13 +473,13 @@ g_converter_input_stream_read (GInputStream *stream,
 	  buffer_consumed (&priv->input_buffer, bytes_read);
 
 	  /* Maybe we consumed without producing any output */
-	  if (buffer_available (&priv->converted_buffer) == 0 && res != G_CONVERTER_FINISHED)
+	  if (buffer_data_size (&priv->converted_buffer) == 0 && res != G_CONVERTER_FINISHED)
 	    continue; /* Convert more */
 
 	  if (res == G_CONVERTER_FINISHED)
 	    priv->finished = TRUE;
 
-	  total_bytes_read = MIN (count, buffer_available (&priv->converted_buffer));
+	  total_bytes_read = MIN (count, buffer_data_size (&priv->converted_buffer));
 	  buffer_read (&priv->converted_buffer, buffer, total_bytes_read);
 
 	  g_assert (priv->finished || total_bytes_read > 0);
@@ -495,7 +497,7 @@ g_converter_input_stream_read (GInputStream *stream,
 	  /* Need more data */
 	  my_error2 = NULL;
 	  res = fill_input_buffer (cstream,
-				   buffer_available (&priv->input_buffer) + 4096,
+				   buffer_data_size (&priv->input_buffer) + 4096,
 				   cancellable,
 				   &my_error2);
 	  if (res < 0)

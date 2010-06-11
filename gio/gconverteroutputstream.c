@@ -228,7 +228,7 @@ g_converter_output_stream_new (GOutputStream *base_stream,
 }
 
 static gsize
-buffer_available (Buffer *buffer)
+buffer_data_size (Buffer *buffer)
 {
   return buffer->end - buffer->start;
 }
@@ -259,7 +259,7 @@ compact_buffer (Buffer *buffer)
 {
   gsize in_buffer;
 
-  in_buffer = buffer_available (buffer);
+  in_buffer = buffer_data_size (buffer);
   memmove (buffer->data,
 	   buffer->data + buffer->start,
 	   in_buffer);
@@ -279,7 +279,7 @@ grow_buffer (Buffer *buffer)
     size = buffer->size * 2;
 
   data = g_malloc (size);
-  in_buffer = buffer_available (buffer);
+  in_buffer = buffer_data_size (buffer);
 
   memcpy (data,
 	  buffer->data + buffer->start,
@@ -291,13 +291,15 @@ grow_buffer (Buffer *buffer)
   buffer->size = size;
 }
 
+/* Ensures that the buffer can fit at_least_size bytes,
+ * *including* the current in-buffer data */
 static void
 buffer_ensure_space (Buffer *buffer,
 		     gsize at_least_size)
 {
   gsize in_buffer, left_to_fill;
 
-  in_buffer = buffer_available (buffer);
+  in_buffer = buffer_data_size (buffer);
 
   if (in_buffer >= at_least_size)
     return;
@@ -330,7 +332,7 @@ buffer_append (Buffer *buffer,
 	       gsize data_size)
 {
   buffer_ensure_space (buffer,
-		       buffer_available (buffer) + data_size);
+		       buffer_data_size (buffer) + data_size);
   memcpy (buffer->data + buffer->end, data, data_size);
   buffer->end += data_size;
 }
@@ -352,7 +354,7 @@ flush_buffer (GConverterOutputStream *stream,
 
   base_stream = G_FILTER_OUTPUT_STREAM (stream)->base_stream;
 
-  available = buffer_available (&priv->converted_buffer);
+  available = buffer_data_size (&priv->converted_buffer);
   if (available > 0)
     {
       res = g_output_stream_write_all (base_stream,
@@ -398,12 +400,12 @@ g_converter_output_stream_write (GOutputStream *stream,
     return 0;
 
   /* Convert as much as possible */
-  if (buffer_available (&priv->output_buffer) > 0)
+  if (buffer_data_size (&priv->output_buffer) > 0)
     {
       converting_from_buffer = TRUE;
       buffer_append (&priv->output_buffer, buffer, count);
       to_convert = buffer_data (&priv->output_buffer);
-      to_convert_size = buffer_available (&priv->output_buffer);
+      to_convert_size = buffer_data_size (&priv->output_buffer);
     }
   else
     {
@@ -427,7 +429,7 @@ g_converter_output_stream_write (GOutputStream *stream,
       res = g_converter_convert (priv->converter,
 				 to_convert + converted_bytes,
 				 to_convert_size - converted_bytes,
-				 buffer_data (&priv->converted_buffer) + buffer_available (&priv->converted_buffer),
+				 buffer_data (&priv->converted_buffer) + buffer_data_size (&priv->converted_buffer),
 				 buffer_tailspace (&priv->converted_buffer),
 				 0,
 				 &bytes_read,
@@ -541,8 +543,8 @@ g_converter_output_stream_flush (GOutputStream  *stream,
       my_error = NULL;
       res = g_converter_convert (priv->converter,
 				 buffer_data (&priv->output_buffer),
-				 buffer_available (&priv->output_buffer),
-				 buffer_data (&priv->converted_buffer) + buffer_available (&priv->converted_buffer),
+				 buffer_data_size (&priv->output_buffer),
+				 buffer_data (&priv->converted_buffer) + buffer_data_size (&priv->converted_buffer),
 				 buffer_tailspace (&priv->converted_buffer),
 				 is_closing ? G_CONVERTER_INPUT_AT_END : G_CONVERTER_FLUSH,
 				 &bytes_read,
@@ -560,7 +562,7 @@ g_converter_output_stream_flush (GOutputStream  *stream,
 	      res == G_CONVERTER_FLUSHED)
 	    {
 	      /* Should not have retured FLUSHED with input left */
-	      g_assert (buffer_available (&priv->output_buffer) == 0);
+	      g_assert (buffer_data_size (&priv->output_buffer) == 0);
 	      flushed = TRUE;
 	    }
 	}
