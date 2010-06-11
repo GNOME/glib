@@ -33,6 +33,14 @@
  * GIConstantInfo represents a constant. A constant has a type associated
  * which can be obtained by calling g_constant_info_get_type() and a value,
  * which can be obtained by calling g_constant_info_get_value().
+ *
+ * <refsect1 id="gi-giconstantinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----GIConstantInfo
+ * </synopsis>
+ * </refsect1>
  */
 
 

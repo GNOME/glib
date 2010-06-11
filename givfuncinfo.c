@@ -34,6 +34,17 @@
  *
  * GIVfuncInfo represents a virtual function. A property belongs to
  * either a #GIObjectInfo or a #GIInterfaceInfo.
+ *
+ * <refsect1 id="gi-givfuncinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
+ *          +----<link linkend="gi-GIFunctionInfo">GIFunctionInfo</link>
+ *          +----<link linkend="gi-GISignalInfo">GISignalInfo</link>
+ *          +----GIVFuncInfo
+ * </synopsis>
+ * </refsect1>
  */
 
 GIVFuncInfo *

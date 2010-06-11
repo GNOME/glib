@@ -180,6 +180,21 @@ _g_type_info_init (GIBaseInfo *info,
  * </programlisting>
  * </example>
  *
+ * <refsect1 id="gi-gibaseinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   GIBaseInfo
+ *    +----<link linkend="gi-GIArgInfo">GIArgInfo</link>
+ *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
+ *    +----<link linkend="gi-GIConstantInfo">GIConstantInfo</link>
+ *    +----<link linkend="gi-GIErrorDomainInfo">GIErrorDomainInfo</link>
+ *    +----<link linkend="gi-GIFieldInfo">GIFieldInfo</link>
+ *    +----<link linkend="gi-GIPropertyInfo">GIPropertyInfo</link>
+ *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
+ *    +----<link linkend="gi-GITypeInfo">GITypeInfo</link>
+ * </synopsis>
+ * </refsect1>
+ *
  */
 
 /**

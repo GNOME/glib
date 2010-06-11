@@ -40,6 +40,14 @@
  * g_type_info_get_interface() to get a reference to the base info for that
  * interface.
  *
+ * <refsect1 id="gi-gitypeinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----GITypeInfo
+ * </synopsis>
+ * </refsect1>
+ *
  */
 
 /**

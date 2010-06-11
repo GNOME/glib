@@ -35,6 +35,17 @@
  *
  * See #GICallableInfo for information on how to retreive arguments
  * and other metadata from the signal.
+ *
+ * <refsect1 id="gi-gisignalinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
+ *          +----<link linkend="gi-GIFunctionInfo">GIFunctionInfo</link>
+ *          +----GISignalInfo
+ *          +----<link linkend="gi-GIVFuncInfo">GIVFuncInfo</link>
+ * </synopsis>
+ * </refsect1>
  */
 
 /**

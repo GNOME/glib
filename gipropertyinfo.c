@@ -32,6 +32,14 @@
  *
  * GIPropertyInfo represents a property. A property belongs to
  * either a #GIObjectInfo or a #GIInterfaceInfo.
+ *
+ * <refsect1 id="gi-gipropertyinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----GIPropertyInfo
+ * </synopsis>
+ * </refsect1>
  */
 
 /**

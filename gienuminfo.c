@@ -33,6 +33,15 @@
  * A GIEnumInfo represents an enumeration and a GIValueInfo struct represents a value
  * of an enumeration. The GIEnumInfo contains a set of values and a type
  * The GIValueInfo is fetched by calling g_enum_info_get_value() on a #GIEnumInfo.
+ *
+ * <refsect1 id="gi-gienuminfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
+ *          +----GIEnumInfo
+ * </synopsis>
+ * </refsect1>
  */
 
 /**

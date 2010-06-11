@@ -39,6 +39,16 @@
  * A callable has a list of arguments (#GIArgInfo), a return type,
  * direction and a flag which decides if it returns null.
  *
+ * <refsect1 id="gi-gicallableinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----GICallableInfo
+ *          +----<link linkend="gi-GIFunctionInfo">GIFunctionInfo</link>
+ *          +----<link linkend="gi-GISignalInfo">GISignalInfo</link>
+ *          +----<link linkend="gi-GIVFuncInfo">GIVFuncInfo</link>
+ * </synopsis>
+ * </refsect1>
  */
 
 static guint32

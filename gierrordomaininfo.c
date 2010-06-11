@@ -33,6 +33,14 @@
  * A GIErrorDomainInfo struct represents a domain of a #GError.
  * An error domain is associated with a #GQuark and contains a pointer
  * to an enum with all the error codes.
+ *
+ * <refsect1 id="gi-gierrordomaininfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----GIErrorDomainInfo
+ * </synopsis>
+ * </refsect1>
  */
 
 /**

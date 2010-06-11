@@ -37,6 +37,14 @@
  * or g_object_info_get_value().
  * A field has a size, type and a struct offset asssociated and a set of flags,
  * which is currently #GI_FIELD_IS_READABLE or #GI_FIELD_IS_WRITABLE.
+ *
+ * <refsect1 id="gi-gifieldinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----GIFieldInfo
+ * </synopsis>
+ * </refsect1>
  */
 
 /**
