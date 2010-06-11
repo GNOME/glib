@@ -1467,6 +1467,7 @@ g_settings_get_double
 g_settings_set_double
 g_settings_get_boolean
 g_settings_set_boolean
+g_settings_sync
 #endif
 #endif
 

@@ -1219,5 +1219,20 @@ g_settings_backend_setup (const gchar      *context,
                        g_object_ref (backend));
 }
 
+/*< private >
+ * g_settings_backend_sync:
+ * @backend: a #GSettingsBackend
+ *
+ * Syncs the backend.
+ */
+void
+g_settings_backend_sync (GSettingsBackend *backend)
+{
+  GSettingsBackendClass *class = G_SETTINGS_BACKEND_GET_CLASS (backend);
+
+  if (class->sync)
+    class->sync (backend);
+}
+
 #define __G_SETTINGS_BACKEND_C__
 #include "gioaliasdef.c"

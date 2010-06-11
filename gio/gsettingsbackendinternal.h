@@ -103,5 +103,7 @@ GPermission *                   g_settings_backend_get_permission       (GSettin
                                                                          const gchar                          *path);
 G_GNUC_INTERNAL
 GMainContext *                  g_settings_backend_get_active_context   (void);
+G_GNUC_INTERNAL
+void                            g_settings_backend_sync                 (GSettingsBackend                     *backend);
 
 #endif  /* __G_SETTINGS_BACKEND_INTERNAL_H__ */

@@ -2135,6 +2135,7 @@ g_settings_new_with_path
 g_settings_new_with_context
 g_settings_new_with_context_and_path
 g_settings_supports_context
+g_settings_sync
 g_settings_get_value
 g_settings_set_value
 g_settings_is_writable

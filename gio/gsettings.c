@@ -1860,5 +1860,33 @@ g_settings_set_strv (GSettings           *settings,
   return g_settings_set_value (settings, key, array);
 }
 
+/**
+ * g_settings_sync:
+ * @context: the context to sync, or %NULL
+ *
+ * Ensures that all pending operations for the given context are
+ * complete.
+ *
+ * Writes made to a #GSettings are handled asynchronously.  For this
+ * reason, it is very unlikely that the changes have it to disk by the
+ * time g_settings_set() returns.
+ *
+ * This call will block until all of the writes have made it to the
+ * backend.  Since the mainloop is not running, no change notifications
+ * will be dispatched during this call (but some may be queued by the
+ * time the call is done).
+ **/
+void
+g_settings_sync (const gchar *context)
+{
+  GSettingsBackend *backend;
+
+  if (context == NULL)
+    context = "";
+
+  backend = g_settings_backend_get_with_context (context);
+  g_settings_backend_sync (backend);
+}
+
 #define __G_SETTINGS_C__
 #include "gioaliasdef.c"
