@@ -2483,17 +2483,6 @@ g_bus_watch_name_on_connection_with_closures
 </SECTION>
 
 <SECTION>
-<FILE>gdbusproxywatching</FILE>
-GBusProxyAppearedCallback
-GBusProxyVanishedCallback
-g_bus_watch_proxy
-g_bus_watch_proxy_on_connection
-g_bus_unwatch_proxy
-g_bus_watch_proxy_with_closures
-g_bus_watch_proxy_on_connection_with_closures
-</SECTION>
-
-<SECTION>
 <FILE>gdbuserror</FILE>
 GDBusError
 G_DBUS_ERROR
@@ -2521,9 +2510,13 @@ GDBusProxyClass
 g_dbus_proxy_new
 g_dbus_proxy_new_finish
 g_dbus_proxy_new_sync
+g_dbus_proxy_new_for_bus
+g_dbus_proxy_new_for_bus_finish
+g_dbus_proxy_new_for_bus_sync
 g_dbus_proxy_get_flags
 g_dbus_proxy_get_connection
-g_dbus_proxy_get_unique_bus_name
+g_dbus_proxy_get_name
+g_dbus_proxy_get_name_owner
 g_dbus_proxy_get_object_path
 g_dbus_proxy_get_interface_name
 g_dbus_proxy_get_default_timeout

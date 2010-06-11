@@ -89,7 +89,6 @@ gdbus_headers = 			\
 	gdbusmessage.h			\
 	gdbusnameowning.h		\
 	gdbusnamewatching.h		\
-	gdbusproxywatching.h		\
 	gdbusproxy.h			\
 	gdbusintrospection.h		\
 	gdbusmethodinvocation.h		\
@@ -110,7 +109,6 @@ gdbus_sources = 							\
 	gdbusmessage.h			gdbusmessage.c			\
 	gdbusnameowning.h		gdbusnameowning.c		\
 	gdbusnamewatching.h		gdbusnamewatching.c		\
-	gdbusproxywatching.h		gdbusproxywatching.c		\
 	gdbusproxy.h			gdbusproxy.c			\
 	gdbusprivate.h			gdbusprivate.c			\
 	gdbusintrospection.h		gdbusintrospection.c		\

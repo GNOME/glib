@@ -1695,6 +1695,9 @@ g_dbus_proxy_get_type G_GNUC_CONST
 g_dbus_proxy_new
 g_dbus_proxy_new_finish
 g_dbus_proxy_new_sync
+g_dbus_proxy_new_for_bus
+g_dbus_proxy_new_for_bus_finish
+g_dbus_proxy_new_for_bus_sync
 g_dbus_proxy_get_cached_property
 g_dbus_proxy_set_cached_property
 g_dbus_proxy_get_cached_property_names
@@ -1704,22 +1707,13 @@ g_dbus_proxy_get_flags
 g_dbus_proxy_get_interface_info
 g_dbus_proxy_get_interface_name
 g_dbus_proxy_get_object_path
-g_dbus_proxy_get_unique_bus_name
+g_dbus_proxy_get_name
+g_dbus_proxy_get_name_owner
 g_dbus_proxy_set_default_timeout
 g_dbus_proxy_set_interface_info
 g_dbus_proxy_call
 g_dbus_proxy_call_finish
 g_dbus_proxy_call_sync
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_PROXY_WATCHING_H__)
-#if IN_FILE(__G_DBUS_PROXY_WATCHING_C__)
-g_bus_watch_proxy
-g_bus_watch_proxy_on_connection
-g_bus_unwatch_proxy
-g_bus_watch_proxy_with_closures
-g_bus_watch_proxy_on_connection_with_closures
 #endif
 #endif
 

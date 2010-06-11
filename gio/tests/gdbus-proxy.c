@@ -34,10 +34,7 @@ static GMainLoop *loop = NULL;
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-test_methods (GDBusConnection *connection,
-              const gchar     *name,
-              const gchar     *name_owner,
-              GDBusProxy      *proxy)
+test_methods (GDBusProxy *proxy)
 {
   GVariant *result;
   GError *error;
@@ -133,10 +130,7 @@ test_methods (GDBusConnection *connection,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-test_properties (GDBusConnection *connection,
-                 const gchar     *name,
-                 const gchar     *name_owner,
-                 GDBusProxy      *proxy)
+test_properties (GDBusProxy *proxy)
 {
   GError *error;
   GVariant *variant;
@@ -281,10 +275,7 @@ test_proxy_signals_on_emit_signal_cb (GDBusProxy   *proxy,
 }
 
 static void
-test_signals (GDBusConnection *connection,
-              const gchar     *name,
-              const gchar     *name_owner,
-              GDBusProxy      *proxy)
+test_signals (GDBusProxy *proxy)
 {
   GError *error;
   GString *s;
@@ -359,10 +350,7 @@ test_signals (GDBusConnection *connection,
 }
 
 static void
-test_bogus_method_return (GDBusConnection *connection,
-                          const gchar     *name,
-                          const gchar     *name_owner,
-                          GDBusProxy      *proxy)
+test_bogus_method_return (GDBusProxy *proxy)
 {
   GError *error = NULL;
   GVariant *result;
@@ -401,16 +389,8 @@ static const gchar *frob_dbus_interface_xml =
 static GDBusInterfaceInfo *frob_dbus_interface_info;
 
 static void
-on_proxy_appeared (GDBusConnection *connection,
-                   const gchar     *name,
-                   const gchar     *name_owner,
-                   GDBusProxy      *proxy,
-                   gpointer         user_data)
+test_expected_interface (GDBusProxy *proxy)
 {
-  test_methods (connection, name, name_owner, proxy);
-  test_properties (connection, name, name_owner, proxy);
-  test_signals (connection, name, name_owner, proxy);
-
   /* This is obviously wrong but expected interface is not set so we don't fail... */
   g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_string ("error_me_out!"));
   g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_byte (42));
@@ -419,12 +399,12 @@ on_proxy_appeared (GDBusConnection *connection,
 
   /* Now repeat the method tests, with an expected interface set */
   g_dbus_proxy_set_interface_info (proxy, frob_dbus_interface_info);
-  test_methods (connection, name, name_owner, proxy);
+  test_methods (proxy);
 
   /* And now one more test where we deliberately set the expected
    * interface definition incorrectly
    */
-  test_bogus_method_return (connection, name, name_owner, proxy);
+  test_bogus_method_return (proxy);
 
   /* Also check that we complain if setting a cached property of the wrong type */
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT | G_TEST_TRAP_SILENCE_STDERR))
@@ -443,21 +423,14 @@ on_proxy_appeared (GDBusConnection *connection,
 
   /* this should work, however (since the type is correct) */
   g_dbus_proxy_set_cached_property (proxy, "y", g_variant_new_byte (42));
-
-  g_main_loop_quit (loop);
-}
-
-static void
-on_proxy_vanished (GDBusConnection *connection,
-                   const gchar     *name,
-                   gpointer         user_data)
-{
 }
 
 static void
 test_proxy (void)
 {
-  guint watcher_id;
+  GDBusProxy *proxy;
+  GDBusConnection *connection;
+  GError *error;
 
   session_bus_up ();
 
@@ -466,27 +439,34 @@ test_proxy (void)
    */
   usleep (500 * 1000);
 
-  watcher_id = g_bus_watch_proxy (G_BUS_TYPE_SESSION,
-                                  "com.example.TestService",
-                                  G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                  "/com/example/TestObject",
-                                  "com.example.Frob",
-                                  G_TYPE_DBUS_PROXY,
-                                  G_DBUS_PROXY_FLAGS_NONE,
-                                  on_proxy_appeared,
-                                  on_proxy_vanished,
-                                  NULL,
-                                  NULL);
+  error = NULL;
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
+                               NULL,
+                               &error);
+  g_assert_no_error (error);
+  error = NULL;
+  proxy = g_dbus_proxy_new_sync (connection,
+                                 G_DBUS_PROXY_FLAGS_NONE,
+                                 NULL,                      /* GDBusInterfaceInfo */
+                                 "com.example.TestService", /* name */
+                                 "/com/example/TestObject", /* object path */
+                                 "com.example.Frob",        /* interface */
+                                 NULL, /* GCancellable */
+                                 &error);
+  g_assert_no_error (error);
 
   /* this is safe; testserver will exit once the bus goes away */
   g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));
 
-  g_main_loop_run (loop);
+  _g_assert_property_notify (proxy, "g-name-owner");
 
-  g_bus_unwatch_proxy (watcher_id);
+  test_methods (proxy);
+  test_properties (proxy);
+  test_signals (proxy);
+  test_expected_interface (proxy);
 
-  /* tear down bus */
-  session_bus_down ();
+  g_object_unref (proxy);
+  g_object_unref (connection);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

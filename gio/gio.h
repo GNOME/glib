@@ -52,7 +52,6 @@
 #include <gio/gdbusnameowning.h>
 #include <gio/gdbusnamewatching.h>
 #include <gio/gdbusproxy.h>
-#include <gio/gdbusproxywatching.h>
 #include <gio/gdbusserver.h>
 #include <gio/gdbusutils.h>
 #include <gio/gdrive.h>

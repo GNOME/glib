@@ -343,7 +343,6 @@ get_nodes_at (GDBusConnection  *c,
 
   error = NULL;
   proxy = g_dbus_proxy_new_sync (c,
-                                 G_TYPE_DBUS_PROXY,
                                  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
                                  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
                                  NULL,
@@ -400,7 +399,6 @@ has_interface (GDBusConnection *c,
 
   error = NULL;
   proxy = g_dbus_proxy_new_sync (c,
-                                 G_TYPE_DBUS_PROXY,
                                  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
                                  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
                                  NULL,
@@ -450,7 +448,6 @@ count_interfaces (GDBusConnection *c,
 
   error = NULL;
   proxy = g_dbus_proxy_new_sync (c,
-                                 G_TYPE_DBUS_PROXY,
                                  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
                                  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
                                  NULL,
@@ -522,7 +519,6 @@ dyna_create (GDBusConnection *c,
 
   error = NULL;
   proxy = g_dbus_proxy_new_sync (c,
-                                 G_TYPE_DBUS_PROXY,
                                  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
                                  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
                                  NULL,
@@ -745,7 +741,6 @@ test_dispatch_thread_func (gpointer user_data)
   const gchar *value_str;
 
   foo_proxy = g_dbus_proxy_new_sync (c,
-                                     G_TYPE_DBUS_PROXY,
                                      G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS |
                                      G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
                                      NULL,

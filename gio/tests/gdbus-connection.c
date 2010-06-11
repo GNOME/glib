@@ -360,9 +360,11 @@ test_connection_signals (void)
   GDBusConnection *c2;
   GDBusConnection *c3;
   guint s1;
+  guint s1b;
   guint s2;
   guint s3;
   gint count_s1;
+  gint count_s1b;
   gint count_s2;
   gint count_name_owner_changed;
   GError *error;
@@ -425,11 +427,26 @@ test_connection_signals (void)
                                            test_connection_signal_handler,
                                            &count_name_owner_changed,
                                            NULL);
+  /* Note that s1b is *just like* s1 - this is to catch a bug where N
+   * subscriptions of the same rule causes N calls to each of the N
+   * subscriptions instead of just 1 call to each of the N subscriptions.
+   */
+  s1b = g_dbus_connection_signal_subscribe (c1,
+                                           ":1.2",
+                                           "org.gtk.GDBus.ExampleInterface",
+                                           "Foo",
+                                           "/org/gtk/GDBus/ExampleInterface",
+                                           NULL,
+                                           test_connection_signal_handler,
+                                           &count_s1b,
+                                           NULL);
   g_assert (s1 != 0);
+  g_assert (s1b != 0);
   g_assert (s2 != 0);
   g_assert (s3 != 0);
 
   count_s1 = 0;
+  count_s1b = 0;
   count_s2 = 0;
   count_name_owner_changed = 0;
 
@@ -480,7 +497,7 @@ test_connection_signals (void)
                                        &error);
   g_assert_no_error (error);
   g_assert (ret);
-  while (!(count_s1 == 1 && count_s2 == 1))
+  while (!(count_s1 >= 1 && count_s2 >= 1))
     g_main_loop_run (loop);
   g_assert_cmpint (count_s1, ==, 1);
   g_assert_cmpint (count_s2, ==, 1);
@@ -510,7 +527,7 @@ test_connection_signals (void)
   guint quit_mainloop_id;
   quit_mainloop_fired = FALSE;
   quit_mainloop_id = g_timeout_add (5000, test_connection_signal_quit_mainloop, &quit_mainloop_fired);
-  while (count_name_owner_changed != 2 && !quit_mainloop_fired)
+  while (count_name_owner_changed < 2 && !quit_mainloop_fired)
     g_main_loop_run (loop);
   g_source_remove (quit_mainloop_id);
   g_assert_cmpint (count_s1, ==, 1);
@@ -520,6 +537,7 @@ test_connection_signals (void)
   g_dbus_connection_signal_unsubscribe (c1, s1);
   g_dbus_connection_signal_unsubscribe (c1, s2);
   g_dbus_connection_signal_unsubscribe (c1, s3);
+  g_dbus_connection_signal_unsubscribe (c1, s1b);
 
   _g_object_wait_for_single_ref (c1);
   _g_object_wait_for_single_ref (c2);

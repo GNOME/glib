@@ -34,11 +34,7 @@ static GMainLoop *loop = NULL;
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-introspection_on_proxy_appeared (GDBusConnection *connection,
-                                 const gchar     *name,
-                                 const gchar     *name_owner,
-                                 GDBusProxy      *proxy,
-                                 gpointer         user_data)
+test_introspection (GDBusProxy *proxy)
 {
   GError *error;
   const gchar *xml_data;
@@ -105,46 +101,45 @@ introspection_on_proxy_appeared (GDBusConnection *connection,
 }
 
 static void
-introspection_on_proxy_vanished (GDBusConnection *connection,
-                                 const gchar     *name,
-                                 gpointer         user_data)
-{
-}
-
-static void
 test_introspection_parser (void)
 {
-  guint watcher_id;
+  GDBusProxy *proxy;
+  GDBusConnection *connection;
+  GError *error;
 
   session_bus_up ();
-
-  watcher_id = g_bus_watch_proxy (G_BUS_TYPE_SESSION,
-                                  "com.example.TestService",
-                                  G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                  "/com/example/TestObject",
-                                  "com.example.Frob",
-                                  G_TYPE_DBUS_PROXY,
-                                  G_DBUS_PROXY_FLAGS_NONE,
-                                  introspection_on_proxy_appeared,
-                                  introspection_on_proxy_vanished,
-                                  NULL,
-                                  NULL);
 
   /* TODO: wait a bit for the bus to come up.. ideally session_bus_up() won't return
    * until one can connect to the bus but that's not how things work right now
    */
   usleep (500 * 1000);
+
+  error = NULL;
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
+                               NULL,
+                               &error);
+  g_assert_no_error (error);
+  error = NULL;
+  proxy = g_dbus_proxy_new_sync (connection,
+                                 G_DBUS_PROXY_FLAGS_NONE,
+                                 NULL,                      /* GDBusInterfaceInfo */
+                                 "com.example.TestService", /* name */
+                                 "/com/example/TestObject", /* object path */
+                                 "com.example.Frob",        /* interface */
+                                 NULL, /* GCancellable */
+                                 &error);
+  g_assert_no_error (error);
+
   /* this is safe; testserver will exit once the bus goes away */
   g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));
 
-  g_main_loop_run (loop);
+  _g_assert_property_notify (proxy, "g-name-owner");
 
-  g_bus_unwatch_proxy (watcher_id);
+  test_introspection (proxy);
 
-  /* tear down bus */
-  session_bus_down ();
+  g_object_unref (proxy);
+  g_object_unref (connection);
 }
-
 
 /* ---------------------------------------------------------------------------------------------------- */
 

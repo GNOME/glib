@@ -350,92 +350,9 @@ accounts_user_frobnicate_finish (AccountsUser        *user,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-/* Example usage of the AccountsUser type */
-/* ---------------------------------------------------------------------------------------------------- */
-
-static void
-print_user (AccountsUser *user)
-{
-  g_print ("  user-name       = `%s'\n", accounts_user_get_user_name (user));
-  g_print ("  real-name       = `%s'\n", accounts_user_get_real_name (user));
-  g_print ("  automatic-login = %s\n", accounts_user_get_automatic_login (user) ? "true" : "false");
-}
-
-static void
-on_changed (AccountsUser *user,
-            gpointer      user_data)
-{
-  g_print ("+++ Received the AccountsUser::changed signal\n");
-  print_user (user);
-}
-
-static void
-on_notify (GObject    *object,
-           GParamSpec *pspec,
-           gpointer    user_data)
-{
-  AccountsUser *user = ACCOUNTS_USER (object);
-  g_print ("+++ Received the GObject::notify signal for property `%s'\n",
-           pspec->name);
-  print_user (user);
-}
-
-static void
-on_proxy_appeared (GDBusConnection *connection,
-                   const gchar     *name,
-                   const gchar     *name_owner,
-                   GDBusProxy      *proxy,
-                   gpointer         user_data)
-{
-  AccountsUser *user = ACCOUNTS_USER (proxy);
-
-  g_print ("+++ Acquired proxy for user\n");
-  print_user (user);
-
-  g_signal_connect (proxy,
-                    "notify",
-                    G_CALLBACK (on_notify),
-                    NULL);
-  g_signal_connect (user,
-                    "changed",
-                    G_CALLBACK (on_changed),
-                    NULL);
-}
-
-static void
-on_proxy_vanished (GDBusConnection *connection,
-                   const gchar     *name,
-                   gpointer         user_data)
-{
-  g_print ("--- Cannot create proxy for user: no remote object\n");
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
 
 gint
 main (gint argc, gchar *argv[])
 {
-  guint watcher_id;
-  GMainLoop *loop;
-
-  g_type_init ();
-
-  watcher_id = g_bus_watch_proxy (G_BUS_TYPE_SYSTEM,
-                                  "org.freedesktop.Accounts",
-                                  G_BUS_NAME_WATCHER_FLAGS_AUTO_START,
-                                  "/org/freedesktop/Accounts/User500",
-                                  "org.freedesktop.Accounts.User",
-                                  ACCOUNTS_TYPE_USER,
-                                  G_DBUS_PROXY_FLAGS_NONE,
-                                  on_proxy_appeared,
-                                  on_proxy_vanished,
-                                  NULL,
-                                  NULL);
-
-  loop = g_main_loop_new (NULL, FALSE);
-  g_main_loop_run (loop);
-  g_main_loop_unref (loop);
-  g_bus_unwatch_proxy (watcher_id);
-
   return 0;
 }

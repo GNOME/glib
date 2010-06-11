@@ -526,7 +526,6 @@ test_peer (void)
    */
   error = NULL;
   proxy = g_dbus_proxy_new_sync (c,
-                                 G_TYPE_DBUS_PROXY,
                                  G_DBUS_PROXY_FLAGS_NONE,
                                  NULL,
                                  NULL, /* bus_name */

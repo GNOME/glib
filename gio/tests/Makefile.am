@@ -48,6 +48,7 @@ TEST_PROGS +=			\
 	gdbus-connection	\
 	gdbus-names		\
 	gdbus-proxy		\
+	gdbus-proxy-well-known-name \
 	gdbus-introspection	\
 	gdbus-threading		\
 	gdbus-export		\
@@ -207,6 +208,9 @@ gdbus_names_LDADD = $(progs_ldadd)
 
 gdbus_proxy_SOURCES = gdbus-proxy.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_proxy_LDADD = $(progs_ldadd)
+
+gdbus_proxy_well_known_name_SOURCES = gdbus-proxy-well-known-name.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_proxy_well_known_name_LDADD = $(progs_ldadd)
 
 gdbus_introspection_SOURCES = gdbus-introspection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_introspection_LDADD = $(progs_ldadd)

@@ -95,10 +95,9 @@ struct _GDBusProxyClass
 
 GType            g_dbus_proxy_get_type                  (void) G_GNUC_CONST;
 void             g_dbus_proxy_new                       (GDBusConnection     *connection,
-                                                         GType                object_type,
                                                          GDBusProxyFlags      flags,
                                                          GDBusInterfaceInfo *info,
-                                                         const gchar         *unique_bus_name,
+                                                         const gchar         *name,
                                                          const gchar         *object_path,
                                                          const gchar         *interface_name,
                                                          GCancellable        *cancellable,
@@ -107,17 +106,36 @@ void             g_dbus_proxy_new                       (GDBusConnection     *co
 GDBusProxy      *g_dbus_proxy_new_finish                (GAsyncResult        *res,
                                                          GError             **error);
 GDBusProxy      *g_dbus_proxy_new_sync                  (GDBusConnection     *connection,
-                                                         GType                object_type,
                                                          GDBusProxyFlags      flags,
                                                          GDBusInterfaceInfo *info,
-                                                         const gchar         *unique_bus_name,
+                                                         const gchar         *name,
+                                                         const gchar         *object_path,
+                                                         const gchar         *interface_name,
+                                                         GCancellable        *cancellable,
+                                                         GError             **error);
+void             g_dbus_proxy_new_for_bus               (GBusType             bus_type,
+                                                         GDBusProxyFlags      flags,
+                                                         GDBusInterfaceInfo *info,
+                                                         const gchar         *name,
+                                                         const gchar         *object_path,
+                                                         const gchar         *interface_name,
+                                                         GCancellable        *cancellable,
+                                                         GAsyncReadyCallback  callback,
+                                                         gpointer             user_data);
+GDBusProxy      *g_dbus_proxy_new_for_bus_finish        (GAsyncResult        *res,
+                                                         GError             **error);
+GDBusProxy      *g_dbus_proxy_new_for_bus_sync          (GBusType             bus_type,
+                                                         GDBusProxyFlags      flags,
+                                                         GDBusInterfaceInfo *info,
+                                                         const gchar         *name,
                                                          const gchar         *object_path,
                                                          const gchar         *interface_name,
                                                          GCancellable        *cancellable,
                                                          GError             **error);
 GDBusConnection *g_dbus_proxy_get_connection            (GDBusProxy          *proxy);
 GDBusProxyFlags  g_dbus_proxy_get_flags                 (GDBusProxy          *proxy);
-const gchar     *g_dbus_proxy_get_unique_bus_name       (GDBusProxy          *proxy);
+const gchar     *g_dbus_proxy_get_name                  (GDBusProxy          *proxy);
+gchar           *g_dbus_proxy_get_name_owner            (GDBusProxy          *proxy);
 const gchar     *g_dbus_proxy_get_object_path           (GDBusProxy          *proxy);
 const gchar     *g_dbus_proxy_get_interface_name        (GDBusProxy          *proxy);
 gint             g_dbus_proxy_get_default_timeout       (GDBusProxy          *proxy);

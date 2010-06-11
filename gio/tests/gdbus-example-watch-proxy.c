@@ -4,7 +4,7 @@ static gchar *opt_name         = NULL;
 static gchar *opt_object_path  = NULL;
 static gchar *opt_interface    = NULL;
 static gboolean opt_system_bus = FALSE;
-static gboolean opt_auto_start = FALSE;
+static gboolean opt_no_auto_start = FALSE;
 static gboolean opt_no_properties = FALSE;
 
 static GOptionEntry opt_entries[] =
@@ -13,10 +13,12 @@ static GOptionEntry opt_entries[] =
   { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_object_path, "Object path of the remote object", NULL },
   { "interface", 'i', 0, G_OPTION_ARG_STRING, &opt_interface, "D-Bus interface of remote object", NULL },
   { "system-bus", 's', 0, G_OPTION_ARG_NONE, &opt_system_bus, "Use the system-bus instead of the session-bus", NULL },
-  { "auto-start", 'a', 0, G_OPTION_ARG_NONE, &opt_auto_start, "Instruct the bus to launch an owner for the name", NULL},
+  { "no-auto-start", 'a', 0, G_OPTION_ARG_NONE, &opt_no_auto_start, "Don't instruct the bus to launch an owner for the name", NULL},
   { "no-properties", 'p', 0, G_OPTION_ARG_NONE, &opt_no_properties, "Do not load properties", NULL},
   { NULL}
 };
+
+static GMainLoop *loop = NULL;
 
 static void
 print_properties (GDBusProxy *proxy)
@@ -100,63 +102,61 @@ on_signal (GDBusProxy *proxy,
 }
 
 static void
-on_proxy_appeared (GDBusConnection *connection,
-                   const gchar     *name,
-                   const gchar     *name_owner,
-                   GDBusProxy      *proxy,
-                   gpointer         user_data)
+print_proxy (GDBusProxy *proxy)
 {
-  g_print ("+++ Acquired proxy object for remote object owned by %s\n"
-           "    bus:          %s\n"
-           "    name:         %s\n"
-           "    object path:  %s\n"
-           "    interface:    %s\n",
-           name_owner,
-           opt_system_bus ? "System Bus" : "Session Bus",
-           opt_name,
-           opt_object_path,
-           opt_interface);
+  gchar *name_owner;
 
-  print_properties (proxy);
-
-  g_signal_connect (proxy,
-                    "g-properties-changed",
-                    G_CALLBACK (on_properties_changed),
-                    NULL);
-
-  g_signal_connect (proxy,
-                    "g-signal",
-                    G_CALLBACK (on_signal),
-                    NULL);
+  name_owner = g_dbus_proxy_get_name_owner (proxy);
+  if (name_owner != NULL)
+    {
+      g_print ("+++ Proxy object points to remote object owned by %s\n"
+               "    bus:          %s\n"
+               "    name:         %s\n"
+               "    object path:  %s\n"
+               "    interface:    %s\n",
+               name_owner,
+               opt_system_bus ? "System Bus" : "Session Bus",
+               opt_name,
+               opt_object_path,
+               opt_interface);
+      print_properties (proxy);
+    }
+  else
+    {
+      g_print ("--- Proxy object is inert - there is no name owner for the name\n"
+               "    bus:          %s\n"
+               "    name:         %s\n"
+               "    object path:  %s\n"
+               "    interface:    %s\n",
+               opt_system_bus ? "System Bus" : "Session Bus",
+               opt_name,
+               opt_object_path,
+               opt_interface);
+    }
+  g_free (name_owner);
 }
 
 static void
-on_proxy_vanished (GDBusConnection *connection,
-                   const gchar     *name,
-                   gpointer         user_data)
+on_name_owner_notify (GObject    *object,
+                      GParamSpec *pspec,
+                      gpointer    user_data)
 {
-  g_print ("--- Cannot create proxy object for\n"
-           "    bus:          %s\n"
-           "    name:         %s\n"
-           "    object path:  %s\n"
-           "    interface:    %s\n",
-           opt_system_bus ? "System Bus" : "Session Bus",
-           opt_name,
-           opt_object_path,
-           opt_interface);
+  GDBusProxy *proxy = G_DBUS_PROXY (object);
+  print_proxy (proxy);
 }
 
 int
 main (int argc, char *argv[])
 {
-  guint watcher_id;
-  GMainLoop *loop;
   GOptionContext *opt_context;
   GError *error;
-  GBusNameWatcherFlags flags;
-  GDBusProxyFlags proxy_flags;
+  GDBusProxyFlags flags;
+  GDBusProxy *proxy;
 
   g_type_init ();
+
+  loop = NULL;
+  proxy = NULL;
 
   opt_context = g_option_context_new ("g_bus_watch_proxy() example");
   g_option_context_set_summary (opt_context,
@@ -169,7 +169,7 @@ main (int argc, char *argv[])
   error = NULL;
   if (!g_option_context_parse (opt_context, &argc, &argv, &error))
     {
-      g_printerr ("Error parsing options: %s", error->message);
+      g_printerr ("Error parsing options: %s\n", error->message);
       goto out;
     }
   if (opt_name == NULL || opt_object_path == NULL || opt_interface == NULL)
@@ -178,32 +178,51 @@ main (int argc, char *argv[])
       goto out;
     }
 
-  flags = G_BUS_NAME_WATCHER_FLAGS_NONE;
-  if (opt_auto_start)
-    flags |= G_BUS_NAME_WATCHER_FLAGS_AUTO_START;
-
-  proxy_flags = G_DBUS_PROXY_FLAGS_NONE;
+  flags = G_DBUS_PROXY_FLAGS_NONE;
   if (opt_no_properties)
-    proxy_flags |= G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES;
-
-  watcher_id = g_bus_watch_proxy (opt_system_bus ? G_BUS_TYPE_SYSTEM : G_BUS_TYPE_SESSION,
-                                  opt_name,
-                                  flags,
-                                  opt_object_path,
-                                  opt_interface,
-                                  G_TYPE_DBUS_PROXY,
-                                  proxy_flags,
-                                  on_proxy_appeared,
-                                  on_proxy_vanished,
-                                  NULL,
-                                  NULL);
+    flags |= G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES;
+  if (opt_no_auto_start)
+    flags |= G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START;
 
   loop = g_main_loop_new (NULL, FALSE);
+
+  error = NULL;
+  proxy = g_dbus_proxy_new_for_bus_sync (opt_system_bus ? G_BUS_TYPE_SYSTEM : G_BUS_TYPE_SESSION,
+                                         flags,
+                                         NULL, /* GDBusInterfaceInfo */
+                                         opt_name,
+                                         opt_object_path,
+                                         opt_interface,
+                                         NULL, /* GCancellable */
+                                         &error);
+  if (proxy == NULL)
+    {
+      g_printerr ("Error creating proxy: %s\n", error->message);
+      g_error_free (error);
+      goto out;
+    }
+
+  g_signal_connect (proxy,
+                    "g-properties-changed",
+                    G_CALLBACK (on_properties_changed),
+                    NULL);
+  g_signal_connect (proxy,
+                    "g-signal",
+                    G_CALLBACK (on_signal),
+                    NULL);
+  g_signal_connect (proxy,
+                    "notify::g-name-owner",
+                    G_CALLBACK (on_name_owner_notify),
+                    NULL);
+  print_proxy (proxy);
+
   g_main_loop_run (loop);
 
-  g_bus_unwatch_proxy (watcher_id);
-
  out:
+  if (proxy != NULL)
+    g_object_unref (proxy);
+  if (loop != NULL)
+    g_main_loop_unref (loop);
   g_option_context_free (opt_context);
   g_free (opt_name);
   g_free (opt_object_path);

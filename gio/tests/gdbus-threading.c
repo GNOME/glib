@@ -348,11 +348,7 @@ test_sleep_in_thread_func (gpointer _data)
 }
 
 static void
-on_proxy_appeared (GDBusConnection *connection,
-                   const gchar     *name,
-                   const gchar     *name_owner,
-                   GDBusProxy      *proxy,
-                   gpointer         user_data)
+test_method_calls_on_proxy (GDBusProxy *proxy)
 {
   guint n;
 
@@ -454,32 +450,37 @@ on_proxy_appeared (GDBusConnection *connection,
 }
 
 static void
-on_proxy_vanished (GDBusConnection *connection,
-                   const gchar     *name,
-                   gpointer         user_data)
-{
-}
-
-static void
 test_method_calls_in_thread (void)
 {
-  guint watcher_id;
+  GDBusProxy *proxy;
+  GDBusConnection *connection;
+  GError *error;
+  gchar *name_owner;
 
-  watcher_id = g_bus_watch_proxy (G_BUS_TYPE_SESSION,
-                                  "com.example.TestService",
-                                  G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                  "/com/example/TestObject",
-                                  "com.example.Frob",
-                                  G_TYPE_DBUS_PROXY,
-                                  G_DBUS_PROXY_FLAGS_NONE,
-                                  on_proxy_appeared,
-                                  on_proxy_vanished,
-                                  NULL,
-                                  NULL);
+  error = NULL;
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION,
+                               NULL,
+                               &error);
+  g_assert_no_error (error);
+  error = NULL;
+  proxy = g_dbus_proxy_new_sync (connection,
+                                 G_DBUS_PROXY_FLAGS_NONE,
+                                 NULL,                      /* GDBusInterfaceInfo */
+                                 "com.example.TestService", /* name */
+                                 "/com/example/TestObject", /* object path */
+                                 "com.example.Frob",        /* interface */
+                                 NULL, /* GCancellable */
+                                 &error);
+  g_assert_no_error (error);
 
-  g_main_loop_run (loop);
+  name_owner = g_dbus_proxy_get_name_owner (proxy);
+  g_assert_cmpstr (name_owner, !=, NULL);
+  g_free (name_owner);
 
-  g_bus_unwatch_proxy (watcher_id);
+  test_method_calls_on_proxy (proxy);
+
+  g_object_unref (proxy);
+  g_object_unref (connection);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

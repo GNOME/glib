@@ -144,7 +144,7 @@
  *
  * This class is rarely used directly in D-Bus clients. If you are writing
  * an D-Bus client, it is often easier to use the g_bus_own_name(),
- * g_bus_watch_name() or g_bus_watch_proxy() APIs.
+ * g_bus_watch_name() or g_dbus_proxy_new_for_bus() APIs.
  *
  * <example id="gdbus-server"><title>D-Bus server example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  *
@@ -265,9 +265,9 @@ struct _GDBusConnectionPrivate
   GHashTable *map_method_serial_to_send_message_data;  /* guint32 -> SendMessageData* */
 
   /* Maps used for managing signal subscription */
-  GHashTable *map_rule_to_signal_data;          /* gchar* -> SignalData */
-  GHashTable *map_id_to_signal_data;            /* guint  -> SignalData */
-  GHashTable *map_sender_to_signal_data_array;  /* gchar* -> GPtrArray* of SignalData */
+  GHashTable *map_rule_to_signal_data;                      /* match rule (gchar*)    -> SignalData */
+  GHashTable *map_id_to_signal_data;                        /* id (guint)             -> SignalData */
+  GHashTable *map_sender_unique_name_to_signal_data_array;  /* unique sender (gchar*) -> GPtrArray* of SignalData */
 
   /* Maps used for managing exported objects and subtrees */
   GHashTable *map_object_path_to_eo;  /* gchar* -> ExportedObject* */
@@ -408,7 +408,7 @@ g_dbus_connection_finalize (GObject *object)
   purge_all_signal_subscriptions (connection);
   g_hash_table_unref (connection->priv->map_rule_to_signal_data);
   g_hash_table_unref (connection->priv->map_id_to_signal_data);
-  g_hash_table_unref (connection->priv->map_sender_to_signal_data_array);
+  g_hash_table_unref (connection->priv->map_sender_unique_name_to_signal_data_array);
 
   g_hash_table_unref (connection->priv->map_id_to_ei);
   g_hash_table_unref (connection->priv->map_object_path_to_eo);
@@ -785,10 +785,10 @@ g_dbus_connection_init (GDBusConnection *connection)
                                                                 g_str_equal);
   connection->priv->map_id_to_signal_data = g_hash_table_new (g_direct_hash,
                                                               g_direct_equal);
-  connection->priv->map_sender_to_signal_data_array = g_hash_table_new_full (g_str_hash,
-                                                                             g_str_equal,
-                                                                             g_free,
-                                                                             NULL);
+  connection->priv->map_sender_unique_name_to_signal_data_array = g_hash_table_new_full (g_str_hash,
+                                                                                         g_str_equal,
+                                                                                         g_free,
+                                                                                         NULL);
 
   connection->priv->map_object_path_to_eo = g_hash_table_new_full (g_str_hash,
                                                                    g_str_equal,
@@ -2372,6 +2372,7 @@ typedef struct
 {
   gchar *rule;
   gchar *sender;
+  gchar *sender_unique_name; /* if sender is unique or org.freedesktop.DBus, then that name... otherwise blank */
   gchar *interface_name;
   gchar *member;
   gchar *object_path;
@@ -2389,16 +2390,17 @@ typedef struct
 } SignalSubscriber;
 
 static void
-signal_data_free (SignalData *data)
+signal_data_free (SignalData *signal_data)
 {
-  g_free (data->rule);
-  g_free (data->sender);
-  g_free (data->interface_name);
-  g_free (data->member);
-  g_free (data->object_path);
-  g_free (data->arg0);
-  g_array_free (data->subscribers, TRUE);
-  g_free (data);
+  g_free (signal_data->rule);
+  g_free (signal_data->sender);
+  g_free (signal_data->sender_unique_name);
+  g_free (signal_data->interface_name);
+  g_free (signal_data->member);
+  g_free (signal_data->object_path);
+  g_free (signal_data->arg0);
+  g_array_free (signal_data->subscribers, TRUE);
+  g_free (signal_data);
 }
 
 static gchar *
@@ -2444,7 +2446,6 @@ add_match_rule (GDBusConnection *connection,
                                             "org.freedesktop.DBus", /* interface */
                                             "AddMatch");
   g_dbus_message_set_body (message, g_variant_new ("(s)", match_rule));
-
   error = NULL;
   if (!g_dbus_connection_send_message_unlocked (connection,
                                                 message,
@@ -2490,7 +2491,7 @@ remove_match_rule (GDBusConnection *connection,
 static gboolean
 is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
 {
-  return g_strcmp0 (signal_data->sender, "org.freedesktop.DBus") == 0 &&
+  return g_strcmp0 (signal_data->sender_unique_name, "org.freedesktop.DBus") == 0 &&
          g_strcmp0 (signal_data->interface_name, "org.freedesktop.DBus") == 0 &&
          g_strcmp0 (signal_data->object_path, "/org/freedesktop/DBus") == 0 &&
          (g_strcmp0 (signal_data->member, "NameLost") == 0 ||
@@ -2502,7 +2503,7 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
 /**
  * g_dbus_connection_signal_subscribe:
  * @connection: A #GDBusConnection.
- * @sender: Sender name to match on. Must be either <literal>org.freedesktop.DBus</literal> (for listening to signals from the message bus daemon) or a unique name or %NULL to listen from all senders.
+ * @sender: Sender name to match on (unique or well-known name) or %NULL to listen from all senders.
  * @interface_name: D-Bus interface name to match on or %NULL to match on all interfaces.
  * @member: D-Bus signal name to match on or %NULL to match on all signals.
  * @object_path: Object path to match on or %NULL to match on all object paths.
@@ -2517,14 +2518,18 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * linkend="g-main-context-push-thread-default">thread-default main
  * loop</link> of the thread you are calling this method from.
  *
- * It is considered a programming error to use this function if @connection is closed.
+ * It is considered a programming error to use this function if
+ * @connection is closed.
  *
- * Note that if @sender is not <literal>org.freedesktop.DBus</literal> (for listening to signals from the
- * message bus daemon), then it needs to be a unique bus name or %NULL (for listening to signals from any
- * name) - you cannot pass a name like <literal>com.example.MyApp</literal>.
- * Use e.g. g_bus_watch_name() to find the unique name for the owner of the name you are interested in. Also note
- * that this function does not remove a subscription if @sender vanishes from the bus. You have to manually
- * call g_dbus_connection_signal_unsubscribe() to remove a subscription.
+ * If @connection is not a message bus connection, @sender must be
+ * %NULL.
+ *
+ * If @sender is a well-known name note that @callback is invoked with
+ * the unique name for the owner of @sender, not the well-known name
+ * as one would expect. This is because the message bus rewrites the
+ * name. As such, to avoid certain race conditions, users should be
+ * tracking the name owner of the well-known name and use that when
+ * processing the received signal.
  *
  * Returns: A subscription identifier that can be used with g_dbus_connection_signal_unsubscribe().
  *
@@ -2545,6 +2550,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   SignalData *signal_data;
   SignalSubscriber subscriber;
   GPtrArray *signal_data_array;
+  const gchar *sender_unique_name;
 
   /* Right now we abort if AddMatch() fails since it can only fail with the bus being in
    * an OOM condition. We might want to change that but that would involve making
@@ -2558,8 +2564,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
   g_return_val_if_fail (!g_dbus_connection_is_closed (connection), 0);
-  g_return_val_if_fail (sender == NULL || ((strcmp (sender, "org.freedesktop.DBus") == 0 || sender[0] == ':') &&
-                                           (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)), 0);
+  g_return_val_if_fail (sender == NULL || (g_dbus_is_name (sender) && (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)), 0);
   g_return_val_if_fail (interface_name == NULL || g_dbus_is_interface_name (interface_name), 0);
   g_return_val_if_fail (member == NULL || g_dbus_is_member_name (member), 0);
   g_return_val_if_fail (object_path == NULL || g_variant_is_object_path (object_path), 0);
@@ -2569,8 +2574,10 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
   rule = args_to_rule (sender, interface_name, member, object_path, arg0);
 
-  if (sender == NULL)
-    sender = "";
+  if (sender != NULL && (g_dbus_is_unique_name (sender) || g_strcmp0 (sender, "org.freedesktop.DBus") == 0))
+    sender_unique_name = sender;
+  else
+    sender_unique_name = "";
 
   subscriber.callback = callback;
   subscriber.user_data = user_data;
@@ -2590,13 +2597,14 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
     }
 
   signal_data = g_new0 (SignalData, 1);
-  signal_data->rule           = rule;
-  signal_data->sender         = g_strdup (sender);
-  signal_data->interface_name = g_strdup (interface_name);
-  signal_data->member         = g_strdup (member);
-  signal_data->object_path    = g_strdup (object_path);
-  signal_data->arg0           = g_strdup (arg0);
-  signal_data->subscribers    = g_array_new (FALSE, FALSE, sizeof (SignalSubscriber));
+  signal_data->rule                  = rule;
+  signal_data->sender                = g_strdup (sender);
+  signal_data->sender_unique_name    = g_strdup (sender_unique_name);
+  signal_data->interface_name        = g_strdup (interface_name);
+  signal_data->member                = g_strdup (member);
+  signal_data->object_path           = g_strdup (object_path);
+  signal_data->arg0                  = g_strdup (arg0);
+  signal_data->subscribers           = g_array_new (FALSE, FALSE, sizeof (SignalSubscriber));
   g_array_append_val (signal_data->subscribers, subscriber);
 
   g_hash_table_insert (connection->priv->map_rule_to_signal_data,
@@ -2614,21 +2622,21 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
         add_match_rule (connection, signal_data->rule);
     }
 
+  signal_data_array = g_hash_table_lookup (connection->priv->map_sender_unique_name_to_signal_data_array,
+                                           signal_data->sender_unique_name);
+  if (signal_data_array == NULL)
+    {
+      signal_data_array = g_ptr_array_new ();
+      g_hash_table_insert (connection->priv->map_sender_unique_name_to_signal_data_array,
+                           g_strdup (signal_data->sender_unique_name),
+                           signal_data_array);
+    }
+  g_ptr_array_add (signal_data_array, signal_data);
+
  out:
   g_hash_table_insert (connection->priv->map_id_to_signal_data,
                        GUINT_TO_POINTER (subscriber.id),
                        signal_data);
-
-  signal_data_array = g_hash_table_lookup (connection->priv->map_sender_to_signal_data_array,
-                                           signal_data->sender);
-  if (signal_data_array == NULL)
-    {
-      signal_data_array = g_ptr_array_new ();
-      g_hash_table_insert (connection->priv->map_sender_to_signal_data_array,
-                           g_strdup (signal_data->sender),
-                           signal_data_array);
-    }
-  g_ptr_array_add (signal_data_array, signal_data);
 
   CONNECTION_UNLOCK (connection);
 
@@ -2669,24 +2677,27 @@ unsubscribe_id_internal (GDBusConnection *connection,
       g_array_remove_index (signal_data->subscribers, n);
 
       if (signal_data->subscribers->len == 0)
-        g_warn_if_fail (g_hash_table_remove (connection->priv->map_rule_to_signal_data, signal_data->rule));
-
-      signal_data_array = g_hash_table_lookup (connection->priv->map_sender_to_signal_data_array,
-                                               signal_data->sender);
-      g_warn_if_fail (signal_data_array != NULL);
-      g_warn_if_fail (g_ptr_array_remove (signal_data_array, signal_data));
-
-      if (signal_data_array->len == 0)
         {
-          g_warn_if_fail (g_hash_table_remove (connection->priv->map_sender_to_signal_data_array, signal_data->sender));
+          g_warn_if_fail (g_hash_table_remove (connection->priv->map_rule_to_signal_data, signal_data->rule));
+
+          signal_data_array = g_hash_table_lookup (connection->priv->map_sender_unique_name_to_signal_data_array,
+                                                   signal_data->sender_unique_name);
+          g_warn_if_fail (signal_data_array != NULL);
+          g_warn_if_fail (g_ptr_array_remove (signal_data_array, signal_data));
+
+          if (signal_data_array->len == 0)
+            {
+              g_warn_if_fail (g_hash_table_remove (connection->priv->map_sender_unique_name_to_signal_data_array,
+                                                   signal_data->sender_unique_name));
+            }
 
           /* remove the match rule from the bus unless NameLost or NameAcquired (see subscribe()) */
           if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
             {
               if (!is_signal_data_for_name_lost_or_acquired (signal_data))
-                remove_match_rule (connection, signal_data->rule);
+                if (!connection->priv->closed)
+                  remove_match_rule (connection, signal_data->rule);
             }
-
           signal_data_free (signal_data);
         }
 
@@ -2779,7 +2790,8 @@ emit_signal_instance_in_idle_cb (gpointer data)
     }
 
 #if 0
-  g_debug ("in emit_signal_instance_in_idle_cb (sender=%s path=%s interface=%s member=%s params=%s)",
+  g_print ("in emit_signal_instance_in_idle_cb (id=%d sender=%s path=%s interface=%s member=%s params=%s)\n",
+           signal_instance->subscription_id,
            signal_instance->sender,
            signal_instance->path,
            signal_instance->interface,
@@ -2842,11 +2854,17 @@ schedule_callbacks (GDBusConnection *connection,
   arg0 = g_dbus_message_get_arg0 (message);
 
 #if 0
-  g_debug ("sender    = `%s'", sender);
-  g_debug ("interface = `%s'", interface);
-  g_debug ("member    = `%s'", member);
-  g_debug ("path      = `%s'", path);
-  g_debug ("arg0      = `%s'", arg0);
+  g_print ("In schedule_callbacks:\n"
+           "  sender    = `%s'\n"
+           "  interface = `%s'\n"
+           "  member    = `%s'\n"
+           "  path      = `%s'\n"
+           "  arg0      = `%s'\n",
+           sender,
+           interface,
+           member,
+           path,
+           arg0);
 #endif
 
   /* TODO: if this is slow, then we can change signal_data_array into
@@ -2912,13 +2930,13 @@ distribute_signals (GDBusConnection *connection,
   /* collect subscribers that match on sender */
   if (sender != NULL)
     {
-      signal_data_array = g_hash_table_lookup (connection->priv->map_sender_to_signal_data_array, sender);
+      signal_data_array = g_hash_table_lookup (connection->priv->map_sender_unique_name_to_signal_data_array, sender);
       if (signal_data_array != NULL)
         schedule_callbacks (connection, signal_data_array, message, sender);
     }
 
   /* collect subscribers not matching on sender */
-  signal_data_array = g_hash_table_lookup (connection->priv->map_sender_to_signal_data_array, "");
+  signal_data_array = g_hash_table_lookup (connection->priv->map_sender_unique_name_to_signal_data_array, "");
   if (signal_data_array != NULL)
     schedule_callbacks (connection, signal_data_array, message, sender);
 }

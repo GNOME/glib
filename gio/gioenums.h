@@ -741,6 +741,7 @@ typedef enum {
 /**
  * GBusType:
  * @G_BUS_TYPE_STARTER: An alias for the message bus that activated the process, if any.
+ * @G_BUS_TYPE_NONE: Not a message bus.
  * @G_BUS_TYPE_SYSTEM: The system-wide message bus.
  * @G_BUS_TYPE_SESSION: The login session message bus.
  *
@@ -750,7 +751,8 @@ typedef enum {
  */
 typedef enum
 {
-  G_BUS_TYPE_STARTER = 0,
+  G_BUS_TYPE_STARTER = -1,
+  G_BUS_TYPE_NONE = 0,
   G_BUS_TYPE_SYSTEM  = 1,
   G_BUS_TYPE_SESSION = 2
 } GBusType;
@@ -795,6 +797,9 @@ typedef enum
  * @G_DBUS_PROXY_FLAGS_NONE: No flags set.
  * @G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES: Don't load properties.
  * @G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS: Don't connect to signals on the remote object.
+ * @G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START: If not set and the proxy if for a well-known name,
+ * then request the bus to launch an owner for the name if no-one owns the name. This flag can
+ * only be used in proxies for well-known names.
  *
  * Flags used when constructing an instance of a #GDBusProxy derived class.
  *
@@ -802,9 +807,10 @@ typedef enum
  */
 typedef enum
 {
-  G_DBUS_PROXY_FLAGS_NONE = 0,                        /*< nick=none >*/
-  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES = (1<<0), /*< nick=do-not-load-properties >*/
-  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS = (1<<1) /*< nick=do-not-connect-signals >*/
+  G_DBUS_PROXY_FLAGS_NONE = 0,
+  G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES = (1<<0),
+  G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS = (1<<1),
+  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START = (1<<2)
 } GDBusProxyFlags;
 
 /**

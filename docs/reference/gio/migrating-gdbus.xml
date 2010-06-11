@@ -1,5 +1,5 @@
 <chapter>
-  <title>Migrating from dbus-glib to GDBus</title>
+  <title>Migrating to GDBus</title>
 
   <section>
     <title>Conceptual differences</title>
@@ -47,8 +47,8 @@
           <row><entry>#DBusGMethodInvocation</entry><entry>#GDBusMethodInvocation</entry></row>
           <row><entry>dbus_g_bus_get()</entry><entry>g_bus_get_sync(), also see
                g_bus_get()</entry></row>
-          <row><entry>dbus_g_proxy_new_for_name()</entry><entry>g_dbus_proxy_new_sync(), also see
-               g_dbus_proxy_new()</entry></row>
+          <row><entry>dbus_g_proxy_new_for_name()</entry><entry>g_dbus_proxy_new_sync() and
+               g_dbus_proxy_new_for_bus_sync(), also see g_dbus_proxy_new()</entry></row>
           <row><entry>dbus_g_proxy_add_signal()</entry><entry>not needed, use the generic #GDBusProxy::g-signal</entry></row>
           <row><entry>dbus_g_proxy_connect_signal()</entry><entry>use g_signal_connect() with #GDBusProxy::g-signal</entry></row>
           <row><entry>dbus_g_connection_register_g_object()</entry><entry>g_dbus_connection_register_object()</entry></row>
@@ -177,46 +177,28 @@ on_name_acquired (GDBusConnection *connection,
       the current owner of the name, and that owner can change over time.
     </para>
     <para>
-      In contrast, #GDBusProxy instances are always bound to a unique name.
-      To get a proxy for a well-known name, you either have to call
-      GetNameOwner yourself and construct a proxy for the unique name
-      of the current name owner, or use the high-level API. The latter
-      option is highly recommended:
+      The same can be achieved with #GDBusProxy:
       <informalexample><programlisting><![CDATA[
-static void
-on_proxy_appeared (GDBusConnection *connection,
-                   const gchar     *name,
-                   const gchar     *name_owner,
-                   GDBusProxy      *proxy,
-                   gpointer         user_data)
-{
-  /* start to use proxy */
-}
-
-  /* ... */
-
-  watcher_id = g_bus_watch_proxy (G_BUS_TYPE_SYSTEM,
-                                  "org.freedesktop.Accounts",
-                                  G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                  "/org/freedesktop/Accounts",
-                                  "org.freedesktop.Accounts",
-                                  G_TYPE_DBUS_PROXY,
-                                  G_BUS_PROXY_FLAGS_NONE,
-                                  on_proxy_appeared,
-                                  on_proxy_vanished,
-                                  NULL,
-                                  NULL);
-
-  g_main_loop_run (loop);
-
-  g_bus_unwatch_proxy (watcher_id);
+  error = NULL;
+  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SYSTEM,
+                                         G_DBUS_PROXY_FLAGS_NONE,
+                                         NULL, /* GDBusInterfaceInfo */
+                                         "org.freedesktop.Accounts",
+                                         "/org/freedesktop/Accounts",
+                                         "org.freedesktop.Accounts",
+                                         NULL, /* GCancellable */
+                                         &error);
       ]]>
       </programlisting></informalexample>
-      Like g_bus_own_name(), g_bus_watch_proxy() is asynchronous and
-      you are expected to enter your mainloop to await the on_proxy_appeared()
-      callback. Note that GDBus also does all the setup operations for the
-      proxy asynchronously, and only calls your callback when the proxy
-      is ready for use.
+      For an added layer of safety, you can specify what D-Bus
+      interface the proxy is expected to conform to by using the
+      #GDBusInterfaceInfo type.
+    </para>
+    <para>
+      Additionally, #GDBusProxy loads, caches and tracks changes to
+      the D-Bus properties on the remote object. It also sets up match
+      rules so D-Bus signals from the remote object are delivered
+      locally.
     </para>
   </section>
   <section>
