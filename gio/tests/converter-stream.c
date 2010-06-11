@@ -558,6 +558,59 @@ test_compressor (void)
   g_object_unref (compressor);
 }
 
+#define DATA_LENGTH 1000000
+
+static void
+test_corruption (void)
+{
+  GError *error = NULL;
+  guint32 *data0, *data1;
+  gsize data1_size;
+  gint i;
+  GInputStream *istream0, *istream1, *cistream1;
+  GOutputStream *ostream1, *ostream2, *costream1;
+  GConverter *compressor, *decompressor;
+
+  data0 = g_malloc (DATA_LENGTH * sizeof (guint32));
+  for (i = 0; i < DATA_LENGTH; i++)
+    data0[i] = g_random_int ();
+
+  istream0 = g_memory_input_stream_new_from_data (data0,
+    DATA_LENGTH * sizeof (guint32), NULL);
+
+  ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
+  compressor = G_CONVERTER (g_zlib_compressor_new (
+                            G_ZLIB_COMPRESSOR_FORMAT_GZIP, -1));
+  costream1 = g_converter_output_stream_new (ostream1, compressor);
+
+  g_output_stream_splice (costream1, istream0, 0, NULL, &error);
+  g_assert_no_error (error);
+
+  g_object_unref (costream1);
+  g_object_unref (compressor);
+  data1 = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (ostream1));
+  data1_size = g_memory_output_stream_get_data_size (
+    G_MEMORY_OUTPUT_STREAM (ostream1));
+  g_object_unref (ostream1);
+  g_object_unref (istream0);
+
+  istream1 = g_memory_input_stream_new_from_data (data1, data1_size, NULL);
+  decompressor = G_CONVERTER (g_zlib_decompressor_new (
+                              G_ZLIB_COMPRESSOR_FORMAT_GZIP));
+  cistream1 = g_converter_input_stream_new (istream1, decompressor);
+
+  ostream2 = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
+
+  g_output_stream_splice (ostream2, cistream1, 0, NULL, &error);
+  g_assert_no_error (error);
+
+  g_assert_cmpuint (DATA_LENGTH * sizeof (guint32), ==,
+    g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (ostream2)));
+  g_assert (memcmp (data0, g_memory_output_stream_get_data (
+    G_MEMORY_OUTPUT_STREAM (ostream2)), DATA_LENGTH * sizeof (guint32)) == 0);
+}
+
+
 int
 main (int   argc,
       char *argv[])
@@ -567,6 +620,7 @@ main (int   argc,
 
   g_test_add_func ("/converter-input-stream/expander", test_expander);
   g_test_add_func ("/converter-input-stream/compressor", test_compressor);
+  g_test_add_func ("/converter-output-stream/corruption", test_corruption);
 
   return g_test_run();
 }
