@@ -25,12 +25,35 @@
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 
+/**
+ * SECTION:gipropertyinfo
+ * @Short_description: Struct representing a property
+ * @Title: GIPropertyInfo
+ *
+ * GIPropertyInfo represents a property. A property belongs to
+ * either a #GIObjectInfo or a #GIInterfaceInfo.
+ */
+
+/**
+ * g_property_info_get_flags:
+ * @info: a #GIPropertyInfo
+ *
+ * Obtain the flags for this property info. See #GParamFags for
+ * more information about possible flag values.
+ *
+ * Returns: the flags
+ */
 GParamFlags
 g_property_info_get_flags (GIPropertyInfo *info)
 {
   GParamFlags flags;
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  PropertyBlob *blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
+  PropertyBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_PROPERTY_INFO (info), 0);
+
+  blob = (PropertyBlob *)&rinfo->typelib->data[rinfo->offset];
 
   flags = 0;
 
@@ -49,12 +72,28 @@ g_property_info_get_flags (GIPropertyInfo *info)
   return flags;
 }
 
+/**
+ * g_property_info_get_type:
+ * @info: a #GIPropertyInfo
+ *
+ * Obtain the type information for the property @info.
+ *
+ * Returns: (transfer full): the #GIPropertyInfo, free it with
+ * g_base_info_unref() when done.
+ *
+ * Returns: the type
+ */
 GITypeInfo *
 g_property_info_get_type (GIPropertyInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
 
-  return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + G_STRUCT_OFFSET (PropertyBlob, type));
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_PROPERTY_INFO (info), NULL);
+
+  return _g_type_info_new ((GIBaseInfo*)info,
+                           rinfo->typelib,
+                           rinfo->offset + G_STRUCT_OFFSET (PropertyBlob, type));
 }
 
 /**
