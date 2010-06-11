@@ -34,7 +34,7 @@
  *
  * GICallableInfo represents an entity which is callable.
  * Currently a function (#GIFunctionInfo), virtual function,
- * (#GIVirtualFunc) or callback (#GICallbackInfo).
+ * (#GIVFuncInfo) or callback (#GICallbackInfo).
  *
  * A callable has a list of arguments (#GIArgInfo), a return type,
  * direction and a flag which decides if it returns null.
