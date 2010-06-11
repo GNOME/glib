@@ -6,6 +6,8 @@
 #define G_SETTINGS_ENABLE_BACKEND
 #include <gio/gsettingsbackend.h>
 
+static gboolean backend_set;
+
 /* These tests rely on the schemas in org.gtk.test.gschema.xml
  * to be compiled and installed in the same directory.
  */
@@ -30,14 +32,17 @@ test_basic (void)
   g_free (str);
   str = NULL;
 
-  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+  if (!backend_set)
     {
-      settings = g_settings_new ("org.gtk.test");
-      g_settings_set (settings, "greeting", "i", 555);
-      abort ();
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        {
+          settings = g_settings_new ("org.gtk.test");
+          g_settings_set (settings, "greeting", "i", 555);
+          abort ();
+        }
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*correct_type*");
     }
-  g_test_trap_assert_failed ();
-  g_test_trap_assert_stderr ("*correct_type*");
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "goodbye world");
@@ -1184,10 +1189,16 @@ glib_translations_work (void)
 int
 main (int argc, char *argv[])
 {
+  gint result;
+
   setlocale (LC_ALL, "");
 
+  backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
+
   g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
-  g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
+
+  if (!backend_set)
+    g_setenv ("GSETTINGS_BACKEND", "memory", TRUE);
 
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
@@ -1197,9 +1208,14 @@ main (int argc, char *argv[])
                                        NULL, NULL, NULL, NULL));
 
   g_test_add_func ("/gsettings/basic", test_basic);
-  g_test_add_func ("/gsettings/no-schema", test_no_schema);
-  g_test_add_func ("/gsettings/unknown-key", test_unknown_key);
-  g_test_add_func ("/gsettings/wrong-type", test_wrong_type);
+
+  if (!backend_set)
+    {
+      g_test_add_func ("/gsettings/no-schema", test_no_schema);
+      g_test_add_func ("/gsettings/unknown-key", test_unknown_key);
+      g_test_add_func ("/gsettings/wrong-type", test_wrong_type);
+    }
+
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
   g_test_add_func ("/gsettings/complex-types", test_complex_types);
   g_test_add_func ("/gsettings/changes", test_changes);
@@ -1215,13 +1231,22 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/atomic", test_atomic);
   g_test_add_func ("/gsettings/simple-binding", test_simple_binding);
   g_test_add_func ("/gsettings/directional-binding", test_directional_binding);
-  g_test_add_func ("/gsettings/typesafe-binding", test_typesafe_binding);
   g_test_add_func ("/gsettings/custom-binding", test_custom_binding);
   g_test_add_func ("/gsettings/no-change-binding", test_no_change_binding);
-  g_test_add_func ("/gsettings/no-read-binding", test_no_read_binding);
-  g_test_add_func ("/gsettings/no-write-binding", test_no_write_binding);
+
+  if (!backend_set)
+    {
+      g_test_add_func ("/gsettings/typesafe-binding", test_typesafe_binding);
+      g_test_add_func ("/gsettings/no-read-binding", test_no_read_binding);
+      g_test_add_func ("/gsettings/no-write-binding", test_no_write_binding);
+    }
+
   g_test_add_func ("/gsettings/keyfile", test_keyfile);
   g_test_add_func ("/gsettings/child-schema", test_child_schema);
 
-  return g_test_run ();
+  result = g_test_run ();
+
+  g_settings_sync (NULL);
+
+  return result;
 }
