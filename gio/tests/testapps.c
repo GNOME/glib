@@ -309,8 +309,11 @@ call_quit (gpointer data)
                                      -1,
                                      NULL,
                                      &error);
-
-  g_assert_no_error (error);
+  if (error)
+    {
+      g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_NO_REPLY);
+      g_error_free (error);
+    }
 
   if (res)
     g_variant_unref (res);
