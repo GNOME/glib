@@ -86,10 +86,8 @@ g_property_info_get_flags (GIPropertyInfo *info)
  *
  * Obtain the type information for the property @info.
  *
- * Returns: (transfer full): the #GIPropertyInfo, free it with
+ * Returns: (transfer full): the #GITypeInfo, free it with
  * g_base_info_unref() when done.
- *
- * Returns: the type
  */
 GITypeInfo *
 g_property_info_get_type (GIPropertyInfo *info)
