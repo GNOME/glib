@@ -1254,8 +1254,8 @@ write_union_info (const gchar *namespace,
  * gir_writer_write:
  * @filename: filename to write to
  * @namespace: GIR namespace to write
- * @needs_prefix:
- * @show_all:
+ * @needs_prefix: if the filename needs prefixing
+ * @show_all: if field size calculations should be included
  *
  * Writes the output of a typelib represented by @namespace
  * into a GIR xml file named @filename.
