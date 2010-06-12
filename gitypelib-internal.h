@@ -397,7 +397,7 @@ typedef struct {
   guint          scope                        : 3;
   /* <private> */
   guint          reserved                     :21;
-
+  /* <public> */
   gint8        closure;
   gint8        destroy;
 
