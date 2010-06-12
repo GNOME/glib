@@ -3375,7 +3375,7 @@ post_filter (GIrModule *module)
  * Parse a string that holds a complete GIR XML file, and return a list of a
  * a #GirModule for each &lt;namespace/&gt; element within the file.
  *
- * Returns: a newly allocated list of #GIrModule. The modules themselves
+ * Returns: (transfer container): a newly allocated list of #GIrModule. The modules themselves
  *  are owned by the #GIrParser and will be freed along with the parser.
  */
 GList *
@@ -3446,7 +3446,7 @@ g_ir_parser_parse_string (GIrParser           *parser,
  * Parse GIR XML file, and return a list of a a #GirModule for each
  * &lt;namespace/&gt; element within the file.
  *
- * Returns: a newly allocated list of #GIrModule. The modules themselves
+ * Returns: (transfer container): a newly allocated list of #GIrModule. The modules themselves
  *  are owned by the #GIrParser and will be freed along with the parser.
  */
 GList *
