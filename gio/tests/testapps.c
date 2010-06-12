@@ -94,8 +94,8 @@ typedef struct {
 
 static void
 on_child_termination_exited (GPid pid,
-			     gint status,
-			     gpointer user_data)
+                             gint status,
+                             gpointer user_data)
 {
   AwaitChildTerminationData *data = user_data;
   data->child_exited = TRUE;
@@ -113,8 +113,8 @@ on_child_termination_timeout (gpointer user_data)
 
 static void
 await_child_termination_init (AwaitChildTerminationData *data,
-			      GPid                       pid,
-			      int                        fd)
+                              GPid                       pid,
+                              int                        fd)
 {
   data->context = g_main_context_get_thread_default ();
   data->child_exited = FALSE;
@@ -179,9 +179,9 @@ typedef struct {
 
 static void
 on_run_with_application_name_appeared (GDBusConnection *connection,
-				       const gchar     *name,
-				       const gchar     *name_owner,
-				       gpointer         user_data)
+                                       const gchar     *name,
+                                       const gchar     *name_owner,
+                                       gpointer         user_data)
 {
   RunWithAppNameAppearedData *data = user_data;
 
@@ -282,12 +282,40 @@ test_unique (void)
 
 static void
 on_name_disappeared_quit (GDBusConnection *connection,
-			  const gchar     *name,
-			  gpointer         user_data)
+                          const gchar     *name,
+                          gpointer         user_data)
 {
   GMainLoop *loop = user_data;
 
   g_main_loop_quit (loop);
+}
+
+static gboolean
+call_quit (gpointer data)
+{
+  GDBusConnection *connection;
+  GError *error = NULL;
+  GVariant *res;
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  res = g_dbus_connection_call_sync (connection,
+                                     "org.gtk.test.app",
+                                     "/org/gtk/test/app",
+                                     "org.gtk.Application",
+                                     "Quit",
+                                     g_variant_new ("(u)", 0),
+                                     NULL,
+                                     G_DBUS_CALL_FLAGS_NONE,
+                                     -1,
+                                     NULL,
+                                     &error);
+
+  g_assert_no_error (error);
+
+  if (res)
+    g_variant_unref (res);
+
+  return FALSE;
 }
 
 /* This test starts an application, checks that its name appears on
@@ -299,7 +327,6 @@ test_quit_on_app_appeared (void)
 {
   GMainLoop *loop;
   int quit_disappeared_watch;
-  GDBusConnection *connection;
 
   loop = g_main_loop_new (NULL, FALSE);
   quit_disappeared_watch = g_bus_watch_name (G_BUS_TYPE_SESSION,
@@ -310,18 +337,11 @@ test_quit_on_app_appeared (void)
                             loop,
                             NULL);
 
-  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
-  g_dbus_connection_call (connection,
-			  "org.gtk.test.app",
-			  "/org/gtk/test/app",
-			  "org.gtk.Application",
-			  "Quit",
-			  g_variant_new ("(u)", 0),
-			  NULL,
-			  G_DBUS_CALL_FLAGS_NONE,
-			  -1,
-			  NULL,
-			  NULL, NULL);
+  /* We need a timeout here, since we may otherwise end up calling
+   * Quit after the application took the name, but before it registered
+   * the object.
+   */
+  g_timeout_add (500, call_quit, NULL);
 
   g_main_loop_run (loop);
 
@@ -367,7 +387,7 @@ list_actions (void)
                                      "org.gtk.Application",
                                      "ListActions",
                                      NULL,
-				     NULL,
+                                     NULL,
                                      G_DBUS_CALL_FLAGS_NONE,
                                      -1,
                                      NULL,
@@ -432,7 +452,7 @@ invoke_action (gpointer user_data)
                                      g_variant_new ("(su)",
                                                     action,
                                                     0),
-				     NULL,
+                                     NULL,
                                      G_DBUS_CALL_FLAGS_NONE,
                                      -1,
                                      NULL,
@@ -457,12 +477,12 @@ test_invoke (void)
   loop = g_main_loop_new (NULL, FALSE);
 
   quit_disappeared_watch = g_bus_watch_name (G_BUS_TYPE_SESSION,
-					     "org.gtk.test.app",
-					     0,
-					     NULL,
-					     on_name_disappeared_quit,
-					     loop,
-					     NULL);
+                                             "org.gtk.test.app",
+                                             0,
+                                             NULL,
+                                             on_name_disappeared_quit,
+                                             loop,
+                                             NULL);
 
   g_timeout_add (0, invoke_action, "action1");
 
