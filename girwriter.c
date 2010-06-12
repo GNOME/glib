@@ -1,4 +1,3 @@
-
 /* -*- Mode: C; c-file-style: "gnu"; -*- */
 /* GObject introspection: IDL generator
  *
@@ -49,7 +48,7 @@ xml_element_new (const char *name)
 {
   XmlElement *elem;
 
-  elem = g_new (XmlElement, 1);
+  elem = g_slice_new (XmlElement);
   elem->name = g_strdup (name);
   elem->has_children = FALSE;
   return elem;
@@ -59,7 +58,7 @@ static void
 xml_element_free (XmlElement *elem)
 {
   g_free (elem->name);
-  g_free (elem);
+  g_slice_free (XmlElement, elem);
 }
 
 static void
@@ -127,7 +126,7 @@ xml_open (FILE *file)
 {
   Xml *xml;
 
-  xml = g_new (Xml, 1);
+  xml = g_slice_new (Xml);
   xml->file = file;
   xml->stack = NULL;
 
@@ -151,7 +150,7 @@ static void
 xml_free (Xml *xml)
 {
   xml_close (xml);
-  g_free (xml);
+  g_slice_free (Xml, xml);
 }
 
 
