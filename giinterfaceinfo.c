@@ -25,44 +25,123 @@
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 
+/**
+ * SECTION:giinterfaceinfo
+ * @Short_description: Struct representing a GInterface
+ * @Title: GIInterfaceInfo
+ *
+ * GIInterfaceInfo represents a #GInterface type.
+ *
+ * A GInterface has methods, fields, properties, signals, interfaces, constants,
+ * virtual functions and prerequisites.
+ *
+ * <refsect1 id="gi-giinterfaceinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
+ *          +----GIInterfaceInfo
+ * </synopsis>
+ * </refsect1>
+ */
+
+/**
+ * g_interface_info_get_n_prerequisites:
+ * @info: a #GIInterfaceInfo
+ *
+ * Obtain the number of prerequisites for this interface type.
+ * A prerequisites is another interface that needs to be implemented for
+ * interface, similar to an base class for GObjects.
+ *
+ * Returns: number of prerequisites
+ */
 gint
 g_interface_info_get_n_prerequisites (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), 0);
+
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_prerequisites;
 }
 
+/**
+ * g_interface_info_get_prerequisite:
+ * @info: a #GIInterfaceInfo
+ * @n: index of prerequisites to get
+ *
+ * Obtain an interface type prerequisites index @n.
+ *
+ * Returns: (transfer full): the prerequisites as a #GIBaseInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
 GIBaseInfo *
 g_interface_info_get_prerequisite (GIInterfaceInfo *info,
 				   gint            n)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return _g_info_from_entry (rinfo->repository,
 			     rinfo->typelib, blob->prerequisites[n]);
 }
 
 
+/**
+ * g_interface_info_get_n_properties:
+ * @info: a #GIInterfaceInfo
+ *
+ * Obtain the number of properties that this interface type has.
+ *
+ * Returns: number of properties
+ */
 gint
 g_interface_info_get_n_properties (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), 0);
+
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_properties;
 }
 
+/**
+ * g_interface_info_get_property:
+ * @info: a #GIInterfaceInfo
+ * @n: index of property to get
+ *
+ * Obtain an interface type property at index @n.
+ *
+ * Returns: (transfer full): the #GIPropertyInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
 GIPropertyInfo *
 g_interface_info_get_property (GIInterfaceInfo *info,
 			       gint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header = (Header *)rinfo->typelib->data;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header;
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+
+  header = (Header *)rinfo->typelib->data;
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
@@ -72,23 +151,52 @@ g_interface_info_get_property (GIInterfaceInfo *info,
 					rinfo->typelib, offset);
 }
 
+/**
+ * g_interface_info_get_n_methods:
+ * @info: a #GIInterfaceInfo
+ *
+ * Obtain the number of methods that this interface type has.
+ *
+ * Returns: number of methods
+ */
 gint
 g_interface_info_get_n_methods (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), 0);
+
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_methods;
 }
 
+/**
+ * g_interface_info_get_method:
+ * @info: a #GIInterfaceInfo
+ * @n: index of method to get
+ *
+ * Obtain an interface type method at index @n.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
 GIFunctionInfo *
 g_interface_info_get_method (GIInterfaceInfo *info,
 			     gint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header = (Header *)rinfo->typelib->data;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header;
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+
+  header = (Header *)rinfo->typelib->data;
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
@@ -99,6 +207,17 @@ g_interface_info_get_method (GIInterfaceInfo *info,
 					rinfo->typelib, offset);
 }
 
+/**
+ * g_interface_info_find_method:
+ * @info: a #GIInterfaceInfo
+ * @name: name of method to obtain
+ *
+ * Obtain a method of the interface type given a @name. %NULL will be
+ * returned if there's no method available with that name.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo or %NULL if none found.
+ * Free the struct by calling g_base_info_unref() when done.
+ */
 GIFunctionInfo *
 g_interface_info_find_method (GIInterfaceInfo *info,
 			      const gchar     *name)
@@ -115,23 +234,52 @@ g_interface_info_find_method (GIInterfaceInfo *info,
   return _g_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
+/**
+ * g_interface_info_get_n_signals:
+ * @info: a #GIInterfaceInfo
+ *
+ * Obtain the number of signals that this interface type has.
+ *
+ * Returns: number of signals
+ */
 gint
 g_interface_info_get_n_signals (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), 0);
+
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_signals;
 }
 
+/**
+ * g_interface_info_get_signal:
+ * @info: a #GIInterfaceInfo
+ * @n: index of signal to get
+ *
+ * Obtain an interface type signal at index @n.
+ *
+ * Returns: (transfer full): the #GISignalInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
 GISignalInfo *
 g_interface_info_get_signal (GIInterfaceInfo *info,
 			     gint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header = (Header *)rinfo->typelib->data;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header;
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+
+  header = (Header *)rinfo->typelib->data;
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
@@ -143,23 +291,52 @@ g_interface_info_get_signal (GIInterfaceInfo *info,
 				      rinfo->typelib, offset);
 }
 
+/**
+ * g_interface_info_get_n_vfuncs:
+ * @info: a #GIInterfaceInfo
+ *
+ * Obtain the number of virtual functions that this interface type has.
+ *
+ * Returns: number of virtual functions
+ */
 gint
 g_interface_info_get_n_vfuncs (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), 0);
+
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_vfuncs;
 }
 
+/**
+ * g_interface_info_get_vfunc:
+ * @info: a #GIInterfaceInfo
+ * @n: index of virtual function to get
+ *
+ * Obtain an interface type virtual function at index @n.
+ *
+ * Returns: (transfer full): the #GIVFuncInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
 GIVFuncInfo *
 g_interface_info_get_vfunc (GIInterfaceInfo *info,
 			    gint            n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header = (Header *)rinfo->typelib->data;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header;
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+
+  header = (Header *)rinfo->typelib->data;
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
@@ -174,7 +351,7 @@ g_interface_info_get_vfunc (GIInterfaceInfo *info,
 
 /**
  * g_interface_info_find_vfunc:
- * @info: a #GIObjectInfo
+ * @info: a #GIInterfaceInfo
  * @name: The name of a virtual function to find.
  *
  * Locate a virtual function slot with name @name. See the documentation
@@ -189,8 +366,14 @@ g_interface_info_find_vfunc (GIInterfaceInfo *info,
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header = (Header *)rinfo->typelib->data;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header;
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+
+  header = (Header *)rinfo->typelib->data;
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + blob->n_prerequisites % 2) * 2
@@ -201,23 +384,52 @@ g_interface_info_find_vfunc (GIInterfaceInfo *info,
   return _g_base_info_find_vfunc (rinfo, offset, blob->n_vfuncs, name);
 }
 
+/**
+ * g_interface_info_get_n_constants:
+ * @info: a #GIInterfaceInfo
+ *
+ * Obtain the number of constants that this interface type has.
+ *
+ * Returns: number of constants
+ */
 gint
 g_interface_info_get_n_constants (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), 0);
+
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   return blob->n_constants;
 }
 
+/**
+ * g_interface_info_get_constant:
+ * @info: a #GIInterfaceInfo
+ * @n: index of constant to get
+ *
+ * Obtain an interface type constant at index @n.
+ *
+ * Returns: (transfer full): the #GIConstantInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
 GIConstantInfo *
 g_interface_info_get_constant (GIInterfaceInfo *info,
 			       gint             n)
 {
   gint offset;
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  Header *header = (Header *)rinfo->typelib->data;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  Header *header;
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+
+  header = (Header *)rinfo->typelib->data;
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   offset = rinfo->offset + header->interface_blob_size
     + (blob->n_prerequisites + (blob->n_prerequisites % 2)) * 2
@@ -244,7 +456,12 @@ GIStructInfo *
 g_interface_info_get_iface_struct (GIInterfaceInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
-  InterfaceBlob *blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
+  InterfaceBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_INTERFACE_INFO (info), NULL);
+
+  blob = (InterfaceBlob *)&rinfo->typelib->data[rinfo->offset];
 
   if (blob->gtype_struct)
     return (GIStructInfo *) _g_info_from_entry (rinfo->repository,
