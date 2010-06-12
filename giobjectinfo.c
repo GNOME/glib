@@ -30,7 +30,7 @@
  * @Short_description: Struct representing a GObject
  * @Title: GIObjectInfo
  *
- * GIPropertyInfo represents a #GObject. This doesn't represent a specific
+ * GIObjectInfo represents a #GObject. This doesn't represent a specific
  * instance of a GObject, instead this represent the object type (eg class).
  *
  * A GObject has methods, fields, properties, signals, interfaces, constants
@@ -359,6 +359,10 @@ g_object_info_get_method (GIObjectInfo *info,
 /**
  * g_object_info_find_method:
  * @info: a #GIObjectInfo
+ * @name: name of method to obtain
+ *
+ * Obtain a method of the object type given a @name. %NULL will be
+ * returned if there's no method available with that name.
  *
  * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
  * g_base_info_unref() when done.
