@@ -339,12 +339,7 @@ test_quit_on_app_appeared (void)
                             on_name_disappeared_quit,
                             loop,
                             NULL);
-
-  /* We need a timeout here, since we may otherwise end up calling
-   * Quit after the application took the name, but before it registered
-   * the object.
-   */
-  g_timeout_add (500, call_quit, NULL);
+  call_quit (NULL);
 
   g_main_loop_run (loop);
 

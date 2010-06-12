@@ -289,22 +289,6 @@ ensure_bus (GApplication *app)
 static void
 _g_application_platform_init (GApplication *app)
 {
-  GError *error = NULL;
-  guint registration_id;
-
-  ensure_bus (app);
-
-  registration_id = g_dbus_connection_register_object (app->priv->session_bus,
-                                                       app->priv->dbus_path,
-                                                       &application_dbus_interface_info,
-                                                       &application_dbus_vtable,
-                                                       app, NULL,
-                                                       &error);
-  if (registration_id == 0)
-    {
-      g_error ("%s", error->message);
-      g_error_free (error);
-    }
 }
 
 static gboolean
@@ -313,9 +297,22 @@ _g_application_platform_acquire_single_instance (GApplication  *app,
 {
   GVariant *request_result;
   guint32 request_status;
+  gboolean result;
+  guint registration_id;
 
   ensure_bus (app);
+
   if (app->priv->session_bus == NULL)
+    return FALSE;
+
+  registration_id = g_dbus_connection_register_object (app->priv->session_bus,
+                                                       app->priv->dbus_path,
+                                                       &application_dbus_interface_info,
+                                                       &application_dbus_vtable,
+                                                       app,
+                                                       NULL,
+                                                       error);
+  if (registration_id == 0)
     return FALSE;
 
   request_result = g_dbus_connection_call_sync (app->priv->session_bus,
@@ -327,7 +324,10 @@ _g_application_platform_acquire_single_instance (GApplication  *app,
                                                 NULL, 0, -1, NULL, error);
 
   if (request_result == NULL)
-    return FALSE;
+    {
+      result = FALSE;
+      goto done;
+    }
 
   if (g_variant_is_of_type (request_result, G_VARIANT_TYPE ("(u)")))
     g_variant_get (request_result, "(u)", &request_status);
@@ -343,10 +343,17 @@ _g_application_platform_acquire_single_instance (GApplication  *app,
       else
         g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Unknown error");
 
-      return FALSE;
+      result = FALSE;
+      goto done;
     }
 
-  return TRUE;
+  result = TRUE;
+
+done:
+  if (!result)
+    g_dbus_connection_unregister_object (app->priv->session_bus, registration_id);
+
+  return result;
 }
 
 static void
