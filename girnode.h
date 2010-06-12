@@ -244,9 +244,15 @@ struct _GIrNodeInterface
 
   gboolean abstract;
   gboolean deprecated;
+  gboolean fundamental;
 
   gchar *gtype_name;
   gchar *gtype_init;
+
+  gchar *ref_func;
+  gchar *unref_func;
+  gchar *set_value_func;
+  gchar *get_value_func;
 
   gchar *parent;
   gchar *glib_type_struct;

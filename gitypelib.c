@@ -183,7 +183,7 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (PropertyBlob, 16);
   CHECK_SIZE (SignalBlob, 16);
   CHECK_SIZE (VFuncBlob, 20);
-  CHECK_SIZE (ObjectBlob, 44);
+  CHECK_SIZE (ObjectBlob, 60);
   CHECK_SIZE (InterfaceBlob, 40);
   CHECK_SIZE (ConstantBlob, 24);
   CHECK_SIZE (AttributeBlob, 12);

@@ -271,6 +271,56 @@ dump_enum_type (GType type, const char *symbol, GOutputStream *out)
 }
 
 static void
+dump_fundamental_type (GType type, const char *symbol, GOutputStream *out)
+{
+  guint n_interfaces;
+  guint i;
+  GType *interfaces;
+  GString *parent_str;
+  GType parent;
+  gboolean first = TRUE;
+
+
+  escaped_printf (out, "  <fundamental name=\"%s\" get-type=\"%s\"",
+		  g_type_name (type), symbol);
+
+  if (G_TYPE_IS_ABSTRACT (type))
+    escaped_printf (out, " abstract=\"1\"");
+
+  if (G_TYPE_IS_INSTANTIATABLE (type))
+    escaped_printf (out, " instantiatable=\"1\"");
+
+  parent = type;
+  parent_str = g_string_new ("");
+  do
+    {
+      parent = g_type_parent (parent);
+      if (first)
+        first = FALSE;
+      else
+        g_string_append_c (parent_str, ',');
+      if (!g_type_name (parent))
+        break;
+      g_string_append (parent_str, g_type_name (parent));
+    } while (parent != G_TYPE_INVALID);
+
+  if (parent_str->len > 0)
+    escaped_printf (out, " parents=\"%s\"", parent_str->str);
+  g_string_free (parent_str, TRUE);
+
+  goutput_write (out, ">\n");
+
+  interfaces = g_type_interfaces (type, &n_interfaces);
+  for (i = 0; i < n_interfaces; i++)
+    {
+      GType itype = interfaces[i];
+      escaped_printf (out, "    <implements name=\"%s\"/>\n",
+		      g_type_name (itype));
+    }
+  goutput_write (out, "  </fundamental>\n");
+}
+
+static void
 dump_type (GType type, const char *symbol, GOutputStream *out)
 {
   switch (g_type_fundamental (type))
@@ -294,10 +344,7 @@ dump_type (GType type, const char *symbol, GOutputStream *out)
       /* GValue, etc.  Just skip them. */
       break;
     default:
-      /* Other fundamental types such as the once GStreamer and Clutter registers
-       * are not yet interesting from an introspection perspective and should be
-       * ignored
-       */
+      dump_fundamental_type (type, symbol, out);
       break;
     }
 }

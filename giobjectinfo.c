@@ -97,6 +97,29 @@ g_object_info_get_abstract (GIObjectInfo *info)
 }
 
 /**
+ * g_object_info_get_fundamental:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain if the object type is of a fundamental type which is not
+ * G_TYPE_OBJECT. This is mostly for supporting GstMiniObject.
+ *
+ * Returns: %TRUE if the object type is a fundamental type
+ */
+gboolean
+g_object_info_get_fundamental (GIObjectInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), FALSE);
+
+  blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  return blob->fundamental != 0;
+}
+
+/**
  * g_object_info_get_type_name:
  * @info: a #GIObjectInfo
  *
@@ -636,3 +659,229 @@ g_object_info_get_class_struct (GIObjectInfo *info)
     return NULL;
 }
 
+typedef const char* (*SymbolGetter) (GIObjectInfo *info);
+
+static void *
+_get_func(GIObjectInfo *info,
+          SymbolGetter getter)
+{
+  const char* symbol;
+  GSList *parents = NULL, *l;
+  GIObjectInfo *parent_info;
+
+  parent_info = info;
+  while (parent_info != NULL) {
+    parents = g_slist_prepend(parents, parent_info);
+    parent_info = g_object_info_get_parent(parent_info);
+  }
+
+  for (l = parents; l; l = l->next) {
+    GIObjectInfoRefFunction func;
+    parent_info = l->data;
+    symbol = getter(parent_info);
+    if (symbol == NULL)
+      continue;
+    if (g_typelib_symbol (((GIRealInfo *)parent_info)->typelib, symbol, (void**) &func)) {
+      g_slist_free(parents);
+      return func;
+    }
+  }
+
+  g_slist_free(parents);
+  return NULL;
+
+}
+
+/**
+ * g_object_info_get_ref_function:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain the symbol name of the function that should be called to ref this
+ * object type. It's mainly used fundamental types. The type signature for
+ * the symbol is %GIObjectInfoRefFunction, to fetch the function pointer
+ * see g_object_info_get_ref_function().
+ *
+ * Returns: the symbol or %NULL
+ */
+const char *
+g_object_info_get_ref_function (GIObjectInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+
+  blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (blob->ref_func)
+    return g_typelib_get_string (rinfo->typelib, blob->ref_func);
+
+  return NULL;
+}
+
+/**
+ * g_object_info_get_ref_function_pointer:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain a pointer to a function which can be used to
+ * increase the reference count an instance of this object type.
+ * This takes derivation into account and will reversely traverse
+ * the base classes of this type, starting at the top type.
+ *
+ * Returns: the function pointer or %NULL
+ */
+GIObjectInfoRefFunction
+g_object_info_get_ref_function_pointer (GIObjectInfo *info)
+{
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+
+  return (GIObjectInfoRefFunction)_get_func(info, (SymbolGetter)g_object_info_get_ref_function);
+}
+
+/**
+ * g_object_info_get_unref_function:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain the symbol name of the function that should be called to unref this
+ * object type. It's mainly used fundamental types. The type signature for
+ * the symbol is %GIObjectInfoUnrefFunction, to fetch the function pointer
+ * see g_object_info_get_unref_function().
+ *
+ * Returns: the symbol or %NULL
+ */
+const char *
+g_object_info_get_unref_function (GIObjectInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+
+  blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (blob->unref_func)
+    return g_typelib_get_string (rinfo->typelib, blob->unref_func);
+
+  return NULL;
+}
+
+/**
+ * g_object_info_get_unref_function_pointer:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain a pointer to a function which can be used to
+ * decrease the reference count an instance of this object type.
+ * This takes derivation into account and will reversely traverse
+ * the base classes of this type, starting at the top type.
+ *
+ * Returns: the function pointer or %NULL
+ */
+GIObjectInfoUnrefFunction
+g_object_info_get_unref_function_pointer (GIObjectInfo *info)
+{
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+
+  return (GIObjectInfoUnrefFunction)_get_func(info, (SymbolGetter)g_object_info_get_unref_function);
+}
+
+/**
+ * g_object_info_get_set_value_function:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain the symbol name of the function that should be called to convert
+ * set a GValue giving an object instance pointer of this object type.
+ * I's mainly used fundamental types. The type signature for the symbol
+ * is %GIObjectInfoSetValueFunction, to fetch the function pointer
+ * see g_object_info_get_set_value_function().
+ *
+ * Returns: the symbol or %NULL
+ */
+const char *
+g_object_info_get_set_value_function (GIObjectInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+
+  blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (blob->set_value_func)
+    return g_typelib_get_string (rinfo->typelib, blob->set_value_func);
+
+  return NULL;
+}
+
+/**
+ * g_object_info_get_set_value_function_pointer:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain a pointer to a function which can be used to
+ * set a GValue given an instance of this object type.
+ * This takes derivation into account and will reversely traverse
+ * the base classes of this type, starting at the top type.
+ *
+ * Returns: the function pointer or %NULL
+ */
+GIObjectInfoSetValueFunction
+g_object_info_get_set_value_function_pointer (GIObjectInfo *info)
+{
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+
+  return (GIObjectInfoSetValueFunction)_get_func(info, (SymbolGetter)g_object_info_get_set_value_function);
+}
+
+/**
+ * g_object_info_get_get_value_function:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain the symbol name of the function that should be called to convert
+ * an object instance pointer of this object type to a GValue.
+ * I's mainly used fundamental types. The type signature for the symbol
+ * is %GIObjectInfoGetValueFunction, to fetch the function pointer
+ * see g_object_info_get_get_value_function().
+ *
+ * Returns: the symbol or %NULL
+ */
+const char *
+g_object_info_get_get_value_function (GIObjectInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ObjectBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+
+  blob = (ObjectBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (blob->get_value_func)
+    return g_typelib_get_string (rinfo->typelib, blob->get_value_func);
+
+  return NULL;
+}
+
+/**
+ * g_object_info_get_get_value_function_pointer:
+ * @info: a #GIObjectInfo
+ *
+ * Obtain a pointer to a function which can be used to
+ * extract an instance of this object type out of a GValue.
+ * This takes derivation into account and will reversely traverse
+ * the base classes of this type, starting at the top type.
+ *
+ * Returns: the function pointer or %NULL
+ */
+GIObjectInfoGetValueFunction
+g_object_info_get_get_value_function_pointer (GIObjectInfo *info)
+{
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_OBJECT_INFO (info), NULL);
+
+  return (GIObjectInfoGetValueFunction)_get_func(info, (SymbolGetter)g_object_info_get_get_value_function);
+}

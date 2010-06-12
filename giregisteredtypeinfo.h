@@ -38,7 +38,8 @@ G_BEGIN_DECLS
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_INTERFACE) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_OBJECT) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_STRUCT) || \
-     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_UNION))
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_UNION) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_BOXED))
 
 const gchar *          g_registered_type_info_get_type_name (GIRegisteredTypeInfo *info);
 const gchar *          g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info);

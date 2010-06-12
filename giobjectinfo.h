@@ -30,12 +30,52 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GIObjectInfoRefFunction:
+ * @object: object instance pointer
+ *
+ * Increases the reference count of an object instance.
+ *
+ * Returns: the object instance
+ */
+typedef void * (*GIObjectInfoRefFunction) (void *object);
+
+/**
+ * GIObjectInfoUnrefFunction:
+ * @object: object instance pointer
+ *
+ * Decreases the reference count of an object instance.
+ *
+ */
+typedef void   (*GIObjectInfoUnrefFunction) (void *object);
+
+/**
+ * GIObjectInfoSetValueFunction:
+ * @value: a #GValue
+ * @object: object instance pointer
+ *
+ * Update @value and attach the object instance pointer @object to it.
+ *
+ */
+typedef void   (*GIObjectInfoSetValueFunction) (GValue *value, void *object);
+
+/**
+ * GIObjectInfoGetValueFunction:
+ * @value: a #GValue
+ *
+ * Extract an object instance out of @value
+ *
+ * Returns: the object instance
+ */
+typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
+
 #define GI_IS_OBJECT_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_OBJECT)
 
 const gchar *     g_object_info_get_type_name	 (GIObjectInfo *info);
 const gchar *     g_object_info_get_type_init	 (GIObjectInfo *info);
 gboolean          g_object_info_get_abstract     (GIObjectInfo *info);
+gboolean          g_object_info_get_fundamental  (GIObjectInfo *info);
 GIObjectInfo *    g_object_info_get_parent       (GIObjectInfo *info);
 gint              g_object_info_get_n_interfaces (GIObjectInfo *info);
 GIInterfaceInfo * g_object_info_get_interface    (GIObjectInfo *info,
@@ -63,6 +103,18 @@ gint              g_object_info_get_n_constants  (GIObjectInfo *info);
 GIConstantInfo *  g_object_info_get_constant     (GIObjectInfo *info,
 						  gint          n);
 GIStructInfo *    g_object_info_get_class_struct (GIObjectInfo *info);
+
+const char *                 g_object_info_get_ref_function               (GIObjectInfo *info);
+GIObjectInfoRefFunction      g_object_info_get_ref_function_pointer       (GIObjectInfo *info);
+
+const char *                 g_object_info_get_unref_function             (GIObjectInfo *info);
+GIObjectInfoUnrefFunction    g_object_info_get_unref_function_pointer     (GIObjectInfo *info);
+
+const char *                 g_object_info_get_set_value_function         (GIObjectInfo *info);
+GIObjectInfoSetValueFunction g_object_info_get_set_value_function_pointer (GIObjectInfo *info);
+
+const char *                 g_object_info_get_get_value_function         (GIObjectInfo *info);
+GIObjectInfoGetValueFunction g_object_info_get_get_value_function_pointer (GIObjectInfo *info);
 
 
 G_END_DECLS

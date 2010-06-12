@@ -72,6 +72,11 @@ G_BEGIN_DECLS
 /*
 TYPELIB HISTORY
 -----
+
+Version 1.1
+- Add ref/unref/set-value/get-value functions to Object, to be able
+  to support instantiatable fundamental types which are not GObject based.
+
 Version 1.0
 - Rename class_struct to gtype_struct, add to interfaces
 
@@ -918,6 +923,8 @@ typedef struct {
 /**
  * ObjectBlob:
  * @blob_type: #BLOB_TYPE_OBJECT
+ * @fundamental: this object is not a GObject derived type, instead it's
+ * an additional fundamental type.
  * @gtype_name: String name of the associated #GType
  * @gtype_init: String naming the symbol which gets the runtime #GType
  * @parent: The directory index of the parent type. This is only set for
@@ -938,12 +945,21 @@ typedef struct {
  * @signals: Describes the signals.
  * @vfuncs: Describes the virtual functions.
  * @constants: Describes the constants.
+ * @ref_func: String pointing to a function which can be called to increase
+ * the reference count for an instance of this object type.
+ * @unref_func: String pointing to a function which can be called to decrease
+ * the reference count for an instance of this object type.
+ * @set_value_func: String pointing to a function which can be called to
+ * convert a pointer of this object to a GValue
+ * @get_value_func: String pointing to a function which can be called to
+ * convert extract a pointer to this object from a GValue
  */
 typedef struct {
   guint16   blob_type;  /* 7 */
   guint16   deprecated   : 1;
   guint16   abstract     : 1;
-  guint16   reserved     :14;
+  guint16   fundamental  : 1;
+  guint16   reserved     :13;
   guint32   name;
 
   guint32   gtype_name;
@@ -960,6 +976,11 @@ typedef struct {
   guint16   n_vfuncs;
   guint16   n_constants;
   guint16   reserved2;
+
+  guint32   ref_func;
+  guint32   unref_func;
+  guint32   set_value_func;
+  guint32   get_value_func;
 
   guint32   reserved3;
   guint32   reserved4;

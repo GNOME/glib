@@ -999,8 +999,10 @@ write_object_info (const gchar  *namespace,
   const gchar *name;
   const gchar *type_name;
   const gchar *type_init;
+  const gchar *func;
   gboolean deprecated;
   gboolean is_abstract;
+  gboolean is_fundamental;
   GIObjectInfo *pnode;
   GIStructInfo *class_struct;
   gint i;
@@ -1008,6 +1010,7 @@ write_object_info (const gchar  *namespace,
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
   is_abstract = g_object_info_get_abstract (info);
+  is_fundamental = g_object_info_get_fundamental (info);
 
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
@@ -1032,6 +1035,25 @@ write_object_info (const gchar  *namespace,
     xml_printf (file, " abstract=\"1\"");
 
   xml_printf (file, " glib:type-name=\"%s\" glib:get-type=\"%s\"", type_name, type_init);
+
+  if (is_fundamental)
+    xml_printf (file, " glib:fundamental=\"1\"");
+
+  func = g_object_info_get_unref_function (info);
+  if (func)
+    xml_printf (file, " glib:unref-function=\"%s\"", func);
+
+  func = g_object_info_get_ref_function (info);
+  if (func)
+    xml_printf (file, " glib:ref-function=\"%s\"", func);
+
+  func = g_object_info_get_set_value_function (info);
+  if (func)
+    xml_printf (file, " glib:set-value-function=\"%s\"", func);
+
+  func = g_object_info_get_get_value_function (info);
+  if (func)
+    xml_printf (file, " glib:get-value-function=\"%s\"", func);
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");

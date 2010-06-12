@@ -298,6 +298,10 @@ g_ir_node_free (GIrNode *node)
 	g_free (node->name);
 	g_free (iface->gtype_name);
 	g_free (iface->gtype_init);
+	g_free (iface->ref_func);
+	g_free (iface->unref_func);
+	g_free (iface->set_value_func);
+	g_free (iface->get_value_func);
 
 
 	g_free (iface->glib_type_struct);
@@ -692,6 +696,14 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 	size += ALIGN_VALUE (strlen (iface->gtype_name) + 1, 4);
 	if (iface->gtype_init)
 	  size += ALIGN_VALUE (strlen (iface->gtype_init) + 1, 4);
+	if (iface->ref_func)
+	  size += ALIGN_VALUE (strlen (iface->ref_func) + 1, 4);
+	if (iface->unref_func)
+	  size += ALIGN_VALUE (strlen (iface->unref_func) + 1, 4);
+	if (iface->set_value_func)
+	  size += ALIGN_VALUE (strlen (iface->set_value_func) + 1, 4);
+	if (iface->get_value_func)
+	  size += ALIGN_VALUE (strlen (iface->get_value_func) + 1, 4);
 	size += 2 * (n + (n % 2));
 
 	for (l = iface->members; l; l = l->next)
@@ -2094,11 +2106,20 @@ g_ir_node_build_typelib (GIrNode         *node,
 
 	blob->blob_type = BLOB_TYPE_OBJECT;
 	blob->abstract = object->abstract;
+        blob->fundamental = object->fundamental;
 	blob->deprecated = object->deprecated;
 	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->gtype_name = write_string (object->gtype_name, strings, data, offset2);
 	blob->gtype_init = write_string (object->gtype_init, strings, data, offset2);
+        if (object->ref_func)
+          blob->ref_func = write_string (object->ref_func, strings, data, offset2);
+        if (object->unref_func)
+          blob->unref_func = write_string (object->unref_func, strings, data, offset2);
+        if (object->set_value_func)
+          blob->set_value_func = write_string (object->set_value_func, strings, data, offset2);
+        if (object->get_value_func)
+          blob->get_value_func = write_string (object->get_value_func, strings, data, offset2);
 	if (object->parent)
 	  blob->parent = find_entry (module, modules, object->parent);
 	else
