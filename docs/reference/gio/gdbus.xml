@@ -22,6 +22,7 @@
     </group>
     <arg choice="plain">--dest <replaceable>bus_name</replaceable></arg>
     <arg choice="plain">--object-path <replaceable>/path/to/object</replaceable></arg>
+    <arg choice="plain">--xml</arg>
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gdbus</command>

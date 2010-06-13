@@ -1155,11 +1155,13 @@ dump_node (GDBusConnection      *c,
 
 static gchar *opt_introspect_dest = NULL;
 static gchar *opt_introspect_object_path = NULL;
+static gboolean opt_introspect_xml = FALSE;
 
 static const GOptionEntry introspect_entries[] =
 {
   { "dest", 'd', 0, G_OPTION_ARG_STRING, &opt_introspect_dest, N_("Destination name to introspect"), NULL},
   { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_introspect_object_path, N_("Object path to introspect"), NULL},
+  { "xml", 'x', 0, G_OPTION_ARG_NONE, &opt_introspect_xml, N_("Print XML"), NULL},
   { NULL }
 };
 
@@ -1325,16 +1327,23 @@ handle_introspect (gint        *argc,
     }
   g_variant_get (result, "(&s)", &xml_data);
 
-  error = NULL;
-  node = g_dbus_node_info_new_for_xml (xml_data, &error);
-  if (node == NULL)
+  if (opt_introspect_xml)
     {
-      g_printerr (_("Error parsing introspection XML: %s\n"), error->message);
-      g_error_free (error);
-      goto out;
+      g_print ("%s", xml_data);
     }
+  else
+    {
+      error = NULL;
+      node = g_dbus_node_info_new_for_xml (xml_data, &error);
+      if (node == NULL)
+        {
+          g_printerr (_("Error parsing introspection XML: %s\n"), error->message);
+          g_error_free (error);
+          goto out;
+        }
 
-  dump_node (c, opt_introspect_dest, node, 0, opt_introspect_object_path);
+      dump_node (c, opt_introspect_dest, node, 0, opt_introspect_object_path);
+    }
 
   ret = TRUE;
 
