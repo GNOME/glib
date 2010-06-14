@@ -121,7 +121,11 @@ gchar **                g_settings_get_strv                             (GSettin
 gboolean                g_settings_set_strv                             (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          const gchar *const *value);
-
+gint                    g_settings_get_enum                             (GSettings          *settings,
+                                                                         const gchar        *key);
+gboolean                g_settings_set_enum                             (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         gint                value);
 GSettings *             g_settings_get_child                            (GSettings          *settings,
                                                                          const gchar        *name);
 

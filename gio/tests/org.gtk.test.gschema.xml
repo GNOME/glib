@@ -92,4 +92,32 @@
     </key>
   </schema>
 
+  <schema id='org.gtk.test.enums' path='/tests/enums/'>
+    <key name='test' enum='org.gtk.test.TestEnum'>
+      <default>'bar'</default>
+      <aliases>
+        <alias value='qux' target='quux'/>
+      </aliases>
+    </key>
+  </schema>
+
+  <schema id='org.gtk.test.enums.direct' path='/tests/enums/'>
+    <key name='test' type='s'>
+      <default>'bar'</default>
+    </key>
+  </schema>
+
+  <schema id='org.gtk.test.range' path='/tests/range/'>
+    <key name='val' type='i'>
+      <default>33</default>
+      <range min='2' max='44'/>
+    </key>
+  </schema>
+
+  <schema id='org.gtk.test.range.direct' path='/tests/range/'>
+    <key name='val' type='i'>
+      <default>33</default>
+    </key>
+  </schema>
+
 </schemalist>

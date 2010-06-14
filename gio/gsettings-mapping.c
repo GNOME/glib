@@ -377,6 +377,21 @@ g_settings_set_mapping (const GValue       *value,
         return g_variant_new_signature (g_value_get_string (value));
     }
 
+  else if (G_VALUE_HOLDS_ENUM (value))
+    {
+      GEnumValue *enumval;
+      GEnumClass *eclass;
+
+      eclass = g_type_class_ref (G_VALUE_TYPE (value));
+      enumval = g_enum_get_value (eclass, g_value_get_enum (value));
+      g_type_class_unref (eclass);
+
+      if (enumval)
+        return g_variant_new_string (enumval->value_nick);
+      else
+        return NULL;
+    }
+
   type_string = g_variant_type_dup_string (expected_type);
   g_critical ("No GSettings bind handler for type \"%s\".", type_string);
   g_free (type_string);
@@ -426,8 +441,11 @@ g_settings_get_mapping (GValue   *value,
            g_variant_is_of_type (variant, G_VARIANT_TYPE_OBJECT_PATH) ||
            g_variant_is_of_type (variant, G_VARIANT_TYPE_SIGNATURE))
     {
-      g_value_set_string (value, g_variant_get_string (variant, NULL));
-      return TRUE;
+      if (G_VALUE_HOLDS_STRING (value))
+        {
+          g_value_set_string (value, g_variant_get_string (variant, NULL));
+          return TRUE;
+        }
     }
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE ("ay")))
     {
@@ -470,6 +488,8 @@ g_settings_mapping_is_compatible (GType               gvalue_type,
           g_variant_type_equal (variant_type, G_VARIANT_TYPE ("ay")) ||
           g_variant_type_equal (variant_type, G_VARIANT_TYPE_OBJECT_PATH) ||
           g_variant_type_equal (variant_type, G_VARIANT_TYPE_SIGNATURE));
+  else if (G_TYPE_IS_ENUM (gvalue_type))
+    ok = g_variant_type_equal (variant_type, G_VARIANT_TYPE_STRING);
 
   return ok;
 }

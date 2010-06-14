@@ -162,37 +162,32 @@ g_settings_schema_new (const gchar *name)
   return schema;
 }
 
-GVariant *
-g_settings_schema_get_value (GSettingsSchema  *schema,
-                             const gchar      *key,
-                             GVariant        **options)
+GVariantIter *
+g_settings_schema_get_value (GSettingsSchema *schema,
+                             const gchar     *key)
 {
-  GVariant *variant, *value;
+  GVariantIter *iter;
+  GVariant *value;
+
+  value = gvdb_table_get_value (schema->priv->table, key);
+
+  if G_UNLIKELY (value == NULL)
+    g_error ("schema does not contain a key named '%s'", key);
+
 #if G_BYTE_ORDER == G_BIG_ENDIAN
-  GVariant *tmp;
+  {
+    GVariant *tmp;
 
-  tmp = gvdb_table_get_value (schema->priv->table, key);
-
-  if (tmp)
-    {
-      variant = g_variant_byteswap (tmp);
-      g_variant_unref (tmp);
-    }
-  else
-    variant = NULL;
-#else
-  variant = gvdb_table_get_value (schema->priv->table, key);
+    tmp = g_variant_byteswap (value);
+    g_variant_unref (value);
+    value = tmp;
+  }
 #endif
 
-  if (variant == NULL)
-    return NULL;
+  iter = g_variant_iter_new (value);
+  g_variant_unref (value);
 
-  value = g_variant_get_child_value (variant, 0);
-  if (options != NULL)
-    *options = g_variant_get_child_value (variant, 1);
-  g_variant_unref (variant);
-
-  return value;
+  return iter;
 }
 
 const gchar *

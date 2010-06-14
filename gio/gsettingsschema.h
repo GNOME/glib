@@ -61,9 +61,8 @@ const gchar *           g_settings_schema_get_path                      (GSettin
 G_GNUC_INTERNAL
 const gchar *           g_settings_schema_get_gettext_domain            (GSettingsSchema  *schema);
 G_GNUC_INTERNAL
-GVariant *              g_settings_schema_get_value                     (GSettingsSchema  *schema,
-                                                                         const gchar      *key,
-                                                                         GVariant        **options);
+GVariantIter *          g_settings_schema_get_value                     (GSettingsSchema  *schema,
+                                                                         const gchar      *key);
 G_GNUC_INTERNAL
 gboolean                g_settings_schema_has_key                       (GSettingsSchema  *schema,
                                                                          const gchar      *key);

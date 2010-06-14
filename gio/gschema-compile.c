@@ -19,6 +19,8 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+/* Prologue {{{1 */
+#define _GNU_SOURCE
 #include "config.h"
 
 #include <gstdio.h>
@@ -30,30 +32,578 @@
 #include <gi18n.h>
 
 #include "gvdb/gvdb-builder.h"
+#include "strinfo.c"
 
+/* Handling of <enum> {{{1 */
+typedef GString EnumState;
+
+static void
+enum_state_free (gpointer data)
+{
+  EnumState *state = data;
+
+  g_string_free (state, TRUE);
+}
+
+static void
+enum_state_add_value (EnumState    *state,
+                      const gchar  *nick,
+                      const gchar  *valuestr,
+                      GError      **error)
+{
+  gint64 value;
+  gchar *end;
+
+  if (nick[0] == '\0' || nick[1] == '\0')
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "enum nick must be a minimum of 2 characters");
+      return;
+    }
+
+  value = g_ascii_strtoll (valuestr, &end, 0);
+  if (*end || value > G_MAXINT32 || value < G_MININT32)
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "invalid numeric value");
+      return;
+    }
+
+  if (strinfo_builder_contains (state, nick))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<value nick='%s'> already specified", nick);
+      return;
+    }
+
+  strinfo_builder_append_item (state, nick, value);
+}
+
+static void
+enum_state_end (EnumState **state_ptr,
+                GError    **error)
+{
+  EnumState *state;
+
+  state = *state_ptr;
+  *state_ptr = NULL;
+
+  if (state->len == 0)
+    g_set_error_literal (error,
+                         G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                         "<enum> must contain at least one <value>");
+}
+
+/* Handling of <key> {{{1 */
 typedef struct
 {
-  gboolean byteswap;
+  /* for <child>, @child_schema will be set.
+   * for <key>, everything else will be set.
+   */
+  gchar        *child_schema;
 
-  GVariantBuilder key_options;
-  GHashTable *schemas;
-  gchar *schemalist_domain;
 
-  GHashTable *schema;
-  GvdbItem *schema_root;
-  gchar *schema_domain;
-
-  GString *string;
-
-  GvdbItem *key;
-  GVariant *value;
-  GVariant *min, *max;
-  GString *choices;
-  gchar l10n;
-  gchar *context;
   GVariantType *type;
-} ParseState;
+  gboolean      have_gettext_domain;
 
+  gchar         l10n;
+  gchar        *l10n_context;
+  GString      *unparsed_default_value;
+  GVariant     *default_value;
+
+  GString      *strinfo;
+  gboolean      is_enum;
+
+  GVariant     *minimum;
+  GVariant     *maximum;
+
+  gboolean      has_choices;
+  gboolean      has_aliases;
+
+  gboolean      checked;
+  GVariant     *serialised;
+} KeyState;
+
+static KeyState *
+key_state_new (const gchar *type_string,
+               const gchar *gettext_domain,
+               EnumState   *enum_data)
+{
+  KeyState *state;
+
+  state = g_slice_new0 (KeyState);
+  state->type = g_variant_type_new (type_string);
+  state->have_gettext_domain = gettext_domain != NULL;
+
+  if ((state->is_enum = (enum_data != NULL)))
+    state->strinfo = g_string_new_len (enum_data->str, enum_data->len);
+  else
+    state->strinfo = g_string_new (NULL);
+
+  return state;
+}
+
+static KeyState *
+key_state_new_child (const gchar *child_schema)
+{
+  KeyState *state;
+
+  state = g_slice_new0 (KeyState);
+  state->child_schema = g_strdup (child_schema);
+
+  return state;
+}
+
+static gboolean
+is_valid_choices (GVariant *variant,
+                  GString  *strinfo)
+{
+  switch (g_variant_classify (variant))
+    {
+      case G_VARIANT_CLASS_MAYBE:
+      case G_VARIANT_CLASS_ARRAY:
+        {
+          gboolean valid = TRUE;
+          GVariantIter iter;
+
+          g_variant_iter_init (&iter, variant);
+
+          while (valid && (variant = g_variant_iter_next_value (&iter)))
+            {
+              valid = is_valid_choices (variant, strinfo);
+              g_variant_unref (variant);
+            }
+
+          return valid;
+        }
+
+      case G_VARIANT_CLASS_STRING:
+        return strinfo_is_string_valid ((const guint32 *) strinfo->str,
+                                        strinfo->len / 4,
+                                        g_variant_get_string (variant, NULL));
+
+      default:
+        g_assert_not_reached ();
+    }
+}
+
+
+/* Gets called at </default> </choices> or <range/> to check for
+ * validity of the default value so that any inconsistency is
+ * reported as soon as it is encountered.
+ */
+static void
+key_state_check_range (KeyState  *state,
+                       GError   **error)
+{
+  if (state->default_value)
+    {
+      if (state->minimum)
+        {
+          if (g_variant_compare (state->default_value, state->minimum) < 0 ||
+              g_variant_compare (state->default_value, state->maximum) > 0)
+            {
+              g_set_error (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "<default> is not contained in "
+                           "the specified range");
+            }
+        }
+
+      else if (state->strinfo->len)
+        {
+          if (!is_valid_choices (state->default_value, state->strinfo))
+            {
+              if (state->is_enum)
+                g_set_error_literal (error, G_MARKUP_ERROR,
+                                     G_MARKUP_ERROR_INVALID_CONTENT,
+                                     "<default> is not a valid member of "
+                                     "the specified enumerated type");
+
+              else
+                g_set_error_literal (error, G_MARKUP_ERROR,
+                                     G_MARKUP_ERROR_INVALID_CONTENT,
+                                     "<default> contains string not in "
+                                     "<choices>");
+            }
+        }
+    }
+}
+
+static void
+key_state_set_range (KeyState     *state,
+                     const gchar  *min_str,
+                     const gchar  *max_str,
+                     GError      **error)
+{
+  if (state->minimum)
+    {
+      g_set_error_literal (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "<range/> already specified for this key");
+      return;
+    }
+
+  if (strchr ("ynqiuxtd", *(char *) state->type) == NULL)
+    {
+      gchar *type = g_variant_type_dup_string (state->type);
+      g_set_error (error, G_MARKUP_ERROR,
+                  G_MARKUP_ERROR_INVALID_CONTENT,
+                  "<range> not allowed for keys of type \"%s\"\n", type);
+      g_free (type);
+      return;
+    }
+
+  state->minimum = g_variant_parse (state->type, min_str, NULL, NULL, error);
+  if (state->minimum == NULL)
+    return;
+
+  state->maximum = g_variant_parse (state->type, max_str, NULL, NULL, error);
+  if (state->maximum == NULL)
+    return;
+
+  if (g_variant_compare (state->minimum, state->maximum) > 0)
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<range> specified minimum is greater than maxmimum");
+      return;
+    }
+
+  key_state_check_range (state, error);
+}
+
+static GString *
+key_state_start_default (KeyState     *state,
+                         const gchar  *l10n,
+                         const gchar  *context,
+                         GError      **error)
+{
+  if (l10n != NULL)
+    {
+      if (strcmp (l10n, "messages") == 0)
+        state->l10n = 'm';
+
+      else if (strcmp (l10n, "time") == 0)
+        state->l10n = 't';
+
+      else
+        {
+          g_set_error (error, G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_INVALID_CONTENT,
+                       "unsupported l10n category: %s", l10n);
+          return NULL;
+        }
+
+      if (!state->have_gettext_domain)
+        {
+          g_set_error_literal (error, G_MARKUP_ERROR,
+                               G_MARKUP_ERROR_INVALID_CONTENT,
+                               "l10n requested, but no "
+                               "gettext domain given");
+          return NULL;
+        }
+
+      state->l10n_context = g_strdup (context);
+    }
+
+  else if (context != NULL)
+    {
+      g_set_error_literal (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "translation context given for "
+                           " value without l10n enabled");
+      return NULL;
+    }
+
+  return g_string_new (NULL);
+}
+
+static void
+key_state_end_default (KeyState  *state,
+                       GString  **string,
+                       GError   **error)
+{
+  state->unparsed_default_value = *string;
+  *string = NULL;
+
+  state->default_value = g_variant_parse (state->type,
+                                          state->unparsed_default_value->str,
+                                          NULL, NULL, error);
+  key_state_check_range (state, error);
+}
+
+static void
+key_state_start_choices (KeyState  *state,
+                         GError   **error)
+{
+  const GVariantType *type = state->type;
+
+  if (state->is_enum)
+    {
+      g_set_error_literal (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "<choices> can not be specified for keys "
+                           "tagged as having an enumerated type");
+      return;
+    }
+
+  if (state->has_choices)
+    {
+      g_set_error_literal (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "<choices> already specified for this key");
+      return;
+    }
+
+  while (g_variant_type_is_maybe (type) || g_variant_type_is_array (type))
+    type = g_variant_type_element (type);
+
+  if (!g_variant_type_equal (type, G_VARIANT_TYPE_STRING))
+    {
+      gchar *type_string = g_variant_type_dup_string (state->type);
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<choices> not allowed for keys of type '%s'",
+                   type_string);
+      g_free (type_string);
+      return;
+    }
+}
+
+static void
+key_state_add_choice (KeyState     *state,
+                      const gchar  *choice,
+                      GError      **error)
+{
+  if (strinfo_builder_contains (state->strinfo, choice))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<choice value='%s'/> already given", choice);
+      return;
+    }
+
+  strinfo_builder_append_item (state->strinfo, choice, 0);
+  state->has_choices = TRUE;
+}
+
+static void
+key_state_end_choices (KeyState  *state,
+                       GError   **error)
+{
+  if (!state->has_choices)
+    {
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<choices> must contain at least one <choice>");
+      return;
+    }
+
+  key_state_check_range (state, error);
+}
+
+static void
+key_state_start_aliases (KeyState  *state,
+                         GError   **error)
+{
+  if (state->has_aliases)
+    g_set_error_literal (error, G_MARKUP_ERROR,
+                         G_MARKUP_ERROR_INVALID_CONTENT,
+                         "<aliases> already specified for this key");
+
+  if (!state->is_enum && !state->has_choices)
+    g_set_error_literal (error, G_MARKUP_ERROR,
+                         G_MARKUP_ERROR_INVALID_CONTENT,
+                         "<aliases> can only be specified for keys with "
+                         "enumerated types or after <choices>");
+}
+
+static void
+key_state_add_alias (KeyState     *state,
+                     const gchar  *alias,
+                     const gchar  *target,
+                     GError      **error)
+{
+  if (strinfo_builder_contains (state->strinfo, alias))
+    {
+      if (strinfo_is_string_valid ((guint32 *) state->strinfo->str,
+                                   state->strinfo->len / 4,
+                                   alias))
+        {
+          if (state->is_enum)
+            g_set_error (error, G_MARKUP_ERROR,
+                         G_MARKUP_ERROR_INVALID_CONTENT,
+                         "<alias value='%s'/> given when '%s' is already "
+                         "a member of the enumerated type", alias, alias);
+
+          else
+            g_set_error (error, G_MARKUP_ERROR,
+                         G_MARKUP_ERROR_INVALID_CONTENT,
+                         "<alias value='%s'/> given when "
+                         "<choice value='%s'/> was already given",
+                         alias, alias);
+        }
+
+      else
+        g_set_error (error, G_MARKUP_ERROR,
+                     G_MARKUP_ERROR_INVALID_CONTENT,
+                     "<alias value='%s'/> already specified", alias);
+
+      return;
+    }
+
+  if (!strinfo_builder_append_alias (state->strinfo, alias, target))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "alias target '%s' is not in %s", target,
+                   state->is_enum ? "enumerated type" : "<choices>");
+      return;
+    }
+
+  state->has_aliases = TRUE;
+}
+
+static void
+key_state_end_aliases (KeyState  *state,
+                       GError   **error)
+{
+  if (!state->has_aliases)
+    {
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<aliases> must contain at least one <alias>");
+      return;
+    }
+}
+
+static gboolean
+key_state_check (KeyState  *state,
+                 GError   **error)
+{
+  if (state->checked)
+    return TRUE;
+
+  return state->checked = TRUE;
+}
+
+static GVariant *
+key_state_serialise (KeyState *state)
+{
+  if (state->serialised == NULL)
+    {
+      if (state->child_schema)
+        {
+          state->serialised = g_variant_new_string (state->child_schema);
+        }
+
+      else
+        {
+          GVariantBuilder builder;
+
+          g_assert (key_state_check (state, NULL));
+
+          g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+
+          /* default value */
+          g_variant_builder_add_value (&builder, state->default_value);
+
+          /* translation */
+          if (state->l10n)
+            {
+              if (state->l10n_context)
+                {
+                  gint len;
+
+                  /* Contextified messages are supported by prepending
+                   * the context, followed by '\004' to the start of the
+                   * message string.  We do that here to save GSettings
+                   * the work later on.
+                   */
+                  len = strlen (state->l10n_context);
+                  state->l10n_context[len] = '\004';
+                  g_string_prepend_len (state->unparsed_default_value,
+                                        state->l10n_context, len + 1);
+                  g_free (state->l10n_context);
+                  state->l10n_context = NULL;
+                }
+
+              g_variant_builder_add (&builder, "(y(y&s))", 'l', state->l10n,
+                                     state->unparsed_default_value);
+              g_string_free (state->unparsed_default_value, TRUE);
+              state->unparsed_default_value = NULL;
+            }
+
+          /* choice, aliases, enums */
+          if (state->strinfo->len)
+            {
+              GVariant *array;
+              gpointer data;
+              gsize size;
+
+              data = state->strinfo->str;
+              size = state->strinfo->len;
+
+              array = g_variant_new_from_data (G_VARIANT_TYPE ("au"),
+                                               data, size, TRUE,
+                                               g_free, data);
+
+              g_string_free (state->strinfo, FALSE);
+              state->strinfo = NULL;
+
+              g_variant_builder_add (&builder, "(y@au)",
+                                     state->is_enum ? 'e' : 'c',
+                                     array);
+            }
+
+          /* range */
+          if (state->minimum || state->maximum)
+            g_variant_builder_add (&builder, "(y(**))", 'r',
+                                   state->minimum, state->maximum);
+
+          state->serialised = g_variant_builder_end (&builder);
+        }
+
+      g_variant_ref_sink (state->serialised);
+    }
+
+  return g_variant_ref (state->serialised);
+}
+
+static void
+key_state_free (gpointer data)
+{
+  KeyState *state = data;
+
+  if (state->type)
+    g_variant_type_free (state->type);
+
+  g_free (state->l10n_context);
+
+  if (state->unparsed_default_value)
+    g_string_free (state->unparsed_default_value, TRUE);
+
+  if (state->default_value)
+    g_variant_unref (state->default_value);
+
+  if (state->strinfo)
+    g_string_free (state->strinfo, TRUE);
+
+  if (state->minimum)
+    g_variant_unref (state->minimum);
+
+  if (state->maximum)
+    g_variant_unref (state->maximum);
+
+  if (state->serialised)
+    g_variant_unref (state->serialised);
+
+  g_slice_free (KeyState, state);
+}
+
+/* Key name validity {{{1 */
 static gboolean allow_any_name = FALSE;
 
 static gboolean
@@ -120,67 +670,194 @@ is_valid_keyname (const gchar  *key,
   return TRUE;
 }
 
-static gboolean
-type_allows_choices (const GVariantType *type)
+/* Handling of <schema> {{{1 */
+typedef struct
 {
-  if (g_variant_type_is_array (type) ||
-      g_variant_type_is_maybe (type))
-    return type_allows_choices (g_variant_type_element (type));
+  gchar      *path;
+  gchar      *gettext_domain;
 
-  return g_variant_type_equal (type, G_VARIANT_TYPE_STRING);
+  GHashTable *keys;
+} SchemaState;
+
+static SchemaState *
+schema_state_new (const gchar  *path,
+                  const gchar  *gettext_domain)
+{
+  SchemaState *state;
+
+  state = g_slice_new (SchemaState);
+  state->path = g_strdup (path);
+  state->gettext_domain = g_strdup (gettext_domain);
+  state->keys = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                       g_free, key_state_free);
+
+  return state;
 }
 
-static gboolean
-type_allows_range (const GVariantType *type)
+static void
+schema_state_free (gpointer data)
 {
-  static const char range_types[] = "ynqiuxtd";
+  SchemaState *state = data;
 
-  return strchr (range_types, *(const char*) type) != NULL;
+  g_free (state->path);
+  g_free (state->gettext_domain);
+  g_hash_table_unref (state->keys);
 }
 
-static gboolean
-is_valid_choices (GVariant    *variant,
-                  const gchar *choices)
+static void
+schema_state_add_child (SchemaState  *state,
+                        const gchar  *name,
+                        const gchar  *schema,
+                        GError      **error)
 {
-  switch (g_variant_classify (variant))
+  gchar *childname;
+
+  if (!is_valid_keyname (name, error))
+    return;
+
+  childname = g_strconcat (name, "/", NULL);
+
+  if (g_hash_table_lookup (state->keys, childname))
     {
-      case G_VARIANT_CLASS_MAYBE:
-      case G_VARIANT_CLASS_ARRAY:
-        {
-          gsize i, n;
-          GVariant *child;
-          gboolean is_valid;
-
-          n = g_variant_n_children (variant);
-          for (i = 0; i < n; ++i)
-            {
-              child = g_variant_get_child_value (variant, i);
-              is_valid = is_valid_choices (child, choices);
-              g_variant_unref (child);
-
-              if (!is_valid)
-                return FALSE;
-            }
-
-          return TRUE;
-        }
-
-      case G_VARIANT_CLASS_STRING:
-        {
-          const gchar *string;
-
-          g_variant_get (variant, "&s", &string);
-
-          while ((choices = strstr (choices, string)) && choices[-1] != 0xff);
-
-          return choices != NULL;
-        }
-
-      default:
-        g_assert_not_reached ();
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<child name='%s'> already specified", name);
+      return;
     }
+
+  g_hash_table_insert (state->keys, childname,
+                       key_state_new_child (schema));
 }
 
+static KeyState *
+schema_state_add_key (SchemaState  *state,
+                      GHashTable   *enum_table,
+                      const gchar  *name,
+                      const gchar  *type_string,
+                      const gchar  *enum_type,
+                      GError      **error)
+{
+  GString *enum_data;
+  KeyState *key;
+
+  if (!is_valid_keyname (name, error))
+    return NULL;
+
+  if (g_hash_table_lookup (state->keys, name))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<key name='%s'> already specified", name);
+      return NULL;
+    }
+
+  if ((type_string == NULL) == (enum_type == NULL))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_MISSING_ATTRIBUTE,
+                   "exactly one of 'type' or 'enum' must "
+                   "be specified as an attribute to <key>");
+      return NULL;
+    }
+
+  if (enum_type != NULL)
+    {
+      enum_data = g_hash_table_lookup (enum_table, enum_type);
+
+      if (enum_data == NULL)
+        {
+          g_set_error (error, G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_INVALID_CONTENT,
+                       "<enum id='%s'> not (yet) defined.", enum_type);
+          return NULL;
+        }
+
+      g_assert (type_string == NULL);
+      type_string = "s";
+    }
+  else
+    {
+      if (!g_variant_type_string_is_valid (type_string))
+        {
+          g_set_error (error, G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_INVALID_CONTENT,
+                       "invalid GVariant type string '%s'", type_string);
+          return NULL;
+        }
+
+      enum_data = NULL;
+    }
+
+  key = key_state_new (type_string, state->gettext_domain, enum_data);
+  g_hash_table_insert (state->keys, g_strdup (name), key);
+
+  return key;
+}
+
+/* Handling of toplevel state {{{1 */
+typedef struct
+{
+  GHashTable  *schema_table;            /* string -> SchemaState */
+  GHashTable  *enum_table;              /* string -> GString */
+
+  gchar       *schemalist_domain;       /* the <schemalist> gettext domain */
+
+  SchemaState *schema_state;            /* non-NULL when inside <schema> */
+  KeyState    *key_state;               /* non-NULL when inside <key> */
+  GString     *enum_state;              /* non-NULL when inside <enum> */
+
+  GString     *string;                  /* non-NULL when accepting text */
+} ParseState;
+
+static void
+parse_state_start_schema (ParseState  *state,
+                          const gchar  *id,
+                          const gchar  *path,
+                          const gchar  *gettext_domain,
+                          GError      **error)
+{
+  if (g_hash_table_lookup (state->schema_table, id))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<schema id='%s'> already specified", id);
+      return;
+    }
+
+  if (path && !(g_str_has_prefix (path, "/") && g_str_has_suffix (path, "/")))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "a path, if given, must begin and "
+                   "end with a slash");
+      return;
+    }
+
+  state->schema_state = schema_state_new (path, gettext_domain);
+  g_hash_table_insert (state->schema_table, g_strdup (id),
+                       state->schema_state);
+}
+
+static void
+parse_state_start_enum (ParseState   *state,
+                        const gchar  *id,
+                        GError      **error)
+{
+  if (g_hash_table_lookup (state->enum_table, id))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<enum id='%s'> already specified", id);
+      return;
+    }
+
+  state->enum_state = g_string_new (NULL);
+  g_hash_table_insert (state->enum_table, g_strdup (id), state->enum_state);
+}
+
+/* GMarkup Parser Functions {{{1 */
+
+/* Start element {{{2 */
 static void
 start_element (GMarkupParseContext  *context,
                const gchar          *element_name,
@@ -205,6 +882,7 @@ start_element (GMarkupParseContext  *context,
 #define STRING     G_MARKUP_COLLECT_STRING
 #define NO_ATTRS()  COLLECT (G_MARKUP_COLLECT_INVALID, NULL)
 
+  /* Toplevel items {{{3 */
   if (container == NULL)
     {
       if (strcmp (element_name, "schemalist") == 0)
@@ -215,84 +893,46 @@ start_element (GMarkupParseContext  *context,
           return;
         }
     }
+
+
+  /* children of <schemalist> {{{3 */
   else if (strcmp (container, "schemalist") == 0)
     {
       if (strcmp (element_name, "schema") == 0)
         {
-          const gchar *id, *path;
-
+          const gchar *id, *path, *gettext_domain;
           if (COLLECT (STRING, "id", &id,
                        OPTIONAL | STRING, "path", &path,
-                       OPTIONAL | STRDUP, "gettext-domain",
-                                          &state->schema_domain))
-            {
-              if (!g_hash_table_lookup (state->schemas, id))
-                {
-                  state->schema = gvdb_hash_table_new (state->schemas, id);
-                  state->schema_root = gvdb_hash_table_insert (state->schema, "");
+                       OPTIONAL | STRDUP, "gettext-domain", &gettext_domain))
+            parse_state_start_schema (state, id, path, gettext_domain, error);
+          return;
+        }
 
-                  if (path != NULL)
-                    {
-                      if (!g_str_has_prefix (path, "/") ||
-                          !g_str_has_suffix (path, "/"))
-                        {
-                          g_set_error (error, G_MARKUP_ERROR,
-                                       G_MARKUP_ERROR_INVALID_CONTENT,
-                                       "a path, if given, must begin and "
-                                       "end with a slash");
-                          return;
-                        }
-
-                      gvdb_hash_table_insert_string (state->schema,
-                                                     ".path", path);
-                    }
-                }
-              else
-                g_set_error (error, G_MARKUP_ERROR,
-                             G_MARKUP_ERROR_INVALID_CONTENT,
-                             "<schema id='%s'> already specified", id);
-            }
+      else if (strcmp (element_name, "enum") == 0)
+        {
+          const gchar *id;
+          if (COLLECT (STRING, "id", &id))
+            parse_state_start_enum (state, id, error);
           return;
         }
     }
+
+
+  /* children of <schema> {{{3 */
   else if (strcmp (container, "schema") == 0)
     {
       if (strcmp (element_name, "key") == 0)
         {
-          const gchar *name, *type;
+          const gchar *name, *type_string, *enum_type;
 
-          if (COLLECT (STRING, "name", &name, STRING, "type", &type))
-            {
-              if (!is_valid_keyname (name, error))
-                return;
+          if (COLLECT (STRING,            "name", &name,
+                       OPTIONAL | STRING, "type", &type_string,
+                       OPTIONAL | STRING, "enum", &enum_type))
 
-              if (!g_hash_table_lookup (state->schema, name))
-                {
-                  state->key = gvdb_hash_table_insert (state->schema, name);
-                  gvdb_item_set_parent (state->key, state->schema_root);
-                }
-              else
-                {
-                  g_set_error (error, G_MARKUP_ERROR,
-                               G_MARKUP_ERROR_INVALID_CONTENT,
-                               "<key name='%s'> already specified", name);
-                  return;
-                }
-
-              if (g_variant_type_string_is_valid (type))
-                state->type = g_variant_type_new (type);
-              else
-                {
-                  g_set_error (error, G_MARKUP_ERROR,
-                               G_MARKUP_ERROR_INVALID_CONTENT,
-                               "invalid GVariant type string '%s'", type);
-                  return;
-                }
-
-              g_variant_builder_init (&state->key_options,
-                                      G_VARIANT_TYPE ("a{sv}"));
-            }
-
+            state->key_state = schema_state_add_key (state->schema_state,
+                                                     state->enum_table,
+                                                     name, type_string,
+                                                     enum_type, error);
           return;
         }
       else if (strcmp (element_name, "child") == 0)
@@ -300,166 +940,97 @@ start_element (GMarkupParseContext  *context,
           const gchar *name, *schema;
 
           if (COLLECT (STRING, "name", &name, STRING, "schema", &schema))
-            {
-              gchar *childname;
-
-              if (!is_valid_keyname (name, error))
-                return;
-
-              childname = g_strconcat (name, "/", NULL);
-
-              if (!g_hash_table_lookup (state->schema, childname))
-                gvdb_hash_table_insert_string (state->schema, childname, schema);
-              else
-                g_set_error (error, G_MARKUP_ERROR,
-                             G_MARKUP_ERROR_INVALID_CONTENT,
-                             "<child name='%s'> already specified", name);
-
-              g_free (childname);
-              return;
-            }
+            schema_state_add_child (state->schema_state,
+                                    name, schema, error);
+          return;
         }
     }
+
+
+  /* children of <key> {{{3 */
   else if (strcmp (container, "key") == 0)
     {
       if (strcmp (element_name, "default") == 0)
         {
-          const gchar *l10n;
-
-          if (COLLECT (STRING | OPTIONAL, "l10n", &l10n,
-                       STRDUP | OPTIONAL, "context", &state->context))
-            {
-              if (l10n != NULL)
-                {
-                  if (!g_hash_table_lookup (state->schema, ".gettext-domain"))
-                    {
-                      const gchar *domain = state->schema_domain ?
-                                            state->schema_domain :
-                                            state->schemalist_domain;
-
-                      if (domain == NULL)
-                        {
-                          g_set_error_literal (error, G_MARKUP_ERROR,
-                                               G_MARKUP_ERROR_INVALID_CONTENT,
-                                               "l10n requested, but no "
-                                               "gettext domain given");
-                          return;
-                        }
-
-                      gvdb_hash_table_insert_string (state->schema,
-                                                     ".gettext-domain",
-                                                     domain);
-
-                      if (strcmp (l10n, "messages") == 0)
-                        state->l10n = 'm';
-                      else if (strcmp (l10n, "time") == 0)
-                        state->l10n = 't';
-                      else
-                        {
-                          g_set_error (error, G_MARKUP_ERROR,
-                                       G_MARKUP_ERROR_INVALID_CONTENT,
-                                       "unsupported l10n category: %s", l10n);
-                          return;
-                        }
-                    }
-                }
-              else
-                {
-                  state->l10n = '\0';
-
-                  if (state->context != NULL)
-                    {
-                      g_set_error_literal (error, G_MARKUP_ERROR,
-                                           G_MARKUP_ERROR_INVALID_CONTENT,
-                                           "translation context given for "
-                                           " value without l10n enabled");
-                      return;
-                    }
-                }
-
-              state->string = g_string_new (NULL);
-            }
-
+          const gchar *l10n, *context;
+          if (COLLECT (STRING | OPTIONAL, "l10n",    &l10n,
+                       STRING | OPTIONAL, "context", &context))
+            state->string = key_state_start_default (state->key_state,
+                                                     l10n, context, error);
           return;
         }
+
       else if (strcmp (element_name, "summary") == 0 ||
                strcmp (element_name, "description") == 0)
         {
-          state->string = g_string_new (NULL);
-          NO_ATTRS ();
+          if (NO_ATTRS ())
+            state->string = g_string_new (NULL);
           return;
         }
+
       else if (strcmp (element_name, "range") == 0)
         {
-          const gchar *min_str, *max_str;
-
-          if (!type_allows_range (state->type))
-            {
-              gchar *type = g_variant_type_dup_string (state->type);
-              g_set_error (error, G_MARKUP_ERROR,
-                          G_MARKUP_ERROR_INVALID_CONTENT,
-                          "Element <%s> not allowed for keys of type \"%s\"\n",
-                          element_name, type);
-              g_free (type);
-              return;
-            }
-
-          if (!COLLECT (STRING, "min", &min_str,
-                        STRING, "max", &max_str))
-            return;
-
-          state->min = g_variant_parse (state->type, min_str, NULL, NULL, error);
-          if (state->min == NULL)
-            return;
-
-          state->max = g_variant_parse (state->type, max_str, NULL, NULL, error);
-          if (state->max == NULL)
-            return;
-
-          if (g_variant_compare (state->min, state->max) > 0)
-            {
-              g_set_error (error, G_MARKUP_ERROR,
-                           G_MARKUP_ERROR_INVALID_CONTENT,
-                           "Element <%s> specified minimum is greater than maxmimum",
-                           element_name);
-              return;
-            }
-
-          g_variant_builder_add (&state->key_options, "{sv}", "range",
-                                 g_variant_new ("(@?@?)", state->min, state->max));
+          const gchar *min, *max;
+          if (COLLECT (STRING, "min", &min, STRING, "max", &max))
+            key_state_set_range (state->key_state, min, max, error);
           return;
         }
+
       else if (strcmp (element_name, "choices") == 0)
         {
-          if (!type_allows_choices (state->type))
-            {
-              gchar *type = g_variant_type_dup_string (state->type);
-              g_set_error (error, G_MARKUP_ERROR,
-                           G_MARKUP_ERROR_INVALID_CONTENT,
-                           "Element <%s> not allowed for keys of type \"%s\"\n",
-                           element_name, type);
-              g_free (type);
-              return;
-            }
+          if (NO_ATTRS ())
+            key_state_start_choices (state->key_state, error);
+          return;
+        }
 
-          state->choices = g_string_new ("\xff");
-
-          NO_ATTRS ();
+      else if (strcmp (element_name, "aliases") == 0)
+        {
+          if (NO_ATTRS ())
+            key_state_start_aliases (state->key_state, error);
           return;
         }
     }
+
+
+  /* children of <choices> {{{3 */
   else if (strcmp (container, "choices") == 0)
     {
       if (strcmp (element_name, "choice") == 0)
         {
           const gchar *value;
-
           if (COLLECT (STRING, "value", &value))
-            g_string_append_printf (state->choices, "%s\xff", value);
-
+            key_state_add_choice (state->key_state, value, error);
           return;
         }
     }
+
+
+  /* children of <aliases> {{{3 */
+  else if (strcmp (container, "aliases") == 0)
+    {
+      if (strcmp (element_name, "alias") == 0)
+        {
+          const gchar *value, *target;
+          if (COLLECT (STRING, "value", &value, STRING, "target", &target))
+            key_state_add_alias (state->key_state, value, target, error);
+          return;
+        }
+    }
+
+
+  /* children of <enum> {{{3 */
+  else if (strcmp (container, "enum") == 0)
+    {
+      if (strcmp (element_name, "value") == 0)
+        {
+          const gchar *nick, *valuestr;
+          if (COLLECT (STRING, "nick", &nick,
+                       STRING, "value", &valuestr))
+            enum_state_add_value (state->enum_state, nick, valuestr, error);
+          return;
+        }
+    }
+  /* 3}}} */
 
   if (container)
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
@@ -468,6 +1039,36 @@ start_element (GMarkupParseContext  *context,
   else
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
                  "Element <%s> not allowed at toplevel\n", element_name);
+}
+/* 2}}} */
+/* End element {{{2 */
+
+static void
+key_state_end (KeyState **state_ptr,
+               GError   **error)
+{
+  KeyState *state;
+
+  state = *state_ptr;
+  *state_ptr = NULL;
+
+  if (state->default_value == NULL)
+    {
+      g_set_error_literal (error,
+                           G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                           "element <default> is required in <key>\n");
+      return;
+    }
+}
+
+static void
+schema_state_end (SchemaState **state_ptr,
+                  GError      **error)
+{
+  SchemaState *state;
+
+  state = *state_ptr;
+  *state_ptr = NULL;
 }
 
 static void
@@ -478,103 +1079,37 @@ end_element (GMarkupParseContext  *context,
 {
   ParseState *state = user_data;
 
-  if (strcmp (element_name, "default") == 0)
+  if (strcmp (element_name, "schemalist") == 0)
     {
-      state->value = g_variant_parse (state->type, state->string->str,
-                                      NULL, NULL, error);
-      if (state->value == NULL)
-        return;
-
-      if (state->l10n)
-        {
-          if (state->context)
-            {
-              gint len;
-
-              /* Contextified messages are supported by prepending the
-               * context, followed by '\004' to the start of the message
-               * string.  We do that here to save GSettings the work
-               * later on.
-               *
-               * Note: we are about to g_free() the context anyway...
-               */
-              len = strlen (state->context);
-              state->context[len] = '\004';
-              g_string_prepend_len (state->string, state->context, len + 1);
-            }
-
-          g_variant_builder_add (&state->key_options, "{sv}", "l10n",
-                                 g_variant_new ("(ys)",
-                                                state->l10n,
-                                                state->string->str));
-        }
-
-      g_string_free (state->string, TRUE);
-      state->string = NULL;
-      g_free (state->context);
-      state->context = NULL;
+      g_free (state->schemalist_domain);
+      state->schemalist_domain = NULL;
     }
+
+  else if (strcmp (element_name, "enum") == 0)
+    enum_state_end (&state->enum_state, error);
+
+  else if (strcmp (element_name, "schema") == 0)
+    schema_state_end (&state->schema_state, error);
 
   else if (strcmp (element_name, "key") == 0)
-    {
-      if (state->value == NULL)
-        {
-          g_set_error_literal (error,
-                               G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                               "element <default> is required in <key>\n");
-          return;
-        }
+    key_state_end (&state->key_state, error);
 
-      if (state->min != NULL)
-        {
-          if (g_variant_compare (state->value, state->min) < 0 ||
-              g_variant_compare (state->value, state->max) > 0)
-            {
-              g_set_error (error, G_MARKUP_ERROR,
-                           G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<default> is not contained in the specified range");
-              return;
-            }
+  else if (strcmp (element_name, "default") == 0)
+    key_state_end_default (state->key_state, &state->string, error);
 
-          state->min = state->max = NULL;
-        }
-      else if (state->choices != NULL)
-        {
-          if (!is_valid_choices (state->value, state->choices->str))
-            {
-              g_set_error_literal (error, G_MARKUP_ERROR,
-                                   G_MARKUP_ERROR_INVALID_CONTENT,
-                                   "<default> contains string not in <choices>");
-              return;
-            }
+  else if (strcmp (element_name, "choices") == 0)
+    key_state_end_choices (state->key_state, error);
 
-          state->choices = NULL;
-        }
+  else if (strcmp (element_name, "aliases") == 0)
+    key_state_end_aliases (state->key_state, error);
 
-      gvdb_item_set_value (state->key,
-                           g_variant_new ("(*a{sv})", state->value,
-                                                   &state->key_options));
-      state->value = NULL;
-    }
-
-  else if (strcmp (element_name, "summary") == 0 ||
-           strcmp (element_name, "description") == 0)
+  if (state->string)
     {
       g_string_free (state->string, TRUE);
       state->string = NULL;
     }
-
-  else if (strcmp (element_name, "choices") == 0)
-    {
-      gchar *choices;
-
-      choices = g_string_free (state->choices, FALSE);
-      g_variant_builder_add (&state->key_options, "{sv}", "choices",
-                             g_variant_new_byte_array (choices, -1));
-      g_free (choices);
-    }
 }
-
+/* Text {{{2 */
 static void
 text (GMarkupParseContext  *context,
       const gchar          *text,
@@ -600,20 +1135,120 @@ text (GMarkupParseContext  *context,
       }
 }
 
+/* Write to GVDB {{{1 */
+typedef struct
+{
+  GHashTable *table;
+  GvdbItem *root;
+} GvdbPair;
+
+static void
+gvdb_pair_init (GvdbPair *pair)
+{
+  pair->table = gvdb_hash_table_new (NULL, NULL);
+  pair->root = gvdb_hash_table_insert (pair->table, "");
+}
+
+typedef struct
+{
+  GvdbPair pair;
+  gboolean l10n;
+} OutputSchemaData;
+
+static void
+output_key (gpointer key,
+            gpointer value,
+            gpointer user_data)
+{
+  OutputSchemaData *data;
+  const gchar *name;
+  KeyState *state;
+  GvdbItem *item;
+
+  name = key;
+  state = value;
+  data = user_data;
+
+  item = gvdb_hash_table_insert (data->pair.table, name);
+  gvdb_item_set_parent (item, data->pair.root);
+  gvdb_item_set_value (item, key_state_serialise (state));
+
+  if (state->l10n)
+    data->l10n = TRUE;
+}
+
+static void
+output_schema (gpointer key,
+               gpointer value,
+               gpointer user_data)
+{
+  OutputSchemaData data;
+  GvdbPair *root_pair;
+  SchemaState *state;
+  const gchar *id;
+  GvdbItem *item;
+
+  id = key;
+  state = value;
+  root_pair = user_data;
+
+  gvdb_pair_init (&data.pair);
+  data.l10n = FALSE;
+
+  item = gvdb_hash_table_insert (root_pair->table, id);
+  gvdb_item_set_parent (item, root_pair->root);
+  gvdb_item_set_hash_table (item, data.pair.table);
+
+  g_hash_table_foreach (state->keys, output_key, &data);
+
+  if (state->path)
+    gvdb_hash_table_insert_string (data.pair.table, ".path", state->path);
+
+  if (data.l10n)
+    gvdb_hash_table_insert_string (data.pair.table,
+                                   ".gettext-domain",
+                                   state->gettext_domain);
+}
+
+static gboolean
+write_to_file (GHashTable   *schema_table,
+               const gchar  *filename,
+               GError      **error)
+{
+  gboolean success;
+  GvdbPair pair;
+
+  gvdb_pair_init (&pair);
+
+  g_hash_table_foreach (schema_table, output_schema, &pair);
+
+  success = gvdb_table_write_contents (pair.table, filename,
+                                       G_BYTE_ORDER != G_LITTLE_ENDIAN,
+                                       error);
+  g_hash_table_unref (pair.table);
+
+  return success;
+}
+
+/* Parser driver {{{1 */
 static GHashTable *
-parse_gschema_files (gchar    **files,
-                     gboolean   byteswap,
-                     GError   **error)
+parse_gschema_files (gchar  **files,
+                     GError **error)
 {
   GMarkupParser parser = { start_element, end_element, text };
   GMarkupParseContext *context;
-  ParseState state = { byteswap, };
+  ParseState state = { 0, };
   const gchar *filename;
 
   context = g_markup_parse_context_new (&parser,
                                         G_MARKUP_PREFIX_ERROR_POSITION,
                                         &state, NULL);
-  state.schemas = gvdb_hash_table_new (NULL, NULL);
+
+  state.enum_table = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                            g_free, enum_state_free);
+
+  state.schema_table = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                              g_free, schema_state_free);
 
   while ((filename = *files++) != NULL)
     {
@@ -636,13 +1271,24 @@ parse_gschema_files (gchar    **files,
         }
     }
 
-  return state.schemas;
+  g_hash_table_unref (state.enum_table);
+
+  return state.schema_table;
+}
+
+static gint
+compare_strings (gconstpointer a,
+                 gconstpointer b)
+{
+  gchar *one = *(gchar **) a;
+  gchar *two = *(gchar **) b;
+
+  return strcmp (one, two);
 }
 
 int
 main (int argc, char **argv)
 {
-  gboolean byteswap = G_BYTE_ORDER != G_LITTLE_ENDIAN;
   GError *error;
   GHashTable *table;
   GDir *dir;
@@ -712,7 +1358,8 @@ main (int argc, char **argv)
 
       while ((file = g_dir_read_name (dir)) != NULL)
         {
-          if (g_str_has_suffix (file, ".gschema.xml"))
+          if (g_str_has_suffix (file, ".gschema.xml") ||
+              g_str_has_suffix (file, ".enums.xml"))
             g_ptr_array_add (files, g_build_filename (srcdir, file, NULL));
         }
 
@@ -729,14 +1376,15 @@ main (int argc, char **argv)
               return 1;
             }
         }
+      g_ptr_array_sort (files, compare_strings);
       g_ptr_array_add (files, NULL);
 
       schema_files = (char **) g_ptr_array_free (files, FALSE);
     }
 
 
-  if (!(table = parse_gschema_files (schema_files, byteswap, &error)) ||
-      (!dry_run && !gvdb_table_write_contents (table, target, byteswap, &error)))
+  if (!(table = parse_gschema_files (schema_files, &error)) ||
+      (!dry_run && !write_to_file (table, target, &error)))
     {
       fprintf (stderr, "%s\n", error->message);
       return 1;
@@ -746,3 +1394,7 @@ main (int argc, char **argv)
 
   return 0;
 }
+
+/* Epilogue {{{1 */
+
+/* vim:set foldmethod=marker: */

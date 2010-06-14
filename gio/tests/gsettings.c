@@ -6,6 +6,8 @@
 #define G_SETTINGS_ENABLE_BACKEND
 #include <gio/gsettingsbackend.h>
 
+#include "testenum.h"
+
 static gboolean backend_set;
 
 /* These tests rely on the schemas in org.gtk.test.gschema.xml
@@ -41,7 +43,7 @@ test_basic (void)
           abort ();
         }
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*correct_type*");
+      g_test_trap_assert_stderr ("*g_settings_type_check*");
     }
 
   g_settings_get (settings, "greeting", "s", &str);
@@ -120,7 +122,7 @@ test_wrong_type (void)
 
       settings = g_settings_new ("org.gtk.test");
 
-      g_settings_set (settings, "greetings", "o", "/a/path");
+      g_settings_set (settings, "greeting", "o", "/a/path");
     }
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*");
@@ -1186,9 +1188,137 @@ glib_translations_work (void)
   return str != orig;
 }
 
+#include "../strinfo.c"
+
+static void
+test_strinfo (void)
+{
+  /*  "foo" has a value of 1
+   *  "bar" has a value of 2
+   *  "baz" is an alias for "bar"
+   */
+  gchar array[] =
+    "\1\0\0\0"      "\xff""foo"     "\0\0\0\xff"    "\2\0\0\0"
+    "\xff" "bar"    "\0\0\0\xff"    "\3\0\0\0"      "\xfe""baz"
+    "\0\0\0\xff";
+  const guint32 *strinfo = (guint32 *) array;
+  guint length = sizeof array / 4;
+  guint result;
+
+  {
+    /* build it and compare */
+    GString *builder;
+
+    builder = g_string_new (NULL);
+    strinfo_builder_append_item (builder, "foo", 1);
+    strinfo_builder_append_item (builder, "bar", 2);
+    g_assert (strinfo_builder_append_alias (builder, "baz", "bar"));
+    g_assert_cmpint (builder->len % 4, ==, 0);
+    g_assert_cmpint (builder->len / 4, ==, length);
+    g_assert (memcmp (builder->str, strinfo, length * 4) == 0);
+    g_string_free (builder, TRUE);
+  }
+
+  g_assert_cmpstr (strinfo_string_from_alias (strinfo, length, "foo"),
+                   ==, NULL);
+  g_assert_cmpstr (strinfo_string_from_alias (strinfo, length, "bar"),
+                   ==, NULL);
+  g_assert_cmpstr (strinfo_string_from_alias (strinfo, length, "baz"),
+                   ==, "bar");
+  g_assert_cmpstr (strinfo_string_from_alias (strinfo, length, "quux"),
+                   ==, NULL);
+
+  g_assert (strinfo_enum_from_string (strinfo, length, "foo", &result));
+  g_assert_cmpint (result, ==, 1);
+  g_assert (strinfo_enum_from_string (strinfo, length, "bar", &result));
+  g_assert_cmpint (result, ==, 2);
+  g_assert (!strinfo_enum_from_string (strinfo, length, "baz", &result));
+  g_assert (!strinfo_enum_from_string (strinfo, length, "quux", &result));
+
+  g_assert_cmpstr (strinfo_string_from_enum (strinfo, length, 0), ==, NULL);
+  g_assert_cmpstr (strinfo_string_from_enum (strinfo, length, 1), ==, "foo");
+  g_assert_cmpstr (strinfo_string_from_enum (strinfo, length, 2), ==, "bar");
+  g_assert_cmpstr (strinfo_string_from_enum (strinfo, length, 3), ==, NULL);
+
+  g_assert (strinfo_is_string_valid (strinfo, length, "foo"));
+  g_assert (strinfo_is_string_valid (strinfo, length, "bar"));
+  g_assert (!strinfo_is_string_valid (strinfo, length, "baz"));
+  g_assert (!strinfo_is_string_valid (strinfo, length, "quux"));
+}
+
+static void
+test_enums (void)
+{
+  GSettings *settings, *direct;
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  direct = g_settings_new ("org.gtk.test.enums.direct");
+
+  if (!backend_set)
+    {
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_get_enum (direct, "test");
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*not associated with an enum*");
+
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_set_enum (settings, "test", 42);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*invalid enum value 42*");
+
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_set_string (settings, "test", "qux");
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*g_settings_range_check*");
+    }
+
+  g_assert_cmpstr (g_settings_get_string (settings, "test"), ==, "bar");
+  g_settings_set_enum (settings, "test", TEST_ENUM_FOO);
+  g_assert_cmpstr (g_settings_get_string (settings, "test"), ==, "foo");
+  g_assert_cmpint (g_settings_get_enum (settings, "test"), ==, TEST_ENUM_FOO);
+  g_settings_set_string (direct, "test", "qux");
+  g_assert_cmpstr (g_settings_get_string (direct, "test"), ==, "qux");
+  g_assert_cmpstr (g_settings_get_string (settings, "test"), ==, "quux");
+  g_assert_cmpint (g_settings_get_enum (settings, "test"), ==, TEST_ENUM_QUUX);
+}
+
+static void
+test_range (void)
+{
+  GSettings *settings, *direct;
+
+  settings = g_settings_new ("org.gtk.test.range");
+  direct = g_settings_new ("org.gtk.test.range.direct");
+
+  if (!backend_set)
+    {
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_set_int (settings, "val", 45);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*g_settings_range_check*");
+
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_set_int (settings, "val", 1);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*g_settings_range_check*");
+    }
+
+  g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 33);
+  g_settings_set_int (direct, "val", 22);
+  g_assert_cmpint (g_settings_get_int (direct, "val"), ==, 22);
+  g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 22);
+  g_settings_set_int (direct, "val", 45);
+  g_assert_cmpint (g_settings_get_int (direct, "val"), ==, 45);
+  g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 33);
+  g_settings_set_int (direct, "val", 1);
+  g_assert_cmpint (g_settings_get_int (direct, "val"), ==, 1);
+  g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 33);
+}
+
 int
 main (int argc, char *argv[])
 {
+  gchar *enums;
   gint result;
 
   setlocale (LC_ALL, "");
@@ -1203,9 +1333,18 @@ main (int argc, char *argv[])
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
+  g_remove ("org.gtk.test.enums.xml");
+  g_assert (g_spawn_command_line_sync ("../../gobject/glib-mkenums "
+                                       "--template enums.xml.template "
+                                       SRCDIR "/testenum.h",
+                                       &enums, NULL, &result, NULL));
+  g_assert (result == 0);
+  g_assert (g_file_set_contents ("org.gtk.test.enums.xml", enums, -1, NULL));
+
   g_remove ("gschemas.compiled");
   g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. " SRCDIR,
-                                       NULL, NULL, NULL, NULL));
+                                       NULL, NULL, &result, NULL));
+  g_assert (result == 0);
 
   g_test_add_func ("/gsettings/basic", test_basic);
 
@@ -1243,6 +1382,9 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/gsettings/keyfile", test_keyfile);
   g_test_add_func ("/gsettings/child-schema", test_child_schema);
+  g_test_add_func ("/gsettings/strinfo", test_strinfo);
+  g_test_add_func ("/gsettings/enums", test_enums);
+  g_test_add_func ("/gsettings/range", test_range);
 
   result = g_test_run ();
 

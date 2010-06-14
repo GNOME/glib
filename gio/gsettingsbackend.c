@@ -732,7 +732,8 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
  * g_settings_backend_read:
  * @backend: a #GSettingsBackend implementation
  * @key: the key to read
- * @expected_type: a #GVariantType hint
+ * @expected_type: a #GVariantType
+ * @default_value: if the default value should be returned
  * @returns: the value that was read, or %NULL
  *
  * Reads a key. This call will never block.
@@ -740,11 +741,13 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
  * If the key exists, the value associated with it will be returned.
  * If the key does not exist, %NULL will be returned.
  *
- * If @expected_type is given, it serves as a type hint to the backend.
- * If you expect a key of a certain type then you should give
- * @expected_type to increase your chances of getting it.  Some backends
- * may ignore this argument and return values of a different type; it is
- * mostly used by backends that don't store strong type information.
+ * The returned value will be of the type given in @expected_type.  If
+ * the backend stored a value of a different type then %NULL will be
+ * returned.
+ *
+ * If @default_value is %TRUE then this gets the default value from the
+ * backend (ie: the one that the backend would contain if
+ * g_settings_reset() were called).
  */
 GVariant *
 g_settings_backend_read (GSettingsBackend   *backend,
@@ -752,8 +755,18 @@ g_settings_backend_read (GSettingsBackend   *backend,
                          const GVariantType *expected_type,
                          gboolean            default_value)
 {
-  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+  GVariant *value;
+
+  value = G_SETTINGS_BACKEND_GET_CLASS (backend)
     ->read (backend, key, expected_type, default_value);
+
+  if G_UNLIKELY (value && !g_variant_is_of_type (value, expected_type))
+    {
+      g_variant_unref (value);
+      value = NULL;
+    }
+
+  return value;
 }
 
 /*< private >
