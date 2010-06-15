@@ -17,7 +17,12 @@ AC_DEFUN([GLIB_GSETTINGS],
   AC_SUBST([GSETTINGS_DISABLE_SCHEMAS_COMPILE])
   PKG_PROG_PKG_CONFIG([0.16])
   AC_SUBST(gsettingsschemadir, [${datadir}/glib-2.0/schemas])
-  AC_SUBST(GLIB_COMPILE_SCHEMAS, `$PKG_CONFIG --variable glib_compile_schemas gio-2.0`)
+  if test x$cross_compiling != xyes; then
+    GLIB_COMPILE_SCHEMAS=`$PKG_CONFIG --variable glib_compile_schemas gio-2.0`
+  else
+    AC_PATH_TOOL(GLIB_COMPILE_SCHEMAS, glib-compile-schemas)
+  fi
+  AC_SUBST(GLIB_COMPILE_SCHEMAS)
   if test "x$GLIB_COMPILE_SCHEMAS" = "x"; then
     AC_MSG_ERROR([glib-compile-schemas not found.])
   fi
