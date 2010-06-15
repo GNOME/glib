@@ -17,8 +17,19 @@
 # License along with this library; if not, write to the
 # Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 # Boston, MA 02111-1307, USA.
+import datetime
 import optparse
 import sys, re, xml.dom.minidom
+
+try:
+    import subunit
+    from subunit import iso8601
+    from testtools.content import Content, ContentType
+    mime_utf8 = ContentType('text', 'plain', {'charset': 'utf8'})
+except ImportError:
+    subunit = None
+
+
 pkginstall_configvars = {
   #@PKGINSTALL_CONFIGVARS_IN24LINES@ # configvars are substituted upon script installation
 }
@@ -153,8 +164,25 @@ class ReportReader (TreeProcess):
       self.last_binary.random_seed = node_as_text (rseed)
     self.process_children (node)
 
-# HTML report generation class
-class ReportWriter (TreeProcess):
+
+class ReportWriter(object):
+    """Base class for reporting."""
+
+    def __init__(self, binary_list):
+        self.binaries = binary_list
+
+    def _error_text(node):
+        """Get a string representing the error children of node."""
+        rlist = list_children(node, 'error')
+        txt = ''
+        for enode in rlist:
+            txt += node_as_text (enode)
+            if txt and txt[-1] != '\n':
+                txt += '\n'
+        return txt
+
+
+class HTMLReportWriter(ReportWriter):
   # Javascript/CSS snippet to toggle element visibility
   cssjs = r'''
   <style type="text/css" media="screen">
@@ -196,9 +224,8 @@ class ReportWriter (TreeProcess):
   --></script>
   '''
   def __init__ (self, info, binary_list):
-    TreeProcess.__init__ (self)
+    ReportWriter.__init__(self, binary_list)
     self.info = info
-    self.binaries = binary_list
     self.bcounter = 0
     self.tcounter = 0
     self.total_tcounter = 0
@@ -231,12 +258,7 @@ class ReportWriter (TreeProcess):
     self.oprint ('<td>%s %s</td> <td align="right">%s</td> \n' % (html_indent_string (4), path, duration))
     perflist = list_children (node, 'performance')
     if result != 'success':
-      rlist = list_children (node, 'error')
-      txt = ''
-      for enode in rlist:
-        txt += node_as_text (enode)
-        if txt and txt[-1] != '\n':
-          txt += '\n'
+      txt = self._error_text(node)
       txt = re.sub (r'"', r'\\"', txt)
       txt = re.sub (r'\n', r'\\n', txt)
       txt = re.sub (r'&', r'&amp;', txt)
@@ -331,6 +353,93 @@ class ReportWriter (TreeProcess):
     self.oprint ('</body>\n')
     self.oprint ('</html>\n')
 
+
+class SubunitWriter(ReportWriter):
+    """Reporter to output a subunit stream."""
+
+    def printout(self):
+        reporter = subunit.TestProtocolClient(sys.stdout)
+        for binary in self.binaries:
+            for tc in binary.testcases:
+                test = GTestCase(tc, binary)
+                test.run(reporter)
+
+
+class GTestCase(object):
+    """A representation of a gtester test result as a pyunit TestCase."""
+
+    def __init__(self, case, binary):
+        """Create a GTestCase for case `case` from binary program `binary`."""
+        self._case = case
+        self._binary = binary
+        # the name of the case - e.g. /dbusmenu/glib/objects/menuitem/props_boolstr
+        self._path = attribute_as_text(self._case, 'path')
+
+    def id(self):
+        """What test is this? Returns the gtester path for the testcase."""
+        return self._path
+
+    def _get_details(self):
+        """Calculate a details dict for the test - attachments etc."""
+        details = {}
+        result = attribute_as_text(self._case, 'result', 'status')
+        details['filename'] = Content(mime_utf8, lambda:[self._binary.file])
+        details['random_seed'] = Content(mime_utf8,
+            lambda:[self._binary.random_seed])
+        if self._get_outcome() == 'addFailure':
+            # Extract the error details. Skips have no details because its not
+            # skip like unittest does, instead the runner just bypasses N test.
+            txt = self._error_text(self._case)
+            details['error'] = Content(mime_utf8, lambda:[txt])
+        if self._get_outcome() == 'addSuccess':
+            # Sucessful tests may have performance metrics.
+            perflist = list_children(self._case, 'performance')
+            if perflist:
+                presults = []
+                for perf in perflist:
+                    pmin = bool (int (attribute_as_text (perf, 'minimize')))
+                    pmax = bool (int (attribute_as_text (perf, 'maximize')))
+                    pval = float (attribute_as_text (perf, 'value'))
+                    txt = node_as_text (perf)
+                    txt = 'Performance(' + (pmin and 'minimized' or 'maximized'
+                        ) + '): ' + txt.strip() + '\n'
+                    presults += [(pval, txt)]
+                presults.sort()
+                perf_details = [e[1] for e in presults]
+                details['performance'] = Content(mime_utf8, lambda:perf_details)
+        return details
+
+    def _get_outcome(self):
+        if int(attribute_as_text(self._case, 'skipped') + '0'):
+            return 'addSkip'
+        outcome = attribute_as_text(self._case, 'result', 'status')
+        if outcome == 'success':
+            return 'addSuccess'
+        else:
+            return 'addFailure'
+
+    def run(self, result):
+        time = datetime.datetime.utcnow().replace(tzinfo=iso8601.Utc())
+        result.time(time)
+        result.startTest(self)
+        try:
+            outcome = self._get_outcome()
+            details = self._get_details()
+            # Only provide a duration IFF outcome == 'addSuccess' - the main
+            # parser claims bogus results otherwise: in that case emit time as
+            # zero perhaps.
+            if outcome == 'addSuccess':
+                duration = float(node_as_text(self._case, 'duration'))
+                duration = duration * 1000000
+                timedelta = datetime.timedelta(0, 0, duration)
+                time = time + timedelta
+                result.time(time)
+            getattr(result, outcome)(self, details=details)
+        finally:
+            result.stopTest(self)
+
+
+
 # main program handling
 def parse_opts():
     """Parse program options.
@@ -344,12 +453,17 @@ def parse_opts():
     parser.epilog = "gtester-report (GLib utils) version %s."% (parser.version,)
     parser.add_option("-v", "--version", action="store_true", dest="version", default=False,
         help="Show program version.")
+    parser.add_option("-s", "--subunit", action="store_true", dest="subunit", default=False,
+        help="Output subunit [See https://launchpad.net/subunit/"
+            " Needs python-subunit]")
     options, files = parser.parse_args()
     if options.version:
         print parser.epilog
         return None, None
     if len(files) != 1:
         parser.error("Must supply a log file to parse.")
+    if options.subunit and subunit is None:
+        parser.error("python-subunit is not installed.")
     return options, files
 
 
@@ -360,8 +474,11 @@ def main():
   xd = xml.dom.minidom.parse (files[0])
   rr = ReportReader()
   rr.trampoline (xd)
-  rw = ReportWriter (rr.get_info(), rr.binary_list())
-  rw.printout()
+  if not options.subunit:
+      HTMLReportWriter(rr.get_info(), rr.binary_list()).printout()
+  else:
+      SubunitWriter(rr.get_info(), rr.binary_list()).printout()
+
 
 if __name__ == '__main__':
   main()
