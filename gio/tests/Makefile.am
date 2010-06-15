@@ -313,8 +313,14 @@ test.mo: de.po
 	$(MKDIR_P) de/LC_MESSAGES; \
 	cp -f test.mo de/LC_MESSAGES
 
+if CROSS_COMPILING
+  glib_compile_schemas=$(GLIB_COMPILE_SCHEMAS)
+else
+  glib_compile_schemas=$(top_builddir)/gio/glib-compile-schemas
+endif
+
 gschemas.compiled:
-	$(top_builddir)/gio/glib-compile-schemas --targetdir=$(abs_builddir) $(srcdir)
+	$(glib_compile_schemas) --targetdir=$(abs_builddir) $(srcdir)
 
 DISTCLEANFILES =                                        \
 	applications/mimeinfo.cache                     \
