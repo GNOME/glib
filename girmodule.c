@@ -192,6 +192,16 @@ write_attributes (GIrModule *module,
   return wdata.count;
 }
 
+static gint
+node_cmp_offset_func (gconstpointer a,
+                      gconstpointer b)
+{
+  const GIrNode *na = a;
+  const GIrNode *nb = b;
+  return na->offset - nb->offset;
+}
+
+
 GTypelib *
 g_ir_module_build_typelib (GIrModule  *module,
 			     GList       *modules)
@@ -209,7 +219,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   guint32 size, offset, offset2, old_offset;
   GHashTable *strings;
   GHashTable *types;
-  GList *offset_ordered_nodes;
+  GList *nodes_with_attributes;
   char *dependencies;
   guchar *data;
 
@@ -242,7 +252,7 @@ g_ir_module_build_typelib (GIrModule  *module,
   _g_irnode_init_stats ();
   strings = g_hash_table_new (g_str_hash, g_str_equal);
   types = g_hash_table_new (g_str_hash, g_str_equal);
-  offset_ordered_nodes = NULL;
+  nodes_with_attributes = NULL;
   n_entries = g_list_length (module->entries);
 
   g_message ("%d entries (%d local), %d dependencies\n", n_entries, n_local_entries,
@@ -258,7 +268,6 @@ g_ir_module_build_typelib (GIrModule  *module,
       GIrNode *node = e->data;
 
       size += g_ir_node_get_full_size (node);
-      size += g_ir_node_get_attribute_size (node);
 
       /* Also reset the offset here */
       node->offset = 0;
@@ -350,10 +359,10 @@ g_ir_module_build_typelib (GIrModule  *module,
 	  g_hash_table_destroy (types);
 
 	  /* Reset the cached offsets */
-	  for (link = offset_ordered_nodes; link; link = link->next)
+	  for (link = nodes_with_attributes; link; link = link->next)
 	    ((GIrNode *) link->data)->offset = 0;
 
-	  g_list_free (offset_ordered_nodes);
+	  g_list_free (nodes_with_attributes);
 	  strings = NULL;
 
 	  g_free (data);
@@ -387,12 +396,12 @@ g_ir_module_build_typelib (GIrModule  *module,
 	  build.modules = modules;
 	  build.strings = strings;
 	  build.types = types;
-	  build.offset_ordered_nodes = offset_ordered_nodes;
+	  build.nodes_with_attributes = nodes_with_attributes;
 	  build.n_attributes = header->n_attributes;
 	  build.data = data;
 	  g_ir_node_build_typelib (node, NULL, &build, &offset, &offset2);
 
-	  offset_ordered_nodes = build.offset_ordered_nodes;
+	  nodes_with_attributes = build.nodes_with_attributes;
 	  header->n_attributes = build.n_attributes;
 
 	  if (offset2 > old_offset + g_ir_node_get_full_size (node))
@@ -402,7 +411,8 @@ g_ir_module_build_typelib (GIrModule  *module,
       entry++;
     }
 
-  offset_ordered_nodes = g_list_reverse (offset_ordered_nodes);
+  /* GIBaseInfo expects the AttributeBlob array to be sorted on the field (offset) */
+  nodes_with_attributes = g_list_sort (nodes_with_attributes, node_cmp_offset_func);
 
   g_message ("header: %d entries, %d attributes", header->n_entries, header->n_attributes);
 
@@ -413,10 +423,9 @@ g_ir_module_build_typelib (GIrModule  *module,
   header->attributes = offset;
   offset2 = offset + header->n_attributes * header->attribute_blob_size;
 
-  for (e = offset_ordered_nodes; e; e = e->next)
+  for (e = nodes_with_attributes; e; e = e->next)
     {
       GIrNode *node = e->data;
-
       write_attributes (module, node, strings, data, &offset, &offset2);
     }
 
@@ -429,7 +438,7 @@ g_ir_module_build_typelib (GIrModule  *module,
 
   g_hash_table_destroy (strings);
   g_hash_table_destroy (types);
-  g_list_free (offset_ordered_nodes);
+  g_list_free (nodes_with_attributes);
 
   return typelib;
 }

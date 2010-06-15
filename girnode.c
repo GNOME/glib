@@ -573,7 +573,7 @@ add_attribute_size (gpointer key, gpointer value, gpointer data)
   *size_p += ALIGN_VALUE (strlen (value_str) + 1, 4);
 }
 
-/* returns the full size of the blob including variable-size parts */
+/* returns the full size of the blob including variable-size parts (including attributes) */
 static guint32
 g_ir_node_get_full_size_internal (GIrNode *parent,
 				  GIrNode *node)
@@ -878,6 +878,8 @@ g_ir_node_get_full_size_internal (GIrNode *parent,
 	   node->name ? "' " : "",
 	   node, g_ir_node_type_to_string (node->type), size);
 
+  g_hash_table_foreach (node->attributes, add_attribute_size, &size);
+
   return size;
 }
 
@@ -885,14 +887,6 @@ guint32
 g_ir_node_get_full_size (GIrNode *node)
 {
   return g_ir_node_get_full_size_internal (NULL, node);
-}
-
-guint32
-g_ir_node_get_attribute_size (GIrNode *node)
-{
-  guint32 size = 0;
-  g_hash_table_foreach (node->attributes, add_attribute_size, &size);
-  return size;
 }
 
 int
@@ -1438,7 +1432,7 @@ g_ir_node_build_typelib (GIrNode         *node,
    */
   g_assert (node->offset == 0);
   node->offset = *offset;
-  build->offset_ordered_nodes = g_list_prepend (build->offset_ordered_nodes, node);
+  build->nodes_with_attributes = g_list_prepend (build->nodes_with_attributes, node);
 
   build->n_attributes += g_hash_table_size (node->attributes);
 
