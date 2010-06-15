@@ -325,7 +325,10 @@ class HTMLReportWriter(ReportWriter):
                  (self.bcounter, self.total_tcounter, self.total_fcounter, self.total_tcounter - self.total_fcounter))
     self.oprint ('<td align="right">%f</td>\n' % self.total_duration)
     self.oprint ('<td align="center">-</td>\n')
-    perc = (self.total_tcounter - self.total_fcounter) * 100.0 / self.total_tcounter
+    if self.total_tcounter != 0:
+        perc = (self.total_tcounter - self.total_fcounter) * 100.0 / self.total_tcounter
+    else:
+        perc = 0.0
     pcolor = {
       100 : 'bgcolor="lightgreen"',
       0   : 'bgcolor="red"',
