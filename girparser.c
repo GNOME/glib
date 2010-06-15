@@ -1990,7 +1990,14 @@ start_attribute (GMarkupParseContext *context,
 
   curnode = CURRENT_NODE (ctx);
 
-  g_hash_table_insert (curnode->attributes, g_strdup (name), g_strdup (value));
+  if (ctx->current_typed && ctx->current_typed->type == G_IR_NODE_PARAM)
+    {
+      g_hash_table_insert (ctx->current_typed->attributes, g_strdup (name), g_strdup (value));
+    }
+  else
+    {
+      g_hash_table_insert (curnode->attributes, g_strdup (name), g_strdup (value));
+    }
 
   return TRUE;
 }

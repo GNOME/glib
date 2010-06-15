@@ -1110,6 +1110,10 @@ gboolean g_typelib_validate (GTypelib  *typelib,
 			     GError    **error);
 
 
+/* defined in gibaseinfo.c */
+AttributeBlob *_attribute_blob_find_first (GIBaseInfo *info,
+                                           guint32     blob_offset);
+
 G_END_DECLS
 
 #endif  /* __G_TYPELIB_H__ */

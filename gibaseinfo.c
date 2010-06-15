@@ -475,7 +475,7 @@ g_base_info_get_attribute (GIBaseInfo   *info,
 
 static int
 cmp_attribute (const void *av,
-                const void *bv)
+               const void *bv)
 {
   const AttributeBlob *a = av;
   const AttributeBlob *b = bv;
@@ -488,13 +488,25 @@ cmp_attribute (const void *av,
     return 1;
 }
 
-static AttributeBlob *
-find_first_attribute (GIRealInfo *rinfo)
+/*
+ * _attribute_blob_find_first:
+ * @GIBaseInfo: A #GIBaseInfo.
+ * @blob_offset: The offset for the blob to find the first attribute for.
+ *
+ * Searches for the first #AttributeBlob for @blob_offset and returns
+ * it if found.
+ *
+ * Returns: A pointer to #AttributeBlob or %NULL if not found.
+ */
+AttributeBlob *
+_attribute_blob_find_first (GIBaseInfo *info,
+                            guint32     blob_offset)
 {
+  GIRealInfo *rinfo = (GIRealInfo *) info;
   Header *header = (Header *)rinfo->typelib->data;
   AttributeBlob blob, *first, *res, *previous;
 
-  blob.offset = rinfo->offset;
+  blob.offset = blob_offset;
 
   first = (AttributeBlob *) &rinfo->typelib->data[header->attributes];
 
@@ -505,7 +517,7 @@ find_first_attribute (GIRealInfo *rinfo)
     return NULL;
 
   previous = res - 1;
-  while (previous >= first && previous->offset == rinfo->offset)
+  while (previous >= first && previous->offset == blob_offset)
     {
       res = previous;
       previous = res - 1;
@@ -563,7 +575,7 @@ g_base_info_iterate_attributes (GIBaseInfo      *info,
   if (iterator->data != NULL)
     next = (AttributeBlob *) iterator->data;
   else
-    next = find_first_attribute (rinfo);
+    next = _attribute_blob_find_first (info, rinfo->offset);
 
   if (next == NULL || next->offset != rinfo->offset || next >= after)
     return FALSE;

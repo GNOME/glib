@@ -39,6 +39,12 @@ G_BEGIN_DECLS
 GITypeInfo *           g_callable_info_get_return_type (GICallableInfo *info);
 void                   g_callable_info_load_return_type (GICallableInfo *info,
                                                          GITypeInfo     *type);
+const gchar *          g_callable_info_get_return_attribute (GICallableInfo *info,
+                                                             const gchar    *name);
+gboolean               g_callable_info_iterate_return_attributes (GICallableInfo  *info,
+                                                                  GIAttributeIter *iterator,
+                                                                  char           **name,
+                                                                  char          **value);
 GITransfer             g_callable_info_get_caller_owns (GICallableInfo *info);
 gboolean               g_callable_info_may_return_null (GICallableInfo *info);
 gint                   g_callable_info_get_n_args      (GICallableInfo *info);

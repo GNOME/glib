@@ -1678,6 +1678,14 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->symbol = write_string (function->symbol, strings, data, offset2);
 	blob->signature = signature;
 
+        /* function->result is special since it doesn't appear in the serialized format but
+         * we do want the attributes for it to appear
+         */
+        build->nodes_with_attributes = g_list_prepend (build->nodes_with_attributes, function->result);
+        build->n_attributes += g_hash_table_size (((GIrNode *) function->result)->attributes);
+        g_assert (((GIrNode *) function->result)->offset == 0);
+        ((GIrNode *) function->result)->offset = signature;
+
 	g_debug ("building function '%s'", function->symbol);
 
         g_ir_node_build_typelib ((GIrNode *)function->result->type,
@@ -1769,6 +1777,14 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->class_closure = 0; /* FIXME */
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->signature = signature;
+
+        /* signal->result is special since it doesn't appear in the serialized format but
+         * we do want the attributes for it to appear
+         */
+        build->nodes_with_attributes = g_list_prepend (build->nodes_with_attributes, signal->result);
+        build->n_attributes += g_hash_table_size (((GIrNode *) signal->result)->attributes);
+        g_assert (((GIrNode *) signal->result)->offset == 0);
+        ((GIrNode *) signal->result)->offset = signature;
 
         g_ir_node_build_typelib ((GIrNode *)signal->result->type,
 				 node, build, &signature, offset2);

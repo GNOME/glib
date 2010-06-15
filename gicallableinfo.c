@@ -19,6 +19,8 @@
  * Boston, MA 02111-1307, USA.
  */
 
+#include <stdlib.h>
+
 #include <glib.h>
 
 #include <girepository.h>
@@ -258,4 +260,78 @@ g_callable_info_load_arg (GICallableInfo *info,
 
   _g_info_init ((GIRealInfo*)arg, GI_INFO_TYPE_ARG, rinfo->repository, (GIBaseInfo*)info, rinfo->typelib,
                 offset + header->signature_blob_size + n * header->arg_blob_size);
+}
+
+/**
+ * g_callable_info_get_return_attribute:
+ * @info: a #GICallableInfo
+ * @name: a freeform string naming an attribute
+ *
+ * Retrieve an arbitrary attribute associated with the return value.
+ *
+ * Returns: The value of the attribute, or %NULL if no such attribute exists
+ */
+const gchar *
+g_callable_info_get_return_attribute (GICallableInfo  *info,
+                                      const gchar     *name)
+{
+  GIAttributeIter iter = { 0, };
+  gchar *curname, *curvalue;
+  while (g_callable_info_iterate_return_attributes (info, &iter, &curname, &curvalue))
+    {
+      if (g_strcmp0 (name, curname) == 0)
+        return (const gchar*) curvalue;
+    }
+
+  return NULL;
+}
+
+/**
+ * g_callable_info_iterate_return_attributes:
+ * @info: a #GICallableInfo
+ * @iterator: a #GIAttributeIter structure, must be initialized; see below
+ * @name: (out) (transfer none): Returned name, must not be freed
+ * @value: (out) (transfer none): Returned name, must not be freed
+ *
+ * Iterate over all attributes associated with the return value.  The
+ * iterator structure is typically stack allocated, and must have its
+ * first member initialized to %NULL.
+ *
+ * Both the @name and @value should be treated as constants
+ * and must not be freed.
+ *
+ * See g_base_info_iterate_attributes() for an example of how to use a
+ * similar API.
+ *
+ * Returns: %TRUE if there are more attributes
+ */
+gboolean
+g_callable_info_iterate_return_attributes (GICallableInfo  *info,
+                                           GIAttributeIter *iterator,
+                                           char           **name,
+                                           char          **value)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header = (Header *)rinfo->typelib->data;
+  AttributeBlob *next, *after;
+  guint32 blob_offset;
+
+  after = (AttributeBlob *) &rinfo->typelib->data[header->attributes +
+                                                  header->n_attributes * header->attribute_blob_size];
+
+  blob_offset = signature_offset (info);
+
+  if (iterator->data != NULL)
+    next = (AttributeBlob *) iterator->data;
+  else
+    next = _attribute_blob_find_first (info, blob_offset);
+
+  if (next == NULL || next->offset != blob_offset || next >= after)
+    return FALSE;
+
+  *name = (gchar*) g_typelib_get_string (rinfo->typelib, next->name);
+  *value = (gchar*) g_typelib_get_string (rinfo->typelib, next->value);
+  iterator->data = next + 1;
+
+  return TRUE;
 }

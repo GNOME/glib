@@ -358,12 +358,27 @@ write_type_info (const gchar *namespace,
 
 static void
 write_attributes (Xml *file,
-                   GIBaseInfo *info)
+                  GIBaseInfo *info)
 {
   GIAttributeIter iter = { 0, };
   char *name, *value;
 
   while (g_base_info_iterate_attributes (info, &iter, &name, &value))
+    {
+      xml_start_element (file, "attribute");
+      xml_printf (file, " name=\"%s\" value=\"%s\"", name, value);
+      xml_end_element (file, "attribute");
+    }
+}
+
+static void
+write_return_value_attributes (Xml *file,
+                               GICallableInfo *info)
+{
+  GIAttributeIter iter = { 0, };
+  char *name, *value;
+
+  while (g_callable_info_iterate_return_attributes (info, &iter, &name, &value))
     {
       xml_start_element (file, "attribute");
       xml_printf (file, " name=\"%s\" value=\"%s\"", name, value);
@@ -467,6 +482,8 @@ write_callable_info (const gchar    *namespace,
   if (g_callable_info_may_return_null (info))
     xml_printf (file, " allow-none=\"1\"");
 
+  write_return_value_attributes (file, info);
+
   write_type_info (namespace, type, file);
 
   xml_end_element (file, "return-value");
@@ -527,6 +544,8 @@ write_callable_info (const gchar    *namespace,
 
       if (g_arg_info_get_destroy (arg) >= 0)
         xml_printf (file, " destroy=\"%d\"", g_arg_info_get_destroy (arg));
+
+      write_attributes (file, (GIBaseInfo*) arg);
 
       type = g_arg_info_get_type (arg);
       write_type_info (namespace, type, file);
