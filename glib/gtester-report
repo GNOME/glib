@@ -110,11 +110,19 @@ class ReportReader (TreeProcess):
     self.binary_names = []
     self.binaries = {}
     self.last_binary = None
+    self.info = {}
   def binary_list (self):
     lst = []
     for name in self.binary_names:
       lst += [ self.binaries[name] ]
     return lst
+  def get_info (self):
+    return self.info
+  def handle_info (self, node):
+    dn = find_child (node, 'package')
+    self.info['package'] = node_as_text (dn)
+    dn = find_child (node, 'version')
+    self.info['version'] = node_as_text (dn)
   def handle_testcase (self, node):
     self.last_binary.testcases += [ node ]
     result = attribute_as_text (node, 'result', 'status')
@@ -186,8 +194,9 @@ class ReportWriter (TreeProcess):
   }
   --></script>
   '''
-  def __init__ (self, binary_list):
+  def __init__ (self, info, binary_list):
     TreeProcess.__init__ (self)
+    self.info = info
     self.binaries = binary_list
     self.bcounter = 0
     self.tcounter = 0
@@ -200,6 +209,8 @@ class ReportWriter (TreeProcess):
     sys.stdout.write (message)
     if message:
       self.lastchar = message[-1]
+  def handle_info (self):
+    self.oprint ('<h3>Package: %(package)s, version: %(version)s</h3>\n' % self.info)
   def handle_text (self, node):
     self.oprint (node.nodeValue)
   def handle_testcase (self, node, binary):
@@ -305,6 +316,7 @@ class ReportWriter (TreeProcess):
     self.oprint ('</head>\n')
     self.oprint ('<body>\n')
     self.oprint ('<h2>GTester Unit Test Report</h2>\n')
+    self.handle_info ()
     self.oprint ('<table id="ResultTable" width="100%" border="1">\n<tr>\n')
     self.oprint ('<th>Program / Testcase </th>\n')
     self.oprint ('<th style="width:8em">Duration (sec)</th>\n')
@@ -356,7 +368,7 @@ def main():
   xd = xml.dom.minidom.parse (files[0])
   rr = ReportReader()
   rr.trampoline (xd)
-  rw = ReportWriter (rr.binary_list())
+  rw = ReportWriter (rr.get_info(), rr.binary_list())
   rw.printout()
 
 if __name__ == '__main__':
