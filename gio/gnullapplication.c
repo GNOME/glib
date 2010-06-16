@@ -25,14 +25,19 @@
 
 #include "gioerror.h"
 
-static void
-_g_application_platform_init (GApplication *app)
+static gboolean
+_g_application_platform_init (GApplication *app,
+			      GCancellable *cancellable,
+			      GError      **error)
 {
+  return TRUE;
 }
 
 static gboolean
-_g_application_platform_acquire_single_instance (GApplication  *app,
-                                                 GError       **error)
+_g_application_platform_register (GApplication *app,
+				  gboolean     *unique,
+				  GCancellable *cancellable,
+				  GError      **error)
 {
   return TRUE;
 }

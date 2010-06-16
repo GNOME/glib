@@ -102,16 +102,21 @@ struct _GApplicationClass
 };
 GType                   g_application_get_type                  (void) G_GNUC_CONST;
 
-GApplication *          g_application_new                       (const gchar              *appid);
+GApplication *          g_application_new                       (const gchar      *appid,
+								 int               argc,
+								 char            **argv);
 
-void                    g_application_register_with_data        (GApplication      *application,
-                                                                 gint               argc,
-                                                                 gchar            **argv,
-                                                                 GVariant          *platform_data);
+GApplication *          g_application_try_new                   (const gchar      *appid,
+								 int               argc,
+								 char            **argv,
+								 GError          **error);
 
-GApplication *          g_application_new_and_register           (const gchar      *appid,
-                                                                  gint              argc,
-                                                                  gchar           **argv);
+GApplication *          g_application_unregistered_try_new      (const gchar      *appid,
+								 int               argc,
+								 char            **argv,
+								 GError          **error);
+
+gboolean                g_application_register                  (GApplication      *application);
 
 GApplication *          g_application_get_instance              (void);
 G_CONST_RETURN gchar *  g_application_get_id                    (GApplication      *application);

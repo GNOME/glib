@@ -259,15 +259,6 @@ static GDBusInterfaceVTable application_dbus_vtable =
   NULL
 };
 
-static GVariant *
-create_empty_vardict ()
-{
-  GVariantBuilder builder;
-
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
-  return g_variant_builder_end (&builder);
-}
-
 static gchar *
 application_path_from_appid (const gchar *appid)
 {
@@ -284,41 +275,31 @@ application_path_from_appid (const gchar *appid)
   return appid_path;
 }
 
-static void
-ensure_bus (GApplication *app)
+static gboolean
+_g_application_platform_init (GApplication  *app,
+			      GCancellable  *cancellable,
+			      GError       **error)
 {
-  GError *error = NULL;
-
   if (app->priv->session_bus == NULL)
-    app->priv->session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-  if (app->priv->session_bus == NULL)
-    {
-      g_error ("%s", error->message);
-      g_error_free (error);
-    }
+    app->priv->session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, cancellable, error);
+  if (!app->priv->session_bus)
+    return FALSE;
 
-  if (app->priv->dbus_path == NULL)
+  if (!app->priv->dbus_path)
     app->priv->dbus_path = application_path_from_appid (app->priv->appid);
-}
-
-static void
-_g_application_platform_init (GApplication *app)
-{
+  return TRUE;
 }
 
 static gboolean
-_g_application_platform_acquire_single_instance (GApplication  *app,
-                                                 GError       **error)
+_g_application_platform_register (GApplication  *app,
+				  gboolean      *unique,
+				  GCancellable  *cancellable,
+				  GError       **error)
 {
   GVariant *request_result;
   guint32 request_status;
   gboolean result;
   guint registration_id;
-
-  ensure_bus (app);
-
-  if (app->priv->session_bus == NULL)
-    return FALSE;
 
   registration_id = g_dbus_connection_register_object (app->priv->session_bus,
                                                        app->priv->dbus_path,
@@ -336,7 +317,7 @@ _g_application_platform_acquire_single_instance (GApplication  *app,
                                                 "org.freedesktop.DBus",
                                                 "RequestName",
                                                 g_variant_new ("(su)", app->priv->appid, 0x4),
-                                                NULL, 0, -1, NULL, error);
+                                                NULL, 0, -1, cancellable, error);
 
   if (request_result == NULL)
     {
@@ -351,18 +332,45 @@ _g_application_platform_acquire_single_instance (GApplication  *app,
 
   g_variant_unref (request_result);
 
-  if (request_status != 1 && request_status != 4)
-    {
-      if (request_status == 3)
-        g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Another process has name \"%s\"", app->priv->appid);
-      else
-        g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED, "Unknown error");
-
-      result = FALSE;
-      goto done;
-    }
-
+  *unique = (request_status == 1 || request_status == 4);
   result = TRUE;
+
+  if (*unique)
+    {
+      app->priv->is_remote = FALSE;
+    }
+  else if (app->priv->default_quit)
+    {
+      GVariantBuilder builder;
+      GVariant *message;
+      GVariant *result;
+
+      g_variant_builder_init (&builder, G_VARIANT_TYPE ("(aaya{sv})"));
+      g_variant_builder_add (&builder, "@aay", app->priv->argv);
+
+      if (app->priv->platform_data)
+	g_variant_builder_add (&builder, "@a{sv}", app->priv->platform_data);
+      else
+	{
+	  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
+	  g_variant_builder_close (&builder);
+	}
+
+      message = g_variant_builder_end (&builder);
+
+      result = g_dbus_connection_call_sync (app->priv->session_bus,
+					    app->priv->appid,
+					    app->priv->dbus_path,
+					    G_APPLICATION_IFACE,
+					    "Activate",
+					    message,
+					    NULL, 0, -1, NULL, NULL);
+
+      if (result)
+	g_variant_unref (result);
+
+      exit (0);
+    }
 
 done:
   if (!result)
@@ -387,8 +395,6 @@ _g_application_platform_remote_invoke_action (GApplication  *app,
 {
   GVariant *result;
 
-  ensure_bus (app);
-
   result = g_dbus_connection_call_sync (app->priv->session_bus,
                                         app->priv->appid,
                                         app->priv->dbus_path,
@@ -396,7 +402,7 @@ _g_application_platform_remote_invoke_action (GApplication  *app,
                                         "InvokeAction",
                                         g_variant_new ("(s@a{sv})",
                                                        action,
-                                                       platform_data || create_empty_vardict ()),
+                                                       platform_data),
                                         NULL, 0, -1, NULL, NULL);
   if (result)
     g_variant_unref (result);
@@ -408,38 +414,15 @@ _g_application_platform_remote_quit (GApplication *app,
 {
   GVariant *result;
 
-  ensure_bus (app);
-
   result = g_dbus_connection_call_sync (app->priv->session_bus,
                                         app->priv->appid,
                                         app->priv->dbus_path,
                                         G_APPLICATION_IFACE,
                                         "Quit",
                                         g_variant_new ("(@a{sv})",
-                                                       platform_data || create_empty_vardict ()),
+                                                       platform_data),
                                         NULL, 0, -1, NULL, NULL);
   if (result)
     g_variant_unref (result);
 }
 
-static void
-_g_application_platform_activate (GApplication *app,
-                                  GVariant     *data)
-{
-  GVariant *result;
-
-  ensure_bus (app);
-
-  result = g_dbus_connection_call_sync (app->priv->session_bus,
-                                        app->priv->appid,
-                                        app->priv->dbus_path,
-                                        G_APPLICATION_IFACE,
-                                        "Activate",
-                                        data,
-                                        NULL, 0, -1, NULL, NULL);
-
-  if (result)
-    g_variant_unref (result);
-
-  exit (0);
-}

@@ -33,6 +33,7 @@
 #include "glibintl.h"
 
 #include "gioerror.h"
+#include "ginitable.h"
 
 #include "gdbusconnection.h"
 #include "gdbusintrospection.h"
@@ -130,6 +131,11 @@
  * application instance when a second instance fails to take the bus name.
  * @arguments contains the commandline arguments given to the second instance
  * and @data contains platform-specific additional data.
+ * 
+ * On all platforms, @data is guaranteed to have a key "cwd" of type
+ * singature "ay" which contains the working directory of the invoked
+ * executable.
+ * 
  * </para>
  * <para>
  * The <methodname>InvokeAction</methodname> function can be called to
@@ -161,15 +167,22 @@
  * </refsect2>
  */
 
-G_DEFINE_TYPE (GApplication, g_application, G_TYPE_OBJECT);
+static void initable_iface_init       (GInitableIface      *initable_iface);
+
+G_DEFINE_TYPE_WITH_CODE (GApplication, g_application, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init));
+
 
 enum
 {
   PROP_0,
 
   PROP_APPLICATION_ID,
+  PROP_REGISTER,
   PROP_DEFAULT_QUIT,
-  PROP_IS_REMOTE
+  PROP_IS_REMOTE,
+  PROP_ARGV,
+  PROP_PLATFORM_DATA
 };
 
 enum
@@ -195,6 +208,10 @@ struct _GApplicationPrivate
   GHashTable *actions; /* name -> GApplicationAction */
   GMainLoop *mainloop;
 
+  GVariant *argv;
+  GVariant *platform_data;
+
+  guint do_register  : 1;
   guint default_quit : 1;
   guint is_remote    : 1;
 
@@ -209,17 +226,30 @@ struct _GApplicationPrivate
 static GApplication *primary_application = NULL;
 static GHashTable *instances_for_appid = NULL;
 
-static void     _g_application_platform_init                    (GApplication  *app); 
-static gboolean _g_application_platform_acquire_single_instance (GApplication  *app,
-                                                                 GError       **error);
+static gboolean initable_init (GInitable     *initable,
+			       GCancellable  *cancellable,
+			       GError       **error);
+
+static gboolean _g_application_platform_init                    (GApplication  *app,
+								 GCancellable  *cancellable,
+								 GError       **error); 
+static gboolean _g_application_platform_register                (GApplication  *app,
+								 gboolean      *unique,
+								 GCancellable  *cancellable,
+								 GError       **error); 
+
 static void     _g_application_platform_remote_invoke_action    (GApplication  *app,
                                                                  const gchar   *action,
                                                                  GVariant      *platform_data);
 static void     _g_application_platform_remote_quit             (GApplication  *app,
                                                                  GVariant      *platform_data);
-static void     _g_application_platform_activate                (GApplication  *app,
-                                                                 GVariant      *data) G_GNUC_NORETURN;
 static void     _g_application_platform_on_actions_changed      (GApplication  *app);
+
+static void
+initable_iface_init (GInitableIface *initable_iface)
+{
+  initable_iface->init = initable_init;
+}
 
 #ifdef G_OS_UNIX
 #include "gdbusapplication.c"
@@ -288,45 +318,25 @@ g_application_default_run (GApplication *application)
   g_main_loop_run (application->priv->mainloop);
 }
 
-static void
-_g_application_handle_activation (GApplication  *app,
-                                  int            argc,
-                                  char         **argv,
-                                  GVariant      *platform_data)
+static GVariant *
+variant_from_argv (int    argc,
+		   char **argv)
 {
   GVariantBuilder builder;
-  GVariant *message;
   int i;
 
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("(aaya{sv})"));
-  g_variant_builder_open (&builder, G_VARIANT_TYPE ("aay"));
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
 
   for (i = 1; i < argc; i++)
     {
-      int j;
       guint8 *argv_bytes;
 
-      g_variant_builder_open (&builder, G_VARIANT_TYPE ("ay"));
-
       argv_bytes = (guint8*) argv[i];
-      for (j = 0; argv_bytes[j]; j++)
-        g_variant_builder_add_value (&builder,
-                                     g_variant_new_byte (argv_bytes[j]));
-      g_variant_builder_close (&builder);
+      g_variant_builder_add_value (&builder,
+				   g_variant_new_byte_array (argv_bytes, -1));
     }
-  g_variant_builder_close (&builder);
-
-  if (platform_data)
-    g_variant_builder_add (&builder, "@a{sv}", platform_data);
-  else
-    {
-      g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
-      g_variant_builder_close (&builder);
-    }
-
-  message = g_variant_builder_end (&builder);
-  _g_application_platform_activate (app, message);
-  g_variant_unref (message);
+  
+  return g_variant_builder_end (&builder);
 }
 
 static gboolean
@@ -350,6 +360,24 @@ queue_actions_change_notification (GApplication *application)
     priv->actions_changed_id = g_timeout_add (0, timeout_handle_actions_changed, application);
 }
 
+static gboolean
+initable_init (GInitable     *initable,
+               GCancellable  *cancellable,
+               GError       **error)
+{
+  GApplication *app = G_APPLICATION (initable);
+  gboolean unique;
+
+  if (!_g_application_platform_init (app, cancellable, error))
+    return FALSE;
+
+  if (app->priv->do_register &&
+      !_g_application_platform_register (app, &unique, cancellable ,error))
+    return FALSE;
+
+  return TRUE;
+}
+
 static void
 g_application_action_free (gpointer data)
 {
@@ -364,15 +392,35 @@ g_application_action_free (gpointer data)
     }
 }
 
-
 /**
  * g_application_new:
  * @appid: System-dependent application identifier
+ * @argc: Number of arguments in @argv
+ * @argv: (allow-none) (array length=argc): Argument vector, usually from the <parameter>argv</parameter> parameter of main() 
  *
- * Create a new #GApplication.  The application is initially in
- * "remote" mode.  Almost certainly, you want to call
- * g_application_register() immediately after this function, which
- * will finish initialization.
+ * Create a new #GApplication.  This uses a platform-specific
+ * mechanism to ensure the current process is the unique owner of the
+ * application (as defined by the @appid). If successful, the
+ * #GApplication:is-remote property will be %FALSE, and it is safe to
+ * continue creating other resources such as graphics windows.
+ *
+ * If the given @appid is already running in another process, the the
+ * GApplication::activate_with_data signal will be emitted in the
+ * remote process, with the data from @argv and other
+ * platform-specific data available.  Subsequently the
+ * #GApplication:default-exit property will be evaluated.  If it's
+ * %TRUE, then the current process will terminate.  If %FALSE, then
+ * the application remains in the #GApplication:is-remote state, and
+ * you can e.g. call g_application_invoke_action().
+ *
+ * This function may do synchronous I/O to obtain unique ownership
+ * of the application id, and will block the calling thread in this
+ * case.
+ *
+ * If the environment does not support the basic functionality of
+ * #GApplication, this function will invoke g_error(), which by
+ * default is a fatal operation.  This may arise for example on
+ * UNIX systems using D-Bus when the session bus is not available.
  *
  * As a convenience, this function is defined to call g_type_init() as
  * its very first action.
@@ -382,79 +430,133 @@ g_application_action_free (gpointer data)
  * Since: 2.26
  */
 GApplication *
-g_application_new (const gchar *appid)
+g_application_new (const gchar *appid,
+		   int          argc,
+		   char       **argv)
 {
+  GObject *app;
+  GError *error = NULL;
+  GVariant *argv_variant;
+
   g_type_init ();
 
-  return G_APPLICATION (g_object_new (G_TYPE_APPLICATION, "application-id", appid, NULL));
-}
-
-/**
- * g_application_register_with_data:
- * @application: A #GApplication
- * @argc: System argument count
- * @argv: (array length=argc): System argument vector
- * @platform_data: (allow-none): Arbitrary platform-specific data, must have signature "a{sv}"
- *
- * Ensure the current process is the unique owner of the application.
- * If successful, the #GApplication:is-remote property will be changed
- * to %FALSE, and it is safe to continue creating other resources
- * such as graphics windows.
- *
- * If the given @appid is already running in another process, the
- * #GApplication:default-exit property will be evaluated.  If it's
- * %TRUE, then a platform-specific action such as bringing any
- * graphics windows associated with the application to the foreground
- * may be initiated.  After that, the current process will terminate.
- * If %FALSE, then the application remains in the #GApplication:is-remote
- * state, and you can e.g. call g_application_invoke_action().
- *
- * This function may do synchronous I/O to obtain unique ownership
- * of the application id, and will block the calling thread in this
- * case.
- */
-void
-g_application_register_with_data (GApplication  *application,
-                                  gint           argc,
-                                  gchar        **argv,
-                                  GVariant      *platform_data)
-{
-  g_return_if_fail (application->priv->appid != NULL);
-  g_return_if_fail (application->priv->is_remote);
-  g_return_if_fail (platform_data == NULL
-                    || g_variant_is_of_type (platform_data, G_VARIANT_TYPE ("a{sv}")));
-
-  if (!_g_application_platform_acquire_single_instance (application, NULL))
+  g_return_val_if_fail (appid != NULL, NULL);
+  
+  argv_variant = variant_from_argv (argc, argv);
+  
+  app = g_initable_new (G_TYPE_APPLICATION, 
+			NULL,
+			&error,
+			"application-id", appid, 
+			"argv", argv_variant, 
+			NULL);
+  if (!app)
     {
-      if (application->priv->default_quit)
-        _g_application_handle_activation (application, argc, argv, platform_data);
-      else
-        return;
+      g_error ("%s", error->message);
+      g_clear_error (&error);
+      return NULL;
     }
-
-  application->priv->is_remote = FALSE;
-
-  _g_application_platform_init (application);
+  return G_APPLICATION (app);
 }
 
 /**
- * g_application_new_and_register:
- * @appid: An application identifier
- * @argc: System argument count
- * @argv: (array length=argc): System argument vector
+ * g_application_try_new:
+ * @appid: System-dependent application identifier
+ * @argc: Number of arguments in @argv
+ * @argv: (allow-none) (array length=argc): Argument vector, usually from the <parameter>argv</parameter> parameter of main() 
+ * @error: a #GError
  *
- * This is a convenience function which combines g_application_new()
- * with g_application_register_with_data(). Therefore, it may block
- * the calling thread just like g_application_register_with_data().
+ * This function is similar to g_application_new(), but allows for
+ * more graceful fallback if the environment doesn't support the
+ * basic #GApplication functionality.
+ *
+ * Returns: (transfer full): An application instance
+ *
+ * Since: 2.26
  */
 GApplication *
-g_application_new_and_register (const gchar  *appid,
-                                gint          argc,
-                                gchar       **argv)
+g_application_try_new (const gchar *appid,
+		       int          argc,
+		       char       **argv,
+		       GError     **error)
 {
-  GApplication *app = g_application_new (appid);
-  g_application_register_with_data (app, argc, argv, NULL);
-  return app;
+  GVariant *argv_variant;
+
+  g_type_init ();
+
+  g_return_val_if_fail (appid != NULL, NULL);
+  
+  argv_variant = variant_from_argv (argc, argv);
+  
+  return G_APPLICATION (g_initable_new (G_TYPE_APPLICATION, 
+					NULL,
+					error,
+					"application-id", appid, 
+					"argv", argv_variant, 
+					NULL));
+}
+
+/**
+ * g_application_unregistered_try_new:
+ * @appid: System-dependent application identifier
+ * @argc: Number of arguments in @argv
+ * @argv: (allow-none) (array length=argc): Argument vector, usually from the <parameter>argv</parameter> parameter of main() 
+ * @error: a #GError
+ *
+ * This function is similar to g_application_try_new(), but also
+ * sets the GApplication:register property to %FALSE.  You can later
+ * call g_application_register() to complete initialization.
+ *
+ * Returns: (transfer full): An application instance
+ *
+ * Since: 2.26
+ */
+GApplication *
+g_application_unregistered_try_new (const gchar *appid,
+				    int          argc,
+				    char       **argv,
+				    GError     **error)
+{
+  GVariant *argv_variant;
+
+  g_type_init ();
+
+  g_return_val_if_fail (appid != NULL, NULL);
+  
+  argv_variant = variant_from_argv (argc, argv);
+  
+  return G_APPLICATION (g_initable_new (G_TYPE_APPLICATION, 
+					NULL,
+					error,
+					"application-id", appid, 
+					"argv", argv_variant, 
+					"register", FALSE,
+					NULL));
+}
+
+/**
+ * g_application_register:
+ * @app: a #GApplication
+ * 
+ * By default, #GApplication ensures process uniqueness when
+ * initialized, but this behavior is controlled by the
+ * GApplication:register property.  If it was given as %FALSE at
+ * construction time, this function allows you to later attempt
+ * to ensure uniqueness.
+ *
+ * Returns: %TRUE if registration was successful
+ */
+gboolean
+g_application_register (GApplication   *app)
+{
+  gboolean unique;
+
+  g_return_val_if_fail (G_IS_APPLICATION (app), FALSE);
+  g_return_val_if_fail (app->priv->is_remote, FALSE);
+  
+  if (!_g_application_platform_register (app, &unique, NULL, NULL))
+    return FALSE;
+  return unique;
 }
 
 /**
@@ -563,25 +665,33 @@ g_application_invoke_action (GApplication *application,
   g_return_if_fail (G_IS_APPLICATION (application));
   g_return_if_fail (name != NULL);
   g_return_if_fail (platform_data == NULL
-                    || g_variant_is_of_type (platform_data, "a{sv}"));
+                    || g_variant_is_of_type (platform_data, G_VARIANT_TYPE ("a{sv}")));
+  
+  if (platform_data == NULL)
+    platform_data = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), NULL, 0);
+  else
+    g_variant_ref (platform_data);
 
   priv = application->priv;
-
+  
   if (priv->is_remote)
     {
       _g_application_platform_remote_invoke_action (application, name, platform_data);
-      return;
+      goto out;
     }
 
   action = g_hash_table_lookup (priv->actions, name);
   g_return_if_fail (action != NULL);
   if (!action->enabled)
-    return;
+    goto out;
 
   g_signal_emit (application, application_signals[ACTION_WITH_DATA],
                  g_quark_from_string (name),
                  name,
                  platform_data);
+
+ out:
+  g_variant_unref (platform_data);
 }
 
 /**
@@ -779,7 +889,12 @@ g_application_quit_with_data (GApplication *application,
 
   g_return_val_if_fail (G_IS_APPLICATION (application), FALSE);
   g_return_val_if_fail (platform_data == NULL
-			|| g_variant_is_of_type (platform_data, "a{sv}"), FALSE);
+			|| g_variant_is_of_type (platform_data, G_VARIANT_TYPE ("a{sv}")), FALSE);
+
+  if (platform_data == NULL)
+    platform_data = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), NULL, 0);
+  else
+    g_variant_ref (platform_data);
 
   if (application->priv->is_remote)
     {
@@ -788,6 +903,8 @@ g_application_quit_with_data (GApplication *application,
     }
   else
     g_signal_emit (application, application_signals[QUIT_WITH_DATA], 0, platform_data, &retval);
+
+  g_variant_unref (platform_data);
 
   return retval;
 }
@@ -855,6 +972,7 @@ g_application_init (GApplication *app)
                                               NULL,
                                               g_application_action_free);
   app->priv->default_quit = TRUE;
+  app->priv->do_register = TRUE;
   app->priv->is_remote = TRUE;
 }
 
@@ -880,6 +998,18 @@ g_application_get_property (GObject    *object,
       g_value_set_boolean (value, g_application_is_remote (app));
       break;
 
+    case PROP_REGISTER:
+      g_value_set_boolean (value, app->priv->do_register);
+      break;
+
+    case PROP_ARGV:
+      g_value_set_boxed (value, app->priv->argv);
+      break;
+
+    case PROP_PLATFORM_DATA:
+      g_value_set_boxed (value, app->priv->platform_data);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -902,6 +1032,28 @@ g_application_set_property (GObject      *object,
 
     case PROP_DEFAULT_QUIT:
       app->priv->default_quit = g_value_get_boolean (value);
+      break;
+
+    case PROP_REGISTER:
+      app->priv->do_register = g_value_get_boolean (value);
+      break;
+
+    case PROP_ARGV:
+      {
+	GVariant *argv = g_value_get_boxed (value);
+	g_return_if_fail (argv == NULL ||
+			  g_variant_is_of_type (argv, G_VARIANT_TYPE ("aay")));
+	app->priv->argv = argv;
+      }
+      break;
+
+    case PROP_PLATFORM_DATA:
+      {
+	GVariant *platform_data = g_value_get_boxed (value);
+	g_return_if_fail (platform_data == NULL ||
+			  g_variant_is_of_type (platform_data, G_VARIANT_TYPE ("a{sv}")));
+	app->priv->platform_data = platform_data;
+      }
       break;
 
     default:
@@ -1053,7 +1205,7 @@ g_application_class_init (GApplicationClass *klass)
                   G_TYPE_VARIANT,
                   G_TYPE_VARIANT);
 
-   /**
+  /**
    * GApplication:application-id:
    *
    * The unique identifier for this application.  See the documentation for
@@ -1069,6 +1221,40 @@ g_application_class_init (GApplicationClass *klass)
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GApplication:argv:
+   *
+   * The argument vector given to this application.  It must be a #GVariant
+   * with a type signature "aay".
+   *
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_ARGV,
+                                   g_param_spec_boxed ("argv",
+						       P_("Argument vector"),
+						       P_("System argument vector with type signature aay"),
+						       G_TYPE_VARIANT,
+						       G_PARAM_READWRITE |
+						       G_PARAM_CONSTRUCT_ONLY |
+						       G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GApplication:platform-data:
+   *
+   * Platform-specific data retrieved from the operating system
+   * environment.  It must be a #GVariant with type signature "a{sv}".
+   *
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_PLATFORM_DATA,
+                                   g_param_spec_boxed ("platform-data",
+						       P_("Platform data"),
+						       P_("Environmental data, must have type signature a{sv}"),
+						       G_TYPE_VARIANT,
+						       G_PARAM_READWRITE |
+						       G_PARAM_CONSTRUCT_ONLY |
+						       G_PARAM_STATIC_STRINGS));
 
   /**
    * GApplication:default-quit:
@@ -1103,6 +1289,23 @@ g_application_class_init (GApplicationClass *klass)
                                                          P_("Whether this application is a proxy for another process"),
                                                          TRUE,
                                                          G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
+
+  /**
+   * GApplication:register:
+   *
+   * If this property is %FALSE, the application construction will not attempt
+   * to ensure process uniqueness, and the application is guaranteed to be in the
+   * remote state.  See GApplication:is-remote.
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_REGISTER,
+                                   g_param_spec_boolean ("register",
+                                                         P_("Register"),
+                                                         P_("If false, do not "),
+                                                         TRUE,
+                                                         G_PARAM_READWRITE | 
+							 G_PARAM_CONSTRUCT_ONLY |
+							 G_PARAM_STATIC_STRINGS));
 }
 
 #define __G_APPLICATION_C__

@@ -60,9 +60,13 @@ main (int argc, char *argv[])
   }
 #endif
 
-  app = g_application_new ("org.gtk.test.app");
+  app = g_application_unregistered_try_new ("org.gtk.test.app", 
+					    argc, argv, NULL);
   if (!(argc > 1 && strcmp (argv[1], "--non-unique") == 0))
-    g_application_register_with_data (app, argc, argv, NULL);
+    {
+      if (!g_application_register (app))
+	exit (0);
+    }
 
   if (g_application_is_remote (app))
     {

@@ -149,7 +149,7 @@ test_basic (void)
 {
   GApplication *app;
 
-  app = g_application_new_and_register ("org.gtk.TestApplication", 0, NULL);
+  app = g_application_new ("org.gtk.TestApplication", 0, NULL);
   g_application_add_action (app, "About", "Print an about message");
 
   g_signal_connect (app, "action-with-data::About", G_CALLBACK (on_app_action), NULL);
