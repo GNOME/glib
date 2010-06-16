@@ -1873,6 +1873,7 @@ g_settings_binding_key_changed (GSettings   *settings,
     g_object_set_property (binding->object,
                            binding->property->name,
                            &value);
+  g_variant_unref (variant);
   g_value_unset (&value);
 
   binding->running = FALSE;
