@@ -312,6 +312,40 @@ binding_transform (void)
   g_object_unref (target);
 }
 
+static void
+binding_chain (void)
+{
+  BindingSource *a = g_object_new (binding_source_get_type (), NULL);
+  BindingSource *b = g_object_new (binding_source_get_type (), NULL);
+  BindingSource *c = g_object_new (binding_source_get_type (), NULL);
+  GBinding *binding_1, *binding_2;
+
+  /* A -> B, B -> C */
+  binding_1 = g_object_bind_property (a, "foo", b, "foo", G_BINDING_BIDIRECTIONAL);
+  binding_2 = g_object_bind_property (b, "foo", c, "foo", G_BINDING_BIDIRECTIONAL);
+
+  /* verify the chain */
+  g_object_set (a, "foo", 42, NULL);
+  g_assert_cmpint (a->foo, ==, b->foo);
+  g_assert_cmpint (b->foo, ==, c->foo);
+
+  /* unbind A -> B and B -> C */
+  g_object_unref (binding_1);
+  g_object_unref (binding_2);
+
+  /* bind A -> C directly */
+  binding_2 = g_object_bind_property (a, "foo", c, "foo", G_BINDING_BIDIRECTIONAL);
+
+  /* verify the chain is broken */
+  g_object_set (a, "foo", 47, NULL);
+  g_assert_cmpint (a->foo, !=, b->foo);
+  g_assert_cmpint (a->foo, ==, c->foo);
+
+  g_object_unref (a);
+  g_object_unref (b);
+  g_object_unref (c);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -321,6 +355,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/default", binding_default);
   g_test_add_func ("/binding/bidirectional", binding_bidirectional);
   g_test_add_func ("/binding/transform", binding_transform);
+  g_test_add_func ("/binding/chain", binding_chain);
 
   return g_test_run ();
 }
