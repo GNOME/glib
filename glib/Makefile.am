@@ -41,13 +41,13 @@ AM_CPPFLAGS = 				\
 	-DPCRE_STATIC
 
 glib.def: glib.symbols
-	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > glib.def
+	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > glib.def
 
 galias.h: $(srcdir)/makegalias.pl glib.symbols
-	  $(PERL) $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h
+	  $(AM_V_GEN) $(PERL) $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h
 
 galiasdef.c: $(srcdir)/makegalias.pl glib.symbols
-	  $(PERL) $(srcdir)/makegalias.pl -def < $(srcdir)/glib.symbols > galiasdef.c
+	  $(AM_V_GEN) $(PERL) $(srcdir)/makegalias.pl -def < $(srcdir)/glib.symbols > galiasdef.c
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
@@ -435,7 +435,7 @@ gdbdir = $(datadir)/glib-2.0/gdb
 dist_gdb_SCRIPTS = glib.py
 
 libglib-gdb.py: libglib-gdb.py.in
-	sed -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libglib-gdb.py.in > libglib-gdb.py
+	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libglib-gdb.py.in > libglib-gdb.py
 
 
 install-data-hook: libglib-gdb.py

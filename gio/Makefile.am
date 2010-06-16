@@ -24,15 +24,15 @@ uninstall-ms-lib:
 	$(uninstall_ms_lib_cmd)
 
 gio.def: gio.symbols
-	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gio.def.tmp && \
+	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gio.def.tmp && \
 	  mv gio.def.tmp gio.def
 
 gioalias.h: gio.symbols
-	$(PERL) $(srcdir)/makegioalias.pl < $(srcdir)/gio.symbols > gioalias.h.tmp && \
+	$(AM_V_GEN) $(PERL) $(srcdir)/makegioalias.pl < $(srcdir)/gio.symbols > gioalias.h.tmp && \
 	  mv gioalias.h.tmp gioalias.h
 
 gioaliasdef.c: gio.symbols
-	$(PERL) $(srcdir)/makegioalias.pl -def < $(srcdir)/gio.symbols > gioaliasdef.c.tmp && \
+	$(AM_V_GEN) $(PERL) $(srcdir)/makegioalias.pl -def < $(srcdir)/gio.symbols > gioaliasdef.c.tmp && \
 	  mv gioaliasdef.c.tmp gioaliasdef.c
 
 if OS_LINUX
@@ -71,11 +71,11 @@ else
 endif
 
 gio-marshal.h: gio-marshal.list
-	$(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --header --internal > $@.tmp && \
+	$(AM_V_GEN) $(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --header --internal > $@.tmp && \
 	  mv $@.tmp $@
 
 gio-marshal.c: gio-marshal.h gio-marshal.list
-	(echo "#include \"gio-marshal.h\""; \
+	$(AM_V_GEN) (echo "#include \"gio-marshal.h\""; \
 	$(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --body --internal) > $@.tmp && \
 	  mv $@.tmp $@
 
@@ -541,12 +541,12 @@ CLEANFILES = 			\
 	$(NULL)
 
 gioenumtypes.h: $(gio_headers) gioenumtypes.h.template
-	( top_builddir=`cd $(top_builddir) && pwd`; \
+	$(AM_V_GEN) ( top_builddir=`cd $(top_builddir) && pwd`; \
 	  cd $(srcdir) && $$top_builddir/gobject/glib-mkenums --template gioenumtypes.h.template $(gio_headers) ) > \
 	    gioenumtypes.h.tmp && mv gioenumtypes.h.tmp gioenumtypes.h
 
 gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
-	( top_builddir=`cd $(top_builddir) && pwd`; \
+	$(AM_V_GEN) ( top_builddir=`cd $(top_builddir) && pwd`; \
 	  cd $(srcdir) && $$top_builddir/gobject/glib-mkenums --template gioenumtypes.c.template $(gio_headers) ) > \
 	    gioenumtypes.c.tmp && mv gioenumtypes.c.tmp gioenumtypes.c
 

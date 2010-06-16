@@ -82,15 +82,14 @@ CONFIGURE_DEPENDENCIES = acglib.m4
 
 BUILT_SOURCES = stamp-gc-h #note: not glibconfig.h
 glibconfig.h: stamp-gc-h
-	@if test -f glibconfig.h; then :; \
+	$(AM_V_GEN) if test -f glibconfig.h; then :; \
 	else rm -f stamp-gc-h; $(MAKE) stamp-gc-h; fi
 stamp-gc-h: config.status
 	cd $(top_builddir) && $(SHELL) ./config.status glibconfig.h
 	echo timestamp > stamp-gc-h
 
 ChangeLog:
-	@echo Creating $@
-	@if test -d "$(srcdir)/.git"; then \
+	$(AM_V_GEN) test -d "$(srcdir)/.git"; then \
 	  (GIT_DIR=$(top_srcdir)/.git ./missing --run git log GLIB_2_20_0^^.. --stat) | fmt --split-only > $@.tmp \
 	  && mv -f $@.tmp $@ \
 	  || ($(RM) $@.tmp; \

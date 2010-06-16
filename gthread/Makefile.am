@@ -80,7 +80,7 @@ libgthread_2_0_la_LIBADD = $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD) $
 libgthread_2_0_la_DEPENDENCIES = $(gthread_win32_res) $(gthread_def)
 
 gthread-win32-res.o: gthread.rc
-	$(WINDRES) gthread.rc $@
+	$(AM_V_GEN) $(WINDRES) gthread.rc $@
 
 gthread-2.0.lib: libgthread-2.0.la gthread.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgthread-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(srcdir)/gthread.def -out:$@

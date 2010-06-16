@@ -24,13 +24,13 @@ AM_CPPFLAGS = 					\
 	-DG_DISABLE_CONST_RETURNS
 
 gobject.def: gobject.symbols
-	(echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
+	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
 
 gobjectalias.h: gobject.symbols
-	$(PERL) $(srcdir)/makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
+	$(AM_V_GEN) $(PERL) $(srcdir)/makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
 
 gobjectaliasdef.c: gobject.symbols
-	$(PERL) $(srcdir)/makegobjectalias.pl -def < $(srcdir)/gobject.symbols > gobjectaliasdef.c
+	$(AM_V_GEN) $(PERL) $(srcdir)/makegobjectalias.pl -def < $(srcdir)/gobject.symbols > gobjectaliasdef.c
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
@@ -209,7 +209,7 @@ gmarshal.h: stamp-gmarshal.h
 	@true
 stamp-gmarshal.h: @REBUILD@ gmarshal.list glib-genmarshal$(EXEEXT)
 	$(MAKE) glib-genmarshal$(EXEEXT)
-	echo "#ifndef __G_MARSHAL_H__" > xgen-gmh \
+	$(AM_V_GEN) echo "#ifndef __G_MARSHAL_H__" > xgen-gmh \
 	&& echo "#define __G_MARSHAL_H__" >> xgen-gmh \
 	&& $(glib_genmarshal) --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --header >> xgen-gmh \
 	&& echo "#endif /* __G_MARSHAL_H__ */" >> xgen-gmh \
@@ -218,12 +218,12 @@ stamp-gmarshal.h: @REBUILD@ gmarshal.list glib-genmarshal$(EXEEXT)
 	&& echo timestamp > $@
 
 gmarshal.c: @REBUILD@ stamp-gmarshal.h
-	$(glib_genmarshal) --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --body >> xgen-gmc \
+	$(AM_V_GEN) $(glib_genmarshal) --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --body >> xgen-gmc \
 	&& cp xgen-gmc gmarshal.c \
 	&& rm -f xgen-gmc xgen-gmc~
 
 gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list
-	grep '^[A-Z]' $(srcdir)/gmarshal.list \
+	$(AM_V_GEN) grep '^[A-Z]' $(srcdir)/gmarshal.list \
 	| sed -e 's/^/"g_cclosure_marshal_/' -e 's/:/__/' -e 's/,/_/g' -e 's/$$/",/' > xgen-gms \
 	&& cp xgen-gms gmarshal.strings \
 	&& rm -f xgen-gms xgen-gms~
@@ -272,7 +272,7 @@ BUILT_EXTRA_DIST = \
 	gobjectaliasdef.c
 
 gobject-win32-res.o: gobject.rc
-	$(WINDRES) gobject.rc $@
+	$(AM_V_GEN) $(WINDRES) gobject.rc $@
 
 gobject-2.0.lib: libgobject-2.0.la gobject.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gobject.def -out:$@
@@ -307,7 +307,7 @@ gdbdir = $(datadir)/glib-2.0/gdb
 dist_gdb_SCRIPTS = gobject.py
 
 libgobject-gdb.py: libgobject-gdb.py.in
-	sed -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libgobject-gdb.py.in > libgobject-gdb.py
+	$(AM_V_GEN) $(SED) -e "s|\@datadir\@|$(datadir)|" $(srcdir)/libgobject-gdb.py.in > libgobject-gdb.py
 
 uninstall-gdb:
 	-rm -r $(DESTDIR)$(datadir)/gdb

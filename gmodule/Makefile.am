@@ -10,7 +10,7 @@ AM_CPPFLAGS = 				\
 	-DG_DISABLE_DEPRECATED
 
 gmodule.def: gmodule.symbols
-	(echo -e EXPORTS; $(CPP) -P - <$(srcdir)/gmodule.symbols | sed -e '/^$$/d' -e 's/^/	/') > gmodule.def
+	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P - <$(srcdir)/gmodule.symbols | sed -e '/^$$/d' -e 's/^/	/') > gmodule.def
 
 EXTRA_DIST +=				\
 		makefile.msc.in 	\
@@ -91,7 +91,7 @@ libgmodule_2_0_la_LIBADD = $(G_MODULE_LIBS_EXTRA) $(G_MODULE_LIBS) $(libglib)
 libgmodule_2_0_la_DEPENDENCIES = $(gmodule_win32_res) $(gmodule_def)
 
 gmodule-win32-res.o: gmodule.rc
-	$(WINDRES) gmodule.rc $@
+	$(AM_V_GEN) $(WINDRES) gmodule.rc $@
 
 gmodule-2.0.lib: libgmodule-2.0.la gmodule.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgmodule-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gmodule.def -out:$@
