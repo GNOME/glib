@@ -191,7 +191,7 @@ typedef struct _GParamSpecPool  GParamSpecPool;
  * @name: name of this parameter
  * @flags: #GParamFlags flags for this parameter
  * @value_type: the #GValue type for this parameter
- * @owner_type: #GType type that uses (introduces) this paremeter
+ * @owner_type: #GType type that uses (introduces) this parameter
  * 
  * All other fields of the <structname>GParamSpec</structname> struct are private and
  * should not be used directly.
