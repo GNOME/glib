@@ -133,7 +133,7 @@
  * and @data contains platform-specific additional data.
  * 
  * On all platforms, @data is guaranteed to have a key "cwd" of type
- * singature "ay" which contains the working directory of the invoked
+ * signature "ay" which contains the working directory of the invoked
  * executable.
  * 
  * </para>
