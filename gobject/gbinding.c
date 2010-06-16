@@ -194,34 +194,45 @@ static inline void
 add_binding_qdata (GObject  *gobject,
                    GBinding *binding)
 {
-  GList *bindings;
+  GHashTable *bindings;
 
   bindings = g_object_get_qdata (gobject, quark_gbinding);
   if (bindings == NULL)
     {
-      bindings = g_list_prepend (NULL, binding);
-      g_object_set_qdata (gobject, quark_gbinding, bindings);
+      bindings = g_hash_table_new (NULL, NULL);
+
+      g_object_set_qdata_full (gobject, quark_gbinding,
+                               bindings,
+                               (GDestroyNotify) g_hash_table_destroy);
     }
-  else
-    bindings = g_list_prepend (bindings, binding);
+
+  g_hash_table_insert (bindings, binding, GUINT_TO_POINTER (1));
 }
 
 static inline void
 remove_binding_qdata (GObject  *gobject,
                       GBinding *binding)
 {
-  GList *bindings;
+  GHashTable *bindings;
 
   bindings = g_object_get_qdata (gobject, quark_gbinding);
-  bindings = g_list_remove (bindings, binding);
+  g_hash_table_remove (bindings, binding);
 }
 
+/* the basic assumption is that if either the source or the target
+ * goes away then the binding does not exist any more and it should
+ * be reaped as well
+ */
 static void
 weak_unbind (gpointer  user_data,
              GObject  *where_the_object_was)
 {
   GBinding *binding = user_data;
 
+  /* if what went away was the source, unset it so that GBinding::finalize
+   * does not try to access it; otherwise, disconnect everything and remove
+   * the GBinding instance from the object's qdata
+   */
   if (binding->source == where_the_object_was)
     binding->source = NULL;
   else
@@ -234,6 +245,7 @@ weak_unbind (gpointer  user_data,
       binding->source = NULL;
     }
 
+  /* as above, but with the target */
   if (binding->target == where_the_object_was)
     binding->target = NULL;
   else
@@ -246,6 +258,7 @@ weak_unbind (gpointer  user_data,
       binding->target = NULL;
     }
 
+  /* this will take care of the binding itself */
   g_object_unref (binding);
 }
 
@@ -399,6 +412,7 @@ g_binding_finalize (GObject *gobject)
 {
   GBinding *binding = G_BINDING (gobject);
 
+  /* dispose of the transformation data */
   if (binding->notify != NULL)
     {
       binding->notify (binding->transform_data);
@@ -407,6 +421,9 @@ g_binding_finalize (GObject *gobject)
       binding->notify = NULL;
     }
 
+  /* we need this in case the source and target instance are still
+   * valid, and it was the GBinding that was unreferenced
+   */
   if (binding->source != NULL)
     {
       if (binding->source_notify != 0)
