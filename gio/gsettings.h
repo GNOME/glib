@@ -26,7 +26,7 @@
 #ifndef __G_SETTINGS_H__
 #define __G_SETTINGS_H__
 
-#include <glib-object.h>
+#include <gio/giotypes.h>
 
 G_BEGIN_DECLS
 
@@ -42,7 +42,6 @@ G_BEGIN_DECLS
 
 typedef struct _GSettingsPrivate                            GSettingsPrivate;
 typedef struct _GSettingsClass                              GSettingsClass;
-typedef struct _GSettings                                   GSettings;
 
 struct _GSettingsClass
 {

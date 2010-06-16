@@ -60,8 +60,6 @@ G_BEGIN_DECLS
  **/
 typedef struct _GSettingsBackendPrivate                     GSettingsBackendPrivate;
 typedef struct _GSettingsBackendClass                       GSettingsBackendClass;
-typedef struct _GSettingsBackend                            GSettingsBackend;
-
 
 struct _GSettingsBackendClass
 {

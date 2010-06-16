@@ -43,10 +43,13 @@ typedef struct _GConverter                    GConverter;
 typedef struct _GConverterInputStream         GConverterInputStream;
 typedef struct _GConverterOutputStream        GConverterOutputStream;
 typedef struct _GDataInputStream              GDataInputStream;
-typedef struct _GPermission                   GPermission;
 typedef struct _GSimplePermission             GSimplePermission;
 typedef struct _GZlibCompressor               GZlibCompressor;
 typedef struct _GZlibDecompressor             GZlibDecompressor;
+
+typedef struct _GSettingsBackend              GSettingsBackend;
+typedef struct _GSettings                     GSettings;
+typedef struct _GPermission                   GPermission;
 
 /**
  * GDrive:
