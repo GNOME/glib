@@ -129,7 +129,7 @@ static void
 g_variant_serialised_check (GVariantSerialised serialised)
 {
   gsize fixed_size;
-  gsize alignment;
+  guint alignment;
 
   g_assert (serialised.type_info != NULL);
   g_variant_type_info_query (serialised.type_info, &alignment, &fixed_size);
