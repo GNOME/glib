@@ -36,6 +36,7 @@ gdbus-introspection
 gdbus-names
 gdbus-peer
 gdbus-proxy
+gdbus-proxy-well-known-name
 gdbus-serialization
 gdbus-threading
 gschemas.compiled
