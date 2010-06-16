@@ -346,16 +346,8 @@ _g_application_platform_register (GApplication  *app,
       GVariant *result;
 
       g_variant_builder_init (&builder, G_VARIANT_TYPE ("(aaya{sv})"));
-      g_variant_builder_add (&builder, "@aay", app->priv->argv);
-
-      if (app->priv->platform_data)
-	g_variant_builder_add (&builder, "@a{sv}", app->priv->platform_data);
-      else
-	{
-	  g_variant_builder_open (&builder, G_VARIANT_TYPE ("a{sv}"));
-	  g_variant_builder_close (&builder);
-	}
-
+      g_variant_builder_add_value (&builder, app->priv->argv);
+      g_variant_builder_add_value (&builder, app->priv->platform_data);
       message = g_variant_builder_end (&builder);
 
       result = g_dbus_connection_call_sync (app->priv->session_bus,

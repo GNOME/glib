@@ -31,6 +31,26 @@ on_app_activated (GApplication  *application,
 		  GVariant      *args,
 		  GVariant      *platform_data)
 {
+  GVariantIter iter;
+  const char *key;
+  GVariant *value;
+  char *cwd;
+
+  cwd = g_get_current_dir ();
+  g_variant_iter_init (&iter, platform_data);
+  while (g_variant_iter_next (&iter, "{&sv}", &key, &value))
+    {
+      const char *activate_cwd;
+      gsize *len;
+      if (strcmp (key, "cwd") != 0)
+	continue;
+
+      activate_cwd = g_variant_get_byte_array (value, &len);
+      g_assert_cmpstr (cwd, ==, activate_cwd);
+      g_variant_unref (value);
+    }
+
+  g_free (cwd);
 }
 
 static gboolean

@@ -131,11 +131,12 @@
  * application instance when a second instance fails to take the bus name.
  * @arguments contains the commandline arguments given to the second instance
  * and @data contains platform-specific additional data.
- * 
- * On all platforms, @data is guaranteed to have a key "cwd" of type
- * signature "ay" which contains the working directory of the invoked
- * executable.
- * 
+ *
+ * On all platforms, @data will have a key "cwd" of type signature
+ * "ay" which contains the working directory of the invoked
+ * executable; this data is defined to be in the default GLib
+ * filesystem encoding for the platform.  See g_filename_to_utf8().
+ *
  * </para>
  * <para>
  * The <methodname>InvokeAction</methodname> function can be called to
@@ -316,6 +317,38 @@ g_application_default_run (GApplication *application)
     application->priv->mainloop = g_main_loop_new (NULL, TRUE);
 
   g_main_loop_run (application->priv->mainloop);
+}
+
+static GVariant *
+append_cwd_to_platform_data (GVariant *platform_data)
+{
+  GVariantBuilder builder;
+  gchar *cwd;
+  GVariant *result;
+
+  cwd = g_get_current_dir ();
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+  if (cwd)
+    g_variant_builder_add (&builder, "{sv}",
+			   "cwd",
+			   g_variant_new_byte_array (cwd, -1));
+  g_free (cwd);
+
+  if (platform_data)
+    {
+      GVariantIter iter;
+      GVariant *item;
+
+      g_variant_iter_init (&iter, platform_data);
+      while (g_variant_iter_next (&iter, "@{sv}", &item))
+	{
+	  g_variant_builder_add_value (&builder, item);
+	  g_variant_unref (item);
+	}
+    }
+  result = g_variant_builder_end (&builder);
+  return result;
 }
 
 static GVariant *
@@ -976,6 +1009,7 @@ g_application_init (GApplication *app)
   app->priv->default_quit = TRUE;
   app->priv->do_register = TRUE;
   app->priv->is_remote = TRUE;
+  app->priv->platform_data = g_variant_new_array (G_VARIANT_TYPE ("{sv}"), NULL, 0);
 }
 
 static void
@@ -1045,7 +1079,12 @@ g_application_set_property (GObject      *object,
       break;
 
     case PROP_PLATFORM_DATA:
-      app->priv->platform_data = g_value_dup_variant (value);
+      {
+	GVariant *platform_data = g_value_get_variant (value);
+	if (app->priv->platform_data)
+	  g_variant_unref (app->priv->platform_data);
+	app->priv->platform_data = g_variant_ref_sink (append_cwd_to_platform_data (platform_data));
+      }
       break;
 
     default:
