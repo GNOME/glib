@@ -1392,6 +1392,7 @@ get_connection_cb (GObject       *source_object,
   GetConnectionData *data = user_data;
   GError *error;
 
+  error = NULL;
   data->proxy->priv->connection = g_bus_get_finish (res, &error);
   if (data->proxy->priv->connection == NULL)
     {
