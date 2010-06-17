@@ -75,6 +75,8 @@ gboolean _g_dbus_address_parse_entry (const gchar  *address_entry,
 
 GVariantType * _g_dbus_compute_complete_signature (GDBusArgInfo **args);
 
+gchar *_g_dbus_hexdump (const gchar *data, gsize len, guint indent);
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 #ifdef G_OS_WIN32

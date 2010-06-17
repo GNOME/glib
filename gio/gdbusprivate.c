@@ -56,8 +56,8 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static gchar *
-hexdump (const gchar *data, gsize len, guint indent)
+gchar *
+_g_dbus_hexdump (const gchar *data, gsize len, guint indent)
 {
  guint n, m;
  GString *ret;
@@ -589,7 +589,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
           if (message == NULL)
             {
               gchar *s;
-              s = hexdump (worker->read_buffer, worker->read_buffer_cur_size, 2);
+              s = _g_dbus_hexdump (worker->read_buffer, worker->read_buffer_cur_size, 2);
               g_warning ("Error decoding D-Bus message of %" G_GSIZE_FORMAT " bytes\n"
                          "The error is: %s\n"
                          "The payload is as follows:\n"
@@ -621,7 +621,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
               s = g_dbus_message_print (message, 2);
               g_print ("%s", s);
               g_free (s);
-              s = hexdump (worker->read_buffer, worker->read_buffer_cur_size, 2);
+              s = _g_dbus_hexdump (worker->read_buffer, worker->read_buffer_cur_size, 2);
               g_print ("%s\n", s);
               g_free (s);
             }
@@ -830,7 +830,7 @@ write_message (GDBusWorker         *worker,
       s = g_dbus_message_print (data->message, 2);
       g_print ("%s", s);
       g_free (s);
-      s = hexdump (data->blob, data->blob_size, 2);
+      s = _g_dbus_hexdump (data->blob, data->blob_size, 2);
       g_print ("%s\n", s);
       g_free (s);
     }

@@ -20,6 +20,9 @@
  * Author: David Zeuthen <davidz@redhat.com>
  */
 
+/* Uncomment to debug serializer code */
+/* #define DEBUG_SERIALIZER */
+
 #include "config.h"
 
 #include <string.h>
@@ -42,6 +45,7 @@
 #include "gmemoryoutputstream.h"
 #include "gseekable.h"
 #include "gioerror.h"
+#include "gdbusprivate.h"
 
 #ifdef G_OS_UNIX
 #include "gunixfdlist.h"
@@ -682,9 +686,14 @@ ensure_input_padding (GMemoryInputStream   *mis,
   offset = g_seekable_tell (G_SEEKABLE (mis));
   wanted_offset = ((offset + padding_size - 1) / padding_size) * padding_size;
 
-  /*g_debug ("ensure_input_padding(%d) pushed offset 0x%04x to 0x%04x", (gint) padding_size, (gint) offset, (gint) wanted_offset);*/
-
-  return g_seekable_seek (G_SEEKABLE (mis), wanted_offset, G_SEEK_SET, NULL, error);
+  if (offset != wanted_offset)
+    {
+      return g_seekable_seek (G_SEEKABLE (mis), wanted_offset, G_SEEK_SET, NULL, error);
+    }
+  else
+    {
+      return TRUE;
+    }
 }
 
 static gchar *
@@ -759,15 +768,29 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                        GDataInputStream      *dis,
                        const GVariantType    *type,
                        gboolean               just_align,
+                       guint                  indent,
                        GError               **error)
 {
   GVariant *ret;
   GError *local_error;
+  gboolean is_leaf;
 
-  /*g_debug ("Reading type %s from offset 0x%04x", g_variant_type_dup_string (type), (gint) g_seekable_tell (G_SEEKABLE (mis)));*/
+#ifdef DEBUG_SERIALIZER
+  if (!just_align)
+    {
+      gchar *s;
+      s = g_variant_type_dup_string (type);
+      g_print ("%*sReading type %s from offset 0x%04x",
+               indent, "",
+               s,
+               (gint) g_seekable_tell (G_SEEKABLE (mis)));
+      g_free (s);
+    }
+#endif /* DEBUG_SERIALIZER */
 
   ret = NULL;
 
+  is_leaf = TRUE;
   local_error = NULL;
   if (g_variant_type_equal (type, G_VARIANT_TYPE_BOOLEAN))
     {
@@ -969,18 +992,31 @@ parse_value_from_blob (GMemoryInputStream    *mis,
 
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
-      array_len = g_data_input_stream_read_uint32 (dis, NULL, &local_error);
-      if (local_error != NULL)
-        goto fail;
 
-      if (array_len > (2<<26))
+      if (just_align)
         {
-          g_set_error (&local_error,
-                       G_IO_ERROR,
-                       G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Encountered array of length %" G_GUINT32_FORMAT " bytes. Maximum length is 2<<26 bytes."),
-                       array_len);
-          goto fail;
+          array_len = 0;
+        }
+      else
+        {
+          array_len = g_data_input_stream_read_uint32 (dis, NULL, &local_error);
+          if (local_error != NULL)
+            goto fail;
+
+          is_leaf = FALSE;
+#ifdef DEBUG_SERIALIZER
+          g_print (": array spans 0x%04x bytes\n", array_len);
+#endif /* DEBUG_SERIALIZER */
+
+          if (array_len > (2<<26))
+            {
+              g_set_error (&local_error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("Encountered array of length %" G_GUINT32_FORMAT " bytes. Maximum length is 2<<26 bytes."),
+                           array_len);
+              goto fail;
+            }
         }
 
       g_variant_builder_init (&builder, type);
@@ -993,6 +1029,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                         dis,
                                         element_type,
                                         TRUE,
+                                        indent + 2,
                                         &local_error);
           g_assert (item == NULL);
         }
@@ -1008,6 +1045,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                             dis,
                                             element_type,
                                             FALSE,
+                                            indent + 2,
                                             &local_error);
               if (item == NULL)
                 {
@@ -1038,6 +1076,11 @@ parse_value_from_blob (GMemoryInputStream    *mis,
       if (!ensure_input_padding (mis, 8, &local_error))
         goto fail;
 
+      is_leaf = FALSE;
+#ifdef DEBUG_SERIALIZER
+      g_print ("\n");
+#endif /* DEBUG_SERIALIZER */
+
       if (!just_align)
         {
           key_type = g_variant_type_key (type);
@@ -1045,6 +1088,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                        dis,
                                        key_type,
                                        FALSE,
+                                       indent + 2,
                                        &local_error);
           if (key == NULL)
             goto fail;
@@ -1054,6 +1098,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                          dis,
                                          value_type,
                                          FALSE,
+                                         indent + 2,
                                          &local_error);
           if (value == NULL)
             {
@@ -1067,6 +1112,11 @@ parse_value_from_blob (GMemoryInputStream    *mis,
     {
       if (!ensure_input_padding (mis, 8, &local_error))
         goto fail;
+
+      is_leaf = FALSE;
+#ifdef DEBUG_SERIALIZER
+      g_print ("\n");
+#endif /* DEBUG_SERIALIZER */
 
       if (!just_align)
         {
@@ -1082,6 +1132,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                             dis,
                                             element_type,
                                             FALSE,
+                                            indent + 2,
                                             &local_error);
               if (item == NULL)
                 {
@@ -1097,6 +1148,11 @@ parse_value_from_blob (GMemoryInputStream    *mis,
     }
   else if (g_variant_type_is_variant (type))
     {
+      is_leaf = FALSE;
+#ifdef DEBUG_SERIALIZER
+      g_print ("\n");
+#endif /* DEBUG_SERIALIZER */
+
       if (!just_align)
         {
           guchar siglen;
@@ -1126,6 +1182,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                          dis,
                                          variant_type,
                                          FALSE,
+                                         indent + 2,
                                          &local_error);
           g_variant_type_free (variant_type);
           if (value == NULL)
@@ -1147,9 +1204,38 @@ parse_value_from_blob (GMemoryInputStream    *mis,
     }
 
   g_assert ((just_align && ret == NULL) || (!just_align && ret != NULL));
+
+#ifdef DEBUG_SERIALIZER
+  if (ret != NULL)
+    {
+      if (is_leaf)
+        {
+          gchar *s;
+          if (g_variant_type_equal (type, G_VARIANT_TYPE_BYTE))
+            {
+              s = g_strdup_printf ("0x%02x '%c'", g_variant_get_byte (ret), g_variant_get_byte (ret));
+            }
+          else
+            {
+              s = g_variant_print (ret, FALSE);
+            }
+          g_print (": %s\n", s);
+          g_free (s);
+        }
+    }
+#endif /* DEBUG_SERIALIZER */
+
   return ret;
 
  fail:
+#ifdef DEBUG_SERIALIZER
+  g_print ("\n"
+           "%*sFAILURE: %s (%s, %d)\n",
+           indent, "",
+           local_error->message,
+           g_quark_to_string (local_error->domain),
+           local_error->code);
+#endif /* DEBUG_SERIALIZER */
   g_propagate_error (error, local_error);
   return NULL;
 }
@@ -1306,10 +1392,24 @@ g_dbus_message_new_from_blob (guchar                *blob,
   message_body_len = g_data_input_stream_read_uint32 (dis, NULL, NULL);
   message->priv->serial = g_data_input_stream_read_uint32 (dis, NULL, NULL);
 
+#ifdef DEBUG_SERIALIZER
+  g_print ("Parsing blob (blob_len = 0x%04x bytes)\n", (gint) blob_len);
+  {
+    gchar *s;
+    s = _g_dbus_hexdump ((const gchar *) blob, blob_len, 2);
+    g_print ("%s\n", s);
+    g_free (s);
+  }
+#endif /* DEBUG_SERIALIZER */
+
+#ifdef DEBUG_SERIALIZER
+  g_print ("Parsing headers (blob_len = 0x%04x bytes)\n", (gint) blob_len);
+#endif /* DEBUG_SERIALIZER */
   headers = parse_value_from_blob (mis,
                                    dis,
                                    G_VARIANT_TYPE ("a{yv}"),
                                    FALSE,
+                                   2,
                                    error);
   if (headers == NULL)
     goto out;
@@ -1362,10 +1462,14 @@ g_dbus_message_new_from_blob (guchar                *blob,
           tupled_signature_str = g_strdup_printf ("(%s)", signature_str);
           variant_type = g_variant_type_new (tupled_signature_str);
           g_free (tupled_signature_str);
+#ifdef DEBUG_SERIALIZER
+          g_print ("Parsing body (blob_len = 0x%04x bytes)\n", (gint) blob_len);
+#endif /* DEBUG_SERIALIZER */
           message->priv->body = parse_value_from_blob (mis,
                                                        dis,
                                                        variant_type,
                                                        FALSE,
+                                                       2,
                                                        error);
           if (message->priv->body == NULL)
             {

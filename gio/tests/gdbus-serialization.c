@@ -647,6 +647,15 @@ message_serialize_complex (void)
                        "value 1:   array:\n"
                        "value 2:   array:\n"
                        "    string: `Something'\n");
+
+  /* https://bugzilla.gnome.org/show_bug.cgi?id=621838 */
+  check_serialization (g_variant_new_parsed ("(@aay [], {'cwd': <'/home/davidz/Hacking/glib/gio/tests'>})"),
+                       "value 0:   array:\n"
+                       "value 1:   array:\n"
+                       "    dict_entry:\n"
+                       "      string: `cwd'\n"
+                       "      variant:\n"
+                       "        string: `/home/davidz/Hacking/glib/gio/tests'\n");
 }
 
 
