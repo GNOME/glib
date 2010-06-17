@@ -79,7 +79,7 @@
  * utility. The input is a schema description in an XML format that can be
  * described by the following DTD:
  * |[<![CDATA[
- * <!ELEMENT schemalist (schema*) >
+ * <!ELEMENT schemalist (schema|enum)* >
  * <!ATTLIST schemalist gettext-domain #IMPLIED >
  *
  * <!ELEMENT schema (key|child)* >
@@ -87,11 +87,24 @@
  *                  path           CDATA #IMPLIED
  *                  gettext-domain CDATA #IMPLIED >
  *
+ * <!-- defines an enumerated type -->
+ * <!-- each value element maps a nick to a numeric value -->
+ * <!ELEMENT enum (value*) >
+ * <!ATTLIST enum id CDATA #REQUIRED >
+ * <!ELEMENT value EMPTY >
+ * <!-- nick must be at least 2 characters long -->
+ * <!-- value must be parsable as a 32-bit integer -->
+ * <!ELEMENT value nick  #REQUIRED
+ *                 value #REQUIRED >
+ *
  * <!ELEMENT key (default|summary?|description?|range?|choices?|aliases?) >
  * <!-- name can only contain lowercase letters, numbers and '-' -->
  * <!-- type must be a GVariant type string -->
+ * <!-- enum must be the id of an enum that has been defined earlier -->
+ * <!-- exactly one of enum or type must be given -->
  * <!ATTLIST key name CDATA #REQUIRED
- *               type CDATA #REQUIRED >
+ *               type CDATA #IMPLIED
+ *               enum CDATA #IMPLIED >
  *
  * <!-- the default value is specified a a serialized GVariant,
  *      i.e. you have to include the quotes when specifying a string -->
@@ -105,14 +118,21 @@
  * <!ELEMENT summary (#PCDATA) >
  * <!ELEMENT description (#PCDATA) >
  *
+ * <!-- range is only allowed for keys with numeric type -->
  * <!ELEMENT range EMPTY >
+ * <!-- min and max must be parseable as values of the key type and min < max -->
  * <!ATTLIST range min CDATA #REQUIRED
  *                 max CDATA #REQUIRED >
  *
+ * <!-- choices is only allowed for keys with string or string array type -->
  * <!ELEMENT choices (choice+) >
+ * <!-- each choice element specifies one possible value -->
  * <!ELEMENT choice EMPTY >
  * <!ATTLIST choice value CDATA #REQUIRED >
+ *
+ * <!-- aliases is only allowed for keys with enumerated type or with choices -->
  * <!ELEMENT aliases (alias+) >
+ * <!-- each alias element specifies an alias for one of the possible values -->
  * <!ELEMENT alias EMPTY >
  * <!ATTLIST alias value CDATA #REQUIRED >
  *
@@ -127,6 +147,64 @@
  * <tag class="starttag">schema</tag> element). The
  * convention for schema ids is to use a dotted name, similar in
  * style to a DBus bus name, e.g. "org.gnome.font-rendering".
+ *
+ * <example><title>Default values</title>
+ * <programlisting><![CDATA[
+ * <schemalist>
+ *   <schema id="org.gtk.test" path="/tests/" gettext-domain="test">
+ *     
+ *     <key name="greeting" type="s">
+ *       <default l10n="messages">"Hello, earthlings"</default>
+ *       <summary>A greeting</summary>
+ *       <description>
+ *         Greeting of the invading martians
+ *       </description>
+ *     </key>
+ *      
+ *     <key name="box" type="(ii)">
+ *       <default>(20,30)</default>
+ *     </key>
+ *      
+ *   </schema>
+ * </schemalist>
+ * ]]></programlisting></example>
+ *
+ * <example><title>Ranges, choices and enumerated types</title>
+ * <programlisting><![CDATA[
+ * <schemalist>
+ *     
+ *   <enum id="myenum">
+ *     <value nick="first" value="1"/>
+ *     <value nick="second" value="2"/>
+ *   </enum>
+ *      
+ *   <schema id="org.gtk.test">
+ *     
+ *     <key name="key-with-range" type="i">
+ *       <range min="1" max="100"/>
+ *       <default>10</default>
+ *     </key>
+ *      
+ *     <key name="key-with-choices" type="s">
+ *       <choices>
+ *         <choice value='Elisabeth'/>
+ *         <choice value='Annabeth'/>
+ *         <choice value='Joe'/>
+ *       </choices>
+ *       <aliases>
+ *         <alias value="Annabeth" alias="Anna"/>
+ *         <alias value="Elisabeth" alias="Beth"/>
+ *       </aliases>
+ *       <default>'Joe'</default>
+ *     </key>
+ *      
+ *     <key name="enumerated-key" enum="myenum">
+ *       <default>'first'</default>
+ *     </key>
+ *      
+ *   </schema>
+ * </schemalist>
+ * ]]></programlisting></example>
  *
  * <refsect2>
  *  <title>Binding</title>
