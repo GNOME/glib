@@ -87,7 +87,7 @@
  *                  path           CDATA #IMPLIED
  *                  gettext-domain CDATA #IMPLIED >
  *
- * <!ELEMENT key (default|summary?|description?|range?|choices?) >
+ * <!ELEMENT key (default|summary?|description?|range?|choices?|aliases?) >
  * <!-- name can only contain lowercase letters, numbers and '-' -->
  * <!-- type must be a GVariant type string -->
  * <!ATTLIST key name CDATA #REQUIRED
@@ -110,9 +110,9 @@
  *                 max CDATA #REQUIRED >
  *
  * <!ELEMENT choices (choice+) >
- * <!ELEMENT choice (alias?) >
+ * <!ELEMENT choice EMPTY >
  * <!ATTLIST choice value CDATA #REQUIRED >
- * <!ELEMENT choice (alias?) >
+ * <!ELEMENT aliases (alias+) >
  * <!ELEMENT alias EMPTY >
  * <!ATTLIST alias value CDATA #REQUIRED >
  *
