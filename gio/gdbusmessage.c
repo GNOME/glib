@@ -970,6 +970,8 @@ parse_value_from_blob (GMemoryInputStream    *mis,
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
       array_len = g_data_input_stream_read_uint32 (dis, NULL, &local_error);
+      if (local_error != NULL)
+        goto fail;
 
       if (array_len > (2<<26))
         {
