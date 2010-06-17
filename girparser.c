@@ -30,6 +30,11 @@
 #include "gitypelib-internal.h"
 #include "config.h"
 
+/* This is a "major" version in the sense that it's only bumped
+ * for incompatible changes.
+ */
+#define SUPPORTED_GIR_VERSION "1.0"
+
 #if defined(HAVE_BACKTRACE) && defined(HAVE_BACKTRACE_SYMBOLS)
 # include <execinfo.h>
 #endif
@@ -2754,7 +2759,7 @@ start_element_handler (GMarkupParseContext *context,
 
 	  if (version == NULL)
 	    MISSING_ATTRIBUTE (context, error, element_name, "version");
-	  else if (strcmp (version, "1.0") != 0)
+	  else if (strcmp (version, SUPPORTED_GIR_VERSION) != 0)
 	    g_set_error (error,
 			 G_MARKUP_ERROR,
 			 G_MARKUP_ERROR_INVALID_CONTENT,
