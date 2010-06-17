@@ -344,9 +344,10 @@ else
   glib_compile_schemas=$(top_builddir)/gio/glib-compile-schemas
 endif
 
-DISTCLEANFILES =                                        \
-	applications/mimeinfo.cache                     \
-	de/LC_MESSAGES/test.mo                          \
-	test.mo                                         \
-	gsettings.store                                 \
+DISTCLEANFILES = \
+	applications/mimeinfo.cache	\
+	org.gtk.test.enums.xml		\
+	de/LC_MESSAGES/test.mo		\
+	test.mo				\
+	gsettings.store			\
 	gschemas.compiled

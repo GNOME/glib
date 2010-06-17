@@ -515,7 +515,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
   g_type_class_add_private (class, sizeof (GKeyfileSettingsBackendPrivate));
 }
 
-static GKeyfileSettingsBackend *
+GSettingsBackend *
 g_keyfile_settings_backend_new (const gchar *filename)
 {
   GKeyfileSettingsBackend *kf_backend;
@@ -536,42 +536,7 @@ g_keyfile_settings_backend_new (const gchar *filename)
 
   g_keyfile_settings_backend_keyfile_reload (kf_backend);
 
-  return kf_backend;
-}
-
-/**
- * g_settings_backend_setup_keyfile:
- * @context: a context string (not %NULL or "")
- * @filename: a filename
- *
- * Sets up a keyfile for use with #GSettings.
- *
- * If you create a #GSettings with its context property set to @context
- * then the settings will be stored in the keyfile at @filename.  See
- * g_settings_new_with_context().
- *
- * The keyfile must be setup before any settings objects are created
- * for the named context.
- *
- * It is not possible to specify a keyfile for the default context.
- *
- * If the path leading up to @filename does not exist, it will be
- * recursively created with user-only permissions.  If the keyfile is
- * not writable, any #GSettings objects created using @context will
- * return %FALSE for any calls to g_settings_is_writable() and any
- * attempts to write will fail.
- *
- * Since: 2.26
- */
-void
-g_settings_backend_setup_keyfile (const gchar *context,
-                                  const gchar *filename)
-{
-  GKeyfileSettingsBackend *kf_backend;
-
-  kf_backend = g_keyfile_settings_backend_new (filename);
-  g_settings_backend_setup (context, G_SETTINGS_BACKEND (kf_backend));
-  g_object_unref (kf_backend);
+  return G_SETTINGS_BACKEND (kf_backend);
 }
 
 #define __G_KEYFILE_SETTINGS_BACKEND_C__

@@ -236,7 +236,6 @@ struct _GSettingsPrivate
   GSettingsBackend *backend;
   GSettingsSchema *schema;
   gchar *schema_name;
-  gchar *context;
   gchar *path;
 
   GDelayedSettingsBackend *delayed;
@@ -245,9 +244,8 @@ struct _GSettingsPrivate
 enum
 {
   PROP_0,
-  PROP_BACKEND,
   PROP_SCHEMA,
-  PROP_CONTEXT,
+  PROP_BACKEND,
   PROP_PATH,
   PROP_HAS_UNAPPLIED,
 };
@@ -446,8 +444,8 @@ g_settings_set_property (GObject      *object,
       settings->priv->path = g_value_dup_string (value);
       break;
 
-    case PROP_CONTEXT:
-      settings->priv->context = g_value_dup_string (value);
+    case PROP_BACKEND:
+      settings->priv->backend = g_value_dup_object (value);
       break;
 
     default:
@@ -501,7 +499,9 @@ g_settings_constructed (GObject *object)
       settings->priv->path = g_strdup (schema_path);
     }
 
-  settings->priv->backend = g_settings_backend_get_with_context (settings->priv->context);
+  if (settings->priv->backend == NULL)
+    settings->priv->backend = g_settings_backend_get_default ();
+
   g_settings_backend_watch (settings->priv->backend, G_OBJECT (settings),
                             settings->priv->main_context,
                             settings_backend_changed,
@@ -524,7 +524,6 @@ g_settings_finalize (GObject *object)
   g_object_unref (settings->priv->backend);
   g_object_unref (settings->priv->schema);
   g_free (settings->priv->schema_name);
-  g_free (settings->priv->context);
   g_free (settings->priv->path);
 }
 
@@ -668,11 +667,11 @@ g_settings_class_init (GSettingsClass *class)
    *
    * The name of the context that the settings are stored in.
    */
-  g_object_class_install_property (object_class, PROP_CONTEXT,
-    g_param_spec_string ("context",
-                         P_("Context name"),
-                         P_("The name of the context for this settings object"),
-                         "", G_PARAM_CONSTRUCT_ONLY |
+  g_object_class_install_property (object_class, PROP_BACKEND,
+    g_param_spec_object ("backend",
+                         P_("GSettingsBackend"),
+                         P_("The GSettingsBackend for this settings object"),
+                         G_TYPE_SETTINGS_BACKEND, G_PARAM_CONSTRUCT_ONLY |
                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   /**
@@ -773,66 +772,63 @@ g_settings_new_with_path (const gchar *schema,
 }
 
 /**
- * g_settings_new_with_context:
+ * g_settings_new_with_backend:
  * @schema: the name of the schema
- * @context: the context to use
+ * @backend: the #GSettingsBackend to use
  * @returns: a new #GSettings object
  *
- * Creates a new #GSettings object with a given schema and context.
+ * Creates a new #GSettings object with a given schema and backend.
  *
- * Creating settings objects with a context allow accessing settings
+ * Creating settings objects with an different backend allows accessing settings
  * from a database other than the usual one.  For example, it may make
- * sense to specify "defaults" in order to get a settings object that
- * modifies the system default settings instead of the settings for this
- * user.
- *
- * It is a programmer error to call this function for an unsupported
- * context.  Use g_settings_supports_context() to determine if a context
- * is supported if you are unsure.
+ * sense to pass a backend corresponding to teh "defaults" settings database on
+ * the system to get a settings object that modifies the system default
+ * settings instead of the settings for this user.
  *
  * Since: 2.26
  */
 GSettings *
-g_settings_new_with_context (const gchar *schema,
-                             const gchar *context)
+g_settings_new_with_backend (const gchar      *schema,
+                             GSettingsBackend *backend)
 {
   g_return_val_if_fail (schema != NULL, NULL);
-  g_return_val_if_fail (context != NULL, NULL);
+  g_return_val_if_fail (G_IS_SETTINGS_BACKEND (backend), NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
                        "schema", schema,
-                       "context", context,
+                       "backend", backend,
                        NULL);
 }
 
 /**
- * g_settings_new_with_context_and_path:
+ * g_settings_new_with_backend_and_path:
  * @schema: the name of the schema
+ * @backend: the #GSettingsBackend to use
  * @path: the path to use
  * @returns: a new #GSettings object
  *
- * Creates a new #GSettings object with a given schema, context and
+ * Creates a new #GSettings object with a given schema, backend and
  * path.
  *
- * This is a mix of g_settings_new_with_context() and
+ * This is a mix of g_settings_new_with_backend() and
  * g_settings_new_with_path().
  *
  * Since: 2.26
  */
 GSettings *
-g_settings_new_with_context_and_path (const gchar *schema,
-                                      const gchar *context,
-                                      const gchar *path)
+g_settings_new_with_backend_and_path (const gchar      *schema,
+                                      GSettingsBackend *backend,
+                                      const gchar      *path)
 {
   g_return_val_if_fail (schema != NULL, NULL);
-  g_return_val_if_fail (context != NULL, NULL);
+  g_return_val_if_fail (G_IS_SETTINGS_BACKEND (backend), NULL);
   g_return_val_if_fail (path != NULL, NULL);
 
   return g_object_new (G_TYPE_SETTINGS,
                        "schema", schema,
-                        "context", context,
-                        "path", path,
-                        NULL);
+                       "backend", backend,
+                       "path", path,
+                       NULL);
 }
 
 /* Internal read/write utilities, enum conversion, validation {{{1 */
@@ -1784,15 +1780,9 @@ g_settings_get_has_unapplied (GSettings *settings)
  * time the call is done).
  **/
 void
-g_settings_sync (const gchar *context)
+g_settings_sync (void)
 {
-  GSettingsBackend *backend;
-
-  if (context == NULL)
-    context = "";
-
-  backend = g_settings_backend_get_with_context (context);
-  g_settings_backend_sync (backend);
+  g_settings_backend_sync_default ();
 }
 
 /**

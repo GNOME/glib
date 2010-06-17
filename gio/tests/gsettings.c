@@ -1120,15 +1120,16 @@ test_no_write_binding (void)
 static void
 test_keyfile (void)
 {
+  GSettingsBackend *kf_backend;
   GSettings *settings;
   GKeyFile *keyfile;
   gchar *str;
 
   g_remove ("gsettings.store");
 
-  g_settings_backend_setup_keyfile ("blah", "gsettings.store");
-
-  settings = g_settings_new_with_context ("org.gtk.test", "blah");
+  kf_backend = g_keyfile_settings_backend_new ("gsettings.store");
+  settings = g_settings_new_with_backend ("org.gtk.test", kf_backend);
+  g_object_unref (kf_backend);
 
   g_settings_set (settings, "greeting", "s", "see if this works");
 
@@ -1390,7 +1391,7 @@ main (int argc, char *argv[])
 
   result = g_test_run ();
 
-  g_settings_sync (NULL);
+  g_settings_sync ();
 
   return result;
 }

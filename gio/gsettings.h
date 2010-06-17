@@ -73,11 +73,10 @@ GType                   g_settings_get_type                             (void);
 GSettings *             g_settings_new                                  (const gchar        *schema);
 GSettings *             g_settings_new_with_path                        (const gchar        *schema,
                                                                          const gchar        *path);
-gboolean                g_settings_supports_context                     (const gchar        *context);
-GSettings *             g_settings_new_with_context                     (const gchar        *schema,
-                                                                         const gchar        *context);
-GSettings *             g_settings_new_with_context_and_path            (const gchar        *schema,
-                                                                         const gchar        *context,
+GSettings *             g_settings_new_with_backend                     (const gchar        *schema,
+                                                                         GSettingsBackend   *backend);
+GSettings *             g_settings_new_with_backend_and_path            (const gchar        *schema,
+                                                                         GSettingsBackend   *backend,
                                                                          const gchar        *path);
 
 gboolean                g_settings_set_value                            (GSettings          *settings,
@@ -135,7 +134,7 @@ void                    g_settings_delay                                (GSettin
 void                    g_settings_apply                                (GSettings          *settings);
 void                    g_settings_revert                               (GSettings          *settings);
 gboolean                g_settings_get_has_unapplied                    (GSettings          *settings);
-void                    g_settings_sync                                 (const gchar        *context);
+void                    g_settings_sync                                 ();
 
 /**
  * GSettingsBindSetMapping:

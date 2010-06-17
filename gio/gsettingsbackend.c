@@ -1038,136 +1038,61 @@ g_settings_backend_create_tree (void)
                           g_free, (GDestroyNotify) g_variant_unref);
 }
 
-
-static gpointer
-get_default_backend (const gchar *context)
-{
-  GIOExtension *extension = NULL;
-  GIOExtensionPoint *point;
-  GList *extensions;
-  const gchar *env;
-  GType type;
-
-  _g_io_modules_ensure_loaded ();
-
-  point = g_io_extension_point_lookup (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME);
-
-  if ((env = getenv ("GSETTINGS_BACKEND")))
-    {
-      extension = g_io_extension_point_get_extension_by_name (point, env);
-
-      if (extension == NULL)
-        g_warning ("Can't find GSettings backend '%s' given in "
-                   "GSETTINGS_BACKEND environment variable", env);
-    }
-
-  if (extension == NULL)
-    {
-      extensions = g_io_extension_point_get_extensions (point);
-
-      if (extensions == NULL)
-        g_error ("No GSettingsBackend implementations exist.");
-
-      extension = extensions->data;
-    }
-
-  if (context[0] != '\0') /* (context != "") */
-    {
-      GSettingsBackendClass *backend_class;
-      GTypeClass *class;
-
-      class = g_io_extension_ref_class (extension);
-      backend_class = G_SETTINGS_BACKEND_CLASS (class);
-
-      if (backend_class->supports_context == NULL ||
-          !backend_class->supports_context (context))
-        {
-          g_type_class_unref (class);
-          return NULL;
-        }
-
-      g_type_class_unref (class);
-    }
-
-  type = g_io_extension_get_type (extension);
-
-  return g_object_new (type, "context", context, NULL);
-}
-
-static GHashTable *g_settings_backends;
-
 /*< private >
- * g_settings_backend_get_with_context:
- * @context: a context that might be used by the backend to determine
- *     which storage to use, or %NULL to use the default storage
+ * g_settings_backend_get_default:
  * @returns: the default #GSettingsBackend
  *
  * Returns the default #GSettingsBackend. It is possible to override
  * the default by setting the <envar>GSETTINGS_BACKEND</envar>
  * environment variable to the name of a settings backend.
  *
- * The @context parameter can be used to indicate that a different
- * than the default storage is desired. E.g. the DConf backend lets
- * you use "user", "system", "defaults" and "login" as contexts.
- *
- * If @context is not supported by the implementation, this function
- * returns an instance of the #GSettingsMemoryBackend.
- * See g_settings_backend_supports_context(),
- *
- * The user does not own the return value and it must not be freed.
+ * The user gets a reference to the backend.
  */
 GSettingsBackend *
-g_settings_backend_get_with_context (const gchar *context)
+g_settings_backend_get_default (void)
 {
-  GSettingsBackend *backend;
+  static gsize backend;
 
-  g_return_val_if_fail (context != NULL, NULL);
-
-  _g_io_modules_ensure_extension_points_registered ();
-
-  if (g_settings_backends == NULL)
-    g_settings_backends = g_hash_table_new (g_str_hash, g_str_equal);
-
-  backend = g_hash_table_lookup (g_settings_backends, context);
-
-  if (!backend)
+  if (g_once_init_enter (&backend))
     {
-      backend = get_default_backend (context);
+      GSettingsBackend *instance;
+      GIOExtensionPoint *point;
+      GIOExtension *extension;
+      GType extension_type;
+      GList *extensions;
+      const gchar *env;
 
-      if (!backend)
-        backend = g_null_settings_backend_new ();
+      _g_io_modules_ensure_loaded ();
 
-      g_hash_table_insert (g_settings_backends, g_strdup (context), backend);
+      point = g_io_extension_point_lookup (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME);
+      extension = NULL;
+
+      if ((env = getenv ("GSETTINGS_BACKEND")))
+        {
+          extension = g_io_extension_point_get_extension_by_name (point, env);
+
+          if (extension == NULL)
+            g_warning ("Can't find GSettings backend '%s' given in "
+                       "GSETTINGS_BACKEND environment variable", env);
+        }
+
+      if (extension == NULL)
+        {
+          extensions = g_io_extension_point_get_extensions (point);
+
+          if (extensions == NULL)
+            g_error ("No GSettingsBackend implementations exist.");
+
+          extension = extensions->data;
+        }
+
+      extension_type = g_io_extension_get_type (extension);
+      instance = g_object_new (extension_type, NULL);
+
+      g_once_init_leave (&backend, (gsize) instance);
     }
 
-  return g_object_ref (backend);
-}
-
-/*< private >
- * g_settings_backend_supports_context:
- * @context: a context string that might be passed to
- *     g_settings_backend_new_with_context()
- * @returns: #TRUE if @context is supported
- *
- * Determines if the given context is supported by the default
- * GSettingsBackend implementation.
- */
-gboolean
-g_settings_backend_supports_context (const gchar *context)
-{
-  GSettingsBackend *backend;
-
-  g_return_val_if_fail (context != NULL, FALSE);
-
-  backend = get_default_backend (context);
-
-  if (backend)
-    {
-      g_object_unref (backend);
-      return TRUE;
-    }
-
-  return FALSE;
+  return g_object_ref ((void *) backend);
 }
 
 /*< private >
@@ -1194,54 +1119,19 @@ g_settings_backend_get_permission (GSettingsBackend *backend,
   return g_simple_permission_new (TRUE);
 }
 
-/**
- * g_settings_backend_setup:
- * @context: a context string (not %NULL or "")
- * @backend: a #GSettingsBackend
- *
- * Sets up @backend for use with #GSettings.
- *
- * If you create a #GSettings with its context property set to @context
- * then it will use the backend given to this function.  See
- * g_settings_new_with_context().
- *
- * The backend must be set up before any settings objects are created
- * for the named context.
- *
- * It is not possible to specify a backend for the default context.
- *
- * This function takes a reference on @backend and never releases it.
- *
- * Since: 2.26
- **/
-void
-g_settings_backend_setup (const gchar      *context,
-                          GSettingsBackend *backend)
-{
-  g_return_if_fail (context[0] != '\0');
-  g_return_if_fail (G_IS_SETTINGS_BACKEND (backend));
-
-  if (g_settings_backends == NULL)
-    g_settings_backends = g_hash_table_new (g_str_hash, g_str_equal);
-
-  if (g_hash_table_lookup (g_settings_backends, context))
-    g_error ("A GSettingsBackend already exists for context '%s'", context);
-
-  g_hash_table_insert (g_settings_backends,
-                       g_strdup (context),
-                       g_object_ref (backend));
-}
-
 /*< private >
- * g_settings_backend_sync:
- * @backend: a #GSettingsBackend
+ * g_settings_backend_sync_default:
  *
- * Syncs the backend.
+ * Syncs the default backend.
  */
 void
-g_settings_backend_sync (GSettingsBackend *backend)
+g_settings_backend_sync_default (void)
 {
-  GSettingsBackendClass *class = G_SETTINGS_BACKEND_GET_CLASS (backend);
+  GSettingsBackendClass *class;
+  GSettingsBackend *backend;
+
+  backend = g_settings_backend_get_default ();
+  class = G_SETTINGS_BACKEND_GET_CLASS (backend);
 
   if (class->sync)
     class->sync (backend);

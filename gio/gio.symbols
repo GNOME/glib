@@ -1420,12 +1420,7 @@ g_file_descriptor_based_get_fd
 #endif
 
 #if IN_HEADER(__G_SETTINGS_BACKEND_H__)
-#if IN_FILE(__G_KEYFILE_SETTINGS_BACKEND_C__)
-g_settings_backend_setup_keyfile
-#endif
-
 #if IN_FILE(__G_SETTINGS_BACKEND_C__)
-g_settings_backend_setup
 g_settings_backend_get_type
 g_settings_backend_changed
 g_settings_backend_flatten_tree
@@ -1451,8 +1446,8 @@ g_settings_get_type
 g_settings_get_value
 g_settings_is_writable
 g_settings_new
-g_settings_new_with_context
-g_settings_new_with_context_and_path
+g_settings_new_with_backend
+g_settings_new_with_backend_and_path
 g_settings_new_with_path
 g_settings_revert
 g_settings_set
