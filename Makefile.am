@@ -89,7 +89,7 @@ stamp-gc-h: config.status
 	echo timestamp > stamp-gc-h
 
 ChangeLog:
-	$(AM_V_GEN) test -d "$(srcdir)/.git"; then \
+	$(AM_V_GEN) if test -d "$(srcdir)/.git"; then \
 	  (GIT_DIR=$(top_srcdir)/.git ./missing --run git log GLIB_2_20_0^^.. --stat) | fmt --split-only > $@.tmp \
 	  && mv -f $@.tmp $@ \
 	  || ($(RM) $@.tmp; \
