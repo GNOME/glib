@@ -1,8 +1,12 @@
 Overview of Changes from GLib 2.25.8 to GLib 2.25.9
 ===================================================
 
-Warning: there have been some API changes in GDBus, GSettings
-and GApplication. Users of these APIs will need to be adapted.
++----------------------------------------------------------------+
+| WARNING: There have been API changes in GDBus, GSettings and   |
+| GApplication. Users of these APIs will need to be adapted. In  |
+| particular, a new release of GTK+ is required to go along with |
+| this one.                                                      |
++----------------------------------------------------------------+
 
 * GDBus
  - Use Gio's default async implementation
@@ -18,8 +22,9 @@ and GApplication. Users of these APIs will need to be adapted.
 * GSettings
  - schema file format change: store (default, options) in gvdb
  - Add g_settings_sync()
- - Add g_variant_default_value()
  - Add support for enums and ranges
+ - 'context' support has been replaced by direct use of
+   GSettingsBackend
 
 * GApplication
  - Switch to using variants for timestamps
@@ -58,6 +63,8 @@ and GApplication. Users of these APIs will need to be adapted.
  620952 g_application_register_with_data is an ugly API
  621252 GSettings leaks context
  618715 fork() in GSettings test cases is problematic 618715
+ 621905 Assume a ref when doing async work
+ 621266 GSettings "context" clarification
 
 * Translation updates:
  Chinese
