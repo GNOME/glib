@@ -800,7 +800,7 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
       switch (code)
         {
         case 'l':
-          /* translation requeted */
+          /* translation requested */
           g_variant_get (data, "(y&s)", &info->lc_char, &info->unparsed);
           break;
 
