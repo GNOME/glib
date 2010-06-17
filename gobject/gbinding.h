@@ -56,8 +56,8 @@ typedef struct _GBinding        GBinding;
  * @user_data: data passed to the transform function
  *
  * A function to be called to transform the source property of @source
- * from @source_value into the target property of @target using
- * @target_value
+ * from @source_value into the target property of @target
+ * using @target_value.
  *
  * Return value: %TRUE if the transformation was successful, and %FALSE
  *   otherwise
