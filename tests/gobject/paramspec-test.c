@@ -206,15 +206,47 @@ test_param_spec_gtype (void)
   g_assert (!modified && g_value_get_gtype (&value) == G_TYPE_PARAM_INT);
 }
 
+static void
+test_param_spec_variant (void)
+{
+  GParamSpec *pspec;
+  GValue value = { 0, };
+  gboolean modified;
+
+  pspec = g_param_spec_variant ("variant", "nick", "blurb",
+                                G_VARIANT_TYPE ("i"),
+                                g_variant_new_int32 (42),
+                                G_PARAM_READWRITE);
+
+  g_value_init (&value, G_TYPE_VARIANT);
+  g_value_set_variant (&value, g_variant_new_int32 (42));
+
+  g_assert (g_param_value_defaults (pspec, &value));
+
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (!modified);
+
+  g_value_reset (&value);
+  g_value_set_variant (&value, g_variant_new_uint32 (41));
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified);
+  g_assert_cmpint (g_variant_get_int32 (g_value_get_variant (&value)), ==, 42);
+  g_value_unset (&value);
+
+  g_param_spec_unref (pspec);
+}
+
 int
 main (int argc, char *argv[])
 {
-  g_type_init (); 
-  
-  test_param_spec_char ();
-  test_param_spec_string ();
-  test_param_spec_override ();
-  test_param_spec_gtype ();
+  g_test_init (&argc, &argv, NULL);
+  g_type_init ();
 
-  return 0;
+  g_test_add_func ("/paramspec/char", test_param_spec_char);
+  g_test_add_func ("/paramspec/string", test_param_spec_string);
+  g_test_add_func ("/paramspec/override", test_param_spec_override);
+  g_test_add_func ("/paramspec/gtype", test_param_spec_gtype);
+  g_test_add_func ("/paramspec/variant", test_param_spec_variant);
+
+  return g_test_run ();
 }

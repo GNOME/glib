@@ -163,6 +163,17 @@ G_BEGIN_DECLS
  * Returns: %TRUE on success.
  */
 #define G_VALUE_HOLDS_GTYPE(value)	 (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_GTYPE))
+/**
+ * G_VALUE_HOLDS_VARIANT:
+ * @value: a valid #GValue structure
+ *
+ * Checks whether the given #GValue can hold values of type %G_TYPE_VARIANT.
+ *
+ * Returns: %TRUE on success.
+ *
+ * Since: 2.26
+ */
+#define G_VALUE_HOLDS_VARIANT(value)     (G_TYPE_CHECK_VALUE_TYPE ((value), G_TYPE_VARIANT))
 
 
 /* --- prototypes --- */
@@ -212,6 +223,10 @@ GType		      g_gtype_get_type		(void);
 void		      g_value_set_gtype	        (GValue	      *value,
 						 GType         v_gtype);
 GType	              g_value_get_gtype	        (const GValue *value);
+void		      g_value_set_variant	(GValue	      *value,
+						 GVariant     *variant);
+GVariant*	      g_value_get_variant	(const GValue *value);
+GVariant*	      g_value_dup_variant	(const GValue *value);
 
 
 /* Convenience for registering new pointer types */

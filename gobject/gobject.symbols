@@ -41,7 +41,6 @@ g_error_get_type G_GNUC_CONST
 g_ptr_array_get_type G_GNUC_CONST
 g_regex_get_type G_GNUC_CONST
 g_variant_type_get_gtype G_GNUC_CONST
-g_variant_get_gtype G_GNUC_CONST
 g_closure_get_type G_GNUC_CONST
 g_value_get_type G_GNUC_CONST
 g_value_array_get_type G_GNUC_CONST
@@ -52,6 +51,7 @@ g_value_get_boxed
 g_value_set_static_boxed
 #ifndef G_DISABLE_DEPRECATED
 g_value_set_boxed_take_ownership
+g_variant_get_gtype G_GNUC_CONST
 #endif
 #endif
 #endif
@@ -215,6 +215,7 @@ g_param_spec_uint64
 g_param_spec_ulong
 g_param_spec_unichar
 g_param_spec_value_array
+g_param_spec_variant
 #endif
 #endif
 
@@ -294,6 +295,9 @@ g_value_take_string
 g_gtype_get_type
 g_value_set_gtype
 g_value_get_gtype
+g_value_get_variant
+g_value_dup_variant
+g_value_set_variant
 #endif
 #endif
 

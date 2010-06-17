@@ -19,6 +19,7 @@
 #   BOXED       for boxed (anonymous but reference counted) types (GBoxed*)
 #   POINTER     for anonymous pointer types (gpointer)
 #   OBJECT      for GObject or derived types (GObject*)
+#   VARIANT     for variants (GVariant*)
 #   NONE        deprecated alias for VOID
 #   BOOL        deprecated alias for BOOLEAN
 
@@ -40,6 +41,7 @@ VOID:PARAM
 VOID:BOXED
 VOID:POINTER
 VOID:OBJECT
+VOID:VARIANT
 
 # GRuntime specific marshallers
 VOID:UINT,POINTER

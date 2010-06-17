@@ -286,17 +286,16 @@ g_variant_type_get_gtype (void)
   return type_id;
 }
 
+/**
+ * g_variant_get_gtype:
+ *
+ * Since: 2.24
+ * Deprecated: 2.26
+ */
 GType
 g_variant_get_gtype (void)
 {
-  static GType type_id = 0;
-
-  if (!type_id)
-    type_id = g_boxed_type_register_static (g_intern_static_string ("GVariant"),
-                                            (GBoxedCopyFunc) g_variant_ref,
-                                            (GBoxedFreeFunc) g_variant_unref);
-
-  return type_id;
+  return G_TYPE_VARIANT;
 }
 
 GType

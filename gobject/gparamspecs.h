@@ -549,6 +549,34 @@ G_BEGIN_DECLS
  */
 #define G_PARAM_SPEC_GTYPE(pspec)          (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_GTYPE, GParamSpecGType))
 
+/**
+ * G_TYPE_PARAM_VARIANT:
+ *
+ * The #GType of #GParamSpecVariant.
+ *
+ * Since: 2.26
+ */
+#define G_TYPE_PARAM_VARIANT                (g_param_spec_types[22])
+/**
+ * G_IS_PARAM_SPEC_VARIANT:
+ * @pspec: a #GParamSpec
+ *
+ * Checks whether the given #GParamSpec is of type %G_TYPE_PARAM_VARIANT.
+ *
+ * Returns: %TRUE on success
+ *
+ * Since: 2.26
+ */
+#define G_IS_PARAM_SPEC_VARIANT(pspec)      (G_TYPE_CHECK_INSTANCE_TYPE ((pspec), G_TYPE_PARAM_VARIANT))
+/**
+ * G_PARAM_SPEC_VARIANT:
+ * @pspec: a #GParamSpec
+ *
+ * Casts a #GParamSpec into a #GParamSpecVariant.
+ *
+ * Since: 2.26
+ */
+#define G_PARAM_SPEC_VARIANT(pspec)         (G_TYPE_CHECK_INSTANCE_CAST ((pspec), G_TYPE_PARAM_VARIANT, GParamSpecVariant))
 
 /* --- typedefs & structures --- */
 typedef struct _GParamSpecChar       GParamSpecChar;
@@ -573,6 +601,7 @@ typedef struct _GParamSpecValueArray GParamSpecValueArray;
 typedef struct _GParamSpecObject     GParamSpecObject;
 typedef struct _GParamSpecOverride   GParamSpecOverride;
 typedef struct _GParamSpecGType      GParamSpecGType;
+typedef struct _GParamSpecVariant    GParamSpecVariant;
 
 /**
  * GParamSpecChar:
@@ -921,6 +950,23 @@ struct _GParamSpecGType
   GParamSpec    parent_instance;
   GType         is_a_type;
 };
+/**
+ * GParamSpecVariant:
+ * @parent_instance: private #GParamSpec portion
+ * @type: a #GVariantType, or %NULL
+ * @default_value: a #GVariant, or %NULL
+ *
+ * A #GParamSpec derived structure that contains the meta data for #GVariant properties.
+ *
+ * Since: 2.26
+ */
+struct _GParamSpecVariant
+{
+  GParamSpec    parent_instance;
+  GVariantType *type;
+  GVariant     *default_value;
+  gpointer      padding[4];
+};
 
 /* --- GParamSpec prototypes --- */
 GParamSpec*	g_param_spec_char	 (const gchar	 *name,
@@ -1051,6 +1097,12 @@ GParamSpec*	g_param_spec_gtype	 (const gchar	 *name,
 					  const gchar	 *blurb,
 					  GType           is_a_type,
 					  GParamFlags	  flags);
+GParamSpec*	g_param_spec_variant	 (const gchar        *name,
+					  const gchar        *nick,
+					  const gchar	     *blurb,
+					  const GVariantType *type,
+					  GVariant           *default_value,
+					  GParamFlags         flags);
 
 /* --- internal --- */
 /* We prefix variable declarations so they can

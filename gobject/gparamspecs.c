@@ -1,5 +1,6 @@
 /* GObject - GLib Type, Object, Parameter and Signal Library
  * Copyright (C) 1997-1999, 2000-2001 Tim Janik and Red Hat, Inc.
+ * Copyright (C) 2010 Christian Persch
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -1098,13 +1099,71 @@ param_gtype_values_cmp (GParamSpec   *pspec,
   return p1 < p2 ? -1 : p1 > p2;
 }
 
+static void
+param_variant_init (GParamSpec *pspec)
+{
+  GParamSpecVariant *vspec = G_PARAM_SPEC_VARIANT (pspec);
+
+  vspec->type = NULL;
+  vspec->default_value = NULL;
+}
+
+static void
+param_variant_finalize (GParamSpec *pspec)
+{
+  GParamSpecVariant *vspec = G_PARAM_SPEC_VARIANT (pspec);
+  GParamSpecClass *parent_class = g_type_class_peek (g_type_parent (G_TYPE_PARAM_VARIANT));
+
+  if (vspec->default_value)
+    g_variant_unref (vspec->default_value);
+  g_variant_type_free (vspec->type);
+
+  parent_class->finalize (pspec);
+}
+
+static void
+param_variant_set_default (GParamSpec *pspec,
+                           GValue     *value)
+{
+  value->data[0].v_pointer = G_PARAM_SPEC_VARIANT (pspec)->default_value;
+  value->data[1].v_uint |= G_VALUE_NOCOPY_CONTENTS;
+}
+
+static gboolean
+param_variant_validate (GParamSpec *pspec,
+                        GValue     *value)
+{
+  GParamSpecVariant *vspec = G_PARAM_SPEC_VARIANT (pspec);
+  GVariant *variant = value->data[0].v_pointer;
+
+  if ((variant == NULL && vspec->default_value != NULL) ||
+      (variant != NULL && !g_variant_is_of_type (variant, vspec->type)))
+    {
+      g_param_value_set_default (pspec, value);
+      return TRUE;
+    }
+
+  return FALSE;
+}
+
+static gint
+param_variant_values_cmp (GParamSpec   *pspec,
+                          const GValue *value1,
+                          const GValue *value2)
+{
+  GVariant *v1 = value1->data[0].v_pointer;
+  GVariant *v2 = value2->data[0].v_pointer;
+
+  return v1 < v2 ? -1 : v2 > v1;
+}
+
 /* --- type initialization --- */
 GType *g_param_spec_types = NULL;
 
 void
 g_param_spec_types_init (void)	
 {
-  const guint n_types = 22;
+  const guint n_types = 23;
   GType type, *spec_types, *spec_types_bound;
 
   g_param_spec_types = g_new0 (GType, n_types);
@@ -1507,6 +1566,24 @@ g_param_spec_types_init (void)
     type = g_param_type_register_static (g_intern_static_string ("GParamGType"), &pspec_info);
     *spec_types++ = type;
     g_assert (type == G_TYPE_PARAM_GTYPE);
+  }
+
+  /* G_TYPE_PARAM_VARIANT
+   */
+  {
+    const GParamSpecTypeInfo pspec_info = {
+      sizeof (GParamSpecVariant), /* instance_size */
+      0,                          /* n_preallocs */
+      param_variant_init,         /* instance_init */
+      G_TYPE_VARIANT,             /* value_type */
+      param_variant_finalize,     /* finalize */
+      param_variant_set_default,  /* value_set_default */
+      param_variant_validate,     /* value_validate */
+      param_variant_values_cmp,   /* values_cmp */
+    };
+    type = g_param_type_register_static (g_intern_static_string ("GParamVariant"), &pspec_info);
+    *spec_types++ = type;
+    g_assert (type == G_TYPE_PARAM_VARIANT);
   }
 
   g_assert (spec_types == spec_types_bound);
@@ -2391,6 +2468,54 @@ g_param_spec_override (const gchar *name,
   G_PARAM_SPEC_OVERRIDE (pspec)->overridden = g_param_spec_ref (overridden);
 
   return pspec;
+}
+
+/**
+ * g_param_spec_variant:
+ * @name: canonical name of the property specified
+ * @nick: nick name for the property specified
+ * @blurb: description of the property specified
+ * @type: a #GVariantType
+ * @default_value: (allow-none): a #GVariant of type @type to use as the
+ *                 default value, or %NULL
+ * @flags: flags for the property specified
+ *
+ * Creates a new #GParamSpecVariant instance specifying a #GVariant
+ * property.
+ *
+ * If @default_value is floating, it is consumed.
+ *
+ * See g_param_spec_internal() for details on property names.
+ *
+ * Returns: the newly created #GParamSpec
+ *
+ * Since: 2.26
+ */
+GParamSpec*
+g_param_spec_variant (const gchar        *name,
+                      const gchar        *nick,
+                      const gchar        *blurb,
+                      const GVariantType *type,
+                      GVariant           *default_value,
+                      GParamFlags         flags)
+{
+  GParamSpecVariant *vspec;
+
+  g_return_val_if_fail (type != NULL, NULL);
+  g_return_val_if_fail (default_value == NULL ||
+                        g_variant_is_of_type (default_value, type), NULL);
+
+  vspec = g_param_spec_internal (G_TYPE_PARAM_VARIANT,
+                                 name,
+                                 nick,
+                                 blurb,
+                                 flags);
+
+  vspec->type = g_variant_type_copy (type);
+  if (default_value)
+    vspec->default_value = g_variant_ref_sink (default_value);
+
+  return G_PARAM_SPEC (vspec);
 }
 
 #define __G_PARAMSPECS_C__

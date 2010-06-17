@@ -28,6 +28,10 @@ and GApplication. Users of these APIs will need to be adapted.
 * GObject
  - Introduce g_object_notify_by_pspec
  - Add GBinding
+ - The GVariant gtype G_TYPE_VARIANT was changed from boxed
+   to fundamental. We believe there were no existing users
+   of the boxed type, so this should not cause any applications
+   to break.
 
 * Test framework
  - Add package and version to the test report XML

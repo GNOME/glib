@@ -147,6 +147,7 @@ G_TYPE_BOXED
 G_TYPE_PARAM
 G_TYPE_OBJECT
 G_TYPE_GTYPE
+G_TYPE_VARIANT
 
 <SUBSECTION>
 G_TYPE_RESERVED_GLIB_FIRST
@@ -351,7 +352,6 @@ G_TYPE_REGEX
 G_TYPE_ARRAY
 G_TYPE_BYTE_ARRAY
 G_TYPE_PTR_ARRAY
-G_TYPE_VARIANT
 G_TYPE_VARIANT_TYPE
 G_TYPE_ERROR
 GStrv
@@ -697,6 +697,17 @@ GParamSpecGType
 g_param_spec_gtype
 g_value_get_gtype
 g_value_set_gtype
+
+<SUBSECTION GVariant>
+G_IS_PARAM_SPEC_VARIANT
+G_PARAM_SPEC_VARIANT
+G_VALUE_HOLDS_VARIANT
+G_TYPE_PARAM_VARIANT
+GParamSpecVariant
+g_param_spec_variant
+g_value_get_variant
+g_value_dup_variant
+g_value_set_variant
 
 <SUBSECTION Private>
 g_value_set_instance

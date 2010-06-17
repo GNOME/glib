@@ -195,14 +195,6 @@ GType	g_boxed_type_register_static		(const gchar	*name,
  */
 #define	G_TYPE_VARIANT_TYPE (g_variant_type_get_gtype ())
 /**
- * G_TYPE_VARIANT:
- * 
- * The #GType for a boxed type holding a #GVariant reference.
- * 
- * Since: 2.24
- */
-#define	G_TYPE_VARIANT (g_variant_get_gtype ())
-/**
  * G_TYPE_ERROR:
  * 
  * The #GType for a boxed type holding a #GError.
@@ -229,9 +221,12 @@ GType   g_array_get_type        (void)  G_GNUC_CONST;
 GType   g_byte_array_get_type   (void)  G_GNUC_CONST;
 GType   g_ptr_array_get_type    (void)  G_GNUC_CONST;
 GType   g_variant_type_get_gtype(void)  G_GNUC_CONST;
-GType   g_variant_get_gtype     (void)  G_GNUC_CONST;
 GType   g_regex_get_type        (void)  G_GNUC_CONST;
 GType   g_error_get_type        (void)  G_GNUC_CONST;
+
+#ifndef G_DISABLE_DEPRECATED
+GType   g_variant_get_gtype     (void)  G_GNUC_CONST;
+#endif
 
 /**
  * GStrv:

@@ -151,6 +151,7 @@ put_marshal_value_getters (void)
   fputs ("#define g_marshal_value_peek_boxed(v)    g_value_get_boxed (v)\n", fout);
   fputs ("#define g_marshal_value_peek_pointer(v)  g_value_get_pointer (v)\n", fout);
   fputs ("#define g_marshal_value_peek_object(v)   g_value_get_object (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_variant(v)  g_value_get_variant (v)\n", fout);
   fputs ("#else /* !G_ENABLE_DEBUG */\n", fout);
   fputs ("/* WARNING: This code accesses GValues directly, which is UNSUPPORTED API.\n", fout);
   fputs (" *          Do not access GValues directly in your code. Instead, use the\n", fout);
@@ -174,6 +175,7 @@ put_marshal_value_getters (void)
   fputs ("#define g_marshal_value_peek_boxed(v)    (v)->data[0].v_pointer\n", fout);
   fputs ("#define g_marshal_value_peek_pointer(v)  (v)->data[0].v_pointer\n", fout);
   fputs ("#define g_marshal_value_peek_object(v)   (v)->data[0].v_pointer\n", fout);
+  fputs ("#define g_marshal_value_peek_variant(v)  (v)->data[0].v_pointer\n", fout);
   fputs ("#endif /* !G_ENABLE_DEBUG */\n", fout);
   fputs ("\n", fout);
 }
@@ -202,6 +204,7 @@ complete_in_arg (InArgument *iarg)
     { "BOXED",		"BOXED",	"gpointer",	"g_marshal_value_peek_boxed",	},
     { "POINTER",	"POINTER",	"gpointer",	"g_marshal_value_peek_pointer",	},
     { "OBJECT",		"OBJECT",	"gpointer",	"g_marshal_value_peek_object",	},
+    { "VARIANT",	"VARIANT",	"gpointer",	"g_marshal_value_peek_variant",	},
     /* deprecated: */
     { "NONE",		"VOID",		"void",		NULL,			},
     { "BOOL",		"BOOLEAN",	"gboolean",	"g_marshal_value_peek_boolean",	},
@@ -246,6 +249,7 @@ complete_out_arg (OutArgument *oarg)
     { "BOXED",		"BOXED",	"gpointer",	"g_value_take_boxed",			     },
     { "POINTER",	"POINTER",	"gpointer",	"g_value_set_pointer",			     },
     { "OBJECT",		"OBJECT",	"GObject*",	"g_value_take_object",			     },
+    { "VARIANT",	"VARIANT",	"GVariant*",	"g_value_take_variant",			     },
     /* deprecated: */
     { "NONE",		"VOID",		"void",		NULL,					     },
     { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",			     },
