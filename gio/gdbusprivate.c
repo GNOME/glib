@@ -588,6 +588,16 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
                                                   &error);
           if (message == NULL)
             {
+              gchar *s;
+              s = hexdump (worker->read_buffer, worker->read_buffer_cur_size, 2);
+              g_warning ("Error decoding D-Bus message of %" G_GSIZE_FORMAT " bytes\n"
+                         "The error is: %s\n"
+                         "The payload is as follows:\n"
+                         "%s\n",
+                         worker->read_buffer_cur_size,
+                         error->message,
+                         s);
+              g_free (s);
               _g_dbus_worker_emit_disconnected (worker, FALSE, error);
               g_error_free (error);
               goto out;
