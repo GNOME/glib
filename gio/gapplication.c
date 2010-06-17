@@ -1003,11 +1003,11 @@ g_application_get_property (GObject    *object,
       break;
 
     case PROP_ARGV:
-      g_value_set_boxed (value, app->priv->argv);
+      g_value_set_variant (value, app->priv->argv);
       break;
 
     case PROP_PLATFORM_DATA:
-      g_value_set_boxed (value, app->priv->platform_data);
+      g_value_set_variant (value, app->priv->platform_data);
       break;
 
     default:
@@ -1039,21 +1039,11 @@ g_application_set_property (GObject      *object,
       break;
 
     case PROP_ARGV:
-      {
-	GVariant *argv = g_value_get_boxed (value);
-	g_return_if_fail (argv == NULL ||
-			  g_variant_is_of_type (argv, G_VARIANT_TYPE ("aay")));
-	app->priv->argv = argv;
-      }
+      app->priv->argv = g_value_dup_variant (value);
       break;
 
     case PROP_PLATFORM_DATA:
-      {
-	GVariant *platform_data = g_value_get_boxed (value);
-	g_return_if_fail (platform_data == NULL ||
-			  g_variant_is_of_type (platform_data, G_VARIANT_TYPE ("a{sv}")));
-	app->priv->platform_data = platform_data;
-      }
+      app->priv->platform_data = g_value_dup_variant (value);
       break;
 
     default:
@@ -1154,7 +1144,7 @@ g_application_class_init (GApplicationClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, quit_with_data),
                   g_signal_accumulator_true_handled, NULL,
-                  _gio_marshal_BOOLEAN__BOXED,
+                  _gio_marshal_BOOLEAN__VARIANT,
                   G_TYPE_BOOLEAN, 1,
                   G_TYPE_VARIANT);
 
@@ -1176,7 +1166,7 @@ g_application_class_init (GApplicationClass *klass)
                   G_SIGNAL_RUN_FIRST | G_SIGNAL_NO_RECURSE | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GApplicationClass, action_with_data),
                   NULL, NULL,
-                  _gio_marshal_VOID__STRING_BOXED,
+                  _gio_marshal_VOID__STRING_VARIANT,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_VARIANT);
@@ -1200,7 +1190,7 @@ g_application_class_init (GApplicationClass *klass)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, prepare_activation),
                   NULL, NULL,
-                  _gio_marshal_VOID__BOXED_BOXED,
+                  _gio_marshal_VOID__VARIANT_VARIANT,
                   G_TYPE_NONE, 2,
                   G_TYPE_VARIANT,
                   G_TYPE_VARIANT);
@@ -1231,13 +1221,14 @@ g_application_class_init (GApplicationClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ARGV,
-                                   g_param_spec_boxed ("argv",
-						       P_("Argument vector"),
-						       P_("System argument vector with type signature aay"),
-						       G_TYPE_VARIANT,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_variant ("argv",
+						        P_("Argument vector"),
+						        P_("System argument vector with type signature aay"),
+						        G_VARIANT_TYPE ("aay"),
+                                                        NULL,
+						        G_PARAM_READWRITE |
+						        G_PARAM_CONSTRUCT_ONLY |
+						        G_PARAM_STATIC_STRINGS));
 
   /**
    * GApplication:platform-data:
@@ -1248,13 +1239,14 @@ g_application_class_init (GApplicationClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_PLATFORM_DATA,
-                                   g_param_spec_boxed ("platform-data",
-						       P_("Platform data"),
-						       P_("Environmental data, must have type signature a{sv}"),
-						       G_TYPE_VARIANT,
-						       G_PARAM_READWRITE |
-						       G_PARAM_CONSTRUCT_ONLY |
-						       G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_variant ("platform-data",
+						         P_("Platform data"),
+						         P_("Environmental data, must have type signature a{sv}"),
+						         G_VARIANT_TYPE ("a{sv}"),
+                                                         NULL,
+						         G_PARAM_READWRITE |
+						         G_PARAM_CONSTRUCT_ONLY |
+						         G_PARAM_STATIC_STRINGS));
 
   /**
    * GApplication:default-quit:
