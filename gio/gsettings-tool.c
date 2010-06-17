@@ -213,7 +213,7 @@ handle_set (gint   *argc,
       goto out;
     }
 
-  g_settings_sync (NULL);
+  g_settings_sync ();
   ret = 0;
 
  out:

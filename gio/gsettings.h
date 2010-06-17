@@ -134,7 +134,7 @@ void                    g_settings_delay                                (GSettin
 void                    g_settings_apply                                (GSettings          *settings);
 void                    g_settings_revert                               (GSettings          *settings);
 gboolean                g_settings_get_has_unapplied                    (GSettings          *settings);
-void                    g_settings_sync                                 ();
+void                    g_settings_sync                                 (void);
 
 /**
  * GSettingsBindSetMapping:
