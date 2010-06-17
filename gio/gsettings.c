@@ -152,7 +152,7 @@
  * <programlisting><![CDATA[
  * <schemalist>
  *   <schema id="org.gtk.test" path="/tests/" gettext-domain="test">
- *     
+ *
  *     <key name="greeting" type="s">
  *       <default l10n="messages">"Hello, earthlings"</default>
  *       <summary>A greeting</summary>
@@ -160,11 +160,11 @@
  *         Greeting of the invading martians
  *       </description>
  *     </key>
- *      
+ *
  *     <key name="box" type="(ii)">
  *       <default>(20,30)</default>
  *     </key>
- *      
+ *
  *   </schema>
  * </schemalist>
  * ]]></programlisting></example>
@@ -172,19 +172,19 @@
  * <example><title>Ranges, choices and enumerated types</title>
  * <programlisting><![CDATA[
  * <schemalist>
- *     
+ *
  *   <enum id="myenum">
  *     <value nick="first" value="1"/>
  *     <value nick="second" value="2"/>
  *   </enum>
- *      
+ *
  *   <schema id="org.gtk.test">
- *     
+ *
  *     <key name="key-with-range" type="i">
  *       <range min="1" max="100"/>
  *       <default>10</default>
  *     </key>
- *      
+ *
  *     <key name="key-with-choices" type="s">
  *       <choices>
  *         <choice value='Elisabeth'/>
@@ -197,11 +197,11 @@
  *       </aliases>
  *       <default>'Joe'</default>
  *     </key>
- *      
+ *
  *     <key name="enumerated-key" enum="myenum">
  *       <default>'first'</default>
  *     </key>
- *      
+ *
  *   </schema>
  * </schemalist>
  * ]]></programlisting></example>
@@ -225,7 +225,7 @@
  *    #G_SETTINGS_BIND_NO_SENSITIVITY flag.
  *   </para>
  *  </refsect2>
- */
+ **/
 
 struct _GSettingsPrivate
 {
