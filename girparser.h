@@ -34,7 +34,6 @@ void       g_ir_parser_set_includes (GIrParser          *parser,
 
 GList *g_ir_parser_parse_string (GIrParser    *parser,
 				 const gchar  *namespace,
-				 const gchar  *filename,
 				 const gchar  *buffer,
 				 gssize        length,
 				 GError      **error);
