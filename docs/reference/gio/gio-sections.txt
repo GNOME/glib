@@ -2110,10 +2110,6 @@ g_settings_backend_path_writable_changed
 g_settings_backend_writable_changed
 g_settings_backend_changed_tree
 
-<SUBSECTION Custom>
-g_settings_backend_setup
-g_settings_backend_setup_keyfile
-
 <SUBSECTION Standard>
 G_IS_SETTINGS_BACKEND
 G_IS_SETTINGS_BACKEND_CLASS
@@ -2132,9 +2128,8 @@ GSettingsBackendPrivate
 GSettings
 g_settings_new
 g_settings_new_with_path
-g_settings_new_with_context
-g_settings_new_with_context_and_path
-g_settings_supports_context
+g_settings_new_with_backend_
+g_settings_new_with_backend_and_path
 g_settings_sync
 g_settings_get_value
 g_settings_set_value
