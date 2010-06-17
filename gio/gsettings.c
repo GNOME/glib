@@ -193,13 +193,13 @@
  *         <choice value='Joe'/>
  *       </choices>
  *       <aliases>
- *         <alias value="Annabeth" alias="Anna"/>
- *         <alias value="Elisabeth" alias="Beth"/>
+ *         <alias value='Anna' target='Annabeth'/>
+ *         <alias value='Beth' target='Elisabeth'/>
  *       </aliases>
  *       <default>'Joe'</default>
  *     </key>
  *
- *     <key name="enumerated-key" enum="myenum">
+ *     <key name='enumerated-key' enum='myenum'>
  *       <default>'first'</default>
  *     </key>
  *
