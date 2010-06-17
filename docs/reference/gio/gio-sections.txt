@@ -2158,6 +2158,8 @@ g_settings_get_string
 g_settings_set_string
 g_settings_get_strv
 g_settings_set_strv
+g_settings_get_enum
+g_settings_set_enum
 
 <SUBSECTION Binding>
 GSettingsBindFlags
