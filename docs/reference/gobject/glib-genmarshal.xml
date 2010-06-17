@@ -262,6 +262,13 @@ for GObject or derived types (GObject*)
 </varlistentry>
 
 <varlistentry>
+<term><replaceable>VARIANT</replaceable></term>
+<listitem><para>
+for GVariant types (GVariant*)
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
 <term><replaceable>NONE</replaceable></term>
 <listitem><para>
 deprecated alias for <replaceable>VOID</replaceable>
