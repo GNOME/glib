@@ -1432,6 +1432,12 @@ g_settings_backend_changed_tree
 #endif
 #endif
 
+#if IN_HEADER(__G_SETTINGS_BACKEND_H__)
+#if IN_FILE(__G_KEYFILE_SETTINGS_BACKEND_C__)
+g_keyfile_settings_backend_new
+#endif
+#endif
+
 #if IN_HEADER(__G_SETTINGS_H__)
 #if IN_FILE(__G_SETTINGS_C__)
 g_settings_apply
