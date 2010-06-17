@@ -1418,6 +1418,8 @@ get_connection_cb (GObject       *source_object,
 
   if (data->cancellable != NULL)
     g_object_unref (data->cancellable);
+  if (data->proxy != NULL)
+    g_object_unref (data->proxy);
   g_free (data);
 }
 
@@ -1437,7 +1439,7 @@ async_initable_init_async (GAsyncInitable      *initable,
       g_assert (proxy->priv->connection == NULL);
 
       data = g_new0 (GetConnectionData, 1);
-      data->proxy = proxy;
+      data->proxy = g_object_ref (proxy);
       data->io_priority = io_priority;
       data->cancellable = cancellable != NULL ? g_object_ref (cancellable) : NULL;
       data->callback = callback;
