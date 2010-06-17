@@ -1,3 +1,64 @@
+Overview of Changes from GLib 2.25.8 to GLib 2.25.9
+===================================================
+
+Warning: there have been some API changes in GDBus, GSettings
+and GApplication. Users of these APIs will need to be adapted.
+
+* GDBus
+ - Use Gio's default async implementation
+ - Fix proxy construction for objects with no properties
+ - Fix error handling in synchronous initialization
+ - Do not dispatch calls to unregistered objects
+ - Add _with_closures alternative functions
+ - Allow constructing GDBusProxy with well-known names
+ - Remove GType parameters from GDBusProxy constructors
+ - Nuke g_bus_watch_proxy API
+ - Add --xml to gdbus-tool to print raw introspected XML
+
+* GSettings
+ - schema file format change: store (default, options) in gvdb
+ - Add g_settings_sync()
+ - Add g_variant_default_value()
+ - Add support for enums and ranges
+
+* GApplication
+ - Switch to using variants for timestamps
+ - Use GInitable
+
+* GObject
+ - Introduce g_object_notify_by_pspec
+ - Add GBinding
+
+* Test framework
+ - Add package and version to the test report XML
+ - Use optparse to parse gtester-report commandline
+ - Add subunit support to gtester-report
+ - Prevent division by zero if no tests
+
+* Bugs fixed:
+ 621782 Crash using gbinding
+ 619945 GConverterOutputStream triggers assertion and corrupts data
+ 621319 more leaked GVariants in GSettings
+ 621168 GKeyFile memory leak on Windows platform
+ 621002 Switch to using variants for timestamps, split out signals
+ 620953 tiny docs addition
+ 618904 Lies in gunixmounts documentation
+ 621702 Correctly initialize GError
+ 611778 minor cleanup of gtester-report
+ 621213 GDBusProxy and well-known names
+ 621034 Rewrite apps test to ensure children are killed
+ 620954 gapplication gvariant simplifications
+ 611869 add subunit out feature to gtester-report
+ 621119 GDBusProxy and objects with no properties
+ 620990 Use Gio's default async implementation again
+ 620952 g_application_register_with_data is an ugly API
+ 621252 GSettings leaks context
+ 618715 fork() in GSettings test cases is problematic 618715
+
+* Translation updates:
+ Chinese
+
+
 Overview of Changes from GLib 2.25.7 to GLib 2.25.8
 ===================================================
 
