@@ -299,6 +299,7 @@ g_value_get_gtype
 g_value_get_variant
 g_value_dup_variant
 g_value_set_variant
+g_value_take_variant
 #endif
 #endif
 

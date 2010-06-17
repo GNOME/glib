@@ -225,6 +225,8 @@ void		      g_value_set_gtype	        (GValue	      *value,
 GType	              g_value_get_gtype	        (const GValue *value);
 void		      g_value_set_variant	(GValue	      *value,
 						 GVariant     *variant);
+void		      g_value_take_variant	(GValue	      *value,
+						 GVariant     *variant);
 GVariant*	      g_value_get_variant	(const GValue *value);
 GVariant*	      g_value_dup_variant	(const GValue *value);
 

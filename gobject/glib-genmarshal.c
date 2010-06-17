@@ -249,7 +249,7 @@ complete_out_arg (OutArgument *oarg)
     { "BOXED",		"BOXED",	"gpointer",	"g_value_take_boxed",			     },
     { "POINTER",	"POINTER",	"gpointer",	"g_value_set_pointer",			     },
     { "OBJECT",		"OBJECT",	"GObject*",	"g_value_take_object",			     },
-    { "VARIANT",	"VARIANT",	"GVariant*",	"g_value_set_variant",			     },
+    { "VARIANT",	"VARIANT",	"GVariant*",	"g_value_take_variant",			     },
     /* deprecated: */
     { "NONE",		"VOID",		"void",		NULL,					     },
     { "BOOL",		"BOOLEAN",	"gboolean",	"g_value_set_boolean",			     },

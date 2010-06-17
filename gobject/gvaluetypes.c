@@ -1207,6 +1207,45 @@ g_value_set_variant (GValue   *value,
 }
 
 /**
+ * g_value_take_variant:
+ * @value: a valid #GValue of %G_TYPE_VARIANT
+ * @variant: a #GVariant, or %NULL
+ *
+ * Set the contents of a variant #GValue to @variant, and takes over
+ * the ownership of the caller's reference to @variant;
+ * the caller doesn't have to unref it any more (i.e. the reference
+ * count of the variant is not increased).
+ * 
+ * It is a programmer error to pass a floating variant to this function.
+ * In particular this means that callbacks in closures, and signal handlers
+ * for signals of return type %G_TYPE_VARIANT, must never return floating
+ * variants.
+ *
+ * If you want the #GValue to hold its own reference to @variant, use
+ * g_value_set_variant() instead.
+ *
+ * This is an internal function introduced mainly for C marshallers.
+ *
+ * Since: 2.26
+ */
+void
+g_value_take_variant (GValue   *value,
+                      GVariant *variant)
+{
+  GVariant *old_variant;
+
+  g_return_if_fail (G_VALUE_HOLDS_VARIANT (value));
+  g_return_if_fail (variant == NULL || !g_variant_is_floating (variant));
+
+  old_variant = value->data[0].v_pointer;
+
+  value->data[0].v_pointer = variant;
+
+  if (old_variant)
+    g_variant_unref (old_variant);
+}
+
+/**
  * g_value_get_variant:
  * @value: a valid #GValue of %G_TYPE_VARIANT
  *

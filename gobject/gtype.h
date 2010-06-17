@@ -184,6 +184,13 @@ G_BEGIN_DECLS
  *
  * The fundamental type corresponding to #GVariant.
  *
+ * All floating #GVariant instances passed through the #GType system are
+ * consumed.
+ * 
+ * Note that callbacks in closures, and signal handlers
+ * for signals of return type %G_TYPE_VARIANT, must never return floating
+ * variants.
+ *
  * Note: GLib 2.24 did include a boxed type with this name. It was replaced
  * with this fundamental type in 2.26.
  *
