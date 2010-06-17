@@ -64,8 +64,8 @@ G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
  * g_unix_connection_send_fd:
  * @connection: a #GUnixConnection
  * @fd: a file descriptor
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: #GError for error reporting, or %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @error: (allow-none): #GError for error reporting, or %NULL to ignore.
  *
  * Passes a file descriptor to the recieving side of the
  * connection. The recieving end has to call g_unix_connection_receive_fd()
@@ -118,8 +118,8 @@ g_unix_connection_send_fd (GUnixConnection  *connection,
 /**
  * g_unix_connection_receive_fd:
  * @connection: a #GUnixConnection
- * @cancellable: optional #GCancellable object, %NULL to ignore
- * @error: #GError for error reporting, or %NULL to ignore
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
+ * @error: (allow-none): #GError for error reporting, or %NULL to ignore
  *
  * Receives a file descriptor from the sending end of the connection.
  * The sending end has to call g_unix_connection_send_fd() for this

@@ -2128,7 +2128,7 @@ GSettingsBackendPrivate
 GSettings
 g_settings_new
 g_settings_new_with_path
-g_settings_new_with_backend_
+g_settings_new_with_backend
 g_settings_new_with_backend_and_path
 g_settings_sync
 g_settings_get_value
@@ -2624,9 +2624,9 @@ GApplication
 GApplicationClass
 
 g_application_new
-g_application_new_and_register
-g_application_register_with_data
-g_application_format_activation_data
+g_application_register
+g_application_try_new
+g_application_unregistered_try_new
 g_application_get_instance
 g_application_get_id
 g_application_add_action
@@ -2637,7 +2637,7 @@ g_application_get_action_enabled
 g_application_get_action_description
 g_application_invoke_action
 g_application_run
-g_application_quit
+g_application_quit_with_data
 g_application_is_remote
 <SUBSECTION Standard>
 G_TYPE_APPLICATION

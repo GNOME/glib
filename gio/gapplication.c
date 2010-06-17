@@ -536,8 +536,8 @@ g_application_unregistered_try_new (const gchar *appid,
 
 /**
  * g_application_register:
- * @app: a #GApplication
- * 
+ * @application: a #GApplication
+ *
  * By default, #GApplication ensures process uniqueness when
  * initialized, but this behavior is controlled by the
  * GApplication:register property.  If it was given as %FALSE at
@@ -547,13 +547,13 @@ g_application_unregistered_try_new (const gchar *appid,
  * Returns: %TRUE if registration was successful
  */
 gboolean
-g_application_register (GApplication   *app)
+g_application_register (GApplication *application)
 {
   gboolean unique;
 
   g_return_val_if_fail (G_IS_APPLICATION (app), FALSE);
   g_return_val_if_fail (app->priv->is_remote, FALSE);
-  
+
   if (!_g_application_platform_register (app, &unique, NULL, NULL))
     return FALSE;
   return unique;
@@ -950,6 +950,8 @@ g_application_get_id (GApplication *application)
 /**
  * g_application_is_remote:
  * @application: a #GApplication
+ *
+ * Returns whether the object represents a proxy for a remote application.
  *
  * Returns: %TRUE if this object represents a proxy for a remote application.
  */

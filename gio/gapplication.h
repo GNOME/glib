@@ -62,8 +62,8 @@ struct _GApplication
 
 /**
  * GApplicationClass:
- * @action: class handler for the #GApplication::action signal
- * @quit: class handler for the #GApplication::quit signal
+ * @action_with_data: class handler for the #GApplication::action-with-data signal
+ * @quit_with_data: class handler for the #GApplication::quit-with-data signal
  * @prepare_activation: class handler for the #GApplication::prepare-activation signal
  * @run: virtual function, called by g_application_run()
  *
@@ -139,7 +139,7 @@ void                    g_application_invoke_action             (GApplication   
                                                                  GVariant          *platform_data);
 
 void                    g_application_run                       (GApplication      *application);
-gboolean                g_application_quit_with_data            (GApplication      *app,
+gboolean                g_application_quit_with_data            (GApplication      *application,
                                                                  GVariant          *platform_data);
 
 gboolean                g_application_is_remote                 (GApplication      *application);
