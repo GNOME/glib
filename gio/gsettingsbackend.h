@@ -65,8 +65,6 @@ struct _GSettingsBackendClass
 {
   GObjectClass parent_class;
 
-  gboolean      (*supports_context) (const gchar         *context);
-
   GVariant *    (*read)             (GSettingsBackend    *backend,
                                      const gchar         *key,
                                      const GVariantType  *expected_type,

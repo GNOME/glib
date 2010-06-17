@@ -45,13 +45,6 @@ struct _GSettingsBackendPrivate
 {
   GSettingsBackendWatch *watches;
   GStaticMutex lock;
-  gchar *context;
-};
-
-enum
-{
-  PROP_0,
-  PROP_CONTEXT
 };
 
 /**
@@ -358,7 +351,7 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
 
   if (data1_free == NULL)
     data1_free = pointer_ignore;
- 
+
   context = g_settings_backend_get_active_context ();
   here_and_now = g_main_context_new ();
 
@@ -921,52 +914,11 @@ g_settings_backend_subscribe (GSettingsBackend *backend,
 }
 
 static void
-g_settings_backend_set_property (GObject         *object,
-                                 guint            prop_id,
-                                 const GValue    *value,
-                                 GParamSpec      *pspec)
-{
-  GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
-
-  switch (prop_id)
-    {
-    case PROP_CONTEXT:
-      backend->priv->context = g_value_dup_string (value);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
-static void
-g_settings_backend_get_property (GObject    *object,
-                                 guint       prop_id,
-                                 GValue     *value,
-                                 GParamSpec *pspec)
-{
-  GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
-
-  switch (prop_id)
-    {
-    case PROP_CONTEXT:
-      g_value_set_string (value, backend->priv->context);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
-}
-
-static void
 g_settings_backend_finalize (GObject *object)
 {
   GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
 
   g_static_mutex_unlock (&backend->priv->lock);
-  g_free (backend->priv->context);
 
   G_OBJECT_CLASS (g_settings_backend_parent_class)
     ->finalize (object);
@@ -995,32 +947,9 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
   class->subscribe = ignore_subscription;
   class->unsubscribe = ignore_subscription;
 
-  gobject_class->get_property = g_settings_backend_get_property;
-  gobject_class->set_property = g_settings_backend_set_property;
   gobject_class->finalize = g_settings_backend_finalize;
 
   g_type_class_add_private (class, sizeof (GSettingsBackendPrivate));
-
-  /**
-   * GSettingsBackend:context:
-   *
-   * The "context" property gives a hint to the backend as to
-   * what storage to use. It is up to the implementation to make
-   * use of this information.
-   *
-   * E.g. DConf supports "user", "system", "defaults" and "login"
-   * contexts.
-   *
-   * If your backend supports different contexts, you should also
-   * provide an implementation of the supports_context() class
-   * function in #GSettingsBackendClass.
-   */
-  g_object_class_install_property (gobject_class, PROP_CONTEXT,
-    g_param_spec_string ("context", P_("Context"),
-                         P_("An identifier to decide which storage to use"),
-                         "", G_PARAM_READWRITE |
-                         G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
-
 }
 
 /*< private >
