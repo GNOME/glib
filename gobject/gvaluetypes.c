@@ -1225,7 +1225,7 @@ g_value_get_variant (const GValue *value)
 }
 
 /**
- * g_value_get_variant:
+ * g_value_dup_variant:
  * @value: a valid #GValue of %G_TYPE_VARIANT
  *
  * Get the contents of a variant #GValue, increasing its refcount.
