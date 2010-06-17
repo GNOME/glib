@@ -272,41 +272,66 @@ testapp_LDADD   = $(progs_ldadd)
 testapps_SOURCES = testapps.c gdbus-sessionbus.c gdbus-sessionbus.h
 testapps_LDADD   = $(progs_ldadd)
 
+schema_tests = \
+	schema-tests/array-default-not-in-choices.gschema.xml		\
+	schema-tests/bad-choice.gschema.xml				\
+	schema-tests/bad-key.gschema.xml				\
+	schema-tests/bad-key2.gschema.xml				\
+	schema-tests/bad-key3.gschema.xml				\
+	schema-tests/bad-key4.gschema.xml				\
+	schema-tests/bad-type.gschema.xml				\
+	schema-tests/bare-alias.gschema.xml				\
+	schema-tests/choice-alias.gschema.xml				\
+	schema-tests/choice-bad.gschema.xml				\
+	schema-tests/choice-badtype.gschema.xml				\
+	schema-tests/choice-invalid-alias.gschema.xml			\
+	schema-tests/choice-missing-value.gschema.xml			\
+	schema-tests/choice-shadowed-alias.gschema.xml			\
+	schema-tests/choice-upside-down.gschema.xml			\
+	schema-tests/choice.gschema.xml					\
+	schema-tests/choices-wrong-type.gschema.xml			\
+	schema-tests/default-in-aliases.gschema.xml			\
+	schema-tests/default-not-in-choices.gschema.xml			\
+	schema-tests/default-out-of-range.gschema.xml			\
+	schema-tests/empty-key.gschema.xml				\
+	schema-tests/enum-with-aliases.gschema.xml			\
+	schema-tests/enum-with-bad-default.gschema.xml			\
+	schema-tests/enum-with-chained-alias.gschema.xml		\
+	schema-tests/enum-with-choice.gschema.xml			\
+	schema-tests/enum-with-invalid-alias.gschema.xml		\
+	schema-tests/enum-with-repeated-alias.gschema.xml		\
+	schema-tests/enum-with-shadow-alias.gschema.xml			\
+	schema-tests/enum.gschema.xml					\
+	schema-tests/incomplete-list.gschema.xml			\
+	schema-tests/invalid-path.gschema.xml				\
+	schema-tests/missing-quotes.gschema.xml				\
+	schema-tests/no-default.gschema.xml				\
+	schema-tests/overflow.gschema.xml				\
+	schema-tests/range-badtype.gschema.xml				\
+	schema-tests/range-default-high.gschema.xml			\
+	schema-tests/range-default-low.gschema.xml			\
+	schema-tests/range-high-default.gschema.xml			\
+	schema-tests/range-low-default.gschema.xml			\
+	schema-tests/range-missing-max.gschema.xml			\
+	schema-tests/range-missing-min.gschema.xml			\
+	schema-tests/range-parse-error.gschema.xml			\
+	schema-tests/range-wrong-type.gschema.xml			\
+	schema-tests/range.gschema.xml					\
+	schema-tests/wrong-category.gschema.xml
+
+
 EXTRA_DIST += \
-	socket-common.c						\
-	org.gtk.test.gschema					\
-	org.gtk.test.gschema.xml				\
-	de.po							\
-	schema-tests/bad-type.gschema.xml			\
-	schema-tests/incomplete-list.gschema.xml		\
-	schema-tests/missing-quotes.gschema.xml			\
-	schema-tests/no-default.gschema.xml			\
-	schema-tests/wrong-category.gschema.xml			\
-	schema-tests/overflow.gschema.xml			\
-	schema-tests/bad-key.gschema.xml			\
-	schema-tests/bad-key2.gschema.xml			\
-	schema-tests/bad-key3.gschema.xml			\
-	schema-tests/bad-key4.gschema.xml			\
-	schema-tests/empty-key.gschema.xml			\
-	schema-tests/array-default-not-in-choices.gschema.xml	\
-	schema-tests/bad-type.gschema.xml			\
-	schema-tests/choice-missing-value.gschema.xml		\
-	schema-tests/choices-wrong-type.gschema.xml		\
-	schema-tests/default-not-in-choices.gschema.xml		\
-	schema-tests/default-out-of-range.gschema.xml		\
-	schema-tests/incomplete-list.gschema.xml		\
-	schema-tests/missing-quotes.gschema.xml			\
-	schema-tests/no-default.gschema.xml			\
-	schema-tests/overflow.gschema.xml			\
-	schema-tests/range-missing-max.gschema.xml		\
-	schema-tests/range-missing-min.gschema.xml		\
-	schema-tests/range-wrong-type.gschema.xml		\
-	schema-tests/wrong-category.gschema.xml 		\
-	schema-tests/invalid-path.gschema.xml 			\
-	appinfo-test.desktop					\
+	socket-common.c			\
+	org.gtk.test.gschema		\
+	org.gtk.test.gschema.xml	\
+	testenum.h			\
+	enums.xml.template		\
+	de.po				\
+	$(schema_tests)			\
+	appinfo-test.desktop		\
 	gdbus-testserver.py
  
-MISC_STUFF = gschemas.compiled test.mo
+MISC_STUFF = test.mo
 
 test.mo: de.po
 	$(MSGFMT) -o test.mo $(srcdir)/de.po; \
@@ -318,9 +343,6 @@ if CROSS_COMPILING
 else
   glib_compile_schemas=$(top_builddir)/gio/glib-compile-schemas
 endif
-
-gschemas.compiled:
-	$(glib_compile_schemas) --targetdir=$(abs_builddir) $(srcdir)
 
 DISTCLEANFILES =                                        \
 	applications/mimeinfo.cache                     \

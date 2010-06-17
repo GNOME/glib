@@ -1335,14 +1335,16 @@ main (int argc, char *argv[])
 
   g_remove ("org.gtk.test.enums.xml");
   g_assert (g_spawn_command_line_sync ("../../gobject/glib-mkenums "
-                                       "--template enums.xml.template "
+                                       "--template " SRCDIR "/enums.xml.template "
                                        SRCDIR "/testenum.h",
                                        &enums, NULL, &result, NULL));
   g_assert (result == 0);
   g_assert (g_file_set_contents ("org.gtk.test.enums.xml", enums, -1, NULL));
 
   g_remove ("gschemas.compiled");
-  g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. " SRCDIR,
+  g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
+                                       "--schema-file=org.gtk.test.enums.xml "
+                                       "--schema-file=" SRCDIR "/org.gtk.test.gschema.xml",
                                        NULL, NULL, &result, NULL));
   g_assert (result == 0);
 
