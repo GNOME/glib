@@ -66,7 +66,32 @@ static const SchemaTest tests[] = {
   { "bad-key4",                     NULL, "*invalid name*"                                      },
   { "bad-key4",                     "--allow-any-name", NULL                                    },
   { "empty-key",                    NULL, "*empty names*"                                       },
-  { "empty-key",                    "--allow-any-name", "*empty names*"                         }
+  { "empty-key",                    "--allow-any-name", "*empty names*"                         },
+  { "enum",                         NULL, NULL                                                  },
+  { "enum-with-aliases",            NULL, NULL                                                  },
+  { "enum-with-invalid-alias",      NULL, "*'banger' is not in enumerated type*"                },
+  { "enum-with-repeated-alias",     NULL, "*<alias value='sausages'/> already specified*"       },
+  { "enum-with-chained-alias",      NULL, "*'sausages' is not in enumerated type*"              },
+  { "enum-with-shadow-alias",       NULL, "*'mash' is already a member of the enum*"            },
+  { "enum-with-choice",             NULL, "*<choices> can not be specified*"                    },
+  { "enum-with-bad-default",        NULL, "*<default> is not a valid member*"                   },
+  { "choice",                       NULL, NULL                                                  },
+  { "choice-upside-down",           NULL, NULL                                                  },
+  { "bad-choice",                   NULL, "*<default> contains string not in <choices>*"        },
+  { "choice-bad",                   NULL, "*<default> contains string not in <choices>*"        },
+  { "choice-badtype",               NULL, "*<choices> not allowed for keys of type 'i'*"        },
+  { "bare-alias",                   NULL, "*enumerated types or after <choices>*"               },
+  { "choice-alias",                 NULL, NULL                                                  },
+  { "default-in-aliases",           NULL, "*<default> contains string not in <choices>*"        },
+  { "choice-invalid-alias",         NULL, "*'befor' is not in <choices>*"                       },
+  { "choice-shadowed-alias",        NULL, "*given when <choice value='before'/> was already*"   },
+  { "range",                        NULL, NULL                                                  },
+  { "range-badtype",                NULL, "*<range> not allowed for keys of type 's'*"          },
+  { "range-low-default",            NULL, "*<default> is not contained in the specified range*" },
+  { "range-high-default",           NULL, "*<default> is not contained in the specified range*" },
+  { "range-default-low",            NULL, "*<default> is not contained in the specified range*" },
+  { "range-default-high",           NULL, "*<default> is not contained in the specified range*" },
+  { "range-parse-error",            NULL, "*invalid character in number*"                       }
 };
 
 int

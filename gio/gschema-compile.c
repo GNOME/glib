@@ -252,7 +252,7 @@ key_state_set_range (KeyState     *state,
       gchar *type = g_variant_type_dup_string (state->type);
       g_set_error (error, G_MARKUP_ERROR,
                   G_MARKUP_ERROR_INVALID_CONTENT,
-                  "<range> not allowed for keys of type \"%s\"\n", type);
+                  "<range> not allowed for keys of type '%s'", type);
       g_free (type);
       return;
     }
@@ -1034,11 +1034,11 @@ start_element (GMarkupParseContext  *context,
 
   if (container)
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                 "Element <%s> not allowed inside <%s>\n",
+                 "Element <%s> not allowed inside <%s>",
                  element_name, container);
   else
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                 "Element <%s> not allowed at toplevel\n", element_name);
+                 "Element <%s> not allowed at toplevel", element_name);
 }
 /* 2}}} */
 /* End element {{{2 */
@@ -1056,7 +1056,7 @@ key_state_end (KeyState **state_ptr,
     {
       g_set_error_literal (error,
                            G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                           "element <default> is required in <key>\n");
+                           "element <default> is required in <key>");
       return;
     }
 }
@@ -1128,7 +1128,7 @@ text (GMarkupParseContext  *context,
 
         else
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       "text may not appear inside <%s>\n",
+                       "text may not appear inside <%s>",
                        g_markup_parse_context_get_element (context));
 
         break;

@@ -304,5 +304,5 @@ strinfo_builder_contains (GString     *builder,
   return strinfo_find_string ((const guint32 *) builder->str,
                               builder->len / 4, string, FALSE) != -1 ||
          strinfo_find_string ((const guint32 *) builder->str,
-                              builder->len / 4, string, FALSE) != -1;
+                              builder->len / 4, string, TRUE) != -1;
 }

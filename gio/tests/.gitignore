@@ -58,3 +58,4 @@ test.mo
 unix-fd
 unix-streams
 utf8-input-streamgdbus-addresses
+org.gtk.test.enums.xml
