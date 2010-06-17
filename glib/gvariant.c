@@ -1377,7 +1377,7 @@ g_variant_dup_strv (GVariant *value,
   return strv;
 }
 
-/* Type checking, querying, default value {{{1 */
+/* Type checking and querying {{{1 */
 /**
  * g_variant_get_type:
  * @value: a #GVariant
@@ -1455,6 +1455,7 @@ g_variant_is_container (GVariant *value)
   return g_variant_type_is_container (g_variant_get_type (value));
 }
 
+
 /**
  * g_variant_classify:
  * @value: a #GVariant
@@ -1497,35 +1498,6 @@ g_variant_classify (GVariant *value)
   g_return_val_if_fail (value != NULL, 0);
 
   return *g_variant_get_type_string (value);
-}
-
-/**
- * g_variant_default_value:
- * @type: a definite #GVariantType
- * @returns: a reference to a #GVariant of the requested type
- *
- * Returns the "default value" for @type.  The default boolean instance
- * is false, the default value for any numeric type is (positive) zero,
- * the default array is empty and the default maybe instance is Nothing.
- * The default value for a tuple type is the tuple containing the
- * default value for each child.  This is roughly equivalent to the
- * values produced by the serialiser when it detects invalid data.
- *
- * Since: 2.26
- **/
-GVariant *
-g_variant_default_value (const GVariantType *type)
-{
-  GVariant *broken, *fixed;
-
-  g_return_val_if_fail (g_variant_type_is_definite (type), NULL);
-
-  /* let the serialiser figure it out */
-  broken = g_variant_new_from_data (type, NULL, 0, FALSE, NULL, NULL);
-  fixed = g_variant_get_normal_form (broken);
-  g_variant_unref (broken);
-
-  return fixed;
 }
 
 /* Pretty printer {{{1 */

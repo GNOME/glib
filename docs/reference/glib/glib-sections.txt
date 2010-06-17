@@ -2813,7 +2813,6 @@ g_variant_get_type_string
 g_variant_is_of_type
 g_variant_is_container
 g_variant_compare
-g_variant_default_value
 
 <SUBSECTION>
 g_variant_classify

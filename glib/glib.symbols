@@ -1725,7 +1725,6 @@ g_variant_is_of_type
 g_variant_is_container
 g_variant_classify
 g_variant_compare
-g_variant_default_value
 
 g_variant_new_boolean
 g_variant_new_byte
