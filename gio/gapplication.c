@@ -551,10 +551,10 @@ g_application_register (GApplication *application)
 {
   gboolean unique;
 
-  g_return_val_if_fail (G_IS_APPLICATION (app), FALSE);
-  g_return_val_if_fail (app->priv->is_remote, FALSE);
+  g_return_val_if_fail (G_IS_APPLICATION (application), FALSE);
+  g_return_val_if_fail (application->priv->is_remote, FALSE);
 
-  if (!_g_application_platform_register (app, &unique, NULL, NULL))
+  if (!_g_application_platform_register (application, &unique, NULL, NULL))
     return FALSE;
   return unique;
 }
