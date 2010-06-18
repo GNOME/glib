@@ -132,6 +132,10 @@ G_BEGIN_DECLS
  *  unmodified for the lifetime of the parameter. 
  *  Since 2.8
  * @G_PARAM_PRIVATE: internal
+ * @G_PARAM_DEPRECATED: the parameter is deprecated and will be removed
+ *  in a future version. A warning will be generated if it is used
+ *  while running with G_ENABLE_DIAGNOSTIC=1.
+ *  Since: 2.26
  * 
  * Through the #GParamFlags flag values, certain aspects of parameters
  * can be configured.
@@ -148,7 +152,9 @@ typedef enum
   G_PARAM_PRIVATE	      = G_PARAM_STATIC_NAME,
 #endif
   G_PARAM_STATIC_NICK	      = 1 << 6,
-  G_PARAM_STATIC_BLURB	      = 1 << 7
+  G_PARAM_STATIC_BLURB	      = 1 << 7,
+  /* User defined flags go up to 30 */
+  G_PARAM_DEPRECATED          = 1 << 31
 } GParamFlags;
 /**
  * G_PARAM_READWRITE:
@@ -175,10 +181,9 @@ typedef enum
  * G_PARAM_USER_SHIFT:
  * 
  * Minimum shift count to be used for user defined flags, to be stored in
- * #GParamSpec.flags.
+ * #GParamSpec.flags. The maximum allowed is 30 + G_PARAM_USER_SHIFT.
  */
 #define	G_PARAM_USER_SHIFT	(8)
-
 
 /* --- typedefs & structures --- */
 typedef struct _GParamSpec      GParamSpec;

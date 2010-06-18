@@ -1016,10 +1016,26 @@ object_set_property (GObject             *object,
   GObjectClass *class = g_type_class_peek (pspec->owner_type);
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
   GParamSpec *redirect;
+  static gchar* enable_diagnostic = NULL;
 
   redirect = g_param_spec_get_redirect_target (pspec);
   if (redirect)
     pspec = redirect;
+
+  if (G_UNLIKELY (!enable_diagnostic))
+    {
+      enable_diagnostic = g_getenv ("G_ENABLE_DIAGNOSTIC");
+      if (!enable_diagnostic)
+        enable_diagnostic = "0";
+    }
+
+  if (enable_diagnostic[0] == '1')
+    {
+      if (pspec->flags & G_PARAM_DEPRECATED)
+        g_warning ("The property %s::%s is deprecated and shouldn't be used "
+                   "anymore. It will be removed in a future version.",
+                   G_OBJECT_TYPE_NAME (object), pspec->name);
+    }
 
   /* provide a copy to work from, convert (if necessary) and validate */
   g_value_init (&tmp_value, pspec->value_type);
