@@ -737,13 +737,22 @@ g_bus_own_name_with_closures (GBusType                  bus_type,
   data = g_new0 (OwnNameData, 1);
 
   if (bus_acquired_closure != NULL)
-    data->bus_acquired_closure = g_closure_ref (bus_acquired_closure);
+    {
+      data->bus_acquired_closure = g_closure_ref (bus_acquired_closure);
+      g_closure_sink (bus_acquired_closure);
+    }
 
   if (name_acquired_closure != NULL)
-    data->name_acquired_closure = g_closure_ref (name_acquired_closure);
+    {
+      data->name_acquired_closure = g_closure_ref (name_acquired_closure);
+      g_closure_sink (name_acquired_closure);
+    }
 
   if (name_lost_closure != NULL)
-    data->name_lost_closure = g_closure_ref (name_lost_closure);
+    {
+      data->name_lost_closure = g_closure_ref (name_lost_closure);
+      g_closure_sink (name_lost_closure);
+    }
 
   return g_bus_own_name (bus_type,
           name,
@@ -787,10 +796,16 @@ g_bus_own_name_on_connection_with_closures (GDBusConnection          *connection
   data = g_new0 (OwnNameData, 1);
 
   if (name_acquired_closure != NULL)
-    data->name_acquired_closure = g_closure_ref (name_acquired_closure);
+    {
+      data->name_acquired_closure = g_closure_ref (name_acquired_closure);
+      g_closure_sink (name_acquired_closure);
+    }
 
   if (name_lost_closure != NULL)
-    data->name_lost_closure = g_closure_ref (name_lost_closure);
+    {
+      data->name_lost_closure = g_closure_ref (name_lost_closure);
+      g_closure_sink (name_lost_closure);
+    }
 
   return g_bus_own_name_on_connection (connection,
           name,

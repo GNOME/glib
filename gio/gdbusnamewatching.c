@@ -739,10 +739,16 @@ g_bus_watch_name_with_closures (GBusType                 bus_type,
   data = g_new0 (WatchNameData, 1);
 
   if (name_appeared_closure != NULL)
-    data->name_appeared_closure = g_closure_ref (name_appeared_closure);
+    {
+      data->name_appeared_closure = g_closure_ref (name_appeared_closure);
+      g_closure_sink (name_appeared_closure);
+    }
 
   if (name_vanished_closure != NULL)
-    data->name_vanished_closure = g_closure_ref (name_vanished_closure);
+    {
+      data->name_vanished_closure = g_closure_ref (name_vanished_closure);
+      g_closure_sink (name_vanished_closure);
+    }
 
   return g_bus_watch_name (bus_type,
           name,
@@ -785,10 +791,16 @@ guint g_bus_watch_name_on_connection_with_closures (
   data = g_new0 (WatchNameData, 1);
 
   if (name_appeared_closure != NULL)
-    data->name_appeared_closure = g_closure_ref (name_appeared_closure);
+    {
+      data->name_appeared_closure = g_closure_ref (name_appeared_closure);
+      g_closure_sink (name_appeared_closure);
+    }
 
   if (name_vanished_closure != NULL)
-    data->name_vanished_closure = g_closure_ref (name_vanished_closure);
+    {
+      data->name_vanished_closure = g_closure_ref (name_vanished_closure);
+      g_closure_sink (name_vanished_closure);
+    }
 
   return g_bus_watch_name_on_connection (connection,
           name,
