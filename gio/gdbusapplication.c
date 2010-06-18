@@ -301,6 +301,10 @@ _g_application_platform_register (GApplication  *app,
   gboolean result;
   guint registration_id;
 
+  /* Callers should have verified this */
+  g_assert (app->priv->registration_tried == FALSE);
+  app->priv->registration_tried = TRUE;
+
   registration_id = g_dbus_connection_register_object (app->priv->session_bus,
                                                        app->priv->dbus_path,
                                                        &application_dbus_interface_info,
@@ -339,7 +343,7 @@ _g_application_platform_register (GApplication  *app,
     {
       app->priv->is_remote = FALSE;
     }
-  else if (app->priv->default_quit)
+  else
     {
       GVariantBuilder builder;
       GVariant *message;
@@ -361,7 +365,8 @@ _g_application_platform_register (GApplication  *app,
       if (result)
 	g_variant_unref (result);
 
-      exit (0);
+      if (app->priv->default_quit)
+	exit (0);
     }
 
 done:

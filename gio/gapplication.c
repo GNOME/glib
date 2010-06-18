@@ -214,6 +214,7 @@ struct _GApplicationPrivate
   guint do_register  : 1;
   guint default_quit : 1;
   guint is_remote    : 1;
+  guint registration_tried : 1;
 
   guint actions_changed_id;
 
@@ -382,8 +383,8 @@ initable_init (GInitable     *initable,
   if (!_g_application_platform_init (app, cancellable, error))
     return FALSE;
 
-  if (app->priv->do_register &&
-      !_g_application_platform_register (app, &unique, cancellable ,error))
+  if (app->priv->do_register
+      && !_g_application_platform_register (app, &unique, cancellable ,error))
     return FALSE;
 
   return TRUE;
@@ -557,7 +558,14 @@ g_application_unregistered_try_new (const gchar *appid,
  * initialized, but this behavior is controlled by the
  * GApplication:register property.  If it was given as %FALSE at
  * construction time, this function allows you to later attempt
- * to ensure uniqueness.
+ * to ensure uniqueness.  Note that the GApplication:default-quit
+ * property no longer applies at this point; if this function returns
+ * %FALSE, platform activation will occur, but the current process
+ * will not be terminated.
+ *
+ * It is an error to call this function more than once.  It is
+ * also an error to call this function if the GApplication:register
+ * property was %TRUE at construction time.
  *
  * Returns: %TRUE if registration was successful
  */
@@ -568,6 +576,7 @@ g_application_register (GApplication *application)
 
   g_return_val_if_fail (G_IS_APPLICATION (application), FALSE);
   g_return_val_if_fail (application->priv->is_remote, FALSE);
+  g_return_val_if_fail (!application->priv->registration_tried, FALSE);
 
   if (!_g_application_platform_register (application, &unique, NULL, NULL))
     return FALSE;
@@ -1054,6 +1063,9 @@ g_application_set_property (GObject      *object,
 
     case PROP_REGISTER:
       app->priv->do_register = g_value_get_boolean (value);
+      /* If we're not registering, the default_quit no longer applies */
+      if (!app->priv->do_register)
+	app->priv->default_quit = FALSE;
       break;
 
     case PROP_ARGV:
@@ -1274,8 +1286,9 @@ g_application_class_init (GApplicationClass *klass)
   /**
    * GApplication:default-quit:
    *
-   * By default, if a different process is running this application, the
-   * process will be exited.  Set this property to %FALSE to allow custom
+   * By default, if the GApplication:register property is %TRUE, and a
+   * different process is running this application, the process will
+   * be exited.  Set this property to %FALSE to allow custom
    * interaction with the remote process.
    *
    */
