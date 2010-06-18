@@ -50,13 +50,13 @@ _g_application_platform_on_actions_changed (GApplication *app)
 static void
 _g_application_platform_remote_invoke_action (GApplication  *app,
                                               const gchar   *action,
-                                              guint          timestamp)
+                                              GVariant      *platform_data)
 {
 }
 
 static void
 _g_application_platform_remote_quit (GApplication *app,
-                                     guint         timestamp)
+                                     GVariant     *platform_data)
 {
 }
 
