@@ -271,7 +271,10 @@ handle_writable (gint   *argc,
   schema = (*argv)[1];
   key = (*argv)[2];
 
-  settings = g_settings_new_with_path (schema, path);
+  if (path)
+    settings = g_settings_new_with_path (schema, path);
+  else
+    settings = g_settings_new (schema);
 
   if (g_settings_is_writable (settings, key))
     g_print ("true\n");
@@ -347,7 +350,10 @@ handle_monitor (gint   *argc,
   schema = (*argv)[1];
   key = (*argv)[2];
 
-  settings = g_settings_new_with_path (schema, path);
+  if (path)
+    settings = g_settings_new_with_path (schema, path);
+  else
+    settings = g_settings_new (schema);
 
   detailed_signal = g_strdup_printf ("changed::%s", key);
   g_signal_connect (settings, detailed_signal,
