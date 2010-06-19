@@ -349,7 +349,8 @@ gsettings_SCHEMAS = my.app.gschema.xml
         will be used in similar ways by a future gsettings-editor, so you
         should use the same conventions for them: The summary is just a short
         label with no punctuation, the description can be one or more complete
-        sentences.
+        sentences. If multiple paragraphs are desired for the description, the
+        paragraphs should be separated by a completely empty line.
       </para>
       <para>
         Translations for these strings will also be handled
