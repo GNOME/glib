@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-06-12 17:42+0200\n"
-"PO-Revision-Date: 2010-06-12 17:47+0200\n"
+"POT-Creation-Date: 2010-06-19 15:13+0200\n"
+"PO-Revision-Date: 2010-06-19 15:13+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome@g11.net>\n"
 "MIME-Version: 1.0\n"
@@ -1313,6 +1313,8 @@ msgstr "Erro no enderezo «%s» - falta o atributo do porto ou está mal formado
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
+"Produciuse un erro no enderezo «%s» - falta o atributo do ficheiro de uso de "
+"unha vez ou está mal formado"
 
 #: ../gio/gdbusaddress.c:601
 #, c-format
@@ -1322,16 +1324,18 @@ msgstr "Transporte «%s» descoñecido ou non compatíbel para o enderezo «%s»
 #: ../gio/gdbusaddress.c:635
 #, c-format
 msgid "Error reading nonce file `%s':"
-msgstr ""
+msgstr "Produciuse un erro ao ler o fichiro de uso de unha vez «%s»:"
 
 #: ../gio/gdbusaddress.c:646
 msgid "The nonce-file `%s' was %"
-msgstr ""
+msgstr "O ficheiro de uso de unha vez «%s» foi %"
 
 #: ../gio/gdbusaddress.c:662
 #, c-format
 msgid "Error write contents of nonce file `%s' to stream:"
 msgstr ""
+"Produciuse un erro ao gravar os contidos do ficheiro de uso de unha vez «%s» "
+"ao fluxo:"
 
 #: ../gio/gdbusaddress.c:978
 #, c-format
@@ -1376,6 +1380,8 @@ msgstr "Falta de contido inesperada ao tentar ler (de forma segura) unha liña"
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
+"Agotáronse todos os mecanismos de autenticación dispoñíbel (tentaronse: %s) "
+"(dispoñíbeis: %s)"
 
 #: ../gio/gdbusauth.c:1146
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -1384,7 +1390,7 @@ msgstr "Cancelando mediante GDBusAuthObserver::authorize-authenticated-peer"
 #: ../gio/gdbusauthmechanismsha1.c:264
 #, c-format
 msgid "Error statting directory `%s': %s"
-msgstr ""
+msgstr "Produciuse un fallo ao abrir o directorio «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:276
 #, c-format
@@ -1433,7 +1439,7 @@ msgstr "Non foi posíbel encontrar a cookie co id %d no anel de chave en «%s»"
 #: ../gio/gdbusauthmechanismsha1.c:531
 #, c-format
 msgid "Error deleting stale lock-file `%s': %s"
-msgstr ""
+msgstr "Produciuse un erro ao eliminar o ficheiro de bloqueo antigo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:562
 #, c-format
@@ -1554,36 +1560,36 @@ msgstr "Xa se exportou un subárbore para %s"
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: %s"
 
-#: ../gio/gdbusmessage.c:723
+#: ../gio/gdbusmessage.c:732
 msgid "Wanted to read %"
 msgstr "Quíxose ler %"
 
-#: ../gio/gdbusmessage.c:744
+#: ../gio/gdbusmessage.c:753
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
 msgstr "Esperábase un byte NUL despois da cadea «%s» pero encontrouse «%c» (%d)"
 
-#: ../gio/gdbusmessage.c:927
+#: ../gio/gdbusmessage.c:950
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "O valor analizado «%s» non é un camiño de obxecto D-Bus válido"
 
-#: ../gio/gdbusmessage.c:953
+#: ../gio/gdbusmessage.c:976
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "«%s» non é un nome válido"
 
-#: ../gio/gdbusmessage.c:979
+#: ../gio/gdbusmessage.c:1016
 msgid "Encountered array of length %"
 msgstr "Encontrouse unha matriz de lonxitude %"
 
-#: ../gio/gdbusmessage.c:1116
+#: ../gio/gdbusmessage.c:1174
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
 "O valor «%s» analizado para a variante non é unha sinatura de D-Bus válida."
 
-#: ../gio/gdbusmessage.c:1141
+#: ../gio/gdbusmessage.c:1200
 #, c-format
 msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
@@ -1591,35 +1597,35 @@ msgstr ""
 "Produciuse un erro ao desserializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
-#: ../gio/gdbusmessage.c:1286
+#: ../gio/gdbusmessage.c:1374
 #, c-format
 msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
 msgstr ""
 "Valor de endianness non válido. Esperábase «|» ou «B» pero encontrouse «%c» (%d)"
 
-#: ../gio/gdbusmessage.c:1300
+#: ../gio/gdbusmessage.c:1388
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Versión maior do protocolo inválida. Esperábase 1 pero encontrouse a %d"
 
-#: ../gio/gdbusmessage.c:1342
+#: ../gio/gdbusmessage.c:1444
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 "Encontrouse a cabeceira de sinatura coa sinatura «%s» máis o corpo da mensaxe "
 "está baleiro"
 
-#: ../gio/gdbusmessage.c:1356
+#: ../gio/gdbusmessage.c:1458
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "O valor analizado «%s» non é unha sinatura D-Bus válida (para o corpo)"
 
-#: ../gio/gdbusmessage.c:1385
+#: ../gio/gdbusmessage.c:1491
 msgid "No signature header in message but the message body is %"
 msgstr "Non hai unha cabeceira da sinatura pero o corpo da mensaxe é %"
 
-#: ../gio/gdbusmessage.c:1694
+#: ../gio/gdbusmessage.c:1800
 #, c-format
 msgid ""
 "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
@@ -1627,19 +1633,19 @@ msgstr ""
 "Produciuse un erro ao serializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
-#: ../gio/gdbusmessage.c:1823
+#: ../gio/gdbusmessage.c:1929
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
 msgstr "A mensaxe ten %d fds pero o campo da cabeceira indica %d fds"
 
-#: ../gio/gdbusmessage.c:1869
+#: ../gio/gdbusmessage.c:1975
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 "O corpo da mensaxe ten a sinatura «%s» máis non está presente a cabeceira de "
 "sinatura"
 
-#: ../gio/gdbusmessage.c:1879
+#: ../gio/gdbusmessage.c:1985
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `%"
@@ -1648,18 +1654,18 @@ msgstr ""
 "O corpo da mensaxe ten a sinatura de tipo «%s» pero a sintura no campo da "
 "cabeceira é «%s»"
 
-#: ../gio/gdbusmessage.c:1895
+#: ../gio/gdbusmessage.c:2001
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 "O corpo da mensaxe está baleiro máis a sinatura do campo da cabeceira é «(%s)»"
 
-#: ../gio/gdbusmessage.c:2448
+#: ../gio/gdbusmessage.c:2554
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Produciuse un erro ao devolver co corpo de tipo «%s»"
 
-#: ../gio/gdbusmessage.c:2456
+#: ../gio/gdbusmessage.c:2562
 msgid "Error return with empty body"
 msgstr "Produciuse un erro ao devolver co corpo baleiro"
 
@@ -1674,7 +1680,7 @@ msgstr "O tipo do valor de retorno é incorrecto, obtívose «%s» e esperábase
 msgid "Error sending message: %s"
 msgstr "Produciuse un erro ao enviar a mensaxe: %s"
 
-#: ../gio/gdbusprivate.c:775
+#: ../gio/gdbusprivate.c:785
 msgid "Error writing first 16 bytes of message to socket: "
 msgstr ""
 "Produciuse un erro ao escribir os primeiros 16 bytes da mensaxe no socket:"
@@ -1705,11 +1711,13 @@ msgstr "Non se admite un espazo de nomes abstracto"
 #: ../gio/gdbusserver.c:759
 msgid "Cannot specify nonce file when creating a server"
 msgstr ""
+"Non é posíbel especificar o ficheiro de uso de unha vez ao crear un servidor"
 
 #: ../gio/gdbusserver.c:836
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr ""
+"Produciuse un erro ao escribir no ficheiro de uso de unha vez en «%s»: %s"
 
 #: ../gio/gdbusserver.c:988
 #, c-format
@@ -1745,12 +1753,12 @@ msgstr ""
 "Use '%s COMMAND --help' para obter axuda sobre cada orde.\n"
 
 #: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
-#: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1322
+#: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
 #, c-format
 msgid "Error: %s\n"
 msgstr "Erro: %s\n"
 
-#: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1332
+#: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Produciuse un erro ao analizar o XML de introspección: %s\n"
@@ -1816,22 +1824,22 @@ msgstr "Método e nome da interface"
 msgid "Invoke a method on a remote object."
 msgstr "Invocar un método nun obxecto remoto."
 
-#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1243 ../gio/gdbus-tool.c:1495
+#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1504
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Produciuse un erro ao conectar: %s\n"
 
-#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1262 ../gio/gdbus-tool.c:1514
+#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1523
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Erro: non se especificou un destino\n"
 
-#: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1281
+#: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1283
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Erro: non se especificou un camiño de obxecto\n"
 
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1301 ../gio/gdbus-tool.c:1554
+#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1563
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Erro: %s non é un camiño a un obxecto válido\n"
@@ -1856,27 +1864,31 @@ msgstr "Produciuse un erro ao analizar o parámetro %d do tipo «%s»: %s\n"
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Produciuse un erro ao analizar a opción %d: %s\n"
 
-#: ../gio/gdbus-tool.c:1161
+#: ../gio/gdbus-tool.c:1162
 msgid "Destination name to introspect"
 msgstr "Nome de destino a introspeccionar"
 
-#: ../gio/gdbus-tool.c:1162
+#: ../gio/gdbus-tool.c:1163
 msgid "Object path to introspect"
 msgstr "Camiño do obxecto a introspeccionar"
 
-#: ../gio/gdbus-tool.c:1195
+#: ../gio/gdbus-tool.c:1164
+msgid "Print XML"
+msgstr "Imprimir XML"
+
+#: ../gio/gdbus-tool.c:1197
 msgid "Introspect a remote object."
 msgstr "Introspecciona un obxecto remoto."
 
-#: ../gio/gdbus-tool.c:1413
+#: ../gio/gdbus-tool.c:1422
 msgid "Destination name to monitor"
 msgstr "Nome de destino a monitorizar"
 
-#: ../gio/gdbus-tool.c:1414
+#: ../gio/gdbus-tool.c:1423
 msgid "Object path to monitor"
 msgstr "Camiño do obxecto a monitorizar"
 
-#: ../gio/gdbus-tool.c:1447
+#: ../gio/gdbus-tool.c:1456
 msgid "Monitor a remote object."
 msgstr "Monitoriza un obxecto remoto."
 
@@ -2553,27 +2565,27 @@ msgstr "Foi incapaz de resolver temporalmente «%s»"
 msgid "Error resolving '%s'"
 msgstr "Produciuse un erro ao resolver: «%s»"
 
-#: ../gio/gschema-compile.c:658
+#: ../gio/gschema-compile.c:1304
 msgid "where to store the gschemas.compiled file"
 msgstr "onde almacenar o ficheiro compilado de gschemas"
 
-#: ../gio/gschema-compile.c:658 ../gio/gschema-compile.c:670
+#: ../gio/gschema-compile.c:1304 ../gio/gschema-compile.c:1316
 msgid "DIRECTORY"
 msgstr "DIRECTORIO"
 
-#: ../gio/gschema-compile.c:659
+#: ../gio/gschema-compile.c:1305
 msgid "Do not write the gschema.compiled file"
 msgstr "Non escribir o ficheiro compilado de gschema"
 
-#: ../gio/gschema-compile.c:660
+#: ../gio/gschema-compile.c:1306
 msgid "Do not give error for empty directory"
 msgstr "Non é posíbel mover o directorio sobre un directorio"
 
-#: ../gio/gschema-compile.c:661
+#: ../gio/gschema-compile.c:1307
 msgid "Do not enforce key name restrictions"
 msgstr "Non respetar as restricións de nome de chave"
 
-#: ../gio/gschema-compile.c:673
+#: ../gio/gschema-compile.c:1319
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2583,12 +2595,12 @@ msgstr ""
 "de esquemas. Os ficheiros de esquema deben ter a extensión\n"
 ".gschema.xml e o ficheiro de caché chámase gschemas.compiled."
 
-#: ../gio/gschema-compile.c:689
+#: ../gio/gschema-compile.c:1335
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Debería fornecer exactamente un nome de cartafol\n"
 
-#: ../gio/gschema-compile.c:728
+#: ../gio/gschema-compile.c:1375
 #, c-format
 msgid "No schema files found\n"
 msgstr "Non se encontraron ficheiros de esquema\n"
