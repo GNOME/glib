@@ -3556,8 +3556,9 @@ fi
 
 # Check for libdbus1 - Optional - is only used in the GDBus test cases
 #
+# 1.2.14 required for dbus_message_set_serial
 PKG_CHECK_MODULES(DBUS1,
-                  dbus-1,
+                  dbus-1 >= 1.2.14,
                   [AC_DEFINE(HAVE_DBUS1, 1, [Define if dbus-1 is available]) have_dbus1=yes],
                   have_dbus1=no)
 AC_SUBST(DBUS1_CFLAGS)
