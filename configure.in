@@ -2744,7 +2744,7 @@ if test $cross_compiling = yes; then
     AC_MSG_ERROR(Could not find a glib-genmarshal in your PATH)
   fi
 
-  AC_PATH_TOOL(GLIB_COMPILE_SCHEMAS, glib-compile-schemas, no)
+  AC_PATH_PROG(GLIB_COMPILE_SCHEMAS, glib-compile-schemas, no)
   if test x$GLIB_COMPILE_SCHEMAS = xno; then
     AC_MSG_ERROR(Could not find a glib-compile-schemas in your PATH)
   fi

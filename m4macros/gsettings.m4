@@ -20,11 +20,13 @@ AC_DEFUN([GLIB_GSETTINGS],
   if test x$cross_compiling != xyes; then
     GLIB_COMPILE_SCHEMAS=`$PKG_CONFIG --variable glib_compile_schemas gio-2.0`
   else
-    AC_PATH_TOOL(GLIB_COMPILE_SCHEMAS, glib-compile-schemas)
+    AC_PATH_PROG(GLIB_COMPILE_SCHEMAS, glib-compile-schemas)
   fi
   AC_SUBST(GLIB_COMPILE_SCHEMAS)
   if test "x$GLIB_COMPILE_SCHEMAS" = "x"; then
-    AC_MSG_ERROR([glib-compile-schemas not found.])
+    ifelse([$2],,[AC_MSG_ERROR([glib-compile-schemas not found.])],[$2])
+  else
+    ifelse([$1],,[:],[$1])
   fi
 
   GSETTINGS_RULES='
