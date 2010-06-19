@@ -446,6 +446,28 @@ g_settings_get_mapping (GValue   *value,
           g_value_set_string (value, g_variant_get_string (variant, NULL));
           return TRUE;
         }
+
+      else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_STRING) &&
+               G_VALUE_HOLDS_ENUM (value))
+        {
+          GEnumClass *eclass;
+          GEnumValue *evalue;
+          const gchar *nick;
+
+          eclass = g_type_class_ref (G_VALUE_TYPE (value));
+          nick = g_variant_get_string (variant, NULL);
+          evalue = g_enum_get_value_by_nick (eclass, nick);
+          g_type_class_unref (eclass);
+
+          if (evalue)
+            {
+             g_value_set_enum (value, evalue->value);
+             return TRUE;
+            }
+
+          g_warning ("Unable to lookup enum nick '%s' via GType\n", nick);
+          return FALSE;
+        }
     }
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE ("ay")))
     {
