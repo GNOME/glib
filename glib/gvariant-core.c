@@ -675,6 +675,30 @@ g_variant_ref_sink (GVariant *value)
 }
 
 /**
+ * g_variant_is_floating:
+ * @value: a #GVariant
+ * @returns: whether @value is floating
+ *
+ * Checks whether @value has a floating reference count.
+ *
+ * This function should only ever be used to assert that a given variant
+ * is or is not floating, or for debug purposes. To acquire a reference
+ * to a variant that might be floating, always use g_variant_ref_sink().
+ *
+ * See g_variant_ref_sink() for more information about floating reference
+ * counts.
+ *
+ * Since: 2.26
+ **/
+gboolean
+g_variant_is_floating (GVariant *value)
+{
+  g_return_val_if_fail (value != NULL, FALSE);
+
+  return (value->state & STATE_FLOATING) != 0;
+}
+
+/**
  * g_variant_get_size:
  * @value: a #GVariant instance
  * @returns: the serialised size of @value

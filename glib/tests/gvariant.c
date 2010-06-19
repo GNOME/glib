@@ -3800,6 +3800,18 @@ test_parse_positional (void)
     }
 }
 
+static void
+test_floating (void)
+{
+  GVariant *value;
+
+  value = g_variant_new_int32 (42);
+  g_assert (g_variant_is_floating (value));
+  g_variant_ref_sink (value);
+  g_assert (!g_variant_is_floating (value));
+  g_variant_unref (value);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -3838,6 +3850,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/parser", test_parses);
   g_test_add_func ("/gvariant/parse-failures", test_parse_failures);
   g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
+  g_test_add_func ("/gvariant/floating", test_floating);
 
   return g_test_run ();
 }
