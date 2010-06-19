@@ -1179,7 +1179,7 @@ g_value_get_gtype (const GValue *value)
 
 /**
  * g_value_set_variant:
- * @value: a valid #GValue of %G_TYPE_VARIANT
+ * @value: a valid #GValue of type %G_TYPE_VARIANT
  * @variant: a #GVariant, or %NULL
  *
  * Set the contents of a variant #GValue to @variant.
@@ -1208,7 +1208,7 @@ g_value_set_variant (GValue   *value,
 
 /**
  * g_value_take_variant:
- * @value: a valid #GValue of %G_TYPE_VARIANT
+ * @value: a valid #GValue of type %G_TYPE_VARIANT
  * @variant: a #GVariant, or %NULL
  *
  * Set the contents of a variant #GValue to @variant, and takes over
@@ -1247,7 +1247,7 @@ g_value_take_variant (GValue   *value,
 
 /**
  * g_value_get_variant:
- * @value: a valid #GValue of %G_TYPE_VARIANT
+ * @value: a valid #GValue of type %G_TYPE_VARIANT
  *
  * Get the contents of a variant #GValue.
  *
@@ -1265,7 +1265,7 @@ g_value_get_variant (const GValue *value)
 
 /**
  * g_value_dup_variant:
- * @value: a valid #GValue of %G_TYPE_VARIANT
+ * @value: a valid #GValue of type %G_TYPE_VARIANT
  *
  * Get the contents of a variant #GValue, increasing its refcount.
  *
