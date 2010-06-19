@@ -147,6 +147,9 @@ strinfo_scan (const guint32 *strinfo,
 {
   guint i = 0;
 
+  if (length < n_words)
+    return -1;
+
   while (i <= length - n_words)
     {
       guint j = 0;

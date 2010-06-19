@@ -91,7 +91,8 @@ static const SchemaTest tests[] = {
   { "range-high-default",           NULL, "*<default> is not contained in the specified range*" },
   { "range-default-low",            NULL, "*<default> is not contained in the specified range*" },
   { "range-default-high",           NULL, "*<default> is not contained in the specified range*" },
-  { "range-parse-error",            NULL, "*invalid character in number*"                       }
+  { "range-parse-error",            NULL, "*invalid character in number*"                       },
+  { "from-docs",                    NULL, NULL                                                  }
 };
 
 int
