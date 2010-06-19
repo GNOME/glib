@@ -132,7 +132,10 @@ handle_get (gint   *argc,
   schema = (*argv)[1];
   key = (*argv)[2];
 
-  settings = g_settings_new_with_path (schema, path);
+  if (path)
+    settings = g_settings_new_with_path (schema, path);
+  else
+    settings = g_settings_new (schema);
 
   v = g_settings_get_value (settings, key);
   g_print ("%s\n", g_variant_print (v, FALSE));
@@ -193,7 +196,10 @@ handle_set (gint   *argc,
   key = (*argv)[2];
   value = (*argv)[3];
 
-  settings = g_settings_new_with_path (schema, path);
+  if (path)
+    settings = g_settings_new_with_path (schema, path);
+  else
+    settings = g_settings_new (schema);
 
   v = g_settings_get_value (settings, key);
   type = g_variant_get_type (v);
