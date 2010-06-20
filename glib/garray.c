@@ -1075,13 +1075,12 @@ g_ptr_array_remove_index_fast (GPtrArray *farray,
   g_return_val_if_fail (index_ < array->len, NULL);
 
   result = array->pdata[index_];
-  
+
+  if (array->element_free_func != NULL)
+    array->element_free_func (array->pdata[index_]);
+
   if (index_ != array->len - 1)
-    {
-      if (array->element_free_func != NULL)
-        array->element_free_func (array->pdata[index_]);
-      array->pdata[index_] = array->pdata[array->len - 1];
-    }
+    array->pdata[index_] = array->pdata[array->len - 1];
 
   array->len -= 1;
 
