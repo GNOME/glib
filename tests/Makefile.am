@@ -135,8 +135,7 @@ test_programs =					\
 	unicode-encoding			\
 	utf8-validate				\
 	utf8-pointer				\
-	uri-test				\
-	regex-test
+	uri-test
 
 test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh run-assert-msg-test.sh
 
@@ -204,7 +203,6 @@ unicode_collate_LDADD = $(progs_ldadd)
 utf8_validate_LDADD = $(progs_ldadd)
 utf8_pointer_LDADD = $(progs_ldadd)
 uri_test_LDADD = $(progs_ldadd)
-regex_test_LDADD = $(progs_ldadd)
 markup_collect_LDADD = $(progs_ldadd)
 
 noinst_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
