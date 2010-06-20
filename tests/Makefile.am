@@ -67,9 +67,6 @@ noinst_PROGRAMS = $(TEST_PROGS)	\
 	errorcheck-mutex-test	\
 	assert-msg-test
 
-TEST_PROGS              += scannerapi
-scannerapi_SOURCES       = scannerapi.c
-scannerapi_LDADD         = $(progs_ldadd)
 TEST_PROGS		+= testglib
 testglib_SOURCES         = testglib.c
 testglib_LDADD		 = $(libglib)
@@ -91,7 +88,6 @@ endif
 
 test_programs =					\
 	atomic-test				\
-	base64-test				\
 	bit-test				\
 	$(CXX_TEST)				\
 	checksum-test				\
@@ -118,7 +114,6 @@ test_programs =					\
 	asyncqueue-test				\
 	qsort-test				\
 	relation-test				\
-	sequence-test				\
 	shell-test				\
 	slist-test				\
 	slice-test				\
@@ -154,7 +149,6 @@ thread_ldadd = $(libgthread) $(G_THREAD_LIBS) $(progs_ldadd)
 module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
 
 atomic_test_LDADD = $(progs_ldadd)
-base64_test_LDADD = $(progs_ldadd)
 bit_test_LDADD = $(progs_ldadd)
 bookmarkfile_test_LDADD = $(progs_ldadd)
 checksum_test_LDADD = $(progs_ldadd)
@@ -181,7 +175,6 @@ queue_test_LDADD = $(progs_ldadd)
 asyncqueue_test_LDADD = $(thread_ldadd)
 qsort_test_LDADD = $(progs_ldadd)
 relation_test_LDADD = $(progs_ldadd)
-sequence_test_LDADD = $(progs_ldadd)
 shell_test_LDADD = $(progs_ldadd)
 slist_test_LDADD = $(progs_ldadd)
 slice_test_SOURCES = slice-test.c memchunks.c
