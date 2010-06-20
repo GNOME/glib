@@ -204,7 +204,24 @@ typedef enum
   G_UNICODE_SCRIPT_VAI,                /* Vaii */
   G_UNICODE_SCRIPT_CARIAN,             /* Cari */
   G_UNICODE_SCRIPT_LYCIAN,             /* Lyci */
-  G_UNICODE_SCRIPT_LYDIAN              /* Lydi */
+  G_UNICODE_SCRIPT_LYDIAN,             /* Lydi */
+
+  /* Unicode-5.2 additions */
+  G_UNICODE_SCRIPT_AVESTAN,                /* Avestan */
+  G_UNICODE_SCRIPT_BAMUM,                  /* Bamum */
+  G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS,   /* Egyptian Hieroglyphs */
+  G_UNICODE_SCRIPT_IMPERIAL_ARAMAIC,       /* Imperial Aramaic */
+  G_UNICODE_SCRIPT_INSCRIPTIONAL_PAHLAVI,  /* Inscriptional Pahlavi */
+  G_UNICODE_SCRIPT_INSCRIPTIONAL_PARTHIAN, /* Inscriptional Parthian */
+  G_UNICODE_SCRIPT_JAVANESE,               /* Javanese */
+  G_UNICODE_SCRIPT_KAITHI,                 /* Kaithi */
+  G_UNICODE_SCRIPT_LISU,                   /* Lisu */
+  G_UNICODE_SCRIPT_MEETEI_MAYEK,           /* Meetei Mayek */
+  G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN,      /* Old South Arabian */
+  G_UNICODE_SCRIPT_OLD_TURKISH,            /* Old Turkish */
+  G_UNICODE_SCRIPT_SAMARITAN,              /* Samaritan */
+  G_UNICODE_SCRIPT_TAI_THAM,               /* Tai Tham */
+  G_UNICODE_SCRIPT_TAI_VIET                /* Tai Viet */
 } GUnicodeScript;
 
 /* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is
