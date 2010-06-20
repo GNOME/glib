@@ -62,6 +62,9 @@ regex_LDADD         = $(progs_ldadd)
 TEST_PROGS         += base64
 base64_LDADD         = $(progs_ldadd)
 
+TEST_PROGS         += sequence
+sequence_LDADD       = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality
