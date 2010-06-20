@@ -538,6 +538,21 @@ url="http://www.unicode.org/reports/tr24/">Unicode Standard Annex
 @G_UNICODE_SCRIPT_CARIAN:     Carian. Since 2.16.3
 @G_UNICODE_SCRIPT_LYCIAN:     Lycian. Since 2.16.3
 @G_UNICODE_SCRIPT_LYDIAN:     Lydian. Since 2.16.3
+@G_UNICODE_SCRIPT_AVESTAN:                Avestan. Since 2.26
+@G_UNICODE_SCRIPT_BAMUM:                  Bamum. Since 2.26
+@G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS:   Egyptian Hieroglpyhs. Since 2.26
+@G_UNICODE_SCRIPT_IMPERIAL_ARAMAIC:       Imperial Aramaic. Since 2.26
+@G_UNICODE_SCRIPT_INSCRIPTIONAL_PAHLAVI:  Inscriptional Pahlavi. Since 2.26
+@G_UNICODE_SCRIPT_INSCRIPTIONAL_PARTHIAN: Inscriptional Parthian. Since 2.26
+@G_UNICODE_SCRIPT_JAVANESE:               Javanese. Since 2.26
+@G_UNICODE_SCRIPT_KAITHI:                 Kaithi. Since 2.26
+@G_UNICODE_SCRIPT_LISU:                   Lisu. Since 2.26
+@G_UNICODE_SCRIPT_MEETEI_MAYEK:           Meetei Mayek. Since 2.26
+@G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN:      Old South Arabian. Since 2.26
+@G_UNICODE_SCRIPT_OLD_TURKISH:            Old Turkish. Since 2.26
+@G_UNICODE_SCRIPT_SAMARITAN:              Samaritan. Since 2.26
+@G_UNICODE_SCRIPT_TAI_THAM:               Tai Tham. Since 2.26
+@G_UNICODE_SCRIPT_TAI_VIET:               Tai Viet. Since 2.26
 
 <!-- ##### FUNCTION g_unichar_get_script ##### -->
 <para>
