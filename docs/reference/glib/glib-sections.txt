@@ -2920,6 +2920,7 @@ g_variant_builder_open
 g_variant_builder_close
 
 <SUBSECTION>
+GVariantParseError
 G_VARIANT_PARSE_ERROR
 g_variant_parse
 g_variant_new_parsed_va

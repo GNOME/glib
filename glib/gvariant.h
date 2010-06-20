@@ -180,7 +180,12 @@ struct _GVariantBuilder {
   gsize x[16];
 };
 
+typedef enum
+{
+  G_VARIANT_PARSE_ERROR_FAILED
+} GVariantParseError;
 #define G_VARIANT_PARSE_ERROR (g_variant_parser_get_error_quark ())
+
 GQuark                          g_variant_parser_get_error_quark        (void);
 
 GVariantBuilder *               g_variant_builder_new                   (const GVariantType   *type);

@@ -39,6 +39,13 @@
  * are not currently defined for this domain.  See #GError for
  * information on error domains.
  **/
+/**
+ * GVariantParseError:
+ * @G_VARIANT_PARSE_ERROR_FAILED: generic error
+ *
+ * Error codes returned by parsing text-format GVariants.  Currently the
+ * parser makes no distinction between different types of error.
+ **/
 GQuark
 g_variant_parser_get_error_quark (void)
 {
