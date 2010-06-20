@@ -2268,8 +2268,11 @@ g_dbus_message_to_blob (GDBusMessage          *message,
 
   g_data_output_stream_put_uint32 (dos, body_size, NULL, NULL);
 
+  if (!g_output_stream_close (G_OUTPUT_STREAM (dos), NULL, error))
+    goto out;
+
   *out_size = size;
-  ret = g_memdup (g_memory_output_stream_get_data (mos), size);
+  ret = g_memory_output_stream_steal_data (mos);
 
  out:
   g_object_unref (dos);
