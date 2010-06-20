@@ -1045,7 +1045,7 @@ g_variant_new_signature (const gchar *signature)
  * @returns: %TRUE if @string is a DBus type signature
  *
  * Determines if a given string is a valid DBus type signature.  You
- * should ensure that a string is a valid DBus object path before
+ * should ensure that a string is a valid DBus type signature before
  * passing it to g_variant_new_signature().
  *
  * DBus type signatures consist of zero or more definite #GVariantType
