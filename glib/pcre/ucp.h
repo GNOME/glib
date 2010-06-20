@@ -6,9 +6,8 @@
 #define _UCP_H
 
 /* This file contains definitions of the property values that are returned by
-the function _pcre_ucp_findprop(). New values that are added for new releases
-of Unicode should always be at the end of each enum, for backwards
-compatibility. */
+the UCD access macros. New values that are added for new releases of Unicode
+should always be at the end of each enum, for backwards compatibility. */
 
 /* These are the general character categories. */
 
@@ -121,24 +120,40 @@ enum {
   ucp_Tifinagh = G_UNICODE_SCRIPT_TIFINAGH,
   ucp_Ugaritic = G_UNICODE_SCRIPT_UGARITIC,
   ucp_Yi = G_UNICODE_SCRIPT_YI,
-  ucp_Balinese = G_UNICODE_SCRIPT_BALINESE,	/* New for Unicode 5.0.0 */
-  ucp_Cuneiform = G_UNICODE_SCRIPT_CUNEIFORM,   /* New for Unicode 5.0.0 */
-  ucp_Nko = G_UNICODE_SCRIPT_NKO,           	/* New for Unicode 5.0.0 */
-  ucp_Phags_Pa = G_UNICODE_SCRIPT_PHAGS_PA,     /* New for Unicode 5.0.0 */
-  ucp_Phoenician = G_UNICODE_SCRIPT_PHOENICIAN, /* New for Unicode 5.0.0 */
-  ucp_Carian = G_UNICODE_SCRIPT_CARIAN,         /* New for Unicode 5.1 */
-  ucp_Cham = G_UNICODE_SCRIPT_CHAM,             /* New for Unicode 5.1 */
-  ucp_Kayah_Li = G_UNICODE_SCRIPT_KAYAH_LI,     /* New for Unicode 5.1 */
-  ucp_Lepcha = G_UNICODE_SCRIPT_LEPCHA,         /* New for Unicode 5.1 */
-  ucp_Lycian = G_UNICODE_SCRIPT_LYCIAN,         /* New for Unicode 5.1 */
-  ucp_Lydian = G_UNICODE_SCRIPT_LYDIAN,         /* New for Unicode 5.1 */
-  ucp_Ol_Chiki = G_UNICODE_SCRIPT_OL_CHIKI,     /* New for Unicode 5.1 */
-  ucp_Rejang = G_UNICODE_SCRIPT_REJANG,         /* New for Unicode 5.1 */
-  ucp_Saurashtra = G_UNICODE_SCRIPT_SAURASHTRA, /* New for Unicode 5.1 */
-  ucp_Sundanese = G_UNICODE_SCRIPT_SUNDANESE,   /* New for Unicode 5.1 */
-  ucp_Vai = G_UNICODE_SCRIPT_VAI                /* New for Unicode 5.1 */
+  ucp_Balinese = G_UNICODE_SCRIPT_BALINESE,
+  ucp_Cuneiform = G_UNICODE_SCRIPT_CUNEIFORM,
+  ucp_Nko = G_UNICODE_SCRIPT_NKO,
+  ucp_Phags_Pa = G_UNICODE_SCRIPT_PHAGS_PA,
+  ucp_Phoenician = G_UNICODE_SCRIPT_PHOENICIAN,
+  ucp_Carian = G_UNICODE_SCRIPT_CARIAN,
+  ucp_Cham = G_UNICODE_SCRIPT_CHAM,
+  ucp_Kayah_Li = G_UNICODE_SCRIPT_KAYAH_LI,
+  ucp_Lepcha = G_UNICODE_SCRIPT_LEPCHA,
+  ucp_Lycian = G_UNICODE_SCRIPT_LYCIAN,
+  ucp_Lydian = G_UNICODE_SCRIPT_LYDIAN,
+  ucp_Ol_Chiki = G_UNICODE_SCRIPT_OL_CHIKI,
+  ucp_Rejang = G_UNICODE_SCRIPT_REJANG,
+  ucp_Saurashtra = G_UNICODE_SCRIPT_SAURASHTRA,
+  ucp_Sundanese = G_UNICODE_SCRIPT_SUNDANESE,
+  ucp_Vai = G_UNICODE_SCRIPT_VAI,
+  ucp_Avestan = G_UNICODE_SCRIPT_AVESTAN,
+  ucp_Bamum = G_UNICODE_SCRIPT_BAMUM,
+  ucp_Egyptian_Hieroglyphs = G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS,
+  ucp_Imperial_Aramaic = G_UNICODE_SCRIPT_IMPERIAL_ARAMAIC,
+  ucp_Inscriptional_Pahlavi = G_UNICODE_SCRIPT_INSCRIPTIONAL_PAHLAVI,
+  ucp_Inscriptional_Parthian = G_UNICODE_SCRIPT_INSCRIPTIONAL_PARTHIAN,
+  ucp_Javanese = G_UNICODE_SCRIPT_JAVANESE,
+  ucp_Kaithi = G_UNICODE_SCRIPT_KAITHI,
+  ucp_Lisu = G_UNICODE_SCRIPT_LISU,
+  ucp_Meetei_Mayek = G_UNICODE_SCRIPT_MEETEI_MAYEK,
+  ucp_Old_South_Arabian = G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN,
+  ucp_Old_Turkic = G_UNICODE_SCRIPT_OLD_TURKISH,
+  ucp_Samaritan = G_UNICODE_SCRIPT_SAMARITAN,
+  ucp_Tai_Tham = G_UNICODE_SCRIPT_TAI_THAM,
+  ucp_Tai_Viet = G_UNICODE_SCRIPT_TAI_VIET
 };
 
 #endif
 
 /* End of ucp.h */
+
