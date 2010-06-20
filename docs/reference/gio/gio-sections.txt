@@ -823,6 +823,7 @@ g_memory_output_stream_new
 g_memory_output_stream_get_data
 g_memory_output_stream_get_size
 g_memory_output_stream_get_data_size
+g_memory_output_stream_steal_data
 <SUBSECTION Standard>
 GMemoryOutputStreamClass
 G_MEMORY_OUTPUT_STREAM
