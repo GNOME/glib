@@ -358,7 +358,7 @@ g_data_input_stream_read_byte (GDataInputStream  *stream,
  * Reads a 16-bit/2-byte value from @stream.
  *
  * In order to get the correct byte order for this read operation, 
- * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
+ * see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order().
  * 
  * Returns: a signed 16-bit/2-byte value read from @stream or %0 if 
  * an error occurred.
@@ -402,7 +402,7 @@ g_data_input_stream_read_int16 (GDataInputStream  *stream,
  * Reads an unsigned 16-bit/2-byte value from @stream.
  *
  * In order to get the correct byte order for this read operation, 
- * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order(). 
+ * see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order(). 
  * 
  * Returns: an unsigned 16-bit/2-byte value read from the @stream or %0 if 
  * an error occurred. 
@@ -446,7 +446,7 @@ g_data_input_stream_read_uint16 (GDataInputStream  *stream,
  * Reads a signed 32-bit/4-byte value from @stream.
  *
  * In order to get the correct byte order for this read operation, 
- * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
+ * see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order().
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -494,7 +494,7 @@ g_data_input_stream_read_int32 (GDataInputStream  *stream,
  * Reads an unsigned 32-bit/4-byte value from @stream.
  *
  * In order to get the correct byte order for this read operation, 
- * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
+ * see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order().
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -542,7 +542,7 @@ g_data_input_stream_read_uint32 (GDataInputStream  *stream,
  * Reads a 64-bit/8-byte value from @stream.
  *
  * In order to get the correct byte order for this read operation, 
- * see g_data_stream_get_byte_order() and g_data_stream_set_byte_order().
+ * see g_data_input_stream_get_byte_order() and g_data_input_stream_set_byte_order().
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
@@ -590,7 +590,7 @@ g_data_input_stream_read_int64 (GDataInputStream  *stream,
  * Reads an unsigned 64-bit/8-byte value from @stream.
  *
  * In order to get the correct byte order for this read operation, 
- * see g_data_stream_get_byte_order().
+ * see g_data_input_stream_get_byte_order().
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
