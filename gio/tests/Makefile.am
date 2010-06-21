@@ -302,6 +302,7 @@ schema_tests = \
 	schema-tests/enum-with-repeated-alias.gschema.xml		\
 	schema-tests/enum-with-shadow-alias.gschema.xml			\
 	schema-tests/enum.gschema.xml					\
+	schema-tests/from-docs.gschema.xml				\
 	schema-tests/incomplete-list.gschema.xml			\
 	schema-tests/invalid-path.gschema.xml				\
 	schema-tests/missing-quotes.gschema.xml				\
