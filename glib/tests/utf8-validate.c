@@ -26,15 +26,14 @@
      ((Char) & 0xFFFE) != 0xFFFE)
 
 
-
-static gboolean any_failed = FALSE;
-
-struct {
+typedef struct {
   const gchar *text;
   gint max_len;
   gint offset;
   gboolean valid;
-} test[] = {  
+} Test;
+
+Test test[] = {
   /* some tests to check max_len handling */
   /* length 1 */
   { "abcde", -1, 5, TRUE },
@@ -42,14 +41,14 @@ struct {
   { "abcde", 5, 5, TRUE },
   { "abcde", 7, 5, FALSE },
   /* length 2 */
-  { "\xc2\xa9\xc2\xa9\xc2\xa9", -1, 6, TRUE }, 
-  { "\xc2\xa9\xc2\xa9\xc2\xa9",  1, 0, FALSE }, 
-  { "\xc2\xa9\xc2\xa9\xc2\xa9",  2, 2, TRUE }, 
-  { "\xc2\xa9\xc2\xa9\xc2\xa9",  3, 2, FALSE }, 
-  { "\xc2\xa9\xc2\xa9\xc2\xa9",  4, 4, TRUE }, 
-  { "\xc2\xa9\xc2\xa9\xc2\xa9",  5, 4, FALSE }, 
-  { "\xc2\xa9\xc2\xa9\xc2\xa9",  6, 6, TRUE }, 
-  { "\xc2\xa9\xc2\xa9\xc2\xa9",  7, 6, FALSE }, 
+  { "\xc2\xa9\xc2\xa9\xc2\xa9", -1, 6, TRUE },
+  { "\xc2\xa9\xc2\xa9\xc2\xa9",  1, 0, FALSE },
+  { "\xc2\xa9\xc2\xa9\xc2\xa9",  2, 2, TRUE },
+  { "\xc2\xa9\xc2\xa9\xc2\xa9",  3, 2, FALSE },
+  { "\xc2\xa9\xc2\xa9\xc2\xa9",  4, 4, TRUE },
+  { "\xc2\xa9\xc2\xa9\xc2\xa9",  5, 4, FALSE },
+  { "\xc2\xa9\xc2\xa9\xc2\xa9",  6, 6, TRUE },
+  { "\xc2\xa9\xc2\xa9\xc2\xa9",  7, 6, FALSE },
   /* length 3 */
   { "\xe2\x89\xa0\xe2\x89\xa0", -1, 6, TRUE },
   { "\xe2\x89\xa0\xe2\x89\xa0",  1, 0, FALSE },
@@ -274,46 +273,33 @@ struct {
   { NULL, }
 };
 
-static void 
-do_test (gint         index,
-	 const gchar *text, 
-	 gint         max_len,
-	 gint         offset,
-	 gboolean     valid)
+static void
+do_test (gconstpointer d)
 {
+  const Test *test = d;
   const gchar *end;
   gboolean result;
-  
-  result = g_utf8_validate (text, max_len, &end);
 
-  if (result != valid || end - text != offset)
-    {
-      GString *str;
-      const gchar *p;
+  result = g_utf8_validate (test->text, test->max_len, &end);
 
-      any_failed = TRUE;
-      
-      str = g_string_new (0);
-      for (p = text; *p; p++)
-	g_string_append_printf (str, "\\x%02hhx", *p);
-      g_print ("%d: g_utf8_validate (\"%s\", %d) failed, "
-	       "expected %s %d, got %s %d\n",
-	       index,
-	       str->str, max_len, 
-	       valid ? "TRUE" : "FALSE", offset,
-	       result ? "TRUE" : "FALSE", (gint) (end - text));
-      g_string_free (str, FALSE);
-    }
+  g_assert (result == test->valid);
+  g_assert (end - test->text == test->offset);
 }
 
 int
 main (int argc, char *argv[])
 {
   gint i;
+  gchar *path;
+
+  g_test_init (&argc, &argv, NULL);
 
   for (i = 0; test[i].text; i++)
-    do_test (i, test[i].text, test[i].max_len, 
-	     test[i].offset, test[i].valid);
+    {
+      path = g_strdup_printf ("/utf8/validate/%d", i);
+      g_test_add_data_func (path, &test[i], do_test);
+      g_free (path);
+    }
 
-  return any_failed ? 1 : 0;
+  return g_test_run ();
 }

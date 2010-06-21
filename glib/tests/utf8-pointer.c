@@ -21,7 +21,7 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #include <string.h>
@@ -29,29 +29,30 @@
 
 /* Test conversions between offsets and pointers */
 
-static void test_utf8 (gchar *string)
+static void test_utf8 (gconstpointer d)
 {
   gint num_chars;
-  gchar **p;
+  const gchar **p;
   gint i, j;
-  
+  const gchar *string = d;
+
   g_assert (g_utf8_validate (string, -1, NULL));
-  
+
   num_chars = g_utf8_strlen (string, -1);
-  
-  p = (gchar **) g_malloc (num_chars * sizeof (gchar *));
-  
+
+  p = (const gchar **) g_malloc (num_chars * sizeof (gchar *));
+
   p[0] = string;
   for (i = 1; i < num_chars; i++)
     p[i] = g_utf8_next_char (p[i-1]);
-  
+
   for (i = 0; i < num_chars; i++)
-    for (j = 0; j < num_chars; j++) 
+    for (j = 0; j < num_chars; j++)
       {
-	g_assert (g_utf8_offset_to_pointer (p[i], j - i) == p[j]);	
-	g_assert (g_utf8_pointer_to_offset (p[i], p[j]) == j - i);	
+        g_assert (g_utf8_offset_to_pointer (p[i], j - i) == p[j]);
+        g_assert (g_utf8_pointer_to_offset (p[i], p[j]) == j - i);
       }
-  
+
   g_free (p);
 }
 
@@ -104,9 +105,11 @@ test_misc (void)
 
 int main (int argc, char *argv[])
 {
-  test_utf8 (longline);
-  test_length ();
-  test_misc ();
-  
-  return 0;
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_data_func ("/utf8/offsets", longline, test_utf8);
+  g_test_add_func ("/utf8/lengths", test_length);
+  g_test_add_func ("/utf8/reverse", test_misc);
+
+  return g_test_run ();
 }
