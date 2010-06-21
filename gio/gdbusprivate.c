@@ -355,6 +355,7 @@ struct GDBusWorker
   GDBusCapabilityFlags                capabilities;
   GCancellable                       *cancellable;
   GDBusWorkerMessageReceivedCallback  message_received_callback;
+  GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback;
   GDBusWorkerDisconnectedCallback     disconnected_callback;
   gpointer                            user_data;
 
@@ -424,11 +425,22 @@ _g_dbus_worker_emit_disconnected (GDBusWorker  *worker,
 }
 
 static void
-_g_dbus_worker_emit_message (GDBusWorker  *worker,
-                             GDBusMessage *message)
+_g_dbus_worker_emit_message_received (GDBusWorker  *worker,
+                                      GDBusMessage *message)
 {
   if (!worker->stopped)
     worker->message_received_callback (worker, message, worker->user_data);
+}
+
+static gboolean
+_g_dbus_worker_emit_message_about_to_be_sent (GDBusWorker  *worker,
+                                              GDBusMessage *message)
+{
+  gboolean ret;
+  ret = FALSE;
+  if (!worker->stopped)
+    ret = worker->message_about_to_be_sent_callback (worker, message, worker->user_data);
+  return ret;
 }
 
 static void _g_dbus_worker_do_read_unlocked (GDBusWorker *worker);
@@ -627,7 +639,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
             }
 
           /* yay, got a message, go deliver it */
-          _g_dbus_worker_emit_message (worker, message);
+          _g_dbus_worker_emit_message_received (worker, message);
           g_object_unref (message);
 
           /* start reading another message! */
@@ -720,7 +732,7 @@ message_to_write_data_free (MessageToWriteData *data)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* called in private thread shared by all GDBusConnection instances (with write-lock held) */
+/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
 static gboolean
 write_message (GDBusWorker         *worker,
                MessageToWriteData  *data,
@@ -848,28 +860,38 @@ write_message_in_idle_cb (gpointer user_data)
   GDBusWorker *worker = user_data;
   gboolean more_writes_are_pending;
   MessageToWriteData *data;
+  gboolean message_was_dropped;
   GError *error;
 
   g_mutex_lock (worker->write_lock);
-
   data = g_queue_pop_head (worker->write_queue);
   g_assert (data != NULL);
-
-  error = NULL;
-  if (!write_message (worker,
-                      data,
-                      &error))
-    {
-      /* TODO: handle */
-      _g_dbus_worker_emit_disconnected (worker, TRUE, error);
-      g_error_free (error);
-    }
-  message_to_write_data_free (data);
-
   more_writes_are_pending = (g_queue_get_length (worker->write_queue) > 0);
-
   worker->write_is_pending = more_writes_are_pending;
   g_mutex_unlock (worker->write_lock);
+
+  /* Note that write_lock is only used for protecting the @write_queue
+   * and @write_is_pending fields of the GDBusWorker struct ... which we
+   * need to modify from arbitrary threads in _g_dbus_worker_send_message().
+   *
+   * Therefore, it's fine to drop it here when calling back into user
+   * code and then writing the message out onto the GIOStream since this
+   * function only runs on the worker thread.
+   */
+  message_was_dropped = _g_dbus_worker_emit_message_about_to_be_sent (worker, data->message);
+  if (G_LIKELY (!message_was_dropped))
+    {
+      error = NULL;
+      if (!write_message (worker,
+                          data,
+                          &error))
+        {
+          /* TODO: handle */
+          _g_dbus_worker_emit_disconnected (worker, TRUE, error);
+          g_error_free (error);
+        }
+    }
+  message_to_write_data_free (data);
 
   return more_writes_are_pending;
 }
@@ -928,16 +950,18 @@ _g_dbus_worker_thread_begin_func (gpointer user_data)
 }
 
 GDBusWorker *
-_g_dbus_worker_new (GIOStream                          *stream,
-                    GDBusCapabilityFlags                capabilities,
-                    GDBusWorkerMessageReceivedCallback  message_received_callback,
-                    GDBusWorkerDisconnectedCallback     disconnected_callback,
-                    gpointer                            user_data)
+_g_dbus_worker_new (GIOStream                              *stream,
+                    GDBusCapabilityFlags                    capabilities,
+                    GDBusWorkerMessageReceivedCallback      message_received_callback,
+                    GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback,
+                    GDBusWorkerDisconnectedCallback         disconnected_callback,
+                    gpointer                                user_data)
 {
   GDBusWorker *worker;
 
   g_return_val_if_fail (G_IS_IO_STREAM (stream), NULL);
   g_return_val_if_fail (message_received_callback != NULL, NULL);
+  g_return_val_if_fail (message_about_to_be_sent_callback != NULL, NULL);
   g_return_val_if_fail (disconnected_callback != NULL, NULL);
 
   worker = g_new0 (GDBusWorker, 1);
@@ -945,6 +969,7 @@ _g_dbus_worker_new (GIOStream                          *stream,
 
   worker->read_lock = g_mutex_new ();
   worker->message_received_callback = message_received_callback;
+  worker->message_about_to_be_sent_callback = message_about_to_be_sent_callback;
   worker->disconnected_callback = disconnected_callback;
   worker->user_data = user_data;
   worker->stream = g_object_ref (stream);

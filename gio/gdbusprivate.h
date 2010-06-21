@@ -39,6 +39,10 @@ typedef void (*GDBusWorkerMessageReceivedCallback) (GDBusWorker   *worker,
                                                     GDBusMessage  *message,
                                                     gpointer       user_data);
 
+typedef gboolean (*GDBusWorkerMessageAboutToBeSentCallback) (GDBusWorker   *worker,
+                                                             GDBusMessage  *message,
+                                                             gpointer       user_data);
+
 typedef void (*GDBusWorkerDisconnectedCallback)    (GDBusWorker   *worker,
                                                     gboolean       remote_peer_vanished,
                                                     GError        *error,
@@ -50,6 +54,7 @@ typedef void (*GDBusWorkerDisconnectedCallback)    (GDBusWorker   *worker,
 GDBusWorker *_g_dbus_worker_new          (GIOStream                          *stream,
                                           GDBusCapabilityFlags                capabilities,
                                           GDBusWorkerMessageReceivedCallback  message_received_callback,
+                                          GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback,
                                           GDBusWorkerDisconnectedCallback     disconnected_callback,
                                           gpointer                            user_data);
 

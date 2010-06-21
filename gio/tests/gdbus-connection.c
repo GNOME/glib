@@ -555,20 +555,29 @@ test_connection_signals (void)
 typedef struct
 {
   guint num_handled;
+  guint num_outgoing;
   guint32 serial;
 } FilterData;
 
 static gboolean
 filter_func (GDBusConnection *connection,
              GDBusMessage    *message,
+             gboolean         incoming,
              gpointer         user_data)
 {
   FilterData *data = user_data;
   guint32 reply_serial;
 
-  reply_serial = g_dbus_message_get_reply_serial (message);
-  if (reply_serial == data->serial)
-    data->num_handled += 1;
+  if (incoming)
+    {
+      reply_serial = g_dbus_message_get_reply_serial (message);
+      if (reply_serial == data->serial)
+        data->num_handled += 1;
+    }
+  else
+    {
+      data->num_outgoing += 1;
+    }
 
   return FALSE;
 }
@@ -638,6 +647,7 @@ test_connection_filter (void)
   g_assert (r != NULL);
   g_object_unref (r);
   g_assert_cmpint (data.num_handled, ==, 3);
+  g_assert_cmpint (data.num_outgoing, ==, 3);
 
   _g_object_wait_for_single_ref (c);
   g_object_unref (c);

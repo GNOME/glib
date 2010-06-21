@@ -1624,6 +1624,7 @@ on_worker_message_received (GDBusWorker  *worker,
     {
       consumed_by_filter = filters[n].func (connection,
                                             message,
+                                            TRUE,
                                             filters[n].user_data);
       if (consumed_by_filter)
         break;
@@ -1671,6 +1672,52 @@ on_worker_message_received (GDBusWorker  *worker,
 
   g_object_unref (connection);
   g_free (filters);
+}
+
+/* Called in worker's thread */
+static gboolean
+on_worker_message_about_to_be_sent (GDBusWorker  *worker,
+                                    GDBusMessage *message,
+                                    gpointer      user_data)
+{
+  GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
+  FilterCallback *filters;
+  gboolean consumed_by_filter;
+  guint num_filters;
+  guint n;
+
+  //g_debug ("in on_worker_message_about_to_be_sent");
+
+  g_object_ref (connection);
+
+  /* First collect the set of callback functions */
+  CONNECTION_LOCK (connection);
+  num_filters = connection->priv->filters->len;
+  filters = g_new0 (FilterCallback, num_filters);
+  for (n = 0; n < num_filters; n++)
+    {
+      FilterData *data = connection->priv->filters->pdata[n];
+      filters[n].func = data->filter_function;
+      filters[n].user_data = data->user_data;
+    }
+  CONNECTION_UNLOCK (connection);
+
+  /* the call the filters in order (without holding the lock) */
+  consumed_by_filter = FALSE;
+  for (n = 0; n < num_filters; n++)
+    {
+      consumed_by_filter = filters[n].func (connection,
+                                            message,
+                                            FALSE,
+                                            filters[n].user_data);
+      if (consumed_by_filter)
+        break;
+    }
+
+  g_object_unref (connection);
+  g_free (filters);
+
+  return consumed_by_filter;
 }
 
 /* Called in worker's thread - we must not block */
@@ -1831,6 +1878,7 @@ initable_init (GInitable     *initable,
   connection->priv->worker = _g_dbus_worker_new (connection->priv->stream,
                                                  connection->priv->capabilities,
                                                  on_worker_message_received,
+                                                 on_worker_message_about_to_be_sent,
                                                  on_worker_closed,
                                                  connection);
 
@@ -2266,11 +2314,11 @@ static guint _global_filter_id = 1;
  * is removed or %NULL.
  *
  * Adds a message filter. Filters are handlers that are run on all
- * incoming messages, prior to standard dispatch. Filters are run in
- * the order that they were added.  The same handler can be added as a
- * filter more than once, in which case it will be run more than once.
- * Filters added during a filter callback won't be run on the message
- * being processed.
+ * incoming and outgoing messages, prior to standard dispatch. Filters
+ * are run in the order that they were added.  The same handler can be
+ * added as a filter more than once, in which case it will be run more
+ * than once.  Filters added during a filter callback won't be run on
+ * the message being processed.
  *
  * Note that filters are run in a dedicated message handling thread so
  * they can't block and, generally, can't do anything but signal a
@@ -2278,6 +2326,14 @@ static guint _global_filter_id = 1;
  * such as g_dbus_connection_send_message_with_reply(),
  * g_dbus_connection_signal_subscribe() or
  * g_dbus_connection_call() instead.
+ *
+ * If a filter consumes an incoming message (by returning %TRUE), the
+ * message is not dispatched anywhere else - not even the standard
+ * dispatch machinery (that API such as
+ * g_dbus_connection_signal_subscribe() and
+ * g_dbus_connection_send_message_with_reply() relies on) will see the
+ * message. Similary, if a filter consumes an outgoing message, the
+ * message will not be sent to the other peer.
  *
  * Returns: A filter identifier that can be used with
  * g_dbus_connection_remove_filter().

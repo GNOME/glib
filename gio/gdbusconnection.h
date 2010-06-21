@@ -469,6 +469,8 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
  * GDBusMessageFilterFunction:
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
+ * @incoming: %TRUE if it is a message received from the other peer, %FALSE if it is
+ * a message to be sent to the other peer.
  * @user_data: User data passed when adding the filter.
  *
  * Signature for function used in g_dbus_connection_add_filter().
@@ -480,6 +482,7 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
  */
 typedef gboolean (*GDBusMessageFilterFunction) (GDBusConnection *connection,
                                                 GDBusMessage    *message,
+                                                gboolean         incoming,
                                                 gpointer         user_data);
 
 guint g_dbus_connection_add_filter (GDBusConnection            *connection,
