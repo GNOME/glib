@@ -1,4 +1,6 @@
 array-test
+base64
+collate
 fileutils
 gvariant
 hostutils
@@ -9,8 +11,14 @@ option-context
 printf
 protocol
 rand
+regex
+scannerapi
+sequence
 strfuncs
 string
 testing
 tmpsample.xml
+utf8-misc
+utf8-pointer
+utf8-validate
 utils
