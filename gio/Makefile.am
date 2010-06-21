@@ -27,11 +27,11 @@ gio.def: gio.symbols
 	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gio.def.tmp && \
 	  mv gio.def.tmp gio.def
 
-gioalias.h: gio.symbols
+gioalias.h: gio.symbols makegioalias.pl
 	$(AM_V_GEN) $(PERL) $(srcdir)/makegioalias.pl < $(srcdir)/gio.symbols > gioalias.h.tmp && \
 	  mv gioalias.h.tmp gioalias.h
 
-gioaliasdef.c: gio.symbols
+gioaliasdef.c: gio.symbols makegioalias.pl
 	$(AM_V_GEN) $(PERL) $(srcdir)/makegioalias.pl -def < $(srcdir)/gio.symbols > gioaliasdef.c.tmp && \
 	  mv gioaliasdef.c.tmp gioaliasdef.c
 
@@ -417,7 +417,7 @@ install-data-local: install-ms-lib install-def-file
 
 uninstall-local: uninstall-ms-lib uninstall-def-file
 
-libgio_2_0_la_LDFLAGS = \
+libgio_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gio_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
 	-export-dynamic $(no_undefined) $(export_symbols)

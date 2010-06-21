@@ -3642,7 +3642,7 @@ SAVED_LDFLAGS="${LDFLAGS}"
 AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
 LDFLAGS=-Wl,-Bsymbolic-functions
 AC_TRY_LINK([], [int main (void) { return 0; }],
-            GLIB_LINK_FLAGS=-Bsymbolic-functions
+            GLIB_LINK_FLAGS=-Wl[,]-Bsymbolic-functions
             AC_MSG_RESULT(yes),
             GLIB_LINK_FLAGS=
             AC_MSG_RESULT(no))

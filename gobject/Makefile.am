@@ -26,10 +26,10 @@ AM_CPPFLAGS = 					\
 gobject.def: gobject.symbols
 	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
 
-gobjectalias.h: gobject.symbols
+gobjectalias.h: gobject.symbols makegobjectalias.pl
 	$(AM_V_GEN) $(PERL) $(srcdir)/makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
 
-gobjectaliasdef.c: gobject.symbols
+gobjectaliasdef.c: gobject.symbols makegobjectalias.pl
 	$(AM_V_GEN) $(PERL) $(srcdir)/makegobjectalias.pl -def < $(srcdir)/gobject.symbols > gobjectaliasdef.c
 
 if OS_LINUX
@@ -83,7 +83,7 @@ endif
 
 # libtool stuff: set version and export symbols for resolving
 libgobjectincludedir = $(includedir)/glib-2.0/gobject
-libgobject_2_0_la_LDFLAGS = \
+libgobject_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
   $(gobject_win32_res_ldflag) \
   -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
   -export-dynamic $(no_undefined) $(export_symbols)

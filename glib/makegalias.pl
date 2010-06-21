@@ -1,5 +1,7 @@
 #!/usr/bin/perl -w
 
+exit 0;
+
 my $do_def = 0;
 
 if (($#ARGV >= 0) && ($ARGV[0] eq "-def")) {

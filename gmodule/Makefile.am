@@ -80,7 +80,7 @@ uninstall-def-file:
 endif
 
 libgmodule_2_0_la_SOURCES = gmodule.c
-libgmodule_2_0_la_LDFLAGS = \
+libgmodule_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gmodule_win32_res_ldflag) \
 	$(G_MODULE_LDFLAGS) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
