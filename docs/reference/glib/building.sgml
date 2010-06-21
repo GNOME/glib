@@ -255,9 +255,13 @@ How to compile GLib itself
             <arg>--disable-dtrace</arg>
             <arg>--enable-dtrace</arg>
           </group>
-            <group>
+          <group>
             <arg>--disable-systemtap</arg>
             <arg>--enable-systemtap</arg>
+          </group>
+          <group>
+            <arg>--enable-gcov</arg>
+            <arg>--disable-gcov</arg>
           </group>
           <group>
             <arg>--with-runtime-libdir=RELPATH</arg>
@@ -604,6 +608,19 @@ How to compile GLib itself
 	  the presence of SystemTap.
         </para>
      </formalpara>
+
+      <formalpara>
+        <title><systemitem>--enable-gcov</systemitem> and
+          <systemitem>--disable-gcov</systemitem></title>
+
+        <para>
+          Enable the generation of coverage reports for the GLib tests.
+          This requires the lcov frontend to gcov from the
+          <ulink url="http://ltp.sourcforge.net">Linux Test Project</ulink>.
+          To generate a coverage report, use the lcov make target. The
+          report is placed in the <filename>glib-lcov</filename> directory.
+        </para>
+      </formalpara>
 
       <formalpara>
         <title><systemitem>--with-runtime-libdir=RELPATH</systemitem></title>

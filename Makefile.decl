@@ -61,5 +61,27 @@ test-report perf-report full-report:	${TEST_PROGS}
 	    ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
 	  }
 .PHONY: test test-report perf-report full-report
+
+.PHONY: lcov genlcov lcov-clean
+# use recursive makes in order to ignore errors during check
+lcov:
+	-$(MAKE) $(AM_MAKEFLAGS) -k check
+	$(MAKE) $(AM_MAKEFLAGS) genlcov
+
+# we have to massage the lcov.info file slightly to hide the effect of libtool
+# placing the objects files in the .libs/ directory separate from the *.c
+# we also have to delete tests/.libs/libmoduletestplugin_*.gcda
+genlcov:
+	rm -f $(top_builddir)/tests/.libs/libmoduletestplugin_*.gcda
+	$(LTP) --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum
+	$(SED) -e 's#.libs/##' < glib-lcov.info > glib-lcov.info.tmp
+	LANG=C $(LTP_GENHTML) --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --show-details glib-lcov.info.tmp
+	rm -f glib-lcov.info.tmp
+
+lcov-clean:
+	-$(LTP) --directory $(top_builddir) -z
+	-rm -rf glib-lcov.info glib-lcov
+	-find -name '*.gcda' -print | xargs rm
+
 # run make test as part of make check
 check-local: test

@@ -123,7 +123,7 @@ DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gtk-doc --enable-man
 
 DISTCLEANFILES = glibconfig-sysdefs.h glibconfig.h stamp-gc-h config.lt
 
-distclean-local:
+distclean-local: lcov-clean
 	if test $(srcdir) = .; then :; else \
 	    rm -f $(BUILT_EXTRA_DIST); \
 	fi
