@@ -590,16 +590,17 @@ NUMERIC_TYPE (DOUBLE, double, gdouble)
 /* Container type Constructor / Deconstructors {{{1 */
 /**
  * g_variant_new_maybe:
- * @child_type: the #GVariantType of the child
- * @child: the child value, or %NULL
+ * @child_type: (allow-none): the #GVariantType of the child, or %NULL
+ * @child: (allow-none): the child value, or %NULL
  * @returns: a new #GVariant maybe instance
  *
- * Depending on if @value is %NULL, either wraps @value inside of a
+ * Depending on if @child is %NULL, either wraps @child inside of a
  * maybe container or creates a Nothing instance for the given @type.
  *
- * At least one of @type and @value must be non-%NULL.  If @type is
- * non-%NULL then it must be a definite type.  If they are both
- * non-%NULL then @type must be the type of @value.
+ * At least one of @child_type and @child must be non-%NULL.
+ * If @child_type is non-%NULL then it must be a definite type.
+ * If they are both non-%NULL then @child_type must be the type
+ * of @child.
  *
  * Since: 2.24
  **/
@@ -644,7 +645,7 @@ g_variant_new_maybe (const GVariantType *child_type,
 /**
  * g_variant_get_maybe:
  * @value: a maybe-typed value
- * @returns: the contents of @value, or %NULL
+ * @returns: (allow-none): the contents of @value, or %NULL
  *
  * Given a maybe-typed #GVariant instance, extract its value.  If the
  * value is Nothing, then this function returns %NULL.
@@ -704,8 +705,9 @@ g_variant_get_variant (GVariant *value)
 
 /**
  * g_variant_new_array:
- * @child_type: the element type of the new array
- * @children: an array of #GVariant pointers, the children
+ * @child_type: (allow-none): the element type of the new array
+ * @children: (allow-none) (array length=n_children): an array of
+ *            #GVariant pointers, the children
  * @n_children: the length of @children
  * @returns: a new #GVariant array
  *
@@ -763,7 +765,7 @@ g_variant_new_array (const GVariantType *child_type,
 
 /*< private >
  * g_variant_make_tuple_type:
- * @children: an array of GVariant *
+ * @children: (array length=n_children): an array of GVariant *
  * @n_children: the length of @children
  *
  * Return the type of a tuple containing @children as its items.
@@ -789,7 +791,7 @@ g_variant_make_tuple_type (GVariant * const *children,
 
 /**
  * g_variant_new_tuple:
- * @children: the items to make the tuple out of
+ * @children: (array length=n_children): the items to make the tuple out of
  * @n_children: the length of @children
  * @returns: a new #GVariant tuple
  *
@@ -887,7 +889,7 @@ g_variant_new_dict_entry (GVariant *key,
  * @value: a #GVariant array with fixed-sized elements
  * @n_elements: a pointer to the location to store the number of items
  * @element_size: the size of each element
- * @returns: a pointer to the fixed array
+ * @returns: (array length=n_elements): a pointer to the fixed array
  *
  * Provides access to the serialised data for an array of fixed-sized
  * items.
@@ -1064,7 +1066,8 @@ g_variant_is_signature (const gchar *string)
 /**
  * g_variant_get_string:
  * @value: a string #GVariant instance
- * @length: a pointer to a #gsize, to store the length
+ * @length: (allow-none) (default NULL): a pointer to a #gsize,
+ *          to store the length
  * @returns: the constant string, utf8 encoded
  *
  * Returns the string value of a #GVariant instance with a string
@@ -1163,7 +1166,7 @@ g_variant_dup_string (GVariant *value,
 
 /**
  * g_variant_new_byte_array:
- * @array: a pointer to an array of bytes
+ * @array: (array length=length): a pointer to an array of bytes
  * @length: the length of @array, or -1
  * @returns: a new floating #GVariant instance
  *
@@ -1196,8 +1199,8 @@ g_variant_new_byte_array (gconstpointer array,
 /**
  * g_variant_get_byte_array:
  * @value: an array of bytes #GVariant
- * @length: the length of the result, or %NULL
- * @returns: a pointer to the byte data, or %NULL
+ * @length: (allow-none): the length of the result, or %NULL
+ * @returns: (array length=length): a pointer to the byte data, or %NULL
  *
  * Gets the contents of an array of bytes #GVariant.
  *
@@ -1504,7 +1507,7 @@ g_variant_classify (GVariant *value)
 /**
  * g_variant_print_string:
  * @value: a #GVariant
- * @string: a #GString, or %NULL
+ * @string: (allow-none) (default NULL): a #GString, or %NULL
  * @type_annotate: %TRUE if type information should be included in
  *                 the output
  * @returns: a #GString containing the string
@@ -1904,7 +1907,7 @@ g_variant_print (GVariant *value,
 /* Hash, Equal, Compare {{{1 */
 /**
  * g_variant_hash:
- * @value: a basic #GVariant value as a #gconstpointer
+ * @value: (type GVariant): a basic #GVariant value as a #gconstpointer
  * @returns: a hash value corresponding to @value
  *
  * Generates a hash value for a #GVariant instance.
@@ -1990,8 +1993,8 @@ g_variant_hash (gconstpointer value_)
 
 /**
  * g_variant_equal:
- * @one: a #GVariant instance
- * @two: a #GVariant instance
+ * @one: (type GVariant): a #GVariant instance
+ * @two: (type GVariant): a #GVariant instance
  * @returns: %TRUE if @one and @two are equal
  *
  * Checks if @one and @two have the same type and value.
@@ -2055,8 +2058,8 @@ g_variant_equal (gconstpointer one,
 
 /**
  * g_variant_compare:
- * @one: a basic-typed #GVariant instance
- * @two: a #GVariant instance of the same type
+ * @one: (type GVariant): a basic-typed #GVariant instance
+ * @two: (type GVariant): a #GVariant instance of the same type
  * @returns: negative value if a &lt; b;
  *           zero if a = b;
  *           positive value if a &gt; b.
@@ -2329,7 +2332,7 @@ g_variant_iter_free (GVariantIter *iter)
 /**
  * g_variant_iter_next_value:
  * @iter: a #GVariantIter
- * @returns: a #GVariant, or %NULL
+ * @returns: (allow-none): a #GVariant, or %NULL
  *
  * Gets the next item in the container.  If no more items remain then
  * %NULL is returned.
@@ -2927,8 +2930,10 @@ g_variant_builder_end (GVariantBuilder *builder)
 /*< private >
  * g_variant_format_string_scan:
  * @string: a string that may be prefixed with a format string
- * @limit: a pointer to the end of @string, or %NULL
- * @endptr: location to store the end pointer, or %NULL
+ * @limit: (allow-none) (default NULL): a pointer to the end of @string,
+ *         or %NULL
+ * @endptr: (allow-none) (default NULL): location to store the end pointer,
+ *          or %NULL
  * @returns: %TRUE if there was a valid format string
  *
  * Checks the string pointed to by @string for starting with a properly
@@ -3048,9 +3053,11 @@ g_variant_format_string_scan (const gchar  *string,
 /*< private >
  * g_variant_format_string_scan_type:
  * @string: a string that may be prefixed with a format string
- * @limit: a pointer to the end of @string
- * @endptr: location to store the end pointer, or %NULL
- * @returns: a #GVariantType if there was a valid format string
+ * @limit: (allow-none) (default NULL): a pointer to the end of @string,
+ *         or %NULL
+ * @endptr: (allow-none) (default NULL): location to store the end pointer,
+ *          or %NULL
+ * @returns: (allow-none): a #GVariantType if there was a valid format string
  *
  * If @string starts with a valid format string then this function will
  * return the type that the format string corresponds to.  Otherwise
@@ -3775,7 +3782,8 @@ g_variant_new (const gchar *format_string,
 /**
  * g_variant_new_va:
  * @format_string: a string that is prefixed with a format string
- * @endptr: location to store the end pointer, or %NULL
+ * @endptr: (allow-none) (default NULL): location to store the end pointer,
+ *          or %NULL
  * @app: a pointer to a #va_list
  * @returns: a new, usually floating, #GVariant
  *
@@ -3875,7 +3883,8 @@ g_variant_get (GVariant    *value,
  * g_variant_get_va:
  * @value: a #GVariant
  * @format_string: a string that is prefixed with a format string
- * @endptr: location to store the end pointer, or %NULL
+ * @endptr: (allow-none) (default NULL): location to store the end pointer,
+ *          or %NULL
  * @app: a pointer to a #va_list
  *
  * This function is intended to be used by libraries based on #GVariant
