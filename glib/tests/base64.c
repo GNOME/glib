@@ -265,6 +265,24 @@ decode_and_compare (const gchar            *datap,
 }
 
 static void
+decode_inplace_and_compare (const gchar            *datap,
+                            const struct MyRawData *p)
+{
+  gchar *data;
+  guchar *data2;
+  gsize len;
+  int memcmp_decode;
+
+  data = g_strdup (datap);
+  data2 = g_base64_decode_inplace (data, &len);
+  g_assert_cmpint (len, ==, p->length);
+  /* g_print ("length: got %d, expected %d\n",len, length); */
+  memcmp_decode = memcmp (p->data, data2, p->length);
+  g_assert_cmpint (memcmp_decode, ==, 0);
+  g_free (data2);
+}
+
+static void
 test_base64_decode (void)
 {
   int i;
@@ -276,6 +294,21 @@ test_base64_decode (void)
     {
       myraw.length = i + 1;
       decode_and_compare (ok_100_encode_strs[i], &myraw);
+    }
+}
+
+static void
+test_base64_decode_inplace (void)
+{
+  int i;
+  struct MyRawData myraw;
+
+  generate_databuffer_for_base64 (&myraw);
+
+  for (i = 0; ok_100_encode_strs[i]; i++)
+    {
+      myraw.length = i + 1;
+      decode_inplace_and_compare (ok_100_encode_strs[i], &myraw);
     }
 }
 
@@ -330,7 +363,8 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/base64/encode", test_base64_encode);
   g_test_add_func ("/base64/decode", test_base64_decode);
-  g_test_add_func ("/base64/encode_decode", test_base64_encode_decode);
+  g_test_add_func ("/base64/decode-inplace", test_base64_decode_inplace);
+  g_test_add_func ("/base64/encode-decode", test_base64_encode_decode);
 
   return g_test_run ();
 }
