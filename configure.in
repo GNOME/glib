@@ -3634,6 +3634,21 @@ AC_SUBST(DBUS1_CFLAGS)
 AC_SUBST(DBUS1_LIBS)
 AM_CONDITIONAL(HAVE_DBUS1, [test "x$have_dbus1" = "xyes"])
 
+dnl
+dnl Check for -Bsymbolic-functions linker flag used to avoid
+dnl intra-library PLT jumps, if available.
+dnl
+SAVED_LDFLAGS="${LDFLAGS}"
+AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
+LDFLAGS=-Wl,-Bsymbolic-functions
+AC_TRY_LINK([], [int main (void) { return 0; }],
+            GLIB_LINK_FLAGS=-Bsymbolic-functions
+            AC_MSG_RESULT(yes),
+            GLIB_LINK_FLAGS=
+            AC_MSG_RESULT(no))
+AC_SUBST(GLIB_LINK_FLAGS)
+LDFLAGS="${SAVED_LDFLAGS}"
+
 AC_CONFIG_FILES([
 glib-2.0.pc
 glib-2.0-uninstalled.pc
