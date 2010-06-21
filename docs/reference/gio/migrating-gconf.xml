@@ -159,7 +159,7 @@
 
       <para>
         If you are porting your application from GConf, most likely you already
-        have a GConf schema. GIO comes with a commandline tool
+        have a GConf schema. GConf comes with a commandline tool
         <link linkend="gsettings-schema-convert">gsettings-schema-convert</link>
         that can help with the task of converting a GConf schema into
         an equivalent GSettings schema. The tool is not perfect and

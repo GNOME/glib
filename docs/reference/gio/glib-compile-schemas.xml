@@ -74,12 +74,6 @@ in the future.
 </refsect2>
 </refsect1>
 <refsect1><title>See also</title>
-<para>
-<citerefentry>
-  <refentrytitle>gsettings-schema-convert</refentrytitle>
-  <manvolnum>1</manvolnum>
-</citerefentry> is a utility to convert GConf schemas into GSettings schemas.
-</para>
 </refsect1>
 </refentry>
 
