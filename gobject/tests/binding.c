@@ -346,6 +346,41 @@ binding_chain (void)
   g_object_unref (c);
 }
 
+static void
+binding_sync_create (void)
+{
+  BindingSource *source = g_object_new (binding_source_get_type (),
+                                        "foo", 42,
+                                        NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (),
+                                        "bar", 47,
+                                        NULL);
+  GBinding *binding;
+
+  binding = g_object_bind_property (source, "foo",
+                                    target, "bar",
+                                    G_BINDING_DEFAULT | G_BINDING_SYNC_CREATE);
+
+  g_assert_cmpint (source->foo, ==, 42);
+  g_assert_cmpint (target->bar, ==, 42);
+
+  g_object_set (source, "foo", 47, NULL);
+  g_assert_cmpint (source->foo, ==, target->bar);
+
+  g_object_unref (binding);
+
+  g_object_set (target, "bar", 49, NULL);
+
+  binding = g_object_bind_property (source, "foo",
+                                    target, "bar",
+                                    G_BINDING_BIDIRECTIONAL | G_BINDING_SYNC_CREATE);
+  g_assert_cmpint (source->foo, ==, 47);
+  g_assert_cmpint (target->bar, ==, 47);
+
+  g_object_unref (source);
+  g_object_unref (target);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -356,6 +391,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/bidirectional", binding_bidirectional);
   g_test_add_func ("/binding/transform", binding_transform);
   g_test_add_func ("/binding/chain", binding_chain);
+  g_test_add_func ("/binding/sync-create", binding_sync_create);
 
   return g_test_run ();
 }

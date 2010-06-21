@@ -124,6 +124,7 @@ g_binding_flags_get_type (void)
       static const GFlagsValue values[] = {
         { G_BINDING_DEFAULT, "G_BINDING_DEFAULT", "default" },
         { G_BINDING_BIDIRECTIONAL, "G_BINDING_BIDIRECTIONAL", "bidirectional" },
+        { G_BINDING_SYNC_CREATE, "G_BINDING_SYNC_CREATE", "sync-create" },
         { 0, NULL, NULL }
       };
       GType g_define_type_id =
@@ -892,6 +893,14 @@ g_object_bind_property_full (gpointer               source,
   binding->transform_t2s = transform_from;
   binding->transform_data = user_data;
   binding->notify = notify;
+
+  /* synchronize the target with the source by faking an emission of
+   * the ::notify signal for the source property; this will also take
+   * care of the bidirectional binding case because the eventual change
+   * will emit a notification on the target
+   */
+  if (flags & G_BINDING_SYNC_CREATE)
+    on_source_notify (binding->source, binding->source_pspec, binding);
 
   return binding;
 }
