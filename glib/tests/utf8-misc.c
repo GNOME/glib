@@ -85,6 +85,17 @@ test_utf8_strrchr (void)
   g_assert (g_utf8_strrchr (string, -1, 'x') == NULL);
 }
 
+static void
+test_unichar_validate (void)
+{
+  g_assert (g_unichar_validate ('j'));
+  g_assert (g_unichar_validate (8356));
+  g_assert (g_unichar_validate (8356));
+  g_assert (!g_unichar_validate (0xfdd1));
+  g_assert (g_unichar_validate (917760));
+  g_assert (!g_unichar_validate (0x110000));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -94,6 +105,7 @@ main (int   argc,
   g_test_add_func ("/utf8/strlen", test_utf8_strlen);
   g_test_add_func ("/utf8/strncpy", test_utf8_strncpy);
   g_test_add_func ("/utf8/strrchr", test_utf8_strrchr);
+  g_test_add_func ("/unicode/validate", test_unichar_validate);
 
   return g_test_run();
 }
