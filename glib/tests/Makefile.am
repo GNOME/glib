@@ -68,6 +68,12 @@ sequence_LDADD       = $(progs_ldadd)
 TEST_PROGS         += scannerapi
 scannerapi_LDADD       = $(progs_ldadd)
 
+TEST_PROGS         += collate
+collate_LDADD       = $(progs_ldadd)
+
+TEST_PROGS         += utf8-pointer
+utf8_pointer_LDADD       = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality

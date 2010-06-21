@@ -126,7 +126,6 @@ test_programs =					\
 	unicode-caseconv			\
 	unicode-encoding			\
 	utf8-validate				\
-	utf8-pointer				\
 	uri-test
 
 test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh run-assert-msg-test.sh
