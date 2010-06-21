@@ -74,6 +74,9 @@ collate_LDADD       = $(progs_ldadd)
 TEST_PROGS         += utf8-pointer
 utf8_pointer_LDADD       = $(progs_ldadd)
 
+TEST_PROGS         += utf8-validate
+utf8_validate_LDADD       = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality
