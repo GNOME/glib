@@ -616,7 +616,7 @@ How to compile GLib itself
         <para>
           Enable the generation of coverage reports for the GLib tests.
           This requires the lcov frontend to gcov from the
-          <ulink url="http://ltp.sourcforge.net">Linux Test Project</ulink>.
+          <ulink url="http://ltp.sourceforge.net">Linux Test Project</ulink>.
           To generate a coverage report, use the lcov make target. The
           report is placed in the <filename>glib-lcov</filename> directory.
         </para>
