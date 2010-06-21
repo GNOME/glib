@@ -72,6 +72,29 @@ test_language_names (void)
                         NULL));
 }
 
+static void
+test_version (void)
+{
+  g_assert (glib_check_version (GLIB_MAJOR_VERSION,
+                                GLIB_MINOR_VERSION,
+                                GLIB_MICRO_VERSION) == NULL);
+  g_assert (glib_check_version (GLIB_MAJOR_VERSION,
+                                GLIB_MINOR_VERSION,
+                                0) == NULL);
+  g_assert (glib_check_version (GLIB_MAJOR_VERSION - 1,
+                                0,
+                                0) != NULL);
+  g_assert (glib_check_version (GLIB_MAJOR_VERSION + 1,
+                                0,
+                                0) != NULL);
+  g_assert (glib_check_version (GLIB_MAJOR_VERSION,
+                                GLIB_MINOR_VERSION + 1,
+                                0) != NULL);
+  g_assert (glib_check_version (GLIB_MAJOR_VERSION,
+                                GLIB_MINOR_VERSION,
+                                GLIB_MICRO_VERSION + 1) != NULL);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -79,6 +102,7 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/utils/language-names", test_language_names);
+  g_test_add_func ("/utils/version", test_version);
 
   return g_test_run();
 }
