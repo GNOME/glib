@@ -1454,6 +1454,8 @@ g_local_file_delete (GFile         *file,
   return TRUE;
 }
 
+#ifndef G_OS_WIN32
+
 static char *
 strip_trailing_slashes (const char *path)
 {
@@ -1577,8 +1579,6 @@ expand_all_symlinks (const char *path)
   
   return res;
 }
-
-#ifndef G_OS_WIN32
 
 static char *
 find_mountpoint_for (const char *file, 
