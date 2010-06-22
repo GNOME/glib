@@ -77,14 +77,7 @@ struct _GDBusConnectionClass
 
   /*< private >*/
   /* Padding for future expansion */
-  void (*_g_reserved1) (void);
-  void (*_g_reserved2) (void);
-  void (*_g_reserved3) (void);
-  void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
-  void (*_g_reserved6) (void);
-  void (*_g_reserved7) (void);
-  void (*_g_reserved8) (void);
+  gpointer padding[64];
 };
 
 GType            g_dbus_connection_get_type                   (void) G_GNUC_CONST;
@@ -304,14 +297,7 @@ struct _GDBusInterfaceVTable
 
   /*< private >*/
   /* Padding for future expansion */
-  void (*_g_reserved1) (void);
-  void (*_g_reserved2) (void);
-  void (*_g_reserved3) (void);
-  void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
-  void (*_g_reserved6) (void);
-  void (*_g_reserved7) (void);
-  void (*_g_reserved8) (void);
+  gpointer padding[8];
 };
 
 guint            g_dbus_connection_register_object            (GDBusConnection            *connection,

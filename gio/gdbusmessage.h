@@ -52,6 +52,10 @@ struct _GDBusMessageClass
 {
   /*< private >*/
   GObjectClass parent_class;
+
+  /*< private >*/
+  /* Padding for future expansion */
+  gpointer padding[32];
 };
 
 /**

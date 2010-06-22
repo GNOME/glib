@@ -50,22 +50,7 @@ struct _GDBusAuthMechanismSha1Class
 
   /*< private >*/
   /* Padding for future expansion */
-  void (*_g_reserved1) (void);
-  void (*_g_reserved2) (void);
-  void (*_g_reserved3) (void);
-  void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
-  void (*_g_reserved6) (void);
-  void (*_g_reserved7) (void);
-  void (*_g_reserved8) (void);
-  void (*_g_reserved9) (void);
-  void (*_g_reserved10) (void);
-  void (*_g_reserved11) (void);
-  void (*_g_reserved12) (void);
-  void (*_g_reserved13) (void);
-  void (*_g_reserved14) (void);
-  void (*_g_reserved15) (void);
-  void (*_g_reserved16) (void);
+  gpointer padding[16];
 };
 
 struct _GDBusAuthMechanismSha1
