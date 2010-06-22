@@ -1207,6 +1207,32 @@ test_bounds (void)
   g_mapped_file_free (file);
 }
 
+static void
+test_strip_context (void)
+{
+  const gchar *msgid;
+  const gchar *msgval;
+  const gchar *s;
+
+
+  msgid = "blabla";
+  msgval = "bla";
+  s = g_strip_context (msgid, msgval);
+  g_assert (s == msgval);
+
+  msgid = msgval = "blabla";
+  s = g_strip_context (msgid, msgval);
+  g_assert (s == msgval);
+
+  msgid = msgval = "blabla|foo";
+  s = g_strip_context (msgid, msgval);
+  g_assert (s == msgval + 7);
+
+  msgid = msgval = "blabla||bar";
+  s = g_strip_context (msgid, msgval);
+  g_assert (s == msgval + 7);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1236,6 +1262,7 @@ main (int   argc,
   g_test_add_func ("/strfuncs/strtod", test_strtod);
   g_test_add_func ("/strfuncs/strtoull-strtoll", test_strtoll);
   g_test_add_func ("/strfuncs/bounds-check", test_bounds);
+  g_test_add_func ("/strfuncs/strip-context", test_strip_context);
 
   return g_test_run();
 }
