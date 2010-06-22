@@ -35,10 +35,6 @@
  */
 #define SUPPORTED_GIR_VERSION "1.1"
 
-#if defined(HAVE_BACKTRACE) && defined(HAVE_BACKTRACE_SYMBOLS)
-# include <execinfo.h>
-#endif
-
 struct _GIrParser
 {
   gchar **includes;
@@ -281,29 +277,6 @@ locate_gir (GIrParser  *parser,
 	         "Line %d, character %d: The attribute '%s' on the element '%s' must be specified",    \
 	         line_number, char_number, attribute, element);		\
   } while (0)
-
-static void
-backtrace_stderr (void)
-{
-#if defined(HAVE_BACKTRACE) && defined(HAVE_BACKTRACE_SYMBOLS)
-  void *array[50];
-  int size, i;
-  char **strings;
-
-  size = backtrace (array, 50);
-  strings = (char**) backtrace_symbols (array, size);
-
-  fprintf (stderr, "--- BACKTRACE (%d frames) ---\n", size);
-
-  for (i = 0; i < size; i++)
-    fprintf (stderr, "%s\n", strings[i]);
-
-  fprintf (stderr, "--- END BACKTRACE ---\n");
-
-  free (strings);
-#endif
-}
-
 
 static const gchar *
 find_attribute (const gchar  *name,
@@ -2857,7 +2830,6 @@ start_element_handler (GMarkupParseContext *context,
       g_markup_parse_context_get_position (context, &line_number, &char_number);
 
       g_printerr ("%s:%d:%d: error: %s\n", ctx->file_path, line_number, char_number, (*error)->message);
-      backtrace_stderr ();
     }
 }
 
@@ -2896,7 +2868,6 @@ require_one_of_end_elements (GMarkupParseContext *context,
 	       "Unexpected end tag '%s' on line %d char %d; current state=%d",
 	       actual_name,
 	       line_number, char_number, ctx->state);
-  backtrace_stderr();
   return FALSE;
 }
 
