@@ -582,95 +582,98 @@ const char *SHA256_sums[] = {
   "df3a0c35d5345d6d792415c1310bd4589cdf68bac96ed599d6bb0c1545ffc86c"
 };
 
+typedef struct {
+  GChecksumType  checksum_type;
+  const gchar   *sum;
+  int            length;
+} ChecksumTest;
+
 static void
-test_checksum (GChecksumType  checksum_type,
-               const gchar   *type,
-               const gchar   *sum,
-               int            length)
+test_checksum (gconstpointer d)
 {
+  const ChecksumTest *test = d;
   GChecksum *checksum;
   const char *p;
   int chunk_length;
 
-  for (chunk_length = MIN (length, 1); chunk_length < length; chunk_length++)
+  for (chunk_length = MIN (test->length, 1); chunk_length < test->length; chunk_length++)
     {
-      checksum = g_checksum_new (checksum_type);
-      for (p = FIXED_STR; p < FIXED_STR + length; p += chunk_length)
+      checksum = g_checksum_new (test->checksum_type);
+      for (p = FIXED_STR; p < FIXED_STR + test->length; p += chunk_length)
 	{
 	  g_checksum_update (checksum, (const guchar *)p,
-			     MIN (chunk_length, length - (p - FIXED_STR)));
+			     MIN (chunk_length, test->length - (p - FIXED_STR)));
 	}
 
-      if (strcmp (g_checksum_get_string (checksum), sum) != 0)
-	{
-	  g_print ("Invalid %s checksum for `%.*s' (length %d) counting by %d:\n"
-		   "%s (expecting: %s)\n",
-		   type,
-		   length, FIXED_STR,
-		   length, chunk_length,
-		   g_checksum_get_string (checksum),
-		   sum);
-	  exit (1);
-	}
-
+      g_assert_cmpstr (g_checksum_get_string (checksum), ==, test->sum);
       g_checksum_free (checksum);
     }
 }
 
+typedef struct {
+  GChecksumType   checksum_type;
+  const gchar   **sums;
+} ChecksumStringTest;
+
 static void
-test_checksum_string (GChecksumType   checksum_type,
-                      const gchar    *type,
-                      const gchar   **sums)
+test_checksum_string (gconstpointer d)
 {
+  const ChecksumStringTest *test = d;
   int length;
 
   for (length = 0; length <= FIXED_LEN; length++)
     {
-      const char *expected = sums[length];
       char *checksum;
 
-      checksum = g_compute_checksum_for_string (checksum_type,
+      checksum = g_compute_checksum_for_string (test->checksum_type,
                                                 FIXED_STR,
                                                 length);
-      if (strcmp (checksum, expected) != 0)
-        {
-          g_print ("Invalid %s checksum for `%.*s' (length %d):\n"
-                   "%s (expecting: %s)\n",
-                   type,
-                   length, FIXED_STR, length,
-                   checksum,
-                   expected);
-          exit (1);
-        }
-
+      g_assert_cmpstr (checksum, ==, test->sums[length]);
       g_free (checksum);
     }
 }
 
-#define test(type, length) test_checksum (G_CHECKSUM_##type,	\
-                                          #type, \
-                                          type##_sums[length], \
-                                          length)
+#define test(type, length) {                                    \
+  ChecksumTest *test;                                           \
+  gchar *path;                                                  \
+  test = g_new0 (ChecksumTest, 1);                              \
+  test->checksum_type = G_CHECKSUM_##type;                      \
+  test->sum = type##_sums[length];                              \
+  test->length = length;                                        \
+  path = g_strdup_printf ("/checksum/%s/%d", #type, length);    \
+  g_test_add_data_func (path, test, test_checksum);             \
+  g_free (path);                                                \
+}
 
-#define test_string(type) test_checksum_string (G_CHECKSUM_##type,	\
-                                                #type, \
-                                                type##_sums)
+#define test_string(type) {                                     \
+  ChecksumStringTest *test;                                     \
+  gchar *path;                                                  \
+  test = g_new0 (ChecksumStringTest, 1);                        \
+  test->checksum_type = G_CHECKSUM_##type;                      \
+  test->sums = type##_sums;                                     \
+  path = g_strdup_printf ("/checksum/%s/string", #type);        \
+  g_test_add_data_func (path, test, test_checksum_string);      \
+  g_free (path);                                                \
+}
 
 int
 main (int argc, char *argv[])
 {
   int length;
 
-  for (length = 0; length <= FIXED_LEN; length++)
-    {
-      test (MD5, length);
-      test (SHA1, length);
-      test (SHA256, length);
-    }
+  g_test_init (&argc, &argv, NULL);
 
+  for (length = 0; length <= FIXED_LEN; length++)
+    test (MD5, length);
   test_string (MD5);
+
+  for (length = 0; length <= FIXED_LEN; length++)
+    test (SHA1, length);
   test_string (SHA1);
+
+  for (length = 0; length <= FIXED_LEN; length++)
+    test (SHA256, length);
   test_string (SHA256);
 
-  return EXIT_SUCCESS;
+  return g_test_run ();
 }

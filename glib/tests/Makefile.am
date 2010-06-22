@@ -84,6 +84,9 @@ utf8_validate_LDADD       = $(progs_ldadd)
 TEST_PROGS         += utf8-misc
 utf8_misc_LDADD       = $(progs_ldadd)
 
+TEST_PROGS         += checksum
+checksum_LDADD       = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality

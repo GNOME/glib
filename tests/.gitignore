@@ -6,7 +6,6 @@ atomic-test
 base64-test
 bit-test
 bookmarkfile-test
-checksum-test
 child-test
 closures
 collate.out
