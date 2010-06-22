@@ -2215,8 +2215,10 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
 
   g_object_set_data_full (G_OBJECT (simple), "-gdbus-proxy-method-name", g_strdup (target_method_name), g_free);
 
-  /* Just warn here */
-  expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
+  /* Warn if method is unexpected (cf. :g-interface-info) */
+  expected_method_info = NULL;
+  if (!was_split)
+    expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
 
   if (expected_method_info)
     reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
