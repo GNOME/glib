@@ -91,8 +91,8 @@ handle_pair (gpointer key, gpointer value, int result_array[10000])
 
 static gboolean
 my_hash_callback_remove (gpointer key,
-			 gpointer value,
-			 gpointer user_data)
+                         gpointer value,
+                         gpointer user_data)
 {
   int *d = value;
 
@@ -104,8 +104,8 @@ my_hash_callback_remove (gpointer key,
 
 static void
 my_hash_callback_remove_test (gpointer key,
-			      gpointer value,
-			      gpointer user_data)
+                              gpointer value,
+                              gpointer user_data)
 {
   int *d = value;
 
@@ -115,8 +115,8 @@ my_hash_callback_remove_test (gpointer key,
 
 static void
 my_hash_callback (gpointer key,
-		  gpointer value,
-		  gpointer user_data)
+                  gpointer value,
+                  gpointer user_data)
 {
   handle_pair (key, value, user_data);
 }
@@ -129,7 +129,7 @@ my_hash (gconstpointer key)
 
 static gboolean
 my_hash_equal (gconstpointer a,
-	       gconstpointer b)
+               gconstpointer b)
 {
   return *((const gint*) a) == *((const gint*) b);
 }
@@ -150,17 +150,17 @@ my_hash_equal (gconstpointer a,
  * implicit.  IT MUST ALSO BE THE CASE that the coefficients of orders
  * 31 down to 25 are zero.  Happily, we have candidates, from
  * E. J.  Watson, "Primitive Polynomials (Mod 2)", Math. Comp. 16 (1962):
- *	x^32 + x^7 + x^5 + x^3 + x^2 + x^1 + x^0
- *	x^31 + x^3 + x^0
+ *      x^32 + x^7 + x^5 + x^3 + x^2 + x^1 + x^0
+ *      x^31 + x^3 + x^0
  *
  * We reverse the bits to get:
- *	111101010000000000000000000000001 but drop the last 1
+ *      111101010000000000000000000000001 but drop the last 1
  *         f   5   0   0   0   0   0   0
- *	010010000000000000000000000000001 ditto, for 31-bit crc
- *	   4   8   0   0   0   0   0   0
+ *      010010000000000000000000000000001 ditto, for 31-bit crc
+ *         4   8   0   0   0   0   0   0
  */
 
-#define POLY 0x48000000L	/* 31-bit polynomial (avoids sign problems) */
+#define POLY 0x48000000L        /* 31-bit polynomial (avoids sign problems) */
 
 static guint CrcTable[128];
 
@@ -169,16 +169,16 @@ static guint CrcTable[128];
  */
 static void crcinit(void)
 {
-	int i, j;
-	guint sum;
+        int i, j;
+        guint sum;
 
-	for (i = 0; i < 128; ++i) {
-		sum = 0L;
-		for (j = 7 - 1; j >= 0; --j)
-			if (i & (1 << j))
-				sum ^= POLY >> j;
-		CrcTable[i] = sum;
-	}
+        for (i = 0; i < 128; ++i) {
+                sum = 0L;
+                for (j = 7 - 1; j >= 0; --j)
+                        if (i & (1 << j))
+                                sum ^= POLY >> j;
+                CrcTable[i] = sum;
+        }
 }
 
 /*
@@ -186,20 +186,20 @@ static void crcinit(void)
  */
 static guint honeyman_hash(gconstpointer key)
 {
-	const gchar *name = (const gchar *) key;
-	gint size;
-	guint sum = 0;
+        const gchar *name = (const gchar *) key;
+        gint size;
+        guint sum = 0;
 
-	g_assert (name != NULL);
-	g_assert (*name != 0);
+        g_assert (name != NULL);
+        g_assert (*name != 0);
 
-	size = strlen(name);
+        size = strlen(name);
 
-	while (size--) {
-		sum = (sum >> 7) ^ CrcTable[(sum ^ (*name++)) & 0x7f];
-	}
+        while (size--) {
+                sum = (sum >> 7) ^ CrcTable[(sum ^ (*name++)) & 0x7f];
+        }
 
-	return(sum);
+        return(sum);
 }
 
 
@@ -217,8 +217,8 @@ static guint one_hash(gconstpointer key)
 
 
 static void not_even_foreach (gpointer       key,
-				 gpointer       value,
-				 gpointer	user_data)
+                                 gpointer       value,
+                                 gpointer       user_data)
 {
   const char *_key = (const char *) key;
   const char *_value = (const char *) value;
@@ -241,8 +241,8 @@ static void not_even_foreach (gpointer       key,
 
 
 static gboolean remove_even_foreach (gpointer       key,
-				 gpointer       value,
-				 gpointer	user_data)
+                                 gpointer       value,
+                                 gpointer       user_data)
 {
   const char *_key = (const char *) key;
   const char *_value = (const char *) value;
@@ -265,8 +265,10 @@ static gboolean remove_even_foreach (gpointer       key,
 
 
 
-static void second_hash_test (gboolean simple_hash)
+static void second_hash_test (gconstpointer d)
 {
+     gboolean simple_hash = GPOINTER_TO_INT (d);
+
      int       i;
      char      key[20] = "", val[20]="", *v, *orig_key, *orig_val;
      GHashTable     *h;
@@ -275,16 +277,16 @@ static void second_hash_test (gboolean simple_hash)
      crcinit ();
 
      h = g_hash_table_new_full (simple_hash ? one_hash : honeyman_hash,
-     			        second_hash_cmp,
+                                second_hash_cmp,
                                 g_free, g_free);
      g_assert (h != NULL);
      for (i=0; i<20; i++)
           {
           sprintf (key, "%d", i);
-	  g_assert (atoi (key) == i);
+          g_assert (atoi (key) == i);
 
-	  sprintf (val, "%d value", i);
-	  g_assert (atoi (val) == i);
+          sprintf (val, "%d value", i);
+          g_assert (atoi (val) == i);
 
           g_hash_table_insert (h, g_strdup (key), g_strdup (val));
           }
@@ -294,13 +296,13 @@ static void second_hash_test (gboolean simple_hash)
      for (i=0; i<20; i++)
           {
           sprintf (key, "%d", i);
-	  g_assert (atoi(key) == i);
+          g_assert (atoi(key) == i);
 
           v = (char *) g_hash_table_lookup (h, key);
 
-	  g_assert (v != NULL);
-	  g_assert (*v != 0);
-	  g_assert (atoi (v) == i);
+          g_assert (v != NULL);
+          g_assert (*v != 0);
+          g_assert (atoi (v) == i);
           }
 
      sprintf (key, "%d", 3);
@@ -313,36 +315,36 @@ static void second_hash_test (gboolean simple_hash)
      for (i=0; i<20; i++)
           {
           sprintf (key, "%d", i);
-	  g_assert (atoi(key) == i);
+          g_assert (atoi(key) == i);
 
-	  sprintf (val, "%d value", i);
-	  g_assert (atoi (val) == i);
+          sprintf (val, "%d value", i);
+          g_assert (atoi (val) == i);
 
-	  orig_key = orig_val = NULL;
+          orig_key = orig_val = NULL;
           found = g_hash_table_lookup_extended (h, key,
-	  					(gpointer)&orig_key,
-						(gpointer)&orig_val);
-	  if ((i % 2) == 0 || i == 3)
+                                                (gpointer)&orig_key,
+                                                (gpointer)&orig_val);
+          if ((i % 2) == 0 || i == 3)
             {
               g_assert (!found);
-  	      continue;
+              continue;
             }
 
-	  g_assert (found);
+          g_assert (found);
 
-	  g_assert (orig_key != NULL);
-	  g_assert (strcmp (key, orig_key) == 0);
+          g_assert (orig_key != NULL);
+          g_assert (strcmp (key, orig_key) == 0);
 
-	  g_assert (orig_val != NULL);
-	  g_assert (strcmp (val, orig_val) == 0);
+          g_assert (orig_val != NULL);
+          g_assert (strcmp (val, orig_val) == 0);
           }
 
     g_hash_table_destroy (h);
 }
 
 static gboolean find_first     (gpointer key, 
-				gpointer value, 
-				gpointer user_data)
+                                gpointer value, 
+                                gpointer user_data)
 {
   gint *v = value; 
   gint *test = user_data;
@@ -360,7 +362,7 @@ static void direct_hash_test (void)
      for (i=1; i<=20; i++)
           {
           g_hash_table_insert (h, GINT_TO_POINTER (i),
-	  		       GINT_TO_POINTER (i + 42));
+                               GINT_TO_POINTER (i + 42));
           }
 
      g_assert (g_hash_table_size (h) == 20);
@@ -368,20 +370,17 @@ static void direct_hash_test (void)
      for (i=1; i<=20; i++)
           {
           rc = GPOINTER_TO_INT (
-	  	g_hash_table_lookup (h, GINT_TO_POINTER (i)));
+                g_hash_table_lookup (h, GINT_TO_POINTER (i)));
 
-	  g_assert (rc != 0);
-	  g_assert ((rc - 42) == i);
+          g_assert (rc != 0);
+          g_assert ((rc - 42) == i);
           }
 
     g_hash_table_destroy (h);
 }
 
-
-
-int
-main (int   argc,
-      char *argv[])
+static void
+test_hash_misc (void)
 {
   GHashTable *hash_table;
   gint i;
@@ -392,7 +391,7 @@ main (int   argc,
   GHashTableIter iter;
   gpointer ikey, ivalue;
   int result_array[10000];
-  
+
   hash_table = g_hash_table_new (my_hash, my_hash_equal);
   fill_hash_table_and_array (hash_table);
   pvalue = g_hash_table_find (hash_table, find_first, &value);
@@ -424,7 +423,7 @@ main (int   argc,
       handle_pair (ikey, ivalue, result_array);
 
       if (i % 2)
-	g_hash_table_iter_remove (&iter);
+        g_hash_table_iter_remove (&iter);
     }
   g_assert (! g_hash_table_iter_next (&iter, &ikey, &ivalue));
   g_assert (g_hash_table_size (hash_table) == 5000);
@@ -446,14 +445,81 @@ main (int   argc,
     g_assert_not_reached();
 
   g_hash_table_foreach (hash_table, my_hash_callback_remove_test, NULL);
-
-
   g_hash_table_destroy (hash_table);
+}
 
-  second_hash_test (TRUE);
-  second_hash_test (FALSE);
-  direct_hash_test ();
+static gint destroy_counter;
 
-  return 0;
+static void
+value_destroy (gpointer value)
+{
+  destroy_counter++;
+}
+
+static void
+test_hash_ref (void)
+{
+  GHashTable *h;
+  GHashTableIter iter;
+  gchar *key, *value;
+  gboolean abc_seen = FALSE;
+  gboolean cde_seen = FALSE;
+  gboolean xyz_seen = FALSE;
+
+  h = g_hash_table_new_full (g_str_hash, g_str_equal, NULL, value_destroy);
+  g_hash_table_insert (h, "abc", "ABC");
+  g_hash_table_insert (h, "cde", "CDE");
+  g_hash_table_insert (h, "xyz", "XYZ");
+
+  g_assert_cmpint (g_hash_table_size (h), == , 3);
+
+  g_hash_table_iter_init (&iter, h);
+
+  while (g_hash_table_iter_next (&iter, (gpointer*)&key, (gpointer*)&value))
+    {
+      if (strcmp (key, "abc") == 0)
+        {
+          g_assert_cmpstr (value, ==, "ABC");
+          abc_seen = TRUE;
+          g_hash_table_iter_steal (&iter);
+        }
+      else if (strcmp (key, "cde") == 0)
+        {
+          g_assert_cmpstr (value, ==, "CDE");
+          cde_seen = TRUE;
+        }
+      else if (strcmp (key, "xyz") == 0)
+        {
+          g_assert_cmpstr (value, ==, "XYZ");
+          xyz_seen = TRUE;
+        }
+    }
+  g_assert_cmpint (destroy_counter, ==, 0);
+
+  g_assert (g_hash_table_iter_get_hash_table (&iter) == h);
+  g_assert (abc_seen && cde_seen && xyz_seen);
+  g_assert_cmpint (g_hash_table_size (h), == , 2);
+
+  g_hash_table_ref (h);
+  g_hash_table_destroy (h);
+  g_assert_cmpint (g_hash_table_size (h), == , 0);
+  g_assert_cmpint (destroy_counter, ==, 2);
+  g_hash_table_insert (h, "uvw", "UVW");
+  g_hash_table_unref (h);
+  g_assert_cmpint (destroy_counter, ==, 3);
+}
+
+int
+main (int argc, char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/hash/misc", test_hash_misc);
+  g_test_add_data_func ("/hash/one", GINT_TO_POINTER (TRUE), second_hash_test);
+  g_test_add_data_func ("/hash/honeyman", GINT_TO_POINTER (FALSE), second_hash_test);
+  g_test_add_func ("/hash/direct", direct_hash_test);
+  g_test_add_func ("/hash/ref", test_hash_ref);
+
+  return g_test_run ();
 
 }

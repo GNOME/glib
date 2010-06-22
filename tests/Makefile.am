@@ -95,7 +95,6 @@ test_programs =					\
 	file-test				\
 	env-test				\
 	gio-test				\
-	hash-test				\
 	iochannel-test				\
 	list-test				\
 	mainloop-test				\
@@ -153,7 +152,6 @@ dirname_test_LDADD = $(progs_ldadd)
 file_test_LDADD = $(progs_ldadd)
 env_test_LDADD = $(progs_ldadd)
 gio_test_LDADD = $(progs_ldadd)
-hash_test_LDADD = $(progs_ldadd)
 iochannel_test_LDADD = $(progs_ldadd)
 list_test_LDADD = $(progs_ldadd)
 mainloop_test_LDADD = $(thread_ldadd)

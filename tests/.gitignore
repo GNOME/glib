@@ -20,7 +20,6 @@ errorcheck-mutex-test
 file-test
 file-test-get-contents
 gio-test
-hash-test
 iochannel-test
 iochannel-test-outfile
 list-test

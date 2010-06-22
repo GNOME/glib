@@ -87,6 +87,9 @@ utf8_misc_LDADD       = $(progs_ldadd)
 TEST_PROGS         += checksum
 checksum_LDADD       = $(progs_ldadd)
 
+TEST_PROGS         += hash
+hash_LDADD       = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality
