@@ -610,6 +610,75 @@ test_checksum (gconstpointer d)
     }
 }
 
+static gint
+hexval (const gchar c)
+{
+  switch (c)
+    {
+     case '0' ... '9':
+       return c - '0';
+     case 'a' ... 'f':
+       return 10 + c - 'a';
+     default:
+       return 0;
+    }
+}
+
+static guint8 *
+sum_to_digest (const gchar *sum, gsize *len)
+{
+  gsize l;
+  guint8 *digest;
+  gint i;
+
+  g_assert (strlen (sum) % 2 == 0);
+  l = strlen (sum) / 2;
+
+  digest = g_malloc (l);
+  for (i = 0; i < l; i++)
+    digest[i] = (hexval(sum[2*i]) << 4) + hexval(sum[2*i+1]);
+
+  *len = l;
+  return digest;
+}
+
+static void
+test_checksum_reset (gconstpointer d)
+{
+  const ChecksumTest *test = d;
+  GChecksum *checksum;
+  const char *p;
+  int chunk_length;
+  guint8 *digest;
+  guint8 *digest2;
+  gsize len, len2;
+
+  checksum = g_checksum_new (test->checksum_type);
+
+  for (chunk_length = MIN (test->length, 1); chunk_length < test->length; chunk_length++)
+    {
+      for (p = FIXED_STR; p < FIXED_STR + test->length; p += chunk_length)
+	{
+	  g_checksum_update (checksum, (const guchar *)p,
+			     MIN (chunk_length, test->length - (p - FIXED_STR)));
+	}
+
+      len2 = g_checksum_type_get_length (test->checksum_type);
+      digest = sum_to_digest (test->sum, &len);
+      g_assert_cmpint (len, ==, len2);
+      digest2 = g_malloc (len2);
+      g_checksum_get_digest (checksum, digest2, &len2);
+      g_assert_cmpint (len, ==, len2);
+      g_assert (memcmp (digest, digest2, len) == 0);
+      g_free (digest);
+      g_free (digest2);
+
+      g_checksum_reset (checksum);
+    }
+
+  g_checksum_free (checksum);
+}
+
 typedef struct {
   GChecksumType   checksum_type;
   const gchar   **sums;
@@ -642,6 +711,9 @@ test_checksum_string (gconstpointer d)
   test->length = length;                                        \
   path = g_strdup_printf ("/checksum/%s/%d", #type, length);    \
   g_test_add_data_func (path, test, test_checksum);             \
+  g_free (path);                                                \
+  path = g_strdup_printf ("/checksum/%s/reset/%d", #type, length); \
+  g_test_add_data_func (path, test, test_checksum_reset);       \
   g_free (path);                                                \
 }
 
