@@ -134,7 +134,9 @@ void                    g_settings_backend_changed_tree                 (GSettin
                                                                          GTree               *tree,
                                                                          gpointer             origin_tag);
 
-GSettingsBackend *      g_keyfile_settings_backend_new                  (const gchar         *filename);
+GSettingsBackend *      g_keyfile_settings_backend_new                  (const gchar         *filename,
+                                                                         const gchar         *root_path,
+                                                                         const gchar         *root_group);
 
 G_END_DECLS
 

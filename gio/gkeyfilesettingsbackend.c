@@ -23,34 +23,230 @@
 
 #include "config.h"
 
-#include "gkeyfilesettingsbackend.h"
-
 #include <stdio.h>
 #include <string.h>
-#include <errno.h>
 
-#include "gioerror.h"
-#include "giomodule.h"
 #include "gfile.h"
 #include "gfileinfo.h"
 #include "gfilemonitor.h"
 #include "gsimplepermission.h"
+#include "gsettingsbackend.h"
 
 #include "gioalias.h"
+
+#define G_TYPE_KEYFILE_SETTINGS_BACKEND      (g_keyfile_settings_backend_get_type ())
+#define G_KEYFILE_SETTINGS_BACKEND(inst)     (G_TYPE_CHECK_INSTANCE_CAST ((inst),      \
+                                              G_TYPE_KEYFILE_SETTINGS_BACKEND,         \
+                                              GKeyfileSettingsBackend))
+#define G_IS_KEYFILE_SETTINGS_BACKEND(inst)  (G_TYPE_CHECK_INSTANCE_TYPE ((inst),      \
+                                              G_TYPE_KEYFILE_SETTINGS_BACKEND))
+
+
+typedef GSettingsBackendClass GKeyfileSettingsBackendClass;
+
+typedef struct
+{
+  GSettingsBackend   parent_instance;
+
+  GKeyFile          *keyfile;
+  GPermission       *permission;
+  gboolean           writable;
+
+  gchar             *prefix;
+  gint               prefix_len;
+  gchar             *root_group;
+  gint               root_group_len;
+
+  GFile             *file;
+  GFileMonitor      *file_monitor;
+  guint8             digest[32];
+  GFile             *dir;
+  GFileMonitor      *dir_monitor;
+} GKeyfileSettingsBackend;
 
 G_DEFINE_TYPE (GKeyfileSettingsBackend,
                g_keyfile_settings_backend,
                G_TYPE_SETTINGS_BACKEND)
 
-struct _GKeyfileSettingsBackendPrivate
+static void
+compute_checksum (guint8        *digest,
+                  gconstpointer  contents,
+                  gsize          length)
 {
-  GHashTable   *table;
-  GKeyFile     *keyfile;
-  gboolean      writable;
-  gchar        *file_path;
-  gchar        *checksum;
-  GFileMonitor *monitor;
-};
+  GChecksum *checksum;
+  gsize len = 32;
+
+  checksum = g_checksum_new (G_CHECKSUM_SHA256);
+  g_checksum_update (checksum, contents, length);
+  g_checksum_get_digest (checksum, digest, &len);
+  g_checksum_free (checksum);
+  g_assert (len == 32);
+}
+
+static void
+g_keyfile_settings_backend_keyfile_write (GKeyfileSettingsBackend *kfsb)
+{
+  gchar *contents;
+  gsize length;
+
+  contents = g_key_file_to_data (kfsb->keyfile, &length, NULL);
+  g_file_replace_contents (kfsb->file, contents, length, NULL, FALSE,
+                           G_FILE_CREATE_REPLACE_DESTINATION,
+                           NULL, NULL, NULL);
+
+  compute_checksum (kfsb->digest, contents, length);
+  g_free (contents);
+}
+
+static gboolean
+group_name_matches (const gchar *group_name,
+                    const gchar *prefix)
+{
+  /* sort of like g_str_has_prefix() except that it must be an exact
+   * match or the prefix followed by '/'.
+   *
+   * for example 'a' is a prefix of 'a' and 'a/b' but not 'ab'.
+   */
+  gint i;
+
+  for (i = 0; prefix[i]; i++)
+    if (prefix[i] != group_name[i])
+      return FALSE;
+
+  return group_name[i] == '\0' || group_name[i] == '/';
+}
+
+static gboolean
+convert_path (GKeyfileSettingsBackend  *kfsb,
+              const gchar              *key,
+              gchar                   **group,
+              gchar                   **basename)
+{
+  gint key_len = strlen (key);
+  gint i;
+
+  if (key_len < kfsb->prefix_len ||
+      memcmp (key, kfsb->prefix, kfsb->prefix_len) != 0)
+    return FALSE;
+
+  key_len -= kfsb->prefix_len;
+  key += kfsb->prefix_len;
+
+  for (i = key_len; i >= 0; i--)
+    if (key[i] == '/')
+      break;
+
+  if (kfsb->root_group)
+    {
+      /* if a root_group was specified, make sure the user hasn't given
+       * a path that ghosts that group name
+       */
+      if (i == kfsb->root_group_len && memcmp (key, kfsb->root_group, i) == 0)
+        return FALSE;
+    }
+  else
+    {
+      /* if no root_group was given, ensure that the user gave a path */
+      if (i == -1)
+        return FALSE;
+    }
+
+  if (group)
+    {
+      if (i >= 0)
+        {
+          *group = g_memdup (key, i + 1);
+          (*group)[i] = '\0';
+        }
+      else
+        *group = g_strdup (kfsb->root_group);
+    }
+
+  if (basename)
+    *basename = g_memdup (key + i + 1, key_len - i);
+
+  return TRUE;
+}
+
+gboolean
+path_is_valid (GKeyfileSettingsBackend *kfsb,
+               const gchar             *path)
+{
+  return convert_path (kfsb, path, NULL, NULL);
+}
+
+static GVariant *
+get_from_keyfile (GKeyfileSettingsBackend *kfsb,
+                  const GVariantType      *type,
+                  const gchar             *key)
+{
+  GVariant *return_value = NULL;
+  gchar *group, *name;
+
+  if (convert_path (kfsb, key, &group, &name))
+    {
+      gchar *str;
+
+      g_assert (*name);
+
+      str = g_key_file_get_value (kfsb->keyfile, group, name, NULL);
+
+      if (str)
+        {
+          return_value = g_variant_parse (type, str, NULL, NULL, NULL);
+          g_free (str);
+        }
+
+      g_free (group);
+      g_free (name);
+    }
+
+  return return_value;
+}
+
+static gboolean
+set_to_keyfile (GKeyfileSettingsBackend *kfsb,
+                const gchar             *key,
+                GVariant                *value)
+{
+  gchar *group, *name;
+
+  if (convert_path (kfsb, key, &group, &name))
+    {
+      if (value)
+        {
+          gchar *str = g_variant_print (value, FALSE);
+          g_key_file_set_value (kfsb->keyfile, group, name, str);
+          g_variant_unref (g_variant_ref_sink (value));
+          g_free (str);
+        }
+      else
+        {
+          if (*name == '\0')
+            {
+              gchar **groups;
+              gint i;
+
+              groups = g_key_file_get_groups (kfsb->keyfile, NULL);
+
+              for (i = 0; groups[i]; i++)
+                if (group_name_matches (groups[i], group))
+                  g_key_file_remove_group (kfsb->keyfile, groups[i], NULL);
+
+              g_strfreev (groups);
+            }
+          else
+            g_key_file_remove_key (kfsb->keyfile, group, name, NULL);
+        }
+
+      g_free (group);
+      g_free (name);
+
+      return TRUE;
+    }
+
+  return FALSE;
+}
 
 static GVariant *
 g_keyfile_settings_backend_read (GSettingsBackend   *backend,
@@ -58,70 +254,65 @@ g_keyfile_settings_backend_read (GSettingsBackend   *backend,
                                  const GVariantType *expected_type,
                                  gboolean            default_value)
 {
-  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
-  GVariant *value;
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
 
   if (default_value)
     return NULL;
 
-  value = g_hash_table_lookup (kf_backend->priv->table, key);
-
-  if (value != NULL)
-    g_variant_ref (value);
-
-  return value;
+  return get_from_keyfile (kfsb, expected_type, key);
 }
 
-static gboolean
-g_keyfile_settings_backend_write_one (const gchar             *key,
-                                      GVariant                *value,
-                                      GKeyfileSettingsBackend *kf_backend)
+typedef struct
 {
-  const gchar *slash;
-  const gchar *base_key;
-  gchar       *path;
+  GKeyfileSettingsBackend *kfsb;
+  gboolean failed;
+} WriteManyData;
 
-  g_hash_table_replace (kf_backend->priv->table,
-                        g_strdup (key), g_variant_ref (value));
+static gboolean
+g_keyfile_settings_backend_write_one (gpointer key,
+                                      gpointer value,
+                                      gpointer user_data)
+{
+  WriteManyData *data = user_data;
+  gboolean success;
 
-  slash = strrchr (key, '/');
-  g_assert (slash != NULL);
-  base_key = (slash + 1);
-  path = g_strndup (key, slash - key + 1);
-
-  g_key_file_set_string (kf_backend->priv->keyfile,
-                         path, base_key, g_variant_print (value, TRUE));
-
-  g_free (path);
+  success = set_to_keyfile (data->kfsb, key, value);
+  g_assert (success);
 
   return FALSE;
 }
 
-static void
-g_keyfile_settings_backend_keyfile_write (GKeyfileSettingsBackend *kf_backend)
+static gboolean
+g_keyfile_settings_backend_check_one (gpointer key,
+                                      gpointer value,
+                                      gpointer user_data)
 {
-  gchar *dirname;
-  gchar *contents;
-  gsize  length;
-  GFile *file;
+  WriteManyData *data = user_data;
 
-  dirname = g_path_get_dirname (kf_backend->priv->file_path);
-  if (!g_file_test (dirname, G_FILE_TEST_IS_DIR))
-    g_mkdir_with_parents (dirname, 0700);
-  g_free (dirname);
+  return data->failed = !path_is_valid (data->kfsb, key);
+}
 
-  contents = g_key_file_to_data (kf_backend->priv->keyfile, &length, NULL);
+static gboolean
+g_keyfile_settings_backend_write_many (GSettingsBackend *backend,
+                                       GTree            *tree,
+                                       gpointer          origin_tag)
+{
+  WriteManyData data = { G_KEYFILE_SETTINGS_BACKEND (backend) };
 
-  file = g_file_new_for_path (kf_backend->priv->file_path);
-  g_file_replace_contents (file, contents, length,
-                           NULL, FALSE, G_FILE_CREATE_REPLACE_DESTINATION,
-                           NULL, NULL, NULL);
-  g_object_unref (file);
+  if (!data.kfsb->writable)
+    return FALSE;
 
-  g_free (kf_backend->priv->checksum);
-  kf_backend->priv->checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, contents, length);
+  g_tree_foreach (tree, g_keyfile_settings_backend_check_one, &data);
 
-  g_free (contents);
+  if (data.failed)
+    return FALSE;
+
+  g_tree_foreach (tree, g_keyfile_settings_backend_write_one, &data);
+  g_keyfile_settings_backend_keyfile_write (data.kfsb);
+
+  g_settings_backend_changed_tree (backend, tree, origin_tag);
+
+  return TRUE;
 }
 
 static gboolean
@@ -130,81 +321,34 @@ g_keyfile_settings_backend_write (GSettingsBackend *backend,
                                   GVariant         *value,
                                   gpointer          origin_tag)
 {
-  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
+  gboolean success;
 
-  g_keyfile_settings_backend_write_one (key, value, kf_backend);
-  g_keyfile_settings_backend_keyfile_write (kf_backend);
+  if (!kfsb->writable)
+    return FALSE;
 
-  g_settings_backend_changed (backend, key, origin_tag);
+  success = set_to_keyfile (kfsb, key, value);
 
-  return TRUE;
-}
+  if (success)
+    {
+      g_settings_backend_changed (backend, key, origin_tag);
+      g_keyfile_settings_backend_keyfile_write (kfsb);
+    }
 
-static gboolean
-g_keyfile_settings_backend_write_keys (GSettingsBackend *backend,
-                                       GTree            *tree,
-                                       gpointer          origin_tag)
-{
-  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
-
-  g_tree_foreach (tree, (GTraverseFunc) g_keyfile_settings_backend_write_one, backend);
-  g_keyfile_settings_backend_keyfile_write (kf_backend);
-
-  g_settings_backend_changed_tree (backend, tree, origin_tag);
-
-  return TRUE;
+  return success;
 }
 
 static void
 g_keyfile_settings_backend_reset_path (GSettingsBackend *backend,
                                        const gchar      *path,
-                                       gpointer         origin_tag)
+                                       gpointer          origin_tag)
 {
-  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
-  GPtrArray  *reset_array;
-  GList      *hash_keys;
-  GList      *l;
-  gboolean    changed;
-  gchar     **groups = NULL;
-  gsize       groups_nb = 0;
-  int         i;
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
 
-  reset_array = g_ptr_array_new_with_free_func (g_free);
+  if (set_to_keyfile (kfsb, path, NULL))
+    g_keyfile_settings_backend_keyfile_write (kfsb);
 
-  hash_keys = g_hash_table_get_keys (kf_backend->priv->table);
-  for (l = hash_keys; l != NULL; l = l->next)
-    {
-      if (g_str_has_prefix (l->data, path))
-        {
-          g_hash_table_remove (kf_backend->priv->table, l->data);
-          g_ptr_array_add (reset_array, g_strdup (l->data));
-        }
-    }
-  g_list_free (hash_keys);
-
-  changed = FALSE;
-  groups = g_key_file_get_groups (kf_backend->priv->keyfile, &groups_nb);
-  for (i = 0; i < groups_nb; i++)
-    {
-      if (g_str_has_prefix (groups[i], path))
-        changed = g_key_file_remove_group (kf_backend->priv->keyfile, groups[i], NULL) || changed;
-    }
-  g_strfreev (groups);
-
-  if (changed)
-    g_keyfile_settings_backend_keyfile_write (kf_backend);
-
-  if (reset_array->len > 0)
-    {
-      /* the array has to be NULL-terminated */
-      g_ptr_array_add (reset_array, NULL);
-      g_settings_backend_keys_changed (G_SETTINGS_BACKEND (kf_backend),
-                                       "",
-                                       (const gchar **) reset_array->pdata,
-                                       origin_tag);
-    }
-
-  g_ptr_array_free (reset_array, TRUE);
+  g_settings_backend_path_changed (backend, path, origin_tag);
 }
 
 static void
@@ -212,331 +356,310 @@ g_keyfile_settings_backend_reset (GSettingsBackend *backend,
                                   const gchar      *key,
                                   gpointer          origin_tag)
 {
-  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
-  gboolean     had_key;
-  const gchar *slash;
-  const gchar *base_key;
-  gchar       *path;
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
 
-  had_key = g_hash_table_lookup_extended (kf_backend->priv->table, key, NULL, NULL);
-  if (had_key)
-    g_hash_table_remove (kf_backend->priv->table, key);
+  if (set_to_keyfile (kfsb, key, NULL))
+    g_keyfile_settings_backend_keyfile_write (kfsb);
 
-  slash = strrchr (key, '/');
-  g_assert (slash != NULL);
-  base_key = (slash + 1);
-  path = g_strndup (key, slash - key + 1);
-
-  if (g_key_file_remove_key (kf_backend->priv->keyfile, path, base_key, NULL))
-    g_keyfile_settings_backend_keyfile_write (kf_backend);
-
-  g_free (path);
-
-  if (had_key)
-    g_settings_backend_changed (G_SETTINGS_BACKEND (kf_backend), key, origin_tag);
+  g_settings_backend_changed (backend, key, origin_tag);
 }
 
 static gboolean
 g_keyfile_settings_backend_get_writable (GSettingsBackend *backend,
                                          const gchar      *name)
 {
-  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (backend);
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
 
-  return kf_backend->priv->writable;
+  return kfsb->writable && path_is_valid (kfsb, name);
 }
 
 static GPermission *
 g_keyfile_settings_backend_get_permission (GSettingsBackend *backend,
                                            const gchar      *path)
 {
-  return g_simple_permission_new (TRUE);
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
+
+  return g_object_ref (kfsb->permission);
 }
 
 static void
-g_keyfile_settings_backend_keyfile_reload (GKeyfileSettingsBackend *kf_backend)
+keyfile_to_tree (GKeyfileSettingsBackend *kfsb,
+                 GTree                   *tree,
+                 GKeyFile                *keyfile,
+                 gboolean                 dup_check)
 {
-  gchar       *contents = NULL;
-  gsize        length = 0;
-  gchar       *new_checksum;
-  GHashTable  *loaded_keys;
-  GPtrArray   *changed_array;
-  gchar      **groups = NULL;
-  gsize        groups_nb = 0;
-  int          i;
-  GList       *keys_l = NULL;
-  GList       *l;
+  gchar **groups;
+  gint i;
 
-  if (!g_file_get_contents (kf_backend->priv->file_path,
-                            &contents, &length, NULL))
+  groups = g_key_file_get_groups (keyfile, NULL);
+  for (i = 0; groups[i]; i++)
     {
-      contents = g_strdup ("");
-      length = 0;
-    }
+      gboolean is_root_group;
+      gchar **keys;
+      gint j;
 
-  new_checksum = g_compute_checksum_for_string (G_CHECKSUM_SHA256, contents, length);
+      is_root_group = g_strcmp0 (kfsb->root_group, groups[i]) == 0;
+      keys = g_key_file_get_keys (keyfile, groups[i], NULL, NULL);
 
-  if (g_strcmp0 (kf_backend->priv->checksum, new_checksum) == 0)
-    {
-      g_free (new_checksum);
-      return;
-    }
-
-  if (kf_backend->priv->checksum != NULL)
-    g_free (kf_backend->priv->checksum);
-  kf_backend->priv->checksum = new_checksum;
-
-  if (kf_backend->priv->keyfile != NULL)
-    g_key_file_free (kf_backend->priv->keyfile);
-
-  kf_backend->priv->keyfile = g_key_file_new ();
-
-  /* we just silently ignore errors: there's not much we can do about them */
-  if (length > 0)
-    g_key_file_load_from_data (kf_backend->priv->keyfile, contents, length,
-                               G_KEY_FILE_KEEP_COMMENTS|G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
-
-  loaded_keys = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
-  changed_array = g_ptr_array_new_with_free_func (g_free);
-
-  /* Load keys from the keyfile */
-  groups = g_key_file_get_groups (kf_backend->priv->keyfile, &groups_nb);
-  for (i = 0; i < groups_nb; i++)
-    {
-      gchar **keys = NULL;
-      gsize   keys_nb = 0;
-      int     j;
-
-      keys = g_key_file_get_keys (kf_backend->priv->keyfile, groups[i], &keys_nb, NULL);
-      if (keys == NULL)
-        continue;
-
-      for (j = 0; j < keys_nb; j++)
+      for (j = 0; keys[j]; j++)
         {
-          gchar    *value;
-          gchar    *full_key;
-          GVariant *old_variant;
-          GVariant *variant;
+          gchar *path, *value;
 
-          value = g_key_file_get_string (kf_backend->priv->keyfile, groups[i], keys[j], NULL);
-          if (value == NULL)
-            continue;
+          if (is_root_group)
+            path = g_strdup_printf ("%s%s", kfsb->prefix, keys[j]);
+          else
+            path = g_strdup_printf ("%s%s/%s", kfsb->prefix, groups[i], keys[j]);
 
-          variant = g_variant_new_parsed (value);
-          g_free (value);
+          value = g_key_file_get_value (keyfile, groups[i], keys[j], NULL);
 
-          if (variant == NULL)
-            continue;
-
-          full_key = g_strjoin ("", groups[i], keys[j], NULL),
-          g_hash_table_insert (loaded_keys, full_key, GINT_TO_POINTER(TRUE));
-
-          old_variant = g_hash_table_lookup (kf_backend->priv->table, full_key);
-
-          if (old_variant == NULL || !g_variant_equal (old_variant, variant))
+          if (dup_check && g_strcmp0 (g_tree_lookup (tree, path), value) == 0)
             {
-              g_ptr_array_add (changed_array, g_strdup (full_key));
-              g_hash_table_replace (kf_backend->priv->table,
-                                    g_strdup (full_key),
-                                    g_variant_ref_sink (variant));
+              g_tree_remove (tree, path);
+              g_free (value);
+              g_free (path);
             }
           else
-            g_variant_unref (variant);
+            g_tree_insert (tree, path, value);
         }
 
       g_strfreev (keys);
     }
   g_strfreev (groups);
-
-  /* Remove keys that were in the hashtable but not in the keyfile */
-  keys_l = g_hash_table_get_keys (kf_backend->priv->table);
-  for (l = keys_l; l != NULL; l = l->next)
-    {
-      gchar *key = l->data;
-
-      if (g_hash_table_lookup_extended (loaded_keys, key, NULL, NULL))
-        continue;
-
-      g_ptr_array_add (changed_array, g_strdup (key));
-      g_hash_table_remove (kf_backend->priv->table, key);
-    }
-  g_list_free (keys_l);
-
-  if (changed_array->len > 0)
-    {
-      /* the array has to be NULL-terminated */
-      g_ptr_array_add (changed_array, NULL);
-      g_settings_backend_keys_changed (G_SETTINGS_BACKEND (kf_backend),
-                                       "",
-                                       (const gchar **) changed_array->pdata,
-                                       NULL);
-    }
-
-  g_hash_table_unref (loaded_keys);
-  g_ptr_array_free (changed_array, TRUE);
-}
-
-static gboolean
-g_keyfile_settings_backend_keyfile_writable (GFile *file)
-{
-  GFileInfo *fileinfo;
-  GError    *error;
-  gboolean   writable = FALSE;
-
-  error = NULL;
-  fileinfo = g_file_query_info (file, "access::*",
-                                G_FILE_QUERY_INFO_NONE, NULL, &error);
-
-  if (fileinfo == NULL)
-    {
-      if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
-        {
-          GFile *parent;
-
-          parent = g_file_get_parent (file);
-          if (parent)
-            {
-              writable = g_keyfile_settings_backend_keyfile_writable (parent);
-              g_object_unref (parent);
-            }
-        }
-
-      g_error_free (error);
-
-      return writable;
-    }
-
-  /* We don't want to mark the backend as writable if the file is not readable,
-   * since it means we won't be able to load the content of the file, and we'll
-   * lose data. */
-  writable =
-        g_file_info_get_attribute_boolean (fileinfo, G_FILE_ATTRIBUTE_ACCESS_CAN_READ) &&
-        g_file_info_get_attribute_boolean (fileinfo, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE);
-  g_object_unref (fileinfo);
-
-  return writable;
 }
 
 static void
-g_keyfile_settings_backend_keyfile_changed (GFileMonitor      *monitor,
-                                            GFile             *file,
-                                            GFile             *other_file,
-                                            GFileMonitorEvent  event_type,
-                                            gpointer           user_data)
+g_keyfile_settings_backend_keyfile_reload (GKeyfileSettingsBackend *kfsb)
 {
-  GKeyfileSettingsBackend *kf_backend;
+  guint8 digest[32];
+  gchar *contents;
+  gsize length;
 
-  if (event_type != G_FILE_MONITOR_EVENT_CHANGED &&
-      event_type != G_FILE_MONITOR_EVENT_CREATED &&
-      event_type != G_FILE_MONITOR_EVENT_DELETED &&
-      event_type != G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED)
-    return;
+  contents = NULL;
+  length = 0;
 
-  kf_backend = G_KEYFILE_SETTINGS_BACKEND (user_data);
+  g_file_load_contents (kfsb->file, NULL, &contents, &length, NULL, NULL);
+  compute_checksum (digest, contents, length);
 
-  if (event_type == G_FILE_MONITOR_EVENT_ATTRIBUTE_CHANGED)
+  if (memcmp (kfsb->digest, digest, sizeof digest) != 0)
     {
-      gboolean writable;
+      GKeyFile *keyfiles[2];
+      GTree *tree;
 
-      writable = g_keyfile_settings_backend_keyfile_writable (file);
+      tree = g_tree_new_full ((GCompareDataFunc) strcmp, NULL,
+                              g_free, g_free);
 
-      if (kf_backend->priv->writable == writable)
-        return;
+      keyfiles[0] = kfsb->keyfile;
+      keyfiles[1] = g_key_file_new ();
 
-      kf_backend->priv->writable = writable;
-      if (!writable)
-        return;
-      /* else: reload the file since it was possibly not readable before */
+      if (length > 0)
+        g_key_file_load_from_data (keyfiles[1], contents, length,
+                                   G_KEY_FILE_KEEP_COMMENTS |
+                                   G_KEY_FILE_KEEP_TRANSLATIONS, NULL);
+
+      keyfile_to_tree (kfsb, tree, keyfiles[0], FALSE);
+      keyfile_to_tree (kfsb, tree, keyfiles[1], TRUE);
+      g_key_file_free (keyfiles[0]);
+      kfsb->keyfile = keyfiles[1];
+
+      if (g_tree_nnodes (tree) > 0)
+        g_settings_backend_changed_tree (&kfsb->parent_instance, tree, NULL);
+
+      g_tree_unref (tree);
+
+      memcpy (kfsb->digest, digest, sizeof digest);
     }
 
-  g_keyfile_settings_backend_keyfile_reload (kf_backend);
+  g_free (contents);
+}
+
+static void
+g_keyfile_settings_backend_keyfile_writable (GKeyfileSettingsBackend *kfsb)
+{
+  GFileInfo *fileinfo;
+  gboolean writable;
+
+  fileinfo = g_file_query_info (kfsb->dir, "access::*", 0, NULL, NULL);
+
+  if (fileinfo)
+    {
+      writable =
+        g_file_info_get_attribute_boolean (fileinfo, G_FILE_ATTRIBUTE_ACCESS_CAN_WRITE) &&
+        g_file_info_get_attribute_boolean (fileinfo, G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE);
+      g_object_unref (fileinfo);
+    }
+  else
+    writable = FALSE;
+
+  if (writable != kfsb->writable)
+    {
+      kfsb->writable = writable;
+      g_settings_backend_path_writable_changed (&kfsb->parent_instance, "/");
+    }
 }
 
 static void
 g_keyfile_settings_backend_finalize (GObject *object)
 {
-  GKeyfileSettingsBackend *kf_backend = G_KEYFILE_SETTINGS_BACKEND (object);
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (object);
 
-  g_hash_table_unref (kf_backend->priv->table);
-  kf_backend->priv->table = NULL;
+  g_key_file_free (kfsb->keyfile);
+  g_object_unref (kfsb->permission);
 
-  g_key_file_free (kf_backend->priv->keyfile);
-  kf_backend->priv->keyfile = NULL;
+  g_file_monitor_cancel (kfsb->file_monitor);
+  g_object_unref (kfsb->file_monitor);
+  g_object_unref (kfsb->file);
 
-  g_free (kf_backend->priv->file_path);
-  kf_backend->priv->file_path = NULL;
+  g_file_monitor_cancel (kfsb->dir_monitor);
+  g_object_unref (kfsb->dir_monitor);
+  g_object_unref (kfsb->dir);
 
-  g_free (kf_backend->priv->checksum);
-  kf_backend->priv->checksum = NULL;
-
-  g_file_monitor_cancel (kf_backend->priv->monitor);
-  g_object_unref (kf_backend->priv->monitor);
-  kf_backend->priv->monitor = NULL;
+  g_free (kfsb->root_group);
+  g_free (kfsb->prefix);
 
   G_OBJECT_CLASS (g_keyfile_settings_backend_parent_class)
     ->finalize (object);
 }
 
 static void
-g_keyfile_settings_backend_init (GKeyfileSettingsBackend *kf_backend)
+g_keyfile_settings_backend_init (GKeyfileSettingsBackend *kfsb)
 {
-  kf_backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (kf_backend,
-                                                  G_TYPE_KEYFILE_SETTINGS_BACKEND,
-                                                  GKeyfileSettingsBackendPrivate);
-  kf_backend->priv->table =
-    g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
-                           (GDestroyNotify) g_variant_unref);
-
-  kf_backend->priv->keyfile = NULL;
-  kf_backend->priv->writable = FALSE;
-  kf_backend->priv->file_path = NULL;
-  kf_backend->priv->checksum = NULL;
-  kf_backend->priv->monitor = NULL;
 }
 
 static void
 g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
 {
-  GSettingsBackendClass *backend_class = G_SETTINGS_BACKEND_CLASS (class);
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = g_keyfile_settings_backend_finalize;
 
-  backend_class->read = g_keyfile_settings_backend_read;
-  backend_class->write = g_keyfile_settings_backend_write;
-  backend_class->write_keys = g_keyfile_settings_backend_write_keys;
-  backend_class->reset = g_keyfile_settings_backend_reset;
-  backend_class->reset_path = g_keyfile_settings_backend_reset_path;
-  backend_class->get_writable = g_keyfile_settings_backend_get_writable;
-  backend_class->get_permission = g_keyfile_settings_backend_get_permission;
+  class->read = g_keyfile_settings_backend_read;
+  class->write = g_keyfile_settings_backend_write;
+  class->write_keys = g_keyfile_settings_backend_write_many;
+  class->reset = g_keyfile_settings_backend_reset;
+  class->reset_path = g_keyfile_settings_backend_reset_path;
+  class->get_writable = g_keyfile_settings_backend_get_writable;
+  class->get_permission = g_keyfile_settings_backend_get_permission;
   /* No need to implement subscribed/unsubscribe: the only point would be to
    * stop monitoring the file when there's no GSettings anymore, which is no
    * big win. */
-
-  g_type_class_add_private (class, sizeof (GKeyfileSettingsBackendPrivate));
 }
 
-GSettingsBackend *
-g_keyfile_settings_backend_new (const gchar *filename)
+static void
+file_changed (GFileMonitor      *monitor,
+              GFile             *file,
+              GFile             *other_file,
+              GFileMonitorEvent  event_type,
+              gpointer           user_data)
 {
-  GKeyfileSettingsBackend *kf_backend;
-  GFile *file;
+  GKeyfileSettingsBackend *kfsb = user_data;
 
-  kf_backend = g_object_new (G_TYPE_KEYFILE_SETTINGS_BACKEND, NULL);
-  kf_backend->priv->file_path = g_strdup (filename);
+  g_keyfile_settings_backend_keyfile_reload (kfsb);
+}
 
-  file = g_file_new_for_path (kf_backend->priv->file_path);
+static void
+dir_changed (GFileMonitor       *monitor,
+              GFile             *file,
+              GFile             *other_file,
+              GFileMonitorEvent  event_type,
+              gpointer           user_data)
+{
+  GKeyfileSettingsBackend *kfsb = user_data;
 
-  kf_backend->priv->writable = g_keyfile_settings_backend_keyfile_writable (file);
+  g_keyfile_settings_backend_keyfile_writable (kfsb);
+}
 
-  kf_backend->priv->monitor = g_file_monitor_file (file, G_FILE_MONITOR_SEND_MOVED, NULL, NULL);
-  g_signal_connect (kf_backend->priv->monitor, "changed",
-                    (GCallback)g_keyfile_settings_backend_keyfile_changed, kf_backend);
+/**
+ * g_keyfile_settings_backend_new:
+ * @filename: the filename of the keyfile
+ * @root_path: the path under which all settings keys appear
+ * @root_group: (allow-none): the group name corresponding to
+ *              @root_path, or %NULL
+ * Returns: a keyfile-backed #GSettingsBackend
+ *
+ * Creates a keyfile-backed #GSettingsBackend.
+ *
+ * The filename of the keyfile to use is given by @filename.
+ *
+ * All settings read to or written from the backend must fall under the
+ * path given in @root_path (which must start and end with a slash and
+ * not contain two consecutive slashes).  @root_path may be "/".
+ *
+ * If @root_group is non-%NULL then it specifies the name of the keyfile
+ * group used for keys that are written directly below @root_path.  For
+ * example, if @root_path is "/apps/example/" and @root_group is
+ * "toplevel", then settings the key "/apps/example/enabled" to a value
+ * of %TRUE will cause the following to appear in the keyfile:
+ *
+ * <programlisting>
+ *   [toplevel]
+ *   foo=true
+ * </programlisting>
+ *
+ * If @root_group is %NULL then it is not permitted to store keys
+ * directly below the @root_path.
+ *
+ * For keys not stored directly below @root_path (ie: in a sub-path),
+ * the name of the subpath (with the final slash stripped) is used as
+ * the name of the keyfile group.  To continue the example, if
+ * were stored in "/apps/example/profiles/default/font-size" were set to
+ * 12 then the following would appear in the keyfile:
+ *
+ * <programlisting>
+ *   [profiles/default]
+ *   font-size=12
+ * </programlisting>
+ *
+ * The backend will refuse writes (and return writability as being
+ * %FALSE) for keys outside of @root_path and, in the event that
+ * @root_group is %NULL, also for keys directly under @root_path.
+ * Writes will also be refused if the backend detects that it has the
+ * inability to rewrite the keyfile (ie: the containing directory is not
+ * writable).
+ **/
+GSettingsBackend *
+g_keyfile_settings_backend_new (const gchar *filename,
+                                const gchar *root_path,
+                                const gchar *root_group)
+{
+  GKeyfileSettingsBackend *kfsb;
 
-  g_object_unref (file);
+  g_return_val_if_fail (filename != NULL, NULL);
+  g_return_val_if_fail (root_path != NULL, NULL);
+  g_return_val_if_fail (g_str_has_prefix (root_path, "/"), NULL);
+  g_return_val_if_fail (g_str_has_suffix (root_path, "/"), NULL);
+  g_return_val_if_fail (strstr (root_path, "//") == NULL, NULL);
 
-  g_keyfile_settings_backend_keyfile_reload (kf_backend);
+  kfsb = g_object_new (G_TYPE_KEYFILE_SETTINGS_BACKEND, NULL);
+  kfsb->keyfile = g_key_file_new ();
+  kfsb->permission = g_simple_permission_new (TRUE);
 
-  return G_SETTINGS_BACKEND (kf_backend);
+  kfsb->file = g_file_new_for_path (filename);
+  kfsb->dir = g_file_get_parent (kfsb->file);
+  g_file_make_directory_with_parents (kfsb->dir, NULL, NULL);
+
+  kfsb->file_monitor = g_file_monitor_file (kfsb->file, 0, NULL, NULL);
+  kfsb->dir_monitor = g_file_monitor_file (kfsb->dir, 0, NULL, NULL);
+
+  kfsb->prefix_len = strlen (root_path);
+  kfsb->prefix = g_strdup (root_path);
+
+  if (root_group)
+    {
+      kfsb->root_group_len = strlen (root_group);
+      kfsb->root_group = g_strdup (root_group);
+    }
+
+  compute_checksum (kfsb->digest, NULL, 0);
+
+  g_signal_connect (kfsb->file_monitor, "changed",
+                    G_CALLBACK (file_changed), kfsb);
+  g_signal_connect (kfsb->dir_monitor, "changed",
+                    G_CALLBACK (dir_changed), kfsb);
+
+  g_keyfile_settings_backend_keyfile_writable (kfsb);
+  g_keyfile_settings_backend_keyfile_reload (kfsb);
+
+  return G_SETTINGS_BACKEND (kfsb);
 }
 
 #define __G_KEYFILE_SETTINGS_BACKEND_C__

@@ -1129,7 +1129,7 @@ test_keyfile (void)
 
   g_remove ("gsettings.store");
 
-  kf_backend = g_keyfile_settings_backend_new ("gsettings.store");
+  kf_backend = g_keyfile_settings_backend_new ("gsettings.store", "/", "root");
   settings = g_settings_new_with_backend ("org.gtk.test", kf_backend);
   g_object_unref (kf_backend);
 
@@ -1138,7 +1138,7 @@ test_keyfile (void)
   keyfile = g_key_file_new ();
   g_assert (g_key_file_load_from_file (keyfile, "gsettings.store", 0, NULL));
 
-  str = g_key_file_get_string (keyfile, "/tests/", "greeting", NULL);
+  str = g_key_file_get_string (keyfile, "tests", "greeting", NULL);
   g_assert_cmpstr (str, ==, "'see if this works'");
 
   g_free (str);
@@ -1248,6 +1248,8 @@ test_strinfo (void)
   g_assert (!strinfo_is_string_valid (strinfo, length, "baz"));
   g_assert (!strinfo_is_string_valid (strinfo, length, "quux"));
 }
+
+
 
 static void
 test_enums (void)
