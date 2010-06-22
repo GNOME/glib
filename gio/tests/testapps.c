@@ -142,17 +142,17 @@ await_child_termination_run (AwaitChildTerminationData *data)
   child_watch_source = g_child_watch_source_new (data->pid);
   g_source_set_callback (child_watch_source, (GSourceFunc) on_child_termination_exited, data, NULL);
   g_source_attach (child_watch_source, data->context);
-  g_source_unref (child_watch_source);
 
   timeout_source = g_timeout_source_new_seconds (5);
   g_source_set_callback (timeout_source, on_child_termination_timeout, data, NULL);
   g_source_attach (timeout_source, data->context);
-  g_source_unref (timeout_source);
 
   g_main_loop_run (data->loop);
 
   g_source_destroy (child_watch_source);
+  g_source_unref (child_watch_source);
   g_source_destroy (timeout_source);
+  g_source_unref (timeout_source);
 
   g_main_loop_unref (data->loop);
 
