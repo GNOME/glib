@@ -22,7 +22,13 @@
 
 #include <errno.h>  /* errno */
 #include <glib.h>
+#ifndef _WIN32
 #include <unistd.h> /* pipe() */
+#else
+#include <io.h>
+#include <fcntl.h>
+#define pipe(fds) _pipe(fds, 4096, _O_BINARY)
+#endif
 
 static void
 debug (void)
