@@ -32,7 +32,8 @@
 G_BEGIN_DECLS
 
 #define GI_IS_REGISTERED_TYPE_INFO(info) \
-    ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_ENUM) || \
+    ((g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_BOXED) || \
+     (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_ENUM) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_FLAGS) ||	\
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_INTERFACE) || \
      (g_base_info_get_type((GIBaseInfo*)info) == GI_INFO_TYPE_OBJECT) || \
