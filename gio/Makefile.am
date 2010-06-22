@@ -231,10 +231,7 @@ giounixinclude_HEADERS = \
 	$(NULL)
 endif
 
-if OS_WIN32
-appinfo_sources += gwin32appinfo.c gwin32appinfo.h
-platform_libadd += -lshlwapi -lws2_32 -ldnsapi
-win32_sources = \
+win32_actual_sources = \
 	gwin32mount.c \
 	gwin32mount.h \
 	gwin32resolver.c \
@@ -253,6 +250,11 @@ win32_more_sources_for_vcproj = \
 	win32/gwinhttpfileinputstream.c \
 	win32/gwinhttpfileoutputstream.c \
 	win32/gwinhttpvfs.c
+
+if OS_WIN32
+appinfo_sources += gwin32appinfo.c gwin32appinfo.h
+platform_libadd += -lshlwapi -lws2_32 -ldnsapi
+win32_sources = $(win32_actual_sources)
 
 giowin32includedir=$(includedir)/gio-win32-2.0/gio
 giowin32include_HEADERS = \
@@ -601,7 +603,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	  cp $$d/$$f $(distdir) || exit 1; done
 
 ../build/win32/vs9/gio.vcproj: $(top_srcdir)/build/win32/vs9/gio.vcprojin
-	for F in `echo $(libgio_2_0_la_SOURCES) $(win32_sources) $(win32_more_sources_for_vcproj) | tr '/' '\\'`; do \
+	for F in `echo $(libgio_2_0_la_SOURCES) $(win32_actual_sources) $(win32_actual_more_sources_for_vcproj) | tr '/' '\\'`; do \
 		case $$F in \
 		gunix*.c|gdesktopappinfo.c) ;; \
 		*.c) echo '   <File RelativePath="..\..\..\gio\'$$F'" />' \

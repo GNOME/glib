@@ -64,12 +64,14 @@ static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIfac
 #endif
 
 #define g_local_file_output_stream_get_type _g_local_file_output_stream_get_type
-G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,
 #ifdef G_OS_UNIX
+G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
 						g_file_descriptor_based_iface_init)
-#endif
                            );
+#else
+G_DEFINE_TYPE_WITH_CODE (GLocalFileOutputStream, g_local_file_output_stream, G_TYPE_FILE_OUTPUT_STREAM,);
+#endif
 
 
 /* Some of the file replacement code was based on the code from gedit,

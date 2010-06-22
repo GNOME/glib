@@ -152,12 +152,12 @@ static const GDBusErrorEntry g_dbus_error_entries[] =
 GQuark
 g_dbus_error_quark (void)
 {
+  G_STATIC_ASSERT (G_N_ELEMENTS (g_dbus_error_entries) - 1 == G_DBUS_ERROR_OBJECT_PATH_IN_USE);
   static volatile gsize quark_volatile = 0;
   g_dbus_error_register_error_domain ("g-dbus-error-quark",
                                       &quark_volatile,
                                       g_dbus_error_entries,
                                       G_N_ELEMENTS (g_dbus_error_entries));
-  G_STATIC_ASSERT (G_N_ELEMENTS (g_dbus_error_entries) - 1 == G_DBUS_ERROR_OBJECT_PATH_IN_USE);
   return (GQuark) quark_volatile;
 }
 

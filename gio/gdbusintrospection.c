@@ -1826,6 +1826,7 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
   GMarkupParser *parser;
   guint num_nodes;
   ParseData *data;
+  GDBusNodeInfo **ughret;
 
   ret = NULL;
   parser = NULL;
@@ -1848,7 +1849,6 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
                                      error))
     goto out;
 
-  GDBusNodeInfo **ughret;
   ughret = parse_data_steal_nodes (data, &num_nodes);
 
   if (num_nodes != 1)

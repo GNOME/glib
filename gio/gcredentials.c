@@ -67,7 +67,9 @@ struct _GCredentialsPrivate
 #ifdef __linux__
   struct ucred native;
 #else
+#ifdef __GNUC__
 #warning Please add GCredentials support for your OS
+#endif
   guint foo;
 #endif
 };

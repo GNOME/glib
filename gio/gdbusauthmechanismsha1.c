@@ -29,6 +29,9 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#ifdef _WIN32
+#include <io.h>
+#endif
 
 #include <glib/gstdio.h>
 
@@ -281,7 +284,9 @@ ensure_keyring_directory (GError **error)
               goto out;
             }
 #else
+#ifdef __GNUC__
 #warning Please implement permission checking on this non-UNIX platform
+#endif
 #endif
         }
         goto out;

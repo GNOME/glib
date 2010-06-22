@@ -54,12 +54,14 @@ static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIfac
 #endif
 
 #define g_local_file_input_stream_get_type _g_local_file_input_stream_get_type
-G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM,
 #ifdef G_OS_UNIX
+G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
 						g_file_descriptor_based_iface_init)
-#endif
 );
+#else
+G_DEFINE_TYPE_WITH_CODE (GLocalFileInputStream, g_local_file_input_stream, G_TYPE_FILE_INPUT_STREAM,);
+#endif
 
 struct _GLocalFileInputStreamPrivate {
   int fd;

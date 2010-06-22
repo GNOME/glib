@@ -4773,7 +4773,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                   ExportedSubtree *es,
                                   GDBusMessage    *message)
 {
-  gboolean handled;;
+  gboolean handled;
   const gchar *sender;
   const gchar *interface_name;
   const gchar *member;

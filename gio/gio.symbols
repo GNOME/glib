@@ -81,12 +81,14 @@ g_app_launch_context_launch_failed
 #endif
 
 #if IN_FILE(__G_DESKTOP_APP_INFO_C__)
+#ifdef G_OS_UNIX
 g_app_info_create_from_commandline
 g_app_info_get_all
 g_app_info_get_all_for_type
 g_app_info_get_default_for_type
 g_app_info_get_default_for_uri_scheme
 g_app_info_reset_type_associations
+#endif
 #endif
 #endif
 
