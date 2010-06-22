@@ -12,7 +12,6 @@ collate.out
 completion-test
 convert-test
 cxx-test
-date-test
 deftype
 dirname-test
 env-test

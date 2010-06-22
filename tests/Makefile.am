@@ -90,7 +90,6 @@ test_programs =					\
 	child-test				\
 	completion-test				\
 	convert-test				\
-	date-test				\
 	dirname-test				\
 	file-test				\
 	env-test				\

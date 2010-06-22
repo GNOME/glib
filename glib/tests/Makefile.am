@@ -90,6 +90,9 @@ checksum_LDADD       = $(progs_ldadd)
 TEST_PROGS         += hash
 hash_LDADD       = $(progs_ldadd)
 
+TEST_PROGS         += date
+date_LDADD       = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality
