@@ -441,10 +441,11 @@ g_application_action_free (gpointer data)
  * GApplication::activate_with_data signal will be emitted in the
  * remote process, with the data from @argv and other
  * platform-specific data available.  Subsequently the
- * #GApplication:default-exit property will be evaluated.  If it's
+ * #GApplication:default-quit property will be evaluated.  If it's
  * %TRUE, then the current process will terminate.  If %FALSE, then
  * the application remains in the #GApplication:is-remote state, and
- * you can e.g. call g_application_invoke_action().
+ * you can e.g. call g_application_invoke_action(). Note that proxy
+ * instances should not call g_application_add_action().
  *
  * This function may do synchronous I/O to obtain unique ownership
  * of the application id, and will block the calling thread in this
