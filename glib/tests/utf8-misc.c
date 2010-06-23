@@ -350,9 +350,37 @@ test_combining_class (void)
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
-      g_print ("%d: %#x\n", i, examples[i].c);
       g_assert (g_unichar_combining_class (examples[i].c) == examples[i].class);
     }
+}
+
+static void
+test_mirror (void)
+{
+  gunichar mirror;
+
+  g_assert (g_unichar_get_mirror_char ('(', &mirror));
+  g_assert_cmpint (mirror, ==, ')');
+  g_assert (g_unichar_get_mirror_char (')', &mirror));
+  g_assert_cmpint (mirror, ==, '(');
+  g_assert (g_unichar_get_mirror_char ('{', &mirror));
+  g_assert_cmpint (mirror, ==, '}');
+  g_assert (g_unichar_get_mirror_char ('}', &mirror));
+  g_assert_cmpint (mirror, ==, '{');
+  g_assert (g_unichar_get_mirror_char (0x208D, &mirror));
+  g_assert_cmpint (mirror, ==, 0x208E);
+  g_assert (g_unichar_get_mirror_char (0x208E, &mirror));
+  g_assert_cmpint (mirror, ==, 0x208D);
+  g_assert (!g_unichar_get_mirror_char ('a', &mirror));
+}
+
+static void
+test_mark (void)
+{
+  g_assert (g_unichar_ismark (0x0903));
+  g_assert (g_unichar_ismark (0x20DD));
+  g_assert (g_unichar_ismark (0xA806));
+  g_assert (!g_unichar_ismark ('a'));
 }
 
 int
@@ -369,6 +397,8 @@ main (int   argc,
   g_test_add_func ("/unicode/break-type", test_unichar_break_type);
   g_test_add_func ("/unicode/script", test_unichar_script);
   g_test_add_func ("/unicode/combining-class", test_combining_class);
+  g_test_add_func ("/unicode/mirror", test_mirror);
+  g_test_add_func ("/unicode/mark", test_mark);
 
   return g_test_run();
 }
