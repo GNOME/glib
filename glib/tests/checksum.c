@@ -689,17 +689,22 @@ test_checksum_string (gconstpointer d)
 {
   const ChecksumStringTest *test = d;
   int length;
+  gchar *checksum;
 
   for (length = 0; length <= FIXED_LEN; length++)
     {
-      char *checksum;
-
       checksum = g_compute_checksum_for_string (test->checksum_type,
                                                 FIXED_STR,
                                                 length);
       g_assert_cmpstr (checksum, ==, test->sums[length]);
       g_free (checksum);
     }
+
+  checksum = g_compute_checksum_for_string (test->checksum_type,
+                                            FIXED_STR,
+                                            -1);
+  g_assert_cmpstr (checksum, ==, test->sums[FIXED_LEN]);
+  g_free (checksum);
 }
 
 #define test(type, length) {                                    \
@@ -728,12 +733,21 @@ test_checksum_string (gconstpointer d)
   g_free (path);                                                \
 }
 
+static void
+test_unsupported (void)
+{
+  g_assert_cmpint (g_checksum_type_get_length (20), ==, -1);
+  g_assert (g_checksum_new (20) == NULL);
+}
+
 int
 main (int argc, char *argv[])
 {
   int length;
 
   g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/checksum/unsupported", test_unsupported);
 
   for (length = 0; length <= FIXED_LEN; length++)
     test (MD5, length);

@@ -379,6 +379,105 @@ static void direct_hash_test (void)
     g_hash_table_destroy (h);
 }
 
+static void int64_hash_test (void)
+{
+     gint       i, rc;
+     GHashTable     *h;
+     gint64     values[20];
+     gint64 key;
+
+     h = g_hash_table_new (g_int64_hash, g_int64_equal);
+     g_assert (h != NULL);
+     for (i=0; i<20; i++)
+          {
+          values[i] = i + 42;
+          g_hash_table_insert (h, &values[i], GINT_TO_POINTER (i + 42));
+          }
+
+     g_assert (g_hash_table_size (h) == 20);
+
+     for (i=0; i<20; i++)
+          {
+          key = i + 42;
+          rc = GPOINTER_TO_INT (g_hash_table_lookup (h, &key));
+
+          g_assert_cmpint (rc, ==, i + 42);
+          }
+
+    g_hash_table_destroy (h);
+}
+
+static void double_hash_test (void)
+{
+     gint       i, rc;
+     GHashTable     *h;
+     gdouble values[20];
+     gdouble key;
+
+     h = g_hash_table_new (g_double_hash, g_double_equal);
+     g_assert (h != NULL);
+     for (i=0; i<20; i++)
+          {
+          values[i] = i + 42.5;
+          g_hash_table_insert (h, &values[i], GINT_TO_POINTER (i + 42));
+          }
+
+     g_assert (g_hash_table_size (h) == 20);
+
+     for (i=0; i<20; i++)
+          {
+          key = i + 42.5;
+          rc = GPOINTER_TO_INT (g_hash_table_lookup (h, &key));
+
+          g_assert_cmpint (rc, ==, i + 42);
+          }
+
+    g_hash_table_destroy (h);
+}
+
+static void
+string_free (gpointer data)
+{
+  GString *s = data;
+
+  g_string_free (s, TRUE);
+}
+
+static void string_hash_test (void)
+{
+     gint       i, rc;
+     GHashTable     *h;
+     GString *s;
+
+     h = g_hash_table_new_full ((GHashFunc)g_string_hash, (GEqualFunc)g_string_equal, string_free, NULL);
+     g_assert (h != NULL);
+     for (i=0; i<20; i++)
+          {
+          s = g_string_new ("");
+          g_string_append_printf (s, "%d", i + 42);
+          g_string_append_c (s, '.');
+          g_string_prepend_unichar (s, 0x2301);
+          g_hash_table_insert (h, s, GINT_TO_POINTER (i + 42));
+          }
+
+     g_assert (g_hash_table_size (h) == 20);
+
+     s = g_string_new ("");
+     for (i=0; i<20; i++)
+          {
+          g_string_assign (s, "");
+          g_string_append_printf (s, "%d", i + 42);
+          g_string_append_c (s, '.');
+          g_string_prepend_unichar (s, 0x2301);
+          rc = GPOINTER_TO_INT (g_hash_table_lookup (h, s));
+
+          g_assert_cmpint (rc, ==, i + 42);
+          }
+
+    g_string_free (s, TRUE);
+    g_hash_table_destroy (h);
+}
+
 static void
 test_hash_misc (void)
 {
@@ -518,6 +617,9 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/hash/one", GINT_TO_POINTER (TRUE), second_hash_test);
   g_test_add_data_func ("/hash/honeyman", GINT_TO_POINTER (FALSE), second_hash_test);
   g_test_add_func ("/hash/direct", direct_hash_test);
+  g_test_add_func ("/hash/int64", int64_hash_test);
+  g_test_add_func ("/hash/double", double_hash_test);
+  g_test_add_func ("/hash/string", string_hash_test);
   g_test_add_func ("/hash/ref", test_hash_ref);
 
   return g_test_run ();

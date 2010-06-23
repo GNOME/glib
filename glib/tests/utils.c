@@ -95,14 +95,45 @@ test_version (void)
                                 GLIB_MICRO_VERSION + 1) != NULL);
 }
 
+static const gchar *argv0;
+
+static void
+test_appname (void)
+{
+  const gchar *prgname;
+  const gchar *appname;
+
+  prgname = g_get_prgname ();
+  appname = g_get_application_name ();
+  g_assert_cmpstr (prgname, ==, argv0);
+  g_assert_cmpstr (appname, ==, prgname);
+
+  g_set_prgname ("prgname");
+
+  prgname = g_get_prgname ();
+  appname = g_get_application_name ();
+  g_assert_cmpstr (prgname, ==, "prgname");
+  g_assert_cmpstr (appname, ==, "prgname");
+
+  g_set_application_name ("appname");
+
+  prgname = g_get_prgname ();
+  appname = g_get_application_name ();
+  g_assert_cmpstr (prgname, ==, "prgname");
+  g_assert_cmpstr (appname, ==, "appname");
+}
+
 int
 main (int   argc,
       char *argv[])
 {
+  argv0 = argv[0];
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/utils/language-names", test_language_names);
   g_test_add_func ("/utils/version", test_version);
+  g_test_add_func ("/utils/appname", test_appname);
 
   return g_test_run();
 }
