@@ -1226,7 +1226,7 @@ g_settings_get_enum (GSettings   *settings,
  * @settings: a #GSettings object
  * @key: a key, within @settings
  * @value: an enumerated value
- * Returns: %TRUE, if the set succeeds
+ * @returns: %TRUE, if the set succeeds
  *
  * Looks up the enumerated type nick for @value and writes it to @key,
  * within @settings.

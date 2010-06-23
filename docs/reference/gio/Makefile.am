@@ -32,10 +32,15 @@ IGNORE_HFILES=				\
 	gdbusauthmechanismexternal.h	\
 	gdbusauthmechanismsha1.h	\
 	gdbusprivate.h			\
+	gdbus-sessionbus.h		\
+	gdbus-tests.h			\
+	testenums.h			\
 	gdelayedsettingsbackend.h	\
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
+	gfendirectorymonitor.h		\
+	gfenfilemonitor.h		\
 	gfileattribute-priv.h		\
 	gfileinfo-priv.h		\
 	ginotifydirectorymonitor.h	\
@@ -52,6 +57,7 @@ IGNORE_HFILES=				\
 	glocalfileenumerator.h		\
 	glocalfileinfo.h		\
 	glocalfileinputstream.h		\
+	glocalfileiostream.h		\
 	glocalfilemonitor.h		\
 	glocalfileoutputstream.h	\
 	glocalvfs.h			\
@@ -67,9 +73,21 @@ IGNORE_HFILES=				\
 	gunixdrive.h			\
 	gunixresolver.h			\
 	gunixvolume.h			\
+	gvdb-builder.h			\
+	gvdb-format.h			\
+	gvdb-render.h			\
 	gvolumeprivate.h		\
 	gwin32appinfo.h			\
+	gwin32mount.h			\
+	gwin32directorymonitor.h	\
+	gwin32inputstream.h		\
+	gwin32outputstream.h		\
+	gwin32volumemonitor.h		\
 	gwin32resolver.h		\
+	gwinhttpfile.h			\
+	gwinhttpfileinputstream.h	\
+	gwinhttpfileoutputstream.h	\
+	gwinhttpvfs.h			\
 	inotify-diag.h			\
 	inotify-helper.h		\
 	inotify-kernel.h		\
