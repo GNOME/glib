@@ -44,7 +44,7 @@
 int array[10000];
 gboolean failed = FALSE;
 
-#define	TEST(m,cond)	G_STMT_START { failed = !(cond); \
+#define TEST(m,cond)    G_STMT_START { failed = !(cond); \
 if (failed) \
   { if (!m) \
       g_print ("\n(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
@@ -54,20 +54,20 @@ if (failed) \
   } \
 } G_STMT_END
 
-#define	C2P(c)		((gpointer) ((long) (c)))
-#define	P2C(p)		((gchar) ((long) (p)))
+#define C2P(c)          ((gpointer) ((long) (c)))
+#define P2C(p)          ((gchar) ((long) (p)))
 
 #define GLIB_TEST_STRING "el dorado "
 #define GLIB_TEST_STRING_5 "el do"
 
 typedef struct {
-	guint age;
-	gchar name[40];
+        guint age;
+        gchar name[40];
 } GlibTestInfo;
 
 static gboolean
 node_build_string (GNode    *node,
-		   gpointer  data)
+                   gpointer  data)
 {
   gchar **p = data;
   gchar *string;
@@ -83,36 +83,25 @@ node_build_string (GNode    *node,
 }
 
 static void
-g_node_test (void)
+traversal_test (void)
 {
   GNode *root;
-  GNode *node;
   GNode *node_B;
   GNode *node_D;
   GNode *node_F;
   GNode *node_G;
   GNode *node_J;
-  guint i;
   gchar *tstring;
 
-  failed = FALSE;
-
   root = g_node_new (C2P ('A'));
-  TEST (NULL, g_node_depth (root) == 1 && g_node_max_height (root) == 1);
-
   node_B = g_node_new (C2P ('B'));
   g_node_append (root, node_B);
-  TEST (NULL, root->children == node_B);
-
   g_node_append_data (node_B, C2P ('E'));
   g_node_prepend_data (node_B, C2P ('C'));
   node_D = g_node_new (C2P ('D'));
-  g_node_insert (node_B, 1, node_D); 
-
+  g_node_insert (node_B, 1, node_D);
   node_F = g_node_new (C2P ('F'));
   g_node_append (root, node_F);
-  TEST (NULL, root->children->next == node_F);
-
   node_G = g_node_new (C2P ('G'));
   g_node_append (node_F, node_G);
   node_J = g_node_new (C2P ('J'));
@@ -120,27 +109,6 @@ g_node_test (void)
   g_node_insert (node_G, 42, g_node_new (C2P ('K')));
   g_node_insert_data (node_G, 0, C2P ('H'));
   g_node_insert (node_G, 1, g_node_new (C2P ('I')));
-
-  TEST (NULL, g_node_depth (root) == 1);
-  TEST (NULL, g_node_max_height (root) == 4);
-  TEST (NULL, g_node_depth (node_G->children->next) == 4);
-  TEST (NULL, g_node_n_nodes (root, G_TRAVERSE_LEAFS) == 7);
-  TEST (NULL, g_node_n_nodes (root, G_TRAVERSE_NON_LEAFS) == 4);
-  TEST (NULL, g_node_n_nodes (root, G_TRAVERSE_ALL) == 11);
-  TEST (NULL, g_node_max_height (node_F) == 3);
-  TEST (NULL, g_node_n_children (node_G) == 4);
-  TEST (NULL, g_node_find_child (root, G_TRAVERSE_ALL, C2P ('F')) == node_F);
-  TEST (NULL, g_node_find (root, G_LEVEL_ORDER, G_TRAVERSE_NON_LEAFS, C2P ('I')) == NULL);
-  TEST (NULL, g_node_find (root, G_IN_ORDER, G_TRAVERSE_LEAFS, C2P ('J')) == node_J);
-
-  for (i = 0; i < g_node_n_children (node_B); i++)
-    {
-      node = g_node_nth_child (node_B, i);
-      TEST (NULL, P2C (node->data) == ('C' + i));
-    }
-  
-  for (i = 0; i < g_node_n_children (node_G); i++)
-    TEST (NULL, g_node_child_position (node_G, g_node_nth_child (node_G, i)) == i);
 
   /* we have built:                    A
    *                                 /   \
@@ -154,44 +122,116 @@ g_node_test (void)
    * child of 'F', which will cause 'F' to be the last node visited.
    */
 
-  tstring = NULL;
   g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  TEST (tstring, strcmp (tstring, "ABCDEFGHIJK") == 0);
+  g_assert_cmpstr (tstring, ==,  "ABCDEFGHIJK");
   g_free (tstring); tstring = NULL;
   g_node_traverse (root, G_POST_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  TEST (tstring, strcmp (tstring, "CDEBHIJKGFA") == 0);
+  g_assert_cmpstr (tstring, ==, "CDEBHIJKGFA");
   g_free (tstring); tstring = NULL;
   g_node_traverse (root, G_IN_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  TEST (tstring, strcmp (tstring, "CBDEAHGIJKF") == 0);
+  g_assert_cmpstr (tstring, ==, "CBDEAHGIJKF");
   g_free (tstring); tstring = NULL;
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  TEST (tstring, strcmp (tstring, "ABFCDEGHIJK") == 0);
+  g_assert_cmpstr (tstring, ==, "ABFCDEGHIJK");
   g_free (tstring); tstring = NULL;
   
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_LEAFS, -1, node_build_string, &tstring);
-  TEST (tstring, strcmp (tstring, "CDEHIJK") == 0);
+  g_assert_cmpstr (tstring, ==, "CDEHIJK");
   g_free (tstring); tstring = NULL;
   g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_NON_LEAFS, -1, node_build_string, &tstring);
-  TEST (tstring, strcmp (tstring, "ABFG") == 0);
+  g_assert_cmpstr (tstring, ==, "ABFG");
   g_free (tstring); tstring = NULL;
 
   g_node_reverse_children (node_B);
   g_node_reverse_children (node_G);
 
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  TEST (tstring, strcmp (tstring, "ABFEDCGKJIH") == 0);
+  g_assert_cmpstr (tstring, ==, "ABFEDCGKJIH");
   g_free (tstring); tstring = NULL;
   
   g_node_append (node_D, g_node_new (C2P ('L')));
   g_node_append (node_D, g_node_new (C2P ('M')));
 
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
-  TEST (tstring, strcmp (tstring, "ABFEDCGLMKJIH") == 0);
+  g_assert_cmpstr (tstring, ==, "ABFEDCGLMKJIH");
   g_free (tstring); tstring = NULL;
 
   g_node_destroy (root);
+}
 
-  /* allocation tests */
+static void
+construct_test (void)
+{
+  GNode *root;
+  GNode *node;
+  GNode *node_B;
+  GNode *node_D;
+  GNode *node_F;
+  GNode *node_G;
+  GNode *node_J;
+  guint i;
+
+  root = g_node_new (C2P ('A'));
+  g_assert_cmpint (g_node_depth (root), ==, 1);
+  g_assert_cmpint (g_node_max_height (root), ==, 1);
+
+  node_B = g_node_new (C2P ('B'));
+  g_node_append (root, node_B);
+  g_assert (root->children == node_B);
+
+  g_node_append_data (node_B, C2P ('E'));
+  g_node_prepend_data (node_B, C2P ('C'));
+  node_D = g_node_new (C2P ('D'));
+  g_node_insert (node_B, 1, node_D);
+
+  node_F = g_node_new (C2P ('F'));
+  g_node_append (root, node_F);
+  g_assert (root->children->next == node_F);
+
+  node_G = g_node_new (C2P ('G'));
+  g_node_append (node_F, node_G);
+  node_J = g_node_new (C2P ('J'));
+  g_node_prepend (node_G, node_J);
+  g_node_insert (node_G, 42, g_node_new (C2P ('K')));
+  g_node_insert_data (node_G, 0, C2P ('H'));
+  g_node_insert (node_G, 1, g_node_new (C2P ('I')));
+
+  /* we have built:                    A
+   *                                 /   \
+   *                               B       F
+   *                             / | \       \
+   *                           C   D   E       G
+   *                                         / /\ \
+   *                                       H  I  J  K
+   */
+  g_assert_cmpint (g_node_depth (root), ==, 1);
+  g_assert_cmpint (g_node_max_height (root), ==, 4);
+  g_assert_cmpint (g_node_depth (node_G->children->next), ==, 4);
+  g_assert_cmpint (g_node_n_nodes (root, G_TRAVERSE_LEAFS), ==, 7);
+  g_assert_cmpint (g_node_n_nodes (root, G_TRAVERSE_NON_LEAFS), ==, 4);
+  g_assert_cmpint (g_node_n_nodes (root, G_TRAVERSE_ALL), ==, 11);
+  g_assert_cmpint (g_node_max_height (node_F), ==, 3);
+  g_assert_cmpint (g_node_n_children (node_G), ==, 4);
+  g_assert (g_node_find_child (root, G_TRAVERSE_ALL, C2P ('F')) == node_F);
+  g_assert (g_node_find (root, G_LEVEL_ORDER, G_TRAVERSE_NON_LEAFS, C2P ('I')) == NULL);
+  g_assert (g_node_find (root, G_IN_ORDER, G_TRAVERSE_LEAFS, C2P ('J')) == node_J);
+
+  for (i = 0; i < g_node_n_children (node_B); i++)
+    {
+      node = g_node_nth_child (node_B, i);
+      g_assert_cmpint (P2C (node->data), ==, ('C' + i));
+    }
+
+  for (i = 0; i < g_node_n_children (node_G); i++)
+    g_assert_cmpint (g_node_child_position (node_G, g_node_nth_child (node_G, i)), ==, i);
+}
+
+static void
+allocation_test (void)
+{
+  GNode *root;
+  GNode *node;
+  gint i;
 
   root = g_node_new (NULL);
   node = root;
@@ -199,16 +239,13 @@ g_node_test (void)
   for (i = 0; i < 2048; i++)
     {
       g_node_append (node, g_node_new (NULL));
-      if ((i%5) == 4)
-	node = node->children->next;
+      if ((i % 5) == 4)
+        node = node->children->next;
     }
-  TEST (NULL, g_node_max_height (root) > 100);
-  TEST (NULL, g_node_n_nodes (root, G_TRAVERSE_ALL) == 1 + 2048);
+  g_assert_cmpint (g_node_max_height (root), >, 100);
+  g_assert_cmpint (g_node_n_nodes (root, G_TRAVERSE_ALL), ==, 1 + 2048);
 
   g_node_destroy (root);
-  
-  if (failed)
-    exit(1);
 }
 
 
@@ -216,8 +253,12 @@ int
 main (int   argc,
       char *argv[])
 {
-  g_node_test ();
+  g_test_init (&argc, &argv, NULL);
 
-  return 0;
+  g_test_add_func ("/node/allocation", allocation_test);
+  g_test_add_func ("/node/construction", construct_test);
+  g_test_add_func ("/node/traversal", traversal_test);
+
+  return g_test_run ();
 }
 
