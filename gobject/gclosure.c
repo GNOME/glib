@@ -1171,7 +1171,23 @@ g_signal_type_cclosure_new (GType    itype,
  * @marshal_data: additional data specified when registering the marshaller
  *
  * A marshaller for a #GCClosure with a callback of type
- * <literal>void (*callback) (gpointer instance, GOBject *arg1, gpointer user_data)</literal>.
+ * <literal>void (*callback) (gpointer instance, GObject *arg1, gpointer user_data)</literal>.
+ */
+
+/**
+ * g_cclosure_marshal_VOID__VARIANT:
+ * @closure: the #GClosure to which the marshaller belongs
+ * @return_value: ignored
+ * @n_param_values: 2
+ * @param_values: a #GValue array holding the instance and the #GVariant* parameter
+ * @invocation_hint: the invocation hint given as the last argument
+ *  to g_closure_invoke()
+ * @marshal_data: additional data specified when registering the marshaller
+ *
+ * A marshaller for a #GCClosure with a callback of type
+ * <literal>void (*callback) (gpointer instance, GVariant *arg1, gpointer user_data)</literal>.
+ *
+ * Since: 2.26
  */
 
 /**
