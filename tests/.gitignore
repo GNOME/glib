@@ -30,7 +30,6 @@ markup-collect
 markup-escape-test
 markup-test
 module-test
-node-test
 objects
 objects2
 onceinit

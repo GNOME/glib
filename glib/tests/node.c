@@ -41,29 +41,8 @@
 
 #include "glib.h"
 
-int array[10000];
-gboolean failed = FALSE;
-
-#define TEST(m,cond)    G_STMT_START { failed = !(cond); \
-if (failed) \
-  { if (!m) \
-      g_print ("\n(%s:%d) failed for: %s\n", __FILE__, __LINE__, ( # cond )); \
-    else \
-      g_print ("\n(%s:%d) failed for: %s: (%s)\n", __FILE__, __LINE__, ( # cond ), (gchar*)m); \
-      exit(1); \
-  } \
-} G_STMT_END
-
 #define C2P(c)          ((gpointer) ((long) (c)))
 #define P2C(p)          ((gchar) ((long) (p)))
-
-#define GLIB_TEST_STRING "el dorado "
-#define GLIB_TEST_STRING_5 "el do"
-
-typedef struct {
-        guint age;
-        gchar name[40];
-} GlibTestInfo;
 
 static gboolean
 node_build_string (GNode    *node,
@@ -122,6 +101,7 @@ traversal_test (void)
    * child of 'F', which will cause 'F' to be the last node visited.
    */
 
+  tstring = NULL;
   g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
   g_assert_cmpstr (tstring, ==,  "ABCDEFGHIJK");
   g_free (tstring); tstring = NULL;
@@ -249,6 +229,53 @@ allocation_test (void)
 }
 
 
+static void
+misc_test (void)
+{
+  GNode *root;
+  GNode *node_B;
+  GNode *node_C;
+  GNode *node_D;
+  GNode *node_E;
+  gchar *tstring;
+
+  root = g_node_new (C2P ('A'));
+  node_B = g_node_new (C2P ('B'));
+  g_node_append (root, node_B);
+  node_D = g_node_new (C2P ('D'));
+  g_node_append (root, node_D);
+  node_C = g_node_new (C2P ('C'));
+  g_node_insert_after (root, node_B, node_C);
+  node_E = g_node_new (C2P ('E'));
+  g_node_append (node_C, node_E);
+
+  g_assert (g_node_get_root (node_E) == root);
+  g_assert (g_node_is_ancestor (root, node_B));
+  g_assert (g_node_is_ancestor (root, node_E));
+  g_assert (!g_node_is_ancestor (node_B, node_D));
+  g_assert (g_node_first_sibling (node_D) == node_B);
+  g_assert (g_node_first_sibling (node_E) == node_E);
+  g_assert_cmpint (g_node_child_index (root, C2P ('B')), ==, 0);
+  g_assert_cmpint (g_node_child_index (root, C2P ('C')), ==, 1);
+  g_assert_cmpint (g_node_child_index (root, C2P ('D')), ==, 2);
+  g_assert_cmpint (g_node_child_index (root, C2P ('E')), ==, -1);
+
+  tstring = NULL;
+  g_node_children_foreach (root, G_TRAVERSE_ALL, (GNodeForeachFunc)node_build_string, &tstring);
+  g_assert_cmpstr (tstring, ==, "BCD");
+  g_free (tstring); tstring = NULL;
+
+  g_node_children_foreach (root, G_TRAVERSE_LEAVES, (GNodeForeachFunc)node_build_string, &tstring);
+  g_assert_cmpstr (tstring, ==, "BD");
+  g_free (tstring); tstring = NULL;
+
+  g_node_children_foreach (root, G_TRAVERSE_NON_LEAVES, (GNodeForeachFunc)node_build_string, &tstring);
+  g_assert_cmpstr (tstring, ==, "C");
+  g_free (tstring); tstring = NULL;
+
+  g_node_destroy (root);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -258,6 +285,7 @@ main (int   argc,
   g_test_add_func ("/node/allocation", allocation_test);
   g_test_add_func ("/node/construction", construct_test);
   g_test_add_func ("/node/traversal", traversal_test);
+  g_test_add_func ("/node/misc", misc_test);
 
   return g_test_run ();
 }
