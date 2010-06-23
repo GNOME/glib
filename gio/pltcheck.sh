@@ -1,5 +1,7 @@
 #!/bin/sh
 
+exit 0
+
 LANG=C
 
 status=0
