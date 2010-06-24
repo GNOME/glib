@@ -1867,21 +1867,21 @@ g_settings_get_child (GSettings   *settings,
  * (since you should already know what keys are in your schema).  This
  * function is intended for introspection reasons.
  *
- * You should free the return value with g_strfreev() when you are done
- * with it.
+ * You should free the return value with g_free() when you are done with
+ * it.
  */
-gchar **
+const gchar **
 g_settings_list_keys (GSettings *settings)
 {
   const GQuark *keys;
-  gchar **strv;
+  const gchar **strv;
   gint n_keys;
   gint i;
 
   keys = g_settings_schema_list (settings->priv->schema, &n_keys);
-  strv = g_new (gchar *, n_keys + 1);
+  strv = g_new (const gchar *, n_keys + 1);
   for (i = 0; i < n_keys; i++)
-    strv[i] = g_strdup (g_quark_to_string (keys[i]));
+    strv[i] = g_quark_to_string (keys[i]);
   strv[i] = NULL;
 
   return strv;

@@ -70,7 +70,7 @@ struct _GSettings
 
 GType                   g_settings_get_type                             (void);
 
-gboolean                g_settings_schema_exists                        (const gchar        *schema_name);
+const gchar * const *   g_settings_list_schemas                         (void);
 GSettings *             g_settings_new                                  (const gchar        *schema);
 GSettings *             g_settings_new_with_path                        (const gchar        *schema,
                                                                          const gchar        *path);
@@ -79,7 +79,7 @@ GSettings *             g_settings_new_with_backend                     (const g
 GSettings *             g_settings_new_with_backend_and_path            (const gchar        *schema,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
-gchar **                g_settings_list_keys                            (GSettings          *settings);
+const gchar **          g_settings_list_keys                            (GSettings          *settings);
 
 gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,

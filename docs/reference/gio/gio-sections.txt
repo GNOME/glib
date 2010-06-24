@@ -2135,7 +2135,6 @@ GSettingsBackendPrivate
 <FILE>gsettings</FILE>
 <TITLE>GSettings</TITLE>
 GSettings
-g_settings_schema_exists
 g_settings_new
 g_settings_new_with_path
 g_settings_new_with_backend
@@ -2149,6 +2148,9 @@ g_settings_apply
 g_settings_revert
 g_settings_get_has_unapplied
 g_settings_get_child
+
+<SUBSECTION Introspection>
+g_settings_list_schemas
 g_settings_list_keys
 
 <SUBSECTION Convenience>

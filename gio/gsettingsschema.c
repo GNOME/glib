@@ -53,7 +53,8 @@ initialise_schema_sources (void)
           gchar *filename;
           GvdbTable *table;
 
-          filename = g_build_filename (*dir, "glib-2.0", "schemas", "gschemas.compiled", NULL);
+          filename = g_build_filename (*dir, "glib-2.0", "schemas",
+                                       "gschemas.compiled", NULL);
           table = gvdb_table_new (filename, TRUE, NULL);
 
           if (table != NULL)
@@ -80,6 +81,67 @@ initialise_schema_sources (void)
 
       g_once_init_leave (&initialised, TRUE);
     }
+}
+
+static void
+add_item (gpointer key,
+          gpointer value,
+          gpointer user_data)
+{
+  gchar ***ptr = user_data;
+
+  *(*ptr)++ = (gchar *) key;
+}
+
+/**
+ * g_settings_list_schemas:
+ * Returns: a list of the schemas installed on the system
+ *
+ * Returns a list of GSettings schemas that are available.  The list
+ * must not be modified or freed.
+ **/
+const gchar * const *
+g_settings_list_schemas (void)
+{
+  static gsize schema_list;
+
+  if (g_once_init_enter (&schema_list))
+    {
+      GHashTable *builder;
+      GSList *source;
+      gchar **list;
+      gchar **ptr;
+      gint i;
+
+      initialise_schema_sources ();
+
+      builder = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+
+      for (source = schema_sources; source; source = source->next)
+        {
+          list = gvdb_table_list (source->data, "");
+
+          if (list)
+            {
+              for (i = 0; list[i]; i++)
+                g_hash_table_insert (builder, list[i], NULL);
+
+              /* not strfreev: we stole the strings into the hashtable */
+              g_free (list);
+            }
+        }
+
+      ptr = list = g_new (gchar *, g_hash_table_size (builder) + 1);
+      g_hash_table_foreach (builder, add_item, &ptr);
+      *ptr = NULL;
+
+      g_hash_table_steal_all (builder);
+      g_hash_table_unref (builder);
+
+      g_once_init_leave (&schema_list, (gsize) list);
+    }
+
+  return (const gchar **) schema_list;
 }
 
 static void
@@ -236,29 +298,4 @@ g_settings_schema_list (GSettingsSchema *schema,
 
   *n_items = schema->priv->n_items;
   return schema->priv->items;
-}
-
-/**
- * g_settings_schema_exists:
- * @schema_name: the schema name to query for
- * Returns: %TRUE if @schema_name exists
- *
- * Checks if the named schema is installed.
- **/
-gboolean
-g_settings_schema_exists (const gchar *schema_name)
-{
-  GSList *source;
-
-  initialise_schema_sources ();
-
-  for (source = schema_sources; source; source = source->next)
-    {
-      GvdbTable *file = source->data;
-
-      if (gvdb_table_get_table (file, schema_name))
-        return TRUE;
-    }
-
-  return FALSE;
 }
