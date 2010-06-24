@@ -100,6 +100,22 @@ array_ref_count (void)
   g_array_unref (garray2);
 }
 
+static gpointer
+array_large_size_remalloc_impl (gpointer mem,
+				gsize n_bytes)
+{
+  /* We only care that g_array_set_size() doesn't hang; we'll never
+   * actually use any of the 2G of memory that it requests, so it's
+   * OK that we don't actually allocate the whole thing.
+   */
+  return realloc (mem, MIN (n_bytes, 1024 * 1024));
+}
+
+static GMemVTable array_large_size_mem_vtable = {
+  malloc, array_large_size_remalloc_impl, free,
+  NULL, NULL, NULL
+};
+
 static void
 array_large_size (void)
 {
@@ -107,19 +123,15 @@ array_large_size (void)
 
   g_test_bug ("568760");
 
-  array = g_array_new (TRUE, TRUE, sizeof (char));
+  array = g_array_new (FALSE, FALSE, sizeof (char));
 
-  /* it might take really long until the allocation happens */
-  if (g_test_trap_fork (10 /* s */ * 1000 /* ms */ * 1000 /* µs */, 0))
+  if (g_test_trap_fork (5 /* s */ * 1000 /* ms */ * 1000 /* µs */, 0))
     {
+      g_mem_set_vtable (&array_large_size_mem_vtable);
       g_array_set_size (array, 1073750016);
       exit (0); /* success */
     }
-
-  if (!g_test_trap_has_passed ())
-    {
-      g_test_trap_assert_stderr ("*failed to allocate 2147483648 bytes*");
-    }
+  g_test_trap_assert_passed ();
 
   g_array_free (array, TRUE);
 }
