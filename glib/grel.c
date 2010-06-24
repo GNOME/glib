@@ -32,7 +32,14 @@
 #include <stdarg.h>
 #include <string.h>
 
-#include "glib.h"
+#include "ghash.h"
+#include "gmessages.h"
+#include "gtestutils.h"
+#include "gstring.h"
+
+#undef G_DISABLE_DEPRECATED
+
+#include "grel.h"
 #include "galias.h"
 
 /**
@@ -76,6 +83,10 @@
  * To destroy the #GRelation, use g_relation_destroy().
  *
  * To help debug #GRelation objects, use g_relation_print().
+ *
+ * GRelation has been marked as deprecated, since this API has never
+ * been fully implemented, is not very actively maintained and rarely
+ * used.
  **/
 
 typedef struct _GRealTuples        GRealTuples;
@@ -177,6 +188,8 @@ tuple_equal (gint fields)
  *
  * Creates a new #GRelation with the given number of fields. Note that
  * currently the number of fields must be 2.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 GRelation*
 g_relation_new (gint fields)
@@ -213,6 +226,8 @@ g_relation_free_array (gpointer key, gpointer value, gpointer user_data)
  * Destroys the #GRelation, freeing all memory allocated. However, it
  * does not free memory allocated for the tuple data, so you should
  * free that first if appropriate.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void
 g_relation_destroy (GRelation *relation)
@@ -247,6 +262,8 @@ g_relation_destroy (GRelation *relation)
  *
  * Creates an index on the given field. Note that this must be called
  * before any records are added to the #GRelation.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void
 g_relation_index (GRelation   *relation,
@@ -269,6 +286,8 @@ g_relation_index (GRelation   *relation,
  *           or #gconstpointer.
  *
  * Inserts a record into a #GRelation.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void
 g_relation_insert (GRelation   *relation,
@@ -359,6 +378,8 @@ g_relation_delete_tuple (gpointer tuple_key,
  *
  * Deletes any records from a #GRelation that have the given key value
  * in the given field.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 gint
 g_relation_delete  (GRelation     *relation,
@@ -422,6 +443,8 @@ g_relation_select_tuple (gpointer tuple_key,
  * Returns all of the tuples which have the given key in the given
  * field. Use g_tuples_index() to access the returned records. The
  * returned records should be freed with g_tuples_destroy().
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 GTuples*
 g_relation_select (GRelation     *relation,
@@ -466,6 +489,8 @@ g_relation_select (GRelation     *relation,
  *
  * Returns the number of tuples in a #GRelation that have the given
  * value in the given field.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 gint
 g_relation_count (GRelation     *relation,
@@ -499,6 +524,8 @@ g_relation_count (GRelation     *relation,
  * Returns %TRUE if a record with the given values exists in a
  * #GRelation. Note that the values are compared directly, so that, for
  * example, two copies of the same string will not match.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 gboolean
 g_relation_exists (GRelation   *relation, ...)
@@ -530,6 +557,8 @@ g_relation_exists (GRelation   *relation, ...)
  * should always be called after g_relation_select() when you are
  * finished with the records. The records are not removed from the
  * #GRelation.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void
 g_tuples_destroy (GTuples *tuples0)
@@ -553,6 +582,8 @@ g_tuples_destroy (GTuples *tuples0)
  * Gets a field from the records returned by g_relation_select(). It
  * returns the given field of the record at the given index. The
  * returned value should not be changed.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 gpointer
 g_tuples_index (GTuples     *tuples0,
@@ -616,6 +647,8 @@ g_relation_print_index (gpointer tuple_key,
  *
  * Outputs information about all records in a #GRelation, as well as
  * the indexes. It is for debugging.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void
 g_relation_print (GRelation *relation)

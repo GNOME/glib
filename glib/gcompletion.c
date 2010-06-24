@@ -32,7 +32,13 @@
 
 #include <string.h>
 
-#include "glib.h"
+#include "gstrfuncs.h"
+#include "gmessages.h"
+#include "gunicode.h"
+
+#undef G_DISABLE_DEPRECATED
+
+#include "gcompletion.h"
 #include "galias.h"
 
 /**
@@ -58,6 +64,9 @@
  * retrieves the item's string from the data structure. You can change
  * the way in which strings are compared by setting a different
  * #GCompletionStrncmpFunc in g_completion_set_compare().
+ *
+ * GCompletion has been marked as deprecated, since this API is rarely
+ * used and not very actively maintained.
  **/
 
 /**
@@ -132,6 +141,8 @@ g_completion_new (GCompletionFunc func)
  * @items: the list of items to add.
  *
  * Adds items to the #GCompletion.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void 
 g_completion_add_items (GCompletion* cmp,
@@ -168,6 +179,8 @@ g_completion_add_items (GCompletion* cmp,
  * @items: the items to remove.
  *
  * Removes items from a #GCompletion.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void 
 g_completion_remove_items (GCompletion* cmp,
@@ -197,6 +210,8 @@ g_completion_remove_items (GCompletion* cmp,
  * @cmp: the #GCompletion.
  *
  * Removes all items from the #GCompletion.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void 
 g_completion_clear_items (GCompletion* cmp)
@@ -276,6 +291,8 @@ completion_check_cache (GCompletion* cmp,
  * not be changed.
  *
  * Since: 2.4
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 GList*
 g_completion_complete_utf8 (GCompletion  *cmp,
@@ -320,6 +337,8 @@ g_completion_complete_utf8 (GCompletion  *cmp,
  *
  * Attempts to complete the string @prefix using the #GCompletion
  * target items.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 GList* 
 g_completion_complete (GCompletion* cmp,
@@ -388,6 +407,8 @@ g_completion_complete (GCompletion* cmp,
  * @cmp: the #GCompletion.
  *
  * Frees all memory used by the #GCompletion.
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void 
 g_completion_free (GCompletion* cmp)
@@ -405,6 +426,8 @@ g_completion_free (GCompletion* cmp)
  *
  * Sets the function to use for string comparisons. The default string
  * comparison function is strncmp().
+ *
+ * Deprecated: 2.26: Rarely used API
  **/
 void
 g_completion_set_compare(GCompletion *cmp,
