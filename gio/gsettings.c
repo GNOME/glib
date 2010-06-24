@@ -1135,8 +1135,8 @@ g_settings_from_enum (GSettingsKeyInfo *info,
  *
  * Gets the value that is stored in @settings for @key.
  *
- * It is a programmer error to give a @key that isn't valid for
- * @settings.
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings.
  *
  * Since: 2.26
  */
@@ -1176,8 +1176,8 @@ g_settings_get_value (GSettings   *settings,
  * In order to use this function the type of the value must be a string
  * and it must be marked in the schema file as an enumerated type.
  *
- * It is a programmer error to give a @key that isn't valid for
- * @settings, or is not marked as an enumerated type in the schema.
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings or is not marked as an enumerated type.
  *
  * If the value stored in the configuration database is not a valid
  * value for the enumerated type then this function will return the
@@ -1231,9 +1231,9 @@ g_settings_get_enum (GSettings   *settings,
  * Looks up the enumerated type nick for @value and writes it to @key,
  * within @settings.
  *
- * It is a programmer error for @key to not be listed in the schema or
- * for it not to be tagged as an enumerated type, or for @value not to
- * be a valid value for the named type.
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings or is not marked as an enumerated type, or for
+ * @value not to be a valid value for the named type.
  *
  * After performing the write, accessing @key directly
  * g_settings_get_string() will return the 'nick' associated with
@@ -1286,9 +1286,9 @@ g_settings_set_enum (GSettings   *settings,
  *
  * Sets @key in @settings to @value.
  *
- * It is a programmer error to give a @key that isn't valid for
- * @settings.  It is a programmer error to give a @value of the
- * incorrect type.
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings or for @value to have the incorrect type, per
+ * the schema.
  *
  * If @value is floating then this function consumes the reference.
  *
@@ -1324,9 +1324,9 @@ g_settings_set_value (GSettings   *settings,
  * A convenience function that combines g_settings_get_value() with
  * g_variant_get().
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or a @format_string that doesn't match the type of @key according
- * to the schema of @settings.
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings or for the #GVariantType of @format to mismatch
+ * the type given in the schema.
  *
  * Since: 2.26
  */
@@ -1362,9 +1362,9 @@ g_settings_get (GSettings   *settings,
  * A convenience function that combines g_settings_set_value() with
  * g_variant_new().
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or a @format that doesn't match the type of @key according
- * to the schema of @settings.
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings or for the #GVariantType of @format to mismatch
+ * the type given in the schema.
  *
  * Since: 2.26
  */
@@ -1395,8 +1395,8 @@ g_settings_set (GSettings   *settings,
  *
  * A convenience variant of g_settings_get() for strings.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type string.
+ * It is a programmer error to give a @key that isn't specified as
+ * having a string type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1426,8 +1426,8 @@ g_settings_get_string (GSettings   *settings,
  *
  * A convenience variant of g_settings_set() for strings.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type string.
+ * It is a programmer error to give a @key that isn't specified as
+ * having a string type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1449,8 +1449,8 @@ g_settings_set_string (GSettings   *settings,
  *
  * A convenience variant of g_settings_get() for 32-bit integers.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type int32.
+ * It is a programmer error to give a @key that isn't specified as
+ * having a int32 type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1480,8 +1480,8 @@ g_settings_get_int (GSettings   *settings,
  *
  * A convenience variant of g_settings_set() for 32-bit integers.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type int32.
+ * It is a programmer error to give a @key that isn't specified as
+ * having a int32 type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1503,8 +1503,8 @@ g_settings_set_int (GSettings   *settings,
  *
  * A convenience variant of g_settings_get() for doubles.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type double.
+ * It is a programmer error to give a @key that isn't specified as
+ * having a 'double' type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1534,8 +1534,8 @@ g_settings_get_double (GSettings   *settings,
  *
  * A convenience variant of g_settings_set() for doubles.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type double.
+ * It is a programmer error to give a @key that isn't specified as
+ * having a 'double' type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1557,8 +1557,8 @@ g_settings_set_double (GSettings   *settings,
  *
  * A convenience variant of g_settings_get() for booleans.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type boolean.
+ * It is a programmer error to give a @key that isn't specified as
+ * having a boolean type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1588,8 +1588,8 @@ g_settings_get_boolean (GSettings  *settings,
  *
  * A convenience variant of g_settings_set() for booleans.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type boolean.
+ * It is a programmer error to give a @key that isn't specified as
+ * having a boolean type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1611,8 +1611,8 @@ g_settings_set_boolean (GSettings  *settings,
  *
  * A convenience variant of g_settings_get() for string arrays.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type 'string array'.
+ * It is a programmer error to give a @key that isn't specified as
+ * having an array of strings type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1643,8 +1643,8 @@ g_settings_get_strv (GSettings   *settings,
  * A convenience variant of g_settings_set() for string arrays.  If
  * @value is %NULL, then @key is set to be the empty array.
  *
- * It is a programmer error to pass a @key that isn't valid for
- * @settings or is not of type 'string array'.
+ * It is a programmer error to give a @key that isn't specified as
+ * having an array of strings type in the schema for @settings.
  *
  * Since: 2.26
  */
@@ -1662,6 +1662,7 @@ g_settings_set_strv (GSettings           *settings,
 
   return g_settings_set_value (settings, key, array);
 }
+
 /* Delayed apply (delay, apply, revert, get_has_unapplied) {{{1 */
 /**
  * g_settings_delay:
