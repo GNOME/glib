@@ -1441,6 +1441,10 @@ g_keyfile_settings_backend_new
 #endif
 
 #if IN_HEADER(__G_SETTINGS_H__)
+#if IN_FILE(__G_SETTINGS_SCHEMA_C__)
+g_settings_schema_exists
+#endif
+
 #if IN_FILE(__G_SETTINGS_C__)
 g_settings_apply
 g_settings_bind

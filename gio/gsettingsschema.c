@@ -237,3 +237,28 @@ g_settings_schema_list (GSettingsSchema *schema,
   *n_items = schema->priv->n_items;
   return schema->priv->items;
 }
+
+/**
+ * g_settings_schema_exists:
+ * @schema_name: the schema name to query for
+ * Returns: %TRUE if @schema_name exists
+ *
+ * Checks if the named schema is installed.
+ **/
+gboolean
+g_settings_schema_exists (const gchar *schema_name)
+{
+  GSList *source;
+
+  initialise_schema_sources ();
+
+  for (source = schema_sources; source; source = source->next)
+    {
+      GvdbTable *file = source->data;
+
+      if (gvdb_table_get_table (file, schema_name))
+        return TRUE;
+    }
+
+  return FALSE;
+}

@@ -70,6 +70,7 @@ struct _GSettings
 
 GType                   g_settings_get_type                             (void);
 
+gboolean                g_settings_schema_exists                        (const gchar        *schema_name);
 GSettings *             g_settings_new                                  (const gchar        *schema);
 GSettings *             g_settings_new_with_path                        (const gchar        *schema,
                                                                          const gchar        *path);
