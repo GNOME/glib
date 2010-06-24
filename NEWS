@@ -1,3 +1,76 @@
+Overview of Changes from GLib 2.25.9 to GLib 2.25.10
+====================================================
+
++----------------------------------------------------------------+
+| WARNING: There have been API changes in GDBus. Users of these  |
+| APIs will need to be adapted.  In particular, a new release of |
+| dconf is required to go along with this one.  There has also   |
+| been a change in the GSettings backend API used for keyfiles.  |
++----------------------------------------------------------------+
+
+* GDBus:
+ - add direction parameter to filter functions (API change)
+ - allow calling other interfaces with a GDBusProxy
+ - padding added to class struct fields (ABI change)
+ - fixes for closures-based functions
+
+* GVariant:
+ - new is_floating() call
+ - add g_value_take_variant() call (required for marshallers)
+
+* GSettings:
+ - support for binding GParamSpecEnum properties
+ - ifelse-style condition support for GLIB_GSETTINGS m4 macro
+ - remove gsettings-schema-convert tool (now in GConf)
+ - allow introspection of all installed schemas
+ - allow introspection of the keys in a schema
+ - rewrite keyfile backend (API change)
+
+* GNIO:
+ - don't implicitly close GSocket until it is destroyed
+ - windows fixups
+
+* Other:
+ - allow GChecksum to take (NULL, 0) for data/length
+ - GRelation and GCompletion are now deprecated
+ - introduce G_PARAM_DEPRECATED and G_ENABLE_DIAGNOSTIC
+ - add working directory to GApplication platform data
+ - lots of documentation cleanups
+ - PCRE updated to 8.02
+
+* Build:
+ - the IA__g_* style symbol aliasing has been disabled and replaced with
+   the -Bsymbolic-functions linker flag on platforms that support it.
+   Please be on the watch for portability issues and report them to us.
+ - many test cases have been moved to the GTester framework
+ - lcov support has been added for tests
+ - many windows fixes
+
+* Bugs fixed:
+ 501057  lcov coverage suite and GLib integration
+ 551271  deprecate GRelation
+ 601686  Implement diagnostic mode
+ 603309  GSocketOutputStream broken on Windows (?)
+ 616718  GLIB_GSETTINGS macro can't be used conditionally
+ 616855  GSocketConnection: don't close the socket if it's still reffed
+ 618866  g_ptr_array_remove_index_fast memory leak
+ 619878  keyfile backend calls keys_changed with invalid argument
+ 619879  keyfile backend doesn't make use of expected_type
+ 621092  Add with_closures() variants for bindings
+ 621172  Cross compiling fails
+ 621838  Actually add cwd to platform data
+ 621945  Filter outgoing messages in GDBusConnection
+ 621947  add g_value_take_variant
+ 622038  GSettings: "It is a programmer error" documentation is unclear
+ 622154  [patch] update documentation for g_application_new
+ 622281  binding: Add SYNC_CREATE to the flags
+ 622480  Improve documentation for g_strcmp0()
+ 622554  g_error called if schema not installed
+ 622601  Return interned strings from g_settings_list_keys
+
+* Translation updates:
+ - Galician
+
 Overview of Changes from GLib 2.25.8 to GLib 2.25.9
 ===================================================
 
