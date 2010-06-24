@@ -1,12 +1,16 @@
 array-test
 base64
+checksum
 collate
+date
 fileutils
 gvariant
+hash
 hostutils
 keyfile
 markup-subparser
 mem-overflow
+node
 option-context
 printf
 protocol
