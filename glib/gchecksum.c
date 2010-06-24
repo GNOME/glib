@@ -1240,7 +1240,7 @@ g_checksum_update (GChecksum    *checksum,
                    gssize        length)
 {
   g_return_if_fail (checksum != NULL);
-  g_return_if_fail (data != NULL);
+  g_return_if_fail (length == 0 || data != NULL);
 
   if (length < 0)
     length = strlen ((const gchar *) data);
@@ -1415,7 +1415,7 @@ g_compute_checksum_for_data (GChecksumType  checksum_type,
   gchar *retval;
 
   g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
-  g_return_val_if_fail (data != NULL, NULL);
+  g_return_val_if_fail (length == 0 || data != NULL, NULL);
 
   checksum = g_checksum_new (checksum_type);
   if (!checksum)
@@ -1449,7 +1449,7 @@ g_compute_checksum_for_string (GChecksumType  checksum_type,
                                gssize         length)
 {
   g_return_val_if_fail (IS_VALID_TYPE (checksum_type), NULL);
-  g_return_val_if_fail (str != NULL, NULL);
+  g_return_val_if_fail (length == 0 || str != NULL, NULL);
 
   if (length < 0)
     length = strlen (str);
