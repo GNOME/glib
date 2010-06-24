@@ -111,8 +111,9 @@ g_socket_input_stream_read (GInputStream  *stream,
 {
   GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (stream);
 
-  return g_socket_receive (input_stream->priv->socket, buffer, count,
-			   cancellable, error);
+  return g_socket_receive_with_blocking (input_stream->priv->socket,
+					 buffer, count, TRUE,
+					 cancellable, error);
 }
 
 static gboolean
@@ -124,11 +125,12 @@ g_socket_input_stream_read_ready (GSocket *socket,
   GError *error = NULL;
   gssize result;
 
-  result = g_socket_receive (stream->priv->socket,
-			     stream->priv->buffer,
-			     stream->priv->count,
-			     stream->priv->cancellable,
-			     &error);
+  result = g_socket_receive_with_blocking (stream->priv->socket,
+					   stream->priv->buffer,
+					   stream->priv->count,
+					   FALSE,
+					   stream->priv->cancellable,
+					   &error);
 
   if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
     return TRUE;

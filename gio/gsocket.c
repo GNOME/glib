@@ -1722,6 +1722,37 @@ g_socket_receive (GSocket       *socket,
 		  GCancellable  *cancellable,
 		  GError       **error)
 {
+  return g_socket_receive_with_blocking (socket, buffer, size,
+					 socket->priv->blocking,
+					 cancellable, error);
+}
+
+/**
+ * g_socket_receive_with_blocking:
+ * @socket: a #GSocket
+ * @buffer: a buffer to read data into (which should be at least @size
+ *     bytes long).
+ * @size: the number of bytes you want to read from the socket
+ * @blocking: whether to do blocking or non-blocking I/O
+ * @cancellable: a %GCancellable or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * This behaves exactly the same as g_socket_receive(), except that
+ * the choice of blocking or non-blocking behavior is determined by
+ * the @blocking argument rather than by @socket's properties.
+ *
+ * Returns: Number of bytes read, or -1 on error
+ *
+ * Since: 2.26
+ */
+gssize
+g_socket_receive_with_blocking (GSocket       *socket,
+				gchar         *buffer,
+				gsize          size,
+				gboolean       blocking,
+				GCancellable  *cancellable,
+				GError       **error)
+{
   gssize ret;
 
   g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, FALSE);
@@ -1734,7 +1765,7 @@ g_socket_receive (GSocket       *socket,
 
   while (1)
     {
-      if (socket->priv->blocking &&
+      if (blocking &&
 	  !g_socket_condition_wait (socket,
 				    G_IO_IN, cancellable, error))
 	return -1;
@@ -1746,7 +1777,7 @@ g_socket_receive (GSocket       *socket,
 	  if (errsv == EINTR)
 	    continue;
 
-	  if (socket->priv->blocking)
+	  if (blocking)
 	    {
 #ifdef WSAEWOULDBLOCK
 	      if (errsv == WSAEWOULDBLOCK)
@@ -1862,6 +1893,37 @@ g_socket_send (GSocket       *socket,
 	       GCancellable  *cancellable,
 	       GError       **error)
 {
+  return g_socket_send_with_blocking (socket, buffer, size,
+				      socket->priv->blocking,
+				      cancellable, error);
+}
+
+/**
+ * g_socket_send_with_blocking:
+ * @socket: a #GSocket
+ * @buffer: the buffer containing the data to send.
+ * @size: the number of bytes to send
+ * @blocking: whether to do blocking or non-blocking I/O
+ * @cancellable: a %GCancellable or %NULL
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * This behaves exactly the same as g_socket_send(), except that
+ * the choice of blocking or non-blocking behavior is determined by
+ * the @blocking argument rather than by @socket's properties.
+ *
+ * Returns: Number of bytes written (which may be less than @size), or -1
+ * on error
+ *
+ * Since: 2.26
+ */
+gssize
+g_socket_send_with_blocking (GSocket       *socket,
+			     const gchar   *buffer,
+			     gsize          size,
+			     gboolean       blocking,
+			     GCancellable  *cancellable,
+			     GError       **error)
+{
   gssize ret;
 
   g_return_val_if_fail (G_IS_SOCKET (socket) && buffer != NULL, FALSE);
@@ -1874,7 +1936,7 @@ g_socket_send (GSocket       *socket,
 
   while (1)
     {
-      if (socket->priv->blocking &&
+      if (blocking &&
 	  !g_socket_condition_wait (socket,
 				    G_IO_OUT, cancellable, error))
 	return -1;
@@ -1891,7 +1953,7 @@ g_socket_send (GSocket       *socket,
 	    win32_unset_event_mask (socket, FD_WRITE);
 #endif
 
-	  if (socket->priv->blocking)
+	  if (blocking)
 	    {
 #ifdef WSAEWOULDBLOCK
 	      if (errsv == WSAEWOULDBLOCK)

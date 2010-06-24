@@ -176,6 +176,19 @@ gboolean               g_socket_speaks_ipv4             (GSocket                
 GCredentials          *g_socket_get_credentials         (GSocket                 *socket,
                                                          GError                 **error);
 
+gssize                 g_socket_receive_with_blocking   (GSocket                 *socket,
+							 gchar                   *buffer,
+							 gsize                    size,
+							 gboolean                 blocking,
+							 GCancellable            *cancellable,
+							 GError                 **error);
+gssize                 g_socket_send_with_blocking      (GSocket                 *socket,
+							 const gchar             *buffer,
+							 gsize                    size,
+							 gboolean                 blocking,
+							 GCancellable            *cancellable,
+							 GError                 **error);
+
 G_END_DECLS
 
 #endif /* __G_SOCKET_H__ */

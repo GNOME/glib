@@ -113,8 +113,9 @@ g_socket_output_stream_write (GOutputStream  *stream,
 {
   GSocketOutputStream *onput_stream = G_SOCKET_OUTPUT_STREAM (stream);
 
-  return g_socket_send (onput_stream->priv->socket, buffer, count,
-			cancellable, error);
+  return g_socket_send_with_blocking (onput_stream->priv->socket,
+				      buffer, count, TRUE,
+				      cancellable, error);
 }
 
 static gboolean
@@ -126,11 +127,12 @@ g_socket_output_stream_write_ready (GSocket *socket,
   GError *error = NULL;
   gssize result;
 
-  result = g_socket_send (stream->priv->socket,
-			  stream->priv->buffer,
-			  stream->priv->count,
-			  stream->priv->cancellable,
-			  &error);
+  result = g_socket_send_with_blocking (stream->priv->socket,
+					stream->priv->buffer,
+					stream->priv->count,
+					FALSE,
+					stream->priv->cancellable,
+					&error);
 
   if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
     return TRUE;
