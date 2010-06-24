@@ -714,6 +714,18 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
 
   g_settings_backend_flatten_tree (tree, &path, &keys, NULL);
 
+#ifdef DEBUG_CHANGES
+  {
+    gint i;
+
+    g_print ("----\n");
+    g_print ("changed_tree(): prefix %s\n", path);
+    for (i = 0; keys[i]; i++)
+      g_print ("  %s\n", keys[i]);
+    g_print ("----\n");
+  }
+#endif
+
   for (watch = backend->priv->watches; watch; watch = watch->next)
     watch->keys_changed (backend, watch->target, path, keys, origin_tag);
 
