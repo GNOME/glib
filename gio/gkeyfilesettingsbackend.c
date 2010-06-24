@@ -591,10 +591,10 @@ dir_changed (GFileMonitor       *monitor,
  * "toplevel", then settings the key "/apps/example/enabled" to a value
  * of %TRUE will cause the following to appear in the keyfile:
  *
- * <programlisting>
+ * |[
  *   [toplevel]
- *   foo=true
- * </programlisting>
+ *   enabled=true
+ * ]|
  *
  * If @root_group is %NULL then it is not permitted to store keys
  * directly below the @root_path.
@@ -602,13 +602,13 @@ dir_changed (GFileMonitor       *monitor,
  * For keys not stored directly below @root_path (ie: in a sub-path),
  * the name of the subpath (with the final slash stripped) is used as
  * the name of the keyfile group.  To continue the example, if
- * were stored in "/apps/example/profiles/default/font-size" were set to
+ * "/apps/example/profiles/default/font-size" were set to
  * 12 then the following would appear in the keyfile:
  *
- * <programlisting>
+ * |[
  *   [profiles/default]
  *   font-size=12
- * </programlisting>
+ * ]|
  *
  * The backend will refuse writes (and return writability as being
  * %FALSE) for keys outside of @root_path and, in the event that
@@ -616,6 +616,11 @@ dir_changed (GFileMonitor       *monitor,
  * Writes will also be refused if the backend detects that it has the
  * inability to rewrite the keyfile (ie: the containing directory is not
  * writable).
+ *
+ * There is no checking done for your key namespace clashing with the
+ * syntax of the key file format.  For example, if you have '[' or ']'
+ * characters in your path names or '=' in your key names you may be in
+ * trouble.
  **/
 GSettingsBackend *
 g_keyfile_settings_backend_new (const gchar *filename,
