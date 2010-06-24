@@ -27,6 +27,7 @@ test_basic (void)
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_free (str);
 
   g_settings_set (settings, "greeting", "s", "goodbye world");
   g_settings_get (settings, "greeting", "s", &str);
@@ -1005,6 +1006,7 @@ test_custom_binding (void)
   g_object_set (obj, "bool", TRUE, NULL);
   s = g_settings_get_string (settings, "string");
   g_assert_cmpstr (s, ==, "true");
+  g_free (s);
 
   g_object_unref (obj);
   g_object_unref (settings);
@@ -1251,6 +1253,7 @@ static void
 test_enums (void)
 {
   GSettings *settings, *direct;
+  gchar *str;
 
   settings = g_settings_new ("org.gtk.test.enums");
   direct = g_settings_new ("org.gtk.test.enums.direct");
@@ -1273,13 +1276,28 @@ test_enums (void)
       g_test_trap_assert_stderr ("*g_settings_range_check*");
     }
 
-  g_assert_cmpstr (g_settings_get_string (settings, "test"), ==, "bar");
+  str = g_settings_get_string (settings, "test");
+  g_assert_cmpstr (str, ==, "bar");
+  g_free (str);
+
   g_settings_set_enum (settings, "test", TEST_ENUM_FOO);
-  g_assert_cmpstr (g_settings_get_string (settings, "test"), ==, "foo");
+
+  str = g_settings_get_string (settings, "test");
+  g_assert_cmpstr (str, ==, "foo");
+  g_free (str);
+
   g_assert_cmpint (g_settings_get_enum (settings, "test"), ==, TEST_ENUM_FOO);
+
   g_settings_set_string (direct, "test", "qux");
-  g_assert_cmpstr (g_settings_get_string (direct, "test"), ==, "qux");
-  g_assert_cmpstr (g_settings_get_string (settings, "test"), ==, "quux");
+
+  str = g_settings_get_string (direct, "test");
+  g_assert_cmpstr (str, ==, "qux");
+  g_free (str);
+
+  str = g_settings_get_string (settings, "test");
+  g_assert_cmpstr (str, ==, "quux");
+  g_free (str);
+
   g_assert_cmpint (g_settings_get_enum (settings, "test"), ==, TEST_ENUM_QUUX);
 }
 
@@ -1341,6 +1359,7 @@ main (int argc, char *argv[])
                                        &enums, NULL, &result, NULL));
   g_assert (result == 0);
   g_assert (g_file_set_contents ("org.gtk.test.enums.xml", enums, -1, NULL));
+  g_free (enums);
 
   g_remove ("gschemas.compiled");
   g_assert (g_spawn_command_line_sync ("../glib-compile-schemas --targetdir=. "
