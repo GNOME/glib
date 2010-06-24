@@ -1762,7 +1762,7 @@ g_settings_get_has_unapplied (GSettings *settings)
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
 
-/* Extra API (sync, get_child, is_writable) {{{1 */
+/* Extra API (sync, get_child, is_writable, list_keys) {{{1 */
 /**
  * g_settings_sync:
  * @context: the context to sync, or %NULL
@@ -1853,6 +1853,37 @@ g_settings_get_child (GSettings   *settings,
   g_free (child_name);
 
   return child;
+}
+
+/**
+ * g_settings_list_keys:
+ * @settings: a #GSettings object
+ * Returns: a list of the keys on @settings
+ *
+ * Introspects the list of keys on @settings.
+ *
+ * You should probably not be calling this function from "normal" code
+ * (since you should already know what keys are in your schema).  This
+ * function is intended for introspection reasons.
+ *
+ * You should free the return value with g_strfreev() when you are done
+ * with it.
+ */
+gchar **
+g_settings_list_keys (GSettings *settings)
+{
+  const GQuark *keys;
+  gchar **strv;
+  gint n_keys;
+  gint i;
+
+  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+  strv = g_new (gchar *, n_keys + 1);
+  for (i = 0; i < n_keys; i++)
+    strv[i] = g_strdup (g_quark_to_string (keys[i]));
+  strv[i] = NULL;
+
+  return strv;
 }
 
 /* Binding {{{1 */
