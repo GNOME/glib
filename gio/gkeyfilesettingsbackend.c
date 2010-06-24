@@ -64,6 +64,7 @@ typedef struct
   GFileMonitor      *dir_monitor;
 } GKeyfileSettingsBackend;
 
+static GType g_keyfile_settings_backend_get_type (void);
 G_DEFINE_TYPE (GKeyfileSettingsBackend,
                g_keyfile_settings_backend,
                G_TYPE_SETTINGS_BACKEND)
