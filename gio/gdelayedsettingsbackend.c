@@ -405,6 +405,7 @@ g_delayed_settings_backend_finalize (GObject *object)
 
   g_static_mutex_free (&delayed->priv->lock);
   g_object_unref (delayed->priv->backend);
+  g_tree_unref (delayed->priv->delayed);
 
   /* if our owner is still alive, why are we finalizing? */
   g_assert (delayed->priv->owner == NULL);
