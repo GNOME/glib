@@ -866,9 +866,8 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
 
   info->default_value = g_variant_iter_next_value (iter);
   info->type = g_variant_get_type (info->default_value);
-  info->schema = settings->priv->schema;
-  info->settings = settings;
-  info->key = key;
+  info->settings = g_object_ref (settings);
+  info->key = g_intern_string (key);
 
   while (g_variant_iter_next (iter, "(y*)", &code, &data))
     {
@@ -914,6 +913,7 @@ g_settings_free_key_info (GSettingsKeyInfo *info)
     g_variant_unref (info->maximum);
 
   g_variant_unref (info->default_value);
+  g_object_unref (info->settings);
 }
 
 static gboolean
@@ -1054,7 +1054,7 @@ g_settings_get_translated_default (GSettingsKeyInfo *info)
     /* translation not requested for this key */
     return NULL;
 
-  domain = g_settings_schema_get_gettext_domain (info->schema);
+  domain = g_settings_schema_get_gettext_domain (info->settings->priv->schema);
 
   if (info->lc_char == 't')
     translated = g_dcgettext (domain, info->unparsed, LC_TIME);
@@ -1890,7 +1890,7 @@ g_settings_list_keys (GSettings *settings)
 /* Binding {{{1 */
 typedef struct
 {
-  GSettings *settings;
+  GSettingsKeyInfo info;
   GObject *object;
 
   GSettingsBindGetMapping get_mapping;
@@ -1902,8 +1902,6 @@ typedef struct
   guint property_handler_id;
   const GParamSpec *property;
   guint key_handler_id;
-  GVariantType *type;
-  const gchar *key;
 
   /* prevent recursion */
   gboolean running;
@@ -1917,11 +1915,11 @@ g_settings_binding_free (gpointer data)
   g_assert (!binding->running);
 
   if (binding->writable_handler_id)
-    g_signal_handler_disconnect (binding->settings,
+    g_signal_handler_disconnect (binding->info.settings,
                                  binding->writable_handler_id);
 
   if (binding->key_handler_id)
-    g_signal_handler_disconnect (binding->settings,
+    g_signal_handler_disconnect (binding->info.settings,
                                  binding->key_handler_id);
 
   if (g_signal_handler_is_connected (binding->object,
@@ -1929,8 +1927,7 @@ g_settings_binding_free (gpointer data)
   g_signal_handler_disconnect (binding->object,
                                binding->property_handler_id);
 
-  g_variant_type_free (binding->type);
-  g_object_unref (binding->settings);
+  g_settings_free_key_info (&binding->info);
 
   if (binding->destroy)
     binding->destroy (binding->user_data);
@@ -1960,8 +1957,8 @@ g_settings_binding_key_changed (GSettings   *settings,
   GValue value = { 0, };
   GVariant *variant;
 
-  g_assert (settings == binding->settings);
-  g_assert (key == binding->key);
+  g_assert (settings == binding->info.settings);
+  g_assert (key == binding->info.key);
 
   if (binding->running)
     return;
@@ -1969,11 +1966,42 @@ g_settings_binding_key_changed (GSettings   *settings,
   binding->running = TRUE;
 
   g_value_init (&value, binding->property->value_type);
-  variant = g_settings_get_value (settings, key);
-  if (binding->get_mapping (&value, variant, binding->user_data))
-    g_object_set_property (binding->object,
-                           binding->property->name,
-                           &value);
+
+  variant = g_settings_read_from_backend (&binding->info);
+  if (variant && !binding->get_mapping (&value, variant, binding->user_data))
+    {
+      /* silently ignore errors in the user's config database */
+      g_variant_unref (variant);
+      variant = NULL;
+    }
+
+  if (variant == NULL)
+    {
+      variant = g_settings_get_translated_default (&binding->info);
+      if (variant &&
+          !binding->get_mapping (&value, variant, binding->user_data))
+        {
+          /* flag translation errors with a warning */
+          g_warning ("Translated default `%s' for key `%s' in schema `%s' "
+                     "was rejected by the binding mapping function",
+                     binding->info.unparsed, binding->info.key,
+                     binding->info.settings->priv->schema_name);
+          g_variant_unref (variant);
+          variant = NULL;
+        }
+    }
+
+  if (variant == NULL)
+    {
+      variant = g_variant_ref (binding->info.default_value);
+      if (!binding->get_mapping (&value, variant, binding->user_data))
+        g_error ("The schema default value for key `%s' in schema `%s' "
+                 "was rejected by the binding mapping function.",
+                 binding->info.key,
+                 binding->info.settings->priv->schema_name);
+    }
+
+  g_object_set_property (binding->object, binding->property->name, &value);
   g_variant_unref (variant);
   g_value_unset (&value);
 
@@ -1999,12 +2027,34 @@ g_settings_binding_property_changed (GObject          *object,
 
   g_value_init (&value, pspec->value_type);
   g_object_get_property (object, pspec->name, &value);
-  if ((variant = binding->set_mapping (&value, binding->type,
+  if ((variant = binding->set_mapping (&value, binding->info.type,
                                        binding->user_data)))
     {
-      g_settings_set_value (binding->settings,
-                            binding->key,
-                            g_variant_ref_sink (variant));
+      if (g_variant_is_floating (variant))
+        g_variant_ref_sink (variant);
+
+      if (!g_settings_type_check (&binding->info, variant))
+        {
+          g_critical ("binding mapping function for key `%s' returned "
+                      "GVariant of type `%s' when type `%s' was requested",
+                      binding->info.key, g_variant_get_type_string (variant),
+                      g_variant_type_dup_string (binding->info.type));
+          return;
+        }
+
+      if (!g_settings_range_check (&binding->info, variant))
+        {
+          g_critical ("GObject property `%s' on a `%s' object is out of "
+                      "schema-specified range for key `%s' of `%s': %s",
+                      binding->property->name,
+                      g_type_name (binding->property->owner_type),
+                      binding->info.key,
+                      binding->info.settings->priv->schema_name,
+                      g_variant_print (variant, TRUE));
+          return;
+        }
+
+      g_settings_write_to_backend (&binding->info, variant);
       g_variant_unref (variant);
     }
   g_value_unset (&value);
@@ -2102,9 +2152,8 @@ g_settings_bind_with_mapping (GSettings               *settings,
   objectclass = G_OBJECT_GET_CLASS (object);
 
   binding = g_slice_new0 (GSettingsBinding);
-  binding->settings = g_object_ref (settings);
+  g_settings_get_key_info (&binding->info, settings, key);
   binding->object = object;
-  binding->key = g_intern_string (key);
   binding->property = g_object_class_find_property (objectclass, property);
   binding->user_data = user_data;
   binding->destroy = destroy;
@@ -2121,47 +2170,31 @@ g_settings_bind_with_mapping (GSettings               *settings,
       return;
     }
 
-  if ((flags & G_SETTINGS_BIND_GET) && (binding->property->flags & G_PARAM_WRITABLE) == 0)
+  if ((flags & G_SETTINGS_BIND_GET) &&
+      (binding->property->flags & G_PARAM_WRITABLE) == 0)
     {
-      g_critical ("g_settings_bind: property '%s' on class '%s' is not writable",
-                  property, G_OBJECT_TYPE_NAME (object));
+      g_critical ("g_settings_bind: property '%s' on class '%s' is not "
+                  "writable", property, G_OBJECT_TYPE_NAME (object));
       return;
     }
-  if ((flags & G_SETTINGS_BIND_SET) && (binding->property->flags & G_PARAM_READABLE) == 0)
+  if ((flags & G_SETTINGS_BIND_SET) &&
+      (binding->property->flags & G_PARAM_READABLE) == 0)
     {
-      g_critical ("g_settings_bind: property '%s' on class '%s' is not readable",
-                  property, G_OBJECT_TYPE_NAME (object));
-      return;
-    }
-
-  {
-    GVariantIter *iter;
-    GVariant *value;
-
-    iter = g_settings_schema_get_value (settings->priv->schema, key);
-    value = g_variant_iter_next_value (iter);
-    binding->type = g_variant_type_copy (g_variant_get_type (value));
-    g_variant_iter_free (iter);
-    g_variant_unref (value);
-  }
-
-  if (binding->type == NULL)
-    {
-      g_critical ("g_settings_bind: no key '%s' on schema '%s'",
-                  key, settings->priv->schema_name);
+      g_critical ("g_settings_bind: property '%s' on class '%s' is not "
+                  "readable", property, G_OBJECT_TYPE_NAME (object));
       return;
     }
 
   if (((get_mapping == NULL && (flags & G_SETTINGS_BIND_GET)) ||
        (set_mapping == NULL && (flags & G_SETTINGS_BIND_SET))) &&
       !g_settings_mapping_is_compatible (binding->property->value_type,
-                                         binding->type))
+                                         binding->info.type))
     {
       g_critical ("g_settings_bind: property '%s' on class '%s' has type "
                   "'%s' which is not compatible with type '%s' of key '%s' "
                   "on schema '%s'", property, G_OBJECT_TYPE_NAME (object),
                   g_type_name (binding->property->value_type),
-                  g_variant_type_dup_string (binding->type), key,
+                  g_variant_type_dup_string (binding->info.type), key,
                   settings->priv->schema_name);
       return;
     }
@@ -2175,7 +2208,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
 
       if (sensitive && sensitive->value_type == G_TYPE_BOOLEAN &&
           (sensitive->flags & G_PARAM_WRITABLE))
-        g_settings_bind_writable (settings, binding->key,
+        g_settings_bind_writable (settings, binding->info.key,
                                   object, "sensitive", FALSE);
     }
 
@@ -2206,7 +2239,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
           g_free (detailed_signal);
         }
 
-      g_settings_binding_key_changed (settings, binding->key, binding);
+      g_settings_binding_key_changed (settings, binding->info.key, binding);
     }
 
   binding_quark = g_settings_binding_quark (property);
