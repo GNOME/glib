@@ -145,6 +145,7 @@ struct _GSocketPrivate
   gint            listen_backlog;
   guint           timeout;
   GError         *construct_error;
+  GSocketAddress *remote_address;
   guint           inited : 1;
   guint           blocking : 1;
   guint           keepalive : 1;
@@ -152,6 +153,7 @@ struct _GSocketPrivate
   guint           connected : 1;
   guint           listening : 1;
   guint           timed_out : 1;
+  guint           connect_pending : 1;
 #ifdef G_OS_WIN32
   WSAEVENT        event;
   int             current_events;
@@ -628,6 +630,9 @@ g_socket_finalize (GObject *object)
   if (socket->priv->fd != -1 &&
       !socket->priv->closed)
     g_socket_close (socket, NULL);
+
+  if (socket->priv->remote_address)
+    g_object_unref (socket->priv->remote_address);
 
 #ifdef G_OS_WIN32
   if (socket->priv->event != WSA_INVALID_EVENT)
@@ -1245,15 +1250,28 @@ g_socket_get_remote_address (GSocket  *socket,
 
   g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
 
-  if (getpeername (socket->priv->fd, (struct sockaddr *) &buffer, &len) < 0)
+  if (socket->priv->connect_pending)
     {
-      int errsv = get_socket_errno ();
-      g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("could not get remote address: %s"), socket_strerror (errsv));
-      return NULL;
+      if (!g_socket_check_connect_result (socket, error))
+        return NULL;
+      else
+        socket->priv->connect_pending = FALSE;
     }
 
-  return g_socket_address_new_from_native (&buffer, len);
+  if (!socket->priv->remote_address)
+    {
+      if (getpeername (socket->priv->fd, (struct sockaddr *) &buffer, &len) < 0)
+	{
+	  int errsv = get_socket_errno ();
+	  g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
+		       _("could not get remote address: %s"), socket_strerror (errsv));
+	  return NULL;
+	}
+
+      socket->priv->remote_address = g_socket_address_new_from_native (&buffer, len);
+    }
+
+  return g_object_ref (socket->priv->remote_address);
 }
 
 /**
@@ -1591,6 +1609,10 @@ g_socket_connect (GSocket         *socket,
   if (!g_socket_address_to_native (address, &buffer, sizeof buffer, error))
     return FALSE;
 
+  if (socket->priv->remote_address)
+    g_object_unref (socket->priv->remote_address);
+  socket->priv->remote_address = g_object_ref (address);
+
   while (1)
     {
       if (connect (socket->priv->fd, (struct sockaddr *) &buffer,
@@ -1617,8 +1639,11 @@ g_socket_connect (GSocket         *socket,
 		  g_prefix_error (error, _("Error connecting: "));
 		}
 	      else
-                g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
-                                     _("Connection in progress"));
+                {
+                  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PENDING,
+                                       _("Connection in progress"));
+                  socket->priv->connect_pending = TRUE;
+                }
 	    }
 	  else
 	    g_set_error (error, G_IO_ERROR,
@@ -1674,6 +1699,11 @@ g_socket_check_connect_result (GSocket  *socket,
     {
       g_set_error_literal (error, G_IO_ERROR, socket_io_error_from_errno (value),
                            socket_strerror (value));
+      if (socket->priv->remote_address)
+        {
+          g_object_unref (socket->priv->remote_address);
+          socket->priv->remote_address = NULL;
+        }
       return FALSE;
     }
   return TRUE;
@@ -2168,6 +2198,11 @@ g_socket_close (GSocket  *socket,
 
   socket->priv->connected = FALSE;
   socket->priv->closed = TRUE;
+  if (socket->priv->remote_address)
+    {
+      g_object_unref (socket->priv->remote_address);
+      socket->priv->remote_address = NULL;
+    }
 
   return TRUE;
 }
