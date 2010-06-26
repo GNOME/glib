@@ -257,7 +257,7 @@ typedef struct pcre_callout_block {
 #define pcre_free g_free
 #define pcre_stack_malloc g_try_malloc
 
-int   (*pcre_callout)(pcre_callout_block *);
+PCRE_EXP_DECL int   (*pcre_callout)(pcre_callout_block *);
 
 /* Exported PCRE functions */
 
