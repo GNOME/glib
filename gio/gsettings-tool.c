@@ -157,7 +157,7 @@ handle_set (gint   *argc,
   gchar *key;
   gchar *value;
   GSettings *settings;
-  GVariant *v;
+  GVariant *v, *default_v;
   const GVariantType *type;
   GOptionContext *context;
   GOptionEntry entries[] = {
@@ -201,12 +201,12 @@ handle_set (gint   *argc,
   else
     settings = g_settings_new (schema);
 
-  v = g_settings_get_value (settings, key);
-  type = g_variant_get_type (v);
-  g_variant_unref (v);
+  default_v = g_settings_get_value (settings, key);
+  type = g_variant_get_type (default_v);
 
   error = NULL;
   v = g_variant_parse (type, value, NULL, NULL, &error);
+  g_variant_unref (default_v);
   if (v == NULL)
     {
       g_printerr ("%s\n", error->message);
