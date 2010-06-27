@@ -164,7 +164,8 @@ key_exists (GSettings   *settings,
 
   keys = g_settings_list_keys (settings);
   for (i = 0; keys[i]; i++)
-    if (g_strcmp0 (keys[i], name) == 0)
+    if (!g_str_has_suffix (keys[i], "/") &&
+        g_strcmp0 (keys[i], name) == 0)
       {
         ret = TRUE;
         break;
@@ -183,8 +184,11 @@ list_keys (GSettings   *settings,
 
   keys = g_settings_list_keys (settings);
   for (i = 0; keys[i]; i++)
-    if (prefix == NULL || g_str_has_prefix (keys[i], prefix))
-      g_print ("%s \n", keys[i]);
+    {
+      if (!g_str_has_suffix (keys[i], "/") &&
+          (prefix == NULL || g_str_has_prefix (keys[i], prefix)))
+        g_print ("%s \n", keys[i]);
+    }
   g_free (keys);
 }
 
