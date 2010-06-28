@@ -382,9 +382,9 @@ g_settings_set_mapping (const GValue       *value,
       GEnumValue *enumval;
       GEnumClass *eclass;
 
-      eclass = g_type_class_ref (G_VALUE_TYPE (value));
+      /* GParamSpecEnum holds a ref on the class so we just peek... */
+      eclass = g_type_class_peek (G_VALUE_TYPE (value));
       enumval = g_enum_get_value (eclass, g_value_get_enum (value));
-      g_type_class_unref (eclass);
 
       if (enumval)
         return g_variant_new_string (enumval->value_nick);
@@ -454,10 +454,10 @@ g_settings_get_mapping (GValue   *value,
           GEnumValue *evalue;
           const gchar *nick;
 
-          eclass = g_type_class_ref (G_VALUE_TYPE (value));
+          /* GParamSpecEnum holds a ref on the class so we just peek... */
+          eclass = g_type_class_peek (G_VALUE_TYPE (value));
           nick = g_variant_get_string (variant, NULL);
           evalue = g_enum_get_value_by_nick (eclass, nick);
-          g_type_class_unref (eclass);
 
           if (evalue)
             {
