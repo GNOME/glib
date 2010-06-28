@@ -1303,7 +1303,7 @@ main (int argc, char **argv)
   GOptionEntry entries[] = {
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
     { "dry-run", 0, 0, G_OPTION_ARG_NONE, &dry_run, N_("Do not write the gschema.compiled file"), NULL },
-    { "uninstall", 0, 0, G_OPTION_ARG_NONE, &uninstall, N_("Do not give error for empty directory"), NULL },
+    { "uninstall", 0, 0, G_OPTION_ARG_NONE, &uninstall, N_("This option will be removed soon.") },
     { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, N_("Do not enforce key name restrictions") },
 
     /* These options are only for use in the gschema-compile tests */
@@ -1365,16 +1365,15 @@ main (int argc, char **argv)
 
       if (files->len == 0)
         {
-          if (uninstall)
-            {
-              g_unlink (target);
-              return 0;
-            }
+          fprintf (stderr, _("No schema files found: "));
+
+          if (g_unlink (target))
+            fprintf (stderr, _("doing nothing.\n"));
+
           else
-            {
-              fprintf (stderr, _("No schema files found\n"));
-              return 1;
-            }
+            fprintf (stderr, _("removed existing output file.\n"));
+
+          return 0;
         }
       g_ptr_array_sort (files, compare_strings);
       g_ptr_array_add (files, NULL);

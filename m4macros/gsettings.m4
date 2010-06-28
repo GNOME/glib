@@ -68,7 +68,7 @@ uninstall-gsettings-schemas:
 	test -n "$$files" || exit 0; \
 	echo " ( cd '\''$(DESTDIR)$(gsettingsschemadir)'\'' && rm -f" $$files ")"; \
 	cd "$(DESTDIR)$(gsettingsschemadir)" && rm -f $$files
-	test -n "$(GSETTINGS_DISABLE_SCHEMAS_COMPILE)$(DESTDIR)" || $(GLIB_COMPILE_SCHEMAS) --uninstall $(gsettingsschemadir)
+	test -n "$(GSETTINGS_DISABLE_SCHEMAS_COMPILE)$(DESTDIR)" || $(GLIB_COMPILE_SCHEMAS) $(gsettingsschemadir)
 
 clean-gsettings-schemas:
 	rm -f $(gsettings_SCHEMAS:.xml=.valid)
