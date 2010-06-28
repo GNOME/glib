@@ -1479,6 +1479,7 @@ g_settings_get_enum
 g_settings_set_enum
 g_settings_sync
 g_settings_list_keys
+g_settings_get_mapped
 #endif
 #endif
 

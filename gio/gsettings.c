@@ -1126,7 +1126,7 @@ g_settings_from_enum (GSettingsKeyInfo *info,
   return g_variant_ref_sink (g_variant_new_string (string));
 }
 
-/* Public Get/Set API {{{1 (get, get_value, set, set_value) */
+/* Public Get/Set API {{{1 (get, get_value, set, set_value, get_mapped) */
 /**
  * g_settings_get_value:
  * @settings: a #GSettings object
@@ -1382,6 +1382,87 @@ g_settings_set (GSettings   *settings,
   va_end (ap);
 
   return g_settings_set_value (settings, key, value);
+}
+
+/**
+ * g_settings_get_mapped:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @mapping: the function to map the value in the settings database to
+ *           the value used by the application
+ * @user_data: user data for @mapping
+ *
+ * Gets the value that is stored at @key in @settings, subject to
+ * application-level validation/mapping.
+ *
+ * You should use this function when the application needs to perform
+ * some processing on the value of the key (for example, parsing).  The
+ * @mapping function performs that processing.  If the function
+ * indicates that the processing was unsuccessful (due to a parse error,
+ * for example) then the mapping is tried again with another value.
+
+ * This allows a robust 'fall back to defaults' behaviour to be
+ * implemented somewhat automatically.
+ *
+ * The first value that is tried is the user's setting for the key.  If
+ * the mapping function fails to map this value, other values may be
+ * tried in an unspecified order (system or site defaults, translated
+ * schema default values, untranslated schema default values, etc).
+ *
+ * If the mapping function fails for all possible values, one additional
+ * attempt is made: the mapping function is called with a %NULL value.
+ * If the mapping function still indicates failure at this point then
+ * the application will be aborted.
+ *
+ * The result parameter for the @mapping function is pointed to a
+ * #gpointer which is initially set to %NULL.  The same pointer is given
+ * to each invocation of @mapping.  The final value of that #gpointer is
+ * what is returned by this function.  %NULL is valid; it is returned
+ * just as any other value would be.
+ **/
+gpointer
+g_settings_get_mapped (GSettings           *settings,
+                       const gchar         *key,
+                       GSettingsGetMapping  mapping,
+                       gpointer             user_data)
+{
+  gpointer result = NULL;
+  GSettingsKeyInfo info;
+  GVariant *value;
+  gboolean okay;
+
+  g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
+  g_return_val_if_fail (key != NULL, NULL);
+  g_return_val_if_fail (mapping != NULL, NULL);
+
+  g_settings_get_key_info (&info, settings, key);
+
+  if ((value = g_settings_read_from_backend (&info)))
+    {
+      okay = mapping (value, &result, user_data);
+      g_variant_unref (value);
+      if (okay) goto okay;
+    }
+
+  if ((value = g_settings_get_translated_default (&info)))
+    {
+      okay = mapping (value, &result, user_data);
+      g_variant_unref (value);
+      if (okay) goto okay;
+    }
+
+  if (mapping (info.default_value, &result, user_data))
+    goto okay;
+
+  if (!mapping (NULL, &result, user_data))
+    g_error ("The mapping function given to g_settings_get_mapped() for key "
+             "`%s' in schema `%s' returned FALSE when given a NULL value.",
+             key, settings->priv->schema_name);
+
+ okay:
+  g_settings_free_key_info (&info);
+
+  return result;
 }
 
 /* Convenience API (get, set_string, int, double, boolean, strv) {{{1 */

@@ -169,6 +169,28 @@ typedef gboolean      (*GSettingsBindGetMapping)                        (GValue 
                                                                          gpointer            user_data);
 
 /**
+ * GSettingsGetMapping:
+ * @value: the #GVariant to map, or %NULL
+ * @result: the result of the mapping
+ * @user_data: the user data that was passed to g_settings_get_mapped()
+ * Returns: %TRUE if the conversion succeeded, %FALSE in case of an error
+ *
+ * The type of the function that is used to convert from a value stored
+ * in a #GSettings to a value that is useful to the application.
+ *
+ * If the value is successfully mapped, the result should be stored at
+ * @result and %TRUE returned.  If mapping fails (for example, if @value
+ * is not in the right format) then %FALSE should be returned.
+ *
+ * If @value is %NULL then it means that the mapping function is being
+ * given a "last chance" to successfully return a valid value.  %TRUE
+ * must be returned in this case.
+ **/
+typedef gboolean      (*GSettingsGetMapping)                            (GVariant           *value,
+                                                                         gpointer           *result,
+                                                                         gpointer            user_data);
+
+/**
  * GSettingsBindFlags:
  * @G_SETTINGS_BIND_DEFAULT: Equivalent to <literal>G_SETTINGS_BIND_GET|G_SETTINGS_BIND_SET</literal>
  * @G_SETTINGS_BIND_GET: Update the #GObject property when the setting changes.
@@ -213,6 +235,11 @@ void                    g_settings_bind_writable                        (GSettin
                                                                          gboolean                 inverted);
 void                    g_settings_unbind                               (gpointer                 object,
                                                                          const gchar             *property);
+
+gpointer                g_settings_get_mapped                           (GSettings               *settings,
+                                                                         const gchar             *key,
+                                                                         GSettingsGetMapping      mapping,
+                                                                         gpointer                 user_data);
 
 G_END_DECLS
 

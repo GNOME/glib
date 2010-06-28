@@ -2169,6 +2169,10 @@ g_settings_set_strv
 g_settings_get_enum
 g_settings_set_enum
 
+<SUBSECTION MappedGet>
+GSettingsGetMapping
+g_settings_get_mapped
+
 <SUBSECTION Binding>
 GSettingsBindFlags
 g_settings_bind
