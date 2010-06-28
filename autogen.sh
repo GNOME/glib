@@ -76,7 +76,12 @@ test $TEST_TYPE $FILE || {
 	exit 1
 }
 
-if test -z "$AUTOGEN_SUBDIR_MODE"; then
+# NOCONFIGURE is used by gnome-common; support both
+if ! test -z "$AUTOGEN_SUBDIR_MODE"; then
+    NOCONFIGURE=1
+fi
+
+if test -z "$NOCONFIGURE"; then
         if test -z "$*"; then
                 echo "I am going to run ./configure with no arguments - if you wish "
                 echo "to pass any to it, please specify them on the $0 command line."
@@ -101,7 +106,7 @@ $AUTOMAKE --add-missing || exit $?
 autoconf || exit $?
 cd $ORIGDIR || exit $?
 
-if test -z "$AUTOGEN_SUBDIR_MODE"; then
+if test -z "$NOCONFIGURE"; then
         $srcdir/configure --enable-maintainer-mode $AUTOGEN_CONFIGURE_ARGS "$@" || exit $?
 
         echo 
