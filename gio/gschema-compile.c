@@ -903,7 +903,7 @@ start_element (GMarkupParseContext  *context,
           const gchar *id, *path, *gettext_domain;
           if (COLLECT (STRING, "id", &id,
                        OPTIONAL | STRING, "path", &path,
-                       OPTIONAL | STRDUP, "gettext-domain", &gettext_domain))
+                       OPTIONAL | STRING, "gettext-domain", &gettext_domain))
             parse_state_start_schema (state, id, path, gettext_domain, error);
           return;
         }
