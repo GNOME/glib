@@ -92,7 +92,16 @@ static const SchemaTest tests[] = {
   { "range-default-low",            NULL, "*<default> is not contained in the specified range*" },
   { "range-default-high",           NULL, "*<default> is not contained in the specified range*" },
   { "range-parse-error",            NULL, "*invalid character in number*"                       },
-  { "from-docs",                    NULL, NULL                                                  }
+  { "from-docs",                    NULL, NULL                                                  },
+  { "extending",                    NULL, NULL                                                  },
+  { "extend-missing",               NULL, "*extends not yet existing schema*"                   },
+  { "extend-nonlist",               NULL, "*which is not a list*"                               },
+  { "extend-self",                  NULL, "*not yet existing*"                                  },
+  { "extend-wrong-list-indirect",   NULL, "*'y' does not extend 'x'*"                           },
+  { "extend-wrong-list",            NULL, "*'y' does not extend 'x'*"                           },
+  { "key-in-list-indirect",         NULL, "*can not add keys to a list*"                        },
+  { "key-in-list",                  NULL, "*can not add keys to a list*"                        },
+  { "list-of-missing",              NULL, "*is list of not yet existing schema*"                }
 };
 
 int

@@ -302,9 +302,18 @@ schema_tests = \
 	schema-tests/enum-with-repeated-alias.gschema.xml		\
 	schema-tests/enum-with-shadow-alias.gschema.xml			\
 	schema-tests/enum.gschema.xml					\
+	schema-tests/extend-missing.gschema.xml				\
+	schema-tests/extend-nonlist.gschema.xml				\
+	schema-tests/extend-self.gschema.xml				\
+	schema-tests/extend-wrong-list-indirect.gschema.xml		\
+	schema-tests/extend-wrong-list.gschema.xml			\
+	schema-tests/extending.gschema.xml				\
 	schema-tests/from-docs.gschema.xml				\
 	schema-tests/incomplete-list.gschema.xml			\
 	schema-tests/invalid-path.gschema.xml				\
+	schema-tests/key-in-list-indirect.gschema.xml			\
+	schema-tests/key-in-list.gschema.xml				\
+	schema-tests/list-of-missing.gschema.xml			\
 	schema-tests/missing-quotes.gschema.xml				\
 	schema-tests/no-default.gschema.xml				\
 	schema-tests/overflow.gschema.xml				\
@@ -319,7 +328,6 @@ schema_tests = \
 	schema-tests/range-wrong-type.gschema.xml			\
 	schema-tests/range.gschema.xml					\
 	schema-tests/wrong-category.gschema.xml
-
 
 EXTRA_DIST += \
 	socket-common.c			\

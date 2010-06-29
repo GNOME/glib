@@ -671,23 +671,34 @@ is_valid_keyname (const gchar  *key,
 }
 
 /* Handling of <schema> {{{1 */
-typedef struct
+typedef struct _SchemaState SchemaState;
+struct _SchemaState
 {
-  gchar      *path;
-  gchar      *gettext_domain;
+  SchemaState *extends;
 
-  GHashTable *keys;
-} SchemaState;
+  gchar       *path;
+  gchar       *gettext_domain;
+  gchar       *extends_name;
+  gchar       *list_of;
+
+  GHashTable  *keys;
+};
 
 static SchemaState *
 schema_state_new (const gchar  *path,
-                  const gchar  *gettext_domain)
+                  const gchar  *gettext_domain,
+                  SchemaState  *extends,
+                  const gchar  *extends_name,
+                  const gchar  *list_of)
 {
   SchemaState *state;
 
   state = g_slice_new (SchemaState);
   state->path = g_strdup (path);
   state->gettext_domain = g_strdup (gettext_domain);
+  state->extends = extends;
+  state->extends_name = g_strdup (extends_name);
+  state->list_of = g_strdup (list_of);
   state->keys = g_hash_table_new_full (g_str_hash, g_str_equal,
                                        g_free, key_state_free);
 
@@ -739,6 +750,14 @@ schema_state_add_key (SchemaState  *state,
 {
   GString *enum_data;
   KeyState *key;
+
+  if (state->list_of)
+    {
+      g_set_error_literal (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "can not add keys to a list-of schema");
+      return NULL;
+    }
 
   if (!is_valid_keyname (name, error))
     return NULL;
@@ -809,19 +828,100 @@ typedef struct
   GString     *string;                  /* non-NULL when accepting text */
 } ParseState;
 
+static gboolean
+is_subclass (const gchar *class_name,
+             const gchar *possible_parent,
+             GHashTable  *schema_table)
+{
+  SchemaState *class;
+
+  if (strcmp (class_name, possible_parent) == 0)
+    return TRUE;
+
+  class = g_hash_table_lookup (schema_table, class_name);
+  g_assert (class != NULL);
+
+  return class->extends_name &&
+         is_subclass (class->extends_name, possible_parent, schema_table);
+}
+
 static void
 parse_state_start_schema (ParseState  *state,
                           const gchar  *id,
                           const gchar  *path,
                           const gchar  *gettext_domain,
+                          const gchar  *extends_name,
+                          const gchar  *list_of,
                           GError      **error)
 {
+  SchemaState *extends;
+
   if (g_hash_table_lookup (state->schema_table, id))
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
                    "<schema id='%s'> already specified", id);
       return;
+    }
+
+  if (extends_name)
+    {
+      extends = g_hash_table_lookup (state->schema_table, extends_name);
+
+      if (extends == NULL)
+        {
+          g_set_error (error, G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_INVALID_CONTENT,
+                       "<schema id='%s'> extends not yet "
+                       "existing schema '%s'", id, extends_name);
+          return;
+        }
+    }
+  else
+    extends = NULL;
+
+  if (list_of)
+    {
+      if (!g_hash_table_lookup (state->schema_table, list_of))
+        {
+          g_set_error (error, G_MARKUP_ERROR,
+                       G_MARKUP_ERROR_INVALID_CONTENT,
+                       "<schema id='%s'> is list of not yet "
+                       "existing schema '%s'", id, list_of);
+          return;
+        }
+    }
+
+  if (extends)
+    {
+      if (list_of)
+        {
+          if (extends->list_of == NULL)
+            {
+              g_set_error (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "<schema id='%s'> is a list, extending "
+                           "<schema id='%s'> which is not a list",
+                           id, extends_name);
+              return;
+            }
+
+          if (!is_subclass (list_of, extends->list_of, state->schema_table))
+            {
+              g_set_error (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "<schema id='%s' list-of='%s'> extends <schema "
+                           "id='%s' list-of='%s'> but '%s' does not extend '%s'",
+                           id, list_of, extends_name, extends->list_of,
+                           list_of, extends->list_of);
+              return;
+            }
+        }
+      else
+        /* by default we are a list of the same thing that the schema
+         * we are extending is a list of (which might be nothing)
+         */
+        list_of = extends->list_of;
     }
 
   if (path && !(g_str_has_prefix (path, "/") && g_str_has_suffix (path, "/")))
@@ -833,7 +933,8 @@ parse_state_start_schema (ParseState  *state,
       return;
     }
 
-  state->schema_state = schema_state_new (path, gettext_domain);
+  state->schema_state = schema_state_new (path, gettext_domain,
+                                          extends, extends_name, list_of);
   g_hash_table_insert (state->schema_table, g_strdup (id),
                        state->schema_state);
 }
@@ -900,11 +1001,14 @@ start_element (GMarkupParseContext  *context,
     {
       if (strcmp (element_name, "schema") == 0)
         {
-          const gchar *id, *path, *gettext_domain;
+          const gchar *id, *path, *gettext_domain, *extends, *list_of;
           if (COLLECT (STRING, "id", &id,
                        OPTIONAL | STRING, "path", &path,
-                       OPTIONAL | STRING, "gettext-domain", &gettext_domain))
-            parse_state_start_schema (state, id, path, gettext_domain, error);
+                       OPTIONAL | STRING, "gettext-domain", &gettext_domain,
+                       OPTIONAL | STRING, "extends", &extends,
+                       OPTIONAL | STRING, "list-of", &list_of))
+            parse_state_start_schema (state, id, path, gettext_domain,
+                                      extends, list_of, error);
           return;
         }
 
