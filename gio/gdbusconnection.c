@@ -2574,9 +2574,6 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * linkend="g-main-context-push-thread-default">thread-default main
  * loop</link> of the thread you are calling this method from.
  *
- * It is considered a programming error to use this function if
- * @connection is closed.
- *
  * If @connection is not a message bus connection, @sender must be
  * %NULL.
  *
@@ -2619,7 +2616,6 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
    */
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
-  g_return_val_if_fail (!g_dbus_connection_is_closed (connection), 0);
   g_return_val_if_fail (sender == NULL || (g_dbus_is_name (sender) && (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)), 0);
   g_return_val_if_fail (interface_name == NULL || g_dbus_is_interface_name (interface_name), 0);
   g_return_val_if_fail (member == NULL || g_dbus_is_member_name (member), 0);
@@ -4096,7 +4092,6 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   guint ret;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
-  g_return_val_if_fail (!g_dbus_connection_is_closed (connection), 0);
   g_return_val_if_fail (object_path != NULL && g_variant_is_object_path (object_path), 0);
   g_return_val_if_fail (introspection_data != NULL, 0);
   g_return_val_if_fail (g_dbus_is_interface_name (introspection_data->name), 0);

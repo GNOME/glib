@@ -450,7 +450,7 @@ connection_get_cb (GObject      *source_object,
 
 /**
  * g_bus_own_name_on_connection:
- * @connection: A #GDBusConnection that is not closed.
+ * @connection: A #GDBusConnection.
  * @name: The well-known name to own.
  * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
  * @name_acquired_handler: Handler to invoke when @name is acquired or %NULL.
@@ -478,7 +478,6 @@ g_bus_own_name_on_connection (GDBusConnection          *connection,
   Client *client;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
-  g_return_val_if_fail (!g_dbus_connection_is_closed (connection), 0);
   g_return_val_if_fail (g_dbus_is_name (name) && !g_dbus_is_unique_name (name), 0);
 
   G_LOCK (lock);
@@ -766,7 +765,7 @@ g_bus_own_name_with_closures (GBusType                  bus_type,
 
 /**
  * g_bus_own_name_on_connection_with_closures:
- * @connection: A #GDBusConnection that is not closed.
+ * @connection: A #GDBusConnection.
  * @name: The well-known name to own.
  * @flags: A set of flags from the #GBusNameOwnerFlags enumeration.
  * @name_acquired_closure: (allow-none): #GClosure to invoke when @name is

@@ -590,7 +590,7 @@ g_bus_watch_name (GBusType                  bus_type,
 
 /**
  * g_bus_watch_name_on_connection:
- * @connection: A #GDBusConnection that is not closed.
+ * @connection: A #GDBusConnection.
  * @name: The name (well-known or unique) to watch.
  * @flags: Flags from the #GBusNameWatcherFlags enumeration.
  * @name_appeared_handler: Handler to invoke when @name is known to exist or %NULL.
@@ -761,7 +761,7 @@ g_bus_watch_name_with_closures (GBusType                 bus_type,
 
 /**
  * g_bus_watch_name_on_connection_with_closures:
- * @connection: A #GDBusConnection that is not closed.
+ * @connection: A #GDBusConnection.
  * @name: The name (well-known or unique) to watch.
  * @flags: Flags from the #GBusNameWatcherFlags enumeration.
  * @name_appeared_closure: (allow-none): #GClosure to invoke when @name is known
