@@ -101,7 +101,15 @@ static const SchemaTest tests[] = {
   { "extend-wrong-list",            NULL, "*'y' does not extend 'x'*"                           },
   { "key-in-list-indirect",         NULL, "*can not add keys to a list*"                        },
   { "key-in-list",                  NULL, "*can not add keys to a list*"                        },
-  { "list-of-missing",              NULL, "*is list of not yet existing schema*"                }
+  { "list-of-missing",              NULL, "*is list of not yet existing schema*"                },
+  { "extend-and-shadow",            NULL, "*shadows*use <override>*"                            },
+  { "extend-and-shadow-indirect",   NULL, "*shadows*use <override>*"                            },
+  { "override",                     NULL, NULL                                                  },
+  { "override-missing",             NULL, "*no <key name='bar'> to override*"                   },
+  { "override-range-error",         NULL, "*<override> is not contained in the specified range*"},
+  { "override-then-key",            NULL, "*shadows <key name='foo'> in <schema id='base'>*"    },
+  { "override-twice",               NULL, "*<override name='foo'> already specified*"           },
+  { "override-type-error",          NULL, "*invalid character in number*"                       }
 };
 
 int

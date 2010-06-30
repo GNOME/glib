@@ -302,6 +302,8 @@ schema_tests = \
 	schema-tests/enum-with-repeated-alias.gschema.xml		\
 	schema-tests/enum-with-shadow-alias.gschema.xml			\
 	schema-tests/enum.gschema.xml					\
+	schema-tests/extend-and-shadow-indirect.gschema.xml		\
+	schema-tests/extend-and-shadow.gschema.xml			\
 	schema-tests/extend-missing.gschema.xml				\
 	schema-tests/extend-nonlist.gschema.xml				\
 	schema-tests/extend-self.gschema.xml				\
@@ -317,6 +319,12 @@ schema_tests = \
 	schema-tests/missing-quotes.gschema.xml				\
 	schema-tests/no-default.gschema.xml				\
 	schema-tests/overflow.gschema.xml				\
+	schema-tests/override-missing.gschema.xml			\
+	schema-tests/override-range-error.gschema.xml			\
+	schema-tests/override-then-key.gschema.xml			\
+	schema-tests/override-twice.gschema.xml				\
+	schema-tests/override-type-error.gschema.xml			\
+	schema-tests/override.gschema.xml				\
 	schema-tests/range-badtype.gschema.xml				\
 	schema-tests/range-default-high.gschema.xml			\
 	schema-tests/range-default-low.gschema.xml			\

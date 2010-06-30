@@ -122,6 +122,7 @@ typedef struct
 
   gboolean      has_choices;
   gboolean      has_aliases;
+  gboolean      is_override;
 
   gboolean      checked;
   GVariant     *serialised;
@@ -144,6 +145,29 @@ key_state_new (const gchar *type_string,
     state->strinfo = g_string_new (NULL);
 
   return state;
+}
+
+static KeyState *
+key_state_override (KeyState    *state,
+                    const gchar *gettext_domain)
+{
+  KeyState *copy;
+
+  copy = g_slice_new0 (KeyState);
+  copy->type = g_variant_type_copy (state->type);
+  copy->have_gettext_domain = gettext_domain != NULL;
+  copy->strinfo = g_string_new_len (state->strinfo->str,
+                                    state->strinfo->len);
+  copy->is_enum = state->is_enum;
+  copy->is_override = TRUE;
+
+  if (state->minimum)
+    {
+      copy->minimum = g_variant_ref (state->minimum);
+      copy->maximum = g_variant_ref (state->maximum);
+    }
+
+  return copy;
 }
 
 static KeyState *
@@ -201,6 +225,10 @@ key_state_check_range (KeyState  *state,
 {
   if (state->default_value)
     {
+      const gchar *tag;
+
+      tag = state->is_override ? "override" : "default";
+
       if (state->minimum)
         {
           if (g_variant_compare (state->default_value, state->minimum) < 0 ||
@@ -208,8 +236,8 @@ key_state_check_range (KeyState  *state,
             {
               g_set_error (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<default> is not contained in "
-                           "the specified range");
+                           "<%s> is not contained in "
+                           "the specified range", tag);
             }
         }
 
@@ -218,16 +246,16 @@ key_state_check_range (KeyState  *state,
           if (!is_valid_choices (state->default_value, state->strinfo))
             {
               if (state->is_enum)
-                g_set_error_literal (error, G_MARKUP_ERROR,
-                                     G_MARKUP_ERROR_INVALID_CONTENT,
-                                     "<default> is not a valid member of "
-                                     "the specified enumerated type");
+                g_set_error (error, G_MARKUP_ERROR,
+                             G_MARKUP_ERROR_INVALID_CONTENT,
+                             "<%s> is not a valid member of "
+                             "the specified enumerated type", tag);
 
               else
-                g_set_error_literal (error, G_MARKUP_ERROR,
-                                     G_MARKUP_ERROR_INVALID_CONTENT,
-                                     "<default> contains string not in "
-                                     "<choices>");
+                g_set_error (error, G_MARKUP_ERROR,
+                             G_MARKUP_ERROR_INVALID_CONTENT,
+                             "<%s> contains string not in "
+                             "<choices>", tag);
             }
         }
     }
@@ -749,6 +777,7 @@ schema_state_add_key (SchemaState  *state,
                       GError      **error)
 {
   GString *enum_data;
+  SchemaState *node;
   KeyState *key;
 
   if (state->list_of)
@@ -769,6 +798,27 @@ schema_state_add_key (SchemaState  *state,
                    "<key name='%s'> already specified", name);
       return NULL;
     }
+
+  for (node = state; node; node = node->extends)
+    if (node->extends)
+      {
+        KeyState *shadow;
+
+        shadow = g_hash_table_lookup (node->extends->keys, name);
+
+        /* in case of <key> <override> <key> make sure we report the
+         * location of the original <key>, not the <override>.
+         */
+        if (shadow && !shadow->is_override)
+          {
+            g_set_error (error, G_MARKUP_ERROR,
+                         G_MARKUP_ERROR_INVALID_CONTENT,
+                         "<key name='%s'> shadows <key name='%s'> in "
+                         "<schema id='%s'>; use <override> to modify value",
+                         name, name, node->extends_name);
+            return NULL;
+          }
+      }
 
   if ((type_string == NULL) == (enum_type == NULL))
     {
@@ -811,6 +861,61 @@ schema_state_add_key (SchemaState  *state,
   g_hash_table_insert (state->keys, g_strdup (name), key);
 
   return key;
+}
+
+static void
+schema_state_add_override (SchemaState  *state,
+                           KeyState    **key_state,
+                           GString     **string,
+                           const gchar  *key,
+                           const gchar  *l10n,
+                           const gchar  *context,
+                           GError      **error)
+{
+  SchemaState *parent;
+  KeyState *original;
+
+  if (state->extends == NULL)
+    {
+      g_set_error_literal (error, G_MARKUP_ERROR,
+                           G_MARKUP_ERROR_INVALID_CONTENT,
+                           "<override> given but schema isn't "
+                           "extending anything");
+      return;
+    }
+
+  for (parent = state->extends; parent; parent = parent->extends)
+    if ((original = g_hash_table_lookup (parent->keys, key)))
+      break;
+
+  if (original == NULL)
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "no <key name='%s'> to override", key);
+      return;
+    }
+
+  if (g_hash_table_lookup (state->keys, key))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "<override name='%s'> already specified", key);
+      return;
+    }
+
+  *key_state = key_state_override (original, state->gettext_domain);
+  *string = key_state_start_default (*key_state, l10n, context, error);
+  g_hash_table_insert (state->keys, g_strdup (key), *key_state);
+}
+
+static void
+override_state_end (KeyState **key_state,
+                    GString  **string,
+                    GError   **error)
+{
+  key_state_end_default (*key_state, string, error);
+  *key_state = NULL;
 }
 
 /* Handling of toplevel state {{{1 */
@@ -1048,8 +1153,19 @@ start_element (GMarkupParseContext  *context,
                                     name, schema, error);
           return;
         }
-    }
+      else if (strcmp (element_name, "override") == 0)
+        {
+          const gchar *name, *l10n, *context;
 
+          if (COLLECT (STRING,            "name",    &name,
+                       OPTIONAL | STRING, "l10n",    &l10n,
+                       OPTIONAL | STRING, "context", &context))
+            schema_state_add_override (state->schema_state,
+                                       &state->key_state, &state->string,
+                                       name, l10n, context, error);
+          return;
+        }
+    }
 
   /* children of <key> {{{3 */
   else if (strcmp (container, "key") == 0)
@@ -1195,6 +1311,9 @@ end_element (GMarkupParseContext  *context,
   else if (strcmp (element_name, "schema") == 0)
     schema_state_end (&state->schema_state, error);
 
+  else if (strcmp (element_name, "override") == 0)
+    override_state_end (&state->key_state, &state->string, error);
+
   else if (strcmp (element_name, "key") == 0)
     key_state_end (&state->key_state, error);
 
@@ -1307,6 +1426,14 @@ output_schema (gpointer key,
 
   if (state->path)
     gvdb_hash_table_insert_string (data.pair.table, ".path", state->path);
+
+  if (state->extends_name)
+    gvdb_hash_table_insert_string (data.pair.table, ".extends",
+                                   state->extends_name);
+
+  if (state->list_of)
+    gvdb_hash_table_insert_string (data.pair.table, ".list-of",
+                                   state->extends_name);
 
   if (data.l10n)
     gvdb_hash_table_insert_string (data.pair.table,
