@@ -1117,7 +1117,8 @@ start_element (GMarkupParseContext  *context,
           return;
         }
 
-      else if (strcmp (element_name, "enum") == 0)
+      else if (strcmp (element_name, "enum") == 0 ||
+               strcmp (element_name, "flags") == 0)
         {
           const gchar *id;
           if (COLLECT (STRING, "id", &id))
@@ -1239,7 +1240,8 @@ start_element (GMarkupParseContext  *context,
 
 
   /* children of <enum> {{{3 */
-  else if (strcmp (container, "enum") == 0)
+  else if (strcmp (container, "enum") == 0 ||
+           strcmp (container, "flags") == 0)
     {
       if (strcmp (element_name, "value") == 0)
         {
@@ -1305,7 +1307,8 @@ end_element (GMarkupParseContext  *context,
       state->schemalist_domain = NULL;
     }
 
-  else if (strcmp (element_name, "enum") == 0)
+  else if (strcmp (element_name, "enum") == 0 ||
+           strcmp (element_name, "flags") == 0)
     enum_state_end (&state->enum_state, error);
 
   else if (strcmp (element_name, "schema") == 0)
