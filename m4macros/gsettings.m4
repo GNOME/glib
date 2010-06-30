@@ -34,8 +34,10 @@ AC_DEFUN([GLIB_GSETTINGS],
 
 mostlyclean-am: clean-gsettings-schemas
 
-%.gschema.valid: %.gschema.xml
-	$(AM_V_GEN) if test -f "$^"; then d=; else d="$(srcdir)/"; fi; $(GLIB_COMPILE_SCHEMAS) --dry-run --schema-file=$${d}$^ && touch [$]@
+gsettings__enum_file = $(addsuffix .enums.xml,$(gsettings_ENUM_NAMESPACE))
+
+%.gschema.valid: %.gschema.xml $(gsettings__enum_file)
+	$(AM_V_GEN) if test -f "$<"; then d=; else d="$(srcdir)/"; fi; $(GLIB_COMPILE_SCHEMAS) --dry-run $(addprefix --schema-file=,$(gsettings__enum_file)) --schema-file=$${d}$< && touch [$]@
 
 all-am: $(gsettings_SCHEMAS:.xml=.valid)
 uninstall-am: uninstall-gsettings-schemas
@@ -47,10 +49,10 @@ gsettings__base_list = \
   sed "$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g" | \
   sed "$$!N;$$!N;$$!N;$$!N;s/\n/ /g"
 
-install-gsettings-schemas: $(gsettings_SCHEMAS:.xml=.valid)
+install-gsettings-schemas: $(gsettings_SCHEMAS:.xml=.valid) $(gsettings__enum_file)
 	@$(NORMAL_INSTALL)
 	test -z "$(gsettingsschemadir)" || $(MKDIR_P) "$(DESTDIR)$(gsettingsschemadir)"
-	@list='\''$(gsettings_SCHEMAS)'\''; test -n "$(gsettingsschemadir)" || list=; \
+	@list='\''$(gsettings__enum_file) $(gsettings_SCHEMAS)'\''; test -n "$(gsettingsschemadir)" || list=; \
 	for p in $$list; do \
 	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
 	  echo "$$d$$p"; \
@@ -63,7 +65,7 @@ install-gsettings-schemas: $(gsettings_SCHEMAS:.xml=.valid)
 
 uninstall-gsettings-schemas:
 	@$(NORMAL_UNINSTALL)
-	@list='\''$(gsettings_SCHEMAS)'\''; test -n "$(gsettingsschemadir)" || list=; \
+	@list='\''$(gsettings_SCHEMAS) $(gsettings__enum_file)'\''; test -n "$(gsettingsschemadir)" || list=; \
 	files=`for p in $$list; do echo $$p; done | sed -e '\''s|^.*/||'\''`; \
 	test -n "$$files" || exit 0; \
 	echo " ( cd '\''$(DESTDIR)$(gsettingsschemadir)'\'' && rm -f" $$files ")"; \
@@ -71,8 +73,12 @@ uninstall-gsettings-schemas:
 	test -n "$(GSETTINGS_DISABLE_SCHEMAS_COMPILE)$(DESTDIR)" || $(GLIB_COMPILE_SCHEMAS) $(gsettingsschemadir)
 
 clean-gsettings-schemas:
-	rm -f $(gsettings_SCHEMAS:.xml=.valid)
+	rm -f $(gsettings_SCHEMAS:.xml=.valid) $(gsettings__enum_file)
 
+ifdef gsettings_ENUM_NAMESPACE
+$(gsettings__enum_file): $(gsettings_ENUM_FILES)
+	$(AM_V_GEN) glib-mkenums --comments '\''<!-- @comment@ -->'\'' --fhead "<schemalist>" --vhead "  <@type@ id='\''$(gsettings_ENUM_NAMESPACE).@EnumName@'\''>" --vprod "    <value nick='\''@valuenick@'\'' value='\''@valuenum@'\''/>" --vtail "  </@type@>" --ftail "</schemalist>" $(gsettings_ENUM_FILES) > [$]@.tmp && mv [$]@.tmp [$]@
+endif
 '
   _GSETTINGS_SUBST(GSETTINGS_RULES)
 ])
