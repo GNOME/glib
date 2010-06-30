@@ -119,6 +119,7 @@ read_with_control_data_free (ReadWithControlData *data)
   g_object_unref (data->socket);
   if (data->cancellable != NULL)
     g_object_unref (data->cancellable);
+  g_object_unref (data->simple);
   g_free (data);
 }
 

@@ -763,6 +763,8 @@ read_string (GMemoryInputStream    *mis,
 }
 
 /* if just_align==TRUE, don't read a value, just align the input stream wrt padding */
+
+/* returns a non-floating GVariant! */
 static GVariant *
 parse_value_from_blob (GMemoryInputStream    *mis,
                        GDataInputStream      *dis,
@@ -1053,6 +1055,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                   goto fail;
                 }
               g_variant_builder_add_value (&builder, item);
+              g_variant_unref (item);
               offset = g_seekable_tell (G_SEEKABLE (mis));
             }
         }
@@ -1092,7 +1095,6 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                                        &local_error);
           if (key == NULL)
             goto fail;
-
           value_type = g_variant_type_value (type);
           value = parse_value_from_blob (mis,
                                          dis,
@@ -1106,6 +1108,8 @@ parse_value_from_blob (GMemoryInputStream    *mis,
               goto fail;
             }
           ret = g_variant_new_dict_entry (key, value);
+          g_variant_unref (key);
+          g_variant_unref (value);
         }
     }
   else if (g_variant_type_is_tuple (type))
@@ -1140,6 +1144,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                   goto fail;
                 }
               g_variant_builder_add_value (&builder, item);
+              g_variant_unref (item);
 
               element_type = g_variant_type_next (element_type);
             }
@@ -1188,6 +1193,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           if (value == NULL)
             goto fail;
           ret = g_variant_new_variant (value);
+          g_variant_unref (value);
         }
     }
   else
@@ -1225,6 +1231,12 @@ parse_value_from_blob (GMemoryInputStream    *mis,
     }
 #endif /* DEBUG_SERIALIZER */
 
+  /* sink the reference */
+  if (ret != NULL)
+    {
+      g_assert (g_variant_is_floating (ret));
+      g_variant_ref_sink (ret);
+    }
   return ret;
 
  fail:
@@ -1413,9 +1425,8 @@ g_dbus_message_new_from_blob (guchar                *blob,
                                    error);
   if (headers == NULL)
     goto out;
-  g_variant_ref_sink (headers);
   g_variant_iter_init (&iter, headers);
-  while ((item = g_variant_iter_next_value (&iter)))
+  while ((item = g_variant_iter_next_value (&iter)) != NULL)
     {
       guchar header_field;
       GVariant *value;
@@ -1424,6 +1435,8 @@ g_dbus_message_new_from_blob (guchar                *blob,
                      &header_field,
                      &value);
       g_dbus_message_set_header (message, header_field, value);
+      g_variant_unref (value);
+      g_variant_unref (item);
     }
   g_variant_unref (headers);
 
@@ -1471,13 +1484,9 @@ g_dbus_message_new_from_blob (guchar                *blob,
                                                        FALSE,
                                                        2,
                                                        error);
-          if (message->priv->body == NULL)
-            {
-              g_variant_type_free (variant_type);
-              goto out;
-            }
-          g_variant_ref_sink (message->priv->body);
           g_variant_type_free (variant_type);
+          if (message->priv->body == NULL)
+            goto out;
         }
     }
   else
@@ -1716,7 +1725,7 @@ append_value_to_blob (GVariant             *value,
               guint n;
               n = 0;
               g_variant_iter_init (&iter, value);
-              while ((item = g_variant_iter_next_value (&iter)))
+              while ((item = g_variant_iter_next_value (&iter)) != NULL)
                 {
                   gsize padding_added_for_item;
                   if (!append_value_to_blob (item,
@@ -1725,7 +1734,11 @@ append_value_to_blob (GVariant             *value,
                                              dos,
                                              &padding_added_for_item,
                                              error))
-                    goto fail;
+                    {
+                      g_variant_unref (item);
+                      goto fail;
+                    }
+                  g_variant_unref (item);
                   if (n == 0)
                     {
                       array_payload_begin_offset += padding_added_for_item;
@@ -1755,7 +1768,7 @@ append_value_to_blob (GVariant             *value,
           GVariant *item;
           GVariantIter iter;
           g_variant_iter_init (&iter, value);
-          while ((item = g_variant_iter_next_value (&iter)))
+          while ((item = g_variant_iter_next_value (&iter)) != NULL)
             {
               if (!append_value_to_blob (item,
                                          g_variant_get_type (item),
@@ -1763,7 +1776,11 @@ append_value_to_blob (GVariant             *value,
                                          dos,
                                          NULL,
                                          error))
-                goto fail;
+                {
+                  g_variant_unref (item);
+                  goto fail;
+                }
+              g_variant_unref (item);
             }
         }
     }
@@ -1833,7 +1850,7 @@ append_body_to_blob (GVariant             *value,
     }
 
   g_variant_iter_init (&iter, value);
-  while ((item = g_variant_iter_next_value (&iter)))
+  while ((item = g_variant_iter_next_value (&iter)) != NULL)
     {
       if (!append_value_to_blob (item,
                                  g_variant_get_type (item),
@@ -1841,7 +1858,11 @@ append_body_to_blob (GVariant             *value,
                                  dos,
                                  NULL,
                                  error))
-        goto fail;
+        {
+          g_variant_unref (item);
+          goto fail;
+        }
+      g_variant_unref (item);
     }
   return TRUE;
 
@@ -2454,6 +2475,7 @@ g_dbus_message_get_arg0 (GDBusMessage  *message)
       item = g_variant_get_child_value (message->priv->body, 0);
       if (g_variant_is_of_type (item, G_VARIANT_TYPE_STRING))
         ret = g_variant_get_string (item, NULL);
+      g_variant_unref (item);
     }
 
   return ret;

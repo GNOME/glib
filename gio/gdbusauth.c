@@ -607,6 +607,8 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
 
   dis = G_DATA_INPUT_STREAM (g_data_input_stream_new (g_io_stream_get_input_stream (auth->priv->stream)));
   dos = G_DATA_OUTPUT_STREAM (g_data_output_stream_new (g_io_stream_get_output_stream (auth->priv->stream)));
+  g_filter_input_stream_set_close_base_stream (G_FILTER_INPUT_STREAM (dis), FALSE);
+  g_filter_output_stream_set_close_base_stream (G_FILTER_OUTPUT_STREAM (dos), FALSE);
 
   g_data_input_stream_set_newline_type (dis, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
 
@@ -863,8 +865,8 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
     g_object_unref (mech);
   g_ptr_array_unref (attempted_auth_mechs);
   g_strfreev (supported_auth_mechs);
-  g_object_ref (dis);
-  g_object_ref (dos);
+  g_object_unref (dis);
+  g_object_unref (dos);
 
   /* ensure return value is NULL if error is set */
   if (error != NULL && *error != NULL)
@@ -972,6 +974,8 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
 
   dis = G_DATA_INPUT_STREAM (g_data_input_stream_new (g_io_stream_get_input_stream (auth->priv->stream)));
   dos = G_DATA_OUTPUT_STREAM (g_data_output_stream_new (g_io_stream_get_output_stream (auth->priv->stream)));
+  g_filter_input_stream_set_close_base_stream (G_FILTER_INPUT_STREAM (dis), FALSE);
+  g_filter_output_stream_set_close_base_stream (G_FILTER_OUTPUT_STREAM (dos), FALSE);
 
   g_data_input_stream_set_newline_type (dis, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
 
@@ -1324,9 +1328,9 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
   if (mech != NULL)
     g_object_unref (mech);
   if (dis != NULL)
-    g_object_ref (dis);
-  if (dis != NULL)
-    g_object_ref (dos);
+    g_object_unref (dis);
+  if (dos != NULL)
+    g_object_unref (dos);
 
   /* ensure return value is FALSE if error is set */
   if (error != NULL && *error != NULL)
