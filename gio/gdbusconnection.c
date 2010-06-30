@@ -3092,7 +3092,7 @@ typedef struct
   guint                       id;
   gchar                      *interface_name;
   const GDBusInterfaceVTable *vtable;
-  const GDBusInterfaceInfo   *introspection_data;
+  const GDBusInterfaceInfo   *interface_info;
 
   GMainContext               *context;
   gpointer                    user_data;
@@ -3303,7 +3303,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
                                              guint                       registration_id,
                                              guint                       subtree_registration_id,
                                              gboolean                    is_get,
-                                             const GDBusInterfaceInfo   *introspection_data,
+                                             const GDBusInterfaceInfo   *interface_info,
                                              const GDBusInterfaceVTable *vtable,
                                              GMainContext               *main_context,
                                              gpointer                    user_data)
@@ -3347,7 +3347,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
   property_info = NULL;
 
   /* TODO: the cost of this is O(n) - it might be worth caching the result */
-  property_info = g_dbus_interface_info_lookup_property (introspection_data, property_name);
+  property_info = g_dbus_interface_info_lookup_property (interface_info, property_name);
   if (property_info == NULL)
     {
       reply = g_dbus_message_new_method_error (message,
@@ -3390,7 +3390,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
   property_data->user_data = user_data;
   property_data->property_name = property_name;
   property_data->vtable = vtable;
-  property_data->interface_info = introspection_data;
+  property_data->interface_info = interface_info;
   property_data->property_info = property_info;
   property_data->registration_id = registration_id;
   property_data->subtree_registration_id = subtree_registration_id;
@@ -3458,7 +3458,7 @@ handle_getset_property (GDBusConnection *connection,
                                                          ei->id,
                                                          0,
                                                          is_get,
-                                                         ei->introspection_data,
+                                                         ei->interface_info,
                                                          ei->vtable,
                                                          ei->context,
                                                          ei->user_data);
@@ -3561,7 +3561,7 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
                                               GDBusMessage               *message,
                                               guint                       registration_id,
                                               guint                       subtree_registration_id,
-                                              const GDBusInterfaceInfo   *introspection_data,
+                                              const GDBusInterfaceInfo   *interface_info,
                                               const GDBusInterfaceVTable *vtable,
                                               GMainContext               *main_context,
                                               gpointer                    user_data)
@@ -3586,7 +3586,7 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
   property_get_all_data->message = g_object_ref (message);
   property_get_all_data->user_data = user_data;
   property_get_all_data->vtable = vtable;
-  property_get_all_data->interface_info = introspection_data;
+  property_get_all_data->interface_info = interface_info;
   property_get_all_data->registration_id = registration_id;
   property_get_all_data->subtree_registration_id = subtree_registration_id;
 
@@ -3642,7 +3642,7 @@ handle_get_all_properties (GDBusConnection *connection,
                                                           message,
                                                           ei->id,
                                                           0,
-                                                          ei->introspection_data,
+                                                          ei->interface_info,
                                                           ei->vtable,
                                                           ei->context,
                                                           ei->user_data);
@@ -3807,7 +3807,7 @@ handle_introspect (GDBusConnection *connection,
   /* then include the registered interfaces */
   g_hash_table_iter_init (&hash_iter, eo->map_if_name_to_ei);
   while (g_hash_table_iter_next (&hash_iter, NULL, (gpointer) &ei))
-    g_dbus_interface_info_generate_xml (ei->introspection_data, 2, s);
+    g_dbus_interface_info_generate_xml (ei->interface_info, 2, s);
 
   /* finally include nodes registered below us */
   registered = g_dbus_connection_list_registered_unlocked (connection, eo->object_path);
@@ -3874,7 +3874,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
                                          GDBusMessage               *message,
                                          guint                       registration_id,
                                          guint                       subtree_registration_id,
-                                         const GDBusInterfaceInfo   *introspection_data,
+                                         const GDBusInterfaceInfo   *interface_info,
                                          const GDBusInterfaceVTable *vtable,
                                          GMainContext               *main_context,
                                          gpointer                    user_data)
@@ -3890,7 +3890,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
   handled = FALSE;
 
   /* TODO: the cost of this is O(n) - it might be worth caching the result */
-  method_info = g_dbus_interface_info_lookup_method (introspection_data, g_dbus_message_get_member (message));
+  method_info = g_dbus_interface_info_lookup_method (interface_info, g_dbus_message_get_member (message));
 
   /* if the method doesn't exist, return the org.freedesktop.DBus.Error.UnknownMethod
    * error to the caller
@@ -4012,7 +4012,7 @@ obj_message_func (GDBusConnection *connection,
                                                              message,
                                                              ei->id,
                                                              0,
-                                                             ei->introspection_data,
+                                                             ei->interface_info,
                                                              ei->vtable,
                                                              ei->context,
                                                              ei->user_data);
@@ -4057,26 +4057,26 @@ obj_message_func (GDBusConnection *connection,
  * g_dbus_connection_register_object:
  * @connection: A #GDBusConnection.
  * @object_path: The object path to register at.
- * @introspection_data: Introspection data for the interface.
+ * @interface_info: Introspection data for the interface.
  * @vtable: A #GDBusInterfaceVTable to call into or %NULL.
  * @user_data: Data to pass to functions in @vtable.
  * @user_data_free_func: Function to call when the object path is unregistered.
  * @error: Return location for error or %NULL.
  *
  * Registers callbacks for exported objects at @object_path with the
- * D-Bus interface that is described in @introspection_data.
+ * D-Bus interface that is described in @interface_info.
  *
  * Calls to functions in @vtable (and @user_data_free_func) will
  * happen in the <link linkend="g-main-context-push-thread-default">thread-default main
  * loop</link> of the thread you are calling this method from.
  *
  * Note that all #GVariant values passed to functions in @vtable will match
- * the signature given in @introspection_data - if a remote caller passes
+ * the signature given in @interface_info - if a remote caller passes
  * incorrect values, the <literal>org.freedesktop.DBus.Error.InvalidArgs</literal>
  * is returned to the remote caller.
  *
  * Additionally, if the remote caller attempts to invoke methods or
- * access properties not mentioned in @introspection_data the
+ * access properties not mentioned in @interface_info the
  * <literal>org.freedesktop.DBus.Error.UnknownMethod</literal> resp.
  * <literal>org.freedesktop.DBus.Error.InvalidArgs</literal> errors
  * are returned to the caller.
@@ -4109,7 +4109,7 @@ obj_message_func (GDBusConnection *connection,
 guint
 g_dbus_connection_register_object (GDBusConnection            *connection,
                                    const gchar                *object_path,
-                                   const GDBusInterfaceInfo   *introspection_data,
+                                   const GDBusInterfaceInfo   *interface_info,
                                    const GDBusInterfaceVTable *vtable,
                                    gpointer                    user_data,
                                    GDestroyNotify              user_data_free_func,
@@ -4121,8 +4121,8 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
   g_return_val_if_fail (object_path != NULL && g_variant_is_object_path (object_path), 0);
-  g_return_val_if_fail (introspection_data != NULL, 0);
-  g_return_val_if_fail (g_dbus_is_interface_name (introspection_data->name), 0);
+  g_return_val_if_fail (interface_info != NULL, 0);
+  g_return_val_if_fail (g_dbus_is_interface_name (interface_info->name), 0);
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
 
   ret = 0;
@@ -4142,14 +4142,14 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
       g_hash_table_insert (connection->priv->map_object_path_to_eo, eo->object_path, eo);
     }
 
-  ei = g_hash_table_lookup (eo->map_if_name_to_ei, introspection_data->name);
+  ei = g_hash_table_lookup (eo->map_if_name_to_ei, interface_info->name);
   if (ei != NULL)
     {
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_EXISTS,
                    _("An object is already exported for the interface %s at %s"),
-                   introspection_data->name,
+                   interface_info->name,
                    object_path);
       goto out;
     }
@@ -4160,8 +4160,8 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   ei->user_data = user_data;
   ei->user_data_free_func = user_data_free_func;
   ei->vtable = vtable;
-  ei->introspection_data = introspection_data;
-  ei->interface_name = g_strdup (introspection_data->name);
+  ei->interface_info = interface_info;
+  ei->interface_name = g_strdup (interface_info->name);
   ei->context = g_main_context_get_thread_default ();
   if (ei->context != NULL)
     g_main_context_ref (ei->context);
@@ -4805,7 +4805,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
   const gchar *requested_node;
   gboolean is_root;
   gchar **children;
-  const GDBusInterfaceInfo *introspection_data;
+  const GDBusInterfaceInfo *interface_info;
   const GDBusInterfaceVTable *interface_vtable;
   gpointer interface_user_data;
   guint n;
@@ -4863,16 +4863,16 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                        requested_node,
                                        es->user_data);
   g_assert (interfaces != NULL);
-  introspection_data = NULL;
+  interface_info = NULL;
   for (n = 0; n < interfaces->len; n++)
     {
       const GDBusInterfaceInfo *id_n = (const GDBusInterfaceInfo *) interfaces->pdata[n];
       if (g_strcmp0 (id_n->name, interface_name) == 0)
-        introspection_data = id_n;
+        interface_info = id_n;
     }
 
   /* dispatch the call if the user wants to handle it */
-  if (introspection_data != NULL)
+  if (interface_info != NULL)
     {
       /* figure out where to dispatch the method call */
       interface_user_data = NULL;
@@ -4891,7 +4891,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                                          message,
                                                          0,
                                                          es->id,
-                                                         introspection_data,
+                                                         interface_info,
                                                          interface_vtable,
                                                          es->context,
                                                          interface_user_data);
@@ -4914,13 +4914,13 @@ handle_subtree_method_invocation (GDBusConnection *connection,
         {
           const GDBusInterfaceInfo *id_n = (const GDBusInterfaceInfo *) interfaces->pdata[n];
           if (g_strcmp0 (id_n->name, interface_name) == 0)
-            introspection_data = id_n;
+            interface_info = id_n;
         }
 
       /* Fail with org.freedesktop.DBus.Error.InvalidArgs if the user-code
        * claims it won't support the interface
        */
-      if (introspection_data == NULL)
+      if (interface_info == NULL)
         {
           GDBusMessage *reply;
           reply = g_dbus_message_new_method_error (message,
@@ -4953,7 +4953,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                                                  0,
                                                                  es->id,
                                                                  is_property_get,
-                                                                 introspection_data,
+                                                                 interface_info,
                                                                  interface_vtable,
                                                                  es->context,
                                                                  interface_user_data);
@@ -4966,7 +4966,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                                                   message,
                                                                   0,
                                                                   es->id,
-                                                                  introspection_data,
+                                                                  interface_info,
                                                                   interface_vtable,
                                                                   es->context,
                                                                   interface_user_data);

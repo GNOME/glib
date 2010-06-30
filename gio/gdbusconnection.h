@@ -303,7 +303,7 @@ struct _GDBusInterfaceVTable
 
 guint            g_dbus_connection_register_object            (GDBusConnection            *connection,
                                                                const gchar                *object_path,
-                                                               const GDBusInterfaceInfo   *introspection_data,
+                                                               const GDBusInterfaceInfo   *interface_info,
                                                                const GDBusInterfaceVTable *vtable,
                                                                gpointer                    user_data,
                                                                GDestroyNotify              user_data_free_func,
