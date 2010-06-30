@@ -2151,7 +2151,7 @@ g_settings_get_child
 
 <SUBSECTION Introspection>
 g_settings_list_schemas
-g_settings_list_keys
+g_settings_list_items
 
 <SUBSECTION Convenience>
 g_settings_get

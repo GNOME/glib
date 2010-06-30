@@ -1844,7 +1844,7 @@ g_settings_get_has_unapplied (GSettings *settings)
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
 
-/* Extra API (sync, get_child, is_writable, list_keys) {{{1 */
+/* Extra API (sync, get_child, is_writable, list_items) {{{1 */
 /**
  * g_settings_sync:
  * @context: the context to sync, or %NULL
@@ -1938,11 +1938,15 @@ g_settings_get_child (GSettings   *settings,
 }
 
 /**
- * g_settings_list_keys:
+ * g_settings_list_items:
  * @settings: a #GSettings object
  * Returns: a list of the keys on @settings
  *
- * Introspects the list of keys on @settings.
+ * Introspects the list of keys and children on @settings.
+ *
+ * The list that is returned is a mix of the keys and children.  The
+ * names of the children are suffixed with '/'.  The names of the keys
+ * are not.
  *
  * You should probably not be calling this function from "normal" code
  * (since you should already know what keys are in your schema).  This
@@ -1952,7 +1956,7 @@ g_settings_get_child (GSettings   *settings,
  * it.
  */
 const gchar **
-g_settings_list_keys (GSettings *settings)
+g_settings_list_items (GSettings *settings)
 {
   const GQuark *keys;
   const gchar **strv;

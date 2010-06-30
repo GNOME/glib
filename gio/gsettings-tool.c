@@ -162,7 +162,7 @@ key_exists (GSettings   *settings,
 
   ret = FALSE;
 
-  keys = g_settings_list_keys (settings);
+  keys = g_settings_list_items (settings);
   for (i = 0; keys[i]; i++)
     if (!g_str_has_suffix (keys[i], "/") &&
         g_strcmp0 (keys[i], name) == 0)
@@ -182,7 +182,7 @@ list_keys (GSettings   *settings,
   const gchar **keys;
   gint i;
 
-  keys = g_settings_list_keys (settings);
+  keys = g_settings_list_items (settings);
   for (i = 0; keys[i]; i++)
     {
       if (!g_str_has_suffix (keys[i], "/") &&

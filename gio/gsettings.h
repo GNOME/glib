@@ -79,7 +79,7 @@ GSettings *             g_settings_new_with_backend                     (const g
 GSettings *             g_settings_new_with_backend_and_path            (const gchar        *schema,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
-const gchar **          g_settings_list_keys                            (GSettings          *settings);
+const gchar **          g_settings_list_items                           (GSettings          *settings);
 
 gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,
