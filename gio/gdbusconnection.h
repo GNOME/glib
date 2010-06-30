@@ -128,6 +128,7 @@ GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar      
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+void             g_dbus_connection_start_message_processing   (GDBusConnection    *connection);
 gboolean         g_dbus_connection_is_closed                  (GDBusConnection    *connection);
 void             g_dbus_connection_close                      (GDBusConnection    *connection);
 GIOStream       *g_dbus_connection_get_stream                 (GDBusConnection    *connection);

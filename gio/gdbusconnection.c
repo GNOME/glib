@@ -830,6 +830,23 @@ g_dbus_connection_get_stream (GDBusConnection *connection)
   return connection->priv->stream;
 }
 
+/**
+ * g_dbus_connection_start_message_processing:
+ * @connection: A #GDBusConnection.
+ *
+ * If @connection was created with
+ * %G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING, this method
+ * starts processing messages. Does nothing on if @connection wasn't
+ * created with this flag or if the method has already been called.
+ *
+ * Since: 2.26
+ */
+void
+g_dbus_connection_start_message_processing (GDBusConnection *connection)
+{
+  g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
+  _g_dbus_worker_unfreeze (connection->priv->worker);
+}
 
 /**
  * g_dbus_connection_is_closed:
@@ -1877,15 +1894,26 @@ initable_init (GInitable     *initable,
 
   connection->priv->worker = _g_dbus_worker_new (connection->priv->stream,
                                                  connection->priv->capabilities,
+                                                 (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING),
                                                  on_worker_message_received,
                                                  on_worker_message_about_to_be_sent,
                                                  on_worker_closed,
                                                  connection);
 
-  /* if a bus connection, invoke org.freedesktop.DBus.Hello - this is how we're getting a name */
+  /* if a bus connection, call org.freedesktop.DBus.Hello - this is how we're getting a name */
   if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
     {
       GVariant *hello_result;
+
+      /* we could lift this restriction by adding code in gdbusprivate.c */
+      if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING)
+        {
+          g_set_error_literal (&connection->priv->initialization_error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_FAILED,
+                               "Cannot use DELAY_MESSAGE_PROCESSING with MESSAGE_BUS_CONNECTION");
+          goto out;
+        }
 
       hello_result = g_dbus_connection_call_sync (connection,
                                                   "org.freedesktop.DBus", /* name */

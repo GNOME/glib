@@ -969,6 +969,8 @@ typedef enum
  * method.
  * @G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION: Pass this flag if connecting to a peer that is a
  * message bus. This means that the Hello() method will be invoked as part of the connection setup.
+ * @G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING: If set, processing of D-Bus messages is
+ * delayed until g_dbus_connection_start_message_processing() is called.
  *
  * Flags used when creating a new #GDBusConnection.
  *
@@ -979,7 +981,8 @@ typedef enum {
   G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT = (1<<0),
   G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER = (1<<1),
   G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS = (1<<2),
-  G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION = (1<<3)
+  G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION = (1<<3),
+  G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING = (1<<4)
 } GDBusConnectionFlags;
 
 /**

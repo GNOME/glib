@@ -732,6 +732,192 @@ test_peer (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+typedef struct
+{
+  GDBusServer *server;
+  GMainContext *context;
+  GMainLoop *loop;
+
+  GList *connections;
+} DmpData;
+
+static void
+dmp_data_free (DmpData *data)
+{
+  g_main_loop_unref (data->loop);
+  g_main_context_unref (data->context);
+  g_object_unref (data->server);
+  g_list_foreach (data->connections, (GFunc) g_object_unref, NULL);
+  g_list_free (data->connections);
+  g_free (data);
+}
+
+static void
+dmp_on_method_call (GDBusConnection       *connection,
+                    const gchar           *sender,
+                    const gchar           *object_path,
+                    const gchar           *interface_name,
+                    const gchar           *method_name,
+                    GVariant              *parameters,
+                    GDBusMethodInvocation *invocation,
+                    gpointer               user_data)
+{
+  //DmpData *data = user_data;
+  gint32 first;
+  gint32 second;
+  g_variant_get (parameters,
+                 "(ii)",
+                 &first,
+                 &second);
+  g_dbus_method_invocation_return_value (invocation,
+                                         g_variant_new ("(i)", first + second));
+}
+
+static const GDBusInterfaceVTable dmp_interface_vtable =
+{
+  dmp_on_method_call,
+  NULL,  /* get_property */
+  NULL   /* set_property */
+};
+
+
+/* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
+static void
+dmp_on_new_connection (GDBusServer     *server,
+                       GDBusConnection *connection,
+                       gpointer         user_data)
+{
+  DmpData *data = user_data;
+  GDBusNodeInfo *node;
+  GError *error;
+
+  /* accept the connection */
+  data->connections = g_list_prepend (data->connections, g_object_ref (connection));
+
+  error = NULL;
+  node = g_dbus_node_info_new_for_xml ("<node>"
+                                       "  <interface name='org.gtk.GDBus.DmpInterface'>"
+                                       "    <method name='AddPair'>"
+                                       "      <arg type='i' name='first' direction='in'/>"
+                                       "      <arg type='i' name='second' direction='in'/>"
+                                       "      <arg type='i' name='sum' direction='out'/>"
+                                       "    </method>"
+                                       "  </interface>"
+                                       "</node>",
+                                       &error);
+  g_assert_no_error (error);
+
+  /* sleep 100ms before exporting an object - this is to test that
+   * G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING really works
+   * (GDBusServer uses this feature).
+   */
+  usleep (100 * 1000);
+
+  /* export an object */
+  error = NULL;
+  g_dbus_connection_register_object (connection,
+                                     "/dmp/test",
+                                     node->interfaces[0],
+                                     &dmp_interface_vtable,
+                                     data,
+                                     NULL,
+                                     &error);
+  //g_dbus_node_info_unref (node);
+}
+
+static gpointer
+dmp_thread_func (gpointer user_data)
+{
+  DmpData *data = user_data;
+  GError *error;
+  gchar *guid;
+
+  data->context = g_main_context_new ();
+  g_main_context_push_thread_default (data->context);
+
+  error = NULL;
+  guid = g_dbus_generate_guid ();
+  data->server = g_dbus_server_new_sync ("nonce-tcp:",
+                                         G_DBUS_SERVER_FLAGS_NONE,
+                                         guid,
+                                         NULL, /* GDBusAuthObserver */
+                                         NULL, /* GCancellable */
+                                         &error);
+  g_assert_no_error (error);
+  g_signal_connect (data->server,
+                    "new-connection",
+                    G_CALLBACK (dmp_on_new_connection),
+                    data);
+
+  g_dbus_server_start (data->server);
+
+  data->loop = g_main_loop_new (data->context, FALSE);
+  g_main_loop_run (data->loop);
+
+  g_main_context_pop_thread_default (data->context);
+
+  g_free (guid);
+  return NULL;
+}
+
+static void
+delayed_message_processing (void)
+{
+  GError *error;
+  DmpData *data;
+  GThread *service_thread;
+  guint n;
+
+  data = g_new0 (DmpData, 1);
+
+  error = NULL;
+  service_thread = g_thread_create (dmp_thread_func,
+                                    data,
+                                    TRUE,
+                                    &error);
+  while (data->server == NULL || !g_dbus_server_is_active (data->server))
+    g_thread_yield ();
+
+  for (n = 0; n < 5; n++)
+    {
+      GDBusConnection *c;
+      GVariant *res;
+      gint32 val;
+
+      error = NULL;
+      c = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (data->server),
+                                                  G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                                  NULL, /* GDBusAuthObserver */
+                                                  NULL, /* GCancellable */
+                                                  &error);
+      g_assert_no_error (error);
+
+      error = NULL;
+      res = g_dbus_connection_call_sync (c,
+                                         NULL,    /* bus name */
+                                         "/dmp/test",
+                                         "org.gtk.GDBus.DmpInterface",
+                                         "AddPair",
+                                         g_variant_new ("(ii)", 2, n),
+                                         G_VARIANT_TYPE ("(i)"),
+                                         G_DBUS_CALL_FLAGS_NONE,
+                                         -1, /* timeout_msec */
+                                         NULL, /* GCancellable */
+                                         &error);
+      g_assert_no_error (error);
+      g_variant_get (res, "(i)", &val);
+      g_assert_cmpint (val, ==, 2 + n);
+      g_variant_unref (res);
+      g_object_unref (c);
+  }
+
+  g_main_loop_quit (data->loop);
+  g_thread_join (service_thread);
+  dmp_data_free (data);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -753,6 +939,7 @@ main (int   argc,
   loop = g_main_loop_new (NULL, FALSE);
 
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
+  g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
 
   ret = g_test_run();
 

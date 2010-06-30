@@ -367,6 +367,11 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * linkend="g-main-context-push-thread-default">thread-default main
    * loop</link> of the thread that @server was constructed in.
    *
+   * You are guaranteed that signal handlers for this signal runs
+   * before incoming messages on @connection are processed. This means
+   * that it's suitable to call g_dbus_connection_register_object() or
+   * similar from the signal handler.
+   *
    * Since: 2.26
    */
   _signals[NEW_CONNECTION_SIGNAL] = g_signal_new ("new-connection",
@@ -889,6 +894,7 @@ emit_new_connection_in_idle (gpointer user_data)
                  _signals[NEW_CONNECTION_SIGNAL],
                  0,
                  data->connection);
+  g_dbus_connection_start_message_processing (data->connection);
   g_object_unref (data->connection);
 
   return FALSE;
@@ -925,7 +931,9 @@ on_run (GSocketService    *service,
         goto out;
     }
 
-  connection_flags = G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER;
+  connection_flags =
+    G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER |
+    G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING;
   if (server->priv->flags & G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS)
     connection_flags |= G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS;
 
@@ -944,6 +952,7 @@ on_run (GSocketService    *service,
                      _signals[NEW_CONNECTION_SIGNAL],
                      0,
                      connection);
+      g_dbus_connection_start_message_processing (connection);
       g_object_unref (connection);
     }
   else

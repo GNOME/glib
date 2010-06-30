@@ -350,7 +350,16 @@ _g_dbus_shared_thread_unref (void)
 struct GDBusWorker
 {
   volatile gint                       ref_count;
+
   gboolean                            stopped;
+
+  /* TODO: frozen (e.g. G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) currently
+   * only affects messages received from the other peer (since GDBusServer is the
+   * only user) - we might want it to affect messages sent to the other peer too?
+   */
+  gboolean                            frozen;
+  GQueue                             *received_messages_while_frozen;
+
   GIOStream                          *stream;
   GDBusCapabilityFlags                capabilities;
   GCancellable                       *cancellable;
@@ -406,11 +415,13 @@ _g_dbus_worker_unref (GDBusWorker *worker)
       if (worker->read_fd_list != NULL)
         g_object_unref (worker->read_fd_list);
 
+      g_queue_foreach (worker->received_messages_while_frozen, (GFunc) g_object_unref, NULL);
+      g_queue_free (worker->received_messages_while_frozen);
+
       g_mutex_free (worker->write_lock);
-      g_queue_foreach (worker->write_queue,
-                       (GFunc) message_to_write_data_free,
-                       NULL);
+      g_queue_foreach (worker->write_queue, (GFunc) message_to_write_data_free, NULL);
       g_queue_free (worker->write_queue);
+
       g_free (worker);
     }
 }
@@ -442,6 +453,66 @@ _g_dbus_worker_emit_message_about_to_be_sent (GDBusWorker  *worker,
     ret = worker->message_about_to_be_sent_callback (worker, message, worker->user_data);
   return ret;
 }
+
+/* can only be called from private thread with read-lock held - takes ownership of @message */
+static void
+_g_dbus_worker_queue_or_deliver_received_message (GDBusWorker  *worker,
+                                                  GDBusMessage *message)
+{
+  if (worker->frozen || g_queue_get_length (worker->received_messages_while_frozen) > 0)
+    {
+      /* queue up */
+      g_queue_push_tail (worker->received_messages_while_frozen, message);
+    }
+  else
+    {
+      /* not frozen, nor anything in queue */
+      _g_dbus_worker_emit_message_received (worker, message);
+      g_object_unref (message);
+    }
+}
+
+/* called in private thread shared by all GDBusConnection instances (without read-lock held) */
+static gboolean
+unfreeze_in_idle_cb (gpointer user_data)
+{
+  GDBusWorker *worker = user_data;
+  GDBusMessage *message;
+
+  g_mutex_lock (worker->read_lock);
+  if (worker->frozen)
+    {
+      while ((message = g_queue_pop_head (worker->received_messages_while_frozen)) != NULL)
+        {
+          _g_dbus_worker_emit_message_received (worker, message);
+          g_object_unref (message);
+        }
+      worker->frozen = FALSE;
+    }
+  else
+    {
+      g_assert (g_queue_get_length (worker->received_messages_while_frozen) == 0);
+    }
+  g_mutex_unlock (worker->read_lock);
+  return FALSE;
+}
+
+/* can be called from any thread */
+void
+_g_dbus_worker_unfreeze (GDBusWorker *worker)
+{
+  GSource *idle_source;
+  idle_source = g_idle_source_new ();
+  g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
+  g_source_set_callback (idle_source,
+                         unfreeze_in_idle_cb,
+                         _g_dbus_worker_ref (worker),
+                         (GDestroyNotify) _g_dbus_worker_unref);
+  g_source_attach (idle_source, shared_thread_data->context);
+  g_source_unref (idle_source);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
 
 static void _g_dbus_worker_do_read_unlocked (GDBusWorker *worker);
 
@@ -639,8 +710,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
             }
 
           /* yay, got a message, go deliver it */
-          _g_dbus_worker_emit_message_received (worker, message);
-          g_object_unref (message);
+          _g_dbus_worker_queue_or_deliver_received_message (worker, message);
 
           /* start reading another message! */
           worker->read_buffer_bytes_wanted = 0;
@@ -952,6 +1022,7 @@ _g_dbus_worker_thread_begin_func (gpointer user_data)
 GDBusWorker *
 _g_dbus_worker_new (GIOStream                              *stream,
                     GDBusCapabilityFlags                    capabilities,
+                    gboolean                                initially_frozen,
                     GDBusWorkerMessageReceivedCallback      message_received_callback,
                     GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback,
                     GDBusWorkerDisconnectedCallback         disconnected_callback,
@@ -975,6 +1046,9 @@ _g_dbus_worker_new (GIOStream                              *stream,
   worker->stream = g_object_ref (stream);
   worker->capabilities = capabilities;
   worker->cancellable = g_cancellable_new ();
+
+  worker->frozen = initially_frozen;
+  worker->received_messages_while_frozen = g_queue_new ();
 
   worker->write_lock = g_mutex_new ();
   worker->write_queue = g_queue_new ();

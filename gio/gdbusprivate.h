@@ -53,6 +53,7 @@ typedef void (*GDBusWorkerDisconnectedCallback)    (GDBusWorker   *worker,
  */
 GDBusWorker *_g_dbus_worker_new          (GIOStream                          *stream,
                                           GDBusCapabilityFlags                capabilities,
+                                          gboolean                            initially_frozen,
                                           GDBusWorkerMessageReceivedCallback  message_received_callback,
                                           GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback,
                                           GDBusWorkerDisconnectedCallback     disconnected_callback,
@@ -66,6 +67,9 @@ void         _g_dbus_worker_send_message (GDBusWorker    *worker,
 
 /* can be called from any thread */
 void         _g_dbus_worker_stop         (GDBusWorker    *worker);
+
+/* can be called from any thread */
+void         _g_dbus_worker_unfreeze     (GDBusWorker    *worker);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
