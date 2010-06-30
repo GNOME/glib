@@ -3103,6 +3103,8 @@ typedef struct
 static void
 exported_interface_free (ExportedInterface *ei)
 {
+  g_dbus_interface_info_unref ((GDBusInterfaceInfo *) ei->interface_info);
+
   if (ei->user_data_free_func != NULL)
     /* TODO: push to thread-default mainloop */
     ei->user_data_free_func (ei->user_data);
@@ -4160,7 +4162,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   ei->user_data = user_data;
   ei->user_data_free_func = user_data_free_func;
   ei->vtable = vtable;
-  ei->interface_info = interface_info;
+  ei->interface_info = g_dbus_interface_info_ref ((GDBusInterfaceInfo *) interface_info);
   ei->interface_name = g_strdup (interface_info->name);
   ei->context = g_main_context_get_thread_default ();
   if (ei->context != NULL)

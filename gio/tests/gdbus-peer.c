@@ -822,7 +822,7 @@ dmp_on_new_connection (GDBusServer     *server,
                                      data,
                                      NULL,
                                      &error);
-  //g_dbus_node_info_unref (node);
+  g_dbus_node_info_unref (node);
 }
 
 static gpointer
