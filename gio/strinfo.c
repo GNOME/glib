@@ -309,3 +309,11 @@ strinfo_builder_contains (GString     *builder,
          strinfo_find_string ((const guint32 *) builder->str,
                               builder->len / 4, string, TRUE) != -1;
 }
+
+G_GNUC_UNUSED static gboolean
+strinfo_builder_contains_value (GString *builder,
+                                guint    value)
+{
+  return strinfo_string_from_enum ((const guint32 *) builder->str,
+                                   builder->len / 4, value) != NULL;
+}

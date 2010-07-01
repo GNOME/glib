@@ -831,7 +831,7 @@ g_settings_new_with_backend_and_path (const gchar      *schema,
                        NULL);
 }
 
-/* Internal read/write utilities, enum conversion, validation {{{1 */
+/* Internal read/write utilities, enum/flags conversion, validation {{{1 */
 typedef struct
 {
   GSettings *settings;
@@ -839,7 +839,9 @@ typedef struct
 
   GSettingsSchema *schema;
 
-  gboolean is_enum;
+  guint is_flags : 1;
+  guint is_enum  : 1;
+
   const guint32 *strinfo;
   gsize strinfo_length;
 
@@ -879,9 +881,16 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
           break;
 
         case 'e':
-          /* enumerated types, ... */
+          /* enumerated types... */
           info->is_enum = TRUE;
-        case 'c':
+          goto choice;
+
+        case 'f':
+          /* flags... */
+          info->is_flags = TRUE;
+          goto choice;
+
+        choice: case 'c':
           /* ..., choices, aliases */
           info->strinfo = g_variant_get_fixed_array (data,
                                                      &info->strinfo_length,
@@ -956,7 +965,7 @@ g_settings_range_check (GSettingsKeyInfo *info,
       g_variant_iter_init (&iter, value);
       while (ok && (child = g_variant_iter_next_value (&iter)))
         {
-          ok = g_settings_range_check (info, value);
+          ok = g_settings_range_check (info, child);
           g_variant_unref (child);
         }
 
@@ -992,6 +1001,7 @@ g_settings_range_fixup (GSettingsKeyInfo *info,
       GVariantIter iter;
       GVariant *child;
 
+      g_variant_iter_init (&iter, value);
       g_variant_builder_init (&builder, g_variant_get_type (value));
 
       while ((child = g_variant_iter_next_value (&iter)))
@@ -1123,7 +1133,64 @@ g_settings_from_enum (GSettingsKeyInfo *info,
   if (string == NULL)
     return NULL;
 
-  return g_variant_ref_sink (g_variant_new_string (string));
+  return g_variant_new_string (string);
+}
+
+static guint
+g_settings_to_flags (GSettingsKeyInfo *info,
+                     GVariant         *value)
+{
+  GVariantIter iter;
+  const gchar *flag;
+  guint result;
+
+  result = 0;
+  g_variant_iter_init (&iter, value);
+  while (g_variant_iter_next (&iter, "&s", &flag))
+    {
+      gboolean it_worked;
+      guint flag_value;
+
+      it_worked = strinfo_enum_from_string (info->strinfo,
+                                            info->strinfo_length,
+                                            flag, &flag_value);
+      /* as in g_settings_to_enum() */
+      g_assert (it_worked);
+
+      result |= flag_value;
+    }
+
+  return result;
+}
+
+static GVariant *
+g_settings_from_flags (GSettingsKeyInfo *info,
+                       guint             value)
+{
+  GVariantBuilder builder;
+  gint i;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+
+  for (i = 0; i < 32; i++)
+    if (value & (1u << i))
+      {
+        const gchar *string;
+
+        string = strinfo_string_from_enum (info->strinfo,
+                                           info->strinfo_length,
+                                           1u << i);
+
+        if (string == NULL)
+          {
+            g_variant_builder_clear (&builder);
+            return NULL;
+          }
+
+        g_variant_builder_add (&builder, "s", string);
+      }
+
+  return g_variant_builder_end (&builder);
 }
 
 /* Public Get/Set API {{{1 (get, get_value, set, set_value, get_mapped) */
@@ -1235,7 +1302,7 @@ g_settings_get_enum (GSettings   *settings,
  * schema for @settings or is not marked as an enumerated type, or for
  * @value not to be a valid value for the named type.
  *
- * After performing the write, accessing @key directly
+ * After performing the write, accessing @key directly with
  * g_settings_get_string() will return the 'nick' associated with
  * @value.
  **/
@@ -1271,7 +1338,118 @@ g_settings_set_enum (GSettings   *settings,
 
   success = g_settings_write_to_backend (&info, variant);
   g_settings_free_key_info (&info);
-  g_variant_unref (variant);
+
+  return success;
+}
+
+/**
+ * g_settings_get_flags:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @returns: the flags value
+ *
+ * Gets the value that is stored in @settings for @key and converts it
+ * to the flags value that it represents.
+ *
+ * In order to use this function the type of the value must be an array
+ * of strings and it must be marked in the schema file as an flags type.
+ *
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings or is not marked as a flags type.
+ *
+ * If the value stored in the configuration database is not a valid
+ * value for the flags type then this function will return the default
+ * value.
+ *
+ * Since: 2.26
+ **/
+guint
+g_settings_get_flags (GSettings   *settings,
+                      const gchar *key)
+{
+  GSettingsKeyInfo info;
+  GVariant *value;
+  guint result;
+
+  g_return_val_if_fail (G_IS_SETTINGS (settings), -1);
+  g_return_val_if_fail (key != NULL, -1);
+
+  g_settings_get_key_info (&info, settings, key);
+
+  if (!info.is_flags)
+    {
+      g_critical ("g_settings_get_flags() called on key `%s' which is not "
+                  "associated with a flags type", info.key);
+      g_settings_free_key_info (&info);
+      return -1;
+    }
+
+  value = g_settings_read_from_backend (&info);
+
+  if (value == NULL)
+    value = g_settings_get_translated_default (&info);
+
+  if (value == NULL)
+    value = g_variant_ref (info.default_value);
+
+  result = g_settings_to_flags (&info, value);
+  g_settings_free_key_info (&info);
+  g_variant_unref (value);
+
+  return result;
+}
+
+/**
+ * g_settings_set_flags:
+ * @settings: a #GSettings object
+ * @key: a key, within @settings
+ * @value: a flags value
+ * @returns: %TRUE, if the set succeeds
+ *
+ * Looks up the flags type nicks for the bits specified by @value, puts
+ * them in an array of strings and writes the array to @key, withing
+ * @settings.
+ *
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings or is not marked as a flags type, or for @value
+ * to contain any bits that are not value for the named type.
+ *
+ * After performing the write, accessing @key directly with
+ * g_settings_get_strv() will return an array of 'nicks'; one for each
+ * bit in @value.
+ **/
+gboolean
+g_settings_set_flags (GSettings   *settings,
+                      const gchar *key,
+                      guint        value)
+{
+  GSettingsKeyInfo info;
+  GVariant *variant;
+  gboolean success;
+
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+  g_return_val_if_fail (key != NULL, FALSE);
+
+  g_settings_get_key_info (&info, settings, key);
+
+  if (!info.is_flags)
+    {
+      g_critical ("g_settings_set_flags() called on key `%s' which is not "
+                  "associated with a flags type", info.key);
+      return FALSE;
+    }
+
+  if (!(variant = g_settings_from_flags (&info, value)))
+    {
+      g_critical ("g_settings_set_flags(): invalid flags value 0x%08x "
+                  "for key `%s' in schema `%s'.  Doing nothing.",
+                  value, info.key, info.settings->priv->schema_name);
+      g_settings_free_key_info (&info);
+      return FALSE;
+    }
+
+  success = g_settings_write_to_backend (&info, variant);
+  g_settings_free_key_info (&info);
 
   return success;
 }

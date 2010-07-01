@@ -1249,8 +1249,6 @@ test_strinfo (void)
   g_assert (!strinfo_is_string_valid (strinfo, length, "quux"));
 }
 
-
-
 static void
 test_enums (void)
 {
@@ -1276,6 +1274,11 @@ test_enums (void)
         g_settings_set_string (settings, "test", "qux");
       g_test_trap_assert_failed ();
       g_test_trap_assert_stderr ("*g_settings_range_check*");
+
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_get_flags (settings, "test");
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*not associated with a flags*");
     }
 
   str = g_settings_get_string (settings, "test");
@@ -1301,6 +1304,78 @@ test_enums (void)
   g_free (str);
 
   g_assert_cmpint (g_settings_get_enum (settings, "test"), ==, TEST_ENUM_QUUX);
+}
+
+static void
+test_flags (void)
+{
+  GSettings *settings, *direct;
+  gchar **strv;
+  gchar *str;
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  direct = g_settings_new ("org.gtk.test.enums.direct");
+
+  if (!backend_set)
+    {
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_get_flags (direct, "test");
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*not associated with a flags*");
+
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_set_flags (settings, "f-test", 0x42);
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*invalid flags value 0x00000042*");
+
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_set_strv (settings, "f-test",
+                             (const gchar **) g_strsplit ("rock", ",", 0));
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*g_settings_range_check*");
+
+      if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+        g_settings_get_enum (settings, "f-test");
+      g_test_trap_assert_failed ();
+      g_test_trap_assert_stderr ("*not associated with an enum*");
+    }
+
+  strv = g_settings_get_strv (settings, "f-test");
+  str = g_strjoinv (",", strv);
+  g_assert_cmpstr (str, ==, "");
+  g_strfreev (strv);
+  g_free (str);
+
+  g_settings_set_flags (settings, "f-test",
+                        TEST_FLAGS_WALKING | TEST_FLAGS_TALKING);
+
+  strv = g_settings_get_strv (settings, "f-test");
+  str = g_strjoinv (",", strv);
+  g_assert_cmpstr (str, ==, "talking,walking");
+  g_strfreev (strv);
+  g_free (str);
+
+  g_assert_cmpint (g_settings_get_flags (settings, "f-test"), ==,
+                   TEST_FLAGS_WALKING | TEST_FLAGS_TALKING);
+
+  strv = g_strsplit ("speaking,laughing", ",", 0);
+  g_settings_set_strv (direct, "f-test", (const gchar **) strv);
+  g_strfreev (strv);
+
+  strv = g_settings_get_strv (direct, "f-test");
+  str = g_strjoinv (",", strv);
+  g_assert_cmpstr (str, ==, "speaking,laughing");
+  g_strfreev (strv);
+  g_free (str);
+
+  strv = g_settings_get_strv (settings, "f-test");
+  str = g_strjoinv (",", strv);
+  g_assert_cmpstr (str, ==, "talking,laughing");
+  g_strfreev (strv);
+  g_free (str);
+
+  g_assert_cmpint (g_settings_get_flags (settings, "f-test"), ==,
+                   TEST_FLAGS_TALKING | TEST_FLAGS_LAUGHING);
 }
 
 static void
@@ -1408,6 +1483,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/child-schema", test_child_schema);
   g_test_add_func ("/gsettings/strinfo", test_strinfo);
   g_test_add_func ("/gsettings/enums", test_enums);
+  g_test_add_func ("/gsettings/flags", test_flags);
   g_test_add_func ("/gsettings/range", test_range);
 
   result = g_test_run ();

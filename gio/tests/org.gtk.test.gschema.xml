@@ -99,9 +99,18 @@
         <alias value='qux' target='quux'/>
       </aliases>
     </key>
+    <key name='f-test' flags='org.gtk.test.TestFlags'>
+      <default>[]</default>
+      <aliases>
+        <alias value='speaking' target='talking'/>
+      </aliases>
+    </key>
   </schema>
 
   <schema id='org.gtk.test.enums.direct' path='/tests/enums/'>
+    <key name='f-test' type='as'>
+      <default>[]</default>
+    </key>
     <key name='test' type='s'>
       <default>'bar'</default>
     </key>

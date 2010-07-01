@@ -35,14 +35,32 @@
 #include "strinfo.c"
 
 /* Handling of <enum> {{{1 */
-typedef GString EnumState;
+typedef struct
+{
+  GString *strinfo;
+
+  gboolean is_flags;
+} EnumState;
 
 static void
 enum_state_free (gpointer data)
 {
   EnumState *state = data;
 
-  g_string_free (state, TRUE);
+  g_string_free (state->strinfo, TRUE);
+  g_slice_free (EnumState, state);
+}
+
+EnumState *
+enum_state_new (gboolean is_flags)
+{
+  EnumState *state;
+
+  state = g_slice_new (EnumState);
+  state->strinfo = g_string_new (NULL);
+  state->is_flags = is_flags;
+
+  return state;
 }
 
 static void
@@ -58,12 +76,14 @@ enum_state_add_value (EnumState    *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "enum nick must be a minimum of 2 characters");
+                   "nick must be a minimum of 2 characters");
       return;
     }
 
   value = g_ascii_strtoll (valuestr, &end, 0);
-  if (*end || value > G_MAXINT32 || value < G_MININT32)
+  if (*end || state->is_flags ?
+                (value > G_MAXUINT32 || value < 0) :
+                (value > G_MAXINT32 || value < G_MININT32))
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
@@ -71,15 +91,38 @@ enum_state_add_value (EnumState    *state,
       return;
     }
 
-  if (strinfo_builder_contains (state, nick))
+  if (strinfo_builder_contains (state->strinfo, nick))
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<value nick='%s'> already specified", nick);
+                   "<value nick='%s'/> already specified", nick);
       return;
     }
 
-  strinfo_builder_append_item (state, nick, value);
+  if (strinfo_builder_contains_value (state->strinfo, value))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "value='%s' already specified", valuestr);
+      return;
+    }
+
+  if (state->is_flags && (value & (value - 1)))
+    {
+      g_set_error (error, G_MARKUP_ERROR,
+                   G_MARKUP_ERROR_INVALID_CONTENT,
+                   "flags values must have at most 1 bit set");
+      return;
+    }
+
+  /* Since we reject exact duplicates of value='' and we only allow one
+   * bit to be set, it's not possible to have overlaps.
+   *
+   * If we loosen the one-bit-set restriction we need an overlap check.
+   */
+
+
+  strinfo_builder_append_item (state->strinfo, nick, value);
 }
 
 static void
@@ -91,7 +134,7 @@ enum_state_end (EnumState **state_ptr,
   state = *state_ptr;
   *state_ptr = NULL;
 
-  if (state->len == 0)
+  if (state->strinfo->len == 0)
     g_set_error_literal (error,
                          G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                          "<enum> must contain at least one <value>");
@@ -116,6 +159,7 @@ typedef struct
 
   GString      *strinfo;
   gboolean      is_enum;
+  gboolean      is_flags;
 
   GVariant     *minimum;
   GVariant     *maximum;
@@ -131,16 +175,20 @@ typedef struct
 static KeyState *
 key_state_new (const gchar *type_string,
                const gchar *gettext_domain,
-               EnumState   *enum_data)
+               gboolean     is_enum,
+               gboolean     is_flags,
+               GString     *strinfo)
 {
   KeyState *state;
 
   state = g_slice_new0 (KeyState);
   state->type = g_variant_type_new (type_string);
   state->have_gettext_domain = gettext_domain != NULL;
+  state->is_enum = is_enum;
+  state->is_flags = is_flags;
 
-  if ((state->is_enum = (enum_data != NULL)))
-    state->strinfo = g_string_new_len (enum_data->str, enum_data->len);
+  if (strinfo)
+    state->strinfo = g_string_new_len (strinfo->str, strinfo->len);
   else
     state->strinfo = g_string_new (NULL);
 
@@ -159,6 +207,7 @@ key_state_override (KeyState    *state,
   copy->strinfo = g_string_new_len (state->strinfo->str,
                                     state->strinfo->len);
   copy->is_enum = state->is_enum;
+  copy->is_flags = state->is_flags;
   copy->is_override = TRUE;
 
   if (state->minimum)
@@ -250,6 +299,12 @@ key_state_check_range (KeyState  *state,
                              G_MARKUP_ERROR_INVALID_CONTENT,
                              "<%s> is not a valid member of "
                              "the specified enumerated type", tag);
+
+              else if (state->is_flags)
+                g_set_error (error, G_MARKUP_ERROR,
+                             G_MARKUP_ERROR_INVALID_CONTENT,
+                             "<%s> contains string not in the "
+                             "specified flags type", tag);
 
               else
                 g_set_error (error, G_MARKUP_ERROR,
@@ -442,11 +497,11 @@ key_state_start_aliases (KeyState  *state,
                          G_MARKUP_ERROR_INVALID_CONTENT,
                          "<aliases> already specified for this key");
 
-  if (!state->is_enum && !state->has_choices)
+  if (!state->is_flags && !state->is_enum && !state->has_choices)
     g_set_error_literal (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
                          "<aliases> can only be specified for keys with "
-                         "enumerated types or after <choices>");
+                         "enumerated or flags types or after <choices>");
 }
 
 static void
@@ -582,6 +637,7 @@ key_state_serialise (KeyState *state)
               state->strinfo = NULL;
 
               g_variant_builder_add (&builder, "(y@au)",
+                                     state->is_flags ? 'f' :
                                      state->is_enum ? 'e' : 'c',
                                      array);
             }
@@ -771,13 +827,15 @@ schema_state_add_child (SchemaState  *state,
 static KeyState *
 schema_state_add_key (SchemaState  *state,
                       GHashTable   *enum_table,
+                      GHashTable   *flags_table,
                       const gchar  *name,
                       const gchar  *type_string,
                       const gchar  *enum_type,
+                      const gchar  *flags_type,
                       GError      **error)
 {
-  GString *enum_data;
   SchemaState *node;
+  GString *strinfo;
   KeyState *key;
 
   if (state->list_of)
@@ -820,29 +878,37 @@ schema_state_add_key (SchemaState  *state,
           }
       }
 
-  if ((type_string == NULL) == (enum_type == NULL))
+  if ((type_string != NULL) + (enum_type != NULL) + (flags_type != NULL) != 1)
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_MISSING_ATTRIBUTE,
-                   "exactly one of 'type' or 'enum' must "
+                   "exactly one of 'type', 'enum' or 'flags' must "
                    "be specified as an attribute to <key>");
       return NULL;
     }
 
-  if (enum_type != NULL)
+  if (type_string == NULL) /* flags or enums was specified */
     {
-      enum_data = g_hash_table_lookup (enum_table, enum_type);
+      EnumState *enum_state;
 
-      if (enum_data == NULL)
+      if (enum_type)
+        enum_state = g_hash_table_lookup (enum_table, enum_type);
+      else
+        enum_state = g_hash_table_lookup (flags_table, flags_type);
+
+
+      if (enum_state == NULL)
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       "<enum id='%s'> not (yet) defined.", enum_type);
+                       "<%s id='%s'> not (yet) defined.",
+                       flags_type ? "flags"    : "enum",
+                       flags_type ? flags_type : enum_type);
           return NULL;
         }
 
-      g_assert (type_string == NULL);
-      type_string = "s";
+      type_string = flags_type ? "as" : "s";
+      strinfo = enum_state->strinfo;
     }
   else
     {
@@ -854,10 +920,11 @@ schema_state_add_key (SchemaState  *state,
           return NULL;
         }
 
-      enum_data = NULL;
+      strinfo = NULL;
     }
 
-  key = key_state_new (type_string, state->gettext_domain, enum_data);
+  key = key_state_new (type_string, state->gettext_domain,
+                       enum_type != NULL, flags_type != NULL, strinfo);
   g_hash_table_insert (state->keys, g_strdup (name), key);
 
   return key;
@@ -922,13 +989,14 @@ override_state_end (KeyState **key_state,
 typedef struct
 {
   GHashTable  *schema_table;            /* string -> SchemaState */
-  GHashTable  *enum_table;              /* string -> GString */
+  GHashTable  *flags_table;             /* string -> EnumState */
+  GHashTable  *enum_table;              /* string -> EnumState */
 
   gchar       *schemalist_domain;       /* the <schemalist> gettext domain */
 
   SchemaState *schema_state;            /* non-NULL when inside <schema> */
   KeyState    *key_state;               /* non-NULL when inside <key> */
-  GString     *enum_state;              /* non-NULL when inside <enum> */
+  EnumState   *enum_state;              /* non-NULL when inside <enum> */
 
   GString     *string;                  /* non-NULL when accepting text */
 } ParseState;
@@ -1047,18 +1115,22 @@ parse_state_start_schema (ParseState  *state,
 static void
 parse_state_start_enum (ParseState   *state,
                         const gchar  *id,
+                        gboolean      is_flags,
                         GError      **error)
 {
-  if (g_hash_table_lookup (state->enum_table, id))
+  GHashTable *table = is_flags ? state->flags_table : state->enum_table;
+
+  if (g_hash_table_lookup (table, id))
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<enum id='%s'> already specified", id);
+                   "<%s id='%s'> already specified",
+                   is_flags ? "flags" : "enum", id);
       return;
     }
 
-  state->enum_state = g_string_new (NULL);
-  g_hash_table_insert (state->enum_table, g_strdup (id), state->enum_state);
+  state->enum_state = enum_state_new (is_flags);
+  g_hash_table_insert (table, g_strdup (id), state->enum_state);
 }
 
 /* GMarkup Parser Functions {{{1 */
@@ -1117,12 +1189,19 @@ start_element (GMarkupParseContext  *context,
           return;
         }
 
-      else if (strcmp (element_name, "enum") == 0 ||
-               strcmp (element_name, "flags") == 0)
+      else if (strcmp (element_name, "enum") == 0)
         {
           const gchar *id;
           if (COLLECT (STRING, "id", &id))
-            parse_state_start_enum (state, id, error);
+            parse_state_start_enum (state, id, FALSE, error);
+          return;
+        }
+
+      else if (strcmp (element_name, "flags") == 0)
+        {
+          const gchar *id;
+          if (COLLECT (STRING, "id", &id))
+            parse_state_start_enum (state, id, TRUE, error);
           return;
         }
     }
@@ -1133,16 +1212,19 @@ start_element (GMarkupParseContext  *context,
     {
       if (strcmp (element_name, "key") == 0)
         {
-          const gchar *name, *type_string, *enum_type;
+          const gchar *name, *type_string, *enum_type, *flags_type;
 
-          if (COLLECT (STRING,            "name", &name,
-                       OPTIONAL | STRING, "type", &type_string,
-                       OPTIONAL | STRING, "enum", &enum_type))
+          if (COLLECT (STRING,            "name",  &name,
+                       OPTIONAL | STRING, "type",  &type_string,
+                       OPTIONAL | STRING, "enum",  &enum_type,
+                       OPTIONAL | STRING, "flags", &flags_type))
 
             state->key_state = schema_state_add_key (state->schema_state,
                                                      state->enum_table,
+                                                     state->flags_table,
                                                      name, type_string,
-                                                     enum_type, error);
+                                                     enum_type, flags_type,
+                                                     error);
           return;
         }
       else if (strcmp (element_name, "child") == 0)
@@ -1480,6 +1562,9 @@ parse_gschema_files (gchar  **files,
 
   state.enum_table = g_hash_table_new_full (g_str_hash, g_str_equal,
                                             g_free, enum_state_free);
+
+  state.flags_table = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                             g_free, enum_state_free);
 
   state.schema_table = g_hash_table_new_full (g_str_hash, g_str_equal,
                                               g_free, schema_state_free);

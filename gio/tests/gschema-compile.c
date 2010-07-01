@@ -71,6 +71,8 @@ static const SchemaTest tests[] = {
   { "enum-with-aliases",            NULL, NULL                                                  },
   { "enum-with-invalid-alias",      NULL, "*'banger' is not in enumerated type*"                },
   { "enum-with-repeated-alias",     NULL, "*<alias value='sausages'/> already specified*"       },
+  { "enum-with-repeated-nick",      NULL, "*<value nick='spam'/> already specified*"            },
+  { "enum-with-repeated-value",     NULL, "*value='1' already specified*"                       },
   { "enum-with-chained-alias",      NULL, "*'sausages' is not in enumerated type*"              },
   { "enum-with-shadow-alias",       NULL, "*'mash' is already a member of the enum*"            },
   { "enum-with-choice",             NULL, "*<choices> can not be specified*"                    },
@@ -80,7 +82,7 @@ static const SchemaTest tests[] = {
   { "bad-choice",                   NULL, "*<default> contains string not in <choices>*"        },
   { "choice-bad",                   NULL, "*<default> contains string not in <choices>*"        },
   { "choice-badtype",               NULL, "*<choices> not allowed for keys of type 'i'*"        },
-  { "bare-alias",                   NULL, "*enumerated types or after <choices>*"               },
+  { "bare-alias",                   NULL, "*enumerated or flags types or after <choices>*"      },
   { "choice-alias",                 NULL, NULL                                                  },
   { "default-in-aliases",           NULL, "*<default> contains string not in <choices>*"        },
   { "choice-invalid-alias",         NULL, "*'befor' is not in <choices>*"                       },
@@ -109,7 +111,12 @@ static const SchemaTest tests[] = {
   { "override-range-error",         NULL, "*<override> is not contained in the specified range*"},
   { "override-then-key",            NULL, "*shadows <key name='foo'> in <schema id='base'>*"    },
   { "override-twice",               NULL, "*<override name='foo'> already specified*"           },
-  { "override-type-error",          NULL, "*invalid character in number*"                       }
+  { "override-type-error",          NULL, "*invalid character in number*"                       },
+  { "flags-aliased-default",        NULL, "*<default> * not in the specified flags type*"       },
+  { "flags-bad-default",            NULL, "*<default> * not in the specified flags type*"       },
+  { "flags-more-than-one-bit",      NULL, "*flags values must have at most 1 bit set*"          },
+  { "flags-with-enum-attr",         NULL, "*<enum id='flags'> not (yet) defined*"               },
+  { "flags-with-enum-tag",          NULL, "*<flags id='flags'> not (yet) defined*"              }
 };
 
 int

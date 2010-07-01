@@ -126,6 +126,11 @@ gint                    g_settings_get_enum                             (GSettin
 gboolean                g_settings_set_enum                             (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          gint                value);
+guint                   g_settings_get_flags                            (GSettings          *settings,
+                                                                         const gchar        *key);
+gboolean                g_settings_set_flags                            (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         guint               value);
 GSettings *             g_settings_get_child                            (GSettings          *settings,
                                                                          const gchar        *name);
 

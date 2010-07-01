@@ -392,6 +392,34 @@ g_settings_set_mapping (const GValue       *value,
         return NULL;
     }
 
+  else if (G_VALUE_HOLDS_FLAGS (value))
+    {
+      GVariantBuilder builder;
+      GFlagsValue *flagsval;
+      GFlagsClass *fclass;
+      guint flags;
+
+      fclass = g_type_class_peek (G_VALUE_TYPE (value));
+      flags = g_value_get_flags (value);
+
+      g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+      while (flags)
+        {
+          flagsval = g_flags_get_first_value (fclass, flags);
+
+          if (flagsval == NULL)
+            {
+              g_variant_builder_clear (&builder);
+              return NULL;
+            }
+
+          g_variant_builder_add (&builder, "s", flagsval->value_nick);
+          flags &= ~flagsval->value;
+        }
+
+      return g_variant_builder_end (&builder);
+    }
+
   type_string = g_variant_type_dup_string (expected_type);
   g_critical ("No GSettings bind handler for type \"%s\".", type_string);
   g_free (type_string);
@@ -447,8 +475,7 @@ g_settings_get_mapping (GValue   *value,
           return TRUE;
         }
 
-      else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_STRING) &&
-               G_VALUE_HOLDS_ENUM (value))
+      else if (G_VALUE_HOLDS_ENUM (value))
         {
           GEnumClass *eclass;
           GEnumValue *evalue;
@@ -467,6 +494,38 @@ g_settings_get_mapping (GValue   *value,
 
           g_warning ("Unable to lookup enum nick '%s' via GType\n", nick);
           return FALSE;
+        }
+    }
+  else if (g_variant_is_of_type (variant, G_VARIANT_TYPE ("as")))
+    {
+      if (G_VALUE_HOLDS_FLAGS (value))
+        {
+          GFlagsClass *fclass;
+          GFlagsValue *fvalue;
+          const gchar *nick;
+          GVariantIter iter;
+          guint flags = 0;
+
+          fclass = g_type_class_peek (G_VALUE_TYPE (value));
+
+          g_variant_iter_init (&iter, variant);
+          while (g_variant_iter_next (&iter, "&s", &nick))
+            {
+              fvalue = g_flags_get_value_by_nick (fclass, nick);
+
+              if (fvalue)
+                flags |= fvalue->value;
+
+              else
+                {
+                  g_warning ("Unable to lookup flags nick '%s' via GType\n",
+                             nick);
+                  return FALSE;
+                }
+            }
+
+          g_value_set_flags (value, flags);
+          return TRUE;
         }
     }
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE ("ay")))
@@ -512,6 +571,8 @@ g_settings_mapping_is_compatible (GType               gvalue_type,
           g_variant_type_equal (variant_type, G_VARIANT_TYPE_SIGNATURE));
   else if (G_TYPE_IS_ENUM (gvalue_type))
     ok = g_variant_type_equal (variant_type, G_VARIANT_TYPE_STRING);
+  else if (G_TYPE_IS_FLAGS (gvalue_type))
+    ok = g_variant_type_equal (variant_type, G_VARIANT_TYPE ("as"));
 
   return ok;
 }

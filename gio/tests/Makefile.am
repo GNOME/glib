@@ -300,8 +300,15 @@ schema_tests = \
 	schema-tests/enum-with-choice.gschema.xml			\
 	schema-tests/enum-with-invalid-alias.gschema.xml		\
 	schema-tests/enum-with-repeated-alias.gschema.xml		\
+	schema-tests/enum-with-repeated-nick.gschema.xml		\
+	schema-tests/enum-with-repeated-value.gschema.xml		\
 	schema-tests/enum-with-shadow-alias.gschema.xml			\
 	schema-tests/enum.gschema.xml					\
+	schema-tests/flags-aliased-default.gschema.xml			\
+	schema-tests/flags-bad-default.gschema.xml			\
+	schema-tests/flags-more-than-one-bit.gschema.xml		\
+	schema-tests/flags-with-enum-attr.gschema.xml			\
+	schema-tests/flags-with-enum-tag.gschema.xml			\
 	schema-tests/extend-and-shadow-indirect.gschema.xml		\
 	schema-tests/extend-and-shadow.gschema.xml			\
 	schema-tests/extend-missing.gschema.xml				\
