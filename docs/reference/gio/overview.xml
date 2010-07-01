@@ -344,6 +344,26 @@
              <listitem><para>Show all sent and received D-Bus messages</para></listitem>
            </varlistentry>
            <varlistentry>
+             <term>payload</term>
+             <listitem><para>Show payload for all sent and received D-Bus messages (implies message)</para></listitem>
+           </varlistentry>
+           <varlistentry>
+             <term>call</term>
+             <listitem><para>Trace g_dbus_connection_call() and g_dbus_connection_call_sync() API usage</para></listitem>
+           </varlistentry>
+           <varlistentry>
+             <term>signal</term>
+             <listitem><para>Show when a D-Bus signal is received</para></listitem>
+           </varlistentry>
+           <varlistentry>
+             <term>incoming</term>
+             <listitem><para>Show when an incoming D-Bus method call is received</para></listitem>
+           </varlistentry>
+           <varlistentry>
+             <term>emission</term>
+             <listitem><para>Trace g_dbus_connection_emit_signal() API usage</para></listitem>
+           </varlistentry>
+           <varlistentry>
              <term>authentication</term>
              <listitem><para>Information about authentication</para></listitem>
            </varlistentry>

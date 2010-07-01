@@ -698,6 +698,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
           if (G_UNLIKELY (_g_dbus_debug_message ()))
             {
               gchar *s;
+              _g_dbus_debug_print_lock ();
               g_print ("========================================================================\n"
                        "GDBus-debug:Message:\n"
                        "  <<<< RECEIVED D-Bus message (%" G_GSIZE_FORMAT " bytes)\n",
@@ -705,9 +706,13 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
               s = g_dbus_message_print (message, 2);
               g_print ("%s", s);
               g_free (s);
-              s = _g_dbus_hexdump (worker->read_buffer, worker->read_buffer_cur_size, 2);
-              g_print ("%s\n", s);
-              g_free (s);
+              if (G_UNLIKELY (_g_dbus_debug_payload ()))
+                {
+                  s = _g_dbus_hexdump (worker->read_buffer, worker->read_buffer_cur_size, 2);
+                  g_print ("%s\n", s);
+                  g_free (s);
+                }
+              _g_dbus_debug_print_unlock ();
             }
 
           /* yay, got a message, go deliver it */
@@ -906,6 +911,7 @@ write_message (GDBusWorker         *worker,
   if (G_UNLIKELY (_g_dbus_debug_message ()))
     {
       gchar *s;
+      _g_dbus_debug_print_lock ();
       g_print ("========================================================================\n"
                "GDBus-debug:Message:\n"
                "  >>>> SENT D-Bus message (%" G_GSIZE_FORMAT " bytes)\n",
@@ -913,9 +919,13 @@ write_message (GDBusWorker         *worker,
       s = g_dbus_message_print (data->message, 2);
       g_print ("%s", s);
       g_free (s);
-      s = _g_dbus_hexdump (data->blob, data->blob_size, 2);
-      g_print ("%s\n", s);
-      g_free (s);
+      if (G_UNLIKELY (_g_dbus_debug_payload ()))
+        {
+          s = _g_dbus_hexdump (data->blob, data->blob_size, 2);
+          g_print ("%s\n", s);
+          g_free (s);
+        }
+      _g_dbus_debug_print_unlock ();
     }
 
  out:
@@ -1084,6 +1094,11 @@ _g_dbus_worker_stop (GDBusWorker *worker)
 
 #define G_DBUS_DEBUG_AUTHENTICATION (1<<0)
 #define G_DBUS_DEBUG_MESSAGE        (1<<1)
+#define G_DBUS_DEBUG_PAYLOAD        (1<<2)
+#define G_DBUS_DEBUG_CALL           (1<<3)
+#define G_DBUS_DEBUG_SIGNAL         (1<<4)
+#define G_DBUS_DEBUG_INCOMING       (1<<5)
+#define G_DBUS_DEBUG_EMISSION       (1<<6)
 #define G_DBUS_DEBUG_ALL            0xffffffff
 static gint _gdbus_debug_flags = 0;
 
@@ -1099,6 +1114,55 @@ _g_dbus_debug_message (void)
 {
   _g_dbus_initialize ();
   return (_gdbus_debug_flags & G_DBUS_DEBUG_MESSAGE) != 0;
+}
+
+gboolean
+_g_dbus_debug_payload (void)
+{
+  _g_dbus_initialize ();
+  return (_gdbus_debug_flags & G_DBUS_DEBUG_PAYLOAD) != 0;
+}
+
+gboolean
+_g_dbus_debug_call (void)
+{
+  _g_dbus_initialize ();
+  return (_gdbus_debug_flags & G_DBUS_DEBUG_CALL) != 0;
+}
+
+gboolean
+_g_dbus_debug_signal (void)
+{
+  _g_dbus_initialize ();
+  return (_gdbus_debug_flags & G_DBUS_DEBUG_SIGNAL) != 0;
+}
+
+gboolean
+_g_dbus_debug_incoming (void)
+{
+  _g_dbus_initialize ();
+  return (_gdbus_debug_flags & G_DBUS_DEBUG_INCOMING) != 0;
+}
+
+gboolean
+_g_dbus_debug_emission (void)
+{
+  _g_dbus_initialize ();
+  return (_gdbus_debug_flags & G_DBUS_DEBUG_EMISSION) != 0;
+}
+
+G_LOCK_DEFINE_STATIC (print_lock);
+
+void
+_g_dbus_debug_print_lock (void)
+{
+  G_LOCK (print_lock);
+}
+
+void
+_g_dbus_debug_print_unlock (void)
+{
+  G_UNLOCK (print_lock);
 }
 
 /*
@@ -1133,6 +1197,16 @@ _g_dbus_initialize (void)
                 _gdbus_debug_flags |= G_DBUS_DEBUG_AUTHENTICATION;
               else if (g_strcmp0 (tokens[n], "message") == 0)
                 _gdbus_debug_flags |= G_DBUS_DEBUG_MESSAGE;
+              else if (g_strcmp0 (tokens[n], "payload") == 0) /* implies `message' */
+                _gdbus_debug_flags |= (G_DBUS_DEBUG_MESSAGE | G_DBUS_DEBUG_PAYLOAD);
+              else if (g_strcmp0 (tokens[n], "call") == 0)
+                _gdbus_debug_flags |= G_DBUS_DEBUG_CALL;
+              else if (g_strcmp0 (tokens[n], "signal") == 0)
+                _gdbus_debug_flags |= G_DBUS_DEBUG_SIGNAL;
+              else if (g_strcmp0 (tokens[n], "incoming") == 0)
+                _gdbus_debug_flags |= G_DBUS_DEBUG_INCOMING;
+              else if (g_strcmp0 (tokens[n], "emission") == 0)
+                _gdbus_debug_flags |= G_DBUS_DEBUG_EMISSION;
               else if (g_strcmp0 (tokens[n], "all") == 0)
                 _gdbus_debug_flags |= G_DBUS_DEBUG_ALL;
             }

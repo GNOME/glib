@@ -76,6 +76,13 @@ void         _g_dbus_worker_unfreeze     (GDBusWorker    *worker);
 void _g_dbus_initialize (void);
 gboolean _g_dbus_debug_authentication (void);
 gboolean _g_dbus_debug_message (void);
+gboolean _g_dbus_debug_payload (void);
+gboolean _g_dbus_debug_call    (void);
+gboolean _g_dbus_debug_signal  (void);
+gboolean _g_dbus_debug_incoming (void);
+gboolean _g_dbus_debug_emission (void);
+void     _g_dbus_debug_print_lock (void);
+void     _g_dbus_debug_print_unlock (void);
 
 gboolean _g_dbus_address_parse_entry (const gchar  *address_entry,
                                       gchar       **out_transport_name,

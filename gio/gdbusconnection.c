@@ -71,7 +71,7 @@
  *   - see g_dbus_address_connect() in gdbusaddress.c
  *
  * - would be cute to use kernel-specific APIs to resolve fds for
- *   debug output when using G_DBUS_DEBUG=messages, e.g. in addition to
+ *   debug output when using G_DBUS_DEBUG=message, e.g. in addition to
  *
  *     fd 21: dev=8:1,mode=0100644,ino=1171231,uid=0,gid=0,rdev=0:0,size=234,atime=1273070640,mtime=1267126160,ctime=1267126160
  *
@@ -3007,6 +3007,21 @@ distribute_signals (GDBusConnection *connection,
 
   sender = g_dbus_message_get_sender (message);
 
+  if (G_UNLIKELY (_g_dbus_debug_signal ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Signal:\n"
+               " >>>> SIGNAL %s.%s\n"
+               "      on object %s\n"
+               "      sent by name %s\n",
+               g_dbus_message_get_interface (message),
+               g_dbus_message_get_member (message),
+               g_dbus_message_get_path (message),
+               sender != NULL ? sender : "(none)");
+      _g_dbus_debug_print_unlock ();
+    }
+
   /* collect subscribers that match on sender */
   if (sender != NULL)
     {
@@ -4273,6 +4288,20 @@ g_dbus_connection_emit_signal (GDBusConnection  *connection,
   g_return_val_if_fail (signal_name != NULL && g_dbus_is_member_name (signal_name), FALSE);
   g_return_val_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), FALSE);
 
+  if (G_UNLIKELY (_g_dbus_debug_emission ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Emission:\n"
+               " >>>> SIGNAL EMISSION %s.%s()\n"
+               "      on object %s\n"
+               "      destination %s\n",
+               interface_name, signal_name,
+               object_path,
+               destination_bus_name != NULL ? destination_bus_name : "(none)");
+      _g_dbus_debug_print_unlock ();
+    }
+
   message = g_dbus_message_new_signal (object_path,
                                        interface_name,
                                        signal_name);
@@ -4356,6 +4385,7 @@ typedef struct
   GSimpleAsyncResult *simple;
   GVariantType *reply_type;
   gchar *method_name; /* for error message */
+  guint32 serial;
 } CallState;
 
 static void
@@ -4365,12 +4395,36 @@ g_dbus_connection_call_done (GObject      *source,
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (source);
   CallState *state = user_data;
-  GError *error = NULL;
+  GError *error;
   GDBusMessage *reply;
   GVariant *value;
 
+  error = NULL;
   reply = g_dbus_connection_send_message_with_reply_finish (connection,
-                                                            result, &error);
+                                                            result,
+                                                            &error);
+
+  if (G_UNLIKELY (_g_dbus_debug_call ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Call:\n"
+               " >>>> ASYNC COMPLETE %s() (serial %d)\n"
+               "      ",
+               state->method_name,
+               state->serial);
+      if (reply != NULL)
+        {
+          g_print ("SUCCESS\n");
+        }
+      else
+        {
+          g_print ("FAILED: %s\n",
+                   error->message);
+        }
+      _g_dbus_debug_print_unlock ();
+    }
+
 
   if (reply != NULL)
     {
@@ -4503,10 +4557,26 @@ g_dbus_connection_call (GDBusConnection        *connection,
   g_dbus_connection_send_message_with_reply (connection,
                                              message,
                                              timeout_msec,
-                                             NULL, /* volatile guint32 *out_serial */
+                                             &state->serial,
                                              cancellable,
                                              g_dbus_connection_call_done,
                                              state);
+
+  if (G_UNLIKELY (_g_dbus_debug_call ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Call:\n"
+               " >>>> ASYNC %s.%s()\n"
+               "      on object %s\n"
+               "      owned by name %s (serial %d)\n",
+               interface_name,
+               method_name,
+               object_path,
+               bus_name != NULL ? bus_name : "(none)",
+               state->serial);
+      _g_dbus_debug_print_unlock ();
+    }
 
   if (message != NULL)
     g_object_unref (message);
@@ -4619,6 +4689,7 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
   GDBusMessage *message;
   GDBusMessage *reply;
   GVariant *result;
+  GError *local_error;
 
   message = NULL;
   reply = NULL;
@@ -4643,15 +4714,58 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
   if (parameters != NULL)
     g_dbus_message_set_body (message, parameters);
 
+  if (G_UNLIKELY (_g_dbus_debug_call ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Call:\n"
+               " >>>> SYNC %s.%s()\n"
+               "      on object %s\n"
+               "      owned by name %s\n",
+               interface_name,
+               method_name,
+               object_path,
+               bus_name != NULL ? bus_name : "(none)");
+      _g_dbus_debug_print_unlock ();
+    }
+
+  local_error = NULL;
   reply = g_dbus_connection_send_message_with_reply_sync (connection,
                                                           message,
                                                           timeout_msec,
                                                           NULL, /* volatile guint32 *out_serial */
                                                           cancellable,
-                                                          error);
+                                                          &local_error);
+
+  if (G_UNLIKELY (_g_dbus_debug_call ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Call:\n"
+               " <<<< SYNC COMPLETE %s.%s()\n"
+               "      ",
+               interface_name,
+               method_name);
+      if (reply != NULL)
+        {
+          g_print ("SUCCESS\n");
+        }
+      else
+        {
+          g_print ("FAILED: %s\n",
+                   local_error->message);
+        }
+      _g_dbus_debug_print_unlock ();
+    }
 
   if (reply == NULL)
-    goto out;
+    {
+      if (error != NULL)
+        *error = local_error;
+      else
+        g_error_free (local_error);
+      goto out;
+    }
 
   result = decode_method_reply (reply, method_name, reply_type, error);
 
@@ -5378,6 +5492,21 @@ distribute_method_call (GDBusConnection *connection,
     {
       g_free (subtree_path);
       subtree_path = NULL;
+    }
+
+
+  if (G_UNLIKELY (_g_dbus_debug_incoming ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Incoming:\n"
+               " >>>> METHOD INVOCATION %s.%s()\n"
+               "      on object %s\n"
+               "      invoked by name %s\n",
+               interface_name, member,
+               path,
+               g_dbus_message_get_sender (message) != NULL ? g_dbus_message_get_sender (message) : "(none)");
+      _g_dbus_debug_print_unlock ();
     }
 
 #if 0
