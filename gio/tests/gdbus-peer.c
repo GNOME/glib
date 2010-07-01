@@ -837,7 +837,7 @@ dmp_thread_func (gpointer user_data)
 
   error = NULL;
   guid = g_dbus_generate_guid ();
-  data->server = g_dbus_server_new_sync ("nonce-tcp:",
+  data->server = g_dbus_server_new_sync ("unix:tmpdir=/tmp/gdbus-test-",
                                          G_DBUS_SERVER_FLAGS_NONE,
                                          guid,
                                          NULL, /* GDBusAuthObserver */
