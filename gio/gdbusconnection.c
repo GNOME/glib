@@ -3712,7 +3712,7 @@ introspect_append_standard_interfaces (GString *s)
 static void
 maybe_add_path (const gchar *path, gsize path_len, const gchar *object_path, GHashTable *set)
 {
-  if (g_str_has_prefix (object_path, path) && strlen (object_path) > path_len)
+  if (g_str_has_prefix (object_path, path) && strlen (object_path) > path_len && object_path[path_len-1] == '/')
     {
       const gchar *begin;
       const gchar *end;
@@ -3720,7 +3720,6 @@ maybe_add_path (const gchar *path, gsize path_len, const gchar *object_path, GHa
 
       begin = object_path + path_len;
       end = strchr (begin, '/');
-
       if (end != NULL)
         s = g_strndup (begin, end - begin);
       else

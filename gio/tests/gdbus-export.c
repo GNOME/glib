@@ -963,6 +963,7 @@ test_object_registration (void)
   guint boss_foo_reg_id;
   guint boss_bar_reg_id;
   guint worker1_foo_reg_id;
+  guint worker1p1_foo_reg_id;
   guint worker2_bar_reg_id;
   guint intern1_foo_reg_id;
   guint intern2_bar_reg_id;
@@ -1020,6 +1021,18 @@ test_object_registration (void)
   g_assert_no_error (error);
   g_assert (registration_id > 0);
   worker1_foo_reg_id = registration_id;
+  num_successful_registrations++;
+
+  registration_id = g_dbus_connection_register_object (c,
+                                                       "/foo/boss/worker1p1",
+                                                       &foo_interface_info,
+                                                       NULL,
+                                                       &data,
+                                                       on_object_unregistered,
+                                                       &error);
+  g_assert_no_error (error);
+  g_assert (registration_id > 0);
+  worker1p1_foo_reg_id = registration_id;
   num_successful_registrations++;
 
   registration_id = g_dbus_connection_register_object (c,
@@ -1250,8 +1263,9 @@ test_object_registration (void)
 
   nodes = get_nodes_at (c, "/foo/boss");
   g_assert (nodes != NULL);
-  g_assert_cmpint (g_strv_length (nodes), ==, 4);
+  g_assert_cmpint (g_strv_length (nodes), ==, 5);
   g_assert (_g_strv_has_string ((const gchar* const *) nodes, "worker1"));
+  g_assert (_g_strv_has_string ((const gchar* const *) nodes, "worker1p1"));
   g_assert (_g_strv_has_string ((const gchar* const *) nodes, "worker2"));
   g_assert (_g_strv_has_string ((const gchar* const *) nodes, "interns"));
   g_assert (_g_strv_has_string ((const gchar* const *) nodes, "executives"));
@@ -1311,6 +1325,17 @@ test_object_registration (void)
   g_assert (_g_strv_has_string ((const gchar* const *) nodes, "evp2"));
   g_strfreev (nodes);
 
+  /* This is to check that a bug (rather, class of bugs) in gdbusconnection.c's
+   *
+   *  g_dbus_connection_list_registered_unlocked()
+   *
+   * where /foo/boss/worker1 reported a child '1', is now fixed.
+   */
+  nodes = get_nodes_at (c, "/foo/boss/worker1");
+  g_assert (nodes != NULL);
+  g_assert_cmpint (g_strv_length (nodes), ==, 0);
+  g_strfreev (nodes);
+
   /* check that calls are properly dispatched to the functions in foo_vtable for objects
    * implementing the org.example.Foo interface
    *
@@ -1339,6 +1364,7 @@ test_object_registration (void)
   g_assert (g_dbus_connection_unregister_object (c, boss_foo_reg_id));
   g_assert (g_dbus_connection_unregister_object (c, boss_bar_reg_id));
   g_assert (g_dbus_connection_unregister_object (c, worker1_foo_reg_id));
+  g_assert (g_dbus_connection_unregister_object (c, worker1p1_foo_reg_id));
   g_assert (g_dbus_connection_unregister_object (c, worker2_bar_reg_id));
   g_assert (g_dbus_connection_unregister_object (c, intern1_foo_reg_id));
   g_assert (g_dbus_connection_unregister_object (c, intern2_bar_reg_id));
