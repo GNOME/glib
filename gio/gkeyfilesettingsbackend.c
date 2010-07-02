@@ -400,11 +400,22 @@ keyfile_to_tree (GKeyfileSettingsBackend *kfsb,
       gint j;
 
       is_root_group = g_strcmp0 (kfsb->root_group, groups[i]) == 0;
+
+      /* reject group names that will form invalid key names */
+      if (!is_root_group &&
+          (g_str_has_prefix (groups[i], "/") ||
+           g_str_has_suffix (groups[i], "/") || strstr (groups[i], "//")))
+        continue;
+
       keys = g_key_file_get_keys (keyfile, groups[i], NULL, NULL);
 
       for (j = 0; keys[j]; j++)
         {
           gchar *path, *value;
+
+          /* reject key names with slashes in them */
+          if (strchr (keys[j], '/'))
+            continue;
 
           if (is_root_group)
             path = g_strdup_printf ("%s%s", kfsb->prefix, keys[j]);
