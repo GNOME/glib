@@ -45,7 +45,7 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gspawn-win32-helper*
 mkdir $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\msvc_recommended_pragmas.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
 copy ..\..\..\glib\glib.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
-copy ..\..\..\gmodule\gmodule.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
+
 copy ..\..\..\glib\glib-object.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
 copy ..\..\..\glib\galloca.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\garray.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
@@ -112,7 +112,10 @@ copy ..\..\..\glib\gvariant.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gvarianttype.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gwin32.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 
+copy ..\..\..\gmodule\gmodule.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
+
 mkdir $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\gbinding.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\gboxed.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\gclosure.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\genums.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
@@ -133,6 +136,7 @@ copy ..\..\..\gobject\gvaluetypes.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0
 
 mkdir $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gappinfo.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gapplication.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gasyncinitable.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gasyncresult.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gbufferedinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
@@ -145,6 +149,19 @@ copy ..\..\..\gio\gconverterinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#
 copy ..\..\..\gio\gconverteroutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdatainputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdataoutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusauthobserver.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gcredentials.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusutils.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbuserror.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusaddress.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusconnection.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusmessage.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusnameowning.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusnamewatching.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusproxy.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusintrospection.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusmethodinvocation.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gdbusserver.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gdrive.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gemblem.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gemblemedicon.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
@@ -182,6 +199,7 @@ copy ..\..\..\gio\gnativevolumemonitor.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x
 copy ..\..\..\gio\gnetworkaddress.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gnetworkservice.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\goutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gpermission.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gresolver.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gseekable.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsimpleasyncresult.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
