@@ -1601,8 +1601,15 @@ compare_strings (gconstpointer a,
 {
   gchar *one = *(gchar **) a;
   gchar *two = *(gchar **) b;
+  gint cmp;
 
-  return strcmp (one, two);
+  cmp = g_str_has_suffix (two, ".enums.xml") -
+        g_str_has_suffix (one, ".enums.xml");
+
+  if (!cmp)
+    cmp = strcmp (one, two);
+
+  return cmp;
 }
 
 int
