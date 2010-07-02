@@ -32,8 +32,8 @@
 
 /**
  * SECTION:gdbusintrospection
- * @title: Introspection XML
- * @short_description: Parse and Generate Introspection XML
+ * @title: D-Bus Introspection Data
+ * @short_description: Node and interface description data structures
  * @include: gio/gio.h
  *
  * Various data structures and convenience routines to parse and
