@@ -1552,13 +1552,8 @@ parse_gschema_files (gchar  **files,
                      GError **error)
 {
   GMarkupParser parser = { start_element, end_element, text };
-  GMarkupParseContext *context;
   ParseState state = { 0, };
   const gchar *filename;
-
-  context = g_markup_parse_context_new (&parser,
-                                        G_MARKUP_PREFIX_ERROR_POSITION,
-                                        &state, NULL);
 
   state.enum_table = g_hash_table_new_full (g_str_hash, g_str_equal,
                                             g_free, enum_state_free);
@@ -1571,8 +1566,13 @@ parse_gschema_files (gchar  **files,
 
   while ((filename = *files++) != NULL)
     {
+      GMarkupParseContext *context;
       gchar *contents;
       gsize size;
+
+      context = g_markup_parse_context_new (&parser,
+                                            G_MARKUP_PREFIX_ERROR_POSITION,
+                                            &state, NULL);
 
       if (!g_file_get_contents (filename, &contents, &size, error))
         return FALSE;
@@ -1588,6 +1588,8 @@ parse_gschema_files (gchar  **files,
           g_prefix_error (error, "%s: ", filename);
           return FALSE;
         }
+
+      g_markup_parse_context_free (context);
     }
 
   g_hash_table_unref (state.enum_table);
