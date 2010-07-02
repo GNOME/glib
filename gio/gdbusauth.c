@@ -58,6 +58,8 @@ debug_print (const gchar *message, ...)
       va_list var_args;
       guint n;
 
+      _g_dbus_debug_print_lock ();
+
       va_start (var_args, message);
       s = g_strdup_vprintf (message, var_args);
       va_end (var_args);
@@ -75,6 +77,8 @@ debug_print (const gchar *message, ...)
       g_print ("GDBus-debug:Auth: %s\n", str->str);
       g_string_free (str, TRUE);
       g_free (s);
+
+      _g_dbus_debug_print_unlock ();
     }
 }
 
