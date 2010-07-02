@@ -48,12 +48,9 @@
 #include "glibintl.h"
 #include "gioalias.h"
 
-#define DEBUG_ENABLED 0
-
 static void
 debug_print (const gchar *message, ...)
 {
-#if DEBUG_ENABLED
   if (G_UNLIKELY (_g_dbus_debug_authentication ()))
     {
       gchar *s;
@@ -79,7 +76,6 @@ debug_print (const gchar *message, ...)
       g_string_free (str, TRUE);
       g_free (s);
     }
-#endif
 }
 
 typedef struct

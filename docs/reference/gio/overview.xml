@@ -365,7 +365,7 @@
            </varlistentry>
            <varlistentry>
              <term>authentication</term>
-             <listitem><para>Information about authentication</para></listitem>
+             <listitem><para>Show information about connection authentication</para></listitem>
            </varlistentry>
          </variablelist>
          The special value <literal>all</literal> can be used to turn on
