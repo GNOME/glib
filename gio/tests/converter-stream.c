@@ -561,7 +561,7 @@ test_compressor (void)
 #define DATA_LENGTH 1000000
 
 static void
-test_corruption (void)
+test_corruption (GZlibCompressorFormat format, gint level)
 {
   GError *error = NULL;
   guint32 *data0, *data1;
@@ -579,8 +579,7 @@ test_corruption (void)
     DATA_LENGTH * sizeof (guint32), NULL);
 
   ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
-  compressor = G_CONVERTER (g_zlib_compressor_new (
-                            G_ZLIB_COMPRESSOR_FORMAT_GZIP, -1));
+  compressor = G_CONVERTER (g_zlib_compressor_new (format, level));
   costream1 = g_converter_output_stream_new (ostream1, compressor);
 
   g_output_stream_splice (costream1, istream0, 0, NULL, &error);
@@ -595,8 +594,7 @@ test_corruption (void)
   g_object_unref (istream0);
 
   istream1 = g_memory_input_stream_new_from_data (data1, data1_size, NULL);
-  decompressor = G_CONVERTER (g_zlib_decompressor_new (
-                              G_ZLIB_COMPRESSOR_FORMAT_GZIP));
+  decompressor = G_CONVERTER (g_zlib_decompressor_new (format));
   cistream1 = g_converter_input_stream_new (istream1, decompressor);
 
   ostream2 = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
@@ -610,17 +608,40 @@ test_corruption (void)
     G_MEMORY_OUTPUT_STREAM (ostream2)), DATA_LENGTH * sizeof (guint32)) == 0);
 }
 
+typedef struct {
+  const gchar *path;
+  GZlibCompressorFormat format;
+  gint level;
+} CompressorTest;
+
+static void
+test_roundtrip (CompressorTest *test)
+{
+  test_corruption (test->format, test->level);
+}
 
 int
 main (int   argc,
       char *argv[])
 {
+  CompressorTest tests[] = {
+    { "/converter-output-stream/corruption/zlib-0", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 0 },
+    { "/converter-output-stream/corruption/zlib-9", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 9 },
+    { "/converter-output-stream/corruption/gzip-0", G_ZLIB_COMPRESSOR_FORMAT_GZIP, 0 },
+    { "/converter-output-stream/corruption/gzip-9", G_ZLIB_COMPRESSOR_FORMAT_GZIP, 9 },
+    { "/converter-output-stream/corruption/raw-0", G_ZLIB_COMPRESSOR_FORMAT_RAW, 0 },
+    { "/converter-output-stream/corruption/raw-9", G_ZLIB_COMPRESSOR_FORMAT_RAW, 9 },
+  };
+  gint i;
+
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/converter-input-stream/expander", test_expander);
   g_test_add_func ("/converter-input-stream/compressor", test_compressor);
-  g_test_add_func ("/converter-output-stream/corruption", test_corruption);
+
+  for (i = 0; i < G_N_ELEMENTS (tests); i++)
+    g_test_add_data_func (tests[i].path, &tests[i], test_roundtrip);
 
   return g_test_run();
 }
