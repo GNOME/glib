@@ -79,6 +79,7 @@ SAMPLE_PROGS = 				\
 	gdbus-example-proxy-subclass	\
 	testapp				\
 	appinfo-test			\
+	icons				\
 	$(NULL)
 
 
@@ -271,6 +272,9 @@ testapp_LDADD   = $(progs_ldadd)
 
 testapps_SOURCES = testapps.c gdbus-sessionbus.c gdbus-sessionbus.h
 testapps_LDADD   = $(progs_ldadd)
+
+icons_SOURCES = icons.c
+icons_LDADD   = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
