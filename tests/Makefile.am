@@ -89,7 +89,6 @@ test_programs =					\
 	$(CXX_TEST)				\
 	child-test				\
 	completion-test				\
-	convert-test				\
 	dirname-test				\
 	file-test				\
 	env-test				\
@@ -144,7 +143,6 @@ bit_test_LDADD = $(progs_ldadd)
 bookmarkfile_test_LDADD = $(progs_ldadd)
 child_test_LDADD = $(thread_ldadd)
 completion_test_LDADD = $(progs_ldadd)
-convert_test_LDADD = $(progs_ldadd)
 date_test_LDADD = $(progs_ldadd)
 dirname_test_LDADD = $(progs_ldadd)
 file_test_LDADD = $(progs_ldadd)

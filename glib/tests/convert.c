@@ -653,10 +653,12 @@ test_unicode_conversions (void)
 int
 main (int argc, char *argv[])
 {
-  test_iconv_state ();
-  test_one_half ();
-  test_byte_order ();
-  test_unicode_conversions ();
+  g_test_init (&argc, &argv, NULL);
 
-  return 0;
+  g_test_add_func ("/conversion/iconv-state", test_iconv_state);
+  g_test_add_func ("/conversion/illegal-sequence", test_one_half);
+  g_test_add_func ("/conversion/byte-order", test_byte_order);
+  g_test_add_func ("/conversion/unicode", test_unicode_conversions);
+
+  return g_test_run ();
 }

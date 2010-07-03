@@ -64,37 +64,40 @@ TEST_PROGS         += regex
 regex_LDADD         = $(progs_ldadd)
 
 TEST_PROGS         += base64
-base64_LDADD         = $(progs_ldadd)
+base64_LDADD        = $(progs_ldadd)
 
 TEST_PROGS         += sequence
-sequence_LDADD       = $(progs_ldadd)
+sequence_LDADD      = $(progs_ldadd)
 
 TEST_PROGS         += scannerapi
-scannerapi_LDADD       = $(progs_ldadd)
+scannerapi_LDADD    = $(progs_ldadd)
 
 TEST_PROGS         += collate
 collate_LDADD       = $(progs_ldadd)
 
 TEST_PROGS         += utf8-pointer
-utf8_pointer_LDADD       = $(progs_ldadd)
+utf8_pointer_LDADD  = $(progs_ldadd)
 
 TEST_PROGS         += utf8-validate
-utf8_validate_LDADD       = $(progs_ldadd)
+utf8_validate_LDADD = $(progs_ldadd)
 
 TEST_PROGS         += utf8-misc
-utf8_misc_LDADD       = $(progs_ldadd)
+utf8_misc_LDADD     = $(progs_ldadd)
 
 TEST_PROGS         += checksum
-checksum_LDADD       = $(progs_ldadd)
+checksum_LDADD      = $(progs_ldadd)
 
 TEST_PROGS         += hash
-hash_LDADD       = $(progs_ldadd)
+hash_LDADD          = $(progs_ldadd)
 
 TEST_PROGS         += date
-date_LDADD       = $(progs_ldadd)
+date_LDADD          = $(progs_ldadd)
 
 TEST_PROGS         += node
-node_LDADD       = $(progs_ldadd)
+node_LDADD          = $(progs_ldadd)
+
+TEST_PROGS         += convert
+convert_LDADD       = $(progs_ldadd)
 
 if OS_UNIX
 
