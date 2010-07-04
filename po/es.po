@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-07-01 19:39+0000\n"
-"PO-Revision-Date: 2010-07-03 13:48+0200\n"
+"POT-Creation-Date: 2010-07-03 11:49+0000\n"
+"PO-Revision-Date: 2010-07-04 13:43+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1696,7 +1696,7 @@ msgstr "Error al llamar StartSereviceByName para %s: "
 #: ../gio/gdbusproxy.c:1207
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
-msgstr ""
+msgstr "Respuesta %d no esperada del método StartServiceByName(«%s»)"
 
 #: ../gio/gdbusserver.c:677
 #, fuzzy
@@ -1727,7 +1727,7 @@ msgid "COMMAND"
 msgstr "COMANDO"
 
 #: ../gio/gdbus-tool.c:92
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
@@ -1739,10 +1739,9 @@ msgid ""
 msgstr ""
 "Comandos:\n"
 "  help        Mostrar esta información\n"
-"  get         Obtener el valor de una clave\n"
-"  set         Establecer el valor de una clave\n"
-"  monitor     Monitorizar si hay cambios en una clave\n"
-"  writable    Comprobar si una clave se puede escribir\n"
+"  introspect   Introspeccionar un objeto remoto\n"
+"  monitor     Monitorizar un objeto remoto\n"
+"  call         Invocar un método sobre un objeto remoto\n"
 "\n"
 "Use «%s COMANDO --help» para obtener ayuda de los comandos individuales.\n"
 
@@ -1753,9 +1752,9 @@ msgid "Error: %s\n"
 msgstr "Error: %s\n"
 
 #: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr "Error al analizar la opción: %s"
+msgstr "Error al analizar la introspección XML: %s\n"
 
 #: ../gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
@@ -1792,6 +1791,7 @@ msgstr "Se especificaron varios puntos de conexión extremos"
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
+"Advertencia: según la introspección de los datos, la interfaz «%s» no existe\n"
 
 #: ../gio/gdbus-tool.c:468
 #, c-format
@@ -1799,6 +1799,8 @@ msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
 msgstr ""
+"Advertencia: según la introspección de los datos, el método «%s» no existe en "
+"la interfaz «%s»\n"
 
 #: ../gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
@@ -1858,19 +1860,19 @@ msgstr "Error al analizar el parámetro %d: %s\n"
 
 #: ../gio/gdbus-tool.c:1162
 msgid "Destination name to introspect"
-msgstr ""
+msgstr "Nombre de destino que introspeccionar"
 
 #: ../gio/gdbus-tool.c:1163
 msgid "Object path to introspect"
-msgstr ""
+msgstr "Ruta del objeto que introspeccionar"
 
 #: ../gio/gdbus-tool.c:1164
 msgid "Print XML"
-msgstr ""
+msgstr "Imprimir XML"
 
 #: ../gio/gdbus-tool.c:1197
 msgid "Introspect a remote object."
-msgstr ""
+msgstr "Introspeccionar un objeto remoto."
 
 #: ../gio/gdbus-tool.c:1422
 msgid "Destination name to monitor"
@@ -2558,27 +2560,27 @@ msgstr "No se puede resolver «%s» temporalmente"
 msgid "Error resolving '%s'"
 msgstr "Error al resolver «%s»"
 
-#: ../gio/gschema-compile.c:1538
+#: ../gio/gschema-compile.c:1632
 msgid "where to store the gschemas.compiled file"
 msgstr "dónde almacenar el archivo gschemas.compiled"
 
-#: ../gio/gschema-compile.c:1538 ../gio/gschema-compile.c:1550
+#: ../gio/gschema-compile.c:1632 ../gio/gschema-compile.c:1644
 msgid "DIRECTORY"
 msgstr "DIRECTORIO"
 
-#: ../gio/gschema-compile.c:1539
+#: ../gio/gschema-compile.c:1633
 msgid "Do not write the gschema.compiled file"
 msgstr "No escribir el archivo gschemas.compiled"
 
-#: ../gio/gschema-compile.c:1540
+#: ../gio/gschema-compile.c:1634
 msgid "This option will be removed soon."
-msgstr ""
+msgstr "Pronto se quitará esta opción."
 
-#: ../gio/gschema-compile.c:1541
+#: ../gio/gschema-compile.c:1635
 msgid "Do not enforce key name restrictions"
 msgstr "No forzar las restricciones de nombre de las claves"
 
-#: ../gio/gschema-compile.c:1553
+#: ../gio/gschema-compile.c:1647
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2589,26 +2591,26 @@ msgstr ""
 "Los archivos de esquema deben tener la extensión .gschema.xml,\n"
 "y el archivo de caché se llama gschemas.compiled."
 
-#: ../gio/gschema-compile.c:1569
+#: ../gio/gschema-compile.c:1663
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Deberá proporcionar exactamente un nombre de directorio\n"
 
-#: ../gio/gschema-compile.c:1602
-#, fuzzy, c-format
+#: ../gio/gschema-compile.c:1696
+#, c-format
 #| msgid "No schema files found\n"
 msgid "No schema files found: "
-msgstr "No se encontró ningún archivo de esquemas\n"
+msgstr "No se encontró ningún archivo de esquemas: "
 
-#: ../gio/gschema-compile.c:1605
+#: ../gio/gschema-compile.c:1699
 #, c-format
 msgid "doing nothing.\n"
-msgstr ""
+msgstr "sin hacer nada.\n"
 
-#: ../gio/gschema-compile.c:1608
+#: ../gio/gschema-compile.c:1702
 #, c-format
 msgid "removed existing output file.\n"
-msgstr ""
+msgstr "se quitó el archivo de salida existente.\n"
 
 #: ../gio/gsettings-tool.c:79
 #, c-format
