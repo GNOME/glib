@@ -58,6 +58,8 @@ TEST_PROGS +=			\
 	application		\
 	testapps		\
 	appinfo			\
+	icons			\
+	contenttype		\
 	$(NULL)
 endif
 
@@ -79,8 +81,6 @@ SAMPLE_PROGS = 				\
 	gdbus-example-proxy-subclass	\
 	testapp				\
 	appinfo-test			\
-	icons				\
-	contenttype			\
 	$(NULL)
 
 
