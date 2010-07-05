@@ -80,6 +80,7 @@ SAMPLE_PROGS = 				\
 	testapp				\
 	appinfo-test			\
 	icons				\
+	contenttype			\
 	$(NULL)
 
 
@@ -275,6 +276,9 @@ testapps_LDADD   = $(progs_ldadd)
 
 icons_SOURCES = icons.c
 icons_LDADD   = $(progs_ldadd)
+
+contenttype_SOURCES = contenttype.c
+contenttype_LDADD   = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
