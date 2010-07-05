@@ -124,6 +124,26 @@ test_read_byte (void)
   g_object_unref (in);
 }
 
+static void
+test_skip (void)
+{
+  GInputStream *base;
+  GInputStream *in;
+
+  base = g_memory_input_stream_new_from_data ("abcdefghijk", -1, NULL);
+  in = g_buffered_input_stream_new_sized (base, 5);
+
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'a');
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'b');
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'c');
+
+  g_assert_cmpint (g_input_stream_skip (in, 7, NULL, NULL), ==, 7);
+  
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'k');
+
+  g_object_unref (in);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -136,6 +156,7 @@ main (int   argc,
   g_test_add_func ("/buffered-input-stream/peek-buffer", test_peek_buffer);
   g_test_add_func ("/buffered-input-stream/set-buffer-size", test_set_buffer_size);
   g_test_add_func ("/buffered-input-stream/read-byte", test_read_byte);
+  g_test_add_func ("/buffered-input-stream/skip", test_skip);
 
   return g_test_run();
 }
