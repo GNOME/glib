@@ -2647,7 +2647,7 @@ flags_to_string (GType flags_type, guint value)
   if (s->len == 0)
     g_string_append (s, "none");
   g_type_class_unref (klass);
-  return g_string_free (s, FALSE);;
+  return g_string_free (s, FALSE);
 }
 
 static gint

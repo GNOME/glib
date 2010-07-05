@@ -192,7 +192,7 @@ g_dbus_auth_observer_init (GDBusAuthObserver *observer)
   /* not used for now */
   observer->priv = G_TYPE_INSTANCE_GET_PRIVATE (observer,
                                                 G_TYPE_DBUS_AUTH_OBSERVER,
-                                                GDBusAuthObserverPrivate);;
+                                                GDBusAuthObserverPrivate);
 }
 
 /**

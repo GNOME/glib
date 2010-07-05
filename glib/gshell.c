@@ -433,7 +433,7 @@ tokenize_command_line (const gchar *command_line,
   const gchar *p;
   GString *current_token = NULL;
   GSList *retval = NULL;
-  gboolean quoted;;
+  gboolean quoted;
 
   current_quote = '\0';
   quoted = FALSE;
