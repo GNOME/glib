@@ -23,7 +23,7 @@ test_themed_icon (void)
   g_assert_cmpstr (names[2], ==, "last");
   g_assert_cmpuint (g_icon_hash (icon1), ==, 3193088045);
 
-  icon2 = g_themed_icon_new_from_names (names2, -1);
+  icon2 = g_themed_icon_new_from_names ((gchar**)names2, -1);
   g_assert (g_icon_equal (icon1, icon2));
 
   str = g_icon_to_string (icon2);
@@ -51,6 +51,7 @@ test_emblemed_icon (void)
   icon3 = g_emblemed_icon_new (icon1, emblem1);
   emblems = g_emblemed_icon_get_emblems (G_EMBLEMED_ICON (icon3));
   g_assert_cmpint (g_list_length (emblems), ==, 1);
+  g_assert (g_emblemed_icon_get_icon (G_EMBLEMED_ICON (icon3)) == icon1);
 
   icon4 = g_emblemed_icon_new (icon1, emblem1);
   g_emblemed_icon_add_emblem (G_EMBLEMED_ICON (icon4), emblem2);
