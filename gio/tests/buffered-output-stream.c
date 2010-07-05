@@ -72,6 +72,40 @@ test_grow (void)
   g_object_unref (base);
 }
 
+static void
+test_close (void)
+{
+  GOutputStream *base;
+  GOutputStream *out;
+  GError *error;
+
+  base = g_memory_output_stream_new (g_malloc0 (30), 30, g_realloc, g_free);
+  out = g_buffered_output_stream_new (base);
+
+  g_assert (g_filter_output_stream_get_close_base_stream (G_FILTER_OUTPUT_STREAM (out)));
+
+  error = NULL;
+  g_assert (g_output_stream_close (out, NULL, &error));
+  g_assert_no_error (error);
+  g_assert (g_output_stream_is_closed (base));
+
+  g_object_unref (out);
+  g_object_unref (base);
+
+  base = g_memory_output_stream_new (g_malloc0 (30), 30, g_realloc, g_free);
+  out = g_buffered_output_stream_new (base);
+
+  g_filter_output_stream_set_close_base_stream (G_FILTER_OUTPUT_STREAM (out), FALSE);
+
+  error = NULL;
+  g_assert (g_output_stream_close (out, NULL, &error));
+  g_assert_no_error (error);
+  g_assert (!g_output_stream_is_closed (base));
+
+  g_object_unref (out);
+  g_object_unref (base);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -81,6 +115,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/buffered-output-stream/write", test_write);
   g_test_add_func ("/buffered-output-stream/grow", test_grow);
+  g_test_add_func ("/filter-output-stream/close", test_close);
 
   return g_test_run ();
 }

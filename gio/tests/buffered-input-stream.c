@@ -246,6 +246,40 @@ test_skip (void)
   g_object_unref (base);
 }
 
+static void
+test_close (void)
+{
+  GInputStream *base;
+  GInputStream *in;
+  GError *error;
+
+  base = g_memory_input_stream_new_from_data ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ", -1, NULL);
+  in = g_buffered_input_stream_new (base);
+
+  g_assert (g_filter_input_stream_get_close_base_stream (G_FILTER_INPUT_STREAM (in)));
+
+  error = NULL;
+  g_assert (g_input_stream_close (in, NULL, &error));
+  g_assert_no_error (error);
+  g_assert (g_input_stream_is_closed (base));
+
+  g_object_unref (in);
+  g_object_unref (base);
+
+  base = g_memory_input_stream_new_from_data ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ", -1, NULL);
+  in = g_buffered_input_stream_new (base);
+
+  g_filter_input_stream_set_close_base_stream (G_FILTER_INPUT_STREAM (in), FALSE);
+
+  error = NULL;
+  g_assert (g_input_stream_close (in, NULL, &error));
+  g_assert_no_error (error);
+  g_assert (!g_input_stream_is_closed (base));
+
+  g_object_unref (in);
+  g_object_unref (base);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -260,6 +294,7 @@ main (int   argc,
   g_test_add_func ("/buffered-input-stream/read-byte", test_read_byte);
   g_test_add_func ("/buffered-input-stream/read", test_read);
   g_test_add_func ("/buffered-input-stream/skip", test_skip);
+  g_test_add_func ("/filter-input-stream/close", test_close);
 
   return g_test_run();
 }

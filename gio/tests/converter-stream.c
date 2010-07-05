@@ -325,6 +325,7 @@ test_expander (void)
 					     sizeof (unexpanded_data),
 					     NULL);
   cstream = g_converter_input_stream_new (mem, expander);
+  g_assert (g_converter_input_stream_get_converter (cstream) == expander);
   g_object_unref (mem);
 
   total_read = 0;
@@ -581,6 +582,7 @@ test_corruption (GZlibCompressorFormat format, gint level)
   ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
   compressor = G_CONVERTER (g_zlib_compressor_new (format, level));
   costream1 = g_converter_output_stream_new (ostream1, compressor);
+  g_assert (g_converter_output_stream_get_converter (costream1) == compressor);
 
   g_output_stream_splice (costream1, istream0, 0, NULL, &error);
   g_assert_no_error (error);
