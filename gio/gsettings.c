@@ -464,7 +464,7 @@ g_settings_get_property (GObject    *object,
   switch (prop_id)
     {
      case PROP_SCHEMA:
-      g_value_set_object (value, settings->priv->schema);
+      g_value_set_string (value, settings->priv->schema_name);
       break;
 
      case PROP_HAS_UNAPPLIED:
