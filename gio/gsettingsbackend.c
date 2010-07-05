@@ -1040,7 +1040,7 @@ g_settings_backend_get_default (void)
  * g_settings_backend_get_permission:
  * @backend: a #GSettingsBackend
  * @path: a path
- * @returns: a non-%NULL #GPermission
+ * @returns: a non-%NULL #GPermission. Free with g_object_unref()
  *
  * Gets the permission object associated with writing to keys below
  * @path on @backend.
