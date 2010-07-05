@@ -615,16 +615,55 @@ typedef struct {
 } CompressorTest;
 
 static void
-test_roundtrip (CompressorTest *test)
+test_roundtrip (gconstpointer data)
 {
+  const CompressorTest *test = data;
+
   test_corruption (test->format, test->level);
+}
+
+typedef struct {
+  const gchar *path;
+  const gchar *charset_in;
+  const gchar *text_in;
+  const gchar *charset_out;
+  const gchar *text_out;
+} CharsetTest;
+
+static void
+test_charset (gconstpointer data)
+{
+  const CharsetTest *test = data;
+  GInputStream *in, *in2;
+  GConverter *conv;
+  gchar *buffer;
+  gsize count;
+  gsize bytes_read;
+  GError *error;
+
+  in = g_memory_input_stream_new_from_data (test->text_in, -1, NULL);
+  conv = (GConverter *)g_charset_converter_new (test->charset_out, test->charset_in, NULL);
+  in2 = g_converter_input_stream_new (in, conv);
+  g_object_unref (in);
+  g_object_unref (conv);
+
+  count = 2 * strlen (test->text_out);
+  buffer = g_malloc (count);
+  error = NULL;
+  g_input_stream_read_all (in2, buffer, count, &bytes_read, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (bytes_read, ==, strlen (test->text_out));
+  g_assert_cmpstr (buffer, ==, test->text_out);
+
+  g_free (buffer);
+  g_object_unref (in2);
 }
 
 int
 main (int   argc,
       char *argv[])
 {
-  CompressorTest tests[] = {
+  CompressorTest compressor_tests[] = {
     { "/converter-output-stream/corruption/zlib-0", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 0 },
     { "/converter-output-stream/corruption/zlib-9", G_ZLIB_COMPRESSOR_FORMAT_ZLIB, 9 },
     { "/converter-output-stream/corruption/gzip-0", G_ZLIB_COMPRESSOR_FORMAT_GZIP, 0 },
@@ -632,6 +671,11 @@ main (int   argc,
     { "/converter-output-stream/corruption/raw-0", G_ZLIB_COMPRESSOR_FORMAT_RAW, 0 },
     { "/converter-output-stream/corruption/raw-9", G_ZLIB_COMPRESSOR_FORMAT_RAW, 9 },
   };
+  CharsetTest charset_tests[] = {
+    { "/converter-input-stream/charset/1", "UTF-8", "\303\205rr Sant\303\251", "ISO-8859-1", "\305rr Sant\351" },
+    { "/converter-input-stream/charset/2", "ISO-8859-1", "\305rr Sant\351", "UTF-8", "\303\205rr Sant\303\251" },
+  };
+
   gint i;
 
   g_type_init ();
@@ -640,8 +684,12 @@ main (int   argc,
   g_test_add_func ("/converter-input-stream/expander", test_expander);
   g_test_add_func ("/converter-input-stream/compressor", test_compressor);
 
-  for (i = 0; i < G_N_ELEMENTS (tests); i++)
-    g_test_add_data_func (tests[i].path, &tests[i], test_roundtrip);
+  for (i = 0; i < G_N_ELEMENTS (compressor_tests); i++)
+    g_test_add_data_func (compressor_tests[i].path, &compressor_tests[i], test_roundtrip);
+
+  for (i = 0; i < G_N_ELEMENTS (charset_tests); i++)
+    g_test_add_data_func (charset_tests[i].path, &charset_tests[i], test_charset);
+
 
   return g_test_run();
 }
