@@ -466,7 +466,7 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
  *
- * To lauch the application without arguments pass a %NULL @files list.
+ * To launch the application without arguments pass a %NULL @files list.
  *
  * Note that even if the launch is successful the application launched
  * can fail to start if it runs into problems during startup. There is
