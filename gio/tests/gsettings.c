@@ -649,7 +649,8 @@ enum
   PROP_DOUBLE,
   PROP_STRING,
   PROP_NO_READ,
-  PROP_NO_WRITE
+  PROP_NO_WRITE,
+  PROP_ENUM
 };
 
 typedef struct
@@ -664,6 +665,7 @@ typedef struct
   gchar *string_prop;
   gchar *no_read_prop;
   gchar *no_write_prop;
+  guint enum_prop;
 } TestObject;
 
 typedef struct
@@ -717,6 +719,9 @@ test_object_get_property (GObject    *object,
     case PROP_NO_WRITE:
       g_value_set_string (value, test_object->no_write_prop);
       break;
+    case PROP_ENUM:
+      g_value_set_enum (value, test_object->enum_prop);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -756,10 +761,35 @@ test_object_set_property (GObject      *object,
       g_free (test_object->no_read_prop);
       test_object->no_read_prop = g_value_dup_string (value);
       break;
+    case PROP_ENUM:
+      test_object->enum_prop = g_value_get_enum (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
+}
+
+static GType
+test_enum_get_type (void)
+{
+  static volatile gsize define_type_id = 0;
+
+  if (g_once_init_enter (&define_type_id))
+    {
+      static const GEnumValue values[] = {
+        { TEST_ENUM_FOO, "TEST_ENUM_FOO", "foo" },
+        { TEST_ENUM_BAR, "TEST_ENUM_BAR", "bar" },
+        { TEST_ENUM_BAZ, "TEST_ENUM_BAZ", "baz" },
+        { TEST_ENUM_QUUX, "TEST_ENUM_QUUX", "quux" },
+        { 0, NULL, NULL }
+      };
+
+      GType type_id = g_enum_register_static ("TestEnum", values);
+      g_once_init_leave (&define_type_id, type_id);
+    }
+
+  return define_type_id;
 }
 
 static void
@@ -787,6 +817,8 @@ test_object_class_init (TestObjectClass *class)
     g_param_spec_string ("no-write", "", "", NULL, G_PARAM_READABLE));
   g_object_class_install_property (gobject_class, PROP_NO_READ,
     g_param_spec_string ("no-read", "", "", NULL, G_PARAM_WRITABLE));
+  g_object_class_install_property (gobject_class, PROP_ENUM,
+    g_param_spec_enum ("enum", "", "", test_enum_get_type (), TEST_ENUM_FOO, G_PARAM_READWRITE));
 }
 
 static TestObject *
@@ -887,6 +919,19 @@ test_simple_binding (void)
   g_settings_set_double (settings, "double", -G_MINDOUBLE);
   g_object_get (obj, "double", &d, NULL);
   g_assert_cmpfloat (d, ==, -G_MINDOUBLE);
+
+  g_settings_bind (settings, "enum", obj, "enum", G_SETTINGS_BIND_DEFAULT);
+  g_object_set (obj, "enum", TEST_ENUM_BAZ, NULL);
+  g_assert_cmpstr (g_settings_get_string (settings, "enum"), ==, "baz");
+  g_assert_cmpint (g_settings_get_enum (settings, "enum"), ==, TEST_ENUM_BAZ);
+
+  g_settings_set_enum (settings, "enum", TEST_ENUM_QUUX);
+  g_object_get (obj, "enum", &i, NULL);
+  g_assert_cmpint (i, ==, TEST_ENUM_QUUX);
+
+  g_settings_set_string (settings, "enum", "baz");
+  g_object_get (obj, "enum", &i, NULL);
+  g_assert_cmpint (i, ==, TEST_ENUM_BAZ);
 
   g_object_unref (obj);
   g_object_unref (settings);
