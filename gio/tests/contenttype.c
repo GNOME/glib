@@ -94,6 +94,10 @@ test_executable (void)
   type = g_content_type_from_mime_type ("text/plain");
   g_assert (g_content_type_can_be_executable (type));
   g_free (type);
+
+  type = g_content_type_from_mime_type ("image/png");
+  g_assert (!g_content_type_can_be_executable (type));
+  g_free (type);
 }
 
 static void

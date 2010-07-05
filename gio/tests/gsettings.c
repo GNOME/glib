@@ -810,6 +810,7 @@ test_simple_binding (void)
   guint64 u64;
   gdouble d;
   gchar *s;
+  GVariant *value;
 
   settings = g_settings_new ("org.gtk.test.binding");
   obj = test_object_new ();
@@ -864,6 +865,13 @@ test_simple_binding (void)
   g_assert_cmpstr (s, ==, "bla bla");
   g_free (s);
 
+  g_settings_bind (settings, "chararray", obj, "string", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "string", "non-unicode:\315", NULL);
+  value = g_settings_get_value (settings, "chararray");
+  g_assert_cmpstr (g_variant_get_byte_array (value, NULL), ==, "non-unicode:\315");
+  g_variant_unref (value);
+
   g_settings_bind (settings, "double", obj, "double", G_SETTINGS_BIND_DEFAULT);
 
   g_object_set (obj, "double", G_MAXFLOAT, NULL);
@@ -879,6 +887,51 @@ test_simple_binding (void)
   g_settings_set_double (settings, "double", -G_MINDOUBLE);
   g_object_get (obj, "double", &d, NULL);
   g_assert_cmpfloat (d, ==, -G_MINDOUBLE);
+
+  g_object_unref (obj);
+  g_object_unref (settings);
+}
+
+static void
+test_unbind (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_settings_bind (settings, "int", obj, "int", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "int", 12345, NULL);
+  g_assert_cmpint (g_settings_get_int (settings, "int"), ==, 12345);
+
+  g_settings_unbind (obj, "int");
+
+  g_object_set (obj, "int", 54321, NULL);
+  g_assert_cmpint (g_settings_get_int (settings, "int"), ==, 12345);
+
+  g_object_unref (obj);
+  g_object_unref (settings);
+}
+
+static void
+test_bind_writable (void)
+{
+  TestObject *obj;
+  GSettings *settings;
+  gboolean b;
+
+  settings = g_settings_new ("org.gtk.test.binding");
+  obj = test_object_new ();
+
+  g_object_set (obj, "bool", FALSE, NULL);
+
+  g_settings_bind_writable (settings, "int", obj, "bool", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_get (obj, "bool", &b, NULL);
+  g_assert (b);
+
   g_object_unref (obj);
   g_object_unref (settings);
 }
@@ -1467,10 +1520,13 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/delay-apply", test_delay_apply);
   g_test_add_func ("/gsettings/delay-revert", test_delay_revert);
   g_test_add_func ("/gsettings/atomic", test_atomic);
+
   g_test_add_func ("/gsettings/simple-binding", test_simple_binding);
   g_test_add_func ("/gsettings/directional-binding", test_directional_binding);
   g_test_add_func ("/gsettings/custom-binding", test_custom_binding);
   g_test_add_func ("/gsettings/no-change-binding", test_no_change_binding);
+  g_test_add_func ("/gsettings/unbinding", test_unbind);
+  g_test_add_func ("/gsettings/writable-binding", test_bind_writable);
 
   if (!backend_set)
     {

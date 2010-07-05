@@ -90,6 +90,9 @@
     <key name="string" type="s">
       <default>""</default>
     </key>
+    <key name="chararray" type="ay">
+      <default>[48, 49]</default>
+    </key>
   </schema>
 
   <schema id='org.gtk.test.enums' path='/tests/enums/'>

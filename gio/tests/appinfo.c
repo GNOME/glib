@@ -8,11 +8,17 @@ static void
 test_launch (void)
 {
   GAppInfo *appinfo;
+  GError *error;
 
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test.desktop");
   g_assert (appinfo != NULL);
 
-  g_assert (g_app_info_launch (appinfo, NULL, NULL, NULL));
+  error = NULL;
+  g_assert (g_app_info_launch (appinfo, NULL, NULL, &error));
+  g_assert_no_error (error);
+
+  g_assert (g_app_info_launch_uris (appinfo, NULL, NULL, &error));
+  g_assert_no_error (error);
 }
 
 static void
@@ -65,6 +71,7 @@ static void
 test_basic (void)
 {
   GAppInfo *appinfo;
+  GAppInfo *appinfo2;
   GIcon *icon, *icon2;
 
   appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test.desktop");
@@ -79,7 +86,12 @@ test_basic (void)
   g_assert (g_icon_equal (icon, icon2));
   g_object_unref (icon2);
 
+  appinfo2 = g_app_info_dup (appinfo);
+  g_assert (g_app_info_get_id (appinfo) == g_app_info_get_id (appinfo2));
+  g_assert_cmpstr (g_app_info_get_commandline (appinfo), ==, g_app_info_get_commandline (appinfo2));
+
   g_object_unref (appinfo);
+  g_object_unref (appinfo2);
 }
 
 static void
@@ -160,12 +172,21 @@ test_launch_context (void)
   g_object_unref (context);
 }
 
+static void
+test_tryexec (void)
+{
+  GAppInfo *appinfo;
+
+  appinfo = (GAppInfo*)g_desktop_app_info_new_from_filename (SRCDIR "/appinfo-test2.desktop");
+
+  g_assert (appinfo == NULL);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
-
 
   g_test_add_func ("/appinfo/basic", test_basic);
   g_test_add_func ("/appinfo/text", test_text);
@@ -173,6 +194,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/show-in", test_show_in);
   g_test_add_func ("/appinfo/commandline", test_commandline);
   g_test_add_func ("/appinfo/launch-context", test_launch_context);
+  g_test_add_func ("/appinfo/tryexec", test_tryexec);
+
   return g_test_run ();
 }
 

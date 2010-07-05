@@ -60,6 +60,7 @@ TEST_PROGS +=			\
 	appinfo			\
 	icons			\
 	contenttype		\
+	file			\
 	$(NULL)
 endif
 
@@ -280,6 +281,9 @@ icons_LDADD   = $(progs_ldadd)
 contenttype_SOURCES = contenttype.c
 contenttype_LDADD   = $(progs_ldadd)
 
+file_SOURCES = file.c
+file_LDADD   = $(progs_ldadd)
+
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
 	schema-tests/bad-choice.gschema.xml				\
@@ -361,6 +365,9 @@ EXTRA_DIST += \
 	de.po				\
 	$(schema_tests)			\
 	appinfo-test.desktop		\
+	appinfo-test2.desktop		\
+	appinfo-test-gnome.desktop	\
+	appinfo-test-notgnome.desktop	\
 	gdbus-testserver.py
  
 MISC_STUFF = test.mo
