@@ -137,18 +137,42 @@ test_commandline (void)
   g_object_unref (appinfo);
 }
 
+static void
+test_launch_context (void)
+{
+  GAppLaunchContext *context;
+  GAppInfo *appinfo;
+  gchar *str;
+
+  context = g_app_launch_context_new ();
+  appinfo = g_app_info_create_from_commandline ("./appinfo-test --option",
+                                                "cmdline-app-test",
+                                                G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                                NULL);
+
+  str = g_app_launch_context_get_display (context, appinfo, NULL);
+  g_assert (str == NULL);
+
+  str = g_app_launch_context_get_startup_notify_id (context, appinfo, NULL);
+  g_assert (str == NULL);
+
+  g_object_unref (appinfo);
+  g_object_unref (context);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
+
   g_test_add_func ("/appinfo/basic", test_basic);
   g_test_add_func ("/appinfo/text", test_text);
   g_test_add_func ("/appinfo/launch", test_launch);
   g_test_add_func ("/appinfo/show-in", test_show_in);
   g_test_add_func ("/appinfo/commandline", test_commandline);
-
+  g_test_add_func ("/appinfo/launch-context", test_launch_context);
   return g_test_run ();
 }
 
