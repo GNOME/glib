@@ -25,6 +25,9 @@ test_basic (void)
 
   settings = g_settings_new ("org.gtk.test");
 
+  g_object_get (settings, "schema", &str, NULL);
+  g_assert_cmpstr (str, ==, "org.gtk.test");
+
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "Hello, earthlings");
   g_free (str);
@@ -128,6 +131,36 @@ test_wrong_type (void)
   g_test_trap_assert_failed ();
   g_test_trap_assert_stderr ("*CRITICAL*");
 }
+
+/* Check errors with explicit paths */
+static void
+test_wrong_path (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      GSettings *settings;
+
+      settings = g_settings_new_with_path ("org.gtk.test", "/wrong-path/");
+    }
+
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*but path * specified by schema*");
+}
+
+static void
+test_no_path (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      GSettings *settings;
+
+      settings = g_settings_new ("org.gtk.test.no-path");
+    }
+
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*attempting to create schema * without a path**");
+}
+
 
 /* Check that we can successfully read and set the full
  * range of all basic types
@@ -643,7 +676,11 @@ enum
 {
   PROP_0,
   PROP_BOOL,
+  PROP_BYTE,
+  PROP_INT16,
+  PROP_UINT16,
   PROP_INT,
+  PROP_UINT,
   PROP_INT64,
   PROP_UINT64,
   PROP_DOUBLE,
@@ -658,7 +695,11 @@ typedef struct
   GObject parent_instance;
 
   gboolean bool_prop;
+  gchar byte_prop;
+  gint int16_prop;
+  guint16 uint16_prop;
   gint int_prop;
+  guint uint_prop;
   gint64 int64_prop;
   guint64 uint64_prop;
   gdouble double_prop;
@@ -701,8 +742,20 @@ test_object_get_property (GObject    *object,
     case PROP_BOOL:
       g_value_set_boolean (value, test_object->bool_prop);
       break;
+    case PROP_BYTE:
+      g_value_set_char (value, test_object->byte_prop);
+      break;
+    case PROP_UINT16:
+      g_value_set_uint (value, test_object->uint16_prop);
+      break;
+    case PROP_INT16:
+      g_value_set_int (value, test_object->int16_prop);
+      break;
     case PROP_INT:
       g_value_set_int (value, test_object->int_prop);
+      break;
+    case PROP_UINT:
+      g_value_set_uint (value, test_object->uint_prop);
       break;
     case PROP_INT64:
       g_value_set_int64 (value, test_object->int64_prop);
@@ -741,8 +794,20 @@ test_object_set_property (GObject      *object,
     case PROP_BOOL:
       test_object->bool_prop = g_value_get_boolean (value);
       break;
+    case PROP_BYTE:
+      test_object->byte_prop = g_value_get_char (value);
+      break;
+    case PROP_INT16:
+      test_object->int16_prop = g_value_get_int (value);
+      break;
+    case PROP_UINT16:
+      test_object->uint16_prop = g_value_get_uint (value);
+      break;
     case PROP_INT:
       test_object->int_prop = g_value_get_int (value);
+      break;
+    case PROP_UINT:
+      test_object->uint_prop = g_value_get_uint (value);
       break;
     case PROP_INT64:
       test_object->int64_prop = g_value_get_int64 (value);
@@ -803,8 +868,16 @@ test_object_class_init (TestObjectClass *class)
 
   g_object_class_install_property (gobject_class, PROP_BOOL,
     g_param_spec_boolean ("bool", "", "", FALSE, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_BYTE,
+    g_param_spec_char ("byte", "", "", G_MININT8, G_MAXINT8, 0, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_INT16,
+    g_param_spec_int ("int16", "", "", -G_MAXINT16, G_MAXINT16, 0, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_UINT16,
+    g_param_spec_uint ("uint16", "", "", 0, G_MAXUINT16, 0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_INT,
-    g_param_spec_int ("int", "", "", -G_MAXINT, G_MAXINT, 0, G_PARAM_READWRITE));
+    g_param_spec_int ("int", "", "", G_MININT, G_MAXINT, 0, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_UINT,
+    g_param_spec_uint ("uint", "", "", 0, G_MAXUINT, 0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_INT64,
     g_param_spec_int64 ("int64", "", "", G_MININT64, G_MAXINT64, 0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_UINT64,
@@ -837,7 +910,9 @@ test_simple_binding (void)
   TestObject *obj;
   GSettings *settings;
   gboolean b;
+  gchar y;
   gint i;
+  guint u;
   gint64 i64;
   guint64 u64;
   gdouble d;
@@ -855,6 +930,36 @@ test_simple_binding (void)
   g_settings_set_boolean (settings, "bool", FALSE);
   g_object_get (obj, "bool", &b, NULL);
   g_assert_cmpint (b, ==, FALSE);
+
+  g_settings_bind (settings, "byte", obj, "byte", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "byte", 123, NULL);
+  g_settings_get (settings, "byte", "y", &y);
+  g_assert_cmpint (y, ==, 123);
+
+  g_settings_set (settings, "byte", "y", 54);
+  g_object_get (obj, "byte", &y, NULL);
+  g_assert_cmpint (y, ==, 54);
+
+  g_settings_bind (settings, "int16", obj, "int16", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "int16", 1234, NULL);
+  g_settings_get (settings, "int16", "n", &i);
+  g_assert_cmpint (i, ==, 1234);
+
+  g_settings_set (settings, "int16", "n", 4321);
+  g_object_get (obj, "int16", &i, NULL);
+  g_assert_cmpint (i, ==, 4321);
+
+  g_settings_bind (settings, "uint16", obj, "uint16", G_SETTINGS_BIND_DEFAULT);
+
+  g_object_set (obj, "uint16", (guint16) G_MAXUINT16, NULL);
+  g_settings_get (settings, "uint16", "q", &u);
+  g_assert_cmpuint (u, ==, G_MAXUINT16);
+
+  g_settings_set (settings, "uint16", "q", (guint16) G_MAXINT16);
+  g_object_get (obj, "uint16", &u, NULL);
+  g_assert_cmpuint (u, ==, (guint16) G_MAXINT16);
 
   g_settings_bind (settings, "int", obj, "int", G_SETTINGS_BIND_DEFAULT);
 
@@ -972,10 +1077,17 @@ test_bind_writable (void)
 
   g_object_set (obj, "bool", FALSE, NULL);
 
-  g_settings_bind_writable (settings, "int", obj, "bool", G_SETTINGS_BIND_DEFAULT);
+  g_settings_bind_writable (settings, "int", obj, "bool", FALSE);
 
   g_object_get (obj, "bool", &b, NULL);
   g_assert (b);
+
+  g_settings_unbind (obj, "bool");
+
+  g_settings_bind_writable (settings, "int", obj, "bool", TRUE);
+
+  g_object_get (obj, "bool", &b, NULL);
+  g_assert (!b);
 
   g_object_unref (obj);
   g_object_unref (settings);
@@ -1509,6 +1621,120 @@ test_range (void)
   g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 33);
 }
 
+static gboolean
+strv_has_string (const gchar **haystack,
+                 const gchar  *needle)
+{
+  guint n;
+
+  for (n = 0; haystack != NULL && haystack[n] != NULL; n++)
+    {
+      if (g_strcmp0 (haystack[n], needle) == 0)
+        return TRUE;
+    }
+  return FALSE;
+}
+
+static gboolean
+strv_set_equal (const gchar **strv, ...)
+{
+  gint count;
+  va_list list;
+  const gchar *str;
+  gboolean res;
+
+  res = TRUE;
+  count = 0;
+  va_start (list, strv);
+  while (1)
+    {
+      str = va_arg (list, const gchar *);
+      if (str == NULL)
+        break;
+      if (!strv_has_string (strv, str))
+        {
+          res = FALSE;
+          break;
+        }
+      count++;
+    }
+  va_end (list);
+
+  if (res)
+    res = g_strv_length ((gchar**)strv) == count;
+
+  return res;
+}
+
+static void
+test_list_items (void)
+{
+  GSettings *settings;
+  const gchar **items;
+
+  settings = g_settings_new ("org.gtk.test");
+  items = g_settings_list_items (settings);
+
+  g_assert (strv_set_equal (items, "greeting", "farewell", "basic-types/", "complex-types/", "localized/", NULL));
+
+  g_free (items);
+
+  g_object_unref (settings);
+}
+
+static gboolean
+map_func (GVariant *value,
+          gpointer *result,
+          gpointer  user_data)
+{
+  gint *state = user_data;
+  gint v;
+
+  if (value)
+    v = g_variant_get_int32 (value);
+  else
+    v = -1;
+
+  if (*state == 0)
+    {
+      g_assert_cmpint (v, ==, 1);
+      (*state)++;
+      return FALSE;
+    }
+  else if (*state == 1)
+    {
+      g_assert_cmpint (v, ==, 0);
+      (*state)++;
+      return FALSE;
+    }
+  else
+    {
+      g_assert (value == NULL);
+      *result = g_variant_new_int32 (5);
+      return TRUE;
+    }
+}
+
+static void
+test_get_mapped (void)
+{
+  GSettings *settings;
+  gint state;
+  gpointer p;
+  gint val;
+
+  settings = g_settings_new ("org.gtk.test.mapped");
+  g_settings_set_int (settings, "val", 1);
+
+  state = 0;
+  p = g_settings_get_mapped (settings, "val", map_func, &state);
+  val = g_variant_get_int32 ((GVariant*)p);
+  g_assert_cmpint (val, ==, 5);
+
+  g_variant_unref (p);
+  g_object_unref (settings);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1550,6 +1776,8 @@ main (int argc, char *argv[])
       g_test_add_func ("/gsettings/no-schema", test_no_schema);
       g_test_add_func ("/gsettings/unknown-key", test_unknown_key);
       g_test_add_func ("/gsettings/wrong-type", test_wrong_type);
+      g_test_add_func ("/gsettings/wrong-path", test_wrong_path);
+      g_test_add_func ("/gsettings/no-path", test_no_path);
     }
 
   g_test_add_func ("/gsettings/basic-types", test_basic_types);
@@ -1586,6 +1814,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/enums", test_enums);
   g_test_add_func ("/gsettings/flags", test_flags);
   g_test_add_func ("/gsettings/range", test_range);
+  g_test_add_func ("/gsettings/list-items", test_list_items);
+  g_test_add_func ("/gsettings/mapped", test_get_mapped);
 
   result = g_test_run ();
 
