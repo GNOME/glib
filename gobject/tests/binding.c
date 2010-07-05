@@ -247,6 +247,12 @@ binding_default (void)
                                     target, "bar",
                                     G_BINDING_DEFAULT);
 
+  g_assert (g_binding_get_source (binding) == source);
+  g_assert (g_binding_get_target (binding) == target);
+  g_assert_cmpstr (g_binding_get_source_property (binding), ==, "foo");
+  g_assert_cmpstr (g_binding_get_target_property (binding), ==, "bar");
+  g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
+
   g_object_set (source, "foo", 42, NULL);
   g_assert_cmpint (source->foo, ==, target->bar);
 
@@ -289,18 +295,27 @@ binding_bidirectional (void)
 }
 
 static void
+data_free (gpointer data)
+{
+  gboolean *b = data;
+
+  *b = TRUE;
+}
+
+static void
 binding_transform (void)
 {
   BindingSource *source = g_object_new (binding_source_get_type (), NULL);
   BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
   GBinding *binding;
+  gboolean unused_data = FALSE;
 
   binding = g_object_bind_property_full (source, "value",
                                          target, "value",
                                          G_BINDING_BIDIRECTIONAL,
                                          celsius_to_fahrenheit,
                                          fahrenheit_to_celsius,
-                                         NULL, NULL);
+                                         &unused_data, data_free);
 
   g_object_set (source, "value", 24.0, NULL);
   g_assert_cmpfloat (target->value, ==, ((9 * 24.0 / 5) + 32.0));
@@ -310,6 +325,8 @@ binding_transform (void)
 
   g_object_unref (source);
   g_object_unref (target);
+
+  g_assert (unused_data);
 }
 
 static void
