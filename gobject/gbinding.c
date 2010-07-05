@@ -333,10 +333,7 @@ on_source_notify (GObject    *gobject,
   if (binding->is_frozen)
     return;
 
-  if (pspec->flags & G_PARAM_STATIC_NAME)
-    p_name = g_intern_static_string (pspec->name);
-  else
-    p_name = g_intern_string (pspec->name);
+  p_name = g_intern_string (pspec->name);
 
   if (p_name != binding->source_property)
     return;
@@ -377,10 +374,7 @@ on_target_notify (GObject    *gobject,
   if (binding->is_frozen)
     return;
 
-  if (pspec->flags & G_PARAM_STATIC_NAME)
-    p_name = g_intern_static_string (pspec->name);
-  else
-    p_name = g_intern_string (pspec->name);
+  p_name = g_intern_string (pspec->name);
 
   if (p_name != binding->target_property)
     return;
