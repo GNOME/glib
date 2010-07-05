@@ -36,7 +36,10 @@ test_peek (void)
   base = g_memory_input_stream_new_from_data ("abcdefghijk", -1, NULL);
   in = g_buffered_input_stream_new_sized (base, 64);
 
-  g_buffered_input_stream_fill (G_BUFFERED_INPUT_STREAM (in), strlen ("abcdefghijk"), NULL, NULL);
+  g_buffered_input_stream_fill (G_BUFFERED_INPUT_STREAM (in), 5, NULL, NULL);
+  g_assert_cmpint (g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (in)), ==, 5);
+  g_buffered_input_stream_fill (G_BUFFERED_INPUT_STREAM (in), -1, NULL, NULL);
+  g_assert_cmpint (g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (in)), ==, strlen ("abcdefjhijk"));
 
   buffer = g_new0 (char, 64);
   npeek = g_buffered_input_stream_peek (G_BUFFERED_INPUT_STREAM (in), buffer, 2, 3);
@@ -118,49 +121,84 @@ test_read_byte (void)
 {
   GInputStream *base;
   GInputStream *in;
+  GError *error;
 
   g_test_bug ("562393");
 
-  base = g_memory_input_stream_new_from_data ("abcdefghijk", -1, NULL);
+  base = g_memory_input_stream_new_from_data ("abcdefgh", -1, NULL);
   in = g_buffered_input_stream_new (base);
 
-  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'a');
-  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'b');
-  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'c');
+  error = NULL;
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'a');
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'b');
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'c');
+  g_assert_no_error (error);
 
-  g_assert_cmpint (g_input_stream_skip (in, 3, NULL, NULL), ==, 3);
+  g_assert_cmpint (g_input_stream_skip (in, 3, NULL, &error), ==, 3);
+  g_assert_no_error (error);
 
-  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'g');
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'g');
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'h');
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, -1);
+  g_assert_no_error (error);
+
+  g_assert (g_input_stream_close (in, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, -1);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
 
   g_object_unref (in);
   g_object_unref (base);
 }
 
 static void
-test_large_read (void)
+test_read (void)
 {
   GInputStream *base;
   GInputStream *in;
   gchar buffer[20];
+  GError *error;
 
-  base = g_memory_input_stream_new_from_data ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ", -1, NULL);
+  base = g_memory_input_stream_new_from_data ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", -1, NULL);
   in = g_buffered_input_stream_new_sized (base, 8);
 
   g_assert_cmpint (g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (in)), ==, 0);
 
-  g_assert_cmpint (g_buffered_input_stream_fill (G_BUFFERED_INPUT_STREAM (in), 8, NULL, NULL), ==, 8);
+  error = NULL;
+  g_assert_cmpint (g_buffered_input_stream_fill (G_BUFFERED_INPUT_STREAM (in), 8, NULL, &error), ==, 8);
+  g_assert_no_error (error);
 
   g_assert_cmpint (g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (in)), ==, 8);
 
   memset (buffer, 0, 20);
-  g_assert_cmpint (g_input_stream_read (in, &buffer, 16, NULL, NULL), ==, 16);
+  g_assert_cmpint (g_input_stream_read (in, &buffer, 16, NULL, &error), ==, 16);
   g_assert_cmpstr (buffer, ==, "abcdefghijklmnop");
+  g_assert_no_error (error);
 
   g_assert_cmpint (g_buffered_input_stream_get_available (G_BUFFERED_INPUT_STREAM (in)), ==, 0);
 
   memset (buffer, 0, 20);
-  g_assert_cmpint (g_input_stream_read (in, &buffer, 16, NULL, NULL), ==, 16);
+  g_assert_cmpint (g_input_stream_read (in, &buffer, 16, NULL, &error), ==, 16);
   g_assert_cmpstr (buffer, ==, "qrstuvwxyzABCDEF");
+  g_assert_no_error (error);
+
+  memset (buffer, 0, 20);
+  g_assert_cmpint (g_input_stream_read (in, &buffer, 16, NULL, &error), ==, 16);
+  g_assert_cmpstr (buffer, ==, "GHIJKLMNOPQRSTUV");
+  g_assert_no_error (error);
+
+  memset (buffer, 0, 20);
+  g_assert_cmpint (g_input_stream_read (in, &buffer, 16, NULL, &error), ==, 4);
+  g_assert_cmpstr (buffer, ==, "WXYZ");
+  g_assert_no_error (error);
+
+  memset (buffer, 0, 20);
+  g_assert_cmpint (g_input_stream_read (in, &buffer, 16, NULL, &error), ==, 0);
+  g_assert_no_error (error);
 
   g_object_unref (in);
   g_object_unref (base);
@@ -171,17 +209,38 @@ test_skip (void)
 {
   GInputStream *base;
   GInputStream *in;
+  GError *error;
 
-  base = g_memory_input_stream_new_from_data ("abcdefghijk", -1, NULL);
+  base = g_memory_input_stream_new_from_data ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVXYZ", -1, NULL);
   in = g_buffered_input_stream_new_sized (base, 5);
 
-  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'a');
-  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'b');
-  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'c');
+  error = NULL;
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'a');
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'b');
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'c');
+  g_assert_no_error (error);
 
-  g_assert_cmpint (g_input_stream_skip (in, 7, NULL, NULL), ==, 7);
-  
-  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, NULL), ==, 'k');
+  g_assert_cmpint (g_input_stream_skip (in, 7, NULL, &error), ==, 7);
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'k');
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_input_stream_skip (in, 10, NULL, &error), ==, 10);
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'v');
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_input_stream_skip (in, 20, NULL, &error), ==, 20);
+  g_assert_no_error (error);
+  g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, 'Q');
+  g_assert_no_error (error);
+
+  g_assert_cmpint (g_input_stream_skip (in, 10, NULL, &error), ==, 8);
+  g_assert_no_error (error);
+  g_assert_cmpint (g_input_stream_skip (in, 10, NULL, &error), ==, 0);
+  g_assert_no_error (error);
 
   g_object_unref (in);
   g_object_unref (base);
@@ -199,7 +258,7 @@ main (int   argc,
   g_test_add_func ("/buffered-input-stream/peek-buffer", test_peek_buffer);
   g_test_add_func ("/buffered-input-stream/set-buffer-size", test_set_buffer_size);
   g_test_add_func ("/buffered-input-stream/read-byte", test_read_byte);
-  g_test_add_func ("/buffered-input-stream/large-read", test_large_read);
+  g_test_add_func ("/buffered-input-stream/read", test_read);
   g_test_add_func ("/buffered-input-stream/skip", test_skip);
 
   return g_test_run();
