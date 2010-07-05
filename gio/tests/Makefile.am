@@ -32,6 +32,7 @@ TEST_PROGS +=	 		\
 	data-output-stream 	\
 	g-icon			\
 	buffered-input-stream	\
+	buffered-output-stream	\
 	sleepy-stream		\
 	filter-streams		\
 	simple-async-result	\
@@ -129,6 +130,9 @@ g_icon_LDADD	= $(progs_ldadd)
 
 buffered_input_stream_SOURCES	= buffered-input-stream.c
 buffered_input_stream_LDADD	= $(progs_ldadd)
+
+buffered_output_stream_SOURCES	= buffered-output-stream.c
+buffered_output_stream_LDADD	= $(progs_ldadd)
 
 live_g_file_SOURCES	  = live-g-file.c
 live_g_file_LDADD	  = $(progs_ldadd)
