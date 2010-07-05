@@ -325,7 +325,7 @@ test_expander (void)
 					     sizeof (unexpanded_data),
 					     NULL);
   cstream = g_converter_input_stream_new (mem, expander);
-  g_assert (g_converter_input_stream_get_converter (cstream) == expander);
+  g_assert (g_converter_input_stream_get_converter (G_CONVERTER_INPUT_STREAM (cstream)) == expander);
   g_object_unref (mem);
 
   total_read = 0;
@@ -582,7 +582,7 @@ test_corruption (GZlibCompressorFormat format, gint level)
   ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
   compressor = G_CONVERTER (g_zlib_compressor_new (format, level));
   costream1 = g_converter_output_stream_new (ostream1, compressor);
-  g_assert (g_converter_output_stream_get_converter (costream1) == compressor);
+  g_assert (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (costream1)) == compressor);
 
   g_output_stream_splice (costream1, istream0, 0, NULL, &error);
   g_assert_no_error (error);
@@ -630,6 +630,7 @@ typedef struct {
   const gchar *text_in;
   const gchar *charset_out;
   const gchar *text_out;
+  gint n_fallbacks;
 } CharsetTest;
 
 static void
@@ -642,23 +643,57 @@ test_charset (gconstpointer data)
   gsize count;
   gsize bytes_read;
   GError *error;
+  gboolean fallback;
+
+  conv = (GConverter *)g_charset_converter_new (test->charset_out, test->charset_in, NULL);
+  g_object_get (conv, "use-fallback", &fallback, NULL);
+  g_assert (!fallback);
 
   in = g_memory_input_stream_new_from_data (test->text_in, -1, NULL);
-  conv = (GConverter *)g_charset_converter_new (test->charset_out, test->charset_in, NULL);
   in2 = g_converter_input_stream_new (in, conv);
+
+  count = 2 * strlen (test->text_out);
+  buffer = g_malloc (count);
+  error = NULL;
+  g_input_stream_read_all (in2, buffer, count, &bytes_read, NULL, &error);
+  if (test->n_fallbacks == 0)
+    {
+      g_assert_no_error (error);
+      g_assert_cmpint (bytes_read, ==, strlen (test->text_out));
+      g_assert_cmpstr (buffer, ==, test->text_out);
+    }
+  else
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA);
+
+  g_free (buffer);
+  g_object_unref (in2);
   g_object_unref (in);
-  g_object_unref (conv);
+
+  if (test->n_fallbacks == 0)
+    return;
+
+  g_converter_reset (conv);
+
+  g_assert (!g_charset_converter_get_use_fallback (G_CHARSET_CONVERTER (conv)));
+  g_charset_converter_set_use_fallback (G_CHARSET_CONVERTER (conv), TRUE);
+
+  in = g_memory_input_stream_new_from_data (test->text_in, -1, NULL);
+  in2 = g_converter_input_stream_new (in, conv);
 
   count = 2 * strlen (test->text_out);
   buffer = g_malloc (count);
   error = NULL;
   g_input_stream_read_all (in2, buffer, count, &bytes_read, NULL, &error);
   g_assert_no_error (error);
-  g_assert_cmpint (bytes_read, ==, strlen (test->text_out));
   g_assert_cmpstr (buffer, ==, test->text_out);
+  g_assert_cmpint (bytes_read, ==, strlen (test->text_out));
+  g_assert_cmpint (test->n_fallbacks, ==, g_charset_converter_get_num_fallbacks (G_CHARSET_CONVERTER (conv)));
 
   g_free (buffer);
   g_object_unref (in2);
+  g_object_unref (in);
+
+  g_object_unref (conv);
 }
 
 int
@@ -674,8 +709,10 @@ main (int   argc,
     { "/converter-output-stream/corruption/raw-9", G_ZLIB_COMPRESSOR_FORMAT_RAW, 9 },
   };
   CharsetTest charset_tests[] = {
-    { "/converter-input-stream/charset/1", "UTF-8", "\303\205rr Sant\303\251", "ISO-8859-1", "\305rr Sant\351" },
-    { "/converter-input-stream/charset/2", "ISO-8859-1", "\305rr Sant\351", "UTF-8", "\303\205rr Sant\303\251" },
+    { "/converter-input-stream/charset/utf8->latin1", "UTF-8", "\303\205rr Sant\303\251", "ISO-8859-1", "\305rr Sant\351", 0 },
+    { "/converter-input-stream/charset/latin1->utf8", "ISO-8859-1", "\305rr Sant\351", "UTF-8", "\303\205rr Sant\303\251", 0 },
+    { "/converter-input-stream/charset/fallbacks", "UTF-8", "Some characters just don't fit into latin1: πא", "ISO-8859-1", "Some characters just don't fit into latin1: \\CF\\80\\D7\\90", 4 },
+
   };
 
   gint i;
