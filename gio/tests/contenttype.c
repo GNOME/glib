@@ -96,6 +96,20 @@ test_executable (void)
   g_free (type);
 }
 
+static void
+test_description (void)
+{
+  gchar *type;
+  gchar *desc;
+
+  type = g_content_type_from_mime_type ("text/plain");
+  desc = g_content_type_get_description (type);
+  g_assert (desc != NULL);
+
+  g_free (desc);
+  g_free (type);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -108,6 +122,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/contenttype/subtype", test_subtype);
   g_test_add_func ("/contenttype/list", test_list);
   g_test_add_func ("/contenttype/executable", test_executable);
+  g_test_add_func ("/contenttype/description", test_description);
 
   return g_test_run ();
 }
