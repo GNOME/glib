@@ -54,7 +54,7 @@
 
 static char *
 get_registry_classes_key (const char    *subdir,
-			  const wchar_t *key_name)
+                          const wchar_t *key_name)
 {
   wchar_t *wc_key;
   HKEY reg_key = NULL;
@@ -67,14 +67,14 @@ get_registry_classes_key (const char    *subdir,
   nbytes = 0;
   wc_key = g_utf8_to_utf16 (subdir, -1, NULL, NULL, NULL);
   if (RegOpenKeyExW (HKEY_CLASSES_ROOT, wc_key, 0,
-		     KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS &&
+                     KEY_QUERY_VALUE, &reg_key) == ERROR_SUCCESS &&
       RegQueryValueExW (reg_key, key_name, 0,
-			&key_type, NULL, &nbytes) == ERROR_SUCCESS &&
+                        &key_type, NULL, &nbytes) == ERROR_SUCCESS &&
       (key_type == REG_SZ || key_type == REG_EXPAND_SZ))
     {
       wchar_t *wc_temp = g_new (wchar_t, (nbytes+1)/2 + 1);
       RegQueryValueExW (reg_key, key_name, 0,
-			&key_type, (LPBYTE) wc_temp, &nbytes);
+                        &key_type, (LPBYTE) wc_temp, &nbytes);
       wc_temp[nbytes/2] = '\0';
       if (key_type == REG_EXPAND_SZ)
         {
@@ -104,8 +104,8 @@ get_registry_classes_key (const char    *subdir,
 }
 
 gboolean
-g_content_type_equals (const char *type1,
-		       const char *type2)
+g_content_type_equals (const gchar *type1,
+                       const gchar *type2)
 {
   char *progid1, *progid2;
   gboolean res;
@@ -129,8 +129,8 @@ g_content_type_equals (const char *type1,
 }
 
 gboolean
-g_content_type_is_a (const char *type,
-		     const char *supertype)
+g_content_type_is_a (const gchar *type,
+                     const gchar *supertype)
 {
   gboolean res;
   char *value_utf8;
@@ -151,15 +151,15 @@ g_content_type_is_a (const char *type,
 }
 
 gboolean
-g_content_type_is_unknown (const char *type)
+g_content_type_is_unknown (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
   return strcmp ("*", type) == 0;
 }
 
-char *
-g_content_type_get_description (const char *type)
+gchar *
+g_content_type_get_description (const gchar *type)
 {
   char *progid;
   char *description;
@@ -173,7 +173,7 @@ g_content_type_get_description (const char *type)
       g_free (progid);
 
       if (description)
-	return description;
+        return description;
     }
 
   if (g_content_type_is_unknown (type))
@@ -181,8 +181,8 @@ g_content_type_get_description (const char *type)
   return g_strdup_printf (_("%s filetype"), type);
 }
 
-char *
-g_content_type_get_mime_type (const char *type)
+gchar *
+g_content_type_get_mime_type (const gchar *type)
 {
   char *mime;
 
@@ -204,7 +204,7 @@ G_LOCK_DEFINE_STATIC (_type_icons);
 static GHashTable *_type_icons = NULL;
 
 GIcon *
-g_content_type_get_icon (const char *type)
+g_content_type_get_icon (const gchar *type)
 {
   GIcon *themed_icon;
   char *name = NULL;
@@ -229,16 +229,16 @@ g_content_type_get_icon (const char *type)
         key = g_strconcat (type+1, "file\\DefaultIcon", NULL);
       else
         {
-	  gchar *key2 = g_strconcat (key, "\\DefaultIcon", NULL);
-	  g_free (key);
-	  key = key2;
-	}
+          gchar *key2 = g_strconcat (key, "\\DefaultIcon", NULL);
+          g_free (key);
+          key = key2;
+        }
       name = get_registry_classes_key (key, NULL);
       if (name && strcmp (name, "%1") == 0)
         {
-	  g_free (name);
-	  name = NULL;
-	}
+          g_free (name);
+          name = NULL;
+        }
       if (name)
         g_hash_table_insert (_type_icons, g_strdup (type), g_strdup (name));
       g_free (key);
@@ -253,7 +253,7 @@ g_content_type_get_icon (const char *type)
     {
       /* if not found an icon fall back to gtk-builtins */
       name = strcmp (type, "inode/directory") == 0 ? "gtk-directory" : 
-	                   g_content_type_can_be_executable (type) ? "gtk-execute" : "gtk-file";
+                           g_content_type_can_be_executable (type) ? "gtk-execute" : "gtk-file";
       g_hash_table_insert (_type_icons, g_strdup (type), g_strdup (name));
       themed_icon = g_themed_icon_new_with_default_fallbacks (name);
     }
@@ -263,7 +263,7 @@ g_content_type_get_icon (const char *type)
 }
 
 gboolean
-g_content_type_can_be_executable (const char *type)
+g_content_type_can_be_executable (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
@@ -296,13 +296,13 @@ looks_like_text (const guchar *data,
     {
       c = data[i];
       if (g_ascii_iscntrl (c) && !g_ascii_isspace (c) && c != '\b')
-	return FALSE;
+        return FALSE;
     }
   return TRUE;
 }
 
-char *
-g_content_type_from_mime_type (const char *mime_type)
+gchar *
+g_content_type_from_mime_type (const gchar *mime_type)
 {
   char *key, *content_type;
 
@@ -315,11 +315,11 @@ g_content_type_from_mime_type (const char *mime_type)
   return content_type;
 }
 
-char *
-g_content_type_guess (const char   *filename,
-		      const guchar *data,
-		      gsize         data_size,
-		      gboolean     *result_uncertain)
+gchar *
+g_content_type_guess (const gchar  *filename,
+                      const guchar *data,
+                      gsize         data_size,
+                      gboolean     *result_uncertain)
 {
   char *basename;
   char *type;
@@ -335,7 +335,7 @@ g_content_type_guess (const char   *filename,
       basename = g_path_get_basename (filename);
       dot = strrchr (basename, '.');
       if (dot)
-	type = g_strdup (dot);
+        type = g_strdup (dot);
       g_free (basename);
     }
 
@@ -361,22 +361,22 @@ g_content_types_get_registered (void)
   index = 0;
   key_len = 256;
   while (RegEnumKeyExW(HKEY_CLASSES_ROOT,
-		       index,
-		       keyname,
-		       &key_len,
-		       NULL,
-		       NULL,
-		       NULL,
-		       NULL) == ERROR_SUCCESS)
+                       index,
+                       keyname,
+                       &key_len,
+                       NULL,
+                       NULL,
+                       NULL,
+                       NULL) == ERROR_SUCCESS)
     {
       key_utf8 = g_utf16_to_utf8 (keyname, -1, NULL, NULL, NULL);
       if (key_utf8)
-	{
-	  if (*key_utf8 == '.')
-	    types = g_list_prepend (types, key_utf8);
-	  else
-	    g_free (key_utf8);
-	}
+        {
+          if (*key_utf8 == '.')
+            types = g_list_prepend (types, key_utf8);
+          else
+            g_free (key_utf8);
+        }
       index++;
       key_len = 256;
     }
@@ -384,7 +384,7 @@ g_content_types_get_registered (void)
   return g_list_reverse (types);
 }
 
-char **
+gchar **
 g_content_type_guess_for_tree (GFile *root)
 {
   /* FIXME: implement */
@@ -413,111 +413,111 @@ _g_unix_content_type_get_sniff_len (void)
   return size;
 }
 
-char *
-_g_unix_content_type_unalias (const char *type)
+gchar *
+_g_unix_content_type_unalias (const gchar *type)
 {
-  char *res;
-  
+  gchar *res;
+
   G_LOCK (gio_xdgmime);
   res = g_strdup (xdg_mime_unalias_mime_type (type));
   G_UNLOCK (gio_xdgmime);
-  
+
   return res;
 }
 
-char **
-_g_unix_content_type_get_parents (const char *type)
+gchar **
+_g_unix_content_type_get_parents (const gchar *type)
 {
-  const char *umime;
-  char **parents;
+  const gchar *umime;
+  gchar **parents;
   GPtrArray *array;
   int i;
 
   array = g_ptr_array_new ();
-  
+
   G_LOCK (gio_xdgmime);
-  
+
   umime = xdg_mime_unalias_mime_type (type);
-  
+
   g_ptr_array_add (array, g_strdup (umime));
-  
+
   parents = xdg_mime_list_mime_parents (umime);
   for (i = 0; parents && parents[i] != NULL; i++)
     g_ptr_array_add (array, g_strdup (parents[i]));
-  
+
   free (parents);
-  
+
   G_UNLOCK (gio_xdgmime);
-  
+
   g_ptr_array_add (array, NULL);
-  
-  return (char **)g_ptr_array_free (array, FALSE);
+
+  return (gchar **)g_ptr_array_free (array, FALSE);
 }
 
 /**
  * g_content_type_equals:
- * @type1: a content type string.
- * @type2: a content type string.
+ * @type1: a content type string
+ * @type2: a content type string
  *
  * Compares two content types for equality.
  *
  * Returns: %TRUE if the two strings are identical or equivalent,
- * %FALSE otherwise.
- **/  
+ *     %FALSE otherwise.
+ */
 gboolean
-g_content_type_equals (const char *type1,
-		       const char *type2)
+g_content_type_equals (const gchar *type1,
+                       const gchar *type2)
 {
   gboolean res;
-  
+
   g_return_val_if_fail (type1 != NULL, FALSE);
   g_return_val_if_fail (type2 != NULL, FALSE);
-  
+
   G_LOCK (gio_xdgmime);
   res = xdg_mime_mime_type_equal (type1, type2);
   G_UNLOCK (gio_xdgmime);
-	
+
   return res;
 }
 
 /**
  * g_content_type_is_a:
- * @type: a content type string. 
- * @supertype: a string.
+ * @type: a content type string
+ * @supertype: a content type string
  *
- * Determines if @type is a subset of @supertype.  
+ * Determines if @type is a subset of @supertype.
  *
  * Returns: %TRUE if @type is a kind of @supertype,
- * %FALSE otherwise. 
- **/  
+ *     %FALSE otherwise.
+ */
 gboolean
-g_content_type_is_a (const char *type,
-		     const char *supertype)
+g_content_type_is_a (const gchar *type,
+                     const gchar *supertype)
 {
   gboolean res;
-    
+
   g_return_val_if_fail (type != NULL, FALSE);
   g_return_val_if_fail (supertype != NULL, FALSE);
-  
+
   G_LOCK (gio_xdgmime);
   res = xdg_mime_mime_type_subclass (type, supertype);
   G_UNLOCK (gio_xdgmime);
-	
+
   return res;
 }
 
 /**
  * g_content_type_is_unknown:
- * @type: a content type string. 
- * 
+ * @type: a content type string
+ *
  * Checks if the content type is the generic "unknown" type.
- * On unix this is the "application/octet-stream" mimetype,
+ * On UNIX this is the "application/octet-stream" mimetype,
  * while on win32 it is "*".
- * 
+ *
  * Returns: %TRUE if the type is the unknown type.
- **/  
+ */
 gboolean
-g_content_type_is_unknown (const char *type)
+g_content_type_is_unknown (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
@@ -543,65 +543,64 @@ language_level (const char *lang)
 {
   const char * const *lang_list;
   int i;
-  
+
   /* The returned list is sorted from most desirable to least
      desirable and always contains the default locale "C". */
   lang_list = g_get_language_names ();
-  
+
   for (i = 0; lang_list[i]; i++)
     if (strcmp (lang_list[i], lang) == 0)
       return 1000-i;
-  
+
   return 0;
 }
 
 static void
 mime_info_start_element (GMarkupParseContext  *context,
-			 const gchar          *element_name,
-			 const gchar         **attribute_names,
-			 const gchar         **attribute_values,
-			 gpointer              user_data,
-			 GError              **error)
+                         const gchar          *element_name,
+                         const gchar         **attribute_names,
+                         const gchar         **attribute_values,
+                         gpointer              user_data,
+                         GError              **error)
 {
   int i;
   const char *lang;
   MimeParser *parser = user_data;
-  
+
   if (strcmp (element_name, "comment") == 0)
     {
       lang = "C";
       for (i = 0; attribute_names[i]; i++)
-	if (strcmp (attribute_names[i], "xml:lang") == 0)
-	  {
-	    lang = attribute_values[i];
-	    break;
-	  }
-      
+        if (strcmp (attribute_names[i], "xml:lang") == 0)
+          {
+            lang = attribute_values[i];
+            break;
+          }
+
       parser->current_lang_level = language_level (lang);
       parser->current_type = MIME_TAG_TYPE_COMMENT;
     }
   else
     parser->current_type = MIME_TAG_TYPE_OTHER;
-  
 }
 
 static void
 mime_info_end_element (GMarkupParseContext  *context,
-		       const gchar          *element_name,
-		       gpointer              user_data,
-		       GError              **error)
+                       const gchar          *element_name,
+                       gpointer              user_data,
+                       GError              **error)
 {
   MimeParser *parser = user_data;
-  
+
   parser->current_type = MIME_TAG_TYPE_OTHER;
 }
 
 static void
 mime_info_text (GMarkupParseContext  *context,
-		const gchar          *text,
-		gsize                 text_len,  
-		gpointer              user_data,
-		GError              **error)
+                const gchar          *text,
+                gsize                 text_len,
+                gpointer              user_data,
+                GError              **error)
 {
   MimeParser *parser = user_data;
 
@@ -615,7 +614,7 @@ mime_info_text (GMarkupParseContext  *context,
 }
 
 static char *
-load_comment_for_mime_helper (const char *dir, 
+load_comment_for_mime_helper (const char *dir,
                               const char *basename)
 {
   GMarkupParseContext *context;
@@ -630,17 +629,17 @@ load_comment_for_mime_helper (const char *dir,
   };
 
   filename = g_build_filename (dir, "mime", basename, NULL);
-  
+
   res = g_file_get_contents (filename,  &data,  &len,  NULL);
   g_free (filename);
   if (!res)
     return NULL;
-  
+
   context = g_markup_parse_context_new   (&parser, 0, &parse_data, NULL);
   res = g_markup_parse_context_parse (context, data, len, NULL);
   g_free (data);
   g_markup_parse_context_free (context);
-  
+
   if (!res)
     return NULL;
 
@@ -664,39 +663,40 @@ load_comment_for_mime (const char *mimetype)
       g_free (basename);
       return comment;
     }
-  
+
   dirs = g_get_system_data_dirs ();
 
   for (i = 0; dirs[i] != NULL; i++)
     {
       comment = load_comment_for_mime_helper (dirs[i], basename);
       if (comment)
-	{
-	  g_free (basename);
-	  return comment;
-	}
+        {
+          g_free (basename);
+          return comment;
+        }
     }
   g_free (basename);
-  
+
   return g_strdup_printf (_("%s type"), mimetype);
 }
 
 /**
  * g_content_type_get_description:
- * @type: a content type string. 
- * 
+ * @type: a content type string
+ *
  * Gets the human readable description of the content type.
- * 
- * Returns: a short description of the content type @type. 
- **/  
-char *
-g_content_type_get_description (const char *type)
+ *
+ * Returns: a short description of the content type @type. Free the
+ *     returned string with g_free()
+ */
+gchar *
+g_content_type_get_description (const gchar *type)
 {
   static GHashTable *type_comment_cache = NULL;
-  char *comment;
+  gchar *comment;
 
   g_return_val_if_fail (type != NULL, NULL);
-  
+
   G_LOCK (gio_xdgmime);
   type = xdg_mime_unalias_mime_type (type);
 
@@ -706,16 +706,16 @@ g_content_type_get_description (const char *type)
   comment = g_hash_table_lookup (type_comment_cache, type);
   comment = g_strdup (comment);
   G_UNLOCK (gio_xdgmime);
-  
+
   if (comment != NULL)
     return comment;
 
   comment = load_comment_for_mime (type);
-  
+
   G_LOCK (gio_xdgmime);
   g_hash_table_insert (type_comment_cache,
-		       g_strdup (type),
-		       g_strdup (comment));
+                       g_strdup (type),
+                       g_strdup (comment));
   G_UNLOCK (gio_xdgmime);
 
   return comment;
@@ -723,12 +723,13 @@ g_content_type_get_description (const char *type)
 
 /**
  * g_content_type_get_mime_type:
- * @type: a content type string. 
- * 
- * Gets the mime-type for the content type. If one is registered
- * 
- * Returns: the registered mime-type for the given @type, or NULL if unknown.
- **/  
+ * @type: a content type string
+ *
+ * Gets the mime type for the content type, if one is registered.
+ *
+ * Returns: (allow-none): the registered mime type for the given @type,
+ *     or %NULL if unknown.
+ */
 char *
 g_content_type_get_mime_type (const char *type)
 {
@@ -739,14 +740,15 @@ g_content_type_get_mime_type (const char *type)
 
 /**
  * g_content_type_get_icon:
- * @type: a content type string.
- * 
+ * @type: a content type string
+ *
  * Gets the icon for a content type.
- * 
- * Returns: #GIcon corresponding to the content type.
- **/  
+ *
+ * Returns: #GIcon corresponding to the content type. Free the returned
+ *     object with g_object_unref()
+ */
 GIcon *
-g_content_type_get_icon (const char *type)
+g_content_type_get_icon (const gchar *type)
 {
   char *mimetype_icon, *generic_mimetype_icon, *q;
   char *xdg_mimetype_icon, *legacy_mimetype_icon;
@@ -755,31 +757,31 @@ g_content_type_get_icon (const char *type)
   int n = 0;
   const char *p;
   GIcon *themed_icon;
-  
+
   g_return_val_if_fail (type != NULL, NULL);
-  
+
   G_LOCK (gio_xdgmime);
   xdg_mimetype_icon = g_strdup (xdg_mime_get_icon (type));
   xdg_mimetype_generic_icon = g_strdup (xdg_mime_get_generic_icon (type));
   G_UNLOCK (gio_xdgmime);
 
   mimetype_icon = g_strdup (type);
-  
+
   while ((q = strchr (mimetype_icon, '/')) != NULL)
     *q = '-';
-  
+
   p = strchr (type, '/');
   if (p == NULL)
     p = type + strlen (type);
 
   /* Not all icons have migrated to the new icon theme spec, look for old names too */
   legacy_mimetype_icon = g_strconcat ("gnome-mime-", mimetype_icon, NULL);
-  
+
   generic_mimetype_icon = g_malloc (p - type + strlen ("-x-generic") + 1);
   memcpy (generic_mimetype_icon, type, p - type);
   memcpy (generic_mimetype_icon + (p - type), "-x-generic", strlen ("-x-generic"));
   generic_mimetype_icon[(p - type) + strlen ("-x-generic")] = 0;
-  
+
   if (xdg_mimetype_icon)
     icon_names[n++] = xdg_mimetype_icon;
 
@@ -790,30 +792,30 @@ g_content_type_get_icon (const char *type)
     icon_names[n++] = xdg_mimetype_generic_icon;
 
   icon_names[n++] = generic_mimetype_icon;
-  
+
   themed_icon = g_themed_icon_new_from_names (icon_names, n);
-  
+
   g_free (xdg_mimetype_icon);
   g_free (xdg_mimetype_generic_icon);
   g_free (mimetype_icon);
   g_free (legacy_mimetype_icon);
   g_free (generic_mimetype_icon);
-  
+
   return themed_icon;
 }
 
 /**
  * g_content_type_can_be_executable:
- * @type: a content type string.
- * 
+ * @type: a content type string
+ *
  * Checks if a content type can be executable. Note that for instance
  * things like text files can be executables (i.e. scripts and batch files).
- * 
+ *
  * Returns: %TRUE if the file type corresponds to a type that
- * can be executable, %FALSE otherwise. 
- **/  
+ *     can be executable, %FALSE otherwise.
+ */
 gboolean
-g_content_type_can_be_executable (const char *type)
+g_content_type_can_be_executable (const gchar *type)
 {
   g_return_val_if_fail (type != NULL, FALSE);
 
@@ -829,31 +831,32 @@ looks_like_text (const guchar *data, gsize data_size)
 {
   gsize i;
   char c;
-  
+
   for (i = 0; i < data_size; i++)
     {
       c = data[i];
-      
+
       if (g_ascii_iscntrl (c) &&
-	  !g_ascii_isspace (c) &&
-	  c != '\b')
-	return FALSE;
+          !g_ascii_isspace (c) &&
+          c != '\b')
+        return FALSE;
     }
   return TRUE;
 }
 
 /**
  * g_content_type_from_mime_type:
- * @mime_type: a mime type string.
+ * @mime_type: a mime type string
  *
  * Tries to find a content type based on the mime type name.
  *
- * Returns: Newly allocated string with content type or NULL when does not know.
+ * Returns: (allow-none): Newly allocated string with content type
+ *     or %NULL. Free with g_free()
  *
  * Since: 2.18
  **/
-char *
-g_content_type_from_mime_type (const char *mime_type)
+gchar *
+g_content_type_from_mime_type (const gchar *mime_type)
 {
   char *umime;
 
@@ -869,24 +872,25 @@ g_content_type_from_mime_type (const char *mime_type)
 
 /**
  * g_content_type_guess:
- * @filename: a string, or %NULL
- * @data: a stream of data, or %NULL
+ * @filename: (allow-none): a string, or %NULL
+ * @data: (allow-none) (array length=data_size): a stream of data, or %NULL
  * @data_size: the size of @data
- * @result_uncertain: a flag indicating the certainty of the result
- * 
- * Guesses the content type based on example data. If the function is 
+ * @result_uncertain: (allow-none) (out): return location for the certainty
+ *     of the result, or %NULL
+ *
+ * Guesses the content type based on example data. If the function is
  * uncertain, @result_uncertain will be set to %TRUE. Either @filename
  * or @data may be %NULL, in which case the guess will be based solely
  * on the other argument.
- * 
- * Returns: a string indicating a guessed content type for the 
- * given data. 
- **/  
-char *
-g_content_type_guess (const char   *filename,
-		      const guchar *data,
-		      gsize         data_size,
-		      gboolean     *result_uncertain)
+ *
+ * Returns: a string indicating a guessed content type for the
+ *     given data. Free with g_free()
+ */
+gchar *
+g_content_type_guess (const gchar  *filename,
+                      const guchar *data,
+                      gsize         data_size,
+                      gboolean     *result_uncertain)
 {
   char *basename;
   const char *name_mimetypes[10], *sniffed_mimetype;
@@ -901,9 +905,9 @@ g_content_type_guess (const char   *filename,
 
   if (result_uncertain)
     *result_uncertain = FALSE;
-  
+
   G_LOCK (gio_xdgmime);
-  
+
   if (filename)
     {
       i = strlen (filename);
@@ -929,14 +933,14 @@ g_content_type_guess (const char   *filename,
       G_UNLOCK (gio_xdgmime);
       return g_strdup (name_mimetypes[0]);
     }
-  
+
   if (data)
     {
       sniffed_mimetype = xdg_mime_get_mime_type_for_data (data, data_size, &sniffed_prio);
       if (sniffed_mimetype == XDG_MIME_TYPE_UNKNOWN &&
-	  data &&
-	  looks_like_text (data, data_size))
-	sniffed_mimetype = "text/plain";
+          data &&
+          looks_like_text (data, data_size))
+        sniffed_mimetype = "text/plain";
 
       /* For security reasons we don't ever want to sniff desktop files
        * where we know the filename and it doesn't have a .desktop extension.
@@ -948,57 +952,60 @@ g_content_type_guess (const char   *filename,
           strcmp (sniffed_mimetype, "application/x-desktop") == 0)
         sniffed_mimetype = "text/plain";
     }
-  
+
   if (n_name_mimetypes == 0)
     {
       if (sniffed_mimetype == XDG_MIME_TYPE_UNKNOWN &&
-	  result_uncertain)
-	*result_uncertain = TRUE;
-      
+          result_uncertain)
+        *result_uncertain = TRUE;
+
       mimetype = g_strdup (sniffed_mimetype);
     }
   else
     {
       mimetype = NULL;
       if (sniffed_mimetype != XDG_MIME_TYPE_UNKNOWN)
-	{
-	  if (sniffed_prio >= 80) /* High priority sniffing match, use that */
-	    mimetype = g_strdup (sniffed_mimetype);
-	  else
-	    {
-	      /* There are conflicts between the name matches and we have a sniffed
-		 type, use that as a tie breaker. */
-	      
-	      for (i = 0; i < n_name_mimetypes; i++)
-		{
-		  if ( xdg_mime_mime_type_subclass (name_mimetypes[i], sniffed_mimetype))
-		    {
-		      /* This nametype match is derived from (or the same as) the sniffed type).
-			 This is probably it. */
-		      mimetype = g_strdup (name_mimetypes[i]);
-		      break;
-		    }
-		}
-	    }
-	}
-      
+        {
+          if (sniffed_prio >= 80) /* High priority sniffing match, use that */
+            mimetype = g_strdup (sniffed_mimetype);
+          else
+            {
+              /* There are conflicts between the name matches and we
+               * have a sniffed type, use that as a tie breaker.
+               */
+              for (i = 0; i < n_name_mimetypes; i++)
+                {
+                  if ( xdg_mime_mime_type_subclass (name_mimetypes[i], sniffed_mimetype))
+                    {
+                      /* This nametype match is derived from (or the same as)
+                       * the sniffed type). This is probably it.
+                       */
+                      mimetype = g_strdup (name_mimetypes[i]);
+                      break;
+                    }
+                }
+            }
+        }
+
       if (mimetype == NULL)
-	{
-	  /* Conflicts, and sniffed type was no help or not there. Guess on the first one */
-	  mimetype = g_strdup (name_mimetypes[0]);
-	  if (result_uncertain)
-	    *result_uncertain = TRUE;
-	}
+        {
+          /* Conflicts, and sniffed type was no help or not there.
+           * Guess on the first one
+           */
+          mimetype = g_strdup (name_mimetypes[0]);
+          if (result_uncertain)
+            *result_uncertain = TRUE;
+        }
     }
-  
+
   G_UNLOCK (gio_xdgmime);
 
   return mimetype;
 }
 
 static void
-enumerate_mimetypes_subdir (const char *dir, 
-                            const char *prefix, 
+enumerate_mimetypes_subdir (const char *dir,
+                            const char *prefix,
                             GHashTable *mimetypes)
 {
   DIR *d;
@@ -1009,19 +1016,19 @@ enumerate_mimetypes_subdir (const char *dir,
   if (d)
     {
       while ((ent = readdir (d)) != NULL)
-	{
-	  if (g_str_has_suffix (ent->d_name, ".xml"))
-	    {
-	      mimetype = g_strdup_printf ("%s/%.*s", prefix, (int) strlen (ent->d_name) - 4, ent->d_name);
-	      g_hash_table_replace (mimetypes, mimetype, NULL);
-	    }
-	}
+        {
+          if (g_str_has_suffix (ent->d_name, ".xml"))
+            {
+              mimetype = g_strdup_printf ("%s/%.*s", prefix, (int) strlen (ent->d_name) - 4, ent->d_name);
+              g_hash_table_replace (mimetypes, mimetype, NULL);
+            }
+        }
       closedir (d);
     }
 }
 
 static void
-enumerate_mimetypes_dir (const char *dir, 
+enumerate_mimetypes_dir (const char *dir,
                          GHashTable *mimetypes)
 {
   DIR *d;
@@ -1030,34 +1037,38 @@ enumerate_mimetypes_dir (const char *dir,
   char *name;
 
   mimedir = g_build_filename (dir, "mime", NULL);
-  
+
   d = opendir (mimedir);
   if (d)
     {
       while ((ent = readdir (d)) != NULL)
-	{
-	  if (strcmp (ent->d_name, "packages") != 0)
-	    {
-	      name = g_build_filename (mimedir, ent->d_name, NULL);
-	      if (g_file_test (name, G_FILE_TEST_IS_DIR))
-		enumerate_mimetypes_subdir (name, ent->d_name, mimetypes);
-	      g_free (name);
-	    }
-	}
+        {
+          if (strcmp (ent->d_name, "packages") != 0)
+            {
+              name = g_build_filename (mimedir, ent->d_name, NULL);
+              if (g_file_test (name, G_FILE_TEST_IS_DIR))
+                enumerate_mimetypes_subdir (name, ent->d_name, mimetypes);
+              g_free (name);
+            }
+        }
       closedir (d);
     }
-  
+
   g_free (mimedir);
 }
 
 /**
  * g_content_types_get_registered:
- * 
+ *
  * Gets a list of strings containing all the registered content types
- * known to the system. The list and its data should be freed using 
- * @g_list_foreach(list, g_free, NULL) and @g_list_free(list)
- * Returns: #GList of the registered content types.
- **/  
+ * known to the system. The list and its data should be freed using
+ * <programlisting>
+ * g_list_foreach (list, g_free, NULL);
+ * g_list_free (list);
+ * </programlisting>
+ *
+ * Returns: #GList of the registered content types
+ */
 GList *
 g_content_types_get_registered (void)
 {
@@ -1096,7 +1107,7 @@ static gboolean need_reload = FALSE;
 
 G_LOCK_DEFINE_STATIC (gio_treemagic);
 
-typedef struct 
+typedef struct
 {
   gchar *path;
   GFileType type;
@@ -1146,10 +1157,10 @@ parse_header (gchar *line)
 
   if (line[0] != '[' || line[len - 1] != ']')
     return NULL;
-	
+
   line[len - 1] = 0;
   s = strchr (line, ':');
-	
+
   match = g_slice_new0 (TreeMatch);
   match->priority = atoi (line + 1);
   match->contenttype = g_strdup (s + 1);
@@ -1158,8 +1169,8 @@ parse_header (gchar *line)
 }
 
 static TreeMatchlet *
-parse_match_line (gchar *line, 
-		  gint  *depth)
+parse_match_line (gchar *line,
+                  gint  *depth)
 {
   gchar *s, *p;
   TreeMatchlet *matchlet;
@@ -1168,17 +1179,17 @@ parse_match_line (gchar *line,
 
   matchlet = g_slice_new0 (TreeMatchlet);
 
-  if (line[0] == '>') 
+  if (line[0] == '>')
     {
       *depth = 0;
       s = line;
     }
-  else 
+  else
     {
       *depth = atoi (line);
       s = strchr (line, '>');
     }
-  s += 2; 
+  s += 2;
   p = strchr (s, '"');
   *p = 0;
 
@@ -1203,7 +1214,7 @@ parse_match_line (gchar *line,
         matchlet->non_empty = 1;
       else if (strcmp (parts[i], "on-disc") == 0)
         matchlet->on_disc = 1;
-      else 
+      else
         matchlet->mimetype = g_strdup (parts[i]);
     }
 
@@ -1228,19 +1239,19 @@ insert_match (TreeMatch *match)
 }
 
 static void
-insert_matchlet (TreeMatch    *match, 
-                 TreeMatchlet *matchlet, 
+insert_matchlet (TreeMatch    *match,
+                 TreeMatchlet *matchlet,
                  gint          depth)
 {
-  if (depth == 0) 
+  if (depth == 0)
     match->matches = g_list_append (match->matches, matchlet);
-  else 
+  else
     {
       GList *last;
       TreeMatchlet *m;
 
       last = g_list_last (match->matches);
-      if (!last) 
+      if (!last)
         {
           tree_matchlet_free (matchlet);
           g_warning ("can't insert tree matchlet at depth %d", depth);
@@ -1248,16 +1259,16 @@ insert_matchlet (TreeMatch    *match,
         }
 
       m = (TreeMatchlet *) last->data;
-      while (--depth > 0) 
+      while (--depth > 0)
         {
           last = g_list_last (m->matches);
-          if (!last) 
+          if (!last)
             {
               tree_matchlet_free (matchlet);
               g_warning ("can't insert tree matchlet at depth %d", depth);
               return;
             }
-			
+
           m = (TreeMatchlet *) last->data;
         }
       m->matches = g_list_append (m->matches, matchlet);
@@ -1278,34 +1289,34 @@ read_tree_magic_from_directory (const gchar *prefix)
 
   filename = g_build_filename (prefix, "mime", "treemagic", NULL);
 
-  if (g_file_get_contents (filename, &text, &len, NULL)) 
+  if (g_file_get_contents (filename, &text, &len, NULL))
     {
-      if (strcmp (text, "MIME-TreeMagic") == 0) 
+      if (strcmp (text, "MIME-TreeMagic") == 0)
         {
           lines = g_strsplit (text + strlen ("MIME-TreeMagic") + 2, "\n", 0);
           match = NULL;
-          for (i = 0; lines[i] && lines[i][0]; i++) 
+          for (i = 0; lines[i] && lines[i][0]; i++)
             {
-              if (lines[i][0] == '[') 
+              if (lines[i][0] == '[')
                 {
                   match = parse_header (lines[i]);
                   insert_match (match);
                 }
-              else 
+              else
                 {
                   matchlet = parse_match_line (lines[i], &depth);
                   insert_matchlet (match, matchlet, depth);
                 }
             }
-      
+
           g_strfreev (lines);
         }
-      else 
+      else
         g_warning ("%s: header not found, skipping\n", filename);
 
       g_free (text);
     }
-	
+
   g_free (filename);
 }
 
@@ -1316,7 +1327,7 @@ xdg_mime_reload (void *user_data)
   need_reload = TRUE;
 }
 
-static void 
+static void
 tree_magic_shutdown (void)
 {
   g_list_foreach (tree_matches, (GFunc)tree_match_free, NULL);
@@ -1332,7 +1343,7 @@ tree_magic_init (void)
   const gchar * const * dirs;
   int i;
 
-  if (!initialized) 
+  if (!initialized)
     {
       initialized = TRUE;
 
@@ -1340,7 +1351,7 @@ tree_magic_init (void)
       need_reload = TRUE;
     }
 
-  if (need_reload) 
+  if (need_reload)
     {
       need_reload = FALSE;
 
@@ -1356,7 +1367,7 @@ tree_magic_init (void)
 
 /* a filtering enumerator */
 
-typedef struct 
+typedef struct
 {
   gchar *path;
   gint depth;
@@ -1368,8 +1379,8 @@ typedef struct
 } Enumerator;
 
 static gboolean
-component_match (Enumerator  *e, 
-                 gint         depth, 
+component_match (Enumerator  *e,
+                 gint         depth,
                  const gchar *name)
 {
   gchar *case_folded, *key;
@@ -1393,38 +1404,38 @@ component_match (Enumerator  *e,
 }
 
 static GFile *
-next_match_recurse (Enumerator *e, 
+next_match_recurse (Enumerator *e,
                     gint        depth)
 {
   GFile *file;
   GFileInfo *info;
   const gchar *name;
 
-  while (TRUE) 
+  while (TRUE)
     {
-      if (e->enumerators[depth] == NULL) 
+      if (e->enumerators[depth] == NULL)
         {
-          if (depth > 0) 
+          if (depth > 0)
             {
               file = next_match_recurse (e, depth - 1);
-              if (file)  
+              if (file)
                 {
                   e->children[depth] = file;
                   e->enumerators[depth] = g_file_enumerate_children (file,
                                                                      G_FILE_ATTRIBUTE_STANDARD_NAME,
                                                                      G_FILE_QUERY_INFO_NONE,
-							             NULL,
-							             NULL);
+                                                                     NULL,
+                                                                     NULL);
                 }
             }
           if (e->enumerators[depth] == NULL)
             return NULL;
         }
 
-      while ((info = g_file_enumerator_next_file (e->enumerators[depth], NULL, NULL))) 
+      while ((info = g_file_enumerator_next_file (e->enumerators[depth], NULL, NULL)))
         {
           name = g_file_info_get_name (info);
-          if (component_match (e, depth, name)) 
+          if (component_match (e, depth, name))
             {
               file = g_file_get_child (e->children[depth], name);
               g_object_unref (info);
@@ -1448,7 +1459,7 @@ enumerator_next (Enumerator *e)
 
 static Enumerator *
 enumerator_new (GFile      *root,
-                const char *path, 
+                const char *path,
                 gboolean    ignore_case)
 {
   Enumerator *e;
@@ -1461,15 +1472,15 @@ enumerator_new (GFile      *root,
 
   e->components = g_strsplit (e->path, G_DIR_SEPARATOR_S, -1);
   e->depth = g_strv_length (e->components);
-  if (e->ignore_case) 
+  if (e->ignore_case)
     {
       e->case_components = g_new0 (char *, e->depth + 1);
-      for (i = 0; e->components[i]; i++) 
+      for (i = 0; e->components[i]; i++)
         {
           case_folded = g_utf8_casefold (e->components[i], -1);
           e->case_components[i] = g_utf8_collate_key (case_folded, -1);
           g_free (case_folded);
-        }	
+        }
     }
 
   e->children = g_new0 (GFile *, e->depth);
@@ -1489,9 +1500,9 @@ enumerator_free (Enumerator *e)
 {
   gint i;
 
-  for (i = 0; i < e->depth; i++) 
-    { 
-      if (e->enumerators[i]) 
+  for (i = 0; i < e->depth; i++)
+    {
+      if (e->enumerators[i])
         g_object_unref (e->enumerators[i]);
       if (e->children[i])
         g_object_unref (e->children[i]);
@@ -1518,13 +1529,13 @@ matchlet_match (TreeMatchlet *matchlet,
   GList *l;
 
   e = enumerator_new (root, matchlet->path, !matchlet->match_case);
-	
-  do 
+
+  do
     {
       file = enumerator_next (e);
-      if (!file) 
+      if (!file)
         {
-          enumerator_free (e);	
+          enumerator_free (e);
           return FALSE;
         }
 
@@ -1535,67 +1546,67 @@ matchlet_match (TreeMatchlet *matchlet,
       else
         attrs = G_FILE_ATTRIBUTE_STANDARD_TYPE ","
                 G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE;
-      info = g_file_query_info (file, 
+      info = g_file_query_info (file,
                                 attrs,
                                 G_FILE_QUERY_INFO_NONE,
                                 NULL,
                                 NULL);
-      if (info) 
+      if (info)
         {
           result = TRUE;
 
           if (matchlet->type != G_FILE_TYPE_UNKNOWN &&
-              g_file_info_get_file_type (info) != matchlet->type) 
+              g_file_info_get_file_type (info) != matchlet->type)
             result = FALSE;
 
           if (matchlet->executable &&
               !g_file_info_get_attribute_boolean (info, G_FILE_ATTRIBUTE_ACCESS_CAN_EXECUTE))
             result = FALSE;
-        }	
-      else 
+        }
+      else
         result = FALSE;
 
-      if (result && matchlet->non_empty) 
+      if (result && matchlet->non_empty)
         {
           GFileEnumerator *child_enum;
           GFileInfo *child_info;
 
-          child_enum = g_file_enumerate_children (file, 
+          child_enum = g_file_enumerate_children (file,
                                                   G_FILE_ATTRIBUTE_STANDARD_NAME,
                                                   G_FILE_QUERY_INFO_NONE,
                                                   NULL,
                                                   NULL);
-	
-          if (child_enum) 
+
+          if (child_enum)
             {
               child_info = g_file_enumerator_next_file (child_enum, NULL, NULL);
               if (child_info)
                 g_object_unref (child_info);
-              else 
-                result = FALSE;	
+              else
+                result = FALSE;
               g_object_unref (child_enum);
             }
-          else 
+          else
             result = FALSE;
         }
-	
-      if (result && matchlet->mimetype) 
+
+      if (result && matchlet->mimetype)
         {
-          if (strcmp (matchlet->mimetype, g_file_info_get_content_type (info)) != 0) 
+          if (strcmp (matchlet->mimetype, g_file_info_get_content_type (info)) != 0)
             result = FALSE;
         }
-	
+
       g_object_unref (info);
       g_object_unref (file);
     }
   while (!result);
 
   enumerator_free (e);
-	
-  if (!matchlet->matches) 
+
+  if (!matchlet->matches)
     return TRUE;
 
-  for (l = matchlet->matches; l; l = l->next) 
+  for (l = matchlet->matches; l; l = l->next)
     {
       TreeMatchlet *submatchlet;
 
@@ -1613,11 +1624,11 @@ match_match (TreeMatch    *match,
              GPtrArray    *types)
 {
   GList *l;
-	
-  for (l = match->matches; l; l = l->next) 
+
+  for (l = match->matches; l; l = l->next)
     {
       TreeMatchlet *matchlet = l->data;
-      if (matchlet_match (matchlet, root)) 
+      if (matchlet_match (matchlet, root))
         {
           g_ptr_array_add (types, g_strdup (match->contenttype));
           break;
@@ -1634,18 +1645,19 @@ match_match (TreeMatch    *match,
  * of content types, with the best guess coming first.
  *
  * The types returned all have the form x-content/foo, e.g.
- * x-content/audio-cdda (for audio CDs) or x-content/image-dcf 
+ * x-content/audio-cdda (for audio CDs) or x-content/image-dcf
  * (for a camera memory card). See the <ulink url="http://www.freedesktop.org/wiki/Specifications/shared-mime-info-spec">shared-mime-info</ulink>
  * specification for more on x-content types.
  *
- * This function is useful in the implementation of g_mount_guess_content_type().
+ * This function is useful in the implementation of
+ * g_mount_guess_content_type().
  *
- * Returns: an %NULL-terminated array of zero or more content types, or %NULL. 
- *    Free with g_strfreev()
+ * Returns: an %NULL-terminated array of zero or more content types,
+ *     or %NULL. Free with g_strfreev()
  *
  * Since: 2.18
  */
-char **
+gchar **
 g_content_type_guess_for_tree (GFile *root)
 {
   GPtrArray *types;
@@ -1656,7 +1668,7 @@ g_content_type_guess_for_tree (GFile *root)
   G_LOCK (gio_treemagic);
 
   tree_magic_init ();
-  for (l = tree_matches; l; l = l->next) 
+  for (l = tree_matches; l; l = l->next)
     {
       TreeMatch *match = l->data;
       match_match (match, root, types);
@@ -1666,7 +1678,7 @@ g_content_type_guess_for_tree (GFile *root)
 
   g_ptr_array_add (types, NULL);
 
-  return (char **)g_ptr_array_free (types, FALSE);
+  return (gchar **)g_ptr_array_free (types, FALSE);
 }
 
 #endif /* Unix version */
