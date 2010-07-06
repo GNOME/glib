@@ -1278,6 +1278,28 @@ test_int64 (void)
   g_key_file_free (file);
 }
 
+static void
+test_load (void)
+{
+  GKeyFile *file;
+  GError *error;
+  gboolean bools[2] = { TRUE, FALSE };
+
+  g_setenv ("XDG_DATA_HOME", SRCDIR, TRUE);
+
+  file = g_key_file_new ();
+  g_assert (g_key_file_load_from_data_dirs (file, "keyfiletest.ini", NULL, 0, &error));
+  g_assert_no_error (error);
+
+  g_key_file_set_locale_string (file, "test", "key4", "de", "Vierter Schlüssel");
+  g_key_file_set_boolean_list (file, "test", "key5", bools, 2);
+  g_key_file_set_integer (file, "test", "key6", 22);
+  g_key_file_set_double (file, "test", "key7", 2.5);
+  g_key_file_set_comment (file, "test", "key7", "some float", NULL);
+
+  g_key_file_free (file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1304,6 +1326,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/key-names", test_key_names);
   g_test_add_func ("/keyfile/reload", test_reload_idempotency);
   g_test_add_func ("/keyfile/int64", test_int64);
+  g_test_add_func ("/keyfile/load", test_load);
   
   return g_test_run ();
 }
