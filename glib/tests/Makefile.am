@@ -105,6 +105,9 @@ list_LDADD          = $(progs_ldadd)
 TEST_PROGS         += slist
 slist_LDADD         = $(progs_ldadd)
 
+TEST_PROGS         += tree
+tree_LDADD          = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality

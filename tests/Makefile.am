@@ -114,7 +114,6 @@ test_programs =					\
 	$(spawn_test_win32_gui)			\
 	thread-test				\
 	threadpool-test				\
-	tree-test				\
 	type-test				\
 	unicode-caseconv			\
 	unicode-encoding			\
@@ -171,7 +170,6 @@ slice_threadinit_LDADD = $(thread_ldadd)
 spawn_test_LDADD = $(progs_ldadd)
 thread_test_LDADD = $(thread_ldadd)
 threadpool_test_LDADD = $(thread_ldadd)
-tree_test_LDADD = $(progs_ldadd)
 type_test_LDADD = $(progs_ldadd)
 unicode_encoding_LDADD = $(progs_ldadd)
 unicode_caseconv_LDADD = $(progs_ldadd)

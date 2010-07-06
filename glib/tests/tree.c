@@ -21,7 +21,7 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
 #undef G_DISABLE_ASSERT
@@ -34,7 +34,7 @@
 
 static gint
 my_compare (gconstpointer a,
-	    gconstpointer b)
+            gconstpointer b)
 {
   const char *cha = a;
   const char *chb = b;
@@ -44,7 +44,7 @@ my_compare (gconstpointer a,
 
 static gint
 my_search (gconstpointer a,
-	   gconstpointer b)
+           gconstpointer b)
 {
   return my_compare (b, a);
 }
@@ -52,13 +52,13 @@ my_search (gconstpointer a,
 static gpointer destroyed_key = NULL;
 static gpointer destroyed_value = NULL;
 
-static void 
+static void
 my_key_destroy (gpointer key)
 {
   destroyed_key = key;
 }
 
-static void 
+static void
 my_value_destroy (gpointer value)
 {
   destroyed_value = value;
@@ -66,31 +66,31 @@ my_value_destroy (gpointer value)
 
 static gint
 my_traverse (gpointer key,
-	     gpointer value,
-	     gpointer data)
+             gpointer value,
+             gpointer data)
 {
   char *ch = key;
   g_assert ((*ch) > 0);
   return FALSE;
 }
 
-char chars[] = 
+char chars[] =
   "0123456789"
   "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
   "abcdefghijklmnopqrstuvwxyz";
 
-char chars2[] = 
+char chars2[] =
   "0123456789"
   "abcdefghijklmnopqrstuvwxyz";
 
 static gint
 check_order (gpointer key,
-	     gpointer value,
-	     gpointer data)
+             gpointer value,
+             gpointer data)
 {
   char **p = data;
   char *ch = key;
-  
+ 
   g_assert (**p == *ch);
 
   (*p)++;
@@ -98,17 +98,14 @@ check_order (gpointer key,
   return FALSE;
 }
 
-
-
-int
-main (int   argc,
-      char *argv[])
+static void
+test_tree_search (void)
 {
   gint i;
   GTree *tree;
   gboolean removed;
-  char c, d;
-  char *p;
+  gchar c;
+  gchar *p, *d;
 
   tree = g_tree_new (my_compare);
 
@@ -117,9 +114,9 @@ main (int   argc,
 
   g_tree_foreach (tree, my_traverse, NULL);
 
-  g_assert (g_tree_nnodes (tree) == strlen (chars));
-  g_assert (g_tree_height (tree) == 6);
-  
+  g_assert_cmpint (g_tree_nnodes (tree), ==, strlen (chars));
+  g_assert_cmpint (g_tree_height (tree), ==, 6);
+ 
   p = chars;
   g_tree_foreach (tree, check_order, &p);
 
@@ -131,12 +128,12 @@ main (int   argc,
 
   c = '\0';
   removed = g_tree_remove (tree, &c);
-  g_assert (removed == FALSE);
+  g_assert (!removed);
 
   g_tree_foreach (tree, my_traverse, NULL);
 
-  g_assert (g_tree_nnodes (tree) == strlen (chars2));
-  g_assert (g_tree_height (tree) == 6);
+  g_assert_cmpint (g_tree_nnodes (tree), ==, strlen (chars2));
+  g_assert_cmpint (g_tree_height (tree), ==, 6);
 
   p = chars2;
   g_tree_foreach (tree, check_order, &p);
@@ -148,8 +145,10 @@ main (int   argc,
   g_tree_foreach (tree, check_order, &p);
 
   c = '0';
-  p = g_tree_lookup (tree, &c); 
+  p = g_tree_lookup (tree, &c);
   g_assert (p && *p == c);
+  g_assert (g_tree_lookup_extended (tree, &c, (gpointer *)&d, (gpointer *)&p));
+  g_assert (c == *d && c == *p);
 
   c = 'A';
   p = g_tree_lookup (tree, &c);
@@ -176,7 +175,7 @@ main (int   argc,
   g_assert (p == NULL);
 
   c = '0';
-  p = g_tree_search (tree, my_search, &c); 
+  p = g_tree_search (tree, my_search, &c);
   g_assert (p && *p == c);
 
   c = 'A';
@@ -203,16 +202,24 @@ main (int   argc,
   p = g_tree_search (tree, my_search, &c);
   g_assert (p == NULL);
 
-
   g_tree_destroy (tree);
+}
 
-  tree = g_tree_new_full ((GCompareDataFunc)my_compare, NULL, 
-			  my_key_destroy, 
-			  my_value_destroy);
+static void
+test_tree_remove (void)
+{
+  GTree *tree;
+  char c, d;
+  gint i;
+  gboolean removed;
+
+  tree = g_tree_new_full ((GCompareDataFunc)my_compare, NULL,
+                          my_key_destroy,
+                          my_value_destroy);
 
   for (i = 0; chars[i]; i++)
     g_tree_insert (tree, &chars[i], &chars[i]);
-  
+
   c = '0';
   g_tree_insert (tree, &c, &c);
   g_assert (destroyed_key == &c);
@@ -241,6 +248,39 @@ main (int   argc,
   g_assert (destroyed_key == NULL);
   g_assert (destroyed_value == NULL);
 
-  return 0;
+  g_tree_destroy (tree);
+}
+
+static void
+test_tree_destroy (void)
+{
+  GTree *tree;
+  gint i;
+
+  tree = g_tree_new (my_compare);
+
+  for (i = 0; chars[i]; i++)
+    g_tree_insert (tree, &chars[i], &chars[i]);
+
+  g_assert_cmpint (g_tree_nnodes (tree), ==, strlen (chars));
+
+  g_tree_ref (tree);
+  g_tree_destroy (tree);
+
+  g_assert_cmpint (g_tree_nnodes (tree), ==, 0);
+
+  g_tree_unref (tree);
+}
+
+int
+main (int argc, char *argv[])
+{
+  g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/tree/search", test_tree_search);
+  g_test_add_func ("/tree/remove", test_tree_remove);
+  g_test_add_func ("/tree/destroy", test_tree_destroy);
+
+  return g_test_run ();
 }
 
