@@ -1285,9 +1285,8 @@ test_load (void)
   GError *error;
   gboolean bools[2] = { TRUE, FALSE };
 
-  g_setenv ("XDG_DATA_HOME", SRCDIR, TRUE);
-
   file = g_key_file_new ();
+  error = NULL;
   g_assert (g_key_file_load_from_data_dirs (file, "keyfiletest.ini", NULL, 0, &error));
   g_assert_no_error (error);
 
@@ -1300,9 +1299,15 @@ test_load (void)
   g_key_file_free (file);
 }
 
+#ifndef SRCDIR
+#define SRCDIR "."
+#endif
+
 int
 main (int argc, char *argv[])
 {
+  g_setenv ("XDG_DATA_HOME", SRCDIR, TRUE);
+
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
