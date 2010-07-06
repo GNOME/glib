@@ -318,6 +318,18 @@ run_uri_list_tests (void)
   g_assert_cmpint (g_strv_length (uris), ==, 0);
 }
 
+static void
+test_uri_unescape (void)
+{
+  g_assert_cmpstr (g_uri_unescape_string ("%2Babc %4F",  NULL), ==, "+abc O");
+  g_assert_cmpstr (g_uri_unescape_string ("%2Babc %4F",  "+"), ==, NULL);
+  g_assert_cmpstr (g_uri_unescape_string ("%00abc %4F",  "+/"), ==, NULL);
+  g_assert_cmpstr (g_uri_unescape_string ("%0",  NULL), ==, NULL);
+  g_assert_cmpstr (g_uri_unescape_string ("%ra",  NULL), ==, NULL);
+  g_assert_cmpstr (g_uri_unescape_string ("%2r",  NULL), ==, NULL);
+  g_assert_cmpstr (g_uri_unescape_string (NULL,  NULL), ==, NULL);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -328,6 +340,7 @@ main (int   argc,
   g_test_add_func ("/uri/from-uri", run_from_uri_tests);
   g_test_add_func ("/uri/roundtrip", run_roundtrip_tests);
   g_test_add_func ("/uri/list", run_uri_list_tests);
+  g_test_add_func ("/uri/unescape", test_uri_unescape);
 
   return g_test_run ();
 }
