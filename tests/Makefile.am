@@ -94,7 +94,6 @@ test_programs =					\
 	env-test				\
 	gio-test				\
 	iochannel-test				\
-	list-test				\
 	mainloop-test				\
 	mapping-test				\
 	markup-collect				\
@@ -107,7 +106,6 @@ test_programs =					\
 	qsort-test				\
 	relation-test				\
 	shell-test				\
-	slist-test				\
 	slice-test				\
 	slice-color				\
 	slice-concurrent			\
@@ -162,7 +160,6 @@ asyncqueue_test_LDADD = $(thread_ldadd)
 qsort_test_LDADD = $(progs_ldadd)
 relation_test_LDADD = $(progs_ldadd)
 shell_test_LDADD = $(progs_ldadd)
-slist_test_LDADD = $(progs_ldadd)
 slice_test_SOURCES = slice-test.c memchunks.c
 slice_test_LDADD = $(thread_ldadd)
 slice_color_SOURCES = slice-color.c memchunks.c
