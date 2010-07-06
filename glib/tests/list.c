@@ -157,6 +157,143 @@ test_list_nth (void)
   g_list_free (list);
 }
 
+static void
+test_list_concat (void)
+{
+  GList *list1 = NULL;
+  GList *list2 = NULL;
+  GList *st;
+  gint   nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  gint i;
+
+  for (i = 0; i < 5; i++)
+    {
+      list1 = g_list_append (list1, &nums[i]);
+      list2 = g_list_append (list2, &nums[i+5]);
+    }
+
+  g_assert_cmpint (g_list_length (list1), ==, 5);
+  g_assert_cmpint (g_list_length (list2), ==, 5);
+
+  list1 = g_list_concat (list1, list2);
+
+  g_assert_cmpint (g_list_length (list1), ==, 10);
+
+  for (i = 0; i < 10; i++)
+    {
+      st = g_list_nth (list1, i);
+      g_assert (*((gint*) st->data) == i);
+    }
+
+  g_list_free (list1);
+}
+
+static void
+test_list_remove (void)
+{
+  GList *list = NULL;
+  GList *st;
+  gint   nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  gint   i;
+
+  for (i = 0; i < 10; i++)
+    {
+      list = g_list_append (list, &nums[i]);
+      list = g_list_append (list, &nums[i]);
+    }
+
+  g_assert_cmpint (g_list_length (list), ==, 20);
+
+  for (i = 0; i < 10; i++)
+    {
+      list = g_list_remove (list, &nums[i]);
+    }
+
+  g_assert_cmpint (g_list_length (list), ==, 10);
+
+  for (i = 0; i < 10; i++)
+    {
+      st = g_list_nth (list, i);
+      g_assert (*((gint*) st->data) == i);
+    }
+
+  g_list_free (list);
+}
+
+static void
+test_list_remove_all (void)
+{
+  GList *list = NULL;
+  gint   nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  gint   i;
+
+  for (i = 0; i < 10; i++)
+    {
+      list = g_list_append (list, &nums[i]);
+      list = g_list_append (list, &nums[i]);
+    }
+
+  g_assert_cmpint (g_list_length (list), ==, 20);
+
+  for (i = 0; i < 10; i++)
+    {
+      list = g_list_remove_all (list, &nums[i]);
+    }
+
+  g_assert_cmpint (g_list_length (list), ==, 0);
+  g_assert (list == NULL);
+}
+
+static void
+test_list_first_last (void)
+{
+  GList *list = NULL;
+  GList *st;
+  gint   nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  gint   i;
+
+  for (i = 0; i < 10; i++)
+    list = g_list_append (list, &nums[i]);
+
+  st = g_list_last (list);
+  g_assert (*((gint*) st->data) == 9);
+  st = g_list_nth_prev (st, 3);
+  g_assert (*((gint*) st->data) == 6);
+  st = g_list_first (st);
+  g_assert (*((gint*) st->data) == 0);
+
+  g_list_free (list);
+}
+
+static void
+test_list_insert (void)
+{
+  GList *list = NULL;
+  GList *st;
+  gint   nums[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  gint   i;
+
+  list = g_list_insert_before (NULL, NULL, &nums[1]);
+  list = g_list_insert (list, &nums[3], 1);
+  list = g_list_insert (list, &nums[4], -1);
+  list = g_list_insert (list, &nums[0], 0);
+  list = g_list_insert (list, &nums[5], 100);
+  list = g_list_insert_before (list, NULL, &nums[6]);
+  list = g_list_insert_before (list, list->next->next, &nums[2]);
+
+  list = g_list_insert (list, &nums[9], 7);
+  list = g_list_insert (list, &nums[8], 7);
+  list = g_list_insert (list, &nums[7], 7);
+
+  for (i = 0; i < 10; i++)
+    {
+      st = g_list_nth (list, i);
+      g_assert (*((gint*) st->data) == i);
+    }
+
+  g_list_free (list);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -174,6 +311,11 @@ main (int argc, char *argv[])
   g_test_add_func ("/list/insert-sorted-with-data", test_list_insert_sorted_with_data);
   g_test_add_func ("/list/reverse", test_list_reverse);
   g_test_add_func ("/list/nth", test_list_nth);
+  g_test_add_func ("/list/concat", test_list_concat);
+  g_test_add_func ("/list/remove", test_list_remove);
+  g_test_add_func ("/list/remove-all", test_list_remove_all);
+  g_test_add_func ("/list/first-last", test_list_first_last);
+  g_test_add_func ("/list/insert", test_list_insert);
 
   return g_test_run ();
 }
