@@ -28,6 +28,19 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+test_empty_address (void)
+{
+  GError *error;
+  error = NULL;
+  g_dbus_address_get_stream_sync ("",
+                                  NULL,
+                                  NULL,
+                                  &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_error_free (error);
+}
+
 #ifdef G_OS_UNIX
 static void
 test_unix_address (void)
@@ -68,6 +81,7 @@ main (int   argc,
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/gdbus/empty-address", test_empty_address);
 #ifdef G_OS_UNIX
   g_test_add_func ("/gdbus/unix-address", test_unix_address);
 #endif

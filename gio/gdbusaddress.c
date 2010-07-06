@@ -83,6 +83,9 @@ g_dbus_is_address (const gchar *string)
   g_return_val_if_fail (string != NULL, FALSE);
 
   a = g_strsplit (string, ";", 0);
+  if (a[0] == NULL)
+    goto out;
+
   for (n = 0; a[n] != NULL; n++)
     {
       if (!_g_dbus_address_parse_entry (a[n],
@@ -879,11 +882,19 @@ g_dbus_address_get_stream_sync (const gchar   *address,
   last_error = NULL;
 
   addr_array = g_strsplit (address, ";", 0);
-  last_error = NULL;
+  if (addr_array[0] == NULL)
+    {
+      last_error = g_error_new_literal (G_IO_ERROR,
+                                        G_IO_ERROR_INVALID_ARGUMENT,
+                                        _("The given address is empty"));
+      goto out;
+    }
+
   for (n = 0; addr_array != NULL && addr_array[n] != NULL; n++)
     {
       const gchar *addr = addr_array[n];
       GError *this_error;
+
       this_error = NULL;
       ret = g_dbus_address_try_connect_one (addr,
                                             out_guid,
