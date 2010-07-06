@@ -5356,23 +5356,15 @@ handle_generic_get_machine_id_unlocked (GDBusConnection *connection,
   if (connection->priv->machine_id == NULL)
     {
       GError *error;
+
       error = NULL;
-      /* TODO: use PACKAGE_LOCALSTATEDIR ? */
-      if (!g_file_get_contents ("/var/lib/dbus/machine-id",
-                                &connection->priv->machine_id,
-                                NULL,
-                                &error))
+      connection->priv->machine_id = _g_dbus_get_machine_id (&error);
+      if (connection->priv->machine_id == NULL)
         {
-          reply = g_dbus_message_new_method_error (message,
-                                                   "org.freedesktop.DBus.Error.Failed",
-                                                   _("Unable to load /var/lib/dbus/machine-id: %s"),
-                                                   error->message);
+          reply = g_dbus_message_new_method_error_literal (message,
+                                                           "org.freedesktop.DBus.Error.Failed",
+                                                           error->message);
           g_error_free (error);
-        }
-      else
-        {
-          g_strstrip (connection->priv->machine_id);
-          /* TODO: validate value */
         }
     }
 

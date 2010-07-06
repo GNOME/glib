@@ -55,6 +55,8 @@
  * is explained in detail in the <link linkend="http://dbus.freedesktop.org/doc/dbus-specification.html&num;addresses">D-Bus specification</link>.
  */
 
+static gchar *get_session_address_platform_specific (GError **error);
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
@@ -386,6 +388,8 @@ g_dbus_is_supported_address (const gchar  *string,
         supported = is_valid_tcp (a[n], key_value_pairs, error);
       else if (g_strcmp0 (transport_name, "nonce-tcp") == 0)
         supported = is_valid_nonce_tcp (a[n], key_value_pairs, error);
+      else if (g_strcmp0 (a[n], "autolaunch:") == 0)
+        supported = TRUE;
 
       g_free (transport_name);
       g_hash_table_unref (key_value_pairs);
@@ -487,6 +491,12 @@ out:
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+static GIOStream *
+g_dbus_address_try_connect_one (const gchar   *address_entry,
+                                gchar        **out_guid,
+                                GCancellable  *cancellable,
+                                GError       **error);
 
 /* TODO: Declare an extension point called GDBusTransport (or similar)
  * and move code below to extensions implementing said extension
@@ -595,6 +605,21 @@ g_dbus_address_connect (const gchar   *address_entry,
 
       /* TODO: deal with family */
       connectable = g_network_address_new (host, port);
+    }
+  else if (g_strcmp0 (address_entry, "autolaunch:") == 0)
+    {
+      gchar *autolaunch_address;
+      autolaunch_address = get_session_address_platform_specific (error);
+      if (autolaunch_address != NULL)
+        {
+          ret = g_dbus_address_try_connect_one (autolaunch_address, NULL, cancellable, error);
+          g_free (autolaunch_address);
+          goto out;
+        }
+      else
+        {
+          g_prefix_error (error, _("Error auto-launching: "));
+        }
     }
   else
     {
@@ -931,11 +956,168 @@ g_dbus_address_get_stream_sync (const gchar   *address,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#ifdef G_OS_UNIX
+static gchar *
+get_session_address_dbus_launch (GError **error)
+{
+  gchar *ret;
+  gchar *machine_id;
+  gchar *command_line;
+  gchar *launch_stdout;
+  gchar *launch_stderr;
+  gint exit_status;
+  gchar *old_dbus_verbose;
+  gboolean restore_dbus_verbose;
+
+  ret = NULL;
+  machine_id = NULL;
+  command_line = NULL;
+  launch_stdout = NULL;
+  launch_stderr = NULL;
+  restore_dbus_verbose = FALSE;
+  old_dbus_verbose = NULL;
+
+  machine_id = _g_dbus_get_machine_id (error);
+  if (machine_id == NULL)
+    {
+      g_prefix_error (error, _("Cannot spawn a message bus without a machine-id: "));
+      goto out;
+    }
+
+  /* We're using private libdbus facilities here. When everything
+   * (X11, Mac OS X, Windows) is spec'ed out correctly (not even the
+   * X11 property is correctly documented right now) we should
+   * consider using the spec instead of dbus-launch.
+   *
+   *   --autolaunch=MACHINEID
+   *          This option implies that dbus-launch should scan  for  a  previ‐
+   *          ously-started  session  and  reuse the values found there. If no
+   *          session is found, it will start a new session. The  --exit-with-
+   *          session option is implied if --autolaunch is given.  This option
+   *          is for the exclusive use of libdbus, you do not want to  use  it
+   *          manually. It may change in the future.
+   */
+
+  /* TODO: maybe provide a variable for where to look for the dbus-launch binary? */
+  command_line = g_strdup_printf ("dbus-launch --autolaunch=%s --binary-syntax --close-stderr", machine_id);
+
+  if (G_UNLIKELY (_g_dbus_debug_address ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("GDBus-debug:Address: Running `%s' to get bus address (possibly autolaunching)\n", command_line);
+      old_dbus_verbose = g_strdup (g_getenv ("DBUS_VERBOSE"));
+      restore_dbus_verbose = TRUE;
+      g_setenv ("DBUS_VERBOSE", "1", TRUE);
+      _g_dbus_debug_print_unlock ();
+    }
+
+  if (!g_spawn_command_line_sync (command_line,
+                                  &launch_stdout,
+                                  &launch_stderr,
+                                  &exit_status,
+                                  error))
+    {
+      g_prefix_error (error, _("Error spawning command line `%s': "), command_line);
+      goto out;
+    }
+
+  if (!WIFEXITED (exit_status))
+    {
+      gchar *escaped_stderr;
+      escaped_stderr = g_strescape (launch_stderr, "");
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   _("Abnormal program termination spawning command line `%s': %s"),
+                   command_line,
+                   escaped_stderr);
+      g_free (escaped_stderr);
+      goto out;
+    }
+
+  if (WEXITSTATUS (exit_status) != 0)
+    {
+      gchar *escaped_stderr;
+      escaped_stderr = g_strescape (launch_stderr, "");
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_FAILED,
+                   _("Command line `%s' exited with non-zero exit status %d: %s"),
+                   command_line,
+                   WEXITSTATUS (exit_status),
+                   escaped_stderr);
+      g_free (escaped_stderr);
+      goto out;
+    }
+
+  /* From the dbus-launch(1) man page:
+   *
+   *   --binary-syntax Write to stdout a nul-terminated bus address,
+   *   then the bus PID as a binary integer of size sizeof(pid_t),
+   *   then the bus X window ID as a binary integer of size
+   *   sizeof(long).  Integers are in the machine's byte order, not
+   *   network byte order or any other canonical byte order.
+   */
+  ret = g_strdup (launch_stdout);
+
+ out:
+  if (G_UNLIKELY (_g_dbus_debug_address ()))
+    {
+      gchar *s;
+      _g_dbus_debug_print_lock ();
+      g_print ("GDBus-debug:Address: dbus-launch output:");
+      if (launch_stdout != NULL)
+        {
+          s = _g_dbus_hexdump (launch_stdout, strlen (launch_stdout) + 1 + sizeof (pid_t) + sizeof (long), 2);
+          g_print ("\n%s", s);
+          g_free (s);
+        }
+      else
+        {
+          g_print (" (none)\n");
+        }
+      g_print ("GDBus-debug:Address: dbus-launch stderr output:");
+      if (launch_stderr != NULL)
+        g_print ("\n%s", launch_stderr);
+      else
+        g_print (" (none)\n");
+      _g_dbus_debug_print_unlock ();
+    }
+
+  g_free (machine_id);
+  g_free (command_line);
+  g_free (launch_stdout);
+  g_free (launch_stderr);
+  if (G_UNLIKELY (restore_dbus_verbose))
+    {
+      if (old_dbus_verbose != NULL)
+        g_setenv ("DBUS_VERBOSE", old_dbus_verbose, TRUE);
+      else
+        g_unsetenv ("DBUS_VERBOSE");
+    }
+  g_free (old_dbus_verbose);
+  return ret;
+}
+#endif
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 /* TODO: implement for UNIX, Win32 and OS X */
 static gchar *
-get_session_address_platform_specific (void)
+get_session_address_platform_specific (GError **error)
 {
-  return NULL;
+  gchar *ret;
+#ifdef G_OS_UNIX
+  /* need to handle OS X in a different way since `dbus-launch --autolaunch' probably won't work there */
+  ret = get_session_address_dbus_launch (error);
+#else
+  ret = NULL;
+  g_set_error (error,
+               G_IO_ERROR,
+               G_IO_ERROR_FAILED,
+               _("Cannot determine session bus address (not implemented for this OS)"));
+#endif
+  return ret;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -961,10 +1143,39 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
 {
   gchar *ret;
   const gchar *starter_bus;
+  GError *local_error;
 
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   ret = NULL;
+  local_error = NULL;
+
+  if (G_UNLIKELY (_g_dbus_debug_address ()))
+    {
+      guint n;
+      _g_dbus_debug_print_lock ();
+      g_print ("GDBus-debug:Address: In g_dbus_address_get_for_bus_sync() for bus type `%s'\n",
+               _g_dbus_enum_to_string (G_TYPE_BUS_TYPE, bus_type));
+      for (n = 0; n < 3; n++)
+        {
+          const gchar *k;
+          const gchar *v;
+          switch (n)
+            {
+            case 0: k = "DBUS_SESSION_BUS_ADDRESS"; break;
+            case 1: k = "DBUS_SYSTEM_BUS_ADDRESS"; break;
+            case 2: k = "DBUS_STARTER_BUS_TYPE"; break;
+            default: g_assert_not_reached ();
+            }
+          v = g_getenv (k);
+          g_print ("GDBus-debug:Address: env var %s", k);
+          if (v != NULL)
+            g_print ("=`%s'\n", v);
+          else
+            g_print (" is not set\n");
+        }
+      _g_dbus_debug_print_unlock ();
+    }
 
   switch (bus_type)
     {
@@ -980,14 +1191,7 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
       ret = g_strdup (g_getenv ("DBUS_SESSION_BUS_ADDRESS"));
       if (ret == NULL)
         {
-          ret = get_session_address_platform_specific ();
-          if (ret == NULL)
-            {
-              g_set_error (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_FAILED,
-                           _("Cannot determine session bus address (TODO: run dbus-launch to find out)"));
-            }
+          ret = get_session_address_platform_specific (&local_error);
         }
       break;
 
@@ -995,19 +1199,19 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
       starter_bus = g_getenv ("DBUS_STARTER_BUS_TYPE");
       if (g_strcmp0 (starter_bus, "session") == 0)
         {
-          ret = g_dbus_address_get_for_bus_sync (G_BUS_TYPE_SESSION, cancellable, error);
+          ret = g_dbus_address_get_for_bus_sync (G_BUS_TYPE_SESSION, cancellable, &local_error);
           goto out;
         }
       else if (g_strcmp0 (starter_bus, "system") == 0)
         {
-          ret = g_dbus_address_get_for_bus_sync (G_BUS_TYPE_SYSTEM, cancellable, error);
+          ret = g_dbus_address_get_for_bus_sync (G_BUS_TYPE_SYSTEM, cancellable, &local_error);
           goto out;
         }
       else
         {
           if (starter_bus != NULL)
             {
-              g_set_error (error,
+              g_set_error (&local_error,
                            G_IO_ERROR,
                            G_IO_ERROR_FAILED,
                            _("Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable"
@@ -1016,7 +1220,7 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
             }
           else
             {
-              g_set_error_literal (error,
+              g_set_error_literal (&local_error,
                                    G_IO_ERROR,
                                    G_IO_ERROR_FAILED,
                                    _("Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
@@ -1026,7 +1230,7 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
       break;
 
     default:
-      g_set_error (error,
+      g_set_error (&local_error,
                    G_IO_ERROR,
                    G_IO_ERROR_FAILED,
                    _("Unknown bus type %d"),
@@ -1035,6 +1239,27 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
     }
 
  out:
+  if (G_UNLIKELY (_g_dbus_debug_address ()))
+    {
+      _g_dbus_debug_print_lock ();
+      if (ret != NULL)
+        {
+          g_print ("GDBus-debug:Address: Returning address `%s' for bus type `%s'\n",
+                   ret,
+                   _g_dbus_enum_to_string (G_TYPE_BUS_TYPE, bus_type));
+        }
+      else
+        {
+          g_print ("GDBus-debug:Address: Cannot look-up address bus type `%s': %s\n",
+                   _g_dbus_enum_to_string (G_TYPE_BUS_TYPE, bus_type),
+                   local_error->message);
+        }
+      _g_dbus_debug_print_unlock ();
+    }
+
+  if (local_error != NULL)
+    g_propagate_error (error, local_error);
+
   return ret;
 }
 

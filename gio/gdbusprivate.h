@@ -81,6 +81,8 @@ gboolean _g_dbus_debug_call    (void);
 gboolean _g_dbus_debug_signal  (void);
 gboolean _g_dbus_debug_incoming (void);
 gboolean _g_dbus_debug_emission (void);
+gboolean _g_dbus_debug_address (void);
+
 void     _g_dbus_debug_print_lock (void);
 void     _g_dbus_debug_print_unlock (void);
 
@@ -98,6 +100,10 @@ gchar *_g_dbus_hexdump (const gchar *data, gsize len, guint indent);
 #ifdef G_OS_WIN32
 gchar *_g_dbus_win32_get_user_sid (void);
 #endif
+
+gchar *_g_dbus_get_machine_id (GError **error);
+
+gchar *_g_dbus_enum_to_string (GType enum_type, gint value);
 
 G_END_DECLS
 

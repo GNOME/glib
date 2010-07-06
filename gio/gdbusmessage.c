@@ -2605,23 +2605,6 @@ g_dbus_message_to_gerror (GDBusMessage   *message,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gchar *
-enum_to_string (GType enum_type, gint value)
-{
-  gchar *ret;
-  GEnumClass *klass;
-  GEnumValue *enum_value;
-
-  klass = g_type_class_ref (enum_type);
-  enum_value = g_enum_get_value (klass, value);
-  if (enum_value != NULL)
-    ret = g_strdup (enum_value->value_nick);
-  else
-    ret = g_strdup_printf ("unknown (value %d)", value);
-  g_type_class_unref (klass);
-  return ret;
-}
-
-static gchar *
 flags_to_string (GType flags_type, guint value)
 {
   GString *s;
@@ -2720,7 +2703,7 @@ g_dbus_message_print (GDBusMessage *message,
 
   str = g_string_new (NULL);
 
-  s = enum_to_string (G_TYPE_DBUS_MESSAGE_TYPE, message->priv->type);
+  s = _g_dbus_enum_to_string (G_TYPE_DBUS_MESSAGE_TYPE, message->priv->type);
   g_string_append_printf (str, "%*sType:    %s\n", indent, "", s);
   g_free (s);
   s = flags_to_string (G_TYPE_DBUS_MESSAGE_FLAGS, message->priv->flags);
@@ -2743,7 +2726,7 @@ g_dbus_message_print (GDBusMessage *message,
           value = g_hash_table_lookup (message->priv->headers, l->data);
           g_assert (value != NULL);
 
-          s = enum_to_string (G_TYPE_DBUS_MESSAGE_HEADER_FIELD, key);
+          s = _g_dbus_enum_to_string (G_TYPE_DBUS_MESSAGE_HEADER_FIELD, key);
           value_str = g_variant_print (value, TRUE);
           g_string_append_printf (str, "%*s  %s -> %s\n", indent, "", s, value_str);
           g_free (s);

@@ -367,6 +367,10 @@
              <term>authentication</term>
              <listitem><para>Show information about connection authentication</para></listitem>
            </varlistentry>
+           <varlistentry>
+             <term>address</term>
+             <listitem><para>Show information about D-Bus address lookups and autolaunching</para></listitem>
+           </varlistentry>
          </variablelist>
          The special value <literal>all</literal> can be used to turn on
          all debug options.

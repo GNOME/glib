@@ -1099,6 +1099,7 @@ _g_dbus_worker_stop (GDBusWorker *worker)
 #define G_DBUS_DEBUG_SIGNAL         (1<<4)
 #define G_DBUS_DEBUG_INCOMING       (1<<5)
 #define G_DBUS_DEBUG_EMISSION       (1<<6)
+#define G_DBUS_DEBUG_ADDRESS        (1<<7)
 #define G_DBUS_DEBUG_ALL            0xffffffff
 static gint _gdbus_debug_flags = 0;
 
@@ -1149,6 +1150,13 @@ _g_dbus_debug_emission (void)
 {
   _g_dbus_initialize ();
   return (_gdbus_debug_flags & G_DBUS_DEBUG_EMISSION) != 0;
+}
+
+gboolean
+_g_dbus_debug_address (void)
+{
+  _g_dbus_initialize ();
+  return (_gdbus_debug_flags & G_DBUS_DEBUG_ADDRESS) != 0;
 }
 
 G_LOCK_DEFINE_STATIC (print_lock);
@@ -1207,6 +1215,8 @@ _g_dbus_initialize (void)
                 _gdbus_debug_flags |= G_DBUS_DEBUG_INCOMING;
               else if (g_strcmp0 (tokens[n], "emission") == 0)
                 _gdbus_debug_flags |= G_DBUS_DEBUG_EMISSION;
+              else if (g_strcmp0 (tokens[n], "address") == 0)
+                _gdbus_debug_flags |= G_DBUS_DEBUG_ADDRESS;
               else if (g_strcmp0 (tokens[n], "all") == 0)
                 _gdbus_debug_flags |= G_DBUS_DEBUG_ALL;
             }
@@ -1310,6 +1320,48 @@ out:
   return ret;
 }
 #endif
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+gchar *
+_g_dbus_get_machine_id (GError **error)
+{
+  gchar *ret;
+  /* TODO: use PACKAGE_LOCALSTATEDIR ? */
+  ret = NULL;
+  if (!g_file_get_contents ("/var/lib/dbus/machine-id",
+                            &ret,
+                            NULL,
+                            error))
+    {
+      g_prefix_error (error, _("Unable to load /var/lib/dbus/machine-id: "));
+    }
+  else
+    {
+      /* TODO: validate value */
+      g_strstrip (ret);
+    }
+  return ret;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+gchar *
+_g_dbus_enum_to_string (GType enum_type, gint value)
+{
+  gchar *ret;
+  GEnumClass *klass;
+  GEnumValue *enum_value;
+
+  klass = g_type_class_ref (enum_type);
+  enum_value = g_enum_get_value (klass, value);
+  if (enum_value != NULL)
+    ret = g_strdup (enum_value->value_nick);
+  else
+    ret = g_strdup_printf ("unknown (value %d)", value);
+  g_type_class_unref (klass);
+  return ret;
+}
 
 /* ---------------------------------------------------------------------------------------------------- */
 
