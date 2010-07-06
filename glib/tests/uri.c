@@ -21,13 +21,8 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
-
-#undef G_DISABLE_ASSERT
-#undef G_LOG_DOMAIN
-
-#include "config.h"
 
 #include <glib.h>
 #include <stdio.h>
@@ -169,58 +164,25 @@ from_uri_tests[] = {
   { "file://%2F/", NULL, NULL, G_CONVERT_ERROR_BAD_URI},
 };
 
-
-static gboolean any_failed = FALSE;
-
 static void
 run_to_uri_tests (void)
 {
   int i;
   gchar *res;
   GError *error;
-  
+
   for (i = 0; i < G_N_ELEMENTS (to_uri_tests); i++)
     {
       error = NULL;
       res = g_filename_to_uri (to_uri_tests[i].filename,
-			       to_uri_tests[i].hostname,
-			       &error);
+                               to_uri_tests[i].hostname,
+                               &error);
 
-      if (to_uri_tests[i].expected_result == NULL)
-	{
-	  if (res != NULL)
-	    {
-	      g_print ("\ng_filename_to_uri() test %d failed, expected to return NULL, actual result: %s\n", i, res);
-	      any_failed = TRUE;
-	    }
-	  else
-	    {
-	      if (error == NULL)
-		{
-		  g_print ("\ng_filename_to_uri() test %d failed, returned NULL, but didn't set error\n", i);
-		  any_failed = TRUE;
-		}
-	      else if (error->domain != G_CONVERT_ERROR)
-		{
-		  g_print ("\ng_filename_to_uri() test %d failed, returned NULL, set non G_CONVERT_ERROR error\n", i);
-		  any_failed = TRUE;
-		}
-	      else if (error->code != to_uri_tests[i].expected_error)
-		{
-		  g_print ("\ng_filename_to_uri() test %d failed as expected, but set wrong errorcode %d instead of expected %d \n",
-			   i, error->code, to_uri_tests[i].expected_error);
-		  any_failed = TRUE;
-		}
-	    }
-	}
-      else if (res == NULL || strcmp (res, to_uri_tests[i].expected_result) != 0)
-	{
-	  g_print ("\ng_filename_to_uri() test %d failed, expected result: %s, actual result: %s\n",
-		   i, to_uri_tests[i].expected_result, (res) ? res : "NULL");
-	  if (error)
-	    g_print ("Error message: %s\n", error->message);
-	  any_failed = TRUE;
-	}
+      if (res)
+        g_assert_cmpstr (res, ==, to_uri_tests[i].expected_result);
+      else
+        g_assert_error (error, G_CONVERT_ERROR, to_uri_tests[i].expected_error);
+
       g_free (res);
     }
 }
@@ -232,104 +194,51 @@ run_from_uri_tests (void)
   gchar *res;
   gchar *hostname;
   GError *error;
-  
+
   for (i = 0; i < G_N_ELEMENTS (from_uri_tests); i++)
     {
       error = NULL;
       res = g_filename_from_uri (from_uri_tests[i].uri,
-				 &hostname,
-				 &error);
+                                 &hostname,
+                                 &error);
 
-      if (from_uri_tests[i].expected_filename == NULL)
-	{
-	  if (res != NULL)
-	    {
-	      g_print ("\ng_filename_from_uri() test %d failed, expected to return NULL, actual result: %s\n", i, res);
-	      any_failed = TRUE;
-	    }
-	  else
-	    {
-	      if (error == NULL)
-		{
-		  g_print ("\ng_filename_from_uri() test %d failed, returned NULL, but didn't set error\n", i);
-		  any_failed = TRUE;
-		}
-	      else if (error->domain != G_CONVERT_ERROR)
-		{
-		  g_print ("\ng_filename_from_uri() test %d failed, returned NULL, set non G_CONVERT_ERROR error\n", i);
-		  any_failed = TRUE;
-		}
-	      else if (error->code != from_uri_tests[i].expected_error)
-		{
-		  g_print ("\ng_filename_from_uri() test %d failed as expected, but set wrong errorcode %d instead of expected %d \n",
-			   i, error->code, from_uri_tests[i].expected_error);
-		  any_failed = TRUE;
-		}
-	    }
-	}
-      else
-	{
 #ifdef G_OS_WIN32
-	  gchar *slash, *p;
-
-	  p = from_uri_tests[i].expected_filename = g_strdup (from_uri_tests[i].expected_filename);
-	  while ((slash = strchr (p, '/')) != NULL)
-	    {
-	      *slash = '\\';
-	      p = slash + 1;
-	    }
+      {
+        gchar *p, *slash;
+        p = from_uri_tests[i].expected_filename = g_strdup (from_uri_tests[i].expected_filename);
+        while ((slash = strchr (p, '/')) != NULL)
+          {
+            *slash = '\\';
+            p = slash + 1;
+          }
+      }
 #endif
-	  if (res == NULL || strcmp (res, from_uri_tests[i].expected_filename) != 0)
-	    {
-	      g_print ("\ng_filename_from_uri() test %d failed, expected result: %s, actual result: %s\n",
-		       i, from_uri_tests[i].expected_filename, (res) ? res : "NULL");
-	      any_failed = TRUE;
-	    }
-
-	  if (from_uri_tests[i].expected_hostname == NULL)
-	    {
-	      if (hostname != NULL)
-		{
-		  g_print ("\ng_filename_from_uri() test %d failed, expected no hostname, got: %s\n",
-			   i, hostname);
-		  any_failed = TRUE;
-		}
-	    }
-	  else if (hostname == NULL ||
-		   strcmp (hostname, from_uri_tests[i].expected_hostname) != 0)
-	    {
-	      g_print ("\ng_filename_from_uri() test %d failed, expected hostname: %s, actual result: %s\n",
-		       i, from_uri_tests[i].expected_hostname, (hostname) ? hostname : "NULL");
-	      any_failed = TRUE;
-	    }
-	}
+      if (res)
+        g_assert_cmpstr (res, ==, from_uri_tests[i].expected_filename);
+      else
+        g_assert_error (error, G_CONVERT_ERROR, from_uri_tests[i].expected_error);
+      g_assert_cmpstr (hostname, ==, from_uri_tests[i].expected_hostname);
     }
-}
-
-static gint
-safe_strcmp (const gchar *a, const gchar *b)
-{
-  return strcmp (a ? a : "", b ? b : "");
 }
 
 static gint
 safe_strcmp_filename (const gchar *a, const gchar *b)
 {
 #ifndef G_OS_WIN32
-  return safe_strcmp (a, b);
+  return g_strcmp0 (a, b);
 #else
   if (!a || !b)
-    return safe_strcmp (a, b);
+    return g_strcmp0 (a, b);
   else
     {
       while (*a && *b)
-	{
-	  if ((G_IS_DIR_SEPARATOR (*a) && G_IS_DIR_SEPARATOR (*b)) ||
-	      *a == *b)
-	    a++, b++;
-	  else
-	    return (*a - *b);
-	}
+        {
+          if ((G_IS_DIR_SEPARATOR (*a) && G_IS_DIR_SEPARATOR (*b)) ||
+              *a == *b)
+            a++, b++;
+          else
+            return (*a - *b);
+        }
       return (*a - *b);
     }
 #endif
@@ -338,13 +247,17 @@ safe_strcmp_filename (const gchar *a, const gchar *b)
 static gint
 safe_strcmp_hostname (const gchar *a, const gchar *b)
 {
+  if (a == NULL)
+    a = "";
+  if (b == NULL)
+    b = "";
 #ifndef G_OS_WIN32
-  return safe_strcmp (a, b);
+  return g_strcmp0 (a, b);
 #else
-  if (safe_strcmp (a, "localhost") == 0 && b == NULL)
+  if (g_strcmp0 (a, "localhost") == 0 && b == NULL)
     return 0;
   else
-    return safe_strcmp (a, b);
+    return g_strcmp0 (a, b);
 #endif
 }
 
@@ -354,50 +267,24 @@ run_roundtrip_tests (void)
   int i;
   gchar *uri, *hostname, *res;
   GError *error;
-  
+
   for (i = 0; i < G_N_ELEMENTS (to_uri_tests); i++)
     {
       if (to_uri_tests[i].expected_error != 0)
-	continue;
+        continue;
 
       error = NULL;
       uri = g_filename_to_uri (to_uri_tests[i].filename,
-			       to_uri_tests[i].hostname,
-			       &error);
-      
-      if (error != NULL)
-	{
-	  g_print ("g_filename_to_uri failed unexpectedly: %s\n", 
-		   error->message);
-	  any_failed = TRUE;
-	  continue;
-	}
-      
-      error = NULL;
+                               to_uri_tests[i].hostname,
+                               &error);
+      g_assert_no_error (error);
+
+      hostname = NULL;
       res = g_filename_from_uri (uri, &hostname, &error);
-      if (error != NULL)
-	{
-	  g_print ("g_filename_from_uri failed unexpectedly: %s\n", 
-		   error->message);
-	  any_failed = TRUE;
-	  continue;
-	}
+      g_assert_no_error (error);
 
-      if (safe_strcmp_filename (to_uri_tests[i].filename, res))
-	{
-	  g_print ("roundtrip test %d failed, filename modified: "
-		   " expected \"%s\", but got \"%s\"\n",
-		   i, to_uri_tests[i].filename, res);
-	  any_failed = TRUE;
-	}
-
-      if (safe_strcmp_hostname (to_uri_tests[i].hostname, hostname))
-	{
-	  g_print ("roundtrip test %d failed, hostname modified: "
-		     " expected \"%s\", but got \"%s\"\n",
-		   i, to_uri_tests[i].hostname, hostname);
-	  any_failed = TRUE;
-	}
+      g_assert (safe_strcmp_filename (to_uri_tests[i].filename, res) == 0);
+      g_assert (safe_strcmp_hostname (to_uri_tests[i].hostname, hostname) == 0);
     }
 }
 
@@ -420,58 +307,27 @@ run_uri_list_tests (void)
   gint j;
 
   uris = g_uri_list_extract_uris (list);
-  
-  if (g_strv_length (uris) != 3)
-    {
-      g_print ("uri list test failed: "
-	       " expected %d uris, but got %d\n",
-	       3, g_strv_length (uris));
-      any_failed = TRUE;
-    }
-  
+  g_assert_cmpint (g_strv_length (uris), ==, 3);
+
   for (j = 0; j < 3; j++)
-    {
-      if (safe_strcmp (uris[j], expected_uris[j])) 
-	{
-	  g_print ("uri list test failed: "
-		   " expected \"%s\", but got \"%s\"\n",
-		   expected_uris[j], uris[j]);
-	  any_failed = TRUE;
-	}
-    }
+    g_assert_cmpstr (uris[j], ==, expected_uris[j]);
 
   g_strfreev (uris);
 
   uris = g_uri_list_extract_uris ("# just hot air\r\n# more hot air");
-  if (g_strv_length (uris) != 0)
-    {
-      g_print ("uri list test 2 failed: "
-	       " expected %d uris, but got %d (first is \"%s\")\n",
-	       0, g_strv_length (uris), uris[0]);
-      any_failed = TRUE;
-    }
-  
+  g_assert_cmpint (g_strv_length (uris), ==, 0);
 }
 
 int
 main (int   argc,
       char *argv[])
 {
-#ifdef G_OS_UNIX
-#  ifdef HAVE_UNSETENV  
-  unsetenv ("G_BROKEN_FILENAMES");
-#  else
-  /* putenv with no = isn't standard, but works to unset the variable
-   * on some systems
-   */
-  putenv ("G_BROKEN_FILENAMES");
-#  endif  
-#endif
+  g_test_init (&argc, &argv, NULL);
 
-  run_to_uri_tests ();
-  run_from_uri_tests ();
-  run_roundtrip_tests ();
-  run_uri_list_tests ();
+  g_test_add_func ("/uri/to-uri", run_to_uri_tests);
+  g_test_add_func ("/uri/from-uri", run_from_uri_tests);
+  g_test_add_func ("/uri/roundtrip", run_roundtrip_tests);
+  g_test_add_func ("/uri/list", run_uri_list_tests);
 
-  return any_failed ? 1 : 0;
+  return g_test_run ();
 }
