@@ -909,17 +909,8 @@ validate_constant_blob (GTypelib     *typelib,
     4, /* UINT32 */
     8, /* INT64 */
     8, /* UINT64 */
-    sizeof (gshort),
-    sizeof (gushort),
-    sizeof (gint),
-    sizeof (guint),
-    sizeof (glong),
-    sizeof (gulong),
-    sizeof (gssize),
-    sizeof (gsize),
     sizeof (gfloat),
     sizeof (gdouble),
-    sizeof (time_t),
     0, /* GTYPE */
     0, /* UTF8 */
     0, /* FILENAME */
@@ -932,6 +923,8 @@ validate_constant_blob (GTypelib     *typelib,
   };
   ConstantBlob *blob;
   SimpleTypeBlob *type;
+
+  g_assert (G_N_ELEMENTS (value_size) == GI_TYPE_TAG_ERROR + 1);
 
   if (typelib->len < offset + sizeof (ConstantBlob))
     {

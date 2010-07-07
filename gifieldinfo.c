@@ -215,15 +215,11 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	  break;
 	case GI_TYPE_TAG_INT16:
 	case GI_TYPE_TAG_UINT16:
-	case GI_TYPE_TAG_SHORT:
-	case GI_TYPE_TAG_USHORT:
 	  value->v_uint16 = G_STRUCT_MEMBER (guint16, mem, offset);
 	  result = TRUE;
 	  break;
 	case GI_TYPE_TAG_INT32:
 	case GI_TYPE_TAG_UINT32:
-	case GI_TYPE_TAG_INT:
-	case GI_TYPE_TAG_UINT:
 	  value->v_uint32 = G_STRUCT_MEMBER (guint32, mem, offset);
 	  result = TRUE;
 	  break;
@@ -232,13 +228,6 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	  value->v_uint64 = G_STRUCT_MEMBER (guint64, mem, offset);
 	  result = TRUE;
 	  break;
-	case GI_TYPE_TAG_LONG:
-	case GI_TYPE_TAG_ULONG:
-	  value->v_ulong = G_STRUCT_MEMBER (gulong, mem, offset);
-	  result = TRUE;
-	  break;
-	case GI_TYPE_TAG_SSIZE:
-	case GI_TYPE_TAG_SIZE:
 	case GI_TYPE_TAG_GTYPE:
 	  value->v_size = G_STRUCT_MEMBER (gsize, mem, offset);
 	  result = TRUE;
@@ -249,16 +238,6 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	  break;
 	case GI_TYPE_TAG_DOUBLE:
 	  value->v_double = G_STRUCT_MEMBER (gdouble, mem, offset);
-	  result = TRUE;
-	  break;
-	case GI_TYPE_TAG_TIME_T:
-#if SIZEOF_TIME_T == 4
-	  value->v_int32 = G_STRUCT_MEMBER (time_t, mem, offset);
-#elif SIZEOF_TIME_T == 8
-	  value->v_int64 = G_STRUCT_MEMBER (time_t, mem, offset);
-#else
-#  error "Unexpected size for time_t: not 4 or 8"
-#endif
 	  result = TRUE;
 	  break;
 	case GI_TYPE_TAG_UTF8:
@@ -306,26 +285,17 @@ g_field_info_get_field (GIFieldInfo *field_info,
 		      break;
 		    case GI_TYPE_TAG_INT16:
 		    case GI_TYPE_TAG_UINT16:
-		    case GI_TYPE_TAG_SHORT:
-		    case GI_TYPE_TAG_USHORT:
 		      value->v_int = (gint)G_STRUCT_MEMBER (guint16, mem, offset);
 		      result = TRUE;
 		      break;
 		    case GI_TYPE_TAG_INT32:
 		    case GI_TYPE_TAG_UINT32:
-		    case GI_TYPE_TAG_INT:
-		    case GI_TYPE_TAG_UINT:
 		      value->v_int = (gint)G_STRUCT_MEMBER (guint32, mem, offset);
 		      result = TRUE;
 		      break;
 		    case GI_TYPE_TAG_INT64:
 		    case GI_TYPE_TAG_UINT64:
 		      value->v_int = (gint)G_STRUCT_MEMBER (guint64, mem, offset);
-		      result = TRUE;
-		      break;
-		    case GI_TYPE_TAG_LONG:
-		    case GI_TYPE_TAG_ULONG:
-		      value->v_int = (gint)G_STRUCT_MEMBER (gulong, mem, offset);
 		      result = TRUE;
 		      break;
 		    default:
@@ -424,15 +394,11 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	  break;
 	case GI_TYPE_TAG_INT16:
 	case GI_TYPE_TAG_UINT16:
-	case GI_TYPE_TAG_SHORT:
-	case GI_TYPE_TAG_USHORT:
 	  G_STRUCT_MEMBER (guint16, mem, offset) = value->v_uint16;
 	  result = TRUE;
 	  break;
 	case GI_TYPE_TAG_INT32:
 	case GI_TYPE_TAG_UINT32:
-	case GI_TYPE_TAG_INT:
-	case GI_TYPE_TAG_UINT:
 	  G_STRUCT_MEMBER (guint32, mem, offset) = value->v_uint32;
 	  result = TRUE;
 	  break;
@@ -441,13 +407,6 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	  G_STRUCT_MEMBER (guint64, mem, offset) = value->v_uint64;
 	  result = TRUE;
 	  break;
-	case GI_TYPE_TAG_LONG:
-	case GI_TYPE_TAG_ULONG:
-	  G_STRUCT_MEMBER (gulong, mem, offset)= value->v_ulong;
-	  result = TRUE;
-	  break;
-	case GI_TYPE_TAG_SSIZE:
-	case GI_TYPE_TAG_SIZE:
 	case GI_TYPE_TAG_GTYPE:
 	  G_STRUCT_MEMBER (gsize, mem, offset) = value->v_size;
 	  result = TRUE;
@@ -458,16 +417,6 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	  break;
 	case GI_TYPE_TAG_DOUBLE:
 	  G_STRUCT_MEMBER (gdouble, mem, offset)= value->v_double;
-	  result = TRUE;
-	  break;
-	case GI_TYPE_TAG_TIME_T:
-#if SIZEOF_TIME_T == 4
-	  G_STRUCT_MEMBER (time_t, mem, offset) = value->v_int32;
-#elif SIZEOF_TIME_T == 8
-	  G_STRUCT_MEMBER (time_t, mem, offset) = value->v_int64;
-#else
-#  error "Unexpected size for time_t: not 4 or 8"
-#endif
 	  result = TRUE;
 	  break;
 	case GI_TYPE_TAG_UTF8:
@@ -510,26 +459,17 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 		      break;
 		    case GI_TYPE_TAG_INT16:
 		    case GI_TYPE_TAG_UINT16:
-		    case GI_TYPE_TAG_SHORT:
-		    case GI_TYPE_TAG_USHORT:
 		      G_STRUCT_MEMBER (guint16, mem, offset) = (guint16)value->v_int;
 		      result = TRUE;
 		      break;
 		    case GI_TYPE_TAG_INT32:
 		    case GI_TYPE_TAG_UINT32:
-		    case GI_TYPE_TAG_INT:
-		    case GI_TYPE_TAG_UINT:
 		      G_STRUCT_MEMBER (guint32, mem, offset) = (guint32)value->v_int;
 		      result = TRUE;
 		      break;
 		    case GI_TYPE_TAG_INT64:
 		    case GI_TYPE_TAG_UINT64:
 		      G_STRUCT_MEMBER (guint64, mem, offset) = (guint64)value->v_int;
-		      result = TRUE;
-		      break;
-		    case GI_TYPE_TAG_LONG:
-		    case GI_TYPE_TAG_ULONG:
-		      G_STRUCT_MEMBER (gulong, mem, offset) = (gulong)value->v_int;
 		      result = TRUE;
 		      break;
 		    default:

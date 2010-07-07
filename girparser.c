@@ -328,17 +328,36 @@ static GIrNodeType * parse_type_internal (const gchar *str, gchar **next, gboole
 
 typedef struct {
   const gchar *str;
+  guint size;
+  guint is_signed : 1;
+} IntegerAliasInfo;
+
+static IntegerAliasInfo integer_aliases[] = {
+  { "char",     SIZEOF_CHAR,      0 },
+  { "short",    SIZEOF_SHORT,     1 },
+  { "ushort",   SIZEOF_SHORT,     0 },
+  { "int",      SIZEOF_INT,       1 },
+  { "uint",     SIZEOF_INT,       0 },
+  { "long",     SIZEOF_LONG,      1 },
+  { "ulong",    SIZEOF_LONG,      0 },
+  { "gsize",    GLIB_SIZEOF_SIZE_T,    0 },
+  { "gssize",   GLIB_SIZEOF_SIZE_T,    1 },
+};
+
+typedef struct {
+  const gchar *str;
   gint tag;
   gboolean pointer;
 } BasicTypeInfo;
+
+#define BASIC_TYPE_FIXED_OFFSET 3
 
 static BasicTypeInfo basic_types[] = {
     { "none",     GI_TYPE_TAG_VOID,    0 },
     { "any",      GI_TYPE_TAG_VOID,    1 },
 
     { "bool",     GI_TYPE_TAG_BOOLEAN, 0 },
-    { "char",     GI_TYPE_TAG_INT8,    0 },
-    { "int8",     GI_TYPE_TAG_INT8,    0 },
+    { "int8",     GI_TYPE_TAG_INT8,    0 }, /* Start of BASIC_TYPE_FIXED_OFFSET */
     { "uint8",    GI_TYPE_TAG_UINT8,   0 },
     { "int16",    GI_TYPE_TAG_INT16,   0 },
     { "uint16",   GI_TYPE_TAG_UINT16,  0 },
@@ -346,19 +365,8 @@ static BasicTypeInfo basic_types[] = {
     { "uint32",   GI_TYPE_TAG_UINT32,  0 },
     { "int64",    GI_TYPE_TAG_INT64,   0 },
     { "uint64",   GI_TYPE_TAG_UINT64,  0 },
-    { "short",    GI_TYPE_TAG_SHORT,   0 },
-    { "ushort",   GI_TYPE_TAG_USHORT,  0 },
-    { "int",      GI_TYPE_TAG_INT,     0 },
-    { "uint",     GI_TYPE_TAG_UINT,    0 },
-    { "long",     GI_TYPE_TAG_LONG,    0 },
-    { "ulong",    GI_TYPE_TAG_ULONG,   0 },
-    { "ssize_t",  GI_TYPE_TAG_SSIZE,   0 },
-    { "ssize",    GI_TYPE_TAG_SSIZE,   0 },
-    { "size_t",   GI_TYPE_TAG_SIZE,    0 },
-    { "size",     GI_TYPE_TAG_SIZE,    0 },
     { "float",    GI_TYPE_TAG_FLOAT,   0 },
     { "double",   GI_TYPE_TAG_DOUBLE,  0 },
-    { "time_t",   GI_TYPE_TAG_TIME_T,  0 },
     { "GType",    GI_TYPE_TAG_GTYPE,   0 },
     { "utf8",     GI_TYPE_TAG_UTF8,    1 },
     { "filename", GI_TYPE_TAG_FILENAME,1 },
@@ -374,6 +382,41 @@ parse_basic (const char *str)
     {
       if (g_str_has_prefix (str, basic_types[i].str))
 	return &(basic_types[i]);
+    }
+  for (i = 0; i < G_N_ELEMENTS (integer_aliases); i++)
+    {
+      if (g_str_has_prefix (str, integer_aliases[i].str))
+	{
+	  switch (integer_aliases[i].size)
+	    {
+	    case sizeof(guint8):
+	      if (integer_aliases[i].is_signed)
+		return &basic_types[BASIC_TYPE_FIXED_OFFSET];
+	      else
+		return &basic_types[BASIC_TYPE_FIXED_OFFSET+1];
+	      break;
+	    case sizeof(guint16):
+	      if (integer_aliases[i].is_signed)
+		return &basic_types[BASIC_TYPE_FIXED_OFFSET+2];
+	      else
+		return &basic_types[BASIC_TYPE_FIXED_OFFSET+3];
+	      break;
+	    case sizeof(guint32):
+	      if (integer_aliases[i].is_signed)
+		return &basic_types[BASIC_TYPE_FIXED_OFFSET+4];
+	      else
+		return &basic_types[BASIC_TYPE_FIXED_OFFSET+5];
+	      break;
+	    case sizeof(guint64):
+	      if (integer_aliases[i].is_signed)
+		return &basic_types[BASIC_TYPE_FIXED_OFFSET+6];
+	      else
+		return &basic_types[BASIC_TYPE_FIXED_OFFSET+7];
+	      break;
+	    default:
+	      g_assert_not_reached ();
+	    }
+	}
     }
   return NULL;
 }

@@ -319,17 +319,8 @@ typedef enum {
  * @GI_TYPE_TAG_UINT32: 32-bit unsigned integer
  * @GI_TYPE_TAG_INT64: 64-bit signed integer
  * @GI_TYPE_TAG_UINT64: 64-bit unsigned integer
- * @GI_TYPE_TAG_SHORT: signed short
- * @GI_TYPE_TAG_USHORT: unsigned hosrt
- * @GI_TYPE_TAG_INT: signed integer
- * @GI_TYPE_TAG_UINT: unsigned integer
- * @GI_TYPE_TAG_LONG: signed long
- * @GI_TYPE_TAG_ULONG: unsigned long
- * @GI_TYPE_TAG_SSIZE: ssize_t
- * @GI_TYPE_TAG_SIZE: size_t
  * @GI_TYPE_TAG_FLOAT: float
  * @GI_TYPE_TAG_DOUBLE: double floating point
- * @GI_TYPE_TAG_TIME_T: time_t
  * @GI_TYPE_TAG_GTYPE: a #GType
  * @GI_TYPE_TAG_UTF8: a UTF-8 encoded string
  * @GI_TYPE_TAG_FILENAME: a filename, encoded in the same encoding
@@ -355,30 +346,31 @@ typedef enum {
   GI_TYPE_TAG_UINT32    =  7,
   GI_TYPE_TAG_INT64     =  8,
   GI_TYPE_TAG_UINT64    =  9,
-  GI_TYPE_TAG_SHORT     = 10,
-  GI_TYPE_TAG_USHORT    = 11,
-  GI_TYPE_TAG_INT       = 12,
-  GI_TYPE_TAG_UINT      = 13,
-  GI_TYPE_TAG_LONG      = 14,
-  GI_TYPE_TAG_ULONG     = 15,
-  GI_TYPE_TAG_SSIZE     = 16,
-  GI_TYPE_TAG_SIZE      = 17,
-  GI_TYPE_TAG_FLOAT     = 18,
-  GI_TYPE_TAG_DOUBLE    = 19,
-  GI_TYPE_TAG_TIME_T    = 20,
-  GI_TYPE_TAG_GTYPE     = 21,
-  GI_TYPE_TAG_UTF8      = 22,
-  GI_TYPE_TAG_FILENAME  = 23,
+  GI_TYPE_TAG_FLOAT     = 10,
+  GI_TYPE_TAG_DOUBLE    = 11,
+  GI_TYPE_TAG_GTYPE     = 12,
+  GI_TYPE_TAG_UTF8      = 13,
+  GI_TYPE_TAG_FILENAME  = 14,
   /* Non-basic types */
-  GI_TYPE_TAG_ARRAY     = 24,
-  GI_TYPE_TAG_INTERFACE = 25,
-  GI_TYPE_TAG_GLIST     = 26,
-  GI_TYPE_TAG_GSLIST    = 27,
-  GI_TYPE_TAG_GHASH     = 28,
-  GI_TYPE_TAG_ERROR     = 29
+  GI_TYPE_TAG_ARRAY     = 15,
+  GI_TYPE_TAG_INTERFACE = 16,
+  GI_TYPE_TAG_GLIST     = 17,
+  GI_TYPE_TAG_GSLIST    = 18,
+  GI_TYPE_TAG_GHASH     = 19,
+  GI_TYPE_TAG_ERROR     = 20
   /* Note - there is only room currently for 32 tags.
    * See docs/typelib-format.txt SimpleTypeBlob definition */
 } GITypeTag;
+
+#define GI_TYPE_TAG_N_TYPES (GI_TYPE_TAG_ERROR+1)
+
+/* These were removed and no longer appear in the typelib;
+ * instead, the machine-specific versions like INT32 are
+ * always used.
+ */
+#define GI_TYPE_TAG_SHORT GI_TYPE_TAG_SHORT_WAS_REMOVED
+#define GI_TYPE_TAG_INT   GI_TYPE_TAG_INT_WAS_REMOVED
+#define GI_TYPE_TAG_LONG  GI_TYPE_TAG_LONG_WAS_REMOVED
 
 /**
  * GIArrayType:

@@ -129,27 +129,6 @@ g_constant_info_get_value (GIConstantInfo *info,
 	    case GI_TYPE_TAG_DOUBLE:
 	      value->v_double = *(gdouble*)&rinfo->typelib->data[blob->offset];
 	      break;
-	    case GI_TYPE_TAG_TIME_T:
-	      value->v_long = *(long*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_SHORT:
-	      value->v_short = *(gshort*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_USHORT:
-	      value->v_ushort = *(gushort*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_INT:
-	      value->v_int = *(gint*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_UINT:
-	      value->v_uint = *(guint*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_LONG:
-	      value->v_long = *(glong*)&rinfo->typelib->data[blob->offset];
-	      break;
-	    case GI_TYPE_TAG_ULONG:
-	      value->v_ulong = *(gulong*)&rinfo->typelib->data[blob->offset];
-	      break;
 	    }
 	}
     }

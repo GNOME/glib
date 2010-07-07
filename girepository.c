@@ -1319,28 +1319,10 @@ g_type_tag_to_string (GITypeTag type)
       return "int64";
     case GI_TYPE_TAG_UINT64:
       return "uint64";
-    case GI_TYPE_TAG_SHORT:
-      return "short";
-    case GI_TYPE_TAG_USHORT:
-      return "ushort";
-    case GI_TYPE_TAG_INT:
-      return "int";
-    case GI_TYPE_TAG_UINT:
-      return "uint";
-    case GI_TYPE_TAG_LONG:
-      return "long";
-    case GI_TYPE_TAG_ULONG:
-      return "ulong";
-    case GI_TYPE_TAG_SSIZE:
-      return "ssize";
-    case GI_TYPE_TAG_SIZE:
-      return "size";
     case GI_TYPE_TAG_FLOAT:
       return "float";
     case GI_TYPE_TAG_DOUBLE:
       return "double";
-    case GI_TYPE_TAG_TIME_T:
-      return "time_t";
     case GI_TYPE_TAG_GTYPE:
       return "GType";
     case GI_TYPE_TAG_UTF8:

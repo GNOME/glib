@@ -2319,33 +2319,6 @@ g_ir_node_build_typelib (GIrNode         *node,
 	    blob->size = 8;
 	    DO_ALIGNED_COPY(&data[blob->offset], parse_uint_value (constant->value), guint64);
 	    break;
-	  case GI_TYPE_TAG_SHORT:
-	    blob->size = sizeof (gshort);
-	    *(gshort*)&data[blob->offset] = (gshort) parse_int_value (constant->value);
-	    break;
-	  case GI_TYPE_TAG_USHORT:
-	    blob->size = sizeof (gushort);
-	    *(gushort*)&data[blob->offset] = (gushort) parse_uint_value (constant->value);
-	    break;
-	  case GI_TYPE_TAG_INT:
-	    blob->size = sizeof (gint);
-	    *(gint*)&data[blob->offset] = (gint) parse_int_value (constant->value);
-	    break;
-	  case GI_TYPE_TAG_UINT:
-	    blob->size = sizeof (guint);
-	    *(gint*)&data[blob->offset] = (guint) parse_uint_value (constant->value);
-	    break;
-	  case GI_TYPE_TAG_SSIZE: /* FIXME */
-	  case GI_TYPE_TAG_LONG:
-	    blob->size = sizeof (glong);
-	    DO_ALIGNED_COPY(&data[blob->offset], parse_int_value (constant->value), glong);
-	    break;
-	  case GI_TYPE_TAG_SIZE: /* FIXME */
-	  case GI_TYPE_TAG_TIME_T:
-	  case GI_TYPE_TAG_ULONG:
-	    blob->size = sizeof (gulong);
-	    DO_ALIGNED_COPY(&data[blob->offset], parse_uint_value (constant->value), gulong);
-	    break;
 	  case GI_TYPE_TAG_FLOAT:
 	    blob->size = sizeof (gfloat);
 	    DO_ALIGNED_COPY(&data[blob->offset], parse_float_value (constant->value), gfloat);

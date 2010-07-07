@@ -757,24 +757,6 @@ write_constant_value (const gchar *namespace,
     case GI_TYPE_TAG_UINT64:
       xml_printf (file, "%" G_GUINT64_FORMAT, value->v_uint64);
       break;
-    case GI_TYPE_TAG_INT:
-      xml_printf (file, "%d", value->v_int);
-      break;
-    case GI_TYPE_TAG_UINT:
-      xml_printf (file, "%d", value->v_uint);
-      break;
-    case GI_TYPE_TAG_LONG:
-      xml_printf (file, "%ld", value->v_long);
-      break;
-    case GI_TYPE_TAG_ULONG:
-      xml_printf (file, "%ld", value->v_ulong);
-      break;
-    case GI_TYPE_TAG_SSIZE:
-      xml_printf (file, "%zd", value->v_ssize);
-      break;
-    case GI_TYPE_TAG_SIZE:
-      xml_printf (file, "%zd", value->v_size);
-      break;
     case GI_TYPE_TAG_FLOAT:
       xml_printf (file, "%f", value->v_float);
       break;

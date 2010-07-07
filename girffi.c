@@ -54,25 +54,6 @@ _gi_type_tag_get_ffi_type (GITypeTag   tag,
       return &ffi_type_sint64;
     case GI_TYPE_TAG_UINT64:
       return &ffi_type_uint64;
-    case GI_TYPE_TAG_SHORT:
-      return &ffi_type_sshort;
-    case GI_TYPE_TAG_USHORT:
-      return &ffi_type_ushort;
-    case GI_TYPE_TAG_INT:
-      return &ffi_type_sint;
-    case GI_TYPE_TAG_UINT:
-      return &ffi_type_uint;
-    case GI_TYPE_TAG_SSIZE:
-#if GLIB_SIZEOF_SIZE_T == 4
-      return &ffi_type_sint32;
-#elif GLIB_SIZEOF_SIZE_T == 8
-      return &ffi_type_sint64;
-#else
-#  error "Unexpected size for size_t: not 4 or 8"
-#endif
-    case GI_TYPE_TAG_LONG:
-      return &ffi_type_slong;
-    case GI_TYPE_TAG_SIZE:
     case GI_TYPE_TAG_GTYPE:
 #if GLIB_SIZEOF_SIZE_T == 4
       return &ffi_type_uint32;
@@ -81,16 +62,6 @@ _gi_type_tag_get_ffi_type (GITypeTag   tag,
 #else
 #  error "Unexpected size for size_t: not 4 or 8"
 #endif
-    case GI_TYPE_TAG_TIME_T:
-#if SIZEOF_TIME_T == 4
-      return &ffi_type_sint32;
-#elif SIZEOF_TIME_T == 8
-      return &ffi_type_sint64;
-#else
-#  error "Unexpected size for time_t: not 4 or 8"
-#endif
-    case GI_TYPE_TAG_ULONG:
-      return &ffi_type_ulong;
     case GI_TYPE_TAG_FLOAT:
       return &ffi_type_float;
     case GI_TYPE_TAG_DOUBLE:
