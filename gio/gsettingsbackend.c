@@ -1025,6 +1025,10 @@ g_settings_backend_get_default (void)
             g_error ("No GSettingsBackend implementations exist.");
 
           extension = extensions->data;
+
+          if (strcmp (g_io_extension_get_name (extension), "memory") == 0)
+            g_message ("Using the 'memory' GSettings backend.  Your settings "
+                       "will not be saved or shared with other applications.");
         }
 
       extension_type = g_io_extension_get_type (extension);
