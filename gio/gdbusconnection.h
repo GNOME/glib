@@ -139,6 +139,20 @@ gboolean         g_dbus_connection_get_exit_on_close          (GDBusConnection  
 void             g_dbus_connection_set_exit_on_close          (GDBusConnection    *connection,
                                                                gboolean            exit_on_close);
 GDBusCapabilityFlags  g_dbus_connection_get_capabilities      (GDBusConnection    *connection);
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+void             g_dbus_connection_flush                          (GDBusConnection     *connection,
+                                                                   GCancellable        *cancellable,
+                                                                   GAsyncReadyCallback  callback,
+                                                                   gpointer             user_data);
+gboolean         g_dbus_connection_flush_finish                   (GDBusConnection     *connection,
+                                                                   GAsyncResult        *res,
+                                                                   GError             **error);
+gboolean         g_dbus_connection_flush_sync                     (GDBusConnection     *connection,
+                                                                   GCancellable        *cancellable,
+                                                                   GError             **error);
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 gboolean         g_dbus_connection_send_message                   (GDBusConnection     *connection,

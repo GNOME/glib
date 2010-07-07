@@ -81,6 +81,7 @@ SAMPLE_PROGS = 				\
 	gdbus-example-subtree		\
 	gdbus-example-peer		\
 	gdbus-example-proxy-subclass	\
+	gdbus-connection-flush-helper	\
 	testapp				\
 	appinfo-test			\
 	$(NULL)
@@ -263,6 +264,9 @@ gdbus_example_proxy_subclass_LDADD   = $(progs_ldadd)
 
 gdbus_example_export_SOURCES = gdbus-example-export.c
 gdbus_example_export_LDADD   = $(progs_ldadd)
+
+gdbus_connection_flush_helper_SOURCES = gdbus-connection-flush-helper.c
+gdbus_connection_flush_helper_LDADD = $(progs_ldadd)
 
 application_SOURCES = application.c gdbus-sessionbus.c gdbus-sessionbus.h
 application_LDADD   = $(progs_ldadd)

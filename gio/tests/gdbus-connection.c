@@ -24,6 +24,9 @@
 #include <unistd.h>
 #include <string.h>
 
+#include <sys/types.h>
+#include <sys/wait.h>
+
 #include "gdbus-tests.h"
 
 /* all tests rely on a shared mainloop */
@@ -661,6 +664,84 @@ test_connection_filter (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+test_connection_flush_signal_handler (GDBusConnection  *connection,
+                                      const gchar      *sender_name,
+                                      const gchar      *object_path,
+                                      const gchar      *interface_name,
+                                      const gchar      *signal_name,
+                                      GVariant         *parameters,
+                                      gpointer         user_data)
+{
+  g_main_loop_quit (loop);
+}
+
+static gboolean
+test_connection_flush_on_timeout (gpointer user_data)
+{
+  guint iteration = GPOINTER_TO_UINT (user_data);
+  g_printerr ("Timeout waiting 1000 msec on iteration %d\n", iteration);
+  g_assert_not_reached ();
+  return FALSE;
+}
+
+static void
+test_connection_flush (void)
+{
+  GDBusConnection *connection;
+  GError *error;
+  guint n;
+  guint signal_handler_id;
+
+  session_bus_up ();
+
+  error = NULL;
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (connection != NULL);
+
+  signal_handler_id = g_dbus_connection_signal_subscribe (connection,
+                                                          NULL, /* sender */
+                                                          "org.gtk.GDBus.FlushInterface",
+                                                          "SomeSignal",
+                                                          "/org/gtk/GDBus/FlushObject",
+                                                          NULL,
+                                                          test_connection_flush_signal_handler,
+                                                          NULL,
+                                                          NULL);
+  g_assert_cmpint (signal_handler_id, !=, 0);
+
+  for (n = 0; n < 50; n++)
+    {
+      gboolean ret;
+      gint exit_status;
+      guint timeout_mainloop_id;
+
+      error = NULL;
+      ret = g_spawn_command_line_sync ("./gdbus-connection-flush-helper",
+                                       NULL, /* stdout */
+                                       NULL, /* stderr */
+                                       &exit_status,
+                                       &error);
+      g_assert_no_error (error);
+      g_assert (WIFEXITED (exit_status));
+      g_assert_cmpint (WEXITSTATUS (exit_status), ==, 0);
+      g_assert (ret);
+
+      timeout_mainloop_id = g_timeout_add (1000, test_connection_flush_on_timeout, GUINT_TO_POINTER (n));
+      g_main_loop_run (loop);
+      g_source_remove (timeout_mainloop_id);
+    }
+
+  g_dbus_connection_signal_unsubscribe (connection, signal_handler_id);
+  _g_object_wait_for_single_ref (connection);
+  g_object_unref (connection);
+
+  session_bus_down ();
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -681,5 +762,6 @@ main (int   argc,
   g_test_add_func ("/gdbus/connection-send", test_connection_send);
   g_test_add_func ("/gdbus/connection-signals", test_connection_signals);
   g_test_add_func ("/gdbus/connection-filter", test_connection_filter);
+  g_test_add_func ("/gdbus/connection-flush", test_connection_flush);
   return g_test_run();
 }

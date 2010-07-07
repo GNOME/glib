@@ -71,6 +71,11 @@ void         _g_dbus_worker_stop         (GDBusWorker    *worker);
 /* can be called from any thread */
 void         _g_dbus_worker_unfreeze     (GDBusWorker    *worker);
 
+/* can be called from any thread (except the worker thread) */
+gboolean     _g_dbus_worker_flush_sync   (GDBusWorker    *worker,
+                                          GCancellable   *cancellable,
+                                          GError        **error);
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 void _g_dbus_initialize (void);
