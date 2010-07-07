@@ -1026,7 +1026,11 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   if (blob == NULL)
     goto out;
 
-  serial_to_use = ++connection->priv->last_serial; /* TODO: handle overflow */
+  serial_to_use = g_dbus_message_get_serial (message);
+  if (serial_to_use == 0)
+    {
+      serial_to_use = ++connection->priv->last_serial; /* TODO: handle overflow */
+    }
 
   switch (blob[0])
     {
@@ -1079,8 +1083,11 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
  *
  * Asynchronously sends @message to the peer represented by @connection.
  *
- * If @out_serial is not %NULL, then the serial number assigned to
- * @message by @connection will be written to this location prior to
+ * If g_dbus_message_get_serial() returns non-zero for @message, then
+ * that value is used for the message serial number. Otherwise a
+ * serial number will be assigned by @connection and set on @message
+ * via g_dbus_message_set_serial(). If @out_serial is not %NULL, then
+ * the serial number used will be written to this location prior to
  * submitting the message to the underlying transport.
  *
  * If @connection is closed then the operation will fail with
@@ -1392,8 +1399,11 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  *
  * Asynchronously sends @message to the peer represented by @connection.
  *
- * If @out_serial is not %NULL, then the serial number assigned to
- * @message by @connection will be written to this location prior to
+ * If g_dbus_message_get_serial() returns non-zero for @message, then
+ * that value is used for the message serial number. Otherwise a
+ * serial number will be assigned by @connection and set on @message
+ * via g_dbus_message_set_serial(). If @out_serial is not %NULL, then
+ * the serial number used will be written to this location prior to
  * submitting the message to the underlying transport.
  *
  * If @connection is closed then the operation will fail with
@@ -1525,8 +1535,11 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * timeout is reached. See g_dbus_connection_send_message_with_reply()
  * for the asynchronous version of this method.
  *
- * If @out_serial is not %NULL, then the serial number assigned to
- * @message by @connection will be written to this location prior to
+ * If g_dbus_message_get_serial() returns non-zero for @message, then
+ * that value is used for the message serial number. Otherwise a
+ * serial number will be assigned by @connection and set on @message
+ * via g_dbus_message_set_serial(). If @out_serial is not %NULL, then
+ * the serial number used will be written to this location prior to
  * submitting the message to the underlying transport.
  *
  * If @connection is closed then the operation will fail with

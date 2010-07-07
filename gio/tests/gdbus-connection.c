@@ -618,12 +618,14 @@ test_connection_filter (void)
   while (data.num_handled == 0)
     g_thread_yield ();
 
+  g_dbus_message_set_serial (m, 0);
   g_dbus_connection_send_message (c, m, &data.serial, &error);
   g_assert_no_error (error);
 
   while (data.num_handled == 1)
     g_thread_yield ();
 
+  g_dbus_message_set_serial (m, 0);
   r = g_dbus_connection_send_message_with_reply_sync (c,
                                                       m,
                                                       -1,
@@ -637,6 +639,7 @@ test_connection_filter (void)
 
   g_dbus_connection_remove_filter (c, filter_id);
 
+  g_dbus_message_set_serial (m, 0);
   r = g_dbus_connection_send_message_with_reply_sync (c,
                                                       m,
                                                       -1,
