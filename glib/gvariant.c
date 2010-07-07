@@ -1296,7 +1296,7 @@ g_variant_dup_strv (GVariant *value,
 
 /**
  * g_variant_new_bytestring:
- * @string: a normal utf8 nul-terminated string
+ * @string: a normal nul-terminated string in no particular encoding
  * @returns: a new bytestring #GVariant instance
  *
  * Creates an array-of-bytes #GVariant with the contents of @string.
