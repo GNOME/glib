@@ -134,4 +134,5 @@ CLEANFILES = \
 	tmpsample.xml
 
 EXTRA_DIST += \
-	4096-random-bytes
+	4096-random-bytes	\
+	keyfiletest.ini
