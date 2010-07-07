@@ -26,7 +26,6 @@
 #include <gioerror.h>
 #include <gfile.h>
 
-#include "gioalias.h"
 
 /**
  * SECTION:gappinfo
@@ -818,7 +817,3 @@ g_app_launch_context_launch_failed (GAppLaunchContext *context,
   if (class->launch_failed != NULL)
     class->launch_failed (context, startup_notify_id);
 }
-
-
-#define __G_APP_INFO_C__
-#include "gioaliasdef.c"

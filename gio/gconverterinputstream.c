@@ -31,7 +31,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gconverterinputstream
@@ -552,6 +551,3 @@ g_converter_input_stream_get_converter (GConverterInputStream *converter_stream)
 {
   return converter_stream->priv->converter;
 }
-
-#define __G_CONVERTER_INPUT_STREAM_C__
-#include "gioaliasdef.c"

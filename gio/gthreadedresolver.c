@@ -34,7 +34,6 @@
 #include "gsimpleasyncresult.h"
 #include "gsocketaddress.h"
 
-#include "gioalias.h"
 
 G_DEFINE_TYPE (GThreadedResolver, g_threaded_resolver, G_TYPE_RESOLVER)
 
@@ -615,6 +614,3 @@ g_threaded_resolver_class_init (GThreadedResolverClass *threaded_class)
 
   object_class->finalize = finalize;
 }
-
-#define __G_THREADED_RESOLVER_C__
-#include "gioaliasdef.c"

@@ -56,7 +56,6 @@
 #include "glibintl.h"
 #include "gthemedicon.h"
 
-#include "gioalias.h"
 
 static const char *_resolve_dev_root (void);
 
@@ -2191,6 +2190,3 @@ found:
   return real_dev_root;
 }
 #endif
-
-#define __G_UNIX_MOUNTS_C__
-#include "gioaliasdef.c"

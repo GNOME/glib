@@ -31,7 +31,6 @@
 #include "gsimpleasyncresult.h"
 #include "gioerror.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:ginputstream
@@ -1204,6 +1203,3 @@ g_input_stream_real_close_finish (GInputStream  *stream,
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_input_stream_real_close_async);
   return TRUE;
 }
-
-#define __G_INPUT_STREAM_C__
-#include "gioaliasdef.c"

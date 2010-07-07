@@ -25,7 +25,6 @@
 #include "gioscheduler.h"
 #include "gcancellable.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gioscheduler
@@ -460,7 +459,3 @@ g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
   g_source_attach (source, job->context);
   g_source_unref (source);
 }
-
-
-#define __G_IO_SCHEDULER_C__
-#include "gioaliasdef.c"

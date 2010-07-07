@@ -30,7 +30,6 @@
 #include "gdrive.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gvolumemonitor
@@ -390,7 +389,3 @@ g_volume_monitor_get_mount_for_uuid (GVolumeMonitor *volume_monitor,
 
   return class->get_mount_for_uuid (volume_monitor, uuid);
 }
-
-
-#define __G_VOLUME_MONITOR_C__
-#include "gioaliasdef.c"

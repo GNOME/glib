@@ -35,7 +35,6 @@
 #include "gfileinfo.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gcontenttype
@@ -1682,6 +1681,3 @@ g_content_type_guess_for_tree (GFile *root)
 }
 
 #endif /* Unix version */
-
-#define __G_CONTENT_TYPE_C__
-#include "gioaliasdef.c"

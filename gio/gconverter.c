@@ -24,7 +24,6 @@
 #include "gconverter.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gconverter
@@ -200,6 +199,3 @@ g_converter_reset (GConverter *converter)
 
   (* iface->reset) (converter);
 }
-
-#define __G_CONVERTER_C__
-#include "gioaliasdef.c"

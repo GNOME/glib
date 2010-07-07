@@ -34,7 +34,6 @@
 #include <glib.h>
 #include <glibintl.h>
 
-#include "gioalias.h"
 
 G_DEFINE_ABSTRACT_TYPE (GSettingsBackend, g_settings_backend, G_TYPE_OBJECT)
 
@@ -1081,6 +1080,3 @@ g_settings_backend_sync_default (void)
   if (class->sync)
     class->sync (backend);
 }
-
-#define __G_SETTINGS_BACKEND_C__
-#include "gioaliasdef.c"

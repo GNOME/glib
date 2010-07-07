@@ -52,7 +52,6 @@
 
 #include "gio-marshal.h"
 
-#include "gioalias.h"
 
 static guint g_threaded_socket_service_run_signal;
 
@@ -273,6 +272,3 @@ g_threaded_socket_service_new (int max_threads)
 		       "max-threads", max_threads,
 		       NULL);
 }
-
-#define __G_THREADED_SOCKET_SERVICE_C__
-#include "gioaliasdef.c"

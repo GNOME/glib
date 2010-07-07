@@ -33,7 +33,6 @@
 
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /* There versioning of this is implicit, version 1 would be ".1 " */
 #define G_ICON_SERIALIZATION_MAGIC0 ". "
@@ -450,7 +449,3 @@ g_icon_new_for_string (const gchar   *str,
 
   return icon;
 }
-
-
-#define __G_ICON_C__
-#include "gioaliasdef.c"

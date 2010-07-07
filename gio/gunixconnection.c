@@ -50,7 +50,6 @@
 #include <string.h>
 #endif
 
-#include "gioalias.h"
 
 G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
 			 G_TYPE_SOCKET_CONNECTION,
@@ -548,6 +547,3 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
   g_object_unref (socket);
   return ret;
 }
-
-#define __G_UNIX_CONNECTION_C__
-#include "gioaliasdef.c"

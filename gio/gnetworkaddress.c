@@ -38,7 +38,6 @@
 
 #include <string.h>
 
-#include "gioalias.h"
 
 /**
  * SECTION:gnetworkaddress
@@ -615,6 +614,3 @@ g_network_address_connectable_enumerate (GSocketConnectable *connectable)
 
   return (GSocketAddressEnumerator *)addr_enum;
 }
-
-#define __G_NETWORK_ADDRESS_C__
-#include "gioaliasdef.c"

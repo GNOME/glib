@@ -34,7 +34,6 @@
 #include "gsimpleasyncresult.h"
 #include "gsocketaddress.h"
 
-#include "gioalias.h"
 
 G_DEFINE_TYPE (GUnixResolver, g_unix_resolver, G_TYPE_THREADED_RESOLVER)
 
@@ -522,6 +521,3 @@ g_unix_resolver_class_init (GUnixResolverClass *unix_class)
 
   object_class->finalize = g_unix_resolver_finalize;
 }
-
-#define __G_UNIX_RESOLVER_C__
-#include "gioaliasdef.c"

@@ -26,7 +26,6 @@
 #include "gsettingsbackend.h"
 #include "giomodule.h"
 
-#include "gioalias.h"
 
 #define G_TYPE_MEMORY_SETTINGS_BACKEND  (g_memory_settings_backend_get_type())
 #define G_MEMORY_SETTINGS_BACKEND(inst) (G_TYPE_CHECK_INSTANCE_CAST ((inst), \

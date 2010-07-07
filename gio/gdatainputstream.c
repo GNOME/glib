@@ -30,7 +30,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gdatainputstream
@@ -1246,7 +1245,3 @@ g_data_input_stream_read_until_finish (GDataInputStream  *stream,
 
   return g_data_input_stream_read_finish (stream, result, length, error);
 }
-
-
-#define __G_DATA_INPUT_STREAM_C__
-#include "gioaliasdef.c"

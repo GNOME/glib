@@ -24,7 +24,6 @@
 #include "gpermission.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gpermission
@@ -414,6 +413,3 @@ g_permission_class_init (GPermissionClass *class)
 
   g_type_class_add_private (class, sizeof (GPermissionPrivate));
 }
-
-#define __G_PERMISSION_C__
-#include "gioaliasdef.c"

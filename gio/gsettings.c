@@ -37,7 +37,6 @@
 
 #include <string.h>
 
-#include "gioalias.h"
 
 #include "strinfo.c"
 
@@ -2650,7 +2649,5 @@ g_settings_unbind (gpointer     object,
 }
 
 /* Epilogue {{{1 */
-#define __G_SETTINGS_C__
-#include "gioaliasdef.c"
 
 /* vim:set foldmethod=marker: */

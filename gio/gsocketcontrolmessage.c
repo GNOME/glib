@@ -51,7 +51,6 @@
 #include "gunixfdmessage.h"
 #endif
 
-#include "gioalias.h"
 
 G_DEFINE_ABSTRACT_TYPE (GSocketControlMessage,
                         g_socket_control_message,
@@ -211,6 +210,3 @@ g_socket_control_message_deserialize (int      level,
 
   return message;
 }
-
-#define __G_SOCKET_CONTROL_MESSAGE_C__
-#include "gioaliasdef.c"

@@ -35,7 +35,6 @@
 #include "gdummyfile.h"
 #include "gfile.h"
 
-#include "gioalias.h"
 
 static void g_dummy_file_file_iface_init (GFileIface *iface);
 

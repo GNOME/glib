@@ -33,7 +33,6 @@
 #include "glibintl.h"
 #include "gnetworkingprivate.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:ginetaddress
@@ -866,6 +865,3 @@ g_inet_address_get_is_mc_site_local (GInetAddress *address)
   else
     return IN6_IS_ADDR_MC_SITELOCAL (&address->priv->addr.ipv6);
 }
-
-#define __G_INET_ADDRESS_C__
-#include "gioaliasdef.c"

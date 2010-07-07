@@ -40,7 +40,6 @@
 #include "gcancellable.h"
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gdbusproxy
@@ -2438,6 +2437,3 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-
-#define __G_DBUS_PROXY_C__
-#include "gioaliasdef.c"

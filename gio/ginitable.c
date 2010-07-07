@@ -24,7 +24,6 @@
 #include "ginitable.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:ginitable
@@ -224,6 +223,3 @@ g_initable_new_valist (GType          object_type,
 
   return obj;
 }
-
-#define __G_INITABLE_C__
-#include "gioaliasdef.c"

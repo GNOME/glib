@@ -33,7 +33,6 @@
 #endif
 #include <string.h>
 
-#include "gioalias.h"
 
 struct _GLocalVfs
 {

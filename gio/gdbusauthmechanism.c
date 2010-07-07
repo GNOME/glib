@@ -29,7 +29,6 @@
 #include "giostream.h"
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -340,6 +339,3 @@ _g_dbus_auth_mechanism_client_shutdown (GDBusAuthMechanism *mechanism)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-
-#define __G_DBUS_AUTH_MECHANISM_C__
-#include "gioaliasdef.c"

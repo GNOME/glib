@@ -29,7 +29,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gthemedicon
@@ -521,6 +520,3 @@ g_themed_icon_icon_iface_init (GIconIface *iface)
   iface->to_tokens = g_themed_icon_to_tokens;
   iface->from_tokens = g_themed_icon_from_tokens;
 }
-
-#define __G_THEMED_ICON_C__
-#include "gioaliasdef.c"

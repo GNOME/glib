@@ -30,7 +30,6 @@
 
 #include <string.h>
 
-#include "gioalias.h"
 
 enum
 {
@@ -223,6 +222,3 @@ _g_local_file_monitor_new (const char         *pathname,
   
   return monitor;
 }
-
-#define __G_LOCAL_FILE_MONITOR_C__
-#include "gioaliasdef.c"

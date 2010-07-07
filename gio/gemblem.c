@@ -29,7 +29,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gioalias.h"
 
 /**
  * SECTION:gemblem
@@ -358,6 +357,3 @@ g_emblem_iface_init (GIconIface *iface)
   iface->to_tokens = g_emblem_to_tokens;
   iface->from_tokens = g_emblem_from_tokens;
 }
-
-#define __G_EMBLEM_C__
-#include "gioaliasdef.c"

@@ -24,7 +24,6 @@
 #include <errno.h>
 #include "gioerror.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gioerror
@@ -232,6 +231,3 @@ g_io_error_from_win32_error (gint error_code)
 }
 
 #endif
-
-#define __G_IO_ERROR_C__
-#include "gioaliasdef.c"

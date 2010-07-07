@@ -74,4 +74,3 @@ dump_event (node_event_t* ev, gpointer user_data)
     node_t* node = ev->user_data;
     g_printf ("ne:0x%p e:%p n:0x%p ds:0x%p s:0x%p s\n", ev, ev->e, node, node->dir_subs, node->subs, NODE_NAME(node));
 }
-

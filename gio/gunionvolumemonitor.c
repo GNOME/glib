@@ -38,7 +38,6 @@
 
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 struct _GUnionVolumeMonitor {
   GVolumeMonitor parent;
@@ -689,7 +688,3 @@ g_volume_monitor_adopt_orphan_mount (GMount *mount)
 
   return volume;
 }
-
-
-#define __G_UNION_VOLUME_MONITOR_C__
-#include "gioaliasdef.c"

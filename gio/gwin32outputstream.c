@@ -36,7 +36,6 @@
 #include "gasynchelper.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gwin32outputstream
@@ -354,6 +353,3 @@ g_win32_output_stream_close (GOutputStream  *stream,
 
   return TRUE;
 }
-
-#define __G_WIN32_OUTPUT_STREAM_C__
-#include "gioaliasdef.c"

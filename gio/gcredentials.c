@@ -38,7 +38,6 @@
 #include "gioerror.h"
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gcredentials
@@ -343,6 +342,3 @@ g_credentials_set_unix_user (GCredentials    *credentials,
   return ret;
 }
 #endif /* G_OS_UNIX */
-
-#define __G_CREDENTIALS_C__
-#include "gioaliasdef.c"

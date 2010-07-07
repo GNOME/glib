@@ -221,8 +221,6 @@ local_sources = \
 all : \
 	$(PRJ_TOP)\config.h \
 	sub-all	\
-	gioalias.h		\
-	gioaliasdef.c		\
 	gio-marshal.c \
 	gioenumtypes.h		\
 	gioenumtypes.c		\
@@ -231,12 +229,6 @@ all : \
 
 $(PRJ_TOP)\config.h: $(PRJ_TOP)\config.h.win32
 	copy $(PRJ_TOP)\config.h.win32 $(PRJ_TOP)\config.h
-
-gioalias.h: gio.symbols
-	perl ..\glib\makegalias.pl < gio.symbols > gioalias.h
-
-gioaliasdef.c: gio.symbols
-	  perl ..\glib\makegalias.pl -def < gio.symbols > gioaliasdef.c
 
 gioenumtypes.h: $(gio_headers) gioenumtypes.h.template
 	$(PERL) ..\gobject\glib-mkenums --template gioenumtypes.h.template $(gio_headers) > gioenumtypes.h

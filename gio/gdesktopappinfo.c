@@ -43,7 +43,6 @@
 #include "giomodule-priv.h"
 #include "gappinfo.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gdesktopappinfo
@@ -2706,6 +2705,3 @@ g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *loo
 
   return (* iface->get_default_for_uri_scheme) (lookup, uri_scheme);
 }
-
-#define __G_DESKTOP_APP_INFO_C__
-#include "gioaliasdef.c"

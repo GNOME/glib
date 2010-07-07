@@ -31,8 +31,6 @@
 #include "gwinhttpfileoutputstream.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
-
 struct _GWinHttpFileOutputStream
 {
   GFileOutputStream parent_instance;

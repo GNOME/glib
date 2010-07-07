@@ -29,7 +29,6 @@
 #include <glib-object.h>
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gfileattribute
@@ -1068,6 +1067,3 @@ g_file_attribute_info_list_add (GFileAttributeInfoList *list,
 
   list_update_public (priv);
 }
-
-#define __G_FILE_ATTRIBUTE_C__
-#include "gioaliasdef.c"

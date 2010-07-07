@@ -194,4 +194,3 @@ fen_init ()
     G_UNLOCK (fen_lock);
     return result;
 }
-

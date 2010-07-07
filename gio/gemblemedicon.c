@@ -31,7 +31,6 @@
 #include "glibintl.h"
 #include "gioerror.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gemblemedicon
@@ -350,6 +349,3 @@ g_emblemed_icon_icon_iface_init (GIconIface *iface)
   iface->to_tokens = g_emblemed_icon_to_tokens;
   iface->from_tokens = g_emblemed_icon_from_tokens;
 }
-
-#define __G_EMBLEMED_ICON_C__
-#include "gioaliasdef.c"

@@ -38,7 +38,6 @@
 #include "gasynchelper.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gunixinputstream
@@ -643,6 +642,3 @@ g_unix_input_stream_close_finish (GInputStream  *stream,
   /* Failures handled in generic close_finish code */
   return TRUE;
 }
-
-#define __G_UNIX_INPUT_STREAM_C__
-#include "gioaliasdef.c"

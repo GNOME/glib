@@ -27,17 +27,9 @@ gio.def: gio.symbols
 	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gio.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gio.def.tmp && \
 	  mv gio.def.tmp gio.def
 
-gioalias.h: gio.symbols makegioalias.pl
-	$(AM_V_GEN) $(PERL) $(srcdir)/makegioalias.pl < $(srcdir)/gio.symbols > gioalias.h.tmp && \
-	  mv gioalias.h.tmp gioalias.h
-
-gioaliasdef.c: gio.symbols makegioalias.pl
-	$(AM_V_GEN) $(PERL) $(srcdir)/makegioalias.pl -def < $(srcdir)/gio.symbols > gioaliasdef.c.tmp && \
-	  mv gioaliasdef.c.tmp gioaliasdef.c
-
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
-TESTS = abicheck.sh pltcheck.sh
+TESTS = abicheck.sh
 endif
 endif
 
@@ -364,8 +356,6 @@ libgio_2_0_la_SOURCES =		\
 	gmountprivate.h 	\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
-	gioalias.h 		\
-	gioaliasdef.c		\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
@@ -515,8 +505,6 @@ gioinclude_HEADERS = 		\
 BUILT_SOURCES = 		\
 	gio-marshal.h 		\
 	gio-marshal.c 		\
-	gioalias.h 		\
-	gioaliasdef.c		\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
 	$(NULL)
@@ -527,9 +515,7 @@ EXTRA_DIST += 			\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\
 	makefile.msc		\
-	makegioalias.pl		\
 	abicheck.sh		\
-	pltcheck.sh		\
 	gio.rc.in		\
 	gschema.dtd		\
 	$(NULL)

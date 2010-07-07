@@ -29,7 +29,6 @@
 #include "giostream.h"
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gdbusauthobserver
@@ -264,8 +263,3 @@ g_dbus_auth_observer_authorize_authenticated_peer (GDBusAuthObserver  *observer,
                  &denied);
   return denied;
 }
-
-
-
-#define __G_DBUS_AUTH_OBSERVER_C__
-#include "gioaliasdef.c"

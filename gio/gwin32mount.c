@@ -40,7 +40,6 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 struct _GWin32Mount {
   GObject parent;

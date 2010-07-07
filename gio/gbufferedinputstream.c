@@ -31,7 +31,6 @@
 #include <string.h>
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gbufferedinputstream
@@ -1380,7 +1379,3 @@ g_buffered_input_stream_skip_finish (GInputStream   *stream,
 
   return data->bytes_skipped;
 }
-
-
-#define __G_BUFFERED_INPUT_STREAM_C__
-#include "gioaliasdef.c"

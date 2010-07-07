@@ -31,8 +31,6 @@
 #define USE_INOTIFY 1
 #include "inotify-helper.h"
 
-#include "gioalias.h"
-
 struct _GInotifyFileMonitor
 {
   GLocalFileMonitor parent_instance;
@@ -178,4 +176,3 @@ g_inotify_file_monitor_cancel (GFileMonitor* monitor)
 
   return TRUE;
 }
-

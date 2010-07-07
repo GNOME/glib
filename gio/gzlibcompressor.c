@@ -33,7 +33,6 @@
 #include "gioenumtypes.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 enum {
   PROP_0,
@@ -319,6 +318,3 @@ g_zlib_compressor_iface_init (GConverterIface *iface)
   iface->convert = g_zlib_compressor_convert;
   iface->reset = g_zlib_compressor_reset;
 }
-
-#define __G_ZLIB_COMPRESSOR_C__
-#include "gioaliasdef.c"

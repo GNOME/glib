@@ -30,7 +30,6 @@
 #include "gvfs.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 struct _FileChange;
 typedef struct _FileChange FileChange;
@@ -726,6 +725,3 @@ g_file_monitor_emit_event (GFileMonitor      *monitor,
       update_rate_limiter_timeout (monitor, limiter->send_virtual_changes_done_at);
     }
 }
-
-#define __G_FILE_MONITOR_C__
-#include "gioaliasdef.c"

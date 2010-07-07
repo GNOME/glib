@@ -43,7 +43,6 @@
 #endif
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gdbusaddress
@@ -1264,6 +1263,3 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
 
   return ret;
 }
-
-#define __G_DBUS_ADDRESS_C__
-#include "gioaliasdef.c"

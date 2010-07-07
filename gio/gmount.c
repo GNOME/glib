@@ -34,7 +34,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gmount
@@ -1010,6 +1009,3 @@ g_mount_unshadow (GMount *mount)
     g_warning ("Shadow ref count on GMount is negative");
   G_UNLOCK (priv_lock);
 }
-
-#define __G_MOUNT_C__
-#include "gioaliasdef.c"

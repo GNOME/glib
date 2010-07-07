@@ -52,7 +52,6 @@
 #endif
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gdbusmessage
@@ -2834,7 +2833,3 @@ g_dbus_message_print (GDBusMessage *message,
 
   return g_string_free (str, FALSE);
 }
-
-
-#define __G_DBUS_MESSAGE_C__
-#include "gioaliasdef.c"

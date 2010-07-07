@@ -42,7 +42,6 @@
 /* for BUFSIZ */
 #include <stdio.h>
 
-#include "gioalias.h"
 
 struct _GUnixVolume {
   GObject parent;

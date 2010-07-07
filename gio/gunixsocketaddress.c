@@ -29,7 +29,6 @@
 #include "glibintl.h"
 #include "gnetworkingprivate.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gunixsocketaddress
@@ -526,6 +525,3 @@ g_unix_socket_address_abstract_names_supported (void)
   return FALSE;
 #endif
 }
-
-#define __G_UNIX_SOCKET_ADDRESS_C__
-#include "gioaliasdef.c"

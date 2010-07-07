@@ -31,7 +31,6 @@
 #include <stdlib.h>
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 #define CHUNK_SIZE 1000
 
@@ -387,5 +386,3 @@ g_local_file_enumerator_close (GFileEnumerator  *enumerator,
 
   return TRUE;
 }
-
-

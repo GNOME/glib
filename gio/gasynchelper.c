@@ -24,7 +24,6 @@
 
 #include "gasynchelper.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gasynchelper

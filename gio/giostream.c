@@ -30,7 +30,6 @@
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gasyncresult.h>
 
-#include "gioalias.h"
 
 G_DEFINE_TYPE (GIOStream, g_io_stream, G_TYPE_OBJECT);
 
@@ -609,6 +608,3 @@ g_io_stream_real_close_finish (GIOStream     *stream,
 		  g_io_stream_real_close_async);
   return TRUE;
 }
-
-#define __G_IO_STREAM_C__
-#include "gioaliasdef.c"

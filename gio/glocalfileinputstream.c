@@ -46,7 +46,6 @@
 #include <io.h>
 #endif
 
-#include "gioalias.h"
 
 
 #ifdef G_OS_UNIX

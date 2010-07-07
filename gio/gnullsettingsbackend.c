@@ -24,7 +24,6 @@
 #include "gnullsettingsbackend.h"
 #include "gsimplepermission.h"
 
-#include "gioalias.h"
 
 #define G_TYPE_NULL_SETTINGS_BACKEND    (g_null_settings_backend_get_type ())
 #define G_NULL_SETTINGS_BACKEND(inst)   (G_TYPE_CHECK_INSTANCE_CAST ((inst), \

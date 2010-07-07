@@ -32,7 +32,6 @@
 #include "gsimplepermission.h"
 #include "gsettingsbackend.h"
 
-#include "gioalias.h"
 
 #define G_TYPE_KEYFILE_SETTINGS_BACKEND      (g_keyfile_settings_backend_get_type ())
 #define G_KEYFILE_SETTINGS_BACKEND(inst)     (G_TYPE_CHECK_INSTANCE_CAST ((inst),      \
@@ -678,6 +677,3 @@ g_keyfile_settings_backend_new (const gchar *filename,
 
   return G_SETTINGS_BACKEND (kfsb);
 }
-
-#define __G_KEYFILE_SETTINGS_BACKEND_C__
-#include "gioaliasdef.c"

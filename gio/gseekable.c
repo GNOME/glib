@@ -24,7 +24,6 @@
 #include "gseekable.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gseekable
@@ -174,6 +173,3 @@ g_seekable_truncate (GSeekable     *seekable,
 
   return (* iface->truncate_fn) (seekable, offset, cancellable, error);
 }
-
-#define __G_SEEKABLE_C__
-#include "gioaliasdef.c"

@@ -35,8 +35,6 @@
 
 #include "fen-helper.h"
 
-#include "gioalias.h"
-
 struct _GFenFileMonitor
 {
     GLocalFileMonitor parent_instance;
@@ -142,4 +140,3 @@ g_fen_file_monitor_cancel (GFileMonitor* monitor)
 
     return TRUE;
 }
-

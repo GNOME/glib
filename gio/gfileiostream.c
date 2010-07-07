@@ -32,7 +32,6 @@
 #include "gfileoutputstream.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gfileiostream
@@ -672,6 +671,3 @@ g_file_io_stream_class_init (GFileIOStreamClass *klass)
   klass->query_info_finish = g_file_io_stream_real_query_info_finish;
   klass->get_etag = g_file_io_stream_real_get_etag;
 }
-
-#define __G_FILE_IO_STREAM_C__
-#include "gioaliasdef.c"

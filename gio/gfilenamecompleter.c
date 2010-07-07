@@ -30,7 +30,6 @@
 #include <string.h>
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gfilenamecompleter
@@ -515,6 +514,3 @@ g_filename_completer_set_dirs_only (GFilenameCompleter *completer,
 
   completer->dirs_only = dirs_only;
 }
-
-#define __G_FILENAME_COMPLETER_C__
-#include "gioaliasdef.c"

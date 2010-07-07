@@ -38,8 +38,6 @@
 
 #include "glibintl.h"
 
-#include "gioalias.h"
-
 static void g_winhttp_file_file_iface_init (GFileIface *iface);
 
 #define g_winhttp_file_get_type _g_winhttp_file_get_type

@@ -34,7 +34,6 @@
 #include "gcancellable.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gcancellable
@@ -771,6 +770,3 @@ g_cancellable_disconnect (GCancellable  *cancellable,
   g_signal_handler_disconnect (cancellable, handler_id);
   G_UNLOCK (cancellable);
 }
-
-#define __G_CANCELLABLE_C__
-#include "gioaliasdef.c"

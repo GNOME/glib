@@ -34,7 +34,6 @@
 #include "gwin32mount.h"
 #include "gmount.h"
 #include "giomodule.h"
-#include "gioalias.h"
 
 #define _WIN32_WINNT 0x0500
 #include <windows.h>

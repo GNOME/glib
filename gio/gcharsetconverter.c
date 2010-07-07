@@ -31,7 +31,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 enum {
   PROP_0,
@@ -473,6 +472,3 @@ g_charset_converter_initable_iface_init (GInitableIface *iface)
 {
   iface->init = g_charset_converter_initable_init;
 }
-
-#define __G_CHARSET_CONVERTER_C__
-#include "gioaliasdef.c"

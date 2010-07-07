@@ -47,7 +47,6 @@
 #include "gunixfdlist.h"
 #include "gioerror.h"
 
-#include "gioalias.h"
 
 
 G_DEFINE_TYPE (GUnixFDMessage, g_unix_fd_message,
@@ -319,6 +318,3 @@ g_unix_fd_message_append_fd (GUnixFDMessage  *message,
 
   return g_unix_fd_list_append (message->priv->list, fd, error) > 0;
 }
-
-#define __G_UNIX_FD_MESSAGE_C__
-#include "gioaliasdef.c"

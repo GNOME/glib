@@ -72,4 +72,3 @@ _g_application_platform_activate (GApplication *app,
 {
   exit (0);
 }
-

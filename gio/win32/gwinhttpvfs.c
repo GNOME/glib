@@ -33,8 +33,6 @@
 #include "gwinhttpfile.h"
 #include "gwinhttpvfs.h"
 
-#include "gioalias.h"
-
 static gboolean lookup_done = FALSE;
 static gboolean funcs_found = FALSE;
 static GWinHttpDllFuncs funcs;

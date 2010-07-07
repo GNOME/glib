@@ -38,9 +38,6 @@
 #include "inotify-path.h"
 #include "inotify-diag.h"
 
-#include "gioalias.h"
-
-
 static gboolean ih_debug_enabled = FALSE;
 #define IH_W if (ih_debug_enabled) g_warning 
 

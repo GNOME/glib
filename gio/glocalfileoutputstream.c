@@ -57,7 +57,6 @@
 #define O_BINARY 0
 #endif
 
-#include "gioalias.h"
 
 #ifdef G_OS_UNIX
 static void       g_file_descriptor_based_iface_init   (GFileDescriptorBasedIface *iface);

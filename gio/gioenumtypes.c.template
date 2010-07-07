@@ -1,6 +1,5 @@
 /*** BEGIN file-header ***/
 #include <gio.h>
-#include "gioalias.h"
 
 /*** END file-header ***/
 
@@ -35,8 +34,3 @@ GType
 }
 
 /*** END value-tail ***/
-
-/*** BEGIN file-tail ***/
-#define __GIO_ENUM_TYPES_C__
-#include "gioaliasdef.c"
-/*** END file-tail ***/

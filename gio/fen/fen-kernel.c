@@ -554,4 +554,3 @@ _event_string (int event)
         return "EVENT_UNKNOWN";
     }
 }
-

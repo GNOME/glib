@@ -29,7 +29,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gmemoryinputstream
@@ -521,6 +520,3 @@ g_memory_input_stream_truncate (GSeekable     *seekable,
                        _("Cannot truncate GMemoryInputStream"));
   return FALSE;
 }
-
-#define __G_MEMORY_INPUT_STREAM_C__
-#include "gioaliasdef.c"

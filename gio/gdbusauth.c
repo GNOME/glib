@@ -46,7 +46,6 @@
 #endif
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 static void
 debug_print (const gchar *message, ...)
@@ -1355,6 +1354,3 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-
-#define __G_DBUS_AUTH_C__
-#include "gioaliasdef.c"

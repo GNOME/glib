@@ -34,7 +34,6 @@
 #ifdef G_OS_UNIX
 #include "gdesktopappinfo.h"
 #endif
-#include "gioalias.h"
 #include <glib/gstdio.h>
 
 /**
@@ -896,6 +895,3 @@ g_io_extension_get_priority (GIOExtension *extension)
 {
   return extension->priority;
 }
-
-#define __G_IO_MODULE_C__
-#include "gioaliasdef.c"

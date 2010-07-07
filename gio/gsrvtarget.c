@@ -29,7 +29,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gioalias.h"
 
 /**
  * SECTION:gsrvtarget
@@ -326,6 +325,3 @@ g_srv_target_list_sort (GList *targets)
 
   return out;
 }
-
-#define __G_SRV_TARGET_C__
-#include "gioaliasdef.c"

@@ -26,7 +26,6 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gfilterinputstream
@@ -313,6 +312,3 @@ g_filter_input_stream_close (GInputStream  *stream,
 
   return res;
 }
-
-#define __G_FILTER_INPUT_STREAM_C__
-#include "gioaliasdef.c"

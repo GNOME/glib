@@ -1,7 +1,5 @@
 /* This file lists all exported symbols. It is used to generate
- * the gio.def file used to control exports on Windows and the
- * gioalias.h/gioaliasdef.c files used to avoid PLT entries for
- * internal uses of exported functions (see makegioalias.pl).
+ * the gio.def file used to control exports on Windows.
  *
  * Every symbol must be included in the right
  * #ifdef IN_HEADER(sym) #endif and

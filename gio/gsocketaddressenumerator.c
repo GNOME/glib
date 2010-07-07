@@ -24,7 +24,6 @@
 
 #include "gsimpleasyncresult.h"
 
-#include "gioalias.h"
 
 G_DEFINE_ABSTRACT_TYPE (GSocketAddressEnumerator, g_socket_address_enumerator, G_TYPE_OBJECT);
 
@@ -186,6 +185,3 @@ g_socket_address_enumerator_next_finish (GSocketAddressEnumerator  *enumerator,
 
   return (* klass->next_finish) (enumerator, result, error);
 }
-
-#define __G_SOCKET_ADDRESS_ENUMERATOR_C__
-#include "gioaliasdef.c"

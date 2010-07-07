@@ -37,7 +37,6 @@
 #include "gunixsocketaddress.h"
 #endif
 
-#include "gioalias.h"
 
 /**
  * SECTION:gsocketaddress
@@ -352,6 +351,3 @@ g_socket_address_connectable_enumerate (GSocketConnectable *connectable)
 
   return (GSocketAddressEnumerator *)sockaddr_enum;
 }
-
-#define __G_SOCKET_ADDRESS_C__
-#include "gioaliasdef.c"

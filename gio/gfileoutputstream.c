@@ -31,7 +31,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gfileoutputstream
@@ -570,6 +569,3 @@ g_file_output_stream_real_query_info_finish (GFileOutputStream     *stream,
   
   return NULL;
 }
-
-#define __G_FILE_OUTPUT_STREAM_C__
-#include "gioaliasdef.c"

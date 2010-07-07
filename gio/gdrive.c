@@ -28,7 +28,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gdrive
@@ -866,6 +865,3 @@ g_drive_stop_finish (GDrive        *drive,
 
   return (* iface->stop_finish) (drive, result, error);
 }
-
-#define __G_DRIVE_C__
-#include "gioaliasdef.c"

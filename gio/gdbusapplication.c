@@ -417,4 +417,3 @@ _g_application_platform_remote_quit (GApplication *app,
   if (result)
     g_variant_unref (result);
 }
-

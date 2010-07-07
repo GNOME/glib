@@ -31,7 +31,6 @@
 #include "gsimpleasyncresult.h"
 #include "gioerror.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gfileicon
@@ -383,6 +382,3 @@ g_file_icon_loadable_icon_iface_init (GLoadableIconIface *iface)
   iface->load_async = g_file_icon_load_async;
   iface->load_finish = g_file_icon_load_finish;
 }
-
-#define __G_FILE_ICON_C__
-#include "gioaliasdef.c"

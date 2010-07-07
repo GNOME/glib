@@ -26,7 +26,6 @@
 #include "gsimpleasyncresult.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gasyncinitable
@@ -359,6 +358,3 @@ g_async_initable_new_finish (GAsyncInitable  *initable,
   else
     return NULL;
 }
-
-#define __G_ASYNC_INITABLE_C__
-#include "gioaliasdef.c"

@@ -45,7 +45,6 @@
 /* for BUFSIZ */
 #include <stdio.h>
 
-#include "gioalias.h"
 
 struct _GUnixMount {
   GObject parent;

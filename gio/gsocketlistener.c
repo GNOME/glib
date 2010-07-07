@@ -38,7 +38,6 @@
 #include <gio/ginetsocketaddress.h>
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION: gsocketlistener
@@ -1151,6 +1150,3 @@ g_socket_listener_add_any_inet_port (GSocketListener  *listener,
 
   return candidate_port;
 }
-
-#define __G_SOCKET_LISTENER_C__
-#include "gioaliasdef.c"

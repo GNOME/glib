@@ -35,7 +35,6 @@
 #include "gfiledescriptorbased.h"
 #endif
 
-#include "gioalias.h"
 
 #define g_local_file_io_stream_get_type _g_local_file_io_stream_get_type
 G_DEFINE_TYPE (GLocalFileIOStream, g_local_file_io_stream, G_TYPE_FILE_IO_STREAM);

@@ -37,7 +37,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "gioalias.h"
 
 /**
  * SECTION:gnetworkservice
@@ -660,6 +659,3 @@ g_network_service_connectable_enumerate (GSocketConnectable *connectable)
 
   return (GSocketAddressEnumerator *)srv_enum;
 }
-
-#define __G_NETWORK_SERVICE_C__
-#include "gioaliasdef.c"

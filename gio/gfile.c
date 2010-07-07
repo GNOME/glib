@@ -50,7 +50,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gfile
@@ -7226,6 +7225,3 @@ g_file_supports_thread_contexts (GFile *file)
  iface = G_FILE_GET_IFACE (file);
  return iface->supports_thread_contexts;
 }
-
-#define __G_FILE_C__
-#include "gioaliasdef.c"

@@ -31,7 +31,6 @@
 
 #include <string.h>
 
-#include "gioalias.h"
 
 enum
 {
@@ -313,6 +312,3 @@ g_local_directory_monitor_cancel (GFileMonitor *monitor)
 
   return TRUE;
 }
-
-#define __G_LOCAL_DIRECTORY_MONITOR_C__
-#include "gioaliasdef.c"

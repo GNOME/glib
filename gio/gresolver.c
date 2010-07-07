@@ -42,7 +42,6 @@
 
 #include <stdlib.h>
 
-#include "gioalias.h"
 
 /**
  * SECTION:gresolver
@@ -930,6 +929,3 @@ _g_resolver_targets_from_DnsQuery (const gchar  *rrname,
 }
 
 #endif
-
-#define __G_RESOLVER_C__
-#include "gioaliasdef.c"

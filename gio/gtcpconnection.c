@@ -34,7 +34,6 @@
 #include "giostream.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 G_DEFINE_TYPE_WITH_CODE (GTcpConnection, g_tcp_connection,
 			 G_TYPE_SOCKET_CONNECTION,
@@ -376,7 +375,3 @@ g_tcp_connection_get_graceful_disconnect (GTcpConnection *connection)
 {
   return connection->priv->graceful_disconnect;
 }
-
-
-#define __G_TCP_CONNECTION_C__
-#include "gioaliasdef.c"

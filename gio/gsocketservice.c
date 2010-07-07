@@ -64,7 +64,6 @@
 #include "gsocketlistener.h"
 #include "gsocketconnection.h"
 
-#include "gioalias.h"
 
 static guint g_socket_service_incoming_signal;
 
@@ -326,6 +325,3 @@ g_socket_service_new (void)
 {
   return g_object_new (G_TYPE_SOCKET_SERVICE, NULL);
 }
-
-#define __G_SOCKET_SERVICE_C__
-#include "gioaliasdef.c"

@@ -105,7 +105,6 @@
 #endif
 #endif
 
-#include "gioalias.h"
 
 static void g_local_file_file_iface_init (GFileIface *iface);
 

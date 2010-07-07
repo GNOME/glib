@@ -31,7 +31,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:ginetsocketaddress
@@ -320,6 +319,3 @@ g_inet_socket_address_get_port (GInetSocketAddress *address)
 
   return address->priv->port;
 }
-
-#define __G_INET_SOCKET_ADDRESS_C__
-#include "gioaliasdef.c"

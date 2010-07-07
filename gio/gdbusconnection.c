@@ -130,7 +130,6 @@
 #endif
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gdbusconnection
@@ -6026,6 +6025,3 @@ g_bus_get_finish (GAsyncResult  *res,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-
-#define __G_DBUS_CONNECTION_C__
-#include "gioaliasdef.c"

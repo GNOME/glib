@@ -22,7 +22,6 @@
 #include "gsocketconnectable.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gsocketconnectable
@@ -121,6 +120,3 @@ g_socket_connectable_enumerate (GSocketConnectable *connectable)
 
   return (* iface->enumerate) (connectable);
 }
-
-#define __G_SOCKET_CONNECTABLE_C__
-#include "gioaliasdef.c"

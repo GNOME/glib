@@ -24,7 +24,6 @@
 #include "gfiledescriptorbased.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gfiledescriptorbased
@@ -72,7 +71,3 @@ g_file_descriptor_based_get_fd (GFileDescriptorBased *fd_based)
 
   return (* iface->get_fd) (fd_based);
 }
-
-
-#define __G_FILE_DESCRIPTOR_BASED_C__
-#include "gioaliasdef.c"

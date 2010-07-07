@@ -55,7 +55,6 @@
 #include "gsocketcontrolmessage.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gsocket
@@ -3319,6 +3318,3 @@ g_socket_receive_message (GSocket                 *socket,
   }
 #endif
 }
-
-#define __G_SOCKET_C__
-#include "gioaliasdef.c"

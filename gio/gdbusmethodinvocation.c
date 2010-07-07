@@ -33,7 +33,6 @@
 #include "gdbusprivate.h"
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gdbusmethodinvocation
@@ -569,6 +568,3 @@ g_dbus_method_invocation_return_dbus_error (GDBusMethodInvocation *invocation,
 
   g_object_unref (invocation);
 }
-
-#define __G_DBUS_METHOD_INVOCATION_C__
-#include "gioaliasdef.c"

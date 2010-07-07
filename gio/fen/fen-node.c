@@ -639,4 +639,3 @@ node_event_delete (node_event_t* ev)
 {
     g_free (ev);
 }
-

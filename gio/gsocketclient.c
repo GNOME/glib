@@ -40,7 +40,6 @@
 #include <gio/gsocketaddress.h>
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gsocketclient
@@ -1008,6 +1007,3 @@ g_socket_client_connect_to_service_finish (GSocketClient  *client,
 {
   return g_socket_client_connect_finish (client, result, error);
 }
-
-#define __G_SOCKET_CLIENT_C__
-#include "gioaliasdef.c"

@@ -39,7 +39,6 @@
 #include "gdbusintrospection.h"
 #include "gdbusmethodinvocation.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION: gapplication
@@ -1323,6 +1322,3 @@ g_application_class_init (GApplicationClass *klass)
 							 G_PARAM_CONSTRUCT_ONLY |
 							 G_PARAM_STATIC_STRINGS));
 }
-
-#define __G_APPLICATION_C__
-#include "gioaliasdef.c"

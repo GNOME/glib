@@ -45,7 +45,6 @@
 #include "gunixfdlist.h"
 #include "gioerror.h"
 
-#include "gioalias.h"
 
 
 G_DEFINE_TYPE (GUnixFDList, g_unix_fd_list, G_TYPE_OBJECT)
@@ -396,6 +395,3 @@ g_unix_fd_list_get_length (GUnixFDList *list)
 
   return list->priv->nfd;
 }
-
-#define __G_UNIX_FD_LIST_C__
-#include "gioaliasdef.c"

@@ -31,7 +31,6 @@
 #include "gdbusconnection.h"
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gdbusnameowning
@@ -908,6 +907,3 @@ g_bus_unown_name (guint owner_id)
       client_unref (client);
     }
 }
-
-#define __G_DBUS_NAME_OWNING_C__
-#include "gioaliasdef.c"

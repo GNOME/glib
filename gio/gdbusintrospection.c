@@ -28,7 +28,6 @@
 #include "gdbusintrospection.h"
 
 #include "glibintl.h"
-#include "gioalias.h"
 
 /**
  * SECTION:gdbusintrospection
@@ -2074,6 +2073,3 @@ g_dbus_node_info_lookup_interface (const GDBusNodeInfo *info,
  out:
   return result;
 }
-
-#define __G_DBUS_INTROSPECTION_C__
-#include "gioaliasdef.c"

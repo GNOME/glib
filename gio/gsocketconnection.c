@@ -37,7 +37,6 @@
 #include "gtcpconnection.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gsocketconnection
@@ -519,6 +518,3 @@ g_socket_connection_factory_create_connection (GSocket *socket)
 						  g_socket_get_protocol (socket));
   return g_object_new (type, "socket", socket, NULL);
 }
-
-#define __G_SOCKET_CONNECTION_C__
-#include "gioaliasdef.c"

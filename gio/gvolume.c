@@ -29,7 +29,6 @@
 #include "gioerror.h"
 #include "glibintl.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gvolume
@@ -638,8 +637,3 @@ g_volume_get_activation_root (GVolume *volume)
 
   return (* iface->get_activation_root) (volume);
 }
-
-
-
-#define __G_VOLUME_C__
-#include "gioaliasdef.c"

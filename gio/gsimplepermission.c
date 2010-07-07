@@ -24,7 +24,6 @@
 #include "gsimplepermission.h"
 #include "gpermission.h"
 
-#include "gioalias.h"
 
 /**
  * SECTION:gsimplepermission
@@ -83,6 +82,3 @@ g_simple_permission_new (gboolean allowed)
 
   return permission;
 }
-
-#define __G_SIMPLE_PERMISSION_C__
-#include "gioaliasdef.c"

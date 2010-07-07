@@ -34,7 +34,6 @@
 #include "gsimpleasyncresult.h"
 #include "gsocketaddress.h"
 
-#include "gioalias.h"
 
 G_DEFINE_TYPE (GWin32Resolver, g_win32_resolver, G_TYPE_THREADED_RESOLVER)
 
@@ -482,6 +481,3 @@ g_win32_handle_source_add (HANDLE      handle,
   g_source_attach (source, g_main_context_get_thread_default ());
   return source;
 }
-
-#define __G_WIN32_RESOLVER_C__
-#include "gioaliasdef.c"
