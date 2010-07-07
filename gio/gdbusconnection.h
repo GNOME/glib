@@ -56,30 +56,6 @@ struct _GDBusConnection
   GDBusConnectionPrivate *priv;
 };
 
-/**
- * GDBusConnectionClass:
- * @closed: Signal class handler for the #GDBusConnection::closed signal.
- *
- * Class structure for #GDBusConnection.
- *
- * Since: 2.26
- */
-struct _GDBusConnectionClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-
-  /*< public >*/
-  /* Signals */
-  void (*closed) (GDBusConnection *connection,
-                  gboolean         remote_peer_vanished,
-                  GError          *error);
-
-  /*< private >*/
-  /* Padding for future expansion */
-  gpointer padding[64];
-};
-
 GType            g_dbus_connection_get_type                   (void) G_GNUC_CONST;
 
 /* ---------------------------------------------------------------------------------------------------- */

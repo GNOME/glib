@@ -41,33 +41,6 @@ G_BEGIN_DECLS
 typedef struct _GDBusAuthObserverClass   GDBusAuthObserverClass;
 typedef struct _GDBusAuthObserverPrivate GDBusAuthObserverPrivate;
 
-
-/**
- * GDBusAuthObserverClass:
- * @authorize_authenticated_peer: Signal class handler for the #GDBusAuthObserver::authorize-authenticated-peer signal.
- *
- * Class structure for #GDBusAuthObserverClass.
- *
- * Since: 2.26
- */
-struct _GDBusAuthObserverClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-
-  /*< public >*/
-
-  /* Signals */
-  gboolean (*authorize_authenticated_peer) (GDBusAuthObserver  *observer,
-                                            GIOStream          *stream,
-                                            GCredentials       *credentials);
-
-
-  /*< private >*/
-  /* Padding for future expansion */
-  gpointer padding[32];
-};
-
 /**
  * GDBusAuthObserver:
  *

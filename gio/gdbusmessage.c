@@ -63,6 +63,20 @@
  * on a #GDBusConnection.
  */
 
+
+/**
+ * GDBusMessageClass:
+ *
+ * Class structure for #GDBusMessage.
+ *
+ * Since: 2.26
+ */
+struct _GDBusMessageClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+};
+
 struct _GDBusMessagePrivate
 {
   GDBusMessageType type;

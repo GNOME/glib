@@ -49,6 +49,19 @@
  * #GDBusInterfaceVTable that was passed to g_dbus_connection_register_object().
  */
 
+/**
+ * GDBusMethodInvocationClass:
+ *
+ * Class structure for #GDBusMethodInvocation.
+ *
+ * Since: 2.26
+ */
+struct _GDBusMethodInvocationClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+};
+
 struct _GDBusMethodInvocationPrivate
 {
   /* construct-only properties */

@@ -56,23 +56,6 @@ struct _GDBusMethodInvocation
   GDBusMethodInvocationPrivate *priv;
 };
 
-/**
- * GDBusMethodInvocationClass:
- *
- * Class structure for #GDBusMethodInvocation.
- *
- * Since: 2.26
- */
-struct _GDBusMethodInvocationClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-
-  /*< private >*/
-  /* Padding for future expansion */
-  gpointer padding[32];
-};
-
 GType                  g_dbus_method_invocation_get_type             (void) G_GNUC_CONST;
 GDBusMethodInvocation *g_dbus_method_invocation_new                  (const gchar           *sender,
                                                                       const gchar           *object_path,

@@ -47,10 +47,6 @@ struct _GDBusAuthMechanismSha1Class
 {
   /*< private >*/
   GDBusAuthMechanismClass parent_class;
-
-  /*< private >*/
-  /* Padding for future expansion */
-  gpointer padding[16];
 };
 
 struct _GDBusAuthMechanismSha1

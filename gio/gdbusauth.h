@@ -46,10 +46,6 @@ struct _GDBusAuthClass
 {
   /*< private >*/
   GObjectClass parent_class;
-
-  /*< private >*/
-  /* Padding for future expansion */
-  gpointer padding[16];
 };
 
 struct _GDBusAuth

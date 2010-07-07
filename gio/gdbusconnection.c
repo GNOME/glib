@@ -157,6 +157,26 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/**
+ * GDBusConnectionClass:
+ * @closed: Signal class handler for the #GDBusConnection::closed signal.
+ *
+ * Class structure for #GDBusConnection.
+ *
+ * Since: 2.26
+ */
+struct _GDBusConnectionClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+  /* Signals */
+  void (*closed) (GDBusConnection *connection,
+                  gboolean         remote_peer_vanished,
+                  GError          *error);
+};
+
 G_LOCK_DEFINE_STATIC (message_bus_lock);
 
 static GDBusConnection *the_session_bus = NULL;

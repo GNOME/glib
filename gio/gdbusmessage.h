@@ -42,23 +42,6 @@ typedef struct _GDBusMessageClass   GDBusMessageClass;
 typedef struct _GDBusMessagePrivate GDBusMessagePrivate;
 
 /**
- * GDBusMessageClass:
- *
- * Class structure for #GDBusMessage.
- *
- * Since: 2.26
- */
-struct _GDBusMessageClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-
-  /*< private >*/
-  /* Padding for future expansion */
-  gpointer padding[32];
-};
-
-/**
  * GDBusMessage:
  *
  * The #GDBusMessage structure contains only private data and should

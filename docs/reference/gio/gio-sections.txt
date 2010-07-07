@@ -2272,7 +2272,6 @@ g_dbus_is_interface_name
 <FILE>gdbusauthobserver</FILE>
 <TITLE>GDBusAuthObserver</TITLE>
 GDBusAuthObserver
-GDBusAuthObserverClass
 g_dbus_auth_observer_new
 g_dbus_auth_observer_authorize_authenticated_peer
 <SUBSECTION Standard>
@@ -2291,7 +2290,6 @@ g_dbus_auth_observer_get_type
 <FILE>gdbusserver</FILE>
 <TITLE>GDBusServer</TITLE>
 GDBusServer
-GDBusServerClass
 GDBusServerFlags
 g_dbus_server_new_sync
 g_dbus_server_start
@@ -2315,11 +2313,10 @@ g_dbus_server_get_type
 <SECTION>
 <FILE>gdbusmessage</FILE>
 <TITLE>GDBusMessage</TITLE>
+GDBusMessage
 GDBusMessageType
 GDBusMessageFlags
 GDBusMessageHeaderField
-GDBusMessage
-GDBusMessageClass
 g_dbus_message_new
 g_dbus_message_new_signal
 g_dbus_message_new_method_call
@@ -2384,7 +2381,6 @@ g_bus_get
 g_bus_get_finish
 g_bus_get_sync
 GDBusConnection
-GDBusConnectionClass
 GDBusConnectionFlags
 g_dbus_connection_new
 g_dbus_connection_new_finish
@@ -2393,7 +2389,6 @@ g_dbus_connection_new_for_address
 g_dbus_connection_new_for_address_finish
 g_dbus_connection_new_for_address_sync
 g_dbus_connection_start_message_processing
-GDBusCapabilityFlags
 g_dbus_connection_close
 g_dbus_connection_is_closed
 g_dbus_connection_flush
@@ -2404,6 +2399,7 @@ g_dbus_connection_set_exit_on_close
 g_dbus_connection_get_stream
 g_dbus_connection_get_guid
 g_dbus_connection_get_unique_name
+GDBusCapabilityFlags
 g_dbus_connection_get_capabilities
 g_dbus_connection_get_peer_credentials
 GDBusCallFlags
@@ -2450,7 +2446,6 @@ g_dbus_connection_get_type
 <FILE>gdbusmethodinvocation</FILE>
 <TITLE>GDBusMethodInvocation</TITLE>
 GDBusMethodInvocation
-GDBusMethodInvocationClass
 g_dbus_method_invocation_new
 g_dbus_method_invocation_get_sender
 g_dbus_method_invocation_get_object_path

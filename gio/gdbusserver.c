@@ -69,6 +69,25 @@
  * <example id="gdbus-peer-to-peer"><title>D-Bus peer-to-peer example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-peer.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
 
+/**
+ * GDBusServerClass:
+ * @new_connection: Signal class handler for the #GDBusServer::new-connection signal.
+ *
+ * Class structure for #GDBusServer.
+ *
+ * Since: 2.26
+ */
+struct _GDBusServerClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+  /* Signals */
+  void (*new_connection) (GDBusServer      *server,
+                          GDBusConnection  *connection);
+};
+
 struct _GDBusServerPrivate
 {
   GDBusServerFlags flags;

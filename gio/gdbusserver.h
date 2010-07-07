@@ -56,29 +56,6 @@ struct _GDBusServer
   GDBusServerPrivate *priv;
 };
 
-/**
- * GDBusServerClass:
- * @new_connection: Signal class handler for the #GDBusServer::new-connection signal.
- *
- * Class structure for #GDBusServer.
- *
- * Since: 2.26
- */
-struct _GDBusServerClass
-{
-  /*< private >*/
-  GObjectClass parent_class;
-
-  /*< public >*/
-  /* Signals */
-  void (*new_connection) (GDBusServer      *server,
-                          GDBusConnection  *connection);
-
-  /*< private >*/
-  /* Padding for future expansion */
-  gpointer padding[16];
-};
-
 GType             g_dbus_server_get_type           (void) G_GNUC_CONST;
 GDBusServer      *g_dbus_server_new_sync           (const gchar       *address,
                                                     GDBusServerFlags   flags,

@@ -100,10 +100,6 @@ struct _GDBusAuthMechanismClass
   gchar                    *(*client_data_send)         (GDBusAuthMechanism   *mechanism,
                                                          gsize                *out_data_len);
   void                      (*client_shutdown)          (GDBusAuthMechanism   *mechanism);
-
-  /*< private >*/
-  /* Padding for future expansion */
-  gpointer padding[16];
 };
 
 struct _GDBusAuthMechanism

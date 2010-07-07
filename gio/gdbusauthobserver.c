@@ -100,6 +100,27 @@
  * </programlisting></example>
  */
 
+/**
+ * GDBusAuthObserverClass:
+ * @authorize_authenticated_peer: Signal class handler for the #GDBusAuthObserver::authorize-authenticated-peer signal.
+ *
+ * Class structure for #GDBusAuthObserverClass.
+ *
+ * Since: 2.26
+ */
+struct _GDBusAuthObserverClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+
+  /* Signals */
+  gboolean (*authorize_authenticated_peer) (GDBusAuthObserver  *observer,
+                                            GIOStream          *stream,
+                                            GCredentials       *credentials);
+};
+
 struct _GDBusAuthObserverPrivate
 {
   gint foo;
