@@ -833,7 +833,7 @@ process_get_all_reply (GDBusProxy *proxy,
   gchar *key;
   GVariant *value;
 
-  if (strcmp (g_variant_get_type_string (result), "(a{sv})") != 0)
+  if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(a{sv})")))
     {
       g_warning ("Value for GetAll reply with type `%s' does not match `(a{sv})'",
                  g_variant_get_type_string (result));
@@ -843,13 +843,27 @@ process_get_all_reply (GDBusProxy *proxy,
   g_variant_get (result, "(a{sv})", &iter);
   while (g_variant_iter_next (iter, "{sv}", &key, &value))
     {
-      /*g_print ("got %s -> %s\n", key, g_variant_print (value, FALSE));*/
-
       g_hash_table_insert (proxy->priv->properties,
                            key, /* adopts string */
                            value); /* adopts value */
     }
   g_variant_iter_free (iter);
+
+  /* Synthesize ::g-properties-changed changed */
+  if (g_hash_table_size (proxy->priv->properties) > 0)
+    {
+      GVariant *changed_properties;
+      const gchar *invalidated_properties[1] = {NULL};
+
+      g_variant_get (result,
+                     "(@a{sv})",
+                     &changed_properties);
+      g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
+                     0,
+                     changed_properties,
+                     invalidated_properties);
+      g_variant_unref (changed_properties);
+    }
 
  out:
   ;
@@ -952,7 +966,37 @@ on_name_owner_changed (GDBusConnection *connection,
     {
       g_free (proxy->priv->name_owner);
       proxy->priv->name_owner = NULL;
-      g_hash_table_remove_all (proxy->priv->properties);
+
+      /* Synthesize ::g-properties-changed changed */
+      if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES) &&
+          g_hash_table_size (proxy->priv->properties) > 0)
+        {
+          GVariantBuilder builder;
+          GVariant *changed_properties;
+          GPtrArray *invalidated_properties;
+          GHashTableIter iter;
+          const gchar *key;
+
+          /* Build changed_properties (always empty) and invalidated_properties ... */
+          g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
+          changed_properties = g_variant_builder_end (&builder);
+          invalidated_properties = g_ptr_array_new_with_free_func (g_free);
+          g_hash_table_iter_init (&iter, proxy->priv->properties);
+          while (g_hash_table_iter_next (&iter, (gpointer) &key, NULL))
+            g_ptr_array_add (invalidated_properties, g_strdup (key));
+          g_ptr_array_add (invalidated_properties, NULL);
+
+          /* ... throw out the properties ... */
+          g_hash_table_remove_all (proxy->priv->properties);
+
+          /* ... and finally emit the ::g-properties-changed signal */
+          g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
+                         0,
+                         changed_properties,
+                         (const gchar* const *) invalidated_properties->pdata);
+          g_variant_unref (changed_properties);
+          g_ptr_array_unref (invalidated_properties);
+        }
       g_object_notify (G_OBJECT (proxy), "g-name-owner");
     }
   else
