@@ -28,7 +28,6 @@
 
 #include "gclosure.h"
 #include "gvalue.h"
-#include "gobjectalias.h"
 
 
 /**
@@ -1237,6 +1236,3 @@ g_signal_type_cclosure_new (GType    itype,
  * A marshaller for a #GCClosure with a callback of type
  * <literal>gchar* (*callback) (gpointer instance, GObject *arg1, gpointer arg2, gpointer user_data)</literal>.
  */
-
-#define __G_CLOSURE_C__
-#include "gobjectaliasdef.c"

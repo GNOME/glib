@@ -27,7 +27,6 @@
 #include <stdlib.h>  /* qsort() */
 
 #include "gvaluearray.h"
-#include "gobjectalias.h"
 
 
 /**
@@ -340,6 +339,3 @@ g_value_array_sort_with_data (GValueArray     *value_array,
 		       compare_func, user_data);
   return value_array;
 }
-
-#define __G_VALUE_ARRAY_C__
-#include "gobjectaliasdef.c"

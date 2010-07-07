@@ -26,15 +26,9 @@ AM_CPPFLAGS = 					\
 gobject.def: gobject.symbols
 	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
 
-gobjectalias.h: gobject.symbols makegobjectalias.pl
-	$(AM_V_GEN) $(PERL) $(srcdir)/makegobjectalias.pl < $(srcdir)/gobject.symbols > gobjectalias.h
-
-gobjectaliasdef.c: gobject.symbols makegobjectalias.pl
-	$(AM_V_GEN) $(PERL) $(srcdir)/makegobjectalias.pl -def < $(srcdir)/gobject.symbols > gobjectaliasdef.c
-
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
-TESTS = abicheck.sh pltcheck.sh
+TESTS = abicheck.sh
 endif
 endif
 
@@ -144,7 +138,7 @@ gobject_c_sources = \
 	gvaluetypes.c
 
 # these sources (also mentioned above) are generated.
-BUILT_SOURCES = gmarshal.h gmarshal.c gobjectalias.h gobjectaliasdef.c
+BUILT_SOURCES = gmarshal.h gmarshal.c
 
 if ENABLE_DTRACE
 gobject_probes.h: gobject_probes.d Makefile
@@ -182,7 +176,6 @@ EXTRA_HEADERS =
 EXTRA_DIST += \
 	$(gobject_private_h_sources) 	\
 	$(gobject_extra_sources) 	\
-	makegobjectalias.pl		\
 	marshal-genstrings.pl
 
 #
@@ -259,17 +252,14 @@ EXTRA_DIST += 			\
 	gobject.rc.in		\
 	libgobject-gdb.py.in	\
 	glib-mkenums.in		\
-	abicheck.sh		\
-	pltcheck.sh
+	abicheck.sh
 
 BUILT_EXTRA_DIST = \
 	makefile.msc		\
 	gobject.rc		\
 	gmarshal.h		\
 	gmarshal.c		\
-	stamp-gmarshal.h	\
-	gobjectalias.h		\
-	gobjectaliasdef.c
+	stamp-gmarshal.h
 
 gobject-win32-res.o: gobject.rc
 	$(AM_V_GEN) $(WINDRES) gobject.rc $@

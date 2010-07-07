@@ -25,7 +25,6 @@
 #include "gmarshal.h"
 #include "gvalue.h"
 #include "gvaluetypes.h"
-#include "gobjectalias.h"
 
 
 GType
@@ -204,6 +203,3 @@ g_source_set_closure (GSource  *source,
 	g_closure_set_marshal (closure, marshal);
     }
 }
-
-#define __G_SOURCECLOSURE_C__
-#include "gobjectaliasdef.c"

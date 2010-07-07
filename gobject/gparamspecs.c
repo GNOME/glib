@@ -29,7 +29,6 @@
 #include "gparamspecs.h"
 #include "gvaluecollector.h"
 #include "gvaluearray.h"
-#include "gobjectalias.h"
 
 
 /**
@@ -2517,6 +2516,3 @@ g_param_spec_variant (const gchar        *name,
 
   return G_PARAM_SPEC (vspec);
 }
-
-#define __G_PARAMSPECS_C__
-#include "gobjectaliasdef.c"

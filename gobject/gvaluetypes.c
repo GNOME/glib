@@ -33,7 +33,6 @@
 #include "gparam.h"
 #include "gboxed.h"
 #include "genums.h"
-#include "gobjectalias.h"
 
 
 /* --- value functions --- */
@@ -1394,6 +1393,3 @@ g_pointer_type_register_static (const gchar *name)
 
   return type;
 }
-
-#define __G_VALUETYPES_C__
-#include "gobjectaliasdef.c"

@@ -23,7 +23,6 @@
 
 #include "gtypeplugin.h"
 #include "gtypemodule.h"
-#include "gobjectalias.h"
 
 
 /**
@@ -580,7 +579,3 @@ g_type_module_register_flags (GTypeModule      *module,
   return g_type_module_register_type (G_TYPE_MODULE (module),
                                       G_TYPE_FLAGS, name, &flags_type_info, 0);
 }
-
-
-#define __G_TYPE_MODULE_C__
-#include "gobjectaliasdef.c"

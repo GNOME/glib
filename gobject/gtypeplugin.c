@@ -20,7 +20,6 @@
 #include "config.h"
 
 #include "gtypeplugin.h"
-#include "gobjectalias.h"
 
 
 /**
@@ -205,6 +204,3 @@ g_type_plugin_complete_interface_info (GTypePlugin    *plugin,
 				  interface_type,
 				  info);
 }
-
-#define __G_TYPE_PLUGIN_C__
-#include "gobjectaliasdef.c"

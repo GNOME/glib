@@ -37,7 +37,6 @@
 #include "gobject.h"
 #include "genums.h"
 #include "gobject_trace.h"
-#include "gobjectalias.h"
 
 
 /**
@@ -3442,6 +3441,3 @@ g_signal_accumulator_true_handled (GSignalInvocationHint *ihint,
 
 /* --- compile standard marshallers --- */
 #include "gmarshal.c"
-
-#define __G_SIGNAL_C__
-#include "gobjectaliasdef.c"

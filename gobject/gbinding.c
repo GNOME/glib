@@ -112,7 +112,6 @@
 
 #include "glibintl.h"
 
-#include "gobjectalias.h"
 
 GType
 g_binding_flags_get_type (void)
@@ -952,6 +951,3 @@ g_object_bind_property (gpointer       source,
                                       NULL,
                                       NULL, NULL);
 }
-
-#define __G_BINDING_C__
-#include "gobjectaliasdef.c"

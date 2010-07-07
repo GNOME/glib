@@ -34,11 +34,8 @@
 #include "gparamspecs.h"
 #include "gvaluetypes.h"
 #include "gobject_trace.h"
-#include "gobjectalias.h"
 
-/* This should be included after gobjectalias.h (or pltcheck.sh will fail) */
 #include "gobjectnotifyqueue.c"
-
 
 /**
  * SECTION:objects
@@ -3326,6 +3323,3 @@ static void
 g_initially_unowned_class_init (GInitiallyUnownedClass *klass)
 {
 }
-
-#define __G_OBJECT_C__
-#include "gobjectaliasdef.c"

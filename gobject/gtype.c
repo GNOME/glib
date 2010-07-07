@@ -30,7 +30,6 @@
 #include "gtypeplugin.h"
 #include "gvaluecollector.h"
 #include "gbsearcharray.h"
-#include "gobjectalias.h"
 #include "gatomicarray.h"
 #include "gobject_trace.h"
 
@@ -4616,6 +4615,3 @@ g_type_class_get_private (GTypeClass *klass,
 
   return G_STRUCT_MEMBER_P (klass, offset);
 }
-
-#define __G_TYPE_C__
-#include "gobjectaliasdef.c"

@@ -27,7 +27,6 @@
 #include "gvaluearray.h"
 #include "gclosure.h"
 #include "gvaluecollector.h"
-#include "gobjectalias.h"
 
 
 /**
@@ -666,6 +665,3 @@ g_value_take_boxed (GValue       *value,
 
   value_set_boxed_internal (value, boxed, FALSE, TRUE);
 }
-
-#define __G_BOXED_C__
-#include "gobjectaliasdef.c"

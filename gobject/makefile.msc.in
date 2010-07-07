@@ -17,8 +17,6 @@ all :				\
 	glib-genmarshal.exe     \
 	gmarshal.h              \
 	gmarshal.c              \
-	gobjectalias.h	\
-	gobjectaliasdef.c \
 	gmarshal.strings \
 	gobject-query.exe \
 	libgobject-2.0-@LT_CURRENT_MINUS_AGE@.dll	\
@@ -41,12 +39,6 @@ gobject_OBJECTS =		\
 	gvaluearray.obj		\
 	gvaluetypes.obj	\
 	gvaluetransform.obj
-
-gobjectalias.h: gobject.symbols
-	perl makegobjectalias.pl < gobject.symbols > gobjectalias.h
-
-gobjectaliasdef.c: gobject.symbols
-	perl makegobjectalias.pl -def < gobject.symbols > gobjectaliasdef.c
 
 gobject.def: gobject.symbols
 	echo EXPORTS > gobject.def
