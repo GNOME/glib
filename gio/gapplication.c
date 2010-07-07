@@ -332,7 +332,7 @@ append_cwd_to_platform_data (GVariant *platform_data)
   if (cwd)
     g_variant_builder_add (&builder, "{sv}",
 			   "cwd",
-			   g_variant_new_byte_array (cwd, -1));
+			   g_variant_new_bytestring (cwd));
   g_free (cwd);
 
   if (platform_data)
@@ -349,27 +349,6 @@ append_cwd_to_platform_data (GVariant *platform_data)
     }
   result = g_variant_builder_end (&builder);
   return result;
-}
-
-static GVariant *
-variant_from_argv (int    argc,
-		   char **argv)
-{
-  GVariantBuilder builder;
-  int i;
-
-  g_variant_builder_init (&builder, G_VARIANT_TYPE ("aay"));
-
-  for (i = 1; i < argc; i++)
-    {
-      guint8 *argv_bytes;
-
-      argv_bytes = (guint8*) argv[i];
-      g_variant_builder_add_value (&builder,
-				   g_variant_new_byte_array (argv_bytes, -1));
-    }
-  
-  return g_variant_builder_end (&builder);
 }
 
 static gboolean
@@ -468,6 +447,7 @@ g_application_new (const gchar *appid,
 		   int          argc,
 		   char       **argv)
 {
+  const gchar * const *args = (const gchar **) argv;
   GObject *app;
   GError *error = NULL;
   GVariant *argv_variant;
@@ -476,7 +456,7 @@ g_application_new (const gchar *appid,
 
   g_return_val_if_fail (appid != NULL, NULL);
   
-  argv_variant = variant_from_argv (argc, argv);
+  argv_variant = g_variant_new_bytestring_array (args, argc);
   
   app = g_initable_new (G_TYPE_APPLICATION, 
 			NULL,
@@ -514,13 +494,14 @@ g_application_try_new (const gchar *appid,
 		       char       **argv,
 		       GError     **error)
 {
+  const gchar * const *args = (const gchar **) argv;
   GVariant *argv_variant;
 
   g_type_init ();
 
   g_return_val_if_fail (appid != NULL, NULL);
   
-  argv_variant = variant_from_argv (argc, argv);
+  argv_variant = g_variant_new_bytestring_array (args, argc);
   
   return G_APPLICATION (g_initable_new (G_TYPE_APPLICATION, 
 					NULL,
@@ -551,13 +532,14 @@ g_application_unregistered_try_new (const gchar *appid,
 				    char       **argv,
 				    GError     **error)
 {
+  const gchar * const *args = (const gchar **) argv;
   GVariant *argv_variant;
 
   g_type_init ();
 
   g_return_val_if_fail (appid != NULL, NULL);
   
-  argv_variant = variant_from_argv (argc, argv);
+  argv_variant = g_variant_new_bytestring_array (args, argc);
   
   return G_APPLICATION (g_initable_new (G_TYPE_APPLICATION, 
 					NULL,

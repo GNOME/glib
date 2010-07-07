@@ -877,7 +877,7 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @x: text to convert to a literal string.
 
-<!-- ##### FUNCTION g_variant_dup_bytestring ##### -->
+<!-- ##### FUNCTION g_variant_get_byte_array ##### -->
 <para>
 
 </para>
@@ -886,46 +886,12 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 @length: 
 @Returns: 
 
-<!-- ##### FUNCTION g_variant_dup_bytestring_array ##### -->
+<!-- ##### FUNCTION g_variant_new_byte_array ##### -->
 <para>
 
 </para>
 
-@value: 
-@length: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_bytestring ##### -->
-<para>
-
-</para>
-
-@value: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_get_bytestring_array ##### -->
-<para>
-
-</para>
-
-@value: 
-@length: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_bytestring ##### -->
-<para>
-
-</para>
-
-@string: 
-@Returns: 
-
-<!-- ##### FUNCTION g_variant_new_bytestring_array ##### -->
-<para>
-
-</para>
-
-@strv: 
+@array: 
 @length: 
 @Returns: 
 

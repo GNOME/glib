@@ -163,7 +163,22 @@ token_stream_prepare (TokenStream *stream)
           break;
       break;
 
-    case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
+    case 'b':
+      if (stream->stream[1] == '\'' || stream->stream[1] == '"')
+        {
+          for (end = stream->stream + 2; end != stream->end; end++)
+            if (*end == stream->stream[1] || *end == '\0' ||
+                (*end == '\\' && (++end == stream->end || *end == '\0')))
+              break;
+
+          if (end != stream->end && *end)
+            end++;
+          break;
+        }
+
+      else    /* ↓↓↓ */;
+
+    case 'a': /* 'b' */ case 'c': case 'd': case 'e': case 'f':
     case 'g': case 'h': case 'i': case 'j': case 'k': case 'l':
     case 'm': case 'n': case 'o': case 'p': case 'q': case 'r':
     case 's': case 't': case 'u': case 'v': case 'w': case 'x':
@@ -171,23 +186,6 @@ token_stream_prepare (TokenStream *stream)
       for (end = stream->stream; end != stream->end; end++)
         if (!g_ascii_isalnum (*end))
           break;
-      break;
-
-    case '@': case '%':
-      /* stop at the first space, comma, colon or unmatched bracket.
-       * deals nicely with cases like (%i, %i) or {%i: %i}.
-       */
-      for (end = stream->stream + 1;
-           end != stream->end && *end != ',' &&
-           *end != ':' && !g_ascii_isspace (*end);
-           end++)
-
-        if (*end == '(' || *end == '{')
-          brackets++;
-
-        else if ((*end == ')' || *end == '}') && !brackets--)
-          break;
-
       break;
 
     case '\'': case '"':
@@ -198,6 +196,23 @@ token_stream_prepare (TokenStream *stream)
 
       if (end != stream->end && *end)
         end++;
+      break;
+
+    case '@': case '%':
+      /* stop at the first space, comma, colon or unmatched bracket.
+       * deals nicely with cases like (%i, %i) or {%i: %i}.
+       */
+      for (end = stream->stream + 1;
+           end != stream->end && *end != ',' &&
+           *end != ':' && *end != '>' && !g_ascii_isspace (*end);
+           end++)
+
+        if (*end == '(' || *end == '{')
+          brackets++;
+
+        else if ((*end == ')' || *end == '}') && !brackets--)
+          break;
+
       break;
 
     default:
@@ -225,11 +240,23 @@ token_stream_peek (TokenStream *stream,
 }
 
 static gboolean
+token_stream_peek2 (TokenStream *stream,
+                    gchar        first_char,
+                    gchar        second_char)
+{
+  token_stream_prepare (stream);
+
+  return stream->this[0] == first_char &&
+         stream->this[1] == second_char;
+}
+
+static gboolean
 token_stream_is_keyword (TokenStream *stream)
 {
   token_stream_prepare (stream);
 
-  return g_ascii_isalpha (stream->this[0]);
+  return g_ascii_isalpha (stream->this[0]) &&
+         g_ascii_isalpha (stream->this[1]);
 }
 
 static gboolean
@@ -1542,6 +1569,128 @@ string_parse (TokenStream  *stream,
 typedef struct
 {
   AST ast;
+  gchar *string;
+} ByteString;
+
+static gchar *
+bytestring_get_pattern (AST     *ast,
+                        GError **error)
+{
+  return g_strdup ("May");
+}
+
+static GVariant *
+bytestring_get_value (AST                 *ast,
+                      const GVariantType  *type,
+                      GError             **error)
+{
+  ByteString *string = (ByteString *) ast;
+
+  g_assert (g_variant_type_equal (type, G_VARIANT_TYPE_BYTESTRING));
+
+  return g_variant_new_bytestring (string->string);
+}
+
+static void
+bytestring_free (AST *ast)
+{
+  ByteString *string = (ByteString *) ast;
+
+  g_free (string->string);
+  g_slice_free (ByteString, string);
+}
+
+static AST *
+bytestring_parse (TokenStream  *stream,
+                  va_list      *app,
+                  GError      **error)
+{
+  static const ASTClass bytestring_class = {
+    bytestring_get_pattern,
+    maybe_wrapper, bytestring_get_value,
+    bytestring_free
+  };
+  ByteString *string;
+  SourceRef ref;
+  gchar *token;
+  gsize length;
+  gchar quote;
+  gchar *str;
+  gint i, j;
+
+  token_stream_start_ref (stream, &ref);
+  token = token_stream_get (stream);
+  token_stream_end_ref (stream, &ref);
+  g_assert (token[0] == 'b');
+  length = strlen (token);
+  quote = token[1];
+
+  str = g_malloc (length);
+  g_assert (quote == '"' || quote == '\'');
+  j = 0;
+  i = 2;
+  while (token[i] != quote)
+    switch (token[i])
+      {
+      case '\0':
+        parser_set_error (error, &ref, NULL,
+                          "unterminated string constant");
+        g_free (token);
+        return NULL;
+
+      case '\\':
+        switch (token[++i])
+          {
+          case '\0':
+            parser_set_error (error, &ref, NULL,
+                              "unterminated string constant");
+            g_free (token);
+            return NULL;
+
+          case '0': case '1': case '2': case '3':
+          case '4': case '5': case '6': case '7':
+            {
+              /* up to 3 characters */
+              guchar val = token[i++] - '0';
+
+              if ('0' <= token[i] && token[i] < '8')
+                val = (val << 3) | (token[i++] - '0');
+
+              if ('0' <= token[i] && token[i] < '8')
+                val = (val << 3) | (token[i++] - '0');
+
+              str[j++] = val;
+            }
+            continue;
+
+          case 'a': str[j++] = '\a'; i++; continue;
+          case 'b': str[j++] = '\b'; i++; continue;
+          case 'f': str[j++] = '\f'; i++; continue;
+          case 'n': str[j++] = '\n'; i++; continue;
+          case 'r': str[j++] = '\r'; i++; continue;
+          case 't': str[j++] = '\t'; i++; continue;
+          case 'v': str[j++] = '\v'; i++; continue;
+          case '\n': i++; continue;
+          }
+
+      default:
+        str[j++] = token[i++];
+      }
+  str[j++] = '\0';
+  g_free (token);
+
+  string = g_slice_new (ByteString);
+  string->ast.class = &bytestring_class;
+  string->string = str;
+
+  token_stream_next (stream);
+
+  return (AST *) string;
+}
+
+typedef struct
+{
+  AST ast;
 
   gchar *token;
 } Number;
@@ -2042,6 +2191,10 @@ parse (TokenStream  *stream,
   else if (token_stream_peek (stream, '\'') ||
            token_stream_peek (stream, '"'))
     result = string_parse (stream, app, error);
+
+  else if (token_stream_peek2 (stream, 'b', '\'') ||
+           token_stream_peek2 (stream, 'b', '"'))
+    result = bytestring_parse (stream, app, error);
 
   else
     {

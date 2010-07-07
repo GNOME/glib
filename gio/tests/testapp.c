@@ -41,11 +41,11 @@ on_app_activated (GApplication  *application,
   while (g_variant_iter_next (&iter, "{&sv}", &key, &value))
     {
       const char *activate_cwd;
-      gsize *len;
+
       if (strcmp (key, "cwd") != 0)
 	continue;
 
-      activate_cwd = g_variant_get_byte_array (value, &len);
+      activate_cwd = g_variant_get_bytestring (value);
       g_assert_cmpstr (cwd, ==, activate_cwd);
       g_variant_unref (value);
     }

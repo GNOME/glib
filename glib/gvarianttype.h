@@ -232,6 +232,31 @@ typedef struct _GVariantType GVariantType;
 #define G_VARIANT_TYPE_DICTIONARY           ((const GVariantType *) "a{?*}")
 
 /**
+ * G_VARIANT_TYPE_STRING_ARRAY:
+ *
+ * The type of an array of strings.
+ **/
+#define G_VARIANT_TYPE_STRING_ARRAY         ((const GVariantType *) "as")
+
+/**
+ * G_VARIANT_TYPE_BYTESTRING:
+ *
+ * The type of an array of bytes.  This type is commonly used to pass
+ * around strings that may not be valid utf8.  In that case, the
+ * convention is that the nul terminator character should be included as
+ * the last character in the array.
+ **/
+#define G_VARIANT_TYPE_BYTESTRING           ((const GVariantType *) "ay")
+
+/**
+ * G_VARIANT_TYPE_BYTESTRING_ARRAY:
+ *
+ * The type of an array of byte strings (an array of arrays of bytes).
+ **/
+#define G_VARIANT_TYPE_BYTESTRING_ARRAY     ((const GVariantType *) "aay")
+
+
+/**
  * G_VARIANT_TYPE:
  * @type_string: a well-formed #GVariantType type string
  *

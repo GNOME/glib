@@ -1006,7 +1006,7 @@ test_simple_binding (void)
 
   g_object_set (obj, "string", "non-unicode:\315", NULL);
   value = g_settings_get_value (settings, "chararray");
-  g_assert_cmpstr (g_variant_get_byte_array (value, NULL), ==, "non-unicode:\315");
+  g_assert_cmpstr (g_variant_get_bytestring (value), ==, "non-unicode:\315");
   g_variant_unref (value);
 
   g_settings_bind (settings, "double", obj, "double", G_SETTINGS_BIND_DEFAULT);

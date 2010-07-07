@@ -83,9 +83,10 @@ gboolean                        g_variant_is_object_path                (const g
 GVariant *                      g_variant_new_signature                 (const gchar          *signature);
 gboolean                        g_variant_is_signature                  (const gchar          *string);
 GVariant *                      g_variant_new_variant                   (GVariant             *value);
-GVariant *                      g_variant_new_byte_array                (gconstpointer         array,
-                                                                         gssize                length);
 GVariant *                      g_variant_new_strv                      (const gchar * const  *strv,
+                                                                         gssize                length);
+GVariant *                      g_variant_new_bytestring                (const gchar          *string);
+GVariant *                      g_variant_new_bytestring_array          (const gchar * const  *strv,
                                                                          gssize                length);
 
 gboolean                        g_variant_get_boolean                   (GVariant             *value);
@@ -103,11 +104,16 @@ const gchar *                   g_variant_get_string                    (GVarian
                                                                          gsize                *length);
 gchar *                         g_variant_dup_string                    (GVariant             *value,
                                                                          gsize                *length);
-gconstpointer                   g_variant_get_byte_array                (GVariant             *value,
-                                                                         gsize                *length);
 const gchar **                  g_variant_get_strv                      (GVariant             *value,
                                                                          gsize                *length);
 gchar **                        g_variant_dup_strv                      (GVariant             *value,
+                                                                         gsize                *length);
+const gchar *                   g_variant_get_bytestring                (GVariant             *value);
+gchar *                         g_variant_dup_bytestring                (GVariant             *value,
+                                                                         gsize                *length);
+const gchar **                  g_variant_get_bytestring_array          (GVariant             *value,
+                                                                         gsize                *length);
+gchar **                        g_variant_dup_bytestring_array          (GVariant             *value,
                                                                          gsize                *length);
 
 GVariant *                      g_variant_new_maybe                     (const GVariantType   *child_type,

@@ -369,8 +369,8 @@ g_settings_set_mapping (const GValue       *value,
         return NULL;
       else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_STRING))
         return g_variant_new_string (g_value_get_string (value));
-      else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE ("ay")))
-        return g_variant_new_byte_array (g_value_get_string (value), -1);
+      else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_BYTESTRING))
+        return g_variant_new_bytestring (g_value_get_string (value));
       else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_OBJECT_PATH))
         return g_variant_new_object_path (g_value_get_string (value));
       else if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_SIGNATURE))
@@ -528,9 +528,9 @@ g_settings_get_mapping (GValue   *value,
           return TRUE;
         }
     }
-  else if (g_variant_is_of_type (variant, G_VARIANT_TYPE ("ay")))
+  else if (g_variant_is_of_type (variant, G_VARIANT_TYPE_BYTESTRING))
     {
-      g_value_set_string (value, g_variant_get_byte_array (variant, NULL));
+      g_value_set_string (value, g_variant_get_bytestring (variant));
       return TRUE;
     }
 

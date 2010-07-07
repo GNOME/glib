@@ -46,8 +46,8 @@
    <listitem>
     <para>
      '<literal>&amp;s</literal>' '<literal>&amp;o</literal>', '<literal>&amp;g</literal>', '<literal>^as</literal>',
-     '<literal>^ao</literal>', '<literal>^ag</literal>', '<literal>^a&amp;s</literal>', '<literal>^a&amp;o</literal>' or
-     '<literal>^a&amp;g</literal>'
+     '<literal>^a&amp;s</literal>', '<literal>^ay</literal>', '<literal>^&amp;ay</literal>', '<literal>^aay</literal>'
+     or '<literal>^a&amp;ay</literal>'.
     </para>
    </listitem>
    <listitem>
@@ -935,39 +935,155 @@ value2 = g_variant_new ("(@(iii)*)", value1, g_variant_new_string ("foo"));
    </para>
 
    <para>
-    The '<literal>^</literal>' character currently only has one purpose: to convert to and from
-    <link linkend='G-TYPE-STRV'><literal>G_TYPE_STRV</literal></link> type arrays of strings.  It is always used with
-    arrays of strings (or other string types).  It has two forms.
+    The '<literal>^</literal>' character currently supports conversion to and from bytestrings or to and from arrays
+    of strings or bytestrings.  It has a number of forms.
    </para>
-   <itemizedlist>
-    <listitem>
-     <para>
-      '<literal>^as</literal>' (or <literal>o</literal> or <literal>g</literal>)
-     </para>
-    </listitem>
-    <listitem>
-     <para>
-      '<literal>^a&amp;s</literal>' (or <literal>o</literal> or <literal>g</literal>)
-     </para>
-    </listitem>
-   </itemizedlist>
+
    <para>
-    When used with <link linkend='g-variant-new'><function>g_variant_new()</function></link> both forms are equivalent.
-    A <code>(const <link linkend='gchar'>gchar</link> * const *)</code> is collected.  This must be a pointer to the
-    array of <link linkend='NULL--CAPS'><literal>NULL</literal></link>-terminated pointers to strings.  This array is
-    converted to a <link linkend='GVariant'><type>GVariant</type></link> instance.  Copies are made, so the original
-    array may be freed immediately.
+    In all forms, when used with <link linkend='g-variant-new'><function>g_variant_new()</function></link> one
+    pointer value is collected from the variable arguments and passed to a function (as given in the table below).
+    The result of that function is used as the value for this position.  When used with
+    <link linkend='g-variant-get'><function>g_variant_get()</function></link> one pointer value is produced by using
+    the function (given in the table) and returned by reference.
    </para>
-   <para>
-    When used with <link linkend='g-variant-get'><function>g_variant_get()</function></link> the two forms have
-    different meaning.  Both return a freshly allocated
-    <link linkend='NULL--CAPS'><literal>NULL</literal></link>-terminated array of pointers to strings.  In the case of
-    '<literal>^as</literal>', the strings are owned by the caller -- it is appropriate to free the array with
-    <link linkend='g-strfreev'><function>g_strfreev()</function></link>.  In the case of '<literal>^a&amp;s</literal>',
-    a shallow copy is made; the strings themselves are embedded in the serialised data and owned by the original
-    <link linkend='GVariant'><type>GVariant</type></link> instance -- it is only appropriate to free the outer array
-    with <link linkend='g-free'><function>g_free()</function></link>.
-   </para>
+
+   <informaltable>
+    <tgroup cols='2'>
+     <colspec colname='col_0'/>
+     <colspec colname='col_1'/>
+     <colspec colname='col_2'/>
+     <tbody>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>Conversion</emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+          <emphasis role='strong'>
+            Used with <link linkend='g-variant-new'><function>g_variant_new()</function></link>
+          </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+          <emphasis role='strong'>
+            Used with <link linkend='g-variant-get'><function>g_variant_get()</function></link>
+          </emphasis>
+        </para>
+       </entry>
+      </row>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>
+          <literal>^as</literal>
+         </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1' morerows='1'>
+        <para>
+         equivalent to <link linkend='g-variant-new-strv'><function>g_variant_new_strv()</function></link>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         equivalent to <link linkend='g-variant-dup-strv'><function>g_variant_dup_strv()</function></link>
+        </para>
+       </entry>
+      </row>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>
+          <literal>^a&amp;s</literal>
+         </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         equivalent to <link linkend='g-variant-get-strv'><function>g_variant_get_strv()</function></link>
+        </para>
+       </entry>
+      </row>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>
+          <literal>^ay</literal>
+         </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1' morerows='1'>
+        <para>
+         equivalent to <link linkend='g-variant-new-bytestring'><function>g_variant_new_bytestring()</function></link>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         equivalent to <link linkend='g-variant-dup-bytestring'><function>g_variant_dup_bytestring()</function></link>
+        </para>
+       </entry>
+      </row>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>
+          <literal>^&amp;ay</literal>
+         </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         equivalent to <link linkend='g-variant-get-bytestring'><function>g_variant_get_bytestring()</function></link>
+        </para>
+       </entry>
+      </row>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>
+          <literal>^aay</literal>
+         </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1' morerows='1'>
+        <para>
+         equivalent to <link linkend='g-variant-new-bytestring-array'><function>g_variant_new_bytestring_array()</function></link>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         equivalent to <link linkend='g-variant-dup-bytestring-array'><function>g_variant_dup_bytestring_array()</function></link>
+        </para>
+       </entry>
+      </row>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>
+          <literal>^a&amp;ay</literal>
+         </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         equivalent to <link linkend='g-variant-get-bytestring-array'><function>g_variant_get_bytestring_array()</function></link>
+        </para>
+       </entry>
+      </row>
+
+     </tbody>
+    </tgroup>
+   </informaltable>
   </refsect2>
  </refsect1>
 </refentry>

@@ -1165,95 +1165,15 @@ g_variant_dup_string (GVariant *value,
 }
 
 /**
- * g_variant_new_byte_array:
- * @array: (array length=length): a pointer to an array of bytes
- * @length: the length of @array, or -1
- * @returns: a new floating #GVariant instance
- *
- * Constructs an array of bytes #GVariant from the given array of bytes.
- *
- * If @length is -1 then @array is taken to be a normal C string (in the
- * sense that it is terminated by a nul character).  The nul character
- * is included in the array.  If length is not -1 then it gives the
- * length of @array which may then contain nul chracters with no special
- * meaning.
- *
- * Since: 2.26
- **/
-GVariant *
-g_variant_new_byte_array (gconstpointer array,
-                          gssize        length)
-{
-  if (length == -1)
-    {
-      const gchar *bytes = array;
-
-      length = 0;
-      while (bytes[length++]);
-    }
-
-  return g_variant_new_from_trusted (G_VARIANT_TYPE ("ay"),
-                                     array, length);
-}
-
-/**
- * g_variant_get_byte_array:
- * @value: an array of bytes #GVariant
- * @length: (allow-none): the length of the result, or %NULL
- * @returns: (array length=length): a pointer to the byte data, or %NULL
- *
- * Gets the contents of an array of bytes #GVariant.
- *
- * If @length is non-%NULL then it points to a location at which to
- * store the length of the array and nul bytes contained within the
- * array have no special meaning.
- *
- * If @length is %NULL then the caller has no way to determine what the
- * length of the returned data might be.  In this case, the function
- * ensures that the last byte of the array is a nul byte and, if it is
- * not, returns %NULL instead.  In this way, the caller is assured that
- * any non-%NULL pointer that is returned will be nul-terminated.
- *
- * The return value remains valid as long as @value exists.
- *
- * Since: 2.26
- **/
-gconstpointer
-g_variant_get_byte_array (GVariant *value,
-                          gsize    *length)
-{
-  gconstpointer data;
-  gsize size;
-
-  TYPE_CHECK (value, G_VARIANT_TYPE ("ay"), NULL);
-
-  data = g_variant_get_data (value);
-  size = g_variant_get_size (value);
-
-  if (length == NULL)
-    {
-      const gchar *bytes = data;
-
-      if (bytes[size - 1] != '\0')
-        return NULL;
-    }
-  else
-    *length = size;
-
-  return data;
-}
-
-/**
  * g_variant_new_strv:
- * @strv: an array of strings
+ * @strv: (array length=length): an array of strings
  * @length: the length of @strv, or -1
- * @returns: (array length=length): a new floating #GVariant instance
+ * @returns: a new floating #GVariant instance
  *
  * Constructs an array of strings #GVariant from the given array of
  * strings.
  *
- * If @length is not -1 then it gives the maximum length of @strv.  In
- * any case, a %NULL pointer in @strv is taken as a terminator.
+ * If @length is -1 then @strv is %NULL-terminated.
  *
  * Since: 2.24
  **/
@@ -1273,7 +1193,7 @@ g_variant_new_strv (const gchar * const *strv,
   for (i = 0; i < length; i++)
     strings[i] = g_variant_ref_sink (g_variant_new_string (strv[i]));
 
-  return g_variant_new_from_children (G_VARIANT_TYPE ("as"),
+  return g_variant_new_from_children (G_VARIANT_TYPE_STRING_ARRAY,
                                       strings, length, TRUE);
 }
 
@@ -1304,10 +1224,7 @@ g_variant_get_strv (GVariant *value,
   gsize n;
   gsize i;
 
-  g_return_val_if_fail (g_variant_is_of_type (value, G_VARIANT_TYPE ("as")) ||
-                        g_variant_is_of_type (value, G_VARIANT_TYPE ("ao")) ||
-                        g_variant_is_of_type (value, G_VARIANT_TYPE ("ag")),
-                        NULL);
+  TYPE_CHECK (value, G_VARIANT_TYPE_STRING_ARRAY, NULL);
 
   g_variant_get_data (value);
   n = g_variant_n_children (value);
@@ -1333,7 +1250,7 @@ g_variant_get_strv (GVariant *value,
  * g_variant_dup_strv:
  * @value: an array of strings #GVariant
  * @length: (allow-none): the length of the result, or %NULL
- * @returns: (array length=length): an array of constant strings
+ * @returns: (array length=length): an array of strings
  *
  * Gets the contents of an array of strings #GVariant.  This call
  * makes a deep copy; the return result should be released with
@@ -1356,10 +1273,7 @@ g_variant_dup_strv (GVariant *value,
   gsize n;
   gsize i;
 
-  g_return_val_if_fail (g_variant_is_of_type (value, G_VARIANT_TYPE ("as")) ||
-                        g_variant_is_of_type (value, G_VARIANT_TYPE ("ao")) ||
-                        g_variant_is_of_type (value, G_VARIANT_TYPE ("ag")),
-                        NULL);
+  TYPE_CHECK (value, G_VARIANT_TYPE_STRING_ARRAY, NULL);
 
   n = g_variant_n_children (value);
   strv = g_new (gchar *, n + 1);
@@ -1370,6 +1284,234 @@ g_variant_dup_strv (GVariant *value,
 
       string = g_variant_get_child_value (value, i);
       strv[i] = g_variant_dup_string (string, NULL);
+      g_variant_unref (string);
+    }
+  strv[i] = NULL;
+
+  if (length)
+    *length = n;
+
+  return strv;
+}
+
+/**
+ * g_variant_new_bytestring:
+ * @string: a normal utf8 nul-terminated string
+ * @returns: a new bytestring #GVariant instance
+ *
+ * Creates an array-of-bytes #GVariant with the contents of @string.
+ * This function is just like g_variant_new_string() except that the
+ * string need not be valid utf8.
+ *
+ * The nul terminator character at the end of the string is stored in
+ * the array.
+ *
+ * Since: 2.26
+ **/
+GVariant *
+g_variant_new_bytestring (const gchar *string)
+{
+  g_return_val_if_fail (string != NULL, NULL);
+
+  return g_variant_new_from_trusted (G_VARIANT_TYPE_BYTESTRING,
+                                     string, strlen (string) + 1);
+}
+
+/**
+ * g_variant_get_bytestring:
+ * @value: an array-of-bytes #GVariant instance
+ * @returns: the constant string
+ *
+ * Returns the string value of a #GVariant instance with an
+ * array-of-bytes type.  The string has no particular encoding.
+ *
+ * If the array does not end with a nul terminator character, the empty
+ * string is returned.  For this reason, you can always trust that a
+ * non-%NULL nul-terminated string will be returned by this function.
+ *
+ * If the array contains a nul terminator character somewhere other than
+ * the last byte then the returned string is the string, up to the first
+ * such nul character.
+ *
+ * It is an error to call this function with a @value that is not an
+ * array of bytes.
+ *
+ * The return value remains valid as long as @value exists.
+ *
+ * Since: 2.26
+ **/
+const gchar *
+g_variant_get_bytestring (GVariant *value)
+{
+  const gchar *string;
+  gsize size;
+
+  TYPE_CHECK (value, G_VARIANT_TYPE_BYTESTRING, NULL);
+
+  /* Won't be NULL since this is an array type */
+  string = g_variant_get_data (value);
+  size = g_variant_get_size (value);
+
+  if (string[size - 1] == '\0')
+    return string;
+  else
+    return "";
+}
+
+/**
+ * g_variant_dup_bytestring:
+ * @value: an array-of-bytes #GVariant instance
+ * @length: (allow-none) (default NULL): a pointer to a #gsize, to store
+ *          the length (not including the nul terminator)
+ * @returns: a newly allocated string
+ *
+ * Similar to g_variant_get_bytestring() except that instead of
+ * returning a constant string, the string is duplicated.
+ *
+ * The return value must be freed using g_free().
+ *
+ * Since: 2.26
+ **/
+gchar *
+g_variant_dup_bytestring (GVariant *value,
+                          gsize    *length)
+{
+  const gchar *original = g_variant_get_bytestring (value);
+  gsize size;
+
+  /* don't crash in case get_bytestring() had an assert failure */
+  if (original == NULL)
+    return NULL;
+
+  size = strlen (original);
+
+  if (length)
+    *length = size;
+
+  return g_memdup (original, size + 1);
+}
+
+/**
+ * g_variant_new_bytestring_array:
+ * @strv (array length=length): an array of strings
+ * @length: the length of @strv, or -1
+ * @returns: a new floating #GVariant instance
+ *
+ * Constructs an array of bytestring #GVariant from the given array of
+ * strings.
+ *
+ * If @length is -1 then @strv is %NULL-terminated.
+ *
+ * Since: 2.26
+ **/
+GVariant *
+g_variant_new_bytestring_array (const gchar * const *strv,
+                                gssize               length)
+{
+  GVariant **strings;
+  gsize i;
+
+  g_return_val_if_fail (length == 0 || strv != NULL, NULL);
+
+  if (length < 0)
+    length = g_strv_length ((gchar **) strv);
+
+  strings = g_new (GVariant *, length);
+  for (i = 0; i < length; i++)
+    strings[i] = g_variant_ref_sink (g_variant_new_bytestring (strv[i]));
+
+  return g_variant_new_from_children (G_VARIANT_TYPE_BYTESTRING_ARRAY,
+                                      strings, length, TRUE);
+}
+
+/**
+ * g_variant_get_bytestring_array:
+ * @value: an array of array of bytes #GVariant ('aay')
+ * @length: (allow-none): the length of the result, or %NULL
+ * @returns: (array length=length): an array of constant strings
+ *
+ * Gets the contents of an array of array of bytes #GVariant.  This call
+ * makes a shallow copy; the return result should be released with
+ * g_free(), but the individual strings must not be modified.
+ *
+ * If @length is non-%NULL then the number of elements in the result is
+ * stored there.  In any case, the resulting array will be
+ * %NULL-terminated.
+ *
+ * For an empty array, @length will be set to 0 and a pointer to a
+ * %NULL pointer will be returned.
+ *
+ * Since: 2.26
+ **/
+const gchar **
+g_variant_get_bytestring_array (GVariant *value,
+                                gsize    *length)
+{
+  const gchar **strv;
+  gsize n;
+  gsize i;
+
+  TYPE_CHECK (value, G_VARIANT_TYPE_BYTESTRING_ARRAY, NULL);
+
+  g_variant_get_data (value);
+  n = g_variant_n_children (value);
+  strv = g_new (const gchar *, n + 1);
+
+  for (i = 0; i < n; i++)
+    {
+      GVariant *string;
+
+      string = g_variant_get_child_value (value, i);
+      strv[i] = g_variant_get_bytestring (string);
+      g_variant_unref (string);
+    }
+  strv[i] = NULL;
+
+  if (length)
+    *length = n;
+
+  return strv;
+}
+
+/**
+ * g_variant_dup_bytestring_array:
+ * @value: an array of array of bytes #GVariant ('aay')
+ * @length: (allow-none): the length of the result, or %NULL
+ * @returns: (array length=length): an array of strings
+ *
+ * Gets the contents of an array of array of bytes #GVariant.  This call
+ * makes a deep copy; the return result should be released with
+ * g_strfreev().
+ *
+ * If @length is non-%NULL then the number of elements in the result is
+ * stored there.  In any case, the resulting array will be
+ * %NULL-terminated.
+ *
+ * For an empty array, @length will be set to 0 and a pointer to a
+ * %NULL pointer will be returned.
+ *
+ * Since: 2.26
+ **/
+gchar **
+g_variant_dup_bytestring_array (GVariant *value,
+                                gsize    *length)
+{
+  gchar **strv;
+  gsize n;
+  gsize i;
+
+  TYPE_CHECK (value, G_VARIANT_TYPE_BYTESTRING_ARRAY, NULL);
+
+  g_variant_get_data (value);
+  n = g_variant_n_children (value);
+  strv = g_new (gchar *, n + 1);
+
+  for (i = 0; i < n; i++)
+    {
+      GVariant *string;
+
+      string = g_variant_get_child_value (value, i);
+      strv[i] = g_variant_dup_bytestring (string, NULL);
       g_variant_unref (string);
     }
   strv[i] = NULL;
@@ -1573,6 +1715,45 @@ g_variant_print_string (GVariant *value,
     case G_VARIANT_CLASS_ARRAY:
       /* it's an array so the first character of the type string is 'a'
        *
+       * if the first two characters are 'ay' then it's a bytestring.
+       * under certain conditions we print those as strings.
+       */
+      if (g_variant_get_type_string (value)[1] == 'y')
+        {
+          const gchar *str;
+          gsize size;
+          gsize i;
+
+          /* first determine if it is a byte string.
+           * that's when there's a single nul character: at the end.
+           */
+          str = g_variant_get_data (value);
+          size = g_variant_get_size (value);
+
+          for (i = 0; i < size; i++)
+            if (str[i] == '\0')
+              break;
+
+          /* first nul byte is the last byte -> it's a byte string. */
+          if (i == size - 1)
+            {
+              gchar *escaped = g_strescape (str, NULL);
+
+              /* use double quotes only if a ' is in the string */
+              if (strchr (str, '\''))
+                g_string_append_printf (string, "b\"%s\"", escaped);
+              else
+                g_string_append_printf (string, "b'%s'", escaped);
+
+              g_free (escaped);
+              break;
+            }
+
+          else
+            /* fall through and handle normally... */;
+        }
+
+      /*
        * if the first two characters are 'a{' then it's an array of
        * dictionary entries (ie: a dictionary) so we print that
        * differently.
@@ -3015,19 +3196,43 @@ g_variant_format_string_scan (const gchar  *string,
 
       break;
 
-    case '^': /* '^as' or '^a&s' only */
-      if (next_char() != 'a')
-        return FALSE;
+    case '^':
+      if ((c = next_char()) == 'a')
+        {
+          if ((c = next_char()) == '&')
+            {
+              if ((c = next_char()) == 'a')
+                {
+                  if ((c = next_char()) == 'y')
+                    break;      /* '^a&ay' */
+                }
 
-      if (peek_char() == '&')
-        next_char ();
+              else if (c == 's')
+                break;          /* '^a&s' */
+            }
 
-      c = next_char ();
+          else if (c == 'a')
+            {
+              if ((c = next_char()) == 'y')
+                break;          /* '^aay' */
+            }
 
-      if (c != 's' && c != 'o' && c != 'g')
-        return FALSE;
+          else if (c == 's')
+            break;              /* '^as' */
 
-      break;
+          else if (c == 'y')
+            break;              /* '^ay' */
+        }
+      else if (c == '&')
+        {
+          if ((c = next_char()) == 'a')
+            {
+              if ((c = next_char()) == 'y')
+                break;          /* '^&ay' */
+            }
+        }
+
+      return FALSE;
 
     case '&':
       c = next_char();
@@ -3242,6 +3447,29 @@ g_variant_valist_free_nnp (const gchar *str,
     }
 }
 
+static gchar
+g_variant_scan_convenience (const gchar **str,
+                            gboolean     *constant,
+                            guint        *arrays)
+{
+  *constant = FALSE;
+  *arrays = 0;
+
+  for (;;)
+    {
+      char c = *(*str)++;
+
+      if (c == '&')
+        *constant = TRUE;
+
+      else if (c == 'a')
+        (*arrays)++;
+
+      else
+        return c;
+    }
+}
+
 static GVariant *
 g_variant_valist_new_nnp (const gchar **str,
                           gpointer      ptr)
@@ -3288,31 +3516,16 @@ g_variant_valist_new_nnp (const gchar **str,
 
     case '^':
       {
-        const GVariantType *type;
-        GVariantType *array_type;
-        GVariant **children;
-        gchar **strv = ptr;
-        GVariant *value;
-        guint length, i;
+        gboolean constant;
+        guint arrays;
 
-        if ((*str)[1] == '&')    /* '^a&s' */
-          (*str) += 2;
-        else                     /* '^as' */
-          (*str)++;
+        if (g_variant_scan_convenience (str, &constant, &arrays) == 's')
+          return g_variant_new_strv (ptr, -1);
 
-        type = (GVariantType *) (*str)++;
-        array_type = g_variant_type_new_array (type);
-        length = g_strv_length (strv);
-        children = g_new (GVariant *, length);
-        for (i = 0; i < length; i++)
-          children[i] = g_variant_ref_sink (
-            g_variant_new_from_trusted (type, strv[i], strlen (strv[i]) + 1));
+        if (arrays > 1)
+          return g_variant_new_bytestring_array (ptr, -1);
 
-        value = g_variant_new_from_children (array_type, children,
-                                             length, TRUE);
-        g_variant_type_free (array_type);
-
-        return value;
+        return g_variant_new_bytestring (ptr);
       }
 
     case '@':
@@ -3373,16 +3586,34 @@ g_variant_valist_get_nnp (const gchar **str,
       return g_variant_dup_string (value, NULL);
 
     case '^':
-      if ((*str)[1] == '&')    /* '^a&s' */
-        {
-          (*str) += 3;
-          return g_variant_get_strv (value, NULL);
-        }
-      else                    /* '^as' */
-        {
-          (*str) += 2;
-          return g_variant_dup_strv (value, NULL);
-        }
+      {
+        gboolean constant;
+        guint arrays;
+
+        if (g_variant_scan_convenience (str, &constant, &arrays) == 's')
+          {
+            if (constant)
+              return g_variant_get_strv (value, NULL);
+            else
+              return g_variant_dup_strv (value, NULL);
+          }
+
+        else if (arrays > 1)
+          {
+            if (constant)
+              return g_variant_get_bytestring_array (value, NULL);
+            else
+              return g_variant_dup_bytestring_array (value, NULL);
+          }
+
+        else
+          {
+            if (constant)
+              return (gchar *) g_variant_get_bytestring (value);
+            else
+              return g_variant_dup_bytestring (value, NULL);
+          }
+      }
 
     case '@':
       g_variant_type_string_scan (*str, NULL, str);

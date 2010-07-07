@@ -2981,16 +2981,16 @@ test_varargs (void)
     gchar *str;
     gint i;
 
-    g_variant_builder_init (&builder, G_VARIANT_TYPE ("ao"));
-    g_variant_builder_add (&builder, "o", "/foo");
-    g_variant_builder_add (&builder, "o", "/bar");
-    g_variant_builder_add (&builder, "o", "/baz");
-    value = g_variant_new("(ao^ao^a&o)", &builder, strvector, strvector);
+    g_variant_builder_init (&builder, G_VARIANT_TYPE ("as"));
+    g_variant_builder_add (&builder, "s", "/foo");
+    g_variant_builder_add (&builder, "s", "/bar");
+    g_variant_builder_add (&builder, "s", "/baz");
+    value = g_variant_new("(as^as^a&s)", &builder, strvector, strvector);
     g_variant_iter_init (&tuple, value);
-    g_variant_iter_next (&tuple, "ao", &array);
+    g_variant_iter_next (&tuple, "as", &array);
 
     i = 0;
-    while (g_variant_iter_loop (array, "o", &str))
+    while (g_variant_iter_loop (array, "s", &str))
       g_assert_cmpstr (str, ==, test_strs[i++]);
     g_assert (i == 3);
 
@@ -2998,17 +2998,17 @@ test_varargs (void)
 
     /* start over */
     g_variant_iter_init (&tuple, value);
-    g_variant_iter_next (&tuple, "ao", &array);
+    g_variant_iter_next (&tuple, "as", &array);
 
     i = 0;
-    while (g_variant_iter_loop (array, "&o", &str))
+    while (g_variant_iter_loop (array, "&s", &str))
       g_assert_cmpstr (str, ==, test_strs[i++]);
     g_assert (i == 3);
 
     g_variant_iter_free (array);
 
-    g_variant_iter_next (&tuple, "^a&o", &strv);
-    g_variant_iter_next (&tuple, "^ao", &my_strv);
+    g_variant_iter_next (&tuple, "^a&s", &strv);
+    g_variant_iter_next (&tuple, "^as", &my_strv);
 
     g_assert_cmpstr (strv[0], ==, "/hello");
     g_assert_cmpstr (strv[1], ==, "/world");
@@ -3033,46 +3033,46 @@ test_varargs (void)
     gchar **strv;
     gint i;
 
-    g_variant_builder_init (&builder, G_VARIANT_TYPE ("aag"));
-    g_variant_builder_open (&builder, G_VARIANT_TYPE ("ag"));
+    g_variant_builder_init (&builder, G_VARIANT_TYPE ("aas"));
+    g_variant_builder_open (&builder, G_VARIANT_TYPE ("as"));
     for (i = 0; i < 6; i++)
       if (i & 1)
-        g_variant_builder_add (&builder, "g", strvector[i]);
+        g_variant_builder_add (&builder, "s", strvector[i]);
       else
-        g_variant_builder_add (&builder, "&g", strvector[i]);
+        g_variant_builder_add (&builder, "&s", strvector[i]);
     g_variant_builder_close (&builder);
-    g_variant_builder_add (&builder, "^ag", strvector);
-    g_variant_builder_add (&builder, "^ag", strvector);
-    value = g_variant_new ("aag", &builder);
+    g_variant_builder_add (&builder, "^as", strvector);
+    g_variant_builder_add (&builder, "^as", strvector);
+    value = g_variant_new ("aas", &builder);
 
     g_variant_iter_init (&iter, value);
-    while (g_variant_iter_loop (&iter, "^ag", &strv))
+    while (g_variant_iter_loop (&iter, "^as", &strv))
       for (i = 0; i < 6; i++)
         g_assert_cmpstr (strv[i], ==, strvector[i]);
 
     g_variant_iter_init (&iter, value);
-    while (g_variant_iter_loop (&iter, "^a&g", &strv))
+    while (g_variant_iter_loop (&iter, "^a&s", &strv))
       for (i = 0; i < 6; i++)
         g_assert_cmpstr (strv[i], ==, strvector[i]);
 
     g_variant_iter_init (&iter, value);
-    while (g_variant_iter_loop (&iter, "ag", &i2))
+    while (g_variant_iter_loop (&iter, "as", &i2))
       {
         gchar *str;
 
         i = 0;
-        while (g_variant_iter_loop (i2, "g", &str))
+        while (g_variant_iter_loop (i2, "s", &str))
           g_assert_cmpstr (str, ==, strvector[i++]);
         g_assert (i == 6);
       }
 
     g_variant_iter_init (&iter, value);
     i3 = g_variant_iter_copy (&iter);
-    while (g_variant_iter_loop (&iter, "@ag", &sub))
+    while (g_variant_iter_loop (&iter, "@as", &sub))
       {
         gchar *str = g_variant_print (sub, TRUE);
         g_assert_cmpstr (str, ==,
-                         "[signature 'i', 'ii', 'iii', 'iv', 'v', 'vi']");
+                         "['i', 'ii', 'iii', 'iv', 'v', 'vi']");
         g_free (str);
       }
 
@@ -3087,7 +3087,7 @@ test_varargs (void)
       {
         gchar *str = g_variant_print (sub, TRUE);
         g_assert_cmpstr (str, ==,
-                         "[signature 'i', 'ii', 'iii', 'iv', 'v', 'vi']");
+                         "['i', 'ii', 'iii', 'iv', 'v', 'vi']");
         g_free (str);
       }
 
@@ -3104,11 +3104,11 @@ test_varargs (void)
             const gchar *str = NULL;
             GVariant *cval;
 
-            g_variant_get_child (sub, j, "&g", &str);
+            g_variant_get_child (sub, j, "&s", &str);
             g_assert_cmpstr (str, ==, strvector[j]);
 
             cval = g_variant_get_child_value (sub, j);
-            g_variant_get (cval, "&g", &str);
+            g_variant_get (cval, "&s", &str);
             g_assert_cmpstr (str, ==, strvector[j]);
             g_variant_unref (cval);
           }
@@ -3812,6 +3812,80 @@ test_floating (void)
   g_variant_unref (value);
 }
 
+static void
+test_bytestring (void)
+{
+  const gchar *test_string = "foo,bar,baz,quux,\xffoooo";
+  GVariant *value;
+  gchar **strv;
+  gchar *str;
+
+  strv = g_strsplit (test_string, ",", 0);
+
+  value = g_variant_new_bytestring_array ((const gchar **) strv, -1);
+  g_assert (g_variant_is_floating (value));
+  g_strfreev (strv);
+
+  str = g_variant_print (value, FALSE);
+  g_variant_unref (value);
+
+  value = g_variant_parse (NULL, str, NULL, NULL, NULL);
+  g_free (str);
+
+  strv = g_variant_dup_bytestring_array (value, NULL);
+  g_variant_unref (value);
+
+  str = g_strjoinv (",", strv);
+  g_strfreev (strv);
+
+  g_assert_cmpstr (str, ==, test_string);
+  g_free (str);
+
+  strv = g_strsplit (test_string, ",", 0);
+  value = g_variant_new ("(^aay^a&ay^ay^&ay)",
+                         strv, strv, strv[0], strv[0]);
+  g_strfreev (strv);
+
+  g_variant_get_child (value, 0, "^a&ay", &strv);
+  str = g_strjoinv (",", strv);
+  g_free (strv);
+  g_assert_cmpstr (str, ==, test_string);
+  g_free (str);
+
+  g_variant_get_child (value, 0, "^aay", &strv);
+  str = g_strjoinv (",", strv);
+  g_strfreev (strv);
+  g_assert_cmpstr (str, ==, test_string);
+  g_free (str);
+
+  g_variant_get_child (value, 1, "^a&ay", &strv);
+  str = g_strjoinv (",", strv);
+  g_free (strv);
+  g_assert_cmpstr (str, ==, test_string);
+  g_free (str);
+
+  g_variant_get_child (value, 1, "^aay", &strv);
+  str = g_strjoinv (",", strv);
+  g_strfreev (strv);
+  g_assert_cmpstr (str, ==, test_string);
+  g_free (str);
+
+  g_variant_get_child (value, 2, "^ay", &str);
+  g_assert_cmpstr (str, ==, "foo");
+  g_free (str);
+
+  g_variant_get_child (value, 2, "^&ay", &str);
+  g_assert_cmpstr (str, ==, "foo");
+
+  g_variant_get_child (value, 3, "^ay", &str);
+  g_assert_cmpstr (str, ==, "foo");
+  g_free (str);
+
+  g_variant_get_child (value, 3, "^&ay", &str);
+  g_assert_cmpstr (str, ==, "foo");
+  g_variant_unref (value);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -3851,6 +3925,7 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/parse-failures", test_parse_failures);
   g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
   g_test_add_func ("/gvariant/floating", test_floating);
+  g_test_add_func ("/gvariant/bytestring", test_bytestring);
 
   return g_test_run ();
 }
