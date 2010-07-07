@@ -653,7 +653,7 @@ test_charset (gconstpointer data)
   in2 = g_converter_input_stream_new (in, conv);
 
   count = 2 * strlen (test->text_out);
-  buffer = g_malloc (count);
+  buffer = g_malloc0 (count);
   error = NULL;
   g_input_stream_read_all (in2, buffer, count, &bytes_read, NULL, &error);
   if (test->n_fallbacks == 0)
@@ -681,7 +681,7 @@ test_charset (gconstpointer data)
   in2 = g_converter_input_stream_new (in, conv);
 
   count = 2 * strlen (test->text_out);
-  buffer = g_malloc (count);
+  buffer = g_malloc0 (count);
   error = NULL;
   g_input_stream_read_all (in2, buffer, count, &bytes_read, NULL, &error);
   g_assert_no_error (error);
