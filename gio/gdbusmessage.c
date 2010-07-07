@@ -726,10 +726,11 @@ read_string (GMemoryInputStream    *mis,
         goto fail;
       if (num_read == 0)
         {
+          /* G_GSIZE_FORMAT doesn't work with gettext, so we use %lu */
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Wanted to read %" G_GSIZE_FORMAT " bytes but got EOF"),
+                       _("Wanted to read %lu bytes but got EOF"),
                        to_read);
           goto fail;
         }
@@ -1012,10 +1013,11 @@ parse_value_from_blob (GMemoryInputStream    *mis,
 
           if (array_len > (2<<26))
             {
+              /* G_GUINT32_FORMAT doesn't work with gettext, so use u */
               g_set_error (&local_error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Encountered array of length %" G_GUINT32_FORMAT " bytes. Maximum length is 2<<26 bytes."),
+                           _("Encountered array of length %u bytes. Maximum length is 2<<26 bytes."),
                            array_len);
               goto fail;
             }
@@ -1494,10 +1496,11 @@ g_dbus_message_new_from_blob (guchar                *blob,
       /* no signature, this is only OK if the body is empty */
       if (message_body_len != 0)
         {
+          /* G_GUINT32_FORMAT doesn't work with gettext, just use %u */
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("No signature header in message but the message body is %" G_GUINT32_FORMAT " bytes"),
+                       _("No signature header in message but the message body is %u bytes"),
                        message_body_len);
           goto out;
         }

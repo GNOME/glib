@@ -669,10 +669,11 @@ g_dbus_address_connect (const gchar   *address_entry,
 
           if (nonce_length != 16)
             {
+              /* G_GSIZE_FORMAT doesn't work with gettext, so we use %lu */
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
-                           _("The nonce-file `%s' was %" G_GSIZE_FORMAT " bytes. Expected 16 bytes."),
+                           _("The nonce-file `%s' was %lu bytes. Expected 16 bytes."),
                            nonce_file,
                            nonce_length);
               g_free (nonce_contents);
