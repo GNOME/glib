@@ -44,7 +44,6 @@
 #include <fcntl.h>
 
 #include "glib.h"
-#include "galias.h"
 
 /*
  * Unix IO Channels
@@ -640,6 +639,3 @@ g_io_channel_unix_get_fd (GIOChannel *channel)
   GIOUnixChannel *unix_channel = (GIOUnixChannel *)channel;
   return unix_channel->fd;
 }
-
-#define __G_IO_UNIX_C__
-#include "galiasdef.c"

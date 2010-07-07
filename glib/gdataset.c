@@ -37,7 +37,6 @@
 #include "glib.h"
 #include "gdatasetprivate.h"
 #include "glib_trace.h"
-#include "galias.h"
 
 /**
  * SECTION: datasets
@@ -1214,6 +1213,3 @@ g_intern_static_string (const gchar *string)
 
   return result;
 }
-
-#define __G_DATASET_C__
-#include "galiasdef.c"

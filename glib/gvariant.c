@@ -34,7 +34,6 @@
 
 #include <string.h>
 
-#include "galias.h"
 
 /**
  * SECTION: gvariant
@@ -4630,7 +4629,4 @@ g_variant_new_from_data (const GVariantType *type,
 }
 
 /* Epilogue {{{1 */
-#define __G_VARIANT_C__
-#include "galiasdef.c"
-
 /* vim:set foldmethod=marker: */

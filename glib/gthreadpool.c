@@ -27,7 +27,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 /**
  * SECTION: thread_pools
@@ -990,6 +989,3 @@ g_thread_pool_get_max_idle_time (void)
 { 
   return g_atomic_int_get (&max_idle_time);
 }
-
-#define __G_THREADPOOL_C__
-#include "galiasdef.c"

@@ -27,7 +27,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 
 /**
@@ -384,6 +383,3 @@ g_propagate_prefixed_error (GError      **dest,
       va_end (ap);
     }
 }
-
-#define __G_ERROR_C__
-#include "galiasdef.c"

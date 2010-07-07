@@ -31,7 +31,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 /**
  * SECTION: caches
@@ -326,6 +325,3 @@ g_cache_value_foreach (GCache   *cache,
 
   g_hash_table_foreach (cache->key_table, func, user_data);
 }
-
-#define __G_CACHE_C__
-#include "galiasdef.c"

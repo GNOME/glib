@@ -27,7 +27,6 @@
 #include "gunidecomp.h"
 #include "gunicomp.h"
 #include "gunicodeprivate.h"
-#include "galias.h"
 
 
 #define CC_PART1(Page, Char) \
@@ -530,6 +529,3 @@ g_utf8_normalize (const gchar    *str,
 
   return result;
 }
-
-#define __G_UNIDECOMP_C__
-#include "galiasdef.c"

@@ -31,7 +31,6 @@
 #endif
 
 #include "glibintl.h"
-#include "galias.h"
 
 /**
  * SECTION: shell
@@ -690,6 +689,3 @@ g_shell_parse_argv (const gchar *command_line,
   
   return FALSE;
 }
-
-#define __G_SHELL_C__
-#include "galiasdef.c"

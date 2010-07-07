@@ -32,7 +32,6 @@
 #include <string.h>
 
 #include "config.h"
-#include "galias.h"
 
 /**
  * SECTION:gurifuncs
@@ -248,6 +247,3 @@ g_uri_escape_string (const char *unescaped,
   
   return g_string_free (s, FALSE);
 }
-
-#define __G_URI_FUNCS_C__
-#include "galiasdef.c"

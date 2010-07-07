@@ -29,7 +29,6 @@
 #include <glib/gmem.h>
 #include <string.h>
 
-#include "galias.h"
 
 /*
  * This file includes the structure definition for GVariant and a small
@@ -951,6 +950,3 @@ g_variant_is_normal_form (GVariant *value)
 
   return (value->state & STATE_TRUSTED) != 0;
 }
-
-#define __G_VARIANT_CORE_C__
-#include "galiasdef.c"

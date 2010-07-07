@@ -31,7 +31,6 @@
 #include "gmirroringtable.h"
 #include "gscripttable.h"
 #include "gunicodeprivate.h"
-#include "galias.h"
 
 #define ATTR_TABLE(Page) (((Page) <= G_UNICODE_LAST_PAGE_PART1) \
                           ? attr_table_part1[Page] \
@@ -1296,7 +1295,3 @@ g_unichar_get_script (gunichar ch)
   else 
     return g_unichar_get_script_bsearch (ch); 
 }
-
-
-#define __G_UNIPROP_C__
-#include "galiasdef.c"

@@ -115,10 +115,7 @@ class GHashPrinter:
         try:
             string_hash = read_global_var ("g_str_hash")
         except:
-            try:
-                string_hash = read_global_var ("IA__g_str_hash")
-            except:
-                string_hash = None
+            string_hash = None
         if self.val != 0 and string_hash != None and self.val["hash_func"] == string_hash:
             self.keys_are_strings = True
 

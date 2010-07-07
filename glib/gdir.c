@@ -39,7 +39,6 @@
 
 #include "glibintl.h"
 
-#include "galias.h"
 
 #if defined (_MSC_VER) && !defined (HAVE_DIRENT_H)
 #include "../build/win32/dirent/dirent.h"
@@ -302,6 +301,3 @@ g_dir_close (GDir *dir)
 #endif
   g_free (dir);
 }
-
-#define __G_DIR_C__
-#include "galiasdef.c"

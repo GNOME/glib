@@ -251,7 +251,6 @@ typedef struct pcre_callout_block {
 } pcre_callout_block;
 
 #include "glib.h"
-#include "galias.h"
 
 #define pcre_malloc g_try_malloc
 #define pcre_free g_free

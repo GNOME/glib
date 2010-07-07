@@ -29,7 +29,6 @@
 
 #include "glib.h"
 #include "gthreadprivate.h"
-#include "galias.h"
 
 #if defined (__GNUC__)
 # if defined (G_ATOMIC_I486)
@@ -1053,6 +1052,3 @@ void
   g_atomic_pointer_set (atomic, newval);
 }
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
-
-#define __G_ATOMIC_C__
-#include "galiasdef.c"

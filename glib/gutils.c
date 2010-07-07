@@ -61,7 +61,6 @@
 #include "gprintfint.h"
 #include "gthreadprivate.h"
 #include "glibintl.h"
-#include "galias.h"
 
 #ifdef	MAXPATHLEN
 #define	G_PATH_LENGTH	MAXPATHLEN
@@ -3596,6 +3595,3 @@ g_get_tmp_dir (void)
 }
 
 #endif
-
-#define __G_UTILS_C__
-#include "galiasdef.c"

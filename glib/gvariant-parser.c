@@ -24,7 +24,6 @@
 #include <errno.h>
 #include <glib.h>
 
-#include "galias.h"
 
 /*
  * two-pass algorithm
@@ -2450,7 +2449,3 @@ g_variant_builder_add_parsed (GVariantBuilder *builder,
   g_variant_builder_add_value (builder, g_variant_new_parsed_va (format, &ap));
   va_end (ap);
 }
-
-
-#define __G_VARIANT_PARSER_C__
-#include "galiasdef.c"

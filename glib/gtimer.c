@@ -49,7 +49,6 @@
 
 #include "glib.h"
 #include "gthread.h"
-#include "galias.h"
 
 /**
  * SECTION: timers
@@ -563,6 +562,3 @@ g_time_val_to_iso8601 (GTimeVal *time_)
   
   return retval;
 }
-
-#define __G_TIMER_C__
-#include "galiasdef.c"

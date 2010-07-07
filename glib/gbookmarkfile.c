@@ -55,7 +55,6 @@
 #include "gtimer.h"
 #include "gutils.h"
 
-#include "galias.h"
 
 /* XBEL 1.0 standard entities */
 #define XBEL_VERSION		"1.0"
@@ -3704,6 +3703,3 @@ g_bookmark_file_get_icon (GBookmarkFile  *bookmark,
   
   return TRUE;
 }
-
-#define __G_BOOKMARK_FILE_C__
-#include "galiasdef.c"

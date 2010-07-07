@@ -27,7 +27,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 /**
  * g_queue_new:
@@ -1008,6 +1007,3 @@ g_queue_insert_sorted (GQueue           *queue,
   else
     g_queue_push_tail (queue, data);
 }
-
-#define __G_QUEUE_C__
-#include "galiasdef.c"

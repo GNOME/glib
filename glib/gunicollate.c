@@ -32,7 +32,6 @@
 
 #include "glib.h"
 #include "gunicodeprivate.h"
-#include "galias.h"
 
 #ifdef _MSC_VER
 /* Workaround for bug in MSVCR80.DLL */
@@ -673,7 +672,3 @@ g_utf8_collate_key_for_filename (const gchar *str,
   return carbon_collate_key_for_filename (str, len);
 #endif
 }
-
-
-#define __G_UNICOLLATE_C__
-#include "galiasdef.c"

@@ -27,7 +27,6 @@
 #include "glib.h"
 #include "glibintl.h"
 
-#include "galias.h"
 
 /**
  * SECTION: checksum
@@ -1456,6 +1455,3 @@ g_compute_checksum_for_string (GChecksumType  checksum_type,
 
   return g_compute_checksum_for_data (checksum_type, (const guchar *) str, length);
 }
-
-#define __G_CHECKSUM_C__
-#include "galiasdef.c"

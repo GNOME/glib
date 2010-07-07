@@ -41,7 +41,6 @@
 #include "gthread.h"
 #include "glib_trace.h"
 
-#include "galias.h"
 
 #define MEM_PROFILE_TABLE_SIZE 4096
 
@@ -1197,6 +1196,3 @@ _g_mem_thread_init_noprivate_nomessage (void)
   gmem_profile_mutex = g_mutex_new ();
 #endif
 }
-
-#define __G_MEM_C__
-#include "galiasdef.c"

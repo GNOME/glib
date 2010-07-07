@@ -33,7 +33,6 @@
 #include <string.h>  /* memset */
 
 #include "glib.h"
-#include "galias.h"
 
 /**
  * SECTION: hash_tables
@@ -1456,6 +1455,3 @@ g_hash_table_get_values (GHashTable *hash_table)
 
   return retval;
 }
-
-#define __G_HASH_C__
-#include "galiasdef.c"

@@ -36,7 +36,6 @@
 #include "gthreadprivate.h"
 #include "glib.h"
 #include "glib_trace.h"
-#include "galias.h"
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>             /* sysconf() */
 #endif
@@ -1488,6 +1487,3 @@ g_slice_debug_tree_statistics (void)
    */
 }
 #endif /* G_ENABLE_DEBUG */
-
-#define __G_SLICE_C__
-#include "galiasdef.c"

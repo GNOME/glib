@@ -27,7 +27,6 @@
 #include <glib/gatomic.h>
 #include <glib/gmem.h>
 
-#include "galias.h"
 
 typedef struct
 {

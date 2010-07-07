@@ -40,7 +40,6 @@
 #include "gmessages.h"
 #include "gqsort.h"
 
-#include "galias.h"
 
 /**
  * SECTION: arrays
@@ -1590,6 +1589,3 @@ g_byte_array_sort_with_data (GByteArray       *array,
 {
   g_array_sort_with_data ((GArray *) array, compare_func, user_data);
 }
-
-#define __G_ARRAY_C__
-#include "galiasdef.c"

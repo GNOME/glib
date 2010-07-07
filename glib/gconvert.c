@@ -55,7 +55,6 @@
 #error GNU libiconv not in use but included iconv.h is from libiconv
 #endif
 
-#include "galias.h"
 
 /* We try to terminate strings in unknown charsets with this many zero bytes
  * to ensure that multibyte strings really are nul-terminated when we return
@@ -2125,6 +2124,3 @@ g_filename_display_name (const gchar *filename)
 
   return display_name;
 }
-
-#define __G_CONVERT_C__
-#include "galiasdef.c"

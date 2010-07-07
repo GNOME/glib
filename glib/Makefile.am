@@ -43,20 +43,12 @@ AM_CPPFLAGS = 				\
 glib.def: glib.symbols
 	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g') > glib.def
 
-galias.h: $(srcdir)/makegalias.pl glib.symbols
-	  $(AM_V_GEN) $(PERL) $(srcdir)/makegalias.pl < $(srcdir)/glib.symbols > galias.h
-
-galiasdef.c: $(srcdir)/makegalias.pl glib.symbols
-	  $(AM_V_GEN) $(PERL) $(srcdir)/makegalias.pl -def < $(srcdir)/glib.symbols > galiasdef.c
-
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
 TESTS_ENVIRONMENT = GLIB_DEBUG_FLAGS="$(GLIB_DEBUG_FLAGS)"
-TESTS = abicheck.sh pltcheck.sh
+TESTS = abicheck.sh
 endif
 endif
-
-BUILT_SOURCES = galias.h galiasdef.c
 
 MIRRORING_TAB_SOURCE = 				\
 	glib-mirroring-tab/Makefile 		\
@@ -71,9 +63,7 @@ EXTRA_DIST += 			\
 	glib.rc.in		\
 	gen-unicode-tables.pl	\
 	gen-script-table.pl	\
-	makegalias.pl		\
 	abicheck.sh		\
-	pltcheck.sh		\
 	glib.symbols		\
 	gregex.c		\
 	gregex.h		\
@@ -84,9 +74,7 @@ EXTRA_DIST += 			\
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
 	makefile.msc		\
-	glib.rc			\
-	galias.h		\
-	galiasdef.c
+	glib.rc
 
 lib_LTLIBRARIES = libglib-2.0.la
 
@@ -336,7 +324,7 @@ glib_probes.h: glib_probes.d Makefile
 	sed -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
 glib_probes.o: glib_probes.d Makefile
 	$(DTRACE) -G -s $< -o $@
-BUILT_SOURCES += glib_probes.h glib_probes.o
+BUILT_SOURCES = glib_probes.h glib_probes.o
 CLEANFILES += glib_probes.h glib_probes.h.tmp
 libglib_2_0_la_LIBADD += glib_probes.o
 endif

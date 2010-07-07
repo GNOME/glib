@@ -31,7 +31,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 /**
  * SECTION: linked_lists_double
@@ -1148,6 +1147,3 @@ g_list_sort_with_data (GList            *list,
 {
   return g_list_sort_real (list, (GFunc) compare_func, user_data);
 }
-
-#define __G_LIST_C__
-#include "galiasdef.c"

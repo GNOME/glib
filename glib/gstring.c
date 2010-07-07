@@ -42,7 +42,6 @@
 #include "glib.h"
 #include "gprintf.h"
 
-#include "galias.h"
 
 /**
  * SECTION: string_chunks
@@ -1519,6 +1518,3 @@ g_string_append_printf (GString     *string,
   g_string_append_vprintf (string, format, args);
   va_end (args);
 }
-
-#define __G_STRING_C__
-#include "galiasdef.c"

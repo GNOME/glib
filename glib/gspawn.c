@@ -43,7 +43,6 @@
 
 #include "glib.h"
 #include "glibintl.h"
-#include "galias.h"
 
 static gint g_execute (const gchar  *file,
                        gchar **argv,
@@ -1677,6 +1676,3 @@ void
 g_spawn_close_pid (GPid pid)
 {
 }
-
-#define __G_SPAWN_C__
-#include "galiasdef.c"

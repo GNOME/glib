@@ -21,7 +21,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 /**
  * SECTION: sequence
@@ -1813,7 +1812,3 @@ node_insert_sorted (GSequenceNode            *node,
   
   node_insert_before (closest, new);
 }
-
-
-#define __G_SEQUENCE_C__
-#include "galiasdef.c"

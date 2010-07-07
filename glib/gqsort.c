@@ -39,7 +39,6 @@
 #include <string.h>
 
 #include "glib.h"
-#include "galias.h"
 
 /* Byte-wise swap two items of size SIZE. */
 #define SWAP(a, b, size)						      \
@@ -282,6 +281,3 @@ g_qsort_with_data (gconstpointer    pbase,
       }
   }
 }
-
-#define __G_QSORT_C__
-#include "galiasdef.c"

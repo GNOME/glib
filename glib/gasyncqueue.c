@@ -33,7 +33,6 @@
 #include "gtestutils.h"
 #include "gthread.h"
 
-#include "galias.h"
 
 
 struct _GAsyncQueue
@@ -667,6 +666,3 @@ _g_async_queue_get_mutex (GAsyncQueue* queue)
 
   return queue->mutex;
 }
-
-#define __G_ASYNCQUEUE_C__
-#include "galiasdef.c"

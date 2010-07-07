@@ -48,7 +48,6 @@
 #include "gprintfint.h"
 #include "glibintl.h"
 
-#include "galias.h"
 
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -3270,7 +3269,3 @@ g_dngettext (const gchar *domain,
 
   return dngettext (domain, msgid, msgid_plural, n);
 }
-
-
-#define __G_STRFUNCS_C__
-#include "galiasdef.c"

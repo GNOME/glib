@@ -34,7 +34,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 /**
  * SECTION: trees-nary
@@ -1276,6 +1275,3 @@ g_node_children_foreach (GNode		  *node,
 	}
     }
 }
-
-#define __G_NODE_C__
-#include "galiasdef.c"

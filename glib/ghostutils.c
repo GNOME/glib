@@ -26,7 +26,6 @@
 
 #include <string.h>
 
-#include "galias.h"
 
 /**
  * SECTION:ghostutils
@@ -764,6 +763,3 @@ g_hostname_is_ip_address (const gchar *hostname)
   /* If there's nothing left to parse, then it's ok. */
   return !*p;
 }
-
-#define __G_HOST_UTILS_C__
-#include "galiasdef.c"

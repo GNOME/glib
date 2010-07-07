@@ -21,7 +21,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 gint
 g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
@@ -87,6 +86,3 @@ void
   *atomic = newval;
   __sync_synchronize ();
 }
-
-#define __G_ATOMIC_C__
-#include "galiasdef.c"

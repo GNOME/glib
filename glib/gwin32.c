@@ -52,7 +52,6 @@
 #endif /* _MSC_VER || __DMC__ */
 
 #include "glib.h"
-#include "galias.h"
 
 #ifdef G_WITH_CYGWIN
 #include <sys/cygwin.h>
@@ -595,6 +594,3 @@ g_win32_locale_filename_from_utf8 (const gchar *utf8filename)
     }
   return retval;
 }
-
-#define __G_WIN32_C__
-#include "galiasdef.c"

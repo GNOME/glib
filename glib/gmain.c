@@ -77,7 +77,6 @@
 #include <sys/wait.h>
 #endif
 
-#include "galias.h"
 
 /* Types */
 
@@ -4251,6 +4250,3 @@ g_idle_remove_by_data (gpointer data)
 {
   return g_source_remove_by_funcs_user_data (&g_idle_funcs, data);
 }
-
-#define __G_MAIN_C__
-#include "galiasdef.c"

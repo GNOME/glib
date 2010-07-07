@@ -29,7 +29,6 @@
 
 #include <string.h>
 
-#include "galias.h"
 
 /**
  * SECTION: gvarianttype
@@ -1489,6 +1488,3 @@ g_variant_type_checked_ (const gchar *type_string)
   g_return_val_if_fail (g_variant_type_string_is_valid (type_string), NULL);
   return (const GVariantType *) type_string;
 }
-
-#define __G_VARIANT_TYPE_C__
-#include "galiasdef.c"

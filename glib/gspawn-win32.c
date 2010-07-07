@@ -47,7 +47,6 @@
 #include "glib.h"
 #include "gprintfint.h"
 #include "glibintl.h"
-#include "galias.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -1492,6 +1491,3 @@ g_spawn_command_line_async (const gchar *command_line,
 #endif	/* !_WIN64 */
 
 #endif /* !GSPAWN_HELPER */
-
-#define __G_SPAWN_C__
-#include "galiasdef.c"

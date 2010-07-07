@@ -65,7 +65,6 @@
 #include "gstrfuncs.h"
 #include "gutils.h"
 
-#include "galias.h"
 
 typedef struct _GKeyFileGroup GKeyFileGroup;
 
@@ -3929,6 +3928,3 @@ g_key_file_parse_comment_as_value (GKeyFile      *key_file,
 
   return g_string_free (string, FALSE);
 }
-
-#define __G_KEY_FILE_C__
-#include "galiasdef.c"

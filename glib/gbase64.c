@@ -31,7 +31,6 @@
 #include "glib.h"
 #include "glibintl.h"
 
-#include "galias.h"
 
 /**
  * SECTION:base64 Base64 Encoding
@@ -441,7 +440,3 @@ g_base64_decode_inplace (gchar *text,
   
   return (guchar *) text; 
 }
-
-
-#define __G_BASE64_C__
-#include "galiasdef.c"

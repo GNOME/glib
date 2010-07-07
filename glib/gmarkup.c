@@ -29,7 +29,6 @@
 
 #include "glib.h"
 #include "glibintl.h"
-#include "galias.h"
 
 GQuark
 g_markup_error_quark (void)
@@ -2779,6 +2778,3 @@ failure:
 
   return FALSE;
 }
-
-#define __G_MARKUP_C__
-#include "galiasdef.c"

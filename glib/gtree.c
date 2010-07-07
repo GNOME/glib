@@ -31,7 +31,6 @@
 #include "config.h"
 
 #include "glib.h"
-#include "galias.h"
 
 /**
  * SECTION: trees-binary
@@ -1410,8 +1409,3 @@ g_tree_dump (GTree *tree)
     g_tree_node_dump (tree->root, 0);
 }
 #endif
-
-
-#define __G_TREE_C__
-#include "galiasdef.c"
-

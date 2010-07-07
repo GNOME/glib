@@ -56,7 +56,6 @@
 
 #include "glibintl.h"
 
-#include "galias.h"
 
 #ifndef _O_BINARY
 #define _O_BINARY 0
@@ -343,6 +342,3 @@ g_mapped_file_unref (GMappedFile *file)
   if (g_atomic_int_dec_and_test (&file->ref_count))
     g_mapped_file_destroy (file);
 }
-
-#define __G_MAPPED_FILE_C__
-#include "galiasdef.c"

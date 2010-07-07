@@ -45,7 +45,6 @@
 
 #include "gstdio.h"
 
-#include "galias.h"
 
 #if !defined (G_OS_UNIX) && !defined (G_OS_WIN32) && !defined (G_OS_BEOS)
 #error Please port this to your operating system
@@ -824,6 +823,3 @@ g_utime (const gchar    *filename,
   return utime (filename, utb);
 #endif
 }
-
-#define __G_STDIO_C__
-#include "galiasdef.c"

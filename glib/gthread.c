@@ -61,7 +61,6 @@
 #include "gtestutils.h"
 #include "gtimer.h"
 
-#include "galias.h"
 
 /**
  * SECTION: threads
@@ -2537,7 +2536,3 @@ g_thread_get_initialized ()
 {
   return g_thread_supported ();
 }
-
-#define __G_THREAD_C__
-#include "galiasdef.c"
-

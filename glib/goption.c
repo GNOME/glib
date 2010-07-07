@@ -132,7 +132,6 @@
 #include "glibintl.h"
 #include "gprintf.h"
 
-#include "galias.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -2380,7 +2379,3 @@ g_option_context_get_description (GOptionContext *context)
 
   return context->description;
 }
-
-
-#define __G_OPTION_C__
-#include "galiasdef.c"

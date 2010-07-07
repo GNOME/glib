@@ -40,7 +40,6 @@
 #undef G_DISABLE_DEPRECATED
 
 #include "grel.h"
-#include "galias.h"
 
 /**
  * SECTION: relations
@@ -674,6 +673,3 @@ g_relation_print (GRelation *relation)
     }
   
 }
-
-#define __G_REL_C__
-#include "galiasdef.c"

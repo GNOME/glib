@@ -39,7 +39,6 @@
 #undef G_DISABLE_DEPRECATED
 
 #include "gcompletion.h"
-#include "galias.h"
 
 /**
  * SECTION: completion
@@ -490,6 +489,3 @@ main (int   argc,
   return 0;
 }
 #endif
-
-#define __G_COMPLETION_C__
-#include "galiasdef.c"

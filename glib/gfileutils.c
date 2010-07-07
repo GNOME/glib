@@ -52,7 +52,6 @@
 #include "gstdio.h"
 #include "glibintl.h"
 
-#include "galias.h"
 
 /**
  * g_mkdir_with_parents:
@@ -2015,6 +2014,3 @@ g_file_open_tmp (const gchar  *tmpl,
 }
 
 #endif
-
-#define __G_FILEUTILS_C__
-#include "galiasdef.c"

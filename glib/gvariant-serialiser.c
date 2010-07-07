@@ -31,7 +31,6 @@
 
 #include <string.h>
 
-#include "galias.h"
 
 /* GVariantSerialiser
  *
@@ -1682,7 +1681,4 @@ g_variant_serialiser_is_signature (gconstpointer data,
 }
 
 /* Epilogue {{{1 */
-#define __G_VARIANT_SERIALISER_C__
-#include "galiasdef.c"
-
 /* vim:set foldmethod=marker: */

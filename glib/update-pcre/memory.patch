@@ -1,7 +1,7 @@
 diff -r 0f4042339eb5 pcre/pcre.h
 --- pcre/pcre.h	Tue Jul 25 22:39:16 2006 +0200
 +++ pcre/pcre.h	Tue Jul 25 22:52:10 2006 +0200
-@@ -233,25 +233,14 @@ typedef struct pcre_callout_block {
+@@ -233,25 +233,13 @@ typedef struct pcre_callout_block {
    /* ------------------------------------------------------------------ */
  } pcre_callout_block;
  
@@ -17,7 +17,6 @@ diff -r 0f4042339eb5 pcre/pcre.h
 -PCRE_DATA_SCOPE void *(*pcre_stack_malloc)(size_t);
 -PCRE_DATA_SCOPE void  (*pcre_stack_free)(void *);
 +#include "glib.h"
-+#include "galias.h"
 +
 +#define pcre_malloc g_try_malloc
 +#define pcre_free g_free

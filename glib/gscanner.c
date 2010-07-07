@@ -44,7 +44,6 @@
 
 #include	"glib.h"
 #include	"gprintfint.h"
-#include        "galias.h"
 
 #ifdef G_OS_WIN32
 #include	<io.h>		/* For _read() */
@@ -1762,6 +1761,3 @@ g_scanner_get_token_ll	(GScanner	*scanner,
   *token_p = token;
   *value_p = value;
 }
-
-#define __G_SCANNER_C__
-#include "galiasdef.c"

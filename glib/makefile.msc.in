@@ -18,8 +18,6 @@ DEPCFLAGS = -Zm400 $(INTL_CFLAGS) $(DIRENT_CFLAGS)
 all :				\
 	..\config.h		\
 	..\glibconfig.h	\
-	galias.h		\
-	galiasdef.c		\
 	gnulib\gnulib.lib	\
 	pcre\pcre.lib		\
 	libglib-2.0-0.dll \
@@ -106,12 +104,6 @@ glib_OBJECTS =			\
 
 ..\config.h: ..\config.h.win32
 	copy ..\config.h.win32 ..\config.h
-
-galias.h: glib.symbols
-	perl makegalias.pl < glib.symbols > galias.h
-
-galiasdef.c: glib.symbols
-	  perl makegalias.pl -def < glib.symbols > galiasdef.c
 
 localcharset.obj : libcharset\localcharset.c
 	$(CC) $(CFLAGS) -DLIBDIR=\".\" -c libcharset\localcharset.c

@@ -46,7 +46,6 @@
 #include <windows.h>
 #endif
 
-#include "galias.h"
 
 GDate*
 g_date_new (void)
@@ -1899,7 +1898,3 @@ g_date_strftime (gchar       *s,
   return retval;
 #endif
 }
-
-#define __G_DATE_C__
-#include "galiasdef.c"
-

@@ -39,7 +39,6 @@
 #include "libcharset/libcharset.h"
 
 #include "glibintl.h"
-#include "galias.h"
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
   if (Char < 128)							      \
@@ -1897,7 +1896,3 @@ _g_utf8_make_valid (const gchar *name)
   
   return g_string_free (string, FALSE);
 }
-
-
-#define __G_UTF8_C__
-#include "galiasdef.c"

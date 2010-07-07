@@ -29,7 +29,6 @@
 #include "gthreadprivate.h"
 #include "config.h"
 
-#include "galias.h"
 
 #ifdef G_BIT_LOCK_FORCE_FUTEX_EMULATION
 #undef HAVE_FUTEX
@@ -295,6 +294,3 @@ g_bit_unlock (volatile gint *address,
   if (g_atomic_int_get (&g_bit_lock_contended[class]))
     g_futex_wake (address);
 }
-
-#define __G_BITLOCK_C__
-#include "galiasdef.c"

@@ -49,7 +49,6 @@
 #include "gstrfuncs.h"
 #include "gtimer.h"
 
-#include "galias.h"
  
 /* Global variable for storing assertion messages; this is the counterpart to
  * glibc's (private) __abort_msg variable, and allows developers and crash
@@ -2038,6 +2037,3 @@ g_test_log_msg_free (GTestLogMsg *tmsg)
  * Since: 2.16
  **/
 /* --- macros docs END --- */
-
-#define __G_TEST_UTILS_C__
-#include "galiasdef.c"

@@ -77,7 +77,6 @@
 #include <windows.h>
 #endif /* G_OS_WIN32 */
 
-#include "galias.h"
 
 #ifdef G_MAIN_POLL_DEBUG
 extern gboolean _g_main_poll_debug;
@@ -425,6 +424,3 @@ g_poll (GPollFD *fds,
 #endif /* !G_OS_WIN32 */
 
 #endif	/* !HAVE_POLL */
-
-#define __G_POLL_C__
-#include "galiasdef.c"

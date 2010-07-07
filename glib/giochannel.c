@@ -48,7 +48,6 @@
 
 #include "glibintl.h"
 
-#include "galias.h"
 
 /**
  * SECTION: iochannels
@@ -2579,6 +2578,3 @@ g_io_channel_error_quark (void)
 {
   return g_quark_from_static_string ("g-io-channel-error-quark");
 }
-
-#define __G_IOCHANNEL_C__
-#include "galiasdef.c"
