@@ -33,28 +33,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_DBUS_SERVER         (g_dbus_server_get_type ())
 #define G_DBUS_SERVER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_SERVER, GDBusServer))
-#define G_DBUS_SERVER_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DBUS_SERVER, GDBusServerClass))
-#define G_DBUS_SERVER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DBUS_SERVER, GDBusServerClass))
 #define G_IS_DBUS_SERVER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_SERVER))
-#define G_IS_DBUS_SERVER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DBUS_SERVER))
-
-typedef struct _GDBusServerClass   GDBusServerClass;
-typedef struct _GDBusServerPrivate GDBusServerPrivate;
-
-/**
- * GDBusServer:
- *
- * The #GDBusServer structure contains only private data and
- * should only be accessed using the provided API.
- *
- * Since: 2.26
- */
-struct _GDBusServer
-{
-  /*< private >*/
-  GObject parent_instance;
-  GDBusServerPrivate *priv;
-};
 
 GType             g_dbus_server_get_type           (void) G_GNUC_CONST;
 GDBusServer      *g_dbus_server_new_sync           (const gchar       *address,

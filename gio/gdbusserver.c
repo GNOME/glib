@@ -70,26 +70,18 @@
  */
 
 /**
- * GDBusServerClass:
- * @new_connection: Signal class handler for the #GDBusServer::new-connection signal.
+ * GDBusServer:
  *
- * Class structure for #GDBusServer.
+ * The #GDBusServer structure contains only private data and
+ * should only be accessed using the provided API.
  *
  * Since: 2.26
  */
-struct _GDBusServerClass
+struct _GDBusServer
 {
   /*< private >*/
-  GObjectClass parent_class;
+  GObject parent_instance;
 
-  /*< public >*/
-  /* Signals */
-  void (*new_connection) (GDBusServer      *server,
-                          GDBusConnection  *connection);
-};
-
-struct _GDBusServerPrivate
-{
   GDBusServerFlags flags;
   gchar *address;
   gchar *guid;
@@ -111,6 +103,27 @@ struct _GDBusServerPrivate
   gboolean active;
 
   GDBusAuthObserver *authentication_observer;
+};
+
+typedef struct _GDBusServerClass GDBusServerClass;
+
+/**
+ * GDBusServerClass:
+ * @new_connection: Signal class handler for the #GDBusServer::new-connection signal.
+ *
+ * Class structure for #GDBusServer.
+ *
+ * Since: 2.26
+ */
+struct _GDBusServerClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
+
+  /*< public >*/
+  /* Signals */
+  void (*new_connection) (GDBusServer      *server,
+                          GDBusConnection  *connection);
 };
 
 enum
@@ -143,27 +156,27 @@ g_dbus_server_finalize (GObject *object)
 {
   GDBusServer *server = G_DBUS_SERVER (object);
 
-  if (server->priv->authentication_observer != NULL)
-    g_object_unref (server->priv->authentication_observer);
+  if (server->authentication_observer != NULL)
+    g_object_unref (server->authentication_observer);
 
-  if (server->priv->listener != NULL)
-    g_object_unref (server->priv->listener);
+  if (server->listener != NULL)
+    g_object_unref (server->listener);
 
-  g_free (server->priv->address);
-  g_free (server->priv->guid);
-  g_free (server->priv->client_address);
-  if (server->priv->nonce != NULL)
+  g_free (server->address);
+  g_free (server->guid);
+  g_free (server->client_address);
+  if (server->nonce != NULL)
     {
-      memset (server->priv->nonce, '\0', 16);
-      g_free (server->priv->nonce);
+      memset (server->nonce, '\0', 16);
+      g_free (server->nonce);
     }
   /* we could unlink the nonce file but I don't
    * think it's really worth the effort/risk
    */
-  g_free (server->priv->nonce_file);
+  g_free (server->nonce_file);
 
-  if (server->priv->main_context_at_construction != NULL)
-    g_main_context_unref (server->priv->main_context_at_construction);
+  if (server->main_context_at_construction != NULL)
+    g_main_context_unref (server->main_context_at_construction);
 
   G_OBJECT_CLASS (g_dbus_server_parent_class)->finalize (object);
 }
@@ -179,27 +192,27 @@ g_dbus_server_get_property (GObject    *object,
   switch (prop_id)
     {
     case PROP_FLAGS:
-      g_value_set_flags (value, server->priv->flags);
+      g_value_set_flags (value, server->flags);
       break;
 
     case PROP_GUID:
-      g_value_set_string (value, server->priv->guid);
+      g_value_set_string (value, server->guid);
       break;
 
     case PROP_ADDRESS:
-      g_value_set_string (value, server->priv->address);
+      g_value_set_string (value, server->address);
       break;
 
     case PROP_CLIENT_ADDRESS:
-      g_value_set_string (value, server->priv->client_address);
+      g_value_set_string (value, server->client_address);
       break;
 
     case PROP_ACTIVE:
-      g_value_set_boolean (value, server->priv->active);
+      g_value_set_boolean (value, server->active);
       break;
 
     case PROP_AUTHENTICATION_OBSERVER:
-      g_value_set_object (value, server->priv->authentication_observer);
+      g_value_set_object (value, server->authentication_observer);
       break;
 
     default:
@@ -219,19 +232,19 @@ g_dbus_server_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_FLAGS:
-      server->priv->flags = g_value_get_flags (value);
+      server->flags = g_value_get_flags (value);
       break;
 
     case PROP_GUID:
-      server->priv->guid = g_value_dup_string (value);
+      server->guid = g_value_dup_string (value);
       break;
 
     case PROP_ADDRESS:
-      server->priv->address = g_value_dup_string (value);
+      server->address = g_value_dup_string (value);
       break;
 
     case PROP_AUTHENTICATION_OBSERVER:
-      server->priv->authentication_observer = g_value_dup_object (value);
+      server->authentication_observer = g_value_dup_object (value);
       break;
 
     default:
@@ -403,19 +416,14 @@ g_dbus_server_class_init (GDBusServerClass *klass)
                                                   G_TYPE_NONE,
                                                   1,
                                                   G_TYPE_DBUS_CONNECTION);
-
-
-  g_type_class_add_private (klass, sizeof (GDBusServerPrivate));
 }
 
 static void
 g_dbus_server_init (GDBusServer *server)
 {
-  server->priv = G_TYPE_INSTANCE_GET_PRIVATE (server, G_TYPE_DBUS_SERVER, GDBusServerPrivate);
-
-  server->priv->main_context_at_construction = g_main_context_get_thread_default ();
-  if (server->priv->main_context_at_construction != NULL)
-    g_main_context_ref (server->priv->main_context_at_construction);
+  server->main_context_at_construction = g_main_context_get_thread_default ();
+  if (server->main_context_at_construction != NULL)
+    g_main_context_ref (server->main_context_at_construction);
 }
 
 static gboolean
@@ -481,8 +489,8 @@ g_dbus_server_new_sync (const gchar        *address,
   if (server != NULL)
     {
       /* Right now we don't have any transport not using the listener... */
-      g_assert (server->priv->is_using_listener);
-      g_signal_connect (G_SOCKET_SERVICE (server->priv->listener),
+      g_assert (server->is_using_listener);
+      g_signal_connect (G_SOCKET_SERVICE (server->listener),
                         "run",
                         G_CALLBACK (on_run),
                         server);
@@ -507,7 +515,7 @@ const gchar *
 g_dbus_server_get_client_address (GDBusServer *server)
 {
   g_return_val_if_fail (G_IS_DBUS_SERVER (server), NULL);
-  return server->priv->client_address;
+  return server->client_address;
 }
 
 /**
@@ -524,7 +532,7 @@ const gchar *
 g_dbus_server_get_guid (GDBusServer *server)
 {
   g_return_val_if_fail (G_IS_DBUS_SERVER (server), NULL);
-  return server->priv->guid;
+  return server->guid;
 }
 
 /**
@@ -541,7 +549,7 @@ GDBusServerFlags
 g_dbus_server_get_flags (GDBusServer *server)
 {
   g_return_val_if_fail (G_IS_DBUS_SERVER (server), G_DBUS_SERVER_FLAGS_NONE);
-  return server->priv->flags;
+  return server->flags;
 }
 
 /**
@@ -558,7 +566,7 @@ gboolean
 g_dbus_server_is_active (GDBusServer *server)
 {
   g_return_val_if_fail (G_IS_DBUS_SERVER (server), G_DBUS_SERVER_FLAGS_NONE);
-  return server->priv->active;
+  return server->active;
 }
 
 /**
@@ -573,12 +581,12 @@ void
 g_dbus_server_start (GDBusServer *server)
 {
   g_return_if_fail (G_IS_DBUS_SERVER (server));
-  if (server->priv->active)
+  if (server->active)
     return;
   /* Right now we don't have any transport not using the listener... */
-  g_assert (server->priv->is_using_listener);
-  g_socket_service_start (G_SOCKET_SERVICE (server->priv->listener));
-  server->priv->active = TRUE;
+  g_assert (server->is_using_listener);
+  g_socket_service_start (G_SOCKET_SERVICE (server->listener));
+  server->active = TRUE;
   g_object_notify (G_OBJECT (server), "active");
 }
 
@@ -594,12 +602,12 @@ void
 g_dbus_server_stop (GDBusServer *server)
 {
   g_return_if_fail (G_IS_DBUS_SERVER (server));
-  if (!server->priv->active)
+  if (!server->active)
     return;
   /* Right now we don't have any transport not using the listener... */
-  g_assert (server->priv->is_using_listener);
-  g_socket_service_stop (G_SOCKET_SERVICE (server->priv->listener));
-  server->priv->active = FALSE;
+  g_assert (server->is_using_listener);
+  g_socket_service_stop (G_SOCKET_SERVICE (server->listener));
+  server->active = FALSE;
   g_object_notify (G_OBJECT (server), "active");
 }
 
@@ -667,7 +675,7 @@ try_unix (GDBusServer  *server,
       g_string_free (s, TRUE);
 
       local_error = NULL;
-      if (!g_socket_listener_add_address (server->priv->listener,
+      if (!g_socket_listener_add_address (server->listener,
                                           address,
                                           G_SOCKET_TYPE_STREAM,
                                           G_SOCKET_PROTOCOL_DEFAULT,
@@ -705,7 +713,7 @@ try_unix (GDBusServer  *server,
       g_assert_not_reached ();
     }
 
-  if (!g_socket_listener_add_address (server->priv->listener,
+  if (!g_socket_listener_add_address (server->listener,
                                       address,
                                       G_SOCKET_TYPE_STREAM,
                                       G_SOCKET_PROTOCOL_DEFAULT,
@@ -723,18 +731,18 @@ try_unix (GDBusServer  *server,
       /* Fill out client_address if the connection attempt worked */
       if (ret)
         {
-          server->priv->is_using_listener = TRUE;
+          server->is_using_listener = TRUE;
 
           switch (g_unix_socket_address_get_address_type (G_UNIX_SOCKET_ADDRESS (address)))
             {
             case G_UNIX_SOCKET_ADDRESS_ABSTRACT:
-              server->priv->client_address = g_strdup_printf ("unix:abstract=%s",
-                                                              g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address)));
+              server->client_address = g_strdup_printf ("unix:abstract=%s",
+                                                        g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address)));
               break;
 
             case G_UNIX_SOCKET_ADDRESS_PATH:
-              server->priv->client_address = g_strdup_printf ("unix:path=%s",
-                                                              g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address)));
+              server->client_address = g_strdup_printf ("unix:path=%s",
+                                                        g_unix_socket_address_get_path (G_UNIX_SOCKET_ADDRESS (address)));
               break;
 
             default:
@@ -809,7 +817,7 @@ try_tcp (GDBusServer  *server,
       GSocketAddress *effective_address;
 
       socket_address = g_inet_socket_address_new (address, port_num);
-      if (!g_socket_listener_add_address (server->priv->listener,
+      if (!g_socket_listener_add_address (server->listener,
                                           socket_address,
                                           G_SOCKET_TYPE_STREAM,
                                           G_SOCKET_PROTOCOL_TCP,
@@ -835,15 +843,15 @@ try_tcp (GDBusServer  *server,
       gsize bytes_written;
       gsize bytes_remaining;
 
-      server->priv->nonce = g_new0 (guchar, 16);
+      server->nonce = g_new0 (guchar, 16);
       for (n = 0; n < 16; n++)
-        server->priv->nonce[n] = g_random_int_range (0, 256);
+        server->nonce[n] = g_random_int_range (0, 256);
       fd = g_file_open_tmp ("gdbus-nonce-file-XXXXXX",
-                            &server->priv->nonce_file,
+                            &server->nonce_file,
                             error);
       if (fd == -1)
         {
-          g_socket_listener_close (server->priv->listener);
+          g_socket_listener_close (server->listener);
           goto out;
         }
     again:
@@ -852,7 +860,7 @@ try_tcp (GDBusServer  *server,
       while (bytes_remaining > 0)
         {
           gssize ret;
-          ret = write (fd, server->priv->nonce + bytes_written, bytes_remaining);
+          ret = write (fd, server->nonce + bytes_written, bytes_remaining);
           if (ret == -1)
             {
               if (errno == EINTR)
@@ -861,7 +869,7 @@ try_tcp (GDBusServer  *server,
                            G_IO_ERROR,
                            g_io_error_from_errno (errno),
                            _("Error writing nonce file at `%s': %s"),
-                           server->priv->nonce_file,
+                           server->nonce_file,
                            strerror (errno));
               goto out;
             }
@@ -869,16 +877,16 @@ try_tcp (GDBusServer  *server,
           bytes_remaining -= ret;
         }
       close (fd);
-      server->priv->client_address = g_strdup_printf ("nonce-tcp:host=%s,port=%d,noncefile=%s",
-                                                      host,
-                                                      port_num,
-                                                      server->priv->nonce_file);
+      server->client_address = g_strdup_printf ("nonce-tcp:host=%s,port=%d,noncefile=%s",
+                                                host,
+                                                port_num,
+                                                server->nonce_file);
     }
   else
     {
-      server->priv->client_address = g_strdup_printf ("tcp:host=%s,port=%d", host, port_num);
+      server->client_address = g_strdup_printf ("tcp:host=%s,port=%d", host, port_num);
     }
-  server->priv->is_using_listener = TRUE;
+  server->is_using_listener = TRUE;
   ret = TRUE;
 
  out:
@@ -930,7 +938,7 @@ on_run (GSocketService    *service,
   GDBusConnection *connection;
   GDBusConnectionFlags connection_flags;
 
-  if (server->priv->nonce != NULL)
+  if (server->nonce != NULL)
     {
       gchar buf[16];
       gsize bytes_read;
@@ -946,26 +954,26 @@ on_run (GSocketService    *service,
       if (bytes_read != 16)
         goto out;
 
-      if (memcmp (buf, server->priv->nonce, 16) != 0)
+      if (memcmp (buf, server->nonce, 16) != 0)
         goto out;
     }
 
   connection_flags =
     G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER |
     G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING;
-  if (server->priv->flags & G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS)
+  if (server->flags & G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS)
     connection_flags |= G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS;
 
   connection = g_dbus_connection_new_sync (G_IO_STREAM (socket_connection),
-                                           server->priv->guid,
+                                           server->guid,
                                            connection_flags,
-                                           server->priv->authentication_observer,
+                                           server->authentication_observer,
                                            NULL,  /* GCancellable */
                                            NULL); /* GError */
   if (connection == NULL)
       goto out;
 
-  if (server->priv->flags & G_DBUS_SERVER_FLAGS_RUN_IN_THREAD)
+  if (server->flags & G_DBUS_SERVER_FLAGS_RUN_IN_THREAD)
     {
       g_signal_emit (server,
                      _signals[NEW_CONNECTION_SIGNAL],
@@ -989,7 +997,7 @@ on_run (GSocketService    *service,
                              emit_new_connection_in_idle,
                              data,
                              (GDestroyNotify) emit_idle_data_free);
-      g_source_attach (idle_source, server->priv->main_context_at_construction);
+      g_source_attach (idle_source, server->main_context_at_construction);
       g_source_unref (idle_source);
     }
 
@@ -1011,19 +1019,19 @@ initable_init (GInitable     *initable,
   ret = FALSE;
   last_error = NULL;
 
-  if (!g_dbus_is_guid (server->priv->guid))
+  if (!g_dbus_is_guid (server->guid))
     {
       g_set_error (&last_error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
                    _("The string `%s' is not a valid D-Bus GUID"),
-                   server->priv->guid);
+                   server->guid);
       goto out;
     }
 
-  server->priv->listener = G_SOCKET_LISTENER (g_threaded_socket_service_new (-1));
+  server->listener = G_SOCKET_LISTENER (g_threaded_socket_service_new (-1));
 
-  addr_array = g_strsplit (server->priv->address, ";", 0);
+  addr_array = g_strsplit (server->address, ";", 0);
   last_error = NULL;
   for (n = 0; addr_array != NULL && addr_array[n] != NULL; n++)
     {

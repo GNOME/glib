@@ -33,27 +33,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_DBUS_AUTH_OBSERVER         (g_dbus_auth_observer_get_type ())
 #define G_DBUS_AUTH_OBSERVER(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_AUTH_OBSERVER, GDBusAuthObserver))
-#define G_DBUS_AUTH_OBSERVER_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DBUS_AUTH_OBSERVER, GDBusAuthObserverClass))
-#define G_DBUS_AUTH_OBSERVER_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DBUS_AUTH_OBSERVER, GDBusAuthObserverClass))
 #define G_IS_DBUS_AUTH_OBSERVER(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_AUTH_OBSERVER))
-#define G_IS_DBUS_AUTH_OBSERVER_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DBUS_AUTH_OBSERVER))
-
-typedef struct _GDBusAuthObserverClass   GDBusAuthObserverClass;
-typedef struct _GDBusAuthObserverPrivate GDBusAuthObserverPrivate;
-
-/**
- * GDBusAuthObserver:
- *
- * The #GDBusAuthObserver structure contains only private data and
- * should only be accessed using the provided API.
- *
- * Since: 2.26
- */
-struct _GDBusAuthObserver
-{
-  GObject parent_instance;
-  GDBusAuthObserverPrivate *priv;
-};
 
 GType              g_dbus_auth_observer_get_type                     (void) G_GNUC_CONST;
 GDBusAuthObserver *g_dbus_auth_observer_new                          (void);

@@ -49,6 +49,8 @@
  * #GDBusInterfaceVTable that was passed to g_dbus_connection_register_object().
  */
 
+typedef struct _GDBusMethodInvocationClass GDBusMethodInvocationClass;
+
 /**
  * GDBusMethodInvocationClass:
  *
@@ -62,8 +64,19 @@ struct _GDBusMethodInvocationClass
   GObjectClass parent_class;
 };
 
-struct _GDBusMethodInvocationPrivate
+/**
+ * GDBusMethodInvocation:
+ *
+ * The #GDBusMethodInvocation structure contains only private data and
+ * should only be accessed using the provided API.
+ *
+ * Since: 2.26
+ */
+struct _GDBusMethodInvocation
 {
+  /*< private >*/
+  GObject parent_instance;
+
   /* construct-only properties */
   gchar           *sender;
   gchar           *object_path;
@@ -83,13 +96,13 @@ g_dbus_method_invocation_finalize (GObject *object)
 {
   GDBusMethodInvocation *invocation = G_DBUS_METHOD_INVOCATION (object);
 
-  g_free (invocation->priv->sender);
-  g_free (invocation->priv->object_path);
-  g_free (invocation->priv->interface_name);
-  g_free (invocation->priv->method_name);
-  g_object_unref (invocation->priv->connection);
-  g_object_unref (invocation->priv->message);
-  g_variant_unref (invocation->priv->parameters);
+  g_free (invocation->sender);
+  g_free (invocation->object_path);
+  g_free (invocation->interface_name);
+  g_free (invocation->method_name);
+  g_object_unref (invocation->connection);
+  g_object_unref (invocation->message);
+  g_variant_unref (invocation->parameters);
 
   G_OBJECT_CLASS (g_dbus_method_invocation_parent_class)->finalize (object);
 }
@@ -100,16 +113,11 @@ g_dbus_method_invocation_class_init (GDBusMethodInvocationClass *klass)
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->finalize = g_dbus_method_invocation_finalize;
-
-  g_type_class_add_private (klass, sizeof (GDBusMethodInvocationPrivate));
 }
 
 static void
 g_dbus_method_invocation_init (GDBusMethodInvocation *invocation)
 {
-  invocation->priv = G_TYPE_INSTANCE_GET_PRIVATE (invocation,
-                                                  G_TYPE_DBUS_METHOD_INVOCATION,
-                                                  GDBusMethodInvocationPrivate);
 }
 
 /**
@@ -126,7 +134,7 @@ const gchar *
 g_dbus_method_invocation_get_sender (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->sender;
+  return invocation->sender;
 }
 
 /**
@@ -143,7 +151,7 @@ const gchar *
 g_dbus_method_invocation_get_object_path (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->object_path;
+  return invocation->object_path;
 }
 
 /**
@@ -160,7 +168,7 @@ const gchar *
 g_dbus_method_invocation_get_interface_name (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->interface_name;
+  return invocation->interface_name;
 }
 
 /**
@@ -177,7 +185,7 @@ const GDBusMethodInfo *
 g_dbus_method_invocation_get_method_info (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->method_info;
+  return invocation->method_info;
 }
 
 /**
@@ -194,7 +202,7 @@ const gchar *
 g_dbus_method_invocation_get_method_name (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->method_name;
+  return invocation->method_name;
 }
 
 /**
@@ -211,7 +219,7 @@ GDBusConnection *
 g_dbus_method_invocation_get_connection (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->connection;
+  return invocation->connection;
 }
 
 /**
@@ -235,7 +243,7 @@ GDBusMessage *
 g_dbus_method_invocation_get_message (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->message;
+  return invocation->message;
 }
 
 /**
@@ -252,7 +260,7 @@ GVariant *
 g_dbus_method_invocation_get_parameters (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->parameters;
+  return invocation->parameters;
 }
 
 /**
@@ -269,7 +277,7 @@ gpointer
 g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
 {
   g_return_val_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation), NULL);
-  return invocation->priv->user_data;
+  return invocation->user_data;
 }
 
 /**
@@ -302,7 +310,6 @@ g_dbus_method_invocation_new (const gchar           *sender,
                               gpointer               user_data)
 {
   GDBusMethodInvocation *invocation;
-  GDBusMethodInvocationPrivate *priv;
 
   g_return_val_if_fail (sender == NULL || g_dbus_is_name (sender), NULL);
   g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);
@@ -313,17 +320,15 @@ g_dbus_method_invocation_new (const gchar           *sender,
   g_return_val_if_fail (g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), NULL);
 
   invocation = G_DBUS_METHOD_INVOCATION (g_object_new (G_TYPE_DBUS_METHOD_INVOCATION, NULL));
-
-  priv = invocation->priv;
-  priv->sender = g_strdup (sender);
-  priv->object_path = g_strdup (object_path);
-  priv->interface_name = g_strdup (interface_name);
-  priv->method_name = g_strdup (method_name);
-  priv->method_info = g_dbus_method_info_ref ((GDBusMethodInfo *)method_info);
-  priv->connection = g_object_ref (connection);
-  priv->message = g_object_ref (message);
-  priv->parameters = g_variant_ref (parameters);
-  priv->user_data = user_data;
+  invocation->sender = g_strdup (sender);
+  invocation->object_path = g_strdup (object_path);
+  invocation->interface_name = g_strdup (interface_name);
+  invocation->method_name = g_strdup (method_name);
+  invocation->method_info = g_dbus_method_info_ref ((GDBusMethodInfo *)method_info);
+  invocation->connection = g_object_ref (connection);
+  invocation->message = g_object_ref (message);
+  invocation->parameters = g_variant_ref (parameters);
+  invocation->user_data = user_data;
 
   return invocation;
 }
@@ -358,11 +363,11 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
     parameters = g_variant_new_tuple (NULL, 0);
 
   /* if we have introspection data, check that the signature of @parameters is correct */
-  if (invocation->priv->method_info != NULL)
+  if (invocation->method_info != NULL)
     {
       GVariantType *type;
 
-      type = _g_dbus_compute_complete_signature (invocation->priv->method_info->out_args);
+      type = _g_dbus_compute_complete_signature (invocation->method_info->out_args);
 
       if (!g_variant_is_of_type (parameters, type))
         {
@@ -377,7 +382,7 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
       g_variant_type_free (type);
     }
 
-  reply = g_dbus_message_new_method_reply (invocation->priv->message);
+  reply = g_dbus_message_new_method_reply (invocation->message);
   g_dbus_message_set_body (reply, parameters);
   error = NULL;
   if (!g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, NULL, &error))
@@ -556,7 +561,7 @@ g_dbus_method_invocation_return_dbus_error (GDBusMethodInvocation *invocation,
   g_return_if_fail (error_name != NULL && g_dbus_is_name (error_name));
   g_return_if_fail (error_message != NULL);
 
-  reply = g_dbus_message_new_method_error_literal (invocation->priv->message,
+  reply = g_dbus_message_new_method_error_literal (invocation->message,
                                                    error_name,
                                                    error_message);
   g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, NULL, NULL);

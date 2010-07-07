@@ -33,28 +33,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_DBUS_CONNECTION         (g_dbus_connection_get_type ())
 #define G_DBUS_CONNECTION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_CONNECTION, GDBusConnection))
-#define G_DBUS_CONNECTION_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DBUS_CONNECTION, GDBusConnectionClass))
-#define G_DBUS_CONNECTION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DBUS_CONNECTION, GDBusConnectionClass))
 #define G_IS_DBUS_CONNECTION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_CONNECTION))
-#define G_IS_DBUS_CONNECTION_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DBUS_CONNECTION))
-
-typedef struct _GDBusConnectionClass   GDBusConnectionClass;
-typedef struct _GDBusConnectionPrivate GDBusConnectionPrivate;
-
-/**
- * GDBusConnection:
- *
- * The #GDBusConnection structure contains only private data and
- * should only be accessed using the provided API.
- *
- * Since: 2.26
- */
-struct _GDBusConnection
-{
-  /*< private >*/
-  GObject parent_instance;
-  GDBusConnectionPrivate *priv;
-};
 
 GType            g_dbus_connection_get_type                   (void) G_GNUC_CONST;
 

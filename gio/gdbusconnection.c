@@ -157,6 +157,8 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+typedef struct _GDBusConnectionClass GDBusConnectionClass;
+
 /**
  * GDBusConnectionClass:
  * @closed: Signal class handler for the #GDBusConnection::closed signal.
@@ -205,7 +207,7 @@ _g_strv_has_string (const gchar* const *haystack,
 #else
 // TODO: for some reason this doesn't work on Windows
 #define CONNECTION_ENSURE_LOCK(obj) do {                                \
-    if (G_UNLIKELY (g_mutex_trylock((obj)->priv->lock)))                \
+    if (G_UNLIKELY (g_mutex_trylock((obj)->lock)))                      \
       {                                                                 \
         g_assertion_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, \
                              "CONNECTION_ENSURE_LOCK: GDBusConnection object lock is not locked"); \
@@ -214,15 +216,26 @@ _g_strv_has_string (const gchar* const *haystack,
 #endif
 
 #define CONNECTION_LOCK(obj) do {                                       \
-    g_mutex_lock ((obj)->priv->lock);                                   \
+    g_mutex_lock ((obj)->lock);                                         \
   } while (FALSE)
 
 #define CONNECTION_UNLOCK(obj) do {                                     \
-    g_mutex_unlock ((obj)->priv->lock);                                 \
+    g_mutex_unlock ((obj)->lock);                                       \
   } while (FALSE)
 
-struct _GDBusConnectionPrivate
+/**
+ * GDBusConnection:
+ *
+ * The #GDBusConnection structure contains only private data and
+ * should only be accessed using the provided API.
+ *
+ * Since: 2.26
+ */
+struct _GDBusConnection
 {
+  /*< private >*/
+  GObject parent_instance;
+
   /* ------------------------------------------------------------------------ */
   /* -- General object state ------------------------------------------------ */
   /* ------------------------------------------------------------------------ */
@@ -380,10 +393,10 @@ g_dbus_connection_dispose (GObject *object)
     {
       the_system_bus = NULL;
     }
-  if (connection->priv->worker != NULL)
+  if (connection->worker != NULL)
     {
-      _g_dbus_worker_stop (connection->priv->worker);
-      connection->priv->worker = NULL;
+      _g_dbus_worker_stop (connection->worker);
+      connection->worker = NULL;
     }
   G_UNLOCK (message_bus_lock);
 
@@ -396,55 +409,55 @@ g_dbus_connection_finalize (GObject *object)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (object);
 
-  if (connection->priv->authentication_observer != NULL)
-    g_object_unref (connection->priv->authentication_observer);
+  if (connection->authentication_observer != NULL)
+    g_object_unref (connection->authentication_observer);
 
-  if (connection->priv->auth != NULL)
-    g_object_unref (connection->priv->auth);
+  if (connection->auth != NULL)
+    g_object_unref (connection->auth);
 
   //g_debug ("finalizing %p", connection);
-  if (connection->priv->stream != NULL)
+  if (connection->stream != NULL)
     {
       /* We don't really care if closing the stream succeeds or not */
-      g_io_stream_close_async (connection->priv->stream,
+      g_io_stream_close_async (connection->stream,
                                G_PRIORITY_DEFAULT,
                                NULL,  /* GCancellable */
                                NULL,  /* GAsyncReadyCallback */
                                NULL); /* userdata */
-      g_object_unref (connection->priv->stream);
-      connection->priv->stream = NULL;
+      g_object_unref (connection->stream);
+      connection->stream = NULL;
     }
 
-  g_free (connection->priv->address);
+  g_free (connection->address);
 
-  g_free (connection->priv->guid);
-  g_free (connection->priv->bus_unique_name);
+  g_free (connection->guid);
+  g_free (connection->bus_unique_name);
 
-  if (connection->priv->initialization_error != NULL)
-    g_error_free (connection->priv->initialization_error);
+  if (connection->initialization_error != NULL)
+    g_error_free (connection->initialization_error);
 
-  g_hash_table_unref (connection->priv->map_method_serial_to_send_message_data);
+  g_hash_table_unref (connection->map_method_serial_to_send_message_data);
 
   purge_all_signal_subscriptions (connection);
-  g_hash_table_unref (connection->priv->map_rule_to_signal_data);
-  g_hash_table_unref (connection->priv->map_id_to_signal_data);
-  g_hash_table_unref (connection->priv->map_sender_unique_name_to_signal_data_array);
+  g_hash_table_unref (connection->map_rule_to_signal_data);
+  g_hash_table_unref (connection->map_id_to_signal_data);
+  g_hash_table_unref (connection->map_sender_unique_name_to_signal_data_array);
 
-  g_hash_table_unref (connection->priv->map_id_to_ei);
-  g_hash_table_unref (connection->priv->map_object_path_to_eo);
-  g_hash_table_unref (connection->priv->map_id_to_es);
-  g_hash_table_unref (connection->priv->map_object_path_to_es);
+  g_hash_table_unref (connection->map_id_to_ei);
+  g_hash_table_unref (connection->map_object_path_to_eo);
+  g_hash_table_unref (connection->map_id_to_es);
+  g_hash_table_unref (connection->map_object_path_to_es);
 
   purge_all_filters (connection);
-  g_ptr_array_unref (connection->priv->filters);
+  g_ptr_array_unref (connection->filters);
 
-  if (connection->priv->main_context_at_construction != NULL)
-    g_main_context_unref (connection->priv->main_context_at_construction);
+  if (connection->main_context_at_construction != NULL)
+    g_main_context_unref (connection->main_context_at_construction);
 
-  g_free (connection->priv->machine_id);
+  g_free (connection->machine_id);
 
-  g_mutex_free (connection->priv->init_lock);
-  g_mutex_free (connection->priv->lock);
+  g_mutex_free (connection->init_lock);
+  g_mutex_free (connection->lock);
 
   G_OBJECT_CLASS (g_dbus_connection_parent_class)->finalize (object);
 }
@@ -500,19 +513,19 @@ g_dbus_connection_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_STREAM:
-      connection->priv->stream = g_value_dup_object (value);
+      connection->stream = g_value_dup_object (value);
       break;
 
     case PROP_GUID:
-      connection->priv->guid = g_value_dup_string (value);
+      connection->guid = g_value_dup_string (value);
       break;
 
     case PROP_ADDRESS:
-      connection->priv->address = g_value_dup_string (value);
+      connection->address = g_value_dup_string (value);
       break;
 
     case PROP_FLAGS:
-      connection->priv->flags = g_value_get_flags (value);
+      connection->flags = g_value_get_flags (value);
       break;
 
     case PROP_EXIT_ON_CLOSE:
@@ -520,7 +533,7 @@ g_dbus_connection_set_property (GObject      *object,
       break;
 
     case PROP_AUTHENTICATION_OBSERVER:
-      connection->priv->authentication_observer = g_value_dup_object (value);
+      connection->authentication_observer = g_value_dup_object (value);
       break;
 
     default:
@@ -534,7 +547,7 @@ g_dbus_connection_real_closed (GDBusConnection *connection,
                                gboolean         remote_peer_vanished,
                                GError          *error)
 {
-  if (remote_peer_vanished && connection->priv->exit_on_close)
+  if (remote_peer_vanished && connection->exit_on_close)
     {
       g_print ("%s: Remote peer vanished. Exiting.\n", G_STRFUNC);
       raise (SIGTERM);
@@ -545,8 +558,6 @@ static void
 g_dbus_connection_class_init (GDBusConnectionClass *klass)
 {
   GObjectClass *gobject_class;
-
-  g_type_class_add_private (klass, sizeof (GDBusConnectionPrivate));
 
   gobject_class = G_OBJECT_CLASS (klass);
 
@@ -794,43 +805,41 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
 static void
 g_dbus_connection_init (GDBusConnection *connection)
 {
-  connection->priv = G_TYPE_INSTANCE_GET_PRIVATE (connection, G_TYPE_DBUS_CONNECTION, GDBusConnectionPrivate);
+  connection->lock = g_mutex_new ();
+  connection->init_lock = g_mutex_new ();
 
-  connection->priv->lock = g_mutex_new ();
-  connection->priv->init_lock = g_mutex_new ();
+  connection->map_method_serial_to_send_message_data = g_hash_table_new (g_direct_hash, g_direct_equal);
 
-  connection->priv->map_method_serial_to_send_message_data = g_hash_table_new (g_direct_hash, g_direct_equal);
+  connection->map_rule_to_signal_data = g_hash_table_new (g_str_hash,
+                                                          g_str_equal);
+  connection->map_id_to_signal_data = g_hash_table_new (g_direct_hash,
+                                                        g_direct_equal);
+  connection->map_sender_unique_name_to_signal_data_array = g_hash_table_new_full (g_str_hash,
+                                                                                   g_str_equal,
+                                                                                   g_free,
+                                                                                   NULL);
 
-  connection->priv->map_rule_to_signal_data = g_hash_table_new (g_str_hash,
-                                                                g_str_equal);
-  connection->priv->map_id_to_signal_data = g_hash_table_new (g_direct_hash,
-                                                              g_direct_equal);
-  connection->priv->map_sender_unique_name_to_signal_data_array = g_hash_table_new_full (g_str_hash,
-                                                                                         g_str_equal,
-                                                                                         g_free,
-                                                                                         NULL);
+  connection->map_object_path_to_eo = g_hash_table_new_full (g_str_hash,
+                                                             g_str_equal,
+                                                             NULL,
+                                                             (GDestroyNotify) exported_object_free);
 
-  connection->priv->map_object_path_to_eo = g_hash_table_new_full (g_str_hash,
-                                                                   g_str_equal,
-                                                                   NULL,
-                                                                   (GDestroyNotify) exported_object_free);
+  connection->map_id_to_ei = g_hash_table_new (g_direct_hash,
+                                               g_direct_equal);
 
-  connection->priv->map_id_to_ei = g_hash_table_new (g_direct_hash,
-                                                     g_direct_equal);
+  connection->map_object_path_to_es = g_hash_table_new_full (g_str_hash,
+                                                             g_str_equal,
+                                                             NULL,
+                                                             (GDestroyNotify) exported_subtree_free);
 
-  connection->priv->map_object_path_to_es = g_hash_table_new_full (g_str_hash,
-                                                                   g_str_equal,
-                                                                   NULL,
-                                                                   (GDestroyNotify) exported_subtree_free);
+  connection->map_id_to_es = g_hash_table_new (g_direct_hash,
+                                               g_direct_equal);
 
-  connection->priv->map_id_to_es = g_hash_table_new (g_direct_hash,
-                                                     g_direct_equal);
+  connection->main_context_at_construction = g_main_context_get_thread_default ();
+  if (connection->main_context_at_construction != NULL)
+    g_main_context_ref (connection->main_context_at_construction);
 
-  connection->priv->main_context_at_construction = g_main_context_get_thread_default ();
-  if (connection->priv->main_context_at_construction != NULL)
-    g_main_context_ref (connection->priv->main_context_at_construction);
-
-  connection->priv->filters = g_ptr_array_new ();
+  connection->filters = g_ptr_array_new ();
 }
 
 /**
@@ -847,7 +856,7 @@ GIOStream *
 g_dbus_connection_get_stream (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  return connection->priv->stream;
+  return connection->stream;
 }
 
 /**
@@ -865,7 +874,7 @@ void
 g_dbus_connection_start_message_processing (GDBusConnection *connection)
 {
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
-  _g_dbus_worker_unfreeze (connection->priv->worker);
+  _g_dbus_worker_unfreeze (connection->worker);
 }
 
 /**
@@ -882,7 +891,7 @@ gboolean
 g_dbus_connection_is_closed (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
-  return connection->priv->closed;
+  return connection->closed;
 }
 
 /**
@@ -899,7 +908,7 @@ GDBusCapabilityFlags
 g_dbus_connection_get_capabilities (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), G_DBUS_CAPABILITY_FLAGS_NONE);
-  return connection->priv->capabilities;
+  return connection->capabilities;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1031,7 +1040,7 @@ g_dbus_connection_flush_sync (GDBusConnection  *connection,
 
   ret = FALSE;
 
-  if (connection->priv->closed)
+  if (connection->closed)
     {
       g_set_error_literal (error,
                            G_IO_ERROR,
@@ -1040,7 +1049,7 @@ g_dbus_connection_flush_sync (GDBusConnection  *connection,
       goto out;
     }
 
-  ret = _g_dbus_worker_flush_sync (connection->priv->worker,
+  ret = _g_dbus_worker_flush_sync (connection->worker,
                                    cancellable,
                                    error);
 
@@ -1093,9 +1102,9 @@ set_closed_unlocked (GDBusConnection *connection,
 
   CONNECTION_ENSURE_LOCK (connection);
 
-  g_assert (!connection->priv->closed);
+  g_assert (!connection->closed);
 
-  connection->priv->closed = TRUE;
+  connection->closed = TRUE;
 
   data = g_new0 (EmitClosedData, 1);
   data->connection = g_object_ref (connection);
@@ -1108,7 +1117,7 @@ set_closed_unlocked (GDBusConnection *connection,
                          emit_closed_in_idle,
                          data,
                          (GDestroyNotify) emit_closed_data_free);
-  g_source_attach (idle_source, connection->priv->main_context_at_construction);
+  g_source_attach (idle_source, connection->main_context_at_construction);
   g_source_unref (idle_source);
 }
 
@@ -1139,13 +1148,13 @@ g_dbus_connection_close (GDBusConnection *connection)
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
 
   CONNECTION_LOCK (connection);
-  if (!connection->priv->closed)
+  if (!connection->closed)
     {
       GError *error = NULL;
 
       /* TODO: do this async */
-      //g_debug ("closing connection %p's stream %p", connection, connection->priv->stream);
-      if (!g_io_stream_close (connection->priv->stream, NULL, &error))
+      //g_debug ("closing connection %p's stream %p", connection, connection->stream);
+      if (!g_io_stream_close (connection->stream, NULL, &error))
         {
           g_warning ("Error closing stream: %s", error->message);
           g_error_free (error);
@@ -1182,7 +1191,7 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   if (out_serial != NULL)
     *out_serial = 0;
 
-  if (connection->priv->closed)
+  if (connection->closed)
     {
       g_set_error_literal (error,
                            G_IO_ERROR,
@@ -1193,7 +1202,7 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
 
   blob = g_dbus_message_to_blob (message,
                                  &blob_size,
-                                 connection->priv->capabilities,
+                                 connection->capabilities,
                                  error);
   if (blob == NULL)
     goto out;
@@ -1201,7 +1210,7 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   serial_to_use = g_dbus_message_get_serial (message);
   if (serial_to_use == 0)
     {
-      serial_to_use = ++connection->priv->last_serial; /* TODO: handle overflow */
+      serial_to_use = ++connection->last_serial; /* TODO: handle overflow */
     }
 
   switch (blob[0])
@@ -1225,14 +1234,14 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   g_printerr ("----\n");
 #endif
 
-  /* TODO: use connection->priv->auth to encode the blob */
+  /* TODO: use connection->auth to encode the blob */
 
   if (out_serial != NULL)
     *out_serial = serial_to_use;
 
   g_dbus_message_set_serial (message, serial_to_use);
 
-  _g_dbus_worker_send_message (connection->priv->worker,
+  _g_dbus_worker_send_message (connection->worker,
                                message,
                                (gchar*) blob,
                                blob_size);
@@ -1364,7 +1373,7 @@ send_message_with_reply_deliver (SendMessageData *data)
       data->cancellable_handler_id = 0;
     }
 
-  g_warn_if_fail (g_hash_table_remove (data->connection->priv->map_method_serial_to_send_message_data,
+  g_warn_if_fail (g_hash_table_remove (data->connection->map_method_serial_to_send_message_data,
                                        GUINT_TO_POINTER (data->serial)));
 
   send_message_data_unref (data);
@@ -1498,7 +1507,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
       goto out;
     }
 
-  if (connection->priv->closed)
+  if (connection->closed)
     {
       g_simple_async_result_set_error (simple,
                                        G_IO_ERROR,
@@ -1549,7 +1558,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
   g_source_attach (data->timeout_source, data->main_context);
   g_source_unref (data->timeout_source);
 
-  g_hash_table_insert (connection->priv->map_method_serial_to_send_message_data,
+  g_hash_table_insert (connection->map_method_serial_to_send_message_data,
                        GUINT_TO_POINTER (*out_serial),
                        data);
 
@@ -1809,11 +1818,11 @@ on_worker_message_received (GDBusWorker  *worker,
 
   /* First collect the set of callback functions */
   CONNECTION_LOCK (connection);
-  num_filters = connection->priv->filters->len;
+  num_filters = connection->filters->len;
   filters = g_new0 (FilterCallback, num_filters);
   for (n = 0; n < num_filters; n++)
     {
-      FilterData *data = connection->priv->filters->pdata[n];
+      FilterData *data = connection->filters->pdata[n];
       filters[n].func = data->filter_function;
       filters[n].user_data = data->user_data;
     }
@@ -1844,7 +1853,7 @@ on_worker_message_received (GDBusWorker  *worker,
 
           reply_serial = g_dbus_message_get_reply_serial (message);
           CONNECTION_LOCK (connection);
-          send_message_data = g_hash_table_lookup (connection->priv->map_method_serial_to_send_message_data,
+          send_message_data = g_hash_table_lookup (connection->map_method_serial_to_send_message_data,
                                                    GUINT_TO_POINTER (reply_serial));
           if (send_message_data != NULL)
             {
@@ -1893,11 +1902,11 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
 
   /* First collect the set of callback functions */
   CONNECTION_LOCK (connection);
-  num_filters = connection->priv->filters->len;
+  num_filters = connection->filters->len;
   filters = g_new0 (FilterCallback, num_filters);
   for (n = 0; n < num_filters; n++)
     {
-      FilterData *data = connection->priv->filters->pdata[n];
+      FilterData *data = connection->filters->pdata[n];
       filters[n].func = data->filter_function;
       filters[n].user_data = data->user_data;
     }
@@ -1933,7 +1942,7 @@ on_worker_closed (GDBusWorker *worker,
   //g_debug ("in on_worker_closed: %s", error->message);
 
   CONNECTION_LOCK (connection);
-  if (!connection->priv->closed)
+  if (!connection->closed)
     set_closed_unlocked (connection, remote_peer_vanished, error);
   CONNECTION_UNLOCK (connection);
 }
@@ -1947,7 +1956,7 @@ get_offered_capabilities_max (GDBusConnection *connection)
       GDBusCapabilityFlags ret;
       ret = G_DBUS_CAPABILITY_FLAGS_NONE;
 #ifdef G_OS_UNIX
-      if (G_IS_UNIX_CONNECTION (connection->priv->stream))
+      if (G_IS_UNIX_CONNECTION (connection->stream))
         ret |= G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
 #endif
       return ret;
@@ -1969,19 +1978,19 @@ initable_init (GInitable     *initable,
    * callbacks above needs the lock during initialization (for message
    * bus connections we do a synchronous Hello() call on the bus).
    */
-  g_mutex_lock (connection->priv->init_lock);
+  g_mutex_lock (connection->init_lock);
 
   ret = FALSE;
 
-  if (connection->priv->is_initialized)
+  if (connection->is_initialized)
     {
-      if (connection->priv->stream != NULL)
+      if (connection->stream != NULL)
         ret = TRUE;
       else
-        g_assert (connection->priv->initialization_error != NULL);
+        g_assert (connection->initialization_error != NULL);
       goto out;
     }
-  g_assert (connection->priv->initialization_error == NULL);
+  g_assert (connection->initialization_error == NULL);
 
   /* The user can pass multiple (but mutally exclusive) construct
    * properties:
@@ -1990,14 +1999,14 @@ initable_init (GInitable     *initable,
    *  - address (of type gchar*)
    *
    * At the end of the day we end up with a non-NULL GIOStream
-   * object in connection->priv->stream.
+   * object in connection->stream.
    */
-  if (connection->priv->address != NULL)
+  if (connection->address != NULL)
     {
-      g_assert (connection->priv->stream == NULL);
+      g_assert (connection->stream == NULL);
 
-      if ((connection->priv->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER) ||
-          (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS))
+      if ((connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER) ||
+          (connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS))
         {
           g_set_error_literal (error,
                                G_IO_ERROR,
@@ -2006,14 +2015,14 @@ initable_init (GInitable     *initable,
           goto out;
         }
 
-      connection->priv->stream = g_dbus_address_get_stream_sync (connection->priv->address,
-                                                                 NULL, /* TODO: out_guid */
-                                                                 cancellable,
-                                                                 &connection->priv->initialization_error);
-      if (connection->priv->stream == NULL)
+      connection->stream = g_dbus_address_get_stream_sync (connection->address,
+                                                           NULL, /* TODO: out_guid */
+                                                           cancellable,
+                                                           &connection->initialization_error);
+      if (connection->stream == NULL)
         goto out;
     }
-  else if (connection->priv->stream != NULL)
+  else if (connection->stream != NULL)
     {
       /* nothing to do */
     }
@@ -2023,45 +2032,45 @@ initable_init (GInitable     *initable,
     }
 
   /* Authenticate the connection */
-  if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER)
+  if (connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER)
     {
-      g_assert (!(connection->priv->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT));
-      g_assert (connection->priv->guid != NULL);
-      connection->priv->auth = _g_dbus_auth_new (connection->priv->stream);
-      if (!_g_dbus_auth_run_server (connection->priv->auth,
-                                    connection->priv->authentication_observer,
-                                    connection->priv->guid,
-                                    (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS),
+      g_assert (!(connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT));
+      g_assert (connection->guid != NULL);
+      connection->auth = _g_dbus_auth_new (connection->stream);
+      if (!_g_dbus_auth_run_server (connection->auth,
+                                    connection->authentication_observer,
+                                    connection->guid,
+                                    (connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS),
                                     get_offered_capabilities_max (connection),
-                                    &connection->priv->capabilities,
-                                    &connection->priv->crendentials,
+                                    &connection->capabilities,
+                                    &connection->crendentials,
                                     cancellable,
-                                    &connection->priv->initialization_error))
+                                    &connection->initialization_error))
         goto out;
     }
-  else if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT)
+  else if (connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT)
     {
-      g_assert (!(connection->priv->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER));
-      g_assert (connection->priv->guid == NULL);
-      connection->priv->auth = _g_dbus_auth_new (connection->priv->stream);
-      connection->priv->guid = _g_dbus_auth_run_client (connection->priv->auth,
-                                                        get_offered_capabilities_max (connection),
-                                                        &connection->priv->capabilities,
-                                                        cancellable,
-                                                        &connection->priv->initialization_error);
-      if (connection->priv->guid == NULL)
+      g_assert (!(connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER));
+      g_assert (connection->guid == NULL);
+      connection->auth = _g_dbus_auth_new (connection->stream);
+      connection->guid = _g_dbus_auth_run_client (connection->auth,
+                                                  get_offered_capabilities_max (connection),
+                                                  &connection->capabilities,
+                                                  cancellable,
+                                                  &connection->initialization_error);
+      if (connection->guid == NULL)
         goto out;
     }
 
-  if (connection->priv->authentication_observer != NULL)
+  if (connection->authentication_observer != NULL)
     {
-      g_object_unref (connection->priv->authentication_observer);
-      connection->priv->authentication_observer = NULL;
+      g_object_unref (connection->authentication_observer);
+      connection->authentication_observer = NULL;
     }
 
-  //g_output_stream_flush (G_SOCKET_CONNECTION (connection->priv->stream)
+  //g_output_stream_flush (G_SOCKET_CONNECTION (connection->stream)
 
-  //g_debug ("haz unix fd passing powers: %d", connection->priv->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
+  //g_debug ("haz unix fd passing powers: %d", connection->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
 #ifdef G_OS_UNIX
   /* Hack used until
@@ -2070,29 +2079,29 @@ initable_init (GInitable     *initable,
    *
    * has been resolved
    */
-  if (G_IS_SOCKET_CONNECTION (connection->priv->stream))
+  if (G_IS_SOCKET_CONNECTION (connection->stream))
     {
-      g_socket_set_blocking (g_socket_connection_get_socket (G_SOCKET_CONNECTION (connection->priv->stream)), FALSE);
+      g_socket_set_blocking (g_socket_connection_get_socket (G_SOCKET_CONNECTION (connection->stream)), FALSE);
     }
 #endif
 
-  connection->priv->worker = _g_dbus_worker_new (connection->priv->stream,
-                                                 connection->priv->capabilities,
-                                                 (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING),
-                                                 on_worker_message_received,
-                                                 on_worker_message_about_to_be_sent,
-                                                 on_worker_closed,
-                                                 connection);
+  connection->worker = _g_dbus_worker_new (connection->stream,
+                                           connection->capabilities,
+                                           (connection->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING),
+                                           on_worker_message_received,
+                                           on_worker_message_about_to_be_sent,
+                                           on_worker_closed,
+                                           connection);
 
   /* if a bus connection, call org.freedesktop.DBus.Hello - this is how we're getting a name */
-  if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
+  if (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
     {
       GVariant *hello_result;
 
       /* we could lift this restriction by adding code in gdbusprivate.c */
-      if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING)
+      if (connection->flags & G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING)
         {
-          g_set_error_literal (&connection->priv->initialization_error,
+          g_set_error_literal (&connection->initialization_error,
                                G_IO_ERROR,
                                G_IO_ERROR_FAILED,
                                "Cannot use DELAY_MESSAGE_PROCESSING with MESSAGE_BUS_CONNECTION");
@@ -2109,26 +2118,26 @@ initable_init (GInitable     *initable,
                                                   G_DBUS_CALL_FLAGS_NONE,
                                                   -1,
                                                   NULL, /* TODO: cancellable */
-                                                  &connection->priv->initialization_error);
+                                                  &connection->initialization_error);
       if (hello_result == NULL)
         goto out;
 
-      g_variant_get (hello_result, "(s)", &connection->priv->bus_unique_name);
+      g_variant_get (hello_result, "(s)", &connection->bus_unique_name);
       g_variant_unref (hello_result);
-      //g_debug ("unique name is `%s'", connection->priv->bus_unique_name);
+      //g_debug ("unique name is `%s'", connection->bus_unique_name);
     }
 
-  connection->priv->is_initialized = TRUE;
+  connection->is_initialized = TRUE;
 
   ret = TRUE;
  out:
   if (!ret)
     {
-      g_assert (connection->priv->initialization_error != NULL);
-      g_propagate_error (error, g_error_copy (connection->priv->initialization_error));
+      g_assert (connection->initialization_error != NULL);
+      g_propagate_error (error, g_error_copy (connection->initialization_error));
     }
 
-  g_mutex_unlock (connection->priv->init_lock);
+  g_mutex_unlock (connection->init_lock);
 
   return ret;
 }
@@ -2424,7 +2433,7 @@ g_dbus_connection_set_exit_on_close (GDBusConnection *connection,
                                      gboolean         exit_on_close)
 {
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
-  connection->priv->exit_on_close = exit_on_close;
+  connection->exit_on_close = exit_on_close;
 }
 
 /**
@@ -2444,7 +2453,7 @@ gboolean
 g_dbus_connection_get_exit_on_close (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
-  return connection->priv->exit_on_close;
+  return connection->exit_on_close;
 }
 
 /**
@@ -2463,7 +2472,7 @@ const gchar *
 g_dbus_connection_get_guid (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  return connection->priv->guid;
+  return connection->guid;
 }
 
 /**
@@ -2484,7 +2493,7 @@ const gchar *
 g_dbus_connection_get_unique_name (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  return connection->priv->bus_unique_name;
+  return connection->bus_unique_name;
 }
 
 /**
@@ -2510,7 +2519,7 @@ GCredentials *
 g_dbus_connection_get_peer_credentials (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  return connection->priv->crendentials;
+  return connection->crendentials;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -2569,7 +2578,7 @@ g_dbus_connection_add_filter (GDBusConnection            *connection,
   data->filter_function = filter_function;
   data->user_data = user_data;
   data->user_data_free_func = user_data_free_func;
-  g_ptr_array_add (connection->priv->filters, data);
+  g_ptr_array_add (connection->filters, data);
   CONNECTION_UNLOCK (connection);
 
   return data->id;
@@ -2580,9 +2589,9 @@ static void
 purge_all_filters (GDBusConnection *connection)
 {
   guint n;
-  for (n = 0; n < connection->priv->filters->len; n++)
+  for (n = 0; n < connection->filters->len; n++)
     {
-      FilterData *data = connection->priv->filters->pdata[n];
+      FilterData *data = connection->filters->pdata[n];
       if (data->user_data_free_func != NULL)
         data->user_data_free_func (data->user_data);
       g_free (data);
@@ -2609,12 +2618,12 @@ g_dbus_connection_remove_filter (GDBusConnection *connection,
 
   CONNECTION_LOCK (connection);
   to_destroy = NULL;
-  for (n = 0; n < connection->priv->filters->len; n++)
+  for (n = 0; n < connection->filters->len; n++)
     {
-      FilterData *data = connection->priv->filters->pdata[n];
+      FilterData *data = connection->filters->pdata[n];
       if (data->id == filter_id)
         {
-          g_ptr_array_remove_index (connection->priv->filters, n);
+          g_ptr_array_remove_index (connection->filters, n);
           to_destroy = data;
           break;
         }
@@ -2828,7 +2837,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
    */
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
-  g_return_val_if_fail (sender == NULL || (g_dbus_is_name (sender) && (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)), 0);
+  g_return_val_if_fail (sender == NULL || (g_dbus_is_name (sender) && (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)), 0);
   g_return_val_if_fail (interface_name == NULL || g_dbus_is_interface_name (interface_name), 0);
   g_return_val_if_fail (member == NULL || g_dbus_is_member_name (member), 0);
   g_return_val_if_fail (object_path == NULL || g_variant_is_object_path (object_path), 0);
@@ -2852,7 +2861,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
     g_main_context_ref (subscriber.context);
 
   /* see if we've already have this rule */
-  signal_data = g_hash_table_lookup (connection->priv->map_rule_to_signal_data, rule);
+  signal_data = g_hash_table_lookup (connection->map_rule_to_signal_data, rule);
   if (signal_data != NULL)
     {
       g_array_append_val (signal_data->subscribers, subscriber);
@@ -2871,7 +2880,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
   signal_data->subscribers           = g_array_new (FALSE, FALSE, sizeof (SignalSubscriber));
   g_array_append_val (signal_data->subscribers, subscriber);
 
-  g_hash_table_insert (connection->priv->map_rule_to_signal_data,
+  g_hash_table_insert (connection->map_rule_to_signal_data,
                        signal_data->rule,
                        signal_data);
 
@@ -2880,25 +2889,25 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
    * Avoid adding match rules for NameLost and NameAcquired messages - the bus will
    * always send such messages to us.
    */
-  if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
+  if (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
     {
       if (!is_signal_data_for_name_lost_or_acquired (signal_data))
         add_match_rule (connection, signal_data->rule);
     }
 
-  signal_data_array = g_hash_table_lookup (connection->priv->map_sender_unique_name_to_signal_data_array,
+  signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
                                            signal_data->sender_unique_name);
   if (signal_data_array == NULL)
     {
       signal_data_array = g_ptr_array_new ();
-      g_hash_table_insert (connection->priv->map_sender_unique_name_to_signal_data_array,
+      g_hash_table_insert (connection->map_sender_unique_name_to_signal_data_array,
                            g_strdup (signal_data->sender_unique_name),
                            signal_data_array);
     }
   g_ptr_array_add (signal_data_array, signal_data);
 
  out:
-  g_hash_table_insert (connection->priv->map_id_to_signal_data,
+  g_hash_table_insert (connection->map_id_to_signal_data,
                        GUINT_TO_POINTER (subscriber.id),
                        signal_data);
 
@@ -2919,7 +2928,7 @@ unsubscribe_id_internal (GDBusConnection *connection,
   GPtrArray *signal_data_array;
   guint n;
 
-  signal_data = g_hash_table_lookup (connection->priv->map_id_to_signal_data,
+  signal_data = g_hash_table_lookup (connection->map_id_to_signal_data,
                                      GUINT_TO_POINTER (subscription_id));
   if (signal_data == NULL)
     {
@@ -2935,31 +2944,31 @@ unsubscribe_id_internal (GDBusConnection *connection,
       if (subscriber->id != subscription_id)
         continue;
 
-      g_warn_if_fail (g_hash_table_remove (connection->priv->map_id_to_signal_data,
+      g_warn_if_fail (g_hash_table_remove (connection->map_id_to_signal_data,
                                            GUINT_TO_POINTER (subscription_id)));
       g_array_append_val (out_removed_subscribers, *subscriber);
       g_array_remove_index (signal_data->subscribers, n);
 
       if (signal_data->subscribers->len == 0)
         {
-          g_warn_if_fail (g_hash_table_remove (connection->priv->map_rule_to_signal_data, signal_data->rule));
+          g_warn_if_fail (g_hash_table_remove (connection->map_rule_to_signal_data, signal_data->rule));
 
-          signal_data_array = g_hash_table_lookup (connection->priv->map_sender_unique_name_to_signal_data_array,
+          signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array,
                                                    signal_data->sender_unique_name);
           g_warn_if_fail (signal_data_array != NULL);
           g_warn_if_fail (g_ptr_array_remove (signal_data_array, signal_data));
 
           if (signal_data_array->len == 0)
             {
-              g_warn_if_fail (g_hash_table_remove (connection->priv->map_sender_unique_name_to_signal_data_array,
+              g_warn_if_fail (g_hash_table_remove (connection->map_sender_unique_name_to_signal_data_array,
                                                    signal_data->sender_unique_name));
             }
 
           /* remove the match rule from the bus unless NameLost or NameAcquired (see subscribe()) */
-          if (connection->priv->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
+          if (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
             {
               if (!is_signal_data_for_name_lost_or_acquired (signal_data))
-                if (!connection->priv->closed)
+                if (!connection->closed)
                   remove_match_rule (connection, signal_data->rule);
             }
           signal_data_free (signal_data);
@@ -3066,7 +3075,7 @@ emit_signal_instance_in_idle_cb (gpointer data)
   /* Careful here, don't do the callback if we no longer has the subscription */
   CONNECTION_LOCK (signal_instance->connection);
   has_subscription = FALSE;
-  if (g_hash_table_lookup (signal_instance->connection->priv->map_id_to_signal_data,
+  if (g_hash_table_lookup (signal_instance->connection->map_id_to_signal_data,
                            GUINT_TO_POINTER (signal_instance->subscription_id)) != NULL)
     has_subscription = TRUE;
   CONNECTION_UNLOCK (signal_instance->connection);
@@ -3209,13 +3218,13 @@ distribute_signals (GDBusConnection *connection,
   /* collect subscribers that match on sender */
   if (sender != NULL)
     {
-      signal_data_array = g_hash_table_lookup (connection->priv->map_sender_unique_name_to_signal_data_array, sender);
+      signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array, sender);
       if (signal_data_array != NULL)
         schedule_callbacks (connection, signal_data_array, message, sender);
     }
 
   /* collect subscribers not matching on sender */
-  signal_data_array = g_hash_table_lookup (connection->priv->map_sender_unique_name_to_signal_data_array, "");
+  signal_data_array = g_hash_table_lookup (connection->map_sender_unique_name_to_signal_data_array, "");
   if (signal_data_array != NULL)
     schedule_callbacks (connection, signal_data_array, message, sender);
 }
@@ -3233,7 +3242,7 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
   guint n;
 
   ids = g_array_new (FALSE, FALSE, sizeof (guint));
-  g_hash_table_iter_init (&iter, connection->priv->map_id_to_signal_data);
+  g_hash_table_iter_init (&iter, connection->map_id_to_signal_data);
   while (g_hash_table_iter_next (&iter, &key, NULL))
     {
       guint subscription_id = GPOINTER_TO_UINT (key);
@@ -3335,12 +3344,12 @@ has_object_been_unregistered (GDBusConnection  *connection,
   ret = FALSE;
 
   CONNECTION_LOCK (connection);
-  if (registration_id != 0 && g_hash_table_lookup (connection->priv->map_id_to_ei,
+  if (registration_id != 0 && g_hash_table_lookup (connection->map_id_to_ei,
                                                    GUINT_TO_POINTER (registration_id)) == NULL)
     {
       ret = TRUE;
     }
-  else if (subtree_registration_id != 0 && g_hash_table_lookup (connection->priv->map_id_to_es,
+  else if (subtree_registration_id != 0 && g_hash_table_lookup (connection->map_id_to_es,
                                                                 GUINT_TO_POINTER (subtree_registration_id)) == NULL)
     {
       ret = TRUE;
@@ -3953,11 +3962,11 @@ g_dbus_connection_list_registered_unlocked (GDBusConnection *connection,
 
   set = g_hash_table_new (g_str_hash, g_str_equal);
 
-  g_hash_table_iter_init (&hash_iter, connection->priv->map_object_path_to_eo);
+  g_hash_table_iter_init (&hash_iter, connection->map_object_path_to_eo);
   while (g_hash_table_iter_next (&hash_iter, (gpointer) &object_path, NULL))
     maybe_add_path (path, path_len, object_path, set);
 
-  g_hash_table_iter_init (&hash_iter, connection->priv->map_object_path_to_es);
+  g_hash_table_iter_init (&hash_iter, connection->map_object_path_to_es);
   while (g_hash_table_iter_next (&hash_iter, (gpointer) &object_path, NULL))
     maybe_add_path (path, path_len, object_path, set);
 
@@ -4329,7 +4338,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
 
   CONNECTION_LOCK (connection);
 
-  eo = g_hash_table_lookup (connection->priv->map_object_path_to_eo, object_path);
+  eo = g_hash_table_lookup (connection->map_object_path_to_eo, object_path);
   if (eo == NULL)
     {
       eo = g_new0 (ExportedObject, 1);
@@ -4339,7 +4348,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
                                                      g_str_equal,
                                                      NULL,
                                                      (GDestroyNotify) exported_interface_free);
-      g_hash_table_insert (connection->priv->map_object_path_to_eo, eo->object_path, eo);
+      g_hash_table_insert (connection->map_object_path_to_eo, eo->object_path, eo);
     }
 
   ei = g_hash_table_lookup (eo->map_if_name_to_ei, interface_info->name);
@@ -4369,7 +4378,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   g_hash_table_insert (eo->map_if_name_to_ei,
                        (gpointer) ei->interface_name,
                        ei);
-  g_hash_table_insert (connection->priv->map_id_to_ei,
+  g_hash_table_insert (connection->map_id_to_ei,
                        GUINT_TO_POINTER (ei->id),
                        ei);
 
@@ -4406,18 +4415,18 @@ g_dbus_connection_unregister_object (GDBusConnection *connection,
 
   CONNECTION_LOCK (connection);
 
-  ei = g_hash_table_lookup (connection->priv->map_id_to_ei,
+  ei = g_hash_table_lookup (connection->map_id_to_ei,
                             GUINT_TO_POINTER (registration_id));
   if (ei == NULL)
     goto out;
 
   eo = ei->eo;
 
-  g_warn_if_fail (g_hash_table_remove (connection->priv->map_id_to_ei, GUINT_TO_POINTER (ei->id)));
+  g_warn_if_fail (g_hash_table_remove (connection->map_id_to_ei, GUINT_TO_POINTER (ei->id)));
   g_warn_if_fail (g_hash_table_remove (eo->map_if_name_to_ei, ei->interface_name));
   /* unregister object path if we have no more exported interfaces */
   if (g_hash_table_size (eo->map_if_name_to_ei) == 0)
-    g_warn_if_fail (g_hash_table_remove (connection->priv->map_object_path_to_eo,
+    g_warn_if_fail (g_hash_table_remove (connection->map_object_path_to_eo,
                                          eo->object_path));
 
   ret = TRUE;
@@ -5435,7 +5444,7 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
 
   CONNECTION_LOCK (connection);
 
-  es = g_hash_table_lookup (connection->priv->map_object_path_to_es, object_path);
+  es = g_hash_table_lookup (connection->map_object_path_to_es, object_path);
   if (es != NULL)
     {
       g_set_error (error,
@@ -5459,8 +5468,8 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
   if (es->context != NULL)
     g_main_context_ref (es->context);
 
-  g_hash_table_insert (connection->priv->map_object_path_to_es, es->object_path, es);
-  g_hash_table_insert (connection->priv->map_id_to_es,
+  g_hash_table_insert (connection->map_object_path_to_es, es->object_path, es);
+  g_hash_table_insert (connection->map_id_to_es,
                        GUINT_TO_POINTER (es->id),
                        es);
 
@@ -5498,13 +5507,13 @@ g_dbus_connection_unregister_subtree (GDBusConnection *connection,
 
   CONNECTION_LOCK (connection);
 
-  es = g_hash_table_lookup (connection->priv->map_id_to_es,
+  es = g_hash_table_lookup (connection->map_id_to_es,
                             GUINT_TO_POINTER (registration_id));
   if (es == NULL)
     goto out;
 
-  g_warn_if_fail (g_hash_table_remove (connection->priv->map_id_to_es, GUINT_TO_POINTER (es->id)));
-  g_warn_if_fail (g_hash_table_remove (connection->priv->map_object_path_to_es, es->object_path));
+  g_warn_if_fail (g_hash_table_remove (connection->map_id_to_es, GUINT_TO_POINTER (es->id)));
+  g_warn_if_fail (g_hash_table_remove (connection->map_object_path_to_es, es->object_path));
 
   ret = TRUE;
 
@@ -5537,13 +5546,13 @@ handle_generic_get_machine_id_unlocked (GDBusConnection *connection,
   GDBusMessage *reply;
 
   reply = NULL;
-  if (connection->priv->machine_id == NULL)
+  if (connection->machine_id == NULL)
     {
       GError *error;
 
       error = NULL;
-      connection->priv->machine_id = _g_dbus_get_machine_id (&error);
-      if (connection->priv->machine_id == NULL)
+      connection->machine_id = _g_dbus_get_machine_id (&error);
+      if (connection->machine_id == NULL)
         {
           reply = g_dbus_message_new_method_error_literal (message,
                                                            "org.freedesktop.DBus.Error.Failed",
@@ -5555,7 +5564,7 @@ handle_generic_get_machine_id_unlocked (GDBusConnection *connection,
   if (reply == NULL)
     {
       reply = g_dbus_message_new_method_reply (message);
-      g_dbus_message_set_body (reply, g_variant_new ("(s)", connection->priv->machine_id));
+      g_dbus_message_set_body (reply, g_variant_new ("(s)", connection->machine_id));
     }
   g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
   g_object_unref (reply);
@@ -5696,14 +5705,14 @@ distribute_method_call (GDBusConnection *connection,
   object_path = g_dbus_message_get_path (message);
   g_assert (object_path != NULL);
 
-  eo = g_hash_table_lookup (connection->priv->map_object_path_to_eo, object_path);
+  eo = g_hash_table_lookup (connection->map_object_path_to_eo, object_path);
   if (eo != NULL)
     {
       if (obj_message_func (connection, eo, message))
         goto out;
     }
 
-  es = g_hash_table_lookup (connection->priv->map_object_path_to_es, object_path);
+  es = g_hash_table_lookup (connection->map_object_path_to_es, object_path);
   if (es != NULL)
     {
       if (subtree_message_func (connection, es, message))
@@ -5712,7 +5721,7 @@ distribute_method_call (GDBusConnection *connection,
 
   if (subtree_path != NULL)
     {
-      es = g_hash_table_lookup (connection->priv->map_object_path_to_es, subtree_path);
+      es = g_hash_table_lookup (connection->map_object_path_to_es, subtree_path);
       if (es != NULL)
         {
           if (subtree_message_func (connection, es, message))

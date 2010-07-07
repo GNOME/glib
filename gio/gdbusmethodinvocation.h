@@ -33,28 +33,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_DBUS_METHOD_INVOCATION         (g_dbus_method_invocation_get_type ())
 #define G_DBUS_METHOD_INVOCATION(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_METHOD_INVOCATION, GDBusMethodInvocation))
-#define G_DBUS_METHOD_INVOCATION_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DBUS_METHOD_INVOCATION, GDBusMethodInvocationClass))
-#define G_DBUS_METHOD_INVOCATION_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DBUS_METHOD_INVOCATION, GDBusMethodInvocationClass))
 #define G_IS_DBUS_METHOD_INVOCATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_METHOD_INVOCATION))
-#define G_IS_DBUS_METHOD_INVOCATION_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DBUS_METHOD_INVOCATION))
-
-typedef struct _GDBusMethodInvocationClass   GDBusMethodInvocationClass;
-typedef struct _GDBusMethodInvocationPrivate GDBusMethodInvocationPrivate;
-
-/**
- * GDBusMethodInvocation:
- *
- * The #GDBusMethodInvocation structure contains only private data and
- * should only be accessed using the provided API.
- *
- * Since: 2.26
- */
-struct _GDBusMethodInvocation
-{
-  /*< private >*/
-  GObject parent_instance;
-  GDBusMethodInvocationPrivate *priv;
-};
 
 GType                  g_dbus_method_invocation_get_type             (void) G_GNUC_CONST;
 GDBusMethodInvocation *g_dbus_method_invocation_new                  (const gchar           *sender,

@@ -100,6 +100,8 @@
  * </programlisting></example>
  */
 
+typedef struct _GDBusAuthObserverClass GDBusAuthObserverClass;
+
 /**
  * GDBusAuthObserverClass:
  * @authorize_authenticated_peer: Signal class handler for the #GDBusAuthObserver::authorize-authenticated-peer signal.
@@ -121,9 +123,17 @@ struct _GDBusAuthObserverClass
                                             GCredentials       *credentials);
 };
 
-struct _GDBusAuthObserverPrivate
+/**
+ * GDBusAuthObserver:
+ *
+ * The #GDBusAuthObserver structure contains only private data and
+ * should only be accessed using the provided API.
+ *
+ * Since: 2.26
+ */
+struct _GDBusAuthObserver
 {
-  gint foo;
+  GObject parent_instance;
 };
 
 enum
@@ -202,18 +212,11 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
                   2,
                   G_TYPE_IO_STREAM,
                   G_TYPE_CREDENTIALS);
-
-
-  g_type_class_add_private (klass, sizeof (GDBusAuthObserverPrivate));
 }
 
 static void
 g_dbus_auth_observer_init (GDBusAuthObserver *observer)
 {
-  /* not used for now */
-  observer->priv = G_TYPE_INSTANCE_GET_PRIVATE (observer,
-                                                G_TYPE_DBUS_AUTH_OBSERVER,
-                                                GDBusAuthObserverPrivate);
 }
 
 /**

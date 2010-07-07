@@ -33,28 +33,7 @@ G_BEGIN_DECLS
 
 #define G_TYPE_DBUS_MESSAGE         (g_dbus_message_get_type ())
 #define G_DBUS_MESSAGE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_TYPE_DBUS_MESSAGE, GDBusMessage))
-#define G_DBUS_MESSAGE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_TYPE_DBUS_MESSAGE, GDBusMessageClass))
-#define G_DBUS_MESSAGE_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), G_TYPE_DBUS_MESSAGE, GDBusMessageClass))
 #define G_IS_DBUS_MESSAGE(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_MESSAGE))
-#define G_IS_DBUS_MESSAGE_CLASS(k)  (G_TYPE_CHECK_CLASS_TYPE ((k), G_TYPE_DBUS_MESSAGE))
-
-typedef struct _GDBusMessageClass   GDBusMessageClass;
-typedef struct _GDBusMessagePrivate GDBusMessagePrivate;
-
-/**
- * GDBusMessage:
- *
- * The #GDBusMessage structure contains only private data and should
- * only be accessed using the provided API.
- *
- * Since: 2.26
- */
-struct _GDBusMessage
-{
-  /*< private >*/
-  GObject parent_instance;
-  GDBusMessagePrivate *priv;
-};
 
 GType                     g_dbus_message_get_type           (void) G_GNUC_CONST;
 GDBusMessage             *g_dbus_message_new                (void);

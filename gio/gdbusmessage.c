@@ -63,6 +63,7 @@
  * on a #GDBusConnection.
  */
 
+typedef struct _GDBusMessageClass GDBusMessageClass;
 
 /**
  * GDBusMessageClass:
@@ -77,8 +78,19 @@ struct _GDBusMessageClass
   GObjectClass parent_class;
 };
 
-struct _GDBusMessagePrivate
+/**
+ * GDBusMessage:
+ *
+ * The #GDBusMessage structure contains only private data and should
+ * only be accessed using the provided API.
+ *
+ * Since: 2.26
+ */
+struct _GDBusMessage
 {
+  /*< private >*/
+  GObject parent_instance;
+
   GDBusMessageType type;
   GDBusMessageFlags flags;
   guchar major_protocol_version;
@@ -97,13 +109,13 @@ g_dbus_message_finalize (GObject *object)
 {
   GDBusMessage *message = G_DBUS_MESSAGE (object);
 
-  if (message->priv->headers != NULL)
-    g_hash_table_unref (message->priv->headers);
-  if (message->priv->body != NULL)
-    g_variant_unref (message->priv->body);
+  if (message->headers != NULL)
+    g_hash_table_unref (message->headers);
+  if (message->body != NULL)
+    g_variant_unref (message->body);
 #ifdef G_OS_UNIX
-  if (message->priv->fd_list != NULL)
-    g_object_unref (message->priv->fd_list);
+  if (message->fd_list != NULL)
+    g_object_unref (message->fd_list);
 #endif
 
   if (G_OBJECT_CLASS (g_dbus_message_parent_class)->finalize != NULL)
@@ -115,8 +127,6 @@ g_dbus_message_class_init (GDBusMessageClass *klass)
 {
   GObjectClass *gobject_class;
 
-  g_type_class_add_private (klass, sizeof (GDBusMessagePrivate));
-
   gobject_class = G_OBJECT_CLASS (klass);
 
   gobject_class->finalize     = g_dbus_message_finalize;
@@ -125,12 +135,10 @@ g_dbus_message_class_init (GDBusMessageClass *klass)
 static void
 g_dbus_message_init (GDBusMessage *message)
 {
-  message->priv = G_TYPE_INSTANCE_GET_PRIVATE (message, G_TYPE_DBUS_MESSAGE, GDBusMessagePrivate);
-
-  message->priv->headers = g_hash_table_new_full (g_direct_hash,
-                                                  g_direct_equal,
-                                                  NULL,
-                                                  (GDestroyNotify) g_variant_unref);
+  message->headers = g_hash_table_new_full (g_direct_hash,
+                                            g_direct_equal,
+                                            NULL,
+                                            (GDestroyNotify) g_variant_unref);
 }
 
 /**
@@ -175,7 +183,7 @@ g_dbus_message_new_method_call (const gchar *name,
   g_return_val_if_fail (interface_ == NULL || g_dbus_is_interface_name (interface_), NULL);
 
   message = g_dbus_message_new ();
-  message->priv->type = G_DBUS_MESSAGE_TYPE_METHOD_CALL;
+  message->type = G_DBUS_MESSAGE_TYPE_METHOD_CALL;
 
   if (name != NULL)
     g_dbus_message_set_destination (message, name);
@@ -211,8 +219,8 @@ g_dbus_message_new_signal (const gchar  *path,
   g_return_val_if_fail (interface_ == NULL || g_dbus_is_interface_name (interface_), NULL);
 
   message = g_dbus_message_new ();
-  message->priv->type = G_DBUS_MESSAGE_TYPE_SIGNAL;
-  message->priv->flags = G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
+  message->type = G_DBUS_MESSAGE_TYPE_SIGNAL;
+  message->flags = G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
 
   g_dbus_message_set_path (message, path);
   g_dbus_message_set_member (message, signal);
@@ -246,8 +254,8 @@ g_dbus_message_new_method_reply (GDBusMessage *method_call_message)
   g_return_val_if_fail (g_dbus_message_get_serial (method_call_message) != 0, NULL);
 
   message = g_dbus_message_new ();
-  message->priv->type = G_DBUS_MESSAGE_TYPE_METHOD_RETURN;
-  message->priv->flags = G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
+  message->type = G_DBUS_MESSAGE_TYPE_METHOD_RETURN;
+  message->flags = G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
 
   g_dbus_message_set_reply_serial (message, g_dbus_message_get_serial (method_call_message));
   sender = g_dbus_message_get_sender (method_call_message);
@@ -318,8 +326,8 @@ g_dbus_message_new_method_error_literal (GDBusMessage  *method_call_message,
   g_return_val_if_fail (error_message != NULL, NULL);
 
   message = g_dbus_message_new ();
-  message->priv->type = G_DBUS_MESSAGE_TYPE_ERROR;
-  message->priv->flags = G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
+  message->type = G_DBUS_MESSAGE_TYPE_ERROR;
+  message->flags = G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
 
   g_dbus_message_set_reply_serial (message, g_dbus_message_get_serial (method_call_message));
   g_dbus_message_set_error_name (message, error_name);
@@ -380,7 +388,7 @@ GDBusMessageType
 g_dbus_message_get_message_type (GDBusMessage  *message)
 {
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), G_DBUS_MESSAGE_TYPE_INVALID);
-  return message->priv->type;
+  return message->type;
 }
 
 /**
@@ -398,7 +406,7 @@ g_dbus_message_set_message_type (GDBusMessage      *message,
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail (type >=0 && type < 256);
-  message->priv->type = type;
+  message->type = type;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -419,7 +427,7 @@ GDBusMessageFlags
 g_dbus_message_get_flags (GDBusMessage  *message)
 {
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), G_DBUS_MESSAGE_FLAGS_NONE);
-  return message->priv->flags;
+  return message->flags;
 }
 
 /**
@@ -438,7 +446,7 @@ g_dbus_message_set_flags (GDBusMessage       *message,
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail (flags >=0 && flags < 256);
-  message->priv->flags = flags;
+  message->flags = flags;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -457,7 +465,7 @@ guint32
 g_dbus_message_get_serial (GDBusMessage *message)
 {
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), 0);
-  return message->priv->serial;
+  return message->serial;
 }
 
 /**
@@ -474,7 +482,7 @@ g_dbus_message_set_serial (GDBusMessage  *message,
                            guint32        serial)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
-  message->priv->serial = serial;
+  message->serial = serial;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -499,7 +507,7 @@ g_dbus_message_get_header (GDBusMessage             *message,
 {
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
   g_return_val_if_fail (header_field >=0 && header_field < 256, NULL);
-  return g_hash_table_lookup (message->priv->headers, GUINT_TO_POINTER (header_field));
+  return g_hash_table_lookup (message->headers, GUINT_TO_POINTER (header_field));
 }
 
 /**
@@ -523,11 +531,11 @@ g_dbus_message_set_header (GDBusMessage             *message,
   g_return_if_fail (header_field >=0 && header_field < 256);
   if (value == NULL)
     {
-      g_hash_table_remove (message->priv->headers, GUINT_TO_POINTER (header_field));
+      g_hash_table_remove (message->headers, GUINT_TO_POINTER (header_field));
     }
   else
     {
-      g_hash_table_insert (message->priv->headers, GUINT_TO_POINTER (header_field), g_variant_ref_sink (value));
+      g_hash_table_insert (message->headers, GUINT_TO_POINTER (header_field), g_variant_ref_sink (value));
     }
 }
 
@@ -554,7 +562,7 @@ g_dbus_message_get_header_fields (GDBusMessage  *message)
 
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
 
-  keys = g_hash_table_get_keys (message->priv->headers);
+  keys = g_hash_table_get_keys (message->headers);
   num_keys = g_list_length (keys);
   ret = g_new (guchar, num_keys + 1);
   for (l = keys, n = 0; l != NULL; l = l->next, n++)
@@ -582,7 +590,7 @@ GVariant *
 g_dbus_message_get_body (GDBusMessage  *message)
 {
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
-  return message->priv->body;
+  return message->body;
 }
 
 /**
@@ -605,11 +613,11 @@ g_dbus_message_set_body (GDBusMessage  *message,
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail ((body == NULL) || g_variant_is_of_type (body, G_VARIANT_TYPE_TUPLE));
 
-  if (message->priv->body != NULL)
-    g_variant_unref (message->priv->body);
+  if (message->body != NULL)
+    g_variant_unref (message->body);
   if (body == NULL)
     {
-      message->priv->body = NULL;
+      message->body = NULL;
       g_dbus_message_set_signature (message, NULL);
     }
   else
@@ -618,7 +626,7 @@ g_dbus_message_set_body (GDBusMessage  *message,
       gsize type_string_len;
       gchar *signature;
 
-      message->priv->body = g_variant_ref_sink (body);
+      message->body = g_variant_ref_sink (body);
 
       type_string = g_variant_get_type_string (body);
       type_string_len = strlen (type_string);
@@ -649,7 +657,7 @@ GUnixFDList *
 g_dbus_message_get_unix_fd_list (GDBusMessage  *message)
 {
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
-  return message->priv->fd_list;
+  return message->fd_list;
 }
 
 /**
@@ -672,16 +680,16 @@ g_dbus_message_set_unix_fd_list (GDBusMessage  *message,
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list));
-  if (message->priv->fd_list != NULL)
-    g_object_unref (message->priv->fd_list);
+  if (message->fd_list != NULL)
+    g_object_unref (message->fd_list);
   if (fd_list != NULL)
     {
-      message->priv->fd_list = g_object_ref (fd_list);
+      message->fd_list = g_object_ref (fd_list);
       g_dbus_message_set_num_unix_fds (message, g_unix_fd_list_get_length (fd_list));
     }
   else
     {
-      message->priv->fd_list = NULL;
+      message->fd_list = NULL;
       g_dbus_message_set_num_unix_fds (message, 0);
     }
 }
@@ -1405,8 +1413,8 @@ g_dbus_message_new_from_blob (guchar                *blob,
     }
   g_data_input_stream_set_byte_order (dis, byte_order);
 
-  message->priv->type = g_data_input_stream_read_byte (dis, NULL, NULL);
-  message->priv->flags = g_data_input_stream_read_byte (dis, NULL, NULL);
+  message->type = g_data_input_stream_read_byte (dis, NULL, NULL);
+  message->flags = g_data_input_stream_read_byte (dis, NULL, NULL);
   major_protocol_version = g_data_input_stream_read_byte (dis, NULL, NULL);
   if (major_protocol_version != 1)
     {
@@ -1418,7 +1426,7 @@ g_dbus_message_new_from_blob (guchar                *blob,
       goto out;
     }
   message_body_len = g_data_input_stream_read_uint32 (dis, NULL, NULL);
-  message->priv->serial = g_data_input_stream_read_uint32 (dis, NULL, NULL);
+  message->serial = g_data_input_stream_read_uint32 (dis, NULL, NULL);
 
 #ifdef DEBUG_SERIALIZER
   g_print ("Parsing blob (blob_len = 0x%04x bytes)\n", (gint) blob_len);
@@ -1494,14 +1502,14 @@ g_dbus_message_new_from_blob (guchar                *blob,
 #ifdef DEBUG_SERIALIZER
           g_print ("Parsing body (blob_len = 0x%04x bytes)\n", (gint) blob_len);
 #endif /* DEBUG_SERIALIZER */
-          message->priv->body = parse_value_from_blob (mis,
-                                                       dis,
-                                                       variant_type,
-                                                       FALSE,
-                                                       2,
-                                                       error);
+          message->body = parse_value_from_blob (mis,
+                                                 dis,
+                                                 variant_type,
+                                                 FALSE,
+                                                 2,
+                                                 error);
           g_variant_type_free (variant_type);
-          if (message->priv->body == NULL)
+          if (message->body == NULL)
             goto out;
         }
     }
@@ -1944,18 +1952,18 @@ g_dbus_message_to_blob (GDBusMessage          *message,
 
   /* Core header */
   g_data_output_stream_put_byte (dos, byte_order == G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN ? 'l' : 'B', NULL, NULL);
-  g_data_output_stream_put_byte (dos, message->priv->type, NULL, NULL);
-  g_data_output_stream_put_byte (dos, message->priv->flags, NULL, NULL);
+  g_data_output_stream_put_byte (dos, message->type, NULL, NULL);
+  g_data_output_stream_put_byte (dos, message->flags, NULL, NULL);
   g_data_output_stream_put_byte (dos, 1, NULL, NULL); /* major protocol version */
   body_len_offset = g_memory_output_stream_get_data_size (mos);
   /* body length - will be filled in later */
   g_data_output_stream_put_uint32 (dos, 0xF00DFACE, NULL, NULL);
-  g_data_output_stream_put_uint32 (dos, message->priv->serial, NULL, NULL);
+  g_data_output_stream_put_uint32 (dos, message->serial, NULL, NULL);
 
   num_fds_in_message = 0;
 #ifdef G_OS_UNIX
-  if (message->priv->fd_list != NULL)
-    num_fds_in_message = g_unix_fd_list_get_length (message->priv->fd_list);
+  if (message->fd_list != NULL)
+    num_fds_in_message = g_unix_fd_list_get_length (message->fd_list);
 #endif
   num_fds_according_to_header = g_dbus_message_get_num_unix_fds (message);
   /* TODO: check we have all the right header fields and that they are the correct value etc etc */
@@ -1971,7 +1979,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
     }
 
   g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{yv}"));
-  g_hash_table_iter_init (&hash_iter, message->priv->headers);
+  g_hash_table_iter_init (&hash_iter, message->headers);
   while (g_hash_table_iter_next (&hash_iter, &key, (gpointer) &header_value))
     {
       g_variant_builder_add (&builder,
@@ -2001,7 +2009,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   signature_str = NULL;
   if (signature != NULL)
       signature_str = g_variant_get_string (signature, NULL);
-  if (message->priv->body != NULL)
+  if (message->body != NULL)
     {
       gchar *tupled_signature_str;
       tupled_signature_str = g_strdup_printf ("(%s)", signature_str);
@@ -2015,18 +2023,18 @@ g_dbus_message_to_blob (GDBusMessage          *message,
           g_free (tupled_signature_str);
           goto out;
         }
-      else if (g_strcmp0 (tupled_signature_str, g_variant_get_type_string (message->priv->body)) != 0)
+      else if (g_strcmp0 (tupled_signature_str, g_variant_get_type_string (message->body)) != 0)
         {
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Message body has type signature `%s' but signature in the header field is `%s'"),
-                       tupled_signature_str, g_variant_get_type_string (message->priv->body));
+                       tupled_signature_str, g_variant_get_type_string (message->body));
           g_free (tupled_signature_str);
           goto out;
         }
       g_free (tupled_signature_str);
-      if (!append_body_to_blob (message->priv->body, mos, dos, error))
+      if (!append_body_to_blob (message->body, mos, dos, error))
         goto out;
     }
   else
@@ -2071,7 +2079,7 @@ get_uint32_header (GDBusMessage            *message,
   guint32 ret;
 
   ret = 0;
-  value = g_hash_table_lookup (message->priv->headers, GUINT_TO_POINTER (header_field));
+  value = g_hash_table_lookup (message->headers, GUINT_TO_POINTER (header_field));
   if (value != NULL && g_variant_is_of_type (value, G_VARIANT_TYPE_UINT32))
     ret = g_variant_get_uint32 (value);
 
@@ -2086,7 +2094,7 @@ get_string_header (GDBusMessage            *message,
   const gchar *ret;
 
   ret = NULL;
-  value = g_hash_table_lookup (message->priv->headers, GUINT_TO_POINTER (header_field));
+  value = g_hash_table_lookup (message->headers, GUINT_TO_POINTER (header_field));
   if (value != NULL && g_variant_is_of_type (value, G_VARIANT_TYPE_STRING))
     ret = g_variant_get_string (value, NULL);
 
@@ -2101,7 +2109,7 @@ get_object_path_header (GDBusMessage            *message,
   const gchar *ret;
 
   ret = NULL;
-  value = g_hash_table_lookup (message->priv->headers, GUINT_TO_POINTER (header_field));
+  value = g_hash_table_lookup (message->headers, GUINT_TO_POINTER (header_field));
   if (value != NULL && g_variant_is_of_type (value, G_VARIANT_TYPE_OBJECT_PATH))
     ret = g_variant_get_string (value, NULL);
 
@@ -2116,7 +2124,7 @@ get_signature_header (GDBusMessage            *message,
   const gchar *ret;
 
   ret = NULL;
-  value = g_hash_table_lookup (message->priv->headers, GUINT_TO_POINTER (header_field));
+  value = g_hash_table_lookup (message->headers, GUINT_TO_POINTER (header_field));
   if (value != NULL && g_variant_is_of_type (value, G_VARIANT_TYPE_SIGNATURE))
     ret = g_variant_get_string (value, NULL);
 
@@ -2486,10 +2494,10 @@ g_dbus_message_get_arg0 (GDBusMessage  *message)
 
   ret = NULL;
 
-  if (message->priv->body != NULL && g_variant_is_of_type (message->priv->body, G_VARIANT_TYPE_TUPLE))
+  if (message->body != NULL && g_variant_is_of_type (message->body, G_VARIANT_TYPE_TUPLE))
     {
       GVariant *item;
-      item = g_variant_get_child_value (message->priv->body, 0);
+      item = g_variant_get_child_value (message->body, 0);
       if (g_variant_is_of_type (item, G_VARIANT_TYPE_STRING))
         ret = g_variant_get_string (item, NULL);
       g_variant_unref (item);
@@ -2563,7 +2571,7 @@ g_dbus_message_to_gerror (GDBusMessage   *message,
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), FALSE);
 
   ret = FALSE;
-  if (message->priv->type != G_DBUS_MESSAGE_TYPE_ERROR)
+  if (message->type != G_DBUS_MESSAGE_TYPE_ERROR)
     goto out;
 
   error_name = g_dbus_message_get_error_name (message);
@@ -2720,17 +2728,17 @@ g_dbus_message_print (GDBusMessage *message,
 
   str = g_string_new (NULL);
 
-  s = _g_dbus_enum_to_string (G_TYPE_DBUS_MESSAGE_TYPE, message->priv->type);
+  s = _g_dbus_enum_to_string (G_TYPE_DBUS_MESSAGE_TYPE, message->type);
   g_string_append_printf (str, "%*sType:    %s\n", indent, "", s);
   g_free (s);
-  s = flags_to_string (G_TYPE_DBUS_MESSAGE_FLAGS, message->priv->flags);
+  s = flags_to_string (G_TYPE_DBUS_MESSAGE_FLAGS, message->flags);
   g_string_append_printf (str, "%*sFlags:   %s\n", indent, "", s);
   g_free (s);
-  g_string_append_printf (str, "%*sVersion: %d\n", indent, "", message->priv->major_protocol_version);
-  g_string_append_printf (str, "%*sSerial:  %d\n", indent, "", message->priv->serial);
+  g_string_append_printf (str, "%*sVersion: %d\n", indent, "", message->major_protocol_version);
+  g_string_append_printf (str, "%*sSerial:  %d\n", indent, "", message->serial);
 
   g_string_append_printf (str, "%*sHeaders:\n", indent, "");
-  keys = g_hash_table_get_keys (message->priv->headers);
+  keys = g_hash_table_get_keys (message->headers);
   keys = g_list_sort (keys, _sort_keys_func);
   if (keys != NULL)
     {
@@ -2740,7 +2748,7 @@ g_dbus_message_print (GDBusMessage *message,
           GVariant *value;
           gchar *value_str;
 
-          value = g_hash_table_lookup (message->priv->headers, l->data);
+          value = g_hash_table_lookup (message->headers, l->data);
           g_assert (value != NULL);
 
           s = _g_dbus_enum_to_string (G_TYPE_DBUS_MESSAGE_HEADER_FIELD, key);
@@ -2755,9 +2763,9 @@ g_dbus_message_print (GDBusMessage *message,
       g_string_append_printf (str, "%*s  (none)\n", indent, "");
     }
   g_string_append_printf (str, "%*sBody: ", indent, "");
-  if (message->priv->body != NULL)
+  if (message->body != NULL)
     {
-      g_variant_print_string (message->priv->body,
+      g_variant_print_string (message->body,
                               str,
                               TRUE);
     }
@@ -2768,13 +2776,13 @@ g_dbus_message_print (GDBusMessage *message,
   g_string_append (str, "\n");
 #ifdef G_OS_UNIX
   g_string_append_printf (str, "%*sUNIX File Descriptors:\n", indent, "");
-  if (message->priv->fd_list != NULL)
+  if (message->fd_list != NULL)
     {
       gint num_fds;
       const gint *fds;
       gint n;
 
-      fds = g_unix_fd_list_peek_fds (message->priv->fd_list, &num_fds);
+      fds = g_unix_fd_list_peek_fds (message->fd_list, &num_fds);
       if (num_fds > 0)
         {
           for (n = 0; n < num_fds; n++)
