@@ -932,7 +932,6 @@ on_name_owner_changed (GDBusConnection *connection,
                        gpointer          user_data)
 {
   GDBusProxy *proxy = G_DBUS_PROXY (user_data);
-  const gchar *name;
   const gchar *old_owner;
   const gchar *new_owner;
 
@@ -945,13 +944,9 @@ on_name_owner_changed (GDBusConnection *connection,
 
   g_variant_get (parameters,
                  "(&s&s&s)",
-                 &name,
+                 NULL,
                  &old_owner,
                  &new_owner);
-
-  /* we only care about a specific name */
-  if (g_strcmp0 (name, proxy->priv->name) != 0)
-    goto out;
 
   if (strlen (new_owner) == 0)
     {
