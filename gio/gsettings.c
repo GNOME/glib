@@ -1964,8 +1964,8 @@ g_settings_delay (GSettings *settings)
  *
  * Applies any changes that have been made to the settings.  This
  * function does nothing unless @settings is in 'delay-apply' mode;
- * see g_settings_set_delay_apply().  In the normal case settings are
- * always applied immediately.
+ * see g_settings_delay().  In the normal case settings are always
+ * applied immediately.
  **/
 void
 g_settings_apply (GSettings *settings)
@@ -1985,8 +1985,8 @@ g_settings_apply (GSettings *settings)
  *
  * Reverts all non-applied changes to the settings.  This function
  * does nothing unless @settings is in 'delay-apply' mode; see
- * g_settings_set_delay_apply().  In the normal case settings are
- * always applied immediately.
+ * g_settings_delay().  In the normal case settings are always applied
+ * immediately.
  *
  * Change notifications will be emitted for affected keys.
  **/

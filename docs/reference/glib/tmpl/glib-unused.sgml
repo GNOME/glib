@@ -877,6 +877,58 @@ Turns the argument into a string literal by using the '#' stringizing operator.
 
 @x: text to convert to a literal string.
 
+<!-- ##### FUNCTION g_variant_dup_bytestring ##### -->
+<para>
+
+</para>
+
+@value: 
+@length: 
+@Returns: 
+
+<!-- ##### FUNCTION g_variant_dup_bytestring_array ##### -->
+<para>
+
+</para>
+
+@value: 
+@length: 
+@Returns: 
+
+<!-- ##### FUNCTION g_variant_get_bytestring ##### -->
+<para>
+
+</para>
+
+@value: 
+@Returns: 
+
+<!-- ##### FUNCTION g_variant_get_bytestring_array ##### -->
+<para>
+
+</para>
+
+@value: 
+@length: 
+@Returns: 
+
+<!-- ##### FUNCTION g_variant_new_bytestring ##### -->
+<para>
+
+</para>
+
+@string: 
+@Returns: 
+
+<!-- ##### FUNCTION g_variant_new_bytestring_array ##### -->
+<para>
+
+</para>
+
+@strv: 
+@length: 
+@Returns: 
+
 <!-- ##### FUNCTION g_warn_message ##### -->
 <para>
 
