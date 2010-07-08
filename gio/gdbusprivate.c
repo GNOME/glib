@@ -1180,7 +1180,7 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
 #define G_DBUS_DEBUG_INCOMING       (1<<5)
 #define G_DBUS_DEBUG_EMISSION       (1<<6)
 #define G_DBUS_DEBUG_ADDRESS        (1<<7)
-#define G_DBUS_DEBUG_ALL            0xffffffff
+
 static gint _gdbus_debug_flags = 0;
 
 gboolean
@@ -1276,31 +1276,20 @@ _g_dbus_initialize (void)
       debug = g_getenv ("G_DBUS_DEBUG");
       if (debug != NULL)
         {
-          gchar **tokens;
-          guint n;
-          tokens = g_strsplit (debug, ",", 0);
-          for (n = 0; tokens[n] != NULL; n++)
-            {
-              if (g_strcmp0 (tokens[n], "authentication") == 0)
-                _gdbus_debug_flags |= G_DBUS_DEBUG_AUTHENTICATION;
-              else if (g_strcmp0 (tokens[n], "message") == 0)
-                _gdbus_debug_flags |= G_DBUS_DEBUG_MESSAGE;
-              else if (g_strcmp0 (tokens[n], "payload") == 0) /* implies `message' */
-                _gdbus_debug_flags |= (G_DBUS_DEBUG_MESSAGE | G_DBUS_DEBUG_PAYLOAD);
-              else if (g_strcmp0 (tokens[n], "call") == 0)
-                _gdbus_debug_flags |= G_DBUS_DEBUG_CALL;
-              else if (g_strcmp0 (tokens[n], "signal") == 0)
-                _gdbus_debug_flags |= G_DBUS_DEBUG_SIGNAL;
-              else if (g_strcmp0 (tokens[n], "incoming") == 0)
-                _gdbus_debug_flags |= G_DBUS_DEBUG_INCOMING;
-              else if (g_strcmp0 (tokens[n], "emission") == 0)
-                _gdbus_debug_flags |= G_DBUS_DEBUG_EMISSION;
-              else if (g_strcmp0 (tokens[n], "address") == 0)
-                _gdbus_debug_flags |= G_DBUS_DEBUG_ADDRESS;
-              else if (g_strcmp0 (tokens[n], "all") == 0)
-                _gdbus_debug_flags |= G_DBUS_DEBUG_ALL;
-            }
-          g_strfreev (tokens);
+          const GDebugKey keys[] = {
+            { "authentication", G_DBUS_DEBUG_AUTHENTICATION },
+            { "message",        G_DBUS_DEBUG_MESSAGE        },
+            { "payload",        G_DBUS_DEBUG_PAYLOAD        },
+            { "call",           G_DBUS_DEBUG_CALL           },
+            { "signal",         G_DBUS_DEBUG_SIGNAL         },
+            { "incoming",       G_DBUS_DEBUG_INCOMING       },
+            { "emission",       G_DBUS_DEBUG_EMISSION       },
+            { "address",        G_DBUS_DEBUG_ADDRESS        }
+          };
+
+          _gdbus_debug_flags = g_parse_debug_string (debug, keys, G_N_ELEMENTS (keys));
+          if (_gdbus_debug_flags & G_DBUS_DEBUG_PAYLOAD)
+            _gdbus_debug_flags |= G_DBUS_DEBUG_MESSAGE;
         }
 
       g_once_init_leave (&initialized, 1);
