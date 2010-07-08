@@ -698,18 +698,28 @@ expand_macro (char              macro,
       if (info->icon_name)
 	{
 	  g_string_append (exec, "--icon ");
-	  g_string_append (exec, info->icon_name);
+          expanded = g_shell_quote (info->icon_name);
+	  g_string_append (exec, expanded);
+          g_free (expanded);
 	}
       break;
 
     case 'c':
       if (info->name) 
-	g_string_append (exec, info->name);
+        {
+          expanded = g_shell_quote (info->name);
+	  g_string_append (exec, expanded);
+          g_free (expanded);
+        }
       break;
 
     case 'k':
       if (info->filename) 
-	g_string_append (exec, info->filename);
+        {
+          expanded = g_shell_quote (info->filename);
+	  g_string_append (exec, info->filename);
+          g_free (expanded);
+        }
       break;
 
     case 'm': /* deprecated */
