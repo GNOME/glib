@@ -187,9 +187,11 @@ g_value_array_copy (const GValueArray *value_array)
 /**
  * g_value_array_prepend:
  * @value_array: #GValueArray to add an element to
- * @value: #GValue to copy into #GValueArray
+ * @value: #GValue to copy into #GValueArray, or %NULL
  *
- * Insert a copy of @value as first element of @value_array.
+ * Insert a copy of @value as first element of @value_array. If @value is
+ * %NULL, an uninitialized value is prepended.
+ *
  *
  * Returns: the #GValueArray passed in as @value_array
  */
@@ -205,9 +207,10 @@ g_value_array_prepend (GValueArray  *value_array,
 /**
  * g_value_array_append:
  * @value_array: #GValueArray to add an element to
- * @value: #GValue to copy into #GValueArray
+ * @value: #GValue to copy into #GValueArray, or %NULL
  *
- * Insert a copy of @value as last element of @value_array.
+ * Insert a copy of @value as last element of @value_array. If @value is
+ * %NULL, an uninitialized value is appended.
  *
  * Returns: the #GValueArray passed in as @value_array
  */
@@ -224,9 +227,10 @@ g_value_array_append (GValueArray  *value_array,
  * g_value_array_insert:
  * @value_array: #GValueArray to add an element to
  * @index_: insertion position, must be &lt;= value_array-&gt;n_values
- * @value: #GValue to copy into #GValueArray
+ * @value: #GValue to copy into #GValueArray, or %NULL
  *
- * Insert a copy of @value at specified position into @value_array.
+ * Insert a copy of @value at specified position into @value_array. If @value
+ * is %NULL, an uninitialized value is inserted.
  *
  * Returns: the #GValueArray passed in as @value_array
  */
@@ -239,8 +243,6 @@ g_value_array_insert (GValueArray  *value_array,
 
   g_return_val_if_fail (value_array != NULL, NULL);
   g_return_val_if_fail (index <= value_array->n_values, value_array);
-
-  /* we support NULL for "value" as a shortcut for an unset value */
 
   i = value_array->n_values;
   value_array_grow (value_array, value_array->n_values + 1, FALSE);
