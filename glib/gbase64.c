@@ -254,8 +254,7 @@ g_base64_encode (const guchar *data,
   gint state = 0, outlen;
   gint save = 0;
 
-  g_return_val_if_fail (data != NULL, NULL);
-  g_return_val_if_fail (len > 0, NULL);
+  g_return_val_if_fail (data != NULL || len == 0, NULL);
 
   /* We can use a smaller limit here, since we know the saved state is 0,
      +1 is needed for trailing \0, also check for unlikely integer overflow */
@@ -397,8 +396,6 @@ g_base64_decode (const gchar *text,
   g_return_val_if_fail (out_len != NULL, NULL);
 
   input_length = strlen (text);
-
-  g_return_val_if_fail (input_length > 1, NULL);
 
   /* We can use a smaller limit here, since we know the saved state is 0,
      +1 used to avoid calling g_malloc0(0), and hence retruning NULL */
