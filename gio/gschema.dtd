@@ -1,4 +1,4 @@
-<!ELEMENT schemalist (schema*) >
+<!ELEMENT schemalist (schema|enum)* >
 <!ATTLIST schemalist gettext-domain #IMPLIED >
 
 <!ELEMENT schema (key|child)* >
@@ -6,11 +6,24 @@
                  path           CDATA #IMPLIED
                  gettext-domain CDATA #IMPLIED >
 
-<!ELEMENT key (default|summary?|description?|range?|choices?) >
+<!-- defines an enumerated type -->
+<!-- each value element maps a nick to a numeric value -->
+<!ELEMENT enum (value*) >
+<!ATTLIST enum id CDATA #REQUIRED >
+<!ELEMENT value EMPTY >
+<!-- nick must be at least 2 characters long -->
+<!-- value must be parsable as a 32-bit integer -->
+<!ELEMENT value nick  #REQUIRED
+                value #REQUIRED >
+
+<!ELEMENT key (default|summary?|description?|range?|choices?|aliases?) >
 <!-- name can only contain lowercase letters, numbers and '-' -->
 <!-- type must be a GVariant type string -->
+<!-- enum must be the id of an enum that has been defined earlier -->
+<!-- exactly one of enum or type must be given -->
 <!ATTLIST key name CDATA #REQUIRED
-              type CDATA #REQUIRED >
+              type CDATA #IMPLIED
+              enum CDATA #IMPLIED >
 
 <!-- the default value is specified a a serialized GVariant,
      i.e. you have to include the quotes when specifying a string -->
@@ -24,14 +37,21 @@
 <!ELEMENT summary (#PCDATA) >
 <!ELEMENT description (#PCDATA) >
 
+<!-- range is only allowed for keys with numeric type -->
 <!ELEMENT range EMPTY >
+<!-- min and max must be parseable as values of the key type and min < max -->
 <!ATTLIST range min CDATA #REQUIRED
                 max CDATA #REQUIRED >
 
+<!-- choices is only allowed for keys with string or string array type -->
 <!ELEMENT choices (choice+) >
-<!ELEMENT choice (alias?) >
+<!-- each choice element specifies one possible value -->
+<!ELEMENT choice EMPTY >
 <!ATTLIST choice value CDATA #REQUIRED >
-<!ELEMENT choice (alias?) >
+
+<!-- aliases is only allowed for keys with enumerated type or with choices -->
+<!ELEMENT aliases (alias+) >
+<!-- each alias element specifies an alias for one of the possible values -->
 <!ELEMENT alias EMPTY >
 <!ATTLIST alias value CDATA #REQUIRED >
 
