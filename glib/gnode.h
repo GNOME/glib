@@ -250,7 +250,8 @@ GNode*	 g_node_last_sibling	 (GNode		  *node);
  *
  * Gets the previous sibling of a #GNode.
  *
- * Returns: the previous sibling of @node, or %NULL if @node is %NULL
+ * Returns: the previous sibling of @node, or %NULL if @node is the first
+ *     node or %NULL
  */
 #define	 g_node_prev_sibling(node)	((node) ? \
 					 ((GNode*) (node))->prev : NULL)
@@ -261,7 +262,8 @@ GNode*	 g_node_last_sibling	 (GNode		  *node);
  *
  * Gets the next sibling of a #GNode.
  *
- * Returns: the next sibling of @node, or %NULL if @node is %NULL
+ * Returns: the next sibling of @node, or %NULL if @node is the last node
+ *     or %NULL
  */
 #define	 g_node_next_sibling(node)	((node) ? \
 					 ((GNode*) (node))->next : NULL)
