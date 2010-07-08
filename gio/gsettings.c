@@ -77,70 +77,7 @@
  * by the <link linkend="glib-compile-schemas">glib-compile-schemas</link>
  * utility. The input is a schema description in an XML format that can be
  * described by the following DTD:
- * |[<![CDATA[
- * <!ELEMENT schemalist (schema|enum)* >
- * <!ATTLIST schemalist gettext-domain #IMPLIED >
- *
- * <!ELEMENT schema (key|child)* >
- * <!ATTLIST schema id             CDATA #REQUIRED
- *                  path           CDATA #IMPLIED
- *                  gettext-domain CDATA #IMPLIED >
- *
- * <!-- defines an enumerated type -->
- * <!-- each value element maps a nick to a numeric value -->
- * <!ELEMENT enum (value*) >
- * <!ATTLIST enum id CDATA #REQUIRED >
- * <!ELEMENT value EMPTY >
- * <!-- nick must be at least 2 characters long -->
- * <!-- value must be parsable as a 32-bit integer -->
- * <!ELEMENT value nick  #REQUIRED
- *                 value #REQUIRED >
- *
- * <!ELEMENT key (default|summary?|description?|range?|choices?|aliases?) >
- * <!-- name can only contain lowercase letters, numbers and '-' -->
- * <!-- type must be a GVariant type string -->
- * <!-- enum must be the id of an enum that has been defined earlier -->
- * <!-- exactly one of enum or type must be given -->
- * <!ATTLIST key name CDATA #REQUIRED
- *               type CDATA #IMPLIED
- *               enum CDATA #IMPLIED >
- *
- * <!-- the default value is specified a a serialized GVariant,
- *      i.e. you have to include the quotes when specifying a string -->
- * <!ELEMENT default (#PCDATA) >
- * <!-- the presence of the l10n attribute marks a default value for
- *      translation, its value is the gettext category to use -->
- * <!-- if context is present, it specifies msgctxt to use -->
- * <!ATTLIST default l10n (messages|time) #IMPLIED
- *                   context CDATA #IMPLIED >
- *
- * <!ELEMENT summary (#PCDATA) >
- * <!ELEMENT description (#PCDATA) >
- *
- * <!-- range is only allowed for keys with numeric type -->
- * <!ELEMENT range EMPTY >
- * <!-- min and max must be parseable as values of the key type and min < max -->
- * <!ATTLIST range min CDATA #REQUIRED
- *                 max CDATA #REQUIRED >
- *
- * <!-- choices is only allowed for keys with string or string array type -->
- * <!ELEMENT choices (choice+) >
- * <!-- each choice element specifies one possible value -->
- * <!ELEMENT choice EMPTY >
- * <!ATTLIST choice value CDATA #REQUIRED >
- *
- * <!-- aliases is only allowed for keys with enumerated type or with choices -->
- * <!ELEMENT aliases (alias+) >
- * <!-- each alias element specifies an alias for one of the possible values -->
- * <!ELEMENT alias EMPTY >
- * <!ATTLIST alias value CDATA #REQUIRED
- *                 target CDATA #REQUIRED >
- *
- * <!ELEMENT child EMPTY >
- * <!ATTLIST child name  CDATA #REQUIRED
- *                 schema CDATA #REQUIRED >
- * ]]>
- * ]|
+ * |[<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/gschema.dtd"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>]|
  *
  * At runtime, schemas are identified by their id (as specified
  * in the <tag class="attribute">id</tag> attribute of the
