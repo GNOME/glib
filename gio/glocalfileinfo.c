@@ -1215,19 +1215,19 @@ get_content_type (const char          *basename,
 {
   if (is_symlink &&
       (symlink_broken || (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS)))
-    return g_strdup  ("inode/symlink");
-  else if (S_ISDIR(statbuf->st_mode))
+    return g_strdup ("inode/symlink");
+  else if (statbuf != NULL && S_ISDIR(statbuf->st_mode))
     return g_strdup ("inode/directory");
 #ifndef G_OS_WIN32
-  else if (S_ISCHR(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISCHR(statbuf->st_mode))
     return g_strdup ("inode/chardevice");
-  else if (S_ISBLK(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISBLK(statbuf->st_mode))
     return g_strdup ("inode/blockdevice");
-  else if (S_ISFIFO(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISFIFO(statbuf->st_mode))
     return g_strdup ("inode/fifo");
 #endif
 #ifdef S_ISSOCK
-  else if (S_ISSOCK(statbuf->st_mode))
+  else if (statbuf != NULL && S_ISSOCK(statbuf->st_mode))
     return g_strdup ("inode/socket");
 #endif
   else
@@ -1421,6 +1421,7 @@ _g_local_file_info_get (const char             *basename,
   struct stat statbuf2;
 #endif
   int res;
+  gboolean stat_ok;
   gboolean is_symlink, symlink_broken;
 #ifdef G_OS_WIN32
   DWORD dos_attributes;
@@ -1471,20 +1472,31 @@ _g_local_file_info_get (const char             *basename,
   if (res == -1)
     {
       int errsv = errno;
-      char *display_name = g_filename_display_name (path);
-      g_object_unref (info);
-      g_set_error (error, G_IO_ERROR,
-		   g_io_error_from_errno (errsv),
-		   _("Error stating file '%s': %s"),
-		   display_name, g_strerror (errsv));
-      g_free (display_name);
-      return NULL;
+
+      /* Don't bail out if we get Permission denied (SELinux?) */
+      if (errsv != EACCES)
+        {
+          char *display_name = g_filename_display_name (path);
+          g_object_unref (info);
+          g_set_error (error, G_IO_ERROR,
+		       g_io_error_from_errno (errsv),
+		       _("Error stating file '%s': %s"),
+		       display_name, g_strerror (errsv));
+          g_free (display_name);
+          return NULL;
+        }
     }
 
-  device = statbuf.st_dev;
+  /* Even if stat() fails, try to get as much as other attributes possible */
+  stat_ok = res != -1;
+
+  if (stat_ok)
+    device = statbuf.st_dev;
+  else
+    device = 0;
 
 #ifdef S_ISLNK
-  is_symlink = S_ISLNK (statbuf.st_mode);
+  is_symlink = stat_ok && S_ISLNK (statbuf.st_mode);
 #else
   is_symlink = FALSE;
 #endif
@@ -1499,23 +1511,27 @@ _g_local_file_info_get (const char             *basename,
 	{
 	  res = stat (path, &statbuf2);
 
-	    /* Report broken links as symlinks */
+	  /* Report broken links as symlinks */
 	  if (res != -1)
-	    statbuf = statbuf2;
+	    {
+	      statbuf = statbuf2;
+	      stat_ok = TRUE;
+	    }
 	  else
 	    symlink_broken = TRUE;
 	}
     }
 #endif
 
-  set_info_from_stat (info, &statbuf, attribute_matcher);
-  
+  if (stat_ok)
+    set_info_from_stat (info, &statbuf, attribute_matcher);
+
 #ifndef G_OS_WIN32
   if (basename != NULL && basename[0] == '.')
     g_file_info_set_is_hidden (info, TRUE);
 
   if (basename != NULL && basename[strlen (basename) -1] == '~' &&
-      S_ISREG (statbuf.st_mode))
+      (stat_ok && S_ISREG (statbuf.st_mode)))
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_STANDARD_IS_BACKUP, TRUE);
 #else
   if (dos_attributes & FILE_ATTRIBUTE_HIDDEN)
@@ -1578,7 +1594,7 @@ _g_local_file_info_get (const char             *basename,
       _g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_STANDARD_ICON))
     {
-      char *content_type = get_content_type (basename, path, &statbuf, is_symlink, symlink_broken, flags, FALSE);
+      char *content_type = get_content_type (basename, path, stat_ok ? &statbuf : NULL, is_symlink, symlink_broken, flags, FALSE);
 
       if (content_type)
 	{
@@ -1635,7 +1651,7 @@ _g_local_file_info_get (const char             *basename,
   if (_g_file_attribute_matcher_matches_id (attribute_matcher,
 					    G_FILE_ATTRIBUTE_ID_STANDARD_FAST_CONTENT_TYPE))
     {
-      char *content_type = get_content_type (basename, path, &statbuf, is_symlink, symlink_broken, flags, TRUE);
+      char *content_type = get_content_type (basename, path, stat_ok ? &statbuf : NULL, is_symlink, symlink_broken, flags, TRUE);
       
       if (content_type)
 	{
@@ -1652,7 +1668,8 @@ _g_local_file_info_get (const char             *basename,
 #ifdef G_OS_WIN32
       win32_get_file_user_info (path, NULL, &name, NULL);
 #else
-      name = get_username_from_uid (statbuf.st_uid);
+      if (stat_ok)
+        name = get_username_from_uid (statbuf.st_uid);
 #endif
       if (name)
 	_g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_OWNER_USER, name);
@@ -1666,7 +1683,8 @@ _g_local_file_info_get (const char             *basename,
 #ifdef G_OS_WIN32
       win32_get_file_user_info (path, NULL, NULL, &name);
 #else
-      name = get_realname_from_uid (statbuf.st_uid);
+      if (stat_ok)
+        name = get_realname_from_uid (statbuf.st_uid);
 #endif
       if (name)
 	_g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_OWNER_USER_REAL, name);
@@ -1680,19 +1698,21 @@ _g_local_file_info_get (const char             *basename,
 #ifdef G_OS_WIN32
       win32_get_file_user_info (path, &name, NULL, NULL);
 #else
-      name = get_groupname_from_gid (statbuf.st_gid);
+      if (stat_ok)
+        name = get_groupname_from_gid (statbuf.st_gid);
 #endif
       if (name)
 	_g_file_info_set_attribute_string_by_id (info, G_FILE_ATTRIBUTE_ID_OWNER_GROUP, name);
       g_free (name);
     }
 
-  if (parent_info && parent_info->device != 0 &&
+  if (stat_ok && parent_info && parent_info->device != 0 &&
       _g_file_attribute_matcher_matches_id (attribute_matcher, G_FILE_ATTRIBUTE_ID_UNIX_IS_MOUNTPOINT) &&
       statbuf.st_dev != parent_info->device) 
     _g_file_info_set_attribute_boolean_by_id (info, G_FILE_ATTRIBUTE_ID_UNIX_IS_MOUNTPOINT, TRUE);
   
-  get_access_rights (attribute_matcher, info, path, &statbuf, parent_info);
+  if (stat_ok)
+    get_access_rights (attribute_matcher, info, path, &statbuf, parent_info);
   
 #ifdef HAVE_SELINUX
   get_selinux_context (path, info, attribute_matcher, (flags & G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS) == 0);
