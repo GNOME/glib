@@ -13,56 +13,45 @@ versions always exist.
 
 <para>
 The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
-	sign, mantissa and exponent of IEEE floats and doubles. These
-	unions are defined as appropriate for a given platform. 
- IEEE floats and doubles are supported (used for
-	storage) by at least Intel, PPC and Sparc, for reference: <ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
-</para>
-
-<!-- ##### SECTION See_Also ##### -->
-<para>
-<ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
+sign, mantissa and exponent of IEEE floats and doubles. These unions are
+defined as appropriate for a given platform. IEEE floats and doubles are
+supported (used for storage) by at least Intel, PPC and Sparc. See
+<ulink url="http://en.wikipedia.org/wiki/IEEE_float">IEEE 754-2008</ulink>
+for more information about IEEE number formats.
 </para>
 
 <!-- ##### SECTION Stability_Level ##### -->
 
 
-<!-- ##### SECTION Image ##### -->
-
-
 <!-- ##### MACRO G_IEEE754_FLOAT_BIAS ##### -->
 <para>
-See <ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
+The bias by which exponents in single-precision floats are offset.
 </para>
 
 
 
 <!-- ##### MACRO G_IEEE754_DOUBLE_BIAS ##### -->
 <para>
-See <ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
+The bias by which exponents in double-precision floats are offset.
 </para>
 
 
 
 <!-- ##### UNION GFloatIEEE754 ##### -->
 <para>
-The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
-	sign, mantissa and exponent of IEEE floats and doubles. These
-	unions are defined as appropriate for a given platform. 
- IEEE floats and doubles are supported (used for
-	storage) by at least Intel, PPC and Sparc, for reference: 
-<ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
+The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the sign,
+mantissa and exponent of IEEE floats and doubles. These unions are defined
+as appropriate for a given platform. IEEE floats and doubles are supported
+(used for storage) by at least Intel, PPC and Sparc.
 </para>
 
 
 <!-- ##### UNION GDoubleIEEE754 ##### -->
 <para>
-The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the
-	sign, mantissa and exponent of IEEE floats and doubles. These
-	unions are defined as appropriate for a given platform. 
- IEEE floats and doubles are supported (used for
-	storage) by at least Intel, PPC and Sparc, for reference: 
-<ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
+The #GFloatIEEE754 and #GDoubleIEEE754 unions are used to access the sign,
+mantissa and exponent of IEEE floats and doubles. These unions are defined
+as appropriate for a given platform. IEEE floats and doubles are supported
+(used for storage) by at least Intel, PPC and Sparc.
 </para>
 
 
@@ -117,9 +106,6 @@ The square root of two.
 
 <!-- ##### MACRO G_LOG_2_BASE_10 ##### -->
 <para>
-Used for fooling around with float formats, see 
-<ulink url="http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html">http://cch.loria.fr/documentation/IEEE754/numerical_comp_guide/ncg_math.doc.html</ulink>
+Multiplying the base 2 exponent by this number yields the base 10 exponent.
 </para>
-
-
 
