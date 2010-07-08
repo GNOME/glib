@@ -717,7 +717,7 @@ expand_macro (char              macro,
       if (info->filename) 
         {
           expanded = g_shell_quote (info->filename);
-	  g_string_append (exec, info->filename);
+	  g_string_append (exec, expanded);
           g_free (expanded);
         }
       break;
