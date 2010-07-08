@@ -242,18 +242,19 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
     "/proc",
     "/sbin",
     "/net",
+    "/sys",
     NULL
   };
 
   if (is_in (mount_path, ignore_mountpoints))
     return TRUE;
   
-  if (g_str_has_prefix (mount_path, "/dev") ||
-      g_str_has_prefix (mount_path, "/proc") ||
-      g_str_has_prefix (mount_path, "/sys"))
+  if (g_str_has_prefix (mount_path, "/dev/") ||
+      g_str_has_prefix (mount_path, "/proc/") ||
+      g_str_has_prefix (mount_path, "/sys/"))
     return TRUE;
 
-  if (strstr (mount_path, "/.gvfs") != NULL)
+  if (g_str_has_suffix (mount_path, "/.gvfs"))
     return TRUE;
 
   return FALSE;
