@@ -6,10 +6,11 @@ text buffers which grow automatically as text is added
 
 <!-- ##### SECTION Long_Description ##### -->
 <para>
-A #GString is similar to a standard C string, except that it grows 
-automatically as text is appended or inserted. Also, it stores the 
-length of the string, so can be used for binary data with embedded 
-nul bytes.
+A #GString is an object that handles the memory management of a C string
+for you. You can think of it as similar to a Java StringBuffer.
+In addition to the string itself, GString stores the length of the string,
+so can be used for binary data with embedded nul bytes. To access the C
+string managed by the GString @string, simply use @string->str.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
