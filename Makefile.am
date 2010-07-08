@@ -55,7 +55,7 @@ libgirepository_1_0_la_SOURCES =		\
 
 libgirepository_1_0_la_CPPFLAGS = $(GIREPO_CFLAGS)
 libgirepository_1_0_la_LIBADD = $(GIREPO_LIBS)
-libgirepository_1_0_la_LDFLAGS = -no-undefined
+libgirepository_1_0_la_LDFLAGS = -no-undefined -version-number 1:0:0
 
 libgirepository_parser_la_SOURCES =		\
 	girmodule.c				\
