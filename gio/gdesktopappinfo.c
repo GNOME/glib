@@ -908,7 +908,7 @@ child_setup (gpointer user_data)
 
       g_setenv ("GIO_LAUNCHED_DESKTOP_FILE", data->desktop_file, TRUE);
 
-      g_snprintf (pid, 20, "%d", getpid ());
+      g_snprintf (pid, 20, "%ld", (long)getpid ());
       g_setenv ("GIO_LAUNCHED_DESKTOP_FILE_PID", pid, TRUE);
     }
 }
