@@ -912,7 +912,8 @@ test_simple_binding (void)
   gboolean b;
   gchar y;
   gint i;
-  guint u;
+  gint16 n;
+  guint16 q;
   gint64 i64;
   guint64 u64;
   gdouble d;
@@ -928,38 +929,45 @@ test_simple_binding (void)
   g_assert_cmpint (g_settings_get_boolean (settings, "bool"), ==, TRUE);
 
   g_settings_set_boolean (settings, "bool", FALSE);
+  b = TRUE;
   g_object_get (obj, "bool", &b, NULL);
   g_assert_cmpint (b, ==, FALSE);
 
   g_settings_bind (settings, "byte", obj, "byte", G_SETTINGS_BIND_DEFAULT);
 
   g_object_set (obj, "byte", 123, NULL);
+  y = 'c';
   g_settings_get (settings, "byte", "y", &y);
   g_assert_cmpint (y, ==, 123);
 
   g_settings_set (settings, "byte", "y", 54);
+  y = 'c';
   g_object_get (obj, "byte", &y, NULL);
   g_assert_cmpint (y, ==, 54);
 
   g_settings_bind (settings, "int16", obj, "int16", G_SETTINGS_BIND_DEFAULT);
 
   g_object_set (obj, "int16", 1234, NULL);
-  g_settings_get (settings, "int16", "n", &i);
-  g_assert_cmpint (i, ==, 1234);
+  n = 4321;
+  g_settings_get (settings, "int16", "n", &n);
+  g_assert_cmpint (n, ==, 1234);
 
   g_settings_set (settings, "int16", "n", 4321);
-  g_object_get (obj, "int16", &i, NULL);
-  g_assert_cmpint (i, ==, 4321);
+  n = 1111;
+  g_object_get (obj, "int16", &n, NULL);
+  g_assert_cmpint (n, ==, 4321);
 
   g_settings_bind (settings, "uint16", obj, "uint16", G_SETTINGS_BIND_DEFAULT);
 
   g_object_set (obj, "uint16", (guint16) G_MAXUINT16, NULL);
-  g_settings_get (settings, "uint16", "q", &u);
-  g_assert_cmpuint (u, ==, G_MAXUINT16);
+  q = 1111;
+  g_settings_get (settings, "uint16", "q", &q);
+  g_assert_cmpuint (q, ==, G_MAXUINT16);
 
   g_settings_set (settings, "uint16", "q", (guint16) G_MAXINT16);
-  g_object_get (obj, "uint16", &u, NULL);
-  g_assert_cmpuint (u, ==, (guint16) G_MAXINT16);
+  q = 1111;
+  g_object_get (obj, "uint16", &q, NULL);
+  g_assert_cmpuint (q, ==, (guint16) G_MAXINT16);
 
   g_settings_bind (settings, "int", obj, "int", G_SETTINGS_BIND_DEFAULT);
 
@@ -967,26 +975,31 @@ test_simple_binding (void)
   g_assert_cmpint (g_settings_get_int (settings, "int"), ==, 12345);
 
   g_settings_set_int (settings, "int", 54321);
+  i = 1111;
   g_object_get (obj, "int", &i, NULL);
   g_assert_cmpint (i, ==, 54321);
 
   g_settings_bind (settings, "int64", obj, "int64", G_SETTINGS_BIND_DEFAULT);
 
   g_object_set (obj, "int64", (gint64) G_MAXINT64, NULL);
+  i64 = 1111;
   g_settings_get (settings, "int64", "x", &i64);
   g_assert_cmpint (i64, ==, G_MAXINT64);
 
   g_settings_set (settings, "int64", "x", (gint64) G_MININT64);
+  i64 = 1111;
   g_object_get (obj, "int64", &i64, NULL);
   g_assert_cmpint (i64, ==, G_MININT64);
 
   g_settings_bind (settings, "uint64", obj, "uint64", G_SETTINGS_BIND_DEFAULT);
 
   g_object_set (obj, "uint64", (guint64) G_MAXUINT64, NULL);
+  u64 = 1111;
   g_settings_get (settings, "uint64", "t", &u64);
   g_assert_cmpuint (u64, ==, G_MAXUINT64);
 
   g_settings_set (settings, "uint64", "t", (guint64) G_MAXINT64);
+  u64 = 1111;
   g_object_get (obj, "uint64", &u64, NULL);
   g_assert_cmpuint (u64, ==, (guint64) G_MAXINT64);
 
@@ -1015,6 +1028,7 @@ test_simple_binding (void)
   g_assert_cmpfloat (g_settings_get_double (settings, "double"), ==, G_MAXFLOAT);
 
   g_settings_set_double (settings, "double", G_MINFLOAT);
+  d = 1.0;
   g_object_get (obj, "double", &d, NULL);
   g_assert_cmpfloat (d, ==, G_MINFLOAT);
 
@@ -1022,6 +1036,7 @@ test_simple_binding (void)
   g_assert_cmpfloat (g_settings_get_double (settings, "double"), ==, G_MAXDOUBLE);
 
   g_settings_set_double (settings, "double", -G_MINDOUBLE);
+  d = 1.0;
   g_object_get (obj, "double", &d, NULL);
   g_assert_cmpfloat (d, ==, -G_MINDOUBLE);
 
@@ -1031,10 +1046,12 @@ test_simple_binding (void)
   g_assert_cmpint (g_settings_get_enum (settings, "enum"), ==, TEST_ENUM_BAZ);
 
   g_settings_set_enum (settings, "enum", TEST_ENUM_QUUX);
+  i = 230;
   g_object_get (obj, "enum", &i, NULL);
   g_assert_cmpint (i, ==, TEST_ENUM_QUUX);
 
   g_settings_set_string (settings, "enum", "baz");
+  i = 230;
   g_object_get (obj, "enum", &i, NULL);
   g_assert_cmpint (i, ==, TEST_ENUM_BAZ);
 
