@@ -702,10 +702,7 @@ do_copy_move (GFile * root, struct StructureItem item, const char *target_dir,
 	   (extra_flags == TEST_TARGET_IS_FILE))
     {
       g_assert_cmpint (res, ==, FALSE);
-      if (item.file_type == G_FILE_TYPE_DIRECTORY)
-	g_assert_error (error, G_IO_ERROR, G_IO_ERROR_WOULD_RECURSE);
-      else
-	g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_DIRECTORY);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_DIRECTORY);
     }
   /*  source file is directory  */
   else if ((item.extra_flags & TEST_COPY_ERROR_RECURSE) ==

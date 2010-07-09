@@ -2455,7 +2455,8 @@ open_source_for_copy (GFile           *source,
       info = g_file_query_info (destination, G_FILE_ATTRIBUTE_STANDARD_TYPE,
 				G_FILE_QUERY_INFO_NOFOLLOW_SYMLINKS,
 				cancellable, &my_error);
-      if (info != NULL)
+      if (info != NULL &&
+          g_file_info_has_attribute (info, G_FILE_ATTRIBUTE_STANDARD_TYPE))
 	{
 	  file_type = g_file_info_get_file_type (info);
 	  g_object_unref (info);
@@ -2482,12 +2483,12 @@ open_source_for_copy (GFile           *source,
 	  /* Error getting info from target, return that error 
            * (except for NOT_FOUND, which is no error here) 
            */
-	  if (my_error->domain != G_IO_ERROR && my_error->code != G_IO_ERROR_NOT_FOUND)
+	  if (my_error != NULL && !g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
 	    {
 	      g_propagate_error (error, my_error);
 	      return NULL;
 	    }
-	  g_error_free (my_error);
+	  g_clear_error (&my_error);
 	}
       
       g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_RECURSE,
