@@ -1987,7 +1987,7 @@ start_doc (GMarkupParseContext *context,
 {
   if (strcmp (element_name, "doc") != 0 || ctx->node_stack == NULL)
     return FALSE;
-  
+
   state_switch (ctx, STATE_DOC);
 
   return TRUE;
