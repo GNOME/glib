@@ -167,19 +167,17 @@ ih_event_callback (ik_event_t  *event,
 {
   gchar *fullpath;
   GFileMonitorEvent eflags;
-  GFile* parent;
   GFile* child;
   GFile* other;
-  
+
   eflags = ih_mask_to_EventFlags (event->mask);
-  parent = g_file_new_for_path (sub->dirname);
   fullpath = _ih_fullpath_from_event (event, sub->dirname);
   child = g_file_new_for_path (fullpath);
   g_free (fullpath);
 
   if (ih_event_is_paired_move (event) && sub->pair_moves)
     {
-      char *parent_dir = (char *) _ip_get_path_for_wd (event->pair->wd);
+      const char *parent_dir = (char *) _ip_get_path_for_wd (event->pair->wd);
       fullpath = _ih_fullpath_from_event (event->pair, parent_dir);
       other = g_file_new_for_path (fullpath);
       g_free (fullpath);
@@ -193,7 +191,6 @@ ih_event_callback (ik_event_t  *event,
 			     child, other, eflags);
 
   g_object_unref (child);
-  g_object_unref (parent);
   if (other)
     g_object_unref (other);
 }
@@ -204,10 +201,7 @@ ih_not_missing_callback (inotify_sub *sub)
   gchar *fullpath;
   GFileMonitorEvent eflags;
   guint32 mask;
-  GFile* parent;
   GFile* child;
-  
-  parent = g_file_new_for_path (sub->dirname);
 
   if (sub->filename)
     {
@@ -234,7 +228,6 @@ ih_not_missing_callback (inotify_sub *sub)
 			     child, NULL, eflags);
 
   g_object_unref (child);
-  g_object_unref (parent);
 }
 
 /* Transforms a inotify event to a GVFS event. */
