@@ -461,6 +461,8 @@ g_settings_finalize (GObject *object)
   g_object_unref (settings->priv->schema);
   g_free (settings->priv->schema_name);
   g_free (settings->priv->path);
+
+  G_OBJECT_CLASS (g_settings_parent_class)->finalize (object);
 }
 
 static void
