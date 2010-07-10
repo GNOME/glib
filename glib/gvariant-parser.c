@@ -1516,6 +1516,7 @@ string_parse (TokenStream  *stream,
         parser_set_error (error, &ref, NULL,
                           "unterminated string constant");
         g_free (token);
+        g_free (str);
         return NULL;
 
       case '\\':
@@ -1525,12 +1526,14 @@ string_parse (TokenStream  *stream,
             parser_set_error (error, &ref, NULL,
                               "unterminated string constant");
             g_free (token);
+            g_free (str);
             return NULL;
 
           case 'u':
             if (!unicode_unescape (token, &i, str, &j, 4, &ref, error))
               {
                 g_free (token);
+                g_free (str);
                 return NULL;
               }
             continue;
@@ -1539,6 +1542,7 @@ string_parse (TokenStream  *stream,
             if (!unicode_unescape (token, &i, str, &j, 8, &ref, error))
               {
                 g_free (token);
+                g_free (str);
                 return NULL;
               }
             continue;
