@@ -327,7 +327,7 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
       _g_local_file_info_get_parent_info (local->filename, local->matcher, &local->parent_info);
       local->got_parent_info = TRUE;
     }
-  
+
  next_file:
 
 #ifdef USE_GDIR
@@ -354,8 +354,7 @@ g_local_file_enumerator_next_file (GFileEnumerator  *enumerator,
       /* If the file does not exist there might have been a race where
        * the file was removed between the readdir and the stat, so we
        * ignore the file. */
-      if (my_error->domain == G_IO_ERROR &&
-	  my_error->code == G_IO_ERROR_NOT_FOUND)
+      if (g_error_matches (my_error, G_IO_ERROR, G_IO_ERROR_NOT_FOUND))
 	{
 	  g_error_free (my_error);
 	  goto next_file;
