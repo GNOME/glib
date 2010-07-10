@@ -285,7 +285,7 @@ gint *
 g_unix_fd_message_steal_fds (GUnixFDMessage *message,
                              gint           *length)
 {
-  g_return_val_if_fail (G_UNIX_FD_MESSAGE (message), FALSE);
+  g_return_val_if_fail (G_UNIX_FD_MESSAGE (message), NULL);
 
   return g_unix_fd_list_steal_fds (message->priv->list, length);
 }

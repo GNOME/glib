@@ -793,8 +793,8 @@ g_file_info_set_attribute_status (GFileInfo  *info,
 {
   GFileAttributeValue *val;
 
-  g_return_val_if_fail (G_IS_FILE_INFO (info), 0);
-  g_return_val_if_fail (attribute != NULL && *attribute != '\0', 0);
+  g_return_val_if_fail (G_IS_FILE_INFO (info), FALSE);
+  g_return_val_if_fail (attribute != NULL && *attribute != '\0', FALSE);
 
   val = g_file_info_find_value_by_name (info, attribute);
   if (val)

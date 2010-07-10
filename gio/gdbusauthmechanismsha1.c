@@ -359,8 +359,8 @@ keyring_lookup_entry (const gchar  *cookie_context,
   guint n;
   gchar **lines;
 
-  g_return_val_if_fail (cookie_context != NULL, FALSE);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (cookie_context != NULL, NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   ret = NULL;
   path = NULL;

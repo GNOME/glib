@@ -4802,7 +4802,7 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
   simple = G_SIMPLE_ASYNC_RESULT (res);
 
   if (g_simple_async_result_propagate_error (simple, error))
-    return FALSE;
+    return NULL;
 
   return g_variant_ref (g_simple_async_result_get_op_res_gpointer (simple));
 }

@@ -166,7 +166,7 @@ g_inet_socket_address_to_native (GSocketAddress  *address,
   GInetSocketAddress *addr;
   GSocketFamily family;
 
-  g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (address), 0);
+  g_return_val_if_fail (G_IS_INET_SOCKET_ADDRESS (address), FALSE);
 
   addr = G_INET_SOCKET_ADDRESS (address);
   family = g_inet_address_get_family (addr->priv->address);

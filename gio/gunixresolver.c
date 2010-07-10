@@ -344,7 +344,8 @@ lookup_by_name_finish (GResolver     *resolver,
   GUnixResolverRequest *req;
   GList *addresses;
 
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_by_name_async), FALSE);
+  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_by_name_async), NULL);
+
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
   if (g_simple_async_result_propagate_error (simple, error))
@@ -418,7 +419,8 @@ lookup_by_address_finish (GResolver     *resolver,
   GUnixResolverRequest *req;
   gchar *name;
 
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_by_address_async), FALSE);
+  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_by_address_async), NULL);
+
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
   if (g_simple_async_result_propagate_error (simple, error))
@@ -491,7 +493,8 @@ lookup_service_finish (GResolver     *resolver,
   GUnixResolverRequest *req;
   GList *targets;
 
-  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_service_async), FALSE);
+  g_return_val_if_fail (g_simple_async_result_is_valid (result, G_OBJECT (resolver), lookup_service_async), NULL);
+
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
   if (g_simple_async_result_propagate_error (simple, error))

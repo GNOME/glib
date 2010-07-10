@@ -584,7 +584,7 @@ g_converter_output_stream_flush (GOutputStream  *stream,
 	  /* Any other error, including PARTIAL_INPUT can't be fixed by now
 	     and is an error */
 	  g_propagate_error (error, my_error);
-	  return -1;
+	  return FALSE;
 	}
     }
 

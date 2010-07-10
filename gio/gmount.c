@@ -812,14 +812,14 @@ g_mount_guess_content_type_finish (GMount        *mount,
 {
   GMountIface *iface;
 
-  g_return_val_if_fail (G_IS_MOUNT (mount), FALSE);
-  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), FALSE);
+  g_return_val_if_fail (G_IS_MOUNT (mount), NULL);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (result), NULL);
 
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
     {
       GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
       if (g_simple_async_result_propagate_error (simple, error))
-        return FALSE;
+        return NULL;
     }
   
   iface = G_MOUNT_GET_IFACE (mount);

@@ -1575,18 +1575,18 @@ parse_gschema_files (gchar  **files,
                                             &state, NULL);
 
       if (!g_file_get_contents (filename, &contents, &size, error))
-        return FALSE;
+        return NULL;
 
       if (!g_markup_parse_context_parse (context, contents, size, error))
         {
           g_prefix_error (error, "%s: ", filename);
-          return FALSE;
+          return NULL;
         }
 
       if (!g_markup_parse_context_end_parse (context, error))
         {
           g_prefix_error (error, "%s: ", filename);
-          return FALSE;
+          return NULL;
         }
 
       g_markup_parse_context_free (context);
