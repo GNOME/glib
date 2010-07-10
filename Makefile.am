@@ -3,6 +3,8 @@ include $(top_srcdir)/Makefile.decl
 
 AUTOMAKE_OPTIONS = 1.7
 
+ACLOCAL_AMFLAGS = -I m4macros
+
 SUBDIRS = . m4macros glib gmodule gthread gobject gio tests po docs
 DIST_SUBDIRS = $(SUBDIRS) build
 
