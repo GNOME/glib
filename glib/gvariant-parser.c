@@ -630,6 +630,7 @@ ast_array_get_pattern (AST    **array,
       merged = pattern_coalesce (pattern, tmp);
       g_free (pattern);
       pattern = merged;
+      g_free (tmp);
 
       if (merged == NULL)
         /* set coalescence implies pairwise coalescence (i think).
