@@ -1655,7 +1655,7 @@ g_app_info_create_from_commandline (const char           *commandline,
   info->desktop_id = NULL;
   
   info->terminal = flags & G_APP_INFO_CREATE_NEEDS_TERMINAL;
-  info->startup_notify = FALSE;
+  info->startup_notify = flags & G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION;
   info->hidden = FALSE;
   if (flags & G_APP_INFO_CREATE_SUPPORTS_URIS)
     info->exec = g_strconcat (commandline, " %u", NULL);
