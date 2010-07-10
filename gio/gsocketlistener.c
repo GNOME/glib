@@ -790,7 +790,7 @@ g_socket_listener_accept_socket_finish (GSocketListener  *listener,
   GSocket *socket;
   GSimpleAsyncResult *simple;
 
-  g_return_val_if_fail (G_IS_SOCKET_LISTENER (listener), FALSE);
+  g_return_val_if_fail (G_IS_SOCKET_LISTENER (listener), NULL);
 
   simple = G_SIMPLE_ASYNC_RESULT (result);
 
