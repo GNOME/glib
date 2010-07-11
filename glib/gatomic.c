@@ -30,6 +30,44 @@
 #include "glib.h"
 #include "gthreadprivate.h"
 
+/**
+ * SECTION:atomic_operations
+ * @title: Atomic Operations
+ * @shot_description: basic atomic integer and pointer operations
+ * @see_also: #GMutex
+ *
+ * The following functions can be used to atomically access integers and
+ * pointers. They are implemented as inline assembler function on most
+ * platforms and use slower fall-backs otherwise. Using them can sometimes
+ * save you from using a performance-expensive #GMutex to protect the
+ * integer or pointer.
+ *
+ * The most important usage is reference counting. Using
+ * g_atomic_int_inc() and g_atomic_int_dec_and_test() makes reference
+ * counting a very fast operation.
+ *
+ * <note><para>You must not directly read integers or pointers concurrently
+ * accessed by multiple threads, but use the atomic accessor functions
+ * instead. That is, always use g_atomic_int_get() and g_atomic_pointer_get()
+ * for read outs. They provide the neccessary synchonization mechanisms
+ * like memory barriers to access memory locations concurrently.
+ * </para></note>
+ *
+ * <note><para>If you are using those functions for anything apart from
+ * simple reference counting, you should really be aware of the implications
+ * of doing that. There are literally thousands of ways to shoot yourself
+ * in the foot. So if in doubt, use a #GMutex. If you don't know, what
+ * memory barriers are, do not use anything but g_atomic_int_inc() and
+ * g_atomic_int_dec_and_test().
+ * </para></note>
+ *
+ * <note><para>It is not safe to set an integer or pointer just by assigning
+ * to it, when it is concurrently accessed by other threads with the following
+ * functions. Use g_atomic_int_compare_and_exchange() or
+ * g_atomic_pointer_compare_and_exchange() respectively.
+ * </para></note>
+ */
+
 #if defined (__GNUC__)
 # if defined (G_ATOMIC_I486)
 /* Adapted from CVS version 1.10 of glibc's sysdeps/i386/i486/bits/atomic.h 
@@ -846,6 +884,19 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomi
 /* We have to use the slow, but safe locking method */
 static GMutex *g_atomic_mutex; 
 
+/**
+ * g_atomic_int_exchange_and_add:
+ * @atomic: a pointer to an integer
+ * @val: the value to add to *@atomic
+ *
+ * Atomically adds @val to the integer pointed to by @atomic.
+ * It returns the value of *@atomic just before the addition
+ * took place. Also acts as a memory barrier.
+ *
+ * Returns: the value of *@atomic before the addition.
+ *
+ * Since: 2.4
+ */
 gint
 g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 			       gint           val)
@@ -860,7 +911,16 @@ g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
   return result;
 }
 
-
+/**
+ * g_atomic_int_add:
+ * @atomic: a pointer to an integer
+ * @val: the value to add to *@atomic
+ *
+ * Atomically adds @val to the integer pointed to by @atomic.
+ * Also acts as a memory barrier.
+ *
+ * Since: 2.4
+ */
 void
 g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
 		  gint           val)
@@ -870,6 +930,20 @@ g_atomic_int_add (volatile gint G_GNUC_MAY_ALIAS *atomic,
   g_mutex_unlock (g_atomic_mutex);
 }
 
+/**
+ * g_atomic_int_compare_and_exchange:
+ * @atomic: a pointer to an integer
+ * @oldval: the assumed old value of *@atomic
+ * @newval: the new value of *@atomic
+ *
+ * Compares @oldval with the integer pointed to by @atomic and
+ * if they are equal, atomically exchanges *@atomic with @newval.
+ * Also acts as a memory barrier.
+ *
+ * Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
+ *
+ * Since: 2.4
+ */
 gboolean
 g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic, 
 				   gint           oldval, 
@@ -890,6 +964,20 @@ g_atomic_int_compare_and_exchange (volatile gint G_GNUC_MAY_ALIAS *atomic,
   return result;
 }
 
+/**
+ * g_atomic_pointer_compare_and_exchange:
+ * @atomic: a pointer to a #gpointer
+ * @oldval: the assumed old value of *@atomic
+ * @newval: the new value of *@atomic
+ *
+ * Compares @oldval with the pointer pointed to by @atomic and
+ * if they are equal, atomically exchanges *@atomic with @newval.
+ * Also acts as a memory barrier.
+ *
+ * Returns: %TRUE, if *@atomic was equal @oldval. %FALSE otherwise.
+ *
+ * Since: 2.4
+ */
 gboolean
 g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomic, 
 				       gpointer           oldval, 
@@ -911,6 +999,18 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomi
 }
 
 #ifdef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
+
+/**
+ * g_atomic_int_get:
+ * @atomic: a pointer to an integer
+ *
+ * Reads the value of the integer pointed to by @atomic.
+ * Also acts as a memory barrier.
+ *
+ * Returns: the value of *@atomic
+ *
+ * Since: 2.4
+ */
 gint
 (g_atomic_int_get) (volatile gint G_GNUC_MAY_ALIAS *atomic)
 {
@@ -923,6 +1023,16 @@ gint
   return result;
 }
 
+/**
+ * g_atomic_int_set:
+ * @atomic: a pointer to an integer
+ * @newval: the new value
+ *
+ * Sets the value of the integer pointed to by @atomic.
+ * Also acts as a memory barrier.
+ *
+ * Since: 2.10
+ */
 void
 (g_atomic_int_set) (volatile gint G_GNUC_MAY_ALIAS *atomic,
                   gint           newval)
@@ -932,6 +1042,17 @@ void
   g_mutex_unlock (g_atomic_mutex);
 }
 
+/**
+ * g_atomic_pointer_get:
+ * @atomic: a pointer to a #gpointer.
+ *
+ * Reads the value of the pointer pointed to by @atomic.
+ * Also acts as a memory barrier.
+ *
+ * Returns: the value to add to *@atomic.
+ *
+ * Since: 2.4
+ */
 gpointer
 (g_atomic_pointer_get) (volatile gpointer G_GNUC_MAY_ALIAS *atomic)
 {
@@ -944,6 +1065,16 @@ gpointer
   return result;
 }
 
+/**
+ * g_atomic_pointer_set:
+ * @atomic: a pointer to a #gpointer
+ * @newval: the new value
+ *
+ * Sets the value of the pointer pointed to by @atomic.
+ * Also acts as a memory barrier.
+ *
+ * Since: 2.10
+ */
 void
 (g_atomic_pointer_set) (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
                       gpointer           newval)

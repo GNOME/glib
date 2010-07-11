@@ -76,8 +76,28 @@ void     g_atomic_pointer_set                  (volatile gpointer G_GNUC_MAY_ALI
   (g_atomic_pointer_set) ((volatile gpointer G_GNUC_MAY_ALIAS *) (volatile void *) (atomic), (newval)))
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
 
+/**
+ * g_atomic_int_inc:
+ * @atomic: a pointer to an integer.
+ *
+ * Atomically increments the integer pointed to by @atomic by 1.
+ *
+ * Since: 2.4
+ */
 #define g_atomic_int_inc(atomic) (g_atomic_int_add ((atomic), 1))
-#define g_atomic_int_dec_and_test(atomic)				\
+
+/**
+ * g_atomic_int_dec_and_test:
+ * @atomic: a pointer to an integer
+ *
+ * Atomically decrements the integer pointed to by @atomic by 1.
+ *
+ * Returns: %TRUE if the integer pointed to by @atomic is 0
+ *     after decrementing it
+ *
+ * Since: 2.4
+ */
+#define g_atomic_int_dec_and_test(atomic) \
   (g_atomic_int_exchange_and_add ((atomic), -1) == 1)
 
 G_END_DECLS
