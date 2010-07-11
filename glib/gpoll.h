@@ -59,10 +59,34 @@ G_BEGIN_DECLS
  * Windows.
  */
 typedef struct _GPollFD GPollFD;
-typedef gint	(*GPollFunc)	(GPollFD *ufds,
-				 guint	  nfsd,
-				 gint     timeout_);
 
+/**
+ * GPollFunc:
+ * @ufds: an array of #GPollFD elements
+ * @nfsd: the number of elements in @ufds
+ * @timeout_: the maximum time to wait for an event of the file descriptors.
+ *     A negative value indicates an infinite timeout.
+ *
+ * Specifies the type of function passed to g_main_context_set_poll_func().
+ * The semantics of the function should match those of the poll() system call.
+ *
+ * Returns: the number of #GPollFD elements which have events or errors
+ *     reported, or -1 if an error occurred.
+ */
+typedef gint    (*GPollFunc)    (GPollFD *ufds,
+                                 guint    nfsd,
+                                 gint     timeout_);
+
+/**
+ * GPollFD:
+ * @fd: the file descriptor to poll (or a <type>HANDLE</type> on Win32)
+ * @events: a bitwise combination from #GIOCondition, specifying which
+ *     events should be polled for. Typically for reading from a file
+ *     descriptor you would use %G_IO_IN | %G_IO_HUP | %G_IO_ERR, and
+ *     for writing you would use %G_IO_OUT | %G_IO_ERR.
+ * @revents: a bitwise combination of flags from #GIOCondition, returned
+ *     from the poll() function to indicate which events occurred.
+ */
 struct _GPollFD
 {
 #if defined (G_OS_WIN32) && GLIB_SIZEOF_VOID_P == 8
