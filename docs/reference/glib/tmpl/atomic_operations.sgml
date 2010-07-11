@@ -25,7 +25,8 @@ Atomic Operations
 
 </para>
 
-@atomic:
+@atomic: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_atomic_int_set ##### -->
@@ -33,8 +34,8 @@ Atomic Operations
 
 </para>
 
-@atomic:
-@newval:
+@atomic: 
+@newval: 
 
 
 <!-- ##### FUNCTION g_atomic_int_add ##### -->
@@ -42,8 +43,8 @@ Atomic Operations
 
 </para>
 
-@atomic:
-@val:
+@atomic: 
+@val: 
 
 
 <!-- ##### FUNCTION g_atomic_int_exchange_and_add ##### -->
@@ -51,8 +52,9 @@ Atomic Operations
 
 </para>
 
-@atomic:
-@val:
+@atomic: 
+@val: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_atomic_int_compare_and_exchange ##### -->
@@ -60,9 +62,10 @@ Atomic Operations
 
 </para>
 
-@atomic:
-@oldval:
-@newval:
+@atomic: 
+@oldval: 
+@newval: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_atomic_pointer_get ##### -->
@@ -70,7 +73,8 @@ Atomic Operations
 
 </para>
 
-@atomic:
+@atomic: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_atomic_pointer_set ##### -->
@@ -78,8 +82,8 @@ Atomic Operations
 
 </para>
 
-@atomic:
-@newval:
+@atomic: 
+@newval: 
 
 
 <!-- ##### FUNCTION g_atomic_pointer_compare_and_exchange ##### -->
@@ -87,9 +91,10 @@ Atomic Operations
 
 </para>
 
-@atomic:
-@oldval:
-@newval:
+@atomic: 
+@oldval: 
+@newval: 
+@Returns: 
 
 
 <!-- ##### FUNCTION g_atomic_int_inc ##### -->
@@ -97,7 +102,7 @@ Atomic Operations
 
 </para>
 
-@atomic:
+@atomic: 
 
 
 <!-- ##### FUNCTION g_atomic_int_dec_and_test ##### -->
@@ -105,6 +110,7 @@ Atomic Operations
 
 </para>
 
-@atomic:
+@atomic: 
+@Returns: 
 
 

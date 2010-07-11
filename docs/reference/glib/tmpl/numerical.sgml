@@ -20,7 +20,15 @@ supported (used for storage) by at least Intel, PPC and Sparc. See
 for more information about IEEE number formats.
 </para>
 
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
 <!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
 
 
 <!-- ##### MACRO G_IEEE754_FLOAT_BIAS ##### -->
@@ -108,4 +116,6 @@ The square root of two.
 <para>
 Multiplying the base 2 exponent by this number yields the base 10 exponent.
 </para>
+
+
 
