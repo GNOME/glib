@@ -33,7 +33,7 @@
 /**
  * SECTION:atomic_operations
  * @title: Atomic Operations
- * @shot_description: basic atomic integer and pointer operations
+ * @short_description: basic atomic integer and pointer operations
  * @see_also: #GMutex
  *
  * The following functions can be used to atomically access integers and

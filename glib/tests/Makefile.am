@@ -135,4 +135,5 @@ CLEANFILES = \
 
 EXTRA_DIST += \
 	4096-random-bytes	\
-	keyfiletest.ini
+	keyfiletest.ini		\
+	bookmarks.xbel
