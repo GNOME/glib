@@ -487,6 +487,7 @@ g_unix_output_stream_write_async (GOutputStream       *stream,
   source = _g_fd_source_new (unix_stream->priv->fd,
 			     G_IO_OUT,
 			     cancellable);
+  g_source_set_name (source, "GUnixOutputStream");
   
   g_source_set_callback (source, (GSourceFunc)write_async_cb, data, g_free);
   g_source_attach (source, g_main_context_get_thread_default ());

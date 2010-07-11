@@ -500,6 +500,7 @@ g_unix_input_stream_read_async (GInputStream        *stream,
   source = _g_fd_source_new (unix_stream->priv->fd,
 			     G_IO_IN,
 			     cancellable);
+  g_source_set_name (source, "GUnixInputStream");
   
   g_source_set_callback (source, (GSourceFunc)read_async_cb, data, g_free);
   g_source_attach (source, g_main_context_get_thread_default ());

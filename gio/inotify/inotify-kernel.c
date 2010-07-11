@@ -208,6 +208,7 @@ gboolean _ik_startup (void (*cb)(ik_event_t *event))
   g_io_channel_set_flags (inotify_read_ioc, G_IO_FLAG_NONBLOCK, NULL);
 
   source = g_source_new (&ik_source_funcs, sizeof (GSource));
+  g_source_set_name (source, "GIO Inotify");
   g_source_add_poll (source, &ik_poll_fd);
   g_source_set_callback (source, ik_read_callback, NULL, NULL);
   g_source_attach (source, NULL);
