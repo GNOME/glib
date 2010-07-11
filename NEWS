@@ -1,3 +1,155 @@
+Overview of Changes from GLib 2.25.10 to GLib 2.25.11
+=====================================================
+
++-------------------------------------------------------------------+
+| WARNING: There have been minor API changes in GDBus and GVariant. |
+| These API changes will not affect many users, but they do require |
+| a new version of GTK+ to be installed.                            |
++-------------------------------------------------------------------+
+
+Build:
+  - add a --disable-Bsymbolic configure flag to disable linking with
+    -Bsymbolic-functions
+  - this release sees the complete removal of the old 'g*alias' hacks
+  - honour the NOCONFIGURE environment variable from autogen.sh
+  - use proper feature test macros for isnan
+  - use pkg-config to check for zlib
+  - add ACLOCAL_AMFLAGS to Makefile.am
+
+GDBus:
+  - hide Class and instance structures for all GDBus types except
+    GDBusProxy.  This breaks API by preventing subclassing, but probably
+    nobody was doing that.
+  - add new GDBusConnection call to support flushing all pending
+    outgoing messages
+  - change the register_object API to add a reference to the
+    GDBusInterfaceInfo object so the caller need not keep it alive
+    themselves
+  - don't rewrite the serial number when sending messages that already
+    have a serial number
+  - better error checking for DBUS_SESSION_BUS_ADDRESS environment
+    variable
+  - switch to g_parse_debug_string for G_DBUS_DEBUG and add a lot of new
+    flags
+  - add support for temporarily freezing a freshly created
+    GDBusConnection.  Do this until after the ::new-connection signal
+    has finished running on GDBus services.
+  - never require non-closed connections (the user is incapable of doing
+    this due to the obvious race)
+  - remove weird/misleading redundant check on NameOwnerChanged signal
+  - emit GDBusProxy::g-properties-changed on NameOwnerChanged
+
+GVariant:
+  - the 'g_variant_{new,get}_byte_array' APIs have been removed
+  - g_variant_{new,get,dup}_bytestring has been added, with different
+    arguments and different behaviour
+  - g_variant_{new,get,dup}_bytestring_array has been added, doing
+    essentially the same thing as the 'strv' functions, but with byte
+    strings instead of utf8 strings
+  - G_VARIANT_TYPE_BYTESTRING ('ay'), BYTESTRING_ARRAY ('aay') and
+    STRING_ARRAY ('as') constants have been added
+  - the undocumented behaviour that g_variant_get_strv() deserialised
+    arrays of object paths or signature strings has been dropped
+  - additional varargs support for converting bytestrings or bytestring
+    arrays with ^ay ^aay ^&ay and ^a&ay
+  - improved gobject-introspection annotation
+  - fix a problem with GBuffer calling g_slice_free for the wrong type
+  - fix leaks in the type inferencing code of the parser
+
+GSettings:
+  - improved documentation
+  - updated schema XML DTD, now xincluded into the docs
+  - added support for schemas that extend other schemas (using the
+    'extends=' attribute).  Values of keys in the base schema can be
+    overridden using <override>.
+  - added theoretical support for lists (using the 'list-of=' attribute)
+  - lots of new tests
+  - add support for flags (implemented similarly to enums)
+  - add support for generating .enums.xml files to gsettings.m4:
+      gsettings_ENUM_NAMESPACE = org.example.myapp
+      gsettings_ENUM_FILES = ../path/to/*.h
+    will generate org.example.myapp.enums.xml with mappings for all
+    enums and flags in the specified .h files.
+  - warn with g_message() if the 'memory' backend is used by default
+    (ie: because no other GSettings backends are installed)
+  - fix get_property() for GSettings::schema
+  - command line tool: fix a bug that prevented non-basic values from
+    being set due to a premature free
+  - command line tool: bash completion support
+  - chain up in _finalize
+  - add a new g_settings_get_mapped API to read settings that require
+    post-processing
+  - retry with the translated or schema default value if the
+    GSettingsBindGetMapping function fails
+  - schema compiler: never fail due to empty schema directories (but
+    warn)
+  - peek rather than ref/unref the GEnumClass in the mapping function
+  - schema compiler: compile *.enums.xml before *.gschemas.xml to ensure
+    that we have all the enums that the schemas may reference
+  - schema compiler: improve accuracy of line numbers in error reports
+  - fix crashes in the keyfile backend caused by invalid group names in
+    the keyfile
+
+Other:
+  - always intern GBinding prop names
+  - base64: remove asserts preventing conversion of empty strings
+  - document NULL special-cases for GValueArray
+  - GNode docs improvements
+  - improve detection of 'system internal' mounts
+  - fix leaks in the inotify GFileMonitor implementation
+  - annotate all custom GIO GSources to improve debugging (e.g. using
+    SystemTap)
+
+Tests:
+  - Turn on glibc malloc checking features for make check
+  - improvements for GSettings tests, plus new tests
+  - improved tests for GKeyfile
+  - new tests for GDir, GSList, GSList, GAppLaunchContext,
+    CharsetConverter, GIcon, ...
+  - move some tests to GTester (tree tests, uri tests)
+  - generally, really an awful lot of new tests
+  - don't try to allocate 2gigs of memory anymore for the array test
+
+ 552363 g_value_array_{insert,prepend,append}'s special cases for NULL
+ 561248 Improve return value description from g_node_prev/next_sibling()
+ 570036 Add ACLOCAL_AMFLAGS to Makefile.am
+ 576833 g_sprintf add a reference to g_strdup_printf
+ 576854 g_strconcat() documentation should provide a hint about bad l10n
+ 582227 reference: add other URI functions to 'URI Functions' section
+ 599223 should provide g_spawn_* variants that take a GAppLaunchContext
+ 610784 array test failing
+ 613057 Leak in inotify GFileMonitor implementation
+ 620536 Annotate all custom GIO GSource using g_source_set_name
+ 620913 More control with G_DBUS_DEBUG
+ 622124 implement flags
+ 622127 GSettings extended key validation
+ 622128 retry with default value for failed mapping
+ 622294 More annotations for GVariant
+ 622565 glib-compile-schemas fails when no schemas
+ 622600 Fix missing prototype warning
+ 622813 gsettings mapping & enum buglet
+ 623142 Ensure ::new-connection runs before processing D-Bus messages
+ 623143 Never require non-closed connections
+ 623319 use g_parse_debug_string for dbus debug flags
+ 623401 process enums first
+ 623402 schema compiler reports wrong line numbers
+ 623407 g_keyfile_settings_backend_new crashes with the key "/"
+ 623473 zlib should be checked with pkg-config
+ 623537 GDBusProxy has weird checking on NameOwnerChanged
+ 623538 GDBusProxy::g-properties-changed emission for corner cases
+ 623692 directory with file at multiple MLS levels may display empty
+ 623720 gschema.dtd does not contain enum definitions
+ 623770 quoting of expand_macro in gdesktopappinfo.c
+ 623772 gdesktopappinfo.c, function child_setup
+ 623780 g_unix_is_mount_path_system_internal
+ 623954 g_settings_finalize
+ 623955 Dubious return values
+
+Updated translations:
+ Galician
+ Hebrew
+ Spanish
+
 Overview of Changes from GLib 2.25.9 to GLib 2.25.10
 ====================================================
 
