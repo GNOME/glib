@@ -691,6 +691,7 @@ GSystemThread
 g_thread_use_default_impl
 g_threads_got_initialized
 g_thread_functions_for_glib_use
+g_thread_gettime
 g_thread_init_glib
 g_thread_error_quark
 g_once_impl
@@ -764,6 +765,9 @@ g_atomic_pointer_set
 g_atomic_pointer_compare_and_exchange
 g_atomic_int_inc
 g_atomic_int_dec_and_test
+
+<SUBSECTION Private>
+G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 </SECTION>
 
 <SECTION>
@@ -1184,6 +1188,7 @@ g_utime
 
 <SUBSECTION Private>
 g_file_error_quark
+utimbuf
 </SECTION>
 
 
@@ -2581,6 +2586,7 @@ g_unichar_to_utf8
 <TITLE>I18N</TITLE>
 <FILE>i18n</FILE>
 <INCLUDE>glib.h,glib/gi18n.h</INCLUDE>
+_
 Q_
 C_
 N_
