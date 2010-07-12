@@ -1664,10 +1664,10 @@ g_strlcpy (gchar       *dest,
  * strcat() or strncat(), but for real security g_strconcat() is harder 
  * to mess up.</para></note>
  *
- * Returns size of attempted result, which is
- * MIN (dest_size, strlen (original dest)) + strlen (src),
- * so if retval >= dest_size, truncation occurred.
- */
+ * Returns: size of attempted result, which is MIN (dest_size, strlen
+ *          (original dest)) + strlen (src), so if retval >= dest_size,
+ *          truncation occurred.
+ **/
 gsize
 g_strlcat (gchar       *dest,
            const gchar *src,
@@ -3216,7 +3216,7 @@ g_dgettext (const gchar *domain,
 }
 
 /**
- * g_dgettext:
+ * g_dcgettext:
  * @domain: (allow-none): the translation domain to use, or %NULL to use
  *   the domain set with textdomain()
  * @msgid: message to translate

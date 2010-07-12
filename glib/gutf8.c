@@ -95,7 +95,7 @@
       (Result) |= ((Chars)[(Count)] & 0x3f);				      \
     }
     
-/**
+/*
  * Check whether a Unicode (5.2) char is in a valid range.
  *
  * The first check comes from the Unicode guarantee to never encode

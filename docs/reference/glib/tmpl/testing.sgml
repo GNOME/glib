@@ -150,13 +150,29 @@ Returns %TRUE if tests are run in quiet mode.
 @Returns: 
 
 
+<!-- ##### USER_FUNCTION GTestFunc ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
 <!-- ##### FUNCTION g_test_add_func ##### -->
 <para>
 
 </para>
 
 @testpath: 
-@void: 
+@test_func: 
+
+
+<!-- ##### USER_FUNCTION GTestDataFunc ##### -->
+<para>
+
+</para>
+
+@user_data: 
 
 
 <!-- ##### FUNCTION g_test_add_data_func ##### -->
@@ -166,7 +182,7 @@ Returns %TRUE if tests are run in quiet mode.
 
 @testpath: 
 @test_data: 
-@gconstpointer: 
+@test_func: 
 
 
 <!-- ##### MACRO g_test_add ##### -->
@@ -597,6 +613,15 @@ An opaque structure representing a test suite.
 </para>
 
 
+<!-- ##### USER_FUNCTION GTestFixtureFunc ##### -->
+<para>
+
+</para>
+
+@fixture: 
+@user_data: 
+
+
 <!-- ##### FUNCTION g_test_create_case ##### -->
 <para>
 
@@ -605,9 +630,9 @@ An opaque structure representing a test suite.
 @test_name: 
 @data_size: 
 @test_data: 
-@void: 
-@void: 
-@void: 
+@data_setup: 
+@data_test: 
+@data_teardown: 
 @Returns: 
 
 

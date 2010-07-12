@@ -1392,7 +1392,7 @@ g_variant_dup_bytestring (GVariant *value,
 
 /**
  * g_variant_new_bytestring_array:
- * @strv (array length=length): an array of strings
+ * @strv: (array length=length): an array of strings
  * @length: the length of @strv, or -1
  * @returns: a new floating #GVariant instance
  *

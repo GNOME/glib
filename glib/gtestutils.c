@@ -906,12 +906,12 @@ g_test_run (void)
  * Since: 2.16
  */
 GTestCase*
-g_test_create_case (const char     *test_name,
-                    gsize           data_size,
-                    gconstpointer   test_data,
-                    void          (*data_setup) (void),
-                    void          (*data_test) (void),
-                    void          (*data_teardown) (void))
+g_test_create_case (const char       *test_name,
+                    gsize             data_size,
+                    gconstpointer     test_data,
+                    GTestFixtureFunc  data_setup,
+                    GTestFixtureFunc  data_test,
+                    GTestFixtureFunc  data_teardown)
 {
   GTestCase *tc;
   g_return_val_if_fail (test_name != NULL, NULL);
@@ -928,13 +928,29 @@ g_test_create_case (const char     *test_name,
   return tc;
 }
 
+/**
+ * GTestFixtureFunc:
+ * @fixture: the test fixture
+ * @user_data: the data provided when registering the test
+ *
+ * The type used for functions that operate on test fixtures.  This is
+ * used for the fixture setup and teardown functions as well as for the
+ * testcases themselves.
+ *
+ * @user_data is a pointer to the data that was given when registering
+ * the test case.
+ *
+ * @fixture will be a pointer to the area of memory allocated by the
+ * test framework, of the size requested.  If the requested size was
+ * zero then @fixture will be equal to @user_data.
+ **/
 void
-g_test_add_vtable (const char     *testpath,
-                   gsize           data_size,
-                   gconstpointer   test_data,
-                   void          (*data_setup)    (void),
-                   void          (*fixture_test_func) (void),
-                   void          (*data_teardown) (void))
+g_test_add_vtable (const char       *testpath,
+                   gsize             data_size,
+                   gconstpointer     test_data,
+                   GTestFixtureFunc  data_setup,
+                   GTestFixtureFunc  fixture_test_func,
+                   GTestFixtureFunc  data_teardown)
 {
   gchar **segments;
   guint ui;
@@ -970,6 +986,11 @@ g_test_add_vtable (const char     *testpath,
 }
 
 /**
+ * GTestFunc:
+ *
+ * The type used for test case functions.
+ **/
+/**
  * g_test_add_func:
  * @testpath:   Slash-separated test case path name for the test.
  * @test_func:  The test function to invoke for this test.
@@ -982,15 +1003,22 @@ g_test_add_vtable (const char     *testpath,
  * Since: 2.16
  */
 void
-g_test_add_func (const char     *testpath,
-                 void          (*test_func) (void))
+g_test_add_func (const char *testpath,
+                 GTestFunc   test_func)
 {
   g_return_if_fail (testpath != NULL);
   g_return_if_fail (testpath[0] == '/');
   g_return_if_fail (test_func != NULL);
-  g_test_add_vtable (testpath, 0, NULL, NULL, test_func, NULL);
+  g_test_add_vtable (testpath, 0, NULL, NULL, (GTestFixtureFunc) test_func, NULL);
 }
 
+/**
+ * GTestDataFunc:
+ * @user_data: the data provided when registering the test
+ *
+ * The type used for test case functions that take an extra pointer
+ * argument.
+ **/
 /**
  * g_test_add_data_func:
  * @testpath:   Slash-separated test case path name for the test.
@@ -1008,12 +1036,12 @@ g_test_add_func (const char     *testpath,
 void
 g_test_add_data_func (const char     *testpath,
                       gconstpointer   test_data,
-                      void          (*test_func) (gconstpointer))
+                      GTestDataFunc   test_func)
 {
   g_return_if_fail (testpath != NULL);
   g_return_if_fail (testpath[0] == '/');
   g_return_if_fail (test_func != NULL);
-  g_test_add_vtable (testpath, 0, test_data, NULL, (void(*)(void)) test_func, NULL);
+  g_test_add_vtable (testpath, 0, test_data, NULL, (GTestFixtureFunc) test_func, NULL);
 }
 
 /**

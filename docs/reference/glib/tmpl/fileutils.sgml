@@ -382,6 +382,12 @@ not be accessed directly.
 @Returns: 
 
 
+<!-- ##### TYPEDEF GStatBuf ##### -->
+<para>
+
+</para>
+
+
 <!-- ##### FUNCTION g_stat ##### -->
 <para>
 

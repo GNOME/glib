@@ -1168,6 +1168,7 @@ g_mapped_file_get_contents
 g_open
 g_rename
 g_mkdir
+GStatBuf
 g_stat
 g_lstat
 g_unlink
@@ -1399,7 +1400,6 @@ g_date_sunday_week_of_year
 g_date_days_in_month
 g_date_monday_weeks_in_year
 g_date_sunday_weeks_in_year
-tm
 </SECTION>
 
 <SECTION>
@@ -2654,7 +2654,9 @@ g_test_perf
 g_test_verbose
 g_test_quiet
 g_test_run
+GTestFunc
 g_test_add_func
+GTestDataFunc
 g_test_add_data_func
 g_test_add
 
@@ -2701,6 +2703,7 @@ g_assert_error
 
 GTestCase
 GTestSuite
+GTestFixtureFunc
 g_test_create_case
 g_test_create_suite
 g_test_get_root
@@ -2718,7 +2721,6 @@ g_assertion_message_error
 
 g_test_add_vtable
 GTestConfig
-g_test_config_vars
 GTestLogType
 GTestLogMsg
 GTestLogBuffer
@@ -2757,6 +2759,9 @@ G_VARIANT_TYPE_TUPLE
 G_VARIANT_TYPE_UNIT
 G_VARIANT_TYPE_DICT_ENTRY
 G_VARIANT_TYPE_DICTIONARY
+G_VARIANT_TYPE_STRING_ARRAY
+G_VARIANT_TYPE_BYTESTRING
+G_VARIANT_TYPE_BYTESTRING_ARRAY
 
 <SUBSECTION>
 G_VARIANT_TYPE

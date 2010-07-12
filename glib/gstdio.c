@@ -426,6 +426,14 @@ g_chdir (const gchar *path)
 }
 
 /**
+ * GStatBuf:
+ *
+ * A type corresponding to the appropriate struct type for the stat
+ * system call, depending on the platform and/or compiler being used.
+ *
+ * See g_stat() for more information.
+ **/
+/**
  * g_stat: 
  * @filename: a pathname in the GLib file name encoding (UTF-8 on Windows)
  * @buf: a pointer to a <structname>stat</structname> struct, which
