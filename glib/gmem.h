@@ -85,7 +85,7 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 	  gsize __n = (gsize) (n_structs);			\
 	  gsize __s = sizeof (struct_type);			\
 	  gpointer __p;						\
-	  if (__s == 1)			\
+	  if (__s == 1)						\
 	    __p = g_##func (__n);				\
 	  else if (__builtin_constant_p (__n) &&		\
 	           (__s == 0 || __n <= G_MAXSIZE / __s))	\
