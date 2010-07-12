@@ -43,7 +43,6 @@ EXTRA_DIST += 			\
 	Makefile.decl		\
 	mkinstalldirs		\
 	makefile.msc		\
-	glibconfig.h.win32.in	\
 	msvc_recommended_pragmas.h \
 	config.h.win32.in	\
         po/po2tbl.sed.in        \
@@ -70,25 +69,10 @@ BUILT_EXTRA_DIST = 		\
 	README			\
 	INSTALL			\
 	ChangeLog		\
-	glibconfig.h.win32	\
 	config.h.win32		\
 	gtk-doc.make
 
-configexecincludedir = $(libdir)/glib-2.0/include
-configexecinclude_DATA = glibconfig.h
-
-uninstall-local:
-	rm -f $(DESTDIR)$(configexecincludedir)/glibconfig.h
-
 CONFIGURE_DEPENDENCIES = acglib.m4
-
-BUILT_SOURCES = stamp-gc-h #note: not glibconfig.h
-glibconfig.h: stamp-gc-h
-	$(AM_V_GEN) if test -f glibconfig.h; then :; \
-	else rm -f stamp-gc-h; $(MAKE) stamp-gc-h; fi
-stamp-gc-h: config.status
-	cd $(top_builddir) && $(SHELL) ./config.status glibconfig.h
-	echo timestamp > stamp-gc-h
 
 ChangeLog:
 	$(AM_V_GEN) if test -d "$(srcdir)/.git"; then \
@@ -123,7 +107,7 @@ gettext_SCRIPTS = mkinstalldirs
 # build documentation when doing distcheck
 DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gtk-doc --enable-man
 
-DISTCLEANFILES = glibconfig-sysdefs.h glibconfig.h stamp-gc-h config.lt
+DISTCLEANFILES = config.lt
 
 distclean-local: lcov-clean
 	if test $(srcdir) = .; then :; else \

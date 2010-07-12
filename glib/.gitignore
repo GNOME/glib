@@ -1,3 +1,7 @@
+glibconfig.h
+glibconfig.h.win32
+glibconfig-stamp
+
 gtester
 libglib-gdb.py
 makefile.msc

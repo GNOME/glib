@@ -1,7 +1,28 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-CLEANFILES=
+BUILT_SOURCES =
+DISTCLEANFILES =
+CLEANFILES =
+
+#
+# Generate glibconfig.h
+#
+# The timestamp of the stamp file is used to indicate if glibconfig.h is
+# up to date with respect to config.status.  In the usual case, changes
+# to config.status will not result in changes to glibconfig.h so we
+# avoid touching its timestamp (in order not to rebuild the whole tree).
+#
+DISTCLEANFILES += glibconfig-stamp glibconfig.h
+BUILT_SOURCES += glibconfig-stamp
+configexecincludedir = $(libdir)/glib-2.0/include
+configexecinclude_HEADERS = glibconfig.h
+glibconfig-stamp: ../config.status
+	$(AM_V_GEN) cd $(top_builddir) && \
+	  $(SHELL) ./config.status glib/glibconfig.h
+	@touch glibconfig-stamp
+
+
 
 if HAVE_GOOD_PRINTF
 else
@@ -63,6 +84,7 @@ EXTRA_DIST += 			\
 	glib.rc.in		\
 	gen-unicode-tables.pl	\
 	gen-script-table.pl	\
+	glibconfig.h.win32.in	\
 	abicheck.sh		\
 	glib.symbols		\
 	gregex.c		\
@@ -74,6 +96,7 @@ EXTRA_DIST += 			\
 # These may be in the builddir too
 BUILT_EXTRA_DIST = 		\
 	makefile.msc		\
+	glibconfig.h.win32	\
 	glib.rc
 
 lib_LTLIBRARIES = libglib-2.0.la
@@ -317,14 +340,13 @@ libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 
 INSTALL_PROGS=
 
-
 if ENABLE_DTRACE
 glib_probes.h: glib_probes.d Makefile
 	$(DTRACE) -C -h -s $< -o $@.tmp
 	sed -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
 glib_probes.o: glib_probes.d Makefile
 	$(DTRACE) -G -s $< -o $@
-BUILT_SOURCES = glib_probes.h glib_probes.o
+BUILT_SOURCES += glib_probes.h glib_probes.o
 CLEANFILES += glib_probes.h glib_probes.h.tmp
 libglib_2_0_la_LIBADD += glib_probes.o
 endif
@@ -346,6 +368,7 @@ gspawn-win64-helper.c:
 gspawn-win64-helper-console.c:
 	echo '#define HELPER_CONSOLE' >$@
 	echo '#include "gspawn-win32-helper.c"' >>$@
+
 
 if OS_WIN32
 if OS_WIN32_X64

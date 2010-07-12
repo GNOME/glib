@@ -1,6 +1,6 @@
 #! /bin/sh
 
-egrep '^#([^i]|if).*[^\]$' "${top_builddir:-..}/glibconfig.h" > glibconfig.cpp
+egrep '^#([^i]|if).*[^\]$' "${builddir:-.}/glibconfig.h" > glibconfig.cpp
 
 INCLUDES="-include ${top_builddir:-..}/config.h"
 INCLUDES="$INCLUDES -include glibconfig.cpp $GLIB_DEBUG_FLAGS"

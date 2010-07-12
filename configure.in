@@ -2911,10 +2911,10 @@ dnl *** output the whole stuff ***
 dnl ******************************
 
 dnl this section will only be run if config.status is invoked with no
-dnl arguments, or with "glibconfig.h" as an argument.
-AC_CONFIG_COMMANDS([glibconfig.h],
+dnl arguments, or with "glib/glibconfig.h" as an argument.
+AC_CONFIG_COMMANDS([glib/glibconfig.h],
 [
-	outfile=glibconfig.h-tmp
+	outfile=glib/glibconfig.h-tmp
 	cat > $outfile <<\_______EOF
 /* glibconfig.h
  *
@@ -3283,11 +3283,11 @@ G_END_DECLS
 _______EOF
 
 
-	if cmp -s $outfile glibconfig.h; then
-	  AC_MSG_NOTICE([glibconfig.h is unchanged])
+	if cmp -s $outfile glib/glibconfig.h; then
+	  AC_MSG_NOTICE([glib/glibconfig.h is unchanged])
 	  rm -f $outfile
 	else
-	  mv $outfile glibconfig.h
+	  mv $outfile glib/glibconfig.h
 	fi
 ],[
 
@@ -3739,7 +3739,7 @@ if false; then
     INSTALL
     README
     config.h.win32
-    glibconfig.h.win32
+    glib/glibconfig.h.win32
     glib/makefile.msc
     glib/glib.rc
     gmodule/makefile.msc
