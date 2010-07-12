@@ -95,7 +95,7 @@ add_item (gpointer key,
 
 /**
  * g_settings_list_schemas:
- * Returns: a list of the schemas installed on the system
+ * @returns: a list of the schemas installed on the system
  *
  * Returns a list of GSettings schemas that are available.  The list
  * must not be modified or freed.

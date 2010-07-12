@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 
 /**
  * GDataOutputStream:
- * @parent_instance: a #GBufferedOutputStream.
  *
  * An implementation of #GBufferedOutputStream that allows for high-level
  * data manipulation of arbitrary data (including binary operations).

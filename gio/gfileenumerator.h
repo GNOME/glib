@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 
 /**
  * GFileEnumerator:
- * @parent_instance: The parent class.
  *
  * A per matched file iterator.
  **/

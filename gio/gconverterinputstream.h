@@ -41,7 +41,6 @@ G_BEGIN_DECLS
 
 /**
  * GConverterInputStream:
- * @parent_interface: a #GFilterInputStream.
  *
  * An implementation of #GFilterInputStream that allows data
  * conversion.

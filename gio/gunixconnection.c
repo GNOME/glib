@@ -131,7 +131,7 @@ g_unix_connection_send_fd (GUnixConnection  *connection,
  * Returns: a file descriptor on success, -1 on error.
  *
  * Since: 2.22
- */
+ **/
 gint
 g_unix_connection_receive_fd (GUnixConnection  *connection,
                               GCancellable     *cancellable,

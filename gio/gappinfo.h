@@ -186,7 +186,6 @@ gboolean  g_app_info_launch_default_for_uri      (const char              *uri,
 
 /**
  * GAppLaunchContext:
- * @parent_instance: The parent instance.
  *
  * Integrating the launch with the launching application. This is used to
  * handle for instance startup notification and launching the new application

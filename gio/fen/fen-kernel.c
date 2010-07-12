@@ -302,7 +302,7 @@ psource_new()
 	return source;
 }
 
-/**
+/*
  * port_add:
  * @f:
  *
@@ -374,7 +374,7 @@ start_over:
     return errno;
 }
 
-/**
+/*
  * port_remove
  *
  * < private >
@@ -408,7 +408,7 @@ port_remove (node_t *f)
     }
 }
 
-/**
+/*
  * Get Solaris resouce values.
  *
  */

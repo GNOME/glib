@@ -378,6 +378,7 @@ G_TYPE_FILE_INFO
 G_FILE_INFO_CLASS
 G_IS_FILE_INFO_CLASS
 G_FILE_INFO_GET_CLASS
+g_file_attribute_matcher_get_type
 <SUBSECTION Private>
 g_file_info_get_type
 </SECTION>
@@ -1194,6 +1195,7 @@ g_io_scheduler_job_send_to_mainloop_async
 G_IO_ERROR
 GIOErrorEnum
 g_io_error_from_errno
+g_io_error_from_win32_error
 <SUBSECTION Private>
 g_io_error_quark
 </SECTION>
@@ -1910,7 +1912,6 @@ G_IS_SOCKET_LISTENER_CLASS
 G_SOCKET_LISTENER
 G_SOCKET_LISTENER_CLASS
 G_SOCKET_LISTENER_GET_CLASS
-G_TYPE_SOCKET_INPUT_STREAM
 G_TYPE_SOCKET_LISTENER
 <SUBSECTION Private>
 GSocketListenerPrivate
@@ -2116,6 +2117,7 @@ g_settings_backend_keys_changed
 g_settings_backend_path_writable_changed
 g_settings_backend_writable_changed
 g_settings_backend_changed_tree
+g_settings_backend_flatten_tree
 g_keyfile_settings_backend_new
 
 <SUBSECTION Standard>
@@ -2188,14 +2190,9 @@ GSettingsBindGetMapping
 GSettingsClass
 G_IS_SETTINGS
 G_IS_SETTINGS_CLASS
-G_IS_SETTINGS_SCHEMA
-G_IS_SETTINGS_SCHEMA_CLASS
 G_SETTINGS
 G_SETTINGS_CLASS
 G_SETTINGS_GET_CLASS
-G_SETTINGS_SCHEMA
-G_SETTINGS_SCHEMA_CLASS
-G_SETTINGS_SCHEMA_GET_CLASS
 G_TYPE_SETTINGS
 
 <SUBSECTION Private>
@@ -2278,11 +2275,7 @@ g_dbus_auth_observer_authorize_authenticated_peer
 G_DBUS_AUTH_OBSERVER
 G_IS_DBUS_AUTH_OBSERVER
 G_TYPE_DBUS_AUTH_OBSERVER
-G_DBUS_AUTH_OBSERVER_CLASS
-G_IS_DBUS_AUTH_OBSERVER_CLASS
-G_DBUS_AUTH_OBSERVER_GET_CLASS
 <SUBSECTION Private>
-GDBusAuthObserverPrivate
 g_dbus_auth_observer_get_type
 </SECTION>
 
@@ -2302,11 +2295,7 @@ g_dbus_server_get_client_address
 G_DBUS_SERVER
 G_IS_DBUS_SERVER
 G_TYPE_DBUS_SERVER
-G_DBUS_SERVER_CLASS
-G_IS_DBUS_SERVER_CLASS
-G_DBUS_SERVER_GET_CLASS
 <SUBSECTION Private>
-GDBusServerPrivate
 g_dbus_server_get_type
 </SECTION>
 
@@ -2365,11 +2354,7 @@ g_dbus_message_to_gerror
 G_DBUS_MESSAGE
 G_IS_DBUS_MESSAGE
 G_TYPE_DBUS_MESSAGE
-G_DBUS_MESSAGE_CLASS
-G_IS_DBUS_MESSAGE_CLASS
-G_DBUS_MESSAGE_GET_CLASS
 <SUBSECTION Private>
-GDBusMessagePrivate
 g_dbus_message_get_type
 </SECTION>
 
@@ -2434,11 +2419,7 @@ g_dbus_connection_unregister_subtree
 G_DBUS_CONNECTION
 G_IS_DBUS_CONNECTION
 G_TYPE_DBUS_CONNECTION
-G_DBUS_CONNECTION_CLASS
-G_IS_DBUS_CONNECTION_CLASS
-G_DBUS_CONNECTION_GET_CLASS
 <SUBSECTION Private>
-GDBusConnectionPrivate
 g_dbus_connection_get_type
 </SECTION>
 
@@ -2466,11 +2447,7 @@ g_dbus_method_invocation_return_dbus_error
 G_DBUS_METHOD_INVOCATION
 G_IS_DBUS_METHOD_INVOCATION
 G_TYPE_DBUS_METHOD_INVOCATION
-G_DBUS_METHOD_INVOCATION_CLASS
-G_IS_DBUS_METHOD_INVOCATION_CLASS
-G_DBUS_METHOD_INVOCATION_GET_CLASS
 <SUBSECTION Private>
-GDBusMethodInvocationPrivate
 g_dbus_method_invocation_get_type
 </SECTION>
 
@@ -2643,10 +2620,7 @@ g_simple_permission_new
 
 <SUBSECTION Standard>
 G_SIMPLE_PERMISSION
-G_SIMPLE_PERMISSION_CLASS
-G_SIMPLE_PERMISSION_GET_CLASS
 G_IS_SIMPLE_PERMISSION
-G_IS_SIMPLE_PERMISSION_CLASS
 G_TYPE_SIMPLE_PERMISSION
 
 <SUBSECTION Private>

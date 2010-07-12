@@ -51,7 +51,6 @@ G_BEGIN_DECLS
 
 /**
  * GVolumeMonitor:
- * @parent_instance: The parent instance.
  *
  * A Volume Monitor that watches for volume events.
  **/

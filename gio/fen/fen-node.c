@@ -243,7 +243,7 @@ node_create_children_snapshot(node_t *f, gint created_event, gboolean emit)
     }
 }
 
-/**
+/*
  * If all active children nodes are ported, then cancel monitor the parent
  * node. If we know how many children are created, then we can stop accordingly.
  *
@@ -373,7 +373,7 @@ node_children_num (node_t *f)
     return g_hash_table_size (f->children);
 }
 
-/**
+/*
  * depth first delete recursively
  */
 static gboolean
@@ -394,7 +394,7 @@ node_class_init()
     return port_class_init (node_add_event);
 }
 
-/**
+/*
  * Adjust self on failing to Port
  */
 void
@@ -481,7 +481,7 @@ node_emit_events(node_t *f, const node_event_t *ne)
     }
 }
 
-/**
+/*
  * node_add_event:
  *
  */

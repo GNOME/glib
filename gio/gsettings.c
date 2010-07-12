@@ -1507,6 +1507,7 @@ g_settings_set (GSettings   *settings,
  * @mapping: the function to map the value in the settings database to
  *           the value used by the application
  * @user_data: user data for @mapping
+ * @returns: the result, which may be %NULL
  *
  * Gets the value that is stored at @key in @settings, subject to
  * application-level validation/mapping.
@@ -1963,10 +1964,9 @@ g_settings_get_has_unapplied (GSettings *settings)
 /* Extra API (sync, get_child, is_writable, list_items) {{{1 */
 /**
  * g_settings_sync:
- * @context: the context to sync, or %NULL
  *
- * Ensures that all pending operations for the given context are
- * complete.
+ * Ensures that all pending operations for the given are complete for
+ * the default backend.
  *
  * Writes made to a #GSettings are handled asynchronously.  For this
  * reason, it is very unlikely that the changes have it to disk by the
@@ -2056,7 +2056,7 @@ g_settings_get_child (GSettings   *settings,
 /**
  * g_settings_list_items:
  * @settings: a #GSettings object
- * Returns: a list of the keys on @settings
+ * @returns: a list of the keys on @settings
  *
  * Introspects the list of keys and children on @settings.
  *

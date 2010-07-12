@@ -18,6 +18,8 @@ CFILE_GLOB=$(top_srcdir)/gio/*.c
 
 # Headers to ignore
 IGNORE_HFILES=				\
+	gvdb				\
+	tests				\
 	asyncns.h			\
 	fam-helper.h			\
 	fen-data.h			\
@@ -59,6 +61,7 @@ IGNORE_HFILES=				\
 	glocalfilemonitor.h		\
 	glocalfileoutputstream.h	\
 	glocalvfs.h			\
+	gmemorysettingsbackend.h	\
 	gnativevolumemonitor.h		\
 	gnetworkingprivate.h		\
 	gnullsettingsbackend.h		\
@@ -66,6 +69,8 @@ IGNORE_HFILES=				\
 	gsettingsbackendinternal.h	\
 	gsettingsschema.h		\
 	gsettings-mapping.h		\
+	gsocketinputstream.h		\
+	gsocketoutputstream.h		\
 	gthreadedresolver.h		\
 	gunionvolumemonitor.h		\
 	gunixdrive.h			\

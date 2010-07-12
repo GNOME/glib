@@ -40,7 +40,6 @@ G_BEGIN_DECLS
 
 /**
  * GDataInputStream:
- * @parent: a #GBufferedInputStream.
  *
  * An implementation of #GBufferedInputStream that allows for high-level
  * data manipulation of arbitrary data (including binary operations).
