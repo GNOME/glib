@@ -51,10 +51,15 @@ enum	/*< skip >*/
 };
 
 
-/* vararg union holding actuall values collected
+/* vararg union holding actual values collected
  */
 /**
  * GTypeCValue:
+ * @v_int: the field for holding integer values
+ * @v_long: the field for holding long integer values
+ * @v_int64: the field for holding 64 bit integer values
+ * @v_double: the field for holding floating point values
+ * @v_pointer: the field for holding pointers
  * 
  * A union holding one collected value.
  */

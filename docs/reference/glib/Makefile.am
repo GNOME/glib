@@ -24,10 +24,6 @@ CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
 
 # Headers to ignore
 IGNORE_HFILES=			\
-	build			\
-	gobject 		\
-	gio			\
-	config.h 		\
 	gdatasetprivate.h	\
 	glibintl.h		\
 	gbsearcharray.h		\
@@ -38,10 +34,8 @@ IGNORE_HFILES=			\
 	gunichartables.h	\
 	glib_trace.h		\
 	libcharset.h		\
-	glibconfig-sysdefs.h	\
 	gdebug.h		\
 	gprintfint.h		\
-	galias.h		\
 	gmirroringtable.h	\
 	gscripttable.h		\
 	glib-mirroring-tab	\

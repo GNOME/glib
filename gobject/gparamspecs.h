@@ -965,6 +965,8 @@ struct _GParamSpecVariant
   GParamSpec    parent_instance;
   GVariantType *type;
   GVariant     *default_value;
+
+  /*< private >*/
   gpointer      padding[4];
 };
 

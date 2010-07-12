@@ -47,8 +47,6 @@ IGNORE_HFILES=				\
 	ginotifyfilemonitor.h		\
 	gio-marshal.h			\
 	gio.h				\
-	gioalias.h			\
-	gioalias.h			\
 	gkeyfilesettingsbackend.h	\
 	gioenumtypes.h			\
 	giomodule-priv.h		\

@@ -25,7 +25,7 @@ CFILE_GLOB=$(top_srcdir)/gobject/*.c
 
 # Headers to ignore
 IGNORE_HFILES = \
-	gobjectalias.h			\
+	gobject_trace.h			\
 	gatomicarray.h
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
