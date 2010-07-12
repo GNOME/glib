@@ -149,7 +149,7 @@ replay_parser_end (GMarkupParseContext  *ctx,
       g_string_free (string, TRUE);
       strings_allocated--;
 
-      return FALSE;
+      return NULL;
     }
 
   result = string->str;

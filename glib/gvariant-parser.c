@@ -1218,7 +1218,7 @@ dictionary_get_value (AST                 *ast,
       if (!(subvalue = ast_get_value (dict->keys[0], subtype, error)))
         {
           g_variant_builder_clear (&builder);
-          return FALSE;
+          return NULL;
         }
       g_variant_builder_add_value (&builder, subvalue);
 
@@ -1226,7 +1226,7 @@ dictionary_get_value (AST                 *ast,
       if (!(subvalue = ast_get_value (dict->values[0], subtype, error)))
         {
           g_variant_builder_clear (&builder);
-          return FALSE;
+          return NULL;
         }
       g_variant_builder_add_value (&builder, subvalue);
 
@@ -1256,14 +1256,14 @@ dictionary_get_value (AST                 *ast,
           if (!(subvalue = ast_get_value (dict->keys[i], key, error)))
             {
               g_variant_builder_clear (&builder);
-              return FALSE;
+              return NULL;
             }
           g_variant_builder_add_value (&builder, subvalue);
 
           if (!(subvalue = ast_get_value (dict->values[i], val, error)))
             {
               g_variant_builder_clear (&builder);
-              return FALSE;
+              return NULL;
             }
           g_variant_builder_add_value (&builder, subvalue);
           g_variant_builder_close (&builder);
