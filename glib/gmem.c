@@ -50,7 +50,7 @@
  * g_mem_profile().
  * REALLOC_0_WORKS is defined if g_realloc (NULL, x) works.
  * SANE_MALLOC_PROTOS is defined if the systems malloc() and friends functions
- * match the corresponding GLib prototypes, keep configure.in and gmem.h in sync here.
+ * match the corresponding GLib prototypes, keep configure.ac and gmem.h in sync here.
  * g_mem_gc_friendly is TRUE, freed memory should be 0-wiped.
  */
 

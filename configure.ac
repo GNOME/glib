@@ -6,7 +6,7 @@ dnl ***********************************
 dnl *** include special GLib macros ***
 dnl ***********************************
 
-m4_define(glib_configure_in)
+m4_define(glib_configure_ac)
 
 #
 # The following version number definitions apply to GLib, GModule, GObject,
@@ -2918,7 +2918,7 @@ AC_CONFIG_COMMANDS([glib/glibconfig.h],
 	cat > $outfile <<\_______EOF
 /* glibconfig.h
  *
- * This is a generated file.  Please modify 'configure.in'
+ * This is a generated file.  Please modify 'configure.ac'
  */
 
 #ifndef __G_LIBCONFIG_H__

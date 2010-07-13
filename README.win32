@@ -153,7 +153,7 @@ something that libtool has added. The -0 suffix is added by libtool
 and is the value of "LT_CURRENT - LT_AGE". The 0 should *not* be
 thought to be part of the version number of GLib. The LT_CURRENT -
 LT_AGE value will on purpose be kept as zero as long as binary
-compatibility is maintained. For the gory details, see configure.in
+compatibility is maintained. For the gory details, see configure.ac
 and libtool documentation.
 
 Building with Visual Studio
