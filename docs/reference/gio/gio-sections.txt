@@ -1330,7 +1330,6 @@ g_filename_completer_get_type
 <SECTION>
 <FILE>gunixmounts</FILE>
 <TITLE>Unix Mounts</TITLE>
-GUnixMount
 GUnixMountPoint
 GUnixMountEntry
 GUnixMountMonitor
@@ -1365,28 +1364,14 @@ g_unix_mount_monitor_new
 g_unix_mount_monitor_set_rate_limit
 g_unix_is_mount_path_system_internal
 <SUBSECTION Standard>
-GUnixMountClass
 GUnixMountMonitorClass
 G_UNIX_MOUNT_MONITOR
 G_IS_UNIX_MOUNT_MONITOR
 G_TYPE_UNIX_MOUNT_MONITOR
 G_UNIX_MOUNT_MONITOR_CLASS
 G_IS_UNIX_MOUNT_MONITOR_CLASS
-G_IS_UNIX_MOUNT
-G_IS_UNIX_MOUNT_CLASS
-G_UNIX_MOUNT
-G_UNIX_MOUNT_CLASS
-G_TYPE_UNIX_MOUNT
 <SUBSECTION Private>
 g_unix_mount_monitor_get_type
-G_IS_UNIX_VOLUME_MONITOR
-G_IS_UNIX_VOLUME_MONITOR_CLASS
-G_TYPE_UNIX_VOLUME_MONITOR
-G_UNIX_VOLUME_MONITOR
-G_UNIX_VOLUME_MONITOR_CLASS
-GUnixVolume
-GUnixVolumeMonitor
-GUnixVolumeMonitorClass
 </SECTION>
 
 <SECTION>

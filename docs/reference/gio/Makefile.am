@@ -62,6 +62,7 @@ IGNORE_HFILES=				\
 	glocalfileoutputstream.h	\
 	glocalvfs.h			\
 	gmemorysettingsbackend.h	\
+	gmountprivate.h			\
 	gnativevolumemonitor.h		\
 	gnetworkingprivate.h		\
 	gnullsettingsbackend.h		\
@@ -74,6 +75,8 @@ IGNORE_HFILES=				\
 	gthreadedresolver.h		\
 	gunionvolumemonitor.h		\
 	gunixdrive.h			\
+	gunixmount.h			\
+	gunixvolumemonitor.h		\
 	gunixresolver.h			\
 	gunixvolume.h			\
 	gvdb-builder.h			\
