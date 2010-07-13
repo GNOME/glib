@@ -1,6 +1,5 @@
 # Process this file with autoconf to produce a configure script.
-# require autoconf 2.54
-AC_PREREQ(2.54)
+AC_PREREQ([2.62])
 
 dnl ***********************************
 dnl *** include special GLib macros ***
@@ -48,15 +47,13 @@ m4_define([glib_debug_default],
 AC_INIT(glib, [glib_version],
         [http://bugzilla.gnome.org/enter_bug.cgi?product=glib])
 
+AC_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([glib/glib.h])
 
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
 
-AM_INIT_AUTOMAKE([no-define])
-
-# Specify a configuration file
-AM_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE([1.10 no-define])
 
 # Support silent build rules, requires at least automake-1.11. Enable
 # by either passing --enable-silent-rules to configure or passing V=0
@@ -518,9 +515,8 @@ case $with_libiconv in
 esac
 
 dnl Initialize libtool
-AM_DISABLE_STATIC
-AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+LT_PREREQ([2.2])
+LT_INIT([disable-static win32-dll])
 dnl when using libtool 2.x create libtool early, because it's used in configure
 m4_ifdef([LT_OUTPUT], [LT_OUTPUT])
 

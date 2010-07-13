@@ -19,14 +19,14 @@ if libtoolize --version < /dev/null > /dev/null 2>&1 ; then
 			 sed -e 's/^\(.*\)([^)]*)\(.*\)$/\1\2/g' \
 			     -e 's/^[^0-9]*\([0-9.][0-9.]*\).*/\1/'`
 	case $libtool_version in
-	    1.4*|1.5*|2.2*)
+	    2.2*)
 		have_libtool=true
 		;;
 	esac
 fi
 if $have_libtool ; then : ; else
 	echo
-	echo "You must have libtool 1.4 installed to compile $PROJECT."
+	echo "You must have libtool >= 2.2 installed to compile $PROJECT."
 	echo "Install the appropriate package for your distribution,"
 	echo "or get the source tarball at http://ftp.gnu.org/gnu/libtool/"
 	DIE=1
@@ -54,16 +54,12 @@ if automake-1.11 --version < /dev/null > /dev/null 2>&1 ; then
 else if automake-1.10 --version < /dev/null > /dev/null 2>&1 ; then
     AUTOMAKE=automake-1.10
     ACLOCAL=aclocal-1.10
-else if automake-1.9 --version < /dev/null > /dev/null 2>&1 ; then
-    AUTOMAKE=automake-1.9
-    ACLOCAL=aclocal-1.9
 else
 	echo
-	echo "You must have automake 1.9.x, 1.10.x or 1.11.x installed to compile $PROJECT."
+	echo "You must have automake 1.10.x or 1.11.x installed to compile $PROJECT."
 	echo "Install the appropriate package for your distribution,"
 	echo "or get the source tarball at http://ftp.gnu.org/gnu/automake/"
 	DIE=1
-fi
 fi
 fi
 
