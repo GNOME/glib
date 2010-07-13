@@ -867,6 +867,7 @@ g_binding_get_flags
 g_object_bind_property
 GBindingTransformFunc
 g_object_bind_property_full
+g_object_bind_property_with_closures
 <SUBSECTION Standard>
 G_TYPE_BINDING
 G_TYPE_BINDING_FLAGS

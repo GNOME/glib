@@ -809,12 +809,6 @@ g_object_bind_property_full (gpointer               source,
       return NULL;
     }
 
-  if (transform_to == NULL)
-    transform_to = default_transform_to;
-
-  if (transform_from == NULL)
-    transform_from = default_transform_from;
-
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (source), source_property);
   if (pspec == NULL)
     {
@@ -881,9 +875,12 @@ g_object_bind_property_full (gpointer               source,
                           "flags", flags,
                           NULL);
 
-  /* making these properties would be awkward, though not impossible */
-  binding->transform_s2t = transform_to;
-  binding->transform_t2s = transform_from;
+  if (transform_to != NULL)
+    binding->transform_s2t = transform_to;
+
+  if (transform_from != NULL)
+    binding->transform_t2s = transform_from;
+
   binding->transform_data = user_data;
   binding->notify = notify;
 
@@ -950,4 +947,172 @@ g_object_bind_property (gpointer       source,
                                       NULL,
                                       NULL,
                                       NULL, NULL);
+}
+
+typedef struct _TransformData
+{
+  GClosure *transform_to_closure;
+  GClosure *transform_from_closure;
+} TransformData;
+
+static gboolean
+bind_with_closures_transform_to (GBinding     *binding,
+                                 const GValue *source,
+                                 GValue       *target,
+                                 gpointer      data)
+{
+  TransformData *t_data = data;
+  GValue params[3] = { { 0, }, { 0, }, { 0, } };
+  GValue retval = { 0, };
+  gboolean res;
+
+  g_value_init (&params[0], G_TYPE_BINDING);
+  g_value_set_object (&params[0], binding);
+
+  g_value_init (&params[1], G_TYPE_VALUE);
+  g_value_set_boxed (&params[1], source);
+
+  g_value_init (&params[2], G_TYPE_VALUE);
+  g_value_set_boxed (&params[2], target);
+
+  g_value_init (&retval, G_TYPE_BOOLEAN);
+  g_value_set_boolean (&retval, FALSE);
+
+  g_closure_invoke (t_data->transform_to_closure, &retval, 3, params, NULL);
+
+  res = g_value_get_boolean (&retval);
+  if (res)
+    {
+      const GValue *out_value = g_value_get_boxed (&params[2]);
+
+      g_assert (out_value != NULL);
+
+      g_value_copy (out_value, target);
+    }
+
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+  g_value_unset (&params[2]);
+  g_value_unset (&retval);
+
+  return res;
+}
+
+static gboolean
+bind_with_closures_transform_from (GBinding     *binding,
+                                   const GValue *source,
+                                   GValue       *target,
+                                   gpointer      data)
+{
+  TransformData *t_data = data;
+  GValue params[3] = { { 0, }, { 0, }, { 0, } };
+  GValue retval = { 0, };
+  gboolean res;
+
+  g_value_init (&params[0], G_TYPE_BINDING);
+  g_value_set_object (&params[0], binding);
+
+  g_value_init (&params[1], G_TYPE_VALUE);
+  g_value_set_boxed (&params[1], source);
+
+  g_value_init (&params[2], G_TYPE_VALUE);
+  g_value_set_boxed (&params[2], target);
+
+  g_value_init (&retval, G_TYPE_BOOLEAN);
+  g_value_set_boolean (&retval, FALSE);
+
+  g_closure_invoke (t_data->transform_from_closure, &retval, 3, params, NULL);
+
+  res = g_value_get_boolean (&retval);
+  if (res)
+    {
+      const GValue *out_value = g_value_get_boxed (&params[2]);
+
+      g_assert (out_value != NULL);
+
+      g_value_copy (out_value, target);
+    }
+
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+  g_value_unset (&params[2]);
+  g_value_unset (&retval);
+
+  return res;
+}
+
+static void
+bind_with_closures_free_func (gpointer data)
+{
+  TransformData *t_data = data;
+
+  if (t_data->transform_to_closure != NULL)
+    g_closure_unref (t_data->transform_to_closure);
+
+  if (t_data->transform_from_closure != NULL)
+    g_closure_unref (t_data->transform_from_closure);
+
+  g_slice_free (TransformData, t_data);
+}
+
+/**
+ * g_object_bind_property_with_closures:
+ * @source: the source #GObject
+ * @source_property: the property on @source to bind
+ * @target: the target #GObject
+ * @target_property: the property on @target to bind
+ * @flags: flags to pass to #GBinding
+ * @transform_to: a #GClosure wrapping the transformation function
+ *   from the @source to the @target, or %NULL to use the default
+ * @transform_from: a #GClosure wrapping the transformation function
+ *   from the @target to the @source, or %NULL to use the default
+ *
+ * Creates a binding between @source_property on @source and @target_property
+ * on @target, allowing you to set the transformation functions to be used by
+ * the binding.
+ *
+ * This function is the language bindings friendly version of
+ * g_object_bind_property_full(), using #GClosure<!-- -->s instead of
+ * function pointers.
+ *
+ * Rename to: g_object_bind_property_full
+ *
+ * Return value: (transfer none): the #GBinding instance representing the
+ *   binding between the two #GObject instances. The binding is released
+ *   whenever the #GBinding reference count reaches zero.
+ *
+ * Since: 2.26
+ */
+GBinding *
+g_object_bind_property_with_closures (gpointer       source,
+                                      const gchar   *source_property,
+                                      gpointer       target,
+                                      const gchar   *target_property,
+                                      GBindingFlags  flags,
+                                      GClosure      *transform_to,
+                                      GClosure      *transform_from)
+{
+  TransformData *data;
+
+  data = g_slice_new0 (TransformData);
+
+  if (transform_to != NULL)
+    {
+      data->transform_to_closure = g_closure_ref (transform_to);
+      g_closure_sink (data->transform_to_closure);
+    }
+
+  if (transform_from != NULL)
+    {
+      data->transform_from_closure = g_closure_ref (transform_from);
+      g_closure_sink (data->transform_from_closure);
+    }
+
+  return g_object_bind_property_full (source, source_property,
+                                      target, target_property,
+                                      flags,
+                                      transform_to != NULL ? bind_with_closures_transform_to : NULL,
+                                      transform_from != NULL ? bind_with_closures_transform_from : NULL,
+                                      data,
+                                      bind_with_closures_free_func);
 }

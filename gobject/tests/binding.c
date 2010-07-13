@@ -247,8 +247,8 @@ binding_default (void)
                                     target, "bar",
                                     G_BINDING_DEFAULT);
 
-  g_assert (g_binding_get_source (binding) == G_OBJECT (source));
-  g_assert (g_binding_get_target (binding) == G_OBJECT (target));
+  g_assert ((BindingSource *) g_binding_get_source (binding) == source);
+  g_assert ((BindingTarget *) g_binding_get_target (binding) == target);
   g_assert_cmpstr (g_binding_get_source_property (binding), ==, "foo");
   g_assert_cmpstr (g_binding_get_target_property (binding), ==, "bar");
   g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
@@ -330,6 +330,77 @@ binding_transform (void)
 }
 
 static void
+binding_transform_marshal (GClosure     *closure,
+                           GValue       *return_value,
+                           guint         n_param_values,
+                           const GValue *param_values,
+                           gpointer      invocation_hint G_GNUC_UNUSED,
+                           gpointer      marshal_data)
+{
+  typedef gboolean (* GMarshalFunc_BOOLEAN__VALUE_VALUE) (gpointer data1,
+                                                          gpointer arg_2,
+                                                          gpointer arg_3,
+                                                          gpointer data2);
+  register GMarshalFunc_BOOLEAN__VALUE_VALUE callback;
+  register GCClosure *cc = (GCClosure *) closure;
+  register gpointer data1, data2;
+  gboolean v_return;
+
+  if (G_CCLOSURE_SWAP_DATA (closure))
+    {
+      data1 = closure->data;
+      data2 = g_value_peek_pointer (param_values + 0);
+    }
+  else
+    {
+      data1 = g_value_peek_pointer (param_values + 0);
+      data2 = closure->data;
+    }
+
+  callback = (GMarshalFunc_BOOLEAN__VALUE_VALUE) (marshal_data ? marshal_data : cc->callback);
+  v_return = callback (data1,
+                       g_value_get_boxed (param_values + 1),
+                       g_value_get_boxed (param_values + 2),
+                       data2);
+
+  g_value_set_boolean (return_value, v_return);
+}
+
+static void
+binding_transform_closure (void)
+{
+  BindingSource *source = g_object_new (binding_source_get_type (), NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (), NULL);
+  GBinding *binding;
+  gboolean unused_data_1 = FALSE, unused_data_2 = FALSE;
+  GClosure *c2f_clos, *f2c_clos;
+
+  c2f_clos = g_cclosure_new (G_CALLBACK (celsius_to_fahrenheit), &unused_data_1, (GClosureNotify) data_free);
+  g_closure_set_marshal (c2f_clos, binding_transform_marshal);
+
+  f2c_clos = g_cclosure_new (G_CALLBACK (fahrenheit_to_celsius), &unused_data_2, (GClosureNotify) data_free);
+  g_closure_set_marshal (f2c_clos, binding_transform_marshal);
+
+  binding = g_object_bind_property_with_closures (source, "value",
+                                                  target, "value",
+                                                  G_BINDING_BIDIRECTIONAL,
+                                                  c2f_clos,
+                                                  f2c_clos);
+
+  g_object_set (source, "value", 24.0, NULL);
+  g_assert_cmpfloat (target->value, ==, ((9 * 24.0 / 5) + 32.0));
+
+  g_object_set (target, "value", 69.0, NULL);
+  g_assert_cmpfloat (source->value, ==, (5 * (69.0 - 32.0) / 9));
+
+  g_object_unref (source);
+  g_object_unref (target);
+
+  g_assert (unused_data_1);
+  g_assert (unused_data_2);
+}
+
+static void
 binding_chain (void)
 {
   BindingSource *a = g_object_new (binding_source_get_type (), NULL);
@@ -407,6 +478,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/default", binding_default);
   g_test_add_func ("/binding/bidirectional", binding_bidirectional);
   g_test_add_func ("/binding/transform", binding_transform);
+  g_test_add_func ("/binding/transform-closure", binding_transform_closure);
   g_test_add_func ("/binding/chain", binding_chain);
   g_test_add_func ("/binding/sync-create", binding_sync_create);
 
