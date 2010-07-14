@@ -1945,8 +1945,18 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   mos = G_MEMORY_OUTPUT_STREAM (g_memory_output_stream_new (NULL, 0, g_realloc, g_free));
   dos = g_data_output_stream_new (G_OUTPUT_STREAM (mos));
 
-  /* TODO: detect endianess... */
+  /* Any D-Bus implementation is supposed to handle both Big and
+   * Little Endian encodings and the Endianness is part of the D-Bus
+   * message - we prefer to use Big Endian (since it's Network Byte
+   * Order and just easier to read for humans) but if the machine is
+   * Little Endian we use that for performance reasons.
+   */
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
   byte_order = G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
+#else
+  /* this could also be G_PDP_ENDIAN */
+  byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
+#endif
   g_data_output_stream_set_byte_order (dos, byte_order);
 
   /* Core header */
