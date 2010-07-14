@@ -54,6 +54,7 @@ format_output (GTypelib *typelib)
 
   result = g_string_sized_new (6 * typelib->len);
 
+  g_string_append_printf (result, "/* GENERATED CODE - DO NOT EDIT */\n");
   g_string_append_printf (result, "#include <stdlib.h>\n");
   g_string_append_printf (result, "#include <girepository.h>\n\n");
   
@@ -84,7 +85,8 @@ format_output (GTypelib *typelib)
 			      "register_typelib (void)\n"
 			      "{\n"
 			      "\tGTypelib *typelib;\n"
-			      "\ttypelib = g_typelib_new_from_const_memory (_G_TYPELIB, _G_TYPELIB_SIZE);\n"
+			      "\ttypelib = g_typelib_new_from_const_memory (_G_TYPELIB, _G_TYPELIB_SIZE, NULL);\n"
+			      "\tg_assert (typelib != NULL);\n"
 			      "\tg_irepository_load_typelib (NULL, typelib, G_IREPOSITORY_LOAD_FLAG_LAZY, NULL);\n"
 			      "}\n\n");
     }
