@@ -206,6 +206,7 @@ GTypelib *
 g_ir_module_build_typelib (GIrModule  *module,
 			     GList       *modules)
 {
+  GError *error = NULL;
   GTypelib *typelib;
   gsize length;
   guint i;
@@ -434,7 +435,12 @@ g_ir_module_build_typelib (GIrModule  *module,
   data = g_realloc (data, offset2);
   header = (Header*) data;
   length = header->size = offset2;
-  typelib = g_typelib_new_from_memory (data, length);
+  typelib = g_typelib_new_from_memory (data, length, &error);
+  if (!typelib)
+    {
+      g_error ("error building typelib: %s",
+	       error->message);
+    }
 
   g_hash_table_destroy (strings);
   g_hash_table_destroy (types);

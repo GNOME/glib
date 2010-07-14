@@ -260,30 +260,30 @@ validate_name (GTypelib   *typelib,
   return TRUE;
 }
 
+/* Fast path sanity check, operates on a memory blob */
 static gboolean
-validate_header (ValidateContext  *ctx,
-		 GError          **error)
+validate_header_basic (const guint8   *memory,
+		       gsize           len,
+		       GError        **error)
 {
-  GTypelib *typelib = ctx->typelib;
-  Header *header;
+  Header *header = (Header *)memory;
 
-  if (typelib->len < sizeof (Header))
+  if (len < sizeof (Header))
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID,
-		   "The buffer is too short");
+		   "The specified typelib length %" G_GSIZE_FORMAT " is too short",
+		   len);
       return FALSE;
     }
-
-  header = (Header *)typelib->data;
 
   if (strncmp (header->magic, G_IR_MAGIC, 16) != 0)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_HEADER,
-		   "Magic string not found");
+		   "Invalid magic header");
       return FALSE;
 
     }
@@ -293,7 +293,7 @@ validate_header (ValidateContext  *ctx,
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_HEADER,
-		   "Version mismatch; expected 3, found %d",
+		   "Typelib version mismatch; expected 3, found %d",
 		   header->major_version);
       return FALSE;
 
@@ -308,12 +308,13 @@ validate_header (ValidateContext  *ctx,
       return FALSE;
     }
 
-  if (header->size != typelib->len)
+  if (header->size != len)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_HEADER,
-		   "Typelib size mismatch");
+		   "Typelib size %" G_GSIZE_FORMAT " does not match %" G_GSIZE_FORMAT,
+		   header->size, len);
       return FALSE;
     }
 
@@ -378,8 +379,23 @@ validate_header (ValidateContext  *ctx,
       return FALSE;
     }
 
-  if (!validate_name (typelib, "namespace", typelib->data, header->namespace, error))
+  return TRUE;
+}
+
+static gboolean
+validate_header (ValidateContext  *ctx,
+		 GError          **error)
+{
+  GTypelib *typelib = ctx->typelib;
+  
+  if (!validate_header_basic (typelib->data, typelib->len, error))
     return FALSE;
+
+  {
+    Header *header = (Header*)typelib->data;
+    if (!validate_name (typelib, "namespace", typelib->data, header->namespace, error))
+      return FALSE;
+  }
 
   return TRUE;
 }
@@ -2056,6 +2072,7 @@ _g_typelib_ensure_open (GTypelib *typelib)
  * g_typelib_new_from_memory:
  * @memory: address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
+ * @error: a #GError
  *
  * Creates a new #GTypelib from a memory location.  The memory block
  * pointed to by @typelib will be automatically g_free()d when the
@@ -2064,9 +2081,14 @@ _g_typelib_ensure_open (GTypelib *typelib)
  * Return value: the new #GTypelib
  **/
 GTypelib *
-g_typelib_new_from_memory (guchar *memory, gsize len)
+g_typelib_new_from_memory (guint8  *memory, 
+			   gsize    len,
+			   GError **error)
 {
   GTypelib *meta;
+
+  if (!validate_header_basic (memory, len, error))
+    return NULL;
 
   meta = g_slice_new0 (GTypelib);
   meta->data = memory;
@@ -2081,15 +2103,21 @@ g_typelib_new_from_memory (guchar *memory, gsize len)
  * g_typelib_new_from_const_memory:
  * @memory: address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
+ * @error: A #GError
  *
  * Creates a new #GTypelib from a memory location.
  *
  * Return value: the new #GTypelib
  **/
 GTypelib *
-g_typelib_new_from_const_memory (const guchar *memory, gsize len)
+g_typelib_new_from_const_memory (const guchar *memory, 
+				 gsize         len,
+				 GError      **error)
 {
   GTypelib *meta;
+
+  if (!validate_header_basic (memory, len, error))
+    return NULL;
 
   meta = g_slice_new0 (GTypelib);
   meta->data = (guchar *) memory;
@@ -2103,21 +2131,28 @@ g_typelib_new_from_const_memory (const guchar *memory, gsize len)
 /**
  * g_typelib_new_from_mapped_file:
  * @mfile: a #GMappedFile, that will be free'd when the repository is destroyed
+ * @error: a #GError
  *
  * Creates a new #GTypelib from a #GMappedFile.
  *
  * Return value: the new #GTypelib
  **/
 GTypelib *
-g_typelib_new_from_mapped_file (GMappedFile *mfile)
+g_typelib_new_from_mapped_file (GMappedFile  *mfile,
+				GError      **error)
 {
   GTypelib *meta;
+  guint8 *data = (guint8 *) g_mapped_file_get_contents (mfile);
+  gsize len = g_mapped_file_get_length (mfile);
+
+  if (!validate_header_basic (data, len, error))
+    return NULL;
 
   meta = g_slice_new0 (GTypelib);
   meta->mfile = mfile;
   meta->owns_memory = FALSE;
-  meta->data = (guchar *) g_mapped_file_get_contents (mfile);
-  meta->len = g_mapped_file_get_length (mfile);
+  meta->data = data; 
+  meta->len = len;
 
   return meta;
 }

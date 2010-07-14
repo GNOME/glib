@@ -34,11 +34,14 @@ G_BEGIN_DECLS
 
 typedef struct _GTypelib GTypelib;
 
-GTypelib *    g_typelib_new_from_memory       (guchar       *memory,
-                                               gsize         len);
-GTypelib *    g_typelib_new_from_const_memory (const guchar *memory,
-                                               gsize         len);
-GTypelib *    g_typelib_new_from_mapped_file  (GMappedFile  *mfile);
+GTypelib *    g_typelib_new_from_memory       (guint8        *memory,
+                                               gsize          len,
+					       GError       **error);
+GTypelib *    g_typelib_new_from_const_memory (const guint8  *memory,
+                                               gsize          len,
+					       GError       **error);
+GTypelib *    g_typelib_new_from_mapped_file  (GMappedFile   *mfile,
+					       GError       **error);
 void          g_typelib_free                  (GTypelib     *typelib);
 
 gboolean      g_typelib_symbol                (GTypelib     *typelib,

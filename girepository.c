@@ -1221,7 +1221,9 @@ g_irepository_require (GIRepository  *repository,
       goto out;
     }
 
-  typelib = g_typelib_new_from_mapped_file (mfile);
+  typelib = g_typelib_new_from_mapped_file (mfile, error);
+  if (!typelib)
+    goto out;
   header = (Header *) typelib->data;
   typelib_namespace = g_typelib_get_string (typelib, header->namespace);
   typelib_version = g_typelib_get_string (typelib, header->nsversion);
