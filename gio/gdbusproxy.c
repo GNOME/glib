@@ -737,7 +737,7 @@ on_signal_received (GDBusConnection *connection,
   if (!proxy->priv->initialized)
     goto out;
 
-  if (g_strcmp0 (sender_name, proxy->priv->name_owner) != 0)
+  if (proxy->priv->name_owner != NULL && g_strcmp0 (sender_name, proxy->priv->name_owner) != 0)
     goto out;
 
   g_signal_emit (proxy,
@@ -778,7 +778,7 @@ on_properties_changed (GDBusConnection *connection,
   if (!proxy->priv->initialized)
     goto out;
 
-  if (g_strcmp0 (sender_name, proxy->priv->name_owner) != 0)
+  if (proxy->priv->name_owner != NULL && g_strcmp0 (sender_name, proxy->priv->name_owner) != 0)
     goto out;
 
   if (!g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sa{sv}as)")))

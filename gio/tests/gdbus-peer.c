@@ -68,6 +68,7 @@ static const gchar *test_interface_introspection_xml =
   "      <arg type='s' name='response' direction='out'/>"
   "    </method>"
   "    <method name='EmitSignal'/>"
+  "    <method name='EmitSignalWithNameSet'/>"
   "    <method name='OpenFile'>"
   "      <arg type='s' name='path' direction='in'/>"
   "    </method>"
@@ -122,6 +123,25 @@ test_interface_method_call (GDBusConnection       *connection,
                                      NULL,
                                      &error);
       g_assert_no_error (error);
+      g_dbus_method_invocation_return_value (invocation, NULL);
+    }
+  else if (g_strcmp0 (method_name, "EmitSignalWithNameSet") == 0)
+    {
+      GError *error;
+      gboolean ret;
+      GDBusMessage *message;
+
+      message = g_dbus_message_new_signal ("/org/gtk/GDBus/PeerTestObject",
+                                           "org.gtk.GDBus.PeerTestInterface",
+                                           "PeerSignalWithNameSet");
+      g_dbus_message_set_sender (message, ":1.42");
+
+      error = NULL;
+      ret = g_dbus_connection_send_message (connection, message, NULL, &error);
+      g_assert_no_error (error);
+      g_assert (ret);
+      g_object_unref (message);
+
       g_dbus_method_invocation_return_value (invocation, NULL);
     }
   else if (g_strcmp0 (method_name, "OpenFile") == 0)
@@ -204,6 +224,22 @@ on_proxy_signal_received (GDBusProxy *proxy,
 
   g_assert (sender_name == NULL);
   g_assert_cmpstr (signal_name, ==, "PeerSignal");
+  g_main_loop_quit (loop);
+}
+
+static void
+on_proxy_signal_received_with_name_set (GDBusProxy *proxy,
+                                        gchar      *sender_name,
+                                        gchar      *signal_name,
+                                        GVariant   *parameters,
+                                        gpointer    user_data)
+{
+  PeerData *data = user_data;
+
+  data->signal_received = TRUE;
+
+  g_assert_cmpstr (sender_name, ==, ":1.42");
+  g_assert_cmpstr (signal_name, ==, "PeerSignalWithNameSet");
   g_main_loop_quit (loop);
 }
 
@@ -474,6 +510,7 @@ test_peer (void)
   GVariant *result;
   const gchar *s;
   GThread *service_thread;
+  gulong signal_handler_id;
 
   memset (&data, '\0', sizeof (PeerData));
   data.current_connections = g_ptr_array_new_with_free_func (g_object_unref);
@@ -555,10 +592,10 @@ test_peer (void)
   g_assert_cmpint (data.num_method_calls, ==, 1);
 
   /* make the other peer emit a signal - catch it */
-  g_signal_connect (proxy,
-                    "g-signal",
-                    G_CALLBACK (on_proxy_signal_received),
-                    &data);
+  signal_handler_id = g_signal_connect (proxy,
+                                        "g-signal",
+                                        G_CALLBACK (on_proxy_signal_received),
+                                        &data);
   g_assert (!data.signal_received);
   g_dbus_proxy_call (proxy,
                      "EmitSignal",
@@ -571,6 +608,31 @@ test_peer (void)
   g_main_loop_run (loop);
   g_assert (data.signal_received);
   g_assert_cmpint (data.num_method_calls, ==, 2);
+  g_signal_handler_disconnect (proxy, signal_handler_id);
+
+  /* Also ensure that messages with the sender header-field set gets
+   * delivered to the proxy - note that this doesn't really make sense
+   * e.g. names are meaning-less in a peer-to-peer case... but we
+   * support it because it makes sense in certain bridging
+   * applications - see e.g. #623815.
+   */
+  signal_handler_id = g_signal_connect (proxy,
+                                        "g-signal",
+                                        G_CALLBACK (on_proxy_signal_received_with_name_set),
+                                        &data);
+  data.signal_received = FALSE;
+  g_dbus_proxy_call (proxy,
+                     "EmitSignalWithNameSet",
+                     NULL,  /* no arguments */
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,  /* GCancellable */
+                     NULL,  /* GAsyncReadyCallback - we don't care about the result */
+                     NULL); /* user_data */
+  g_main_loop_run (loop);
+  g_assert (data.signal_received);
+  g_assert_cmpint (data.num_method_calls, ==, 3);
+  g_signal_handler_disconnect (proxy, signal_handler_id);
 
   /* check for UNIX fd passing */
 #ifdef G_OS_UNIX
@@ -708,7 +770,7 @@ test_peer (void)
   g_variant_get (result, "(&s)", &s);
   g_assert_cmpstr (s, ==, "You greeted me with 'Hey Again Peer!'.");
   g_variant_unref (result);
-  g_assert_cmpint (data.num_method_calls, ==, 4);
+  g_assert_cmpint (data.num_method_calls, ==, 5);
 
 #if 0
   /* TODO: THIS TEST DOESN'T WORK YET */
