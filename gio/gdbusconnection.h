@@ -278,7 +278,10 @@ struct _GDBusInterfaceVTable
   GDBusInterfaceSetPropertyFunc set_property;
 
   /*< private >*/
-  /* Padding for future expansion */
+  /* Padding for future expansion - also remember to update
+   * gdbusconnection.c:_g_dbus_interface_vtable_copy() when
+   * changing this.
+   */
   gpointer padding[8];
 };
 
@@ -374,15 +377,11 @@ struct _GDBusSubtreeVTable
   GDBusSubtreeDispatchFunc   dispatch;
 
   /*< private >*/
-  /* Padding for future expansion */
-  void (*_g_reserved1) (void);
-  void (*_g_reserved2) (void);
-  void (*_g_reserved3) (void);
-  void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
-  void (*_g_reserved6) (void);
-  void (*_g_reserved7) (void);
-  void (*_g_reserved8) (void);
+  /* Padding for future expansion - also remember to update
+   * gdbusconnection.c:_g_dbus_subtree_vtable_copy() when
+   * changing this.
+   */
+  gpointer padding[8];
 };
 
 guint            g_dbus_connection_register_subtree           (GDBusConnection            *connection,

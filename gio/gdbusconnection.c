@@ -3391,6 +3391,40 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static GDBusInterfaceVTable *
+_g_dbus_interface_vtable_copy (const GDBusInterfaceVTable *vtable)
+{
+  /* Don't waste memory by copying padding - remember to update this
+   * when changing struct _GDBusInterfaceVTable in gdbusconnection.h
+   */
+  return g_memdup ((gconstpointer) vtable, 3 * sizeof (gpointer));
+}
+
+static void
+_g_dbus_interface_vtable_free (GDBusInterfaceVTable *vtable)
+{
+  g_free (vtable);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static GDBusSubtreeVTable *
+_g_dbus_subtree_vtable_copy (const GDBusSubtreeVTable *vtable)
+{
+  /* Don't waste memory by copying padding - remember to update this
+   * when changing struct _GDBusSubtreeVTable in gdbusconnection.h
+   */
+  return g_memdup ((gconstpointer) vtable, 3 * sizeof (gpointer));
+}
+
+static void
+_g_dbus_subtree_vtable_free (GDBusSubtreeVTable *vtable)
+{
+  g_free (vtable);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 struct ExportedObject
 {
   gchar *object_path;
@@ -3415,8 +3449,8 @@ typedef struct
 
   guint                       id;
   gchar                      *interface_name;
-  const GDBusInterfaceVTable *vtable;
-  const GDBusInterfaceInfo   *interface_info;
+  GDBusInterfaceVTable       *vtable;
+  GDBusInterfaceInfo         *interface_info;
 
   GMainContext               *context;
   gpointer                    user_data;
@@ -3437,6 +3471,7 @@ exported_interface_free (ExportedInterface *ei)
     g_main_context_unref (ei->context);
 
   g_free (ei->interface_name);
+  _g_dbus_interface_vtable_free (ei->vtable);
   g_free (ei);
 }
 
@@ -4413,16 +4448,17 @@ obj_message_func (GDBusConnection *connection,
  * If an existing callback is already registered at @object_path and
  * @interface_name, then @error is set to #G_IO_ERROR_EXISTS.
  *
- * Note that @vtable is not copied, so the struct you pass must exist until
- * the path is unregistered. One possibility is to free @vtable at the
- * same time as @user_data when @user_data_free_func is called.
- *
  * GDBus automatically implements the standard D-Bus interfaces
  * org.freedesktop.DBus.Properties, org.freedesktop.DBus.Introspectable
  * and org.freedesktop.Peer, so you don't have to implement those for
  * the objects you export. You <emphasis>can</emphasis> implement
  * org.freedesktop.DBus.Properties yourself, e.g. to handle getting
  * and setting of properties asynchronously.
+ *
+ * Note that the reference count on @interface_info will be
+ * incremented by 1 (unless allocated statically, e.g. if the
+ * reference count is -1, see g_dbus_interface_info_ref()) for as long
+ * as the object is exported. Also note that @vtable will be copied.
  *
  * See <xref linkend="gdbus-server"/> for an example of how to use this method.
  *
@@ -4484,7 +4520,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   ei->eo = eo;
   ei->user_data = user_data;
   ei->user_data_free_func = user_data_free_func;
-  ei->vtable = vtable;
+  ei->vtable = _g_dbus_interface_vtable_copy (vtable);
   ei->interface_info = g_dbus_interface_info_ref ((GDBusInterfaceInfo *) interface_info);
   ei->interface_name = g_strdup (interface_info->name);
   ei->context = g_main_context_get_thread_default ();
@@ -5094,7 +5130,7 @@ struct ExportedSubtree
   guint                     id;
   gchar                    *object_path;
   GDBusConnection          *connection;
-  const GDBusSubtreeVTable *vtable;
+  GDBusSubtreeVTable       *vtable;
   GDBusSubtreeFlags         flags;
 
   GMainContext             *context;
@@ -5112,6 +5148,7 @@ exported_subtree_free (ExportedSubtree *es)
   if (es->context != NULL)
     g_main_context_unref (es->context);
 
+  _g_dbus_subtree_vtable_free (es->vtable);
   g_free (es->object_path);
   g_free (es);
 }
@@ -5532,6 +5569,9 @@ subtree_message_func (GDBusConnection *connection,
  * for object paths not registered via g_dbus_connection_register_object()
  * or other bindings.
  *
+ * Note that @vtable will be copied so you cannot change it after
+ * registration.
+ *
  * See <xref linkend="gdbus-subtree-server"/> for an example of how to use this method.
  *
  * Returns: 0 if @error is set, otherwise a subtree registration id (never 0)
@@ -5575,7 +5615,7 @@ g_dbus_connection_register_subtree (GDBusConnection           *connection,
   es->object_path = g_strdup (object_path);
   es->connection = connection;
 
-  es->vtable = vtable;
+  es->vtable = _g_dbus_subtree_vtable_copy (vtable);
   es->flags = flags;
   es->id = _global_subtree_registration_id++; /* TODO: overflow etc. */
   es->user_data = user_data;
