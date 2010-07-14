@@ -85,7 +85,6 @@ GDBusConnection *g_dbus_connection_new_for_address_sync       (const gchar      
 
 void             g_dbus_connection_start_message_processing   (GDBusConnection    *connection);
 gboolean         g_dbus_connection_is_closed                  (GDBusConnection    *connection);
-void             g_dbus_connection_close                      (GDBusConnection    *connection);
 GIOStream       *g_dbus_connection_get_stream                 (GDBusConnection    *connection);
 const gchar     *g_dbus_connection_get_guid                   (GDBusConnection    *connection);
 const gchar     *g_dbus_connection_get_unique_name            (GDBusConnection    *connection);
@@ -94,6 +93,19 @@ gboolean         g_dbus_connection_get_exit_on_close          (GDBusConnection  
 void             g_dbus_connection_set_exit_on_close          (GDBusConnection    *connection,
                                                                gboolean            exit_on_close);
 GDBusCapabilityFlags  g_dbus_connection_get_capabilities      (GDBusConnection    *connection);
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+void             g_dbus_connection_close                          (GDBusConnection     *connection,
+                                                                   GCancellable        *cancellable,
+                                                                   GAsyncReadyCallback  callback,
+                                                                   gpointer             user_data);
+gboolean         g_dbus_connection_close_finish                   (GDBusConnection     *connection,
+                                                                   GAsyncResult        *res,
+                                                                   GError             **error);
+gboolean         g_dbus_connection_close_sync                     (GDBusConnection     *connection,
+                                                                   GCancellable        *cancellable,
+                                                                   GError             **error);
 
 /* ---------------------------------------------------------------------------------------------------- */
 

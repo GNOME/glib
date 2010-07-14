@@ -39,6 +39,7 @@ static GMainLoop *loop = NULL;
 static void
 test_connection_life_cycle (void)
 {
+  gboolean ret;
   GDBusConnection *c;
   GDBusConnection *c2;
   GError *error;
@@ -88,9 +89,14 @@ test_connection_life_cycle (void)
   g_assert_no_error (error);
   g_assert (c2 != NULL);
   g_assert (!g_dbus_connection_is_closed (c2));
-  g_dbus_connection_close (c2);
+  ret = g_dbus_connection_close_sync (c2, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (ret);
   _g_assert_signal_received (c2, "closed");
   g_assert (g_dbus_connection_is_closed (c2));
+  ret = g_dbus_connection_close_sync (c2, NULL, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
+  g_assert (!ret);
   g_object_unref (c2);
 
   /*

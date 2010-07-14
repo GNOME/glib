@@ -1036,6 +1036,7 @@ g_dbus_connection_flush_sync (GDBusConnection  *connection,
   gboolean ret;
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   ret = FALSE;
 
@@ -1122,46 +1123,162 @@ set_closed_unlocked (GDBusConnection *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+close_in_thread_func (GSimpleAsyncResult *res,
+                      GObject            *object,
+                      GCancellable       *cancellable)
+{
+  GError *error;
+
+  error = NULL;
+  if (!g_dbus_connection_close_sync (G_DBUS_CONNECTION (object),
+                                     cancellable,
+                                     &error))
+    {
+      g_simple_async_result_set_from_error (res, error);
+      g_error_free (error);
+    }
+}
+
 /**
  * g_dbus_connection_close:
  * @connection: A #GDBusConnection.
+ * @cancellable: A #GCancellable or %NULL.
+ * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
+ * care about the result.
+ * @user_data: The data to pass to @callback.
  *
  * Closes @connection. Note that this never causes the process to
  * exit (this might only happen if the other end of a shared message
  * bus connection disconnects, see #GDBusConnection:exit-on-close).
  *
- * Once the stream is closed, all operations will return
+ * Once the connection is closed, operations such as sending a message
+ * will return with the error %G_IO_ERROR_CLOSED. Closing a connection
+ * will not automatically flush the connection so queued messages may
+ * be lost. Use g_dbus_connection_flush() if you need such guarantees.
+ *
+ * If @connection is already closed, this method fails with
  * %G_IO_ERROR_CLOSED.
  *
- * Note that closing a connection will not automatically flush the
- * connection so queued messages may be lost. Use
- * g_dbus_connection_flush() if you need such guarantees.
+ * When @connection has been closed, the #GDBusConnection::closed
+ * signal is emitted in the <link
+ * linkend="g-main-context-push-thread-default">thread-default main
+ * loop</link> of the thread that @connection was constructed in.
  *
- * If @connection is already closed, this method does nothing.
+ * This is an asynchronous method. When the operation is finished,
+ * @callback will be invoked in the <link
+ * linkend="g-main-context-push-thread-default">thread-default main
+ * loop</link> of the thread you are calling this method from. You can
+ * then call g_dbus_connection_close_finish() to get the result of the
+ * operation.  See g_dbus_connection_close_sync() for the synchronous
+ * version.
  *
  * Since: 2.26
  */
 void
-g_dbus_connection_close (GDBusConnection *connection)
+g_dbus_connection_close (GDBusConnection     *connection,
+                         GCancellable        *cancellable,
+                         GAsyncReadyCallback  callback,
+                         gpointer             user_data)
 {
+  GSimpleAsyncResult *simple;
+
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
+
+  simple = g_simple_async_result_new (NULL,
+                                      callback,
+                                      user_data,
+                                      g_dbus_connection_close);
+  g_simple_async_result_run_in_thread (simple,
+                                       close_in_thread_func,
+                                       G_PRIORITY_DEFAULT,
+                                       cancellable);
+  g_object_unref (simple);
+}
+
+/**
+ * g_dbus_connection_close_finish:
+ * @connection: A #GDBusConnection.
+ * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_close().
+ * @error: Return location for error or %NULL.
+ *
+ * Finishes an operation started with g_dbus_connection_close().
+ *
+ * Returns: %TRUE if the operation succeeded, %FALSE if @error is set.
+ *
+ * Since: 2.26
+ */
+gboolean
+g_dbus_connection_close_finish (GDBusConnection  *connection,
+                                GAsyncResult     *res,
+                                GError          **error)
+{
+  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+  gboolean ret;
+
+  ret = FALSE;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (res), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_dbus_connection_close);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    goto out;
+
+  ret = TRUE;
+
+ out:
+  return ret;
+}
+
+/**
+ * g_dbus_connection_close_sync:
+ * @connection: A #GDBusConnection.
+ * @cancellable: A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Synchronously closees @connection. The calling thread is blocked
+ * until this is done. See g_dbus_connection_close() for the
+ * asynchronous version of this method and more details about what it
+ * does.
+ *
+ * Returns: %TRUE if the operation succeeded, %FALSE if @error is set.
+ *
+ * Since: 2.26
+ */
+gboolean
+g_dbus_connection_close_sync (GDBusConnection     *connection,
+                              GCancellable        *cancellable,
+                              GError             **error)
+{
+  gboolean ret;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  ret = FALSE;
 
   CONNECTION_LOCK (connection);
   if (!connection->closed)
     {
-      GError *error = NULL;
-
-      /* TODO: do this async */
-      //g_debug ("closing connection %p's stream %p", connection, connection->stream);
-      if (!g_io_stream_close (connection->stream, NULL, &error))
-        {
-          g_warning ("Error closing stream: %s", error->message);
-          g_error_free (error);
-        }
-
-      set_closed_unlocked (connection, FALSE, NULL);
+      ret = g_io_stream_close (connection->stream,
+                               cancellable,
+                               error);
+      if (ret)
+        set_closed_unlocked (connection, FALSE, NULL);
+    }
+  else
+    {
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_CLOSED,
+                           _("The connection is closed"));
     }
   CONNECTION_UNLOCK (connection);
+
+  return ret;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
