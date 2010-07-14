@@ -29,45 +29,6 @@
 #include "girepository.h"
 #include "gitypelib-internal.h"
 
-static const guchar *
-load_typelib (const gchar  *filename,
-	      GModule     **dlhandle,
-	      gsize        *len)
-{
-  guchar *typelib;
-  gsize *typelib_size;
-  GModule *handle;
-
-  handle = g_module_open (filename, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
-  if (handle == NULL)
-    {
-      g_printerr ("Could not load typelib from '%s': %s\n",
-		  filename, g_module_error ());
-      return NULL;
-    }
-
-  if (!g_module_symbol (handle, "_G_TYPELIB", (gpointer *) &typelib))
-    {
-      g_printerr ("Could not load typelib from '%s': %s\n",
-		  filename, g_module_error ());
-      return NULL;
-    }
-
-  if (!g_module_symbol (handle, "_G_TYPELIB_SIZE", (gpointer *) &typelib_size))
-    {
-      g_printerr ("Could not load typelib from '%s': %s\n",
-		  filename, g_module_error ());
-      return NULL;
-    }
-
-  *len = *typelib_size;
-
-  if (dlhandle)
-    *dlhandle = handle;
-
-  return typelib;
-}
-
 int
 main (int argc, char *argv[])
 {
@@ -114,61 +75,30 @@ main (int argc, char *argv[])
 
   for (i = 0; input[i]; i++)
     {
-      GModule *dlhandle = NULL;
-      const guchar *typelib;
-      gsize len;
+      GError *error = NULL;
       const char *namespace;
+      GMappedFile *mfile;
+      GTypelib *typelib;
 
-      if (!shlib)
-	{
-	  if (!g_file_get_contents (input[i], (gchar **)&typelib, &len, &error))
-	    {
-	      g_fprintf (stderr, "failed to read '%s': %s\n",
-			 input[i], error->message);
-	      g_clear_error (&error);
-	      continue;
-	    }
-	}
-      else
-	{
-	  typelib = load_typelib (input[i], &dlhandle, &len);
-	  if (!typelib)
-	    {
-	      g_fprintf (stderr, "failed to load typelib from '%s'\n",
-			 input[i]);
-	      continue;
-	    }
-	}
+      mfile = g_mapped_file_new (input[i], FALSE, &error);
+      if (!mfile)
+	g_error ("failed to read '%s': %s", input[i], error->message);
 
       if (input[i + 1] && output)
 	needs_prefix = TRUE;
       else
 	needs_prefix = FALSE;
 
-      data = g_typelib_new_from_const_memory (typelib, len);
-      {
-        GError *error = NULL;
-        if (!g_typelib_validate (data, &error)) {
-          g_printerr ("typelib not valid: %s\n", error->message);
-          g_clear_error (&error);
-	  return 1;
-        }
-      }
-      namespace = g_irepository_load_typelib (g_irepository_get_default (), data, 0,
+      typelib = g_typelib_new_from_mapped_file (mfile, &error);
+      if (!typelib)
+	g_error ("failed to create typelib '%s': %s", input[i], error->message);
+
+      namespace = g_irepository_load_typelib (g_irepository_get_default (), typelib, 0,
 					      &error);
       if (namespace == NULL)
-	{
-	  g_printerr ("failed to load typelib: %s\n", error->message);
-	  return 1;
-	}
-
+	g_error ("failed to load typelib: %s", error->message);
+      
       gir_writer_write (output, namespace, needs_prefix, show_all);
-
-      if (dlhandle)
-	{
-	  g_module_close (dlhandle);
-	  dlhandle = NULL;
-	}
 
       /* when writing to stdout, stop after the first module */
       if (input[i + 1] && !output)
