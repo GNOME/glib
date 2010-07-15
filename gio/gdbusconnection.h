@@ -330,10 +330,13 @@ typedef gchar** (*GDBusSubtreeEnumerateFunc) (GDBusConnection       *connection,
  * @connection: A #GDBusConnection.
  * @sender: The unique bus name of the remote caller.
  * @object_path: The object path that was registered with g_dbus_connection_register_subtree().
- * @node: A node that is a child of @object_path (relative to @object_path) or <quote>/</quote> for the root of the subtree.
+ * @node: A node that is a child of @object_path (relative to @object_path) or %NULL for the root of the subtree.
  * @user_data: The @user_data #gpointer passed to g_dbus_connection_register_subtree().
  *
  * The type of the @introspect function in #GDBusSubtreeVTable.
+ *
+ * Subtrees are flat.  @node, if non-%NULL, is always exactly one
+ * segment of the object path (ie: it never contains a slash).
  *
  * This function should return %NULL to indicate that there is no object
  * at this node.
@@ -365,11 +368,14 @@ typedef GDBusInterfaceInfo ** (*GDBusSubtreeIntrospectFunc) (GDBusConnection    
  * @sender: The unique bus name of the remote caller.
  * @object_path: The object path that was registered with g_dbus_connection_register_subtree().
  * @interface_name: The D-Bus interface name that the method call or property access is for.
- * @node: A node that is a child of @object_path (relative to @object_path) or <quote>/</quote> for the root of the subtree.
+ * @node: A node that is a child of @object_path (relative to @object_path) or %NULL for the root of the subtree.
  * @out_user_data: Return location for user data to pass to functions in the returned #GDBusInterfaceVTable (never %NULL).
  * @user_data: The @user_data #gpointer passed to g_dbus_connection_register_subtree().
  *
  * The type of the @dispatch function in #GDBusSubtreeVTable.
+ *
+ * Subtrees are flat.  @node, if non-%NULL, is always exactly one
+ * segment of the object path (ie: it never contains a slash).
  *
  * Returns: A #GDBusInterfaceVTable or %NULL if you don't want to handle the methods.
  *

@@ -5199,7 +5199,7 @@ handle_subtree_introspect (GDBusConnection *connection,
     }
   else
     {
-      requested_node = "/";
+      requested_node = NULL;
     }
 
   interfaces = es->vtable->introspect (es->connection,
@@ -5319,7 +5319,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
     }
   else
     {
-      requested_node = "/";
+      requested_node = NULL;
     }
 
   /* get introspection data for the node */

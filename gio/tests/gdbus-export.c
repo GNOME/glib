@@ -628,17 +628,17 @@ subtree_introspect (GDBusConnection       *connection,
   /* VPs implement the Foo interface, EVPs implement the Bar interface. The root
    * does not implement any interfaces
    */
-  if (g_str_has_prefix (node, "vp"))
+  if (node == NULL)
+    {
+      return NULL;
+    }
+  else if (g_str_has_prefix (node, "vp"))
     {
       interfaces[0] = &foo_interface_info;
     }
   else if (g_str_has_prefix (node, "evp"))
     {
       interfaces[0] = &bar_interface_info;
-    }
-  else if (g_strcmp0 (node, "/") == 0)
-    {
-      return NULL;
     }
   else
     {
