@@ -325,16 +325,29 @@ typedef gchar** (*GDBusSubtreeEnumerateFunc) (GDBusConnection       *connection,
  *
  * The type of the @introspect function in #GDBusSubtreeVTable.
  *
- * Returns: A newly-allocated #GPtrArray with pointers to #GDBusInterfaceInfo describing
- * the interfaces implemented by @node.
+ * This function should return %NULL to indicate that there is no object
+ * at this node.
+ *
+ * If this function returns non-%NULL, the return value is expected to
+ * be a %NULL-terminated array of pointers to #GDBusInterfaceInfo
+ * structures describing the interfaces implemented by @node.  This
+ * array will have g_dbus_interface_info_unref() called on each item
+ * before being freed with g_free().
+ *
+ * The difference between returning %NULL and an array containing zero
+ * items is that the standard DBus interfaces will returned to the
+ * remote introspector in the empty array case, but not in the %NULL
+ * case.
+ *
+ * Returns: A %NULL-terminated array of pointers to #GDBusInterfaceInfo, or %NULL.
  *
  * Since: 2.26
  */
-typedef GPtrArray *(*GDBusSubtreeIntrospectFunc) (GDBusConnection       *connection,
-                                                  const gchar           *sender,
-                                                  const gchar           *object_path,
-                                                  const gchar           *node,
-                                                  gpointer               user_data);
+typedef GDBusInterfaceInfo ** (*GDBusSubtreeIntrospectFunc) (GDBusConnection       *connection,
+                                                             const gchar           *sender,
+                                                             const gchar           *object_path,
+                                                             const gchar           *node,
+                                                             gpointer               user_data);
 
 /**
  * GDBusSubtreeDispatchFunc:

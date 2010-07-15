@@ -614,37 +614,38 @@ subtree_enumerate (GDBusConnection       *connection,
 }
 
 /* Only allows certain objects, and aborts on unknowns */
-static GPtrArray *
+static GDBusInterfaceInfo **
 subtree_introspect (GDBusConnection       *connection,
                     const gchar           *sender,
                     const gchar           *object_path,
                     const gchar           *node,
                     gpointer               user_data)
 {
-  GPtrArray *interfaces;
+  const GDBusInterfaceInfo *interfaces[2] = {
+     NULL /* filled in below */, NULL
+  };
 
   /* VPs implement the Foo interface, EVPs implement the Bar interface. The root
    * does not implement any interfaces
    */
-  interfaces = g_ptr_array_new ();
   if (g_str_has_prefix (node, "vp"))
     {
-      g_ptr_array_add (interfaces, (gpointer) &foo_interface_info);
+      interfaces[0] = &foo_interface_info;
     }
   else if (g_str_has_prefix (node, "evp"))
     {
-      g_ptr_array_add (interfaces, (gpointer) &bar_interface_info);
+      interfaces[0] = &bar_interface_info;
     }
   else if (g_strcmp0 (node, "/") == 0)
     {
-      /* do nothing */
+      return NULL;
     }
   else
     {
       g_assert_not_reached ();
     }
 
-  return interfaces;
+  return g_memdup (interfaces, 2 * sizeof (void *));
 }
 
 static const GDBusInterfaceVTable *
@@ -691,20 +692,16 @@ dynamic_subtree_enumerate (GDBusConnection       *connection,
 }
 
 /* Allow all objects to be introspected */
-static GPtrArray *
+static GDBusInterfaceInfo **
 dynamic_subtree_introspect (GDBusConnection       *connection,
                             const gchar           *sender,
                             const gchar           *object_path,
                             const gchar           *node,
                             gpointer               user_data)
 {
-  GPtrArray *interfaces;
+  const GDBusInterfaceInfo *interfaces[2] = { &dyna_interface_info, NULL };
 
-  /* All nodes (including the root node) implements the Dyna interface */
-  interfaces = g_ptr_array_new ();
-  g_ptr_array_add (interfaces, (gpointer) &dyna_interface_info);
-
-  return interfaces;
+  return g_memdup (interfaces, 2 * sizeof (void *));
 }
 
 static const GDBusInterfaceVTable *

@@ -5167,7 +5167,7 @@ handle_subtree_introspect (GDBusConnection *connection,
   const gchar *sender;
   const gchar *requested_object_path;
   const gchar *requested_node;
-  GPtrArray *interfaces;
+  GDBusInterfaceInfo **interfaces;
   guint n;
   gchar **subnode_paths;
 
@@ -5209,18 +5209,14 @@ handle_subtree_introspect (GDBusConnection *connection,
                                        es->user_data);
   if (interfaces != NULL)
     {
-      if (interfaces->len > 0)
-        {
-          /* we're in business */
-          introspect_append_standard_interfaces (s);
+      introspect_append_standard_interfaces (s);
 
-          for (n = 0; n < interfaces->len; n++)
-            {
-              const GDBusInterfaceInfo *interface_info = interfaces->pdata[n];
-              g_dbus_interface_info_generate_xml (interface_info, 2, s);
-            }
+      for (n = 0; interfaces[n] != NULL; n++)
+        {
+          g_dbus_interface_info_generate_xml (interfaces[n], 2, s);
+          g_dbus_interface_info_unref (interfaces[n]);
         }
-      g_ptr_array_unref (interfaces);
+      g_free (interfaces);
     }
 
   /* then include <node> entries from the Subtree for the root */
@@ -5265,12 +5261,11 @@ handle_subtree_method_invocation (GDBusConnection *connection,
   const gchar *requested_object_path;
   const gchar *requested_node;
   gboolean is_root;
-  gchar **children;
   const GDBusInterfaceInfo *interface_info;
   const GDBusInterfaceVTable *interface_vtable;
   gpointer interface_user_data;
   guint n;
-  GPtrArray *interfaces;
+  GDBusInterfaceInfo **interfaces;
   gboolean is_property_get;
   gboolean is_property_set;
   gboolean is_property_get_all;
@@ -5298,19 +5293,29 @@ handle_subtree_method_invocation (GDBusConnection *connection,
         is_property_get_all = TRUE;
     }
 
-  children = es->vtable->enumerate (es->connection,
-                                    sender,
-                                    es->object_path,
-                                    es->user_data);
-
   if (!is_root)
     {
       requested_node = strrchr (requested_object_path, '/') + 1;
 
-      /* If not dynamic, skip if requested node is not part of children */
-      if (!(es->flags & G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES) &&
-          !_g_strv_has_string ((const gchar * const *) children, requested_node))
-        goto out;
+      if (~es->flags & G_DBUS_SUBTREE_FLAGS_DISPATCH_TO_UNENUMERATED_NODES)
+        {
+          /* We don't want to dispatch to unenumerated
+           * nodes, so ensure that the child exists.
+           */
+          gchar **children;
+          gboolean exists;
+
+          children = es->vtable->enumerate (es->connection,
+                                            sender,
+                                            es->object_path,
+                                            es->user_data);
+
+          exists = _g_strv_has_string ((const gchar * const *) children, requested_node);
+          g_strfreev (children);
+
+          if (!exists)
+            goto out;
+        }
     }
   else
     {
@@ -5323,13 +5328,15 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                        requested_object_path,
                                        requested_node,
                                        es->user_data);
-  g_assert (interfaces != NULL);
+
+  if (interfaces == NULL)
+    goto out;
+
   interface_info = NULL;
-  for (n = 0; n < interfaces->len; n++)
+  for (n = 0; interfaces[n] != NULL; n++)
     {
-      const GDBusInterfaceInfo *id_n = (const GDBusInterfaceInfo *) interfaces->pdata[n];
-      if (g_strcmp0 (id_n->name, interface_name) == 0)
-        interface_info = id_n;
+      if (g_strcmp0 (interfaces[n]->name, interface_name) == 0)
+        interface_info = interfaces[n];
     }
 
   /* dispatch the call if the user wants to handle it */
@@ -5371,11 +5378,10 @@ handle_subtree_method_invocation (GDBusConnection *connection,
         g_assert_not_reached ();
 
       /* see if the object supports this interface at all */
-      for (n = 0; n < interfaces->len; n++)
+      for (n = 0; interfaces[n] != NULL; n++)
         {
-          const GDBusInterfaceInfo *id_n = (const GDBusInterfaceInfo *) interfaces->pdata[n];
-          if (g_strcmp0 (id_n->name, interface_name) == 0)
-            interface_info = id_n;
+          if (g_strcmp0 (interfaces[n]->name, interface_name) == 0)
+            interface_info = interfaces[n];
         }
 
       /* Fail with org.freedesktop.DBus.Error.InvalidArgs if the user-code
@@ -5437,8 +5443,12 @@ handle_subtree_method_invocation (GDBusConnection *connection,
 
  out:
   if (interfaces != NULL)
-    g_ptr_array_unref (interfaces);
-  g_strfreev (children);
+    {
+      for (n = 0; interfaces[n] != NULL; n++)
+        g_dbus_interface_info_unref (interfaces[n]);
+      g_free (interfaces);
+    }
+
   return handled;
 }
 
