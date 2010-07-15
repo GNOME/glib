@@ -5410,7 +5410,12 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                                &interface_user_data,
                                                es->user_data);
       if (interface_vtable == NULL)
-        goto out;
+        {
+          g_warning ("The subtree introspection function indicates that '%s' "
+                     "is a valid interface name, but calling the dispatch "
+                     "function on that interface gave us NULL", interface_name);
+          goto out;
+        }
 
       if (is_property_get || is_property_set)
         {
