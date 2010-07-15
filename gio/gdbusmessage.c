@@ -2048,7 +2048,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
     }
   else
     {
-      if (signature != NULL)
+      if (signature != NULL && strlen (signature_str) > 0)
         {
           g_set_error (error,
                        G_IO_ERROR,

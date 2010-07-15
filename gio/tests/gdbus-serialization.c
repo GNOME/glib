@@ -484,12 +484,19 @@ get_body_signature (GVariant *value)
   gsize len;
   gchar *ret;
 
+  if (value == NULL)
+    {
+      ret = g_strdup ("");
+      goto out;
+    }
+
   s = g_variant_get_type_string (value);
   len = strlen (s);
-  g_assert (len>=2);
+  g_assert (len >= 2);
 
   ret = g_strndup (s + 1, len - 2);
 
+ out:
   return ret;
 }
 
@@ -560,20 +567,27 @@ check_serialization (GVariant *value,
                                                     blob_size,
                                                     G_DBUS_CAPABILITY_FLAGS_NONE,
                                                     &error);
-  g_assert_no_error (error);
   g_assert (recovered_message != NULL);
-  g_assert (g_dbus_message_get_body (recovered_message) != NULL);
+  g_assert_no_error (error);
 
-  if (!g_variant_equal (g_dbus_message_get_body (recovered_message), value))
+  if (value == NULL)
     {
-      s = g_variant_print (g_dbus_message_get_body (recovered_message), TRUE);
-      s1 = g_variant_print (value, TRUE);
-      g_printerr ("Recovered value:\n%s\ndoes not match given value\n%s\n",
-                  s,
-                  s1);
-      g_free (s);
-      g_free (s1);
-      g_assert_not_reached ();
+      g_assert (g_dbus_message_get_body (recovered_message) == NULL);
+    }
+  else
+    {
+      g_assert (g_dbus_message_get_body (recovered_message) != NULL);
+      if (!g_variant_equal (g_dbus_message_get_body (recovered_message), value))
+        {
+          s = g_variant_print (g_dbus_message_get_body (recovered_message), TRUE);
+          s1 = g_variant_print (value, TRUE);
+          g_printerr ("Recovered value:\n%s\ndoes not match given value\n%s\n",
+                      s,
+                      s1);
+          g_free (s);
+          g_free (s1);
+          g_assert_not_reached ();
+        }
     }
   g_object_unref (message);
   g_object_unref (recovered_message);
@@ -582,6 +596,8 @@ check_serialization (GVariant *value,
 static void
 message_serialize_basic (void)
 {
+  check_serialization (NULL, "");
+
   check_serialization (g_variant_new ("(sogybnqiuxtd)",
                                       "this is a string",
                                       "/this/is/a/path",
