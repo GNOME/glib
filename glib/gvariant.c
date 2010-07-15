@@ -1165,7 +1165,7 @@ g_variant_dup_string (GVariant *value,
 
 /**
  * g_variant_new_strv:
- * @strv: (array length=length): an array of strings
+ * @strv: (array length=length) (element-type utf8): an array of strings
  * @length: the length of @strv, or -1
  * @returns: a new floating #GVariant instance
  *
@@ -1200,7 +1200,8 @@ g_variant_new_strv (const gchar * const *strv,
  * g_variant_get_strv:
  * @value: an array of strings #GVariant
  * @length: (allow-none): the length of the result, or %NULL
- * @returns: (array length=length): an array of constant strings
+ * @returns: (array length=length) (transfer container): an array of constant
+ * strings
  *
  * Gets the contents of an array of strings #GVariant.  This call
  * makes a shallow copy; the return result should be released with
