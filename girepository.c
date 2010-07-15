@@ -131,6 +131,9 @@ init_globals (void)
           g_free (custom_dirs);
         }
 
+      if (override_search_path != NULL)
+        override_search_path = g_slist_reverse (override_search_path);
+
       libdir = GOBJECT_INTROSPECTION_LIBDIR;
 
       typelib_dir = g_build_filename (libdir, "girepository-1.0", NULL);
