@@ -455,9 +455,11 @@ g_socket_create_socket (GSocketFamily   family,
     }
 
 #ifdef SOCK_CLOEXEC
-  native_type |= SOCK_CLOEXEC;
+  fd = socket (family, native_type | SOCK_CLOEXEC, protocol);
+  /* It's possible that libc has SOCK_CLOEXEC but the kernel does not */
+  if (fd < 0 && errno == EINVAL)
 #endif
-  fd = socket (family, native_type, protocol);
+    fd = socket (family, native_type, protocol);
 
   if (fd < 0)
     {
