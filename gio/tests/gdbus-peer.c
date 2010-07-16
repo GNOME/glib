@@ -29,6 +29,9 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+/* for g_unlink() */
+#include <glib/gstdio.h>
+
 #include <gio/gunixsocketaddress.h>
 #include <gio/gunixfdlist.h>
 
@@ -980,6 +983,205 @@ delayed_message_processing (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static gboolean
+nonce_tcp_on_authorize_authenticated_peer (GDBusAuthObserver *observer,
+                                           GIOStream         *stream,
+                                           GCredentials      *credentials,
+                                           gpointer           user_data)
+{
+  PeerData *data = user_data;
+  gboolean authorized;
+
+  data->num_connection_attempts++;
+
+  authorized = TRUE;
+  if (!data->accept_connection)
+    {
+      authorized = FALSE;
+      g_main_loop_quit (loop);
+    }
+
+  return authorized;
+}
+
+/* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
+static void
+nonce_tcp_on_new_connection (GDBusServer *server,
+                             GDBusConnection *connection,
+                             gpointer user_data)
+{
+  PeerData *data = user_data;
+
+  g_ptr_array_add (data->current_connections, g_object_ref (connection));
+
+  g_main_loop_quit (loop);
+}
+
+static gpointer
+nonce_tcp_service_thread_func (gpointer user_data)
+{
+  PeerData *data = user_data;
+  GMainContext *service_context;
+  GDBusAuthObserver *observer;
+  GError *error;
+
+  service_context = g_main_context_new ();
+  g_main_context_push_thread_default (service_context);
+
+  error = NULL;
+  observer = g_dbus_auth_observer_new ();
+  server = g_dbus_server_new_sync ("nonce-tcp:",
+                                   G_DBUS_SERVER_FLAGS_NONE,
+                                   test_guid,
+                                   observer,
+                                   NULL, /* cancellable */
+                                   &error);
+  g_assert_no_error (error);
+
+  g_signal_connect (server,
+                    "new-connection",
+                    G_CALLBACK (nonce_tcp_on_new_connection),
+                    data);
+  g_signal_connect (observer,
+                    "authorize-authenticated-peer",
+                    G_CALLBACK (nonce_tcp_on_authorize_authenticated_peer),
+                    data);
+  g_object_unref (observer);
+
+  g_dbus_server_start (server);
+
+  service_loop = g_main_loop_new (service_context, FALSE);
+  g_main_loop_run (service_loop);
+
+  g_main_context_pop_thread_default (service_context);
+
+  g_main_loop_unref (service_loop);
+  g_main_context_unref (service_context);
+
+  /* test code specifically unrefs the server - see below */
+  g_assert (server == NULL);
+
+  return NULL;
+}
+
+static void
+test_nonce_tcp (void)
+{
+  PeerData data;
+  GError *error;
+  GThread *service_thread;
+  GDBusConnection *c;
+  gchar *s;
+  gchar *nonce_file;
+  gboolean res;
+  const gchar *address;
+
+  memset (&data, '\0', sizeof (PeerData));
+  data.current_connections = g_ptr_array_new_with_free_func (g_object_unref);
+
+  error = NULL;
+  server = NULL;
+  service_loop = NULL;
+  service_thread = g_thread_create (nonce_tcp_service_thread_func,
+                                    &data,
+                                    TRUE,
+                                    &error);
+  while (service_loop == NULL)
+    g_thread_yield ();
+  g_assert (server != NULL);
+
+
+  /* bring up a connection and accept it */
+  data.accept_connection = TRUE;
+  error = NULL;
+  c = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (server),
+                                              G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                              NULL, /* GDBusAuthObserver */
+                                              NULL, /* cancellable */
+                                              &error);
+  g_assert_no_error (error);
+  g_assert (c != NULL);
+  while (data.current_connections->len < 1)
+    g_main_loop_run (loop);
+  g_assert_cmpint (data.current_connections->len, ==, 1);
+  g_assert_cmpint (data.num_connection_attempts, ==, 1);
+  g_assert (g_dbus_connection_get_unique_name (c) == NULL);
+  g_assert_cmpstr (g_dbus_connection_get_guid (c), ==, test_guid);
+  g_object_unref (c);
+
+  /* now, try to subvert the nonce file (this assumes noncefile is the last key/value pair)
+   */
+
+  address = g_dbus_server_get_client_address (server);
+
+  s = strstr (address, "noncefile=");
+  g_assert (s != NULL);
+  s += sizeof "noncefile=" - 1;
+  nonce_file = g_strdup (s);
+
+  /* First try invalid data in the nonce file - this will actually
+   * make the client send this and the server will reject it. The way
+   * it works is that if the nonce doesn't match, the server will
+   * simply close the connection. So, from the client point of view,
+   * we can see a variety of errors.
+   */
+  error = NULL;
+  res = g_file_set_contents (nonce_file,
+                             "0123456789012345",
+                             -1,
+                             &error);
+  g_assert_no_error (error);
+  g_assert (res);
+  c = g_dbus_connection_new_for_address_sync (address,
+                                              G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                              NULL, /* GDBusAuthObserver */
+                                              NULL, /* cancellable */
+                                              &error);
+  _g_assert_error_domain (error, G_IO_ERROR);
+  g_assert (c == NULL);
+
+  /* Then try with a nonce-file of incorrect length - this will make
+   * the client complain - we won't even try connecting to the server
+   * for this
+   */
+  error = NULL;
+  res = g_file_set_contents (nonce_file,
+                             "0123456789012345_",
+                             -1,
+                             &error);
+  g_assert_no_error (error);
+  g_assert (res);
+  c = g_dbus_connection_new_for_address_sync (address,
+                                              G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                              NULL, /* GDBusAuthObserver */
+                                              NULL, /* cancellable */
+                                              &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert (c == NULL);
+
+  /* Finally try with no nonce-file at all */
+  g_assert_cmpint (g_unlink (nonce_file), ==, 0);
+  error = NULL;
+  c = g_dbus_connection_new_for_address_sync (address,
+                                              G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                              NULL, /* GDBusAuthObserver */
+                                              NULL, /* cancellable */
+                                              &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_assert (c == NULL);
+
+  g_free (nonce_file);
+
+  g_dbus_server_stop (server);
+  g_object_unref (server);
+  server = NULL;
+
+  g_main_loop_quit (service_loop);
+  g_thread_join (service_thread);
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1002,6 +1204,7 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
+  g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
 
   ret = g_test_run();
 

@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <stdio.h>
+#include <errno.h>
 
 #include "gioerror.h"
 #include "gdbusutils.h"
@@ -148,19 +150,16 @@ is_valid_unix (const gchar  *address_entry,
     {
       if (tmpdir != NULL || abstract != NULL)
         goto meaningless;
-      /* TODO: validate path */
     }
   else if (tmpdir != NULL)
     {
       if (path != NULL || abstract != NULL)
         goto meaningless;
-      /* TODO: validate tmpdir */
     }
   else if (abstract != NULL)
     {
       if (path != NULL || tmpdir != NULL)
         goto meaningless;
-      /* TODO: validate abstract */
     }
   else
     {
@@ -460,9 +459,21 @@ _g_dbus_address_parse_entry (const gchar  *address_entry,
           goto out;
         }
 
-      /* TODO: actually validate that no illegal characters are present before and after then '=' sign */
       key = g_uri_unescape_segment (kv_pair, s, NULL);
       value = g_uri_unescape_segment (s + 1, kv_pair + strlen (kv_pair), NULL);
+      if (key == NULL || value == NULL)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Error unescaping key or value in Key/Value pair %d, `%s', in address element `%s'"),
+                       n,
+                       kv_pair,
+                       address_entry);
+          g_free (key);
+          g_free (value);
+          goto out;
+        }
       g_hash_table_insert (key_value_pairs, key, value);
     }
 
@@ -603,7 +614,7 @@ g_dbus_address_connect (const gchar   *address_entry,
             }
         }
 
-      /* TODO: deal with family */
+      /* TODO: deal with family key/value-pair */
       connectable = g_network_address_new (host, port);
     }
   else if (g_strcmp0 (address_entry, "autolaunch:") == 0)
@@ -651,50 +662,67 @@ g_dbus_address_connect (const gchar   *address_entry,
 
       if (nonce_file != NULL)
         {
-          gchar *nonce_contents;
-          gsize nonce_length;
+          gchar nonce_contents[16 + 1];
+          size_t num_bytes_read;
+          FILE *f;
 
-          /* TODO: too dangerous to read the entire file? (think denial-of-service etc.) */
-          if (!g_file_get_contents (nonce_file,
-                                    &nonce_contents,
-                                    &nonce_length,
-                                    error))
+          /* be careful to read only 16 bytes - we also check that the file is only 16 bytes long */
+          f = fopen (nonce_file, "rb");
+          if (f == NULL)
             {
-              g_prefix_error (error, _("Error reading nonce file `%s':"), nonce_file);
-              g_object_unref (ret);
-              ret = NULL;
-              goto out;
-            }
-
-          if (nonce_length != 16)
-            {
-              /* G_GSIZE_FORMAT doesn't work with gettext, so we use %lu */
               g_set_error (error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
-                           _("The nonce-file `%s' was %lu bytes. Expected 16 bytes."),
+                           _("Error opening nonce file `%s': %s"),
                            nonce_file,
-                           nonce_length);
-              g_free (nonce_contents);
+                           g_strerror (errno));
               g_object_unref (ret);
               ret = NULL;
               goto out;
             }
+          num_bytes_read = fread (nonce_contents,
+                                  sizeof (gchar),
+                                  16 + 1,
+                                  f);
+          if (num_bytes_read != 16)
+            {
+              if (num_bytes_read == 0)
+                {
+                  g_set_error (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("Error reading from nonce file `%s': %s"),
+                               nonce_file,
+                               g_strerror (errno));
+                }
+              else
+                {
+                  g_set_error (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("Error reading from nonce file `%s', expected 16 bytes, got %d"),
+                               nonce_file,
+                               (gint) num_bytes_read);
+                }
+              g_object_unref (ret);
+              ret = NULL;
+              fclose (f);
+              goto out;
+            }
+          fclose (f);
 
           if (!g_output_stream_write_all (g_io_stream_get_output_stream (ret),
                                           nonce_contents,
-                                          nonce_length,
+                                          16,
                                           NULL,
                                           cancellable,
                                           error))
             {
-              g_prefix_error (error, _("Error write contents of nonce file `%s' to stream:"), nonce_file);
+              g_prefix_error (error, _("Error writing contents of nonce file `%s' to stream:"), nonce_file);
               g_object_unref (ret);
               ret = NULL;
-              g_free (nonce_contents);
               goto out;
             }
-          g_free (nonce_contents);
         }
     }
 
@@ -732,7 +760,6 @@ g_dbus_address_try_connect_one (const gchar   *address_entry,
   if (ret == NULL)
     goto out;
 
-  /* TODO: validate that guid is of correct format */
   guid = g_hash_table_lookup (key_value_pairs, "guid");
   if (guid != NULL && out_guid != NULL)
     *out_guid = g_strdup (guid);
@@ -1103,7 +1130,6 @@ get_session_address_dbus_launch (GError **error)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* TODO: implement for UNIX, Win32 and OS X */
 static gchar *
 get_session_address_platform_specific (GError **error)
 {
@@ -1112,6 +1138,7 @@ get_session_address_platform_specific (GError **error)
   /* need to handle OS X in a different way since `dbus-launch --autolaunch' probably won't work there */
   ret = get_session_address_dbus_launch (error);
 #else
+  /* TODO: implement for UNIX, Win32 and OS X */
   ret = NULL;
   g_set_error (error,
                G_IO_ERROR,
