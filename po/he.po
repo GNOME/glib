@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-16 17:19+0300\n"
-"PO-Revision-Date: 2010-07-16 17:20+0200\n"
+"POT-Creation-Date: 2010-07-17 13:00+0300\n"
+"PO-Revision-Date: 2010-07-17 13:01+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1201,40 +1201,40 @@ msgstr "There is no GCredentials support for your platform"
 msgid "Unexpected early end-of-stream"
 msgstr "Unexpected early end-of-stream"
 
-#: ../gio/gdbusaddress.c:140 ../gio/gdbusaddress.c:231
-#: ../gio/gdbusaddress.c:305
+#: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
+#: ../gio/gdbusaddress.c:304
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Unsupported key `%s' in address entry `%s'"
 
-#: ../gio/gdbusaddress.c:170
+#: ../gio/gdbusaddress.c:169
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 
-#: ../gio/gdbusaddress.c:183
+#: ../gio/gdbusaddress.c:182
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Meaningless key/value pair combination in address entry `%s'"
 
-#: ../gio/gdbusaddress.c:246 ../gio/gdbusaddress.c:320
+#: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Error in address `%s' - the port attribute is malformed"
 
-#: ../gio/gdbusaddress.c:257 ../gio/gdbusaddress.c:331
+#: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:330
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Error in address `%s' - the family attribute is malformed"
 
-#: ../gio/gdbusaddress.c:435
+#: ../gio/gdbusaddress.c:434
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "Address element `%s', does not contain a colon (:)"
 
-#: ../gio/gdbusaddress.c:456
+#: ../gio/gdbusaddress.c:455
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
@@ -1243,7 +1243,16 @@ msgstr ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 
-#: ../gio/gdbusaddress.c:536
+#: ../gio/gdbusaddress.c:469
+#, c-format
+msgid ""
+"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
+"`%s'"
+msgstr ""
+"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
+"`%s'"
+
+#: ../gio/gdbusaddress.c:547
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -1252,75 +1261,80 @@ msgstr ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 
-#: ../gio/gdbusaddress.c:572
+#: ../gio/gdbusaddress.c:583
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Error in address `%s' - the host attribute is missing or malformed"
 
-#: ../gio/gdbusaddress.c:586
+#: ../gio/gdbusaddress.c:597
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Error in address `%s' - the port attribute is missing or malformed"
 
-#: ../gio/gdbusaddress.c:600
+#: ../gio/gdbusaddress.c:611
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Error in address `%s' - the noncefile attribute is missing or malformed"
 
-#: ../gio/gdbusaddress.c:621
+#: ../gio/gdbusaddress.c:632
 msgid "Error auto-launching: "
 msgstr "Error auto-launching: "
 
-#: ../gio/gdbusaddress.c:629
+#: ../gio/gdbusaddress.c:640
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Unknown or unsupported transport `%s' for address `%s'"
 
-#: ../gio/gdbusaddress.c:663
+#: ../gio/gdbusaddress.c:676
 #, c-format
-msgid "Error reading nonce file `%s':"
-msgstr "Error reading nonce file `%s':"
+msgid "Error opening nonce file `%s': %s"
+msgstr "Error opening nonce file `%s': %s"
 
-#: ../gio/gdbusaddress.c:675
+#: ../gio/gdbusaddress.c:694
 #, c-format
-msgid "The nonce-file `%s' was %lu bytes. Expected 16 bytes."
-msgstr "The nonce-file `%s' was %lu bytes. Expected 16 bytes."
+msgid "Error reading from nonce file `%s': %s"
+msgstr "Error reading from nonce file `%s': %s"
 
-#: ../gio/gdbusaddress.c:691
+#: ../gio/gdbusaddress.c:703
 #, c-format
-msgid "Error write contents of nonce file `%s' to stream:"
-msgstr "Error write contents of nonce file `%s' to stream:"
+msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgstr "Error reading from nonce file `%s', expected 16 bytes, got %d"
 
-#: ../gio/gdbusaddress.c:915
+#: ../gio/gdbusaddress.c:721
+#, c-format
+msgid "Error writing contents of nonce file `%s' to stream:"
+msgstr "Error writing contents of nonce file `%s' to stream:"
+
+#: ../gio/gdbusaddress.c:942
 msgid "The given address is empty"
 msgstr "The given address is empty"
 
-#: ../gio/gdbusaddress.c:984
+#: ../gio/gdbusaddress.c:1011
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Cannot spawn a message bus without a machine-id: "
 
-#: ../gio/gdbusaddress.c:1021
+#: ../gio/gdbusaddress.c:1048
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Error spawning command line `%s': "
 
-#: ../gio/gdbusaddress.c:1032
+#: ../gio/gdbusaddress.c:1059
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Abnormal program termination spawning command line `%s': %s"
 
-#: ../gio/gdbusaddress.c:1046
+#: ../gio/gdbusaddress.c:1073
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "Command line `%s' exited with non-zero exit status %d: %s"
 
-#: ../gio/gdbusaddress.c:1119
+#: ../gio/gdbusaddress.c:1146
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Cannot determine session bus address (not implemented for this OS)"
 
-#: ../gio/gdbusaddress.c:1218 ../gio/gdbusconnection.c:5959
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5959
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1329,7 +1343,7 @@ msgstr ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 
-#: ../gio/gdbusaddress.c:1227 ../gio/gdbusconnection.c:5968
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5968
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1337,7 +1351,7 @@ msgstr ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 
-#: ../gio/gdbusaddress.c:1237
+#: ../gio/gdbusaddress.c:1264
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Unknown bus type %d"
@@ -2913,6 +2927,9 @@ msgstr "Need more input"
 #: ../gio/gzlibdecompressor.c:242
 msgid "Invalid compressed data"
 msgstr "Invalid hostname"
+
+#~ msgid "The nonce-file `%s' was %lu bytes. Expected 16 bytes."
+#~ msgstr "The nonce-file `%s' was %lu bytes. Expected 16 bytes."
 
 #~ msgid "Encountered array of length %"
 #~ msgstr "Encountered array of length %"
