@@ -534,6 +534,23 @@ gvdb_table_unref (GvdbTable *file)
     }
 }
 
+/**
+ * gvdb_table_is_valid:
+ * @table: a #GvdbTable
+ * @returns: %TRUE if @table is still valid
+ *
+ * Checks if the table is still valid.
+ *
+ * An on-disk GVDB can be marked as invalid.  This happens when the file
+ * has been replaced.  The appropriate action is typically to reopen the
+ * file.
+ **/
+gboolean
+gvdb_table_is_valid (GvdbTable *table)
+{
+  return !!table->data;
+}
+
 void
 gvdb_table_walk (GvdbTable         *table,
                  const gchar       *key,
