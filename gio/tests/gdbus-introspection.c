@@ -39,9 +39,9 @@ test_introspection (GDBusProxy *proxy)
   GError *error;
   const gchar *xml_data;
   GDBusNodeInfo *node_info;
-  const GDBusInterfaceInfo *interface_info;
-  const GDBusMethodInfo *method_info;
-  const GDBusSignalInfo *signal_info;
+  GDBusInterfaceInfo *interface_info;
+  GDBusMethodInfo *method_info;
+  GDBusSignalInfo *signal_info;
   GVariant *result;
 
   error = NULL;

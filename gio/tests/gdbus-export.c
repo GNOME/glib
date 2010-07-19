@@ -986,7 +986,7 @@ test_object_registration (void)
 
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss",
-                                                       &foo_interface_info,
+                                                       (GDBusInterfaceInfo *) &foo_interface_info,
                                                        &foo_vtable,
                                                        &data,
                                                        on_object_unregistered,
@@ -998,7 +998,7 @@ test_object_registration (void)
 
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss",
-                                                       &bar_interface_info,
+                                                       (GDBusInterfaceInfo *) &bar_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1010,7 +1010,7 @@ test_object_registration (void)
 
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/worker1",
-                                                       &foo_interface_info,
+                                                       (GDBusInterfaceInfo *) &foo_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1022,7 +1022,7 @@ test_object_registration (void)
 
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/worker1p1",
-                                                       &foo_interface_info,
+                                                       (GDBusInterfaceInfo *) &foo_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1034,7 +1034,7 @@ test_object_registration (void)
 
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/worker2",
-                                                       &bar_interface_info,
+                                                       (GDBusInterfaceInfo *) &bar_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1046,7 +1046,7 @@ test_object_registration (void)
 
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/interns/intern1",
-                                                       &foo_interface_info,
+                                                       (GDBusInterfaceInfo *) &foo_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1059,7 +1059,7 @@ test_object_registration (void)
   /* ... and try again at another path */
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/interns/intern2",
-                                                       &bar_interface_info,
+                                                       (GDBusInterfaceInfo *) &bar_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1072,7 +1072,7 @@ test_object_registration (void)
   /* register at the same path/interface - this should fail */
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/interns/intern2",
-                                                       &bar_interface_info,
+                                                       (GDBusInterfaceInfo *) &bar_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1086,7 +1086,7 @@ test_object_registration (void)
   /* register at different interface - shouldn't fail */
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/interns/intern2",
-                                                       &foo_interface_info,
+                                                       (GDBusInterfaceInfo *) &foo_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1104,7 +1104,7 @@ test_object_registration (void)
   /* register it back */
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/interns/intern2",
-                                                       &foo_interface_info,
+                                                       (GDBusInterfaceInfo *) &foo_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1116,7 +1116,7 @@ test_object_registration (void)
 
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/interns/intern3",
-                                                       &bar_interface_info,
+                                                       (GDBusInterfaceInfo *) &bar_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1172,7 +1172,7 @@ test_object_registration (void)
    */
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/executives/non_subtree_object",
-                                                       &bar_interface_info,
+                                                       (GDBusInterfaceInfo *) &bar_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,
@@ -1183,7 +1183,7 @@ test_object_registration (void)
   num_successful_registrations++;
   registration_id = g_dbus_connection_register_object (c,
                                                        "/foo/boss/executives/non_subtree_object",
-                                                       &foo_interface_info,
+                                                       (GDBusInterfaceInfo *) &foo_interface_info,
                                                        NULL,
                                                        &data,
                                                        on_object_unregistered,

@@ -2541,6 +2541,13 @@ g_dbus_interface_info_generate_xml
 g_dbus_node_info_new_for_xml
 g_dbus_node_info_lookup_interface
 g_dbus_node_info_generate_xml
+G_TYPE_DBUS_NODE_INFO
+G_TYPE_DBUS_INTERFACE_INFO
+G_TYPE_DBUS_METHOD_INFO
+G_TYPE_DBUS_SIGNAL_INFO
+G_TYPE_DBUS_PROPERTY_INFO
+G_TYPE_DBUS_ARG_INFO
+G_TYPE_DBUS_ANNOTATION_INFO
 g_dbus_node_info_ref
 g_dbus_interface_info_ref
 g_dbus_method_info_ref
@@ -2555,14 +2562,6 @@ g_dbus_signal_info_unref
 g_dbus_property_info_unref
 g_dbus_arg_info_unref
 g_dbus_annotation_info_unref
-<SUBSECTION Standard>
-G_TYPE_DBUS_NODE_INFO
-G_TYPE_DBUS_INTERFACE_INFO
-G_TYPE_DBUS_METHOD_INFO
-G_TYPE_DBUS_SIGNAL_INFO
-G_TYPE_DBUS_PROPERTY_INFO
-G_TYPE_DBUS_ARG_INFO
-G_TYPE_DBUS_ANNOTATION_INFO
 <SUBSECTION Private>
 g_dbus_annotation_info_get_type
 g_dbus_arg_info_get_type

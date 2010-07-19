@@ -174,42 +174,41 @@ struct _GDBusNodeInfo
   GDBusAnnotationInfo **annotations;
 };
 
-const gchar              *g_dbus_annotation_info_lookup          (const GDBusAnnotationInfo **annotations,
-                                                                  const gchar               *name);
-const GDBusMethodInfo    *g_dbus_interface_info_lookup_method    (const GDBusInterfaceInfo  *info,
-                                                                  const gchar               *name);
-const GDBusSignalInfo    *g_dbus_interface_info_lookup_signal    (const GDBusInterfaceInfo  *info,
-                                                                  const gchar               *name);
-const GDBusPropertyInfo  *g_dbus_interface_info_lookup_property  (const GDBusInterfaceInfo  *info,
-                                                                  const gchar               *name);
-void                      g_dbus_interface_info_generate_xml     (const GDBusInterfaceInfo  *info,
-                                                                  guint                      indent,
-                                                                  GString                   *string_builder);
+const gchar        *g_dbus_annotation_info_lookup          (GDBusAnnotationInfo **annotations,
+                                                            const gchar          *name);
+GDBusMethodInfo    *g_dbus_interface_info_lookup_method    (GDBusInterfaceInfo   *info,
+                                                            const gchar          *name);
+GDBusSignalInfo    *g_dbus_interface_info_lookup_signal    (GDBusInterfaceInfo   *info,
+                                                            const gchar          *name);
+GDBusPropertyInfo  *g_dbus_interface_info_lookup_property  (GDBusInterfaceInfo   *info,
+                                                            const gchar          *name);
+void                g_dbus_interface_info_generate_xml     (GDBusInterfaceInfo   *info,
+                                                            guint                 indent,
+                                                            GString              *string_builder);
 
-GDBusNodeInfo            *g_dbus_node_info_new_for_xml           (const gchar               *xml_data,
-                                                                  GError                   **error);
-const GDBusInterfaceInfo *g_dbus_node_info_lookup_interface      (const GDBusNodeInfo       *info,
-                                                                  const gchar               *name);
-void                      g_dbus_node_info_generate_xml          (const GDBusNodeInfo       *info,
-                                                                  guint                      indent,
-                                                                  GString                   *string_builder);
+GDBusNodeInfo      *g_dbus_node_info_new_for_xml           (const gchar          *xml_data,
+                                                            GError              **error);
+GDBusInterfaceInfo *g_dbus_node_info_lookup_interface      (GDBusNodeInfo        *info,
+                                                            const gchar          *name);
+void                g_dbus_node_info_generate_xml          (GDBusNodeInfo        *info,
+                                                            guint                 indent,
+                                                            GString              *string_builder);
 
-GDBusNodeInfo            *g_dbus_node_info_ref                   (GDBusNodeInfo             *info);
-GDBusInterfaceInfo       *g_dbus_interface_info_ref              (GDBusInterfaceInfo        *info);
-GDBusMethodInfo          *g_dbus_method_info_ref                 (GDBusMethodInfo           *info);
-GDBusSignalInfo          *g_dbus_signal_info_ref                 (GDBusSignalInfo           *info);
-GDBusPropertyInfo        *g_dbus_property_info_ref               (GDBusPropertyInfo         *info);
-GDBusArgInfo             *g_dbus_arg_info_ref                    (GDBusArgInfo              *info);
-GDBusAnnotationInfo      *g_dbus_annotation_info_ref             (GDBusAnnotationInfo       *info);
+GDBusNodeInfo       *g_dbus_node_info_ref                  (GDBusNodeInfo        *info);
+GDBusInterfaceInfo  *g_dbus_interface_info_ref             (GDBusInterfaceInfo   *info);
+GDBusMethodInfo     *g_dbus_method_info_ref                (GDBusMethodInfo      *info);
+GDBusSignalInfo     *g_dbus_signal_info_ref                (GDBusSignalInfo      *info);
+GDBusPropertyInfo   *g_dbus_property_info_ref              (GDBusPropertyInfo    *info);
+GDBusArgInfo        *g_dbus_arg_info_ref                   (GDBusArgInfo         *info);
+GDBusAnnotationInfo *g_dbus_annotation_info_ref            (GDBusAnnotationInfo  *info);
 
-void                      g_dbus_node_info_unref                 (GDBusNodeInfo             *info);
-void                      g_dbus_interface_info_unref            (GDBusInterfaceInfo        *info);
-void                      g_dbus_method_info_unref               (GDBusMethodInfo           *info);
-void                      g_dbus_signal_info_unref               (GDBusSignalInfo           *info);
-void                      g_dbus_property_info_unref             (GDBusPropertyInfo         *info);
-void                      g_dbus_arg_info_unref                  (GDBusArgInfo              *info);
-void                      g_dbus_annotation_info_unref           (GDBusAnnotationInfo       *info);
-
+void                 g_dbus_node_info_unref                (GDBusNodeInfo        *info);
+void                 g_dbus_interface_info_unref           (GDBusInterfaceInfo   *info);
+void                 g_dbus_method_info_unref              (GDBusMethodInfo      *info);
+void                 g_dbus_signal_info_unref              (GDBusSignalInfo      *info);
+void                 g_dbus_property_info_unref            (GDBusPropertyInfo    *info);
+void                 g_dbus_arg_info_unref                 (GDBusArgInfo         *info);
+void                 g_dbus_annotation_info_unref          (GDBusAnnotationInfo  *info);
 
 /**
  * G_TYPE_DBUS_NODE_INFO:

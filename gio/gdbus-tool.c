@@ -425,8 +425,8 @@ call_helper_get_method_in_signature (GDBusConnection  *c,
   GVariant *result;
   GDBusNodeInfo *node_info;
   const gchar *xml_data;
-  const GDBusInterfaceInfo *interface_info;
-  const GDBusMethodInfo *method_info;
+  GDBusInterfaceInfo *interface_info;
+  GDBusMethodInfo *method_info;
   guint n;
 
   ret = NULL;

@@ -307,7 +307,7 @@ _g_application_platform_register (GApplication  *app,
 
   registration_id = g_dbus_connection_register_object (app->priv->session_bus,
                                                        app->priv->dbus_path,
-                                                       &application_dbus_interface_info,
+                                                       (GDBusInterfaceInfo *) &application_dbus_interface_info,
                                                        &application_dbus_vtable,
                                                        app,
                                                        NULL,

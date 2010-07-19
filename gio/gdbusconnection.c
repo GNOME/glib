@@ -3521,7 +3521,7 @@ typedef struct
   gpointer user_data;
   const gchar *property_name;
   const GDBusInterfaceVTable *vtable;
-  const GDBusInterfaceInfo *interface_info;
+  GDBusInterfaceInfo *interface_info;
   const GDBusPropertyInfo *property_info;
   guint registration_id;
   guint subtree_registration_id;
@@ -3666,7 +3666,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
                                              guint                       registration_id,
                                              guint                       subtree_registration_id,
                                              gboolean                    is_get,
-                                             const GDBusInterfaceInfo   *interface_info,
+                                             GDBusInterfaceInfo         *interface_info,
                                              const GDBusInterfaceVTable *vtable,
                                              GMainContext               *main_context,
                                              gpointer                    user_data)
@@ -3837,7 +3837,7 @@ typedef struct
   GDBusMessage *message;
   gpointer user_data;
   const GDBusInterfaceVTable *vtable;
-  const GDBusInterfaceInfo *interface_info;
+  GDBusInterfaceInfo *interface_info;
   guint registration_id;
   guint subtree_registration_id;
 } PropertyGetAllData;
@@ -3924,7 +3924,7 @@ validate_and_maybe_schedule_property_get_all (GDBusConnection            *connec
                                               GDBusMessage               *message,
                                               guint                       registration_id,
                                               guint                       subtree_registration_id,
-                                              const GDBusInterfaceInfo   *interface_info,
+                                              GDBusInterfaceInfo         *interface_info,
                                               const GDBusInterfaceVTable *vtable,
                                               GMainContext               *main_context,
                                               gpointer                    user_data)
@@ -4236,7 +4236,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
                                          GDBusMessage               *message,
                                          guint                       registration_id,
                                          guint                       subtree_registration_id,
-                                         const GDBusInterfaceInfo   *interface_info,
+                                         GDBusInterfaceInfo         *interface_info,
                                          const GDBusInterfaceVTable *vtable,
                                          GMainContext               *main_context,
                                          gpointer                    user_data)
@@ -4472,7 +4472,7 @@ obj_message_func (GDBusConnection *connection,
 guint
 g_dbus_connection_register_object (GDBusConnection            *connection,
                                    const gchar                *object_path,
-                                   const GDBusInterfaceInfo   *interface_info,
+                                   GDBusInterfaceInfo         *interface_info,
                                    const GDBusInterfaceVTable *vtable,
                                    gpointer                    user_data,
                                    GDestroyNotify              user_data_free_func,
@@ -4523,7 +4523,7 @@ g_dbus_connection_register_object (GDBusConnection            *connection,
   ei->user_data = user_data;
   ei->user_data_free_func = user_data_free_func;
   ei->vtable = _g_dbus_interface_vtable_copy (vtable);
-  ei->interface_info = g_dbus_interface_info_ref ((GDBusInterfaceInfo *) interface_info);
+  ei->interface_info = g_dbus_interface_info_ref (interface_info);
   ei->interface_name = g_strdup (interface_info->name);
   ei->context = g_main_context_get_thread_default ();
   if (ei->context != NULL)
@@ -5263,7 +5263,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
   const gchar *requested_object_path;
   const gchar *requested_node;
   gboolean is_root;
-  const GDBusInterfaceInfo *interface_info;
+  GDBusInterfaceInfo *interface_info;
   const GDBusInterfaceVTable *interface_vtable;
   gpointer interface_user_data;
   guint n;

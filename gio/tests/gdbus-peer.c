@@ -81,7 +81,7 @@ static const gchar *test_interface_introspection_xml =
   "    <property type='s' name='PeerProperty' access='read'/>"
   "  </interface>"
   "</node>";
-static const GDBusInterfaceInfo *test_interface_introspection_data = NULL;
+static GDBusInterfaceInfo *test_interface_introspection_data = NULL;
 
 static void
 test_interface_method_call (GDBusConnection       *connection,

@@ -39,7 +39,7 @@
  * generate D-Bus introspection XML. Introspection information is
  * used when registering objects with g_dbus_connection_register_object().
  *
- * The format of D-BUs introspection XML is specified in the
+ * The format of D-Bus introspection XML is specified in the
  * <link linkend="http://dbus.freedesktop.org/doc/dbus-specification.html&num;introspection-format">D-Bus specification</link>.
  */
 
@@ -637,7 +637,7 @@ g_dbus_node_info_set (ParseData            *data,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-g_dbus_annotation_info_generate_xml (const GDBusAnnotationInfo  *info,
+g_dbus_annotation_info_generate_xml (GDBusAnnotationInfo        *info,
                                      guint                       indent,
                                      GString                    *string_builder)
 {
@@ -668,7 +668,7 @@ g_dbus_annotation_info_generate_xml (const GDBusAnnotationInfo  *info,
 }
 
 static void
-g_dbus_arg_info_generate_xml (const GDBusArgInfo  *info,
+g_dbus_arg_info_generate_xml (GDBusArgInfo        *info,
                               guint                indent,
                               const gchar         *extra_attributes,
                               GString             *string_builder)
@@ -704,7 +704,7 @@ g_dbus_arg_info_generate_xml (const GDBusArgInfo  *info,
 }
 
 static void
-g_dbus_method_info_generate_xml (const GDBusMethodInfo  *info,
+g_dbus_method_info_generate_xml (GDBusMethodInfo        *info,
                                  guint                   indent,
                                  GString                *string_builder)
 {
@@ -744,7 +744,7 @@ g_dbus_method_info_generate_xml (const GDBusMethodInfo  *info,
 }
 
 static void
-g_dbus_signal_info_generate_xml (const GDBusSignalInfo  *info,
+g_dbus_signal_info_generate_xml (GDBusSignalInfo        *info,
                                  guint                   indent,
                                  GString                *string_builder)
 {
@@ -778,7 +778,7 @@ g_dbus_signal_info_generate_xml (const GDBusSignalInfo  *info,
 }
 
 static void
-g_dbus_property_info_generate_xml (const GDBusPropertyInfo  *info,
+g_dbus_property_info_generate_xml (GDBusPropertyInfo        *info,
                                    guint                     indent,
                                    GString                  *string_builder)
 {
@@ -843,7 +843,7 @@ g_dbus_property_info_generate_xml (const GDBusPropertyInfo  *info,
  * Since: 2.26
  */
 void
-g_dbus_interface_info_generate_xml (const GDBusInterfaceInfo  *info,
+g_dbus_interface_info_generate_xml (GDBusInterfaceInfo        *info,
                                     guint                      indent,
                                     GString                   *string_builder)
 {
@@ -890,7 +890,7 @@ g_dbus_interface_info_generate_xml (const GDBusInterfaceInfo  *info,
  * Since: 2.26
  */
 void
-g_dbus_node_info_generate_xml (const GDBusNodeInfo  *info,
+g_dbus_node_info_generate_xml (GDBusNodeInfo        *info,
                                guint                 indent,
                                GString              *string_builder)
 {
@@ -1898,8 +1898,8 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
  * Since: 2.26
  */
 const gchar *
-g_dbus_annotation_info_lookup (const GDBusAnnotationInfo **annotations,
-                               const gchar                *name)
+g_dbus_annotation_info_lookup (GDBusAnnotationInfo **annotations,
+                               const gchar          *name)
 {
   guint n;
   const gchar *ret;
@@ -1933,16 +1933,16 @@ g_dbus_annotation_info_lookup (const GDBusAnnotationInfo **annotations,
  *
  * Since: 2.26
  */
-const GDBusMethodInfo *
-g_dbus_interface_info_lookup_method (const GDBusInterfaceInfo *info,
-                                     const gchar              *name)
+GDBusMethodInfo *
+g_dbus_interface_info_lookup_method (GDBusInterfaceInfo *info,
+                                     const gchar        *name)
 {
   guint n;
-  const GDBusMethodInfo *result;
+  GDBusMethodInfo *result;
 
   for (n = 0; info->methods != NULL && info->methods[n] != NULL; n++)
     {
-      const GDBusMethodInfo *i = info->methods[n];
+      GDBusMethodInfo *i = info->methods[n];
 
       if (g_strcmp0 (i->name, name) == 0)
         {
@@ -1972,16 +1972,16 @@ g_dbus_interface_info_lookup_method (const GDBusInterfaceInfo *info,
  *
  * Since: 2.26
  */
-const GDBusSignalInfo *
-g_dbus_interface_info_lookup_signal (const GDBusInterfaceInfo *info,
-                                     const gchar              *name)
+GDBusSignalInfo *
+g_dbus_interface_info_lookup_signal (GDBusInterfaceInfo *info,
+                                     const gchar        *name)
 {
   guint n;
-  const GDBusSignalInfo *result;
+  GDBusSignalInfo *result;
 
   for (n = 0; info->signals != NULL && info->signals[n] != NULL; n++)
     {
-      const GDBusSignalInfo *i = info->signals[n];
+      GDBusSignalInfo *i = info->signals[n];
 
       if (g_strcmp0 (i->name, name) == 0)
         {
@@ -2011,16 +2011,16 @@ g_dbus_interface_info_lookup_signal (const GDBusInterfaceInfo *info,
  *
  * Since: 2.26
  */
-const GDBusPropertyInfo *
-g_dbus_interface_info_lookup_property (const GDBusInterfaceInfo *info,
-                                       const gchar              *name)
+GDBusPropertyInfo *
+g_dbus_interface_info_lookup_property (GDBusInterfaceInfo *info,
+                                       const gchar        *name)
 {
   guint n;
-  const GDBusPropertyInfo *result;
+  GDBusPropertyInfo *result;
 
   for (n = 0; info->properties != NULL && info->properties[n] != NULL; n++)
     {
-      const GDBusPropertyInfo *i = info->properties[n];
+      GDBusPropertyInfo *i = info->properties[n];
 
       if (g_strcmp0 (i->name, name) == 0)
         {
@@ -2050,16 +2050,16 @@ g_dbus_interface_info_lookup_property (const GDBusInterfaceInfo *info,
  *
  * Since: 2.26
  */
-const GDBusInterfaceInfo *
-g_dbus_node_info_lookup_interface (const GDBusNodeInfo *info,
-                                   const gchar         *name)
+GDBusInterfaceInfo *
+g_dbus_node_info_lookup_interface (GDBusNodeInfo *info,
+                                   const gchar   *name)
 {
   guint n;
-  const GDBusInterfaceInfo *result;
+  GDBusInterfaceInfo *result;
 
   for (n = 0; info->interfaces != NULL && info->interfaces[n] != NULL; n++)
     {
-      const GDBusInterfaceInfo *i = info->interfaces[n];
+      GDBusInterfaceInfo *i = info->interfaces[n];
 
       if (g_strcmp0 (i->name, name) == 0)
         {
