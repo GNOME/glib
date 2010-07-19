@@ -5,9 +5,9 @@
 /* ---------------------------------------------------------------------------------------------------- */
 
 static GDBusNodeInfo *introspection_data = NULL;
-static const GDBusInterfaceInfo *manager_interface_info = NULL;
-static const GDBusInterfaceInfo *block_interface_info = NULL;
-static const GDBusInterfaceInfo *partition_interface_info = NULL;
+static GDBusInterfaceInfo *manager_interface_info = NULL;
+static GDBusInterfaceInfo *block_interface_info = NULL;
+static GDBusInterfaceInfo *partition_interface_info = NULL;
 
 /* Introspection data for the service we are exporting */
 static const gchar introspection_xml[] =
@@ -253,7 +253,7 @@ subtree_enumerate (GDBusConnection       *connection,
   return nodes;
 }
 
-static GPtrArray *
+static GDBusInterfaceInfo **
 subtree_introspect (GDBusConnection       *connection,
                     const gchar           *sender,
                     const gchar           *object_path,
@@ -263,18 +263,21 @@ subtree_introspect (GDBusConnection       *connection,
   GPtrArray *p;
 
   p = g_ptr_array_new ();
-  if (g_strcmp0 (node, "/") == 0)
+  if (node == NULL)
     {
-      g_ptr_array_add (p, (gpointer) manager_interface_info);
+      g_ptr_array_add (p, g_dbus_interface_info_ref (manager_interface_info));
     }
   else
     {
-      g_ptr_array_add (p, (gpointer) block_interface_info);
+      g_ptr_array_add (p, g_dbus_interface_info_ref (block_interface_info));
       if (strlen (node) == 4)
-        g_ptr_array_add (p, (gpointer) partition_interface_info);
+        g_ptr_array_add (p,
+                         g_dbus_interface_info_ref (partition_interface_info));
     }
 
-  return p;
+  g_ptr_array_add (p, NULL);
+
+  return (GDBusInterfaceInfo **) g_ptr_array_free (p, FALSE);
 }
 
 static const GDBusInterfaceVTable *
