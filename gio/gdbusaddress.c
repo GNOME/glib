@@ -24,7 +24,9 @@
 
 #include <stdlib.h>
 #include <string.h>
+#ifdef G_OS_UNIX
 #include <sys/wait.h>
+#endif
 #include <stdio.h>
 #include <errno.h>
 
