@@ -1324,11 +1324,10 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   if (blob == NULL)
     goto out;
 
-  serial_to_use = g_dbus_message_get_serial (message);
-  if (serial_to_use == 0)
-    {
-      serial_to_use = ++connection->last_serial; /* TODO: handle overflow */
-    }
+  if (flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL)
+    serial_to_use = g_dbus_message_get_serial (message);
+  else
+    serial_to_use = ++connection->last_serial; /* TODO: handle overflow */
 
   switch (blob[0])
     {
@@ -1376,17 +1375,17 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
  * g_dbus_connection_send_message:
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage
- * @flags: Flags affecting how the message is sent (currently unused).
+ * @flags: Flags affecting how the message is sent.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Asynchronously sends @message to the peer represented by @connection.
  *
- * If g_dbus_message_get_serial() returns non-zero for @message, then
- * that value is used for the message serial number. Otherwise a
- * serial number will be assigned by @connection and set on @message
- * via g_dbus_message_set_serial(). If @out_serial is not %NULL, then
- * the serial number used will be written to this location prior to
+ * Unless @flags contain the
+ * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the serial number
+ * will be assigned by @connection and set on @message via
+ * g_dbus_message_set_serial(). If @out_serial is not %NULL, then the
+ * serial number used will be written to this location prior to
  * submitting the message to the underlying transport.
  *
  * If @connection is closed then the operation will fail with
@@ -1690,7 +1689,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * g_dbus_connection_send_message_with_reply:
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
- * @flags: Flags affecting how the message is sent (currently unused).
+ * @flags: Flags affecting how the message is sent.
  * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @cancellable: A #GCancellable or %NULL.
@@ -1700,11 +1699,11 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  *
  * Asynchronously sends @message to the peer represented by @connection.
  *
- * If g_dbus_message_get_serial() returns non-zero for @message, then
- * that value is used for the message serial number. Otherwise a
- * serial number will be assigned by @connection and set on @message
- * via g_dbus_message_set_serial(). If @out_serial is not %NULL, then
- * the serial number used will be written to this location prior to
+ * Unless @flags contain the
+ * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the serial number
+ * will be assigned by @connection and set on @message via
+ * g_dbus_message_set_serial(). If @out_serial is not %NULL, then the
+ * serial number used will be written to this location prior to
  * submitting the message to the underlying transport.
  *
  * If @connection is closed then the operation will fail with
@@ -1828,7 +1827,7 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * g_dbus_connection_send_message_with_reply_sync:
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
- * @flags: Flags affecting how the message is sent (currently unused).
+ * @flags: Flags affecting how the message is sent.
  * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @cancellable: A #GCancellable or %NULL.
@@ -1839,11 +1838,11 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * timeout is reached. See g_dbus_connection_send_message_with_reply()
  * for the asynchronous version of this method.
  *
- * If g_dbus_message_get_serial() returns non-zero for @message, then
- * that value is used for the message serial number. Otherwise a
- * serial number will be assigned by @connection and set on @message
- * via g_dbus_message_set_serial(). If @out_serial is not %NULL, then
- * the serial number used will be written to this location prior to
+ * Unless @flags contain the
+ * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag, the serial number
+ * will be assigned by @connection and set on @message via
+ * g_dbus_message_set_serial(). If @out_serial is not %NULL, then the
+ * serial number used will be written to this location prior to
  * submitting the message to the underlying transport.
  *
  * If @connection is closed then the operation will fail with

@@ -1155,14 +1155,18 @@ typedef enum /*< flags >*/
 /**
  * GDBusSendMessageFlags:
  * @G_DBUS_SEND_MESSAGE_FLAGS_NONE: No flags set.
+ * @G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL: Do not automatically
+ * assign a serial number from the #GDBusConnection object when
+ * sending a message.
  *
  * Flags used when sending #GDBusMessage<!-- -->s on a #GDBusConnection.
  *
  * Since: 2.26
  */
-typedef enum /*< flags >*/
+typedef enum
 {
   G_DBUS_SEND_MESSAGE_FLAGS_NONE = 0,
+  G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL = (1<<0)
 } GDBusSendMessageFlags;
 
 G_END_DECLS
