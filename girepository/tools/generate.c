@@ -41,7 +41,6 @@ main (int argc, char *argv[])
   GError *error = NULL;
   gboolean needs_prefix;
   gint i;
-  GTypelib *data;
   GOptionEntry options[] =
     {
       { "shlib", 0, 0, G_OPTION_ARG_NONE, &shlib, "handle typelib embedded in shlib", NULL },
