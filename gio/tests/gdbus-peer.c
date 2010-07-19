@@ -140,7 +140,7 @@ test_interface_method_call (GDBusConnection       *connection,
       g_dbus_message_set_sender (message, ":1.42");
 
       error = NULL;
-      ret = g_dbus_connection_send_message (connection, message, NULL, &error);
+      ret = g_dbus_connection_send_message (connection, message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, &error);
       g_assert_no_error (error);
       g_assert (ret);
       g_object_unref (message);
@@ -174,6 +174,7 @@ test_interface_method_call (GDBusConnection       *connection,
       error = NULL;
       g_dbus_connection_send_message (connection,
                                       reply,
+                                      G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                       NULL, /* out_serial */
                                       &error);
       g_assert_no_error (error);
@@ -657,6 +658,7 @@ test_peer (void)
     error = NULL;
     method_reply_message = g_dbus_connection_send_message_with_reply_sync (c,
                                                                            method_call_message,
+                                                                           G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                                            -1,
                                                                            NULL, /* out_serial */
                                                                            NULL, /* cancellable */

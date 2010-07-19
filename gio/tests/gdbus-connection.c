@@ -625,14 +625,14 @@ test_connection_filter (void)
                                       "GetNameOwner");
   g_dbus_message_set_body (m, g_variant_new ("(s)", "org.freedesktop.DBus"));
   error = NULL;
-  g_dbus_connection_send_message (c, m, &data.serial, &error);
+  g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &data.serial, &error);
   g_assert_no_error (error);
 
   while (data.num_handled == 0)
     g_thread_yield ();
 
   g_dbus_message_set_serial (m, 0);
-  g_dbus_connection_send_message (c, m, &data.serial, &error);
+  g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &data.serial, &error);
   g_assert_no_error (error);
 
   while (data.num_handled == 1)
@@ -641,6 +641,7 @@ test_connection_filter (void)
   g_dbus_message_set_serial (m, 0);
   r = g_dbus_connection_send_message_with_reply_sync (c,
                                                       m,
+                                                      G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
                                                       &data.serial,
                                                       NULL, /* GCancellable */
@@ -655,6 +656,7 @@ test_connection_filter (void)
   g_dbus_message_set_serial (m, 0);
   r = g_dbus_connection_send_message_with_reply_sync (c,
                                                       m,
+                                                      G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
                                                       &data.serial,
                                                       NULL, /* GCancellable */

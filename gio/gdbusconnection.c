@@ -1286,6 +1286,7 @@ g_dbus_connection_close_sync (GDBusConnection     *connection,
 static gboolean
 g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
                                          GDBusMessage      *message,
+                                         GDBusSendMessageFlags flags,
                                          volatile guint32  *out_serial,
                                          GError           **error)
 {
@@ -1375,6 +1376,7 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
  * g_dbus_connection_send_message:
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage
+ * @flags: Flags affecting how the message is sent (currently unused).
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @error: Return location for error or %NULL.
  *
@@ -1403,6 +1405,7 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
 gboolean
 g_dbus_connection_send_message (GDBusConnection   *connection,
                                 GDBusMessage      *message,
+                                GDBusSendMessageFlags flags,
                                 volatile guint32  *out_serial,
                                 GError           **error)
 {
@@ -1413,7 +1416,7 @@ g_dbus_connection_send_message (GDBusConnection   *connection,
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   CONNECTION_LOCK (connection);
-  ret = g_dbus_connection_send_message_unlocked (connection, message, out_serial, error);
+  ret = g_dbus_connection_send_message_unlocked (connection, message, flags, out_serial, error);
   CONNECTION_UNLOCK (connection);
   return ret;
 }
@@ -1588,6 +1591,7 @@ send_message_with_reply_timeout_cb (gpointer user_data)
 static void
 g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connection,
                                                     GDBusMessage        *message,
+                                                    GDBusSendMessageFlags flags,
                                                     gint                 timeout_msec,
                                                     volatile guint32    *out_serial,
                                                     GCancellable        *cancellable,
@@ -1635,7 +1639,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
     }
 
   error = NULL;
-  if (!g_dbus_connection_send_message_unlocked (connection, message, out_serial, &error))
+  if (!g_dbus_connection_send_message_unlocked (connection, message, flags, out_serial, &error))
     {
       g_simple_async_result_set_from_error (simple, error);
       g_simple_async_result_complete_in_idle (simple);
@@ -1686,6 +1690,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * g_dbus_connection_send_message_with_reply:
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
+ * @flags: Flags affecting how the message is sent (currently unused).
  * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @cancellable: A #GCancellable or %NULL.
@@ -1722,6 +1727,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
 void
 g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
                                            GDBusMessage        *message,
+                                           GDBusSendMessageFlags flags,
                                            gint                 timeout_msec,
                                            volatile guint32    *out_serial,
                                            GCancellable        *cancellable,
@@ -1735,6 +1741,7 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
   CONNECTION_LOCK (connection);
   g_dbus_connection_send_message_with_reply_unlocked (connection,
                                                       message,
+                                                      flags,
                                                       timeout_msec,
                                                       out_serial,
                                                       cancellable,
@@ -1821,6 +1828,7 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * g_dbus_connection_send_message_with_reply_sync:
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
+ * @flags: Flags affecting how the message is sent (currently unused).
  * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @cancellable: A #GCancellable or %NULL.
@@ -1859,6 +1867,7 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
 GDBusMessage *
 g_dbus_connection_send_message_with_reply_sync (GDBusConnection   *connection,
                                                 GDBusMessage      *message,
+                                                GDBusSendMessageFlags flags,
                                                 gint               timeout_msec,
                                                 volatile guint32  *out_serial,
                                                 GCancellable      *cancellable,
@@ -1880,6 +1889,7 @@ g_dbus_connection_send_message_with_reply_sync (GDBusConnection   *connection,
 
   g_dbus_connection_send_message_with_reply (connection,
                                              message,
+                                             flags,
                                              timeout_msec,
                                              out_serial,
                                              cancellable,
@@ -2842,6 +2852,7 @@ add_match_rule (GDBusConnection *connection,
   error = NULL;
   if (!g_dbus_connection_send_message_unlocked (connection,
                                                 message,
+                                                G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                 NULL,
                                                 &error))
     {
@@ -2870,6 +2881,7 @@ remove_match_rule (GDBusConnection *connection,
   error = NULL;
   if (!g_dbus_connection_send_message_unlocked (connection,
                                                 message,
+                                                G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                 NULL,
                                                 &error))
     {
@@ -3552,7 +3564,7 @@ invoke_get_property_in_idle_cb (gpointer _data)
                                                "org.freedesktop.DBus.Error.UnknownMethod",
                                                _("No such interface `org.freedesktop.DBus.Properties' on object at path %s"),
                                                g_dbus_message_get_path (data->message));
-      g_dbus_connection_send_message (data->connection, reply, NULL, NULL);
+      g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       goto out;
     }
@@ -3574,7 +3586,7 @@ invoke_get_property_in_idle_cb (gpointer _data)
       g_variant_ref_sink (value);
       reply = g_dbus_message_new_method_reply (data->message);
       g_dbus_message_set_body (reply, g_variant_new ("(v)", value));
-      g_dbus_connection_send_message (data->connection, reply, NULL, NULL);
+      g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_variant_unref (value);
       g_object_unref (reply);
     }
@@ -3586,7 +3598,7 @@ invoke_get_property_in_idle_cb (gpointer _data)
       reply = g_dbus_message_new_method_error_literal (data->message,
                                                        dbus_error_name,
                                                        error->message);
-      g_dbus_connection_send_message (data->connection, reply, NULL, NULL);
+      g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_free (dbus_error_name);
       g_error_free (error);
       g_object_unref (reply);
@@ -3653,7 +3665,7 @@ invoke_set_property_in_idle_cb (gpointer _data)
 
  out:
   g_assert (reply != NULL);
-  g_dbus_connection_send_message (data->connection, reply, NULL, NULL);
+  g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
 
   return FALSE;
@@ -3717,7 +3729,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
                                                "org.freedesktop.DBus.Error.InvalidArgs",
                                                _("No such property `%s'"),
                                                property_name);
-      g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+      g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       handled = TRUE;
       goto out;
@@ -3729,7 +3741,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
                                                "org.freedesktop.DBus.Error.InvalidArgs",
                                                _("Property `%s' is not readable"),
                                                property_name);
-      g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+      g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       handled = TRUE;
       goto out;
@@ -3740,7 +3752,7 @@ validate_and_maybe_schedule_property_getset (GDBusConnection            *connect
                                                "org.freedesktop.DBus.Error.InvalidArgs",
                                                _("Property `%s' is not writable"),
                                                property_name);
-      g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+      g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       handled = TRUE;
       goto out;
@@ -3810,7 +3822,7 @@ handle_getset_property (GDBusConnection *connection,
                                                "org.freedesktop.DBus.Error.InvalidArgs",
                                                _("No such interface `%s'"),
                                                interface_name);
-      g_dbus_connection_send_message_unlocked (eo->connection, reply, NULL, NULL);
+      g_dbus_connection_send_message_unlocked (eo->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       handled = TRUE;
       goto out;
@@ -3868,7 +3880,7 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
                                                "org.freedesktop.DBus.Error.UnknownMethod",
                                                _("No such interface `org.freedesktop.DBus.Properties' on object at path %s"),
                                                g_dbus_message_get_path (data->message));
-      g_dbus_connection_send_message (data->connection, reply, NULL, NULL);
+      g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       goto out;
     }
@@ -3911,7 +3923,7 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
 
   reply = g_dbus_message_new_method_reply (data->message);
   g_dbus_message_set_body (reply, g_variant_builder_end (&builder));
-  g_dbus_connection_send_message (data->connection, reply, NULL, NULL);
+  g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
 
  out:
@@ -3995,7 +4007,7 @@ handle_get_all_properties (GDBusConnection *connection,
                                                "org.freedesktop.DBus.Error.InvalidArgs",
                                                _("No such interface"),
                                                interface_name);
-      g_dbus_connection_send_message_unlocked (eo->connection, reply, NULL, NULL);
+      g_dbus_connection_send_message_unlocked (eo->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       handled = TRUE;
       goto out;
@@ -4180,7 +4192,7 @@ handle_introspect (GDBusConnection *connection,
 
   reply = g_dbus_message_new_method_reply (message);
   g_dbus_message_set_body (reply, g_variant_new ("(s)", s->str));
-  g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+  g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
   g_string_free (s, TRUE);
 
@@ -4212,7 +4224,7 @@ call_in_idle_cb (gpointer user_data)
                                                _("No such interface `%s' on object at path %s"),
                                                g_dbus_method_invocation_get_interface_name (invocation),
                                                g_dbus_method_invocation_get_object_path (invocation));
-      g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, NULL, NULL);
+      g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       goto out;
     }
@@ -4263,7 +4275,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
                                                "org.freedesktop.DBus.Error.UnknownMethod",
                                                _("No such method `%s'"),
                                                g_dbus_message_get_member (message));
-      g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+      g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
       handled = TRUE;
       goto out;
@@ -4295,7 +4307,7 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
                                                _("Type of message, `%s', does not match expected type `%s'"),
                                                g_variant_get_type_string (parameters),
                                                type_string);
-      g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+      g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_variant_type_free (in_type);
       g_variant_unref (parameters);
       g_object_unref (reply);
@@ -4661,7 +4673,7 @@ g_dbus_connection_emit_signal (GDBusConnection  *connection,
   if (parameters != NULL)
     g_dbus_message_set_body (message, parameters);
 
-  ret = g_dbus_connection_send_message (connection, message, NULL, error);
+  ret = g_dbus_connection_send_message (connection, message, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, error);
   g_object_unref (message);
 
   return ret;
@@ -4903,6 +4915,7 @@ g_dbus_connection_call (GDBusConnection        *connection,
 
   g_dbus_connection_send_message_with_reply (connection,
                                              message,
+                                             G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                              timeout_msec,
                                              &state->serial,
                                              cancellable,
@@ -5079,6 +5092,7 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
   local_error = NULL;
   reply = g_dbus_connection_send_message_with_reply_sync (connection,
                                                           message,
+                                                          flags,
                                                           timeout_msec,
                                                           NULL, /* volatile guint32 *out_serial */
                                                           cancellable,
@@ -5238,7 +5252,7 @@ handle_subtree_introspect (GDBusConnection *connection,
 
   reply = g_dbus_message_new_method_reply (message);
   g_dbus_message_set_body (reply, g_variant_new ("(s)", s->str));
-  g_dbus_connection_send_message (connection, reply, NULL, NULL);
+  g_dbus_connection_send_message (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
 
   handled = TRUE;
@@ -5396,7 +5410,7 @@ handle_subtree_method_invocation (GDBusConnection *connection,
                                                    "org.freedesktop.DBus.Error.InvalidArgs",
                                                    _("No such interface `%s'"),
                                                    interface_name);
-          g_dbus_connection_send_message (es->connection, reply, NULL, NULL);
+          g_dbus_connection_send_message (es->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
           g_object_unref (reply);
           handled = TRUE;
           goto out;
@@ -5509,7 +5523,7 @@ process_subtree_vtable_message_in_idle_cb (gpointer _data)
                                                g_dbus_message_get_member (data->message),
                                                g_dbus_message_get_interface (data->message),
                                                g_dbus_message_get_signature (data->message));
-      g_dbus_connection_send_message (data->es->connection, reply, NULL, NULL);
+      g_dbus_connection_send_message (data->es->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
       g_object_unref (reply);
     }
 
@@ -5706,7 +5720,7 @@ handle_generic_ping_unlocked (GDBusConnection *connection,
 {
   GDBusMessage *reply;
   reply = g_dbus_message_new_method_reply (message);
-  g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+  g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
 }
 
@@ -5739,7 +5753,7 @@ handle_generic_get_machine_id_unlocked (GDBusConnection *connection,
       reply = g_dbus_message_new_method_reply (message);
       g_dbus_message_set_body (reply, g_variant_new ("(s)", connection->machine_id));
     }
-  g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+  g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
 }
 
@@ -5766,7 +5780,7 @@ handle_generic_introspect_unlocked (GDBusConnection *connection,
 
   reply = g_dbus_message_new_method_reply (message);
   g_dbus_message_set_body (reply, g_variant_new ("(s)", s->str));
-  g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+  g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
   g_string_free (s, TRUE);
 }
@@ -5911,7 +5925,7 @@ distribute_method_call (GDBusConnection *connection,
                                            _("No such interface `%s' on object at path %s"),
                                            interface_name,
                                            object_path);
-  g_dbus_connection_send_message_unlocked (connection, reply, NULL, NULL);
+  g_dbus_connection_send_message_unlocked (connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
 
  out:

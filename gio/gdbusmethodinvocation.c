@@ -384,7 +384,7 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
   reply = g_dbus_message_new_method_reply (invocation->message);
   g_dbus_message_set_body (reply, parameters);
   error = NULL;
-  if (!g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, NULL, &error))
+  if (!g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, &error))
     {
       g_warning (_("Error sending message: %s"), error->message);
       g_error_free (error);
@@ -563,7 +563,7 @@ g_dbus_method_invocation_return_dbus_error (GDBusMethodInvocation *invocation,
   reply = g_dbus_message_new_method_error_literal (invocation->message,
                                                    error_name,
                                                    error_message);
-  g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, NULL, NULL);
+  g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
 
   g_object_unref (invocation);

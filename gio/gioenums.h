@@ -1152,6 +1152,19 @@ typedef enum /*< flags >*/
   G_DBUS_SIGNAL_FLAGS_NONE = 0,
 } GDBusSignalFlags;
 
+/**
+ * GDBusSendMessageFlags:
+ * @G_DBUS_SEND_MESSAGE_FLAGS_NONE: No flags set.
+ *
+ * Flags used when sending #GDBusMessage<!-- -->s on a #GDBusConnection.
+ *
+ * Since: 2.26
+ */
+typedef enum /*< flags >*/
+{
+  G_DBUS_SEND_MESSAGE_FLAGS_NONE = 0,
+} GDBusSendMessageFlags;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

@@ -124,10 +124,12 @@ gboolean         g_dbus_connection_flush_sync                     (GDBusConnecti
 
 gboolean         g_dbus_connection_send_message                   (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
+                                                                   GDBusSendMessageFlags flags,
                                                                    volatile guint32    *out_serial,
                                                                    GError             **error);
 void             g_dbus_connection_send_message_with_reply        (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
+                                                                   GDBusSendMessageFlags flags,
                                                                    gint                 timeout_msec,
                                                                    volatile guint32    *out_serial,
                                                                    GCancellable        *cancellable,
@@ -138,6 +140,7 @@ GDBusMessage    *g_dbus_connection_send_message_with_reply_finish (GDBusConnecti
                                                                    GError             **error);
 GDBusMessage    *g_dbus_connection_send_message_with_reply_sync   (GDBusConnection     *connection,
                                                                    GDBusMessage        *message,
+                                                                   GDBusSendMessageFlags flags,
                                                                    gint                 timeout_msec,
                                                                    volatile guint32    *out_serial,
                                                                    GCancellable        *cancellable,

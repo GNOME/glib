@@ -30,6 +30,7 @@ get_server_stdout (GDBusConnection  *connection,
                                                         "GimmeStdout");
   method_reply_message = g_dbus_connection_send_message_with_reply_sync (connection,
                                                                          method_call_message,
+                                                                         G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                                          -1,
                                                                          NULL, /* out_serial */
                                                                          NULL, /* cancellable */

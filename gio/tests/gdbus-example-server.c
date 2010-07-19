@@ -140,6 +140,7 @@ handle_method_call (GDBusConnection       *connection,
           error = NULL;
           g_dbus_connection_send_message (connection,
                                           reply,
+                                          G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                           NULL, /* out_serial */
                                           &error);
           g_assert_no_error (error);
