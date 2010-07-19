@@ -314,7 +314,7 @@ validate_header_basic (const guint8   *memory,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_HEADER,
 		   "Typelib size %" G_GSIZE_FORMAT " does not match %" G_GSIZE_FORMAT,
-		   header->size, len);
+		   (gsize) header->size, len);
       return FALSE;
     }
 
