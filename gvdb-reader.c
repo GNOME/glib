@@ -548,7 +548,7 @@ gvdb_table_unref (GvdbTable *file)
 gboolean
 gvdb_table_is_valid (GvdbTable *table)
 {
-  return !!table->data;
+  return !!*table->data;
 }
 
 void
