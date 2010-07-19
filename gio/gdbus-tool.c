@@ -1398,6 +1398,7 @@ monitor_on_name_appeared (GDBusConnection *connection,
                                                           NULL,  /* any member */
                                                           opt_monitor_object_path,
                                                           NULL,  /* arg0 */
+                                                          G_DBUS_SIGNAL_FLAGS_NONE,
                                                           monitor_signal_cb,
                                                           NULL,  /* user_data */
                                                           NULL); /* user_data destroy notify */

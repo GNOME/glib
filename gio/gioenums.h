@@ -1139,6 +1139,19 @@ typedef enum
   G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS = (1<<1)
 } GDBusServerFlags;
 
+/**
+ * GDBusSignalFlags:
+ * @G_DBUS_SIGNAL_FLAGS_NONE: No flags set.
+ *
+ * Flags used when subscribing to signals via g_dbus_connection_signal_subscribe().
+ *
+ * Since: 2.26
+ */
+typedef enum /*< flags >*/
+{
+  G_DBUS_SIGNAL_FLAGS_NONE = 0,
+} GDBusSignalFlags;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

@@ -2901,6 +2901,7 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * @member: D-Bus signal name to match on or %NULL to match on all signals.
  * @object_path: Object path to match on or %NULL to match on all object paths.
  * @arg0: Contents of first string argument to match on or %NULL to match on all kinds of arguments.
+ * @flags: Flags describing how to subscribe to the signal (currently unused).
  * @callback: Callback to invoke when there is a signal matching the requested data.
  * @user_data: User data to pass to @callback.
  * @user_data_free_func: Function to free @user_data with when subscription is removed or %NULL.
@@ -2932,6 +2933,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
                                     const gchar         *member,
                                     const gchar         *object_path,
                                     const gchar         *arg0,
+                                    GDBusSignalFlags     flags,
                                     GDBusSignalCallback  callback,
                                     gpointer             user_data,
                                     GDestroyNotify       user_data_free_func)

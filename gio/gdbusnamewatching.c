@@ -447,6 +447,7 @@ has_connection (Client *client)
                                                                                    "NameOwnerChanged",      /* signal */
                                                                                    "/org/freedesktop/DBus", /* path */
                                                                                    client->name,
+                                                                                   G_DBUS_SIGNAL_FLAGS_NONE,
                                                                                    on_name_owner_changed,
                                                                                    client,
                                                                                    NULL);

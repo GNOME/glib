@@ -415,6 +415,7 @@ test_connection_signals (void)
                                            "Foo",
                                            "/org/gtk/GDBus/ExampleInterface",
                                            NULL,
+                                           G_DBUS_SIGNAL_FLAGS_NONE,
                                            test_connection_signal_handler,
                                            &count_s1,
                                            NULL);
@@ -424,6 +425,7 @@ test_connection_signals (void)
                                            "Foo",
                                            "/org/gtk/GDBus/ExampleInterface",
                                            NULL,
+                                           G_DBUS_SIGNAL_FLAGS_NONE,
                                            test_connection_signal_handler,
                                            &count_s2,
                                            NULL);
@@ -433,6 +435,7 @@ test_connection_signals (void)
                                            "NameOwnerChanged",      /* member */
                                            "/org/freedesktop/DBus", /* path */
                                            NULL,
+                                           G_DBUS_SIGNAL_FLAGS_NONE,
                                            test_connection_signal_handler,
                                            &count_name_owner_changed,
                                            NULL);
@@ -441,14 +444,15 @@ test_connection_signals (void)
    * subscriptions instead of just 1 call to each of the N subscriptions.
    */
   s1b = g_dbus_connection_signal_subscribe (c1,
-                                           ":1.2",
-                                           "org.gtk.GDBus.ExampleInterface",
-                                           "Foo",
-                                           "/org/gtk/GDBus/ExampleInterface",
-                                           NULL,
-                                           test_connection_signal_handler,
-                                           &count_s1b,
-                                           NULL);
+                                            ":1.2",
+                                            "org.gtk.GDBus.ExampleInterface",
+                                            "Foo",
+                                            "/org/gtk/GDBus/ExampleInterface",
+                                            NULL,
+                                            G_DBUS_SIGNAL_FLAGS_NONE,
+                                            test_connection_signal_handler,
+                                            &count_s1b,
+                                            NULL);
   g_assert (s1 != 0);
   g_assert (s1b != 0);
   g_assert (s2 != 0);
@@ -712,6 +716,7 @@ test_connection_flush (void)
                                                           "SomeSignal",
                                                           "/org/gtk/GDBus/FlushObject",
                                                           NULL,
+                                                          G_DBUS_SIGNAL_FLAGS_NONE,
                                                           test_connection_flush_signal_handler,
                                                           NULL,
                                                           NULL);

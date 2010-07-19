@@ -2379,6 +2379,7 @@ g_dbus_connection_call
 g_dbus_connection_call_finish
 g_dbus_connection_call_sync
 g_dbus_connection_emit_signal
+GDBusSignalFlags
 GDBusSignalCallback
 g_dbus_connection_signal_subscribe
 g_dbus_connection_signal_unsubscribe

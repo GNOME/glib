@@ -553,6 +553,7 @@ test_change_action_on_application_appeared (void)
                                            "ActionsChanged",
                                            "/org/gtk/test/app",
                                            NULL,
+                                           G_DBUS_SIGNAL_FLAGS_NONE,
                                            actions_changed,
                                            loop,
                                            NULL);

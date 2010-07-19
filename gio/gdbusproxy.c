@@ -1366,6 +1366,7 @@ async_initable_init_first (GAsyncInitable *initable)
                                             "PropertiesChanged",
                                             proxy->priv->object_path,
                                             proxy->priv->interface_name,
+                                            G_DBUS_SIGNAL_FLAGS_NONE,
                                             on_properties_changed,
                                             proxy,
                                             NULL);
@@ -1381,6 +1382,7 @@ async_initable_init_first (GAsyncInitable *initable)
                                             NULL,                        /* member */
                                             proxy->priv->object_path,
                                             NULL,                        /* arg0 */
+                                            G_DBUS_SIGNAL_FLAGS_NONE,
                                             on_signal_received,
                                             proxy,
                                             NULL);
@@ -1395,6 +1397,7 @@ async_initable_init_first (GAsyncInitable *initable)
                                             "NameOwnerChanged",      /* signal name */
                                             "/org/freedesktop/DBus", /* path */
                                             proxy->priv->name,       /* arg0 */
+                                            G_DBUS_SIGNAL_FLAGS_NONE,
                                             on_name_owner_changed,
                                             proxy,
                                             NULL);

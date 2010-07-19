@@ -197,6 +197,7 @@ test_delivery_in_thread_func (gpointer _data)
                                                         "NameOwnerChanged",      /* member */
                                                         "/org/freedesktop/DBus", /* path */
                                                         NULL,
+                                                        G_DBUS_SIGNAL_FLAGS_NONE,
                                                         signal_handler,
                                                         &data,
                                                         NULL);

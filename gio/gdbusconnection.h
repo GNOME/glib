@@ -453,6 +453,7 @@ guint            g_dbus_connection_signal_subscribe           (GDBusConnection  
                                                                const gchar         *member,
                                                                const gchar         *object_path,
                                                                const gchar         *arg0,
+                                                               GDBusSignalFlags     flags,
                                                                GDBusSignalCallback  callback,
                                                                gpointer             user_data,
                                                                GDestroyNotify       user_data_free_func);
