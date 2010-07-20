@@ -92,6 +92,7 @@ struct _GDBusServer
 
   GSocketListener *listener;
   gboolean is_using_listener;
+  gulong run_signal_handler_id;
 
   /* The result of g_main_context_get_thread_default() when the object
    * was created (the GObject _init() function) - this is used for delivery
@@ -157,6 +158,9 @@ g_dbus_server_finalize (GObject *object)
 
   if (server->authentication_observer != NULL)
     g_object_unref (server->authentication_observer);
+
+  if (server->run_signal_handler_id > 0)
+    g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
 
   if (server->listener != NULL)
     g_object_unref (server->listener);
@@ -489,10 +493,10 @@ g_dbus_server_new_sync (const gchar        *address,
     {
       /* Right now we don't have any transport not using the listener... */
       g_assert (server->is_using_listener);
-      g_signal_connect (G_SOCKET_SERVICE (server->listener),
-                        "run",
-                        G_CALLBACK (on_run),
-                        server);
+      server->run_signal_handler_id = g_signal_connect (G_SOCKET_SERVICE (server->listener),
+                                                        "run",
+                                                        G_CALLBACK (on_run),
+                                                        server);
     }
 
   return server;
@@ -605,6 +609,9 @@ g_dbus_server_stop (GDBusServer *server)
     return;
   /* Right now we don't have any transport not using the listener... */
   g_assert (server->is_using_listener);
+  g_assert (server->run_signal_handler_id > 0);
+  g_signal_handler_disconnect (server->listener, server->run_signal_handler_id);
+  server->run_signal_handler_id = 0;
   g_socket_service_stop (G_SOCKET_SERVICE (server->listener));
   server->active = FALSE;
   g_object_notify (G_OBJECT (server), "active");
