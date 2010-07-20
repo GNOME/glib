@@ -405,6 +405,18 @@ dbus_1_message_append (GString *s,
         break;
       }
 
+#ifdef DBUS_TYPE_UNIX_FD
+    case DBUS_TYPE_UNIX_FD:
+      {
+        /* unfortunately there's currently no way to get just the
+         * protocol value, since dbus_message_iter_get_basic() wants
+         * to be 'helpful' and dup the fd for the user...
+         */
+        g_string_append (s, "unix-fd: (not extracted)\n");
+        break;
+      }
+#endif
+
      case DBUS_TYPE_VARIANT:
        g_string_append_printf (s, "variant:\n");
        dbus_message_iter_recurse (iter, &sub);
@@ -672,6 +684,22 @@ message_serialize_complex (void)
                        "      string: `cwd'\n"
                        "      variant:\n"
                        "        string: `/home/davidz/Hacking/glib/gio/tests'\n");
+
+#ifdef DBUS_TYPE_UNIX_FD
+  value = g_variant_parse (G_VARIANT_TYPE ("(hah)"),
+                           "(42, [43, 44])",
+                           NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (value != NULL);
+  /* about (not extracted), see comment in DBUS_TYPE_UNIX_FD case in
+   * dbus_1_message_append() above.
+   */
+  check_serialization (value,
+                       "value 0:   unix-fd: (not extracted)\n"
+                       "value 1:   array:\n"
+                       "    unix-fd: (not extracted)\n"
+                       "    unix-fd: (not extracted)\n");
+#endif
 }
 
 

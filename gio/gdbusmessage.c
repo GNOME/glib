@@ -1006,6 +1006,19 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           g_free (v);
         }
     }
+  else if (g_variant_type_equal (type, G_VARIANT_TYPE_HANDLE))
+    {
+      if (!ensure_input_padding (mis, 4, &local_error))
+        goto fail;
+      if (!just_align)
+        {
+          gint32 v;
+          v = g_data_input_stream_read_int32 (dis, NULL, &local_error);
+          if (local_error != NULL)
+            goto fail;
+          ret = g_variant_new_handle (v);
+        }
+    }
   else if (g_variant_type_is_array (type))
     {
       guint32 array_len;
@@ -1699,6 +1712,15 @@ append_value_to_blob (GVariant             *value,
           g_data_output_stream_put_byte (dos, len, NULL, NULL);
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
+        }
+    }
+  else if (g_variant_type_equal (type, G_VARIANT_TYPE_HANDLE))
+    {
+      padding_added = ensure_output_padding (mos, dos, 4);
+      if (value != NULL)
+        {
+          gint32 v = g_variant_get_handle (value);
+          g_data_output_stream_put_int32 (dos, v, NULL, NULL);
         }
     }
   else if (g_variant_type_is_array (type))
