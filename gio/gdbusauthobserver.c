@@ -42,7 +42,8 @@
  * in the future
  *
  * For example, if you only want to allow D-Bus connections from
- * processes owned by the same uid as the server, you would do this:
+ * processes owned by the same uid as the server, you would use a
+ * signal handler like the following:
  * <example id="auth-observer"><title>Controlling Authentication</title><programlisting>
  * static gboolean
  * on_authorize_authenticated_peer (GDBusAuthObserver *observer,
@@ -50,52 +51,20 @@
  *                                  GCredentials      *credentials,
  *                                  gpointer           user_data)
  * {
- *   GCredentials *me;
  *   gboolean authorized;
  *
  *   authorized = FALSE;
- *   me = g_credentials_new ();
- *
- *   if (credentials != NULL &&
- *       !g_credentials_is_same_user (credentials, me))
- *     authorized = TRUE;
- *
- *   g_object_unref (me);
+ *   if (credentials != NULL)
+ *     {
+ *       GCredentials *own_credentials;
+ *       own_credentials = g_credentials_new ();
+ *       if (g_credentials_is_same_user (credentials, own_credentials, NULL))
+ *         authorized = TRUE;
+ *       g_object_unref (own_credentials);
+ *     }
  *
  *   return authorized;
  * }
- *
- * static gboolean
- * on_new_connection (GDBusServer     *server,
- *                    GDBusConnection *connection,
- *                    gpointer         user_data)
- * {
- *   /<!-- -->* Guaranteed here that @connection is from a process owned by the same user *<!-- -->/
- * }
- *
- * [...]
- *
- * GDBusAuthObserver *observer;
- * GDBusServer *server;
- * GError *error;
- *
- * error = NULL;
- * observer = g_dbus_auth_observer_new ();
- * server = g_dbus_server_new_sync ("unix:tmpdir=/tmp/my-app-name",
- *                                  G_DBUS_SERVER_FLAGS_NONE,
- *                                  observer,
- *                                  NULL, /<!-- -->* GCancellable *<!-- -->/
- *                                  &error);
- * g_signal_connect (observer,
- *                   "authorize-authenticated-peer",
- *                   G_CALLBACK (on_authorize_authenticated_peer),
- *                   NULL);
- * g_signal_connect (server,
- *                   "new-connection",
- *                   G_CALLBACK (on_new_connection),
- *                   NULL);
- * g_object_unref (observer);
- * g_dbus_server_start (server);
  * </programlisting></example>
  */
 
@@ -243,7 +212,7 @@ g_dbus_auth_observer_new (void)
  *
  * Emits the #GDBusAuthObserver::authorize-authenticated-peer signal on @observer.
  *
- * Returns: %TRUE if the peer should be denied, %FALSE otherwise.
+ * Returns: %TRUE if the peer is authorized, %FALSE if not.
  *
  * Since: 2.26
  */
