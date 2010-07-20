@@ -24,17 +24,10 @@
 
 #include <stdlib.h>
 
-#ifdef __linux__
-#define __USE_GNU
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <string.h>
-#endif
-
 #include <gobject/gvaluecollector.h>
 
 #include "gcredentials.h"
+#include "gnetworkingprivate.h"
 #include "gioerror.h"
 
 #include "glibintl.h"
@@ -44,9 +37,9 @@
  * @short_description: An object containing credentials
  * @include: gio/gio.h
  *
- * The #GCredentials type is a reference-counted wrapper for the
- * native credentials type. This information is typically used for
- * identifying, authenticating and authorizing other processes.
+ * The #GCredentials type is a reference-counted wrapper for native
+ * credentials. This information is typically used for identifying,
+ * authenticating and authorizing other processes.
  *
  * Some operating systems supports looking up the credentials of the
  * remote peer of a communication endpoint - see e.g.
@@ -57,20 +50,46 @@
  * #GUnixCredentialsMessage, g_unix_connection_send_credentials() and
  * g_unix_connection_receive_credentials() for details.
  *
- * On Linux, the native credential type is a <literal>struct ucred</literal> - see
- * the <literal>unix(7)</literal> man page for details.
+ * On Linux, the native credential type is a <type>struct ucred</type>
+ * - see the
+ * <citerefentry><refentrytitle>unix</refentrytitle><manvolnum>7</manvolnum></citerefentry>
+ * man page for details. This corresponds to
+ * %G_CREDENTIALS_TYPE_LINUX_UCRED.
  */
 
-struct _GCredentialsPrivate
+/**
+ * GCredentials:
+ *
+ * The #GCredentials structure contains only private data and
+ * should only be accessed using the provided API.
+ *
+ * Since: 2.26
+ */
+struct _GCredentials
 {
+  /*< private >*/
+  GObject parent_instance;
+
 #ifdef __linux__
   struct ucred native;
 #else
 #ifdef __GNUC__
 #warning Please add GCredentials support for your OS
 #endif
-  guint foo;
 #endif
+};
+
+/**
+ * GCredentialsClass:
+ *
+ * Class structure for #GCredentials.
+ *
+ * Since: 2.26
+ */
+struct _GCredentialsClass
+{
+  /*< private >*/
+  GObjectClass parent_class;
 };
 
 G_DEFINE_TYPE (GCredentials, g_credentials, G_TYPE_OBJECT);
@@ -90,8 +109,6 @@ g_credentials_class_init (GCredentialsClass *klass)
 {
   GObjectClass *gobject_class;
 
-  g_type_class_add_private (klass, sizeof (GCredentialsPrivate));
-
   gobject_class = G_OBJECT_CLASS (klass);
   gobject_class->finalize = g_credentials_finalize;
 }
@@ -99,11 +116,10 @@ g_credentials_class_init (GCredentialsClass *klass)
 static void
 g_credentials_init (GCredentials *credentials)
 {
-  credentials->priv = G_TYPE_INSTANCE_GET_PRIVATE (credentials, G_TYPE_CREDENTIALS, GCredentialsPrivate);
 #ifdef __linux__
-  credentials->priv->native.pid = getpid ();
-  credentials->priv->native.uid = getuid ();
-  credentials->priv->native.gid = getgid ();
+  credentials->native.pid = getpid ();
+  credentials->native.uid = getuid ();
+  credentials->native.gid = getgid ();
 #endif
 }
 
@@ -148,13 +164,13 @@ g_credentials_to_string (GCredentials *credentials)
 
   ret = g_string_new ("GCredentials:");
 #ifdef __linux__
-  g_string_append (ret, "linux:");
-  if (credentials->priv->native.pid != -1)
-    g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) credentials->priv->native.pid);
-  if (credentials->priv->native.uid != -1)
-    g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->priv->native.uid);
-  if (credentials->priv->native.gid != -1)
-    g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->priv->native.gid);
+  g_string_append (ret, "linux-ucred:");
+  if (credentials->native.pid != -1)
+    g_string_append_printf (ret, "pid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.pid);
+  if (credentials->native.uid != -1)
+    g_string_append_printf (ret, "uid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.uid);
+  if (credentials->native.gid != -1)
+    g_string_append_printf (ret, "gid=%" G_GINT64_FORMAT ",", (gint64) credentials->native.gid);
   if (ret->str[ret->len - 1] == ',')
     ret->str[ret->len - 1] = '\0';
 #else
@@ -195,7 +211,7 @@ g_credentials_is_same_user (GCredentials  *credentials,
 
   ret = FALSE;
 #ifdef __linux__
-  if (credentials->priv->native.uid == other_credentials->priv->native.uid)
+  if (credentials->native.uid == other_credentials->native.uid)
     ret = TRUE;
 #else
   g_set_error_literal (error,
@@ -210,25 +226,46 @@ g_credentials_is_same_user (GCredentials  *credentials,
 /**
  * g_credentials_get_native:
  * @credentials: A #GCredentials.
+ * @native_type: The type of native credentials to get.
  *
- * Gets a pointer to the native credentials structure.
- *
- * Returns: The pointer or %NULL if there is no #GCredentials support
- * for the OS. Do not free the returned data, it is owned by
+ * Gets a pointer to native credentials of type @native_type from
  * @credentials.
+ *
+ * It is a programming error (which will cause an warning to be
+ * logged) to use this method if there is no #GCredentials support for
+ * the OS or if @native_type isn't supported by the OS.
+ *
+ * Returns: The pointer to native credentials or %NULL if the
+ * operation there is no #GCredentials support for the OS or if
+ * @native_type isn't supported by the OS. Do not free the returned
+ * data, it is owned by @credentials.
  *
  * Since: 2.26
  */
 gpointer
-g_credentials_get_native (GCredentials *credentials)
+g_credentials_get_native (GCredentials     *credentials,
+                          GCredentialsType  native_type)
 {
   gpointer ret;
+
   g_return_val_if_fail (G_IS_CREDENTIALS (credentials), NULL);
 
-#ifdef __linux__
-  ret = &credentials->priv->native;
-#else
   ret = NULL;
+
+#ifdef __linux__
+  if (native_type != G_CREDENTIALS_TYPE_LINUX_UCRED)
+    {
+      g_warning ("g_credentials_get_native: Trying to get credentials of type %d but only "
+                 "G_CREDENTIALS_TYPE_LINUX_UCRED is supported.",
+                 native_type);
+    }
+  else
+    {
+      ret = &credentials->native;
+    }
+#else
+  g_warning ("g_credentials_get_native: Trying to get credentials but GLib has no support "
+             "for the native credentials type. Please add support.");
 #endif
 
   return ret;
@@ -237,22 +274,34 @@ g_credentials_get_native (GCredentials *credentials)
 /**
  * g_credentials_set_native:
  * @credentials: A #GCredentials.
+ * @native_type: The type of native credentials to set.
  * @native: A pointer to native credentials.
  *
- * Copies the native credentials from @native into @credentials.
+ * Copies the native credentials of type @native_type from @native
+ * into @credentials.
  *
  * It is a programming error (which will cause an warning to be
  * logged) to use this method if there is no #GCredentials support for
- * the OS.
+ * the OS or if @native_type isn't supported by the OS.
  *
  * Since: 2.26
  */
 void
-g_credentials_set_native (GCredentials    *credentials,
-                          gpointer         native)
+g_credentials_set_native (GCredentials     *credentials,
+                          GCredentialsType  native_type,
+                          gpointer          native)
 {
 #ifdef __linux__
-  memcpy (&credentials->priv->native, native, sizeof (struct ucred));
+  if (native_type != G_CREDENTIALS_TYPE_LINUX_UCRED)
+    {
+      g_warning ("g_credentials_set_native: Trying to set credentials of type %d "
+                 "but only G_CREDENTIALS_TYPE_LINUX_UCRED is supported.",
+                 native_type);
+    }
+  else
+    {
+      memcpy (&credentials->native, native, sizeof (struct ucred));
+    }
 #else
   g_warning ("g_credentials_set_native: Trying to set credentials but GLib has no support "
              "for the native credentials type. Please add support.");
@@ -288,7 +337,7 @@ g_credentials_get_unix_user (GCredentials    *credentials,
   g_return_val_if_fail (error == NULL || *error == NULL, -1);
 
 #ifdef __linux__
-  ret = credentials->priv->native.uid;
+  ret = credentials->native.uid;
 #else
   ret = -1;
   g_set_error_literal (error,
@@ -330,7 +379,7 @@ g_credentials_set_unix_user (GCredentials    *credentials,
 
   ret = FALSE;
 #ifdef __linux__
-  credentials->priv->native.uid = uid;
+  credentials->native.uid = uid;
   ret = TRUE;
 #else
   g_set_error_literal (error,

@@ -1741,6 +1741,7 @@ g_socket_get_protocol
 g_socket_get_remote_address
 g_socket_get_socket_type
 g_socket_speaks_ipv4
+g_socket_get_credentials
 <SUBSECTION Standard>
 GSocketClass
 G_IS_SOCKET
@@ -1797,16 +1798,6 @@ g_socket_connection_get_local_address
 g_socket_connection_get_remote_address
 g_socket_connection_get_socket
 <SUBSECTION>
-GTcpConnection
-g_tcp_connection_set_graceful_disconnect
-g_tcp_connection_get_graceful_disconnect
-<SUBSECTION>
-GUnixConnection
-g_unix_connection_receive_fd
-g_unix_connection_send_fd
-g_unix_connection_receive_credentials
-g_unix_connection_send_credentials
-<SUBSECTION>
 g_socket_connection_factory_create_connection
 g_socket_connection_factory_lookup_type
 g_socket_connection_factory_register_type
@@ -1818,18 +1809,9 @@ G_SOCKET_CONNECTION
 G_SOCKET_CONNECTION_CLASS
 G_SOCKET_CONNECTION_GET_CLASS
 G_TYPE_SOCKET_CONNECTION
-GTcpConnectionClass
-G_IS_TCP_CONNECTION
-G_IS_TCP_CONNECTION_CLASS
-G_TCP_CONNECTION
-G_TCP_CONNECTION_CLASS
-G_TCP_CONNECTION_GET_CLASS
-G_TYPE_TCP_CONNECTION
 <SUBSECTION Private>
 GSocketConnectionPrivate
 g_socket_connection_get_type
-GTcpConnectionPrivate
-g_tcp_connection_get_type
 </SECTION>
 
 <SECTION>
@@ -1838,6 +1820,8 @@ g_tcp_connection_get_type
 GUnixConnection
 g_unix_connection_receive_fd
 g_unix_connection_send_fd
+g_unix_connection_receive_credentials
+g_unix_connection_send_credentials
 <SUBSECTION Standard>
 GUnixConnectionClass
 G_IS_UNIX_CONNECTION
@@ -1849,6 +1833,25 @@ G_UNIX_CONNECTION_GET_CLASS
 <SUBSECTION Private>
 GUnixConnectionPrivate
 g_unix_connection_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gtcpconnection</FILE>
+<TITLE>GTcpConnection</TITLE>
+GTcpConnection
+g_tcp_connection_set_graceful_disconnect
+g_tcp_connection_get_graceful_disconnect
+<SUBSECTION Standard>
+GTcpConnectionClass
+G_IS_TCP_CONNECTION
+G_IS_TCP_CONNECTION_CLASS
+G_TYPE_TCP_CONNECTION
+G_TCP_CONNECTION
+G_TCP_CONNECTION_CLASS
+G_TCP_CONNECTION_GET_CLASS
+<SUBSECTION Private>
+GTcpConnectionPrivate
+g_tcp_connection_get_type
 </SECTION>
 
 <SECTION>
@@ -2210,7 +2213,7 @@ g_unix_credentials_message_get_type
 <FILE>gcredentials</FILE>
 <TITLE>GCredentials</TITLE>
 GCredentials
-GCredentialsClass
+GCredentialsType
 g_credentials_new
 g_credentials_to_string
 g_credentials_get_native

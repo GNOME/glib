@@ -40,6 +40,14 @@
 
 #else /* !G_OS_WIN32 */
 
+/* need this for struct ucred on Linux */
+#ifdef __linux__
+#define __USE_GNU
+#include <sys/types.h>
+#include <sys/socket.h>
+#undef __USE_GNU
+#endif
+
 #include <sys/types.h>
 #include <arpa/inet.h>
 #include <arpa/nameser.h>

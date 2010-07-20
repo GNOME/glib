@@ -13,16 +13,11 @@
 /**
  * SECTION: gtcpconnection
  * @title: GTcpConnection
- * @short_description: a TCP #GSocketConnection
+ * @short_description: a TCP GSocketConnection
  * @see_also: #GSocketConnection.
  *
  * This is the subclass of #GSocketConnection that is created
  * for TCP/IP sockets.
- *
- * It is currently empty; it offers no additional functionality
- * over its base class.
- *
- * Eventually, some TCP-specific socket stuff will be added.
  *
  * Since: 2.22
  */

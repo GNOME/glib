@@ -23,12 +23,15 @@
  * This #GSocketControlMessage contains a #GCredentials instance.  It
  * may be sent using g_socket_send_message() and received using
  * g_socket_receive_message() over UNIX sockets (ie: sockets in the
- * %G_SOCKET_ADDRESS_UNIX family).
+ * %G_SOCKET_FAMILY_UNIX family).
  *
  * For an easier way to send and receive credentials over
- * stream-oriented UNIX sockets, see g_unix_connection_send_credentials() and
- * g_unix_connection_receive_credentials().
- **/
+ * stream-oriented UNIX sockets, see
+ * g_unix_connection_send_credentials() and
+ * g_unix_connection_receive_credentials(). To receive credentials of
+ * a foreign process connected to a socket, use
+ * g_socket_get_credentials().
+ */
 
 #include "config.h"
 
@@ -131,7 +134,7 @@ g_unix_credentials_message_deserialize (gint     level,
     ucred = data;
 
     credentials = g_credentials_new ();
-    g_credentials_set_native (credentials, ucred);
+    g_credentials_set_native (credentials, G_CREDENTIALS_TYPE_LINUX_UCRED, ucred);
     message = g_unix_credentials_message_new_with_credentials (credentials);
     g_object_unref (credentials);
  out:
@@ -148,7 +151,10 @@ g_unix_credentials_message_serialize (GSocketControlMessage *_message,
 {
   GUnixCredentialsMessage *message = G_UNIX_CREDENTIALS_MESSAGE (_message);
 #ifdef __linux__
-  memcpy (data, g_credentials_get_native (message->priv->credentials), sizeof (struct ucred));
+  memcpy (data,
+          g_credentials_get_native (message->priv->credentials,
+                                    G_CREDENTIALS_TYPE_LINUX_UCRED),
+          sizeof (struct ucred));
 #endif
 }
 

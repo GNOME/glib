@@ -173,6 +173,8 @@ GSource *              g_socket_create_source           (GSocket                
 							 GIOCondition             condition,
 							 GCancellable            *cancellable);
 gboolean               g_socket_speaks_ipv4             (GSocket                 *socket);
+GCredentials          *g_socket_get_credentials         (GSocket                 *socket,
+                                                         GError                 **error);
 
 G_END_DECLS
 

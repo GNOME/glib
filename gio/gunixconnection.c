@@ -316,6 +316,9 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
  * byte to the stream, as this is required for credentials passing to
  * work on some implementations.
  *
+ * Other ways to exchange credentials with a foreign peer includes the
+ * #GUnixCredentialsMessage type and g_socket_get_credentials() function.
+ *
  * Note that this function only works on Linux, currently.
  *
  * Returns: %TRUE on success, %FALSE if @error is set.
@@ -381,6 +384,9 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
  * As well as reading the credentials this also reads (and discards) a
  * single byte from the stream, as this is required for credentials
  * passing to work on some implementations.
+ *
+ * Other ways to exchange credentials with a foreign peer includes the
+ * #GUnixCredentialsMessage type and g_socket_get_credentials() function.
  *
  * Returns: Received credentials on success (free with
  * g_object_unref()), %NULL if @error is set.

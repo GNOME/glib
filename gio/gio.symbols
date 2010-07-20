@@ -1025,6 +1025,7 @@ g_dbus_subtree_flags_get_type G_GNUC_CONST
 g_dbus_server_flags_get_type G_GNUC_CONST
 g_dbus_signal_flags_get_type G_GNUC_CONST
 g_dbus_send_message_flags_get_type G_GNUC_CONST
+g_credentials_type_get_type G_GNUC_CONST
 #endif
 #endif
 
@@ -1264,6 +1265,7 @@ g_socket_set_timeout
 g_socket_set_keepalive
 g_socket_set_listen_backlog
 g_socket_speaks_ipv4
+g_socket_get_credentials
 #endif
 #endif
 

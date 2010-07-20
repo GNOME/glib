@@ -53,8 +53,8 @@
 #include "gnetworkingprivate.h"
 #include "gsocketaddress.h"
 #include "gsocketcontrolmessage.h"
+#include "gcredentials.h"
 #include "glibintl.h"
-
 
 /**
  * SECTION:gsocket
@@ -3320,4 +3320,74 @@ g_socket_receive_message (GSocket                 *socket,
     return bytes_received;
   }
 #endif
+}
+
+/**
+ * g_socket_get_credentials:
+ * @socket: a #GSocket.
+ * @error: #GError for error reporting, or %NULL to ignore.
+ *
+ * Returns the credentials of the foreign process connected to this
+ * socket, if any (e.g. it is only supported for %G_SOCKET_FAMILY_UNIX
+ * sockets).
+ *
+ * If this operation isn't supported on the OS, the method fails with
+ * the %G_IO_ERROR_NOT_SUPPORTED error. On Linux this is implemented
+ * by reading the %SO_PEERCRED option on the underlying socket.
+ *
+ * Other ways to obtain credentials from a foreign peer includes the
+ * #GUnixCredentialsMessage type and
+ * g_unix_connection_send_credentials() /
+ * g_unix_connection_receive_credentials() functions.
+ *
+ * Returns: %NULL if @error is set, otherwise a #GCredentials object
+ * that must be freed with g_object_unref().
+ *
+ * Since: 2.26
+ */
+GCredentials *
+g_socket_get_credentials (GSocket   *socket,
+                          GError   **error)
+{
+  GCredentials *ret;
+
+  g_return_val_if_fail (G_IS_SOCKET (socket), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  ret = NULL;
+
+#ifdef __linux__
+  {
+    struct ucred native_creds;
+    socklen_t optlen;
+    optlen = sizeof (struct ucred);
+    if (getsockopt (socket->priv->fd,
+                    SOL_SOCKET,
+                    SO_PEERCRED,
+                    (void *)&native_creds,
+                    &optlen) != 0)
+      {
+        int errsv = get_socket_errno ();
+        g_set_error (error,
+                     G_IO_ERROR,
+                     socket_io_error_from_errno (errsv),
+                     _("Unable to get pending error: %s"),
+                     socket_strerror (errsv));
+      }
+    else
+      {
+        ret = g_credentials_new ();
+        g_credentials_set_native (ret,
+                                  G_CREDENTIALS_TYPE_LINUX_UCRED,
+                                  &native_creds);
+      }
+  }
+#else
+  g_set_error_literal (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_NOT_SUPPORTED,
+                       _("g_socket_get_credentials not implemented for this OS"));
+#endif
+
+  return ret;
 }

@@ -1169,6 +1169,21 @@ typedef enum
   G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL = (1<<0)
 } GDBusSendMessageFlags;
 
+/**
+ * GCredentialsType:
+ * @G_CREDENTIALS_TYPE_INVALID: Indicates an invalid native credential type.
+ * @G_CREDENTIALS_TYPE_LINUX_UCRED: The native credentials type is a <type>struct ucred</type>.
+ *
+ * Enumeration describing different kinds of native credential types.
+ *
+ * Since: 2.26
+ */
+typedef enum
+{
+  G_CREDENTIALS_TYPE_INVALID,
+  G_CREDENTIALS_TYPE_LINUX_UCRED
+} GCredentialsType;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

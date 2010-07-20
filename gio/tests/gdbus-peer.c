@@ -35,6 +35,13 @@
 #include <gio/gunixsocketaddress.h>
 #include <gio/gunixfdlist.h>
 
+/* for struct ucred */
+#ifdef __linux__
+#define __USE_GNU
+#include <sys/types.h>
+#include <sys/socket.h>
+#endif
+
 #include "gdbus-tests.h"
 
 
@@ -702,6 +709,35 @@ test_peer (void)
   g_assert (result == NULL);
   g_error_free (error);
 #endif /* G_OS_UNIX */
+
+  /* Check that g_socket_get_credentials() work - this really should
+   * be in a GSocket-specific test suite but no such test suite exists
+   * right now.
+   */
+  {
+    GSocket *socket;
+    GCredentials *credentials;
+    socket = g_socket_connection_get_socket (G_SOCKET_CONNECTION (g_dbus_connection_get_stream (c)));
+    g_assert (G_IS_SOCKET (socket));
+    error = NULL;
+    credentials = g_socket_get_credentials (socket, &error);
+#ifdef __linux__
+    {
+      struct ucred *native_creds;
+      g_assert_no_error (error);
+      g_assert (G_IS_CREDENTIALS (credentials));
+      native_creds = g_credentials_get_native (credentials, G_CREDENTIALS_TYPE_LINUX_UCRED);
+      g_assert (native_creds != NULL);
+      g_assert (native_creds->uid == getuid ());
+      g_assert (native_creds->gid == getgid ());
+      g_assert (native_creds->pid == getpid ());
+    }
+    g_object_unref (credentials);
+#else
+    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+    g_assert (credentials == NULL);
+#endif
+  }
 
 
   /* bring up a connection - don't accept it - this should fail
