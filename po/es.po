@@ -13,13 +13,12 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-07-16 17:24+0000\n"
-"PO-Revision-Date: 2010-07-18 20:28+0200\n"
+"PO-Revision-Date: 2010-07-20 08:57+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../glib/gbookmarkfile.c:780
@@ -481,8 +480,8 @@ msgstr "El elemento «%s» fue cerrado, no existe ningún elemento abierto"
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"El elemento «%s» fue cerrado, pero el elemento que está abierto actualmente "
-"es «%s»"
+"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es «%"
+"s»"
 
 #: ../glib/gmarkup.c:1647
 msgid "Document was empty or contained only whitespace"
@@ -521,7 +520,7 @@ msgstr "El documento termina inesperadamente dentro de un nombre de atributo"
 #: ../glib/gmarkup.c:1694
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
-"El documento termina inesperadamente dentro de una etiqueta de apertura de "
+"El documento terminó inesperadamente dentro de una etiqueta de apertura de "
 "elemento."
 
 #: ../glib/gmarkup.c:1700
@@ -1332,19 +1331,16 @@ msgstr "Transporte «%s» desconocido o no soportado para la dirección «%s»"
 
 #: ../gio/gdbusaddress.c:676
 #, c-format
-#| msgid "Error opening file '%s': %s"
 msgid "Error opening nonce file `%s': %s"
 msgstr "Error al abrir el archivo de número usado una sola vez «%s»: %s"
 
 #: ../gio/gdbusaddress.c:694
 #, c-format
-#| msgid "Error reading nonce file `%s':"
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Error al leer el archivo de número usado una sola vez «%s»: %s"
 
 #: ../gio/gdbusaddress.c:703
 #, c-format
-#| msgid "Error reading nonce file `%s':"
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
 "Error al leer el archivo de número usado una sola vez «%s», se esperaban 16 "
@@ -1352,7 +1348,6 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:721
 #, c-format
-#| msgid "Error reading nonce file `%s':"
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr ""
 "Error al escribir el contenido del archivo de número usado una sola vez «%s» "
@@ -1436,7 +1431,7 @@ msgstr "Cancelado a través de GDBusAuthObserver::authorize-authenticated-peer"
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
 msgid "Error statting directory `%s': %s"
-msgstr ""
+msgstr "Error al mostrar la información del estado del directorio «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
@@ -2345,7 +2340,7 @@ msgstr "Error al establecer el atributo extendido «%s»: %s"
 #: ../gio/glocalfileinfo.c:1483 ../gio/glocalfileoutputstream.c:833
 #, c-format
 msgid "Error stating file '%s': %s"
-msgstr "Error al mostrar información del estado del archivo «%s»: %s"
+msgstr "Error al mostrar la información del estado del archivo «%s»: %s"
 
 #: ../gio/glocalfileinfo.c:1567
 msgid " (invalid encoding)"
@@ -2686,7 +2681,7 @@ msgid ""
 "\n"
 "Use '%s COMMAND --help' to get help for individual commands.\n"
 msgstr ""
-"Comadnos:\n"
+"Comandos:\n"
 "  help        Mostrar esta información\n"
 "  get         Obtener el valor de una clave\n"
 "  set         Establecer el valor de una clave\n"
