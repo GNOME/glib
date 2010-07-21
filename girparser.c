@@ -47,6 +47,7 @@ typedef enum
   STATE_END,
   STATE_REPOSITORY,
   STATE_INCLUDE,
+  STATE_C_INCLUDE,
   STATE_PACKAGE,
   STATE_NAMESPACE, /* 5 */
   STATE_ENUM,
@@ -2734,6 +2735,11 @@ start_element_handler (GMarkupParseContext *context,
 				 attribute_names, attribute_values,
 				 ctx, error))
 	goto out;
+      else if (strcmp (element_name, "c:include") == 0)
+	{
+	  state_switch (ctx, STATE_C_INCLUDE);
+	  goto out;
+	}
       break;
 
     case 'm':
@@ -3028,6 +3034,13 @@ end_element_handler (GMarkupParseContext *context,
 
     case STATE_INCLUDE:
       if (require_end_element (context, ctx, "include", element_name, error))
+	{
+          state_switch (ctx, STATE_REPOSITORY);
+        }
+      break;
+
+    case STATE_C_INCLUDE:
+      if (require_end_element (context, ctx, "c:include", element_name, error))
 	{
           state_switch (ctx, STATE_REPOSITORY);
         }
