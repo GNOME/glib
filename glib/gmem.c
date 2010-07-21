@@ -263,7 +263,7 @@ g_try_realloc (gpointer mem,
 }
 
 
-#define SIZE_OVERFLOWS(a,b) (G_UNLIKELY ((a) > G_MAXSIZE / (b)))
+#define SIZE_OVERFLOWS(a,b) (G_UNLIKELY ((b) > 0 && (a) > G_MAXSIZE / (b)))
 
 gpointer
 g_malloc_n (gsize n_blocks,
