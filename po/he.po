@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-17 13:00+0300\n"
-"PO-Revision-Date: 2010-07-17 13:01+0200\n"
+"POT-Creation-Date: 2010-07-21 19:11+0300\n"
+"PO-Revision-Date: 2010-07-21 19:11+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1152,8 +1152,8 @@ msgstr "Too large count value passed to %s"
 msgid "Stream is already closed"
 msgstr "Stream is already closed"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1532
-#: ../gio/gdbusconnection.c:1620 ../gio/gdbusconnection.c:1795
+#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1534
+#: ../gio/gdbusconnection.c:1623 ../gio/gdbusconnection.c:1801
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:650
 #: ../gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
@@ -1189,11 +1189,11 @@ msgstr "%s filetype"
 msgid "%s type"
 msgstr "%s type"
 
-#: ../gio/gcredentials.c:204 ../gio/gcredentials.c:339
+#: ../gio/gcredentials.c:220 ../gio/gcredentials.c:388
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials is not implemented on this OS"
 
-#: ../gio/gcredentials.c:297
+#: ../gio/gcredentials.c:346
 msgid "There is no GCredentials support for your platform"
 msgstr "There is no GCredentials support for your platform"
 
@@ -1334,7 +1334,7 @@ msgstr "Command line `%s' exited with non-zero exit status %d: %s"
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Cannot determine session bus address (not implemented for this OS)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5959
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5974
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1343,7 +1343,7 @@ msgstr ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5968
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5983
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1452,87 +1452,87 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Additionally, releasing the lock for `%s' also failed: %s) "
 
 #: ../gio/gdbusconnection.c:1048 ../gio/gdbusconnection.c:1277
-#: ../gio/gdbusconnection.c:1315 ../gio/gdbusconnection.c:1631
+#: ../gio/gdbusconnection.c:1316 ../gio/gdbusconnection.c:1634
 msgid "The connection is closed"
 msgstr "The connection is closed"
 
-#: ../gio/gdbusconnection.c:1576
+#: ../gio/gdbusconnection.c:1578
 msgid "Timeout was reached"
 msgstr "Timeout was reached"
 
-#: ../gio/gdbusconnection.c:2130
+#: ../gio/gdbusconnection.c:2139
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Unsupported flags encountered when constructing a client-side connection"
 
-#: ../gio/gdbusconnection.c:3551 ../gio/gdbusconnection.c:3867
+#: ../gio/gdbusconnection.c:3564 ../gio/gdbusconnection.c:3880
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 
-#: ../gio/gdbusconnection.c:3622
+#: ../gio/gdbusconnection.c:3635
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "Error setting property `%s': Expected type `%s' but got `%s'"
 
-#: ../gio/gdbusconnection.c:3716
+#: ../gio/gdbusconnection.c:3729
 #, c-format
 msgid "No such property `%s'"
 msgstr "No such property `%s'"
 
-#: ../gio/gdbusconnection.c:3728
+#: ../gio/gdbusconnection.c:3741
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Property `%s' is not readable"
 
-#: ../gio/gdbusconnection.c:3739
+#: ../gio/gdbusconnection.c:3752
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Property `%s' is not writable"
 
-#: ../gio/gdbusconnection.c:3809 ../gio/gdbusconnection.c:5395
+#: ../gio/gdbusconnection.c:3822 ../gio/gdbusconnection.c:5410
 #, c-format
 msgid "No such interface `%s'"
 msgstr "No such interface `%s'"
 
-#: ../gio/gdbusconnection.c:3994
+#: ../gio/gdbusconnection.c:4007
 msgid "No such interface"
 msgstr "No such interface"
 
-#: ../gio/gdbusconnection.c:4210 ../gio/gdbusconnection.c:5909
+#: ../gio/gdbusconnection.c:4223 ../gio/gdbusconnection.c:5924
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No such interface `%s' on object at path %s"
 
-#: ../gio/gdbusconnection.c:4262
+#: ../gio/gdbusconnection.c:4275
 #, c-format
 msgid "No such method `%s'"
 msgstr "No such method `%s'"
 
-#: ../gio/gdbusconnection.c:4293
+#: ../gio/gdbusconnection.c:4306
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Type of message, `%s', does not match expected type `%s'"
 
-#: ../gio/gdbusconnection.c:4512
+#: ../gio/gdbusconnection.c:4525
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "An object is already exported for the interface %s at %s"
 
-#: ../gio/gdbusconnection.c:4706
+#: ../gio/gdbusconnection.c:4719
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Method `%s' returned type `%s', but expected `%s'"
 
-#: ../gio/gdbusconnection.c:5506
+#: ../gio/gdbusconnection.c:5521
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Method `%s' on interface `%s' with signature `%s' does not exist"
 
-#: ../gio/gdbusconnection.c:5624
+#: ../gio/gdbusconnection.c:5639
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "A subtree is already exported for %s"
@@ -1557,66 +1557,66 @@ msgstr "Parsed value `%s' is not a valid D-Bus object path"
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "'%s' is not a valid name "
 
-#: ../gio/gdbusmessage.c:1041
+#: ../gio/gdbusmessage.c:1054
 #, c-format
 msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes."
 msgstr "Encountered array of length %u bytes. Maximum length is 2<<26 bytes."
 
-#: ../gio/gdbusmessage.c:1202
+#: ../gio/gdbusmessage.c:1215
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "Parsed value `%s' for variant is not a valid D-Bus signature"
 
-#: ../gio/gdbusmessage.c:1229
+#: ../gio/gdbusmessage.c:1242
 #, c-format
 msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
 msgstr ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
 
-#: ../gio/gdbusmessage.c:1409
+#: ../gio/gdbusmessage.c:1422
 #, c-format
 msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
 msgstr "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
 
-#: ../gio/gdbusmessage.c:1423
+#: ../gio/gdbusmessage.c:1436
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Invalid major protocol version. Expected 1 but found %d"
 
-#: ../gio/gdbusmessage.c:1480
+#: ../gio/gdbusmessage.c:1493
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "Signature header with signature `%s' found but message body is empty"
 
-#: ../gio/gdbusmessage.c:1494
+#: ../gio/gdbusmessage.c:1507
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Parsed value `%s' is not a valid D-Bus signature (for body)"
 
-#: ../gio/gdbusmessage.c:1524
+#: ../gio/gdbusmessage.c:1537
 #, c-format
 msgid "No signature header in message but the message body is %u bytes"
 msgstr "No signature header in message but the message body is %u bytes"
 
-#: ../gio/gdbusmessage.c:1841
+#: ../gio/gdbusmessage.c:1863
 #, c-format
 msgid ""
 "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
 msgstr ""
 "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
 
-#: ../gio/gdbusmessage.c:1984
+#: ../gio/gdbusmessage.c:2006
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
 msgstr "Message has %d fds but the header field indicates %d fds"
 
-#: ../gio/gdbusmessage.c:2030
+#: ../gio/gdbusmessage.c:2052
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr "Message body has signature `%s' but there is no signature header"
 
-#: ../gio/gdbusmessage.c:2040
+#: ../gio/gdbusmessage.c:2062
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `%"
@@ -1625,17 +1625,17 @@ msgstr ""
 "Message body has type signature `%s' but signature in the header field is `%"
 "s'"
 
-#: ../gio/gdbusmessage.c:2056
+#: ../gio/gdbusmessage.c:2078
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "Message body is empty but signature in the header field is `(%s)'"
 
-#: ../gio/gdbusmessage.c:2610
+#: ../gio/gdbusmessage.c:2632
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Error return with body of type `%s'"
 
-#: ../gio/gdbusmessage.c:2618
+#: ../gio/gdbusmessage.c:2640
 msgid "Error return with empty body"
 msgstr "Error return with empty body"
 
@@ -1677,25 +1677,25 @@ msgstr "Error calling StartServiceByName for %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Unexpected reply %d from StartServiceByName(\"%s\") method"
 
-#: ../gio/gdbusserver.c:703
+#: ../gio/gdbusserver.c:710
 msgid "Abstract name space not supported"
 msgstr "Abstract name space not supported"
 
-#: ../gio/gdbusserver.c:793
+#: ../gio/gdbusserver.c:800
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Cannot specify nonce file when creating a server"
 
-#: ../gio/gdbusserver.c:870
+#: ../gio/gdbusserver.c:877
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Error writing nonce file at `%s': %s"
 
-#: ../gio/gdbusserver.c:1026
+#: ../gio/gdbusserver.c:1033
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "The string `%s' is not a valid D-Bus GUID"
 
-#: ../gio/gdbusserver.c:1066
+#: ../gio/gdbusserver.c:1073
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Cannot listen on unsupported transport `%s'"
@@ -1796,12 +1796,12 @@ msgstr "Method and interface name"
 msgid "Invoke a method on a remote object."
 msgstr "Invoke a method on a remote object."
 
-#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1504
+#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Error connecting: %s\n"
 
-#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1523
+#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Error: Destination is not specified\n"
@@ -1811,7 +1811,7 @@ msgstr "Error: Destination is not specified\n"
 msgid "Error: Object path is not specified\n"
 msgstr "Error: Object path is not specified\n"
 
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1563
+#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Error: %s is not a valid object path\n"
@@ -1852,15 +1852,15 @@ msgstr "Print XML"
 msgid "Introspect a remote object."
 msgstr "Introspect a remote object."
 
-#: ../gio/gdbus-tool.c:1422
+#: ../gio/gdbus-tool.c:1423
 msgid "Destination name to monitor"
 msgstr "Destination name to monitor"
 
-#: ../gio/gdbus-tool.c:1423
+#: ../gio/gdbus-tool.c:1424
 msgid "Object path to monitor"
 msgstr "Object path to monitor"
 
-#: ../gio/gdbus-tool.c:1456
+#: ../gio/gdbus-tool.c:1457
 msgid "Monitor a remote object."
 msgstr "corrupted object"
 
@@ -2736,7 +2736,7 @@ msgstr "Connection in progress"
 msgid "Error connecting: %s"
 msgstr "Error connecting: %s"
 
-#: ../gio/gsocket.c:1669
+#: ../gio/gsocket.c:1669 ../gio/gsocket.c:3374
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Unable to get pending error: %s"
@@ -2770,6 +2770,10 @@ msgstr "GSocketControlMessage not supported on windows"
 msgid "Error receiving message: %s"
 msgstr "Error receiving message: %s"
 
+#: ../gio/gsocket.c:3389
+msgid "g_socket_get_credentials not implemented for this OS"
+msgstr "g_socket_get_credentials not implemented for this OS"
+
 #: ../gio/gsocketclient.c:520 ../gio/gsocketclient.c:769
 msgid "Unknown error on connect"
 msgstr "Unknown error on connect"
@@ -2787,12 +2791,12 @@ msgstr "Added socket is closed"
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Can't handle version %d of GThemedIcon encoding"
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:501
+#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:507
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Expecting 1 control message, got %d"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:511
+#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:517
 msgid "Unexpected type of ancillary data"
 msgstr "Unexpected type of ancillary data"
 
@@ -2805,16 +2809,16 @@ msgstr "Expecting one fd, but got %d\n"
 msgid "Received invalid fd"
 msgstr "Received invalid fd"
 
-#: ../gio/gunixconnection.c:358
+#: ../gio/gunixconnection.c:361
 msgid "Error sending credentials: "
 msgstr "Error sending data: %s"
 
-#: ../gio/gunixconnection.c:435
+#: ../gio/gunixconnection.c:441
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Error checking if SO_PASSCRED is enabled for socket: %s"
 
-#: ../gio/gunixconnection.c:444
+#: ../gio/gunixconnection.c:450
 #, c-format
 msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
@@ -2823,18 +2827,18 @@ msgstr ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
 "socket. Expected %d bytes, got %d"
 
-#: ../gio/gunixconnection.c:461
+#: ../gio/gunixconnection.c:467
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Error renaming file: %s"
 
-#: ../gio/gunixconnection.c:491
+#: ../gio/gunixconnection.c:497
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Error while disabling SO_PASSCRED: %s"
