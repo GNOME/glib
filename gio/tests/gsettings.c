@@ -1073,7 +1073,9 @@ test_simple_binding (void)
 
   g_settings_bind (settings, "enum", obj, "enum", G_SETTINGS_BIND_DEFAULT);
   g_object_set (obj, "enum", TEST_ENUM_BAZ, NULL);
-  g_assert_cmpstr (g_settings_get_string (settings, "enum"), ==, "baz");
+  s = g_settings_get_string (settings, "enum");
+  g_assert_cmpstr (s, ==, "baz");
+  g_free (s);
   g_assert_cmpint (g_settings_get_enum (settings, "enum"), ==, TEST_ENUM_BAZ);
 
   g_settings_set_enum (settings, "enum", TEST_ENUM_QUUX);
