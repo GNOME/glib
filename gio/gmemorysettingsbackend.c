@@ -104,7 +104,7 @@ g_memory_settings_backend_write_one (gpointer key,
 }
 
 static gboolean
-g_memory_settings_backend_write_keys (GSettingsBackend *backend,
+g_memory_settings_backend_write_tree (GSettingsBackend *backend,
                                       GTree            *tree,
                                       gpointer          origin_tag)
 {
@@ -168,7 +168,7 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
 
   backend_class->read = g_memory_settings_backend_read;
   backend_class->write = g_memory_settings_backend_write;
-  backend_class->write_keys = g_memory_settings_backend_write_keys;
+  backend_class->write_tree = g_memory_settings_backend_write_tree;
   backend_class->reset = g_memory_settings_backend_reset;
   backend_class->get_writable = g_memory_settings_backend_get_writable;
   backend_class->get_permission = g_memory_settings_backend_get_permission;

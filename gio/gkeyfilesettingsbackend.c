@@ -293,7 +293,7 @@ g_keyfile_settings_backend_check_one (gpointer key,
 }
 
 static gboolean
-g_keyfile_settings_backend_write_many (GSettingsBackend *backend,
+g_keyfile_settings_backend_write_tree (GSettingsBackend *backend,
                                        GTree            *tree,
                                        gpointer          origin_tag)
 {
@@ -336,19 +336,6 @@ g_keyfile_settings_backend_write (GSettingsBackend *backend,
     }
 
   return success;
-}
-
-static void
-g_keyfile_settings_backend_reset_path (GSettingsBackend *backend,
-                                       const gchar      *path,
-                                       gpointer          origin_tag)
-{
-  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
-
-  if (set_to_keyfile (kfsb, path, NULL))
-    g_keyfile_settings_backend_keyfile_write (kfsb);
-
-  g_settings_backend_path_changed (backend, path, origin_tag);
 }
 
 static void
@@ -545,9 +532,8 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
 
   class->read = g_keyfile_settings_backend_read;
   class->write = g_keyfile_settings_backend_write;
-  class->write_keys = g_keyfile_settings_backend_write_many;
+  class->write_tree = g_keyfile_settings_backend_write_tree;
   class->reset = g_keyfile_settings_backend_reset;
-  class->reset_path = g_keyfile_settings_backend_reset_path;
   class->get_writable = g_keyfile_settings_backend_get_writable;
   class->get_permission = g_keyfile_settings_backend_get_permission;
   /* No need to implement subscribed/unsubscribe: the only point would be to

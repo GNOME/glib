@@ -72,7 +72,7 @@ gboolean                g_settings_backend_write                        (GSettin
                                                                          GVariant                             *value,
                                                                          gpointer                              origin_tag);
 G_GNUC_INTERNAL
-gboolean                g_settings_backend_write_keys                   (GSettingsBackend                     *backend,
+gboolean                g_settings_backend_write_tree                   (GSettingsBackend                     *backend,
                                                                          GTree                                *tree,
                                                                          gpointer                              origin_tag);
 G_GNUC_INTERNAL

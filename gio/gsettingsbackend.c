@@ -827,12 +827,12 @@ g_settings_backend_write (GSettingsBackend *backend,
  * old values.
  */
 gboolean
-g_settings_backend_write_keys (GSettingsBackend *backend,
+g_settings_backend_write_tree (GSettingsBackend *backend,
                                GTree            *tree,
                                gpointer          origin_tag)
 {
   return G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->write_keys (backend, tree, origin_tag);
+    ->write_tree (backend, tree, origin_tag);
 }
 
 /*< private >
@@ -852,24 +852,6 @@ g_settings_backend_reset (GSettingsBackend *backend,
 {
   G_SETTINGS_BACKEND_GET_CLASS (backend)
     ->reset (backend, key, origin_tag);
-}
-
-/*< private >
- * g_settings_backend_reset_path:
- * @backend: a #GSettingsBackend implementation
- * @name: the name of a key or path
- * @origin_tag: the origin tag
- *
- * "Resets" the named path.  This means that every key under the path is
- * reset.
- */
-void
-g_settings_backend_reset_path (GSettingsBackend *backend,
-                               const gchar      *path,
-                               gpointer          origin_tag)
-{
-  G_SETTINGS_BACKEND_GET_CLASS (backend)
-    ->reset_path (backend, path, origin_tag);
 }
 
 /*< private >

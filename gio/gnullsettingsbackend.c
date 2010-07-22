@@ -58,7 +58,7 @@ g_null_settings_backend_write (GSettingsBackend *backend,
 }
 
 static gboolean
-g_null_settings_backend_write_keys (GSettingsBackend *backend,
+g_null_settings_backend_write_tree (GSettingsBackend *backend,
                                     GTree            *tree,
                                     gpointer          origin_tag)
 {
@@ -69,13 +69,6 @@ static void
 g_null_settings_backend_reset (GSettingsBackend *backend,
                                const gchar      *key,
                                gpointer          origin_tag)
-{
-}
-
-static void
-g_null_settings_backend_reset_path (GSettingsBackend *backend,
-                                    const gchar      *path,
-                                    gpointer          origin_tag)
 {
 }
 
@@ -105,9 +98,8 @@ g_null_settings_backend_class_init (GNullSettingsBackendClass *class)
 
   backend_class->read = g_null_settings_backend_read;
   backend_class->write = g_null_settings_backend_write;
-  backend_class->write_keys = g_null_settings_backend_write_keys;
+  backend_class->write_tree = g_null_settings_backend_write_tree;
   backend_class->reset = g_null_settings_backend_reset;
-  backend_class->reset_path = g_null_settings_backend_reset_path;
   backend_class->get_writable = g_null_settings_backend_get_writable;
   backend_class->get_permission = g_null_settings_backend_get_permission;
 }

@@ -55,6 +55,11 @@ test_basic (void)
   g_free (str);
   str = NULL;
 
+  g_settings_reset (settings, "greeting");
+  str = g_settings_get_string (settings, "greeting");
+  g_assert_cmpstr (str, ==, "Hello, earthlings");
+  g_free (str);
+
   g_settings_set (settings, "greeting", "s", "this is the end");
   g_object_unref (settings);
 }

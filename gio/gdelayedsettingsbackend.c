@@ -151,7 +151,7 @@ add_to_tree (gpointer key,
 }
 
 static gboolean
-g_delayed_settings_backend_write_keys (GSettingsBackend *backend,
+g_delayed_settings_backend_write_tree (GSettingsBackend *backend,
                                        GTree            *tree,
                                        gpointer          origin_tag)
 {
@@ -196,14 +196,6 @@ g_delayed_settings_backend_reset (GSettingsBackend *backend,
 
   if (was_empty)
     g_delayed_settings_backend_notify_unapplied (delayed);
-}
-
-static void
-g_delayed_settings_backend_reset_path (GSettingsBackend *backend,
-                                       const gchar      *path,
-                                       gpointer          origin_tag)
-{
-  /* deal with this... */
 }
 
 static void
@@ -254,7 +246,7 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
       g_static_mutex_lock (&delayed->priv->lock);
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
-      success = g_settings_backend_write_keys (delayed->priv->backend,
+      success = g_settings_backend_write_tree (delayed->priv->backend,
                                                tmp, delayed->priv);
       g_static_mutex_unlock (&delayed->priv->lock);
 
@@ -446,9 +438,8 @@ g_delayed_settings_backend_class_init (GDelayedSettingsBackendClass *class)
 
   backend_class->read = g_delayed_settings_backend_read;
   backend_class->write = g_delayed_settings_backend_write;
-  backend_class->write_keys = g_delayed_settings_backend_write_keys;
+  backend_class->write_tree = g_delayed_settings_backend_write_tree;
   backend_class->reset = g_delayed_settings_backend_reset;
-  backend_class->reset_path = g_delayed_settings_backend_reset_path;
   backend_class->get_writable = g_delayed_settings_backend_get_writable;
   backend_class->subscribe = g_delayed_settings_backend_subscribe;
   backend_class->unsubscribe = g_delayed_settings_backend_unsubscribe;

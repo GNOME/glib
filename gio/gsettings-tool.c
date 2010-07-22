@@ -80,6 +80,7 @@ usage (gint      *argc,
       "  help        Show this information\n"
       "  get         Get the value of a key\n"
       "  set         Set the value of a key\n"
+      "  reset       Reset the value of a key\n"
       "  monitor     Monitor a key for changes\n"
       "  writable    Check if a key is writable\n"
       "\n"
@@ -420,6 +421,102 @@ handle_set (gint      *argc,
   return ret;
 }
 
+
+static gint
+handle_reset (gint      *argc,
+              gchar    **argv[],
+              gboolean   request_completion,
+              gchar     *completion_cur,
+              gchar     *completion_prev)
+{
+  gchar *schema;
+  gchar *path;
+  gchar *key;
+  GSettings *settings;
+  GOptionContext *context;
+  GOptionEntry entries[] = {
+    { "path", 'p', 0, G_OPTION_ARG_STRING, &path, N_("Specify the path for the schema"), N_("PATH") },
+    { NULL }
+  };
+  GError *error;
+  gint ret = 1;
+
+  modify_argv0_for_command (argc, argv, "reset");
+
+  context = g_option_context_new (_("SCHEMA KEY VALUE"));
+  g_option_context_set_help_enabled (context, FALSE);
+  g_option_context_set_summary (context, _("Sets KEY to its default value"));
+  g_option_context_set_description (context,
+    _("Arguments:\n"
+      "  SCHEMA      The id of the schema\n"
+      "  KEY         The name of the key\n"));
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+
+  settings = NULL;
+  path = NULL;
+  schema = NULL;
+  key = NULL;
+
+  error = NULL;
+  if (!g_option_context_parse (context, argc, argv, NULL))
+    {
+      if (!request_completion)
+        {
+          gchar *s;
+          s = g_option_context_get_help (context, FALSE, NULL);
+          g_printerr ("%s", s);
+          g_free (s);
+          goto out;
+        }
+    }
+
+  if (*argc > 1)
+    schema = (*argv)[1];
+  if (*argc > 2)
+    key = (*argv)[2];
+
+  if (request_completion && completion_cur[0] == '-')
+    {
+      list_options (context, completion_cur);
+      ret = 0;
+      goto out;
+    }
+
+  if (request_completion && !schema_exists (schema))
+    {
+      list_schemas (schema);
+      ret = 0;
+      goto out;
+    }
+
+  if (path)
+    settings = g_settings_new_with_path (schema, path);
+  else
+    settings = g_settings_new (schema);
+
+  if (request_completion && !key_exists (settings, key))
+    {
+      list_keys (settings, key);
+      ret = 0;
+      goto out;
+    }
+
+  if (!request_completion)
+    {
+      g_settings_reset (settings, key);
+      g_settings_sync ();
+      ret = 0;
+    }
+
+ out:
+  if (settings)
+    g_object_unref (settings);
+
+  g_option_context_free (context);
+
+  return ret;
+}
+
 static gint
 handle_writable (gint   *argc,
                  gchar **argv[],
@@ -635,6 +732,7 @@ handle_monitor (gint      *argc,
 
   return ret;
 }
+
 int
 main (int argc, char *argv[])
 {
@@ -671,6 +769,8 @@ main (int argc, char *argv[])
     ret = handle_get (&argc, &argv, request_completion, completion_cur, completion_prev);
   else if (g_strcmp0 (command, "set") == 0)
     ret = handle_set (&argc, &argv, request_completion, completion_cur, completion_prev);
+  else if (g_strcmp0 (command, "reset") == 0)
+    ret = handle_reset (&argc, &argv, request_completion, completion_cur, completion_prev);
   else if (g_strcmp0 (command, "monitor") == 0)
     ret = handle_monitor (&argc, &argv, request_completion, completion_cur, completion_prev);
   else if (g_strcmp0 (command, "writable") == 0)
@@ -725,7 +825,7 @@ main (int argc, char *argv[])
     {
       if (request_completion)
         {
-          g_print ("help \nget \nmonitor \nwritable \nset \n");
+          g_print ("help \nget \nmonitor \nwritable \nset \nreset \n");
           ret = 0;
         }
       else
