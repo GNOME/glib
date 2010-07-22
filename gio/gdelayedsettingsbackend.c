@@ -95,15 +95,29 @@ g_delayed_settings_backend_read (GSettingsBackend   *backend,
                                  gboolean            default_value)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
-  GVariant *result;
+  gpointer result = NULL;
 
-  if (!default_value &&
-      (result = g_tree_lookup (delayed->priv->delayed, key)))
-    return g_variant_ref (result);
+  if (!default_value)
+    {
+      g_static_mutex_lock (&delayed->priv->lock);
+      if (g_tree_lookup_extended (delayed->priv->delayed, key, NULL, &result))
+        {
+          /* NULL in the tree means we should consult the default value */
+          if (result != NULL)
+            g_variant_ref (result);
+          else
+            default_value = TRUE;
+        }
+      g_static_mutex_unlock (&delayed->priv->lock);
+    }
 
-  return g_settings_backend_read (delayed->priv->backend,
-                                  key, expected_type, default_value);
+  if (result == NULL)
+    result = g_settings_backend_read (delayed->priv->backend, key,
+                                      expected_type, default_value);
+
+  return result;
 }
+
 static gboolean
 g_delayed_settings_backend_write (GSettingsBackend *backend,
                                   const gchar      *key,
@@ -172,7 +186,16 @@ g_delayed_settings_backend_reset (GSettingsBackend *backend,
                                   const gchar      *key,
                                   gpointer          origin_tag)
 {
-  /* deal with this... */
+  GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
+  gboolean was_empty;
+
+  g_static_mutex_lock (&delayed->priv->lock);
+  was_empty = g_tree_nnodes (delayed->priv->delayed) == 0;
+  g_tree_insert (delayed->priv->delayed, g_strdup (key), NULL);
+  g_static_mutex_unlock (&delayed->priv->lock);
+
+  if (was_empty)
+    g_delayed_settings_backend_notify_unapplied (delayed);
 }
 
 static void

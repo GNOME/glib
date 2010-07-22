@@ -95,7 +95,10 @@ g_memory_settings_backend_write_one (gpointer key,
 {
   GMemorySettingsBackend *memory = data;
 
-  g_hash_table_insert (memory->table, g_strdup (key), g_variant_ref (value));
+  if (value != NULL)
+    g_hash_table_insert (memory->table, g_strdup (key), g_variant_ref (value));
+  else
+    g_hash_table_remove (memory->table, key);
 
   return FALSE;
 }
@@ -109,6 +112,20 @@ g_memory_settings_backend_write_keys (GSettingsBackend *backend,
   g_settings_backend_changed_tree (backend, tree, origin_tag);
 
   return TRUE;
+}
+
+static void
+g_memory_settings_backend_reset (GSettingsBackend *backend,
+                                 const gchar      *key,
+                                 gpointer          origin_tag)
+{
+  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
+
+  if (g_hash_table_lookup (memory->table, key))
+    {
+      g_hash_table_remove (memory->table, key);
+      g_settings_backend_changed (backend, key, origin_tag);
+    }
 }
 
 static gboolean
@@ -152,6 +169,7 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
   backend_class->read = g_memory_settings_backend_read;
   backend_class->write = g_memory_settings_backend_write;
   backend_class->write_keys = g_memory_settings_backend_write_keys;
+  backend_class->reset = g_memory_settings_backend_reset;
   backend_class->get_writable = g_memory_settings_backend_get_writable;
   backend_class->get_permission = g_memory_settings_backend_get_permission;
   object_class->finalize = g_memory_settings_backend_finalize;

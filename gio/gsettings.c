@@ -1961,7 +1961,29 @@ g_settings_get_has_unapplied (GSettings *settings)
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
 
-/* Extra API (sync, get_child, is_writable, list_items) {{{1 */
+/* Extra API (reset, sync, get_child, is_writable, list_items) {{{1 */
+/**
+ * g_settings_reset:
+ * @settings: a #GSettings object
+ * @key: the name of a key
+ *
+ * Resets @key to its default value.
+ *
+ * This call resets the key, as much as possible, to its default value.
+ * That might the value specified in the schema or the one set by the
+ * administrator.
+ **/
+void
+g_settings_reset (GSettings *settings,
+                  const gchar *key)
+{
+  gchar *path;
+
+  path = g_strconcat (settings->priv->path, key, NULL);
+  g_settings_backend_reset (settings->priv->backend, path, NULL);
+  g_free (path);
+}
+
 /**
  * g_settings_sync:
  *

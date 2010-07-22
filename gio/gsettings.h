@@ -95,6 +95,8 @@ void                    g_settings_get                                  (GSettin
                                                                          const gchar        *key,
                                                                          const gchar        *format,
                                                                          ...);
+void                    g_settings_reset                                (GSettings          *settings,
+                                                                         const gchar        *key);
 
 gint                    g_settings_get_int                              (GSettings          *settings,
                                                                          const gchar        *key);
