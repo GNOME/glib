@@ -135,7 +135,7 @@ _ih_sub_cancel (inotify_sub *sub)
 }
 
 static char *
-_ih_fullpath_from_event (ik_event_t *event, char *dirname)
+_ih_fullpath_from_event (ik_event_t *event, const char *dirname)
 {
   char *fullpath;
 
