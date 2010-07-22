@@ -687,6 +687,7 @@ enum
   PROP_STRING,
   PROP_NO_READ,
   PROP_NO_WRITE,
+  PROP_STRV,
   PROP_ENUM
 };
 
@@ -706,6 +707,7 @@ typedef struct
   gchar *string_prop;
   gchar *no_read_prop;
   gchar *no_write_prop;
+  gchar **strv_prop;
   guint enum_prop;
 } TestObject;
 
@@ -725,6 +727,7 @@ static void
 test_object_finalize (GObject *object)
 {
   TestObject *testo = (TestObject*)object;
+  g_strfreev (testo->strv_prop);
   g_free (testo->string_prop);
   G_OBJECT_CLASS (test_object_parent_class)->finalize (object);
 }
@@ -771,6 +774,9 @@ test_object_get_property (GObject    *object,
       break;
     case PROP_NO_WRITE:
       g_value_set_string (value, test_object->no_write_prop);
+      break;
+    case PROP_STRV:
+      g_value_set_boxed (value, test_object->strv_prop);
       break;
     case PROP_ENUM:
       g_value_set_enum (value, test_object->enum_prop);
@@ -825,6 +831,10 @@ test_object_set_property (GObject      *object,
     case PROP_NO_READ:
       g_free (test_object->no_read_prop);
       test_object->no_read_prop = g_value_dup_string (value);
+      break;
+    case PROP_STRV:
+      g_strfreev (test_object->strv_prop);
+      test_object->strv_prop = g_value_dup_boxed (value);
       break;
     case PROP_ENUM:
       test_object->enum_prop = g_value_get_enum (value);
@@ -890,6 +900,8 @@ test_object_class_init (TestObjectClass *class)
     g_param_spec_string ("no-write", "", "", NULL, G_PARAM_READABLE));
   g_object_class_install_property (gobject_class, PROP_NO_READ,
     g_param_spec_string ("no-read", "", "", NULL, G_PARAM_WRITABLE));
+  g_object_class_install_property (gobject_class, PROP_STRV,
+    g_param_spec_boxed ("strv", "", "", G_TYPE_STRV, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_ENUM,
     g_param_spec_enum ("enum", "", "", test_enum_get_type (), TEST_ENUM_FOO, G_PARAM_READWRITE));
 }
@@ -919,6 +931,7 @@ test_simple_binding (void)
   gdouble d;
   gchar *s;
   GVariant *value;
+  gchar **strv;
 
   settings = g_settings_new ("org.gtk.test.binding");
   obj = test_object_new ();
@@ -1039,6 +1052,24 @@ test_simple_binding (void)
   d = 1.0;
   g_object_get (obj, "double", &d, NULL);
   g_assert_cmpfloat (d, ==, -G_MINDOUBLE);
+
+  strv = g_strsplit ("plastic bag,middle class,polyethylene", ",", 0);
+  g_settings_bind (settings, "strv", obj, "strv", G_SETTINGS_BIND_DEFAULT);
+  g_object_set (obj, "strv", strv, NULL);
+  g_strfreev (strv);
+  strv = g_settings_get_strv (settings, "strv");
+  s = g_strjoinv (",", strv);
+  g_assert_cmpstr (s, ==, "plastic bag,middle class,polyethylene");
+  g_strfreev (strv);
+  g_free (s);
+  strv = g_strsplit ("decaffeinate,unleaded,keep all surfaces clean", ",", 0);
+  g_settings_set_strv (settings, "strv", (const gchar **) strv);
+  g_strfreev (strv);
+  g_object_get (obj, "strv", &strv, NULL);
+  s = g_strjoinv (",", strv);
+  g_assert_cmpstr (s, ==, "decaffeinate,unleaded,keep all surfaces clean");
+  g_strfreev (strv);
+  g_free (s);
 
   g_settings_bind (settings, "enum", obj, "enum", G_SETTINGS_BIND_DEFAULT);
   g_object_set (obj, "enum", TEST_ENUM_BAZ, NULL);

@@ -111,6 +111,9 @@
     <key name="chararray" type="ay">
       <default>[48, 49]</default>
     </key>
+    <key name="strv" type="as">
+      <default>[]</default>
+    </key>
     <key name="enum" enum="org.gtk.test.TestEnum">
       <default>'foo'</default>
     </key>

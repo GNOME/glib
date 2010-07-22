@@ -377,6 +377,14 @@ g_settings_set_mapping (const GValue       *value,
         return g_variant_new_signature (g_value_get_string (value));
     }
 
+  else if (G_VALUE_HOLDS (value, G_TYPE_STRV))
+    {
+      if (g_value_get_boxed (value) == NULL)
+        return NULL;
+      return g_variant_new_strv ((const gchar **) g_value_get_boxed (value),
+                                 -1);
+    }
+
   else if (G_VALUE_HOLDS_ENUM (value))
     {
       GEnumValue *enumval;
@@ -498,7 +506,13 @@ g_settings_get_mapping (GValue   *value,
     }
   else if (g_variant_is_of_type (variant, G_VARIANT_TYPE ("as")))
     {
-      if (G_VALUE_HOLDS_FLAGS (value))
+      if (G_VALUE_HOLDS (value, G_TYPE_STRV))
+        {
+          g_value_take_boxed (value, g_variant_dup_strv (variant, NULL));
+          return TRUE;
+        }
+
+      else if (G_VALUE_HOLDS_FLAGS (value))
         {
           GFlagsClass *fclass;
           GFlagsValue *fvalue;
@@ -569,6 +583,8 @@ g_settings_mapping_is_compatible (GType               gvalue_type,
           g_variant_type_equal (variant_type, G_VARIANT_TYPE ("ay")) ||
           g_variant_type_equal (variant_type, G_VARIANT_TYPE_OBJECT_PATH) ||
           g_variant_type_equal (variant_type, G_VARIANT_TYPE_SIGNATURE));
+  else if (gvalue_type == G_TYPE_STRV)
+    ok = g_variant_type_equal (variant_type, G_VARIANT_TYPE ("as"));
   else if (G_TYPE_IS_ENUM (gvalue_type))
     ok = g_variant_type_equal (variant_type, G_VARIANT_TYPE_STRING);
   else if (G_TYPE_IS_FLAGS (gvalue_type))
