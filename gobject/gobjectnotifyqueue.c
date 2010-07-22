@@ -50,6 +50,8 @@ struct _GObjectNotifyQueue
   guint16               freeze_count;
 };
 
+G_LOCK_DEFINE_STATIC(notify_lock);
+
 /* --- functions --- */
 static void
 g_object_notify_queue_free (gpointer data)
@@ -66,6 +68,7 @@ g_object_notify_queue_freeze (GObject		   *object,
 {
   GObjectNotifyQueue *nqueue;
 
+  G_LOCK(notify_lock);
   nqueue = g_datalist_id_get_data (&object->qdata, context->quark_notify_queue);
   if (!nqueue)
     {
@@ -82,6 +85,7 @@ g_object_notify_queue_freeze (GObject		   *object,
                G_OBJECT_TYPE_NAME (object), object);
   else
     nqueue->freeze_count++;
+  G_UNLOCK(notify_lock);
 
   return nqueue;
 }
@@ -98,8 +102,11 @@ g_object_notify_queue_thaw (GObject            *object,
   g_return_if_fail (nqueue->freeze_count > 0);
   g_return_if_fail (g_atomic_int_get(&object->ref_count) > 0);
 
+  G_LOCK(notify_lock);
+
   /* Just make sure we never get into some nasty race condition */
   if (G_UNLIKELY(nqueue->freeze_count == 0)) {
+    G_UNLOCK(notify_lock);
     g_warning ("%s: property-changed notification for %s(%p) is not frozen",
 	       G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
     return;
@@ -107,6 +114,7 @@ g_object_notify_queue_thaw (GObject            *object,
 
   nqueue->freeze_count--;
   if (nqueue->freeze_count) {
+    G_UNLOCK(notify_lock);
     return;
   }
 
@@ -129,6 +137,8 @@ g_object_notify_queue_thaw (GObject            *object,
     }
   g_datalist_id_set_data (&object->qdata, context->quark_notify_queue, NULL);
 
+  G_UNLOCK(notify_lock);
+
   if (n_pspecs)
     context->dispatcher (object, n_pspecs, pspecs);
   g_free (free_me);
@@ -143,6 +153,8 @@ g_object_notify_queue_add (GObject            *object,
     {
       GParamSpec *redirect;
 
+      G_LOCK(notify_lock);
+
       g_return_if_fail (nqueue->n_pspecs < 65535);
 
       redirect = g_param_spec_get_redirect_target (pspec);
@@ -152,6 +164,8 @@ g_object_notify_queue_add (GObject            *object,
       /* we do the deduping in _thaw */
       nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
       nqueue->n_pspecs++;
+
+      G_UNLOCK(notify_lock);
     }
 }
 
