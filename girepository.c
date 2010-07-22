@@ -1224,9 +1224,19 @@ g_irepository_require (GIRepository  *repository,
       goto out;
     }
 
-  typelib = g_typelib_new_from_mapped_file (mfile, error);
-  if (!typelib)
-    goto out;
+  {
+    GError *temp_error = NULL;
+    typelib = g_typelib_new_from_mapped_file (mfile, &temp_error);
+    if (!typelib)
+      {
+	g_set_error (error, G_IREPOSITORY_ERROR,
+		     G_IREPOSITORY_ERROR_TYPELIB_NOT_FOUND,
+		     "Failed to load typelib file '%s' for namespace '%s': %s",
+		     path, namespace, temp_error->message);
+	g_clear_error (&temp_error);
+	goto out;
+      }
+  }
   header = (Header *) typelib->data;
   typelib_namespace = g_typelib_get_string (typelib, header->namespace);
   typelib_version = g_typelib_get_string (typelib, header->nsversion);
