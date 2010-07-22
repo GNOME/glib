@@ -96,11 +96,19 @@ g_object_notify_queue_thaw (GObject            *object,
   guint n_pspecs = 0;
 
   g_return_if_fail (nqueue->freeze_count > 0);
+  g_return_if_fail (g_atomic_int_get(&object->ref_count) > 0);
+
+  /* Just make sure we never get into some nasty race condition */
+  if (G_UNLIKELY(nqueue->freeze_count == 0)) {
+    g_warning ("%s: property-changed notification for %s(%p) is not frozen",
+	       G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
+    return;
+  }
 
   nqueue->freeze_count--;
-  if (nqueue->freeze_count)
+  if (nqueue->freeze_count) {
     return;
-  g_return_if_fail (object->ref_count > 0);
+  }
 
   pspecs = nqueue->n_pspecs > 16 ? free_me = g_new (GParamSpec*, nqueue->n_pspecs) : pspecs_mem;
   /* set first entry to NULL since it's checked unconditionally */
