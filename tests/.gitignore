@@ -36,6 +36,8 @@ onceinit
 patterntest
 properties
 properties2
+properties3
+properties4
 qsort-test
 queue-test
 regex-test

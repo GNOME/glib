@@ -19,6 +19,8 @@ test_programs = 				\
 	objects2				\
 	properties				\
 	properties2				\
+	properties3				\
+	properties4				\
 	signal1					\
 	signal2					\
 	signal3
