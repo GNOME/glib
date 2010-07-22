@@ -247,8 +247,8 @@ binding_default (void)
                                     target, "bar",
                                     G_BINDING_DEFAULT);
 
-  g_assert (g_binding_get_source (binding) == source);
-  g_assert (g_binding_get_target (binding) == target);
+  g_assert (g_binding_get_source (binding) == G_OBJECT (source));
+  g_assert (g_binding_get_target (binding) == G_OBJECT (target));
   g_assert_cmpstr (g_binding_get_source_property (binding), ==, "foo");
   g_assert_cmpstr (g_binding_get_target_property (binding), ==, "bar");
   g_assert_cmpint (g_binding_get_flags (binding), ==, G_BINDING_DEFAULT);
