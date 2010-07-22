@@ -1445,27 +1445,27 @@ g_type_tag_to_string (GITypeTag type)
     case GI_TYPE_TAG_VOID:
       return "void";
     case GI_TYPE_TAG_BOOLEAN:
-      return "boolean";
+      return "gboolean";
     case GI_TYPE_TAG_INT8:
-      return "int8";
+      return "gint8";
     case GI_TYPE_TAG_UINT8:
-      return "uint8";
+      return "guint8";
     case GI_TYPE_TAG_INT16:
-      return "int16";
+      return "gint16";
     case GI_TYPE_TAG_UINT16:
-      return "uint16";
+      return "guint16";
     case GI_TYPE_TAG_INT32:
-      return "int32";
+      return "gint32";
     case GI_TYPE_TAG_UINT32:
-      return "uint32";
+      return "guint32";
     case GI_TYPE_TAG_INT64:
-      return "int64";
+      return "gint64";
     case GI_TYPE_TAG_UINT64:
-      return "uint64";
+      return "guint64";
     case GI_TYPE_TAG_FLOAT:
-      return "float";
+      return "gfloat";
     case GI_TYPE_TAG_DOUBLE:
-      return "double";
+      return "gdouble";
     case GI_TYPE_TAG_GTYPE:
       return "GType";
     case GI_TYPE_TAG_UTF8:

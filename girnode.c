@@ -1219,36 +1219,10 @@ serialize_type (GIrTypelibBuild    *build,
 		GString      *str)
 {
   gint i;
-  const gchar* basic[] = {
-    "void",
-    "boolean",
-    "int8",
-    "uint8",
-    "int16",
-    "uint16",
-    "int32",
-    "uint32",
-    "int64",
-    "uint64",
-    "short",
-    "ushort",
-    "int",
-    "uint",
-    "long",
-    "ulong",
-    "ssize",
-    "size",
-    "float",
-    "double",
-    "time_t",
-    "GType",
-    "utf8",
-    "filename",
-  };
 
   if (node->tag < GI_TYPE_TAG_ARRAY)
     {
-      g_string_append_printf (str, "%s%s", basic[node->tag],
+      g_string_append_printf (str, "%s%s", g_type_tag_to_string (node->tag),
 			      node->is_pointer ? "*" : "");
     }
   else if (node->tag == GI_TYPE_TAG_ARRAY)

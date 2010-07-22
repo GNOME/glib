@@ -359,13 +359,13 @@ typedef struct {
 } IntegerAliasInfo;
 
 static IntegerAliasInfo integer_aliases[] = {
-  { "char",     SIZEOF_CHAR,      0 },
-  { "short",    SIZEOF_SHORT,     1 },
-  { "ushort",   SIZEOF_SHORT,     0 },
-  { "int",      SIZEOF_INT,       1 },
-  { "uint",     SIZEOF_INT,       0 },
-  { "long",     SIZEOF_LONG,      1 },
-  { "ulong",    SIZEOF_LONG,      0 },
+  { "gchar",    SIZEOF_CHAR,      0 },
+  { "gshort",   SIZEOF_SHORT,     1 },
+  { "gushort",  SIZEOF_SHORT,     0 },
+  { "gint",     SIZEOF_INT,       1 },
+  { "guint",    SIZEOF_INT,       0 },
+  { "glong",    SIZEOF_LONG,      1 },
+  { "gulong",   SIZEOF_LONG,      0 },
   { "gsize",    GLIB_SIZEOF_SIZE_T,    0 },
   { "gssize",   GLIB_SIZEOF_SIZE_T,    1 },
 };
@@ -379,30 +379,30 @@ typedef struct {
 #define BASIC_TYPE_FIXED_OFFSET 3
 
 static BasicTypeInfo basic_types[] = {
-    { "none",     GI_TYPE_TAG_VOID,    0 },
-    { "any",      GI_TYPE_TAG_VOID,    1 },
+    { "none",      GI_TYPE_TAG_VOID,    0 },
+    { "gpointer",  GI_TYPE_TAG_VOID,    1 },
 
-    { "bool",     GI_TYPE_TAG_BOOLEAN, 0 },
-    { "int8",     GI_TYPE_TAG_INT8,    0 }, /* Start of BASIC_TYPE_FIXED_OFFSET */
-    { "uint8",    GI_TYPE_TAG_UINT8,   0 },
-    { "int16",    GI_TYPE_TAG_INT16,   0 },
-    { "uint16",   GI_TYPE_TAG_UINT16,  0 },
-    { "int32",    GI_TYPE_TAG_INT32,   0 },
-    { "uint32",   GI_TYPE_TAG_UINT32,  0 },
-    { "int64",    GI_TYPE_TAG_INT64,   0 },
-    { "uint64",   GI_TYPE_TAG_UINT64,  0 },
-    { "float",    GI_TYPE_TAG_FLOAT,   0 },
-    { "double",   GI_TYPE_TAG_DOUBLE,  0 },
-    { "GType",    GI_TYPE_TAG_GTYPE,   0 },
-    { "utf8",     GI_TYPE_TAG_UTF8,    1 },
-    { "filename", GI_TYPE_TAG_FILENAME,1 },
+    { "gboolean",  GI_TYPE_TAG_BOOLEAN, 0 },
+    { "gint8",     GI_TYPE_TAG_INT8,    0 }, /* Start of BASIC_TYPE_FIXED_OFFSET */
+    { "guint8",    GI_TYPE_TAG_UINT8,   0 },
+    { "gint16",    GI_TYPE_TAG_INT16,   0 },
+    { "guint16",   GI_TYPE_TAG_UINT16,  0 },
+    { "gint32",    GI_TYPE_TAG_INT32,   0 },
+    { "guint32",   GI_TYPE_TAG_UINT32,  0 },
+    { "gint64",    GI_TYPE_TAG_INT64,   0 },
+    { "guint64",   GI_TYPE_TAG_UINT64,  0 },
+    { "gfloat",    GI_TYPE_TAG_FLOAT,   0 },
+    { "gdouble",   GI_TYPE_TAG_DOUBLE,  0 },
+    { "GType",     GI_TYPE_TAG_GTYPE,   0 },
+    { "utf8",      GI_TYPE_TAG_UTF8,    1 },
+    { "filename",  GI_TYPE_TAG_FILENAME,1 },
 };
 
 static const BasicTypeInfo *
 parse_basic (const char *str)
 {
-  gint i;
-  gint n_basic = G_N_ELEMENTS (basic_types);
+  guint i;
+  guint n_basic = G_N_ELEMENTS (basic_types);
 
   for (i = 0; i < n_basic; i++)
     {
@@ -1981,14 +1981,14 @@ end_type_top (ParseContext *ctx)
       typenode->tag == GI_TYPE_TAG_GSLIST)
     {
       if (typenode->parameter_type1 == NULL)
-	typenode->parameter_type1 = parse_type (ctx, "any");
+	typenode->parameter_type1 = parse_type (ctx, "gpointer");
     }
   else if (typenode->tag == GI_TYPE_TAG_GHASH)
     {
       if (typenode->parameter_type1 == NULL)
 	{
-	  typenode->parameter_type1 = parse_type (ctx, "any");
-	  typenode->parameter_type2 = parse_type (ctx, "any");
+	  typenode->parameter_type1 = parse_type (ctx, "gpointer");
+	  typenode->parameter_type2 = parse_type (ctx, "gpointer");
 	}
     }
 
