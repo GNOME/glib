@@ -978,12 +978,14 @@ g_object_thaw_notify (GObject *object)
     return;
   
   g_object_ref (object);
-  nqueue = g_object_notify_queue_from_object (object, &property_notify_context);
-  if (!nqueue || !nqueue->freeze_count)
-    g_warning ("%s: property-changed notification for %s(%p) is not frozen",
-	       G_STRFUNC, G_OBJECT_TYPE_NAME (object), object);
-  else
-    g_object_notify_queue_thaw (object, nqueue);
+
+  /* FIXME: Freezing is the only way to get at the notify queue.
+   * So we freeze once and then thaw twice.
+   */
+  nqueue = g_object_notify_queue_freeze (object,  &property_notify_context);
+  g_object_notify_queue_thaw (object, nqueue);
+  g_object_notify_queue_thaw (object, nqueue);
+
   g_object_unref (object);
 }
 
