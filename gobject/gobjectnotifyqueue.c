@@ -124,16 +124,17 @@ g_object_notify_queue_thaw (GObject            *object,
   for (slist = nqueue->pspecs; slist; slist = slist->next)
     {
       GParamSpec *pspec = slist->data;
-      guint i = 0;
+      guint i;
 
       /* dedup, make pspecs in the list unique */
-    redo_dedup_check:
-      if (pspecs[i] == pspec)
-	continue;
-      if (++i < n_pspecs)
-	goto redo_dedup_check;
+      for (i = 0; i < n_pspecs; i++)
+        {
+          if (pspecs[i] == pspec)
+            break;
+        }
 
-      pspecs[n_pspecs++] = pspec;
+      if (i == n_pspecs) /* if no match was found */
+        pspecs[n_pspecs++] = pspec;
     }
   g_datalist_id_set_data (&object->qdata, context->quark_notify_queue, NULL);
 
