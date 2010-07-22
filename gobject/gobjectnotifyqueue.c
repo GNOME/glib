@@ -75,8 +75,13 @@ g_object_notify_queue_freeze (GObject		   *object,
 				   nqueue, g_object_notify_queue_free);
     }
 
-  g_return_val_if_fail (nqueue->freeze_count < 65535, nqueue);
-  nqueue->freeze_count++;
+  if (nqueue->freeze_count >= 65535)
+    g_critical("Free queue for %s (%p) is larger than 65535,"
+               " called g_object_freeze_notify() too often."
+               " Forgot to call g_object_thaw_notify() or infinite loop",
+               G_OBJECT_TYPE_NAME (object), object);
+  else
+    nqueue->freeze_count++;
 
   return nqueue;
 }
