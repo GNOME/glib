@@ -355,6 +355,8 @@ libgio_2_0_la_SOURCES =		\
 	gproxy.c		\
 	gproxyaddress.c         \
 	gproxyaddressenumerator.c \
+	gproxyconnection.c      \
+	gproxyconnection.h      \
 	gsocketservice.c	\
 	gsrvtarget.c		\
 	gtcpconnection.c	\
