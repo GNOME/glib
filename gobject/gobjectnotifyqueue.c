@@ -170,6 +170,17 @@ g_object_notify_queue_add (GObject            *object,
     }
 }
 
+/* NB: This function is not threadsafe, do not ever use it if
+ * you need a threadsafe notify queue.
+ * Use g_object_notify_queue_freeze() to acquire the queue and
+ * g_object_notify_queue_thaw() after you are done instead.
+ */
+static inline GObjectNotifyQueue*
+g_object_notify_queue_from_object (GObject              *object,
+                                   GObjectNotifyContext *context)
+{
+  return g_datalist_id_get_data (&object->qdata, context->quark_notify_queue);
+}
 
 G_END_DECLS
 
