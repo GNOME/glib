@@ -5,16 +5,19 @@
 # yetist <yetist@gmail.com>, 2007.
 # Deng Xiyue <manphiz@gmail.com>, 2008, 2009.
 # Aron Xu <happyaron.xu@gmail.com>, 2009, 2010.
-#     Note:"fd" is abbr. of "File Descriptor", 文件描述符
 # Dark Blue <darkblue086@yahoo.com.cn>, 2010.
+# Tao Wang <dancefire@gmail.com>, 2010.
+#
+#     Note:"fd" is abbr. of "File Descriptor", 文件描述符
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-15 14:17+0800\n"
-"PO-Revision-Date: 2010-07-15 17:54+0800\n"
-"Last-Translator: Aron Xu <happyaron.xu@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&component=general\n"
+"POT-Creation-Date: 2010-07-22 22:41+0000\n"
+"PO-Revision-Date: 2010-07-19 18:30+1000\n"
+"Last-Translator: Tao Wang <dancefire@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1120,8 +1123,8 @@ msgstr "传递给 %s 的计数值太大了"
 msgid "Stream is already closed"
 msgstr "流已经关闭"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1532
-#: ../gio/gdbusconnection.c:1620 ../gio/gdbusconnection.c:1795
+#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1534
+#: ../gio/gdbusconnection.c:1623 ../gio/gdbusconnection.c:1801
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:650
 #: ../gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
@@ -1139,7 +1142,7 @@ msgstr "输入中有不完整的多字节序列"
 msgid "Not enough space in destination"
 msgstr "目标没有足够的空间"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:803
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:805
 msgid "Cancellable initialization not supported"
 msgstr "不支持可撤销的初始化"
 
@@ -1157,11 +1160,11 @@ msgstr "%s 文件类型"
 msgid "%s type"
 msgstr "%s 类型"
 
-#: ../gio/gcredentials.c:204 ../gio/gcredentials.c:339
+#: ../gio/gcredentials.c:220 ../gio/gcredentials.c:388
 msgid "GCredentials is not implemented on this OS"
 msgstr "此操作系统上没有实现 GCredentials"
 
-#: ../gio/gcredentials.c:297
+#: ../gio/gcredentials.c:346
 msgid "There is no GCredentials support for your platform"
 msgstr "您的系统尚不支持 GCredentials"
 
@@ -1169,135 +1172,145 @@ msgstr "您的系统尚不支持 GCredentials"
 msgid "Unexpected early end-of-stream"
 msgstr "非预期的过早的流结束符"
 
-#: ../gio/gdbusaddress.c:140 ../gio/gdbusaddress.c:231
-#: ../gio/gdbusaddress.c:305
+#: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
+#: ../gio/gdbusaddress.c:304
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "地址条目“%2$s”中不支持的键“%1$s”"
 
-#: ../gio/gdbusaddress.c:170
+#: ../gio/gdbusaddress.c:169
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
-msgstr ""
-"地址 %s 无效(需要指定的一个路径、临时目录或抽象键)"
+msgstr "地址 %s 无效(需要指定的一个路径、临时目录或抽象键)"
 
-#: ../gio/gdbusaddress.c:183
+#: ../gio/gdbusaddress.c:182
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "地址条目“%s”中无意义的键值对组合"
 
-#: ../gio/gdbusaddress.c:246 ../gio/gdbusaddress.c:320
+#: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "地址“%s”中有错误 - 端口属性格式错误"
 
-#: ../gio/gdbusaddress.c:257 ../gio/gdbusaddress.c:331
+#: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:330
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "地址“%s”中有错误 - 类别 (family) 属性格式错误"
 
-#: ../gio/gdbusaddress.c:435
+#: ../gio/gdbusaddress.c:434
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "地址元素“%s”不包含冒号 (:)"
 
-#: ../gio/gdbusaddress.c:456
+#: ../gio/gdbusaddress.c:455
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr "地址元素“%3$s”中的第 %1$d 个键值对 -“%2$s”，不包含等号"
 
-#: ../gio/gdbusaddress.c:536
+#: ../gio/gdbusaddress.c:469
+#, c-format
+msgid ""
+"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
+"`%s'"
+msgstr "在键/值对 %d ，“%s”在地址元素“%s”，中去转义发生错误"
+
+#: ../gio/gdbusaddress.c:547
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
-msgstr ""
-"地址 %s 有错误 - UNIX 传输需要“path”或“abstract”之一的键被设置。"
+msgstr "地址 %s 有错误 - UNIX 传输需要“path”或“abstract”之一的键被设置。"
 
-#: ../gio/gdbusaddress.c:572
+#: ../gio/gdbusaddress.c:583
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "地址“%s”中有错误 - 主机属性丢失或格式错误"
 
-#: ../gio/gdbusaddress.c:586
+#: ../gio/gdbusaddress.c:597
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "地址“%s”中有错误 - 端口属性丢失或格式错误"
 
-#: ../gio/gdbusaddress.c:600
+#: ../gio/gdbusaddress.c:611
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr "地址“%s”中有错误 - noncefile 属性丢失或格式错误"
 
-#: ../gio/gdbusaddress.c:621
+#: ../gio/gdbusaddress.c:632
 msgid "Error auto-launching: "
 msgstr "自启动出错："
 
-#: ../gio/gdbusaddress.c:629
+#: ../gio/gdbusaddress.c:640
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "对地址 %2$s 的未知或不支持的传输 %1$s"
 
-#: ../gio/gdbusaddress.c:663
+#: ../gio/gdbusaddress.c:676
 #, c-format
-msgid "Error reading nonce file `%s':"
-msgstr "读取临时文件“%s”出错："
+msgid "Error opening nonce file `%s': %s"
+msgstr "打开临时文件“%s”出错：%s"
 
-#: ../gio/gdbusaddress.c:675
+#: ../gio/gdbusaddress.c:694
 #, c-format
-msgid "The nonce-file `%s' was %lu bytes. Expected 16 bytes."
-msgstr "临时文件 %s 为 %lu 字节，期望为 16 字节。"
+msgid "Error reading from nonce file `%s': %s"
+msgstr "读取临时文件“%s”出错：%s"
 
-#: ../gio/gdbusaddress.c:691
+#: ../gio/gdbusaddress.c:703
 #, c-format
-msgid "Error write contents of nonce file `%s' to stream:"
-msgstr "写入临时文件 %s 的内容到流出错："
+msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
+msgstr "读取临时文件“%s”出错，预期 16 个字节，得到了 %d 个字节"
 
-#: ../gio/gdbusaddress.c:915
+#: ../gio/gdbusaddress.c:721
+#, c-format
+msgid "Error writing contents of nonce file `%s' to stream:"
+msgstr "写入临时文件 %s 的内容到流的过程中出错："
+
+#: ../gio/gdbusaddress.c:942
 msgid "The given address is empty"
 msgstr "给出的地址为空"
 
-#: ../gio/gdbusaddress.c:984
+#: ../gio/gdbusaddress.c:1011
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "无法在无机器 ID 时启动一条消息总线："
 
-#: ../gio/gdbusaddress.c:1021
+#: ../gio/gdbusaddress.c:1048
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "启动命令 %s 出错："
 
-#: ../gio/gdbusaddress.c:1032
+#: ../gio/gdbusaddress.c:1059
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "命令 %s 非正常程序终止：%s"
 
-#: ../gio/gdbusaddress.c:1046
+#: ../gio/gdbusaddress.c:1073
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "命令 %s 以非零状态数 %d 退出：%s"
 
-#: ../gio/gdbusaddress.c:1119
+#: ../gio/gdbusaddress.c:1146
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "无法确定会话总线地址(尚未在此操作系统上实现)"
 
-#: ../gio/gdbusaddress.c:1218 ../gio/gdbusconnection.c:5944
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5974
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr "无法从 DBUS_STARTER_BUS_TYPE 环境变量确定总线地址 - 未知的值“%s”"
 
-#: ../gio/gdbusaddress.c:1227 ../gio/gdbusconnection.c:5953
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5983
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr "无法确定总线地址，因为环境变量 DBUS_STARTER_BUS_TYPE 未设置"
 
-#: ../gio/gdbusaddress.c:1237
+#: ../gio/gdbusaddress.c:1264
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "未知的总线类型 %d"
@@ -1314,7 +1327,7 @@ msgstr "试图(安全地)读取一行时，异常地缺失内容"
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
-msgstr ""
+msgstr "用尽了所有可用的认证机制(已尝试：%s)(可用的：%s)"
 
 #: ../gio/gdbusauth.c:1149
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -1350,15 +1363,13 @@ msgstr "%2$s 处的密钥环的 %1$d 行有不符合格式的内容 %3$s"
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
-"%2$s 处的密钥环的 %1$d 行第一个令牌有不符合格式的内容 %3$s"
+msgstr "%2$s 处的密钥环的 %1$d 行第一个令牌有不符合格式的内容 %3$s"
 
 #: ../gio/gdbusauthmechanismsha1.c:434 ../gio/gdbusauthmechanismsha1.c:743
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
-"%2$s 处的密钥环的 %1$d 行第二个令牌有不符合格式的内容 %3$s"
+msgstr "%2$s 处的密钥环的 %1$d 行第二个令牌有不符合格式的内容 %3$s"
 
 #: ../gio/gdbusauthmechanismsha1.c:458
 #, c-format
@@ -1396,90 +1407,88 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(此外，释放 %s 的锁失败：%s)"
 
 #: ../gio/gdbusconnection.c:1048 ../gio/gdbusconnection.c:1277
-#: ../gio/gdbusconnection.c:1315 ../gio/gdbusconnection.c:1631
+#: ../gio/gdbusconnection.c:1316 ../gio/gdbusconnection.c:1634
 msgid "The connection is closed"
 msgstr "连接已关闭"
 
-#: ../gio/gdbusconnection.c:1576
+#: ../gio/gdbusconnection.c:1578
 msgid "Timeout was reached"
 msgstr "已到超时限制"
 
-#: ../gio/gdbusconnection.c:2130
+#: ../gio/gdbusconnection.c:2139
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
-msgstr ""
-"构建客户端连接时遇到不支持的标志"
+msgstr "构建客户端连接时遇到不支持的标志"
 
-#: ../gio/gdbusconnection.c:3551 ../gio/gdbusconnection.c:3867
+#: ../gio/gdbusconnection.c:3564 ../gio/gdbusconnection.c:3880
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
-msgstr ""
-"路径 %s 的对象上没有 org.freedesktop.DBus.Properties 接口"
+msgstr "路径 %s 的对象上没有 org.freedesktop.DBus.Properties 接口"
 
-#: ../gio/gdbusconnection.c:3622
+#: ../gio/gdbusconnection.c:3635
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "设置属性 %s 出错：期望 %s 类型但得到 %s 类型"
 
-#: ../gio/gdbusconnection.c:3716
+#: ../gio/gdbusconnection.c:3729
 #, c-format
 msgid "No such property `%s'"
 msgstr "无此属性：%s"
 
-#: ../gio/gdbusconnection.c:3728
+#: ../gio/gdbusconnection.c:3741
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "属性 %s 不可读"
 
-#: ../gio/gdbusconnection.c:3739
+#: ../gio/gdbusconnection.c:3752
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "属性 %s 不可写"
 
-#: ../gio/gdbusconnection.c:3809 ../gio/gdbusconnection.c:5389
+#: ../gio/gdbusconnection.c:3822 ../gio/gdbusconnection.c:5410
 #, c-format
 msgid "No such interface `%s'"
 msgstr "无此接口：%s"
 
-#: ../gio/gdbusconnection.c:3994
+#: ../gio/gdbusconnection.c:4007
 msgid "No such interface"
 msgstr "无此接口"
 
-#: ../gio/gdbusconnection.c:4210 ../gio/gdbusconnection.c:5894
+#: ../gio/gdbusconnection.c:4223 ../gio/gdbusconnection.c:5924
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "在路径 %s 的对象上没有 %s 接口"
 
-#: ../gio/gdbusconnection.c:4262
+#: ../gio/gdbusconnection.c:4275
 #, c-format
 msgid "No such method `%s'"
 msgstr "无此方法：%s"
 
-#: ../gio/gdbusconnection.c:4293
+#: ../gio/gdbusconnection.c:4306
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "消息的类型“%s”，与预期的类型“%s”不匹配"
 
-#: ../gio/gdbusconnection.c:4512
+#: ../gio/gdbusconnection.c:4525
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "%2$s 处的接口 %1$s 已经导出了一个对象"
 
-#: ../gio/gdbusconnection.c:4706
+#: ../gio/gdbusconnection.c:4719
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "方法“%s”返回类型“%s”，但预期的是“%s”"
 
-#: ../gio/gdbusconnection.c:5491
+#: ../gio/gdbusconnection.c:5521
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "带有 %3$s 签名的接口 %2$s 上不存在 %1$s 方法"
 
-#: ../gio/gdbusconnection.c:5609
-#, fuzzy, c-format
+#: ../gio/gdbusconnection.c:5639
+#, c-format
 msgid "A subtree is already exported for %s"
-msgstr "监听器已关闭"
+msgstr "已经为 %s 导出一个子树"
 
 #: ../gio/gdbusmessage.c:754
 #, c-format
@@ -1501,82 +1510,81 @@ msgstr "已解析的值 %s 不是有效的 D-Bus 对象路径"
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "已解析的值 %s 不是有效的 D-Bus 签名"
 
-#: ../gio/gdbusmessage.c:1041
+#: ../gio/gdbusmessage.c:1054
 #, c-format
 msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes."
 msgstr "以外得到长度为 %u 字节的数组，最大长度应为 2<<26 字节。"
 
-#: ../gio/gdbusmessage.c:1202
+#: ../gio/gdbusmessage.c:1215
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "已解析的衍生属性值 %s 不是有效的 D-Bus 签名"
 
-#: ../gio/gdbusmessage.c:1229
+#: ../gio/gdbusmessage.c:1242
 #, c-format
 msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
-msgstr ""
+msgstr "在以 D-Bus 线格式用类型字符串“%s”反序列化 GVariant 时发生错误"
 
-#: ../gio/gdbusmessage.c:1409
+#: ../gio/gdbusmessage.c:1422
 #, c-format
 msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
-msgstr ""
+msgstr "无效的字节序值。期望为“L”或“B”但是发现了“%c”(%d)"
 
-#: ../gio/gdbusmessage.c:1423
+#: ../gio/gdbusmessage.c:1436
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "无效的主协议版本。期望 1，但是找到了 %d"
 
-#: ../gio/gdbusmessage.c:1480
+#: ../gio/gdbusmessage.c:1493
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "头部带有 %s 签名但消息主体为空"
 
-#: ../gio/gdbusmessage.c:1494
+#: ../gio/gdbusmessage.c:1507
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "已解析的值 %s 不是有效的 D-Bus 签名(针对消息主体)"
 
-#: ../gio/gdbusmessage.c:1524
+#: ../gio/gdbusmessage.c:1537
 #, c-format
 msgid "No signature header in message but the message body is %u bytes"
 msgstr "消息中没有签名的头部，但消息主体为 %u 字节"
 
-#: ../gio/gdbusmessage.c:1841
+#: ../gio/gdbusmessage.c:1863
 #, c-format
 msgid ""
 "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
-msgstr ""
+msgstr "在以 D-Bus 线格式用类型字符串“%s”序列化 GVariant 时发生错误"
 
-#: ../gio/gdbusmessage.c:1984
+#: ../gio/gdbusmessage.c:2006
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
-msgstr ""
+msgstr "消息拥有 %d 个文件描述符，但是头区域指出 %d 个文件描述符"
 
-#: ../gio/gdbusmessage.c:2030
+#: ../gio/gdbusmessage.c:2052
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr "消息主体有签名 %s 但头部没有签名"
 
-#: ../gio/gdbusmessage.c:2040
+#: ../gio/gdbusmessage.c:2062
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `%"
 "s'"
-msgstr ""
-"消息主体有类型签名 %s 但头部的签名为 %s"
+msgstr "消息主体有类型签名 %s 但头部的签名为 %s"
 
-#: ../gio/gdbusmessage.c:2056
+#: ../gio/gdbusmessage.c:2078
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "消息主体为空，但头部有签名 %s"
 
-#: ../gio/gdbusmessage.c:2610
+#: ../gio/gdbusmessage.c:2632
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "返回主体类型 %s 出错"
 
-#: ../gio/gdbusmessage.c:2618
+#: ../gio/gdbusmessage.c:2640
 msgid "Error return with empty body"
 msgstr "返回空主体出错"
 
@@ -1585,8 +1593,8 @@ msgstr "返回空主体出错"
 msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr "返回值类型不正确，获得了“%s”，但是期望“%s”"
 
-#: ../gio/gdbusmethodinvocation.c:389 ../gio/gsocket.c:2867
-#: ../gio/gsocket.c:2948
+#: ../gio/gdbusmethodinvocation.c:389 ../gio/gsocket.c:2869
+#: ../gio/gsocket.c:2950
 #, c-format
 msgid "Error sending message: %s"
 msgstr "发送信息出错：%s"
@@ -1604,7 +1612,7 @@ msgstr "无法加载 /var/lib/dbus/machine-id："
 msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
-msgstr ""
+msgstr "尝试设置类型 %s 的属性 %s，但是根据期望的接口，类型是 %s"
 
 #: ../gio/gdbusproxy.c:1224
 #, c-format
@@ -1616,25 +1624,25 @@ msgstr "为 %s 调用 StartServiceByName 出错："
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "从 StartServiceByName(\"%2$s\") 方式处获得以外回复 %1$d"
 
-#: ../gio/gdbusserver.c:703
+#: ../gio/gdbusserver.c:710
 msgid "Abstract name space not supported"
 msgstr "不支持抽象命名空间"
 
-#: ../gio/gdbusserver.c:793
+#: ../gio/gdbusserver.c:800
 msgid "Cannot specify nonce file when creating a server"
 msgstr "创建服务器时无法指定临时文件"
 
-#: ../gio/gdbusserver.c:870
+#: ../gio/gdbusserver.c:877
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "写入“%s”处的临时文件出错：%s"
 
-#: ../gio/gdbusserver.c:1026
+#: ../gio/gdbusserver.c:1033
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "字符串“%s”不是有效 D-Bus GUID"
 
-#: ../gio/gdbusserver.c:1066
+#: ../gio/gdbusserver.c:1073
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "无法监听不支持的传输 %s"
@@ -1644,7 +1652,7 @@ msgid "COMMAND"
 msgstr "命令"
 
 #: ../gio/gdbus-tool.c:92
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
@@ -1655,8 +1663,12 @@ msgid ""
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
 "命令：\n"
-"  help        显示本信息\n"
-"  introspect   "
+"  help         显示本信息\n"
+"  introspect   Introspect 一个远程对象\n"
+"  monitor      监视一个远程对象\n"
+"  call         调用远程对象的一个方法\n"
+"\n"
+"使用“%s COMMAND --help”以获得每一个命令的帮助。\n"
 
 #: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
 #: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
@@ -1665,9 +1677,9 @@ msgid "Error: %s\n"
 msgstr "错误：%s\n"
 
 #: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr "分析选项出错：%s"
+msgstr "解析 Introspection XML 时出错：%s\n"
 
 #: ../gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
@@ -1703,14 +1715,14 @@ msgstr "指定了多个连接端点"
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr ""
+msgstr "警告：根据 Introspection 数据，接口“%s”不存在\n"
 
 #: ../gio/gdbus-tool.c:468
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
-msgstr ""
+msgstr "警告：根据 Introspection 数据，在接口“%s”中方法“%s”不存在\n"
 
 #: ../gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
@@ -1728,12 +1740,12 @@ msgstr "方法和接口名称"
 msgid "Invoke a method on a remote object."
 msgstr "在远程对象上调用一个方法。"
 
-#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1504
+#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "连接时出错：%s\n"
 
-#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1523
+#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "错误：没有指定目标\n"
@@ -1743,7 +1755,7 @@ msgstr "错误：没有指定目标\n"
 msgid "Error: Object path is not specified\n"
 msgstr "错误：没有指定目标路径\n"
 
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1563
+#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "错误：%s 不是有效的对象路径\n"
@@ -1770,11 +1782,11 @@ msgstr "解析第 %d 个选项出错：%s\n"
 
 #: ../gio/gdbus-tool.c:1162
 msgid "Destination name to introspect"
-msgstr ""
+msgstr "要 Introspect 的目标名"
 
 #: ../gio/gdbus-tool.c:1163
 msgid "Object path to introspect"
-msgstr ""
+msgstr "要 Introspect 的对象路径"
 
 #: ../gio/gdbus-tool.c:1164
 msgid "Print XML"
@@ -1782,17 +1794,17 @@ msgstr "输出 XML"
 
 #: ../gio/gdbus-tool.c:1197
 msgid "Introspect a remote object."
-msgstr ""
+msgstr "Introspect 远程对象。"
 
-#: ../gio/gdbus-tool.c:1422
+#: ../gio/gdbus-tool.c:1423
 msgid "Destination name to monitor"
 msgstr "要监视的目标"
 
-#: ../gio/gdbus-tool.c:1423
+#: ../gio/gdbus-tool.c:1424
 msgid "Object path to monitor"
 msgstr "要监视的对象路径"
 
-#: ../gio/gdbus-tool.c:1456
+#: ../gio/gdbus-tool.c:1457
 msgid "Monitor a remote object."
 msgstr "监视一个远程对象。"
 
@@ -2504,12 +2516,22 @@ msgid "removed existing output file.\n"
 msgstr "已删除存在的输出文件。\n"
 
 #: ../gio/gsettings-tool.c:79
-#, c-format
+#, fuzzy, c-format
+#| msgid ""
+#| "Commands:\n"
+#| "  help        Show this information\n"
+#| "  get         Get the value of a key\n"
+#| "  set         Set the value of a key\n"
+#| "  monitor     Monitor a key for changes\n"
+#| "  writable    Check if a key is writable\n"
+#| "\n"
+#| "Use '%s COMMAND --help' to get help for individual commands.\n"
 msgid ""
 "Commands:\n"
 "  help        Show this information\n"
 "  get         Get the value of a key\n"
 "  set         Set the value of a key\n"
+"  reset       Reset the value of a key\n"
 "  monitor     Monitor a key for changes\n"
 "  writable    Check if a key is writable\n"
 "\n"
@@ -2524,27 +2546,29 @@ msgstr ""
 "\n"
 "使用“%s 命令 --help”来获取关于每一个命令的帮助。\n"
 
-#: ../gio/gsettings-tool.c:221 ../gio/gsettings-tool.c:321
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:549
+#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
+#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr "为模式指定路径"
 
-#: ../gio/gsettings-tool.c:221 ../gio/gsettings-tool.c:321
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:549
+#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
+#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr "PATH"
 
-#: ../gio/gsettings-tool.c:229 ../gio/gsettings-tool.c:444
-#: ../gio/gsettings-tool.c:557
+#: ../gio/gsettings-tool.c:230 ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr "模式  键"
 
-#: ../gio/gsettings-tool.c:231
+#: ../gio/gsettings-tool.c:232
 msgid "Get the value of KEY"
 msgstr "获取键的值"
 
-#: ../gio/gsettings-tool.c:233 ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:564
+#: ../gio/gsettings-tool.c:234 ../gio/gsettings-tool.c:450
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2554,15 +2578,15 @@ msgstr ""
 "  模式        模式的标识\n"
 "  键          键的名称\n"
 
-#: ../gio/gsettings-tool.c:329
+#: ../gio/gsettings-tool.c:330 ../gio/gsettings-tool.c:446
 msgid "SCHEMA KEY VALUE"
 msgstr "模式 键 值"
 
-#: ../gio/gsettings-tool.c:331
+#: ../gio/gsettings-tool.c:332
 msgid "Set the value of KEY"
 msgstr "设置键的值"
 
-#: ../gio/gsettings-tool.c:333
+#: ../gio/gsettings-tool.c:334
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2574,16 +2598,20 @@ msgstr ""
 "  键          键名\n"
 "  值          键要设置为的值，一个串行化的 GVariant\n"
 
-#: ../gio/gsettings-tool.c:406
+#: ../gio/gsettings-tool.c:407
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "键 %s 不可写\n"
 
-#: ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:448
+msgid "Sets KEY to its default value"
+msgstr ""
+
+#: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
 msgstr "查看键是否可写"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:657
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
@@ -2591,7 +2619,7 @@ msgstr ""
 "监视键的更改并显示更改过的值。\n"
 "监视将持续到进程结束。"
 
-#: ../gio/gsettings-tool.c:733
+#: ../gio/gsettings-tool.c:833
 #, c-format
 msgid "Unknown command '%s'\n"
 msgstr "未知命令“%s”\n"
@@ -2609,7 +2637,7 @@ msgstr "无效的套接字，初始化失败的原因是：%s"
 msgid "Socket is already closed"
 msgstr "套接字已经关闭"
 
-#: ../gio/gsocket.c:297 ../gio/gsocket.c:2617 ../gio/gsocket.c:2661
+#: ../gio/gsocket.c:297 ../gio/gsocket.c:2619 ../gio/gsocket.c:2663
 msgid "Socket I/O timed out"
 msgstr "套接字 I/O 超时"
 
@@ -2618,7 +2646,7 @@ msgstr "套接字 I/O 超时"
 msgid "creating GSocket from fd: %s"
 msgstr "从文件描述符创建 GSocket：%s"
 
-#: ../gio/gsocket.c:453 ../gio/gsocket.c:467 ../gio/gsocket.c:2019
+#: ../gio/gsocket.c:453 ../gio/gsocket.c:469 ../gio/gsocket.c:2021
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "无法创建套接字：%s"
@@ -2627,77 +2655,83 @@ msgstr "无法创建套接字：%s"
 msgid "Unknown protocol was specified"
 msgstr "指定了未知协议"
 
-#: ../gio/gsocket.c:1217
+#: ../gio/gsocket.c:1219
 #, c-format
 msgid "could not get local address: %s"
 msgstr "不能获取本地地址：%s"
 
-#: ../gio/gsocket.c:1250
+#: ../gio/gsocket.c:1252
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "不能获取远程地址： %s"
 
-#: ../gio/gsocket.c:1308
+#: ../gio/gsocket.c:1310
 #, c-format
 msgid "could not listen: %s"
 msgstr "无法监听：%s"
 
-#: ../gio/gsocket.c:1382
+#: ../gio/gsocket.c:1384
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "错误绑定地址：%s"
 
-#: ../gio/gsocket.c:1502
+#: ../gio/gsocket.c:1504
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "接受连接时出错：%s"
 
-#: ../gio/gsocket.c:1615
+#: ../gio/gsocket.c:1617
 msgid "Error connecting: "
 msgstr "连接出错："
 
-#: ../gio/gsocket.c:1619
+#: ../gio/gsocket.c:1621
 msgid "Connection in progress"
 msgstr "正在连接"
 
-#: ../gio/gsocket.c:1624
+#: ../gio/gsocket.c:1626
 #, c-format
 msgid "Error connecting: %s"
 msgstr "连接时出错：%s"
 
-#: ../gio/gsocket.c:1667
+#: ../gio/gsocket.c:1669 ../gio/gsocket.c:3374
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "无法获取未决的错误：%s"
 
-#: ../gio/gsocket.c:1763
+#: ../gio/gsocket.c:1765
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "接收数据出错：%s"
 
-#: ../gio/gsocket.c:1906
+#: ../gio/gsocket.c:1908
 #, c-format
 msgid "Error sending data: %s"
 msgstr "发送数据出错：%s"
 
-#: ../gio/gsocket.c:2098
+#: ../gio/gsocket.c:2100
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "关闭套接字出错：%s"
 
-#: ../gio/gsocket.c:2610
+#: ../gio/gsocket.c:2612
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "等待套接字状态：%s"
 
-#: ../gio/gsocket.c:2892
+#: ../gio/gsocket.c:2894
 msgid "GSocketControlMessage not supported on windows"
 msgstr "Windows 不支持 GSocketControlMessage"
 
-#: ../gio/gsocket.c:3151 ../gio/gsocket.c:3292
+#: ../gio/gsocket.c:3153 ../gio/gsocket.c:3294
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "接受信息出错：%s"
+
+#: ../gio/gsocket.c:3389
+#, fuzzy
+#| msgid "GCredentials is not implemented on this OS"
+msgid "g_socket_get_credentials not implemented for this OS"
+msgstr "此操作系统上没有实现 GCredentials"
 
 #: ../gio/gsocketclient.c:520 ../gio/gsocketclient.c:769
 msgid "Unknown error on connect"
@@ -2716,12 +2750,12 @@ msgstr "新增套接字已关闭"
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "无法处理 GThemedIcon 编码的版本 %d"
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:501
+#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:507
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "期望一个控制信息，却得到 %d 个"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:511
+#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:517
 msgid "Unexpected type of ancillary data"
 msgstr "非预期的辅助数据类型"
 
@@ -2734,33 +2768,33 @@ msgstr "期望一个文件描述符，却得到 %d 个\n"
 msgid "Received invalid fd"
 msgstr "收到无效文件描述符"
 
-#: ../gio/gunixconnection.c:358
+#: ../gio/gunixconnection.c:361
 msgid "Error sending credentials: "
 msgstr "发送证书出错："
 
-#: ../gio/gunixconnection.c:435
+#: ../gio/gunixconnection.c:441
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "检查套接字是否启用 SO_PASSCRED 出错：%s"
 
-#: ../gio/gunixconnection.c:444
+#: ../gio/gunixconnection.c:450
 #, c-format
 msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
 "socket. Expected %d bytes, got %d"
 msgstr "检查套接字是否启用 SO_PASSCRED 时选项长度异常。期望 %d 字节，获得了 %d"
 
-#: ../gio/gunixconnection.c:461
+#: ../gio/gunixconnection.c:467
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "启用 SO_PASSCRED 出错：%s"
 
-#: ../gio/gunixconnection.c:491
+#: ../gio/gunixconnection.c:497
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr "期望为接收证书读到单个字节但是只读到了 0 字节"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "禁用 SO_PASSCRED 时出错：%s"
@@ -2853,6 +2887,9 @@ msgstr "需要更多输入"
 #: ../gio/gzlibdecompressor.c:242
 msgid "Invalid compressed data"
 msgstr "无效的已压缩数据"
+
+#~ msgid "The nonce-file `%s' was %lu bytes. Expected 16 bytes."
+#~ msgstr "临时文件 %s 为 %lu 字节，期望为 16 字节。"
 
 #~ msgid "Do not give error for empty directory"
 #~ msgstr "不要对空目录给出错误"
