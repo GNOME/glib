@@ -1149,7 +1149,7 @@ typedef enum
  */
 typedef enum /*< flags >*/
 {
-  G_DBUS_SIGNAL_FLAGS_NONE = 0,
+  G_DBUS_SIGNAL_FLAGS_NONE = 0
 } GDBusSignalFlags;
 
 /**
