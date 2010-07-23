@@ -146,6 +146,21 @@ g_object_notify_queue_thaw (GObject            *object,
 }
 
 static inline void
+g_object_notify_queue_clear (GObject            *object,
+			     GObjectNotifyQueue *nqueue)
+{
+  g_return_if_fail (nqueue->freeze_count > 0);
+
+  G_LOCK(notify_lock);
+
+  g_slist_free (nqueue->pspecs);
+  nqueue->pspecs = NULL;
+  nqueue->n_pspecs = 0;
+
+  G_UNLOCK(notify_lock);
+}
+
+static inline void
 g_object_notify_queue_add (GObject            *object,
 			   GObjectNotifyQueue *nqueue,
 			   GParamSpec	      *pspec)
