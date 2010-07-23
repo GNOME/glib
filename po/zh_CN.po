@@ -1,5 +1,5 @@
 # glib simplified chinese translation
-# Copyright (C) 2009 Free Software Foundation, Inc.
+# Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 # He Qiangqiang <carton@263.net>, 2001.
 # Funda Wang <fundawang@linux.net.cn>, 2004, 2005.
 # yetist <yetist@gmail.com>, 2007.
@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-07-22 22:41+0000\n"
-"PO-Revision-Date: 2010-07-19 18:30+1000\n"
+"POT-Creation-Date: 2010-07-23 05:06+0000\n"
+"PO-Revision-Date: 2010-07-23 13:17+0800\n"
 "Last-Translator: Tao Wang <dancefire@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -2516,16 +2516,7 @@ msgid "removed existing output file.\n"
 msgstr "已删除存在的输出文件。\n"
 
 #: ../gio/gsettings-tool.c:79
-#, fuzzy, c-format
-#| msgid ""
-#| "Commands:\n"
-#| "  help        Show this information\n"
-#| "  get         Get the value of a key\n"
-#| "  set         Set the value of a key\n"
-#| "  monitor     Monitor a key for changes\n"
-#| "  writable    Check if a key is writable\n"
-#| "\n"
-#| "Use '%s COMMAND --help' to get help for individual commands.\n"
+#, c-format
 msgid ""
 "Commands:\n"
 "  help        Show this information\n"
@@ -2541,6 +2532,7 @@ msgstr ""
 "  help        显示本帮助信息\n"
 "  get         获取一个键的值\n"
 "  set         设置一个键的值\n"
+"  reset           重置一个键的值\n"
 "  monitor     监视一个键的更改\n"
 "  writable    检查一个键是否可写\n"
 "\n"
@@ -2605,7 +2597,7 @@ msgstr "键 %s 不可写\n"
 
 #: ../gio/gsettings-tool.c:448
 msgid "Sets KEY to its default value"
-msgstr ""
+msgstr "设置 KEY 为其默认值"
 
 #: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
@@ -2728,10 +2720,8 @@ msgid "Error receiving message: %s"
 msgstr "接受信息出错：%s"
 
 #: ../gio/gsocket.c:3389
-#, fuzzy
-#| msgid "GCredentials is not implemented on this OS"
 msgid "g_socket_get_credentials not implemented for this OS"
-msgstr "此操作系统上没有实现 GCredentials"
+msgstr "此操作系统上没有实现 g_socket_get_credentials"
 
 #: ../gio/gsocketclient.c:520 ../gio/gsocketclient.c:769
 msgid "Unknown error on connect"
