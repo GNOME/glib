@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-21 19:11+0300\n"
-"PO-Revision-Date: 2010-07-21 19:11+0200\n"
+"POT-Creation-Date: 2010-07-24 13:31+0300\n"
+"PO-Revision-Date: 2010-07-24 13:31+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2581,6 +2581,7 @@ msgid ""
 "  help        Show this information\n"
 "  get         Get the value of a key\n"
 "  set         Set the value of a key\n"
+"  reset       Reset the value of a key\n"
 "  monitor     Monitor a key for changes\n"
 "  writable    Check if a key is writable\n"
 "\n"
@@ -2590,32 +2591,35 @@ msgstr ""
 "  help        Show this information\n"
 "  get         Get the value of a key\n"
 "  set         Set the value of a key\n"
+"  reset       Reset the value of a key\n"
 "  monitor     Monitor a key for changes\n"
 "  writable    Check if a key is writable\n"
 "\n"
 "Use '%s COMMAND --help' to get help for individual commands.\n"
 
-#: ../gio/gsettings-tool.c:221 ../gio/gsettings-tool.c:321
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:549
+#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
+#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr "Specify the path for the schema"
 
-#: ../gio/gsettings-tool.c:221 ../gio/gsettings-tool.c:321
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:549
+#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
+#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr "PATH"
 
-#: ../gio/gsettings-tool.c:229 ../gio/gsettings-tool.c:444
-#: ../gio/gsettings-tool.c:557
+#: ../gio/gsettings-tool.c:230 ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr "SCHEMA KEY"
 
-#: ../gio/gsettings-tool.c:231
+#: ../gio/gsettings-tool.c:232
 msgid "Get the value of KEY"
 msgstr "Get the value of KEY"
 
-#: ../gio/gsettings-tool.c:233 ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:564
+#: ../gio/gsettings-tool.c:234 ../gio/gsettings-tool.c:450
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2625,15 +2629,15 @@ msgstr ""
 "  SCHEMA      The id of the schema\n"
 "  KEY         The name of the key\n"
 
-#: ../gio/gsettings-tool.c:329
+#: ../gio/gsettings-tool.c:330 ../gio/gsettings-tool.c:446
 msgid "SCHEMA KEY VALUE"
 msgstr "SCHEMA KEY VALUE"
 
-#: ../gio/gsettings-tool.c:331
+#: ../gio/gsettings-tool.c:332
 msgid "Set the value of KEY"
 msgstr "Set the value of KEY"
 
-#: ../gio/gsettings-tool.c:333
+#: ../gio/gsettings-tool.c:334
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2645,16 +2649,20 @@ msgstr ""
 "  KEY         The name of the key\n"
 "  VALUE       The value to set key to, as a serialized GVariant\n"
 
-#: ../gio/gsettings-tool.c:406
+#: ../gio/gsettings-tool.c:407
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "Key %s is not writable\n"
 
-#: ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:448
+msgid "Sets KEY to its default value"
+msgstr "Sets KEY to its default value"
+
+#: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
 msgstr "Find out whether KEY is writable"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:657
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
@@ -2662,7 +2670,7 @@ msgstr ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
 
-#: ../gio/gsettings-tool.c:733
+#: ../gio/gsettings-tool.c:833
 #, c-format
 msgid "Unknown command '%s'\n"
 msgstr "Unknown command '%s'\n"
