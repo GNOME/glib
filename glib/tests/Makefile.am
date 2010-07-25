@@ -110,6 +110,9 @@ list_LDADD          = $(progs_ldadd)
 TEST_PROGS         += slist
 slist_LDADD         = $(progs_ldadd)
 
+TEST_PROGS         += queue
+queue_LDADD         = $(progs_ldadd)
+
 TEST_PROGS         += tree
 tree_LDADD          = $(progs_ldadd)
 

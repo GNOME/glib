@@ -101,7 +101,6 @@ test_programs =					\
 	module-test				\
 	onceinit				\
 	patterntest				\
-	queue-test				\
 	asyncqueue-test				\
 	qsort-test				\
 	relation-test				\
@@ -153,7 +152,6 @@ markup_escape_test_LDADD = $(progs_ldadd)
 module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
 onceinit_LDADD = $(thread_ldadd)
-queue_test_LDADD = $(progs_ldadd)
 asyncqueue_test_LDADD = $(thread_ldadd)
 qsort_test_LDADD = $(progs_ldadd)
 relation_test_LDADD = $(progs_ldadd)
