@@ -140,7 +140,7 @@ main (int argc, char ** argv)
   GOptionContext *context;
   GError *error = NULL;
   GIrParser *parser;
-  GList *m, *modules;
+  GIrModule *module;
   gint i;
   g_typelib_check_sanity ();
 
@@ -178,35 +178,22 @@ main (int argc, char ** argv)
 
   g_ir_parser_set_includes (parser, (const char*const*) includedirs);
 
-  modules = NULL;
-  for (i = 0; input[i]; i++)
+  module = g_ir_parser_parse_file (parser, input[0], &error);
+  if (module == NULL) 
     {
-      GList *mods;
-      mods = g_ir_parser_parse_file (parser, input[i], &error);
+      g_fprintf (stderr, "error parsing file %s: %s\n", 
+		 input[0], error->message);
       
-      if (mods == NULL) 
-	{
-	  g_fprintf (stderr, "error parsing file %s: %s\n", 
-		     input[i], error->message);
-      
-	  return 1;
-	}
-
-      modules = g_list_concat (modules, mods);
+      return 1;
     }
 
   g_debug ("[parsing] done");
 
   g_debug ("[building] start");
 
-  for (m = modules; m; m = m->next)
-    {
-      GIrModule *module = m->data;
-      gchar *prefix;
+  {
       GTypelib *typelib;
 
-      if (mname && strcmp (mname, module->name) != 0)
-	continue;
       if (shlib)
 	{
           if (module->shared_library)
@@ -216,33 +203,16 @@ main (int argc, char ** argv)
 
       g_debug ("[building] module %s", module->name);
 
-      typelib = g_ir_module_build_typelib (module, modules);
+      typelib = g_ir_module_build_typelib (module);
       if (typelib == NULL)
-	{
-	  g_error ("Failed to build typelib for module '%s'\n", module->name);
-
-	  continue;
-	}
+	g_error ("Failed to build typelib for module '%s'\n", module->name);
       if (!g_typelib_validate (typelib, &error))
 	g_error ("Invalid typelib for module '%s': %s", 
 		 module->name, error->message);
 
-      if (!mname && (m->next || m->prev) && output)
-	prefix = module->name;
-      else
-	prefix = NULL;
-
-      write_out_typelib (prefix, typelib);
+      write_out_typelib (NULL, typelib);
       g_typelib_free (typelib);
       typelib = NULL;
-
-      /* when writing to stdout, stop after the first module */
-      if (m->next && !output && !mname)
-	{
-	  g_warning ("%d modules omitted\n", g_list_length (modules) - 1);
-
-	  break;
-	}
     }
 
   g_debug ("[building] done");
