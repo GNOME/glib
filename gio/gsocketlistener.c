@@ -254,7 +254,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  * @type: a #GSocketType
  * @protocol: a #GSocketProtocol
  * @source_object: Optional #GObject identifying this source
- * @effective_address: location to store the address that was bound to, or %NULL.
+ * @effective_address: (out) (allow-none): location to store the address that was bound to, or %NULL.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Creates a socket of type @type and protocol @protocol, binds
@@ -562,7 +562,7 @@ accept_callback (GSocket      *socket,
 /**
  * g_socket_listener_accept_socket:
  * @listener: a #GSocketListener
- * @source_object: location where #GObject pointer will be stored, or %NULL
+ * @source_object: (out) (transfer none) (allow-none): location where #GObject pointer will be stored, or %NULL.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -639,7 +639,7 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
 /**
  * g_socket_listener_accept:
  * @listener: a #GSocketListener
- * @source_object: location where #GObject pointer will be stored, or %NULL
+ * @source_object: (out) (transfer none) (allow-none): location where #GObject pointer will be stored, or %NULL
  * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting, or %NULL to ignore.
  *

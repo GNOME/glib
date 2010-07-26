@@ -122,7 +122,7 @@ g_socket_connection_get_output_stream (GIOStream *io_stream)
  * This can be useful if you want to do something unusual on it
  * not supported by the #GSocketConnection APIs.
  *
- * Returns: a #GSocketAddress or %NULL on error.
+ * Returns: (transfer none): a #GSocketAddress or %NULL on error.
  *
  * Since: 2.22
  */

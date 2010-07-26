@@ -356,7 +356,7 @@ g_socket_client_set_protocol (GSocketClient   *client,
  *
  * See g_socket_client_set_local_address() for details.
  *
- * Returns: a #GSocketAddres or %NULL. don't free
+ * Returns: (transfer none): a #GSocketAddres or %NULL. don't free
  *
  * Since: 2.22
  */

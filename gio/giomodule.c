@@ -723,9 +723,10 @@ lazy_load_modules (GIOExtensionPoint *extension_point)
  *
  * Gets a list of all extensions that implement this extension point.
  * The list is sorted by priority, beginning with the highest priority.
- * 
- * Returns: a #GList of #GIOExtension<!-- -->s. The list is owned by
- *   GIO and should not be modified
+ *
+ * Returns: (element-type GIOExtension) (transfer none): a #GList of
+ * #GIOExtension<!-- -->s. The list is owned by GIO and should not be
+ * modified.
  */
 GList *
 g_io_extension_point_get_extensions (GIOExtensionPoint *extension_point)

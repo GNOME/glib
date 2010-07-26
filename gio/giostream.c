@@ -222,7 +222,8 @@ g_io_stream_is_closed (GIOStream *stream)
  * Gets the input stream for this object. This is used
  * for reading.
  *
- * Returns: a #GInputStream, owned by the #GIOStream. Do not free.
+ * Returns: (transfer none): a #GInputStream, owned by the #GIOStream.
+ * Do not free.
  *
  * Since: 2.22
  */
@@ -245,7 +246,8 @@ g_io_stream_get_input_stream (GIOStream *stream)
  * Gets the output stream for this object. This is used for
  * writing.
  *
- * Returns: a #GOutputStream, owned by the #GIOStream. Do not free.
+ * Returns: (transfer none): a #GOutputStream, owned by the #GIOStream.
+ * Do not free.
  *
  * Since: 2.22
  */
