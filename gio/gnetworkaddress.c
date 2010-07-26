@@ -159,8 +159,7 @@ g_network_address_set_property (GObject      *object,
   switch (prop_id)
     {
     case PROP_HOSTNAME:
-      if (addr->priv->hostname)
-        g_free (addr->priv->hostname);
+      g_free (addr->priv->hostname);
       addr->priv->hostname = g_value_dup_string (value);
       break;
 
