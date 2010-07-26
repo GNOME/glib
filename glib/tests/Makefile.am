@@ -77,6 +77,9 @@ sequence_LDADD      = $(progs_ldadd)
 TEST_PROGS         += scannerapi
 scannerapi_LDADD    = $(progs_ldadd)
 
+TEST_PROGS         += shell
+shell_LDADD         = $(progs_ldadd)
+
 TEST_PROGS         += collate
 collate_LDADD       = $(progs_ldadd)
 

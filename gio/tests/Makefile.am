@@ -35,6 +35,7 @@ TEST_PROGS +=	 		\
 	buffered-output-stream	\
 	sleepy-stream		\
 	filter-streams		\
+	volumemonitor		\
 	simple-async-result	\
 	srvtarget		\
 	contexts		\
@@ -160,6 +161,9 @@ sleepy_stream_LDADD		= $(progs_ldadd)
 
 filter_streams_SOURCES		= filter-streams.c
 filter_streams_LDADD		= $(progs_ldadd)
+
+volumemonitor_SOURCES		= volumemonitor.c
+volumemonitor_LDADD		= $(progs_ldadd)
 
 resolver_SOURCES	  = resolver.c
 resolver_LDADD		  = $(progs_ldadd) \
