@@ -78,7 +78,7 @@ g_ir_module_free (GIrModule *module)
 
 /**
  * g_ir_module_fatal:
- * @module: Current module
+ * @build: Current build
  * @line: Origin line number, or 0 if unknown
  * @msg: printf-format string
  * @args: Remaining arguments
@@ -86,12 +86,14 @@ g_ir_module_free (GIrModule *module)
  * Report a fatal error, then exit.
  */
 void
-g_ir_module_fatal (GIrModule  *module,
+g_ir_module_fatal (GIrTypelibBuild  *build,
                    guint       line,
                    const char *msg,
                    ...)
 {
+  GString *context;
   char *formatted;
+  GList *link;
 
   va_list args;
 
@@ -99,10 +101,27 @@ g_ir_module_fatal (GIrModule  *module,
 
   formatted = g_strdup_vprintf (msg, args);
 
-  if (line)
-    g_printerr ("%s-%s.gir:%d: error: %s\n", module->name, module->version, line, formatted);
-  else
-    g_printerr ("%s-%s.gir: error: %s\n", module->name, module->version, formatted);
+  context = g_string_new ("");
+  if (line > 0)
+    g_string_append_printf (context, "%d: ", line);
+  if (build->stack)
+    g_string_append (context, "In ");
+  for (link = g_list_last (build->stack); link; link = link->prev)
+    {
+      GIrNode *node = link->data;
+      const char *name = node->name;
+      if (name)
+	g_string_append (context, name);
+      if (link->prev)
+	g_string_append (context, ".");
+    }
+  if (build->stack)
+    g_string_append (context, ": ");
+
+  g_printerr ("%s-%s.gir:%serror: %s\n", build->module->name, 
+	      build->module->version,
+	      context->str, formatted);
+  g_string_free (context, TRUE);
 
   exit (1);
 
@@ -203,8 +222,7 @@ node_cmp_offset_func (gconstpointer a,
 
 
 GTypelib *
-g_ir_module_build_typelib (GIrModule  *module,
-			     GList       *modules)
+g_ir_module_build_typelib (GIrModule  *module)
 {
   GError *error = NULL;
   GTypelib *typelib;
@@ -393,8 +411,8 @@ g_ir_module_build_typelib (GIrModule  *module,
 	  entry->offset = offset;
 	  entry->name = write_string (node->name, strings, data, &offset2);
 
+	  memset (&build, 0, sizeof (build));
 	  build.module = module;
-	  build.modules = modules;
 	  build.strings = strings;
 	  build.types = types;
 	  build.nodes_with_attributes = nodes_with_attributes;

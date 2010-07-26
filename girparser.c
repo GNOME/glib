@@ -324,7 +324,8 @@ push_node (ParseContext *ctx, GIrNode *node)
   ctx->node_stack = g_slist_prepend (ctx->node_stack, node);
 }
 
-static GIrNodeType * parse_type_internal (const gchar *str, gchar **next, gboolean in_glib,
+static GIrNodeType * parse_type_internal (GIrModule *module,
+					  const gchar *str, gchar **next, gboolean in_glib,
 					  gboolean in_gobject);
 
 typedef struct {
@@ -423,14 +424,15 @@ parse_basic (const char *str)
 }
 
 static GIrNodeType *
-parse_type_internal (const gchar *str, char **next, gboolean in_glib,
+parse_type_internal (GIrModule *module,
+		     const gchar *str, char **next, gboolean in_glib,
 		     gboolean in_gobject)
 {
   const BasicTypeInfo *basic;
   GIrNodeType *type;
   char *temporary_type = NULL;
 
-  type = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
+  type = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE, module);
 
   type->unparsed = g_strdup (str);
 
@@ -644,7 +646,7 @@ parse_type (ParseContext *ctx, const gchar *type)
   if (basic == NULL)
     type = resolve_aliases (ctx, type);
 
-  node = parse_type_internal (type, NULL, in_glib, in_gobject);
+  node = parse_type_internal (ctx->current_module, type, NULL, in_glib, in_gobject);
   if (node)
     g_debug ("Parsed type: %s => %d", type, node->tag);
   else
@@ -721,7 +723,8 @@ start_glib_boxed (GMarkupParseContext *context,
       return FALSE;
     }
 
-  boxed = (GIrNodeBoxed *) g_ir_node_new (G_IR_NODE_BOXED);
+  boxed = (GIrNodeBoxed *) g_ir_node_new (G_IR_NODE_BOXED,
+					  ctx->current_module);
 
   ((GIrNode *)boxed)->name = g_strdup (name);
   boxed->gtype_name = g_strdup (typename);
@@ -804,7 +807,8 @@ start_function (GMarkupParseContext *context,
       return FALSE;
     }
 
-  function = (GIrNodeFunction *) g_ir_node_new (G_IR_NODE_FUNCTION);
+  function = (GIrNodeFunction *) g_ir_node_new (G_IR_NODE_FUNCTION,
+						ctx->current_module);
 
   ((GIrNode *)function)->name = g_strdup (name);
   function->symbol = g_strdup (symbol);
@@ -1005,7 +1009,8 @@ start_parameter (GMarkupParseContext *context,
   if (name == NULL)
     name = "unknown";
 
-  param = (GIrNodeParam *)g_ir_node_new (G_IR_NODE_PARAM);
+  param = (GIrNodeParam *)g_ir_node_new (G_IR_NODE_PARAM,
+					 ctx->current_module);
 
   ctx->current_typed = (GIrNode*) param;
   ctx->current_typed->name = g_strdup (name);
@@ -1141,7 +1146,8 @@ start_field (GMarkupParseContext *context,
       return FALSE;
     }
 
-  field = (GIrNodeField *)g_ir_node_new (G_IR_NODE_FIELD);
+  field = (GIrNodeField *)g_ir_node_new (G_IR_NODE_FIELD,
+					 ctx->current_module);
   ctx->current_typed = (GIrNode*) field;
   ((GIrNode *)field)->name = g_strdup (name);
   /* Fields are assumed to be read-only.
@@ -1203,7 +1209,8 @@ start_field (GMarkupParseContext *context,
 	  {
 	    GIrNodeConstant *constant;
 
-	    constant = (GIrNodeConstant *) g_ir_node_new (G_IR_NODE_CONSTANT);
+	    constant = (GIrNodeConstant *) g_ir_node_new (G_IR_NODE_CONSTANT,
+							  ctx->current_module);
 	    ((GIrNode *)constant)->name = g_strdup (name);
 	    constant->value = g_strdup (branch);
 	    constant->type = union_->discriminator_type;
@@ -1298,9 +1305,11 @@ start_enum (GMarkupParseContext *context,
     }
 
   if (strcmp (element_name, "enumeration") == 0)
-    enum_ = (GIrNodeEnum *) g_ir_node_new (G_IR_NODE_ENUM);
+    enum_ = (GIrNodeEnum *) g_ir_node_new (G_IR_NODE_ENUM,
+					   ctx->current_module);
   else
-    enum_ = (GIrNodeEnum *) g_ir_node_new (G_IR_NODE_FLAGS);
+    enum_ = (GIrNodeEnum *) g_ir_node_new (G_IR_NODE_FLAGS,
+					   ctx->current_module);
   ((GIrNode *)enum_)->name = g_strdup (name);
   enum_->gtype_name = g_strdup (typename);
   enum_->gtype_init = g_strdup (typeinit);
@@ -1363,7 +1372,8 @@ start_property (GMarkupParseContext *context,
       return FALSE;
     }
 
-  property = (GIrNodeProperty *) g_ir_node_new (G_IR_NODE_PROPERTY);
+  property = (GIrNodeProperty *) g_ir_node_new (G_IR_NODE_PROPERTY,
+						ctx->current_module);
   ctx->current_typed = (GIrNode*) property;
 
   ((GIrNode *)property)->name = g_strdup (name);
@@ -1445,7 +1455,8 @@ start_member (GMarkupParseContext *context,
       return FALSE;
     }
 
-  value_ = (GIrNodeValue *) g_ir_node_new (G_IR_NODE_VALUE);
+  value_ = (GIrNodeValue *) g_ir_node_new (G_IR_NODE_VALUE,
+					   ctx->current_module);
 
   ((GIrNode *)value_)->name = g_strdup (name);
 
@@ -1518,7 +1529,8 @@ start_constant (GMarkupParseContext *context,
       return FALSE;
     }
 
-  constant = (GIrNodeConstant *) g_ir_node_new (G_IR_NODE_CONSTANT);
+  constant = (GIrNodeConstant *) g_ir_node_new (G_IR_NODE_CONSTANT,
+						ctx->current_module);
 
   ((GIrNode *)constant)->name = g_strdup (name);
   constant->value = g_strdup (value);
@@ -1590,7 +1602,8 @@ start_errordomain (GMarkupParseContext *context,
       return FALSE;
     }
 
-  domain = (GIrNodeErrorDomain *) g_ir_node_new (G_IR_NODE_ERROR_DOMAIN);
+  domain = (GIrNodeErrorDomain *) g_ir_node_new (G_IR_NODE_ERROR_DOMAIN,
+						 ctx->current_module);
 
   ((GIrNode *)domain)->name = g_strdup (name);
   domain->getquark = g_strdup (getquark);
@@ -1652,7 +1665,8 @@ start_interface (GMarkupParseContext *context,
       return FALSE;
     }
 
-  iface = (GIrNodeInterface *) g_ir_node_new (G_IR_NODE_INTERFACE);
+  iface = (GIrNodeInterface *) g_ir_node_new (G_IR_NODE_INTERFACE,
+					      ctx->current_module);
   ((GIrNode *)iface)->name = g_strdup (name);
   iface->gtype_name = g_strdup (typename);
   iface->gtype_init = g_strdup (typeinit);
@@ -1727,7 +1741,8 @@ start_class (GMarkupParseContext *context,
       return FALSE;
     }
 
-  iface = (GIrNodeInterface *) g_ir_node_new (G_IR_NODE_OBJECT);
+  iface = (GIrNodeInterface *) g_ir_node_new (G_IR_NODE_OBJECT,
+					      ctx->current_module);
   ((GIrNode *)iface)->name = g_strdup (name);
   iface->gtype_name = g_strdup (typename);
   iface->gtype_init = g_strdup (typeinit);
@@ -1820,7 +1835,8 @@ start_type (GMarkupParseContext *context,
       const char *len;
       const char *size;
 
-      typenode = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE);
+      typenode = (GIrNodeType *)g_ir_node_new (G_IR_NODE_TYPE,
+					       ctx->current_module);
 
       typenode->tag = GI_TYPE_TAG_ARRAY;
       typenode->is_pointer = TRUE;
@@ -1870,7 +1886,10 @@ start_type (GMarkupParseContext *context,
       name = find_attribute ("name", attribute_names, attribute_values);
 
       if (name == NULL)
-	MISSING_ATTRIBUTE (context, error, element_name, "name");
+	{
+	  MISSING_ATTRIBUTE (context, error, element_name, "name");
+	  return FALSE;
+	}
 
       pointer_depth = 0;
       ctype = find_attribute ("c:type", attribute_names, attribute_values);
@@ -2097,7 +2116,8 @@ start_return_value (GMarkupParseContext *context,
 	ctx->state == STATE_FUNCTION))
     return FALSE;
 
-  param = (GIrNodeParam *)g_ir_node_new (G_IR_NODE_PARAM);
+  param = (GIrNodeParam *)g_ir_node_new (G_IR_NODE_PARAM,
+					 ctx->current_module);
   param->in = FALSE;
   param->out = FALSE;
   param->retval = TRUE;
@@ -2206,7 +2226,8 @@ start_glib_signal (GMarkupParseContext *context,
       MISSING_ATTRIBUTE (context, error, element_name, "name");
       return FALSE;
     }
-  signal = (GIrNodeSignal *)g_ir_node_new (G_IR_NODE_SIGNAL);
+  signal = (GIrNodeSignal *)g_ir_node_new (G_IR_NODE_SIGNAL,
+					   ctx->current_module);
 
   ((GIrNode *)signal)->name = g_strdup (name);
 
@@ -2287,7 +2308,8 @@ start_vfunc (GMarkupParseContext *context,
       return FALSE;
     }
 
-  vfunc = (GIrNodeVFunc *)g_ir_node_new (G_IR_NODE_VFUNC);
+  vfunc = (GIrNodeVFunc *)g_ir_node_new (G_IR_NODE_VFUNC,
+					 ctx->current_module);
 
   ((GIrNode *)vfunc)->name = g_strdup (name);
 
@@ -2383,7 +2405,8 @@ start_struct (GMarkupParseContext *context,
       return FALSE;
     }
 
-  struct_ = (GIrNodeStruct *) g_ir_node_new (G_IR_NODE_STRUCT);
+  struct_ = (GIrNodeStruct *) g_ir_node_new (G_IR_NODE_STRUCT,
+					     ctx->current_module);
 
   ((GIrNode *)struct_)->name = g_strdup (name ? name : "");
   if (deprecated)
@@ -2443,7 +2466,8 @@ start_union (GMarkupParseContext *context,
       return FALSE;
     }
 
-  union_ = (GIrNodeUnion *) g_ir_node_new (G_IR_NODE_UNION);
+  union_ = (GIrNodeUnion *) g_ir_node_new (G_IR_NODE_UNION,
+					   ctx->current_module);
 
   ((GIrNode *)union_)->name = g_strdup (name ? name : "");
   union_->gtype_name = g_strdup (typename);
@@ -2505,7 +2529,7 @@ parse_include (GMarkupParseContext *context,
   gchar *buffer;
   gsize length;
   gchar *girpath, *girname;
-  GList *modules;
+  GIrModule *module;
   GList *l;
 
   for (l = ctx->parser->parsed_modules; l; l = l->next)
@@ -2541,7 +2565,7 @@ parse_include (GMarkupParseContext *context,
     }
   g_free (girname);
 
-  g_debug ("Parsing include %s", girpath);
+  g_debug ("Parsing include %s\n", girpath);
 
   if (!g_file_get_contents (girpath, &buffer, &length, &error))
     {
@@ -2551,7 +2575,7 @@ parse_include (GMarkupParseContext *context,
       return FALSE;
     }
 
-  modules = g_ir_parser_parse_string (ctx->parser, name, girpath, buffer, length, &error);
+  module = g_ir_parser_parse_string (ctx->parser, name, girpath, buffer, length, &error);
   g_free (buffer);
   if (error != NULL)
     {
@@ -2564,8 +2588,8 @@ parse_include (GMarkupParseContext *context,
     }
   g_free (girpath);
 
-  ctx->include_modules = g_list_concat (ctx->include_modules,
-					modules);
+  ctx->include_modules = g_list_append (ctx->include_modules,
+					module);
 
   return TRUE;
 }
@@ -3357,10 +3381,9 @@ cleanup (GMarkupParseContext *context,
  * Parse a string that holds a complete GIR XML file, and return a list of a
  * a #GirModule for each &lt;namespace/&gt; element within the file.
  *
- * Returns: (transfer container): a newly allocated list of #GIrModule. The modules themselves
- *  are owned by the #GIrParser and will be freed along with the parser.
+ * Returns: (transfer none): a new #GirModule
  */
-GList *
+GIrModule *
 g_ir_parser_parse_string (GIrParser           *parser,
 			  const gchar         *namespace,
 			  const gchar         *filename,
@@ -3418,7 +3441,7 @@ g_ir_parser_parse_string (GIrParser           *parser,
 
   g_markup_parse_context_free (context);
 
-  return ctx.modules;
+  return ctx.modules->data;
 }
 
 /**
@@ -3433,14 +3456,14 @@ g_ir_parser_parse_string (GIrParser           *parser,
  * Returns: (transfer container): a newly allocated list of #GIrModule. The modules themselves
  *  are owned by the #GIrParser and will be freed along with the parser.
  */
-GList *
+GIrModule *
 g_ir_parser_parse_file (GIrParser   *parser,
 			const gchar *filename,
 			GError     **error)
 {
   gchar *buffer;
   gsize length;
-  GList *modules;
+  GIrModule *module;
   const char *slash;
   char *dash;
   char *namespace;
@@ -3471,13 +3494,13 @@ g_ir_parser_parse_file (GIrParser   *parser,
   if (!g_file_get_contents (filename, &buffer, &length, error))
     return NULL;
 
-  modules = g_ir_parser_parse_string (parser, namespace, filename, buffer, length, error);
+  module = g_ir_parser_parse_string (parser, namespace, filename, buffer, length, error);
 
   g_free (namespace);
 
   g_free (buffer);
 
-  return modules;
+  return module;
 }
 
 

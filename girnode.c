@@ -113,7 +113,8 @@ g_ir_node_type_to_string (GIrNodeTypeId type)
 }
 
 GIrNode *
-g_ir_node_new (GIrNodeTypeId type)
+g_ir_node_new (GIrNodeTypeId  type,
+	       GIrModule     *module)
 {
   GIrNode *node = NULL;
 
@@ -192,6 +193,7 @@ g_ir_node_new (GIrNodeTypeId type)
     }
 
   node->type = type;
+  node->module = module;
   node->offset = 0;
   node->attributes = g_hash_table_new_full (g_str_hash, g_str_equal,
                                             g_free, g_free);
@@ -1040,12 +1042,12 @@ parse_boolean_value (const gchar *str)
 }
 
 static GIrNode *
-find_entry_node (GIrModule   *module,
-		 GList       *modules,
+find_entry_node (GIrTypelibBuild   *build,
 		 const gchar *name,
 		 guint16     *idx)
 
 {
+  GIrModule *module = build->module;
   GList *l;
   gint i;
   gchar **names;
@@ -1086,7 +1088,7 @@ find_entry_node (GIrModule   *module,
 
   if (n_names > 1)
     {
-      GIrNode *node = g_ir_node_new (G_IR_NODE_XREF);
+      GIrNode *node = g_ir_node_new (G_IR_NODE_XREF, module);
 
       ((GIrNodeXRef *)node)->namespace = g_strdup (names[0]);
       node->name = g_strdup (names[1]);
@@ -1103,8 +1105,9 @@ find_entry_node (GIrModule   *module,
       goto out;
     }
 
-  g_ir_module_fatal (module, 0, "Type reference '%s' not found", name);
-
+  
+  g_ir_module_fatal (build, -1, "type reference '%s' not found", 
+		     name);
  out:
 
   g_strfreev (names);
@@ -1113,101 +1116,77 @@ find_entry_node (GIrModule   *module,
 }
 
 static guint16
-find_entry (GIrModule   *module,
-	    GList       *modules,
+find_entry (GIrTypelibBuild   *build,
 	    const gchar *name)
 {
   guint16 idx = 0;
 
-  find_entry_node (module, modules, name, &idx);
+  find_entry_node (build, name, &idx);
 
   return idx;
 }
 
-static GIrNode *
-find_name_in_module (GIrModule   *module,
-		     const gchar *name)
+static GIrModule *
+find_namespace (GIrModule  *module,
+		const char *name)
 {
+  GIrModule *target;
   GList *l;
+  
+  if (strcmp (module->name, name) == 0)
+    return module;
 
-  for (l = module->entries; l; l = l->next)
+  for (l = module->include_modules; l; l = l->next)
     {
-      GIrNode *node = (GIrNode *)l->data;
+      GIrModule *submodule = l->data;
 
-      if (strcmp (node->name, name) == 0)
-	return node;
+     if (strcmp (submodule->name, name) == 0)
+       return submodule;
+
+      target = find_namespace (submodule, name);
+      if (target)
+       return target;
     }
-
   return NULL;
 }
 
-gboolean
-g_ir_find_node (GIrModule  *module,
-		GList      *modules,
-		const char *name,
-		GIrNode   **node_out,
-		GIrModule **module_out)
+GIrNode *
+g_ir_find_node (GIrTypelibBuild  *build,
+		GIrModule        *src_module,
+		const char       *name)
 {
+  GList *l;
+  GIrNode *return_node = NULL;
   char **names = g_strsplit (name, ".", 0);
   gint n_names = g_strv_length (names);
-  GIrNode *node = NULL;
-  GList *l;
-
-  if (n_names == 0)
-    {
-      g_warning ("Name can't be empty");
-      goto out;
-    }
-
-  if (n_names > 2)
-    {
-      g_warning ("Too many name parts in '%s'", name);
-      goto out;
-    }
+  const char *target_name;
+  GIrModule *target_module;
 
   if (n_names == 1)
     {
-      *module_out = module;
-      node = find_name_in_module (module, names[0]);
-    }
-  else if (strcmp (names[0], module->name) == 0)
-    {
-      *module_out = module;
-      node = find_name_in_module (module, names[1]);
+      target_module = src_module;
+      target_name = name;
     }
   else
     {
-      for (l = module->include_modules; l; l = l->next)
+      target_module = find_namespace (build->module, names[0]);
+      target_name = names[1];
+    }
+
+  for (l = target_module->entries; l; l = l->next)
+    {
+      GIrNode *node = (GIrNode *)l->data;
+
+      if (strcmp (node->name, target_name) == 0)
 	{
-	  GIrModule *m = l->data;
-
-	  if (strcmp (names[0], m->name) == 0)
-	    {
-	      *module_out = m;
-	      node = find_name_in_module (m, names[1]);
-	      goto out;
-	    }
-	}
-
-      for (l = modules; l; l = l->next)
-	{
-	  GIrModule *m = l->data;
-
-	  if (strcmp (names[0], m->name) == 0)
-	    {
-	      *module_out = m;
-	      node = find_name_in_module (m, names[1]);
-	      goto out;
-	    }
+	  return_node = node;
+	  break;
 	}
     }
 
- out:
   g_strfreev (names);
 
-  *node_out = node;
-
-  return node != NULL;
+  return return_node;
 }
 
 static int
@@ -1235,8 +1214,7 @@ get_index_of_member_type (GIrNodeInterface *node,
 }
 
 static void
-serialize_type (GIrModule    *module,
-		GList        *modules,
+serialize_type (GIrTypelibBuild    *build,
 		GIrNodeType  *node,
 		GString      *str)
 {
@@ -1275,7 +1253,7 @@ serialize_type (GIrModule    *module,
     }
   else if (node->tag == GI_TYPE_TAG_ARRAY)
     {
-      serialize_type (module, modules, node->parameter_type1, str);
+      serialize_type (build, node->parameter_type1, str);
       g_string_append (str, "[");
 
       if (node->has_length)
@@ -1294,7 +1272,7 @@ serialize_type (GIrModule    *module,
       GIrNode *iface;
       gchar *name;
 
-      iface = find_entry_node (module, modules, node->interface, NULL);
+      iface = find_entry_node (build, node->interface, NULL);
       if (iface)
         {
           if (iface->type == G_IR_NODE_XREF)
@@ -1316,7 +1294,7 @@ serialize_type (GIrModule    *module,
       if (node->parameter_type1)
 	{
 	  g_string_append (str, "<");
-	  serialize_type (module, modules, node->parameter_type1, str);
+	  serialize_type (build, node->parameter_type1, str);
 	  g_string_append (str, ">");
 	}
     }
@@ -1326,7 +1304,7 @@ serialize_type (GIrModule    *module,
       if (node->parameter_type1)
 	{
 	  g_string_append (str, "<");
-	  serialize_type (module, modules, node->parameter_type1, str);
+	  serialize_type (build, node->parameter_type1, str);
 	  g_string_append (str, ">");
 	}
     }
@@ -1336,9 +1314,9 @@ serialize_type (GIrModule    *module,
       if (node->parameter_type1)
 	{
 	  g_string_append (str, "<");
-	  serialize_type (module, modules, node->parameter_type1, str);
+	  serialize_type (build, node->parameter_type1, str);
 	  g_string_append (str, ",");
-	  serialize_type (module, modules, node->parameter_type2, str);
+	  serialize_type (build, node->parameter_type2, str);
 	  g_string_append (str, ">");
 	}
     }
@@ -1421,8 +1399,7 @@ g_ir_node_build_typelib (GIrNode         *node,
                          guint32         *offset,
                          guint32         *offset2)
 {
-  GIrModule *module = build->module;
-  GList *modules = build->modules;
+  gboolean appended_stack;
   GHashTable *strings = build->strings;
   GHashTable *types = build->types;
   guchar *data = build->data;
@@ -1437,7 +1414,14 @@ g_ir_node_build_typelib (GIrNode         *node,
 	   node->name ? " " : "",
 	   g_ir_node_type_to_string (node->type));
 
-  g_ir_node_compute_offsets (node, module, modules);
+  if (build->stack)
+    appended_stack = node != (GIrNode*)build->stack->data; 
+  else
+    appended_stack = TRUE;
+  if (appended_stack)
+    build->stack = g_list_prepend (build->stack, node);
+  
+  g_ir_node_compute_offsets (build, node);
 
   /* We should only be building each node once.  If we do a typelib expansion, we also
    * reset the offset in girmodule.c.
@@ -1474,7 +1458,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 	    gpointer value;
 
 	    str = g_string_new (0);
-	    serialize_type (module, modules, type, str);
+	    serialize_type (build, type, str);
 	    s = g_string_free (str, FALSE);
 
 	    types_count += 1;
@@ -1529,7 +1513,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 		      iface->reserved = 0;
 		      iface->tag = type->tag;
 		      iface->reserved2 = 0;
-		      iface->interface = find_entry (module, modules, type->interface);
+		      iface->interface = find_entry (build, type->interface);
 
 		    }
 		    break;
@@ -1592,7 +1576,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 		      *offset2 = ALIGN_VALUE (*offset2 + G_STRUCT_OFFSET (ErrorTypeBlob, domains)
 		                              + 2 * blob->n_domains, 4);
 		      for (i = 0; i < blob->n_domains; i++)
-			blob->domains[i] = find_entry (module, modules, type->errors[i]);
+			blob->domains[i] = find_entry (build, type->errors[i]);
 		    }
 		    break;
 
@@ -2121,11 +2105,11 @@ g_ir_node_build_typelib (GIrNode         *node,
         if (object->get_value_func)
           blob->get_value_func = write_string (object->get_value_func, strings, data, offset2);
 	if (object->parent)
-	  blob->parent = find_entry (module, modules, object->parent);
+	  blob->parent = find_entry (build, object->parent);
 	else
 	  blob->parent = 0;
 	if (object->glib_type_struct)
-	  blob->gtype_struct = find_entry (module, modules, object->glib_type_struct);
+	  blob->gtype_struct = find_entry (build, object->glib_type_struct);
 	else
 	  blob->gtype_struct = 0;
 
@@ -2141,7 +2125,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 	for (l = object->interfaces; l; l = l->next)
 	  {
 	    blob->n_interfaces++;
-	    *(guint16*)&data[*offset] = find_entry (module, modules, (gchar *)l->data);
+	    *(guint16*)&data[*offset] = find_entry (build, (gchar *)l->data);
 	    *offset += 2;
 	  }
 
@@ -2190,7 +2174,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->gtype_name = write_string (iface->gtype_name, strings, data, offset2);
 	blob->gtype_init = write_string (iface->gtype_init, strings, data, offset2);
 	if (iface->glib_type_struct)
-	  blob->gtype_struct = find_entry (module, modules, iface->glib_type_struct);
+	  blob->gtype_struct = find_entry (build, iface->glib_type_struct);
 	else
 	  blob->gtype_struct = 0;
 	blob->n_prerequisites = 0;
@@ -2204,7 +2188,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 	for (l = iface->prerequisites; l; l = l->next)
 	  {
 	    blob->n_prerequisites++;
-	    *(guint16*)&data[*offset] = find_entry (module, modules, (gchar *)l->data);
+	    *(guint16*)&data[*offset] = find_entry (build, (gchar *)l->data);
 	    *offset += 2;
 	  }
 
@@ -2261,7 +2245,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 	blob->reserved = 0;
 	blob->name = write_string (node->name, strings, data, offset2);
 	blob->get_quark = write_string (domain->getquark, strings, data, offset2);
-	blob->error_codes = find_entry (module, modules, domain->codes);
+	blob->error_codes = find_entry (build, domain->codes);
 	blob->reserved2 = 0;
       }
       break;
@@ -2352,6 +2336,9 @@ g_ir_node_build_typelib (GIrNode         *node,
   if (*offset2 - old_offset2 + *offset - old_offset > g_ir_node_get_full_size (node))
     g_error ("exceeding space reservation; offset: %d (prev %d) offset2: %d (prev %d) nodesize: %d",
              *offset, old_offset, *offset2, old_offset2, g_ir_node_get_full_size (node));
+
+  if (appended_stack)
+    build->stack = g_list_delete_link (build->stack, build->stack);
 }
 
 /* if str is already in the pool, return previous location, otherwise write str

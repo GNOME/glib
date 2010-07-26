@@ -27,7 +27,6 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GIrTypelibBuild GIrTypelibBuild;
 typedef struct _GIrNode GIrNode;
 typedef struct _GIrNodeFunction GIrNodeFunction;
 typedef struct _GIrNodeParam GIrNodeParam;
@@ -45,16 +44,6 @@ typedef struct _GIrNodeConstant GIrNodeConstant;
 typedef struct _GIrNodeErrorDomain GIrNodeErrorDomain;
 typedef struct _GIrNodeXRef GIrNodeXRef;
 typedef struct _GIrNodeUnion GIrNodeUnion;
-
-struct _GIrTypelibBuild {
-  GIrModule  *module;
-  GList       *modules;
-  GHashTable  *strings;
-  GHashTable  *types;
-  GList       *nodes_with_attributes;
-  guint32      n_attributes;
-  guchar      *data;
-};
 
 typedef enum
 {
@@ -84,6 +73,7 @@ struct _GIrNode
 {
   GIrNodeTypeId type;
   gchar *name;
+  GIrModule *module;
 
   guint32 offset; /* Assigned as we build the typelib */
 
@@ -364,7 +354,8 @@ struct _GIrNodeErrorDomain
 };
 
 
-GIrNode * g_ir_node_new             (GIrNodeTypeId type);
+GIrNode * g_ir_node_new             (GIrNodeTypeId type,
+				     GIrModule     *module);
 void      g_ir_node_free            (GIrNode    *node);
 guint32   g_ir_node_get_size        (GIrNode    *node);
 guint32   g_ir_node_get_full_size   (GIrNode    *node);
@@ -386,17 +377,14 @@ guint32   write_string              (const gchar *str,
 const gchar * g_ir_node_param_direction_string (GIrNodeParam * node);
 const gchar * g_ir_node_type_to_string         (GIrNodeTypeId type);
 
-gboolean g_ir_find_node (GIrModule  *module,
-			 GList      *modules,
-			 const char *name,
-			 GIrNode   **node_out,
-			 GIrModule **module_out);
+GIrNode *g_ir_find_node (GIrTypelibBuild  *build,
+			 GIrModule        *module,
+			 const char       *name);
 
 /* In giroffsets.c */
 
-void g_ir_node_compute_offsets (GIrNode   *node,
-			        GIrModule *module,
-			        GList     *modules);
+void g_ir_node_compute_offsets (GIrTypelibBuild *build, 
+				GIrNode         *node);
 
 
 G_END_DECLS

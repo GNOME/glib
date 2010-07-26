@@ -25,6 +25,8 @@
 
 G_BEGIN_DECLS
 
+#include "girmodule.h"
+
 typedef struct _GIrParser GIrParser;
 
 GIrParser *g_ir_parser_new          (void);
@@ -32,15 +34,15 @@ void       g_ir_parser_free         (GIrParser          *parser);
 void       g_ir_parser_set_includes (GIrParser          *parser,
 				     const gchar *const *includes);
 
-GList *g_ir_parser_parse_string (GIrParser    *parser,
-				 const gchar  *namespace,
-				 const gchar  *filename,
-				 const gchar  *buffer,
-				 gssize        length,
-				 GError      **error);
-GList *g_ir_parser_parse_file   (GIrParser    *parser,
-				 const gchar  *filename,
-				 GError      **error);
+GIrModule *g_ir_parser_parse_string (GIrParser    *parser,
+				     const gchar  *namespace,
+				     const gchar  *filename,
+				     const gchar  *buffer,
+				     gssize        length,
+				     GError      **error);
+GIrModule *g_ir_parser_parse_file   (GIrParser    *parser,
+				     const gchar  *filename,
+				     GError      **error);
 
 G_END_DECLS
 

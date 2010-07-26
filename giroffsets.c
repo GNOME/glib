@@ -20,6 +20,7 @@
 
 #include "girepository-private.h"
 #include "girnode.h"
+#include <string.h>
 
 /* The C standard specifies that an enumeration can be any char or any signed
  * or unsigned integer type capable of resresenting all the values of the
@@ -144,26 +145,24 @@ get_enum_size_alignment (GIrNodeEnum *enum_node,
 }
 
 static gboolean
-get_interface_size_alignment (GIrNodeType *type,
-                              GIrModule   *module,
-			      GList       *modules,
+get_interface_size_alignment (GIrTypelibBuild   *build,
+			      GIrNodeType *type,
 			      gint        *size,
 			      gint        *alignment,
                               const char  *who)
 {
   GIrNode *iface;
-  GIrModule *iface_module;
 
-  if (!g_ir_find_node (module, modules, type->interface, &iface, &iface_module))
+  iface = g_ir_find_node (build, ((GIrNode*)type)->module, type->interface);
+  if (!iface)
     {
-      g_ir_module_fatal (module, 0, "Can't resolve type '%s' for %s", type->interface, who);
+      g_ir_module_fatal (build, 0, "Can't resolve type '%s' for %s", type->interface, who);
       *size = -1;
       *alignment = -1;
       return FALSE;
     }
 
-  g_ir_node_compute_offsets (iface, iface_module,
-			     iface_module == module ? modules : NULL);
+  g_ir_node_compute_offsets (build, iface);
 
   switch (iface->type)
     {
@@ -223,9 +222,8 @@ get_interface_size_alignment (GIrNodeType *type,
 }
 
 static gboolean
-get_type_size_alignment (GIrNodeType *type,
-                         GIrModule   *module,
-                         GList       *modules,
+get_type_size_alignment (GIrTypelibBuild   *build,
+			 GIrNodeType *type,
                          gint        *size,
                          gint        *alignment,
                          const char  *who)
@@ -241,7 +239,7 @@ get_type_size_alignment (GIrNodeType *type,
       gint elt_size, elt_alignment;
 
       if (!type->has_size
-          || !get_type_size_alignment(type->parameter_type1, module, modules,
+          || !get_type_size_alignment(build, type->parameter_type1,
                                       &elt_size, &elt_alignment, who))
         {
           *size = -1;
@@ -258,7 +256,7 @@ get_type_size_alignment (GIrNodeType *type,
     {
       if (type->tag == GI_TYPE_TAG_INTERFACE)
 	{
-	  return get_interface_size_alignment (type, module, modules, size, alignment, who);
+	  return get_interface_size_alignment (build, type, size, alignment, who);
 	}
       else
 	{
@@ -291,13 +289,13 @@ get_type_size_alignment (GIrNodeType *type,
 }
 
 static gboolean
-get_field_size_alignment (GIrNodeField *field,
+get_field_size_alignment (GIrTypelibBuild    *build,
+			  GIrNodeField *field,
 			  GIrNode      *parent_node,
-			  GIrModule    *module,
-			  GList        *modules,
 			  gint         *size,
 			  gint         *alignment)
 {
+  GIrModule *module = build->module;
   gchar *who;
   gboolean success;
 
@@ -310,7 +308,7 @@ get_field_size_alignment (GIrNodeField *field,
       success = TRUE;
     }
   else
-    success = get_type_size_alignment (field->type, module, modules, size, alignment, who);
+    success = get_type_size_alignment (build, field->type, size, alignment, who);
   g_free (who);
 
   return success;
@@ -319,10 +317,9 @@ get_field_size_alignment (GIrNodeField *field,
 #define ALIGN(n, align) (((n) + (align) - 1) & ~((align) - 1))
 
 static gboolean
-compute_struct_field_offsets (GIrNode     *node,
+compute_struct_field_offsets (GIrTypelibBuild   *build,
+			      GIrNode     *node,
 			      GList       *members,
-			      GIrModule   *module,
-			      GList       *modules,
 			      gint        *size_out,
 			      gint        *alignment_out)
 {
@@ -346,8 +343,7 @@ compute_struct_field_offsets (GIrNode     *node,
 	      int member_size;
 	      int member_alignment;
 
-	      if (get_field_size_alignment (field, node,
-					    module, modules,
+	      if (get_field_size_alignment (build, field, node,
 					    &member_size, &member_alignment))
 		{
 		  size = ALIGN (size, member_alignment);
@@ -388,10 +384,9 @@ compute_struct_field_offsets (GIrNode     *node,
 }
 
 static gboolean
-compute_union_field_offsets (GIrNode     *node,
+compute_union_field_offsets (GIrTypelibBuild *build,
+			     GIrNode     *node,
 			     GList       *members,
-			     GIrModule   *module,
-			     GList       *modules,
 			     gint        *size_out,
 			     gint        *alignment_out)
 {
@@ -415,8 +410,7 @@ compute_union_field_offsets (GIrNode     *node,
 	      int member_size;
 	      int member_alignment;
 
-	      if (get_field_size_alignment (field, node,
-					    module, modules,
+	      if (get_field_size_alignment (build,field, node,
 					    &member_size, &member_alignment))
 		{
 		  size = MAX (size, member_size);
@@ -446,10 +440,11 @@ compute_union_field_offsets (GIrNode     *node,
 }
 
 static gboolean
-check_needs_computation (GIrNode   *node,
-			 GIrModule *module,
+check_needs_computation (GIrTypelibBuild *build,
+			 GIrNode   *node,
 			 gint       alignment)
 {
+  GIrModule *module = build->module;
   /*
    *  0: Not yet computed
    * >0: Previously succeeded
@@ -467,30 +462,36 @@ check_needs_computation (GIrNode   *node,
 
 /**
  * g_ir_node_compute_offsets:
+ * @build: Current typelib build
  * @node: a #GIrNode
- * @module: Current module being processed
- * @modules: all currently loaded modules
  *
  * If a node is a a structure or union, makes sure that the field
  * offsets have been computed, and also computes the overall size and
  * alignment for the type.
  */
 void
-g_ir_node_compute_offsets (GIrNode   *node,
-			   GIrModule *module,
-			   GList     *modules)
+g_ir_node_compute_offsets (GIrTypelibBuild *build,
+			   GIrNode         *node)
 {
+  gboolean appended_stack;
+
+  if (build->stack)
+    appended_stack = node != (GIrNode*)build->stack->data; 
+  else
+    appended_stack = TRUE;
+  if (appended_stack)
+    build->stack = g_list_prepend (build->stack, node);
+
   switch (node->type)
     {
     case G_IR_NODE_BOXED:
       {
 	GIrNodeBoxed *boxed = (GIrNodeBoxed *)node;
 
-	if (!check_needs_computation (node, module, boxed->alignment))
+	if (!check_needs_computation (build, node, boxed->alignment))
 	  return;
 
-	compute_struct_field_offsets (node, boxed->members,
-				      module, modules,
+	compute_struct_field_offsets (build, node, boxed->members,
 				      &boxed->size, &boxed->alignment);
 	break;
       }
@@ -498,11 +499,10 @@ g_ir_node_compute_offsets (GIrNode   *node,
       {
 	GIrNodeStruct *struct_ = (GIrNodeStruct *)node;
 
-	if (!check_needs_computation (node, module, struct_->alignment))
+	if (!check_needs_computation (build, node, struct_->alignment))
 	  return;
 
-	compute_struct_field_offsets (node, struct_->members,
-				      module, modules,
+	compute_struct_field_offsets (build, node, struct_->members,
 				      &struct_->size, &struct_->alignment);
 	break;
       }
@@ -511,11 +511,10 @@ g_ir_node_compute_offsets (GIrNode   *node,
       {
 	GIrNodeInterface *iface = (GIrNodeInterface *)node;
 
-	if (!check_needs_computation (node, module, iface->alignment))
+	if (!check_needs_computation (build, node, iface->alignment))
 	  return;
 
-	compute_struct_field_offsets (node, iface->members,
-				      module, modules,
+	compute_struct_field_offsets (build, node, iface->members,
 				      &iface->size, &iface->alignment);
 	break;
       }
@@ -523,11 +522,10 @@ g_ir_node_compute_offsets (GIrNode   *node,
       {
 	GIrNodeUnion *union_ = (GIrNodeUnion *)node;
 
-	if (!check_needs_computation (node, module, union_->alignment))
+	if (!check_needs_computation (build, node, union_->alignment))
 	  return;
 
-	compute_union_field_offsets (node, union_->members,
-				     module, modules,
+	compute_union_field_offsets (build, (GIrNode*)union_, union_->members,
 				     &union_->size, &union_->alignment);
 	break;
       }
@@ -544,7 +542,9 @@ g_ir_node_compute_offsets (GIrNode   *node,
 	break;
       }
     default:
-      /* Nothing to do */
-      return;
+      break;
     }
+  
+  if (appended_stack)
+    build->stack = g_list_delete_link (build->stack, build->stack);
 }
