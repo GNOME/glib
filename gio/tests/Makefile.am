@@ -43,6 +43,7 @@ TEST_PROGS +=	 		\
 	gschema-compile		\
 	async-close-output-stream \
 	gdbus-addresses		\
+	network-address		\
 	$(NULL)
 
 if OS_UNIX
@@ -60,7 +61,6 @@ TEST_PROGS +=			\
 	application		\
 	testapps		\
 	appinfo			\
-	icons			\
 	contenttype		\
 	file			\
 	$(NULL)
@@ -192,6 +192,9 @@ send_data_LDADD		  = $(progs_ldadd) \
 srvtarget_SOURCES	  = srvtarget.c
 srvtarget_LDADD		  = $(progs_ldadd)
 
+network_address_SOURCE	  = network-address.c
+network_address_LDADD	  = $(progs_ldadd)
+
 contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
@@ -286,9 +289,6 @@ testapp_LDADD   = $(progs_ldadd)
 
 testapps_SOURCES = testapps.c gdbus-sessionbus.c gdbus-sessionbus.h
 testapps_LDADD   = $(progs_ldadd)
-
-icons_SOURCES = icons.c
-icons_LDADD   = $(progs_ldadd)
 
 contenttype_SOURCES = contenttype.c
 contenttype_LDADD   = $(progs_ldadd)
