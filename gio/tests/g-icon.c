@@ -319,7 +319,7 @@ test_file_icon (void)
   GInputStream *stream;
   gchar *str;
 
-  file = g_file_new_for_path (SRCDIR "/icons.c");
+  file = g_file_new_for_path (SRCDIR "/g-icon.c");
   icon = g_file_icon_new (file);
   g_object_unref (file);
 
