@@ -96,7 +96,6 @@ test_programs =					\
 	mainloop-test				\
 	mapping-test				\
 	markup-collect				\
-	markup-escape-test			\
 	module-test				\
 	onceinit				\
 	asyncqueue-test				\
@@ -145,7 +144,6 @@ list_test_LDADD = $(progs_ldadd)
 mainloop_test_LDADD = $(thread_ldadd)
 markup_test_LDADD = $(progs_ldadd)
 mapping_test_LDADD = $(progs_ldadd)
-markup_escape_test_LDADD = $(progs_ldadd)
 module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
 onceinit_LDADD = $(thread_ldadd)
@@ -167,7 +165,6 @@ type_test_LDADD = $(progs_ldadd)
 unicode_encoding_LDADD = $(progs_ldadd)
 unicode_caseconv_LDADD = $(progs_ldadd)
 unicode_collate_LDADD = $(progs_ldadd)
-markup_collect_LDADD = $(progs_ldadd)
 
 noinst_LTLIBRARIES = libmoduletestplugin_a.la libmoduletestplugin_b.la
 
