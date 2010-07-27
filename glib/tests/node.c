@@ -105,14 +105,26 @@ traversal_test (void)
   g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
   g_assert_cmpstr (tstring, ==,  "ABCDEFGHIJK");
   g_free (tstring); tstring = NULL;
+  g_node_traverse (root, G_PRE_ORDER, G_TRAVERSE_ALL, 2, node_build_string, &tstring);
+  g_assert_cmpstr (tstring, ==,  "ABF");
+  g_free (tstring); tstring = NULL;
   g_node_traverse (root, G_POST_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
   g_assert_cmpstr (tstring, ==, "CDEBHIJKGFA");
+  g_free (tstring); tstring = NULL;
+  g_node_traverse (root, G_POST_ORDER, G_TRAVERSE_ALL, 2, node_build_string, &tstring);
+  g_assert_cmpstr (tstring, ==, "BFA");
   g_free (tstring); tstring = NULL;
   g_node_traverse (root, G_IN_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
   g_assert_cmpstr (tstring, ==, "CBDEAHGIJKF");
   g_free (tstring); tstring = NULL;
+  g_node_traverse (root, G_IN_ORDER, G_TRAVERSE_ALL, 2, node_build_string, &tstring);
+  g_assert_cmpstr (tstring, ==, "BAF");
+  g_free (tstring); tstring = NULL;
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, node_build_string, &tstring);
   g_assert_cmpstr (tstring, ==, "ABFCDEGHIJK");
+  g_free (tstring); tstring = NULL;
+  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, 2, node_build_string, &tstring);
+  g_assert_cmpstr (tstring, ==, "ABF");
   g_free (tstring); tstring = NULL;
   
   g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_LEAFS, -1, node_build_string, &tstring);
@@ -276,6 +288,109 @@ misc_test (void)
   g_node_destroy (root);
 }
 
+static gboolean
+check_order (GNode    *node,
+             gpointer  data)
+{
+  gchar **expected = data;
+  gchar d;
+
+  d = GPOINTER_TO_INT (node->data);
+  g_assert_cmpint (d, ==, **expected);
+  (*expected)++;
+
+  return FALSE;
+}
+
+static void
+unlink_test (void)
+{
+  GNode *root;
+  GNode *cnode;
+  GNode *node;
+  gchar *expected;
+
+  /*
+   *        -------- a --------
+   *       /         |          \
+   *     b           c           d
+   *   / | \       / | \       / | \
+   * e   f   g   h   i   j   k   l   m
+   *
+   */
+
+  root = g_node_new (C2P ('a'));
+  node = g_node_append_data (root, C2P ('b'));
+  g_node_append_data (node, C2P ('e'));
+  g_node_append_data (node, C2P ('f'));
+  g_node_append_data (node, C2P ('g'));
+
+  node = cnode = g_node_append_data (root, C2P ('c'));
+  g_node_append_data (node, C2P ('h'));
+  g_node_append_data (node, C2P ('i'));
+  g_node_append_data (node, C2P ('j'));
+
+  node = g_node_append_data (root, C2P ('d'));
+  g_node_append_data (node, C2P ('k'));
+  g_node_append_data (node, C2P ('l'));
+  g_node_append_data (node, C2P ('m'));
+
+  g_node_unlink (cnode);
+
+  expected = "abdefgklm";
+  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, check_order, &expected);
+
+  expected = "chij";
+  g_node_traverse (cnode, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, check_order, &expected);
+
+  g_node_destroy (root);
+  g_node_destroy (cnode);
+}
+
+static gpointer
+copy_up (gconstpointer src,
+         gpointer      data)
+{
+  gchar l, u;
+
+  l = GPOINTER_TO_INT (src);
+  u = g_ascii_toupper (l);
+
+  return GINT_TO_POINTER (u);
+}
+
+static void
+copy_test (void)
+{
+  GNode *root;
+  GNode *copy;
+  gchar *expected;
+
+  root = g_node_new (C2P ('a'));
+  g_node_append_data (root, C2P ('b'));
+  g_node_append_data (root, C2P ('c'));
+  g_node_append_data (root, C2P ('d'));
+
+  expected = "abcd";
+  g_node_traverse (root, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, check_order, &expected);
+
+  copy = g_node_copy (root);
+
+  expected = "abcd";
+  g_node_traverse (copy, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, check_order, &expected);
+
+  g_node_destroy (copy);
+
+  copy = g_node_copy_deep (root, copy_up, NULL);
+
+  expected = "ABCD";
+  g_node_traverse (copy, G_LEVEL_ORDER, G_TRAVERSE_ALL, -1, check_order, &expected);
+
+  g_node_destroy (copy);
+
+  g_node_destroy (root);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -286,6 +401,8 @@ main (int   argc,
   g_test_add_func ("/node/construction", construct_test);
   g_test_add_func ("/node/traversal", traversal_test);
   g_test_add_func ("/node/misc", misc_test);
+  g_test_add_func ("/node/unlink", unlink_test);
+  g_test_add_func ("/node/copy", copy_test);
 
   return g_test_run ();
 }
