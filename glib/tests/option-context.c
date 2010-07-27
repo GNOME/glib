@@ -1717,6 +1717,36 @@ missing_arg_test (void)
   g_option_context_free (context);
 }
 
+static void
+test_basic (void)
+{
+  GOptionContext *context;
+  gchar *arg = NULL;
+  GOptionEntry entries [] =
+    { { "test", 't', 0, G_OPTION_ARG_STRING, &arg, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  g_assert (g_option_context_get_help_enabled (context));
+  g_assert (!g_option_context_get_ignore_unknown_options (context));
+  g_assert_cmpstr (g_option_context_get_summary (context), ==, NULL);
+  g_assert_cmpstr (g_option_context_get_description (context), ==, NULL);
+
+  g_option_context_set_help_enabled (context, FALSE);
+  g_option_context_set_ignore_unknown_options (context, TRUE);
+  g_option_context_set_summary (context, "summary");
+  g_option_context_set_description(context, "description");
+
+  g_assert (!g_option_context_get_help_enabled (context));
+  g_assert (g_option_context_get_ignore_unknown_options (context));
+  g_assert_cmpstr (g_option_context_get_summary (context), ==, "summary");
+  g_assert_cmpstr (g_option_context_get_description (context), ==, "description");
+
+  g_option_context_free (context);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1724,71 +1754,73 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_bug_base ("http://bugzilla.gnome.org/");
-  g_test_add_func ("/group/captions", group_captions);
+
+  g_test_add_func ("/option/basic", test_basic);
+  g_test_add_func ("/option/group/captions", group_captions);
 
   /* Test that restoration on failure works */
-  g_test_add_func ("/restoration/int", error_test1);
-  g_test_add_func ("/restoration/string", error_test2);
-  g_test_add_func ("/restoration/boolean", error_test3);
+  g_test_add_func ("/option/restoration/int", error_test1);
+  g_test_add_func ("/option/restoration/string", error_test2);
+  g_test_add_func ("/option/restoration/boolean", error_test3);
   
   /* Test that special argument parsing works */
-  g_test_add_func ("/arg/repetition/int", arg_test1);
-  g_test_add_func ("/arg/repetition/string", arg_test2);
-  g_test_add_func ("/arg/repetition/filename", arg_test3);
-  g_test_add_func ("/arg/repetition/double", arg_test4);
-  g_test_add_func ("/arg/repetition/locale", arg_test5);
-  g_test_add_func ("/arg/repetition/int64", arg_test6);
+  g_test_add_func ("/option/arg/repetition/int", arg_test1);
+  g_test_add_func ("/option/arg/repetition/string", arg_test2);
+  g_test_add_func ("/option/arg/repetition/filename", arg_test3);
+  g_test_add_func ("/option/arg/repetition/double", arg_test4);
+  g_test_add_func ("/option/arg/repetition/locale", arg_test5);
+  g_test_add_func ("/option/arg/repetition/int64", arg_test6);
 
   /* Test string arrays */
-  g_test_add_func ("/arg/array/string", array_test1);
+  g_test_add_func ("/option/arg/array/string", array_test1);
 
   /* Test callback args */
-  g_test_add_func ("/arg/callback/string", callback_test1);
-  g_test_add_func ("/arg/callback/count", callback_test2);
+  g_test_add_func ("/option/arg/callback/string", callback_test1);
+  g_test_add_func ("/option/arg/callback/count", callback_test2);
 
   /* Test optional arg flag for callback */
-  g_test_add_func ("/arg/callback/optional1", callback_test_optional_1);
-  g_test_add_func ("/arg/callback/optional2", callback_test_optional_2);
-  g_test_add_func ("/arg/callback/optional3", callback_test_optional_3);
-  g_test_add_func ("/arg/callback/optional4", callback_test_optional_4);
-  g_test_add_func ("/arg/callback/optional5", callback_test_optional_5);
-  g_test_add_func ("/arg/callback/optional6", callback_test_optional_6);
-  g_test_add_func ("/arg/callback/optional7", callback_test_optional_7);
-  g_test_add_func ("/arg/callback/optional8", callback_test_optional_8);
+  g_test_add_func ("/option/arg/callback/optional1", callback_test_optional_1);
+  g_test_add_func ("/option/arg/callback/optional2", callback_test_optional_2);
+  g_test_add_func ("/option/arg/callback/optional3", callback_test_optional_3);
+  g_test_add_func ("/option/arg/callback/optional4", callback_test_optional_4);
+  g_test_add_func ("/option/arg/callback/optional5", callback_test_optional_5);
+  g_test_add_func ("/option/arg/callback/optional6", callback_test_optional_6);
+  g_test_add_func ("/option/arg/callback/optional7", callback_test_optional_7);
+  g_test_add_func ("/option/arg/callback/optional8", callback_test_optional_8);
 
   /* Test callback with G_OPTION_REMAINING */
-  g_test_add_func ("/arg/remaining/callback", callback_remaining_test1);
+  g_test_add_func ("/option/arg/remaining/callback", callback_remaining_test1);
   
   /* Test callbacks which return FALSE */
-  g_test_add_func ("/arg/remaining/callback-false", callback_returns_false);
+  g_test_add_func ("/option/arg/remaining/callback-false", callback_returns_false);
   
   /* Test ignoring options */
-  g_test_add_func ("/arg/ignore/long", ignore_test1);
-  g_test_add_func ("/arg/ignore/short", ignore_test2);
-  g_test_add_func ("/arg/ignore/arg", ignore_test3);
+  g_test_add_func ("/option/arg/ignore/long", ignore_test1);
+  g_test_add_func ("/option/arg/ignore/short", ignore_test2);
+  g_test_add_func ("/option/arg/ignore/arg", ignore_test3);
 
-  g_test_add_func ("/context/add", add_test1);
+  g_test_add_func ("/option/context/add", add_test1);
 
   /* Test parsing empty args */
-  g_test_add_func ("/context/empty1", empty_test1);
-  g_test_add_func ("/context/empty2", empty_test2);
-  g_test_add_func ("/context/empty3", empty_test3);
+  g_test_add_func ("/option/context/empty1", empty_test1);
+  g_test_add_func ("/option/context/empty2", empty_test2);
+  g_test_add_func ("/option/context/empty3", empty_test3);
 
   /* Test handling of rest args */
-  g_test_add_func ("/arg/rest/non-option", rest_test1);
-  g_test_add_func ("/arg/rest/separator1", rest_test2);
-  g_test_add_func ("/arg/rest/separator2", rest_test2a);
-  g_test_add_func ("/arg/rest/separator3", rest_test2b);
-  g_test_add_func ("/arg/rest/separator4", rest_test2c);
-  g_test_add_func ("/arg/rest/separator5", rest_test2d);
-  g_test_add_func ("/arg/remaining/non-option", rest_test3);
-  g_test_add_func ("/arg/remaining/separator", rest_test4);
-  g_test_add_func ("/arg/remaining/array", rest_test5);
+  g_test_add_func ("/option/arg/rest/non-option", rest_test1);
+  g_test_add_func ("/option/arg/rest/separator1", rest_test2);
+  g_test_add_func ("/option/arg/rest/separator2", rest_test2a);
+  g_test_add_func ("/option/arg/rest/separator3", rest_test2b);
+  g_test_add_func ("/option/arg/rest/separator4", rest_test2c);
+  g_test_add_func ("/option/arg/rest/separator5", rest_test2d);
+  g_test_add_func ("/option/arg/remaining/non-option", rest_test3);
+  g_test_add_func ("/option/arg/remaining/separator", rest_test4);
+  g_test_add_func ("/option/arg/remaining/array", rest_test5);
 
   /* regression tests for individual bugs */
-  g_test_add_func ("/bug/unknown-short", unknown_short_test);
-  g_test_add_func ("/bug/lonely-dash", lonely_dash_test);
-  g_test_add_func ("/bug/missing-arg", missing_arg_test);
+  g_test_add_func ("/option/bug/unknown-short", unknown_short_test);
+  g_test_add_func ("/option/bug/lonely-dash", lonely_dash_test);
+  g_test_add_func ("/option/bug/missing-arg", missing_arg_test);
 
   return g_test_run();
 }
