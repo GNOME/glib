@@ -23,23 +23,6 @@
 #include <string.h>
 #include <glib.h>
 
-static gboolean noisy = FALSE;
-
-static void
-verbose (const gchar *format, ...)
-{
-  gchar *msg;
-  va_list args;
-
-  va_start (args, format);
-  msg = g_strdup_vprintf (format, args);
-  va_end (args);
-
-  if (noisy) 
-    g_print (msg);
-  g_free (msg);
-}
-
 /* keep enum and structure of gpattern.c and patterntest.c in sync */
 typedef enum
 {
@@ -60,249 +43,202 @@ struct _GPatternSpec
   gchar     *pattern;
 };
 
+typedef struct _CompileTest CompileTest;
 
-static gchar *
-match_type_name (GMatchType match_type)
+struct _CompileTest
 {
-  switch (match_type)
-    {
-    case G_MATCH_ALL: 
-      return "G_MATCH_ALL";
-      break;
-    case G_MATCH_ALL_TAIL:
-      return "G_MATCH_ALL_TAIL";
-      break;
-    case G_MATCH_HEAD:
-      return "G_MATCH_HEAD";
-      break;
-    case G_MATCH_TAIL:
-      return "G_MATCH_TAIL";
-      break;
-    case G_MATCH_EXACT:
-      return "G_MATCH_EXACT";
-      break;
-    default:
-      return "unknown GMatchType";
-      break;
-    }
-}
+  const gchar *src;
+  GMatchType match_type;
+  gchar *pattern;
+  guint min;
+};
 
-static gboolean
-test_compilation (gchar *src, 
-		  GMatchType match_type, 
-		  gchar *pattern,
-		  guint min)
+static CompileTest compile_tests[] =
 {
-  GPatternSpec *spec; 
+  { "*A?B*", G_MATCH_ALL, "*A?B*", 3 },
+  { "ABC*DEFGH", G_MATCH_ALL_TAIL, "HGFED*CBA", 8 },
+  { "ABCDEF*GH", G_MATCH_ALL, "ABCDEF*GH", 8 },
+  { "ABC**?***??**DEF*GH", G_MATCH_ALL, "ABC*???DEF*GH", 11 },
+  { "*A?AA", G_MATCH_ALL_TAIL, "AA?A*", 4 },
+  { "ABCD*", G_MATCH_HEAD, "ABCD", 4 },
+  { "*ABCD", G_MATCH_TAIL, "ABCD", 4 },
+  { "ABCDE", G_MATCH_EXACT, "ABCDE", 5 },
+  { "A?C?E", G_MATCH_ALL, "A?C?E", 5 },
+  { "*?x", G_MATCH_ALL_TAIL, "x?*", 2 },
+  { "?*x", G_MATCH_ALL_TAIL, "x?*", 2 },
+  { "*?*x", G_MATCH_ALL_TAIL, "x?*", 2 },
+  { "x*??", G_MATCH_ALL_TAIL, "??*x", 3 }
+};
 
-  verbose ("compiling \"%s\" \t", src);
-  spec = g_pattern_spec_new (src);
+static void
+test_compilation (gconstpointer d)
+{
+  const CompileTest *test = d;
+  GPatternSpec *spec;
 
-  if (spec->match_type != match_type)
-    {
-      g_print ("failed \t(match_type: %s, expected %s)\n",
-	       match_type_name (spec->match_type), 
-	       match_type_name (match_type));
-      g_pattern_spec_free (spec);
-      return FALSE;
-    }
-  
-  if (strcmp (spec->pattern, pattern) != 0)
-    {
-      g_print ("failed \t(pattern: \"%s\", expected \"%s\")\n",
-	       spec->pattern,
-	       pattern);
-      g_pattern_spec_free (spec);
-      return FALSE;
-    }
-  
-  if (spec->pattern_length != strlen (spec->pattern))
-    {
-      g_print ("failed \t(pattern_length: %d, expected %d)\n",
-	       spec->pattern_length,
-	       (gint)strlen (spec->pattern));
-      g_pattern_spec_free (spec);
-      return FALSE;
-    }
-  
-  if (spec->min_length != min)
-    {
-      g_print ("failed \t(min_length: %d, expected %d)\n",
-	       spec->min_length,
-	       min);
-      g_pattern_spec_free (spec);
-      return FALSE;
-    }
-  
-  verbose ("passed (%s: \"%s\")\n",
-	   match_type_name (spec->match_type),
-	   spec->pattern);
+  spec = g_pattern_spec_new (test->src);
+
+  g_assert_cmpint (spec->match_type, ==, test->match_type);
+  g_assert_cmpstr (spec->pattern, ==, test->pattern);
+  g_assert_cmpint (spec->pattern_length, ==, strlen (spec->pattern));
+  g_assert_cmpint (spec->min_length, ==, test->min);
 
   g_pattern_spec_free (spec);
-  
-  return TRUE;
 }
 
-static gboolean
-test_match (gchar *pattern, 
-	    gchar *string, 
-	    gboolean match)
-{
-  verbose ("matching \"%s\" against \"%s\" \t", string, pattern);
-  
-  if (g_pattern_match_simple (pattern, string) != match)
-    {
-      g_print ("failed \t(unexpected %s)\n", (match ? "mismatch" : "match"));
-      return FALSE;
-    }
-  
-  verbose ("passed (%s)\n", match ? "match" : "nomatch");
+typedef struct _MatchTest MatchTest;
 
-  return TRUE;
+struct _MatchTest
+{
+  const gchar *pattern;
+  const gchar *string;
+  gboolean match;
+};
+
+static MatchTest match_tests[] =
+{
+  { "*x", "x", TRUE },
+  { "*x", "xx", TRUE },
+  { "*x", "yyyx", TRUE },
+  { "*x", "yyxy", FALSE },
+  { "?x", "x", FALSE },
+  { "?x", "xx", TRUE },
+  { "?x", "yyyx", FALSE },
+  { "?x", "yyxy", FALSE },
+  { "*?x", "xx", TRUE },
+  { "?*x", "xx", TRUE },
+  { "*?x", "x", FALSE },
+  { "?*x", "x", FALSE },
+  { "*?*x", "yx", TRUE },
+  { "*?*x", "xxxx", TRUE },
+  { "x*??", "xyzw", TRUE },
+  { "*x", "\xc3\x84x", TRUE },
+  { "?x", "\xc3\x84x", TRUE },
+  { "??x", "\xc3\x84x", FALSE },
+  { "ab\xc3\xa4\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE },
+  { "ab\xc3\xa4\xc3\xb6", "abao", FALSE },
+  { "ab?\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE },
+  { "ab?\xc3\xb6", "abao", FALSE },
+  { "ab\xc3\xa4?", "ab\xc3\xa4\xc3\xb6", TRUE },
+  { "ab\xc3\xa4?", "abao", FALSE },
+  { "ab??", "ab\xc3\xa4\xc3\xb6", TRUE },
+  { "ab*", "ab\xc3\xa4\xc3\xb6", TRUE },
+  { "ab*\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE },
+  { "ab*\xc3\xb6", "aba\xc3\xb6x\xc3\xb6", TRUE },
+  { "", "abc", FALSE },
+  { "", "", TRUE },
+  { "abc", "abc", TRUE },
+  { "*fo1*bar", "yyyfoxfo1bar", TRUE },
+  { "12*fo1g*bar", "12yyyfoxfo1gbar", TRUE },
+  { "__________:*fo1g*bar", "__________:yyyfoxfo1gbar", TRUE },
+  { "*abc*cde", "abcde", FALSE },
+  { "*abc*cde", "abccde", TRUE },
+  { "*abc*cde", "abcxcde", TRUE },
+  { "*abc*?cde", "abccde", FALSE },
+  { "*abc*?cde", "abcxcde", TRUE },
+  { "*abc*def", "abababcdededef", TRUE },
+  { "*abc*def", "abcbcbcdededef", TRUE },
+  { "*acbc*def", "acbcbcbcdededef", TRUE },
+  { "*a?bc*def", "acbcbcbcdededef", TRUE },
+  { "*abc*def", "bcbcbcdefdef", FALSE },
+  { "*abc*def*ghi", "abcbcbcbcbcbcdefefdefdefghi", TRUE },
+  { "*abc*def*ghi", "bcbcbcbcbcbcdefdefdefdefghi", FALSE },
+  { "_1_2_3_4_5_6_7_8_9_0_1_2_3_4_5_*abc*def*ghi", "_1_2_3_4_5_6_7_8_9_0_1_2_3_4_5_abcbcbcbcbcbcdefefdefdefghi", TRUE },
+  { "fooooooo*a*bc", "fooooooo_a_bd_a_bc", TRUE },
+  { "x*?", "x", FALSE },
+  { "abc*", "abc", TRUE },
+  { "*", "abc", TRUE }
+};
+
+static void
+test_match (gconstpointer d)
+{
+  const MatchTest *test = d;
+  GPatternSpec *p;
+  gchar *r;
+
+  g_assert_cmpint (g_pattern_match_simple (test->pattern, test->string), ==, test->match);
+
+  p = g_pattern_spec_new (test->pattern);
+  g_assert_cmpint (g_pattern_match_string (p, test->string), ==, test->match);
+
+  r = g_utf8_strreverse (test->string, -1);
+  g_assert_cmpint (g_pattern_match (p, strlen (test->string), test->string, r), ==, test->match);
+  g_free (r);
+
+  g_pattern_spec_free (p);
 }
 
-static gboolean
-test_equal (gchar *pattern1,
-	    gchar *pattern2,
-	    gboolean expected)
+typedef struct _EqualTest EqualTest;
+
+struct _EqualTest
 {
-  GPatternSpec *p1 = g_pattern_spec_new (pattern1);
-  GPatternSpec *p2 = g_pattern_spec_new (pattern2);
-  gboolean equal = g_pattern_spec_equal (p1, p2);
+  const gchar *pattern1;
+  const gchar *pattern2;
+  gboolean expected;
+};
 
-  verbose ("comparing \"%s\" with \"%s\" \t", pattern1, pattern2);
+static EqualTest equal_tests[] =
+{
+  { "*A?B*", "*A?B*", TRUE },
+  { "A*BCD", "A*BCD", TRUE },
+  { "ABCD*", "ABCD****", TRUE },
+  { "A1*", "A1*", TRUE },
+  { "*YZ", "*YZ", TRUE },
+  { "A1x", "A1x", TRUE },
+  { "AB*CD", "AB**CD", TRUE },
+  { "AB*?*CD", "AB*?CD", TRUE },
+  { "AB*?CD", "AB?*CD", TRUE },
+  { "AB*CD", "AB*?*CD", FALSE },
+  { "ABC*", "ABC?", FALSE },
+};
 
-  if (expected != equal)
-    {
-      g_print ("failed \t{%s, %u, \"%s\"} %s {%s, %u, \"%s\"}\n",
-	       match_type_name (p1->match_type), p1->pattern_length, p1->pattern,
-	       expected ? "!=" : "==",
-	       match_type_name (p2->match_type), p2->pattern_length, p2->pattern);
-    }
-  else
-    verbose ("passed (%s)\n", equal ? "equal" : "unequal");
-  
+static void
+test_equal (gconstpointer d)
+{
+  const EqualTest *test = d;
+  GPatternSpec *p1, *p2;
+
+  p1 = g_pattern_spec_new (test->pattern1);
+  p2 = g_pattern_spec_new (test->pattern2);
+
+  g_assert_cmpint (g_pattern_spec_equal (p1, p2), ==, test->expected);
+
   g_pattern_spec_free (p1);
   g_pattern_spec_free (p2);
-
-  return expected == equal;
 }
 
-#define TEST_COMPILATION(src, type, pattern, min) { \
-  total++; \
-  if (test_compilation (src, type, pattern, min)) \
-    passed++; \
-  else \
-    failed++; \
-}
-
-#define TEST_MATCH(pattern, string, match) { \
-  total++; \
-  if (test_match (pattern, string, match)) \
-    passed++; \
-  else \
-    failed++; \
-}
-
-#define TEST_EQUAL(pattern1, pattern2, match) { \
-  total++; \
-  if (test_equal (pattern1, pattern2, match)) \
-    passed++; \
-  else \
-    failed++; \
-}
 
 int
 main (int argc, char** argv)
 {
-  gint total = 0;
-  gint passed = 0;
-  gint failed = 0;
   gint i;
+  gchar *path;
 
-  for (i = 1; i < argc; i++) 
-      if (strcmp ("--noisy", argv[i]) == 0)
-	noisy = TRUE;
+  g_test_init (&argc, &argv, NULL);
 
-  TEST_COMPILATION("*A?B*", G_MATCH_ALL, "*A?B*", 3);
-  TEST_COMPILATION("ABC*DEFGH", G_MATCH_ALL_TAIL, "HGFED*CBA", 8);
-  TEST_COMPILATION("ABCDEF*GH", G_MATCH_ALL, "ABCDEF*GH", 8);
-  TEST_COMPILATION("ABC**?***??**DEF*GH", G_MATCH_ALL, "ABC*???DEF*GH", 11);
-  TEST_COMPILATION("*A?AA", G_MATCH_ALL_TAIL, "AA?A*", 4);
-  TEST_COMPILATION("ABCD*", G_MATCH_HEAD, "ABCD", 4);
-  TEST_COMPILATION("*ABCD", G_MATCH_TAIL, "ABCD", 4);
-  TEST_COMPILATION("ABCDE", G_MATCH_EXACT, "ABCDE", 5);
-  TEST_COMPILATION("A?C?E", G_MATCH_ALL, "A?C?E", 5);
-  TEST_COMPILATION("*?x", G_MATCH_ALL_TAIL, "x?*", 2);
-  TEST_COMPILATION("?*x", G_MATCH_ALL_TAIL, "x?*", 2);
-  TEST_COMPILATION("*?*x", G_MATCH_ALL_TAIL, "x?*", 2);
-  TEST_COMPILATION("x*??", G_MATCH_ALL_TAIL, "??*x", 3);
+  for (i = 0; i < G_N_ELEMENTS (compile_tests); i++)
+    {
+      path = g_strdup_printf ("/pattern/compile/%d", i);
+      g_test_add_data_func (path, &compile_tests[i], test_compilation);
+      g_free (path);
+    }
 
-  TEST_EQUAL("*A?B*", "*A?B*", TRUE);
-  TEST_EQUAL("A*BCD", "A*BCD", TRUE);
-  TEST_EQUAL("ABCD*", "ABCD****", TRUE);
-  TEST_EQUAL("A1*", "A1*", TRUE);
-  TEST_EQUAL("*YZ", "*YZ", TRUE);
-  TEST_EQUAL("A1x", "A1x", TRUE);
-  TEST_EQUAL("AB*CD", "AB**CD", TRUE);
-  TEST_EQUAL("AB*?*CD", "AB*?CD", TRUE);
-  TEST_EQUAL("AB*?CD", "AB?*CD", TRUE);
-  TEST_EQUAL("AB*CD", "AB*?*CD", FALSE);
-  TEST_EQUAL("ABC*", "ABC?", FALSE);
+  for (i = 0; i < G_N_ELEMENTS (match_tests); i++)
+    {
+      path = g_strdup_printf ("/pattern/match/%d", i);
+      g_test_add_data_func (path, &match_tests[i], test_match);
+      g_free (path);
+    }
 
-  TEST_MATCH("*x", "x", TRUE);
-  TEST_MATCH("*x", "xx", TRUE);
-  TEST_MATCH("*x", "yyyx", TRUE);
-  TEST_MATCH("*x", "yyxy", FALSE);
-  TEST_MATCH("?x", "x", FALSE);
-  TEST_MATCH("?x", "xx", TRUE);
-  TEST_MATCH("?x", "yyyx", FALSE);
-  TEST_MATCH("?x", "yyxy", FALSE);
-  TEST_MATCH("*?x", "xx", TRUE);
-  TEST_MATCH("?*x", "xx", TRUE);
-  TEST_MATCH("*?x", "x", FALSE);
-  TEST_MATCH("?*x", "x", FALSE);
-  TEST_MATCH("*?*x", "yx", TRUE);
-  TEST_MATCH("*?*x", "xxxx", TRUE);
-  TEST_MATCH("x*??", "xyzw", TRUE);
-  TEST_MATCH("*x", "\xc3\x84x", TRUE);
-  TEST_MATCH("?x", "\xc3\x84x", TRUE);
-  TEST_MATCH("??x", "\xc3\x84x", FALSE);
-  TEST_MATCH("ab\xc3\xa4\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE);
-  TEST_MATCH("ab\xc3\xa4\xc3\xb6", "abao", FALSE);
-  TEST_MATCH("ab?\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE);
-  TEST_MATCH("ab?\xc3\xb6", "abao", FALSE);
-  TEST_MATCH("ab\xc3\xa4?", "ab\xc3\xa4\xc3\xb6", TRUE);
-  TEST_MATCH("ab\xc3\xa4?", "abao", FALSE);
-  TEST_MATCH("ab??", "ab\xc3\xa4\xc3\xb6", TRUE);
-  TEST_MATCH("ab*", "ab\xc3\xa4\xc3\xb6", TRUE);
-  TEST_MATCH("ab*\xc3\xb6", "ab\xc3\xa4\xc3\xb6", TRUE);
-  TEST_MATCH("ab*\xc3\xb6", "aba\xc3\xb6x\xc3\xb6", TRUE);
-  TEST_MATCH("", "abc", FALSE);
+  for (i = 0; i < G_N_ELEMENTS (equal_tests); i++)
+    {
+      path = g_strdup_printf ("/pattern/equal/%d", i);
+      g_test_add_data_func (path, &equal_tests[i], test_equal);
+      g_free (path);
+    }
 
-  TEST_MATCH("", "", TRUE);
-  TEST_MATCH("abc", "abc", TRUE);
-  TEST_MATCH("*fo1*bar", "yyyfoxfo1bar", TRUE);
-  TEST_MATCH("12*fo1g*bar", "12yyyfoxfo1gbar", TRUE);
-  TEST_MATCH("__________:*fo1g*bar", "__________:yyyfoxfo1gbar", TRUE);
-  TEST_MATCH("*abc*cde", "abcde", FALSE);
-  TEST_MATCH("*abc*cde", "abccde", TRUE);
-  TEST_MATCH("*abc*cde", "abcxcde", TRUE);
-  TEST_MATCH("*abc*?cde", "abccde", FALSE);
-  TEST_MATCH("*abc*?cde", "abcxcde", TRUE);
-  TEST_MATCH("*abc*def", "abababcdededef", TRUE);
-  TEST_MATCH("*abc*def", "abcbcbcdededef", TRUE);
-  TEST_MATCH("*acbc*def", "acbcbcbcdededef", TRUE);
-  TEST_MATCH("*a?bc*def", "acbcbcbcdededef", TRUE);
-  TEST_MATCH("*abc*def", "bcbcbcdefdef", FALSE);
-  TEST_MATCH("*abc*def*ghi", "abcbcbcbcbcbcdefefdefdefghi", TRUE);
-  TEST_MATCH("*abc*def*ghi", "bcbcbcbcbcbcdefdefdefdefghi", FALSE);
-  TEST_MATCH("_1_2_3_4_5_6_7_8_9_0_1_2_3_4_5_*abc*def*ghi", "_1_2_3_4_5_6_7_8_9_0_1_2_3_4_5_abcbcbcbcbcbcdefefdefdefghi", TRUE);
-  TEST_MATCH("fooooooo*a*bc", "fooooooo_a_bd_a_bc", TRUE);
-    
-  verbose ("\n%u tests passed, %u failed\n", passed, failed);
-
-  return failed;
+  return g_test_run ();
 }
 
 
