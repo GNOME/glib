@@ -608,6 +608,10 @@ test_corruption (GZlibCompressorFormat format, gint level)
     g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (ostream2)));
   g_assert (memcmp (data0, g_memory_output_stream_get_data (
     G_MEMORY_OUTPUT_STREAM (ostream2)), DATA_LENGTH * sizeof (guint32)) == 0);
+  g_object_unref (istream1);
+  g_object_unref (decompressor);
+  g_object_unref (cistream1);
+  g_object_unref (ostream2);
 }
 
 typedef struct {

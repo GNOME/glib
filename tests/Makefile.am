@@ -72,7 +72,6 @@ testglib_SOURCES         = testglib.c
 testglib_LDADD		 = $(libglib)
 
 
-patterntest_LDADD = $(libglib)
 testgdate_LDADD = $(libglib)
 testgdateparser_LDADD = $(libglib)
 unicode_normalize_LDADD = $(libglib)
@@ -100,7 +99,6 @@ test_programs =					\
 	markup-escape-test			\
 	module-test				\
 	onceinit				\
-	patterntest				\
 	asyncqueue-test				\
 	qsort-test				\
 	relation-test				\
