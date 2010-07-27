@@ -288,12 +288,12 @@ validate_header_basic (const guint8   *memory,
 
     }
 
-  if (header->major_version != 3 || header->minor_version != 0)
+  if (header->major_version != 4 || header->minor_version != 0)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
 		   G_TYPELIB_ERROR_INVALID_HEADER,
-		   "Typelib version mismatch; expected 3, found %d",
+		   "Typelib version mismatch; expected 4, found %d",
 		   header->major_version);
       return FALSE;
 

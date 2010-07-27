@@ -33,7 +33,7 @@
 /* This is a "major" version in the sense that it's only bumped
  * for incompatible changes.
  */
-#define SUPPORTED_GIR_VERSION "1.1"
+#define SUPPORTED_GIR_VERSION "1.2"
 
 struct _GIrParser
 {
@@ -48,33 +48,33 @@ typedef enum
   STATE_REPOSITORY,
   STATE_INCLUDE,
   STATE_C_INCLUDE,
-  STATE_PACKAGE,
-  STATE_NAMESPACE, /* 5 */
+  STATE_PACKAGE,  /* 5 */
+  STATE_NAMESPACE,
   STATE_ENUM,
   STATE_BITFIELD,
   STATE_FUNCTION,
-  STATE_FUNCTION_RETURN,
-  STATE_FUNCTION_PARAMETERS, /* 10 */
+  STATE_FUNCTION_RETURN,  /* 10 */
+  STATE_FUNCTION_PARAMETERS,
   STATE_FUNCTION_PARAMETER,
   STATE_CLASS,
   STATE_CLASS_FIELD,
-  STATE_CLASS_PROPERTY,
-  STATE_INTERFACE, /* 15 */
+  STATE_CLASS_PROPERTY,  /* 15 */
+  STATE_INTERFACE,
   STATE_INTERFACE_PROPERTY,
   STATE_INTERFACE_FIELD,
   STATE_IMPLEMENTS,
-  STATE_PREREQUISITE,
-  STATE_BOXED,   /* 20 */
+  STATE_PREREQUISITE,    /* 20 */
+  STATE_BOXED,
   STATE_BOXED_FIELD,
   STATE_STRUCT,
   STATE_STRUCT_FIELD,
-  STATE_ERRORDOMAIN,
-  STATE_UNION, /* 25 */
+  STATE_ERRORDOMAIN, /* 25 */
+  STATE_UNION,
   STATE_UNION_FIELD,
   STATE_NAMESPACE_CONSTANT,
   STATE_CLASS_CONSTANT,
-  STATE_INTERFACE_CONSTANT,
-  STATE_ALIAS, /* 30 */
+  STATE_INTERFACE_CONSTANT,  /* 30 */
+  STATE_ALIAS,
   STATE_TYPE,
   STATE_ATTRIBUTE,
   STATE_DOC,
@@ -779,6 +779,7 @@ start_function (GMarkupParseContext *context,
   const gchar *throws;
   GIrNodeFunction *function;
   gboolean found = FALSE;
+  gboolean in_embedded_type;
 
   switch (ctx->state)
     {
@@ -787,15 +788,14 @@ start_function (GMarkupParseContext *context,
 	       strcmp (element_name, "callback") == 0);
       break;
     case STATE_CLASS:
-      found = strcmp (element_name, "function") == 0;
-	/* fallthrough */
     case STATE_BOXED:
     case STATE_STRUCT:
     case STATE_UNION:
-      found = (found || strcmp (element_name, "constructor") == 0);
+      found = strcmp (element_name, "constructor") == 0;
       /* fallthrough */
     case STATE_INTERFACE:
       found = (found ||
+	       strcmp (element_name, "function") == 0 ||
 	       strcmp (element_name, "method") == 0 ||
 	       strcmp (element_name, "callback") == 0);
       break;
@@ -809,11 +809,12 @@ start_function (GMarkupParseContext *context,
   if (!found)
     return FALSE;
 
-  if (ctx->state == STATE_STRUCT_FIELD)
-    ctx->in_embedded_type = TRUE;
+  in_embedded_type = ctx->state == STATE_STRUCT_FIELD;
 
   if (!introspectable_prelude (context, attribute_names, attribute_values, ctx, STATE_FUNCTION))
     return TRUE;
+
+  ctx->in_embedded_type = in_embedded_type;
 
   name = find_attribute ("name", attribute_names, attribute_values);
   symbol = find_attribute ("c:identifier", attribute_names, attribute_values);
@@ -964,15 +965,16 @@ parse_property_transfer (GIrNodeProperty *property,
     }
 }
 
-static void
-parse_param_transfer (GIrNodeParam *param, const gchar *transfer, const gchar *name)
+static gboolean
+parse_param_transfer (GIrNodeParam *param, const gchar *transfer, const gchar *name,
+		      GError **error)
 {
   if (transfer == NULL)
   {
-    if (!name)
-      g_warning ("required attribute 'transfer-ownership' missing");
-    else
-      g_warning ("required attribute 'transfer-ownership' for function '%s'", name);
+    g_set_error (error, G_MARKUP_ERROR,
+		 G_MARKUP_ERROR_INVALID_CONTENT,
+		 "required attribute 'transfer-ownership' missing");
+    return FALSE;
   }
   else if (strcmp (transfer, "none") == 0)
     {
@@ -991,8 +993,12 @@ parse_param_transfer (GIrNodeParam *param, const gchar *transfer, const gchar *n
     }
   else
     {
-      g_warning ("Unknown transfer-ownership value: %s", transfer);
+      g_set_error (error, G_MARKUP_ERROR,
+		   G_MARKUP_ERROR_INVALID_CONTENT,
+		   "invalid value for 'transfer-ownership': %s", transfer);
+      return FALSE;
     }
+  return TRUE;
 }
 
 static gboolean
@@ -1078,7 +1084,8 @@ start_parameter (GMarkupParseContext *context,
   else
     param->allow_none = FALSE;
 
-  parse_param_transfer (param, transfer, name);
+  if (!parse_param_transfer (param, transfer, name, error))
+    return FALSE;
 
   if (scope && strcmp (scope, "call") == 0)
     param->scope = GI_SCOPE_TYPE_CALL;
@@ -1142,14 +1149,25 @@ start_field (GMarkupParseContext *context,
   const gchar *bits;
   const gchar *branch;
   GIrNodeField *field;
+  ParseState target_state;
+  gboolean introspectable;
 
   switch (ctx->state)
     {
     case STATE_CLASS:
+      target_state = STATE_CLASS_FIELD;
+      break;
     case STATE_BOXED:
+      target_state = STATE_BOXED_FIELD;
+      break;
     case STATE_STRUCT:
+      target_state = STATE_STRUCT_FIELD;
+      break;
     case STATE_UNION:
+      target_state = STATE_UNION_FIELD;
+      break;
     case STATE_INTERFACE:
+      target_state = STATE_INTERFACE_FIELD;
       break;
     default:
       return FALSE;
@@ -1157,6 +1175,13 @@ start_field (GMarkupParseContext *context,
 
   if (strcmp (element_name, "field") != 0)
     return FALSE;
+
+  g_assert (ctx->state != STATE_PASSTHROUGH);
+
+  /* We handle introspectability specially here; we replace with just gpointer
+   * for the type.
+   */
+  introspectable = introspectable_prelude (context, attribute_names, attribute_values, ctx, target_state);
 
   name = find_attribute ("name", attribute_names, attribute_values);
   readable = find_attribute ("readable", attribute_names, attribute_values);
@@ -1172,7 +1197,15 @@ start_field (GMarkupParseContext *context,
 
   field = (GIrNodeField *)g_ir_node_new (G_IR_NODE_FIELD,
 					 ctx->current_module);
-  ctx->current_typed = (GIrNode*) field;
+  if (introspectable)
+    {
+      ctx->current_typed = (GIrNode*) field;
+    }
+  else
+    {
+      field->type = parse_type (ctx, "gpointer");
+    }
+
   ((GIrNode *)field)->name = g_strdup (name);
   /* Fields are assumed to be read-only.
    * (see also girwriter.py and generate.c)
@@ -1193,7 +1226,6 @@ start_field (GMarkupParseContext *context,
 
 	iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	iface->members = g_list_append (iface->members, field);
-	state_switch (ctx, STATE_CLASS_FIELD);
       }
       break;
     case G_IR_NODE_INTERFACE:
@@ -1202,7 +1234,6 @@ start_field (GMarkupParseContext *context,
 
 	iface = (GIrNodeInterface *)CURRENT_NODE (ctx);
 	iface->members = g_list_append (iface->members, field);
-	state_switch (ctx, STATE_INTERFACE_FIELD);
       }
       break;
     case G_IR_NODE_BOXED:
@@ -1211,7 +1242,6 @@ start_field (GMarkupParseContext *context,
 
 	boxed = (GIrNodeBoxed *)CURRENT_NODE (ctx);
 		boxed->members = g_list_append (boxed->members, field);
-		state_switch (ctx, STATE_BOXED_FIELD);
       }
       break;
     case G_IR_NODE_STRUCT:
@@ -1220,7 +1250,6 @@ start_field (GMarkupParseContext *context,
 
 	struct_ = (GIrNodeStruct *)CURRENT_NODE (ctx);
 	struct_->members = g_list_append (struct_->members, field);
-	state_switch (ctx, STATE_STRUCT_FIELD);
       }
       break;
     case G_IR_NODE_UNION:
@@ -1242,7 +1271,6 @@ start_field (GMarkupParseContext *context,
 
 	    union_->discriminators = g_list_append (union_->discriminators, constant);
 	  }
-	state_switch (ctx, STATE_UNION_FIELD);
       }
       break;
     default:
@@ -2169,7 +2197,8 @@ start_return_value (GMarkupParseContext *context,
   state_switch (ctx, STATE_FUNCTION_RETURN);
 
   transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
-  parse_param_transfer (param, transfer, NULL);
+  if (!parse_param_transfer (param, transfer, NULL, error))
+    return FALSE;
 
   switch (CURRENT_NODE (ctx)->type)
     {
@@ -2979,8 +3008,9 @@ start_element_handler (GMarkupParseContext *context,
     {
       g_markup_parse_context_get_position (context, &line_number, &char_number);
       if (!g_str_has_prefix (element_name, "c:"))
-	g_printerr ("%s:%d:%d: warning: dropping to PASSTHROUGH\n",
-		    ctx->file_path, line_number, char_number);
+	g_printerr ("%s:%d:%d: warning: element %s from state %d is unknown, ignoring\n",
+		    ctx->file_path, line_number, char_number, element_name,
+		    ctx->state);
       state_switch (ctx, STATE_PASSTHROUGH);
       ctx->unknown_depth = 1;
     }
@@ -3026,9 +3056,9 @@ require_one_of_end_elements (GMarkupParseContext *context,
   g_set_error (error,
 	       G_MARKUP_ERROR,
 	       G_MARKUP_ERROR_INVALID_CONTENT,
-	       "Unexpected end tag '%s' on line %d char %d; current state=%d",
+	       "Unexpected end tag '%s' on line %d char %d; current state=%d (prev=%d)",
 	       actual_name,
-	       line_number, char_number, ctx->state);
+	       line_number, char_number, ctx->state, ctx->prev_state);
   return FALSE;
 }
 
@@ -3379,6 +3409,7 @@ end_element_handler (GMarkupParseContext *context,
 
     case STATE_PASSTHROUGH:
       ctx->unknown_depth -= 1;
+      g_assert (ctx->unknown_depth >= 0);
       if (ctx->unknown_depth == 0)
         state_switch (ctx, ctx->prev_state);
       break;
@@ -3486,7 +3517,9 @@ g_ir_parser_parse_string (GIrParser           *parser,
 
   g_markup_parse_context_free (context);
 
-  return ctx.modules->data;
+  if (ctx.modules)
+    return ctx.modules->data;
+  return NULL;
 }
 
 /**

@@ -309,7 +309,7 @@ g_ir_module_build_typelib (GIrModule  *module)
   /* fill in header */
   header = (Header *)data;
   memcpy (header, G_IR_MAGIC, 16);
-  header->major_version = 3;
+  header->major_version = 4;
   header->minor_version = 0;
   header->reserved = 0;
   header->n_entries = n_entries;
