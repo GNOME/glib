@@ -945,6 +945,11 @@ test_strtod (void)
   check_strtod_string ("5.4", 5.4, TRUE, 3);
   check_strtod_string ("5.4,5.5", 5.4, TRUE, 3);
   check_strtod_string ("5,4", 5.0, TRUE, 1);
+  check_strtod_string ("0xa.b", 10.6875, TRUE, 5);
+  check_strtod_string ("0xa.bP3", 85.5, TRUE, 7);
+  check_strtod_string ("0xa.bp+3", 85.5, TRUE, 8);
+  check_strtod_string ("0xa.bp-2", 2.671875, TRUE, 8);
+  check_strtod_string ("0xA.BG", 10.6875, TRUE, 5);
   /* the following are for #156421 */
   check_strtod_string ("1e1", 1e1, FALSE, 0); 
   check_strtod_string ("NAN", our_nan, FALSE, 0);
