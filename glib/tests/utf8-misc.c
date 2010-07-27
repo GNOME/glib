@@ -86,6 +86,31 @@ test_utf8_strrchr (void)
 }
 
 static void
+test_utf8_reverse (void)
+{
+  gchar *r;
+
+  r = g_utf8_strreverse ("abcdef", -1);
+  g_assert_cmpstr (r, ==, "fedcba");
+  g_free (r);
+
+  r = g_utf8_strreverse ("abcdef", 4);
+  g_assert_cmpstr (r, ==, "dcba");
+  g_free (r);
+
+  /* U+0B0B Oriya Letter Vocalic R
+   * U+10900 Phoenician Letter Alf
+   * U+0041 Latin Capital Letter A
+   * U+1EB6 Latin Capital Letter A With Breve And Dot Below
+   */
+  r = g_utf8_strreverse ("\340\254\213\360\220\244\200\101\341\272\266", -1);
+  g_assert_cmpstr (r, ==, "\341\272\266\101\360\220\244\200\340\254\213");
+  g_free (r);
+
+
+}
+
+static void
 test_unichar_validate (void)
 {
   g_assert (g_unichar_validate ('j'));
@@ -392,6 +417,7 @@ main (int   argc,
   g_test_add_func ("/utf8/strlen", test_utf8_strlen);
   g_test_add_func ("/utf8/strncpy", test_utf8_strncpy);
   g_test_add_func ("/utf8/strrchr", test_utf8_strrchr);
+  g_test_add_func ("/utf8/reverse", test_utf8_reverse);
   g_test_add_func ("/unicode/validate", test_unichar_validate);
   g_test_add_func ("/unicode/character-type", test_unichar_character_type);
   g_test_add_func ("/unicode/break-type", test_unichar_break_type);
