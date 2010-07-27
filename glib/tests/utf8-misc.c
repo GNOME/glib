@@ -408,6 +408,23 @@ test_mark (void)
   g_assert (!g_unichar_ismark ('a'));
 }
 
+static void
+test_title (void)
+{
+  g_assert (g_unichar_istitle (0x01c5));
+  g_assert (g_unichar_istitle (0x1f88));
+  g_assert (g_unichar_istitle (0x1fcc));
+  g_assert (!g_unichar_ismark ('a'));
+
+  g_assert (g_unichar_totitle (0x01c6) == 0x01c5);
+  g_assert (g_unichar_totitle (0x01c4) == 0x01c5);
+  g_assert (g_unichar_totitle (0x01c5) == 0x01c5);
+  g_assert (g_unichar_totitle (0x1f80) == 0x1f88);
+  g_assert (g_unichar_totitle (0x1f88) == 0x1f88);
+  g_assert (g_unichar_totitle ('a') == 'A');
+  g_assert (g_unichar_totitle ('A') == 'A');
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -425,6 +442,7 @@ main (int   argc,
   g_test_add_func ("/unicode/combining-class", test_combining_class);
   g_test_add_func ("/unicode/mirror", test_mirror);
   g_test_add_func ("/unicode/mark", test_mark);
+  g_test_add_func ("/unicode/title", test_title);
 
   return g_test_run();
 }

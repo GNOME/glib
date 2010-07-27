@@ -92,15 +92,38 @@ test_length (void)
 }
 
 static void
-test_misc (void)
+test_find (void)
 {
-  char *s;
-  s = g_utf8_strreverse ("1234", -1);
-  g_assert (strcmp (s, "4321") == 0);
-  g_free (s);
-  s = g_utf8_strreverse ("1234", 3);
-  g_assert (strcmp (s, "321") == 0);
-  g_free (s);
+  /* U+0B0B Oriya Letter Vocalic R (\340\254\213)
+   * U+10900 Phoenician Letter Alf (\360\220\244\200)
+   * U+0041 Latin Capital Letter A (\101)
+   * U+1EB6 Latin Capital Letter A With Breve And Dot Below (\341\272\266)
+   */
+  const gchar *str = "\340\254\213\360\220\244\200\101\341\272\266";
+  const gchar *p = str + strlen (str);
+  const gchar *q;
+
+  q = g_utf8_find_prev_char (str, p);
+  g_assert (q == str + 8);
+  q = g_utf8_find_prev_char (str, q);
+  g_assert (q == str + 7);
+  q = g_utf8_find_prev_char (str, q);
+  g_assert (q == str + 3);
+  q = g_utf8_find_prev_char (str, q);
+  g_assert (q == str);
+  q = g_utf8_find_prev_char (str, q);
+  g_assert (q == NULL);
+
+  p = str + 2;
+  q = g_utf8_find_next_char (p, NULL);
+  g_assert (q == str + 3);
+  q = g_utf8_find_next_char (q, NULL);
+  g_assert (q == str + 7);
+
+  q = g_utf8_find_next_char (p, str + 6);
+  g_assert (q == str + 3);
+  q = g_utf8_find_next_char (q, str + 6);
+  g_assert (q == NULL);
 }
 
 int main (int argc, char *argv[])
@@ -109,7 +132,7 @@ int main (int argc, char *argv[])
 
   g_test_add_data_func ("/utf8/offsets", longline, test_utf8);
   g_test_add_func ("/utf8/lengths", test_length);
-  g_test_add_func ("/utf8/reverse", test_misc);
+  g_test_add_func ("/utf8/find", test_find);
 
   return g_test_run ();
 }
