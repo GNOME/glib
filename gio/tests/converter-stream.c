@@ -571,6 +571,8 @@ test_corruption (GZlibCompressorFormat format, gint level)
   GInputStream *istream0, *istream1, *cistream1;
   GOutputStream *ostream1, *ostream2, *costream1;
   GConverter *compressor, *decompressor;
+  GZlibCompressorFormat fmt;
+  gint lvl;
 
   data0 = g_malloc (DATA_LENGTH * sizeof (guint32));
   for (i = 0; i < DATA_LENGTH; i++)
@@ -588,6 +590,11 @@ test_corruption (GZlibCompressorFormat format, gint level)
   g_assert_no_error (error);
 
   g_object_unref (costream1);
+
+  g_converter_reset (compressor);
+  g_object_get (compressor, "format", &fmt, "level", &lvl, NULL);
+  g_assert_cmpint (fmt, ==, format);
+  g_assert_cmpint (lvl, ==, level);
   g_object_unref (compressor);
   data1 = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (ostream1));
   data1_size = g_memory_output_stream_get_data_size (
@@ -609,6 +616,9 @@ test_corruption (GZlibCompressorFormat format, gint level)
   g_assert (memcmp (data0, g_memory_output_stream_get_data (
     G_MEMORY_OUTPUT_STREAM (ostream2)), DATA_LENGTH * sizeof (guint32)) == 0);
   g_object_unref (istream1);
+  g_converter_reset (decompressor);
+  g_object_get (decompressor, "format", &fmt, NULL);
+  g_assert_cmpint (fmt, ==, format);
   g_object_unref (decompressor);
   g_object_unref (cistream1);
   g_object_unref (ostream2);
