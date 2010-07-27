@@ -43,6 +43,20 @@ my_compare (gconstpointer a,
 }
 
 static gint
+my_compare_with_data (gconstpointer a,
+                      gconstpointer b,
+                      gpointer      user_data)
+{
+  const char *cha = a;
+  const char *chb = b;
+
+  /* just check that we got the right data */
+  g_assert (GPOINTER_TO_INT(user_data) == 123);
+
+  return *cha - *chb;
+}
+
+static gint
 my_search (gconstpointer a,
            gconstpointer b)
 {
@@ -107,7 +121,7 @@ test_tree_search (void)
   gchar c;
   gchar *p, *d;
 
-  tree = g_tree_new (my_compare);
+  tree = g_tree_new_with_data (my_compare_with_data, GINT_TO_POINTER(123));
 
   for (i = 0; chars[i]; i++)
     g_tree_insert (tree, &chars[i], &chars[i]);
@@ -212,6 +226,7 @@ test_tree_remove (void)
   char c, d;
   gint i;
   gboolean removed;
+  gchar *remove;
 
   tree = g_tree_new_full ((GCompareDataFunc)my_compare, NULL,
                           my_key_destroy,
@@ -247,6 +262,13 @@ test_tree_remove (void)
   g_assert (removed);
   g_assert (destroyed_key == NULL);
   g_assert (destroyed_value == NULL);
+
+  remove = "omkjigfedba";
+  for (i = 0; remove[i]; i++)
+    {
+      removed = g_tree_remove (tree, &remove[i]);
+      g_assert (removed);
+    }
 
   g_tree_destroy (tree);
 }
