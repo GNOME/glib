@@ -1737,6 +1737,28 @@ test_list_items (void)
   g_object_unref (settings);
 }
 
+static void
+test_list_schemas (void)
+{
+  const gchar * const *schemas;
+
+  schemas = g_settings_list_schemas ();
+
+  g_assert (strv_set_equal ((const gchar **)schemas,
+                            "org.gtk.test",
+                            "org.gtk.test.no-path",
+                            "org.gtk.test.basic-types",
+                            "org.gtk.test.complex-types",
+                            "org.gtk.test.localized",
+                            "org.gtk.test.binding",
+                            "org.gtk.test.enums",
+                            "org.gtk.test.enums.direct",
+                            "org.gtk.test.range",
+                            "org.gtk.test.range.direct",
+                            "org.gtk.test.mapped",
+                            NULL));
+}
+
 static gboolean
 map_func (GVariant *value,
           gpointer *result,
@@ -1800,6 +1822,7 @@ main (int argc, char *argv[])
 
   backend_set = g_getenv ("GSETTINGS_BACKEND") != NULL;
 
+  g_setenv ("XDG_DATA_DIRS", ".", TRUE);
   g_setenv ("GSETTINGS_SCHEMA_DIR", ".", TRUE);
 
   if (!backend_set)
@@ -1870,6 +1893,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/flags", test_flags);
   g_test_add_func ("/gsettings/range", test_range);
   g_test_add_func ("/gsettings/list-items", test_list_items);
+  g_test_add_func ("/gsettings/list-schemas", test_list_schemas);
   g_test_add_func ("/gsettings/mapped", test_get_mapped);
 
   result = g_test_run ();
