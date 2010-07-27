@@ -1614,6 +1614,148 @@ compare_strings (gconstpointer a,
   return cmp;
 }
 
+static gboolean
+set_overrides (GHashTable  *schema_table,
+               gchar      **files,
+               GError     **error)
+{
+  const gchar *filename;
+
+  while ((filename = *files++))
+    {
+      GKeyFile *key_file;
+      gchar **groups;
+      gint i;
+
+      key_file = g_key_file_new ();
+      if (!g_key_file_load_from_file (key_file, filename, 0, error))
+        {
+          g_key_file_free (key_file);
+
+          return FALSE;
+        }
+
+      groups = g_key_file_get_groups (key_file, NULL);
+
+      for (i = 0; groups[i]; i++)
+        {
+          const gchar *group = groups[i];
+          SchemaState *schema;
+          gchar **keys;
+          gint j;
+
+          schema = g_hash_table_lookup (schema_table, group);
+
+          if (schema == NULL)
+            {
+              g_set_error (error, G_KEY_FILE_ERROR,
+                           G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
+                           "No such schema `%s' specified in "
+                           "override file `%s'", group, filename);
+              g_key_file_free (key_file);
+              g_strfreev (groups);
+
+              return FALSE;
+            }
+
+          keys = g_key_file_get_keys (key_file, group, NULL, NULL);
+          g_assert (keys != NULL);
+
+          for (j = 0; keys[j]; j++)
+            {
+              const gchar *key = keys[j];
+              KeyState *state;
+              GVariant *value;
+              gchar *string;
+
+              state = g_hash_table_lookup (schema->keys, key);
+
+              if (state == NULL)
+                {
+                  g_set_error (error, G_KEY_FILE_ERROR,
+                               G_KEY_FILE_ERROR_KEY_NOT_FOUND,
+                               "No such key `%s' in schema `%s' as "
+                               "specified in override file `%s'",
+                               key, group, filename);
+                  g_key_file_free (key_file);
+                  g_strfreev (groups);
+                  g_strfreev (keys);
+
+                  return FALSE;
+                }
+
+              string = g_key_file_get_value (key_file, group, key, NULL);
+              g_assert (string != NULL);
+
+              value = g_variant_parse (state->type, string,
+                                       NULL, NULL, error);
+
+              if (value == NULL)
+                {
+                  g_key_file_free (key_file);
+                  g_strfreev (groups);
+                  g_strfreev (keys);
+                  g_free (string);
+
+                  return FALSE;
+                }
+
+              if (state->minimum)
+                {
+                  if (g_variant_compare (value, state->minimum) < 0 ||
+                      g_variant_compare (value, state->maximum) > 0)
+                    {
+                      g_set_error (error, G_MARKUP_ERROR,
+                                   G_MARKUP_ERROR_INVALID_CONTENT,
+                                   "override for key `%s' in schema `%s' in "
+                                   "override file `%s' is out of the range "
+                                   "given in the schema",
+                                   key, group, filename);
+
+                      g_key_file_free (key_file);
+                      g_variant_unref (value);
+                      g_strfreev (groups);
+                      g_strfreev (keys);
+                      g_free (string);
+
+                      return FALSE;
+                    }
+                }
+
+              else if (state->strinfo->len)
+                {
+                  if (!is_valid_choices (value, state->strinfo))
+                    {
+                      g_set_error (error, G_MARKUP_ERROR,
+                                   G_MARKUP_ERROR_INVALID_CONTENT,
+                                   "override for key `%s' in schema `%s' in "
+                                   "override file `%s' is not in the list "
+                                   "of valid choices", key, group, filename);
+
+                      g_key_file_free (key_file);
+                      g_variant_unref (value);
+                      g_strfreev (groups);
+                      g_strfreev (keys);
+                      g_free (string);
+
+                      return FALSE;
+                    }
+                }
+
+              g_variant_unref (state->default_value);
+              state->default_value = value;
+            }
+
+
+          g_strfreev (keys);
+        }
+
+      g_strfreev (groups);
+    }
+
+  return TRUE;
+}
+
 int
 main (int argc, char **argv)
 {
@@ -1627,6 +1769,7 @@ main (int argc, char **argv)
   gboolean uninstall = FALSE;
   gboolean dry_run = FALSE;
   gchar **schema_files = NULL;
+  gchar **override_files = NULL;
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
@@ -1673,9 +1816,11 @@ main (int argc, char **argv)
 
   if (!schema_files)
     {
+      GPtrArray *overrides;
       GPtrArray *files;
 
       files = g_ptr_array_new ();
+      overrides = g_ptr_array_new ();
 
       dir = g_dir_open (srcdir, 0, &error);
       if (dir == NULL)
@@ -1689,6 +1834,10 @@ main (int argc, char **argv)
           if (g_str_has_suffix (file, ".gschema.xml") ||
               g_str_has_suffix (file, ".enums.xml"))
             g_ptr_array_add (files, g_build_filename (srcdir, file, NULL));
+
+          else if (g_str_has_suffix (file, ".gschema.override"))
+            g_ptr_array_add (overrides,
+                             g_build_filename (srcdir, file, NULL));
         }
 
       if (files->len == 0)
@@ -1706,11 +1855,16 @@ main (int argc, char **argv)
       g_ptr_array_sort (files, compare_strings);
       g_ptr_array_add (files, NULL);
 
+      g_ptr_array_sort (overrides, compare_strings);
+      g_ptr_array_add (overrides, NULL);
+
       schema_files = (char **) g_ptr_array_free (files, FALSE);
+      override_files = (gchar **) g_ptr_array_free (overrides, FALSE);
     }
 
 
   if (!(table = parse_gschema_files (schema_files, &error)) ||
+      !set_overrides (table, override_files, &error) ||
       (!dry_run && !write_to_file (table, target, &error)))
     {
       fprintf (stderr, "%s\n", error->message);
