@@ -95,7 +95,6 @@ test_programs =					\
 	iochannel-test				\
 	mainloop-test				\
 	mapping-test				\
-	markup-collect				\
 	module-test				\
 	onceinit				\
 	asyncqueue-test				\

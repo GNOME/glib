@@ -50,6 +50,42 @@ test_parent (void)
   g_object_unref (root);
 }
 
+static void
+test_child (void)
+{
+  GFile *file;
+  GFile *child;
+  GFile *child2;
+
+  file = g_file_new_for_path ("./some/directory");
+  child = g_file_get_child (file, "child");
+  g_assert (g_file_has_parent (child, file));
+
+  child2 = g_file_get_child_for_display_name (file, "child2", NULL);
+  g_assert (g_file_has_parent (child2, file));
+
+  g_object_unref (child);
+  g_object_unref (child2);
+  g_object_unref (file);
+}
+
+static void
+test_type (void)
+{
+  GFile *file;
+  GFileType type;
+
+  file = g_file_new_for_path (SRCDIR "/file.c");
+  type = g_file_query_file_type (file, 0, NULL);
+  g_assert_cmpint (type, ==, G_FILE_TYPE_REGULAR);
+  g_object_unref (file);
+
+  file = g_file_new_for_path (SRCDIR "/schema-tests");
+  type = g_file_query_file_type (file, 0, NULL);
+  g_assert_cmpint (type, ==, G_FILE_TYPE_DIRECTORY);
+  g_object_unref (file);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -59,6 +95,8 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/file/basic", test_basic);
   g_test_add_func ("/file/parent", test_parent);
+  g_test_add_func ("/file/child", test_child);
+  g_test_add_func ("/file/type", test_type);
 
   return g_test_run ();
 }
