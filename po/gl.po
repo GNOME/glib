@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-22 16:22+0200\n"
-"PO-Revision-Date: 2010-07-22 16:22+0200\n"
+"POT-Creation-Date: 2010-07-27 17:45+0200\n"
+"PO-Revision-Date: 2010-07-27 17:47+0200\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -2674,41 +2674,45 @@ msgid ""
 "  help        Show this information\n"
 "  get         Get the value of a key\n"
 "  set         Set the value of a key\n"
+"  reset       Reset the value of a key\n"
 "  monitor     Monitor a key for changes\n"
 "  writable    Check if a key is writable\n"
 "\n"
 "Use '%s COMMAND --help' to get help for individual commands.\n"
 msgstr ""
-"ORde:\n"
-"  help        Mostra esta axuda\n"
+"Ordes:\n"
+"  help        Mostrar esta información\n"
 "  get         Obter o valor dunha chave\n"
 "  set         Estabelecer o valor dunha chave\n"
-"  monitor     Monitorizar os cambios dunha chave\n"
-"  writable    Comprobar se unha chave é escribíbel\n"
+"  reset       Restabelecer o valor dunha chave\n"
+"  monitor     Monitorizar se hai cambios nunha chave\n"
+"  writable    Comprobar se se pode escribir unha clave\n"
 "\n"
-"Use '%s COMMAND --help' para obter axuda sobre ordes específicas.\n"
+"Use «%s COMANDO --help» para obter axuda das ordes individualmente.\n"
 
-#: ../gio/gsettings-tool.c:221 ../gio/gsettings-tool.c:321
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:549
+#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
+#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr "Especifique o camiño para o esquema"
 
-#: ../gio/gsettings-tool.c:221 ../gio/gsettings-tool.c:321
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:549
+#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
+#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr "CAMIÑO"
 
-#: ../gio/gsettings-tool.c:229 ../gio/gsettings-tool.c:444
-#: ../gio/gsettings-tool.c:557
+#: ../gio/gsettings-tool.c:230 ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr "CHAVE DE ESQUEMA"
 
-#: ../gio/gsettings-tool.c:231
+#: ../gio/gsettings-tool.c:232
 msgid "Get the value of KEY"
 msgstr "Obter o valor da CHAVE"
 
-#: ../gio/gsettings-tool.c:233 ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:564
+#: ../gio/gsettings-tool.c:234 ../gio/gsettings-tool.c:450
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2718,15 +2722,15 @@ msgstr ""
 "  SCHEMA      O id do esquema\n"
 "  KEY         O nome da chave\n"
 
-#: ../gio/gsettings-tool.c:329
+#: ../gio/gsettings-tool.c:330 ../gio/gsettings-tool.c:446
 msgid "SCHEMA KEY VALUE"
 msgstr "VALOR DA CHAVE DE ESQUEMA"
 
-#: ../gio/gsettings-tool.c:331
+#: ../gio/gsettings-tool.c:332
 msgid "Set the value of KEY"
 msgstr "Estabelecer o valor da CHAVE"
 
-#: ../gio/gsettings-tool.c:333
+#: ../gio/gsettings-tool.c:334
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2739,16 +2743,20 @@ msgstr ""
 "  VALUE       O valor da chave para estabelecer como unha GVariant "
 "serializada\n"
 
-#: ../gio/gsettings-tool.c:406
+#: ../gio/gsettings-tool.c:407
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "Non é posíbel escribir a chave %s\n"
 
-#: ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:448
+msgid "Sets KEY to its default value"
+msgstr "Estabelece a CHAVE ao seu valor predefinido"
+
+#: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
 msgstr "Comprobar se a CHAVE é escribíbel"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:657
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
@@ -2756,7 +2764,7 @@ msgstr ""
 "Monitorizar a CHAVE por cambios e imprimir os valores cambiados.\n"
 "A monitorización continuará até que o proceso remate."
 
-#: ../gio/gsettings-tool.c:733
+#: ../gio/gsettings-tool.c:833
 #, c-format
 msgid "Unknown command '%s'\n"
 msgstr "Orde «%s» descoñecida\n"
