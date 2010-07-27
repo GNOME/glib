@@ -134,6 +134,9 @@ markup_escape_LDADD = $(progs_ldadd)
 TEST_PROGS         += logging
 logging_LDADD       = $(progs_ldadd)
 
+TEST_PROGS          += markup-collect
+markup_collect_LDADD = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality

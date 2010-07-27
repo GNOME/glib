@@ -135,87 +135,54 @@ static struct test tests[] =
     G_MARKUP_ERROR_INVALID_CONTENT, "'mb'" }
 };
 
+static void
+test_collect (gconstpointer d)
+{
+  const struct test *test = d;
+
+  GMarkupParseContext *ctx;
+  GError *error = NULL;
+  GString *string;
+  gboolean result;
+
+  string = g_string_new ("");
+  ctx = g_markup_parse_context_new (&parser, 0, string, NULL);
+  result = g_markup_parse_context_parse (ctx,
+                                         test->document,
+                                         -1, &error);
+  if (result)
+    result = g_markup_parse_context_end_parse (ctx, &error);
+
+  if (result)
+    {
+      g_assert_no_error (error);
+      g_assert_cmpint (test->error_code, ==, 0);
+      g_assert_cmpstr (test->result, ==, string->str);
+    }
+  else
+    {
+      g_assert_error (error, G_MARKUP_ERROR, test->error_code);
+    }
+
+  g_markup_parse_context_free (ctx);
+  g_string_free (string, TRUE);
+  g_clear_error (&error);
+}
+
 int
 main (int argc, char **argv)
 {
-  gboolean verbose = FALSE;
   int i;
+  gchar *path;
 
-  if (argc > 1)
-    {
-      if (argc != 2 || strcmp (argv[1], "-v") != 0)
-        {
-          g_print ("error: call with no arguments or '-v' for verbose\n");
-          return 1;
-        }
-
-      verbose = TRUE;
-    }
+  g_test_init (&argc, &argv, NULL);
 
   for (i = 0; i < G_N_ELEMENTS (tests); i++)
     {
-      GMarkupParseContext *ctx;
-      GError *error = NULL;
-      GString *string;
-      gboolean result;
-
-      string = g_string_new ("");
-      ctx = g_markup_parse_context_new (&parser, 0, string, NULL);
-      result = g_markup_parse_context_parse (ctx,
-                                             tests[i].document,
-                                             -1, &error);
-      if (result)
-        result = g_markup_parse_context_end_parse (ctx, &error);
-
-      if (verbose)
-        g_print ("%d: %s:\n  (error %d, \"%s\")\n  %s\n\n",
-                 i, tests[i].document,
-                 error ? error->code : 0,
-                 error ? error->message : "(no error)",
-                 string->str);
-
-      if (result)
-        {
-          if (error != NULL)
-            g_error ("parser successful but error is set: "
-                     "%s(%d) '%s'", g_quark_to_string (error->domain),
-                     error->code, error->message);
-
-          if (tests[i].error_code != 0)
-            g_error ("parser succeeded on test %d ('%s') but "
-                     "we expected a failure with code %d\n", i,
-                     tests[i].document, tests[i].error_code);
-        }
-      else
-        {
-          if (error->domain != G_MARKUP_ERROR)
-            g_error ("error occured on test %d ('%s') but is not in "
-                     "the GMarkupError domain, but rather '%s'", i,
-                     tests[i].document, g_quark_to_string (error->domain));
-
-          if (error->code != tests[i].error_code)
-            g_error ("failure expected with test %d ('%s') but it "
-                    "has error code %d (we expected code %d)", i,
-                    tests[i].document, error->code, tests[i].error_code);
-
-          if (strstr (error->message, tests[i].error_info) == NULL)
-            g_error ("failure message on test %d ('%s') fails "
-                     "to mention '%s' in the error message", i,
-                     tests[i].document, tests[i].error_info);
-        }
-
-      if (strcmp (tests[i].result, string->str) != 0)
-        g_error ("result on test %d ('%s') expected to be '%s' "
-                 "but came out as '%s'", i, tests[i].document,
-                 tests[i].result, string->str);
-
-      g_markup_parse_context_free (ctx);
-      g_string_free (string, TRUE);
-      g_clear_error (&error);
+      path = g_strdup_printf ("/markup/collect/%d", i);
+      g_test_add_data_func (path, &tests[i], test_collect);
+      g_free (path);
     }
 
-  if (verbose)
-    g_print ("\n*** all tests passed ***\n\n");
-
-  return 0;
+  return g_test_run ();
 }
