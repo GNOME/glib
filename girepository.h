@@ -101,6 +101,8 @@ gboolean      g_irepository_is_registered (GIRepository *repository,
 GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
 					   const gchar  *namespace_,
 					   const gchar  *name);
+GList *       g_irepository_enumerate     (GIRepository *repository,
+					   const gchar  *namespace_);
 GTypelib *    g_irepository_require       (GIRepository *repository,
 					   const gchar  *namespace_,
 					   const gchar  *version,

@@ -1049,22 +1049,17 @@ free_candidate (struct NamespaceVersionCandidadate *candidate)
   g_slice_free (struct NamespaceVersionCandidadate, candidate);
 }
 
-static GMappedFile *
-find_namespace_latest (const gchar  *namespace,
-		       gchar       **version_ret,
-		       gchar       **path_ret)
+static GSList *
+enumerate_namespace_versions (const gchar  *namespace)
 {
+  GSList *candidates = NULL;
+  GHashTable *found_versions = g_hash_table_new (g_str_hash, g_str_equal);
+  char *namespace_dash;
+  char *namespace_typelib;
   GSList *tmp_path;
   GSList *ldir;
   GError *error = NULL;
-  char *namespace_dash;
-  char *namespace_typelib;
-  GSList *candidates = NULL;
-  GMappedFile *result = NULL;
   int index;
-
-  *version_ret = NULL;
-  *path_ret = NULL;
 
   namespace_dash = g_strdup_printf ("%s-", namespace);
   namespace_typelib = g_strdup_printf ("%s.typelib", namespace);
@@ -1105,6 +1100,10 @@ find_namespace_latest (const gchar  *namespace,
 	  else
 	    continue;
 
+	  if (g_hash_table_lookup (found_versions, version) != NULL)
+	    continue;
+	  g_hash_table_insert (found_versions, version, version);
+
 	  path = g_build_filename (dirname, entry, NULL);
 	  mfile = g_mapped_file_new (path, FALSE, &error);
 	  if (mfile == NULL)
@@ -1124,6 +1123,27 @@ find_namespace_latest (const gchar  *namespace,
       g_dir_close (dir);
       index++;
     }
+  
+  g_slist_free (tmp_path);
+  g_free (namespace_dash);
+  g_free (namespace_typelib);
+  g_hash_table_destroy (found_versions);
+
+  return candidates;
+}
+
+static GMappedFile *
+find_namespace_latest (const gchar  *namespace,
+		       gchar       **version_ret,
+		       gchar       **path_ret)
+{
+  GSList *candidates;
+  GMappedFile *result = NULL;
+
+  *version_ret = NULL;
+  *path_ret = NULL;
+
+  candidates = enumerate_namespace_versions (namespace);
 
   if (candidates != NULL)
     {
@@ -1141,10 +1161,33 @@ find_namespace_latest (const gchar  *namespace,
       g_slist_foreach (candidates, (GFunc) free_candidate, NULL);
       g_slist_free (candidates);
     }
-  g_free (namespace_dash);
-  g_free (namespace_typelib);
-  g_slist_free (tmp_path);
   return result;
+}
+
+/**
+ * g_irepository_enumerate:
+ * @repository: (allow-none): Repository
+ * @namespace_: GI namespace, e.g. "Gtk"
+ *
+ * Returns: (element-type utf8) (transfer full): An array of versions available for
+ * this namespace.
+ */
+GList *
+g_irepository_enumerate (GIRepository *repository,
+			 const gchar  *namespace_)
+{
+  GList *ret = NULL;
+  GSList *candidates, *link;
+  
+  candidates = enumerate_namespace_versions (namespace_);
+  for (link = candidates; link; link = link->next)
+    {
+      struct NamespaceVersionCandidadate *candidate = link->data;
+      ret = g_list_append (ret, g_strdup (candidate->version));
+      free_candidate (candidate);
+    }
+  g_slist_free (candidates);
+  return ret;
 }
 
 /**
