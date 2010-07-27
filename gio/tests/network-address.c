@@ -32,6 +32,7 @@ static ParseTest tests[] =
 {
   { "www.gnome.org", "www.gnome.org", 1234, -1 },
   { "www.gnome.org:8080", "www.gnome.org", 8080, -1 },
+  { "www.gnome.org:http", "www.gnome.org", 80, -1 },
   { "[2001:db8::1]", "2001:db8::1", 1234, -1 },
   { "[2001:db8::1]:888", "2001:db8::1", 888, -1 },
   { "[hostname", NULL, 0, G_IO_ERROR_INVALID_ARGUMENT },
@@ -44,7 +45,7 @@ static ParseTest tests[] =
 static void
 test_parse (gconstpointer d)
 {
-  ParseTest *test = d;
+  const ParseTest *test = d;
   GNetworkAddress *address;
   GError *error;
 
