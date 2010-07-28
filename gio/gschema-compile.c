@@ -1864,7 +1864,7 @@ main (int argc, char **argv)
 
 
   if (!(table = parse_gschema_files (schema_files, &error)) ||
-      !set_overrides (table, override_files, &error) ||
+      (override_files != NULL && !set_overrides (table, override_files, &error)) ||
       (!dry_run && !write_to_file (table, target, &error)))
     {
       fprintf (stderr, "%s\n", error->message);
