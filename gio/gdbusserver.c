@@ -353,14 +353,14 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_ACTIVE,
-                                   g_param_spec_string ("active",
-                                                        P_("Active"),
-                                                        P_("Whether the server is currently active"),
-                                                        NULL,
-                                                        G_PARAM_READABLE |
-                                                        G_PARAM_STATIC_NAME |
-                                                        G_PARAM_STATIC_BLURB |
-                                                        G_PARAM_STATIC_NICK));
+                                   g_param_spec_boolean ("active",
+                                                         P_("Active"),
+                                                         P_("Whether the server is currently active"),
+                                                         FALSE,
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_NAME |
+                                                         G_PARAM_STATIC_BLURB |
+                                                         G_PARAM_STATIC_NICK));
 
   /**
    * GDBusServer:authentication-observer:
