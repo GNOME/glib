@@ -181,6 +181,7 @@ typedef enum {
         ((blob)->blob_type == BLOB_TYPE_STRUCT ||   \
          (blob)->blob_type == BLOB_TYPE_UNION  ||   \
          (blob)->blob_type == BLOB_TYPE_ENUM   ||   \
+         (blob)->blob_type == BLOB_TYPE_FLAGS  ||   \
          (blob)->blob_type == BLOB_TYPE_OBJECT ||   \
          (blob)->blob_type == BLOB_TYPE_INTERFACE)
 
