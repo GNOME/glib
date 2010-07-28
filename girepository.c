@@ -1353,6 +1353,14 @@ g_irepository_error_quark (void)
   return quark;
 }
 
+/**
+ * g_type_tag_to_string:
+ * @type: the type_tag
+ *
+ * Obtain a string representation of @type
+ *
+ * Returns: the string
+ */
 const gchar*
 g_type_tag_to_string (GITypeTag type)
 {
@@ -1407,9 +1415,11 @@ g_type_tag_to_string (GITypeTag type)
 
 /**
  * g_info_type_to_string:
- * @type: info type
+ * @type: the info type
  *
- * Returns: (transfer none): Description for this info type
+ * Obtain a string representation of @type
+ *
+ * Returns: the string
  */
 const gchar*
 g_info_type_to_string (GIInfoType type)
