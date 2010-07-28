@@ -965,7 +965,7 @@ g_dbus_connection_flush (GDBusConnection     *connection,
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
 
-  simple = g_simple_async_result_new (NULL,
+  simple = g_simple_async_result_new (G_OBJECT (connection),
                                       callback,
                                       user_data,
                                       g_dbus_connection_flush);
@@ -1185,7 +1185,7 @@ g_dbus_connection_close (GDBusConnection     *connection,
 
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
 
-  simple = g_simple_async_result_new (NULL,
+  simple = g_simple_async_result_new (G_OBJECT (connection),
                                       callback,
                                       user_data,
                                       g_dbus_connection_close);
