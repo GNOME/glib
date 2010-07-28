@@ -1050,7 +1050,7 @@ free_candidate (struct NamespaceVersionCandidadate *candidate)
 }
 
 static GSList *
-enumerate_namespace_versions (const gchar  *namespace)
+enumerate_namespace_versions (const gchar *namespace)
 {
   GSList *candidates = NULL;
   GHashTable *found_versions = g_hash_table_new (g_str_hash, g_str_equal);
@@ -1123,7 +1123,7 @@ enumerate_namespace_versions (const gchar  *namespace)
       g_dir_close (dir);
       index++;
     }
-  
+
   g_slist_free (tmp_path);
   g_free (namespace_dash);
   g_free (namespace_typelib);
@@ -1165,20 +1165,21 @@ find_namespace_latest (const gchar  *namespace,
 }
 
 /**
- * g_irepository_enumerate:
- * @repository: (allow-none): Repository
+ * g_irepository_enumerate_versions:
+ * @repository: (allow-none): the repository
  * @namespace_: GI namespace, e.g. "Gtk"
  *
- * Returns: (element-type utf8) (transfer full): An array of versions available for
- * this namespace.
+ * Obtain a list of versions for @namespace_ in this @repository.
+ *
+ * Returns: (element-type utf8) (transfer full): the array of versions.
  */
 GList *
-g_irepository_enumerate (GIRepository *repository,
+g_irepository_enumerate_versions (GIRepository *repository,
 			 const gchar  *namespace_)
 {
   GList *ret = NULL;
   GSList *candidates, *link;
-  
+
   candidates = enumerate_namespace_versions (namespace_);
   for (link = candidates; link; link = link->next)
     {
