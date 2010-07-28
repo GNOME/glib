@@ -182,6 +182,67 @@ test_tryexec (void)
   g_assert (appinfo == NULL);
 }
 
+/* Test that we can set an appinfo as default for a mime type or
+ * file extension, and also add and remove handled mime types.
+ */
+static void
+test_associations (void)
+{
+  GAppInfo *appinfo;
+  GAppInfo *appinfo2;
+  GError *error;
+  gboolean result;
+  GList *list;
+
+  appinfo = g_app_info_create_from_commandline ("./appinfo-test --option",
+                                                "cmdline-app-test",
+                                                G_APP_INFO_CREATE_SUPPORTS_URIS,
+                                                NULL);
+
+  error = NULL;
+  result = g_app_info_set_as_default_for_type (appinfo, "application/x-glib-test", &error);
+
+  g_assert (result);
+  g_assert_no_error (error);
+
+  appinfo2 = g_app_info_get_default_for_type ("application/x-glib-test", FALSE);
+
+  g_assert (appinfo2);
+  g_assert_cmpstr (g_app_info_get_commandline (appinfo), ==, g_app_info_get_commandline (appinfo2));
+
+  g_object_unref (appinfo2);
+
+  result = g_app_info_set_as_default_for_extension (appinfo, "gio-tests", &error);
+  g_assert (result);
+  g_assert_no_error (error);
+
+  appinfo2 = g_app_info_get_default_for_type ("application/x-extension-gio-tests", FALSE);
+
+  g_assert (appinfo2);
+  g_assert_cmpstr (g_app_info_get_commandline (appinfo), ==, g_app_info_get_commandline (appinfo2));
+
+  g_object_unref (appinfo2);
+
+  result = g_app_info_add_supports_type (appinfo, "application/x-gio-test", &error);
+  g_assert (result);
+  g_assert_no_error (error);
+
+  list = g_app_info_get_all_for_type ("application/x-gio-test");
+  g_assert_cmpint (g_list_length (list), ==, 1);
+  appinfo2 = list->data;
+  g_assert_cmpstr (g_app_info_get_commandline (appinfo), ==, g_app_info_get_commandline (appinfo2));
+  g_object_unref (appinfo2);
+  g_list_free (list);
+
+  g_assert (g_app_info_can_remove_supports_type (appinfo));
+  g_assert (g_app_info_remove_supports_type (appinfo, "application/x-gio-test", &error));
+  g_assert_no_error (error);
+
+  g_assert (g_app_info_can_delete (appinfo));
+  g_assert (g_app_info_delete (appinfo));
+  g_object_unref (appinfo);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -195,6 +256,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/commandline", test_commandline);
   g_test_add_func ("/appinfo/launch-context", test_launch_context);
   g_test_add_func ("/appinfo/tryexec", test_tryexec);
+  g_test_add_func ("/appinfo/associations", test_associations);
 
   return g_test_run ();
 }
