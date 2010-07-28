@@ -1403,3 +1403,59 @@ g_type_tag_to_string (GITypeTag type)
       return "unknown";
     }
 }
+
+/**
+ * g_info_type_to_string:
+ * @type: info type
+ *
+ * Returns: (transfer none): Description for this info type
+ */
+const gchar*
+g_info_type_to_string (GIInfoType type)
+{
+  switch (type)
+    {
+    case GI_INFO_TYPE_INVALID:
+      return "invalid";
+    case GI_INFO_TYPE_FUNCTION:
+      return "function";
+    case GI_INFO_TYPE_CALLBACK:
+      return "callback";
+    case GI_INFO_TYPE_STRUCT:
+      return "struct";
+    case GI_INFO_TYPE_BOXED:
+      return "boxed";
+    case GI_INFO_TYPE_ENUM:
+      return "enum";
+    case GI_INFO_TYPE_FLAGS:
+      return "flags";
+    case GI_INFO_TYPE_OBJECT:
+      return "object";
+    case GI_INFO_TYPE_INTERFACE:
+      return "interface";
+    case GI_INFO_TYPE_CONSTANT:
+      return "constant";
+    case GI_INFO_TYPE_ERROR_DOMAIN:
+      return "error domain";
+    case GI_INFO_TYPE_UNION:
+      return "union";
+    case GI_INFO_TYPE_VALUE:
+      return "value";
+    case GI_INFO_TYPE_SIGNAL:
+      return "signal";
+    case GI_INFO_TYPE_VFUNC:
+      return "vfunc";
+    case GI_INFO_TYPE_PROPERTY:
+      return "property";
+    case GI_INFO_TYPE_FIELD:
+      return "field";
+    case GI_INFO_TYPE_ARG:
+      return "arg";
+    case GI_INFO_TYPE_TYPE:
+      return "type";
+    case GI_INFO_TYPE_UNRESOLVED:
+      return "unresolved";
+    default:
+      return "unknown";
+  }
+}

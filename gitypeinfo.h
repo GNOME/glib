@@ -36,6 +36,7 @@ G_BEGIN_DECLS
 #define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
 
 const gchar*           g_type_tag_to_string            (GITypeTag   type);
+const gchar*           g_info_type_to_string           (GIInfoType  type);
 
 gboolean               g_type_info_is_pointer          (GITypeInfo *info);
 GITypeTag              g_type_info_get_tag             (GITypeInfo *info);
