@@ -1339,6 +1339,109 @@ test_match_all (gconstpointer d)
   }                                                                     \
 }
 
+#define PCRE_UTF8               0x00000800
+#define PCRE_NO_UTF8_CHECK      0x00002000
+#define PCRE_NEWLINE_ANY        0x00400000
+
+static void
+test_basic (void)
+{
+  GRegexCompileFlags cflags = G_REGEX_CASELESS | G_REGEX_EXTENDED | G_REGEX_OPTIMIZE;
+  GRegexMatchFlags mflags = G_REGEX_MATCH_NOTBOL | G_REGEX_MATCH_PARTIAL;
+  GRegex *regex;
+
+  regex = g_regex_new ("[A-Z]+", cflags, mflags, NULL);
+
+  g_assert (regex != NULL);
+  g_assert_cmpint (g_regex_get_compile_flags (regex), ==, cflags|PCRE_UTF8|PCRE_NO_UTF8_CHECK|PCRE_NEWLINE_ANY );
+  g_assert_cmpint (g_regex_get_match_flags (regex), ==, mflags|PCRE_NO_UTF8_CHECK);
+
+  g_regex_unref (regex);
+}
+
+static void
+test_compile (void)
+{
+  GRegex *regex;
+  GError *error;
+
+  error = NULL;
+  regex = g_regex_new ("a\\", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_STRAY_BACKSLASH);
+  g_clear_error (&error);
+  regex = g_regex_new ("a\\c", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MISSING_CONTROL_CHAR);
+  g_clear_error (&error);
+  regex = g_regex_new ("a\\l", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNRECOGNIZED_ESCAPE);
+  g_clear_error (&error);
+  regex = g_regex_new ("a{4,2}", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_QUANTIFIERS_OUT_OF_ORDER);
+  g_clear_error (&error);
+  regex = g_regex_new ("a{999999,}", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_QUANTIFIER_TOO_BIG);
+  g_clear_error (&error);
+  regex = g_regex_new ("[a-z", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNTERMINATED_CHARACTER_CLASS);
+  g_clear_error (&error);
+#if 0
+  regex = g_regex_new ("[\\b]", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_INVALID_ESCAPE_IN_CHARACTER_CLASS);
+  g_clear_error (&error);
+#endif
+  regex = g_regex_new ("[z-a]", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_RANGE_OUT_OF_ORDER);
+  g_clear_error (&error);
+  regex = g_regex_new ("{2,4}", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_NOTHING_TO_REPEAT);
+  g_clear_error (&error);
+  regex = g_regex_new ("a(?u)", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNRECOGNIZED_CHARACTER);
+  g_clear_error (&error);
+  regex = g_regex_new ("a(?<$foo)bar", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNRECOGNIZED_CHARACTER);
+  g_clear_error (&error);
+  regex = g_regex_new ("a[:alpha:]b", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_POSIX_NAMED_CLASS_OUTSIDE_CLASS);
+  g_clear_error (&error);
+  regex = g_regex_new ("a(b", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  g_clear_error (&error);
+  regex = g_regex_new ("a)b", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  g_clear_error (&error);
+  regex = g_regex_new ("a(?R", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  g_clear_error (&error);
+  regex = g_regex_new ("a(?-54", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNMATCHED_PARENTHESIS);
+  g_clear_error (&error);
+  regex = g_regex_new ("a(?#abc", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNTERMINATED_COMMENT);
+  g_clear_error (&error);
+  regex = g_regex_new ("a[[:fubar:]]b", 0, 0, &error);
+  g_assert (regex == NULL);
+  g_assert_error (error, G_REGEX_ERROR, G_REGEX_ERROR_UNKNOWN_POSIX_CLASS_NAME);
+  g_clear_error (&error);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1347,6 +1450,9 @@ main (int argc, char *argv[])
   g_setenv ("G_DEBUG", "fatal_warnings", TRUE);
 
   g_test_init (&argc, &argv, NULL);
+
+  g_test_add_func ("/regex/basic", test_basic);
+  g_test_add_func ("/regex/compile", test_compile);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("", 0, 0);
