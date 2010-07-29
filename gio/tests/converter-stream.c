@@ -301,6 +301,7 @@ test_expander (void)
   GInputStream *mem, *cstream;
   GOutputStream *mem_out, *cstream_out;
   GConverter *expander;
+  GConverter *converter;
   GError *error;
   int i;
 
@@ -326,6 +327,9 @@ test_expander (void)
 					     NULL);
   cstream = g_converter_input_stream_new (mem, expander);
   g_assert (g_converter_input_stream_get_converter (G_CONVERTER_INPUT_STREAM (cstream)) == expander);
+  g_object_get (cstream, "converter", &converter, NULL);
+  g_assert (converter == expander);
+  g_object_unref (converter);
   g_object_unref (mem);
 
   total_read = 0;

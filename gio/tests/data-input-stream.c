@@ -29,6 +29,30 @@
 #define MAX_BYTES	0x10000	
 
 static void
+test_basic (void)
+{
+  GInputStream *stream;
+  GInputStream *base_stream;
+  gint val;
+
+  base_stream = g_memory_input_stream_new ();
+  stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
+
+  g_object_get (stream, "byte-order", &val, NULL);
+  g_assert_cmpint (val, ==, G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN);
+  g_object_set (stream, "byte-order", G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN, NULL);
+  g_assert_cmpint (g_data_input_stream_get_byte_order (G_DATA_INPUT_STREAM (stream)), ==, G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN);
+
+  g_object_get (stream, "newline-type", &val, NULL);
+  g_assert_cmpint (val, ==, G_DATA_STREAM_NEWLINE_TYPE_LF);
+  g_object_set (stream, "newline-type", G_DATA_STREAM_NEWLINE_TYPE_CR_LF, NULL);
+  g_assert_cmpint (g_data_input_stream_get_newline_type (G_DATA_INPUT_STREAM (stream)), ==, G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
+
+  g_object_unref (stream);
+  g_object_unref (base_stream);
+}
+
+static void
 test_seek_to_start (GInputStream *stream)
 {
   GError *error = NULL;
@@ -117,6 +141,11 @@ test_read_lines_CR_LF (void)
   test_read_lines (G_DATA_STREAM_NEWLINE_TYPE_CR_LF);
 }
 
+static void
+test_read_lines_any (void)
+{
+  test_read_lines (G_DATA_STREAM_NEWLINE_TYPE_ANY);
+}
 
 static void
 test_read_until (void)
@@ -326,9 +355,11 @@ main (int   argc,
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/data-input-stream/basic", test_basic);
   g_test_add_func ("/data-input-stream/read-lines-LF", test_read_lines_LF);
   g_test_add_func ("/data-input-stream/read-lines-CR", test_read_lines_CR);
   g_test_add_func ("/data-input-stream/read-lines-CR-LF", test_read_lines_CR_LF);
+  g_test_add_func ("/data-input-stream/read-lines-any", test_read_lines_any);
   g_test_add_func ("/data-input-stream/read-until", test_read_until);
   g_test_add_func ("/data-input-stream/read-int", test_read_int);
 

@@ -30,6 +30,29 @@
 #define MAX_BYTES_BINARY	0x100	
 
 static void
+test_basic (void)
+{
+  GOutputStream *stream;
+  GOutputStream *base_stream;
+  gpointer data;
+  gint val;
+
+  data = g_malloc0 (MAX_LINES_BUFF);
+  
+  /* initialize objects */
+  base_stream = g_memory_output_stream_new (data, MAX_LINES_BUFF, NULL, NULL);
+  stream = G_OUTPUT_STREAM (g_data_output_stream_new (base_stream));
+
+  g_object_get (stream, "byte-order", &val, NULL);
+  g_assert_cmpint (val, ==, G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN);
+  g_object_set (stream, "byte-order", G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN, NULL);
+  g_assert_cmpint (g_data_output_stream_get_byte_order (G_DATA_OUTPUT_STREAM (stream)), ==, G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN);
+
+  g_object_unref (stream);
+  g_object_unref (base_stream);
+}
+
+static void
 test_read_lines (GDataStreamNewlineType newline_type)
 {
   GOutputStream *stream;
@@ -280,10 +303,11 @@ main (int   argc,
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/data-input-stream/read-lines-LF", test_read_lines_LF);
-  g_test_add_func ("/data-input-stream/read-lines-CR", test_read_lines_CR);
-  g_test_add_func ("/data-input-stream/read-lines-CR-LF", test_read_lines_CR_LF);
-  g_test_add_func ("/data-input-stream/read-int", test_read_int);
+  g_test_add_func ("/data-output-stream/basic", test_basic);
+  g_test_add_func ("/data-output-stream/write-lines-LF", test_read_lines_LF);
+  g_test_add_func ("/data-output-stream/write-lines-CR", test_read_lines_CR);
+  g_test_add_func ("/data-output-stream/write-lines-CR-LF", test_read_lines_CR_LF);
+  g_test_add_func ("/data-output-stream/write-int", test_read_int);
 
   return g_test_run();
 }
