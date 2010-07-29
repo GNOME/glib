@@ -354,6 +354,10 @@ test_expander (void)
 
   mem_out = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
   cstream_out = g_converter_output_stream_new (mem_out, expander);
+  g_assert (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (cstream_out)) == expander);
+  g_object_get (cstream_out, "converter", &converter, NULL);
+  g_assert (converter == expander);
+  g_object_unref (converter);
   g_object_unref (mem_out);
 
   for (i = 0; i < sizeof(unexpanded_data); i++)
