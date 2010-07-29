@@ -34,6 +34,17 @@ int writer_pipe[2], reader_pipe[2];
 GCancellable *writer_cancel, *reader_cancel, *main_cancel;
 GMainLoop *loop;
 
+static gboolean
+cancel_main (gpointer data)
+{
+  GCancellable *main_cancel = data;
+
+  g_cancellable_cancel (main_cancel);
+
+  return FALSE;
+}
+
+
 static gpointer
 writer_thread (gpointer user_data)
 {
@@ -64,7 +75,17 @@ writer_thread (gpointer user_data)
 
   if (g_cancellable_is_cancelled (writer_cancel))
     {
-      g_cancellable_cancel (main_cancel);
+      /* FIXME: directly calling g_cancellable_cancel (main_cancel) here
+       * leads to sporadic deadlock, because it will try to wake up the
+       * main context, for which it needs to acquire the main context lock.
+       * This lock may be held by the main loop running in the main thread,
+       * and it may be held while the main thread is blocking in
+       * fd_source_finalize -> g_cancellable_disconnect
+       * until the ::cancelled callbacks have run.
+       *
+       * Work around by deferring the cancellation to a timeout.
+       */
+      g_timeout_add (0, cancel_main, main_cancel);
       g_object_unref (out);
       return NULL;
     }
