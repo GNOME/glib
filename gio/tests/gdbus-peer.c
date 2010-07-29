@@ -1218,6 +1218,32 @@ test_nonce_tcp (void)
   g_thread_join (service_thread);
 }
 
+static void
+test_credentials (void)
+{
+  GCredentials *c1, *c2;
+  GError *error;
+  gchar *desc;
+
+  c1 = g_credentials_new ();
+  c2 = g_credentials_new ();
+
+  error = NULL;
+  if (g_credentials_set_unix_user (c2, getuid (), &error))
+    g_assert_no_error (error);
+
+  g_clear_error (&error);
+  g_assert (g_credentials_is_same_user (c1, c2, &error));
+  g_assert_no_error (error);
+
+  desc = g_credentials_to_string (c1);
+  g_assert (desc != NULL);
+  g_free (desc);
+
+  g_object_unref (c1);
+  g_object_unref (c2);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -1243,6 +1269,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
   g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
+  g_test_add_func ("/gdbus/credentials", test_credentials);
 
   ret = g_test_run();
 
