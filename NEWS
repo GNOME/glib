@@ -1,3 +1,70 @@
+Overview of Changes from GLib 2.25.11 to GLib 2.25.12
+=====================================================
+
++-------------------------------------------------------------------+
+| WARNING: There have been many API changes in GDBus -- sending     |
+| messages, subscribing to signals, closing connections and         |
+| registering subtrees are affected.  The ABI for GSettingsBackend  |
+| has also been changed.  For both reasons, a new dconf release is  |
+| required (and will be along soon).                                |
++-------------------------------------------------------------------+
+
+Build:
+  - cleanup automake setup
+  - rename configure.in to configure.ac
+  - various docs fixups
+  - move glibconfig.h to glib/
+  - disable dtrace support on Mac OS (which has incompatible 'dtrace')
+
+GSettings:
+  - add support for vendor override files (to change the default values
+    in a schema)
+  - change GSettingsBackend vtable
+  - add g_settings_reset()
+  - support binding to G_TYPE_STRV properties
+
+GDBus:
+  - many bug fixes, including a serialisation fix
+  - stop handling incoming connections as soon as stop() is called
+  - proper support for file descriptor passing
+  - new flags parameter for sending messages
+  - new flags parameter for subscribing to signals
+  - always reset the message serial when sending a message unless
+    G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL is given
+  - constness fixes for introspection structures
+  - clean ups to subtree registration API
+
+Other:
+  - fix divide by zero bug in g_malloc_n functions
+  - GIO: don't blindly assume that SOCK_CLOEXEC is supported
+  - make GObject property notify freezes threadsafe
+  - GIO: clean up credentials passing
+  - GApplication: make default-quit not apply if register=FALSE
+
+Bugs closed:
+166020 use GAtomic for refcounting
+617483 Credentials passing
+622005 [GApplication] no way to modify the "default-quit" property
+623293 vendor override files
+623810 Message serialization bug
+623815 Don't check sender for GDBusProxy objects where name is not set
+624473 GDBusSubtreeIntrospectFunc return type
+624483 GDBusSubtreeEnumerateFunc clarification
+624484 GDBusSubtreeDispatchFunc clarification
+624754 gdbusaddress.c missing sys/wait.h
+624968 div by zero in g_malloc_n family
+624991 GSettings mapping for G_TYPE_STRV 
+
+Updated Translations:
+ Galician
+ Spanish
+ Hebrew
+ Simplified Chinese
+ Armenian
+ Romanian
+ German
+ Kazakh
+
 Overview of Changes from GLib 2.25.10 to GLib 2.25.11
 =====================================================
 
