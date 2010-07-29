@@ -89,7 +89,7 @@ SAMPLE_PROGS = 				\
 
 
 if OS_UNIX
-TEST_PROGS += live-g-file desktop-app-info unix-fd #unix-streams
+TEST_PROGS += live-g-file desktop-app-info unix-fd unix-streams
 SAMPLE_PROGS +=	gdbus-example-unix-fd-client
 endif
 
@@ -142,9 +142,9 @@ live_g_file_LDADD	  = $(progs_ldadd)
 desktop_app_info_SOURCES  = desktop-app-info.c
 desktop_app_info_LDADD	  = $(progs_ldadd)
 
-#unix_streams_SOURCES	  = unix-streams.c
-#unix_streams_LDADD	  = $(progs_ldadd) \
-#	$(top_builddir)/gthread/libgthread-2.0.la
+unix_streams_SOURCES	  = unix-streams.c
+unix_streams_LDADD	  = $(progs_ldadd) \
+	$(top_builddir)/gthread/libgthread-2.0.la
 
 win32_streams_SOURCES	  = win32-streams.c
 win32_streams_LDADD	  = $(progs_ldadd) \
