@@ -19,7 +19,6 @@
  * if advised of the possibility of such damage.
  */
 
-#include <glib/glib.h>
 #include <gio/gio.h>
 #include <gio/gunixinputstream.h>
 #include <gio/gunixoutputstream.h>
