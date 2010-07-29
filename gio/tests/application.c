@@ -148,9 +148,45 @@ static void
 test_basic (void)
 {
   GApplication *app;
+  const gchar *appid;
+  gboolean quit;
+  gboolean remote;
+  gboolean reg;
+  gchar **actions;
 
   app = g_application_new ("org.gtk.TestApplication", 0, NULL);
+
+  g_assert (g_application_get_instance () == app);
+  g_assert_cmpstr (g_application_get_id (app), ==, "org.gtk.TestApplication");
+  g_object_get (app,
+                "application-id", &appid,
+                "default-quit", &quit,
+                "is-remote", &remote,
+                "register", &reg,
+                NULL);
+  g_assert_cmpstr (appid, ==, "org.gtk.TestApplication");
+  g_assert (quit);
+  g_assert (!remote);
+  g_assert (reg);
+
   g_application_add_action (app, "About", "Print an about message");
+
+  g_assert (g_application_get_action_enabled (app, "About"));
+  g_assert_cmpstr (g_application_get_action_description (app, "About"), ==, "Print an about message");
+
+  actions = g_application_list_actions (app);
+  g_assert_cmpint (g_strv_length (actions), ==, 1);
+  g_assert_cmpstr (actions[0], ==, "About");
+  g_strfreev (actions);
+
+  g_application_add_action (app, "Action2", "Another action");
+  actions = g_application_list_actions (app);
+  g_assert_cmpint (g_strv_length (actions), ==, 2);
+  g_strfreev (actions);
+  g_application_remove_action (app, "Action2");
+  actions = g_application_list_actions (app);
+  g_assert_cmpint (g_strv_length (actions), ==, 1);
+  g_strfreev (actions);
 
   g_signal_connect (app, "action-with-data::About", G_CALLBACK (on_app_action), NULL);
 
