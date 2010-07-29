@@ -40,30 +40,32 @@ Other:
   - make GObject property notify freezes threadsafe
   - GIO: clean up credentials passing
   - GApplication: make default-quit not apply if register=FALSE
+  - GIO: add annotations for gobject-introspection
 
 Bugs closed:
-166020 use GAtomic for refcounting
-617483 Credentials passing
-622005 [GApplication] no way to modify the "default-quit" property
-623293 vendor override files
-623810 Message serialization bug
-623815 Don't check sender for GDBusProxy objects where name is not set
-624473 GDBusSubtreeIntrospectFunc return type
-624483 GDBusSubtreeEnumerateFunc clarification
-624484 GDBusSubtreeDispatchFunc clarification
-624754 gdbusaddress.c missing sys/wait.h
-624968 div by zero in g_malloc_n family
-624991 GSettings mapping for G_TYPE_STRV 
+ 166020 use GAtomic for refcounting
+ 617483 Credentials passing
+ 622005 [GApplication] no way to modify the "default-quit" property
+ 623293 vendor override files
+ 623810 Message serialization bug
+ 623815 Don't check sender for GDBusProxy objects where name is not set
+ 624473 GDBusSubtreeIntrospectFunc return type
+ 624483 GDBusSubtreeEnumerateFunc clarification
+ 624484 GDBusSubtreeDispatchFunc clarification
+ 624754 gdbusaddress.c missing sys/wait.h
+ 624968 div by zero in g_malloc_n family
+ 624991 GSettings mapping for G_TYPE_STRV 
+ 625383 Add missing GI annotations
 
 Updated Translations:
- Galician
- Spanish
- Hebrew
- Simplified Chinese
  Armenian
- Romanian
+ Galician
  German
+ Hebrew
  Kazakh
+ Romanian
+ Simplified Chinese
+ Spanish
 
 Overview of Changes from GLib 2.25.10 to GLib 2.25.11
 =====================================================
