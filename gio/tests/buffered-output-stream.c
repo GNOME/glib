@@ -43,12 +43,17 @@ test_grow (void)
   GOutputStream *out;
   GError *error;
   const gchar buffer[] = "abcdefghijklmnopqrstuvwxyz";
+  gint size;
+  gboolean grow;
 
   base = g_memory_output_stream_new (g_malloc0 (30), 30, g_realloc, g_free);
-  out = g_buffered_output_stream_new (base);
+  out = g_buffered_output_stream_new_sized (base, 16);
 
-  g_buffered_output_stream_set_buffer_size (G_BUFFERED_OUTPUT_STREAM (out), 16);
   g_buffered_output_stream_set_auto_grow (G_BUFFERED_OUTPUT_STREAM (out), TRUE);
+
+  g_object_get (out, "buffer-size", &size, "auto-grow", &grow, NULL);
+  g_assert_cmpint (size, ==, 16);
+  g_assert (grow);
 
   error = NULL;
   g_assert_cmpint (g_output_stream_write (out, buffer, 10, NULL, &error), ==, 10);
