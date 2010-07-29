@@ -35,6 +35,7 @@ test_truncate (void)
   g_test_bug ("540423");
 
   mo = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
+  g_assert (g_seekable_can_truncate (G_SEEKABLE (mo)));
   o = g_data_output_stream_new (mo);
   for (i = 0; i < 1000; i++)
     {
@@ -50,6 +51,29 @@ test_truncate (void)
     }
 
   g_object_unref (o);
+  g_object_unref (mo);
+}
+
+static void
+test_seek (void)
+{
+  GOutputStream *mo;
+  GError *error;
+
+  mo = g_memory_output_stream_new (g_new (gchar, 100), 100, g_realloc, g_free);
+
+  g_assert (G_IS_SEEKABLE (mo));
+  g_assert (g_seekable_can_seek (G_SEEKABLE (mo)));
+
+  error = NULL;
+  g_assert (g_seekable_seek (G_SEEKABLE (mo), 26, G_SEEK_SET, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (mo)), ==, 26);
+
+  g_assert (!g_seekable_seek (G_SEEKABLE (mo), 200, G_SEEK_CUR, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_error_free (error);
+
   g_object_unref (mo);
 }
 
@@ -80,7 +104,9 @@ test_data_size (void)
   
   pos = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo));
   g_assert_cmpint (pos, ==, 1);
-  
+
+  g_assert_cmpint (g_memory_output_stream_get_size (G_MEMORY_OUTPUT_STREAM (mo)), ==, 16);
+
   g_object_unref (o);
   g_object_unref (mo);
 }
@@ -130,6 +156,7 @@ main (int   argc,
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/memory-output-stream/truncate", test_truncate);
+  g_test_add_func ("/memory-output-stream/seek", test_seek);
   g_test_add_func ("/memory-output-stream/get-data-size", test_data_size);
   g_test_add_func ("/memory-output-stream/properties", test_properties);
 

@@ -65,6 +65,67 @@ test_read_chunks (void)
     }
 }
 
+static void
+test_seek (void)
+{
+  const char *data1 = "abcdefghijklmnopqrstuvwxyz";
+  const char *data2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  GInputStream *stream;
+  GError *error;
+  char buffer[10];
+
+  stream = g_memory_input_stream_new ();
+
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (stream),
+                                  data1, -1, NULL);
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (stream),
+                                  data2, -1, NULL);
+
+  g_assert (G_IS_SEEKABLE (stream));
+  g_assert (g_seekable_can_seek (G_SEEKABLE (stream)));
+
+  error = NULL;
+  g_assert (g_seekable_seek (G_SEEKABLE (stream), 26, G_SEEK_SET, NULL, &error));
+  g_assert_no_error (error);
+  g_assert_cmpint (g_seekable_tell (G_SEEKABLE (stream)), ==, 26);
+
+  g_assert (g_input_stream_read (stream, buffer, 1, NULL, &error) == 1);
+  g_assert_no_error (error);
+
+  g_assert (buffer[0] == 'A');
+
+  g_assert (!g_seekable_seek (G_SEEKABLE (stream), 26, G_SEEK_CUR, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_error_free (error);
+
+  g_object_unref (stream);
+}
+
+static void
+test_truncate (void)
+{
+  const char *data1 = "abcdefghijklmnopqrstuvwxyz";
+  const char *data2 = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  GInputStream *stream;
+  GError *error;
+
+  stream = g_memory_input_stream_new ();
+
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (stream),
+                                  data1, -1, NULL);
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (stream),
+                                  data2, -1, NULL);
+
+  g_assert (G_IS_SEEKABLE (stream));
+  g_assert (!g_seekable_can_truncate (G_SEEKABLE (stream)));
+
+  error = NULL;
+  g_assert (!g_seekable_truncate (G_SEEKABLE (stream), 26, NULL, &error));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+
+  g_object_unref (stream);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -73,6 +134,8 @@ main (int   argc,
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/memory-input-stream/read-chunks", test_read_chunks);
+  g_test_add_func ("/memory-input-stream/seek", test_seek);
+  g_test_add_func ("/memory-input-stream/truncate", test_truncate);
 
   return g_test_run();
 }
