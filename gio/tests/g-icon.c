@@ -239,8 +239,12 @@ test_themed_icon (void)
   const gchar *const *names;
   const gchar *names2[] = { "first", "testicon", "last", NULL };
   gchar *str;
+  gboolean fallbacks;
 
   icon1 = g_themed_icon_new ("testicon");
+
+  g_object_get (icon1, "use-default-fallbacks", &fallbacks, NULL);
+  g_assert (!fallbacks);
 
   names = g_themed_icon_get_names (G_THEMED_ICON (icon1));
   g_assert_cmpint (g_strv_length ((gchar **)names), ==, 1);
