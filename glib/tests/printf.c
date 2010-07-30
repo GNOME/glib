@@ -19,9 +19,11 @@
  * if advised of the possibility of such damage.
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "glib.h"
+#include "gstdio.h"
 
 static void
 test_retval_and_trunc (void)
@@ -607,6 +609,54 @@ test_positional_params (void)
 }
 
 static void
+test_positional_params2 (void)
+{
+  gint res;
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%2$c %1$c", 'b', 'a');
+      g_assert_cmpint (res, ==, 3);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*a b*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%1$*2$.*3$s", "abc", 5, 2);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*   ab*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%1$s%1$s", "abc");
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*abcabc*");
+}
+
+static void
+test_percent2 (void)
+{
+  gint res;
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%%");
+      g_assert_cmpint (res, ==, 1);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*%*");
+}
+
+static void
 test_64bit (void)
 {
   gchar buf[128];
@@ -686,26 +736,189 @@ test_64bit (void)
 #endif
 }
 
+static void
+test_64bit2 (void)
+{
+  gint res;
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_FORMAT, (gint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*123456*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_FORMAT, (gint64)-123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*-123456*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GUINT64_FORMAT, (guint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*123456*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_MODIFIER "o", (gint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*361100*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%#" G_GINT64_MODIFIER "o", (gint64)123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*0361100*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_MODIFIER "x", (gint64)123456);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*1e240*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%#" G_GINT64_MODIFIER "x", (gint64)123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*0x1e240*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" G_GINT64_MODIFIER "X", (gint64)123456);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*1E240*");
+
+#ifdef G_OS_WIN32
+  /* On Win32, test that the "ll" modifier also works, for backward
+   * compatibility. One really should use the G_GINT64_MODIFIER (which
+   * on Win32 is the "I64" that the (msvcrt) C library's printf uses),
+   * but "ll" used to work with the "trio" g_printf implementation in
+   * GLib 2.2, so it's best if it continues to work.
+   */
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "lli", (gint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*123456*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "lli", (gint64)-123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*-123456*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "llu", (guint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*123456*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "ll" "o", (gint64)123456);
+      g_assert_cmpint (res, ==, 6);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*361100*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%#" "ll" "o", (gint64)123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*0361100*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "ll" "x", (gint64)123456);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*1e240*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%#" "ll" "x", (gint64)123456);
+      g_assert_cmpint (res, ==, 7);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*0x1e240*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDOUT))
+    {
+      res = g_printf ("%" "ll" "X", (gint64)123456);
+      g_assert_cmpint (res, ==, 5);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stdout ("*1E240*");
+#endif
+}
+
 int
 main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_add_func ("/printf/test-retval-and-trunc", test_retval_and_trunc);
-  g_test_add_func ("/printf/test-d", test_d);
-  g_test_add_func ("/printf/test-o", test_o);
-  g_test_add_func ("/printf/test-u", test_u);
-  g_test_add_func ("/printf/test-x", test_x);
-  g_test_add_func ("/printf/test-X", test_X);
-  g_test_add_func ("/printf/test-f", test_f);
-  g_test_add_func ("/printf/test-e", test_e);
-  g_test_add_func ("/printf/test-c", test_c);
-  g_test_add_func ("/printf/test-s", test_s);
-  g_test_add_func ("/printf/test-n", test_n);
-  g_test_add_func ("/printf/test-percent", test_percent);
-  g_test_add_func ("/printf/test-positional-params", test_positional_params);
-  g_test_add_func ("/printf/test-64bit", test_64bit);
+  g_test_add_func ("/snprintf/retval-and-trunc", test_retval_and_trunc);
+  g_test_add_func ("/snprintf/%d", test_d);
+  g_test_add_func ("/snprintf/%o", test_o);
+  g_test_add_func ("/snprintf/%u", test_u);
+  g_test_add_func ("/snprintf/%x", test_x);
+  g_test_add_func ("/snprintf/%X", test_X);
+  g_test_add_func ("/snprintf/%f", test_f);
+  g_test_add_func ("/snprintf/%e", test_e);
+  g_test_add_func ("/snprintf/%c", test_c);
+  g_test_add_func ("/snprintf/%s", test_s);
+  g_test_add_func ("/snprintf/%n", test_n);
+  g_test_add_func ("/snprintf/test-percent", test_percent);
+  g_test_add_func ("/snprintf/test-positional-params", test_positional_params);
+  g_test_add_func ("/snprintf/test-64bit", test_64bit);
+
+  g_test_add_func ("/printf/test-percent", test_percent2);
+  g_test_add_func ("/printf/test-positional-params", test_positional_params2);
+  g_test_add_func ("/printf/test-64bit", test_64bit2);
 
   return g_test_run();
 }
