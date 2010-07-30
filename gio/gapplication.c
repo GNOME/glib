@@ -747,7 +747,7 @@ g_application_list_actions (GApplication *application)
 
   priv = application->priv;
 
-  retval = g_new (gchar*, g_hash_table_size (priv->actions));
+  retval = g_new (gchar*, g_hash_table_size (priv->actions) + 1);
 
   i = 0;
   g_hash_table_iter_init (&iter, priv->actions);
