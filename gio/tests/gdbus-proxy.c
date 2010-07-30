@@ -125,6 +125,37 @@ test_methods (GDBusProxy *proxy)
   g_dbus_proxy_set_default_timeout (proxy, -1);
 }
 
+static gboolean
+strv_equal (const gchar **strv, ...)
+{
+  gint count;
+  va_list list;
+  const gchar *str;
+  gboolean res;
+
+  res = TRUE;
+  count = 0;
+  va_start (list, strv);
+  while (1)
+    {
+      str = va_arg (list, const gchar *);
+      if (str == NULL)
+        break;
+      if (g_strcmp0 (str, strv[count]) != 0)
+        {
+          res = FALSE;
+          break;
+        }
+      count++;
+    }
+  va_end (list);
+
+  if (res)
+    res = g_strv_length ((gchar**)strv) == count;
+
+  return res;
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 /* Test that the property aspects of GDBusProxy works */
 /* ---------------------------------------------------------------------------------------------------- */
@@ -136,8 +167,42 @@ test_properties (GDBusProxy *proxy)
   GVariant *variant;
   GVariant *variant2;
   GVariant *result;
+  gchar **names;
 
   error = NULL;
+
+  /*
+   * Check that we can list all cached properties.
+   */
+  names = g_dbus_proxy_get_cached_property_names (proxy);
+
+  g_assert (strv_equal (names,
+                        "PropertyThatWillBeInvalidated",
+                        "ab",
+                        "ad",
+                        "ai",
+                        "an",
+                        "ao",
+                        "aq",
+                        "as",
+                        "at",
+                        "au",
+                        "ax",
+                        "ay",
+                        "b",
+                        "d",
+                        "foo",
+                        "i",
+                        "n",
+                        "o",
+                        "q",
+                        "s",
+                        "t",
+                        "u",
+                        "x",
+                        "y"));
+
+  g_strfreev (names);
 
   /*
    * Check that we can read cached properties.
