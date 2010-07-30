@@ -112,9 +112,9 @@ test_programs =					\
 	unicode-caseconv			\
 	unicode-encoding
 
-test_scripts = run-markup-tests.sh run-collate-tests.sh run-bookmark-test.sh run-assert-msg-test.sh
+test_scripts = run-collate-tests.sh run-bookmark-test.sh run-assert-msg-test.sh
 
-test_script_support_programs = markup-test unicode-collate bookmarkfile-test
+test_script_support_programs = unicode-collate bookmarkfile-test
 
 check_PROGRAMS = $(test_programs) $(test_script_support_programs)
 
@@ -141,7 +141,6 @@ gio_test_LDADD = $(progs_ldadd)
 iochannel_test_LDADD = $(progs_ldadd)
 list_test_LDADD = $(progs_ldadd)
 mainloop_test_LDADD = $(thread_ldadd)
-markup_test_LDADD = $(progs_ldadd)
 mapping_test_LDADD = $(progs_ldadd)
 module_test_LDADD = $(module_ldadd) $(module_test_exp)
 module_test_LDFLAGS = $(G_MODULE_LDFLAGS)
@@ -180,9 +179,6 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	for f in $$files; do 					\
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; 	\
 	  cp $$d/$$f $(distdir) || exit 1; done
-	mkdir $(distdir)/markups;          			\
-	for f in $(srcdir)/markups/* ; do  			\
-	  cp $$f $(distdir)/markups; done 
 	mkdir $(distdir)/collate;          			\
 	for f in $(srcdir)/collate/* ; do  			\
           if test -f $$f; then cp $$f $(distdir)/collate; fi; done

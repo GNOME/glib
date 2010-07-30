@@ -47,6 +47,15 @@ TEST_PROGS        += string
 string_SOURCES     = string.c
 string_LDADD	   = $(progs_ldadd) -lm
 
+TEST_PROGS          += markup-parse
+markup_parse_LDADD   = $(progs_ldadd)
+
+TEST_PROGS          += markup-collect
+markup_collect_LDADD = $(progs_ldadd)
+
+TEST_PROGS         += markup-escape
+markup_escape_LDADD = $(progs_ldadd)
+
 TEST_PROGS               += markup-subparser
 markup_subparser_LDADD    = $(progs_ldadd)
 
@@ -128,14 +137,8 @@ dir_LDADD           = $(progs_ldadd)
 TEST_PROGS         += pattern
 pattern_LDADD       = $(progs_ldadd)
 
-TEST_PROGS         += markup-escape
-markup_escape_LDADD = $(progs_ldadd)
-
 TEST_PROGS         += logging
 logging_LDADD       = $(progs_ldadd)
-
-TEST_PROGS          += markup-collect
-markup_collect_LDADD = $(progs_ldadd)
 
 if OS_UNIX
 
@@ -155,3 +158,8 @@ EXTRA_DIST += \
 	4096-random-bytes	\
 	keyfiletest.ini		\
 	bookmarks.xbel
+
+dist_hook:
+	mkdir $(distdir)/markups;		\
+	for f in $(srcdir)/markups/*; do 	\
+	  cp $$f $(distdir)/markups; done
