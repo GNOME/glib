@@ -118,8 +118,8 @@ g_credentials_init (GCredentials *credentials)
 {
 #ifdef __linux__
   credentials->native.pid = getpid ();
-  credentials->native.uid = getuid ();
-  credentials->native.gid = getgid ();
+  credentials->native.uid = geteuid ();
+  credentials->native.gid = getegid ();
 #endif
 }
 
