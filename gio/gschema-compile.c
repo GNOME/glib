@@ -699,7 +699,7 @@ is_valid_keyname (const gchar  *key,
   if (key[0] == '\0')
     {
       g_set_error_literal (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                           "empty names are not permitted");
+                           _("empty names are not permitted"));
       return FALSE;
     }
 
@@ -709,8 +709,8 @@ is_valid_keyname (const gchar  *key,
   if (!g_ascii_islower (key[0]))
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   "invalid name '%s': names must begin "
-                   "with a lowercase letter", key);
+                   _("invalid name '%s': names must begin "
+                     "with a lowercase letter"), key);
       return FALSE;
     }
 
@@ -721,17 +721,17 @@ is_valid_keyname (const gchar  *key,
           !g_ascii_isdigit (key[i]))
         {
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       "invalid name '%s': invalid character '%c'; "
-                       "only lowercase letters, numbers and dash ('-') "
-                       "are permitted.", key, key[i]);
+                       _("invalid name '%s': invalid character '%c'; "
+                         "only lowercase letters, numbers and dash ('-') "
+                         "are permitted."), key, key[i]);
           return FALSE;
         }
 
       if (key[i] == '-' && key[i + 1] == '-')
         {
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       "invalid name '%s': two successive dashes ('--') are "
-                       "not permitted.", key);
+                       _("invalid name '%s': two successive dashes ('--') "
+                         "are not permitted."), key);
           return FALSE;
         }
     }
@@ -739,15 +739,15 @@ is_valid_keyname (const gchar  *key,
   if (key[i - 1] == '-')
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   "invalid name '%s': the last character may not be a "
-                   "dash ('-').", key);
+                   _("invalid name '%s': the last character may not be a "
+                     "dash ('-')."), key);
       return FALSE;
     }
 
   if (i > 32)
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   "invalid name '%s': maximum length is 32", key);
+                   _("invalid name '%s': maximum length is 32"), key);
       return FALSE;
     }
 
@@ -816,7 +816,7 @@ schema_state_add_child (SchemaState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<child name='%s'> already specified", name);
+                   _("<child name='%s'> already specified"), name);
       return;
     }
 
@@ -842,7 +842,7 @@ schema_state_add_key (SchemaState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "can not add keys to a list-of schema");
+                           _("can not add keys to a 'list-of' schema"));
       return NULL;
     }
 
@@ -853,7 +853,7 @@ schema_state_add_key (SchemaState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<key name='%s'> already specified", name);
+                   _("<key name='%s'> already specified"), name);
       return NULL;
     }
 
@@ -871,8 +871,8 @@ schema_state_add_key (SchemaState  *state,
           {
             g_set_error (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
-                         "<key name='%s'> shadows <key name='%s'> in "
-                         "<schema id='%s'>; use <override> to modify value",
+                         _("<key name='%s'> shadows <key name='%s'> in "
+                           "<schema id='%s'>; use <override> to modify value"),
                          name, name, node->extends_name);
             return NULL;
           }
@@ -882,8 +882,8 @@ schema_state_add_key (SchemaState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_MISSING_ATTRIBUTE,
-                   "exactly one of 'type', 'enum' or 'flags' must "
-                   "be specified as an attribute to <key>");
+                   _("exactly one of 'type', 'enum' or 'flags' must "
+                     "be specified as an attribute to <key>"));
       return NULL;
     }
 
@@ -901,7 +901,7 @@ schema_state_add_key (SchemaState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       "<%s id='%s'> not (yet) defined.",
+                       _("<%s id='%s'> not (yet) defined."),
                        flags_type ? "flags"    : "enum",
                        flags_type ? flags_type : enum_type);
           return NULL;
@@ -916,7 +916,7 @@ schema_state_add_key (SchemaState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       "invalid GVariant type string '%s'", type_string);
+                       _("invalid GVariant type string '%s'"), type_string);
           return NULL;
         }
 
@@ -946,8 +946,8 @@ schema_state_add_override (SchemaState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<override> given but schema isn't "
-                           "extending anything");
+                           _("<override> given but schema isn't "
+                             "extending anything"));
       return;
     }
 
@@ -959,7 +959,7 @@ schema_state_add_override (SchemaState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "no <key name='%s'> to override", key);
+                   _("no <key name='%s'> to override"), key);
       return;
     }
 
@@ -967,7 +967,7 @@ schema_state_add_override (SchemaState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<override name='%s'> already specified", key);
+                   _("<override name='%s'> already specified"), key);
       return;
     }
 
@@ -1033,7 +1033,7 @@ parse_state_start_schema (ParseState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<schema id='%s'> already specified", id);
+                   _("<schema id='%s'> already specified"), id);
       return;
     }
 
@@ -1045,8 +1045,8 @@ parse_state_start_schema (ParseState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       "<schema id='%s'> extends not yet "
-                       "existing schema '%s'", id, extends_name);
+                       _("<schema id='%s'> extends not yet "
+                         "existing schema '%s'"), id, extends_name);
           return;
         }
     }
@@ -1059,8 +1059,8 @@ parse_state_start_schema (ParseState  *state,
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
-                       "<schema id='%s'> is list of not yet "
-                       "existing schema '%s'", id, list_of);
+                       _("<schema id='%s'> is list of not yet "
+                         "existing schema '%s'"), id, list_of);
           return;
         }
     }
@@ -1073,8 +1073,8 @@ parse_state_start_schema (ParseState  *state,
             {
               g_set_error (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<schema id='%s'> is a list, extending "
-                           "<schema id='%s'> which is not a list",
+                           _("<schema id='%s'> is a list, extending "
+                             "<schema id='%s'> which is not a list"),
                            id, extends_name);
               return;
             }
@@ -1083,10 +1083,10 @@ parse_state_start_schema (ParseState  *state,
             {
               g_set_error (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<schema id='%s' list-of='%s'> extends <schema "
-                           "id='%s' list-of='%s'> but '%s' does not extend '%s'",
-                           id, list_of, extends_name, extends->list_of,
-                           list_of, extends->list_of);
+                           _("<schema id='%s' list-of='%s'> extends <schema "
+                             "id='%s' list-of='%s'> but '%s' does not "
+                             "extend '%s'"), id, list_of, extends_name,
+                           extends->list_of, list_of, extends->list_of);
               return;
             }
         }
@@ -1099,10 +1099,8 @@ parse_state_start_schema (ParseState  *state,
 
   if (path && !(g_str_has_prefix (path, "/") && g_str_has_suffix (path, "/")))
     {
-      g_set_error (error, G_MARKUP_ERROR,
-                   G_MARKUP_ERROR_INVALID_CONTENT,
-                   "a path, if given, must begin and "
-                   "end with a slash");
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                   _("a path, if given, must begin and end with a slash"));
       return;
     }
 
@@ -1124,7 +1122,7 @@ parse_state_start_enum (ParseState   *state,
     {
       g_set_error (error, G_MARKUP_ERROR,
                    G_MARKUP_ERROR_INVALID_CONTENT,
-                   "<%s id='%s'> already specified",
+                   _("<%s id='%s'> already specified"),
                    is_flags ? "flags" : "enum", id);
       return;
     }
@@ -1338,11 +1336,11 @@ start_element (GMarkupParseContext  *context,
 
   if (container)
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                 "Element <%s> not allowed inside <%s>",
+                 _("Element <%s> not allowed inside <%s>"),
                  element_name, container);
   else
     g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_UNKNOWN_ELEMENT,
-                 "Element <%s> not allowed at toplevel", element_name);
+                 _("Element <%s> not allowed at toplevel"), element_name);
 }
 /* 2}}} */
 /* End element {{{2 */
@@ -1436,7 +1434,7 @@ text (GMarkupParseContext  *context,
 
         else
           g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                       "text may not appear inside <%s>",
+                       _("text may not appear inside <%s>"),
                        g_markup_parse_context_get_element (context));
 
         break;
@@ -1650,8 +1648,8 @@ set_overrides (GHashTable  *schema_table,
             {
               g_set_error (error, G_KEY_FILE_ERROR,
                            G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                           "No such schema `%s' specified in "
-                           "override file `%s'", group, filename);
+                           _("No such schema `%s' specified in "
+                             "override file `%s'"), group, filename);
               g_key_file_free (key_file);
               g_strfreev (groups);
 
@@ -1674,8 +1672,8 @@ set_overrides (GHashTable  *schema_table,
                 {
                   g_set_error (error, G_KEY_FILE_ERROR,
                                G_KEY_FILE_ERROR_KEY_NOT_FOUND,
-                               "No such key `%s' in schema `%s' as "
-                               "specified in override file `%s'",
+                               _("No such key `%s' in schema `%s' as "
+                                 "specified in override file `%s'"),
                                key, group, filename);
                   g_key_file_free (key_file);
                   g_strfreev (groups);
@@ -1707,9 +1705,9 @@ set_overrides (GHashTable  *schema_table,
                     {
                       g_set_error (error, G_MARKUP_ERROR,
                                    G_MARKUP_ERROR_INVALID_CONTENT,
-                                   "override for key `%s' in schema `%s' in "
-                                   "override file `%s' is out of the range "
-                                   "given in the schema",
+                                   _("override for key `%s' in schema `%s' in "
+                                     "override file `%s' is out of the range "
+                                     "given in the schema"),
                                    key, group, filename);
 
                       g_key_file_free (key_file);
@@ -1728,9 +1726,10 @@ set_overrides (GHashTable  *schema_table,
                     {
                       g_set_error (error, G_MARKUP_ERROR,
                                    G_MARKUP_ERROR_INVALID_CONTENT,
-                                   "override for key `%s' in schema `%s' in "
-                                   "override file `%s' is not in the list "
-                                   "of valid choices", key, group, filename);
+                                   _("override for key `%s' in schema `%s' in "
+                                     "override file `%s' is not in the list "
+                                     "of valid choices"),
+                                   key, group, filename);
 
                       g_key_file_free (key_file);
                       g_variant_unref (value);
