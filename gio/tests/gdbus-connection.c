@@ -32,9 +32,64 @@
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
 
+static gboolean
+test_connection_quit_mainloop (gpointer user_data)
+{
+  gboolean *quit_mainloop_fired = user_data;
+  *quit_mainloop_fired = TRUE;
+  g_main_loop_quit (loop);
+  return TRUE;
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 /* Connection life-cycle testing */
 /* ---------------------------------------------------------------------------------------------------- */
+
+static const GDBusInterfaceInfo boo_interface_info =
+{
+  -1,
+  "org.example.Boo",
+  (GDBusMethodInfo **) NULL,
+  (GDBusSignalInfo **) NULL,
+  (GDBusPropertyInfo **) NULL,
+  NULL,
+};
+
+static const GDBusInterfaceVTable boo_vtable =
+{
+  NULL, /* _method_call */
+  NULL, /* _get_property */
+  NULL  /* _set_property */
+};
+
+static gboolean
+some_filter_func (GDBusConnection *connection,
+                  GDBusMessage    *message,
+                  gboolean         incoming,
+                  gpointer         user_data)
+{
+  return FALSE;
+}
+
+static void
+on_name_owner_changed (GDBusConnection *connection,
+                       const gchar     *sender_name,
+                       const gchar     *object_path,
+                       const gchar     *interface_name,
+                       const gchar     *signal_name,
+                       GVariant        *parameters,
+                       gpointer         user_data)
+{
+}
+
+static void
+a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop (gpointer user_data)
+{
+  gboolean *val = user_data;
+  *val = TRUE;
+
+  g_main_loop_quit (loop);
+}
 
 static void
 test_connection_life_cycle (void)
@@ -43,6 +98,12 @@ test_connection_life_cycle (void)
   GDBusConnection *c;
   GDBusConnection *c2;
   GError *error;
+  gboolean on_signal_registration_freed_called;
+  gboolean on_filter_freed_called;
+  gboolean on_register_object_freed_called;
+  gboolean quit_mainloop_fired;
+  guint quit_mainloop_id;
+  guint registration_id;
 
   error = NULL;
 
@@ -98,6 +159,66 @@ test_connection_life_cycle (void)
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
   g_assert (!ret);
   g_object_unref (c2);
+
+  /*
+   * Check that the finalization code works
+   *
+   * (and that the GDestroyNotify for filters and objects and signal
+   * registrations are run as expected)
+   */
+  error = NULL;
+  c2 = _g_bus_get_priv (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (c2 != NULL);
+  /* signal registration */
+  on_signal_registration_freed_called = FALSE;
+  g_dbus_connection_signal_subscribe (c2,
+                                      "org.freedesktop.DBus", /* bus name */
+                                      "org.freedesktop.DBus", /* interface */
+                                      "NameOwnerChanged",     /* member */
+                                      "/org/freesktop/DBus",  /* path */
+                                      NULL,                   /* arg0 */
+                                      G_DBUS_SIGNAL_FLAGS_NONE,
+                                      on_name_owner_changed,
+                                      &on_signal_registration_freed_called,
+                                      a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop);
+  /* filter func */
+  on_filter_freed_called = FALSE;
+  g_dbus_connection_add_filter (c2,
+                                some_filter_func,
+                                &on_filter_freed_called,
+                                a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop);
+  /* object registration */
+  on_register_object_freed_called = FALSE;
+  error = NULL;
+  registration_id = g_dbus_connection_register_object (c2,
+                                                       "/foo",
+                                                       (GDBusInterfaceInfo *) &boo_interface_info,
+                                                       &boo_vtable,
+                                                       &on_register_object_freed_called,
+                                                       a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop,
+                                                       &error);
+  g_assert_no_error (error);
+  g_assert (registration_id > 0);
+  /* ok, finalize the connection and check that all the GDestroyNotify functions are invoked as expected */
+  g_object_unref (c2);
+  quit_mainloop_fired = FALSE;
+  quit_mainloop_id = g_timeout_add (1000, test_connection_quit_mainloop, &quit_mainloop_fired);
+  while (TRUE)
+    {
+      if (on_signal_registration_freed_called &&
+          on_filter_freed_called &&
+          on_register_object_freed_called)
+        break;
+      if (quit_mainloop_fired)
+        break;
+      g_main_loop_run (loop);
+    }
+  g_source_remove (quit_mainloop_id);
+  g_assert (on_signal_registration_freed_called);
+  g_assert (on_filter_freed_called);
+  g_assert (on_register_object_freed_called);
+  g_assert (!quit_mainloop_fired);
 
   /*
    *  Check for correct behavior when the bus goes away
@@ -353,15 +474,6 @@ test_connection_signal_handler (GDBusConnection  *connection,
   g_main_loop_quit (loop);
 }
 
-static gboolean
-test_connection_signal_quit_mainloop (gpointer user_data)
-{
-  gboolean *quit_mainloop_fired = user_data;
-  *quit_mainloop_fired = TRUE;
-  g_main_loop_quit (loop);
-  return TRUE;
-}
-
 static void
 test_connection_signals (void)
 {
@@ -539,7 +651,7 @@ test_connection_signals (void)
   gboolean quit_mainloop_fired;
   guint quit_mainloop_id;
   quit_mainloop_fired = FALSE;
-  quit_mainloop_id = g_timeout_add (5000, test_connection_signal_quit_mainloop, &quit_mainloop_fired);
+  quit_mainloop_id = g_timeout_add (5000, test_connection_quit_mainloop, &quit_mainloop_fired);
   while (count_name_owner_changed < 2 && !quit_mainloop_fired)
     g_main_loop_run (loop);
   g_source_remove (quit_mainloop_id);

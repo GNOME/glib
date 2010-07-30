@@ -318,6 +318,9 @@ struct _GDBusConnection
 
   GDBusAuthObserver *authentication_observer;
   GCredentials *crendentials;
+
+  /* set to TRUE when finalizing */
+  gboolean finalizing;
 };
 
 typedef struct ExportedObject ExportedObject;
@@ -408,13 +411,19 @@ g_dbus_connection_finalize (GObject *object)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (object);
 
+  connection->finalizing = TRUE;
+
+  purge_all_signal_subscriptions (connection);
+
+  purge_all_filters (connection);
+  g_ptr_array_unref (connection->filters);
+
   if (connection->authentication_observer != NULL)
     g_object_unref (connection->authentication_observer);
 
   if (connection->auth != NULL)
     g_object_unref (connection->auth);
 
-  //g_debug ("finalizing %p", connection);
   if (connection->stream != NULL)
     {
       /* We don't really care if closing the stream succeeds or not */
@@ -437,7 +446,6 @@ g_dbus_connection_finalize (GObject *object)
 
   g_hash_table_unref (connection->map_method_serial_to_send_message_data);
 
-  purge_all_signal_subscriptions (connection);
   g_hash_table_unref (connection->map_rule_to_signal_data);
   g_hash_table_unref (connection->map_id_to_signal_data);
   g_hash_table_unref (connection->map_sender_unique_name_to_signal_data_array);
@@ -446,9 +454,6 @@ g_dbus_connection_finalize (GObject *object)
   g_hash_table_unref (connection->map_object_path_to_eo);
   g_hash_table_unref (connection->map_id_to_es);
   g_hash_table_unref (connection->map_object_path_to_es);
-
-  purge_all_filters (connection);
-  g_ptr_array_unref (connection->filters);
 
   if (connection->main_context_at_construction != NULL)
     g_main_context_unref (connection->main_context_at_construction);
@@ -3047,7 +3052,7 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* must hold lock when calling this */
+/* must hold lock when calling this (except if connection->finalizing is TRUE) */
 static void
 unsubscribe_id_internal (GDBusConnection *connection,
                          guint            subscription_id,
@@ -3097,7 +3102,7 @@ unsubscribe_id_internal (GDBusConnection *connection,
           if (connection->flags & G_DBUS_CONNECTION_FLAGS_MESSAGE_BUS_CONNECTION)
             {
               if (!is_signal_data_for_name_lost_or_acquired (signal_data))
-                if (!connection->closed)
+                if (!connection->closed && !connection->finalizing)
                   remove_match_rule (connection, signal_data->rule);
             }
           signal_data_free (signal_data);
