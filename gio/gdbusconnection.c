@@ -4767,7 +4767,7 @@ g_dbus_connection_call_done (GObject      *source,
       _g_dbus_debug_print_lock ();
       g_print ("========================================================================\n"
                "GDBus-debug:Call:\n"
-               " >>>> ASYNC COMPLETE %s() (serial %d)\n"
+               " <<<< ASYNC COMPLETE %s() (serial %d)\n"
                "      ",
                state->method_name,
                state->serial);
