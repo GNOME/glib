@@ -108,6 +108,12 @@ GTypelib *    g_irepository_require       (GIRepository *repository,
 					   const gchar  *version,
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
+GTypelib *    g_irepository_require_private (GIRepository  *repository,
+					     const gchar   *typelib_dir,
+					     const gchar   *namespace,
+					     const gchar   *version,
+					     GIRepositoryLoadFlags flags,
+					     GError       **error);
 gchar      ** g_irepository_get_dependencies (GIRepository *repository,
 					      const gchar  *namespace_);
 gchar      ** g_irepository_get_loaded_namespaces (GIRepository *repository);

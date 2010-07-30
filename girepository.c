@@ -929,9 +929,9 @@ g_irepository_get_typelib_path (GIRepository *repository,
 static GMappedFile *
 find_namespace_version (const gchar  *namespace,
 			const gchar  *version,
+			GSList       *search_path,
 			gchar       **path_ret)
 {
-  GSList *tmp_path;
   GSList *ldir;
   GError *error = NULL;
   GMappedFile *mfile = NULL;
@@ -939,8 +939,7 @@ find_namespace_version (const gchar  *namespace,
 
   fname = g_strdup_printf ("%s-%s.typelib", namespace, version);
 
-  tmp_path = build_search_path_with_overrides ();
-  for (ldir = tmp_path; ldir; ldir = ldir->next)
+  for (ldir = search_path; ldir; ldir = ldir->next)
     {
       char *path = g_build_filename (ldir->data, fname, NULL);
 
@@ -955,7 +954,6 @@ find_namespace_version (const gchar  *namespace,
       break;
     }
   g_free (fname);
-  g_slist_free (tmp_path);
   return mfile;
 }
 
@@ -1050,13 +1048,13 @@ free_candidate (struct NamespaceVersionCandidadate *candidate)
 }
 
 static GSList *
-enumerate_namespace_versions (const gchar *namespace)
+enumerate_namespace_versions (const gchar *namespace,
+			      GSList      *search_path)
 {
   GSList *candidates = NULL;
   GHashTable *found_versions = g_hash_table_new (g_str_hash, g_str_equal);
   char *namespace_dash;
   char *namespace_typelib;
-  GSList *tmp_path;
   GSList *ldir;
   GError *error = NULL;
   int index;
@@ -1065,8 +1063,7 @@ enumerate_namespace_versions (const gchar *namespace)
   namespace_typelib = g_strdup_printf ("%s.typelib", namespace);
 
   index = 0;
-  tmp_path = build_search_path_with_overrides ();
-  for (ldir = tmp_path; ldir; ldir = ldir->next)
+  for (ldir = search_path; ldir; ldir = ldir->next)
     {
       GDir *dir;
       const char *dirname;
@@ -1124,7 +1121,6 @@ enumerate_namespace_versions (const gchar *namespace)
       index++;
     }
 
-  g_slist_free (tmp_path);
   g_free (namespace_dash);
   g_free (namespace_typelib);
   g_hash_table_destroy (found_versions);
@@ -1134,6 +1130,7 @@ enumerate_namespace_versions (const gchar *namespace)
 
 static GMappedFile *
 find_namespace_latest (const gchar  *namespace,
+		       GSList       *search_path,
 		       gchar       **version_ret,
 		       gchar       **path_ret)
 {
@@ -1143,7 +1140,7 @@ find_namespace_latest (const gchar  *namespace,
   *version_ret = NULL;
   *path_ret = NULL;
 
-  candidates = enumerate_namespace_versions (namespace);
+  candidates = enumerate_namespace_versions (namespace, search_path);
 
   if (candidates != NULL)
     {
@@ -1178,9 +1175,13 @@ g_irepository_enumerate_versions (GIRepository *repository,
 			 const gchar  *namespace_)
 {
   GList *ret = NULL;
+  GSList *search_path;
   GSList *candidates, *link;
 
-  candidates = enumerate_namespace_versions (namespace_);
+  search_path = build_search_path_with_overrides ();
+  candidates = enumerate_namespace_versions (namespace_, search_path);
+  g_slist_free (search_path);
+
   for (link = candidates; link; link = link->next)
     {
       struct NamespaceVersionCandidadate *candidate = link->data;
@@ -1191,28 +1192,13 @@ g_irepository_enumerate_versions (GIRepository *repository,
   return ret;
 }
 
-/**
- * g_irepository_require:
- * @repository: (allow-none): Repository, may be %NULL for the default
- * @namespace_: GI namespace to use, e.g. "Gtk"
- * @version: (allow-none): Version of namespace, may be %NULL for latest
- * @flags: Set of %GIRepositoryLoadFlags, may be 0
- * @error: a #GError.
- *
- * Force the namespace @namespace_ to be loaded if it isn't already.
- * If @namespace_ is not loaded, this function will search for a
- * ".typelib" file using the repository search path.  In addition, a
- * version @version of namespace may be specified.  If @version is
- * not specified, the latest will be used.
- *
- * Returns: a pointer to the #GTypelib if successful, %NULL otherwise
- */
-GTypelib *
-g_irepository_require (GIRepository  *repository,
-		       const gchar   *namespace,
-		       const gchar   *version,
-		       GIRepositoryLoadFlags flags,
-		       GError       **error)
+static GTypelib *
+require_internal (GIRepository  *repository,
+		  const gchar   *namespace,
+		  const gchar   *version,
+		  GIRepositoryLoadFlags flags,
+		  GSList        *search_path,
+		  GError       **error)
 {
   GMappedFile *mfile;
   GTypelib *ret = NULL;
@@ -1245,12 +1231,14 @@ g_irepository_require (GIRepository  *repository,
 
   if (version != NULL)
     {
-      mfile = find_namespace_version (namespace, version, &path);
+      mfile = find_namespace_version (namespace, version,
+				      search_path, &path);
       tmp_version = g_strdup (version);
     }
   else
     {
-      mfile = find_namespace_latest (namespace, &tmp_version, &path);
+      mfile = find_namespace_latest (namespace, search_path,
+				     &tmp_version, &path);
     }
 
   if (mfile == NULL)
@@ -1315,6 +1303,71 @@ g_irepository_require (GIRepository  *repository,
   g_free (tmp_version);
   g_free (path);
   return ret;
+}
+
+/**
+ * g_irepository_require:
+ * @repository: (allow-none): Repository, may be %NULL for the default
+ * @namespace_: GI namespace to use, e.g. "Gtk"
+ * @version: (allow-none): Version of namespace, may be %NULL for latest
+ * @flags: Set of %GIRepositoryLoadFlags, may be 0
+ * @error: a #GError.
+ *
+ * Force the namespace @namespace_ to be loaded if it isn't already.
+ * If @namespace_ is not loaded, this function will search for a
+ * ".typelib" file using the repository search path.  In addition, a
+ * version @version of namespace may be specified.  If @version is
+ * not specified, the latest will be used.
+ *
+ * Returns: a pointer to the #GTypelib if successful, %NULL otherwise
+ */
+GTypelib *
+g_irepository_require (GIRepository  *repository,
+		       const gchar   *namespace,
+		       const gchar   *version,
+		       GIRepositoryLoadFlags flags,
+		       GError       **error)
+{
+  GSList *search_path;
+  GTypelib *typelib;
+
+  search_path = build_search_path_with_overrides ();
+  typelib = require_internal (repository, namespace, version, flags,
+			      search_path, error);
+  g_slist_free (search_path);
+
+  return typelib;
+}
+
+/**
+ * g_irepository_require_private:
+ * @repository: (allow-none): Repository, may be %NULL for the default
+ * @typelib_dir: Private directory where to find the requested typelib
+ * @namespace_: GI namespace to use, e.g. "Gtk"
+ * @version: (allow-none): Version of namespace, may be %NULL for latest
+ * @flags: Set of %GIRepositoryLoadFlags, may be 0
+ * @error: a #GError.
+ *
+ * Force the namespace @namespace_ to be loaded if it isn't already.
+ * If @namespace_ is not loaded, this function will search for a
+ * ".typelib" file within the private directory only. In addition, a
+ * version @version of namespace should be specified.  If @version is
+ * not specified, the latest will be used.
+ *
+ * Returns: a pointer to the #GTypelib if successful, %NULL otherwise
+ */
+GTypelib *
+g_irepository_require_private (GIRepository  *repository,
+			       const gchar   *typelib_dir,
+			       const gchar   *namespace,
+			       const gchar   *version,
+			       GIRepositoryLoadFlags flags,
+			       GError       **error)
+{
+  GSList search_path = { (gpointer) typelib_dir, NULL };
+
+  return require_internal (repository, namespace, version, flags,
+			   &search_path, error);
 }
 
 static gboolean
