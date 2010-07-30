@@ -1747,6 +1747,69 @@ test_basic (void)
   g_option_context_free (context);
 }
 
+static void
+test_main_group (void)
+{
+  GOptionContext *context;
+  GOptionGroup *group;
+
+  context = g_option_context_new (NULL);
+  g_assert (g_option_context_get_main_group (context) == NULL);
+  group = g_option_group_new ("name", "description", "hlep", NULL, NULL);
+  g_option_context_add_group (context, group);
+  g_assert (g_option_context_get_main_group (context) == NULL);
+  group = g_option_group_new ("name", "description", "hlep", NULL, NULL);
+  g_option_context_set_main_group (context, group);
+  g_assert (g_option_context_get_main_group (context) == group);
+
+  g_option_context_free (context);
+}
+
+static gboolean error_func_called = FALSE;
+
+static void
+error_func (GOptionContext  *context,
+            GOptionGroup    *group,
+            gpointer         data,
+            GError         **error)
+{
+  g_assert_cmpint (GPOINTER_TO_INT(data), ==, 1234);
+  error_func_called = TRUE;
+}
+
+static void
+test_error_hook (void)
+{
+  GOptionContext *context;
+  gchar *arg = NULL;
+  GOptionEntry entries [] =
+    { { "test", 't', 0, G_OPTION_ARG_STRING, &arg, NULL, NULL },
+      { NULL } };
+  GOptionGroup *group;
+  gchar **argv;
+  gint argc;
+  gboolean retval;
+  GError *error = NULL;
+
+  context = g_option_context_new (NULL);
+  group = g_option_group_new ("name", "description", "hlep", GINT_TO_POINTER(1234), NULL);
+  g_option_group_add_entries (group, entries);
+  g_option_context_set_main_group (context, group);
+  g_option_group_set_error_hook (g_option_context_get_main_group (context),
+                                 error_func);
+
+  argv = split_string ("program --test", &argc);
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval == FALSE);
+  g_clear_error (&error);
+
+  g_assert (error_func_called);
+
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -1757,6 +1820,8 @@ main (int   argc,
 
   g_test_add_func ("/option/basic", test_basic);
   g_test_add_func ("/option/group/captions", group_captions);
+  g_test_add_func ("/option/group/main", test_main_group);
+  g_test_add_func ("/option/group/error-hook", test_error_hook);
 
   /* Test that restoration on failure works */
   g_test_add_func ("/option/restoration/int", error_test1);
