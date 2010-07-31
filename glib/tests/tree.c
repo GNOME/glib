@@ -294,6 +294,47 @@ test_tree_destroy (void)
   g_tree_unref (tree);
 }
 
+static gboolean
+traverse_func (gpointer key, gpointer value, gpointer data)
+{
+  gchar *c = value;
+  gchar **p = data;
+
+  **p = *c;
+  (*p)++;
+
+  return FALSE;
+}
+
+static void
+test_tree_traverse (void)
+{
+  GTree *tree;
+  gint i;
+  gchar *p, *result;
+
+  tree = g_tree_new (my_compare);
+
+  for (i = 0; chars[i]; i++)
+    g_tree_insert (tree, &chars[i], &chars[i]);
+
+  result = g_new0 (gchar, strlen (chars) + 1);
+
+  p = result;
+  g_tree_traverse (tree, traverse_func, G_IN_ORDER, &p);
+  g_assert_cmpstr (result, ==, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+
+  p = result;
+  g_tree_traverse (tree, traverse_func, G_PRE_ORDER, &p);
+  g_assert_cmpstr (result, ==, "VF73102546B98ADCENJHGILKMRPOQTSUldZXWYbachfegjiktpnmorqsxvuwyz");
+
+  p = result;
+  g_tree_traverse (tree, traverse_func, G_POST_ORDER, &p);
+  g_assert_cmpstr (result, ==, "02146538A9CEDB7GIHKMLJOQPSUTRNFWYXacbZegfikjhdmonqsrpuwvzyxtlV");
+
+  g_tree_unref (tree);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -302,6 +343,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/tree/search", test_tree_search);
   g_test_add_func ("/tree/remove", test_tree_remove);
   g_test_add_func ("/tree/destroy", test_tree_destroy);
+  g_test_add_func ("/tree/traverse", test_tree_traverse);
 
   return g_test_run ();
 }
