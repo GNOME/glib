@@ -2375,7 +2375,7 @@ g_variant_new_parsed_va (const gchar *format,
  *
  * Parses @format and returns the result.
  *
- * @format must be a text format #GVariant with one extention: at any
+ * @format must be a text format #GVariant with one extension: at any
  * point that a value may appear in the text, a '%' character followed
  * by a GVariant format string (as per g_variant_new()) may appear.  In
  * that case, the same arguments are collected from the argument list as
