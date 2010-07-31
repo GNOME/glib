@@ -96,7 +96,10 @@ test_scanner_symbols (ScannerFixture *fix,
                                 g_ascii_dtostr (buf, 2, (gdouble)i),
                                 GINT_TO_POINTER (i));
   g_scanner_scope_foreach_symbol (fix->scanner, 1, check_keys, NULL);
+  g_assert_cmpint (GPOINTER_TO_INT (g_scanner_lookup_symbol (fix->scanner, "5")), ==, 5);
   g_scanner_scope_remove_symbol (fix->scanner, 1, "5");
+  g_assert (g_scanner_lookup_symbol (fix->scanner, "5") == NULL);
+
   g_assert_cmpint (GPOINTER_TO_INT (g_scanner_scope_lookup_symbol (fix->scanner, 1, "4")), ==, 4);
   g_assert_cmpint (GPOINTER_TO_INT (g_scanner_scope_lookup_symbol (fix->scanner, 1, "5")), ==, 0);
 }
