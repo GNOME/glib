@@ -68,6 +68,7 @@ static GType
 invoke_get_type (GModule *self, const char *symbol, GError **error)
 {
   GetTypeFunc sym;
+  GType ret;
 
   if (!g_module_symbol (self, symbol, (void**)&sym))
     {
@@ -78,7 +79,15 @@ invoke_get_type (GModule *self, const char *symbol, GError **error)
       return G_TYPE_INVALID;
     }
 
-  return sym ();
+  ret = sym ();
+  if (ret == G_TYPE_INVALID)
+    {
+      g_set_error (error,
+		   G_IO_ERROR,
+		   G_IO_ERROR_FAILED,
+		   "Function '%s' returned G_TYPE_INVALID", symbol);
+    }
+  return ret;
 }
 
 static void
@@ -429,7 +438,6 @@ g_irepository_dump (const char *arg, GError **error)
 
       if (type == G_TYPE_INVALID)
 	{
-          g_printerr ("Invalid GType: '%s'\n", line);
           caught_error = TRUE;
 	  g_free (line);
 	  break;

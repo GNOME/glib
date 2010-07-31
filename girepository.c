@@ -1378,8 +1378,15 @@ g_irepository_introspect_cb (const char *option_name,
 			     gpointer data,
 			     GError **error)
 {
-  gboolean ret = g_irepository_dump (value, error);
-  exit (ret ? 0 : 1);
+  GError *tmp_error = NULL;
+  gboolean ret = g_irepository_dump (value, &tmp_error);
+  if (!ret)
+    {
+      g_error ("Failed to extract GType data: %s",
+	       tmp_error->message);
+      exit (1);
+    }
+  exit (0);
 }
 
 static const GOptionEntry introspection_args[] = {
