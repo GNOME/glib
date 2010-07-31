@@ -314,6 +314,7 @@ pointer_array_add (void)
   gpointer *segment;
 
   gparray = g_ptr_array_sized_new (1000);
+
   for (i = 0; i < 10000; i++)
     g_ptr_array_add (gparray, GINT_TO_POINTER (i));
 
@@ -552,6 +553,8 @@ byte_array_prepend (void)
   gint i;
 
   gbarray = g_byte_array_new ();
+  g_byte_array_set_size (gbarray, 1000);
+
   for (i = 0; i < 10000; i++)
     g_byte_array_prepend (gbarray, (guint8*) "abcd", 4);
 
