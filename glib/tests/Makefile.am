@@ -140,6 +140,9 @@ pattern_LDADD       = $(progs_ldadd)
 TEST_PROGS         += logging
 logging_LDADD       = $(progs_ldadd)
 
+TEST_PROGS         += error
+error_LDADD         = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality
