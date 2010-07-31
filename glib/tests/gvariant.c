@@ -612,6 +612,7 @@ test_gvarianttype (void)
        */
       ctype = G_VARIANT_TYPE (type_string->str);
       g_assert (g_variant_type_equal (ctype, type));
+      g_assert (g_variant_type_hash (ctype) == g_variant_type_hash (type));
       g_assert (g_variant_type_is_subtype_of (ctype, type));
       g_assert (g_variant_type_is_subtype_of (type, ctype));
 
@@ -2868,8 +2869,7 @@ test_varargs (void)
     GVariantBuilder array;
 
     g_variant_builder_init (&array, G_VARIANT_TYPE_ARRAY);
-    g_variant_builder_add (&array, "{sv}", "size",
-                           g_variant_new ("(ii)", 800, 600));
+    g_variant_builder_add_parsed (&array, "{'size', <(%i, %i)> }", 800, 600);
     g_variant_builder_add (&array, "{sv}", "title",
                            g_variant_new_string ("Test case"));
     g_variant_builder_add_value (&array,
