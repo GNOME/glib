@@ -46,6 +46,7 @@ test_string_chunks (void)
   tmp_string = g_string_chunk_insert_const (string_chunk, tmp_string);
   g_assert_cmpstr (tmp_string_2, ==, tmp_string);
 
+  g_string_chunk_clear (string_chunk);
   g_string_chunk_free (string_chunk);
 }
 
@@ -148,7 +149,10 @@ test_string_append_c (void)
   string = g_string_new ("hi pete!");
 
   for (i = 0; i < 10000; i++)
-    g_string_append_c (string, 'a'+(i%26));
+    if (i % 2)
+      g_string_append_c (string, 'a'+(i%26));
+    else
+      (g_string_append_c) (string, 'a'+(i%26));
 
   g_assert((strlen("hi pete!") + 10000) == string->len);
   g_assert((strlen("hi pete!") + 10000) == strlen(string->str));
@@ -391,6 +395,28 @@ test_string_nul_handling (void)
   g_string_free (string2, TRUE);
 }
 
+static void
+test_string_up_down (void)
+{
+  GString *s;
+
+  s = g_string_new ("Mixed Case String !?");
+  g_string_ascii_down (s);
+  g_assert_cmpstr (s->str, ==, "mixed case string !?");
+
+  g_string_assign (s, "Mixed Case String !?");
+  g_string_down (s);
+  g_assert_cmpstr (s->str, ==, "mixed case string !?");
+
+  g_string_assign (s, "Mixed Case String !?");
+  g_string_ascii_up (s);
+  g_assert_cmpstr (s->str, ==, "MIXED CASE STRING !?");
+
+  g_string_assign (s, "Mixed Case String !?");
+  g_string_up (s);
+  g_assert_cmpstr (s->str, ==, "MIXED CASE STRING !?");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -412,6 +438,7 @@ main (int   argc,
   g_test_add_func ("/string/test-string-truncate", test_string_truncate);
   g_test_add_func ("/string/test-string-overwrite", test_string_overwrite);
   g_test_add_func ("/string/test-string-nul-handling", test_string_nul_handling);
+  g_test_add_func ("/string/test-string-up-down", test_string_up_down);
 
   return g_test_run();
 }
