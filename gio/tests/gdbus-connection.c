@@ -865,6 +865,56 @@ test_connection_flush (void)
   session_bus_down ();
 }
 
+static void
+test_connection_basic (void)
+{
+  GDBusConnection *connection;
+  GError *error;
+  GDBusCapabilityFlags flags;
+  const gchar *guid;
+  const gchar *name;
+  gboolean closed;
+  gboolean exit_on_close;
+  GIOStream *stream;
+  GCredentials *credentials;
+
+  session_bus_up ();
+
+  error = NULL;
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (connection != NULL);
+
+  flags = g_dbus_connection_get_capabilities (connection);
+  g_assert (flags == G_DBUS_CAPABILITY_FLAGS_NONE ||
+            flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
+
+  credentials = g_dbus_connection_get_peer_credentials (connection);
+  g_assert (credentials == NULL);
+
+  g_object_get (connection,
+                "stream", &stream,
+                "guid", &guid,
+                "unique-name", &name,
+                "closed", &closed,
+                "exit-on-close", &exit_on_close,
+                "capabilities", &flags,
+                NULL);
+
+  g_assert (G_IS_IO_STREAM (stream));
+  g_assert (g_dbus_is_guid (guid));
+  g_assert (g_dbus_is_unique_name (name));
+  g_assert (!closed);
+  g_assert (exit_on_close);
+  g_assert (flags == G_DBUS_CAPABILITY_FLAGS_NONE ||
+            flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
+
+  g_object_unref (stream);
+  g_object_unref (connection);
+
+  session_bus_down ();
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -883,10 +933,11 @@ main (int   argc,
   g_unsetenv ("DISPLAY");
   g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
-  g_test_add_func ("/gdbus/connection-life-cycle", test_connection_life_cycle);
-  g_test_add_func ("/gdbus/connection-send", test_connection_send);
-  g_test_add_func ("/gdbus/connection-signals", test_connection_signals);
-  g_test_add_func ("/gdbus/connection-filter", test_connection_filter);
-  g_test_add_func ("/gdbus/connection-flush", test_connection_flush);
+  g_test_add_func ("/gdbus/connection/basic", test_connection_basic);
+  g_test_add_func ("/gdbus/connection/life-cycle", test_connection_life_cycle);
+  g_test_add_func ("/gdbus/connection/send", test_connection_send);
+  g_test_add_func ("/gdbus/connection/signals", test_connection_signals);
+  g_test_add_func ("/gdbus/connection/filter", test_connection_filter);
+  g_test_add_func ("/gdbus/connection/flush", test_connection_flush);
   return g_test_run();
 }

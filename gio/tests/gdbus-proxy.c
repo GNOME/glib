@@ -126,7 +126,7 @@ test_methods (GDBusProxy *proxy)
 }
 
 static gboolean
-strv_equal (const gchar **strv, ...)
+strv_equal (gchar **strv, ...)
 {
   gint count;
   va_list list;
@@ -151,7 +151,7 @@ strv_equal (const gchar **strv, ...)
   va_end (list);
 
   if (res)
-    res = g_strv_length ((gchar**)strv) == count;
+    res = g_strv_length (strv) == count;
 
   return res;
 }
@@ -170,6 +170,12 @@ test_properties (GDBusProxy *proxy)
   gchar **names;
 
   error = NULL;
+
+  if (g_dbus_proxy_get_flags (proxy) & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES)
+    {
+       g_assert (g_dbus_proxy_get_cached_property_names (proxy) == NULL);
+       return;
+    }
 
   /*
    * Check that we can list all cached properties.
@@ -200,7 +206,8 @@ test_properties (GDBusProxy *proxy)
                         "t",
                         "u",
                         "x",
-                        "y"));
+                        "y",
+                        NULL));
 
   g_strfreev (names);
 
@@ -491,6 +498,51 @@ test_expected_interface (GDBusProxy *proxy)
 }
 
 static void
+test_basic (GDBusProxy *proxy)
+{
+  GDBusConnection *connection;
+  GDBusConnection *conn;
+  GDBusProxyFlags flags;
+  GDBusInterfaceInfo *info;
+  const gchar *name;
+  const gchar *path;
+  const gchar *interface;
+  gint timeout;
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
+  g_assert (g_dbus_proxy_get_connection (proxy) == connection);
+  g_assert (g_dbus_proxy_get_flags (proxy) == G_DBUS_PROXY_FLAGS_NONE);
+  g_assert (g_dbus_proxy_get_interface_info (proxy) == NULL);
+  g_assert_cmpstr (g_dbus_proxy_get_name (proxy), ==, "com.example.TestService");
+  g_assert_cmpstr (g_dbus_proxy_get_object_path (proxy), ==, "/com/example/TestObject");
+  g_assert_cmpstr (g_dbus_proxy_get_interface_name (proxy), ==, "com.example.Frob");
+  g_assert_cmpint (g_dbus_proxy_get_default_timeout (proxy), ==, -1);
+
+  g_object_get (proxy,
+                "g-connection", &conn,
+                "g-interface-info", &info,
+                "g-flags", &flags,
+                "g-name", &name,
+                "g-object-path", &path,
+                "g-interface-name", &interface,
+                "g-default-timeout", &timeout,
+                NULL);
+
+  g_assert (conn == connection);
+  g_assert (info == NULL);
+  g_assert_cmpint (flags, ==, G_DBUS_PROXY_FLAGS_NONE);
+  g_assert_cmpstr (name, ==, "com.example.TestService");
+  g_assert_cmpstr (path, ==, "/com/example/TestObject");
+  g_assert_cmpstr (interface, ==, "com.example.Frob");
+  g_assert_cmpint (timeout, ==, -1);
+
+  g_object_unref (conn);
+
+  g_object_unref (connection);
+}
+
+static void
 test_proxy (void)
 {
   GDBusProxy *proxy;
@@ -525,6 +577,7 @@ test_proxy (void)
 
   _g_assert_property_notify (proxy, "g-name-owner");
 
+  test_basic (proxy);
   test_methods (proxy);
   test_properties (proxy);
   test_signals (proxy);
@@ -535,6 +588,63 @@ test_proxy (void)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+static void
+proxy_ready (GObject      *source,
+             GAsyncResult *result,
+             gpointer      user_data)
+{
+  GDBusProxy *proxy;
+  GError *error;
+
+  error = NULL;
+  proxy = g_dbus_proxy_new_for_bus_finish (result, &error);
+  g_assert_no_error (error);
+
+  test_basic (proxy);
+  test_methods (proxy);
+  test_properties (proxy);
+  test_signals (proxy);
+  test_expected_interface (proxy);
+
+  g_object_unref (proxy);
+}
+
+static void
+test_async (void)
+{
+  g_dbus_proxy_new_for_bus (G_BUS_TYPE_SESSION,
+                            G_DBUS_PROXY_FLAGS_NONE,
+                            NULL,                      /* GDBusInterfaceInfo */
+                            "com.example.TestService", /* name */
+                            "/com/example/TestObject", /* object path */
+                            "com.example.Frob",        /* interface */
+                            NULL, /* GCancellable */
+                            proxy_ready,
+                            NULL);
+}
+
+static void
+test_no_properties (void)
+{
+  GDBusProxy *proxy;
+  GError *error;
+
+  error = NULL;
+  proxy = g_dbus_proxy_new_for_bus_sync (G_BUS_TYPE_SESSION,
+                                         G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES,
+                                         NULL,                      /* GDBusInterfaceInfo */
+                                         "com.example.TestService", /* name */
+                                         "/com/example/TestObject", /* object path */
+                                         "com.example.Frob",        /* interface */
+                                         NULL, /* GCancellable */
+                                         &error);
+  g_assert_no_error (error);
+
+  test_properties (proxy);
+
+  g_object_unref (proxy);
+}
 
 int
 main (int   argc,
@@ -560,6 +670,8 @@ main (int   argc,
   g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
   g_test_add_func ("/gdbus/proxy", test_proxy);
+  g_test_add_func ("/gdbus/proxy/async", test_async);
+  g_test_add_func ("/gdbus/proxy/no-properties", test_no_properties);
 
   ret = g_test_run();
 
