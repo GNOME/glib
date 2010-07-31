@@ -317,7 +317,7 @@ struct _GDBusConnection
   GDBusCapabilityFlags capabilities;
 
   GDBusAuthObserver *authentication_observer;
-  GCredentials *crendentials;
+  GCredentials *credentials;
 
   /* set to TRUE when finalizing */
   gboolean finalizing;
@@ -2173,7 +2173,7 @@ initable_init (GInitable     *initable,
                                     (connection->flags & G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS),
                                     get_offered_capabilities_max (connection),
                                     &connection->capabilities,
-                                    &connection->crendentials,
+                                    &connection->credentials,
                                     cancellable,
                                     &connection->initialization_error))
         goto out;
@@ -2649,7 +2649,7 @@ GCredentials *
 g_dbus_connection_get_peer_credentials (GDBusConnection *connection)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  return connection->crendentials;
+  return connection->credentials;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
