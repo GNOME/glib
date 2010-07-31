@@ -414,6 +414,12 @@ test_comments (void)
   check_name ("key comment", comment, key_comment, 0);
   g_free (comment);
 
+  g_key_file_remove_comment (keyfile, "group1", "key2", &error);
+  check_no_error (&error);
+  comment = g_key_file_get_comment (keyfile, "group1", "key2", &error);
+  check_no_error (&error);
+  g_assert (comment == NULL);
+
   comment = g_key_file_get_comment (keyfile, "group2", NULL, &error);
   check_no_error (&error);
   check_name ("group comment", comment, group_comment, 0);
@@ -1295,6 +1301,47 @@ test_load (void)
   g_key_file_set_integer (file, "test", "key6", 22);
   g_key_file_set_double (file, "test", "key7", 2.5);
   g_key_file_set_comment (file, "test", "key7", "some float", NULL);
+  g_key_file_set_comment (file, "test", NULL, "the test group", NULL);
+  g_key_file_set_comment (file, NULL, NULL, "top comment", NULL);
+
+  g_key_file_free (file);
+}
+
+static void
+test_non_utf8 (void)
+{
+  GKeyFile *file;
+  static const char data[] =
+"[group]\n"
+"a=\230\230\230\n"
+"b=a;b;\230\230\230;\n"
+"c=a\\\n";
+  gboolean ok;
+  GError *error;
+  gchar *s;
+  gchar **l;
+
+  file = g_key_file_new ();
+
+  ok = g_key_file_load_from_data (file, data, strlen (data), 0, NULL);
+  g_assert (ok);
+
+  error = NULL;
+  s = g_key_file_get_string (file, "group", "a", &error);
+  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
+  g_assert (s == NULL);
+
+  g_clear_error (&error);
+  l = g_key_file_get_string_list (file, "group", "b", NULL, &error);
+  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_UNKNOWN_ENCODING);
+  g_assert (l == NULL);
+
+  g_clear_error (&error);
+  l = g_key_file_get_string_list (file, "group", "c", NULL, &error);
+  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
+  g_assert (l == NULL);
+
+  g_clear_error (&error);
 
   g_key_file_free (file);
 }
@@ -1332,6 +1379,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/reload", test_reload_idempotency);
   g_test_add_func ("/keyfile/int64", test_int64);
   g_test_add_func ("/keyfile/load", test_load);
+  g_test_add_func ("/keyfile/non-utf8", test_non_utf8);
   
   return g_test_run ();
 }
