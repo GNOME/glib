@@ -73,7 +73,6 @@ int main (int argc, char *argv[])
   g_completion_remove_items (cmp, items);
 
   items = g_completion_complete_utf8 (cmp, "b", &prefix);
-  g_assert (!strcmp ("b", prefix));
   g_assert (g_list_length (items) == 1);
   g_free (prefix);
 
