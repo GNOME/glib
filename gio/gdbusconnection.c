@@ -5096,7 +5096,7 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
   local_error = NULL;
   reply = g_dbus_connection_send_message_with_reply_sync (connection,
                                                           message,
-                                                          flags,
+							  G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                           timeout_msec,
                                                           NULL, /* volatile guint32 *out_serial */
                                                           cancellable,
