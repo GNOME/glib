@@ -143,6 +143,9 @@ logging_LDADD       = $(progs_ldadd)
 TEST_PROGS         += error
 error_LDADD         = $(progs_ldadd)
 
+TEST_PROGS         += bookmarkfile
+bookmarkfile_LDADD  = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality
@@ -166,3 +169,7 @@ dist_hook:
 	mkdir $(distdir)/markups;		\
 	for f in $(srcdir)/markups/*; do 	\
 	  cp $$f $(distdir)/markups; done
+	mkdir $(distdir)/bookmarks;		\
+	for f in $(srcdir)/bookmarks/* ; do 	\
+	  cp $$f $(distdir)/bookmarks; done
+

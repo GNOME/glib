@@ -112,9 +112,9 @@ test_programs =					\
 	unicode-caseconv			\
 	unicode-encoding
 
-test_scripts = run-collate-tests.sh run-bookmark-test.sh run-assert-msg-test.sh
+test_scripts = run-collate-tests.sh run-assert-msg-test.sh
 
-test_script_support_programs = unicode-collate bookmarkfile-test
+test_script_support_programs = unicode-collate
 
 check_PROGRAMS = $(test_programs) $(test_script_support_programs)
 
@@ -130,7 +130,6 @@ module_ldadd = $(libgmodule) $(G_MODULE_LIBS) $(progs_ldadd)
 
 atomic_test_LDADD = $(progs_ldadd)
 bit_test_LDADD = $(progs_ldadd)
-bookmarkfile_test_LDADD = $(progs_ldadd)
 child_test_LDADD = $(thread_ldadd)
 completion_test_LDADD = $(progs_ldadd)
 date_test_LDADD = $(progs_ldadd)
@@ -182,9 +181,6 @@ dist-hook: $(BUILT_EXTRA_DIST)
 	mkdir $(distdir)/collate;          			\
 	for f in $(srcdir)/collate/* ; do  			\
           if test -f $$f; then cp $$f $(distdir)/collate; fi; done
-	mkdir $(distdir)/bookmarks;          			\
-	for f in $(srcdir)/bookmarks/* ; do  			\
-	  cp $$f $(distdir)/bookmarks; done 
 
 DISTCLEANFILES =		\
 	iochannel-test-outfile 	\
