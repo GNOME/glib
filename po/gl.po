@@ -11,14 +11,15 @@
 # Suso Baleato <suso.baleato@xunta.es>,2009.
 # Antón Méixome <meixome@mancomun.org>, 2009.
 # Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010.
+# Fran Dieguez <frandieguez@mabishu.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-07-27 17:45+0200\n"
-"PO-Revision-Date: 2010-07-27 17:47+0200\n"
-"Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
+"POT-Creation-Date: 2010-08-01 23:17+0200\n"
+"PO-Revision-Date: 2010-08-01 23:17+0200\n"
+"Last-Translator: Fran Dieguez <frandieguez@mabishu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1194,12 +1195,12 @@ msgid "Too large count value passed to %s"
 msgstr "O valor de conta pasado a %s é demasiado longo"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:891
-#: ../gio/giostream.c:304 ../gio/goutputstream.c:1195
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1195
 msgid "Stream is already closed"
 msgstr "O fluxo xa se pechou"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1534
-#: ../gio/gdbusconnection.c:1623 ../gio/gdbusconnection.c:1801
+#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1539
+#: ../gio/gdbusconnection.c:1628 ../gio/gdbusconnection.c:1806
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:650
 #: ../gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
@@ -1390,7 +1391,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (non está implementado "
 "para este SO)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5974
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5979
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1399,7 +1400,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5983
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5988
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1511,23 +1512,23 @@ msgstr "Produciuse un erro ao abrir o anel de chaves «%s» para escribir:"
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Ademais, a liberación do bloqueo para «%s» tamén fallou: %s) "
 
-#: ../gio/gdbusconnection.c:1048 ../gio/gdbusconnection.c:1277
-#: ../gio/gdbusconnection.c:1316 ../gio/gdbusconnection.c:1634
+#: ../gio/gdbusconnection.c:1053 ../gio/gdbusconnection.c:1282
+#: ../gio/gdbusconnection.c:1321 ../gio/gdbusconnection.c:1639
 msgid "The connection is closed"
 msgstr "O socket engadido está pechado"
 
-#: ../gio/gdbusconnection.c:1578
+#: ../gio/gdbusconnection.c:1583
 msgid "Timeout was reached"
 msgstr "Tempo de espera máximo alcanzado"
 
-#: ../gio/gdbusconnection.c:2139
+#: ../gio/gdbusconnection.c:2144
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Encontraronse bandeiras non compatíbeis ao construír a conexión da parte "
 "cliente"
 
-#: ../gio/gdbusconnection.c:3564 ../gio/gdbusconnection.c:3880
+#: ../gio/gdbusconnection.c:3569 ../gio/gdbusconnection.c:3885
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1535,68 +1536,68 @@ msgstr ""
 "Non existe a interface «org.freedesktop.DBus.Properties» no obxecto co camiño "
 "%s"
 
-#: ../gio/gdbusconnection.c:3635
+#: ../gio/gdbusconnection.c:3640
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Produciuse un erro ao estabelecer a propiedade «%s»: Esperábase o tipo «%s» "
 "pero obtívose «%s»"
 
-#: ../gio/gdbusconnection.c:3729
+#: ../gio/gdbusconnection.c:3734
 #, c-format
 msgid "No such property `%s'"
 msgstr "Non existe a propiedade «%s»"
 
-#: ../gio/gdbusconnection.c:3741
+#: ../gio/gdbusconnection.c:3746
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3752
+#: ../gio/gdbusconnection.c:3757
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3822 ../gio/gdbusconnection.c:5410
+#: ../gio/gdbusconnection.c:3827 ../gio/gdbusconnection.c:5415
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
 
-#: ../gio/gdbusconnection.c:4007
+#: ../gio/gdbusconnection.c:4012
 msgid "No such interface"
 msgstr "Non existe a interface"
 
-#: ../gio/gdbusconnection.c:4223 ../gio/gdbusconnection.c:5924
+#: ../gio/gdbusconnection.c:4228 ../gio/gdbusconnection.c:5929
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Non existe a interface «%s» no obxecto co camiño %s"
 
-#: ../gio/gdbusconnection.c:4275
+#: ../gio/gdbusconnection.c:4280
 #, c-format
 msgid "No such method `%s'"
 msgstr "Non existe o método «%s»"
 
-#: ../gio/gdbusconnection.c:4306
+#: ../gio/gdbusconnection.c:4311
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "O tipo da mensaxe, «%s», non coincide co tipo «%s» esperado"
 
-#: ../gio/gdbusconnection.c:4525
+#: ../gio/gdbusconnection.c:4530
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 
-#: ../gio/gdbusconnection.c:4719
+#: ../gio/gdbusconnection.c:4724
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "O método «%s» devolveu un tipo «%s» máis esperábase «%s»"
 
-#: ../gio/gdbusconnection.c:5521
+#: ../gio/gdbusconnection.c:5526
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:5639
+#: ../gio/gdbusconnection.c:5644
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
@@ -1722,8 +1723,8 @@ msgstr "Produciuse un erro ao devolver co corpo baleiro"
 msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr "O tipo do valor de retorno é incorrecto, obtívose «%s» e esperábase «%s»"
 
-#: ../gio/gdbusmethodinvocation.c:389 ../gio/gsocket.c:2869
-#: ../gio/gsocket.c:2950
+#: ../gio/gdbusmethodinvocation.c:389 ../gio/gsocket.c:2871
+#: ../gio/gsocket.c:2952
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Produciuse un erro ao enviar a mensaxe: %s"
@@ -1737,7 +1738,7 @@ msgstr ""
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:703
+#: ../gio/gdbusproxy.c:710
 #, c-format
 msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
@@ -1746,12 +1747,12 @@ msgstr ""
 "Tentouse estabelecer a propiedade %s do tipo %s pero segundo á interface "
 "esperada o tipo é %s"
 
-#: ../gio/gdbusproxy.c:1224
+#: ../gio/gdbusproxy.c:1231
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Produciuse un erro ao chamar a StartServiceByName para %s:"
 
-#: ../gio/gdbusproxy.c:1245
+#: ../gio/gdbusproxy.c:1252
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Resposta %d non esperada desde o método StartServiceByName(«%s»)"
@@ -2189,7 +2190,7 @@ msgstr "O fluxo de entrada non implementa a lectura"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:901 ../gio/giostream.c:314
+#: ../gio/ginputstream.c:901 ../gio/giostream.c:316
 #: ../gio/goutputstream.c:1205
 msgid "Stream has outstanding operation"
 msgstr "O fluxo ten unha operación excepcional"
@@ -2579,7 +2580,7 @@ msgstr "a montaxe non implementa a averiguación do tipo de contido"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "a montaxe non implementa a averiguación síncrona do tipo de contido"
 
-#: ../gio/gnetworkaddress.c:294
+#: ../gio/gnetworkaddress.c:293
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "O nome do host «%s» contén '[' mais non ']'"
@@ -2617,27 +2618,191 @@ msgstr "Foi incapaz de resolver temporalmente «%s»"
 msgid "Error resolving '%s'"
 msgstr "Produciuse un erro ao resolver: «%s»"
 
-#: ../gio/gschema-compile.c:1632
+#: ../gio/gschema-compile.c:702
+msgid "empty names are not permitted"
+msgstr "non se permiten nomes baleiros"
+
+#: ../gio/gschema-compile.c:712
+#, c-format
+msgid "invalid name '%s': names must begin with a lowercase letter"
+msgstr "nome «%s» non válido: os nomes deben comezar por unha letra minúscula"
+
+#: ../gio/gschema-compile.c:724
+#, c-format
+msgid ""
+"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
+"and dash ('-') are permitted."
+msgstr ""
+"nome «%s» non válido o carácter «%c» non é válido; só se permiten nomes en "
+"minúsculas, números e guións («-»)."
+
+#: ../gio/gschema-compile.c:733
+#, c-format
+msgid "invalid name '%s': two successive dashes ('--') are not permitted."
+msgstr "nome «%s» non válido: non se permiten dous guións seguidos («--»)."
+
+#: ../gio/gschema-compile.c:742
+#, c-format
+msgid "invalid name '%s': the last character may not be a dash ('-')."
+msgstr "nome «%s» non válido: o último carácter non pode ser un guión («-»)."
+
+#: ../gio/gschema-compile.c:750
+#, c-format
+msgid "invalid name '%s': maximum length is 32"
+msgstr "nome «%s» non válido: a lonxitude máxima é 32"
+
+#: ../gio/gschema-compile.c:819
+#, c-format
+msgid "<child name='%s'> already specified"
+msgstr "<child name='%s'> xa especificado"
+
+#: ../gio/gschema-compile.c:845
+msgid "can not add keys to a 'list-of' schema"
+msgstr "non se pode engadir chaves a un esquema «lista-de» "
+
+#: ../gio/gschema-compile.c:856
+#, c-format
+msgid "<key name='%s'> already specified"
+msgstr "<key name='%s'> xa especificada"
+
+#: ../gio/gschema-compile.c:874
+#, c-format
+msgid ""
+"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
+"to modify value"
+msgstr ""
+
+#: ../gio/gschema-compile.c:885
+#, c-format
+msgid ""
+"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
+"to <key>"
+msgstr ""
+
+#: ../gio/gschema-compile.c:904
+#, c-format
+msgid "<%s id='%s'> not (yet) defined."
+msgstr "<%s id='%s'> aínda non especificado."
+
+#: ../gio/gschema-compile.c:919
+#, c-format
+msgid "invalid GVariant type string '%s'"
+msgstr "tipo de cadea GVarian «%s» non válida"
+
+#: ../gio/gschema-compile.c:949
+msgid "<override> given but schema isn't extending anything"
+msgstr "<override> fornecido pero o esquema non estende nada"
+
+#: ../gio/gschema-compile.c:962
+#, c-format
+msgid "no <key name='%s'> to override"
+msgstr ""
+
+#: ../gio/gschema-compile.c:970
+#, c-format
+msgid "<override name='%s'> already specified"
+msgstr ""
+
+#: ../gio/gschema-compile.c:1036
+#, c-format
+msgid "<schema id='%s'> already specified"
+msgstr "<schema id='%s'> xa especificado"
+
+#: ../gio/gschema-compile.c:1048
+#, c-format
+msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgstr "<schema id='%s'> estende un esquema non existente «%s»"
+
+#: ../gio/gschema-compile.c:1062
+#, c-format
+msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgstr "<schema id='%s'> é unha lista dun esquema non existente «%s»"
+
+#: ../gio/gschema-compile.c:1076
+#, c-format
+msgid ""
+"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgstr ""
+
+#: ../gio/gschema-compile.c:1086
+#, c-format
+msgid ""
+"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
+"does not extend '%s'"
+msgstr ""
+
+#: ../gio/gschema-compile.c:1103
+#, c-format
+msgid "a path, if given, must begin and end with a slash"
+msgstr "se se especifica un camiño, debe comezar e rematar con unha barra"
+
+#: ../gio/gschema-compile.c:1125
+#, c-format
+msgid "<%s id='%s'> already specified"
+msgstr "<%s id='%s'> xa especificado"
+
+#: ../gio/gschema-compile.c:1339
+#, c-format
+msgid "Element <%s> not allowed inside <%s>"
+msgstr "Non se permite o elemento <%s> dentro de <%s>"
+
+#: ../gio/gschema-compile.c:1343
+#, c-format
+msgid "Element <%s> not allowed at toplevel"
+msgstr "Non se permite o elemento <%s> non nivel superior"
+
+#: ../gio/gschema-compile.c:1437
+#, c-format
+msgid "text may not appear inside <%s>"
+msgstr "O texto non debe aparecer dentro de <%s>"
+
+#: ../gio/gschema-compile.c:1651
+#, c-format
+msgid "No such schema `%s' specified in override file `%s'"
+msgstr "Non existe o esquema «%s» especificado no ficheiro de sobrescritura «%s»"
+
+#: ../gio/gschema-compile.c:1675
+#, c-format
+msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgstr ""
+"Non existe a chave «%s» no esquema «%s» como se especificou no ficheiro de "
+"sobrescritura «%s»"
+
+#: ../gio/gschema-compile.c:1708
+#, c-format
+msgid ""
+"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"range given in the schema"
+msgstr ""
+
+#: ../gio/gschema-compile.c:1729
+#, c-format
+msgid ""
+"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"list of valid choices"
+msgstr ""
+
+#: ../gio/gschema-compile.c:1774
 msgid "where to store the gschemas.compiled file"
 msgstr "onde almacenar o ficheiro compilado de gschemas"
 
-#: ../gio/gschema-compile.c:1632 ../gio/gschema-compile.c:1644
+#: ../gio/gschema-compile.c:1774 ../gio/gschema-compile.c:1786
 msgid "DIRECTORY"
 msgstr "DIRECTORIO"
 
-#: ../gio/gschema-compile.c:1633
+#: ../gio/gschema-compile.c:1775
 msgid "Do not write the gschema.compiled file"
 msgstr "Non escribir o ficheiro compilado de gschema"
 
-#: ../gio/gschema-compile.c:1634
+#: ../gio/gschema-compile.c:1776
 msgid "This option will be removed soon."
 msgstr "Esta opción eliminarase pronto"
 
-#: ../gio/gschema-compile.c:1635
+#: ../gio/gschema-compile.c:1777
 msgid "Do not enforce key name restrictions"
 msgstr "Non respetar as restricións de nome de chave"
 
-#: ../gio/gschema-compile.c:1647
+#: ../gio/gschema-compile.c:1789
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2647,22 +2812,22 @@ msgstr ""
 "de esquemas. Os ficheiros de esquema deben ter a extensión\n"
 ".gschema.xml e o ficheiro de caché chámase gschemas.compiled."
 
-#: ../gio/gschema-compile.c:1663
+#: ../gio/gschema-compile.c:1805
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Debería fornecer exactamente un nome de cartafol\n"
 
-#: ../gio/gschema-compile.c:1696
+#: ../gio/gschema-compile.c:1844
 #, c-format
 msgid "No schema files found: "
 msgstr "Non se encontraron ficheiros de esquema: "
 
-#: ../gio/gschema-compile.c:1699
+#: ../gio/gschema-compile.c:1847
 #, c-format
 msgid "doing nothing.\n"
 msgstr "sen facer nada.\n"
 
-#: ../gio/gschema-compile.c:1702
+#: ../gio/gschema-compile.c:1850
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "eliminouse o ficheiro de saída existente.\n"
@@ -2838,7 +3003,7 @@ msgstr "Conexión en marcha"
 msgid "Error connecting: %s"
 msgstr "Produciuse un erro ao conectar: %s"
 
-#: ../gio/gsocket.c:1669 ../gio/gsocket.c:3374
+#: ../gio/gsocket.c:1669 ../gio/gsocket.c:3376
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Non é posíbel obter o erro pendente: %s"
@@ -2863,16 +3028,16 @@ msgstr "Produciuse un erro ao pechar o socket: %s"
 msgid "Waiting for socket condition: %s"
 msgstr "Agardando pola situación do socket: %s"
 
-#: ../gio/gsocket.c:2894
+#: ../gio/gsocket.c:2896
 msgid "GSocketControlMessage not supported on windows"
 msgstr "O GSocketControlMessage non está permitido en windows"
 
-#: ../gio/gsocket.c:3153 ../gio/gsocket.c:3294
+#: ../gio/gsocket.c:3155 ../gio/gsocket.c:3296
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Produciuse un erro ao recibir a mensaxe: %s"
 
-#: ../gio/gsocket.c:3389
+#: ../gio/gsocket.c:3391
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials non está implementado para este sistema operativo"
