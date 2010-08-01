@@ -1693,9 +1693,7 @@ g_bookmark_file_load_from_data (GBookmarkFile  *bookmark,
   gboolean retval;
   
   g_return_val_if_fail (bookmark != NULL, FALSE);
-  g_return_val_if_fail (data != NULL, FALSE);
-  g_return_val_if_fail (length != 0, FALSE);
-  
+
   if (length == (gsize) -1)
     length = strlen (data);
 
@@ -1704,7 +1702,7 @@ g_bookmark_file_load_from_data (GBookmarkFile  *bookmark,
       g_bookmark_file_clear (bookmark);
       g_bookmark_file_init (bookmark);
     }
-  
+
   parse_error = NULL;
   retval = g_bookmark_file_parse (bookmark, data, length, &parse_error);
   if (!retval)
