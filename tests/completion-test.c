@@ -34,6 +34,7 @@ int main (int argc, char *argv[])
   gchar *prefix;
   
   cmp = g_completion_new (NULL);
+  g_completion_set_compare (cmp, strncmp);
 
   items = NULL;
   items = g_list_append (items, "a\302\243");
@@ -67,6 +68,14 @@ int main (int argc, char *argv[])
 
   items = g_completion_complete_utf8 (cmp, "a", NULL);
   g_assert (g_list_length (items) == 2);
+
+  items = g_list_append (NULL, "bb");
+  g_completion_remove_items (cmp, items);
+
+  items = g_completion_complete_utf8 (cmp, "b", &prefix);
+  g_assert (!strcmp ("b", prefix));
+  g_assert (g_list_length (items) == 1);
+  g_free (prefix);
 
   g_completion_free (cmp);
 
