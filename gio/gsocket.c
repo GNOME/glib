@@ -2776,6 +2776,8 @@ g_socket_send_message (GSocket                *socket,
     struct msghdr msg;
     gssize result;
 
+   msg.msg_flags = 0;
+
     /* name */
     if (address)
       {
