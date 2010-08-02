@@ -91,6 +91,19 @@ g_app_info_reset_type_associations
 #endif
 
 
+#if IN_FILE(__G_WIN32_APP_INFO_C__)
+#ifdef G_OS_WIN32
+g_app_info_create_from_commandline
+g_app_info_get_all
+g_app_info_get_all_for_type
+g_app_info_get_default_for_type
+g_app_info_get_default_for_uri_scheme
+g_app_info_reset_type_associations
+#endif
+#endif
+#endif
+
+
 #if IN_HEADER(__G_DESKTOP_APP_INFO_H__)
 #if IN_FILE(__G_DESKTOP_APP_INFO_C__)
 #ifdef G_OS_UNIX
