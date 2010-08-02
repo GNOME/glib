@@ -153,7 +153,7 @@ endif
 
 if ENABLE_SYSTEMTAP
 tapset_in_files = gobject.stp.in
-tapsetdir   = $(DESTDIR)@ABS_TAPSET_DIR@
+tapsetdir   = @ABS_TAPSET_DIR@
 tapset_DATA = $(tapset_in_files:.stp.in=.stp)
 EXTRA_DIST += $(tapset_in_files)
 endif
