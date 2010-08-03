@@ -971,6 +971,7 @@ GVariant *
 g_variant_new_string (const gchar *string)
 {
   g_return_val_if_fail (string != NULL, NULL);
+  g_return_val_if_fail (g_utf8_validate (string, -1, NULL), NULL);
 
   return g_variant_new_from_trusted (G_VARIANT_TYPE_STRING,
                                      string, strlen (string) + 1);
