@@ -3349,7 +3349,7 @@ distribute_signals (GDBusConnection *connection,
       _g_dbus_debug_print_lock ();
       g_print ("========================================================================\n"
                "GDBus-debug:Signal:\n"
-               " >>>> SIGNAL %s.%s\n"
+               " <<<< RECEIVED SIGNAL %s.%s\n"
                "      on object %s\n"
                "      sent by name %s\n",
                g_dbus_message_get_interface (message),
@@ -5886,7 +5886,7 @@ distribute_method_call (GDBusConnection *connection,
       _g_dbus_debug_print_lock ();
       g_print ("========================================================================\n"
                "GDBus-debug:Incoming:\n"
-               " >>>> METHOD INVOCATION %s.%s()\n"
+               " <<<< METHOD INVOCATION %s.%s()\n"
                "      on object %s\n"
                "      invoked by name %s\n",
                interface_name, member,
