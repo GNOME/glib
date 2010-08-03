@@ -1236,3 +1236,18 @@ g_signal_type_cclosure_new (GType    itype,
  * A marshaller for a #GCClosure with a callback of type
  * <literal>gchar* (*callback) (gpointer instance, GObject *arg1, gpointer arg2, gpointer user_data)</literal>.
  */
+/**
+ * g_cclosure_marshal_BOOLEAN__OBJECT_BOXED_BOXED:
+ * @closure: the #GClosure to which the marshaller belongs
+ * @return_value: a #GValue, which can store the returned string
+ * @n_param_values: 3
+ * @param_values: a #GValue array holding instance, arg1 and arg2
+ * @invocation_hint: the invocation hint given as the last argument
+ *  to g_closure_invoke()
+ * @marshal_data: additional data specified when registering the marshaller
+ *
+ * A marshaller for a #GCClosure with a callback of type
+ * <literal>gboolean (*callback) (gpointer instance, GBoxed *arg1, GBoxed *arg2, gpointer user_data)</literal>.
+ *
+ * Since: 2.26
+ */

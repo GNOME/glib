@@ -58,6 +58,7 @@ g_variant_get_gtype G_GNUC_CONST
 #if IN_HEADER(__G_MARSHAL_H__)
 #if IN_FILE(__G_SIGNAL_C__)
 g_cclosure_marshal_BOOLEAN__FLAGS
+g_cclosure_marshal_BOOLEAN__BOXED_BOXED
 g_cclosure_marshal_STRING__OBJECT_POINTER
 g_cclosure_marshal_VOID__BOOLEAN
 g_cclosure_marshal_VOID__BOXED

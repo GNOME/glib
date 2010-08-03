@@ -105,6 +105,7 @@
 
 #include "gbinding.h"
 #include "genums.h"
+#include "gmarshal.h"
 #include "gobject.h"
 #include "gsignal.h"
 #include "gparamspecs.h"
@@ -1161,12 +1162,18 @@ g_object_bind_property_with_closures (gpointer       source,
 
   if (transform_to != NULL)
     {
+      if (G_CLOSURE_NEEDS_MARSHAL (transform_to))
+        g_closure_set_marshal (transform_to, g_cclosure_marshal_BOOLEAN__BOXED_BOXED);
+
       data->transform_to_closure = g_closure_ref (transform_to);
       g_closure_sink (data->transform_to_closure);
     }
 
   if (transform_from != NULL)
     {
+      if (G_CLOSURE_NEEDS_MARSHAL (transform_from))
+        g_closure_set_marshal (transform_from, g_cclosure_marshal_BOOLEAN__BOXED_BOXED);
+
       data->transform_from_closure = g_closure_ref (transform_from);
       g_closure_sink (data->transform_from_closure);
     }

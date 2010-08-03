@@ -356,43 +356,6 @@ binding_transform (void)
 }
 
 static void
-binding_transform_marshal (GClosure     *closure,
-                           GValue       *return_value,
-                           guint         n_param_values,
-                           const GValue *param_values,
-                           gpointer      invocation_hint G_GNUC_UNUSED,
-                           gpointer      marshal_data)
-{
-  typedef gboolean (* GMarshalFunc_BOOLEAN__VALUE_VALUE) (gpointer data1,
-                                                          gpointer arg_2,
-                                                          gpointer arg_3,
-                                                          gpointer data2);
-  register GMarshalFunc_BOOLEAN__VALUE_VALUE callback;
-  register GCClosure *cc = (GCClosure *) closure;
-  register gpointer data1, data2;
-  gboolean v_return;
-
-  if (G_CCLOSURE_SWAP_DATA (closure))
-    {
-      data1 = closure->data;
-      data2 = g_value_peek_pointer (param_values + 0);
-    }
-  else
-    {
-      data1 = g_value_peek_pointer (param_values + 0);
-      data2 = closure->data;
-    }
-
-  callback = (GMarshalFunc_BOOLEAN__VALUE_VALUE) (marshal_data ? marshal_data : cc->callback);
-  v_return = callback (data1,
-                       g_value_get_boxed (param_values + 1),
-                       g_value_get_boxed (param_values + 2),
-                       data2);
-
-  g_value_set_boolean (return_value, v_return);
-}
-
-static void
 binding_transform_closure (void)
 {
   BindingSource *source = g_object_new (binding_source_get_type (), NULL);
@@ -402,10 +365,8 @@ binding_transform_closure (void)
   GClosure *c2f_clos, *f2c_clos;
 
   c2f_clos = g_cclosure_new (G_CALLBACK (celsius_to_fahrenheit), &unused_data_1, (GClosureNotify) data_free);
-  g_closure_set_marshal (c2f_clos, binding_transform_marshal);
 
   f2c_clos = g_cclosure_new (G_CALLBACK (fahrenheit_to_celsius), &unused_data_2, (GClosureNotify) data_free);
-  g_closure_set_marshal (f2c_clos, binding_transform_marshal);
 
   binding = g_object_bind_property_with_closures (source, "value",
                                                   target, "value",
