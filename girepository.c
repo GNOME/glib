@@ -1280,6 +1280,7 @@ require_internal (GIRepository  *repository,
 		   "Typelib file %s for namespace '%s' contains "
 		   "namespace '%s' which doesn't match the file name",
 		   path, namespace, typelib_namespace);
+      g_typelib_free (typelib);
       goto out;
     }
   if (version != NULL && strcmp (typelib_version, version) != 0)
@@ -1289,6 +1290,7 @@ require_internal (GIRepository  *repository,
 		   "Typelib file %s for namespace '%s' contains "
 		   "version '%s' which doesn't match the expected version '%s'",
 		   path, namespace, typelib_version, version);
+      g_typelib_free (typelib);
       goto out;
     }
 
