@@ -49,6 +49,7 @@ icons
 live-g-file
 memory-input-stream
 memory-output-stream
+network-address
 org.gtk.test.enums.xml
 readwrite
 resolver
@@ -64,3 +65,4 @@ test.mo
 unix-fd
 unix-streams
 utf8-input-streamgdbus-addresses
+volumemonitor
