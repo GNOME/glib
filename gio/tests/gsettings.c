@@ -681,6 +681,7 @@ enum
 {
   PROP_0,
   PROP_BOOL,
+  PROP_ANTI_BOOL,
   PROP_BYTE,
   PROP_INT16,
   PROP_UINT16,
@@ -701,6 +702,7 @@ typedef struct
   GObject parent_instance;
 
   gboolean bool_prop;
+  gboolean anti_bool_prop;
   gchar byte_prop;
   gint int16_prop;
   guint16 uint16_prop;
@@ -749,6 +751,9 @@ test_object_get_property (GObject    *object,
     {
     case PROP_BOOL:
       g_value_set_boolean (value, test_object->bool_prop);
+      break;
+    case PROP_ANTI_BOOL:
+      g_value_set_boolean (value, test_object->anti_bool_prop);
       break;
     case PROP_BYTE:
       g_value_set_char (value, test_object->byte_prop);
@@ -804,6 +809,9 @@ test_object_set_property (GObject      *object,
     {
     case PROP_BOOL:
       test_object->bool_prop = g_value_get_boolean (value);
+      break;
+    case PROP_ANTI_BOOL:
+      test_object->anti_bool_prop = g_value_get_boolean (value);
       break;
     case PROP_BYTE:
       test_object->byte_prop = g_value_get_char (value);
@@ -883,6 +891,8 @@ test_object_class_init (TestObjectClass *class)
 
   g_object_class_install_property (gobject_class, PROP_BOOL,
     g_param_spec_boolean ("bool", "", "", FALSE, G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_ANTI_BOOL,
+    g_param_spec_boolean ("anti-bool", "", "", FALSE, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_BYTE,
     g_param_spec_char ("byte", "", "", G_MININT8, G_MAXINT8, 0, G_PARAM_READWRITE));
   g_object_class_install_property (gobject_class, PROP_INT16,
@@ -942,7 +952,6 @@ test_simple_binding (void)
   obj = test_object_new ();
 
   g_settings_bind (settings, "bool", obj, "bool", G_SETTINGS_BIND_DEFAULT);
-
   g_object_set (obj, "bool", TRUE, NULL);
   g_assert_cmpint (g_settings_get_boolean (settings, "bool"), ==, TRUE);
 
@@ -950,6 +959,16 @@ test_simple_binding (void)
   b = TRUE;
   g_object_get (obj, "bool", &b, NULL);
   g_assert_cmpint (b, ==, FALSE);
+
+  g_settings_bind (settings, "anti-bool", obj, "anti-bool",
+                   G_SETTINGS_BIND_INVERT_BOOLEAN);
+  g_object_set (obj, "anti-bool", FALSE, NULL);
+  g_assert_cmpint (g_settings_get_boolean (settings, "anti-bool"), ==, TRUE);
+
+  g_settings_set_boolean (settings, "anti-bool", FALSE);
+  b = FALSE;
+  g_object_get (obj, "anti-bool", &b, NULL);
+  g_assert_cmpint (b, ==, TRUE);
 
   g_settings_bind (settings, "byte", obj, "byte", G_SETTINGS_BIND_DEFAULT);
 

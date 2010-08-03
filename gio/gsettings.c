@@ -2285,6 +2285,23 @@ g_settings_binding_property_changed (GObject          *object,
   binding->running = FALSE;
 }
 
+static gboolean
+g_settings_bind_invert_boolean_get_mapping (GValue   *value,
+                                            GVariant *variant,
+                                            gpointer  user_data)
+{
+  g_value_set_boolean (value, !g_variant_get_boolean (variant));
+  return TRUE;
+}
+
+static GVariant *
+g_settings_bind_invert_boolean_set_mapping (const GValue       *value,
+                                            const GVariantType *expected_type,
+                                            gpointer            user_data)
+{
+  return g_variant_new_boolean (!g_value_get_boolean (value));
+}
+
 /**
  * g_settings_bind:
  * @settings: a #GSettings object
@@ -2323,8 +2340,20 @@ g_settings_bind (GSettings          *settings,
                  const gchar        *property,
                  GSettingsBindFlags  flags)
 {
-  g_settings_bind_with_mapping (settings, key, object, property,
-                                flags, NULL, NULL, NULL, NULL);
+  GSettingsBindGetMapping get_mapping = NULL;
+  GSettingsBindSetMapping set_mapping = NULL;
+
+  if (flags & G_SETTINGS_BIND_INVERT_BOOLEAN)
+    {
+      get_mapping = g_settings_bind_invert_boolean_get_mapping;
+      set_mapping = g_settings_bind_invert_boolean_set_mapping;
+
+      /* can't pass this flag to g_settings_bind_with_mapping() */
+      flags &= ~G_SETTINGS_BIND_INVERT_BOOLEAN;
+    }
+
+  g_settings_bind_with_mapping (settings, key, object, property, flags,
+                                get_mapping, set_mapping, NULL, NULL);
 }
 
 /**
@@ -2371,6 +2400,7 @@ g_settings_bind_with_mapping (GSettings               *settings,
   GQuark binding_quark;
 
   g_return_if_fail (G_IS_SETTINGS (settings));
+  g_return_if_fail (~flags & G_SETTINGS_BIND_INVERT_BOOLEAN);
 
   objectclass = G_OBJECT_GET_CLASS (object);
 
@@ -2408,10 +2438,39 @@ g_settings_bind_with_mapping (GSettings               *settings,
       return;
     }
 
-  if (((get_mapping == NULL && (flags & G_SETTINGS_BIND_GET)) ||
-       (set_mapping == NULL && (flags & G_SETTINGS_BIND_SET))) &&
-      !g_settings_mapping_is_compatible (binding->property->value_type,
-                                         binding->info.type))
+  if (get_mapping == g_settings_bind_invert_boolean_get_mapping)
+    {
+      /* g_settings_bind_invert_boolean_get_mapping() is a private
+       * function, so if we are here it means that g_settings_bind() was
+       * called with G_SETTINGS_BIND_INVERT_BOOLEAN.
+       *
+       * Ensure that both sides are boolean.
+       */
+
+      if (binding->property->value_type != G_TYPE_BOOLEAN)
+        {
+          g_critical ("g_settings_bind: G_SETTINGS_BIND_INVERT_BOOLEAN "
+                      "was specified, but property `%s' on type `%s' has "
+                      "type `%s'", property, G_OBJECT_TYPE_NAME (object),
+                      g_type_name ((binding->property->value_type)));
+          return;
+        }
+
+      if (!g_variant_type_equal (binding->info.type, G_VARIANT_TYPE_BOOLEAN))
+        {
+          g_critical ("g_settings_bind: G_SETTINGS_BIND_INVERT_BOOLEAN "
+                      "was specified, but key `%s' on schema `%s' has "
+                      "type `%s'", key, settings->priv->schema_name,
+                      g_variant_type_dup_string (binding->info.type));
+          return;
+        }
+
+    }
+
+  else if (((get_mapping == NULL && (flags & G_SETTINGS_BIND_GET)) ||
+            (set_mapping == NULL && (flags & G_SETTINGS_BIND_SET))) &&
+           !g_settings_mapping_is_compatible (binding->property->value_type,
+                                              binding->info.type))
     {
       g_critical ("g_settings_bind: property '%s' on class '%s' has type "
                   "'%s' which is not compatible with type '%s' of key '%s' "
