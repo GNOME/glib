@@ -55,7 +55,7 @@ test_exit_on_close (void)
       session_bus_down ();
       g_main_loop_run (loop);
     }
-  g_test_trap_assert_stdout ("*Remote peer vanished. Exiting.*");
+  g_test_trap_assert_stdout ("*Remote peer vanished with error: Underlying GIOStream returned 0 bytes on an async read (g-io-error-quark, 0). Exiting.*");
   g_test_trap_assert_failed();
 }
 
