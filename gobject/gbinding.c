@@ -124,6 +124,7 @@ g_binding_flags_get_type (void)
         { G_BINDING_DEFAULT, "G_BINDING_DEFAULT", "default" },
         { G_BINDING_BIDIRECTIONAL, "G_BINDING_BIDIRECTIONAL", "bidirectional" },
         { G_BINDING_SYNC_CREATE, "G_BINDING_SYNC_CREATE", "sync-create" },
+        { G_BINDING_INVERT_BOOLEAN, "G_BINDING_INVERT_BOOLEAN", "invert-boolean" },
         { 0, NULL, NULL }
       };
       GType g_define_type_id =
@@ -301,21 +302,44 @@ done:
   return TRUE;
 }
 
+static inline gboolean
+default_invert_boolean_transform (const GValue *value_a,
+                                  GValue       *value_b)
+{
+  gboolean value;
+
+  g_assert (G_VALUE_HOLDS_BOOLEAN (value_a));
+  g_assert (G_VALUE_HOLDS_BOOLEAN (value_b));
+
+  value = g_value_get_boolean (value_a);
+  value = !value;
+
+  g_value_set_boolean (value_b, value);
+
+  return TRUE;
+}
+
 static gboolean
-default_transform_to (GBinding     *binding G_GNUC_UNUSED,
+default_transform_to (GBinding     *binding,
                       const GValue *value_a,
                       GValue       *value_b,
                       gpointer      user_data G_GNUC_UNUSED)
 {
+  if (binding->flags & G_BINDING_INVERT_BOOLEAN)
+    return default_invert_boolean_transform (value_a, value_b);
+
   return default_transform (value_a, value_b);
 }
 
 static gboolean
-default_transform_from (GBinding     *binding G_GNUC_UNUSED,
+default_transform_from (GBinding     *binding,
                         const GValue *value_a,
                         GValue       *value_b,
                         gpointer      user_data G_GNUC_UNUSED)
 {
+  if (binding->flags & G_BINDING_INVERT_BOOLEAN)
+    return default_invert_boolean_transform (value_a, value_b);
+
   return default_transform (value_a, value_b);
 }
 
@@ -809,6 +833,15 @@ g_object_bind_property_full (gpointer               source,
       return NULL;
     }
 
+  /* remove the G_BINDING_INVERT_BOOLEAN flag in case we have
+   * custom transformation functions
+   */
+  if ((flags & G_BINDING_INVERT_BOOLEAN) &&
+      (transform_to != NULL || transform_from != NULL))
+    {
+      flags &= ~G_BINDING_INVERT_BOOLEAN;
+    }
+
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (source), source_property);
   if (pspec == NULL)
     {
@@ -838,6 +871,18 @@ g_object_bind_property_full (gpointer               source,
       return NULL;
     }
 
+  if ((flags & G_BINDING_INVERT_BOOLEAN) &&
+      !(G_PARAM_SPEC_VALUE_TYPE (pspec) == G_TYPE_BOOLEAN))
+    {
+      g_warning ("%s: The G_BINDING_INVERT_BOOLEAN flag can only be used "
+                 "when binding boolean properties; the source property '%s' "
+                 "is of type '%s'",
+                 G_STRLOC,
+                 source_property,
+                 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
+      return NULL;
+    }
+
   pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (target), target_property);
   if (pspec == NULL)
     {
@@ -864,6 +909,18 @@ g_object_bind_property_full (gpointer               source,
                  G_STRLOC,
                  G_OBJECT_TYPE_NAME (target),
                  target_property);
+      return NULL;
+    }
+
+  if ((flags & G_BINDING_INVERT_BOOLEAN) &&
+      !(G_PARAM_SPEC_VALUE_TYPE (pspec) == G_TYPE_BOOLEAN))
+    {
+      g_warning ("%s: The G_BINDING_INVERT_BOOLEAN flag can only be used "
+                 "when binding boolean properties; the target property '%s' "
+                 "is of type '%s'",
+                 G_STRLOC,
+                 target_property,
+                 g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspec)));
       return NULL;
     }
 

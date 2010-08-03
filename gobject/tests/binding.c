@@ -8,6 +8,7 @@ typedef struct _BindingSource
 
   gint foo;
   gdouble value;
+  gboolean toggle;
 } BindingSource;
 
 typedef struct _BindingSourceClass
@@ -20,8 +21,8 @@ enum
   PROP_SOURCE_0,
 
   PROP_SOURCE_FOO,
-
-  PROP_SOURCE_VALUE
+  PROP_SOURCE_VALUE,
+  PROP_SOURCE_TOGGLE
 };
 
 G_DEFINE_TYPE (BindingSource, binding_source, G_TYPE_OBJECT);
@@ -42,6 +43,10 @@ binding_source_set_property (GObject      *gobject,
 
     case PROP_SOURCE_VALUE:
       source->value = g_value_get_double (value);
+      break;
+
+    case PROP_SOURCE_TOGGLE:
+      source->toggle = g_value_get_boolean (value);
       break;
 
     default:
@@ -67,6 +72,10 @@ binding_source_get_property (GObject    *gobject,
       g_value_set_double (value, source->value);
       break;
 
+    case PROP_SOURCE_TOGGLE:
+      g_value_set_boolean (value, source->toggle);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
@@ -90,6 +99,10 @@ binding_source_class_init (BindingSourceClass *klass)
                                                         -100.0, 200.0,
                                                         0.0,
                                                         G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_SOURCE_TOGGLE,
+                                   g_param_spec_boolean ("toggle", "Toggle", "Toggle",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 }
 
 static void
@@ -103,6 +116,7 @@ typedef struct _BindingTarget
 
   gint bar;
   gdouble value;
+  gboolean toggle;
 } BindingTarget;
 
 typedef struct _BindingTargetClass
@@ -115,8 +129,8 @@ enum
   PROP_TARGET_0,
 
   PROP_TARGET_BAR,
-
-  PROP_TARGET_VALUE
+  PROP_TARGET_VALUE,
+  PROP_TARGET_TOGGLE
 };
 
 G_DEFINE_TYPE (BindingTarget, binding_target, G_TYPE_OBJECT);
@@ -137,6 +151,10 @@ binding_target_set_property (GObject      *gobject,
 
     case PROP_TARGET_VALUE:
       target->value = g_value_get_double (value);
+      break;
+
+    case PROP_TARGET_TOGGLE:
+      target->toggle = g_value_get_boolean (value);
       break;
 
     default:
@@ -162,6 +180,10 @@ binding_target_get_property (GObject    *gobject,
       g_value_set_double (value, target->value);
       break;
 
+    case PROP_TARGET_TOGGLE:
+      g_value_set_boolean (value, target->toggle);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);
     }
@@ -180,11 +202,15 @@ binding_target_class_init (BindingTargetClass *klass)
                                                      -1, 100,
                                                      0,
                                                      G_PARAM_READWRITE));
-  g_object_class_install_property (gobject_class, PROP_SOURCE_VALUE,
+  g_object_class_install_property (gobject_class, PROP_TARGET_VALUE,
                                    g_param_spec_double ("value", "Value", "Value",
                                                         -100.0, 200.0,
                                                         0.0,
                                                         G_PARAM_READWRITE));
+  g_object_class_install_property (gobject_class, PROP_TARGET_TOGGLE,
+                                   g_param_spec_boolean ("toggle", "Toggle", "Toggle",
+                                                         FALSE,
+                                                         G_PARAM_READWRITE));
 }
 
 static void
@@ -469,6 +495,33 @@ binding_sync_create (void)
   g_object_unref (target);
 }
 
+static void
+binding_invert_boolean (void)
+{
+  BindingSource *source = g_object_new (binding_source_get_type (),
+                                        "toggle", TRUE,
+                                        NULL);
+  BindingTarget *target = g_object_new (binding_target_get_type (),
+                                        "toggle", FALSE,
+                                        NULL);
+  GBinding *binding;
+
+  binding = g_object_bind_property (source, "toggle",
+                                    target, "toggle",
+                                    G_BINDING_DEFAULT | G_BINDING_INVERT_BOOLEAN);
+
+  g_assert (source->toggle);
+  g_assert (!target->toggle);
+
+  g_object_set (source, "toggle", FALSE, NULL);
+  g_assert (!source->toggle);
+  g_assert (target->toggle);
+
+  g_object_unref (binding);
+  g_object_unref (source);
+  g_object_unref (target);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -481,6 +534,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/binding/transform-closure", binding_transform_closure);
   g_test_add_func ("/binding/chain", binding_chain);
   g_test_add_func ("/binding/sync-create", binding_sync_create);
+  g_test_add_func ("/binding/invert-boolean", binding_invert_boolean);
 
   return g_test_run ();
 }

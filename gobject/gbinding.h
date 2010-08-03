@@ -72,13 +72,18 @@ typedef gboolean (* GBindingTransformFunc) (GBinding     *binding,
 /**
  * GBindingFlags:
  * @G_BINDING_DEFAULT: The default binding; if the source property
- *   changes, the target property is updated with its value
+ *   changes, the target property is updated with its value.
  * @G_BINDING_BIDIRECTIONAL: Bidirectional binding; if either the
  *   property of the source or the property of the target changes,
- *   the other is updated
+ *   the other is updated.
  * @G_BINDING_SYNC_CREATE: Synchronize the values of the source and
  *   target properties when creating the binding; the direction of
- *   the synchronization is always from the source to the target
+ *   the synchronization is always from the source to the target.
+ * @G_BINDING_INVERT_BOOLEAN: If the two properties being bound are
+ *   booleans, setting one to %TRUE will result in the other being
+ *   set to %FALSE and vice versa. This flag will only work for
+ *   boolean properties, and cannot be used when passing custom
+ *   transformation functions to g_object_bind_property_full().
  *
  * Flags to be passed to g_object_bind_property() or
  * g_object_bind_property_full().
@@ -88,10 +93,11 @@ typedef gboolean (* GBindingTransformFunc) (GBinding     *binding,
  * Since: 2.26
  */
 typedef enum { /*< prefix=G_BINDING >*/
-  G_BINDING_DEFAULT       = 0,
+  G_BINDING_DEFAULT        = 0,
 
-  G_BINDING_BIDIRECTIONAL = 1 << 0,
-  G_BINDING_SYNC_CREATE   = 1 << 1
+  G_BINDING_BIDIRECTIONAL  = 1 << 0,
+  G_BINDING_SYNC_CREATE    = 1 << 1,
+  G_BINDING_INVERT_BOOLEAN = 1 << 2
 } GBindingFlags;
 
 GType                 g_binding_flags_get_type      (void) G_GNUC_CONST;
