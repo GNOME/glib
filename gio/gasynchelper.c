@@ -86,9 +86,13 @@ fd_source_finalize (GSource *source)
 {
   FDSource *fd_source = (FDSource *)source;
 
+  /* we don't use g_cancellable_disconnect() here, since we are holding
+   * the main context lock here, and the ::disconnect signal handler
+   * will try to grab that, and deadlock looms.
+   */
   if (fd_source->cancelled_tag)
-    g_cancellable_disconnect (fd_source->cancellable,
-			      fd_source->cancelled_tag);
+    g_signal_handler_disconnect (fd_source->cancellable,
+                                 fd_source->cancelled_tag);
 
   if (fd_source->cancellable)
     g_object_unref (fd_source->cancellable);
