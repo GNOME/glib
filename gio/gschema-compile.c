@@ -614,7 +614,7 @@ key_state_serialise (KeyState *state)
                 }
 
               g_variant_builder_add (&builder, "(y(y&s))", 'l', state->l10n,
-                                     state->unparsed_default_value);
+                                     state->unparsed_default_value->str);
               g_string_free (state->unparsed_default_value, TRUE);
               state->unparsed_default_value = NULL;
             }
