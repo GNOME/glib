@@ -553,7 +553,17 @@ g_dbus_connection_real_closed (GDBusConnection *connection,
 {
   if (remote_peer_vanished && connection->exit_on_close)
     {
-      g_print ("%s: Remote peer vanished. Exiting.\n", G_STRFUNC);
+      if (error != NULL)
+        {
+          g_print ("%s: Remote peer vanished with error: %s (%s, %d). Exiting.\n",
+                   G_STRFUNC,
+                   error->message,
+                   g_quark_to_string (error->domain), error->code);
+        }
+      else
+        {
+          g_print ("%s: Remote peer vanished. Exiting.\n", G_STRFUNC);
+        }
       raise (SIGTERM);
     }
 }
