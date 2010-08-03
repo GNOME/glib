@@ -101,6 +101,7 @@ struct _ParseContext
   const char *c_prefix;
   GIrModule *current_module;
   GSList *node_stack;
+  char *current_alias;
   GIrNode *current_typed;
   GList *type_stack;
   GList *type_parameters;
@@ -127,6 +128,8 @@ static void text_handler          (GMarkupParseContext *context,
 static void cleanup               (GMarkupParseContext *context,
 				   GError              *error,
 				   gpointer             user_data);
+static void state_switch (ParseContext *ctx, ParseState newstate);
+
 
 static GMarkupParser markup_parser =
 {
@@ -144,6 +147,13 @@ start_alias (GMarkupParseContext *context,
 	     const gchar        **attribute_values,
 	     ParseContext        *ctx,
 	     GError             **error);
+static gboolean
+start_type (GMarkupParseContext *context,
+	    const gchar         *element_name,
+	    const gchar        **attribute_names,
+	    const gchar        **attribute_values,
+	    ParseContext        *ctx,
+	    GError             **error);
 
 static const gchar *find_attribute (const gchar  *name,
 				    const gchar **attribute_names,
@@ -197,6 +207,11 @@ firstpass_start_element_handler (GMarkupParseContext *context,
       start_alias (context, element_name, attribute_names, attribute_values,
 		   ctx, error);
     }
+  else if (ctx->state == STATE_ALIAS && strcmp (element_name, "type") == 0)
+    {
+      start_type (context, element_name, attribute_names, attribute_values,
+		  ctx, error);
+    }
   else if (strcmp (element_name, "record") == 0)
     {
       const gchar *name;
@@ -221,6 +236,15 @@ firstpass_end_element_handler (GMarkupParseContext *context,
 			       gpointer             user_data,
 			       GError             **error)
 {
+  ParseContext *ctx = user_data;
+  if (strcmp (element_name, "alias") == 0)
+    {
+      state_switch (ctx, STATE_NAMESPACE);
+      g_free (ctx->current_alias);
+      ctx->current_alias = NULL;
+    }
+  else if (strcmp (element_name, "type") == 0 && ctx->state == STATE_TYPE)
+    state_switch (ctx, ctx->prev_state);
 }
 
 static GMarkupParser firstpass_parser =
@@ -1237,9 +1261,6 @@ start_alias (GMarkupParseContext *context,
 	     GError             **error)
 {
   const gchar *name;
-  const gchar *target;
-  char *key;
-  char *value;
 
   name = find_attribute ("name", attribute_names, attribute_values);
   if (name == NULL)
@@ -1248,26 +1269,8 @@ start_alias (GMarkupParseContext *context,
       return FALSE;
     }
 
-  target = find_attribute ("target", attribute_names, attribute_values);
-  if (name == NULL)
-    {
-      MISSING_ATTRIBUTE (context, error, element_name, "target");
-      return FALSE;
-    }
-
-  value = g_strdup (target);
-  key = g_strdup_printf ("%s.%s", ctx->namespace, name);
-  if (!strchr (target, '.'))
-    {
-      const BasicTypeInfo *basic = parse_basic (target);
-      if (!basic)
-	{
-	  g_free (value);
-	  /* For non-basic types, re-qualify the interface */
-	  value = g_strdup_printf ("%s.%s", ctx->namespace, target);
-	}
-    }
-  g_hash_table_replace (ctx->aliases, key, value);
+  ctx->current_alias = g_strdup (name);
+  state_switch (ctx, STATE_ALIAS);
 
   return TRUE;
 }
@@ -1781,6 +1784,7 @@ start_type (GMarkupParseContext *context,
 {
   const gchar *name;
   const gchar *ctype;
+  gboolean in_alias = FALSE;
   gboolean is_array;
   gboolean is_varargs;
   GIrNodeType *typenode;
@@ -1808,14 +1812,54 @@ start_type (GMarkupParseContext *context,
 	   ctx->state == STATE_BOXED_FIELD ||
 	   ctx->state == STATE_NAMESPACE_CONSTANT ||
 	   ctx->state == STATE_CLASS_CONSTANT ||
-	   ctx->state == STATE_INTERFACE_CONSTANT
+	   ctx->state == STATE_INTERFACE_CONSTANT ||
+	   ctx->state == STATE_ALIAS
 	   )
     {
+      if (ctx->state == STATE_ALIAS)
+	in_alias = TRUE;
       state_switch (ctx, STATE_TYPE);
       ctx->type_depth = 1;
       ctx->type_stack = NULL;
       ctx->type_parameters = NULL;
     }
+
+  name = find_attribute ("name", attribute_names, attribute_values);
+
+  if (in_alias && ctx->current_alias)
+    {
+      char *key;
+      char *value;
+
+      if (name == NULL)
+	{
+	  MISSING_ATTRIBUTE (context, error, element_name, "name");
+	  return FALSE;
+	}
+
+      key = g_strdup_printf ("%s.%s", ctx->namespace, ctx->current_alias);
+      if (!strchr (name, '.'))
+	{
+	  const BasicTypeInfo *basic = parse_basic (name);
+	  if (!basic)
+	    {
+	      /* For non-basic types, re-qualify the interface */
+	      value = g_strdup_printf ("%s.%s", ctx->namespace, name);
+	    }
+	  else
+	    {
+	      value = g_strdup (name);
+	    }
+	}
+      else
+	value = g_strdup (name);
+
+      g_hash_table_replace (ctx->aliases, key, value);
+
+      return TRUE;
+    }
+  else if (!ctx->current_module || in_alias)
+    return TRUE;
 
   if (!ctx->current_typed)
     {
@@ -1842,7 +1886,6 @@ start_type (GMarkupParseContext *context,
       typenode->is_pointer = TRUE;
       typenode->is_array = TRUE;
 
-      name = find_attribute ("name", attribute_names, attribute_values);
       if (name && strcmp (name, "GLib.Array") == 0) {
         typenode->array_type = GI_ARRAY_TYPE_ARRAY;
       } else if (name && strcmp (name, "GLib.ByteArray") == 0) {
@@ -1883,7 +1926,6 @@ start_type (GMarkupParseContext *context,
   else
     {
       int pointer_depth;
-      name = find_attribute ("name", attribute_names, attribute_values);
 
       if (name == NULL)
 	{
@@ -2933,7 +2975,7 @@ start_element_handler (GMarkupParseContext *context,
       break;
     }
 
-  if (ctx->state != STATE_PASSTHROUGH)
+  if (*error == NULL && ctx->state != STATE_PASSTHROUGH)
     {
       g_markup_parse_context_get_position (context, &line_number, &char_number);
       if (!g_str_has_prefix (element_name, "c:"))
@@ -3088,6 +3130,8 @@ end_element_handler (GMarkupParseContext *context,
     case STATE_ALIAS:
       if (require_end_element (context, ctx, "alias", element_name, error))
 	{
+	  g_free (ctx->current_alias);
+	  ctx->current_alias = NULL;
 	  state_switch (ctx, STATE_NAMESPACE);
 	}
       break;
@@ -3415,6 +3459,7 @@ g_ir_parser_parse_string (GIrParser           *parser,
 
   g_markup_parse_context_free (context);
 
+  ctx.state = STATE_START;
   context = g_markup_parse_context_new (&markup_parser, 0, &ctx, NULL);
   if (!g_markup_parse_context_parse (context, buffer, length, error))
     goto out;
