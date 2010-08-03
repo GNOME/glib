@@ -2157,6 +2157,7 @@ reply_cb (GDBusConnection *connection,
 
   /* no need to complete in idle since the method GDBusConnection already does */
   g_simple_async_result_complete (simple);
+  g_object_unref (simple);
 }
 
 static const GDBusMethodInfo *
