@@ -802,6 +802,12 @@ g_binding_get_target_property (GBinding *binding)
  *
  * A #GObject can have multiple bindings.
  *
+ * <note>The same @user_data parameter will be used for both @transform_to
+ * and @transform_from transformation functions; the @notify function will
+ * be called once, when the binding is removed. If you need different data
+ * for each transformation function, please use
+ * g_object_bind_property_with_closures() instead.</note>
+ *
  * Return value: (transfer none): the #GBinding instance representing the
  *   binding between the two #GObject instances. The binding is released
  *   whenever the #GBinding reference count reaches zero.
