@@ -1184,6 +1184,21 @@ typedef enum
   G_CREDENTIALS_TYPE_LINUX_UCRED
 } GCredentialsType;
 
+/**
+ * GDBusMessageByteOrder:
+ * @G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN: The byte order is big endian.
+ * @G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN: The byte order is little endian.
+ *
+ * Enumeration used to describe the byte order of a D-Bus message.
+ *
+ * Since: 2.26
+ */
+typedef enum
+{
+  G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN    = 'B',
+  G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN = 'l'
+} GDBusMessageByteOrder;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

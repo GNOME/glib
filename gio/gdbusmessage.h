@@ -59,6 +59,10 @@ GDBusMessage             *g_dbus_message_new_method_error_literal (GDBusMessage 
 gchar                    *g_dbus_message_print              (GDBusMessage             *message,
                                                              guint                     indent);
 
+GDBusMessageByteOrder     g_dbus_message_get_byte_order     (GDBusMessage             *message);
+void                      g_dbus_message_set_byte_order     (GDBusMessage             *message,
+                                                             GDBusMessageByteOrder     byte_order);
+
 GDBusMessageType          g_dbus_message_get_message_type   (GDBusMessage             *message);
 void                      g_dbus_message_set_message_type   (GDBusMessage             *message,
                                                              GDBusMessageType          type);

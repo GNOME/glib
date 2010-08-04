@@ -525,6 +525,7 @@ check_serialization (GVariant *value,
   DBusError dbus_error;
   gchar *s;
   gchar *s1;
+  guint n;
 
   message = g_dbus_message_new ();
   g_dbus_message_set_body (message, value);
@@ -536,73 +537,101 @@ check_serialization (GVariant *value,
   g_dbus_message_set_header (message, G_DBUS_MESSAGE_HEADER_FIELD_SIGNATURE, g_variant_new_signature (s));
   g_free (s);
 
-  /* First check that the serialization to the D-Bus wire format is correct */
-
-  error = NULL;
-  blob = g_dbus_message_to_blob (message,
-                                 &blob_size,
-                                 G_DBUS_CAPABILITY_FLAGS_NONE,
-                                 &error);
-  g_assert_no_error (error);
-  g_assert (blob != NULL);
-
-  dbus_error_init (&dbus_error);
-  dbus_1_message = dbus_message_demarshal ((char *) blob, blob_size, &dbus_error);
-  if (dbus_error_is_set (&dbus_error))
+  /* First check that the serialization to the D-Bus wire format is correct - do this for both byte orders */
+  for (n = 0; n < 2; n++)
     {
-      g_printerr ("Error calling dbus_message_demarshal() on this blob: %s: %s\n",
-                  dbus_error.name,
-                  dbus_error.message);
-      hexdump (blob, blob_size);
-      dbus_error_free (&dbus_error);
-
-      s = g_variant_print (value, TRUE);
-      g_printerr ("\nThe blob was generated from the following GVariant value:\n%s\n\n", s);
-      g_free (s);
-
-      g_printerr ("If the blob was encoded using DBusMessageIter, the payload would have been:\n");
-      print_gv_dbus_message (value);
-
-      g_assert_not_reached ();
-    }
-
-  s = dbus_1_message_print (dbus_1_message);
-  dbus_message_unref (dbus_1_message);
-
-  g_assert_cmpstr (s, ==, expected_dbus_1_output);
-  g_free (s);
-
-  /* Then serialize back and check that the body is identical */
-
-  error = NULL;
-  recovered_message = g_dbus_message_new_from_blob (blob,
-                                                    blob_size,
-                                                    G_DBUS_CAPABILITY_FLAGS_NONE,
-                                                    &error);
-  g_assert (recovered_message != NULL);
-  g_assert_no_error (error);
-
-  if (value == NULL)
-    {
-      g_assert (g_dbus_message_get_body (recovered_message) == NULL);
-    }
-  else
-    {
-      g_assert (g_dbus_message_get_body (recovered_message) != NULL);
-      if (!g_variant_equal (g_dbus_message_get_body (recovered_message), value))
+      GDBusMessageByteOrder byte_order;
+      switch (n)
         {
-          s = g_variant_print (g_dbus_message_get_body (recovered_message), TRUE);
-          s1 = g_variant_print (value, TRUE);
-          g_printerr ("Recovered value:\n%s\ndoes not match given value\n%s\n",
-                      s,
-                      s1);
+        case 0:
+          byte_order = G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN;
+          break;
+        case 1:
+          byte_order = G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN;
+          break;
+        case 2:
+          g_assert_not_reached ();
+          break;
+        }
+      g_dbus_message_set_byte_order (message, byte_order);
+
+      error = NULL;
+      blob = g_dbus_message_to_blob (message,
+                                     &blob_size,
+                                     G_DBUS_CAPABILITY_FLAGS_NONE,
+                                     &error);
+      g_assert_no_error (error);
+      g_assert (blob != NULL);
+
+      switch (byte_order)
+        {
+        case G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN:
+          g_assert_cmpint (blob[0], ==, 'B');
+          break;
+        case G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN:
+          g_assert_cmpint (blob[0], ==, 'l');
+          break;
+        }
+
+      dbus_error_init (&dbus_error);
+      dbus_1_message = dbus_message_demarshal ((char *) blob, blob_size, &dbus_error);
+      if (dbus_error_is_set (&dbus_error))
+        {
+          g_printerr ("Error calling dbus_message_demarshal() on this blob: %s: %s\n",
+                      dbus_error.name,
+                      dbus_error.message);
+          hexdump (blob, blob_size);
+          dbus_error_free (&dbus_error);
+
+          s = g_variant_print (value, TRUE);
+          g_printerr ("\nThe blob was generated from the following GVariant value:\n%s\n\n", s);
           g_free (s);
-          g_free (s1);
+
+          g_printerr ("If the blob was encoded using DBusMessageIter, the payload would have been:\n");
+          print_gv_dbus_message (value);
+
           g_assert_not_reached ();
         }
+
+      s = dbus_1_message_print (dbus_1_message);
+      dbus_message_unref (dbus_1_message);
+
+      g_assert_cmpstr (s, ==, expected_dbus_1_output);
+      g_free (s);
+
+      /* Then serialize back and check that the body is identical */
+
+      error = NULL;
+      recovered_message = g_dbus_message_new_from_blob (blob,
+                                                        blob_size,
+                                                        G_DBUS_CAPABILITY_FLAGS_NONE,
+                                                        &error);
+      g_assert (recovered_message != NULL);
+      g_assert_no_error (error);
+
+      if (value == NULL)
+        {
+          g_assert (g_dbus_message_get_body (recovered_message) == NULL);
+        }
+      else
+        {
+          g_assert (g_dbus_message_get_body (recovered_message) != NULL);
+          if (!g_variant_equal (g_dbus_message_get_body (recovered_message), value))
+            {
+              s = g_variant_print (g_dbus_message_get_body (recovered_message), TRUE);
+              s1 = g_variant_print (value, TRUE);
+              g_printerr ("Recovered value:\n%s\ndoes not match given value\n%s\n",
+                          s,
+                          s1);
+              g_free (s);
+              g_free (s1);
+              g_assert_not_reached ();
+            }
+        }
+      g_object_unref (recovered_message);
     }
+
   g_object_unref (message);
-  g_object_unref (recovered_message);
 }
 
 static void

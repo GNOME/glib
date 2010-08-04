@@ -99,6 +99,7 @@ struct _GDBusMessage
 #ifdef G_OS_UNIX
   GUnixFDList *fd_list;
 #endif
+  GDBusMessageByteOrder byte_order;
 };
 
 G_DEFINE_TYPE (GDBusMessage, g_dbus_message, G_TYPE_OBJECT);
@@ -134,6 +135,18 @@ g_dbus_message_class_init (GDBusMessageClass *klass)
 static void
 g_dbus_message_init (GDBusMessage *message)
 {
+  /* Any D-Bus implementation is supposed to handle both Big and
+   * Little Endian encodings and the Endianness is part of the D-Bus
+   * message - we prefer to use Big Endian (since it's Network Byte
+   * Order and just easier to read for humans) but if the machine is
+   * Little Endian we use that for performance reasons.
+   */
+#if G_BYTE_ORDER == G_LITTLE_ENDIAN
+  message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN;
+#else
+  /* this could also be G_PDP_ENDIAN */
+  message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN;
+#endif
   message->headers = g_hash_table_new_full (g_direct_hash,
                                             g_direct_equal,
                                             NULL,
@@ -255,6 +268,8 @@ g_dbus_message_new_method_reply (GDBusMessage *method_call_message)
   message = g_dbus_message_new ();
   message->type = G_DBUS_MESSAGE_TYPE_METHOD_RETURN;
   message->flags = G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
+  /* reply with same endianness */
+  message->byte_order = method_call_message->byte_order;
 
   g_dbus_message_set_reply_serial (message, g_dbus_message_get_serial (method_call_message));
   sender = g_dbus_message_get_sender (method_call_message);
@@ -327,6 +342,8 @@ g_dbus_message_new_method_error_literal (GDBusMessage  *method_call_message,
   message = g_dbus_message_new ();
   message->type = G_DBUS_MESSAGE_TYPE_ERROR;
   message->flags = G_DBUS_MESSAGE_FLAGS_NO_REPLY_EXPECTED;
+  /* reply with same endianness */
+  message->byte_order = method_call_message->byte_order;
 
   g_dbus_message_set_reply_serial (message, g_dbus_message_get_serial (method_call_message));
   g_dbus_message_set_error_name (message, error_name);
@@ -367,6 +384,38 @@ g_dbus_message_new_method_error_valist (GDBusMessage             *method_call_me
                                                  error_message);
   g_free (error_message);
   return ret;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+/**
+ * g_dbus_message_get_byte_order:
+ * @message: A #GDBusMessage.
+ *
+ * Gets the byte order of @message.
+ *
+ * Returns: The byte order.
+ */
+GDBusMessageByteOrder
+g_dbus_message_get_byte_order (GDBusMessage *message)
+{
+  g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), (GDBusMessageByteOrder) 0);
+  return message->byte_order;
+}
+
+/**
+ * g_dbus_message_set_byte_order:
+ * @message: A #GDBusMessage.
+ * @byte_order: The byte order.
+ *
+ * Sets the byte order of @message.
+ */
+void
+g_dbus_message_set_byte_order (GDBusMessage          *message,
+                               GDBusMessageByteOrder  byte_order)
+{
+  g_return_if_fail (G_IS_DBUS_MESSAGE (message));
+  message->byte_order = byte_order;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1385,7 +1434,9 @@ g_dbus_message_bytes_needed (guchar                *blob,
  * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
  * @error: Return location for error or %NULL.
  *
- * Creates a new #GDBusMessage from the data stored at @blob.
+ * Creates a new #GDBusMessage from the data stored at @blob. The byte
+ * order that the message was in can be retrieved using
+ * g_dbus_message_get_byte_order().
  *
  * Returns: A new #GDBusMessage or %NULL if @error is set. Free with
  * g_object_unref().
@@ -1429,16 +1480,18 @@ g_dbus_message_new_from_blob (guchar                *blob,
     {
     case 'l':
       byte_order = G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
+      message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN;
       break;
     case 'B':
       byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
+      message->byte_order = G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN;
       break;
     default:
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"),
-                   endianness, endianness);
+                   _("Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x%02x"),
+                   endianness);
       goto out;
     }
   g_data_input_stream_set_byte_order (dis, byte_order);
@@ -1945,7 +1998,8 @@ append_body_to_blob (GVariant             *value,
  * @capabilities: A #GDBusCapabilityFlags describing what protocol features are supported.
  * @error: Return location for error.
  *
- * Serializes @message to a blob.
+ * Serializes @message to a blob. The byte order returned by
+ * g_dbus_message_get_byte_order() will be used.
  *
  * Returns: A pointer to a valid binary D-Bus message of @out_size bytes
  * generated by @message or %NULL if @error is set. Free with g_free().
@@ -1987,22 +2041,19 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   mos = G_MEMORY_OUTPUT_STREAM (g_memory_output_stream_new (NULL, 0, g_realloc, g_free));
   dos = g_data_output_stream_new (G_OUTPUT_STREAM (mos));
 
-  /* Any D-Bus implementation is supposed to handle both Big and
-   * Little Endian encodings and the Endianness is part of the D-Bus
-   * message - we prefer to use Big Endian (since it's Network Byte
-   * Order and just easier to read for humans) but if the machine is
-   * Little Endian we use that for performance reasons.
-   */
-#if G_BYTE_ORDER == G_LITTLE_ENDIAN
-  byte_order = G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
-#else
-  /* this could also be G_PDP_ENDIAN */
-  byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
-#endif
+  switch (message->byte_order)
+    {
+    case G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN:
+      byte_order = G_DATA_STREAM_BYTE_ORDER_BIG_ENDIAN;
+      break;
+    case G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN:
+      byte_order = G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN;
+      break;
+    }
   g_data_output_stream_set_byte_order (dos, byte_order);
 
   /* Core header */
-  g_data_output_stream_put_byte (dos, byte_order == G_DATA_STREAM_BYTE_ORDER_LITTLE_ENDIAN ? 'l' : 'B', NULL, NULL);
+  g_data_output_stream_put_byte (dos, (guchar) message->byte_order, NULL, NULL);
   g_data_output_stream_put_byte (dos, message->type, NULL, NULL);
   g_data_output_stream_put_byte (dos, message->flags, NULL, NULL);
   g_data_output_stream_put_byte (dos, 1, NULL, NULL); /* major protocol version */

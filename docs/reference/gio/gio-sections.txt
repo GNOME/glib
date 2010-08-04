@@ -2295,6 +2295,7 @@ GDBusMessage
 GDBusMessageType
 GDBusMessageFlags
 GDBusMessageHeaderField
+GDBusMessageByteOrder
 g_dbus_message_new
 g_dbus_message_new_signal
 g_dbus_message_new_method_call
@@ -2303,6 +2304,8 @@ g_dbus_message_new_method_error
 g_dbus_message_new_method_error_valist
 g_dbus_message_new_method_error_literal
 g_dbus_message_print
+g_dbus_message_get_byte_order
+g_dbus_message_set_byte_order
 g_dbus_message_get_message_type
 g_dbus_message_set_message_type
 g_dbus_message_get_serial
