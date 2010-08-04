@@ -728,6 +728,7 @@ read_string (GMemoryInputStream    *mis,
   gsize remaining;
   guchar nul;
   GError *local_error;
+  const gchar *end_valid;
 
   s = g_string_new (NULL);
 
@@ -767,13 +768,30 @@ read_string (GMemoryInputStream    *mis,
       g_propagate_error (error, local_error);
       goto fail;
     }
+  if (!g_utf8_validate (s->str, -1, &end_valid))
+    {
+      gint offset;
+      gchar *valid_str;
+      offset = (gint) (end_valid - s->str);
+      valid_str = g_strndup (s->str, offset);
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). "
+                     "The valid UTF-8 string up until that that point was `%s'"),
+                   offset,
+                   (gint) s->len,
+                   valid_str);
+      g_free (valid_str);
+      goto fail;
+    }
   if (nul != '\0')
     {
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Expected NUL byte after the string `%s' but found `%c' (%d)"),
-                   s->str, nul, nul);
+                   _("Expected NUL byte after the string `%s' but found byte %d"),
+                   s->str, nul);
       goto fail;
     }
 
@@ -1051,7 +1069,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
               g_set_error (&local_error,
                            G_IO_ERROR,
                            G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Encountered array of length %u bytes. Maximum length is 2<<26 bytes."),
+                           _("Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."),
                            array_len);
               goto fail;
             }

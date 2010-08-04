@@ -705,6 +705,93 @@ message_serialize_complex (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+static void
+message_serialize_invalid (void)
+{
+  guint n;
+
+  /* Here we're relying on libdbus-1's DBusMessage type not checking
+   * anything. If that were to change, we'd need to do our own
+   * thing.
+   *
+   * Other things we could check (note that GDBus _does_ check for all
+   * these things - we just don't have test-suit coverage for it)
+   *
+   *  - array exceeding 64 MiB (2^26 bytes) - unfortunately libdbus-1 checks
+   *    this, e.g.
+   *
+   *      process 19620: arguments to dbus_message_iter_append_fixed_array() were incorrect,
+   *      assertion "n_elements <= DBUS_MAXIMUM_ARRAY_LENGTH / _dbus_type_get_alignment (element_type)"
+   *      failed in file dbus-message.c line 2344.
+   *      This is normally a bug in some application using the D-Bus library.
+   *      D-Bus not built with -rdynamic so unable to print a backtrace
+   *      Aborted (core dumped)
+   *
+   *  - message exceeding 128 MiB (2^27 bytes)
+   *
+   *  - endianness, message type, flags, protocol version
+   */
+
+  for (n = 0; n < 3; n++)
+    {
+      GDBusMessage *message;
+      GError *error;
+      DBusMessage *dbus_message;
+      char *blob;
+      int blob_len;
+      const gchar *invalid_utf8_str = "this is invalid\xff";
+      const gchar *invalid_object_path = "/this/is/not a valid object path";
+      const gchar *invalid_signature = "not valid signature";
+
+      dbus_message = dbus_message_new (DBUS_MESSAGE_TYPE_METHOD_CALL);
+      dbus_message_set_serial (dbus_message, 0x41);
+      dbus_message_set_path (dbus_message, "/foo/bar");
+      dbus_message_set_member (dbus_message, "Member");
+      switch (n)
+        {
+        case 0:
+          /* invalid UTF-8 */
+          dbus_message_append_args (dbus_message,
+                                    DBUS_TYPE_STRING, &invalid_utf8_str,
+                                    DBUS_TYPE_INVALID);
+          break;
+
+        case 1:
+          /* invalid object path */
+          dbus_message_append_args (dbus_message,
+                                    DBUS_TYPE_OBJECT_PATH, &invalid_object_path,
+                                    DBUS_TYPE_INVALID);
+          break;
+
+        case 2:
+          /* invalid signature */
+          dbus_message_append_args (dbus_message,
+                                    DBUS_TYPE_SIGNATURE, &invalid_signature,
+                                    DBUS_TYPE_INVALID);
+          break;
+
+        default:
+          g_assert_not_reached ();
+          break;
+        }
+      dbus_message_marshal (dbus_message, &blob, &blob_len);
+
+      error = NULL;
+      message = g_dbus_message_new_from_blob ((guchar *) blob,
+                                              blob_len,
+                                              G_DBUS_CAPABILITY_FLAGS_NONE,
+                                              &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+      g_error_free (error);
+      g_assert (message == NULL);
+
+      dbus_free (blob);
+    }
+
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -714,6 +801,7 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/message-serialize-basic", message_serialize_basic);
   g_test_add_func ("/gdbus/message-serialize-complex", message_serialize_complex);
+  g_test_add_func ("/gdbus/message-serialize-invalid", message_serialize_invalid);
   return g_test_run();
 }
 
