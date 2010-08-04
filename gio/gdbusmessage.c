@@ -947,7 +947,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           v = g_data_input_stream_read_uint64 (dis, NULL, &local_error);
           if (local_error != NULL)
             goto fail;
-          /* TODO: hmm */
+          G_STATIC_ASSERT (sizeof (gdouble) == sizeof (guint64));
           encoded = (gdouble *) &v;
           ret = g_variant_new_double (*encoded);
         }
@@ -1690,7 +1690,7 @@ append_value_to_blob (GVariant             *value,
         {
           guint64 *encoded;
           gdouble v = g_variant_get_double (value);
-          /* TODO: hmm */
+          G_STATIC_ASSERT (sizeof (gdouble) == sizeof (guint64));
           encoded = (guint64 *) &v;
           g_data_output_stream_put_uint64 (dos, *encoded, NULL, NULL);
         }
@@ -1701,7 +1701,10 @@ append_value_to_blob (GVariant             *value,
       if (value != NULL)
         {
           gsize len;
-          const gchar *v = g_variant_get_string (value, &len);
+          const gchar *v;
+          const gchar *end;
+          v = g_variant_get_string (value, &len);
+          g_assert (g_utf8_validate (v, -1, &end) && (end == v + len));
           g_data_output_stream_put_uint32 (dos, len, NULL, NULL);
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
@@ -1712,9 +1715,9 @@ append_value_to_blob (GVariant             *value,
       padding_added = ensure_output_padding (mos, dos, 4);
       if (value != NULL)
         {
-          /* TODO: validate object path */
           gsize len;
           const gchar *v = g_variant_get_string (value, &len);
+          g_assert (g_variant_is_object_path (v));
           g_data_output_stream_put_uint32 (dos, len, NULL, NULL);
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
@@ -1724,9 +1727,9 @@ append_value_to_blob (GVariant             *value,
     {
       if (value != NULL)
         {
-          /* TODO: validate signature (including max len being 255) */
           gsize len;
           const gchar *v = g_variant_get_string (value, &len);
+          g_assert (g_variant_is_signature (v));
           g_data_output_stream_put_byte (dos, len, NULL, NULL);
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
@@ -1856,7 +1859,6 @@ append_value_to_blob (GVariant             *value,
           const gchar *signature;
           child = g_variant_get_child_value (value, 0);
           signature = g_variant_get_type_string (child);
-          /* TODO: validate signature (including max len being 255) */
           g_data_output_stream_put_byte (dos, strlen (signature), NULL, NULL);
           g_data_output_stream_put_string (dos, signature, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
