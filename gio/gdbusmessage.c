@@ -210,7 +210,7 @@ g_dbus_message_new_method_call (const gchar *name,
 /**
  * g_dbus_message_new_signal:
  * @path: A valid object path.
- * @interface_: A valid D-Bus interface name or %NULL.
+ * @interface_: A valid D-Bus interface name.
  * @signal: A valid signal name.
  *
  * Creates a new #GDBusMessage for a signal emission.
@@ -228,7 +228,7 @@ g_dbus_message_new_signal (const gchar  *path,
 
   g_return_val_if_fail (g_variant_is_object_path (path), NULL);
   g_return_val_if_fail (g_dbus_is_member_name (signal), NULL);
-  g_return_val_if_fail (interface_ == NULL || g_dbus_is_interface_name (interface_), NULL);
+  g_return_val_if_fail (g_dbus_is_interface_name (interface_), NULL);
 
   message = g_dbus_message_new ();
   message->type = G_DBUS_MESSAGE_TYPE_SIGNAL;
@@ -236,9 +236,7 @@ g_dbus_message_new_signal (const gchar  *path,
 
   g_dbus_message_set_path (message, path);
   g_dbus_message_set_member (message, signal);
-
-  if (interface_ != NULL)
-    g_dbus_message_set_interface (message, interface_);
+  g_dbus_message_set_interface (message, interface_);
 
   return message;
 }
@@ -742,6 +740,105 @@ g_dbus_message_set_unix_fd_list (GDBusMessage  *message,
     }
 }
 #endif
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static gboolean
+validate_headers (GDBusMessage  *message,
+                  GError       **error)
+{
+  gboolean ret;
+
+  g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  ret = FALSE;
+
+  switch (message->type)
+    {
+    case G_DBUS_MESSAGE_TYPE_INVALID:
+      g_set_error_literal (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           _("type is INVALID"));
+      goto out;
+      break;
+
+    case G_DBUS_MESSAGE_TYPE_METHOD_CALL:
+      if (g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH) == NULL ||
+          g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER) == NULL)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("METHOD_CALL message: PATH or MEMBER header field is missing"));
+          goto out;
+        }
+      break;
+
+    case G_DBUS_MESSAGE_TYPE_METHOD_RETURN:
+      if (g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL) == NULL)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("METHOD_RETURN message: REPLY_SERIAL header field is missing"));
+          goto out;
+        }
+      break;
+
+    case G_DBUS_MESSAGE_TYPE_ERROR:
+      if (g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_ERROR_NAME) == NULL ||
+          g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_REPLY_SERIAL) == NULL)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"));
+          goto out;
+        }
+      break;
+
+    case G_DBUS_MESSAGE_TYPE_SIGNAL:
+      if (g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_PATH) == NULL ||
+          g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_INTERFACE) == NULL ||
+          g_dbus_message_get_header (message, G_DBUS_MESSAGE_HEADER_FIELD_MEMBER) == NULL)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"));
+          goto out;
+        }
+      if (g_strcmp0 (g_dbus_message_get_path (message), "/org/freedesktop/DBus/Local") == 0)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"));
+          goto out;
+        }
+      if (g_strcmp0 (g_dbus_message_get_interface (message), "org.freedesktop.DBus.Local") == 0)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"));
+          goto out;
+        }
+      break;
+
+    default:
+      /* hitherto unknown type - nothing to check */
+      break;
+    }
+
+  ret = TRUE;
+
+ out:
+  g_assert (ret || (error == NULL || *error != NULL));
+  return ret;
+}
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -1611,6 +1708,11 @@ g_dbus_message_new_from_blob (guchar                *blob,
         }
     }
 
+  if (!validate_headers (message, error))
+    {
+      g_prefix_error (error, _("Cannot deserialize message: "));
+      goto out;
+    }
 
   ret = TRUE;
 
@@ -2068,7 +2170,6 @@ g_dbus_message_to_blob (GDBusMessage          *message,
     num_fds_in_message = g_unix_fd_list_get_length (message->fd_list);
 #endif
   num_fds_according_to_header = g_dbus_message_get_num_unix_fds (message);
-  /* TODO: check we have all the right header fields and that they are the correct value etc etc */
   if (num_fds_in_message != num_fds_according_to_header)
     {
       g_set_error (error,
@@ -2077,6 +2178,12 @@ g_dbus_message_to_blob (GDBusMessage          *message,
                    _("Message has %d fds but the header field indicates %d fds"),
                    num_fds_in_message,
                    num_fds_according_to_header);
+      goto out;
+    }
+
+  if (!validate_headers (message, error))
+    {
+      g_prefix_error (error, _("Cannot serialize message: "));
       goto out;
     }
 
