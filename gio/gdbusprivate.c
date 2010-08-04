@@ -1178,8 +1178,9 @@ _g_dbus_worker_flush_sync (GDBusWorker    *worker,
 #define G_DBUS_DEBUG_CALL           (1<<3)
 #define G_DBUS_DEBUG_SIGNAL         (1<<4)
 #define G_DBUS_DEBUG_INCOMING       (1<<5)
-#define G_DBUS_DEBUG_EMISSION       (1<<6)
-#define G_DBUS_DEBUG_ADDRESS        (1<<7)
+#define G_DBUS_DEBUG_RETURN         (1<<6)
+#define G_DBUS_DEBUG_EMISSION       (1<<7)
+#define G_DBUS_DEBUG_ADDRESS        (1<<8)
 
 static gint _gdbus_debug_flags = 0;
 
@@ -1223,6 +1224,13 @@ _g_dbus_debug_incoming (void)
 {
   _g_dbus_initialize ();
   return (_gdbus_debug_flags & G_DBUS_DEBUG_INCOMING) != 0;
+}
+
+gboolean
+_g_dbus_debug_return (void)
+{
+  _g_dbus_initialize ();
+  return (_gdbus_debug_flags & G_DBUS_DEBUG_RETURN) != 0;
 }
 
 gboolean
@@ -1283,6 +1291,7 @@ _g_dbus_initialize (void)
             { "call",           G_DBUS_DEBUG_CALL           },
             { "signal",         G_DBUS_DEBUG_SIGNAL         },
             { "incoming",       G_DBUS_DEBUG_INCOMING       },
+            { "return",         G_DBUS_DEBUG_RETURN         },
             { "emission",       G_DBUS_DEBUG_EMISSION       },
             { "address",        G_DBUS_DEBUG_ADDRESS        }
           };

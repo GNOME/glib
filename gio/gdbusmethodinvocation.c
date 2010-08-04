@@ -381,6 +381,23 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
       g_variant_type_free (type);
     }
 
+  if (G_UNLIKELY (_g_dbus_debug_return ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Return:\n"
+               " >>>> METHOD RETURN\n"
+               "      in response to %s.%s()\n"
+               "      on object %s\n"
+               "      to name %s\n"
+               "      reply-serial %d\n",
+               invocation->interface_name, invocation->method_name,
+               invocation->object_path,
+               invocation->sender,
+               g_dbus_message_get_serial (invocation->message));
+      _g_dbus_debug_print_unlock ();
+    }
+
   reply = g_dbus_message_new_method_reply (invocation->message);
   g_dbus_message_set_body (reply, parameters);
   error = NULL;
@@ -559,6 +576,26 @@ g_dbus_method_invocation_return_dbus_error (GDBusMethodInvocation *invocation,
   g_return_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation));
   g_return_if_fail (error_name != NULL && g_dbus_is_name (error_name));
   g_return_if_fail (error_message != NULL);
+
+  if (G_UNLIKELY (_g_dbus_debug_return ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Return:\n"
+               " >>>> METHOD ERROR %s\n"
+               "      message `%s'\n"
+               "      in response to %s.%s()\n"
+               "      on object %s\n"
+               "      to name %s\n"
+               "      reply-serial %d\n",
+               error_name,
+               error_message,
+               invocation->interface_name, invocation->method_name,
+               invocation->object_path,
+               invocation->sender,
+               g_dbus_message_get_serial (invocation->message));
+      _g_dbus_debug_print_unlock ();
+    }
 
   reply = g_dbus_message_new_method_error_literal (invocation->message,
                                                    error_name,

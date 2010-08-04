@@ -360,6 +360,10 @@
              <listitem><para>Show when an incoming D-Bus method call is received</para></listitem>
            </varlistentry>
            <varlistentry>
+             <term>return</term>
+             <listitem><para>Show when a reply is returned via the #GDBusMethodInvocation API</para></listitem>
+           </varlistentry>
+           <varlistentry>
              <term>emission</term>
              <listitem><para>Trace g_dbus_connection_emit_signal() API usage</para></listitem>
            </varlistentry>
@@ -372,8 +376,10 @@
              <listitem><para>Show information about D-Bus address lookups and autolaunching</para></listitem>
            </varlistentry>
          </variablelist>
-         The special value <literal>all</literal> can be used to turn on
-         all debug options.
+         The special value <literal>all</literal> can be used to turn
+         on all debug options. The special value
+         <literal>help</literal> can be used to print a list of
+         supported options to standard output.
       </para>
    </formalpara>
 

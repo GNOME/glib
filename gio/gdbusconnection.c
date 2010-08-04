@@ -5883,10 +5883,12 @@ distribute_method_call (GDBusConnection *connection,
                "GDBus-debug:Incoming:\n"
                " <<<< METHOD INVOCATION %s.%s()\n"
                "      on object %s\n"
-               "      invoked by name %s\n",
+               "      invoked by name %s\n"
+               "      serial %d\n",
                interface_name, member,
                path,
-               g_dbus_message_get_sender (message) != NULL ? g_dbus_message_get_sender (message) : "(none)");
+               g_dbus_message_get_sender (message) != NULL ? g_dbus_message_get_sender (message) : "(none)",
+               g_dbus_message_get_serial (message));
       _g_dbus_debug_print_unlock ();
     }
 

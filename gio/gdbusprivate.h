@@ -85,6 +85,7 @@ gboolean _g_dbus_debug_payload (void);
 gboolean _g_dbus_debug_call    (void);
 gboolean _g_dbus_debug_signal  (void);
 gboolean _g_dbus_debug_incoming (void);
+gboolean _g_dbus_debug_return (void);
 gboolean _g_dbus_debug_emission (void);
 gboolean _g_dbus_debug_address (void);
 
