@@ -277,19 +277,7 @@ AC_PROG_INSTALL
 
 AC_SYS_LARGEFILE
 
-#
-# Find pkg-config
-#
-AC_PATH_PROG(PKG_CONFIG, [pkg-config], [no])
-if test x$PKG_CONFIG = xno ; then
-  AC_MSG_ERROR([*** pkg-config not found. See http://www.freedesktop.org/software/pkgconfig/])
-fi
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.16 ; then
-  :
-else
-  AC_MSG_ERROR([*** pkg-config too old; version 0.16 or better required.])
-fi
+PKG_PROG_PKG_CONFIG(0.16)
 
 if test "x$enable_debug" = "xyes"; then
   if test x$cflags_set != xset ; then
