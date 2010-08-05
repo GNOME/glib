@@ -43,6 +43,7 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)					\
 	-I$(top_srcdir)/glib				\
 	-I$(top_srcdir)/gmodule				\
+	-I$(top_builddir)/glib				\
 	$(GLIB_DEBUG_FLAGS)				\
 	$(THREAD_FLAGS)					\
 	-DG_DISABLE_DEPRECATED				\

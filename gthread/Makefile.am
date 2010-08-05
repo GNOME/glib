@@ -8,6 +8,7 @@ AM_CPPFLAGS = 				\
 	-I$(top_srcdir) 		\
 	-I$(top_srcdir)/glib 		\
 	-I$(top_srcdir)/gthread 	\
+	-I$(top_builddir)/glib 		\
 	-DG_LOG_DOMAIN=\"GThread\" 	\
 	@GTHREAD_COMPILE_IMPL_DEFINES@ 	\
 	@GLIB_DEBUG_FLAGS@ 		\

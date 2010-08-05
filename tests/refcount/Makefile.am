@@ -4,6 +4,7 @@ INCLUDES =					\
 	-I$(top_srcdir)				\
 	-I$(top_srcdir)/glib			\
 	-I$(top_srcdir)/gmodule			\
+	-I$(top_builddir)/glib			\
 	$(GLIB_DEBUG_FLAGS)
 
 libglib = $(top_builddir)/glib/libglib-2.0.la

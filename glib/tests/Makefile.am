@@ -4,6 +4,7 @@ INCLUDES = 				\
 	-g 				\
 	-I$(top_srcdir) 		\
 	-I$(top_srcdir)/glib 		\
+	-I$(top_builddir)/glib		\
 	-DSRCDIR=\""$(srcdir)"\"	\
 	$(GLIB_DEBUG_FLAGS)
 

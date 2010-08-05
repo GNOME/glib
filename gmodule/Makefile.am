@@ -5,6 +5,7 @@ AM_CPPFLAGS = 				\
 	-I$(top_srcdir) 		\
 	-I$(top_srcdir)/glib 		\
 	-I$(top_srcdir)/gmodule 	\
+	-I$(top_builddir)/glib 		\
 	-DG_LOG_DOMAIN=\"GModule\" 	\
 	@GLIB_DEBUG_FLAGS@ 		\
 	-DG_DISABLE_DEPRECATED
