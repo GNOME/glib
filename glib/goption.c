@@ -28,7 +28,7 @@
  * following example:
  * 
  * <literal>testtreemodel -r 1 --max-size 20 --rand --display=:1.0 -vb -- file1 file2</literal>
- * 
+ *
  * The example demonstrates a number of features of the GOption commandline parser
  * <itemizedlist><listitem><para>
  *   Options can be single letters, prefixed by a single dash. Multiple
@@ -36,25 +36,27 @@
  * </para></listitem><listitem><para>
  *   Long options are prefixed by two consecutive dashes.
  * </para></listitem><listitem><para>
- *   Options can have an extra argument, which can be a number, a string or a 
- *   filename. For long options, the extra argument can be appended with an 
- *   equals sign after the option name.
+ *   Options can have an extra argument, which can be a number, a string or a
+ *   filename. For long options, the extra argument can be appended with an
+ *   equals sign after the option name, which is useful if the extra argument
+ *   starts with a dash, which would otherwise cause it to be interpreted
+ *   as another option.
  * </para></listitem><listitem><para>
  *   Non-option arguments are returned to the application as rest arguments.
  * </para></listitem><listitem><para>
- *   An argument consisting solely of two dashes turns off further parsing, 
- *   any remaining arguments (even those starting with a dash) are returned 
+ *   An argument consisting solely of two dashes turns off further parsing,
+ *   any remaining arguments (even those starting with a dash) are returned
  *   to the application as rest arguments.
  * </para></listitem></itemizedlist>
- * 
- * Another important feature of GOption is that it can automatically generate 
- * nicely formatted help output. Unless it is explicitly turned off with 
- * g_option_context_set_help_enabled(), GOption will recognize the 
+ *
+ * Another important feature of GOption is that it can automatically generate
+ * nicely formatted help output. Unless it is explicitly turned off with
+ * g_option_context_set_help_enabled(), GOption will recognize the
  * <option>--help</option>, <option>-?</option>, <option>--help-all</option>
- * and <option>--help-</option><replaceable>groupname</replaceable> options 
- * (where <replaceable>groupname</replaceable> is the name of a #GOptionGroup) 
+ * and <option>--help-</option><replaceable>groupname</replaceable> options
+ * (where <replaceable>groupname</replaceable> is the name of a #GOptionGroup)
  * and write a text similar to the one shown in the following example to stdout.
- * 
+ *
  * <informalexample><screen>
  * Usage:
  *   testtreemodel [OPTION...] - test tree model performance
