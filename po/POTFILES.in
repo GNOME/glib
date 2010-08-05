@@ -16,6 +16,7 @@ glib/gutf8.c
 glib/goption.c
 glib/gkeyfile.c
 gio/gappinfo.c
+gio/gapplication.c
 gio/gasynchelper.c
 gio/gasyncinitable.c
 gio/gasyncresult.c
@@ -123,3 +124,4 @@ gio/gwin32outputstream.c
 gio/gzlibcompressor.c
 gio/gzlibdecompressor.c
 gio/win32/gwinhttpfile.c
+gobject/gbinding.c
