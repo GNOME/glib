@@ -1708,12 +1708,68 @@ missing_arg_test (void)
   g_strfreev (argv);
 
   /* Try parsing again */
-  argv = split_string ("program --t", &argc);
+  argv = split_string ("program -t", &argc);
 
   retval = g_option_context_parse (context, &argc, &argv, &error);
   g_assert (retval == FALSE);
 
   g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+static gchar *test_arg;
+
+static gboolean cb (const gchar  *option_name,
+                    const gchar  *value,
+                    gpointer      data,
+                    GError      **error)
+{
+  test_arg = g_strdup (value);
+  return TRUE;
+}
+
+void
+dash_arg_test (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  gboolean argb = FALSE;
+  GOptionEntry entries [] =
+    { { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_CALLBACK, cb, NULL, NULL },
+      { "three", '3', 0, G_OPTION_ARG_NONE, &argb, NULL, NULL },
+      { NULL } };
+
+  g_test_bug ("577638");
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test=-3", &argc);
+
+  test_arg = NULL;
+  error = NULL;
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert (retval);
+  g_assert_no_error (error);
+  g_assert_cmpstr (test_arg, ==, "-3");
+
+  g_strfreev (argv);
+  g_free (test_arg);
+  test_arg = NULL;
+
+  /* Try parsing again */
+  argv = split_string ("program --test -3", &argc);
+
+  error = NULL;
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_no_error (error);
+  g_assert (retval);
+  g_assert_cmpstr (test_arg, ==, NULL);
+
   g_option_context_free (context);
 }
 
@@ -1886,6 +1942,7 @@ main (int   argc,
   g_test_add_func ("/option/bug/unknown-short", unknown_short_test);
   g_test_add_func ("/option/bug/lonely-dash", lonely_dash_test);
   g_test_add_func ("/option/bug/missing-arg", missing_arg_test);
+  g_test_add_func ("/option/bug/dash-arg", dash_arg_test);
 
   return g_test_run();
 }
