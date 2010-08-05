@@ -100,6 +100,10 @@ AC_SUBST(LT_CURRENT_MINUS_AGE)
 dnl Initialize maintainer mode
 AM_MAINTAINER_MODE
 
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_CPP
+
 AC_CANONICAL_HOST
 
 AC_MSG_CHECKING([for the BeOS])
@@ -258,10 +262,6 @@ ABS_GLIB_RUNTIME_LIBDIR="`readlink -f $libdir/$with_runtime_libdir`"
 AC_SUBST(GLIB_RUNTIME_LIBDIR)
 AC_SUBST(ABS_GLIB_RUNTIME_LIBDIR)
 AM_CONDITIONAL(HAVE_GLIB_RUNTIME_LIBDIR, [test "x$with_runtime_libdir" != "x"])
-
-dnl Checks for programs.
-AC_PROG_CC
-AC_PROG_CPP
 
 dnl Check for a working C++ compiler, but do not bail out, if none is found.
 AC_CHECK_TOOLS(CXX, [$CCC c++ g++ gcc CC cxx cc++ cl], [gcc])
