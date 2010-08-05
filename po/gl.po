@@ -11,15 +11,15 @@
 # Suso Baleato <suso.baleato@xunta.es>,2009.
 # Antón Méixome <meixome@mancomun.org>, 2009.
 # Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010.
-# Fran Dieguez <frandieguez@mabishu.com>, 2010.
+# Fran Dieguez <frandieguez@ubuntu.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-01 23:17+0200\n"
-"PO-Revision-Date: 2010-08-01 23:17+0200\n"
-"Last-Translator: Fran Dieguez <frandieguez@mabishu.com>\n"
+"POT-Creation-Date: 2010-08-05 15:35+0200\n"
+"PO-Revision-Date: 2010-08-05 15:35+0200\n"
+"Last-Translator: Fran Dieguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,51 +51,51 @@ msgstr "Etiqueta «%s» inesperada, esperábase a etiqueta «%s»"
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Etiqueta «%s» inesperada dentro de «%s»"
 
-#: ../glib/gbookmarkfile.c:1836
+#: ../glib/gbookmarkfile.c:1834
 msgid "No valid bookmark file found in data dirs"
 msgstr ""
 "Non foi posíbel localizar un ficheiro de marcadores válido nos directorios "
 "de datos"
 
-#: ../glib/gbookmarkfile.c:2037
+#: ../glib/gbookmarkfile.c:2035
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "Xa existe un marcador para o URI «%s»"
 
-#: ../glib/gbookmarkfile.c:2083 ../glib/gbookmarkfile.c:2241
-#: ../glib/gbookmarkfile.c:2326 ../glib/gbookmarkfile.c:2406
-#: ../glib/gbookmarkfile.c:2491 ../glib/gbookmarkfile.c:2574
-#: ../glib/gbookmarkfile.c:2652 ../glib/gbookmarkfile.c:2731
-#: ../glib/gbookmarkfile.c:2773 ../glib/gbookmarkfile.c:2870
-#: ../glib/gbookmarkfile.c:2996 ../glib/gbookmarkfile.c:3186
-#: ../glib/gbookmarkfile.c:3262 ../glib/gbookmarkfile.c:3427
-#: ../glib/gbookmarkfile.c:3516 ../glib/gbookmarkfile.c:3606
-#: ../glib/gbookmarkfile.c:3734
+#: ../glib/gbookmarkfile.c:2081 ../glib/gbookmarkfile.c:2239
+#: ../glib/gbookmarkfile.c:2324 ../glib/gbookmarkfile.c:2404
+#: ../glib/gbookmarkfile.c:2489 ../glib/gbookmarkfile.c:2572
+#: ../glib/gbookmarkfile.c:2650 ../glib/gbookmarkfile.c:2729
+#: ../glib/gbookmarkfile.c:2771 ../glib/gbookmarkfile.c:2868
+#: ../glib/gbookmarkfile.c:2994 ../glib/gbookmarkfile.c:3184
+#: ../glib/gbookmarkfile.c:3260 ../glib/gbookmarkfile.c:3425
+#: ../glib/gbookmarkfile.c:3514 ../glib/gbookmarkfile.c:3604
+#: ../glib/gbookmarkfile.c:3732
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "Non se encontrou ningún marcador para o URI «%s»"
 
-#: ../glib/gbookmarkfile.c:2415
+#: ../glib/gbookmarkfile.c:2413
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "Non hai ningún tipo MIME definido no marcador para o URI «%s»"
 
-#: ../glib/gbookmarkfile.c:2500
+#: ../glib/gbookmarkfile.c:2498
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "Non se definiu ningún parámetro privado no marcador para o URI «%s»"
 
-#: ../glib/gbookmarkfile.c:2879
+#: ../glib/gbookmarkfile.c:2877
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "Non existe ningún grupo definido no marcador para o URI «%s»"
 
-#: ../glib/gbookmarkfile.c:3280 ../glib/gbookmarkfile.c:3437
+#: ../glib/gbookmarkfile.c:3278 ../glib/gbookmarkfile.c:3435
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr "Ningún aplicativo denominado «%s» rexistrou un marcador para «%s»"
 
-#: ../glib/gbookmarkfile.c:3460
+#: ../glib/gbookmarkfile.c:3458
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Produciuse un fallo ao expandir a liña executábel «%s» co URI «%s»"
@@ -1011,61 +1011,61 @@ msgstr "Secuencia non válida na entrada da conversión"
 msgid "Character out of range for UTF-16"
 msgstr "Carácter fóra de intervalo para UTF-16"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:756
 msgid "Usage:"
 msgstr "Uso:"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:756
 msgid "[OPTION...]"
 msgstr "[OPCIÓN...]"
 
-#: ../glib/goption.c:860
+#: ../glib/goption.c:862
 msgid "Help Options:"
 msgstr "Opcións de axuda:"
 
-#: ../glib/goption.c:861
+#: ../glib/goption.c:863
 msgid "Show help options"
 msgstr "Mostrar as opcións de axuda"
 
-#: ../glib/goption.c:867
+#: ../glib/goption.c:869
 msgid "Show all help options"
 msgstr "Mostrar todas as opcións de axuda"
 
-#: ../glib/goption.c:929
+#: ../glib/goption.c:931
 msgid "Application Options:"
 msgstr "Opcións do aplicativo:"
 
-#: ../glib/goption.c:991 ../glib/goption.c:1061
+#: ../glib/goption.c:993 ../glib/goption.c:1063
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Non é posíbel analizar o valor enteiro «%s» para %s"
 
-#: ../glib/goption.c:1001 ../glib/goption.c:1069
+#: ../glib/goption.c:1003 ../glib/goption.c:1071
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "O valor enteiro «%s» para %s está fóra do intervalo"
 
-#: ../glib/goption.c:1026
+#: ../glib/goption.c:1028
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Non é posíbel analizar o valor \"double\" «%s» para %s"
 
-#: ../glib/goption.c:1034
+#: ../glib/goption.c:1036
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "O valor \"double\" «%s» para %s está fóra do intervalo"
 
-#: ../glib/goption.c:1297 ../glib/goption.c:1376
+#: ../glib/goption.c:1299 ../glib/goption.c:1378
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Produciuse un erro ao analizar a opción %s"
 
-#: ../glib/goption.c:1407 ../glib/goption.c:1521
+#: ../glib/goption.c:1409 ../glib/goption.c:1523
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Argumento que falta para %s"
 
-#: ../glib/goption.c:1916
+#: ../glib/goption.c:1918
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción %s descoñecida"
@@ -1199,8 +1199,8 @@ msgstr "O valor de conta pasado a %s é demasiado longo"
 msgid "Stream is already closed"
 msgstr "O fluxo xa se pechou"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1539
-#: ../gio/gdbusconnection.c:1628 ../gio/gdbusconnection.c:1806
+#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1544
+#: ../gio/gdbusconnection.c:1633 ../gio/gdbusconnection.c:1811
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:650
 #: ../gio/gsimpleasyncresult.c:676
 msgid "Operation was cancelled"
@@ -1391,7 +1391,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (non está implementado "
 "para este SO)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5979
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5986
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1400,7 +1400,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5988
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5995
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1512,23 +1512,23 @@ msgstr "Produciuse un erro ao abrir o anel de chaves «%s» para escribir:"
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Ademais, a liberación do bloqueo para «%s» tamén fallou: %s) "
 
-#: ../gio/gdbusconnection.c:1053 ../gio/gdbusconnection.c:1282
-#: ../gio/gdbusconnection.c:1321 ../gio/gdbusconnection.c:1639
+#: ../gio/gdbusconnection.c:1058 ../gio/gdbusconnection.c:1287
+#: ../gio/gdbusconnection.c:1326 ../gio/gdbusconnection.c:1644
 msgid "The connection is closed"
 msgstr "O socket engadido está pechado"
 
-#: ../gio/gdbusconnection.c:1583
+#: ../gio/gdbusconnection.c:1588
 msgid "Timeout was reached"
 msgstr "Tempo de espera máximo alcanzado"
 
-#: ../gio/gdbusconnection.c:2144
+#: ../gio/gdbusconnection.c:2149
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Encontraronse bandeiras non compatíbeis ao construír a conexión da parte "
 "cliente"
 
-#: ../gio/gdbusconnection.c:3569 ../gio/gdbusconnection.c:3885
+#: ../gio/gdbusconnection.c:3574 ../gio/gdbusconnection.c:3890
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1536,106 +1536,151 @@ msgstr ""
 "Non existe a interface «org.freedesktop.DBus.Properties» no obxecto co camiño "
 "%s"
 
-#: ../gio/gdbusconnection.c:3640
+#: ../gio/gdbusconnection.c:3645
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Produciuse un erro ao estabelecer a propiedade «%s»: Esperábase o tipo «%s» "
 "pero obtívose «%s»"
 
-#: ../gio/gdbusconnection.c:3734
+#: ../gio/gdbusconnection.c:3739
 #, c-format
 msgid "No such property `%s'"
 msgstr "Non existe a propiedade «%s»"
 
-#: ../gio/gdbusconnection.c:3746
+#: ../gio/gdbusconnection.c:3751
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3757
+#: ../gio/gdbusconnection.c:3762
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3827 ../gio/gdbusconnection.c:5415
+#: ../gio/gdbusconnection.c:3832 ../gio/gdbusconnection.c:5420
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
 
-#: ../gio/gdbusconnection.c:4012
+#: ../gio/gdbusconnection.c:4017
 msgid "No such interface"
 msgstr "Non existe a interface"
 
-#: ../gio/gdbusconnection.c:4228 ../gio/gdbusconnection.c:5929
+#: ../gio/gdbusconnection.c:4233 ../gio/gdbusconnection.c:5936
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Non existe a interface «%s» no obxecto co camiño %s"
 
-#: ../gio/gdbusconnection.c:4280
+#: ../gio/gdbusconnection.c:4285
 #, c-format
 msgid "No such method `%s'"
 msgstr "Non existe o método «%s»"
 
-#: ../gio/gdbusconnection.c:4311
+#: ../gio/gdbusconnection.c:4316
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "O tipo da mensaxe, «%s», non coincide co tipo «%s» esperado"
 
-#: ../gio/gdbusconnection.c:4530
+#: ../gio/gdbusconnection.c:4535
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 
-#: ../gio/gdbusconnection.c:4724
+#: ../gio/gdbusconnection.c:4729
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "O método «%s» devolveu un tipo «%s» máis esperábase «%s»"
 
-#: ../gio/gdbusconnection.c:5526
+#: ../gio/gdbusconnection.c:5531
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:5644
+#: ../gio/gdbusconnection.c:5649
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
 
-#: ../gio/gdbusmessage.c:754
+#: ../gio/gdbusmessage.c:763
+msgid "type is INVALID"
+msgstr "o tipo é INVALID"
+
+#: ../gio/gdbusmessage.c:774
+msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
+msgstr "mensaxe METHOD_CALL: falta o campo da cabeceira PATH ou MEMBER"
+
+#: ../gio/gdbusmessage.c:785
+msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
+msgstr "mensaxe METHOD_RETURN: falta o campo da cabeceira REPLY_SERIAL"
+
+#: ../gio/gdbusmessage.c:797
+msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
+msgstr "mensaxe ERROR: falta o campo da cabeceira REPLY_SERIAL ou ERROR_NAME"
+
+#: ../gio/gdbusmessage.c:810
+msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
+msgstr "mensaxe SIGNAL: falta o campo da cabeceira PATH, INTERFACE ou MEMBER"
+
+#: ../gio/gdbusmessage.c:818
+msgid ""
+"SIGNAL message: The PATH header field is using the reserved value /org/"
+"freedesktop/DBus/Local"
+msgstr ""
+"mensaxe SIGNAL: o campo da cabeceira PATH está usando un valor reservado /"
+"org/freedesktop/DBus/Local"
+
+#: ../gio/gdbusmessage.c:826
+msgid ""
+"SIGNAL message: The INTERFACE header field is using the reserved value org."
+"freedesktop.DBus.Local"
+msgstr ""
+"mensaxe SIGNAL: O campo da cabeceira INTERFACE está usando un valor "
+"reservado org.freedesktop.DBus.Local"
+
+#: ../gio/gdbusmessage.c:901
 #, c-format
 msgid "Wanted to read %lu bytes but got EOF"
 msgstr "Quixéronse ler %lu bytes pero obtívose un EOF"
 
-#: ../gio/gdbusmessage.c:775
+#: ../gio/gdbusmessage.c:926
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
-msgstr "Esperábase un byte NUL despois da cadea «%s» pero encontrouse «%c» (%d)"
+msgid ""
+"Expected valid UTF-8 string but found invalid bytes at byte offset %d "
+"(length of string is %d). The valid UTF-8 string up until that that point "
+"was `%s'"
+msgstr ""
 
-#: ../gio/gdbusmessage.c:974
+#: ../gio/gdbusmessage.c:939
+#, c-format
+msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgstr "Esperábase un byte NUL despois da cadea «%s» pero encontrouse o byte %d"
+
+#: ../gio/gdbusmessage.c:1138
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "O valor analizado «%s» non é un camiño de obxecto D-Bus válido"
 
-#: ../gio/gdbusmessage.c:1000
+#: ../gio/gdbusmessage.c:1164
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "«%s» non é un nome válido"
 
-#: ../gio/gdbusmessage.c:1054
+#: ../gio/gdbusmessage.c:1218
 #, c-format
-msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes."
+msgid ""
+"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr ""
 "Encontrouse unha matriz cunha lonxitude de %u bytes. A lonxitude máxima é "
-"2<<26 bytes."
+"2<<26 bytes (64 MiB)."
 
-#: ../gio/gdbusmessage.c:1215
+#: ../gio/gdbusmessage.c:1379
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
 "O valor «%s» analizado para a variante non é unha sinatura de D-Bus válida."
 
-#: ../gio/gdbusmessage.c:1242
+#: ../gio/gdbusmessage.c:1406
 #, c-format
 msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
@@ -1643,38 +1688,45 @@ msgstr ""
 "Produciuse un erro ao desserializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
-#: ../gio/gdbusmessage.c:1422
+#: ../gio/gdbusmessage.c:1590
 #, c-format
-msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
+msgid ""
+"Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
+"0x%02x"
 msgstr ""
-"Valor de endianness non válido. Esperábase «|» ou «B» pero encontrouse «%c» (%d)"
+"Valor de endianness non válido. Esperábase 0x6c («|») ou 0x42 («B») pero "
+"encontrouse 0x%02x"
 
-#: ../gio/gdbusmessage.c:1436
+#: ../gio/gdbusmessage.c:1604
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Versión maior do protocolo inválida. Esperábase 1 pero encontrouse a %d"
 
-#: ../gio/gdbusmessage.c:1493
+#: ../gio/gdbusmessage.c:1661
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 "Encontrouse a cabeceira de sinatura coa sinatura «%s» máis o corpo da mensaxe "
 "está baleiro"
 
-#: ../gio/gdbusmessage.c:1507
+#: ../gio/gdbusmessage.c:1675
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "O valor analizado «%s» non é unha sinatura D-Bus válida (para o corpo)"
 
-#: ../gio/gdbusmessage.c:1537
+#: ../gio/gdbusmessage.c:1705
 #, c-format
 msgid "No signature header in message but the message body is %u bytes"
 msgstr ""
 "Non hai unha cabeceira da sinatura na mensaxe pero o corpo da mensaxe ten %u "
 "bytes"
 
-#: ../gio/gdbusmessage.c:1863
+#: ../gio/gdbusmessage.c:1713
+msgid "Cannot deserialize message: "
+msgstr "Non foi posíbel deserializar a mensaxe: "
+
+#: ../gio/gdbusmessage.c:2038
 #, c-format
 msgid ""
 "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
@@ -1682,19 +1734,23 @@ msgstr ""
 "Produciuse un erro ao serializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
-#: ../gio/gdbusmessage.c:2006
+#: ../gio/gdbusmessage.c:2178
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
 msgstr "A mensaxe ten %d fds pero o campo da cabeceira indica %d fds"
 
-#: ../gio/gdbusmessage.c:2052
+#: ../gio/gdbusmessage.c:2186
+msgid "Cannot serialize message: "
+msgstr "Non foi posíbel serializar a mensaxe: "
+
+#: ../gio/gdbusmessage.c:2230
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 "O corpo da mensaxe ten a sinatura «%s» máis non está presente a cabeceira de "
 "sinatura"
 
-#: ../gio/gdbusmessage.c:2062
+#: ../gio/gdbusmessage.c:2240
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `%"
@@ -1703,18 +1759,18 @@ msgstr ""
 "O corpo da mensaxe ten a sinatura de tipo «%s» pero a sintura no campo da "
 "cabeceira é «%s»"
 
-#: ../gio/gdbusmessage.c:2078
+#: ../gio/gdbusmessage.c:2256
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 "O corpo da mensaxe está baleiro máis a sinatura do campo da cabeceira é «(%s)»"
 
-#: ../gio/gdbusmessage.c:2632
+#: ../gio/gdbusmessage.c:2810
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Produciuse un erro ao devolver co corpo de tipo «%s»"
 
-#: ../gio/gdbusmessage.c:2640
+#: ../gio/gdbusmessage.c:2818
 msgid "Error return with empty body"
 msgstr "Produciuse un erro ao devolver co corpo baleiro"
 
@@ -1723,7 +1779,7 @@ msgstr "Produciuse un erro ao devolver co corpo baleiro"
 msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr "O tipo do valor de retorno é incorrecto, obtívose «%s» e esperábase «%s»"
 
-#: ../gio/gdbusmethodinvocation.c:389 ../gio/gsocket.c:2871
+#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:2871
 #: ../gio/gsocket.c:2952
 #, c-format
 msgid "Error sending message: %s"
@@ -1734,7 +1790,7 @@ msgid "Error writing first 16 bytes of message to socket: "
 msgstr ""
 "Produciuse un erro ao escribir os primeiros 16 bytes da mensaxe no socket:"
 
-#: ../gio/gdbusprivate.c:1406
+#: ../gio/gdbusprivate.c:1415
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: "
 
@@ -1830,7 +1886,7 @@ msgstr "Conectar a un enderezo D-Bus fornecido"
 
 #: ../gio/gdbus-tool.c:358
 msgid "Connection Endpoint Options:"
-msgstr "Conexión en marcha"
+msgstr "Opcións da conexión do extremo:"
 
 #: ../gio/gdbus-tool.c:359
 msgid "Options specifying the connection endpoint"
@@ -2671,6 +2727,8 @@ msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 msgstr ""
+"<key name='%s'> enmascara a <key name='%s'> en <schema id='%s'>; use "
+"<override> para modificar o valor"
 
 #: ../gio/gschema-compile.c:885
 #, c-format
@@ -2678,6 +2736,8 @@ msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
+"debe especificar exactamente un de «type», «enum» ou «flags» como un atributo "
+"de <key>"
 
 #: ../gio/gschema-compile.c:904
 #, c-format
@@ -2696,12 +2756,12 @@ msgstr "<override> fornecido pero o esquema non estende nada"
 #: ../gio/gschema-compile.c:962
 #, c-format
 msgid "no <key name='%s'> to override"
-msgstr ""
+msgstr "non existe <key name='%s'> para sobrescribir"
 
 #: ../gio/gschema-compile.c:970
 #, c-format
 msgid "<override name='%s'> already specified"
-msgstr ""
+msgstr "<override name='%s'> xa foi especificada"
 
 #: ../gio/gschema-compile.c:1036
 #, c-format
@@ -2723,6 +2783,8 @@ msgstr "<schema id='%s'> é unha lista dun esquema non existente «%s»"
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
+"<schema id='%s'> é unha lista, estase estendendo <schema id='%s'> que non é "
+"unha lista"
 
 #: ../gio/gschema-compile.c:1086
 #, c-format
@@ -2730,6 +2792,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
+"<schema id='%s' list-of='%s'> estende <schema id='%s' list-of='%s'> pero «%s» "
+"non estende a «%s»"
 
 #: ../gio/gschema-compile.c:1103
 #, c-format
