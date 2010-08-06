@@ -26,7 +26,7 @@
 #include "config.h"
 
 #include "gfamfilemonitor.h"
-#include "giomodule.h"
+#include <gio/giomodule.h>
 
 #include "fam-helper.h"
 

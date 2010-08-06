@@ -32,7 +32,7 @@
 #include "fen-dump.h"
 
 #ifdef GIO_COMPILATION
-#include "gfilemonitor.h"
+#include <gio/gfilemonitor.h>
 #else
 #include "gam_event.h"
 #include "gam_server.h"

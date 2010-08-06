@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <locale.h>
 #include <libintl.h>
-#include <gio.h>
+#include <gio/gio.h>
 #include <gstdio.h>
 
 typedef struct {

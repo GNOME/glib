@@ -31,7 +31,7 @@
 #include "config.h"
 
 #include "gfendirectorymonitor.h"
-#include "giomodule.h"
+#include <gio/giomodule.h>
 
 #include "fen-helper.h"
 

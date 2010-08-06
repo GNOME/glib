@@ -29,8 +29,8 @@
 #include <glib-object.h>
 #include <string.h>
 #include <gio/gfilemonitor.h>
-#include "glocalfilemonitor.h"
-#include "giomodule.h"
+#include <gio/glocalfilemonitor.h>
+#include <gio/giomodule.h>
 
 G_BEGIN_DECLS
 

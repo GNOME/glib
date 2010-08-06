@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <gio.h>
+#include <gio/gio.h>
 #include <gstdio.h>
 
 #include "gdbus-sessionbus.h"

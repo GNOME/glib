@@ -27,7 +27,7 @@
 #include "fen-helper.h"
 #include "fen-kernel.h"
 #ifdef GIO_COMPILATION
-#include "gfilemonitor.h"
+#include <gio/gfilemonitor.h>
 #else
 #include "gam_event.h"
 #include "gam_server.h"

@@ -26,7 +26,7 @@
 #include "config.h"
 
 #include "ginotifydirectorymonitor.h"
-#include "giomodule.h"
+#include <gio/giomodule.h>
 
 #define USE_INOTIFY 1
 #include "inotify-helper.h"
