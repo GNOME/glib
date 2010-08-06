@@ -1,3 +1,70 @@
+Overview of Changes from GLib 2.25.12 to GLib 2.25.13
+=====================================================
+
++-------------------------------------------------------------------+
+|   WARNING: There have been no breaks in API or ABI.  Weird, eh?   |
++-------------------------------------------------------------------+
+
+The primary purpose of this release is to fix a serious problem with
+glib 2.25.12: glibconfig.h (as generated on a Fedora amd64 system) was
+being distributed in the tarball.  It was being used to build some parts
+of glib on other systems (eg: 32bit ones).  This was causing some very
+serious problems.
+
+There have been many other improvements, however:
+
+ Build and testing:
+  - vastly improved test coverage
+  - old tests moved to the gtester framework
+  - gtester Makefile modified so that the tests only run once
+  - cleanup of how we handle includes while building glib
+
+ GVariant:
+  - add a g_return_if_fail (utf8) to g_variant_new_string()
+
+ GDBus:
+  - perform extra sanity checks when serialising messages
+  - add API to query and set the byteorder of a GDBusMessage
+  - improve debug output, add some extra options
+  - if exiting due to the bus disconnecting us, print an error message
+    explaining why
+  - sort property names correctly
+  - don't bother sending RemoveMatch when we will close the connection
+    anyway
+  - use effective uid/gid for credential passing
+
+ GSettings:
+  - add G_SETTINGS_BIND_INVERT_BOOLEAN for inverting boolean bindings
+    without mapping functions
+  - mark all strings in the schema compiler for translation
+
+ Binding:
+  - improve closure support for bindings
+  - copy GSettings INVERT_BOOLEAN flag
+
+ Other:
+  - fix another complicated GCancellable deadlock possibility
+
+Bugs closed:
+ 599590 glib build doesn't look for correct pkg-config
+ 619026 avoid warning in gutils.h when using gcc with -Wconversion
+ 624739 Please fix POTFILES.in
+ 625472 Valgrind claims uninitialized bytes used
+ 625500 g_date_set_time_val documentation doesn't mention local time
+ 625628 GDBusProxy: wrong property name sorting
+ 625753 Incorrect flags used in g_dbus_connection_call_sync()
+ 625827 Expand documentation about error quark naming
+ 625988 builddir != srcdir issues
+ 626107 glibconfig.h is being disted
+
+Updated translations:
+ French
+ Galician
+ Hebrew
+ Norwegian bokmål
+ Spanish
+
+
 Overview of Changes from GLib 2.25.11 to GLib 2.25.12
 =====================================================
 
