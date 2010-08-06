@@ -16,11 +16,13 @@ do_mount_tests (GDrive *drive, GVolume *volume, GMount *mount)
 
   v = g_mount_get_volume (mount);
   g_assert (v == volume);
-  g_object_unref (v);
+  if (v != NULL)
+    g_object_unref (v);
 
   d = g_mount_get_drive (mount);
   g_assert (d == drive);
-  g_object_unref (d);
+  if (d != NULL)
+    g_object_unref (d);
 
   uuid = g_mount_get_uuid (mount);
   if (uuid)
@@ -147,8 +149,11 @@ test_mounts (void)
       drive = g_mount_get_drive (mount);
       volume = g_mount_get_volume (mount);
       do_mount_tests (drive, volume, mount);
-      g_object_unref (drive);
-      g_object_unref (volume);
+
+      if (drive != NULL)
+        g_object_unref (drive);
+      if (volume != NULL)
+        g_object_unref (volume);
     }
 
   g_list_foreach (mounts, (GFunc)g_object_unref,  NULL);
