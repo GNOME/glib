@@ -2,7 +2,7 @@
 include $(top_srcdir)/Makefile.decl
 
 INCLUDES = 			\
-	-DLIBDIR=\"$(libdir)\" -I$(top_srcdir)
+	-DLIBDIR=\"$(libdir)\" $(config_h_INCLUDES)
 
 noinst_LTLIBRARIES = libcharset.la
 

@@ -13,10 +13,7 @@ INCLUDES = \
 	-DLINK_SIZE=2 \
 	-DPOSIX_MALLOC_THRESHOLD=10 \
 	-DPCRE_STATIC \
-	-I$(top_srcdir) \
-	-I$(srcdir) \
-	-I$(top_srcdir)/glib \
-	-I$(top_builddir)/glib \
+	$(glib_INCLUDES) \
 	@GLIB_DEBUG_FLAGS@ \
 	-DG_DISABLE_DEPRECATED \
 	-DGLIB_COMPILATION \

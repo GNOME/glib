@@ -53,7 +53,7 @@ SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
 DIST_SUBDIRS = libcharset gnulib pcre update-pcre tests
 
 AM_CPPFLAGS = 				\
-	-I$(top_srcdir) 		\
+	$(glib_INCLUDES) 		\
 	$(pcre_inc) 			\
 	-DG_LOG_DOMAIN=\"GLib\" 	\
 	$(GLIB_DEBUG_FLAGS) 		\

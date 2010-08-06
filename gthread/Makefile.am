@@ -5,10 +5,7 @@ SUBDIRS = . tests
 DIST_SUBDIRS = tests
 
 AM_CPPFLAGS = 				\
-	-I$(top_srcdir) 		\
-	-I$(top_srcdir)/glib 		\
-	-I$(top_srcdir)/gthread 	\
-	-I$(top_builddir)/glib 		\
+	$(glib_INCLUDES) 		\
 	-DG_LOG_DOMAIN=\"GThread\" 	\
 	@GTHREAD_COMPILE_IMPL_DEFINES@ 	\
 	@GLIB_DEBUG_FLAGS@ 		\

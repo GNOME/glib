@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = -I$(top_srcdir)
+INCLUDES = $(config_h_INCLUDES)
 
 noinst_LTLIBRARIES = libasyncns.la
 

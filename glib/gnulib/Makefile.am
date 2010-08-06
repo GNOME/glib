@@ -1,8 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_builddir)/glib \
-	-DG_LOG_DOMAIN=\"GLib\" \
+INCLUDES = $(glib_INCLUDES) -DG_LOG_DOMAIN=\"GLib\" \
 	$(GLIB_DEBUG_FLAGS) -DG_DISABLE_DEPRECATED -DGLIB_COMPILATION 
 
 noinst_LTLIBRARIES = libgnulib.la

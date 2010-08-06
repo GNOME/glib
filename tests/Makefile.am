@@ -3,10 +3,7 @@ include $(top_srcdir)/Makefile.decl
 SUBDIRS=gobject refcount
 
 AM_CPPFLAGS = 				\
-	-I$(top_srcdir) 		\
-	-I$(top_srcdir)/glib 		\
-	-I$(top_srcdir)/gmodule 	\
-	-I$(top_builddir)/glib 		\
+	$(gmodule_INCLUDES) 		\
 	$(GLIB_DEBUG_FLAGS)
 
 AM_CFLAGS = -g

@@ -39,11 +39,7 @@ endif
 
 AM_CPPFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\"			\
-	-I$(top_builddir)				\
-	-I$(top_srcdir)					\
-	-I$(top_srcdir)/glib				\
-	-I$(top_srcdir)/gmodule				\
-	-I$(top_builddir)/glib				\
+	$(gmodule_INCLUDES)				\
 	$(GLIB_DEBUG_FLAGS)				\
 	$(THREAD_FLAGS)					\
 	-DG_DISABLE_DEPRECATED				\

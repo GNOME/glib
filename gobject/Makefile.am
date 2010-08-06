@@ -14,10 +14,7 @@ endif
 
 AM_CPPFLAGS = 					\
 	-DG_LOG_DOMAIN=\"GLib-GObject\"		\
-	-I$(top_srcdir)				\
-	-I$(top_srcdir)/glib			\
-	-I$(top_builddir)			\
-	-I$(top_builddir)/glib			\
+	$(gthread_INCLUDES) 			\
 	$(GLIB_DEBUG_FLAGS)			\
 	$(THREAD_FLAGS)				\
 	-DG_DISABLE_DEPRECATED			\

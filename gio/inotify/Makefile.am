@@ -25,11 +25,7 @@ libinotify_la_SOURCES = 		\
 
 libinotify_la_CFLAGS = \
 	-DG_LOG_DOMAIN=\"GLib-GIO\"	\
-	-I$(top_srcdir) 		\
-	-I$(top_srcdir)/glib 		\
-	-I$(top_srcdir)/gmodule		\
-	-I$(top_srcdir)/gio 		\
-	-I$(top_builddir)/gio 		\
+	$(gio_INCLUDES) 		\
 	$(GLIB_DEBUG_FLAGS)		\
 	-DGIO_MODULE_DIR=\"$(GIO_MODULE_DIR)\"	\
 	-DGIO_COMPILATION		\

@@ -32,10 +32,7 @@ IGNORE_HFILES = \
 # if $(DOC_MODULE).types is non-empty.
 INCLUDES = \
 	-I$(srcdir) 			\
-	-I$(top_srcdir) 		\
-	-I$(top_srcdir)/glib 		\
-	-I$(top_builddir) 		\
-	-I$(top_builddir)/glib 		\
+	$(gobject_INCLUDES) 		\
 	$(GLIB_DEBUG_FLAGS)
 GTKDOC_LIBS = \
 	$(top_builddir)/glib/libglib-2.0.la	\

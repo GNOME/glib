@@ -4,12 +4,7 @@ include $(top_srcdir)/Makefile.decl
 
 INCLUDES = 			\
 	-g 			\
-	-I$(top_srcdir) 	\
-	-I$(top_srcdir)/glib 	\
-	-I$(top_srcdir)/gmodule	\
-	-I$(top_srcdir)/gobject	\
-	-I$(top_srcdir)/gio 	\
-	-I$(top_builddir)/glib 	\
+	$(gio_INCLUDES)		\
 	$(GLIB_DEBUG_FLAGS)	\
 	-DSRCDIR=\""$(srcdir)"\"
 

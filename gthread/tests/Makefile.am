@@ -1,6 +1,6 @@
 include $(top_srcdir)/Makefile.decl
 
-INCLUDES = -g -I$(top_srcdir) -I$(top_srcdir)/glib -I$(top_builddir)/glib $(GLIB_DEBUG_FLAGS)
+INCLUDES = -g $(gthread_INCLUDES) $(GLIB_DEBUG_FLAGS)
 
 noinst_PROGRAMS = $(TEST_PROGS)
 progs_ldadd     = $(top_builddir)/glib/libglib-2.0.la \

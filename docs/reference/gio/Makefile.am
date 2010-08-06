@@ -116,15 +116,7 @@ IGNORE_HFILES=				\
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
 INCLUDES = \
-	-I$(srcdir)			\
-	-I$(top_srcdir)			\
-	-I$(top_srcdir)/glib		\
-	-I$(top_srcdir)/gobject		\
-	-I$(top_srcdir)/gio		\
-	-I$(top_builddir)		\
-	-I$(top_builddir)/glib		\
-	-I$(top_builddir)/gobject	\
-	-I$(top_builddir)/gio		\
+	$(gio_INCLUDES)			\
 	$(GLIB_DEBUG_FLAGS)
 
 GTKDOC_LIBS = \
