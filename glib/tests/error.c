@@ -44,7 +44,6 @@ test_prefix (void)
   g_propagate_prefixed_error (&dest, src, "foo %d %s: ", 1, "two");
   g_assert_cmpstr (dest->message, ==, "foo 1 two: bla");
   g_error_free (dest);
-  g_error_free (src);
 }
 
 static void
