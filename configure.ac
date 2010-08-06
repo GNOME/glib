@@ -3648,6 +3648,45 @@ fi
 
 AC_SUBST(GLIB_LINK_FLAGS)
 
+#
+# Define variables corresponding to the correct include paths to use for
+# in-tree building.
+#
+
+# for config.h:
+config_h_INCLUDES='-I$(top_builddir)'
+AC_SUBST(config_h_INCLUDES)
+
+# glib:
+#   config.h
+#   $(top_builddir)/glib: for glibconfig.h
+#   $(top_srcdir)/glib:   for glib.h
+#   $(top_srcdir):        for everything
+glib_INCLUDES='$(config_h_INCLUDES) -I$(top_builddir)/glib -I$(top_srcdir)/glib -I$(top_srcdir)'
+AC_SUBST(glib_INCLUDES)
+
+# gthread:
+#   same as glib
+gthread_INCLUDES='$(glib_INCLUDES)'
+AC_SUBST(gthread_INCLUDES)
+
+# gobject:
+#   same as gthread
+gobject_INCLUDES='$(gthread_INCLUDES)'
+AC_SUBST(gobject_INCLUDES)
+
+# gmodule:
+#   glib includes
+#   $(top_srcdir)/gmodule: for gmodule.h
+gmodule_INCLUDES='$(glib_INCLUDES) -I$(top_srcdir)/gmodule'
+AC_SUBST(gmodule_INCLUDES)
+
+# gio:
+#   same as gmodule
+gio_INCLUDES='$(gmodule_INCLUDES)'
+AC_SUBST(gio_INCLUDES)
+
+
 AC_CONFIG_FILES([
 glib-2.0.pc
 glib-2.0-uninstalled.pc
