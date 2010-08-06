@@ -475,15 +475,21 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
  *
  * Signature for function used in g_dbus_connection_add_filter().
  *
- * Returns: %TRUE if the filter handled @message, %FALSE to let other
- * handlers run.
+ * If you modify an outgoing message, make sure to return
+ * %G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED instead of
+ * %G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT so the message can be
+ * re-serialized. If an error occurs during re-serialization, a
+ * warning will be printed on standard error.
+ *
+ * Returns: A value from the #GDBusMessageFilterResult enumeration
+ * describing what to do with @message.
  *
  * Since: 2.26
  */
-typedef gboolean (*GDBusMessageFilterFunction) (GDBusConnection *connection,
-                                                GDBusMessage    *message,
-                                                gboolean         incoming,
-                                                gpointer         user_data);
+typedef GDBusMessageFilterResult (*GDBusMessageFilterFunction) (GDBusConnection *connection,
+                                                                GDBusMessage    *message,
+                                                                gboolean         incoming,
+                                                                gpointer         user_data);
 
 guint g_dbus_connection_add_filter (GDBusConnection            *connection,
                                     GDBusMessageFilterFunction  filter_function,

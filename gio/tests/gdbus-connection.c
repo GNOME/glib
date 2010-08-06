@@ -62,13 +62,13 @@ static const GDBusInterfaceVTable boo_vtable =
   NULL  /* _set_property */
 };
 
-static gboolean
+static GDBusMessageFilterResult
 some_filter_func (GDBusConnection *connection,
                   GDBusMessage    *message,
                   gboolean         incoming,
                   gpointer         user_data)
 {
-  return FALSE;
+  return G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
 }
 
 static void
@@ -686,7 +686,7 @@ typedef struct
   guint32 serial;
 } FilterData;
 
-static gboolean
+static GDBusMessageFilterResult
 filter_func (GDBusConnection *connection,
              GDBusMessage    *message,
              gboolean         incoming,
@@ -706,6 +706,75 @@ filter_func (GDBusConnection *connection,
       data->num_outgoing += 1;
     }
 
+  return G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
+}
+
+typedef struct
+{
+  GDBusMessageFilterResult incoming;
+  GDBusMessageFilterResult outgoing;
+} FilterEffects;
+
+static GDBusMessageFilterResult
+other_filter_func (GDBusConnection *connection,
+                   GDBusMessage    *message,
+                   gboolean         incoming,
+                   gpointer         user_data)
+{
+  FilterEffects *effects = user_data;
+  GDBusMessageFilterResult ret;
+
+  if (incoming)
+    ret = effects->incoming;
+  else
+    ret = effects->outgoing;
+
+  if (ret == G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED)
+    {
+      GVariant *body;
+      gchar *s;
+      gchar *s2;
+      body = g_dbus_message_get_body (message);
+      g_variant_get (body, "(s)", &s);
+      s2 = g_strdup_printf ("MOD: %s", s);
+      g_dbus_message_set_body (message, g_variant_new ("(s)", s2));
+      g_free (s2);
+      g_free (s);
+    }
+
+  return ret;
+}
+
+static void
+test_connection_filter_name_owner_changed_signal_handler (GDBusConnection  *connection,
+                                                          const gchar      *sender_name,
+                                                          const gchar      *object_path,
+                                                          const gchar      *interface_name,
+                                                          const gchar      *signal_name,
+                                                          GVariant         *parameters,
+                                                          gpointer         user_data)
+{
+  const gchar *name;
+  const gchar *old_owner;
+  const gchar *new_owner;
+
+  g_variant_get (parameters,
+                 "(&s&s&s)",
+                 &name,
+                 &old_owner,
+                 &new_owner);
+
+  if (g_strcmp0 (name, "com.example.TestService") == 0 && strlen (new_owner) > 0)
+    {
+      g_main_loop_quit (loop);
+    }
+}
+
+static gboolean
+test_connection_filter_on_timeout (gpointer user_data)
+{
+  g_printerr ("Timeout waiting 1000 msec on service\n");
+  g_assert_not_reached ();
   return FALSE;
 }
 
@@ -718,6 +787,11 @@ test_connection_filter (void)
   GDBusMessage *r;
   GError *error;
   guint filter_id;
+  guint timeout_mainloop_id;
+  guint signal_handler_id;
+  FilterEffects effects;
+  GVariant *result;
+  const gchar *s;
 
   memset (&data, '\0', sizeof (FilterData));
 
@@ -780,6 +854,73 @@ test_connection_filter (void)
   g_object_unref (r);
   g_assert_cmpint (data.num_handled, ==, 3);
   g_assert_cmpint (data.num_outgoing, ==, 3);
+
+  /* this is safe; testserver will exit once the bus goes away */
+  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));
+  /* wait for service to be available */
+  signal_handler_id = g_dbus_connection_signal_subscribe (c,
+                                                          "org.freedesktop.DBus", /* sender */
+                                                          "org.freedesktop.DBus",
+                                                          "NameOwnerChanged",
+                                                          "/org/freedesktop/DBus",
+                                                          NULL, /* arg0 */
+                                                          G_DBUS_SIGNAL_FLAGS_NONE,
+                                                          test_connection_filter_name_owner_changed_signal_handler,
+                                                          NULL,
+                                                          NULL);
+  g_assert_cmpint (signal_handler_id, !=, 0);
+  timeout_mainloop_id = g_timeout_add (1000, test_connection_filter_on_timeout, NULL);
+  g_main_loop_run (loop);
+  g_source_remove (timeout_mainloop_id);
+  g_dbus_connection_signal_unsubscribe (c, signal_handler_id);
+
+  /* now test all nine combinations... */
+
+  filter_id = g_dbus_connection_add_filter (c,
+                                            other_filter_func,
+                                            &effects,
+                                            NULL);
+  /* -- */
+  effects.incoming = G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
+  effects.outgoing = G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
+  error = NULL;
+  result = g_dbus_connection_call_sync (c,
+                                        "com.example.TestService",      /* bus name */
+                                        "/com/example/TestObject",      /* object path */
+                                        "com.example.Frob",             /* interface name */
+                                        "HelloWorld",                   /* method name */
+                                        g_variant_new ("(s)", "Cat"),   /* parameters */
+                                        G_VARIANT_TYPE ("(s)"),         /* return type */
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        -1,
+                                        NULL,
+                                        &error);
+  g_assert_no_error (error);
+  g_variant_get (result, "(&s)", &s);
+  g_assert_cmpstr (s, ==, "You greeted me with 'Cat'. Thanks!");
+  g_variant_unref (result);
+  /* -- */
+  effects.incoming = G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED;
+  effects.outgoing = G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED;
+  error = NULL;
+  result = g_dbus_connection_call_sync (c,
+                                        "com.example.TestService",      /* bus name */
+                                        "/com/example/TestObject",      /* object path */
+                                        "com.example.Frob",             /* interface name */
+                                        "HelloWorld",                   /* method name */
+                                        g_variant_new ("(s)", "Cat"),   /* parameters */
+                                        G_VARIANT_TYPE ("(s)"),         /* return type */
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        -1,
+                                        NULL,
+                                        &error);
+  g_assert_no_error (error);
+  g_variant_get (result, "(&s)", &s);
+  g_assert_cmpstr (s, ==, "MOD: You greeted me with 'MOD: Cat'. Thanks!");
+  g_variant_unref (result);
+
+
+  g_dbus_connection_remove_filter (c, filter_id);
 
   _g_object_wait_for_single_ref (c);
   g_object_unref (c);

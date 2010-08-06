@@ -1944,6 +1944,7 @@ on_worker_message_received (GDBusWorker  *worker,
   GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
   FilterCallback *filters;
   gboolean consumed_by_filter;
+  gboolean altered_by_filter;
   guint num_filters;
   guint n;
 
@@ -1965,17 +1966,39 @@ on_worker_message_received (GDBusWorker  *worker,
 
   /* the call the filters in order (without holding the lock) */
   consumed_by_filter = FALSE;
+  altered_by_filter = FALSE;
   for (n = 0; n < num_filters; n++)
     {
-      consumed_by_filter = filters[n].func (connection,
-                                            message,
-                                            TRUE,
-                                            filters[n].user_data);
+      GDBusMessageFilterResult result;
+      result = filters[n].func (connection,
+                                message,
+                                TRUE,
+                                filters[n].user_data);
+      switch (result)
+        {
+        case G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT:
+          /* do nothing */
+          break;
+
+        default:
+          g_warning ("Treating unknown value %d for GDBusMessageFilterResult from filter "
+                     "function on incoming message as MESSAGE_CONSUMED.", result);
+          /* explicit fallthrough */
+        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED:
+          consumed_by_filter = TRUE;
+          break;
+
+        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED:
+          altered_by_filter = TRUE;
+          break;
+        }
       if (consumed_by_filter)
         break;
     }
 
-  /* Standard dispatch unless the filter ate the message */
+  /* Standard dispatch unless the filter ate the message - no need to
+   * do anything if the message was altered
+   */
   if (!consumed_by_filter)
     {
       GDBusMessageType message_type;
@@ -2020,18 +2043,20 @@ on_worker_message_received (GDBusWorker  *worker,
 }
 
 /* Called in worker's thread */
-static gboolean
+static GDBusMessageFilterResult
 on_worker_message_about_to_be_sent (GDBusWorker  *worker,
                                     GDBusMessage *message,
                                     gpointer      user_data)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
   FilterCallback *filters;
-  gboolean consumed_by_filter;
   guint num_filters;
   guint n;
+  GDBusMessageFilterResult ret;
 
   //g_debug ("in on_worker_message_about_to_be_sent");
+
+  ret = G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
 
   g_object_ref (connection);
 
@@ -2047,22 +2072,39 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
     }
   CONNECTION_UNLOCK (connection);
 
-  /* the call the filters in order (without holding the lock) */
-  consumed_by_filter = FALSE;
+  /* then call the filters in order (without holding the lock) */
   for (n = 0; n < num_filters; n++)
     {
-      consumed_by_filter = filters[n].func (connection,
-                                            message,
-                                            FALSE,
-                                            filters[n].user_data);
-      if (consumed_by_filter)
-        break;
+      GDBusMessageFilterResult result;
+      result = filters[n].func (connection,
+                                message,
+                                FALSE,
+                                filters[n].user_data);
+      switch (result)
+        {
+        case G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT:
+          /* do nothing, ret might already be _ALTERED */
+          break;
+
+        default:
+          g_warning ("Treating unknown value %d for GDBusMessageFilterResult from filter "
+                     "function on outgoing message as MESSAGE_CONSUMED.", result);
+          /* explicit fallthrough */
+        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED:
+          ret = G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED;
+          goto out;
+
+        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED:
+          ret = G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED;
+          break;
+        }
     }
 
+ out:
   g_object_unref (connection);
   g_free (filters);
 
-  return consumed_by_filter;
+  return ret;
 }
 
 /* Called in worker's thread - we must not block */
@@ -2674,7 +2716,9 @@ static guint _global_filter_id = 1;
  * are run in the order that they were added.  The same handler can be
  * added as a filter more than once, in which case it will be run more
  * than once.  Filters added during a filter callback won't be run on
- * the message being processed.
+ * the message being processed. Filter functions are allowed to modify
+ * and even drop messages - see the #GDBusMessageFilterResult
+ * enumeration for details.
  *
  * Note that filters are run in a dedicated message handling thread so
  * they can't block and, generally, can't do anything but signal a
@@ -2683,10 +2727,9 @@ static guint _global_filter_id = 1;
  * g_dbus_connection_signal_subscribe() or
  * g_dbus_connection_call() instead.
  *
- * If a filter consumes an incoming message (by returning %TRUE), the
- * message is not dispatched anywhere else - not even the standard
- * dispatch machinery (that API such as
- * g_dbus_connection_signal_subscribe() and
+ * If a filter consumes an incoming message the message is not
+ * dispatched anywhere else - not even the standard dispatch machinery
+ * (that API such as g_dbus_connection_signal_subscribe() and
  * g_dbus_connection_send_message_with_reply() relies on) will see the
  * message. Similary, if a filter consumes an outgoing message, the
  * message will not be sent to the other peer.

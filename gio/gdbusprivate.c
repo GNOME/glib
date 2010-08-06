@@ -468,12 +468,12 @@ _g_dbus_worker_emit_message_received (GDBusWorker  *worker,
     worker->message_received_callback (worker, message, worker->user_data);
 }
 
-static gboolean
+static GDBusMessageFilterResult
 _g_dbus_worker_emit_message_about_to_be_sent (GDBusWorker  *worker,
                                               GDBusMessage *message)
 {
-  gboolean ret;
-  ret = FALSE;
+  GDBusMessageFilterResult ret;
+  ret = G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
   if (!worker->stopped)
     ret = worker->message_about_to_be_sent_callback (worker, message, worker->user_data);
   return ret;
@@ -1241,23 +1241,56 @@ maybe_write_next_message (GDBusWorker *worker)
    */
   if (data != NULL)
     {
-      gboolean message_was_dropped;
-      message_was_dropped = _g_dbus_worker_emit_message_about_to_be_sent (worker, data->message);
-      if (G_UNLIKELY (message_was_dropped))
+      GDBusMessageFilterResult filter_result;
+      guchar *new_blob;
+      gsize new_blob_size;
+      GError *error;
+
+      filter_result = _g_dbus_worker_emit_message_about_to_be_sent (worker, data->message);
+      switch (filter_result)
         {
+        case G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT:
+          /* do nothing */
+          break;
+
+        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED:
+          /* drop message */
           g_mutex_lock (worker->write_lock);
           worker->num_writes_pending -= 1;
           g_mutex_unlock (worker->write_lock);
           message_to_write_data_free (data);
           goto write_next;
+
+        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED:
+          /* reencode altered message */
+          error = NULL;
+          new_blob = g_dbus_message_to_blob (data->message,
+                                             &new_blob_size,
+                                             worker->capabilities,
+                                             &error);
+          if (new_blob == NULL)
+            {
+              /* if filter make the GDBusMessage unencodeable, just complain on stderr and send
+               * the old message instead
+               */
+              g_warning ("Error encoding GDBusMessage with serial %d altered by filter function: %s",
+                         g_dbus_message_get_serial (data->message),
+                         error->message);
+              g_error_free (error);
+            }
+          else
+            {
+              g_free (data->blob);
+              data->blob = (gchar *) new_blob;
+              data->blob_size = new_blob_size;
+            }
+          break;
         }
-      else
-        {
-          write_message_async (worker,
-                               data,
-                               write_message_cb,
-                               data);
-        }
+
+      write_message_async (worker,
+                           data,
+                           write_message_cb,
+                           data);
     }
 }
 

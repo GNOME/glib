@@ -1250,7 +1250,7 @@ test_credentials (void)
 #define OVERFLOW_NUM_SIGNALS 5000
 #define OVERFLOW_TIMEOUT_SEC 10
 
-static gboolean
+static GDBusMessageFilterResult
 overflow_filter_func (GDBusConnection *connection,
                       GDBusMessage    *message,
                       gboolean         incoming,
@@ -1258,7 +1258,7 @@ overflow_filter_func (GDBusConnection *connection,
 {
   volatile gint *counter = user_data;
   *counter += 1;
-  return FALSE; /* don't drop the message */
+  return G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
 }
 
 static gboolean
