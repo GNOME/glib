@@ -11,13 +11,18 @@ TEST_PROGS =
 ### testing rules
 
 # test: run all tests in cwd and subdirs
-test:	${TEST_PROGS}
+test: test-nonrecursive
 if OS_UNIX
-	@test -z "${TEST_PROGS}" || MALLOC_CHECK_=2 MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256)) ${GTESTER} --verbose ${TEST_PROGS}
 	@ for subdir in $(SUBDIRS) . ; do \
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
 	    ( cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $? ; \
 	  done
+endif
+
+# test-nonrecursive: run tests only in cwd
+test-nonrecursive: ${TEST_PROGS}
+if OS_UNIX
+	@test -z "${TEST_PROGS}" || MALLOC_CHECK_=2 MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256)) ${GTESTER} --verbose ${TEST_PROGS}
 endif
 
 # test-report: run tests in subdirs and generate report
@@ -60,7 +65,7 @@ test-report perf-report full-report:	${TEST_PROGS}
 	    rm -rf "$$GTESTER_LOGDIR"/ ; \
 	    ${GTESTER_REPORT} --version 2>/dev/null 1>&2 ; test "$$?" != 0 || ${GTESTER_REPORT} $@.xml >$@.html ; \
 	  }
-.PHONY: test test-report perf-report full-report
+.PHONY: test test-report perf-report full-report test-nonrecursive
 
 .PHONY: lcov genlcov lcov-clean
 # use recursive makes in order to ignore errors during check
@@ -83,5 +88,5 @@ lcov-clean:
 	-rm -rf glib-lcov.info glib-lcov
 	-find -name '*.gcda' -print | xargs rm
 
-# run make test as part of make check
-check-local: test
+# run tests in cwd as part of make check
+check-local: test-nonrecursive
