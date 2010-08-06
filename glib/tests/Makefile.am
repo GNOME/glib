@@ -164,7 +164,7 @@ EXTRA_DIST += \
 	keyfiletest.ini		\
 	bookmarks.xbel
 
-dist_hook:
+dist-hook:
 	mkdir $(distdir)/markups;		\
 	for f in $(srcdir)/markups/*; do 	\
 	  cp $$f $(distdir)/markups; done
