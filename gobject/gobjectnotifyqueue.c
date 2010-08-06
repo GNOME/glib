@@ -119,22 +119,10 @@ g_object_notify_queue_thaw (GObject            *object,
   }
 
   pspecs = nqueue->n_pspecs > 16 ? free_me = g_new (GParamSpec*, nqueue->n_pspecs) : pspecs_mem;
-  /* set first entry to NULL since it's checked unconditionally */
-  pspecs[0] = NULL;
+
   for (slist = nqueue->pspecs; slist; slist = slist->next)
     {
-      GParamSpec *pspec = slist->data;
-      guint i;
-
-      /* dedup, make pspecs in the list unique */
-      for (i = 0; i < n_pspecs; i++)
-        {
-          if (pspecs[i] == pspec)
-            break;
-        }
-
-      if (i == n_pspecs) /* if no match was found */
-        pspecs[n_pspecs++] = pspec;
+      pspecs[n_pspecs++] = slist->data;
     }
   g_datalist_id_set_data (&object->qdata, context->quark_notify_queue, NULL);
 
@@ -178,8 +166,11 @@ g_object_notify_queue_add (GObject            *object,
 	pspec = redirect;
 	    
       /* we do the deduping in _thaw */
-      nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
-      nqueue->n_pspecs++;
+      if (g_slist_find (nqueue->pspecs, pspec) == NULL)
+        {
+          nqueue->pspecs = g_slist_prepend (nqueue->pspecs, pspec);
+          nqueue->n_pspecs++;
+        }
 
       G_UNLOCK(notify_lock);
     }
