@@ -16,7 +16,7 @@ CLEANFILES =
 DISTCLEANFILES += glibconfig-stamp glibconfig.h
 BUILT_SOURCES += glibconfig-stamp
 configexecincludedir = $(libdir)/glib-2.0/include
-configexecinclude_HEADERS = glibconfig.h
+nodist_configexecinclude_HEADERS = glibconfig.h
 glibconfig-stamp: ../config.status
 	$(AM_V_GEN) cd $(top_builddir) && \
 	  $(SHELL) ./config.status glib/glibconfig.h
