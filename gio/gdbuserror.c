@@ -433,10 +433,13 @@ g_dbus_error_unregister_error (GQuark       error_domain,
       g_warn_if_fail (g_hash_table_lookup (quark_code_pair_to_re, &pair) == NULL); /* check invariant */
       goto out;
     }
+
+  ret = TRUE;
+
   g_warn_if_fail (g_hash_table_lookup (quark_code_pair_to_re, &(re->pair)) == re); /* check invariant */
 
   g_warn_if_fail (g_hash_table_remove (quark_code_pair_to_re, &(re->pair)));
-  g_warn_if_fail (g_hash_table_remove (dbus_error_name_to_re, re));
+  g_warn_if_fail (g_hash_table_remove (dbus_error_name_to_re, re->dbus_error_name));
 
   /* destroy hashes if empty */
   hash_size = g_hash_table_size (dbus_error_name_to_re);
