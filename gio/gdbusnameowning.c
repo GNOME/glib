@@ -29,6 +29,7 @@
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
 #include "gdbusconnection.h"
+#include "gio-marshal.h"
 
 #include "glibintl.h"
 
@@ -634,6 +635,42 @@ typedef struct {
   GClosure *name_lost_closure;
 } OwnNameData;
 
+static OwnNameData *
+own_name_data_new (GClosure *bus_acquired_closure,
+                   GClosure *name_acquired_closure,
+                   GClosure *name_lost_closure)
+{
+  OwnNameData *data;
+
+  data = g_new0 (OwnNameData, 1);
+
+  if (bus_acquired_closure != NULL)
+    {
+      data->bus_acquired_closure = g_closure_ref (bus_acquired_closure);
+      g_closure_sink (bus_acquired_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (bus_acquired_closure))
+        g_closure_set_marshal (bus_acquired_closure, _gio_marshal_VOID__STRING);
+    }
+
+  if (name_acquired_closure != NULL)
+    {
+      data->name_acquired_closure = g_closure_ref (name_acquired_closure);
+      g_closure_sink (name_acquired_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (name_acquired_closure))
+        g_closure_set_marshal (name_acquired_closure, _gio_marshal_VOID__STRING);
+    }
+
+  if (name_lost_closure != NULL)
+    {
+      data->name_lost_closure = g_closure_ref (name_lost_closure);
+      g_closure_sink (name_lost_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (name_lost_closure))
+        g_closure_set_marshal (name_lost_closure, _gio_marshal_VOID__STRING);
+    }
+
+  return data;
+}
+
 static void
 own_with_closures_on_bus_acquired (GDBusConnection *connection,
                                    const gchar     *name,
@@ -649,6 +686,9 @@ own_with_closures_on_bus_acquired (GDBusConnection *connection,
   g_value_set_string (&params[1], name);
 
   g_closure_invoke (data->bus_acquired_closure, NULL, 2, params, NULL);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
 }
 
 static void
@@ -666,6 +706,9 @@ own_with_closures_on_name_acquired (GDBusConnection *connection,
   g_value_set_string (&params[1], name);
 
   g_closure_invoke (data->name_acquired_closure, NULL, 2, params, NULL);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
 }
 
 static void
@@ -683,6 +726,9 @@ own_with_closures_on_name_lost (GDBusConnection *connection,
   g_value_set_string (&params[1], name);
 
   g_closure_invoke (data->name_lost_closure, NULL, 2, params, NULL);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
 }
 
 static void
@@ -732,35 +778,15 @@ g_bus_own_name_with_closures (GBusType                  bus_type,
                               GClosure                 *name_acquired_closure,
                               GClosure                 *name_lost_closure)
 {
-  OwnNameData *data;
-
-  data = g_new0 (OwnNameData, 1);
-
-  if (bus_acquired_closure != NULL)
-    {
-      data->bus_acquired_closure = g_closure_ref (bus_acquired_closure);
-      g_closure_sink (bus_acquired_closure);
-    }
-
-  if (name_acquired_closure != NULL)
-    {
-      data->name_acquired_closure = g_closure_ref (name_acquired_closure);
-      g_closure_sink (name_acquired_closure);
-    }
-
-  if (name_lost_closure != NULL)
-    {
-      data->name_lost_closure = g_closure_ref (name_lost_closure);
-      g_closure_sink (name_lost_closure);
-    }
-
   return g_bus_own_name (bus_type,
           name,
           flags,
           bus_acquired_closure != NULL ? own_with_closures_on_bus_acquired : NULL,
           name_acquired_closure != NULL ? own_with_closures_on_name_acquired : NULL,
           name_lost_closure != NULL ? own_with_closures_on_name_lost : NULL,
-          data,
+          own_name_data_new (bus_acquired_closure,
+                             name_acquired_closure,
+                             name_lost_closure),
           bus_own_name_free_func);
 }
 
@@ -791,28 +817,14 @@ g_bus_own_name_on_connection_with_closures (GDBusConnection          *connection
                                             GClosure                 *name_acquired_closure,
                                             GClosure                 *name_lost_closure)
 {
-  OwnNameData *data;
-
-  data = g_new0 (OwnNameData, 1);
-
-  if (name_acquired_closure != NULL)
-    {
-      data->name_acquired_closure = g_closure_ref (name_acquired_closure);
-      g_closure_sink (name_acquired_closure);
-    }
-
-  if (name_lost_closure != NULL)
-    {
-      data->name_lost_closure = g_closure_ref (name_lost_closure);
-      g_closure_sink (name_lost_closure);
-    }
-
   return g_bus_own_name_on_connection (connection,
           name,
           flags,
           name_acquired_closure != NULL ? own_with_closures_on_name_acquired : NULL,
           name_lost_closure != NULL ? own_with_closures_on_name_lost : NULL,
-          data,
+          own_name_data_new (NULL,
+                             name_acquired_closure,
+                             name_lost_closure),
           bus_own_name_free_func);
 }
 

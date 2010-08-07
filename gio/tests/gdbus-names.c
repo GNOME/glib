@@ -220,14 +220,18 @@ test_bus_own_name (void)
   data.num_acquired = 0;
   data.num_lost = 0;
   data.expect_null_connection = FALSE;
-  id = g_bus_own_name (G_BUS_TYPE_SESSION,
-                       name,
-                       G_BUS_NAME_OWNER_FLAGS_NONE,
-                       bus_acquired_handler,
-                       name_acquired_handler,
-                       name_lost_handler,
-                       &data,
-                       (GDestroyNotify) own_name_data_free_func);
+  id = g_bus_own_name_with_closures (G_BUS_TYPE_SESSION,
+                                     name,
+                                     G_BUS_NAME_OWNER_FLAGS_NONE,
+                                     g_cclosure_new (G_CALLBACK (bus_acquired_handler),
+                                                     &data,
+                                                     NULL),
+                                     g_cclosure_new (G_CALLBACK (name_acquired_handler),
+                                                     &data,
+                                                     NULL),
+                                     g_cclosure_new (G_CALLBACK (name_lost_handler),
+                                                     &data,
+                                                     (GClosureNotify) own_name_data_free_func));
   g_assert_cmpint (data.num_bus_acquired, ==, 0);
   g_assert_cmpint (data.num_acquired, ==, 0);
   g_assert_cmpint (data.num_lost,     ==, 0);
@@ -538,6 +542,7 @@ test_bus_watch_name (void)
   WatchNameData data;
   guint id;
   guint owner_id;
+  GDBusConnection *connection;
 
   /*
    * First check that name_vanished_handler() is invoked if there is no bus.
@@ -585,16 +590,20 @@ test_bus_watch_name (void)
   g_main_loop_run (loop);
   g_assert_cmpint (data.num_acquired, ==, 1);
   g_assert_cmpint (data.num_lost,     ==, 0);
+
+  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+  g_assert (connection != NULL);
+
   /* now watch the name */
   data.num_appeared = 0;
   data.num_vanished = 0;
-  id = g_bus_watch_name (G_BUS_TYPE_SESSION,
-                         "org.gtk.GDBus.Name1",
-                         G_BUS_NAME_WATCHER_FLAGS_NONE,
-                         name_appeared_handler,
-                         name_vanished_handler,
-                         &data,
-                         (GDestroyNotify) watch_name_data_free_func);
+  id = g_bus_watch_name_on_connection (connection,
+                                       "org.gtk.GDBus.Name1",
+                                       G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                       name_appeared_handler,
+                                       name_vanished_handler,
+                                       &data,
+                                       (GDestroyNotify) watch_name_data_free_func);
   g_assert_cmpint (data.num_appeared, ==, 0);
   g_assert_cmpint (data.num_vanished, ==, 0);
   g_main_loop_run (loop);
@@ -606,6 +615,8 @@ test_bus_watch_name (void)
    */
   g_bus_unwatch_name (id);
   g_assert_cmpint (data.num_free_func, ==, 1);
+
+  g_object_unref (connection);
 
   /* unown the name */
   g_bus_unown_name (owner_id);
@@ -621,13 +632,15 @@ test_bus_watch_name (void)
   data.num_appeared = 0;
   data.num_vanished = 0;
   data.num_free_func = 0;
-  id = g_bus_watch_name (G_BUS_TYPE_SESSION,
-                         "org.gtk.GDBus.Name1",
-                         G_BUS_NAME_WATCHER_FLAGS_NONE,
-                         name_appeared_handler,
-                         name_vanished_handler,
-                         &data,
-                         (GDestroyNotify) watch_name_data_free_func);
+  id = g_bus_watch_name_with_closures (G_BUS_TYPE_SESSION,
+                                       "org.gtk.GDBus.Name1",
+                                       G_BUS_NAME_WATCHER_FLAGS_NONE,
+                                       g_cclosure_new (G_CALLBACK (name_appeared_handler),
+                                                       &data,
+                                                       NULL),
+                                       g_cclosure_new (G_CALLBACK (name_vanished_handler),
+                                                       &data,
+                                                       (GClosureNotify) watch_name_data_free_func));
   g_assert_cmpint (data.num_appeared, ==, 0);
   g_assert_cmpint (data.num_vanished, ==, 0);
   g_main_loop_run (loop);

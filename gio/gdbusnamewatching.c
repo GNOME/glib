@@ -30,6 +30,7 @@
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
 #include "gdbusconnection.h"
+#include "gio-marshal.h"
 
 #include "glibintl.h"
 
@@ -635,9 +636,8 @@ guint g_bus_watch_name_on_connection (GDBusConnection          *connection,
     g_main_context_ref (client->main_context);
 
   if (map_id_to_client == NULL)
-    {
-      map_id_to_client = g_hash_table_new (g_direct_hash, g_direct_equal);
-    }
+    map_id_to_client = g_hash_table_new (g_direct_hash, g_direct_equal);
+
   g_hash_table_insert (map_id_to_client,
                        GUINT_TO_POINTER (client->id),
                        client);
@@ -654,6 +654,33 @@ typedef struct {
   GClosure *name_appeared_closure;
   GClosure *name_vanished_closure;
 } WatchNameData;
+
+static WatchNameData *
+watch_name_data_new (GClosure *name_appeared_closure,
+                     GClosure *name_vanished_closure)
+{
+  WatchNameData *data;
+
+  data = g_new0 (WatchNameData, 1);
+
+  if (name_appeared_closure != NULL)
+    {
+      data->name_appeared_closure = g_closure_ref (name_appeared_closure);
+      g_closure_sink (name_appeared_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (name_appeared_closure))
+        g_closure_set_marshal (name_appeared_closure, _gio_marshal_VOID__STRING_STRING);
+    }
+
+  if (name_vanished_closure != NULL)
+    {
+      data->name_vanished_closure = g_closure_ref (name_vanished_closure);
+      g_closure_sink (name_vanished_closure);
+      if (G_CLOSURE_NEEDS_MARSHAL (name_vanished_closure))
+        g_closure_set_marshal (name_vanished_closure, _gio_marshal_VOID__STRING);
+    }
+
+  return data;
+}
 
 static void
 watch_with_closures_on_name_appeared (GDBusConnection *connection,
@@ -674,6 +701,10 @@ watch_with_closures_on_name_appeared (GDBusConnection *connection,
   g_value_set_string (&params[2], name_owner);
 
   g_closure_invoke (data->name_appeared_closure, NULL, 3, params, NULL);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
+  g_value_unset (params + 2);
 }
 
 static void
@@ -691,6 +722,9 @@ watch_with_closures_on_name_vanished (GDBusConnection *connection,
   g_value_set_string (&params[1], name);
 
   g_closure_invoke (data->name_vanished_closure, NULL, 2, params, NULL);
+
+  g_value_unset (params + 0);
+  g_value_unset (params + 1);
 }
 
 static void
@@ -734,28 +768,12 @@ g_bus_watch_name_with_closures (GBusType                 bus_type,
                                 GClosure                *name_appeared_closure,
                                 GClosure                *name_vanished_closure)
 {
-  WatchNameData *data;
-
-  data = g_new0 (WatchNameData, 1);
-
-  if (name_appeared_closure != NULL)
-    {
-      data->name_appeared_closure = g_closure_ref (name_appeared_closure);
-      g_closure_sink (name_appeared_closure);
-    }
-
-  if (name_vanished_closure != NULL)
-    {
-      data->name_vanished_closure = g_closure_ref (name_vanished_closure);
-      g_closure_sink (name_vanished_closure);
-    }
-
   return g_bus_watch_name (bus_type,
           name,
           flags,
           name_appeared_closure != NULL ? watch_with_closures_on_name_appeared : NULL,
           name_vanished_closure != NULL ? watch_with_closures_on_name_vanished : NULL,
-          data,
+          watch_name_data_new (name_appeared_closure, name_vanished_closure),
           bus_watch_name_free_func);
 }
 
@@ -786,28 +804,12 @@ guint g_bus_watch_name_on_connection_with_closures (
                                       GClosure                 *name_appeared_closure,
                                       GClosure                 *name_vanished_closure)
 {
-  WatchNameData *data;
-
-  data = g_new0 (WatchNameData, 1);
-
-  if (name_appeared_closure != NULL)
-    {
-      data->name_appeared_closure = g_closure_ref (name_appeared_closure);
-      g_closure_sink (name_appeared_closure);
-    }
-
-  if (name_vanished_closure != NULL)
-    {
-      data->name_vanished_closure = g_closure_ref (name_vanished_closure);
-      g_closure_sink (name_vanished_closure);
-    }
-
   return g_bus_watch_name_on_connection (connection,
           name,
           flags,
           name_appeared_closure != NULL ? watch_with_closures_on_name_appeared : NULL,
           name_vanished_closure != NULL ? watch_with_closures_on_name_vanished : NULL,
-          data,
+          watch_name_data_new (name_appeared_closure, name_vanished_closure),
           bus_watch_name_free_func);
 }
 
