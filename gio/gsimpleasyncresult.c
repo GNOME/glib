@@ -757,10 +757,12 @@ g_simple_async_result_is_valid (GAsyncResult *result,
   cmp_source = g_async_result_get_source_object (result);
   if (cmp_source != source)
     {
-      g_object_unref (cmp_source);
+      if (cmp_source != NULL)
+        g_object_unref (cmp_source);
       return FALSE;
     }
-  g_object_unref (cmp_source);
+  if (cmp_source != NULL)
+    g_object_unref (cmp_source);
 
   return source_tag == g_simple_async_result_get_source_tag (simple);
 }
