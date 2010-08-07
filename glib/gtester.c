@@ -620,11 +620,20 @@ parse_args (gint    *argc_p,
   *argc_p = e;
 }
 
+static gboolean
+do_nothing (gpointer data)
+{
+  return TRUE;
+}
+
 int
 main (int    argc,
       char **argv)
 {
   guint ui;
+
+  /* See #578295 */
+  g_timeout_add_seconds (5, do_nothing, NULL);
 
   /* some unices need SA_RESTART for SIGCHLD to return -EAGAIN for io.
    * we must fiddle with sigaction() *before* glib is used, otherwise
