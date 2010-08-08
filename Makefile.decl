@@ -78,10 +78,8 @@ lcov:
 # we also have to delete tests/.libs/libmoduletestplugin_*.gcda
 genlcov:
 	rm -f $(top_builddir)/tests/.libs/libmoduletestplugin_*.gcda
-	$(LTP) --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum
-	$(SED) -e 's#.libs/##' < glib-lcov.info > glib-lcov.info.tmp
-	LANG=C $(LTP_GENHTML) --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --show-details glib-lcov.info.tmp
-	rm -f glib-lcov.info.tmp
+	$(LTP) --directory $(top_builddir) --capture --output-file glib-lcov.info --test-name GLIB_PERF --no-checksum --compat-libtool
+	LANG=C $(LTP_GENHTML) --prefix $(top_builddir) --output-directory glib-lcov --title "GLib Code Coverage" --legend --show-details glib-lcov.info
 
 lcov-clean:
 	-$(LTP) --directory $(top_builddir) -z
