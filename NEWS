@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.24.1 to GLib 2.24.2
+===================================================
+
+* Bugs fixed:
+ 578295 gtester has a race condition
+ 619945 GConverterOutputStream triggers assertion and corrupts data
+ 621168 GKeyFile memory leak on Windows platform
+ 616216 glib compile from remote directory fails
+ 
+* Translation updates:
+ Estonian
+ French
+ Galician
+ Indonesian
+ Italian
+ Latvian
+ Romanian
+ Spanish
+
 Overview of Changes from GLib 2.24.0 to GLib 2.24.1
 ===================================================
 

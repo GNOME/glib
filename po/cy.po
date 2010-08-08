@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"POT-Creation-Date: 2010-08-08 14:53-0400\n"
 "PO-Revision-Date: 2009-12-21 14:56+0100\n"
 "Last-Translator: Iestyn Pryce <dylunio@gmail.com>\n"
 "Language-Team: Welsh <gnome-cy@pengwyn.linux.org.uk>\n"
+"Language: cy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cy\n"
 "Plural-Forms: nplurals=2; plural=(n==2) ? 1 : 0;\n"
 "X-Generator: Virtaal 0.5.0\n"
 
@@ -405,8 +405,8 @@ msgstr ""
 #: glib/gmarkup.c:1122
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr "Nod od '%s', disgwyliwyd nod '>' er mwyn gorffen y tag elfen wag '%s'"
 
 #: glib/gmarkup.c:1206
@@ -424,8 +424,8 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Nod od '%s', disgwyliwyd '>' neu '/' er mwyn gorffen tag dechrau'r elfen '%"
-"s', neu briodoledd ddewisol; efallai defnyddiwyd nod annilys mewn enw "
+"Nod od '%s', disgwyliwyd '>' neu '/' er mwyn gorffen tag dechrau'r elfen "
+"'%s', neu briodoledd ddewisol; efallai defnyddiwyd nod annilys mewn enw "
 "priodoledd"
 
 #: glib/gmarkup.c:1291

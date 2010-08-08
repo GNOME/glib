@@ -10,16 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"POT-Creation-Date: 2010-08-08 14:53-0400\n"
 "PO-Revision-Date: 2010-03-05 11:16+0200\n"
 "Last-Translator: Rimas Kudelis <rq@akl.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
+"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: lt\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
-"100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Generator: Virtaal 0.5.2\n"
 
 #: glib/gbookmarkfile.c:737
@@ -411,8 +411,8 @@ msgstr ""
 #: glib/gmarkup.c:1122
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "Neįprastas simbolis „%s“, tikėtasi sulaukti „>“ simbolio, užbaigiančio "
 "tuščią elementą „%s“"
@@ -867,8 +867,8 @@ msgstr "Nepavyko gauti duomenų iš antrinio proceso"
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
-"Nepavyko sukurti konvejerio skirto keistis duomenimis su antriniu procesu (%"
-"s)"
+"Nepavyko sukurti konvejerio skirto keistis duomenimis su antriniu procesu "
+"(%s)"
 
 #: glib/gspawn-win32.c:339 glib/gspawn-win32.c:347 glib/gspawn.c:1139
 #, c-format
@@ -927,8 +927,8 @@ msgstr "Nepavyko gauti duomenis iš antrinio proceso (%s)"
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
-"Netikėta klaida tarp select() funkcijos duomenų gavimo iš antrinio proceso (%"
-"s) metu"
+"Netikėta klaida tarp select() funkcijos duomenų gavimo iš antrinio proceso "
+"(%s) metu"
 
 #: glib/gspawn.c:414
 #, c-format

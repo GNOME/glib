@@ -9,10 +9,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"POT-Creation-Date: 2010-08-08 14:53-0400\n"
 "PO-Revision-Date: 2010-04-02 14:03+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -84,8 +85,8 @@ msgstr "No hi ha cap grup establit a l'adreça d'interés per a l'URI «%s»"
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
 msgstr ""
-"No hi ha cap aplicació amb el nom «%s» que haja registrat l'adreça d'interés «%"
-"s»"
+"No hi ha cap aplicació amb el nom «%s» que haja registrat l'adreça d'interés "
+"«%s»"
 
 #: glib/gbookmarkfile.c:3417
 #, c-format
@@ -194,8 +195,8 @@ msgstr "No s'ha pogut obrir el fitxer «%s»: %s"
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"No s'ha pogut obtindre els atributs del fitxer «%s»: ha fallat la funció fstat"
-"(): %s"
+"No s'ha pogut obtindre els atributs del fitxer «%s»: ha fallat la funció "
+"fstat(): %s"
 
 #: glib/gfileutils.c:750
 #, c-format
@@ -224,12 +225,14 @@ msgstr ""
 #: glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "No s'ha pogut escriure el fitxer «%s»: ha fallat la funció fwrite(): %s"
+msgstr ""
+"No s'ha pogut escriure el fitxer «%s»: ha fallat la funció fwrite(): %s"
 
 #: glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr "No s'ha pogut escriure el fitxer «%s»: ha fallat la funció fflush(): %s"
+msgstr ""
+"No s'ha pogut escriure el fitxer «%s»: ha fallat la funció fflush(): %s"
 
 #: glib/gfileutils.c:987
 #, c-format
@@ -376,8 +379,8 @@ msgid ""
 "as &amp;"
 msgstr ""
 "La referència del caràcter no acaba amb un punt i coma. Segurament heu "
-"utilitzat un caràcter «&» sense intenció d'iniciar una entitat. Substituïu el "
-"caràcter «&» per &amp;"
+"utilitzat un caràcter «&» sense intenció d'iniciar una entitat. Substituïu "
+"el caràcter «&» per &amp;"
 
 #: glib/gmarkup.c:616
 #, c-format
@@ -388,8 +391,8 @@ msgstr "El caràcter de referència «%-.*s» no codifica un caràcter permés"
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"S'ha vist una entitat buida «&;». Les entitats vàlides són: &amp; &quot; &lt; "
-"&gt; &apos;"
+"S'ha vist una entitat buida «&;». Les entitats vàlides són: &amp; &quot; "
+"&lt; &gt; &apos;"
 
 #: glib/gmarkup.c:662
 #, c-format
@@ -402,7 +405,8 @@ msgid ""
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
 "L'entitat no acaba amb un punt i coma. Segurament heu utilitzat un caràcter "
-"«&» sense intenció d'iniciar una entitat. Substituïu el caràcter «&» per &amp;"
+"«&» sense intenció d'iniciar una entitat. Substituïu el caràcter «&» per "
+"&amp;"
 
 #: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
@@ -414,14 +418,14 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"«%s» no és un caràcter vàlid després d'un caràcter «<». No pot començar un nom "
-"d'element"
+"«%s» no és un caràcter vàlid després d'un caràcter «<». No pot començar un "
+"nom d'element"
 
 #: glib/gmarkup.c:1122
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "S'ha trobat un caràcter estrany «%s». S'esperava el caràcter «>» per acabar "
 "l'etiqueta d'element buit «%s»"
@@ -853,8 +857,8 @@ msgstr "no es reconeix la seqüència d'escapament"
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
-"S'ha produït un error en analitzar el text de reemplaçament «%s» al caràcter %"
-"lu: %s"
+"S'ha produït un error en analitzar el text de reemplaçament «%s» al caràcter "
+"%lu: %s"
 
 #: glib/gshell.c:92
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -1078,8 +1082,8 @@ msgstr "El fitxer és buit"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"El fitxer de claus conté la línia «%s» que no és una parella clau-valor, grup "
-"o comentari"
+"El fitxer de claus conté la línia «%s» que no és una parella clau-valor, "
+"grup o comentari"
 
 #: glib/gkeyfile.c:823
 #, c-format
@@ -1115,20 +1119,23 @@ msgstr "El fitxer de claus no té la clau «%s»"
 #: glib/gkeyfile.c:1395 glib/gkeyfile.c:1510
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "El fitxer de claus conté la clau «%s» amb el valor «%s» que no és UTF-8"
+msgstr ""
+"El fitxer de claus conté la clau «%s» amb el valor «%s» que no és UTF-8"
 
 #: glib/gkeyfile.c:1415 glib/gkeyfile.c:1909
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
-"El fitxer de claus conté la clau «%s» que té un valor que no és interpretable."
+"El fitxer de claus conté la clau «%s» que té un valor que no és "
+"interpretable."
 
 #: glib/gkeyfile.c:1530
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
-"El fitxer de claus conté la clau «%s» que té un valor que no és interpretable."
+"El fitxer de claus conté la clau «%s» que té un valor que no és "
+"interpretable."
 
 #: glib/gkeyfile.c:2124 glib/gkeyfile.c:2336
 #, c-format
@@ -1240,8 +1247,8 @@ msgstr "No s'ha pogut trobar el terminal que demanava l'aplicació"
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
-"No s'ha pogut crear el directori de configuració de l'aplicació de l'usuari %"
-"s: %s"
+"No s'ha pogut crear el directori de configuració de l'aplicació de l'usuari "
+"%s: %s"
 
 #: gio/gdesktopappinfo.c:1136
 #, c-format
@@ -1633,8 +1640,8 @@ msgstr " (codificació no vàlida)"
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr ""
-"S'ha produït un error en executar la funció «stat()» al descriptor de fitxer: "
-"%s"
+"S'ha produït un error en executar la funció «stat()» al descriptor de "
+"fitxer: %s"
 
 #: gio/glocalfileinfo.c:1800
 msgid "Invalid attribute type (uint32 expected)"

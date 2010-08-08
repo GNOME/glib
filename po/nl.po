@@ -10,10 +10,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"POT-Creation-Date: 2010-08-08 14:53-0400\n"
 "PO-Revision-Date: 2009-02-23 14:07+0100\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -433,8 +434,8 @@ msgstr ""
 #: glib/gmarkup.c:1122
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "Onverwacht teken ‘%s’, er werd een ‘>’-teken verwacht om de ledig-element-"
 "tag ‘%s’ af te sluiten"
@@ -893,8 +894,8 @@ msgstr "Tekst eindigde na een ‘\\’-teken (de tekst was ‘%s’)."
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"De tekst eindigde voordat een afsluitend aanhalingsteken was gevonden voor %"
-"c (de tekst was ‘%s’)"
+"De tekst eindigde voordat een afsluitend aanhalingsteken was gevonden voor "
+"%c (de tekst was ‘%s’)"
 
 #: glib/gshell.c:579
 msgid "Text was empty (or contained only whitespace)"
@@ -968,8 +969,8 @@ msgstr "Lezen van data van dochterproces is mislukt (%s)"
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
-"Onverwachte fout in select() bij het lezen van data van een dochterproces (%"
-"s)"
+"Onverwachte fout in select() bij het lezen van data van een dochterproces "
+"(%s)"
 
 #: glib/gspawn.c:414
 #, c-format

@@ -13,10 +13,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"POT-Creation-Date: 2010-08-08 14:53-0400\n"
 "PO-Revision-Date: 2010-03-04 22:01+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -97,7 +98,8 @@ msgstr ""
 #: glib/gbookmarkfile.c:3417
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "Die Befehlzeile »%s« konnte nicht mit der Adresse »%s« verknüpft werden."
+msgstr ""
+"Die Befehlzeile »%s« konnte nicht mit der Adresse »%s« verknüpft werden."
 
 #: glib/gconvert.c:437 glib/gconvert.c:515 glib/giochannel.c:1404
 #: gio/gcharsetconverter.c:459
@@ -202,8 +204,8 @@ msgstr "Datei »%s« konnte nicht geöffnet werden: %s"
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"Attribute der Datei »%s« konnten nicht ermittelt werden: fstat() gescheitert: "
-"%s"
+"Attribute der Datei »%s« konnten nicht ermittelt werden: fstat() "
+"gescheitert: %s"
 
 #: glib/gfileutils.c:750
 #, c-format
@@ -214,8 +216,8 @@ msgstr "Datei »%s« konnte nicht geöffnet werden: fdopen() gescheitert: %s"
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
-"Datei »%s« konnte nicht in »%s« umbenannt werden: g_rename() ist gescheitert: %"
-"s"
+"Datei »%s« konnte nicht in »%s« umbenannt werden: g_rename() ist "
+"gescheitert: %s"
 
 #: glib/gfileutils.c:900 glib/gfileutils.c:1366
 #, c-format
@@ -244,7 +246,8 @@ msgstr ""
 #: glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
-msgstr "Datei »%s« konnte nicht geschrieben werden: fsync() ist gescheitert: %s"
+msgstr ""
+"Datei »%s« konnte nicht geschrieben werden: fsync() ist gescheitert: %s"
 
 #: glib/gfileutils.c:1006
 #, c-format
@@ -432,8 +435,8 @@ msgstr ""
 #: glib/gmarkup.c:1122
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "Seltsames Zeichen »%s«, »>« erwartet um Start-Tag des leeren Elements »%s« "
 "abzuschließen"
@@ -452,9 +455,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Seltsames Zeichen »%s«, es wurde entweder ein Attribut oder aber »>« oder »/« "
-"erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht haben "
-"Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
+"Seltsames Zeichen »%s«, es wurde entweder ein Attribut oder aber »>« oder "
+"»/« erwartet, um das Start-Tag des Elements »%s« abzuschließen; vielleicht "
+"haben Sie ein ungültiges Zeichen in einem Attributnamen benutzt"
 
 #: glib/gmarkup.c:1291
 #, c-format
@@ -462,8 +465,9 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des Elements "
-"»%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen erwartet"
+"Seltsames Zeichen »%s«; bei der Wertangabe für das Attribut »%s« des "
+"Elements »%s« wurde ein Anführungszeichen nach dem Gleichheitszeichen "
+"erwartet"
 
 #: glib/gmarkup.c:1425
 #, c-format
@@ -471,8 +475,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« darf "
-"keinen Elementnamen beginnen"
+"»%s« ist kein gültiges Zeichen, wenn es auf die Zeichen »</« folgt; »%s« "
+"darf keinen Elementnamen beginnen"
 
 #: glib/gmarkup.c:1461
 #, c-format
@@ -480,8 +484,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%s« "
-"folgt; das erlaubte Zeichen ist »>«"
+"»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen "
+"»%s« folgt; das erlaubte Zeichen ist »>«"
 
 #: glib/gmarkup.c:1472
 #, c-format
@@ -491,7 +495,8 @@ msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 #: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
+msgstr ""
+"Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
 #: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
@@ -516,8 +521,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%s/"
-"> schließt, erwartet"
+"Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <"
+"%s/> schließt, erwartet"
 
 #: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
@@ -2186,8 +2191,8 @@ msgstr "Ungültige komprimierte Daten"
 #~ "characters. Ignores names after the first if multiple names are given."
 #~ msgstr ""
 #~ "Legt fest, ob die Standard-Alternativen benutzt werden sollen, indem der "
-#~ "Name bei »-«-Zeichen abgeschnitten wird. Alle Namen nach dem ersten werden "
-#~ "ignoriert falls mehrere angegeben sind."
+#~ "Name bei »-«-Zeichen abgeschnitten wird. Alle Namen nach dem ersten "
+#~ "werden ignoriert falls mehrere angegeben sind."
 
 #~ msgid "File descriptor"
 #~ msgstr "Datei-Deskriptor"

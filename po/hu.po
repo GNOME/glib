@@ -8,10 +8,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-02 21:22-0400\n"
+"POT-Creation-Date: 2010-08-08 14:53-0400\n"
 "PO-Revision-Date: 2010-03-05 22:02+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -206,8 +207,8 @@ msgstr "Nem sikerült megnyitni a(z) „%s” fájlt. Az fdopen() sikertelen: %s
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
-"Nem sikerült átnevezni a(z) „%s” fájlt erre: „%s”. A g_rename() sikertelen: %"
-"s"
+"Nem sikerült átnevezni a(z) „%s” fájlt erre: „%s”. A g_rename() sikertelen: "
+"%s"
 
 #: glib/gfileutils.c:900 glib/gfileutils.c:1366
 #, c-format
@@ -415,8 +416,8 @@ msgstr ""
 #: glib/gmarkup.c:1122
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "Furcsa karakter („%s”), „>” karakternek kellett volna jönnie, hogy lezárja a"
 "(z) „%s” üres elemcímkét"
@@ -1033,8 +1034,8 @@ msgstr "Nem dolgozható fel a(z) „%s” dupla hosszúságú érték a követke
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
-"A(z) „%s” dupla hosszúságú érték a tartományon kívülre esik a következőhöz: %"
-"s"
+"A(z) „%s” dupla hosszúságú érték a tartományon kívülre esik a következőhöz: "
+"%s"
 
 #: glib/goption.c:1298 glib/goption.c:1377
 #, c-format
