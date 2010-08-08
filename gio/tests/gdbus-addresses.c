@@ -74,6 +74,34 @@ test_nonce_tcp_address (void)
   g_assert (!g_dbus_is_supported_address ("nonce-tcp:host=,port=420000,noncefile=/foo/bar,family=ipv4", NULL));
 }
 
+static void
+test_tcp_address (void)
+{
+  g_assert (g_dbus_is_supported_address ("tcp:host=localhost", NULL));
+  g_assert (!g_dbus_is_supported_address ("tcp:host=localhost,noncefile=/tmp/foo", NULL));
+  g_assert (g_dbus_is_supported_address ("tcp:host=localhost,port=42", NULL));
+  g_assert (!g_dbus_is_supported_address ("tcp:host=localhost,port=-1", NULL));
+  g_assert (!g_dbus_is_supported_address ("tcp:host=localhost,port=420000", NULL));
+  g_assert (!g_dbus_is_supported_address ("tcp:host=localhost,port=42x", NULL));
+  g_assert (g_dbus_is_supported_address ("tcp:host=localhost,port=42,family=ipv4", NULL));
+  g_assert (g_dbus_is_supported_address ("tcp:host=localhost,port=42,family=ipv6", NULL));
+  g_assert (!g_dbus_is_supported_address ("tcp:host=localhost,port=42,family=sopranos", NULL));
+}
+
+static void
+test_autolaunch_address (void)
+{
+  g_assert (g_dbus_is_supported_address ("autolaunch:", NULL));
+}
+
+static void
+test_mixed_address (void)
+{
+  g_assert (g_dbus_is_supported_address ("unix:path=/tmp/dbus1;unix:path=/tmp/dbus2", NULL));
+  g_assert (g_dbus_is_supported_address ("tcp:host=localhost,port=42;autolaunch:", NULL));
+  g_assert (!g_dbus_is_supported_address ("tcp:host=localhost,port=42;tcp:family=bla", NULL));
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -86,6 +114,10 @@ main (int   argc,
   g_test_add_func ("/gdbus/unix-address", test_unix_address);
 #endif
   g_test_add_func ("/gdbus/nonce-tcp-address", test_nonce_tcp_address);
+  g_test_add_func ("/gdbus/tcp-address", test_tcp_address);
+  g_test_add_func ("/gdbus/autolaunch-address", test_autolaunch_address);
+  g_test_add_func ("/gdbus/mixed-address", test_mixed_address);
+
   return g_test_run();
 }
 
