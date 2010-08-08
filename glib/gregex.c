@@ -544,7 +544,7 @@ g_match_info_next (GMatchInfo  *match_info,
       match_info->pos = match_info->offsets[1];
     }
 
-  /* it's possibile to get two identical matches when we are matching
+  /* it's possible to get two identical matches when we are matching
    * empty strings, for instance if the pattern is "(?=[A-Z0-9])" and
    * the string is "RegExTest" we have:
    *  - search at position 0: match from 0 to 0
