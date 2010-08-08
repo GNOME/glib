@@ -68,6 +68,7 @@ test_simple_async_idle (gpointer user_data)
   c = g_object_new (G_TYPE_OBJECT, NULL);
 
   result = g_simple_async_result_new (a, callback_func, b, test_simple_async_idle);
+  g_assert (g_async_result_get_user_data (G_ASYNC_RESULT (result)) == b);
   check (NULL, NULL, NULL);
   g_simple_async_result_complete (result);
   check (a, result, b);
