@@ -1442,6 +1442,70 @@ test_compile (void)
   g_clear_error (&error);
 }
 
+static void
+test_properties (void)
+{
+  GRegex *regex;
+  GError *error;
+  gboolean res;
+  GMatchInfo *match;
+  gchar *str;
+
+  error = NULL;
+  regex = g_regex_new ("\\p{L}\\p{Ll}\\p{Lu}\\p{L&}\\p{N}\\p{Nd}", G_REGEX_OPTIMIZE, 0, &error);
+  res = g_regex_match (regex, "ppPP01", 0, &match);
+  g_assert (res);
+  str = g_match_info_fetch (match, 0);
+  g_assert_cmpstr (str, ==, "ppPP01");
+  g_free (str);
+
+  g_match_info_free (match);
+  g_regex_unref (regex);
+}
+
+static void
+test_class (void)
+{
+  GRegex *regex;
+  GError *error;
+  gboolean res;
+  GMatchInfo *match;
+  gchar *str;
+
+  error = NULL;
+  regex = g_regex_new ("[abc\\x{0B1E}\\p{Mn}\\x{0391}-\\x{03A9}]", G_REGEX_OPTIMIZE, 0, &error);
+  res = g_regex_match (regex, "a:b:\340\254\236:\333\253:\316\240", 0, &match);
+  g_assert (res);
+  str = g_match_info_fetch (match, 0);
+  g_assert_cmpstr (str, ==, "a");
+  g_free (str);
+  res = g_match_info_next (match, NULL);
+  g_assert (res);
+  str = g_match_info_fetch (match, 0);
+  g_assert_cmpstr (str, ==, "b");
+  g_free (str);
+  res = g_match_info_next (match, NULL);
+  g_assert (res);
+  str = g_match_info_fetch (match, 0);
+  g_assert_cmpstr (str, ==, "\340\254\236");
+  g_free (str);
+  res = g_match_info_next (match, NULL);
+  g_assert (res);
+  str = g_match_info_fetch (match, 0);
+  g_assert_cmpstr (str, ==, "\333\253");
+  g_free (str);
+  res = g_match_info_next (match, NULL);
+  g_assert (res);
+  str = g_match_info_fetch (match, 0);
+  g_assert_cmpstr (str, ==, "\316\240");
+  g_free (str);
+
+  res = g_match_info_next (match, NULL);
+  g_assert (!res);
+
+  g_match_info_free (match);
+  g_regex_unref (regex);
+}
 int
 main (int argc, char *argv[])
 {
@@ -1453,6 +1517,8 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/regex/basic", test_basic);
   g_test_add_func ("/regex/compile", test_compile);
+  g_test_add_func ("/regex/properties", test_properties);
+  g_test_add_func ("/regex/class", test_class);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("", 0, 0);
