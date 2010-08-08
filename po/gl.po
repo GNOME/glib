@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-05 15:35+0200\n"
-"PO-Revision-Date: 2010-08-05 15:35+0200\n"
+"POT-Creation-Date: 2010-08-09 01:08+0200\n"
+"PO-Revision-Date: 2010-08-09 01:11+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1650,6 +1650,9 @@ msgid ""
 "(length of string is %d). The valid UTF-8 string up until that that point "
 "was `%s'"
 msgstr ""
+"Esperábase unha cadea UTF-8 válida pero encontráronse bytes inválidos no "
+"byte desvío %d (a lonxitude da cadea é %d). A cadea UTF-8 válida até que "
+"apunte foi «%s»"
 
 #: ../gio/gdbusmessage.c:939
 #, c-format
@@ -2838,6 +2841,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
+"a chave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura «%s» "
+"está fora do rango fornecido no esquema"
 
 #: ../gio/gschema-compile.c:1729
 #, c-format
@@ -2845,6 +2850,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 msgstr ""
+"a chave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura «%s» "
+"non está na lista de opcións válidas"
 
 #: ../gio/gschema-compile.c:1774
 msgid "where to store the gschemas.compiled file"
