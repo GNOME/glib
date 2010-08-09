@@ -556,7 +556,9 @@ examples have the same effect:
 </programlisting>
 
 <para>
-The following general category property codes are supported:
+In addition to the two-letter category codes listed in the
+documentation for the #GUnicodeType enumeration, the following
+general category property codes are supported:
 </para>
 
 <table frame="all" colsep="1" rowsep="1">
@@ -575,148 +577,28 @@ The following general category property codes are supported:
     <entry>Other</entry>
   </row>
   <row>
-    <entry>Cc</entry>
-    <entry>Control</entry>
-  </row>
-  <row>
-    <entry>Cf</entry>
-    <entry>Format</entry>
-  </row>
-  <row>
-    <entry>Cn</entry>
-    <entry>Unassigned</entry>
-  </row>
-  <row>
-    <entry>Co</entry>
-    <entry>Private use</entry>
-  </row>
-  <row>
-    <entry>Cs</entry>
-    <entry>Surrogate</entry>
-  </row>
-  <row>
     <entry>L</entry>
     <entry>Letter</entry>
-  </row>
-  <row>
-    <entry>Ll</entry>
-    <entry>Lower case letter</entry>
-  </row>
-  <row>
-    <entry>Lm</entry>
-    <entry>Modifier letter</entry>
-  </row>
-  <row>
-    <entry>Lo</entry>
-    <entry>Other letter</entry>
-  </row>
-  <row>
-    <entry>Lt</entry>
-    <entry>Title case letter</entry>
-  </row>
-  <row>
-    <entry>Lu</entry>
-    <entry>Upper case letter</entry>
   </row>
   <row>
     <entry>M</entry>
     <entry>Mark</entry>
   </row>
   <row>
-    <entry>Mc</entry>
-    <entry>Spacing mark</entry>
-  </row>
-  <row>
-    <entry>Me</entry>
-    <entry>Enclosing mark</entry>
-  </row>
-  <row>
-    <entry>Mn</entry>
-    <entry>Non-spacing mark</entry>
-  </row>
-  <row>
     <entry>N</entry>
     <entry>Number</entry>
-  </row>
-  <row>
-    <entry>Nd</entry>
-    <entry>Decimal number</entry>
-  </row>
-  <row>
-    <entry>Nl</entry>
-    <entry>Letter number</entry>
-  </row>
-  <row>
-    <entry>No</entry>
-    <entry>Other number</entry>
   </row>
   <row>
     <entry>P</entry>
     <entry>Punctuation</entry>
   </row>
   <row>
-    <entry>Pc</entry>
-    <entry>Connector punctuation</entry>
-  </row>
-  <row>
-    <entry>Pd</entry>
-    <entry>Dash punctuation</entry>
-  </row>
-  <row>
-    <entry>Pe</entry>
-    <entry>Close punctuation</entry>
-  </row>
-  <row>
-    <entry>Pf</entry>
-    <entry>Final punctuation</entry>
-  </row>
-  <row>
-    <entry>Pi</entry>
-    <entry>Initial punctuation</entry>
-  </row>
-  <row>
-    <entry>Po</entry>
-    <entry>Other punctuation</entry>
-  </row>
-  <row>
-    <entry>Ps</entry>
-    <entry>Open punctuation</entry>
-  </row>
-  <row>
     <entry>S</entry>
     <entry>Symbol</entry>
   </row>
   <row>
-    <entry>Sc</entry>
-    <entry>Currency symbol</entry>
-  </row>
-  <row>
-    <entry>Sk</entry>
-    <entry>Modifier symbol</entry>
-  </row>
-  <row>
-    <entry>Sm</entry>
-    <entry>Mathematical symbol</entry>
-  </row>
-  <row>
-    <entry>So</entry>
-    <entry>Other symbol</entry>
-  </row>
-  <row>
     <entry>Z</entry>
     <entry>Separator</entry>
-  </row>
-  <row>
-    <entry>Zl</entry>
-    <entry>Line separator</entry>
-  </row>
-  <row>
-    <entry>Zp</entry>
-    <entry>Paragraph separator</entry>
-  </row>
-  <row>
-    <entry>Zs</entry>
-    <entry>Space separator</entry>
   </row>
 </tbody>
 </tgroup>
