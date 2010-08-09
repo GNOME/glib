@@ -188,6 +188,12 @@ as part of the pattern.
 </para>
 
 <para>
+Note that the C compiler interprets backslash in strings itself, therefore
+you need to duplicate all \ characters when you put a regular expression
+in a C string, like "\\d{3}".
+</para>
+
+<para>
 If you want to remove the special meaning from a sequence of characters,
 you can do so by putting them between \Q and \E.
 The \Q...\E sequence is recognized both inside and outside character
@@ -524,77 +530,11 @@ example, \p{Greek} or \P{Han}.
 
 <para>
 Those that are not part of an identified script are lumped together as
-"Common". The current list of scripts is:
+"Common". The current list of scripts can be found in the documentation for
+the #GUnicodeScript enumeration. Script names for use with \p{} can be
+found by replacing all spaces with underscores, e.g. for Linear B use
+\p{Linear_B}.
 </para>
-
-<itemizedlist>
-<listitem><para>Arabic</para></listitem>
-<listitem><para>Armenian</para></listitem>
-<listitem><para>Balinese</para></listitem>
-<listitem><para>Bengali</para></listitem>
-<listitem><para>Bopomofo</para></listitem>
-<listitem><para>Braille</para></listitem>
-<listitem><para>Buginese</para></listitem>
-<listitem><para>Buhid</para></listitem>
-<listitem><para>Canadian_Aboriginal</para></listitem>
-<listitem><para>Cherokee</para></listitem>
-<listitem><para>Common</para></listitem>
-<listitem><para>Coptic</para></listitem>
-<listitem><para>Cuneiform</para></listitem>
-<listitem><para>Cypriot</para></listitem>
-<listitem><para>Cyrillic</para></listitem>
-<listitem><para>Deseret</para></listitem>
-<listitem><para>Devanagari</para></listitem>
-<listitem><para>Ethiopic</para></listitem>
-<listitem><para>Georgian</para></listitem>
-<listitem><para>Glagolitic</para></listitem>
-<listitem><para>Gothic</para></listitem>
-<listitem><para>Greek</para></listitem>
-<listitem><para>Gujarati</para></listitem>
-<listitem><para>Gurmukhi</para></listitem>
-<listitem><para>Han</para></listitem>
-<listitem><para>Hangul</para></listitem>
-<listitem><para>Hanunoo</para></listitem>
-<listitem><para>Hebrew</para></listitem>
-<listitem><para>Hiragana</para></listitem>
-<listitem><para>Inherited</para></listitem>
-<listitem><para>Kannada</para></listitem>
-<listitem><para>Katakana</para></listitem>
-<listitem><para>Kharoshthi</para></listitem>
-<listitem><para>Khmer</para></listitem>
-<listitem><para>Lao</para></listitem>
-<listitem><para>Latin</para></listitem>
-<listitem><para>Limbu</para></listitem>
-<listitem><para>Linear_B</para></listitem>
-<listitem><para>Malayalam</para></listitem>
-<listitem><para>Mongolian</para></listitem>
-<listitem><para>Myanmar</para></listitem>
-<listitem><para>New_Tai_Lue</para></listitem>
-<listitem><para>Nko</para></listitem>
-<listitem><para>Ogham</para></listitem>
-<listitem><para>Old_Italic</para></listitem>
-<listitem><para>Old_Persian</para></listitem>
-<listitem><para>Oriya</para></listitem>
-<listitem><para>Osmanya</para></listitem>
-<listitem><para>Phags_Pa</para></listitem>
-<listitem><para>Phoenician</para></listitem>
-<listitem><para>Runic</para></listitem>
-<listitem><para>Shavian</para></listitem>
-<listitem><para>Sinhala</para></listitem>
-<listitem><para>Syloti_Nagri</para></listitem>
-<listitem><para>Syriac</para></listitem>
-<listitem><para>Tagalog</para></listitem>
-<listitem><para>Tagbanwa</para></listitem>
-<listitem><para>Tai_Le</para></listitem>
-<listitem><para>Tamil</para></listitem>
-<listitem><para>Telugu</para></listitem>
-<listitem><para>Thaana</para></listitem>
-<listitem><para>Thai</para></listitem>
-<listitem><para>Tibetan</para></listitem>
-<listitem><para>Tifinagh</para></listitem>
-<listitem><para>Ugaritic</para></listitem>
-<listitem><para>Yi</para></listitem>
-</itemizedlist>
 
 <para>
 Each character has exactly one general category property, specified by a
