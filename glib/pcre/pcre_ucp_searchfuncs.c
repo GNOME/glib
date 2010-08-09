@@ -53,7 +53,8 @@ properties. */
 
 /* Table to translate from particular type value to the general value. */
 
-#if 0
+#ifdef NOT_USED_IN_GLIB
+
 static int ucp_gentype[] = {
   ucp_C, ucp_C, ucp_C, ucp_C, ucp_C,  /* Cc, Cf, Cn, Co, Cs */
   ucp_L, ucp_L, ucp_L, ucp_L, ucp_L,  /* Ll, Lu, Lm, Lo, Lt */
@@ -92,6 +93,7 @@ _pcre_ucp_findprop(const unsigned int c, int *type_ptr, int *script_ptr)
 *script_ptr = g_unichar_get_script(c);
 return ucp_gentype[*type_ptr];
 }
+
 #endif
 
 

@@ -164,7 +164,7 @@ return PCRE_ERROR_NOSUBSTRING;
 }
 
 
-#if 0
+#ifdef NOT_USED_IN_GLIB
 
 /*************************************************
 *    Find first set of multiple named strings    *

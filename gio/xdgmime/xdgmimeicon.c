@@ -163,6 +163,7 @@ _xdg_mime_icon_read_from_file (XdgIconList *list,
            sizeof (XdgIcon), icon_entry_cmp);
 }
 
+#ifdef NOT_USED_IN_GIO
 
 void
 _xdg_mime_icon_list_dump (XdgIconList *list)
@@ -180,4 +181,5 @@ _xdg_mime_icon_list_dump (XdgIconList *list)
     }
 }
 
+#endif
 

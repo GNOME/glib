@@ -199,6 +199,7 @@ _xdg_mime_parent_read_from_file (XdgParentList *list,
            sizeof (XdgMimeParents), &parent_entry_cmp);
 }
 
+#ifdef NOT_USED_IN_GIO
 
 void         
 _xdg_mime_parent_list_dump (XdgParentList *list)
@@ -216,4 +217,5 @@ _xdg_mime_parent_list_dump (XdgParentList *list)
     }
 }
 
+#endif
 
