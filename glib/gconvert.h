@@ -35,7 +35,19 @@
 
 G_BEGIN_DECLS
 
-typedef enum 
+/**
+ * GConvertError:
+ * @G_CONVERT_ERROR_NO_CONVERSION: Conversion between the requested character
+ *     sets is not supported.
+ * @G_CONVERT_ERROR_ILLEGAL_SEQUENCE: Invalid byte sequence in conversion input.
+ * @G_CONVERT_ERROR_FAILED: Conversion failed for some reason.
+ * @G_CONVERT_ERROR_PARTIAL_INPUT: Partial character sequence at end of input.
+ * @G_CONVERT_ERROR_BAD_URI: URI is invalid.
+ * @G_CONVERT_ERROR_NOT_ABSOLUTE_PATH: Pathname is not an absolute path.
+ *
+ * Error codes returned by character set conversion routines.
+ */
+typedef enum
 {
   G_CONVERT_ERROR_NO_CONVERSION,
   G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
@@ -45,10 +57,22 @@ typedef enum
   G_CONVERT_ERROR_NOT_ABSOLUTE_PATH
 } GConvertError;
 
+/**
+ * G_CONVERT_ERROR:
+ *
+ * Error domain for character set conversions. Errors in this domain will
+ * be from the #GConvertError enumeration. See #GError for information on
+ * error domains.
+ */
 #define G_CONVERT_ERROR g_convert_error_quark()
 GQuark g_convert_error_quark (void);
 
-/* Thin wrappers around iconv
+/**
+ * GIconv:
+ *
+ * The <structname>GIConv</structname> struct wraps an
+ * iconv() conversion descriptor. It contains private data
+ * and should only be accessed using the following functions.
  */
 typedef struct _GIConv *GIConv;
 
