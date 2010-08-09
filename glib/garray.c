@@ -692,8 +692,6 @@ g_array_maybe_expand (GRealArray *array,
     }
 }
 
-/* Pointer Array
- */
 /**
  * SECTION: arrays_pointer
  * @title: Pointer Arrays
@@ -1308,8 +1306,6 @@ g_ptr_array_foreach (GPtrArray *array,
     (*func) (array->pdata[i], user_data);
 }
 
-/* Byte arrays 
- */
 /**
  * SECTION: arrays_byte
  * @title: Byte Arrays
