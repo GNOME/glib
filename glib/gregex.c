@@ -691,7 +691,7 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
  * Use g_regex_check_replacement() to find out whether @string_to_expand
  * contains references.
  *
- * Returns: the expanded string, or %NULL if an error occurred
+ * Returns: (allow-none): the expanded string, or %NULL if an error occurred
  *
  * Since: 2.14
  */
@@ -753,8 +753,8 @@ g_match_info_expand_references (const GMatchInfo  *match_info,
  * The string is fetched from the string passed to the match function,
  * so you cannot call this function after freeing the string.
  *
- * Returns: The matched substring, or %NULL if an error occurred.
- *          You have to free the string yourself
+ * Returns: (allow-none): The matched substring, or %NULL if an error
+ *     occurred. You have to free the string yourself
  *
  * Since: 2.14
  */
@@ -786,25 +786,27 @@ g_match_info_fetch (const GMatchInfo *match_info,
  * g_match_info_fetch_pos:
  * @match_info: #GMatchInfo structure
  * @match_num: number of the sub expression
- * @start_pos: pointer to location where to store the start position
- * @end_pos: pointer to location where to store the end position
+ * @start_pos: (out) (allow-none): pointer to location where to store
+ *     the start position, or %NULL
+ * @end_pos: (out) (allow-none): pointer to location where to store
+ *     the end position, or %NULL
  *
- * Retrieves the position in bytes of the @match_num<!-- -->'th capturing 
- * parentheses. 0 is the full text of the match, 1 is the first 
+ * Retrieves the position in bytes of the @match_num<!-- -->'th capturing
+ * parentheses. 0 is the full text of the match, 1 is the first
  * paren set, 2 the second, and so on.
  *
- * If @match_num is a valid sub pattern but it didn't match anything 
- * (e.g. sub pattern 1, matching "b" against "(a)?b") then @start_pos 
+ * If @match_num is a valid sub pattern but it didn't match anything
+ * (e.g. sub pattern 1, matching "b" against "(a)?b") then @start_pos
  * and @end_pos are set to -1 and %TRUE is returned.
  *
  * If the match was obtained using the DFA algorithm, that is using
  * g_regex_match_all() or g_regex_match_all_full(), the retrieved
  * position is not that of a set of parentheses but that of a matched
- * substring. Substrings are matched in reverse order of length, so 
+ * substring. Substrings are matched in reverse order of length, so
  * 0 is the longest match.
  *
- * Returns: %TRUE if the position was fetched, %FALSE otherwise. If 
- *   the position cannot be fetched, @start_pos and @end_pos are left 
+ * Returns: %TRUE if the position was fetched, %FALSE otherwise. If
+ *   the position cannot be fetched, @start_pos and @end_pos are left
  *   unchanged
  *
  * Since: 2.14
@@ -882,8 +884,8 @@ get_matched_substring_number (const GMatchInfo *match_info,
  * The string is fetched from the string passed to the match function,
  * so you cannot call this function after freeing the string.
  *
- * Returns: The matched substring, or %NULL if an error occurred.
- *          You have to free the string yourself
+ * Returns: (allow-none): The matched substring, or %NULL if an error
+ *     occurred. You have to free the string yourself
  *
  * Since: 2.14
  */
@@ -909,18 +911,20 @@ g_match_info_fetch_named (const GMatchInfo *match_info,
  * g_match_info_fetch_named_pos:
  * @match_info: #GMatchInfo structure
  * @name: name of the subexpression
- * @start_pos: pointer to location where to store the start position
- * @end_pos: pointer to location where to store the end position
+ * @start_pos: (out) (allow-none): pointer to location where to store
+ *     the start position, or %NULL
+ * @end_pos: (out) (allow-none): pointer to location where to store
+ *     the end position, or %NULL
  *
  * Retrieves the position in bytes of the capturing parentheses named @name.
  *
- * If @name is a valid sub pattern name but it didn't match anything 
- * (e.g. sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b") 
+ * If @name is a valid sub pattern name but it didn't match anything
+ * (e.g. sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b")
  * then @start_pos and @end_pos are set to -1 and %TRUE is returned.
  *
- * Returns: %TRUE if the position was fetched, %FALSE otherwise. If 
- *   the position cannot be fetched, @start_pos and @end_pos are left
- *   unchanged
+ * Returns: %TRUE if the position was fetched, %FALSE otherwise.
+ *     If the position cannot be fetched, @start_pos and @end_pos
+ *     are left unchanged.
  *
  * Since: 2.14
  */
@@ -963,9 +967,9 @@ g_match_info_fetch_named_pos (const GMatchInfo *match_info,
  * The strings are fetched from the string passed to the match function,
  * so you cannot call this function after freeing the string.
  *
- * Returns: a %NULL-terminated array of gchar * pointers. It must be 
- *   freed using g_strfreev(). If the previous match failed %NULL is
- *   returned
+ * Returns: (allow-none): a %NULL-terminated array of gchar * pointers.
+ *     It must be freed using g_strfreev(). If the previous match failed
+ *     %NULL is returned
  *
  * Since: 2.14
  */
@@ -1277,7 +1281,7 @@ g_regex_get_capture_count (const GRegex *regex)
  * Since: 2.26
  */
 GRegexCompileFlags
-g_regex_get_compile_flags (GRegex *regex)
+g_regex_get_compile_flags (const GRegex *regex)
 {
   g_return_val_if_fail (regex != NULL, 0);
 
@@ -1295,7 +1299,7 @@ g_regex_get_compile_flags (GRegex *regex)
  * Since: 2.26
  */
 GRegexMatchFlags
-g_regex_get_match_flags (GRegex *regex)
+g_regex_get_match_flags (const GRegex *regex)
 {
   g_return_val_if_fail (regex != NULL, 0);
 
@@ -1346,20 +1350,20 @@ g_regex_match_simple (const gchar        *pattern,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: the string to scan for matches
  * @match_options: match options
- * @match_info: pointer to location where to store the #GMatchInfo, 
- *   or %NULL if you do not need it
+ * @match_info: (out) (allow-none): pointer to location where to store
+ *     the #GMatchInfo, or %NULL if you do not need it
  *
- * Scans for a match in string for the pattern in @regex. 
- * The @match_options are combined with the match options specified 
- * when the @regex structure was created, letting you have more 
+ * Scans for a match in string for the pattern in @regex.
+ * The @match_options are combined with the match options specified
+ * when the @regex structure was created, letting you have more
  * flexibility in reusing #GRegex structures.
  *
- * A #GMatchInfo structure, used to get information on the match, 
- * is stored in @match_info if not %NULL. Note that if @match_info 
- * is not %NULL then it is created even if the function returns %FALSE, 
+ * A #GMatchInfo structure, used to get information on the match,
+ * is stored in @match_info if not %NULL. Note that if @match_info
+ * is not %NULL then it is created even if the function returns %FALSE,
  * i.e. you must free it regardless if regular expression actually matched.
  *
- * To retrieve all the non-overlapping matches of the pattern in 
+ * To retrieve all the non-overlapping matches of the pattern in
  * string you can use g_match_info_next().
  *
  * |[
@@ -1384,8 +1388,8 @@ g_regex_match_simple (const gchar        *pattern,
  * }
  * ]|
  *
- * @string is not copied and is used in #GMatchInfo internally. If 
- * you use any #GMatchInfo method (except g_match_info_free()) after 
+ * @string is not copied and is used in #GMatchInfo internally. If
+ * you use any #GMatchInfo method (except g_match_info_free()) after
  * freeing or modifying @string then the behaviour is undefined.
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
@@ -1393,8 +1397,8 @@ g_regex_match_simple (const gchar        *pattern,
  * Since: 2.14
  */
 gboolean
-g_regex_match (const GRegex      *regex, 
-	       const gchar       *string, 
+g_regex_match (const GRegex      *regex,
+	       const gchar       *string,
 	       GRegexMatchFlags   match_options,
 	       GMatchInfo       **match_info)
 {
@@ -1405,34 +1409,34 @@ g_regex_match (const GRegex      *regex,
 /**
  * g_regex_match_full:
  * @regex: a #GRegex structure from g_regex_new()
- * @string: the string to scan for matches
+ * @string: (array length=string_len): the string to scan for matches
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @match_options: match options
- * @match_info: pointer to location where to store the #GMatchInfo, 
- *   or %NULL if you do not need it
+ * @match_info: (out) (allow-none): pointer to location where to store
+ *     the #GMatchInfo, or %NULL if you do not need it
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
- * Scans for a match in string for the pattern in @regex. 
- * The @match_options are combined with the match options specified 
- * when the @regex structure was created, letting you have more 
+ * Scans for a match in string for the pattern in @regex.
+ * The @match_options are combined with the match options specified
+ * when the @regex structure was created, letting you have more
  * flexibility in reusing #GRegex structures.
  *
- * Setting @start_position differs from just passing over a shortened 
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern 
+ * Setting @start_position differs from just passing over a shortened
+ * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
- * A #GMatchInfo structure, used to get information on the match, is 
- * stored in @match_info if not %NULL. Note that if @match_info is 
- * not %NULL then it is created even if the function returns %FALSE, 
- * i.e. you must free it regardless if regular expression actually 
+ * A #GMatchInfo structure, used to get information on the match, is
+ * stored in @match_info if not %NULL. Note that if @match_info is
+ * not %NULL then it is created even if the function returns %FALSE,
+ * i.e. you must free it regardless if regular expression actually
  * matched.
  *
- * @string is not copied and is used in #GMatchInfo internally. If 
- * you use any #GMatchInfo method (except g_match_info_free()) after 
+ * @string is not copied and is used in #GMatchInfo internally. If
+ * you use any #GMatchInfo method (except g_match_info_free()) after
  * freeing or modifying @string then the behaviour is undefined.
  *
- * To retrieve all the non-overlapping matches of the pattern in 
+ * To retrieve all the non-overlapping matches of the pattern in
  * string you can use g_match_info_next().
  *
  * |[
@@ -1501,24 +1505,24 @@ g_regex_match_full (const GRegex      *regex,
  * @regex: a #GRegex structure from g_regex_new()
  * @string: the string to scan for matches
  * @match_options: match options
- * @match_info: pointer to location where to store the #GMatchInfo, 
- *   or %NULL if you do not need it
+ * @match_info: (out) (allow-none): pointer to location where to store
+ *     the #GMatchInfo, or %NULL if you do not need it
  *
- * Using the standard algorithm for regular expression matching only 
- * the longest match in the string is retrieved. This function uses 
+ * Using the standard algorithm for regular expression matching only
+ * the longest match in the string is retrieved. This function uses
  * a different algorithm so it can retrieve all the possible matches.
  * For more documentation see g_regex_match_all_full().
  *
- * A #GMatchInfo structure, used to get information on the match, is 
- * stored in @match_info if not %NULL. Note that if @match_info is 
- * not %NULL then it is created even if the function returns %FALSE, 
- * i.e. you must free it regardless if regular expression actually 
+ * A #GMatchInfo structure, used to get information on the match, is
+ * stored in @match_info if not %NULL. Note that if @match_info is
+ * not %NULL then it is created even if the function returns %FALSE,
+ * i.e. you must free it regardless if regular expression actually
  * matched.
  *
- * @string is not copied and is used in #GMatchInfo internally. If 
- * you use any #GMatchInfo method (except g_match_info_free()) after 
+ * @string is not copied and is used in #GMatchInfo internally. If
+ * you use any #GMatchInfo method (except g_match_info_free()) after
  * freeing or modifying @string then the behaviour is undefined.
- * 
+ *
  * Returns: %TRUE is the string matched, %FALSE otherwise
  *
  * Since: 2.14
@@ -1536,49 +1540,49 @@ g_regex_match_all (const GRegex      *regex,
 /**
  * g_regex_match_all_full:
  * @regex: a #GRegex structure from g_regex_new()
- * @string: the string to scan for matches
+ * @string: (array length=string_len): the string to scan for matches
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @match_options: match options
- * @match_info: pointer to location where to store the #GMatchInfo, 
- *   or %NULL if you do not need it
+ * @match_info: (out) (allow-none): pointer to location where to store
+ *     the #GMatchInfo, or %NULL if you do not need it
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
- * Using the standard algorithm for regular expression matching only 
- * the longest match in the string is retrieved, it is not possibile 
+ * Using the standard algorithm for regular expression matching only
+ * the longest match in the string is retrieved, it is not possibile
  * to obtain all the available matches. For instance matching
- * "&lt;a&gt; &lt;b&gt; &lt;c&gt;" against the pattern "&lt;.*&gt;" 
+ * "&lt;a&gt; &lt;b&gt; &lt;c&gt;" against the pattern "&lt;.*&gt;"
  * you get "&lt;a&gt; &lt;b&gt; &lt;c&gt;".
  *
  * This function uses a different algorithm (called DFA, i.e. deterministic
  * finite automaton), so it can retrieve all the possible matches, all
  * starting at the same point in the string. For instance matching
- * "&lt;a&gt; &lt;b&gt; &lt;c&gt;" against the pattern "&lt;.*&gt;" 
+ * "&lt;a&gt; &lt;b&gt; &lt;c&gt;" against the pattern "&lt;.*&gt;"
  * you would obtain three matches: "&lt;a&gt; &lt;b&gt; &lt;c&gt;",
  * "&lt;a&gt; &lt;b&gt;" and "&lt;a&gt;".
  *
  * The number of matched strings is retrieved using
- * g_match_info_get_match_count(). To obtain the matched strings and 
- * their position you can use, respectively, g_match_info_fetch() and 
- * g_match_info_fetch_pos(). Note that the strings are returned in 
- * reverse order of length; that is, the longest matching string is 
+ * g_match_info_get_match_count(). To obtain the matched strings and
+ * their position you can use, respectively, g_match_info_fetch() and
+ * g_match_info_fetch_pos(). Note that the strings are returned in
+ * reverse order of length; that is, the longest matching string is
  * given first.
  *
- * Note that the DFA algorithm is slower than the standard one and it 
+ * Note that the DFA algorithm is slower than the standard one and it
  * is not able to capture substrings, so backreferences do not work.
  *
- * Setting @start_position differs from just passing over a shortened 
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern 
+ * Setting @start_position differs from just passing over a shortened
+ * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
- * A #GMatchInfo structure, used to get information on the match, is 
- * stored in @match_info if not %NULL. Note that if @match_info is 
- * not %NULL then it is created even if the function returns %FALSE, 
- * i.e. you must free it regardless if regular expression actually 
+ * A #GMatchInfo structure, used to get information on the match, is
+ * stored in @match_info if not %NULL. Note that if @match_info is
+ * not %NULL then it is created even if the function returns %FALSE,
+ * i.e. you must free it regardless if regular expression actually
  * matched.
  *
- * @string is not copied and is used in #GMatchInfo internally. If 
- * you use any #GMatchInfo method (except g_match_info_free()) after 
+ * @string is not copied and is used in #GMatchInfo internally. If
+ * you use any #GMatchInfo method (except g_match_info_free()) after
  * freeing or modifying @string then the behaviour is undefined.
  *
  * Returns: %TRUE is the string matched, %FALSE otherwise
@@ -1775,11 +1779,11 @@ g_regex_split (const GRegex     *regex,
 /**
  * g_regex_split_full:
  * @regex: a #GRegex structure
- * @string: the string to split with the pattern
+ * @string: (array length=string_len): the string to split with the pattern
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @match_options: match time option flags
- * @max_tokens: the maximum number of tokens to split @string into. 
+ * @max_tokens: the maximum number of tokens to split @string into.
  *   If this is less than 1, the string is split completely
  * @error: return location for a #GError
  *
@@ -1810,8 +1814,8 @@ g_regex_split (const GRegex     *regex,
  * Since: 2.14
  **/
 gchar **
-g_regex_split_full (const GRegex      *regex, 
-		    const gchar       *string, 
+g_regex_split_full (const GRegex      *regex,
+		    const gchar       *string,
 		    gssize             string_len,
 		    gint               start_position,
 		    GRegexMatchFlags   match_options,
@@ -2405,7 +2409,7 @@ interpolation_list_needs_match (GList *list)
 /**
  * g_regex_replace:
  * @regex: a #GRegex structure
- * @string: the string to perform matches against
+ * @string: (array length=string_len): the string to perform matches against
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @replacement: text to replace each match with
@@ -2517,7 +2521,7 @@ literal_replacement (const GMatchInfo *match_info,
 /**
  * g_regex_replace_literal:
  * @regex: a #GRegex structure
- * @string: the string to perform matches against
+ * @string: (array length=string_len): the string to perform matches against
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @replacement: text to replace each match with
@@ -2560,7 +2564,7 @@ g_regex_replace_literal (const GRegex      *regex,
 /**
  * g_regex_replace_eval:
  * @regex: a #GRegex structure from g_regex_new()
- * @string: string to perform matches against
+ * @string (array length=string_len): string to perform matches against
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @match_options: options for the match
@@ -2672,7 +2676,7 @@ g_regex_replace_eval (const GRegex        *regex,
 /**
  * g_regex_check_replacement:
  * @replacement: the replacement string
- * @has_references: location to store information about
+ * @has_references: (out) (allow-none): location to store information about
  *   references in @replacement or %NULL
  * @error: location to store error
  *
@@ -2717,7 +2721,7 @@ g_regex_check_replacement (const gchar  *replacement,
 
 /**
  * g_regex_escape_string:
- * @string: the string to escape
+ * @string: (array length=length): the string to escape
  * @length: the length of @string, or -1 if @string is nul-terminated
  *
  * Escapes the special characters used for regular expressions 
