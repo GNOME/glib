@@ -33,7 +33,8 @@
 
 
 /**
- * SECTION:base64 Base64 Encoding
+ * SECTION:base64
+ * @title: Base64 Encoding
  * @short_description: encodes and decodes data in Base64 format
  *
  * Base64 is an encoding that allows a sequence of arbitrary bytes to be
