@@ -33,78 +33,77 @@
 #include "pcre/pcre.h"
 #endif
 
-
 /* Mask of all the possible values for GRegexCompileFlags. */
-#define G_REGEX_COMPILE_MASK (G_REGEX_CASELESS		| \
-			      G_REGEX_MULTILINE		| \
-			      G_REGEX_DOTALL		| \
-			      G_REGEX_EXTENDED		| \
-			      G_REGEX_ANCHORED		| \
-			      G_REGEX_DOLLAR_ENDONLY	| \
-			      G_REGEX_UNGREEDY		| \
-			      G_REGEX_RAW		| \
-			      G_REGEX_NO_AUTO_CAPTURE	| \
-			      G_REGEX_OPTIMIZE		| \
-			      G_REGEX_DUPNAMES		| \
-			      G_REGEX_NEWLINE_CR	| \
-			      G_REGEX_NEWLINE_LF	| \
-			      G_REGEX_NEWLINE_CRLF)
+#define G_REGEX_COMPILE_MASK (G_REGEX_CASELESS          | \
+                              G_REGEX_MULTILINE         | \
+                              G_REGEX_DOTALL            | \
+                              G_REGEX_EXTENDED          | \
+                              G_REGEX_ANCHORED          | \
+                              G_REGEX_DOLLAR_ENDONLY    | \
+                              G_REGEX_UNGREEDY          | \
+                              G_REGEX_RAW               | \
+                              G_REGEX_NO_AUTO_CAPTURE   | \
+                              G_REGEX_OPTIMIZE          | \
+                              G_REGEX_DUPNAMES          | \
+                              G_REGEX_NEWLINE_CR        | \
+                              G_REGEX_NEWLINE_LF        | \
+                              G_REGEX_NEWLINE_CRLF)
 
 /* Mask of all the possible values for GRegexMatchFlags. */
-#define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED	| \
-			    G_REGEX_MATCH_NOTBOL	| \
-			    G_REGEX_MATCH_NOTEOL	| \
-			    G_REGEX_MATCH_NOTEMPTY	| \
-			    G_REGEX_MATCH_PARTIAL	| \
-			    G_REGEX_MATCH_NEWLINE_CR	| \
-			    G_REGEX_MATCH_NEWLINE_LF	| \
-			    G_REGEX_MATCH_NEWLINE_CRLF	| \
-			    G_REGEX_MATCH_NEWLINE_ANY)
+#define G_REGEX_MATCH_MASK (G_REGEX_MATCH_ANCHORED      | \
+                            G_REGEX_MATCH_NOTBOL        | \
+                            G_REGEX_MATCH_NOTEOL        | \
+                            G_REGEX_MATCH_NOTEMPTY      | \
+                            G_REGEX_MATCH_PARTIAL       | \
+                            G_REGEX_MATCH_NEWLINE_CR    | \
+                            G_REGEX_MATCH_NEWLINE_LF    | \
+                            G_REGEX_MATCH_NEWLINE_CRLF  | \
+                            G_REGEX_MATCH_NEWLINE_ANY)
 
 /* if the string is in UTF-8 use g_utf8_ functions, else use
  * use just +/- 1. */
 #define NEXT_CHAR(re, s) (((re)->compile_opts & PCRE_UTF8) ? \
-				g_utf8_next_char (s) : \
-				((s) + 1))
+                                g_utf8_next_char (s) : \
+                                ((s) + 1))
 #define PREV_CHAR(re, s) (((re)->compile_opts & PCRE_UTF8) ? \
-				g_utf8_prev_char (s) : \
-				((s) - 1))
+                                g_utf8_prev_char (s) : \
+                                ((s) - 1))
 
 struct _GMatchInfo
 {
-  GRegex *regex;		/* the regex */
-  GRegexMatchFlags match_opts;	/* options used at match time on the regex */
-  gint matches;			/* number of matching sub patterns */
-  gint pos;			/* position in the string where last match left off */
-  gint *offsets;		/* array of offsets paired 0,1 ; 2,3 ; 3,4 etc */
-  gint n_offsets;		/* number of offsets */
-  gint *workspace;		/* workspace for pcre_dfa_exec() */
-  gint n_workspace;		/* number of workspace elements */
-  const gchar *string;		/* string passed to the match function */
-  gssize string_len;		/* length of string */
+  GRegex *regex;                /* the regex */
+  GRegexMatchFlags match_opts;  /* options used at match time on the regex */
+  gint matches;                 /* number of matching sub patterns */
+  gint pos;                     /* position in the string where last match left off */
+  gint *offsets;                /* array of offsets paired 0,1 ; 2,3 ; 3,4 etc */
+  gint n_offsets;               /* number of offsets */
+  gint *workspace;              /* workspace for pcre_dfa_exec() */
+  gint n_workspace;             /* number of workspace elements */
+  const gchar *string;          /* string passed to the match function */
+  gssize string_len;            /* length of string */
 };
 
 struct _GRegex
 {
-  volatile gint ref_count;	/* the ref count for the immutable part */
-  gchar *pattern;		/* the pattern */
-  pcre *pcre_re;		/* compiled form of the pattern */
-  GRegexCompileFlags compile_opts;	/* options used at compile time on the pattern */
-  GRegexMatchFlags match_opts;	/* options used at match time on the regex */
-  pcre_extra *extra;		/* data stored when G_REGEX_OPTIMIZE is used */
+  volatile gint ref_count;      /* the ref count for the immutable part */
+  gchar *pattern;               /* the pattern */
+  pcre *pcre_re;                /* compiled form of the pattern */
+  GRegexCompileFlags compile_opts;      /* options used at compile time on the pattern */
+  GRegexMatchFlags match_opts;  /* options used at match time on the regex */
+  pcre_extra *extra;            /* data stored when G_REGEX_OPTIMIZE is used */
 };
 
 /* TRUE if ret is an error code, FALSE otherwise. */
 #define IS_PCRE_ERROR(ret) ((ret) < PCRE_ERROR_NOMATCH && (ret) != PCRE_ERROR_PARTIAL)
 
 typedef struct _InterpolationData InterpolationData;
-static gboolean	 interpolation_list_needs_match	(GList *list);
-static gboolean	 interpolate_replacement	(const GMatchInfo *match_info,
-						 GString *result,
-						 gpointer data);
-static GList	*split_replacement		(const gchar *replacement,
-						 GError **error);
-static void	 free_interpolation_data	(InterpolationData *data);
+static gboolean  interpolation_list_needs_match (GList *list);
+static gboolean  interpolate_replacement        (const GMatchInfo *match_info,
+                                                 GString *result,
+                                                 gpointer data);
+static GList    *split_replacement              (const gchar *replacement,
+                                                 GError **error);
+static void      free_interpolation_data        (InterpolationData *data);
 
 
 static const gchar *
@@ -246,7 +245,7 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       break;
     case 129:
       *errcode = G_REGEX_ERROR_UNMATCHED_PARENTHESIS;
-      /* translators: '(?R' and '(?[+-]digits' are both meant as (groups of) 
+      /* translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
        * sequences here, '(?-54' would be an example for the second group.
        */
       *errmsg = _("(?R or (?[+-]digits must be followed by )");
@@ -325,7 +324,7 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
       break;
     case G_REGEX_ERROR_MISSING_BACK_REFERENCE:
       *errmsg = _("\\g is not followed by a braced name or an optionally "
-		 "braced non-zero number");
+                 "braced non-zero number");
       break;
     case 11:
       *errcode = G_REGEX_ERROR_INTERNAL;
@@ -371,11 +370,11 @@ translate_compile_error (gint *errcode, const gchar **errmsg)
 
 static GMatchInfo *
 match_info_new (const GRegex *regex,
-		const gchar  *string,
-		gint          string_len,
-		gint          start_position,
-		gint          match_options,
-		gboolean      is_dfa)
+                const gchar  *string,
+                gint          string_len,
+                gint          start_position,
+                gint          match_options,
+                gboolean      is_dfa)
 {
   GMatchInfo *match_info;
 
@@ -490,7 +489,7 @@ g_match_info_free (GMatchInfo *match_info)
  */
 gboolean
 g_match_info_next (GMatchInfo  *match_info,
-		   GError     **error)
+                   GError     **error)
 {
   gint prev_match_start;
   gint prev_match_end;
@@ -503,18 +502,18 @@ g_match_info_next (GMatchInfo  *match_info,
   prev_match_end = match_info->offsets[1];
 
   match_info->matches = pcre_exec (match_info->regex->pcre_re,
-				   match_info->regex->extra,
-				   match_info->string,
-				   match_info->string_len,
-				   match_info->pos,
-				   match_info->regex->match_opts | match_info->match_opts,
-				   match_info->offsets,
+                                   match_info->regex->extra,
+                                   match_info->string,
+                                   match_info->string_len,
+                                   match_info->pos,
+                                   match_info->regex->match_opts | match_info->match_opts,
+                                   match_info->offsets,
                                    match_info->n_offsets);
   if (IS_PCRE_ERROR (match_info->matches))
     {
       g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
-		   _("Error while matching regular expression %s: %s"),
-		   match_info->regex->pattern, match_error (match_info->matches));
+                   _("Error while matching regular expression %s: %s"),
+                   match_info->regex->pattern, match_error (match_info->matches));
       return FALSE;
     }
 
@@ -523,16 +522,16 @@ g_match_info_next (GMatchInfo  *match_info,
   if (match_info->pos == match_info->offsets[1])
     {
       if (match_info->pos > match_info->string_len)
-	{
-	  /* we have reached the end of the string */
-	  match_info->pos = -1;
+        {
+          /* we have reached the end of the string */
+          match_info->pos = -1;
           match_info->matches = PCRE_ERROR_NOMATCH;
-	  return FALSE;
+          return FALSE;
         }
 
       match_info->pos = NEXT_CHAR (match_info->regex,
-				   &match_info->string[match_info->pos]) -
-				   match_info->string;
+                                   &match_info->string[match_info->pos]) -
+                                   match_info->string;
     }
   else
     {
@@ -566,8 +565,8 @@ g_match_info_next (GMatchInfo  *match_info,
  * @match_info: a #GMatchInfo structure
  *
  * Returns whether the previous match operation succeeded.
- * 
- * Returns: %TRUE if the previous match operation succeeded, 
+ *
+ * Returns: %TRUE if the previous match operation succeeded,
  *   %FALSE otherwise
  *
  * Since: 2.14
@@ -584,11 +583,11 @@ g_match_info_matches (const GMatchInfo *match_info)
  * g_match_info_get_match_count:
  * @match_info: a #GMatchInfo structure
  *
- * Retrieves the number of matched substrings (including substring 0, 
- * that is the whole matched text), so 1 is returned if the pattern 
+ * Retrieves the number of matched substrings (including substring 0,
+ * that is the whole matched text), so 1 is returned if the pattern
  * has no substrings in it and 0 is returned if the match failed.
  *
- * If the last match was obtained using the DFA algorithm, that is 
+ * If the last match was obtained using the DFA algorithm, that is
  * using g_regex_match_all() or g_regex_match_all_full(), the retrieved
  * count is not that of the number of capturing parentheses but that of
  * the number of matched substrings.
@@ -639,15 +638,15 @@ g_match_info_get_match_count (const GMatchInfo *match_info)
  *
  * When using partial matching you cannot use g_match_info_fetch*().
  *
- * Because of the way certain internal optimizations are implemented 
- * the partial matching algorithm cannot be used with all patterns. 
- * So repeated single characters such as "a{2,4}" and repeated single 
- * meta-sequences such as "\d+" are not permitted if the maximum number 
- * of occurrences is greater than one. Optional items such as "\d?" 
- * (where the maximum is one) are permitted. Quantifiers with any values 
- * are permitted after parentheses, so the invalid examples above can be 
- * coded thus "(a){2,4}" and "(\d)+". If #G_REGEX_MATCH_PARTIAL is set 
- * for a pattern that does not conform to the restrictions, matching 
+ * Because of the way certain internal optimizations are implemented
+ * the partial matching algorithm cannot be used with all patterns.
+ * So repeated single characters such as "a{2,4}" and repeated single
+ * meta-sequences such as "\d+" are not permitted if the maximum number
+ * of occurrences is greater than one. Optional items such as "\d?"
+ * (where the maximum is one) are permitted. Quantifiers with any values
+ * are permitted after parentheses, so the invalid examples above can be
+ * coded thus "(a){2,4}" and "(\d)+". If #G_REGEX_MATCH_PARTIAL is set
+ * for a pattern that does not conform to the restrictions, matching
  * functions return an error.
  *
  * Returns: %TRUE if the match was partial, %FALSE otherwise
@@ -691,9 +690,9 @@ g_match_info_is_partial_match (const GMatchInfo *match_info)
  * Since: 2.14
  */
 gchar *
-g_match_info_expand_references (const GMatchInfo  *match_info, 
-				const gchar       *string_to_expand,
-				GError           **error)
+g_match_info_expand_references (const GMatchInfo  *match_info,
+                                const gchar       *string_to_expand,
+                                GError           **error)
 {
   GString *result;
   GList *list;
@@ -712,8 +711,8 @@ g_match_info_expand_references (const GMatchInfo  *match_info,
   if (!match_info && interpolation_list_needs_match (list))
     {
       g_critical ("String '%s' contains references to the match, can't "
-		  "expand references without GMatchInfo object",
-		  string_to_expand);
+                  "expand references without GMatchInfo object",
+                  string_to_expand);
       return NULL;
     }
 
@@ -731,18 +730,18 @@ g_match_info_expand_references (const GMatchInfo  *match_info,
  * @match_info: #GMatchInfo structure
  * @match_num: number of the sub expression
  *
- * Retrieves the text matching the @match_num<!-- -->'th capturing 
- * parentheses. 0 is the full text of the match, 1 is the first paren 
+ * Retrieves the text matching the @match_num<!-- -->'th capturing
+ * parentheses. 0 is the full text of the match, 1 is the first paren
  * set, 2 the second, and so on.
  *
- * If @match_num is a valid sub pattern but it didn't match anything 
- * (e.g. sub pattern 1, matching "b" against "(a)?b") then an empty 
+ * If @match_num is a valid sub pattern but it didn't match anything
+ * (e.g. sub pattern 1, matching "b" against "(a)?b") then an empty
  * string is returned.
  *
  * If the match was obtained using the DFA algorithm, that is using
  * g_regex_match_all() or g_regex_match_all_full(), the retrieved
  * string is not that of a set of parentheses but that of a matched
- * substring. Substrings are matched in reverse order of length, so 
+ * substring. Substrings are matched in reverse order of length, so
  * 0 is the longest match.
  *
  * The string is fetched from the string passed to the match function,
@@ -755,7 +754,7 @@ g_match_info_expand_references (const GMatchInfo  *match_info,
  */
 gchar *
 g_match_info_fetch (const GMatchInfo *match_info,
-		    gint              match_num)
+                    gint              match_num)
 {
   /* we cannot use pcre_get_substring() because it allocates the
    * string using pcre_malloc(). */
@@ -808,13 +807,13 @@ g_match_info_fetch (const GMatchInfo *match_info,
  */
 gboolean
 g_match_info_fetch_pos (const GMatchInfo *match_info,
-			gint              match_num,
-			gint             *start_pos,
-			gint             *end_pos)
+                        gint              match_num,
+                        gint             *start_pos,
+                        gint             *end_pos)
 {
   g_return_val_if_fail (match_info != NULL, FALSE);
   g_return_val_if_fail (match_num >= 0, FALSE);
- 
+
   /* make sure the sub expression number they're requesting is less than
    * the total number of sub expressions that were matched. */
   if (match_num >= match_info->matches)
@@ -837,7 +836,7 @@ g_match_info_fetch_pos (const GMatchInfo *match_info,
  */
 static gint
 get_matched_substring_number (const GMatchInfo *match_info,
-			      const gchar      *name)
+                              const gchar      *name)
 {
   gint entrysize;
   gchar *first, *last;
@@ -847,10 +846,10 @@ get_matched_substring_number (const GMatchInfo *match_info,
     return pcre_get_stringnumber (match_info->regex->pcre_re, name);
 
   /* This code is copied from pcre_get.c: get_first_set() */
-  entrysize = pcre_get_stringtable_entries (match_info->regex->pcre_re, 
-					    name,
-					    &first,
-					    &last);
+  entrysize = pcre_get_stringtable_entries (match_info->regex->pcre_re,
+                                            name,
+                                            &first,
+                                            &last);
 
   if (entrysize <= 0)
     return entrysize;
@@ -859,7 +858,7 @@ get_matched_substring_number (const GMatchInfo *match_info,
     {
       gint n = (entry[0] << 8) + entry[1];
       if (match_info->offsets[n*2] >= 0)
-	return n;
+        return n;
     }
 
   return (first[0] << 8) + first[1];
@@ -872,8 +871,8 @@ get_matched_substring_number (const GMatchInfo *match_info,
  *
  * Retrieves the text matching the capturing parentheses named @name.
  *
- * If @name is a valid sub pattern name but it didn't match anything 
- * (e.g. sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b") 
+ * If @name is a valid sub pattern name but it didn't match anything
+ * (e.g. sub pattern "X", matching "b" against "(?P&lt;X&gt;a)?b")
  * then an empty string is returned.
  *
  * The string is fetched from the string passed to the match function,
@@ -886,7 +885,7 @@ get_matched_substring_number (const GMatchInfo *match_info,
  */
 gchar *
 g_match_info_fetch_named (const GMatchInfo *match_info,
-			  const gchar      *name)
+                          const gchar      *name)
 {
   /* we cannot use pcre_get_named_substring() because it allocates the
    * string using pcre_malloc(). */
@@ -925,9 +924,9 @@ g_match_info_fetch_named (const GMatchInfo *match_info,
  */
 gboolean
 g_match_info_fetch_named_pos (const GMatchInfo *match_info,
-			      const gchar      *name,
-			      gint             *start_pos,
-			      gint             *end_pos)
+                              const gchar      *name,
+                              gint             *start_pos,
+                              gint             *end_pos)
 {
   gint num;
 
@@ -1039,33 +1038,33 @@ g_regex_unref (GRegex *regex)
     {
       g_free (regex->pattern);
       if (regex->pcre_re != NULL)
-	pcre_free (regex->pcre_re);
+        pcre_free (regex->pcre_re);
       if (regex->extra != NULL)
-	pcre_free (regex->extra);
+        pcre_free (regex->extra);
       g_free (regex);
     }
 }
 
-/** 
+/**
  * g_regex_new:
  * @pattern: the regular expression
- * @compile_options: compile options for the regular expression, or 0 
+ * @compile_options: compile options for the regular expression, or 0
  * @match_options: match options for the regular expression, or 0
  * @error: return location for a #GError
- * 
- * Compiles the regular expression to an internal form, and does 
- * the initial setup of the #GRegex structure.  
- * 
- * Returns: a #GRegex structure. Call g_regex_unref() when you 
+ *
+ * Compiles the regular expression to an internal form, and does
+ * the initial setup of the #GRegex structure.
+ *
+ * Returns: a #GRegex structure. Call g_regex_unref() when you
  *   are done with it
  *
  * Since: 2.14
  */
 GRegex *
-g_regex_new (const gchar         *pattern, 
- 	     GRegexCompileFlags   compile_options,
-	     GRegexMatchFlags     match_options,
-	     GError             **error)
+g_regex_new (const gchar         *pattern,
+             GRegexCompileFlags   compile_options,
+             GRegexMatchFlags     match_options,
+             GError             **error)
 {
   GRegex *regex;
   pcre *re;
@@ -1088,21 +1087,21 @@ g_regex_new (const gchar         *pattern,
 
       pcre_config (PCRE_CONFIG_UTF8, &support);
       if (!support)
-	{
-	  msg = N_("PCRE library is compiled without UTF8 support");
-	  g_critical ("%s", msg);
-	  g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
-	  return NULL;
-	}
+        {
+          msg = N_("PCRE library is compiled without UTF8 support");
+          g_critical ("%s", msg);
+          g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
+          return NULL;
+        }
 
       pcre_config (PCRE_CONFIG_UNICODE_PROPERTIES, &support);
       if (!support)
-	{
-	  msg = N_("PCRE library is compiled without UTF8 properties support");
-	  g_critical ("%s", msg);
-	  g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
-	  return NULL;
-	}
+        {
+          msg = N_("PCRE library is compiled without UTF8 properties support");
+          g_critical ("%s", msg);
+          g_set_error_literal (error, G_REGEX_ERROR, G_REGEX_ERROR_COMPILE, gettext (msg));
+          return NULL;
+        }
 
       initialized = TRUE;
     }
@@ -1136,9 +1135,9 @@ g_regex_new (const gchar         *pattern,
 
   /* compile the pattern */
   re = pcre_compile2 (pattern, compile_options, &errcode,
-		      &errmsg, &erroffset, NULL);
+                      &errmsg, &erroffset, NULL);
 
-  /* if the compilation failed, set the error member and return 
+  /* if the compilation failed, set the error member and return
    * immediately */
   if (re == NULL)
     {
@@ -1152,9 +1151,9 @@ g_regex_new (const gchar         *pattern,
       erroffset = g_utf8_pointer_to_offset (pattern, &pattern[erroffset]);
 
       tmp_error = g_error_new (G_REGEX_ERROR, errcode,
-			       _("Error while compiling regular "
-				 "expression %s at char %d: %s"),
-			       pattern, erroffset, errmsg);
+                               _("Error while compiling regular "
+                                 "expression %s at char %d: %s"),
+                               pattern, erroffset, errmsg);
       g_propagate_error (error, tmp_error);
 
       return NULL;
@@ -1171,7 +1170,7 @@ g_regex_new (const gchar         *pattern,
       gboolean jchanged = FALSE;
       pcre_fullinfo (re, NULL, PCRE_INFO_JCHANGED, &jchanged);
       if (jchanged)
-	compile_options |= G_REGEX_DUPNAMES;
+        compile_options |= G_REGEX_DUPNAMES;
     }
 
   regex = g_new0 (GRegex, 1);
@@ -1187,7 +1186,7 @@ g_regex_new (const gchar         *pattern,
       if (errmsg != NULL)
         {
           GError *tmp_error = g_error_new (G_REGEX_ERROR,
-                                           G_REGEX_ERROR_OPTIMIZE, 
+                                           G_REGEX_ERROR_OPTIMIZE,
                                            _("Error while optimizing "
                                              "regular expression %s: %s"),
                                            regex->pattern,
@@ -1196,7 +1195,7 @@ g_regex_new (const gchar         *pattern,
 
           g_regex_unref (regex);
           return NULL;
-	}
+        }
     }
 
   return regex;
@@ -1206,7 +1205,7 @@ g_regex_new (const gchar         *pattern,
  * g_regex_get_pattern:
  * @regex: a #GRegex structure
  *
- * Gets the pattern string associated with @regex, i.e. a copy of 
+ * Gets the pattern string associated with @regex, i.e. a copy of
  * the string passed to g_regex_new().
  *
  * Returns: the pattern of @regex
@@ -1224,7 +1223,7 @@ g_regex_get_pattern (const GRegex *regex)
 /**
  * g_regex_get_max_backref:
  * @regex: a #GRegex
- *  
+ *
  * Returns the number of the highest back reference
  * in the pattern, or 0 if the pattern does not contain
  * back references.
@@ -1239,7 +1238,7 @@ g_regex_get_max_backref (const GRegex *regex)
   gint value;
 
   pcre_fullinfo (regex->pcre_re, regex->extra,
-		 PCRE_INFO_BACKREFMAX, &value);
+                 PCRE_INFO_BACKREFMAX, &value);
 
   return value;
 }
@@ -1260,7 +1259,7 @@ g_regex_get_capture_count (const GRegex *regex)
   gint value;
 
   pcre_fullinfo (regex->pcre_re, regex->extra,
-		 PCRE_INFO_CAPTURECOUNT, &value);
+                 PCRE_INFO_CAPTURECOUNT, &value);
 
   return value;
 }
@@ -1324,10 +1323,10 @@ g_regex_get_match_flags (const GRegex *regex)
  * Since: 2.14
  */
 gboolean
-g_regex_match_simple (const gchar        *pattern, 
-		      const gchar        *string, 
-		      GRegexCompileFlags  compile_options,
-		      GRegexMatchFlags    match_options)
+g_regex_match_simple (const gchar        *pattern,
+                      const gchar        *string,
+                      GRegexCompileFlags  compile_options,
+                      GRegexMatchFlags    match_options)
 {
   GRegex *regex;
   gboolean result;
@@ -1393,12 +1392,12 @@ g_regex_match_simple (const gchar        *pattern,
  */
 gboolean
 g_regex_match (const GRegex      *regex,
-	       const gchar       *string,
-	       GRegexMatchFlags   match_options,
-	       GMatchInfo       **match_info)
+               const gchar       *string,
+               GRegexMatchFlags   match_options,
+               GMatchInfo       **match_info)
 {
   return g_regex_match_full (regex, string, -1, 0, match_options,
-			     match_info, NULL);
+                             match_info, NULL);
 }
 
 /**
@@ -1468,12 +1467,12 @@ g_regex_match (const GRegex      *regex,
  */
 gboolean
 g_regex_match_full (const GRegex      *regex,
-		    const gchar       *string,
-		    gssize             string_len,
-		    gint               start_position,
-		    GRegexMatchFlags   match_options,
-		    GMatchInfo       **match_info,
-		    GError           **error)
+                    const gchar       *string,
+                    gssize             string_len,
+                    gint               start_position,
+                    GRegexMatchFlags   match_options,
+                    GMatchInfo       **match_info,
+                    GError           **error)
 {
   GMatchInfo *info;
   gboolean match_ok;
@@ -1485,7 +1484,7 @@ g_regex_match_full (const GRegex      *regex,
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
 
   info = match_info_new (regex, string, string_len, start_position,
-			 match_options, FALSE);
+                         match_options, FALSE);
   match_ok = g_match_info_next (info, error);
   if (match_info != NULL)
     *match_info = info;
@@ -1524,12 +1523,12 @@ g_regex_match_full (const GRegex      *regex,
  */
 gboolean
 g_regex_match_all (const GRegex      *regex,
-		   const gchar       *string,
-		   GRegexMatchFlags   match_options,
-		   GMatchInfo       **match_info)
+                   const gchar       *string,
+                   GRegexMatchFlags   match_options,
+                   GMatchInfo       **match_info)
 {
   return g_regex_match_all_full (regex, string, -1, 0, match_options,
-				 match_info, NULL);
+                                 match_info, NULL);
 }
 
 /**
@@ -1586,12 +1585,12 @@ g_regex_match_all (const GRegex      *regex,
  */
 gboolean
 g_regex_match_all_full (const GRegex      *regex,
-			const gchar       *string,
-			gssize             string_len,
-			gint               start_position,
-			GRegexMatchFlags   match_options,
-			GMatchInfo       **match_info,
-			GError           **error)
+                        const gchar       *string,
+                        gssize             string_len,
+                        gint               start_position,
+                        GRegexMatchFlags   match_options,
+                        GMatchInfo       **match_info,
+                        GError           **error)
 {
   GMatchInfo *info;
   gboolean done;
@@ -1603,40 +1602,40 @@ g_regex_match_all_full (const GRegex      *regex,
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, FALSE);
 
   info = match_info_new (regex, string, string_len, start_position,
-			 match_options, TRUE);
+                         match_options, TRUE);
 
   done = FALSE;
   while (!done)
     {
       done = TRUE;
       info->matches = pcre_dfa_exec (regex->pcre_re, regex->extra,
-				     info->string, info->string_len,
-				     info->pos,
-				     regex->match_opts | match_options,
-				     info->offsets, info->n_offsets,
-				     info->workspace, info->n_workspace);
+                                     info->string, info->string_len,
+                                     info->pos,
+                                     regex->match_opts | match_options,
+                                     info->offsets, info->n_offsets,
+                                     info->workspace, info->n_workspace);
       if (info->matches == PCRE_ERROR_DFA_WSSIZE)
-	{
-	  /* info->workspace is too small. */
-	  info->n_workspace *= 2;
-	  info->workspace = g_realloc (info->workspace,
-				       info->n_workspace * sizeof (gint));
-	  done = FALSE;
-	}
+        {
+          /* info->workspace is too small. */
+          info->n_workspace *= 2;
+          info->workspace = g_realloc (info->workspace,
+                                       info->n_workspace * sizeof (gint));
+          done = FALSE;
+        }
       else if (info->matches == 0)
-	{
-	  /* info->offsets is too small. */
-	  info->n_offsets *= 2;
-	  info->offsets = g_realloc (info->offsets,
-				     info->n_offsets * sizeof (gint));
-	  done = FALSE;
-	}
+        {
+          /* info->offsets is too small. */
+          info->n_offsets *= 2;
+          info->offsets = g_realloc (info->offsets,
+                                     info->n_offsets * sizeof (gint));
+          done = FALSE;
+        }
       else if (IS_PCRE_ERROR (info->matches))
-	{
-	  g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
-		       _("Error while matching regular expression %s: %s"),
-		       regex->pattern, match_error (info->matches));
-	}
+        {
+          g_set_error (error, G_REGEX_ERROR, G_REGEX_ERROR_MATCH,
+                       _("Error while matching regular expression %s: %s"),
+                       regex->pattern, match_error (info->matches));
+        }
     }
 
   /* set info->pos to -1 so that a call to g_match_info_next() fails. */
@@ -1657,14 +1656,14 @@ g_regex_match_all_full (const GRegex      *regex,
  *
  * Retrieves the number of the subexpression named @name.
  *
- * Returns: The number of the subexpression or -1 if @name 
+ * Returns: The number of the subexpression or -1 if @name
  *   does not exists
  *
  * Since: 2.14
  */
 gint
 g_regex_get_string_number (const GRegex *regex,
-			   const gchar  *name)
+                           const gchar  *name)
 {
   gint num;
 
@@ -1685,32 +1684,32 @@ g_regex_get_string_number (const GRegex *regex,
  * @compile_options: compile options for the regular expression, or 0
  * @match_options: match options, or 0
  *
- * Breaks the string on the pattern, and returns an array of 
- * the tokens. If the pattern contains capturing parentheses, 
- * then the text for each of the substrings will also be returned. 
- * If the pattern does not match anywhere in the string, then the 
+ * Breaks the string on the pattern, and returns an array of
+ * the tokens. If the pattern contains capturing parentheses,
+ * then the text for each of the substrings will also be returned.
+ * If the pattern does not match anywhere in the string, then the
  * whole string is returned as the first token.
  *
- * This function is equivalent to g_regex_split() but it does 
- * not require to compile the pattern with g_regex_new(), avoiding 
- * some lines of code when you need just to do a split without 
+ * This function is equivalent to g_regex_split() but it does
+ * not require to compile the pattern with g_regex_new(), avoiding
+ * some lines of code when you need just to do a split without
  * extracting substrings, capture counts, and so on.
  *
  * If this function is to be called on the same @pattern more than
  * once, it's more efficient to compile the pattern once with
  * g_regex_new() and then use g_regex_split().
  *
- * As a special case, the result of splitting the empty string "" 
- * is an empty vector, not a vector containing a single string. 
- * The reason for this special case is that being able to represent 
- * a empty vector is typically more useful than consistent handling 
- * of empty elements. If you do need to represent empty elements, 
- * you'll need to check for the empty string before calling this 
+ * As a special case, the result of splitting the empty string ""
+ * is an empty vector, not a vector containing a single string.
+ * The reason for this special case is that being able to represent
+ * a empty vector is typically more useful than consistent handling
+ * of empty elements. If you do need to represent empty elements,
+ * you'll need to check for the empty string before calling this
  * function.
  *
- * A pattern that can match empty strings splits @string into 
- * separate characters wherever it matches the empty string between 
- * characters. For example splitting "ab c" using as a separator 
+ * A pattern that can match empty strings splits @string into
+ * separate characters wherever it matches the empty string between
+ * characters. For example splitting "ab c" using as a separator
  * "\s*", you will get "a", "b" and "c".
  *
  * Returns: a %NULL-terminated array of strings. Free it using g_strfreev()
@@ -1719,9 +1718,9 @@ g_regex_get_string_number (const GRegex *regex,
  **/
 gchar **
 g_regex_split_simple (const gchar        *pattern,
-		      const gchar        *string, 
-		      GRegexCompileFlags  compile_options,
-		      GRegexMatchFlags    match_options)
+                      const gchar        *string,
+                      GRegexCompileFlags  compile_options,
+                      GRegexMatchFlags    match_options)
 {
   GRegex *regex;
   gchar **result;
@@ -1763,9 +1762,9 @@ g_regex_split_simple (const gchar        *pattern,
  * Since: 2.14
  **/
 gchar **
-g_regex_split (const GRegex     *regex, 
-	       const gchar      *string, 
-	       GRegexMatchFlags  match_options)
+g_regex_split (const GRegex     *regex,
+               const gchar      *string,
+               GRegexMatchFlags  match_options)
 {
   return g_regex_split_full (regex, string, -1, 0,
                              match_options, 0, NULL);
@@ -1800,8 +1799,8 @@ g_regex_split (const GRegex     *regex,
  * For example splitting "ab c" using as a separator "\s*", you will get
  * "a", "b" and "c".
  *
- * Setting @start_position differs from just passing over a shortened 
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern 
+ * Setting @start_position differs from just passing over a shortened
+ * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
  * Returns: a %NULL-terminated gchar ** array. Free it using g_strfreev()
@@ -1810,12 +1809,12 @@ g_regex_split (const GRegex     *regex,
  **/
 gchar **
 g_regex_split_full (const GRegex      *regex,
-		    const gchar       *string,
-		    gssize             string_len,
-		    gint               start_position,
-		    GRegexMatchFlags   match_options,
-		    gint               max_tokens,
-		    GError           **error)
+                    const gchar       *string,
+                    gssize             string_len,
+                    gint               start_position,
+                    GRegexMatchFlags   match_options,
+                    gint               max_tokens,
+                    GError           **error)
 {
   GError *tmp_error = NULL;
   GMatchInfo *match_info;
@@ -1850,7 +1849,7 @@ g_regex_split_full (const GRegex      *regex,
     {
       string_list = g_new0 (gchar *, 2);
       string_list[0] = g_strndup (&string[start_position],
-				  string_len - start_position);
+                                  string_len - start_position);
       return string_list;
     }
 
@@ -1860,7 +1859,7 @@ g_regex_split_full (const GRegex      *regex,
   last_match_is_empty = FALSE;
 
   match_ok = g_regex_match_full (regex, string, string_len, start_position,
-				 match_options, &match_info, &tmp_error);
+                                 match_options, &match_info, &tmp_error);
   while (tmp_error == NULL)
     {
       if (match_ok)
@@ -1878,7 +1877,7 @@ g_regex_split_full (const GRegex      *regex,
               gint match_count;
 
               token = g_strndup (string + last_separator_end,
-				 match_info->offsets[0] - last_separator_end);
+                                 match_info->offsets[0] - last_separator_end);
               list = g_list_prepend (list, token);
               token_count++;
 
@@ -1898,7 +1897,7 @@ g_regex_split_full (const GRegex      *regex,
           if (!last_match_is_empty)
             {
               gchar *token = g_strndup (string + last_separator_end,
-					match_info->string_len - last_separator_end);
+                                        match_info->string_len - last_separator_end);
               list = g_list_prepend (list, token);
             }
           /* no more tokens, end the loop. */
@@ -1907,28 +1906,28 @@ g_regex_split_full (const GRegex      *regex,
 
       /* -1 to leave room for the last part. */
       if (token_count >= max_tokens - 1)
-	{
-	  /* we have reached the maximum number of tokens, so we copy
-	   * the remaining part of the string. */
-	  if (last_match_is_empty)
-	    {
-	      /* the last match was empty, so we have moved one char
-	       * after the real position to avoid empty matches at the
-	       * same position. */
-	      match_info->pos = PREV_CHAR (regex, &string[match_info->pos]) - string;
-	    }
-	  /* the if is needed in the case we have terminated the available
-	   * tokens, but we are at the end of the string, so there are no
-	   * characters left to copy. */
-	  if (string_len > match_info->pos)
-	    {
-	      gchar *token = g_strndup (string + match_info->pos,
-					string_len - match_info->pos);
-	      list = g_list_prepend (list, token);
-	    }
-	  /* end the loop. */
-	  break;
-	}
+        {
+          /* we have reached the maximum number of tokens, so we copy
+           * the remaining part of the string. */
+          if (last_match_is_empty)
+            {
+              /* the last match was empty, so we have moved one char
+               * after the real position to avoid empty matches at the
+               * same position. */
+              match_info->pos = PREV_CHAR (regex, &string[match_info->pos]) - string;
+            }
+          /* the if is needed in the case we have terminated the available
+           * tokens, but we are at the end of the string, so there are no
+           * characters left to copy. */
+          if (string_len > match_info->pos)
+            {
+              gchar *token = g_strndup (string + match_info->pos,
+                                        string_len - match_info->pos);
+              list = g_list_prepend (list, token);
+            }
+          /* end the loop. */
+          break;
+        }
 
       last_separator_end = match_info->pos;
       if (last_match_is_empty)
@@ -1966,7 +1965,7 @@ enum
   REPL_TYPE_SYMBOLIC_REFERENCE,
   REPL_TYPE_NUMERIC_REFERENCE,
   REPL_TYPE_CHANGE_CASE
-}; 
+};
 
 typedef enum
 {
@@ -1982,8 +1981,8 @@ typedef enum
 
 struct _InterpolationData
 {
-  gchar     *text;   
-  gint       type;   
+  gchar     *text;
+  gint       type;
   gint       num;
   gchar      c;
   ChangeCase change_case;
@@ -1998,9 +1997,9 @@ free_interpolation_data (InterpolationData *data)
 
 static const gchar *
 expand_escape (const gchar        *replacement,
-	       const gchar        *p, 
-	       InterpolationData  *data,
-	       GError            **error)
+               const gchar        *p,
+               InterpolationData  *data,
+               GError            **error)
 {
   const gchar *q, *r;
   gint x, d, h, i;
@@ -2055,36 +2054,36 @@ expand_escape (const gchar        *replacement,
       p++;
       x = 0;
       if (*p == '{')
-	{
-	  p++;
-	  do 
-	    {
-	      h = g_ascii_xdigit_value (*p);
-	      if (h < 0)
-		{
-		  error_detail = _("hexadecimal digit or '}' expected");
-		  goto error;
-		}
-	      x = x * 16 + h;
-	      p++;
-	    }
-	  while (*p != '}');
-	  p++;
-	}
+        {
+          p++;
+          do
+            {
+              h = g_ascii_xdigit_value (*p);
+              if (h < 0)
+                {
+                  error_detail = _("hexadecimal digit or '}' expected");
+                  goto error;
+                }
+              x = x * 16 + h;
+              p++;
+            }
+          while (*p != '}');
+          p++;
+        }
       else
-	{
-	  for (i = 0; i < 2; i++)
-	    {
-	      h = g_ascii_xdigit_value (*p);
-	      if (h < 0)
-		{
-		  error_detail = _("hexadecimal digit expected");
-		  goto error;
-		}
-	      x = x * 16 + h;
-	      p++;
-	    }
-	}
+        {
+          for (i = 0; i < 2; i++)
+            {
+              h = g_ascii_xdigit_value (*p);
+              if (h < 0)
+                {
+                  error_detail = _("hexadecimal digit expected");
+                  goto error;
+                }
+              x = x * 16 + h;
+              p++;
+            }
+        }
       data->type = REPL_TYPE_STRING;
       data->text = g_new0 (gchar, 8);
       g_unichar_to_utf8 (x, data->text);
@@ -2117,62 +2116,62 @@ expand_escape (const gchar        *replacement,
     case 'g':
       p++;
       if (*p != '<')
-	{
-	  error_detail = _("missing '<' in symbolic reference");
-	  goto error;
-	}
+        {
+          error_detail = _("missing '<' in symbolic reference");
+          goto error;
+        }
       q = p + 1;
-      do 
-	{
-	  p++;
-	  if (!*p)
-	    {
-	      error_detail = _("unfinished symbolic reference");
-	      goto error;
-	    }
-	}
+      do
+        {
+          p++;
+          if (!*p)
+            {
+              error_detail = _("unfinished symbolic reference");
+              goto error;
+            }
+        }
       while (*p != '>');
       if (p - q == 0)
-	{
-	  error_detail = _("zero-length symbolic reference");
-	  goto error;
-	}
+        {
+          error_detail = _("zero-length symbolic reference");
+          goto error;
+        }
       if (g_ascii_isdigit (*q))
-	{
-	  x = 0;
-	  do 
-	    {
-	      h = g_ascii_digit_value (*q);
-	      if (h < 0)
-		{
-		  error_detail = _("digit expected");
-		  p = q;
-		  goto error;
-		}
-	      x = x * 10 + h;
-	      q++;
-	    }
-	  while (q != p);
-	  data->num = x;
-	  data->type = REPL_TYPE_NUMERIC_REFERENCE;
-	}
+        {
+          x = 0;
+          do
+            {
+              h = g_ascii_digit_value (*q);
+              if (h < 0)
+                {
+                  error_detail = _("digit expected");
+                  p = q;
+                  goto error;
+                }
+              x = x * 10 + h;
+              q++;
+            }
+          while (q != p);
+          data->num = x;
+          data->type = REPL_TYPE_NUMERIC_REFERENCE;
+        }
       else
-	{
-	  r = q;
-	  do 
-	    {
-	      if (!g_ascii_isalnum (*r))
-		{
-		  error_detail = _("illegal symbolic reference");
-		  p = r;
-		  goto error;
-		}
-	      r++;
-	    }
-	  while (r != p);
-	  data->text = g_strndup (q, p - q);
-	  data->type = REPL_TYPE_SYMBOLIC_REFERENCE;
-	}
+        {
+          r = q;
+          do
+            {
+              if (!g_ascii_isalnum (*r))
+                {
+                  error_detail = _("illegal symbolic reference");
+                  p = r;
+                  goto error;
+                }
+              r++;
+            }
+          while (r != p);
+          data->text = g_strndup (q, p - q);
+          data->type = REPL_TYPE_SYMBOLIC_REFERENCE;
+        }
       p++;
       break;
     case '0':
@@ -2195,34 +2194,34 @@ expand_escape (const gchar        *replacement,
       x = 0;
       d = 0;
       for (i = 0; i < 3; i++)
-	{
-	  h = g_ascii_digit_value (*p);
-	  if (h < 0) 
-	    break;
-	  if (h > 7)
-	    {
-	      if (base == 8)
-		break;
-	      else 
-		base = 10;
-	    }
-	  if (i == 2 && base == 10)
-	    break;
-	  x = x * 8 + h;
-	  d = d * 10 + h;
-	  p++;
-	}
+        {
+          h = g_ascii_digit_value (*p);
+          if (h < 0)
+            break;
+          if (h > 7)
+            {
+              if (base == 8)
+                break;
+              else
+                base = 10;
+            }
+          if (i == 2 && base == 10)
+            break;
+          x = x * 8 + h;
+          d = d * 10 + h;
+          p++;
+        }
       if (base == 8 || i == 3)
-	{
-	  data->type = REPL_TYPE_STRING;
-	  data->text = g_new0 (gchar, 8);
-	  g_unichar_to_utf8 (x, data->text);
-	}
+        {
+          data->type = REPL_TYPE_STRING;
+          data->text = g_new0 (gchar, 8);
+          g_unichar_to_utf8 (x, data->text);
+        }
       else
-	{
-	  data->type = REPL_TYPE_NUMERIC_REFERENCE;
-	  data->num = d;
-	}
+        {
+          data->type = REPL_TYPE_NUMERIC_REFERENCE;
+          data->num = d;
+        }
       break;
     case 0:
       error_detail = _("stray final '\\'");
@@ -2237,13 +2236,13 @@ expand_escape (const gchar        *replacement,
 
  error:
   /* G_GSSIZE_FORMAT doesn't work with gettext, so we use %lu */
-  tmp_error = g_error_new (G_REGEX_ERROR, 
-			   G_REGEX_ERROR_REPLACE,
-			   _("Error while parsing replacement "
-			     "text \"%s\" at char %lu: %s"),
-			   replacement, 
-			   (gulong)(p - replacement),
-			   error_detail);
+  tmp_error = g_error_new (G_REGEX_ERROR,
+                           G_REGEX_ERROR_REPLACE,
+                           _("Error while parsing replacement "
+                             "text \"%s\" at char %lu: %s"),
+                           replacement,
+                           (gulong)(p - replacement),
+                           error_detail);
   g_propagate_error (error, tmp_error);
 
   return NULL;
@@ -2251,43 +2250,43 @@ expand_escape (const gchar        *replacement,
 
 static GList *
 split_replacement (const gchar  *replacement,
-		   GError      **error)
+                   GError      **error)
 {
   GList *list = NULL;
   InterpolationData *data;
   const gchar *p, *start;
-  
-  start = p = replacement; 
+
+  start = p = replacement;
   while (*p)
     {
       if (*p == '\\')
-	{
-	  data = g_new0 (InterpolationData, 1);
-	  start = p = expand_escape (replacement, p, data, error);
-	  if (p == NULL)
-	    {
-	      g_list_foreach (list, (GFunc)free_interpolation_data, NULL);
-	      g_list_free (list);
-	      free_interpolation_data (data);
+        {
+          data = g_new0 (InterpolationData, 1);
+          start = p = expand_escape (replacement, p, data, error);
+          if (p == NULL)
+            {
+              g_list_foreach (list, (GFunc)free_interpolation_data, NULL);
+              g_list_free (list);
+              free_interpolation_data (data);
 
-	      return NULL;
-	    }
-	  list = g_list_prepend (list, data);
-	}
+              return NULL;
+            }
+          list = g_list_prepend (list, data);
+        }
       else
-	{
-	  p++;
-	  if (*p == '\\' || *p == '\0')
-	    {
-	      if (p - start > 0)
-		{
-		  data = g_new0 (InterpolationData, 1);
-		  data->text = g_strndup (start, p - start);
-		  data->type = REPL_TYPE_STRING;
-		  list = g_list_prepend (list, data);
-		}
-	    }
-	}
+        {
+          p++;
+          if (*p == '\\' || *p == '\0')
+            {
+              if (p - start > 0)
+                {
+                  data = g_new0 (InterpolationData, 1);
+                  data->text = g_strndup (start, p - start);
+                  data->type = REPL_TYPE_STRING;
+                  list = g_list_prepend (list, data);
+                }
+            }
+        }
     }
 
   return g_list_reverse (list);
@@ -2295,13 +2294,13 @@ split_replacement (const gchar  *replacement,
 
 /* Change the case of c based on change_case. */
 #define CHANGE_CASE(c, change_case) \
-	(((change_case) & CHANGE_CASE_LOWER_MASK) ? \
-		g_unichar_tolower (c) : \
-		g_unichar_toupper (c))
+        (((change_case) & CHANGE_CASE_LOWER_MASK) ? \
+                g_unichar_tolower (c) : \
+                g_unichar_toupper (c))
 
 static void
 string_append (GString     *string,
-	       const gchar *text,
+               const gchar *text,
                ChangeCase  *change_case)
 {
   gunichar c;
@@ -2333,8 +2332,8 @@ string_append (GString     *string,
 
 static gboolean
 interpolate_replacement (const GMatchInfo *match_info,
-			 GString          *result,
-			 gpointer          data)
+                         GString          *result,
+                         gpointer          data)
 {
   GList *list;
   InterpolationData *idata;
@@ -2345,38 +2344,38 @@ interpolate_replacement (const GMatchInfo *match_info,
     {
       idata = list->data;
       switch (idata->type)
-	{
-	case REPL_TYPE_STRING:
-	  string_append (result, idata->text, &change_case);
-	  break;
-	case REPL_TYPE_CHARACTER:
-	  g_string_append_c (result, CHANGE_CASE (idata->c, change_case));
+        {
+        case REPL_TYPE_STRING:
+          string_append (result, idata->text, &change_case);
+          break;
+        case REPL_TYPE_CHARACTER:
+          g_string_append_c (result, CHANGE_CASE (idata->c, change_case));
           if (change_case & CHANGE_CASE_SINGLE_MASK)
             change_case = CHANGE_CASE_NONE;
-	  break;
-	case REPL_TYPE_NUMERIC_REFERENCE:
-	  match = g_match_info_fetch (match_info, idata->num);
-	  if (match)
-	    {
-	      string_append (result, match, &change_case);
-	      g_free (match);
-	    }
-	  break;
-	case REPL_TYPE_SYMBOLIC_REFERENCE:
-	  match = g_match_info_fetch_named (match_info, idata->text);
-	  if (match)
-	    {
-	      string_append (result, match, &change_case);
-	      g_free (match);
-	    }
-	  break;
-	case REPL_TYPE_CHANGE_CASE:
-	  change_case = idata->change_case;
-	  break;
-	}
+          break;
+        case REPL_TYPE_NUMERIC_REFERENCE:
+          match = g_match_info_fetch (match_info, idata->num);
+          if (match)
+            {
+              string_append (result, match, &change_case);
+              g_free (match);
+            }
+          break;
+        case REPL_TYPE_SYMBOLIC_REFERENCE:
+          match = g_match_info_fetch_named (match_info, idata->text);
+          if (match)
+            {
+              string_append (result, match, &change_case);
+              g_free (match);
+            }
+          break;
+        case REPL_TYPE_CHANGE_CASE:
+          change_case = idata->change_case;
+          break;
+        }
     }
 
-  return FALSE; 
+  return FALSE;
 }
 
 /* whether actual match_info is needed for replacement, i.e.
@@ -2392,7 +2391,7 @@ interpolation_list_needs_match (GList *list)
       if (data->type == REPL_TYPE_SYMBOLIC_REFERENCE ||
           data->type == REPL_TYPE_NUMERIC_REFERENCE)
         {
-	  return TRUE;
+          return TRUE;
         }
 
       list = list->next;
@@ -2412,11 +2411,11 @@ interpolation_list_needs_match (GList *list)
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
  * Replaces all occurrences of the pattern in @regex with the
- * replacement text. Backreferences of the form '\number' or 
- * '\g&lt;number&gt;' in the replacement text are interpolated by the 
- * number-th captured subexpression of the match, '\g&lt;name&gt;' refers 
- * to the captured subexpression with the given name. '\0' refers to the 
- * complete match, but '\0' followed by a number is the octal representation 
+ * replacement text. Backreferences of the form '\number' or
+ * '\g&lt;number&gt;' in the replacement text are interpolated by the
+ * number-th captured subexpression of the match, '\g&lt;name&gt;' refers
+ * to the captured subexpression with the given name. '\0' refers to the
+ * complete match, but '\0' followed by a number is the octal representation
  * of a character. To include a literal '\' in the replacement, write '\\'.
  * There are also escapes that changes the case of the following text:
  *
@@ -2454,8 +2453,8 @@ interpolation_list_needs_match (GList *list)
  * passed to g_regex_new(). If you want to use not UTF-8 encoded stings
  * you can use g_regex_replace_literal().
  *
- * Setting @start_position differs from just passing over a shortened 
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that 
+ * Setting @start_position differs from just passing over a shortened
+ * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern that
  * begins with any kind of lookbehind assertion, such as "\b".
  *
  * Returns: a newly allocated string containing the replacements
@@ -2463,13 +2462,13 @@ interpolation_list_needs_match (GList *list)
  * Since: 2.14
  */
 gchar *
-g_regex_replace (const GRegex      *regex, 
-		 const gchar       *string, 
-		 gssize             string_len,
-		 gint               start_position,
-		 const gchar       *replacement,
-		 GRegexMatchFlags   match_options,
-		 GError           **error)
+g_regex_replace (const GRegex      *regex,
+                 const gchar       *string,
+                 gssize             string_len,
+                 gint               start_position,
+                 const gchar       *replacement,
+                 GRegexMatchFlags   match_options,
+                 GError           **error)
 {
   gchar *result;
   GList *list;
@@ -2489,11 +2488,11 @@ g_regex_replace (const GRegex      *regex,
       return NULL;
     }
 
-  result = g_regex_replace_eval (regex, 
-				 string, string_len, start_position,
-				 match_options,
-				 interpolate_replacement,
-				 (gpointer)list,
+  result = g_regex_replace_eval (regex,
+                                 string, string_len, start_position,
+                                 match_options,
+                                 interpolate_replacement,
+                                 (gpointer)list,
                                  &tmp_error);
   if (tmp_error != NULL)
     g_propagate_error (error, tmp_error);
@@ -2506,8 +2505,8 @@ g_regex_replace (const GRegex      *regex,
 
 static gboolean
 literal_replacement (const GMatchInfo *match_info,
-		     GString          *result,
-		     gpointer          data)
+                     GString          *result,
+                     gpointer          data)
 {
   g_string_append (result, data);
   return FALSE;
@@ -2527,9 +2526,9 @@ literal_replacement (const GMatchInfo *match_info,
  * replacement text. @replacement is replaced literally, to
  * include backreferences use g_regex_replace().
  *
- * Setting @start_position differs from just passing over a 
- * shortened string and setting #G_REGEX_MATCH_NOTBOL in the 
- * case of a pattern that begins with any kind of lookbehind 
+ * Setting @start_position differs from just passing over a
+ * shortened string and setting #G_REGEX_MATCH_NOTBOL in the
+ * case of a pattern that begins with any kind of lookbehind
  * assertion, such as "\b".
  *
  * Returns: a newly allocated string containing the replacements
@@ -2538,22 +2537,22 @@ literal_replacement (const GMatchInfo *match_info,
  */
 gchar *
 g_regex_replace_literal (const GRegex      *regex,
-			 const gchar       *string,
-			 gssize             string_len,
-			 gint               start_position,
-			 const gchar       *replacement,
-			 GRegexMatchFlags   match_options,
-			 GError           **error)
+                         const gchar       *string,
+                         gssize             string_len,
+                         gint               start_position,
+                         const gchar       *replacement,
+                         GRegexMatchFlags   match_options,
+                         GError           **error)
 {
   g_return_val_if_fail (replacement != NULL, NULL);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, NULL);
 
   return g_regex_replace_eval (regex,
-			       string, string_len, start_position,
-			       match_options,
-			       literal_replacement,
-			       (gpointer)replacement,
-			       error);
+                               string, string_len, start_position,
+                               match_options,
+                               literal_replacement,
+                               (gpointer)replacement,
+                               error);
 }
 
 /**
@@ -2567,45 +2566,45 @@ g_regex_replace_literal (const GRegex      *regex,
  * @user_data: user data to pass to the function
  * @error: location to store the error occuring, or %NULL to ignore errors
  *
- * Replaces occurrences of the pattern in regex with the output of 
+ * Replaces occurrences of the pattern in regex with the output of
  * @eval for that occurrence.
  *
- * Setting @start_position differs from just passing over a shortened 
- * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern 
+ * Setting @start_position differs from just passing over a shortened
+ * string and setting #G_REGEX_MATCH_NOTBOL in the case of a pattern
  * that begins with any kind of lookbehind assertion, such as "\b".
  *
  * The following example uses g_regex_replace_eval() to replace multiple
  * strings at once:
  * |[
- * static gboolean 
- * eval_cb (const GMatchInfo *info,          
+ * static gboolean
+ * eval_cb (const GMatchInfo *info,
  *          GString          *res,
  *          gpointer          data)
  * {
  *   gchar *match;
  *   gchar *r;
- * 
+ *
  *    match = g_match_info_fetch (info, 0);
  *    r = g_hash_table_lookup ((GHashTable *)data, match);
  *    g_string_append (res, r);
  *    g_free (match);
- * 
+ *
  *    return FALSE;
  * }
- * 
+ *
  * /&ast; ... &ast;/
- * 
+ *
  * GRegex *reg;
  * GHashTable *h;
  * gchar *res;
  *
  * h = g_hash_table_new (g_str_hash, g_str_equal);
- * 
+ *
  * g_hash_table_insert (h, "1", "ONE");
  * g_hash_table_insert (h, "2", "TWO");
  * g_hash_table_insert (h, "3", "THREE");
  * g_hash_table_insert (h, "4", "FOUR");
- * 
+ *
  * reg = g_regex_new ("1|2|3|4", 0, 0, NULL);
  * res = g_regex_replace_eval (reg, text, -1, 0, 0, eval_cb, h, NULL);
  * g_hash_table_destroy (h);
@@ -2619,13 +2618,13 @@ g_regex_replace_literal (const GRegex      *regex,
  */
 gchar *
 g_regex_replace_eval (const GRegex        *regex,
-		      const gchar         *string,
-		      gssize               string_len,
-		      gint                 start_position,
-		      GRegexMatchFlags     match_options,
-		      GRegexEvalCallback   eval,
-		      gpointer             user_data,
-		      GError             **error)
+                      const gchar         *string,
+                      gssize               string_len,
+                      gint                 start_position,
+                      GRegexMatchFlags     match_options,
+                      GRegexEvalCallback   eval,
+                      gpointer             user_data,
+                      GError             **error)
 {
   GMatchInfo *match_info;
   GString *result;
@@ -2646,12 +2645,12 @@ g_regex_replace_eval (const GRegex        *regex,
 
   /* run down the string making matches. */
   g_regex_match_full (regex, string, string_len, start_position,
-		      match_options, &match_info, &tmp_error);
+                      match_options, &match_info, &tmp_error);
   while (!done && g_match_info_matches (match_info))
     {
       g_string_append_len (result,
-			   string + str_pos,
-			   match_info->offsets[0] - str_pos);
+                           string + str_pos,
+                           match_info->offsets[0] - str_pos);
       done = (*eval) (match_info, result, user_data);
       str_pos = match_info->offsets[1];
       g_match_info_next (match_info, &tmp_error);
@@ -2675,14 +2674,14 @@ g_regex_replace_eval (const GRegex        *regex,
  *   references in @replacement or %NULL
  * @error: location to store error
  *
- * Checks whether @replacement is a valid replacement string 
- * (see g_regex_replace()), i.e. that all escape sequences in 
+ * Checks whether @replacement is a valid replacement string
+ * (see g_regex_replace()), i.e. that all escape sequences in
  * it are valid.
  *
- * If @has_references is not %NULL then @replacement is checked 
+ * If @has_references is not %NULL then @replacement is checked
  * for pattern references. For instance, replacement text 'foo\n'
  * does not contain references and may be evaluated without information
- * about actual match, but '\0\1' (whole match followed by first 
+ * about actual match, but '\0\1' (whole match followed by first
  * subpattern) requires valid #GMatchInfo object.
  *
  * Returns: whether @replacement is a valid replacement string
@@ -2691,8 +2690,8 @@ g_regex_replace_eval (const GRegex        *regex,
  */
 gboolean
 g_regex_check_replacement (const gchar  *replacement,
-			   gboolean     *has_references,
-			   GError      **error)
+                           gboolean     *has_references,
+                           GError      **error)
 {
   GList *list;
   GError *tmp = NULL;
@@ -2719,12 +2718,12 @@ g_regex_check_replacement (const gchar  *replacement,
  * @string: (array length=length): the string to escape
  * @length: the length of @string, or -1 if @string is nul-terminated
  *
- * Escapes the special characters used for regular expressions 
- * in @string, for instance "a.b*c" becomes "a\.b\*c". This 
+ * Escapes the special characters used for regular expressions
+ * in @string, for instance "a.b*c" becomes "a\.b\*c". This
  * function is useful to dynamically generate regular expressions.
  *
- * @string can contain nul characters that are replaced with "\0", 
- * in this case remember to specify the correct length of @string 
+ * @string can contain nul characters that are replaced with "\0",
+ * in this case remember to specify the correct length of @string
  * in @length.
  *
  * Returns: a newly-allocated escaped string
@@ -2733,7 +2732,7 @@ g_regex_check_replacement (const gchar  *replacement,
  */
 gchar *
 g_regex_escape_string (const gchar *string,
-		       gint         length)
+                       gint         length)
 {
   GString *escaped;
   const char *p, *piece_start, *end;
@@ -2750,36 +2749,36 @@ g_regex_escape_string (const gchar *string,
   while (p < end)
     {
       switch (*p)
-	{
+        {
         case '\0':
-	case '\\':
-	case '|':
-	case '(':
-	case ')':
-	case '[':
-	case ']':
-	case '{':
-	case '}':
-	case '^':
-	case '$':
-	case '*':
-	case '+':
-	case '?':
-	case '.':
-	  if (p != piece_start)
-	    /* copy the previous piece. */
-	    g_string_append_len (escaped, piece_start, p - piece_start);
-	  g_string_append_c (escaped, '\\');
+        case '\\':
+        case '|':
+        case '(':
+        case ')':
+        case '[':
+        case ']':
+        case '{':
+        case '}':
+        case '^':
+        case '$':
+        case '*':
+        case '+':
+        case '?':
+        case '.':
+          if (p != piece_start)
+            /* copy the previous piece. */
+            g_string_append_len (escaped, piece_start, p - piece_start);
+          g_string_append_c (escaped, '\\');
           if (*p == '\0')
             g_string_append_c (escaped, '0');
           else
-	    g_string_append_c (escaped, *p);
-	  piece_start = ++p;
-	  break;
-	default:
-	  p = g_utf8_next_char (p);
+            g_string_append_c (escaped, *p);
+          piece_start = ++p;
           break;
-        } 
+        default:
+          p = g_utf8_next_char (p);
+          break;
+        }
   }
 
   if (piece_start < end)
