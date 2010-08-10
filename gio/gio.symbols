@@ -1359,12 +1359,14 @@ g_socket_client_get_local_address
 g_socket_client_get_protocol
 g_socket_client_get_socket_type
 g_socket_client_get_timeout
+g_socket_client_get_enable_proxy
 g_socket_client_new
 g_socket_client_set_family
 g_socket_client_set_local_address
 g_socket_client_set_protocol
 g_socket_client_set_socket_type
 g_socket_client_set_timeout
+g_socket_client_set_enable_proxy
 #endif
 #endif
 

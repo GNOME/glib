@@ -85,6 +85,9 @@ void                    g_socket_client_set_local_address               (GSocket
 guint                   g_socket_client_get_timeout                     (GSocketClient        *client);
 void                    g_socket_client_set_timeout                     (GSocketClient        *client,
 									 guint                 timeout);
+gboolean                g_socket_client_get_enable_proxy                (GSocketClient        *client);
+void                    g_socket_client_set_enable_proxy                (GSocketClient        *client,
+    									 gboolean	      enable);
 
 GSocketConnection *     g_socket_client_connect                         (GSocketClient        *client,
                                                                          GSocketConnectable   *connectable,

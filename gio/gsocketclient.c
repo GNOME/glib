@@ -26,18 +26,24 @@
 #include "gsocketclient.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 #include <gio/gioenumtypes.h>
 #include <gio/gsocketaddressenumerator.h>
 #include <gio/gsocketconnectable.h>
 #include <gio/gsocketconnection.h>
+#include <gio/gproxyaddressenumerator.h>
+#include <gio/gproxyaddress.h>
+#include <gio/gproxyconnection.h>
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gcancellable.h>
 #include <gio/gioerror.h>
 #include <gio/gsocket.h>
 #include <gio/gnetworkaddress.h>
 #include <gio/gnetworkservice.h>
+#include <gio/gproxy.h>
 #include <gio/gsocketaddress.h>
+#include <gio/gtcpconnection.h>
 #include "glibintl.h"
 
 
@@ -71,7 +77,8 @@ enum
   PROP_TYPE,
   PROP_PROTOCOL,
   PROP_LOCAL_ADDRESS,
-  PROP_TIMEOUT
+  PROP_TIMEOUT,
+  PROP_ENABLE_PROXY,
 };
 
 struct _GSocketClientPrivate
@@ -81,6 +88,7 @@ struct _GSocketClientPrivate
   GSocketProtocol protocol;
   GSocketAddress *local_address;
   guint timeout;
+  gboolean enable_proxy;
 };
 
 static GSocket *
@@ -121,6 +129,15 @@ create_socket (GSocketClient  *client,
     g_socket_set_timeout (socket, client->priv->timeout);
 
   return socket;
+}
+
+gboolean
+can_use_proxy (GSocketClient *client)
+{
+  GSocketClientPrivate *priv = client->priv;
+
+  return priv->enable_proxy
+          && priv->type == G_SOCKET_TYPE_STREAM;
 }
 
 static void
@@ -190,6 +207,10 @@ g_socket_client_get_property (GObject    *object,
 	g_value_set_uint (value, client->priv->timeout);
 	break;
 
+      case PROP_ENABLE_PROXY:
+	g_value_set_boolean (value, client->priv->enable_proxy);
+	break;
+
       default:
 	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -223,6 +244,10 @@ g_socket_client_set_property (GObject      *object,
 
     case PROP_TIMEOUT:
       g_socket_client_set_timeout (client, g_value_get_uint (value));
+      break;
+
+    case PROP_ENABLE_PROXY:
+      g_socket_client_set_enable_proxy (client, g_value_get_boolean (value));
       break;
 
     default:
@@ -399,7 +424,7 @@ g_socket_client_set_local_address (GSocketClient  *client,
 				   GSocketAddress *address)
 {
   if (address)
-  g_object_ref (address);
+    g_object_ref (address);
 
   if (client->priv->local_address)
     {
@@ -451,6 +476,46 @@ g_socket_client_set_timeout (GSocketClient *client,
 
   client->priv->timeout = timeout;
   g_object_notify (G_OBJECT (client), "timeout");
+}
+
+/**
+ * g_socket_client_get_enable_proxy:
+ * @client: a #GSocketClient.
+ *
+ * Gets the proxy enable state; see g_socket_client_set_enable_proxy()
+ *
+ * Returns: whether proxying is enabled
+ *
+ * Since: 2.26
+ */
+gboolean
+g_socket_client_get_enable_proxy (GSocketClient *client)
+{
+  return client->priv->enable_proxy;
+}
+
+/**
+ * g_socket_client_set_enable_proxy:
+ * @client: a #GSocketClient.
+ * @enable: whether to enable proxies
+ *
+ * Sets whether or not @client attempts to make connections via a
+ * proxy server. When enabled (the default), #GSocketClient will use a
+ * #GProxyResolver to determine if a proxy protocol such as SOCKS is
+ * needed, and automatically do the necessary proxy negotiation.
+ *
+ * Since: 2.26
+ */
+void
+g_socket_client_set_enable_proxy (GSocketClient *client,
+				  gboolean       enable)
+{
+  enable = !!enable;
+  if (client->priv->enable_proxy == enable)
+    return;
+
+  client->priv->enable_proxy = enable;
+  g_object_notify (G_OBJECT (client), "enable-proxy");
 }
 
 static void
@@ -512,6 +577,15 @@ g_socket_client_class_init (GSocketClientClass *class)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_STATIC_STRINGS));
 
+   g_object_class_install_property (gobject_class, PROP_ENABLE_PROXY,
+				    g_param_spec_boolean ("enable-proxy",
+							  P_("Enable proxy"),
+							  P_("Enable proxy support"),
+							  TRUE,
+							  G_PARAM_CONSTRUCT |
+							  G_PARAM_READWRITE |
+							  G_PARAM_STATIC_STRINGS));
+
 }
 
 /**
@@ -551,14 +625,19 @@ g_socket_client_connect (GSocketClient       *client,
 			 GError             **error)
 {
   GSocketConnection *connection = NULL;
-  GSocketAddressEnumerator *enumerator;
+  GSocketAddressEnumerator *enumerator = NULL;
   GError *last_error, *tmp_error;
 
   last_error = NULL;
-  enumerator = g_socket_connectable_enumerate (connectable);
+
+  if (can_use_proxy (client))
+    enumerator = g_socket_connectable_proxy_enumerate (connectable);
+  else
+    enumerator = g_socket_connectable_enumerate (connectable);
+
   while (connection == NULL)
     {
-      GSocketAddress *address;
+      GSocketAddress *address = NULL;
       GSocket *socket;
 
       if (g_cancellable_is_cancelled (cancellable))
@@ -570,7 +649,8 @@ g_socket_client_connect (GSocketClient       *client,
 
       tmp_error = NULL;
       address = g_socket_address_enumerator_next (enumerator, cancellable,
-						  &tmp_error);
+	      					  &tmp_error);
+
       if (address == NULL)
 	{
 	  if (tmp_error)
@@ -598,6 +678,71 @@ g_socket_client_connect (GSocketClient       *client,
 	    connection = g_socket_connection_factory_create_connection (socket);
 
 	  g_object_unref (socket);
+	}
+
+      if (connection &&
+	  G_IS_PROXY_ADDRESS (address) &&
+	  client->priv->enable_proxy)
+	{
+	  GProxyAddress *proxy_addr = G_PROXY_ADDRESS (address);
+	  const gchar *protocol;
+	  GProxy *proxy;
+
+	  protocol = g_proxy_address_get_protocol (proxy_addr);
+	  proxy = g_proxy_get_default_for_protocol (protocol);
+
+          /* The connection should not be anything else then TCP Connection,
+           * but let's put a safety guard in case
+	   */
+          if (!G_IS_TCP_CONNECTION (connection))
+            {
+              g_critical ("Trying to proxy over non-TCP connection, this is "
+                          "most likely a bug in GLib IO library.");
+
+              g_set_error_literal (&last_error,
+                  G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+                  _("Trying to proxy over non-TCP connection is not supported."));
+
+	      g_object_unref (connection);
+	      connection = NULL;
+            }
+          else if (proxy)
+	    {
+              GIOStream *io_stream;
+              GTcpConnection *old_connection = G_TCP_CONNECTION (connection);
+
+	      io_stream = g_proxy_connect (proxy,
+					   G_IO_STREAM (old_connection),
+					   proxy_addr,
+					   cancellable,
+					   &last_error);
+
+              if (io_stream)
+                {
+                  if (G_IS_SOCKET_CONNECTION (io_stream))
+                    connection = G_SOCKET_CONNECTION (g_object_ref (io_stream));
+                  else
+                    connection = _g_proxy_connection_new (old_connection,
+                                                          io_stream);
+
+                  g_object_unref (io_stream);
+                }
+              else
+                {
+                  connection = NULL;
+                }
+
+              g_object_unref (old_connection);
+	      g_object_unref (proxy);
+	    }
+	  else
+	    {
+	      g_set_error (&last_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+			   _("Proxy protocol '%s' is not supported."),
+			   protocol);
+	      g_object_unref (connection);
+	      connection = NULL;
+	    }
 	}
 
       g_object_unref (address);
@@ -720,7 +865,9 @@ typedef struct
   GSocketClient *client;
 
   GSocketAddressEnumerator *enumerator;
+  GProxyAddress *proxy_addr;
   GSocket *current_socket;
+  GSocketConnection *connection;
 
   GError *last_error;
 } GSocketClientAsyncConnectData;
@@ -728,8 +875,6 @@ typedef struct
 static void
 g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
 {
-  GSocketConnection *connection;
-
   if (data->last_error)
     {
       g_simple_async_result_set_from_error (data->result, data->last_error);
@@ -737,14 +882,10 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
     }
   else
     {
-      g_assert (data->current_socket);
+      g_assert (data->connection);
 
-      g_socket_set_blocking (data->current_socket, TRUE);
-
-      connection = g_socket_connection_factory_create_connection (data->current_socket);
-      g_object_unref (data->current_socket);
       g_simple_async_result_set_op_res_gpointer (data->result,
-						 connection,
+						 data->connection,
 						 g_object_unref);
     }
 
@@ -753,6 +894,10 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
   g_object_unref (data->enumerator);
   if (data->cancellable)
     g_object_unref (data->cancellable);
+  if (data->current_socket)
+    g_object_unref (data->current_socket);
+  if (data->proxy_addr)
+    g_object_unref (data->proxy_addr);
   g_slice_free (GSocketClientAsyncConnectData, data);
 }
 
@@ -768,6 +913,97 @@ set_last_error (GSocketClientAsyncConnectData *data,
 {
   g_clear_error (&data->last_error);
   data->last_error = error;
+}
+
+static void
+enumerator_next_async (GSocketClientAsyncConnectData *data)
+{
+  g_socket_address_enumerator_next_async (data->enumerator,
+					  data->cancellable,
+					  g_socket_client_enumerator_callback,
+					  data);
+}
+
+static void
+g_socket_client_proxy_connect_callback (GObject      *object,
+					GAsyncResult *result,
+					gpointer      user_data)
+{
+  GSocketClientAsyncConnectData *data = user_data;
+  GIOStream *io_stream;
+  GTcpConnection *old_connection = G_TCP_CONNECTION (data->connection);
+
+  io_stream = g_proxy_connect_finish (G_PROXY (object),
+				      result,
+				      &data->last_error);
+
+  if (io_stream)
+    {
+      if (G_IS_SOCKET_CONNECTION (io_stream))
+        data->connection = G_SOCKET_CONNECTION (g_object_ref (io_stream));
+      else
+        data->connection = _g_proxy_connection_new (old_connection,
+                                                    io_stream);
+      g_object_unref (io_stream);
+    }
+  else
+    {
+      data->connection = NULL;
+    }
+
+  g_object_unref (old_connection);
+
+  g_socket_client_async_connect_complete (data);
+}
+
+static void
+g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
+{
+  GProxy *proxy;
+  const gchar *protocol = g_proxy_address_get_protocol (data->proxy_addr);
+
+  proxy = g_proxy_get_default_for_protocol (protocol);
+
+  /* The connection should not be anything else then TCP Connection,
+   * but let's put a safety guard in case
+   */
+  if (!G_IS_TCP_CONNECTION (data->connection))
+    {
+      g_critical ("Trying to proxy over non-TCP connection, this is "
+          "most likely a bug in GLib IO library.");
+
+      g_set_error_literal (&data->last_error,
+          G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+          _("Trying to proxy over non-TCP connection is not supported."));
+
+      g_object_unref (data->connection);
+      data->connection = NULL;
+
+      enumerator_next_async (data);
+    }
+  else if (proxy)
+    {
+      g_proxy_connect_async (proxy,
+                             G_IO_STREAM (data->connection),
+                             data->proxy_addr,
+                             data->cancellable,
+                             g_socket_client_proxy_connect_callback,
+                             data);
+      g_object_unref (proxy);
+    }
+  else
+    {
+      g_clear_error (&data->last_error);
+
+      g_set_error (&data->last_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
+          _("Proxy protocol '%s' is not supported."),
+          protocol);
+
+      g_object_unref (data->connection);
+      data->connection = NULL;
+
+      enumerator_next_async (data);
+    }
 }
 
 static gboolean
@@ -796,16 +1032,23 @@ g_socket_client_socket_callback (GSocket *socket,
 	  data->current_socket = NULL;
 
 	  /* try next one */
-	  g_socket_address_enumerator_next_async (data->enumerator,
-						  data->cancellable,
-						  g_socket_client_enumerator_callback,
-						  data);
+	  enumerator_next_async (data);
 
 	  return FALSE;
 	}
     }
 
-  g_socket_client_async_connect_complete (data);
+  g_socket_set_blocking (data->current_socket, TRUE);
+
+  data->connection =
+    g_socket_connection_factory_create_connection (data->current_socket);
+  g_object_unref (data->current_socket);
+  data->current_socket = NULL;
+
+  if (data->proxy_addr)
+    g_socket_client_proxy_connect (data);
+  else
+    g_socket_client_async_connect_complete (data);
 
   return FALSE;
 }
@@ -816,7 +1059,7 @@ g_socket_client_enumerator_callback (GObject      *object,
 				     gpointer      user_data)
 {
   GSocketClientAsyncConnectData *data = user_data;
-  GSocketAddress *address;
+  GSocketAddress *address = NULL;
   GSocket *socket;
   GError *tmp_error = NULL;
 
@@ -842,6 +1085,10 @@ g_socket_client_enumerator_callback (GObject      *object,
       g_socket_client_async_connect_complete (data);
       return;
     }
+
+  if (G_IS_PROXY_ADDRESS (address) &&
+      data->client->priv->enable_proxy)
+    data->proxy_addr = g_object_ref (G_PROXY_ADDRESS (address));
 
   g_clear_error (&data->last_error);
 
@@ -880,13 +1127,10 @@ g_socket_client_enumerator_callback (GObject      *object,
 	  data->last_error = tmp_error;
 	  g_object_unref (socket);
 	}
-      g_object_unref (address);
     }
 
-  g_socket_address_enumerator_next_async (data->enumerator,
-					  data->cancellable,
-					  g_socket_client_enumerator_callback,
-					  data);
+  g_object_unref (address);
+  enumerator_next_async (data);
 }
 
 /**
@@ -916,7 +1160,7 @@ g_socket_client_connect_async (GSocketClient       *client,
 
   g_return_if_fail (G_IS_SOCKET_CLIENT (client));
 
-  data = g_slice_new (GSocketClientAsyncConnectData);
+  data = g_slice_new0 (GSocketClientAsyncConnectData);
 
   data->result = g_simple_async_result_new (G_OBJECT (client),
 					    callback, user_data,
@@ -924,14 +1168,13 @@ g_socket_client_connect_async (GSocketClient       *client,
   data->client = client;
   if (cancellable)
     data->cancellable = g_object_ref (cancellable);
-  else
-    data->cancellable = NULL;
-  data->last_error = NULL;
-  data->enumerator = g_socket_connectable_enumerate (connectable);
 
-  g_socket_address_enumerator_next_async (data->enumerator, cancellable,
-					  g_socket_client_enumerator_callback,
-					  data);
+  if (can_use_proxy (client))
+      data->enumerator = g_socket_connectable_proxy_enumerate (connectable);
+  else
+      data->enumerator = g_socket_connectable_enumerate (connectable);
+
+  enumerator_next_async (data);
 }
 
 /**
