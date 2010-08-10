@@ -208,6 +208,7 @@ typedef struct _GVfs                          GVfs; /* Dummy typedef */
 typedef struct _GProxyResolver                GProxyResolver;
 typedef struct _GProxy			      GProxy;
 typedef struct _GProxyAddress		      GProxyAddress;
+typedef struct _GProxyAddressEnumerator	      GProxyAddressEnumerator;
 
 /**
  * GVolume:

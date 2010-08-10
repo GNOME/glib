@@ -1162,6 +1162,12 @@ g_proxy_address_get_password
 #endif
 #endif
 
+#if IN_HEADER(__G_PROXY_ADDRESS_ENUMERATOR_H__)
+#if IN_FILE(__G_PROXY_ADDRESS_ENUMERATOR_C__)
+g_proxy_address_enumerator_get_type
+#endif
+#endif
+
 #if IN_HEADER(__G_RESOLVER_H__)
 #if IN_FILE(__G_RESOLVER_C__)
 g_resolver_error_quark

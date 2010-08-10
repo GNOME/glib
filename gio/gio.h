@@ -94,6 +94,7 @@
 #include <gio/gpermission.h>
 #include <gio/gproxy.h>
 #include <gio/gproxyaddress.h>
+#include <gio/gproxyaddressenumerator.h>
 #include <gio/gproxyresolver.h>
 #include <gio/gresolver.h>
 #include <gio/gseekable.h>

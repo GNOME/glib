@@ -1638,6 +1638,8 @@ GSocketAddressEnumerator
 g_socket_address_enumerator_next
 g_socket_address_enumerator_next_async
 g_socket_address_enumerator_next_finish
+<SUBSECTION>
+GProxyAddressEnumerator
 <SUBSECTION Standard>
 G_IS_SOCKET_CONNECTABLE
 G_SOCKET_CONNECTABLE
@@ -1650,7 +1652,16 @@ G_SOCKET_ADDRESS_ENUMERATOR
 G_SOCKET_ADDRESS_ENUMERATOR_CLASS
 G_SOCKET_ADDRESS_ENUMERATOR_GET_CLASS
 G_TYPE_SOCKET_ADDRESS_ENUMERATOR
+GProxyAddressEnumeratorClass
+G_IS_PROXY_ADDRESS_ENUMERATOR
+G_IS_PROXY_ADDRESS_ENUMERATOR_CLASS
+G_PROXY_ADDRESS_ENUMERATOR
+G_PROXY_ADDRESS_ENUMERATOR_CLASS
+G_PROXY_ADDRESS_ENUMERATOR_GET_CLASS
+G_TYPE_PROXY_ADDRESS_ENUMERATOR
 <SUBSECTION Private>
+GProxyAddressEnumeratorPrivate
+g_proxy_address_enumerator_get_type
 g_socket_address_enumerator_get_type
 g_socket_connectable_get_type
 </SECTION>
