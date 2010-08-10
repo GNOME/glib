@@ -28,13 +28,13 @@
 #include <string.h>
 #include <wchar.h>
 
-#include "gfile.h"
-#include "gfileattribute.h"
-#include "gfileinfo.h"
+#include "gio/gfile.h"
+#include "gio/gfileattribute.h"
+#include "gio/gfileinfo.h"
 #include "gwinhttpfile.h"
 #include "gwinhttpfileinputstream.h"
 #include "gwinhttpfileoutputstream.h"
-#include "gioerror.h"
+#include "gio/gioerror.h"
 
 #include "glibintl.h"
 

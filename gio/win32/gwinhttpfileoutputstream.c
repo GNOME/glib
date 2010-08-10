@@ -26,8 +26,8 @@
 
 #include <glib.h>
 
-#include "gcancellable.h"
-#include "gioerror.h"
+#include "gio/gcancellable.h"
+#include "gio/gioerror.h"
 #include "gwinhttpfileoutputstream.h"
 #include "glibintl.h"
 

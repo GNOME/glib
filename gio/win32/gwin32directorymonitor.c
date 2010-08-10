@@ -25,7 +25,6 @@
 
 #include "config.h"
 #include "gwin32directorymonitor.h"
-#include "giomodule.h"
 #include <windows.h>
 
 G_DEFINE_TYPE_WITH_CODE (GWin32DirectoryMonitor,

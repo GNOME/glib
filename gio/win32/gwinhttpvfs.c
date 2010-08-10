@@ -26,9 +26,9 @@
 
 #include <wchar.h>
 
-#include "gioerror.h"
-#include "giomodule.h"
-#include "gvfs.h"
+#include "gio/gioerror.h"
+#include "gio/giomodule.h"
+#include "gio/gvfs.h"
 
 #include "gwinhttpfile.h"
 #include "gwinhttpvfs.h"

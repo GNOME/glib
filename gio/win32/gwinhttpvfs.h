@@ -26,8 +26,7 @@
 #define __G_WINHTTP_VFS_H__
 
 #include <gio/giotypes.h>
-
-#include "gvfs.h"
+#include <gio/gvfs.h>
 
 #define _WIN32_WINNT 0x0500
 #include <windows.h>
