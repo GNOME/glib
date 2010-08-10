@@ -422,7 +422,7 @@ g_network_address_parse (const gchar  *host_and_port,
 #define G_URI_OTHER_UNRESERVED "-._~"
 
 /* This or something equivalent will eventually go into glib/guri.h */
-static gboolean
+gboolean
 _g_uri_parse_authority (const char  *uri,
 		        char       **host,
 		        guint16     *port,

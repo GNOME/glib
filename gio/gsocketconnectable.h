@@ -45,8 +45,10 @@ typedef struct _GSocketConnectableIface GSocketConnectableIface;
  * GSocketConnectableIface:
  * @g_iface: The parent interface.
  * @enumerate: Creates a #GSocketAddressEnumerator
+ * @proxy_enumerate: Creates a #GProxyAddressEnumerator
  *
  * Provides an interface for returning a #GSocketAddressEnumerator
+ * and #GProxyAddressEnumerator
  */
 struct _GSocketConnectableIface
 {
@@ -54,13 +56,17 @@ struct _GSocketConnectableIface
 
   /* Virtual Table */
 
-  GSocketAddressEnumerator * (* enumerate) (GSocketConnectable *connectable);
+  GSocketAddressEnumerator * (* enumerate)       (GSocketConnectable *connectable);
+
+  GSocketAddressEnumerator * (* proxy_enumerate) (GSocketConnectable *connectable);
 
 };
 
 GType                     g_socket_connectable_get_type  (void) G_GNUC_CONST;
 
 GSocketAddressEnumerator *g_socket_connectable_enumerate (GSocketConnectable *connectable);
+
+GSocketAddressEnumerator *g_socket_connectable_proxy_enumerate (GSocketConnectable *connectable);
 
 G_END_DECLS
 

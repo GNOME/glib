@@ -120,6 +120,11 @@ GList *_g_resolver_targets_from_DnsQuery   (const gchar      *rrname,
 					    GError          **error);
 #endif
 
+gboolean _g_uri_parse_authority            (const char       *uri,
+					    char            **host,
+					    guint16          *port,
+					    char            **userinfo);
+
 G_END_DECLS
 
 #endif /* __G_NETWORKINGPRIVATE_H__ */

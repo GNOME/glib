@@ -1248,8 +1248,9 @@ g_network_service_new
 
 #if IN_HEADER(__G_SOCKET_CONNECTABLE_H__)
 #if IN_FILE(__G_SOCKET_CONNECTABLE_C__)
-g_socket_connectable_enumerate
 g_socket_connectable_get_type G_GNUC_CONST
+g_socket_connectable_enumerate
+g_socket_connectable_proxy_enumerate
 #endif
 #endif
 

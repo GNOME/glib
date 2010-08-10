@@ -120,3 +120,34 @@ g_socket_connectable_enumerate (GSocketConnectable *connectable)
 
   return (* iface->enumerate) (connectable);
 }
+
+/**
+ * g_socket_connectable_proxy_enumerate:
+ * @connectable: a #GSocketConnectable
+ *
+ * Creates a #GSocketAddressEnumerator for @connectable that will
+ * return #GProxyAddress<!-- -->es for addresses that you must connect
+ * to via a proxy.
+ *
+ * If @connectable does not implement
+ * g_socket_connectable_proxy_enumerate(), this will fall back to
+ * calling g_socket_connectable_enumerate().
+ *
+ * Return value: a new #GSocketAddressEnumerator.
+ *
+ * Since: 2.26
+ */
+GSocketAddressEnumerator *
+g_socket_connectable_proxy_enumerate (GSocketConnectable *connectable)
+{
+  GSocketConnectableIface *iface;
+
+  g_return_val_if_fail (G_IS_SOCKET_CONNECTABLE (connectable), NULL);
+
+  iface = G_SOCKET_CONNECTABLE_GET_IFACE (connectable);
+
+  if (iface->proxy_enumerate)
+    return (* iface->proxy_enumerate) (connectable);
+  else
+    return (* iface->enumerate) (connectable);
+}

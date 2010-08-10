@@ -1633,6 +1633,7 @@ g_srv_target_get_type
 GSocketConnectable
 GSocketConnectableIface
 g_socket_connectable_enumerate
+g_socket_connectable_proxy_enumerate
 <SUBSECTION>
 GSocketAddressEnumerator
 g_socket_address_enumerator_next
