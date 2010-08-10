@@ -30,6 +30,7 @@
 #include "ginetaddress.h"
 #include "ginetsocketaddress.h"
 #include "gnetworkingprivate.h"
+#include "gproxyaddressenumerator.h"
 #include "gresolver.h"
 #include "gsimpleasyncresult.h"
 #include "gsocketaddressenumerator.h"
@@ -82,8 +83,9 @@ static void g_network_address_get_property (GObject      *object,
                                             GValue       *value,
                                             GParamSpec   *pspec);
 
-static void                      g_network_address_connectable_iface_init (GSocketConnectableIface *iface);
-static GSocketAddressEnumerator *g_network_address_connectable_enumerate  (GSocketConnectable      *connectable);
+static void                      g_network_address_connectable_iface_init       (GSocketConnectableIface *iface);
+static GSocketAddressEnumerator *g_network_address_connectable_enumerate        (GSocketConnectable      *connectable);
+static GSocketAddressEnumerator	*g_network_address_connectable_proxy_enumerate  (GSocketConnectable      *connectable);
 
 G_DEFINE_TYPE_WITH_CODE (GNetworkAddress, g_network_address, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_SOCKET_CONNECTABLE,
@@ -151,6 +153,7 @@ static void
 g_network_address_connectable_iface_init (GSocketConnectableIface *connectable_iface)
 {
   connectable_iface->enumerate  = g_network_address_connectable_enumerate;
+  connectable_iface->proxy_enumerate = g_network_address_connectable_proxy_enumerate;
 }
 
 static void
@@ -908,4 +911,25 @@ g_network_address_connectable_enumerate (GSocketConnectable *connectable)
   addr_enum->addr = g_object_ref (connectable);
 
   return (GSocketAddressEnumerator *)addr_enum;
+}
+
+static GSocketAddressEnumerator *
+g_network_address_connectable_proxy_enumerate (GSocketConnectable *connectable)
+{
+  GNetworkAddress *self = G_NETWORK_ADDRESS (connectable);
+  GSocketAddressEnumerator *proxy_enum;
+  gchar *uri;
+
+  uri = g_strdup_printf ("%s://%s:%u",
+      	                 self->priv->scheme ? self->priv->scheme : "none",
+                         self->priv->hostname, self->priv->port);
+
+  proxy_enum = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
+                             "connectable", connectable,
+      	       	       	     "uri", uri,
+      	       	       	     NULL);
+
+  g_free (uri);
+
+  return proxy_enum;
 }

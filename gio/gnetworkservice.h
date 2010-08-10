@@ -62,6 +62,8 @@ GSocketConnectable  *g_network_service_new           (const gchar     *service,
 const gchar         *g_network_service_get_service   (GNetworkService *srv);
 const gchar         *g_network_service_get_protocol  (GNetworkService *srv);
 const gchar         *g_network_service_get_domain    (GNetworkService *srv);
+const gchar         *g_network_service_get_scheme    (GNetworkService *srv);
+void                 g_network_service_set_scheme    (GNetworkService *srv, const gchar *scheme);
 
 G_END_DECLS
 

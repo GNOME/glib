@@ -28,6 +28,7 @@
 #include "ginetaddress.h"
 #include "ginetsocketaddress.h"
 #include "gnetworkingprivate.h"
+#include "gproxyaddressenumerator.h"
 #include "gsocketaddressenumerator.h"
 #include "gsocketconnectable.h"
 #include "glibintl.h"
@@ -62,8 +63,9 @@ enum
   PROP_FAMILY
 };
 
-static void                      g_socket_address_connectable_iface_init (GSocketConnectableIface *iface);
-static GSocketAddressEnumerator *g_socket_address_connectable_enumerate  (GSocketConnectable      *connectable);
+static void                      g_socket_address_connectable_iface_init       (GSocketConnectableIface *iface);
+static GSocketAddressEnumerator *g_socket_address_connectable_enumerate	       (GSocketConnectable      *connectable);
+static GSocketAddressEnumerator *g_socket_address_connectable_proxy_enumerate  (GSocketConnectable      *connectable);
 
 G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GSocketAddress, g_socket_address, G_TYPE_OBJECT,
 				  G_IMPLEMENT_INTERFACE (G_TYPE_SOCKET_CONNECTABLE,
@@ -125,6 +127,7 @@ static void
 g_socket_address_connectable_iface_init (GSocketConnectableIface *connectable_iface)
 {
   connectable_iface->enumerate  = g_socket_address_connectable_enumerate;
+  connectable_iface->proxy_enumerate  = g_socket_address_connectable_proxy_enumerate;
 }
 
 static void
@@ -350,4 +353,39 @@ g_socket_address_connectable_enumerate (GSocketConnectable *connectable)
   sockaddr_enum->sockaddr = g_object_ref (connectable);
 
   return (GSocketAddressEnumerator *)sockaddr_enum;
+}
+
+static GSocketAddressEnumerator *
+g_socket_address_connectable_proxy_enumerate (GSocketConnectable *connectable)
+{
+  GSocketAddressEnumerator *addr_enum = NULL;
+
+  if (G_IS_INET_SOCKET_ADDRESS (connectable) &&
+      !G_IS_PROXY_ADDRESS (connectable))
+    {
+      GInetAddress *addr;
+      guint port;
+      gchar *uri;
+      gchar *ip;
+
+      g_object_get (connectable, "address", &addr, "port", &port, NULL);
+
+      ip = g_inet_address_to_string (addr);
+      uri = g_strdup_printf ("none://%s:%u", ip, port);
+
+      addr_enum = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
+      	       	       	       	"connectable", connectable,
+      	       	       	       	"uri", uri,
+      	       	       	       	NULL);
+
+      g_object_unref (addr);
+      g_free (ip);
+      g_free (uri);
+    }
+  else
+    {
+      addr_enum = g_socket_address_connectable_enumerate (connectable);
+    }
+
+  return addr_enum;
 }
