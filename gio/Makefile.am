@@ -350,6 +350,7 @@ libgio_2_0_la_SOURCES =		\
 	gsocketlistener.c	\
 	gsocketoutputstream.c	\
 	gsocketoutputstream.h	\
+	gproxy.c		\
 	gproxyaddress.c         \
 	gsocketservice.c	\
 	gsrvtarget.c		\
@@ -483,6 +484,7 @@ gio_headers =			\
 	goutputstream.h 	\
 	gpermission.h 		\
 	gproxyaddress.h         \
+	gproxy.h		\
 	gproxyresolver.h	\
 	gresolver.h		\
 	gseekable.h 		\

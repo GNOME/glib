@@ -1128,6 +1128,17 @@ g_socket_address_to_native
 #endif
 #endif
 
+#if IN_HEADER(__G_PROXY_H__)
+#if IN_FILE(__G_PROXY_C__)
+g_proxy_get_type
+g_proxy_get_default_for_protocol
+g_proxy_connect
+g_proxy_connect_async
+g_proxy_connect_finish
+g_proxy_supports_hostname
+#endif
+#endif
+
 #if IN_HEADER(__G_PROXY_RESOLVER_H__)
 #if IN_FILE(__G_PROXY_RESOLVER_C__)
 g_proxy_resolver_get_default

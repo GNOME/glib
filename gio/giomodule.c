@@ -31,6 +31,7 @@
 #include "glocaldirectorymonitor.h"
 #include "gnativevolumemonitor.h"
 #include "gproxyresolver.h"
+#include "gproxy.h"
 #include "gvfs.h"
 #ifdef G_OS_UNIX
 #include "gdesktopappinfo.h"
@@ -540,6 +541,9 @@ _g_io_modules_ensure_extension_points_registered (void)
 
       ep = g_io_extension_point_register (G_PROXY_RESOLVER_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_PROXY_RESOLVER);
+
+      ep = g_io_extension_point_register (G_PROXY_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_PROXY);
     }
   
   G_UNLOCK (registered_extensions);

@@ -206,6 +206,7 @@ typedef struct _GVfs                          GVfs; /* Dummy typedef */
  * Since: 2.26
  **/
 typedef struct _GProxyResolver                GProxyResolver;
+typedef struct _GProxy			      GProxy;
 typedef struct _GProxyAddress		      GProxyAddress;
 
 /**

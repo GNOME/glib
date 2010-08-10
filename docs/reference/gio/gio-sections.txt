@@ -2811,3 +2811,22 @@ G_TYPE_PROXY_ADDRESS
 GProxyAddressPrivate
 g_proxy_address_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gproxy</FILE>
+<TITLE>GProxy</TITLE>
+GProxy
+GProxyIface
+g_proxy_connect
+g_proxy_connect_async
+g_proxy_connect_finish
+g_proxy_get_default_for_protocol
+<SUBSECTION Standard>
+G_PROXY
+G_PROXY_EXTENSION_POINT_NAME
+G_PROXY_GET_IFACE
+G_IS_PROXY
+G_TYPE_PROXY
+<SUBSECTION Private>
+g_proxy_get_type
+</SECTION>
