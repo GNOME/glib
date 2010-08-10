@@ -60,8 +60,12 @@ GSocketConnectable *g_network_address_new          (const gchar      *hostname,
 GSocketConnectable *g_network_address_parse        (const gchar      *host_and_port,
 						    guint16           default_port,
 						    GError          **error);
+GSocketConnectable *g_network_address_parse_uri    (const gchar      *uri,
+    						    guint16           default_port,
+						    GError          **error);
 const gchar        *g_network_address_get_hostname (GNetworkAddress  *addr);
 guint16             g_network_address_get_port     (GNetworkAddress  *addr);
+const gchar        *g_network_address_get_scheme   (GNetworkAddress  *addr);
 
 
 G_END_DECLS

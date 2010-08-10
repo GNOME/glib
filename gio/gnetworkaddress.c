@@ -63,12 +63,14 @@ struct _GNetworkAddressPrivate {
   gchar *hostname;
   guint16 port;
   GList *sockaddrs;
+  gchar *scheme;
 };
 
 enum {
   PROP_0,
   PROP_HOSTNAME,
   PROP_PORT,
+  PROP_SCHEME,
 };
 
 static void g_network_address_set_property (GObject      *object,
@@ -93,6 +95,7 @@ g_network_address_finalize (GObject *object)
   GNetworkAddress *addr = G_NETWORK_ADDRESS (object);
 
   g_free (addr->priv->hostname);
+  g_free (addr->priv->scheme);
 
   if (addr->priv->sockaddrs)
     {
@@ -133,6 +136,15 @@ g_network_address_class_init (GNetworkAddressClass *klass)
                                                       G_PARAM_READWRITE |
                                                       G_PARAM_CONSTRUCT_ONLY |
                                                       G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (gobject_class, PROP_SCHEME,
+                                   g_param_spec_string ("scheme",
+                                                        P_("Scheme"),
+                                                        P_("URI Scheme"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 }
 
 static void
@@ -167,6 +179,12 @@ g_network_address_set_property (GObject      *object,
       addr->priv->port = g_value_get_uint (value);
       break;
 
+    case PROP_SCHEME:
+      if (addr->priv->scheme)
+        g_free (addr->priv->scheme);
+      addr->priv->scheme = g_value_dup_string (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -190,6 +208,10 @@ g_network_address_get_property (GObject    *object,
 
     case PROP_PORT:
       g_value_set_uint (value, addr->priv->port);
+      break;
+
+    case PROP_SCHEME:
+      g_value_set_string (value, addr->priv->scheme);
       break;
 
     default:
@@ -396,6 +418,262 @@ g_network_address_parse (const gchar  *host_and_port,
   return connectable;
 }
 
+/* Allowed characters outside alphanumeric for unreserved. */
+#define G_URI_OTHER_UNRESERVED "-._~"
+
+/* This or something equivalent will eventually go into glib/guri.h */
+static gboolean
+_g_uri_parse_authority (const char  *uri,
+		        char       **host,
+		        guint16     *port,
+		        char       **userinfo)
+{
+  char *tmp_str;
+  const char *start, *p;
+  char c;
+
+  g_return_val_if_fail (uri != NULL, FALSE);
+
+  if (host)
+    *host = NULL;
+
+  if (port)
+    *port = 0;
+
+  if (userinfo)
+    *userinfo = NULL;
+
+  /* From RFC 3986 Decodes:
+   * URI          = scheme ":" hier-part [ "?" query ] [ "#" fragment ]
+   * hier-part    = "//" authority path-abempty
+   * path-abempty = *( "/" segment )
+   * authority    = [ userinfo "@" ] host [ ":" port ]
+   */
+
+  /* Check we have a valid scheme */
+  tmp_str = g_uri_parse_scheme (uri);
+
+  if (tmp_str == NULL)
+    return FALSE;
+
+  g_free (tmp_str);
+
+  /* Decode hier-part:
+   *  hier-part   = "//" authority path-abempty
+   */
+  p = uri;
+  start = strstr (p, "//");
+
+  if (start == NULL)
+    return FALSE;
+
+  start += 2;
+  p = strchr (start, '@');
+
+  if (p != NULL)
+    {
+      /* Decode userinfo:
+       * userinfo      = *( unreserved / pct-encoded / sub-delims / ":" )
+       * unreserved    = ALPHA / DIGIT / "-" / "." / "_" / "~"
+       * pct-encoded   = "%" HEXDIG HEXDIG
+       */
+      while (1)
+	{
+	  c = *p++;
+
+	  if (c == '@')
+	    break;
+
+	  /* pct-encoded */
+	  if (c == '%')
+	    {
+	      if (!(g_ascii_isxdigit (p[0]) ||
+		    g_ascii_isxdigit (p[1])))
+		return FALSE;
+
+	      p++;
+
+	      continue;
+	    }
+
+	  /* unreserved /  sub-delims / : */
+	  if (!(g_ascii_isalnum(c) ||
+		strchr (G_URI_OTHER_UNRESERVED, c) ||
+		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c) ||
+		c == ':'))
+	    return FALSE;
+	}
+
+      if (userinfo)
+	*userinfo = g_strndup (start, p - start - 1);
+
+      start = p;
+    }
+  else
+    {
+      p = start;
+    }
+
+
+  /* decode host:
+   * host          = IP-literal / IPv4address / reg-name
+   * reg-name      = *( unreserved / pct-encoded / sub-delims )
+   */
+
+  /* If IPv6 or IPvFuture */
+  if (*p == '[')
+    {
+      while (1)
+	{
+	  c = *p++;
+
+	  if (c == ']')
+	    break;
+
+	  /* unreserved /  sub-delims */
+	  if (!(g_ascii_isalnum(c) ||
+		strchr (G_URI_OTHER_UNRESERVED, c) ||
+		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c) ||
+		c == ':' ||
+		c == '.'))
+	    goto error;
+	}
+    }
+  else
+    {
+      while (1)
+	{
+	  c = *p++;
+
+	  if (c == ':' ||
+	      c == '/' ||
+	      c == '?' ||
+	      c == '#' ||
+	      c == '\0')
+	    break;
+
+	  /* pct-encoded */
+	  if (c == '%')
+	    {
+	      if (!(g_ascii_isxdigit (p[0]) ||
+		    g_ascii_isxdigit (p[1])))
+		goto error;
+
+	      p++;
+
+	      continue;
+	    }
+
+	  /* unreserved /  sub-delims */
+	  if (!(g_ascii_isalnum(c) ||
+		strchr (G_URI_OTHER_UNRESERVED, c) ||
+		strchr (G_URI_RESERVED_CHARS_SUBCOMPONENT_DELIMITERS, c)))
+	    goto error;
+	}
+    }
+
+  if (host)
+    *host = g_uri_unescape_segment (start, p - 1, NULL);
+
+  if (c == ':')
+    {
+      /* Decode pot:
+       *  port          = *DIGIT
+       */
+      guint tmp = 0;
+
+      while (1)
+	{
+	  c = *p++;
+
+	  if (c == '/' ||
+	      c == '?' ||
+	      c == '#' ||
+	      c == '\0')
+	    break;
+
+	  if (!g_ascii_isdigit (c))
+	    goto error;
+
+	  tmp = (tmp * 10) + (c - '0');
+
+	  if (tmp > 65535)
+	    goto error;
+	}
+      if (port)
+	*port = (guint16) tmp;
+    }
+
+  return TRUE;
+
+error:
+  if (host && *host)
+    {
+      g_free (*host);
+      *host = NULL;
+    }
+
+  if (userinfo && *userinfo)
+    {
+      g_free (*userinfo);
+      *userinfo = NULL;
+    }
+
+  return FALSE;
+}
+
+/**
+ * g_network_address_parse_uri:
+ * @uri: the hostname and optionally a port
+ * @default_port: The default port if none is found in the URI
+ * @error: a pointer to a #GError, or %NULL
+ *
+ * Creates a new #GSocketConnectable for connecting to the given
+ * @uri. May fail and return %NULL in case parsing @uri fails.
+ *
+ * Using this rather than g_network_address_new() or
+ * g_network_address_parse_host() allows #GSocketClient to determine
+ * when to use application-specific proxy protocols.
+ *
+ * Return value: the new #GNetworkAddress, or %NULL on error
+ *
+ * Since: 2.26
+ */
+GSocketConnectable *
+g_network_address_parse_uri (const gchar  *uri,
+    			     guint16       default_port,
+			     GError      **error)
+{
+  GSocketConnectable *conn;
+  gchar *scheme;
+  gchar *hostname;
+  guint16 port;
+
+  if (!_g_uri_parse_authority (uri, &hostname, &port, NULL))
+    {
+      g_set_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT,
+		   "Invalid URI '%s'",
+		   uri);
+      return NULL;
+    }
+
+  if (port == 0)
+    port = default_port;
+
+  scheme = g_uri_parse_scheme (uri);
+
+  conn = g_object_new (G_TYPE_NETWORK_ADDRESS,
+                       "hostname", hostname,
+                       "port", port,
+                       "scheme", scheme,
+                       NULL);
+
+  g_free (scheme);
+  g_free (hostname);
+
+  return conn;
+}
+
 /**
  * g_network_address_get_hostname:
  * @addr: a #GNetworkAddress
@@ -431,6 +709,24 @@ g_network_address_get_port (GNetworkAddress *addr)
   g_return_val_if_fail (G_IS_NETWORK_ADDRESS (addr), 0);
 
   return addr->priv->port;
+}
+
+/**
+ * g_network_address_get_scheme:
+ * @addr: a #GNetworkAddress
+ *
+ * Gets @addr's scheme
+ *
+ * Return value: @addr's scheme (%NULL if not built from URI)
+ *
+ * Since: 2.26
+ */
+const gchar *
+g_network_address_get_scheme (GNetworkAddress *addr)
+{
+  g_return_val_if_fail (G_IS_NETWORK_ADDRESS (addr), NULL);
+
+  return addr->priv->scheme;
 }
 
 #define G_TYPE_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (_g_network_address_address_enumerator_get_type ())
