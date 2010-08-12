@@ -128,6 +128,12 @@ settings_sources = \
 	gsettings-mapping.c		\
 	gsettings.c
 
+if OS_WIN32
+settings_sources += \
+	gregistrysettingsbackend.h	\
+	gregistrysettingsbackend.c
+endif
+
 application_headers = \
 	gactiongroup.h			\
 	gsimpleactiongroup.h		\
@@ -141,7 +147,6 @@ application_sources = \
 	gaction.c			\
 	gsimpleaction.c			\
 	gapplication.c
-
 
 local_sources = \
 	glocaldirectorymonitor.c 	\

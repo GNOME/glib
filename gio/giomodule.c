@@ -39,6 +39,9 @@
 #ifdef G_OS_UNIX
 #include "gdesktopappinfo.h"
 #endif
+#ifdef G_OS_WIN32
+#include "gregistrysettingsbackend.h"
+#endif
 #include <glib/gstdio.h>
 
 /**
@@ -596,6 +599,7 @@ _g_io_modules_ensure_loaded (void)
 #ifdef G_OS_WIN32
       _g_win32_volume_monitor_get_type ();
       g_win32_directory_monitor_get_type ();
+      g_registry_backend_get_type ();
 #endif
 #ifdef G_OS_UNIX
       _g_unix_volume_monitor_get_type ();
