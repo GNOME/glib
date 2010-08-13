@@ -1,4 +1,6 @@
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <gio/gio.h>
 #include <gio/gfiledescriptorbased.h>
 
@@ -392,7 +394,6 @@ stop_timeout (gpointer data)
 static void
 test_create_delete (gconstpointer d)
 {
-  gint fd;
   GError *error;
   CreateDeleteData *data;
 
@@ -402,18 +403,15 @@ test_create_delete (gconstpointer d)
   data->data = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789";
   data->pos = 0;
 
-  error = NULL;
-  fd = g_file_open_tmp ("g_file_create_delete_XXXXXX", &data->monitor_path, &error);
-  g_assert_no_error (error);
-  unlink (data->monitor_path);
-  close (fd);
+  data->monitor_path = tempnam ("/tmp", "g_file_create_delete_");
 
   data->file = g_file_new_for_path (data->monitor_path);
   g_assert (!g_file_query_exists  (data->file, NULL));
 
+  error = NULL;
   data->monitor = g_file_monitor_file (data->file, 0, NULL, &error);
-  g_file_monitor_set_rate_limit (data->monitor, 100);
   g_assert_no_error (error);
+  g_file_monitor_set_rate_limit (data->monitor, 100);
 
   g_signal_connect (data->monitor, "changed", G_CALLBACK (monitor_changed), data);
 
@@ -438,9 +436,145 @@ test_create_delete (gconstpointer d)
   g_object_unref (data->ostream);
   g_object_unref (data->istream);
   g_object_unref (data->file);
-  g_free (data->monitor_path);
+  free (data->monitor_path);
   g_free (data->buffer);
   g_free (data);
+}
+
+typedef struct
+{
+  GFile *file;
+  const gchar *data;
+  GMainLoop *loop;
+  gboolean again;
+} ReplaceLoadData;
+
+static void replaced_cb (GObject      *source,
+                         GAsyncResult *res,
+                         gpointer      user_data);
+
+static void
+loaded_cb (GObject      *source,
+           GAsyncResult *res,
+           gpointer      user_data)
+{
+  ReplaceLoadData *data = user_data;
+  gboolean ret;
+  GError *error;
+  gchar *contents;
+  gsize length;
+
+  error = NULL;
+  ret = g_file_load_contents_finish (data->file, res, &contents, &length, NULL, &error);
+  g_assert (ret);
+  g_assert_no_error (error);
+  g_assert_cmpint (length, ==, strlen (data->data));
+  g_assert_cmpstr (contents, ==, data->data);
+
+  g_free (contents);
+
+  if (data->again)
+    {
+      data->again = FALSE;
+      data->data = "pi pa po";
+
+      g_file_replace_contents_async (data->file,
+                                     data->data,
+                                     strlen (data->data),
+                                     NULL,
+                                     FALSE,
+                                     0,
+                                     NULL,
+                                     replaced_cb,
+                                     data);
+    }
+  else
+    {
+       error = NULL;
+       ret = g_file_delete (data->file, NULL, &error);
+       g_assert_no_error (error);
+       g_assert (ret);
+       g_assert (!g_file_query_exists (data->file, NULL));
+
+       g_main_loop_quit (data->loop);
+    }
+}
+
+static void
+replaced_cb (GObject      *source,
+             GAsyncResult *res,
+             gpointer      user_data)
+{
+  ReplaceLoadData *data = user_data;
+  gboolean ret;
+  GError *error;
+
+  error = NULL;
+  ret = g_file_replace_contents_finish (data->file, res, NULL, &error);
+  g_assert_no_error (error);
+
+  g_file_load_contents_async (data->file, NULL, loaded_cb, data);
+}
+
+static void
+test_replace_load (void)
+{
+  ReplaceLoadData *data;
+  gchar *path;
+
+  data = g_new0 (ReplaceLoadData, 1);
+  data->again = TRUE;
+  data->data =
+    "/**\n"
+    " * g_file_replace_contents_async:\n"
+    " * @file: input #GFile.\n"
+    " * @contents: string of contents to replace the file with.\n"
+    " * @length: the length of @contents in bytes.\n"
+    " * @etag: (allow-none): a new <link linkend=\"gfile-etag\">entity tag</link> for the @file, or %NULL\n"
+    " * @make_backup: %TRUE if a backup should be created.\n"
+    " * @flags: a set of #GFileCreateFlags.\n"
+    " * @cancellable: optional #GCancellable object, %NULL to ignore.\n"
+    " * @callback: a #GAsyncReadyCallback to call when the request is satisfied\n"
+    " * @user_data: the data to pass to callback function\n"
+    " * \n"
+    " * Starts an asynchronous replacement of @file with the given \n"
+    " * @contents of @length bytes. @etag will replace the document's\n"
+    " * current entity tag.\n"
+    " * \n"
+    " * When this operation has completed, @callback will be called with\n"
+    " * @user_user data, and the operation can be finalized with \n"
+    " * g_file_replace_contents_finish().\n"
+    " * \n"
+    " * If @cancellable is not %NULL, then the operation can be cancelled by\n"
+    " * triggering the cancellable object from another thread. If the operation\n"
+    " * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. \n"
+    " * \n"
+    " * If @make_backup is %TRUE, this function will attempt to \n"
+    " * make a backup of @file.\n"
+    " **/\n";
+
+  path = tempnam ("/tmp", "g_file_replace_load_");
+  data->file = g_file_new_for_path (path);
+  g_assert (!g_file_query_exists (data->file, NULL));
+
+  data->loop = g_main_loop_new (NULL, FALSE);
+
+  g_file_replace_contents_async (data->file,
+                                 data->data,
+                                 strlen (data->data),
+                                 NULL,
+                                 FALSE,
+                                 0,
+                                 NULL,
+                                 replaced_cb,
+                                 data);
+
+  g_main_loop_run (data->loop);
+
+  g_main_loop_unref (data->loop);
+  g_object_unref (data->file);
+  g_free (data);
+  free (path);
 }
 
 int
@@ -459,6 +593,7 @@ main (int argc, char *argv[])
   g_test_add_data_func ("/file/async-create-delete/10", GINT_TO_POINTER (10), test_create_delete);
   g_test_add_data_func ("/file/async-create-delete/25", GINT_TO_POINTER (25), test_create_delete);
   g_test_add_data_func ("/file/async-create-delete/4096", GINT_TO_POINTER (4096), test_create_delete);
+  g_test_add_func ("/file/replace-load", test_replace_load);
 
   return g_test_run ();
 }
