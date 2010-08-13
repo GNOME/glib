@@ -1,3 +1,27 @@
+Overview of Changes from GLib 2.25.13 to GLib 2.25.14
+=====================================================
+
+* GDBus
+ - Make the closure variants of GDBus apis work
+ - Make error unregistration work
+
+* GIO
+ - Make g_simple_async_result_is_valid work without source (626208)
+
+* Other
+ - Improve test coverage for GDBus, GRegex, GAsyncResult
+ - Drop dead code in pcre, xdgmime
+ - Fix a race condition in gtester (578295)
+ - Avoid an extra allocation in GAsyncQueue (626704)
+
+* Translation updates:
+ - Galicia
+ - Norwegian bokmål
+ - Punjabi
+ - Simplified Chinese
+ - Swedish
+
+
 Overview of Changes from GLib 2.25.12 to GLib 2.25.13
 =====================================================
 
