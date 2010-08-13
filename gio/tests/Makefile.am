@@ -54,6 +54,7 @@ TEST_PROGS +=			\
 	gdbus-error		\
 	gdbus-peer		\
 	gdbus-exit-on-close	\
+	gdbus-non-socket	\
 	application		\
 	testapps		\
 	appinfo			\
@@ -235,8 +236,11 @@ gdbus_export_LDADD = $(progs_ldadd)
 gdbus_error_SOURCES = gdbus-error.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_error_LDADD = $(progs_ldadd)
 
-gdbus_peer_SOURCES = gdbus-peer.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_peer_SOURCES = gdbus-peer.c gdbus-tests.h gdbus-tests.c
 gdbus_peer_LDADD = $(progs_ldadd)
+
+gdbus_non_socket_SOURCES = gdbus-non-socket.c gdbus-tests.h gdbus-tests.c
+gdbus_non_socket_LDADD = $(progs_ldadd)
 
 gdbus_exit_on_close_SOURCES = gdbus-exit-on-close.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_exit_on_close_LDADD = $(progs_ldadd)

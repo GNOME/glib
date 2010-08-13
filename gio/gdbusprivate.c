@@ -836,78 +836,84 @@ write_message (GDBusWorker         *worker,
    * since it may involve writing an ancillary message with file
    * descriptors
    */
+  if (FALSE)
+    {
+    }
 #ifdef G_OS_UNIX
-  {
-    GOutputVector vector;
-    GSocketControlMessage *message;
-    GUnixFDList *fd_list;
-    gssize bytes_written;
+  else if (worker->socket != NULL)
+    {
+      GOutputVector vector;
+      GSocketControlMessage *message;
+      GUnixFDList *fd_list;
+      gssize bytes_written;
 
-    fd_list = g_dbus_message_get_unix_fd_list (data->message);
+      fd_list = g_dbus_message_get_unix_fd_list (data->message);
 
-    message = NULL;
-    if (fd_list != NULL)
-      {
-        if (!G_IS_UNIX_CONNECTION (worker->stream))
-          {
-            g_set_error (error,
-                         G_IO_ERROR,
-                         G_IO_ERROR_INVALID_ARGUMENT,
-                         "Tried sending a file descriptor on unsupported stream of type %s",
-                         g_type_name (G_TYPE_FROM_INSTANCE (worker->stream)));
-            goto out;
-          }
-        else if (!(worker->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING))
-          {
-            g_set_error_literal (error,
-                                 G_IO_ERROR,
-                                 G_IO_ERROR_INVALID_ARGUMENT,
-                                 "Tried sending a file descriptor but remote peer does not support this capability");
-            goto out;
-          }
-        message = g_unix_fd_message_new_with_fd_list (fd_list);
-      }
+      message = NULL;
+      if (fd_list != NULL)
+        {
+          if (!G_IS_UNIX_CONNECTION (worker->stream))
+            {
+              g_set_error (error,
+                           G_IO_ERROR,
+                           G_IO_ERROR_INVALID_ARGUMENT,
+                           "Tried sending a file descriptor on unsupported stream of type %s",
+                           g_type_name (G_TYPE_FROM_INSTANCE (worker->stream)));
+              goto out;
+            }
+          else if (!(worker->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING))
+            {
+              g_set_error_literal (error,
+                                   G_IO_ERROR,
+                                   G_IO_ERROR_INVALID_ARGUMENT,
+                                   "Tried sending a file descriptor but remote peer does not support this capability");
+              goto out;
+            }
+          message = g_unix_fd_message_new_with_fd_list (fd_list);
+        }
 
-    vector.buffer = data->blob;
-    vector.size = 16;
+      vector.buffer = data->blob;
+      vector.size = 16;
 
-    bytes_written = g_socket_send_message (worker->socket,
-                                           NULL, /* address */
-                                           &vector,
-                                           1,
-                                           message != NULL ? &message : NULL,
-                                           message != NULL ? 1 : 0,
-                                           G_SOCKET_MSG_NONE,
-                                           worker->cancellable,
-                                           error);
-    if (bytes_written == -1)
-      {
-        g_prefix_error (error, _("Error writing first 16 bytes of message to socket: "));
-        if (message != NULL)
-          g_object_unref (message);
+      bytes_written = g_socket_send_message (worker->socket,
+                                             NULL, /* address */
+                                             &vector,
+                                             1,
+                                             message != NULL ? &message : NULL,
+                                             message != NULL ? 1 : 0,
+                                             G_SOCKET_MSG_NONE,
+                                             worker->cancellable,
+                                             error);
+      if (bytes_written == -1)
+        {
+          g_prefix_error (error, _("Error writing first 16 bytes of message to socket: "));
+          if (message != NULL)
+            g_object_unref (message);
+          goto out;
+        }
+      if (message != NULL)
+        g_object_unref (message);
+
+      if (bytes_written < 16)
+        {
+          /* TODO: I think this needs to be handled ... are we guaranteed that the ancillary
+           * messages are sent?
+           */
+          g_assert_not_reached ();
+        }
+    }
+#endif /* #ifdef G_OS_UNIX */
+  else
+    {
+      /* write the first 16 bytes (guaranteed to return an error if everything can't be written) */
+      if (!g_output_stream_write_all (g_io_stream_get_output_stream (worker->stream),
+                                      (const gchar *) data->blob,
+                                      16,
+                                      NULL, /* bytes_written */
+                                      worker->cancellable, /* cancellable */
+                                      error))
         goto out;
-      }
-    if (message != NULL)
-      g_object_unref (message);
-
-    if (bytes_written < 16)
-      {
-        /* TODO: I think this needs to be handled ... are we guaranteed that the ancillary
-         * messages are sent?
-         */
-        g_assert_not_reached ();
-      }
-  }
-#else
-  /* write the first 16 bytes (guaranteed to return an error if everything can't be written) */
-  if (!g_output_stream_write_all (g_io_stream_get_output_stream (worker->stream),
-                                  (const gchar *) data->blob,
-                                  16,
-                                  NULL, /* bytes_written */
-                                  worker->cancellable, /* cancellable */
-                                  error))
-    goto out;
-#endif
+    }
 
   /* Then write the rest of the message (guaranteed to return an error if everything can't be written) */
   if (!g_output_stream_write_all (g_io_stream_get_output_stream (worker->stream),
