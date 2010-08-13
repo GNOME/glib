@@ -42,8 +42,12 @@
 #include <sys/socket.h>
 #endif
 
-#include "gdbus-tests.h"
+/* used in test_overflow */
+#ifdef G_OS_UNIX
+#include <gio/gunixconnection.h>
+#endif
 
+#include "gdbus-tests.h"
 
 #ifdef G_OS_UNIX
 static gboolean is_unix = TRUE;
@@ -1246,6 +1250,109 @@ test_credentials (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#if 0 /* def G_OS_UNIX disabled while it fails */
+static gboolean
+signal_count_cb (GDBusConnection *connection,
+		 GDBusMessage    *message,
+		 gboolean         incoming,
+		 gpointer         user_data)
+{
+  volatile int *p = user_data;
+  (*p)++;
+  return TRUE;
+}
+
+static void
+test_overflow (void)
+{
+  gint sv[2], i;
+  GSocket *socket;
+  GSocketConnection *socket_connection;
+  GDBusConnection *producer, *consumer;
+  GError *error;
+  gchar *guid;
+  pid_t child;
+  GTimer *timer;
+  volatile int counter = 0;
+
+  g_assert_cmpint (socketpair (AF_UNIX, SOCK_STREAM, 0, sv), ==, 0);
+
+  error = NULL;
+  socket = g_socket_new_from_fd (sv[0], &error);
+  g_assert_no_error (error);
+  socket_connection = g_socket_connection_factory_create_connection (socket);
+  g_assert (socket_connection != NULL);
+  g_object_unref (socket);
+  producer = g_dbus_connection_new_sync (G_IO_STREAM (socket_connection),
+					 NULL, /* guid */
+					 G_DBUS_CONNECTION_FLAGS_NONE,
+					 NULL, /* GDBusAuthObserver */
+					 NULL,
+					 &error);
+  g_dbus_connection_set_exit_on_close (producer, TRUE);
+  g_assert_no_error (error);
+  g_object_unref (socket_connection);
+
+  /* send enough data that we get an EAGAIN */
+  for (i = 0; i < 1000; i++)
+    {
+      error = NULL;
+      g_dbus_connection_emit_signal (producer,
+                                     NULL, /* destination */
+                                     "/org/foo/Object",
+                                     "org.foo.Interface",
+                                     "Member",
+                                     g_variant_new ("(s)", "a string"),
+                                     &error);
+      /* run the main event loop - otherwise GDBusConnection::closed won't be fired */
+      g_main_context_iteration (NULL, FALSE);
+      g_assert_no_error (error);
+      static gint count = 0;
+      g_print ("%d ", count++);
+    }
+
+  /* now suck it all out as a client, and add it up */
+  socket = g_socket_new_from_fd (sv[1], &error);
+  g_assert_no_error (error);
+  socket_connection = g_socket_connection_factory_create_connection (socket);
+  g_assert (socket_connection != NULL);
+  g_object_unref (socket);
+  guid = g_dbus_generate_guid ();
+  consumer = g_dbus_connection_new_sync (G_IO_STREAM (socket_connection),
+					 guid,
+					 G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING,
+					 NULL, /* GDBusAuthObserver */
+					 NULL,
+					 &error);
+  g_dbus_connection_add_filter (consumer, signal_count_cb, &counter, NULL);
+  g_dbus_connection_start_message_processing (consumer);
+
+  g_free (guid);
+  g_assert_no_error (error);
+  g_object_unref (socket_connection);
+
+  timer = g_timer_new ();
+  g_timer_start (timer);
+
+  while (counter < 1000 &&
+	 g_timer_elapsed (timer, NULL) < 5.0)
+      g_main_context_iteration (NULL, FALSE);
+
+  g_assert (counter == 1000);
+
+  g_timer_destroy (timer);
+  g_object_unref (consumer);
+  g_object_unref (producer);
+}
+#else
+static void
+test_overflow (void)
+{
+}
+#endif
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1270,6 +1377,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
   g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
   g_test_add_func ("/gdbus/credentials", test_credentials);
+  g_test_add_func ("/gdbus/overflow", test_overflow);
 
   ret = g_test_run();
 
