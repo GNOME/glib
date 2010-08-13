@@ -895,6 +895,8 @@ GUnixOutputStreamPrivate
 GIOStream
 g_io_stream_get_input_stream
 g_io_stream_get_output_stream
+g_io_stream_splice_async
+g_io_stream_splice_finish
 g_io_stream_close
 g_io_stream_close_async
 g_io_stream_close_finish

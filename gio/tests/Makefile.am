@@ -18,6 +18,7 @@ progs_ldadd     = 					\
 	$(top_builddir)/gio/libgio-2.0.la
 
 TEST_PROGS +=	 		\
+	io-stream		\
 	actions 		\
 	memory-input-stream 	\
 	memory-output-stream 	\
@@ -101,6 +102,9 @@ endif
 if OS_WIN32
 TEST_PROGS += win32-streams
 endif
+
+io_stream_SOURCES = io-stream.c
+io_stream_LDADD   = $(progs_ldadd)
 
 actions_LDADD	  = $(progs_ldadd)
 

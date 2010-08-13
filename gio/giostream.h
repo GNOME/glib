@@ -88,6 +88,17 @@ GType          g_io_stream_get_type          (void)  G_GNUC_CONST;
 GInputStream * g_io_stream_get_input_stream  (GIOStream            *stream);
 GOutputStream *g_io_stream_get_output_stream (GIOStream            *stream);
 
+void           g_io_stream_splice_async      (GIOStream            *stream1,
+					      GIOStream            *stream2,
+					      GIOStreamSpliceFlags  flags,
+					      int                   io_priority,
+					      GCancellable         *cancellable,
+					      GAsyncReadyCallback   callback,
+					      gpointer              user_data);
+
+gboolean       g_io_stream_splice_finish     (GAsyncResult         *result,
+                                              GError              **error);
+
 gboolean       g_io_stream_close             (GIOStream            *stream,
 					      GCancellable         *cancellable,
 					      GError              **error);

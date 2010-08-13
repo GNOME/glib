@@ -572,6 +572,25 @@ typedef enum {
 
 
 /**
+ * GIOStreamSpliceFlags:
+ * @G_IO_STREAM_SPLICE_NONE: Do not close either stream.
+ * @G_IO_STREAM_SPLICE_CLOSE_STREAM1: Close the first stream after
+ *     the splice.
+ * @G_IO_STREAM_SPLICE_CLOSE_STREAM2: Close the second stream after
+ *     the splice.
+ * @G_IO_STREAM_SPLICE_WAIT_FOR_BOTH: Wait for both splice operations to finish
+ *     before calling the callback.
+ *
+ * GIOStreamSpliceFlags determine how streams should be spliced.
+ **/
+typedef enum {
+  G_IO_STREAM_SPLICE_NONE          = 0,
+  G_IO_STREAM_SPLICE_CLOSE_STREAM1 = (1 << 0),
+  G_IO_STREAM_SPLICE_CLOSE_STREAM2 = (1 << 1),
+  G_IO_STREAM_SPLICE_WAIT_FOR_BOTH = (1 << 2),
+} GIOStreamSpliceFlags;
+
+/**
  * GEmblemOrigin:
  * @G_EMBLEM_ORIGIN_UNKNOWN: Emblem of unknown origin
  * @G_EMBLEM_ORIGIN_DEVICE: Emblem adds device-specific information
