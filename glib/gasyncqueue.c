@@ -92,7 +92,7 @@ struct _GAsyncQueue
 {
   GMutex *mutex;
   GCond *cond;
-  GQueue *queue;
+  GQueue queue;
   GDestroyNotify item_free_func;
   guint waiting_threads;
   gint32 ref_count;
@@ -116,7 +116,7 @@ g_async_queue_new (void)
   GAsyncQueue* retval = g_new (GAsyncQueue, 1);
   retval->mutex = g_mutex_new ();
   retval->cond = NULL;
-  retval->queue = g_queue_new ();
+  g_queue_init (&retval->queue);
   retval->waiting_threads = 0;
   retval->ref_count = 1;
   retval->item_free_func = NULL;
@@ -228,8 +228,8 @@ g_async_queue_unref (GAsyncQueue *queue)
       if (queue->cond)
 	g_cond_free (queue->cond);
       if (queue->item_free_func)
-        g_queue_foreach (queue->queue, (GFunc) queue->item_free_func, NULL);
-      g_queue_free (queue->queue);
+        g_queue_foreach (&queue->queue, (GFunc) queue->item_free_func, NULL);
+      g_queue_clear (&queue->queue);
       g_free (queue);
     }
 }
@@ -300,7 +300,7 @@ g_async_queue_push_unlocked (GAsyncQueue* queue, gpointer data)
   g_return_if_fail (g_atomic_int_get (&queue->ref_count) > 0);
   g_return_if_fail (data);
 
-  g_queue_push_head (queue->queue, data);
+  g_queue_push_head (&queue->queue, data);
   if (queue->waiting_threads > 0)
     g_cond_signal (queue->cond);
 }
@@ -386,7 +386,7 @@ g_async_queue_push_sorted_unlocked (GAsyncQueue      *queue,
   sd.func = func;
   sd.user_data = user_data;
 
-  g_queue_insert_sorted (queue->queue, 
+  g_queue_insert_sorted (&queue->queue,
 			 data, 
 			 (GCompareDataFunc)g_async_queue_invert_compare, 
 			 &sd);
@@ -401,7 +401,7 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
 {
   gpointer retval;
 
-  if (!g_queue_peek_tail_link (queue->queue))
+  if (!g_queue_peek_tail_link (&queue->queue))
     {
       if (try)
 	return NULL;
@@ -412,23 +412,23 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
       if (!end_time)
         {
           queue->waiting_threads++;
-	  while (!g_queue_peek_tail_link (queue->queue))
+	  while (!g_queue_peek_tail_link (&queue->queue))
             g_cond_wait (queue->cond, queue->mutex);
           queue->waiting_threads--;
         }
       else
         {
           queue->waiting_threads++;
-          while (!g_queue_peek_tail_link (queue->queue))
+          while (!g_queue_peek_tail_link (&queue->queue))
             if (!g_cond_timed_wait (queue->cond, queue->mutex, end_time))
               break;
           queue->waiting_threads--;
-          if (!g_queue_peek_tail_link (queue->queue))
+          if (!g_queue_peek_tail_link (&queue->queue))
 	    return NULL;
         }
     }
 
-  retval = g_queue_pop_tail (queue->queue);
+  retval = g_queue_pop_tail (&queue->queue);
 
   g_assert (retval);
 
@@ -599,7 +599,7 @@ g_async_queue_length (GAsyncQueue* queue)
   g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, 0);
 
   g_mutex_lock (queue->mutex);
-  retval = queue->queue->length - queue->waiting_threads;
+  retval = queue->queue.length - queue->waiting_threads;
   g_mutex_unlock (queue->mutex);
 
   return retval;
@@ -626,7 +626,7 @@ g_async_queue_length_unlocked (GAsyncQueue* queue)
   g_return_val_if_fail (queue, 0);
   g_return_val_if_fail (g_atomic_int_get (&queue->ref_count) > 0, 0);
 
-  return queue->queue->length - queue->waiting_threads;
+  return queue->queue.length - queue->waiting_threads;
 }
 
 /**
@@ -702,7 +702,7 @@ g_async_queue_sort_unlocked (GAsyncQueue      *queue,
   sd.func = func;
   sd.user_data = user_data;
 
-  g_queue_sort (queue->queue, 
+  g_queue_sort (&queue->queue,
 		(GCompareDataFunc)g_async_queue_invert_compare, 
 		&sd);
 }
