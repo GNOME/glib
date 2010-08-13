@@ -32,6 +32,10 @@
  * @short_description: Filter Input Stream
  * @include: gio/gio.h
  *
+ * Base class for input stream implementations that perform some
+ * kind of filtering operation on a base stream. Typical examples
+ * of filtering operations are character set conversion, compression
+ * and byte order flipping.
  **/
 
 enum {
