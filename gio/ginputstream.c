@@ -616,35 +616,35 @@ g_input_stream_read_finish (GInputStream  *stream,
  * g_input_stream_skip_async:
  * @stream: A #GInputStream.
  * @count: the number of bytes that will be skipped from the stream
- * @io_priority: the <link linkend="io-priority">I/O priority</link> 
- * of the request. 
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
+ * of the request.
+ * @cancellable: optional #GCancellable object, %NULL to ignore.
  * @callback: callback to call when the request is satisfied
  * @user_data: the data to pass to callback function
  *
  * Request an asynchronous skip of @count bytes from the stream.
- * When the operation is finished @callback will be called. 
- * You can then call g_input_stream_skip_finish() to get the result of the 
- * operation.
+ * When the operation is finished @callback will be called.
+ * You can then call g_input_stream_skip_finish() to get the result
+ * of the operation.
  *
- * During an async request no other sync and async calls are allowed, and will
- * result in %G_IO_ERROR_PENDING errors. 
+ * During an async request no other sync and async calls are allowed,
+ * and will result in %G_IO_ERROR_PENDING errors.
  *
  * A value of @count larger than %G_MAXSSIZE will cause a %G_IO_ERROR_INVALID_ARGUMENT error.
  *
- * On success, the number of bytes skipped will be passed to the
- * callback. It is not an error if this is not the same as the requested size, as it
+ * On success, the number of bytes skipped will be passed to the callback.
+ * It is not an error if this is not the same as the requested size, as it
  * can happen e.g. near the end of a file, but generally we try to skip
  * as many bytes as requested. Zero is returned on end of file
  * (or if @count is zero), but never otherwise.
  *
- * Any outstanding i/o request with higher priority (lower numerical value) will
- * be executed before an outstanding request with lower priority. Default
- * priority is %G_PRIORITY_DEFAULT.
+ * Any outstanding i/o request with higher priority (lower numerical value)
+ * will be executed before an outstanding request with lower priority.
+ * Default priority is %G_PRIORITY_DEFAULT.
  *
- * The asyncronous methods have a default fallback that uses threads to implement
- * asynchronicity, so they are optional for inheriting classes. However, if you
- * override one you must override all.
+ * The asynchronous methods have a default fallback that uses threads to
+ * implement asynchronicity, so they are optional for inheriting classes.
+ * However, if you override one, you must override all.
  **/
 void
 g_input_stream_skip_async (GInputStream        *stream,
