@@ -96,13 +96,15 @@ typedef struct
   GOutputStream *ostream;
   GInputStream *istream;
   GMainLoop *loop;
-
+  gint buffersize;
   gint monitor_created;
   gint monitor_deleted;
   gint monitor_changed;
   gchar *monitor_path;
+  gint pos;
   gchar *data;
   gchar *buffer;
+  guint timeout;
 } CreateDeleteData;
 
 static void
@@ -130,6 +132,7 @@ quit_idle (gpointer user_data)
 {
   CreateDeleteData *data = user_data;
 
+  g_source_remove (data->timeout); 
   g_main_loop_quit (data->loop);
 
   return FALSE;
@@ -174,12 +177,70 @@ read_cb (GObject      *source,
   error = NULL;
   size = g_input_stream_read_finish (data->istream, res, &error);
   g_assert_no_error (error);
-  g_assert_cmpint (size, ==, strlen (data->data));
-  g_assert_cmpstr (data->buffer, ==, data->data);
 
-  g_assert (!g_input_stream_is_closed (data->istream));
+  data->pos += size;
+  if (data->pos < strlen (data->data))
+    {
+      g_input_stream_read_async (data->istream,
+                                 data->buffer + data->pos,
+                                 strlen (data->data) - data->pos,
+                                 0,
+                                 NULL,
+                                 read_cb,
+                                 data);
+    }
+  else
+    {
+      g_assert_cmpstr (data->buffer, ==, data->data);
+      g_assert (!g_input_stream_is_closed (data->istream));
+      g_input_stream_close_async (data->istream, 0, NULL, iclosed_cb, data);
+    }
+}
 
-  g_input_stream_close_async (data->istream, 0, NULL, iclosed_cb, data);
+static void
+ipending_cb (GObject      *source,
+             GAsyncResult *res,
+             gpointer      user_data)
+{
+  CreateDeleteData *data = user_data;
+  GError *error;
+  gssize size;
+
+  error = NULL;
+  size = g_input_stream_read_finish (data->istream, res, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PENDING);
+  g_error_free (error);
+}
+
+static void
+skipped_cb (GObject      *source,
+            GAsyncResult *res,
+            gpointer      user_data)
+{
+  CreateDeleteData *data = user_data;
+  GError *error;
+  gssize size;
+
+  error = NULL;
+  size = g_input_stream_skip_finish (data->istream, res, &error);
+  g_assert_no_error (error);
+  g_assert_cmpint (size, ==, data->pos);
+
+  g_input_stream_read_async (data->istream,
+                             data->buffer + data->pos,
+                             strlen (data->data) - data->pos,
+                             0,
+                             NULL,
+                             read_cb,
+                             data);
+  /* check that we get a pending error */
+  g_input_stream_read_async (data->istream,
+                             data->buffer + data->pos,
+                             strlen (data->data) - data->pos,
+                             0,
+                             NULL,
+                             ipending_cb,
+                             data);
 }
 
 static void
@@ -187,20 +248,31 @@ opened_cb (GObject      *source,
            GAsyncResult *res,
            gpointer      user_data)
 {
+  GFileInputStream *base;
   CreateDeleteData *data = user_data;
   GError *error;
 
   error = NULL;
-  data->istream = (GInputStream *)g_file_read_finish (data->file, res, &error);
+  base = g_file_read_finish (data->file, res, &error);
   g_assert_no_error (error);
 
+  if (data->buffersize == 0)
+    data->istream = G_INPUT_STREAM (g_object_ref (base));
+  else
+    data->istream = g_buffered_input_stream_new_sized (G_INPUT_STREAM (base), data->buffersize);
+  g_object_unref (base);
+
   data->buffer = g_new0 (gchar, strlen (data->data) + 1);
-  g_input_stream_read_async (data->istream,
-                             data->buffer,
-                             strlen (data->data),
+
+  /* copy initial segment directly, then skip */
+  memcpy (data->buffer, data->data, 10);
+  data->pos = 10;
+
+  g_input_stream_skip_async (data->istream,
+                             10,
                              0,
                              NULL,
-                             read_cb,
+                             skipped_cb,
                              data);
 }
 
@@ -234,10 +306,38 @@ written_cb (GObject      *source,
   error = NULL;
   size = g_output_stream_write_finish (data->ostream, res, &error);
   g_assert_no_error (error);
-  g_assert_cmpint (size, ==, strlen (data->data));
-  g_assert (!g_output_stream_is_closed (data->ostream));
 
-  g_output_stream_close_async (data->ostream, 0, NULL, oclosed_cb, data);
+  data->pos += size;
+  if (data->pos < strlen (data->data))
+    {
+      g_output_stream_write_async (data->ostream,
+                                   data->data + data->pos,
+                                   strlen (data->data) - data->pos,
+                                   0,
+                                   NULL,
+                                   written_cb,
+                                   data);
+    }
+  else
+    {
+      g_assert (!g_output_stream_is_closed (data->ostream));
+      g_output_stream_close_async (data->ostream, 0, NULL, oclosed_cb, data);
+    }
+}
+
+static void
+opending_cb (GObject      *source,
+             GAsyncResult *res,
+             gpointer      user_data)
+{
+  CreateDeleteData *data = user_data;
+  GError *error;
+  gssize size;
+
+  error = NULL;
+  size = g_output_stream_write_finish (data->ostream, res, &error);
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PENDING);
+  g_error_free (error);
 }
 
 static void
@@ -245,21 +345,35 @@ created_cb (GObject      *source,
             GAsyncResult *res,
             gpointer      user_data)
 {
+  GFileOutputStream *base;
   CreateDeleteData *data = user_data;
   GError *error;
 
   error = NULL;
-  data->ostream = (GOutputStream *)g_file_create_finish (G_FILE (source), res, &error);
+  base = g_file_create_finish (G_FILE (source), res, &error);
   g_assert_no_error (error);
   g_assert (g_file_query_exists  (data->file, NULL));
 
-  data->data = "abcdefghijklmnopqrstuvxyz";
+  if (data->buffersize == 0)
+    data->ostream = G_OUTPUT_STREAM (g_object_ref (base));
+  else
+    data->ostream = g_buffered_output_stream_new_sized (G_OUTPUT_STREAM (base), data->buffersize);
+  g_object_unref (base);
+
   g_output_stream_write_async (data->ostream,
                                data->data,
                                strlen (data->data),
                                0,
                                NULL,
                                written_cb,
+                               data);
+  /* check that we get a pending error */
+  g_output_stream_write_async (data->ostream,
+                               data->data,
+                               strlen (data->data),
+                               0,
+                               NULL,
+                               opending_cb,
                                data);
 }
 
@@ -276,13 +390,17 @@ stop_timeout (gpointer data)
  * Callbackistan.
  */
 static void
-test_create_delete (void)
+test_create_delete (gconstpointer d)
 {
   gint fd;
   GError *error;
   CreateDeleteData *data;
 
   data = g_new0 (CreateDeleteData, 1);
+
+  data->buffersize = GPOINTER_TO_INT (d);
+  data->data = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789";
+  data->pos = 0;
 
   error = NULL;
   fd = g_file_open_tmp ("g_file_create_delete_XXXXXX", &data->monitor_path, &error);
@@ -301,7 +419,7 @@ test_create_delete (void)
 
   data->loop = g_main_loop_new (NULL, FALSE);
 
-  g_timeout_add (5000, stop_timeout, NULL);
+  data->timeout = g_timeout_add (5000, stop_timeout, NULL);
 
   g_file_create_async (data->file, 0, 0, NULL, created_cb, data);
 
@@ -311,8 +429,11 @@ test_create_delete (void)
   g_assert_cmpint (data->monitor_deleted, ==, 1);
   g_assert_cmpint (data->monitor_changed, >, 0);
 
-  g_main_loop_unref (data->loop);
+  g_assert (!g_file_monitor_is_cancelled (data->monitor));
   g_file_monitor_cancel (data->monitor);
+  g_assert (g_file_monitor_is_cancelled (data->monitor));
+
+  g_main_loop_unref (data->loop);
   g_object_unref (data->monitor);
   g_object_unref (data->ostream);
   g_object_unref (data->istream);
@@ -333,7 +454,11 @@ main (int argc, char *argv[])
   g_test_add_func ("/file/parent", test_parent);
   g_test_add_func ("/file/child", test_child);
   g_test_add_func ("/file/type", test_type);
-  g_test_add_func ("/file/create-delete", test_create_delete);
+  g_test_add_data_func ("/file/async-create-delete/0", GINT_TO_POINTER (0), test_create_delete);
+  g_test_add_data_func ("/file/async-create-delete/1", GINT_TO_POINTER (1), test_create_delete);
+  g_test_add_data_func ("/file/async-create-delete/10", GINT_TO_POINTER (10), test_create_delete);
+  g_test_add_data_func ("/file/async-create-delete/25", GINT_TO_POINTER (25), test_create_delete);
+  g_test_add_data_func ("/file/async-create-delete/4096", GINT_TO_POINTER (4096), test_create_delete);
 
   return g_test_run ();
 }
