@@ -164,6 +164,8 @@ main (int argc, char *argv[])
 {
   gboolean ret;
 
+  g_setenv ("GIO_USE_VFS", "local", FALSE);
+
   g_type_init ();
 
   g_test_init (&argc, &argv, NULL);
