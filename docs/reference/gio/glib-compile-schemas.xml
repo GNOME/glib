@@ -35,6 +35,12 @@ specified in the <envar>XDG_DATA_DIRS</envar> environment variable. The
 usual location to install schema files is
 <filename>/usr/share/glib-2.0/schemas</filename>.
 </para>
+<para>
+In addition to schema files, glib-compile-schemas reads 'vendor override'
+files, which are key files that can override default values for keys in
+the schemas. The group names in the key files are the schema id, and the
+values are written in serialized GVariant form.
+</para>
 
 <refsect2><title>Options</title>
 <variablelist>
