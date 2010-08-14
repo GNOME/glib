@@ -316,7 +316,7 @@ g_variant_new_from_trusted (const GVariantType *type,
 /**
  * g_variant_new_boolean:
  * @boolean: a #gboolean value
- * @returns: a new boolean #GVariant instance
+ * @returns: a floating reference to a new boolean #GVariant instance
  *
  * Creates a new boolean #GVariant instance -- either %TRUE or %FALSE.
  *
@@ -374,7 +374,7 @@ g_variant_get_boolean (GVariant *value)
 /**
  * g_variant_new_byte:
  * @byte: a #guint8 value
- * @returns: a new byte #GVariant instance
+ * @returns: a floating reference to a new byte #GVariant instance
  *
  * Creates a new byte #GVariant instance.
  *
@@ -397,7 +397,7 @@ NUMERIC_TYPE (BYTE, byte, guchar)
 /**
  * g_variant_new_int16:
  * @int16: a #gint16 value
- * @returns: a new int16 #GVariant instance
+ * @returns: a floating reference to a new int16 #GVariant instance
  *
  * Creates a new int16 #GVariant instance.
  *
@@ -420,7 +420,7 @@ NUMERIC_TYPE (INT16, int16, gint16)
 /**
  * g_variant_new_uint16:
  * @uint16: a #guint16 value
- * @returns: a new uint16 #GVariant instance
+ * @returns: a floating reference to a new uint16 #GVariant instance
  *
  * Creates a new uint16 #GVariant instance.
  *
@@ -443,7 +443,7 @@ NUMERIC_TYPE (UINT16, uint16, guint16)
 /**
  * g_variant_new_int32:
  * @int32: a #gint32 value
- * @returns: a new int32 #GVariant instance
+ * @returns: a floating reference to a new int32 #GVariant instance
  *
  * Creates a new int32 #GVariant instance.
  *
@@ -466,7 +466,7 @@ NUMERIC_TYPE (INT32, int32, gint32)
 /**
  * g_variant_new_uint32:
  * @uint32: a #guint32 value
- * @returns: a new uint32 #GVariant instance
+ * @returns: a floating reference to a new uint32 #GVariant instance
  *
  * Creates a new uint32 #GVariant instance.
  *
@@ -489,7 +489,7 @@ NUMERIC_TYPE (UINT32, uint32, guint32)
 /**
  * g_variant_new_int64:
  * @int64: a #gint64 value
- * @returns: a new int64 #GVariant instance
+ * @returns: a floating reference to a new int64 #GVariant instance
  *
  * Creates a new int64 #GVariant instance.
  *
@@ -512,7 +512,7 @@ NUMERIC_TYPE (INT64, int64, gint64)
 /**
  * g_variant_new_uint64:
  * @uint64: a #guint64 value
- * @returns: a new uint64 #GVariant instance
+ * @returns: a floating reference to a new uint64 #GVariant instance
  *
  * Creates a new uint64 #GVariant instance.
  *
@@ -535,7 +535,7 @@ NUMERIC_TYPE (UINT64, uint64, guint64)
 /**
  * g_variant_new_handle:
  * @handle: a #gint32 value
- * @returns: a new handle #GVariant instance
+ * @returns: a floating reference to a new handle #GVariant instance
  *
  * Creates a new handle #GVariant instance.
  *
@@ -566,7 +566,7 @@ NUMERIC_TYPE (HANDLE, handle, gint32)
 /**
  * g_variant_new_double:
  * @floating: a #gdouble floating point value
- * @returns: a new double #GVariant instance
+ * @returns: a floating reference to a new double #GVariant instance
  *
  * Creates a new double #GVariant instance.
  *
@@ -591,7 +591,7 @@ NUMERIC_TYPE (DOUBLE, double, gdouble)
  * g_variant_new_maybe:
  * @child_type: (allow-none): the #GVariantType of the child, or %NULL
  * @child: (allow-none): the child value, or %NULL
- * @returns: a new #GVariant maybe instance
+ * @returns: a floating reference to a new #GVariant maybe instance
  *
  * Depending on if @child is %NULL, either wraps @child inside of a
  * maybe container or creates a Nothing instance for the given @type.
@@ -600,6 +600,9 @@ NUMERIC_TYPE (DOUBLE, double, gdouble)
  * If @child_type is non-%NULL then it must be a definite type.
  * If they are both non-%NULL then @child_type must be the type
  * of @child.
+ *
+ * If @child is a floating reference (see g_variant_ref_sink()), the new
+ * instance takes ownership of @child.
  *
  * Since: 2.24
  **/
@@ -665,10 +668,13 @@ g_variant_get_maybe (GVariant *value)
 /**
  * g_variant_new_variant:
  * @value: a #GVariance instance
- * @returns: a new variant #GVariant instance
+ * @returns: a floating reference to a new variant #GVariant instance
  *
  * Boxes @value.  The result is a #GVariant instance representing a
  * variant containing the original value.
+ *
+ * If @child is a floating reference (see g_variant_ref_sink()), the new
+ * instance takes ownership of @child.
  *
  * Since: 2.24
  **/
@@ -708,7 +714,7 @@ g_variant_get_variant (GVariant *value)
  * @children: (allow-none) (array length=n_children): an array of
  *            #GVariant pointers, the children
  * @n_children: the length of @children
- * @returns: a new #GVariant array
+ * @returns: a floating reference to a new #GVariant array
  *
  * Creates a new #GVariant array from @children.
  *
@@ -722,6 +728,9 @@ g_variant_get_variant (GVariant *value)
  *
  * All items in the array must have the same type, which must be the
  * same as @child_type, if given.
+ *
+ * If the @children are floating references (see g_variant_ref_sink()), the
+ * new instance takes ownership of them as if via g_variant_ref_sink().
  *
  * Since: 2.24
  **/
@@ -792,13 +801,16 @@ g_variant_make_tuple_type (GVariant * const *children,
  * g_variant_new_tuple:
  * @children: (array length=n_children): the items to make the tuple out of
  * @n_children: the length of @children
- * @returns: a new #GVariant tuple
+ * @returns: a floating reference to a new #GVariant tuple
  *
  * Creates a new tuple #GVariant out of the items in @children.  The
  * type is determined from the types of @children.  No entry in the
  * @children array may be %NULL.
  *
  * If @n_children is 0 then the unit tuple is constructed.
+ *
+ * If the @children are floating references (see g_variant_ref_sink()), the
+ * new instance takes ownership of them as if via g_variant_ref_sink().
  *
  * Since: 2.24
  **/
@@ -851,12 +863,15 @@ g_variant_make_dict_entry_type (GVariant *key,
  * g_variant_new_dict_entry:
  * @key: a basic #GVariant, the key
  * @value: a #GVariant, the value
- * @returns: a new dictionary entry #GVariant
+ * @returns: a floating reference to a new dictionary entry #GVariant
  *
  * Creates a new dictionary entry #GVariant.  @key and @value must be
  * non-%NULL.
  *
  * @key must be a value of a basic type (ie: not a container).
+ *
+ * If the @key or @value are floating references (see g_variant_ref_sink()),
+ * the new instance takes ownership of them as if via g_variant_ref_sink().
  *
  * Since: 2.24
  **/
@@ -959,7 +974,7 @@ g_variant_get_fixed_array (GVariant *value,
 /**
  * g_variant_new_string:
  * @string: a normal utf8 nul-terminated string
- * @returns: a new string #GVariant instance
+ * @returns: a floating reference to a new string #GVariant instance
  *
  * Creates a string #GVariant with the contents of @string.
  *
@@ -980,7 +995,7 @@ g_variant_new_string (const gchar *string)
 /**
  * g_variant_new_object_path:
  * @object_path: a normal C nul-terminated string
- * @returns: a new object path #GVariant instance
+ * @returns: a floating reference to a new object path #GVariant instance
  *
  * Creates a DBus object path #GVariant with the contents of @string.
  * @string must be a valid DBus object path.  Use
@@ -1024,7 +1039,7 @@ g_variant_is_object_path (const gchar *string)
 /**
  * g_variant_new_signature:
  * @signature: a normal C nul-terminated string
- * @returns: a new signature #GVariant instance
+ * @returns: a floating reference to a new signature #GVariant instance
  *
  * Creates a DBus type signature #GVariant with the contents of
  * @string.  @string must be a valid DBus type signature.  Use
@@ -1298,7 +1313,7 @@ g_variant_dup_strv (GVariant *value,
 /**
  * g_variant_new_bytestring:
  * @string: a normal nul-terminated string in no particular encoding
- * @returns: a new bytestring #GVariant instance
+ * @returns: a floating reference to a new bytestring #GVariant instance
  *
  * Creates an array-of-bytes #GVariant with the contents of @string.
  * This function is just like g_variant_new_string() except that the

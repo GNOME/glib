@@ -220,7 +220,9 @@
         <link linkend='GVariant'>GVariant</link> should be used in place of the normal C type or types.  For
         <link linkend='g-variant-new'><function>g_variant_new()</function></link> this means that you must pass a
         non-<link linkend='NULL--CAPS'><literal>NULL</literal></link> <code>(<link linkend='GVariant'>GVariant</link>
-        *)</code>.  For <link linkend='g-variant-get'><function>g_variant_get()</function></link> this means that you
+        *)</code>; if it is a floating reference, ownership will be taken, as
+        if by using <link linkend="g-variant-ref-sink"><function>g_variant_ref_sink()</function></link>.
+        For <link linkend='g-variant-get'><function>g_variant_get()</function></link> this means that you
         must pass a pointer to a <code>(<link linkend='GVariant'>GVariant</link> *)</code> for the value to be returned
         by reference or <link linkend='NULL--CAPS'><literal>NULL</literal></link> to ignore the value.  See
         <link linkend='gvariant-format-strings-gvariant'><code>GVariant *</code></link> below.
