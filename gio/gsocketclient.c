@@ -751,6 +751,8 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
   g_simple_async_result_complete (data->result);
   g_object_unref (data->result);
   g_object_unref (data->enumerator);
+  if (data->cancellable)
+    g_object_unref (data->cancellable);
   g_slice_free (GSocketClientAsyncConnectData, data);
 }
 
@@ -790,6 +792,8 @@ g_socket_client_socket_callback (GSocket *socket,
       if (!g_socket_check_connect_result (data->current_socket, &error))
 	{
 	  set_last_error (data, error);
+	  g_object_unref (data->current_socket);
+	  data->current_socket = NULL;
 
 	  /* try next one */
 	  g_socket_address_enumerator_next_async (data->enumerator,
