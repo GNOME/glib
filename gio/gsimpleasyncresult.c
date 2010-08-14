@@ -560,6 +560,9 @@ g_simple_async_result_set_error (GSimpleAsyncResult *simple,
  * the thread where the asynchronous result was to be delivered, as it
  * invokes the callback directly. If you are in a different thread use
  * g_simple_async_result_complete_in_idle().
+ *
+ * Calling this function takes a reference to @simple for as long as
+ * is needed to complete the call.
  **/
 void
 g_simple_async_result_complete (GSimpleAsyncResult *simple)
