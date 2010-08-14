@@ -109,7 +109,109 @@
  * g_simple_async_result_get_op_res_gssize() are
  * provided, getting the operation's result as a gpointer, gboolean, and
  * gssize, respectively.
- **/
+ *
+ * For the details of the requirements implementations must respect, see
+ * #GAsyncResult.  A typical implementation of an asynchronous operation
+ * using GSimpleAsyncResult looks something like this:
+ *
+ * |[
+ * static void
+ * baked_cb (Cake    *cake,
+ *           gpointer user_data)
+ * {
+ *   /&ast; In this example, this callback is not given a reference to the cake, so
+ *    &ast; the GSimpleAsyncResult has to take a reference to it.
+ *    &ast;/
+ *   GSimpleAsyncResult *result = user_data;
+ *
+ *   if (cake == NULL)
+ *     g_simple_async_result_set_error (result,
+ *                                      BAKER_ERRORS,
+ *                                      BAKER_ERROR_NO_FLOUR,
+ *                                      "Go to the supermarket");
+ *   else
+ *     g_simple_async_result_set_op_res_gpointer (result,
+ *                                                g_object_ref (cake),
+ *                                                g_object_unref);
+ *
+ *
+ *   /&ast; In this example, we assume that baked_cb is called as a callback from
+ *    &ast; the mainloop, so it's safe to complete the operation synchronously here.
+ *    &ast; If, however, _baker_prepare_cake () might call its callback without
+ *    &ast; first returning to the mainloop — inadvisable, but some APIs do so —
+ *    &ast; we would need to use g_simple_async_result_complete_in_idle().
+ *    &ast;/
+ *   g_simple_async_result_complete (result);
+ *   g_object_unref (result);
+ * }
+ *
+ * void
+ * baker_bake_cake_async (Baker              *self,
+ *                        guint               radius,
+ *                        GAsyncReadyCallback callback,
+ *                        gpointer            user_data)
+ * {
+ *   GSimpleAsyncResult *simple;
+ *   Cake               *cake;
+ *
+ *   if (radius < 3)
+ *     {
+ *       g_simple_async_report_error_in_idle (G_OBJECT (self),
+ *                                            callback,
+ *                                            user_data,
+ *                                            BAKER_ERRORS,
+ *                                            BAKER_ERROR_TOO_SMALL,
+ *                                            "%ucm radius cakes are silly",
+ *                                            radius);
+ *       return;
+ *     }
+ *
+ *   simple = g_simple_async_result_new (G_OBJECT (self),
+ *                                       callback,
+ *                                       user_data,
+ *                                       baker_bake_cake_async);
+ *   cake = _baker_get_cached_cake (self, radius);
+ *
+ *   if (cake != NULL)
+ *     {
+ *       g_simple_async_result_set_op_res_gpointer (simple,
+ *                                                  g_object_ref (cake),
+ *                                                  g_object_unref);
+ *       g_simple_async_result_complete_in_idle (simple);
+ *       g_object_unref (simple);
+ *       /&ast; Drop the reference returned by _baker_get_cached_cake(); the
+ *        &ast; GSimpleAsyncResult has taken its own reference.
+ *        &ast;/
+ *       g_object_unref (cake);
+ *       return;
+ *     }
+ *
+ *   _baker_prepare_cake (self, radius, baked_cb, user_data);
+ * }
+ *
+ * Cake *
+ * baker_bake_cake_finish (Baker        *self,
+ *                         GAsyncResult *result,
+ *                         GError      **error)
+ * {
+ *   GSimpleAsyncResult *simple;
+ *   Cake               *cake;
+ *
+ *   g_return_val_if_fail (g_simple_async_result_is_valid (result,
+ *                                                         G_OBJECT (self),
+ *                                                         baker_bake_cake_async),
+ *                         NULL);
+ *
+ *   simple = (GSimpleAsyncResult *) result;
+ *
+ *   if (g_simple_async_result_propagate_error (simple, error))
+ *     return NULL;
+ *
+ *   cake = CAKE (g_simple_async_result_get_op_res_gpointer (simple));
+ *   return g_object_ref (cake);
+ * }
+ * ]|
+ */
 
 static void g_simple_async_result_async_result_iface_init (GAsyncResultIface       *iface);
 

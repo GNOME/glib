@@ -45,6 +45,100 @@
  * directly, or indirectly via a foo_thing_new_async() wrapper. This will call
  * g_async_initable_init_async() under the cover, calling back with %NULL and
  * a set %GError on failure.
+ *
+ * A typical implementation might look something like this:
+ *
+ * |[
+ * enum {
+ *    NOT_INITIALIZED,
+ *    INITIALIZING,
+ *    INITIALIZED
+ * };
+ *
+ * static void
+ * _foo_ready_cb (Foo *self)
+ * {
+ *   GList *l;
+ *
+ *   self->priv->state = INITIALIZED;
+ *
+ *   for (l = self->priv->init_results; l != NULL; l = l->next)
+ *     {
+ *       GSimpleAsyncResult *simple = l->data;
+ *
+ *       if (!self->priv->success)
+ *         g_simple_async_result_set_error (simple, ...);
+ *
+ *       g_simple_async_result_complete (simple);
+ *       g_object_unref (simple);
+ *     }
+ *
+ *   g_list_free (self->priv->init_results);
+ *   self->priv->init_results = NULL;
+ * }
+ *
+ * static void
+ * foo_init_async (GAsyncInitable       *initable,
+ *                 int                   io_priority,
+ *                 GCancellable         *cancellable,
+ *                 GAsyncReadyCallback   callback,
+ *                 gpointer              user_data)
+ * {
+ *   Foo *self = FOO (initable);
+ *   GSimpleAsyncResult *simple;
+ *
+ *   simple = g_simple_async_result_new (G_OBJECT (initable)
+ *                                       callback,
+ *                                       user_data,
+ *                                       foo_init_async);
+ *
+ *   switch (self->priv->state)
+ *     {
+ *       case NOT_INITIALIZED:
+ *         _foo_get_ready (self);
+ *         self->priv->init_results = g_list_append (self->priv->init_results,
+ *                                                   simple);
+ *         self->priv->state = INITIALIZING;
+ *         break;
+ *       case INITIALIZING:
+ *         self->priv->init_results = g_list_append (self->priv->init_results,
+ *                                                   simple);
+ *         break;
+ *       case INITIALIZED:
+ *         if (!self->priv->success)
+ *           g_simple_async_result_set_error (simple, ...);
+ *
+ *         g_simple_async_result_complete_in_idle (simple);
+ *         g_object_unref (simple);
+ *         break;
+ *     }
+ * }
+ *
+ * static gboolean
+ * foo_init_finish (GAsyncInitable       *initable,
+ *                  GAsyncResult         *result,
+ *                  GError              **error)
+ * {
+ *   g_return_val_if_fail (g_simple_async_result_is_valid (result,
+ *       G_OBJECT (initable), foo_init_async), FALSE);
+ *
+ *   if (g_simple_async_result_propagate_error (G_SIMPLE_ASYNC_RESULT (result),
+ *           error))
+ *     return FALSE;
+ *
+ *   return TRUE;
+ * }
+ *
+ * static void
+ * foo_async_initable_iface_init (gpointer g_iface,
+ *                                gpointer data)
+ * {
+ *   GAsyncInitableIface *iface = g_iface;
+ *
+ *   iface->init_async = foo_init_async;
+ *   iface->init_finish = foo_init_finish;
+ * }
+ * ]|
  */
 
 static void     g_async_initable_real_init_async  (GAsyncInitable       *initable,
