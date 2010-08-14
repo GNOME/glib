@@ -19,6 +19,10 @@
  * if advised of the possibility of such damage.
  */
 
+/* We test for errors in optimize-only definitions in gmem.h */
+
+#pragma GCC optimize (1)
+
 #include "glib.h"
 #include <stdlib.h>
 
@@ -96,13 +100,38 @@ mem_overflow (void)
   free (q);
 }
 
+typedef struct
+{
+} Empty;
+
+static void
+empty_alloc (void)
+{
+  g_test_bug ("615379");
+
+  g_assert_cmpint (sizeof (Empty), ==, 0);
+
+  if (g_test_trap_fork (0, 0))
+    {
+      Empty *empty;
+
+      empty = g_new0 (Empty, 1);
+      g_assert (empty == NULL);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+}
+
 int
 main (int   argc,
       char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_bug_base ("http://bugzilla.gnome.org/");
+
   g_test_add_func ("/mem/overflow", mem_overflow);
+  g_test_add_func ("/mem/empty-alloc", empty_alloc);
 
   return g_test_run();
 }

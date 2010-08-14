@@ -643,6 +643,8 @@ test_roundtrip (gconstpointer data)
 {
   const CompressorTest *test = data;
 
+  g_test_bug ("162549");
+
   test_corruption (test->format, test->level);
 }
 
@@ -741,6 +743,8 @@ main (int   argc,
 
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
+
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/converter-input-stream/expander", test_expander);
   g_test_add_func ("/converter-input-stream/compressor", test_compressor);

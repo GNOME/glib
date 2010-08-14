@@ -395,6 +395,8 @@ binding_chain (void)
   BindingSource *c = g_object_new (binding_source_get_type (), NULL);
   GBinding *binding_1, *binding_2;
 
+  g_test_bug ("621782");
+
   /* A -> B, B -> C */
   binding_1 = g_object_bind_property (a, "foo", b, "foo", G_BINDING_BIDIRECTIONAL);
   binding_2 = g_object_bind_property (b, "foo", c, "foo", G_BINDING_BIDIRECTIONAL);
@@ -488,6 +490,8 @@ main (int argc, char *argv[])
 {
   g_type_init ();
   g_test_init (&argc, &argv, NULL);
+
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/binding/default", binding_default);
   g_test_add_func ("/binding/bidirectional", binding_bidirectional);
