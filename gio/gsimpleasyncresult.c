@@ -735,10 +735,12 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
  * First, @result is checked to ensure that it is really a
  * #GSimpleAsyncResult.  Second, @source is checked to ensure that it
  * matches the source object of @result.  Third, @source_tag is
- * checked to ensure that it is equal to the source_tag argument given
- * to g_simple_async_result_new() (which, by convention, is a pointer
- * to the _async function corresponding to the _finish function from
- * which this function is called).
+ * checked to ensure that it is either %NULL (as it is when the result was
+ * created by g_simple_async_report_error_in_idle() or
+ * g_simple_async_report_gerror_in_idle()) or equal to the
+ * @source_tag argument given to g_simple_async_result_new() (which, by
+ * convention, is a pointer to the _async function corresponding to the
+ * _finish function from which this function is called).
  *
  * Returns: #TRUE if all checks passed or #FALSE if any failed.
  **/
@@ -764,7 +766,8 @@ g_simple_async_result_is_valid (GAsyncResult *result,
   if (cmp_source != NULL)
     g_object_unref (cmp_source);
 
-  return source_tag == g_simple_async_result_get_source_tag (simple);
+  return source_tag == NULL ||
+         source_tag == g_simple_async_result_get_source_tag (simple);
 }
 
 /**
