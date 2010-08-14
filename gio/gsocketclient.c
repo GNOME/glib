@@ -70,7 +70,8 @@ enum
   PROP_FAMILY,
   PROP_TYPE,
   PROP_PROTOCOL,
-  PROP_LOCAL_ADDRESS
+  PROP_LOCAL_ADDRESS,
+  PROP_TIMEOUT
 };
 
 struct _GSocketClientPrivate
@@ -79,6 +80,7 @@ struct _GSocketClientPrivate
   GSocketType type;
   GSocketProtocol protocol;
   GSocketAddress *local_address;
+  guint timeout;
 };
 
 static GSocket *
@@ -114,6 +116,9 @@ create_socket (GSocketClient  *client,
 	  return NULL;
 	}
     }
+
+  if (client->priv->timeout)
+    g_socket_set_timeout (socket, client->priv->timeout);
 
   return socket;
 }
@@ -181,6 +186,10 @@ g_socket_client_get_property (GObject    *object,
 	g_value_set_object (value, client->priv->local_address);
 	break;
 
+      case PROP_TIMEOUT:
+	g_value_set_uint (value, client->priv->timeout);
+	break;
+
       default:
 	G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
     }
@@ -210,6 +219,10 @@ g_socket_client_set_property (GObject      *object,
 
     case PROP_LOCAL_ADDRESS:
       g_socket_client_set_local_address (client, g_value_get_object (value));
+      break;
+
+    case PROP_TIMEOUT:
+      g_socket_client_set_timeout (client, g_value_get_uint (value));
       break;
 
     default:
@@ -396,6 +409,50 @@ g_socket_client_set_local_address (GSocketClient  *client,
   g_object_notify (G_OBJECT (client), "local-address");
 }
 
+/**
+ * g_socket_client_get_timeout:
+ * @client: a #GSocketClient
+ *
+ * Gets the I/O timeout time for sockets created by @client.
+ *
+ * See g_socket_client_set_timeout() for details.
+ *
+ * Returns: the timeout in seconds
+ *
+ * Since: 2.26
+ */
+guint
+g_socket_client_get_timeout (GSocketClient *client)
+{
+  return client->priv->timeout;
+}
+
+
+/**
+ * g_socket_client_set_timeout:
+ * @client: a #GSocketClient.
+ * @timeout: the timeout
+ *
+ * Sets the I/O timeout for sockets created by @client. @timeout is a
+ * time in seconds, or 0 for no timeout (the default).
+ *
+ * The timeout value affects the initial connection attempt as well,
+ * so setting this may cause calls to g_socket_client_connect(), etc,
+ * to fail with %G_IO_ERROR_TIMED_OUT.
+ *
+ * Since: 2.26
+ */
+void
+g_socket_client_set_timeout (GSocketClient *client,
+			     guint          timeout)
+{
+  if (client->priv->timeout == timeout)
+    return;
+
+  client->priv->timeout = timeout;
+  g_object_notify (G_OBJECT (client), "timeout");
+}
+
 static void
 g_socket_client_class_init (GSocketClientClass *class)
 {
@@ -445,6 +502,16 @@ g_socket_client_class_init (GSocketClientClass *class)
 							G_PARAM_CONSTRUCT |
                                                         G_PARAM_READWRITE |
                                                         G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (gobject_class, PROP_TIMEOUT,
+				   g_param_spec_uint ("timeout",
+						      P_("Socket timeout"),
+						      P_("The I/O timeout for sockets, or 0 for none"),
+						      0, G_MAXUINT, 0,
+						      G_PARAM_CONSTRUCT |
+                                                      G_PARAM_READWRITE |
+                                                      G_PARAM_STATIC_STRINGS));
+
 }
 
 /**

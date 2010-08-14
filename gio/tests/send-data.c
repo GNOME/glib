@@ -5,6 +5,7 @@
 GMainLoop *loop;
 
 int cancel_timeout = 0;
+int io_timeout = 0;
 gboolean async = FALSE;
 gboolean graceful = FALSE;
 static GOptionEntry cmd_entries[] = {
@@ -14,6 +15,8 @@ static GOptionEntry cmd_entries[] = {
    "Use async ops", NULL},
   {"graceful-disconnect", 'g', 0, G_OPTION_ARG_NONE, &graceful,
    "Use graceful disconnect", NULL},
+  {"timeout", 't', 0, G_OPTION_ARG_INT, &io_timeout,
+   "Time out socket I/O after the specified number of seconds", NULL},
   {NULL}
 };
 
@@ -97,6 +100,8 @@ main (int argc, char *argv[])
     }
 
   client = g_socket_client_new ();
+  if (io_timeout)
+    g_socket_client_set_timeout (client, io_timeout);
 
   if (async)
     {
