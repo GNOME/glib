@@ -94,7 +94,7 @@
  * that use Glib do the same thing.  If you get a file name from
  * the file system, for example, from readdir(3) or from g_dir_read_name(),
  * and you wish to display the file name to the user, you
- * emphasis>will</emphasis> need to convert it into UTF-8.  The
+ * <emphasis>will</emphasis> need to convert it into UTF-8.  The
  * opposite case is when the user types the name of a file he
  * wishes to save:  the toolkit will give you that string in
  * UTF-8 encoding, and you will need to convert it to the
@@ -172,7 +172,7 @@
  * characters when <envar>G_FILENAME_ENCODING</envar> is set to
  * <literal>ISO-8859-1</literal>, for example.
  * </para></listitem>
- * orderedlist>
+ * </orderedlist>
  * </refsect3>
  * </refsect2>
  */

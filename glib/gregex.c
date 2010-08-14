@@ -37,7 +37,7 @@
  * SECTION:gregex
  * @title: Perl-compatible regular expressions
  * @short_description: matches strings against regular expressions
- * @see_also: <xref linkend="glib-regex-syntax">
+ * @see_also: <xref linkend="glib-regex-syntax"/>
  *
  * The <function>g_regex_*()</function> functions implement regular
  * expression pattern matching using syntax and semantics similar to
