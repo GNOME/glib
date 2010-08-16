@@ -2618,7 +2618,7 @@ g_regex_replace_literal (const GRegex      *regex,
 /**
  * g_regex_replace_eval:
  * @regex: a #GRegex structure from g_regex_new()
- * @string (array length=string_len): string to perform matches against
+ * @string: (array length=string_len): string to perform matches against
  * @string_len: the length of @string, or -1 if @string is nul-terminated
  * @start_position: starting index of the string to match
  * @match_options: options for the match
