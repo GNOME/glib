@@ -673,6 +673,10 @@ async_ready_close_flushed_callback_wrapper (GObject      *source_object,
  * requested size, as it can happen e.g. on a partial I/O error, 
  * but generally we try to write as many bytes as requested. 
  *
+ * You are guaranteed that this method will never fail with
+ * %G_IO_ERROR_WOULD_BLOCK - if @stream can't accept more data, the
+ * method will just wait until this changes.
+ *
  * Any outstanding I/O request with higher priority (lower numerical 
  * value) will be executed before an outstanding request with lower 
  * priority. Default priority is %G_PRIORITY_DEFAULT.
