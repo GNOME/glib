@@ -1166,7 +1166,8 @@ find_namespace_latest (const gchar  *namespace,
  * @repository: (allow-none): the repository
  * @namespace_: GI namespace, e.g. "Gtk"
  *
- * Obtain a list of versions for @namespace_ in this @repository.
+ * Obtain an unordered list of versions (either currently loaded or
+ * available) for @namespace_ in this @repository.
  *
  * Returns: (element-type utf8) (transfer full): the array of versions.
  */
@@ -1177,6 +1178,7 @@ g_irepository_enumerate_versions (GIRepository *repository,
   GList *ret = NULL;
   GSList *search_path;
   GSList *candidates, *link;
+  const gchar *loaded_version;
 
   search_path = build_search_path_with_overrides ();
   candidates = enumerate_namespace_versions (namespace_, search_path);
@@ -1185,10 +1187,19 @@ g_irepository_enumerate_versions (GIRepository *repository,
   for (link = candidates; link; link = link->next)
     {
       struct NamespaceVersionCandidadate *candidate = link->data;
-      ret = g_list_append (ret, g_strdup (candidate->version));
+      ret = g_list_prepend (ret, g_strdup (candidate->version));
       free_candidate (candidate);
     }
   g_slist_free (candidates);
+
+  /* The currently loaded version of a namespace is also part of the
+   * available versions, as it could have been loaded using
+   * require_private().
+   */
+  loaded_version = g_irepository_get_version (NULL, namespace_);
+  if (loaded_version && !g_list_find_custom (ret, loaded_version, g_str_equal))
+    ret = g_list_prepend (ret, g_strdup (loaded_version));
+
   return ret;
 }
 
