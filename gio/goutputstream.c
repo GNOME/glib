@@ -45,7 +45,7 @@
  * All of these functions have async variants too.
  **/
 
-G_DEFINE_TYPE (GOutputStream, g_output_stream, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (GOutputStream, g_output_stream, G_TYPE_OBJECT);
 
 struct _GOutputStreamPrivate {
   guint closed : 1;

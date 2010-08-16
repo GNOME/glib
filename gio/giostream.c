@@ -31,7 +31,7 @@
 #include <gio/gasyncresult.h>
 
 
-G_DEFINE_TYPE (GIOStream, g_io_stream, G_TYPE_OBJECT);
+G_DEFINE_ABSTRACT_TYPE (GIOStream, g_io_stream, G_TYPE_OBJECT);
 
 /**
  * SECTION:giostream

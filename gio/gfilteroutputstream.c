@@ -68,7 +68,7 @@ static gboolean g_filter_output_stream_close        (GOutputStream  *stream,
                                                      GCancellable   *cancellable,
                                                      GError        **error);
 
-G_DEFINE_TYPE (GFilterOutputStream, g_filter_output_stream, G_TYPE_OUTPUT_STREAM)
+G_DEFINE_ABSTRACT_TYPE (GFilterOutputStream, g_filter_output_stream, G_TYPE_OUTPUT_STREAM)
 
 #define GET_PRIVATE(inst) G_TYPE_INSTANCE_GET_PRIVATE (inst, \
   G_TYPE_FILTER_OUTPUT_STREAM, GFilterOutputStreamPrivate)
