@@ -7,12 +7,19 @@ Overview of Changes from GLib 2.25.13 to GLib 2.25.14
 
 * GIO
  - Make g_simple_async_result_is_valid work without source (626208)
+ - GSocketClient: add a timeout property
+ - Fix memory leaks in GSocketClient
+ - Handle async vs. sync correctly in GSocketConnection stream (616458)
+ - Declare stream base classes as abstract
 
 * Other
  - Improve test coverage for GDBus, GRegex, GAsyncResult
  - Drop dead code in pcre, xdgmime
  - Fix a race condition in gtester (578295)
  - Avoid an extra allocation in GAsyncQueue (626704)
+ - Add test case for non-socket GIOStream (626841)
+ - More explicit GVariant docs (622770)
+ - Imroved docs for GAsyncInitable and GSimpleAsyncResult (602417)
 
 * Translation updates:
  - Galicia
