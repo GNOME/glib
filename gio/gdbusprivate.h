@@ -80,6 +80,7 @@ gboolean     _g_dbus_worker_flush_sync   (GDBusWorker    *worker,
 
 void _g_dbus_initialize (void);
 gboolean _g_dbus_debug_authentication (void);
+gboolean _g_dbus_debug_transport (void);
 gboolean _g_dbus_debug_message (void);
 gboolean _g_dbus_debug_payload (void);
 gboolean _g_dbus_debug_call    (void);

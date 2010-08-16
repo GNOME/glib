@@ -340,6 +340,10 @@
          information when using the D-Bus routines.
          <variablelist>
            <varlistentry>
+             <term>transport</term>
+             <listitem><para>Show IO activity (e.g. reads and writes)</para></listitem>
+           </varlistentry>
+           <varlistentry>
              <term>message</term>
              <listitem><para>Show all sent and received D-Bus messages</para></listitem>
            </varlistentry>

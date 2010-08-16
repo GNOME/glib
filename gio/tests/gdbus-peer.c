@@ -1250,30 +1250,42 @@ test_credentials (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-#if 0 /* def G_OS_UNIX disabled while it fails */
+#ifdef G_OS_UNIX
+
+/* Chosen to be big enough to overflow the socket buffer */
+#define OVERFLOW_NUM_SIGNALS 5000
+#define OVERFLOW_TIMEOUT_SEC 10
+
 static gboolean
-signal_count_cb (GDBusConnection *connection,
-		 GDBusMessage    *message,
-		 gboolean         incoming,
-		 gpointer         user_data)
+overflow_filter_func (GDBusConnection *connection,
+                      GDBusMessage    *message,
+                      gboolean         incoming,
+                      gpointer         user_data)
 {
-  volatile int *p = user_data;
-  (*p)++;
-  return TRUE;
+  volatile gint *counter = user_data;
+  *counter += 1;
+  return FALSE; /* don't drop the message */
+}
+
+static gboolean
+overflow_on_500ms_later_func (gpointer user_data)
+{
+  g_main_loop_quit (loop);
+  return FALSE; /* don't keep the idle */
 }
 
 static void
 test_overflow (void)
 {
-  gint sv[2], i;
+  gint sv[2];
+  gint n;
   GSocket *socket;
   GSocketConnection *socket_connection;
   GDBusConnection *producer, *consumer;
   GError *error;
-  gchar *guid;
-  pid_t child;
   GTimer *timer;
-  volatile int counter = 0;
+  volatile gint n_messages_received;
+  volatile gint n_messages_sent;
 
   g_assert_cmpint (socketpair (AF_UNIX, SOCK_STREAM, 0, sv), ==, 0);
 
@@ -1287,14 +1299,16 @@ test_overflow (void)
 					 NULL, /* guid */
 					 G_DBUS_CONNECTION_FLAGS_NONE,
 					 NULL, /* GDBusAuthObserver */
-					 NULL,
+					 NULL, /* GCancellable */
 					 &error);
   g_dbus_connection_set_exit_on_close (producer, TRUE);
   g_assert_no_error (error);
   g_object_unref (socket_connection);
+  n_messages_sent = 0;
+  g_dbus_connection_add_filter (producer, overflow_filter_func, (gpointer) &n_messages_sent, NULL);
 
   /* send enough data that we get an EAGAIN */
-  for (i = 0; i < 1000; i++)
+  for (n = 0; n < OVERFLOW_NUM_SIGNALS; n++)
     {
       error = NULL;
       g_dbus_connection_emit_signal (producer,
@@ -1304,12 +1318,19 @@ test_overflow (void)
                                      "Member",
                                      g_variant_new ("(s)", "a string"),
                                      &error);
-      /* run the main event loop - otherwise GDBusConnection::closed won't be fired */
-      g_main_context_iteration (NULL, FALSE);
       g_assert_no_error (error);
-      static gint count = 0;
-      g_print ("%d ", count++);
     }
+
+  /* sleep for 0.5 sec (to allow the GDBus IO thread to fill up the
+   * kernel buffers) and verify that n_messages_sent <
+   * OVERFLOW_NUM_SIGNALS
+   *
+   * This is to verify that not all the submitted messages have been
+   * sent to the underlying transport.
+   */
+  g_timeout_add (500, overflow_on_500ms_later_func, NULL);
+  g_main_loop_run (loop);
+  g_assert_cmpint (n_messages_sent, <, OVERFLOW_NUM_SIGNALS);
 
   /* now suck it all out as a client, and add it up */
   socket = g_socket_new_from_fd (sv[1], &error);
@@ -1317,28 +1338,26 @@ test_overflow (void)
   socket_connection = g_socket_connection_factory_create_connection (socket);
   g_assert (socket_connection != NULL);
   g_object_unref (socket);
-  guid = g_dbus_generate_guid ();
   consumer = g_dbus_connection_new_sync (G_IO_STREAM (socket_connection),
-					 guid,
+					 NULL, /* guid */
 					 G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING,
 					 NULL, /* GDBusAuthObserver */
-					 NULL,
+					 NULL, /* GCancellable */
 					 &error);
-  g_dbus_connection_add_filter (consumer, signal_count_cb, &counter, NULL);
-  g_dbus_connection_start_message_processing (consumer);
-
-  g_free (guid);
   g_assert_no_error (error);
   g_object_unref (socket_connection);
+  n_messages_received = 0;
+  g_dbus_connection_add_filter (consumer, overflow_filter_func, (gpointer) &n_messages_received, NULL);
+  g_dbus_connection_start_message_processing (consumer);
 
   timer = g_timer_new ();
   g_timer_start (timer);
 
-  while (counter < 1000 &&
-	 g_timer_elapsed (timer, NULL) < 5.0)
+  while (n_messages_received < OVERFLOW_NUM_SIGNALS && g_timer_elapsed (timer, NULL) < OVERFLOW_TIMEOUT_SEC)
       g_main_context_iteration (NULL, FALSE);
 
-  g_assert (counter == 1000);
+  g_assert_cmpint (n_messages_sent, ==, OVERFLOW_NUM_SIGNALS);
+  g_assert_cmpint (n_messages_received, ==, OVERFLOW_NUM_SIGNALS);
 
   g_timer_destroy (timer);
   g_object_unref (consumer);
@@ -1348,6 +1367,7 @@ test_overflow (void)
 static void
 test_overflow (void)
 {
+  /* TODO: test this with e.g. GWin32InputStream/GWin32OutputStream */
 }
 #endif
 
