@@ -12,6 +12,7 @@ Overview of Changes from GLib 2.25.13 to GLib 2.25.14
  - Fix memory leaks in GSocketClient
  - Handle async vs. sync correctly in GSocketConnection stream (616458)
  - Declare stream base classes as abstract
+ - Clarify semantics of g_output_stream_write() (627071)
 
 * Other
  - Improve test coverage for GDBus, GRegex, GAsyncResult
