@@ -445,6 +445,8 @@ _g_dbus_worker_unref (GDBusWorker *worker)
       g_queue_foreach (worker->write_queue, (GFunc) message_to_write_data_free, NULL);
       g_queue_free (worker->write_queue);
 
+      g_free (worker->read_buffer);
+
       g_free (worker);
     }
 }
