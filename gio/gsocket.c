@@ -377,13 +377,34 @@ g_socket_details_from_fd (GSocket *socket)
     {
      case G_SOCKET_FAMILY_IPV4:
      case G_SOCKET_FAMILY_IPV6:
+       socket->priv->family = address.ss_family;
+       switch (socket->priv->type)
+	 {
+	 case G_SOCKET_TYPE_STREAM:
+	   socket->priv->protocol = G_SOCKET_PROTOCOL_TCP;
+	   break;
+
+	 case G_SOCKET_TYPE_DATAGRAM:
+	   socket->priv->protocol = G_SOCKET_PROTOCOL_UDP;
+	   break;
+
+	 case G_SOCKET_TYPE_SEQPACKET:
+	   socket->priv->protocol = G_SOCKET_PROTOCOL_SCTP;
+	   break;
+
+	 default:
+	   break;
+	 }
+       break;
+
      case G_SOCKET_FAMILY_UNIX:
-      socket->priv->family = address.ss_family;
-      break;
+       socket->priv->family = G_SOCKET_FAMILY_UNIX;
+       socket->priv->protocol = G_SOCKET_PROTOCOL_DEFAULT;
+       break;
 
      default:
-      socket->priv->family = G_SOCKET_FAMILY_INVALID;
-      break;
+       socket->priv->family = G_SOCKET_FAMILY_INVALID;
+       break;
     }
 
   if (socket->priv->family != G_SOCKET_FAMILY_INVALID)

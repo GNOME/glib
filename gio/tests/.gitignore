@@ -62,6 +62,7 @@ resolver
 send-data
 simple-async-result
 sleepy-stream
+socket
 socket-client
 socket-server
 srvtarget
