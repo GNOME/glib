@@ -41,6 +41,7 @@ TEST_PROGS +=	 		\
 	gdbus-addresses		\
 	network-address		\
 	gdbus-message		\
+	socket			\
 	$(NULL)
 
 if OS_UNIX
@@ -192,6 +193,9 @@ srvtarget_LDADD		  = $(progs_ldadd)
 
 network_address_SOURCE	  = network-address.c
 network_address_LDADD	  = $(progs_ldadd)
+
+socket_SOURCE		  = socket.c
+socket_LDADD		  = $(progs_ldadd)
 
 contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
@@ -386,7 +390,7 @@ EXTRA_DIST += \
 	appinfo-test-gnome.desktop	\
 	appinfo-test-notgnome.desktop	\
 	gdbus-testserver.py
- 
+
 MISC_STUFF = test.mo
 
 test.mo: de.po
