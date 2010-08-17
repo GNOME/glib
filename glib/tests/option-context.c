@@ -33,16 +33,14 @@ group_captions (void)
   gchar *help_variants[] = { "--help", "--help-all", "--help-test" };
 
   GOptionEntry main_entries[] = {
-    { "main-switch", 0,
-      G_OPTION_FLAG_NO_ARG,
+    { "main-switch", 0, 0,
       G_OPTION_ARG_NONE, NULL,
       "A switch that is in the main group", NULL },
     { NULL }
   };
 
   GOptionEntry group_entries[] = {
-    { "test-switch", 0,
-      G_OPTION_FLAG_NO_ARG,
+    { "test-switch", 0, 0,
       G_OPTION_ARG_NONE, NULL,
       "A switch that is in the test group", NULL },
     { NULL }
