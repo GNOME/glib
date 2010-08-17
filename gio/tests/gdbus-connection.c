@@ -274,6 +274,7 @@ msg_cb_expect_error_unknown_method (GDBusConnection *connection,
                                           &error);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
   g_assert (g_dbus_error_is_remote_error (error));
+  g_error_free (error);
   g_assert (result == NULL);
 
   g_main_loop_quit (loop);
