@@ -871,8 +871,8 @@ test_connection_basic (void)
   GDBusConnection *connection;
   GError *error;
   GDBusCapabilityFlags flags;
-  const gchar *guid;
-  const gchar *name;
+  gchar *guid;
+  gchar *name;
   gboolean closed;
   gboolean exit_on_close;
   GIOStream *stream;
@@ -911,6 +911,8 @@ test_connection_basic (void)
 
   g_object_unref (stream);
   g_object_unref (connection);
+  g_free (name);
+  g_free (guid);
 
   session_bus_down ();
 }
