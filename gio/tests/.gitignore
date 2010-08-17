@@ -33,6 +33,7 @@ gdbus-exit-on-close
 gdbus-export
 gdbus-introspection
 gdbus-names
+gdbus-non-socket
 gdbus-peer
 gdbus-proxy
 gdbus-proxy-well-known-name
