@@ -157,6 +157,7 @@ test_connection_life_cycle (void)
   g_assert (g_dbus_connection_is_closed (c2));
   ret = g_dbus_connection_close_sync (c2, NULL, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
+  g_error_free (error);
   g_assert (!ret);
   g_object_unref (c2);
 
