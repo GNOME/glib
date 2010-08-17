@@ -35,7 +35,6 @@
 #include "girparser.h"
 #include "gitypelib-internal.h"
 
-gboolean code = FALSE;
 gboolean no_init = FALSE;
 gchar **includedirs = NULL;
 gchar **input = NULL;
@@ -45,54 +44,6 @@ gchar *shlib = NULL;
 gboolean include_cwd = FALSE;
 gboolean debug = FALSE;
 gboolean verbose = FALSE;
-
-static gchar *
-format_output (GTypelib *typelib)
-{
-  GString *result;
-  guint i;
-
-  result = g_string_sized_new (6 * typelib->len);
-
-  g_string_append_printf (result, "/* GENERATED CODE - DO NOT EDIT */\n");
-  g_string_append_printf (result, "#include <stdlib.h>\n");
-  g_string_append_printf (result, "#include <girepository.h>\n\n");
-  
-  g_string_append_printf (result, "const unsigned char _G_TYPELIB[] = \n{");
-
-  for (i = 0; i < typelib->len; i++)
-    {
-      if (i > 0)
-	g_string_append (result, ", ");
-
-      if (i % 10 == 0)
-	g_string_append (result, "\n\t");
-      
-      g_string_append_printf (result, "0x%.2x", typelib->data[i]);      
-    }
-
-  g_string_append_printf (result, "\n};\n\n");
-  g_string_append_printf (result, "const gsize _G_TYPELIB_SIZE = %u;\n\n",
-			  (guint)typelib->len);
-
-  if (!no_init)
-    {
-      g_string_append_printf (result,
-			      "__attribute__((constructor)) void "
-			      "register_typelib (void);\n\n");
-      g_string_append_printf (result,
-			      "__attribute__((constructor)) void\n"
-			      "register_typelib (void)\n"
-			      "{\n"
-			      "\tGTypelib *typelib;\n"
-			      "\ttypelib = g_typelib_new_from_const_memory (_G_TYPELIB, _G_TYPELIB_SIZE, NULL);\n"
-			      "\tg_assert (typelib != NULL);\n"
-			      "\tg_irepository_load_typelib (NULL, typelib, G_IREPOSITORY_LOAD_FLAG_LAZY, NULL);\n"
-			      "}\n\n");
-    }
-
-  return g_string_free (result, FALSE);
-}
 
 static void
 write_out_typelib (gchar *prefix,
@@ -136,23 +87,12 @@ write_out_typelib (gchar *prefix,
 	}
     }
 
-  if (!code)
-    {
-      written = fwrite (typelib->data, 1, typelib->len, file);
-      if (written < typelib->len) {
-        g_error ("ERROR: Could not write the whole output: %s",
-                 strerror(errno));
-        goto out;
-      }
-    }
-  else
-    {
-      gchar *code;
-
-      code = format_output (typelib);
-      fputs (code, file);
-      g_free (code);
-    }
+  written = fwrite (typelib->data, 1, typelib->len, file);
+  if (written < typelib->len) {
+    g_error ("ERROR: Could not write the whole output: %s",
+	     strerror(errno));
+    goto out;
+  }
 
   if (output != NULL)
     fclose (file);
@@ -183,7 +123,6 @@ static void log_handler (const gchar *log_domain,
 
 static GOptionEntry options[] = 
 {
-  { "code", 0, 0, G_OPTION_ARG_NONE, &code, "emit C code", NULL },
   { "no-init", 0, 0, G_OPTION_ARG_NONE, &no_init, "do not create _init() function", NULL },
   { "includedir", 0, 0, G_OPTION_ARG_FILENAME_ARRAY, &includedirs, "include directories in GIR search path", NULL }, 
   { "output", 'o', 0, G_OPTION_ARG_FILENAME, &output, "output file", "FILE" }, 
