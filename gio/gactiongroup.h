@@ -35,8 +35,8 @@ G_BEGIN_DECLS
                                                              G_TYPE_ACTION_GROUP, GActionGroup))
 #define G_ACTION_GROUP_CLASS(class)                         (G_TYPE_CHECK_CLASS_CAST ((class),                       \
                                                              G_TYPE_ACTION_GROUP, GActionGroupClass))
-#define G_IS_ACTION_GROUP(inst)                             (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_ACTION))
-#define G_IS_ACTION_GROUP_CLASS(class)                      (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ACTION))
+#define G_IS_ACTION_GROUP(inst)                             (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_ACTION_GROUP))
+#define G_IS_ACTION_GROUP_CLASS(class)                      (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ACTION_GROUP))
 #define G_ACTION_GROUP_GET_CLASS(inst)                      (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
                                                              G_TYPE_ACTION_GROUP, GActionGroupClass))
 
