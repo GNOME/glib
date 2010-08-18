@@ -113,6 +113,10 @@ struct _GActionGroupClass
                                                      const gchar   *action_name,
                                                      GVariant      *parameter);
 
+  /*< private >*/
+  gpointer vtable_padding[6];
+
+  /*< public >*/
   /* signals */
   void                  (* action_added)            (GActionGroup  *action_group,
                                                      const gchar   *action_name);
