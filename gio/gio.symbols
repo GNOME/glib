@@ -1833,7 +1833,7 @@ g_action_group_activate
 g_action_group_get_enabled
 g_action_group_get_parameter_type
 g_action_group_get_state
-g_action_group_get_state_range
+g_action_group_get_state_hint
 g_action_group_get_state_type
 g_action_group_get_type
 g_action_group_has_action
