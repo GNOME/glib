@@ -383,7 +383,7 @@ g_object_do_class_init (GObjectClass *class)
   g_type_add_interface_check (NULL, object_interface_check_properties);
 }
 
-static void
+static inline void
 install_property_internal (GType       g_type,
 			   guint       property_id,
 			   GParamSpec *pspec)
@@ -444,12 +444,129 @@ g_object_class_install_property (GObjectClass *class,
   if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     class->construct_properties = g_slist_prepend (class->construct_properties, pspec);
 
-  /* for property overrides of construct poperties, we have to get rid
+  /* for property overrides of construct properties, we have to get rid
    * of the overidden inherited construct property
    */
   pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, g_type_parent (G_OBJECT_CLASS_TYPE (class)), TRUE);
   if (pspec && pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
     class->construct_properties = g_slist_remove (class->construct_properties, pspec);
+}
+
+/**
+ * g_object_class_install_properties:
+ * @oclass: a #GObjectClass
+ * @n_pspecs: the length of the #GParamSpec<!-- -->s array
+ * @pspecs: (array length=n_pspecs): the #GParamSpec<!-- -->s array
+ *   defining the new properties
+ *
+ * Installs new properties from an array of #GParamSpec<!-- -->s. This is
+ * usually done in the class initializer.
+ *
+ * The property id of each property is the index of each #GParamSpec in
+ * the @pspecs array.
+ *
+ * The property id of 0 is treated specially by #GObject and it should not
+ * be used to store a #GParamSpec.
+ *
+ * This function should be used if you plan to use a static array of
+ * #GParamSpec<!-- -->s and g_object_notify_pspec(). For instance, this
+ * class initialization:
+ *
+ * |[
+ * enum {
+ *   PROP_0, PROP_FOO, PROP_BAR, N_PROPERTIES
+ * };
+ *
+ * static GParamSpec *obj_properties[N_PROPERTIES] = { NULL, };
+ *
+ * static void
+ * my_object_class_init (MyObjectClass *klass)
+ * {
+ *   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+ *
+ *   obj_properties[PROP_FOO] =
+ *     g_param_spec_int ("foo", "Foo", "Foo",
+ *                       -1, G_MAXINT,
+ *                       0,
+ *                       G_PARAM_READWRITE);
+ *
+ *   obj_properties[PROP_BAR] =
+ *     g_param_spec_string ("bar", "Bar", "Bar",
+ *                          NULL,
+ *                          G_PARAM_READWRITE);
+ *
+ *   gobject_class->set_property = my_object_set_property;
+ *   gobject_class->get_property = my_object_get_property;
+ *   g_object_class_install_properties (gobject_class,
+ *                                      N_PROPERTIES,
+ *                                      obj_properties);
+ * }
+ * ]|
+ *
+ * allows calling g_object_notify_by_pspec() to notify of property changes:
+ *
+ * |[
+ * void
+ * my_object_set_foo (MyObject *self, gint foo)
+ * {
+ *   if (self->foo != foo)
+ *     {
+ *       self->foo = foo;
+ *       g_object_notify_by_pspec (G_OBJECT (self), obj_properties[PROP_FOO]);
+ *     }
+ *  }
+ * ]|
+ *
+ * Since: 2.26
+ */
+void
+g_object_class_install_properties (GObjectClass  *oclass,
+                                   guint          n_pspecs,
+                                   GParamSpec   **pspecs)
+{
+  GType oclass_type;
+  gint i;
+
+  g_return_if_fail (G_IS_OBJECT_CLASS (oclass));
+  g_return_if_fail (n_pspecs > 1);
+  g_return_if_fail (pspecs[0] == NULL);
+
+  if (CLASS_HAS_DERIVED_CLASS (oclass))
+    g_error ("Attempt to add properties to %s after it was derived",
+             G_OBJECT_CLASS_NAME (oclass));
+
+  oclass_type = G_OBJECT_CLASS_TYPE (oclass);
+
+  /* we skip the first element of the array as it would have a 0 prop_id */
+  for (i = 1; i < n_pspecs; i++)
+    {
+      GParamSpec *pspec = pspecs[i];
+
+      g_return_if_fail (pspec != NULL);
+
+      if (pspec->flags & G_PARAM_WRITABLE)
+        g_return_if_fail (oclass->set_property != NULL);
+      if (pspec->flags & G_PARAM_READABLE)
+        g_return_if_fail (oclass->get_property != NULL);
+      g_return_if_fail (PARAM_SPEC_PARAM_ID (pspec) == 0);	/* paranoid */
+      if (pspec->flags & G_PARAM_CONSTRUCT)
+        g_return_if_fail ((pspec->flags & G_PARAM_CONSTRUCT_ONLY) == 0);
+      if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+        g_return_if_fail (pspec->flags & G_PARAM_WRITABLE);
+
+      oclass->flags |= CLASS_HAS_PROPS_FLAG;
+      install_property_internal (oclass_type, i, pspec);
+
+      if (pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+        oclass->construct_properties = g_slist_prepend (oclass->construct_properties, pspec);
+
+      /* for property overrides of construct properties, we have to get rid
+       * of the overidden inherited construct property
+       */
+      pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, g_type_parent (G_OBJECT_CLASS_TYPE (oclass)), TRUE);
+      if (pspec && pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
+        oclass->construct_properties = g_slist_remove (oclass->construct_properties, pspec);
+    }
 }
 
 /**

@@ -390,6 +390,9 @@ GParamSpec**g_object_class_list_properties    (GObjectClass   *oclass,
 void        g_object_class_override_property  (GObjectClass   *oclass,
 					       guint           property_id,
 					       const gchar    *name);
+void        g_object_class_install_properties (GObjectClass   *oclass,
+                                               guint           n_pspecs,
+                                               GParamSpec    **pspecs);
 
 void        g_object_interface_install_property (gpointer     g_iface,
 						 GParamSpec  *pspec);

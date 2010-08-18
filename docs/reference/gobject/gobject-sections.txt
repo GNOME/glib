@@ -244,6 +244,7 @@ G_OBJECT_TYPE_NAME
 G_OBJECT_CLASS_TYPE
 G_OBJECT_CLASS_NAME
 g_object_class_install_property
+g_object_class_install_properties
 g_object_class_find_property
 g_object_class_list_properties
 g_object_class_override_property
