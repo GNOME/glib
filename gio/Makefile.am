@@ -128,6 +128,15 @@ settings_sources = \
 	gsettings-mapping.c		\
 	gsettings.c
 
+application_headers = \
+	gactiongroup.h			\
+	gapplication.h
+
+application_sources = \
+	gactiongroup.c			\
+	gapplication.c
+
+
 local_sources = \
 	glocaldirectorymonitor.c 	\
 	glocaldirectorymonitor.h 	\
@@ -256,8 +265,6 @@ SUBDIRS += tests
 
 libgio_2_0_la_SOURCES =		\
 	gappinfo.c 		\
-	gapplication.c		\
-	gapplication.h		\
 	gasynchelper.c 		\
 	gasynchelper.h 		\
 	gasyncinitable.c	\
@@ -356,6 +363,7 @@ libgio_2_0_la_SOURCES =		\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
+	$(application_sources) 	\
 	$(settings_sources) 	\
 	$(gdbus_sources) 	\
 	$(local_sources) 	\
@@ -417,7 +425,6 @@ gio-win32-res.o: gio.rc
 
 gio_headers =			\
 	gappinfo.h 		\
-	gapplication.h		\
 	gasyncinitable.h	\
 	gasyncresult.h 		\
 	gbufferedinputstream.h 	\
@@ -489,6 +496,7 @@ gio_headers =			\
 	gvolumemonitor.h 	\
 	gzlibcompressor.h	\
 	gzlibdecompressor.h	\
+	$(application_headers)	\
 	$(settings_headers)	\
 	$(gdbus_headers)	\
 	$(NULL)

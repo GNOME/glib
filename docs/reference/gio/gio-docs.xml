@@ -162,6 +162,7 @@
     </chapter>
     <chapter id="application">
         <title>Application support</title>
+        <xi:include href="xml/gactiongroup.xml"/>
         <xi:include href="xml/gapplication.xml"/>
     </chapter>
     <chapter id="extending">

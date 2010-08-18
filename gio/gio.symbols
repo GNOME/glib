@@ -1822,3 +1822,23 @@ g_simple_permission_get_type
 g_simple_permission_new
 #endif
 #endif
+
+#if IN_HEADER(__G_ACTION_GROUP_H__)
+#if IN_FILE(__G_ACTION_GROUP_C__)
+g_action_group_action_added
+g_action_group_action_enabled_changed
+g_action_group_action_removed
+g_action_group_action_state_changed
+g_action_group_activate
+g_action_group_get_enabled
+g_action_group_get_parameter_type
+g_action_group_get_state
+g_action_group_get_state_range
+g_action_group_get_state_type
+g_action_group_get_type
+g_action_group_has_action
+g_action_group_list_actions
+g_action_group_set_state
+#endif
+#endif
+
