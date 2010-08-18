@@ -1622,16 +1622,16 @@ initable_iface_init (GInitableIface *initable_iface)
  * Creates a proxy for accessing @interface_name on the remote object
  * at @object_path owned by @name at @connection and asynchronously
  * loads D-Bus properties unless the
- * #G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is used. Connect to
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is used. Connect to
  * the #GDBusProxy::g-properties-changed signal to get notified about
  * property changes.
  *
- * If the #G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets up
+ * If the %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets up
  * match rules for signals. Connect to the #GDBusProxy::g-signal signal
  * to handle signals from the remote object.
  *
  * If @name is a well-known name and the
- * #G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag isn't set and no name
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag isn't set and no name
  * owner currently exists, the message bus will be requested to launch
  * a name owner for the name.
  *
@@ -1721,14 +1721,14 @@ g_dbus_proxy_new_finish (GAsyncResult  *res,
  * Creates a proxy for accessing @interface_name on the remote object
  * at @object_path owned by @name at @connection and synchronously
  * loads D-Bus properties unless the
- * #G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is used.
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES flag is used.
  *
- * If the #G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets up
+ * If the %G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS flag is not set, also sets up
  * match rules for signals. Connect to the #GDBusProxy::g-signal signal
  * to handle signals from the remote object.
  *
  * If @name is a well-known name and the
- * #G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag isn't set and no name
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag isn't set and no name
  * owner currently exists, the message bus will be requested to launch
  * a name owner for the name.
  *
