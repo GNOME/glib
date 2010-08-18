@@ -237,9 +237,20 @@ test_non_socket (void)
       stream = my_io_stream_new_for_fds (read_fd, write_fd);
       guid = g_dbus_generate_guid ();
       error = NULL;
+      /* We need to delay message processing to avoid the race
+       * described in
+       *
+       *  https://bugzilla.gnome.org/show_bug.cgi?id=627188
+       *
+       * This is because (early) dispatching is done on the IO thread
+       * (method_call() isn't called until we're in the right thread
+       * though) so in rare cases the parent sends the message before
+       * we (the child) register the object
+       */
       connection = g_dbus_connection_new_sync (stream,
                                                guid,
-                                               G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER,
+                                               G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_SERVER |
+                                               G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING,
                                                NULL, /* GDBusAuthObserver */
                                                NULL,
                                                &error);
@@ -250,9 +261,6 @@ test_non_socket (void)
       /* make sure we exit along with the parent */
       g_dbus_connection_set_exit_on_close (connection, TRUE);
 
-      /* btw, no need to delay message processing since method
-       * invocations are delivered via the main loop
-       */
       error = NULL;
       g_dbus_connection_register_object (connection,
                                          "/pokee",
@@ -262,6 +270,9 @@ test_non_socket (void)
                                          NULL, /* user_data_free_func */
                                          &error);
       g_assert_no_error (error);
+
+      /* and now start message processing */
+      g_dbus_connection_start_message_processing (connection);
 
       g_main_loop_run (loop);
 
