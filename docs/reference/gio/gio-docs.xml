@@ -163,6 +163,7 @@
     <chapter id="application">
         <title>Application support</title>
         <xi:include href="xml/gactiongroup.xml"/>
+        <xi:include href="xml/gsimpleactiongroup.xml"/>
         <xi:include href="xml/gaction.xml"/>
         <xi:include href="xml/gapplication.xml"/>
     </chapter>

@@ -130,11 +130,13 @@ settings_sources = \
 
 application_headers = \
 	gactiongroup.h			\
+	gsimpleactiongroup.h		\
 	gaction.h			\
 	gapplication.h
 
 application_sources = \
 	gactiongroup.c			\
+	gsimpleactiongroup.c		\
 	gaction.c			\
 	gapplication.c
 

@@ -69,6 +69,33 @@ test_basic (void)
   g_assert (!a.did_run);
 }
 
+static void
+test_simple_group (void)
+{
+  GSimpleActionGroup *group;
+  Activation a = { 0, };
+  GAction *action;
+
+  action = g_action_new ("foo", NULL);
+  g_signal_connect (action, "activate", G_CALLBACK (activate), &a);
+  g_assert (!a.did_run);
+  g_action_activate (action, NULL);
+  g_assert (a.did_run);
+  a.did_run = FALSE;
+
+  group = g_simple_action_group_new ();
+  g_simple_action_group_insert (group, action);
+  g_object_unref (action);
+
+  g_assert (!a.did_run);
+  g_action_group_activate (G_ACTION_GROUP (group), "foo", NULL);
+  g_assert (a.did_run);
+
+  a.did_run = FALSE;
+  g_object_unref (group);
+  g_assert (!a.did_run);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -76,6 +103,7 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/actions/basic", test_basic);
+  g_test_add_func ("/actions/simplegroup", test_simple_group);
 
   return g_test_run ();
 }
