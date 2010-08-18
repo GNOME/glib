@@ -141,7 +141,8 @@ g_action_set_property (GObject *object, guint prop_id,
       break;
 
     case PROP_STATE:
-      g_action_set_state (action, g_value_get_variant (value));
+      if (g_value_get_variant (value))
+        g_action_set_state (action, g_value_get_variant (value));
       break;
 
     default:
@@ -270,7 +271,8 @@ g_action_class_init (GActionClass *class)
   g_object_class_install_property (object_class, PROP_ENABLED,
     g_param_spec_boolean ("enabled", "enabled",
                           "if the action can be activated", TRUE,
-                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                          G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:state-type:
@@ -292,7 +294,8 @@ g_action_class_init (GActionClass *class)
   g_object_class_install_property (object_class, PROP_STATE,
     g_param_spec_variant ("state", "state", "the state the action is in",
                           G_VARIANT_TYPE_ANY, NULL,
-                          G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
+                          G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (class, sizeof (GActionPrivate));
 }
