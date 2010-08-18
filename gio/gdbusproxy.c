@@ -61,9 +61,13 @@
  * name is tracked and can be read from
  * #GDBusProxy:g-name-owner. Connect to the #GObject::notify signal to
  * get notified of changes. Additionally, only signals and property
- * changes emitted from the current name owner are considered. This
- * avoids a number of race conditions when the name is lost by one
- * owner and claimed by another.
+ * changes emitted from the current name owner are considered and
+ * calls are always sent to the current name owner. This avoids a
+ * number of race conditions when the name is lost by one owner and
+ * claimed by another. However, if no name owner currently exists,
+ * then calls will be sent to the well-known name which may result in
+ * the message bus launching an owner (unless
+ * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is set).
  *
  * The generic #GDBusProxy::g-properties-changed and #GDBusProxy::g-signal
  * signals are not very convenient to work with. Therefore, the recommended
@@ -2179,6 +2183,31 @@ lookup_method_info_or_warn (GDBusProxy  *proxy,
   return info;
 }
 
+static const gchar *
+get_destination_for_call (GDBusProxy *proxy)
+{
+  const gchar *ret;
+
+  ret = NULL;
+
+  /* If proxy->priv->name is a unique name, then proxy->priv->name_owner
+   * is never NULL and always the same as proxy->priv->name. We use this
+   * knowledge to avoid checking if proxy->priv->name is a unique or
+   * well-known name.
+   */
+  ret = proxy->priv->name_owner;
+  if (ret != NULL)
+    goto out;
+
+  if (proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START)
+    goto out;
+
+  ret = proxy->priv->name;
+
+ out:
+  return ret;
+}
+
 /**
  * g_dbus_proxy_call:
  * @proxy: A #GDBusProxy.
@@ -2243,15 +2272,18 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
   gboolean was_split;
   gchar *split_interface_name;
   const gchar *split_method_name;
-  const GDBusMethodInfo *expected_method_info;
   const gchar *target_method_name;
   const gchar *target_interface_name;
+  const gchar *destination;
   GVariantType *reply_type;
 
   g_return_if_fail (G_IS_DBUS_PROXY (proxy));
   g_return_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name));
   g_return_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
   g_return_if_fail (timeout_msec == -1 || timeout_msec >= 0);
+
+  reply_type = NULL;
+  split_interface_name = NULL;
 
   simple = g_simple_async_result_new (G_OBJECT (proxy),
                                       callback,
@@ -2265,17 +2297,30 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
   g_object_set_data_full (G_OBJECT (simple), "-gdbus-proxy-method-name", g_strdup (target_method_name), g_free);
 
   /* Warn if method is unexpected (cf. :g-interface-info) */
-  expected_method_info = NULL;
   if (!was_split)
-    expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
+    {
+      const GDBusMethodInfo *expected_method_info;
+      expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
+      if (expected_method_info != NULL)
+        reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
+    }
 
-  if (expected_method_info)
-    reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
-  else
-    reply_type = NULL;
+  destination = NULL;
+  if (proxy->priv->name != NULL)
+    {
+      destination = get_destination_for_call (proxy);
+      if (destination == NULL)
+        {
+          g_simple_async_result_set_error (simple,
+                                           G_IO_ERROR,
+                                           G_IO_ERROR_FAILED,
+                                           _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
+          goto out;
+        }
+    }
 
   g_dbus_connection_call (proxy->priv->connection,
-                          proxy->priv->name_owner,
+                          destination,
                           proxy->priv->object_path,
                           target_interface_name,
                           target_method_name,
@@ -2287,6 +2332,7 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
                           (GAsyncReadyCallback) reply_cb,
                           simple);
 
+ out:
   if (reply_type != NULL)
     g_variant_type_free (reply_type);
 
@@ -2392,9 +2438,9 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
   gboolean was_split;
   gchar *split_interface_name;
   const gchar *split_method_name;
-  const GDBusMethodInfo *expected_method_info;
   const gchar *target_method_name;
   const gchar *target_interface_name;
+  const gchar *destination;
   GVariantType *reply_type;
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
@@ -2403,32 +2449,37 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
   g_return_val_if_fail (timeout_msec == -1 || timeout_msec >= 0, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
+  reply_type = NULL;
+
   was_split = maybe_split_method_name (method_name, &split_interface_name, &split_method_name);
   target_method_name = was_split ? split_method_name : method_name;
   target_interface_name = was_split ? split_interface_name : proxy->priv->interface_name;
 
-  if (proxy->priv->expected_interface)
+  /* Warn if method is unexpected (cf. :g-interface-info) */
+  if (!was_split)
     {
-      expected_method_info = g_dbus_interface_info_lookup_method (proxy->priv->expected_interface, target_method_name);
-      if (expected_method_info == NULL)
+      const GDBusMethodInfo *expected_method_info;
+      expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
+      if (expected_method_info != NULL)
+        reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
+    }
+
+  destination = NULL;
+  if (proxy->priv->name != NULL)
+    {
+      destination = get_destination_for_call (proxy);
+      if (destination == NULL)
         {
-          g_warning ("Trying to invoke method `%s' which isn't in expected interface `%s'",
-                     target_method_name,
-                     target_interface_name);
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_FAILED,
+                               _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
+          goto out;
         }
     }
-  else
-    {
-      expected_method_info = NULL;
-    }
-
-  if (expected_method_info)
-    reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
-  else
-    reply_type = NULL;
 
   ret = g_dbus_connection_call_sync (proxy->priv->connection,
-                                     proxy->priv->name_owner,
+                                     destination,
                                      proxy->priv->object_path,
                                      target_interface_name,
                                      target_method_name,
@@ -2439,6 +2490,7 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
                                      cancellable,
                                      error);
 
+ out:
   if (reply_type != NULL)
     g_variant_type_free (reply_type);
 
