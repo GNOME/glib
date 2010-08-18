@@ -1196,9 +1196,12 @@ g_irepository_enumerate_versions (GIRepository *repository,
    * available versions, as it could have been loaded using
    * require_private().
    */
-  loaded_version = g_irepository_get_version (NULL, namespace_);
-  if (loaded_version && !g_list_find_custom (ret, loaded_version, g_str_equal))
-    ret = g_list_prepend (ret, g_strdup (loaded_version));
+  if (g_irepository_is_registered (repository, namespace_, NULL))
+    {
+      loaded_version = g_irepository_get_version (repository, namespace_);
+      if (loaded_version && !g_list_find_custom (ret, loaded_version, g_str_equal))
+        ret = g_list_prepend (ret, g_strdup (loaded_version));
+    }
 
   return ret;
 }
