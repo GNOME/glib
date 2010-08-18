@@ -28,6 +28,7 @@
 #include <gio/giotypes.h>
 
 #include <gio/gappinfo.h>
+#include <gio/gactiongroup.h>
 #include <gio/gapplication.h>
 #include <gio/gasyncinitable.h>
 #include <gio/gasyncresult.h>
