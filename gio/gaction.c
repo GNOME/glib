@@ -19,7 +19,9 @@
  * Authors: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
 #include "gaction.h"
+#include "glibintl.h"
 
 G_DEFINE_TYPE (GAction, g_action, G_TYPE_OBJECT)
 
@@ -229,36 +231,52 @@ g_action_class_init (GActionClass *class)
    *
    * @parameter will always be of the expected type.  In the event that
    * an incorrect type was given, no signal will be emitted.
-   **/
+   *
+   * Since: 2.26
+   */
   g_action_signals[SIGNAL_ACTIVATE] =
-    g_signal_new ("activate", G_TYPE_ACTION, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("activate"),
+                  G_TYPE_ACTION,
+                  G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GActionClass, activate),
-                  NULL, NULL, g_cclosure_marshal_VOID__VARIANT,
-                  G_TYPE_NONE, 1, G_TYPE_VARIANT);
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__VARIANT,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_VARIANT);
 
   /**
    * GAction:name:
    *
    * The name of the action.  This is mostly meaningful for identifying
    * the action once it has been added to a #GActionGroup.
+   *
+   * Since: 2.26
    **/
   g_object_class_install_property (object_class, PROP_NAME,
-    g_param_spec_string ("name", "action name",
-                         "the name used to invoke the action",
-                         NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY |
-                         G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_string ("name",
+                                                        P_("Action Name"),
+                                                        P_("The name used to invoke the action"),
+                                                        NULL,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
+                                                        G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:parameter-type:
    *
    * The type of the parameter that must be given when activating the
    * action.
+   *
+   * Since: 2.26
    **/
   g_object_class_install_property (object_class, PROP_PARAMETER_TYPE,
-    g_param_spec_boxed ("parameter-type", "parameter type",
-                        "the type of GVariant passed to activate()",
-                        G_TYPE_VARIANT_TYPE, G_PARAM_READWRITE |
-                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boxed ("parameter-type",
+                                                       P_("Parameter Type"),
+                                                       P_("The type of GVariant passed to activate()"),
+                                                       G_TYPE_VARIANT_TYPE,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:enabled:
@@ -267,35 +285,51 @@ g_action_class_init (GActionClass *class)
    *
    * If the action is disabled then calls to g_action_activate() and
    * g_action_set_state() have no effect.
+   *
+   * Since: 2.26
    **/
   g_object_class_install_property (object_class, PROP_ENABLED,
-    g_param_spec_boolean ("enabled", "enabled",
-                          "if the action can be activated", TRUE,
-                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
-                          G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boolean ("enabled",
+                                                         P_("Enabled"),
+                                                         P_("If the action can be activated"),
+                                                         TRUE,
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:state-type:
    *
    * The #GVariantType of the state that the action has, or %NULL if the
    * action is stateless.
+   *
+   * Since: 2.26
    **/
   g_object_class_install_property (object_class, PROP_STATE_TYPE,
-    g_param_spec_boxed ("state-type", "state type",
-                        "the type of the state kept by the action",
-                        G_TYPE_VARIANT_TYPE, G_PARAM_READWRITE |
-                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_boxed ("state-type",
+                                                       P_("State Type"),
+                                                       P_("The type of the state kept by the action"),
+                                                       G_TYPE_VARIANT_TYPE,
+                                                       G_PARAM_READWRITE |
+                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:state:
    *
    * The state of the action, or %NULL if the action is stateless.
+   *
+   * Since: 2.26
    **/
   g_object_class_install_property (object_class, PROP_STATE,
-    g_param_spec_variant ("state", "state", "the state the action is in",
-                          G_VARIANT_TYPE_ANY, NULL,
-                          G_PARAM_CONSTRUCT | G_PARAM_READWRITE |
-                          G_PARAM_STATIC_STRINGS));
+                                   g_param_spec_variant ("state",
+                                                         P_("State"),
+                                                         P_("The state the action is in"),
+                                                         G_VARIANT_TYPE_ANY,
+                                                         NULL,
+                                                         G_PARAM_CONSTRUCT |
+                                                         G_PARAM_READWRITE |
+                                                         G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (class, sizeof (GActionPrivate));
 }
@@ -462,8 +496,7 @@ g_action_get_state_hint (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), NULL);
 
-  return G_ACTION_GET_CLASS (action)
-    ->get_state_hint (action);
+  return G_ACTION_GET_CLASS (action)->get_state_hint (action);
 }
 
 /**
@@ -539,13 +572,13 @@ g_action_activate (GAction  *action,
                      g_variant_is_of_type (parameter,
                                            action->priv->parameter_type)));
 
-  if (parameter)
+  if (parameter != NULL)
     g_variant_ref_sink (parameter);
 
   if (action->priv->enabled)
     g_signal_emit (action, g_action_signals[SIGNAL_ACTIVATE], 0, parameter);
 
-  if (parameter)
+  if (parameter != NULL)
     g_variant_unref (parameter);
 }
 

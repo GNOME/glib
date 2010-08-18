@@ -19,8 +19,11 @@
  * Authors: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
 #include "gactiongroup.h"
+#include "gaction.h"
 #include "gio-marshal.h"
+#include "glibintl.h"
 
 /**
  * SECTION:gactiongroup
@@ -73,13 +76,18 @@ g_action_group_class_init (GActionGroupClass *class)
    *
    * Signals that a new action was just added to the group.  This signal
    * is emitted after the action has been added and is now visible.
+   *
+   * Since: 2.26
    **/
   g_action_group_signals[SIGNAL_ACTION_ADDED] =
-    g_signal_new ("action-added",
-                  G_TYPE_ACTION_GROUP, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("action-added"),
+                  G_TYPE_ACTION_GROUP,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GActionGroupClass, action_added),
-                  NULL, NULL, g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1, G_TYPE_STRING);
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
 
   /**
    * GActionGroup::action-removed:
@@ -89,13 +97,18 @@ g_action_group_class_init (GActionGroupClass *class)
    * Signals that an action is just about to be removed from the group.
    * This signal is emitted before the action is removed, so the action
    * is still visible and can be queried from the signal handler.
+   *
+   * Since: 2.26
    **/
   g_action_group_signals[SIGNAL_ACTION_REMOVED] =
-    g_signal_new ("action-removed",
-                  G_TYPE_ACTION_GROUP, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("action-removed"),
+                  G_TYPE_ACTION_GROUP,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GActionGroupClass, action_removed),
-                  NULL, NULL, g_cclosure_marshal_VOID__STRING,
-                  G_TYPE_NONE, 1, G_TYPE_STRING);
+                  NULL, NULL,
+                  g_cclosure_marshal_VOID__STRING,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_STRING);
 
 
   /**
@@ -105,13 +118,19 @@ g_action_group_class_init (GActionGroupClass *class)
    * @enabled: whether the action is enabled or not
    *
    * Signals that the enabled status of the named action has changed.
+   *
+   * Since: 2.26
    **/
   g_action_group_signals[SIGNAL_ACTION_ENABLED_CHANGED] =
-    g_signal_new ("action-enabled-changed",
-                  G_TYPE_ACTION_GROUP, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("action-enabled-changed"),
+                  G_TYPE_ACTION_GROUP,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GActionGroupClass, action_enabled_changed),
-                  NULL, NULL, _gio_marshal_VOID__STRING_BOOLEAN,
-                  G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+                  NULL, NULL,
+                  _gio_marshal_VOID__STRING_BOOLEAN,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_STRING,
+                  G_TYPE_BOOLEAN);
 
   /**
    * GActionGroup::action-state-changed:
@@ -120,14 +139,19 @@ g_action_group_class_init (GActionGroupClass *class)
    * @value: the new value of the state
    *
    * Signals that the state of the named action has changed.
+   *
+   * Since: 2.26
    **/
   g_action_group_signals[SIGNAL_ACTION_STATE_CHANGED] =
-    g_signal_new ("action-state-changed",
-                  G_TYPE_ACTION_GROUP, G_SIGNAL_RUN_LAST,
+    g_signal_new (I_("action-state-changed"),
+                  G_TYPE_ACTION_GROUP,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
                   G_STRUCT_OFFSET (GActionGroupClass, action_state_changed),
-                  NULL, NULL, _gio_marshal_VOID__STRING_VARIANT,
-                  G_TYPE_NONE, 2, G_TYPE_STRING, G_TYPE_VARIANT);
-
+                  NULL, NULL,
+                  _gio_marshal_VOID__STRING_VARIANT,
+                  G_TYPE_NONE, 2,
+                  G_TYPE_STRING,
+                  G_TYPE_VARIANT);
 }
 
 /**
@@ -146,8 +170,9 @@ g_action_group_class_init (GActionGroupClass *class)
 gchar **
 g_action_group_list_actions (GActionGroup *action_group)
 {
-  return G_ACTION_GROUP_GET_CLASS (action_group)
-    ->list_actions (action_group);
+  g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
+
+  return G_ACTION_GROUP_GET_CLASS (action_group)->list_actions (action_group);
 }
 
 /**
@@ -165,8 +190,9 @@ gboolean
 g_action_group_has_action (GActionGroup *action_group,
                            const gchar  *action_name)
 {
-  return G_ACTION_GROUP_GET_CLASS (action_group)
-    ->has_action (action_group, action_name);
+  g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), FALSE);
+
+  return G_ACTION_GROUP_GET_CLASS (action_group)->has_action (action_group, action_name);
 }
 
 /**
@@ -188,7 +214,7 @@ g_action_group_has_action (GActionGroup *action_group,
  * possible for an action to be removed and for a new action to be added
  * with the same name but a different parameter type.
  *
- * Returns: (allow-none): the parameter type
+ * Return value: the parameter type
  *
  * Since: 2.26
  **/
@@ -196,8 +222,9 @@ const GVariantType *
 g_action_group_get_parameter_type (GActionGroup *action_group,
                                    const gchar  *action_name)
 {
-  return G_ACTION_GROUP_GET_CLASS (action_group)
-    ->get_parameter_type (action_group, action_name);
+  g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
+
+  return G_ACTION_GROUP_GET_CLASS (action_group)->get_parameter_type (action_group, action_name);
 }
 
 /**
@@ -225,12 +252,13 @@ g_action_group_get_parameter_type (GActionGroup *action_group,
  *
  * Since: 2.26
  **/
- const GVariantType *
+const GVariantType *
 g_action_group_get_state_type (GActionGroup *action_group,
                                const gchar  *action_name)
 {
-  return G_ACTION_GROUP_GET_CLASS (action_group)
-    ->get_state_type (action_group, action_name);
+  g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
+
+  return G_ACTION_GROUP_GET_CLASS (action_group)->get_state_type (action_group, action_name);
 }
 
 /**
@@ -257,16 +285,17 @@ g_action_group_get_state_type (GActionGroup *action_group,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Returns: (allow-none): the state range hint
+ * Return value: the state range hint
  *
  * Since: 2.26
  **/
 GVariant *
 g_action_group_get_state_hint (GActionGroup *action_group,
-                                const gchar  *action_name)
+                               const gchar  *action_name)
 {
-  return G_ACTION_GROUP_GET_CLASS (action_group)
-    ->get_state_hint (action_group, action_name);
+  g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
+
+  return G_ACTION_GROUP_GET_CLASS (action_group)->get_state_hint (action_group, action_name);
 }
 
 /**
@@ -279,7 +308,7 @@ g_action_group_get_state_hint (GActionGroup *action_group,
  * An action must be enabled in order to be activated or in order to
  * have its state changed from outside callers.
  *
- * Returns: whether or not the action is currently enabled
+ * Return value: whether or not the action is currently enabled
  *
  * Since: 2.26
  **/
@@ -287,8 +316,9 @@ gboolean
 g_action_group_get_enabled (GActionGroup *action_group,
                             const gchar  *action_name)
 {
-  return G_ACTION_GROUP_GET_CLASS (action_group)
-    ->get_enabled (action_group, action_name);
+  g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), FALSE);
+
+  return G_ACTION_GROUP_GET_CLASS (action_group)->get_enabled (action_group, action_name);
 }
 
 /**
@@ -305,7 +335,7 @@ g_action_group_get_enabled (GActionGroup *action_group,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Returns: (allow-none): the current state of the action
+ * Return value: the current state of the action
  *
  * Since: 2.26
  **/
@@ -313,8 +343,9 @@ GVariant *
 g_action_group_get_state (GActionGroup *action_group,
                           const gchar  *action_name)
 {
-  return G_ACTION_GROUP_GET_CLASS (action_group)
-    ->get_state (action_group, action_name);
+  g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
+
+  return G_ACTION_GROUP_GET_CLASS (action_group)->get_state (action_group, action_name);
 }
 
 /**
@@ -340,8 +371,11 @@ g_action_group_set_state (GActionGroup *action_group,
                           const gchar  *action_name,
                           GVariant     *value)
 {
-  G_ACTION_GROUP_GET_CLASS (action_group)
-    ->set_state (action_group, action_name, value);
+  g_return_if_fail (G_IS_ACTION_GROUP (action_group));
+  g_return_if_fail (action_name != NULL);
+  g_return_if_fail (value != NULL);
+
+  G_ACTION_GROUP_GET_CLASS (action_group)->set_state (action_group, action_name, value);
 }
 
 /**
@@ -364,8 +398,10 @@ g_action_group_activate (GActionGroup *action_group,
                          const gchar  *action_name,
                          GVariant     *parameter)
 {
-  G_ACTION_GROUP_GET_CLASS (action_group)
-    ->activate (action_group, action_name, parameter);
+  g_return_if_fail (G_IS_ACTION_GROUP (action_group));
+  g_return_if_fail (action_name != NULL);
+
+  G_ACTION_GROUP_GET_CLASS (action_group)->activate (action_group, action_name, parameter);
 }
 
 /**
@@ -373,7 +409,7 @@ g_action_group_activate (GActionGroup *action_group,
  * @action_group: a #GActionGroup
  * @action_name: the name of an action in the group
  *
- * Emits the "action-added" signal on @action_group.
+ * Emits the #GActionGroup::action-added signal on @action_group.
  *
  * This function should only be called by #GActionGroup implementations.
  *
@@ -383,9 +419,13 @@ void
 g_action_group_action_added (GActionGroup *action_group,
                              const gchar  *action_name)
 {
+  g_return_if_fail (G_IS_ACTION_GROUP (action_group));
+  g_return_if_fail (action_name != NULL);
+
   g_signal_emit (action_group,
                  g_action_group_signals[SIGNAL_ACTION_ADDED],
-                 g_quark_try_string (action_name), action_name);
+                 g_quark_try_string (action_name),
+                 action_name);
 }
 
 /**
@@ -393,7 +433,7 @@ g_action_group_action_added (GActionGroup *action_group,
  * @action_group: a #GActionGroup
  * @action_name: the name of an action in the group
  *
- * Emits the "action-removed" signal on @action_group.
+ * Emits the #GActionGroup::action-removed signal on @action_group.
  *
  * This function should only be called by #GActionGroup implementations.
  *
@@ -403,9 +443,13 @@ void
 g_action_group_action_removed (GActionGroup *action_group,
                                const gchar  *action_name)
 {
+  g_return_if_fail (G_IS_ACTION_GROUP (action_group));
+  g_return_if_fail (action_name != NULL);
+
   g_signal_emit (action_group,
                  g_action_group_signals[SIGNAL_ACTION_REMOVED],
-                 g_quark_try_string (action_name), action_name);
+                 g_quark_try_string (action_name),
+                 action_name);
 }
 
 /**
@@ -414,7 +458,7 @@ g_action_group_action_removed (GActionGroup *action_group,
  * @action_name: the name of an action in the group
  * @enabled: whether or not the action is now enabled
  *
- * Emits the "action-enabled-changed" signal on @action_group.
+ * Emits the #GActionGroup::action-enabled-changed signal on @action_group.
  *
  * This function should only be called by #GActionGroup implementations.
  *
@@ -425,9 +469,16 @@ g_action_group_action_enabled_changed (GActionGroup *action_group,
                                        const gchar  *action_name,
                                        gboolean      enabled)
 {
+  g_return_if_fail (G_IS_ACTION_GROUP (action_group));
+  g_return_if_fail (action_name != NULL);
+
+  enabled = !!enabled;
+
   g_signal_emit (action_group,
                  g_action_group_signals[SIGNAL_ACTION_ENABLED_CHANGED],
-                 g_quark_try_string (action_name), action_name);
+                 g_quark_try_string (action_name),
+                 action_name,
+                 enabled);
 }
 
 /**
@@ -436,7 +487,7 @@ g_action_group_action_enabled_changed (GActionGroup *action_group,
  * @action_name: the name of an action in the group
  * @state: the new state of the named action
  *
- * Emits the "action-state-changed" signal on @action_group.
+ * Emits the #GActionGroup::action-state-changed signal on @action_group.
  *
  * This function should only be called by #GActionGroup implementations.
  *
@@ -447,7 +498,12 @@ g_action_group_action_state_changed (GActionGroup *action_group,
                                      const gchar  *action_name,
                                      GVariant     *state)
 {
+  g_return_if_fail (G_IS_ACTION_GROUP (action_group));
+  g_return_if_fail (action_name != NULL);
+
   g_signal_emit (action_group,
                  g_action_group_signals[SIGNAL_ACTION_STATE_CHANGED],
-                 g_quark_try_string (action_name), action_name);
+                 g_quark_try_string (action_name),
+                 action_name,
+                 state);
 }
