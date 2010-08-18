@@ -24,8 +24,7 @@
 #ifndef __G_UNIX_CREDENTIALS_MESSAGE_H__
 #define __G_UNIX_CREDENTIALS_MESSAGE_H__
 
-#include <gio/giotypes.h>
-#include <gio/gsocketcontrolmessage.h>
+#include <gio/gio.h>
 
 G_BEGIN_DECLS
 
