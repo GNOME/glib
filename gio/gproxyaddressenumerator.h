@@ -70,4 +70,6 @@ struct _GProxyAddressEnumeratorClass
 
 GType           g_proxy_address_enumerator_get_type    (void) G_GNUC_CONST;
 
+G_END_DECLS
+
 #endif /* __G_PROXY_ADDRESS_ENUMERATOR_H__ */
