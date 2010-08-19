@@ -257,7 +257,7 @@ test_themed_icon (void)
   g_assert_cmpstr (names[0], ==, "first");
   g_assert_cmpstr (names[1], ==, "testicon");
   g_assert_cmpstr (names[2], ==, "last");
-  g_assert_cmpuint (g_icon_hash (icon1), ==, 3193088045);
+  g_assert_cmpuint (g_icon_hash (icon1), ==, 3193088045U);
 
   icon2 = g_themed_icon_new_from_names ((gchar**)names2, -1);
   g_assert (g_icon_equal (icon1, icon2));

@@ -250,7 +250,7 @@ main (int argc, char** argv)
   gint i;
 
   /* Try to get all the leap year cases. */
-  GDateYear check_years[] = {
+  int check_years[] = {
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
     11, 12, 13, 14, 98, 99, 100, 101, 102, 103, 397,
     398, 399, 400, 401, 402, 403, 404, 405, 406,

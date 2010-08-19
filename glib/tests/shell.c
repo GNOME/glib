@@ -68,11 +68,11 @@ static CmdlineTest cmdline_tests[] =
 };
 
 static gboolean
-strv_equal (const gchar **a, const gchar **b)
+strv_equal (gchar **a, gchar **b)
 {
   gint i;
 
-  if (g_strv_length ((gchar**)a) != g_strv_length ((gchar **)b))
+  if (g_strv_length (a) != g_strv_length (b))
     return FALSE;
 
   for (i = 0; a[i]; i++)

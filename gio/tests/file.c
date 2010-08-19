@@ -396,6 +396,7 @@ test_create_delete (gconstpointer d)
 {
   GError *error;
   CreateDeleteData *data;
+  int tmpfd;
 
   data = g_new0 (CreateDeleteData, 1);
 
@@ -403,7 +404,12 @@ test_create_delete (gconstpointer d)
   data->data = "abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ0123456789";
   data->pos = 0;
 
-  data->monitor_path = tempnam ("/tmp", "g_file_create_delete_");
+  /* Using tempnam() would be easier here, but causes a compile warning */
+  tmpfd = g_file_open_tmp ("g_file_create_delete_XXXXXX",
+			   &data->monitor_path, NULL);
+  g_assert_cmpint (tmpfd, !=, -1);
+  close (tmpfd);
+  remove (data->monitor_path);
 
   data->file = g_file_new_for_path (data->monitor_path);
   g_assert (!g_file_query_exists  (data->file, NULL));
@@ -521,6 +527,7 @@ test_replace_load (void)
 {
   ReplaceLoadData *data;
   gchar *path;
+  int tmpfd;
 
   data = g_new0 (ReplaceLoadData, 1);
   data->again = TRUE;
@@ -553,7 +560,13 @@ test_replace_load (void)
     " * make a backup of @file.\n"
     " **/\n";
 
-  path = tempnam ("/tmp", "g_file_replace_load_");
+  /* Using tempnam() would be easier here, but causes a compile warning */
+  tmpfd = g_file_open_tmp ("g_file_replace_load_XXXXXX",
+			   &path, NULL);
+  g_assert_cmpint (tmpfd, !=, -1);
+  close (tmpfd);
+  remove (path);
+
   data->file = g_file_new_for_path (path);
   g_assert (!g_file_query_exists (data->file, NULL));
 

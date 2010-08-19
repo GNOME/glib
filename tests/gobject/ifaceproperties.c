@@ -425,7 +425,7 @@ main (gint   argc,
   GObjectClass *object_class;
   TestIfaceClass *iface_vtable;
   GParamSpec **properties;
-  gint n_properties;
+  guint n_properties;
   
   gint val1, val2, val3, val4;
 	

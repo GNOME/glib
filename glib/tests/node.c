@@ -356,7 +356,7 @@ copy_up (gconstpointer src,
   l = GPOINTER_TO_INT (src);
   u = g_ascii_toupper (l);
 
-  return GINT_TO_POINTER (u);
+  return GINT_TO_POINTER ((int)u);
 }
 
 static void

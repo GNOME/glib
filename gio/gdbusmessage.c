@@ -899,7 +899,7 @@ read_string (GMemoryInputStream    *mis,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
                        _("Wanted to read %lu bytes but got EOF"),
-                       to_read);
+                       (gulong)to_read);
           goto fail;
         }
 
