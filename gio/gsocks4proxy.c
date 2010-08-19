@@ -39,8 +39,6 @@ struct _GSocks4ProxyClass
   GSocks4aProxyClass parent_class;
 };
 
-static void g_socks4_proxy_iface_init (GProxyInterface *proxy_iface);
-
 #define g_socks4_proxy_get_type _g_socks4_proxy_get_type
 G_DEFINE_TYPE_WITH_CODE (GSocks4Proxy, g_socks4_proxy, G_TYPE_SOCKS4A_PROXY,
 			 _g_io_modules_ensure_extension_points_registered ();

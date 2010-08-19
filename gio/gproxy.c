@@ -200,7 +200,7 @@ g_proxy_supports_hostname (GProxy *proxy)
 {
   GProxyInterface *iface;
 
-  g_return_val_if_fail (G_IS_PROXY (proxy), NULL);
+  g_return_val_if_fail (G_IS_PROXY (proxy), FALSE);
 
   iface = G_PROXY_GET_IFACE (proxy);
 
