@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-08-04 18:41+0000\n"
-"PO-Revision-Date: 2010-08-05 12:10+0200\n"
+"POT-Creation-Date: 2010-08-18 15:44+0000\n"
+"PO-Revision-Date: 2010-08-19 21:16+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,72 +93,72 @@ msgstr "Ninguna aplicación con nombre «%s» registró un marcador para «%s»"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Falló la expansión de la la linea ejecutable «%s» con el URI «%s»"
 
-#: ../glib/gconvert.c:436 ../glib/gconvert.c:514 ../glib/giochannel.c:1403
+#: ../glib/gconvert.c:557 ../glib/gconvert.c:635 ../glib/giochannel.c:1403
 #: ../gio/gcharsetconverter.c:458
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr ""
 "La conversión desde el conjunto de caracteres «%s» a «%s» no está soportada"
 
-#: ../glib/gconvert.c:440 ../glib/gconvert.c:518
+#: ../glib/gconvert.c:561 ../glib/gconvert.c:639
 #: ../gio/gcharsetconverter.c:462
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "No se pudo abrir el conversor de «%s» a «%s»"
 
-#: ../glib/gconvert.c:637 ../glib/gconvert.c:1030 ../glib/giochannel.c:1575
+#: ../glib/gconvert.c:758 ../glib/gconvert.c:1151 ../glib/giochannel.c:1575
 #: ../glib/giochannel.c:1617 ../glib/giochannel.c:2461 ../glib/gutf8.c:988
 #: ../glib/gutf8.c:1443 ../gio/gcharsetconverter.c:345
 msgid "Invalid byte sequence in conversion input"
 msgstr "Hay una secuencia de bytes no válida en la entrada de conversión"
 
-#: ../glib/gconvert.c:645 ../glib/gconvert.c:955 ../glib/giochannel.c:1582
+#: ../glib/gconvert.c:766 ../glib/gconvert.c:1076 ../glib/giochannel.c:1582
 #: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Falló durante la conversión: %s"
 
-#: ../glib/gconvert.c:677 ../glib/gutf8.c:984 ../glib/gutf8.c:1194
+#: ../glib/gconvert.c:798 ../glib/gutf8.c:984 ../glib/gutf8.c:1194
 #: ../glib/gutf8.c:1335 ../glib/gutf8.c:1439
 msgid "Partial character sequence at end of input"
 msgstr "Hay una secuencia parcial de caracteres en el final de la entrada"
 
-#: ../glib/gconvert.c:927
+#: ../glib/gconvert.c:1048
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "No se puede convertir el fallback «%s» al conjunto de códigos «%s»"
 
-#: ../glib/gconvert.c:1750
+#: ../glib/gconvert.c:1871
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "El URI «%s» no es una URI absoluta utilizando el esquema «file»"
 
-#: ../glib/gconvert.c:1760
+#: ../glib/gconvert.c:1881
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "El archivo local en la URI «%s» no debe incluir un «#»"
 
-#: ../glib/gconvert.c:1777
+#: ../glib/gconvert.c:1898
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "El URI «%s» es inválida"
 
-#: ../glib/gconvert.c:1789
+#: ../glib/gconvert.c:1910
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "El nombre del host de la URI «%s» es inválido"
 
-#: ../glib/gconvert.c:1805
+#: ../glib/gconvert.c:1926
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "El URI «%s» contiene caracteres de escape inválidos"
 
-#: ../glib/gconvert.c:1900
+#: ../glib/gconvert.c:2021
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "El nombre de la ruta «%s» no es una ruta absoluta"
 
-#: ../glib/gconvert.c:1910
+#: ../glib/gconvert.c:2031
 msgid "Invalid hostname"
 msgstr "El nombre del host es inválido"
 
@@ -548,306 +548,306 @@ msgstr ""
 "El documento termina inesperadamente dentro de un comentario o instrucción "
 "de proceso"
 
-#: ../glib/gregex.c:130
+#: ../glib/gregex.c:184
 msgid "corrupted object"
 msgstr "objeto corrupto"
 
-#: ../glib/gregex.c:132
+#: ../glib/gregex.c:186
 msgid "internal error or corrupted object"
 msgstr "error interno u objeto corrupto"
 
-#: ../glib/gregex.c:134
+#: ../glib/gregex.c:188
 msgid "out of memory"
 msgstr "sin memoria"
 
-#: ../glib/gregex.c:139
+#: ../glib/gregex.c:193
 msgid "backtracking limit reached"
 msgstr "se alcanzó el límite de «backtracking»"
 
-#: ../glib/gregex.c:151 ../glib/gregex.c:159
+#: ../glib/gregex.c:205 ../glib/gregex.c:213
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "el patrón contiene elementos no soportados para una coincidencia parcial"
 
-#: ../glib/gregex.c:153 ../gio/glocalfile.c:2109
+#: ../glib/gregex.c:207 ../gio/glocalfile.c:2109
 msgid "internal error"
 msgstr "error interno"
 
-#: ../glib/gregex.c:161
+#: ../glib/gregex.c:215
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "no se soportan referencias anteriores como condiciones para coincidencias "
 "parciales"
 
-#: ../glib/gregex.c:170
+#: ../glib/gregex.c:224
 msgid "recursion limit reached"
 msgstr "se alcanzó el límite de recursividad"
 
-#: ../glib/gregex.c:172
+#: ../glib/gregex.c:226
 msgid "workspace limit for empty substrings reached"
 msgstr "límite del espacio de trabajo cuando se alcanzan subcadenas vacías"
 
-#: ../glib/gregex.c:174
+#: ../glib/gregex.c:228
 msgid "invalid combination of newline flags"
 msgstr "combinación de banderas de nueva línea inválidas"
 
-#: ../glib/gregex.c:178
+#: ../glib/gregex.c:232
 msgid "unknown error"
 msgstr "error desconocido"
 
-#: ../glib/gregex.c:198
+#: ../glib/gregex.c:252
 msgid "\\ at end of pattern"
 msgstr "\\ al final del patrón"
 
-#: ../glib/gregex.c:201
+#: ../glib/gregex.c:255
 msgid "\\c at end of pattern"
 msgstr "\\c al final del patrón"
 
-#: ../glib/gregex.c:204
+#: ../glib/gregex.c:258
 msgid "unrecognized character follows \\"
 msgstr "carácter no reconocido después de \\"
 
-#: ../glib/gregex.c:211
+#: ../glib/gregex.c:265
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr ""
 "aquí no se permite escapar las letras (\\l, \\L, \\u, \\U) (mayúscula y "
 "minúscula)"
 
-#: ../glib/gregex.c:214
+#: ../glib/gregex.c:268
 msgid "numbers out of order in {} quantifier"
 msgstr "números fuera de rango en el cuantificador {}"
 
-#: ../glib/gregex.c:217
+#: ../glib/gregex.c:271
 msgid "number too big in {} quantifier"
 msgstr "número demasiado grande en el cuantificador {}"
 
-#: ../glib/gregex.c:220
+#: ../glib/gregex.c:274
 msgid "missing terminating ] for character class"
 msgstr "falta la terminación ] para la clase de carácter"
 
-#: ../glib/gregex.c:223
+#: ../glib/gregex.c:277
 msgid "invalid escape sequence in character class"
 msgstr "secuencia de escape no válida en la clase de carácter"
 
-#: ../glib/gregex.c:226
+#: ../glib/gregex.c:280
 msgid "range out of order in character class"
 msgstr "rango fuera de orden en la clase de carácter"
 
-#: ../glib/gregex.c:229
+#: ../glib/gregex.c:283
 msgid "nothing to repeat"
 msgstr "nada que repetir"
 
-#: ../glib/gregex.c:232
+#: ../glib/gregex.c:286
 msgid "unrecognized character after (?"
 msgstr "carácter no reconocido después de (?"
 
-#: ../glib/gregex.c:236
+#: ../glib/gregex.c:290
 msgid "unrecognized character after (?<"
 msgstr "carácter no reconocido después de (?<"
 
-#: ../glib/gregex.c:240
+#: ../glib/gregex.c:294
 msgid "unrecognized character after (?P"
 msgstr "carácter no reconocido después de (?P"
 
-#: ../glib/gregex.c:243
+#: ../glib/gregex.c:297
 msgid "POSIX named classes are supported only within a class"
 msgstr "Sólo se soportan las clases con nombres POSIX dentro de una clase"
 
-#: ../glib/gregex.c:246
+#: ../glib/gregex.c:300
 msgid "missing terminating )"
 msgstr "falta el ) de terminación"
 
-#: ../glib/gregex.c:250
+#: ../glib/gregex.c:304
 msgid ") without opening ("
 msgstr ") sin ( que lo abriera"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:257
+#: ../glib/gregex.c:311
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R o los dígitos (?[+-] deben estar seguidos por )"
 
-#: ../glib/gregex.c:260
+#: ../glib/gregex.c:314
 msgid "reference to non-existent subpattern"
 msgstr "referencia a un subpatrón no existente"
 
-#: ../glib/gregex.c:263
+#: ../glib/gregex.c:317
 msgid "missing ) after comment"
 msgstr "falta ) después del comentario"
 
-#: ../glib/gregex.c:266
+#: ../glib/gregex.c:320
 msgid "regular expression too large"
 msgstr "la expresión regular es demasiado larga"
 
-#: ../glib/gregex.c:269
+#: ../glib/gregex.c:323
 msgid "failed to get memory"
 msgstr "falló al obtener memoria"
 
-#: ../glib/gregex.c:272
+#: ../glib/gregex.c:326
 msgid "lookbehind assertion is not fixed length"
 msgstr "la comprobación «lookbehind» no tiene una longitud fija"
 
-#: ../glib/gregex.c:275
+#: ../glib/gregex.c:329
 msgid "malformed number or name after (?("
 msgstr "número o nombre mal formado después de (?("
 
-#: ../glib/gregex.c:278
+#: ../glib/gregex.c:332
 msgid "conditional group contains more than two branches"
 msgstr "el grupo condicional contiene más de dos ramas"
 
-#: ../glib/gregex.c:281
+#: ../glib/gregex.c:335
 msgid "assertion expected after (?("
 msgstr "se esperaba una comprobación después de (?("
 
-#: ../glib/gregex.c:284
+#: ../glib/gregex.c:338
 msgid "unknown POSIX class name"
 msgstr "nombre de clase POSIX desconocido"
 
-#: ../glib/gregex.c:287
+#: ../glib/gregex.c:341
 msgid "POSIX collating elements are not supported"
 msgstr "los elementos POSIX recopilados no están soportados"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:344
 msgid "character value in \\x{...} sequence is too large"
 msgstr "el valor del carácter en la secuencia \\x{…} es demasiado largo"
 
-#: ../glib/gregex.c:293
+#: ../glib/gregex.c:347
 msgid "invalid condition (?(0)"
 msgstr "condición no válida (?(0)"
 
-#: ../glib/gregex.c:296
+#: ../glib/gregex.c:350
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "no se permite \\C en comprobaciones «lookbehind»"
 
-#: ../glib/gregex.c:299
+#: ../glib/gregex.c:353
 msgid "recursive call could loop indefinitely"
 msgstr "una llamada recursiva podrá crear un bucle infinito"
 
-#: ../glib/gregex.c:302
+#: ../glib/gregex.c:356
 msgid "missing terminator in subpattern name"
 msgstr "falta el terminador en el nombre del subpatrón"
 
-#: ../glib/gregex.c:305
+#: ../glib/gregex.c:359
 msgid "two named subpatterns have the same name"
 msgstr "dos subpatrones tienen el mismo nombre"
 
-#: ../glib/gregex.c:308
+#: ../glib/gregex.c:362
 msgid "malformed \\P or \\p sequence"
 msgstr "secuencia \\P o \\p mal formada"
 
-#: ../glib/gregex.c:311
+#: ../glib/gregex.c:365
 msgid "unknown property name after \\P or \\p"
 msgstr "nombre de propiedad desconocido después de \\P o \\p"
 
-#: ../glib/gregex.c:314
+#: ../glib/gregex.c:368
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "el nombre del subpatrón es demasiado largo (máximo 32 caracteres)"
 
-#: ../glib/gregex.c:317
+#: ../glib/gregex.c:371
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "demasiados subpatrones con nombre (máximo 10.000)"
 
-#: ../glib/gregex.c:320
+#: ../glib/gregex.c:374
 msgid "octal value is greater than \\377"
 msgstr "el valor octal es mayor que \\377"
 
-#: ../glib/gregex.c:323
+#: ../glib/gregex.c:377
 msgid "DEFINE group contains more than one branch"
 msgstr "el grupo DEFINE contiene más de una rama"
 
-#: ../glib/gregex.c:326
+#: ../glib/gregex.c:380
 msgid "repeating a DEFINE group is not allowed"
 msgstr "no se permite repetir un grupo DEFINE"
 
-#: ../glib/gregex.c:329
+#: ../glib/gregex.c:383
 msgid "inconsistent NEWLINE options"
 msgstr "opciones NEWLINE inconsistentes"
 
-#: ../glib/gregex.c:332
+#: ../glib/gregex.c:386
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "\\g no está seguido por un nombre de llave o un número distinto de cero con "
 "una llave opcional"
 
-#: ../glib/gregex.c:337
+#: ../glib/gregex.c:391
 msgid "unexpected repeat"
 msgstr "repetición inesperada"
 
-#: ../glib/gregex.c:341
+#: ../glib/gregex.c:395
 msgid "code overflow"
 msgstr "desbordamiento de código"
 
-#: ../glib/gregex.c:345
+#: ../glib/gregex.c:399
 msgid "overran compiling workspace"
 msgstr "se desbordó el espacio de trabajo de compilación"
 
-#: ../glib/gregex.c:349
+#: ../glib/gregex.c:403
 msgid "previously-checked referenced subpattern not found"
 msgstr "no se encontró el subpatrón referenciado anteriormente comprobado"
 
-#: ../glib/gregex.c:521 ../glib/gregex.c:1638
+#: ../glib/gregex.c:575 ../glib/gregex.c:1696
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Error al coincidir con la expresión regular %s: %s"
 
-#: ../glib/gregex.c:1093
+#: ../glib/gregex.c:1151
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "La biblioteca PCRE está compilada sin soporte para UTF8"
 
-#: ../glib/gregex.c:1102
+#: ../glib/gregex.c:1160
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 "La biblioteca PCRE está compilada sin soporte para las propiedades de UTF8"
 
-#: ../glib/gregex.c:1156
+#: ../glib/gregex.c:1214
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Error al compilar la expresión regular %s en el carácter %d: %s"
 
-#: ../glib/gregex.c:1192
+#: ../glib/gregex.c:1250
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Error al optimizar la expresión regular %s: %s"
 
-#: ../glib/gregex.c:2066
+#: ../glib/gregex.c:2124
 msgid "hexadecimal digit or '}' expected"
 msgstr "se esperaba un dígito hexadecimal o «}»"
 
-#: ../glib/gregex.c:2082
+#: ../glib/gregex.c:2140
 msgid "hexadecimal digit expected"
 msgstr "se esperaba un dígito hexadecimal"
 
-#: ../glib/gregex.c:2122
+#: ../glib/gregex.c:2180
 msgid "missing '<' in symbolic reference"
 msgstr "falta «<» en la referencia simbólica"
 
-#: ../glib/gregex.c:2131
+#: ../glib/gregex.c:2189
 msgid "unfinished symbolic reference"
 msgstr "referencia de símbolo sin terminar"
 
-#: ../glib/gregex.c:2138
+#: ../glib/gregex.c:2196
 msgid "zero-length symbolic reference"
 msgstr "referencia simbólica de longitud cero"
 
-#: ../glib/gregex.c:2149
+#: ../glib/gregex.c:2207
 msgid "digit expected"
 msgstr "se esperaba un dígito"
 
-#: ../glib/gregex.c:2167
+#: ../glib/gregex.c:2225
 msgid "illegal symbolic reference"
 msgstr "referencia simbólica ilegal"
 
-#: ../glib/gregex.c:2229
+#: ../glib/gregex.c:2287
 msgid "stray final '\\'"
 msgstr "«\\» al final de la cadena"
 
-#: ../glib/gregex.c:2233
+#: ../glib/gregex.c:2291
 msgid "unknown escape sequence"
 msgstr "secuencia de escape desconocida"
 
-#: ../glib/gregex.c:2243
+#: ../glib/gregex.c:2301
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Error al analizar el texto de reemplazo «%s» en el carácter %lu: %s"
@@ -997,61 +997,61 @@ msgstr "Secuencia inválida en la entrada de conversión"
 msgid "Character out of range for UTF-16"
 msgstr "El carácter se sale del rango para UTF-16"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:756
 msgid "Usage:"
 msgstr "Uso:"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:756
 msgid "[OPTION...]"
 msgstr "[OPCIÓN…]"
 
-#: ../glib/goption.c:860
+#: ../glib/goption.c:862
 msgid "Help Options:"
 msgstr "Opciones de ayuda:"
 
-#: ../glib/goption.c:861
+#: ../glib/goption.c:863
 msgid "Show help options"
 msgstr "Mostrar opciones de ayuda"
 
-#: ../glib/goption.c:867
+#: ../glib/goption.c:869
 msgid "Show all help options"
 msgstr "Muestra todas las opciones de ayuda"
 
-#: ../glib/goption.c:929
+#: ../glib/goption.c:931
 msgid "Application Options:"
 msgstr "Opciones de la aplicación:"
 
-#: ../glib/goption.c:991 ../glib/goption.c:1061
+#: ../glib/goption.c:993 ../glib/goption.c:1063
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "No se puede analizar el valor entero «%s» para %s"
 
-#: ../glib/goption.c:1001 ../glib/goption.c:1069
+#: ../glib/goption.c:1003 ../glib/goption.c:1071
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "El valor entero «%s» para %s está fuera de rango"
 
-#: ../glib/goption.c:1026
+#: ../glib/goption.c:1028
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "No se puede analizar el valor doble «%s» para %s"
 
-#: ../glib/goption.c:1034
+#: ../glib/goption.c:1036
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "El valor doble «%s» para %s está fuera de rango"
 
-#: ../glib/goption.c:1297 ../glib/goption.c:1376
+#: ../glib/goption.c:1299 ../glib/goption.c:1378
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Error al analizar la opción: %s"
 
-#: ../glib/goption.c:1407 ../glib/goption.c:1521
+#: ../glib/goption.c:1409 ../glib/goption.c:1523
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Falta un argumento para %s"
 
-#: ../glib/goption.c:1916
+#: ../glib/goption.c:1918
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opción desconocida %s"
@@ -1178,20 +1178,20 @@ msgstr "El valor «%s» no puede interpretarse como un booleano."
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:681
-#: ../gio/goutputstream.c:197 ../gio/goutputstream.c:720
+#: ../gio/goutputstream.c:197 ../gio/goutputstream.c:724
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "El valor de conteo pasado a %s es demasiado largo"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:891
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1195
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1199
 msgid "Stream is already closed"
 msgstr "El flujo ya se cerró"
 
 #: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1544
 #: ../gio/gdbusconnection.c:1633 ../gio/gdbusconnection.c:1811
-#: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:650
-#: ../gio/gsimpleasyncresult.c:676
+#: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:755
+#: ../gio/gsimpleasyncresult.c:781
 msgid "Operation was cancelled"
 msgstr "Se canceló la operación"
 
@@ -1385,7 +1385,7 @@ msgstr ""
 "No se puede determinar la dirección del bus de sesión (no implementado para "
 "este SO)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5984
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5986
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1394,7 +1394,7 @@ msgstr ""
 "No se puede determinar la dirección del bus desde la variable de entorno "
 "DBUS_STARTER_BUS_TYPE; variable «%s» desconocida"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5993
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5995
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1563,7 +1563,7 @@ msgstr "La interfaz «%s» no existe"
 msgid "No such interface"
 msgstr "No existe tal interfaz"
 
-#: ../gio/gdbusconnection.c:4233 ../gio/gdbusconnection.c:5934
+#: ../gio/gdbusconnection.c:4233 ../gio/gdbusconnection.c:5936
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No existe la interfaz «%s» en el objeto en la ruta %s"
@@ -1653,7 +1653,6 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:939
 #, c-format
-#| msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr ""
 "Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte %d"
@@ -1670,7 +1669,6 @@ msgstr "El valor analizado «%s» no es una firma de D-Bus válida"
 
 #: ../gio/gdbusmessage.c:1218
 #, c-format
-#| msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes."
 msgid ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr ""
@@ -1693,7 +1691,6 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1590
 #, c-format
-#| msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
@@ -1771,12 +1768,12 @@ msgstr ""
 "El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es «(%"
 "s)»"
 
-#: ../gio/gdbusmessage.c:2810
+#: ../gio/gdbusmessage.c:2813
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Error al devolver el cuerpo de tipo «%s»"
 
-#: ../gio/gdbusmessage.c:2818
+#: ../gio/gdbusmessage.c:2821
 msgid "Error return with empty body"
 msgstr "Error al devolver un cuepro vacío"
 
@@ -1786,21 +1783,17 @@ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr ""
 "El tipo del valor devuelto es incorrecto, se obtuvo «%s», se esperaba «%s»"
 
-#: ../gio/gdbusmethodinvocation.c:389 ../gio/gsocket.c:2871
-#: ../gio/gsocket.c:2952
+#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:2934
+#: ../gio/gsocket.c:3015
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Error al enviar el mensaje: %s"
 
-#: ../gio/gdbusprivate.c:885
-msgid "Error writing first 16 bytes of message to socket: "
-msgstr "Error al escribir los primeros 16 bytes del mensaje en el socket: "
-
-#: ../gio/gdbusprivate.c:1406
+#: ../gio/gdbusprivate.c:1687
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "No se puede cargar /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:710
+#: ../gio/gdbusproxy.c:714
 #, c-format
 msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
@@ -1809,15 +1802,24 @@ msgstr ""
 "Intentando establecer la propiedad %s del tipo %s pero según la interfaz "
 "esperada el tipo es %s"
 
-#: ../gio/gdbusproxy.c:1231
+#: ../gio/gdbusproxy.c:1235
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Error al llamar StartSereviceByName para %s: "
 
-#: ../gio/gdbusproxy.c:1252
+#: ../gio/gdbusproxy.c:1256
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Respuesta %d no esperada del método StartServiceByName(«%s»)"
+
+#: ../gio/gdbusproxy.c:2317 ../gio/gdbusproxy.c:2476
+msgid ""
+"Cannot invoke method; proxy is for a well-known name without an owner and "
+"proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
+msgstr ""
+"No se puede invocar al método; el proxy no tiene dueño para un nombre "
+"conocido y el proxy se construyó con la opción "
+"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
 #: ../gio/gdbusserver.c:710
 msgid "Abstract name space not supported"
@@ -2252,7 +2254,7 @@ msgstr "El flujo de entrada no implementa la lectura"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:901 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1205
+#: ../gio/goutputstream.c:1209
 msgid "Stream has outstanding operation"
 msgstr "El flujo tiene una operación excepcional"
 
@@ -2554,7 +2556,7 @@ msgstr "El archivo se modificó externamente"
 msgid "Error removing old file: %s"
 msgstr "Error al eliminar el archivo antiguo: %s"
 
-#: ../gio/gmemoryinputstream.c:486 ../gio/gmemoryoutputstream.c:717
+#: ../gio/gmemoryinputstream.c:486 ../gio/gmemoryoutputstream.c:746
 msgid "Invalid GSeekType supplied"
 msgstr "Se proporcionó un GSeekType no válido"
 
@@ -2566,15 +2568,15 @@ msgstr "Petición de búsqueda no válida"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "No se puede truncar GMemoryInputStream"
 
-#: ../gio/gmemoryoutputstream.c:467
+#: ../gio/gmemoryoutputstream.c:496
 msgid "Memory output stream not resizable"
 msgstr "El flujo de salida de la memoria no es redimensionable"
 
-#: ../gio/gmemoryoutputstream.c:483
+#: ../gio/gmemoryoutputstream.c:512
 msgid "Failed to resize memory output stream"
 msgstr "Falló al redimensionar el flujo de salida de la memoria"
 
-#: ../gio/gmemoryoutputstream.c:571
+#: ../gio/gmemoryoutputstream.c:600
 msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
@@ -2582,11 +2584,11 @@ msgstr ""
 "La cantidad de memoria necesaria para procesar el escrito es mayor que el "
 "espacio de direcciones libre disponible"
 
-#: ../gio/gmemoryoutputstream.c:727
+#: ../gio/gmemoryoutputstream.c:756
 msgid "Requested seek before the beginning of the stream"
 msgstr "La búsqueda solicitada antes del inicio del flujo"
 
-#: ../gio/gmemoryoutputstream.c:736
+#: ../gio/gmemoryoutputstream.c:765
 msgid "Requested seek beyond the end of the stream"
 msgstr "La búsqueda solicitada después del final del flujo"
 
@@ -2653,7 +2655,7 @@ msgstr "El nombre del equipo «%s» contiene «[» pero no «]»"
 msgid "Output stream doesn't implement write"
 msgstr "El flujo de salida no implementa la escritura"
 
-#: ../gio/goutputstream.c:368 ../gio/goutputstream.c:844
+#: ../gio/goutputstream.c:368 ../gio/goutputstream.c:848
 msgid "Source stream is already closed"
 msgstr "El flujo de origen ya está cerrado"
 
@@ -3026,7 +3028,7 @@ msgstr "Socket no válido, falló la instalación debido a: %s"
 msgid "Socket is already closed"
 msgstr "El socket ya está cerrado"
 
-#: ../gio/gsocket.c:297 ../gio/gsocket.c:2619 ../gio/gsocket.c:2663
+#: ../gio/gsocket.c:297 ../gio/gsocket.c:2681 ../gio/gsocket.c:2725
 msgid "Socket I/O timed out"
 msgstr "Expiró la E/S del socket"
 
@@ -3035,7 +3037,7 @@ msgstr "Expiró la E/S del socket"
 msgid "creating GSocket from fd: %s"
 msgstr "creando el GSocket desde fd: %s"
 
-#: ../gio/gsocket.c:453 ../gio/gsocket.c:469 ../gio/gsocket.c:2021
+#: ../gio/gsocket.c:453 ../gio/gsocket.c:469 ../gio/gsocket.c:2083
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "No se pudo crear el socket: %s"
@@ -3082,45 +3084,45 @@ msgstr "Conexión en progreso"
 msgid "Error connecting: %s"
 msgstr "Error al conectar: %s"
 
-#: ../gio/gsocket.c:1669 ../gio/gsocket.c:3376
+#: ../gio/gsocket.c:1669 ../gio/gsocket.c:3439
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "No se pudo obtener el error pendiente: %s"
 
-#: ../gio/gsocket.c:1765
+#: ../gio/gsocket.c:1796
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Error al recibir los datos: %s"
 
-#: ../gio/gsocket.c:1908
+#: ../gio/gsocket.c:1970
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Error al enviar los datos: %s"
 
-#: ../gio/gsocket.c:2100
+#: ../gio/gsocket.c:2162
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Error al cerrar el socket: %s"
 
-#: ../gio/gsocket.c:2612
+#: ../gio/gsocket.c:2674
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Esperando la condición del socket: %s"
 
-#: ../gio/gsocket.c:2896
+#: ../gio/gsocket.c:2959
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage no está soportado en win32"
 
-#: ../gio/gsocket.c:3155 ../gio/gsocket.c:3296
+#: ../gio/gsocket.c:3218 ../gio/gsocket.c:3359
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Error al recibir el mensaje: %s"
 
-#: ../gio/gsocket.c:3391
+#: ../gio/gsocket.c:3454
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials no está implementado en este SO"
 
-#: ../gio/gsocketclient.c:520 ../gio/gsocketclient.c:769
+#: ../gio/gsocketclient.c:587 ../gio/gsocketclient.c:840
 msgid "Unknown error on connect"
 msgstr "Error desconocido al conectar"
 
@@ -3263,22 +3265,25 @@ msgstr "Error al cerrar el manejador: %s"
 msgid "Error writing to handle: %s"
 msgstr "Error al escribir en el manejador: %s"
 
-#: ../gio/gzlibcompressor.c:278 ../gio/gzlibdecompressor.c:249
+#: ../gio/gzlibcompressor.c:393 ../gio/gzlibdecompressor.c:346
 msgid "Not enough memory"
 msgstr "No hay suficiente memoria"
 
-#: ../gio/gzlibcompressor.c:285 ../gio/gzlibdecompressor.c:256
+#: ../gio/gzlibcompressor.c:400 ../gio/gzlibdecompressor.c:353
 #, c-format
 msgid "Internal error: %s"
 msgstr "Error interno: %s"
 
-#: ../gio/gzlibcompressor.c:298 ../gio/gzlibdecompressor.c:270
+#: ../gio/gzlibcompressor.c:413 ../gio/gzlibdecompressor.c:367
 msgid "Need more input"
 msgstr "Se necesita más entrada"
 
-#: ../gio/gzlibdecompressor.c:242
+#: ../gio/gzlibdecompressor.c:339
 msgid "Invalid compressed data"
 msgstr "Datos comprimidos no válidos"
+
+#~ msgid "Error writing first 16 bytes of message to socket: "
+#~ msgstr "Error al escribir los primeros 16 bytes del mensaje en el socket: "
 
 #~ msgid "Encountered array of length %"
 #~ msgstr "Se encontró un vector de longitud %"
