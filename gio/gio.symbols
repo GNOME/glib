@@ -1910,3 +1910,13 @@ g_action_set_state
 #endif
 #endif
 
+#if IN_HEADER(__G_SIMPLE_ACTION_GROUP_H__)
+#if IN_FILE(__G_SIMPLE_ACTION_GROUP_C__)
+g_simple_action_group_get_type G_GNUC_CONST
+g_simple_action_group_insert
+g_simple_action_group_lookup
+g_simple_action_group_new
+g_simple_action_group_remove
+g_simple_action_group_set_enabled
+#endif
+#endif
