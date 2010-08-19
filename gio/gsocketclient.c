@@ -89,6 +89,7 @@ struct _GSocketClientPrivate
   GSocketAddress *local_address;
   guint timeout;
   gboolean enable_proxy;
+  GHashTable *app_proxies;
 };
 
 static GSocket *
@@ -147,6 +148,10 @@ g_socket_client_init (GSocketClient *client)
 					      G_TYPE_SOCKET_CLIENT,
 					      GSocketClientPrivate);
   client->priv->type = G_SOCKET_TYPE_STREAM;
+  client->priv->app_proxies = g_hash_table_new_full (g_str_hash,
+						     g_str_equal,
+						     g_free,
+						     NULL);
 }
 
 /**
@@ -175,6 +180,8 @@ g_socket_client_finalize (GObject *object)
 
   if (G_OBJECT_CLASS (g_socket_client_parent_class)->finalize)
     (*G_OBJECT_CLASS (g_socket_client_parent_class)->finalize) (object);
+
+  g_hash_table_unref (client->priv->app_proxies);
 }
 
 static void
@@ -735,7 +742,8 @@ g_socket_client_connect (GSocketClient       *client,
               g_object_unref (old_connection);
 	      g_object_unref (proxy);
 	    }
-	  else
+	  else if (!g_hash_table_lookup_extended (client->priv->app_proxies,
+						  protocol, NULL, NULL))
 	    {
 	      g_set_error (&last_error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED,
 			   _("Proxy protocol '%s' is not supported."),
@@ -1044,7 +1052,8 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
                              data);
       g_object_unref (proxy);
     }
-  else
+  else if (!g_hash_table_lookup_extended (data->client->priv->app_proxies,
+					  protocol, NULL, NULL))
     {
       g_clear_error (&data->last_error);
 
@@ -1440,4 +1449,32 @@ g_socket_client_connect_to_uri_finish (GSocketClient  *client,
 				       GError        **error)
 {
   return g_socket_client_connect_finish (client, result, error);
+}
+
+/**
+ * g_socket_client_add_application_proxy:
+ * @client: a #GSocketClient
+ * @protocol: The proxy protocol
+ *
+ * Enable proxy protocols to be handled by the application. When the
+ * indicated proxy protocol is returned by the #GProxyResolver,
+ * #GSocketClient will consider this protocol as supported but will
+ * not try find a #GProxy instance to handle handshaking. The
+ * application must check for this case by calling
+ * g_socket_connection_get_remote_address() on the returned
+ * #GSocketConnection, and seeing if it's a #GProxyAddress of the
+ * appropriate type, to determine whether or not it needs to handle
+ * the proxy handshaking itself.
+ *
+ * This should be used for proxy protocols that are dialects of
+ * another protocol such as HTTP proxy. It also allows cohabitation of
+ * proxy protocols that are reused between protocols. A good example
+ * is HTTP. It can be used to proxy HTTP, FTP and Gopher and can also
+ * be use as generic socket proxy through the HTTP CONNECT method.
+ */
+void
+g_socket_client_add_application_proxy (GSocketClient *client,
+			               const gchar   *protocol)
+{
+  g_hash_table_insert (client->priv->app_proxies, g_strdup (protocol), NULL);
 }

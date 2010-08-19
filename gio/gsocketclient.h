@@ -144,6 +144,8 @@ void                    g_socket_client_connect_to_uri_async            (GSocket
 GSocketConnection *     g_socket_client_connect_to_uri_finish           (GSocketClient        *client,
                                                                          GAsyncResult         *result,
                                                                          GError              **error);
+void			g_socket_client_add_application_proxy		(GSocketClient        *client,
+									 const gchar          *protocol);
 
 G_END_DECLS
 

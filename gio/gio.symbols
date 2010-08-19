@@ -1370,6 +1370,7 @@ g_socket_client_set_protocol
 g_socket_client_set_socket_type
 g_socket_client_set_timeout
 g_socket_client_set_enable_proxy
+g_socket_client_add_application_proxy
 #endif
 #endif
 

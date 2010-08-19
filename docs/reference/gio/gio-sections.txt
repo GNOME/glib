@@ -1778,6 +1778,7 @@ GSocketPrivate
 <FILE>gsocketclient</FILE>
 <TITLE>GSocketClient</TITLE>
 GSocketClient
+g_socket_client_add_application_proxy
 g_socket_client_new
 g_socket_client_connect
 g_socket_client_connect_async
