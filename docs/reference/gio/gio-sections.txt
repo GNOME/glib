@@ -1838,7 +1838,7 @@ GSocketPrivate
 <FILE>gsocketclient</FILE>
 <TITLE>GSocketClient</TITLE>
 GSocketClient
-g_socket_client_add_application_proxy
+GSocketClientEvent
 g_socket_client_new
 g_socket_client_connect
 g_socket_client_connect_async
@@ -1868,6 +1868,7 @@ g_socket_client_get_timeout
 g_socket_client_get_enable_proxy
 g_socket_client_get_tls
 g_socket_client_get_tls_validation_flags
+g_socket_client_add_application_proxy
 <SUBSECTION Standard>
 GSocketClientClass
 G_IS_SOCKET_CLIENT

@@ -8,6 +8,7 @@ int cancel_timeout = 0;
 int io_timeout = 0;
 gboolean async = FALSE;
 gboolean graceful = FALSE;
+gboolean verbose = FALSE;
 static GOptionEntry cmd_entries[] = {
   {"cancel", 'c', 0, G_OPTION_ARG_INT, &cancel_timeout,
    "Cancel any op after the specified amount of seconds", NULL},
@@ -17,6 +18,8 @@ static GOptionEntry cmd_entries[] = {
    "Use graceful disconnect", NULL},
   {"timeout", 't', 0, G_OPTION_ARG_INT, &io_timeout,
    "Time out socket I/O after the specified number of seconds", NULL},
+  {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
+   "Verbose debugging output", NULL},
   {NULL}
 };
 
@@ -56,6 +59,24 @@ async_cb (GObject *source_object,
   g_main_loop_quit (loop);
 }
 
+static void
+socket_client_event (GSocketClient *client,
+		     GSocketClientEvent event,
+		     GSocketConnectable *connectable,
+		     GSocketConnection *connection)
+{
+  static GEnumClass *event_class;
+  GTimeVal tv;
+
+  if (!event_class)
+    event_class = g_type_class_ref (G_TYPE_SOCKET_CLIENT_EVENT);
+
+  g_get_current_time (&tv);
+  printf ("% 12ld.%06ld GSocketClient => %s [%s]\n",
+	  tv.tv_sec, tv.tv_usec,
+	  g_enum_get_value (event_class, event)->value_nick,
+	  connection ? G_OBJECT_TYPE_NAME (connection) : "");
+}
 
 int
 main (int argc, char *argv[])
@@ -103,6 +124,8 @@ main (int argc, char *argv[])
   client = g_socket_client_new ();
   if (io_timeout)
     g_socket_client_set_timeout (client, io_timeout);
+  if (verbose)
+    g_signal_connect (client, "event", G_CALLBACK (socket_client_event), NULL);
 
   if (async)
     {

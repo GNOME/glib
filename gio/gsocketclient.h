@@ -52,12 +52,16 @@ struct _GSocketClientClass
 {
   GObjectClass parent_class;
 
+  void (* event) (GSocketClient       *client,
+		  GSocketClientEvent  event,
+		  GSocketConnectable  *connectable,
+		  GIOStream           *connection);
+
   /* Padding for future expansion */
   void (*_g_reserved1) (void);
   void (*_g_reserved2) (void);
   void (*_g_reserved3) (void);
   void (*_g_reserved4) (void);
-  void (*_g_reserved5) (void);
 };
 
 struct _GSocketClient

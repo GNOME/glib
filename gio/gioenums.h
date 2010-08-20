@@ -1517,6 +1517,44 @@ typedef enum {
   G_IO_MODULE_SCOPE_BLOCK_DUPLICATES
 } GIOModuleScopeFlags;
 
+/**
+ * GSocketClientEvent:
+ * @G_SOCKET_CLIENT_RESOLVING: The client is doing a DNS lookup.
+ * @G_SOCKET_CLIENT_RESOLVED: The client has completed a DNS lookup.
+ * @G_SOCKET_CLIENT_CONNECTING: The client is connecting to a remote
+ *   host (either a proxy or the destination server).
+ * @G_SOCKET_CLIENT_CONNECTED: The client has connected to a remote
+ *   host.
+ * @G_SOCKET_CLIENT_PROXY_NEGOTIATING: The client is negotiating
+ *   with a proxy to connect to the destination server.
+ * @G_SOCKET_CLIENT_PROXY_NEGOTIATED: The client has negotiated
+ *   with the proxy server.
+ * @G_SOCKET_CLIENT_TLS_HANDSHAKING: The client is performing a
+ *   TLS handshake.
+ * @G_SOCKET_CLIENT_TLS_HANDSHAKED: The client has performed a
+ *   TLS handshake.
+ * @G_SOCKET_CLIENT_COMPLETE: The client is done with a particular
+ *   #GSocketConnectable.
+ *
+ * Describes an event occurring on a #GSocketClient. See the
+ * #GSocketClient::event signal for more details.
+ *
+ * Additional values may be added to this type in the future.
+ *
+ * Since: 2.32
+ */
+typedef enum {
+  G_SOCKET_CLIENT_RESOLVING,
+  G_SOCKET_CLIENT_RESOLVED,
+  G_SOCKET_CLIENT_CONNECTING,
+  G_SOCKET_CLIENT_CONNECTED,
+  G_SOCKET_CLIENT_PROXY_NEGOTIATING,
+  G_SOCKET_CLIENT_PROXY_NEGOTIATED,
+  G_SOCKET_CLIENT_TLS_HANDSHAKING,
+  G_SOCKET_CLIENT_TLS_HANDSHAKED,
+  G_SOCKET_CLIENT_COMPLETE
+} GSocketClientEvent;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */
