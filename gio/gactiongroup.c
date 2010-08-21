@@ -155,7 +155,7 @@ g_action_group_class_init (GActionGroupClass *class)
 }
 
 /**
- * g_action_group_has_action:
+ * g_action_group_list_actions:
  * @action_group: a #GActionGroup
  *
  * Lists the actions contained within @action_group.
@@ -163,7 +163,7 @@ g_action_group_class_init (GActionGroupClass *class)
  * The caller is responsible for freeing the list with g_strfreev() when
  * it is no longer required.
  *
- * Returns: a list of the actions in the group
+ * Returns: a %NULL-terminated array of the names of the actions in the group
  *
  * Since: 2.26
  **/
