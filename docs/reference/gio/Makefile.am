@@ -36,6 +36,7 @@ IGNORE_HFILES=				\
 	gdbusprivate.h			\
 	gdbus-sessionbus.h		\
 	gdbus-tests.h			\
+	gdummyproxyresolver.h		\
 	testenums.h			\
 	gdelayedsettingsbackend.h	\
 	gdummyfile.h			\
@@ -67,6 +68,7 @@ IGNORE_HFILES=				\
 	gnetworkingprivate.h		\
 	gnullsettingsbackend.h		\
 	gpollfilemonitor.h		\
+	gproxyconnection.h		\
 	gsettingsbackendinternal.h	\
 	gsettingsschema.h		\
 	gsettings-mapping.h		\
