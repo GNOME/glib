@@ -96,6 +96,40 @@ test_simple_group (void)
   g_assert (!a.did_run);
 }
 
+static void
+test_stateful (void)
+{
+  GAction *action;
+
+  action = g_action_new_stateful ("foo", NULL, g_variant_new_string ("hihi"));
+  g_assert (g_variant_type_equal (g_action_get_state_type (action),
+                                  G_VARIANT_TYPE_STRING));
+  g_assert_cmpstr (g_variant_get_string (g_action_get_state (action), NULL),
+                   ==, "hihi");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_action_set_state (action, g_variant_new_int32 (123));
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+
+  g_action_set_state (action, g_variant_new_string ("hello"));
+  g_assert_cmpstr (g_variant_get_string (g_action_get_state (action), NULL),
+                   ==, "hello");
+
+  g_object_unref (action);
+
+  action = g_action_new ("foo", NULL);
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_action_set_state (action, g_variant_new_int32 (123));
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_object_unref (action);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -104,6 +138,7 @@ main (int argc, char **argv)
 
   g_test_add_func ("/actions/basic", test_basic);
   g_test_add_func ("/actions/simplegroup", test_simple_group);
+  g_test_add_func ("/actions/stateful", test_stateful);
 
   return g_test_run ();
 }

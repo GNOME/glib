@@ -67,9 +67,8 @@ struct _GActionPrivate
 {
   gchar        *name;
   GVariantType *parameter_type;
-  gboolean      enabled;
-
-  GVariantType *state_type;
+  guint         enabled : 1;
+  guint         state_set : 1;
   GVariant     *state;
 };
 
@@ -137,14 +136,29 @@ g_action_set_property (GObject *object, guint prop_id,
       g_action_set_enabled (action, g_value_get_boolean (value));
       break;
 
-    case PROP_STATE_TYPE:
-      g_assert (action->priv->state_type == NULL);
-      action->priv->state_type = g_value_dup_boxed (value);
-      break;
-
     case PROP_STATE:
-      if (g_value_get_variant (value))
+      /* PROP_STATE is marked as G_PARAM_CONSTRUCT so we always get a
+       * call during object construction, even if it is NULL.  We treat
+       * that first call differently, for a number of reasons.
+       *
+       * First, we don't want the value to be rejected by the
+       * possibly-overridden .set_state() function.  Second, we don't
+       * want to be tripped by the assertions in g_action_set_state()
+       * that would enforce the catch22 that we only provide a value of
+       * the same type as the existing value (when there is not yet an
+       * existing value).
+       */
+      if (action->priv->state_set)
         g_action_set_state (action, g_value_get_variant (value));
+
+      else /* this is the special case */
+        {
+          /* only do it the first time. */
+          action->priv->state_set = TRUE;
+
+          /* blindly set it. */
+          action->priv->state = g_value_dup_variant (value);
+        }
       break;
 
     default:
@@ -193,8 +207,6 @@ g_action_finalize (GObject *object)
   g_free (action->priv->name);
   if (action->priv->parameter_type)
     g_variant_type_free (action->priv->parameter_type);
-  if (action->priv->state_type)
-    g_variant_type_free (action->priv->state_type);
   if (action->priv->state)
     g_variant_unref (action->priv->state);
 
@@ -310,8 +322,7 @@ g_action_class_init (GActionClass *class)
                                                        P_("State Type"),
                                                        P_("The type of the state kept by the action"),
                                                        G_TYPE_VARIANT_TYPE,
-                                                       G_PARAM_READWRITE |
-                                                       G_PARAM_CONSTRUCT_ONLY |
+                                                       G_PARAM_READABLE |
                                                        G_PARAM_STATIC_STRINGS));
 
   /**
@@ -354,9 +365,13 @@ void
 g_action_set_state (GAction  *action,
                     GVariant *value)
 {
+  const GVariantType *state_type;
+
   g_return_if_fail (G_IS_ACTION (action));
-  g_return_if_fail ((action->priv->state_type == NULL && value == NULL) ||
-                    g_variant_is_of_type (value, action->priv->state_type));
+  g_return_if_fail (value != NULL);
+  state_type = g_action_get_state_type (action);
+  g_return_if_fail (state_type != NULL);
+  g_return_if_fail (g_variant_is_of_type (value, state_type));
 
   g_variant_ref_sink (value);
 
@@ -377,10 +392,7 @@ g_action_set_state (GAction  *action,
  * action is stateful then the type of the return value is the type
  * given by g_action_get_state_type().
  *
- * The return value (if non-%NULL) should be freed with
- * g_variant_unref() when it is no longer required.
- *
- * Returns: (allow-none): the current state of the action
+ * Returns: (allow-none) (transfer none): the current state of the action
  *
  * Since: 2.26
  **/
@@ -461,7 +473,10 @@ g_action_get_state_type (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), NULL);
 
-  return action->priv->state_type;
+  if (action->priv->state != NULL)
+    return g_variant_get_type (action->priv->state);
+  else
+    return NULL;
 }
 
 /**
