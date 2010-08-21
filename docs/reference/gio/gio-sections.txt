@@ -2837,13 +2837,14 @@ g_proxy_address_get_type
 <TITLE>GProxy</TITLE>
 GProxy
 GProxyIface
+G_PROXY_EXTENSION_POINT_NAME
 g_proxy_connect
 g_proxy_connect_async
 g_proxy_connect_finish
 g_proxy_get_default_for_protocol
+g_proxy_supports_hostname
 <SUBSECTION Standard>
 G_PROXY
-G_PROXY_EXTENSION_POINT_NAME
 G_PROXY_GET_IFACE
 G_IS_PROXY
 G_TYPE_PROXY
