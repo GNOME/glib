@@ -340,6 +340,7 @@ g_network_service_get_scheme (GNetworkService *srv)
 /**
  * g_network_service_set_scheme:
  * @srv: a #GNetworkService
+ * @scheme: a URI scheme
  *
  * Set's the URI scheme used to resolve proxies. By default, the service name
  * is used as scheme.
@@ -347,7 +348,8 @@ g_network_service_get_scheme (GNetworkService *srv)
  * Since: 2.26
  */
 void
-g_network_service_set_scheme (GNetworkService *srv, const gchar *scheme)
+g_network_service_set_scheme (GNetworkService *srv,
+                              const gchar     *scheme)
 {
   g_return_if_fail (G_IS_NETWORK_SERVICE (srv));
 

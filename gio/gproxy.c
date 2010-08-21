@@ -82,25 +82,25 @@ g_proxy_get_default_for_protocol (const gchar *protocol)
 /**
  * g_proxy_connect:
  * @proxy: a #GProxy
- * @io_stream: a #GIOStream
+ * @connection: a #GIOStream
  * @proxy_address: a #GProxyAddress
  * @cancellable: a #GCancellable
  * @error: return #GError
  *
- * Given @io_stream to communicate with a proxy (eg, a
+ * Given @connection to communicate with a proxy (eg, a
  * #GSocketConnection that is connected to the proxy server), this
  * does the necessary handshake to connect to @proxy_address, and if
  * required, wraps the #GIOStream to handle proxy payload.
  *
- * Return value: a #GIOStream that will replace @io_stream. This might
- *               be the same as @io_stream, in which case a reference
+ * Return value: a #GIOStream that will replace @connection. This might
+ *               be the same as @connection, in which case a reference
  *               will be added.
  *
  * Since: 2.26
  */
 GIOStream *
 g_proxy_connect (GProxy            *proxy,
-		 GIOStream         *io_stream,
+		 GIOStream         *connection,
 		 GProxyAddress     *proxy_address,
 		 GCancellable      *cancellable,
 		 GError           **error)
@@ -112,7 +112,7 @@ g_proxy_connect (GProxy            *proxy,
   iface = G_PROXY_GET_IFACE (proxy);
 
   return (* iface->connect) (proxy,
-			     io_stream,
+			     connection,
 			     proxy_address,
 			     cancellable,
 			     error);
@@ -121,7 +121,7 @@ g_proxy_connect (GProxy            *proxy,
 /**
  * g_proxy_connect_async:
  * @proxy: a #GProxy
- * @io-stream: a #GIOStream
+ * @connection: a #GIOStream
  * @proxy_address: a #GProxyAddress
  * @cancellable: a #GCancellable
  * @callback: a #GAsyncReadyCallback
@@ -133,7 +133,7 @@ g_proxy_connect (GProxy            *proxy,
  */
 void
 g_proxy_connect_async (GProxy               *proxy,
-		       GIOStream            *io_stream,
+		       GIOStream            *connection,
 		       GProxyAddress        *proxy_address,
 		       GCancellable         *cancellable,
 		       GAsyncReadyCallback   callback,
@@ -146,7 +146,7 @@ g_proxy_connect_async (GProxy               *proxy,
   iface = G_PROXY_GET_IFACE (proxy);
 
   (* iface->connect_async) (proxy,
-			    io_stream,
+			    connection,
 			    proxy_address,
 			    cancellable,
 			    callback,
