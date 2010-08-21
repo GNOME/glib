@@ -115,8 +115,10 @@ g_action_real_get_state_hint (GAction *action)
 }
 
 static void
-g_action_set_property (GObject *object, guint prop_id,
-                       const GValue *value, GParamSpec *pspec)
+g_action_set_property (GObject      *object,
+                       guint         prop_id,
+                       const GValue *value,
+                       GParamSpec   *pspec)
 {
   GAction *action = G_ACTION (object);
 
@@ -167,8 +169,10 @@ g_action_set_property (GObject *object, guint prop_id,
 }
 
 static void
-g_action_get_property (GObject *object, guint prop_id,
-                       GValue *value, GParamSpec *pspec)
+g_action_get_property (GObject    *object,
+                       guint       prop_id,
+                       GValue     *value,
+                       GParamSpec *pspec)
 {
   GAction *action = G_ACTION (object);
 
@@ -565,7 +569,7 @@ g_action_set_enabled (GAction  *action,
 /**
  * g_action_activate:
  * @action: a #GAction
- * @parameter: the parameter to the activation
+ * @parameter: (allow-none): the parameter to the activation
  *
  * Activates the action.
  *
@@ -600,7 +604,7 @@ g_action_activate (GAction  *action,
 /**
  * g_action_new:
  * @name: the name of the action
- * @parameter_type: the type of parameter to the activate function
+ * @parameter_type: (allow-none): the type of parameter to the activate function
  *
  * Creates a new action.
  *
@@ -623,7 +627,7 @@ g_action_new (const gchar        *name,
 /**
  * g_action_new_stateful:
  * @name: the name of the action
- * @parameter_type: the type of the parameter to the activate function
+ * @parameter_type: (allow-none): the type of the parameter to the activate function
  * @state: the initial state of the action
  *
  * Creates a new stateful action.
