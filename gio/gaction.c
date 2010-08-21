@@ -363,6 +363,8 @@ g_action_class_init (GActionClass *class)
  * its state or may change its state to something other than @value.
  * See g_action_get_state_hint().
  *
+ * If the @value GVariant is floating, it is consumed.
+ *
  * Since: 2.26
  **/
 void
@@ -634,6 +636,8 @@ g_action_new (const gchar        *name,
  *
  * @state is the initial state of the action.  All future state values
  * must have the same #GVariantType as the initial state.
+ *
+ * If the @state GVariant is floating, it is consumed.
  *
  * Returns: a new #GAction
  *
