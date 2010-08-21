@@ -26,8 +26,31 @@ test_basic (void)
 {
   Activation a = { 0, };
   GAction *action;
+  const gchar *name;
+  GVariantType *parameter_type;
+  gboolean enabled;
+  GVariantType *state_type;
+  GVariant *state;
 
   action = g_action_new ("foo", NULL);
+  g_assert (g_action_get_enabled (action));
+  g_assert (g_action_get_parameter_type (action) == NULL);
+  g_assert (g_action_get_state_type (action) == NULL);
+  g_assert (g_action_get_state_hint (action) == NULL);
+  g_assert (g_action_get_state (action) == NULL);
+  g_object_get (action,
+                "name", &name,
+                "parameter-type", &parameter_type,
+                "enabled", &enabled,
+                "state-type", &state_type,
+                "state", &state,
+                 NULL);
+  g_assert_cmpstr (name, ==, "foo");
+  g_assert (parameter_type == NULL);
+  g_assert (enabled);
+  g_assert (state_type == NULL);
+  g_assert (state == NULL);
+
   g_signal_connect (action, "activate", G_CALLBACK (activate), &a);
   g_assert (!a.did_run);
   g_action_activate (action, NULL);
@@ -49,6 +72,12 @@ test_basic (void)
   g_assert (!a.did_run);
 
   action = g_action_new ("foo", G_VARIANT_TYPE_STRING);
+  g_assert (g_action_get_enabled (action));
+  g_assert (g_variant_type_equal (g_action_get_parameter_type (action), G_VARIANT_TYPE_STRING));
+  g_assert (g_action_get_state_type (action) == NULL);
+  g_assert (g_action_get_state_hint (action) == NULL);
+  g_assert (g_action_get_state (action) == NULL);
+
   g_signal_connect (action, "activate", G_CALLBACK (activate), &a);
   g_assert (!a.did_run);
   g_action_activate (action, g_variant_new_string ("Hello world"));
@@ -69,12 +98,59 @@ test_basic (void)
   g_assert (!a.did_run);
 }
 
+static gboolean
+strv_has_string (const gchar **haystack,
+                 const gchar  *needle)
+{
+  guint n;
+
+  for (n = 0; haystack != NULL && haystack[n] != NULL; n++)
+    {
+      if (g_strcmp0 (haystack[n], needle) == 0)
+        return TRUE;
+    }
+  return FALSE;
+}
+
+static gboolean
+strv_set_equal (const gchar **strv, ...)
+{
+  gint count;
+  va_list list;
+  const gchar *str;
+  gboolean res;
+
+  res = TRUE;
+  count = 0;
+  va_start (list, strv);
+  while (1)
+    {
+      str = va_arg (list, const gchar *);
+      if (str == NULL)
+        break;
+      if (!strv_has_string (strv, str))
+        {
+          res = FALSE;
+          break;
+        }
+      count++;
+    }
+  va_end (list);
+
+  if (res)
+    res = g_strv_length ((gchar**)strv) == count;
+
+  return res;
+}
+
 static void
 test_simple_group (void)
 {
   GSimpleActionGroup *group;
   Activation a = { 0, };
   GAction *action;
+  gchar **actions;
+  GVariant *state;
 
   action = g_action_new ("foo", NULL);
   g_signal_connect (action, "activate", G_CALLBACK (activate), &a);
@@ -91,6 +167,43 @@ test_simple_group (void)
   g_action_group_activate (G_ACTION_GROUP (group), "foo", NULL);
   g_assert (a.did_run);
 
+  action = g_action_new_stateful ("bar", G_VARIANT_TYPE_STRING, g_variant_new_string ("hihi"));
+  g_simple_action_group_insert (group, action);
+  g_object_unref (action);
+
+  g_assert (g_action_group_has_action (G_ACTION_GROUP (group), "foo"));
+  g_assert (g_action_group_has_action (G_ACTION_GROUP (group), "bar"));
+  g_assert (!g_action_group_has_action (G_ACTION_GROUP (group), "baz"));
+  actions = g_action_group_list_actions (G_ACTION_GROUP (group));
+  g_assert_cmpint (g_strv_length (actions), ==, 2);
+  g_assert (strv_set_equal (actions, "foo", "bar", NULL));
+  g_strfreev (actions);
+  g_assert (g_action_group_get_enabled (G_ACTION_GROUP (group), "foo"));
+  g_assert (g_action_group_get_enabled (G_ACTION_GROUP (group), "bar"));
+  g_assert (g_action_group_get_parameter_type (G_ACTION_GROUP (group), "foo") == NULL);
+  g_assert (g_variant_type_equal (g_action_group_get_parameter_type (G_ACTION_GROUP (group), "bar"), G_VARIANT_TYPE_STRING));
+  g_assert (g_action_group_get_state_type (G_ACTION_GROUP (group), "foo") == NULL);
+  g_assert (g_variant_type_equal (g_action_group_get_state_type (G_ACTION_GROUP (group), "bar"), G_VARIANT_TYPE_STRING));
+  g_assert (g_action_group_get_state_hint (G_ACTION_GROUP (group), "foo") == NULL);
+  g_assert (g_action_group_get_state_hint (G_ACTION_GROUP (group), "bar") == NULL);
+  g_assert (g_action_group_get_state (G_ACTION_GROUP (group), "foo") == NULL);
+  state = g_action_group_get_state (G_ACTION_GROUP (group), "bar");
+  g_assert (g_variant_type_equal (g_variant_get_type (state), G_VARIANT_TYPE_STRING));
+  g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hihi");
+
+  g_action_group_set_state (G_ACTION_GROUP (group), "bar", g_variant_new_string ("boo"));
+  state = g_action_group_get_state (G_ACTION_GROUP (group), "bar");
+  g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "boo");
+
+  g_simple_action_group_set_enabled (group, "bar", FALSE);
+  g_assert (!g_action_group_get_enabled (G_ACTION_GROUP (group), "bar"));
+
+  g_simple_action_group_remove (group, "bar");
+  action = g_simple_action_group_lookup (group, "foo");
+  g_assert_cmpstr (g_action_get_name (action), ==, "foo");
+  action = g_simple_action_group_lookup (group, "bar");
+  g_assert (action == NULL);
+
   a.did_run = FALSE;
   g_object_unref (group);
   g_assert (!a.did_run);
@@ -102,6 +215,9 @@ test_stateful (void)
   GAction *action;
 
   action = g_action_new_stateful ("foo", NULL, g_variant_new_string ("hihi"));
+  g_assert (g_action_get_enabled (action));
+  g_assert (g_action_get_parameter_type (action) == NULL);
+  g_assert (g_action_get_state_hint (action) == NULL);
   g_assert (g_variant_type_equal (g_action_get_state_type (action),
                                   G_VARIANT_TYPE_STRING));
   g_assert_cmpstr (g_variant_get_string (g_action_get_state (action), NULL),
