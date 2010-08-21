@@ -335,7 +335,7 @@ g_action_group_get_enabled (GActionGroup *action_group,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Return value: the current state of the action
+ * Return value: (allow-none) (transfer-none): the current state of the action
  *
  * Since: 2.26
  **/
