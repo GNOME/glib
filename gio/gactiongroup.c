@@ -364,6 +364,8 @@ g_action_group_get_state (GActionGroup *action_group,
  * its state or may change its state to something other than @value.
  * See g_action_group_get_state_hint().
  *
+ * If the @value GVariant is floating, it is consumed.
+ *
  * Since: 2.26
  **/
 void
