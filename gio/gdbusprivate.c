@@ -1007,6 +1007,7 @@ write_message_continue_writing (MessageToWriteData *data)
 #endif
   else
     {
+#ifdef G_OS_UNIX
       if (fd_list != NULL)
         {
           g_simple_async_result_set_error (simple,
@@ -1018,6 +1019,7 @@ write_message_continue_writing (MessageToWriteData *data)
           g_object_unref (simple);
           goto out;
         }
+#endif
 
       g_output_stream_write_async (ostream,
                                    (const gchar *) data->blob + data->total_written,
