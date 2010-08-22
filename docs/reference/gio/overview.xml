@@ -528,5 +528,17 @@
         by dconf.
       </para>
    </formalpara>
+
+   <formalpara>
+     <title>G_PROXY_EXTENSION_POINT_NAME</title>
+
+     <para>
+       Allows to provide implementations for network proxying.
+       Implementations of this extension point must provide the
+       #GProxy interface, and must be named after the network
+       protocol they are proxying.
+     </para>
+   </formalpara>
+
   </chapter>
 </part>
