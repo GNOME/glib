@@ -924,7 +924,7 @@ read_string (GMemoryInputStream    *mis,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
                    _("Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). "
-                     "The valid UTF-8 string up until that that point was `%s'"),
+                     "The valid UTF-8 string up until that point was `%s'"),
                    offset,
                    (gint) s->len,
                    valid_str);
