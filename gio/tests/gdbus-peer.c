@@ -42,6 +42,9 @@
 #include <sys/socket.h>
 #endif
 
+/* for SOCK_STREAM and AF_UNIX */
+#include <sys/socket.h>
+
 /* used in test_overflow */
 #ifdef G_OS_UNIX
 #include <gio/gunixconnection.h>
