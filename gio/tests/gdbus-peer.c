@@ -32,18 +32,9 @@
 /* for g_unlink() */
 #include <glib/gstdio.h>
 
+#include <gio/gnetworkingprivate.h>
 #include <gio/gunixsocketaddress.h>
 #include <gio/gunixfdlist.h>
-
-/* for struct ucred */
-#ifdef __linux__
-#define __USE_GNU
-#include <sys/types.h>
-#include <sys/socket.h>
-#endif
-
-/* for SOCK_STREAM and AF_UNIX */
-#include <sys/socket.h>
 
 /* used in test_overflow */
 #ifdef G_OS_UNIX
