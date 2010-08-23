@@ -279,8 +279,8 @@ g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
   return invocation->user_data;
 }
 
-/**
- * g_dbus_method_invocation_new:
+/* < internal >
+ * _g_dbus_method_invocation_new:
  * @sender: The bus name that invoked the method or %NULL if @connection is not a bus connection.
  * @object_path: The object path the method was invoked on.
  * @interface_name: The name of the D-Bus interface the method was invoked on.
@@ -298,15 +298,15 @@ g_dbus_method_invocation_get_user_data (GDBusMethodInvocation *invocation)
  * Since: 2.26
  */
 GDBusMethodInvocation *
-g_dbus_method_invocation_new (const gchar           *sender,
-                              const gchar           *object_path,
-                              const gchar           *interface_name,
-                              const gchar           *method_name,
-                              const GDBusMethodInfo *method_info,
-                              GDBusConnection       *connection,
-                              GDBusMessage          *message,
-                              GVariant              *parameters,
-                              gpointer               user_data)
+_g_dbus_method_invocation_new (const gchar           *sender,
+                               const gchar           *object_path,
+                               const gchar           *interface_name,
+                               const gchar           *method_name,
+                               const GDBusMethodInfo *method_info,
+                               GDBusConnection       *connection,
+                               GDBusMessage          *message,
+                               GVariant              *parameters,
+                               gpointer               user_data)
 {
   GDBusMethodInvocation *invocation;
 

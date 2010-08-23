@@ -36,15 +36,6 @@ G_BEGIN_DECLS
 #define G_IS_DBUS_METHOD_INVOCATION(o)        (G_TYPE_CHECK_INSTANCE_TYPE ((o), G_TYPE_DBUS_METHOD_INVOCATION))
 
 GType                  g_dbus_method_invocation_get_type             (void) G_GNUC_CONST;
-GDBusMethodInvocation *g_dbus_method_invocation_new                  (const gchar           *sender,
-                                                                      const gchar           *object_path,
-                                                                      const gchar           *interface_name,
-                                                                      const gchar           *method_name,
-                                                                      const GDBusMethodInfo *method_info,
-                                                                      GDBusConnection       *connection,
-                                                                      GDBusMessage          *message,
-                                                                      GVariant              *parameters,
-                                                                      gpointer               user_data);
 const gchar           *g_dbus_method_invocation_get_sender           (GDBusMethodInvocation *invocation);
 const gchar           *g_dbus_method_invocation_get_object_path      (GDBusMethodInvocation *invocation);
 const gchar           *g_dbus_method_invocation_get_interface_name   (GDBusMethodInvocation *invocation);

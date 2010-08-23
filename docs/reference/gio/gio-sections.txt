@@ -2454,7 +2454,6 @@ g_dbus_connection_get_type
 <FILE>gdbusmethodinvocation</FILE>
 <TITLE>GDBusMethodInvocation</TITLE>
 GDBusMethodInvocation
-g_dbus_method_invocation_new
 g_dbus_method_invocation_get_sender
 g_dbus_method_invocation_get_object_path
 g_dbus_method_invocation_get_interface_name

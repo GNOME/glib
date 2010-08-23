@@ -4370,15 +4370,15 @@ validate_and_maybe_schedule_method_call (GDBusConnection            *connection,
   g_variant_type_free (in_type);
 
   /* schedule the call in idle */
-  invocation = g_dbus_method_invocation_new (g_dbus_message_get_sender (message),
-                                             g_dbus_message_get_path (message),
-                                             g_dbus_message_get_interface (message),
-                                             g_dbus_message_get_member (message),
-                                             method_info,
-                                             connection,
-                                             message,
-                                             parameters,
-                                             user_data);
+  invocation = _g_dbus_method_invocation_new (g_dbus_message_get_sender (message),
+                                              g_dbus_message_get_path (message),
+                                              g_dbus_message_get_interface (message),
+                                              g_dbus_message_get_member (message),
+                                              method_info,
+                                              connection,
+                                              message,
+                                              parameters,
+                                              user_data);
   g_variant_unref (parameters);
 
   /* TODO: would be nicer with a real MethodData like we already

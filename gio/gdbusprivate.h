@@ -114,4 +114,16 @@ gchar *_g_dbus_enum_to_string (GType enum_type, gint value);
 
 G_END_DECLS
 
+/* ---------------------------------------------------------------------------------------------------- */
+
+GDBusMethodInvocation *_g_dbus_method_invocation_new (const gchar           *sender,
+                                                      const gchar           *object_path,
+                                                      const gchar           *interface_name,
+                                                      const gchar           *method_name,
+                                                      const GDBusMethodInfo *method_info,
+                                                      GDBusConnection       *connection,
+                                                      GDBusMessage          *message,
+                                                      GVariant              *parameters,
+                                                      gpointer               user_data);
+
 #endif /* __G_DBUS_PRIVATE_H__ */
