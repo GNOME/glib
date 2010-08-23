@@ -55,9 +55,24 @@ test_dmy_constructor (void)
 }
 
 static void
+test_julian_constructor (void)
+{
+  GDate *d1;
+  GDate *d2;
+
+  d1 = g_date_new_julian (4000);
+  d2 = g_date_new_julian (5000);
+  g_assert_cmpint (g_date_get_julian (d1), ==, 4000);
+  g_assert_cmpint (g_date_days_between (d1, d2), ==, 1000);
+  g_date_free (d1);
+  g_date_free (d2);
+}
+
+static void
 test_dates (void)
 {
   GDate *d;
+  GTimeVal tv;
 
   d = g_date_new ();
 
@@ -69,9 +84,30 @@ test_dates (void)
   g_date_set_time (d, 1);
   g_assert (g_date_valid (d));
 
+  tv.tv_sec = 0;
+  tv.tv_usec = 0;
+  g_date_set_time_val (d, &tv);
+  g_assert (g_date_valid (d));
+
   /* Julian day 1 */
   g_date_set_julian (d, 1);
   g_assert (g_date_valid (d));
+
+  g_date_set_year (d, 3);
+  g_date_set_day (d, 3);
+  g_date_set_month (d, 3);
+  g_assert (g_date_valid (d));
+  g_assert_cmpint (g_date_get_year (d), ==, 3);
+  g_assert_cmpint (g_date_get_month (d), ==, 3);
+  g_assert_cmpint (g_date_get_day (d), ==, 3);
+  g_assert (!g_date_is_first_of_month (d));
+  g_assert (!g_date_is_last_of_month (d));
+  g_date_set_day (d, 1);
+  g_assert (g_date_is_first_of_month (d));
+  g_date_subtract_days (d, 1);
+  g_assert (g_date_is_last_of_month (d));
+
+  g_date_free (d);
 }
 
 static void
@@ -272,6 +308,7 @@ main (int argc, char** argv)
   g_test_add_func ("/date/basic", test_basic);
   g_test_add_func ("/date/empty", test_empty_constructor);
   g_test_add_func ("/date/dmy", test_dmy_constructor);
+  g_test_add_func ("/date/julian", test_julian_constructor);
   g_test_add_func ("/date/dates", test_dates);
   g_test_add_func ("/date/parse", test_parse);
   for (i = 0; i < G_N_ELEMENTS (check_years); i++)
