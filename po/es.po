@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-08-19 21:04+0000\n"
-"PO-Revision-Date: 2010-08-22 21:15+0200\n"
+"POT-Creation-Date: 2010-08-22 19:18+0000\n"
+"PO-Revision-Date: 2010-08-23 17:39+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1385,7 +1385,7 @@ msgstr ""
 "No se puede determinar la dirección del bus de sesión (no implementado para "
 "este SO)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5986
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6029
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1394,7 +1394,7 @@ msgstr ""
 "No se puede determinar la dirección del bus desde la variable de entorno "
 "DBUS_STARTER_BUS_TYPE; variable «%s» desconocida"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5995
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6038
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1517,14 +1517,14 @@ msgstr "La conexión está cerrada"
 msgid "Timeout was reached"
 msgstr "Se alcanzó el tiempo de expiración"
 
-#: ../gio/gdbusconnection.c:2149
+#: ../gio/gdbusconnection.c:2191
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Se encontraron opciones no soportadas al construir la conexión del lado del "
 "cliente"
 
-#: ../gio/gdbusconnection.c:3574 ../gio/gdbusconnection.c:3890
+#: ../gio/gdbusconnection.c:3617 ../gio/gdbusconnection.c:3933
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1532,68 +1532,68 @@ msgstr ""
 "No existe la interfaz «org.freedesktop.DBus.Properties» en el objeto en la "
 "ruta %s"
 
-#: ../gio/gdbusconnection.c:3645
+#: ../gio/gdbusconnection.c:3688
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se obtuvo "
 "«%s»."
 
-#: ../gio/gdbusconnection.c:3739
+#: ../gio/gdbusconnection.c:3782
 #, c-format
 msgid "No such property `%s'"
 msgstr "No existe la propiedad «%s»"
 
-#: ../gio/gdbusconnection.c:3751
+#: ../gio/gdbusconnection.c:3794
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "No se puede leer la clave «%s»"
 
-#: ../gio/gdbusconnection.c:3762
+#: ../gio/gdbusconnection.c:3805
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "No se puede escribir la clave «%s»"
 
-#: ../gio/gdbusconnection.c:3832 ../gio/gdbusconnection.c:5420
+#: ../gio/gdbusconnection.c:3875 ../gio/gdbusconnection.c:5463
 #, c-format
 msgid "No such interface `%s'"
 msgstr "La interfaz «%s» no existe"
 
-#: ../gio/gdbusconnection.c:4017
+#: ../gio/gdbusconnection.c:4060
 msgid "No such interface"
 msgstr "No existe tal interfaz"
 
-#: ../gio/gdbusconnection.c:4233 ../gio/gdbusconnection.c:5936
+#: ../gio/gdbusconnection.c:4276 ../gio/gdbusconnection.c:5979
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No existe la interfaz «%s» en el objeto en la ruta %s"
 
-#: ../gio/gdbusconnection.c:4285
+#: ../gio/gdbusconnection.c:4328
 #, c-format
 msgid "No such method `%s'"
 msgstr "No existe el método «%s»"
 
-#: ../gio/gdbusconnection.c:4316
+#: ../gio/gdbusconnection.c:4359
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "El tipo de mensaje, «%s», no concide con el tipo esperado «%s»"
 
-#: ../gio/gdbusconnection.c:4535
+#: ../gio/gdbusconnection.c:4578
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Ya existe un objeto exportado para la interfaz %s en %s"
 
-#: ../gio/gdbusconnection.c:4729
+#: ../gio/gdbusconnection.c:4772
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "El método «%s» devolvió el tipo «%s» pero se esperaba «%s»"
 
-#: ../gio/gdbusconnection.c:5531
+#: ../gio/gdbusconnection.c:5574
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "El método «%s» con interfaz «%s» y firma «%s» no existe"
 
-#: ../gio/gdbusconnection.c:5649
+#: ../gio/gdbusconnection.c:5692
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ya se ha exportado un subárbol para %s"
@@ -1642,10 +1642,13 @@ msgstr "Se querían leer %lu bytes pero se obtuvo EOF"
 
 #: ../gio/gdbusmessage.c:926
 #, c-format
+#| msgid ""
+#| "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
+#| "(length of string is %d). The valid UTF-8 string up until that that point "
+#| "was `%s'"
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that that point "
-"was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr ""
 "Se esperaba una cadena válida en UTF-8 pero se encontraron bytes no válidos "
 "en el byte desplazado %d (la longitud de la cadena es %d). La cadena UTF-8 "
@@ -1789,7 +1792,7 @@ msgstr ""
 msgid "Error sending message: %s"
 msgstr "Error al enviar el mensaje: %s"
 
-#: ../gio/gdbusprivate.c:1687
+#: ../gio/gdbusprivate.c:1722
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "No se puede cargar /var/lib/dbus/machine-id: "
 
@@ -3133,7 +3136,6 @@ msgstr ""
 
 #: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1061
 #, c-format
-#| msgid "Property `%s' is not readable"
 msgid "Proxy protocol '%s' is not supported."
 msgstr "El protocolo del proxy «%s» no está soportado."
 
@@ -3173,46 +3175,53 @@ msgstr "Se rechazó la conexión a través del servidor SOCKSv4"
 #: ../gio/gsocks5proxy.c:155 ../gio/gsocks5proxy.c:328
 #: ../gio/gsocks5proxy.c:338
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr ""
+msgstr "El servidor no es un servidor proxy SOCKSv5."
 
 #: ../gio/gsocks5proxy.c:169
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr ""
+msgstr "El servidor proxy SOCKSv5 requiere autenticación."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
 "The SOCKSv5 require an authentication method that is not supported by GLib."
 msgstr ""
+"El servidor SOCKSv5 requiere un método de autenticación que GLib no soporta."
 
 #: ../gio/gsocks5proxy.c:208
 #, c-format
 msgid "Username or password is too long for SOCKSv5 protocol (max. is %i)."
 msgstr ""
+"El nombre de usuario o la contraseña son demasiado largos para el protocolo "
+"SOCKSv5 (el máximo son %i)."
 
 #: ../gio/gsocks5proxy.c:239
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
+"Falló la autenticación SOCKSv5 debido a un nombre de usuario o contraseña "
+"incorrecta."
 
 #: ../gio/gsocks5proxy.c:289
 #, c-format
 msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgstr ""
+"El nombre de equipo «%s» es demasiado largo para el protocolo SOCKSv5 (el "
+"máximo son %i bytes)"
 
 #: ../gio/gsocks5proxy.c:352
 msgid "The SOCKSv5 proxy server uses unkown address type."
-msgstr ""
+msgstr "El servidor proxy SOCKSv5 usa un tipo de dirección desconocido."
 
 #: ../gio/gsocks5proxy.c:359
 msgid "Internal SOCKSv5 proxy server error."
-msgstr ""
+msgstr "Error interno de SOCKSv5 del servidor proxy."
 
 #: ../gio/gsocks5proxy.c:365
 msgid "SOCKSv5 connection not allowed by ruleset."
-msgstr ""
+msgstr "El conjunto de reglas no permite la conexión SOCKSv5."
 
 #: ../gio/gsocks5proxy.c:372
 msgid "Host unreachable through SOCKSv5 server."
-msgstr ""
+msgstr "El servidor no es alcanzable a través del servidor SOCKSv5."
 
 #: ../gio/gsocks5proxy.c:378
 msgid "Network unreachable through SOCKSv5 proxy."
