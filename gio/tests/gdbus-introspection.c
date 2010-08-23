@@ -141,6 +141,85 @@ test_introspection_parser (void)
   g_object_unref (connection);
 }
 
+static void
+test_generate (void)
+{
+  GDBusNodeInfo *info;
+  GDBusNodeInfo *info2;
+  GDBusInterfaceInfo *iinfo;
+  GDBusMethodInfo *minfo;
+  GDBusSignalInfo *sinfo;
+  GDBusArgInfo *arginfo;
+  GDBusPropertyInfo *pinfo;
+  GDBusAnnotationInfo *aninfo;
+
+  const gchar *data =
+  "  <node>"
+  "    <interface name='com.example.Frob'>"
+  "      <annotation name='foo' value='bar'/>"
+  "      <method name='PairReturn'>"
+  "        <annotation name='org.freedesktop.DBus.GLib.Async' value=''/>"
+  "        <arg type='u' name='somenumber' direction='in'/>"
+  "        <arg type='s' name='somestring' direction='out'/>"
+  "      </method>"
+  "      <signal name='HelloWorld'>"
+  "        <arg type='s' name='somestring'/>"
+  "      </signal>"
+  "      <method name='Sleep'>"
+  "        <arg type='i' name='timeout' direction='in'/>"
+  "      </method>"
+  "      <property name='y' type='y' access='readwrite'/>"
+  "    </interface>"
+  "  </node>";
+
+  GString *string;
+  GString *string2;
+  GError *error;
+
+  error = NULL;
+  info = g_dbus_node_info_new_for_xml (data, &error);
+  g_assert_no_error (error);
+
+  iinfo = g_dbus_node_info_lookup_interface (info, "com.example.Frob");
+  aninfo = iinfo->annotations[0];
+  g_assert_cmpstr (aninfo->key, ==, "foo");
+  g_assert_cmpstr (aninfo->value, ==, "bar");
+  g_assert (iinfo->annotations[1] == NULL);
+  minfo = g_dbus_interface_info_lookup_method (iinfo, "PairReturn");
+  g_assert_cmpstr (g_dbus_annotation_info_lookup (minfo->annotations, "org.freedesktop.DBus.GLib.Async"), ==, "");
+  arginfo = minfo->in_args[0];
+  g_assert_cmpstr (arginfo->name, ==, "somenumber");
+  g_assert_cmpstr (arginfo->signature, ==, "u");
+  g_assert (minfo->in_args[1] == NULL);
+  arginfo = minfo->out_args[0];
+  g_assert_cmpstr (arginfo->name, ==, "somestring");
+  g_assert_cmpstr (arginfo->signature, ==, "s");
+  g_assert (minfo->out_args[1] == NULL);
+  sinfo = g_dbus_interface_info_lookup_signal (iinfo, "HelloWorld");
+  arginfo = minfo->out_args[0];
+  g_assert_cmpstr (arginfo->name, ==, "somestring");
+  g_assert_cmpstr (arginfo->signature, ==, "s");
+  g_assert (minfo->out_args[1] == NULL);
+  pinfo = g_dbus_interface_info_lookup_property (iinfo, "y");
+  g_assert_cmpstr (pinfo->signature, ==, "y");
+  g_assert_cmpint (pinfo->flags, ==, G_DBUS_PROPERTY_INFO_FLAGS_READABLE |
+                                     G_DBUS_PROPERTY_INFO_FLAGS_WRITABLE);
+
+  string = g_string_new ("");
+  g_dbus_node_info_generate_xml (info, 2, string);
+
+  info2 = g_dbus_node_info_new_for_xml (string->str, &error);
+  string2 = g_string_new ("");
+  g_dbus_node_info_generate_xml (info2, 2, string2);
+
+  g_assert_cmpstr (string->str, ==, string2->str);
+  g_string_free (string, TRUE);
+  g_string_free (string2, TRUE);
+
+  g_dbus_node_info_unref (info);
+  g_dbus_node_info_unref (info2);
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 int
@@ -160,5 +239,7 @@ main (int   argc,
   g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
 
   g_test_add_func ("/gdbus/introspection-parser", test_introspection_parser);
+  g_test_add_func ("/gdbus/introspection-generate", test_generate);
+
   return g_test_run();
 }

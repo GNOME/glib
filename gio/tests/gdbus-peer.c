@@ -99,11 +99,15 @@ test_interface_method_call (GDBusConnection       *connection,
                             gpointer               user_data)
 {
   PeerData *data = user_data;
+  const GDBusMethodInfo *info;
 
   data->num_method_calls++;
 
   g_assert_cmpstr (object_path, ==, "/org/gtk/GDBus/PeerTestObject");
   g_assert_cmpstr (interface_name, ==, "org.gtk.GDBus.PeerTestInterface");
+
+  info = g_dbus_method_invocation_get_method_info (invocation);
+  g_assert_cmpstr (info->name, ==, method_name);
 
   if (g_strcmp0 (method_name, "HelloPeer") == 0)
     {
