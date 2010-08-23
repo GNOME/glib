@@ -28,6 +28,7 @@
 #include "ginetaddress.h"
 #include "ginetsocketaddress.h"
 #include "gnetworkingprivate.h"
+#include "gproxyaddress.h"
 #include "gproxyaddressenumerator.h"
 #include "gsocketaddressenumerator.h"
 #include "gsocketconnectable.h"
