@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-20 12:48+0200\n"
-"PO-Revision-Date: 2010-08-20 13:21+0200\n"
+"POT-Creation-Date: 2010-08-23 02:23+0200\n"
+"PO-Revision-Date: 2010-08-23 02:23+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1391,7 +1391,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (non está implementado "
 "para este SO)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5986
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6029
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1400,7 +1400,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5995
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6038
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1521,14 +1521,14 @@ msgstr "O socket engadido está pechado"
 msgid "Timeout was reached"
 msgstr "Tempo de espera máximo alcanzado"
 
-#: ../gio/gdbusconnection.c:2149
+#: ../gio/gdbusconnection.c:2191
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Encontraronse bandeiras non compatíbeis ao construír a conexión da parte "
 "cliente"
 
-#: ../gio/gdbusconnection.c:3574 ../gio/gdbusconnection.c:3890
+#: ../gio/gdbusconnection.c:3617 ../gio/gdbusconnection.c:3933
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1536,68 +1536,68 @@ msgstr ""
 "Non existe a interface «org.freedesktop.DBus.Properties» no obxecto co camiño "
 "%s"
 
-#: ../gio/gdbusconnection.c:3645
+#: ../gio/gdbusconnection.c:3688
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Produciuse un erro ao estabelecer a propiedade «%s»: Esperábase o tipo «%s» "
 "pero obtívose «%s»"
 
-#: ../gio/gdbusconnection.c:3739
+#: ../gio/gdbusconnection.c:3782
 #, c-format
 msgid "No such property `%s'"
 msgstr "Non existe a propiedade «%s»"
 
-#: ../gio/gdbusconnection.c:3751
+#: ../gio/gdbusconnection.c:3794
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3762
+#: ../gio/gdbusconnection.c:3805
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3832 ../gio/gdbusconnection.c:5420
+#: ../gio/gdbusconnection.c:3875 ../gio/gdbusconnection.c:5463
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
 
-#: ../gio/gdbusconnection.c:4017
+#: ../gio/gdbusconnection.c:4060
 msgid "No such interface"
 msgstr "Non existe a interface"
 
-#: ../gio/gdbusconnection.c:4233 ../gio/gdbusconnection.c:5936
+#: ../gio/gdbusconnection.c:4276 ../gio/gdbusconnection.c:5979
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Non existe a interface «%s» no obxecto co camiño %s"
 
-#: ../gio/gdbusconnection.c:4285
+#: ../gio/gdbusconnection.c:4328
 #, c-format
 msgid "No such method `%s'"
 msgstr "Non existe o método «%s»"
 
-#: ../gio/gdbusconnection.c:4316
+#: ../gio/gdbusconnection.c:4359
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "O tipo da mensaxe, «%s», non coincide co tipo «%s» esperado"
 
-#: ../gio/gdbusconnection.c:4535
+#: ../gio/gdbusconnection.c:4578
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 
-#: ../gio/gdbusconnection.c:4729
+#: ../gio/gdbusconnection.c:4772
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "O método «%s» devolveu un tipo «%s» máis esperábase «%s»"
 
-#: ../gio/gdbusconnection.c:5531
+#: ../gio/gdbusconnection.c:5574
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:5649
+#: ../gio/gdbusconnection.c:5692
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
@@ -1647,12 +1647,11 @@ msgstr "Quixéronse ler %lu bytes pero obtívose un EOF"
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
-"(length of string is %d). The valid UTF-8 string up until that that point "
-"was `%s'"
+"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr ""
 "Esperábase unha cadea UTF-8 válida pero encontráronse bytes inválidos no "
-"byte desvío %d (a lonxitude da cadea é %d). A cadea UTF-8 válida até que "
-"apunte foi «%s»"
+"byte desvío %d (a lonxitude da cadea é %d). A cadea UTF-8 válida até ese "
+"punto foi «%s»"
 
 #: ../gio/gdbusmessage.c:939
 #, c-format
@@ -1788,7 +1787,7 @@ msgstr "O tipo do valor de retorno é incorrecto, obtívose «%s» e esperábase
 msgid "Error sending message: %s"
 msgstr "Produciuse un erro ao enviar a mensaxe: %s"
 
-#: ../gio/gdbusprivate.c:1687
+#: ../gio/gdbusprivate.c:1722
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: "
 
