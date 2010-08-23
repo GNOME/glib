@@ -642,6 +642,25 @@ test_positional_params2 (void)
 }
 
 static void
+test_positional_params3 (void)
+{
+  gchar buf[128];
+  gint res;
+
+  res = g_sprintf (buf, "%2$c %1$c", 'b', 'a');
+  g_assert_cmpint (res, ==, 3);
+  g_assert_cmpstr (buf, ==, "a b");
+
+  res = g_sprintf (buf, "%1$*2$.*3$s", "abc", 5, 2);
+  g_assert_cmpint (res, ==, 5);
+  g_assert_cmpstr (buf, ==, "   ab");
+
+  res = g_sprintf (buf, "%1$s%1$s", "abc");
+  g_assert_cmpint (res, ==, 6);
+  g_assert_cmpstr (buf, ==, "abcabc");
+}
+
+static void
 test_percent2 (void)
 {
   gint res;
@@ -919,6 +938,8 @@ main (int   argc,
   g_test_add_func ("/printf/test-percent", test_percent2);
   g_test_add_func ("/printf/test-positional-params", test_positional_params2);
   g_test_add_func ("/printf/test-64bit", test_64bit2);
+
+  g_test_add_func ("/sprintf/test-positional-params", test_positional_params3);
 
   return g_test_run();
 }
