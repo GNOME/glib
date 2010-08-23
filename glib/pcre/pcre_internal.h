@@ -1782,7 +1782,7 @@ extern const uschar      _pcre_ucd_stage1[];
 extern const pcre_uint16 _pcre_ucd_stage2[];
 extern const int         _pcre_ucp_gentype[];
 
-extern unsigned int      _pcre_ucp_othercase (unsigned int);
+extern unsigned int      _pcre_ucp_othercase (const unsigned int);
 
 /* UCD access macros */
 
