@@ -46,6 +46,19 @@ test_assertions (void)
   g_assert_cmpstr ("fzz", >, "faa");
   g_assert_cmpstr ("fzz", ==, "fzz");
 
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_assert_cmpstr ("fzz", !=, "fzz");
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      g_assert_cmpint (4, !=, 4);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion failed*");
 }
 
 /* test g_test_timer* API */
