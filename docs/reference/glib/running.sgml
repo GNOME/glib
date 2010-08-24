@@ -202,6 +202,17 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara> 
 
+<formalpara id="TZDIR">
+  <title><envar>TZDIR</envar></title>
+
+  <para>
+    Allows to specify a nonstandard location for the timezone data files
+    that are used by the #GDateTime API. The default location is under
+    <filename>/usr/share/zoneinfo</filename>. For more information,
+    also look at the <command>tzset</command> manual page.
+  </para>
+</formalpara>
+
 </refsect2>
 
 <refsect2 id="setlocale">
