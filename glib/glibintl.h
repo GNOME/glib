@@ -13,6 +13,7 @@ G_CONST_RETURN gchar *glib_gettext (const gchar *str) G_GNUC_FORMAT(1);
 #define _(String) glib_gettext(String)
 /* Split out this in the code, but keep it in the same domain for now */
 #define P_(String) glib_gettext(String)
+#define C_(Context,String) g_dpgettext (NULL, Context "\004" String, strlen (Context) + 1)
 
 #ifdef gettext_noop
 #define N_(String) gettext_noop(String)
@@ -23,6 +24,7 @@ G_CONST_RETURN gchar *glib_gettext (const gchar *str) G_GNUC_FORMAT(1);
 #define _(String) (String)
 #define N_(String) (String)
 #define P_(String) (String)
+#define C_(Context,String) (String)
 #define textdomain(String) ((String) ? (String) : "messages")
 #define gettext(String) (String)
 #define dgettext(Domain,String) (String)
