@@ -429,9 +429,20 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       tm.tm_year = val / 10000 - 1900;
     }
 
-  if (*iso_date++ != 'T')
+  if (*iso_date != 'T')
+    {
+      /* Date only */
+      if (*iso_date == '\0')
+        return TRUE;
+      return FALSE;
+    }
+
+  *iso_date++;
+
+  /* If there is a 'T' then there has to be a time */
+  if (!g_ascii_isdigit (*iso_date))
     return FALSE;
-  
+
   val = strtoul (iso_date, (char **)&iso_date, 10);
   if (*iso_date == ':')
     {
