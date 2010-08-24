@@ -267,8 +267,9 @@ get_weekday_name_abbr (gint day)
       return C_("GDateTime", "Sat");
     case 7:
       return C_("GDateTime", "Sun");
+
     default:
-      g_warning (_("Invalid week day number %d"), day);
+      g_warning ("Invalid week day number %d", day);
     }
 
   return NULL;
