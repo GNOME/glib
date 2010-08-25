@@ -1,6 +1,8 @@
 /* gdatetime.c
  *
  * Copyright (C) 2009-2010 Christian Hergert <chris@dronelabs.com>
+ * Copyright (C) 2010 Thiago Santos <thiago.sousa.santos@collabora.co.uk>
+ * Copyright (C) 2010 Emmanuele Bassi <ebassi@linux.intel.com>
  *
  * This is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -88,35 +90,6 @@
 #define JULIAN_YEAR(d)       ((d)->julian / 365.25)
 #define DAYS_PER_PERIOD      (G_GINT64_CONSTANT (2914695))
 
-#define ADD_DAYS(d,n)                                   G_STMT_START {  \
-  gint __day = d->julian + (n);                                         \
-  if (__day < 1)                                                        \
-    {                                                                   \
-      d->period += -1 + (__day / DAYS_PER_PERIOD);                      \
-      d->period += DAYS_PER_PERIOD + (__day % DAYS_PER_PERIOD);         \
-    }                                                                   \
-  else if (__day > DAYS_PER_PERIOD)                                     \
-    {                                                                   \
-      d->period += (d->julian + (n)) / DAYS_PER_PERIOD;                 \
-      d->julian = (d->julian + (n)) % DAYS_PER_PERIOD;                  \
-    }                                                                   \
-  else                                                                  \
-    d->julian += n;                                     } G_STMT_END
-
-#define ADD_USEC(d,n)                                   G_STMT_START {  \
-  gint64 __usec;                                                        \
-  gint   __days;                                                        \
-  __usec = (d)->usec + (n);                                             \
-  __days = __usec / USEC_PER_DAY;                                       \
-  if (__usec < 0)                                                       \
-    __days -= 1;                                                        \
-  if (__days != 0)                                                      \
-    ADD_DAYS ((d), __days);                                             \
-  if (__usec < 0)                                                       \
-    d->usec = USEC_PER_DAY + (__usec % USEC_PER_DAY);                   \
-  else                                                                  \
-    d->usec = __usec % USEC_PER_DAY;                    } G_STMT_END
-
 #define GET_AMPM(d,l)         ((g_date_time_get_hour (d) < 12)  \
                                 ? (l ? C_("GDateTime", "am") : C_("GDateTime", "AM"))       \
                                 : (l ? C_("GDateTime", "pm") : C_("GDateTime", "PM")))
@@ -134,6 +107,35 @@
 #define GET_PREFERRED_TIME(d) (g_date_time_printf ((d), C_("GDateTime", "%H:%M:%S")))
 
 typedef struct _GTimeZone       GTimeZone;
+
+struct _GDateTime
+{
+  /* Julian Period, 0 is Initial Epoch */
+  gint period  :  3;
+
+  /* Day within Julian Period */
+  guint julian : 22;
+
+  /* Microsecond timekeeping within Day */
+  guint64 usec : 37;
+
+  gint reserved : 2;
+
+  /* TimeZone information, NULL is UTC */
+  GTimeZone *tz;
+
+  volatile gint ref_count;
+};
+
+struct _GTimeZone
+{
+  /* TZ abbreviation (e.g. PST) */
+  gchar  *name;
+
+  gint64 offset;
+
+  guint is_dst : 1;
+};
 
 static const guint16 days_in_months[2][13] =
 {
@@ -275,34 +277,43 @@ get_weekday_name_abbr (gint day)
   return NULL;
 }
 
-struct _GDateTime
+static inline void
+g_date_time_add_days_internal (GDateTime *datetime,
+                               gint64     days)
 {
-  /* Julian Period, 0 is Initial Epoch */
-  gint period  :  3;
+  gint __day = datetime->julian + days;
+  if (__day < 1)
+    {
+      datetime->period += -1 + (__day / DAYS_PER_PERIOD);
+      datetime->period += DAYS_PER_PERIOD + (__day % DAYS_PER_PERIOD);
+    }
+  else if (__day > DAYS_PER_PERIOD)
+    {
+      datetime->period += (datetime->julian + days) / DAYS_PER_PERIOD;
+      datetime->julian = (datetime->julian + days) % DAYS_PER_PERIOD;
+    }
+  else
+    datetime->julian += days;
+}
 
-  /* Day within Julian Period */
-  guint julian : 22;
-
-  /* Microsecond timekeeping within Day */
-  guint64 usec : 37;
-
-  gint reserved : 2;
-
-  /* TimeZone information, NULL is UTC */
-  GTimeZone *tz;
-
-  volatile gint ref_count;
-};
-
-struct _GTimeZone
+static inline void
+g_date_time_add_usec (GDateTime *datetime,
+                      gint64     usecs)
 {
-  /* TZ abbreviation (e.g. PST) */
-  gchar  *name;
+  gint64 __usec = datetime->usec + usecs;
+  gint __days = __usec / USEC_PER_DAY;
 
-  gint64 offset;
+  if (__usec < 0)
+    __days -= 1;
 
-  guint is_dst : 1;
-};
+  if (__days != 0)
+    g_date_time_add_days_internal (datetime, __days);
+
+  if (__usec < 0)
+    datetime->usec = USEC_PER_DAY + (__usec % USEC_PER_DAY);
+  else
+    datetime->usec = __usec % USEC_PER_DAY;
+}
 
 #define ZONEINFO_DIR            "zoneinfo"
 #define TZ_MAGIC                "TZif"
@@ -670,7 +681,7 @@ g_date_time_add (const GDateTime *datetime,
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  ADD_USEC (dt, timespan);
+  g_date_time_add_usec (dt, timespan);
 
   return dt;
 }
@@ -816,7 +827,7 @@ g_date_time_add_days (const GDateTime *datetime,
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  ADD_DAYS (dt, days);
+  g_date_time_add_days_internal (dt, days);
 
   return dt;
 }
@@ -838,13 +849,11 @@ g_date_time_add_hours (const GDateTime *datetime,
                        gint             hours)
 {
   GDateTime *dt;
-  gint64     usec;
 
   g_return_val_if_fail (datetime != NULL, NULL);
 
-  usec = hours * USEC_PER_HOUR;
   dt = g_date_time_copy (datetime);
-  ADD_USEC (dt, usec);
+  g_date_time_add_usec (dt, (gint64) hours * USEC_PER_HOUR);
 
   return dt;
 }
@@ -866,13 +875,11 @@ g_date_time_add_seconds (const GDateTime *datetime,
                          gint             seconds)
 {
   GDateTime *dt;
-  gint64     usec;
 
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  usec = seconds * USEC_PER_SECOND;
-  ADD_USEC (dt, usec);
+  g_date_time_add_usec (dt, (gint64) seconds * USEC_PER_SECOND);
 
   return dt;
 }
@@ -894,13 +901,11 @@ g_date_time_add_milliseconds (const GDateTime *datetime,
                               gint             milliseconds)
 {
   GDateTime *dt;
-  guint64    usec;
 
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  usec = milliseconds * USEC_PER_MILLISECOND;
-  ADD_USEC (dt, usec);
+  g_date_time_add_usec (dt, (gint64) milliseconds * USEC_PER_MILLISECOND);
 
   return dt;
 }
@@ -926,7 +931,7 @@ g_date_time_add_minutes (const GDateTime *datetime,
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  ADD_USEC (dt, minutes * USEC_PER_MINUTE);
+  g_date_time_add_usec (dt, (gint64) minutes * USEC_PER_MINUTE);
 
   return dt;
 }
@@ -2066,23 +2071,17 @@ GDateTime *
 g_date_time_to_local (const GDateTime *datetime)
 {
   GDateTime *dt;
-  gint       offset,
-             year;
-  gint64     usec;
 
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-
-  if (!dt->tz)
+  if (dt->tz == NULL)
     {
-      year = g_date_time_get_year (dt);
       dt->tz = g_date_time_create_time_zone (dt, NULL);
+      if (dt->tz == NULL)
+        return dt;
 
-      offset = dt->tz->offset;
-
-      usec = offset * USEC_PER_SECOND;
-      ADD_USEC (dt, usec);
+      g_date_time_add_usec (dt, dt->tz->offset * USEC_PER_SECOND);
     }
 
   return dt;
