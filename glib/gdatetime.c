@@ -59,7 +59,7 @@
 /**
  * SECTION:date-time
  * @title: GDateTime
- * @short_description: A Date and Time structure
+ * @short_description: A structure representing Date and Time
  *
  * #GDateTime is a structure that combines a date and time into a single
  * structure. It provides many conversion and methods to manipulate dates
