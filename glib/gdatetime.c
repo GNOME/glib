@@ -357,14 +357,14 @@ g_date_time_add_dmy (GDateTime *datetime,
   gint step, i;
   const guint16 *max_days;
 
+  __year += years;
+
   /* subtract one day for leap years */
   if (GREGORIAN_LEAP (__year) && __month == 2)
     {
       if (__day == 29)
         __day -= 1;
     }
-
-  __year += years;
 
   /* add months */
   step = months > 0 ? 1 : -1;
