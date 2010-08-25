@@ -1408,7 +1408,7 @@ g_date_sunday_weeks_in_year
 </SECTION>
 
 <SECTION>
-<FILE>gdatetime</FILE>
+<FILE>date-time</FILE>
 G_TIME_SPAN_DAY
 G_TIME_SPAN_HOUR
 G_TIME_SPAN_MINUTE
