@@ -168,17 +168,17 @@ dump_object_type (GType type, const char *symbol, GOutputStream *out)
       GType parent;
       gboolean first = TRUE;
 
-      parent = type;
+      parent = g_type_parent (type);
       parent_str = g_string_new ("");
-      do
+      while (parent != G_TYPE_OBJECT && parent != G_TYPE_INVALID)
         {
-          parent = g_type_parent (parent);
           if (first)
             first = FALSE;
           else
             g_string_append_c (parent_str, ',');
           g_string_append (parent_str, g_type_name (parent));
-        } while (parent != G_TYPE_OBJECT && parent != G_TYPE_INVALID);
+          parent = g_type_parent (parent);
+        }
 
       escaped_printf (out, " parents=\"%s\"", parent_str->str);
 
@@ -299,11 +299,10 @@ dump_fundamental_type (GType type, const char *symbol, GOutputStream *out)
   if (G_TYPE_IS_INSTANTIATABLE (type))
     escaped_printf (out, " instantiatable=\"1\"");
 
-  parent = type;
+  parent = g_type_parent (type);
   parent_str = g_string_new ("");
-  do
+  while (parent != G_TYPE_INVALID)
     {
-      parent = g_type_parent (parent);
       if (first)
         first = FALSE;
       else
@@ -311,7 +310,8 @@ dump_fundamental_type (GType type, const char *symbol, GOutputStream *out)
       if (!g_type_name (parent))
         break;
       g_string_append (parent_str, g_type_name (parent));
-    } while (parent != G_TYPE_INVALID);
+      parent = g_type_parent (parent);
+    }
 
   if (parent_str->len > 0)
     escaped_printf (out, " parents=\"%s\"", parent_str->str);
