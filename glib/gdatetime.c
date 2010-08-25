@@ -1843,172 +1843,158 @@ g_date_time_printf (const GDateTime *datetime,
       tmp = g_utf8_offset_to_pointer (format, i);
       c = g_utf8_get_char (tmp);
 
-      switch (c) {
-      case '%':
-        if (!in_mod)
-          {
-            in_mod = TRUE;
-            break;
-          }
-        /* Fall through */
-      default:
-        if (in_mod)
-          {
-            switch (c) {
-            case 'a':
-              g_string_append (outstr, WEEKDAY_ABBR (datetime));
-              break;
-            case 'A':
-              g_string_append (outstr, WEEKDAY_FULL (datetime));
-              break;
-            case 'b':
-              g_string_append (outstr, MONTH_ABBR (datetime));
-              break;
-            case 'B':
-              g_string_append (outstr, MONTH_FULL (datetime));
-              break;
-            case 'd':
-              g_string_append_printf (outstr, "%02d",
-                                      g_date_time_get_day_of_month (datetime));
-              break;
-            case 'e':
-              g_string_append_printf (outstr, "%2d",
-                                      g_date_time_get_day_of_month (datetime));
-              break;
-            case 'F':
-              g_string_append_printf (outstr, "%d-%02d-%02d",
-                                      g_date_time_get_year (datetime),
-                                      g_date_time_get_month (datetime),
-                                      g_date_time_get_day_of_month (datetime));
-              break;
-            case 'h':
-              g_string_append (outstr, MONTH_ABBR (datetime));
-              break;
-            case 'H':
-              g_string_append_printf (outstr, "%02d",
-                                      g_date_time_get_hour (datetime));
-              break;
-            case 'I':
-              if (g_date_time_get_hour (datetime) == 0)
-                g_string_append (outstr, "12");
-              else
-                g_string_append_printf (outstr, "%02d",
-                                        g_date_time_get_hour (datetime) % 12);
-              break;
-            case 'j':
-              g_string_append_printf (outstr, "%03d",
-                                      g_date_time_get_day_of_year (datetime));
-              break;
-            case 'k':
-              g_string_append_printf (outstr, "%2d",
-                                      g_date_time_get_hour (datetime));
-              break;
-            case 'l':
-              if (g_date_time_get_hour (datetime) == 0)
-                g_string_append (outstr, "12");
-              else
-                g_string_append_printf (outstr, "%2d",
-                                        g_date_time_get_hour (datetime) % 12);
-              break;
-            case 'm':
-              g_string_append_printf (outstr, "%02d",
-                                      g_date_time_get_month (datetime));
-              break;
-            case 'M':
-              g_string_append_printf (outstr, "%02d",
-                                      g_date_time_get_minute (datetime));
-              break;
-            case 'N':
-              g_string_append_printf (outstr, "%"G_GUINT64_FORMAT,
-                                      datetime->usec % USEC_PER_SECOND);
-              break;
-            case 'p':
-              g_string_append (outstr, GET_AMPM (datetime, FALSE));
-              break;
-            case 'P':
-              g_string_append (outstr, GET_AMPM (datetime, TRUE));
-              break;
-            case 'r': {
-              gint hour = g_date_time_get_hour (datetime) % 12;
-              if (hour == 0)
-                hour = 12;
-              g_string_append_printf (outstr, "%02d:%02d:%02d %s",
-                                      hour,
-                                      g_date_time_get_minute (datetime),
-                                      g_date_time_get_second (datetime),
-                                      GET_AMPM (datetime, FALSE));
+      switch (c)
+        {
+        case '%':
+          if (!in_mod)
+            {
+              in_mod = TRUE;
               break;
             }
-            case 'R':
-              g_string_append_printf (outstr, "%02d:%02d",
-                                      g_date_time_get_hour (datetime),
-                                      g_date_time_get_minute (datetime));
-              break;
-            case 's':
-              g_string_append_printf (outstr, "%" G_GINT64_FORMAT,
-                                      g_date_time_to_epoch (datetime));
-              break;
-            case 'S':
-              g_string_append_printf (outstr, "%02d",
-                                      g_date_time_get_second (datetime));
-              break;
-            case 't':
-              g_string_append_c (outstr, '\t');
-              break;
-            case 'u':
-              g_string_append_printf (outstr, "%d",
-                                      g_date_time_get_day_of_week (datetime));
-              break;
-            case 'W':
-              g_string_append_printf (outstr, "%d",
-                                      g_date_time_get_day_of_year (datetime) / 7);
-              break;
-            case 'x': {
-              tmp2 = GET_PREFERRED_DATE (datetime);
-              g_string_append (outstr, tmp2);
-              g_free (tmp2);
-              break;
+            /* Fall through */
+        default:
+          if (in_mod)
+            {
+              switch (c)
+                {
+                case 'a':
+                  g_string_append (outstr, WEEKDAY_ABBR (datetime));
+                  break;
+                case 'A':
+                  g_string_append (outstr, WEEKDAY_FULL (datetime));
+                  break;
+                case 'b':
+                  g_string_append (outstr, MONTH_ABBR (datetime));
+                  break;
+                case 'B':
+                  g_string_append (outstr, MONTH_FULL (datetime));
+                  break;
+                case 'd':
+                  g_string_append_printf (outstr, "%02d", g_date_time_get_day_of_month (datetime));
+                  break;
+                case 'e':
+                  g_string_append_printf (outstr, "%2d", g_date_time_get_day_of_month (datetime));
+                  break;
+                case 'F':
+                  g_string_append_printf (outstr, "%d-%02d-%02d",
+                                          g_date_time_get_year (datetime),
+                                          g_date_time_get_month (datetime),
+                                          g_date_time_get_day_of_month (datetime));
+                  break;
+                case 'h':
+                  g_string_append (outstr, MONTH_ABBR (datetime));
+                  break;
+                case 'H':
+                  g_string_append_printf (outstr, "%02d", g_date_time_get_hour (datetime));
+                  break;
+                case 'I':
+                  if (g_date_time_get_hour (datetime) == 0)
+                    g_string_append (outstr, "12");
+                  else
+                    g_string_append_printf (outstr, "%02d", g_date_time_get_hour (datetime) % 12);
+                  break;
+                case 'j':
+                  g_string_append_printf (outstr, "%03d", g_date_time_get_day_of_year (datetime));
+                  break;
+                case 'k':
+                  g_string_append_printf (outstr, "%2d", g_date_time_get_hour (datetime));
+                  break;
+                case 'l':
+                  if (g_date_time_get_hour (datetime) == 0)
+                    g_string_append (outstr, "12");
+                  else
+                    g_string_append_printf (outstr, "%2d", g_date_time_get_hour (datetime) % 12);
+                  break;
+                case 'm':
+                  g_string_append_printf (outstr, "%02d", g_date_time_get_month (datetime));
+                  break;
+                case 'M':
+                  g_string_append_printf (outstr, "%02d", g_date_time_get_minute (datetime));
+                  break;
+                case 'N':
+                  g_string_append_printf (outstr, "%"G_GUINT64_FORMAT, datetime->usec % USEC_PER_SECOND);
+                  break;
+                case 'p':
+                  g_string_append (outstr, GET_AMPM (datetime, FALSE));
+                  break;
+                case 'P':
+                  g_string_append (outstr, GET_AMPM (datetime, TRUE));
+                  break;
+                case 'r':
+                  {
+                    gint hour = g_date_time_get_hour (datetime) % 12;
+                    if (hour == 0)
+                      hour = 12;
+                    g_string_append_printf (outstr, "%02d:%02d:%02d %s",
+                                            hour,
+                                            g_date_time_get_minute (datetime),
+                                            g_date_time_get_second (datetime),
+                                            GET_AMPM (datetime, FALSE));
+                  }
+                  break;
+                case 'R':
+                  g_string_append_printf (outstr, "%02d:%02d",
+                                          g_date_time_get_hour (datetime),
+                                          g_date_time_get_minute (datetime));
+                  break;
+                case 's':
+                  g_string_append_printf (outstr, "%" G_GINT64_FORMAT, g_date_time_to_epoch (datetime));
+                  break;
+                case 'S':
+                  g_string_append_printf (outstr, "%02d", g_date_time_get_second (datetime));
+                  break;
+                case 't':
+                  g_string_append_c (outstr, '\t');
+                  break;
+                case 'u':
+                  g_string_append_printf (outstr, "%d", g_date_time_get_day_of_week (datetime));
+                  break;
+                case 'W':
+                  g_string_append_printf (outstr, "%d", g_date_time_get_day_of_year (datetime) / 7);
+                  break;
+                case 'x':
+                  {
+                    tmp2 = GET_PREFERRED_DATE (datetime);
+                    g_string_append (outstr, tmp2);
+                    g_free (tmp2);
+                  }
+                  break;
+                case 'X':
+                  {
+                    tmp2 = GET_PREFERRED_TIME (datetime);
+                    g_string_append (outstr, tmp2);
+                    g_free (tmp2);
+                  }
+                  break;
+                case 'y':
+                  g_string_append_printf (outstr, "%02d", g_date_time_get_year (datetime) % 100);
+                  break;
+                case 'Y':
+                  g_string_append_printf (outstr, "%d", g_date_time_get_year (datetime));
+                  break;
+                case 'Z':
+                  if (datetime->tz != NULL)
+                    g_string_append_printf (outstr, "%s", datetime->tz->name);
+                  else
+                    g_string_append_printf (outstr, "UTC");
+                  break;
+                case '%':
+                  g_string_append_c (outstr, '%');
+                  break;
+                case 'n':
+                  g_string_append_c (outstr, '\n');
+                  break;
+                default:
+                  goto bad_format;
+                }
+              in_mod = FALSE;
             }
-            case 'X': {
-              tmp2 = GET_PREFERRED_TIME (datetime);
-              g_string_append (outstr, tmp2);
-              g_free (tmp2);
-              break;
-            }
-            case 'y':
-              g_string_append_printf (outstr, "%02d",
-                                      g_date_time_get_year (datetime) % 100);
-              break;
-            case 'Y':
-              g_string_append_printf (outstr, "%d",
-                                      g_date_time_get_year (datetime));
-              break;
-            case 'Z':
-              if (datetime->tz)
-                g_string_append_printf (outstr, "%s", datetime->tz->name);
-              else
-                g_string_append_printf (outstr, "UTC");
-              break;
-            case '%':
-              g_string_append_c (outstr, '%');
-              break;
-            case 'n':
-              g_string_append_c (outstr, '\n');
-              break;
-            default:
-              goto bad_format;
-            }
-            in_mod = FALSE;
-          }
-        else
-          g_string_append_unichar (outstr, c);
-      }
-  }
+          else
+            g_string_append_unichar (outstr, c);
+        }
+    }
 
-  tmp = outstr->str;
-  g_string_free (outstr, FALSE);
-
-  return (gchar*)tmp;
+  return g_string_free (outstr, FALSE);
 
 bad_format:
   g_string_free (outstr, TRUE);
