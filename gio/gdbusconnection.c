@@ -3635,7 +3635,8 @@ invoke_get_property_in_idle_cb (gpointer _data)
     {
       g_assert_no_error (error);
 
-      g_variant_ref_sink (value);
+      if (g_variant_is_floating (value))
+        g_variant_ref_sink (value);
       reply = g_dbus_message_new_method_reply (data->message);
       g_dbus_message_set_body (reply, g_variant_new ("(v)", value));
       g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
@@ -3966,10 +3967,13 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
       if (value == NULL)
         continue;
 
+      if (g_variant_is_floating (value))
+        g_variant_ref_sink (value);
       g_variant_builder_add (&builder,
                              "{sv}",
                              property_info->name,
                              value);
+      g_variant_unref (value);
     }
   g_variant_builder_close (&builder);
 

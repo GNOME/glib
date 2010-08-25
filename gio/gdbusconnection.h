@@ -221,7 +221,9 @@ typedef void (*GDBusInterfaceMethodCallFunc) (GDBusConnection       *connection,
  *
  * The type of the @get_property function in #GDBusInterfaceVTable.
  *
- * Returns: A newly-allocated #GVariant with the value for @property_name or %NULL if @error is set.
+ * Returns: A #GVariant with the value for @property_name or %NULL if
+ *     @error is set. If the returned #GVariant is floating, it is
+ *     consumed - otherwise its reference count is decreased by one.
  *
  * Since: 2.26
  */
