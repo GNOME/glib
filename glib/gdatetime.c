@@ -86,7 +86,7 @@
 #define USEC_PER_MILLISECOND (G_GINT64_CONSTANT (1000))
 #define USEC_PER_DAY         (G_GINT64_CONSTANT (86400000000))
 
-#define GREGORIAN_LEAP(y)    (((y % 4) == 0) && (!(((y % 100) == 0) && ((y % 400) != 0))))
+#define GREGORIAN_LEAP(y)    ((((y) % 4) == 0) && (!((((y) % 100) == 0) && (((y) % 400) != 0))))
 #define JULIAN_YEAR(d)       ((d)->julian / 365.25)
 #define DAYS_PER_PERIOD      (G_GINT64_CONSTANT (2914695))
 
@@ -513,28 +513,35 @@ g_time_zone_new_from_epoch (const gchar *tzname,
 #define SECS_PER_JULIAN (DAYS_PER_PERIOD * SECS_PER_DAY)
 
 static gint64
-g_date_time_secs_offset (GDateTime * dt)
+g_date_time_secs_offset (const GDateTime * dt)
 {
   gint64 secs;
   gint d, y, h, m, s;
-  gint leaps;
+  gint i, leaps;
 
-  y = g_date_time_get_year (dt) - 1970;
+  y = g_date_time_get_year (dt);
   d = g_date_time_get_day_of_year (dt);
   h = g_date_time_get_hour (dt);
   m = g_date_time_get_minute (dt);
   s = g_date_time_get_second (dt);
 
-  /* FIXME this is an approximation */
-  leaps = y / 4;
+  leaps = GREGORIAN_LEAP (y) ? 1 : 0;
+  for (i = 1970; i < y; i++)
+    {
+      if (GREGORIAN_LEAP (i))
+        leaps += 1;
+    }
 
   secs = 0;
-  secs += y * SECS_PER_YEAR;
+  secs += (y - 1970) * SECS_PER_YEAR;
   secs += d * SECS_PER_DAY;
-  secs += leaps * SECS_PER_DAY;
+  secs += (leaps - 1) * SECS_PER_DAY;
   secs += h * SECS_PER_HOUR;
   secs += m * SECS_PER_MINUTE;
   secs += s;
+
+  if (dt->tz != NULL)
+    secs -= dt->tz->offset;
 
   return secs;
 }
