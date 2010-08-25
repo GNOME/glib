@@ -203,7 +203,7 @@ GType	g_boxed_type_register_static		(const gchar	*name,
  */
 #define	G_TYPE_ERROR (g_error_get_type ())
 /**
- * G_TYPE_DATE_TIME
+ * G_TYPE_DATE_TIME:
  *
  * The #GType for a boxed type holding a #GDateTime.
  *
