@@ -1804,9 +1804,9 @@ g_date_time_new_now (void)
  * %%u  The day of the week as a decimal, range 1 to 7, Monday being 1.
  * %%W  The week number of the current year as a decimal number.
  * %%x  The preferred date representation for the current locale without
- *      the date.
- * %%X  The preferred date representation for the current locale without
  *      the time.
+ * %%X  The preferred date representation for the current locale without
+ *      the date.
  * %%y  The year as a decimal number without the century.
  * %%Y  The year as a decimal number including the century.
  * %%z  The timezone or name or abbreviation.
