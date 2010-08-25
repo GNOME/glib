@@ -1,3 +1,55 @@
+Overview of Changes from GLib 2.25.14 to GLib 2.25.15
+=====================================================
+
+ * GIO
+  - The GZip(De}Compressor can now process header information
+  - Support for network proxies has been added, with the GProxy
+    interface and the gio-proxy-resolver extension point. GIO
+    includes SOCKSv4 and SOCKSv5 implementations, and libproxy
+    is also going to provide an implementation of this extension
+    point.
+  - There is are GAction and GActionGroup classes now, that will
+    be used in GApplication in the near future.
+
+ * GObject
+  - There are now convenience macros for defining boxed and
+    pointer types
+
+ * GDBus
+  - Memory leak fixes
+  - GDBusProxy for well-known names can now auto-restart
+    the service if the name owner disapperas
+  - Filter functions are now allowed to modify messages
+
+ * GLib
+  - GDateTime is a replacement for GDate that supports time
+    and timezone information.
+
+ * Bugs fixed:
+  50076 Time API to go with date API
+ 449565 Add G_DEFINE_BOXED_TYPE()
+ 617691 Add GZIP header processing to GZlibCompressor/GZlibDecompressor
+ 622184 add g_memory_output_stream_steal_data
+ 624546 Modification of GDBusMessage in filter function
+ 627088 Build failure in gdbus-peer.c on FreeBSD
+ 627181 save a memdup
+ 627182 Plug a mem leak in the gdbus-connection test
+ 627187 Plug some gdbus mem leaks
+ 627188 gdbus-non-socket test occasionally fails
+ 627252 G_OPTION_FLAG_NO_ARG is only for callback options
+ 627392 gdbus commit 8a3a4596 breaks win32 compile
+ 627407 FTBFS on !linux UNIX platforms
+ 627604 String error: 'that' twice in a row
+
+ * Updated translations:
+  Danish
+  Galician
+  Hebrew
+  Serbian
+  Spanish
+  Traditional Chinese
+
+
 Overview of Changes from GLib 2.25.13 to GLib 2.25.14
 =====================================================
 
