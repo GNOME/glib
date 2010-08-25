@@ -1809,7 +1809,7 @@ g_date_time_new_now (void)
  *      the date.
  * %%y  The year as a decimal number without the century.
  * %%Y  The year as a decimal number including the century.
- * %%z  The timezone or name or abbreviation.
+ * %%Z  Alphabetic time zone abbreviation (e.g. EDT).
  * %%%  A literal %% character.
  *
  * Return value: a newly allocated string formatted to the requested format or
@@ -1983,7 +1983,7 @@ g_date_time_printf (const GDateTime *datetime,
               g_string_append_printf (outstr, "%d",
                                       g_date_time_get_year (datetime));
               break;
-            case 'z':
+            case 'Z':
               if (datetime->tz)
                 g_string_append_printf (outstr, "%s", datetime->tz->name);
               else

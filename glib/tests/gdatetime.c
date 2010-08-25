@@ -905,7 +905,7 @@ GDateTime *__dt = g_date_time_new_from_date (2009, 10, 24);     \
   TEST_PRINTF ("%%", "%");
   TEST_PRINTF ("%", "");
   TEST_PRINTF ("%9", NULL);
-  TEST_PRINTF ("%z", dst);
+  TEST_PRINTF ("%Z", dst);
 }
 
 gint
