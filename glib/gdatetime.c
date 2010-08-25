@@ -277,6 +277,24 @@ get_weekday_name_abbr (gint day)
   return NULL;
 }
 
+static inline gint
+date_to_julian (gint year,
+                gint month,
+                gint day)
+{
+  gint a = (14 - month) / 12;
+  gint y = year + 4800 - a;
+  gint m = month + (12 * a) - 3;
+
+  return day
+       + (((153 * m) + 2) / 5)
+       + (y * 365)
+       + (y / 4)
+       - (y / 100)
+       + (y / 400)
+       - 32045;
+}
+
 static inline void
 g_date_time_add_days_internal (GDateTime *datetime,
                                gint64     days)
@@ -313,6 +331,69 @@ g_date_time_add_usec (GDateTime *datetime,
     datetime->usec = USEC_PER_DAY + (__usec % USEC_PER_DAY);
   else
     datetime->usec = __usec % USEC_PER_DAY;
+}
+
+/*< internal >
+ * g_date_time_add_dmy:
+ * @datetime: a #GDateTime
+ * @years: years to add, in the Gregorian calendar
+ * @months: months to add, in the Gregorian calendar
+ * @days: days to add, in the Gregorian calendar
+ *
+ * Updates @datetime by adding @years, @months and @days to it
+ *
+ * This function modifies the passed #GDateTime so public accessors
+ * should make always pass a copy
+ */
+static inline void
+g_date_time_add_dmy (GDateTime *datetime,
+                     gint       years,
+                     gint       months,
+                     gint       days)
+{
+  gint __year = g_date_time_get_year (datetime);
+  gint __month = g_date_time_get_month (datetime);
+  gint __day = g_date_time_get_day_of_month (datetime);
+  gint step, i;
+  const guint16 *max_days;
+
+  /* subtract one day for leap years */
+  if (GREGORIAN_LEAP (__year) && __month == 2)
+    {
+      if (__day == 29)
+        __day -= 1;
+    }
+
+  __year += years;
+
+  /* add months */
+  step = months > 0 ? 1 : -1;
+  for (i = 0; i < ABS (months); i++)
+    {
+      __month += step;
+
+      if (__month < 1)
+        {
+          __year -= 1;
+          __month = 12;
+        }
+      else if (__month > 12)
+        {
+          __year += 1;
+          __month = 1;
+        }
+    }
+
+  /* clamp the days */
+  max_days = days_in_months[GREGORIAN_LEAP (__year) ? 1 : 0];
+  if (max_days[__month] < __day)
+    __day = max_days[__month];
+
+  /* since the add_days_internal() uses the julian date we need to
+   * update it using the new year/month/day and then add the days
+   */
+  datetime->julian = date_to_julian (__year, __month, __day);
+  g_date_time_add_days_internal (datetime, days);
 }
 
 #define ZONEINFO_DIR            "zoneinfo"
@@ -970,31 +1051,21 @@ g_date_time_add_full (const GDateTime *datetime,
                       gint             minutes,
                       gint             seconds)
 {
-  GDateTime *tmp, *dt;
+  GDateTime *dt;
+  gint64 usecs;
 
   g_return_val_if_fail (datetime != NULL, NULL);
 
-  dt = g_date_time_add_years (datetime, years);
-  tmp = dt;
+  dt = g_date_time_copy (datetime);
 
-  dt = g_date_time_add_months (tmp, months);
-  g_date_time_unref (tmp);
-  tmp = dt;
+  /* add date */
+  g_date_time_add_dmy (dt, years, months, days);
 
-  dt = g_date_time_add_days (tmp, days);
-  g_date_time_unref (tmp);
-  tmp = dt;
-
-  dt = g_date_time_add_hours (tmp, hours);
-  g_date_time_unref (tmp);
-  tmp = dt;
-
-  dt = g_date_time_add_minutes (tmp, minutes);
-  g_date_time_unref (tmp);
-  tmp = dt;
-
-  dt = g_date_time_add_seconds (tmp, seconds);
-  g_date_time_unref (tmp);
+  /* add time */
+  usecs = (hours   * USEC_PER_HOUR)
+        + (minutes * USEC_PER_MINUTE)
+        + (seconds * USEC_PER_SECOND);
+  g_date_time_add_usec (dt, usecs);
 
   return dt;
 }
@@ -1144,8 +1215,8 @@ g_date_time_equal (gconstpointer dt1,
   a = dt1;
   b = dt2;
 
-  a_utc = g_date_time_to_utc ((GDateTime *) a);
-  b_utc = g_date_time_to_utc ((GDateTime *) b);
+  a_utc = g_date_time_to_utc (a);
+  b_utc = g_date_time_to_utc (b);
 
   a_epoch = g_date_time_to_epoch (a_utc);
   b_epoch = g_date_time_to_epoch (b_utc);
@@ -1571,24 +1642,6 @@ g_date_time_is_daylight_savings (const GDateTime *datetime)
     return FALSE;
 
   return datetime->tz->is_dst;
-}
-
-static inline gint
-date_to_julian (gint year,
-                gint month,
-                gint day)
-{
-  gint a = (14 - month) / 12;
-  gint y = year + 4800 - a;
-  gint m = month + (12 * a) - 3;
-
-  return day
-       + (((153 * m) + 2) / 5)
-       + (y * 365)
-       + (y / 4)
-       - (y / 100)
-       + (y / 400)
-       - 32045;
 }
 
 /**
