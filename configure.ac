@@ -882,6 +882,7 @@ AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f
 #endif])
 # struct statvfs.f_basetype is available on Solaris but not for Linux. 
 AC_CHECK_MEMBERS([struct statvfs.f_basetype],,, [#include <sys/statvfs.h>])
+AC_CHECK_MEMBERS([struct tm.tm_gmtoff])
 
 # Checks for libcharset
 AM_LANGINFO_CODESET

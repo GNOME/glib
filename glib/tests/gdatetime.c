@@ -54,9 +54,9 @@ get_localtime_tm (time_t     time_,
         g_return_if_fail_warning (G_LOG_DOMAIN, G_STRFUNC, "ptm != NULL");
 #endif
 
-        tm.tm_mon = 0;
-        tm.tm_mday = 1;
-        tm.tm_year = 100;
+        retval->tm_mon = 0;
+        retval->tm_mday = 1;
+        retval->tm_year = 100;
       }
     else
       memcpy ((void *) retval, (void *) ptm, sizeof (struct tm));
@@ -718,7 +718,18 @@ test_GDateTime_utc_now (void)
   struct tm  tm;
 
   t = time (NULL);
+#ifdef HAVE_GMTIME_R
   gmtime_r (&t, &tm);
+#else
+  {
+    struct tm *tmp = gmtime (&t);
+    /* Assume gmtime() can't fail as we got t from time(NULL). (Note
+     * that on Windows, gmtime() *is* MT-safe, it uses a thread-local
+     * buffer.)
+     */
+    memcpy (&tm, tmp, sizeof (struct tm));
+  }
+#endif
   dt = g_date_time_new_utc_now ();
   g_assert_cmpint (tm.tm_year + 1900, ==, g_date_time_get_year (dt));
   g_assert_cmpint (tm.tm_mon + 1, ==, g_date_time_get_month (dt));
@@ -741,7 +752,9 @@ test_GDateTime_get_utc_offset (void)
 
   dt = g_date_time_new_now ();
   ts = g_date_time_get_utc_offset (dt);
+#ifdef HAVE_STRUCT_TM_TM_GMTOFF
   g_assert_cmpint (ts, ==, (tm.tm_gmtoff * G_TIME_SPAN_SECOND));
+#endif
   g_date_time_unref (dt);
 }
 
@@ -791,7 +804,14 @@ test_GDateTime_to_utc (void)
   struct tm  tm;
 
   t = time (NULL);
+#ifdef HAVE_GMTIME_R
   gmtime_r (&t, &tm);
+#else
+  {
+    struct tm *tmp = gmtime (&t);
+    memcpy (&tm, tmp, sizeof (struct tm));
+  }
+#endif
   dt2 = g_date_time_new_now ();
   dt = g_date_time_to_utc (dt2);
   g_assert_cmpint (tm.tm_year + 1900, ==, g_date_time_get_year (dt));

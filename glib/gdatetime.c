@@ -1700,7 +1700,7 @@ g_date_time_new_from_epoch (gint64 t) /* IN */
   localtime_r (&tt, &tm);
 #else
   {
-    struct tm *ptm = localtime (&timet);
+    struct tm *ptm = localtime (&tt);
 
     if (ptm == NULL)
       {
