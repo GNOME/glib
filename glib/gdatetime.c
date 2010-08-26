@@ -2231,3 +2231,24 @@ g_date_time_new_utc_now (void)
 
   return utc;
 }
+
+/**
+ * g_date_time_get_week_of_year:
+ *
+ * Returns the numeric week of the respective year.
+ *
+ * Return value: the week of the year
+ *
+ * Since: 2.26
+ */
+gint
+g_date_time_get_week_of_year (const GDateTime *datetime)
+{
+  gint weeknum;
+
+  g_return_val_if_fail (datetime != NULL, 0);
+
+  g_date_time_get_week_number (datetime, &weeknum, NULL, NULL);
+
+  return weeknum;
+}

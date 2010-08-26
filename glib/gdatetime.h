@@ -163,6 +163,7 @@ gint                  g_date_time_get_millisecond        (const GDateTime *datet
 gint                  g_date_time_get_microsecond        (const GDateTime *datetime);
 gint                  g_date_time_get_day_of_week        (const GDateTime *datetime);
 gint                  g_date_time_get_day_of_month       (const GDateTime *datetime);
+gint                  g_date_time_get_week_of_year       (const GDateTime *datetime);
 gint                  g_date_time_get_day_of_year        (const GDateTime *datetime);
 gint                  g_date_time_get_month              (const GDateTime *datetime);
 gint                  g_date_time_get_year               (const GDateTime *datetime);
