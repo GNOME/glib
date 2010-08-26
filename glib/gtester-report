@@ -171,7 +171,7 @@ class ReportWriter(object):
     def __init__(self, binary_list):
         self.binaries = binary_list
 
-    def _error_text(node):
+    def _error_text(self, node):
         """Get a string representing the error children of node."""
         rlist = list_children(node, 'error')
         txt = ''
