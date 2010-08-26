@@ -1525,17 +1525,17 @@ g_get_any_init_do (void)
   gchar hostname[100];
 
   g_tmp_dir = g_strdup (g_getenv ("TMPDIR"));
-  if (!g_tmp_dir)
+  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
     g_tmp_dir = g_strdup (g_getenv ("TMP"));
-  if (!g_tmp_dir)
+  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
     g_tmp_dir = g_strdup (g_getenv ("TEMP"));
 
 #ifdef G_OS_WIN32
-  if (!g_tmp_dir)
+  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
     g_tmp_dir = get_windows_directory_root ();
 #else  
 #ifdef P_tmpdir
-  if (!g_tmp_dir)
+  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
     {
       gsize k;    
       g_tmp_dir = g_strdup (P_tmpdir);
@@ -1545,7 +1545,7 @@ g_get_any_init_do (void)
     }
 #endif
   
-  if (!g_tmp_dir)
+  if (g_tmp_dir == NULL || *g_tmp_dir == '\0')
     {
       g_tmp_dir = g_strdup ("/tmp");
     }
@@ -1868,7 +1868,7 @@ g_get_home_dir (void)
  * <envar>TMP</envar>, and <envar>TEMP</envar> in that order. If none 
  * of those are defined "/tmp" is returned on UNIX and "C:\" on Windows. 
  * The encoding of the returned string is system-defined. On Windows, 
- * it is always UTF-8. The return value is never %NULL.
+ * it is always UTF-8. The return value is never %NULL or the empty string.
  *
  * Returns: the directory to use for temporary files.
  */

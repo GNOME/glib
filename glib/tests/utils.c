@@ -123,17 +123,31 @@ test_appname (void)
   g_assert_cmpstr (appname, ==, "appname");
 }
 
+static void
+test_tmpdir (void)
+{
+  g_test_bug ("627969");
+  g_assert_cmpstr (g_get_tmp_dir (), !=, "");
+}
+
 int
 main (int   argc,
       char *argv[])
 {
   argv0 = argv[0];
 
+  /* for tmpdir test, need to do this early before g_get_any_init */
+  g_setenv ("TMPDIR", "", TRUE);
+  g_unsetenv ("TMP");
+  g_unsetenv ("TEMP");
+
   g_test_init (&argc, &argv, NULL);
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/utils/language-names", test_language_names);
   g_test_add_func ("/utils/version", test_version);
   g_test_add_func ("/utils/appname", test_appname);
+  g_test_add_func ("/utils/tmpdir", test_tmpdir);
 
   return g_test_run();
 }
