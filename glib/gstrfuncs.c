@@ -107,6 +107,17 @@ g_strdup (const gchar *str)
   return new_str;
 }
 
+/**
+ * g_memdup:
+ * @mem: the memory to copy.
+ * @byte_size: the number of bytes to copy.
+ * 
+ * Allocates @byte_size bytes of memory, and copies @byte_size bytes into it
+ * from @mem. If @mem is %NULL it returns %NULL.
+ * 
+ * Returns: a pointer to the newly-allocated copy of the memory, or %NULL if @mem
+ *  is %NULL.
+ */
 gpointer
 g_memdup (gconstpointer mem,
 	  guint         byte_size)
