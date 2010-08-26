@@ -792,22 +792,11 @@ g_date_time_add_years (const GDateTime *datetime,
                        gint             years)
 {
   GDateTime *dt;
-  gint       day;
 
   g_return_val_if_fail (datetime != NULL, NULL);
 
-  day = g_date_time_get_day_of_month (datetime);
-  if (g_date_time_is_leap_year (datetime) &&
-      g_date_time_get_month (datetime) == 2)
-    {
-      if (day == 29)
-        day--;
-    }
-
-  dt = g_date_time_new_from_date (g_date_time_get_year (datetime) + years,
-                                  g_date_time_get_month (datetime),
-                                  day);
-  dt->usec = datetime->usec;
+  dt = g_date_time_copy (datetime);
+  g_date_time_add_dmy (dt, years, 0, 0);
 
   return dt;
 }
@@ -829,44 +818,12 @@ GDateTime*
 g_date_time_add_months (const GDateTime *datetime,
                         gint             months)
 {
-  GDateTime     *dt;
-  gint           year,
-                 month,
-                 day,
-                 i,
-                 a;
-  const guint16 *days;
+  GDateTime *dt;
 
   g_return_val_if_fail (datetime != NULL, NULL);
-  g_return_val_if_fail (months != 0, NULL);
 
-  month = g_date_time_get_month (datetime);
-  year = g_date_time_get_year (datetime);
-  a = months > 0 ? 1 : -1;
-
-  for (i = 0; i < ABS (months); i++)
-    {
-      month += a;
-      if (month < 1)
-        {
-          year--;
-          month = 12;
-        }
-      else if (month > 12)
-        {
-          year++;
-          month = 1;
-        }
-    }
-
-  day = g_date_time_get_day_of_month (datetime);
-  days = days_in_months [GREGORIAN_LEAP (year) ? 1 : 0];
-
-  if (days[month] < day)
-    day = days[month];
-
-  dt = g_date_time_new_from_date (year, month, day);
-  dt->usec = datetime->usec;
+  dt = g_date_time_copy (datetime);
+  g_date_time_add_dmy (dt, 0, months, 0);
 
   return dt;
 }
@@ -915,7 +872,7 @@ g_date_time_add_days (const GDateTime *datetime,
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  g_date_time_add_days_internal (dt, days);
+  g_date_time_add_dmy (dt, 0, 0, days);
 
   return dt;
 }

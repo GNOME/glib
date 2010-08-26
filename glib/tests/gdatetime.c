@@ -74,12 +74,15 @@ test_GDateTime_now (void)
   get_localtime_tm (time (NULL), &tm);
 
   dt = g_date_time_new_now ();
+
   g_assert_cmpint (g_date_time_get_year (dt), ==, 1900 + tm.tm_year);
   g_assert_cmpint (g_date_time_get_month (dt), ==, 1 + tm.tm_mon);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, tm.tm_mday);
   g_assert_cmpint (g_date_time_get_hour (dt), ==, tm.tm_hour);
   g_assert_cmpint (g_date_time_get_minute (dt), ==, tm.tm_min);
-  g_assert_cmpint (g_date_time_get_second (dt), ==, tm.tm_sec);
+  /* XXX we need some fuzzyness here */
+  g_assert_cmpint (g_date_time_get_second (dt), >=, tm.tm_sec);
+
   g_date_time_unref (dt);
 }
 
