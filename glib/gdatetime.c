@@ -337,7 +337,7 @@ g_date_time_add_usec (GDateTime *datetime,
 }
 
 /*< internal >
- * g_date_time_add_dmy:
+ * g_date_time_add_ymd:
  * @datetime: a #GDateTime
  * @years: years to add, in the Gregorian calendar
  * @months: months to add, in the Gregorian calendar
@@ -349,7 +349,7 @@ g_date_time_add_usec (GDateTime *datetime,
  * should make always pass a copy
  */
 static inline void
-g_date_time_add_dmy (GDateTime *datetime,
+g_date_time_add_ymd (GDateTime *datetime,
                      gint       years,
                      gint       months,
                      gint       days)
@@ -799,7 +799,7 @@ g_date_time_add_years (const GDateTime *datetime,
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  g_date_time_add_dmy (dt, years, 0, 0);
+  g_date_time_add_ymd (dt, years, 0, 0);
 
   return dt;
 }
@@ -826,7 +826,7 @@ g_date_time_add_months (const GDateTime *datetime,
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  g_date_time_add_dmy (dt, 0, months, 0);
+  g_date_time_add_ymd (dt, 0, months, 0);
 
   return dt;
 }
@@ -875,7 +875,7 @@ g_date_time_add_days (const GDateTime *datetime,
   g_return_val_if_fail (datetime != NULL, NULL);
 
   dt = g_date_time_copy (datetime);
-  g_date_time_add_dmy (dt, 0, 0, days);
+  g_date_time_add_ymd (dt, 0, 0, days);
 
   return dt;
 }
@@ -1019,7 +1019,7 @@ g_date_time_add_full (const GDateTime *datetime,
   dt = g_date_time_copy (datetime);
 
   /* add date */
-  g_date_time_add_dmy (dt, years, months, days);
+  g_date_time_add_ymd (dt, years, months, days);
 
   /* add time */
   usecs = (hours   * USEC_PER_HOUR)
