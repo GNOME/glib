@@ -1056,6 +1056,9 @@ write_to_temp_file (const gchar  *contents,
  * it returns %FALSE and sets @error. The error domain is #G_FILE_ERROR.
  * Possible error codes are those in the #GFileError enumeration.
  *
+ * Note that the name for the temporary file is constructed by appending up
+ * to 7 characters to @filename.
+ *
  * Return value: %TRUE on success, %FALSE if an error occurred
  *
  * Since: 2.8
