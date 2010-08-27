@@ -1,6 +1,7 @@
 glib/gatomic.c
 glib/gbookmarkfile.c
 glib/gconvert.c
+glib/gdatetime.c
 glib/gdir.c
 glib/gfileutils.c
 glib/giochannel.c
@@ -15,6 +16,8 @@ glib/gspawn.c
 glib/gutf8.c
 glib/goption.c
 glib/gkeyfile.c
+gio/gaction.c
+gio/gactiongroup.c
 gio/gappinfo.c
 gio/gapplication.c
 gio/gasynchelper.c
@@ -87,6 +90,9 @@ gio/gnetworkservice.c
 gio/goutputstream.c
 gio/gpermission.c
 gio/gpollfilemonitor.c
+gio/gproxyaddress.c
+gio/gproxyaddressenumerator.c
+gio/gproxyconnection.c
 gio/gresolver.c
 gio/gschema-compile.c
 gio/gseekable.c
