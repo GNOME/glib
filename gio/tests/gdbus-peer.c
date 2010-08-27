@@ -28,6 +28,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <string.h>
 
 /* for g_unlink() */
 #include <glib/gstdio.h>
@@ -39,6 +40,7 @@
 /* used in test_overflow */
 #ifdef G_OS_UNIX
 #include <gio/gunixconnection.h>
+#include <errno.h>
 #endif
 
 #include "gdbus-tests.h"
@@ -511,6 +513,55 @@ on_do_disconnect_in_idle (gpointer data)
 }
 #endif
 
+#ifdef G_OS_UNIX
+static gchar *
+read_all_from_fd (gint fd, gsize *out_len, GError **error)
+{
+  GString *str;
+  gchar buf[64];
+  gssize num_read;
+
+  str = g_string_new (NULL);
+
+  do
+    {
+      num_read = read (fd, buf, sizeof (buf));
+      if (num_read == -1)
+        {
+          if (errno == EAGAIN || errno == EWOULDBLOCK)
+            continue;
+          g_set_error (error,
+                       G_IO_ERROR,
+                       g_io_error_from_errno (errno),
+                       "Failed reading %d bytes into offset %d: %s",
+                       (gint) sizeof (buf),
+                       (gint) str->len,
+                       strerror (errno));
+          goto error;
+        }
+      else if (num_read > 0)
+        {
+          g_string_append_len (str, buf, num_read);
+        }
+      else if (num_read == 0)
+        {
+          break;
+        }
+    }
+  while (TRUE);
+
+  if (out_len != NULL)
+    *out_len = str->len;
+  return g_string_free (str, FALSE);
+
+ error:
+  if (out_len != NULL)
+    out_len = 0;
+  g_string_free (str, TRUE);
+  return NULL;
+}
+#endif
+
 static void
 test_peer (void)
 {
@@ -654,8 +705,8 @@ test_peer (void)
     GDBusMessage *method_reply_message;
     GUnixFDList *fd_list;
     gint fd;
-    gchar buf[1024];
-    gssize len;
+    gchar *buf;
+    gsize len;
     gchar *buf2;
     gsize len2;
 
@@ -683,8 +734,10 @@ test_peer (void)
     g_object_unref (method_call_message);
     g_object_unref (method_reply_message);
 
-    memset (buf, '\0', sizeof (buf));
-    len = read (fd, buf, sizeof (buf) - 1);
+    error = NULL;
+    buf = read_all_from_fd (fd, &len, &error);
+    g_assert_no_error (error);
+    g_assert (buf != NULL);
     close (fd);
 
     error = NULL;
@@ -693,10 +746,10 @@ test_peer (void)
                          &len2,
                          &error);
     g_assert_no_error (error);
-    if (len2 > sizeof (buf))
-      buf2[sizeof (buf)] = '\0';
-    g_assert_cmpstr (buf, ==, buf2);
+    g_assert_cmpint (len, ==, len2);
+    g_assert (memcmp (buf, buf2, len) == 0);
     g_free (buf2);
+    g_free (buf);
   }
 #else
   error = NULL;
