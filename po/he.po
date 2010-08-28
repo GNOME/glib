@@ -7,19 +7,21 @@
 # Meir Kriheli <meirkr@mksoft.co.il>, 2002.
 # Gil 'Dolfin' Osher <dolfin@rpg.org.il>, 2002.
 # Gil Osher <dolfin@rpg.org.il>, 2004.
-#
+# Yaron Shahrabani <sh.yaron@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-27 14:53+0300\n"
-"PO-Revision-Date: 2010-08-27 14:53+0200\n"
+"POT-Creation-Date: 2010-08-28 10:41+0300\n"
+"PO-Revision-Date: 2010-08-28 10:45+0300\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
-"Language-Team: Hebrew <he@li.org>\n"
+"Language-Team: Gezer (Hebrew)\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../glib/gbookmarkfile.c:780
 #, c-format
@@ -160,6 +162,223 @@ msgstr "The pathname '%s' is not an absolute path"
 #: ../glib/gconvert.c:2031
 msgid "Invalid hostname"
 msgstr "Invalid hostname"
+
+#: ../glib/gdatetime.c:94
+msgctxt "GDateTime"
+msgid "am"
+msgstr "am"
+
+#: ../glib/gdatetime.c:94
+msgctxt "GDateTime"
+msgid "AM"
+msgstr "AM"
+
+#: ../glib/gdatetime.c:95
+msgctxt "GDateTime"
+msgid "pm"
+msgstr "pm"
+
+#: ../glib/gdatetime.c:95
+msgctxt "GDateTime"
+msgid "PM"
+msgstr "PM"
+
+#. Translators: this is the preferred format for expressing the date
+#: ../glib/gdatetime.c:104
+msgctxt "GDateTime"
+msgid "%m/%d/%y"
+msgstr "%m/%d/%y"
+
+#. Translators: this is the preferred format for expressing the time
+#: ../glib/gdatetime.c:107
+msgctxt "GDateTime"
+msgid "%H:%M:%S"
+msgstr "%H:%M:%S"
+
+#: ../glib/gdatetime.c:158
+msgctxt "GDateTime"
+msgid "January"
+msgstr "ינואר"
+
+#: ../glib/gdatetime.c:160
+msgctxt "GDateTime"
+msgid "February"
+msgstr "פברואר"
+
+#: ../glib/gdatetime.c:162
+msgctxt "GDateTime"
+msgid "March"
+msgstr "מרץ"
+
+#: ../glib/gdatetime.c:164
+msgctxt "GDateTime"
+msgid "April"
+msgstr "אפריל"
+
+#: ../glib/gdatetime.c:166 ../glib/gdatetime.c:203
+msgctxt "GDateTime"
+msgid "May"
+msgstr "מאי"
+
+#: ../glib/gdatetime.c:168
+msgctxt "GDateTime"
+msgid "June"
+msgstr "יוני"
+
+#: ../glib/gdatetime.c:170
+msgctxt "GDateTime"
+msgid "July"
+msgstr "יולי"
+
+#: ../glib/gdatetime.c:172
+msgctxt "GDateTime"
+msgid "August"
+msgstr "אוגוסט"
+
+#: ../glib/gdatetime.c:174
+msgctxt "GDateTime"
+msgid "September"
+msgstr "ספטמבר"
+
+#: ../glib/gdatetime.c:176
+msgctxt "GDateTime"
+msgid "October"
+msgstr "אוקטובר"
+
+#: ../glib/gdatetime.c:178
+msgctxt "GDateTime"
+msgid "November"
+msgstr "נובמבר"
+
+#: ../glib/gdatetime.c:180
+msgctxt "GDateTime"
+msgid "December"
+msgstr "דצמבר"
+
+#: ../glib/gdatetime.c:195
+msgctxt "GDateTime"
+msgid "Jan"
+msgstr "ינו"
+
+#: ../glib/gdatetime.c:197
+msgctxt "GDateTime"
+msgid "Feb"
+msgstr "פבר"
+
+#: ../glib/gdatetime.c:199
+msgctxt "GDateTime"
+msgid "Mar"
+msgstr "מרץ"
+
+#: ../glib/gdatetime.c:201
+msgctxt "GDateTime"
+msgid "Apr"
+msgstr "אפר"
+
+#: ../glib/gdatetime.c:205
+msgctxt "GDateTime"
+msgid "Jun"
+msgstr "יונ"
+
+#: ../glib/gdatetime.c:207
+msgctxt "GDateTime"
+msgid "Jul"
+msgstr "יול"
+
+#: ../glib/gdatetime.c:209
+msgctxt "GDateTime"
+msgid "Aug"
+msgstr "אוג"
+
+#: ../glib/gdatetime.c:211
+msgctxt "GDateTime"
+msgid "Sep"
+msgstr "ספט"
+
+#: ../glib/gdatetime.c:213
+msgctxt "GDateTime"
+msgid "Oct"
+msgstr "אוק"
+
+#: ../glib/gdatetime.c:215
+msgctxt "GDateTime"
+msgid "Nov"
+msgstr "נוב"
+
+#: ../glib/gdatetime.c:217
+msgctxt "GDateTime"
+msgid "Dec"
+msgstr "דצמ"
+
+#: ../glib/gdatetime.c:232
+msgctxt "GDateTime"
+msgid "Monday"
+msgstr "יום שני"
+
+#: ../glib/gdatetime.c:234
+msgctxt "GDateTime"
+msgid "Tuesday"
+msgstr "יום שלישי"
+
+#: ../glib/gdatetime.c:236
+msgctxt "GDateTime"
+msgid "Wednesday"
+msgstr "יום רביעי"
+
+#: ../glib/gdatetime.c:238
+msgctxt "GDateTime"
+msgid "Thursday"
+msgstr "יום חמישי"
+
+#: ../glib/gdatetime.c:240
+msgctxt "GDateTime"
+msgid "Friday"
+msgstr "יום שישי"
+
+#: ../glib/gdatetime.c:242
+msgctxt "GDateTime"
+msgid "Saturday"
+msgstr "שבת"
+
+#: ../glib/gdatetime.c:244
+msgctxt "GDateTime"
+msgid "Sunday"
+msgstr "יום ראשון"
+
+#: ../glib/gdatetime.c:259
+msgctxt "GDateTime"
+msgid "Mon"
+msgstr "ב׳"
+
+#: ../glib/gdatetime.c:261
+msgctxt "GDateTime"
+msgid "Tue"
+msgstr "ג׳"
+
+#: ../glib/gdatetime.c:263
+msgctxt "GDateTime"
+msgid "Wed"
+msgstr "ד׳"
+
+#: ../glib/gdatetime.c:265
+msgctxt "GDateTime"
+msgid "Thu"
+msgstr "ה"
+
+#: ../glib/gdatetime.c:267
+msgctxt "GDateTime"
+msgid "Fri"
+msgstr "ו׳"
+
+#: ../glib/gdatetime.c:269
+msgctxt "GDateTime"
+msgid "Sat"
+msgstr "ש׳"
+
+#: ../glib/gdatetime.c:271
+msgctxt "GDateTime"
+msgid "Sun"
+msgstr "א׳"
 
 #: ../glib/gdir.c:111 ../glib/gdir.c:134
 #, c-format
@@ -3333,9 +3552,6 @@ msgstr "Invalid hostname"
 
 #~ msgid "The file containing the icon"
 #~ msgstr "The file containing the icon"
-
-#~ msgid "name"
-#~ msgstr "name"
 
 #~ msgid "The name of the icon"
 #~ msgstr "The name of the icon"
