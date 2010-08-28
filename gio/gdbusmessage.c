@@ -1403,7 +1403,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
       g_set_error (&local_error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error deserializing GVariant with type-string `%s' from the D-Bus wire format"),
+                   _("Error deserializing GVariant with type string `%s' from the D-Bus wire format"),
                    s);
       g_free (s);
       goto fail;
@@ -2035,7 +2035,7 @@ append_value_to_blob (GVariant             *value,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error serializing GVariant with type-string `%s' to the D-Bus wire format"),
+                   _("Error serializing GVariant with type string `%s' to the D-Bus wire format"),
                    g_variant_get_type_string (value));
       goto fail;
     }
