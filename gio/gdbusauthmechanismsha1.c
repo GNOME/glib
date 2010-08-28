@@ -524,7 +524,7 @@ keyring_acquire_lock (const gchar  *path,
       num_tries++;
       if (num_tries == 50)
         {
-          /* ok, we slept 50*10ms = 0.5 seconds.. Conclude that the lock-file must be
+          /* ok, we slept 50*10ms = 0.5 seconds. Conclude that the lock file must be
            * stale (nuke the it from orbit)
            */
           if (g_unlink (lock) != 0)
@@ -532,12 +532,12 @@ keyring_acquire_lock (const gchar  *path,
               g_set_error (error,
                            G_IO_ERROR,
                            g_io_error_from_errno (errno),
-                           _("Error deleting stale lock-file `%s': %s"),
+                           _("Error deleting stale lock file `%s': %s"),
                            lock,
                            strerror (errno));
               goto out;
             }
-          _log ("Deleted stale lock-file `%s'", lock);
+          _log ("Deleted stale lock file `%s'", lock);
           break;
         }
     }
@@ -563,7 +563,7 @@ keyring_acquire_lock (const gchar  *path,
       g_set_error (error,
                    G_IO_ERROR,
                    g_io_error_from_errno (errno),
-                   _("Error creating lock-file `%s': %s"),
+                   _("Error creating lock file `%s': %s"),
                    lock,
                    strerror (errno));
       goto out;
@@ -593,7 +593,7 @@ keyring_release_lock (const gchar  *path,
       g_set_error (error,
                    G_IO_ERROR,
                    g_io_error_from_errno (errno),
-                   _("Error closing (unlinked) lock-file `%s': %s"),
+                   _("Error closing (unlinked) lock file `%s': %s"),
                    lock,
                    strerror (errno));
       goto out;
@@ -603,7 +603,7 @@ keyring_release_lock (const gchar  *path,
       g_set_error (error,
                    G_IO_ERROR,
                    g_io_error_from_errno (errno),
-                   _("Error unlinking lock-file `%s': %s"),
+                   _("Error unlinking lock file `%s': %s"),
                    lock,
                    strerror (errno));
       goto out;
