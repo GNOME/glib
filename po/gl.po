@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-27 23:13+0200\n"
-"PO-Revision-Date: 2010-08-27 23:15+0200\n"
+"POT-Creation-Date: 2010-08-29 04:08+0200\n"
+"PO-Revision-Date: 2010-08-29 04:18+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1701,22 +1701,22 @@ msgstr "Non foi posíbel encontrar a cookie co id %d no anel de chave en «%s»"
 
 #: ../gio/gdbusauthmechanismsha1.c:535
 #, c-format
-msgid "Error deleting stale lock-file `%s': %s"
+msgid "Error deleting stale lock file `%s': %s"
 msgstr "Produciuse un erro ao eliminar o ficheiro de bloqueo antigo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
 #, c-format
-msgid "Error creating lock-file `%s': %s"
+msgid "Error creating lock file `%s': %s"
 msgstr "Produciuse un erro ao crear o ficheiro de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
 #, c-format
-msgid "Error closing (unlinked) lock-file `%s': %s"
+msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr "Produciuse un erro ao pechar o ficheiro de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
 #, c-format
-msgid "Error unlinking lock-file `%s': %s"
+msgid "Error unlinking lock file `%s': %s"
 msgstr "Produciuse un erro ao abrir o ficheiro de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:682
@@ -1902,9 +1902,9 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1406
 #, c-format
 msgid ""
-"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
-"Produciuse un erro ao desserializar o GVariant co tipo cadea «%s» desde o "
+"Produciuse un erro ao deserializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
 #: ../gio/gdbusmessage.c:1590
@@ -1948,7 +1948,7 @@ msgstr "Non foi posíbel deserializar a mensaxe: "
 #: ../gio/gdbusmessage.c:2038
 #, c-format
 msgid ""
-"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
 "Produciuse un erro ao serializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
