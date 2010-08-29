@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
-"POT-Creation-Date: 2010-08-22 02:00+0000\n"
-"PO-Revision-Date: 2010-08-25 21:59+0530\n"
+"POT-Creation-Date: 2010-08-28 23:39+0000\n"
+"PO-Revision-Date: 2010-08-29 09:31+0530\n"
 "Last-Translator: A S Alam <aalam@users.sf.net>\n"
 "Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -159,6 +159,224 @@ msgstr "ਮਾਰਗ-ਨਾਂ %s ਇਕ ਅਸਲੀ (absolute) ਮਾਰਗ �
 msgid "Invalid hostname"
 msgstr "ਗਲਤ ਹੋਸਟ-ਨਾਂ"
 
+#: ../glib/gdatetime.c:94
+#| msgid "name"
+msgctxt "GDateTime"
+msgid "am"
+msgstr "ਸਵੇਰ"
+
+#: ../glib/gdatetime.c:94
+msgctxt "GDateTime"
+msgid "AM"
+msgstr "ਸਵੇਰ"
+
+#: ../glib/gdatetime.c:95
+msgctxt "GDateTime"
+msgid "pm"
+msgstr "ਸ਼ਾਮ"
+
+#: ../glib/gdatetime.c:95
+msgctxt "GDateTime"
+msgid "PM"
+msgstr "ਸ਼ਾਮ"
+
+#. Translators: this is the preferred format for expressing the date
+#: ../glib/gdatetime.c:104
+msgctxt "GDateTime"
+msgid "%m/%d/%y"
+msgstr "%d/%m/%y"
+
+#. Translators: this is the preferred format for expressing the time
+#: ../glib/gdatetime.c:107
+msgctxt "GDateTime"
+msgid "%H:%M:%S"
+msgstr "%H:%M:%S"
+
+#: ../glib/gdatetime.c:158
+msgctxt "GDateTime"
+msgid "January"
+msgstr "ਜਨਵਰੀ"
+
+#: ../glib/gdatetime.c:160
+msgctxt "GDateTime"
+msgid "February"
+msgstr "ਫਰਵਰੀ"
+
+#: ../glib/gdatetime.c:162
+msgctxt "GDateTime"
+msgid "March"
+msgstr "ਮਾਰਚ"
+
+#: ../glib/gdatetime.c:164
+msgctxt "GDateTime"
+msgid "April"
+msgstr "ਅਪਰੈਲ"
+
+#: ../glib/gdatetime.c:166 ../glib/gdatetime.c:203
+msgctxt "GDateTime"
+msgid "May"
+msgstr "ਮਈ"
+
+#: ../glib/gdatetime.c:168
+msgctxt "GDateTime"
+msgid "June"
+msgstr "ਜੂਨ"
+
+#: ../glib/gdatetime.c:170
+msgctxt "GDateTime"
+msgid "July"
+msgstr "ਜੁਲਾਈ"
+
+#: ../glib/gdatetime.c:172
+msgctxt "GDateTime"
+msgid "August"
+msgstr "ਅਗਸਤ"
+
+#: ../glib/gdatetime.c:174
+msgctxt "GDateTime"
+msgid "September"
+msgstr "ਸਤੰਬਰ"
+
+#: ../glib/gdatetime.c:176
+msgctxt "GDateTime"
+msgid "October"
+msgstr "ਅਕਤੂਬਰ"
+
+#: ../glib/gdatetime.c:178
+msgctxt "GDateTime"
+msgid "November"
+msgstr "ਨਵੰਬਰ"
+
+#: ../glib/gdatetime.c:180
+msgctxt "GDateTime"
+msgid "December"
+msgstr "ਦਸੰਬਰ"
+
+#: ../glib/gdatetime.c:195
+msgctxt "GDateTime"
+msgid "Jan"
+msgstr "ਜਨ"
+
+#: ../glib/gdatetime.c:197
+msgctxt "GDateTime"
+msgid "Feb"
+msgstr "ਫਰ"
+
+#: ../glib/gdatetime.c:199
+msgctxt "GDateTime"
+msgid "Mar"
+msgstr "ਮਾਰ"
+
+#: ../glib/gdatetime.c:201
+msgctxt "GDateTime"
+msgid "Apr"
+msgstr "ਅਪ"
+
+#: ../glib/gdatetime.c:205
+msgctxt "GDateTime"
+msgid "Jun"
+msgstr "ਜੂਨ"
+
+#: ../glib/gdatetime.c:207
+msgctxt "GDateTime"
+msgid "Jul"
+msgstr "ਜੁਲ"
+
+#: ../glib/gdatetime.c:209
+msgctxt "GDateTime"
+msgid "Aug"
+msgstr "ਅਗ"
+
+#: ../glib/gdatetime.c:211
+msgctxt "GDateTime"
+msgid "Sep"
+msgstr "ਸਤੰ"
+
+#: ../glib/gdatetime.c:213
+msgctxt "GDateTime"
+msgid "Oct"
+msgstr "ਅਕ"
+
+#: ../glib/gdatetime.c:215
+msgctxt "GDateTime"
+msgid "Nov"
+msgstr "ਨਵੰ"
+
+#: ../glib/gdatetime.c:217
+msgctxt "GDateTime"
+msgid "Dec"
+msgstr "ਦਸੰ"
+
+#: ../glib/gdatetime.c:232
+msgctxt "GDateTime"
+msgid "Monday"
+msgstr "ਸੋਮਵਾਰ"
+
+#: ../glib/gdatetime.c:234
+msgctxt "GDateTime"
+msgid "Tuesday"
+msgstr "ਮੰਗਲਵਾਰ"
+
+#: ../glib/gdatetime.c:236
+msgctxt "GDateTime"
+msgid "Wednesday"
+msgstr "ਬੁੱਧਵਾਰ"
+
+#: ../glib/gdatetime.c:238
+msgctxt "GDateTime"
+msgid "Thursday"
+msgstr "ਵੀਰਵਾਰ"
+
+#: ../glib/gdatetime.c:240
+msgctxt "GDateTime"
+msgid "Friday"
+msgstr "ਸ਼ੁੱਕਰਵਾਰ"
+
+#: ../glib/gdatetime.c:242
+msgctxt "GDateTime"
+msgid "Saturday"
+msgstr "ਸ਼ਨਿੱਚਰਵਾਰ"
+
+#: ../glib/gdatetime.c:244
+msgctxt "GDateTime"
+msgid "Sunday"
+msgstr "ਐਤਵਾਰ"
+
+#: ../glib/gdatetime.c:259
+msgctxt "GDateTime"
+msgid "Mon"
+msgstr "ਸੋਮ"
+
+#: ../glib/gdatetime.c:261
+msgctxt "GDateTime"
+msgid "Tue"
+msgstr "ਮੰਗ"
+
+#: ../glib/gdatetime.c:263
+msgctxt "GDateTime"
+msgid "Wed"
+msgstr "ਬੁੱਧ"
+
+#: ../glib/gdatetime.c:265
+msgctxt "GDateTime"
+msgid "Thu"
+msgstr "ਵੀਰ"
+
+#: ../glib/gdatetime.c:267
+msgctxt "GDateTime"
+msgid "Fri"
+msgstr "ਸ਼ੁੱਕ"
+
+#: ../glib/gdatetime.c:269
+msgctxt "GDateTime"
+msgid "Sat"
+msgstr "ਸ਼ਨਿੱ"
+
+#: ../glib/gdatetime.c:271
+msgctxt "GDateTime"
+msgid "Sun"
+msgstr "ਐਤ"
+
 #: ../glib/gdir.c:111 ../glib/gdir.c:134
 #, c-format
 msgid "Error opening directory '%s': %s"
@@ -204,7 +422,7 @@ msgstr "ਫਾਇਲ '%s' ਖੋਲ੍ਹਣ ਵਿੱਚ ਫੇਲ੍ਹ: fdope
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਦਾ ਨਾਂ '%s' ਬਦਲਣ 'ਚ ਅਸਫ਼ਲ: g_rename() ਫੇਲ੍ਹ: %s"
 
-#: ../glib/gfileutils.c:899 ../glib/gfileutils.c:1365
+#: ../glib/gfileutils.c:899 ../glib/gfileutils.c:1368
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "ਫਾਇਲ %s' ਬਣਾਉਣ ਵਿੱਚ ਫੇਲ੍ਹ: %s"
@@ -234,64 +452,64 @@ msgstr "ਫਾਇਲ '%s' ਨੂੰ ਲਿਖਣ ਲਈ ਫੇਲ੍ਹ: fsync()
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "ਫਾਇਲ '%s' ਨੂੰ ਬੰਦ ਕਰਨ 'ਚ ਫੇਲ੍ਹ: fclose() ਫੇਲ੍ਹ: %s"
 
-#: ../glib/gfileutils.c:1123
+#: ../glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "ਮੌਜੂਦਾ ਫਾਇਲ '%s' ਨੂੰ ਹਟਾਇਆ ਨਹੀਂ ਜਾ ਸਕਿਆ: g_unlink() ਫੇਲ੍ਹ: %s"
 
-#: ../glib/gfileutils.c:1327
+#: ../glib/gfileutils.c:1330
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "ਟੈਪਲੇਟ '%s' ਸਹੀਂ ਨਹੀਂ ਹੈ, ਇਸ ਕੋਲ '%s' ਨਹੀਂ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ"
 
-#: ../glib/gfileutils.c:1340
+#: ../glib/gfileutils.c:1343
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "ਟੈਂਪਲੇਟ '%s' XXXXXX ਨਹੀਂ ਰੱਖਦਾ ਹੈ"
 
-#: ../glib/gfileutils.c:1773
+#: ../glib/gfileutils.c:1776
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u ਬਾਈਟ"
 msgstr[1] "%u ਬਾਈਟ"
 
-#: ../glib/gfileutils.c:1781
+#: ../glib/gfileutils.c:1784
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1786
+#: ../glib/gfileutils.c:1789
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1791
+#: ../glib/gfileutils.c:1794
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1796
+#: ../glib/gfileutils.c:1799
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:1801
+#: ../glib/gfileutils.c:1804
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:1806
+#: ../glib/gfileutils.c:1809
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#: ../glib/gfileutils.c:1849
+#: ../glib/gfileutils.c:1852
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "ਸਿੰਬੋਲਿਕ ਲਿੰਕ '%s' ਪੜ੍ਹਨ ਲਈ ਫੇਲ੍ਹ: %s"
 
-#: ../glib/gfileutils.c:1870
+#: ../glib/gfileutils.c:1873
 msgid "Symbolic links not supported"
 msgstr "ਸਿੰਬੋਲਿਕ ਲਿੰਕ ਮੱਦਦ ਪ੍ਰਾਪਤ ਨਹੀਂ ਹਨ"
 
@@ -1226,8 +1444,8 @@ msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 msgstr ""
-"`%s' ਐਡਰੈੱਸ 'ਚ ਗਲਤੀ - ਯੂਨੈਕਸ ਟਰਾਂਸਪੋਰਟ ਲਈ ਠੀਕ ਇੱਕ `path' ਜਾਂ `abstract' ਕੁੰਜੀ ਸੈੱਟ ਹੋਣੀ ਚਾਹੀਦੀ "
-"ਹੈ।"
+"`%s' ਐਡਰੈੱਸ 'ਚ ਗਲਤੀ - ਯੂਨੈਕਸ ਟਰਾਂਸਪੋਰਟ ਲਈ ਠੀਕ ਇੱਕ `path' ਜਾਂ `abstract' ਕੁੰਜੀ ਸੈੱਟ ਹੋਣੀ "
+"ਚਾਹੀਦੀ ਹੈ।"
 
 #: ../gio/gdbusaddress.c:583
 #, c-format
@@ -1301,22 +1519,22 @@ msgstr "ਕਮਾਂਡ ਲਾਈਨ `%s' ਗ਼ੈਰ-ਸਿਫ਼ਰ ਬੰਦ
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "ਸ਼ੈਸ਼ਨ ਬਸ ਐਡਰੈੱਸ ਜਾਣਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ (ਇਸ OS ਵਲੋਂ ਬਣਾਇਆ ਨਹੀਂ ਹੈ)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:5986
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6033
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
-"ਬਸ ਐਡਰੈੱਸ ਜਾਣਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ DBUS_STARTER_BUS_TYPE ਇੰਵਾਇਰਨਮੈਂਟ "
-"ਵੇਰੀਬਲ - ਅਣਜਾਣ ਮੁੱਲ `%s'"
+"ਬਸ ਐਡਰੈੱਸ ਜਾਣਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ DBUS_STARTER_BUS_TYPE ਇੰਵਾਇਰਨਮੈਂਟ ਵੇਰੀਬਲ - "
+"ਅਣਜਾਣ ਮੁੱਲ `%s'"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:5995
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6042
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
-"ਬਸ ਐਡਰੈੱਸ ਜਾਣਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ DBUS_STARTER_BUS_TYPE ਇੰਵਾਇਰਨਮੈਂਟ "
-"ਵੇਰੀਬਲ ਸੈੱਟ ਨਹੀਂ ਹੈ"
+"ਬਸ ਐਡਰੈੱਸ ਜਾਣਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ, ਕਿਉਂਕਿ DBUS_STARTER_BUS_TYPE ਇੰਵਾਇਰਨਮੈਂਟ ਵੇਰੀਬਲ ਸੈੱਟ ਨਹੀਂ "
+"ਹੈ"
 
 #: ../gio/gdbusaddress.c:1264
 #, c-format
@@ -1382,22 +1600,26 @@ msgstr "`%2$s' ਉੱਤੇ ਕੀਰਿੰਗ ਵਿੱਚ id %1$d ਨਾਲ �
 
 #: ../gio/gdbusauthmechanismsha1.c:535
 #, c-format
-msgid "Error deleting stale lock-file `%s': %s"
-msgstr "ਸਟਾਲ ਲਾਕ-ਫਾਇਲ `%s' ਹਟਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
+#| msgid "Error deleting stale lock-file `%s': %s"
+msgid "Error deleting stale lock file `%s': %s"
+msgstr "ਸਟਾਲ ਲਾਕ ਫਾਇਲ `%s' ਹਟਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
 #, c-format
-msgid "Error creating lock-file `%s': %s"
+#| msgid "Error creating lock-file `%s': %s"
+msgid "Error creating lock file `%s': %s"
 msgstr "`%s' ਲਾਕ ਫਾਇਲ ਬਣਾਉਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
 #, c-format
-msgid "Error closing (unlinked) lock-file `%s': %s"
-msgstr "`%s' ਲਾਕ-ਫਾਇਲ ਬੰਦ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ (ਬਿਨ-ਲਿੰਕ): %s"
+#| msgid "Error closing (unlinked) lock-file `%s': %s"
+msgid "Error closing (unlinked) lock file `%s': %s"
+msgstr "`%s' ਲਾਕ ਫਾਇਲ ਬੰਦ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ (ਬਿਨ-ਲਿੰਕ): %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
 #, c-format
-msgid "Error unlinking lock-file `%s': %s"
+#| msgid "Error unlinking lock-file `%s': %s"
+msgid "Error unlinking lock file `%s': %s"
 msgstr "ਲਾਕ ਫਾਇਲ `%s' ਅਣ-ਲਿੰਕ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:682
@@ -1419,75 +1641,75 @@ msgstr "ਕੁਨੈਕਸ਼ਨ ਬੰਦ ਕੀਤਾ ਗਿਆ।"
 msgid "Timeout was reached"
 msgstr "ਸਮਾਂ ਸਮਾਪਤ ਹੋ ਚੁੱਕਾ ਸੀ"
 
-#: ../gio/gdbusconnection.c:2149
+#: ../gio/gdbusconnection.c:2191
 msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr "ਗ਼ੈਰ-ਸਹਾਇਕ ਫਲੈਗ ਮਿਲੇ, ਜਦੋਂ ਕਿ ਕਲਾਇਟ-ਪੱਖੀ ਕੁਨੈਕਸ਼ਨ ਬਣਾਇਆ ਜਾ ਰਿਹਾ ਸੀ"
 
-#: ../gio/gdbusconnection.c:3574 ../gio/gdbusconnection.c:3890
+#: ../gio/gdbusconnection.c:3617 ../gio/gdbusconnection.c:3934
 #, c-format
 msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "ਪਾਥ %s ਉੱਤੇ ਆਬਜੈਕਟ ਉੱਤੇ `org.freedesktop.DBus.Properties' ਵਰਗਾ ਕੋਈ ਆਬਜੈਕਟ ਨਹੀਂ"
 
-#: ../gio/gdbusconnection.c:3645
+#: ../gio/gdbusconnection.c:3689
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "ਵਿਸ਼ੇਸ਼ਤਾ `%s' ਸੈੱਟ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ: ਲੋੜੀਦੀ ਕਿਸਮ ਸੀ `%s', ਪਰ ਮਿਲੀ `%s'"
 
-#: ../gio/gdbusconnection.c:3739
+#: ../gio/gdbusconnection.c:3783
 #, c-format
 msgid "No such property `%s'"
 msgstr "ਕੋਈ `%s' ਵਿਸ਼ੇਸ਼ਤਾ ਨਹੀਂ"
 
-#: ../gio/gdbusconnection.c:3751
+#: ../gio/gdbusconnection.c:3795
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "ਵਿਸ਼ੇਸ਼ਤਾ `%s' ਪੜ੍ਹਨਯੋਗ ਨਹੀਂ"
 
-#: ../gio/gdbusconnection.c:3762
+#: ../gio/gdbusconnection.c:3806
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "ਵਿਸ਼ੇਸ਼ਤਾ `%s' ਲਿਖਣਯੋਗ ਨਹੀਂ"
 
-#: ../gio/gdbusconnection.c:3832 ../gio/gdbusconnection.c:5420
+#: ../gio/gdbusconnection.c:3876 ../gio/gdbusconnection.c:5467
 #, c-format
 msgid "No such interface `%s'"
 msgstr "`%s' ਕੋਈ ਇੰਟਰਫੇਸ ਨਹੀਂ"
 
-#: ../gio/gdbusconnection.c:4017
+#: ../gio/gdbusconnection.c:4064
 msgid "No such interface"
 msgstr "ਕੋਈ ਇੰਟਰਫੇਸ ਨਹੀਂ"
 
-#: ../gio/gdbusconnection.c:4233 ../gio/gdbusconnection.c:5936
+#: ../gio/gdbusconnection.c:4280 ../gio/gdbusconnection.c:5983
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "ਪਾਥ %2$s ਉੱਤੇ ਆਬਜੈਕਟ ਲਈ `%1$s' ਕੋਈ ਇੰਟਰਫੇਸ ਨਹੀਂ ਹੈ"
 
-#: ../gio/gdbusconnection.c:4285
+#: ../gio/gdbusconnection.c:4332
 #, c-format
 msgid "No such method `%s'"
 msgstr " `%s' ਢੰਗ ਨਹੀਂ ਹੈ"
 
-#: ../gio/gdbusconnection.c:4316
+#: ../gio/gdbusconnection.c:4363
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "ਸੁਨੇਹੇ ਦੀ ਕਿਸਮ `%s' ਮੰਗੀ ਗਈ ਕਿਸਮ `%s' ਨਾਲ ਨਹੀਂ ਮਿਲਦੀ"
 
-#: ../gio/gdbusconnection.c:4535
+#: ../gio/gdbusconnection.c:4582
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "ਆਬਜੈਕਟ %s ਆਬਜੈਕਟ ਲਈ %s ਉੱਤੇ ਪਹਿਲਾਂ ਹੀ ਐਕਸਪੋਰਟ ਕੀਤਾ ਗਿਆ ਹੈ"
 
-#: ../gio/gdbusconnection.c:4729
+#: ../gio/gdbusconnection.c:4776
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "ਢੰਗ `%s' ਨੇ `%s' ਕਿਸਮ ਵਾਪਸ ਕੀਤੀ, ਪਰ ਚਾਹੀਦੀ ਸੀ `%s'"
 
-#: ../gio/gdbusconnection.c:5531
+#: ../gio/gdbusconnection.c:5578
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "ਇੰਟਰਫੇਸ `%2$s' ਉੱਤੇ ਢੰਗ `%1$s' ਦਸਤਖਤ `%3$s' ਨਾਲ ਮੌਜੂਦ ਨਹੀਂ ਹੈ"
 
-#: ../gio/gdbusconnection.c:5649
+#: ../gio/gdbusconnection.c:5696
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "ਸਬ-ਟਰੀ ਪਹਿਲਾਂ ਹੀ %s ਲਈ ਐਕਸਪੋਰ ਕੀਤਾ ਜਾ ਚੁੱਕਿਆ ਹੈ"
@@ -1517,16 +1739,16 @@ msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr ""
-"SIGNAL ਸੁਨੇਹਾ: PATH ਹੈੱਡਰ ਖੇਤਰ ਨੂੰ ਉਲਟ /org/freedesktop/DBus/Local ਮੁੱਲ "
-"ਨਾਲ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
+"SIGNAL ਸੁਨੇਹਾ: PATH ਹੈੱਡਰ ਖੇਤਰ ਨੂੰ ਉਲਟ /org/freedesktop/DBus/Local ਮੁੱਲ ਨਾਲ ਵਰਤਿਆ "
+"ਜਾਂਦਾ ਹੈ।"
 
 #: ../gio/gdbusmessage.c:826
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
-"SIGNAL ਸੁਨੇਹਾ: INTERFACE ਹੈੱਡਰ ਖੇਤਰ ਨੂੰ ਉਲਟ org.freedesktop.DBus.Local ਮੁੱਲ "
-"ਨਾਲ ਵਰਤਿਆ ਜਾਂਦਾ ਹੈ।"
+"SIGNAL ਸੁਨੇਹਾ: INTERFACE ਹੈੱਡਰ ਖੇਤਰ ਨੂੰ ਉਲਟ org.freedesktop.DBus.Local ਮੁੱਲ ਨਾਲ ਵਰਤਿਆ "
+"ਜਾਂਦਾ ਹੈ।"
 
 #: ../gio/gdbusmessage.c:901
 #, c-format
@@ -1539,8 +1761,8 @@ msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr ""
-"ਠੀਕ UTF-8 ਲਾਈਨ ਦੀ ਲੋੜ ਸੀ, ਪਰ ਬਾਈਟ ਆਫਸੈਟ %d ਉੱਤੇ ਗਲਤ ਬਾਈਟ ਮਿਲੇ (ਲਾਈਨ "
-"ਦੀ ਲੰਬਾਈ %d)। ਉਸ ਪੁਆਇੰਟ ਤੱਕ ਠੀਕ UTF-8 ਲਾਈਨ `%s' ਸੀ।"
+"ਠੀਕ UTF-8 ਲਾਈਨ ਦੀ ਲੋੜ ਸੀ, ਪਰ ਬਾਈਟ ਆਫਸੈਟ %d ਉੱਤੇ ਗਲਤ ਬਾਈਟ ਮਿਲੇ (ਲਾਈਨ ਦੀ ਲੰਬਾਈ %d)। "
+"ਉਸ ਪੁਆਇੰਟ ਤੱਕ ਠੀਕ UTF-8 ਲਾਈਨ `%s' ਸੀ।"
 
 #: ../gio/gdbusmessage.c:939
 #, c-format
@@ -1569,17 +1791,18 @@ msgstr "ਵੇਰੀਐਂਟ ਲਈ ਪਾਰਸ ਕੀਤਾ ਮੁੱਲ `%s'
 
 #: ../gio/gdbusmessage.c:1406
 #, c-format
-msgid "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
-msgstr "GVariant ਨੂੰ type-string `%s' ਨਾਲ ਡੀ-ਬੱਸ ਵਾਇਰ ਫਾਰਮੈਟ 'ਚ ਗ਼ੈਰ-ਲੜੀਬੱਧ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ"
+#| msgid ""
+#| "Error deserializing GVariant with type-string `%s' from the D-Bus wire "
+#| "format"
+msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+msgstr "GVariant ਨੂੰ type string `%s' ਨਾਲ ਡੀ-ਬੱਸ ਵਾਇਰ ਫਾਰਮੈਟ 'ਚ ਗ਼ੈਰ-ਲੜੀਬੱਧ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ"
 
 #: ../gio/gdbusmessage.c:1590
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
-msgstr ""
-"ਗਲਤ endianness ਮੁੱਲ। 0x6c ('l') ਜਾਂ 0x42 ('B') ਚਾਹੀਦਾ ਹੈ, ਪਰ ਮਿਲਿਆ ਮੁੱਲ "
-"0x%02x ਹੈ"
+msgstr "ਗਲਤ endianness ਮੁੱਲ। 0x6c ('l') ਜਾਂ 0x42 ('B') ਚਾਹੀਦਾ ਹੈ, ਪਰ ਮਿਲਿਆ ਮੁੱਲ 0x%02x ਹੈ"
 
 #: ../gio/gdbusmessage.c:1604
 #, c-format
@@ -1607,8 +1830,10 @@ msgstr "ਸੁਨੇਹਾ ਡੀਸੀਰੀਅਲਾਈਜ਼ ਨਹੀਂ ਕ
 
 #: ../gio/gdbusmessage.c:2038
 #, c-format
-msgid "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
-msgstr "GVariant ਨੂੰ type-string `%s' ਨਾਲ ਡੀ-ਬੱਸ ਵਾਇਰ ਫਾਰਮੈਟ 'ਚ ਲੜੀਬੱਧ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ"
+#| msgid ""
+#| "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
+msgstr "GVariant ਨੂੰ type string `%s' ਨਾਲ ਡੀ-ਬੱਸ ਵਾਇਰ ਫਾਰਮੈਟ 'ਚ ਲੜੀਬੱਧ ਕਰਨ ਦੌਰਾਨ ਗਲਤੀ"
 
 #: ../gio/gdbusmessage.c:2178
 #, c-format
@@ -1656,7 +1881,7 @@ msgstr "ਦਿੱਤਾ ਮੁੱਲ ਗਲਤ ਹੈ, ਮਿਲਿਆ '%s', ਚ
 msgid "Error sending message: %s"
 msgstr "ਸੁਨੇਹਾ ਭੇਜਣ ਦੌਰਾਨ ਗਲਤੀ: %s"
 
-#: ../gio/gdbusprivate.c:1687
+#: ../gio/gdbusprivate.c:1722
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "/var/lib/dbus/machine-id ਲੋਡ ਕਰਨ ਲਈ ਅਸਮਰੱਥ: "
 
@@ -1682,8 +1907,8 @@ msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
-"ਢੰਗ ਸ਼ਾਮਲ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ; ਪਰਾਕਸੀ ਜਾਣੇ-ਪਛਾਣੇ ਨਾਂ ਨਾਲ ਬਿਨਾਂ ਓਨਰ ਦੇ ਪਰਾਕਸੀ ਹੈ ਅਤੇ ਪਰਾਕਸੀ ਨੂੰ  "
-"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START ਫਲੈਗ ਨਾਲ ਬਣਾਇਆ ਗਿਆ।"
+"ਢੰਗ ਸ਼ਾਮਲ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ; ਪਰਾਕਸੀ ਜਾਣੇ-ਪਛਾਣੇ ਨਾਂ ਨਾਲ ਬਿਨਾਂ ਓਨਰ ਦੇ ਪਰਾਕਸੀ ਹੈ ਅਤੇ "
+"ਪਰਾਕਸੀ ਨੂੰ  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START ਫਲੈਗ ਨਾਲ ਬਣਾਇਆ ਗਿਆ।"
 
 #: ../gio/gdbusserver.c:710
 msgid "Abstract name space not supported"
@@ -2578,7 +2803,8 @@ msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 msgstr ""
-"<key name='%s'> ਸ਼ੈਡੋ <key name='%s'> <schema id='%s'> ਵਿੱਚ; ਮੁੱਲ ਸੋਧਣ ਲਈ <override>  ਵਰਤੋਂ"
+"<key name='%s'> ਸ਼ੈਡੋ <key name='%s'> <schema id='%s'> ਵਿੱਚ; ਮੁੱਲ ਸੋਧਣ ਲਈ "
+"<override>  ਵਰਤੋਂ"
 
 #: ../gio/gschema-compile.c:885
 #, c-format
@@ -2681,8 +2907,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
-"ਅਣਡਿੱਠਾ ਫਾਇਲ `%3$s' ਵਿੱਚ `%2$s' ਸਕੀਮਾ ਅੰਦਰ `%1$s' ਕੁੰਜੀ ਲਈ ਅਣਡਿੱਠਾ ਕਰਨਾ "
-"ਸਕੀਮ 'ਚ ਦਿੱਤੀ ਰੇਜ਼ ਤੋਂ ਬਾਹਰ ਹੈ"
+"ਅਣਡਿੱਠਾ ਫਾਇਲ `%3$s' ਵਿੱਚ `%2$s' ਸਕੀਮਾ ਅੰਦਰ `%1$s' ਕੁੰਜੀ ਲਈ ਅਣਡਿੱਠਾ ਕਰਨਾ ਸਕੀਮ 'ਚ "
+"ਦਿੱਤੀ ਰੇਜ਼ ਤੋਂ ਬਾਹਰ ਹੈ"
 
 #: ../gio/gschema-compile.c:1729
 #, c-format
@@ -2690,8 +2916,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 msgstr ""
-"ਅਣਡਿੱਠਾ ਫਾਇਲ `%3$s' ਵਿੱਚ `%2$s' ਸਕੀਮਾ ਅੰਦਰ `%1$s' ਕੁੰਜੀ ਲਈ ਅਣਡਿੱਠਾ ਕਰਨਾ "
-"ਦਿੱਤੀਆਂ ਢੁੱਕਵੀਆਂ ਚੋਣਾਂ ਦੀ ਲਿਸਟ ਹੈ"
+"ਅਣਡਿੱਠਾ ਫਾਇਲ `%3$s' ਵਿੱਚ `%2$s' ਸਕੀਮਾ ਅੰਦਰ `%1$s' ਕੁੰਜੀ ਲਈ ਅਣਡਿੱਠਾ ਕਰਨਾ ਦਿੱਤੀਆਂ "
+"ਢੁੱਕਵੀਆਂ ਚੋਣਾਂ ਦੀ ਲਿਸਟ ਹੈ"
 
 #: ../gio/gschema-compile.c:1774
 msgid "where to store the gschemas.compiled file"
@@ -2961,7 +3187,6 @@ msgstr "ਗ਼ੈਰ-TCP ਕੁਨੈਕਸ਼ਨ ਉੱਤੇ ਪਰਾਕਸ�
 
 #: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1061
 #, c-format
-#| msgid "Property `%s' is not readable"
 msgid "Proxy protocol '%s' is not supported."
 msgstr "ਪਰਾਕਸੀ ਪਰੋਟੋਕਾਲ '%s' ਸਹਾਇਕ ਨਹੀਂ ਹੈ।"
 
@@ -3252,9 +3477,6 @@ msgstr "ਗਲਤ ਕੰਪਰੈੱਸ ਕੀਤਾ ਡਾਟਾ"
 
 #~ msgid "The file containing the icon"
 #~ msgstr "ਫਾਇਲ ਆਈਕਾਨ ਰੱਖਦੀ ਹੈ"
-
-#~ msgid "name"
-#~ msgstr "ਨਾਂ"
 
 #~ msgid "The name of the icon"
 #~ msgstr "ਆਈਕਾਨ ਦਾ ਨਾਂ"
