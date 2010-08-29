@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-08-27 18:04+0000\n"
-"PO-Revision-Date: 2010-08-28 10:07+0200\n"
+"POT-Creation-Date: 2010-08-28 23:39+0000\n"
+"PO-Revision-Date: 2010-08-29 11:32+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -163,7 +163,6 @@ msgid "Invalid hostname"
 msgstr "El nombre del host es inválido"
 
 #: ../glib/gdatetime.c:94
-#| msgid "name"
 msgctxt "GDateTime"
 msgid "am"
 msgstr "am"
@@ -1698,22 +1697,26 @@ msgstr "No se encontró la «cookie» con ID %d en el depósito de claves en «%
 
 #: ../gio/gdbusauthmechanismsha1.c:535
 #, c-format
-msgid "Error deleting stale lock-file `%s': %s"
+#| msgid "Error deleting stale lock-file `%s': %s"
+msgid "Error deleting stale lock file `%s': %s"
 msgstr "Error al eliminar el archivo de bloqueo antiguo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
 #, c-format
-msgid "Error creating lock-file `%s': %s"
+#| msgid "Error creating lock-file `%s': %s"
+msgid "Error creating lock file `%s': %s"
 msgstr "Error al crear el archivo de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
 #, c-format
-msgid "Error closing (unlinked) lock-file `%s': %s"
+#| msgid "Error closing (unlinked) lock-file `%s': %s"
+msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr "Error al cerrar (desenlazar) el archivo de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
 #, c-format
-msgid "Error unlinking lock-file `%s': %s"
+#| msgid "Error unlinking lock-file `%s': %s"
+msgid "Error unlinking lock file `%s': %s"
 msgstr "Error al desenlazar el archivo de bloqueo «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:682
@@ -1900,8 +1903,11 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:1406
 #, c-format
+#| msgid ""
+#| "Error deserializing GVariant with type-string `%s' from the D-Bus wire "
+#| "format"
 msgid ""
-"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
 "Error al deserializar GVariant con el tipo de cadena «%s» al formato de "
 "mensaje de D-Bus"
@@ -1948,8 +1954,10 @@ msgstr "No se puede deserializar el mensaje: "
 
 #: ../gio/gdbusmessage.c:2038
 #, c-format
+#| msgid ""
+#| "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
 msgid ""
-"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
 "Error al serializar GVariant con el tipo de cadena «%s» al formato de mensaje "
 "de D-Bus"
