@@ -2418,7 +2418,7 @@ start_vfunc (GMarkupParseContext *context,
   if (offset)
     vfunc->offset = atoi (offset);
   else
-    vfunc->offset = 0;
+    vfunc->offset = 0xFFFF;
 
   vfunc->invoker = g_strdup (invoker);
 
