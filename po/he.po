@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-28 10:41+0300\n"
-"PO-Revision-Date: 2010-08-28 10:45+0300\n"
+"POT-Creation-Date: 2010-08-29 15:57+0300\n"
+"PO-Revision-Date: 2010-08-29 15:57+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
-"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: he\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
@@ -1642,23 +1642,23 @@ msgstr "Didn't find cookie with id %d in the keyring at `%s'"
 
 #: ../gio/gdbusauthmechanismsha1.c:535
 #, c-format
-msgid "Error deleting stale lock-file `%s': %s"
-msgstr "Error deleting stale lock-file `%s': %s"
+msgid "Error deleting stale lock file `%s': %s"
+msgstr "Error deleting stale lock file `%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
 #, c-format
-msgid "Error creating lock-file `%s': %s"
-msgstr "Error creating lock-file `%s': %s"
+msgid "Error creating lock file `%s': %s"
+msgstr "Error creating lock file `%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
 #, c-format
-msgid "Error closing (unlinked) lock-file `%s': %s"
-msgstr "Error closing (unlinked) lock-file `%s': %s"
+msgid "Error closing (unlinked) lock file `%s': %s"
+msgstr "Error closing (unlinked) lock file `%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
 #, c-format
-msgid "Error unlinking lock-file `%s': %s"
-msgstr "Error unlinking lock-file `%s': %s"
+msgid "Error unlinking lock file `%s': %s"
+msgstr "Error unlinking lock file `%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:682
 #, c-format
@@ -1836,9 +1836,9 @@ msgstr "Parsed value `%s' for variant is not a valid D-Bus signature"
 #: ../gio/gdbusmessage.c:1406
 #, c-format
 msgid ""
-"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
-"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 
 #: ../gio/gdbusmessage.c:1590
 #, c-format
@@ -1876,9 +1876,9 @@ msgstr "Cannot deserialize message: "
 #: ../gio/gdbusmessage.c:2038
 #, c-format
 msgid ""
-"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
-"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string `%s' to the D-Bus wire format"
 
 #: ../gio/gdbusmessage.c:2178
 #, c-format
