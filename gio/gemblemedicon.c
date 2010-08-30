@@ -159,6 +159,21 @@ g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed)
   return emblemed->emblems;
 }
 
+static gint
+g_emblem_comp (GEmblem *a,
+               GEmblem *b)
+{
+  guint hash_a = g_icon_hash (G_ICON (a));
+  guint hash_b = g_icon_hash (G_ICON (b));
+
+  if(hash_a < hash_b)
+    return -1;
+
+  if(hash_a == hash_b)
+    return 0;
+
+  return 1;
+}
 
 /**
  * g_emblemed_icon_add_emblem:
@@ -177,7 +192,8 @@ g_emblemed_icon_add_emblem (GEmblemedIcon *emblemed,
   g_return_if_fail (G_IS_EMBLEM (emblem));
 
   g_object_ref (emblem);
-  emblemed->emblems = g_list_append (emblemed->emblems, emblem);
+  emblemed->emblems = g_list_insert_sorted (emblemed->emblems, emblem,
+                                            (GCompareFunc) g_emblem_comp);
 }
 
 static guint
@@ -193,22 +209,6 @@ g_emblemed_icon_hash (GIcon *icon)
   return hash;
 }
 
-static gint
-g_emblem_comp (GEmblem *a,
-               GEmblem *b)
-{
-  guint hash_a = g_icon_hash (G_ICON (a));
-  guint hash_b = g_icon_hash (G_ICON (b));
-
-  if(hash_a < hash_b)
-    return -1;
-
-  if(hash_a == hash_b)
-    return 0;
-
-  return 1;
-}
-
 static gboolean
 g_emblemed_icon_equal (GIcon *icon1,
                        GIcon *icon2)
@@ -222,9 +222,6 @@ g_emblemed_icon_equal (GIcon *icon1,
 
   list1 = emblemed1->emblems;
   list2 = emblemed2->emblems;
-
-  list1 = g_list_sort (list1, (GCompareFunc) g_emblem_comp);
-  list2 = g_list_sort (list2, (GCompareFunc) g_emblem_comp);
 
   while (list1 && list2)
   {
