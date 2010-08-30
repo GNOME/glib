@@ -1083,6 +1083,9 @@ g_socket_client_socket_callback (GSocket *socket,
       data->current_socket = NULL;
       g_cancellable_set_error_if_cancelled (data->cancellable,
 					    &data->last_error);
+
+      g_socket_client_async_connect_complete (data);
+      return FALSE;
     }
   else
     {
