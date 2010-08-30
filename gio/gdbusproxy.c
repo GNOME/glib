@@ -2372,7 +2372,7 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
   if (g_simple_async_result_propagate_error (simple, error))
     goto out;
 
-  value = g_simple_async_result_get_op_res_gpointer (simple);
+  value = g_variant_ref (g_simple_async_result_get_op_res_gpointer (simple));
   method_name = g_object_get_data (G_OBJECT (simple), "-gdbus-proxy-method-name");
 
  out:
