@@ -50,6 +50,7 @@ test_basic (void)
   g_assert (enabled);
   g_assert (state_type == NULL);
   g_assert (state == NULL);
+  g_free (name);
 
   g_signal_connect (action, "activate", G_CALLBACK (activate), &a);
   g_assert (!a.did_run);
@@ -99,7 +100,7 @@ test_basic (void)
 }
 
 static gboolean
-strv_has_string (const gchar **haystack,
+strv_has_string (gchar       **haystack,
                  const gchar  *needle)
 {
   guint n;
@@ -113,7 +114,7 @@ strv_has_string (const gchar **haystack,
 }
 
 static gboolean
-strv_set_equal (const gchar **strv, ...)
+strv_set_equal (gchar **strv, ...)
 {
   gint count;
   va_list list;
@@ -190,12 +191,15 @@ test_simple_group (void)
   state = g_action_group_get_state (G_ACTION_GROUP (group), "bar");
   g_assert (g_variant_type_equal (g_variant_get_type (state), G_VARIANT_TYPE_STRING));
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hihi");
+  g_variant_unref (state);
 
   g_action_group_set_state (G_ACTION_GROUP (group), "bar", g_variant_new_string ("boo"));
   state = g_action_group_get_state (G_ACTION_GROUP (group), "bar");
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "boo");
+  g_variant_unref (state);
 
-  g_simple_action_group_set_enabled (group, "bar", FALSE);
+  action = g_simple_action_group_lookup (group, "bar");
+  g_action_set_enabled (action, FALSE);
   g_assert (!g_action_group_get_enabled (G_ACTION_GROUP (group), "bar"));
 
   g_simple_action_group_remove (group, "bar");
@@ -212,6 +216,7 @@ test_simple_group (void)
 static void
 test_stateful (void)
 {
+  GVariant *state;
   GAction *action;
 
   action = g_action_new_stateful ("foo", NULL, g_variant_new_string ("hihi"));
@@ -220,8 +225,9 @@ test_stateful (void)
   g_assert (g_action_get_state_hint (action) == NULL);
   g_assert (g_variant_type_equal (g_action_get_state_type (action),
                                   G_VARIANT_TYPE_STRING));
-  g_assert_cmpstr (g_variant_get_string (g_action_get_state (action), NULL),
-                   ==, "hihi");
+  state = g_action_get_state (action);
+  g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hihi");
+  g_variant_unref (state);
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
@@ -231,8 +237,9 @@ test_stateful (void)
   g_test_trap_assert_failed ();
 
   g_action_set_state (action, g_variant_new_string ("hello"));
-  g_assert_cmpstr (g_variant_get_string (g_action_get_state (action), NULL),
-                   ==, "hello");
+  state = g_action_get_state (action);
+  g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hello");
+  g_variant_unref (state);
 
   g_object_unref (action);
 

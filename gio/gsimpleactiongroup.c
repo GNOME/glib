@@ -36,7 +36,11 @@ struct _GSimpleActionGroupPrivate
   GHashTable *table;  /* string -> GAction */
 };
 
-G_DEFINE_TYPE (GSimpleActionGroup, g_simple_action_group, G_TYPE_ACTION_GROUP)
+static void g_simple_action_group_iface_init (GActionGroupInterface *);
+G_DEFINE_TYPE_WITH_CODE (GSimpleActionGroup,
+  g_simple_action_group, G_TYPE_OBJECT,
+  G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP,
+    g_simple_action_group_iface_init))
 
 static gchar **
 g_simple_action_group_list_actions (GActionGroup *group)
@@ -176,23 +180,27 @@ g_simple_action_group_activate (GActionGroup *group,
 }
 
 static void
-action_enabled_changed (GAction  *action,
-                        gboolean  enabled,
-                        gpointer  user_data)
+action_enabled_notify (GAction     *action,
+                       GParamSpec  *pspec,
+                       gpointer     user_data)
 {
   g_action_group_action_enabled_changed (user_data,
                                          g_action_get_name (action),
-                                         enabled);
+                                         g_action_get_enabled (action));
 }
 
 static void
-action_state_changed (GAction  *action,
-                      GVariant *value,
-                      gpointer  user_data)
+action_state_notify (GAction    *action,
+                     GParamSpec *pspec,
+                     gpointer    user_data)
 {
+  GVariant *value;
+
+  value = g_action_get_state (action);
   g_action_group_action_state_changed (user_data,
                                        g_action_get_name (action),
                                        value);
+  g_variant_unref (value);
 }
 
 static void
@@ -200,9 +208,9 @@ g_simple_action_group_disconnect (gpointer key,
                                   gpointer value,
                                   gpointer user_data)
 {
-  g_signal_handlers_disconnect_by_func (value, action_enabled_changed,
+  g_signal_handlers_disconnect_by_func (value, action_enabled_notify,
                                         user_data);
-  g_signal_handlers_disconnect_by_func (value, action_state_changed,
+  g_signal_handlers_disconnect_by_func (value, action_state_notify,
                                         user_data);
 }
 
@@ -233,22 +241,25 @@ g_simple_action_group_init (GSimpleActionGroup *simple)
 static void
 g_simple_action_group_class_init (GSimpleActionGroupClass *class)
 {
-  GActionGroupClass *group_class = G_ACTION_GROUP_CLASS (class);
   GObjectClass *object_class = G_OBJECT_CLASS (class);
 
   object_class->finalize = g_simple_action_group_finalize;
 
-  group_class->list_actions = g_simple_action_group_list_actions;
-  group_class->has_action = g_simple_action_group_has_action;
-  group_class->get_parameter_type = g_simple_action_group_get_parameter_type;
-  group_class->get_state_type = g_simple_action_group_get_state_type;
-  group_class->get_state_hint = g_simple_action_group_get_state_hint;
-  group_class->get_enabled = g_simple_action_group_get_enabled;
-  group_class->get_state = g_simple_action_group_get_state;
-  group_class->set_state = g_simple_action_group_set_state;
-  group_class->activate = g_simple_action_group_activate;
-
   g_type_class_add_private (class, sizeof (GSimpleActionGroupPrivate));
+}
+
+static void
+g_simple_action_group_iface_init (GActionGroupInterface *iface)
+{
+  iface->list_actions = g_simple_action_group_list_actions;
+  iface->has_action = g_simple_action_group_has_action;
+  iface->get_parameter_type = g_simple_action_group_get_parameter_type;
+  iface->get_state_type = g_simple_action_group_get_state_type;
+  iface->get_state_hint = g_simple_action_group_get_state_hint;
+  iface->get_enabled = g_simple_action_group_get_enabled;
+  iface->get_state = g_simple_action_group_get_state;
+  iface->set_state = g_simple_action_group_set_state;
+  iface->activate = g_simple_action_group_activate;
 }
 
 /**
@@ -325,11 +336,11 @@ g_simple_action_group_insert (GSimpleActionGroup *simple,
         }
 
       g_signal_connect (action, "notify::enabled",
-                        G_CALLBACK (action_enabled_changed), simple);
+                        G_CALLBACK (action_enabled_notify), simple);
 
       if (g_action_get_state_type (action) != NULL)
         g_signal_connect (action, "notify::state",
-                          G_CALLBACK (action_state_changed), simple);
+                          G_CALLBACK (action_state_notify), simple);
 
       g_hash_table_insert (simple->priv->table,
                            g_strdup (action_name),
@@ -366,36 +377,4 @@ g_simple_action_group_remove (GSimpleActionGroup *simple,
       g_simple_action_group_disconnect (NULL, action, simple);
       g_hash_table_remove (simple->priv->table, action_name);
     }
-}
-
-/**
- * g_simple_action_group_set_enabled:
- * @simple: a #GSimpleActionGroup
- * @action_name: the name of an action
- * @enabled: if the action should be enabled
- *
- * Sets an action in the group as being enabled or not.
- *
- * This is a convenience function, equivalent to calling
- * g_simple_action_group_lookup() and using g_action_set_enabled() on
- * the result.
- *
- * If no action named @action_name exists then this function does
- * nothing.
- *
- * Since: 2.26
- **/
-void
-g_simple_action_group_set_enabled (GSimpleActionGroup *simple,
-                                   const gchar        *action_name,
-                                   gboolean            enabled)
-{
-  GAction *action;
-
-  g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (simple));
-
-  action = g_hash_table_lookup (simple->priv->table, action_name);
-
-  if (action != NULL)
-    g_action_set_enabled (action, enabled);
 }

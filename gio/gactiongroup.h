@@ -33,33 +33,15 @@ G_BEGIN_DECLS
 #define G_TYPE_ACTION_GROUP                                 (g_action_group_get_type ())
 #define G_ACTION_GROUP(inst)                                (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
                                                              G_TYPE_ACTION_GROUP, GActionGroup))
-#define G_ACTION_GROUP_CLASS(class)                         (G_TYPE_CHECK_CLASS_CAST ((class),                       \
-                                                             G_TYPE_ACTION_GROUP, GActionGroupClass))
-#define G_IS_ACTION_GROUP(inst)                             (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_ACTION_GROUP))
-#define G_IS_ACTION_GROUP_CLASS(class)                      (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ACTION_GROUP))
-#define G_ACTION_GROUP_GET_CLASS(inst)                      (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
-                                                             G_TYPE_ACTION_GROUP, GActionGroupClass))
+#define G_IS_ACTION_GROUP(inst)                             (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
+                                                             G_TYPE_ACTION_GROUP))
+#define G_ACTION_GROUP_GET_IFACE(inst)                      (G_TYPE_INSTANCE_GET_INTERFACE ((inst),                  \
+                                                             G_TYPE_ACTION_GROUP, GActionGroupInterface))
 
-typedef struct _GActionGroupPrivate                         GActionGroupPrivate;
-typedef struct _GActionGroupClass                           GActionGroupClass;
+typedef struct _GActionGroupInterface                       GActionGroupInterface;
 
 /**
- * GActionGroup:
- *
- * The #GActionGroup structure contains private data and should only be accessed using the provided API.
- *
- * Since: 2.26
- */
-struct _GActionGroup
-{
-  /*< private >*/
-  GObject parent_instance;
-
-  GActionGroupPrivate *priv;
-};
-
-/**
- * GActionGroupClass:
+ * GActionGroupInterface:
  * @has_action: the virtual function pointer for g_action_group_has_action()
  * @list_actions: the virtual function pointer for g_action_group_list_actions()
  * @get_parameter_type: the virtual function pointer for g_action_group_get_parameter_type()
@@ -78,12 +60,10 @@ struct _GActionGroup
  *
  * Since: 2.26
  */
-struct _GActionGroupClass
+struct _GActionGroupInterface
 {
-  /*< private >*/
-  GObjectClass parent_class;
+  GTypeInterface g_iface;
 
-  /*< public >*/
   /* virtual functions */
   gboolean              (* has_action)              (GActionGroup  *action_group,
                                                      const gchar   *action_name);
@@ -113,10 +93,6 @@ struct _GActionGroupClass
                                                      const gchar   *action_name,
                                                      GVariant      *parameter);
 
-  /*< private >*/
-  gpointer vtable_padding[6];
-
-  /*< public >*/
   /* signals */
   void                  (* action_added)            (GActionGroup  *action_group,
                                                      const gchar   *action_name);
@@ -128,9 +104,6 @@ struct _GActionGroupClass
   void                  (* action_state_changed)    (GActionGroup   *action_group,
                                                      const gchar    *action_name,
                                                      GVariant       *value);
-
-  /*< private >*/
-  gpointer signal_padding[6];
 };
 
 GType                   g_action_group_get_type                         (void) G_GNUC_CONST;

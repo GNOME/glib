@@ -55,7 +55,7 @@ typedef struct _GSimpleActionGroupClass                     GSimpleActionGroupCl
 struct _GSimpleActionGroup
 {
   /*< private >*/
-  GActionGroup parent_instance;
+  GObject parent_instance;
 
   GSimpleActionGroupPrivate *priv;
 };
@@ -63,7 +63,7 @@ struct _GSimpleActionGroup
 struct _GSimpleActionGroupClass
 {
   /*< private >*/
-  GActionGroupClass parent_class;
+  GObjectClass parent_class;
 
   /*< private >*/
   gpointer padding[12];
@@ -81,10 +81,6 @@ void                    g_simple_action_group_insert                    (GSimple
 
 void                    g_simple_action_group_remove                    (GSimpleActionGroup *simple,
                                                                          const gchar        *action_name);
-
-void                    g_simple_action_group_set_enabled               (GSimpleActionGroup *simple,
-                                                                         const gchar        *action_name,
-                                                                         gboolean            enabled);
 
 G_END_DECLS
 

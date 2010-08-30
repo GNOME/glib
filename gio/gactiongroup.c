@@ -48,7 +48,7 @@
  * on individual actions.
  **/
 
-G_DEFINE_ABSTRACT_TYPE (GActionGroup, g_action_group, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (GActionGroup, g_action_group, G_TYPE_OBJECT)
 
 enum
 {
@@ -62,12 +62,7 @@ enum
 static guint g_action_group_signals[NR_SIGNALS];
 
 static void
-g_action_group_init (GActionGroup *action_group)
-{
-}
-
-static void
-g_action_group_class_init (GActionGroupClass *class)
+g_action_group_default_init (GActionGroupInterface *class)
 {
   /**
    * GActionGroup::action-added:
@@ -83,7 +78,7 @@ g_action_group_class_init (GActionGroupClass *class)
     g_signal_new (I_("action-added"),
                   G_TYPE_ACTION_GROUP,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
-                  G_STRUCT_OFFSET (GActionGroupClass, action_added),
+                  G_STRUCT_OFFSET (GActionGroupInterface, action_added),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -104,7 +99,7 @@ g_action_group_class_init (GActionGroupClass *class)
     g_signal_new (I_("action-removed"),
                   G_TYPE_ACTION_GROUP,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
-                  G_STRUCT_OFFSET (GActionGroupClass, action_removed),
+                  G_STRUCT_OFFSET (GActionGroupInterface, action_removed),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__STRING,
                   G_TYPE_NONE, 1,
@@ -125,7 +120,8 @@ g_action_group_class_init (GActionGroupClass *class)
     g_signal_new (I_("action-enabled-changed"),
                   G_TYPE_ACTION_GROUP,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
-                  G_STRUCT_OFFSET (GActionGroupClass, action_enabled_changed),
+                  G_STRUCT_OFFSET (GActionGroupInterface,
+                                   action_enabled_changed),
                   NULL, NULL,
                   _gio_marshal_VOID__STRING_BOOLEAN,
                   G_TYPE_NONE, 2,
@@ -146,7 +142,8 @@ g_action_group_class_init (GActionGroupClass *class)
     g_signal_new (I_("action-state-changed"),
                   G_TYPE_ACTION_GROUP,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
-                  G_STRUCT_OFFSET (GActionGroupClass, action_state_changed),
+                  G_STRUCT_OFFSET (GActionGroupInterface,
+                                   action_state_changed),
                   NULL, NULL,
                   _gio_marshal_VOID__STRING_VARIANT,
                   G_TYPE_NONE, 2,
@@ -172,7 +169,8 @@ g_action_group_list_actions (GActionGroup *action_group)
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
-  return G_ACTION_GROUP_GET_CLASS (action_group)->list_actions (action_group);
+  return G_ACTION_GROUP_GET_IFACE (action_group)
+    ->list_actions (action_group);
 }
 
 /**
@@ -192,7 +190,8 @@ g_action_group_has_action (GActionGroup *action_group,
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), FALSE);
 
-  return G_ACTION_GROUP_GET_CLASS (action_group)->has_action (action_group, action_name);
+  return G_ACTION_GROUP_GET_IFACE (action_group)
+    ->has_action (action_group, action_name);
 }
 
 /**
@@ -224,7 +223,8 @@ g_action_group_get_parameter_type (GActionGroup *action_group,
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
-  return G_ACTION_GROUP_GET_CLASS (action_group)->get_parameter_type (action_group, action_name);
+  return G_ACTION_GROUP_GET_IFACE (action_group)
+    ->get_parameter_type (action_group, action_name);
 }
 
 /**
@@ -258,7 +258,8 @@ g_action_group_get_state_type (GActionGroup *action_group,
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
-  return G_ACTION_GROUP_GET_CLASS (action_group)->get_state_type (action_group, action_name);
+  return G_ACTION_GROUP_GET_IFACE (action_group)
+    ->get_state_type (action_group, action_name);
 }
 
 /**
@@ -295,7 +296,8 @@ g_action_group_get_state_hint (GActionGroup *action_group,
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
-  return G_ACTION_GROUP_GET_CLASS (action_group)->get_state_hint (action_group, action_name);
+  return G_ACTION_GROUP_GET_IFACE (action_group)
+    ->get_state_hint (action_group, action_name);
 }
 
 /**
@@ -318,7 +320,8 @@ g_action_group_get_enabled (GActionGroup *action_group,
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), FALSE);
 
-  return G_ACTION_GROUP_GET_CLASS (action_group)->get_enabled (action_group, action_name);
+  return G_ACTION_GROUP_GET_IFACE (action_group)
+    ->get_enabled (action_group, action_name);
 }
 
 /**
@@ -345,7 +348,8 @@ g_action_group_get_state (GActionGroup *action_group,
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
-  return G_ACTION_GROUP_GET_CLASS (action_group)->get_state (action_group, action_name);
+  return G_ACTION_GROUP_GET_IFACE (action_group)
+    ->get_state (action_group, action_name);
 }
 
 /**
@@ -377,7 +381,8 @@ g_action_group_set_state (GActionGroup *action_group,
   g_return_if_fail (action_name != NULL);
   g_return_if_fail (value != NULL);
 
-  G_ACTION_GROUP_GET_CLASS (action_group)->set_state (action_group, action_name, value);
+  G_ACTION_GROUP_GET_IFACE (action_group)
+    ->set_state (action_group, action_name, value);
 }
 
 /**
@@ -403,7 +408,8 @@ g_action_group_activate (GActionGroup *action_group,
   g_return_if_fail (G_IS_ACTION_GROUP (action_group));
   g_return_if_fail (action_name != NULL);
 
-  G_ACTION_GROUP_GET_CLASS (action_group)->activate (action_group, action_name, parameter);
+  G_ACTION_GROUP_GET_IFACE (action_group)
+    ->activate (action_group, action_name, parameter);
 }
 
 /**

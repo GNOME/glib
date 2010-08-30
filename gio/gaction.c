@@ -195,7 +195,7 @@ g_action_get_property (GObject    *object,
       break;
 
     case PROP_STATE:
-      g_value_set_variant (value, g_action_get_state (action));
+      g_value_take_variant (value, g_action_get_state (action));
       break;
 
     default:
@@ -398,7 +398,10 @@ g_action_set_state (GAction  *action,
  * action is stateful then the type of the return value is the type
  * given by g_action_get_state_type().
  *
- * Returns: (allow-none) (transfer none): the current state of the action
+ * The return value should be released with g_variant_unref() when it is
+ * no longer required.
+ *
+ * Returns: (allow-none): the current state of the action
  *
  * Since: 2.26
  **/
@@ -407,7 +410,7 @@ g_action_get_state (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), NULL);
 
-  return action->priv->state;
+  return action->priv->state ? g_variant_ref (action->priv->state) : NULL;
 }
 
 /**
