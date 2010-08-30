@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-28 08:45+0100\n"
+"POT-Creation-Date: 2010-08-30 22:12+0100\n"
 "PO-Revision-Date: 2010-02-24 15:27+0100\n"
 "Last-Translator: Philip Withnall <philip@tecnocode.co.uk>\n"
 "Language-Team: British English <en@li.org>\n"
@@ -1551,8 +1551,8 @@ msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable: "
-"unknown value `%s'"
+"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment "
+"variable: unknown value `%s'"
 
 #: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6042
 msgid ""
@@ -1582,7 +1582,7 @@ msgid ""
 msgstr ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 
-#: ../gio/gdbusauth.c:1149
+#: ../gio/gdbusauth.c:1150
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -1634,22 +1634,22 @@ msgstr "Didn't find cookie with ID %d in the keyring at `%s'"
 
 #: ../gio/gdbusauthmechanismsha1.c:535
 #, c-format
-msgid "Error deleting stale lock-file `%s': %s"
+msgid "Error deleting stale lock file `%s': %s"
 msgstr "Error deleting stale lock file `%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
 #, c-format
-msgid "Error creating lock-file `%s': %s"
+msgid "Error creating lock file `%s': %s"
 msgstr "Error creating lock file `%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
 #, c-format
-msgid "Error closing (unlinked) lock-file `%s': %s"
+msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr "Error closing (unlinked) lock file `%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
 #, c-format
-msgid "Error unlinking lock-file `%s': %s"
+msgid "Error unlinking lock file `%s': %s"
 msgstr "Error unlinking lock file `%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:682
@@ -1828,7 +1828,7 @@ msgstr "Parsed value `%s' for variant is not a valid D-Bus signature"
 #: ../gio/gdbusmessage.c:1406
 #, c-format
 msgid ""
-"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
+"Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
 "Error deserialising GVariant with type string `%s' from the D-Bus wire format"
 
@@ -1868,7 +1868,7 @@ msgstr "Cannot deserialise message: "
 #: ../gio/gdbusmessage.c:2038
 #, c-format
 msgid ""
-"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+"Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
 "Error serialising GVariant with type string `%s' to the D-Bus wire format"
 
@@ -1920,7 +1920,7 @@ msgstr "Type of return value is incorrect: got `%s', expected `%s'"
 msgid "Error sending message: %s"
 msgstr "Error sending message: %s"
 
-#: ../gio/gdbusprivate.c:1722
+#: ../gio/gdbusprivate.c:1723
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Unable to load /var/lib/dbus/machine-id: "
 
@@ -1943,7 +1943,7 @@ msgstr "Error calling StartServiceByName for %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Unexpected reply %d from StartServiceByName(\"%s\") method"
 
-#: ../gio/gdbusproxy.c:2317 ../gio/gdbusproxy.c:2476
+#: ../gio/gdbusproxy.c:2315 ../gio/gdbusproxy.c:2472
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2203,17 +2203,17 @@ msgstr "Can't handle version %d of GEmblem encoding"
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Malformed number of tokens (%d) in GEmblem encoding"
 
-#: ../gio/gemblemedicon.c:295
+#: ../gio/gemblemedicon.c:292
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "Can't handle version %d of GEmblemedIcon encoding"
 
-#: ../gio/gemblemedicon.c:305
+#: ../gio/gemblemedicon.c:302
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 
-#: ../gio/gemblemedicon.c:328
+#: ../gio/gemblemedicon.c:325
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Expected a GEmblem for GEmblemedIcon"
 
@@ -3228,7 +3228,7 @@ msgstr "Error receiving message: %s"
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials not implemented for this OS"
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1145
+#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1148
 msgid "Unknown error on connect"
 msgstr "Unknown error on connect"
 
@@ -3285,7 +3285,8 @@ msgstr "The SOCKSv5 proxy requires authentication."
 msgid ""
 "The SOCKSv5 require an authentication method that is not supported by GLib."
 msgstr ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
 
 #: ../gio/gsocks5proxy.c:208
 #, c-format
