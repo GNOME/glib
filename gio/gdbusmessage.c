@@ -709,7 +709,7 @@ g_dbus_message_get_unix_fd_list (GDBusMessage  *message)
 /**
  * g_dbus_message_set_unix_fd_list:
  * @message: A #GDBusMessage.
- * @fd_list: A #GUnixFDList or %NULL.
+ * @fd_list: (allow-none): A #GUnixFDList or %NULL.
  *
  * Sets the UNIX file descriptors associated with @message. As a
  * side-effect the %G_DBUS_MESSAGE_HEADER_FIELD_NUM_UNIX_FDS header
