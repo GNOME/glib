@@ -3720,6 +3720,7 @@ invoke_set_property_in_idle_cb (gpointer _data)
   g_assert (reply != NULL);
   g_dbus_connection_send_message (data->connection, reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, NULL);
   g_object_unref (reply);
+  g_variant_unref (value);
 
   return FALSE;
 }
