@@ -717,6 +717,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
           if (worker->read_fd_list != NULL)
             {
               g_dbus_message_set_unix_fd_list (message, worker->read_fd_list);
+              g_object_unref (worker->read_fd_list);
               worker->read_fd_list = NULL;
             }
 #endif
