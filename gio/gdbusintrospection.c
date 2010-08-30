@@ -1508,7 +1508,10 @@ parser_start_element (GMarkupParseContext  *context,
                                         G_MARKUP_COLLECT_INVALID))
         goto out;
 
-      is_in = FALSE;
+      if (strcmp (stack->next->data, "method") == 0)
+        is_in = TRUE;
+      else
+        is_in = FALSE;
       if (direction != NULL)
         {
           if (strcmp (direction, "in") == 0)
