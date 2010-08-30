@@ -9,7 +9,7 @@ Overview of Changes from GLib 2.25.14 to GLib 2.25.15
     includes SOCKSv4 and SOCKSv5 implementations, and libproxy
     is also going to provide an implementation of this extension
     point.
-  - There is are GAction and GActionGroup classes now, that will
+  - There are GAction and GActionGroup interfaces now, which will
     be used in GApplication in the near future.
 
  * GObject
