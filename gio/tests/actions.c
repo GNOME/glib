@@ -25,19 +25,19 @@ static void
 test_basic (void)
 {
   Activation a = { 0, };
-  GAction *action;
-  const gchar *name;
+  GSimpleAction *action;
+  gchar *name;
   GVariantType *parameter_type;
   gboolean enabled;
   GVariantType *state_type;
   GVariant *state;
 
-  action = g_action_new ("foo", NULL);
-  g_assert (g_action_get_enabled (action));
-  g_assert (g_action_get_parameter_type (action) == NULL);
-  g_assert (g_action_get_state_type (action) == NULL);
-  g_assert (g_action_get_state_hint (action) == NULL);
-  g_assert (g_action_get_state (action) == NULL);
+  action = g_simple_action_new ("foo", NULL);
+  g_assert (g_action_get_enabled (G_ACTION (action)));
+  g_assert (g_action_get_parameter_type (G_ACTION (action)) == NULL);
+  g_assert (g_action_get_state_type (G_ACTION (action)) == NULL);
+  g_assert (g_action_get_state_hint (G_ACTION (action)) == NULL);
+  g_assert (g_action_get_state (G_ACTION (action)) == NULL);
   g_object_get (action,
                 "name", &name,
                 "parameter-type", &parameter_type,
@@ -54,17 +54,17 @@ test_basic (void)
 
   g_signal_connect (action, "activate", G_CALLBACK (activate), &a);
   g_assert (!a.did_run);
-  g_action_activate (action, NULL);
+  g_action_activate (G_ACTION (action), NULL);
   g_assert (a.did_run);
   a.did_run = FALSE;
 
-  g_action_set_enabled (action, FALSE);
-  g_action_activate (action, NULL);
+  g_simple_action_set_enabled (action, FALSE);
+  g_action_activate (G_ACTION (action), NULL);
   g_assert (!a.did_run);
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      g_action_activate (action, g_variant_new_string ("xxx"));
+      g_action_activate (G_ACTION (action), g_variant_new_string ("xxx"));
       exit (0);
     }
   g_test_trap_assert_failed ();
@@ -72,16 +72,16 @@ test_basic (void)
   g_object_unref (action);
   g_assert (!a.did_run);
 
-  action = g_action_new ("foo", G_VARIANT_TYPE_STRING);
-  g_assert (g_action_get_enabled (action));
-  g_assert (g_variant_type_equal (g_action_get_parameter_type (action), G_VARIANT_TYPE_STRING));
-  g_assert (g_action_get_state_type (action) == NULL);
-  g_assert (g_action_get_state_hint (action) == NULL);
-  g_assert (g_action_get_state (action) == NULL);
+  action = g_simple_action_new ("foo", G_VARIANT_TYPE_STRING);
+  g_assert (g_action_get_enabled (G_ACTION (action)));
+  g_assert (g_variant_type_equal (g_action_get_parameter_type (G_ACTION (action)), G_VARIANT_TYPE_STRING));
+  g_assert (g_action_get_state_type (G_ACTION (action)) == NULL);
+  g_assert (g_action_get_state_hint (G_ACTION (action)) == NULL);
+  g_assert (g_action_get_state (G_ACTION (action)) == NULL);
 
   g_signal_connect (action, "activate", G_CALLBACK (activate), &a);
   g_assert (!a.did_run);
-  g_action_activate (action, g_variant_new_string ("Hello world"));
+  g_action_activate (G_ACTION (action), g_variant_new_string ("Hello world"));
   g_assert (a.did_run);
   g_assert_cmpstr (g_variant_get_string (a.params, NULL), ==, "Hello world");
   g_variant_unref (a.params);
@@ -89,7 +89,7 @@ test_basic (void)
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      g_action_activate (action, NULL);
+      g_action_activate (G_ACTION (action), NULL);
       exit (0);
     }
 
@@ -149,28 +149,29 @@ test_simple_group (void)
 {
   GSimpleActionGroup *group;
   Activation a = { 0, };
+  GSimpleAction *simple;
   GAction *action;
   gchar **actions;
   GVariant *state;
 
-  action = g_action_new ("foo", NULL);
-  g_signal_connect (action, "activate", G_CALLBACK (activate), &a);
+  simple = g_simple_action_new ("foo", NULL);
+  g_signal_connect (simple, "activate", G_CALLBACK (activate), &a);
   g_assert (!a.did_run);
-  g_action_activate (action, NULL);
+  g_action_activate (G_ACTION (simple), NULL);
   g_assert (a.did_run);
   a.did_run = FALSE;
 
   group = g_simple_action_group_new ();
-  g_simple_action_group_insert (group, action);
-  g_object_unref (action);
+  g_simple_action_group_insert (group, G_ACTION (simple));
+  g_object_unref (simple);
 
   g_assert (!a.did_run);
   g_action_group_activate (G_ACTION_GROUP (group), "foo", NULL);
   g_assert (a.did_run);
 
-  action = g_action_new_stateful ("bar", G_VARIANT_TYPE_STRING, g_variant_new_string ("hihi"));
-  g_simple_action_group_insert (group, action);
-  g_object_unref (action);
+  simple = g_simple_action_new_stateful ("bar", G_VARIANT_TYPE_STRING, g_variant_new_string ("hihi"));
+  g_simple_action_group_insert (group, G_ACTION (simple));
+  g_object_unref (simple);
 
   g_assert (g_action_group_has_action (G_ACTION_GROUP (group), "foo"));
   g_assert (g_action_group_has_action (G_ACTION_GROUP (group), "bar"));
@@ -199,7 +200,7 @@ test_simple_group (void)
   g_variant_unref (state);
 
   action = g_simple_action_group_lookup (group, "bar");
-  g_action_set_enabled (action, FALSE);
+  g_simple_action_set_enabled (G_SIMPLE_ACTION (action), FALSE);
   g_assert (!g_action_group_get_enabled (G_ACTION_GROUP (group), "bar"));
 
   g_simple_action_group_remove (group, "bar");
@@ -216,37 +217,37 @@ test_simple_group (void)
 static void
 test_stateful (void)
 {
+  GSimpleAction *action;
   GVariant *state;
-  GAction *action;
 
-  action = g_action_new_stateful ("foo", NULL, g_variant_new_string ("hihi"));
-  g_assert (g_action_get_enabled (action));
-  g_assert (g_action_get_parameter_type (action) == NULL);
-  g_assert (g_action_get_state_hint (action) == NULL);
-  g_assert (g_variant_type_equal (g_action_get_state_type (action),
+  action = g_simple_action_new_stateful ("foo", NULL, g_variant_new_string ("hihi"));
+  g_assert (g_action_get_enabled (G_ACTION (action)));
+  g_assert (g_action_get_parameter_type (G_ACTION (action)) == NULL);
+  g_assert (g_action_get_state_hint (G_ACTION (action)) == NULL);
+  g_assert (g_variant_type_equal (g_action_get_state_type (G_ACTION (action)),
                                   G_VARIANT_TYPE_STRING));
-  state = g_action_get_state (action);
+  state = g_action_get_state (G_ACTION (action));
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hihi");
   g_variant_unref (state);
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      g_action_set_state (action, g_variant_new_int32 (123));
+      g_action_set_state (G_ACTION (action), g_variant_new_int32 (123));
       exit (0);
     }
   g_test_trap_assert_failed ();
 
-  g_action_set_state (action, g_variant_new_string ("hello"));
-  state = g_action_get_state (action);
+  g_action_set_state (G_ACTION (action), g_variant_new_string ("hello"));
+  state = g_action_get_state (G_ACTION (action));
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hello");
   g_variant_unref (state);
 
   g_object_unref (action);
 
-  action = g_action_new ("foo", NULL);
+  action = g_simple_action_new ("foo", NULL);
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      g_action_set_state (action, g_variant_new_int32 (123));
+      g_action_set_state (G_ACTION (action), g_variant_new_int32 (123));
       exit (0);
     }
   g_test_trap_assert_failed ();

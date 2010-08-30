@@ -1,4 +1,5 @@
 g_action_get_type
+g_simple_action_get_type
 g_action_group_get_type
 g_simple_action_group_get_type
 g_app_info_create_flags_get_type

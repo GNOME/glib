@@ -132,12 +132,14 @@ application_headers = \
 	gactiongroup.h			\
 	gsimpleactiongroup.h		\
 	gaction.h			\
+	gsimpleaction.h			\
 	gapplication.h
 
 application_sources = \
 	gactiongroup.c			\
 	gsimpleactiongroup.c		\
 	gaction.c			\
+	gsimpleaction.c			\
 	gapplication.c
 
 

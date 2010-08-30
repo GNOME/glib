@@ -23,7 +23,7 @@
 #include "gaction.h"
 #include "glibintl.h"
 
-G_DEFINE_TYPE (GAction, g_action, G_TYPE_OBJECT)
+G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
 
 /**
  * SECTION:gaction
@@ -46,220 +46,24 @@ G_DEFINE_TYPE (GAction, g_action, G_TYPE_OBJECT)
  * The state may have a hint associated with it, specifying its valid
  * range.
  *
- * #GAction is intended to be used both as a simple action class and as
- * a base class for more complicated action types.  The base class
- * itself supports activation and state.  Not supported are state hints
- * and filtering requests to set the state based on the requested value.
- * You should subclass if you require either of these abilities.
+ * #GAction is merely the interface to the concept of an action, as
+ * described above.  Various implementations of actions exist, including
+ * #GSimpleAction and #GtkAction.
  *
- * In all cases, the base class is responsible for storing the name of
- * the action, the parameter type, the enabled state, the optional state
- * type and the state and emitting the appropriate signals when these
- * change.  The base class is also responsbile for filtering calls to
- * g_action_activate() and g_action_set_state() for type safety and for
- * the state being enabled.
+ * In all cases, the implementing class is responsible for storing the
+ * name of the action, the parameter type, the enabled state, the
+ * optional state type and the state and emitting the appropriate
+ * signals when these change.  The implementor responsible for filtering
+ * calls to g_action_activate() and g_action_set_state() for type safety
+ * and for the state being enabled.
  *
  * Probably the only useful thing to do with a #GAction is to put it
  * inside of a #GSimpleActionGroup.
  **/
 
-struct _GActionPrivate
-{
-  gchar        *name;
-  GVariantType *parameter_type;
-  guint         enabled : 1;
-  guint         state_set : 1;
-  GVariant     *state;
-};
-
-enum
-{
-  PROP_NONE,
-  PROP_NAME,
-  PROP_PARAMETER_TYPE,
-  PROP_ENABLED,
-  PROP_STATE_TYPE,
-  PROP_STATE
-};
-
-enum
-{
-  SIGNAL_ACTIVATE,
-  NR_SIGNALS
-};
-
-static guint g_action_signals[NR_SIGNALS];
-
-static void
-g_action_real_set_state (GAction  *action,
-                         GVariant *value)
-{
-  if (action->priv->state == value)
-    return;
-
-  if (!action->priv->state || !g_variant_equal (action->priv->state, value))
-    {
-      if (action->priv->state)
-        g_variant_unref (action->priv->state);
-
-      action->priv->state = g_variant_ref (value);
-
-      g_object_notify (G_OBJECT (action), "state");
-    }
-}
-
-static GVariant *
-g_action_real_get_state_hint (GAction *action)
-{
-  return NULL;
-}
-
-static void
-g_action_set_property (GObject      *object,
-                       guint         prop_id,
-                       const GValue *value,
-                       GParamSpec   *pspec)
-{
-  GAction *action = G_ACTION (object);
-
-  switch (prop_id)
-    {
-    case PROP_NAME:
-      g_assert (action->priv->name == NULL);
-      action->priv->name = g_value_dup_string (value);
-      break;
-
-    case PROP_PARAMETER_TYPE:
-      g_assert (action->priv->parameter_type == NULL);
-      action->priv->parameter_type = g_value_dup_boxed (value);
-      break;
-
-    case PROP_ENABLED:
-      g_action_set_enabled (action, g_value_get_boolean (value));
-      break;
-
-    case PROP_STATE:
-      /* PROP_STATE is marked as G_PARAM_CONSTRUCT so we always get a
-       * call during object construction, even if it is NULL.  We treat
-       * that first call differently, for a number of reasons.
-       *
-       * First, we don't want the value to be rejected by the
-       * possibly-overridden .set_state() function.  Second, we don't
-       * want to be tripped by the assertions in g_action_set_state()
-       * that would enforce the catch22 that we only provide a value of
-       * the same type as the existing value (when there is not yet an
-       * existing value).
-       */
-      if (action->priv->state_set)
-        g_action_set_state (action, g_value_get_variant (value));
-
-      else /* this is the special case */
-        {
-          /* only do it the first time. */
-          action->priv->state_set = TRUE;
-
-          /* blindly set it. */
-          action->priv->state = g_value_dup_variant (value);
-        }
-      break;
-
-    default:
-      g_assert_not_reached ();
-    }
-}
-
-static void
-g_action_get_property (GObject    *object,
-                       guint       prop_id,
-                       GValue     *value,
-                       GParamSpec *pspec)
-{
-  GAction *action = G_ACTION (object);
-
-  switch (prop_id)
-    {
-    case PROP_NAME:
-      g_value_set_string (value, g_action_get_name (action));
-      break;
-
-    case PROP_PARAMETER_TYPE:
-      g_value_set_boxed (value, g_action_get_parameter_type (action));
-      break;
-
-    case PROP_ENABLED:
-      g_value_set_boolean (value, g_action_get_enabled (action));
-      break;
-
-    case PROP_STATE_TYPE:
-      g_value_set_boxed (value, g_action_get_state_type (action));
-      break;
-
-    case PROP_STATE:
-      g_value_take_variant (value, g_action_get_state (action));
-      break;
-
-    default:
-      g_assert_not_reached ();
-    }
-}
-
-static void
-g_action_finalize (GObject *object)
-{
-  GAction *action = G_ACTION (object);
-
-  g_free (action->priv->name);
-  if (action->priv->parameter_type)
-    g_variant_type_free (action->priv->parameter_type);
-  if (action->priv->state)
-    g_variant_unref (action->priv->state);
-
-  G_OBJECT_CLASS (g_action_parent_class)
-    ->finalize (object);
-}
-
 void
-g_action_init (GAction *action)
+g_action_default_init (GActionInterface *iface)
 {
-  action->priv = G_TYPE_INSTANCE_GET_PRIVATE (action,
-                                              G_TYPE_ACTION,
-                                              GActionPrivate);
-}
-
-void
-g_action_class_init (GActionClass *class)
-{
-  GObjectClass *object_class = G_OBJECT_CLASS (class);
-
-  class->get_state_hint = g_action_real_get_state_hint;
-  class->set_state = g_action_real_set_state;
-
-  object_class->get_property = g_action_get_property;
-  object_class->set_property = g_action_set_property;
-  object_class->finalize = g_action_finalize;
-
-  /**
-   * GAction::activate:
-   * @action: the #GAction
-   * @parameter: (allow-none): the parameter to the activation
-   *
-   * Indicates that the action was just activated.
-   *
-   * @parameter will always be of the expected type.  In the event that
-   * an incorrect type was given, no signal will be emitted.
-   *
-   * Since: 2.26
-   */
-  g_action_signals[SIGNAL_ACTIVATE] =
-    g_signal_new (I_("activate"),
-                  G_TYPE_ACTION,
-                  G_SIGNAL_RUN_LAST,
-                  G_STRUCT_OFFSET (GActionClass, activate),
-                  NULL, NULL,
-                  g_cclosure_marshal_VOID__VARIANT,
-                  G_TYPE_NONE, 1,
-                  G_TYPE_VARIANT);
-
   /**
    * GAction:name:
    *
@@ -268,14 +72,13 @@ g_action_class_init (GActionClass *class)
    *
    * Since: 2.26
    **/
-  g_object_class_install_property (object_class, PROP_NAME,
-                                   g_param_spec_string ("name",
-                                                        P_("Action Name"),
-                                                        P_("The name used to invoke the action"),
-                                                        NULL,
-                                                        G_PARAM_READWRITE |
-                                                        G_PARAM_CONSTRUCT_ONLY |
-                                                        G_PARAM_STATIC_STRINGS));
+  g_object_interface_install_property (iface,
+                                       g_param_spec_string ("name",
+                                                            P_("Action Name"),
+                                                            P_("The name used to invoke the action"),
+                                                            NULL,
+                                                            G_PARAM_READABLE |
+                                                            G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:parameter-type:
@@ -285,14 +88,13 @@ g_action_class_init (GActionClass *class)
    *
    * Since: 2.26
    **/
-  g_object_class_install_property (object_class, PROP_PARAMETER_TYPE,
-                                   g_param_spec_boxed ("parameter-type",
-                                                       P_("Parameter Type"),
-                                                       P_("The type of GVariant passed to activate()"),
-                                                       G_TYPE_VARIANT_TYPE,
-                                                       G_PARAM_READWRITE |
-                                                       G_PARAM_CONSTRUCT_ONLY |
-                                                       G_PARAM_STATIC_STRINGS));
+  g_object_interface_install_property (iface,
+                                       g_param_spec_boxed ("parameter-type",
+                                                           P_("Parameter Type"),
+                                                           P_("The type of GVariant passed to activate()"),
+                                                           G_TYPE_VARIANT_TYPE,
+                                                           G_PARAM_READABLE |
+                                                           G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:enabled:
@@ -304,14 +106,13 @@ g_action_class_init (GActionClass *class)
    *
    * Since: 2.26
    **/
-  g_object_class_install_property (object_class, PROP_ENABLED,
-                                   g_param_spec_boolean ("enabled",
-                                                         P_("Enabled"),
-                                                         P_("If the action can be activated"),
-                                                         TRUE,
-                                                         G_PARAM_CONSTRUCT |
-                                                         G_PARAM_READWRITE |
-                                                         G_PARAM_STATIC_STRINGS));
+  g_object_interface_install_property (iface,
+                                       g_param_spec_boolean ("enabled",
+                                                             P_("Enabled"),
+                                                             P_("If the action can be activated"),
+                                                             TRUE,
+                                                             G_PARAM_READABLE |
+                                                             G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:state-type:
@@ -321,13 +122,13 @@ g_action_class_init (GActionClass *class)
    *
    * Since: 2.26
    **/
-  g_object_class_install_property (object_class, PROP_STATE_TYPE,
-                                   g_param_spec_boxed ("state-type",
-                                                       P_("State Type"),
-                                                       P_("The type of the state kept by the action"),
-                                                       G_TYPE_VARIANT_TYPE,
-                                                       G_PARAM_READABLE |
-                                                       G_PARAM_STATIC_STRINGS));
+  g_object_interface_install_property (iface,
+                                       g_param_spec_boxed ("state-type",
+                                                           P_("State Type"),
+                                                           P_("The type of the state kept by the action"),
+                                                           G_TYPE_VARIANT_TYPE,
+                                                           G_PARAM_READABLE |
+                                                           G_PARAM_STATIC_STRINGS));
 
   /**
    * GAction:state:
@@ -336,17 +137,15 @@ g_action_class_init (GActionClass *class)
    *
    * Since: 2.26
    **/
-  g_object_class_install_property (object_class, PROP_STATE,
-                                   g_param_spec_variant ("state",
-                                                         P_("State"),
-                                                         P_("The state the action is in"),
-                                                         G_VARIANT_TYPE_ANY,
-                                                         NULL,
-                                                         G_PARAM_CONSTRUCT |
-                                                         G_PARAM_READWRITE |
-                                                         G_PARAM_STATIC_STRINGS));
-
-  g_type_class_add_private (class, sizeof (GActionPrivate));
+  g_object_interface_install_property (iface,
+                                       g_param_spec_variant ("state",
+                                                             P_("State"),
+                                                             P_("The state the action is in"),
+                                                             G_VARIANT_TYPE_ANY,
+                                                             NULL,
+                                                             G_PARAM_CONSTRUCT |
+                                                             G_PARAM_READWRITE |
+                                                             G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -381,9 +180,8 @@ g_action_set_state (GAction  *action,
 
   g_variant_ref_sink (value);
 
-  if (action->priv->enabled)
-    G_ACTION_GET_CLASS (action)
-      ->set_state (action, value);
+  G_ACTION_GET_IFACE (action)
+    ->set_state (action, value);
 
   g_variant_unref (value);
 }
@@ -398,8 +196,8 @@ g_action_set_state (GAction  *action,
  * action is stateful then the type of the return value is the type
  * given by g_action_get_state_type().
  *
- * The return value should be released with g_variant_unref() when it is
- * no longer required.
+ * The return value (if non-%NULL) should be freed with
+ * g_variant_unref() when it is no longer required.
  *
  * Returns: (allow-none): the current state of the action
  *
@@ -410,7 +208,8 @@ g_action_get_state (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), NULL);
 
-  return action->priv->state ? g_variant_ref (action->priv->state) : NULL;
+  return G_ACTION_GET_IFACE (action)
+    ->get_state (action);
 }
 
 /**
@@ -428,7 +227,8 @@ g_action_get_name (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), NULL);
 
-  return action->priv->name;
+  return G_ACTION_GET_IFACE (action)
+    ->get_name (action);
 }
 
 /**
@@ -453,7 +253,8 @@ g_action_get_parameter_type (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), NULL);
 
-  return action->priv->parameter_type;
+  return G_ACTION_GET_IFACE (action)
+    ->get_parameter_type (action);
 }
 
 /**
@@ -482,10 +283,8 @@ g_action_get_state_type (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), NULL);
 
-  if (action->priv->state != NULL)
-    return g_variant_get_type (action->priv->state);
-  else
-    return NULL;
+  return G_ACTION_GET_IFACE (action)
+    ->get_state_type (action);
 }
 
 /**
@@ -520,7 +319,8 @@ g_action_get_state_hint (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), NULL);
 
-  return G_ACTION_GET_CLASS (action)->get_state_hint (action);
+  return G_ACTION_GET_IFACE (action)
+    ->get_state_hint (action);
 }
 
 /**
@@ -541,34 +341,8 @@ g_action_get_enabled (GAction *action)
 {
   g_return_val_if_fail (G_IS_ACTION (action), FALSE);
 
-  return action->priv->enabled;
-}
-
-/**
- * g_action_set_enabled:
- * @action: a #GAction
- * @enabled: whether the action is enabled
- *
- * Sets the action as enabled or not.
- *
- * An action must be enabled in order to be activated or in order to
- * have its state changed from outside callers.
- *
- * Since: 2.26
- **/
-void
-g_action_set_enabled (GAction  *action,
-                      gboolean  enabled)
-{
-  g_return_if_fail (G_IS_ACTION (action));
-
-  enabled = !!enabled;
-
-  if (action->priv->enabled != enabled)
-    {
-      action->priv->enabled = enabled;
-      g_object_notify (G_OBJECT (action), "enabled");
-    }
+  return G_ACTION_GET_IFACE (action)
+    ->get_enabled (action);
 }
 
 /**
@@ -590,70 +364,12 @@ g_action_activate (GAction  *action,
 {
   g_return_if_fail (G_IS_ACTION (action));
 
-  g_return_if_fail (action->priv->parameter_type == NULL ?
-                      parameter == NULL :
-                    (parameter != NULL &&
-                     g_variant_is_of_type (parameter,
-                                           action->priv->parameter_type)));
-
   if (parameter != NULL)
     g_variant_ref_sink (parameter);
 
-  if (action->priv->enabled)
-    g_signal_emit (action, g_action_signals[SIGNAL_ACTIVATE], 0, parameter);
+  G_ACTION_GET_IFACE (action)
+    ->activate (action, parameter);
 
   if (parameter != NULL)
     g_variant_unref (parameter);
-}
-
-/**
- * g_action_new:
- * @name: the name of the action
- * @parameter_type: (allow-none): the type of parameter to the activate function
- *
- * Creates a new action.
- *
- * The created action is stateless.  See g_action_new_stateful().
- *
- * Returns: a new #GAction
- *
- * Since: 2.26
- **/
-GAction *
-g_action_new (const gchar        *name,
-              const GVariantType *parameter_type)
-{
-  return g_object_new (G_TYPE_ACTION,
-                       "name", name,
-                       "parameter-type", parameter_type,
-                       NULL);
-}
-
-/**
- * g_action_new_stateful:
- * @name: the name of the action
- * @parameter_type: (allow-none): the type of the parameter to the activate function
- * @state: the initial state of the action
- *
- * Creates a new stateful action.
- *
- * @state is the initial state of the action.  All future state values
- * must have the same #GVariantType as the initial state.
- *
- * If the @state GVariant is floating, it is consumed.
- *
- * Returns: a new #GAction
- *
- * Since: 2.26
- **/
-GAction *
-g_action_new_stateful (const gchar        *name,
-                       const GVariantType *parameter_type,
-                       GVariant           *state)
-{
-  return g_object_new (G_TYPE_ACTION,
-                       "name", name,
-                       "parameter-type", parameter_type,
-                       "state", state,
-                       NULL);
 }

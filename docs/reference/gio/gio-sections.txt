@@ -2689,7 +2689,6 @@ g_application_get_type
 <FILE>gactiongroup</FILE>
 <TITLE>GActionGroup</TITLE>
 GActionGroup
-GActionGroupClass
 
 <SUBSECTION>
 g_action_group_has_action
@@ -2719,9 +2718,7 @@ g_action_group_get_type
 GActionGroupPrivate
 G_TYPE_ACTION_GROUP
 G_IS_ACTION_GROUP
-G_ACTION_GROUP_CLASS
-G_ACTION_GROUP_GET_CLASS
-G_IS_ACTION_GROUP_CLASS
+G_ACTION_GROUP_GET_INTERFACE
 G_ACTION_GROUP
 </SECTION>
 
@@ -2729,11 +2726,6 @@ G_ACTION_GROUP
 <FILE>gaction</FILE>
 <TITLE>GAction</TITLE>
 GAction
-GActionClass
-
-<SUBSECTION>
-g_action_new
-g_action_new_stateful
 
 <SUBSECTION>
 g_action_get_name
@@ -2743,7 +2735,6 @@ g_action_get_state_hint
 
 <SUBSECTION>
 g_action_get_enabled
-g_action_set_enabled
 g_action_get_state
 g_action_set_state
 
@@ -2751,14 +2742,35 @@ g_action_set_state
 g_action_activate
 
 <SUBSECTION Standard>
-GActionPrivate
 g_action_get_type
 G_TYPE_ACTION
 G_IS_ACTION
-G_ACTION_CLASS
-G_ACTION_GET_CLASS
-G_IS_ACTION_CLASS
+G_ACTION_GET_INTERFACE
 G_ACTION
+</SECTION>
+
+<SECTION>
+<FILE>gsimpleaction</FILE>
+<TITLE>GSimpleAction</TITLE>
+GSimpleAction
+GSimpleActionClass
+
+<SUBSECTION>
+g_simple_action_new
+g_simple_action_new_stateful
+
+<SUBSECTION>
+g_simple_action_set_enabled
+
+<SUBSECTION Standard>
+GSimpleActionPrivate
+g_simple_action_get_type
+G_TYPE_SIMPLE_ACTION
+G_IS_SIMPLE_ACTION
+G_SIMPLE_ACTION_CLASS
+G_SIMPLE_ACTION_GET_CLASS
+G_IS_SIMPLE_ACTION_CLASS
+G_SIMPLE_ACTION
 </SECTION>
 
 <SECTION>

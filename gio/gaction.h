@@ -33,72 +33,46 @@ G_BEGIN_DECLS
 #define G_TYPE_ACTION                                       (g_action_get_type ())
 #define G_ACTION(inst)                                      (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
                                                              G_TYPE_ACTION, GAction))
-#define G_ACTION_CLASS(class)                               (G_TYPE_CHECK_CLASS_CAST ((class),                       \
-                                                             G_TYPE_ACTION, GActionClass))
 #define G_IS_ACTION(inst)                                   (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_ACTION))
-#define G_IS_ACTION_CLASS(class)                            (G_TYPE_CHECK_CLASS_TYPE ((class), G_TYPE_ACTION))
-#define G_ACTION_GET_CLASS(inst)                            (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
-                                                             G_TYPE_ACTION, GActionClass))
+#define G_ACTION_GET_IFACE(inst)                            (G_TYPE_INSTANCE_GET_INTERFACE ((inst),                  \
+                                                             G_TYPE_ACTION, GActionInterface))
 
-typedef struct _GActionPrivate                              GActionPrivate;
-typedef struct _GActionClass                                GActionClass;
+typedef struct _GActionInterface                            GActionInterface;
 
 /**
- * GAction:
- *
- * The <structname>GAction</structname> structure contains private
- * data and should only be accessed using the provided API
- *
- * Since: 2.26
- */
-struct _GAction
-{
-  /*< private >*/
-  GObject parent_instance;
-
-  GActionPrivate *priv;
-};
-
-/**
- * GActionClass:
+ * GActionInterface:
+ * @get_name: the virtual function pointer for g_action_get_name()
+ * @get_parameter_type: the virtual function pointer for g_action_get_parameter_type()
+ * @get_state_type: the virtual function pointer for g_action_get_state_type()
  * @get_state_hint: the virtual function pointer for g_action_get_state_hint()
- * @set_state: the virtual function pointer for g_action_set_state().  The implementation should check the value
- *             for validity and then chain up to the handler in the base class in order to actually update the
- *             state.
- * @activate: the class closure for the activate signal
+ * @get_enabled: the virtual function pointer for g_action_get_enabled()
+ * @get_state: the virtual function pointer for g_action_get_state()
+ * @set_state: the virtual function pointer for g_action_set_state()
+ * @activate: the virtual function pointer for g_action_activate().  Note that #GAction does not have an
+ *            'activate' signal but that implementations of it may have one.
  *
  * Since: 2.26
  */
-struct _GActionClass
+struct _GActionInterface
 {
-  GObjectClass parent_class;
+  GTypeInterface g_iface;
 
-  /*< public >*/
   /* virtual functions */
+  const gchar *        (* get_name)             (GAction  *action);
+  const GVariantType * (* get_parameter_type)   (GAction  *action);
+  const GVariantType * (* get_state_type)       (GAction  *action);
   GVariant *           (* get_state_hint)       (GAction  *action);
+
+  gboolean             (* get_enabled)          (GAction  *action);
+  GVariant *           (* get_state)            (GAction  *action);
   void                 (* set_state)            (GAction  *action,
                                                  GVariant *state);
 
-  /*< private >*/
-  gpointer vfunc_padding[6];
-
-  /*< public >*/
-  /* signals */
   void                 (* activate)             (GAction  *action,
                                                  GVariant *parameter);
-
-  /*< private >*/
-  gpointer signal_padding[6];
 };
 
 GType                   g_action_get_type                               (void) G_GNUC_CONST;
-
-GAction *               g_action_new                                    (const gchar        *name,
-                                                                         const GVariantType *parameter_type);
-
-GAction *               g_action_new_stateful                           (const gchar        *name,
-                                                                         const GVariantType *parameter_type,
-                                                                         GVariant           *state);
 
 const gchar *           g_action_get_name                               (GAction            *action);
 const GVariantType *    g_action_get_parameter_type                     (GAction            *action);
@@ -106,9 +80,6 @@ const GVariantType *    g_action_get_state_type                         (GAction
 GVariant *              g_action_get_state_hint                         (GAction            *action);
 
 gboolean                g_action_get_enabled                            (GAction            *action);
-void                    g_action_set_enabled                            (GAction            *action,
-                                                                         gboolean            enabled);
-
 GVariant *              g_action_get_state                              (GAction            *action);
 void                    g_action_set_state                              (GAction            *action,
                                                                          GVariant           *value);
