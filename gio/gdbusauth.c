@@ -762,6 +762,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           debug_print ("CLIENT: WaitingForAgreeUnixFD, read=`%s'", line);
           if (g_strcmp0 (line, "AGREE_UNIX_FD") == 0)
             {
+              g_free (line);
               negotiated_capabilities |= G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING;
               s = "BEGIN\r\n";
               debug_print ("CLIENT: writing `%s'", s);
