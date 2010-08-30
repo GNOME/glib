@@ -2294,8 +2294,6 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
   target_method_name = was_split ? split_method_name : method_name;
   target_interface_name = was_split ? split_interface_name : proxy->priv->interface_name;
 
-  g_object_set_data_full (G_OBJECT (simple), "-gdbus-proxy-method-name", g_strdup (target_method_name), g_free);
-
   /* Warn if method is unexpected (cf. :g-interface-info) */
   if (!was_split)
     {
@@ -2359,7 +2357,6 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
 {
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
   GVariant *value;
-  const char *method_name;
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
   g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
@@ -2373,7 +2370,6 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
     goto out;
 
   value = g_variant_ref (g_simple_async_result_get_op_res_gpointer (simple));
-  method_name = g_object_get_data (G_OBJECT (simple), "-gdbus-proxy-method-name");
 
  out:
   return value;
