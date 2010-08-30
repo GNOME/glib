@@ -141,6 +141,8 @@ test_introspection_parser (void)
   g_object_unref (connection);
 }
 
+/* check that a parse-generate roundtrip produces identical results
+ */
 static void
 test_generate (void)
 {
@@ -152,7 +154,6 @@ test_generate (void)
   GDBusArgInfo *arginfo;
   GDBusPropertyInfo *pinfo;
   GDBusAnnotationInfo *aninfo;
-
   const gchar *data =
   "  <node>"
   "    <interface name='com.example.Frob'>"
@@ -163,7 +164,7 @@ test_generate (void)
   "        <arg type='s' name='somestring' direction='out'/>"
   "      </method>"
   "      <signal name='HelloWorld'>"
-  "        <arg type='s' name='somestring'/>"
+  "        <arg type='s' name='greeting' direction='out'/>"
   "      </signal>"
   "      <method name='Sleep'>"
   "        <arg type='i' name='timeout' direction='in'/>"
@@ -196,10 +197,10 @@ test_generate (void)
   g_assert_cmpstr (arginfo->signature, ==, "s");
   g_assert (minfo->out_args[1] == NULL);
   sinfo = g_dbus_interface_info_lookup_signal (iinfo, "HelloWorld");
-  arginfo = minfo->out_args[0];
-  g_assert_cmpstr (arginfo->name, ==, "somestring");
+  arginfo = sinfo->args[0];
+  g_assert_cmpstr (arginfo->name, ==, "greeting");
   g_assert_cmpstr (arginfo->signature, ==, "s");
-  g_assert (minfo->out_args[1] == NULL);
+  g_assert (sinfo->args[1] == NULL);
   pinfo = g_dbus_interface_info_lookup_property (iinfo, "y");
   g_assert_cmpstr (pinfo->signature, ==, "y");
   g_assert_cmpint (pinfo->flags, ==, G_DBUS_PROPERTY_INFO_FLAGS_READABLE |
@@ -218,6 +219,83 @@ test_generate (void)
 
   g_dbus_node_info_unref (info);
   g_dbus_node_info_unref (info2);
+}
+
+/* test that omitted direction attributes default to 'out' for signals,
+ * and 'in' for methods.
+ */
+static void
+test_default_direction (void)
+{
+  GDBusNodeInfo *info;
+  GDBusInterfaceInfo *iinfo;
+  GDBusMethodInfo *minfo;
+  GDBusSignalInfo *sinfo;
+  GDBusArgInfo *arginfo;
+  const gchar *data =
+  "  <node>"
+  "    <interface name='com.example.Frob'>"
+  "      <signal name='HelloWorld'>"
+  "        <arg type='s' name='greeting'/>"
+  "      </signal>"
+  "      <method name='Sleep'>"
+  "        <arg type='i' name='timeout'/>"
+  "      </method>"
+  "    </interface>"
+  "  </node>";
+
+  GError *error;
+
+  error = NULL;
+  info = g_dbus_node_info_new_for_xml (data, &error);
+  g_assert_no_error (error);
+
+  iinfo = g_dbus_node_info_lookup_interface (info, "com.example.Frob");
+  sinfo = g_dbus_interface_info_lookup_signal (iinfo, "HelloWorld");
+  g_assert (sinfo->args != NULL);
+  arginfo = sinfo->args[0];
+  g_assert_cmpstr (arginfo->name, ==, "greeting");
+  g_assert (sinfo->args[1] == NULL);
+  minfo = g_dbus_interface_info_lookup_method (iinfo, "Sleep");
+  g_assert (minfo->in_args != NULL);
+  arginfo = minfo->in_args[0];
+  g_assert_cmpstr (arginfo->name, ==, "timeout");
+  g_assert (minfo->in_args[1] == NULL);
+
+  g_dbus_node_info_unref (info);
+}
+
+/* test that extraneous attributes are ignored
+ */
+static void
+test_extra_data (void)
+{
+  GDBusNodeInfo *info;
+  const gchar *data =
+  "  <node>"
+  "    <interface name='com.example.Frob' version='1.0'>"
+  "      <annotation name='foo' value='bar' extra='bla'/>"
+  "      <method name='PairReturn' anotherattribute='bla'>"
+  "        <annotation name='org.freedesktop.DBus.GLib.Async' value=''/>"
+  "        <arg type='u' name='somenumber' direction='in' spin='left'/>"
+  "        <arg type='s' name='somestring' direction='out'/>"
+  "      </method>"
+  "      <signal name='HelloWorld'>"
+  "        <arg type='s' name='somestring'/>"
+  "      </signal>"
+  "      <method name='Sleep'>"
+  "        <arg type='i' name='timeout' direction='in'/>"
+  "      </method>"
+  "      <property name='y' type='y' access='readwrite'/>"
+  "    </interface>"
+  "  </node>";
+  GError *error;
+
+  error = NULL;
+  info = g_dbus_node_info_new_for_xml (data, &error);
+  g_assert_no_error (error);
+
+  g_dbus_node_info_unref (info);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -240,6 +318,8 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/introspection-parser", test_introspection_parser);
   g_test_add_func ("/gdbus/introspection-generate", test_generate);
+  g_test_add_func ("/gdbus/introspection-default-direction", test_default_direction);
+  g_test_add_func ("/gdbus/introspection-extra-data", test_extra_data);
 
   return g_test_run();
 }
