@@ -4,7 +4,7 @@ static void
 test_basic (void)
 {
   GNetworkAddress *address;
-  guint16 port;
+  guint port;
   gchar *hostname;
 
   address = (GNetworkAddress*)g_network_address_new ("www.gnome.org", 8080);

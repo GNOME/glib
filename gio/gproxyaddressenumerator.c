@@ -627,13 +627,16 @@ g_proxy_address_enumerator_set_property (GObject        *object,
 		conn = g_network_address_parse_uri (uri, 0, NULL);
 		if (conn)
 		  {
+		    guint port;
+
 		    priv->dest_uri = g_strdup (uri);
 		    
 		    g_object_get (conn,
 				  "hostname", &priv->dest_hostname,
-				  "port", &priv->dest_port,
+				  "port", &port,
 				  NULL);
 
+		    priv->dest_port = port;
 		    g_object_unref (conn);
 		  }
 		else
