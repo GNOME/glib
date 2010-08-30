@@ -477,6 +477,7 @@ g_converter_output_stream_write (GOutputStream *stream,
 		buffer_append (&priv->output_buffer, buffer, count);
 	      /* in the converting_from_buffer case we already appended this */
 
+              g_error_free (my_error);
 	      return count; /* consume everything */
 	    }
 
