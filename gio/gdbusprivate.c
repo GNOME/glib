@@ -970,7 +970,7 @@ write_message_continue_writing (MessageToWriteData *data)
       if (bytes_written == -1)
         {
           /* Handle WOULD_BLOCK by waiting until there's room in the buffer */
-          if (error->domain == G_IO_ERROR && error->code == G_IO_ERROR_WOULD_BLOCK)
+          if (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK))
             {
               GSource *source;
               source = g_socket_create_source (data->worker->socket,
@@ -982,6 +982,7 @@ write_message_continue_writing (MessageToWriteData *data)
                                      NULL); /* GDestroyNotify */
               g_source_attach (source, g_main_context_get_thread_default ());
               g_source_unref (source);
+              g_error_free (error);
               goto out;
             }
           g_simple_async_result_set_from_error (simple, error);
