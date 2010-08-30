@@ -1096,6 +1096,9 @@ initable_init (GInitable     *initable,
     goto out;
 
  out:
+
+  g_strfreev (addr_array);
+
   if (ret)
     {
       if (last_error != NULL)
