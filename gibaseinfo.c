@@ -198,7 +198,7 @@ _g_type_info_init (GIBaseInfo *info,
  */
 
 /**
- * g_base_info_ref:
+ * g_base_info_ref: (skip)
  * @info: a #GIBaseInfo
  *
  * Increases the reference count of @info.
@@ -217,7 +217,7 @@ g_base_info_ref (GIBaseInfo *info)
 }
 
 /**
- * g_base_info_unref:
+ * g_base_info_unref: (skip)
  * @info: a #GIBaseInfo
  *
  * Decreases the reference count of @info. When its reference count

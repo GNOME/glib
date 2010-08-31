@@ -118,7 +118,7 @@ g_type_info_get_tag (GITypeInfo *info)
  *
  * Obtain the parameter type @n.
  *
- * Returns: the param type info
+ * Returns: (transfer full): the param type info
  */
 GITypeInfo *
 g_type_info_get_param_type (GITypeInfo *info,

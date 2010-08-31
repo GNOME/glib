@@ -102,7 +102,7 @@ g_signal_info_get_flags (GISignalInfo *info)
  * closure is a virtual function on the type that the signal belongs to.
  * If the signal lacks a closure %NULL will be returned.
  *
- * Returns: the class closure or %NULL
+ * Returns: (transfer full): the class closure or %NULL
  */
 GIVFuncInfo *
 g_signal_info_get_class_closure (GISignalInfo *info)

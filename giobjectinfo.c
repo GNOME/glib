@@ -721,7 +721,7 @@ g_object_info_get_ref_function (GIObjectInfo *info)
 }
 
 /**
- * g_object_info_get_ref_function_pointer:
+ * g_object_info_get_ref_function_pointer: (skip)
  * @info: a #GIObjectInfo
  *
  * Obtain a pointer to a function which can be used to
@@ -769,7 +769,7 @@ g_object_info_get_unref_function (GIObjectInfo *info)
 }
 
 /**
- * g_object_info_get_unref_function_pointer:
+ * g_object_info_get_unref_function_pointer: (skip)
  * @info: a #GIObjectInfo
  *
  * Obtain a pointer to a function which can be used to
@@ -818,7 +818,7 @@ g_object_info_get_set_value_function (GIObjectInfo *info)
 }
 
 /**
- * g_object_info_get_set_value_function_pointer:
+ * g_object_info_get_set_value_function_pointer: (skip)
  * @info: a #GIObjectInfo
  *
  * Obtain a pointer to a function which can be used to
@@ -867,7 +867,7 @@ g_object_info_get_get_value_function (GIObjectInfo *info)
 }
 
 /**
- * g_object_info_get_get_value_function_pointer:
+ * g_object_info_get_get_value_function_pointer: (skip)
  * @info: a #GIObjectInfo
  *
  * Obtain a pointer to a function which can be used to

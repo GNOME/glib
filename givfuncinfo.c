@@ -138,7 +138,7 @@ g_vfunc_info_get_offset (GIVFuncInfo *info)
  * The signal comes from the object or interface to which
  * this virtual function belongs.
  *
- * Returns: the signal or %NULL if none set
+ * Returns: (transfer full): the signal or %NULL if none set
  */
 GISignalInfo *
 g_vfunc_info_get_signal (GIVFuncInfo *info)
