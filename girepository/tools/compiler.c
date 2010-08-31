@@ -47,7 +47,7 @@ gboolean verbose = FALSE;
 
 static void
 write_out_typelib (gchar *prefix,
-		   GTypelib *typelib)
+		   GITypelib *typelib)
 {
   FILE *file;
   gsize written;
@@ -192,7 +192,7 @@ main (int argc, char ** argv)
   g_debug ("[building] start");
 
   {
-      GTypelib *typelib;
+      GITypelib *typelib;
 
       if (shlib)
 	{
