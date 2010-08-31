@@ -1842,13 +1842,11 @@ gchar *
 g_date_time_printf (const GDateTime *datetime,
                     const gchar     *format)
 {
-  GString     *outstr;
-  const gchar *tmp;
-  gchar       *tmp2,
-               c;
-  glong        utf8len;
-  gint         i;
-  gboolean     in_mod;
+  GString  *outstr;
+  gchar    *tmp;
+  gunichar  c;
+  glong     utf8len;
+  gboolean  in_mod;
 
   g_return_val_if_fail (datetime != NULL, NULL);
   g_return_val_if_fail (format != NULL, NULL);
@@ -1858,10 +1856,9 @@ g_date_time_printf (const GDateTime *datetime,
   utf8len = g_utf8_strlen (format, -1);
   in_mod = FALSE;
 
-  for (i = 0; i < utf8len; i++)
+  for (; *format; format = g_utf8_next_char(format))
     {
-      tmp = g_utf8_offset_to_pointer (format, i);
-      c = g_utf8_get_char (tmp);
+      c = g_utf8_get_char (format);
 
       switch (c)
         {
@@ -1974,16 +1971,16 @@ g_date_time_printf (const GDateTime *datetime,
                   break;
                 case 'x':
                   {
-                    tmp2 = GET_PREFERRED_DATE (datetime);
-                    g_string_append (outstr, tmp2);
-                    g_free (tmp2);
+                    tmp = GET_PREFERRED_DATE (datetime);
+                    g_string_append (outstr, tmp);
+                    g_free (tmp);
                   }
                   break;
                 case 'X':
                   {
-                    tmp2 = GET_PREFERRED_TIME (datetime);
-                    g_string_append (outstr, tmp2);
-                    g_free (tmp2);
+                    tmp = GET_PREFERRED_TIME (datetime);
+                    g_string_append (outstr, tmp);
+                    g_free (tmp);
                   }
                   break;
                 case 'y':
