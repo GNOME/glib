@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-08-28 23:39+0000\n"
-"PO-Revision-Date: 2010-08-25 22:04+0200\n"
+"POT-Creation-Date: 2010-08-30 17:59+0000\n"
+"PO-Revision-Date: 2010-08-30 21:53+0200\n"
 "Last-Translator: Бранко Кокановић <branko.kokanovic@gmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "MIME-Version: 1.0\n"
@@ -169,219 +169,219 @@ msgstr "Неисправно име домаћина"
 #: ../glib/gdatetime.c:94
 msgctxt "GDateTime"
 msgid "am"
-msgstr ""
+msgstr "am"
 
 #: ../glib/gdatetime.c:94
 msgctxt "GDateTime"
 msgid "AM"
-msgstr ""
+msgstr "AM"
 
 #: ../glib/gdatetime.c:95
 msgctxt "GDateTime"
 msgid "pm"
-msgstr ""
+msgstr "pm"
 
 #: ../glib/gdatetime.c:95
 msgctxt "GDateTime"
 msgid "PM"
-msgstr ""
+msgstr "PM"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:104
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr ""
+msgstr "%d.%m.%y"
 
 #. Translators: this is the preferred format for expressing the time
 #: ../glib/gdatetime.c:107
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr ""
+msgstr "%H:%M:%S"
 
 #: ../glib/gdatetime.c:158
 msgctxt "GDateTime"
 msgid "January"
-msgstr ""
+msgstr "Јануар"
 
 #: ../glib/gdatetime.c:160
 msgctxt "GDateTime"
 msgid "February"
-msgstr ""
+msgstr "Фебруар"
 
 #: ../glib/gdatetime.c:162
 msgctxt "GDateTime"
 msgid "March"
-msgstr ""
+msgstr "Март"
 
 #: ../glib/gdatetime.c:164
 msgctxt "GDateTime"
 msgid "April"
-msgstr ""
+msgstr "Април"
 
 #: ../glib/gdatetime.c:166 ../glib/gdatetime.c:203
 msgctxt "GDateTime"
 msgid "May"
-msgstr ""
+msgstr "Мај"
 
 #: ../glib/gdatetime.c:168
 msgctxt "GDateTime"
 msgid "June"
-msgstr ""
+msgstr "Јун"
 
 #: ../glib/gdatetime.c:170
 msgctxt "GDateTime"
 msgid "July"
-msgstr ""
+msgstr "Јул"
 
 #: ../glib/gdatetime.c:172
 msgctxt "GDateTime"
 msgid "August"
-msgstr ""
+msgstr "Август"
 
 #: ../glib/gdatetime.c:174
 msgctxt "GDateTime"
 msgid "September"
-msgstr ""
+msgstr "Септембар"
 
 #: ../glib/gdatetime.c:176
 msgctxt "GDateTime"
 msgid "October"
-msgstr ""
+msgstr "Октобар"
 
 #: ../glib/gdatetime.c:178
 msgctxt "GDateTime"
 msgid "November"
-msgstr ""
+msgstr "Новембар"
 
 #: ../glib/gdatetime.c:180
 msgctxt "GDateTime"
 msgid "December"
-msgstr ""
+msgstr "Децембар"
 
 #: ../glib/gdatetime.c:195
 msgctxt "GDateTime"
 msgid "Jan"
-msgstr ""
+msgstr "Јан"
 
 #: ../glib/gdatetime.c:197
 msgctxt "GDateTime"
 msgid "Feb"
-msgstr ""
+msgstr "Феб"
 
 #: ../glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "Mar"
-msgstr ""
+msgstr "Мар"
 
 #: ../glib/gdatetime.c:201
 msgctxt "GDateTime"
 msgid "Apr"
-msgstr ""
+msgstr "Апр"
 
 #: ../glib/gdatetime.c:205
 msgctxt "GDateTime"
 msgid "Jun"
-msgstr ""
+msgstr "Јун"
 
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "Jul"
-msgstr ""
+msgstr "Јул"
 
 #: ../glib/gdatetime.c:209
 msgctxt "GDateTime"
 msgid "Aug"
-msgstr ""
+msgstr "Авг"
 
 #: ../glib/gdatetime.c:211
 msgctxt "GDateTime"
 msgid "Sep"
-msgstr ""
+msgstr "Сеп"
 
 #: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "Oct"
-msgstr ""
+msgstr "Окт"
 
 #: ../glib/gdatetime.c:215
 msgctxt "GDateTime"
 msgid "Nov"
-msgstr ""
+msgstr "Нов"
 
 #: ../glib/gdatetime.c:217
 msgctxt "GDateTime"
 msgid "Dec"
-msgstr ""
+msgstr "Дец"
 
 #: ../glib/gdatetime.c:232
 msgctxt "GDateTime"
 msgid "Monday"
-msgstr ""
+msgstr "Понедељак"
 
 #: ../glib/gdatetime.c:234
 msgctxt "GDateTime"
 msgid "Tuesday"
-msgstr ""
+msgstr "Уторак"
 
 #: ../glib/gdatetime.c:236
 msgctxt "GDateTime"
 msgid "Wednesday"
-msgstr ""
+msgstr "Среда"
 
 #: ../glib/gdatetime.c:238
 msgctxt "GDateTime"
 msgid "Thursday"
-msgstr ""
+msgstr "Четвртак"
 
 #: ../glib/gdatetime.c:240
 msgctxt "GDateTime"
 msgid "Friday"
-msgstr ""
+msgstr "Петак"
 
 #: ../glib/gdatetime.c:242
 msgctxt "GDateTime"
 msgid "Saturday"
-msgstr ""
+msgstr "Субота"
 
 #: ../glib/gdatetime.c:244
 msgctxt "GDateTime"
 msgid "Sunday"
-msgstr ""
+msgstr "Недеља"
 
 #: ../glib/gdatetime.c:259
 msgctxt "GDateTime"
 msgid "Mon"
-msgstr ""
+msgstr "Пон"
 
 #: ../glib/gdatetime.c:261
 msgctxt "GDateTime"
 msgid "Tue"
-msgstr ""
+msgstr "Уто"
 
 #: ../glib/gdatetime.c:263
 msgctxt "GDateTime"
 msgid "Wed"
-msgstr ""
+msgstr "Сре"
 
 #: ../glib/gdatetime.c:265
 msgctxt "GDateTime"
 msgid "Thu"
-msgstr ""
+msgstr "Чет"
 
 #: ../glib/gdatetime.c:267
 msgctxt "GDateTime"
 msgid "Fri"
-msgstr ""
+msgstr "Пет"
 
 #: ../glib/gdatetime.c:269
 msgctxt "GDateTime"
 msgid "Sat"
-msgstr ""
+msgstr "Суб"
 
 #: ../glib/gdatetime.c:271
 msgctxt "GDateTime"
 msgid "Sun"
-msgstr ""
+msgstr "Нед"
 
 #: ../glib/gdir.c:111 ../glib/gdir.c:134
 #, c-format
@@ -1611,7 +1611,7 @@ msgstr ""
 "Истрошени су сви доступни механизми пријављивања (покушано: %s) (доступно: %"
 "s)"
 
-#: ../gio/gdbusauth.c:1149
+#: ../gio/gdbusauth.c:1150
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Поништено преко GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -1664,26 +1664,22 @@ msgid "Didn't find cookie with id %d in the keyring at `%s'"
 msgstr "Нисам нашао колачић са идентификацијом %d у привеску кључева на „%s“"
 
 #: ../gio/gdbusauthmechanismsha1.c:535
-#, fuzzy, c-format
-#| msgid "Error deleting stale lock-file `%s': %s"
+#, c-format
 msgid "Error deleting stale lock file `%s': %s"
 msgstr "Грешка при брисању заостале датотеке закључавања „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
-#, fuzzy, c-format
-#| msgid "Error creating lock-file `%s': %s"
+#, c-format
 msgid "Error creating lock file `%s': %s"
 msgstr "Грешка при прављењу датотеке закључавања „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
-#, fuzzy, c-format
-#| msgid "Error closing (unlinked) lock-file `%s': %s"
+#, c-format
 msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr "Грешка приликом затварања (неповезане) датотеке закључавања „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
-#, fuzzy, c-format
-#| msgid "Error unlinking lock-file `%s': %s"
+#, c-format
 msgid "Error unlinking lock file `%s': %s"
 msgstr "Грешка приликом одвезивању датотеке закључавања „%s“: %s"
 
@@ -1863,10 +1859,7 @@ msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "Рашчлањена вредност „%s“ за варијанту није исправан Д-бус потпис"
 
 #: ../gio/gdbusmessage.c:1406
-#, fuzzy, c-format
-#| msgid ""
-#| "Error deserializing GVariant with type-string `%s' from the D-Bus wire "
-#| "format"
+#, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
@@ -1907,9 +1900,7 @@ msgid "Cannot deserialize message: "
 msgstr "Не могу да десеријализујем поруку: "
 
 #: ../gio/gdbusmessage.c:2038
-#, fuzzy, c-format
-#| msgid ""
-#| "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+#, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
@@ -1961,7 +1952,7 @@ msgstr "Повратни тип је неисправан, добио сам „
 msgid "Error sending message: %s"
 msgstr "Грешка при слању поруке: %s"
 
-#: ../gio/gdbusprivate.c:1722
+#: ../gio/gdbusprivate.c:1723
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Не могу да учитам /var/lib/dbus/machine-id: "
 
@@ -1984,7 +1975,7 @@ msgstr "Грешка при позиву StartServiceByName за %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Неочекиван одговор %d од StartServiceByName(„%s“) метода"
 
-#: ../gio/gdbusproxy.c:2317 ../gio/gdbusproxy.c:2476
+#: ../gio/gdbusproxy.c:2315 ../gio/gdbusproxy.c:2472
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2247,17 +2238,17 @@ msgstr "Не могу да радим са издањем %d за кодирањ
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Неисправно задат број токена (%d) у кодирању GEmblem-а"
 
-#: ../gio/gemblemedicon.c:295
+#: ../gio/gemblemedicon.c:292
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "Не могу да радим са издањем %d за кодирање GEmblemedIcon"
 
-#: ../gio/gemblemedicon.c:305
+#: ../gio/gemblemedicon.c:302
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "Није исправно задат број токена (%d) у кодирању GEmblemedIcon"
 
-#: ../gio/gemblemedicon.c:328
+#: ../gio/gemblemedicon.c:325
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Очекивано је GEmblem за GEmblemedIcon"
 
@@ -3275,7 +3266,7 @@ msgstr ""
 "g_socket_get_credentials функција није имплементирана за овај оперативни "
 "систем"
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1145
+#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1148
 msgid "Unknown error on connect"
 msgstr "Непозната грешка везе"
 
