@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-31 12:33+0500\n"
-"PO-Revision-Date: 2010-07-20 10:19+0400\n"
+"POT-Creation-Date: 2010-08-31 12:39+0500\n"
+"PO-Revision-Date: 2010-08-31 16:47+0400\n"
 "Last-Translator: Nune <nune@instigatedesign.com>\n"
 "Language-Team: Armenian <norik@freenet.am>\n"
 "MIME-Version: 1.0\n"
@@ -21,147 +21,176 @@ msgstr ""
 msgid "Unexpected attribute '%s' for element '%s'"
 msgstr "'%s' անսպասելի ատրիբուտ '%s' տարրի համար"
 
-#: ../glib/gbookmarkfile.c:791 ../glib/gbookmarkfile.c:862
-#: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:979
+#: ../glib/gbookmarkfile.c:791
+#: ../glib/gbookmarkfile.c:862
+#: ../glib/gbookmarkfile.c:872
+#: ../glib/gbookmarkfile.c:979
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
 msgstr "Չգտնվեց '%s' ատրիբուտ %s' տարրի համար"
 
-#: ../glib/gbookmarkfile.c:1149 ../glib/gbookmarkfile.c:1214
-#: ../glib/gbookmarkfile.c:1278 ../glib/gbookmarkfile.c:1288
+#: ../glib/gbookmarkfile.c:1149
+#: ../glib/gbookmarkfile.c:1214
+#: ../glib/gbookmarkfile.c:1278
+#: ../glib/gbookmarkfile.c:1288
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
 msgstr "Անսպասելի '%s' տեգ, սպասվում էր '%s տեգը"
 
-#: ../glib/gbookmarkfile.c:1174 ../glib/gbookmarkfile.c:1188
-#: ../glib/gbookmarkfile.c:1256 ../glib/gbookmarkfile.c:1308
+#: ../glib/gbookmarkfile.c:1174
+#: ../glib/gbookmarkfile.c:1188
+#: ../glib/gbookmarkfile.c:1256
+#: ../glib/gbookmarkfile.c:1308
 #, c-format
 msgid "Unexpected tag '%s' inside '%s'"
 msgstr "Անսպասելի '%s' տեգ '%s' -ի ներսում"
 
-#: ../glib/gbookmarkfile.c:1836
+#: ../glib/gbookmarkfile.c:1834
 msgid "No valid bookmark file found in data dirs"
 msgstr "Չհաջողվեց գտնել էջանիշ ֆայլ որոնման պանակներում"
 
-#: ../glib/gbookmarkfile.c:2037
+#: ../glib/gbookmarkfile.c:2035
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
 msgstr "URI '%s' -ի համար արդեն գոյություն ունի էջանիշ"
 
-#: ../glib/gbookmarkfile.c:2083 ../glib/gbookmarkfile.c:2241
-#: ../glib/gbookmarkfile.c:2326 ../glib/gbookmarkfile.c:2406
-#: ../glib/gbookmarkfile.c:2491 ../glib/gbookmarkfile.c:2574
-#: ../glib/gbookmarkfile.c:2652 ../glib/gbookmarkfile.c:2731
-#: ../glib/gbookmarkfile.c:2773 ../glib/gbookmarkfile.c:2870
-#: ../glib/gbookmarkfile.c:2996 ../glib/gbookmarkfile.c:3186
-#: ../glib/gbookmarkfile.c:3262 ../glib/gbookmarkfile.c:3427
-#: ../glib/gbookmarkfile.c:3516 ../glib/gbookmarkfile.c:3606
-#: ../glib/gbookmarkfile.c:3734
+#: ../glib/gbookmarkfile.c:2081
+#: ../glib/gbookmarkfile.c:2239
+#: ../glib/gbookmarkfile.c:2324
+#: ../glib/gbookmarkfile.c:2404
+#: ../glib/gbookmarkfile.c:2489
+#: ../glib/gbookmarkfile.c:2572
+#: ../glib/gbookmarkfile.c:2650
+#: ../glib/gbookmarkfile.c:2729
+#: ../glib/gbookmarkfile.c:2771
+#: ../glib/gbookmarkfile.c:2868
+#: ../glib/gbookmarkfile.c:2994
+#: ../glib/gbookmarkfile.c:3184
+#: ../glib/gbookmarkfile.c:3260
+#: ../glib/gbookmarkfile.c:3425
+#: ../glib/gbookmarkfile.c:3514
+#: ../glib/gbookmarkfile.c:3604
+#: ../glib/gbookmarkfile.c:3732
 #, c-format
 msgid "No bookmark found for URI '%s'"
 msgstr "URI '%s' -ի համար էջանիշ գտնված չէ"
 
-#: ../glib/gbookmarkfile.c:2415
+#: ../glib/gbookmarkfile.c:2413
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
 msgstr "URI '%s' ի էջանիշում գտնված չէ MIME տեսակ"
 
-#: ../glib/gbookmarkfile.c:2500
+#: ../glib/gbookmarkfile.c:2498
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
 msgstr "URI '%s' ի էջանիշում գտնված չէ նշում տվյալների գատղնիության մասին"
 
-#: ../glib/gbookmarkfile.c:2879
+#: ../glib/gbookmarkfile.c:2877
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
 msgstr "URI '%s' ի էջանիշում գտնված չէ խմբերի բազմություն "
 
-#: ../glib/gbookmarkfile.c:3280 ../glib/gbookmarkfile.c:3437
+#: ../glib/gbookmarkfile.c:3278
+#: ../glib/gbookmarkfile.c:3435
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr ""
-"Գոյություն չունի '%s' անունով աշխատածրագիր՝ որն ստեղծել էջանիշ '%s' -ի համար"
+msgstr "Գոյություն չունի '%s' անունով աշխատածրագիր՝ որն ստեղծել էջանիշ '%s' -ի համար"
 
-#: ../glib/gbookmarkfile.c:3460
+#: ../glib/gbookmarkfile.c:3458
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Չի հաջողվել լրացնել'%s' կատարման տողը %s URI -ի միջոցով"
 
-#: ../glib/gconvert.c:436 ../glib/gconvert.c:514 ../glib/giochannel.c:1403
+#: ../glib/gconvert.c:557
+#: ../glib/gconvert.c:635
+#: ../glib/giochannel.c:1403
 #: ../gio/gcharsetconverter.c:458
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Նշանների '%s' բազմությունից '%s' փոխարկում չի ապահովվում։"
 
-#: ../glib/gconvert.c:440 ../glib/gconvert.c:518
+#: ../glib/gconvert.c:561
+#: ../glib/gconvert.c:639
 #: ../gio/gcharsetconverter.c:462
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Չհաջողվեց բացել '%s' -ից '%s' փոխարկիչ"
 
-#: ../glib/gconvert.c:637 ../glib/gconvert.c:1030 ../glib/giochannel.c:1575
-#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2461 ../glib/gutf8.c:988
-#: ../glib/gutf8.c:1443 ../gio/gcharsetconverter.c:345
+#: ../glib/gconvert.c:758
+#: ../glib/gconvert.c:1151
+#: ../glib/giochannel.c:1575
+#: ../glib/giochannel.c:1617
+#: ../glib/giochannel.c:2461
+#: ../glib/gutf8.c:988
+#: ../glib/gutf8.c:1443
+#: ../gio/gcharsetconverter.c:345
 msgid "Invalid byte sequence in conversion input"
 msgstr "Փոխարկման մուտքում անվավեր բայթերի հաջորդականություն "
 
-#: ../glib/gconvert.c:645 ../glib/gconvert.c:955 ../glib/giochannel.c:1582
-#: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
+#: ../glib/gconvert.c:766
+#: ../glib/gconvert.c:1076
+#: ../glib/giochannel.c:1582
+#: ../glib/giochannel.c:2473
+#: ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Սխալ փոխարկման ընթացքում․ %s"
 
-#: ../glib/gconvert.c:677 ../glib/gutf8.c:984 ../glib/gutf8.c:1194
-#: ../glib/gutf8.c:1335 ../glib/gutf8.c:1439
+#: ../glib/gconvert.c:798
+#: ../glib/gutf8.c:984
+#: ../glib/gutf8.c:1194
+#: ../glib/gutf8.c:1335
+#: ../glib/gutf8.c:1439
 msgid "Partial character sequence at end of input"
 msgstr "Մուտքի վերջում նշանների մասնակի հաջորդականություն"
 
-#: ../glib/gconvert.c:927
+#: ../glib/gconvert.c:1048
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Չի հաջողվել ճշգրիտ փոխարկել «%s» նիշը «%s» նիշերի հավաքածուի որևէ նիշի"
 
-#: ../glib/gconvert.c:1750
+#: ../glib/gconvert.c:1871
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr ""
-"URI '%s' չի հանդիսանում բացարձակ URI \"file\"  համակարգի օգտագործման ժամանակ"
+msgstr "URI '%s' չի հանդիսանում բացարձակ URI \"file\"  համակարգի օգտագործման ժամանակ"
 
-#: ../glib/gconvert.c:1760
+#: ../glib/gconvert.c:1881
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "'%s' տեղային ֆայլի URI -ը չի կարող պարունակել '#'"
 
-#: ../glib/gconvert.c:1777
+#: ../glib/gconvert.c:1898
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI '%s' անվավեր է"
 
-#: ../glib/gconvert.c:1789
+#: ../glib/gconvert.c:1910
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Անվավեր հոսթի անուն '%s' -ում"
 
-#: ../glib/gconvert.c:1805
+#: ../glib/gconvert.c:1926
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI '%s' պարունակում է անթույլատրելի էկրանավորող նիշեր"
 
-#: ../glib/gconvert.c:1900
+#: ../glib/gconvert.c:2021
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Ճանապարհի '%s' անվանումը բացարձակ չէ"
 
-#: ../glib/gconvert.c:1910
+#: ../glib/gconvert.c:2031
 msgid "Invalid hostname"
 msgstr "Անվավեր հոսթի անուն "
 
-#: ../glib/gdir.c:111 ../glib/gdir.c:134
+#: ../glib/gdir.c:111
+#: ../glib/gdir.c:134
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' պանակը բացելու սխալ՝ %s"
 
-#: ../glib/gfileutils.c:535 ../glib/gfileutils.c:623
+#: ../glib/gfileutils.c:535
+#: ../glib/gfileutils.c:623
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Չի հաջովում հատկացնել %lu բայթ \"%s\" ֆայլը կարդալու համար"
@@ -181,16 +210,17 @@ msgstr "\"%s\" ֆայլը չափազանց մեծ է"
 msgid "Failed to read from file '%s': %s"
 msgstr "Չի հաջողվում կարդալ '%s' ֆայլից՝ %s"
 
-#: ../glib/gfileutils.c:698 ../glib/gfileutils.c:785
+#: ../glib/gfileutils.c:698
+#: ../glib/gfileutils.c:785
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Չի հաջողվել բացել '%s' ֆայլը՝ %s"
 
-#: ../glib/gfileutils.c:715 ../glib/gmappedfile.c:169
+#: ../glib/gfileutils.c:715
+#: ../glib/gmappedfile.c:169
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr ""
-"Չհաջողվեց ստանալ '%s' ֆայլի ատրիբուտները ․ Ձախողում  fstat() ֆունկցիայում․ %s"
+msgstr "Չհաջողվեց ստանալ '%s' ֆայլի ատրիբուտները ․ Ձախողում  fstat() ֆունկցիայում․ %s"
 
 #: ../glib/gfileutils.c:749
 #, c-format
@@ -202,7 +232,8 @@ msgstr "Չի հաջողվել բացել '%s' ֆայլը՝ fdopen() խափանվ
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Չի հաջողվել վերանվանել '%s' ֆայլը որպես '%s'՝ g_rename() խափանվեց՝ %s"
 
-#: ../glib/gfileutils.c:899 ../glib/gfileutils.c:1365
+#: ../glib/gfileutils.c:899
+#: ../glib/gfileutils.c:1368
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Չի հաջողվել ստեղծել ֆայլ '%s'՝ %s"
@@ -232,57 +263,57 @@ msgstr "Չի հաջողվել գրել '%s' ֆայլը․ fsync() -ը խափան
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Չի հաջովել փակել '%s' ֆայլը՝ fclose() խափանվեց՝ %s"
 
-#: ../glib/gfileutils.c:1123
+#: ../glib/gfileutils.c:1126
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "'%s' ֆայլը չի կարող վերացվել՝ g_unlink() խափանվեց՝ %s"
 
-#: ../glib/gfileutils.c:1327
+#: ../glib/gfileutils.c:1330
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' ձևանմուշը անվավեր է, այն պետք է չպարունակի '%s'"
 
-#: ../glib/gfileutils.c:1340
+#: ../glib/gfileutils.c:1343
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' ձևանմուշը չի պարունակում XXXXXX"
 
-#: ../glib/gfileutils.c:1781
+#: ../glib/gfileutils.c:1784
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f ԿԲ"
 
-#: ../glib/gfileutils.c:1786
+#: ../glib/gfileutils.c:1789
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f ՄԲ"
 
-#: ../glib/gfileutils.c:1791
+#: ../glib/gfileutils.c:1794
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ԳԲ"
 
-#: ../glib/gfileutils.c:1796
+#: ../glib/gfileutils.c:1799
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ՏԲ"
 
-#: ../glib/gfileutils.c:1801
+#: ../glib/gfileutils.c:1804
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ՊԲ"
 
-#: ../glib/gfileutils.c:1806
+#: ../glib/gfileutils.c:1809
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ԵԲ"
 
-#: ../glib/gfileutils.c:1849
+#: ../glib/gfileutils.c:1852
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Չի հաջողվել կարդալ '%s' սիմվոլիկ հղումը՝ %s"
 
-#: ../glib/gfileutils.c:1870
+#: ../glib/gfileutils.c:1873
 msgid "Symbolic links not supported"
 msgstr "Սիմվոլիկ հղումները չեն ապահովվում"
 
@@ -295,12 +326,14 @@ msgstr "Չհաջողվեց բացել '%s' ից '%s' փոխարկիչ: %s"
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "g_io_channel_read_line_string ֆունկցիայում ուղղակի կարդալ հնարավոր չէ "
 
-#: ../glib/giochannel.c:1799 ../glib/giochannel.c:2057
+#: ../glib/giochannel.c:1799
+#: ../glib/giochannel.c:2057
 #: ../glib/giochannel.c:2144
 msgid "Leftover unconverted data in read buffer"
 msgstr "Կարդացող բուֆերում մնացել են չփոխարկված տվյալներ"
 
-#: ../glib/giochannel.c:1880 ../glib/giochannel.c:1957
+#: ../glib/giochannel.c:1880
+#: ../glib/giochannel.c:1957
 msgid "Channel terminates in a partial character"
 msgstr "Կապուղին ավարտվում է թերի նիշով"
 
@@ -318,12 +351,14 @@ msgstr "Չի հաջողվել բացել '%s' ֆայլը՝ open() խափանվե
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Չհաջողվեց ցուցադրել '%s' ֆայլը ․ Ձախողում mmap() ֆունկցիայում․ %s "
 
-#: ../glib/gmarkup.c:302 ../glib/gmarkup.c:342
+#: ../glib/gmarkup.c:302
+#: ../glib/gmarkup.c:342
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Սխալ %d տողի %d նիշում․"
 
-#: ../glib/gmarkup.c:362 ../glib/gmarkup.c:440
+#: ../glib/gmarkup.c:362
+#: ../glib/gmarkup.c:440
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Սխալ UTF-8 կոդավորված տեքստ անվան մեջ - անվավեր '%s'"
@@ -345,21 +380,12 @@ msgstr "Սխալ %d տողում՝ %s"
 
 #: ../glib/gmarkup.c:577
 #, c-format
-msgid ""
-"Failed to parse '%-.*s', which should have been a digit inside a character "
-"reference (&#234; for example) - perhaps the digit is too large"
-msgstr ""
-"Չհաջողվեց վերլուծել '%-.*s' -ը, որը պետք է լինի թիվ՝ նիշի վրա հղման ներսում "
-"(Օրինակ՝ &#234;) -"
+msgid "Failed to parse '%-.*s', which should have been a digit inside a character reference (&#234; for example) - perhaps the digit is too large"
+msgstr "Չհաջողվեց վերլուծել '%-.*s' -ը, որը պետք է լինի թիվ՝ նիշի վրա հղման ներսում (Օրինակ՝ &#234;) -"
 
 #: ../glib/gmarkup.c:589
-msgid ""
-"Character reference did not end with a semicolon; most likely you used an "
-"ampersand character without intending to start an entity - escape ampersand "
-"as &amp;"
-msgstr ""
-"Նիշի հղումը չի ավարտվում կետ-ստորակետով; ամենայն հավանականությամբ դուք "
-"օգտագործել եք"
+msgid "Character reference did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Նիշի հղումը չի ավարտվում կետ-ստորակետով; ամենայն հավանականությամբ դուք օգտագործել եք"
 
 #: ../glib/gmarkup.c:615
 #, c-format
@@ -367,11 +393,8 @@ msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "'%-.*s' նիշի վրա հղումը չի այլագրում թույլատրելի նիշ"
 
 #: ../glib/gmarkup.c:653
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
-msgstr ""
-"Հայտնաբերվել է դատարկ կառուցվածք '&;' , թույլատրելի կառուցվածքներն են․  "
-"&amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgstr "Հայտնաբերվել է դատարկ կառուցվածք '&;' , թույլատրելի կառուցվածքներն են․  &amp; &quot; &lt; &gt; &apos;"
 
 #: ../glib/gmarkup.c:661
 #, c-format
@@ -379,12 +402,8 @@ msgid "Entity name '%-.*s' is not known"
 msgstr "'%-.*s' կառուցվածքի անունը հայտնի չէ"
 
 #: ../glib/gmarkup.c:666
-msgid ""
-"Entity did not end with a semicolon; most likely you used an ampersand "
-"character without intending to start an entity - escape ampersand as &amp;"
-msgstr ""
-"Կառուցվածքը չի վերջանում կետ-ստորակետով; հավանաբար «&» նիշը չի օգտագործվել "
-"կառուցվածքի"
+msgid "Entity did not end with a semicolon; most likely you used an ampersand character without intending to start an entity - escape ampersand as &amp;"
+msgstr "Կառուցվածքը չի վերջանում կետ-ստորակետով; հավանաբար «&» նիշը չի օգտագործվել կառուցվածքի"
 
 #: ../glib/gmarkup.c:1013
 msgid "Document must begin with an element (e.g. <book>)"
@@ -392,65 +411,38 @@ msgstr "Փաստաթուղթը պետք է սկսվի որևէ էլէմենտո�
 
 #: ../glib/gmarkup.c:1053
 #, c-format
-msgid ""
-"'%s' is not a valid character following a '<' character; it may not begin an "
-"element name"
-msgstr ""
-"'%s' նիշը հանդիսանում է անվավեր '<' նիշից հետո; տարրի անվանումը չի կարող "
-"սկսվել այդ նիշով"
+msgid "'%s' is not a valid character following a '<' character; it may not begin an element name"
+msgstr "'%s' նիշը հանդիսանում է անվավեր '<' նիշից հետո; տարրի անվանումը չի կարող սկսվել այդ նիշով"
 
 #: ../glib/gmarkup.c:1121
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
-msgstr ""
-"Հանդիպեց '%s' ավելորդ նիշը, սպասվում է '>' նիշը '%s' դատարկ տեգի փակման համար"
+msgid "Odd character '%s', expected a '>' character to end the empty-element tag '%s'"
+msgstr "Հանդիպեց '%s' ավելորդ նիշը, սպասվում է '>' նիշը '%s' դատարկ տեգի փակման համար"
 
 #: ../glib/gmarkup.c:1205
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
-"Հանդիպեց '%s' ավելորդ նիշը , սպասվում է '=' նիշը '%s' ատրիբուտի անվանումից "
-"հետո, որը պատկանում է '%s' տարրին"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgstr "Հանդիպեց '%s' ավելորդ նիշը , սպասվում է '=' նիշը '%s' ատրիբուտի անվանումից հետո, որը պատկանում է '%s' տարրին"
 
 #: ../glib/gmarkup.c:1246
 #, c-format
-msgid ""
-"Odd character '%s', expected a '>' or '/' character to end the start tag of "
-"element '%s', or optionally an attribute; perhaps you used an invalid "
-"character in an attribute name"
-msgstr ""
-"Հանդիպեց '%s' ավելորդ նիշը, սպասվում է '>' կամ '/'  նիշը '%s' տարրի բացվող "
-"տեգի փակման համար,"
+msgid "Odd character '%s', expected a '>' or '/' character to end the start tag of element '%s', or optionally an attribute; perhaps you used an invalid character in an attribute name"
+msgstr "Հանդիպեց '%s' ավելորդ նիշը, սպասվում է '>' կամ '/'  նիշը '%s' տարրի բացվող տեգի փակման համար,"
 
 #: ../glib/gmarkup.c:1290
 #, c-format
-msgid ""
-"Odd character '%s', expected an open quote mark after the equals sign when "
-"giving value for attribute '%s' of element '%s'"
-msgstr ""
-"Հանդիպեց '%s' ավելորդ նիշը, սպասվում է բացվող չակերտ հավասարության նշանից "
-"հետո, երբ '%s' ատրիբուտին տրվում է արժեք «%s» տարրում"
+msgid "Odd character '%s', expected an open quote mark after the equals sign when giving value for attribute '%s' of element '%s'"
+msgstr "Հանդիպեց '%s' ավելորդ նիշը, սպասվում է բացվող չակերտ հավասարության նշանից հետո, երբ '%s' ատրիբուտին տրվում է արժեք «%s» տարրում"
 
 #: ../glib/gmarkup.c:1424
 #, c-format
-msgid ""
-"'%s' is not a valid character following the characters '</'; '%s' may not "
-"begin an element name"
-msgstr ""
-"«%s» նիշը հանդիսանում է անվավեր '</' նիշից հետո; '%s' տարրի անվանումը չի "
-"կարող սկսվել այդ նիշով"
+msgid "'%s' is not a valid character following the characters '</'; '%s' may not begin an element name"
+msgstr "«%s» նիշը հանդիսանում է անվավեր '</' նիշից հետո; '%s' տարրի անվանումը չի կարող սկսվել այդ նիշով"
 
 #: ../glib/gmarkup.c:1460
 #, c-format
-msgid ""
-"'%s' is not a valid character following the close element name '%s'; the "
-"allowed character is '>'"
-msgstr ""
-"'%s' նիշը հանդիսանում է անվավեր փակող տարրի «%s» անվանումից հետո; թույլատրելի "
-"արժեքն է '>'"
+msgid "'%s' is not a valid character following the close element name '%s'; the allowed character is '>'"
+msgstr "'%s' նիշը հանդիսանում է անվավեր փակող տարրի «%s» անվանումից հետո; թույլատրելի արժեքն է '>'"
 
 #: ../glib/gmarkup.c:1471
 #, c-format
@@ -468,27 +460,18 @@ msgstr "Փաստաթուղթը դատարկ էր կամ պարունակում �
 
 #: ../glib/gmarkup.c:1661
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr ""
-"Փաստաթուղթը անսպասելիորեն ավարտվեց անմիջապես անկյունաձև բացող փակագծից հետո "
-"'<'"
+msgstr "Փաստաթուղթը անսպասելիորեն ավարտվեց անմիջապես անկյունաձև բացող փակագծից հետո '<'"
 
-#: ../glib/gmarkup.c:1669 ../glib/gmarkup.c:1714
+#: ../glib/gmarkup.c:1669
+#: ../glib/gmarkup.c:1714
 #, c-format
-msgid ""
-"Document ended unexpectedly with elements still open - '%s' was the last "
-"element opened"
-msgstr ""
-"Փաստաթուղթը անսպասելիորեն ավարտվեց, երբ դեռ բացված  էին  տարրերը - '%s' -ը "
-"վերջին բացված տարրն է"
+msgid "Document ended unexpectedly with elements still open - '%s' was the last element opened"
+msgstr "Փաստաթուղթը անսպասելիորեն ավարտվեց, երբ դեռ բացված  էին  տարրերը - '%s' -ը վերջին բացված տարրն է"
 
 #: ../glib/gmarkup.c:1677
 #, c-format
-msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending "
-"the tag <%s/>"
-msgstr ""
-"Փաստաթուղթը անսպասելիորեն ավարտվեց, սպասվում էր <%s/> տեգի ավարտը նշող փակող "
-"անկյունաձև փակագիծ"
+msgid "Document ended unexpectedly, expected to see a close angle bracket ending the tag <%s/>"
+msgstr "Փաստաթուղթը անսպասելիորեն ավարտվեց, սպասվում էր <%s/> տեգի ավարտը նշող փակող անկյունաձև փակագիծ"
 
 #: ../glib/gmarkup.c:1683
 msgid "Document ended unexpectedly inside an element name"
@@ -503,12 +486,8 @@ msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Փաստաթուղթը անսպասելիորեն ավարտվեց էլեմենտը բացող տեգի ներսում"
 
 #: ../glib/gmarkup.c:1700
-msgid ""
-"Document ended unexpectedly after the equals sign following an attribute "
-"name; no attribute value"
-msgstr ""
-"Փաստաթուղթը անսպասելիորեն ավարտվեց ատրիբուտի անվանը հաջորդող հավասարության "
-"նշանից հետո ;ատրիբուտի արժեքը որոշված չէ"
+msgid "Document ended unexpectedly after the equals sign following an attribute name; no attribute value"
+msgstr "Փաստաթուղթը անսպասելիորեն ավարտվեց ատրիբուտի անվանը հաջորդող հավասարության նշանից հետո ;ատրիբուտի արժեքը որոշված չէ"
 
 #: ../glib/gmarkup.c:1707
 msgid "Document ended unexpectedly while inside an attribute value"
@@ -521,322 +500,309 @@ msgstr "Փաստաթուղթը անսպասելիորեն ավարտվեց '%s' 
 
 #: ../glib/gmarkup.c:1729
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr ""
-"Փաստաթուղթը անսպասելիորեն ավարտվեց մեկնաբանության կամ հրահանգի մշակման "
-"ներսում"
+msgstr "Փաստաթուղթը անսպասելիորեն ավարտվեց մեկնաբանության կամ հրահանգի մշակման ներսում"
 
-#: ../glib/gregex.c:130
+#: ../glib/gregex.c:184
 msgid "corrupted object"
 msgstr "վնասված օբյեկտ"
 
-#: ../glib/gregex.c:132
+#: ../glib/gregex.c:186
 msgid "internal error or corrupted object"
 msgstr "Արտաքի սխալ կամ վնասված օբյեկտ"
 
-#: ../glib/gregex.c:134
+#: ../glib/gregex.c:188
 msgid "out of memory"
 msgstr "հիշողությունը վերջացավ"
 
-#: ../glib/gregex.c:139
+#: ../glib/gregex.c:193
 msgid "backtracking limit reached"
 msgstr "Հասել է հետադարձ վերահսկողության սահմանին"
 
-#: ../glib/gregex.c:151 ../glib/gregex.c:159
+#: ../glib/gregex.c:205
+#: ../glib/gregex.c:213
 msgid "the pattern contains items not supported for partial matching"
-msgstr ""
-"օրինակը պարունակում է տարրեր, որոնք չեն ապահովվում մասնակի համընկնումների "
-"համար "
+msgstr "օրինակը պարունակում է տարրեր, որոնք չեն ապահովվում մասնակի համընկնումների համար "
 
-#: ../glib/gregex.c:153 ../gio/glocalfile.c:2109
+#: ../glib/gregex.c:207
+#: ../gio/glocalfile.c:2109
 msgid "internal error"
 msgstr "ներքին սխալ "
 
-#: ../glib/gregex.c:161
+#: ../glib/gregex.c:215
 msgid "back references as conditions are not supported for partial matching"
-msgstr ""
-"ետ հղումները, ինչպես պայմանները չեն ապահովվում մասնակի համընկնումների համար "
+msgstr "ետ հղումները, ինչպես պայմանները չեն ապահովվում մասնակի համընկնումների համար "
 
-#: ../glib/gregex.c:170
+#: ../glib/gregex.c:224
 msgid "recursion limit reached"
 msgstr "հասել է ռեկուրսիայի սահմանին"
 
-#: ../glib/gregex.c:172
+#: ../glib/gregex.c:226
 msgid "workspace limit for empty substrings reached"
 msgstr "դատարկ ենթատողերի համար աշխատատարածքի սահմանը  "
 
-#: ../glib/gregex.c:174
+#: ../glib/gregex.c:228
 msgid "invalid combination of newline flags"
 msgstr "տողադարձի դրոշների անվավեր համակցում"
 
-#: ../glib/gregex.c:178
+#: ../glib/gregex.c:232
 msgid "unknown error"
 msgstr "Չհայտնաբերված սխալ "
 
-#: ../glib/gregex.c:198
+#: ../glib/gregex.c:252
 msgid "\\ at end of pattern"
 msgstr "\\ շաբլոնի վերջում"
 
-#: ../glib/gregex.c:201
+#: ../glib/gregex.c:255
 msgid "\\c at end of pattern"
 msgstr "\\c շաբլոնի վերջում"
 
-#: ../glib/gregex.c:204
+#: ../glib/gregex.c:258
 msgid "unrecognized character follows \\"
 msgstr "հաջորդում է անճանաչելի տարր \\"
 
-#: ../glib/gregex.c:211
+#: ../glib/gregex.c:265
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
-msgstr ""
-"ռեգիստրի փոփոխման էկրանավորումն (\\l, \\L, \\u, \\U) այստեղ արգելված է "
+msgstr "ռեգիստրի փոփոխման էկրանավորումն (\\l, \\L, \\u, \\U) այստեղ արգելված է "
 
-#: ../glib/gregex.c:214
+#: ../glib/gregex.c:268
 msgid "numbers out of order in {} quantifier"
 msgstr "Թվերի հաջորդականությունը {} քվանտորում սխալ է"
 
-#: ../glib/gregex.c:217
+#: ../glib/gregex.c:271
 msgid "number too big in {} quantifier"
 msgstr "Չաձազանց մեծ թիվ քվանտորում"
 
-#: ../glib/gregex.c:220
+#: ../glib/gregex.c:274
 msgid "missing terminating ] for character class"
 msgstr "բացակայում է փակող ] նիշերի դասի համար"
 
-#: ../glib/gregex.c:223
+#: ../glib/gregex.c:277
 msgid "invalid escape sequence in character class"
 msgstr "Անվավեր էկրանավորում տարրերի դասում"
 
-#: ../glib/gregex.c:226
+#: ../glib/gregex.c:280
 msgid "range out of order in character class"
 msgstr "Տարրերի դասում միջակայքը սխալ է"
 
-#: ../glib/gregex.c:229
+#: ../glib/gregex.c:283
 msgid "nothing to repeat"
 msgstr "ոչինչ չկա կրկնելու"
 
-#: ../glib/gregex.c:232
+#: ../glib/gregex.c:286
 msgid "unrecognized character after (?"
 msgstr "անճանաչելի տարր (? -ից հետո"
 
-#: ../glib/gregex.c:236
+#: ../glib/gregex.c:290
 msgid "unrecognized character after (?<"
 msgstr "անճանաչելի տարր (?< -ից հետո"
 
-#: ../glib/gregex.c:240
+#: ../glib/gregex.c:294
 msgid "unrecognized character after (?P"
 msgstr "անճանաչելի տարր (?P -ից հետո"
 
-#: ../glib/gregex.c:243
+#: ../glib/gregex.c:297
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX դասի փոփոխությունը ապահովված է միայն դասի ներսում"
 
-#: ../glib/gregex.c:246
+#: ../glib/gregex.c:300
 msgid "missing terminating )"
 msgstr "բացակայում է փակվող փակագիծը )"
 
-#: ../glib/gregex.c:250
+#: ../glib/gregex.c:304
 msgid ") without opening ("
 msgstr ") առանց բացվող փակագծի ("
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:257
+#: ../glib/gregex.c:311
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R կամ (?[+-] թվերը պետք է հաջորդեն )-ին"
 
-#: ../glib/gregex.c:260
+#: ../glib/gregex.c:314
 msgid "reference to non-existent subpattern"
 msgstr "Հղում դեպի գոյություն չունեցող ենթաշաբլոն"
 
-#: ../glib/gregex.c:263
+#: ../glib/gregex.c:317
 msgid "missing ) after comment"
 msgstr "բացակայում է ) մեկնաբանությունից հետո"
 
-#: ../glib/gregex.c:266
+#: ../glib/gregex.c:320
 msgid "regular expression too large"
 msgstr "անչափ մեծ կանոնավոր արտահայտություն"
 
-#: ../glib/gregex.c:269
+#: ../glib/gregex.c:323
 msgid "failed to get memory"
 msgstr "չստացվեց ստանալ հիշողություն"
 
-#: ../glib/gregex.c:272
+#: ../glib/gregex.c:326
 msgid "lookbehind assertion is not fixed length"
 msgstr "lookbehind - հաստատումը չունի հաստատուն երկարություն"
 
-#: ../glib/gregex.c:275
+#: ../glib/gregex.c:329
 msgid "malformed number or name after (?("
 msgstr "Սխալ թիվ կամ անուն (?( -ից հետո"
 
-#: ../glib/gregex.c:278
+#: ../glib/gregex.c:332
 msgid "conditional group contains more than two branches"
 msgstr "Պայմանական խումբը պարունակում է երկուսից ավել ճյուղեր"
 
-#: ../glib/gregex.c:281
+#: ../glib/gregex.c:335
 msgid "assertion expected after (?("
 msgstr "սպասվում էր հաստատում (?( -ից հետո"
 
-#: ../glib/gregex.c:284
+#: ../glib/gregex.c:338
 msgid "unknown POSIX class name"
 msgstr "Չհայտնաբերված POSIX դասի անուն "
 
-#: ../glib/gregex.c:287
+#: ../glib/gregex.c:341
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX տեսակավորող տարրերը չեն ապահովվում"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:344
 msgid "character value in \\x{...} sequence is too large"
 msgstr "նիշի արժեք \\x{...} հաջորդականությունում չափազանց մեծ է"
 
-#: ../glib/gregex.c:293
+#: ../glib/gregex.c:347
 msgid "invalid condition (?(0)"
 msgstr "սխալ պայման  (?(0)"
 
-#: ../glib/gregex.c:296
+#: ../glib/gregex.c:350
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "lookbehind - հաստատումներում չի թույլատրվում \\C"
 
-#: ../glib/gregex.c:299
+#: ../glib/gregex.c:353
 msgid "recursive call could loop indefinitely"
 msgstr "ռեկուրսիվ կանչը կարող է կրկնվել անսահման քանակությամբ"
 
-#: ../glib/gregex.c:302
+#: ../glib/gregex.c:356
 msgid "missing terminator in subpattern name"
 msgstr "ենթաշաբլոնի անվան մեջ բացակայում է փակող նիշը"
 
-#: ../glib/gregex.c:305
+#: ../glib/gregex.c:359
 msgid "two named subpatterns have the same name"
 msgstr "երկու անվանված ենթաշաբլոններ ունեն միևնույն անունըv"
 
-#: ../glib/gregex.c:308
+#: ../glib/gregex.c:362
 msgid "malformed \\P or \\p sequence"
 msgstr "սխալ հաջորդականություն \\P կամ \\p"
 
-#: ../glib/gregex.c:311
+#: ../glib/gregex.c:365
 msgid "unknown property name after \\P or \\p"
 msgstr "չհայտնաբերված հատկության անուն \\P -ից կամ \\p -ից հետո"
 
-#: ../glib/gregex.c:314
+#: ../glib/gregex.c:368
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "ենթաշաբլոնի անունը չափազանց երկար է (32 նիշից ավել չի կարող լինել)"
 
-#: ../glib/gregex.c:317
+#: ../glib/gregex.c:371
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "չափազանց շատ անվանված ենթաշաբլոններ (չի կարող լինել 10,000 -ից ավելի)"
 
-#: ../glib/gregex.c:320
+#: ../glib/gregex.c:374
 msgid "octal value is greater than \\377"
 msgstr "ութական արժեքը գերազանցում է \\377"
 
-#: ../glib/gregex.c:323
+#: ../glib/gregex.c:377
 msgid "DEFINE group contains more than one branch"
 msgstr "DEFINE խումբը պարունակում է մեկից ավելի ճյուղեր "
 
-#: ../glib/gregex.c:326
+#: ../glib/gregex.c:380
 msgid "repeating a DEFINE group is not allowed"
 msgstr "Արգելված է կրկնել DEFINE խումբը"
 
-#: ../glib/gregex.c:329
+#: ../glib/gregex.c:383
 msgid "inconsistent NEWLINE options"
 msgstr "Անհամատեղելի NEWLINE ընտրանքներ"
 
-#: ../glib/gregex.c:332
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
-"\\g -ին չի հաջորդում անուն փակագծերի մեջ կամ  ոչ բացասական թիվ  (հնարավոր է "
-"փակագծերում)"
+#: ../glib/gregex.c:386
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr "\\g -ին չի հաջորդում անուն փակագծերի մեջ կամ  ոչ բացասական թիվ  (հնարավոր է փակագծերում)"
 
-#: ../glib/gregex.c:337
+#: ../glib/gregex.c:391
 msgid "unexpected repeat"
 msgstr "չսպասված կրկնում"
 
-#: ../glib/gregex.c:341
+#: ../glib/gregex.c:395
 msgid "code overflow"
 msgstr "կոդի գերլցում"
 
-#: ../glib/gregex.c:345
+#: ../glib/gregex.c:399
 msgid "overran compiling workspace"
 msgstr "կազմակվող աշխատատիրույթի գերածախս "
 
-#: ../glib/gregex.c:349
+#: ../glib/gregex.c:403
 msgid "previously-checked referenced subpattern not found"
 msgstr "արդեն ստուգված հղումով ենթաշաբլոնը գտնված չէ"
 
-#: ../glib/gregex.c:521 ../glib/gregex.c:1638
+#: ../glib/gregex.c:575
+#: ../glib/gregex.c:1696
 #, c-format
 msgid "Error while matching regular expression %s: %s"
-msgstr ""
-"%s կանոնավոր արտահայտության հետ համընկնման որոնման ժամանակ առաջացելե է սխալ․ "
-"%s"
+msgstr "%s կանոնավոր արտահայտության հետ համընկնման որոնման ժամանակ առաջացելե է սխալ․ %s"
 
-#: ../glib/gregex.c:1093
+#: ../glib/gregex.c:1151
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE գրադարանը կազմարկված է առանց UTF8 -ի աջակցման"
 
-#: ../glib/gregex.c:1102
+#: ../glib/gregex.c:1160
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE գրադարանը կազմարկված է առանց UTF8 -ի հատկությունների ապահովման"
 
-#: ../glib/gregex.c:1156
+#: ../glib/gregex.c:1214
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
-msgstr ""
-"Սխալ՝ առաջացած %s կանոնավոր արտահայտության կազմարկման ժամանակ %d նիշում․ %s"
+msgstr "Սխալ՝ առաջացած %s կանոնավոր արտահայտության կազմարկման ժամանակ %d նիշում․ %s"
 
-#: ../glib/gregex.c:1192
+#: ../glib/gregex.c:1250
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "%s կանոնավոր արտահայտության օպտիմիզացման սխալ․ %s"
 
-#: ../glib/gregex.c:2066
+#: ../glib/gregex.c:2124
 msgid "hexadecimal digit or '}' expected"
 msgstr "սպասվում է տասնվեցական թիվ կամ  '}' նիշ"
 
-#: ../glib/gregex.c:2082
+#: ../glib/gregex.c:2140
 msgid "hexadecimal digit expected"
 msgstr "սպասվում է տասնվեցական թիվ"
 
-#: ../glib/gregex.c:2122
+#: ../glib/gregex.c:2180
 msgid "missing '<' in symbolic reference"
 msgstr "նիշային հղումում բացակայում է  '<'"
 
-#: ../glib/gregex.c:2131
+#: ../glib/gregex.c:2189
 msgid "unfinished symbolic reference"
 msgstr "չվերջացած նիշային հղու"
 
-#: ../glib/gregex.c:2138
+#: ../glib/gregex.c:2196
 msgid "zero-length symbolic reference"
 msgstr "զրոյական երկարությամբ նիշային հղում"
 
-#: ../glib/gregex.c:2149
+#: ../glib/gregex.c:2207
 msgid "digit expected"
 msgstr "սպասվում է թիվ"
 
-#: ../glib/gregex.c:2167
+#: ../glib/gregex.c:2225
 msgid "illegal symbolic reference"
 msgstr "չթույլատրված նիշային հղում"
 
-#: ../glib/gregex.c:2229
+#: ../glib/gregex.c:2287
 msgid "stray final '\\'"
 msgstr "ավելորդ '\\' վերջում"
 
-#: ../glib/gregex.c:2233
+#: ../glib/gregex.c:2291
 msgid "unknown escape sequence"
 msgstr "Անհայտ էկրանավորող հաջորդականություն"
 
-#: ../glib/gregex.c:2243
+#: ../glib/gregex.c:2301
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr ""
-"Տեղի է ունեցել սխալ \"%s\" փոխարինվող տեքստի վերլուծության մեջ %lu համարի "
-"նիշում․ %s "
+msgstr "Տեղի է ունեցել սխալ \"%s\" փոխարինվող տեքստի վերլուծության մեջ %lu համարի նիշում․ %s "
 
 #: ../glib/gshell.c:91
 msgid "Quoted text doesn't begin with a quotation mark"
-msgstr ""
-"Տեղի է ունեցել սխալ \"%s\" փոխարինվող տեքստի վերլուծության մեջ %lu համարի "
-"նիշում․ %s "
+msgstr "Տեղի է ունեցել սխալ \"%s\" փոխարինվող տեքստի վերլուծության մեջ %lu համարի նիշում․ %s "
 
 #: ../glib/gshell.c:181
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
@@ -845,15 +811,12 @@ msgstr "Հայտնաբերված է չփակված չակերտ հրամանատ
 #: ../glib/gshell.c:559
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
-"Տեքստը  ավարտվել է '\\' նիշից անմիջապես հետո։ (Տեքստը հետևյալն էր '%s')"
+msgstr "Տեքստը  ավարտվել է '\\' նիշից անմիջապես հետո։ (Տեքստը հետևյալն էր '%s')"
 
 #: ../glib/gshell.c:566
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
-msgstr ""
-"Տեքստը ավարտվել է %c -ի համար փակվող փակագիծը գտնելուց առաջ։ (Տեքստը "
-"հետևյալն էր '%s')"
+msgstr "Տեքստը ավարտվել է %c -ի համար փակվող փակագիծը գտնելուց առաջ։ (Տեքստը հետևյալն էր '%s')"
 
 #: ../glib/gshell.c:578
 msgid "Text was empty (or contained only whitespace)"
@@ -863,22 +826,27 @@ msgstr "Տեքստը դատարկ էր (կամ պարունակում է միա�
 msgid "Failed to read data from child process"
 msgstr "Չի հաջողվել կարդալ տվյալները ենթապրոցեսից"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1479
+#: ../glib/gspawn-win32.c:299
+#: ../glib/gspawn.c:1479
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Չի հաջողվել (%s) ենթապրոցեսի հետ կապուղի ստեղծելը"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1138
+#: ../glib/gspawn-win32.c:338
+#: ../glib/gspawn-win32.c:346
+#: ../glib/gspawn.c:1138
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Չի հաջողվել կարդալ զավակի (%s) կապուղուց"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1345
+#: ../glib/gspawn-win32.c:369
+#: ../glib/gspawn.c:1345
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Չի հաջողվել տեղափոխվել '%s' պանակ (%s)"
 
-#: ../glib/gspawn-win32.c:375 ../glib/gspawn-win32.c:494
+#: ../glib/gspawn-win32.c:375
+#: ../glib/gspawn-win32.c:494
 #, c-format
 msgid "Failed to execute child process (%s)"
 msgstr "Չի հաջողվել աշխատացնել (%s) ենթապրոցեսը"
@@ -888,19 +856,22 @@ msgstr "Չի հաջողվել աշխատացնել (%s) ենթապրոցեսը"
 msgid "Invalid program name: %s"
 msgstr "Անվավեր ծրագրի անուն․ %s"
 
-#: ../glib/gspawn-win32.c:454 ../glib/gspawn-win32.c:722
+#: ../glib/gspawn-win32.c:454
+#: ../glib/gspawn-win32.c:722
 #: ../glib/gspawn-win32.c:1278
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
 msgstr "Անթույլատրելի տող արգումենտների վեկտորի %d համարով տողում․ %s"
 
-#: ../glib/gspawn-win32.c:465 ../glib/gspawn-win32.c:737
+#: ../glib/gspawn-win32.c:465
+#: ../glib/gspawn-win32.c:737
 #: ../glib/gspawn-win32.c:1311
 #, c-format
 msgid "Invalid string in environment: %s"
 msgstr "Անթույլատրելի տող միջավայրում․ %s"
 
-#: ../glib/gspawn-win32.c:718 ../glib/gspawn-win32.c:1259
+#: ../glib/gspawn-win32.c:718
+#: ../glib/gspawn-win32.c:1259
 #, c-format
 msgid "Invalid working directory: %s"
 msgstr "Անթույլատրելի աշխատանքային պանակ․ %s"
@@ -911,11 +882,8 @@ msgid "Failed to execute helper program (%s)"
 msgstr "Չի հաջողվել աշխատեցնել (%s) օգնական ծրագիրը"
 
 #: ../glib/gspawn-win32.c:997
-msgid ""
-"Unexpected error in g_io_channel_win32_poll() reading data from a child "
-"process"
-msgstr ""
-"Չնախատեսված սխալ g_io_channel_win32_poll()-ում ենթապրոցեսից տվյալներ կարդալիս"
+msgid "Unexpected error in g_io_channel_win32_poll() reading data from a child process"
+msgstr "Չնախատեսված սխալ g_io_channel_win32_poll()-ում ենթապրոցեսից տվյալներ կարդալիս"
 
 #: ../glib/gspawn.c:189
 #, c-format
@@ -966,70 +934,79 @@ msgstr "Չի հաջողվել բավականաչափ տվյալներ կարդա
 msgid "Character out of range for UTF-8"
 msgstr "Նիշը դուրս է UTF-8-ի սահմանից"
 
-#: ../glib/gutf8.c:1162 ../glib/gutf8.c:1171 ../glib/gutf8.c:1303
-#: ../glib/gutf8.c:1312 ../glib/gutf8.c:1453 ../glib/gutf8.c:1549
+#: ../glib/gutf8.c:1162
+#: ../glib/gutf8.c:1171
+#: ../glib/gutf8.c:1303
+#: ../glib/gutf8.c:1312
+#: ../glib/gutf8.c:1453
+#: ../glib/gutf8.c:1549
 msgid "Invalid sequence in conversion input"
 msgstr "Փոխակերպման մուտքի տողում հայտնաբերվել է անթույլատրելի տող"
 
-#: ../glib/gutf8.c:1464 ../glib/gutf8.c:1560
+#: ../glib/gutf8.c:1464
+#: ../glib/gutf8.c:1560
 msgid "Character out of range for UTF-16"
 msgstr "Նիշը դուրս է UTF-16-ի սահմանից"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:756
 msgid "Usage:"
 msgstr "Կիրառում՝"
 
-#: ../glib/goption.c:754
+#: ../glib/goption.c:756
 msgid "[OPTION...]"
 msgstr "[ընտրանք...]"
 
-#: ../glib/goption.c:860
+#: ../glib/goption.c:862
 msgid "Help Options:"
 msgstr "Օգնության Ընտրանքներ․"
 
-#: ../glib/goption.c:861
+#: ../glib/goption.c:863
 msgid "Show help options"
 msgstr "Ցուցադրել Ձեռնարկի հատկությունները"
 
-#: ../glib/goption.c:867
+#: ../glib/goption.c:869
 msgid "Show all help options"
 msgstr "Ցույց տալ օգնության բոլոր ընտրանքները"
 
-#: ../glib/goption.c:929
+#: ../glib/goption.c:931
 msgid "Application Options:"
 msgstr "Աշխատածրագրի ընտրանքները․"
 
-#: ../glib/goption.c:991 ../glib/goption.c:1061
+#: ../glib/goption.c:993
+#: ../glib/goption.c:1063
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
 msgstr "Չի ստացվել վերլուծել '%s' ամբողջի արժեքը %s համար"
 
-#: ../glib/goption.c:1001 ../glib/goption.c:1069
+#: ../glib/goption.c:1003
+#: ../glib/goption.c:1071
 #, c-format
 msgid "Integer value '%s' for %s out of range"
 msgstr "'%s' ամբողջ արժեքը %s համար դուրս է սահմանից "
 
-#: ../glib/goption.c:1026
+#: ../glib/goption.c:1028
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
 msgstr "Չի ստացվել վերլուծել '%s' կոտորակային արժեքը %s համար"
 
-#: ../glib/goption.c:1034
+#: ../glib/goption.c:1036
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr "'%s' կոտորակային արժեքը %s համար դուրս է սահմանից "
 
-#: ../glib/goption.c:1297 ../glib/goption.c:1376
+#: ../glib/goption.c:1299
+#: ../glib/goption.c:1378
 #, c-format
 msgid "Error parsing option %s"
 msgstr "Ընտրանքի վերլուծության սխալ %s"
 
-#: ../glib/goption.c:1407 ../glib/goption.c:1521
+#: ../glib/goption.c:1409
+#: ../glib/goption.c:1523
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Բացակայում է %s-ի արգումենտը"
 
-#: ../glib/goption.c:1916
+#: ../glib/goption.c:1918
 #, c-format
 msgid "Unknown option %s"
 msgstr "Անհայտ ընտրանք %s"
@@ -1048,11 +1025,8 @@ msgstr "Ֆայլը դատարկ է"
 
 #: ../glib/gkeyfile.c:764
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
-msgstr ""
-"Բանալիների ֆայլը  պարունակում է '%s' տողը , որը բանալի-արժեք զույգ, խումբ "
-"կամ մեկնաբանություն չէ"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgstr "Բանալիների ֆայլը  պարունակում է '%s' տողը , որը բանալի-արժեք զույգ, խումբ կամ մեկնաբանություն չէ"
 
 #: ../glib/gkeyfile.c:824
 #, c-format
@@ -1073,9 +1047,15 @@ msgstr "Անվավեր բանալու անուն․ %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Բանալիների ֆայլը պարունակում է չապահովվող '%s' կոդավորում"
 
-#: ../glib/gkeyfile.c:1115 ../glib/gkeyfile.c:1277 ../glib/gkeyfile.c:2656
-#: ../glib/gkeyfile.c:2722 ../glib/gkeyfile.c:2857 ../glib/gkeyfile.c:2990
-#: ../glib/gkeyfile.c:3143 ../glib/gkeyfile.c:3330 ../glib/gkeyfile.c:3391
+#: ../glib/gkeyfile.c:1115
+#: ../glib/gkeyfile.c:1277
+#: ../glib/gkeyfile.c:2656
+#: ../glib/gkeyfile.c:2722
+#: ../glib/gkeyfile.c:2857
+#: ../glib/gkeyfile.c:2990
+#: ../glib/gkeyfile.c:3143
+#: ../glib/gkeyfile.c:3330
+#: ../glib/gkeyfile.c:3391
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Բանալիների ֆայլը չունի '%s' խումբը"
@@ -1085,35 +1065,32 @@ msgstr "Բանալիների ֆայլը չունի '%s' խումբը"
 msgid "Key file does not have key '%s'"
 msgstr "Բանալիների ֆայլը չունի '%s' բանալի"
 
-#: ../glib/gkeyfile.c:1396 ../glib/gkeyfile.c:1511
+#: ../glib/gkeyfile.c:1396
+#: ../glib/gkeyfile.c:1511
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr ""
-"Բանալիների ֆայլը  պարունակում է '%s' բանալի՝ '%s' արժեքով, որը  UTF-8 չի"
+msgstr "Բանալիների ֆայլը  պարունակում է '%s' բանալի՝ '%s' արժեքով, որը  UTF-8 չի"
 
-#: ../glib/gkeyfile.c:1416 ../glib/gkeyfile.c:1910
+#: ../glib/gkeyfile.c:1416
+#: ../glib/gkeyfile.c:1910
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
-"Բանալիների ֆայլը  պարունակում է '%s' բանալի, որի արժեքը չի կարող մեկնաբանվել։"
+msgstr "Բանալիների ֆայլը  պարունակում է '%s' բանալի, որի արժեքը չի կարող մեկնաբանվել։"
 
 #: ../glib/gkeyfile.c:1531
 #, c-format
-msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
-msgstr ""
-"Բանալիների ֆայլը  պարունակում է '%s' բանալի, որի արժեքը չի կարող մեկնաբանվել։"
+msgid "Key file contains key '%s' which has a value that cannot be interpreted."
+msgstr "Բանալիների ֆայլը  պարունակում է '%s' բանալի, որի արժեքը չի կարող մեկնաբանվել։"
 
-#: ../glib/gkeyfile.c:2125 ../glib/gkeyfile.c:2487
+#: ../glib/gkeyfile.c:2125
+#: ../glib/gkeyfile.c:2487
 #, c-format
-msgid ""
-"Key file contains key '%s' in group '%s' which has value that cannot be "
-"interpreted."
-msgstr ""
-"Բանալիների ֆայլը պարունակում է '%s' բանալի '%s' խմբում, որի արժեքը չի կարող "
-"մեկնաբանվել։"
+msgid "Key file contains key '%s' in group '%s' which has value that cannot be interpreted."
+msgstr "Բանալիների ֆայլը պարունակում է '%s' բանալի '%s' խմբում, որի արժեքը չի կարող մեկնաբանվել։"
 
-#: ../glib/gkeyfile.c:2671 ../glib/gkeyfile.c:2872 ../glib/gkeyfile.c:3402
+#: ../glib/gkeyfile.c:2671
+#: ../glib/gkeyfile.c:2872
+#: ../glib/gkeyfile.c:3402
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Բանալիների ֆայլը չի պարունակում '%s' բանալի '%s' խմբում"
@@ -1125,8 +1102,7 @@ msgstr "Բանալիների ֆայլը պարունակում է escape նիշ 
 #: ../glib/gkeyfile.c:3658
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr ""
-"Բանալիների ֆայլը պարունակում է անթույլատրելի escape հաջորդականություն '%s'"
+msgstr "Բանալիների ֆայլը պարունակում է անթույլատրելի escape հաջորդականություն '%s'"
 
 #: ../glib/gkeyfile.c:3800
 #, c-format
@@ -1148,23 +1124,32 @@ msgstr "%s' արժեքը չի կարող մեկնաբանվել որպես սա�
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "%s' արժեքը չի կարող մեկնաբանվել որպես տրամաբանական արժեք։"
 
-#: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
-#: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
-#: ../gio/ginputstream.c:556 ../gio/ginputstream.c:681
-#: ../gio/goutputstream.c:197 ../gio/goutputstream.c:720
+#: ../gio/gbufferedinputstream.c:411
+#: ../gio/gbufferedinputstream.c:492
+#: ../gio/ginputstream.c:185
+#: ../gio/ginputstream.c:317
+#: ../gio/ginputstream.c:556
+#: ../gio/ginputstream.c:681
+#: ../gio/goutputstream.c:197
+#: ../gio/goutputstream.c:724
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Քանակի չափազանց մեծ արժեք է փոխանցվել %s-ին"
 
-#: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:891
-#: ../gio/giostream.c:304 ../gio/goutputstream.c:1195
+#: ../gio/gbufferedinputstream.c:881
+#: ../gio/ginputstream.c:891
+#: ../gio/giostream.c:306
+#: ../gio/goutputstream.c:1199
 msgid "Stream is already closed"
 msgstr "Հոսքն արդեն փակ է"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1534
-#: ../gio/gdbusconnection.c:1623 ../gio/gdbusconnection.c:1801
-#: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:650
-#: ../gio/gsimpleasyncresult.c:676
+#: ../gio/gcancellable.c:432
+#: ../gio/gdbusconnection.c:1544
+#: ../gio/gdbusconnection.c:1633
+#: ../gio/gdbusconnection.c:1811
+#: ../gio/glocalfile.c:2102
+#: ../gio/gsimpleasyncresult.c:755
+#: ../gio/gsimpleasyncresult.c:781
 msgid "Operation was cancelled"
 msgstr "Գործողությունը չեղյալ է հայտարարվել"
 
@@ -1172,15 +1157,18 @@ msgstr "Գործողությունը չեղյալ է հայտարարվել"
 msgid "Invalid object, not initialized"
 msgstr "Անվավեր օբյեկտ,  չի սկզբնարժեքավորվել"
 
-#: ../gio/gcharsetconverter.c:284 ../gio/gcharsetconverter.c:312
+#: ../gio/gcharsetconverter.c:284
+#: ../gio/gcharsetconverter.c:312
 msgid "Incomplete multibyte sequence in input"
 msgstr "Ոչ լրիվ բազմաբայթ հաջորդականություն մուտքային տվյալներում"
 
-#: ../gio/gcharsetconverter.c:318 ../gio/gcharsetconverter.c:327
+#: ../gio/gcharsetconverter.c:318
+#: ../gio/gcharsetconverter.c:327
 msgid "Not enough space in destination"
 msgstr "Տարածությունը բավարար չէ արդյունքի համար"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:805
+#: ../gio/gcharsetconverter.c:447
+#: ../gio/gsocket.c:810
 msgid "Cancellable initialization not supported"
 msgstr "Ընդհատվող սկզբնարժեքավորումը չի ապահովվում"
 
@@ -1198,11 +1186,12 @@ msgstr "%s ֆայլի տիպ"
 msgid "%s type"
 msgstr "%s տիպ"
 
-#: ../gio/gcredentials.c:204 ../gio/gcredentials.c:339
+#: ../gio/gcredentials.c:220
+#: ../gio/gcredentials.c:388
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials-ը իրականացված չէ այս ՕՀ-ի վրա"
 
-#: ../gio/gcredentials.c:297
+#: ../gio/gcredentials.c:346
 msgid "There is no GCredentials support for your platform"
 msgstr "Գոյություն չունի GCredentials աջակցում ձեր պլատֆորմայի համար"
 
@@ -1210,160 +1199,139 @@ msgstr "Գոյություն չունի GCredentials աջակցում ձեր պ�
 msgid "Unexpected early end-of-stream"
 msgstr "Հոսքի անսպասելի վաղաժամ ավարտ"
 
-#: ../gio/gdbusaddress.c:144 ../gio/gdbusaddress.c:232
-#: ../gio/gdbusaddress.c:306
+#: ../gio/gdbusaddress.c:142
+#: ../gio/gdbusaddress.c:230
+#: ../gio/gdbusaddress.c:304
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Չաջակցվող `%s' բանալի `%s' հասցեում"
 
-#: ../gio/gdbusaddress.c:171
+#: ../gio/gdbusaddress.c:169
 #, c-format
-msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
-msgstr ""
-"`%s' հասցեն անվավեր է (պետք է ուղիներից ճիշտ մեկը, tmpdir կամ աբստրակտ "
-"բանալիներ)"
+msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+msgstr "`%s' հասցեն անվավեր է (պետք է ուղիներից ճիշտ մեկը, tmpdir կամ աբստրակտ բանալիներ)"
 
-#: ../gio/gdbusaddress.c:184
+#: ../gio/gdbusaddress.c:182
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Բանալի/արժեք զույգի անիմաստ համադրություն `%s' հասցեում"
 
-#: ../gio/gdbusaddress.c:247 ../gio/gdbusaddress.c:321
+#: ../gio/gdbusaddress.c:245
+#: ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Սխալ `%s' հասցեում - port-ի ատրիբուտը սխալ է"
 
-#: ../gio/gdbusaddress.c:258 ../gio/gdbusaddress.c:332
+#: ../gio/gdbusaddress.c:256
+#: ../gio/gdbusaddress.c:330
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Սխալ `%s' հասցեում - family-ի ատրիբուտը սխալ է"
 
-#: ../gio/gdbusaddress.c:436
+#: ../gio/gdbusaddress.c:434
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "`%s' հասցեի էլեմենտը չի պարունակում (:) երկու կետ"
 
-#: ../gio/gdbusaddress.c:457
+#: ../gio/gdbusaddress.c:455
 #, c-format
-msgid ""
-"Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
-"sign"
-msgstr ""
-"%d, `%s' բանալի/արժեք զույգը `%s' հասցեի տարրում չի պարունակում հավասարման "
-"նշան"
+msgid "Key/Value pair %d, `%s', in address element `%s', does not contain an equal sign"
+msgstr "%d, `%s' բանալի/արժեք զույգը `%s' հասցեի տարրում չի պարունակում հավասարման նշան"
 
-#: ../gio/gdbusaddress.c:471
+#: ../gio/gdbusaddress.c:469
 #, c-format
-msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
-"`%s'"
-msgstr ""
-"Բանալու կամ արժեքի կոդավորման սխալ %d Բանալի/Արժեք զույգում, `%s', `%s' "
-"հասցեի տարրում"
+msgid "Error unescaping key or value in Key/Value pair %d, `%s', in address element `%s'"
+msgstr "Բանալու կամ արժեքի կոդավորման սխալ %d Բանալի/Արժեք զույգում, `%s', `%s' հասցեի տարրում"
 
-#: ../gio/gdbusaddress.c:549
+#: ../gio/gdbusaddress.c:547
 #, c-format
-msgid ""
-"Error in address `%s' - the unix transport requires exactly one of the keys "
-"`path' or `abstract' to be set"
-msgstr ""
-"Սխալ `%s' հասցեում - unix-ի փոխադրումը պահանջում է տեղադրված լինի "
-"բանալիներից ճիշտ մեկը՝ `path' կամ `abstract'"
+msgid "Error in address `%s' - the unix transport requires exactly one of the keys `path' or `abstract' to be set"
+msgstr "Սխալ `%s' հասցեում - unix-ի փոխադրումը պահանջում է տեղադրված լինի բանալիներից ճիշտ մեկը՝ `path' կամ `abstract'"
 
-#: ../gio/gdbusaddress.c:585
+#: ../gio/gdbusaddress.c:583
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Սխալ `%s' հասցեում - host ատրիբուտը բացակայում է կամ սխալ է"
 
-#: ../gio/gdbusaddress.c:599
+#: ../gio/gdbusaddress.c:597
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Սխալ `%s' հասցեում - port ատրիբուտը բացակայում է կամ սխալ է"
 
-#: ../gio/gdbusaddress.c:613
+#: ../gio/gdbusaddress.c:611
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr "Սխալ `%s' հասցեում - noncefile ատրիբուտը բացակայում է կամ սխալ է"
 
-#: ../gio/gdbusaddress.c:634
+#: ../gio/gdbusaddress.c:632
 msgid "Error auto-launching: "
 msgstr "Չհաջողվեց ավտոմատ կերպով հաստատել կապ․"
 
-#: ../gio/gdbusaddress.c:642
+#: ../gio/gdbusaddress.c:640
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Չհայտնաբերված կամ չաջակցվող `%s' փոխադրում `%s' հասցեի համար"
 
-#: ../gio/gdbusaddress.c:678
+#: ../gio/gdbusaddress.c:676
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "'%s' ֆայլը բացելու սխալ․ %s"
 
-#: ../gio/gdbusaddress.c:696
+#: ../gio/gdbusaddress.c:694
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "`%s' ֆայլը կարդալու սխալ %s․"
 
-#: ../gio/gdbusaddress.c:705
+#: ../gio/gdbusaddress.c:703
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr "`%s' ֆայլը կարդալու սխալ, սպասվում էր 16 բայթ, ստացվել է %d"
 
-#: ../gio/gdbusaddress.c:723
+#: ../gio/gdbusaddress.c:721
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Չի հաջողվել գրել `%s' file-ի պարունակությունը հոսքում․"
 
-#: ../gio/gdbusaddress.c:944
+#: ../gio/gdbusaddress.c:942
 msgid "The given address is empty"
 msgstr "Տրված հասցեն դատարկ է"
 
-#: ../gio/gdbusaddress.c:1013
+#: ../gio/gdbusaddress.c:1011
 msgid "Cannot spawn a message bus without a machine-id: "
-msgstr ""
-"Չի հաջողվել բազմացնել հաղորդագրության կապուղին առանց մեքենայի իդենտիֆիկատորի"
+msgstr "Չի հաջողվել բազմացնել հաղորդագրության կապուղին առանց մեքենայի իդենտիֆիկատորի"
 
-#: ../gio/gdbusaddress.c:1050
+#: ../gio/gdbusaddress.c:1048
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "`%s' հրամանային տողի բազմացման սխալ․"
 
-#: ../gio/gdbusaddress.c:1061
+#: ../gio/gdbusaddress.c:1059
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Ծրագրի ոչ նորմալ ավարտ `%s' հրամանային տողը բազմացնելիս․ %s"
 
-#: ../gio/gdbusaddress.c:1075
+#: ../gio/gdbusaddress.c:1073
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "`%s' հրամանային տողը ավարտվել է ոչ զրոյական %d կարգավիճակով․ %s"
 
-#: ../gio/gdbusaddress.c:1148
+#: ../gio/gdbusaddress.c:1146
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
-msgstr ""
-"Չի հաջողվել որոշել սեսիայի կապուղու հասցեն (իրականացված չէ այս օպերացիոն "
-"համակարգում)"
+msgstr "Չի հաջողվել որոշել սեսիայի կապուղու հասցեն (իրականացված չէ այս օպերացիոն համակարգում)"
 
-#: ../gio/gdbusaddress.c:1247 ../gio/gdbusconnection.c:5974
+#: ../gio/gdbusaddress.c:1245
+#: ../gio/gdbusconnection.c:6033
 #, c-format
-msgid ""
-"Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
-"- unknown value `%s'"
-msgstr ""
-"Չի հաջողվել որոշել կապուղու հասցեն  DBUS_STARTER_BUS_TYPE միջավայրային "
-"փոփոխականից - անհայտ արժեք `%s'"
+msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value `%s'"
+msgstr "Չի հաջողվել որոշել կապուղու հասցեն  DBUS_STARTER_BUS_TYPE միջավայրային փոփոխականից - անհայտ արժեք `%s'"
 
-#: ../gio/gdbusaddress.c:1256 ../gio/gdbusconnection.c:5983
-msgid ""
-"Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
-"variable is not set"
-msgstr ""
-"Չի հաջողվել որոշել կապուղու հասցեն, քանի որ DBUS_STARTER_BUS_TYPE "
-"միջավայրային փոփոխականը տեղադրված չէ"
+#: ../gio/gdbusaddress.c:1254
+#: ../gio/gdbusconnection.c:6042
+msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
+msgstr "Չի հաջողվել որոշել կապուղու հասցեն, քանի որ DBUS_STARTER_BUS_TYPE միջավայրային փոփոխականը տեղադրված չէ"
 
-#: ../gio/gdbusaddress.c:1266
+#: ../gio/gdbusaddress.c:1264
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "%d չհայտնաբերված bus - ի տիպ"
@@ -1378,13 +1346,10 @@ msgstr "Պարունակության անսպասելի պակաս տողը (ա�
 
 #: ../gio/gdbusauth.c:503
 #, c-format
-msgid ""
-"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
-msgstr ""
-"Վավերացման բոլոր հասանելի մեխանիզմները սպառվել են (փորձվել են․ %s) (հասանելի "
-"են․ %s)"
+msgid "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
+msgstr "Վավերացման բոլոր հասանելի մեխանիզմները սպառվել են (փորձվել են․ %s) (հասանելի են․ %s)"
 
-#: ../gio/gdbusauth.c:1149
+#: ../gio/gdbusauth.c:1150
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Անջատվել է GDBusAuthObserver -ով։։հաստատված-վավերացված-հավասարազոր"
 
@@ -1395,10 +1360,8 @@ msgstr "'%s' պանակը բացելու սխալ. %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
-msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
-msgstr ""
-"`%s' պանակի թույլտվությունները սխալ են։ Սպասվում էր 0700 ռեժիմ, ստացվել է 0%o"
+msgid "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+msgstr "`%s' պանակի թույլտվությունները սխալ են։ Սպասվում էր 0700 ռեժիմ, ստացվել է 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -1410,25 +1373,23 @@ msgstr "'%s' պանակ ստեղծելու սխալ․ %s"
 msgid "Error opening keyring `%s' for reading: "
 msgstr "Կարդալու համար նախատեսված '%s' ֆայլը բացելու սխալ․"
 
-#: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:715
+#: ../gio/gdbusauthmechanismsha1.c:406
+#: ../gio/gdbusauthmechanismsha1.c:715
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr "keyring-ի %d տողը `%s' -ում, որի պարունակությունը `%s' է, սխալ է"
 
-#: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:729
+#: ../gio/gdbusauthmechanismsha1.c:420
+#: ../gio/gdbusauthmechanismsha1.c:729
 #, c-format
-msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
-"%d տողի առաջին բառանիշը `%s' - ում, որի պարունակությունը `%s' է, սխալ է"
+msgid "First token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr "%d տողի առաջին բառանիշը `%s' - ում, որի պարունակությունը `%s' է, սխալ է"
 
-#: ../gio/gdbusauthmechanismsha1.c:434 ../gio/gdbusauthmechanismsha1.c:743
+#: ../gio/gdbusauthmechanismsha1.c:434
+#: ../gio/gdbusauthmechanismsha1.c:743
 #, c-format
-msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
-"keyring-ի %d տողի երկրորդ բառանիշը `%s' -ում, որի պարունակությունը `%s' է, "
-"սխալ է"
+msgid "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgstr "keyring-ի %d տողի երկրորդ բառանիշը `%s' -ում, որի պարունակությունը `%s' է, սխալ է"
 
 #: ../gio/gdbusauthmechanismsha1.c:458
 #, c-format
@@ -1437,23 +1398,27 @@ msgstr "Չի գտնվել %d id-ով cookie `%s' keyring-ում"
 
 #: ../gio/gdbusauthmechanismsha1.c:535
 #, c-format
-msgid "Error deleting stale lock-file `%s': %s"
-msgstr "'%s' հնացած արգելափակման ֆայլը ջնջելու սխալ․ %s"
+#| msgid "Error deleting stale lock-file `%s': %s"
+msgid "Error deleting stale lock file `%s': %s"
+msgstr "'%s' արգելափակման ֆայլը ջնջելու սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
 #, c-format
-msgid "Error creating lock-file `%s': %s"
-msgstr "'%s' արգելափակման ֆայլ ստեղծելու սխալ․ %s"
+#| msgid "Error creating lock-file `%s': %s"
+msgid "Error creating lock file `%s': %s"
+msgstr "'%s' արգելափակման ֆայլի ստեղծման սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
 #, c-format
-msgid "Error closing (unlinked) lock-file `%s': %s"
-msgstr "'%s' արգելափակման (հղում չպարունակող) ֆայլը փակելու սխալ․ %s"
+#| msgid "Error closing (unlinked) lock-file `%s': %s"
+msgid "Error closing (unlinked) lock file `%s': %s"
+msgstr "'%s' արգելափակման (հղում չպարունակող) ֆայլի փակման ժամանակ առաջացած սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
 #, c-format
-msgid "Error unlinking lock-file `%s': %s"
-msgstr "'%s' արգելափակման ֆայլն անջատելու սխալ՝ %s"
+#| msgid "Error unlinking lock-file `%s': %s"
+msgid "Error unlinking lock file `%s': %s"
+msgstr "'%s' արգելափակման ֆայլի կապերն անջատելու սխալ․ %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:682
 #, c-format
@@ -1465,205 +1430,233 @@ msgstr "Գրելու համար նախատեսված '%s' ֆայլը բացել�
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Լրացուցիչ, `%s' - ի արգելափակման թողարկումը ևս ձախողվել է․ %s)"
 
-#: ../gio/gdbusconnection.c:1048 ../gio/gdbusconnection.c:1277
-#: ../gio/gdbusconnection.c:1316 ../gio/gdbusconnection.c:1634
+#: ../gio/gdbusconnection.c:1058
+#: ../gio/gdbusconnection.c:1287
+#: ../gio/gdbusconnection.c:1326
+#: ../gio/gdbusconnection.c:1644
 msgid "The connection is closed"
 msgstr "Կապը փակ է"
 
-#: ../gio/gdbusconnection.c:1578
+#: ../gio/gdbusconnection.c:1588
 msgid "Timeout was reached"
 msgstr "Հասել է timeout"
 
-#: ../gio/gdbusconnection.c:2139
-msgid ""
-"Unsupported flags encountered when constructing a client-side connection"
+#: ../gio/gdbusconnection.c:2191
+msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Հանդիպել են չաջակցվող դրոշներ client-side միացումը հաստատելիս"
 
-#: ../gio/gdbusconnection.c:3564 ../gio/gdbusconnection.c:3880
+#: ../gio/gdbusconnection.c:3617
+#: ../gio/gdbusconnection.c:3934
 #, c-format
-msgid ""
-"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
-msgstr ""
-"Գոյություն չունի `org.freedesktop.DBus.Properties' ինտերֆեյս %s ուղու վրա "
-"գտնվող օբյեկտի համար"
+msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+msgstr "Գոյություն չունի `org.freedesktop.DBus.Properties' ինտերֆեյս %s ուղու վրա գտնվող օբյեկտի համար"
 
-#: ../gio/gdbusconnection.c:3635
+#: ../gio/gdbusconnection.c:3689
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
-msgstr ""
-"Տեղի է ունեցել սխալ`%s' հատկությունը սահմանելիս․ Սպասվում էր `%s' տիպը , "
-"բայց ստացվել է`%s'"
+msgstr "Տեղի է ունեցել սխալ`%s' հատկությունը սահմանելիս․ Սպասվում էր `%s' տիպը , բայց ստացվել է`%s'"
 
-#: ../gio/gdbusconnection.c:3729
+#: ../gio/gdbusconnection.c:3783
 #, c-format
 msgid "No such property `%s'"
 msgstr "`%s' հատկությունը գոյություն չունի  "
 
-#: ../gio/gdbusconnection.c:3741
+#: ../gio/gdbusconnection.c:3795
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "`%s' հատկությունը կարդացվող չէ"
 
-#: ../gio/gdbusconnection.c:3752
+#: ../gio/gdbusconnection.c:3806
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "`%s' հատկությունը գրվող չէ"
 
-#: ../gio/gdbusconnection.c:3822 ../gio/gdbusconnection.c:5410
+#: ../gio/gdbusconnection.c:3876
+#: ../gio/gdbusconnection.c:5467
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Գոյություն չունի `%s' ինտերֆեյս"
 
-#: ../gio/gdbusconnection.c:4007
+#: ../gio/gdbusconnection.c:4064
 msgid "No such interface"
 msgstr "Այդպիսի ինտերֆեյս գոյություն չունի"
 
-#: ../gio/gdbusconnection.c:4223 ../gio/gdbusconnection.c:5924
+#: ../gio/gdbusconnection.c:4280
+#: ../gio/gdbusconnection.c:5983
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Գոյություն չունի `%s' ինտերֆեյս %s ուղու վրա գտնվող օբյեկտի համար"
 
-#: ../gio/gdbusconnection.c:4275
+#: ../gio/gdbusconnection.c:4332
 #, c-format
 msgid "No such method `%s'"
 msgstr "Այդպիսի `%s' մեթոդ գոյություն չունի "
 
-#: ../gio/gdbusconnection.c:4306
+#: ../gio/gdbusconnection.c:4363
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "`%s' հաղորդագրության տիպը չի համապատասխանում `%s' սպասվող տիպին"
 
-#: ../gio/gdbusconnection.c:4525
+#: ../gio/gdbusconnection.c:4582
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Օբյեկտը արդեն արտածվել է  %s ինտերֆեյսի համար %s ում"
 
-#: ../gio/gdbusconnection.c:4719
+#: ../gio/gdbusconnection.c:4776
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "`%s'մեթեդը վերադարձնում է `%s' տիպը, բայց սպասվում էր `%s'"
 
-#: ../gio/gdbusconnection.c:5521
+#: ../gio/gdbusconnection.c:5578
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "`%s' մեթոդը `%s' ինտերֆեյսի վրա `%s' նկարագրությամբ գոյություն չունի"
 
-#: ../gio/gdbusconnection.c:5639
+#: ../gio/gdbusconnection.c:5696
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ենթածառն արդեն արտածվել է %s համար"
 
-#: ../gio/gdbusmessage.c:754
+#: ../gio/gdbusmessage.c:763
+msgid "type is INVALID"
+msgstr "տիպը ԱՆՎԱՎԱԵՐ Է"
+
+#: ../gio/gdbusmessage.c:774
+msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
+msgstr "METHOD_CALL հաղորդագրություն․ PATH կամ MEMBER գլխամասային դաշտը բացակայում է"
+
+#: ../gio/gdbusmessage.c:785
+msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
+msgstr "METHOD_RETURN հաղորդագրություն․ REPLY_SERIAL գլխամասային դաշտը բացակայում է"
+
+#: ../gio/gdbusmessage.c:797
+msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
+msgstr "ՍԽԱԼԻ հաղորդագրություն․ REPLY_SERIAL կամ ERROR_NAME գլխամասային դաշտը բացակայում է"
+
+#: ../gio/gdbusmessage.c:810
+msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
+msgstr "SIGNAL հաղորդագրություն․ PATH, INTERFACE կամ MEMBER գլխամասային դաշտերը բացակայում են"
+
+#: ../gio/gdbusmessage.c:818
+msgid "SIGNAL message: The PATH header field is using the reserved value /org/freedesktop/DBus/Local"
+msgstr "SIGNAL հաղորդագրություն․ PATH գլխամասային դաշտը օգտագործում է /org/freedesktop/DBus/Local ռեզերվացված արժեքը"
+
+#: ../gio/gdbusmessage.c:826
+msgid "SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
+msgstr "SIGNAL հաղորդագրություն․ INTERFACE գլխամասային դաշտը օգտագործում է org.freedesktop.DBus.Local ռեզերվացված արժեքը"
+
+#: ../gio/gdbusmessage.c:901
 #, c-format
 msgid "Wanted to read %lu bytes but got EOF"
 msgstr "Ցանկանում է կարդալ %lu բայթ, բայց ստացվել է EOF"
 
-#: ../gio/gdbusmessage.c:775
+#: ../gio/gdbusmessage.c:926
 #, c-format
-msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
-msgstr "`%s' տողից հետո սպասվում էր NUL բայթ, բայց գտնվել է `%c' (%d)"
+msgid "Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up until that point was `%s'"
+msgstr "Սպասվում է վավերական UTF-8 տող, բայց գտնվել է անվավեր բայթեր %d տեղաշարժի վրա (տողի երկարությունը %d է)։ Վավերական UTF-8 տող, որի համար մինչ այդ կետը `%s' էր։"
 
-#: ../gio/gdbusmessage.c:974
+#: ../gio/gdbusmessage.c:939
+#, c-format
+#| msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
+msgid "Expected NUL byte after the string `%s' but found byte %d"
+msgstr "`%s' տողից հետո սպասվում էր NUL բայթ, բայց գտնվել է %d"
+
+#: ../gio/gdbusmessage.c:1138
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "`%s' վերլուծված արժեքը D-Bus օբյեկտի վավեր ճանապարհ չէ"
 
-#: ../gio/gdbusmessage.c:1000
+#: ../gio/gdbusmessage.c:1164
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "`%s' վերլուծված արժեքը D-Bus օբյեկտի վավեր նկարագրություն չէ"
 
-#: ../gio/gdbusmessage.c:1041
+#: ../gio/gdbusmessage.c:1218
 #, c-format
-msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes."
-msgstr ""
-"Հաշվվել է  %u բայթերի երկարության զանգվածը։ Մեծագույն երկարությունը 2<<26 "
-"բայթ է։"
+#| msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes."
+msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
+msgstr "Հաշվվել է %u բայթերի երկարության զանգվածը։ Առավելագույն երկարությունը 2<<26 բայթ է (64 MiB)։"
 
-#: ../gio/gdbusmessage.c:1202
+#: ../gio/gdbusmessage.c:1379
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr ""
-"`%s' վերլուծված արժեքը տարբերակի համար D-Bus օբյեկտի վավեր նկարագրություն չէ"
+msgstr "`%s' վերլուծված արժեքը տարբերակի համար D-Bus օբյեկտի վավեր նկարագրություն չէ"
 
-#: ../gio/gdbusmessage.c:1229
+#: ../gio/gdbusmessage.c:1406
 #, c-format
-msgid ""
-"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
-msgstr ""
-"Սխալ D-Bus լարի ֆորմատից `%s' տիպ-տողով GVariant-ի փոփոխության ժամանակ "
+#| msgid ""
+#| "Error deserializing GVariant with type-string `%s' from the D-Bus wire "
+#| "format"
+msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
+msgstr "Սխալ D-Bus լարի ֆորմատից `%s' տիպի տողով GVariant-ի զուգահեռացման ժամանակ"
 
-#: ../gio/gdbusmessage.c:1409
+#: ../gio/gdbusmessage.c:1590
 #, c-format
-msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
-msgstr ""
-"Անվավեր endianness արժեք։ Սպասվում էր 'l' կամ 'B', բայց գտնվել է '%c' (%d)"
+#| msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
+msgid "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x%02x"
+msgstr "Անվավեր endianness արժեք։ Սպասվում էր 0x6c ('l') կամ 0x42 ('B') ', բայց գտնվել է 0x%02x արժեքը"
 
-#: ../gio/gdbusmessage.c:1423
+#: ../gio/gdbusmessage.c:1604
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Հիմնական պրոտոկոլի ավավեր տարբերակ։ Սպասվում էր 1, բայց գտնվել է %d"
 
-#: ../gio/gdbusmessage.c:1480
+#: ../gio/gdbusmessage.c:1661
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
-msgstr ""
-"Գտնվել է `%s' նկարագրությամբ նկարագրության գլխամասը, բայց հաղորդագրության "
-"մարմինը դատարկ է"
+msgstr "Գտնվել է `%s' նկարագրությամբ նկարագրության գլխամասը, բայց հաղորդագրության մարմինը դատարկ է"
 
-#: ../gio/gdbusmessage.c:1494
+#: ../gio/gdbusmessage.c:1675
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr ""
-"Վերլուծված `%s' արժեքը վավեր D-Bus նկարագրությաություն չէ (մարմնի համար)"
+msgstr "Վերլուծված `%s' արժեքը վավեր D-Bus նկարագրությաություն չէ (մարմնի համար)"
 
-#: ../gio/gdbusmessage.c:1524
+#: ../gio/gdbusmessage.c:1705
 #, c-format
 msgid "No signature header in message but the message body is %u bytes"
-msgstr ""
-"Հաղորդագրության մեջ չկա նկարագրության գլխամաս, բայց հաղորդագրության մարմինը %"
-"u բայթ է"
+msgstr "Հաղորդագրության մեջ չկա նկարագրության գլխամաս, բայց հաղորդագրության մարմինը %u բայթ է"
 
-#: ../gio/gdbusmessage.c:1841
+#: ../gio/gdbusmessage.c:1713
+msgid "Cannot deserialize message: "
+msgstr "Չի հաջողվել զուգահեռացնել հաղորդագրությունը"
+
+#: ../gio/gdbusmessage.c:2038
 #, c-format
-msgid ""
-"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
-msgstr "Սխալ `%s' տիպ-տողով GVariant-ը D-Bus ֆորմատի փոխելիս"
+#| msgid ""
+#| "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
+msgstr "Սխալ `%s' տիպի տողով GVariant-ը D-Bus լարի ֆորմատի փոխելիս"
 
-#: ../gio/gdbusmessage.c:1984
+#: ../gio/gdbusmessage.c:2178
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
 msgstr "Հաղորդագրությունը ուներ %d fds, բայց header դաշտը ցույց է տալիս %d fds"
 
-#: ../gio/gdbusmessage.c:2030
+#: ../gio/gdbusmessage.c:2186
+msgid "Cannot serialize message: "
+msgstr "Չի հաջողվել հաջորդական ձևով ներկայացնել հաղորդագրությունը"
+
+#: ../gio/gdbusmessage.c:2230
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
-msgstr ""
-"Հաղորդագրության մարմինն ունի `%s' նկարագրություն, բայց գոյություն չունի "
-"նկարագրության գլխամաս"
+msgstr "Հաղորդագրության մարմինն ունի `%s' նկարագրություն, բայց գոյություն չունի նկարագրության գլխամաս"
 
-#: ../gio/gdbusmessage.c:2040
+#: ../gio/gdbusmessage.c:2240
 #, c-format
-msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
-msgstr ""
-"Հաղորդագրության մարմինն ունի տիպի `%s' նկարագրություն, բայց  նկարագրությունը "
-"գլխամասային դաշտում `%s' է"
+msgid "Message body has type signature `%s' but signature in the header field is `%s'"
+msgstr "Հաղորդագրության մարմինն ունի տիպի `%s' նկարագրություն, բայց  նկարագրությունը գլխամասային դաշտում `%s' է"
 
-#: ../gio/gdbusmessage.c:2056
+#: ../gio/gdbusmessage.c:2256
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr ""
-"Հաղորդագրության մարմինը դատարկ է, բայց  նկարագրությունը գլխամասային դաշտում "
-"(`%s') է"
+msgstr "Հաղորդագրության մարմինը դատարկ է, բայց  նկարագրությունը գլխամասային դաշտում (`%s') է"
 
-#: ../gio/gdbusmessage.c:2610
+#: ../gio/gdbusmessage.c:2813
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "'%s' տիպի մարմնով ֆայլի վերադարձման սխալ"
 
-#: ../gio/gdbusmessage.c:2618
+#: ../gio/gdbusmessage.c:2821
 msgid "Error return with empty body"
 msgstr "Սխալ վերադարձ դատարկ մարմնով"
 
@@ -1672,63 +1665,62 @@ msgstr "Սխալ վերադարձ դատարկ մարմնով"
 msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr "Վերադարձվող արժեքի տիպը անվավեր է, ստացվել է `%s', սպասվում էր `%s'"
 
-#: ../gio/gdbusmethodinvocation.c:389 ../gio/gsocket.c:2869
-#: ../gio/gsocket.c:2950
+#: ../gio/gdbusmethodinvocation.c:406
+#: ../gio/gsocket.c:2969
+#: ../gio/gsocket.c:3050
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Հաղորդագրության ուղարկման սխալ․ %s"
 
-#: ../gio/gdbusprivate.c:885
-msgid "Error writing first 16 bytes of message to socket: "
-msgstr "Սխալ հաղորդագրության առաջին 16 բայթը սոկետում գրելիս․ "
-
-#: ../gio/gdbusprivate.c:1406
+#: ../gio/gdbusprivate.c:1723
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Չի հաջողվել բեռնել /var/lib/dbus/machine-id․"
 
-#: ../gio/gdbusproxy.c:703
+#: ../gio/gdbusproxy.c:714
 #, c-format
-msgid ""
-"Trying to set property %s of type %s but according to the expected interface "
-"the type is %s"
-msgstr ""
-"Փորձում է սահմանել %s հատկությունը %s տիպում, բայց հաշվի առնելով ստացված "
-"ինտերֆեյսը տիպը %s է"
+msgid "Trying to set property %s of type %s but according to the expected interface the type is %s"
+msgstr "Փորձում է սահմանել %s հատկությունը %s տիպում, բայց հաշվի առնելով ստացված ինտերֆեյսը տիպը %s է"
 
-#: ../gio/gdbusproxy.c:1224
+#: ../gio/gdbusproxy.c:1235
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "%s - ի համար StartServiceByName-ի կանչման սխալ․ "
 
-#: ../gio/gdbusproxy.c:1245
+#: ../gio/gdbusproxy.c:1256
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Չսպասված պատասխան %d StartServiceByName(\"%s\") մեթոդից"
 
-#: ../gio/gdbusserver.c:703
+#: ../gio/gdbusproxy.c:2315
+#: ../gio/gdbusproxy.c:2472
+msgid "Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
+msgstr "Չի հաջողվել կանչել մեթոդ․ պրոքսին առանց տիրոջ լավ հայտնի անվան համար է և պրոքսին կառուցված է G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START դրոշի միջոցով"
+
+#: ../gio/gdbusserver.c:710
 msgid "Abstract name space not supported"
 msgstr "Աբստրակտ անվանումների տիրույթները չեն ապահովվում"
 
-#: ../gio/gdbusserver.c:793
+#: ../gio/gdbusserver.c:800
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Չի հաջողվել նշել nonce ֆայլ սերվեր ստեղծելիս"
 
-#: ../gio/gdbusserver.c:870
+#: ../gio/gdbusserver.c:877
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Ֆայլը գրելու սխալ `%s' - ում․ %s"
 
-#: ../gio/gdbusserver.c:1026
+#: ../gio/gdbusserver.c:1033
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "`%s' տողը վավեր D-Bus GUID չէ"
 
-#: ../gio/gdbusserver.c:1066
+#: ../gio/gdbusserver.c:1073
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Չի կարող լսել `%s' չաջակցվող փոխադրումը"
 
-#: ../gio/gdbus-tool.c:87 ../gio/gsettings-tool.c:76
+#: ../gio/gdbus-tool.c:87
+#: ../gio/gsettings-tool.c:76
 msgid "COMMAND"
 msgstr "Հրաման"
 
@@ -1749,16 +1741,21 @@ msgstr ""
 "  հետևել               Հետևում է հեռակա օբյեկտը\n"
 "  կանչ                   Կանչում է մեթոդ՝ հեռացված օբյեկտի վրա\n"
 "\n"
-"Օգտագործել \"%s ՀՐԱՄԱՆ --օգնություն\" յուրաքանչյուր հրամանի օգնությունն "
-"ստանալու համար։\n"
+"Օգտագործել \"%s ՀՐԱՄԱՆ --օգնություն\" յուրաքանչյուր հրամանի օգնությունն ստանալու համար։\n"
 
-#: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
-#: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
+#: ../gio/gdbus-tool.c:160
+#: ../gio/gdbus-tool.c:216
+#: ../gio/gdbus-tool.c:288
+#: ../gio/gdbus-tool.c:312
+#: ../gio/gdbus-tool.c:814
+#: ../gio/gdbus-tool.c:1324
 #, c-format
 msgid "Error: %s\n"
 msgstr "Սխալ․ %s\n"
 
-#: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
+#: ../gio/gdbus-tool.c:171
+#: ../gio/gdbus-tool.c:229
+#: ../gio/gdbus-tool.c:1340
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "XML զննումը վերլուծելու սխալ․ %s\n"
@@ -1795,19 +1792,13 @@ msgstr "Նշված են կապի բազմակի վերջնակետեր"
 
 #: ../gio/gdbus-tool.c:459
 #, c-format
-msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr ""
-"Զգուշացում․ Հաշվի առնելով զննում տվյալը, `%s' ինտերֆեյսը գոյություն չունի\n"
+msgid "Warning: According to introspection data, interface `%s' does not exist\n"
+msgstr "Զգուշացում․ Հաշվի առնելով զննում տվյալը, `%s' ինտերֆեյսը գոյություն չունի\n"
 
 #: ../gio/gdbus-tool.c:468
 #, c-format
-msgid ""
-"Warning: According to introspection data, method `%s' does not exist on "
-"interface `%s'\n"
-msgstr ""
-"Զգուշացում․ Հաշվի առնելով զննում տվյալը, `%s'մեթոդը գոյություն չունի `%s' "
-"ինտերֆեյսի համար\n"
+msgid "Warning: According to introspection data, method `%s' does not exist on interface `%s'\n"
+msgstr "Զգուշացում․ Հաշվի առնելով զննում տվյալը, `%s'մեթոդը գոյություն չունի `%s' ինտերֆեյսի համար\n"
 
 #: ../gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
@@ -1825,22 +1816,29 @@ msgstr "Մեթոդի և ինտերֆեյսի անունը"
 msgid "Invoke a method on a remote object."
 msgstr "Կանչել մեթոդը հեռադիր օբյեկտի համար"
 
-#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
+#: ../gio/gdbus-tool.c:626
+#: ../gio/gdbus-tool.c:1245
+#: ../gio/gdbus-tool.c:1505
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Միացման ժամանակ առաջացած սխալ․ %s\n"
 
-#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
+#: ../gio/gdbus-tool.c:646
+#: ../gio/gdbus-tool.c:1264
+#: ../gio/gdbus-tool.c:1524
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Սխալ․ Նպատակակետը նշված չէ\n"
 
-#: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1283
+#: ../gio/gdbus-tool.c:667
+#: ../gio/gdbus-tool.c:1283
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Սխալ․ Օբյեկտի ուղին նշված չէ\n"
 
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
+#: ../gio/gdbus-tool.c:687
+#: ../gio/gdbus-tool.c:1303
+#: ../gio/gdbus-tool.c:1564
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Սխալ․ %s - ը օբյեկտի վավեր ուղի չէ\n"
@@ -1893,7 +1891,8 @@ msgstr "Օբյեկտի ուղին, որին պետք է հետևել"
 msgid "Monitor a remote object."
 msgstr "Հետևել հեռադիր օբյեկտը"
 
-#: ../gio/gdesktopappinfo.c:467 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:467
+#: ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Անանուն"
 
@@ -1908,9 +1907,7 @@ msgstr "Չի հաջողվել աշխատածրագրի համար պահանջվ
 #: ../gio/gdesktopappinfo.c:1153
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr ""
-"Չի հաջողվել ստեղծել %s կոնֆիգուրացիոն պանակ օգտագործողի աշխատածրագրի համար. %"
-"s"
+msgstr "Չի հաջողվել ստեղծել %s կոնֆիգուրացիոն պանակ օգտագործողի աշխատածրագրի համար. %s"
 
 #: ../gio/gdesktopappinfo.c:1157
 #, c-format
@@ -1936,8 +1933,7 @@ msgstr "Սարքը չի իրականացնում դուրս հանումը"
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gdrive.c:443
 msgid "drive doesn't implement eject or eject_with_operation"
-msgstr ""
-"Սարքը չի իրականացնում \"դուրս հանում\" կամ \"դուրս հանում գործողությամբ\""
+msgstr "Սարքը չի իրականացնում \"դուրս հանում\" կամ \"դուրս հանում գործողությամբ\""
 
 #: ../gio/gdrive.c:520
 msgid "drive doesn't implement polling for media"
@@ -1961,29 +1957,47 @@ msgstr "Չի հաջողվել մշակել GEmblem կոդավորման %d տա�
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "GEmblem կոդավորման մեջ սխալ քանակությամբ բառանիշեր (%d)"
 
-#: ../gio/gemblemedicon.c:295
+#: ../gio/gemblemedicon.c:292
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "Չի հաջողվել մշակել GEmblemedIcon կոդավորման %d տարբերակը"
 
-#: ../gio/gemblemedicon.c:305
+#: ../gio/gemblemedicon.c:302
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "GEmblemedIcon կոդավորման մեջ սխալ քանակությանմ բառանիշեր (%d)"
 
-#: ../gio/gemblemedicon.c:328
+#: ../gio/gemblemedicon.c:325
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblemedIcon-ի համար սպասվում է GEmblem"
 
-#: ../gio/gfile.c:870 ../gio/gfile.c:1100 ../gio/gfile.c:1235
-#: ../gio/gfile.c:1471 ../gio/gfile.c:1525 ../gio/gfile.c:1582
-#: ../gio/gfile.c:1665 ../gio/gfile.c:1720 ../gio/gfile.c:1780
-#: ../gio/gfile.c:1834 ../gio/gfile.c:3304 ../gio/gfile.c:3358
-#: ../gio/gfile.c:3490 ../gio/gfile.c:3530 ../gio/gfile.c:3857
-#: ../gio/gfile.c:4259 ../gio/gfile.c:4345 ../gio/gfile.c:4434
-#: ../gio/gfile.c:4532 ../gio/gfile.c:4619 ../gio/gfile.c:4712
-#: ../gio/gfile.c:5042 ../gio/gfile.c:5322 ../gio/gfile.c:5391
-#: ../gio/gfile.c:6982 ../gio/gfile.c:7072 ../gio/gfile.c:7158
+#: ../gio/gfile.c:870
+#: ../gio/gfile.c:1100
+#: ../gio/gfile.c:1235
+#: ../gio/gfile.c:1471
+#: ../gio/gfile.c:1525
+#: ../gio/gfile.c:1582
+#: ../gio/gfile.c:1665
+#: ../gio/gfile.c:1720
+#: ../gio/gfile.c:1780
+#: ../gio/gfile.c:1834
+#: ../gio/gfile.c:3304
+#: ../gio/gfile.c:3358
+#: ../gio/gfile.c:3490
+#: ../gio/gfile.c:3530
+#: ../gio/gfile.c:3857
+#: ../gio/gfile.c:4259
+#: ../gio/gfile.c:4345
+#: ../gio/gfile.c:4434
+#: ../gio/gfile.c:4532
+#: ../gio/gfile.c:4619
+#: ../gio/gfile.c:4712
+#: ../gio/gfile.c:5042
+#: ../gio/gfile.c:5322
+#: ../gio/gfile.c:5391
+#: ../gio/gfile.c:6982
+#: ../gio/gfile.c:7072
+#: ../gio/gfile.c:7158
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Գործողությունն ապահովված չէ"
@@ -1996,12 +2010,15 @@ msgstr "Գործողությունն ապահովված չէ"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1356 ../gio/glocalfile.c:1059 ../gio/glocalfile.c:1070
+#: ../gio/gfile.c:1356
+#: ../gio/glocalfile.c:1059
+#: ../gio/glocalfile.c:1070
 #: ../gio/glocalfile.c:1083
 msgid "Containing mount does not exist"
 msgstr "Դիտման կետ պարունակող գոյություն չունի"
 
-#: ../gio/gfile.c:2408 ../gio/glocalfile.c:2258
+#: ../gio/gfile.c:2408
+#: ../gio/glocalfile.c:2258
 msgid "Can't copy over directory"
 msgstr "Չի ստացվում պատճենել պանակից վերև "
 
@@ -2009,7 +2026,8 @@ msgstr "Չի ստացվում պատճենել պանակից վերև "
 msgid "Can't copy directory over directory"
 msgstr "Չի ստացվում պատճենել պանակը պանակի վրայից "
 
-#: ../gio/gfile.c:2477 ../gio/glocalfile.c:2267
+#: ../gio/gfile.c:2477
+#: ../gio/glocalfile.c:2267
 msgid "Target file exists"
 msgstr "Գոյություն ունի նպատակակակետի ֆայլ"
 
@@ -2043,7 +2061,8 @@ msgstr "Ազբամանը ապահովված չէ"
 msgid "File names cannot contain '%c'"
 msgstr "Ֆայլի անունը չի կարող պարունակել '%c'"
 
-#: ../gio/gfile.c:6039 ../gio/gvolume.c:330
+#: ../gio/gfile.c:6039
+#: ../gio/gvolume.c:330
 msgid "volume doesn't implement mount"
 msgstr "Հատորը չի կարող իրականացնել միացումը"
 
@@ -2055,12 +2074,15 @@ msgstr "Այս ֆայլի մշակման համար աշխատածրագիր գ�
 msgid "Enumerator is closed"
 msgstr "Հաշվիչը փակ է"
 
-#: ../gio/gfileenumerator.c:212 ../gio/gfileenumerator.c:271
-#: ../gio/gfileenumerator.c:371 ../gio/gfileenumerator.c:480
+#: ../gio/gfileenumerator.c:212
+#: ../gio/gfileenumerator.c:271
+#: ../gio/gfileenumerator.c:371
+#: ../gio/gfileenumerator.c:480
 msgid "File enumerator has outstanding operation"
 msgstr "Ֆայլի հաշվիչը պարունակում է անավարտ գործողություն"
 
-#: ../gio/gfileenumerator.c:361 ../gio/gfileenumerator.c:470
+#: ../gio/gfileenumerator.c:361
+#: ../gio/gfileenumerator.c:470
 msgid "File enumerator is already closed"
 msgstr "Ֆայլի հաշվիչը արդեն փակ է"
 
@@ -2073,13 +2095,16 @@ msgstr "Չի հաջողվել փոխել GFileIcon կոդավորման %d տե�
 msgid "Malformed input data for GFileIcon"
 msgstr "Սխալ ձևավորված մուտքային տվյալ GFileIcon համար"
 
-#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:421
-#: ../gio/gfileiostream.c:170 ../gio/gfileoutputstream.c:169
+#: ../gio/gfileinputstream.c:154
+#: ../gio/gfileinputstream.c:421
+#: ../gio/gfileiostream.c:170
+#: ../gio/gfileoutputstream.c:169
 #: ../gio/gfileoutputstream.c:524
 msgid "Stream doesn't support query_info"
 msgstr "Հոսքը չի ապահովում query_info"
 
-#: ../gio/gfileinputstream.c:336 ../gio/gfileiostream.c:388
+#: ../gio/gfileinputstream.c:336
+#: ../gio/gfileiostream.c:388
 #: ../gio/gfileoutputstream.c:382
 msgid "Seek not supported on stream"
 msgstr "Հոսքով տեղաշարժվելը չի ապահովվում"
@@ -2088,7 +2113,8 @@ msgstr "Հոսքով տեղաշարժվելը չի ապահովվում"
 msgid "Truncate not allowed on input stream"
 msgstr "Վնասում թույլատրված չի ելքային հոսքում"
 
-#: ../gio/gfileiostream.c:464 ../gio/gfileoutputstream.c:458
+#: ../gio/gfileiostream.c:464
+#: ../gio/gfileoutputstream.c:458
 msgid "Truncate not supported on stream"
 msgstr "Վնասում չի ապահովվում հոսքում"
 
@@ -2136,12 +2162,14 @@ msgstr "Մուտքային հոսքը չի ապահովում կարդալը "
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:901 ../gio/giostream.c:314
-#: ../gio/goutputstream.c:1205
+#: ../gio/ginputstream.c:901
+#: ../gio/giostream.c:316
+#: ../gio/goutputstream.c:1209
 msgid "Stream has outstanding operation"
 msgstr "Հոսքը պարունակում է անավարտ գործողություն"
 
-#: ../gio/ginetsocketaddress.c:181 ../gio/ginetsocketaddress.c:198
+#: ../gio/ginetsocketaddress.c:181
+#: ../gio/ginetsocketaddress.c:198
 #: ../gio/gunixsocketaddress.c:221
 msgid "Not enough space for socket address"
 msgstr "Սոկետի հասցեի համար բավականաչափ տեղ չկա"
@@ -2154,7 +2182,8 @@ msgstr "Սոկետի չաջակցվող անուն"
 msgid "Unable to find default local directory monitor type"
 msgstr "Չի հաջողվում լռելյայն տեղային պանակների համար գտնել ցուցարկչի տիպը"
 
-#: ../gio/glocalfile.c:593 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:593
+#: ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Ֆայլի %s անունը անվավեր է"
@@ -2168,7 +2197,8 @@ msgstr "Սխալ՝ ֆայլային համակրգի մասին տեղեկատվ
 msgid "Can't rename root directory"
 msgstr "Չի հաջողվում վերանվանել root պանակը"
 
-#: ../gio/glocalfile.c:1125 ../gio/glocalfile.c:1151
+#: ../gio/glocalfile.c:1125
+#: ../gio/glocalfile.c:1151
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Ֆայլը անվանափոխելու սխալ․ %s"
@@ -2177,9 +2207,13 @@ msgstr "Ֆայլը անվանափոխելու սխալ․ %s"
 msgid "Can't rename file, filename already exist"
 msgstr "Չի հաջողվում վերանվանել ֆայլը, ֆայլի անունն արդեն գոյություն ունի"
 
-#: ../gio/glocalfile.c:1147 ../gio/glocalfile.c:2131 ../gio/glocalfile.c:2160
-#: ../gio/glocalfile.c:2320 ../gio/glocalfileoutputstream.c:571
-#: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
+#: ../gio/glocalfile.c:1147
+#: ../gio/glocalfile.c:2131
+#: ../gio/glocalfile.c:2160
+#: ../gio/glocalfile.c:2320
+#: ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfileoutputstream.c:624
+#: ../gio/glocalfileoutputstream.c:669
 #: ../gio/glocalfileoutputstream.c:1151
 msgid "Invalid filename"
 msgstr "Անվավեր ֆայլի անունը"
@@ -2212,7 +2246,8 @@ msgstr "Չի հաջողվել ստեղծել '%s' աղբաման պանակ․ %
 msgid "Unable to find toplevel directory for trash"
 msgstr "Չի հաջողվել գտնել վերին մակարդակի պանակ աղբամանի համար"
 
-#: ../gio/glocalfile.c:1933 ../gio/glocalfile.c:1953
+#: ../gio/glocalfile.c:1933
+#: ../gio/glocalfile.c:1953
 msgid "Unable to find or create trash directory"
 msgstr " Չի հաջողվել գտնել կամ ստեղծել աղբաման պանակը"
 
@@ -2221,7 +2256,9 @@ msgstr " Չի հաջողվել գտնել կամ ստեղծել աղբաման �
 msgid "Unable to create trashing info file: %s"
 msgstr "Չի հաջողվել ստեղծել ինֆորմացիա աղբամանում գտնվող ֆայլի մասին․ %s"
 
-#: ../gio/glocalfile.c:2016 ../gio/glocalfile.c:2021 ../gio/glocalfile.c:2101
+#: ../gio/glocalfile.c:2016
+#: ../gio/glocalfile.c:2021
+#: ../gio/glocalfile.c:2101
 #: ../gio/glocalfile.c:2108
 #, c-format
 msgid "Unable to trash file: %s"
@@ -2242,7 +2279,8 @@ msgstr "Ֆայլային համակարգը չի ապահովում սիմվոլ
 msgid "Error making symbolic link: %s"
 msgstr "Սիմվոլիկ հղում ստեղծելու սխալ․ %s"
 
-#: ../gio/glocalfile.c:2230 ../gio/glocalfile.c:2324
+#: ../gio/glocalfile.c:2230
+#: ../gio/glocalfile.c:2324
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Ֆայլի տեղափոխման սխալ․ %s"
@@ -2251,9 +2289,12 @@ msgstr "Ֆայլի տեղափոխման սխալ․ %s"
 msgid "Can't move directory over directory"
 msgstr "Հնարավոր չէ տեղափոխել պանակը պանակի վրայով"
 
-#: ../gio/glocalfile.c:2280 ../gio/glocalfileoutputstream.c:949
-#: ../gio/glocalfileoutputstream.c:963 ../gio/glocalfileoutputstream.c:978
-#: ../gio/glocalfileoutputstream.c:994 ../gio/glocalfileoutputstream.c:1008
+#: ../gio/glocalfile.c:2280
+#: ../gio/glocalfileoutputstream.c:949
+#: ../gio/glocalfileoutputstream.c:963
+#: ../gio/glocalfileoutputstream.c:978
+#: ../gio/glocalfileoutputstream.c:994
+#: ../gio/glocalfileoutputstream.c:1008
 msgid "Backup file creation failed"
 msgstr "Չի հաջողվել ստեղծել պահուստային ֆայլ"
 
@@ -2283,7 +2324,8 @@ msgstr "Ընդլայնված ատրիբուտի անվավեր անուն"
 msgid "Error setting extended attribute '%s': %s"
 msgstr "'%s' ընդլայնված ատրիբուտը սահմանելու սխալ․ %s"
 
-#: ../gio/glocalfileinfo.c:1483 ../gio/glocalfileoutputstream.c:833
+#: ../gio/glocalfileinfo.c:1483
+#: ../gio/glocalfileoutputstream.c:833
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "'%s' ֆայլի մասին տեղեկություններ ստանալիս առաջացած սխալ․ %s"
@@ -2305,7 +2347,8 @@ msgstr "Ատրիբուտի անվավեր տեսակ (սպասվում է uint32
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Ատրիբուտի անվավեր տեսակ (սպասվում է uint64)"
 
-#: ../gio/glocalfileinfo.c:1851 ../gio/glocalfileinfo.c:1870
+#: ../gio/glocalfileinfo.c:1851
+#: ../gio/glocalfileinfo.c:1870
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Ատրիբուտի անվավեր տեսակ (սպասվում է byte տող)"
 
@@ -2327,7 +2370,8 @@ msgstr "Սխալ սեփականատեր սահմանելիս․ %s"
 msgid "symlink must be non-NULL"
 msgstr "Սիմվոլիկ հղումը պետք է լինի ոչ NULL"
 
-#: ../gio/glocalfileinfo.c:2005 ../gio/glocalfileinfo.c:2024
+#: ../gio/glocalfileinfo.c:2005
+#: ../gio/glocalfileinfo.c:2024
 #: ../gio/glocalfileinfo.c:2035
 #, c-format
 msgid "Error setting symlink: %s"
@@ -2340,8 +2384,7 @@ msgstr "Չի հաջողվել ստեղծել սիմվոլիկ հղում․ ֆա
 #: ../gio/glocalfileinfo.c:2140
 #, c-format
 msgid "Error setting modification or access time: %s"
-msgstr ""
-"Սխալ՝ առաջացած փոփություններ կամ հասանելիության ժամանակը սահմանելիս․ %s"
+msgstr "Սխալ՝ առաջացած փոփություններ կամ հասանելիության ժամանակը սահմանելիս․ %s"
 
 #: ../gio/glocalfileinfo.c:2163
 msgid "SELinux context must be non-NULL"
@@ -2361,19 +2404,23 @@ msgstr "SELinux հասանելի չէ այս համակարգում"
 msgid "Setting attribute %s not supported"
 msgstr "%s ատրիբուտի սահմանումը չի ապահովվում"
 
-#: ../gio/glocalfileinputstream.c:185 ../gio/glocalfileoutputstream.c:722
+#: ../gio/glocalfileinputstream.c:185
+#: ../gio/glocalfileoutputstream.c:722
 #, c-format
 msgid "Error reading from file: %s"
 msgstr "Ֆայլից կարդալու սխալ․ %s"
 
-#: ../gio/glocalfileinputstream.c:216 ../gio/glocalfileinputstream.c:228
-#: ../gio/glocalfileinputstream.c:340 ../gio/glocalfileoutputstream.c:470
+#: ../gio/glocalfileinputstream.c:216
+#: ../gio/glocalfileinputstream.c:228
+#: ../gio/glocalfileinputstream.c:340
+#: ../gio/glocalfileoutputstream.c:470
 #: ../gio/glocalfileoutputstream.c:1026
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Ֆայլի վրայով անցնելու սխալ․ %s"
 
-#: ../gio/glocalfileinputstream.c:261 ../gio/glocalfileoutputstream.c:256
+#: ../gio/glocalfileinputstream.c:261
+#: ../gio/glocalfileoutputstream.c:256
 #: ../gio/glocalfileoutputstream.c:351
 #, c-format
 msgid "Error closing file: %s"
@@ -2383,7 +2430,8 @@ msgstr "Ֆայլը փակելու սխալ․ %s"
 msgid "Unable to find default local file monitor type"
 msgstr "Չի հաջողվել գտնել լռելյայն տեղային ֆայլերի մոնիտորի տիպը "
 
-#: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:235
+#: ../gio/glocalfileoutputstream.c:202
+#: ../gio/glocalfileoutputstream.c:235
 #: ../gio/glocalfileoutputstream.c:743
 #, c-format
 msgid "Error writing to file: %s"
@@ -2394,7 +2442,8 @@ msgstr "Ֆայլում գրելու սխալ․ %s"
 msgid "Error removing old backup link: %s"
 msgstr "Չի հաջողվել ջնջել հին պահուստային ֆայլերը․ %s"
 
-#: ../gio/glocalfileoutputstream.c:297 ../gio/glocalfileoutputstream.c:310
+#: ../gio/glocalfileoutputstream.c:297
+#: ../gio/glocalfileoutputstream.c:310
 #, c-format
 msgid "Error creating backup copy: %s"
 msgstr "Պահեստային կրկնօրինակ ստեղծելիս առաջացած սխալ․ %s"
@@ -2404,14 +2453,18 @@ msgstr "Պահեստային կրկնօրինակ ստեղծելիս առաջա�
 msgid "Error renaming temporary file: %s"
 msgstr "Ժամանակավոր ֆայլն անվանափոխելու սխալ․ %s"
 
-#: ../gio/glocalfileoutputstream.c:516 ../gio/glocalfileoutputstream.c:1077
+#: ../gio/glocalfileoutputstream.c:516
+#: ../gio/glocalfileoutputstream.c:1077
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Ֆայլը կտրելու սխալ․ %s"
 
-#: ../gio/glocalfileoutputstream.c:577 ../gio/glocalfileoutputstream.c:630
-#: ../gio/glocalfileoutputstream.c:675 ../gio/glocalfileoutputstream.c:815
-#: ../gio/glocalfileoutputstream.c:1058 ../gio/glocalfileoutputstream.c:1157
+#: ../gio/glocalfileoutputstream.c:577
+#: ../gio/glocalfileoutputstream.c:630
+#: ../gio/glocalfileoutputstream.c:675
+#: ../gio/glocalfileoutputstream.c:815
+#: ../gio/glocalfileoutputstream.c:1058
+#: ../gio/glocalfileoutputstream.c:1157
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "'%s' Ֆայլը բացելու սխալ․ %s"
@@ -2433,7 +2486,8 @@ msgstr "Ֆայլը արտաքինից փոփոխվել է"
 msgid "Error removing old file: %s"
 msgstr "Հին ֆայլը ջնջելու սխալ․ %s"
 
-#: ../gio/gmemoryinputstream.c:486 ../gio/gmemoryoutputstream.c:717
+#: ../gio/gmemoryinputstream.c:486
+#: ../gio/gmemoryoutputstream.c:746
 msgid "Invalid GSeekType supplied"
 msgstr "Փոխանցված է անվավեր GSeekType"
 
@@ -2445,27 +2499,23 @@ msgstr "Չի կարելի վնասել GMemoryInputStream-ը"
 msgid "Cannot truncate GMemoryInputStream"
 msgstr "Չի կարելի վնասել GMemoryInputStream-ը"
 
-#: ../gio/gmemoryoutputstream.c:467
+#: ../gio/gmemoryoutputstream.c:496
 msgid "Memory output stream not resizable"
 msgstr "Ելքային հոսքի չափը հիշողության մեջ փոփոխելի չէ"
 
-#: ../gio/gmemoryoutputstream.c:483
+#: ../gio/gmemoryoutputstream.c:512
 msgid "Failed to resize memory output stream"
 msgstr "Չի հաջողվել փոփոխել ելքային հոսքի չափը հիշողության մեջ"
 
-#: ../gio/gmemoryoutputstream.c:571
-msgid ""
-"Amount of memory required to process the write is larger than available "
-"address space"
-msgstr ""
-"Գրելու համար պահանջվող հիշողության չափը ավելի մեծ է քան հասանելի հասցեների "
-"տիրույթը"
+#: ../gio/gmemoryoutputstream.c:600
+msgid "Amount of memory required to process the write is larger than available address space"
+msgstr "Գրելու համար պահանջվող հիշողության չափը ավելի մեծ է քան հասանելի հասցեների տիրույթը"
 
-#: ../gio/gmemoryoutputstream.c:727
+#: ../gio/gmemoryoutputstream.c:756
 msgid "Requested seek before the beginning of the stream"
 msgstr "Պահանջվել է տեղափոխում հոսքը սկսվելուց առաջ"
 
-#: ../gio/gmemoryoutputstream.c:736
+#: ../gio/gmemoryoutputstream.c:765
 msgid "Requested seek beyond the end of the stream"
 msgstr "Պահանջվել է տեղափոխում հոսքի ավարտին"
 
@@ -2488,17 +2538,14 @@ msgstr "Տեղադրւմը չի իրականացրել \"դուրս հանելը
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:522
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr ""
-"Տեղադրւմը չի իրականացրել  \"ապամոնտաժումը\" կամ \"ապամոնտաժում գործողությամբ"
-"\""
+msgstr "Տեղադրւմը չի իրականացրել  \"ապամոնտաժումը\" կամ \"ապամոնտաժում գործողությամբ\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:609
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr ""
-"Տեղադրւմը չի իրականացրել  \"դուրս հանել\" կամ \"դուրս հանել գոծողությամբ\""
+msgstr "Տեղադրւմը չի իրականացրել  \"դուրս հանել\" կամ \"դուրս հանել գոծողությամբ\""
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -2521,16 +2568,18 @@ msgstr "Տեղադրւմը չի իրականացնում պարունակութ�
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "Տեղադրումը չի իրականացնում պարունակության տիպի սինխրոն որոշումը "
 
-#: ../gio/gnetworkaddress.c:294
+#: ../gio/gnetworkaddress.c:318
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "'%s' Hostname-ը պարունակում է '[' բայց ոչ ']' "
 
-#: ../gio/goutputstream.c:206 ../gio/goutputstream.c:407
+#: ../gio/goutputstream.c:206
+#: ../gio/goutputstream.c:407
 msgid "Output stream doesn't implement write"
 msgstr "Ելքային հոսքը չի իրականացնում գրելը"
 
-#: ../gio/goutputstream.c:368 ../gio/goutputstream.c:844
+#: ../gio/goutputstream.c:368
+#: ../gio/goutputstream.c:848
 msgid "Source stream is already closed"
 msgstr "Սկզբնական հոսքը արդեն փակ է"
 
@@ -2544,42 +2593,195 @@ msgstr "'%s' - ի լուծման սխալ․ %s"
 msgid "Error reverse-resolving '%s': %s"
 msgstr "'%s' - ի հակադարձ լուծման սխալ․ %s"
 
-#: ../gio/gresolver.c:820 ../gio/gresolver.c:898
+#: ../gio/gresolver.c:820
+#: ../gio/gresolver.c:898
 #, c-format
 msgid "No service record for '%s'"
 msgstr "Գոյություն չունի ծառայողական գրառում '%s' -ի համար"
 
-#: ../gio/gresolver.c:825 ../gio/gresolver.c:903
+#: ../gio/gresolver.c:825
+#: ../gio/gresolver.c:903
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Ժամանակավորապես հնարավոր չէ լուծել '%s'"
 
-#: ../gio/gresolver.c:830 ../gio/gresolver.c:908
+#: ../gio/gresolver.c:830
+#: ../gio/gresolver.c:908
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Լուծման սխալ․ %s"
 
-#: ../gio/gschema-compile.c:1632
+#: ../gio/gschema-compile.c:702
+#| msgid "Abstract name space not supported"
+msgid "empty names are not permitted"
+msgstr "Դատարկ անվանումները թույլատրելի չեն"
+
+#: ../gio/gschema-compile.c:712
+#, c-format
+msgid "invalid name '%s': names must begin with a lowercase letter"
+msgstr "Անվավեր անուն '%s'․ Անունները պետք է սկսվեն փոքրատառով"
+
+#: ../gio/gschema-compile.c:724
+#, c-format
+msgid "invalid name '%s': invalid character '%c'; only lowercase letters, numbers and dash ('-') are permitted."
+msgstr "անվավեր անուն '%s'․ անվավեր նիշ '%c'; միայն փոքրատառեր, թվեր և գծիկներ ('-') են թույլատրվում։"
+
+#: ../gio/gschema-compile.c:733
+#, c-format
+msgid "invalid name '%s': two successive dashes ('--') are not permitted."
+msgstr "անվավեր անուն '%s': որկու հաջորդական գծիկներ ('--') թույլատրելի չեն։"
+
+#: ../gio/gschema-compile.c:742
+#, c-format
+msgid "invalid name '%s': the last character may not be a dash ('-')."
+msgstr "անվավեր անուն '%s'․ վերջին նիշը չի կարող լինելգծիկ ('-')։"
+
+#: ../gio/gschema-compile.c:750
+#, c-format
+msgid "invalid name '%s': maximum length is 32"
+msgstr "անվավեր անուն '%s'․ առավելագույն երկարությունը 32 է"
+
+#: ../gio/gschema-compile.c:819
+#, c-format
+msgid "<child name='%s'> already specified"
+msgstr "<ենթատարրի անունը='%s'> արդեն նշված է"
+
+#: ../gio/gschema-compile.c:845
+msgid "can not add keys to a 'list-of' schema"
+msgstr "չի հաջողվել ավելացնել բանալիներ 'list-of' սխեմային"
+
+#: ../gio/gschema-compile.c:856
+#, c-format
+msgid "<key name='%s'> already specified"
+msgstr "<բանալու անուն='%s'> արդեն նշված է"
+
+#: ../gio/gschema-compile.c:874
+#, c-format
+msgid "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to modify value"
+msgstr "<բանալու անուն='%s'> ծածկում է <բանալու անուն='%s'> <սխեմայի id='%s'> -ում; օգտագործել <override> արժեքը փոփոխելու համար"
+
+#: ../gio/gschema-compile.c:885
+#, c-format
+msgid "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute to <key>"
+msgstr "ճիշտ մեկը հետևյալներից՝ 'տիպ', 'enum' կամ 'դրոշներ', պետք է նշված լինի որպես <բանալի> ատրիբուտ"
+
+#: ../gio/gschema-compile.c:904
+#, c-format
+msgid "<%s id='%s'> not (yet) defined."
+msgstr "<%s id='%s'> դեռևս սահմանված չէ։"
+
+#: ../gio/gschema-compile.c:919
+#, c-format
+#| msgid "Invalid attribute type (string expected)"
+msgid "invalid GVariant type string '%s'"
+msgstr "Անվավեր GVariant տիպի տողի անուն '%s'"
+
+#: ../gio/gschema-compile.c:949
+msgid "<override> given but schema isn't extending anything"
+msgstr "<override> տրված է, բայց սխեման չի ընդլայնում որևէ բան"
+
+#: ../gio/gschema-compile.c:962
+#, c-format
+msgid "no <key name='%s'> to override"
+msgstr "գոյություն չունի <բանալու անուն='%s'> վերագրելու համար"
+
+#: ../gio/gschema-compile.c:970
+#, c-format
+msgid "<override name='%s'> already specified"
+msgstr "<override name='%s'> արդեն սահմանված է"
+
+#: ../gio/gschema-compile.c:1036
+#, c-format
+msgid "<schema id='%s'> already specified"
+msgstr "<սխեմայի id='%s'> արդեն սահմանված է"
+
+#: ../gio/gschema-compile.c:1048
+#, c-format
+msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgstr "<սխեմայի id='%s'> ընդլայնում է դեռևս գոյություն չունեցող սխեման '%s'"
+
+#: ../gio/gschema-compile.c:1062
+#, c-format
+msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgstr "<սխեմայի id='%s'> դեռևս գոյություն չունեցող '%s' սխեմայի ցուցակ է"
+
+#: ../gio/gschema-compile.c:1076
+#, c-format
+msgid "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgstr "<սխեմայի id='%s'> ցուցակ է, որն ընդլայնում է <սխեմայի id='%s'>, որը ցուցակ չէ"
+
+#: ../gio/gschema-compile.c:1086
+#, c-format
+msgid "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' does not extend '%s'"
+msgstr "<սխեմայի id='%s' list-of='%s'> ընդլայնում է <սխեմայի id='%s' list-of='%s'> բայց '%s' չի ընդլայնում '%s'"
+
+#: ../gio/gschema-compile.c:1103
+#, c-format
+msgid "a path, if given, must begin and end with a slash"
+msgstr "ճանապարհը, եթե տրված է, պետք է սկսվի և ավարտվի թեք գծով"
+
+#: ../gio/gschema-compile.c:1125
+#, c-format
+msgid "<%s id='%s'> already specified"
+msgstr "<%s id='%s'> արդեն սահմանված է"
+
+#: ../gio/gschema-compile.c:1339
+#, c-format
+msgid "Element <%s> not allowed inside <%s>"
+msgstr "<%s> տարրըը չի թույլատրվում <%s> -ի ներսում"
+
+#: ../gio/gschema-compile.c:1343
+#, c-format
+msgid "Element <%s> not allowed at toplevel"
+msgstr "<%s> տարրը չի թույլատրվում վերին մակարդակում"
+
+#: ../gio/gschema-compile.c:1437
+#, c-format
+msgid "text may not appear inside <%s>"
+msgstr "տեքստը կարող է չհանդիպել <%s> -ի ներսում"
+
+#: ../gio/gschema-compile.c:1651
+#, c-format
+msgid "No such schema `%s' specified in override file `%s'"
+msgstr "Գոյություն չունի `%s' սխեմա սահմանված վերագրվող `%s' ֆայլում"
+
+#: ../gio/gschema-compile.c:1675
+#, c-format
+msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgstr "Գոյություն չունի `%s' բանալի '%s' սխեմայում, ինչպես սահմանված է նորից վերագրվող `%s' ֆայլում"
+
+#: ../gio/gschema-compile.c:1708
+#, c-format
+msgid "override for key `%s' in schema `%s' in override file `%s' is out of the range given in the schema"
+msgstr "վերագրելու համար `%s' բանալին `%s' սխեմայում `%s' վերագրվող ֆայլում սխեմայում տրված սահմաններից դուրս է"
+
+#: ../gio/gschema-compile.c:1729
+#, c-format
+msgid "override for key `%s' in schema `%s' in override file `%s' is not in the list of valid choices"
+msgstr "վերագրելու համար `%s' բանալին `%s' սխեմայում `%s' վերագրվող ֆայլում վավեր ընտրությունների ցուցակում չէ"
+
+#: ../gio/gschema-compile.c:1774
 msgid "where to store the gschemas.compiled file"
 msgstr "Որտեղ տեղավորել gschemas.compiled ֆայլը"
 
-#: ../gio/gschema-compile.c:1632 ../gio/gschema-compile.c:1644
+#: ../gio/gschema-compile.c:1774
+#: ../gio/gschema-compile.c:1786
 msgid "DIRECTORY"
 msgstr "Պանակ"
 
-#: ../gio/gschema-compile.c:1633
+#: ../gio/gschema-compile.c:1775
 msgid "Do not write the gschema.compiled file"
 msgstr "Չգրել gschemas.compiled ֆայլը"
 
-#: ../gio/gschema-compile.c:1634
+#: ../gio/gschema-compile.c:1776
 msgid "This option will be removed soon."
 msgstr "Այս ընտրանքը շուտով կհեռացվի"
 
-#: ../gio/gschema-compile.c:1635
+#: ../gio/gschema-compile.c:1777
 msgid "Do not enforce key name restrictions"
 msgstr "Չպարտադրել բանալու անվան սահմանապակումները"
 
-#: ../gio/gschema-compile.c:1647
+#: ../gio/gschema-compile.c:1789
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2589,33 +2791,43 @@ msgstr ""
 "Schema ֆայլերը պետք է ունենան .gschema.xml ընդլայնում,\n"
 "և cache ֆայլը կոչվում է gschemas.compiled։"
 
-#: ../gio/gschema-compile.c:1663
+#: ../gio/gschema-compile.c:1805
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Պետք է նշել ճիշտ մեկ պանակի անուն\n"
 
-#: ../gio/gschema-compile.c:1696
+#: ../gio/gschema-compile.c:1844
 #, c-format
 msgid "No schema files found: "
 msgstr "schema ֆայլ չի գտնվել․"
 
-#: ../gio/gschema-compile.c:1699
+#: ../gio/gschema-compile.c:1847
 #, c-format
 msgid "doing nothing.\n"
 msgstr "ոչինչ չանել։\n"
 
-#: ../gio/gschema-compile.c:1702
+#: ../gio/gschema-compile.c:1850
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "հեռացվել է գոյություն ունեցող ելքային ֆայլը։\n"
 
 #: ../gio/gsettings-tool.c:79
 #, c-format
+#| msgid ""
+#| "Commands:\n"
+#| "  help        Show this information\n"
+#| "  get         Get the value of a key\n"
+#| "  set         Set the value of a key\n"
+#| "  monitor     Monitor a key for changes\n"
+#| "  writable    Check if a key is writable\n"
+#| "\n"
+#| "Use '%s COMMAND --help' to get help for individual commands.\n"
 msgid ""
 "Commands:\n"
 "  help        Show this information\n"
 "  get         Get the value of a key\n"
 "  set         Set the value of a key\n"
+"  reset       Reset the value of a key\n"
 "  monitor     Monitor a key for changes\n"
 "  writable    Check if a key is writable\n"
 "\n"
@@ -2625,33 +2837,42 @@ msgstr ""
 "  օգնություն   Ցուցադրում է այս տեղեկությունը\n"
 "  ստանալ       Ստանում է բանալու արժեքը\n"
 "  տեղադրել   Տեղադրում է բանալու արժեքը\n"
+"  վերադնել    Վերադնում է բանալու արժեքը\n"
 "  հետևել         Հետևում է բանալու փոփոխությունները\n"
 "  գրվող           Ստուգում է արդյոք բանալին գրվող է\n"
 "\n"
-"Օգտագործել '%s ՀՐԱՄԱՆ --օգնություն' յուրաքանչյուր հրամանի մասին օգնություն "
-"ստանալու համար.\n"
+"Օգտագործել '%s ՀՐԱՄԱՆ --օգնություն' յուրաքանչյուր հրամանի մասին օգնություն ստանալու համար.\n"
 
-#: ../gio/gsettings-tool.c:221 ../gio/gsettings-tool.c:321
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:549
+#: ../gio/gsettings-tool.c:222
+#: ../gio/gsettings-tool.c:322
+#: ../gio/gsettings-tool.c:438
+#: ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr "Նշել schema-ի ուղին"
 
-#: ../gio/gsettings-tool.c:221 ../gio/gsettings-tool.c:321
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:549
+#: ../gio/gsettings-tool.c:222
+#: ../gio/gsettings-tool.c:322
+#: ../gio/gsettings-tool.c:438
+#: ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr "ՈՒՂԻ"
 
-#: ../gio/gsettings-tool.c:229 ../gio/gsettings-tool.c:444
-#: ../gio/gsettings-tool.c:557
+#: ../gio/gsettings-tool.c:230
+#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr "SCHEMA-Ի ԲԱՆԱԼԻ"
 
-#: ../gio/gsettings-tool.c:231
+#: ../gio/gsettings-tool.c:232
 msgid "Get the value of KEY"
 msgstr "Ստանալ բանալու արժեքը"
 
-#: ../gio/gsettings-tool.c:233 ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:564
+#: ../gio/gsettings-tool.c:234
+#: ../gio/gsettings-tool.c:450
+#: ../gio/gsettings-tool.c:545
+#: ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2661,15 +2882,16 @@ msgstr ""
 "   ՍԽԵՄԱ    Սխեմայի id\n"
 "   ԲԱՆԱԼԻ  Բանալու անուն\n"
 
-#: ../gio/gsettings-tool.c:329
+#: ../gio/gsettings-tool.c:330
+#: ../gio/gsettings-tool.c:446
 msgid "SCHEMA KEY VALUE"
 msgstr "ՍԽԵՄԱՅԻ ԲԱՆԱԼՈՒ ԱՐԺԵՔ"
 
-#: ../gio/gsettings-tool.c:331
+#: ../gio/gsettings-tool.c:332
 msgid "Set the value of KEY"
 msgstr "Տեղադրել ԲԱՆԱԼՈՒ արժեքը"
 
-#: ../gio/gsettings-tool.c:333
+#: ../gio/gsettings-tool.c:334
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2679,19 +2901,22 @@ msgstr ""
 "Արգումենտներ․\n"
 "   ՍԽԵՄԱ    Սխեմայի id\n"
 "   ԲԱՆԱԼԻ  Բանալու անուն\n"
-"   Արժեք      Բանալու արժեք, որը պետք է տեղադրվի, որպես սերիալիզացված "
-"GVariant\n"
+"   Արժեք      Բանալու արժեք, որը պետք է տեղադրվի, որպես սերիալիզացված GVariant\n"
 
-#: ../gio/gsettings-tool.c:406
+#: ../gio/gsettings-tool.c:407
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "%s բանալին գրվող չէ\n"
 
-#: ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:448
+msgid "Sets KEY to its default value"
+msgstr "Սահմանում է ԲԱՆԱԼԻՆ իր լռելյայն արժեքով"
+
+#: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
 msgstr "Պարզել արդյոք ԲԱՆԱԼԻՆ գրվող է"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:657
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
@@ -2699,117 +2924,141 @@ msgstr ""
 "Հետևել բանալու փոփոխություններին և տպել փոփոխված արժեքները։\n"
 "Հետևելը կշարունակվի մինչև պրոցեսի ավարտը։"
 
-#: ../gio/gsettings-tool.c:733
+#: ../gio/gsettings-tool.c:833
 #, c-format
 msgid "Unknown command '%s'\n"
 msgstr "Անհայտ հրաման '%s'\n"
 
-#: ../gio/gsocket.c:274
+#: ../gio/gsocket.c:276
 msgid "Invalid socket, not initialized"
 msgstr "Անվավեր սոկետ, սկզբնարժեքավորված չէ"
 
-#: ../gio/gsocket.c:281
+#: ../gio/gsocket.c:283
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Անվավեր սոկետ, սկզբնարժեքավորումը չի իրականացվել հետևյալ պատճառով․ %s"
 
-#: ../gio/gsocket.c:289
+#: ../gio/gsocket.c:291
 msgid "Socket is already closed"
 msgstr "Սոկետը արդեն փակ է"
 
-#: ../gio/gsocket.c:297 ../gio/gsocket.c:2619 ../gio/gsocket.c:2663
+#: ../gio/gsocket.c:299
+#: ../gio/gsocket.c:2716
+#: ../gio/gsocket.c:2760
 msgid "Socket I/O timed out"
 msgstr "I/O սոկետի ժամանակը լրացել է"
 
-#: ../gio/gsocket.c:419
+#: ../gio/gsocket.c:421
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "Ստեղծել GSocket fd-ից․ %s"
 
-#: ../gio/gsocket.c:453 ../gio/gsocket.c:469 ../gio/gsocket.c:2021
+#: ../gio/gsocket.c:455
+#: ../gio/gsocket.c:471
+#: ../gio/gsocket.c:2113
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Չի հաջողվել ստեղծել սոկետ․ %s"
 
-#: ../gio/gsocket.c:453
+#: ../gio/gsocket.c:455
 msgid "Unknown protocol was specified"
 msgstr "Նշված է անհայտ պրոտոկոլ"
 
-#: ../gio/gsocket.c:1219
+#: ../gio/gsocket.c:1224
 #, c-format
 msgid "could not get local address: %s"
 msgstr "Չի կարող ստանալ տեղային հասցեն․ %s"
 
-#: ../gio/gsocket.c:1252
+#: ../gio/gsocket.c:1267
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "Չի կարող ստանալ հեռադիր հասցեն․ %s"
 
-#: ../gio/gsocket.c:1310
+#: ../gio/gsocket.c:1328
 #, c-format
 msgid "could not listen: %s"
 msgstr "Չի կարող լսել․ %s"
 
-#: ../gio/gsocket.c:1384
+#: ../gio/gsocket.c:1402
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Հասցեին կապվելու սխալ․ %s"
 
-#: ../gio/gsocket.c:1504
+#: ../gio/gsocket.c:1522
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Չհաջողվեց կապի հաստատումը ընդունել՝ %s"
 
-#: ../gio/gsocket.c:1617
+#: ../gio/gsocket.c:1639
 msgid "Error connecting: "
 msgstr "Չհաջողվեց հաստատել կապ․"
 
-#: ../gio/gsocket.c:1621
+#: ../gio/gsocket.c:1644
 msgid "Connection in progress"
 msgstr "Կատարվում է միացում"
 
-#: ../gio/gsocket.c:1626
+#: ../gio/gsocket.c:1651
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Չհաջողվեց հաստատել կապ․ %s"
 
-#: ../gio/gsocket.c:1669
+#: ../gio/gsocket.c:1694
+#: ../gio/gsocket.c:3474
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Չի հաջողվել ստանալ սպասված սխալը․ %s"
 
-#: ../gio/gsocket.c:1765
+#: ../gio/gsocket.c:1826
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Սխալ՝ առաջացած տվյալներն ստանալիս․ %s"
 
-#: ../gio/gsocket.c:1908
+#: ../gio/gsocket.c:2000
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Սխալ՝ առաջացած տվյալներն ուղարկելիս․ %s"
 
-#: ../gio/gsocket.c:2100
+#: ../gio/gsocket.c:2192
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Սխալ՝ առաջացած սոկետը փակելիս․ %s"
 
-#: ../gio/gsocket.c:2612
+#: ../gio/gsocket.c:2709
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Սպասում է սոկետի վիճակին․ %s"
 
-#: ../gio/gsocket.c:2894
+#: ../gio/gsocket.c:2994
 msgid "GSocketControlMessage not supported on windows"
 msgstr "SocketControlMessage-ը չի աջակցվում windows-ում "
 
-#: ../gio/gsocket.c:3153 ../gio/gsocket.c:3294
+#: ../gio/gsocket.c:3253
+#: ../gio/gsocket.c:3394
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Հաղորդագրություն ստանալու ժամանակ առաջացած սխալ․ %s"
 
-#: ../gio/gsocketclient.c:520 ../gio/gsocketclient.c:769
+#: ../gio/gsocket.c:3489
+#| msgid "GCredentials is not implemented on this OS"
+msgid "g_socket_get_credentials not implemented for this OS"
+msgstr "g_socket_get_credentials-ը իրականացված չէ այս ՕՀ-ի վրա"
+
+#: ../gio/gsocketclient.c:674
+#: ../gio/gsocketclient.c:1148
 msgid "Unknown error on connect"
 msgstr "Չհայտնաբերված սխալ կապի ժամանակ"
+
+#: ../gio/gsocketclient.c:711
+#: ../gio/gsocketclient.c:1038
+msgid "Trying to proxy over non-TCP connection is not supported."
+msgstr "Ոչ TCP  կապի միջոցով փորձել պրոքսիի սահմանումը չի աջակցվում"
+
+#: ../gio/gsocketclient.c:749
+#: ../gio/gsocketclient.c:1061
+#, c-format
+#| msgid "Property `%s' is not readable"
+msgid "Proxy protocol '%s' is not supported."
+msgstr "`%s' պրոքսի պրոտոկոլը չի աջակցվում"
 
 #: ../gio/gsocketlistener.c:191
 msgid "Listener is already closed"
@@ -2819,17 +3068,106 @@ msgstr "Լսողը արդեն փակ է"
 msgid "Added socket is closed"
 msgstr "Ավելացված սոկետը փակ է"
 
+#: ../gio/gsocks4aproxy.c:121
+#, c-format
+msgid "SOCKSv4 does not support IPv6 address '%s'"
+msgstr "SOCKSv4 չի աջակցում IPv6 '%s' հասցեն"
+
+#: ../gio/gsocks4aproxy.c:139
+#, c-format
+msgid "SOCKSv4 implementation limits username to %i characters"
+msgstr "SOCKSv4 իրականացումը սահմանափակում է ՛օգտագործողի անունը՛ մինչև %i նիշի"
+
+#: ../gio/gsocks4aproxy.c:157
+#, c-format
+msgid "SOCKSv4a implementation limits hostname to %i characters"
+msgstr "SOCKSv4a իրականացումը սահմանափակում է հոսթի անունը մինչև %i նիշի"
+
+#: ../gio/gsocks4aproxy.c:183
+msgid "The server is not a SOCKSv4 proxy server."
+msgstr "Սերվերը SOCKSv4 պրոքսի սերվեր չէ։"
+
+#: ../gio/gsocks4aproxy.c:190
+msgid "Connection through SOCKSv4 server was rejected"
+msgstr "SOCKSv4 սերվերի միջոցով կապը մերժվել է"
+
+#: ../gio/gsocks5proxy.c:155
+#: ../gio/gsocks5proxy.c:328
+#: ../gio/gsocks5proxy.c:338
+msgid "The server is not a SOCKSv5 proxy server."
+msgstr "Սերվերը SOCKSv5 պրոքսի սերվեր չէ։"
+
+#: ../gio/gsocks5proxy.c:169
+msgid "The SOCKSv5 proxy requires authentication."
+msgstr "SOCKSv5 պրոքսին պահանջում է վավերացում"
+
+#: ../gio/gsocks5proxy.c:179
+msgid "The SOCKSv5 require an authentication method that is not supported by GLib."
+msgstr "SOCKSv5 պահանջում է վավերացման մեթոդ, որը չի աջակցվում GLib-ի կողմից։"
+
+#: ../gio/gsocks5proxy.c:208
+#, c-format
+msgid "Username or password is too long for SOCKSv5 protocol (max. is %i)."
+msgstr "Օգտագործողի անունը կամ գաղտնաբառը չափազանց երկար է SOCKSv5 պրոտոկոլի համար (առավելագույնը %i)։"
+
+#: ../gio/gsocks5proxy.c:239
+msgid "SOCKSv5 authentication failed due to wrong username or password."
+msgstr "SOCKSv5 վավերացումը ձախողվել է սխալ օգտագործողի անվան կամ գաղտնաբառի պատճառով։"
+
+#: ../gio/gsocks5proxy.c:289
+#, c-format
+msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
+msgstr "'%s' հոսթի անունը չափազանց երկար է SOCKSv5 պրոտոկոլի համար (առավելագույնը %i բայթ)"
+
+#: ../gio/gsocks5proxy.c:352
+msgid "The SOCKSv5 proxy server uses unkown address type."
+msgstr "SOCKSv5 պրոքսի սերվերը օգտագործում է անհայտ հասցեի տիպ։"
+
+#: ../gio/gsocks5proxy.c:359
+msgid "Internal SOCKSv5 proxy server error."
+msgstr "Ինտերնալ SOCKSv5 պրոքսի սերվերի սխալ։"
+
+#: ../gio/gsocks5proxy.c:365
+msgid "SOCKSv5 connection not allowed by ruleset."
+msgstr "SOCKSv5 կապը չի թույլատրվում կանոնները սահմանողի կողմից։"
+
+#: ../gio/gsocks5proxy.c:372
+msgid "Host unreachable through SOCKSv5 server."
+msgstr "Հոսթը անհասանելի է SOCKSv սերվերի միջոցով։"
+
+#: ../gio/gsocks5proxy.c:378
+msgid "Network unreachable through SOCKSv5 proxy."
+msgstr "Ցանցը անհասանելի է SOCKSv պրոքսիի միջոցով։"
+
+#: ../gio/gsocks5proxy.c:384
+msgid "Connection refused through SOCKSv5 proxy."
+msgstr "SOCKSv5 պրոքսիի միջոցով կապը մերժվել է։"
+
+#: ../gio/gsocks5proxy.c:390
+msgid "SOCKSv5 proxy does not support 'connect' command."
+msgstr "SOCKSv5 պրոքսին չի աջակցում 'միացնել' հրամանը։"
+
+#: ../gio/gsocks5proxy.c:396
+msgid "SOCKSv5 proxy does not support provided address type."
+msgstr "SOCKSv5 պրոքսին չի աջակցում տրված հասցեի տիպը։"
+
+#: ../gio/gsocks5proxy.c:402
+msgid "Unkown SOCKSv5 proxy error."
+msgstr "Անհայտ SOCKSv5 պրոքսի սխալ։"
+
 #: ../gio/gthemedicon.c:498
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Չի հաջողվել մշակել GThemedIcon կոդավորման %d տարբերակը"
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:501
+#: ../gio/gunixconnection.c:164
+#: ../gio/gunixconnection.c:507
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Սպասվոմ է 1 հսկիչ հաղորդագրություն, ստացվել է %d"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:511
+#: ../gio/gunixconnection.c:177
+#: ../gio/gunixconnection.c:517
 msgid "Unexpected type of ancillary data"
 msgstr "Լրացուցիչ տվյալների անսպասելի տիպ"
 
@@ -2842,57 +3180,57 @@ msgstr "Սպասվում է մեկ ֆայլի դեսկրիպտոր, բայց ս�
 msgid "Received invalid fd"
 msgstr "Ստացվել է անվավեր ֆայլի դեսկրիպտոր"
 
-#: ../gio/gunixconnection.c:358
+#: ../gio/gunixconnection.c:361
 msgid "Error sending credentials: "
 msgstr "Տվյալներն ուղարկելու սխալ․"
 
-#: ../gio/gunixconnection.c:435
+#: ../gio/gunixconnection.c:441
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Սխալ՝ ստուգելիս արդյոք SO_PASSCRED-ը միացված է սոկետին․ %s"
 
-#: ../gio/gunixconnection.c:444
+#: ../gio/gunixconnection.c:450
 #, c-format
-msgid ""
-"Unexpected option length while checking if SO_PASSCRED is enabled for "
-"socket. Expected %d bytes, got %d"
-msgstr ""
-"Հատկության անվավեր երկարություն՝ ստուգելիս, արդյոք SO_PASSCRED-ը սոկետի "
-"համար միացված է։ Սպասվում էր %d բայթ, ստացվել է %d"
+msgid "Unexpected option length while checking if SO_PASSCRED is enabled for socket. Expected %d bytes, got %d"
+msgstr "Հատկության անվավեր երկարություն՝ ստուգելիս, արդյոք SO_PASSCRED-ը սոկետի համար միացված է։ Սպասվում էր %d բայթ, ստացվել է %d"
 
-#: ../gio/gunixconnection.c:461
+#: ../gio/gunixconnection.c:467
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Սխալ՝ առաջացած SO_PASSCRED - ը միացնելու ժամանակ․ %s"
 
-#: ../gio/gunixconnection.c:491
-msgid ""
-"Expecting to read a single byte for receiving credentials but read zero bytes"
-msgstr ""
-"Սպասվում էր կարդալ մեկ բայթ ստացված տվյալներից, բայց կարդացվել է զրո բայթ"
+#: ../gio/gunixconnection.c:497
+msgid "Expecting to read a single byte for receiving credentials but read zero bytes"
+msgstr "Սպասվում էր կարդալ մեկ բայթ ստացված տվյալներից, բայց կարդացվել է զրո բայթ"
 
-#: ../gio/gunixconnection.c:534
+#: ../gio/gunixconnection.c:540
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Սխալ SO_PASSCRED անջատելիս․ %s"
 
-#: ../gio/gunixinputstream.c:353 ../gio/gunixinputstream.c:373
-#: ../gio/gunixinputstream.c:451 ../gio/gunixoutputstream.c:438
+#: ../gio/gunixinputstream.c:353
+#: ../gio/gunixinputstream.c:373
+#: ../gio/gunixinputstream.c:451
+#: ../gio/gunixoutputstream.c:438
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Սխալ՝ առաջացած unix - ից կարդալու ժամանակ․ %s"
 
-#: ../gio/gunixinputstream.c:406 ../gio/gunixinputstream.c:589
-#: ../gio/gunixoutputstream.c:393 ../gio/gunixoutputstream.c:545
+#: ../gio/gunixinputstream.c:406
+#: ../gio/gunixinputstream.c:589
+#: ../gio/gunixoutputstream.c:393
+#: ../gio/gunixoutputstream.c:545
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Սխալ՝ առաջացած unix - ը փակելու ժամանակ․ %s"
 
-#: ../gio/gunixmounts.c:1846 ../gio/gunixmounts.c:1883
+#: ../gio/gunixmounts.c:1846
+#: ../gio/gunixmounts.c:1883
 msgid "Filesystem root"
 msgstr "Ֆայլալին համակարգի արմատը"
 
-#: ../gio/gunixoutputstream.c:339 ../gio/gunixoutputstream.c:360
+#: ../gio/gunixoutputstream.c:339
+#: ../gio/gunixoutputstream.c:360
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Սխալ՝ առաջացած unix - ում գրելիս․ %s"
@@ -2938,7 +3276,8 @@ msgstr "Համադրման ստեղծումը չի աջակցվում win32-ու
 msgid "Error reading from handle: %s"
 msgstr "Սխալ՝ ֆայլից կարդալիս․ %s"
 
-#: ../gio/gwin32inputstream.c:348 ../gio/gwin32outputstream.c:348
+#: ../gio/gwin32inputstream.c:348
+#: ../gio/gwin32outputstream.c:348
 #, c-format
 msgid "Error closing handle: %s"
 msgstr "Սխալ՝ ֆայլը փակելիս․ %s"
@@ -2948,19 +3287,26 @@ msgstr "Սխալ՝ ֆայլը փակելիս․ %s"
 msgid "Error writing to handle: %s"
 msgstr "Տեղի է ունեցել սխալ ֆայլում գրելու ժամանակ․ %s"
 
-#: ../gio/gzlibcompressor.c:278 ../gio/gzlibdecompressor.c:249
+#: ../gio/gzlibcompressor.c:393
+#: ../gio/gzlibdecompressor.c:346
 msgid "Not enough memory"
 msgstr "Հիշողությունը բավական չէ"
 
-#: ../gio/gzlibcompressor.c:285 ../gio/gzlibdecompressor.c:256
+#: ../gio/gzlibcompressor.c:400
+#: ../gio/gzlibdecompressor.c:353
 #, c-format
 msgid "Internal error: %s"
 msgstr "Ներքին սխալ․ %s"
 
-#: ../gio/gzlibcompressor.c:298 ../gio/gzlibdecompressor.c:270
+#: ../gio/gzlibcompressor.c:413
+#: ../gio/gzlibdecompressor.c:367
 msgid "Need more input"
 msgstr "Ավելի շատ մուտքային տվյալների կարիք կա"
 
-#: ../gio/gzlibdecompressor.c:242
+#: ../gio/gzlibdecompressor.c:339
 msgid "Invalid compressed data"
 msgstr "Անվավեր սեղմված տվյալներ"
+
+#~ msgid "Error writing first 16 bytes of message to socket: "
+#~ msgstr "Սխալ հաղորդագրության առաջին 16 բայթը սոկետում գրելիս․ "
+
