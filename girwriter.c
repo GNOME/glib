@@ -389,7 +389,7 @@ write_return_value_attributes (Xml *file,
 static void
 write_constant_value (const gchar *namespace,
 		      GITypeInfo *info,
-		      GArgument *argument,
+		      GIArgument *argument,
 		      Xml *file);
 
 static void
@@ -409,7 +409,7 @@ write_field_info (const gchar *namespace,
   gint offset;
   GITypeInfo *type;
   GIBaseInfo *interface;
-  GArgument value;
+  GIArgument value;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   flags = g_field_info_get_flags (info);
@@ -725,7 +725,7 @@ write_value_info (const gchar *namespace,
 static void
 write_constant_value (const gchar *namespace,
 		      GITypeInfo *type,
-		      GArgument  *value,
+		      GIArgument  *value,
 		      Xml        *file)
 {
   switch (g_type_info_get_tag (type))
@@ -780,7 +780,7 @@ write_constant_info (const gchar    *namespace,
   GITypeInfo *type;
   const gchar *name;
   gboolean deprecated;
-  GArgument value;
+  GIArgument value;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);

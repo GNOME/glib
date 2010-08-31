@@ -61,11 +61,11 @@ typedef enum
 } GInvokeError;
 
 gboolean              g_function_info_invoke         (GIFunctionInfo *info,
-						      const GArgument  *in_args,
+						      const GIArgument  *in_args,
 						      int               n_in_args,
-						      const GArgument  *out_args,
+						      const GIArgument  *out_args,
 						      int               n_out_args,
-						      GArgument        *return_value,
+						      GIArgument        *return_value,
 						      GError          **error);
 
 

@@ -164,7 +164,7 @@ g_field_info_get_type (GIFieldInfo *info)
  * g_field_info_get_field:
  * @field_info: a #GIFieldInfo
  * @mem: pointer to a block of memory representing a C structure or union
- * @value: a #GArgument into which to store the value retrieved
+ * @value: a #GIArgument into which to store the value retrieved
  *
  * Reads a field identified by a #GFieldInfo from a C structure or
  * union.  This only handles fields of simple C types. It will fail
@@ -176,7 +176,7 @@ g_field_info_get_type (GIFieldInfo *info)
 gboolean
 g_field_info_get_field (GIFieldInfo *field_info,
 			gpointer     mem,
-			GArgument   *value)
+			GIArgument   *value)
 {
   int offset;
   GITypeInfo *type_info;
@@ -346,7 +346,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
  * g_field_info_set_field:
  * @field_info: a #GIFieldInfo
  * @mem: pointer to a block of memory representing a C structure or union
- * @value: a #GArgument holding the value to store
+ * @value: a #GIArgument holding the value to store
  *
  * Writes a field identified by a #GFieldInfo to a C structure or
  * union.  This only handles fields of simple C types. It will fail
@@ -360,7 +360,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
 gboolean
 g_field_info_set_field (GIFieldInfo     *field_info,
 			gpointer         mem,
-			const GArgument *value)
+			const GIArgument *value)
 {
   int offset;
   GITypeInfo *type_info;

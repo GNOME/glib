@@ -187,7 +187,7 @@ typedef union
   gsize    v_size;
   gchar *  v_string;
   gpointer v_pointer;
-} GArgument;
+} GIArgument;
 
 /**
  * GIInfoType:
@@ -437,6 +437,11 @@ typedef enum
   GI_FUNCTION_WRAPS_VFUNC    = 1 << 4,
   GI_FUNCTION_THROWS         = 1 << 5
 } GIFunctionInfoFlags;
+
+#ifndef __GI_SCANNER__
+/* backwards compatibility */
+typedef union GIArgument GArgument;
+#endif
 
 G_END_DECLS
 

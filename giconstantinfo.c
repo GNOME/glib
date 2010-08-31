@@ -77,7 +77,7 @@ g_constant_info_get_type (GIConstantInfo *info)
  */
 gint
 g_constant_info_get_value (GIConstantInfo *info,
-			   GArgument      *value)
+			   GIArgument      *value)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
   ConstantBlob *blob;

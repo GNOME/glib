@@ -217,11 +217,11 @@ g_invoke_error_quark (void)
 /**
  * g_function_info_invoke:
  * @info: a #GIFunctionInfo describing the function to invoke
- * @in_args: an array of #GArgument<!-- -->s, one for each in
+ * @in_args: an array of #GIArgument<!-- -->s, one for each in
  *    parameter of @info. If there are no in parameter, @in_args
  *    can be %NULL
  * @n_in_args: the length of the @in_args array
- * @out_args: an array of #GArgument<!-- -->s, one for each out
+ * @out_args: an array of #GIArgument<!-- -->s, one for each out
  *    parameter of @info. If there are no out parameters, @out_args
  *    may be %NULL
  * @n_out_args: the length of the @out_args array
@@ -242,11 +242,11 @@ g_invoke_error_quark (void)
  */
 gboolean
 g_function_info_invoke (GIFunctionInfo *info,
-			const GArgument  *in_args,
+			const GIArgument  *in_args,
 			int               n_in_args,
-			const GArgument  *out_args,
+			const GIArgument  *out_args,
 			int               n_out_args,
-			GArgument        *return_value,
+			GIArgument        *return_value,
 			GError          **error)
 {
   ffi_cif cif;
