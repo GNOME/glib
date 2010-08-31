@@ -826,7 +826,7 @@ g_dbus_connection_init (GDBusConnection *connection)
   connection->map_sender_unique_name_to_signal_data_array = g_hash_table_new_full (g_str_hash,
                                                                                    g_str_equal,
                                                                                    g_free,
-                                                                                   NULL);
+                                                                                   (GDestroyNotify) g_ptr_array_unref);
 
   connection->map_object_path_to_eo = g_hash_table_new_full (g_str_hash,
                                                              g_str_equal,
