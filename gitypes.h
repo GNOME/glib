@@ -441,6 +441,7 @@ typedef enum
 #ifndef __GI_SCANNER__
 /* backwards compatibility */
 typedef union GIArgument GArgument;
+typedef union GITypelib GTypelib;
 #endif
 
 G_END_DECLS

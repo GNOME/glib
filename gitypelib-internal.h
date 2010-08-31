@@ -1085,9 +1085,9 @@ typedef struct {
 } AttributeBlob;
 
 /**
- * GTypelib:
+ * GITypelib:
  */
-struct _GTypelib {
+struct _GITypelib {
   /* <private> */
   guchar *data;
   gsize len;
@@ -1097,7 +1097,7 @@ struct _GTypelib {
   gboolean open_attempted;
 };
 
-DirEntry *g_typelib_get_dir_entry (GTypelib *typelib,
+DirEntry *g_typelib_get_dir_entry (GITypelib *typelib,
 				   guint16   index);
 
 void      g_typelib_check_sanity (void);
@@ -1106,14 +1106,14 @@ void      g_typelib_check_sanity (void);
 
 
 /**
- * GTypelibError:
+ * GITypelibError:
  * @G_TYPELIB_ERROR_INVALID: the typelib is invalid
  * @G_TYPELIB_ERROR_INVALID_HEADER: the typelib header is invalid
  * @G_TYPELIB_ERROR_INVALID_DIRECTORY: the typelib directory is invalid
  * @G_TYPELIB_ERROR_INVALID_ENTRY: a typelib entry is invalid
  * @G_TYPELIB_ERROR_INVALID_BLOB: a typelib blob is invalid
  *
- * A error set while validating the #GTypelib
+ * A error set while validating the #GITypelib
  */
 typedef enum
 {
@@ -1122,13 +1122,13 @@ typedef enum
   G_TYPELIB_ERROR_INVALID_DIRECTORY,
   G_TYPELIB_ERROR_INVALID_ENTRY,
   G_TYPELIB_ERROR_INVALID_BLOB
-} GTypelibError;
+} GITypelibError;
 
 #define G_TYPELIB_ERROR (g_typelib_error_quark ())
 
 GQuark g_typelib_error_quark (void);
 
-gboolean g_typelib_validate (GTypelib  *typelib,
+gboolean g_typelib_validate (GITypelib  *typelib,
 			     GError    **error);
 
 

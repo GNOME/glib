@@ -35,7 +35,7 @@ GIBaseInfo *
 _g_info_new_full (GIInfoType     type,
                   GIRepository  *repository,
                   GIBaseInfo    *container,
-                  GTypelib      *typelib,
+                  GITypelib      *typelib,
                   guint32        offset)
 {
   GIRealInfo *info;
@@ -58,7 +58,7 @@ _g_info_new_full (GIInfoType     type,
 GIBaseInfo *
 g_info_new (GIInfoType     type,
             GIBaseInfo    *container,
-            GTypelib      *typelib,
+            GITypelib      *typelib,
             guint32        offset)
 {
   return _g_info_new_full (type, ((GIRealInfo*)container)->repository, container, typelib, offset);
@@ -69,7 +69,7 @@ _g_info_init (GIRealInfo     *info,
               GIInfoType      type,
               GIRepository   *repository,
               GIBaseInfo     *container,
-              GTypelib       *typelib,
+              GITypelib       *typelib,
               guint32         offset)
 {
   memset (info, 0, sizeof (GIRealInfo));
@@ -90,7 +90,7 @@ _g_info_init (GIRealInfo     *info,
 
 GIBaseInfo *
 _g_info_from_entry (GIRepository *repository,
-                    GTypelib     *typelib,
+                    GITypelib     *typelib,
                     guint16       index)
 {
   GIBaseInfo *result;
@@ -127,7 +127,7 @@ _g_info_from_entry (GIRepository *repository,
 
 GITypeInfo *
 _g_type_info_new (GIBaseInfo    *container,
-                 GTypelib      *typelib,
+                 GITypelib      *typelib,
 		 guint32        offset)
 {
   SimpleTypeBlob *type = (SimpleTypeBlob *)&typelib->data[offset];
@@ -139,7 +139,7 @@ _g_type_info_new (GIBaseInfo    *container,
 void
 _g_type_info_init (GIBaseInfo *info,
                    GIBaseInfo *container,
-                   GTypelib   *typelib,
+                   GITypelib   *typelib,
                    guint32     offset)
 {
   GIRealInfo *rinfo = (GIRealInfo*)container;
@@ -153,7 +153,7 @@ _g_type_info_init (GIBaseInfo *info,
 
 /**
  * SECTION:gibaseinfo
- * @Short_description: Base struct for all GTypelib structs
+ * @Short_description: Base struct for all GITypelib structs
  * @Title: GIBaseInfo
  *
  * GIBaseInfo is the common base struct of all other *Info structs
@@ -611,7 +611,7 @@ g_base_info_get_container (GIBaseInfo *info)
  *
  * Returns: (transfer none): the typelib.
  */
-GTypelib *
+GITypelib *
 g_base_info_get_typelib (GIBaseInfo *info)
 {
   return ((GIRealInfo*)info)->typelib;

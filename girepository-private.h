@@ -49,7 +49,7 @@ struct _GIRealInfo
 
   /* Resolved specific */
 
-  GTypelib *typelib;
+  GITypelib *typelib;
   guint32 offset;
 
   guint32 type_is_embedded : 1; /* Used by GITypeInfo */
@@ -76,26 +76,26 @@ void         _g_info_init       (GIRealInfo   *info,
                                  GIInfoType    type,
                                  GIRepository *repository,
                                  GIBaseInfo   *container,
-                                 GTypelib     *typelib,
+                                 GITypelib     *typelib,
                                  guint32       offset);
 
 GIBaseInfo * _g_info_from_entry (GIRepository *repository,
-                                 GTypelib     *typelib,
+                                 GITypelib     *typelib,
                                  guint16       index);
 
 GIBaseInfo * _g_info_new_full   (GIInfoType    type,
 				 GIRepository *repository,
 				 GIBaseInfo   *container,
-				 GTypelib     *typelib,
+				 GITypelib     *typelib,
 				 guint32       offset);
 
 GITypeInfo * _g_type_info_new   (GIBaseInfo   *container,
-				 GTypelib     *typelib,
+				 GITypelib     *typelib,
 				 guint32       offset);
 
 void         _g_type_info_init  (GIBaseInfo   *info,
 				 GIBaseInfo   *container,
-				 GTypelib     *typelib,
+				 GITypelib     *typelib,
 				 guint32       offset);
 
 GIFunctionInfo * _g_base_info_find_method (GIBaseInfo   *base,

@@ -68,7 +68,7 @@ void       g_ir_module_free           (GIrModule  *module);
 void       g_ir_module_add_include_module (GIrModule  *module,
 					   GIrModule  *include_module);
 
-GTypelib * g_ir_module_build_typelib  (GIrModule  *module);
+GITypelib * g_ir_module_build_typelib  (GIrModule  *module);
 
 void       g_ir_module_fatal (GIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
 

@@ -221,11 +221,11 @@ node_cmp_offset_func (gconstpointer a,
 }
 
 
-GTypelib *
+GITypelib *
 g_ir_module_build_typelib (GIrModule  *module)
 {
   GError *error = NULL;
-  GTypelib *typelib;
+  GITypelib *typelib;
   gsize length;
   guint i;
   GList *e;

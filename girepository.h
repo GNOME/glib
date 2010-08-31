@@ -92,7 +92,7 @@ GIRepository *g_irepository_get_default   (void);
 void          g_irepository_prepend_search_path (const char *directory);
 GSList *      g_irepository_get_search_path     (void);
 const char *  g_irepository_load_typelib  (GIRepository *repository,
-					   GTypelib     *typelib,
+					   GITypelib     *typelib,
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
 gboolean      g_irepository_is_registered (GIRepository *repository,
@@ -103,12 +103,12 @@ GIBaseInfo *  g_irepository_find_by_name  (GIRepository *repository,
 					   const gchar  *name);
 GList *       g_irepository_enumerate_versions (GIRepository *repository,
 					        const gchar  *namespace_);
-GTypelib *    g_irepository_require       (GIRepository *repository,
+GITypelib *    g_irepository_require       (GIRepository *repository,
 					   const gchar  *namespace_,
 					   const gchar  *version,
 					   GIRepositoryLoadFlags flags,
 					   GError      **error);
-GTypelib *    g_irepository_require_private (GIRepository  *repository,
+GITypelib *    g_irepository_require_private (GIRepository  *repository,
 					     const gchar   *typelib_dir,
 					     const gchar   *namespace,
 					     const gchar   *version,
