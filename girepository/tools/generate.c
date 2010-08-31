@@ -77,7 +77,7 @@ main (int argc, char *argv[])
       GError *error = NULL;
       const char *namespace;
       GMappedFile *mfile;
-      GTypelib *typelib;
+      GITypelib *typelib;
 
       mfile = g_mapped_file_new (input[i], FALSE, &error);
       if (!mfile)
