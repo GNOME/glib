@@ -321,19 +321,19 @@ static inline void
 g_date_time_add_usec (GDateTime *datetime,
                       gint64     usecs)
 {
-  gint64 __usec = datetime->usec + usecs;
-  gint __days = __usec / USEC_PER_DAY;
+  gint64 u = datetime->usec + usecs;
+  gint d = u / USEC_PER_DAY;
 
-  if (__usec < 0)
-    __days -= 1;
+  if (u < 0)
+    d -= 1;
 
-  if (__days != 0)
-    g_date_time_add_days_internal (datetime, __days);
+  if (d != 0)
+    g_date_time_add_days_internal (datetime, d);
 
-  if (__usec < 0)
-    datetime->usec = USEC_PER_DAY + (__usec % USEC_PER_DAY);
+  if (u < 0)
+    datetime->usec = USEC_PER_DAY + (u % USEC_PER_DAY);
   else
-    datetime->usec = __usec % USEC_PER_DAY;
+    datetime->usec = u % USEC_PER_DAY;
 }
 
 /*< internal >
@@ -354,48 +354,48 @@ g_date_time_add_ymd (GDateTime *datetime,
                      gint       months,
                      gint       days)
 {
-  gint __year = g_date_time_get_year (datetime);
-  gint __month = g_date_time_get_month (datetime);
-  gint __day = g_date_time_get_day_of_month (datetime);
+  gint y = g_date_time_get_year (datetime);
+  gint m = g_date_time_get_month (datetime);
+  gint d = g_date_time_get_day_of_month (datetime);
   gint step, i;
   const guint16 *max_days;
 
-  __year += years;
+  y += years;
 
   /* subtract one day for leap years */
-  if (GREGORIAN_LEAP (__year) && __month == 2)
+  if (GREGORIAN_LEAP (y) && m == 2)
     {
-      if (__day == 29)
-        __day -= 1;
+      if (d == 29)
+        d -= 1;
     }
 
   /* add months */
   step = months > 0 ? 1 : -1;
   for (i = 0; i < ABS (months); i++)
     {
-      __month += step;
+      m += step;
 
-      if (__month < 1)
+      if (m < 1)
         {
-          __year -= 1;
-          __month = 12;
+          y -= 1;
+          m = 12;
         }
-      else if (__month > 12)
+      else if (m > 12)
         {
-          __year += 1;
-          __month = 1;
+          y += 1;
+          m = 1;
         }
     }
 
   /* clamp the days */
-  max_days = days_in_months[GREGORIAN_LEAP (__year) ? 1 : 0];
-  if (max_days[__month] < __day)
-    __day = max_days[__month];
+  max_days = days_in_months[GREGORIAN_LEAP (y) ? 1 : 0];
+  if (max_days[m] < d)
+    d = max_days[m];
 
   /* since the add_days_internal() uses the julian date we need to
    * update it using the new year/month/day and then add the days
    */
-  datetime->julian = date_to_julian (__year, __month, __day);
+  datetime->julian = date_to_julian (y, m, d);
   g_date_time_add_days_internal (datetime, days);
 }
 
