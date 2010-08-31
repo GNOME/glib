@@ -382,7 +382,7 @@ register_internal (GIRepository *repository,
  * Note: The namespace must have already been loaded using a function
  * such as #g_irepository_require before calling this function.
  *
- * Returns: Zero-terminated string array of versioned dependencies
+ * Returns: (transfer full): Zero-terminated string array of versioned dependencies
  */
 char **
 g_irepository_get_dependencies (GIRepository *repository,
@@ -625,7 +625,7 @@ find_interface (gpointer key,
  * given namespace @namespace_.  The namespace must have
  * already been loaded before calling this function.
  *
- * Returns: #GIBaseInfo containing metadata
+ * Returns: (transfer full): #GIBaseInfo containing metadata
  */
 GIBaseInfo *
 g_irepository_get_info (GIRepository *repository,
@@ -666,7 +666,7 @@ g_irepository_get_info (GIRepository *repository,
  * arbitrary GType - thus, this function will operate most reliably
  * when you know the GType to originate from be from a loaded namespace.
  *
- * Returns: #GIBaseInfo representing metadata about @type, or %NULL
+ * Returns: (transfer full): #GIBaseInfo representing metadata about @type, or %NULL
  */
 GIBaseInfo *
 g_irepository_find_by_gtype (GIRepository *repository,
@@ -719,7 +719,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
  * #g_irepository_require once to load the namespace, or otherwise
  * ensure the namespace has already been loaded.
  *
- * Returns: #GIBaseInfo representing metadata about @name, or %NULL
+ * Returns: (transfer full): #GIBaseInfo representing metadata about @name, or %NULL
  */
 GIBaseInfo *
 g_irepository_find_by_name (GIRepository *repository,
@@ -759,7 +759,7 @@ collect_namespaces (gpointer key,
 }
 
 /**
- * g_irepository_get_namespaces:
+ * g_irepository_get_loaded_namespaces:
  * @repository: A #GIRepository, may be %NULL for the default
  *
  * Return the list of currently loaded namespaces.
@@ -1335,7 +1335,7 @@ require_internal (GIRepository  *repository,
  * version @version of namespace may be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: a pointer to the #GTypelib if successful, %NULL otherwise
+ * Returns: (transfer full): a pointer to the #GTypelib if successful, %NULL otherwise
  */
 GTypelib *
 g_irepository_require (GIRepository  *repository,
@@ -1370,7 +1370,7 @@ g_irepository_require (GIRepository  *repository,
  * version @version of namespace should be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: a pointer to the #GTypelib if successful, %NULL otherwise
+ * Returns: (transfer full): a pointer to the #GTypelib if successful, %NULL otherwise
  */
 GTypelib *
 g_irepository_require_private (GIRepository  *repository,
@@ -1410,6 +1410,15 @@ static const GOptionEntry introspection_args[] = {
   { NULL }
 };
 
+/**
+ * g_irepository_get_option_group:
+ *
+ * Obtain the option group for girepository, it's used
+ * by the dumper and for programs that wants to provide
+ * introspection information
+ *
+ * Returns: (transfer full): the option group
+ */
 GOptionGroup *
 g_irepository_get_option_group (void)
 {
