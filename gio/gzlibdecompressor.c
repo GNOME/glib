@@ -75,6 +75,8 @@ struct _GZlibDecompressor
 static void
 g_zlib_decompressor_set_gzheader (GZlibDecompressor *decompressor)
 {
+  /* On win32, these functions were not exported before 1.2.4 */
+#if !defined (G_OS_WIN32) || ZLIB_VERNUM >= 0x1240
   if (decompressor->format != G_ZLIB_COMPRESSOR_FORMAT_GZIP)
     return;
 
@@ -96,6 +98,7 @@ g_zlib_decompressor_set_gzheader (GZlibDecompressor *decompressor)
 
   if (inflateGetHeader (&decompressor->zstream, &decompressor->header_data->gzheader) != Z_OK)
     g_warning ("unexpected zlib error: %s\n", decompressor->zstream.msg);
+#endif /* !G_OS_WIN32 || ZLIB >= 1.2.4 */
 }
 
 G_DEFINE_TYPE_WITH_CODE (GZlibDecompressor, g_zlib_decompressor, G_TYPE_OBJECT,
@@ -373,6 +376,7 @@ g_zlib_decompressor_convert (GConverter *converter,
   *bytes_read = inbuf_size - decompressor->zstream.avail_in;
   *bytes_written = outbuf_size - decompressor->zstream.avail_out;
 
+#if !defined (G_OS_WIN32) || ZLIB_VERNUM >= 0x1240
   if (decompressor->header_data != NULL &&
       decompressor->header_data->gzheader.done == 1)
     {
@@ -396,6 +400,7 @@ g_zlib_decompressor_convert (GConverter *converter,
 
       g_object_notify (G_OBJECT (decompressor), "file-info");
     }
+#endif /* !G_OS_WIN32 || ZLIB >= 1.2.4 */
 
   if (res == Z_STREAM_END)
     return G_CONVERTER_FINISHED;

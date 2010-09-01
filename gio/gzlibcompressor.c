@@ -72,6 +72,8 @@ struct _GZlibCompressor
 static void
 g_zlib_compressor_set_gzheader (GZlibCompressor *compressor)
 {
+  /* On win32, these functions were not exported before 1.2.4 */
+#if !defined (G_OS_WIN32) || ZLIB_VERNUM >= 0x1240
   const gchar *filename;
 
   if (compressor->format != G_ZLIB_COMPRESSOR_FORMAT_GZIP ||
@@ -91,6 +93,7 @@ g_zlib_compressor_set_gzheader (GZlibCompressor *compressor)
 
   if (deflateSetHeader (&compressor->zstream, &compressor->gzheader) != Z_OK)
     g_warning ("unexpected zlib error: %s\n", compressor->zstream.msg);
+#endif /* !G_OS_WIN32 || ZLIB >= 1.2.4 */
 }
 
 G_DEFINE_TYPE_WITH_CODE (GZlibCompressor, g_zlib_compressor, G_TYPE_OBJECT,
