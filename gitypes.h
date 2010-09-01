@@ -164,7 +164,7 @@ typedef GIBaseInfo GIErrorDomainInfo;
  */
 typedef struct _GIUnresolvedInfo GIUnresolvedInfo;
 
-typedef union
+union _GIArgument
 {
   gboolean v_boolean;
   gint8    v_int8;
@@ -187,7 +187,8 @@ typedef union
   gsize    v_size;
   gchar *  v_string;
   gpointer v_pointer;
-} GIArgument;
+};
+typedef union _GIArgument GIArgument;
 
 /**
  * GIInfoType:
@@ -440,8 +441,8 @@ typedef enum
 
 #ifndef __GI_SCANNER__
 /* backwards compatibility */
-typedef union GIArgument GArgument;
-typedef union GITypelib GTypelib;
+typedef union _GIArgument GArgument;
+typedef struct _GITypelib GTypelib;
 #endif
 
 G_END_DECLS
