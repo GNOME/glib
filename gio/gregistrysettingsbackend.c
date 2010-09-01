@@ -280,8 +280,8 @@ g_variant_get_as_dword (GVariant *variant)
     {
       case 'b': return g_variant_get_boolean (variant);
       case 'y': return g_variant_get_byte (variant);
-      case 'n': return g_variant_get_uint16 (variant);
-      case 'q': return g_variant_get_int16 (variant);
+      case 'n': return g_variant_get_int16 (variant);
+      case 'q': return g_variant_get_uint16 (variant);
       case 'i': return g_variant_get_int32 (variant);
       case 'u': return g_variant_get_uint32 (variant);
       default:  g_warn_if_reached ();
@@ -294,8 +294,8 @@ g_variant_get_as_qword (GVariant *variant)
 {
   switch (g_variant_get_type_string (variant)[0])
     {
-      case 't': return g_variant_get_uint64 (variant);
       case 'x': return g_variant_get_int64 (variant);
+      case 't': return g_variant_get_uint64 (variant);
       default:  g_warn_if_reached ();
     }
   return 0;
