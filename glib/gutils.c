@@ -2277,13 +2277,15 @@ load_user_special_dirs (void)
 						    HANDLE hToken,
 						    PWSTR *ppszPath);
   t_SHGetKnownFolderPath p_SHGetKnownFolderPath;
+
   static const GUID FOLDERID_Downloads =
     { 0x374de290, 0x123f, 0x4565, { 0x91, 0x64, 0x39, 0xc4, 0x92, 0x5e, 0x46, 0x7b } };
   static const GUID FOLDERID_Public =
     { 0xDFDF76A2, 0xC82A, 0x4D63, { 0x90, 0x6A, 0x56, 0x44, 0xAC, 0x45, 0x73, 0x85 } };
+
   wchar_t *wcp;
 
-  p_SHGetKnownFolderPath = (t_SHGetKnownFolderPath) GetProcAddress (LoadLibrary ("shell32.dll"),
+  p_SHGetKnownFolderPath = (t_SHGetKnownFolderPath) GetProcAddress (GetModuleHandle ("shell32.dll"),
 								    "SHGetKnownFolderPath");
 
   g_user_special_dirs[G_USER_DIRECTORY_DESKTOP] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
@@ -2609,7 +2611,7 @@ get_module_for_address (gconstpointer address)
   if (!beenhere)
     {
       p_GetModuleHandleExA =
-	(t_GetModuleHandleExA) GetProcAddress (LoadLibrary ("kernel32.dll"),
+	(t_GetModuleHandleExA) GetProcAddress (GetModuleHandle ("kernel32.dll"),
 					       "GetModuleHandleExA");
       beenhere = TRUE;
     }

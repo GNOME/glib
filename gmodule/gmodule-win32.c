@@ -110,98 +110,25 @@ _g_module_close (gpointer handle,
 static gpointer
 find_in_any_module_using_toolhelp (const gchar *symbol_name)
 {
-  typedef HANDLE (WINAPI *PFNCREATETOOLHELP32SNAPSHOT)(DWORD, DWORD);
-  static PFNCREATETOOLHELP32SNAPSHOT pfnCreateToolhelp32Snapshot = NULL;
-
-  typedef BOOL (WINAPI *PFNMODULE32FIRST)(HANDLE, MODULEENTRY32*);
-  static PFNMODULE32FIRST pfnModule32First= NULL;
-
-  typedef BOOL (WINAPI *PFNMODULE32NEXT)(HANDLE, MODULEENTRY32*);
-  static PFNMODULE32NEXT pfnModule32Next = NULL;
-
-  static HMODULE kernel32;
-
   HANDLE snapshot; 
   MODULEENTRY32 me32;
 
   gpointer p;
 
-  if (!pfnCreateToolhelp32Snapshot || !pfnModule32First || !pfnModule32Next)
-    {
-      if (!kernel32)
-	if (!(kernel32 = GetModuleHandle ("kernel32.dll")))
-	  return NULL;
-
-      if (!(pfnCreateToolhelp32Snapshot = (PFNCREATETOOLHELP32SNAPSHOT) GetProcAddress (kernel32, "CreateToolhelp32Snapshot"))
-	  || !(pfnModule32First = (PFNMODULE32FIRST) GetProcAddress (kernel32, "Module32First"))
-	  || !(pfnModule32Next = (PFNMODULE32NEXT) GetProcAddress (kernel32, "Module32Next")))
-	return NULL;
-    }
-
-  if ((snapshot = (*pfnCreateToolhelp32Snapshot) (TH32CS_SNAPMODULE, 0)) == (HANDLE) -1)
+  if ((snapshot = CreateToolhelp32Snapshot (TH32CS_SNAPMODULE, 0)) == (HANDLE) -1)
     return NULL;
 
   me32.dwSize = sizeof (me32);
   p = NULL;
-  if ((*pfnModule32First) (snapshot, &me32))
+  if (Module32First (snapshot, &me32))
     {
       do {
 	if ((p = GetProcAddress (me32.hModule, symbol_name)) != NULL)
 	  break;
-      } while ((*pfnModule32Next) (snapshot, &me32));
+      } while (Module32Next (snapshot, &me32));
     }
 
   CloseHandle (snapshot);
-
-  return p;
-}
-
-static gpointer
-find_in_any_module_using_psapi (const gchar *symbol_name)
-{
-  static HMODULE psapi = NULL;
-
-  typedef BOOL (WINAPI *PFNENUMPROCESSMODULES) (HANDLE, HMODULE *, DWORD, LPDWORD) ;
-  static PFNENUMPROCESSMODULES pfnEnumProcessModules = NULL;
-
-  HMODULE *modules;
-  HMODULE dummy;
-  gint i, size;
-  DWORD needed;
-  
-  gpointer p;
-
-  if (!pfnEnumProcessModules)
-    {
-      if (!psapi)
-	if ((psapi = LoadLibrary ("psapi.dll")) == NULL)
-	  return NULL;
-
-      if (!(pfnEnumProcessModules = (PFNENUMPROCESSMODULES) GetProcAddress (psapi, "EnumProcessModules")))
-	return NULL;
-    }
-
-  if (!(*pfnEnumProcessModules) (GetCurrentProcess (), &dummy,
-				 sizeof (HMODULE), &needed))
-    return NULL;
-
-  size = needed + 10 * sizeof (HMODULE);
-  modules = g_malloc (size);
-
-  if (!(*pfnEnumProcessModules) (GetCurrentProcess (), modules,
-				 size, &needed)
-      || needed > size)
-    {
-      g_free (modules);
-      return NULL;
-    }
-  
-  p = NULL;
-  for (i = 0; i < needed / sizeof (HMODULE); i++)
-    if ((p = GetProcAddress (modules[i], symbol_name)) != NULL)
-      break;
-
-  g_free (modules);
 
   return p;
 }
@@ -211,8 +138,7 @@ find_in_any_module (const gchar *symbol_name)
 {
   gpointer result;
 
-  if ((result = find_in_any_module_using_toolhelp (symbol_name)) == NULL
-      && (result = find_in_any_module_using_psapi (symbol_name)) == NULL)
+  if ((result = find_in_any_module_using_toolhelp (symbol_name)) == NULL)
     return NULL;
   else
     return result;
