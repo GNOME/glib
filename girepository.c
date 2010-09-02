@@ -168,19 +168,21 @@ g_irepository_get_search_path (void)
   return search_path;
 }
 
-static
-GSList *
+static GSList *
 build_search_path_with_overrides (void)
 {
-	GSList *result;
-	if (override_search_path != NULL)
-	  {
-		result = g_slist_copy (override_search_path);
-		g_slist_last (result)->next = g_slist_copy (search_path);
-	  }
-	else
-	  result = g_slist_copy (search_path);
-	return result;
+  GSList *result;
+
+  init_globals ();
+
+  if (override_search_path != NULL)
+    {
+      result = g_slist_copy (override_search_path);
+      g_slist_last (result)->next = g_slist_copy (search_path);
+    }
+  else
+    result = g_slist_copy (search_path);
+  return result;
 }
 
 static char *
