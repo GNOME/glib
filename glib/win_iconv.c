@@ -706,10 +706,20 @@ static RFC1766TOLCIDA Rfc1766ToLcidA;
 static int
 load_mlang()
 {
-    HMODULE h;
+    HMODULE h = NULL;
+    char mlang_dll[MAX_PATH + 100];
+    int n;
     if (ConvertINetString != NULL)
         return TRUE;
-    h = LoadLibrary("mlang.dll");
+    n = GetSystemDirectory(mlang_dll, MAX_PATH);
+    if (n > 0 && n < MAX_PATH)
+    {
+        if (mlang_dll[n-1] != '\\' &&
+            mlang_dll[n-1] != '/')
+            strcat(mlang_dll, "\\");
+        strcat(mlang_dll, "mlang.dll");
+        h = LoadLibrary(mlang_dll);
+    }
     if (!h)
         return FALSE;
     ConvertINetString = (CONVERTINETSTRING)GetProcAddress(h, "ConvertINetString");
