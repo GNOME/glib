@@ -296,13 +296,15 @@ test_data_array (GInputStream *stream, GInputStream *base_stream,
           g_assert_not_reached ();
           break;
 	}
-      if ((data) && (! error))  
+      if (!error)
 	g_assert_cmpint (data, ==, TEST_DATA_RETYPE_BUFF(data_type, gint64, ((guchar*)buffer + pos)));
       
       pos += data_size;
     }
   if (pos < len + 1)
     g_assert_no_error (error);
+  if (error)
+    g_error_free (error);
   g_assert_cmpint (pos - data_size, ==, len);
 }
 
