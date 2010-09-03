@@ -154,6 +154,7 @@ test_g_file_open_readwrite (void)
   error = NULL;
   file_iostream = g_file_open_readwrite (file, NULL, &error);
   g_assert (file_iostream != NULL);
+  g_object_unref (file);
 
   verify_iostream (file_iostream);
 
