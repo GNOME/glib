@@ -112,9 +112,12 @@ test_read_lines (GDataStreamNewlineType newline_type)
       if (data)
 	{
 	  g_assert_cmpstr (data, ==, lines[line]);
+          g_free (data);
 	  g_assert_no_error (error);
 	  line++;
 	}
+      if (error)
+        g_error_free (error);
     }
   g_assert_cmpint (line, ==, MAX_LINES);
   
@@ -180,6 +183,7 @@ test_read_until (void)
       if (data)
 	{
 	  g_assert_cmpint (strlen (data), ==, DATA_PART_LEN);
+          g_free (data);
 	  g_assert_no_error (error);
 	  line++;
 	}
