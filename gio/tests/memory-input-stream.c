@@ -122,6 +122,7 @@ test_truncate (void)
   error = NULL;
   g_assert (!g_seekable_truncate (G_SEEKABLE (stream), 26, NULL, &error));
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_NOT_SUPPORTED);
+  g_error_free (error);
 
   g_object_unref (stream);
 }
