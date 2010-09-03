@@ -261,6 +261,7 @@ test_g_file_replace_readwrite (void)
   verify_iostream (file_iostream);
 
   g_object_unref (file_iostream);
+  g_object_unref (file);
 
   backup = g_strconcat (tmp_file, "~", NULL);
   res = g_file_get_contents (backup,
