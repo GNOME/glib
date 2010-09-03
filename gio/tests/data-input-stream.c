@@ -96,7 +96,7 @@ test_read_lines (GDataStreamNewlineType newline_type)
   /*  Add sample data */
   for (i = 0; i < MAX_LINES; i++) 
     g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (base_stream),
-				    g_strconcat (lines[i], endl[newline_type], NULL), -1, NULL);
+				    g_strconcat (lines[i], endl[newline_type], NULL), -1, g_free);
 
   /*  Seek to the start */
   test_seek_to_start (base_stream);
