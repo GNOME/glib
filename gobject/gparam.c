@@ -1144,7 +1144,13 @@ pspec_compare_id (gconstpointer a,
 {
   const GParamSpec *pspec1 = a, *pspec2 = b;
 
-  return pspec1->param_id < pspec2->param_id ? -1 : pspec1->param_id > pspec2->param_id;
+  if (pspec1->param_id < pspec2->param_id)
+    return -1;
+
+  if (pspec1->param_id > pspec2->param_id)
+    return 1;
+
+  return strcmp (pspec1->name, pspec2->name);
 }
 
 static inline GSList*
