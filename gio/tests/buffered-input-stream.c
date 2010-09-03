@@ -152,6 +152,7 @@ test_read_byte (void)
   g_assert_no_error (error);
   g_assert_cmpint (g_buffered_input_stream_read_byte (G_BUFFERED_INPUT_STREAM (in), NULL, &error), ==, -1);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
+  g_error_free (error);
 
   g_object_unref (in);
   g_object_unref (base);
