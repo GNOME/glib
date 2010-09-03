@@ -791,7 +791,13 @@ extension_prio_compare (gconstpointer  a,
 {
   const GIOExtension *extension_a = a, *extension_b = b;
 
-  return extension_b->priority - extension_a->priority;
+  if (extension_a->priority > extension_b->priority)
+    return -1;
+
+  if (extension_b->priority > extension_a->priority)
+    return 1;
+
+  return 0;
 }
 
 /**
