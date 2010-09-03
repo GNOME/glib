@@ -30,6 +30,21 @@
 
 #define INVALID_REFCOUNT 0x7FFFFFFF
 
+/* GBoxed registration of BaseInfo. */
+GType
+g_base_info_gtype_get_type (void)
+{
+  static GType our_type = 0;
+  
+  if (our_type == 0)
+    our_type =
+        g_boxed_type_register_static ("GIBaseInfo",
+                                      (GBoxedCopyFunc) g_base_info_ref,
+                                      (GBoxedFreeFunc) g_base_info_unref);
+
+  return our_type;
+}
+
 /* info creation */
 GIBaseInfo *
 _g_info_new_full (GIInfoType     type,

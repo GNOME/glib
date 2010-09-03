@@ -58,6 +58,9 @@ typedef struct {
   gpointer data4;
 } GIAttributeIter;
 
+#define GI_TYPE_BASE_INFO	(g_base_info_gtype_get_type ())
+
+GType                  g_base_info_gtype_get_type   (void) G_GNUC_CONST;
 GIBaseInfo *           g_base_info_ref              (GIBaseInfo   *info);
 void                   g_base_info_unref            (GIBaseInfo   *info);
 GIInfoType             g_base_info_get_type         (GIBaseInfo   *info);
