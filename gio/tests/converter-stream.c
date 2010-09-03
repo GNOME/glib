@@ -688,7 +688,10 @@ test_charset (gconstpointer data)
       g_assert_cmpstr (buffer, ==, test->text_out);
     }
   else
-    g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA);
+    {
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_DATA);
+      g_error_free (error);
+    }
 
   g_free (buffer);
   g_object_unref (in2);
