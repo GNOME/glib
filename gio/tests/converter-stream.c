@@ -548,6 +548,7 @@ test_compressor (void)
       if (res == -1)
 	{
 	  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PARTIAL_INPUT);
+          g_error_free (error);
 	  break;
 	}
 
