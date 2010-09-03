@@ -113,6 +113,7 @@ test1_thread (gpointer user_data)
   loop = g_main_loop_new (context, FALSE);
   g_file_read_async (file, G_PRIORITY_DEFAULT, NULL,
 		     opened_for_read, loop);
+  g_object_unref (file);
   g_main_loop_run (loop);
   g_main_loop_unref (loop);
 
@@ -155,6 +156,7 @@ test_context_independence (void)
   loop = g_main_loop_new (context, FALSE);
   g_file_read_async (file, G_PRIORITY_DEFAULT, NULL,
 		     opened_for_read, loop);
+  g_object_unref (file);
   g_main_loop_run (loop);
   g_main_loop_unref (loop);
 
