@@ -30,7 +30,10 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "gcache.h"
+
+#include "ghash.h"
+#include "gtestutils.h"
 
 /**
  * SECTION: caches
