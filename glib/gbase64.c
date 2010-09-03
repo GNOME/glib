@@ -28,7 +28,7 @@
 #include <string.h>
 
 #include "gbase64.h"
-#include "glib.h"
+#include "gtestutils.h"
 #include "glibintl.h"
 
 
