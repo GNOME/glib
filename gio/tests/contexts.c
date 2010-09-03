@@ -39,6 +39,8 @@ opened_for_read (GObject *source, GAsyncResult *result, gpointer loop)
 			     async_read_buffer, sizeof (async_read_buffer),
 			     G_PRIORITY_DEFAULT, NULL,
 			     read_data, loop);
+
+  g_object_unref (in);
 }
 
 /* Test 1: Async I/O started in a thread with a thread-default context
