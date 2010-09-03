@@ -502,6 +502,8 @@ test_compressor (void)
   g_assert (total_read == 1);
   g_assert (*converted == 5);
 
+  g_object_unref (cstream);
+
   mem = g_memory_input_stream_new_from_data (expanded,
 					     5*1000 * 2,
 					     NULL);
