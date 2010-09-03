@@ -27,6 +27,7 @@ test_basic (void)
 
   g_object_get (settings, "schema", &str, NULL);
   g_assert_cmpstr (str, ==, "org.gtk.test");
+  g_free (str);
 
   g_settings_get (settings, "greeting", "s", &str);
   g_assert_cmpstr (str, ==, "Hello, earthlings");
