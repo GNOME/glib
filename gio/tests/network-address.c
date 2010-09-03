@@ -16,6 +16,8 @@ test_basic (void)
   g_assert_cmpstr (hostname, ==, "www.gnome.org");
   g_assert_cmpint (port, ==, 8080);
   g_free (hostname);
+
+  g_object_unref (address);
 }
 
 typedef struct _ParseTest ParseTest;
