@@ -186,7 +186,8 @@ test_g_file_create_readwrite (void)
   error = NULL;
   file_iostream = g_file_create_readwrite (file, 0, NULL, &error);
   g_assert (file_iostream == NULL);
-  g_assert (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_EXISTS));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_EXISTS);
+  g_error_free (error);
 
   g_unlink (tmp_file);
   file_iostream = g_file_create_readwrite (file, 0, NULL, &error);
