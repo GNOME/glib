@@ -774,6 +774,7 @@ start_function (GMarkupParseContext *context,
 		GError             **error)
 {
   const gchar *name;
+  const gchar *shadows;
   const gchar *symbol;
   const gchar *deprecated;
   const gchar *throws;
@@ -817,6 +818,7 @@ start_function (GMarkupParseContext *context,
   ctx->in_embedded_type = in_embedded_type;
 
   name = find_attribute ("name", attribute_names, attribute_values);
+  shadows = find_attribute ("name", attribute_names, attribute_values);
   symbol = find_attribute ("c:identifier", attribute_names, attribute_values);
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
   throws = find_attribute ("throws", attribute_names, attribute_values);
@@ -831,6 +833,9 @@ start_function (GMarkupParseContext *context,
       MISSING_ATTRIBUTE (context, error, element_name, "c:identifier");
       return FALSE;
     }
+
+  if (shadows)
+    name = shadows;
 
   function = (GIrNodeFunction *) g_ir_node_new (G_IR_NODE_FUNCTION,
 						ctx->current_module);
