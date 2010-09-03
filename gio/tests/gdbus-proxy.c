@@ -435,6 +435,7 @@ test_bogus_method_return (GDBusProxy *proxy)
                                    NULL,
                                    &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_error_free (error);
   g_assert (result == NULL);
 }
 
