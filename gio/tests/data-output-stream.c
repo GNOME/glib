@@ -85,6 +85,7 @@ test_read_lines (GDataStreamNewlineType newline_type)
       g_stpcpy ((char*)(lines + i*strlen(s)), s);
       g_assert_no_error (error);
       g_assert (res == TRUE);
+      g_free (s);
     }
 
   /*  Byte order testing */
