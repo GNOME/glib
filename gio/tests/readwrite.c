@@ -205,6 +205,7 @@ test_g_file_create_readwrite (void)
   verify_iostream (file_iostream);
 
   g_object_unref (file_iostream);
+  g_object_unref (file);
 
   g_unlink (tmp_file);
   g_free (tmp_file);
