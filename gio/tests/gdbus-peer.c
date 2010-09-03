@@ -806,6 +806,7 @@ test_peer (void)
                                                NULL, /* cancellable */
                                                &error);
   _g_assert_error_domain (error, G_IO_ERROR);
+  g_error_free (error);
   g_assert (c2 == NULL);
 
 #if 0
@@ -1232,6 +1233,7 @@ test_nonce_tcp (void)
                                               NULL, /* cancellable */
                                               &error);
   _g_assert_error_domain (error, G_IO_ERROR);
+  g_error_free (error);
   g_assert (c == NULL);
 
   /* Then try with a nonce-file of incorrect length - this will make
@@ -1251,6 +1253,7 @@ test_nonce_tcp (void)
                                               NULL, /* cancellable */
                                               &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_error_free (error);
   g_assert (c == NULL);
 
   /* Finally try with no nonce-file at all */
@@ -1262,6 +1265,7 @@ test_nonce_tcp (void)
                                               NULL, /* cancellable */
                                               &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_INVALID_ARGUMENT);
+  g_error_free (error);
   g_assert (c == NULL);
 
   g_free (nonce_file);
