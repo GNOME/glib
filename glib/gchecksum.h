@@ -38,8 +38,8 @@ G_BEGIN_DECLS
  * The hashing algorithm to be used by #GChecksum when performing the
  * digest of some data.
  *
- * Note that the #GChecksumType enumeration may be extended at a later 
- * date to include new hashing algorithm types. 
+ * Note that the #GChecksumType enumeration may be extended at a later
+ * date to include new hashing algorithm types.
  *
  * Since: 2.16
  */
@@ -60,26 +60,26 @@ typedef enum {
  */
 typedef struct _GChecksum       GChecksum;
 
-gssize                g_checksum_type_get_length (GChecksumType checksum_type);
+gssize                g_checksum_type_get_length    (GChecksumType    checksum_type);
 
-GChecksum *           g_checksum_new        (GChecksumType     checksum_type);
-void                  g_checksum_reset      (GChecksum        *checksum);
-GChecksum *           g_checksum_copy       (const GChecksum  *checksum);
-void                  g_checksum_free       (GChecksum        *checksum);
-void                  g_checksum_update     (GChecksum        *checksum,
-                                             const guchar     *data,
-                                             gssize            length);
-G_CONST_RETURN gchar *g_checksum_get_string (GChecksum        *checksum);
-void                  g_checksum_get_digest (GChecksum        *checksum,
-                                             guint8           *buffer,
-                                             gsize            *digest_len);
+GChecksum *           g_checksum_new                (GChecksumType    checksum_type);
+void                  g_checksum_reset              (GChecksum       *checksum);
+GChecksum *           g_checksum_copy               (const GChecksum *checksum);
+void                  g_checksum_free               (GChecksum       *checksum);
+void                  g_checksum_update             (GChecksum       *checksum,
+                                                     const guchar    *data,
+                                                     gssize           length);
+G_CONST_RETURN gchar *g_checksum_get_string         (GChecksum       *checksum);
+void                  g_checksum_get_digest         (GChecksum       *checksum,
+                                                     guint8          *buffer,
+                                                     gsize           *digest_len);
 
-gchar *g_compute_checksum_for_data   (GChecksumType  checksum_type,
-                                      const guchar  *data,
-                                      gsize          length);
-gchar *g_compute_checksum_for_string (GChecksumType  checksum_type,
-                                      const gchar   *str,
-                                      gssize         length);
+gchar                *g_compute_checksum_for_data   (GChecksumType    checksum_type,
+                                                     const guchar    *data,
+                                                     gsize            length);
+gchar                *g_compute_checksum_for_string (GChecksumType    checksum_type,
+                                                     const gchar     *str,
+                                                     gssize           length);
 
 G_END_DECLS
 
