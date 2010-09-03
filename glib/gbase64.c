@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Library General Public License for more details.
  *
  * You should have received a copy of the GNU Library General Public
@@ -54,7 +54,7 @@
  */
 
 static const char base64_alphabet[] =
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 /**
  * g_base64_encode_step:
@@ -66,10 +66,10 @@ static const char base64_alphabet[] =
  * @save: Saved state between steps, initialize to 0
  *
  * Incrementally encode a sequence of binary data into its Base-64 stringified
- * representation. By calling this function multiple times you can convert 
+ * representation. By calling this function multiple times you can convert
  * data in chunks to avoid having to have the full encoded data in memory.
  *
- * When all of the data has been converted you must call 
+ * When all of the data has been converted you must call
  * g_base64_encode_close() to flush the saved state.
  *
  * The output buffer must be large enough to fit all the data that will
@@ -79,7 +79,7 @@ static const char base64_alphabet[] =
  * ((@len / 3 + 1) * 4 + 4) / 72 + 1 bytes of extra space.
  *
  * @break_lines is typically used when putting base64-encoded data in emails.
- * It breaks the lines at 72 columns instead of putting all of the text on 
+ * It breaks the lines at 72 columns instead of putting all of the text on
  * the same line. This avoids problems with long lines in the email system.
  *
  * Return value: The number of bytes of output that was written
@@ -87,16 +87,16 @@ static const char base64_alphabet[] =
  * Since: 2.12
  */
 gsize
-g_base64_encode_step (const guchar *in, 
-		      gsize         len, 
-		      gboolean      break_lines, 
-		      gchar        *out, 
-		      gint         *state, 
-		      gint         *save)
+g_base64_encode_step (const guchar *in,
+                      gsize         len,
+                      gboolean      break_lines,
+                      gchar        *out,
+                      gint         *state,
+                      gint         *save)
 {
   char *outptr;
   const guchar *inptr;
-  
+
   g_return_val_if_fail (in != NULL, 0);
   g_return_val_if_fail (out != NULL, 0);
   g_return_val_if_fail (state != NULL, 0);
@@ -104,75 +104,75 @@ g_base64_encode_step (const guchar *in,
 
   if (len <= 0)
     return 0;
-  
+
   inptr = in;
   outptr = out;
-  
+
   if (len + ((char *) save) [0] > 2)
     {
       const guchar *inend = in+len-2;
       int c1, c2, c3;
       int already;
-      
+
       already = *state;
-      
+
       switch (((char *) save) [0])
-	{	
-	case 1:	
-	  c1 = ((unsigned char *) save) [1]; 
-          goto skip1;
-	case 2:	
+        {
+        case 1:
           c1 = ((unsigned char *) save) [1];
-	  c2 = ((unsigned char *) save) [2]; 
+          goto skip1;
+        case 2:
+          c1 = ((unsigned char *) save) [1];
+          c2 = ((unsigned char *) save) [2];
           goto skip2;
-	}
-      
-      /* 
-       * yes, we jump into the loop, no i'm not going to change it, 
-       * it's beautiful! 
+        }
+
+      /*
+       * yes, we jump into the loop, no i'm not going to change it,
+       * it's beautiful!
        */
       while (inptr < inend)
-	{
-	  c1 = *inptr++;
-	skip1:
-	  c2 = *inptr++;
-	skip2:
-	  c3 = *inptr++;
-	  *outptr++ = base64_alphabet [ c1 >> 2 ];
-	  *outptr++ = base64_alphabet [ c2 >> 4 | 
-					((c1&0x3) << 4) ];
-	  *outptr++ = base64_alphabet [ ((c2 &0x0f) << 2) | 
-					(c3 >> 6) ];
-	  *outptr++ = base64_alphabet [ c3 & 0x3f ];
-	  /* this is a bit ugly ... */
-	  if (break_lines && (++already) >= 19)
-	    {
-	      *outptr++ = '\n';
-	      already = 0;
-	    }
-	}
-      
+        {
+          c1 = *inptr++;
+        skip1:
+          c2 = *inptr++;
+        skip2:
+          c3 = *inptr++;
+          *outptr++ = base64_alphabet [ c1 >> 2 ];
+          *outptr++ = base64_alphabet [ c2 >> 4 |
+                                        ((c1&0x3) << 4) ];
+          *outptr++ = base64_alphabet [ ((c2 &0x0f) << 2) |
+                                        (c3 >> 6) ];
+          *outptr++ = base64_alphabet [ c3 & 0x3f ];
+          /* this is a bit ugly ... */
+          if (break_lines && (++already) >= 19)
+            {
+              *outptr++ = '\n';
+              already = 0;
+            }
+        }
+
       ((char *)save)[0] = 0;
       len = 2 - (inptr - inend);
       *state = already;
     }
-  
+
   if (len>0)
     {
       char *saveout;
-      
+
       /* points to the slot for the next char to save */
       saveout = & (((char *)save)[1]) + ((char *)save)[0];
-      
+
       /* len can only be 0 1 or 2 */
       switch(len)
-	{
-	case 2:	*saveout++ = *inptr++;
-	case 1:	*saveout++ = *inptr++;
-	}
+        {
+        case 2: *saveout++ = *inptr++;
+        case 1: *saveout++ = *inptr++;
+        }
       ((char *)save)[0] += len;
     }
-  
+
   return outptr - out;
 }
 
@@ -195,9 +195,9 @@ g_base64_encode_step (const guchar *in,
  */
 gsize
 g_base64_encode_close (gboolean  break_lines,
-		       gchar    *out,
-		       gint     *state,
-		       gint     *save)
+                       gchar    *out,
+                       gint     *state,
+                       gint     *save)
 {
   int c1, c2;
   char *outptr = out;
@@ -208,7 +208,7 @@ g_base64_encode_close (gboolean  break_lines,
 
   c1 = ((unsigned char *) save) [1];
   c2 = ((unsigned char *) save) [2];
-  
+
   switch (((char *) save) [0])
     {
     case 2:
@@ -226,10 +226,10 @@ g_base64_encode_close (gboolean  break_lines,
     }
   if (break_lines)
     *outptr++ = '\n';
-  
+
   *save = 0;
   *state = 0;
-  
+
   return outptr - out;
 }
 
@@ -242,13 +242,13 @@ g_base64_encode_close (gboolean  break_lines,
  * representation.
  *
  * Return value: a newly allocated, zero-terminated Base-64 encoded
- *               string representing @data. The returned string must 
+ *               string representing @data. The returned string must
  *               be freed with g_free().
  *
  * Since: 2.12
  */
 gchar *
-g_base64_encode (const guchar *data, 
+g_base64_encode (const guchar *data,
                  gsize         len)
 {
   gchar *out;
@@ -292,7 +292,7 @@ static const unsigned char mime_base64_rank[256] = {
 };
 
 /**
- * g_base64_decode_step: 
+ * g_base64_decode_step:
  * @in: binary input data
  * @len: max length of @in data to decode
  * @out: output buffer
@@ -300,24 +300,24 @@ static const unsigned char mime_base64_rank[256] = {
  * @save: Saved state between steps, initialize to 0
  *
  * Incrementally decode a sequence of binary data from its Base-64 stringified
- * representation. By calling this function multiple times you can convert 
+ * representation. By calling this function multiple times you can convert
  * data in chunks to avoid having to have the full encoded data in memory.
  *
  * The output buffer must be large enough to fit all the data that will
  * be written to it. Since base64 encodes 3 bytes in 4 chars you need
  * at least: (@len / 4) * 3 + 3 bytes (+ 3 may be needed in case of non-zero
  * state).
- * 
+ *
  * Return value: The number of bytes of output that was written
  *
  * Since: 2.12
  **/
 gsize
-g_base64_decode_step (const gchar  *in, 
-		      gsize         len, 
-		      guchar       *out, 
-		      gint         *state, 
-		      guint        *save)
+g_base64_decode_step (const gchar  *in,
+                      gsize         len,
+                      guchar       *out,
+                      gint         *state,
+                      guint        *save)
 {
   const guchar *inptr;
   guchar *outptr;
@@ -334,10 +334,10 @@ g_base64_decode_step (const gchar  *in,
 
   if (len <= 0)
     return 0;
-  
+
   inend = (const guchar *)in+len;
   outptr = out;
-  
+
   /* convert 4 base64 bytes to 3 normal bytes */
   v=*save;
   i=*state;
@@ -348,26 +348,26 @@ g_base64_decode_step (const gchar  *in,
       c = *inptr++;
       rank = mime_base64_rank [c];
       if (rank != 0xff)
-	{
-	  last[1] = last[0];
-	  last[0] = c;
-	  v = (v<<6) | rank;
-	  i++;
-	  if (i==4)
-	    {
-	      *outptr++ = v>>16;
-	      if (last[1] != '=')
-		*outptr++ = v>>8;
-	      if (last[0] != '=')
-		*outptr++ = v;
-	      i=0;
-	    }
-	}
+        {
+          last[1] = last[0];
+          last[0] = c;
+          v = (v<<6) | rank;
+          i++;
+          if (i==4)
+            {
+              *outptr++ = v>>16;
+              if (last[1] != '=')
+                *outptr++ = v>>8;
+              if (last[0] != '=')
+                *outptr++ = v;
+              i=0;
+            }
+        }
     }
-  
+
   *save = v;
   *state = i;
-  
+
   return outptr - out;
 }
 
@@ -386,13 +386,13 @@ g_base64_decode_step (const gchar  *in,
  */
 guchar *
 g_base64_decode (const gchar *text,
-		 gsize       *out_len)
+                 gsize       *out_len)
 {
   guchar *ret;
   gsize input_length;
   gint state = 0;
   guint save = 0;
-  
+
   g_return_val_if_fail (text != NULL, NULL);
   g_return_val_if_fail (out_len != NULL, NULL);
 
@@ -401,12 +401,12 @@ g_base64_decode (const gchar *text,
   /* We can use a smaller limit here, since we know the saved state is 0,
      +1 used to avoid calling g_malloc0(0), and hence retruning NULL */
   ret = g_malloc0 ((input_length / 4) * 3 + 1);
-  
+
   *out_len = g_base64_decode_step (text, input_length, ret, &state, &save);
-  
-  return ret; 
+
+  return ret;
 }
- 
+
 /**
  * g_base64_decode_inplace:
  * @text: zero-terminated string with base64 text to decode
@@ -426,7 +426,7 @@ g_base64_decode_inplace (gchar *text,
 {
   gint input_length, state = 0;
   guint save = 0;
-  
+
   g_return_val_if_fail (text != NULL, NULL);
   g_return_val_if_fail (out_len != NULL, NULL);
 
@@ -435,6 +435,6 @@ g_base64_decode_inplace (gchar *text,
   g_return_val_if_fail (input_length > 1, NULL);
 
   *out_len = g_base64_decode_step (text, input_length, (guchar *) text, &state, &save);
-  
-  return (guchar *) text; 
+
+  return (guchar *) text;
 }
