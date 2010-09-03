@@ -230,6 +230,7 @@ test_g_icon_serialize (void)
   g_object_unref (icon3);
   g_object_unref (icon4);
   g_object_unref (icon5);
+  g_free (data);
 }
 
 static void
