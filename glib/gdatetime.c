@@ -76,18 +76,25 @@
  * reference count drops to 0, the resources allocated by the #GDateTime
  * structure are released.
  *
- * Internally, #GDateTime uses the Julian Day Number since the
- * initial Julian Period (-4712 BC). However, the public API uses the
+ * Internally, #GDateTime uses the Proleptic Gregorian Calendar, the first
+ * representable date is 0001-01-01. However, the public API uses the
  * internationally accepted Gregorian Calendar.
  *
  * #GDateTime is available since GLib 2.26.
  */
+
+#define UNIX_EPOCH_START     719163
+
+#define DAYS_IN_4YEARS    1461    /* days in 4 years */
+#define DAYS_IN_100YEARS  36524   /* days in 100 years */
+#define DAYS_IN_400YEARS  146097  /* days in 400 years  */
 
 #define USEC_PER_SECOND      (G_GINT64_CONSTANT (1000000))
 #define USEC_PER_MINUTE      (G_GINT64_CONSTANT (60000000))
 #define USEC_PER_HOUR        (G_GINT64_CONSTANT (3600000000))
 #define USEC_PER_MILLISECOND (G_GINT64_CONSTANT (1000))
 #define USEC_PER_DAY         (G_GINT64_CONSTANT (86400000000))
+#define SEC_PER_DAY          (G_GINT64_CONSTANT (86400))
 
 #define GREGORIAN_LEAP(y)    ((((y) % 4) == 0) && (!((((y) % 100) == 0) && (((y) % 400) != 0))))
 #define JULIAN_YEAR(d)       ((d)->julian / 365.25)
@@ -113,16 +120,10 @@ typedef struct _GTimeZone       GTimeZone;
 
 struct _GDateTime
 {
-  /* Julian Period, 0 is Initial Epoch */
-  gint period  :  3;
-
-  /* Day within Julian Period */
-  guint julian : 22;
-
+  /* 1 is 0001-01-01 in Proleptic Gregorian */
+  guint32 days;
   /* Microsecond timekeeping within Day */
-  guint64 usec : 37;
-
-  gint reserved : 2;
+  guint64 usec;
 
   /* TimeZone information, NULL is UTC */
   GTimeZone *tz;
@@ -281,40 +282,29 @@ get_weekday_name_abbr (gint day)
 }
 
 static inline gint
-date_to_julian (gint year,
+date_to_proleptic_gregorian (gint year,
                 gint month,
                 gint day)
 {
-  gint a = (14 - month) / 12;
-  gint y = year + 4800 - a;
-  gint m = month + (12 * a) - 3;
+  gint64 days;
 
-  return day
-       + (((153 * m) + 2) / 5)
-       + (y * 365)
-       + (y / 4)
-       - (y / 100)
-       + (y / 400)
-       - 32045;
+  days = (year - 1) * 365 + ((year - 1) / 4) - ((year - 1) / 100)
+      + ((year - 1) / 400);
+
+  days += days_in_year[0][month - 1];
+  if (GREGORIAN_LEAP (year) && month > 2)
+    day++;
+
+  days += day;
+
+  return days;
 }
 
 static inline void
 g_date_time_add_days_internal (GDateTime *datetime,
                                gint64     days)
 {
-  gint __day = datetime->julian + days;
-  if (__day < 1)
-    {
-      datetime->period += -1 + (__day / DAYS_PER_PERIOD);
-      datetime->period += DAYS_PER_PERIOD + (__day % DAYS_PER_PERIOD);
-    }
-  else if (__day > DAYS_PER_PERIOD)
-    {
-      datetime->period += (datetime->julian + days) / DAYS_PER_PERIOD;
-      datetime->julian = (datetime->julian + days) % DAYS_PER_PERIOD;
-    }
-  else
-    datetime->julian += days;
+  datetime->days += days;
 }
 
 static inline void
@@ -392,10 +382,7 @@ g_date_time_add_ymd (GDateTime *datetime,
   if (max_days[m] < d)
     d = max_days[m];
 
-  /* since the add_days_internal() uses the julian date we need to
-   * update it using the new year/month/day and then add the days
-   */
-  datetime->julian = date_to_julian (y, m, d);
+  datetime->days = date_to_proleptic_gregorian (y, m, d);
   g_date_time_add_days_internal (datetime, days);
 }
 
@@ -1052,15 +1039,13 @@ g_date_time_compare (gconstpointer dt1,
   a = dt1;
   b = dt2;
 
-  if ((a->period == b->period) &&
-      (a->julian == b->julian) &&
+  if ((a->days == b->days )&&
       (a->usec == b->usec))
     {
       return 0;
     }
-  else if ((a->period > b->period) ||
-           ((a->period == b->period) && (a->julian > b->julian)) ||
-           ((a->period == b->period) && (a->julian == b->julian) && a->usec > b->usec))
+  else if ((a->days > b->days) ||
+           ((a->days == b->days) && a->usec > b->usec))
     {
       return 1;
     }
@@ -1087,8 +1072,7 @@ g_date_time_copy (const GDateTime *datetime)
   g_return_val_if_fail (datetime != NULL, NULL);
 
   copied = g_date_time_new ();
-  copied->period = datetime->period;
-  copied->julian = datetime->julian;
+  copied->days = datetime->days;
   copied->usec = datetime->usec;
   copied->tz = g_time_zone_copy (datetime->tz);
 
@@ -1141,13 +1125,8 @@ g_date_time_difference (const GDateTime *begin,
   g_return_val_if_fail (begin != NULL, 0);
   g_return_val_if_fail (end != NULL, 0);
 
-  if (begin->period != 0 || end->period != 0)
-    {
-      g_warning ("GDateTime only supports the current Julian period");
-      return 0;
-    }
-
-  return ((end->julian - begin->julian) * USEC_PER_DAY) + (end->usec - begin->usec);
+  return (GTimeSpan) (((gint64) end->days - (gint64) begin->days)
+      * USEC_PER_DAY) + ((gint64) end->usec - (gint64) begin->usec);
 }
 
 /**
@@ -1298,23 +1277,81 @@ g_date_time_get_dmy (const GDateTime *datetime,
                      gint            *month,
                      gint            *year)
 {
-  gint a, b, c, d, e, m;
+  gint the_year;
+  gint the_month;
+  gint the_day;
+  gint remaining_days;
+  gint y100_cycles;
+  gint y4_cycles;
+  gint y1_cycles;
+  gint preceding;
+  gboolean leap;
 
-  a = datetime->julian + 32044;
-  b = ((4 * a) + 3) / 146097;
-  c = a - ((b * 146097) / 4);
-  d = ((4 * c) + 3) / 1461;
-  e = c - (1461 * d) / 4;
-  m = (5 * e + 2) / 153;
+  g_return_if_fail (datetime != NULL);
 
-  if (day != NULL)
-    *day = e - (((153 * m) + 2) / 5) + 1;
+  remaining_days = datetime->days;
 
-  if (month != NULL)
-    *month = m + 3 - (12 * (m / 10));
+  /*
+   * We need to convert an offset in days to its year/month/day representation.
+   * Leap years makes this a little trickier than it should be, so we use
+   * 400, 100 and 4 years cycles here to get to the correct year.
+   */
 
-  if (year != NULL)
-    *year  = (b * 100) + d - 4800 + (m / 10);
+  /* Our days offset starts sets 0001-01-01 as day 1, if it was day 0 our
+   * math would be simpler, so let's do it */
+  remaining_days--;
+
+  the_year = (remaining_days / DAYS_IN_400YEARS) * 400 + 1;
+  remaining_days = remaining_days % DAYS_IN_400YEARS;
+
+  y100_cycles = remaining_days / DAYS_IN_100YEARS;
+  remaining_days = remaining_days % DAYS_IN_100YEARS;
+  the_year += y100_cycles * 100;
+
+  y4_cycles = remaining_days / DAYS_IN_4YEARS;
+  remaining_days = remaining_days % DAYS_IN_4YEARS;
+  the_year += y4_cycles * 4;
+
+  y1_cycles = remaining_days / 365;
+  the_year += y1_cycles;
+  remaining_days = remaining_days % 365;
+
+  if (y1_cycles == 4 || y100_cycles == 4) {
+    g_assert (remaining_days == 0);
+
+    /* special case that indicates that the date is actually one year before,
+     * in the 31th of December */
+    the_year--;
+    the_month = 12;
+    the_day = 31;
+    goto end;
+  }
+
+  /* now get the month and the day */
+  leap = y1_cycles == 3 && (y4_cycles != 24 || y100_cycles == 3);
+
+  g_assert (leap == GREGORIAN_LEAP(the_year));
+
+  the_month = (remaining_days + 50) >> 5;
+  preceding = (days_in_year[0][the_month - 1] + (the_month > 2 && leap));
+  if (preceding > remaining_days) {
+    /* estimate is too large */
+    the_month -= 1;
+    preceding -= leap ? days_in_months[1][the_month] :
+        days_in_months[0][the_month];
+  }
+  remaining_days -= preceding;
+  g_assert(0 <= remaining_days);
+
+  the_day = remaining_days + 1;
+
+end:
+  if (year)
+    *year = the_year;
+  if (month)
+    *month = the_month;
+  if (day)
+    *day = the_day;
 }
 
 /**
@@ -1357,13 +1394,26 @@ g_date_time_get_julian (const GDateTime *datetime,
                         gint            *minute,
                         gint            *second)
 {
+  gint y, m, d, a, b, c, e, f, j;
   g_return_if_fail (datetime != NULL);
 
+  g_date_time_get_dmy (datetime, &d, &m, &y);
+
+  /* FIXME: This is probably not optimal and doesn't handle the fact that the
+   * julian calendar has its 0 hour on midday */
+
+  a = y / 100;
+  b = a / 4;
+  c = 2 - a + b;
+  e = 365.25 * (y + 4716);
+  f = 30.6001 * (m + 1);
+  j = c + d + e + f - 1524;
+
   if (period)
-    *period = datetime->period;
+    *period = 0;
 
   if (julian)
-    *julian = datetime->julian;
+    *julian = j;
 
   if (hour)
     *hour = (datetime->usec / USEC_PER_HOUR);
@@ -1630,7 +1680,8 @@ g_date_time_new_from_date (gint year,
   g_return_val_if_fail (day > 0 && day <= 31, NULL);
 
   dt = g_date_time_new ();
-  dt->julian = date_to_julian (year, month, day);
+
+  dt->days = date_to_proleptic_gregorian (year, month, day);
   dt->tz = g_date_time_create_time_zone (dt, NULL);
 
   return dt;
@@ -2104,33 +2155,18 @@ g_date_time_to_local (const GDateTime *datetime)
 gint64
 g_date_time_to_epoch (const GDateTime *datetime)
 {
-  struct tm tm;
-  gint      year,
-            month,
-            day;
+  gint64 result;
 
   g_return_val_if_fail (datetime != NULL, 0);
-  g_return_val_if_fail (datetime->period == 0, 0);
 
-  g_date_time_get_dmy (datetime, &day, &month, &year);
+  if (datetime->days <= 0)
+    return G_MININT64;
 
-  /* FIXME we use gint64, we shold expand these limits */
-  if (year < 1970)
-    return 0;
-  else if (year > 2037)
-    return G_MAXINT64;
+  result = (datetime->days - UNIX_EPOCH_START) * SEC_PER_DAY
+         + datetime->usec / USEC_PER_SECOND
+         - g_date_time_get_utc_offset (datetime) / 1000000;
 
-  memset (&tm, 0, sizeof (tm));
-
-  tm.tm_year = year - 1900;
-  tm.tm_mon = month - 1;
-  tm.tm_mday = day;
-  tm.tm_hour = g_date_time_get_hour (datetime);
-  tm.tm_min = g_date_time_get_minute (datetime);
-  tm.tm_sec = g_date_time_get_second (datetime);
-  tm.tm_isdst = -1;
-
-  return (gint64) mktime (&tm);
+  return result;
 }
 
 /**
@@ -2151,11 +2187,8 @@ g_date_time_to_timeval (const GDateTime *datetime,
   tv->tv_sec = 0;
   tv->tv_usec = 0;
 
-  if (G_LIKELY (datetime->period == 0))
-    {
-      tv->tv_sec = g_date_time_to_epoch (datetime);
-      tv->tv_usec = datetime->usec % USEC_PER_SECOND;
-    }
+  tv->tv_sec = g_date_time_to_epoch (datetime);
+  tv->tv_usec = datetime->usec % USEC_PER_SECOND;
 }
 
 /**

@@ -293,6 +293,9 @@ test_GDateTime_get_dmy (void)
    struct tm tm;
    time_t t;
    gint d, m, y;
+   gint d2, m2, y2;
+   gint days[2][13] = {{0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+                       {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
 
    t = time (NULL);
    memset (&tm, 0, sizeof (struct tm));
@@ -303,6 +306,28 @@ test_GDateTime_get_dmy (void)
    g_assert_cmpint(y, ==, tm.tm_year + 1900);
    g_assert_cmpint(m, ==, tm.tm_mon + 1);
    g_assert_cmpint(d, ==, tm.tm_mday);
+
+   /* exaustive test */
+   for (y = 1750; y < 2250; y++)
+     {
+       gint leap = ((y % 4) == 0) && (!(((y % 100) == 0) && ((y % 400) != 0)))
+                 ? 1
+                 : 0;
+
+       for (m = 1; m <= 12; m++)
+         {
+           for (d = 1; d <= days[leap][m]; d++)
+             {
+               GDateTime *dt1 = g_date_time_new_from_date (y, m, d);
+
+               g_date_time_get_dmy (dt1, &d2, &m2, &y2);
+               g_assert_cmpint (y, ==, y2);
+               g_assert_cmpint (m, ==, m2);
+               g_assert_cmpint (d, ==, d2);
+               g_date_time_unref (dt1);
+             }
+         }
+     }
 }
 
 static void
@@ -410,6 +435,13 @@ test_GDateTime_new_from_timeval (void)
 
   g_get_current_time (&tv);
   dt = g_date_time_new_from_timeval (&tv);
+
+  if (g_test_verbose ())
+    g_print ("\nDT%d/%d/%d\n",
+             g_date_time_get_year (dt),
+             g_date_time_get_month (dt),
+             g_date_time_get_day_of_month (dt));
+
   g_date_time_to_timeval (dt, &tv2);
   g_assert_cmpint (tv.tv_sec, ==, tv2.tv_sec);
   g_assert_cmpint (tv.tv_usec, ==, tv2.tv_usec);
