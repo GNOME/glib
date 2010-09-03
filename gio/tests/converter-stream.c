@@ -700,7 +700,10 @@ test_charset (gconstpointer data)
   g_object_unref (in);
 
   if (test->n_fallbacks == 0)
-    return;
+    {
+       g_object_unref (conv);
+       return;
+    }
 
   g_converter_reset (conv);
 
