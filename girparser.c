@@ -818,7 +818,7 @@ start_function (GMarkupParseContext *context,
   ctx->in_embedded_type = in_embedded_type;
 
   name = find_attribute ("name", attribute_names, attribute_values);
-  shadows = find_attribute ("name", attribute_names, attribute_values);
+  shadows = find_attribute ("shadows", attribute_names, attribute_values);
   symbol = find_attribute ("c:identifier", attribute_names, attribute_values);
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
   throws = find_attribute ("throws", attribute_names, attribute_values);
