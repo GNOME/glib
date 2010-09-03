@@ -110,12 +110,13 @@ verify_iostream (GFileIOStream *file_iostream)
   res = g_output_stream_write_all (out, new_data, strlen (new_data),
 				   &n_bytes, NULL, &error);
   g_assert (!res);
-  g_assert (error != NULL);
-  g_assert (g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CLOSED));
+  g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CLOSED);
+  g_error_free (error);
 
   error = NULL;
   res = g_io_stream_close (iostream, NULL, &error);
-  g_assert (res && error == NULL);
+  g_assert (res);
+  g_assert_no_error (error);
 
   g_free (modified_data);
 }
