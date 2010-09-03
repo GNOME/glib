@@ -50,6 +50,7 @@ test_basic (void)
 
   g_object_unref (stream);
   g_object_unref (base_stream);
+  g_free (data);
 }
 
 static void
