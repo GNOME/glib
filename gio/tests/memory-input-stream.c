@@ -63,6 +63,8 @@ test_read_chunks (void)
       g_assert_cmpint (res, ==, TRUE);
       g_assert_no_error (error);
     }
+
+  g_object_unref (stream);
 }
 
 static void
