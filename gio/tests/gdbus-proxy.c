@@ -505,9 +505,9 @@ test_basic (GDBusProxy *proxy)
   GDBusConnection *conn;
   GDBusProxyFlags flags;
   GDBusInterfaceInfo *info;
-  const gchar *name;
-  const gchar *path;
-  const gchar *interface;
+  gchar *name;
+  gchar *path;
+  gchar *interface;
   gint timeout;
 
   connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
@@ -539,6 +539,9 @@ test_basic (GDBusProxy *proxy)
   g_assert_cmpint (timeout, ==, -1);
 
   g_object_unref (conn);
+  g_free (name);
+  g_free (path);
+  g_free (interface);
 
   g_object_unref (connection);
 }
