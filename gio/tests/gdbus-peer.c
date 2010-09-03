@@ -180,6 +180,7 @@ test_interface_method_call (GDBusConnection       *connection,
 
       reply = g_dbus_message_new_method_reply (g_dbus_method_invocation_get_message (invocation));
       g_dbus_message_set_unix_fd_list (reply, fd_list);
+      g_object_unref (fd_list);
       g_object_unref (invocation);
 
       error = NULL;
