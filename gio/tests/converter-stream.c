@@ -592,7 +592,7 @@ test_corruption (GZlibCompressorFormat format, gint level)
   istream0 = g_memory_input_stream_new_from_data (data0,
     DATA_LENGTH * sizeof (guint32), NULL);
 
-  ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
+  ostream1 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
   compressor = G_CONVERTER (g_zlib_compressor_new (format, level));
   costream1 = g_converter_output_stream_new (ostream1, compressor);
   g_assert (g_converter_output_stream_get_converter (G_CONVERTER_OUTPUT_STREAM (costream1)) == compressor);
@@ -607,17 +607,17 @@ test_corruption (GZlibCompressorFormat format, gint level)
   g_assert_cmpint (fmt, ==, format);
   g_assert_cmpint (lvl, ==, level);
   g_object_unref (compressor);
-  data1 = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (ostream1));
+  data1 = g_memory_output_stream_steal_data (G_MEMORY_OUTPUT_STREAM (ostream1));
   data1_size = g_memory_output_stream_get_data_size (
     G_MEMORY_OUTPUT_STREAM (ostream1));
   g_object_unref (ostream1);
   g_object_unref (istream0);
 
-  istream1 = g_memory_input_stream_new_from_data (data1, data1_size, NULL);
+  istream1 = g_memory_input_stream_new_from_data (data1, data1_size, g_free);
   decompressor = G_CONVERTER (g_zlib_decompressor_new (format));
   cistream1 = g_converter_input_stream_new (istream1, decompressor);
 
-  ostream2 = g_memory_output_stream_new (NULL, 0, g_realloc, NULL);
+  ostream2 = g_memory_output_stream_new (NULL, 0, g_realloc, g_free);
 
   g_output_stream_splice (ostream2, cistream1, 0, NULL, &error);
   g_assert_no_error (error);
@@ -633,6 +633,7 @@ test_corruption (GZlibCompressorFormat format, gint level)
   g_object_unref (decompressor);
   g_object_unref (cistream1);
   g_object_unref (ostream2);
+  g_free (data0);
 }
 
 typedef struct {
