@@ -21,10 +21,10 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* 
+/*
  * MT safe
  */
 
@@ -159,12 +159,12 @@ g_cache_node_destroy (GCacheNode *node)
  **/
 GCache*
 g_cache_new (GCacheNewFunc      value_new_func,
-	     GCacheDestroyFunc  value_destroy_func,
-	     GCacheDupFunc      key_dup_func,
-	     GCacheDestroyFunc  key_destroy_func,
-	     GHashFunc          hash_key_func,
-	     GHashFunc          hash_value_func,
-	     GEqualFunc         key_equal_func)
+             GCacheDestroyFunc  value_destroy_func,
+             GCacheDupFunc      key_dup_func,
+             GCacheDestroyFunc  key_destroy_func,
+             GHashFunc          hash_key_func,
+             GHashFunc          hash_value_func,
+             GEqualFunc         key_equal_func)
 {
   GCache *cache;
 
@@ -223,7 +223,7 @@ g_cache_destroy (GCache *cache)
  **/
 gpointer
 g_cache_insert (GCache   *cache,
-		gpointer  key)
+                gpointer  key)
 {
   GCacheNode *node;
   gpointer value;
@@ -258,7 +258,7 @@ g_cache_insert (GCache   *cache,
  **/
 void
 g_cache_remove (GCache        *cache,
-		gconstpointer  value)
+                gconstpointer  value)
 {
   GCacheNode *node;
   gpointer key;
@@ -297,8 +297,8 @@ g_cache_remove (GCache        *cache,
  **/
 void
 g_cache_key_foreach (GCache   *cache,
-		     GHFunc    func,
-		     gpointer  user_data)
+                     GHFunc    func,
+                     gpointer  user_data)
 {
   g_return_if_fail (cache != NULL);
   g_return_if_fail (func != NULL);
@@ -320,8 +320,8 @@ g_cache_key_foreach (GCache   *cache,
  **/
 void
 g_cache_value_foreach (GCache   *cache,
-		       GHFunc    func,
-		       gpointer  user_data)
+                       GHFunc    func,
+                       gpointer  user_data)
 {
   g_return_if_fail (cache != NULL);
   g_return_if_fail (func != NULL);
