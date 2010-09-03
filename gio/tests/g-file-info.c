@@ -76,7 +76,8 @@ test_g_file_info (void)
   attr_list = g_file_info_list_attributes (info, NULL);
   g_assert (attr_list != NULL);
   g_assert (*attr_list == NULL);
-	
+  g_strfreev (attr_list);
+
   g_file_info_set_attribute_byte_string (info, G_FILE_ATTRIBUTE_STANDARD_NAME, TEST_NAME);
   g_file_info_set_attribute_string (info, G_FILE_ATTRIBUTE_STANDARD_DISPLAY_NAME, TEST_DISPLAY_NAME);
   g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_STANDARD_SIZE, TEST_SIZE);
@@ -86,7 +87,8 @@ test_g_file_info (void)
   attr_list = g_file_info_list_attributes (info, NULL);
   g_assert (attr_list != NULL);
   g_assert (*attr_list != NULL);
-	
+  g_strfreev (attr_list);
+
   test_assigned_values (info);
 	
   /*  Test dups */
