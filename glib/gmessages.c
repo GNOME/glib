@@ -21,10 +21,10 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* 
+/*
  * MT safe
  */
 
@@ -41,11 +41,6 @@
 #include <locale.h>
 #include <errno.h>
 
-#include "glib.h"
-#include "gdebug.h"
-#include "gprintfint.h"
-#include "gthreadprivate.h"
-
 #ifdef G_OS_WIN32
 #include <process.h>		/* For getpid() */
 #include <io.h>
@@ -54,6 +49,20 @@
 #  include <windows.h>
 #  undef STRICT
 #endif
+
+#include "gmessages.h"
+
+#include "gbacktrace.h"
+#include "gconvert.h"
+#include "gdebug.h"
+#include "gmem.h"
+#include "gprintfint.h"
+#include "gtestutils.h"
+#include "gthread.h"
+#include "gthreadprivate.h"
+#include "gstrfuncs.h"
+#include "gstring.h"
+
 
 /* --- structures --- */
 typedef struct _GLogDomain	GLogDomain;
