@@ -19,11 +19,19 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
-#include <glib.h>
 
+#include "gerror.h"
+#include "gquark.h"
+#include "gstring.h"
+#include "gstrfuncs.h"
+#include "gtestutils.h"
+#include "gvariant.h"
+#include "gvarianttype.h"
 
 /*
  * two-pass algorithm
