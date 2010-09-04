@@ -22,8 +22,6 @@
 
 #define G_STDIO_NO_WRAP_ON_UNIX
 
-#include "glib.h"
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

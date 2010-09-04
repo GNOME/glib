@@ -38,7 +38,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "glib.h"
+#include "gqsort.h"
+
+#include "gtestutils.h"
 
 /* Byte-wise swap two items of size SIZE. */
 #define SWAP(a, b, size)						      \

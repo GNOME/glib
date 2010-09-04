@@ -47,7 +47,6 @@
 #define G_MAIN_POLL_DEBUG
 #endif
 
-#include "glib.h"
 #include <sys/types.h>
 #include <time.h>
 #include <stdlib.h>
@@ -77,6 +76,7 @@
 #include <windows.h>
 #endif /* G_OS_WIN32 */
 
+#include "gpoll.h"
 
 #ifdef G_MAIN_POLL_DEBUG
 extern gboolean _g_main_poll_debug;

@@ -21,16 +21,19 @@
 
 #include "config.h"
 
-#include "glib.h"
-#include "glibintl.h"
-
 #include <string.h>
+
+#include "ghostutils.h"
+
+#include "garray.h"
+#include "gstring.h"
+#include "gstrfuncs.h"
+#include "glibintl.h"
 
 
 /**
  * SECTION:ghostutils
  * @short_description: Internet hostname utilities
- * @include: glib.h
  *
  * Functions for manipulating internet hostnames; in particular, for
  * converting between Unicode and ASCII-encoded forms of

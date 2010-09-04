@@ -35,8 +35,6 @@
 /* #define DEBUG_MSG(args)	g_message args ; */
 #endif
 
-#include "glib.h"
-
 #include <time.h>
 #include <string.h>
 #include <stdlib.h>
@@ -46,6 +44,14 @@
 #include <windows.h>
 #endif
 
+#include "gdate.h"
+
+#include "gconvert.h"
+#include "gmem.h"
+#include "gstrfuncs.h"
+#include "gtestutils.h"
+#include "gthread.h"
+#include "gunicode.h"
 
 GDate*
 g_date_new (void)

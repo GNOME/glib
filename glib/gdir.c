@@ -34,9 +34,11 @@
 #include <dirent.h>
 #endif
 
-#include "glib.h"
 #include "gdir.h"
 
+#include "gconvert.h"
+#include "gfileutils.h"
+#include "gtestutils.h"
 #include "glibintl.h"
 
 

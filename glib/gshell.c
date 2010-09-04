@@ -24,12 +24,11 @@
 
 #include <string.h>
 
-#include "glib.h"
+#include "gshell.h"
 
-#ifdef _
-#warning "FIXME remove gettext hack"
-#endif
-
+#include "gslist.h"
+#include "gstring.h"
+#include "gtestutils.h"
 #include "glibintl.h"
 
 /**

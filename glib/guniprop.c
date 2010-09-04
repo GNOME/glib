@@ -26,7 +26,11 @@
 #include <string.h>
 #include <locale.h>
 
-#include "glib.h"
+#include "gmem.h"
+#include "gstring.h"
+#include "gtestutils.h"
+#include "gtypes.h"
+#include "gunicode.h"
 #include "gunichartables.h"
 #include "gmirroringtable.h"
 #include "gscripttable.h"

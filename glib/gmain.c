@@ -24,14 +24,15 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* 
+/*
  * MT safe
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 /* Uncomment the next line (and the corresponding line in gpoll.c) to
  * enable debugging printouts if the environment variable
@@ -48,8 +49,6 @@
 
 #define _GNU_SOURCE  /* for pipe2 */
 
-#include "glib.h"
-#include "gthreadprivate.h"
 #include <signal.h>
 #include <sys/types.h>
 #include <time.h>
@@ -77,6 +76,16 @@
 #include <sys/wait.h>
 #endif
 
+#include "gmain.h"
+
+#include "garray.h"
+#include "giochannel.h"
+#include "ghash.h"
+#include "ghook.h"
+#include "gqueue.h"
+#include "gstrfuncs.h"
+#include "gtestutils.h"
+#include "gthreadprivate.h"
 
 /**
  * SECTION:main

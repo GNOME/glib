@@ -42,10 +42,9 @@
 
 #undef G_DISABLE_DEPRECATED
 
-#include "glib.h"
-
 #include "giochannel.h"
 
+#include "gtestutils.h"
 #include "glibintl.h"
 
 

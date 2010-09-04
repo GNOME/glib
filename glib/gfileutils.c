@@ -20,8 +20,6 @@
 
 #include "config.h"
 
-#include "glib.h"
-
 #include <sys/stat.h>
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -48,6 +46,8 @@
 #ifndef O_BINARY
 #define O_BINARY 0
 #endif
+
+#include "gfileutils.h"
 
 #include "gstdio.h"
 #include "glibintl.h"

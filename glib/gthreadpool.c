@@ -26,7 +26,12 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "gthreadpool.h"
+
+#include "gasyncqueue.h"
+#include "gmain.h"
+#include "gtestutils.h"
+#include "gtimer.h"
 
 /**
  * SECTION: thread_pools

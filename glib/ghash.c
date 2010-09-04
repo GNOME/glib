@@ -32,7 +32,10 @@
 
 #include <string.h>  /* memset */
 
-#include "glib.h"
+#include "ghash.h"
+
+#include "gtestutils.h"
+
 
 /**
  * SECTION: hash_tables

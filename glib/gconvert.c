@@ -22,8 +22,6 @@
 
 #include "config.h"
 
-#include "glib.h"
-
 #ifndef G_OS_WIN32
 #include <iconv.h>
 #endif
@@ -31,10 +29,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-
-#include "gprintfint.h"
-#include "gthreadprivate.h"
-#include "gunicode.h"
 
 #ifdef G_OS_WIN32
 #include "win_iconv.c"
@@ -45,6 +39,16 @@
 #include <windows.h>
 #undef STRICT
 #endif
+
+#include "gconvert.h"
+
+#include "gprintfint.h"
+#include "gslist.h"
+#include "gstrfuncs.h"
+#include "gtestutils.h"
+#include "gthread.h"
+#include "gthreadprivate.h"
+#include "gunicode.h"
 
 #include "glibintl.h"
 

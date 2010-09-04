@@ -30,8 +30,13 @@
 #include <CoreServices/CoreServices.h>
 #endif
 
-#include "glib.h"
+#include "gmem.h"
+#include "gunicode.h"
 #include "gunicodeprivate.h"
+#include "gstring.h"
+#include "gstrfuncs.h"
+#include "gtestutils.h"
+
 
 #ifdef _MSC_VER
 /* Workaround for bug in MSVCR80.DLL */
