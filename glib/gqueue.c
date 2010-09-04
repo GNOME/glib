@@ -26,12 +26,14 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "gqueue.h"
+
+#include "gtestutils.h"
 
 /**
  * g_queue_new:
  *
- * Creates a new #GQueue. 
+ * Creates a new #GQueue.
  *
  * Returns: a new #GQueue.
  **/
