@@ -441,7 +441,7 @@ g_time_val_from_iso8601 (const gchar *iso_date,
       return FALSE;
     }
 
-  *iso_date++;
+  iso_date++;
 
   /* If there is a 'T' then there has to be a time */
   if (!g_ascii_isdigit (*iso_date))
