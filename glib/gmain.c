@@ -31,6 +31,11 @@
  * MT safe
  */
 
+/* for pipe2; need to define it first to avoid
+ * other headers pulling in unistd.h
+ */
+#define _GNU_SOURCE
+
 #include "config.h"
 #include "glibconfig.h"
 
@@ -46,8 +51,6 @@
  */
 #define G_MAIN_POLL_DEBUG
 #endif
-
-#define _GNU_SOURCE  /* for pipe2 */
 
 #include <signal.h>
 #include <sys/types.h>
