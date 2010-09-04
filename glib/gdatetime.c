@@ -53,6 +53,9 @@
 #include "gdatetime.h"
 
 #include "gatomic.h"
+#include "gfileutils.h"
+#include "gmain.h"
+#include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "glibintl.h"
 

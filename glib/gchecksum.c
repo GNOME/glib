@@ -25,6 +25,7 @@
 #include "gchecksum.h"
 
 #include "gmem.h"
+#include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gtypes.h"
 #include "glibintl.h"

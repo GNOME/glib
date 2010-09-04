@@ -65,7 +65,10 @@
 #  undef STRICT
 #endif
 
+#include "gbacktrace.h"
+
 #include "gtypes.h"
+#include "gmain.h"
 #include "gprintfint.h"
 
 

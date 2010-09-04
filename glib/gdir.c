@@ -38,6 +38,7 @@
 
 #include "gconvert.h"
 #include "gfileutils.h"
+#include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "glibintl.h"
 

@@ -27,6 +27,7 @@
 #include "gshell.h"
 
 #include "gslist.h"
+#include "gstrfuncs.h"
 #include "gstring.h"
 #include "gtestutils.h"
 #include "glibintl.h"

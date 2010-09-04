@@ -25,7 +25,7 @@
 #define __G_DATE_TIME_H__
 
 #include <time.h>
-#include <gtypes.h>
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 

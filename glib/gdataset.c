@@ -39,6 +39,7 @@
 #include "gdatasetprivate.h"
 #include "ghash.h"
 #include "gquark.h"
+#include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthread.h"
 #include "glib_trace.h"

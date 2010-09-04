@@ -44,6 +44,7 @@
 
 #include "giochannel.h"
 
+#include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "glibintl.h"
 

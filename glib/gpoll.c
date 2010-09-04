@@ -33,6 +33,7 @@
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 /* Uncomment the next line (and the corresponding line in gmain.c) to
  * enable debugging printouts if the environment variable

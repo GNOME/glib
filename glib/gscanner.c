@@ -49,6 +49,7 @@
 #include "gscanner.h"
 
 #include "gprintfint.h"
+#include "gstrfuncs.h"
 #include "gstring.h"
 #include "gtestutils.h"
 

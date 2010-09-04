@@ -26,6 +26,7 @@
 #include "ghostutils.h"
 
 #include "garray.h"
+#include "gmem.h"
 #include "gstring.h"
 #include "gstrfuncs.h"
 #include "glibintl.h"

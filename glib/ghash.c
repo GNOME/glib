@@ -34,6 +34,7 @@
 
 #include "ghash.h"
 
+#include "gatomic.h"
 #include "gtestutils.h"
 
 

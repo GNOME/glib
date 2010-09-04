@@ -49,6 +49,7 @@
 
 #include "grand.h"
 
+#include "gmain.h"
 #include "gmem.h"
 #include "gtestutils.h"
 #include "gthread.h"
