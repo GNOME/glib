@@ -38,6 +38,7 @@
 
 #include "gconvert.h"
 #include "ghash.h"
+#include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gtypes.h"
 #include "gthread.h"
