@@ -27,8 +27,6 @@
 #endif
 #include <string.h>
 
-#include "glib.h"
-
 #ifdef G_PLATFORM_WIN32
 #include <stdio.h>
 #define STRICT
@@ -38,6 +36,11 @@
 
 #include "libcharset/libcharset.h"
 
+#include "gconvert.h"
+#include "ghash.h"
+#include "gtestutils.h"
+#include "gtypes.h"
+#include "gthread.h"
 #include "glibintl.h"
 
 #define UTF8_COMPUTE(Char, Mask, Len)					      \
