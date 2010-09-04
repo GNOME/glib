@@ -27,7 +27,12 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include "glib.h"
+#include "gmarkup.h"
+
+#include "galloca.h"
+#include "gstrfuncs.h"
+#include "gstring.h"
+#include "gtestutils.h"
 #include "glibintl.h"
 
 GQuark
