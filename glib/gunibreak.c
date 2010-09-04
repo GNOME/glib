@@ -22,7 +22,6 @@
 
 #include <stdlib.h>
 
-#include "glib.h"
 #include "gunibreak.h"
 
 #define TPROP_PART1(Page, Char) \

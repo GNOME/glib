@@ -4,6 +4,9 @@
 #ifndef BREAKTABLES_H
 #define BREAKTABLES_H
 
+#include <glib/gtypes.h>
+#include <glib/gunicode.h>
+
 #define G_UNICODE_DATA_VERSION "5.1.0"
 
 #define G_UNICODE_LAST_CHAR 0x10FFFF
