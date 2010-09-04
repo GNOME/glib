@@ -736,6 +736,7 @@ test_peer (void)
     g_object_unref (method_reply_message);
 
     error = NULL;
+    len = 0;
     buf = read_all_from_fd (fd, &len, &error);
     g_assert_no_error (error);
     g_assert (buf != NULL);

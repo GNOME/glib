@@ -2470,6 +2470,7 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
                                G_IO_ERROR,
                                G_IO_ERROR_FAILED,
                                _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
+          ret = NULL;
           goto out;
         }
     }

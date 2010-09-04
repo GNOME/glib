@@ -1033,6 +1033,7 @@ mechanism_server_data_send (GDBusAuthMechanism   *mechanism,
   /* TODO: use GDBusAuthObserver here to get the cookie context to use? */
   cookie_context = "org_gtk_gdbus_general";
 
+  cookie_id = -1;
   error = NULL;
   if (!keyring_generate_entry (cookie_context,
                                &cookie_id,

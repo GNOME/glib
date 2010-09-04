@@ -1023,6 +1023,7 @@ initable_init (GInitable     *initable,
   GError *last_error;
 
   ret = FALSE;
+  addr_array = NULL;
   last_error = NULL;
 
   if (!g_dbus_is_guid (server->guid))

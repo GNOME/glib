@@ -2143,6 +2143,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
   mos = G_MEMORY_OUTPUT_STREAM (g_memory_output_stream_new (NULL, 0, g_realloc, g_free));
   dos = g_data_output_stream_new (G_OUTPUT_STREAM (mos));
 
+  byte_order = G_DATA_STREAM_BYTE_ORDER_HOST_ENDIAN;
   switch (message->byte_order)
     {
     case G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN:

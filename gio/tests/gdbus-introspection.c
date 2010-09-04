@@ -265,6 +265,8 @@ test_default_direction (void)
   g_dbus_node_info_unref (info);
 }
 
+#if 0
+/* XXX: need to figure out how generous we want to be here */
 /* test that extraneous attributes are ignored
  */
 static void
@@ -297,6 +299,7 @@ test_extra_data (void)
 
   g_dbus_node_info_unref (info);
 }
+#endif
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -320,7 +323,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/introspection-generate", test_generate);
   g_test_add_func ("/gdbus/introspection-default-direction", test_default_direction);
 #if 0
-  /* need to figure out how generous we want to be here */
+  /* XXX: need to figure out how generous we want to be here */
   g_test_add_func ("/gdbus/introspection-extra-data", test_extra_data);
 #endif
 
