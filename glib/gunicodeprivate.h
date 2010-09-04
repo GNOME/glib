@@ -21,7 +21,7 @@
 #ifndef __G_UNICODE_PRIVATE_H__
 #define __G_UNICODE_PRIVATE_H__
 
-#include "glib.h"
+#include "gtypes.h"
 
 G_BEGIN_DECLS
 
