@@ -26,7 +26,12 @@
 #include <string.h>
 #include <signal.h>
 
+/* fool the single inclusion guard in gatomic.h, which is directly
+ * included by gdatasetprivate.h
+ */
+#define GLIB_COMPILATION
 #include "glib/gdatasetprivate.h"
+#undef GLIB_COMPILATION
 
 #include "gobject.h"
 #include "gvaluecollector.h"
