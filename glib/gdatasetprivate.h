@@ -28,7 +28,7 @@
 #ifndef __G_DATASETPRIVATE_H__
 #define __G_DATASETPRIVATE_H__
 
-#include <glib.h>
+#include <gatomic.h>
 
 G_BEGIN_DECLS
 
