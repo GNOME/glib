@@ -38,8 +38,6 @@
 
 #include "config.h"
 
-#include "glib.h"
-
 #include <stdlib.h>
 #include <string.h>
 
@@ -52,9 +50,11 @@
 #include <time.h>
 #endif /* !G_OS_WIN32 */
 
-#include "glibintl.h"
-
 #include "gdatetime.h"
+
+#include "gatomic.h"
+#include "gtestutils.h"
+#include "glibintl.h"
 
 /**
  * SECTION:date-time
