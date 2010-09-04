@@ -30,7 +30,10 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "gtree.h"
+
+#include "gatomic.h"
+#include "gtestutils.h"
 
 /**
  * SECTION: trees-binary
