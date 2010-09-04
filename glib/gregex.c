@@ -23,15 +23,15 @@
 
 #include <string.h>
 
-#include "glib.h"
-#include "glibintl.h"
-#include "gregex.h"
-
 #ifdef USE_SYSTEM_PCRE
 #include <pcre.h>
 #else
 #include "pcre/pcre.h"
 #endif
+
+#include "gtypes.h"
+#include "gregex.h"
+#include "glibintl.h"
 
 /**
  * SECTION:gregex
