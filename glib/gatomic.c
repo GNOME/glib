@@ -27,7 +27,7 @@
 #include <sched.h>
 #endif
 
-#include "glib.h"
+#include "gatomic.h"
 #include "gthreadprivate.h"
 
 /**

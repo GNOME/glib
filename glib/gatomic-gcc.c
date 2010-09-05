@@ -20,7 +20,7 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "gatomic.h"
 
 gint
 g_atomic_int_exchange_and_add (volatile gint G_GNUC_MAY_ALIAS *atomic,

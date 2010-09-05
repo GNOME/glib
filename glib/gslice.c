@@ -20,8 +20,6 @@
 
 #include "config.h"
 
-#include "gslice.h"
-
 #if     defined HAVE_POSIX_MEMALIGN && defined POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS
 #  define HAVE_COMPLIANT_POSIX_MEMALIGN 1
 #endif
@@ -32,10 +30,7 @@
 #include <stdlib.h>             /* posix_memalign() */
 #include <string.h>
 #include <errno.h>
-#include "gmem.h"               /* gslice.h */
-#include "gthreadprivate.h"
-#include "glib.h"
-#include "glib_trace.h"
+
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>             /* sysconf() */
 #endif
@@ -46,6 +41,14 @@
 
 #include <stdio.h>              /* fputs/fprintf */
 
+#include "gslice.h"
+
+#include "gmem.h"               /* gslice.h */
+#include "gutils.h"
+#include "gtestutils.h"
+#include "gthread.h"
+#include "gthreadprivate.h"
+#include "glib_trace.h"
 
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
  * allocator and magazine extensions as outlined in:

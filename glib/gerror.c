@@ -26,8 +26,10 @@
 
 #include "config.h"
 
-#include "glib.h"
+#include "gerror.h"
 
+#include "gstrfuncs.h"
+#include "gtestutils.h"
 
 /**
  * g_error_new_valist:

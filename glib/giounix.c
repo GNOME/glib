@@ -24,10 +24,10 @@
  * Modified by the GLib Team and others 1997-2000.  See the AUTHORS
  * file for a list of people on the GLib Team.  See the ChangeLog
  * files for a list of changes.  These files are distributed with
- * GLib at ftp://ftp.gtk.org/pub/gtk/. 
+ * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* 
+/*
  * MT safe
  */
 
@@ -43,7 +43,11 @@
 #include <string.h>
 #include <fcntl.h>
 
-#include "glib.h"
+#include "giochannel.h"
+
+#include "gerror.h"
+#include "gfileutils.h"
+#include "gtestutils.h"
 
 /*
  * Unix IO Channels

@@ -27,7 +27,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "glib.h"
 #include "gprintf.h"
 #include "gprintfint.h"
 

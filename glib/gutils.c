@@ -57,9 +57,17 @@
  */
 #define	G_IMPLEMENT_INLINES 1
 #define	__G_UTILS_C__
-#include "glib.h"
+#include "gutils.h"
+
+#include "gfileutils.h"
+#include "ghash.h"
+#include "gslist.h"
 #include "gprintfint.h"
+#include "gthread.h"
 #include "gthreadprivate.h"
+#include "gtestutils.h"
+#include "gunicode.h"
+#include "gstrfuncs.h"
 #include "glibintl.h"
 
 #ifdef	MAXPATHLEN

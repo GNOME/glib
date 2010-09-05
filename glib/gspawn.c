@@ -41,7 +41,12 @@
 #include <sys/resource.h>
 #endif /* HAVE_SYS_RESOURCE_H */
 
-#include "glib.h"
+#include "gspawn.h"
+
+#include "gmem.h"
+#include "gstring.h"
+#include "gtestutils.h"
+#include "gutils.h"
 #include "glibintl.h"
 
 static gint g_execute (const gchar  *file,
