@@ -25,6 +25,35 @@
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 
+/**
+ * SECTION:giunioninfo
+ * @Short_description: Struct representing a union.
+ * @Title: GIUnionInfo
+ *
+ * GIUnionInfo represents a union type.
+ *
+ * A union has methods and fields.  Unions can optionally have a
+ * discriminator, which is a field deciding what type of real union
+ * fields is valid for specified instance.
+ *
+ * <refsect1 id="gi-giobjectinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
+ *          +----GIUnionInfo
+ * </synopsis>
+ * </refsect1>
+ */
+
+/**
+ * g_union_info_get_n_fields:
+ * @info: a #GIUnionInfo
+ *
+ * Obtain the number of fields this union has.
+ *
+ * Returns: number of fields
+ */
 gint
 g_union_info_get_n_fields  (GIUnionInfo *info)
 {
@@ -34,6 +63,16 @@ g_union_info_get_n_fields  (GIUnionInfo *info)
   return blob->n_fields;
 }
 
+/**
+ * g_union_info_get_field:
+ * @info: a #GIUnionInfo
+ * @n: a field index
+ *
+ * Obtain the type information for field with specified index.
+ *
+ * Returns: (transfer full): the #GIFieldInfo, free it with g_base_info_unref()
+ * when done.
+ */
 GIFieldInfo *
 g_union_info_get_field (GIUnionInfo *info,
 			gint         n)
@@ -46,6 +85,14 @@ g_union_info_get_field (GIUnionInfo *info,
 				     n * header->field_blob_size);
 }
 
+/**
+ * g_union_info_get_n_methods:
+ * @info: a #GIUnionInfo
+ *
+ * Obtain the number of methods this union has.
+ *
+ * Returns: number of methods
+ */
 gint
 g_union_info_get_n_methods (GIUnionInfo *info)
 {
@@ -55,6 +102,16 @@ g_union_info_get_n_methods (GIUnionInfo *info)
   return blob->n_functions;
 }
 
+/**
+ * g_union_info_get_method:
+ * @info: a #GIUnionInfo
+ * @n: a method index
+ *
+ * Obtain the type information for method with specified index.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo, free it with g_base_info_unref()
+ * when done.
+ */
 GIFunctionInfo *
 g_union_info_get_method (GIUnionInfo *info,
 			 gint         n)
@@ -71,6 +128,14 @@ g_union_info_get_method (GIUnionInfo *info,
 					rinfo->typelib, offset);
 }
 
+/**
+ * g_union_info_is_discriminated:
+ * @info: a #GIUnionInfo
+ *
+ * Return true if this union contains discriminator field.
+ *
+ * Returns: %TRUE if this is a discriminated union, %FALSE otherwise
+ */
 gboolean
 g_union_info_is_discriminated (GIUnionInfo *info)
 {
@@ -80,6 +145,14 @@ g_union_info_is_discriminated (GIUnionInfo *info)
   return blob->discriminated;
 }
 
+/**
+ * g_union_info_get_discrimintor_offset:
+ * @info: a #GIUnionInfo
+ *
+ * Returns offset of the discriminator field in the structure.
+ *
+ * Returns: (transfer full): offset in bytes of the discriminator
+ */
 gint
 g_union_info_get_discriminator_offset (GIUnionInfo *info)
 {
@@ -89,6 +162,15 @@ g_union_info_get_discriminator_offset (GIUnionInfo *info)
   return blob->discriminator_offset;
 }
 
+/**
+ * g_union_info_get_discriminator_type:
+ * @info: a #GIUnionInfo
+ *
+ * Obtain the type information of the union discriminator.
+ *
+ * Returns: (transfer full): the #GITypeInfo, free it with g_base_info_unref()
+ * when done.
+ */
 GITypeInfo *
 g_union_info_get_discriminator_type (GIUnionInfo *info)
 {
@@ -97,6 +179,18 @@ g_union_info_get_discriminator_type (GIUnionInfo *info)
   return _g_type_info_new ((GIBaseInfo*)info, rinfo->typelib, rinfo->offset + 24);
 }
 
+/**
+ * g_union_info_get_discriminator:
+ * @info: a #GIUnionInfo
+ * @n: a union field index
+ *
+ * Obtain discriminator value assigned for n-th union field, i.e. n-th
+ * union field is the active one if discriminator contains this
+ * constant.
+ *
+ * Returns: (transfer full): the #GIConstantInfo, free it with g_base_info_unref()
+ * when done.
+ */
 GIConstantInfo *
 g_union_info_get_discriminator (GIUnionInfo *info,
 				gint         n)
@@ -121,6 +215,16 @@ g_union_info_get_discriminator (GIUnionInfo *info,
   return NULL;
 }
 
+/**
+ * g_union_info_find_method:
+ * @info: a #GIUnionInfo
+ * @name: a method name
+ *
+ * Obtain the type information for method named @name.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo, free it with g_base_info_unref()
+ * when done.
+ */
 GIFunctionInfo *
 g_union_info_find_method (GIUnionInfo *info,
                           const gchar *name)
@@ -136,6 +240,14 @@ g_union_info_find_method (GIUnionInfo *info,
   return _g_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_functions, name);
 }
 
+/**
+ * g_union_info_get_size:
+ * @info: a #GIUnionInfo
+ *
+ * Obtain the total size of the union.
+ *
+ * Returns: size of the union in bytes
+ */
 gsize
 g_union_info_get_size (GIUnionInfo *info)
 {
@@ -145,6 +257,14 @@ g_union_info_get_size (GIUnionInfo *info)
   return blob->size;
 }
 
+/**
+ * g_union_info_get_alignment:
+ * @info: a #GIUnionInfo
+ *
+ * Obtain the required alignment of the union.
+ *
+ * Returns: required alignment in bytes
+ */
 gsize
 g_union_info_get_alignment (GIUnionInfo *info)
 {

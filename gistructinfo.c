@@ -25,6 +25,33 @@
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
 
+/**
+ * SECTION:gistructinfo
+ * @Short_description: Struct representing a C structure
+ * @Title: GIStructInfo
+ *
+ * GIStructInfo represents a generic C structure type.
+ *
+ * A structure has methods and fields.
+ *
+ * <refsect1 id="gi-giobjectinfo.struct-hierarchy" role="struct_hierarchy">
+ * <title role="struct_hierarchy.title">Struct hierarchy</title>
+ * <synopsis>
+ *   <link linkend="gi-GIBaseInfo">GIBaseInfo</link>
+ *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
+ *          +----GIStructInfo
+ * </synopsis>
+ * </refsect1>
+ */
+
+/**
+ * g_struct_info_get_n_fields:
+ * @info: a #GIStructInfo
+ *
+ * Obtain the number of fields this structure has.
+ *
+ * Returns: number of fields
+ */
 gint
 g_struct_info_get_n_fields (GIStructInfo *info)
 {
@@ -34,6 +61,15 @@ g_struct_info_get_n_fields (GIStructInfo *info)
   return blob->n_fields;
 }
 
+/**
+ * g_struct_info_get_field_offset:
+ * @info: a #GIStructInfo
+ * @n: index of queried field
+ *
+ * Obtain the offset of the specified field.
+ *
+ * Returns: field offset in bytes
+ */
 static gint32
 g_struct_get_field_offset (GIStructInfo *info,
 			   gint         n)
@@ -55,6 +91,16 @@ g_struct_get_field_offset (GIStructInfo *info,
   return offset;
 }
 
+/**
+ * g_struct_info_get_field:
+ * @info: a #GIStructInfo
+ * @n: a field index
+ *
+ * Obtain the type information for field with specified index.
+ *
+ * Returns: (transfer full): the #GIFieldInfo, free it with g_base_info_unref()
+ * when done.
+ */
 GIFieldInfo *
 g_struct_info_get_field (GIStructInfo *info,
                          gint          n)
@@ -65,6 +111,14 @@ g_struct_info_get_field (GIStructInfo *info,
                                      g_struct_get_field_offset (info, n));
 }
 
+/**
+ * g_struct_info_get_n_methods:
+ * @info: a #GIStructInfo
+ *
+ * Obtain the number of methods this structure has.
+ *
+ * Returns: number of methods
+ */
 gint
 g_struct_info_get_n_methods (GIStructInfo *info)
 {
@@ -74,6 +128,16 @@ g_struct_info_get_n_methods (GIStructInfo *info)
   return blob->n_methods;
 }
 
+/**
+ * g_struct_info_get_method:
+ * @info: a #GIStructInfo
+ * @n: a method index
+ *
+ * Obtain the type information for method with specified index.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo, free it with g_base_info_unref()
+ * when done.
+ */
 GIFunctionInfo *
 g_struct_info_get_method (GIStructInfo *info,
 			  gint         n)
@@ -88,6 +152,16 @@ g_struct_info_get_method (GIStructInfo *info,
                                         rinfo->typelib, offset);
 }
 
+/**
+ * g_struct_info_find_method:
+ * @info: a #GIStructInfo
+ * @name: a method name
+ *
+ * Obtain the type information for method named @name.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo, free it with g_base_info_unref()
+ * when done.
+ */
 GIFunctionInfo *
 g_struct_info_find_method (GIStructInfo *info,
 			   const gchar  *name)
@@ -103,6 +177,14 @@ g_struct_info_find_method (GIStructInfo *info,
   return _g_base_info_find_method ((GIBaseInfo*)info, offset, blob->n_methods, name);
 }
 
+/**
+ * g_struct_info_get_size:
+ * @info: a #GIStructInfo
+ *
+ * Obtain the total size of the structure.
+ *
+ * Returns: size of the structure in bytes
+ */
 gsize
 g_struct_info_get_size (GIStructInfo *info)
 {
@@ -112,6 +194,14 @@ g_struct_info_get_size (GIStructInfo *info)
   return blob->size;
 }
 
+/**
+ * g_struct_info_get_alignment:
+ * @info: a #GIStructInfo
+ *
+ * Obtain the required alignment of the structure.
+ *
+ * Returns: required alignment in bytes
+ */
 gsize
 g_struct_info_get_alignment (GIStructInfo *info)
 {

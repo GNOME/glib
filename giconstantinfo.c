@@ -65,7 +65,7 @@ g_constant_info_get_type (GIConstantInfo *info)
 }
 
 /**
- * g_constant_info_get_value:
+ * g_constant_info_get_value: (skip)
  * @info: a #GIConstantInfo
  * @value: (out): an argument
  *

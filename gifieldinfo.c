@@ -161,7 +161,7 @@ g_field_info_get_type (GIFieldInfo *info)
 }
 
 /**
- * g_field_info_get_field:
+ * g_field_info_get_field: (skip)
  * @field_info: a #GIFieldInfo
  * @mem: pointer to a block of memory representing a C structure or union
  * @value: a #GIArgument into which to store the value retrieved
@@ -343,7 +343,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
 }
 
 /**
- * g_field_info_set_field:
+ * g_field_info_set_field: (skip)
  * @field_info: a #GIFieldInfo
  * @mem: pointer to a block of memory representing a C structure or union
  * @value: a #GIArgument holding the value to store

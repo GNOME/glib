@@ -31,17 +31,17 @@
 G_BEGIN_DECLS
 
 /**
- * GIObjectInfoRefFunction:
+ * GIObjectInfoRefFunction: (skip)
  * @object: object instance pointer
  *
  * Increases the reference count of an object instance.
  *
- * Returns: the object instance
+ * Returns: (transfer full): the object instance
  */
 typedef void * (*GIObjectInfoRefFunction) (void *object);
 
 /**
- * GIObjectInfoUnrefFunction:
+ * GIObjectInfoUnrefFunction: (skip)
  * @object: object instance pointer
  *
  * Decreases the reference count of an object instance.
@@ -50,7 +50,7 @@ typedef void * (*GIObjectInfoRefFunction) (void *object);
 typedef void   (*GIObjectInfoUnrefFunction) (void *object);
 
 /**
- * GIObjectInfoSetValueFunction:
+ * GIObjectInfoSetValueFunction: (skip)
  * @value: a #GValue
  * @object: object instance pointer
  *
@@ -60,12 +60,12 @@ typedef void   (*GIObjectInfoUnrefFunction) (void *object);
 typedef void   (*GIObjectInfoSetValueFunction) (GValue *value, void *object);
 
 /**
- * GIObjectInfoGetValueFunction:
+ * GIObjectInfoGetValueFunction: (skip)
  * @value: a #GValue
  *
  * Extract an object instance out of @value
  *
- * Returns: the object instance
+ * Returns: (transfer full): the object instance
  */
 typedef void * (*GIObjectInfoGetValueFunction) (const GValue *value);
 

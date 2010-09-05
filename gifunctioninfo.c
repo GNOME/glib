@@ -215,7 +215,7 @@ g_invoke_error_quark (void)
 }
 
 /**
- * g_function_info_invoke:
+ * g_function_info_invoke: (skip)
  * @info: a #GIFunctionInfo describing the function to invoke
  * @in_args: an array of #GIArgument<!-- -->s, one for each in
  *    parameter of @info. If there are no in parameter, @in_args
