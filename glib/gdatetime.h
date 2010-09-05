@@ -107,7 +107,7 @@ GDateTime *           g_date_time_new_full               (gint             year,
                                                           gint             hour,
                                                           gint             minute,
                                                           gint             second,
-                                                          const gchar     *timezone);
+                                                          const gchar     *time_zone);
 
 GDateTime *           g_date_time_copy                   (const GDateTime *datetime);
 GDateTime *           g_date_time_ref                    (GDateTime       *datetime);

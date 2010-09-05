@@ -433,14 +433,14 @@ get_tzdata_path (const gchar *tz_name)
 /*
  * Parses tzdata database times to get timezone info.
  *
- * @tzname: Olson database name for the timezone
+ * @tz_name: Olson database name for the timezone
  * @start: Time offset from epoch we want to know the timezone
  * @_is_dst: Returns if this time in the timezone is in DST
  * @_offset: Returns the offset from UTC for this timezone
  * @_name: Returns the abreviated name for thie timezone
  */
 static gboolean
-parse_tzdata (const gchar  *tzname,
+parse_tzdata (const gchar  *tz_name,
               gint64        start,
               gboolean      is_utc,
 	      gboolean     *_is_dst,
@@ -460,7 +460,7 @@ parse_tzdata (const gchar  *tzname,
   gint i;
   GError *error;
 
-  filename = get_tzdata_path (tzname);
+  filename = get_tzdata_path (tz_name);
 
   /* XXX: should we be caching this in memory for faster access?
    * and if so, how do we expire the cache?
@@ -550,14 +550,14 @@ parse_tzdata (const gchar  *tzname,
 
 /*< internal >
  * g_time_zone_new_from_epoc:
- * @tzname: The Olson's database timezone name
+ * @tz_name: The Olson's database timezone name
  * @epoch: The epoch offset
- * @is_utc: If the @epoch is in UTC or already in the @tzname timezone
+ * @is_utc: If the @epoch is in UTC or already in the @tz_name timezone
  *
  * Creates a new timezone
  */
 static GTimeZone *
-g_time_zone_new_from_epoch (const gchar *tzname,
+g_time_zone_new_from_epoch (const gchar *tz_name,
                             gint64       epoch,
                             gboolean     is_utc)
 {
@@ -566,7 +566,7 @@ g_time_zone_new_from_epoch (const gchar *tzname,
   gboolean is_dst;
   gchar *name = NULL;
 
-  if (parse_tzdata (tzname, epoch, is_utc, &is_dst, &offset, &name))
+  if (parse_tzdata (tz_name, epoch, is_utc, &is_dst, &offset, &name))
     {
       tz = g_slice_new (GTimeZone);
       tz->is_dst = is_dst;
@@ -620,23 +620,23 @@ g_date_time_secs_offset (const GDateTime * dt)
 /*< internal >
  * g_date_time_create_time_zone:
  * @dt: a #GDateTime
- * @tzname: the name of the timezone
+ * @tz_name: the name of the timezone
  *
  * Creates a timezone from a #GDateTime (disregarding its own timezone).
  * This function transforms the #GDateTime into seconds since the epoch
- * and creates a timezone for it in the @tzname zone.
+ * and creates a timezone for it in the @tz_name zone.
  *
  * Return value: a newly created #GTimeZone
  */
 static GTimeZone *
 g_date_time_create_time_zone (GDateTime   *dt,
-                              const gchar *tzname)
+                              const gchar *tz_name)
 {
   gint64 secs;
 
   secs = g_date_time_secs_offset (dt);
 
-  return g_time_zone_new_from_epoch (tzname, secs, FALSE);
+  return g_time_zone_new_from_epoch (tz_name, secs, FALSE);
 }
 
 static GDateTime *
@@ -651,28 +651,28 @@ g_date_time_new (void)
 }
 
 static GTimeZone *
-g_time_zone_copy (const GTimeZone *timezone)
+g_time_zone_copy (const GTimeZone *time_zone)
 {
   GTimeZone *tz;
 
-  if (G_UNLIKELY (timezone == NULL))
+  if (G_UNLIKELY (time_zone == NULL))
     return NULL;
 
   tz = g_slice_new (GTimeZone);
-  memcpy (tz, timezone, sizeof (GTimeZone));
+  memcpy (tz, time_zone, sizeof (GTimeZone));
 
-  tz->name = g_strdup (timezone->name);
+  tz->name = g_strdup (time_zone->name);
 
   return tz;
 }
 
 static void
-g_time_zone_free (GTimeZone *timezone)
+g_time_zone_free (GTimeZone *time_zone)
 {
-  if (G_LIKELY (timezone != NULL))
+  if (G_LIKELY (time_zone != NULL))
     {
-      g_free (timezone->name);
-      g_slice_free (GTimeZone, timezone);
+      g_free (time_zone->name);
+      g_slice_free (GTimeZone, time_zone);
     }
 }
 
@@ -1772,7 +1772,7 @@ g_date_time_new_from_timeval (GTimeVal *tv)
  * @hour: the hour of the day
  * @minute: the minute of the hour
  * @second: the second of the minute
- * @timezone: (allow-none): the Olson's database timezone name, or %NULL
+ * @time_zone: (allow-none): the Olson's database timezone name, or %NULL
  *   for local (e.g. America/New_York)
  *
  * Creates a new #GDateTime using the date and times in the Gregorian calendar.
@@ -1788,7 +1788,7 @@ g_date_time_new_full (gint         year,
                       gint         hour,
                       gint         minute,
                       gint         second,
-                      const gchar *timezone)
+                      const gchar *time_zone)
 {
   GDateTime *dt;
 
@@ -1803,8 +1803,8 @@ g_date_time_new_full (gint         year,
            + (minute * USEC_PER_MINUTE)
            + (second * USEC_PER_SECOND);
 
-  dt->tz = g_date_time_create_time_zone (dt, timezone);
-  if (timezone != NULL && dt->tz == NULL)
+  dt->tz = g_date_time_create_time_zone (dt, time_zone);
+  if (time_zone != NULL && dt->tz == NULL)
     {
       /* timezone creation failed */
       g_date_time_unref (dt);
