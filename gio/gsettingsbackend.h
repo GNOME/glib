@@ -93,7 +93,19 @@ struct _GSettingsBackendClass
   GPermission * (*get_permission)   (GSettingsBackend    *backend,
                                      const gchar         *path);
 
-  gpointer padding[24];
+  gchar **      (*list)             (GSettingsBackend    *backend,
+                                     const gchar         *path,
+                                     const gchar * const *schema_items);
+  gchar *       (*add)              (GSettingsBackend    *backend,
+                                     const gchar         *path,
+                                     const gchar         *hint);
+  gboolean      (*remove)           (GSettingsBackend    *backend,
+                                     const gchar         *path,
+                                     const gchar         *name);
+  gboolean      (*check)            (GSettingsBackend    *backend,
+                                     const gchar         *path);
+
+  gpointer padding[20];
 };
 
 struct _GSettingsBackend
