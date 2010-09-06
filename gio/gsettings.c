@@ -1981,7 +1981,7 @@ g_settings_get_has_unapplied (GSettings *settings)
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
 
-/* Extra API (reset, sync, get_child, is_writable, list_items) {{{1 */
+/* Extra API (reset, sync, get_child, is_writable, list_*) {{{1 */
 /**
  * g_settings_reset:
  * @settings: a #GSettings object
@@ -2096,36 +2096,90 @@ g_settings_get_child (GSettings   *settings,
 }
 
 /**
- * g_settings_list_items:
+ * g_settings_list_keys:
  * @settings: a #GSettings object
  * @returns: a list of the keys on @settings
  *
- * Introspects the list of keys and children on @settings.
- *
- * The list that is returned is a mix of the keys and children.  The
- * names of the children are suffixed with '/'.  The names of the keys
- * are not.
+ * Introspects the list of keys on @settings.
  *
  * You should probably not be calling this function from "normal" code
  * (since you should already know what keys are in your schema).  This
  * function is intended for introspection reasons.
  *
- * You should free the return value with g_free() when you are done with
- * it.
+ * You should free the return value with g_strfreev() when you are done
+ * with it.
  */
-const gchar **
-g_settings_list_items (GSettings *settings)
+gchar **
+g_settings_list_keys (GSettings *settings)
 {
   const GQuark *keys;
-  const gchar **strv;
+  gchar **strv;
   gint n_keys;
-  gint i;
+  gint i, j;
 
   keys = g_settings_schema_list (settings->priv->schema, &n_keys);
-  strv = g_new (const gchar *, n_keys + 1);
-  for (i = 0; i < n_keys; i++)
-    strv[i] = g_quark_to_string (keys[i]);
-  strv[i] = NULL;
+  strv = g_new (gchar *, n_keys + 1);
+  for (i = j = 0; i < n_keys; i++)
+    {
+      const gchar *key = g_quark_to_string (keys[i]);
+
+      if (!g_str_has_suffix (key, "/"))
+        strv[j++] = g_strdup (key);
+    }
+  strv[j] = NULL;
+
+  return strv;
+}
+
+/**
+ * g_settings_list_children:
+ * @settings: a #GSettings object
+ * @returns: a list of the children on @settings
+ *
+ * Gets the list of children on @settings.
+ *
+ * The list is exactly the list of strings for which it is not an error
+ * to call g_settings_get_child().
+ *
+ * For GSettings objects that are lists, this value can change at any
+ * time and you should connect to the "children-changed" signal to watch
+ * for those changes.  Note that there is a race condition here: you may
+ * request a child after listing it only for it to have been destroyed
+ * in the meantime.  For this reason, g_settings_get_chuld() may return
+ * %NULL even for a child that was listed by this function.
+ *
+ * For GSettings objects that are not lists, you should probably not be
+ * calling this function from "normal" code (since you should already
+ * know what children are in your schema).  This function may still be
+ * useful there for introspection reasons, however.
+ *
+ * You should free the return value with g_strfreev() when you are done
+ * with it.
+ */
+gchar **
+g_settings_list_children (GSettings *settings)
+{
+  const GQuark *keys;
+  gchar **strv;
+  gint n_keys;
+  gint i, j;
+
+  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+  strv = g_new (gchar *, n_keys + 1);
+  for (i = j = 0; i < n_keys; i++)
+    {
+      const gchar *key = g_quark_to_string (keys[i]);
+
+      if (g_str_has_suffix (key, "/"))
+        {
+          gint length = strlen (key);
+
+          strv[j] = g_memdup (key, length);
+          strv[j][length - 1] = '\0';
+          j++;
+        }
+    }
+  strv[j] = NULL;
 
   return strv;
 }

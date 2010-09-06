@@ -1697,7 +1697,7 @@ test_range (void)
 }
 
 static gboolean
-strv_has_string (const gchar **haystack,
+strv_has_string (gchar       **haystack,
                  const gchar  *needle)
 {
   guint n;
@@ -1711,7 +1711,7 @@ strv_has_string (const gchar **haystack,
 }
 
 static gboolean
-strv_set_equal (const gchar **strv, ...)
+strv_set_equal (gchar **strv, ...)
 {
   gint count;
   va_list list;
@@ -1745,14 +1745,18 @@ static void
 test_list_items (void)
 {
   GSettings *settings;
-  const gchar **items;
+  gchar **children;
+  gchar **keys;
 
   settings = g_settings_new ("org.gtk.test");
-  items = g_settings_list_items (settings);
+  children = g_settings_list_children (settings);
+  keys = g_settings_list_keys (settings);
 
-  g_assert (strv_set_equal (items, "greeting", "farewell", "basic-types/", "complex-types/", "localized/", NULL));
+  g_assert (strv_set_equal (children, "basic-types", "complex-types", "localized", NULL));
+  g_assert (strv_set_equal (keys, "greeting", "farewell", NULL));
 
-  g_free (items);
+  g_strfreev (children);
+  g_strfreev (keys);
 
   g_object_unref (settings);
 }
@@ -1764,7 +1768,7 @@ test_list_schemas (void)
 
   schemas = g_settings_list_schemas ();
 
-  g_assert (strv_set_equal ((const gchar **)schemas,
+  g_assert (strv_set_equal ((gchar **)schemas,
                             "org.gtk.test",
                             "org.gtk.test.no-path",
                             "org.gtk.test.basic-types",

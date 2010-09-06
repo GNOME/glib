@@ -1556,7 +1556,8 @@ g_settings_set_enum
 g_settings_get_flags
 g_settings_set_flags
 g_settings_sync
-g_settings_list_items
+g_settings_list_keys
+g_settings_list_children
 g_settings_get_mapped
 #endif
 #endif
