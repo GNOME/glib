@@ -283,8 +283,8 @@ get_weekday_name_abbr (gint day)
 
 static inline gint
 date_to_proleptic_gregorian (gint year,
-                gint month,
-                gint day)
+                             gint month,
+                             gint day)
 {
   gint64 days;
 
@@ -584,7 +584,7 @@ g_time_zone_new_from_epoch (const gchar *tz_name,
 #define SECS_PER_JULIAN (DAYS_PER_PERIOD * SECS_PER_DAY)
 
 static gint64
-g_date_time_secs_offset (const GDateTime * dt)
+g_date_time_secs_offset (const GDateTime *dt)
 {
   gint64 secs;
   gint d, y, h, m, s;
@@ -1334,12 +1334,14 @@ g_date_time_get_dmy (const GDateTime *datetime,
 
   the_month = (remaining_days + 50) >> 5;
   preceding = (days_in_year[0][the_month - 1] + (the_month > 2 && leap));
-  if (preceding > remaining_days) {
-    /* estimate is too large */
-    the_month -= 1;
-    preceding -= leap ? days_in_months[1][the_month] :
-        days_in_months[0][the_month];
-  }
+  if (preceding > remaining_days)
+    {
+      /* estimate is too large */
+      the_month -= 1;
+      preceding -= leap ? days_in_months[1][the_month]
+                        : days_in_months[0][the_month];
+    }
+
   remaining_days -= preceding;
   g_assert(0 <= remaining_days);
 
