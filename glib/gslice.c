@@ -19,6 +19,7 @@
 /* MT safe */
 
 #include "config.h"
+#include "glibconfig.h"
 
 #if     defined HAVE_POSIX_MEMALIGN && defined POSIX_MEMALIGN_WITH_COMPLIANT_ALLOCS
 #  define HAVE_COMPLIANT_POSIX_MEMALIGN 1

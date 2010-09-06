@@ -79,6 +79,10 @@
 
 #include "gpoll.h"
 
+#ifdef G_OS_WIN32
+#include "gprintf.h"
+#endif
+
 #ifdef G_MAIN_POLL_DEBUG
 extern gboolean _g_main_poll_debug;
 #endif

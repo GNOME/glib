@@ -30,6 +30,7 @@
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 #include <signal.h>
 #include <stdarg.h>

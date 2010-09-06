@@ -29,6 +29,7 @@
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 #define DEBUG_MSG(x)	/* */
 #ifdef G_ENABLE_DEBUG
@@ -52,6 +53,10 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "gunicode.h"
+
+#ifdef G_OS_WIN32
+#include "garray.h"
+#endif
 
 GDate*
 g_date_new (void)

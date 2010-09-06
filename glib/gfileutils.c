@@ -19,6 +19,7 @@
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 #include <sys/stat.h>
 #ifdef HAVE_UNISTD_H

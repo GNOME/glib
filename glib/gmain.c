@@ -31,10 +31,20 @@
  * MT safe
  */
 
+#ifndef _WIN32
 /* for pipe2; need to define it first to avoid
  * other headers pulling in unistd.h
  */
+/* The meaning of_GNU_SOURCE that is intended here is present only on
+ * Linux; avoid the possibility that some misguided header in MinGW
+ * looks at it. Ideally we should define _GNU_SOURCE only on platforms
+ * where we know what it means and that is what we want here
+ * (i.e. Linux with glibc). After all, there might be some other POSIX
+ * platform even where _GNU_SOURCE is used for some unrelated change
+ * in semantics that isn't wanted. Sigh.
+ */
 #define _GNU_SOURCE
+#endif
 
 #include "config.h"
 #include "glibconfig.h"
@@ -89,6 +99,14 @@
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthreadprivate.h"
+
+#ifdef G_OS_WIN32
+#include "gwin32.h"
+#endif
+
+#ifdef  G_MAIN_POLL_DEBUG
+#include "gtimer.h"
+#endif
 
 /**
  * SECTION:main

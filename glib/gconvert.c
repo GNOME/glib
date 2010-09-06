@@ -21,6 +21,7 @@
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 #ifndef G_OS_WIN32
 #include <iconv.h>
@@ -49,6 +50,11 @@
 #include "gthread.h"
 #include "gthreadprivate.h"
 #include "gunicode.h"
+
+#ifdef NEED_ICONV_CACHE
+#include "glist.h"
+#include "ghash.h"
+#endif
 
 #include "glibintl.h"
 

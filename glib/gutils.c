@@ -70,6 +70,12 @@
 #include "gstrfuncs.h"
 #include "glibintl.h"
 
+#ifdef G_PLATFORM_WIN32
+#include "garray.h"
+#include "gconvert.h"
+#include "gwin32.h"
+#endif
+
 #ifdef	MAXPATHLEN
 #define	G_PATH_LENGTH	MAXPATHLEN
 #elif	defined (PATH_MAX)

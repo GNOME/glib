@@ -19,6 +19,7 @@
  */
 
 #include "config.h"
+#include "glibconfig.h"
 
 #define G_STDIO_NO_WRAP_ON_UNIX
 
