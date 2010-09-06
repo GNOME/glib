@@ -43,7 +43,9 @@
 
 #include "gslice.h"
 
+#include "gmain.h"
 #include "gmem.h"               /* gslice.h */
+#include "gstrfuncs.h"
 #include "gutils.h"
 #include "gtestutils.h"
 #include "gthread.h"

@@ -44,7 +44,9 @@
 #include "gspawn.h"
 
 #include "gmem.h"
+#include "gshell.h"
 #include "gstring.h"
+#include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gutils.h"
 #include "glibintl.h"
