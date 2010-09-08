@@ -26,13 +26,6 @@
 #include <string.h>
 #include <signal.h>
 
-/* fool the single inclusion guard in gatomic.h, which is directly
- * included by gdatasetprivate.h
- */
-#define GLIB_COMPILATION
-#include "glib/gdatasetprivate.h"
-#undef GLIB_COMPILATION
-
 #include "gobject.h"
 #include "gvaluecollector.h"
 #include "gsignal.h"
@@ -113,7 +106,7 @@
 
 #define OBJECT_HAS_TOGGLE_REF_FLAG 0x1
 #define OBJECT_HAS_TOGGLE_REF(object) \
-    ((G_DATALIST_GET_FLAGS (&(object)->qdata) & OBJECT_HAS_TOGGLE_REF_FLAG) != 0)
+    ((g_datalist_get_flags (&(object)->qdata) & OBJECT_HAS_TOGGLE_REF_FLAG) != 0)
 #define OBJECT_FLOATING_FLAG 0x2
 
 #define CLASS_HAS_PROPS_FLAG 0x1
