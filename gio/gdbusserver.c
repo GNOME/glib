@@ -122,8 +122,8 @@ struct _GDBusServerClass
 
   /*< public >*/
   /* Signals */
-  void (*new_connection) (GDBusServer      *server,
-                          GDBusConnection  *connection);
+  gboolean (*new_connection) (GDBusServer      *server,
+                              GDBusConnection  *connection);
 };
 
 enum
@@ -391,10 +391,12 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * g_dbus_connection_get_peer_credentials() to figure out what
    * identity (if any), was authenticated.
    *
-   * If you want to accept the connection, simply ref the @connection
-   * object. Then call g_dbus_connection_close() and unref it when you
-   * are done with it. A typical thing to do when accepting a
-   * connection is to listen to the #GDBusConnection::closed signal.
+   * If you want to accept the connection, take a reference to the
+   * @connection object and return %TRUE. When you are done with the
+   * connection call g_dbus_connection_close() and give up your
+   * reference. Note that the other peer may disconnect at any time -
+   * a typical thing to do when accepting a connection is to listen to
+   * the #GDBusConnection::closed signal.
    *
    * If #GDBusServer:flags contains %G_DBUS_SERVER_FLAGS_RUN_IN_THREAD
    * then the signal is emitted in a new thread dedicated to the
@@ -407,16 +409,19 @@ g_dbus_server_class_init (GDBusServerClass *klass)
    * that it's suitable to call g_dbus_connection_register_object() or
    * similar from the signal handler.
    *
+   * Returns: %TRUE to claim @connection, %FALSE to let other handlers
+   * run.
+   *
    * Since: 2.26
    */
   _signals[NEW_CONNECTION_SIGNAL] = g_signal_new ("new-connection",
                                                   G_TYPE_DBUS_SERVER,
                                                   G_SIGNAL_RUN_LAST,
                                                   G_STRUCT_OFFSET (GDBusServerClass, new_connection),
-                                                  NULL,
-                                                  NULL,
-                                                  g_cclosure_marshal_VOID__OBJECT,
-                                                  G_TYPE_NONE,
+                                                  g_signal_accumulator_true_handled,
+                                                  NULL, /* accu_data */
+                                                  _gio_marshal_BOOLEAN__OBJECT,
+                                                  G_TYPE_BOOLEAN,
                                                   1,
                                                   G_TYPE_DBUS_CONNECTION);
 }
@@ -922,12 +927,17 @@ static gboolean
 emit_new_connection_in_idle (gpointer user_data)
 {
   EmitIdleData *data = user_data;
+  gboolean claimed;
 
+  claimed = FALSE;
   g_signal_emit (data->server,
                  _signals[NEW_CONNECTION_SIGNAL],
                  0,
-                 data->connection);
-  g_dbus_connection_start_message_processing (data->connection);
+                 data->connection,
+                 &claimed);
+
+  if (claimed)
+    g_dbus_connection_start_message_processing (data->connection);
   g_object_unref (data->connection);
 
   return FALSE;

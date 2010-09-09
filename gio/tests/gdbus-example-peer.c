@@ -121,7 +121,7 @@ static const GDBusInterfaceVTable interface_vtable =
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static void
+static gboolean
 on_new_connection (GDBusServer *server,
                    GDBusConnection *connection,
                    gpointer user_data)
@@ -152,6 +152,8 @@ on_new_connection (GDBusServer *server,
                                                        NULL,  /* user_data_free_func */
                                                        NULL); /* GError** */
   g_assert (registration_id > 0);
+
+  return TRUE;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

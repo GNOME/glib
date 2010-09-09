@@ -283,7 +283,7 @@ on_authorize_authenticated_peer (GDBusAuthObserver *observer,
 }
 
 /* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
-static void
+static gboolean
 on_new_connection (GDBusServer *server,
                    GDBusConnection *connection,
                    gpointer user_data)
@@ -311,6 +311,8 @@ on_new_connection (GDBusServer *server,
   g_assert (reg_id > 0);
 
   g_main_loop_quit (loop);
+
+  return TRUE;
 }
 
 static gpointer
@@ -943,7 +945,7 @@ static const GDBusInterfaceVTable dmp_interface_vtable =
 
 
 /* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
-static void
+static gboolean
 dmp_on_new_connection (GDBusServer     *server,
                        GDBusConnection *connection,
                        gpointer         user_data)
@@ -984,6 +986,8 @@ dmp_on_new_connection (GDBusServer     *server,
                                      NULL,
                                      &error);
   g_dbus_node_info_unref (node);
+
+  return TRUE;
 }
 
 static gpointer
@@ -1101,7 +1105,7 @@ nonce_tcp_on_authorize_authenticated_peer (GDBusAuthObserver *observer,
 }
 
 /* Runs in thread we created GDBusServer in (since we didn't pass G_DBUS_SERVER_FLAGS_RUN_IN_THREAD) */
-static void
+static gboolean
 nonce_tcp_on_new_connection (GDBusServer *server,
                              GDBusConnection *connection,
                              gpointer user_data)
@@ -1111,6 +1115,8 @@ nonce_tcp_on_new_connection (GDBusServer *server,
   g_ptr_array_add (data->current_connections, g_object_ref (connection));
 
   g_main_loop_quit (loop);
+
+  return TRUE;
 }
 
 static gpointer
