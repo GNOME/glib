@@ -319,8 +319,6 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
  * Other ways to exchange credentials with a foreign peer includes the
  * #GUnixCredentialsMessage type and g_socket_get_credentials() function.
  *
- * Note that this function only works on Linux, currently.
- *
  * Returns: %TRUE on success, %FALSE if @error is set.
  *
  * Since: 2.26
