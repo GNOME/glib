@@ -62,13 +62,13 @@ static const GDBusInterfaceVTable boo_vtable =
   NULL  /* _set_property */
 };
 
-static GDBusMessageFilterResult
+static GDBusMessage *
 some_filter_func (GDBusConnection *connection,
                   GDBusMessage    *message,
                   gboolean         incoming,
                   gpointer         user_data)
 {
-  return G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
+  return message;
 }
 
 static void
@@ -686,7 +686,7 @@ typedef struct
   guint32 serial;
 } FilterData;
 
-static GDBusMessageFilterResult
+static GDBusMessage *
 filter_func (GDBusConnection *connection,
              GDBusMessage    *message,
              gboolean         incoming,
@@ -706,40 +706,53 @@ filter_func (GDBusConnection *connection,
       data->num_outgoing += 1;
     }
 
-  return G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
+  return message;
 }
+
 
 typedef struct
 {
-  GDBusMessageFilterResult incoming;
-  GDBusMessageFilterResult outgoing;
+  gboolean alter_incoming;
+  gboolean alter_outgoing;
 } FilterEffects;
 
-static GDBusMessageFilterResult
+static GDBusMessage *
 other_filter_func (GDBusConnection *connection,
                    GDBusMessage    *message,
                    gboolean         incoming,
                    gpointer         user_data)
 {
   FilterEffects *effects = user_data;
-  GDBusMessageFilterResult ret;
+  GDBusMessage *ret;
+  gboolean alter;
 
   if (incoming)
-    ret = effects->incoming;
+    alter = effects->alter_incoming;
   else
-    ret = effects->outgoing;
+    alter = effects->alter_outgoing;
 
-  if (ret == G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED)
+  if (alter)
     {
+      GDBusMessage *copy;
       GVariant *body;
       gchar *s;
       gchar *s2;
-      body = g_dbus_message_get_body (message);
+
+      copy = g_dbus_message_copy (message, NULL);
+      g_object_unref (message);
+
+      body = g_dbus_message_get_body (copy);
       g_variant_get (body, "(s)", &s);
       s2 = g_strdup_printf ("MOD: %s", s);
-      g_dbus_message_set_body (message, g_variant_new ("(s)", s2));
+      g_dbus_message_set_body (copy, g_variant_new ("(s)", s2));
       g_free (s2);
       g_free (s);
+
+      ret = copy;
+    }
+  else
+    {
+      ret = message;
     }
 
   return ret;
@@ -784,6 +797,7 @@ test_connection_filter (void)
   GDBusConnection *c;
   FilterData data;
   GDBusMessage *m;
+  GDBusMessage *m2;
   GDBusMessage *r;
   GError *error;
   guint filter_id;
@@ -819,21 +833,25 @@ test_connection_filter (void)
   while (data.num_handled == 0)
     g_thread_yield ();
 
-  g_dbus_message_set_serial (m, 0);
-  g_dbus_connection_send_message (c, m, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &data.serial, &error);
+  m2 = g_dbus_message_copy (m, &error);
+  g_assert_no_error (error);
+  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_NONE, &data.serial, &error);
+  g_object_unref (m2);
   g_assert_no_error (error);
 
   while (data.num_handled == 1)
     g_thread_yield ();
 
-  g_dbus_message_set_serial (m, 0);
+  m2 = g_dbus_message_copy (m, &error);
+  g_assert_no_error (error);
   r = g_dbus_connection_send_message_with_reply_sync (c,
-                                                      m,
+                                                      m2,
                                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
                                                       &data.serial,
                                                       NULL, /* GCancellable */
                                                       &error);
+  g_object_unref (m2);
   g_assert_no_error (error);
   g_assert (r != NULL);
   g_object_unref (r);
@@ -841,14 +859,16 @@ test_connection_filter (void)
 
   g_dbus_connection_remove_filter (c, filter_id);
 
-  g_dbus_message_set_serial (m, 0);
+  m2 = g_dbus_message_copy (m, &error);
+  g_assert_no_error (error);
   r = g_dbus_connection_send_message_with_reply_sync (c,
-                                                      m,
+                                                      m2,
                                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
                                                       -1,
                                                       &data.serial,
                                                       NULL, /* GCancellable */
                                                       &error);
+  g_object_unref (m2);
   g_assert_no_error (error);
   g_assert (r != NULL);
   g_object_unref (r);
@@ -874,15 +894,14 @@ test_connection_filter (void)
   g_source_remove (timeout_mainloop_id);
   g_dbus_connection_signal_unsubscribe (c, signal_handler_id);
 
-  /* now test all nine combinations... */
-
+  /* now test some combinations... */
   filter_id = g_dbus_connection_add_filter (c,
                                             other_filter_func,
                                             &effects,
                                             NULL);
   /* -- */
-  effects.incoming = G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
-  effects.outgoing = G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
+  effects.alter_incoming = FALSE;
+  effects.alter_outgoing = FALSE;
   error = NULL;
   result = g_dbus_connection_call_sync (c,
                                         "com.example.TestService",      /* bus name */
@@ -900,8 +919,8 @@ test_connection_filter (void)
   g_assert_cmpstr (s, ==, "You greeted me with 'Cat'. Thanks!");
   g_variant_unref (result);
   /* -- */
-  effects.incoming = G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED;
-  effects.outgoing = G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED;
+  effects.alter_incoming = TRUE;
+  effects.alter_outgoing = TRUE;
   error = NULL;
   result = g_dbus_connection_call_sync (c,
                                         "com.example.TestService",      /* bus name */

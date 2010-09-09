@@ -1214,31 +1214,6 @@ typedef enum
   G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN = 'l'
 } GDBusMessageByteOrder;
 
-/**
- * GDBusMessageFilterResult:
- * @G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT: The filter function had
- * no effect on the message - the message will be passed on to the
- * next filter function and/or sent to the remote peer.
- * @G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED: The message was
- * consumed by the filter function and will be dropped - the message
- * will not be passed to other filter functions and/or sent to the
- * remote peer.
- * @G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED: The message was
- * modified - the message will still be passed on to the next filter
- * function and/or sent to the remote peer.
- *
- * Possible return values for #GDBusMessageFilterFunction when
- * handling a #GDBusMessage.
- *
- * Since: 2.26
- */
-typedef enum
-{
-  G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT,
-  G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED,
-  G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED
-} GDBusMessageFilterResult;
-
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

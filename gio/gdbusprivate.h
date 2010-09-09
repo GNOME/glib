@@ -39,9 +39,9 @@ typedef void (*GDBusWorkerMessageReceivedCallback) (GDBusWorker   *worker,
                                                     GDBusMessage  *message,
                                                     gpointer       user_data);
 
-typedef GDBusMessageFilterResult (*GDBusWorkerMessageAboutToBeSentCallback) (GDBusWorker   *worker,
-                                                                             GDBusMessage  *message,
-                                                                             gpointer       user_data);
+typedef GDBusMessage *(*GDBusWorkerMessageAboutToBeSentCallback) (GDBusWorker   *worker,
+                                                                  GDBusMessage  *message,
+                                                                  gpointer       user_data);
 
 typedef void (*GDBusWorkerDisconnectedCallback)    (GDBusWorker   *worker,
                                                     gboolean       remote_peer_vanished,

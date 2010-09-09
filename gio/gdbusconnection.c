@@ -1367,6 +1367,7 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
 
   g_dbus_message_set_serial (message, serial_to_use);
 
+  g_dbus_message_lock (message);
   _g_dbus_worker_send_message (connection->worker,
                                message,
                                (gchar*) blob,
@@ -1406,6 +1407,9 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
  *
+ * Note that @message must be unlocked, unless @flags contain the
+ * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+ *
  * Returns: %TRUE if the message was well-formed and queued for
  * transmission, %FALSE if @error is set.
  *
@@ -1422,6 +1426,7 @@ g_dbus_connection_send_message (GDBusConnection   *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), FALSE);
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), FALSE);
+  g_return_val_if_fail ((flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL) || !g_dbus_message_get_locked (message), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
   CONNECTION_LOCK (connection);
@@ -1727,6 +1732,9 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * g_dbus_connection_send_message_with_reply_finish() to get the result of the operation.
  * See g_dbus_connection_send_message_with_reply_sync() for the synchronous version.
  *
+ * Note that @message must be unlocked, unless @flags contain the
+ * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+ *
  * See <xref linkend="gdbus-server"/> and <xref
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
@@ -1745,6 +1753,7 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
 {
   g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
+  g_return_if_fail ((flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL) || !g_dbus_message_get_locked (message));
   g_return_if_fail (timeout_msec >= 0 || timeout_msec == -1);
 
   CONNECTION_LOCK (connection);
@@ -1776,7 +1785,7 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
  *
- * Returns: A #GDBusMessage or %NULL if @error is set.
+ * Returns: A locked #GDBusMessage or %NULL if @error is set.
  *
  * Since: 2.26
  */
@@ -1869,7 +1878,10 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
  *
- * Returns: A #GDBusMessage that is the reply to @message or %NULL if @error is set.
+ * Note that @message must be unlocked, unless @flags contain the
+ * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
+ *
+ * Returns: A locked #GDBusMessage that is the reply to @message or %NULL if @error is set.
  *
  * Since: 2.26
  */
@@ -1887,6 +1899,7 @@ g_dbus_connection_send_message_with_reply_sync (GDBusConnection   *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
+  g_return_val_if_fail ((flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL) || !g_dbus_message_get_locked (message), FALSE);
   g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
@@ -1950,6 +1963,9 @@ on_worker_message_received (GDBusWorker  *worker,
 
   //g_debug ("in on_worker_message_received");
 
+  g_object_ref (message);
+  g_dbus_message_lock (message);
+
   g_object_ref (connection);
 
   /* First collect the set of callback functions */
@@ -1964,42 +1980,24 @@ on_worker_message_received (GDBusWorker  *worker,
     }
   CONNECTION_UNLOCK (connection);
 
-  /* the call the filters in order (without holding the lock) */
+  /* then call the filters in order (without holding the lock) */
   consumed_by_filter = FALSE;
   altered_by_filter = FALSE;
   for (n = 0; n < num_filters; n++)
     {
-      GDBusMessageFilterResult result;
-      result = filters[n].func (connection,
-                                message,
-                                TRUE,
-                                filters[n].user_data);
-      switch (result)
-        {
-        case G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT:
-          /* do nothing */
-          break;
-
-        default:
-          g_warning ("Treating unknown value %d for GDBusMessageFilterResult from filter "
-                     "function on incoming message as MESSAGE_CONSUMED.", result);
-          /* explicit fallthrough */
-        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED:
-          consumed_by_filter = TRUE;
-          break;
-
-        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED:
-          altered_by_filter = TRUE;
-          break;
-        }
-      if (consumed_by_filter)
+      message = filters[n].func (connection,
+                                 message,
+                                 TRUE,
+                                 filters[n].user_data);
+      if (message == NULL)
         break;
+      g_dbus_message_lock (message);
     }
 
   /* Standard dispatch unless the filter ate the message - no need to
    * do anything if the message was altered
    */
-  if (!consumed_by_filter)
+  if (message != NULL)
     {
       GDBusMessageType message_type;
 
@@ -2038,12 +2036,14 @@ on_worker_message_received (GDBusWorker  *worker,
         }
     }
 
+  if (message != NULL)
+    g_object_unref (message);
   g_object_unref (connection);
   g_free (filters);
 }
 
 /* Called in worker's thread */
-static GDBusMessageFilterResult
+static GDBusMessage *
 on_worker_message_about_to_be_sent (GDBusWorker  *worker,
                                     GDBusMessage *message,
                                     gpointer      user_data)
@@ -2052,12 +2052,8 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
   FilterCallback *filters;
   guint num_filters;
   guint n;
-  GDBusMessageFilterResult ret;
 
   //g_debug ("in on_worker_message_about_to_be_sent");
-
-  ret = G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
-
   g_object_ref (connection);
 
   /* First collect the set of callback functions */
@@ -2075,36 +2071,19 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
   /* then call the filters in order (without holding the lock) */
   for (n = 0; n < num_filters; n++)
     {
-      GDBusMessageFilterResult result;
-      result = filters[n].func (connection,
-                                message,
-                                FALSE,
-                                filters[n].user_data);
-      switch (result)
-        {
-        case G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT:
-          /* do nothing, ret might already be _ALTERED */
-          break;
-
-        default:
-          g_warning ("Treating unknown value %d for GDBusMessageFilterResult from filter "
-                     "function on outgoing message as MESSAGE_CONSUMED.", result);
-          /* explicit fallthrough */
-        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED:
-          ret = G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED;
-          goto out;
-
-        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED:
-          ret = G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED;
-          break;
-        }
+      g_dbus_message_lock (message);
+      message = filters[n].func (connection,
+                                 message,
+                                 FALSE,
+                                 filters[n].user_data);
+      if (message == NULL)
+        break;
     }
 
- out:
   g_object_unref (connection);
   g_free (filters);
 
-  return ret;
+  return message;
 }
 
 /* Called in worker's thread - we must not block */

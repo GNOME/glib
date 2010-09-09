@@ -469,29 +469,82 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
 
 /**
  * GDBusMessageFilterFunction:
- * @connection: A #GDBusConnection.
- * @message: A #GDBusMessage.
+ * @connection: (transfer none): A #GDBusConnection.
+ * @message: (transfer full): A locked #GDBusMessage that the filter function takes ownership of.
  * @incoming: %TRUE if it is a message received from the other peer, %FALSE if it is
  * a message to be sent to the other peer.
  * @user_data: User data passed when adding the filter.
  *
  * Signature for function used in g_dbus_connection_add_filter().
  *
- * If you modify an outgoing message, make sure to return
- * %G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED instead of
- * %G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT so the message can be
- * re-serialized. If an error occurs during re-serialization, a
- * warning will be printed on standard error.
+ * A filter function is passed a #GDBusMessage and expected to return
+ * a #GDBusMessage too. Passive filter functions that don't modify the
+ * message can simply return the @message object:
+ * |[
+ * static GDBusMessage *
+ * passive_filter (GDBusConnection *connection
+ *                 GDBusMessage    *message,
+ *                 gboolean         incoming,
+ *                 gpointer         user_data)
+ * {
+ *   /<!-- -->* inspect @message *<!-- -->/
+ *   return message;
+ * }
+ * ]|
+ * Filter functions that wants to drop a message can simply return %NULL:
+ * |[
+ * static GDBusMessage *
+ * drop_filter (GDBusConnection *connection
+ *              GDBusMessage    *message,
+ *              gboolean         incoming,
+ *              gpointer         user_data)
+ * {
+ *   if (should_drop_message)
+ *     {
+ *       g_object_unref (message);
+ *       message = NULL;
+ *     }
+ *   return message;
+ * }
+ * ]|
+ * Finally, a filter function may modify a message by copying it:
+ * |[
+ * static GDBusMessage *
+ * modifying_filter (GDBusConnection *connection
+ *                   GDBusMessage    *message,
+ *                   gboolean         incoming,
+ *                   gpointer         user_data)
+ * {
+ *   GDBusMessage *copy;
+ *   GError *error;
  *
- * Returns: A value from the #GDBusMessageFilterResult enumeration
- * describing what to do with @message.
+ *   error = NULL;
+ *   copy = g_dbus_message_copy (message, &error);
+ *   /<!-- -->* handle @error being is set *<!-- -->/
+ *   g_object_unref (message);
+ *
+ *   /<!-- -->* modify @copy *<!-- -->/
+ *
+ *   return copy;
+ * }
+ * ]|
+ * If the returned #GDBusMessage is different from @message and the
+ * serial number is unset (e.g. zero), then @message's serial number
+ * will be used on the returned message (so in this case the returned
+ * message must be unlocked). Additionally, if the returned message
+ * cannot be sent on @connection, then a warning is logged to
+ * <emphasis>standard error</emphasis>.
+ *
+ * Returns: (transfer full) (allow-none): A #GDBusMessage that will be freed with
+ * g_object_unref() or %NULL to drop the message. Passive filter
+ * functions can simply return the passed @message object.
  *
  * Since: 2.26
  */
-typedef GDBusMessageFilterResult (*GDBusMessageFilterFunction) (GDBusConnection *connection,
-                                                                GDBusMessage    *message,
-                                                                gboolean         incoming,
-                                                                gpointer         user_data);
+typedef GDBusMessage *(*GDBusMessageFilterFunction) (GDBusConnection *connection,
+                                                     GDBusMessage    *message,
+                                                     gboolean         incoming,
+                                                     gpointer         user_data);
 
 guint g_dbus_connection_add_filter (GDBusConnection            *connection,
                                     GDBusMessageFilterFunction  filter_function,

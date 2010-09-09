@@ -468,14 +468,15 @@ _g_dbus_worker_emit_message_received (GDBusWorker  *worker,
     worker->message_received_callback (worker, message, worker->user_data);
 }
 
-static GDBusMessageFilterResult
+static GDBusMessage *
 _g_dbus_worker_emit_message_about_to_be_sent (GDBusWorker  *worker,
                                               GDBusMessage *message)
 {
-  GDBusMessageFilterResult ret;
-  ret = G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT;
+  GDBusMessage *ret;
   if (!worker->stopped)
     ret = worker->message_about_to_be_sent_callback (worker, message, worker->user_data);
+  else
+    ret = message;
   return ret;
 }
 
@@ -1243,28 +1244,35 @@ maybe_write_next_message (GDBusWorker *worker)
    */
   if (data != NULL)
     {
-      GDBusMessageFilterResult filter_result;
+      guint32 old_serial;
+      GDBusMessage *old_message;
       guchar *new_blob;
       gsize new_blob_size;
       GError *error;
 
-      filter_result = _g_dbus_worker_emit_message_about_to_be_sent (worker, data->message);
-      switch (filter_result)
+      old_message = data->message;
+      old_serial = g_dbus_message_get_serial (old_message);
+      data->message = _g_dbus_worker_emit_message_about_to_be_sent (worker, data->message);
+      if (data->message == old_message)
         {
-        case G_DBUS_MESSAGE_FILTER_RESULT_NO_EFFECT:
-          /* do nothing */
-          break;
-
-        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_CONSUMED:
-          /* drop message */
+          /* filters had no effect - do nothing */
+        }
+      else if (data->message == NULL)
+        {
+          /* filters dropped message */
           g_mutex_lock (worker->write_lock);
           worker->num_writes_pending -= 1;
           g_mutex_unlock (worker->write_lock);
           message_to_write_data_free (data);
           goto write_next;
+        }
+      else
+        {
+          /* filters altered the message -> reencode */
 
-        case G_DBUS_MESSAGE_FILTER_RESULT_MESSAGE_ALTERED:
-          /* reencode altered message */
+          if (g_dbus_message_get_serial (data->message) == 0)
+            g_dbus_message_set_serial (data->message, old_serial);
+
           error = NULL;
           new_blob = g_dbus_message_to_blob (data->message,
                                              &new_blob_size,
@@ -1286,7 +1294,6 @@ maybe_write_next_message (GDBusWorker *worker)
               data->blob = (gchar *) new_blob;
               data->blob_size = new_blob_size;
             }
-          break;
         }
 
       write_message_async (worker,
