@@ -41,6 +41,7 @@ TEST_PROGS +=	 		\
 	async-close-output-stream \
 	gdbus-addresses		\
 	network-address		\
+	gdbus-message		\
 	$(NULL)
 
 if OS_UNIX
@@ -218,6 +219,9 @@ gdbus_addresses_LDADD = $(progs_ldadd)
 
 gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_connection_LDADD = $(progs_ldadd)
+
+gdbus_message_SOURCES = gdbus-message.c
+gdbus_message_LDADD = $(progs_ldadd)
 
 gdbus_names_SOURCES = gdbus-names.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_names_LDADD = $(progs_ldadd)

@@ -58,7 +58,10 @@ GDBusMessage             *g_dbus_message_new_method_error_literal (GDBusMessage 
                                                                    const gchar              *error_message);
 gchar                    *g_dbus_message_print              (GDBusMessage             *message,
                                                              guint                     indent);
-
+gboolean                  g_dbus_message_get_locked         (GDBusMessage             *message);
+void                      g_dbus_message_lock               (GDBusMessage             *message);
+GDBusMessage             *g_dbus_message_copy               (GDBusMessage             *message,
+                                                             GError                  **error);
 GDBusMessageByteOrder     g_dbus_message_get_byte_order     (GDBusMessage             *message);
 void                      g_dbus_message_set_byte_order     (GDBusMessage             *message,
                                                              GDBusMessageByteOrder     byte_order);

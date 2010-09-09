@@ -1703,6 +1703,9 @@ g_dbus_message_new_method_error_valist
 g_dbus_message_new_method_reply
 g_dbus_message_new_signal
 g_dbus_message_bytes_needed
+g_dbus_message_get_locked
+g_dbus_message_lock
+g_dbus_message_copy
 g_dbus_message_get_arg0
 g_dbus_message_get_body
 g_dbus_message_get_byte_order

@@ -92,6 +92,8 @@ struct _GDBusMessage
 
   GDBusMessageType type;
   GDBusMessageFlags flags;
+  gboolean locked;
+  GDBusMessageByteOrder byte_order;
   guchar major_protocol_version;
   guint32 serial;
   GHashTable *headers;
@@ -99,7 +101,12 @@ struct _GDBusMessage
 #ifdef G_OS_UNIX
   GUnixFDList *fd_list;
 #endif
-  GDBusMessageByteOrder byte_order;
+};
+
+enum
+{
+  PROP_0,
+  PROP_LOCKED
 };
 
 G_DEFINE_TYPE (GDBusMessage, g_dbus_message, G_TYPE_OBJECT);
@@ -123,13 +130,51 @@ g_dbus_message_finalize (GObject *object)
 }
 
 static void
+g_dbus_message_get_property (GObject    *object,
+                             guint       prop_id,
+                             GValue     *value,
+                             GParamSpec *pspec)
+{
+  GDBusMessage *message = G_DBUS_MESSAGE (object);
+
+  switch (prop_id)
+    {
+    case PROP_LOCKED:
+      g_value_set_boolean (value, g_dbus_message_get_locked (message));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
 g_dbus_message_class_init (GDBusMessageClass *klass)
 {
   GObjectClass *gobject_class;
 
   gobject_class = G_OBJECT_CLASS (klass);
-
   gobject_class->finalize     = g_dbus_message_finalize;
+  gobject_class->get_property = g_dbus_message_get_property;
+
+  /**
+   * GDBusConnection:locked:
+   *
+   * A boolean specifying whether the message is locked.
+   *
+   * Since: 2.26
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_LOCKED,
+                                   g_param_spec_boolean ("locked",
+                                                         P_("Locked"),
+                                                         P_("Whether the message is locked"),
+                                                         FALSE,
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_STATIC_NAME |
+                                                         G_PARAM_STATIC_BLURB |
+                                                         G_PARAM_STATIC_NICK));
 }
 
 static void
@@ -413,6 +458,13 @@ g_dbus_message_set_byte_order (GDBusMessage          *message,
                                GDBusMessageByteOrder  byte_order)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
+
+  if (message->locked)
+    {
+      g_warning ("%s: Attempted to modify a locked message", G_STRFUNC);
+      return;
+    }
+
   message->byte_order = byte_order;
 }
 
@@ -452,6 +504,13 @@ g_dbus_message_set_message_type (GDBusMessage      *message,
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail (type >=0 && type < 256);
+
+  if (message->locked)
+    {
+      g_warning ("%s: Attempted to modify a locked message", G_STRFUNC);
+      return;
+    }
+
   message->type = type;
 }
 
@@ -492,6 +551,13 @@ g_dbus_message_set_flags (GDBusMessage       *message,
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail (flags >=0 && flags < 256);
+
+  if (message->locked)
+    {
+      g_warning ("%s: Attempted to modify a locked message", G_STRFUNC);
+      return;
+    }
+
   message->flags = flags;
 }
 
@@ -528,6 +594,13 @@ g_dbus_message_set_serial (GDBusMessage  *message,
                            guint32        serial)
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
+
+  if (message->locked)
+    {
+      g_warning ("%s: Attempted to modify a locked message", G_STRFUNC);
+      return;
+    }
+
   message->serial = serial;
 }
 
@@ -575,6 +648,13 @@ g_dbus_message_set_header (GDBusMessage             *message,
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail (header_field >=0 && header_field < 256);
+
+  if (message->locked)
+    {
+      g_warning ("%s: Attempted to modify a locked message", G_STRFUNC);
+      return;
+    }
+
   if (value == NULL)
     {
       g_hash_table_remove (message->headers, GUINT_TO_POINTER (header_field));
@@ -659,6 +739,12 @@ g_dbus_message_set_body (GDBusMessage  *message,
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail ((body == NULL) || g_variant_is_of_type (body, G_VARIANT_TYPE_TUPLE));
 
+  if (message->locked)
+    {
+      g_warning ("%s: Attempted to modify a locked message", G_STRFUNC);
+      return;
+    }
+
   if (message->body != NULL)
     g_variant_unref (message->body);
   if (body == NULL)
@@ -726,6 +812,13 @@ g_dbus_message_set_unix_fd_list (GDBusMessage  *message,
 {
   g_return_if_fail (G_IS_DBUS_MESSAGE (message));
   g_return_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list));
+
+  if (message->locked)
+    {
+      g_warning ("%s: Attempted to modify a locked message", G_STRFUNC);
+      return;
+    }
+
   if (message->fd_list != NULL)
     g_object_unref (message->fd_list);
   if (fd_list != NULL)
@@ -3047,3 +3140,116 @@ g_dbus_message_print (GDBusMessage *message,
 
   return g_string_free (str, FALSE);
 }
+
+/**
+ * g_dbus_message_get_locked:
+ * @message: A #GDBusMessage.
+ *
+ * Checks whether @message is locked. To monitor changes to this
+ * value, conncet to the #GObject::notify signal to listen for changes
+ * on the #GDBusMessage:locked property.
+ *
+ * Returns: %TRUE if @message is locked, %FALSE otherwise.
+ *
+ * Since: 2.26
+ */
+gboolean
+g_dbus_message_get_locked (GDBusMessage *message)
+{
+  g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), FALSE);
+  return message->locked;
+}
+
+/**
+ * g_dbus_message_lock:
+ * @message: A #GDBusMessage.
+ *
+ * If @message is locked, does nothing. Otherwise locks the message.
+ *
+ * Since: 2.26
+ */
+void
+g_dbus_message_lock (GDBusMessage *message)
+{
+  g_return_if_fail (G_IS_DBUS_MESSAGE (message));
+
+  if (message->locked)
+    goto out;
+
+  message->locked = TRUE;
+  g_object_notify (G_OBJECT (message), "locked");
+
+ out:
+  ;
+}
+
+/**
+ * g_dbus_message_copy:
+ * @message: A #GDBusMessage.
+ * @error: Return location for error or %NULL.
+ *
+ * Copies @message. The copy is a deep copy and the returned
+ * #GDBusMessage is completely identical except that it is guaranteed
+ * to not be locked and the serial will be set to 0.
+ *
+ * This operation can fail if e.g. @message contains file descriptors
+ * and the per-process or system-wide open files limit is reached.
+ *
+ * Returns: A new #GDBusMessage or %NULL if @error is set. Free with
+ * g_object_unref().
+ *
+ * Since: 2.26
+ */
+GDBusMessage *
+g_dbus_message_copy (GDBusMessage  *message,
+                     GError       **error)
+{
+  GDBusMessage *ret;
+  GHashTableIter iter;
+  gpointer header_key;
+  GVariant *header_value;
+
+  g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+  ret = g_dbus_message_new ();
+  ret->type                   = message->type;
+  ret->flags                  = message->flags;
+  ret->byte_order             = message->byte_order;
+  ret->major_protocol_version = message->major_protocol_version;
+
+#ifdef G_OS_UNIX
+  if (message->fd_list != NULL)
+    {
+      gint n;
+      gint num_fds;
+      const gint *fds;
+
+      ret->fd_list = g_unix_fd_list_new ();
+      fds = g_unix_fd_list_peek_fds (message->fd_list, &num_fds);
+      for (n = 0; n < num_fds; n++)
+        {
+          if (g_unix_fd_list_append (ret->fd_list,
+                                     fds[n],
+                                     error) == -1)
+            {
+              g_object_unref (ret);
+              ret = NULL;
+              goto out;
+            }
+        }
+    }
+#endif
+
+  /* see https://bugzilla.gnome.org/show_bug.cgi?id=624546#c8 for why it's fine
+   * to just ref (as opposed to deep-copying) the GVariant instances
+   */
+  ret->body = message->body != NULL ? g_variant_ref (message->body) : NULL;
+  g_hash_table_iter_init (&iter, message->headers);
+  while (g_hash_table_iter_next (&iter, &header_key, (gpointer) &header_value))
+    g_hash_table_insert (ret->headers, header_key, g_variant_ref (header_value));
+
+ out:
+  return ret;
+}
+
