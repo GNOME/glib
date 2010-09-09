@@ -262,8 +262,8 @@ g_settings_real_writable_change_event (GSettings *settings,
 }
 
 static void
-settings_backend_changed (GSettingsBackend    *backend,
-                          GObject             *target,
+settings_backend_changed (GObject             *target,
+                          GSettingsBackend    *backend,
                           const gchar         *key,
                           gpointer             origin_tag)
 {
@@ -287,8 +287,8 @@ settings_backend_changed (GSettingsBackend    *backend,
 }
 
 static void
-settings_backend_path_changed (GSettingsBackend *backend,
-                               GObject          *target,
+settings_backend_path_changed (GObject          *target,
+                               GSettingsBackend *backend,
                                const gchar      *path,
                                gpointer          origin_tag)
 {
@@ -303,8 +303,8 @@ settings_backend_path_changed (GSettingsBackend *backend,
 }
 
 static void
-settings_backend_keys_changed (GSettingsBackend    *backend,
-                               GObject             *target,
+settings_backend_keys_changed (GObject             *target,
+                               GSettingsBackend    *backend,
                                const gchar         *path,
                                const gchar * const *items,
                                gpointer             origin_tag)
@@ -347,8 +347,8 @@ settings_backend_keys_changed (GSettingsBackend    *backend,
 }
 
 static void
-settings_backend_writable_changed (GSettingsBackend *backend,
-                                   GObject          *target,
+settings_backend_writable_changed (GObject          *target,
+                                   GSettingsBackend *backend,
                                    const gchar      *key)
 {
   GSettings *settings = G_SETTINGS (target);
@@ -366,8 +366,8 @@ settings_backend_writable_changed (GSettingsBackend *backend,
 }
 
 static void
-settings_backend_path_writable_changed (GSettingsBackend *backend,
-                                        GObject          *target,
+settings_backend_path_writable_changed (GObject          *target,
+                                        GSettingsBackend *backend,
                                         const gchar      *path)
 {
   GSettings *settings = G_SETTINGS (target);
@@ -432,6 +432,14 @@ g_settings_get_property (GObject    *object,
     }
 }
 
+static const GSettingsListenerVTable listener_vtable = {
+  settings_backend_changed,
+  settings_backend_path_changed,
+  settings_backend_keys_changed,
+  settings_backend_writable_changed,
+  settings_backend_path_writable_changed
+};
+
 static void
 g_settings_constructed (GObject *object)
 {
@@ -458,13 +466,9 @@ g_settings_constructed (GObject *object)
   if (settings->priv->backend == NULL)
     settings->priv->backend = g_settings_backend_get_default ();
 
-  g_settings_backend_watch (settings->priv->backend, G_OBJECT (settings),
-                            settings->priv->main_context,
-                            settings_backend_changed,
-                            settings_backend_path_changed,
-                            settings_backend_keys_changed,
-                            settings_backend_writable_changed,
-                            settings_backend_path_writable_changed);
+  g_settings_backend_watch (settings->priv->backend,
+                            &listener_vtable, G_OBJECT (settings),
+                            settings->priv->main_context);
   g_settings_backend_subscribe (settings->priv->backend,
                                 settings->priv->path);
 }
@@ -1908,13 +1912,9 @@ g_settings_delay (GSettings *settings)
   g_object_unref (settings->priv->backend);
 
   settings->priv->backend = G_SETTINGS_BACKEND (settings->priv->delayed);
-  g_settings_backend_watch (settings->priv->backend, G_OBJECT (settings),
-                            settings->priv->main_context,
-                            settings_backend_changed,
-                            settings_backend_path_changed,
-                            settings_backend_keys_changed,
-                            settings_backend_writable_changed,
-                            settings_backend_path_writable_changed);
+  g_settings_backend_watch (settings->priv->backend,
+                            &listener_vtable, G_OBJECT (settings),
+                            settings->priv->main_context);
 }
 
 /**

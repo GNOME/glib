@@ -141,21 +141,16 @@ g_settings_backend_get_active_context (void)
 
 struct _GSettingsBackendWatch
 {
-  GObject                                 *target;
-  GMainContext                            *context;
-  GSettingsBackendChangedFunc              changed;
-  GSettingsBackendPathChangedFunc          path_changed;
-  GSettingsBackendKeysChangedFunc          keys_changed;
-  GSettingsBackendWritableChangedFunc      writable_changed;
-  GSettingsBackendPathWritableChangedFunc  path_writable_changed;
-
-  GSettingsBackendWatch                   *next;
+  GObject                       *target;
+  const GSettingsListenerVTable *vtable;
+  GMainContext                  *context;
+  GSettingsBackendWatch         *next;
 };
 
 struct _GSettingsBackendClosure
 {
-  void (*function) (GSettingsBackend *backend,
-                    GObject          *target,
+  void (*function) (GObject          *target,
+                    GSettingsBackend *backend,
                     const gchar      *name,
                     gpointer          data1,
                     gpointer          data2);
@@ -218,14 +213,10 @@ g_settings_backend_watch_weak_notify (gpointer  data,
  * value of @origin_tag given to any callbacks.
  **/
 void
-g_settings_backend_watch (GSettingsBackend                        *backend,
-                          GObject                                 *target,
-                          GMainContext                            *context,
-                          GSettingsBackendChangedFunc              changed,
-                          GSettingsBackendPathChangedFunc          path_changed,
-                          GSettingsBackendKeysChangedFunc          keys_changed,
-                          GSettingsBackendWritableChangedFunc      writable_changed,
-                          GSettingsBackendPathWritableChangedFunc  path_writable_changed)
+g_settings_backend_watch (GSettingsBackend              *backend,
+                          const GSettingsListenerVTable *vtable,
+                          GObject                       *target,
+                          GMainContext                  *context)
 {
   GSettingsBackendWatch *watch;
 
@@ -265,14 +256,9 @@ g_settings_backend_watch (GSettingsBackend                        *backend,
 
   watch = g_slice_new (GSettingsBackendWatch);
   watch->context = context;
+  watch->vtable = vtable;
   watch->target = target;
   g_object_weak_ref (target, g_settings_backend_watch_weak_notify, backend);
-
-  watch->changed = changed;
-  watch->path_changed = path_changed;
-  watch->keys_changed = keys_changed;
-  watch->writable_changed = writable_changed;
-  watch->path_writable_changed = path_writable_changed;
 
   /* linked list prepend */
   g_static_mutex_lock (&backend->priv->lock);
@@ -297,7 +283,7 @@ g_settings_backend_invoke_closure (gpointer user_data)
 {
   GSettingsBackendClosure *closure = user_data;
 
-  closure->function (closure->backend, closure->target, closure->name,
+  closure->function (closure->target, closure->backend, closure->name,
                      closure->data1, closure->data2);
 
   closure->data1_free (closure->data1);
@@ -364,7 +350,8 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
       closure = g_slice_new (GSettingsBackendClosure);
       closure->backend = g_object_ref (backend);
       closure->target = g_object_ref (watch->target);
-      closure->function = G_STRUCT_MEMBER (void *, watch, function_offset);
+      closure->function = G_STRUCT_MEMBER (void *, watch->vtable,
+                                           function_offset);
       closure->name = g_strdup (name);
       closure->data1 = data1_copy (data1);
       closure->data1_free = data1_free;
@@ -429,7 +416,7 @@ g_settings_backend_changed (GSettingsBackend *backend,
   g_return_if_fail (is_key (key));
 
   g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
                                                        changed),
                                       key, origin_tag, NULL, NULL, NULL);
 }
@@ -478,7 +465,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
   g_return_if_fail (items != NULL);
 
   g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
                                                        keys_changed),
                                       path, (gpointer) items,
                                       (GBoxedCopyFunc) g_strdupv,
@@ -525,7 +512,7 @@ g_settings_backend_path_changed (GSettingsBackend *backend,
   g_return_if_fail (is_path (path));
 
   g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
                                                        path_changed),
                                       path, origin_tag, NULL, NULL, NULL);
 }
@@ -550,7 +537,7 @@ g_settings_backend_writable_changed (GSettingsBackend *backend,
   g_return_if_fail (is_key (key));
 
   g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
                                                        writable_changed),
                                       key, NULL, NULL, NULL, NULL);
 }
@@ -576,7 +563,7 @@ g_settings_backend_path_writable_changed (GSettingsBackend *backend,
   g_return_if_fail (is_path (path));
 
   g_settings_backend_dispatch_signal (backend,
-                                      G_STRUCT_OFFSET (GSettingsBackendWatch,
+                                      G_STRUCT_OFFSET (GSettingsListenerVTable,
                                                        path_writable_changed),
                                       path, NULL, NULL, NULL, NULL);
 }
@@ -726,7 +713,8 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
 #endif
 
   for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->keys_changed (backend, watch->target, path, keys, origin_tag);
+    watch->vtable->keys_changed (watch->target, backend,
+                                 path, keys, origin_tag);
 
   g_free (path);
   g_free (keys);

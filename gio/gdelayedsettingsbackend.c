@@ -280,8 +280,8 @@ g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
 
 /* change notification */
 static void
-delayed_backend_changed (GSettingsBackend *backend,
-                         GObject          *target,
+delayed_backend_changed (GObject          *target,
+                         GSettingsBackend *backend,
                          const gchar      *key,
                          gpointer          origin_tag)
 {
@@ -293,8 +293,8 @@ delayed_backend_changed (GSettingsBackend *backend,
 }
 
 static void
-delayed_backend_keys_changed (GSettingsBackend    *backend,
-                              GObject             *target,
+delayed_backend_keys_changed (GObject             *target,
+                              GSettingsBackend    *backend,
                               const gchar         *path,
                               const gchar * const *items,
                               gpointer             origin_tag)
@@ -307,8 +307,8 @@ delayed_backend_keys_changed (GSettingsBackend    *backend,
 }
 
 static void
-delayed_backend_path_changed (GSettingsBackend *backend,
-                              GObject          *target,
+delayed_backend_path_changed (GObject          *target,
+                              GSettingsBackend *backend,
                               const gchar      *path,
                               gpointer          origin_tag)
 {
@@ -320,8 +320,8 @@ delayed_backend_path_changed (GSettingsBackend *backend,
 }
 
 static void
-delayed_backend_writable_changed (GSettingsBackend *backend,
-                                  GObject          *target,
+delayed_backend_writable_changed (GObject          *target,
+                                  GSettingsBackend *backend,
                                   const gchar      *key)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
@@ -372,8 +372,8 @@ check_prefix (gpointer key,
 }
 
 static void
-delayed_backend_path_writable_changed (GSettingsBackend *backend,
-                                       GObject          *target,
+delayed_backend_path_writable_changed (GObject          *target,
+                                       GSettingsBackend *backend,
                                        const gchar      *path)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
@@ -476,6 +476,13 @@ g_delayed_settings_backend_new (GSettingsBackend *backend,
                                 gpointer          owner,
                                 GMainContext     *owner_context)
 {
+  static GSettingsListenerVTable vtable = {
+    delayed_backend_changed,
+    delayed_backend_path_changed,
+    delayed_backend_keys_changed,
+    delayed_backend_writable_changed,
+    delayed_backend_path_writable_changed
+  };
   GDelayedSettingsBackend *delayed;
 
   delayed = g_object_new (G_TYPE_DELAYED_SETTINGS_BACKEND, NULL);
@@ -485,12 +492,8 @@ g_delayed_settings_backend_new (GSettingsBackend *backend,
 
   g_object_weak_ref (owner, g_delayed_settings_backend_disown, delayed);
 
-  g_settings_backend_watch (delayed->priv->backend, G_OBJECT (delayed), NULL,
-                            delayed_backend_changed,
-                            delayed_backend_path_changed,
-                            delayed_backend_keys_changed,
-                            delayed_backend_writable_changed,
-                            delayed_backend_path_writable_changed);
+  g_settings_backend_watch (delayed->priv->backend,
+                            &vtable, G_OBJECT (delayed), NULL);
 
   return delayed;
 }
