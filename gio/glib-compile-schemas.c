@@ -1055,7 +1055,9 @@ parse_state_start_schema (ParseState  *state,
 
   if (list_of)
     {
-      if (!g_hash_table_lookup (state->schema_table, list_of))
+      SchemaState *tmp;
+
+      if (!(tmp = g_hash_table_lookup (state->schema_table, list_of)))
         {
           g_set_error (error, G_MARKUP_ERROR,
                        G_MARKUP_ERROR_INVALID_CONTENT,
@@ -1063,10 +1065,24 @@ parse_state_start_schema (ParseState  *state,
                          "existing schema '%s'"), id, list_of);
           return;
         }
+
+      if (tmp->path)
+        {
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                       _("Can not be a list of a schema with a path"));
+          return;
+        }
     }
 
   if (extends)
     {
+      if (extends->path)
+        {
+          g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                       _("Can not extend a schema with a path"));
+          return;
+        }
+
       if (list_of)
         {
           if (extends->list_of == NULL)
@@ -1101,6 +1117,13 @@ parse_state_start_schema (ParseState  *state,
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
                    _("a path, if given, must begin and end with a slash"));
+      return;
+    }
+
+  if (path && list_of && !g_str_has_suffix (path, ":/"))
+    {
+      g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                   _("the path of a list must end with ':/'"));
       return;
     }
 
