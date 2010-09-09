@@ -528,12 +528,12 @@ void             g_dbus_connection_signal_unsubscribe         (GDBusConnection  
  *   return copy;
  * }
  * ]|
- * If the returned #GDBusMessage is different from @message and the
- * serial number is unset (e.g. zero), then @message's serial number
- * will be used on the returned message (so in this case the returned
- * message must be unlocked). Additionally, if the returned message
- * cannot be sent on @connection, then a warning is logged to
- * <emphasis>standard error</emphasis>.
+ * If the returned #GDBusMessage is different from @message and cannot
+ * be sent on @connection (it could use features, such as file
+ * descriptors, not compatible with @connection), then a warning is
+ * logged to <emphasis>standard error</emphasis>. Applications can
+ * check this ahead of time using g_dbus_message_to_blob() passing a
+ * #GDBusCapabilityFlags value obtained from @connection.
  *
  * Returns: (transfer full) (allow-none): A #GDBusMessage that will be freed with
  * g_object_unref() or %NULL to drop the message. Passive filter

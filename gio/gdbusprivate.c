@@ -1244,14 +1244,12 @@ maybe_write_next_message (GDBusWorker *worker)
    */
   if (data != NULL)
     {
-      guint32 old_serial;
       GDBusMessage *old_message;
       guchar *new_blob;
       gsize new_blob_size;
       GError *error;
 
       old_message = data->message;
-      old_serial = g_dbus_message_get_serial (old_message);
       data->message = _g_dbus_worker_emit_message_about_to_be_sent (worker, data->message);
       if (data->message == old_message)
         {
@@ -1269,10 +1267,6 @@ maybe_write_next_message (GDBusWorker *worker)
       else
         {
           /* filters altered the message -> reencode */
-
-          if (g_dbus_message_get_serial (data->message) == 0)
-            g_dbus_message_set_serial (data->message, old_serial);
-
           error = NULL;
           new_blob = g_dbus_message_to_blob (data->message,
                                              &new_blob_size,

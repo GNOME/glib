@@ -3190,7 +3190,7 @@ g_dbus_message_lock (GDBusMessage *message)
  *
  * Copies @message. The copy is a deep copy and the returned
  * #GDBusMessage is completely identical except that it is guaranteed
- * to not be locked and the serial will be set to 0.
+ * to not be locked.
  *
  * This operation can fail if e.g. @message contains file descriptors
  * and the per-process or system-wide open files limit is reached.
@@ -3217,6 +3217,7 @@ g_dbus_message_copy (GDBusMessage  *message,
   ret->flags                  = message->flags;
   ret->byte_order             = message->byte_order;
   ret->major_protocol_version = message->major_protocol_version;
+  ret->serial                 = message->serial;
 
 #ifdef G_OS_UNIX
   if (message->fd_list != NULL)

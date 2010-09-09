@@ -108,7 +108,7 @@ message_copy (void)
   g_assert_cmpint (G_OBJECT (m)->ref_count, ==, 1);
   g_assert_cmpint (G_OBJECT (copy)->ref_count, ==, 1);
 
-  g_assert_cmpint (g_dbus_message_get_serial (copy), ==, 0);
+  g_assert_cmpint (g_dbus_message_get_serial (copy), ==, g_dbus_message_get_serial (m));
   g_assert_cmpint (g_dbus_message_get_byte_order (copy), ==, g_dbus_message_get_byte_order (m));
   g_assert_cmpint (g_dbus_message_get_flags (copy), ==, g_dbus_message_get_flags (m));
   g_assert_cmpint (g_dbus_message_get_message_type (copy), ==, g_dbus_message_get_message_type (m));
