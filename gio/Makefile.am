@@ -589,7 +589,7 @@ glib_compile_schemas_SOURCES = \
 	gvdb/gvdb-format.h		\
 	gvdb/gvdb-builder.h		\
 	gvdb/gvdb-builder.c		\
-	gschema-compile.c
+	glib-compile-schemas.c
 
 gsettings_LDADD = \
 	$(top_builddir)/glib/libglib-2.0.la		\
