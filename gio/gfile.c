@@ -5882,7 +5882,8 @@ g_file_real_copy_finish (GFile        *file,
 
 /**
  * g_file_new_for_path:
- * @path: a string containing a relative or absolute path.
+ * @path: a string containing a relative or absolute path. The string
+ *   must be encoded in the glib filename encoding.
  * 
  * Constructs a #GFile for a given path. This operation never
  * fails, but the returned object might not support any I/O
@@ -5900,7 +5901,7 @@ g_file_new_for_path (const char *path)
  
 /**
  * g_file_new_for_uri:
- * @uri: a string containing a URI.
+ * @uri: a UTF8 string containing a URI.
  * 
  * Constructs a #GFile for a given URI. This operation never 
  * fails, but the returned object might not support any I/O 
