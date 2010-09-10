@@ -57,6 +57,7 @@ TEST_PROGS +=			\
 	gdbus-peer		\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
+	gdbus-bz627724		\
 	application		\
 	testapps		\
 	appinfo			\
@@ -216,6 +217,9 @@ endif
 
 gdbus_addresses_SOURCES = gdbus-addresses.c
 gdbus_addresses_LDADD = $(progs_ldadd)
+
+gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_bz627724_LDADD = $(progs_ldadd)
 
 gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_connection_LDADD = $(progs_ldadd)

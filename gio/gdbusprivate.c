@@ -229,6 +229,34 @@ _g_socket_read_with_control_messages_finish (GSocket       *socket,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* Work-around for https://bugzilla.gnome.org/show_bug.cgi?id=627724 */
+
+static GPtrArray *ensured_classes = NULL;
+
+static void
+ensure_type (GType gtype)
+{
+  g_ptr_array_add (ensured_classes, g_type_class_ref (gtype));
+}
+
+static void
+released_required_types (void)
+{
+  g_ptr_array_foreach (ensured_classes, (GFunc) g_type_class_unref, NULL);
+  g_ptr_array_unref (ensured_classes);
+  ensured_classes = NULL;
+}
+
+static void
+ensure_required_types (void)
+{
+  g_assert (ensured_classes == NULL);
+  ensured_classes = g_ptr_array_new ();
+  ensure_type (G_TYPE_SIMPLE_ASYNC_RESULT);
+  ensure_type (G_TYPE_MEMORY_INPUT_STREAM);
+}
+/* ---------------------------------------------------------------------------------------------------- */
+
 G_LOCK_DEFINE_STATIC (shared_thread_lock);
 
 typedef struct
@@ -242,7 +270,7 @@ typedef struct
 static SharedThreadData *shared_thread_data = NULL;
 
 static gpointer
-shared_thread_func (gpointer data)
+gdbus_shared_thread_func (gpointer data)
 {
   g_main_context_push_thread_default (shared_thread_data->context);
   g_main_loop_run (shared_thread_data->loop);
@@ -268,6 +296,8 @@ invoke_caller (gpointer user_data)
   return FALSE;
 }
 
+/* ---------------------------------------------------------------------------------------------------- */
+
 static void
 _g_dbus_shared_thread_ref (GDBusSharedThreadFunc func,
                            gpointer              user_data)
@@ -275,8 +305,11 @@ _g_dbus_shared_thread_ref (GDBusSharedThreadFunc func,
   GError *error;
   GSource *idle_source;
   CallerData *data;
+  gboolean release_types;
 
   G_LOCK (shared_thread_lock);
+
+  release_types = FALSE;
 
   if (shared_thread_data != NULL)
     {
@@ -287,10 +320,14 @@ _g_dbus_shared_thread_ref (GDBusSharedThreadFunc func,
   shared_thread_data = g_new0 (SharedThreadData, 1);
   shared_thread_data->num_users = 1;
 
+  /* Work-around for https://bugzilla.gnome.org/show_bug.cgi?id=627724 */
+  ensure_required_types ();
+  release_types = TRUE;
+
   error = NULL;
   shared_thread_data->context = g_main_context_new ();
   shared_thread_data->loop = g_main_loop_new (shared_thread_data->context, FALSE);
-  shared_thread_data->thread = g_thread_create (shared_thread_func,
+  shared_thread_data->thread = g_thread_create (gdbus_shared_thread_func,
                                                 NULL,
                                                 TRUE,
                                                 &error);
@@ -315,6 +352,9 @@ _g_dbus_shared_thread_ref (GDBusSharedThreadFunc func,
   /* wait for the user code to run.. hmm.. probably use a condition variable instead */
   while (!data->done)
     g_thread_yield ();
+
+  if (release_types)
+    released_required_types ();
 
   g_free (data);
 
