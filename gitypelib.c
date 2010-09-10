@@ -2069,7 +2069,7 @@ _g_typelib_ensure_open (GITypelib *typelib)
 }
 
 /**
- * g_typelib_new_from_memory:
+ * g_typelib_new_from_memory: (skip)
  * @memory: address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
  * @error: a #GError
@@ -2100,7 +2100,7 @@ g_typelib_new_from_memory (guint8  *memory,
 }
 
 /**
- * g_typelib_new_from_const_memory:
+ * g_typelib_new_from_const_memory: (skip)
  * @memory: address of memory chunk containing the typelib
  * @len: length of memory chunk containing the typelib
  * @error: A #GError
@@ -2129,7 +2129,7 @@ g_typelib_new_from_const_memory (const guchar *memory,
 }
 
 /**
- * g_typelib_new_from_mapped_file:
+ * g_typelib_new_from_mapped_file: (skip)
  * @mfile: a #GMappedFile, that will be free'd when the repository is destroyed
  * @error: a #GError
  *

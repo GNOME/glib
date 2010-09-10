@@ -374,7 +374,7 @@ register_internal (GIRepository *repository,
 
 /**
  * g_irepository_get_dependencies:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace of interest
  *
  * Return an array of all (transitive) dependencies for namespace
@@ -440,7 +440,7 @@ g_irepository_load_typelib (GIRepository *repository,
 
 /**
  * g_irepository_is_registered:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace of interest
  * @version: (allow-none): Required version, may be %NULL for latest
  *
@@ -486,7 +486,7 @@ g_irepository_get_default (void)
 
 /**
  * g_irepository_get_n_infos:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace to inspect
  *
  * This function returns the number of metadata entries in
@@ -619,7 +619,7 @@ find_interface (gpointer key,
 
 /**
  * g_irepository_get_info:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace to inspect
  * @index: Offset into namespace metadata for entry
  *
@@ -658,7 +658,7 @@ g_irepository_get_info (GIRepository *repository,
 
 /**
  * g_irepository_find_by_gtype:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @gtype: GType to search for
  *
  * Searches all loaded namespaces for a particular #GType.  Note that
@@ -712,7 +712,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
 
 /**
  * g_irepository_find_by_name:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace which will be searched
  * @name: Entry name to find
  *
@@ -762,7 +762,7 @@ collect_namespaces (gpointer key,
 
 /**
  * g_irepository_get_loaded_namespaces:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  *
  * Return the list of currently loaded namespaces.
  *
@@ -791,7 +791,7 @@ g_irepository_get_loaded_namespaces (GIRepository *repository)
 
 /**
  * g_irepository_get_version:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace to inspect
  *
  * This function returns the loaded version associated with the given
@@ -823,7 +823,7 @@ g_irepository_get_version (GIRepository *repository,
 
 /**
  * g_irepository_get_shared_library:
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace to inspect
  *
  * This function returns the full path to the shared C library
@@ -860,7 +860,7 @@ g_irepository_get_shared_library (GIRepository *repository,
 
 /**
  * g_irepository_get_c_prefix
- * @repository: A #GIRepository, may be %NULL for the default
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace to inspect
  *
  * This function returns the "C prefix", or the C level namespace
@@ -896,7 +896,7 @@ g_irepository_get_c_prefix (GIRepository *repository,
 
 /**
  * g_irepository_get_typelib_path
- * @repository: Repository, may be %NULL for the default
+ * @repository: (allow-none): Repository, may be %NULL for the default
  * @namespace_: GI namespace to use, e.g. "Gtk"
  *
  * If namespace @namespace_ is loaded, return the full path to the
@@ -1337,7 +1337,7 @@ require_internal (GIRepository  *repository,
  * version @version of namespace may be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: (transfer full): a pointer to the #GITypelib if successful, %NULL otherwise
+ * Returns: (transfer none): a pointer to the #GITypelib if successful, %NULL otherwise
  */
 GITypelib *
 g_irepository_require (GIRepository  *repository,
@@ -1372,7 +1372,7 @@ g_irepository_require (GIRepository  *repository,
  * version @version of namespace should be specified.  If @version is
  * not specified, the latest will be used.
  *
- * Returns: (transfer full): a pointer to the #GITypelib if successful, %NULL otherwise
+ * Returns: (transfer none): a pointer to the #GITypelib if successful, %NULL otherwise
  */
 GITypelib *
 g_irepository_require_private (GIRepository  *repository,
