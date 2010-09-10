@@ -526,6 +526,8 @@ _g_uri_parse_authority (const char  *uri,
   /* If IPv6 or IPvFuture */
   if (*p == '[')
     {
+      start++;
+      p++;
       while (1)
 	{
 	  c = *p++;
@@ -623,6 +625,46 @@ error:
     }
 
   return FALSE;
+}
+
+gchar *
+_g_uri_from_authority (const gchar *protocol,
+                       const gchar *host,
+                       guint        port,
+                       const gchar *userinfo)
+{
+  GString *uri;
+
+  uri = g_string_new (protocol);
+  g_string_append (uri, "://");
+
+  if (userinfo)
+    {
+      g_string_append_uri_escaped (uri, userinfo, G_URI_RESERVED_CHARS_ALLOWED_IN_USERINFO, FALSE);
+      g_string_append_c (uri, '@');
+    }
+
+  if (g_hostname_is_non_ascii (host))
+    {
+      gchar *ace_encoded = g_hostname_to_ascii (host);
+
+      if (!ace_encoded)
+        {
+          g_string_free (uri, TRUE);
+          return NULL;
+        }
+      g_string_append (uri, ace_encoded);
+      g_free (ace_encoded);
+    }
+  else if (strchr (host, ':'))
+    g_string_append_printf (uri, "[%s]", host);
+  else
+    g_string_append (uri, host);
+
+  if (port != 0)
+    g_string_append_printf (uri, ":%u", port);
+
+  return g_string_free (uri, FALSE);
 }
 
 /**
@@ -920,9 +962,10 @@ g_network_address_connectable_proxy_enumerate (GSocketConnectable *connectable)
   GSocketAddressEnumerator *proxy_enum;
   gchar *uri;
 
-  uri = g_strdup_printf ("%s://%s:%u",
-      	                 self->priv->scheme ? self->priv->scheme : "none",
-                         self->priv->hostname, self->priv->port);
+  uri = _g_uri_from_authority (self->priv->scheme ? self->priv->scheme : "none",
+                               self->priv->hostname,
+                               self->priv->port,
+                               NULL);
 
   proxy_enum = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
                              "connectable", connectable,

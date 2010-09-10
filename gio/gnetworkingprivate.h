@@ -124,6 +124,10 @@ gboolean _g_uri_parse_authority            (const char       *uri,
 					    char            **host,
 					    guint16          *port,
 					    char            **userinfo);
+gchar *  _g_uri_from_authority             (const gchar      *protocol,
+					    const gchar      *host,
+					    guint             port,
+					    const gchar      *userinfo);
 
 G_END_DECLS
 

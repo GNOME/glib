@@ -31,6 +31,7 @@
 #include "ginetsocketaddress.h"
 #include "gioerror.h"
 #include "gnetworkaddress.h"
+#include "gnetworkingprivate.h"
 #include "gresolver.h"
 #include "gsimpleasyncresult.h"
 #include "gsocketaddressenumerator.h"
@@ -438,10 +439,10 @@ g_network_service_address_enumerator_next (GSocketAddressEnumerator  *enumerator
               continue;
             }
 
-          uri = g_strdup_printf ("%s://%s:%u",
-                                 g_network_service_get_scheme (srv_enum->srv),
-                                 hostname,
-                                 g_srv_target_get_port (target));
+          uri = _g_uri_from_authority (g_network_service_get_scheme (srv_enum->srv),
+                                       hostname,
+                                       g_srv_target_get_port (target),
+                                       NULL);
           g_free (hostname);
 
           addr = g_network_address_parse_uri (uri,

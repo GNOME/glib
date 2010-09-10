@@ -372,7 +372,7 @@ g_socket_address_connectable_proxy_enumerate (GSocketConnectable *connectable)
       g_object_get (connectable, "address", &addr, "port", &port, NULL);
 
       ip = g_inet_address_to_string (addr);
-      uri = g_strdup_printf ("none://%s:%u", ip, port);
+      uri = _g_uri_from_authority ("none", ip, port, NULL);
 
       addr_enum = g_object_new (G_TYPE_PROXY_ADDRESS_ENUMERATOR,
       	       	       	       	"connectable", connectable,
