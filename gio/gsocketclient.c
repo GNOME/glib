@@ -1068,6 +1068,22 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
     }
 }
 
+static void
+g_socket_client_socket_connected (GSocketClientAsyncConnectData *data)
+{
+  g_socket_set_blocking (data->current_socket, TRUE);
+
+  data->connection =
+    g_socket_connection_factory_create_connection (data->current_socket);
+  g_object_unref (data->current_socket);
+  data->current_socket = NULL;
+
+  if (data->proxy_addr)
+    g_socket_client_proxy_connect (data);
+  else
+    g_socket_client_async_connect_complete (data);
+}
+
 static gboolean
 g_socket_client_socket_callback (GSocket *socket,
 				 GIOCondition condition,
@@ -1103,18 +1119,7 @@ g_socket_client_socket_callback (GSocket *socket,
 	}
     }
 
-  g_socket_set_blocking (data->current_socket, TRUE);
-
-  data->connection =
-    g_socket_connection_factory_create_connection (data->current_socket);
-  g_object_unref (data->current_socket);
-  data->current_socket = NULL;
-
-  if (data->proxy_addr)
-    g_socket_client_proxy_connect (data);
-  else
-    g_socket_client_async_connect_complete (data);
-
+  g_socket_client_socket_connected (data);
   return FALSE;
 }
 
@@ -1164,7 +1169,7 @@ g_socket_client_enumerator_callback (GObject      *object,
       if (g_socket_connect (socket, address, data->cancellable, &tmp_error))
 	{
 	  data->current_socket = socket;
-	  g_socket_client_async_connect_complete (data);
+	  g_socket_client_socket_connected (data);
 
 	  g_object_unref (address);
 	  return;
