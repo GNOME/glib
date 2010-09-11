@@ -1,4 +1,3 @@
-# translation of glib.master.po to Indonesian
 # Indonesian translation of glib.
 # Copyright (C) 2005 THE glib's COPYRIGHT HOLDER
 # This file is distributed under the same license as the glib package.
@@ -11,8 +10,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-08-30 17:59+0000\n"
-"PO-Revision-Date: 2010-09-01 09:51+0700\n"
+"POT-Creation-Date: 2010-09-03 18:55+0000\n"
+"PO-Revision-Date: 2010-09-11 16:27+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: GNOME Indonesian Translation Team <gnome@i15n.org>\n"
 "MIME-Version: 1.0\n"
@@ -1664,25 +1663,21 @@ msgstr "Tak menemukan cookie dengan id %d dalam gantungan kunci pada '%s'"
 
 #: ../gio/gdbusauthmechanismsha1.c:535
 #, c-format
-#| msgid "Error deleting stale lock-file `%s': %s"
 msgid "Error deleting stale lock file `%s': %s"
 msgstr "Galat saat menghapus berkas kunci yang basi '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
 #, c-format
-#| msgid "Error creating lock-file `%s': %s"
 msgid "Error creating lock file `%s': %s"
 msgstr "Galat saat membuat berkas kunci '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
 #, c-format
-#| msgid "Error closing (unlinked) lock-file `%s': %s"
 msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr "Galat saat menutup berkas kunci (tak terkait) '%s': %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
 #, c-format
-#| msgid "Error unlinking lock-file `%s': %s"
 msgid "Error unlinking lock file `%s': %s"
 msgstr "Galat saat membuka kait berkas kunci '%s': %s"
 
@@ -1864,9 +1859,6 @@ msgstr "Nilai terurai '%s' bagi varian bukan tanda tangan D-Bus yang valid"
 
 #: ../gio/gdbusmessage.c:1406
 #, c-format
-#| msgid ""
-#| "Error deserializing GVariant with type-string `%s' from the D-Bus wire "
-#| "format"
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
@@ -1909,8 +1901,6 @@ msgstr "Tidak bisa men-deserialisasi pesan:"
 
 #: ../gio/gdbusmessage.c:2038
 #, c-format
-#| msgid ""
-#| "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
@@ -2895,6 +2885,8 @@ msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 msgstr ""
+"<key name='%s'> membayangi <key name='%s'> di <schema id='%s'>; gunakan "
+"<override> untuk mengubah nilai"
 
 #: ../gio/gschema-compile.c:885
 #, c-format
@@ -2917,17 +2909,17 @@ msgstr "string jenis GVariant '%s' tidak sah"
 
 #: ../gio/gschema-compile.c:949
 msgid "<override> given but schema isn't extending anything"
-msgstr ""
+msgstr "<override> diberikan tapi skema tak memperluas apapun"
 
 #: ../gio/gschema-compile.c:962
 #, c-format
 msgid "no <key name='%s'> to override"
-msgstr ""
+msgstr "tak ada <key name='%s'> untuk ditimpa"
 
 #: ../gio/gschema-compile.c:970
 #, c-format
 msgid "<override name='%s'> already specified"
-msgstr ""
+msgstr "<override name='%s'> telah dinyatakan"
 
 #: ../gio/gschema-compile.c:1036
 #, c-format
@@ -2937,18 +2929,19 @@ msgstr "<schema id='%s'> sudah ditentukan"
 #: ../gio/gschema-compile.c:1048
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> memperluas skema '%s' yang belum ada"
 
 #: ../gio/gschema-compile.c:1062
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> adalah daftar dari skema '%s' yang belum ada"
 
 #: ../gio/gschema-compile.c:1076
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
+"<schema id='%s'> adalah daftar, memperluas <schema id='%s'> yang bukan daftar"
 
 #: ../gio/gschema-compile.c:1086
 #, c-format
@@ -2956,6 +2949,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
+"<schema id='%s' list-of='%s'> memperluas <schema id='%s' list-of='%s'> tapi "
+"'%s' tak memperluas '%s'"
 
 #: ../gio/gschema-compile.c:1103
 #, c-format
@@ -2986,12 +2981,14 @@ msgstr "teks tidak boleh muncul di dalam <%s>"
 #: ../gio/gschema-compile.c:1651
 #, c-format
 msgid "No such schema `%s' specified in override file `%s'"
-msgstr ""
+msgstr "Tak ada skema '%s' yang dinyatakan dalam berkas penimpa '%s'"
 
 #: ../gio/gschema-compile.c:1675
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
+"Tak ada kunci '%s' dalam skema '%s' sebagaimana dinyatakan di berkas penimpa "
+"'%s'"
 
 #: ../gio/gschema-compile.c:1708
 #, c-format
@@ -2999,6 +2996,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
+"penimpa bagi kunci '%s' dalam skema '%s' di berkas penimpa '%s' di luar "
+"jangkauan yang diberikan di dalam skema"
 
 #: ../gio/gschema-compile.c:1729
 #, c-format
@@ -3006,6 +3005,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 msgstr ""
+"penimpa bagi kunci '%s' dalam skema '%s' di berkas penimpa '%s' tak ada di "
+"dalam daftar pilihan yang valid"
 
 #: ../gio/gschema-compile.c:1774
 msgid "where to store the gschemas.compiled file"
@@ -3276,7 +3277,6 @@ msgstr "Mencoba proksi melalui koneksi bukan TCP tidak didukung."
 
 #: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1061
 #, c-format
-#| msgid "Property `%s' is not readable"
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Protokol proksi '%s' tidak didukung."
 
@@ -3508,19 +3508,19 @@ msgstr "Galat saat menutup handle: %s"
 msgid "Error writing to handle: %s"
 msgstr "Galat saat menulis ke handle: %s"
 
-#: ../gio/gzlibcompressor.c:393 ../gio/gzlibdecompressor.c:346
+#: ../gio/gzlibcompressor.c:396 ../gio/gzlibdecompressor.c:349
 msgid "Not enough memory"
 msgstr "Tidak cukup memori"
 
-#: ../gio/gzlibcompressor.c:400 ../gio/gzlibdecompressor.c:353
+#: ../gio/gzlibcompressor.c:403 ../gio/gzlibdecompressor.c:356
 #, c-format
 msgid "Internal error: %s"
 msgstr "Galat internal: %s"
 
-#: ../gio/gzlibcompressor.c:413 ../gio/gzlibdecompressor.c:367
+#: ../gio/gzlibcompressor.c:416 ../gio/gzlibdecompressor.c:370
 msgid "Need more input"
 msgstr "Perlu masukan lagi"
 
-#: ../gio/gzlibdecompressor.c:339
+#: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Data terkompresi tak valid"
