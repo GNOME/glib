@@ -1081,7 +1081,7 @@ g_variant_is_signature (const gchar *string)
 /**
  * g_variant_get_string:
  * @value: a string #GVariant instance
- * @length: (allow-none) (default NULL): a pointer to a #gsize,
+ * @length: (allow-none) (default NULL) (out): a pointer to a #gsize,
  *          to store the length
  * @returns: the constant string, utf8 encoded
  *
