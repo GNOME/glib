@@ -249,14 +249,8 @@ g_settings_real_writable_change_event (GSettings *settings,
     keys = g_settings_schema_list (settings->priv->schema, &n_keys);
 
   for (i = 0; i < n_keys; i++)
-    {
-      const gchar *string = g_quark_to_string (keys[i]);
-
-      g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED],
-                     keys[i], string);
-      g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGED],
-                     keys[i], string);
-    }
+    g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGED],
+                   keys[i], g_quark_to_string (keys[i]));
 
   return FALSE;
 }
