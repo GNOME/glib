@@ -37,6 +37,7 @@
 #include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
 #include "ginputstream.h"
+#include "gmemoryinputstream.h"
 #include "giostream.h"
 #include "gsocketcontrolmessage.h"
 #include "gsocketconnection.h"

@@ -36,6 +36,9 @@
 #include "gstring.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
+#ifndef __STDC_ISO_10646__
+#include "gconvert.h"
+#endif
 
 
 #ifdef _MSC_VER

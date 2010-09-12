@@ -35,6 +35,9 @@
 #include "gmirroringtable.h"
 #include "gscripttable.h"
 #include "gunicodeprivate.h"
+#ifdef G_OS_WIN32
+#include "gwin32.h"
+#endif
 
 #define ATTR_TABLE(Page) (((Page) <= G_UNICODE_LAST_PAGE_PART1) \
                           ? attr_table_part1[Page] \
