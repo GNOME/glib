@@ -189,187 +189,187 @@ msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #: ../glib/gdatetime.c:162
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "January"
 msgstr "Janeiro"
 
 #: ../glib/gdatetime.c:164
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "February"
 msgstr "Fevereiro"
 
 #: ../glib/gdatetime.c:166
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "March"
 msgstr "Março"
 
 #: ../glib/gdatetime.c:168
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "April"
 msgstr "Abril"
 
 #: ../glib/gdatetime.c:170 ../glib/gdatetime.c:207
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "May"
 msgstr "Maio"
 
 #: ../glib/gdatetime.c:172
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "June"
 msgstr "Junho"
 
 #: ../glib/gdatetime.c:174
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "July"
 msgstr "Julho"
 
 #: ../glib/gdatetime.c:176
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "August"
 msgstr "Agosto"
 
 #: ../glib/gdatetime.c:178
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "September"
 msgstr "Setembro"
 
 #: ../glib/gdatetime.c:180
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "October"
 msgstr "Outubro"
 
 #: ../glib/gdatetime.c:182
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "November"
 msgstr "Novembro"
 
 #: ../glib/gdatetime.c:184
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "December"
 msgstr "Dezembro"
 
 #: ../glib/gdatetime.c:199
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
 #: ../glib/gdatetime.c:201
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Fev"
 
 #: ../glib/gdatetime.c:203
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
 #: ../glib/gdatetime.c:205
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Abr"
 
 #: ../glib/gdatetime.c:209
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
 #: ../glib/gdatetime.c:211
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
 #: ../glib/gdatetime.c:213
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ago"
 
 #: ../glib/gdatetime.c:215
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Set"
 
 #: ../glib/gdatetime.c:217
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Out"
 
 #: ../glib/gdatetime.c:219
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
 #: ../glib/gdatetime.c:221
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dez"
 
 #: ../glib/gdatetime.c:236
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Monday"
 msgstr "2ª Feira"
 
 #: ../glib/gdatetime.c:238
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "3ª Feira"
 
 #: ../glib/gdatetime.c:240
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "4ª Feira"
 
 #: ../glib/gdatetime.c:242
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "5ª Feira"
 
 #: ../glib/gdatetime.c:244
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Friday"
 msgstr "6ª Feira"
 
 #: ../glib/gdatetime.c:246
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sábado"
 
 #: ../glib/gdatetime.c:248
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Domingo"
 
 #: ../glib/gdatetime.c:263
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "2ª"
 
 #: ../glib/gdatetime.c:265
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "3ª"
 
 #: ../glib/gdatetime.c:267
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "4ª"
 
 #: ../glib/gdatetime.c:269
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "5ª"
 
 #: ../glib/gdatetime.c:271
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "6ª"
 
 #: ../glib/gdatetime.c:273
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sáb"
 
 #: ../glib/gdatetime.c:275
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Dom"
 

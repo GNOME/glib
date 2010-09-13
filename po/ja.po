@@ -207,187 +207,187 @@ msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #: ../glib/gdatetime.c:162
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "January"
 msgstr "1月"
 
 #: ../glib/gdatetime.c:164
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "February"
 msgstr "2月"
 
 #: ../glib/gdatetime.c:166
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "March"
 msgstr "3月"
 
 #: ../glib/gdatetime.c:168
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "April"
 msgstr "4月"
 
 #: ../glib/gdatetime.c:170 ../glib/gdatetime.c:207
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "May"
 msgstr "5月"
 
 #: ../glib/gdatetime.c:172
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "June"
 msgstr "6月"
 
 #: ../glib/gdatetime.c:174
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "July"
 msgstr "7月"
 
 #: ../glib/gdatetime.c:176
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "August"
 msgstr "8月"
 
 #: ../glib/gdatetime.c:178
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "September"
 msgstr "9月"
 
 #: ../glib/gdatetime.c:180
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "October"
 msgstr "10月"
 
 #: ../glib/gdatetime.c:182
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "November"
 msgstr "11月"
 
 #: ../glib/gdatetime.c:184
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "December"
 msgstr "12月"
 
 #: ../glib/gdatetime.c:199
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr " 1月"
 
 #: ../glib/gdatetime.c:201
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr " 2月"
 
 #: ../glib/gdatetime.c:203
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr " 3月"
 
 #: ../glib/gdatetime.c:205
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr " 4月"
 
 #: ../glib/gdatetime.c:209
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr " 6月"
 
 #: ../glib/gdatetime.c:211
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr " 7月"
 
 #: ../glib/gdatetime.c:213
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr " 8月"
 
 #: ../glib/gdatetime.c:215
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr " 9月"
 
 #: ../glib/gdatetime.c:217
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "10月"
 
 #: ../glib/gdatetime.c:219
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "11月"
 
 #: ../glib/gdatetime.c:221
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "12月"
 
 #: ../glib/gdatetime.c:236
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Monday"
 msgstr "月曜日"
 
 #: ../glib/gdatetime.c:238
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "火曜日"
 
 #: ../glib/gdatetime.c:240
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "水曜日"
 
 #: ../glib/gdatetime.c:242
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "木曜日"
 
 #: ../glib/gdatetime.c:244
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Friday"
 msgstr "金曜日"
 
 #: ../glib/gdatetime.c:246
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "土曜日"
 
 #: ../glib/gdatetime.c:248
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "日曜日"
 
 #: ../glib/gdatetime.c:263
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "月"
 
 #: ../glib/gdatetime.c:265
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "火"
 
 #: ../glib/gdatetime.c:267
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "水"
 
 #: ../glib/gdatetime.c:269
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "木"
 
 #: ../glib/gdatetime.c:271
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "金"
 
 #: ../glib/gdatetime.c:273
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "土"
 
 #: ../glib/gdatetime.c:275
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "日"
 

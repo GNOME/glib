@@ -101,8 +101,14 @@
 #define DAYS_PER_PERIOD      (G_GINT64_CONSTANT (2914695))
 
 #define GET_AMPM(d,l)         ((g_date_time_get_hour (d) < 12)  \
-                                ? (l ? C_("GDateTime", "am") : C_("GDateTime", "AM"))       \
-                                : (l ? C_("GDateTime", "pm") : C_("GDateTime", "PM")))
+                                       /* Translators: 'before midday' indicator */ \
+                                ? (l ? C_("GDateTime", "am") \
+                                       /* Translators: 'before midday' indicator */ \
+                                     : C_("GDateTime", "AM")) \
+                                  /* Translators: 'after midday' indicator */ \
+                                : (l ? C_("GDateTime", "pm") \
+                                  /* Translators: 'after midday' indicator */ \
+                                     : C_("GDateTime", "PM")))
 
 #define WEEKDAY_ABBR(d)       (get_weekday_name_abbr (g_date_time_get_day_of_week (datetime)))
 #define WEEKDAY_FULL(d)       (get_weekday_name (g_date_time_get_day_of_week (datetime)))
@@ -159,29 +165,29 @@ get_month_name (gint month)
   switch (month)
     {
     case 1:
-      return C_("GDateTime", "January");
+      return C_("full month name", "January");
     case 2:
-      return C_("GDateTime", "February");
+      return C_("full month name", "February");
     case 3:
-      return C_("GDateTime", "March");
+      return C_("full month name", "March");
     case 4:
-      return C_("GDateTime", "April");
+      return C_("full month name", "April");
     case 5:
-      return C_("GDateTime", "May");
+      return C_("full month name", "May");
     case 6:
-      return C_("GDateTime", "June");
+      return C_("full month name", "June");
     case 7:
-      return C_("GDateTime", "July");
+      return C_("full month name", "July");
     case 8:
-      return C_("GDateTime", "August");
+      return C_("full month name", "August");
     case 9:
-      return C_("GDateTime", "September");
+      return C_("full month name", "September");
     case 10:
-      return C_("GDateTime", "October");
+      return C_("full month name", "October");
     case 11:
-      return C_("GDateTime", "November");
+      return C_("full month name", "November");
     case 12:
-      return C_("GDateTime", "December");
+      return C_("full month name", "December");
 
     default:
       g_warning ("Invalid month number %d", month);
@@ -196,29 +202,29 @@ get_month_name_abbr (gint month)
   switch (month)
     {
     case 1:
-      return C_("GDateTime", "Jan");
+      return C_("abbreviated month name", "Jan");
     case 2:
-      return C_("GDateTime", "Feb");
+      return C_("abbreviated month name", "Feb");
     case 3:
-      return C_("GDateTime", "Mar");
+      return C_("abbreviated month name", "Mar");
     case 4:
-      return C_("GDateTime", "Apr");
+      return C_("abbreviated month name", "Apr");
     case 5:
-      return C_("GDateTime", "May");
+      return C_("abbreviated month name", "May");
     case 6:
-      return C_("GDateTime", "Jun");
+      return C_("abbreviated month name", "Jun");
     case 7:
-      return C_("GDateTime", "Jul");
+      return C_("abbreviated month name", "Jul");
     case 8:
-      return C_("GDateTime", "Aug");
+      return C_("abbreviated month name", "Aug");
     case 9:
-      return C_("GDateTime", "Sep");
+      return C_("abbreviated month name", "Sep");
     case 10:
-      return C_("GDateTime", "Oct");
+      return C_("abbreviated month name", "Oct");
     case 11:
-      return C_("GDateTime", "Nov");
+      return C_("abbreviated month name", "Nov");
     case 12:
-      return C_("GDateTime", "Dec");
+      return C_("abbreviated month name", "Dec");
 
     default:
       g_warning ("Invalid month number %d", month);
@@ -233,19 +239,19 @@ get_weekday_name (gint day)
   switch (day)
     {
     case 1:
-      return C_("GDateTime", "Monday");
+      return C_("full weekday name", "Monday");
     case 2:
-      return C_("GDateTime", "Tuesday");
+      return C_("full weekday name", "Tuesday");
     case 3:
-      return C_("GDateTime", "Wednesday");
+      return C_("full weekday name", "Wednesday");
     case 4:
-      return C_("GDateTime", "Thursday");
+      return C_("full weekday name", "Thursday");
     case 5:
-      return C_("GDateTime", "Friday");
+      return C_("full weekday name", "Friday");
     case 6:
-      return C_("GDateTime", "Saturday");
+      return C_("full weekday name", "Saturday");
     case 7:
-      return C_("GDateTime", "Sunday");
+      return C_("full weekday name", "Sunday");
 
     default:
       g_warning ("Invalid week day number %d", day);
@@ -260,19 +266,19 @@ get_weekday_name_abbr (gint day)
   switch (day)
     {
     case 1:
-      return C_("GDateTime", "Mon");
+      return C_("abbreviated weekday name", "Mon");
     case 2:
-      return C_("GDateTime", "Tue");
+      return C_("abbreviated weekday name", "Tue");
     case 3:
-      return C_("GDateTime", "Wed");
+      return C_("abbreviated weekday name", "Wed");
     case 4:
-      return C_("GDateTime", "Thu");
+      return C_("abbreviated weekday name", "Thu");
     case 5:
-      return C_("GDateTime", "Fri");
+      return C_("abbreviated weekday name", "Fri");
     case 6:
-      return C_("GDateTime", "Sat");
+      return C_("abbreviated weekday name", "Sat");
     case 7:
-      return C_("GDateTime", "Sun");
+      return C_("abbreviated weekday name", "Sun");
 
     default:
       g_warning ("Invalid week day number %d", day);

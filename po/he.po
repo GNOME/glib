@@ -196,187 +196,187 @@ msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #: ../glib/gdatetime.c:158
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "January"
 msgstr "ינואר"
 
 #: ../glib/gdatetime.c:160
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "February"
 msgstr "פברואר"
 
 #: ../glib/gdatetime.c:162
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "March"
 msgstr "מרץ"
 
 #: ../glib/gdatetime.c:164
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "April"
 msgstr "אפריל"
 
 #: ../glib/gdatetime.c:166 ../glib/gdatetime.c:203
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "May"
 msgstr "מאי"
 
 #: ../glib/gdatetime.c:168
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "June"
 msgstr "יוני"
 
 #: ../glib/gdatetime.c:170
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "July"
 msgstr "יולי"
 
 #: ../glib/gdatetime.c:172
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "August"
 msgstr "אוגוסט"
 
 #: ../glib/gdatetime.c:174
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "September"
 msgstr "ספטמבר"
 
 #: ../glib/gdatetime.c:176
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "October"
 msgstr "אוקטובר"
 
 #: ../glib/gdatetime.c:178
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "November"
 msgstr "נובמבר"
 
 #: ../glib/gdatetime.c:180
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "December"
 msgstr "דצמבר"
 
 #: ../glib/gdatetime.c:195
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "ינו"
 
 #: ../glib/gdatetime.c:197
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "פבר"
 
 #: ../glib/gdatetime.c:199
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "מרץ"
 
 #: ../glib/gdatetime.c:201
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "אפר"
 
 #: ../glib/gdatetime.c:205
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "יונ"
 
 #: ../glib/gdatetime.c:207
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "יול"
 
 #: ../glib/gdatetime.c:209
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "אוג"
 
 #: ../glib/gdatetime.c:211
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "ספט"
 
 #: ../glib/gdatetime.c:213
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "אוק"
 
 #: ../glib/gdatetime.c:215
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "נוב"
 
 #: ../glib/gdatetime.c:217
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "דצמ"
 
 #: ../glib/gdatetime.c:232
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Monday"
 msgstr "יום שני"
 
 #: ../glib/gdatetime.c:234
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "יום שלישי"
 
 #: ../glib/gdatetime.c:236
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "יום רביעי"
 
 #: ../glib/gdatetime.c:238
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "יום חמישי"
 
 #: ../glib/gdatetime.c:240
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Friday"
 msgstr "יום שישי"
 
 #: ../glib/gdatetime.c:242
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "שבת"
 
 #: ../glib/gdatetime.c:244
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "יום ראשון"
 
 #: ../glib/gdatetime.c:259
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "ב׳"
 
 #: ../glib/gdatetime.c:261
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "ג׳"
 
 #: ../glib/gdatetime.c:263
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "ד׳"
 
 #: ../glib/gdatetime.c:265
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "ה"
 
 #: ../glib/gdatetime.c:267
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "ו׳"
 
 #: ../glib/gdatetime.c:269
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "ש׳"
 
 #: ../glib/gdatetime.c:271
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "א׳"
 
