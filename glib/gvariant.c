@@ -3056,7 +3056,7 @@ g_variant_make_array_type (GVariant *element)
 /**
  * g_variant_builder_end:
  * @builder: a #GVariantBuilder
- * @returns: a new, floating, #GVariant
+ * @returns: (transfer none): a new, floating, #GVariant
  *
  * Ends the builder process and returns the constructed value.
  *
