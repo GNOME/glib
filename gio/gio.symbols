@@ -1558,6 +1558,11 @@ g_settings_sync
 g_settings_list_keys
 g_settings_list_children
 g_settings_get_mapped
+g_settings_add_child
+g_settings_can_add_child
+g_settings_can_remove_child
+g_settings_remove_child
+g_settings_get_destroyed
 #endif
 #endif
 

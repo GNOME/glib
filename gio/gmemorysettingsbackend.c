@@ -32,11 +32,42 @@
                                          G_TYPE_MEMORY_SETTINGS_BACKEND,     \
                                          GMemorySettingsBackend))
 
+typedef struct
+{
+  GHashTable/*<string, GVariant>*/                     *values;
+  GHashTable/*<string, GHashTable<string, TablePair>*/ *lists;
+} TablePair;
+
+static void
+table_pair_free (gpointer data)
+{
+  TablePair *pair = data;
+
+  g_hash_table_unref (pair->values);
+  g_hash_table_unref (pair->list);
+}
+
+static TablePair *
+table_pair_new (void)
+{
+  TablePair *pair;
+
+  pair = g_slice_new (TablePair);
+  pair->values = g_hash_table_new (g_str_hash, g_str_equal, g_free,
+                                   (GDestroyNotify) g_variant_unref);
+  pair->lists = g_hash_table_new (g_str_hash, g_str_equal, g_free,
+                                  (GDestroyNotify) g_hash_table_unref);
+
+  return pair;
+}
+
+
+
 typedef GSettingsBackendClass GMemorySettingsBackendClass;
 typedef struct
 {
   GSettingsBackend parent_instance;
-  GHashTable *table;
+  TablePair *root;
 } GMemorySettingsBackend;
 
 G_DEFINE_TYPE_WITH_CODE (GMemorySettingsBackend,
@@ -44,6 +75,90 @@ G_DEFINE_TYPE_WITH_CODE (GMemorySettingsBackend,
                          G_TYPE_SETTINGS_BACKEND,
                          g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
                                                          g_define_type_id, "memory", 10))
+
+static GHashTable *
+g_memory_settings_backend_get_table (GHashTable   *table,
+                                     const gchar **key_ptr)
+{
+  const gchar *key = *key_ptr;
+  gchar *prefix;
+  gchar *name;
+  gint i, j;
+
+  for (i = 2; key[i - 2] != ':' || key[i - 1] != '/'; i++)
+    if (key[i - 2] == '\0')
+      /* no :/ in the string -- pass through */
+      return table;
+
+  for (j = i + 1; key[j - 1] != '/'; j++)
+    if (key[j - 1] == '\0')
+      /* string of form /some/path:/child -- definitely invalid */
+      return NULL;
+
+  /* We now have this situation:
+   *
+   *   /some/path:/child/item
+   *   ^0          ^i    ^j
+   *
+   * So we can split the string into 3 parts:
+   *
+   *   prefix   = /some/path:/
+   *   child    = child/
+   *   *key_ptr = item
+   */
+  prefix = g_strndup (key, i);
+  name = g_strndup (key + i, j - i);
+
+  /* name is either like 'foo' or ':foo'
+   *
+   * If it doesn't start with a colon, it's in the schema.
+   */
+  if (name[0] == ':')
+    {
+      table = g_hash_table_lookup (table, prefix);
+      if (table)
+        table = g_hash_table_lookup (table, name);
+    }
+  else
+    {
+      gpointer value;
+
+      if (!g_hash_table_lookup_extended (table, prefix, NULL, &value))
+        g_hash_table_insert (table, prefix,
+                             value = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                            g_free, g_hash_table_unref));
+
+      table = value;
+
+      if (!g_hash_table_lookup_extended (table, prefix, NULL, &value))
+        g_hash_table_insert (table, prefix,
+                             value = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                                            g_free, g_hash_table_unref));
+    }
+
+    if (key[i] == ':' && key[i + 1] == '/')
+      {
+        gchar *prefix;
+        gchar *name;
+        gint j;
+
+        i += 2;
+
+        for (j = i; (*key)[j] != '/'; j++)
+          /* found a path of the form /a:/b
+           * which is never a valid spot for a key.
+           */
+          if ((*key)[j] == '\0')
+            return NULL;
+
+        name = g_strndup (*key + i, j - i);
+        prefix = g_strndup (*key, i);
+        table = g_hash_table_lookup (table, prefix);
+        g_free (prefix);
+      }
+
+  return table;
+}
 
 static GVariant *
 g_memory_settings_backend_read (GSettingsBackend   *backend,

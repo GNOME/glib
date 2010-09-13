@@ -41,10 +41,22 @@ typedef struct
                                   const gchar         *prefix,
                                   const gchar * const *names,
                                   gpointer             origin_tag);
+
   void (* writable_changed)      (GObject             *target,
                                   GSettingsBackend    *backend,
                                   const gchar         *key);
   void (* path_writable_changed) (GObject             *target,
+                                  GSettingsBackend    *backend,
+                                  const gchar         *path);
+
+  void (* children_changed)      (GObject             *target,
+                                  GSettingsBackend    *backend,
+                                  const gchar         *path,
+                                  gpointer             origin_tag);
+  void (* can_add_changed)       (GObject             *target,
+                                  GSettingsBackend    *backend,
+                                  const gchar         *path);
+  void (* can_remove_changed)    (GObject             *target,
                                   GSettingsBackend    *backend,
                                   const gchar         *path);
 } GSettingsListenerVTable;
@@ -91,6 +103,28 @@ void                    g_settings_backend_subscribe                    (GSettin
 G_GNUC_INTERNAL
 GPermission *           g_settings_backend_get_permission               (GSettingsBackend               *backend,
                                                                          const gchar                    *path);
+
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_check                        (GSettingsBackend               *backend,
+                                                                         const gchar                    *path);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_insert                       (GSettingsBackend               *backend,
+                                                                         const gchar                    *path,
+                                                                         gint                            index,
+                                                                         const gchar                    *prefix,
+                                                                         gchar                         **name);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_remove                       (GSettingsBackend               *backend,
+                                                                         const gchar                    *path,
+                                                                         const gchar                    *id);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_can_insert                   (GSettingsBackend               *backend,
+                                                                         const gchar                    *path);
+G_GNUC_INTERNAL
+gboolean                g_settings_backend_can_remove                   (GSettingsBackend               *backend,
+                                                                         const gchar                    *path,
+                                                                         const gchar                    *id);
+
 G_GNUC_INTERNAL
 GMainContext *          g_settings_backend_get_active_context           (void);
 G_GNUC_INTERNAL

@@ -58,7 +58,10 @@ struct _GSettingsClass
                                         const GQuark *keys,
                                         gint          n_keys);
 
-  gpointer padding[20];
+  void        (*can_remove_changed)    (GSettings    *settings);
+  void        (*children_changed)      (GSettings    *settings);
+
+  gpointer padding[18];
 };
 
 struct _GSettings
@@ -79,11 +82,6 @@ GSettings *             g_settings_new_with_backend                     (const g
 GSettings *             g_settings_new_with_backend_and_path            (const gchar        *schema,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
-gchar **                g_settings_list_children                        (GSettings          *settings);
-gchar **                g_settings_list_keys                            (GSettings          *settings);
-
-gboolean                g_settings_get_destroyed                        (GSettings          *settings);
-GPermission *           g_settings_get_permission                       (GSettings          *settings);
 
 gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,
@@ -255,6 +253,23 @@ gpointer                g_settings_get_mapped                           (GSettin
                                                                          const gchar             *key,
                                                                          GSettingsGetMapping      mapping,
                                                                          gpointer                 user_data);
+
+gchar **                g_settings_list_children                        (GSettings               *settings);
+gchar **                g_settings_list_keys                            (GSettings               *settings);
+
+gboolean                g_settings_can_add_child                        (GSettings               *settings);
+
+gboolean                g_settings_can_remove_child                     (GSettings               *settings,
+                                                                         const gchar             *id);
+
+gboolean                g_settings_add_child                            (GSettings               *settings,
+                                                                         const gchar             *prefix,
+                                                                         gchar                  **name);
+
+gboolean                g_settings_remove_child                         (GSettings               *settings,
+                                                                         const gchar             *id);
+
+gboolean                g_settings_get_destroyed                        (GSettings               *settings);
 
 G_END_DECLS
 

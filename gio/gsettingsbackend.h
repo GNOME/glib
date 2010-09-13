@@ -96,16 +96,23 @@ struct _GSettingsBackendClass
   gchar **      (*list)             (GSettingsBackend    *backend,
                                      const gchar         *path,
                                      const gchar * const *schema_items);
-  gchar *       (*add)              (GSettingsBackend    *backend,
-                                     const gchar         *path,
-                                     const gchar         *hint);
-  gboolean      (*remove)           (GSettingsBackend    *backend,
-                                     const gchar         *path,
-                                     const gchar         *name);
   gboolean      (*check)            (GSettingsBackend    *backend,
                                      const gchar         *path);
+  gboolean      (*can_insert)       (GSettingsBackend    *backend,
+                                     const gchar         *path);
+  gboolean      (*can_remove)       (GSettingsBackend    *backend,
+                                     const gchar         *path,
+                                     const gchar         *id);
+  gboolean      (*insert)           (GSettingsBackend    *backend,
+                                     const gchar         *path,
+                                     gint                 index_,
+                                     const gchar         *prefix,
+                                     gchar              **name);
+  gboolean      (*remove)           (GSettingsBackend    *backend,
+                                     const gchar         *path,
+                                     const gchar         *id);
 
-  gpointer padding[20];
+  gpointer padding[18];
 };
 
 struct _GSettingsBackend

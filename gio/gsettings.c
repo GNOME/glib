@@ -195,6 +195,7 @@ struct _GSettingsPrivate
   gchar *path;
 
   GDelayedSettingsBackend *delayed;
+  gboolean destroyed;
 };
 
 enum
@@ -465,6 +466,10 @@ g_settings_constructed (GObject *object)
                             settings->priv->main_context);
   g_settings_backend_subscribe (settings->priv->backend,
                                 settings->priv->path);
+
+  settings->priv->destroyed =
+    !g_settings_backend_check (settings->priv->backend,
+                               settings->priv->path);
 }
 
 static void
@@ -1975,7 +1980,7 @@ g_settings_get_has_unapplied (GSettings *settings)
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
 
-/* Extra API (reset, sync, get_child, is_writable, list_*) {{{1 */
+/* Extra API (reset, sync, get_child, is_writable) {{{1 */
 /**
  * g_settings_reset:
  * @settings: a #GSettings object
@@ -2087,95 +2092,6 @@ g_settings_get_child (GSettings   *settings,
   g_free (child_name);
 
   return child;
-}
-
-/**
- * g_settings_list_keys:
- * @settings: a #GSettings object
- * @returns: a list of the keys on @settings
- *
- * Introspects the list of keys on @settings.
- *
- * You should probably not be calling this function from "normal" code
- * (since you should already know what keys are in your schema).  This
- * function is intended for introspection reasons.
- *
- * You should free the return value with g_strfreev() when you are done
- * with it.
- */
-gchar **
-g_settings_list_keys (GSettings *settings)
-{
-  const GQuark *keys;
-  gchar **strv;
-  gint n_keys;
-  gint i, j;
-
-  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
-  strv = g_new (gchar *, n_keys + 1);
-  for (i = j = 0; i < n_keys; i++)
-    {
-      const gchar *key = g_quark_to_string (keys[i]);
-
-      if (!g_str_has_suffix (key, "/"))
-        strv[j++] = g_strdup (key);
-    }
-  strv[j] = NULL;
-
-  return strv;
-}
-
-/**
- * g_settings_list_children:
- * @settings: a #GSettings object
- * @returns: a list of the children on @settings
- *
- * Gets the list of children on @settings.
- *
- * The list is exactly the list of strings for which it is not an error
- * to call g_settings_get_child().
- *
- * For GSettings objects that are lists, this value can change at any
- * time and you should connect to the "children-changed" signal to watch
- * for those changes.  Note that there is a race condition here: you may
- * request a child after listing it only for it to have been destroyed
- * in the meantime.  For this reason, g_settings_get_chuld() may return
- * %NULL even for a child that was listed by this function.
- *
- * For GSettings objects that are not lists, you should probably not be
- * calling this function from "normal" code (since you should already
- * know what children are in your schema).  This function may still be
- * useful there for introspection reasons, however.
- *
- * You should free the return value with g_strfreev() when you are done
- * with it.
- */
-gchar **
-g_settings_list_children (GSettings *settings)
-{
-  const GQuark *keys;
-  gchar **strv;
-  gint n_keys;
-  gint i, j;
-
-  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
-  strv = g_new (gchar *, n_keys + 1);
-  for (i = j = 0; i < n_keys; i++)
-    {
-      const gchar *key = g_quark_to_string (keys[i]);
-
-      if (g_str_has_suffix (key, "/"))
-        {
-          gint length = strlen (key);
-
-          strv[j] = g_memdup (key, length);
-          strv[j][length - 1] = '\0';
-          j++;
-        }
-    }
-  strv[j] = NULL;
-
-  return strv;
 }
 
 /* Binding {{{1 */
@@ -2734,6 +2650,219 @@ g_settings_unbind (gpointer     object,
 
   binding_quark = g_settings_binding_quark (property);
   g_object_set_qdata (object, binding_quark, NULL);
+}
+
+/* Children (add, remove, can_{add,remove}, list, get_destroyed) {{{1 */
+
+/**
+ * g_settings_add_child:
+ * @settings: a list #GSettings
+ * @prefix: the prefix of the new child name
+ * @name: return location for the new child name
+ * @returns: %TRUE if the child was added
+ *
+ * Adds a child to a list.
+ *
+ * The child will be created with a new unique name that starts with
+ * @prefix.  For example, if @prefix is "item" then the child's name may
+ * end up looking like "item0", "item1", or so on.  No particular format
+ * is specified -- only that the resulting name will have the given
+ * prefix.
+ *
+ * If the creation was successful then @name (if non-%NULL) is set to
+ * the name of the new child and %TRUE is returned.
+ *
+ * If the creation fails then %FALSE is returned and @name is untouched.
+ **/
+gboolean
+g_settings_add_child (GSettings    *settings,
+                      const gchar  *prefix,
+                      gchar       **name)
+{
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+  g_return_val_if_fail (prefix != NULL, FALSE);
+
+  return g_settings_backend_insert (settings->priv->backend,
+                                    settings->priv->path,
+                                    -1, prefix, name);
+}
+
+/**
+ * g_settings_remove_child:
+ * @settings: a list #GSettings
+ * @id: the id of the child to remove
+ * @returns: %TRUE if the child was successfully removed
+ *
+ * Removes a child from the list.
+ *
+ * In the case that the removal was successful then %TRUE is returned.
+ * In the case that it failed, %FALSE is returned.
+ *
+ * The return value of this function is not particularly useful, since
+ * it is not specified if the non-operation resulting from the request
+ * to remove a non-existent child is considered to be a success (and
+ * this situation can easily arise as a race condition).  Most usually
+ * you will actually probably want to ignore the return value here and
+ * just monitor the "children-changed" signal and make changes to your
+ * user interface accordingly.
+ **/
+gboolean
+g_settings_remove_child (GSettings   *settings,
+                         const gchar *id)
+{
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+  g_return_val_if_fail (id != NULL, FALSE);
+
+  return g_settings_backend_remove (settings->priv->backend,
+                                    settings->priv->path,
+                                    id);
+}
+
+/**
+ * g_settings_can_add_child:
+ * @settings: a #GSettings object
+ * @returns: %TRUE if a call to g_settings_add_child() would succeed
+ *
+ * Checks if it is valid to add children to @settings.
+ **/
+gboolean
+g_settings_can_add_child (GSettings *settings)
+{
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
+  return g_settings_backend_can_insert (settings->priv->backend,
+                                        settings->priv->path);
+}
+
+/**
+ * g_settings_can_remove_child:
+ * @settings: a #GSettings object
+ * @id: the identifier of an existing child
+ * @returns: %TRUE if a call to g_settings_remove_child() would succeed
+ *
+ * Checks if it is valid to remove @id from @settings.
+ *
+ * The return value of this function is unspecified for the case that
+ * @id does not exist.
+ **/
+gboolean
+g_settings_can_remove_child (GSettings   *settings,
+                             const gchar *id)
+{
+  g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
+
+  return g_settings_backend_can_remove (settings->priv->backend,
+                                        settings->priv->path, id);
+}
+
+/**
+ * g_settings_get_destroyed:
+ * @settings: a #GSettings
+ * @returns: %TRUE if @settings has been destroyed
+ *
+ * Checks if @settings has been destroyed.
+ *
+ * If @settings is a member of a list (or a child thereof) and has since
+ * been removed from the list then it will be considered as having been
+ * destroyed.  The "notify" signal will be emitted on the "destroyed"
+ * property and this function will return %TRUE thereafter.
+ *
+ * A destroyed #GSettings object is never revived and nearly all
+ * operations performed on it will be meaningless.
+ **/
+gboolean
+g_settings_get_destroyed (GSettings *settings)
+{
+  return settings->priv->destroyed;
+}
+
+/**
+ * g_settings_list_keys:
+ * @settings: a #GSettings object
+ * @returns: a list of the keys on @settings
+ *
+ * Introspects the list of keys on @settings.
+ *
+ * You should probably not be calling this function from "normal" code
+ * (since you should already know what keys are in your schema).  This
+ * function is intended for introspection reasons.
+ *
+ * You should free the return value with g_strfreev() when you are done
+ * with it.
+ */
+gchar **
+g_settings_list_keys (GSettings *settings)
+{
+  const GQuark *keys;
+  gchar **strv;
+  gint n_keys;
+  gint i, j;
+
+  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+  strv = g_new (gchar *, n_keys + 1);
+  for (i = j = 0; i < n_keys; i++)
+    {
+      const gchar *key = g_quark_to_string (keys[i]);
+
+      if (!g_str_has_suffix (key, "/"))
+        strv[j++] = g_strdup (key);
+    }
+  strv[j] = NULL;
+
+  return strv;
+}
+
+/**
+ * g_settings_list_children:
+ * @settings: a #GSettings object
+ * @returns: a list of the children on @settings
+ *
+ * Gets the list of children on @settings.
+ *
+ * The list is exactly the list of strings for which it is not an error
+ * to call g_settings_get_child().
+ *
+ * For GSettings objects that are lists, this value can change at any
+ * time and you should connect to the "children-changed" signal to watch
+ * for those changes.  Note that there is a race condition here: you may
+ * request a child after listing it only for it to have been destroyed
+ * in the meantime.  For this reason, g_settings_get_chuld() may return
+ * %NULL even for a child that was listed by this function.
+ *
+ * For GSettings objects that are not lists, you should probably not be
+ * calling this function from "normal" code (since you should already
+ * know what children are in your schema).  This function may still be
+ * useful there for introspection reasons, however.
+ *
+ * You should free the return value with g_strfreev() when you are done
+ * with it.
+ */
+gchar **
+g_settings_list_children (GSettings *settings)
+{
+  const GQuark *keys;
+  gchar **strv;
+  gint n_keys;
+  gint i, j;
+
+  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+  strv = g_new (gchar *, n_keys + 1);
+  for (i = j = 0; i < n_keys; i++)
+    {
+      const gchar *key = g_quark_to_string (keys[i]);
+
+      if (g_str_has_suffix (key, "/"))
+        {
+          gint length = strlen (key);
+
+          strv[j] = g_memdup (key, length);
+          strv[j][length - 1] = '\0';
+          j++;
+        }
+    }
+  strv[j] = NULL;
+
+  return strv;
 }
 
 /* Epilogue {{{1 */

@@ -1050,3 +1050,48 @@ g_settings_backend_sync_default (void)
   if (class->sync)
     class->sync (backend);
 }
+
+gboolean
+g_settings_backend_can_insert (GSettingsBackend *backend,
+                               const gchar      *path)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->can_insert (backend, path);
+}
+
+gboolean
+g_settings_backend_can_remove (GSettingsBackend *backend,
+                               const gchar      *path,
+                               const gchar      *id)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->can_remove (backend, path, id);
+}
+
+gboolean
+g_settings_backend_insert (GSettingsBackend  *backend,
+                           const gchar       *path,
+                           gint               index_,
+                           const gchar       *prefix,
+                           gchar            **name)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->insert (backend, path, index_, prefix, name);
+}
+
+gboolean
+g_settings_backend_remove (GSettingsBackend *backend,
+                           const gchar      *path,
+                           const gchar      *id)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->remove (backend, path, id);
+}
+
+gboolean
+g_settings_backend_check (GSettingsBackend *backend,
+                          const gchar      *path)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->check (backend, path);
+}
