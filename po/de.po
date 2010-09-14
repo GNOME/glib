@@ -7,16 +7,15 @@
 # Andre Klapper <ak-47@gmx.net>, 2007, 2008.
 # Philipp Kerling <k.philipp@gmail.com>, 2008.
 # Mario Blättermann <mariobl@gnome.org>, 2010.
-# Christian Kirbach <Christian.Kirbach@googlemail.com>, 2009, 2010.
+# Christian Kirbach  <Christian.Kirbach@googlemail.com>, 2009, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&component=general\n"
-"POT-Creation-Date: 2010-09-09 19:17+0000\n"
-"PO-Revision-Date: 2010-09-04 15:28+0200\n"
-"Last-Translator: Christian Kirbach <Christian.Kirbach@googlemail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-09-14 11:10+0200\n"
+"PO-Revision-Date: 2010-09-14 11:17+0200\n"
+"Last-Translator: Christian Kirbach  <Christian.Kirbach@googlemail.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -170,219 +169,228 @@ msgstr "Der Pfadname »%s« ist kein absoluter Pfad"
 msgid "Invalid hostname"
 msgstr "Ungültiger Rechnername"
 
-#: ../glib/gdatetime.c:104
+#. Translators: 'before midday' indicator
+#: ../glib/gdatetime.c:105
 msgctxt "GDateTime"
 msgid "am"
 msgstr "am"
 
-#: ../glib/gdatetime.c:104
+#. Translators: 'before midday' indicator
+#: ../glib/gdatetime.c:107
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
-#: ../glib/gdatetime.c:105
+#. Translators: 'after midday' indicator
+#: ../glib/gdatetime.c:109
 msgctxt "GDateTime"
 msgid "pm"
 msgstr "pm"
 
-#: ../glib/gdatetime.c:105
+#. Translators: 'after midday' indicator
+#: ../glib/gdatetime.c:111
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:114
+#: ../glib/gdatetime.c:120
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d.%m.%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:117
+#: ../glib/gdatetime.c:123
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
-#: ../glib/gdatetime.c:162
+#: ../glib/gdatetime.c:168
 msgctxt "full month name"
 msgid "January"
 msgstr "Januar"
 
-#: ../glib/gdatetime.c:164
+#: ../glib/gdatetime.c:170
 msgctxt "full month name"
 msgid "February"
 msgstr "Februar"
 
-#: ../glib/gdatetime.c:166
+#: ../glib/gdatetime.c:172
 msgctxt "full month name"
 msgid "March"
 msgstr "März"
 
-#: ../glib/gdatetime.c:168
+#: ../glib/gdatetime.c:174
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:170 ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:176
 msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:172
+#: ../glib/gdatetime.c:178
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:174
+#: ../glib/gdatetime.c:180
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:176
+#: ../glib/gdatetime.c:182
 msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-#: ../glib/gdatetime.c:178
+#: ../glib/gdatetime.c:184
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:180
+#: ../glib/gdatetime.c:186
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:182
+#: ../glib/gdatetime.c:188
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:184
+#: ../glib/gdatetime.c:190
 msgctxt "full month name"
 msgid "December"
 msgstr "Dezember"
 
-#: ../glib/gdatetime.c:199
+#: ../glib/gdatetime.c:205
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:201
+#: ../glib/gdatetime.c:207
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:209
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mär"
 
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:211
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:209
+#: ../glib/gdatetime.c:213
+msgctxt "abbreviated month name"
+msgid "May"
+msgstr "Mai"
+
+#: ../glib/gdatetime.c:215
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:217
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:219
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:215
+#: ../glib/gdatetime.c:221
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:217
+#: ../glib/gdatetime.c:223
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:219
+#: ../glib/gdatetime.c:225
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:221
+#: ../glib/gdatetime.c:227
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dez"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:242
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Montag"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:244
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Dienstag"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:246
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Mittwoch"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:248
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Donnerstag"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:250
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Freitag"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:252
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Samstag"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:254
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Sonntag"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:269
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Mo"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:271
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Di"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:273
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Mi"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:275
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Do"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:277
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Fr"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:279
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sa"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:281
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "So"
@@ -1467,7 +1475,7 @@ msgstr "GCredentials ist in diesem Betriebssystem nicht implementiert"
 msgid "There is no GCredentials support for your platform"
 msgstr "Es gibt auf Ihrer Plattform keine Unterstützung für GCredentials"
 
-#: ../gio/gdatainputstream.c:310
+#: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
 msgstr "Unerwartet frühes Datenstromende"
 
@@ -2013,7 +2021,7 @@ msgstr "Typ des Rückgabewertes ist inkorrekt, »%s« erhalten, »%s« erwartet"
 msgid "Error sending message: %s"
 msgstr "Fehler beim Senden der Nachricht: %s"
 
-#: ../gio/gdbusprivate.c:1725
+#: ../gio/gdbusprivate.c:1766
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "/var/lib/dbus/machine-id konnte nicht geladen werden: "
 
@@ -2323,7 +2331,7 @@ msgstr "Es wurde ein GEmblem für GEmblemedIcon erwartet"
 #: ../gio/gfile.c:4259 ../gio/gfile.c:4345 ../gio/gfile.c:4434
 #: ../gio/gfile.c:4532 ../gio/gfile.c:4619 ../gio/gfile.c:4712
 #: ../gio/gfile.c:5042 ../gio/gfile.c:5322 ../gio/gfile.c:5391
-#: ../gio/gfile.c:6982 ../gio/gfile.c:7072 ../gio/gfile.c:7158
+#: ../gio/gfile.c:6983 ../gio/gfile.c:7073 ../gio/gfile.c:7159
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Vorgang wird nicht unterstützt"
@@ -2383,11 +2391,11 @@ msgstr "Müll nicht unterstützt"
 msgid "File names cannot contain '%c'"
 msgstr "Dateinamen dürfen kein »%c« enthalten"
 
-#: ../gio/gfile.c:6039 ../gio/gvolume.c:330
+#: ../gio/gfile.c:6040 ../gio/gvolume.c:330
 msgid "volume doesn't implement mount"
 msgstr "Datenträger unterstützt Einhängen nicht"
 
-#: ../gio/gfile.c:6150
+#: ../gio/gfile.c:6151
 msgid "No application is registered as handling this file"
 msgstr "Es wurde keine Anwendung gefunden, die diese Datei verarbeiten kann"
 
@@ -2489,6 +2497,249 @@ msgstr "Nicht genug Platz für eine Socket-Adresse"
 #: ../gio/ginetsocketaddress.c:211
 msgid "Unsupported socket address"
 msgstr "Nicht unterstützte Socket-Adresse"
+
+#: ../gio/glib-compile-schemas.c:702
+msgid "empty names are not permitted"
+msgstr "Leere Namen sind nicht zulässig"
+
+#: ../gio/glib-compile-schemas.c:712
+#, c-format
+msgid "invalid name '%s': names must begin with a lowercase letter"
+msgstr "Ungültiger Name »%s«: Namen müssen mit einem Kleinbuchstaben beginnen"
+
+#: ../gio/glib-compile-schemas.c:724
+#, c-format
+msgid ""
+"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
+"and dash ('-') are permitted."
+msgstr ""
+"Ungültiger Name »%s«: ungültiges Zeichen »%c«; nur Kleinbuchstaben, Ziffern "
+"und Bindestriche »-« sind zulässig"
+
+#: ../gio/glib-compile-schemas.c:733
+#, c-format
+msgid "invalid name '%s': two successive dashes ('--') are not permitted."
+msgstr ""
+"Ungültiger Name »%s«: Zwei aufeinander folgende Bindestriche »--« sind nicht "
+"zulässig."
+
+#: ../gio/glib-compile-schemas.c:742
+#, c-format
+msgid "invalid name '%s': the last character may not be a dash ('-')."
+msgstr "Ungültiger Name »%s«: das letzte Zeichen darf kein Bindestrich »-« sein."
+
+#: ../gio/glib-compile-schemas.c:750
+#, c-format
+msgid "invalid name '%s': maximum length is 32"
+msgstr "Ungültiger Name »%s«: maximale Länge ist 32"
+
+#: ../gio/glib-compile-schemas.c:819
+#, c-format
+msgid "<child name='%s'> already specified"
+msgstr "<child name='%s'> wurde bereits angegeben"
+
+#: ../gio/glib-compile-schemas.c:845
+msgid "can not add keys to a 'list-of' schema"
+msgstr "Schlüssel können nicht zum Schema »list-of« hinzugefügt werden"
+
+#: ../gio/glib-compile-schemas.c:856
+#, c-format
+msgid "<key name='%s'> already specified"
+msgstr "<key name='%s'> wurde bereits angegeben"
+
+#: ../gio/glib-compile-schemas.c:874
+#, c-format
+msgid ""
+"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
+"to modify value"
+msgstr ""
+"<key name='%s'> verdeckt <key name='%s'> in <schema id='%s'>; verwenden Sie "
+"<override>, um den Wert anzupassen"
+
+#: ../gio/glib-compile-schemas.c:885
+#, c-format
+msgid ""
+"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
+"to <key>"
+msgstr ""
+"Genau eines von »type«, »enum« oder »flags« muss als Attribut für <key> "
+"angegeben werden"
+
+#: ../gio/glib-compile-schemas.c:904
+#, c-format
+msgid "<%s id='%s'> not (yet) defined."
+msgstr "<%s id='%s'> (noch) nicht definiert."
+
+#: ../gio/glib-compile-schemas.c:919
+#, c-format
+msgid "invalid GVariant type string '%s'"
+msgstr "Ungültige GVariant-Typzeichenkette »%s«"
+
+#: ../gio/glib-compile-schemas.c:949
+msgid "<override> given but schema isn't extending anything"
+msgstr "<override> angegeben, aber das Schema erweitert nichts"
+
+#: ../gio/glib-compile-schemas.c:962
+#, c-format
+msgid "no <key name='%s'> to override"
+msgstr "Kein <key name='%s'> zum Überschreiben"
+
+#: ../gio/glib-compile-schemas.c:970
+#, c-format
+msgid "<override name='%s'> already specified"
+msgstr "<override name='%s'> wurde bereits angegeben"
+
+#: ../gio/glib-compile-schemas.c:1036
+#, c-format
+msgid "<schema id='%s'> already specified"
+msgstr "<schema id='%s'> wurde bereits angegeben"
+
+#: ../gio/glib-compile-schemas.c:1048
+#, c-format
+msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgstr "<schema id='%s'> erweitert nicht vorhandenes Schema »%s«"
+
+#: ../gio/glib-compile-schemas.c:1064
+#, c-format
+msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgstr "<schema id='%s'> ist eine Liste des nicht vorhandenen Schemas »%s«"
+
+#: ../gio/glib-compile-schemas.c:1072
+#, c-format
+msgid "Can not be a list of a schema with a path"
+msgstr "Darf nicht eine Liste von Schemata mit einem Pfad sein"
+
+#: ../gio/glib-compile-schemas.c:1082
+#, c-format
+msgid "Can not extend a schema with a path"
+msgstr "Ein Schema darf nicht um einem Pfad erweitert werden"
+
+#: ../gio/glib-compile-schemas.c:1092
+#, c-format
+msgid ""
+"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgstr ""
+"<schema id='%s'> ist eine Liste, welche <schema id='%s'> erweitert, das "
+"keine Liste ist"
+
+#: ../gio/glib-compile-schemas.c:1102
+#, c-format
+msgid ""
+"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
+"does not extend '%s'"
+msgstr ""
+"<schema id='%s' list-of='%s'> erweitert <schema id='%s' list-of='%s'>, aber "
+"»%s« erweitert »%s« nicht"
+
+#: ../gio/glib-compile-schemas.c:1119
+#, c-format
+msgid "a path, if given, must begin and end with a slash"
+msgstr ""
+"Ein Pfad, falls angegeben, muss mit einem Schrägstrich beginnen und enden"
+
+#: ../gio/glib-compile-schemas.c:1126
+#, c-format
+msgid "the path of a list must end with ':/'"
+msgstr "Der Pfad einer Liste muss mit »:/« enden"
+
+#: ../gio/glib-compile-schemas.c:1148
+#, c-format
+msgid "<%s id='%s'> already specified"
+msgstr "<%s id='%s'> bereits angegeben"
+
+#: ../gio/glib-compile-schemas.c:1362
+#, c-format
+msgid "Element <%s> not allowed inside <%s>"
+msgstr "Element <%s> ist innerhalb <%s> nicht erlaubt"
+
+#: ../gio/glib-compile-schemas.c:1366
+#, c-format
+msgid "Element <%s> not allowed at toplevel"
+msgstr "Element <%s> ist in der obersten Ebene nicht erlaubt"
+
+#: ../gio/glib-compile-schemas.c:1460
+#, c-format
+msgid "text may not appear inside <%s>"
+msgstr "Text könnte nicht innerhalb von <%s> erscheinen"
+
+#: ../gio/glib-compile-schemas.c:1674
+#, c-format
+msgid "No such schema `%s' specified in override file `%s'"
+msgstr "Kein Schema »%s« angegeben in überschreibender Datei »%s«"
+
+#: ../gio/glib-compile-schemas.c:1698
+#, c-format
+msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgstr ""
+"Kein Schlüssel »%s« in Schema »%s« wie angegeben in überschreibender Datei »%s«"
+
+#: ../gio/glib-compile-schemas.c:1731
+#, c-format
+msgid ""
+"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"range given in the schema"
+msgstr ""
+"Überschreiben für Schlüssel »%s« in Schema »%s« in überschreibender Datei »%s« "
+"liegt außerhalb des im Schema angegebenen Bereichs"
+
+#: ../gio/glib-compile-schemas.c:1752
+#, c-format
+msgid ""
+"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"list of valid choices"
+msgstr ""
+"Überschreiben für Schlüssel »%s« in Schema »%s« in überschreibender Datei »%s« "
+"befindet sich nicht in der Liste gültiger Auswahlmöglichkeiten"
+
+#: ../gio/glib-compile-schemas.c:1797
+msgid "where to store the gschemas.compiled file"
+msgstr "Speicherort der Datei »gschemas.compiled«"
+
+#: ../gio/glib-compile-schemas.c:1797 ../gio/glib-compile-schemas.c:1809
+msgid "DIRECTORY"
+msgstr "ORDNER"
+
+#: ../gio/glib-compile-schemas.c:1798
+msgid "Do not write the gschema.compiled file"
+msgstr "Die Datei »gschema.compiled« nicht schreiben"
+
+#: ../gio/glib-compile-schemas.c:1799
+msgid "This option will be removed soon."
+msgstr "Diese Option wird demnächst entfernt."
+
+#: ../gio/glib-compile-schemas.c:1800
+msgid "Do not enforce key name restrictions"
+msgstr "Keine Einschränkungen für Schlüsselnamen erzwingen"
+
+#: ../gio/glib-compile-schemas.c:1812
+msgid ""
+"Compile all GSettings schema files into a schema cache.\n"
+"Schema files are required to have the extension .gschema.xml,\n"
+"and the cache file is called gschemas.compiled."
+msgstr ""
+"Alle GSettings-Schemadateien in eine Zwischenspeicherdatei kompilieren.\n"
+"Schemadateien müssen die Erweiterung .gschema.xml haben,\n"
+"die Zwischenspeicherdatei die Erweiterung gschemas.compiled."
+
+#: ../gio/glib-compile-schemas.c:1828
+#, c-format
+msgid "You should give exactly one directory name\n"
+msgstr "Sie sollten genau einen Ordnernamen angeben\n"
+
+#: ../gio/glib-compile-schemas.c:1867
+#, c-format
+msgid "No schema files found: "
+msgstr "Keine Schema-Dateien gefunden:"
+
+#: ../gio/glib-compile-schemas.c:1870
+#, c-format
+msgid "doing nothing.\n"
+msgstr "Nichts wird getan.\n"
+
+#: ../gio/glib-compile-schemas.c:1873
+#, c-format
+msgid "removed existing output file.\n"
+msgstr "Vorhandene Ausgabedatei wurde entfernt.\n"
 
 #: ../gio/glocaldirectorymonitor.c:287
 msgid "Unable to find default local directory monitor type"
@@ -2901,234 +3152,6 @@ msgstr "»%s« kann vorübergehend nicht aufgelöst werden"
 msgid "Error resolving '%s'"
 msgstr "Fehler beim Auflösen von »%s«"
 
-#: ../gio/gschema-compile.c:702
-msgid "empty names are not permitted"
-msgstr "Leere Namen sind nicht zulässig"
-
-#: ../gio/gschema-compile.c:712
-#, c-format
-msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr "Ungültiger Name »%s«: Namen müssen mit einem Kleinbuchstaben beginnen"
-
-#: ../gio/gschema-compile.c:724
-#, c-format
-msgid ""
-"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
-"and dash ('-') are permitted."
-msgstr ""
-"Ungültiger Name »%s«: ungültiges Zeichen »%c«; nur Kleinbuchstaben, Ziffern "
-"und Bindestriche »-« sind zulässig"
-
-#: ../gio/gschema-compile.c:733
-#, c-format
-msgid "invalid name '%s': two successive dashes ('--') are not permitted."
-msgstr ""
-"Ungültiger Name »%s«: Zwei aufeinander folgende Bindestriche »--« sind nicht "
-"zulässig."
-
-#: ../gio/gschema-compile.c:742
-#, c-format
-msgid "invalid name '%s': the last character may not be a dash ('-')."
-msgstr "Ungültiger Name »%s«: das letzte Zeichen darf kein Bindestrich »-« sein."
-
-#: ../gio/gschema-compile.c:750
-#, c-format
-msgid "invalid name '%s': maximum length is 32"
-msgstr "Ungültiger Name »%s«: maximale Länge ist 32"
-
-#: ../gio/gschema-compile.c:819
-#, c-format
-msgid "<child name='%s'> already specified"
-msgstr "<child name='%s'> wurde bereits angegeben"
-
-#: ../gio/gschema-compile.c:845
-msgid "can not add keys to a 'list-of' schema"
-msgstr "Schlüssel können nicht zum Schema »list-of« hinzugefügt werden"
-
-#: ../gio/gschema-compile.c:856
-#, c-format
-msgid "<key name='%s'> already specified"
-msgstr "<key name='%s'> wurde bereits angegeben"
-
-#: ../gio/gschema-compile.c:874
-#, c-format
-msgid ""
-"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
-"to modify value"
-msgstr ""
-"<key name='%s'> verdeckt <key name='%s'> in <schema id='%s'>; verwenden Sie "
-"<override>, um den Wert anzupassen"
-
-#: ../gio/gschema-compile.c:885
-#, c-format
-msgid ""
-"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
-"to <key>"
-msgstr ""
-"Genau eines von »type«, »enum« oder »flags« muss als Attribut für <key> "
-"angegeben werden"
-
-#: ../gio/gschema-compile.c:904
-#, c-format
-msgid "<%s id='%s'> not (yet) defined."
-msgstr "<%s id='%s'> (noch) nicht definiert."
-
-#: ../gio/gschema-compile.c:919
-#, c-format
-msgid "invalid GVariant type string '%s'"
-msgstr "Ungültige GVariant-Typzeichenkette »%s«"
-
-#: ../gio/gschema-compile.c:949
-msgid "<override> given but schema isn't extending anything"
-msgstr "<override> angegeben, aber das Schema erweitert nichts"
-
-#: ../gio/gschema-compile.c:962
-#, c-format
-msgid "no <key name='%s'> to override"
-msgstr "Kein <key name='%s'> zum Überschreiben"
-
-#: ../gio/gschema-compile.c:970
-#, c-format
-msgid "<override name='%s'> already specified"
-msgstr "<override name='%s'> wurde bereits angegeben"
-
-#: ../gio/gschema-compile.c:1036
-#, c-format
-msgid "<schema id='%s'> already specified"
-msgstr "<schema id='%s'> wurde bereits angegeben"
-
-#: ../gio/gschema-compile.c:1048
-#, c-format
-msgid "<schema id='%s'> extends not yet existing schema '%s'"
-msgstr "<schema id='%s'> erweitert nicht vorhandenes Schema »%s«"
-
-#: ../gio/gschema-compile.c:1062
-#, c-format
-msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr "<schema id='%s'> ist eine Liste des nicht vorhandenen Schemas »%s«"
-
-#: ../gio/gschema-compile.c:1076
-#, c-format
-msgid ""
-"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
-msgstr ""
-"<schema id='%s'> ist eine Liste, welche <schema id='%s'> erweitert, das "
-"keine Liste ist"
-
-#: ../gio/gschema-compile.c:1086
-#, c-format
-msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
-"does not extend '%s'"
-msgstr ""
-"<schema id='%s' list-of='%s'> erweitert <schema id='%s' list-of='%s'>, aber "
-"»%s« erweitert »%s« nicht"
-
-#: ../gio/gschema-compile.c:1103
-#, c-format
-msgid "a path, if given, must begin and end with a slash"
-msgstr ""
-"Ein Pfad, falls angegeben, muss mit einem Schrägstrich beginnen und enden"
-
-#: ../gio/gschema-compile.c:1125
-#, c-format
-msgid "<%s id='%s'> already specified"
-msgstr "<%s id='%s'> bereits angegeben"
-
-#: ../gio/gschema-compile.c:1339
-#, c-format
-msgid "Element <%s> not allowed inside <%s>"
-msgstr "Element <%s> ist innerhalb <%s> nicht erlaubt"
-
-#: ../gio/gschema-compile.c:1343
-#, c-format
-msgid "Element <%s> not allowed at toplevel"
-msgstr "Element <%s> ist in der obersten Ebene nicht erlaubt"
-
-#: ../gio/gschema-compile.c:1437
-#, c-format
-msgid "text may not appear inside <%s>"
-msgstr "Text könnte nicht innerhalb von <%s> erscheinen"
-
-#: ../gio/gschema-compile.c:1651
-#, c-format
-msgid "No such schema `%s' specified in override file `%s'"
-msgstr "Kein Schema »%s« angegeben in überschreibender Datei »%s«"
-
-#: ../gio/gschema-compile.c:1675
-#, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
-msgstr ""
-"Kein Schlüssel »%s« in Schema »%s« wie angegeben in überschreibender Datei »%s«"
-
-#: ../gio/gschema-compile.c:1708
-#, c-format
-msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
-"range given in the schema"
-msgstr ""
-"Überschreiben für Schlüssel »%s« in Schema »%s« in überschreibender Datei »%s« "
-"liegt außerhalb des im Schema angegebenen Bereichs"
-
-#: ../gio/gschema-compile.c:1729
-#, c-format
-msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
-"list of valid choices"
-msgstr ""
-"Überschreiben für Schlüssel »%s« in Schema »%s« in überschreibender Datei »%s« "
-"befindet sich nicht in der Liste gültiger Auswahlmöglichkeiten"
-
-#: ../gio/gschema-compile.c:1774
-msgid "where to store the gschemas.compiled file"
-msgstr "Speicherort der Datei »gschemas.compiled«"
-
-#: ../gio/gschema-compile.c:1774 ../gio/gschema-compile.c:1786
-msgid "DIRECTORY"
-msgstr "ORDNER"
-
-#: ../gio/gschema-compile.c:1775
-msgid "Do not write the gschema.compiled file"
-msgstr "Die Datei »gschema.compiled« nicht schreiben"
-
-#: ../gio/gschema-compile.c:1776
-msgid "This option will be removed soon."
-msgstr "Diese Option wird demnächst entfernt."
-
-#: ../gio/gschema-compile.c:1777
-msgid "Do not enforce key name restrictions"
-msgstr "Keine Einschränkungen für Schlüsselnamen erzwingen"
-
-#: ../gio/gschema-compile.c:1789
-msgid ""
-"Compile all GSettings schema files into a schema cache.\n"
-"Schema files are required to have the extension .gschema.xml,\n"
-"and the cache file is called gschemas.compiled."
-msgstr ""
-"Alle GSettings-Schemadateien in eine Zwischenspeicherdatei kompilieren.\n"
-"Schemadateien müssen die Erweiterung .gschema.xml haben,\n"
-"die Zwischenspeicherdatei die Erweiterung gschemas.compiled."
-
-#: ../gio/gschema-compile.c:1805
-#, c-format
-msgid "You should give exactly one directory name\n"
-msgstr "Sie sollten genau einen Ordnernamen angeben\n"
-
-#: ../gio/gschema-compile.c:1844
-#, c-format
-msgid "No schema files found: "
-msgstr "Keine Schema-Dateien gefunden:"
-
-#: ../gio/gschema-compile.c:1847
-#, c-format
-msgid "doing nothing.\n"
-msgstr "Nichts wird getan.\n"
-
-#: ../gio/gschema-compile.c:1850
-#, c-format
-msgid "removed existing output file.\n"
-msgstr "Vorhandene Ausgabedatei wurde entfernt.\n"
-
 #: ../gio/gsettings-tool.c:79
 #, c-format
 msgid ""
@@ -3152,29 +3175,29 @@ msgstr ""
 "\n"
 "Mit »%s BEFEHL --help« erhalten Sie individuelle Hilfe für einen Befehl.\n"
 
-#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
-#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
-#: ../gio/gsettings-tool.c:646
+#: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
+#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
+#: ../gio/gsettings-tool.c:644
 msgid "Specify the path for the schema"
 msgstr "Den Pfad für das Schema angeben"
 
-#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
-#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
-#: ../gio/gsettings-tool.c:646
+#: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
+#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
+#: ../gio/gsettings-tool.c:644
 msgid "PATH"
 msgstr "PFAD"
 
-#: ../gio/gsettings-tool.c:230 ../gio/gsettings-tool.c:541
-#: ../gio/gsettings-tool.c:654
+#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:539
+#: ../gio/gsettings-tool.c:652
 msgid "SCHEMA KEY"
 msgstr "SCHEMA SCHLÜSSEL"
 
-#: ../gio/gsettings-tool.c:232
+#: ../gio/gsettings-tool.c:230
 msgid "Get the value of KEY"
 msgstr "Den Wert von SCHLÜSSEL ermitteln"
 
-#: ../gio/gsettings-tool.c:234 ../gio/gsettings-tool.c:450
-#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
+#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:448
+#: ../gio/gsettings-tool.c:543 ../gio/gsettings-tool.c:659
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -3184,15 +3207,15 @@ msgstr ""
 "  SCHEMA      Die Kennung des Schemas\n"
 "  SCHLÜSSEL         Der Name des Schlüssels\n"
 
-#: ../gio/gsettings-tool.c:330 ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:328 ../gio/gsettings-tool.c:444
 msgid "SCHEMA KEY VALUE"
 msgstr "SCHEMA SCHLÜSSEL WERT"
 
-#: ../gio/gsettings-tool.c:332
+#: ../gio/gsettings-tool.c:330
 msgid "Set the value of KEY"
 msgstr "Den Wert von SCHLÜSSEL festlegen"
 
-#: ../gio/gsettings-tool.c:334
+#: ../gio/gsettings-tool.c:332
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -3205,20 +3228,20 @@ msgstr ""
 "  WERT       Der Wert, auf den der Schlüssel gesetzt wird, als serialisierte "
 "GVariant\n"
 
-#: ../gio/gsettings-tool.c:407
+#: ../gio/gsettings-tool.c:405
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "Schlüssel %s ist nicht schreibbar\n"
 
-#: ../gio/gsettings-tool.c:448
+#: ../gio/gsettings-tool.c:446
 msgid "Sets KEY to its default value"
 msgstr "SCHLÜSSEL auf Vorgabewert setzen"
 
-#: ../gio/gsettings-tool.c:543
+#: ../gio/gsettings-tool.c:541
 msgid "Find out whether KEY is writable"
 msgstr "Prüfen, ob SCHLÜSSEL schreibgeschützt ist"
 
-#: ../gio/gsettings-tool.c:657
+#: ../gio/gsettings-tool.c:655
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
@@ -3226,7 +3249,7 @@ msgstr ""
 "SCHLÜSSEL auf Änderungen überwachen und geänderte Werte ausgeben.\n"
 "Überwachung wird fortgesetzt, bis der Prozess beendet wird."
 
-#: ../gio/gsettings-tool.c:833
+#: ../gio/gsettings-tool.c:831
 #, c-format
 msgid "Unknown command '%s'\n"
 msgstr "Unbekannter Befehl »%s«\n"
@@ -3339,7 +3362,7 @@ msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials ist für dieses Betriebssystem nicht implementiert"
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1148
+#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1153
 msgid "Unknown error on connect"
 msgstr "Unbekannter Fehler bei Verbindungsversuch"
 
