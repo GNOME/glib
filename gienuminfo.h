@@ -42,7 +42,7 @@ GIValueInfo  * g_enum_info_get_value         (GIEnumInfo  *info,
 					      gint         n);
 GITypeTag      g_enum_info_get_storage_type  (GIEnumInfo  *info);
 
-glong          g_value_info_get_value        (GIValueInfo *info);
+gint64         g_value_info_get_value        (GIValueInfo *info);
 
 G_END_DECLS
 

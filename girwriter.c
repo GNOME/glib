@@ -704,7 +704,8 @@ write_value_info (const gchar *namespace,
 		  Xml         *file)
 {
   const gchar *name;
-  glong value;
+  gint64 value;
+  gchar *value_str;
   gboolean deprecated;
 
   name = g_base_info_get_name ((GIBaseInfo *)info);
@@ -712,7 +713,9 @@ write_value_info (const gchar *namespace,
   deprecated = g_base_info_is_deprecated ((GIBaseInfo *)info);
 
   xml_start_element (file, "member");
-  xml_printf (file, " name=\"%s\" value=\"%ld\"", name, value);
+  value_str = g_strdup_printf ("%" G_GINT64_FORMAT, value);
+  xml_printf (file, " name=\"%s\" value=\"%s\"", name, value_str);
+  g_free (value_str);
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");

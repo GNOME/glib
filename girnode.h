@@ -262,7 +262,7 @@ struct _GIrNodeValue
 
   gboolean deprecated;
 
-  gint32 value;
+  gint64 value;
 };
 
 struct _GIrNodeConstant

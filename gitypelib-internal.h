@@ -632,6 +632,7 @@ typedef struct {
 /**
  * ValueBlob:
  * @deprecated: Whether this value is deprecated
+ * @unsigned_value: if set, value is a 32-bit unsigned integer cast to gint32
  * @value: The numerical value
  * @name: Name of blob
  *
@@ -639,8 +640,9 @@ typedef struct {
  */
 typedef struct {
   guint32 deprecated : 1;
+  guint32 unsigned_value : 1;
   /* <private> */
-  guint32 reserved   :31;
+  guint32 reserved   :30;
   /* <public> */
   guint32 name;
   gint32 value;

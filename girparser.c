@@ -1440,7 +1440,7 @@ start_property (GMarkupParseContext *context,
   return TRUE;
 }
 
-static gint
+static gint64
 parse_value (const gchar *str)
 {
   gchar *shift_op;
@@ -1450,15 +1450,15 @@ parse_value (const gchar *str)
 
   if (shift_op)
     {
-      gint base, shift;
+      gint64 base, shift;
 
-      base = strtol (str, NULL, 10);
-      shift = strtol (shift_op + 3, NULL, 10);
+      base = g_ascii_strtoll (str, NULL, 10);
+      shift = g_ascii_strtoll (shift_op + 3, NULL, 10);
 
       return base << shift;
     }
   else
-    return strtol (str, NULL, 10);
+    return g_ascii_strtoll (str, NULL, 10);
 
   return 0;
 }

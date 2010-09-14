@@ -269,9 +269,9 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	      case GI_INFO_TYPE_FLAGS:
 		{
 		  /* FIXME: there's a mismatch here between the value->v_int we use
-		   * here and the glong result returned from g_value_info_get_value().
-		   * But to switch this to glong, we'd have to make g_function_info_invoke()
-		   * translate value->v_long to the proper ABI for an enum function
+		   * here and the gint64 result returned from g_value_info_get_value().
+		   * But to switch this to gint64, we'd have to make g_function_info_invoke()
+		   * translate value->v_int64 to the proper ABI for an enum function
 		   * call parameter, which will usually be int, and then fix up language
 		   * bindings.
 		   */

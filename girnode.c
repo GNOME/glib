@@ -2201,8 +2201,9 @@ g_ir_node_build_typelib (GIrNode         *node,
 
 	blob->deprecated = value->deprecated;
 	blob->reserved = 0;
+	blob->unsigned_value = value->value >= 0 ? 1 : 0;
 	blob->name = write_string (node->name, strings, data, offset2);
-	blob->value = value->value;
+	blob->value = (gint32)value->value;
       }
       break;
 

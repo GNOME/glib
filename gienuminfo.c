@@ -127,9 +127,11 @@ g_enum_info_get_storage_type (GIEnumInfo *info)
  *
  * Obtain the enumeration value of the #GIValueInfo.
  *
- * Returns: the enumeration value
+ * Returns: the enumeration value. This will always be representable
+ *   as a 32-bit signed or unsigned value. The use of gint64 as the
+ *   return type is to allow both.
  */
-glong
+gint64
 g_value_info_get_value (GIValueInfo *info)
 {
   GIRealInfo *rinfo = (GIRealInfo *)info;
@@ -140,6 +142,9 @@ g_value_info_get_value (GIValueInfo *info)
 
   blob = (ValueBlob *)&rinfo->typelib->data[rinfo->offset];
 
-  return (glong)blob->value;
+  if (blob->unsigned_value)
+    return (gint64)(guint32)blob->value;
+  else
+    return (gint64)blob->value;
 }
 
