@@ -2123,7 +2123,7 @@ start_doc (GMarkupParseContext *context,
 	   ParseContext       *ctx,
 	   GError             **error)
 {
-  if (strcmp (element_name, "doc") != 0 || ctx->node_stack == NULL)
+  if (strcmp (element_name, "doc") != 0)
     return FALSE;
 
   state_switch (ctx, STATE_DOC);
