@@ -82,9 +82,6 @@ GSettings *             g_settings_new_with_backend_and_path            (const g
 gchar **                g_settings_list_children                        (GSettings          *settings);
 gchar **                g_settings_list_keys                            (GSettings          *settings);
 
-gboolean                g_settings_get_destroyed                        (GSettings          *settings);
-GPermission *           g_settings_get_permission                       (GSettings          *settings);
-
 gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          GVariant           *value);
