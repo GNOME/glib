@@ -419,6 +419,9 @@ g_dbus_connection_finalize (GObject *object)
   if (connection->auth != NULL)
     g_object_unref (connection->auth);
 
+  if (connection->credentials)
+    g_object_unref (connection->credentials);
+
   if (connection->stream != NULL)
     {
       /* We don't really care if closing the stream succeeds or not */
