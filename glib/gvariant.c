@@ -1368,7 +1368,7 @@ g_variant_get_bytestring (GVariant *value)
   string = g_variant_get_data (value);
   size = g_variant_get_size (value);
 
-  if (string[size - 1] == '\0')
+  if (size && string[size - 1] == '\0')
     return string;
   else
     return "";

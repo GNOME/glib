@@ -3819,6 +3819,8 @@ test_bytestring (void)
   GVariant *value;
   gchar **strv;
   gchar *str;
+  const gchar *const_str;
+  GVariant *untrusted_empty;
 
   strv = g_strsplit (test_string, ",", 0);
 
@@ -3884,6 +3886,12 @@ test_bytestring (void)
   g_variant_get_child (value, 3, "^&ay", &str);
   g_assert_cmpstr (str, ==, "foo");
   g_variant_unref (value);
+
+  untrusted_empty = g_variant_new_from_data (G_VARIANT_TYPE ("ay"), NULL, 0, FALSE, NULL, NULL);
+  value = g_variant_get_normal_form (untrusted_empty);
+  const_str = g_variant_get_bytestring (value);
+  g_variant_unref (value);
+  g_variant_unref (untrusted_empty);
 }
 
 int
