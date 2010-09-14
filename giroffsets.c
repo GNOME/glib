@@ -23,9 +23,9 @@
 #include <string.h>
 
 /* The C standard specifies that an enumeration can be any char or any signed
- * or unsigned integer type capable of resresenting all the values of the
+ * or unsigned integer type capable of representing all the values of the
  * enumeration. We use test enumerations to figure out what choices the
- * compiler makes.
+ * compiler makes. (Ignoring > 32 bit enumerations)
  */
 
 typedef enum {
@@ -52,24 +52,26 @@ typedef enum {
   ENUM_6 = ((guint)G_MAXINT) + 1 /* compiler could use uint32 */
 } Enum6;
 
-/* GIrNodeValue has guint32 values, so if it matters to the ABI whether
- * constant values are signed, we are in trouble. And we don't handle
- * enums with > 32 bit values. */
-
-#if 0
 typedef enum {
   ENUM_7 = -1 /* compiler could use int8, int16, int32 */
 } Enum7;
 
-/* etc... */
-#endif
+typedef enum {
+  ENUM_8 = -129 /* compiler could use int16, int32 */
+} Enum8;
+
+typedef enum {
+  ENUM_9 = G_MINSHORT - 1 /* compiler could use int32 */
+} Enum9;
 
 static void
 compute_enum_storage_type (GIrNodeEnum *enum_node)
 {
   GList *l;
-  gint32 max_value = 0;
+  gint64 max_value = 0;
+  gint64 min_value = 0;
   int width;
+  gboolean signed_type;
 
   if (enum_node->storage_type != GI_TYPE_TAG_VOID) /* already done */
     return;
@@ -79,29 +81,63 @@ compute_enum_storage_type (GIrNodeEnum *enum_node)
       GIrNodeValue *value = l->data;
       if (value->value > max_value)
         max_value = value->value;
+      if (value->value < min_value)
+        min_value = value->value;
     }
 
-  if (max_value < 128)
-    width = sizeof (Enum1);
-  else if (max_value < 256)
-    width = sizeof (Enum2);
-  else if (max_value < G_MAXSHORT)
-    width = sizeof (Enum3);
-  else if (max_value < G_MAXUSHORT)
-    width = sizeof (Enum4);
-  else if (max_value < G_MAXINT)
-    width = sizeof (Enum5);
+  if (min_value < 0)
+    {
+      signed_type = TRUE;
+
+      if (min_value > -128 && max_value <= 127)
+	width = sizeof(Enum7);
+      else if (min_value >= G_MINSHORT && max_value <= G_MAXSHORT)
+	width = sizeof(Enum8);
+      else
+	width = sizeof(Enum9);
+    }
   else
-    width = sizeof (Enum6);
+    {
+      if (max_value <= 127)
+	{
+	  width = sizeof (Enum1);
+	  signed_type = (gint64)(Enum1)(-1) < 0;
+	}
+      else if (max_value <= 255)
+	{
+	  width = sizeof (Enum2);
+	  signed_type = (gint64)(Enum2)(-1) < 0;
+	}
+      else if (max_value <= G_MAXSHORT)
+	{
+	  width = sizeof (Enum3);
+	  signed_type = (gint64)(Enum3)(-1) < 0;
+	}
+      else if (max_value <= G_MAXUSHORT)
+	{
+	  width = sizeof (Enum4);
+	  signed_type = (gint64)(Enum4)(-1) < 0;
+	}
+      else if (max_value <= G_MAXINT)
+	{
+	  width = sizeof (Enum5);
+	  signed_type = (gint64)(Enum5)(-1) < 0;
+	}
+      else
+	{
+	  width = sizeof (Enum6);
+	  signed_type = (gint64)(Enum6)(-1) < 0;
+	}
+    }
 
   if (width == 1)
-    enum_node->storage_type = GI_TYPE_TAG_UINT8;
+    enum_node->storage_type = signed_type ? GI_TYPE_TAG_INT8 : GI_TYPE_TAG_UINT8;
   else if (width == 2)
-    enum_node->storage_type = GI_TYPE_TAG_UINT16;
+    enum_node->storage_type = signed_type ? GI_TYPE_TAG_INT16 : GI_TYPE_TAG_UINT16;
   else if (width == 4)
-    enum_node->storage_type = GI_TYPE_TAG_UINT32;
+    enum_node->storage_type = signed_type ? GI_TYPE_TAG_INT32 : GI_TYPE_TAG_UINT32;
   else if (width == 8)
-    enum_node->storage_type = GI_TYPE_TAG_UINT64;
+    enum_node->storage_type = signed_type ? GI_TYPE_TAG_INT64 : GI_TYPE_TAG_UINT64;
   else
     g_error ("Unexpected enum width %d", width);
 }
