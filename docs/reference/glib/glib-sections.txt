@@ -1424,7 +1424,6 @@ g_date_time_new_from_timeval
 g_date_time_new_now
 g_date_time_new_utc_now
 g_date_time_new_today
-g_date_time_copy
 g_date_time_ref
 g_date_time_unref
 <SUBSECTION>

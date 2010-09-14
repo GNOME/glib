@@ -75,6 +75,25 @@ G_BEGIN_DECLS
 #define G_TIME_SPAN_MILLISECOND         (G_GINT64_CONSTANT (1000))
 
 /**
+ * GTimeSpan:
+ *
+ * A value representing an interval of time, in microseconds.
+ *
+ * Since: 2.26
+ */
+typedef gint64 GTimeSpan;
+
+/**
+ * GTimeZone:
+ *
+ * <structname>GTimeZone</structname> is an opaque structure whose members
+ * cannot be accessed directly.
+ *
+ * Since: 2.26
+ */
+typedef struct _GTimeZone GTimeZone;
+
+/**
  * GDateTime:
  *
  * <structname>GDateTime</structname> is an opaque structure whose members
@@ -83,15 +102,6 @@ G_BEGIN_DECLS
  * Since: 2.26
  */
 typedef struct _GDateTime GDateTime;
-
-/**
- * GTimeSpan:
- *
- * A value representing an interval of time, in microseconds.
- *
- * Since: 2.26
- */
-typedef gint64 GTimeSpan;
 
 GDateTime *           g_date_time_new_now                (void);
 GDateTime *           g_date_time_new_today              (void);
@@ -107,9 +117,8 @@ GDateTime *           g_date_time_new_full               (gint             year,
                                                           gint             hour,
                                                           gint             minute,
                                                           gint             second,
-                                                          const gchar     *time_zone);
+                                                          const GTimeZone *time_zone);
 
-GDateTime *           g_date_time_copy                   (const GDateTime *datetime);
 GDateTime *           g_date_time_ref                    (GDateTime       *datetime);
 void                  g_date_time_unref                  (GDateTime       *datetime);
 
@@ -174,9 +183,9 @@ void                  g_date_time_get_dmy                (const GDateTime *datet
 
 GTimeSpan             g_date_time_get_utc_offset         (const GDateTime *datetime);
 G_CONST_RETURN gchar *g_date_time_get_timezone_name      (const GDateTime *datetime);
+gboolean              g_date_time_is_daylight_savings    (const GDateTime *datetime);
 
 gboolean              g_date_time_is_leap_year           (const GDateTime *datetime);
-gboolean              g_date_time_is_daylight_savings    (const GDateTime *datetime);
 
 GDateTime *           g_date_time_to_local               (const GDateTime *datetime);
 gint64                g_date_time_to_epoch               (const GDateTime *datetime);
@@ -185,6 +194,18 @@ void                  g_date_time_to_timeval             (const GDateTime *datet
 GDateTime *           g_date_time_to_utc                 (const GDateTime *datetime);
 gchar *               g_date_time_printf                 (const GDateTime *datetime,
                                                           const gchar     *format) G_GNUC_MALLOC;
+
+GTimeZone *           g_time_zone_new                    (gint             offset,
+                                                          gboolean         is_dst);
+GTimeZone *           g_time_zone_new_for_name           (const gchar     *name);
+GTimeZone *           g_time_zone_new_utc                (void);
+GTimeZone *           g_time_zone_new_local              (void);
+GTimeZone *           g_time_zone_copy                   (const GTimeZone *time_zone);
+void                  g_time_zone_free                   (GTimeZone       *time_zone);
+G_CONST_RETURN gchar *g_time_zone_get_name               (const GTimeZone *time_zone);
+gint                  g_time_zone_get_offset             (const GTimeZone *time_zone);
+gboolean              g_time_zone_get_is_dst             (const GTimeZone *time_zone);
+gboolean              g_time_zone_is_floating            (const GTimeZone *time_zone);
 
 G_END_DECLS
 

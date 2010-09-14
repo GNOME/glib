@@ -193,20 +193,6 @@ test_GDateTime_compare (void)
 }
 
 static void
-test_GDateTime_copy (void)
-{
-  GDateTime *dt1, *dt2;
-
-  dt1 = g_date_time_new_now ();
-  dt2 = g_date_time_copy (dt1);
-  g_assert (dt1 != NULL);
-  g_assert (dt2 != NULL);
-  g_assert_cmpint (0, ==, g_date_time_compare (dt1, dt2));
-  g_date_time_unref (dt1);
-  g_date_time_unref (dt2);
-}
-
-static void
 test_GDateTime_date (void)
 {
   GDateTime *dt1, *dt2;
@@ -229,6 +215,7 @@ static void
 test_GDateTime_equal (void)
 {
   GDateTime *dt1, *dt2;
+  GTimeZone *time_zone;
 
   dt1 = g_date_time_new_from_date (2009, 10, 19);
   dt2 = g_date_time_new_from_date (2009, 10, 19);
@@ -242,12 +229,26 @@ test_GDateTime_equal (void)
   g_date_time_unref (dt1);
   g_date_time_unref (dt2);
 
-  /* America/Recife is GMT-3 and is not in DST for this time */
-  dt1 = g_date_time_new_full (2010, 5, 24, 8, 0, 0, "America/Recife");
-  dt2 = g_date_time_new_full (2010, 5, 24, 11, 0, 0, "UTC");
+  /* UTC-0300 and not in DST */
+  time_zone = g_time_zone_new (-3 * 3600, FALSE);
+  dt1 = g_date_time_new_full (2010, 5, 24,  8, 0, 0, time_zone);
+  g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, (-3 * 3600));
+  /* UTC */
+  dt2 = g_date_time_new_full (2010, 5, 24, 11, 0, 0, NULL);
+  g_assert_cmpint (g_date_time_get_utc_offset (dt2), ==, 0);
+
+  g_assert (g_date_time_equal (dt1, dt2));
+  g_date_time_unref (dt1);
+  g_time_zone_free (time_zone);
+
+  /* America/Recife is in UTC-0300 */
+  time_zone = g_time_zone_new_for_name ("America/Recife");
+  dt1 = g_date_time_new_full (2010, 5, 24,  8, 0, 0, time_zone);
+  g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, (-3 * 3600));
   g_assert (g_date_time_equal (dt1, dt2));
   g_date_time_unref (dt1);
   g_date_time_unref (dt2);
+  g_time_zone_free (time_zone);
 }
 
 static void
@@ -388,7 +389,7 @@ test_GDateTime_get_millisecond (void)
 
   g_get_current_time (&tv);
   dt = g_date_time_new_from_timeval (&tv);
-  g_assert_cmpint ((tv.tv_usec/1000), ==, g_date_time_get_millisecond (dt));
+  g_assert_cmpint ((tv.tv_usec / 1000), ==, g_date_time_get_millisecond (dt));
   g_date_time_unref (dt);
 }
 
@@ -437,10 +438,14 @@ test_GDateTime_new_from_timeval (void)
   dt = g_date_time_new_from_timeval (&tv);
 
   if (g_test_verbose ())
-    g_print ("\nDT%d/%d/%d\n",
+    g_print ("\nDT%04d-%02d-%02dT%02d:%02d:%02d%s\n",
              g_date_time_get_year (dt),
              g_date_time_get_month (dt),
-             g_date_time_get_day_of_month (dt));
+             g_date_time_get_day_of_month (dt),
+             g_date_time_get_hour (dt),
+             g_date_time_get_minute (dt),
+             g_date_time_get_second (dt),
+             g_date_time_get_timezone_name (dt));
 
   g_date_time_to_timeval (dt, &tv2);
   g_assert_cmpint (tv.tv_sec, ==, tv2.tv_sec);
@@ -723,6 +728,7 @@ static void
 test_GDateTime_new_full (void)
 {
   GDateTime *dt;
+  GTimeZone *time_zone;
 
   dt = g_date_time_new_full (2009, 12, 11, 12, 11, 10, NULL);
   g_assert_cmpint (2009, ==, g_date_time_get_year (dt));
@@ -733,7 +739,8 @@ test_GDateTime_new_full (void)
   g_assert_cmpint (10, ==, g_date_time_get_second (dt));
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_full (2010, 5, 24, 8, 4, 0, "America/Recife");
+  time_zone = g_time_zone_new_for_name ("America/Recife");
+  dt = g_date_time_new_full (2010, 5, 24, 8, 4, 0, time_zone);
   g_assert_cmpint (2010, ==, g_date_time_get_year (dt));
   g_assert_cmpint (5, ==, g_date_time_get_month (dt));
   g_assert_cmpint (24, ==, g_date_time_get_day_of_month (dt));
@@ -743,6 +750,7 @@ test_GDateTime_new_full (void)
   g_assert_cmpstr ("BRT", ==, g_date_time_get_timezone_name (dt));
   g_assert (!g_date_time_is_daylight_savings (dt));
   g_date_time_unref (dt);
+  g_time_zone_free (time_zone);
 }
 
 static void
@@ -987,7 +995,6 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/add_weeks", test_GDateTime_add_weeks);
   g_test_add_func ("/GDateTime/add_years", test_GDateTime_add_years);
   g_test_add_func ("/GDateTime/compare", test_GDateTime_compare);
-  g_test_add_func ("/GDateTime/copy", test_GDateTime_copy);
   g_test_add_func ("/GDateTime/date", test_GDateTime_date);
   g_test_add_func ("/GDateTime/diff", test_GDateTime_diff);
   g_test_add_func ("/GDateTime/equal", test_GDateTime_equal);

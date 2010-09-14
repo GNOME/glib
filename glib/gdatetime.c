@@ -54,9 +54,13 @@
 
 #include "gatomic.h"
 #include "gfileutils.h"
+#include "ghash.h"
 #include "gmain.h"
+#include "gmappedfile.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
+#include "gthread.h"
+
 #include "glibintl.h"
 
 /**
@@ -122,12 +126,19 @@
 /* Translators: this is the preferred format for expressing the time */
 #define GET_PREFERRED_TIME(d) (g_date_time_printf ((d), C_("GDateTime", "%H:%M:%S")))
 
-typedef struct _GTimeZone       GTimeZone;
+#define SECS_PER_MINUTE (60)
+#define SECS_PER_HOUR   (60 * SECS_PER_MINUTE)
+#define SECS_PER_DAY    (24 * SECS_PER_HOUR)
+#define SECS_PER_YEAR   (365 * SECS_PER_DAY)
+#define SECS_PER_JULIAN (DAYS_PER_PERIOD * SECS_PER_DAY)
+
+typedef struct _GTimeZoneFile   GTimeZoneFile;
 
 struct _GDateTime
 {
   /* 1 is 0001-01-01 in Proleptic Gregorian */
   guint32 days;
+
   /* Microsecond timekeeping within Day */
   guint64 usec;
 
@@ -139,13 +150,28 @@ struct _GDateTime
 
 struct _GTimeZone
 {
-  /* TZ abbreviation (e.g. PST) */
-  gchar  *name;
+  GTimeZoneFile *tz_file;
+
+  gchar *name;
 
   gint64 offset;
 
-  guint is_dst : 1;
+  guint is_dst      : 1;
+  guint is_utc      : 1;
+  guint is_floating : 1;
 };
+
+struct _GTimeZoneFile
+{
+  GMappedFile *file;
+
+  gchar *filename;
+
+  volatile gint ref_count;
+};
+
+G_LOCK_DEFINE_STATIC (time_zone_files);
+static GHashTable *time_zone_files = NULL;
 
 static const guint16 days_in_months[2][13] =
 {
@@ -399,7 +425,6 @@ g_date_time_add_ymd (GDateTime *datetime,
 #define TZ_TIMECNT_OFFSET       32
 #define TZ_TYPECNT_OFFSET       36
 #define TZ_TRANSITIONS_OFFSET   44
-
 #define TZ_TTINFO_SIZE          6
 #define TZ_TTINFO_GMTOFF_OFFSET 0
 #define TZ_TTINFO_ISDST_OFFSET  4
@@ -408,52 +433,31 @@ g_date_time_add_ymd (GDateTime *datetime,
 static gchar *
 get_tzdata_path (const gchar *tz_name)
 {
-  gchar *retval;
+  gchar *retval = NULL;
+  const gchar *tz_dir = g_getenv ("TZDIR");
 
-  if (tz_name != NULL)
-    {
-      const gchar *tz_dir = g_getenv ("TZDIR");
-
-      if (tz_dir != NULL)
-        retval = g_build_filename (tz_dir, tz_name, NULL);
-      else
-        retval = g_build_filename ("/", "usr", "share", ZONEINFO_DIR, tz_name, NULL);
-    }
+  if (tz_dir != NULL)
+    retval = g_build_filename (tz_dir, tz_name, NULL);
   else
     {
-      /* an empty tz_name means "the current timezone file". tzset(3) defines
-       * it to be /usr/share/zoneinfo/localtime, and it also allows an
-       * /etc/localtime as a symlink to the localtime file under
-       * /usr/share/zoneinfo or to the correct timezone file. Fedora does not
-       * have /usr/share/zoneinfo/localtime, but it does have a real
-       * /etc/localtime.
-       *
-       * in any case, this path should resolve correctly.
-       */
-      retval = g_build_filename ("/", "etc", "localtime", NULL);
+      if (strcmp (tz_name, "localtime") == 0)
+        retval = g_build_filename ("/", "etc", "localtime", NULL);
+      else
+        retval = g_build_filename ("/", "usr", "share", ZONEINFO_DIR, tz_name, NULL);
     }
 
   return retval;
 }
 
-/*
- * Parses tzdata database times to get timezone info.
- *
- * @tz_name: Olson database name for the timezone
- * @start: Time offset from epoch we want to know the timezone
- * @_is_dst: Returns if this time in the timezone is in DST
- * @_offset: Returns the offset from UTC for this timezone
- * @_name: Returns the abreviated name for thie timezone
- */
 static gboolean
-parse_tzdata (const gchar  *tz_name,
-              gint64        start,
-              gboolean      is_utc,
-	      gboolean     *_is_dst,
-              gint64       *_offset,
-              gchar       **_name)
+parse_tzdata (GTimeZoneFile  *tz_file,
+              gint64          start,
+              gboolean        is_utc,
+              gint64         *_offset,
+              gboolean       *_is_dst,
+              gchar         **_name)
 {
-  gchar *filename, *contents;
+  gchar *contents;
   gsize length;
   guint32 timecnt, typecnt;
   gint transitions_size, ttinfo_map_size;
@@ -464,26 +468,13 @@ parse_tzdata (const gchar  *tz_name,
   guint8 isdst;
   guint8 name_offset;
   gint i;
-  GError *error;
 
-  filename = get_tzdata_path (tz_name);
-
-  /* XXX: should we be caching this in memory for faster access?
-   * and if so, how do we expire the cache?
-   */
-  error = NULL;
-  if (!g_file_get_contents (filename, &contents, &length, &error))
-    {
-      g_free (filename);
-      return FALSE;
-    }
-
-  g_free (filename);
+  contents = g_mapped_file_get_contents (tz_file->file);
+  length = g_mapped_file_get_length (tz_file->file);
 
   if (length < TZ_HEADER_SIZE ||
       (strncmp (contents, TZ_MAGIC, TZ_MAGIC_LEN) != 0))
     {
-      g_free (contents);
       return FALSE;
     }
 
@@ -543,8 +534,6 @@ parse_tzdata (const gchar  *tz_name,
   if (_name != NULL)
     *_name = g_strdup ((gchar*) (ttinfos + TZ_TTINFO_SIZE * typecnt + name_offset));
 
-  g_free (contents);
-
   if (_offset)
     *_offset = offset;
 
@@ -554,95 +543,411 @@ parse_tzdata (const gchar  *tz_name,
   return TRUE;
 }
 
-/*< internal >
- * g_time_zone_new_from_epoc:
- * @tz_name: The Olson's database timezone name
- * @epoch: The epoch offset
- * @is_utc: If the @epoch is in UTC or already in the @tz_name timezone
- *
- * Creates a new timezone
- */
-static GTimeZone *
-g_time_zone_new_from_epoch (const gchar *tz_name,
-                            gint64       epoch,
-                            gboolean     is_utc)
+static GTimeZoneFile *
+g_time_zone_file_new (const gchar *filename)
 {
-  GTimeZone *tz = NULL;
-  gint64 offset;
-  gboolean is_dst;
-  gchar *name = NULL;
+  GMappedFile *tz_file;
+  GTimeZoneFile *retval;
 
-  if (parse_tzdata (tz_name, epoch, is_utc, &is_dst, &offset, &name))
+  tz_file = g_mapped_file_new (filename, FALSE, NULL);
+  if (tz_file == NULL)
+    return NULL;
+
+  retval = g_slice_new (GTimeZoneFile);
+  retval->filename = g_strdup (filename);
+  retval->file = tz_file;
+  retval->ref_count = 1;
+
+  return retval;
+}
+
+static GTimeZoneFile *
+g_time_zone_file_ref (GTimeZoneFile *tz_file)
+{
+  if (tz_file == NULL)
+    return NULL;
+
+  g_atomic_int_inc (&tz_file->ref_count);
+
+  return tz_file;
+}
+
+static void
+g_time_zone_file_unref (GTimeZoneFile *tz_file)
+{
+  if (tz_file == NULL)
+    return;
+
+  if (g_atomic_int_dec_and_test (&tz_file->ref_count))
     {
-      tz = g_slice_new (GTimeZone);
-      tz->is_dst = is_dst;
-      tz->offset = offset;
-      tz->name = name;
+      /* remove the TimeZoneFile from the hash table of known files */
+      G_LOCK (time_zone_files);
+      g_hash_table_remove (time_zone_files, tz_file->filename);
+      G_UNLOCK (time_zone_files);
+
+      g_mapped_file_unref (tz_file->file);
+      g_free (tz_file->filename);
+      g_slice_free (GTimeZoneFile, tz_file);
     }
+}
+
+/*< internal >
+ * g_time_zone_file_get_for_path:
+ * @path: the full path for a time zone file
+ *
+ * Retrieves a #GTimeZoneFile for the given path.
+ *
+ * If a time zone file for the same path has been already requested,
+ * this function will return the same #GTimeZoneFile with its reference
+ * count increased by one; otherwise, a new #GTimeZoneFile will be created
+ * and added to the known time zone files.
+ *
+ * The time zone files are removed from the list of known files when their
+ * reference count reaches 0.
+ *
+ * This function holds the lock on the time_zone_files hash table.
+ *
+ * Return value: a #GTimeZoneFile or %NULL
+ */
+static GTimeZoneFile *
+g_time_zone_file_get_for_path (const gchar *path)
+{
+  GTimeZoneFile *retval;
+
+  G_LOCK (time_zone_files);
+
+  if (G_LIKELY (time_zone_files != NULL))
+    {
+      retval = g_hash_table_lookup (time_zone_files, path);
+      if (retval != NULL)
+        {
+          retval = g_time_zone_file_ref (retval);
+          goto out;
+        }
+    }
+
+  retval = g_time_zone_file_new (path);
+  if (retval != NULL)
+    {
+      if (G_UNLIKELY (time_zone_files == NULL))
+        time_zone_files = g_hash_table_new (g_str_hash, g_str_equal);
+
+      g_hash_table_insert (time_zone_files, retval->filename, retval);
+    }
+
+out:
+  G_UNLOCK (time_zone_files);
+
+  return retval;
+}
+
+/**
+ * g_time_zone_new:
+ * @offset: the timezone offset from UTC, in seconds
+ * @is_dst: whether the timezone is in Daylight Saving Time or not
+ *
+ * Creates a new #GTimeZone for the given @offset, to be used when
+ * creating a #GDateTime.
+ *
+ * The #GTimeZone created will not be floating.
+ *
+ * Return value: (transfer full): the newly allocated #GTimeZone
+ *
+ * Since: 2.26
+ */
+GTimeZone *
+g_time_zone_new (gint     offset,
+                 gboolean is_dst)
+{
+  GTimeZone *tz;
+
+  g_return_val_if_fail (offset >= -12 * SECS_PER_HOUR && offset <= 12 * SECS_PER_HOUR, NULL);
+
+  tz = g_slice_new (GTimeZone);
+  tz->offset = offset;
+  tz->is_dst = is_dst;
+  tz->tz_file = NULL;
+  tz->is_floating = FALSE;
+
+  if (tz->offset == 0)
+    tz->name = g_strdup_printf ("UTC");
+  else
+    tz->name = g_strdup_printf ("UTC%c%02d:%02d",
+                                tz->offset > 0 ? '+' : '-',
+                                (int) tz->offset / 3600,
+                                (int) tz->offset / 60 % 60);
 
   return tz;
 }
 
-#define SECS_PER_MINUTE (60)
-#define SECS_PER_HOUR   (60 * SECS_PER_MINUTE)
-#define SECS_PER_DAY    (24 * SECS_PER_HOUR)
-#define SECS_PER_YEAR   (365 * SECS_PER_DAY)
-#define SECS_PER_JULIAN (DAYS_PER_PERIOD * SECS_PER_DAY)
-
-static gint64
-g_date_time_secs_offset (const GDateTime *dt)
+/**
+ * g_time_zone_new_for_name:
+ * @name: an ASCII string containing the Olson's database name of the
+ *   timezone, e.g. "America/New_York" or "Europe/London"
+ *
+ * Creates a new #GTimeZone for the given @name.
+ *
+ * The returned timezone is "floating": if queried, it will return invalid
+ * values. A floating #GTimeZone is "sunk" when it is bound to a #GDateTime
+ * object.
+ *
+ * For instance:
+ *
+ * |[
+ * /&ast; the time zone is "floating" &ast;/
+ * GTimeZone *tz = g_time_zone_new_for_name ("Europe/London");
+ *
+ * /&ast; this will print: "UTC offset: 0 seconds" &ast;/
+ * g_print ("UTC offset: %d seconds\n", g_time_zone_get_offset (tz));
+ *
+ * /&ast; the GDateTime object copies the time zone &ast;/
+ * GDateTime *dt = g_date_time_new_full (2010, 9, 15, 12, 0, 0, tz);
+ *
+ * /&ast; this will print: "UTC offset: 3600 seconds", because Europe/London
+ *  &ast; on that date is in daylight saving time
+ *  &ast;/
+ * g_print ("UTC offset: %d seconds\n",
+ *          g_date_time_get_utc_offset (dt) / G_USEC_PER_SEC);
+ * ]|
+ *
+ * Return value: (transfer full): the newly created, floating #GTimeZone
+ *   object for the given name, or %NULL if none was found
+ *
+ * Since: 2.26
+ */
+GTimeZone *
+g_time_zone_new_for_name (const gchar *name)
 {
-  gint64 secs;
-  gint d, y, h, m, s;
-  gint i, leaps;
+  GTimeZone *tz;
+  gchar *filename;
+  GTimeZoneFile *tz_file;
 
-  y = g_date_time_get_year (dt);
-  d = g_date_time_get_day_of_year (dt);
-  h = g_date_time_get_hour (dt);
-  m = g_date_time_get_minute (dt);
-  s = g_date_time_get_second (dt);
+  g_return_val_if_fail (name != NULL, NULL);
 
-  leaps = GREGORIAN_LEAP (y) ? 1 : 0;
-  for (i = 1970; i < y; i++)
-    {
-      if (GREGORIAN_LEAP (i))
-        leaps += 1;
-    }
+  filename = get_tzdata_path (name);
+  if (filename == NULL)
+    return NULL;
 
-  secs = 0;
-  secs += (y - 1970) * SECS_PER_YEAR;
-  secs += d * SECS_PER_DAY;
-  secs += (leaps - 1) * SECS_PER_DAY;
-  secs += h * SECS_PER_HOUR;
-  secs += m * SECS_PER_MINUTE;
-  secs += s;
+  tz_file = g_time_zone_file_get_for_path (filename);
+  g_free (filename);
 
-  if (dt->tz != NULL)
-    secs -= dt->tz->offset;
+  if (tz_file == NULL)
+    return NULL;
 
-  return secs;
+  tz = g_slice_new (GTimeZone);
+  tz->tz_file = tz_file;
+  tz->name = NULL;
+  tz->offset = 0;
+  tz->is_dst = FALSE;
+  tz->is_utc = (strcmp (name, "UTC") == 0);
+  tz->is_floating = TRUE;
+
+  return tz;
+}
+
+/**
+ * g_time_zone_new_utc:
+ *
+ * Creates a new #GTimeZone for UTC.
+ *
+ * Return value: (transfer full): a newly created #GTimeZone for UTC.
+ *   Use g_time_zone_free() when done.
+ *
+ * Since: 2.26
+ */
+GTimeZone *
+g_time_zone_new_utc (void)
+{
+  return g_time_zone_new (0, FALSE);
+}
+
+/**
+ * g_time_zone_new_local:
+ *
+ * Creates a new #GTimeZone for the local timezone.
+ *
+ * The returned #GTimeZone is floating.
+ *
+ * Return value: (transfer full): a newly created, floating #GTimeZone.
+ *   Use g_time_zone_free() when done.
+ *
+ * Since: 2.26
+ */
+GTimeZone *
+g_time_zone_new_local (void)
+{
+  return g_time_zone_new_for_name ("localtime");
+}
+
+/**
+ * g_time_zone_copy:
+ * @time_zone: a #GTimeZone
+ *
+ * Copies a #GTimeZone. If @time_zone is floating, the returned copy
+ * will be floating as well.
+ *
+ * Return value: (transfer full): the newly created #GTimeZone
+ *
+ * Since: 2.26
+ */
+GTimeZone *
+g_time_zone_copy (const GTimeZone *time_zone)
+{
+  GTimeZone *retval;
+
+  g_return_val_if_fail (time_zone != NULL, NULL);
+
+  retval = g_slice_dup (GTimeZone, time_zone);
+
+  if (time_zone->tz_file != NULL)
+    retval->tz_file = g_time_zone_file_ref (time_zone->tz_file);
+
+  if (time_zone->name != NULL)
+    retval->name = g_strdup (time_zone->name);
+
+  return retval;
+}
+
+/**
+ * g_time_zone_free:
+ * @time_zone: a #GTimeZone
+ *
+ * Frees the resources associated with a #GTimeZone
+ *
+ * Since: 2.26
+ */
+void
+g_time_zone_free (GTimeZone *time_zone)
+{
+  g_return_if_fail (time_zone != NULL);
+
+  if (time_zone->tz_file != NULL)
+    g_time_zone_file_unref (time_zone->tz_file);
+
+  g_free (time_zone->name);
+  g_slice_free (GTimeZone, time_zone);
+}
+
+/**
+ * g_time_zone_get_name:
+ * @time_zone: a #GTimeZone
+ *
+ * Retrieves the name of the @time_zone, or %NULL if the #GTimeZone is
+ * floating.
+ *
+ * Return value: (transfer none): the name of the #GTimeZone. The returned
+ *   string is owned by the #GTimeZone and it should never be modified or
+ *   freed
+ *
+ * Since: 2.26
+ */
+G_CONST_RETURN gchar *
+g_time_zone_get_name (const GTimeZone *time_zone)
+{
+  g_return_val_if_fail (time_zone != NULL, NULL);
+
+  if (!time_zone->is_floating)
+    return time_zone->name;
+
+  return NULL;
+}
+
+/**
+ * g_time_zone_get_offset:
+ * @time_zone: a #GTimeZone
+ *
+ * Retrieves the offset of the @time_zone, in seconds from UTC, or 0
+ * if the #GTimeZone is floating.
+ *
+ * Return value: the offset from UTC, in seconds
+ *
+ * Since: 2.26
+ */
+gint
+g_time_zone_get_offset (const GTimeZone *time_zone)
+{
+  g_return_val_if_fail (time_zone != NULL, 0);
+
+  if (!time_zone->is_floating)
+    return time_zone->offset;
+
+  return 0;
+}
+
+/**
+ * g_time_zone_get_is_dst:
+ * @time_zone: a #GTimeZone
+ *
+ * Checks whether the @time_zone is in Daylight Saving Time.
+ * If the #GTimeZone is floating, %FALSE is always returned.
+ *
+ * Return value: %TRUE if the #GTimeZone is in DST, or %FALSE.
+ *
+ * Since: 2.26
+ */
+gboolean
+g_time_zone_get_is_dst (const GTimeZone *time_zone)
+{
+  g_return_val_if_fail (time_zone != NULL, FALSE);
+
+  if (!time_zone->is_floating)
+    return time_zone->is_dst;
+
+  return FALSE;
+}
+
+/**
+ * g_time_zone_is_floating:
+ * @time_zone: a #GTimeZone
+ *
+ * Checks whether @time_zone is floating
+ *
+ * Return value: %TRUE if the #GTimeZone is floating, and %FALSE otherwise
+ *
+ * Since: 2.26
+ */
+gboolean
+g_time_zone_is_floating (const GTimeZone *time_zone)
+{
+  g_return_val_if_fail (time_zone != NULL, FALSE);
+
+  return time_zone->is_floating;
 }
 
 /*< internal >
- * g_date_time_create_time_zone:
- * @dt: a #GDateTime
- * @tz_name: the name of the timezone
+ * g_time_zone_sink:
+ * @time_zone: a #GTimeZone
+ * @datetime: a #GDateTime
  *
- * Creates a timezone from a #GDateTime (disregarding its own timezone).
- * This function transforms the #GDateTime into seconds since the epoch
- * and creates a timezone for it in the @tz_name zone.
+ * Sinks the floating state of @time_zone by associating it with the
+ * given #GDateTime.
  *
- * Return value: a newly created #GTimeZone
+ * If @time_zone is not floating, this function does not do anything
  */
-static GTimeZone *
-g_date_time_create_time_zone (GDateTime   *dt,
-                              const gchar *tz_name)
+static void
+g_time_zone_sink (GTimeZone *time_zone,
+                  GDateTime *datetime)
 {
-  gint64 secs;
+  gint64 offset, epoch;
+  gboolean is_dst, is_utc;
+  gchar *abbrev;
 
-  secs = g_date_time_secs_offset (dt);
+  if (!time_zone->is_floating)
+    return;
 
-  return g_time_zone_new_from_epoch (tz_name, secs, FALSE);
+  epoch = g_date_time_to_epoch (datetime);
+  is_utc = time_zone->is_utc;
+  offset = 0;
+  is_dst = FALSE;
+  abbrev = NULL;
+  if (parse_tzdata (time_zone->tz_file, epoch, is_utc, &offset, &is_dst, &abbrev))
+    {
+      time_zone->offset = offset;
+      time_zone->is_dst = is_dst;
+      time_zone->name = abbrev;
+      time_zone->is_utc = (offset == 0);
+      time_zone->is_floating = FALSE;
+    }
 }
 
 static GDateTime *
@@ -656,30 +961,30 @@ g_date_time_new (void)
   return datetime;
 }
 
-static GTimeZone *
-g_time_zone_copy (const GTimeZone *time_zone)
+/*< internal >
+ * g_date_time_copy:
+ * @datetime: a #GDateTime
+ *
+ * Creates a copy of @datetime.
+ *
+ * Return value: the newly created #GDateTime which should be freed with
+ *   g_date_time_unref().
+ */
+static GDateTime *
+g_date_time_copy (const GDateTime *datetime)
 {
-  GTimeZone *tz;
+  GDateTime *copied;
 
-  if (G_UNLIKELY (time_zone == NULL))
-    return NULL;
+  g_return_val_if_fail (datetime != NULL, NULL);
 
-  tz = g_slice_new (GTimeZone);
-  memcpy (tz, time_zone, sizeof (GTimeZone));
+  copied = g_date_time_new ();
+  copied->days = datetime->days;
+  copied->usec = datetime->usec;
 
-  tz->name = g_strdup (time_zone->name);
+  if (datetime->tz != NULL)
+    copied->tz = g_time_zone_copy (datetime->tz);
 
-  return tz;
-}
-
-static void
-g_time_zone_free (GTimeZone *time_zone)
-{
-  if (G_LIKELY (time_zone != NULL))
-    {
-      g_free (time_zone->name);
-      g_slice_free (GTimeZone, time_zone);
-    }
+  return copied;
 }
 
 static void
@@ -688,10 +993,52 @@ g_date_time_free (GDateTime *datetime)
   if (G_UNLIKELY (datetime == NULL))
     return;
 
-  if (datetime->tz)
+  if (datetime->tz != NULL)
     g_time_zone_free (datetime->tz);
 
   g_slice_free (GDateTime, datetime);
+}
+
+/**
+ * g_date_time_ref:
+ * @datetime: a #GDateTime
+ *
+ * Atomically increments the reference count of @datetime by one.
+ *
+ * Return value: the #GDateTime with the reference count increased
+ *
+ * Since: 2.26
+ */
+GDateTime *
+g_date_time_ref (GDateTime *datetime)
+{
+  g_return_val_if_fail (datetime != NULL, NULL);
+  g_return_val_if_fail (datetime->ref_count > 0, NULL);
+
+  g_atomic_int_inc (&datetime->ref_count);
+
+  return datetime;
+}
+
+/**
+ * g_date_time_unref:
+ * @datetime: a #GDateTime
+ *
+ * Atomically decrements the reference count of @datetime by one.
+ *
+ * When the reference count reaches zero, the resources allocated by
+ * @datetime are freed
+ *
+ * Since: 2.26
+ */
+void
+g_date_time_unref (GDateTime *datetime)
+{
+  g_return_if_fail (datetime != NULL);
+  g_return_if_fail (datetime->ref_count > 0);
+
+  if (g_atomic_int_dec_and_test (&datetime->ref_count))
+    g_date_time_free (datetime);
 }
 
 static void
@@ -1057,32 +1404,6 @@ g_date_time_compare (gconstpointer dt1,
     }
   else
     return -1;
-}
-
-/**
- * g_date_time_copy:
- * @datetime: a #GDateTime
- *
- * Creates a copy of @datetime.
- *
- * Return value: the newly created #GDateTime which should be freed with
- *   g_date_time_unref().
- *
- * Since: 2.26
- */
-GDateTime*
-g_date_time_copy (const GDateTime *datetime)
-{
-  GDateTime *copied;
-
-  g_return_val_if_fail (datetime != NULL, NULL);
-
-  copied = g_date_time_new ();
-  copied->days = datetime->days;
-  copied->usec = datetime->usec;
-  copied->tz = g_time_zone_copy (datetime->tz);
-
-  return copied;
 }
 
 /**
@@ -1550,7 +1871,7 @@ g_date_time_get_utc_offset (const GDateTime *datetime)
   g_return_val_if_fail (datetime != NULL, 0);
 
   if (datetime->tz != NULL)
-    offset = datetime->tz->offset;
+    offset = g_time_zone_get_offset (datetime->tz);
 
   return (gint64) offset * USEC_PER_SECOND;
 }
@@ -1559,8 +1880,7 @@ g_date_time_get_utc_offset (const GDateTime *datetime)
  * g_date_time_get_timezone_name:
  * @datetime: a #GDateTime
  *
- * Retrieves the Olson's database timezone name of the timezone specified
- * by @datetime.
+ * Retrieves the name of the timezone specified by @datetime, if any.
  *
  * Return value: (transfer none): the name of the timezone. The returned
  *   string is owned by the #GDateTime and it should not be modified or
@@ -1574,7 +1894,7 @@ g_date_time_get_timezone_name (const GDateTime *datetime)
   g_return_val_if_fail (datetime != NULL, NULL);
 
   if (datetime->tz != NULL)
-    return datetime->tz->name;
+    return g_time_zone_get_name (datetime->tz);
 
   return "UTC";
 }
@@ -1656,7 +1976,7 @@ g_date_time_is_daylight_savings (const GDateTime *datetime)
 {
   g_return_val_if_fail (datetime != NULL, FALSE);
 
-  if (!datetime->tz)
+  if (datetime->tz == NULL)
     return FALSE;
 
   return datetime->tz->is_dst;
@@ -1690,7 +2010,8 @@ g_date_time_new_from_date (gint year,
   dt = g_date_time_new ();
 
   dt->days = date_to_proleptic_gregorian (year, month, day);
-  dt->tz = g_date_time_create_time_zone (dt, NULL);
+  dt->tz = g_time_zone_new_local ();
+  g_time_zone_sink (dt->tz, dt);
 
   return dt;
 }
@@ -1701,13 +2022,17 @@ g_date_time_new_from_date (gint year,
  *
  * Creates a new #GDateTime using the time since Jan 1, 1970 specified by @t.
  *
+ * The timezone of the returned #GDateTime is the local time.
+ *
  * Return value: the newly created #GDateTime
  *
  * Since: 2.26
  */
 GDateTime*
-g_date_time_new_from_epoch (gint64 t) /* IN */
+g_date_time_new_from_epoch (gint64 t)
 {
+  GDateTime *datetime;
+  GTimeZone *tz;
   struct tm tm;
   time_t tt;
 
@@ -1739,13 +2064,17 @@ g_date_time_new_from_epoch (gint64 t) /* IN */
   }
 #endif /* HAVE_LOCALTIME_R */
 
-  return g_date_time_new_full (tm.tm_year + 1900,
-                               tm.tm_mon  + 1,
-                               tm.tm_mday,
-                               tm.tm_hour,
-                               tm.tm_min,
-                               tm.tm_sec,
-                               NULL);
+  tz = g_time_zone_new_local ();
+  datetime = g_date_time_new_full (tm.tm_year + 1900,
+                                   tm.tm_mon  + 1,
+                                   tm.tm_mday,
+                                   tm.tm_hour,
+                                   tm.tm_min,
+                                   tm.tm_sec,
+                                   tz);
+  g_time_zone_free (tz);
+
+  return datetime;
 }
 
 /**
@@ -1753,6 +2082,8 @@ g_date_time_new_from_epoch (gint64 t) /* IN */
  * @tv: #GTimeVal
  *
  * Creates a new #GDateTime using the date and time specified by #GTimeVal.
+ *
+ * The timezone of the returned #GDateTime is UTC.
  *
  * Return value: the newly created #GDateTime
  *
@@ -1767,7 +2098,8 @@ g_date_time_new_from_timeval (GTimeVal *tv)
 
   datetime = g_date_time_new_from_epoch (tv->tv_sec);
   datetime->usec += tv->tv_usec;
-  datetime->tz = g_date_time_create_time_zone (datetime, NULL);
+  datetime->tz = g_time_zone_new_local ();
+  g_time_zone_sink (datetime->tz, datetime);
 
   return datetime;
 }
@@ -1780,23 +2112,26 @@ g_date_time_new_from_timeval (GTimeVal *tv)
  * @hour: the hour of the day
  * @minute: the minute of the hour
  * @second: the second of the minute
- * @time_zone: (allow-none): the Olson's database timezone name, or %NULL
- *   for local (e.g. America/New_York)
+ * @time_zone: (allow-none): a #GTimeZone, or %NULL for UTC
  *
- * Creates a new #GDateTime using the date and times in the Gregorian calendar.
+ * Creates a new #GDateTime using the date and times in the Gregorian
+ * calendar.
+ *
+ * If @time_zone is not %NULL, the #GDateTime will copy the #GTimeZone
+ * and sink it, if floating.
  *
  * Return value: the newly created #GDateTime
  *
  * Since: 2.26
  */
 GDateTime *
-g_date_time_new_full (gint         year,
-                      gint         month,
-                      gint         day,
-                      gint         hour,
-                      gint         minute,
-                      gint         second,
-                      const gchar *time_zone)
+g_date_time_new_full (gint             year,
+                      gint             month,
+                      gint             day,
+                      gint             hour,
+                      gint             minute,
+                      gint             second,
+                      const GTimeZone *time_zone)
 {
   GDateTime *dt;
 
@@ -1804,20 +2139,19 @@ g_date_time_new_full (gint         year,
   g_return_val_if_fail (minute >= 0 && minute < 60, NULL);
   g_return_val_if_fail (second >= 0 && second <= 60, NULL);
 
-  if ((dt = g_date_time_new_from_date (year, month, day)) == NULL)
-    return NULL;
-
+  dt = g_date_time_new ();
+  dt->days = date_to_proleptic_gregorian (year, month, day);
   dt->usec = (hour   * USEC_PER_HOUR)
            + (minute * USEC_PER_MINUTE)
            + (second * USEC_PER_SECOND);
 
-  dt->tz = g_date_time_create_time_zone (dt, time_zone);
-  if (time_zone != NULL && dt->tz == NULL)
+  if (time_zone != NULL)
     {
-      /* timezone creation failed */
-      g_date_time_unref (dt);
-      dt = NULL;
+      dt->tz = g_time_zone_copy (time_zone);
+      g_time_zone_sink (dt->tz, dt);
     }
+  else
+    dt->tz = NULL;
 
   return dt;
 }
@@ -1888,7 +2222,8 @@ g_date_time_new_now (void)
  *      the date.
  * %%y  The year as a decimal number without the century.
  * %%Y  The year as a decimal number including the century.
- * %%Z  Alphabetic time zone abbreviation (e.g. EDT).
+ * %%z  The time-zone as hour offset from UTC
+ * %%Z  The timezone or name or abbreviation
  * %%%  A literal %% character.
  *
  * Return value: a newly allocated string formatted to the requested format or
@@ -2048,11 +2383,25 @@ g_date_time_printf (const GDateTime *datetime,
                 case 'Y':
                   g_string_append_printf (outstr, "%d", g_date_time_get_year (datetime));
                   break;
+                case 'z':
+                  if (datetime->tz != NULL)
+                    {
+                      gint64 offset = g_date_time_get_utc_offset (datetime)
+                                    / USEC_PER_SECOND;
+
+                      g_string_append_printf (outstr, "%c%02d%02d",
+                                              offset >= 0 ? '+' : '-',
+                                              (int) offset / 3600,
+                                              (int) offset / 60 % 60);
+                    }
+                  else
+                    g_string_append (outstr, "+0000");
+                  break;
                 case 'Z':
                   if (datetime->tz != NULL)
-                    g_string_append_printf (outstr, "%s", datetime->tz->name);
+                    g_string_append (outstr, g_date_time_get_timezone_name (datetime));
                   else
-                    g_string_append_printf (outstr, "UTC");
+                    g_string_append (outstr, "UTC");
                   break;
                 case '%':
                   g_string_append_c (outstr, '%');
@@ -2078,48 +2427,6 @@ bad_format:
 }
 
 /**
- * g_date_time_ref:
- * @datetime: a #GDateTime
- *
- * Atomically increments the reference count of @datetime by one.
- *
- * Return value: the #GDateTime with the reference count increased
- *
- * Since: 2.26
- */
-GDateTime *
-g_date_time_ref (GDateTime *datetime)
-{
-  g_return_val_if_fail (datetime != NULL, NULL);
-  g_return_val_if_fail (datetime->ref_count > 0, NULL);
-
-  g_atomic_int_inc (&datetime->ref_count);
-
-  return datetime;
-}
-
-/**
- * g_date_time_unref:
- * @datetime: a #GDateTime
- *
- * Atomically decrements the reference count of @datetime by one.
- *
- * When the reference count reaches zero, the resources allocated by
- * @datetime are freed
- *
- * Since: 2.26
- */
-void
-g_date_time_unref (GDateTime *datetime)
-{
-  g_return_if_fail (datetime != NULL);
-  g_return_if_fail (datetime->ref_count > 0);
-
-  if (g_atomic_int_dec_and_test (&datetime->ref_count))
-    g_date_time_free (datetime);
-}
-
-/**
  * g_date_time_to_local:
  * @datetime: a #GDateTime
  *
@@ -2139,10 +2446,11 @@ g_date_time_to_local (const GDateTime *datetime)
   dt = g_date_time_copy (datetime);
   if (dt->tz == NULL)
     {
-      dt->tz = g_date_time_create_time_zone (dt, NULL);
+      dt->tz = g_time_zone_new_local ();
       if (dt->tz == NULL)
         return dt;
 
+      g_time_zone_sink (dt->tz, dt);
       g_date_time_add_usec (dt, dt->tz->offset * USEC_PER_SECOND);
     }
 
@@ -2172,7 +2480,7 @@ g_date_time_to_epoch (const GDateTime *datetime)
 
   result = (datetime->days - UNIX_EPOCH_START) * SEC_PER_DAY
          + datetime->usec / USEC_PER_SECOND
-         - g_date_time_get_utc_offset (datetime) / 1000000;
+         - g_date_time_get_utc_offset (datetime) / USEC_PER_SECOND;
 
   return result;
 }
@@ -2191,9 +2499,7 @@ g_date_time_to_timeval (const GDateTime *datetime,
                         GTimeVal        *tv)
 {
   g_return_if_fail (datetime != NULL);
-
-  tv->tv_sec = 0;
-  tv->tv_usec = 0;
+  g_return_if_fail (tv != NULL);
 
   tv->tv_sec = g_date_time_to_epoch (datetime);
   tv->tv_usec = datetime->usec % USEC_PER_SECOND;
@@ -2215,13 +2521,17 @@ GDateTime *
 g_date_time_to_utc (const GDateTime *datetime)
 {
   GDateTime *dt;
-  GTimeSpan  ts;
+  GTimeSpan ts;
 
   g_return_val_if_fail (datetime != NULL, NULL);
 
   ts = g_date_time_get_utc_offset (datetime) * -1;
   dt = g_date_time_add (datetime, ts);
-  dt->tz = NULL;
+  if (dt->tz != NULL)
+    {
+      g_time_zone_free (dt->tz);
+      dt->tz = NULL;
+    }
 
   return dt;
 }

@@ -336,7 +336,6 @@ g_date_time_add_seconds
 g_date_time_add_weeks
 g_date_time_add_years
 g_date_time_compare
-g_date_time_copy
 g_date_time_day
 g_date_time_difference
 g_date_time_equal
@@ -372,6 +371,16 @@ g_date_time_to_epoch
 g_date_time_to_timeval
 g_date_time_to_utc
 g_date_time_unref
+g_time_zone_copy
+g_time_zone_free
+g_time_zone_get_is_dst
+g_time_zone_get_name
+g_time_zone_get_offset
+g_time_zone_is_floating
+g_time_zone_new
+g_time_zone_new_for_name
+g_time_zone_new_local
+g_time_zone_new_utc
 #endif
 #endif
 
