@@ -1544,6 +1544,9 @@ g_variant_serialised_is_normal (GVariantSerialised serialised)
 
                  )
 
+  if (serialised.data == NULL)
+    return FALSE;
+
   /* some hard-coded terminal cases */
   switch (g_variant_type_info_get_type_char (serialised.type_info))
     {

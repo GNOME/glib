@@ -503,11 +503,33 @@ g_variant_new_from_buffer (const GVariantType *type,
                            gboolean            trusted)
 {
   GVariant *value;
+  guint alignment;
+  gsize size;
 
   value = g_variant_alloc (type, TRUE, trusted);
+
   value->contents.serialised.buffer = g_buffer_ref (buffer);
-  value->contents.serialised.data = buffer->data;
-  value->size = buffer->size;
+
+  g_variant_type_info_query (value->type_info,
+                             &alignment, &size);
+
+  if (size && buffer->size != size)
+    {
+      /* Creating a fixed-sized GVariant with a buffer of the wrong
+       * size.
+       *
+       * We should do the equivalent of pulling a fixed-sized child out
+       * of a brozen container (ie: data is NULL size is equal to the correct
+       * fixed size).
+       */
+      value->contents.serialised.data = NULL;
+      value->size = size;
+    }
+  else
+    {
+      value->contents.serialised.data = buffer->data;
+      value->size = buffer->size;
+    }
 
   return value;
 }
