@@ -313,111 +313,6 @@ get_weekday_name_abbr (gint day)
   return NULL;
 }
 
-static inline gint
-date_to_proleptic_gregorian (gint year,
-                             gint month,
-                             gint day)
-{
-  gint64 days;
-
-  days = (year - 1) * 365 + ((year - 1) / 4) - ((year - 1) / 100)
-      + ((year - 1) / 400);
-
-  days += days_in_year[0][month - 1];
-  if (GREGORIAN_LEAP (year) && month > 2)
-    day++;
-
-  days += day;
-
-  return days;
-}
-
-static inline void
-g_date_time_add_days_internal (GDateTime *datetime,
-                               gint64     days)
-{
-  datetime->days += days;
-}
-
-static inline void
-g_date_time_add_usec (GDateTime *datetime,
-                      gint64     usecs)
-{
-  gint64 u = datetime->usec + usecs;
-  gint d = u / USEC_PER_DAY;
-
-  if (u < 0)
-    d -= 1;
-
-  if (d != 0)
-    g_date_time_add_days_internal (datetime, d);
-
-  if (u < 0)
-    datetime->usec = USEC_PER_DAY + (u % USEC_PER_DAY);
-  else
-    datetime->usec = u % USEC_PER_DAY;
-}
-
-/*< internal >
- * g_date_time_add_ymd:
- * @datetime: a #GDateTime
- * @years: years to add, in the Gregorian calendar
- * @months: months to add, in the Gregorian calendar
- * @days: days to add, in the Gregorian calendar
- *
- * Updates @datetime by adding @years, @months and @days to it
- *
- * This function modifies the passed #GDateTime so public accessors
- * should make always pass a copy
- */
-static inline void
-g_date_time_add_ymd (GDateTime *datetime,
-                     gint       years,
-                     gint       months,
-                     gint       days)
-{
-  gint y = g_date_time_get_year (datetime);
-  gint m = g_date_time_get_month (datetime);
-  gint d = g_date_time_get_day_of_month (datetime);
-  gint step, i;
-  const guint16 *max_days;
-
-  y += years;
-
-  /* subtract one day for leap years */
-  if (GREGORIAN_LEAP (y) && m == 2)
-    {
-      if (d == 29)
-        d -= 1;
-    }
-
-  /* add months */
-  step = months > 0 ? 1 : -1;
-  for (i = 0; i < ABS (months); i++)
-    {
-      m += step;
-
-      if (m < 1)
-        {
-          y -= 1;
-          m = 12;
-        }
-      else if (m > 12)
-        {
-          y += 1;
-          m = 1;
-        }
-    }
-
-  /* clamp the days */
-  max_days = days_in_months[GREGORIAN_LEAP (y) ? 1 : 0];
-  if (max_days[m] < d)
-    d = max_days[m];
-
-  datetime->days = date_to_proleptic_gregorian (y, m, d);
-  g_date_time_add_days_internal (datetime, days);
-}
-
 #define ZONEINFO_DIR            "zoneinfo"
 #define TZ_MAGIC                "TZif"
 #define TZ_MAGIC_LEN            (strlen (TZ_MAGIC))
@@ -948,6 +843,171 @@ g_time_zone_sink (GTimeZone *time_zone,
       time_zone->is_utc = (offset == 0);
       time_zone->is_floating = FALSE;
     }
+}
+
+static inline gint
+date_to_proleptic_gregorian (gint year,
+                             gint month,
+                             gint day)
+{
+  gint64 days;
+
+  days = (year - 1) * 365 + ((year - 1) / 4) - ((year - 1) / 100)
+      + ((year - 1) / 400);
+
+  days += days_in_year[0][month - 1];
+  if (GREGORIAN_LEAP (year) && month > 2)
+    day++;
+
+  days += day;
+
+  return days;
+}
+
+static inline void g_date_time_add_usec (GDateTime *datetime,
+                                         gint64     usecs);
+
+static inline void
+g_date_time_add_days_internal (GDateTime *datetime,
+                               gint64     days)
+{
+  gboolean was_dst = FALSE;
+  gint64 old_offset = 0;
+
+  if (datetime->tz != NULL && datetime->tz->tz_file != NULL)
+    {
+      was_dst = g_time_zone_get_is_dst (datetime->tz);
+      old_offset = g_time_zone_get_offset (datetime->tz);
+
+      datetime->tz->is_floating = TRUE;
+    }
+
+  datetime->days += days;
+
+  if (datetime->tz != NULL && datetime->tz->tz_file != NULL)
+    {
+      gint64 offset;
+
+      g_time_zone_sink (datetime->tz, datetime);
+
+      if (was_dst == g_time_zone_get_is_dst (datetime->tz))
+        return;
+
+      offset = old_offset - g_time_zone_get_offset (datetime->tz);
+      g_date_time_add_usec (datetime, offset * USEC_PER_SECOND * -1);
+    }
+}
+
+static inline void
+g_date_time_add_usec (GDateTime *datetime,
+                      gint64     usecs)
+{
+  gint64 u = datetime->usec + usecs;
+  gint d = u / USEC_PER_DAY;
+  gboolean was_dst = FALSE;
+  gint64 old_offset = 0;
+
+  /* if we are using a time zone from a zoneinfo we want to
+   * check for changes in the DST and update the DateTime
+   * accordingly in case we change for standard time to DST
+   * and vice versa
+   */
+  if (datetime->tz != NULL && datetime->tz->tz_file != NULL)
+    {
+      was_dst = g_time_zone_get_is_dst (datetime->tz);
+      old_offset = g_time_zone_get_offset (datetime->tz);
+
+      /* force the floating state */
+      datetime->tz->is_floating = TRUE;
+    }
+
+  if (u < 0)
+    d -= 1;
+
+  if (d != 0)
+    g_date_time_add_days_internal (datetime, d);
+
+  if (u < 0)
+    datetime->usec = USEC_PER_DAY + (u % USEC_PER_DAY);
+  else
+    datetime->usec = u % USEC_PER_DAY;
+
+  if (datetime->tz != NULL && datetime->tz->tz_file != NULL)
+    {
+      gint64 offset;
+
+      /* sink the timezone; if there were no changes in the
+       * DST state then bail out; otherwise, apply the change
+       * in the offset to the DateTime
+       */
+      g_time_zone_sink (datetime->tz, datetime);
+
+      if (was_dst == g_time_zone_get_is_dst (datetime->tz))
+        return;
+
+      offset = old_offset - g_time_zone_get_offset (datetime->tz);
+      g_date_time_add_usec (datetime, offset * USEC_PER_SECOND * -1);
+    }
+}
+
+/*< internal >
+ * g_date_time_add_ymd:
+ * @datetime: a #GDateTime
+ * @years: years to add, in the Gregorian calendar
+ * @months: months to add, in the Gregorian calendar
+ * @days: days to add, in the Gregorian calendar
+ *
+ * Updates @datetime by adding @years, @months and @days to it
+ *
+ * This function modifies the passed #GDateTime so public accessors
+ * should make always pass a copy
+ */
+static inline void
+g_date_time_add_ymd (GDateTime *datetime,
+                     gint       years,
+                     gint       months,
+                     gint       days)
+{
+  gint y = g_date_time_get_year (datetime);
+  gint m = g_date_time_get_month (datetime);
+  gint d = g_date_time_get_day_of_month (datetime);
+  gint step, i;
+  const guint16 *max_days;
+
+  y += years;
+
+  /* subtract one day for leap years */
+  if (GREGORIAN_LEAP (y) && m == 2)
+    {
+      if (d == 29)
+        d -= 1;
+    }
+
+  /* add months */
+  step = months > 0 ? 1 : -1;
+  for (i = 0; i < ABS (months); i++)
+    {
+      m += step;
+
+      if (m < 1)
+        {
+          y -= 1;
+          m = 12;
+        }
+      else if (m > 12)
+        {
+          y += 1;
+          m = 1;
+        }
+    }
+
+  /* clamp the days */
+  max_days = days_in_months[GREGORIAN_LEAP (y) ? 1 : 0];
+  if (max_days[m] < d)
+    d = max_days[m];
+
+  datetime->days = date_to_proleptic_gregorian (y, m, d);
+  g_date_time_add_days_internal (datetime, days);
 }
 
 static GDateTime *

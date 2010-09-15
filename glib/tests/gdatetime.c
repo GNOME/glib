@@ -484,26 +484,30 @@ test_GDateTime_add_years (void)
 static void
 test_GDateTime_add_months (void)
 {
+  GTimeZone *utc_tz = g_time_zone_new_utc ();
+
 #define TEST_ADD_MONTHS(y,m,d,a,ny,nm,nd) G_STMT_START { \
   GDateTime *dt, *dt2; \
-  dt = g_date_time_new_from_date (y, m, d); \
+  dt = g_date_time_new_full (y, m, d, 0, 0, 0, utc_tz); \
   dt2 = g_date_time_add_months (dt, a); \
   ASSERT_DATE (dt2, ny, nm, nd); \
   g_date_time_unref (dt); \
   g_date_time_unref (dt2); \
 } G_STMT_END
 
-  TEST_ADD_MONTHS (2009, 12, 31, 1, 2010, 1, 31);
-  TEST_ADD_MONTHS (2009, 12, 31, 1, 2010, 1, 31);
-  TEST_ADD_MONTHS (2009, 6, 15, 1, 2009, 7, 15);
-  TEST_ADD_MONTHS (1400, 3, 1, 1, 1400, 4, 1);
-  TEST_ADD_MONTHS (1400, 1, 31, 1, 1400, 2, 28);
-  TEST_ADD_MONTHS (1400, 1, 31, 7200, 2000, 1, 31);
-  TEST_ADD_MONTHS (2008, 2, 29, 12, 2009, 2, 28);
-  TEST_ADD_MONTHS (2000, 8, 16, -5, 2000, 3, 16);
-  TEST_ADD_MONTHS (2000, 8, 16, -12, 1999, 8, 16);
-  TEST_ADD_MONTHS (2011, 2, 1, -13, 2010, 1, 1);
-  TEST_ADD_MONTHS (1776, 7, 4, 1200, 1876, 7, 4);
+  TEST_ADD_MONTHS (2009, 12, 31,    1, 2010, 1, 31);
+  TEST_ADD_MONTHS (2009, 12, 31,    1, 2010, 1, 31);
+  TEST_ADD_MONTHS (2009,  6, 15,    1, 2009, 7, 15);
+  TEST_ADD_MONTHS (1400,  3,  1,    1, 1400, 4,  1);
+  TEST_ADD_MONTHS (1400,  1, 31,    1, 1400, 2, 28);
+  TEST_ADD_MONTHS (1400,  1, 31, 7200, 2000, 1, 31);
+  TEST_ADD_MONTHS (2008,  2, 29,   12, 2009, 2, 28);
+  TEST_ADD_MONTHS (2000,  8, 16,   -5, 2000, 3, 16);
+  TEST_ADD_MONTHS (2000,  8, 16,  -12, 1999, 8, 16);
+  TEST_ADD_MONTHS (2011,  2,  1,  -13, 2010, 1,  1);
+  TEST_ADD_MONTHS (1776,  7,  4, 1200, 1876, 7,  4);
+
+  g_time_zone_free (utc_tz);
 }
 
 static void
@@ -981,6 +985,44 @@ GDateTime *__dt = g_date_time_new_from_date (2009, 10, 24);     \
   TEST_PRINTF ("%Z", dst);
 }
 
+static void
+test_GDateTime_dst (void)
+{
+  GDateTime *dt1, *dt2;
+  GTimeZone *tz;
+
+  tz = g_time_zone_new_for_name ("Europe/London");
+
+  /* this date has the DST state set for Europe/London */
+  dt1 = g_date_time_new_full (2009, 8, 15, 3, 0, 1, tz);
+  g_assert (g_date_time_is_daylight_savings (dt1));
+  g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, 3600);
+  g_assert_cmpint (g_date_time_get_hour (dt1), ==, 3);
+
+  /* add 6 months to clear the DST flag and go back one hour */
+  dt2 = g_date_time_add_months (dt1, 6);
+  g_assert (!g_date_time_is_daylight_savings (dt2));
+  g_assert_cmpint (g_date_time_get_utc_offset (dt2) / G_USEC_PER_SEC, ==, 0);
+  g_assert_cmpint (g_date_time_get_hour (dt2), ==, 2);
+
+  g_date_time_unref (dt2);
+  g_date_time_unref (dt1);
+
+  /* now do the reverse: start with a non-DST state and move to DST */
+  dt1 = g_date_time_new_full (2009, 2, 15, 2, 0, 1, tz);
+  g_assert (!g_date_time_is_daylight_savings (dt1));
+  g_assert_cmpint (g_date_time_get_hour (dt1), ==, 2);
+
+  dt2 = g_date_time_add_months (dt1, 6);
+  g_assert (g_date_time_is_daylight_savings (dt2));
+  g_assert_cmpint (g_date_time_get_hour (dt2), ==, 3);
+
+  g_date_time_unref (dt2);
+  g_date_time_unref (dt1);
+
+  g_time_zone_free (tz);
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -1029,6 +1071,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/to_utc", test_GDateTime_to_utc);
   g_test_add_func ("/GDateTime/today", test_GDateTime_today);
   g_test_add_func ("/GDateTime/utc_now", test_GDateTime_utc_now);
+  g_test_add_func ("/GDateTime/dst", test_GDateTime_dst);
 
   return g_test_run ();
 }
