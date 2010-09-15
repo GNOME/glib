@@ -121,10 +121,10 @@
 #define MONTH_FULL(d)         (get_month_name (g_date_time_get_month (datetime)))
 
 /* Translators: this is the preferred format for expressing the date */
-#define GET_PREFERRED_DATE(d) (g_date_time_printf ((d), C_("GDateTime", "%m/%d/%y")))
+#define GET_PREFERRED_DATE(d) (g_date_time_format ((d), C_("GDateTime", "%m/%d/%y")))
 
 /* Translators: this is the preferred format for expressing the time */
-#define GET_PREFERRED_TIME(d) (g_date_time_printf ((d), C_("GDateTime", "%H:%M:%S")))
+#define GET_PREFERRED_TIME(d) (g_date_time_format ((d), C_("GDateTime", "%H:%M:%S")))
 
 #define SECS_PER_MINUTE (60)
 #define SECS_PER_HOUR   (60 * SECS_PER_MINUTE)
@@ -2237,7 +2237,7 @@ g_date_time_new_now (void)
 }
 
 /**
- * g_date_time_printf:
+ * g_date_time_format:
  * @datetime: A #GDateTime
  * @format: a valid UTF-8 string, containing the format for the #GDateTime
  *
@@ -2293,7 +2293,7 @@ g_date_time_new_now (void)
  * Since: 2.26
  */
 gchar *
-g_date_time_printf (const GDateTime *datetime,
+g_date_time_format (const GDateTime *datetime,
                     const gchar     *format)
 {
   GString  *outstr;

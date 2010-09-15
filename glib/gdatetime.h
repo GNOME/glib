@@ -192,7 +192,7 @@ gint64                g_date_time_to_epoch               (const GDateTime *datet
 void                  g_date_time_to_timeval             (const GDateTime *datetime,
                                                           GTimeVal        *tv);
 GDateTime *           g_date_time_to_utc                 (const GDateTime *datetime);
-gchar *               g_date_time_printf                 (const GDateTime *datetime,
+gchar *               g_date_time_format                 (const GDateTime *datetime,
                                                           const gchar     *format) G_GNUC_MALLOC;
 
 GTimeZone *           g_time_zone_new                    (gint             offset,

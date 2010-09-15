@@ -899,21 +899,21 @@ test_GDateTime_printf (void)
 
 #define TEST_PRINTF(f,o)                        G_STMT_START {  \
 GDateTime *__dt = g_date_time_new_from_date (2009, 10, 24);     \
-  gchar *__p = g_date_time_printf (__dt, (f));                  \
+  gchar *__p = g_date_time_format (__dt, (f));                  \
   g_assert_cmpstr (__p, ==, (o));                               \
   g_date_time_unref (__dt);                                     \
   g_free (__p);                                 } G_STMT_END
 
 #define TEST_PRINTF_DATE(y,m,d,f,o)             G_STMT_START {  \
   GDateTime *dt = g_date_time_new_from_date ((y), (m), (d));    \
-  gchar *p = g_date_time_printf (dt, (f));                      \
+  gchar *p = g_date_time_format (dt, (f));                      \
   g_assert_cmpstr (p, ==, (o));                                 \
   g_date_time_unref (dt);                                       \
   g_free (p);                                   } G_STMT_END
 
 #define TEST_PRINTF_TIME(h,m,s,f,o)             G_STMT_START { \
   GDateTime *dt = g_date_time_new_full (2009, 10, 24, (h), (m), (s), NULL); \
-  gchar *p = g_date_time_printf (dt, (f));                      \
+  gchar *p = g_date_time_format (dt, (f));                      \
   g_assert_cmpstr (p, ==, (o));                                 \
   g_date_time_unref (dt);                                       \
   g_free (p);                                   } G_STMT_END
