@@ -478,7 +478,10 @@ g_network_service_address_enumerator_next (GSocketAddressEnumerator  *enumerator
                 srv_enum->error = error;
               else
                 g_error_free (error);
+            }
 
+          if (!ret)
+            {
               g_object_unref (srv_enum->addr_enum);
               srv_enum->addr_enum = NULL;
             }
@@ -628,7 +631,10 @@ next_async_have_address (GObject      *source_object,
         srv_enum->error = error;
       else
         g_error_free (error);
+    }
 
+  if (!address)
+    {
       g_object_unref (srv_enum->addr_enum);
       srv_enum->addr_enum = NULL;
 
