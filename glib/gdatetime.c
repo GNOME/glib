@@ -2111,7 +2111,7 @@ g_date_time_new_from_timeval (GTimeVal *tv)
  * @day: the day of the Gregorian month
  * @hour: the hour of the day
  * @minute: the minute of the hour
- * @second: the second of the minute
+ * @second: the second of the minute, with eventual fractionary parts
  * @time_zone: (allow-none): a #GTimeZone, or %NULL for UTC
  *
  * Creates a new #GDateTime using the date and times in the Gregorian
@@ -2130,14 +2130,14 @@ g_date_time_new_full (gint             year,
                       gint             day,
                       gint             hour,
                       gint             minute,
-                      gint             second,
+                      gdouble          second,
                       const GTimeZone *time_zone)
 {
   GDateTime *dt;
 
   g_return_val_if_fail (hour >= 0 && hour < 24, NULL);
   g_return_val_if_fail (minute >= 0 && minute < 60, NULL);
-  g_return_val_if_fail (second >= 0 && second <= 60, NULL);
+  g_return_val_if_fail (second >= 0.0 && second <= 60.0, NULL);
 
   dt = g_date_time_new ();
   dt->days = date_to_proleptic_gregorian (year, month, day);

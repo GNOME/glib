@@ -188,7 +188,6 @@ test_GDateTime_compare (void)
   dt2 = g_date_time_new_full (2000, 1, 1, 0, 0, 0, NULL);
   g_assert_cmpint (0, ==, g_date_time_compare (dt1, dt2));
   g_date_time_unref (dt2);
-
   g_date_time_unref (dt1);
 }
 
@@ -390,6 +389,11 @@ test_GDateTime_get_millisecond (void)
   g_get_current_time (&tv);
   dt = g_date_time_new_from_timeval (&tv);
   g_assert_cmpint ((tv.tv_usec / 1000), ==, g_date_time_get_millisecond (dt));
+  g_date_time_unref (dt);
+
+  dt = g_date_time_new_full (2010, 9, 15, 12, 0, 0.1234, NULL);
+  g_assert_cmpint (123, ==, g_date_time_get_millisecond (dt));
+  g_assert_cmpint (123400, ==, g_date_time_get_microsecond (dt));
   g_date_time_unref (dt);
 }
 
