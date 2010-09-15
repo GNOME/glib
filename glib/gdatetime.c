@@ -1517,43 +1517,6 @@ g_date_time_difference (const GDateTime *begin,
 }
 
 /**
- * g_date_time_equal:
- * @dt1: a #GDateTime
- * @dt2: a #GDateTime
- *
- * Checks to see if @dt1 and @dt2 are equal.
- *
- * Equal here means that they represent the same moment after converting
- * them to the same timezone.
- *
- * Return value: %TRUE if @dt1 and @dt2 are equal
- *
- * Since: 2.26
- */
-gboolean
-g_date_time_equal (gconstpointer dt1,
-                   gconstpointer dt2)
-{
-  const GDateTime *a, *b;
-  GDateTime *a_utc, *b_utc;
-  gint64 a_epoch, b_epoch;
-
-  a = dt1;
-  b = dt2;
-
-  a_utc = g_date_time_to_utc (a);
-  b_utc = g_date_time_to_utc (b);
-
-  a_epoch = g_date_time_to_epoch (a_utc);
-  b_epoch = g_date_time_to_epoch (b_utc);
-
-  g_date_time_unref (a_utc);
-  g_date_time_unref (b_utc);
-
-  return a_epoch == b_epoch;
-}
-
-/**
  * g_date_time_get_day_of_week:
  * @datetime: a #GDateTime
  *
@@ -1994,7 +1957,51 @@ g_date_time_get_year (const GDateTime *datetime)
 guint
 g_date_time_hash (gconstpointer datetime)
 {
-  return (guint) (*((guint64 *) datetime));
+  GDateTime *dt_utc;
+  gint64 epoch;
+
+  dt_utc = g_date_time_to_utc (datetime);
+  epoch = g_date_time_to_epoch (dt_utc);
+  g_date_time_unref (dt_utc);
+
+  return (guint) epoch;
+}
+
+/**
+ * g_date_time_equal:
+ * @dt1: a #GDateTime
+ * @dt2: a #GDateTime
+ *
+ * Checks to see if @dt1 and @dt2 are equal.
+ *
+ * Equal here means that they represent the same moment after converting
+ * them to the same timezone.
+ *
+ * Return value: %TRUE if @dt1 and @dt2 are equal
+ *
+ * Since: 2.26
+ */
+gboolean
+g_date_time_equal (gconstpointer dt1,
+                   gconstpointer dt2)
+{
+  const GDateTime *a, *b;
+  GDateTime *a_utc, *b_utc;
+  gint64 a_epoch, b_epoch;
+
+  a = dt1;
+  b = dt2;
+
+  a_utc = g_date_time_to_utc (a);
+  b_utc = g_date_time_to_utc (b);
+
+  a_epoch = g_date_time_to_epoch (a_utc);
+  b_epoch = g_date_time_to_epoch (b_utc);
+
+  g_date_time_unref (a_utc);
+  g_date_time_unref (b_utc);
+
+  return a_epoch == b_epoch;
 }
 
 /**
