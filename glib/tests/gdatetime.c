@@ -73,7 +73,7 @@ test_GDateTime_now (void)
   memset (&tm, 0, sizeof (tm));
   get_localtime_tm (time (NULL), &tm);
 
-  dt = g_date_time_new_now ();
+  dt = g_date_time_new_now_local ();
 
   g_assert_cmpint (g_date_time_get_year (dt), ==, 1900 + tm.tm_year);
   g_assert_cmpint (g_date_time_get_month (dt), ==, 1 + tm.tm_mon);
@@ -87,27 +87,7 @@ test_GDateTime_now (void)
 }
 
 static void
-test_GDateTime_today (void)
-{
-  GDateTime *dt;
-  struct tm tm;
-
-  memset (&tm, 0, sizeof (tm));
-  get_localtime_tm (time (NULL), &tm);
-
-  dt = g_date_time_new_today ();
-  g_assert_cmpint (g_date_time_get_year (dt), ==, 1900 + tm.tm_year);
-  g_assert_cmpint (g_date_time_get_month (dt), ==, 1 + tm.tm_mon);
-  g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, tm.tm_mday);
-  g_assert_cmpint (g_date_time_get_hour (dt), ==, 0);
-  g_assert_cmpint (g_date_time_get_minute (dt), ==, 0);
-  g_assert_cmpint (g_date_time_get_second (dt), ==, 0);
-  g_assert_cmpint (g_date_time_get_millisecond (dt), ==, 0);
-  g_date_time_unref (dt);
-}
-
-static void
-test_GDateTime_new_from_epoch (void)
+test_GDateTime_new_from_unix (void)
 {
   GDateTime *dt;
   struct tm  tm;
@@ -117,7 +97,7 @@ test_GDateTime_new_from_epoch (void)
   t = time (NULL);
   get_localtime_tm (t, &tm);
 
-  dt = g_date_time_new_from_epoch (t);
+  dt = g_date_time_new_from_unix_local (t);
   g_assert_cmpint (g_date_time_get_year (dt), ==, 1900 + tm.tm_year);
   g_assert_cmpint (g_date_time_get_month (dt), ==, 1 + tm.tm_mon);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, tm.tm_mday);
@@ -135,7 +115,7 @@ test_GDateTime_new_from_epoch (void)
   tm.tm_sec = 0;
   t = mktime (&tm);
 
-  dt = g_date_time_new_from_epoch (t);
+  dt = g_date_time_new_from_unix_local (t);
   g_assert_cmpint (g_date_time_get_year (dt), ==, 1970);
   g_assert_cmpint (g_date_time_get_month (dt), ==, 1);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, 1);
@@ -146,108 +126,72 @@ test_GDateTime_new_from_epoch (void)
 }
 
 static void
-test_GDateTime_is_leap_year (void)
-{
-  GDateTime *dt;
-  gint       i;
-
-  for (i = 1; i <= 3000; i++)
-    {
-      dt = g_date_time_new_from_date (i, 1, 1);
-      if ((((i % 4) == 0) && ((i % 100) != 0)) || ((i % 400) == 0))
-        g_assert (g_date_time_is_leap_year (dt));
-      else
-        g_assert (!g_date_time_is_leap_year (dt));
-      g_date_time_unref (dt);
-    }
-}
-
-static void
 test_GDateTime_compare (void)
 {
   GDateTime *dt1, *dt2;
   gint       i;
 
-  dt1 = g_date_time_new_from_date (2000, 1, 1);
+  dt1 = g_date_time_new_utc (2000, 1, 1, 0, 0, 0);
 
   for (i = 1; i < 2000; i++)
     {
-      dt2 = g_date_time_new_from_date (i, 12, 31);
+      dt2 = g_date_time_new_utc (i, 12, 31, 0, 0, 0);
       g_assert_cmpint (1, ==, g_date_time_compare (dt1, dt2));
       g_date_time_unref (dt2);
     }
 
-  dt2 = g_date_time_new_full (1999, 12, 31, 23, 59, 59, NULL);
+  dt2 = g_date_time_new_utc (1999, 12, 31, 23, 59, 59);
   g_assert_cmpint (1, ==, g_date_time_compare (dt1, dt2));
   g_date_time_unref (dt2);
 
-  dt2 = g_date_time_new_full (2000, 1, 1, 0, 0, 1, NULL);
+  dt2 = g_date_time_new_utc (2000, 1, 1, 0, 0, 1);
   g_assert_cmpint (-1, ==, g_date_time_compare (dt1, dt2));
   g_date_time_unref (dt2);
 
-  dt2 = g_date_time_new_full (2000, 1, 1, 0, 0, 0, NULL);
+  dt2 = g_date_time_new_utc (2000, 1, 1, 0, 0, 0);
   g_assert_cmpint (0, ==, g_date_time_compare (dt1, dt2));
   g_date_time_unref (dt2);
   g_date_time_unref (dt1);
 }
 
 static void
-test_GDateTime_date (void)
-{
-  GDateTime *dt1, *dt2;
-
-  dt1 = g_date_time_new_full (2009, 10, 19, 13, 0, 55, NULL);
-  dt2 = g_date_time_day (dt1);
-  g_assert (dt1 != NULL);
-  g_assert (dt2 != NULL);
-  g_assert_cmpint (2009, ==, g_date_time_get_year (dt2));
-  g_assert_cmpint (10, ==, g_date_time_get_month (dt2));
-  g_assert_cmpint (19, ==, g_date_time_get_day_of_month (dt2));
-  g_assert_cmpint (0, ==, g_date_time_get_hour (dt2));
-  g_assert_cmpint (0, ==, g_date_time_get_minute (dt2));
-  g_assert_cmpint (0, ==, g_date_time_get_second (dt2));
-  g_date_time_unref (dt1);
-  g_date_time_unref (dt2);
-}
-
-static void
 test_GDateTime_equal (void)
 {
   GDateTime *dt1, *dt2;
-  GTimeZone *time_zone;
+  GTimeZone *tz;
 
-  dt1 = g_date_time_new_from_date (2009, 10, 19);
-  dt2 = g_date_time_new_from_date (2009, 10, 19);
+  dt1 = g_date_time_new_local (2009, 10, 19, 0, 0, 0);
+  dt2 = g_date_time_new_local (2009, 10, 19, 0, 0, 0);
   g_assert (g_date_time_equal (dt1, dt2));
   g_date_time_unref (dt1);
   g_date_time_unref (dt2);
 
-  dt1 = g_date_time_new_from_date (2009, 10, 18);
-  dt2 = g_date_time_new_from_date (2009, 10, 19);
+  dt1 = g_date_time_new_local (2009, 10, 18, 0, 0, 0);
+  dt2 = g_date_time_new_local (2009, 10, 19, 0, 0, 0);
   g_assert (!g_date_time_equal (dt1, dt2));
   g_date_time_unref (dt1);
   g_date_time_unref (dt2);
 
   /* UTC-0300 and not in DST */
-  time_zone = g_time_zone_new (-3 * 3600, FALSE);
-  dt1 = g_date_time_new_full (2010, 5, 24,  8, 0, 0, time_zone);
+  tz = g_time_zone_new ("-03:00");
+  dt1 = g_date_time_new (tz, 2010, 5, 24,  8, 0, 0);
+  g_time_zone_unref (tz);
   g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, (-3 * 3600));
   /* UTC */
-  dt2 = g_date_time_new_full (2010, 5, 24, 11, 0, 0, NULL);
+  dt2 = g_date_time_new_utc (2010, 5, 24, 11, 0, 0);
   g_assert_cmpint (g_date_time_get_utc_offset (dt2), ==, 0);
 
   g_assert (g_date_time_equal (dt1, dt2));
   g_date_time_unref (dt1);
-  g_time_zone_free (time_zone);
 
   /* America/Recife is in UTC-0300 */
-  time_zone = g_time_zone_new_for_name ("America/Recife");
-  dt1 = g_date_time_new_full (2010, 5, 24,  8, 0, 0, time_zone);
+  tz = g_time_zone_new ("America/Recife");
+  dt1 = g_date_time_new (tz, 2010, 5, 24,  8, 0, 0);
+  g_time_zone_unref (tz);
   g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, (-3 * 3600));
   g_assert (g_date_time_equal (dt1, dt2));
   g_date_time_unref (dt1);
   g_date_time_unref (dt2);
-  g_time_zone_free (time_zone);
 }
 
 static void
@@ -255,11 +199,11 @@ test_GDateTime_get_day_of_week (void)
 {
   GDateTime *dt;
 
-  dt = g_date_time_new_from_date (2009, 10, 19);
+  dt = g_date_time_new_local (2009, 10, 19, 0, 0, 0);
   g_assert_cmpint (1, ==, g_date_time_get_day_of_week (dt));
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_from_date (2000, 10, 1);
+  dt = g_date_time_new_local (2000, 10, 1, 0, 0, 0);
   g_assert_cmpint (7, ==, g_date_time_get_day_of_week (dt));
   g_date_time_unref (dt);
 }
@@ -269,25 +213,25 @@ test_GDateTime_get_day_of_month (void)
 {
   GDateTime *dt;
 
-  dt = g_date_time_new_from_date (2009, 10, 19);
+  dt = g_date_time_new_local (2009, 10, 19, 0, 0, 0);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, 19);
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_from_date (1400, 3, 12);
+  dt = g_date_time_new_local (1400, 3, 12, 0, 0, 0);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, 12);
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_from_date (1800, 12, 31);
+  dt = g_date_time_new_local (1800, 12, 31, 0, 0, 0);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, 31);
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_from_date (1000, 1, 1);
+  dt = g_date_time_new_local (1000, 1, 1, 0, 0, 0);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, 1);
   g_date_time_unref (dt);
 }
 
 static void
-test_GDateTime_get_dmy (void)
+test_GDateTime_get_ymd (void)
 {
    GDateTime *dt;
    struct tm tm;
@@ -301,8 +245,8 @@ test_GDateTime_get_dmy (void)
    memset (&tm, 0, sizeof (struct tm));
    get_localtime_tm (t, &tm);
 
-   dt = g_date_time_new_from_epoch (t);
-   g_date_time_get_dmy(dt, &d, &m, &y);
+   dt = g_date_time_new_from_unix_utc (t);
+   g_date_time_get_ymd(dt, &y, &m, &d);
    g_assert_cmpint(y, ==, tm.tm_year + 1900);
    g_assert_cmpint(m, ==, tm.tm_mon + 1);
    g_assert_cmpint(d, ==, tm.tm_mday);
@@ -318,9 +262,9 @@ test_GDateTime_get_dmy (void)
          {
            for (d = 1; d <= days[leap][m]; d++)
              {
-               GDateTime *dt1 = g_date_time_new_from_date (y, m, d);
+               GDateTime *dt1 = g_date_time_new_utc (y, m, d, 0, 0, 0);
 
-               g_date_time_get_dmy (dt1, &d2, &m2, &y2);
+               g_date_time_get_ymd (dt1, &y2, &m2, &d2);
                g_assert_cmpint (y, ==, y2);
                g_assert_cmpint (m, ==, m2);
                g_assert_cmpint (d, ==, d2);
@@ -335,36 +279,20 @@ test_GDateTime_get_hour (void)
 {
   GDateTime *dt;
 
-  dt = g_date_time_new_full (2009, 10, 19, 15, 13, 11, NULL);
+  dt = g_date_time_new_utc (2009, 10, 19, 15, 13, 11);
   g_assert_cmpint (15, ==, g_date_time_get_hour (dt));
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_full (100, 10, 19, 1, 0, 0, NULL);
+  dt = g_date_time_new_utc (100, 10, 19, 1, 0, 0);
   g_assert_cmpint (1, ==, g_date_time_get_hour (dt));
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_full (100, 10, 19, 0, 0, 0, NULL);
+  dt = g_date_time_new_utc (100, 10, 19, 0, 0, 0);
   g_assert_cmpint (0, ==, g_date_time_get_hour (dt));
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_full (100, 10, 1, 23, 59, 59, NULL);
+  dt = g_date_time_new_utc (100, 10, 1, 23, 59, 59);
   g_assert_cmpint (23, ==, g_date_time_get_hour (dt));
-  g_date_time_unref (dt);
-}
-
-static void
-test_GDateTime_get_julian (void)
-{
-  GDateTime *dt;
-  gint period, julian, hour = 1, min = 1, sec = 1;
-
-  dt = g_date_time_new_from_date (1984, 8, 16);
-  g_date_time_get_julian (dt, &period, &julian, &hour, &min, &sec);
-  g_assert_cmpint (period, ==, 0);
-  g_assert_cmpint (julian, ==, 2445929);
-  g_assert_cmpint (hour, ==, 0);
-  g_assert_cmpint (min, ==, 0);
-  g_assert_cmpint (sec, ==, 0);
   g_date_time_unref (dt);
 }
 
@@ -375,25 +303,8 @@ test_GDateTime_get_microsecond (void)
   GDateTime *dt;
 
   g_get_current_time (&tv);
-  dt = g_date_time_new_from_timeval (&tv);
+  dt = g_date_time_new_from_timeval_local (&tv);
   g_assert_cmpint (tv.tv_usec, ==, g_date_time_get_microsecond (dt));
-  g_date_time_unref (dt);
-}
-
-static void
-test_GDateTime_get_millisecond (void)
-{
-  GTimeVal   tv;
-  GDateTime *dt;
-
-  g_get_current_time (&tv);
-  dt = g_date_time_new_from_timeval (&tv);
-  g_assert_cmpint ((tv.tv_usec / 1000), ==, g_date_time_get_millisecond (dt));
-  g_date_time_unref (dt);
-
-  dt = g_date_time_new_full (2010, 9, 15, 12, 0, 0.1234, NULL);
-  g_assert_cmpint (123, ==, g_date_time_get_millisecond (dt));
-  g_assert_cmpint (123400, ==, g_date_time_get_microsecond (dt));
   g_date_time_unref (dt);
 }
 
@@ -402,19 +313,19 @@ test_GDateTime_get_year (void)
 {
   GDateTime *dt;
 
-  dt = g_date_time_new_from_date (2009, 1, 1);
+  dt = g_date_time_new_local (2009, 1, 1, 0, 0, 0);
   g_assert_cmpint (2009, ==, g_date_time_get_year (dt));
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_from_date (1, 1, 1);
+  dt = g_date_time_new_local (1, 1, 1, 0, 0, 0);
   g_assert_cmpint (1, ==, g_date_time_get_year (dt));
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_from_date (13, 1, 1);
+  dt = g_date_time_new_local (13, 1, 1, 0, 0, 0);
   g_assert_cmpint (13, ==, g_date_time_get_year (dt));
   g_date_time_unref (dt);
 
-  dt = g_date_time_new_from_date (3000, 1, 1);
+  dt = g_date_time_new_local (3000, 1, 1, 0, 0, 0);
   g_assert_cmpint (3000, ==, g_date_time_get_year (dt));
   g_date_time_unref (dt);
 }
@@ -427,7 +338,7 @@ test_GDateTime_hash (void)
   h = g_hash_table_new_full (g_date_time_hash, g_date_time_equal,
                              (GDestroyNotify)g_date_time_unref,
                              NULL);
-  g_hash_table_insert (h, g_date_time_new_now (), NULL);
+  g_hash_table_insert (h, g_date_time_new_now_local (), NULL);
   g_hash_table_remove_all (h);
   g_hash_table_destroy (h);
 }
@@ -439,7 +350,7 @@ test_GDateTime_new_from_timeval (void)
   GTimeVal   tv, tv2;
 
   g_get_current_time (&tv);
-  dt = g_date_time_new_from_timeval (&tv);
+  dt = g_date_time_new_from_timeval_local (&tv);
 
   if (g_test_verbose ())
     g_print ("\nDT%04d-%02d-%02dT%02d:%02d:%02d%s\n",
@@ -449,7 +360,7 @@ test_GDateTime_new_from_timeval (void)
              g_date_time_get_hour (dt),
              g_date_time_get_minute (dt),
              g_date_time_get_second (dt),
-             g_date_time_get_timezone_name (dt));
+             g_date_time_get_timezone_abbreviation (dt));
 
   g_date_time_to_timeval (dt, &tv2);
   g_assert_cmpint (tv.tv_sec, ==, tv2.tv_sec);
@@ -458,14 +369,14 @@ test_GDateTime_new_from_timeval (void)
 }
 
 static void
-test_GDateTime_to_epoch (void)
+test_GDateTime_to_unix (void)
 {
   GDateTime *dt;
   time_t     t;
 
   t = time (NULL);
-  dt = g_date_time_new_from_epoch (t);
-  g_assert_cmpint (g_date_time_to_epoch (dt), ==, t);
+  dt = g_date_time_new_from_unix_local (t);
+  g_assert_cmpint (g_date_time_to_unix (dt), ==, t);
   g_date_time_unref (dt);
 }
 
@@ -474,7 +385,7 @@ test_GDateTime_add_years (void)
 {
   GDateTime *dt, *dt2;
 
-  dt = g_date_time_new_from_date (2009, 10, 19);
+  dt = g_date_time_new_local (2009, 10, 19, 0, 0, 0);
   dt2 = g_date_time_add_years (dt, 1);
   g_assert_cmpint (2010, ==, g_date_time_get_year (dt2));
   g_date_time_unref (dt);
@@ -484,11 +395,9 @@ test_GDateTime_add_years (void)
 static void
 test_GDateTime_add_months (void)
 {
-  GTimeZone *utc_tz = g_time_zone_new_utc ();
-
 #define TEST_ADD_MONTHS(y,m,d,a,ny,nm,nd) G_STMT_START { \
   GDateTime *dt, *dt2; \
-  dt = g_date_time_new_full (y, m, d, 0, 0, 0, utc_tz); \
+  dt = g_date_time_new_utc (y, m, d, 0, 0, 0); \
   dt2 = g_date_time_add_months (dt, a); \
   ASSERT_DATE (dt2, ny, nm, nd); \
   g_date_time_unref (dt); \
@@ -506,8 +415,6 @@ test_GDateTime_add_months (void)
   TEST_ADD_MONTHS (2000,  8, 16,  -12, 1999, 8, 16);
   TEST_ADD_MONTHS (2011,  2,  1,  -13, 2010, 1,  1);
   TEST_ADD_MONTHS (1776,  7,  4, 1200, 1876, 7,  4);
-
-  g_time_zone_free (utc_tz);
 }
 
 static void
@@ -515,7 +422,7 @@ test_GDateTime_add_days (void)
 {
 #define TEST_ADD_DAYS(y,m,d,a,ny,nm,nd) G_STMT_START { \
   GDateTime *dt, *dt2; \
-  dt = g_date_time_new_from_date (y, m, d); \
+  dt = g_date_time_new_local (y, m, d, 0, 0, 0); \
   dt2 = g_date_time_add_days (dt, a); \
   g_assert_cmpint (ny, ==, g_date_time_get_year (dt2)); \
   g_assert_cmpint (nm, ==, g_date_time_get_month (dt2)); \
@@ -538,7 +445,7 @@ test_GDateTime_add_weeks (void)
 {
 #define TEST_ADD_WEEKS(y,m,d,a,ny,nm,nd) G_STMT_START { \
   GDateTime *dt, *dt2; \
-  dt = g_date_time_new_from_date (y, m, d); \
+  dt = g_date_time_new_local (y, m, d, 0, 0, 0); \
   dt2 = g_date_time_add_weeks (dt, a); \
   g_assert_cmpint (ny, ==, g_date_time_get_year (dt2)); \
   g_assert_cmpint (nm, ==, g_date_time_get_month (dt2)); \
@@ -558,7 +465,7 @@ test_GDateTime_add_hours (void)
 {
 #define TEST_ADD_HOURS(y,m,d,h,mi,s,a,ny,nm,nd,nh,nmi,ns) G_STMT_START { \
   GDateTime *dt, *dt2; \
-  dt = g_date_time_new_full (y, m, d, h, mi, s, NULL); \
+  dt = g_date_time_new_utc (y, m, d, h, mi, s); \
   dt2 = g_date_time_add_hours (dt, a); \
   g_assert_cmpint (ny, ==, g_date_time_get_year (dt2)); \
   g_assert_cmpint (nm, ==, g_date_time_get_month (dt2)); \
@@ -579,7 +486,7 @@ test_GDateTime_add_full (void)
 {
 #define TEST_ADD_FULL(y,m,d,h,mi,s,ay,am,ad,ah,ami,as,ny,nm,nd,nh,nmi,ns) G_STMT_START { \
   GDateTime *dt, *dt2; \
-  dt = g_date_time_new_full (y, m, d, h, mi, s, NULL); \
+  dt = g_date_time_new_utc (y, m, d, h, mi, s); \
   dt2 = g_date_time_add_full (dt, ay, am, ad, ah, ami, as); \
   g_assert_cmpint (ny, ==, g_date_time_get_year (dt2)); \
   g_assert_cmpint (nm, ==, g_date_time_get_month (dt2)); \
@@ -609,29 +516,11 @@ test_GDateTime_add_full (void)
 }
 
 static void
-test_GDateTime_add_milliseconds (void)
-{
-#define TEST_ADD_MILLISECOND(i,o) G_STMT_START { \
-  GDateTime *dt, *dt2; \
-  dt = g_date_time_new_from_date (2000, 1, 1); \
-  dt2 = g_date_time_add_milliseconds (dt, i); \
-  g_assert_cmpint (o, ==, g_date_time_get_millisecond (dt2)); \
-  g_date_time_unref (dt); \
-  g_date_time_unref (dt2); \
-} G_STMT_END
-
-  TEST_ADD_MILLISECOND (199, 199);
-  TEST_ADD_MILLISECOND (10001, 1);
-  TEST_ADD_MILLISECOND (22201, 201);
-  TEST_ADD_MILLISECOND (-1000, 0);
-}
-
-static void
 test_GDateTime_add_minutes (void)
 {
 #define TEST_ADD_MINUTES(i,o) G_STMT_START { \
   GDateTime *dt, *dt2; \
-  dt = g_date_time_new_from_date (2000, 1, 1); \
+  dt = g_date_time_new_local (2000, 1, 1, 0, 0, 0); \
   dt2 = g_date_time_add_minutes (dt, i); \
   g_assert_cmpint (o, ==, g_date_time_get_minute (dt2)); \
   g_date_time_unref (dt); \
@@ -641,8 +530,8 @@ test_GDateTime_add_minutes (void)
   TEST_ADD_MINUTES (60, 0);
   TEST_ADD_MINUTES (100, 40);
   TEST_ADD_MINUTES (5, 5);
-  TEST_ADD_MINUTES (86401, 1);
-  TEST_ADD_MINUTES (-86401, 59);
+  TEST_ADD_MINUTES (1441, 1);
+  TEST_ADD_MINUTES (-1441, 59);
 }
 
 static void
@@ -650,7 +539,7 @@ test_GDateTime_add_seconds (void)
 {
 #define TEST_ADD_SECONDS(i,o) G_STMT_START { \
   GDateTime *dt, *dt2; \
-  dt = g_date_time_new_from_date (2000, 1, 1); \
+  dt = g_date_time_new_local (2000, 1, 1, 0, 0, 0); \
   dt2 = g_date_time_add_seconds (dt, i); \
   g_assert_cmpint (o, ==, g_date_time_get_second (dt2)); \
   g_date_time_unref (dt); \
@@ -674,9 +563,9 @@ test_GDateTime_diff (void)
 #define TEST_DIFF(y,m,d,y2,m2,d2,u) G_STMT_START { \
   GDateTime *dt1, *dt2; \
   GTimeSpan  ts = 0; \
-  dt1 = g_date_time_new_from_date (y, m, d); \
-  dt2 = g_date_time_new_from_date (y2, m2, d2); \
-  ts = g_date_time_difference (dt1, dt2); \
+  dt1 = g_date_time_new_local (y, m, d, 0, 0, 0); \
+  dt2 = g_date_time_new_local (y2, m2, d2, 0, 0, 0); \
+  ts = g_date_time_difference (dt2, dt1); \
   g_assert_cmpint (ts, ==, u); \
   g_date_time_unref (dt1); \
   g_date_time_unref (dt2); \
@@ -695,7 +584,7 @@ test_GDateTime_get_minute (void)
 {
   GDateTime *dt;
 
-  dt = g_date_time_new_full (2009, 12, 1, 1, 31, 0, NULL);
+  dt = g_date_time_new_utc (2009, 12, 1, 1, 31, 0);
   g_assert_cmpint (31, ==, g_date_time_get_minute (dt));
   g_date_time_unref (dt);
 }
@@ -705,7 +594,7 @@ test_GDateTime_get_month (void)
 {
   GDateTime *dt;
 
-  dt = g_date_time_new_full (2009, 12, 1, 1, 31, 0, NULL);
+  dt = g_date_time_new_utc (2009, 12, 1, 1, 31, 0);
   g_assert_cmpint (12, ==, g_date_time_get_month (dt));
   g_date_time_unref (dt);
 }
@@ -715,30 +604,18 @@ test_GDateTime_get_second (void)
 {
   GDateTime *dt;
 
-  dt = g_date_time_new_full (2009, 12, 1, 1, 31, 44, NULL);
+  dt = g_date_time_new_utc (2009, 12, 1, 1, 31, 44);
   g_assert_cmpint (44, ==, g_date_time_get_second (dt));
-  g_date_time_unref (dt);
-}
-
-static void
-test_GDateTime_new_from_date (void)
-{
-  GDateTime *dt;
-
-  dt = g_date_time_new_from_date (2009, 12, 11);
-  g_assert_cmpint (2009, ==, g_date_time_get_year (dt));
-  g_assert_cmpint (12, ==, g_date_time_get_month (dt));
-  g_assert_cmpint (11, ==, g_date_time_get_day_of_month (dt));
   g_date_time_unref (dt);
 }
 
 static void
 test_GDateTime_new_full (void)
 {
+  GTimeZone *tz;
   GDateTime *dt;
-  GTimeZone *time_zone;
 
-  dt = g_date_time_new_full (2009, 12, 11, 12, 11, 10, NULL);
+  dt = g_date_time_new_utc (2009, 12, 11, 12, 11, 10);
   g_assert_cmpint (2009, ==, g_date_time_get_year (dt));
   g_assert_cmpint (12, ==, g_date_time_get_month (dt));
   g_assert_cmpint (11, ==, g_date_time_get_day_of_month (dt));
@@ -747,22 +624,22 @@ test_GDateTime_new_full (void)
   g_assert_cmpint (10, ==, g_date_time_get_second (dt));
   g_date_time_unref (dt);
 
-  time_zone = g_time_zone_new_for_name ("America/Recife");
-  dt = g_date_time_new_full (2010, 5, 24, 8, 4, 0, time_zone);
+  tz = g_time_zone_new ("America/Recife");
+  dt = g_date_time_new (tz, 2010, 5, 24, 8, 4, 0);
+  g_time_zone_unref (tz);
   g_assert_cmpint (2010, ==, g_date_time_get_year (dt));
   g_assert_cmpint (5, ==, g_date_time_get_month (dt));
   g_assert_cmpint (24, ==, g_date_time_get_day_of_month (dt));
   g_assert_cmpint (8, ==, g_date_time_get_hour (dt));
   g_assert_cmpint (4, ==, g_date_time_get_minute (dt));
   g_assert_cmpint (0, ==, g_date_time_get_second (dt));
-  g_assert_cmpstr ("BRT", ==, g_date_time_get_timezone_name (dt));
+  g_assert_cmpstr ("BRT", ==, g_date_time_get_timezone_abbreviation (dt));
   g_assert (!g_date_time_is_daylight_savings (dt));
   g_date_time_unref (dt);
-  g_time_zone_free (time_zone);
 }
 
 static void
-test_GDateTime_utc_now (void)
+test_GDateTime_now_utc (void)
 {
   GDateTime *dt;
   time_t     t;
@@ -781,7 +658,7 @@ test_GDateTime_utc_now (void)
     memcpy (&tm, tmp, sizeof (struct tm));
   }
 #endif
-  dt = g_date_time_new_utc_now ();
+  dt = g_date_time_new_now_utc ();
   g_assert_cmpint (tm.tm_year + 1900, ==, g_date_time_get_year (dt));
   g_assert_cmpint (tm.tm_mon + 1, ==, g_date_time_get_month (dt));
   g_assert_cmpint (tm.tm_mday, ==, g_date_time_get_day_of_month (dt));
@@ -801,7 +678,7 @@ test_GDateTime_get_utc_offset (void)
   memset (&tm, 0, sizeof (tm));
   get_localtime_tm (time (NULL), &tm);
 
-  dt = g_date_time_new_now ();
+  dt = g_date_time_new_now_local ();
   ts = g_date_time_get_utc_offset (dt);
 #ifdef HAVE_STRUCT_TM_TM_GMTOFF
   g_assert_cmpint (ts, ==, (tm.tm_gmtoff * G_TIME_SPAN_SECOND));
@@ -819,7 +696,7 @@ test_GDateTime_to_timeval (void)
   memset (&tv2, 0, sizeof (tv2));
 
   g_get_current_time (&tv1);
-  dt = g_date_time_new_from_timeval (&tv1);
+  dt = g_date_time_new_from_timeval_local (&tv1);
   g_date_time_to_timeval (dt, &tv2);
   g_assert_cmpint (tv1.tv_sec, ==, tv2.tv_sec);
   g_assert_cmpint (tv1.tv_usec, ==, tv2.tv_usec);
@@ -831,8 +708,8 @@ test_GDateTime_to_local (void)
 {
   GDateTime *utc, *now, *dt;
 
-  utc = g_date_time_new_utc_now ();
-  now = g_date_time_new_now ();
+  utc = g_date_time_new_now_utc ();
+  now = g_date_time_new_now_local ();
   dt = g_date_time_to_local (utc);
 
   g_assert_cmpint (g_date_time_get_year (now), ==, g_date_time_get_year (dt));
@@ -863,7 +740,7 @@ test_GDateTime_to_utc (void)
     memcpy (&tm, tmp, sizeof (struct tm));
   }
 #endif
-  dt2 = g_date_time_new_now ();
+  dt2 = g_date_time_new_now_local ();
   dt = g_date_time_to_utc (dt2);
   g_assert_cmpint (tm.tm_year + 1900, ==, g_date_time_get_year (dt));
   g_assert_cmpint (tm.tm_mon + 1, ==, g_date_time_get_month (dt));
@@ -879,7 +756,7 @@ static void
 test_GDateTime_get_day_of_year (void)
 {
 #define TEST_DAY_OF_YEAR(y,m,d,o)                       G_STMT_START {  \
-  GDateTime *__dt = g_date_time_new_from_date ((y), (m), (d));          \
+  GDateTime *__dt = g_date_time_new_local ((y), (m), (d), 0, 0, 0);     \
   g_assert_cmpint ((o), ==, g_date_time_get_day_of_year (__dt));        \
   g_date_time_unref (__dt);                             } G_STMT_END
 
@@ -898,21 +775,21 @@ test_GDateTime_printf (void)
   gchar t_str[16];
 
 #define TEST_PRINTF(f,o)                        G_STMT_START {  \
-GDateTime *__dt = g_date_time_new_from_date (2009, 10, 24);     \
+GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   gchar *__p = g_date_time_format (__dt, (f));                  \
   g_assert_cmpstr (__p, ==, (o));                               \
   g_date_time_unref (__dt);                                     \
   g_free (__p);                                 } G_STMT_END
 
 #define TEST_PRINTF_DATE(y,m,d,f,o)             G_STMT_START {  \
-  GDateTime *dt = g_date_time_new_from_date ((y), (m), (d));    \
+  GDateTime *dt = g_date_time_new_local (y, m, d, 0, 0, 0);     \
   gchar *p = g_date_time_format (dt, (f));                      \
   g_assert_cmpstr (p, ==, (o));                                 \
   g_date_time_unref (dt);                                       \
   g_free (p);                                   } G_STMT_END
 
 #define TEST_PRINTF_TIME(h,m,s,f,o)             G_STMT_START { \
-  GDateTime *dt = g_date_time_new_full (2009, 10, 24, (h), (m), (s), NULL); \
+  GDateTime *dt = g_date_time_new_local (2009, 10, 24, (h), (m), (s)); \
   gchar *p = g_date_time_format (dt, (f));                      \
   g_assert_cmpstr (p, ==, (o));                                 \
   g_date_time_unref (dt);                                       \
@@ -991,36 +868,34 @@ test_GDateTime_dst (void)
   GDateTime *dt1, *dt2;
   GTimeZone *tz;
 
-  tz = g_time_zone_new_for_name ("Europe/London");
-
   /* this date has the DST state set for Europe/London */
-  dt1 = g_date_time_new_full (2009, 8, 15, 3, 0, 1, tz);
+  tz = g_time_zone_new ("Europe/London");
+  dt1 = g_date_time_new (tz, 2009, 8, 15, 3, 0, 1);
   g_assert (g_date_time_is_daylight_savings (dt1));
   g_assert_cmpint (g_date_time_get_utc_offset (dt1) / G_USEC_PER_SEC, ==, 3600);
   g_assert_cmpint (g_date_time_get_hour (dt1), ==, 3);
 
-  /* add 6 months to clear the DST flag and go back one hour */
+  /* add 6 months to clear the DST flag but keep the same time */
   dt2 = g_date_time_add_months (dt1, 6);
   g_assert (!g_date_time_is_daylight_savings (dt2));
   g_assert_cmpint (g_date_time_get_utc_offset (dt2) / G_USEC_PER_SEC, ==, 0);
-  g_assert_cmpint (g_date_time_get_hour (dt2), ==, 2);
-
-  g_date_time_unref (dt2);
-  g_date_time_unref (dt1);
-
-  /* now do the reverse: start with a non-DST state and move to DST */
-  dt1 = g_date_time_new_full (2009, 2, 15, 2, 0, 1, tz);
-  g_assert (!g_date_time_is_daylight_savings (dt1));
-  g_assert_cmpint (g_date_time_get_hour (dt1), ==, 2);
-
-  dt2 = g_date_time_add_months (dt1, 6);
-  g_assert (g_date_time_is_daylight_savings (dt2));
   g_assert_cmpint (g_date_time_get_hour (dt2), ==, 3);
 
   g_date_time_unref (dt2);
   g_date_time_unref (dt1);
 
-  g_time_zone_free (tz);
+  /* now do the reverse: start with a non-DST state and move to DST */
+  dt1 = g_date_time_new (tz, 2009, 2, 15, 2, 0, 1);
+  g_assert (!g_date_time_is_daylight_savings (dt1));
+  g_assert_cmpint (g_date_time_get_hour (dt1), ==, 2);
+
+  dt2 = g_date_time_add_months (dt1, 6);
+  g_assert (g_date_time_is_daylight_savings (dt2));
+  g_assert_cmpint (g_date_time_get_hour (dt2), ==, 2);
+
+  g_date_time_unref (dt2);
+  g_date_time_unref (dt1);
+  g_time_zone_unref (tz);
 }
 
 gint
@@ -1034,43 +909,36 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/add_days", test_GDateTime_add_days);
   g_test_add_func ("/GDateTime/add_full", test_GDateTime_add_full);
   g_test_add_func ("/GDateTime/add_hours", test_GDateTime_add_hours);
-  g_test_add_func ("/GDateTime/add_milliseconds", test_GDateTime_add_milliseconds);
   g_test_add_func ("/GDateTime/add_minutes", test_GDateTime_add_minutes);
   g_test_add_func ("/GDateTime/add_months", test_GDateTime_add_months);
   g_test_add_func ("/GDateTime/add_seconds", test_GDateTime_add_seconds);
   g_test_add_func ("/GDateTime/add_weeks", test_GDateTime_add_weeks);
   g_test_add_func ("/GDateTime/add_years", test_GDateTime_add_years);
   g_test_add_func ("/GDateTime/compare", test_GDateTime_compare);
-  g_test_add_func ("/GDateTime/date", test_GDateTime_date);
   g_test_add_func ("/GDateTime/diff", test_GDateTime_diff);
   g_test_add_func ("/GDateTime/equal", test_GDateTime_equal);
   g_test_add_func ("/GDateTime/get_day_of_week", test_GDateTime_get_day_of_week);
   g_test_add_func ("/GDateTime/get_day_of_month", test_GDateTime_get_day_of_month);
   g_test_add_func ("/GDateTime/get_day_of_year", test_GDateTime_get_day_of_year);
-  g_test_add_func ("/GDateTime/get_dmy", test_GDateTime_get_dmy);
+  g_test_add_func ("/GDateTime/get_ymd", test_GDateTime_get_ymd);
   g_test_add_func ("/GDateTime/get_hour", test_GDateTime_get_hour);
-  g_test_add_func ("/GDateTime/get_julian", test_GDateTime_get_julian);
   g_test_add_func ("/GDateTime/get_microsecond", test_GDateTime_get_microsecond);
-  g_test_add_func ("/GDateTime/get_millisecond", test_GDateTime_get_millisecond);
   g_test_add_func ("/GDateTime/get_minute", test_GDateTime_get_minute);
   g_test_add_func ("/GDateTime/get_month", test_GDateTime_get_month);
   g_test_add_func ("/GDateTime/get_second", test_GDateTime_get_second);
   g_test_add_func ("/GDateTime/get_utc_offset", test_GDateTime_get_utc_offset);
   g_test_add_func ("/GDateTime/get_year", test_GDateTime_get_year);
   g_test_add_func ("/GDateTime/hash", test_GDateTime_hash);
-  g_test_add_func ("/GDateTime/is_leap_year", test_GDateTime_is_leap_year);
-  g_test_add_func ("/GDateTime/new_from_date", test_GDateTime_new_from_date);
-  g_test_add_func ("/GDateTime/new_from_epoch", test_GDateTime_new_from_epoch);
+  g_test_add_func ("/GDateTime/new_from_unix", test_GDateTime_new_from_unix);
   g_test_add_func ("/GDateTime/new_from_timeval", test_GDateTime_new_from_timeval);
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
   g_test_add_func ("/GDateTime/to_local", test_GDateTime_to_local);
-  g_test_add_func ("/GDateTime/to_epoch", test_GDateTime_to_epoch);
+  g_test_add_func ("/GDateTime/to_unix", test_GDateTime_to_unix);
   g_test_add_func ("/GDateTime/to_timeval", test_GDateTime_to_timeval);
   g_test_add_func ("/GDateTime/to_utc", test_GDateTime_to_utc);
-  g_test_add_func ("/GDateTime/today", test_GDateTime_today);
-  g_test_add_func ("/GDateTime/utc_now", test_GDateTime_utc_now);
+  g_test_add_func ("/GDateTime/now_utc", test_GDateTime_now_utc);
   g_test_add_func ("/GDateTime/dst", test_GDateTime_dst);
 
   return g_test_run ();
