@@ -1,3 +1,107 @@
+Overview of Changes from GLib 2.25.15 to GLib 2.27.0
+====================================================
+
+Build:
+  - massive restructuring to reduce #include abuse
+  - tweaks to silence some harmless compiler warnings
+  - rename gschema-compile.c to glib-compile-schemas.c
+  - Windows fixes
+  - fix building with zlib < 1.2.4 on win32
+
+GDateTime:
+  - better msgctxt for translating month and weekday names
+  - API is changed quite a lot, implementation is improved
+  - GTimeZone is now exposed
+
+GObject:
+  - make ordering for overridden interface properties consistent
+  - ->priv structures are limited to 64k but this was not documented,
+    and exceeding this limit produced bad results.  Add docs and enforce
+    the limit properly.
+  - add g_object_class_install_properties() to install multiple
+    properties in one go
+  - improve debugging output for GValue containing G_TYPE_STRV
+
+GIO:
+  - fix priority sorting of GIO extensions
+  - add GCredentials support on FreeBSD
+  - fix support for IPv6 addresses in URI parsing functions
+  - GSocketClient fixes for when g_socket_connect succeeds immediately
+  - clarify string encoding for GFile constructors in docs
+  - new functions g_data_input_stream_read_upto{,async,finish}
+  - tweak confusing documentation for g_output_stream_write()
+
+GDBus:
+  - GDBusMessage can now be locked and copied (like in libdbus)
+  - GDBusConnection filter function API has changed again
+  - GDBusServer: ::new-connection now declares if the connection was claimed
+  - add a partial workaround for GObject bug 627724.
+  - very many memory leaks fixed
+
+GVariant:
+  - check for size == 0 in g_variant_get_bytestring to avoid a crash
+    when attempting to get_bytestring() from an empty array
+  - improve gobject-introspection annotations
+
+GSettings:
+  - add GSettings Windows registry backend
+  - some internal tweaks to the backend API
+  - remove g_settings_list_items
+  - add g_settings_list_children and _list_keys to replace it
+  - add schema compiler restrictions for dealing with lists
+  - don't automatically emit value changed signals on writability
+    changes
+
+Other:
+  - constify the 'parser' vtable param to g_markup_parse_context_push()
+  - plug many memory leaks in test cases
+
+Bugs closed:
+  50076 Time API to go with date API
+ 584284 g_data_input_stream_read_until_async different from sync version
+ 624546 Modification of GDBusMessage in filter function
+ 626919 Let g_object_class_install_property() return the installed GParamSpec*
+ 628029 GDateTime missing get_week_of_year method
+ 628253 Interface properties not listed in a consistent order
+ 628331 Plug lots of mem leaks in gio test suite
+ 628345 Plug a mem leak
+ 628436 Plug a mem leak
+ 628505 Fix building with zlib < 1.2.4 on win32
+ 628839 [PATCH] datetime: Rename shadowing variables
+ 628904 [PATCH] Add credential support for FreeBSD and fix a socket issue
+ 628952 incorrect glib_major_version and other variables on cygwin.
+ 629192 g_strdup_value_contents(): dump GStrv more usefully
+ 629251 g_socket_client_async_connect_complete: assertion failed
+ 629259 Failed to connect to "::1"
+ 629328 g_markup_parse_context_push doesn't respect const structs
+ 629429 month "May" short and full form same with "GDateTime" msgctxt
+ 629689 GDBusConnection leaks its GCredentials
+ 629698 Segfault in g_variant_get_bytestring() 
+
+Updated translations:
+  Arabic
+  Armenian
+  Basque
+  British English
+  Czech
+  Finnish
+  Galician
+  German
+  Hungarian
+  Indonesian
+  Japanese
+  Lithuanian
+  Norwegian bokmål
+  Polish
+  Portuguese
+  Punjabi
+  Simplified Chinese
+  Slovenian
+  Spanish
+  Swedish
+  Swedish
+  Traditional Chinese
+
 Overview of Changes from GLib 2.25.14 to GLib 2.25.15
 =====================================================
 
