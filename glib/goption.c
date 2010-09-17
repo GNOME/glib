@@ -64,12 +64,12 @@
  * <informalexample><screen>
  * Usage:
  *   testtreemodel [OPTION...] - test tree model performance
- *
+ *  
  * Help Options:
  *   -h, --help               Show help options
  *   --help-all               Show all help options
  *   --help-gtk               Show GTK+ Options
- *
+ *  
  * Application Options:
  *   -r, --repeats=N          Average over N repetitions
  *   -m, --max-size=M         Test up to 2^M items
