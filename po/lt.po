@@ -1,8 +1,7 @@
-# translation of lt.po to Lithuanian
 # Lithuanian translation of Glib library.
-# Copyright (C) 2003-2005, 2007, 2008 Free Software Foundation, Inc.
+# Copyright © 2003-2005, 2007, 2008, 2010 Free Software Foundation, Inc.
 # Tomas Kuliavas <tokul@users.sourceforge.net>, 2003-2004.
-# Žygimantas Beručka <zygis@gnome.org>, 2004-2007.
+# Žygimantas Beručka <zygis@gnome.org>, 2004-2007, 2010.
 # Mantas Kriaučiūnas <mantas@akl.lt>, 2006-2007.
 # Gintautas Miliauskas <gintas@akl.lt>, 2007, 2008.
 # Rimas Kudelis <rq@akl.lt>, 2010.
@@ -10,18 +9,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: lt\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-16 22:13+0300\n"
-"PO-Revision-Date: 2010-07-27 23:58+0300\n"
-"Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
-"Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
+"Report-Msgid-Bugs-To: "
+"http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
+"POT-Creation-Date: 2010-09-16 19:14+0000\n"
+"PO-Revision-Date: 2010-09-17 03:47+0300\n"
+"Last-Translator: Žygimantas Beručka <zygis@gnome.org>\n"
+"Language-Team: Lithuanian <gnome-lt@lists.akl.lt>\n"
+"Language: lt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
-"Language: lt\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%"
 "100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Virtaal 0.5.2\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../glib/gbookmarkfile.c:780
 #, c-format
@@ -163,230 +163,229 @@ msgstr "Klaidingas kompiuterio vardas"
 
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:105
-#, fuzzy
 msgctxt "GDateTime"
 msgid "am"
-msgstr "pavadinimas"
+msgstr "am"
 
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:107
 msgctxt "GDateTime"
 msgid "AM"
-msgstr ""
+msgstr "AM"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:109
 msgctxt "GDateTime"
 msgid "pm"
-msgstr ""
+msgstr "pm"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:111
 msgctxt "GDateTime"
 msgid "PM"
-msgstr ""
+msgstr "PM"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:120
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr ""
+msgstr "%Y-%m-%d"
 
 #. Translators: this is the preferred format for expressing the time
 #: ../glib/gdatetime.c:123
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr ""
+msgstr "%H:%M:%S"
 
 #: ../glib/gdatetime.c:168
 msgctxt "full month name"
 msgid "January"
-msgstr ""
+msgstr "Sausis"
 
 #: ../glib/gdatetime.c:170
 msgctxt "full month name"
 msgid "February"
-msgstr ""
+msgstr "Vasaris"
 
 #: ../glib/gdatetime.c:172
 msgctxt "full month name"
 msgid "March"
-msgstr ""
+msgstr "Kovas"
 
 #: ../glib/gdatetime.c:174
 msgctxt "full month name"
 msgid "April"
-msgstr ""
+msgstr "Balandis"
 
 #: ../glib/gdatetime.c:176
 msgctxt "full month name"
 msgid "May"
-msgstr ""
+msgstr "Gegužė"
 
 #: ../glib/gdatetime.c:178
 msgctxt "full month name"
 msgid "June"
-msgstr ""
+msgstr "Birželis"
 
 #: ../glib/gdatetime.c:180
 msgctxt "full month name"
 msgid "July"
-msgstr ""
+msgstr "Liepa"
 
 #: ../glib/gdatetime.c:182
 msgctxt "full month name"
 msgid "August"
-msgstr ""
+msgstr "Rugpjūtis"
 
 #: ../glib/gdatetime.c:184
 msgctxt "full month name"
 msgid "September"
-msgstr ""
+msgstr "Rugsėjis"
 
 #: ../glib/gdatetime.c:186
 msgctxt "full month name"
 msgid "October"
-msgstr ""
+msgstr "Spalis"
 
 #: ../glib/gdatetime.c:188
 msgctxt "full month name"
 msgid "November"
-msgstr ""
+msgstr "Lapkritis"
 
 #: ../glib/gdatetime.c:190
 msgctxt "full month name"
 msgid "December"
-msgstr ""
+msgstr "Gruodis"
 
 #: ../glib/gdatetime.c:205
 msgctxt "abbreviated month name"
 msgid "Jan"
-msgstr ""
+msgstr "Sau"
 
 #: ../glib/gdatetime.c:207
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr ""
+msgstr "Vas"
 
 #: ../glib/gdatetime.c:209
 msgctxt "abbreviated month name"
 msgid "Mar"
-msgstr ""
+msgstr "Kov"
 
 #: ../glib/gdatetime.c:211
 msgctxt "abbreviated month name"
 msgid "Apr"
-msgstr ""
+msgstr "Bal"
 
 #: ../glib/gdatetime.c:213
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr ""
+msgstr "Geg"
 
 #: ../glib/gdatetime.c:215
 msgctxt "abbreviated month name"
 msgid "Jun"
-msgstr ""
+msgstr "Bir"
 
 #: ../glib/gdatetime.c:217
 msgctxt "abbreviated month name"
 msgid "Jul"
-msgstr ""
+msgstr "Lie"
 
 #: ../glib/gdatetime.c:219
 msgctxt "abbreviated month name"
 msgid "Aug"
-msgstr ""
+msgstr "Rgp"
 
 #: ../glib/gdatetime.c:221
 msgctxt "abbreviated month name"
 msgid "Sep"
-msgstr ""
+msgstr "Rgs"
 
 #: ../glib/gdatetime.c:223
 msgctxt "abbreviated month name"
 msgid "Oct"
-msgstr ""
+msgstr "Spa"
 
 #: ../glib/gdatetime.c:225
 msgctxt "abbreviated month name"
 msgid "Nov"
-msgstr ""
+msgstr "Lap"
 
 #: ../glib/gdatetime.c:227
 msgctxt "abbreviated month name"
 msgid "Dec"
-msgstr ""
+msgstr "Grd"
 
 #: ../glib/gdatetime.c:242
 msgctxt "full weekday name"
 msgid "Monday"
-msgstr ""
+msgstr "Pirmadienis"
 
 #: ../glib/gdatetime.c:244
 msgctxt "full weekday name"
 msgid "Tuesday"
-msgstr ""
+msgstr "Antradienis"
 
 #: ../glib/gdatetime.c:246
 msgctxt "full weekday name"
 msgid "Wednesday"
-msgstr ""
+msgstr "Trečiadienis"
 
 #: ../glib/gdatetime.c:248
 msgctxt "full weekday name"
 msgid "Thursday"
-msgstr ""
+msgstr "Ketvirtadienis"
 
 #: ../glib/gdatetime.c:250
 msgctxt "full weekday name"
 msgid "Friday"
-msgstr ""
+msgstr "Penktadienis"
 
 #: ../glib/gdatetime.c:252
 msgctxt "full weekday name"
 msgid "Saturday"
-msgstr ""
+msgstr "Šeštadienis"
 
 #: ../glib/gdatetime.c:254
 msgctxt "full weekday name"
 msgid "Sunday"
-msgstr ""
+msgstr "Sekmadienis"
 
 #: ../glib/gdatetime.c:269
 msgctxt "abbreviated weekday name"
 msgid "Mon"
-msgstr ""
+msgstr "Pir"
 
 #: ../glib/gdatetime.c:271
 msgctxt "abbreviated weekday name"
 msgid "Tue"
-msgstr ""
+msgstr "Ant"
 
 #: ../glib/gdatetime.c:273
 msgctxt "abbreviated weekday name"
 msgid "Wed"
-msgstr ""
+msgstr "Tre"
 
 #: ../glib/gdatetime.c:275
 msgctxt "abbreviated weekday name"
 msgid "Thu"
-msgstr ""
+msgstr "Ket"
 
 #: ../glib/gdatetime.c:277
 msgctxt "abbreviated weekday name"
 msgid "Fri"
-msgstr ""
+msgstr "Pen"
 
 #: ../glib/gdatetime.c:279
 msgctxt "abbreviated weekday name"
 msgid "Sat"
-msgstr ""
+msgstr "Šeš"
 
 #: ../glib/gdatetime.c:281
 msgctxt "abbreviated weekday name"
 msgid "Sun"
-msgstr ""
+msgstr "Sek"
 
 #: ../glib/gdir.c:114 ../glib/gdir.c:137
 #, c-format
@@ -1676,22 +1675,22 @@ msgid "Didn't find cookie with id %d in the keyring at `%s'"
 msgstr "Nerastas slapukas su id %d raktinės vietoje „%s“"
 
 #: ../gio/gdbusauthmechanismsha1.c:535
-#, fuzzy, c-format
+#, c-format
 msgid "Error deleting stale lock file `%s': %s"
-msgstr "Klaida trinant rakinimo failą „%s“: %s"
+msgstr "Klaida trinant nebegaliojantį rakinimo failą „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating lock file `%s': %s"
 msgstr "Klaida kuriant rakinimo failą „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr "Klaida užveriant (nesusietą) rakinimo failą „%s“: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
-#, fuzzy, c-format
+#, c-format
 msgid "Error unlinking lock file `%s': %s"
 msgstr "Klaida atsiejant rakinimo failą „%s“: %s"
 
@@ -1792,7 +1791,7 @@ msgstr "Pomedis %s jau yra eksportuotas"
 
 #: ../gio/gdbusmessage.c:856
 msgid "type is INVALID"
-msgstr ""
+msgstr "tipas yra NETINKAMAS"
 
 #: ../gio/gdbusmessage.c:867
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
@@ -2432,9 +2431,8 @@ msgid "Unsupported socket address"
 msgstr "Nepalaikomas lizdo adresas"
 
 #: ../gio/glib-compile-schemas.c:702
-#, fuzzy
 msgid "empty names are not permitted"
-msgstr "Abstrakti vardų sritis nepalaikoma"
+msgstr "neleidžiami tušti pavadinimai"
 
 #: ../gio/glib-compile-schemas.c:712
 #, c-format
@@ -3284,9 +3282,9 @@ msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr ""
 
 #: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1061
-#, fuzzy, c-format
+#, c-format
 msgid "Proxy protocol '%s' is not supported."
-msgstr "Savybė „%s“ yra neskaitoma"
+msgstr "Tarpinio serverio protokolas „%s“ nepalaikomas."
 
 #: ../gio/gsocketlistener.c:191
 msgid "Listener is already closed"
