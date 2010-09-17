@@ -18,6 +18,7 @@ file
 filter-cat
 filter-streams
 gdbus-addresses
+gdbus-bz627724
 gdbus-connection
 gdbus-connection-flush-helper
 gdbus-error
@@ -33,6 +34,7 @@ gdbus-example-watch-proxy
 gdbus-exit-on-close
 gdbus-export
 gdbus-introspection
+gdbus-message
 gdbus-names
 gdbus-non-socket
 gdbus-peer
