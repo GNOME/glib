@@ -24,28 +24,6 @@ g_vfs_get_local
 #endif
 #endif
 
-#if IN_HEADER(__G_APPLICATION_H__)
-#if IN_FILE(__G_APPLICATION_C__)
-g_application_get_type G_GNUC_CONST
-g_application_new
-g_application_get_instance
-g_application_get_id
-g_application_set_action_enabled
-g_application_get_action_enabled
-g_application_get_action_description
-g_application_add_action
-g_application_remove_action
-g_application_invoke_action
-g_application_list_actions
-g_application_run
-g_application_register
-g_application_try_new
-g_application_unregistered_try_new
-g_application_quit_with_data
-g_application_is_remote
-#endif
-#endif
-
 #if IN_HEADER(__G_APP_INFO_H__)
 #if IN_FILE(__G_APP_INFO_C__)
 g_app_info_get_type G_GNUC_CONST
@@ -1876,58 +1854,5 @@ g_permission_release_finish
 #if IN_FILE(__G_SIMPLE_PERMISSION_C__)
 g_simple_permission_get_type
 g_simple_permission_new
-#endif
-#endif
-
-#if IN_HEADER(__G_ACTION_GROUP_H__)
-#if IN_FILE(__G_ACTION_GROUP_C__)
-g_action_group_action_added
-g_action_group_action_enabled_changed
-g_action_group_action_removed
-g_action_group_action_state_changed
-g_action_group_activate
-g_action_group_get_enabled
-g_action_group_get_parameter_type
-g_action_group_get_state
-g_action_group_get_state_hint
-g_action_group_get_state_type
-g_action_group_get_type
-g_action_group_has_action
-g_action_group_list_actions
-g_action_group_set_state
-#endif
-#endif
-
-#if IN_HEADER(__G_ACTION_H__)
-#if IN_FILE(__G_ACTION_C__)
-g_action_activate
-g_action_get_enabled
-g_action_get_name
-g_action_get_parameter_type
-g_action_get_state
-g_action_get_state_hint
-g_action_get_state_type
-g_action_get_type
-g_action_set_state
-#endif
-#endif
-
-#if IN_HEADER(__G_SIMPLE_ACTION_GROUP_H__)
-#if IN_FILE(__G_SIMPLE_ACTION_GROUP_C__)
-g_simple_action_group_get_type G_GNUC_CONST
-g_simple_action_group_insert
-g_simple_action_group_lookup
-g_simple_action_group_new
-g_simple_action_group_remove
-#endif
-#endif
-
-#if IN_HEADER(__G_SIMPLE_ACTION_H__)
-#if IN_FILE(__G_SIMPLE_ACTION_C__)
-g_simple_action_get_parameter_type
-g_simple_action_get_type
-g_simple_action_new
-g_simple_action_new_stateful
-g_simple_action_set_enabled
 #endif
 #endif

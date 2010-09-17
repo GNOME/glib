@@ -16,10 +16,7 @@ glib/gspawn.c
 glib/gutf8.c
 glib/goption.c
 glib/gkeyfile.c
-gio/gaction.c
-gio/gactiongroup.c
 gio/gappinfo.c
-gio/gapplication.c
 gio/gasynchelper.c
 gio/gasyncinitable.c
 gio/gasyncresult.c

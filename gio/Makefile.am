@@ -134,20 +134,6 @@ settings_sources += \
 	gregistrysettingsbackend.c
 endif
 
-application_headers = \
-	gactiongroup.h			\
-	gsimpleactiongroup.h		\
-	gaction.h			\
-	gsimpleaction.h			\
-	gapplication.h
-
-application_sources = \
-	gactiongroup.c			\
-	gsimpleactiongroup.c		\
-	gaction.c			\
-	gsimpleaction.c			\
-	gapplication.c
-
 local_sources = \
 	glocaldirectorymonitor.c 	\
 	glocaldirectorymonitor.h 	\
@@ -388,14 +374,13 @@ libgio_2_0_la_SOURCES =		\
 	$(appinfo_sources) 	\
 	$(unix_sources) 	\
 	$(win32_sources) 	\
-	$(application_sources) 	\
 	$(settings_sources) 	\
 	$(gdbus_sources) 	\
 	$(local_sources) 	\
 	$(marshal_sources) 	\
 	$(NULL)
 
-EXTRA_DIST += gnullapplication.c gdbusapplication.c strinfo.c
+EXTRA_DIST += strinfo.c
 
 $(libgio_2_0_la_OBJECTS): $(marshal_sources)
 
@@ -525,7 +510,6 @@ gio_headers =			\
 	gvolumemonitor.h 	\
 	gzlibcompressor.h	\
 	gzlibdecompressor.h	\
-	$(application_headers)	\
 	$(settings_headers)	\
 	$(gdbus_headers)	\
 	$(NULL)

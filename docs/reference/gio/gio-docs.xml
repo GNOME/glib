@@ -163,14 +163,6 @@
         <xi:include href="xml/gpermission.xml"/>
         <xi:include href="xml/gsimplepermission.xml"/>
     </chapter>
-    <chapter id="application">
-        <title>Application support</title>
-        <xi:include href="xml/gactiongroup.xml"/>
-        <xi:include href="xml/gsimpleactiongroup.xml"/>
-        <xi:include href="xml/gaction.xml"/>
-        <xi:include href="xml/gsimpleaction.xml"/>
-        <xi:include href="xml/gapplication.xml"/>
-    </chapter>
     <chapter id="extending">
         <title>Extending GIO</title>
         <xi:include href="xml/gvfs.xml"/>

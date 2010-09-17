@@ -47,10 +47,6 @@ typedef struct _GSimplePermission             GSimplePermission;
 typedef struct _GZlibCompressor               GZlibCompressor;
 typedef struct _GZlibDecompressor             GZlibDecompressor;
 
-typedef struct _GSimpleActionGroup            GSimpleActionGroup;
-typedef struct _GActionGroup                  GActionGroup;
-typedef struct _GSimpleAction                 GSimpleAction;
-typedef struct _GAction                       GAction;
 typedef struct _GSettingsBackend              GSettingsBackend;
 typedef struct _GSettings                     GSettings;
 typedef struct _GPermission                   GPermission;
