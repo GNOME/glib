@@ -245,7 +245,7 @@ test_GDateTime_get_ymd (void)
    memset (&tm, 0, sizeof (struct tm));
    get_localtime_tm (t, &tm);
 
-   dt = g_date_time_new_from_unix_utc (t);
+   dt = g_date_time_new_from_unix_local (t);
    g_date_time_get_ymd(dt, &y, &m, &d);
    g_assert_cmpint(y, ==, tm.tm_year + 1900);
    g_assert_cmpint(m, ==, tm.tm_mon + 1);
