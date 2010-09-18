@@ -349,6 +349,8 @@ libgio_2_0_la_SOURCES =		\
 	goutputstream.c 	\
 	gperiodic.c		\
 	gpermission.c 		\
+	gpollableinputstream.c 	\
+	gpollableoutputstream.c \
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
 	gproxyresolver.c	\
@@ -505,6 +507,8 @@ gio_headers =			\
 	goutputstream.h 	\
 	gperiodic.h		\
 	gpermission.h 		\
+	gpollableinputstream.h 	\
+	gpollableoutputstream.h \
 	gproxyaddress.h         \
 	gproxy.h		\
 	gproxyaddressenumerator.h \

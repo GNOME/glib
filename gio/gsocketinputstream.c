@@ -27,13 +27,18 @@
 #include "gsocketinputstream.h"
 #include "glibintl.h"
 
-#include <gio/gsimpleasyncresult.h>
-#include <gio/gcancellable.h>
-#include <gio/gioerror.h>
+#include "gsimpleasyncresult.h"
+#include "gcancellable.h"
+#include "gpollableinputstream.h"
+#include "gioerror.h"
 
+
+static void g_socket_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
 
 #define g_socket_input_stream_get_type _g_socket_input_stream_get_type
-G_DEFINE_TYPE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM);
+G_DEFINE_TYPE_WITH_CODE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM,
+			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
+			 )
 
 enum
 {
@@ -205,6 +210,44 @@ g_socket_input_stream_read_finish (GInputStream  *stream,
   return count;
 }
 
+static gboolean
+g_socket_input_stream_pollable_is_readable (GPollableInputStream *pollable)
+{
+  GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (pollable);
+
+  return g_socket_condition_check (input_stream->priv->socket, G_IO_IN);
+}
+
+static GSource *
+g_socket_input_stream_pollable_create_source (GPollableInputStream *pollable,
+					      GCancellable         *cancellable)
+{
+  GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (pollable);
+  GSource *socket_source, *pollable_source;
+
+  pollable_source = g_pollable_source_new (G_OBJECT (input_stream));
+  socket_source = g_socket_create_source (input_stream->priv->socket,
+					  G_IO_IN, cancellable);
+  g_source_set_dummy_callback (socket_source);
+  g_source_add_child_source (pollable_source, socket_source);
+  g_source_unref (socket_source);
+
+  return pollable_source;
+}
+
+static gssize
+g_socket_input_stream_pollable_read_nonblocking (GPollableInputStream  *pollable,
+						 void                  *buffer,
+						 gsize                  size,
+						 GError               **error)
+{
+  GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (pollable);
+
+  return g_socket_receive_with_blocking (input_stream->priv->socket,
+					 buffer, size, FALSE,
+					 NULL, error);
+}
+
 static void
 g_socket_input_stream_class_init (GSocketInputStreamClass *klass)
 {
@@ -227,6 +270,14 @@ g_socket_input_stream_class_init (GSocketInputStreamClass *klass)
 							P_("The socket that this stream wraps"),
 							G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+}
+
+static void
+g_socket_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
+{
+  iface->is_readable = g_socket_input_stream_pollable_is_readable;
+  iface->create_source = g_socket_input_stream_pollable_create_source;
+  iface->read_nonblocking = g_socket_input_stream_pollable_read_nonblocking;
 }
 
 static void
