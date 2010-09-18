@@ -1,3 +1,13 @@
+Overview of Changes from GLib 2.25.16 to GLib 2.25.17
+=====================================================
+
+The reduction of #include abuse that was made during the last release
+had the side-effect of completely breaking the build when compiling
+against the system-installed pcre library (see bug #629971).  This
+release fixes that.
+
+The Portuguese translation has also been updated.
+
 Overview of Changes from GLib 2.25.15 to GLib 2.25.16
 =====================================================
 
