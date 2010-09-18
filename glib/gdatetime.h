@@ -131,25 +131,34 @@ GDateTime *             g_date_time_new_utc                             (gint   
                                                                          gint            minute,
                                                                          gdouble         seconds);
 
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add                                 (GDateTime      *datetime,
                                                                          GTimeSpan       timespan);
 
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add_years                           (GDateTime      *datetime,
                                                                          gint            years);
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add_months                          (GDateTime      *datetime,
                                                                          gint            months);
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add_weeks                           (GDateTime      *datetime,
                                                                          gint            weeks);
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add_days                            (GDateTime      *datetime,
                                                                          gint            days);
 
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add_hours                           (GDateTime      *datetime,
                                                                          gint            hours);
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add_minutes                         (GDateTime      *datetime,
                                                                          gint            minutes);
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add_seconds                         (GDateTime      *datetime,
                                                                          gdouble         seconds);
 
+G_GNUC_WARN_UNUSED_RESULT
 GDateTime *             g_date_time_add_full                            (GDateTime      *datetime,
                                                                          gint            years,
                                                                          gint            months,
