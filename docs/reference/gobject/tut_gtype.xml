@@ -661,10 +661,10 @@ void           g_type_free_instance   (GTypeInstance *instance);
           classed type which derives from 
           <link linkend="GTypeInterface"><type>GTypeInterface</type></link>. The following piece of code declares such an interface.
 <programlisting>
-#define MAMAN_IBAZ_TYPE                (maman_ibaz_get_type ())
-#define MAMAN_IBAZ(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_IBAZ_TYPE, MamanIbaz))
-#define MAMAN_IS_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_IBAZ_TYPE))
-#define MAMAN_IBAZ_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_IBAZ_TYPE, MamanIbazInterface))
+#define MAMAN_TYPE_IBAZ                (maman_ibaz_get_type ())
+#define MAMAN_IBAZ(obj)                (G_TYPE_CHECK_INSTANCE_CAST ((obj), MAMAN_TYPE_IBAZ, MamanIbaz))
+#define MAMAN_IS_IBAZ(obj)             (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MAMAN_TYPE_IBAZ))
+#define MAMAN_IBAZ_GET_INTERFACE(inst) (G_TYPE_INSTANCE_GET_INTERFACE ((inst), MAMAN_TYPE_IBAZ, MamanIbazInterface))
 
 typedef struct _MamanIbaz MamanIbaz; /* dummy object */
 typedef struct _MamanIbazInterface MamanIbazInterface;
@@ -746,7 +746,7 @@ maman_baz_get_type (void)
                                    "MamanBazType",
                                    &amp;info, 0);
     g_type_add_interface_static (type,
-                                 MAMAN_IBAZ_TYPE,
+                                 MAMAN_TYPE_IBAZ,
                                  &amp;ibaz_info);
   }
   return type;
