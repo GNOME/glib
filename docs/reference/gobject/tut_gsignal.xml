@@ -31,7 +31,7 @@ return_type function_callback (... , gpointer user_data);
     </para>
 
     <para>
-      The <type><link linkend="GClosure">GClosure</link></type> structure represents the common functionality of all
+      The <link linkend="GClosure"><type>GClosure</type></link> structure represents the common functionality of all
       closure implementations: there exists a different Closure implementation for
       each separate runtime which wants to use the GObject type system.
       <footnote><para>
@@ -42,11 +42,11 @@ return_type function_callback (... , gpointer user_data);
         it behaves as a normal C object for GTK+ and as a normal Python object for
         Python code.
       </para></footnote>
-      The GObject library provides a simple <type><link linkend="GCClosure">GCClosure</link></type> type which
+      The GObject library provides a simple <link linkend="GCClosure"><type>GCClosure</type></link> type which
       is a specific implementation of closures to be used with C/C++ callbacks.
     </para>
     <para>
-      A <type><link linkend="GClosure">GClosure</link></type> provides simple services:
+      A <link linkend="GClosure"><type>GClosure</type></link> provides simple services:
       <itemizedlist>
         <listitem><para>
           Invocation (<function><link linkend="g-closure-invoke">g_closure_invoke</link></function>): this is what closures 
@@ -77,7 +77,7 @@ return_type function_callback (... , gpointer user_data);
 
       <para>
         If you are using C or C++
-        to connect a callback to a given event, you will either use simple <type><link linkend="GCClosure">GCClosure</link></type>s
+        to connect a callback to a given event, you will either use simple <link linkend="GCClosure"><type>GCClosure</type></link>s
         which have a pretty minimal API or the even simpler <function><link linkend="g-signal-connect">g_signal_connect</link></function> 
         functions (which will be presented a bit later :).
 <programlisting>
@@ -432,7 +432,7 @@ void g_signal_emitv (const GValue *instance_and_params,
 
 	  <para>
 	    Of the three main connection functions,
-		only one has an explicit detail parameter as a <type><link linkend="GQuark">GQuark</link></type>
+		only one has an explicit detail parameter as a <link linkend="GQuark"><type>GQuark</type></link>
 		<footnote>
 		  <para>A GQuark is an integer which uniquely represents a string. It is possible to transform
 		   back and forth between the integer and string representations with the functions 
@@ -469,7 +469,7 @@ gulong     g_signal_connect_data              (gpointer          instance,
 
 	  <para>
 		Of the four main signal emission functions, three have an explicit detail parameter as a 
-		<type><link linkend="GQuark">GQuark</link></type> again:
+		<link linkend="GQuark"><type>GQuark</type></link> again:
 <programlisting>
 void                  g_signal_emitv        (const GValue       *instance_and_params,
                          guint               signal_id,
