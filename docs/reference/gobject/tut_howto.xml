@@ -57,8 +57,8 @@
         <filename>mamanbar.h</filename> and <filename>mamanbar.c</filename>.
         (this is the convention used by GTK+)</para></listitem>
       </itemizedlist>
-      I personally like the first solution better: it makes reading file names
-      easier for those with poor eyesight like me.
+      Some people like the first two solutions better: it makes reading file
+      names easier for those with poor eyesight.
     </para>
 
     <para>
