@@ -97,10 +97,7 @@ maman_bar_constructor (GType                  gtype,
 
   {
     /* Always chain up to the parent constructor */
-    MamanBarClass *klass;
-    GObjectClass *parent_class;  
-    parent_class = G_OBJECT_CLASS (maman_bar_parent_class);
-    obj = parent_class-&gt;constructor (gtype, n_properties, properties);
+    obj = G_OBJECT_CLASS (maman_bar_parent_class)-&gt;constructor (gtype, n_properties, properties);
   }
   
   /* update the object state depending on constructor properties */
