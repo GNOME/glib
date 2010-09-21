@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-09-02 19:40+0000\n"
-"PO-Revision-Date: 2010-09-03 00:48+0300\n"
+"PO-Revision-Date: 2010-09-19 14:51+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -122,19 +122,19 @@ msgstr "Vigane hostinimi"
 
 msgctxt "GDateTime"
 msgid "am"
-msgstr "am"
+msgstr "el"
 
 msgctxt "GDateTime"
 msgid "AM"
-msgstr "AM"
+msgstr "EL"
 
 msgctxt "GDateTime"
 msgid "pm"
-msgstr "pm"
+msgstr "pl"
 
 msgctxt "GDateTime"
 msgid "PM"
-msgstr "PM"
+msgstr "PL"
 
 #. Translators: this is the preferred format for expressing the date
 msgctxt "GDateTime"
@@ -200,7 +200,7 @@ msgstr "Jaan"
 
 msgctxt "GDateTime"
 msgid "Feb"
-msgstr "Veeb"
+msgstr "Veebr"
 
 msgctxt "GDateTime"
 msgid "Mar"
@@ -495,8 +495,8 @@ msgstr ""
 
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "Veider märk '%s', elemendi '%s' lõpusildi lõpetamiseks oodatakse märki '>'"
 
@@ -1467,8 +1467,8 @@ msgstr ""
 
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr ""
 
 #, c-format
