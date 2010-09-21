@@ -644,7 +644,7 @@ g_io_create_watch (GIOChannel   *channel,
  *
  * This internally creates a main loop source using g_io_create_watch()
  * and attaches it to the main loop context with g_source_attach().
- * You can do these steps manuallt if you need greater control.
+ * You can do these steps manually if you need greater control.
  *
  * Returns: the event source id
  */
