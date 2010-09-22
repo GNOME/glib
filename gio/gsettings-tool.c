@@ -325,6 +325,7 @@ handle_set (gint      *argc,
 
   modify_argv0_for_command (argc, argv, "set");
 
+  /* Translators: Please keep order of words (command parameters) */
   context = g_option_context_new (_("SCHEMA KEY VALUE"));
   g_option_context_set_help_enabled (context, FALSE);
   g_option_context_set_summary (context, _("Set the value of KEY"));
@@ -536,6 +537,7 @@ handle_writable (gint   *argc,
 
   modify_argv0_for_command (argc, argv, "writable");
 
+  /* Translators: Please keep order of words (command parameters) */
   context = g_option_context_new (_("SCHEMA KEY"));
   g_option_context_set_help_enabled (context, FALSE);
   g_option_context_set_summary (context, _("Find out whether KEY is writable"));
