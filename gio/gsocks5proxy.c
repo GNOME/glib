@@ -587,6 +587,7 @@ free_connect_data (ConnectAsyncData *data)
   g_free (data->hostname);
   g_free (data->username);
   g_free (data->password);
+  g_free (data->buffer);
   
   if (data->cancellable)
     g_object_unref (data->cancellable);
