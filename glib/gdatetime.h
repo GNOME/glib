@@ -169,8 +169,8 @@ GDateTime *             g_date_time_add_full                            (GDateTi
 
 gint                    g_date_time_compare                             (gconstpointer   dt1,
                                                                          gconstpointer   dt2);
-GTimeSpan               g_date_time_difference                          (GDateTime      *begin,
-                                                                         GDateTime      *end);
+GTimeSpan               g_date_time_difference                          (GDateTime      *end,
+                                                                         GDateTime      *begin);
 guint                   g_date_time_hash                                (gconstpointer   datetime);
 gboolean                g_date_time_equal                               (gconstpointer   dt1,
                                                                          gconstpointer   dt2);
