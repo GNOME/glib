@@ -116,13 +116,13 @@ test_connection_life_cycle (void)
   g_assert (!g_dbus_error_is_remote_error (error));
   g_assert (c == NULL);
   g_error_free (error);
-  error = NULL;
 
   /*
    *  Check for correct behavior when a bus is present
    */
   session_bus_up ();
   /* case 1 */
+  error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
   g_assert (c != NULL);
@@ -131,6 +131,7 @@ test_connection_life_cycle (void)
   /*
    * Check that singleton handling work
    */
+  error = NULL;
   c2 = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
   g_assert (c2 != NULL);
@@ -1070,11 +1071,12 @@ test_connection_basic (void)
   g_assert (exit_on_close);
   g_assert (flags == G_DBUS_CAPABILITY_FLAGS_NONE ||
             flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
-
   g_object_unref (stream);
-  g_object_unref (connection);
   g_free (name);
   g_free (guid);
+
+  _g_object_wait_for_single_ref (connection);
+  g_object_unref (connection);
 
   session_bus_down ();
 }
