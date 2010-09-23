@@ -25,6 +25,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <signal.h>
 #include <stdio.h>
 
@@ -306,10 +307,7 @@ session_bus_get_temporary_address (void)
 {
   if (temporary_address == NULL)
     {
-      gchar *guid;
-      guid = g_dbus_generate_guid ();
-      temporary_address = g_strdup_printf ("unix:abstract=/tmp/g-dbus-tests-pid-%d-uuid-%s", getpid (), guid);
-      g_free (guid);
+      temporary_address = g_strdup_printf ("unix:path=/tmp/g-dbus-tests-pid-%d", getpid ());
     }
 
   return temporary_address;
