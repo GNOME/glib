@@ -47,6 +47,7 @@ TEST_PROGS +=	 		\
 if OS_UNIX
 TEST_PROGS +=			\
 	gdbus-connection	\
+	gdbus-connection-slow	\
 	gdbus-names		\
 	gdbus-proxy		\
 	gdbus-proxy-well-known-name \
@@ -223,6 +224,9 @@ gdbus_bz627724_LDADD = $(progs_ldadd)
 
 gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_connection_LDADD = $(progs_ldadd)
+
+gdbus_connection_slow_SOURCES = gdbus-connection-slow.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_connection_slow_LDADD = $(progs_ldadd)
 
 gdbus_message_SOURCES = gdbus-message.c
 gdbus_message_LDADD = $(progs_ldadd)
