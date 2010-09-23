@@ -91,14 +91,14 @@ dnl
 int 
 main ()
 {
-  int major, minor, micro;
+  unsigned int major, minor, micro;
   char *tmp_version;
 
   fclose (fopen ("conf.glibtest", "w"));
 
   /* HP/UX 9 (%@#!) writes to sscanf strings */
   tmp_version = g_strdup("$min_glib_version");
-  if (sscanf(tmp_version, "%d.%d.%d", &major, &minor, &micro) != 3) {
+  if (sscanf(tmp_version, "%u.%u.%u", &major, &minor, &micro) != 3) {
      printf("%s, bad version string\n", "$min_glib_version");
      exit(1);
    }
@@ -137,9 +137,9 @@ main ()
        }
      else
       {
-        printf("\n*** An old version of GLIB (%d.%d.%d) was found.\n",
+        printf("\n*** An old version of GLIB (%u.%u.%u) was found.\n",
                glib_major_version, glib_minor_version, glib_micro_version);
-        printf("*** You need a version of GLIB newer than %d.%d.%d. The latest version of\n",
+        printf("*** You need a version of GLIB newer than %u.%u.%u. The latest version of\n",
 	       major, minor, micro);
         printf("*** GLIB is always available from ftp://ftp.gtk.org.\n");
         printf("***\n");
