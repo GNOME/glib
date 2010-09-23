@@ -25,7 +25,7 @@ msgstr ""
 "Project-Id-Version: glib glib-2-26\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-09-19 15:10+0000\n"
+"POT-Creation-Date: 2010-09-23 15:55+0000\n"
 "PO-Revision-Date: 2010-09-19 18:20+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -532,11 +532,11 @@ msgstr "%.1f EB"
 #: ../glib/gfileutils.c:1853
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "シンボリック・リンク '%s' の読み込みが失敗: %s"
+msgstr "シンボリックリンク '%s' の読み込みが失敗: %s"
 
 #: ../glib/gfileutils.c:1874
 msgid "Symbolic links not supported"
-msgstr "シンボリック・リンクはサポートしていません"
+msgstr "シンボリックリンクはサポートしていません"
 
 #: ../glib/giochannel.c:1407
 #, c-format
@@ -2343,7 +2343,7 @@ msgstr "特別なファイルはコピーできません"
 
 #: ../gio/gfile.c:3480
 msgid "Invalid symlink value given"
-msgstr "指定したシンボリック・リンクは間違っています"
+msgstr "指定したシンボリックリンクは間違っています"
 
 #: ../gio/gfile.c:3573
 msgid "Trash not supported"
@@ -2780,12 +2780,12 @@ msgstr "ディレクトリを生成する際にエラー: %s"
 #: ../gio/glocalfile.c:2164
 #, c-format
 msgid "Filesystem does not support symbolic links"
-msgstr "シンボリック・リンクをファイルシステムがサポートしていません"
+msgstr "シンボリックリンクをファイルシステムがサポートしていません"
 
 #: ../gio/glocalfile.c:2168
 #, c-format
 msgid "Error making symbolic link: %s"
-msgstr "シンボリック・リンクを生成する際にエラー: %s"
+msgstr "シンボリックリンクを生成する際にエラー: %s"
 
 #: ../gio/glocalfile.c:2230 ../gio/glocalfile.c:2324
 #, c-format
@@ -2856,7 +2856,7 @@ msgstr "属性の種類が無効です (バイト型の文字列を想定して�
 
 #: ../gio/glocalfileinfo.c:1905
 msgid "Cannot set permissions on symlinks"
-msgstr "シンボリック・リンクにはアクセス権をセットできません"
+msgstr "シンボリックリンクにはアクセス権をセットできません"
 
 #: ../gio/glocalfileinfo.c:1921
 #, c-format
@@ -2870,17 +2870,17 @@ msgstr "所有者をセットする際にエラー: %s"
 
 #: ../gio/glocalfileinfo.c:1995
 msgid "symlink must be non-NULL"
-msgstr "シンボリック・リンクを NULL にしないでください"
+msgstr "シンボリックリンクを NULL にしないでください"
 
 #: ../gio/glocalfileinfo.c:2005 ../gio/glocalfileinfo.c:2024
 #: ../gio/glocalfileinfo.c:2035
 #, c-format
 msgid "Error setting symlink: %s"
-msgstr "シンボリック・リンクをセットする際にエラー: %s"
+msgstr "シンボリックリンクをセットする際にエラー: %s"
 
 #: ../gio/glocalfileinfo.c:2014
 msgid "Error setting symlink: file is not a symlink"
-msgstr "シンボリック・リンクの指定でエラー: ファイルがリンクではない"
+msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
 
 #: ../gio/glocalfileinfo.c:2140
 #, c-format
