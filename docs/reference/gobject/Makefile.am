@@ -40,7 +40,7 @@ GTKDOC_LIBS = \
 
 # Images to copy into HTML directory
 HTML_IMAGES =  \
-	$(srcdir)/images/glue.png
+	images/glue.png
 
 # Extra SGML files that are included by $(DOC_MAIN_SGML_FILE)
 content_files = version.xml 		\
