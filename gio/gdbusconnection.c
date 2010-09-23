@@ -375,13 +375,14 @@ G_DEFINE_TYPE_WITH_CODE (GDBusConnection, g_dbus_connection, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_INITABLE, async_initable_iface_init)
                          );
 
+static GHashTable *alive_connections = NULL;
+
 static void
 g_dbus_connection_dispose (GObject *object)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (object);
 
   G_LOCK (message_bus_lock);
-  //g_debug ("disposing %p", connection);
   if (connection == the_session_bus)
     {
       the_session_bus = NULL;
@@ -390,11 +391,20 @@ g_dbus_connection_dispose (GObject *object)
     {
       the_system_bus = NULL;
     }
+  CONNECTION_LOCK (connection);
   if (connection->worker != NULL)
     {
       _g_dbus_worker_stop (connection->worker);
       connection->worker = NULL;
+      if (alive_connections != NULL)
+        g_warn_if_fail (g_hash_table_remove (alive_connections, connection));
     }
+  else
+    {
+      if (alive_connections != NULL)
+        g_warn_if_fail (g_hash_table_lookup (alive_connections, connection) == NULL);
+    }
+  CONNECTION_UNLOCK (connection);
   G_UNLOCK (message_bus_lock);
 
   if (G_OBJECT_CLASS (g_dbus_connection_parent_class)->dispose != NULL)
@@ -1957,19 +1967,31 @@ on_worker_message_received (GDBusWorker  *worker,
                             GDBusMessage *message,
                             gpointer      user_data)
 {
-  GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
+  GDBusConnection *connection;
   FilterCallback *filters;
   gboolean consumed_by_filter;
   gboolean altered_by_filter;
   guint num_filters;
   guint n;
+  gboolean alive;
+
+  G_LOCK (message_bus_lock);
+  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  if (!alive)
+    {
+      G_UNLOCK (message_bus_lock);
+      return;
+    }
+  connection = G_DBUS_CONNECTION (user_data);
+  g_object_ref (connection);
+  G_UNLOCK (message_bus_lock);
 
   //g_debug ("in on_worker_message_received");
 
   g_object_ref (message);
   g_dbus_message_lock (message);
 
-  g_object_ref (connection);
+  //g_debug ("boo ref_count = %d %p %p", G_OBJECT (connection)->ref_count, connection, connection->worker);
 
   /* First collect the set of callback functions */
   CONNECTION_LOCK (connection);
@@ -2051,13 +2073,24 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
                                     GDBusMessage *message,
                                     gpointer      user_data)
 {
-  GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
+  GDBusConnection *connection;
   FilterCallback *filters;
   guint num_filters;
   guint n;
+  gboolean alive;
+
+  G_LOCK (message_bus_lock);
+  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  if (!alive)
+    {
+      G_UNLOCK (message_bus_lock);
+      return message;
+    }
+  connection = G_DBUS_CONNECTION (user_data);
+  g_object_ref (connection);
+  G_UNLOCK (message_bus_lock);
 
   //g_debug ("in on_worker_message_about_to_be_sent");
-  g_object_ref (connection);
 
   /* First collect the set of callback functions */
   CONNECTION_LOCK (connection);
@@ -2096,7 +2129,19 @@ on_worker_closed (GDBusWorker *worker,
                   GError      *error,
                   gpointer     user_data)
 {
-  GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
+  GDBusConnection *connection;
+  gboolean alive;
+
+  G_LOCK (message_bus_lock);
+  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  if (!alive)
+    {
+      G_UNLOCK (message_bus_lock);
+      return;
+    }
+  connection = G_DBUS_CONNECTION (user_data);
+  g_object_ref (connection);
+  G_UNLOCK (message_bus_lock);
 
   //g_debug ("in on_worker_closed: %s", error->message);
 
@@ -2104,6 +2149,8 @@ on_worker_closed (GDBusWorker *worker,
   if (!connection->closed)
     set_closed_unlocked (connection, remote_peer_vanished, error);
   CONNECTION_UNLOCK (connection);
+
+  g_object_unref (connection);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -2243,6 +2290,12 @@ initable_init (GInitable     *initable,
       g_socket_set_blocking (g_socket_connection_get_socket (G_SOCKET_CONNECTION (connection->stream)), FALSE);
     }
 #endif
+
+  G_LOCK (message_bus_lock);
+  if (alive_connections == NULL)
+    alive_connections = g_hash_table_new (g_direct_hash, g_direct_equal);
+  g_hash_table_insert (alive_connections, connection, connection);
+  G_UNLOCK (message_bus_lock);
 
   connection->worker = _g_dbus_worker_new (connection->stream,
                                            connection->capabilities,

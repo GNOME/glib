@@ -158,6 +158,40 @@ _g_bus_get_priv (GBusType            bus_type,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#if 1
+/* toggle refs are not easy to use (maybe not even safe) when multiple
+ * threads are involved so implement this by busy-waiting for now
+ */
+gboolean
+_g_object_wait_for_single_ref_do (gpointer object)
+{
+  guint num_ms_elapsed;
+  gboolean timed_out;
+
+  timed_out = FALSE;
+  num_ms_elapsed = 0;
+
+  while (TRUE)
+    {
+      if (G_OBJECT (object)->ref_count == 1)
+        goto out;
+
+      if (num_ms_elapsed > 5000)
+        {
+          timed_out = TRUE;
+          goto out;
+        }
+
+      usleep (10 * 1000);
+      num_ms_elapsed += 10;
+    }
+
+ out:
+  return timed_out;
+}
+
+#else
+
 typedef struct
 {
   GMainLoop *loop;
@@ -201,19 +235,31 @@ _g_object_wait_for_single_ref_do (gpointer object)
   g_object_add_toggle_ref (G_OBJECT (object),
                            on_wait_for_single_ref_toggled,
                            &data);
+  /* the reference could have been removed between us checking the
+   * ref_count and the toggle ref being added
+   */
+  if (G_OBJECT (object)->ref_count == 2)
+    goto single_ref_already;
+
   g_object_unref (object);
-
   g_main_loop_run (data.loop);
-
   g_object_ref (object);
+
+single_ref_already:
   g_object_remove_toggle_ref (object,
                               on_wait_for_single_ref_toggled,
                               &data);
 
   g_source_remove (timeout_id);
   g_main_loop_unref (data.loop);
+
  out:
+  if (data.timed_out)
+    {
+      g_printerr ("b ref_count is %d\n", G_OBJECT (object)->ref_count);
+    }
   return data.timed_out;
 }
+#endif
 
 /* ---------------------------------------------------------------------------------------------------- */

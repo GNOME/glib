@@ -1443,22 +1443,14 @@ _g_dbus_worker_new (GIOStream                              *stream,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* This can be called from any thread - frees worker - guarantees no callbacks
- * will ever be issued again
+/* This can be called from any thread - frees worker. Note that
+ * callbacks might still happen if called from another thread than the
+ * worker - use your own synchronization primitive in the callbacks.
  */
 void
 _g_dbus_worker_stop (GDBusWorker *worker)
 {
-  /* If we're called in the worker thread it means we are called from
-   * a worker callback. This is fine, we just can't lock in that case since
-   * we're already holding the lock...
-   */
-  if (g_thread_self () != worker->thread)
-    g_mutex_lock (worker->read_lock);
   worker->stopped = TRUE;
-  if (g_thread_self () != worker->thread)
-    g_mutex_unlock (worker->read_lock);
-
   g_cancellable_cancel (worker->cancellable);
   _g_dbus_worker_unref (worker);
 }
