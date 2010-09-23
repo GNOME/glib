@@ -28,6 +28,8 @@
 #include <signal.h>
 #include <stdio.h>
 
+#include <gio/gio.h>
+
 #include "gdbus-sessionbus.h"
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -304,8 +306,10 @@ session_bus_get_temporary_address (void)
 {
   if (temporary_address == NULL)
     {
-      /* TODO: maybe use a more random name etc etc */
-      temporary_address = g_strdup_printf ("unix:path=/tmp/g-dbus-tests-pid-%d", getpid ());
+      gchar *guid;
+      guid = g_dbus_generate_guid ();
+      temporary_address = g_strdup_printf ("unix:abstract=/tmp/g-dbus-tests-pid-%d-uuid-%s", getpid (), guid);
+      g_free (guid);
     }
 
   return temporary_address;
