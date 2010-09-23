@@ -1140,8 +1140,7 @@ async_init_get_name_owner_cb (GDBusConnection *connection,
             }
           else
             {
-              g_simple_async_result_set_from_error (data->simple, error);
-              g_error_free (error);
+              g_simple_async_result_take_error (data->simple, error);
               g_simple_async_result_complete_in_idle (data->simple);
               async_init_data_free (data);
               goto out;
@@ -1265,8 +1264,7 @@ async_init_start_service_by_name_cb (GDBusConnection *connection,
 
  failed:
   g_warn_if_fail (error != NULL);
-  g_simple_async_result_set_from_error (data->simple, error);
-  g_error_free (error);
+  g_simple_async_result_take_error (data->simple, error);
   g_simple_async_result_complete_in_idle (data->simple);
   async_init_data_free (data);
 }
@@ -1453,8 +1451,7 @@ get_connection_cb (GObject       *source_object,
                                           data->callback,
                                           data->user_data,
                                           NULL);
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
     }
@@ -2148,9 +2145,7 @@ reply_cb (GDBusConnection *connection,
                                          &error);
   if (error != NULL)
     {
-      g_simple_async_result_set_from_error (simple,
-                                            error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
     }
   else
     {

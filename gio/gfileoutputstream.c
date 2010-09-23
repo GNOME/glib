@@ -524,10 +524,7 @@ query_info_async_thread (GSimpleAsyncResult *res,
                          _("Stream doesn't support query_info"));
 
   if (info == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->info = info;
 }

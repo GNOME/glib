@@ -410,7 +410,7 @@ handle_error:
   if (error != NULL)
     {
       GSimpleAsyncResult *simple;
-      simple = g_simple_async_result_new_from_error (G_OBJECT (data->unix_volume),
+      simple = g_simple_async_result_new_take_error (G_OBJECT (data->unix_volume),
                                                      data->callback,
                                                      data->user_data,
                                                      error);
@@ -423,7 +423,6 @@ handle_error:
       if (data->error_channel != NULL)
         g_io_channel_unref (data->error_channel);
 
-      g_error_free (error);
       g_free (data);
     }
 }

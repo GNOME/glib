@@ -938,8 +938,7 @@ g_socket_client_async_connect_complete (GSocketClientAsyncConnectData *data)
 {
   if (data->last_error)
     {
-      g_simple_async_result_set_from_error (data->result, data->last_error);
-      g_error_free (data->last_error);
+      g_simple_async_result_take_error (data->result, data->last_error);
     }
   else
     {

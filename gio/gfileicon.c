@@ -309,11 +309,10 @@ load_async_callback (GObject      *source_object,
   
   if (stream == NULL)
     {
-      simple = g_simple_async_result_new_from_error (G_OBJECT (data->icon),
+      simple = g_simple_async_result_new_take_error (G_OBJECT (data->icon),
 						     data->callback,
 						     data->user_data,
 						     error);
-      g_error_free (error);
     }
   else
     {

@@ -595,8 +595,7 @@ next_async_resolved_targets (GObject      *source_object,
       GSimpleAsyncResult *simple = srv_enum->result;
 
       srv_enum->result = NULL;
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete (simple);
       g_object_unref (simple);
     }
@@ -642,8 +641,7 @@ next_async_have_targets (GNetworkServiceAddressEnumerator *srv_enum)
 
       if (srv_enum->error)
         {
-          g_simple_async_result_set_from_error (simple, srv_enum->error);
-          g_error_free (srv_enum->error);
+          g_simple_async_result_take_error (simple, srv_enum->error);
           srv_enum->error = NULL;
         }
 

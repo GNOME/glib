@@ -806,10 +806,7 @@ get_stream_thread_func (GSimpleAsyncResult *res,
                                                  cancellable,
                                                  &error);
   if (data->stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 /**

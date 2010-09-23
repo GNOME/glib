@@ -1026,10 +1026,7 @@ flush_in_thread_func (GSimpleAsyncResult *res,
   if (!g_dbus_connection_flush_sync (G_DBUS_CONNECTION (object),
                                      cancellable,
                                      &error))
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 /**
@@ -1237,10 +1234,7 @@ close_in_thread_func (GSimpleAsyncResult *res,
   if (!g_dbus_connection_close_sync (G_DBUS_CONNECTION (object),
                                      cancellable,
                                      &error))
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 /**
@@ -1748,7 +1742,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
   error = NULL;
   if (!g_dbus_connection_send_message_unlocked (connection, message, flags, out_serial, &error))
     {
-      g_simple_async_result_set_from_error (simple, error);
+      g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
       goto out;
@@ -4974,10 +4968,7 @@ g_dbus_connection_call_done (GObject      *source,
     value = NULL;
 
   if (value == NULL)
-    {
-      g_simple_async_result_set_from_error (state->simple, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (state->simple, error);
   else
     g_simple_async_result_set_op_res_gpointer (state->simple, value,
                                                (GDestroyNotify) g_variant_unref);
@@ -6284,8 +6275,7 @@ bus_get_async_initable_cb (GObject      *source_object,
                                      &error))
     {
       g_assert (error != NULL);
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
       g_object_unref (source_object);
     }
   else
@@ -6335,8 +6325,7 @@ g_bus_get (GBusType             bus_type,
   if (connection == NULL)
     {
       g_assert (error != NULL);
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
     }

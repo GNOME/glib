@@ -142,10 +142,7 @@ g_socket_input_stream_read_ready (GSocket *socket,
     g_simple_async_result_set_op_res_gssize (simple, result);
 
   if (error)
-    {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (simple, error);
 
   if (stream->priv->cancellable)
     g_object_unref (stream->priv->cancellable);

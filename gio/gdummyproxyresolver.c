@@ -105,8 +105,7 @@ g_dummy_proxy_resolver_lookup_async (GProxyResolver      *resolver,
 
   if (proxies == NULL)
     {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
     }
   else
     {

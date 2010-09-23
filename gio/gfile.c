@@ -4830,10 +4830,7 @@ query_info_async_thread (GSimpleAsyncResult *res,
   info = g_file_query_info (G_FILE (object), data->attributes, data->flags, cancellable, &error);
 
   if (info == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->info = info;
 }
@@ -4906,10 +4903,7 @@ query_filesystem_info_async_thread (GSimpleAsyncResult *res,
   info = g_file_query_filesystem_info (G_FILE (object), data->attributes, cancellable, &error);
 
   if (info == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->info = info;
 }
@@ -4981,10 +4975,7 @@ enumerate_children_async_thread (GSimpleAsyncResult *res,
   enumerator = g_file_enumerate_children (G_FILE (object), data->attributes, data->flags, cancellable, &error);
 
   if (enumerator == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->enumerator = enumerator;
 }
@@ -5046,8 +5037,7 @@ open_read_async_thread (GSimpleAsyncResult *res,
                            G_IO_ERROR_NOT_SUPPORTED,
                            _("Operation not supported"));
 
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (res, error);
 
       return;
     }
@@ -5055,10 +5045,7 @@ open_read_async_thread (GSimpleAsyncResult *res,
   stream = iface->read_fn (G_FILE (object), cancellable, &error);
 
   if (stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     g_simple_async_result_set_op_res_gpointer (res, stream, g_object_unref);
 }
@@ -5112,10 +5099,7 @@ append_to_async_thread (GSimpleAsyncResult *res,
   stream = iface->append_to (G_FILE (object), *data, cancellable, &error);
 
   if (stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     g_simple_async_result_set_op_res_gpointer (res, stream, g_object_unref);
 }
@@ -5175,10 +5159,7 @@ create_async_thread (GSimpleAsyncResult *res,
   stream = iface->create (G_FILE (object), *data, cancellable, &error);
 
   if (stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     g_simple_async_result_set_op_res_gpointer (res, stream, g_object_unref);
 }
@@ -5259,10 +5240,7 @@ replace_async_thread (GSimpleAsyncResult *res,
 			   &error);
 
   if (stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->stream = stream;
 }
@@ -5326,8 +5304,7 @@ open_readwrite_async_thread (GSimpleAsyncResult *res,
                            G_IO_ERROR_NOT_SUPPORTED,
                            _("Operation not supported"));
 
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (res, error);
 
       return;
     }
@@ -5335,10 +5312,7 @@ open_readwrite_async_thread (GSimpleAsyncResult *res,
   stream = iface->open_readwrite (G_FILE (object), cancellable, &error);
 
   if (stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     g_simple_async_result_set_op_res_gpointer (res, stream, g_object_unref);
 }
@@ -5395,8 +5369,7 @@ create_readwrite_async_thread (GSimpleAsyncResult *res,
                            G_IO_ERROR_NOT_SUPPORTED,
                            _("Operation not supported"));
 
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (res, error);
 
       return;
     }
@@ -5404,10 +5377,7 @@ create_readwrite_async_thread (GSimpleAsyncResult *res,
   stream = iface->create_readwrite (G_FILE (object), *data, cancellable, &error);
 
   if (stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     g_simple_async_result_set_op_res_gpointer (res, stream, g_object_unref);
 }
@@ -5488,10 +5458,7 @@ replace_readwrite_async_thread (GSimpleAsyncResult *res,
 				     &error);
 
   if (stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->stream = stream;
 }
@@ -5566,10 +5533,7 @@ set_display_name_async_thread (GSimpleAsyncResult *res,
   file = g_file_set_display_name (G_FILE (object), data->name, cancellable, &error);
 
   if (file == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->file = file;
 }
@@ -5702,10 +5666,7 @@ find_enclosing_mount_async_thread (GSimpleAsyncResult *res,
   mount = g_file_find_enclosing_mount (G_FILE (object), cancellable, &error);
 
   if (mount == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     g_simple_async_result_set_op_res_gpointer (res, mount, (GDestroyNotify)g_object_unref);
 }
@@ -5834,10 +5795,7 @@ copy_async_thread (GIOSchedulerJob *job,
 					 NULL, NULL);
   
   if (!result)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 
   g_simple_async_result_complete_in_idle (res);
 
@@ -6410,12 +6368,11 @@ load_contents_open_callback (GObject      *obj,
     }
   else
     {
-      res = g_simple_async_result_new_from_error (G_OBJECT (data->file),
+      res = g_simple_async_result_new_take_error (G_OBJECT (data->file),
 						  data->callback,
 						  data->user_data,
 						  error);
       g_simple_async_result_complete (res);
-      g_error_free (error);
       load_contents_data_free (data);
       g_object_unref (res);
     }
@@ -6814,12 +6771,11 @@ replace_contents_open_callback (GObject      *obj,
     }
   else
     {
-      res = g_simple_async_result_new_from_error (G_OBJECT (data->file),
+      res = g_simple_async_result_new_take_error (G_OBJECT (data->file),
 						  data->callback,
 						  data->user_data,
 						  error);
       g_simple_async_result_complete (res);
-      g_error_free (error);
       replace_contents_data_free (data);
       g_object_unref (res);
     }

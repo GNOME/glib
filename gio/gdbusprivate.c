@@ -153,8 +153,7 @@ _g_socket_read_with_control_messages_ready (GSocket      *socket,
   else
     {
       g_assert (error != NULL);
-      g_simple_async_result_set_from_error (data->simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (data->simple, error);
     }
 
   if (data->from_mainloop)
@@ -908,8 +907,7 @@ write_message_async_cb (GObject      *source_object,
                                                 &error);
   if (bytes_written == -1)
     {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete (simple);
       g_object_unref (simple);
       goto out;
@@ -1028,8 +1026,7 @@ write_message_continue_writing (MessageToWriteData *data)
               g_error_free (error);
               goto out;
             }
-          g_simple_async_result_set_from_error (simple, error);
-          g_error_free (error);
+          g_simple_async_result_take_error (simple, error);
           g_simple_async_result_complete (simple);
           g_object_unref (simple);
           goto out;

@@ -595,10 +595,11 @@ async_ready_close_callback_wrapper (GObject      *source_object,
         {
           GSimpleAsyncResult *err;
 
-          err = g_simple_async_result_new_from_error (source_object,
+          err = g_simple_async_result_new_take_error (source_object,
                                                       stream->priv->outstanding_callback,
                                                       data->user_data,
                                                       data->flush_error);
+          data->flush_error = NULL;
 
           (*stream->priv->outstanding_callback) (source_object,
                                                  G_ASYNC_RESULT (err),
@@ -1254,10 +1255,7 @@ write_async_thread (GSimpleAsyncResult *res,
   op->count_written = class->write_fn (G_OUTPUT_STREAM (object), op->buffer, op->count_requested,
 				       cancellable, &error);
   if (op->count_written == -1)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 static void
@@ -1321,10 +1319,7 @@ splice_async_thread (GSimpleAsyncResult *result,
 				    cancellable,
 				    &error);
   if (op->bytes_copied == -1)
-    {
-      g_simple_async_result_set_from_error (result, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (result, error);
 }
 
 static void
@@ -1381,10 +1376,7 @@ flush_async_thread (GSimpleAsyncResult *res,
     result = class->flush (G_OUTPUT_STREAM (object), cancellable, &error);
 
   if (!result)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 static void
@@ -1444,10 +1436,7 @@ close_async_thread (GSimpleAsyncResult *res,
         result = class->close_fn (G_OUTPUT_STREAM (object), cancellable, &error);
 
       if (!result)
-	{
-	  g_simple_async_result_set_from_error (res, error);
-	  g_error_free (error);
-	}
+        g_simple_async_result_take_error (res, error);
     }
 }
 

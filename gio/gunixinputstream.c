@@ -462,10 +462,7 @@ read_async_cb (ReadAsyncData *data,
   g_simple_async_result_set_op_res_gssize (simple, count_read);
 
   if (count_read == -1)
-    {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (simple, error);
 
   /* Complete immediately, not in idle, since we're already in a mainloop callout */
   g_simple_async_result_complete (simple);
@@ -601,10 +598,7 @@ close_async_cb (CloseAsyncData *data)
 				      g_unix_input_stream_close_async);
 
   if (!result)
-    {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (simple, error);
 
   /* Complete immediately, not in idle, since we're already in a mainloop callout */
   g_simple_async_result_complete (simple);

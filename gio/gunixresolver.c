@@ -232,8 +232,7 @@ request_cancelled (GCancellable *cancellable,
   req->qy = NULL;
 
   g_cancellable_set_error_if_cancelled (cancellable, &error);
-  g_simple_async_result_set_from_error (req->async_result, error);
-  g_error_free (error);
+  g_simple_async_result_take_error (req->async_result, error);
 
   g_unix_resolver_request_complete (req);
 }
@@ -303,10 +302,7 @@ lookup_by_name_process (GUnixResolverRequest *req)
     freeaddrinfo (res);
 
   if (error)
-    {
-      g_simple_async_result_set_from_error (req->async_result, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (req->async_result, error);
 }
 
 static void
@@ -373,10 +369,7 @@ lookup_by_address_process (GUnixResolverRequest *req)
                                     host, retval, &error);
 
   if (error)
-    {
-      g_simple_async_result_set_from_error (req->async_result, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (req->async_result, error);
 }
 
 static void
@@ -453,10 +446,7 @@ lookup_service_process (GUnixResolverRequest *req)
   _g_asyncns_freeanswer (answer);
 
   if (error)
-    {
-      g_simple_async_result_set_from_error (req->async_result, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (req->async_result, error);
 }
 
 static void

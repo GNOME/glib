@@ -710,8 +710,7 @@ accept_ready (GSocket      *accept_socket,
     }
   else
     {
-      g_simple_async_result_set_from_error (data->simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (data->simple, error);
     }
 
   g_simple_async_result_complete_in_idle (data->simple);

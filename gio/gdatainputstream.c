@@ -970,8 +970,7 @@ g_data_input_stream_read_line_ready (GObject      *object,
           if (bytes < 0)
             /* stream error. */
             {
-              g_simple_async_result_set_from_error (data->simple, error);
-              g_error_free (error);
+              g_simple_async_result_take_error (data->simple, error);
               data->checked = 0;
             }
 

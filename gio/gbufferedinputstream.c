@@ -937,8 +937,7 @@ fill_async_callback (GObject      *source_object,
   g_simple_async_result_set_op_res_gssize (simple, res);
   if (res == -1)
     {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
     }
   else
     {
@@ -1049,13 +1048,12 @@ large_read_callback (GObject *source_object,
 
   /* Only report the error if we've not already read some data */
   if (nread < 0 && data->bytes_read == 0)
-    g_simple_async_result_set_from_error (simple, error);
+    g_simple_async_result_take_error (simple, error);
+  else if (error)
+    g_error_free (error);
 
   if (nread > 0)
     data->bytes_read += nread;
-
-  if (error)
-    g_error_free (error);
 
   /* Complete immediately, not in idle, since we're already
    * in a mainloop callout
@@ -1087,8 +1085,9 @@ read_fill_buffer_callback (GObject      *source_object,
                                                result, &error);
 
   if (nread < 0 && data->bytes_read == 0)
-    g_simple_async_result_set_from_error (simple, error);
-
+    g_simple_async_result_take_error (simple, error);
+  else if (error)
+    g_error_free (error);
 
   if (nread > 0)
     {
@@ -1099,9 +1098,6 @@ read_fill_buffer_callback (GObject      *source_object,
       data->bytes_read += data->count;
       priv->pos += data->count;
     }
-
-  if (error)
-    g_error_free (error);
 
   /* Complete immediately, not in idle, since we're already
    * in a mainloop callout
@@ -1234,13 +1230,12 @@ large_skip_callback (GObject      *source_object,
 
   /* Only report the error if we've not already read some data */
   if (nread < 0 && data->bytes_skipped == 0)
-    g_simple_async_result_set_from_error (simple, error);
+    g_simple_async_result_take_error (simple, error);
+  else if (error)
+    g_error_free (error);
 
   if (nread > 0)
     data->bytes_skipped += nread;
-
-  if (error)
-    g_error_free (error);
 
   /* Complete immediately, not in idle, since we're already
    * in a mainloop callout
@@ -1272,7 +1267,9 @@ skip_fill_buffer_callback (GObject      *source_object,
                                                result, &error);
 
   if (nread < 0 && data->bytes_skipped == 0)
-    g_simple_async_result_set_from_error (simple, error);
+    g_simple_async_result_take_error (simple, error);
+  else if (error)
+    g_error_free (error);
 
   if (nread > 0)
     {
@@ -1282,9 +1279,6 @@ skip_fill_buffer_callback (GObject      *source_object,
       data->bytes_skipped += data->count;
       priv->pos += data->count;
     }
-
-  if (error)
-    g_error_free (error);
 
   /* Complete immediately, not in idle, since we're already
    * in a mainloop callout
