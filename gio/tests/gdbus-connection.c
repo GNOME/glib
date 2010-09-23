@@ -205,7 +205,7 @@ test_connection_life_cycle (void)
   /* ok, finalize the connection and check that all the GDestroyNotify functions are invoked as expected */
   g_object_unref (c2);
   quit_mainloop_fired = FALSE;
-  quit_mainloop_id = g_timeout_add (1000, test_connection_quit_mainloop, &quit_mainloop_fired);
+  quit_mainloop_id = g_timeout_add (30000, test_connection_quit_mainloop, &quit_mainloop_fired);
   while (TRUE)
     {
       if (on_signal_registration_freed_called &&
@@ -654,7 +654,7 @@ test_connection_signals (void)
   gboolean quit_mainloop_fired;
   guint quit_mainloop_id;
   quit_mainloop_fired = FALSE;
-  quit_mainloop_id = g_timeout_add (5000, test_connection_quit_mainloop, &quit_mainloop_fired);
+  quit_mainloop_id = g_timeout_add (30000, test_connection_quit_mainloop, &quit_mainloop_fired);
   while (count_name_owner_changed < 2 && !quit_mainloop_fired)
     g_main_loop_run (loop);
   g_source_remove (quit_mainloop_id);
@@ -787,7 +787,7 @@ test_connection_filter_name_owner_changed_signal_handler (GDBusConnection  *conn
 static gboolean
 test_connection_filter_on_timeout (gpointer user_data)
 {
-  g_printerr ("Timeout waiting 1000 msec on service\n");
+  g_printerr ("Timeout waiting 30 sec on service\n");
   g_assert_not_reached ();
   return FALSE;
 }
@@ -890,7 +890,7 @@ test_connection_filter (void)
                                                           NULL,
                                                           NULL);
   g_assert_cmpint (signal_handler_id, !=, 0);
-  timeout_mainloop_id = g_timeout_add (1000, test_connection_filter_on_timeout, NULL);
+  timeout_mainloop_id = g_timeout_add (30000, test_connection_filter_on_timeout, NULL);
   g_main_loop_run (loop);
   g_source_remove (timeout_mainloop_id);
   g_dbus_connection_signal_unsubscribe (c, signal_handler_id);

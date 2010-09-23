@@ -68,7 +68,7 @@ _g_assert_property_notify_run (gpointer     object,
                                  G_CALLBACK (on_property_notify),
                                  &data);
   g_free (s);
-  timeout_id = g_timeout_add (5 * 1000,
+  timeout_id = g_timeout_add (30 * 1000,
                               on_property_notify_timeout,
                               &data);
   g_main_loop_run (data.loop);
@@ -117,7 +117,7 @@ _g_assert_signal_received_run (gpointer     object,
                                          signal_name,
                                          G_CALLBACK (on_signal_received),
                                          &data);
-  timeout_id = g_timeout_add (5 * 1000,
+  timeout_id = g_timeout_add (30 * 1000,
                               on_signal_received_timeout,
                               &data);
   g_main_loop_run (data.loop);
@@ -176,7 +176,7 @@ _g_object_wait_for_single_ref_do (gpointer object)
       if (G_OBJECT (object)->ref_count == 1)
         goto out;
 
-      if (num_ms_elapsed > 5000)
+      if (num_ms_elapsed > 30000)
         {
           timed_out = TRUE;
           goto out;
@@ -228,7 +228,7 @@ _g_object_wait_for_single_ref_do (gpointer object)
     goto out;
 
   data.loop = g_main_loop_new (NULL, FALSE);
-  timeout_id = g_timeout_add (5 * 1000,
+  timeout_id = g_timeout_add (30 * 1000,
                               on_wait_single_ref_timeout,
                               &data);
 
