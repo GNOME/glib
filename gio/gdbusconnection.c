@@ -180,6 +180,77 @@ static GDBusConnection *the_system_bus = NULL;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+typedef struct
+{
+  GDestroyNotify              callback;
+  gpointer                    user_data;
+  GMainContext               *context;
+} CallDestroyNotifyData;
+
+static gboolean
+call_destroy_notify_data_in_idle (gpointer user_data)
+{
+  CallDestroyNotifyData *data = user_data;
+  data->callback (data->user_data);
+  return FALSE;
+}
+
+static void
+call_destroy_notify_data_free (CallDestroyNotifyData *data)
+{
+  if (data->context != NULL)
+    g_main_context_unref (data->context);
+  g_free (data);
+}
+
+/*
+ * call_destroy_notify: <internal>
+ * @context: A #GMainContext or %NULL.
+ * @callback: A #GDestroyNotify or %NULL.
+ * @user_data: Data to pass to @callback.
+ *
+ * Schedules @callback to run in @context.
+ */
+static void
+call_destroy_notify (GMainContext  *context,
+                     GDestroyNotify callback,
+                     gpointer       user_data)
+{
+  if (callback == NULL)
+    goto out;
+
+  if (context == g_main_context_get_thread_default ())
+    {
+      callback (user_data);
+    }
+  else
+    {
+      GSource *idle_source;
+      CallDestroyNotifyData *data;
+
+      data = g_new0 (CallDestroyNotifyData, 1);
+      data->callback = callback;
+      data->user_data = user_data;
+      data->context = context;
+      if (data->context != NULL)
+        g_main_context_ref (data->context);
+
+      idle_source = g_idle_source_new ();
+      g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
+      g_source_set_callback (idle_source,
+                             call_destroy_notify_data_in_idle,
+                             data,
+                             (GDestroyNotify) call_destroy_notify_data_free);
+      g_source_attach (idle_source, data->context);
+      g_source_unref (idle_source);
+    }
+
+ out:
+  ;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 static gboolean
 _g_strv_has_string (const gchar* const *haystack,
                     const gchar        *needle)
@@ -3234,8 +3305,9 @@ g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
     {
       SignalSubscriber *subscriber;
       subscriber = &(g_array_index (subscribers, SignalSubscriber, n));
-      if (subscriber->user_data_free_func != NULL)
-        subscriber->user_data_free_func (subscriber->user_data);
+      call_destroy_notify (subscriber->context,
+                           subscriber->user_data_free_func,
+                           subscriber->user_data);
       if (subscriber->context != NULL)
         g_main_context_unref (subscriber->context);
     }
@@ -3481,8 +3553,9 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
     {
       SignalSubscriber *subscriber;
       subscriber = &(g_array_index (subscribers, SignalSubscriber, n));
-      if (subscriber->user_data_free_func != NULL)
-        subscriber->user_data_free_func (subscriber->user_data);
+      call_destroy_notify (subscriber->context,
+                           subscriber->user_data_free_func,
+                           subscriber->user_data);
       if (subscriber->context != NULL)
         g_main_context_unref (subscriber->context);
     }
@@ -3564,9 +3637,9 @@ exported_interface_free (ExportedInterface *ei)
 {
   g_dbus_interface_info_unref ((GDBusInterfaceInfo *) ei->interface_info);
 
-  if (ei->user_data_free_func != NULL)
-    /* TODO: push to thread-default mainloop */
-    ei->user_data_free_func (ei->user_data);
+  call_destroy_notify (ei->context,
+                       ei->user_data_free_func,
+                       ei->user_data);
 
   if (ei->context != NULL)
     g_main_context_unref (ei->context);
@@ -5249,9 +5322,9 @@ struct ExportedSubtree
 static void
 exported_subtree_free (ExportedSubtree *es)
 {
-  if (es->user_data_free_func != NULL)
-    /* TODO: push to thread-default mainloop */
-    es->user_data_free_func (es->user_data);
+  call_destroy_notify (es->context,
+                       es->user_data_free_func,
+                       es->user_data);
 
   if (es->context != NULL)
     g_main_context_unref (es->context);
