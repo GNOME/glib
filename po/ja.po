@@ -22,10 +22,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib glib-2-26\n"
+"Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-09-19 15:10+0000\n"
+"POT-Creation-Date: 2010-09-23 16:04+0000\n"
 "PO-Revision-Date: 2010-09-19 18:20+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
@@ -400,7 +400,7 @@ msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "日"
 
-#: ../glib/gdir.c:114 ../glib/gdir.c:137
+#: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' を開く時にエラー: %s"
@@ -532,11 +532,11 @@ msgstr "%.1f EB"
 #: ../glib/gfileutils.c:1853
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "シンボリック・リンク '%s' の読み込みが失敗: %s"
+msgstr "シンボリックリンク '%s' の読み込みが失敗: %s"
 
 #: ../glib/gfileutils.c:1874
 msgid "Symbolic links not supported"
-msgstr "シンボリック・リンクはサポートしていません"
+msgstr "シンボリックリンクはサポートしていません"
 
 #: ../glib/giochannel.c:1407
 #, c-format
@@ -2343,7 +2343,7 @@ msgstr "特別なファイルはコピーできません"
 
 #: ../gio/gfile.c:3480
 msgid "Invalid symlink value given"
-msgstr "指定したシンボリック・リンクは間違っています"
+msgstr "指定したシンボリックリンクは間違っています"
 
 #: ../gio/gfile.c:3573
 msgid "Trash not supported"
@@ -2780,12 +2780,12 @@ msgstr "ディレクトリを生成する際にエラー: %s"
 #: ../gio/glocalfile.c:2164
 #, c-format
 msgid "Filesystem does not support symbolic links"
-msgstr "シンボリック・リンクをファイルシステムがサポートしていません"
+msgstr "シンボリックリンクをファイルシステムがサポートしていません"
 
 #: ../gio/glocalfile.c:2168
 #, c-format
 msgid "Error making symbolic link: %s"
-msgstr "シンボリック・リンクを生成する際にエラー: %s"
+msgstr "シンボリックリンクを生成する際にエラー: %s"
 
 #: ../gio/glocalfile.c:2230 ../gio/glocalfile.c:2324
 #, c-format
@@ -2856,7 +2856,7 @@ msgstr "属性の種類が無効です (バイト型の文字列を想定して�
 
 #: ../gio/glocalfileinfo.c:1905
 msgid "Cannot set permissions on symlinks"
-msgstr "シンボリック・リンクにはアクセス権をセットできません"
+msgstr "シンボリックリンクにはアクセス権をセットできません"
 
 #: ../gio/glocalfileinfo.c:1921
 #, c-format
@@ -2870,17 +2870,17 @@ msgstr "所有者をセットする際にエラー: %s"
 
 #: ../gio/glocalfileinfo.c:1995
 msgid "symlink must be non-NULL"
-msgstr "シンボリック・リンクを NULL にしないでください"
+msgstr "シンボリックリンクを NULL にしないでください"
 
 #: ../gio/glocalfileinfo.c:2005 ../gio/glocalfileinfo.c:2024
 #: ../gio/glocalfileinfo.c:2035
 #, c-format
 msgid "Error setting symlink: %s"
-msgstr "シンボリック・リンクをセットする際にエラー: %s"
+msgstr "シンボリックリンクをセットする際にエラー: %s"
 
 #: ../gio/glocalfileinfo.c:2014
 msgid "Error setting symlink: file is not a symlink"
-msgstr "シンボリック・リンクの指定でエラー: ファイルがリンクではない"
+msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
 
 #: ../gio/glocalfileinfo.c:2140
 #, c-format
@@ -3126,19 +3126,20 @@ msgstr ""
 "'%s COMMAND --help' でここのコマンドのヘルプを表示できます。\n"
 
 #: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr "スキーマのパスを指定してください"
 
 #: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr "PATH"
 
-#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:539
-#: ../gio/gsettings-tool.c:652
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr "SCHEMA KYE"
 
@@ -3146,8 +3147,8 @@ msgstr "SCHEMA KYE"
 msgid "Get the value of KEY"
 msgstr "KEY の値を取得"
 
-#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:543 ../gio/gsettings-tool.c:659
+#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:449
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -3157,15 +3158,16 @@ msgstr ""
 "  SCHEMA      スキーマのID\n"
 "  KEY         キーの名前\n"
 
-#: ../gio/gsettings-tool.c:328 ../gio/gsettings-tool.c:444
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:329 ../gio/gsettings-tool.c:445
 msgid "SCHEMA KEY VALUE"
 msgstr "SCHEMA KEY VALUE"
 
-#: ../gio/gsettings-tool.c:330
+#: ../gio/gsettings-tool.c:331
 msgid "Set the value of KEY"
 msgstr "KEY の値を設定"
 
-#: ../gio/gsettings-tool.c:332
+#: ../gio/gsettings-tool.c:333
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -3173,26 +3175,26 @@ msgid ""
 "  VALUE       The value to set key to, as a serialized GVariant\n"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:405
+#: ../gio/gsettings-tool.c:406
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "キー %s が書き込み可能ではありません\n"
 
-#: ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:447
 msgid "Sets KEY to its default value"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:655
+#: ../gio/gsettings-tool.c:657
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
 msgstr ""
 
-#: ../gio/gsettings-tool.c:831
+#: ../gio/gsettings-tool.c:833
 #, c-format
 msgid "Unknown command '%s'\n"
 msgstr "不明なコマンド: %s\n"
