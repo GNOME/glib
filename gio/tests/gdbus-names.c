@@ -445,6 +445,7 @@ test_bus_own_name (void)
   g_bus_unown_name (id);
   g_assert_cmpint (data.num_free_func, ==, 4);
 
+  _g_object_wait_for_single_ref (c);
   g_object_unref (c);
   g_object_unref (c2);
 }
