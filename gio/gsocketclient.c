@@ -1279,9 +1279,8 @@ g_socket_client_connect_to_host_async (GSocketClient        *client,
 					 &error);
   if (connectable == NULL)
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (client),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (client),
 					    callback, user_data, error);
-      g_error_free (error);
     }
   else
     {
@@ -1355,9 +1354,8 @@ g_socket_client_connect_to_uri_async (GSocketClient        *client,
   connectable = g_network_address_parse_uri (uri, default_port, &error);
   if (connectable == NULL)
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (client),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (client),
 					    callback, user_data, error);
-      g_error_free (error);
     }
   else
     {

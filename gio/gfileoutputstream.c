@@ -225,11 +225,10 @@ g_file_output_stream_query_info_async (GFileOutputStream     *stream,
  
   if (!g_output_stream_set_pending (output_stream, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
 					    callback,
 					    user_data,
 					    error);
-      g_error_free (error);
       return;
     }
 

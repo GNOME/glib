@@ -747,10 +747,9 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
 
   if (!check_listener (listener, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (listener),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (listener),
 					    callback, user_data,
 					    error);
-      g_error_free (error);
       return;
     }
 

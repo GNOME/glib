@@ -122,7 +122,11 @@ void g_simple_async_report_error_in_idle  (GObject            *object,
 void g_simple_async_report_gerror_in_idle (GObject            *object,
 					   GAsyncReadyCallback callback,
 					   gpointer            user_data,
-					   GError             *error);
+					   const GError       *error);
+void g_simple_async_report_take_gerror_in_idle (GObject            *object,
+                                                GAsyncReadyCallback callback,
+                                                gpointer            user_data,
+                                                GError             *error);
 
 G_END_DECLS
 

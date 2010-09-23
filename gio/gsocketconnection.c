@@ -332,10 +332,9 @@ g_socket_connection_close_async (GIOStream           *stream,
   if (class->close_fn &&
       !class->close_fn (stream, cancellable, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
 					    callback, user_data,
 					    error);
-      g_error_free (error);
       return;
     }
 
