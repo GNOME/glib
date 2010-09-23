@@ -32,10 +32,36 @@
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
 
+G_GNUC_UNUSED static void
+_log (const gchar *format, ...)
+{
+  GTimeVal now;
+  time_t now_time;
+  struct tm *now_tm;
+  gchar time_buf[128];
+  gchar *str;
+  va_list var_args;
+
+  va_start (var_args, format);
+  str = g_strdup_vprintf (format, var_args);
+  va_end (var_args);
+
+  g_get_current_time (&now);
+  now_time = (time_t) now.tv_sec;
+  now_tm = localtime (&now_time);
+  strftime (time_buf, sizeof time_buf, "%H:%M:%S", now_tm);
+
+  g_print ("%s.%06d: %s\n",
+           time_buf, (gint) now.tv_usec / 1000,
+           str);
+  g_free (str);
+}
+
 static gboolean
 test_connection_quit_mainloop (gpointer user_data)
 {
-  gboolean *quit_mainloop_fired = user_data;
+  volatile gboolean *quit_mainloop_fired = user_data;
+  //_log ("quit_mainloop_fired");
   *quit_mainloop_fired = TRUE;
   g_main_loop_quit (loop);
   return TRUE;
@@ -85,9 +111,9 @@ on_name_owner_changed (GDBusConnection *connection,
 static void
 a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop (gpointer user_data)
 {
-  gboolean *val = user_data;
+  volatile gboolean *val = user_data;
   *val = TRUE;
-
+  //_log ("destroynotify fired for %p", val);
   g_main_loop_quit (loop);
 }
 
@@ -98,10 +124,10 @@ test_connection_life_cycle (void)
   GDBusConnection *c;
   GDBusConnection *c2;
   GError *error;
-  gboolean on_signal_registration_freed_called;
-  gboolean on_filter_freed_called;
-  gboolean on_register_object_freed_called;
-  gboolean quit_mainloop_fired;
+  volatile gboolean on_signal_registration_freed_called;
+  volatile gboolean on_filter_freed_called;
+  volatile gboolean on_register_object_freed_called;
+  volatile gboolean quit_mainloop_fired;
   guint quit_mainloop_id;
   guint registration_id;
 
@@ -182,13 +208,13 @@ test_connection_life_cycle (void)
                                       NULL,                   /* arg0 */
                                       G_DBUS_SIGNAL_FLAGS_NONE,
                                       on_name_owner_changed,
-                                      &on_signal_registration_freed_called,
+                                      (gpointer) &on_signal_registration_freed_called,
                                       a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop);
   /* filter func */
   on_filter_freed_called = FALSE;
   g_dbus_connection_add_filter (c2,
                                 some_filter_func,
-                                &on_filter_freed_called,
+                                (gpointer) &on_filter_freed_called,
                                 a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop);
   /* object registration */
   on_register_object_freed_called = FALSE;
@@ -197,7 +223,7 @@ test_connection_life_cycle (void)
                                                        "/foo",
                                                        (GDBusInterfaceInfo *) &boo_interface_info,
                                                        &boo_vtable,
-                                                       &on_register_object_freed_called,
+                                                       (gpointer) &on_register_object_freed_called,
                                                        a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop,
                                                        &error);
   g_assert_no_error (error);
@@ -205,7 +231,14 @@ test_connection_life_cycle (void)
   /* ok, finalize the connection and check that all the GDestroyNotify functions are invoked as expected */
   g_object_unref (c2);
   quit_mainloop_fired = FALSE;
-  quit_mainloop_id = g_timeout_add (30000, test_connection_quit_mainloop, &quit_mainloop_fired);
+  quit_mainloop_id = g_timeout_add (30000, test_connection_quit_mainloop, (gpointer) &quit_mainloop_fired);
+  //_log ("destroynotifies for\n"
+  //      " register_object %p\n"
+  //      " filter          %p\n"
+  //      " signal          %p",
+  //      &on_register_object_freed_called,
+  //      &on_filter_freed_called,
+  //      &on_signal_registration_freed_called);
   while (TRUE)
     {
       if (on_signal_registration_freed_called &&
@@ -214,7 +247,9 @@ test_connection_life_cycle (void)
         break;
       if (quit_mainloop_fired)
         break;
+      //_log ("entering loop");
       g_main_loop_run (loop);
+      //_log ("exiting loop");
     }
   g_source_remove (quit_mainloop_id);
   g_assert (on_signal_registration_freed_called);
