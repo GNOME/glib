@@ -435,7 +435,7 @@ write_async_cb (WriteAsyncData *data,
 	  
 	  g_set_error (&error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
-		       _("Error reading from unix: %s"),
+		       _("Error writing to unix: %s"),
 		       g_strerror (errsv));
 	}
       break;
