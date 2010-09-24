@@ -99,6 +99,7 @@ gio/gseekable.c
 gio/gsettingsbackend.c
 gio/gsettings.c
 gio/gsettings-tool.c
+gio/gsimpleaction.c
 gio/gsimpleasyncresult.c
 gio/gsocket.c
 gio/gsocketaddress.c
