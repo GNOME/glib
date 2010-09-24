@@ -69,7 +69,7 @@
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 #include "gthread.h"
-#include "gtimezone.h"
+#include "gtimezoneprivate.h"
 
 #include "glibintl.h"
 

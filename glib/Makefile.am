@@ -177,6 +177,7 @@ libglib_2_0_la_SOURCES = 	\
 	gthreadprivate.h	\
 	gthreadpool.c   	\
 	gtimer.c		\
+	gtimezoneprivate.h 	\
 	gtimezone.c	 	\
 	gtree.c			\
 	guniprop.c		\

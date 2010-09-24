@@ -21,7 +21,7 @@
 
 /* Prologue {{{1 */
 
-#include "gtimezone.h"
+#include "gtimezoneprivate.h"
 
 #include <string.h>
 #include <stdlib.h>
