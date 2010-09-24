@@ -760,7 +760,8 @@ g_object_class_override_property (GObjectClass *oclass,
  *
  * Get an array of #GParamSpec* for all properties of a class.
  *
- * Returns: an array of #GParamSpec* which should be freed after use
+ * Returns: (array length=n_properties) (transfer full): an array of
+ *          #GParamSpec* which should be freed after use
  */
 GParamSpec** /* free result */
 g_object_class_list_properties (GObjectClass *class,
@@ -2291,7 +2292,7 @@ g_object_weak_unref (GObject    *object,
 /**
  * g_object_add_weak_pointer:
  * @object: The object that should be weak referenced.
- * @weak_pointer_location: The memory address of a pointer.
+ * @weak_pointer_location: (inout): The memory address of a pointer.
  *
  * Adds a weak reference from weak_pointer to @object to indicate that
  * the pointer located at @weak_pointer_location is only valid during
@@ -2313,7 +2314,7 @@ g_object_add_weak_pointer (GObject  *object,
 /**
  * g_object_remove_weak_pointer:
  * @object: The object that is weak referenced.
- * @weak_pointer_location: The memory address of a pointer.
+ * @weak_pointer_location: (inout): The memory address of a pointer.
  *
  * Removes a weak reference from @object that was previously added
  * using g_object_add_weak_pointer(). The @weak_pointer_location has
