@@ -289,7 +289,7 @@ g_inet_socket_address_new (GInetAddress *address,
  *
  * Gets @address's #GInetAddress.
  *
- * Returns: the #GInetAddress for @address, which must be
+ * Returns: (transfer full): the #GInetAddress for @address, which must be
  * g_object_ref()'d if it will be stored
  *
  * Since: 2.22

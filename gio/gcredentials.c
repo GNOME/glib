@@ -250,7 +250,7 @@ g_credentials_is_same_user (GCredentials  *credentials,
 }
 
 /**
- * g_credentials_get_native:
+ * g_credentials_get_native: (skip)
  * @credentials: A #GCredentials.
  * @native_type: The type of native credentials to get.
  *

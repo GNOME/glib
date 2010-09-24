@@ -386,7 +386,7 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
  * Other ways to exchange credentials with a foreign peer includes the
  * #GUnixCredentialsMessage type and g_socket_get_credentials() function.
  *
- * Returns: Received credentials on success (free with
+ * Returns: (transfer full): Received credentials on success (free with
  * g_object_unref()), %NULL if @error is set.
  *
  * Since: 2.26

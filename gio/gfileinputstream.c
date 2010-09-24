@@ -122,7 +122,7 @@ g_file_input_stream_init (GFileInputStream *stream)
  * stream is blocked, the stream will set the pending flag internally, and 
  * any other operations on the stream will fail with %G_IO_ERROR_PENDING.
  *
- * Returns: a #GFileInfo, or %NULL on error.
+ * Returns: (transfer full): a #GFileInfo, or %NULL on error.
  **/
 GFileInfo *
 g_file_input_stream_query_info (GFileInputStream  *stream,
@@ -240,7 +240,7 @@ g_file_input_stream_query_info_async (GFileInputStream    *stream,
  * 
  * Finishes an asynchronous info query operation.
  * 
- * Returns: #GFileInfo. 
+ * Returns: (transfer full): #GFileInfo. 
  **/
 GFileInfo *
 g_file_input_stream_query_info_finish (GFileInputStream  *stream,

@@ -163,7 +163,7 @@ g_socket_control_message_class_init (GSocketControlMessageClass *class)
  * If there is no implementation for this kind of control message, %NULL
  * will be returned.
  *
- * Returns: the deserialized message or %NULL
+ * Returns: (transfer full): the deserialized message or %NULL
  *
  * Since: 2.22
  */

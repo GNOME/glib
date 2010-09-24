@@ -555,7 +555,7 @@ g_union_volume_monitor_new (void)
  * 
  * Gets the volume monitor used by gio.
  *
- * Returns: a reference to the #GVolumeMonitor used by gio. Call
+ * Returns: (transfer full): a reference to the #GVolumeMonitor used by gio. Call
  *    g_object_unref() when done with it.
  **/
 GVolumeMonitor *

@@ -92,7 +92,7 @@ g_proxy_get_default_for_protocol (const gchar *protocol)
  * does the necessary handshake to connect to @proxy_address, and if
  * required, wraps the #GIOStream to handle proxy payload.
  *
- * Return value: a #GIOStream that will replace @connection. This might
+ * Return value: (transfer full): a #GIOStream that will replace @connection. This might
  *               be the same as @connection, in which case a reference
  *               will be added.
  *
@@ -161,7 +161,7 @@ g_proxy_connect_async (GProxy               *proxy,
  *
  * See g_proxy_connect().
  *
- * Return value: a #GIOStream.
+ * Return value: (transfer full): a #GIOStream.
  *
  * Since: 2.26
  */

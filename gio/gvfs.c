@@ -77,7 +77,7 @@ g_vfs_is_active (GVfs *vfs)
  * 
  * Gets a #GFile for @path.
  * 
- * Returns: a #GFile. 
+ * Returns: (transfer full): a #GFile. 
  *     Free the returned object with g_object_unref().
  **/
 GFile *
@@ -105,7 +105,7 @@ g_vfs_get_file_for_path (GVfs       *vfs,
  * might not support any I/O operation if the URI 
  * is malformed or if the URI scheme is not supported.
  * 
- * Returns: a #GFile. 
+ * Returns: (transfer full): a #GFile. 
  *     Free the returned object with g_object_unref().
  **/
 GFile *
@@ -128,7 +128,7 @@ g_vfs_get_file_for_uri (GVfs       *vfs,
  * 
  * Gets a list of URI schemes supported by @vfs.
  * 
- * Returns: a %NULL-terminated array of strings.
+ * Returns: (transfer none): a %NULL-terminated array of strings.
  *     The returned array belongs to GIO and must 
  *     not be freed or modified.
  **/
@@ -153,7 +153,7 @@ g_vfs_get_supported_uri_schemes (GVfs *vfs)
  * not support any I/O operations if the @parse_name cannot 
  * be parsed by the #GVfs module.
  * 
- * Returns: a #GFile for the given @parse_name.
+ * Returns: (transfer full): a #GFile for the given @parse_name.
  *     Free the returned object with g_object_unref().
  **/
 GFile *
@@ -222,7 +222,7 @@ get_default_vfs (gpointer arg)
  * 
  * Gets the default #GVfs for the system.
  * 
- * Returns: a #GVfs. 
+ * Returns: (transfer none): a #GVfs. 
  **/
 GVfs *
 g_vfs_get_default (void)
@@ -237,7 +237,7 @@ g_vfs_get_default (void)
  * 
  * Gets the local #GVfs for the system.
  * 
- * Returns: a #GVfs.
+ * Returns: (transfer none): a #GVfs.
  **/
 GVfs *
 g_vfs_get_local (void)

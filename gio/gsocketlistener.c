@@ -581,7 +581,7 @@ accept_callback (GSocket      *socket,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Returns: a #GSocket on success, %NULL on error.
+ * Returns: (transfer full): a #GSocket on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -655,7 +655,7 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -777,7 +777,7 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
  *
  * Finishes an async accept operation. See g_socket_listener_accept_socket_async()
  *
- * Returns: a #GSocket on success, %NULL on error.
+ * Returns: (transfer full): a #GSocket on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -844,7 +844,7 @@ g_socket_listener_accept_async (GSocketListener     *listener,
  *
  * Finishes an async accept operation. See g_socket_listener_accept_async()
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */

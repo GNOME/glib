@@ -227,7 +227,7 @@ compare_target (gconstpointer a, gconstpointer b)
  *
  * Sorts @targets in place according to the algorithm in RFC 2782.
  *
- * Return value: the head of the sorted list.
+ * Return value: (transfer full): the head of the sorted list.
  *
  * Since: 2.22
  */

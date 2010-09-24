@@ -621,7 +621,7 @@ g_socket_client_class_init (GSocketClientClass *class)
  * If a local address is specified with g_socket_client_set_local_address() the
  * socket will be bound to this address before connecting.
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -772,7 +772,7 @@ g_socket_client_connect (GSocketClient       *client,
  *
  * Attempts to create a TCP connection to the named host.
  *
- * @host_and_port may be in any of a number of recognised formats: an IPv6
+ * @host_and_port may be in any of a number of recognised formats; an IPv6
  * address, an IPv4 address, or a domain name (in which case a DNS
  * lookup is performed).  Quoting with [] is supported for all address
  * types.  A port override may be specified in the usual way with a
@@ -799,7 +799,7 @@ g_socket_client_connect (GSocketClient       *client,
  * connectable) %NULL is returned and @error (if non-%NULL) is set
  * accordingly.
  *
- Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -831,7 +831,7 @@ g_socket_client_connect_to_host (GSocketClient  *client,
  * @service: the name of the service to connect to
  * @cancellable: a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
- * @returns: a #GSocketConnection if successful, or %NULL on error
+ * @returns: (transfer full): a #GSocketConnection if successful, or %NULL on error
  *
  * Attempts to create a TCP connection to a service.
  *
@@ -894,7 +894,7 @@ g_socket_client_connect_to_service (GSocketClient  *client,
  * connectable) %NULL is returned and @error (if non-%NULL) is set
  * accordingly.
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.26
  */
@@ -1379,7 +1379,7 @@ g_socket_client_connect_to_uri_async (GSocketClient        *client,
  *
  * Finishes an async connect operation. See g_socket_client_connect_async()
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -1405,7 +1405,7 @@ g_socket_client_connect_finish (GSocketClient  *client,
  *
  * Finishes an async connect operation. See g_socket_client_connect_to_host_async()
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -1426,7 +1426,7 @@ g_socket_client_connect_to_host_finish (GSocketClient  *client,
  *
  * Finishes an async connect operation. See g_socket_client_connect_to_service_async()
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -1447,7 +1447,7 @@ g_socket_client_connect_to_service_finish (GSocketClient  *client,
  *
  * Finishes an async connect operation. See g_socket_client_connect_to_uri_async()
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.26
  */

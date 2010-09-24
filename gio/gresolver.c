@@ -144,7 +144,7 @@ static GResolver *default_resolver;
  * many threads/processes, etc it should allocate for concurrent DNS
  * resolutions.
  *
- * Return value: the default #GResolver.
+ * Return value: (transfer full): the default #GResolver.
  *
  * Since: 2.22
  */

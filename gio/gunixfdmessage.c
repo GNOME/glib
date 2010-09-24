@@ -157,7 +157,7 @@ g_unix_fd_message_set_property (GObject *object, guint prop_id,
  * return a reference to the caller, but the returned list is valid for
  * the lifetime of @message.
  *
- * Returns: the #GUnixFDList from @message
+ * Returns: (transfer none): the #GUnixFDList from @message
  *
  * Since: 2.24
  **/

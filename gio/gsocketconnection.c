@@ -141,7 +141,7 @@ g_socket_connection_get_socket (GSocketConnection *connection)
  *
  * Try to get the local address of a socket connection.
  *
- * Returns: a #GSocketAddress or %NULL on error.
+ * Returns: (transfer full): a #GSocketAddress or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -160,7 +160,7 @@ g_socket_connection_get_local_address (GSocketConnection  *connection,
  *
  * Try to get the remote address of a socket connection.
  *
- * Returns: a #GSocketAddress or %NULL on error.
+ * Returns: (transfer full): a #GSocketAddress or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -504,7 +504,7 @@ g_socket_connection_factory_lookup_type (GSocketFamily family,
  * Creates a #GSocketConnection subclass of the right type for
  * @socket.
  *
- * Returns: a #GSocketConnection
+ * Returns: (transfer full): a #GSocketConnection
  *
  * Since: 2.22
  */

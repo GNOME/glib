@@ -542,7 +542,8 @@ g_file_dup (GFile *file)
  * Creates a hash value for a #GFile.
  *
  * This call does no blocking i/o.
- * 
+ *
+ * Virtual: hash
  * Returns: 0 if @file is not a valid #GFile, otherwise an 
  *     integer that can be used as hash value for the #GFile. 
  *     This function is intended for easily hashing a #GFile to 
@@ -603,7 +604,7 @@ g_file_equal (GFile *file1,
  *
  * This call does no blocking i/o.
  * 
- * Returns: a #GFile structure to the parent of the given
+ * Returns: (transfer full): a #GFile structure to the parent of the given
  *     #GFile or %NULL if there is no parent. 
  *     Free the returned object with g_object_unref().
  **/
@@ -736,6 +737,7 @@ g_file_get_child_for_display_name (GFile      *file,
  * filesystem point of view), because the prefix of @file is an alias 
  * of @prefix.
  *
+ * Virtual: prefix_matches
  * Returns:  %TRUE if the @files's parent, grandparent, etc is @prefix. 
  *     %FALSE otherwise.
  **/
@@ -797,7 +799,7 @@ g_file_get_relative_path (GFile *parent,
  *
  * This call does no blocking i/o.
  * 
- * Returns: #GFile to the resolved path. %NULL if @relative_path 
+ * Returns: (transfer full): #GFile to the resolved path. %NULL if @relative_path 
  *     is %NULL or if @file is invalid.
  *     Free the returned object with g_object_unref().
  **/
@@ -1074,7 +1076,7 @@ g_file_query_file_type (GFile *file,
  * If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
  * Other errors are possible too, and depend on what kind of filesystem the file is on.
  *
- * Returns: a #GFileInfo for the given @file, or %NULL on error.
+ * Returns: (transfer full): a #GFileInfo for the given @file, or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileInfo *
@@ -1157,7 +1159,7 @@ g_file_query_info_async (GFile               *file,
  * Finishes an asynchronous file info query. 
  * See g_file_query_info_async().
  * 
- * Returns: #GFileInfo for given @file or %NULL on error.
+ * Returns: (transfer full): #GFileInfo for given @file or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileInfo *
@@ -1210,7 +1212,7 @@ g_file_query_info_finish (GFile         *file,
  * If the file does not exist, the G_IO_ERROR_NOT_FOUND error will be returned.
  * Other errors are possible too, and depend on what kind of filesystem the file is on.
  *
- * Returns: a #GFileInfo or %NULL if there was an error.
+ * Returns: (transfer full): a #GFileInfo or %NULL if there was an error.
  *     Free the returned object with g_object_unref().
  **/
 GFileInfo *
@@ -1291,7 +1293,7 @@ g_file_query_filesystem_info_async (GFile               *file,
  * Finishes an asynchronous filesystem info query.  See
  * g_file_query_filesystem_info_async().
  * 
- * Returns: #GFileInfo for given @file or %NULL on error.
+ * Returns: (transfer full): #GFileInfo for given @file or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileInfo *
@@ -1331,7 +1333,7 @@ g_file_query_filesystem_info_finish (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GMount where the @file is located or %NULL on error.
+ * Returns: (transfer full): a #GMount where the @file is located or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GMount *
@@ -1405,7 +1407,7 @@ g_file_find_enclosing_mount_async (GFile              *file,
  * Finishes an asynchronous find mount request. 
  * See g_file_find_enclosing_mount_async().
  * 
- * Returns: #GMount for given @file or %NULL on error.
+ * Returns: (transfer full): #GMount for given @file or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GMount *
@@ -1447,7 +1449,8 @@ g_file_find_enclosing_mount_finish (GFile         *file,
  * If the file is a directory, the G_IO_ERROR_IS_DIRECTORY error will be returned.
  * Other errors are possible too, and depend on what kind of filesystem the file is on.
  *
- * Returns: #GFileInputStream or %NULL on error.
+ * Virtual: read_fn
+ * Returns: (transfer full): #GFileInputStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileInputStream *
@@ -1500,7 +1503,7 @@ g_file_read (GFile         *file,
  * returned. Other errors are possible too, and depend on what kind of
  * filesystem the file is on.
  * 
- * Returns: a #GFileOutputStream, or %NULL on error.
+ * Returns: (transfer full): a #GFileOutputStream, or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
@@ -1556,7 +1559,7 @@ g_file_append_to (GFile             *file,
  * Other errors are possible too, and depend on what kind of
  * filesystem the file is on.
  * 
- * Returns: a #GFileOutputStream for the newly created file, or 
+ * Returns: (transfer full): a #GFileOutputStream for the newly created file, or 
  *     %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
@@ -1638,7 +1641,7 @@ g_file_create (GFile             *file,
  * Other errors are possible too, and depend on what kind of
  * filesystem the file is on.
  *
- * Returns: a #GFileOutputStream or %NULL on error. 
+ * Returns: (transfer full): a #GFileOutputStream or %NULL on error. 
  *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
@@ -1694,7 +1697,7 @@ g_file_replace (GFile             *file,
  * so make sure you really need to do read and write streaming, rather than
  * just opening for reading or writing.
  *
- * Returns: #GFileIOStream or %NULL on error.
+ * Returns: (transfer full): #GFileIOStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -1753,7 +1756,7 @@ g_file_open_readwrite (GFile                      *file,
  * supported, so make sure you really need to do read and write streaming,
  * rather than just opening for reading or writing.
  *
- * Returns: a #GFileIOStream for the newly created file, or %NULL on error.
+ * Returns: (transfer full): a #GFileIOStream for the newly created file, or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -1805,7 +1808,7 @@ g_file_create_readwrite (GFile             *file,
  * supported, so make sure you really need to do read and write streaming,
  * rather than just opening for reading or writing.
  *
- * Returns: a #GFileIOStream or %NULL on error.
+ * Returns: (transfer full): a #GFileIOStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -1883,7 +1886,7 @@ g_file_read_async (GFile               *file,
  * Finishes an asynchronous file read operation started with 
  * g_file_read_async(). 
  *  
- * Returns: a #GFileInputStream or %NULL on error.
+ * Returns: (transfer full): a #GFileInputStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileInputStream *
@@ -1955,7 +1958,7 @@ g_file_append_to_async (GFile               *file,
  * Finishes an asynchronous file append operation started with 
  * g_file_append_to_async(). 
  * 
- * Returns: a valid #GFileOutputStream or %NULL on error.
+ * Returns: (transfer full): a valid #GFileOutputStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
@@ -2028,7 +2031,7 @@ g_file_create_async (GFile               *file,
  * Finishes an asynchronous file create operation started with 
  * g_file_create_async(). 
  * 
- * Returns: a #GFileOutputStream or %NULL on error.
+ * Returns: (transfer full): a #GFileOutputStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
@@ -2108,7 +2111,7 @@ g_file_replace_async (GFile               *file,
  * Finishes an asynchronous file replace operation started with 
  * g_file_replace_async(). 
  * 
- * Returns: a #GFileOutputStream, or %NULL on error.
+ * Returns: (transfer full): a #GFileOutputStream, or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileOutputStream *
@@ -2180,7 +2183,7 @@ g_file_open_readwrite_async (GFile                      *file,
  * Finishes an asynchronous file read operation started with
  * g_file_open_readwrite_async().
  *
- * Returns: a #GFileIOStream or %NULL on error.
+ * Returns: (transfer full): a #GFileIOStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -2258,7 +2261,7 @@ g_file_create_readwrite_async (GFile               *file,
  * Finishes an asynchronous file create operation started with
  * g_file_create_readwrite_async().
  *
- * Returns: a #GFileIOStream or %NULL on error.
+ * Returns: (transfer full): a #GFileIOStream or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -2342,7 +2345,7 @@ g_file_replace_readwrite_async (GFile               *file,
  * Finishes an asynchronous file replace operation started with
  * g_file_replace_readwrite_async().
  *
- * Returns: a #GFileIOStream, or %NULL on error.
+ * Returns: (transfer full): a #GFileIOStream, or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -3506,7 +3509,8 @@ g_file_make_symbolic_link (GFile         *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
+ *
+ * Virtual: delete_file
  * Returns: %TRUE if the file was deleted. %FALSE otherwise.
  **/
 gboolean
@@ -3599,7 +3603,7 @@ g_file_trash (GFile         *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GFile specifying what @file was renamed to, or %NULL 
+ * Returns: (transfer full): a #GFile specifying what @file was renamed to, or %NULL 
  *     if there was an error.
  *     Free the returned object with g_object_unref().
  **/
@@ -3680,7 +3684,7 @@ g_file_set_display_name_async (GFile               *file,
  * Finishes setting a display name started with 
  * g_file_set_display_name_async().
  * 
- * Returns: a #GFile or %NULL on error.
+ * Returns: (transfer full): a #GFile or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFile *
@@ -4279,7 +4283,7 @@ g_file_mount_mountable (GFile               *file,
  * Finish an asynchronous mount operation that was started 
  * with g_file_mount_mountable().
  *
- * Returns: a #GFile or %NULL on error.
+ * Returns: (transfer full): a #GFile or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFile *
@@ -4686,8 +4690,9 @@ g_file_eject_mountable_with_operation_finish (GFile         *file,
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
- * 
- * Returns: a #GFileMonitor for the given @file, or %NULL on error.
+ *
+ * Virtual: monitor_dir
+ * Returns: (transfer full): a #GFileMonitor for the given @file, or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileMonitor*
@@ -4775,7 +4780,7 @@ g_file_monitor_file (GFile             *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GFileMonitor for the given @file, or %NULL on error.
+ * Returns: (transfer full): a #GFileMonitor for the given @file, or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.18
@@ -6097,7 +6102,7 @@ g_file_mount_enclosing_volume_finish (GFile         *location,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  *
- * Returns: a #GAppInfo if the handle was found, %NULL if there were errors.
+ * Returns: (transfer full): a #GAppInfo if the handle was found, %NULL if there were errors.
  * When you are done with it, release it with g_object_unref()
  **/
 GAppInfo *

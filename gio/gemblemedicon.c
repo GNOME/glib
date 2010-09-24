@@ -99,7 +99,7 @@ g_emblemed_icon_init (GEmblemedIcon *emblemed)
  *
  * Creates a new emblemed icon for @icon with the emblem @emblem.
  *
- * Returns: a new #GIcon
+ * Returns: (transfer full): a new #GIcon
  *
  * Since: 2.18
  **/
@@ -128,7 +128,7 @@ g_emblemed_icon_new (GIcon   *icon,
  *
  * Gets the main icon for @emblemed.
  *
- * Returns: a #GIcon that is owned by @emblemed
+ * Returns: (transfer full): a #GIcon that is owned by @emblemed
  *
  * Since: 2.18
  **/

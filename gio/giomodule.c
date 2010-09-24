@@ -764,7 +764,7 @@ g_io_extension_point_get_extensions (GIOExtensionPoint *extension_point)
  *
  * Finds a #GIOExtension for an extension point by name.
  *
- * Returns: the #GIOExtension for @extension_point that has the
+ * Returns: (transfer none): the #GIOExtension for @extension_point that has the
  *    given name, or %NULL if there is no extension with that name
  */
 GIOExtension *
@@ -872,7 +872,7 @@ g_io_extension_point_implement (const char *extension_point_name,
  * Gets a reference to the class for the type that is 
  * associated with @extension.
  *
- * Returns: the #GTypeClass for the type of @extension
+ * Returns: (transfer full): the #GTypeClass for the type of @extension
  */
 GTypeClass *
 g_io_extension_ref_class (GIOExtension *extension)

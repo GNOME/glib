@@ -1203,7 +1203,7 @@ g_socket_get_fd (GSocket *socket)
  * useful if the socket has been bound to a local address,
  * either explicitly or implicitly when connecting.
  *
- * Returns: a #GSocketAddress or %NULL on error.
+ * Returns: (transfer full): a #GSocketAddress or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -1236,7 +1236,7 @@ g_socket_get_local_address (GSocket  *socket,
  * Try to get the remove address of a connected socket. This is only
  * useful for connection oriented sockets that have been connected.
  *
- * Returns: a #GSocketAddress or %NULL on error.
+ * Returns: (transfer full): a #GSocketAddress or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -1471,7 +1471,7 @@ g_socket_speaks_ipv4 (GSocket *socket)
  * or return %G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled.
  * To be notified of an incoming connection, wait for the %G_IO_IN condition.
  *
- * Returns: a new #GSocket, or %NULL on error.
+ * Returns: (transfer full): a new #GSocket, or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -2564,7 +2564,7 @@ socket_source_new (GSocket      *socket,
  * marked as having had a timeout, and so the next #GSocket I/O method
  * you call will then fail with a %G_IO_ERROR_TIMED_OUT.
  *
- * Returns: a newly allocated %GSource, free with g_source_unref().
+ * Returns: (transfer full): a newly allocated %GSource, free with g_source_unref().
  *
  * Since: 2.22
  */
@@ -3445,7 +3445,7 @@ g_socket_receive_message (GSocket                 *socket,
  * g_unix_connection_send_credentials() /
  * g_unix_connection_receive_credentials() functions.
  *
- * Returns: %NULL if @error is set, otherwise a #GCredentials object
+ * Returns: (transfer full): %NULL if @error is set, otherwise a #GCredentials object
  * that must be freed with g_object_unref().
  *
  * Since: 2.26

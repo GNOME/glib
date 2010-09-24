@@ -2701,7 +2701,7 @@ g_desktop_app_info_lookup_default_init (GDesktopAppInfoLookupInterface *iface)
  * in a GIO module. There is no reason for applications to use it
  * directly. Applications should use g_app_info_get_default_for_uri_scheme().
  * 
- * Returns: #GAppInfo for given @uri_scheme or %NULL on error.
+ * Returns: (transfer full): #GAppInfo for given @uri_scheme or %NULL on error.
  */
 GAppInfo *
 g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,

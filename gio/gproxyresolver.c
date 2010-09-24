@@ -101,7 +101,7 @@ get_default_proxy_resolver (gpointer arg)
  *
  * Gets the default #GProxyResolver for the system.
  *
- * Return value: the default #GProxyResolver.
+ * Return value: (transfer none): the default #GProxyResolver.
  *
  * Since: 2.26
  */
@@ -160,7 +160,7 @@ g_proxy_resolver_is_supported (GProxyResolver *resolver)
  * Direct connection should not be attempted unless it is part of the
  * returned array of proxies.
  *
- * Return value: A NULL-terminated array of proxy URIs. Must be freed with
+ * Return value: (transfer full) (element-type utf8): A NULL-terminated array of proxy URIs. Must be freed with
  *               g_strfreev().
  *
  * Since: 2.26
@@ -221,7 +221,7 @@ g_proxy_resolver_lookup_async (GProxyResolver      *resolver,
  * g_proxy_resolver_lookup_async() is complete. See
  * g_proxy_resolver_lookup() for more details.
  *
- * Return value: A NULL-terminated array of proxy URIs. Must be freed with
+ * Return value: (transfer full) (element-type utf8): A NULL-terminated array of proxy URIs. Must be freed with
  *               g_strfreev().
  *
  * Since: 2.26

@@ -743,7 +743,7 @@ g_content_type_get_mime_type (const char *type)
  *
  * Gets the icon for a content type.
  *
- * Returns: #GIcon corresponding to the content type. Free the returned
+ * Returns: (transfer full): #GIcon corresponding to the content type. Free the returned
  *     object with g_object_unref()
  */
 GIcon *
@@ -1651,7 +1651,7 @@ match_match (TreeMatch    *match,
  * This function is useful in the implementation of
  * g_mount_guess_content_type().
  *
- * Returns: an %NULL-terminated array of zero or more content types,
+ * Returns: (transfer full): an %NULL-terminated array of zero or more content types,
  *     or %NULL. Free with g_strfreev()
  *
  * Since: 2.18

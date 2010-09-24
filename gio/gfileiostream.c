@@ -136,7 +136,7 @@ g_file_io_stream_init (GFileIOStream *stream)
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be set, and %NULL will
  * be returned.
  *
- * Returns: a #GFileInfo for the @stream, or %NULL on error.
+ * Returns: (transfer full): a #GFileInfo for the @stream, or %NULL on error.
  *
  * Since: 2.22
  **/
@@ -252,7 +252,7 @@ g_file_io_stream_query_info_async (GFileIOStream     *stream,
  * Finalizes the asynchronous query started
  * by g_file_io_stream_query_info_async().
  *
- * Returns: A #GFileInfo for the finished query.
+ * Returns: (transfer full): A #GFileInfo for the finished query.
  *
  * Since: 2.22
  **/

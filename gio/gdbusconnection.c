@@ -950,7 +950,7 @@ g_dbus_connection_init (GDBusConnection *connection)
  *
  * Gets the underlying stream used for IO.
  *
- * Returns: the stream used for IO
+ * Returns: (transfer none): the stream used for IO
  *
  * Since: 2.26
  */
@@ -1878,7 +1878,7 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
  *
- * Returns: A locked #GDBusMessage or %NULL if @error is set.
+ * Returns: (transfer full): A locked #GDBusMessage or %NULL if @error is set.
  *
  * Since: 2.26
  */
@@ -1974,7 +1974,7 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * Note that @message must be unlocked, unless @flags contain the
  * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
  *
- * Returns: A locked #GDBusMessage that is the reply to @message or %NULL if @error is set.
+ * Returns: (transfer full): A locked #GDBusMessage that is the reply to @message or %NULL if @error is set.
  *
  * Since: 2.26
  */
@@ -2802,7 +2802,7 @@ g_dbus_connection_get_unique_name (GDBusConnection *connection)
  * each application is a client. So this method will always return
  * %NULL for message bus clients.
  *
- * Returns: A #GCredentials or %NULL if not available. Do not free
+ * Returns: (transfer none): A #GCredentials or %NULL if not available. Do not free
  * this object, it is owned by @connection.
  *
  * Since: 2.26
@@ -6236,7 +6236,7 @@ get_uninitialized_connection (GBusType       bus_type,
  * Note that the returned #GDBusConnection object will (usually) have
  * the #GDBusConnection:exit-on-close property set to %TRUE.
  *
- * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -6359,7 +6359,7 @@ g_bus_get (GBusType             bus_type,
  * Note that the returned #GDBusConnection object will (usually) have
  * the #GDBusConnection:exit-on-close property set to %TRUE.
  *
- * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
  *
  * Since: 2.26
  */

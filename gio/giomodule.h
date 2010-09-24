@@ -119,7 +119,7 @@ void   g_io_module_unload (GIOModule *module);
  * run gio-querymodules in order to build the cache files required for
  * lazy loading.
  *
- * Returns: A %NULL-terminated array of strings, listing the supported
+ * Returns: (transfer full): A %NULL-terminated array of strings, listing the supported
  *     extension points of the module. The array must be suitable for
  *     freeing with g_strfreev().
  *

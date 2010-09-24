@@ -1525,7 +1525,7 @@ g_settings_set (GSettings   *settings,
  * @mapping: the function to map the value in the settings database to
  *           the value used by the application
  * @user_data: user data for @mapping
- * @returns: the result, which may be %NULL
+ * @returns: (transfer full): the result, which may be %NULL
  *
  * Gets the value that is stored at @key in @settings, subject to
  * application-level validation/mapping.
@@ -2050,7 +2050,7 @@ g_settings_is_writable (GSettings   *settings,
  * g_settings_get_child:
  * @settings: a #GSettings object
  * @name: the name of the 'child' schema
- * @returns: a 'child' settings object
+ * @returns: (transfer full): a 'child' settings object
  *
  * Creates a 'child' settings object which has a base path of
  * <replaceable>base-path</replaceable>/@name", where
@@ -2093,7 +2093,7 @@ g_settings_get_child (GSettings   *settings,
 /**
  * g_settings_list_keys:
  * @settings: a #GSettings object
- * @returns: a list of the keys on @settings
+ * @returns: (transfer full) (element-type utf8): a list of the keys on @settings
  *
  * Introspects the list of keys on @settings.
  *
@@ -2129,7 +2129,7 @@ g_settings_list_keys (GSettings *settings)
 /**
  * g_settings_list_children:
  * @settings: a #GSettings object
- * @returns: a list of the children on @settings
+ * @returns: (transfer full) (element-type utf8): a list of the children on @settings
  *
  * Gets the list of children on @settings.
  *

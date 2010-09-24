@@ -154,7 +154,8 @@ g_seekable_can_truncate (GSeekable *seekable)
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. If an
  * operation was partially finished when the operation was cancelled the
  * partial result will be returned, without an error.
- * 
+ *
+ * Virtual: truncate_fn
  * Returns: %TRUE if successful. If an error
  *     has occurred, this function will return %FALSE and set @error
  *     appropriately if present. 

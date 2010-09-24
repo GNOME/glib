@@ -1905,7 +1905,7 @@ g_dbus_proxy_new_for_bus_sync (GBusType             bus_type,
  *
  * Gets the connection @proxy is for.
  *
- * Returns: A #GDBusConnection owned by @proxy. Do not free.
+ * Returns: (transfer none): A #GDBusConnection owned by @proxy. Do not free.
  *
  * Since: 2.26
  */

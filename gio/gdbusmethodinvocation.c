@@ -210,7 +210,7 @@ g_dbus_method_invocation_get_method_name (GDBusMethodInvocation *invocation)
  *
  * Gets the #GDBusConnection the method was invoked on.
  *
- * Returns: A #GDBusConnection. Do not free, it is owned by @invocation.
+ * Returns: (transfer none):A #GDBusConnection. Do not free, it is owned by @invocation.
  *
  * Since: 2.26
  */
@@ -234,7 +234,7 @@ g_dbus_method_invocation_get_connection (GDBusMethodInvocation *invocation)
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
  *
- * Returns: A #GDBusMessage. Do not free, it is owned by @invocation.
+ * Returns: (transfer none): #GDBusMessage. Do not free, it is owned by @invocation.
  *
  * Since: 2.26
  */
@@ -263,7 +263,7 @@ g_dbus_method_invocation_get_parameters (GDBusMethodInvocation *invocation)
 }
 
 /**
- * g_dbus_method_invocation_get_user_data:
+ * g_dbus_method_invocation_get_user_data: (skip)
  * @invocation: A #GDBusMethodInvocation.
  *
  * Gets the @user_data #gpointer passed to g_dbus_connection_register_object().

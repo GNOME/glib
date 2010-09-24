@@ -122,7 +122,7 @@ g_async_result_default_init (GAsyncResultInterface *iface)
  *
  * Gets the user data from a #GAsyncResult.
  *
- * Returns: the user data for @res.
+ * Returns: (transfer full): the user data for @res.
  **/
 gpointer
 g_async_result_get_user_data (GAsyncResult *res)
@@ -142,7 +142,7 @@ g_async_result_get_user_data (GAsyncResult *res)
  *
  * Gets the source object from a #GAsyncResult.
  *
- * Returns: a new reference to the source object for the @res,
+ * Returns: (transfer full): a new reference to the source object for the @res,
  *    or %NULL if there is none.
  */
 GObject *

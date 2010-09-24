@@ -66,7 +66,7 @@ struct _GActionInterface
   gboolean             (* get_enabled)          (GAction  *action);
   GVariant *           (* get_state)            (GAction  *action);
   void                 (* set_state)            (GAction  *action,
-                                                 GVariant *state);
+                                                 GVariant *value);
 
   void                 (* activate)             (GAction  *action,
                                                  GVariant *parameter);

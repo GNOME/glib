@@ -376,7 +376,7 @@ g_memory_output_stream_new (gpointer       data,
 }
 
 /**
- * g_memory_output_stream_get_data:
+ * g_memory_output_stream_get_data: (skip)
  * @ostream: a #GMemoryOutputStream
  *
  * Gets any loaded data from the @ostream.

@@ -146,7 +146,7 @@ g_mount_get_root (GMount *mount)
  * @mount is a path that reflects the main entry point for the user (e.g.
  * the home directory, or the root of the volume).
  *
- * Returns: a #GFile.
+ * Returns: (transfer full): a #GFile.
  *      The returned object should be unreffed with
  *      g_object_unref() when no longer needed.
  **/
@@ -800,7 +800,7 @@ g_mount_guess_content_type (GMount              *mount,
  * %G_IO_ERROR_NOT_SUPPORTED if the mount does not support content 
  * guessing.
  * 
- * Returns: a %NULL-terminated array of content types or %NULL on error. 
+ * Returns: (transfer full) (element-type utf8): a %NULL-terminated array of content types or %NULL on error. 
  *     Caller should free this array with g_strfreev() when done with it.
  *
  * Since: 2.18
@@ -844,7 +844,7 @@ g_mount_guess_content_type_finish (GMount        *mount,
  * This is an synchronous operation and as such may block doing IO;
  * see g_mount_guess_content_type() for the asynchronous version.
  *
- * Returns: a %NULL-terminated array of content types or %NULL on error.
+ * Returns: (transfer full) (element-type utf8): a %NULL-terminated array of content types or %NULL on error.
  *     Caller should free this array with g_strfreev() when done with it.
  *
  * Since: 2.18

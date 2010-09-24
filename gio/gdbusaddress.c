@@ -867,7 +867,7 @@ g_dbus_address_get_stream (const gchar         *address,
  *
  * Finishes an operation started with g_dbus_address_get_stream().
  *
- * Returns: A #GIOStream or %NULL if @error is set.
+ * Returns: (transfer full): A #GIOStream or %NULL if @error is set.
  *
  * Since: 2.26
  */
@@ -913,7 +913,7 @@ g_dbus_address_get_stream_finish (GAsyncResult        *res,
  * This is a synchronous failable function. See
  * g_dbus_address_get_stream() for the asynchronous version.
  *
- * Returns: A #GIOStream or %NULL if @error is set.
+ * Returns: (transfer full): A #GIOStream or %NULL if @error is set.
  *
  * Since: 2.26
  */

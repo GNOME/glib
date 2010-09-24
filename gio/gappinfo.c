@@ -681,7 +681,8 @@ g_app_info_can_delete (GAppInfo *appinfo)
  * On some platforms, there may be a difference between user-defined
  * #GAppInfo<!-- -->s which can be deleted, and system-wide ones which
  * cannot. See g_app_info_can_delete().
- * 
+ *
+ * Virtual: do_delete
  * Returns: %TRUE if @appinfo has been deleted
  *
  * Since: 2.20

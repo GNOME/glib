@@ -308,6 +308,8 @@ g_volume_should_automount (GVolume *volume)
  * Mounts a volume. This is an asynchronous operation, and is
  * finished by calling g_volume_mount_finish() with the @volume
  * and #GAsyncResult returned in the @callback.
+ *
+ * Virtual: mount_fn
  **/
 void
 g_volume_mount (GVolume             *volume,

@@ -386,7 +386,7 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
  * implementations should call this if a key has possibly changed its
  * value.
  *
- * @key must be a valid key (ie: starting with a slash, not containing
+ * @key must be a valid key (ie starting with a slash, not containing
  * '//', and not ending with a slash).
  *
  * The implementation must call this function during any call to
@@ -432,7 +432,7 @@ g_settings_backend_changed (GSettingsBackend *backend,
  * implementations should call this if keys have possibly changed their
  * values.
  *
- * @path must be a valid path (ie: starting and ending with a slash and
+ * @path must be a valid path (ie starting and ending with a slash and
  * not containing '//').  Each string in @items must form a valid key
  * name when @path is prefixed to it (ie: each item must not start or
  * end with '/' and must not contain '//').
@@ -483,7 +483,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
  * Backend implementations should call this if an entire path of keys
  * have possibly changed their values.
  *
- * @path must be a valid path (ie: starting and ending with a slash and
+ * @path must be a valid path (ie starting and ending with a slash and
  * not containing '//').
  *
  * The meaning of this signal is that any of the key which has a name
