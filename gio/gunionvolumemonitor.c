@@ -645,7 +645,7 @@ _g_mount_get_for_mount_path (const gchar  *mount_path,
  * is to return #GVolume objects representing entries in the users
  * "favorite servers" list or similar.
  *
- * Returns: the #GVolume object that is the parent for @mount or %NULL
+ * Returns: (transfer full): the #GVolume object that is the parent for @mount or %NULL
  * if no wants to adopt the #GMount.
  *
  * Deprecated: 2.20: Instead of using this function, #GVolumeMonitor

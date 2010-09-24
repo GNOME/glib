@@ -160,7 +160,8 @@ g_action_group_default_init (GActionGroupInterface *class)
  * The caller is responsible for freeing the list with g_strfreev() when
  * it is no longer required.
  *
- * Returns: a %NULL-terminated array of the names of the actions in the group
+ * Returns: (transfer full): a %NULL-terminated array of the names of the
+ * actions in the groupb
  *
  * Since: 2.26
  **/
@@ -248,7 +249,7 @@ g_action_group_get_parameter_type (GActionGroup *action_group,
  * possible for an action to be removed and for a new action to be added
  * with the same name but a different state type.
  *
- * Returns: (allow-none): the state type, if the action is stateful
+ * Returns: (transfer full): the state type, if the action is stateful
  *
  * Since: 2.26
  **/
@@ -286,7 +287,7 @@ g_action_group_get_state_type (GActionGroup *action_group,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Return value: the state range hint
+ * Return value: (transfer full): the state range hint
  *
  * Since: 2.26
  **/

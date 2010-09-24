@@ -411,7 +411,8 @@ g_io_modules_scan_all_in_directory (const char *dirname)
  * all gtypes) then you can use g_io_modules_scan_all_in_directory()
  * which allows delayed/lazy loading of modules.
  *
- * Returns: a list of #GIOModules loaded from the directory,
+ * Returns: (element-type GIOModule) (transfer full): a list of #GIOModules loaded
+ *      from the directory,
  *      All the modules are loaded into memory, if you want to
  *      unload them (enabling on-demand loading) you must call
  *      g_type_module_unuse() on all the modules. Free the list

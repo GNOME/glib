@@ -1066,7 +1066,7 @@ enumerate_mimetypes_dir (const char *dir,
  * g_list_free (list);
  * </programlisting>
  *
- * Returns: #GList of the registered content types
+ * Returns: (element-type utf8) (transfer full): #GList of the registered content types
  */
 GList *
 g_content_types_get_registered (void)

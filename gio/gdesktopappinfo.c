@@ -1635,7 +1635,7 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
  *
  * Creates a new #GAppInfo from the given information.
  *
- * Returns: new #GAppInfo for given command.
+ * Returns: (transfer full): new #GAppInfo for given command.
  **/
 GAppInfo *
 g_app_info_create_from_commandline (const char           *commandline,

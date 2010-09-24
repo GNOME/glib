@@ -199,7 +199,7 @@ g_action_set_state (GAction  *action,
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Returns: (allow-none): the current state of the action
+ * Returns: (transfer full): the current state of the action
  *
  * Since: 2.26
  **/
@@ -310,7 +310,7 @@ g_action_get_state_type (GAction *action)
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
  *
- * Returns: (allow-none): the state range hint
+ * Returns: (transfer full): the state range hint
  *
  * Since: 2.26
  **/

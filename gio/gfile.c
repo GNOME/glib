@@ -521,7 +521,7 @@ g_file_get_parse_name (GFile *file)
  *
  * This call does no blocking i/o.
  * 
- * Returns: a new #GFile that is a duplicate of the given #GFile. 
+ * Returns: (transfer full): a new #GFile that is a duplicate of the given #GFile. 
  **/
 GFile *
 g_file_dup (GFile *file)
@@ -675,7 +675,7 @@ g_file_has_parent (GFile *file,
  *
  * This call does no blocking i/o.
  * 
- * Returns: a #GFile to a child specified by @name.
+ * Returns: (transfer full): a #GFile to a child specified by @name.
  *     Free the returned object with g_object_unref().
  **/
 GFile *
@@ -702,7 +702,7 @@ g_file_get_child (GFile      *file,
  * 
  * This call does no blocking i/o.
  * 
- * Returns: a #GFile to the specified child, or 
+ * Returns: (transfer full): a #GFile to the specified child, or 
  *     %NULL if the display name couldn't be converted.  
  *     Free the returned object with g_object_unref().
  **/
@@ -843,7 +843,7 @@ g_file_resolve_relative_path (GFile      *file,
  * If the file is not a directory, the G_FILE_ERROR_NOTDIR error will be returned.
  * Other errors are possible too.
  *
- * Returns: A #GFileEnumerator if successful, %NULL on error. 
+ * Returns: (transfer full): A #GFileEnumerator if successful, %NULL on error. 
  *     Free the returned object with g_object_unref().
  **/
 GFileEnumerator *
@@ -928,7 +928,7 @@ g_file_enumerate_children_async (GFile               *file,
  * Finishes an async enumerate children operation.
  * See g_file_enumerate_children_async().
  *
- * Returns: a #GFileEnumerator or %NULL if an error occurred.
+ * Returns: (transfer full): a #GFileEnumerator or %NULL if an error occurred.
  *     Free the returned object with g_object_unref().
  **/
 GFileEnumerator *
@@ -4730,7 +4730,7 @@ g_file_monitor_directory (GFile             *file,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned. 
  * 
- * Returns: a #GFileMonitor for the given @file, or %NULL on error.
+ * Returns: (transfer full): a #GFileMonitor for the given @file, or %NULL on error.
  *     Free the returned object with g_object_unref().
  **/
 GFileMonitor*
@@ -5889,7 +5889,7 @@ g_file_real_copy_finish (GFile        *file,
  * fails, but the returned object might not support any I/O
  * operation if @path is malformed.
  * 
- * Returns: a new #GFile for the given @path. 
+ * Returns: (transfer full): a new #GFile for the given @path. 
  **/
 GFile *
 g_file_new_for_path (const char *path)
@@ -5908,7 +5908,7 @@ g_file_new_for_path (const char *path)
  * operation if @uri is malformed or if the uri type is 
  * not supported.
  * 
- * Returns: a #GFile for the given @uri.
+ * Returns: (transfer full): a #GFile for the given @uri.
  **/ 
 GFile *
 g_file_new_for_uri (const char *uri)
@@ -5926,7 +5926,7 @@ g_file_new_for_uri (const char *uri)
  * This operation never fails, but the returned object might not support any I/O
  * operation if the @parse_name cannot be parsed.
  * 
- * Returns: a new #GFile.
+ * Returns: (transfer full): a new #GFile.
  **/
 GFile *
 g_file_parse_name (const char *parse_name)
@@ -5972,7 +5972,7 @@ has_valid_scheme (const char *uri)
  * This operation never fails, but the returned object might not support any
  * I/O operation if @arg points to a malformed path.
  *
- * Returns: a new #GFile. 
+ * Returns: (transfer full): a new #GFile. 
  **/
 GFile *
 g_file_new_for_commandline_arg (const char *arg)
@@ -6615,7 +6615,7 @@ g_file_load_contents_finish (GFile         *file,
  *     for the document, or %NULL
  * @make_backup: %TRUE if a backup should be created.
  * @flags: a set of #GFileCreateFlags.
- * @new_etag: a location to a new <link linkend="gfile-etag">entity tag</link>
+ * @new_etag: (allow-none) (out): a location to a new <link linkend="gfile-etag">entity tag</link>
  *      for the document. This should be freed with g_free() when no longer 
  *      needed, or %NULL
  * @cancellable: optional #GCancellable object, %NULL to ignore.

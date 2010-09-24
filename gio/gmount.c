@@ -122,7 +122,7 @@ g_mount_default_init (GMountInterface *iface)
  * 
  * Gets the root directory on @mount.
  * 
- * Returns: a #GFile. 
+ * Returns: (transfer full): a #GFile. 
  *      The returned object should be unreffed with 
  *      g_object_unref() when no longer needed.
  **/
@@ -197,7 +197,7 @@ g_mount_get_name (GMount *mount)
  * 
  * Gets the icon for @mount.
  * 
- * Returns: a #GIcon.
+ * Returns: (transfer full): a #GIcon.
  *      The returned object should be unreffed with 
  *      g_object_unref() when no longer needed.
  **/
@@ -244,7 +244,7 @@ g_mount_get_uuid (GMount *mount)
  * 
  * Gets the volume for the @mount.
  * 
- * Returns: a #GVolume or %NULL if @mount is not associated with a volume.
+ * Returns: (transfer full): a #GVolume or %NULL if @mount is not associated with a volume.
  *      The returned object should be unreffed with 
  *      g_object_unref() when no longer needed.
  **/
@@ -269,7 +269,7 @@ g_mount_get_volume (GMount *mount)
  * This is a convenience method for getting the #GVolume and then
  * using that object to get the #GDrive.
  * 
- * Returns: a #GDrive or %NULL if @mount is not associated with a volume or a drive.
+ * Returns: (transfer full): a #GDrive or %NULL if @mount is not associated with a volume or a drive.
  *      The returned object should be unreffed with 
  *      g_object_unref() when no longer needed.
  **/

@@ -568,8 +568,8 @@ g_volume_get_identifier (GVolume    *volume,
  * that @volume has. Use g_volume_get_identifer() to obtain 
  * the identifiers themselves.
  *
- * Returns: a %NULL-terminated array of strings containing
- *   kinds of identifiers. Use g_strfreev() to free.
+ * Returns: (array zero-terminated=1) (transfer full): a %NULL-terminated array
+ *   of strings containing kinds of identifiers. Use g_strfreev() to free.
  */
 char **
 g_volume_enumerate_identifiers (GVolume *volume)
@@ -619,7 +619,7 @@ g_volume_enumerate_identifiers (GVolume *volume)
  * implementations to find the underlying mount to shadow, see
  * g_mount_is_shadowed() for more details.
  *
- * Returns: the activation root of @volume or %NULL. Use
+ * Returns: (transfer full): the activation root of @volume or %NULL. Use
  * g_object_unref() to free.
  *
  * Since: 2.18

@@ -437,7 +437,7 @@ g_async_initable_new_valist_async (GType                object_type,
  * Finishes the async construction for the various g_async_initable_new calls,
  * returning the created object or %NULL on error.
  *
- * Returns: a newly created #GObject, or %NULL on error. Free with
+ * Returns: (transfer full): a newly created #GObject, or %NULL on error. Free with
  *     g_object_unref().
  *
  * Since: 2.22

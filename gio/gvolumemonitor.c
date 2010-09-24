@@ -349,7 +349,7 @@ g_volume_monitor_get_mounts (GVolumeMonitor *volume_monitor)
  * 
  * Finds a #GVolume object by its UUID (see g_volume_get_uuid())
  * 
- * Returns: a #GVolume or %NULL if no such volume is available.
+ * Returns: (transfer full): a #GVolume or %NULL if no such volume is available.
  *     Free the returned object with g_object_unref().
  **/
 GVolume *

@@ -100,7 +100,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
  * 
  * Creates a duplicate of a #GAppInfo.
  *
- * Returns: a duplicate of @appinfo.
+ * Returns: (transfer full): a duplicate of @appinfo.
  **/
 GAppInfo *
 g_app_info_dup (GAppInfo *appinfo)
@@ -732,7 +732,7 @@ g_app_launch_context_init (GAppLaunchContext *launch_context)
  * g_app_launch_context_get_display:
  * @context: a #GAppLaunchContext
  * @info: a #GAppInfo
- * @files: a #GList of #GFile objects
+ * @files: (element-type GFile): a #GList of #GFile objects
  *
  * Gets the display string for the @context. This is used to ensure new
  * applications are started on the same display as the launching
@@ -762,7 +762,7 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * g_app_launch_context_get_startup_notify_id:
  * @context: a #GAppLaunchContext
  * @info: a #GAppInfo
- * @files: a #GList of of #GFile objects
+ * @files: (element-type GFile): a #GList of of #GFile objects
  * 
  * Initiates startup notification for the application and returns the
  * <envvar>DESKTOP_STARTUP_ID</envvar> for the launched operation,
