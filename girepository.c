@@ -1094,13 +1094,19 @@ enumerate_namespace_versions (const gchar *namespace,
 	      last_dash = strrchr (entry, '-');
 	      version = g_strndup (last_dash+1, name_end-(last_dash+1));
 	      if (!parse_version (version, &major, &minor))
-		continue;
+		{
+		  g_free (version);
+		  continue;
+		}
 	    }
 	  else
 	    continue;
 
 	  if (g_hash_table_lookup (found_versions, version) != NULL)
-	    continue;
+	    {
+	      g_free (version);
+	      continue;
+	    }
 	  g_hash_table_insert (found_versions, version, version);
 
 	  path = g_build_filename (dirname, entry, NULL);
