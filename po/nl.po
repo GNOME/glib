@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the glib package.
 #
 # Dirk-Jan C. Binnema <djcb@djcbsoftware.nl> 2001
-# Tino Meinen <a.t.meinen@chello.nl> 2002–2008.
-# Wouter Bolsterlee <wbolster@gnome.org>, 2008–2009
+# Tino Meinen <a.t.meinen@chello.nl> 2002–2008
+# Wouter Bolsterlee <wbolster@gnome.org>, 2008–2010
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-19 17:08+0200\n"
-"PO-Revision-Date: 2010-09-19 17:08+0200\n"
+"POT-Creation-Date: 2010-09-26 22:59+0200\n"
+"PO-Revision-Date: 2010-09-26 22:59+0200\n"
 "Last-Translator: Wouter Bolsterlee <wbolster@gnome.org>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
 "Language: nl\n"
@@ -399,7 +399,7 @@ msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "zo"
 
-#: ../glib/gdir.c:114 ../glib/gdir.c:137
+#: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Fout bij openen van map ‘%s’: %s"
@@ -1444,8 +1444,8 @@ msgstr "De telwaarde die aan %s werd gegeven is te groot"
 msgid "Stream is already closed"
 msgstr "De stroom is al gesloten"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1552
-#: ../gio/gdbusconnection.c:1641 ../gio/gdbusconnection.c:1823
+#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1633
+#: ../gio/gdbusconnection.c:1722 ../gio/gdbusconnection.c:1904
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:755
 #: ../gio/gsimpleasyncresult.c:781
 msgid "Operation was cancelled"
@@ -1535,6 +1535,7 @@ msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr ""
+"Sleutel/waarde-paar %d, ‘%s’ in adreselement ‘%s’ bevat geen is-gelijk-teken."
 
 #: ../gio/gdbusaddress.c:469
 #, c-format
@@ -1542,6 +1543,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr ""
+"Fout bij het ‘unescapen’ van sleutel of waarde in sleutel/waarde-paar %d, "
+"‘%s’, in adreselement ‘%s’"
 
 #: ../gio/gdbusaddress.c:547
 #, c-format
@@ -1549,26 +1552,30 @@ msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 msgstr ""
+"Fout in adres ‘%s’ — Unix-transport heeft ofwel de sleutel ‘path’ ofwel de "
+"sleutel ‘abstract’ nodig"
 
 #: ../gio/gdbusaddress.c:583
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr ""
+"Fout in adres ‘%s’ — het host-attribuut ontbreekt of is onjuist gevormd"
 
 #: ../gio/gdbusaddress.c:597
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr ""
+"Fout in adres ‘%s’ — het port-attribuut ontbreekt of is onjuist gevormd"
 
 #: ../gio/gdbusaddress.c:611
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
+"Fout in adres ‘%s’ — het noncefile-attribuut ontbreekt of is onjuist gevormd"
 
 #: ../gio/gdbusaddress.c:632
-#, fuzzy
 msgid "Error auto-launching: "
-msgstr "Fout bij het afkappen bestand: %s"
+msgstr "Fout bij automatisch opstarten: "
 
 #: ../gio/gdbusaddress.c:640
 #, c-format
@@ -1577,9 +1584,9 @@ msgstr ""
 
 # lezen/openen
 #: ../gio/gdbusaddress.c:676
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening nonce file `%s': %s"
-msgstr "Fout bij het openen van bestand ‘%s’: %s"
+msgstr "Fout bij het openen van nonce-bestand ‘%s’: %s"
 
 #: ../gio/gdbusaddress.c:694
 #, fuzzy, c-format
@@ -1602,36 +1609,39 @@ msgstr ""
 
 #: ../gio/gdbusaddress.c:1011
 msgid "Cannot spawn a message bus without a machine-id: "
-msgstr ""
+msgstr "Kan geen message-bus starten zonder machine-id: "
 
 #: ../gio/gdbusaddress.c:1048
-#, fuzzy, c-format
+#, c-format
 msgid "Error spawning command line `%s': "
-msgstr "Fout bij lezen van bestand ‘%s’: %s"
+msgstr "Fout bij lezen van opdrachtregel ‘%s’: "
 
 #: ../gio/gdbusaddress.c:1059
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr ""
+"Ongebruikelijk programma-einde bij het opstarten van opdrachtregel ‘%s’: %s"
 
 #: ../gio/gdbusaddress.c:1073
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
-msgstr ""
+msgstr "Opdrachtregel ‘%s’ eindigde met exit-status %d: %s"
 
 #: ../gio/gdbusaddress.c:1146
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
+"Kan adres van sessiebus niet bepalen (niet geïmplementeerd voor dit "
+"besturingssysteem)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6016
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6142
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6025
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6151
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1739,90 +1749,90 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr ""
 
 # opsomming/teller
-#: ../gio/gdbusconnection.c:1061 ../gio/gdbusconnection.c:1290
-#: ../gio/gdbusconnection.c:1329 ../gio/gdbusconnection.c:1652
+#: ../gio/gdbusconnection.c:1142 ../gio/gdbusconnection.c:1371
+#: ../gio/gdbusconnection.c:1410 ../gio/gdbusconnection.c:1733
 msgid "The connection is closed"
 msgstr "De verbinding is gesloten"
 
-#: ../gio/gdbusconnection.c:1596
+#: ../gio/gdbusconnection.c:1677
 msgid "Timeout was reached"
 msgstr "Tijd is verlopen"
 
-#: ../gio/gdbusconnection.c:2173
+#: ../gio/gdbusconnection.c:2291
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 
-#: ../gio/gdbusconnection.c:3599 ../gio/gdbusconnection.c:3917
+#: ../gio/gdbusconnection.c:3725 ../gio/gdbusconnection.c:4043
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "Geen interface ‘org.freedesktop.DBus.Properties’ op object met pad %s"
 
-#: ../gio/gdbusconnection.c:3671
+#: ../gio/gdbusconnection.c:3797
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Fout bij het instellen van eigenschap ‘%s’: verwachte type ‘%s’, maar ‘%s’ "
 "ontvangen"
 
-#: ../gio/gdbusconnection.c:3766
+#: ../gio/gdbusconnection.c:3892
 #, c-format
 msgid "No such property `%s'"
 msgstr "Geen eigenschap ‘%s’"
 
 # Uhhh? (Wouter Bolsterlee)
-#: ../gio/gdbusconnection.c:3778
+#: ../gio/gdbusconnection.c:3904
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Eigenschap ‘%s’ is niet leesbaar"
 
 # Uhhh? (Wouter Bolsterlee)
-#: ../gio/gdbusconnection.c:3789
+#: ../gio/gdbusconnection.c:3915
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Eigenschap ‘%s’ is niet schrijfbaar"
 
-#: ../gio/gdbusconnection.c:3859 ../gio/gdbusconnection.c:5450
+#: ../gio/gdbusconnection.c:3985 ../gio/gdbusconnection.c:5576
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Interface ‘%s’ bestaat niet"
 
-#: ../gio/gdbusconnection.c:4047
+#: ../gio/gdbusconnection.c:4173
 msgid "No such interface"
 msgstr "Interface bestaat niet"
 
-#: ../gio/gdbusconnection.c:4263 ../gio/gdbusconnection.c:5966
+#: ../gio/gdbusconnection.c:4389 ../gio/gdbusconnection.c:6092
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Interface ‘%s’ op object met pad %s bestaat niet"
 
-#: ../gio/gdbusconnection.c:4315
+#: ../gio/gdbusconnection.c:4441
 #, c-format
 msgid "No such method `%s'"
 msgstr "Methode ‘%s' bstaat niet"
 
-#: ../gio/gdbusconnection.c:4346
+#: ../gio/gdbusconnection.c:4472
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Berichttype ‘%s’ komt niet overeen met verwachte type ‘%s’"
 
-#: ../gio/gdbusconnection.c:4565
+#: ../gio/gdbusconnection.c:4691
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Er is al een object geëxporteerd voor de interface %s op %s"
 
-#: ../gio/gdbusconnection.c:4759
+#: ../gio/gdbusconnection.c:4885
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Methode ‘%s’ gaf type ‘%s’ terug, maar ‘%s’ werd verwacht"
 
-#: ../gio/gdbusconnection.c:5561
+#: ../gio/gdbusconnection.c:5687
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Methode ‘%s’ op interface ‘%s’ met signature ‘%s’ bestaat niet"
 
-#: ../gio/gdbusconnection.c:5679
+#: ../gio/gdbusconnection.c:5805
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Er is reeds een sub-boom geëxporteerd voor %s"
@@ -1989,7 +1999,7 @@ msgstr ""
 msgid "Error sending message: %s"
 msgstr "Fout bij het openen van bestand: %s"
 
-#: ../gio/gdbusprivate.c:1766
+#: ../gio/gdbusprivate.c:1758
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr ""
 
@@ -2035,16 +2045,16 @@ msgstr "Fout bij het schrijven naar bestand: %s"
 #: ../gio/gdbusserver.c:1044
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr ""
+msgstr "De tekenreeks ‘%s’ is geen geldige GUID voor D-Bus"
 
 #: ../gio/gdbusserver.c:1084
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
-msgstr ""
+msgstr "Kan niet luisteren op niet ondersteund transport ‘%s’"
 
 #: ../gio/gdbus-tool.c:87 ../gio/gsettings-tool.c:76
 msgid "COMMAND"
-msgstr ""
+msgstr "OPDRACHT"
 
 #: ../gio/gdbus-tool.c:92
 #, c-format
@@ -2060,14 +2070,14 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
 #: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s\n"
-msgstr "Fout in regel %d: %s"
+msgstr "Fout: %s\n"
 
 #: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr "Fout bij verwerken van optie %s"
+msgstr "Fout bij verwerken van introspectie-XML %s\n"
 
 #: ../gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
@@ -2130,9 +2140,9 @@ msgstr ""
 
 # openen/lezen
 #: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting: %s\n"
-msgstr "Fout bij het openen van bestand: %s"
+msgstr "Fout bij verbinden: %s\n"
 
 #: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
 #, c-format
@@ -2467,7 +2477,7 @@ msgstr "Datastroom is nog bezig"
 #: ../gio/ginetsocketaddress.c:181 ../gio/ginetsocketaddress.c:198
 #: ../gio/gunixsocketaddress.c:221
 msgid "Not enough space for socket address"
-msgstr ""
+msgstr "Niet genoeg ruimte voor socket-adres"
 
 #: ../gio/ginetsocketaddress.c:211
 msgid "Unsupported socket address"
@@ -2480,7 +2490,7 @@ msgstr "lege namen zijn niet toegestaan"
 #: ../gio/glib-compile-schemas.c:712
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr ""
+msgstr "ongeldige naam ‘%s’: namen moet met een kleine letter beginnen"
 
 #: ../gio/glib-compile-schemas.c:724
 #, c-format
@@ -3017,14 +3027,16 @@ msgid ""
 "Amount of memory required to process the write is larger than available "
 "address space"
 msgstr ""
+"De benodigde geheugenruimte om de schrijfactie te verwerken is groter dan de "
+"beschikbare adresruimte"
 
 #: ../gio/gmemoryoutputstream.c:756
 msgid "Requested seek before the beginning of the stream"
-msgstr ""
+msgstr "‘Seek’-aanvraag ligt voor het beginpunt van de stroom"
 
 #: ../gio/gmemoryoutputstream.c:765
 msgid "Requested seek beyond the end of the stream"
-msgstr ""
+msgstr "‘Seek’-aanvraag ligt na het eindpunt van de stroom"
 
 # ontkoppelen is op deze koppeling niet mogelijk/niet geimplementeerd
 # ontkoppelen is bij deze koppeling/bij dit aangekoppelde object
@@ -3033,17 +3045,15 @@ msgstr ""
 #. * message for mount objects that
 #. * don't implement unmount.
 #: ../gio/gmount.c:363
-#, fuzzy
 msgid "mount doesn't implement \"unmount\""
-msgstr "ontkoppelen niet ondersteund door koppeling"
+msgstr "mount heeft geen ondersteuning voor ontkoppelen (unmount)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement eject.
 #: ../gio/gmount.c:442
-#, fuzzy
 msgid "mount doesn't implement \"eject\""
-msgstr "uitwerpen niet ondersteund door koppeling"
+msgstr "mount heeft geen ondersteuning voor uitwerpen (eject)"
 
 # ontkoppelen is op deze koppeling niet mogelijk/niet geimplementeerd
 # ontkoppelen is bij deze koppeling/bij dit aangekoppelde object
@@ -3052,17 +3062,16 @@ msgstr "uitwerpen niet ondersteund door koppeling"
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
 #: ../gio/gmount.c:522
-#, fuzzy
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
-msgstr "ontkoppelen niet ondersteund door koppeling"
+msgstr ""
+"mount heeft geen ondersteuning voor ‘unmount’ of ‘unmount_with_operation’"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
 #: ../gio/gmount.c:609
-#, fuzzy
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
-msgstr "uitwerpen niet ondersteund door koppeling"
+msgstr "mount heeft geen ondersteuning voor ‘eject’ of ‘eject_with_operation’"
 
 #. Translators: This is an error
 #. * message for mount objects that
@@ -3089,7 +3098,7 @@ msgstr "op synchrone wijze inhoudstype raden niet ondersteund door koppeling"
 #: ../gio/gnetworkaddress.c:318
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
-msgstr ""
+msgstr "Host-naam ‘%s’ bevat ‘[’ maar geen ‘]’"
 
 # uitvoerdatastroom begrijpt de opdracht 'scrijven' niet
 #: ../gio/goutputstream.c:207 ../gio/goutputstream.c:408
@@ -3114,12 +3123,12 @@ msgstr "Fout bij lezen van bestand ‘%s’: %s"
 #: ../gio/gresolver.c:820 ../gio/gresolver.c:898
 #, c-format
 msgid "No service record for '%s'"
-msgstr ""
+msgstr "Geen service-record voor ‘%s’"
 
 #: ../gio/gresolver.c:825 ../gio/gresolver.c:903
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
-msgstr ""
+msgstr "Kan tijdelijk geen resolve doen voor ‘%s’"
 
 # volledig verwijderen/definitief verwijderen/verwijderen
 #: ../gio/gresolver.c:830 ../gio/gresolver.c:908
@@ -3142,19 +3151,20 @@ msgid ""
 msgstr ""
 
 #: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr ""
 
 #: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:539
-#: ../gio/gsettings-tool.c:652
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr ""
 
@@ -3162,23 +3172,24 @@ msgstr ""
 msgid "Get the value of KEY"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:543 ../gio/gsettings-tool.c:659
+#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:449
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
 "  KEY         The name of the key\n"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:328 ../gio/gsettings-tool.c:444
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:329 ../gio/gsettings-tool.c:445
 msgid "SCHEMA KEY VALUE"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:330
+#: ../gio/gsettings-tool.c:331
 msgid "Set the value of KEY"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:332
+#: ../gio/gsettings-tool.c:333
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -3187,26 +3198,26 @@ msgid ""
 msgstr ""
 
 # Uhhh? (Wouter Bolsterlee)
-#: ../gio/gsettings-tool.c:405
+#: ../gio/gsettings-tool.c:406
 #, fuzzy, c-format
 msgid "Key %s is not writable\n"
 msgstr "Type %s is niet ‘classed’"
 
-#: ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:447
 msgid "Sets KEY to its default value"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:655
+#: ../gio/gsettings-tool.c:657
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
 msgstr ""
 
-#: ../gio/gsettings-tool.c:831
+#: ../gio/gsettings-tool.c:833
 #, fuzzy, c-format
 msgid "Unknown command '%s'\n"
 msgstr "Onbekende optie %s"
@@ -3353,34 +3364,34 @@ msgstr ""
 #: ../gio/gsocks4aproxy.c:121
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address '%s'"
-msgstr ""
+msgstr "SOCKSv4 ondersteunt IPv6-adres ‘%s’ niet"
 
 #: ../gio/gsocks4aproxy.c:139
 #, c-format
 msgid "SOCKSv4 implementation limits username to %i characters"
-msgstr ""
+msgstr "De SOCKSv4-implementatie limiteert de gebruikersnaam tot %i tekens"
 
 #: ../gio/gsocks4aproxy.c:157
 #, c-format
 msgid "SOCKSv4a implementation limits hostname to %i characters"
-msgstr ""
+msgstr "De SOCKSv4-implementatie limiteert de host-naam tot %i tekens"
 
 #: ../gio/gsocks4aproxy.c:183
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr ""
+msgstr "De server is geen SOCKSv4-proxyserver."
 
 #: ../gio/gsocks4aproxy.c:190
 msgid "Connection through SOCKSv4 server was rejected"
-msgstr ""
+msgstr "Verbinding via SOCKSv4-server is geweigerd"
 
 #: ../gio/gsocks5proxy.c:155 ../gio/gsocks5proxy.c:328
 #: ../gio/gsocks5proxy.c:338
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr ""
+msgstr "De server is geen SOCKSv5-proxyserver."
 
 #: ../gio/gsocks5proxy.c:169
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr ""
+msgstr "De SOCKSv5-proxy vereist authenticatie."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
@@ -3407,35 +3418,35 @@ msgstr ""
 
 #: ../gio/gsocks5proxy.c:359
 msgid "Internal SOCKSv5 proxy server error."
-msgstr ""
+msgstr "Interne SOCKSv5-proxyserverfout"
 
 #: ../gio/gsocks5proxy.c:365
 msgid "SOCKSv5 connection not allowed by ruleset."
-msgstr ""
+msgstr "SOCKSv5-verbinding niet toegestaan door regelset."
 
 #: ../gio/gsocks5proxy.c:372
 msgid "Host unreachable through SOCKSv5 server."
-msgstr ""
+msgstr "Host onbereikbaar via SOCKSv5-server."
 
 #: ../gio/gsocks5proxy.c:378
 msgid "Network unreachable through SOCKSv5 proxy."
-msgstr ""
+msgstr "Netwerk onbereikbaar via SOCKSv5-server."
 
 #: ../gio/gsocks5proxy.c:384
 msgid "Connection refused through SOCKSv5 proxy."
-msgstr ""
+msgstr "Verbinding geweigerd via SOCKSv5-server."
 
 #: ../gio/gsocks5proxy.c:390
 msgid "SOCKSv5 proxy does not support 'connect' command."
-msgstr ""
+msgstr "SOCKSv5-proxy ondersteunt de ‘connect’-opdracht niet."
 
 #: ../gio/gsocks5proxy.c:396
 msgid "SOCKSv5 proxy does not support provided address type."
-msgstr ""
+msgstr "SOCKSv5-proxy ondersteunt het opgegeven adrestype niet."
 
 #: ../gio/gsocks5proxy.c:402
 msgid "Unkown SOCKSv5 proxy error."
-msgstr ""
+msgstr "Onbekende SOCKSv5-proxyfout"
 
 #: ../gio/gthemedicon.c:498
 #, c-format
@@ -3455,22 +3466,20 @@ msgstr "Voortijdig einde aan gegevensstroom"
 #: ../gio/gunixconnection.c:195
 #, c-format
 msgid "Expecting one fd, but got %d\n"
-msgstr ""
+msgstr "Eén fd verwacht, maar %d ontvangen\n"
 
 #: ../gio/gunixconnection.c:211
 msgid "Received invalid fd"
-msgstr ""
+msgstr "Ongeldige fd ontvangen"
 
-# openen/lezen
 #: ../gio/gunixconnection.c:359
-#, fuzzy
 msgid "Error sending credentials: "
-msgstr "Fout bij het openen van bestand: %s"
+msgstr "Fout bij het sturen van credentials:"
 
 #: ../gio/gunixconnection.c:439
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr ""
+msgstr "Fout bij controleren of SO_PASSCRED is ingeschakeld voor de socket: %s"
 
 #: ../gio/gunixconnection.c:448
 #, c-format
@@ -3492,7 +3501,7 @@ msgstr ""
 #: ../gio/gunixconnection.c:538
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr ""
+msgstr "Fout bij het uitschakelen van SO_PASSCRED: %s"
 
 #: ../gio/gunixinputstream.c:353 ../gio/gunixinputstream.c:373
 #: ../gio/gunixinputstream.c:451 ../gio/gunixoutputstream.c:438
@@ -3509,7 +3518,7 @@ msgstr "Fout bij sluiten van unix: %s"
 # hoofdmap van bestandssysteem
 #: ../gio/gunixmounts.c:1846 ../gio/gunixmounts.c:1883
 msgid "Filesystem root"
-msgstr "Hoofdmap bestandssysteem"
+msgstr "Hoofdmap van bestandssysteem"
 
 #: ../gio/gunixoutputstream.c:339 ../gio/gunixoutputstream.c:360
 #, c-format
@@ -3559,130 +3568,33 @@ msgid "Association creation not supported on win32"
 msgstr "Associaties aanmaken niet mogelijk op win32"
 
 #: ../gio/gwin32inputstream.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from handle: %s"
-msgstr "Fout bij het lezen van bestand: %s"
+msgstr "Fout bij het lezen van handle: %s"
 
 #: ../gio/gwin32inputstream.c:348 ../gio/gwin32outputstream.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing handle: %s"
-msgstr "Fout bij het sluiten van bestand: %s"
+msgstr "Fout bij het sluiten van handle: %s"
 
 #: ../gio/gwin32outputstream.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to handle: %s"
-msgstr "Fout bij het schrijven naar bestand: %s"
+msgstr "Fout bij het schrijven naar handle: %s"
 
 #: ../gio/gzlibcompressor.c:396 ../gio/gzlibdecompressor.c:349
-#, fuzzy
 msgid "Not enough memory"
-msgstr "onvoldoende geheugen"
+msgstr "Onvoldoende geheugen"
 
 #: ../gio/gzlibcompressor.c:403 ../gio/gzlibdecompressor.c:356
-#, fuzzy, c-format
+#, c-format
 msgid "Internal error: %s"
-msgstr "interne fout"
+msgstr "Interne fout: %s"
 
 #: ../gio/gzlibcompressor.c:416 ../gio/gzlibdecompressor.c:370
 msgid "Need more input"
-msgstr ""
+msgstr "Meer invoer nodig"
 
 #: ../gio/gzlibdecompressor.c:342
-#, fuzzy
 msgid "Invalid compressed data"
-msgstr "Ongeldige hostnaam"
-
-#, fuzzy
-#~ msgid "Do not give error for empty directory"
-#~ msgstr "Kan map niet over map verplaatsen"
-
-#, fuzzy
-#~ msgid "Invalid UTF-8 sequence in input"
-#~ msgstr "Ongeldige reeks in conversieinvoer"
-
-#~ msgid "Reached maximum data array limit"
-#~ msgstr "Maximum data-arraylimiet bereikt"
-
-# vrij vertaald
-#~ msgid "do not hide entries"
-#~ msgstr "ook de verborgen items tonen"
-
-#~ msgid "use a long listing format"
-#~ msgstr "gebruik een uitgebreide opsomming"
-
-#~ msgid "[FILE...]"
-#~ msgstr "[BESTAND...]"
-
-#~ msgid ""
-#~ "Character '%s' is not valid at the start of an entity name; the & "
-#~ "character begins an entity; if this ampersand isn't supposed to be an "
-#~ "entity, escape it as &amp;"
-#~ msgstr ""
-#~ "Teken ‘%s’ is niet geldig aan het begin van een entiteitnaam; het &-teken "
-#~ "begint een entiteit; indien dat niet de bedoeling is, gebruik dan &amp;"
-
-#~ msgid "Character '%s' is not valid inside an entity name"
-#~ msgstr "Het teken ‘%s’ is niet geldig in een entiteitnaam"
-
-#~ msgid "Empty character reference; should include a digit such as &#454;"
-#~ msgstr ""
-#~ "Lege tekenreferentie; ze zou een getal moeten bevatten, zoals &#454;"
-
-#~ msgid "Unfinished entity reference"
-#~ msgstr "Onbeëindigde entiteitreferentie"
-
-#~ msgid "Unfinished character reference"
-#~ msgstr "Onbeëindigde tekenreferentie"
-
-#~ msgid "Invalid UTF-8 encoded text - overlong sequence"
-#~ msgstr "Ongeldige UTF-8-gecodeerde tekst - de reeks is te lang"
-
-# het is geen startteken/er is geen startteken
-#~ msgid "Invalid UTF-8 encoded text - not a start char"
-#~ msgstr "Ongeldige UTF-8-gecodeerde tekst - geen startteken"
-
-#~ msgid "file"
-#~ msgstr "bestand"
-
-# dat het pictogram bevat/met het pictogram
-#~ msgid "The file containing the icon"
-#~ msgstr "Een bestand met het pictogram"
-
-#~ msgid "The name of the icon"
-#~ msgstr "Naam van het pictogram"
-
-#~ msgid "names"
-#~ msgstr "namen"
-
-#~ msgid "An array containing the icon names"
-#~ msgstr "Een lijst met de pictogramnamen"
-
-# Vrij vertaald (Wouter Bolsterlee)
-#~ msgid "use default fallbacks"
-#~ msgstr "standaard terugvalmechanisme gebruiken"
-
-# Vrij vertaald (Wouter Bolsterlee)
-#~ msgid ""
-#~ "Whether to use default fallbacks found by shortening the name at '-' "
-#~ "characters. Ignores names after the first if multiple names are given."
-#~ msgstr ""
-#~ "Of het standaard terugvalmechanisme gebruikt moet worden door de naam bij "
-#~ "het ‘-’-teken af te knippen. Als meerdere namen worden gegeven wordt de "
-#~ "eerste gebruikt."
-
-# Expres onvertaald (Wouter Bolsterlee)
-#~ msgid "File descriptor"
-#~ msgstr "Bestandsdescriptor"
-
-#~ msgid "The file descriptor to read from"
-#~ msgstr "De bestandsdescriptor om van te lezen"
-
-#~ msgid "Close file descriptor"
-#~ msgstr "Bestandsdescriptor sluiten"
-
-#~ msgid "Whether to close the file descriptor when the stream is closed"
-#~ msgstr ""
-#~ "Of de bestandsdescriptor gesloten moet worden als de stream wordt gesloten"
-
-#~ msgid "The file descriptor to write to"
-#~ msgstr "De bestandsdescriptor om naar te schrijven"
+msgstr "Ongeldige gecomprimeerde gegevens"
