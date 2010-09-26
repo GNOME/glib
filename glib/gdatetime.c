@@ -1608,8 +1608,8 @@ g_date_time_get_week_of_year (GDateTime *datetime)
  * g_date_time_get_day_of_week:
  * @datetime: a #GDateTime
  *
- * Retrieves the day of the week represented by @datetime within the gregorian
- * calendar. 1 is Sunday, 2 is Monday, etc.
+ * Retrieves the ISO 8601 day of the week represented by @datetime (1 is
+ * Monday, 2 is Tuesday... 7 is Sunday).
  *
  * Return value: the day of the week
  *
@@ -1618,27 +1618,9 @@ g_date_time_get_week_of_year (GDateTime *datetime)
 gint
 g_date_time_get_day_of_week (GDateTime *datetime)
 {
-  gint a, y, m,
-       year  = 0,
-       month = 0,
-       day   = 0,
-       dow;
-
   g_return_val_if_fail (datetime != NULL, 0);
 
-  /*
-   * See Calendar FAQ Section 2.6 for algorithm information
-   * http://www.tondering.dk/claus/cal/calendar29.txt
-   */
-
-  g_date_time_get_ymd (datetime, &year, &month, &day);
-  a = (14 - month) / 12;
-  y = year - a;
-  m = month + (12 * a) - 2;
-  dow = ((day + y + (y / 4) - (y / 100) + (y / 400) + (31 * m) / 12) % 7);
-
-  /* 1 is Monday and 7 is Sunday */
-  return (dow == 0) ? 7 : dow;
+  return (datetime->days - 1) % 7 + 1;
 }
 
 /* Day of year getter {{{1 */
