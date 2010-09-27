@@ -1791,6 +1791,8 @@ start_class (GMarkupParseContext *context,
 
   iface->abstract = abstract && strcmp (abstract, "1") == 0;
 
+  if (fundamental)
+    iface->fundamental = TRUE;
   if (ref_func)
     iface->ref_func = g_strdup (ref_func);
   if (unref_func)
