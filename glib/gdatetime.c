@@ -1583,12 +1583,102 @@ g_date_time_get_day_of_month (GDateTime *datetime)
 
 /* Week of year / day of week getters {{{1 */
 /**
+ * g_date_time_get_week_numbering_year:
+ * @date: a #GDateTime
+ *
+ * Returns the ISO 8601 week-numbering year in which the week containing
+ * @datetime falls.
+ *
+ * This function, taken together with g_date_time_get_week_of_year() and
+ * g_date_time_get_day_of_week() can be used to determine the full ISO
+ * week date on which @datetime falls.
+ *
+ * This is usually equal to the normal Gregorian year (as returned by
+ * g_date_time_get_year()), except as detailed below:
+ *
+ * For Thursday, the week-numbering year is always equal to the usual
+ * calendar year.  For other days, the number is such that every day
+ * within a complete week (Monday to Sunday) is contained within the
+ * same week-numbering year.
+ *
+ * For Monday, Tuesday and Wednesday occuring near the end of the year,
+ * this may mean that the week-numbering year is one greater than the
+ * calendar year (so that these days have the same week-numbering year
+ * as the Thursday occuring early in the next year).
+ *
+ * For Friday, Saturaday and Sunday occuring near the start of the year,
+ * this may mean that the week-numbering year is one less than the
+ * calendar year (so that these days have the same week-numbering year
+ * as the Thursday occuring late in the previous year).
+ *
+ * An equivalent description is that the week-numbering year is equal to
+ * the calendar year containing the majority of the days in the current
+ * week (Monday to Sunday).
+ *
+ * Note that January 1 0001 in the proleptic Gregorian calendar is a
+ * Monday, so this function never returns 0.
+ *
+ * Returns: the ISO 8601 week-numbering year for @datetime
+ *
+ * Since: 2.26
+ **/
+gint
+g_date_time_get_week_numbering_year (GDateTime *datetime)
+{
+  gint year, month, day, weekday;
+
+  g_date_time_get_ymd (datetime, &year, &month, &day);
+  weekday = g_date_time_get_day_of_week (datetime);
+
+  /* January 1, 2, 3 might be in the previous year if they occur after
+   * Thursday.
+   *
+   *   Jan 1:  Friday, Saturday, Sunday    =>  day 1:  weekday 5, 6, 7
+   *   Jan 2:  Saturday, Sunday            =>  day 2:  weekday 6, 7
+   *   Jan 3:  Sunday                      =>  day 3:  weekday 7
+   *
+   * So we have a special case if (day - weekday) <= -4
+   */
+  if (month == 1 && (day - weekday) <= -4)
+    return year - 1;
+
+  /* December 29, 30, 31 might be in the next year if they occur before
+   * Thursday.
+   *
+   *   Dec 31: Monday, Tuesday, Wednesday  =>  day 31: weekday 1, 2, 3
+   *   Dec 30: Monday, Tuesday             =>  day 30: weekday 1, 2
+   *   Dec 29: Monday                      =>  day 29: weekday 1
+   *
+   * So we have a special case if (day - weekday) >= 28
+   */
+  else if (month == 12 && (day - weekday) >= 28)
+    return year + 1;
+
+  else
+    return year;
+}
+
+/**
  * g_date_time_get_week_of_year:
  * @datetime: a #GDateTime
  *
- * Returns the numeric week of the respective year.
+ * Returns the ISO 8601 week number for the week containing @datetime.
+ * The ISO 8601 week number is the same for every day of the week (from
+ * Moday through Sunday).  That can produce some unusual results
+ * (described below).
  *
- * Return value: the week of the year
+ * The first week of the year is week 1.  This is the week that contains
+ * the first Thursday of the year.  Equivalently, this is the first week
+ * that has more than 4 of its days falling within the calendar year.
+ *
+ * The value 0 is never returned by this function.  Days contained
+ * within a year but occuring before the first ISO 8601 week of that
+ * year are considered as being contained in the last week of the
+ * previous year.  Similarly, the final days of a calendar year may be
+ * considered as being part of the first ISO 8601 week of the next year
+ * if 4 or more days of that week are contained within the new year.
+ *
+ * Returns: the ISO 8601 week number for @datetime.
  *
  * Since: 2.26
  */
@@ -1608,7 +1698,7 @@ g_date_time_get_week_of_year (GDateTime *datetime)
  * g_date_time_get_day_of_week:
  * @datetime: a #GDateTime
  *
- * Retrieves the ISO 8601 day of the week represented by @datetime (1 is
+ * Retrieves the ISO 8601 day of the week on which @datetime falls (1 is
  * Monday, 2 is Tuesday... 7 is Sunday).
  *
  * Return value: the day of the week

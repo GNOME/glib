@@ -1491,6 +1491,7 @@ g_date_time_get_month
 g_date_time_get_day_of_month
 
 <SUBSECTION>
+g_date_time_get_week_numbering_year
 g_date_time_get_week_of_year
 g_date_time_get_day_of_week
 

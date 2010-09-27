@@ -231,50 +231,6 @@ test_GDateTime_get_day_of_month (void)
 }
 
 static void
-test_GDateTime_get_ymd (void)
-{
-   GDateTime *dt;
-   struct tm tm;
-   time_t t;
-   gint d, m, y;
-   gint d2, m2, y2;
-   gint days[2][13] = {{0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
-                       {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
-
-   t = time (NULL);
-   memset (&tm, 0, sizeof (struct tm));
-   get_localtime_tm (t, &tm);
-
-   dt = g_date_time_new_from_unix_local (t);
-   g_date_time_get_ymd(dt, &y, &m, &d);
-   g_assert_cmpint(y, ==, tm.tm_year + 1900);
-   g_assert_cmpint(m, ==, tm.tm_mon + 1);
-   g_assert_cmpint(d, ==, tm.tm_mday);
-
-   /* exaustive test */
-   for (y = 1750; y < 2250; y++)
-     {
-       gint leap = ((y % 4) == 0) && (!(((y % 100) == 0) && ((y % 400) != 0)))
-                 ? 1
-                 : 0;
-
-       for (m = 1; m <= 12; m++)
-         {
-           for (d = 1; d <= days[leap][m]; d++)
-             {
-               GDateTime *dt1 = g_date_time_new_utc (y, m, d, 0, 0, 0);
-
-               g_date_time_get_ymd (dt1, &y2, &m2, &d2);
-               g_assert_cmpint (y, ==, y2);
-               g_assert_cmpint (m, ==, m2);
-               g_assert_cmpint (d, ==, d2);
-               g_date_time_unref (dt1);
-             }
-         }
-     }
-}
-
-static void
 test_GDateTime_get_hour (void)
 {
   GDateTime *dt;
@@ -898,6 +854,148 @@ test_GDateTime_dst (void)
   g_time_zone_unref (tz);
 }
 
+static inline gboolean
+is_leap_year (gint year)
+{
+  g_assert (1 <= year && year <= 9999);
+
+  return year % 400 == 0 || (year % 4 == 0 && year % 100 != 0);
+}
+
+static inline gint
+days_in_month (gint year, gint month)
+{
+  const gint table[2][13] = {
+    {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+    {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
+  };
+
+  g_assert (1 <= month && month <= 12);
+
+  return table[is_leap_year (year)][month];
+}
+
+static void
+test_all_dates (void)
+{
+  gint year, month, day;
+  GTimeZone *timezone;
+  gint64 unix_time;
+  gint day_of_year;
+  gint week_year;
+  gint week_num;
+  gint weekday;
+
+  /* save some time by hanging on to this. */
+  timezone = g_time_zone_new_utc ();
+
+  unix_time = G_GINT64_CONSTANT(-62135596800);
+
+  /* 0001-01-01 is 0001-W01-1 */
+  week_year = 1;
+  week_num = 1;
+  weekday = 1;
+
+
+  /* The calendar makes a full cycle every 400 years, so we could
+   * theoretically just test years 1 through 400.  That assumes that our
+   * software has no bugs, so probably we should just test them all. :)
+   */
+  for (year = 1; year <= 9999; year++)
+    {
+      day_of_year = 1;
+
+      for (month = 1; month <= 12; month++)
+        for (day = 1; day <= days_in_month (year, month); day++)
+          {
+            GDateTime *dt;
+
+            dt = g_date_time_new (timezone, year, month, day, 0, 0, 0);
+
+#if 0
+            g_print ("%04d-%02d-%02d = %04d-W%02d-%d = %04d-%03d\n",
+                     year, month, day,
+                     week_year, week_num, weekday,
+                     year, day_of_year);
+#endif
+
+            /* sanity check */
+            if G_UNLIKELY (g_date_time_get_year (dt) != year ||
+                           g_date_time_get_month (dt) != month ||
+                           g_date_time_get_day_of_month (dt) != day)
+              g_error ("%04d-%02d-%02d comes out as %04d-%02d-%02d",
+                       year, month, day,
+                       g_date_time_get_year (dt),
+                       g_date_time_get_month (dt),
+                       g_date_time_get_day_of_month (dt));
+
+            if G_UNLIKELY (g_date_time_get_week_numbering_year (dt) != week_year ||
+                           g_date_time_get_week_of_year (dt) != week_num ||
+                           g_date_time_get_day_of_week (dt) != weekday)
+              g_error ("%04d-%02d-%02d should be %04d-W%02d-%d but "
+                       "comes out as %04d-W%02d-%d", year, month, day,
+                       week_year, week_num, weekday,
+                       g_date_time_get_week_numbering_year (dt),
+                       g_date_time_get_week_of_year (dt),
+                       g_date_time_get_day_of_week (dt));
+
+            if G_UNLIKELY (g_date_time_to_unix (dt) != unix_time)
+              g_error ("%04d-%02d-%02d 00:00:00 UTC should have unix time %"
+                       G_GINT64_FORMAT " but comes out as %"G_GINT64_FORMAT,
+                       year, month, day, unix_time, g_date_time_to_unix (dt));
+
+            if G_UNLIKELY (g_date_time_get_day_of_year (dt) != day_of_year)
+              g_error ("%04d-%02d-%02d should be day of year %d"
+                       " but comes out as %d", year, month, day,
+                       day_of_year, g_date_time_get_day_of_year (dt));
+
+            if G_UNLIKELY (g_date_time_get_hour (dt) != 0 ||
+                           g_date_time_get_minute (dt) != 0 ||
+                           g_date_time_get_seconds (dt) != 0)
+              g_error ("%04d-%02d-%02d 00:00:00 UTC comes out "
+                       "as %02d:%02d:%02.6f", year, month, day,
+                       g_date_time_get_hour (dt),
+                       g_date_time_get_minute (dt),
+                       g_date_time_get_seconds (dt));
+            /* done */
+
+            /* add 24 hours to unix time */
+            unix_time += 24 * 60 * 60;
+
+            /* move day of year forward */
+            day_of_year++;
+
+            /* move the week date forward */
+            if (++weekday == 8)
+              {
+                weekday = 1; /* Sunday -> Monday */
+
+                /* NOTE: year/month/day is the final day of the week we
+                 * just finished.
+                 *
+                 * If we just finished the last week of last year then
+                 * we are definitely starting the first week of this
+                 * year.
+                 *
+                 * Otherwise, if we're still in this year, but Sunday
+                 * fell on or after December 28 then December 29, 30, 31
+                 * could be days within the next year's first year.
+                 */
+                if (year != week_year || (month == 12 && day >= 28))
+                  {
+                    /* first week of the new year */
+                    week_num = 1;
+                    week_year++;
+                  }
+                else
+                  week_num++;
+              }
+          }
+    }
+
+  g_time_zone_unref (timezone);
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -920,7 +1018,6 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/get_day_of_week", test_GDateTime_get_day_of_week);
   g_test_add_func ("/GDateTime/get_day_of_month", test_GDateTime_get_day_of_month);
   g_test_add_func ("/GDateTime/get_day_of_year", test_GDateTime_get_day_of_year);
-  g_test_add_func ("/GDateTime/get_ymd", test_GDateTime_get_ymd);
   g_test_add_func ("/GDateTime/get_hour", test_GDateTime_get_hour);
   g_test_add_func ("/GDateTime/get_microsecond", test_GDateTime_get_microsecond);
   g_test_add_func ("/GDateTime/get_minute", test_GDateTime_get_minute);
@@ -940,6 +1037,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/to_utc", test_GDateTime_to_utc);
   g_test_add_func ("/GDateTime/now_utc", test_GDateTime_now_utc);
   g_test_add_func ("/GDateTime/dst", test_GDateTime_dst);
+  g_test_add_func ("/GDateTime/test-all-dates", test_all_dates);
 
   return g_test_run ();
 }
