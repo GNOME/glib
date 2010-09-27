@@ -135,9 +135,10 @@ enum_state_end (EnumState **state_ptr,
   *state_ptr = NULL;
 
   if (state->strinfo->len == 0)
-    g_set_error_literal (error,
-                         G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                         "<enum> must contain at least one <value>");
+    g_set_error (error,
+                 G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                 "<%s> must contain at least one <value>",
+                 state->is_flags ? "flags" : "enum");
 }
 
 /* Handling of <key> {{{1 */
