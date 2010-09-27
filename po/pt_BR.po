@@ -8,16 +8,16 @@
 # Og Maciel <ogmaciel@gnome.org>, 2008-2009.
 # Henrique P Machado <zehrique@gmail.com>, 2008-2009.
 # Fábio Nogueira <fnogueira@gnome.org>, 2009.
-# Jonh Wendell <jwendell@gnome.org>, 2009, 2010.
 # Fabrício Godoy <skarllot@gmail.com>, 2010.
+# Jonh Wendell <jwendell@gnome.org>, 2009, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-27 08:49-0300\n"
-"PO-Revision-Date: 2010-09-26 18:32-0300\n"
-"Last-Translator: Fabrício Godoy <skarllot@gmail.com>\n"
+"POT-Creation-Date: 2010-09-27 13:56-0300\n"
+"PO-Revision-Date: 2010-09-27 13:55-0300\n"
+"Last-Translator: Jonh Wendell <jwendell@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2476,16 +2476,16 @@ msgstr "Sem espaço suficiente para o endereço do soquete"
 msgid "Unsupported socket address"
 msgstr "Endereço de soquete não suportado"
 
-#: ../gio/glib-compile-schemas.c:702
+#: ../gio/glib-compile-schemas.c:703
 msgid "empty names are not permitted"
 msgstr "não é permitido nomes vazios"
 
-#: ../gio/glib-compile-schemas.c:712
+#: ../gio/glib-compile-schemas.c:713
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "nome \"%s\" inválido: nomes precisam começar com uma letra minúscula"
 
-#: ../gio/glib-compile-schemas.c:724
+#: ../gio/glib-compile-schemas.c:725
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
@@ -2494,38 +2494,38 @@ msgstr ""
 "nome \"%s\" inválido: caractere \"%c\" inválido, apenas é permitido letras "
 "minúsculas, números e traços (\"-\")."
 
-#: ../gio/glib-compile-schemas.c:733
+#: ../gio/glib-compile-schemas.c:734
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr ""
 "nome \"%s\" inválido: dois traços (\"--\") consecutivos não são permitidos."
 
-#: ../gio/glib-compile-schemas.c:742
+#: ../gio/glib-compile-schemas.c:743
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr ""
 "nome \"%s\" inválido: o último caractere não pode ser um traço (\"-\")."
 
-#: ../gio/glib-compile-schemas.c:750
+#: ../gio/glib-compile-schemas.c:751
 #, c-format
 msgid "invalid name '%s': maximum length is 32"
 msgstr "nome \"%s\" inválido: o tamanho máximo é 32"
 
-#: ../gio/glib-compile-schemas.c:819
+#: ../gio/glib-compile-schemas.c:820
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> já especificado"
 
-#: ../gio/glib-compile-schemas.c:845
+#: ../gio/glib-compile-schemas.c:846
 msgid "can not add keys to a 'list-of' schema"
 msgstr "não é possível adicionar chaves ao esquema \"list-of\""
 
-#: ../gio/glib-compile-schemas.c:856
+#: ../gio/glib-compile-schemas.c:857
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> já especificado"
 
-#: ../gio/glib-compile-schemas.c:874
+#: ../gio/glib-compile-schemas.c:875
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2534,7 +2534,7 @@ msgstr ""
 "<key name='%s'> shadows <key name='%s'> em <schema id='%s'>; use <override> "
 "para modificar o valor"
 
-#: ../gio/glib-compile-schemas.c:885
+#: ../gio/glib-compile-schemas.c:886
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
@@ -2543,63 +2543,63 @@ msgstr ""
 "apenas um entre \"type\", \"enum\" ou \"flags\" deve ser especificado como "
 "atributo para <key>"
 
-#: ../gio/glib-compile-schemas.c:904
+#: ../gio/glib-compile-schemas.c:905
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> não está (ainda) definido."
 
-#: ../gio/glib-compile-schemas.c:919
+#: ../gio/glib-compile-schemas.c:920
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "tipo de texto GVariant \"%s\" é inválido"
 
-#: ../gio/glib-compile-schemas.c:949
+#: ../gio/glib-compile-schemas.c:950
 msgid "<override> given but schema isn't extending anything"
-msgstr "<override> determinado, mas o esquema não está extendendo nada"
+msgstr "<override> fornecido, mas o esquema não está estendendo nada"
 
-#: ../gio/glib-compile-schemas.c:962
+#: ../gio/glib-compile-schemas.c:963
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "nenhum <key name='%s'> para sobrescrever"
 
-#: ../gio/glib-compile-schemas.c:970
+#: ../gio/glib-compile-schemas.c:971
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> já especificado"
 
-#: ../gio/glib-compile-schemas.c:1036
+#: ../gio/glib-compile-schemas.c:1042
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> já especificado"
 
-#: ../gio/glib-compile-schemas.c:1048
+#: ../gio/glib-compile-schemas.c:1054
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> extende um esquema ainda não existente \"%s\""
 
-#: ../gio/glib-compile-schemas.c:1064
+#: ../gio/glib-compile-schemas.c:1070
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> é uma lista de esquema ainda não existente \"%s\""
 
-#: ../gio/glib-compile-schemas.c:1072
+#: ../gio/glib-compile-schemas.c:1078
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "Não pode ser uma lista de um esquema com um caminho"
 
-#: ../gio/glib-compile-schemas.c:1082
+#: ../gio/glib-compile-schemas.c:1088
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "Não é possível extender um esquema com um caminho"
 
-#: ../gio/glib-compile-schemas.c:1092
+#: ../gio/glib-compile-schemas.c:1098
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "<schema id='%s'> é uma lista, extendendo <schema id='%s'> que não é uma lista"
 
-#: ../gio/glib-compile-schemas.c:1102
+#: ../gio/glib-compile-schemas.c:1108
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
@@ -2608,49 +2608,87 @@ msgstr ""
 "<schema id='%s' list-of='%s'> extende <schema id='%s' list-of='%s'>, mas \"%s"
 "\" não extende \"%s\""
 
-#: ../gio/glib-compile-schemas.c:1119
+#: ../gio/glib-compile-schemas.c:1125
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr "um caminho, se determinado, precisa começar e terminar com uma barra"
 
-#: ../gio/glib-compile-schemas.c:1126
+#: ../gio/glib-compile-schemas.c:1132
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "o caminho de uma lista precisa terminar com \":/\""
 
-#: ../gio/glib-compile-schemas.c:1148
+#: ../gio/glib-compile-schemas.c:1158
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> já especificado"
 
-#: ../gio/glib-compile-schemas.c:1362
+#: ../gio/glib-compile-schemas.c:1375
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "O elemento <%s> não é permitido dentro de <%s>"
 
-#: ../gio/glib-compile-schemas.c:1366
+#: ../gio/glib-compile-schemas.c:1379
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "O elemento <%s> não é permitido no nível mais alto"
 
-#: ../gio/glib-compile-schemas.c:1460
+#: ../gio/glib-compile-schemas.c:1473
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "texto não pode aparecer dentro de <%s>"
 
-#: ../gio/glib-compile-schemas.c:1674
+#. Translators: Do not translate "--strict".
+#: ../gio/glib-compile-schemas.c:1641 ../gio/glib-compile-schemas.c:1712
+#: ../gio/glib-compile-schemas.c:1788
 #, c-format
-msgid "No such schema `%s' specified in override file `%s'"
-msgstr "Nenhum esquema \"%s\" especificado no arquivo de sobrescrita \"%s\""
+msgid "--strict was specified; exiting.\n"
+msgstr "--strict foi fornecido; saindo.\n"
 
-#: ../gio/glib-compile-schemas.c:1698
+#: ../gio/glib-compile-schemas.c:1649
+#, c-format
+msgid "This entire file has been ignored.\n"
+msgstr "Este arquivo foi ignorado por completo.\n"
+
+#: ../gio/glib-compile-schemas.c:1708
+#, c-format
+msgid "Ignoring this file.\n"
+msgstr "Ignorando este arquivo.\n"
+
+#: ../gio/glib-compile-schemas.c:1748
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
 "Nenhuma chave \"%s\" no esquema \"%s\" como especificado no arquivo de "
 "sobrescrita \"%s\""
 
-#: ../gio/glib-compile-schemas.c:1731
+#: ../gio/glib-compile-schemas.c:1754 ../gio/glib-compile-schemas.c:1812
+#: ../gio/glib-compile-schemas.c:1840
+#, c-format
+msgid "; ignoring override for this key.\n"
+msgstr "; ignorando sobrescrita para esta chave.\n"
+
+#: ../gio/glib-compile-schemas.c:1758 ../gio/glib-compile-schemas.c:1816
+#: ../gio/glib-compile-schemas.c:1844
+#, c-format
+msgid " and --strict was specified; exiting.\n"
+msgstr " e --strict foi fornecido. saindo.\n"
+
+#: ../gio/glib-compile-schemas.c:1774
+#, c-format
+msgid ""
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
+msgstr ""
+"Erro analisando a chave \"%s\" no esquema \"%s\" como especificado no "
+"arquivo de sobrescrita \"%s\": %s  "
+
+#: ../gio/glib-compile-schemas.c:1784
+#, c-format
+msgid "Ignoring override for this key.\n"
+msgstr "Ignorando a sobrescrita para esta chave.\n"
+
+#: ../gio/glib-compile-schemas.c:1802
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -2659,7 +2697,7 @@ msgstr ""
 "sobrescrita para chave \"%s\" no esquema \"%s\" no arquivo de sobrescrita \"%"
 "s\" está fora dos limites dado pelo esquema"
 
-#: ../gio/glib-compile-schemas.c:1752
+#: ../gio/glib-compile-schemas.c:1830
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -2668,27 +2706,31 @@ msgstr ""
 "sobrescrita para a chave \"%s\" no esquema \"%s\" no arquivo de sobrescrita "
 "\"%s\" não está na lista de escolhas válidas"
 
-#: ../gio/glib-compile-schemas.c:1797
+#: ../gio/glib-compile-schemas.c:1884
 msgid "where to store the gschemas.compiled file"
 msgstr "onde armazenar o arquivo gschemas compilado"
 
-#: ../gio/glib-compile-schemas.c:1797 ../gio/glib-compile-schemas.c:1809
+#: ../gio/glib-compile-schemas.c:1884 ../gio/glib-compile-schemas.c:1897
 msgid "DIRECTORY"
 msgstr "DIRETÓRIO"
 
-#: ../gio/glib-compile-schemas.c:1798
-msgid "Do not write the gschema.compiled file"
-msgstr "Não gravar o arquivo gschema compilado"
+#: ../gio/glib-compile-schemas.c:1885
+msgid "Abort on any errors in schemas"
+msgstr "Aborta se encontrar algum erro nos schemas"
 
-#: ../gio/glib-compile-schemas.c:1799
+#: ../gio/glib-compile-schemas.c:1886
+msgid "Do not write the gschema.compiled file"
+msgstr "Não grava o arquivo gschema.compiled"
+
+#: ../gio/glib-compile-schemas.c:1887
 msgid "This option will be removed soon."
 msgstr "Esta opção será removida logo."
 
-#: ../gio/glib-compile-schemas.c:1800
+#: ../gio/glib-compile-schemas.c:1888
 msgid "Do not enforce key name restrictions"
-msgstr "Não forçar restrições de nome de chave"
+msgstr "Não força restrições de nome de chave"
 
-#: ../gio/glib-compile-schemas.c:1812
+#: ../gio/glib-compile-schemas.c:1900
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2698,22 +2740,22 @@ msgstr ""
 "É necessário que os arquivos schema tenham a extensão\n"
 ".gschema.xml, e o arquivo de cache é chamado gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1828
+#: ../gio/glib-compile-schemas.c:1916
 #, c-format
 msgid "You should give exactly one directory name\n"
-msgstr "Voce deveria dar exatamente um nome de diretório\n"
+msgstr "Você deve fornecer exatamente um nome de diretório\n"
 
-#: ../gio/glib-compile-schemas.c:1867
+#: ../gio/glib-compile-schemas.c:1955
 #, c-format
 msgid "No schema files found: "
 msgstr "Nenhum arquivo schema localizado: "
 
-#: ../gio/glib-compile-schemas.c:1870
+#: ../gio/glib-compile-schemas.c:1958
 #, c-format
 msgid "doing nothing.\n"
 msgstr "fazendo nada.\n"
 
-#: ../gio/glib-compile-schemas.c:1873
+#: ../gio/glib-compile-schemas.c:1961
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "arquivo de saída existente removido.\n"
@@ -3596,3 +3638,6 @@ msgstr "Precisa de mais entrada"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Dados comprimidos inválidos"
+
+#~ msgid "No such schema `%s' specified in override file `%s'"
+#~ msgstr "Nenhum esquema \"%s\" especificado no arquivo de sobrescrita \"%s\""
