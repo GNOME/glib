@@ -18,6 +18,7 @@ filter-streams
 gdbus-addresses
 gdbus-bz627724
 gdbus-connection
+gdbus-connection-slow
 gdbus-connection-flush-helper
 gdbus-error
 gdbus-example-export
