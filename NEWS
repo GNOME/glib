@@ -1,3 +1,51 @@
+Overview of Changes from GLib 2.25.17 to GLib 2.26.0
+====================================================
+
+GSettings:
+ - allow override files to have entries for non-existent schemas
+ - schema compiler no longer aborts due to an error in a single .xml
+   file
+
+GDBus:
+ - fix some race conditions in the connection test cases
+
+GDateTime:
+ - hide some implementation details (time zones)
+ - fix parameter naming in header file to match .c file
+ - add G_GNUC_WARN_UNUSED_RESULT for modifier functions
+ - add full ISO 8601 week date support and improve docs
+
+Other:
+ - g_quark_try_string(NULL) now returns 0 without error
+ - clean up confusing code in GSocketControlMessage
+ - fix SOCKS5 memory leak
+ - improve some docs
+
+Bugs closed:
+ 628937 gracefully handle broken schemas
+ 629687 leaks class refcount in gsocketcontrolmessage
+ 630000 g_date_time_difference
+ 630077 GDateTime week number support
+ 630185 Allow NULL strings in g_quark_try_string() 
+
+Translations updated:
+ Basque
+ Brazilian Portuguese
+ Bulgarian
+ Czech
+ Danish
+ Dutch
+ Estonian
+ French
+ Greek
+ Hebrew
+ Japanese
+ Korean
+ Romanian
+ Russian
+ Spanish
+ Traditional Chinese
+
 Overview of Changes from GLib 2.25.16 to GLib 2.25.17
 =====================================================
 
