@@ -184,6 +184,7 @@ gint                    g_date_time_get_year                            (GDateTi
 gint                    g_date_time_get_month                           (GDateTime      *datetime);
 gint                    g_date_time_get_day_of_month                    (GDateTime      *datetime);
 
+gint                    g_date_time_get_week_numbering_year             (GDateTime      *datetime);
 gint                    g_date_time_get_week_of_year                    (GDateTime      *datetime);
 gint                    g_date_time_get_day_of_week                     (GDateTime      *datetime);
 

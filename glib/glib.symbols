@@ -349,6 +349,7 @@ g_date_time_get_second
 g_date_time_get_seconds
 g_date_time_get_timezone_abbreviation
 g_date_time_get_utc_offset
+g_date_time_get_week_numbering_year
 g_date_time_get_week_of_year
 g_date_time_get_year
 g_date_time_get_ymd
