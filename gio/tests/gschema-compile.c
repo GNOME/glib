@@ -22,6 +22,7 @@ test_schema (gpointer data)
       gchar *path = g_build_filename (SRCDIR, "schema-tests", filename, NULL);
       gchar *argv[] = {
         "../glib-compile-schemas",
+        "--strict",
         "--dry-run",
         "--schema-file", path,
         (gchar *)test->opt,
