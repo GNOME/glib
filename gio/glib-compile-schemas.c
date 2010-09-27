@@ -1685,9 +1685,10 @@ compare_strings (gconstpointer a,
 static gboolean
 set_overrides (GHashTable  *schema_table,
                gchar      **files,
-               GError     **error)
+               gboolean     strict)
 {
   const gchar *filename;
+  GError *error = NULL;
 
   while ((filename = *files++))
     {
@@ -1696,10 +1697,19 @@ set_overrides (GHashTable  *schema_table,
       gint i;
 
       key_file = g_key_file_new ();
-      if (!g_key_file_load_from_file (key_file, filename, 0, error))
+      if (!g_key_file_load_from_file (key_file, filename, 0, &error))
         {
+          fprintf (stderr, "%s: %s.  ", filename, error->message);
           g_key_file_free (key_file);
+          g_clear_error (&error);
 
+          if (!strict)
+            {
+              fprintf (stderr, _("Ignoring this file.\n"));
+              continue;
+            }
+
+          fprintf (stderr, _("--strict was specified; exiting.\n"));
           return FALSE;
         }
 
@@ -1715,16 +1725,11 @@ set_overrides (GHashTable  *schema_table,
           schema = g_hash_table_lookup (schema_table, group);
 
           if (schema == NULL)
-            {
-              g_set_error (error, G_KEY_FILE_ERROR,
-                           G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                           _("No such schema `%s' specified in "
-                             "override file `%s'"), group, filename);
-              g_key_file_free (key_file);
-              g_strfreev (groups);
-
-              return FALSE;
-            }
+            /* Having the schema not be installed is expected to be a
+             * common case.  Don't even emit an error message about
+             * that.
+             */
+            continue;
 
           keys = g_key_file_get_keys (key_file, group, NULL, NULL);
           g_assert (keys != NULL);
@@ -1740,11 +1745,17 @@ set_overrides (GHashTable  *schema_table,
 
               if (state == NULL)
                 {
-                  g_set_error (error, G_KEY_FILE_ERROR,
-                               G_KEY_FILE_ERROR_KEY_NOT_FOUND,
-                               _("No such key `%s' in schema `%s' as "
-                                 "specified in override file `%s'"),
-                               key, group, filename);
+                  fprintf (stderr, _("No such key `%s' in schema `%s' as "
+                                     "specified in override file `%s'"),
+                           key, group, filename);
+
+                  if (!strict)
+                    {
+                      fprintf (stderr, _("; ignoring override for this key.\n"));
+                      continue;
+                    }
+
+                  fprintf (stderr, _(" and --strict was specified; exiting.\n"));
                   g_key_file_free (key_file);
                   g_strfreev (groups);
                   g_strfreev (keys);
@@ -1756,14 +1767,28 @@ set_overrides (GHashTable  *schema_table,
               g_assert (string != NULL);
 
               value = g_variant_parse (state->type, string,
-                                       NULL, NULL, error);
+                                       NULL, NULL, &error);
 
               if (value == NULL)
                 {
+                  fprintf (stderr, _("error parsing key `%s' in schema `%s' "
+                                     "as specified in override file `%s': "
+                                     "%s.  "),
+                           key, group, filename, error->message);
+
+                  g_clear_error (&error);
+                  g_free (string);
+
+                  if (!strict)
+                    {
+                      fprintf (stderr, _("Ignoring override for this key.\n"));
+                      continue;
+                    }
+
+                  fprintf (stderr, _("--strict was specified; exiting.\n"));
                   g_key_file_free (key_file);
                   g_strfreev (groups);
                   g_strfreev (keys);
-                  g_free (string);
 
                   return FALSE;
                 }
@@ -1773,18 +1798,25 @@ set_overrides (GHashTable  *schema_table,
                   if (g_variant_compare (value, state->minimum) < 0 ||
                       g_variant_compare (value, state->maximum) > 0)
                     {
-                      g_set_error (error, G_MARKUP_ERROR,
-                                   G_MARKUP_ERROR_INVALID_CONTENT,
-                                   _("override for key `%s' in schema `%s' in "
-                                     "override file `%s' is out of the range "
-                                     "given in the schema"),
-                                   key, group, filename);
+                      fprintf (stderr,
+                               _("override for key `%s' in schema `%s' in "
+                                 "override file `%s' is out of the range "
+                                 "given in the schema"),
+                               key, group, filename);
 
-                      g_key_file_free (key_file);
                       g_variant_unref (value);
+                      g_free (string);
+
+                      if (!strict)
+                        {
+                          fprintf (stderr, _("; ignoring override for this key.\n"));
+                          continue;
+                        }
+
+                      fprintf (stderr, _(" and --strict was specified; exiting.\n"));
+                      g_key_file_free (key_file);
                       g_strfreev (groups);
                       g_strfreev (keys);
-                      g_free (string);
 
                       return FALSE;
                     }
@@ -1794,18 +1826,25 @@ set_overrides (GHashTable  *schema_table,
                 {
                   if (!is_valid_choices (value, state->strinfo))
                     {
-                      g_set_error (error, G_MARKUP_ERROR,
-                                   G_MARKUP_ERROR_INVALID_CONTENT,
-                                   _("override for key `%s' in schema `%s' in "
-                                     "override file `%s' is not in the list "
-                                     "of valid choices"),
-                                   key, group, filename);
+                      fprintf (stderr,
+                               _("override for key `%s' in schema `%s' in "
+                                 "override file `%s' is not in the list "
+                                 "of valid choices"),
+                               key, group, filename);
 
-                      g_key_file_free (key_file);
                       g_variant_unref (value);
+                      g_free (string);
+
+                      if (!strict)
+                        {
+                          fprintf (stderr, _("; ignoring override for this key.\n"));
+                          continue;
+                        }
+
+                      fprintf (stderr, _(" and --strict was specified; exiting.\n"));
+                      g_key_file_free (key_file);
                       g_strfreev (groups);
                       g_strfreev (keys);
-                      g_free (string);
 
                       return FALSE;
                     }
@@ -1813,8 +1852,8 @@ set_overrides (GHashTable  *schema_table,
 
               g_variant_unref (state->default_value);
               state->default_value = value;
+              g_free (string);
             }
-
 
           g_strfreev (keys);
         }
@@ -1939,8 +1978,14 @@ main (int argc, char **argv)
       return 1;
     }
 
-  if ((override_files != NULL && !set_overrides (table, override_files, &error)) ||
-      (!dry_run && !write_to_file (table, target, &error)))
+  if (override_files != NULL &&
+      !set_overrides (table, override_files, strict))
+    {
+      g_free (target);
+      return 1;
+    }
+
+  if (!dry_run && !write_to_file (table, target, &error))
     {
       fprintf (stderr, "%s\n", error->message);
       g_free (target);
