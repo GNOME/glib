@@ -2785,11 +2785,12 @@ if test "x$enable_dtrace" != xno; then
       if test "x$enable_dtrace" = xyes; then
         AC_MSG_ERROR([dtrace not found])
       fi
+    else
+      AC_CHECK_HEADER([sys/sdt.h],have_dtrace=yes,
+                      [if test "x$enable_dtrace" = xyes; then
+                        AC_MSG_ERROR([dtrace support needs sys/sdt.h header])
+                       fi])
     fi
-    AC_CHECK_HEADER([sys/sdt.h],have_dtrace=yes,
-                    [if test "x$enable_dtrace" = xyes; then
-                      AC_MSG_ERROR([dtrace support needs sys/sdt.h header])
-                     fi])
   fi
 else
   AC_MSG_RESULT([no])
