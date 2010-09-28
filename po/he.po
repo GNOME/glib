@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-20 15:25+0200\n"
-"PO-Revision-Date: 2010-09-20 15:25+0200\n"
+"POT-Creation-Date: 2010-09-29 00:30+0200\n"
+"PO-Revision-Date: 2010-09-29 00:31+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "MIME-Version: 1.0\n"
@@ -389,7 +389,7 @@ msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "א׳"
 
-#: ../glib/gdir.c:114 ../glib/gdir.c:137
+#: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Error opening directory '%s': %s"
@@ -1380,8 +1380,8 @@ msgstr "Too large count value passed to %s"
 msgid "Stream is already closed"
 msgstr "Stream is already closed"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1552
-#: ../gio/gdbusconnection.c:1641 ../gio/gdbusconnection.c:1823
+#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1633
+#: ../gio/gdbusconnection.c:1722 ../gio/gdbusconnection.c:1904
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:755
 #: ../gio/gsimpleasyncresult.c:781
 msgid "Operation was cancelled"
@@ -1562,7 +1562,7 @@ msgstr "Command line `%s' exited with non-zero exit status %d: %s"
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Cannot determine session bus address (not implemented for this OS)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6016
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6142
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1571,7 +1571,7 @@ msgstr ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6025
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6151
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1679,88 +1679,88 @@ msgstr "Error opening keyring `%s' for writing: "
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Additionally, releasing the lock for `%s' also failed: %s) "
 
-#: ../gio/gdbusconnection.c:1061 ../gio/gdbusconnection.c:1290
-#: ../gio/gdbusconnection.c:1329 ../gio/gdbusconnection.c:1652
+#: ../gio/gdbusconnection.c:1142 ../gio/gdbusconnection.c:1371
+#: ../gio/gdbusconnection.c:1410 ../gio/gdbusconnection.c:1733
 msgid "The connection is closed"
 msgstr "The connection is closed"
 
-#: ../gio/gdbusconnection.c:1596
+#: ../gio/gdbusconnection.c:1677
 msgid "Timeout was reached"
 msgstr "Timeout was reached"
 
-#: ../gio/gdbusconnection.c:2173
+#: ../gio/gdbusconnection.c:2291
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Unsupported flags encountered when constructing a client-side connection"
 
-#: ../gio/gdbusconnection.c:3599 ../gio/gdbusconnection.c:3917
+#: ../gio/gdbusconnection.c:3725 ../gio/gdbusconnection.c:4043
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 
-#: ../gio/gdbusconnection.c:3671
+#: ../gio/gdbusconnection.c:3797
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "Error setting property `%s': Expected type `%s' but got `%s'"
 
-#: ../gio/gdbusconnection.c:3766
+#: ../gio/gdbusconnection.c:3892
 #, c-format
 msgid "No such property `%s'"
 msgstr "No such property `%s'"
 
-#: ../gio/gdbusconnection.c:3778
+#: ../gio/gdbusconnection.c:3904
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Property `%s' is not readable"
 
-#: ../gio/gdbusconnection.c:3789
+#: ../gio/gdbusconnection.c:3915
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Property `%s' is not writable"
 
-#: ../gio/gdbusconnection.c:3859 ../gio/gdbusconnection.c:5450
+#: ../gio/gdbusconnection.c:3985 ../gio/gdbusconnection.c:5576
 #, c-format
 msgid "No such interface `%s'"
 msgstr "No such interface `%s'"
 
-#: ../gio/gdbusconnection.c:4047
+#: ../gio/gdbusconnection.c:4173
 msgid "No such interface"
 msgstr "No such interface"
 
-#: ../gio/gdbusconnection.c:4263 ../gio/gdbusconnection.c:5966
+#: ../gio/gdbusconnection.c:4389 ../gio/gdbusconnection.c:6092
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No such interface `%s' on object at path %s"
 
-#: ../gio/gdbusconnection.c:4315
+#: ../gio/gdbusconnection.c:4441
 #, c-format
 msgid "No such method `%s'"
 msgstr "No such method `%s'"
 
-#: ../gio/gdbusconnection.c:4346
+#: ../gio/gdbusconnection.c:4472
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Type of message, `%s', does not match expected type `%s'"
 
-#: ../gio/gdbusconnection.c:4565
+#: ../gio/gdbusconnection.c:4691
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "An object is already exported for the interface %s at %s"
 
-#: ../gio/gdbusconnection.c:4759
+#: ../gio/gdbusconnection.c:4885
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Method `%s' returned type `%s', but expected `%s'"
 
-#: ../gio/gdbusconnection.c:5561
+#: ../gio/gdbusconnection.c:5687
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Method `%s' on interface `%s' with signature `%s' does not exist"
 
-#: ../gio/gdbusconnection.c:5679
+#: ../gio/gdbusconnection.c:5805
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "A subtree is already exported for %s"
@@ -1937,7 +1937,7 @@ msgstr "Type of return value is incorrect, got `%s', expected `%s'"
 msgid "Error sending message: %s"
 msgstr "Error sending message: %s"
 
-#: ../gio/gdbusprivate.c:1766
+#: ../gio/gdbusprivate.c:1758
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Unable to load /var/lib/dbus/machine-id: "
 
@@ -2409,16 +2409,16 @@ msgstr "Not enough space for socket address"
 msgid "Unsupported socket address"
 msgstr "Unsupported socket address"
 
-#: ../gio/glib-compile-schemas.c:702
+#: ../gio/glib-compile-schemas.c:703
 msgid "empty names are not permitted"
 msgstr "empty names are not permitted"
 
-#: ../gio/glib-compile-schemas.c:712
+#: ../gio/glib-compile-schemas.c:713
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "invalid name '%s': names must begin with a lowercase letter"
 
-#: ../gio/glib-compile-schemas.c:724
+#: ../gio/glib-compile-schemas.c:725
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
@@ -2427,36 +2427,36 @@ msgstr ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and dash ('-') are permitted."
 
-#: ../gio/glib-compile-schemas.c:733
+#: ../gio/glib-compile-schemas.c:734
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr "invalid name '%s': two successive dashes ('--') are not permitted."
 
-#: ../gio/glib-compile-schemas.c:742
+#: ../gio/glib-compile-schemas.c:743
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "invalid name '%s': the last character may not be a dash ('-')."
 
-#: ../gio/glib-compile-schemas.c:750
+#: ../gio/glib-compile-schemas.c:751
 #, c-format
 msgid "invalid name '%s': maximum length is 32"
 msgstr "invalid name '%s': maximum length is 32"
 
-#: ../gio/glib-compile-schemas.c:819
+#: ../gio/glib-compile-schemas.c:820
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> already specified"
 
-#: ../gio/glib-compile-schemas.c:845
+#: ../gio/glib-compile-schemas.c:846
 msgid "can not add keys to a 'list-of' schema"
 msgstr "can not add keys to a 'list-of' schema"
 
-#: ../gio/glib-compile-schemas.c:856
+#: ../gio/glib-compile-schemas.c:857
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> already specified"
 
-#: ../gio/glib-compile-schemas.c:874
+#: ../gio/glib-compile-schemas.c:875
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2465,7 +2465,7 @@ msgstr ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 
-#: ../gio/glib-compile-schemas.c:885
+#: ../gio/glib-compile-schemas.c:886
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
@@ -2474,63 +2474,63 @@ msgstr ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 
-#: ../gio/glib-compile-schemas.c:904
+#: ../gio/glib-compile-schemas.c:905
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> not (yet) defined."
 
-#: ../gio/glib-compile-schemas.c:919
+#: ../gio/glib-compile-schemas.c:920
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "invalid GVariant type string '%s'"
 
-#: ../gio/glib-compile-schemas.c:949
+#: ../gio/glib-compile-schemas.c:950
 msgid "<override> given but schema isn't extending anything"
 msgstr "<override> given but schema isn't extending anything"
 
-#: ../gio/glib-compile-schemas.c:962
+#: ../gio/glib-compile-schemas.c:963
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "no <key name='%s'> to override"
 
-#: ../gio/glib-compile-schemas.c:970
+#: ../gio/glib-compile-schemas.c:971
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> already specified"
 
-#: ../gio/glib-compile-schemas.c:1036
+#: ../gio/glib-compile-schemas.c:1042
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> already specified"
 
-#: ../gio/glib-compile-schemas.c:1048
+#: ../gio/glib-compile-schemas.c:1054
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> extends not yet existing schema '%s'"
 
-#: ../gio/glib-compile-schemas.c:1064
+#: ../gio/glib-compile-schemas.c:1070
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> is list of not yet existing schema '%s'"
 
-#: ../gio/glib-compile-schemas.c:1072
+#: ../gio/glib-compile-schemas.c:1078
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "Can not be a list of a schema with a path"
 
-#: ../gio/glib-compile-schemas.c:1082
+#: ../gio/glib-compile-schemas.c:1088
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "Can not extend a schema with a path"
 
-#: ../gio/glib-compile-schemas.c:1092
+#: ../gio/glib-compile-schemas.c:1098
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 
-#: ../gio/glib-compile-schemas.c:1102
+#: ../gio/glib-compile-schemas.c:1108
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
@@ -2539,47 +2539,85 @@ msgstr ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 
-#: ../gio/glib-compile-schemas.c:1119
+#: ../gio/glib-compile-schemas.c:1125
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr "a path, if given, must begin and end with a slash"
 
-#: ../gio/glib-compile-schemas.c:1126
+#: ../gio/glib-compile-schemas.c:1132
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "the path of a list must end with ':/'"
 
-#: ../gio/glib-compile-schemas.c:1148
+#: ../gio/glib-compile-schemas.c:1158
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> already specified"
 
-#: ../gio/glib-compile-schemas.c:1362
+#: ../gio/glib-compile-schemas.c:1375
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Element <%s> not allowed inside <%s>"
 
-#: ../gio/glib-compile-schemas.c:1366
+#: ../gio/glib-compile-schemas.c:1379
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Element <%s> not allowed at toplevel"
 
-#: ../gio/glib-compile-schemas.c:1460
+#: ../gio/glib-compile-schemas.c:1473
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "text may not appear inside <%s>"
 
-#: ../gio/glib-compile-schemas.c:1674
+#. Translators: Do not translate "--strict".
+#: ../gio/glib-compile-schemas.c:1641 ../gio/glib-compile-schemas.c:1712
+#: ../gio/glib-compile-schemas.c:1788
 #, c-format
-msgid "No such schema `%s' specified in override file `%s'"
-msgstr "No such schema `%s' specified in override file `%s'"
+msgid "--strict was specified; exiting.\n"
+msgstr "--strict was specified; exiting.\n"
 
-#: ../gio/glib-compile-schemas.c:1698
+#: ../gio/glib-compile-schemas.c:1649
+#, c-format
+msgid "This entire file has been ignored.\n"
+msgstr "This entire file has been ignored.\n"
+
+#: ../gio/glib-compile-schemas.c:1708
+#, c-format
+msgid "Ignoring this file.\n"
+msgstr "Ignoring this file.\n"
+
+#: ../gio/glib-compile-schemas.c:1748
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr "No such key `%s' in schema `%s' as specified in override file `%s'"
 
-#: ../gio/glib-compile-schemas.c:1731
+#: ../gio/glib-compile-schemas.c:1754 ../gio/glib-compile-schemas.c:1812
+#: ../gio/glib-compile-schemas.c:1840
+#, c-format
+msgid "; ignoring override for this key.\n"
+msgstr "; ignoring override for this key.\n"
+
+#: ../gio/glib-compile-schemas.c:1758 ../gio/glib-compile-schemas.c:1816
+#: ../gio/glib-compile-schemas.c:1844
+#, c-format
+msgid " and --strict was specified; exiting.\n"
+msgstr " and --strict was specified; exiting.\n"
+
+#: ../gio/glib-compile-schemas.c:1774
+#, c-format
+msgid ""
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
+msgstr ""
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
+
+#: ../gio/glib-compile-schemas.c:1784
+#, c-format
+msgid "Ignoring override for this key.\n"
+msgstr "Ignoring override for this key.\n"
+
+#: ../gio/glib-compile-schemas.c:1802
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -2588,7 +2626,7 @@ msgstr ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 
-#: ../gio/glib-compile-schemas.c:1752
+#: ../gio/glib-compile-schemas.c:1830
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -2597,27 +2635,31 @@ msgstr ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 
-#: ../gio/glib-compile-schemas.c:1797
+#: ../gio/glib-compile-schemas.c:1884
 msgid "where to store the gschemas.compiled file"
 msgstr "where to store the gschemas.compiled file"
 
-#: ../gio/glib-compile-schemas.c:1797 ../gio/glib-compile-schemas.c:1809
+#: ../gio/glib-compile-schemas.c:1884 ../gio/glib-compile-schemas.c:1897
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
-#: ../gio/glib-compile-schemas.c:1798
+#: ../gio/glib-compile-schemas.c:1885
+msgid "Abort on any errors in schemas"
+msgstr "Abort on any errors in schemas"
+
+#: ../gio/glib-compile-schemas.c:1886
 msgid "Do not write the gschema.compiled file"
 msgstr "Do not write the gschema.compiled file"
 
-#: ../gio/glib-compile-schemas.c:1799
+#: ../gio/glib-compile-schemas.c:1887
 msgid "This option will be removed soon."
 msgstr "This option will be removed soon."
 
-#: ../gio/glib-compile-schemas.c:1800
+#: ../gio/glib-compile-schemas.c:1888
 msgid "Do not enforce key name restrictions"
 msgstr "Do not enforce key name restrictions"
 
-#: ../gio/glib-compile-schemas.c:1812
+#: ../gio/glib-compile-schemas.c:1900
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2627,22 +2669,22 @@ msgstr ""
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1828
+#: ../gio/glib-compile-schemas.c:1916
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "You should give exactly one directory name\n"
 
-#: ../gio/glib-compile-schemas.c:1867
+#: ../gio/glib-compile-schemas.c:1955
 #, c-format
 msgid "No schema files found: "
 msgstr "No schema files found: "
 
-#: ../gio/glib-compile-schemas.c:1870
+#: ../gio/glib-compile-schemas.c:1958
 #, c-format
 msgid "doing nothing.\n"
 msgstr "doing nothing.\n"
 
-#: ../gio/glib-compile-schemas.c:1873
+#: ../gio/glib-compile-schemas.c:1961
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "removed existing output file.\n"
@@ -3077,19 +3119,20 @@ msgstr ""
 "Use '%s COMMAND --help' to get help for individual commands.\n"
 
 #: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr "Specify the path for the schema"
 
 #: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr "PATH"
 
-#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:539
-#: ../gio/gsettings-tool.c:652
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr "SCHEMA KEY"
 
@@ -3097,8 +3140,8 @@ msgstr "SCHEMA KEY"
 msgid "Get the value of KEY"
 msgstr "Get the value of KEY"
 
-#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:543 ../gio/gsettings-tool.c:659
+#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:449
+#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -3108,15 +3151,16 @@ msgstr ""
 "  SCHEMA      The id of the schema\n"
 "  KEY         The name of the key\n"
 
-#: ../gio/gsettings-tool.c:328 ../gio/gsettings-tool.c:444
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:329 ../gio/gsettings-tool.c:445
 msgid "SCHEMA KEY VALUE"
 msgstr "SCHEMA KEY VALUE"
 
-#: ../gio/gsettings-tool.c:330
+#: ../gio/gsettings-tool.c:331
 msgid "Set the value of KEY"
 msgstr "Set the value of KEY"
 
-#: ../gio/gsettings-tool.c:332
+#: ../gio/gsettings-tool.c:333
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -3128,20 +3172,20 @@ msgstr ""
 "  KEY         The name of the key\n"
 "  VALUE       The value to set key to, as a serialized GVariant\n"
 
-#: ../gio/gsettings-tool.c:405
+#: ../gio/gsettings-tool.c:406
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "Key %s is not writable\n"
 
-#: ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:447
 msgid "Sets KEY to its default value"
 msgstr "Sets KEY to its default value"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
 msgstr "Find out whether KEY is writable"
 
-#: ../gio/gsettings-tool.c:655
+#: ../gio/gsettings-tool.c:657
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
@@ -3149,7 +3193,7 @@ msgstr ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
 
-#: ../gio/gsettings-tool.c:831
+#: ../gio/gsettings-tool.c:833
 #, c-format
 msgid "Unknown command '%s'\n"
 msgstr "Unknown command '%s'\n"
@@ -3515,6 +3559,9 @@ msgstr "Need more input"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Invalid hostname"
+
+#~ msgid "No such schema `%s' specified in override file `%s'"
+#~ msgstr "No such schema `%s' specified in override file `%s'"
 
 #~ msgid "Error writing first 16 bytes of message to socket: "
 #~ msgstr "Error writing first 16 bytes of message to socket: "
