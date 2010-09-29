@@ -1851,7 +1851,7 @@ g_settings_get_strv (GSettings   *settings,
  * g_settings_set_strv:
  * @settings: a #GSettings object
  * @key: the name of the key to set
- * @value: (allow-none): (array zero-terminated=1): the value to set it to, or %NULL
+ * @value: (allow-none) (array zero-terminated=1): the value to set it to, or %NULL
  * @returns: %TRUE if setting the key succeeded,
  *     %FALSE if the key was not writable
  *
