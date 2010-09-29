@@ -703,7 +703,7 @@ g_ascii_strtod (const gchar *nptr,
   struct lconv *locale_data;
 #endif
   const char *decimal_point;
-  int decimal_point_len;
+  gsize decimal_point_len;
   const char *p, *decimal_point_pos;
   const char *end = NULL; /* Silence gcc */
   int strtod_errno;
@@ -920,7 +920,7 @@ g_ascii_formatd (gchar       *buffer,
   struct lconv *locale_data;
 #endif
   const char *decimal_point;
-  int decimal_point_len;
+  gsize decimal_point_len;
   gchar *p;
   int rest_len;
   gchar format_char;
@@ -980,8 +980,8 @@ g_ascii_formatd (gchar       *buffer,
           p++;
           if (decimal_point_len > 1)
             {
-              rest_len = strlen (p + (decimal_point_len-1));
-              memmove (p, p + (decimal_point_len-1), rest_len);
+              rest_len = strlen (p + (decimal_point_len - 1));
+              memmove (p, p + (decimal_point_len - 1), rest_len);
               p[rest_len] = 0;
             }
         }
@@ -1522,9 +1522,9 @@ g_ascii_strdown (const gchar *str,
   g_return_val_if_fail (str != NULL, NULL);
 
   if (len < 0)
-    len = strlen (str);
+    len = (gssize) strlen (str);
 
-  result = g_strndup (str, len);
+  result = g_strndup (str, (gsize) len);
   for (s = result; *s; s++)
     *s = g_ascii_tolower (*s);
 
@@ -1552,9 +1552,9 @@ g_ascii_strup (const gchar *str,
   g_return_val_if_fail (str != NULL, NULL);
 
   if (len < 0)
-    len = strlen (str);
+    len = (gssize) strlen (str);
 
-  result = g_strndup (str, len);
+  result = g_strndup (str, (gsize) len);
   for (s = result; *s; s++)
     *s = g_ascii_toupper (*s);
 
@@ -2841,8 +2841,8 @@ gboolean
 g_str_has_suffix (const gchar *str,
                   const gchar *suffix)
 {
-  int str_len;
-  int suffix_len;
+  gsize str_len;
+  gsize suffix_len;
 
   g_return_val_if_fail (str != NULL, FALSE);
   g_return_val_if_fail (suffix != NULL, FALSE);
