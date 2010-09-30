@@ -53,7 +53,7 @@ libgirepository_1_0_la_SOURCES =		\
 	giunioninfo.c				\
 	givfuncinfo.c
 
-libgirepository_1_0_la_CPPFLAGS = $(GIREPO_CFLAGS)
+libgirepository_1_0_la_CPPFLAGS = $(GIREPO_CFLAGS) -DG_IREPOSITORY_COMPILATION
 libgirepository_1_0_la_LIBADD = $(GIREPO_LIBS)
 libgirepository_1_0_la_LDFLAGS = -no-undefined -version-number 1:0:0
 
@@ -69,3 +69,5 @@ libgirepository_parser_la_SOURCES =		\
 	girwriter.h
 libgirepository_parser_la_CFLAGS = $(GIREPO_CFLAGS)
 
+gdumpdir = $(datadir)/gobject-introspection-1.0/
+gdump_DATA = gdump.c

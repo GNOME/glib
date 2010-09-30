@@ -24,8 +24,15 @@
 #include <glib-object.h>
 #include <gio/gio.h>
 
-#include "girepository.h"
+/* This file is both compiled into libgirepository.so, and installed
+ * on the filesystem.  But for the dumper, we want to avoid linking
+ * to libgirepository; see
+ * https://bugzilla.gnome.org/show_bug.cgi?id=630342
+ */
+#ifdef G_IREPOSITORY_COMPILATION
 #include "config.h"
+#include "girepository.h"
+#endif
 
 #include <string.h>
 
