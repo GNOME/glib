@@ -206,39 +206,39 @@ g_time_zone_ref (GTimeZone *tz)
  *  - mm is 00 to 59
  */
 static gboolean
-parse_time (const gchar *time,
+parse_time (const gchar *time_,
             gint32      *offset)
 {
-  if (*time < '0' || '2' < *time)
+  if (*time_ < '0' || '2' < *time_)
     return FALSE;
 
-  *offset = 10 * 60 * 60 * (*time++ - '0');
+  *offset = 10 * 60 * 60 * (*time_++ - '0');
 
-  if (*time < '0' || '9' < *time)
+  if (*time_ < '0' || '9' < *time_)
     return FALSE;
 
-  *offset += 60 * 60 * (*time++ - '0');
+  *offset += 60 * 60 * (*time_++ - '0');
 
   if (*offset > 23 * 60 * 60)
     return FALSE;
 
-  if (*time == '\0')
+  if (*time_ == '\0')
     return TRUE;
 
-  if (*time == ':')
-    time++;
+  if (*time_ == ':')
+    time_++;
 
-  if (*time < '0' || '5' < *time)
+  if (*time_ < '0' || '5' < *time_)
     return FALSE;
 
-  *offset += 10 * 60 * (*time++ - '0');
+  *offset += 10 * 60 * (*time_++ - '0');
 
-  if (*time < '0' || '9' < *time)
+  if (*time_ < '0' || '9' < *time_)
     return FALSE;
 
-  *offset += 60 * (*time++ - '0');
+  *offset += 60 * (*time_++ - '0');
 
-  return *time == '\0';
+  return *time_ == '\0';
 }
 
 static gboolean
@@ -575,7 +575,7 @@ interval_valid (GTimeZone *tz,
 gint
 g_time_zone_adjust_time (GTimeZone *tz,
                          GTimeType  type,
-                         gint64    *time)
+                         gint64    *time_)
 {
   gint i;
 
@@ -585,47 +585,47 @@ g_time_zone_adjust_time (GTimeZone *tz,
   /* find the interval containing *time UTC
    * TODO: this could be binary searched (or better) */
   for (i = 0; i < tz->timecnt; i++)
-    if (*time <= interval_end (tz, i))
+    if (*time_ <= interval_end (tz, i))
       break;
 
-  g_assert (interval_start (tz, i) <= *time && *time <= interval_end (tz, i));
+  g_assert (interval_start (tz, i) <= *time_ && *time_ <= interval_end (tz, i));
 
   if (type != G_TIME_TYPE_UNIVERSAL)
     {
-      if (*time < interval_local_start (tz, i))
+      if (*time_ < interval_local_start (tz, i))
         /* if time came before the start of this interval... */
         {
           i--;
 
           /* if it's not in the previous interval... */
-          if (*time > interval_local_end (tz, i))
+          if (*time_ > interval_local_end (tz, i))
             {
               /* it doesn't exist.  fast-forward it. */
               i++;
-              *time = interval_local_start (tz, i);
+              *time_ = interval_local_start (tz, i);
             }
         }
 
-      else if (*time > interval_local_end (tz, i))
+      else if (*time_ > interval_local_end (tz, i))
         /* if time came after the end of this interval... */
         {
           i++;
 
           /* if it's not in the next interval... */
-          if (*time < interval_local_start (tz, i))
+          if (*time_ < interval_local_start (tz, i))
             /* it doesn't exist.  fast-forward it. */
-            *time = interval_local_start (tz, i);
+            *time_ = interval_local_start (tz, i);
         }
 
       else if (interval_isdst (tz, i) != type)
         /* it's in this interval, but dst flag doesn't match.
          * check neighbours for a better fit. */
         {
-          if (i && *time <= interval_local_end (tz, i - 1))
+          if (i && *time_ <= interval_local_end (tz, i - 1))
             i--;
 
           else if (i < tz->timecnt &&
-                   *time >= interval_local_start (tz, i + 1))
+                   *time_ >= interval_local_start (tz, i + 1))
             i++;
         }
     }
@@ -636,18 +636,18 @@ g_time_zone_adjust_time (GTimeZone *tz,
 /**
  * g_time_zone_find_interval:
  * @tz: a #GTimeZone
- * @type: the #GTimeType of @time
- * @time: a number of seconds since January 1, 1970
+ * @type: the #GTimeType of @time_
+ * @time_: a number of seconds since January 1, 1970
  *
- * Finds an the interval within @tz that corresponds to the given @time.
- * The meaning of @time depends on @type.
+ * Finds an the interval within @tz that corresponds to the given @time_.
+ * The meaning of @time_ depends on @type.
  *
  * If @type is %G_TIME_TYPE_UNIVERSAL then this function will always
  * succeed (since universal time is monotonic and continuous).
  *
- * Otherwise @time is treated is local time.  The distinction between
+ * Otherwise @time_ is treated is local time.  The distinction between
  * %G_TIME_TYPE_STANDARD and %G_TIME_TYPE_DAYLIGHT is ignored except in
- * the case that the given @time is ambiguous.  In Toronto, for example,
+ * the case that the given @time_ is ambiguous.  In Toronto, for example,
  * 01:30 on November 7th 2010 occured twice (once inside of daylight
  * savings time and the next, an hour later, outside of daylight savings
  * time).  In this case, the different value of @type would result in a
@@ -658,14 +658,14 @@ g_time_zone_adjust_time (GTimeZone *tz,
  * forward to begin daylight savings time).  -1 is returned in that
  * case.
  *
- * Returns: the interval containing @time, or -1 in case of failure
+ * Returns: the interval containing @time_, or -1 in case of failure
  *
  * Since: 2.26
  */
 gint
 g_time_zone_find_interval (GTimeZone *tz,
                            GTimeType  type,
-                           gint64     time)
+                           gint64     time_)
 {
   gint i;
 
@@ -673,30 +673,30 @@ g_time_zone_find_interval (GTimeZone *tz,
     return 0;
 
   for (i = 0; i < tz->timecnt; i++)
-    if (time <= interval_end (tz, i))
+    if (time_ <= interval_end (tz, i))
       break;
 
   if (type == G_TIME_TYPE_UNIVERSAL)
     return i;
 
-  if (time < interval_local_start (tz, i))
+  if (time_ < interval_local_start (tz, i))
     {
-      if (time > interval_local_end (tz, --i))
+      if (time_ > interval_local_end (tz, --i))
         return -1;
     }
 
-  else if (time > interval_local_end (tz, i))
+  else if (time_ > interval_local_end (tz, i))
     {
-      if (time < interval_local_start (tz, ++i))
+      if (time_ < interval_local_start (tz, ++i))
         return -1;
     }
 
   else if (interval_isdst (tz, i) != type)
     {
-      if (i && time <= interval_local_end (tz, i - 1))
+      if (i && time_ <= interval_local_end (tz, i - 1))
         i--;
 
-      else if (i < tz->timecnt && time >= interval_local_start (tz, i + 1))
+      else if (i < tz->timecnt && time_ >= interval_local_start (tz, i + 1))
         i++;
     }
 
