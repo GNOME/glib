@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-27 13:33+0300\n"
-"PO-Revision-Date: 2010-09-27 13:30+0300\n"
+"POT-Creation-Date: 2010-10-02 08:56+0300\n"
+"PO-Revision-Date: 2010-10-02 08:56+0300\n"
 "Last-Translator: Damyan Ivanov <dam+gnome@ktnx.net>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -1982,7 +1982,7 @@ msgstr ""
 msgid "Error sending message: %s"
 msgstr "Грешка при изпращане на съобщение: %s"
 
-#: ../gio/gdbusprivate.c:1758
+#: ../gio/gdbusprivate.c:1759
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Неуспех при зареждане на /var/lib/dbus/machine-id: "
 
@@ -2455,16 +2455,16 @@ msgstr "Няма достатъчно място за адреса на гнез
 msgid "Unsupported socket address"
 msgstr "Неподдържан адрес на гнездо"
 
-#: ../gio/glib-compile-schemas.c:702
+#: ../gio/glib-compile-schemas.c:703
 msgid "empty names are not permitted"
 msgstr "не се позволяват празни имена"
 
-#: ../gio/glib-compile-schemas.c:712
+#: ../gio/glib-compile-schemas.c:713
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "неправилно име „%s“: имената трябва да започват с малка буква"
 
-#: ../gio/glib-compile-schemas.c:724
+#: ../gio/glib-compile-schemas.c:725
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
@@ -2473,36 +2473,36 @@ msgstr ""
 "неправилно име „%s“: неправилен знак „%c“; позволени са само малки букви, "
 "цифри и тире („-“)."
 
-#: ../gio/glib-compile-schemas.c:733
+#: ../gio/glib-compile-schemas.c:734
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr "неправилно име „%s“: не са позволени две последователни тирета(„--“)."
 
-#: ../gio/glib-compile-schemas.c:742
+#: ../gio/glib-compile-schemas.c:743
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "неправилно име „%s“: последният знак не може да е тире („-“)."
 
-#: ../gio/glib-compile-schemas.c:750
+#: ../gio/glib-compile-schemas.c:751
 #, c-format
 msgid "invalid name '%s': maximum length is 32"
 msgstr "неправилно име „%s“: максималната дължина е 32"
 
-#: ../gio/glib-compile-schemas.c:819
+#: ../gio/glib-compile-schemas.c:820
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> вече е указано"
 
-#: ../gio/glib-compile-schemas.c:845
+#: ../gio/glib-compile-schemas.c:846
 msgid "can not add keys to a 'list-of' schema"
 msgstr "към схема „list-of“ не могат да се добавят ключове"
 
-#: ../gio/glib-compile-schemas.c:856
+#: ../gio/glib-compile-schemas.c:857
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> вече е указано"
 
-#: ../gio/glib-compile-schemas.c:874
+#: ../gio/glib-compile-schemas.c:875
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2511,7 +2511,7 @@ msgstr ""
 "<key name='%s'> покрива <key name='%s'> в <schema id='%s'>; използвайте "
 "<override>, за да промените стойността"
 
-#: ../gio/glib-compile-schemas.c:885
+#: ../gio/glib-compile-schemas.c:886
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
@@ -2520,63 +2520,63 @@ msgstr ""
 "като атрибут на <key> трябва да присъства точно едно от „type“, „enum“ или "
 "„flags“"
 
-#: ../gio/glib-compile-schemas.c:904
+#: ../gio/glib-compile-schemas.c:905
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> не е дефинирано (все още)."
 
-#: ../gio/glib-compile-schemas.c:919
+#: ../gio/glib-compile-schemas.c:920
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "неправилен низ за вид на GVariant: „%s“"
 
-#: ../gio/glib-compile-schemas.c:949
+#: ../gio/glib-compile-schemas.c:950
 msgid "<override> given but schema isn't extending anything"
 msgstr "използвано е <override>, но схемата не разширява нищо"
 
-#: ../gio/glib-compile-schemas.c:962
+#: ../gio/glib-compile-schemas.c:963
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "липсва <key name='%s'> за предефиниране"
 
-#: ../gio/glib-compile-schemas.c:970
+#: ../gio/glib-compile-schemas.c:971
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "вече е указано <override name='%s'>"
 
-#: ../gio/glib-compile-schemas.c:1036
+#: ../gio/glib-compile-schemas.c:1042
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "вече е указано <schema id='%s'>"
 
-#: ../gio/glib-compile-schemas.c:1048
+#: ../gio/glib-compile-schemas.c:1054
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> добавя към схема „%s“, която още не съществува"
 
-#: ../gio/glib-compile-schemas.c:1064
+#: ../gio/glib-compile-schemas.c:1070
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> е списък на схема „%s“, която още не съществува"
 
-#: ../gio/glib-compile-schemas.c:1072
+#: ../gio/glib-compile-schemas.c:1078
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "Не може да е списък от схема с път"
 
-#: ../gio/glib-compile-schemas.c:1082
+#: ../gio/glib-compile-schemas.c:1088
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "Схема не може да се разширява с път"
 
-#: ../gio/glib-compile-schemas.c:1092
+#: ../gio/glib-compile-schemas.c:1098
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "<schema id='%s'> е списък, разширяващ <schema id='%s'>, която не е списък"
 
-#: ../gio/glib-compile-schemas.c:1102
+#: ../gio/glib-compile-schemas.c:1108
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
@@ -2585,48 +2585,86 @@ msgstr ""
 "<schema id='%s' list-of='%s'> разширява <schema id='%s' list-of='%s'>, но "
 "„%s“ не разширява „%s“"
 
-#: ../gio/glib-compile-schemas.c:1119
+#: ../gio/glib-compile-schemas.c:1125
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr "всеки път трябва да започва и да завършва с наклонена черта („/“)"
 
-#: ../gio/glib-compile-schemas.c:1126
+#: ../gio/glib-compile-schemas.c:1132
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "пътят на списък трябва да завършва с „:/“"
 
-#: ../gio/glib-compile-schemas.c:1148
+#: ../gio/glib-compile-schemas.c:1158
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "вече е указано <%s id='%s'>"
 
-#: ../gio/glib-compile-schemas.c:1362
+#: ../gio/glib-compile-schemas.c:1375
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Елементът <%s> не е позволен в <%s>"
 
-#: ../gio/glib-compile-schemas.c:1366
+#: ../gio/glib-compile-schemas.c:1379
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Елементът <%s> не е позволен на най-горно ниво"
 
-#: ../gio/glib-compile-schemas.c:1460
+#: ../gio/glib-compile-schemas.c:1473
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "в <%s> не е позволен текст"
 
-#: ../gio/glib-compile-schemas.c:1674
+#. Translators: Do not translate "--strict".
+#: ../gio/glib-compile-schemas.c:1641 ../gio/glib-compile-schemas.c:1712
+#: ../gio/glib-compile-schemas.c:1788
 #, c-format
-msgid "No such schema `%s' specified in override file `%s'"
-msgstr "Схемата „%s“, указана във файла за предефиниране „%s“, не съществува"
+msgid "--strict was specified; exiting.\n"
+msgstr "Указано е „--strict“, излизане.\n"
 
-#: ../gio/glib-compile-schemas.c:1698
+#: ../gio/glib-compile-schemas.c:1649
+#, c-format
+msgid "This entire file has been ignored.\n"
+msgstr "Целият файл е пренебрегнат.\n"
+
+#: ../gio/glib-compile-schemas.c:1708
+#, c-format
+msgid "Ignoring this file.\n"
+msgstr "Пренебрегване на файла.\n"
+
+#: ../gio/glib-compile-schemas.c:1748
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
 "Липсва ключ „%s“ в схемата „%s“, указан във файла за предефиниране „%s“"
 
-#: ../gio/glib-compile-schemas.c:1731
+#: ../gio/glib-compile-schemas.c:1754 ../gio/glib-compile-schemas.c:1812
+#: ../gio/glib-compile-schemas.c:1840
+#, c-format
+msgid "; ignoring override for this key.\n"
+msgstr "; пренебрегване на предефинирането на ключа.\n"
+
+#: ../gio/glib-compile-schemas.c:1758 ../gio/glib-compile-schemas.c:1816
+#: ../gio/glib-compile-schemas.c:1844
+#, c-format
+msgid " and --strict was specified; exiting.\n"
+msgstr "и е указано „--strict“, излизане.\n"
+
+#: ../gio/glib-compile-schemas.c:1774
+#, c-format
+msgid ""
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
+msgstr ""
+"грешка при анализиране на ключа „%s“ от схемата „%s“, указан във файла за "
+"предефиниране „%s“ — %s."
+
+#: ../gio/glib-compile-schemas.c:1784
+#, c-format
+msgid "Ignoring override for this key.\n"
+msgstr "Пренебрегване на предефинирането на ключа.\n"
+
+#: ../gio/glib-compile-schemas.c:1802
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -2635,7 +2673,7 @@ msgstr ""
 "предефинирането на ключа „%s“ в схемата „%s“ във файла за предефиниране „%s“ "
 "е извън обсега, даден в схемата"
 
-#: ../gio/glib-compile-schemas.c:1752
+#: ../gio/glib-compile-schemas.c:1830
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -2644,27 +2682,32 @@ msgstr ""
 "предефинирането на ключа „%s“ в схемата „%s“ във файла за предефиниране „%s“ "
 "не е в списъка с позволени стойности"
 
-#: ../gio/glib-compile-schemas.c:1797
+#: ../gio/glib-compile-schemas.c:1884
 msgid "where to store the gschemas.compiled file"
 msgstr "място за съхраняване на файла gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:1797 ../gio/glib-compile-schemas.c:1809
+#: ../gio/glib-compile-schemas.c:1884 ../gio/glib-compile-schemas.c:1897
 msgid "DIRECTORY"
 msgstr "ПАПКА"
 
-#: ../gio/glib-compile-schemas.c:1798
+# Явно става дума за обясняване на --strict
+#: ../gio/glib-compile-schemas.c:1885
+msgid "Abort on any errors in schemas"
+msgstr "Прекъсване на работа при всякакви грешки в схемите"
+
+#: ../gio/glib-compile-schemas.c:1886
 msgid "Do not write the gschema.compiled file"
 msgstr "Без запис на файл gschema.compiled"
 
-#: ../gio/glib-compile-schemas.c:1799
+#: ../gio/glib-compile-schemas.c:1887
 msgid "This option will be removed soon."
 msgstr "Тази опция скоро ще бъде премахната"
 
-#: ../gio/glib-compile-schemas.c:1800
+#: ../gio/glib-compile-schemas.c:1888
 msgid "Do not enforce key name restrictions"
 msgstr "Без налагане на ограниченията за имена на ключове"
 
-#: ../gio/glib-compile-schemas.c:1812
+#: ../gio/glib-compile-schemas.c:1900
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2674,22 +2717,22 @@ msgstr ""
 "Файловете със схемите трябва да завършват на .gschema.xml,\n"
 "а файлът с кеша се нарича gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1828
+#: ../gio/glib-compile-schemas.c:1916
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Изисква се точно едно име на папка\n"
 
-#: ../gio/glib-compile-schemas.c:1867
+#: ../gio/glib-compile-schemas.c:1955
 #, c-format
 msgid "No schema files found: "
 msgstr "Не са открити файлове със схеми: "
 
-#: ../gio/glib-compile-schemas.c:1870
+#: ../gio/glib-compile-schemas.c:1958
 #, c-format
 msgid "doing nothing.\n"
 msgstr "без обработка.\n"
 
-#: ../gio/glib-compile-schemas.c:1873
+#: ../gio/glib-compile-schemas.c:1961
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "съществуващият резултатен файл е премахнат.\n"
@@ -3576,3 +3619,7 @@ msgstr "Необходими са още данни от входа"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Неправилни, компресирани данни"
+
+#~ msgid "No such schema `%s' specified in override file `%s'"
+#~ msgstr ""
+#~ "Схемата „%s“, указана във файла за предефиниране „%s“, не съществува"
