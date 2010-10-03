@@ -521,6 +521,15 @@ guint    g_idle_add_full            (gint            priority,
                                      GDestroyNotify  notify);
 gboolean g_idle_remove_by_data      (gpointer        data);
 
+void     g_main_context_invoke_full (GMainContext   *context,
+                                     gint            priority,
+                                     GSourceFunc     function,
+                                     gpointer        data,
+                                     GDestroyNotify  notify);
+void     g_main_context_invoke      (GMainContext   *context,
+                                     GSourceFunc     function,
+                                     gpointer        data);
+
 /* Hook for GClosure / GSource integration. Don't touch */
 GLIB_VAR GSourceFuncs g_timeout_funcs;
 GLIB_VAR GSourceFuncs g_child_watch_funcs;

@@ -4356,3 +4356,113 @@ g_idle_remove_by_data (gpointer data)
 {
   return g_source_remove_by_funcs_user_data (&g_idle_funcs, data);
 }
+
+/**
+ * g_main_context_invoke:
+ * @context: a #GMainContext, or %NULL
+ * @function: function to call
+ * @data: data to pass to @function
+ *
+ * Invokes a function in such a way that @context is owned during the
+ * invocation of @function.
+ *
+ * If @context is %NULL then the global default main context — as
+ * returned by g_main_context_default() — is used.
+ *
+ * If @context is owned by the current thread, @function is called
+ * directly.  Otherwise, if @context is the thread-default main context
+ * of the current thread and g_main_context_acquire() succeeds, then
+ * @function is called and g_main_context_release() is called
+ * afterwards.
+ *
+ * In any other case, an idle source is created to call @function and
+ * that source is attached to @context (presumably to be run in another
+ * thread).  The idle source is attached with #G_PRIORITY_DEFAULT
+ * priority.  If you want a different priority, use
+ * g_main_context_invoke_full().
+ *
+ * Note that, as with normal idle functions, @function should probably
+ * return %FALSE.  If it returns %TRUE, it will be continuously run in a
+ * loop (and may prevent this call from returning).
+ *
+ * Since: 2.28
+ **/
+void
+g_main_context_invoke (GMainContext *context,
+                       GSourceFunc   function,
+                       gpointer      data)
+{
+  g_main_context_invoke_full (context,
+                              G_PRIORITY_DEFAULT,
+                              function, data, NULL);
+}
+
+/**
+ * g_main_context_invoke_full:
+ * @context: a #GMainContext, or %NULL
+ * @priority: the priority at which to run @function
+ * @function: function to call
+ * @data: data to pass to @function
+ * @notify: a function to call when @data is no longer in use, or %NULL.
+ *
+ * Invokes a function in such a way that @context is owned during the
+ * invocation of @function.
+ *
+ * This function is the same as g_main_context_invoke() except that it
+ * lets you specify the priority incase @function ends up being
+ * scheduled as an idle and also lets you give a #GDestroyNotify for @data.
+ *
+ * @notify should not assume that it is called from any particular
+ * thread or with any particular context acquired.
+ *
+ * Since: 2.28
+ **/
+void
+g_main_context_invoke_full (GMainContext   *context,
+                            gint            priority,
+                            GSourceFunc     function,
+                            gpointer        data,
+                            GDestroyNotify  notify)
+{
+  g_return_if_fail (function != NULL);
+
+  if (!context)
+    context = g_main_context_default ();
+
+  if (g_main_context_is_owner (context))
+    {
+      while (function (data));
+      if (notify != NULL)
+        notify (data);
+    }
+
+  else
+    {
+      GMainContext *thread_default;
+
+      thread_default = g_main_context_get_thread_default ();
+
+      if (!thread_default)
+        thread_default = g_main_context_default ();
+
+      if (thread_default == context && g_main_context_acquire (context))
+        {
+          while (function (data));
+
+          g_main_context_release (context);
+
+          if (notify != NULL)
+            notify (data);
+        }
+      else
+        {
+          GSource *source;
+
+          source = g_idle_source_new ();
+          g_source_set_priority (source, priority);
+          g_source_set_callback (source, function, data, notify);
+          g_source_attach (source, context);
+          g_source_unref (source);
+        }
+    }
+}

@@ -708,6 +708,8 @@ g_main_context_set_poll_func
 g_main_context_unref
 g_main_context_wait
 g_main_context_wakeup
+g_main_context_invoke
+g_main_context_invoke_full
 g_main_depth
 g_main_current_source
 g_main_loop_get_context
