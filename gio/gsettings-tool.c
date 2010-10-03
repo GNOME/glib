@@ -1,10 +1,10 @@
-/* GLIB - Library of useful routines for C programming
- * Copyright (C) 2010 Red Hat, Inc.
+/*
+ * Copyright © 2010 Codethink Limited
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
+ * version 2 of the licence, or (at your option) any later version.
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -16,828 +16,517 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Author: Matthias Clasen
+ * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
-#include "config.h"
-
+#include <gio/gio.h>
+#include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <locale.h>
-#include <gi18n.h>
-#include <gio.h>
-
-static gchar *
-pick_word_at (const gchar  *s,
-              gint          cursor,
-              gint         *out_word_begins_at)
-{
-  gint begin;
-  gint end;
-
-  if (s[0] == '\0')
-    {
-      if (out_word_begins_at != NULL)
-        *out_word_begins_at = -1;
-      return NULL;
-    }
-
-  if (g_ascii_isspace (s[cursor]) &&
-      ((cursor > 0 && g_ascii_isspace (s[cursor-1])) || cursor == 0))
-    {
-      if (out_word_begins_at != NULL)
-        *out_word_begins_at = cursor;
-      return g_strdup ("");
-    }
-  while (!g_ascii_isspace (s[cursor - 1]) && cursor > 0)
-    cursor--;
-  begin = cursor;
-
-  end = begin;
-  while (!g_ascii_isspace (s[end]) && s[end] != '\0')
-    end++;
-
-  if (out_word_begins_at != NULL)
-    *out_word_begins_at = begin;
-
-  return g_strndup (s + begin, end - begin);
-}
-
-static gint
-usage (gint      *argc,
-       gchar    **argv[],
-       gboolean   use_stdout)
-{
-  GOptionContext *context;
-  gchar *s;
-
-  g_set_prgname (g_path_get_basename ((*argv)[0]));
-
-  context = g_option_context_new (_("COMMAND"));
-  g_option_context_set_help_enabled (context, FALSE);
-  s = g_strdup_printf (
-    _("Commands:\n"
-      "  help        Show this information\n"
-      "  get         Get the value of a key\n"
-      "  set         Set the value of a key\n"
-      "  reset       Reset the value of a key\n"
-      "  monitor     Monitor a key for changes\n"
-      "  writable    Check if a key is writable\n"
-      "\n"
-      "Use '%s COMMAND --help' to get help for individual commands.\n"),
-      g_get_prgname ());
-  g_option_context_set_description (context, s);
-  g_free (s);
-  s = g_option_context_get_help (context, FALSE, NULL);
-  if (use_stdout)
-    g_print ("%s", s);
-  else
-    g_printerr ("%s", s);
-  g_free (s);
-  g_option_context_free (context);
-
-  return use_stdout ? 0 : 1;
-}
-
-static void
-remove_arg (gint num, gint *argc, gchar **argv[])
-{
-  gint n;
-
-  g_assert (num <= (*argc));
-
-  for (n = num; (*argv)[n] != NULL; n++)
-    (*argv)[n] = (*argv)[n+1];
-  (*argv)[n] = NULL;
-  (*argc) = (*argc) - 1;
-}
-
-
-static void
-modify_argv0_for_command (gint         *argc,
-                          gchar       **argv[],
-                          const gchar  *command)
-{
-  gchar *s;
-
-  g_assert (g_strcmp0 ((*argv)[1], command) == 0);
-  remove_arg (1, argc, argv);
-
-  s = g_strdup_printf ("%s %s", (*argv)[0], command);
-  (*argv)[0] = s;
-}
 
 static gboolean
-schema_exists (const gchar *name)
+contained (const gchar * const *items,
+           const gchar         *item)
 {
-  const gchar * const *schemas;
-  gint i;
-
-  schemas = g_settings_list_schemas ();
-  for (i = 0; schemas[i]; i++)
-    if (g_strcmp0 (name, schemas[i]) == 0)
+  while (*items)
+    if (strcmp (*items++, item) == 0)
       return TRUE;
 
   return FALSE;
 }
 
-static void
-list_schemas (const gchar *prefix)
+static gboolean
+is_schema (const gchar *schema)
 {
-  const gchar * const *schemas;
-  gint i;
-
-  schemas = g_settings_list_schemas ();
-  for (i = 0; schemas[i]; i++)
-    if (prefix == NULL || g_str_has_prefix (schemas[i], prefix))
-      g_print ("%s \n", schemas[i]);
+  return contained (g_settings_list_schemas (), schema);
 }
 
 static gboolean
-key_exists (GSettings   *settings,
-            const gchar *name)
+is_relocatable_schema (const gchar *schema)
 {
-  gchar **keys;
-  gint i;
-  gboolean ret;
+  return contained (g_settings_list_relocatable_schemas (), schema);
+}
 
-  ret = FALSE;
+static gboolean
+check_relocatable_schema (const gchar *schema)
+{
+  if (is_relocatable_schema (schema))
+    return TRUE;
+
+  if (is_schema (schema))
+    g_printerr ("Schema '%s' is not relocatable "
+                "(path must not be specified)\n",
+                schema);
+
+  else
+    g_printerr ("No such schema '%s'\n", schema);
+
+  return FALSE;
+}
+
+static gboolean
+check_schema (const gchar *schema)
+{
+  if (is_schema (schema))
+    return TRUE;
+
+  if (is_relocatable_schema (schema))
+    g_printerr ("Schema '%s' is relocatable "
+                "(path must be specified)\n",
+                schema);
+
+  else
+    g_printerr ("No such schema '%s'\n", schema);
+
+  return FALSE;
+}
+
+static gboolean
+check_path (const gchar *path)
+{
+  if (path[0] == '\0')
+    {
+      g_printerr ("Empty path given.\n");
+      return FALSE;
+    }
+
+  if (path[0] != '/')
+    {
+      g_printerr ("Path must begin with a slash (/)\n");
+      return FALSE;
+    }
+
+  if (!g_str_has_suffix (path, "/"))
+    {
+      g_printerr ("Path must end with a slash (/)\n");
+      return FALSE;
+    }
+
+  if (strstr (path, "//"))
+    {
+      g_printerr ("Path must not contain two adjacent slashes (//)\n");
+      return FALSE;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+check_key (GSettings   *settings,
+           const gchar *key)
+{
+  gboolean good;
+  gchar **keys;
 
   keys = g_settings_list_keys (settings);
-  for (i = 0; keys[i]; i++)
-    if (g_strcmp0 (keys[i], name) == 0)
-      {
-        ret = TRUE;
-        break;
-      }
+  good = contained ((const gchar **) keys, key);
   g_strfreev (keys);
 
-  return ret;
+  if (good)
+    return TRUE;
+
+  g_printerr ("No such key '%s'\n", key);
+
+  return FALSE;
 }
 
 static void
-list_keys (GSettings   *settings,
-           const gchar *prefix)
+output_list (const gchar * const *list)
 {
-  gchar **keys;
   gint i;
 
+  for (i = 0; list[i]; i++)
+    g_print ("%s\n", list[i]);
+}
+
+static void
+gsettings_list_schemas (GSettings   *settings,
+                        const gchar *key,
+                        const gchar *value)
+{
+  output_list (g_settings_list_schemas ());
+}
+
+static void
+gsettings_list_relocatable_schemas (GSettings   *settings,
+                                    const gchar *key,
+                                    const gchar *value)
+{
+  output_list (g_settings_list_relocatable_schemas ());
+}
+
+static void
+gsettings_list_keys (GSettings   *settings,
+                     const gchar *key,
+                     const gchar *value)
+{
+  gchar **keys;
+
   keys = g_settings_list_keys (settings);
-  for (i = 0; keys[i]; i++)
-    {
-      if (prefix == NULL || g_str_has_prefix (keys[i], prefix))
-        g_print ("%s \n", keys[i]);
-    }
+  output_list ((const gchar **) keys);
   g_strfreev (keys);
 }
 
 static void
-list_options (GOptionContext *context,
-              const gchar    *prefix)
+gsettings_list_children (GSettings   *settings,
+                         const gchar *key,
+                         const gchar *value)
 {
-  /* FIXME extract options from context */
-  const gchar *options[] = { "--help", "--path", NULL };
+  gchar **children;
+  gint max = 0;
   gint i;
-  for (i = 0; options[i]; i++)
-    if (g_str_has_prefix (options[i], prefix))
-      g_print ("%s \n", options[i]);
-}
 
-static gint
-handle_get (gint      *argc,
-            gchar    **argv[],
-            gboolean   request_completion,
-            gchar     *completion_cur,
-            gchar     *completion_prev)
-{
-  gchar *schema;
-  gchar *path;
-  gchar *key;
-  GSettings *settings;
-  GVariant *v;
-  GOptionContext *context;
-  GOptionEntry entries[] = {
-    { "path", 'p', 0, G_OPTION_ARG_STRING, &path, N_("Specify the path for the schema"), N_("PATH") },
-    { NULL }
-  };
-  GError *error;
-  gint ret = 1;
+  children = g_settings_list_children (settings);
+  for (i = 0; children[i]; i++)
+    if (strlen (children[i]) > max)
+      max = strlen (children[i]);
 
-  modify_argv0_for_command (argc, argv, "get");
-
-  context = g_option_context_new (_("SCHEMA KEY"));
-  g_option_context_set_help_enabled (context, FALSE);
-  g_option_context_set_summary (context, _("Get the value of KEY"));
-  g_option_context_set_description (context,
-    _("Arguments:\n"
-      "  SCHEMA      The id of the schema\n"
-      "  KEY         The name of the key\n"));
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
-
-  settings = NULL;
-  path = NULL;
-  schema = NULL;
-  key = NULL;
-
-  error = NULL;
-  if (!g_option_context_parse (context, argc, argv, NULL))
+  for (i = 0; children[i]; i++)
     {
-      if (!request_completion)
-        {
-          gchar *s;
-          s = g_option_context_get_help (context, FALSE, NULL);
-          g_printerr ("%s", s);
-          g_free (s);
+      GSettings *child;
+      gchar *schema;
+      gchar *path;
 
-          goto out;
-        }
-    }
+      child = g_settings_get_child (settings, children[i]);
+      g_object_get (child,
+                    "schema", &schema,
+                    "path", &path,
+                    NULL);
 
-  if (*argc > 1)
-    schema = (*argv)[1];
-  if (*argc > 2)
-    key = (*argv)[2];
-
-  if (request_completion && completion_cur[0] == '-')
-    {
-      list_options (context, completion_cur);
-      ret = 0;
-      goto out;
-    }
-
-  if (request_completion && !schema_exists (schema))
-    {
-      list_schemas (schema);
-      ret = 0;
-      goto out;
-    }
-
-  if (path)
-    settings = g_settings_new_with_path (schema, path);
-  else
-    settings = g_settings_new (schema);
-
-  if (request_completion && !key_exists (settings, key))
-    {
-      list_keys (settings, key);
-      ret = 0;
-      goto out;
-    }
-
-  if (!request_completion)
-    {
-      v = g_settings_get_value (settings, key);
-      g_print ("%s\n", g_variant_print (v, FALSE));
-      g_variant_unref (v);
-      ret = 0;
-    }
-
- out:
-  if (settings)
-    g_object_unref (settings);
-
-  g_option_context_free (context);
-
-  return ret;
-}
-
-static gint
-handle_set (gint      *argc,
-            gchar    **argv[],
-            gboolean   request_completion,
-            gchar     *completion_cur,
-            gchar     *completion_prev)
-{
-  gchar *schema;
-  gchar *path;
-  gchar *key;
-  gchar *value;
-  GSettings *settings;
-  GVariant *v, *default_v;
-  const GVariantType *type;
-  GOptionContext *context;
-  GOptionEntry entries[] = {
-    { "path", 'p', 0, G_OPTION_ARG_STRING, &path, N_("Specify the path for the schema"), N_("PATH") },
-    { NULL }
-  };
-  GError *error;
-  gint ret = 1;
-
-  modify_argv0_for_command (argc, argv, "set");
-
-  /* Translators: Please keep order of words (command parameters) */
-  context = g_option_context_new (_("SCHEMA KEY VALUE"));
-  g_option_context_set_help_enabled (context, FALSE);
-  g_option_context_set_summary (context, _("Set the value of KEY"));
-  g_option_context_set_description (context,
-    _("Arguments:\n"
-      "  SCHEMA      The id of the schema\n"
-      "  KEY         The name of the key\n"
-      "  VALUE       The value to set key to, as a serialized GVariant\n"));
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
-
-  settings = NULL;
-  path = NULL;
-  schema = NULL;
-  key = NULL;
-
-  error = NULL;
-  if (!g_option_context_parse (context, argc, argv, NULL))
-    {
-      if (!request_completion)
-        {
-          gchar *s;
-          s = g_option_context_get_help (context, FALSE, NULL);
-          g_printerr ("%s", s);
-          g_free (s);
-          goto out;
-        }
-    }
-
-  if (*argc > 1)
-    schema = (*argv)[1];
-  if (*argc > 2)
-    key = (*argv)[2];
-  if (*argc > 3)
-    value = (*argv)[3];
-
-  if (request_completion && completion_cur[0] == '-')
-    {
-      list_options (context, completion_cur);
-      ret = 0;
-      goto out;
-    }
-
-  if (request_completion && !schema_exists (schema))
-    {
-      list_schemas (schema);
-      ret = 0;
-      goto out;
-    }
-
-  if (path)
-    settings = g_settings_new_with_path (schema, path);
-  else
-    settings = g_settings_new (schema);
-
-  if (request_completion && !key_exists (settings, key))
-    {
-      list_keys (settings, key);
-      ret = 0;
-      goto out;
-    }
-
-  if (!request_completion)
-    {
-      default_v = g_settings_get_value (settings, key);
-      type = g_variant_get_type (default_v);
-
-      error = NULL;
-      v = g_variant_parse (type, value, NULL, NULL, &error);
-      g_variant_unref (default_v);
-      if (v == NULL)
-        {
-          g_printerr ("%s\n", error->message);
-          goto out;
-        }
-
-      if (!g_settings_set_value (settings, key, v))
-        {
-          g_printerr (_("Key %s is not writable\n"), key);
-          goto out;
-        }
-
-      g_settings_sync ();
-      ret = 0;
-    }
-
- out:
-  if (settings)
-    g_object_unref (settings);
-
-  g_option_context_free (context);
-
-  return ret;
-}
-
-
-static gint
-handle_reset (gint      *argc,
-              gchar    **argv[],
-              gboolean   request_completion,
-              gchar     *completion_cur,
-              gchar     *completion_prev)
-{
-  gchar *schema;
-  gchar *path;
-  gchar *key;
-  GSettings *settings;
-  GOptionContext *context;
-  GOptionEntry entries[] = {
-    { "path", 'p', 0, G_OPTION_ARG_STRING, &path, N_("Specify the path for the schema"), N_("PATH") },
-    { NULL }
-  };
-  GError *error;
-  gint ret = 1;
-
-  modify_argv0_for_command (argc, argv, "reset");
-
-  context = g_option_context_new (_("SCHEMA KEY VALUE"));
-  g_option_context_set_help_enabled (context, FALSE);
-  g_option_context_set_summary (context, _("Sets KEY to its default value"));
-  g_option_context_set_description (context,
-    _("Arguments:\n"
-      "  SCHEMA      The id of the schema\n"
-      "  KEY         The name of the key\n"));
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
-
-  settings = NULL;
-  path = NULL;
-  schema = NULL;
-  key = NULL;
-
-  error = NULL;
-  if (!g_option_context_parse (context, argc, argv, NULL))
-    {
-      if (!request_completion)
-        {
-          gchar *s;
-          s = g_option_context_get_help (context, FALSE, NULL);
-          g_printerr ("%s", s);
-          g_free (s);
-          goto out;
-        }
-    }
-
-  if (*argc > 1)
-    schema = (*argv)[1];
-  if (*argc > 2)
-    key = (*argv)[2];
-
-  if (request_completion && completion_cur[0] == '-')
-    {
-      list_options (context, completion_cur);
-      ret = 0;
-      goto out;
-    }
-
-  if (request_completion && !schema_exists (schema))
-    {
-      list_schemas (schema);
-      ret = 0;
-      goto out;
-    }
-
-  if (path)
-    settings = g_settings_new_with_path (schema, path);
-  else
-    settings = g_settings_new (schema);
-
-  if (request_completion && !key_exists (settings, key))
-    {
-      list_keys (settings, key);
-      ret = 0;
-      goto out;
-    }
-
-  if (!request_completion)
-    {
-      g_settings_reset (settings, key);
-      g_settings_sync ();
-      ret = 0;
-    }
-
- out:
-  if (settings)
-    g_object_unref (settings);
-
-  g_option_context_free (context);
-
-  return ret;
-}
-
-static gint
-handle_writable (gint   *argc,
-                 gchar **argv[],
-                 gboolean   request_completion,
-                 gchar     *completion_cur,
-                 gchar     *completion_prev)
-{
-  gchar *schema;
-  gchar *path;
-  gchar *key;
-  GSettings *settings;
-  GOptionContext *context;
-  GOptionEntry entries[] = {
-    { "path", 'p', 0, G_OPTION_ARG_STRING, &path, N_("Specify the path for the schema"), N_("PATH") },
-    { NULL }
-  };
-  GError *error;
-  gint ret = 1;
-
-  modify_argv0_for_command (argc, argv, "writable");
-
-  /* Translators: Please keep order of words (command parameters) */
-  context = g_option_context_new (_("SCHEMA KEY"));
-  g_option_context_set_help_enabled (context, FALSE);
-  g_option_context_set_summary (context, _("Find out whether KEY is writable"));
-  g_option_context_set_description (context,
-    _("Arguments:\n"
-      "  SCHEMA      The id of the schema\n"
-      "  KEY         The name of the key\n"));
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
-
-  settings = NULL;
-  path = NULL;
-  schema = NULL;
-  key = NULL;
-
-  error = NULL;
-  if (!g_option_context_parse (context, argc, argv, NULL))
-    {
-      if (!request_completion)
-        {
-          gchar *s;
-          s = g_option_context_get_help (context, FALSE, NULL);
-          g_printerr ("%s", s);
-          g_free (s);
-          goto out;
-        }
-    }
-
-  if (*argc > 1)
-    schema = (*argv)[1];
-  if (*argc > 2)
-    key = (*argv)[2];
-
-  if (request_completion && completion_cur[0] == '-')
-    {
-      list_options (context, completion_cur);
-      ret = 0;
-      goto out;
-    }
-
-  if (request_completion && !schema_exists (schema))
-    {
-      list_schemas (schema);
-      ret = 0;
-      goto out;
-    }
-
-  if (path)
-    settings = g_settings_new_with_path (schema, path);
-  else
-    settings = g_settings_new (schema);
-
-  if (request_completion && !key_exists (settings, key))
-    {
-      list_keys (settings, key);
-      ret = 0;
-      goto out;
-    }
-
-  if (!request_completion)
-    {
-      if (g_settings_is_writable (settings, key))
-        g_print ("true\n");
+      if (is_schema (schema))
+        g_print ("%-*s   %s\n", max, children[i], schema);
       else
-        g_print ("false\n");
-      ret = 0;
+        g_print ("%-*s   %s:%s\n", max, children[i], schema, path);
+
+      g_object_unref (child);
+      g_free (schema);
+      g_free (path);
     }
 
- out:
-  if (settings)
-    g_object_unref (settings);
-
-  g_option_context_free (context);
-
-  return ret;
+  g_strfreev (children);
 }
 
 static void
-key_changed (GSettings   *settings,
-             const gchar *key)
+gsettings_get (GSettings   *settings,
+               const gchar *key,
+               const gchar *value_)
 {
-  GVariant *v;
-  gchar *value;
+  GVariant *value;
+  gchar *printed;
 
-  v = g_settings_get_value (settings, key);
-  value = g_variant_print (v, FALSE);
-  g_print ("%s\n", value);
-  g_free (value);
-  g_variant_unref (v);
+  value = g_settings_get_value (settings, key);
+  printed = g_variant_print (value, TRUE);
+  g_print ("%s\n", printed);
+  g_variant_unref (value);
+  g_free (printed);
 }
 
-static gint
-handle_monitor (gint      *argc,
-                gchar    **argv[],
-                gboolean   request_completion,
-                gchar     *completion_cur,
-                gchar     *completion_prev)
+static void
+gsettings_reset (GSettings   *settings,
+                 const gchar *key,
+                 const gchar *value)
 {
-  gchar *schema;
-  gchar *path;
-  gchar *key;
-  GSettings *settings;
-  gchar *detailed_signal;
-  GMainLoop *loop;
-  GOptionContext *context;
-  GOptionEntry entries[] = {
-    { "path", 'p', 0, G_OPTION_ARG_STRING, &path, N_("Specify the path for the schema"), N_("PATH") },
-    { NULL }
-  };
-  GError *error;
-  gint ret = 1;
+  g_settings_reset (settings, key);
+  g_settings_sync ();
+}
 
-  modify_argv0_for_command (argc, argv, "monitor");
+static void
+gsettings_writable (GSettings   *settings,
+                    const gchar *key,
+                    const gchar *value)
+{
+  g_print ("%s\n",
+           g_settings_is_writable (settings, key) ?
+           "true" : "false");
+}
 
-  context = g_option_context_new (_("SCHEMA KEY"));
-  g_option_context_set_help_enabled (context, FALSE);
-  g_option_context_set_summary (context,
-    _("Monitor KEY for changes and print the changed values.\n"
-      "Monitoring will continue until the process is terminated."));
+static void
+value_changed (GSettings   *settings,
+               const gchar *key,
+               gpointer     user_data)
+{
+  GVariant *value;
+  gchar *printed;
 
-  g_option_context_set_description (context,
-    _("Arguments:\n"
-      "  SCHEMA      The id of the schema\n"
-      "  KEY         The name of the key\n"));
-  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+  value = g_settings_get_value (settings, key);
+  printed = g_variant_print (value, TRUE);
+  g_print ("%s: %s\n", key, printed);
+  g_variant_unref (value);
+  g_free (printed);
+}
 
-  settings = NULL;
-  path = NULL;
-  schema = NULL;
-  key = NULL;
-
-  error = NULL;
-  if (!g_option_context_parse (context, argc, argv, NULL))
+static void
+gsettings_monitor (GSettings   *settings,
+                   const gchar *key,
+                   const gchar *value)
+{
+  if (key)
     {
-      if (!request_completion)
+      gchar *name;
+
+      name = g_strdup_printf ("changed::%s", key);
+      g_signal_connect (settings, name, G_CALLBACK (value_changed), NULL);
+    }
+  else
+    g_signal_connect (settings, "changed", G_CALLBACK (value_changed), NULL);
+
+  g_main_loop_run (g_main_loop_new (NULL, FALSE));
+}
+
+static void
+gsettings_set (GSettings   *settings,
+               const gchar *key,
+               const gchar *value)
+{
+  const GVariantType *type;
+  GError *error = NULL;
+  GVariant *existing;
+  GVariant *new;
+
+  existing = g_settings_get_value (settings, key);
+  type = g_variant_get_type (existing);
+
+  new = g_variant_parse (type, value, NULL, NULL, &error);
+
+  if (new == NULL)
+    {
+      g_printerr ("%s\n", error->message);
+      exit (1);
+    }
+
+  g_settings_set_value (settings, key, new);
+  g_variant_unref (existing);
+  g_variant_unref (new);
+
+  g_settings_sync ();
+}
+
+static int
+gsettings_help (gboolean     requested,
+                const gchar *command)
+{
+  const gchar *description;
+  const gchar *synopsis;
+  GString *string;
+
+  string = g_string_new (NULL);
+
+  if (command == NULL)
+    ;
+
+  else if (strcmp (command, "list-schemas") == 0)
+    {
+      description = "List the installed (non-relocatable) schemas";
+      synopsis = "";
+    }
+
+  else if (strcmp (command, "list-relocatable-schemas") == 0)
+    {
+      description = "List the installed relocatable schemas";
+      synopsis = "";
+    }
+
+  else if (strcmp (command, "list-keys") == 0)
+    {
+      description = "Lists the keys in SCHEMA";
+      synopsis = "SCHEMA[:PATH]";
+    }
+
+  else if (strcmp (command, "list-children") == 0)
+    {
+      description = "Lists the children of SCHEMA";
+      synopsis = "SCHEMA[:PATH]";
+    }
+
+  else if (strcmp (command, "get") == 0)
+    {
+      description = "Gets the value of KEY";
+      synopsis = "SCHEMA[:PATH] KEY";
+    }
+
+  else if (strcmp (command, "set") == 0)
+    {
+      description = "Sets the value of KEY to VALUE";
+      synopsis = "SCHEMA[:PATH] KEY VALUE";
+    }
+
+  else if (strcmp (command, "reset") == 0)
+    {
+      description = "Resets KEY to its default value";
+      synopsis = "SCHEMA[:PATH] KEY";
+    }
+
+  else if (strcmp (command, "writable") == 0)
+    {
+      description = "Checks if KEY is writable";
+      synopsis = "SCHEMA[:PATH] KEY";
+    }
+
+  else if (strcmp (command, "monitor") == 0)
+    {
+      description = "Monitors KEY for changes.\n"
+                    "If no KEY is specified, monitor all keys in SCHEMA.\n"
+                    "Use ^C to stop monitoring.\n";
+      synopsis = "SCHEMA[:PATH] [KEY]";
+    }
+  else
+    {
+      g_string_printf (string, "Unknown command %s\n\n", command);
+      requested = FALSE;
+      command = NULL;
+    }
+
+  if (command == NULL)
+    {
+      g_string_append (string,
+        "Usage:\n"
+        "  gsettings COMMAND [ARGS...]\n"
+        "\n"
+        "Commands:\n"
+        "  help                      Show this information\n"
+        "  list-schemas              List installed schemas\n"
+        "  list-relocatable-schemas  List relocatable schemas\n"
+        "  list-keys                 List keys in a schema\n"
+        "  list-children             List children of a schema\n"
+        "  get                       Get the value of a key\n"
+        "  set                       Set the value of a key\n"
+        "  reset                     Reset the value of a key\n"
+        "  writable                  Check if a key is writable\n"
+        "  monitor                   Watch for changes\n"
+        "\n"
+        "Use 'gsettings help COMMAND' to get detailed help.\n\n");
+    }
+  else
+    {
+      g_string_append_printf (string, "Usage:\n  gsettings %s %s\n\n%s\n\n",
+                              command, synopsis, description);
+
+      if (synopsis[0])
         {
-          gchar *s;
-          s = g_option_context_get_help (context, FALSE, NULL);
-          g_printerr ("%s", s);
-          g_free (s);
-          goto out;
+          g_string_append (string, "Arguments:\n");
+
+          if (strstr (synopsis, "SCHEMA"))
+            g_string_append (string,
+                             "  SCHEMA    The name of the schema\n"
+                             "  PATH      The path, for relocatable schemas\n");
+
+          if (strstr (synopsis, "[KEY]"))
+            g_string_append (string,
+                             "  KEY       The (optional) key within the schema\n");
+
+          else if (strstr (synopsis, "KEY"))
+            g_string_append (string,
+                             "  KEY       The key within the schema\n");
+
+          if (strstr (synopsis, "VALUE"))
+            g_string_append (string,
+                             "  VALUE     The value to set\n");
+
+          g_string_append (string, "\n");
         }
     }
 
-  if (*argc > 1)
-    schema = (*argv)[1];
-  if (*argc > 2)
-    key = (*argv)[2];
-
-  if (request_completion && completion_cur[0] == '-')
-    {
-      list_options (context, completion_cur);
-      ret = 0;
-      goto out;
-    }
-
-  if (request_completion && !schema_exists (schema))
-    {
-      list_schemas (schema);
-      ret = 0;
-      goto out;
-    }
-
-  if (path)
-    settings = g_settings_new_with_path (schema, path);
+  if (requested)
+    g_print ("%s", string->str);
   else
-    settings = g_settings_new (schema);
+    g_printerr ("%s", string->str);
 
-  if (request_completion && !key_exists (settings, key))
-    {
-      list_keys (settings, key);
-      ret = 0;
-      goto out;
-    }
+  g_string_free (string, TRUE);
 
-  if (!request_completion)
-    {
-      detailed_signal = g_strdup_printf ("changed::%s", key);
-      g_signal_connect (settings, detailed_signal,
-                        G_CALLBACK (key_changed), NULL);
-
-      loop = g_main_loop_new (NULL, FALSE);
-      g_main_loop_run (loop);
-      g_main_loop_unref (loop);
-      ret = 0;
-    }
-
- out:
-  if (settings)
-    g_object_unref (settings);
-
-  g_option_context_free (context);
-
-  return ret;
+  return requested ? 0 : 1;
 }
+
 
 int
-main (int argc, char *argv[])
+main (int argc, char **argv)
 {
-  gboolean ret;
-  gchar *command;
-  gboolean request_completion;
-  gchar *completion_cur;
-  gchar *completion_prev;
+  void (* function) (GSettings *, const gchar *, const gchar *);
+  GSettings *settings;
+  const gchar *key;
 
-  setlocale (LC_ALL, "");
+  if (argc < 2)
+    return gsettings_help (FALSE, NULL);
+
+  else if (strcmp (argv[1], "help") == 0)
+    return gsettings_help (TRUE, argv[2]);
+
+  else if (argc == 2 && strcmp (argv[1], "list-schemas") == 0)
+    function = gsettings_list_schemas;
+
+  else if (argc == 2 && strcmp (argv[1], "list-relocatable-schemas") == 0)
+    function = gsettings_list_relocatable_schemas;
+
+  else if (argc == 3 && strcmp (argv[1], "list-keys") == 0)
+    function = gsettings_list_keys;
+
+  else if (argc == 3 && strcmp (argv[1], "list-children") == 0)
+    function = gsettings_list_children;
+
+  else if (argc == 4 && strcmp (argv[1], "get") == 0)
+    function = gsettings_get;
+
+  else if (argc == 5 && strcmp (argv[1], "set") == 0)
+    function = gsettings_set;
+
+  else if (argc == 4 && strcmp (argv[1], "reset") == 0)
+    function = gsettings_reset;
+
+  else if (argc == 4 && strcmp (argv[1], "writable") == 0)
+    function = gsettings_writable;
+
+  else if ((argc == 3 || argc == 4) && strcmp (argv[1], "monitor") == 0)
+    function = gsettings_monitor;
+
+  else
+    return gsettings_help (FALSE, argv[1]);
 
   g_type_init ();
 
-  ret = 1;
-  completion_cur = NULL;
-  completion_prev = NULL;
-  request_completion = FALSE;
-
-  if (argc < 2)
+  if (argc > 2)
     {
-      ret = usage (&argc, &argv, FALSE);
-      goto out;
-    }
+      gchar **parts;
 
- again:
-  command = argv[1];
-
-  if (g_strcmp0 (command, "help") == 0)
-    {
-      if (!request_completion)
-        ret = usage (&argc, &argv, TRUE);
-    }
-  else if (g_strcmp0 (command, "get") == 0)
-    ret = handle_get (&argc, &argv, request_completion, completion_cur, completion_prev);
-  else if (g_strcmp0 (command, "set") == 0)
-    ret = handle_set (&argc, &argv, request_completion, completion_cur, completion_prev);
-  else if (g_strcmp0 (command, "reset") == 0)
-    ret = handle_reset (&argc, &argv, request_completion, completion_cur, completion_prev);
-  else if (g_strcmp0 (command, "monitor") == 0)
-    ret = handle_monitor (&argc, &argv, request_completion, completion_cur, completion_prev);
-  else if (g_strcmp0 (command, "writable") == 0)
-    ret = handle_writable (&argc, &argv, request_completion, completion_cur, completion_prev);
-  else if (g_strcmp0 (command, "complete") == 0 && argc == 4 && !request_completion)
-    {
-      gchar *completion_line;
-      gint completion_point;
-      gchar *endp;
-      gchar **completion_argv;
-      gint completion_argc;
-      gint cur_begin;
-
-      request_completion = TRUE;
-
-      completion_line = argv[2];
-      completion_point = strtol (argv[3], &endp, 10);
-      if (endp == argv[3] || *endp != '\0')
-        goto out;
-
-      if (!g_shell_parse_argv (completion_line,
-                               &completion_argc,
-                               &completion_argv,
-                               NULL))
+      if (argv[2][0] == '\0')
         {
-          /* can't parse partical cmdline, don't attempt completion */
-          goto out;
+          g_printerr ("Empty schema name given");
+          return 1;
         }
 
-      completion_prev = NULL;
-      completion_cur = pick_word_at (completion_line, completion_point, &cur_begin);
-      if (cur_begin > 0)
-        {
-          gint prev_end;
-          for (prev_end = cur_begin - 1; prev_end >= 0; prev_end--)
-            {
-              if (!g_ascii_isspace (completion_line[prev_end]))
-                {
-                  completion_prev = pick_word_at (completion_line, prev_end, NULL);
-                  break;
-                }
-            }
-        }
+      parts = g_strsplit (argv[2], ":", 2);
 
-      argc = completion_argc;
-      argv = completion_argv;
-
-      ret = 0;
-      goto again;
-    }
-  else
-    {
-      if (request_completion)
+      if (parts[1])
         {
-          g_print ("help \nget \nmonitor \nwritable \nset \nreset \n");
-          ret = 0;
+          if (!check_relocatable_schema (parts[0]) || !check_path (parts[1]))
+            return 1;
+
+          settings = g_settings_new_with_path (parts[0], parts[1]);
         }
       else
         {
-          g_printerr (_("Unknown command '%s'\n"), argv[1]);
-          ret = usage (&argc, &argv, FALSE);
+          if (!check_schema (parts[0]))
+            return 1;
+
+          settings = g_settings_new (parts[0]);
         }
+
+      g_strfreev (parts);
     }
+  else
+    settings = NULL;
 
- out:
-  g_free (completion_cur);
-  g_free (completion_prev);
+  if (argc > 3)
+    {
+      if (!check_key (settings, argv[3]))
+        return 1;
 
-  return ret;
+      key = argv[3];
+    }
+  else
+    key = NULL;
+
+  (* function) (settings, key, argc > 4 ? argv[4] : NULL);
+
+  if (settings != NULL)
+    g_object_unref (settings);
+
+  return 0;
 }

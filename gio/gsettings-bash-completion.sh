@@ -4,28 +4,44 @@
 
 ####################################################################################################
 
-
 __gsettings() {
-    local IFS=$'\n'
-    local cur=`_get_cword :`
+  local choices
 
-    local suggestions=$(gsettings complete "${COMP_LINE}" ${COMP_POINT})
-    COMPREPLY=($(compgen -W "$suggestions" -- "$cur"))
+  case "${COMP_CWORD}" in
+    1)
+      choices=$'help \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nget \nset \nreset \nwritable \nmonitor'
+      ;;
 
-    # Remove colon-word prefix from COMPREPLY items
-    case "$cur" in
-        *:*)
-            case "$COMP_WORDBREAKS" in
-                *:*)
-                    local colon_word=${cur%${cur##*:}}
-                    local i=${#COMPREPLY[*]}
-                    while [ $((--i)) -ge 0 ]; do
-                        COMPREPLY[$i]=${COMPREPLY[$i]#"$colon_word"}
-                    done
-                    ;;
-            esac
-            ;;
-    esac
+    2)
+      case "${COMP_WORDS[1]}" in
+        help)
+          choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nget\nset\nreset\nwritable\nmonitor'
+          ;;
+        list-keys|list-children)
+          choices="$(gsettings list-schemas)"$'\n'"$(gsettings list-relocatable-schemas | sed -e 's.$.:/.')"
+          ;;
+
+        get|set|reset|writable|monitor)
+          choices="$(gsettings list-schemas | sed -e 's.$. .')"$'\n'"$(gsettings list-relocatable-schemas | sed -e 's.$.:/.')"
+          ;;
+      esac
+      ;;
+
+    3)
+      case "${COMP_WORDS[1]}" in
+        set)
+          choices="$(gsettings list-keys ${COMP_WORDS[2]} 2> /dev/null | sed -e 's.$. .')"
+          ;;
+
+        get|reset|writable|monitor)
+          choices="$(gsettings list-keys ${COMP_WORDS[2]} 2> /dev/null)"
+          ;;
+      esac
+      ;;
+  esac
+
+  local IFS=$'\n'
+  COMPREPLY=($(compgen -W "${choices}" "${COMP_WORDS[$COMP_CWORD]}"))
 }
 
 ####################################################################################################
