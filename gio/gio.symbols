@@ -1520,6 +1520,7 @@ g_keyfile_settings_backend_new
 #if IN_HEADER(__G_SETTINGS_H__)
 #if IN_FILE(__G_SETTINGS_SCHEMA_C__)
 g_settings_list_schemas
+g_settings_list_relocatable_schemas
 #endif
 
 #if IN_FILE(__G_SETTINGS_C__)

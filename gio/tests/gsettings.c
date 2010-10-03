@@ -1765,12 +1765,17 @@ static void
 test_list_schemas (void)
 {
   const gchar * const *schemas;
+  const gchar * const *relocs;
 
+  relocs = g_settings_list_relocatable_schemas ();
   schemas = g_settings_list_schemas ();
+
+  g_assert (strv_set_equal ((gchar **)relocs,
+                            "org.gtk.test.no-path",
+                            NULL));
 
   g_assert (strv_set_equal ((gchar **)schemas,
                             "org.gtk.test",
-                            "org.gtk.test.no-path",
                             "org.gtk.test.basic-types",
                             "org.gtk.test.complex-types",
                             "org.gtk.test.localized",
