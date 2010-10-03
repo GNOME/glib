@@ -70,21 +70,7 @@ g_delayed_settings_backend_notify_unapplied (GDelayedSettingsBackend *delayed)
   g_static_mutex_unlock (&delayed->priv->lock);
 
   if (target != NULL)
-    {
-      if (g_settings_backend_get_active_context () != target_context)
-        {
-          GSource *source;
-
-          source = g_idle_source_new ();
-          g_source_set_priority (source, G_PRIORITY_DEFAULT);
-          g_source_set_callback (source, invoke_notify_unapplied,
-                                 target, g_object_unref);
-          g_source_attach (source, target_context);
-          g_source_unref (source);
-        }
-      else
-        invoke_notify_unapplied (target);
-    }
+    g_main_context_invoke (target_context, invoke_notify_unapplied, target);
 }
 
 

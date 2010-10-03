@@ -92,8 +92,6 @@ G_GNUC_INTERNAL
 GPermission *           g_settings_backend_get_permission               (GSettingsBackend               *backend,
                                                                          const gchar                    *path);
 G_GNUC_INTERNAL
-GMainContext *          g_settings_backend_get_active_context           (void);
-G_GNUC_INTERNAL
 GSettingsBackend *      g_settings_backend_get_default                  (void);
 G_GNUC_INTERNAL
 void                    g_settings_backend_sync_default                 (void);
