@@ -175,6 +175,8 @@ ensure_schema_lists (void)
  * Returns: (element-type utf8) (transfer none):  a list of #GSettings
  *   schemas that are available.  The list must not be modified or
  *   freed.
+ *
+ * Since: 2.26
  **/
 const gchar * const *
 g_settings_list_schemas (void)
@@ -199,6 +201,8 @@ g_settings_list_schemas (void)
  * Returns: (element-type utf8) (transfer none): a list of relocatable
  *   #GSettings schemas that are available.  The list must not be
  *   modified or freed.
+ *
+ * Since: 2.28
  **/
 const gchar * const *
 g_settings_list_relocatable_schemas (void)
