@@ -417,6 +417,10 @@ g_settings_get_property (GObject    *object,
       g_value_set_string (value, settings->priv->schema_name);
       break;
 
+     case PROP_PATH:
+      g_value_set_string (value, settings->priv->path);
+      break;
+
      case PROP_HAS_UNAPPLIED:
       g_value_set_boolean (value, g_settings_get_has_unapplied (settings));
       break;
