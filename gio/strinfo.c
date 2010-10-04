@@ -193,7 +193,7 @@ strinfo_find_integer (const guint32 *strinfo,
   guint i;
 
   for (i = 0; i < length; i++)
-    if (strinfo[i] == value)
+    if (strinfo[i] == GUINT32_TO_LE (value))
       {
         const guchar *charinfo = (const guchar *) &strinfo[i];
 
@@ -226,7 +226,7 @@ strinfo_enum_from_string (const guint32 *strinfo,
   if (index < 0)
     return FALSE;
 
-  *result = strinfo[index];
+  *result = GUINT32_FROM_LE (strinfo[index]);
   return TRUE;
 }
 
