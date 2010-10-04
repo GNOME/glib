@@ -82,6 +82,8 @@ GSettings *             g_settings_new_with_backend_and_path            (const g
                                                                          const gchar        *path);
 gchar **                g_settings_list_children                        (GSettings          *settings);
 gchar **                g_settings_list_keys                            (GSettings          *settings);
+GVariant *              g_settings_get_range                            (GSettings          *settings,
+                                                                         const gchar        *key);
 
 gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,

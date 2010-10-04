@@ -1995,7 +1995,7 @@ g_settings_get_has_unapplied (GSettings *settings)
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
 
-/* Extra API (reset, sync, get_child, is_writable, list_*) {{{1 */
+/* Extra API (reset, sync, get_child, is_writable, list_*, get_range) {{{1 */
 /**
  * g_settings_reset:
  * @settings: a #GSettings object
@@ -2196,6 +2196,88 @@ g_settings_list_children (GSettings *settings)
   strv[j] = NULL;
 
   return strv;
+}
+
+/**
+ * g_settings_get_range:
+ * @settings: a #GSettings
+ * @key: the key to query the range of
+ * @returns: a #GVariant describing the range
+ *
+ * Queries the range of a key.
+ *
+ * This function will return a #GVariant that fully describes the range
+ * of values that are valid for @key.
+ *
+ * The type of #GVariant returned is <literal>(sv)</literal>.  The
+ * string describes the type of range restriction in effect.  The type
+ * and meaning of the value contained in the variant depends on the
+ * string.
+ *
+ * If the string is <literal>'type'</literal> then the variant contains
+ * an empty array.  The element type of that empty array is the expected
+ * type of value and all values of that type are valid.
+ *
+ * If the string is <literal>'enum'</literal> then the variant contains
+ * an array enumerating the possible values.  Each item in the array is
+ * a possible valid value and no other values are valid.
+ *
+ * If the string is <literal>'flags'</literal> then the variant contains
+ * an array.  Each item in the array is a value that may appear zero or
+ * one times in an array to be used as the value for this key.  For
+ * example, if the variant contained the array <literal>['x',
+ * 'y']</literal> then the valid values for the key would be
+ * <literal>[]</literal>, <literal>['x']</literal>,
+ * <literal>['y']</literal>, <literal>['x', 'y']</literal> and
+ * <literal>['y', 'x']</literal>.
+ *
+ * Finally, if the string is <literal>'range'</literal> then the variant
+ * contains a pair of like-typed values -- the minimum and maximum
+ * permissible values for this key.
+ *
+ * This information should not be used by normal programs.  It is
+ * considered to be a hint for introspection purposes.  Normal programs
+ * should already know what is permitted by their own schema.  The
+ * format may change in any way in the future -- but particularly, new
+ * forms may be added to the possibilities described above.
+ *
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings.
+ *
+ * You should free the returned value with g_variant_unref() when it is
+ * no longer needed.
+ *
+ * Since: 2.28
+ **/
+GVariant *
+g_settings_get_range (GSettings   *settings,
+                      const gchar *key)
+{
+  GSettingsKeyInfo info;
+  const gchar *type;
+  GVariant *range;
+
+  g_settings_get_key_info (&info, settings, key);
+
+  if (info.minimum)
+    {
+      range = g_variant_new ("(**)", info.minimum, info.maximum);
+      type = "range";
+    }
+  else if (info.strinfo)
+    {
+      range = strinfo_enumerate (info.strinfo, info.strinfo_length);
+      type = info.is_flags ? "flags" : "enum";
+    }
+  else
+    {
+      range = g_variant_new_array (info.type, NULL, 0);
+      type = "type";
+    }
+
+  g_settings_free_key_info (&info);
+
+  return g_variant_ref_sink (g_variant_new ("(sv)", type, range));
 }
 
 /* Binding {{{1 */

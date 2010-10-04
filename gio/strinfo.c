@@ -260,6 +260,37 @@ strinfo_string_from_alias (const guint32 *strinfo,
   return 1 + (const gchar *) &strinfo[GUINT32_TO_LE (strinfo[index]) + 1];
 }
 
+G_GNUC_UNUSED static GVariant *
+strinfo_enumerate (const guint32 *strinfo,
+                   guint          length)
+{
+  GVariantBuilder builder;
+  const gchar *ptr, *end;
+
+  ptr = (gpointer) strinfo;
+  end = ptr + 4 * length;
+
+  ptr += 4;
+
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_STRING_ARRAY);
+
+  while (ptr < end)
+    {
+      /* don't include aliases */
+      if (*ptr == '\xff')
+        g_variant_builder_add (&builder, "s", ptr + 1);
+
+      /* find the end of this string */
+      ptr = memchr (ptr, '\xff', end - ptr);
+      g_assert (ptr != NULL);
+
+      /* skip over the int to the next string */
+      ptr += 5;
+    }
+
+  return g_variant_builder_end (&builder);
+}
+
 G_GNUC_UNUSED static void
 strinfo_builder_append_item (GString     *builder,
                              const gchar *string,

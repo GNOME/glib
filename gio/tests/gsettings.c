@@ -14,6 +14,20 @@ static gboolean backend_set;
  * to be compiled and installed in the same directory.
  */
 
+static void
+check_and_free (GVariant    *value,
+                const gchar *expected)
+{
+  gchar *printed;
+
+  printed = g_variant_print (value, TRUE);
+  g_assert_cmpstr (printed, ==, expected);
+  g_free (printed);
+
+  g_variant_unref (value);
+}
+
+
 /* Just to get warmed up: Read and set a string, and
  * verify that can read the changed string back
  */
@@ -1843,6 +1857,34 @@ test_get_mapped (void)
   g_object_unref (settings);
 }
 
+static void
+test_get_range (void)
+{
+  GSettings *settings;
+  GVariant *range;
+
+  settings = g_settings_new ("org.gtk.test.range");
+  range = g_settings_get_range (settings, "val");
+  check_and_free (range, "('range', <(2, 44)>)");
+  g_object_unref (settings);
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  range = g_settings_get_range (settings, "test");
+  check_and_free (range, "('enum', <['foo', 'bar', 'baz', 'quux']>)");
+  g_object_unref (settings);
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  range = g_settings_get_range (settings, "f-test");
+  check_and_free (range, "('flags', "
+                  "<['mourning', 'laughing', 'talking', 'walking']>)");
+  g_object_unref (settings);
+
+  settings = g_settings_new ("org.gtk.test");
+  range = g_settings_get_range (settings, "greeting");
+  check_and_free (range, "('type', <@as []>)");
+  g_object_unref (settings);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1926,6 +1968,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/list-items", test_list_items);
   g_test_add_func ("/gsettings/list-schemas", test_list_schemas);
   g_test_add_func ("/gsettings/mapped", test_get_mapped);
+  g_test_add_func ("/gsettings/get-range", test_get_range);
 
   result = g_test_run ();
 
