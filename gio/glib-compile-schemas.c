@@ -107,6 +107,12 @@ enum_state_add_value (EnumState    *state,
       return;
     }
 
+  /* Silently drop the null case if it is mentioned.
+   * It is properly denoted with an empty array.
+   */
+  if (state->is_flags && value == 0)
+    return;
+
   if (state->is_flags && (value & (value - 1)))
     {
       g_set_error (error, G_MARKUP_ERROR,
@@ -120,7 +126,6 @@ enum_state_add_value (EnumState    *state,
    *
    * If we loosen the one-bit-set restriction we need an overlap check.
    */
-
 
   strinfo_builder_append_item (state->strinfo, nick, value);
 }
