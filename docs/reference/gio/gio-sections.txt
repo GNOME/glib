@@ -2175,7 +2175,11 @@ g_settings_reset
 
 <SUBSECTION Introspection>
 g_settings_list_schemas
-g_settings_list_items
+g_settings_list_relocatable_schemas
+g_settings_list_keys
+g_settings_list_children
+g_settings_get_range
+g_settings_range_check
 
 <SUBSECTION Convenience>
 g_settings_get
