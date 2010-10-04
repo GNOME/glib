@@ -458,6 +458,29 @@ gvdb_table_get_value (GvdbTable    *file,
 }
 
 /**
+ * gvdb_table_get_raw_value:
+ * @table: a #GvdbTable
+ * @key: a string
+ * @returns: a #GVariant, or %NULL
+ *
+ * Looks up a value named @key in @file.
+ *
+ * This call is equivalent to gvdb_table_get_value() except that it
+ * never byteswaps the value.
+ **/
+GVariant *
+gvdb_table_get_raw_value (GvdbTable   *table,
+                          const gchar *key)
+{
+  const struct gvdb_hash_item *item;
+
+  if ((item = gvdb_table_lookup (table, key, 'v')) == NULL)
+    return NULL;
+
+  return gvdb_table_value_from_item (table, item);
+}
+
+/**
  * gvdb_table_get_table:
  * @file: a #GvdbTable
  * @key: a string
