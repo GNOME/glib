@@ -45,22 +45,10 @@ install-data-am: install-gsettings-schemas
 
 .SECONDARY: $(gsettings_SCHEMAS)
 
-gsettings__base_list = \
-  sed "$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g" | \
-  sed "$$!N;$$!N;$$!N;$$!N;s/\n/ /g"
-
-install-gsettings-schemas: $(gsettings_SCHEMAS:.xml=.valid) $(gsettings__enum_file)
+install-gsettings-schemas: $(gsettings_SCHEMAS) $(gsettings__enum_file)
 	@$(NORMAL_INSTALL)
 	test -z "$(gsettingsschemadir)" || $(MKDIR_P) "$(DESTDIR)$(gsettingsschemadir)"
-	@list='\''$(gsettings__enum_file) $(gsettings_SCHEMAS)'\''; test -n "$(gsettingsschemadir)" || list=; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(gsettings__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_DATA) $$files '\''$(DESTDIR)$(gsettingsschemadir)'\''"; \
-	  $(INSTALL_DATA) $$files "$(DESTDIR)$(gsettingsschemadir)" || exit $$?; \
-	done
+	$(INSTALL_DATA) $^ "$(DESTDIR)$(gsettingsschemadir)"
 	test -n "$(GSETTINGS_DISABLE_SCHEMAS_COMPILE)$(DESTDIR)" || $(GLIB_COMPILE_SCHEMAS) $(gsettingsschemadir)
 
 uninstall-gsettings-schemas:
