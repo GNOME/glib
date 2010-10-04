@@ -84,6 +84,9 @@ gchar **                g_settings_list_children                        (GSettin
 gchar **                g_settings_list_keys                            (GSettings          *settings);
 GVariant *              g_settings_get_range                            (GSettings          *settings,
                                                                          const gchar        *key);
+gboolean                g_settings_range_check                          (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         GVariant           *value);
 
 gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,

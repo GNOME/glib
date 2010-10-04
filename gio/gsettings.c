@@ -925,8 +925,8 @@ g_settings_type_check (GSettingsKeyInfo *info,
 }
 
 static gboolean
-g_settings_range_check (GSettingsKeyInfo *info,
-                        GVariant         *value)
+g_settings_key_info_range_check (GSettingsKeyInfo *info,
+                                 GVariant         *value)
 {
   if (info->minimum == NULL && info->strinfo == NULL)
     return TRUE;
@@ -940,7 +940,7 @@ g_settings_range_check (GSettingsKeyInfo *info,
       g_variant_iter_init (&iter, value);
       while (ok && (child = g_variant_iter_next_value (&iter)))
         {
-          ok = g_settings_range_check (info, child);
+          ok = g_settings_key_info_range_check (info, child);
           g_variant_unref (child);
         }
 
@@ -964,7 +964,7 @@ g_settings_range_fixup (GSettingsKeyInfo *info,
 {
   const gchar *target;
 
-  if (g_settings_range_check (info, value))
+  if (g_settings_key_info_range_check (info, value))
     return g_variant_ref (value);
 
   if (info->strinfo == NULL)
@@ -1062,7 +1062,7 @@ g_settings_get_translated_default (GSettingsKeyInfo *info)
       g_error_free (error);
     }
 
-  else if (!g_settings_range_check (info, value))
+  else if (!g_settings_key_info_range_check (info, value))
     {
       g_warning ("Translated default `%s' for key `%s' in schema `%s' "
                  "is outside of valid range", info->unparsed, info->key,
@@ -1459,7 +1459,7 @@ g_settings_set_value (GSettings   *settings,
 
   g_settings_get_key_info (&info, settings, key);
   g_return_val_if_fail (g_settings_type_check (&info, value), FALSE);
-  g_return_val_if_fail (g_settings_range_check (&info, value), FALSE);
+  g_return_val_if_fail (g_settings_key_info_range_check (&info, value), FALSE);
   g_settings_free_key_info (&info);
 
   return g_settings_write_to_backend (&info, value);
@@ -1995,7 +1995,7 @@ g_settings_get_has_unapplied (GSettings *settings)
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
 
-/* Extra API (reset, sync, get_child, is_writable, list_*, get_range) {{{1 */
+/* Extra API (reset, sync, get_child, is_writable, list_*, ranges) {{{1 */
 /**
  * g_settings_reset:
  * @settings: a #GSettings object
@@ -2280,6 +2280,41 @@ g_settings_get_range (GSettings   *settings,
   return g_variant_ref_sink (g_variant_new ("(sv)", type, range));
 }
 
+/**
+ * g_settings_range_check:
+ * @settings: a #GSettings
+ * @key: the key to check
+ * @value: the value to check
+ * @returns: %TRUE if @value is valid for @key
+ *
+ * Checks if the given @value is of the correct type and within the
+ * permitted range for @key.
+ *
+ * This API is not intended to be used by normal programs -- they should
+ * already know what is permitted by their own schemas.  This API is
+ * meant to be used by programs such as editors or commandline tools.
+ *
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings.
+ *
+ * Since: 2.28
+ **/
+gboolean
+g_settings_range_check (GSettings   *settings,
+                        const gchar *key,
+                        GVariant    *value)
+{
+  GSettingsKeyInfo info;
+  gboolean good;
+
+  g_settings_get_key_info (&info, settings, key);
+  good = g_settings_type_check (&info, value) &&
+         g_settings_key_info_range_check (&info, value);
+  g_settings_free_key_info (&info);
+
+  return good;
+}
+
 /* Binding {{{1 */
 typedef struct
 {
@@ -2435,7 +2470,7 @@ g_settings_binding_property_changed (GObject          *object,
           return;
         }
 
-      if (!g_settings_range_check (&binding->info, variant))
+      if (!g_settings_key_info_range_check (&binding->info, variant))
         {
           g_critical ("GObject property `%s' on a `%s' object is out of "
                       "schema-specified range for key `%s' of `%s': %s",
