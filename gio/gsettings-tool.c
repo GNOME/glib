@@ -293,6 +293,13 @@ gsettings_set (GSettings   *settings,
       exit (1);
     }
 
+  if (!g_settings_range_check (settings, key, new))
+    {
+      g_printerr ("The provided value is outside of the valid range\n");
+      g_variant_unref (new);
+      exit (1);
+    }
+
   g_settings_set_value (settings, key, new);
   g_variant_unref (existing);
   g_variant_unref (new);
