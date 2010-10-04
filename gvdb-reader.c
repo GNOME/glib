@@ -34,11 +34,11 @@ struct _GvdbTable {
   gboolean byteswapped;
   gboolean trusted;
 
-  const guint32 *bloom_words;
+  const guint32_le *bloom_words;
   guint32 n_bloom_words;
   guint bloom_shift;
 
-  const guint32 *hash_buckets;
+  const guint32_le *hash_buckets;
   guint32 n_buckets;
 
   struct gvdb_hash_item *hash_items;
@@ -206,7 +206,7 @@ gvdb_table_bloom_filter (GvdbTable *file,
   mask = 1 << (hash_value & 31);
   mask |= 1 << ((hash_value >> file->bloom_shift) & 31);
 
-  return (file->bloom_words[word] & mask) == mask;
+  return (guint32_from_le (file->bloom_words[word]) & mask) == mask;
 }
 
 static gboolean
@@ -262,10 +262,10 @@ gvdb_table_lookup (GvdbTable   *file,
     return NULL;
 
   bucket = hash_value % file->n_buckets;
-  itemno = file->hash_buckets[bucket];
+  itemno = guint32_from_le (file->hash_buckets[bucket]);
 
   if (bucket == file->n_buckets - 1 ||
-      (lastno = file->hash_buckets[bucket + 1]) > file->n_hash_items)
+      (lastno = guint32_from_le(file->hash_buckets[bucket + 1])) > file->n_hash_items)
     lastno = file->n_hash_items;
 
   while G_LIKELY (itemno < lastno)
