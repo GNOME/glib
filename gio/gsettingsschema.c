@@ -299,7 +299,7 @@ g_settings_schema_get_value (GSettingsSchema *schema,
   GVariantIter *iter;
   GVariant *value;
 
-  value = gvdb_table_get_value (schema->priv->table, key);
+  value = gvdb_table_get_raw_value (schema->priv->table, key);
 
   if G_UNLIKELY (value == NULL)
     g_error ("schema does not contain a key named '%s'", key);
