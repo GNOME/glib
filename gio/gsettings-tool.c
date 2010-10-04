@@ -206,6 +206,59 @@ gsettings_list_children (GSettings   *settings,
 }
 
 static void
+gsettings_range (GSettings   *settings,
+                 const gchar *key,
+                 const gchar *value)
+{
+  GVariant *range, *detail;
+  const gchar *type;
+
+  range = g_settings_get_range (settings, key);
+  g_variant_get (range, "(&sv)", &type, &detail);
+
+  if (strcmp (type, "type") == 0)
+    g_print ("type %s\n", g_variant_get_type_string (detail) + 1);
+
+  else if (strcmp (type, "range") == 0)
+    {
+      GVariant *min, *max;
+      gchar *smin, *smax;
+
+      g_variant_get (detail, "(**)", &min, &max);
+      smin = g_variant_print (min, FALSE);
+      smax = g_variant_print (max, FALSE);
+
+      g_print ("range %s %s %s\n",
+               g_variant_get_type_string (min), smin, smax);
+      g_variant_unref (min);
+      g_variant_unref (max);
+      g_free (smin);
+      g_free (smax);
+    }
+
+  else if (strcmp (type, "enum") == 0 || strcmp (type, "flags") == 0)
+    {
+      GVariantIter iter;
+      GVariant *item;
+
+      g_print ("%s\n", type);
+
+      g_variant_iter_init (&iter, detail);
+      while (g_variant_iter_loop (&iter, "*", &item))
+        {
+          gchar *printed;
+
+          printed = g_variant_print (item, FALSE);
+          g_print ("%s\n", printed);
+          g_free (printed);
+        }
+    }
+
+  g_variant_unref (detail);
+  g_variant_unref (range);
+}
+
+static void
 gsettings_get (GSettings   *settings,
                const gchar *key,
                const gchar *value_)
@@ -350,6 +403,12 @@ gsettings_help (gboolean     requested,
       synopsis = "SCHEMA[:PATH] KEY";
     }
 
+  else if (strcmp (command, "range") == 0)
+    {
+      description = "Queries the range of valid values for KEY";
+      synopsis = "SCHEMA[:PATH] KEY";
+    }
+
   else if (strcmp (command, "set") == 0)
     {
       description = "Sets the value of KEY to VALUE";
@@ -394,6 +453,7 @@ gsettings_help (gboolean     requested,
         "  list-relocatable-schemas  List relocatable schemas\n"
         "  list-keys                 List keys in a schema\n"
         "  list-children             List children of a schema\n"
+        "  range                     Queries the range of a key\n"
         "  get                       Get the value of a key\n"
         "  set                       Set the value of a key\n"
         "  reset                     Reset the value of a key\n"
@@ -467,6 +527,9 @@ main (int argc, char **argv)
 
   else if (argc == 3 && strcmp (argv[1], "list-children") == 0)
     function = gsettings_list_children;
+
+  else if (argc == 4 && strcmp (argv[1], "range") == 0)
+    function = gsettings_range;
 
   else if (argc == 4 && strcmp (argv[1], "get") == 0)
     function = gsettings_get;
