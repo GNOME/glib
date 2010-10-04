@@ -42,6 +42,9 @@ G_GNUC_INTERNAL
 GvdbTable *             gvdb_table_get_table                            (GvdbTable    *table,
                                                                          const gchar  *key);
 G_GNUC_INTERNAL
+GVariant *              gvdb_table_get_raw_value                        (GvdbTable    *table,
+                                                                         const gchar  *key);
+G_GNUC_INTERNAL
 GVariant *              gvdb_table_get_value                            (GvdbTable    *table,
                                                                          const gchar  *key);
 
