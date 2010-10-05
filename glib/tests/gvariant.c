@@ -3489,21 +3489,24 @@ test_gv_byteswap ()
    *
    * just test a few simple cases here to make sure they each work
    */
-  guchar valid_data[] = { 'a', '\0', swapped16(66), 2,
+  guchar validbytes[] = { 'a', '\0', swapped16(66), 2,
                           0,
                           'b', '\0', swapped16(77), 2,
                           5, 11 };
-  guchar corrupt_data[] = { 'a', '\0', swapped16(66), 2,
+  guchar corruptbytes[] = { 'a', '\0', swapped16(66), 2,
                             0,
                             'b', '\0', swapped16(77), 2,
                             6, 11 };
+  guint valid_data[4], corrupt_data[4];
   GVariant *value, *swapped;
   gchar *string, *string2;
 
+  memcpy (valid_data, validbytes, sizeof validbytes);
+  memcpy (corrupt_data, corruptbytes, sizeof corruptbytes);
 
   /* trusted */
   value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
-                                   valid_data, sizeof valid_data, TRUE,
+                                   valid_data, sizeof validbytes, TRUE,
                                    NULL, NULL);
   swapped = g_variant_byteswap (value);
   g_variant_unref (value);
@@ -3515,7 +3518,7 @@ test_gv_byteswap ()
 
   /* untrusted but valid */
   value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
-                                   valid_data, sizeof valid_data, FALSE,
+                                   valid_data, sizeof validbytes, FALSE,
                                    NULL, NULL);
   swapped = g_variant_byteswap (value);
   g_variant_unref (value);
@@ -3527,7 +3530,7 @@ test_gv_byteswap ()
 
   /* untrusted, invalid */
   value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
-                                   corrupt_data, sizeof corrupt_data, FALSE,
+                                   corrupt_data, sizeof corruptbytes, FALSE,
                                    NULL, NULL);
   string = g_variant_print (value, FALSE);
   swapped = g_variant_byteswap (value);
