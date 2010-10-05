@@ -258,6 +258,26 @@ struct _GSourceFuncs
  */
 #define G_PRIORITY_LOW              300
 
+/**
+ * G_SOURCE_REMOVE:
+ *
+ * Use this macro as the return value of a #GSourceFunc to remove
+ * the #GSource from the main loop.
+ *
+ * Since: 2.28
+ */
+#define G_SOURCE_REMOVE         FALSE
+
+/**
+ * G_SOURCE_CONTINUE:
+ *
+ * Use this macro as the return value of a #GSourceFunc to leave
+ * the #GSource in the main loop.
+ *
+ * Since: 2.28
+ */
+#define G_SOURCE_CONTINUE       TRUE
+
 /* GMainContext: */
 
 GMainContext *g_main_context_new       (void);
