@@ -1574,7 +1574,7 @@ test_enums (void)
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_set_string (settings, "test", "qux");
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_range_check*");
+      g_test_trap_assert_stderr ("*g_settings_key_info_range_check*");
 
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_get_flags (settings, "test");
@@ -1633,7 +1633,7 @@ test_flags (void)
         g_settings_set_strv (settings, "f-test",
                              (const gchar **) g_strsplit ("rock", ",", 0));
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_range_check*");
+      g_test_trap_assert_stderr ("*g_settings_key_info_range_check*");
 
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_get_enum (settings, "f-test");
@@ -1692,12 +1692,12 @@ test_range (void)
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_set_int (settings, "val", 45);
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_range_check*");
+      g_test_trap_assert_stderr ("*g_settings_key_info_range_check*");
 
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_set_int (settings, "val", 1);
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_range_check*");
+      g_test_trap_assert_stderr ("*g_settings_key_info_range_check*");
     }
 
   g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 33);
