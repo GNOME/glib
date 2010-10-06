@@ -114,7 +114,10 @@ g_registered_type_info_get_type_init (GIRegisteredTypeInfo *info)
  * g_registered_type_info_get_g_type:
  * @info: a #GIRegisteredTypeInfo
  *
- * Obtain the #GType for this registered type.
+ * Obtain the #GType for this registered type or G_TYPE_NONE which a special meaning.
+ * It means that either there is no type information associated with this @info or
+ * that the shared library which provides the type_init function for this
+ * @info cannot be called.
  *
  * Returns: the #GType.
  */
