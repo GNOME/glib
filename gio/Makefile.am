@@ -142,10 +142,11 @@ application_headers = \
 	gapplication.h
 
 application_sources = \
-	gactiongroup.c			\
-	gsimpleactiongroup.c		\
-	gaction.c			\
-	gsimpleaction.c			\
+	gactiongroup.c				\
+	gsimpleactiongroup.c			\
+	gaction.c				\
+	gsimpleaction.c				\
+	gapplicationimpl-dbus.c			\
 	gapplication.c
 
 local_sources = \

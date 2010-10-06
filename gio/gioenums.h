@@ -1216,6 +1216,24 @@ typedef enum
   G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN = 'l'
 } GDBusMessageByteOrder;
 
+/**
+ * GApplicationFlags:
+ * @G_APPLICATION_FLAGS_NONE: Default
+ * @G_APPLICATION_FLAGS_HANDLE_OPEN: This application handles opening files.
+ *
+ * Flags used to define the behaviour of a #GApplication.
+ *
+ * Since: 2.26
+ **/
+typedef enum
+{
+  G_APPLICATION_FLAGS_NONE,
+  G_APPLICATION_FLAGS_IS_SERVICE  =          (1 << 0),
+  G_APPLICATION_FLAGS_IS_LAUNCHER =          (1 << 1),
+
+  G_APPLICATION_FLAGS_HANDLES_OPEN =         (1 << 2)
+} GApplicationFlags;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

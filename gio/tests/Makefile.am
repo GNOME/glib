@@ -59,8 +59,6 @@ TEST_PROGS +=			\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
 	gdbus-bz627724		\
-	application		\
-	testapps		\
 	appinfo			\
 	contenttype		\
 	file			\
@@ -84,7 +82,6 @@ SAMPLE_PROGS = 				\
 	gdbus-example-peer		\
 	gdbus-example-proxy-subclass	\
 	gdbus-connection-flush-helper	\
-	testapp				\
 	appinfo-test			\
 	proxy				\
 	$(NULL)
@@ -291,20 +288,11 @@ gdbus_example_export_LDADD   = $(progs_ldadd)
 gdbus_connection_flush_helper_SOURCES = gdbus-connection-flush-helper.c
 gdbus_connection_flush_helper_LDADD = $(progs_ldadd)
 
-application_SOURCES = application.c gdbus-sessionbus.c gdbus-sessionbus.h
-application_LDADD   = $(progs_ldadd)
-
 appinfo_SOURCES = appinfo.c
 appinfo_LDADD   = $(progs_ldadd)
 
 appinfo_test_SOURCES = appinfo-test.c
 appinfo_test_LDADD   = $(progs_ldadd)
-
-testapp_SOURCES = testapp.c
-testapp_LDADD   = $(progs_ldadd)
-
-testapps_SOURCES = testapps.c gdbus-sessionbus.c gdbus-sessionbus.h
-testapps_LDADD   = $(progs_ldadd)
 
 contenttype_SOURCES = contenttype.c
 contenttype_LDADD   = $(progs_ldadd)

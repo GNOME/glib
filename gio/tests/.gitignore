@@ -1,7 +1,6 @@
 actions
 appinfo
 appinfo-test
-application
 async-close-output-stream
 buffered-input-stream
 buffered-output-stream
@@ -65,8 +64,6 @@ sleepy-stream
 socket-client
 socket-server
 srvtarget
-testapp
-testapps
 test.mo
 unix-fd
 unix-streams
