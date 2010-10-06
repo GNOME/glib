@@ -372,6 +372,11 @@ g_application_class_init (GApplicationClass *class)
                           "If this application instance is remote",
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
+  g_object_class_install_property (object_class, PROP_INACTIVITY_TIMEOUT,
+    g_param_spec_boolean ("inactivity-timeout", "inactivity timeout",
+                          "time (ms) to stay alive after becoming idle",
+                          0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+
 
   g_application_signals[SIGNAL_STARTUP] =
     g_signal_new ("startup", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
@@ -984,14 +989,17 @@ g_application_run_with_arguments (GApplication *application,
 
   g_variant_unref (arguments);
 
-  if (application->priv->use_count ||
-      application->priv->flags & G_APPLICATION_FLAGS_IS_SERVICE)
+  if (application->priv->flags & G_APPLICATION_FLAGS_IS_SERVICE &&
+      !application->priv->use_count &&
+      !application->priv->inactivity_timeout_id)
     {
-      if (!application->priv->use_count)
-        application->priv->inactivity_timeout_id =
-          g_timeout_add (10000, inactivity_timeout_expired, application);
+      application->priv->inactivity_timeout_id =
+        g_timeout_add (10000, inactivity_timeout_expired, application);
+    }
 
-
+  if (application->priv->use_count ||
+      application->priv->inactivity_timeout_id)
+    {
       G_APPLICATION_GET_CLASS (application)
         ->run_mainloop (application);
       status = 0;
