@@ -88,7 +88,7 @@ SAMPLE_PROGS = 				\
 
 
 if OS_UNIX
-TEST_PROGS += live-g-file desktop-app-info unix-fd unix-streams
+TEST_PROGS += live-g-file desktop-app-info unix-fd unix-streams gapplication
 SAMPLE_PROGS +=	gdbus-example-unix-fd-client
 endif
 
@@ -299,6 +299,9 @@ contenttype_LDADD   = $(progs_ldadd)
 
 file_SOURCES = file.c
 file_LDADD   = $(progs_ldadd)
+
+gapplication_SOURCES = gapplication.c gdbus-sessionbus.c
+gapplication_LDADD = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\

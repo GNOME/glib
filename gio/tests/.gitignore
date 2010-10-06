@@ -16,6 +16,7 @@ echo-server
 file
 filter-cat
 filter-streams
+gapplication
 gdbus-addresses
 gdbus-bz627724
 gdbus-connection
