@@ -886,7 +886,8 @@ test_file_functions (void)
   fd = g_mkstemp (template);
   if (g_test_verbose() && fd != -1)
     g_print ("g_mkstemp works even if template doesn't end in XXXXXX\n");
-  close (fd);
+  if (fd != -1)
+    close (fd);
   strcpy (template, "fooXXXXXX");
   fd = g_mkstemp (template);
   if (fd == -1)
