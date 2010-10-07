@@ -23,7 +23,6 @@ g_data_output_stream_get_type
 g_data_stream_byte_order_get_type
 g_data_stream_newline_type_get_type
 g_desktop_app_info_get_type
-g_desktop_app_info_lookup_get_type
 g_drive_get_type
 g_emblem_get_type
 g_emblem_origin_get_type
