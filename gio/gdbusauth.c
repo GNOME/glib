@@ -805,7 +805,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
             {
               gchar *encoded;
               gchar *decoded_data;
-              gsize decoded_data_len;
+              gsize decoded_data_len = 0;
 
               encoded = g_strdup (line + 5);
               g_free (line);
@@ -1230,7 +1230,7 @@ _g_dbus_auth_run_server (GDBusAuth              *auth,
             {
               gchar *encoded;
               gchar *decoded_data;
-              gsize decoded_data_len;
+              gsize decoded_data_len = 0;
 
               encoded = g_strdup (line + 5);
               g_free (line);
