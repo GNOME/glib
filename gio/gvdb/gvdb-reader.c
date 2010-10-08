@@ -612,7 +612,7 @@ gvdb_table_walk (GvdbTable         *table,
                 {
                   if (open_func (name, name_len, user_data))
                     {
-                      guint length;
+                      guint length = 0;
 
                       index++;
                       g_assert (index < 64);
