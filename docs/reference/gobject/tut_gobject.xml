@@ -456,7 +456,7 @@ void g_object_run_dispose         (GObject     *object);
       <para>
         This two-step destruction process is very useful to break reference counting cycles.
         While the detection of the cycles is up to the external code, once the cycles have been
-        detected, the external code can invoke <function><link linkend="g-object-dispose">g_object_dispose</link></function> which 
+        detected, the external code can invoke <function><link linkend="g-object-run-dispose">g_object_run_dispose</link></function> which 
         will indeed break any existing cycles since it will run the dispose handler associated
         to the object and thus release all references to other objects.
       </para>
@@ -466,7 +466,7 @@ void g_object_run_dispose         (GObject     *object);
         we stated a bit sooner: the dispose handler can be invoked multiple times. Let's say we
         have a reference count cycle: object A references B which itself references object A.
         Let's say we have detected the cycle and we want to destroy the two objects. One way to 
-        do this would be to invoke <function><link linkend="g-object-dispose">g_object_dispose</link></function> on one of the 
+        do this would be to invoke <function><link linkend="g-object-run-dispose">g_object_run_dispose</link></function> on one of the 
         objects.
       </para>
   
