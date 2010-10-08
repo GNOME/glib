@@ -469,7 +469,7 @@ g_object_class_install_property (GObjectClass *class,
  * be used to store a #GParamSpec.
  *
  * This function should be used if you plan to use a static array of
- * #GParamSpec<!-- -->s and g_object_notify_pspec(). For instance, this
+ * #GParamSpec<!-- -->s and g_object_notify_by_pspec(). For instance, this
  * class initialization:
  *
  * |[
@@ -524,7 +524,7 @@ g_object_class_install_properties (GObjectClass  *oclass,
                                    guint          n_pspecs,
                                    GParamSpec   **pspecs)
 {
-  GType oclass_type;
+  GType oclass_type, parent_type;
   gint i;
 
   g_return_if_fail (G_IS_OBJECT_CLASS (oclass));
@@ -536,6 +536,7 @@ g_object_class_install_properties (GObjectClass  *oclass,
              G_OBJECT_CLASS_NAME (oclass));
 
   oclass_type = G_OBJECT_CLASS_TYPE (oclass);
+  parent_type = g_type_parent (oclass_type);
 
   /* we skip the first element of the array as it would have a 0 prop_id */
   for (i = 1; i < n_pspecs; i++)
@@ -563,7 +564,7 @@ g_object_class_install_properties (GObjectClass  *oclass,
       /* for property overrides of construct properties, we have to get rid
        * of the overidden inherited construct property
        */
-      pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, g_type_parent (G_OBJECT_CLASS_TYPE (oclass)), TRUE);
+      pspec = g_param_spec_pool_lookup (pspec_pool, pspec->name, parent_type, TRUE);
       if (pspec && pspec->flags & (G_PARAM_CONSTRUCT | G_PARAM_CONSTRUCT_ONLY))
         oclass->construct_properties = g_slist_remove (oclass->construct_properties, pspec);
     }
