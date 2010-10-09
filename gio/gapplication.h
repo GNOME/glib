@@ -93,14 +93,13 @@ struct _GApplicationClass
                                                      gint                      n_files,
                                                      const gchar              *hint);
 
-  gpointer _reserved_1;
+  int                       (* command_line)        (GApplication             *application,
+                                                     GApplicationCommandLine  *command_line);
 
   /* vfuncs */
   gboolean                  (* local_command_line)  (GApplication             *application,
                                                      GVariant                **arguments,
                                                      int                      *exit_status);
-
-  gpointer _reserved_2;
 
   void                      (* before_emit)         (GApplication             *application,
                                                      GVariant                 *platform_data);

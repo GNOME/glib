@@ -139,6 +139,7 @@ application_headers = \
 	gsimpleactiongroup.h		\
 	gaction.h			\
 	gsimpleaction.h			\
+	gapplicationcommandline.h	\
 	gapplication.h
 
 application_sources = \
@@ -146,6 +147,7 @@ application_sources = \
 	gsimpleactiongroup.c			\
 	gaction.c				\
 	gsimpleaction.c				\
+	gapplicationcommandline.c		\
 	gapplicationimpl-dbus.c			\
 	gapplication.c
 

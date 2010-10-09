@@ -28,9 +28,11 @@
 #include "gdbuserror.h"
 
 #include <string.h>
-
+#include <stdio.h>
 
 #include "gapplicationimpl-dbus-interface.c"
+#include "gapplicationcommandline.h"
+#include "gdbusmethodinvocation.h"
 
 struct _GApplicationImpl
 {
@@ -39,9 +41,12 @@ struct _GApplicationImpl
   gchar           *object_path;
   guint            object_id;
   gpointer         app;
-
-  GMainLoop       *cmdline_mainloop;
 };
+
+
+static GApplicationCommandLine *
+g_dbus_command_line_new (GDBusMethodInvocation *invocation);
+
 
 static void
 g_application_impl_method_call (GDBusConnection       *connection,
@@ -102,6 +107,22 @@ g_application_impl_method_call (GDBusConnection       *connection,
       for (i = 0; i < n; i++)
         g_object_unref (files[i]);
       g_free (files);
+    }
+
+  else if (strcmp (method_name, "CommandLine") == 0)
+    {
+      GApplicationCommandLine *cmdline;
+      GVariant *platform_data;
+      int status;
+
+      cmdline = g_dbus_command_line_new (invocation);
+      platform_data = g_variant_get_child_value (parameters, 2);
+      class->before_emit (impl->app, platform_data);
+      g_signal_emit_by_name (impl->app, "command-line", cmdline, &status);
+      g_application_command_line_set_exit_status (cmdline, status);
+      class->after_emit (impl->app, platform_data);
+      g_variant_unref (platform_data);
+      g_object_unref (cmdline);
     }
 
   else
@@ -175,7 +196,7 @@ g_application_impl_register (GApplication       *application,
 
   impl->object_path = application_path_from_appid (appid);
 
-  if (flags & G_APPLICATION_FLAGS_IS_LAUNCHER)
+  if (flags & G_APPLICATION_IS_LAUNCHER)
     {
       impl->object_id = 0;
       *is_remote = TRUE;
@@ -238,7 +259,7 @@ g_application_impl_register (GApplication       *application,
                                            impl->object_id);
       impl->object_id = 0;
 
-      if (flags & G_APPLICATION_FLAGS_IS_SERVICE)
+      if (flags & G_APPLICATION_IS_SERVICE)
         {
           g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
                        "Unable to acquire bus name `%s'", appid);
@@ -297,8 +318,211 @@ g_application_impl_open (GApplicationImpl  *impl,
                           NULL, 0, -1, NULL, NULL, NULL);
 }
 
+static void
+g_application_impl_cmdline_method_call (GDBusConnection       *connection,
+                                        const gchar           *sender,
+                                        const gchar           *object_path,
+                                        const gchar           *interface_name,
+                                        const gchar           *method_name,
+                                        GVariant              *parameters,
+                                        GDBusMethodInvocation *invocation,
+                                        gpointer               user_data)
+{
+  const gchar *message;
+
+  g_variant_get_child (parameters, 0, "&s", &message);
+
+  if (strcmp (method_name, "Print") == 0)
+    g_print ("%s", message);
+  else if (strcmp (method_name, "PrintError") == 0)
+    g_printerr ("%s", message);
+  else
+    g_assert_not_reached ();
+
+  g_dbus_method_invocation_return_value (invocation, NULL);
+}
+
+typedef struct
+{
+  GMainLoop *loop;
+  int status;
+} CommandLineData;
+
+static void
+g_application_impl_cmdline_done (GObject      *source,
+                                 GAsyncResult *result,
+                                 gpointer      user_data)
+{
+  CommandLineData *data = user_data;
+  GError *error = NULL;
+  GVariant *reply;
+
+  reply = g_dbus_connection_call_finish (G_DBUS_CONNECTION (source),
+                                         result, &error);
+
+  if (reply != NULL)
+    {
+      g_variant_get (reply, "(i)", &data->status);
+      g_variant_unref (reply);
+    }
+
+  else
+    {
+      g_printerr ("%s\n", error->message);
+      g_error_free (error);
+      data->status = 1;
+    }
+
+  g_main_loop_quit (data->loop);
+}
+
+int
+g_application_impl_command_line (GApplicationImpl *impl,
+                                 GVariant         *arguments,
+                                 GVariant         *platform_data)
+{
+  const static GDBusInterfaceVTable vtable = {
+    g_application_impl_cmdline_method_call
+  };
+  const gchar *object_path = "/org/gtk/Application/CommandLine";
+  GMainContext *context;
+  CommandLineData data;
+  guint object_id;
+
+  context = g_main_context_new ();
+  data.loop = g_main_loop_new (context, FALSE);
+  g_main_context_push_thread_default (context);
+
+  object_id = g_dbus_connection_register_object (impl->session_bus,
+                                                 object_path,
+                                                 (GDBusInterfaceInfo *)
+                                                   &org_gtk_private_Cmdline,
+                                                 &vtable, &data, NULL, NULL);
+  /* In theory we should try other paths... */
+  g_assert (object_id != 0);
+
+  g_dbus_connection_call (impl->session_bus,
+                          impl->bus_name,
+                          impl->object_path,
+                          "org.gtk.Application",
+                          "CommandLine",
+                          g_variant_new ("(o@aay@a{sv})", object_path,
+                                         arguments, platform_data),
+                          G_VARIANT_TYPE ("(i)"), 0, -1, NULL,
+                          g_application_impl_cmdline_done, &data);
+
+  g_main_loop_run (data.loop);
+
+  g_main_context_pop_thread_default (context);
+  g_main_context_unref (context);
+  g_main_loop_unref (data.loop);
+
+  return data.status;
+}
+
 void
 g_application_impl_flush (GApplicationImpl *impl)
 {
   g_dbus_connection_flush_sync (impl->session_bus, NULL, NULL);
+}
+
+
+
+
+
+typedef GApplicationCommandLineClass GDBusCommandLineClass;
+static GType g_dbus_command_line_get_type (void);
+typedef struct
+{
+  GApplicationCommandLine  parent_instance;
+  GDBusMethodInvocation   *invocation;
+
+  GDBusConnection *connection;
+  const gchar     *bus_name;
+  const gchar     *object_path;
+} GDBusCommandLine;
+
+
+G_DEFINE_TYPE (GDBusCommandLine,
+               g_dbus_command_line,
+               G_TYPE_APPLICATION_COMMAND_LINE)
+
+static void
+g_dbus_command_line_print_literal (GApplicationCommandLine *cmdline,
+                                   const gchar             *message)
+{
+  GDBusCommandLine *gdbcl = (GDBusCommandLine *) cmdline;
+
+  g_dbus_connection_call (gdbcl->connection,
+                          gdbcl->bus_name,
+                          gdbcl->object_path,
+                          "org.gtk.private.CommandLine", "Print",
+                          g_variant_new ("(s)", message),
+                          NULL, 0, -1, NULL, NULL, NULL);
+}
+
+static void
+g_dbus_command_line_printerr_literal (GApplicationCommandLine *cmdline,
+                                      const gchar             *message)
+{
+  GDBusCommandLine *gdbcl = (GDBusCommandLine *) cmdline;
+
+  g_dbus_connection_call (gdbcl->connection,
+                          gdbcl->bus_name,
+                          gdbcl->object_path,
+                          "org.gtk.private.CommandLine", "PrintError",
+                          g_variant_new ("(s)", message),
+                          NULL, 0, -1, NULL, NULL, NULL);
+}
+
+static void
+g_dbus_command_line_finalize (GObject *object)
+{
+  GApplicationCommandLine *cmdline = G_APPLICATION_COMMAND_LINE (object);
+  GDBusCommandLine *gdbcl = (GDBusCommandLine *) object;
+  gint status;
+
+  status = g_application_command_line_get_exit_status (cmdline);
+
+  g_dbus_method_invocation_return_value (gdbcl->invocation,
+                                         g_variant_new ("(i)", status));
+  g_object_unref (gdbcl->invocation);
+
+  G_OBJECT_CLASS (g_dbus_command_line_parent_class)
+    ->finalize (object);
+}
+
+static void
+g_dbus_command_line_init (GDBusCommandLine *gdbcl)
+{
+}
+
+static void
+g_dbus_command_line_class_init (GApplicationCommandLineClass *class)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  object_class->finalize = g_dbus_command_line_finalize;
+  class->printerr_literal = g_dbus_command_line_printerr_literal;
+  class->print_literal = g_dbus_command_line_print_literal;
+}
+
+static GApplicationCommandLine *
+g_dbus_command_line_new (GDBusMethodInvocation *invocation)
+{
+  GDBusCommandLine *gdbcl;
+  GVariant *args;
+
+  args = g_dbus_method_invocation_get_parameters (invocation);
+
+  gdbcl = g_object_new (g_dbus_command_line_get_type (),
+                        "arguments", g_variant_get_child_value (args, 1),
+                        "platform-data", g_variant_get_child_value (args, 2),
+                        NULL);
+  gdbcl->connection = g_dbus_method_invocation_get_connection (invocation);
+  gdbcl->bus_name = g_dbus_method_invocation_get_sender (invocation);
+  g_variant_get_child (args, 0, "&o", &gdbcl->object_path);
+  gdbcl->invocation = g_object_ref (invocation);
+
+  return G_APPLICATION_COMMAND_LINE (gdbcl);
 }

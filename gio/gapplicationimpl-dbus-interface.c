@@ -37,6 +37,9 @@ static const GDBusArgInfo *activate_out[] = { NULL };
 static const GDBusArgInfo *open_in[] = { &open_uris_arg, &open_hint_arg, &platform_data_arg, NULL };
 static const GDBusArgInfo *open_out[] = { NULL };
 
+static const GDBusArgInfo *cmdline_in[] = { &cmdline_path_arg, &cmdline_arguments_arg, &platform_data_arg, NULL };
+static const GDBusArgInfo *cmdline_out[] = { &cmdline_exit_status_arg, NULL };
+
 static const GDBusMethodInfo activate_method = {
   -1, (gchar *) "Activate",
   (GDBusArgInfo **) activate_in,
@@ -49,11 +52,42 @@ static const GDBusMethodInfo open_method = {
   (GDBusArgInfo **) open_out
 };
 
+static const GDBusMethodInfo command_line_method = {
+  -1, (gchar *) "CommandLine",
+  (GDBusArgInfo **) cmdline_in,
+  (GDBusArgInfo **) cmdline_out
+};
+
 static const GDBusMethodInfo *application_methods[] = {
-  &activate_method, &open_method, NULL
+  &activate_method, &open_method, &command_line_method, NULL
 };
 
 const GDBusInterfaceInfo org_gtk_Application = {
   -1, (gchar *) "org.gtk.Application",
   (GDBusMethodInfo **) application_methods
+};
+
+static const GDBusArgInfo message_arg = { -1, (gchar *) "message", (gchar *) "s" };
+static const GDBusArgInfo *print_in[] = { &message_arg, NULL };
+static const GDBusArgInfo *print_out[] = { NULL };
+
+static const GDBusMethodInfo stdout_method = {
+  -1, (gchar *) "Print",
+  (GDBusArgInfo **) print_in,
+  (GDBusArgInfo **) print_out
+};
+
+static const GDBusMethodInfo stderr_method = {
+  -1, (gchar *) "PrintError",
+  (GDBusArgInfo **) print_in,
+  (GDBusArgInfo **) print_out
+};
+
+static const GDBusMethodInfo *cmdline_methods[] = {
+  &stdout_method, &stderr_method, NULL
+};
+
+const GDBusInterfaceInfo org_gtk_private_Cmdline = {
+  -1, (gchar *) "org.gtk.private.CommandLine",
+  (GDBusMethodInfo **) cmdline_methods
 };

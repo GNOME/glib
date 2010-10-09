@@ -33,6 +33,7 @@
 #include <gio/gactiongroup.h>
 #include <gio/gsimpleactiongroup.h>
 #include <gio/gapplication.h>
+#include <gio/gapplicationcommandline.h>
 #include <gio/gasyncinitable.h>
 #include <gio/gasyncresult.h>
 #include <gio/gbufferedinputstream.h>

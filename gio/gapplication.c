@@ -22,6 +22,7 @@
 /* Prologue {{{1 */
 #include "gapplication.h"
 
+#include "gapplicationcommandline.h"
 #include "gapplicationimpl.h"
 
 #include "gioenumtypes.h"
@@ -132,12 +133,30 @@ g_application_real_open (GApplication  *application,
     }
 }
 
+static int
+g_application_real_command_line (GApplication            *application,
+                                 GApplicationCommandLine *cmdline)
+{
+  static gboolean warned;
+
+  if (warned) 
+    return 1;
+
+  g_warning ("Your application claims to support custom command line "
+             "handling but does not implement g_application_command_line() "
+             "and has no handlers connected to the 'command-line' signal.");
+
+  warned = TRUE;
+
+  return 1;
+}
+
 static gboolean
 g_application_real_local_command_line (GApplication  *application,
                                        GVariant     **arguments,
                                        int           *exit_status)
 {
-  if (0)
+  if (application->priv->flags & G_APPLICATION_HANDLES_COMMAND_LINE)
     return FALSE;
 
   else
@@ -155,12 +174,12 @@ g_application_real_local_command_line (GApplication  *application,
 
       n_args = g_variant_n_children (*arguments);
 
-      if (application->priv->flags & G_APPLICATION_FLAGS_IS_SERVICE)
+      if (application->priv->flags & G_APPLICATION_IS_SERVICE)
         {
           if (n_args > 1)
             {
               g_printerr ("GApplication service mode takes no arguments.\n");
-              application->priv->flags &= ~G_APPLICATION_FLAGS_IS_SERVICE;
+              application->priv->flags &= ~G_APPLICATION_IS_SERVICE;
             }
 
           return TRUE;
@@ -174,7 +193,7 @@ g_application_real_local_command_line (GApplication  *application,
 
       else
         {
-          if (~application->priv->flags & G_APPLICATION_FLAGS_HANDLES_OPEN)
+          if (~application->priv->flags & G_APPLICATION_HANDLES_OPEN)
             {
               g_critical ("This application can not open files.");
               *exit_status = 1;
@@ -330,6 +349,17 @@ g_application_init (GApplication *application)
                                                    GApplicationPrivate);
 }
 
+static gboolean
+first_wins_accumulator (GSignalInvocationHint *ihint,
+                        GValue                *return_accu,
+                        const GValue          *handler_return,
+                        gpointer               data)
+{
+  g_value_copy (handler_return, return_accu);
+
+  return FALSE;
+}
+
 static void
 g_application_class_init (GApplicationClass *class)
 {
@@ -345,6 +375,7 @@ g_application_class_init (GApplicationClass *class)
   class->startup = g_application_real_startup;
   class->activate = g_application_real_activate;
   class->open = g_application_real_open;
+  class->command_line = g_application_real_command_line;
   class->local_command_line = g_application_real_local_command_line;
   class->add_platform_data = g_application_real_add_platform_data;
   class->quit_mainloop = g_application_real_quit_mainloop;
@@ -393,6 +424,12 @@ g_application_class_init (GApplicationClass *class)
                   G_STRUCT_OFFSET (GApplicationClass, open),
                   NULL, NULL, _gio_marshal_VOID__POINTER_INT_STRING,
                   G_TYPE_NONE, 3, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_STRING);
+
+  g_application_signals[SIGNAL_COMMAND_LINE] =
+    g_signal_new ("command-line", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GApplicationClass, command_line),
+                  first_wins_accumulator, NULL, _gio_marshal_INT__OBJECT,
+                  G_TYPE_INT, 1, G_TYPE_APPLICATION_COMMAND_LINE);
 
   g_type_class_add_private (class, sizeof (GApplicationPrivate));
 }
@@ -729,9 +766,9 @@ g_application_register (GApplication  *application,
       gboolean try;
 
       /* don't try to be the primary instance if
-       * G_APPLICATION_FLAGS_IS_LAUNCHER was specified.
+       * G_APPLICATION_IS_LAUNCHER was specified.
        */
-      try = !(application->priv->flags & G_APPLICATION_FLAGS_IS_LAUNCHER);
+      try = !(application->priv->flags & G_APPLICATION_IS_LAUNCHER);
 
       application->priv->impl =
         g_application_impl_register (application, application->priv->id,
@@ -867,7 +904,7 @@ g_application_activate (GApplication *application)
  * for this functionality, you should use "".
  *
  * The application must be registered before calling this function and
- * it must have the %G_APPLICATION_FLAGS_CAN_OPEN flag set.  The open()
+ * it must have the %G_APPLICATION_CAN_OPEN flag set.  The open()
  * virtual function should also be implemented in order for anything
  * meaningful to happen.
  *
@@ -881,7 +918,7 @@ g_application_open (GApplication  *application,
 {
   g_return_if_fail (G_IS_APPLICATION (application));
   g_return_if_fail (application->priv->flags &
-                    G_APPLICATION_FLAGS_HANDLES_OPEN);
+                    G_APPLICATION_HANDLES_OPEN);
   g_return_if_fail (application->priv->is_registered);
 
   if (application->priv->is_remote)
@@ -913,7 +950,7 @@ g_application_open (GApplication  *application,
  * virtual function is invoked in the primary instance (which may or may
  * not be this instance).
  *
- * If the application has the %G_APPLICATION_FLAGS_REMOTE_COMMAND_LINE
+ * If the application has the %G_APPLICATION_REMOTE_COMMAND_LINE
  * flag set then the default implementation of handle_command_line()
  * always returns %FALSE immediately, resulting in the commandline
  * always being handled in the primary instance.
@@ -924,7 +961,7 @@ g_application_open (GApplication  *application,
  * to register the application.  If that works, then the command line
  * arguments are inspected.  If no commandline arguments are given, then
  * g_application_activate() is called.  If commandline arguments are
- * given and the %G_APPLICATION_FLAGS_CAN_OPEN flags is set then they
+ * given and the %G_APPLICATION_CAN_OPEN flags is set then they
  * are assumed to be filenames and g_application_open() is called.
  *
  * If you are interested in doing more complicated local handling of the
@@ -984,12 +1021,39 @@ g_application_run_with_arguments (GApplication *application,
   if (!G_APPLICATION_GET_CLASS (application)
         ->local_command_line (application, &arguments, &status))
     {
-      g_assert_not_reached ();
+      GError *error = NULL;
+
+      if (!g_application_register (application, NULL, &error))
+        {
+          g_printerr ("%s", error->message);
+          g_error_free (error);
+          return 1;
+        }
+
+      if (application->priv->is_remote)
+        {
+          GVariant *platform_data;
+
+          platform_data = get_platform_data (application);
+          status = g_application_impl_command_line (application->priv->impl,
+                                                    arguments, platform_data);
+        }
+      else
+        {
+          GApplicationCommandLine *cmdline;
+
+          cmdline = g_object_new (G_TYPE_APPLICATION_COMMAND_LINE,
+                                  "arguments", arguments, NULL);
+          g_signal_emit (application,
+                         g_application_signals[SIGNAL_COMMAND_LINE],
+                         0, cmdline, &status);
+          g_object_unref (cmdline);
+        }
     }
 
   g_variant_unref (arguments);
 
-  if (application->priv->flags & G_APPLICATION_FLAGS_IS_SERVICE &&
+  if (application->priv->flags & G_APPLICATION_IS_SERVICE &&
       !application->priv->use_count &&
       !application->priv->inactivity_timeout_id)
     {
