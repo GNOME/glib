@@ -38,7 +38,7 @@ struct _GApplicationPrivate
   GApplicationFlags  flags;
   gchar             *id;
 
-  GHashTable        *actions; /* string -> GApplicationAction */
+  GActionGroup      *actions;
   GMainLoop         *mainloop;
 
   guint              inactivity_timeout_id;
@@ -58,7 +58,8 @@ enum
   PROP_FLAGS,
   PROP_IS_REGISTERED,
   PROP_IS_REMOTE,
-  PROP_INACTIVITY_TIMEOUT
+  PROP_INACTIVITY_TIMEOUT,
+  PROP_ACTION_GROUP
 };
 
 enum
@@ -278,9 +279,44 @@ g_application_set_property (GObject *object, guint prop_id,
                                             g_value_get_uint (value));
       break;
 
+    case PROP_ACTION_GROUP:
+      g_application_set_action_group (application,
+                                      g_value_get_object (value));
+      break;
+
     default:
       g_assert_not_reached ();
     }
+}
+
+/**
+ * g_application_set_action_group:
+ * @application: a #GApplication
+ * @action_group: a #GActionGroup, or %NULL
+ *
+ * Sets or unsets the group of actions associated with the application.
+ *
+ * These actions are the actions that can be remotely invoked.
+ *
+ * It is an error to call this function after the application has been
+ * registered.
+ *
+ * Since: 2.28
+ **/
+void
+g_application_set_action_group (GApplication *application,
+                                GActionGroup *action_group)
+{
+  g_return_if_fail (G_IS_APPLICATION (application));
+  g_return_if_fail (application->priv->is_registered);
+
+  if (application->priv->actions != NULL)
+    g_object_unref (application->priv->actions);
+
+  application->priv->actions = action_group;
+
+  if (application->priv->actions != NULL)
+    g_object_ref (application->priv->actions);
 }
 
 static void
@@ -410,8 +446,13 @@ g_application_class_init (GApplicationClass *class)
   g_object_class_install_property (object_class, PROP_INACTIVITY_TIMEOUT,
     g_param_spec_boolean ("inactivity-timeout", "inactivity timeout",
                           "time (ms) to stay alive after becoming idle",
-                          0, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                          FALSE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
+  g_object_class_install_property (object_class, PROP_ACTION_GROUP,
+    g_param_spec_object ("action-group", "action group",
+                         "the group of actions that the application exports",
+                         G_TYPE_ACTION_GROUP, 
+                         G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   g_application_signals[SIGNAL_STARTUP] =
     g_signal_new ("startup", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
@@ -1083,48 +1124,92 @@ static gboolean
 g_application_has_action (GActionGroup *action_group,
                           const gchar  *action_name)
 {
-  return FALSE;
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_val_if_fail (application->priv->is_registered, FALSE);
+
+  return application->priv->actions &&
+         g_action_group_has_action (application->priv->actions, action_name);
 }
 
 static gchar **
 g_application_list_actions (GActionGroup *action_group)
 {
-  return NULL;
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_val_if_fail (application->priv->is_registered, NULL);
+
+  if (application->priv->actions != NULL)
+    return g_action_group_list_actions (application->priv->actions);
+
+  else
+    /* empty string array */
+    return g_new0 (gchar *, 1);
 }
 
 static gboolean
 g_application_get_action_enabled (GActionGroup *action_group,
                                   const gchar  *action_name)
 {
-  return FALSE;
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_val_if_fail (application->priv->actions != NULL, FALSE);
+  g_return_val_if_fail (application->priv->is_registered, FALSE);
+
+  return g_action_group_get_action_enabled (application->priv->actions,
+                                            action_name);
 }
 
 static const GVariantType *
 g_application_get_action_parameter_type (GActionGroup *action_group,
                                          const gchar  *action_name)
 {
-  return NULL;
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_val_if_fail (application->priv->actions != NULL, NULL);
+  g_return_val_if_fail (application->priv->is_registered, NULL);
+
+  return g_action_group_get_action_parameter_type (application->priv->actions,
+                                                   action_name);
 }
 
 static const GVariantType *
 g_application_get_action_state_type (GActionGroup *action_group,
                                      const gchar  *action_name)
 {
-  return NULL;
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_val_if_fail (application->priv->actions != NULL, NULL);
+  g_return_val_if_fail (application->priv->is_registered, NULL);
+
+  return g_action_group_get_action_state_type (application->priv->actions,
+                                               action_name);
 }
 
 static GVariant *
 g_application_get_action_state_hint (GActionGroup *action_group,
                                      const gchar  *action_name)
 {
-  return NULL;
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_val_if_fail (application->priv->actions != NULL, NULL);
+  g_return_val_if_fail (application->priv->is_registered, NULL);
+
+  return g_action_group_get_action_state_hint (application->priv->actions,
+                                               action_name);
 }
 
 static GVariant *
 g_application_get_action_state (GActionGroup *action_group,
                                 const gchar  *action_name)
 {
-  return NULL;
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_val_if_fail (application->priv->actions != NULL, NULL);
+  g_return_val_if_fail (application->priv->is_registered, NULL);
+
+  return g_action_group_get_action_state (application->priv->actions,
+                                          action_name);
 }
 
 static void
@@ -1132,6 +1217,13 @@ g_application_change_action_state (GActionGroup *action_group,
                                    const gchar  *action_name,
                                    GVariant     *value)
 {
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_if_fail (application->priv->actions != NULL);
+  g_return_if_fail (application->priv->is_registered);
+
+  g_action_group_change_action_state (application->priv->actions,
+                                      action_name, value);
 }
 
 static void
@@ -1139,6 +1231,13 @@ g_application_activate_action (GActionGroup *action_group,
                                const gchar  *action_name,
                                GVariant     *parameter)
 {
+  GApplication *application = G_APPLICATION (action_group);
+
+  g_return_if_fail (application->priv->actions != NULL);
+  g_return_if_fail (application->priv->is_registered);
+
+  g_action_group_activate_action (application->priv->actions,
+                                  action_name, parameter);
 }
 
 static void
