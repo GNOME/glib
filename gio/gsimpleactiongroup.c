@@ -253,13 +253,13 @@ g_simple_action_group_iface_init (GActionGroupInterface *iface)
 {
   iface->list_actions = g_simple_action_group_list_actions;
   iface->has_action = g_simple_action_group_has_action;
-  iface->get_parameter_type = g_simple_action_group_get_parameter_type;
-  iface->get_state_type = g_simple_action_group_get_state_type;
-  iface->get_state_hint = g_simple_action_group_get_state_hint;
-  iface->get_enabled = g_simple_action_group_get_enabled;
-  iface->get_state = g_simple_action_group_get_state;
-  iface->set_state = g_simple_action_group_set_state;
-  iface->activate = g_simple_action_group_activate;
+  iface->get_action_parameter_type = g_simple_action_group_get_parameter_type;
+  iface->get_action_state_type = g_simple_action_group_get_state_type;
+  iface->get_action_state_hint = g_simple_action_group_get_state_hint;
+  iface->get_action_enabled = g_simple_action_group_get_enabled;
+  iface->get_action_state = g_simple_action_group_get_state;
+  iface->change_action_state = g_simple_action_group_set_state;
+  iface->activate_action = g_simple_action_group_activate;
 }
 
 /**

@@ -166,7 +166,7 @@ test_simple_group (void)
   g_object_unref (simple);
 
   g_assert (!a.did_run);
-  g_action_group_activate (G_ACTION_GROUP (group), "foo", NULL);
+  g_action_group_activate_action (G_ACTION_GROUP (group), "foo", NULL);
   g_assert (a.did_run);
 
   simple = g_simple_action_new_stateful ("bar", G_VARIANT_TYPE_STRING, g_variant_new_string ("hihi"));
@@ -180,28 +180,28 @@ test_simple_group (void)
   g_assert_cmpint (g_strv_length (actions), ==, 2);
   g_assert (strv_set_equal (actions, "foo", "bar", NULL));
   g_strfreev (actions);
-  g_assert (g_action_group_get_enabled (G_ACTION_GROUP (group), "foo"));
-  g_assert (g_action_group_get_enabled (G_ACTION_GROUP (group), "bar"));
-  g_assert (g_action_group_get_parameter_type (G_ACTION_GROUP (group), "foo") == NULL);
-  g_assert (g_variant_type_equal (g_action_group_get_parameter_type (G_ACTION_GROUP (group), "bar"), G_VARIANT_TYPE_STRING));
-  g_assert (g_action_group_get_state_type (G_ACTION_GROUP (group), "foo") == NULL);
-  g_assert (g_variant_type_equal (g_action_group_get_state_type (G_ACTION_GROUP (group), "bar"), G_VARIANT_TYPE_STRING));
-  g_assert (g_action_group_get_state_hint (G_ACTION_GROUP (group), "foo") == NULL);
-  g_assert (g_action_group_get_state_hint (G_ACTION_GROUP (group), "bar") == NULL);
-  g_assert (g_action_group_get_state (G_ACTION_GROUP (group), "foo") == NULL);
-  state = g_action_group_get_state (G_ACTION_GROUP (group), "bar");
+  g_assert (g_action_group_get_action_enabled (G_ACTION_GROUP (group), "foo"));
+  g_assert (g_action_group_get_action_enabled (G_ACTION_GROUP (group), "bar"));
+  g_assert (g_action_group_get_action_parameter_type (G_ACTION_GROUP (group), "foo") == NULL);
+  g_assert (g_variant_type_equal (g_action_group_get_action_parameter_type (G_ACTION_GROUP (group), "bar"), G_VARIANT_TYPE_STRING));
+  g_assert (g_action_group_get_action_state_type (G_ACTION_GROUP (group), "foo") == NULL);
+  g_assert (g_variant_type_equal (g_action_group_get_action_state_type (G_ACTION_GROUP (group), "bar"), G_VARIANT_TYPE_STRING));
+  g_assert (g_action_group_get_action_state_hint (G_ACTION_GROUP (group), "foo") == NULL);
+  g_assert (g_action_group_get_action_state_hint (G_ACTION_GROUP (group), "bar") == NULL);
+  g_assert (g_action_group_get_action_state (G_ACTION_GROUP (group), "foo") == NULL);
+  state = g_action_group_get_action_state (G_ACTION_GROUP (group), "bar");
   g_assert (g_variant_type_equal (g_variant_get_type (state), G_VARIANT_TYPE_STRING));
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hihi");
   g_variant_unref (state);
 
-  g_action_group_set_state (G_ACTION_GROUP (group), "bar", g_variant_new_string ("boo"));
-  state = g_action_group_get_state (G_ACTION_GROUP (group), "bar");
+  g_action_group_change_action_state (G_ACTION_GROUP (group), "bar", g_variant_new_string ("boo"));
+  state = g_action_group_get_action_state (G_ACTION_GROUP (group), "bar");
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "boo");
   g_variant_unref (state);
 
   action = g_simple_action_group_lookup (group, "bar");
   g_simple_action_set_enabled (G_SIMPLE_ACTION (action), FALSE);
-  g_assert (!g_action_group_get_enabled (G_ACTION_GROUP (group), "bar"));
+  g_assert (!g_action_group_get_action_enabled (G_ACTION_GROUP (group), "bar"));
 
   g_simple_action_group_remove (group, "bar");
   action = g_simple_action_group_lookup (group, "foo");

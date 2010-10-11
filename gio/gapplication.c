@@ -1147,13 +1147,13 @@ g_application_action_group_iface_init (GActionGroupInterface *iface)
   iface->has_action = g_application_has_action;
   iface->list_actions = g_application_list_actions;
 
-  iface->get_enabled = g_application_get_action_enabled;
-  iface->get_parameter_type = g_application_get_action_parameter_type;
-  iface->get_state_type = g_application_get_action_state_type;
-  iface->get_state_hint = g_application_get_action_state_hint;
-  iface->get_state = g_application_get_action_state;
-  iface->set_state = g_application_change_action_state;
-  iface->activate = g_application_activate_action;
+  iface->get_action_enabled = g_application_get_action_enabled;
+  iface->get_action_parameter_type = g_application_get_action_parameter_type;
+  iface->get_action_state_type = g_application_get_action_state_type;
+  iface->get_action_state_hint = g_application_get_action_state_hint;
+  iface->get_action_state = g_application_get_action_state;
+  iface->change_action_state = g_application_change_action_state;
+  iface->activate_action = g_application_activate_action;
 }
 
 /* Epilogue {{{1 */

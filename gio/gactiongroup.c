@@ -219,13 +219,13 @@ g_action_group_has_action (GActionGroup *action_group,
  * Since: 2.26
  **/
 const GVariantType *
-g_action_group_get_parameter_type (GActionGroup *action_group,
-                                   const gchar  *action_name)
+g_action_group_get_action_parameter_type (GActionGroup *action_group,
+                                          const gchar  *action_name)
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
   return G_ACTION_GROUP_GET_IFACE (action_group)
-    ->get_parameter_type (action_group, action_name);
+    ->get_action_parameter_type (action_group, action_name);
 }
 
 /**
@@ -254,13 +254,13 @@ g_action_group_get_parameter_type (GActionGroup *action_group,
  * Since: 2.26
  **/
 const GVariantType *
-g_action_group_get_state_type (GActionGroup *action_group,
-                               const gchar  *action_name)
+g_action_group_get_action_state_type (GActionGroup *action_group,
+                                      const gchar  *action_name)
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
   return G_ACTION_GROUP_GET_IFACE (action_group)
-    ->get_state_type (action_group, action_name);
+    ->get_action_state_type (action_group, action_name);
 }
 
 /**
@@ -292,13 +292,13 @@ g_action_group_get_state_type (GActionGroup *action_group,
  * Since: 2.26
  **/
 GVariant *
-g_action_group_get_state_hint (GActionGroup *action_group,
-                               const gchar  *action_name)
+g_action_group_get_action_state_hint (GActionGroup *action_group,
+                                      const gchar  *action_name)
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
   return G_ACTION_GROUP_GET_IFACE (action_group)
-    ->get_state_hint (action_group, action_name);
+    ->get_action_state_hint (action_group, action_name);
 }
 
 /**
@@ -316,13 +316,13 @@ g_action_group_get_state_hint (GActionGroup *action_group,
  * Since: 2.26
  **/
 gboolean
-g_action_group_get_enabled (GActionGroup *action_group,
-                            const gchar  *action_name)
+g_action_group_get_action_enabled (GActionGroup *action_group,
+                                   const gchar  *action_name)
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), FALSE);
 
   return G_ACTION_GROUP_GET_IFACE (action_group)
-    ->get_enabled (action_group, action_name);
+    ->get_action_enabled (action_group, action_name);
 }
 
 /**
@@ -344,13 +344,13 @@ g_action_group_get_enabled (GActionGroup *action_group,
  * Since: 2.26
  **/
 GVariant *
-g_action_group_get_state (GActionGroup *action_group,
-                          const gchar  *action_name)
+g_action_group_get_action_state (GActionGroup *action_group,
+                                 const gchar  *action_name)
 {
   g_return_val_if_fail (G_IS_ACTION_GROUP (action_group), NULL);
 
   return G_ACTION_GROUP_GET_IFACE (action_group)
-    ->get_state (action_group, action_name);
+    ->get_action_state (action_group, action_name);
 }
 
 /**
@@ -374,16 +374,16 @@ g_action_group_get_state (GActionGroup *action_group,
  * Since: 2.26
  **/
 void
-g_action_group_set_state (GActionGroup *action_group,
-                          const gchar  *action_name,
-                          GVariant     *value)
+g_action_group_change_action_state (GActionGroup *action_group,
+                                    const gchar  *action_name,
+                                    GVariant     *value)
 {
   g_return_if_fail (G_IS_ACTION_GROUP (action_group));
   g_return_if_fail (action_name != NULL);
   g_return_if_fail (value != NULL);
 
   G_ACTION_GROUP_GET_IFACE (action_group)
-    ->set_state (action_group, action_name, value);
+    ->change_action_state (action_group, action_name, value);
 }
 
 /**
@@ -402,15 +402,15 @@ g_action_group_set_state (GActionGroup *action_group,
  * Since: 2.26
  **/
 void
-g_action_group_activate (GActionGroup *action_group,
-                         const gchar  *action_name,
-                         GVariant     *parameter)
+g_action_group_activate_action (GActionGroup *action_group,
+                                const gchar  *action_name,
+                                GVariant     *parameter)
 {
   g_return_if_fail (G_IS_ACTION_GROUP (action_group));
   g_return_if_fail (action_name != NULL);
 
   G_ACTION_GROUP_GET_IFACE (action_group)
-    ->activate (action_group, action_name, parameter);
+    ->activate_action (action_group, action_name, parameter);
 }
 
 /**
