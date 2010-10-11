@@ -24,6 +24,7 @@
 
 #include "gapplicationcommandline.h"
 #include "gapplicationimpl.h"
+#include "gactiongroup.h"
 
 #include "gioenumtypes.h"
 #include "gio-marshal.h"
@@ -72,7 +73,10 @@ enum
 
 static guint g_application_signals[NR_SIGNALS];
 
-G_DEFINE_TYPE (GApplication, g_application, G_TYPE_OBJECT)
+static void g_application_action_group_iface_init (GActionGroupInterface *);
+G_DEFINE_TYPE_WITH_CODE (GApplication, g_application, G_TYPE_OBJECT,
+ G_IMPLEMENT_INTERFACE (G_TYPE_ACTION_GROUP,
+   g_application_action_group_iface_init))
 
 /* vfunc defaults {{{1 */
 static void
@@ -1073,6 +1077,83 @@ g_application_run_with_arguments (GApplication *application,
     g_application_impl_flush (application->priv->impl);
 
   return status;
+}
+
+static gboolean
+g_application_has_action (GActionGroup *action_group,
+                          const gchar  *action_name)
+{
+  return FALSE;
+}
+
+static gchar **
+g_application_list_actions (GActionGroup *action_group)
+{
+  return NULL;
+}
+
+static gboolean
+g_application_get_action_enabled (GActionGroup *action_group,
+                                  const gchar  *action_name)
+{
+  return FALSE;
+}
+
+static const GVariantType *
+g_application_get_action_parameter_type (GActionGroup *action_group,
+                                         const gchar  *action_name)
+{
+  return NULL;
+}
+
+static const GVariantType *
+g_application_get_action_state_type (GActionGroup *action_group,
+                                     const gchar  *action_name)
+{
+  return NULL;
+}
+
+static GVariant *
+g_application_get_action_state_hint (GActionGroup *action_group,
+                                     const gchar  *action_name)
+{
+  return NULL;
+}
+
+static GVariant *
+g_application_get_action_state (GActionGroup *action_group,
+                                const gchar  *action_name)
+{
+  return NULL;
+}
+
+static void
+g_application_change_action_state (GActionGroup *action_group,
+                                   const gchar  *action_name,
+                                   GVariant     *value)
+{
+}
+
+static void
+g_application_activate_action (GActionGroup *action_group,
+                               const gchar  *action_name,
+                               GVariant     *parameter)
+{
+}
+
+static void
+g_application_action_group_iface_init (GActionGroupInterface *iface)
+{
+  iface->has_action = g_application_has_action;
+  iface->list_actions = g_application_list_actions;
+
+  iface->get_enabled = g_application_get_action_enabled;
+  iface->get_parameter_type = g_application_get_action_parameter_type;
+  iface->get_state_type = g_application_get_action_state_type;
+  iface->get_state_hint = g_application_get_action_state_hint;
+  iface->get_state = g_application_get_action_state;
+  iface->set_state = g_application_change_action_state;
+  iface->activate = g_application_activate_action;
 }
 
 /* Epilogue {{{1 */
