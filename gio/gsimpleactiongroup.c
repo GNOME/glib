@@ -269,7 +269,7 @@ g_simple_action_group_iface_init (GActionGroupInterface *iface)
  *
  * Returns: a new #GSimpleActionGroup
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GSimpleActionGroup *
 g_simple_action_group_new (void)
@@ -288,7 +288,7 @@ g_simple_action_group_new (void)
  *
  * Returns: (transfer none): a #GAction, or %NULL
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GAction *
 g_simple_action_group_lookup (GSimpleActionGroup *simple,
@@ -311,7 +311,7 @@ g_simple_action_group_lookup (GSimpleActionGroup *simple,
  *
  * The action group takes its own reference on @action.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_simple_action_group_insert (GSimpleActionGroup *simple,
@@ -359,7 +359,7 @@ g_simple_action_group_insert (GSimpleActionGroup *simple,
  *
  * If no action of this name is in the group then nothing happens.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_simple_action_group_remove (GSimpleActionGroup *simple,

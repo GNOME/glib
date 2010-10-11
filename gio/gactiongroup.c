@@ -72,7 +72,7 @@ g_action_group_default_init (GActionGroupInterface *class)
    * Signals that a new action was just added to the group.  This signal
    * is emitted after the action has been added and is now visible.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_action_group_signals[SIGNAL_ACTION_ADDED] =
     g_signal_new (I_("action-added"),
@@ -93,7 +93,7 @@ g_action_group_default_init (GActionGroupInterface *class)
    * This signal is emitted before the action is removed, so the action
    * is still visible and can be queried from the signal handler.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_action_group_signals[SIGNAL_ACTION_REMOVED] =
     g_signal_new (I_("action-removed"),
@@ -114,7 +114,7 @@ g_action_group_default_init (GActionGroupInterface *class)
    *
    * Signals that the enabled status of the named action has changed.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_action_group_signals[SIGNAL_ACTION_ENABLED_CHANGED] =
     g_signal_new (I_("action-enabled-changed"),
@@ -136,7 +136,7 @@ g_action_group_default_init (GActionGroupInterface *class)
    *
    * Signals that the state of the named action has changed.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_action_group_signals[SIGNAL_ACTION_STATE_CHANGED] =
     g_signal_new (I_("action-state-changed"),
@@ -163,7 +163,7 @@ g_action_group_default_init (GActionGroupInterface *class)
  * Returns: (transfer full): a %NULL-terminated array of the names of the
  * actions in the groupb
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 gchar **
 g_action_group_list_actions (GActionGroup *action_group)
@@ -183,7 +183,7 @@ g_action_group_list_actions (GActionGroup *action_group)
  *
  * Returns: whether the named action exists
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 gboolean
 g_action_group_has_action (GActionGroup *action_group,
@@ -216,7 +216,7 @@ g_action_group_has_action (GActionGroup *action_group,
  *
  * Return value: the parameter type
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 const GVariantType *
 g_action_group_get_action_parameter_type (GActionGroup *action_group,
@@ -251,7 +251,7 @@ g_action_group_get_action_parameter_type (GActionGroup *action_group,
  *
  * Returns: (transfer full): the state type, if the action is stateful
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 const GVariantType *
 g_action_group_get_action_state_type (GActionGroup *action_group,
@@ -289,7 +289,7 @@ g_action_group_get_action_state_type (GActionGroup *action_group,
  *
  * Return value: (transfer full): the state range hint
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GVariant *
 g_action_group_get_action_state_hint (GActionGroup *action_group,
@@ -313,7 +313,7 @@ g_action_group_get_action_state_hint (GActionGroup *action_group,
  *
  * Return value: whether or not the action is currently enabled
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 gboolean
 g_action_group_get_action_enabled (GActionGroup *action_group,
@@ -341,7 +341,7 @@ g_action_group_get_action_enabled (GActionGroup *action_group,
  *
  * Return value: (allow-none): the current state of the action
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GVariant *
 g_action_group_get_action_state (GActionGroup *action_group,
@@ -371,7 +371,7 @@ g_action_group_get_action_state (GActionGroup *action_group,
  *
  * If the @value GVariant is floating, it is consumed.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_action_group_change_action_state (GActionGroup *action_group,
@@ -399,7 +399,7 @@ g_action_group_change_action_state (GActionGroup *action_group,
  * parameters then @parameter must be %NULL.  See
  * g_action_group_get_parameter_type().
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_action_group_activate_action (GActionGroup *action_group,
@@ -422,7 +422,7 @@ g_action_group_activate_action (GActionGroup *action_group,
  *
  * This function should only be called by #GActionGroup implementations.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_action_group_action_added (GActionGroup *action_group,
@@ -446,7 +446,7 @@ g_action_group_action_added (GActionGroup *action_group,
  *
  * This function should only be called by #GActionGroup implementations.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_action_group_action_removed (GActionGroup *action_group,
@@ -471,7 +471,7 @@ g_action_group_action_removed (GActionGroup *action_group,
  *
  * This function should only be called by #GActionGroup implementations.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_action_group_action_enabled_changed (GActionGroup *action_group,
@@ -500,7 +500,7 @@ g_action_group_action_enabled_changed (GActionGroup *action_group,
  *
  * This function should only be called by #GActionGroup implementations.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_action_group_action_state_changed (GActionGroup *action_group,
