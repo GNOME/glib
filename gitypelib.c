@@ -288,7 +288,7 @@ validate_header_basic (const guint8   *memory,
 
     }
 
-  if (header->major_version != 4 || header->minor_version != 0)
+  if (header->major_version != 4)
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
