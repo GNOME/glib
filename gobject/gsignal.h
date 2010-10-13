@@ -500,6 +500,11 @@ gboolean g_signal_accumulator_true_handled (GSignalInvocationHint *ihint,
 					    const GValue          *handler_return,
 					    gpointer               dummy);
 
+gboolean g_signal_accumulator_first_wins   (GSignalInvocationHint *ihint,
+                                            GValue                *return_accu,
+                                            const GValue          *handler_return,
+                                            gpointer               dummy);
+
 /*< private >*/
 void	 g_signal_handlers_destroy	      (gpointer		  instance);
 void	 _g_signals_destroy		      (GType		  itype);
