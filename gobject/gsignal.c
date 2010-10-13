@@ -3415,7 +3415,7 @@ type_debug_name (GType type)
  * boolean values. The behavior that this accumulator gives is
  * that a return of %TRUE stops the signal emission: no further
  * callbacks will be invoked, while a return of %FALSE allows
- * the emission to coninue. The idea here is that a %TRUE return
+ * the emission to continue. The idea here is that a %TRUE return
  * indicates that the callback <emphasis>handled</emphasis> the signal,
  * and no further handling is needed.
  *
