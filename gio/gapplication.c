@@ -389,17 +389,6 @@ g_application_init (GApplication *application)
                                                    GApplicationPrivate);
 }
 
-static gboolean
-first_wins_accumulator (GSignalInvocationHint *ihint,
-                        GValue                *return_accu,
-                        const GValue          *handler_return,
-                        gpointer               data)
-{
-  g_value_copy (handler_return, return_accu);
-
-  return FALSE;
-}
-
 static void
 g_application_class_init (GApplicationClass *class)
 {
@@ -473,7 +462,8 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_COMMAND_LINE] =
     g_signal_new ("command-line", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, command_line),
-                  first_wins_accumulator, NULL, _gio_marshal_INT__OBJECT,
+                  g_signal_accumulator_first_wins, NULL,
+                  _gio_marshal_INT__OBJECT,
                   G_TYPE_INT, 1, G_TYPE_APPLICATION_COMMAND_LINE);
 
   g_type_class_add_private (class, sizeof (GApplicationPrivate));
