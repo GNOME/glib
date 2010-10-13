@@ -68,7 +68,9 @@
  *
  * #GVariant is largely compatible with D-Bus.  Almost all types of
  * #GVariant instances can be sent over D-Bus.  See #GVariantType for
- * exceptions.
+ * exceptions.  (However, #GVariant's serialisation format is not the same
+ * as the serialisation format of a D-Bus message body: use #GDBusMessage,
+ * in the gio library, for those.)
  *
  * For convenience to C programmers, #GVariant features powerful
  * varargs-based value construction and destruction.  This feature is
