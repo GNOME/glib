@@ -94,7 +94,7 @@
  *   information cache, buffer management memory and memory for the
  *   #GVariant structure itself.
  *  </para>
- *  <refsect3>
+ *  <refsect3 id="gvariant-serialised-data-memory">
  *   <title>Serialised Data Memory</title>
  *   <para>
  *    This is the memory that is used for storing GVariant data in
@@ -1055,10 +1055,33 @@ g_variant_lookup_value (GVariant           *dictionary,
  * items.
  *
  * @value must be an array with fixed-sized elements.  Numeric types are
- * fixed-size as are tuples containing only other fixed-sized types.
+ * fixed-size, as are tuples containing only other fixed-sized types.
  *
- * @element_size must be the size of a single element in the array.  For
- * example, if calling this function for an array of 32 bit integers,
+ * @element_size must be the size of a single element in the array,
+ * as given by the section on
+ * <link linkend='gvariant-serialised-data-memory'>Serialised Data
+ * Memory</link>.
+ *
+ * In particular, arrays of these fixed-sized types can be interpreted
+ * as an array of the given C type, with @element_size set to
+ * <code>sizeof</code> the appropriate type:
+ *
+ * <informaltable>
+ * <tgroup cols='2'>
+ * <thead><row><entry>element type</entry> <entry>C type</entry></row></thead>
+ * <tbody>
+ * <row><entry>%G_VARIANT_TYPE_INT16 (etc.)</entry>
+ *   <entry>#gint16 (etc.)</entry></row>
+ * <row><entry>%G_VARIANT_TYPE_BOOLEAN</entry>
+ *   <entry>#guchar (not #gboolean!)</entry></row>
+ * <row><entry>%G_VARIANT_TYPE_BYTE</entry> <entry>#guchar</entry></row>
+ * <row><entry>%G_VARIANT_TYPE_HANDLE</entry> <entry>#guint32</entry></row>
+ * <row><entry>%G_VARIANT_TYPE_DOUBLE</entry> <entry>#gdouble</entry></row>
+ * </tbody>
+ * </tgroup>
+ * </informaltable>
+ *
+ * For example, if calling this function for an array of 32 bit integers,
  * you might say <code>sizeof (gint32)</code>.  This value isn't used
  * except for the purpose of a double-check that the form of the
  * seralised data matches the caller's expectation.
