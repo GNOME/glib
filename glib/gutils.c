@@ -2065,8 +2065,10 @@ g_set_application_name (const gchar *application_name)
  * XDG Base Directory Specification</ulink>.
  * In this case the directory retrieved will be XDG_DATA_HOME.
  *
- * On Windows is the virtual folder that represents the My Documents
- * desktop item. See documentation for CSIDL_PERSONAL.
+ * On Windows this is the folder to use for local (as opposed to
+ * roaming) application data. See documentation for
+ * CSIDL_LOCAL_APPDATA. Note that on Windows it thus is the same as
+ * what g_get_user_config_dir() returns.
  *
  * Return value: a string owned by GLib that must not be modified 
  *               or freed.
@@ -2082,7 +2084,7 @@ g_get_user_data_dir (void)
   if (!g_user_data_dir)
     {
 #ifdef G_OS_WIN32
-      data_dir = get_special_folder (CSIDL_PERSONAL);
+      data_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
 #else
       data_dir = (gchar *) g_getenv ("XDG_DATA_HOME");
 
@@ -2119,7 +2121,7 @@ g_init_user_config_dir (void)
   if (!g_user_config_dir)
     {
 #ifdef G_OS_WIN32
-      config_dir = get_special_folder (CSIDL_APPDATA);
+      config_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
 #else
       config_dir = (gchar *) g_getenv ("XDG_CONFIG_HOME");
 
@@ -2151,10 +2153,10 @@ g_init_user_config_dir (void)
  * XDG Base Directory Specification</ulink>.
  * In this case the directory retrieved will be XDG_CONFIG_HOME.
  *
- * On Windows is the directory that serves as a common repository for
- * application-specific data. A typical path is
- * C:\Documents and Settings\username\Application. See documentation for
- * CSIDL_APPDATA.
+ * On Windows this is the folder to use for local (as opposed to
+ * roaming) application data. See documentation for
+ * CSIDL_LOCAL_APPDATA. Note that on Windows it thus is the same as
+ * what g_get_user_data_dir() returns.
  *
  * Return value: a string owned by GLib that must not be modified 
  *               or freed.
