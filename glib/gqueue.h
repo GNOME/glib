@@ -85,9 +85,9 @@ gpointer g_queue_peek_nth       (GQueue           *queue,
 				 guint             n);
 gint     g_queue_index          (GQueue           *queue,
 				 gconstpointer     data);
-void     g_queue_remove         (GQueue           *queue,
+gboolean g_queue_remove         (GQueue           *queue,
 				 gconstpointer     data);
-void     g_queue_remove_all     (GQueue           *queue,
+guint    g_queue_remove_all     (GQueue           *queue,
 				 gconstpointer     data);
 void     g_queue_insert_before  (GQueue           *queue,
 				 GList            *sibling,

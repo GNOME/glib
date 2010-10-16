@@ -880,20 +880,24 @@ g_queue_index (GQueue        *queue,
  * 
  * Removes the first element in @queue that contains @data. 
  * 
+ * Return value: %TRUE if @data was found and removed from @queue
+ *
  * Since: 2.4
  **/
-void
+gboolean
 g_queue_remove (GQueue        *queue,
 		gconstpointer  data)
 {
   GList *link;
   
-  g_return_if_fail (queue != NULL);
+  g_return_val_if_fail (queue != NULL, FALSE);
 
   link = g_list_find (queue->head, data);
 
   if (link)
     g_queue_delete_link (queue, link);
+
+  return (link != NULL);
 }
 
 /**
@@ -903,15 +907,20 @@ g_queue_remove (GQueue        *queue,
  * 
  * Remove all elements whose data equals @data from @queue.
  * 
+ * Return value: the number of elements removed from @queue
+ *
  * Since: 2.4
  **/
-void
+guint
 g_queue_remove_all (GQueue        *queue,
 		    gconstpointer  data)
 {
   GList *list;
+  guint old_length;
   
-  g_return_if_fail (queue != NULL);
+  g_return_val_if_fail (queue != NULL, 0);
+
+  old_length = queue->length;
 
   list = queue->head;
   while (list)
@@ -923,6 +932,8 @@ g_queue_remove_all (GQueue        *queue,
       
       list = next;
     }
+
+  return (old_length - queue->length);
 }
 
 /**
