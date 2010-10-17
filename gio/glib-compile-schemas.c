@@ -497,8 +497,7 @@ key_state_start_aliases (KeyState  *state,
     g_set_error_literal (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
                          "<aliases> already specified for this key");
-
-  if (!state->is_flags && !state->is_enum && !state->has_choices)
+  else if (!state->is_flags && !state->is_enum && !state->has_choices)
     g_set_error_literal (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
                          "<aliases> can only be specified for keys with "
@@ -1634,6 +1633,7 @@ parse_gschema_files (gchar    **files,
 
           /* let them know */
           fprintf (stderr, "%s: %s.  ", filename, error->message);
+          g_clear_error (&error);
 
           if (strict)
             {
