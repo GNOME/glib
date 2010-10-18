@@ -515,108 +515,6 @@ g_irepository_get_n_infos (GIRepository *repository,
   return n_interfaces;
 }
 
-typedef struct
-{
-  GIRepository *repo;
-  gint index;
-  const gchar *name;
-  gboolean type_firstpass;
-  const gchar *type;
-  GIBaseInfo *iface;
-} IfaceData;
-
-static void
-find_interface (gpointer key,
-		gpointer value,
-		gpointer data)
-{
-  gint i;
-  GITypelib *typelib = (GITypelib *)value;
-  Header *header = (Header *) typelib->data;
-  IfaceData *iface_data = (IfaceData *)data;
-  gint index;
-  gint n_entries;
-  const gchar *name;
-  const gchar *type;
-  DirEntry *entry;
-
-  index = 0;
-  n_entries = ((Header *)typelib->data)->n_local_entries;
-
-  if (iface_data->name)
-    {
-      for (i = 1; i <= n_entries; i++)
-	{
-	  entry = g_typelib_get_dir_entry (typelib, i);
-	  name = g_typelib_get_string (typelib, entry->name);
-	  if (strcmp (name, iface_data->name) == 0)
-	    {
-	      index = i;
-	      break;
-	    }
-	}
-    }
-  else if (iface_data->type)
-    {
-      const char *c_prefix;
-      /* Inside each typelib, we include the "C prefix" which acts as
-       * a namespace mechanism.  For GtkTreeView, the C prefix is Gtk.
-       * Given the assumption that GTypes for a library also use the
-       * C prefix, we know we can skip examining a typelib if our
-       * target type does not have this typelib's C prefix.
-       *
-       * However, not every class library necessarily conforms to this,
-       * e.g. Clutter has Cogl inside it.  So, we split this into two
-       * passes.  First we try a lookup, skipping things which don't
-       * have the prefix.  If that fails then we try a global lookup,
-       * ignoring the prefix.
-       *
-       * See http://bugzilla.gnome.org/show_bug.cgi?id=564016
-       */
-      c_prefix = g_typelib_get_string (typelib, header->c_prefix);
-      if (iface_data->type_firstpass && c_prefix != NULL)
-        {
-          if (g_ascii_strncasecmp (c_prefix, iface_data->type, strlen (c_prefix)) != 0)
-            return;
-        }
-
-      for (i = 1; i <= n_entries; i++)
-	{
-	  RegisteredTypeBlob *blob;
-
-	  entry = g_typelib_get_dir_entry (typelib, i);
-	  if (!BLOB_IS_REGISTERED_TYPE (entry))
-	    continue;
-
-	  blob = (RegisteredTypeBlob *)(&typelib->data[entry->offset]);
-	  if (!blob->gtype_name)
-	    continue;
-
-	  type = g_typelib_get_string (typelib, blob->gtype_name);
-	  if (strcmp (type, iface_data->type) == 0)
-	    {
-	      index = i;
-	      break;
-	    }
-	}
-    }
-  else if (iface_data->index > n_entries)
-    iface_data->index -= n_entries;
-  else if (iface_data->index > 0)
-    {
-      index = iface_data->index;
-      iface_data->index = 0;
-    }
-
-  if (index != 0)
-    {
-      entry = g_typelib_get_dir_entry (typelib, index);
-      iface_data->iface = _g_info_new_full (entry->blob_type,
-				 	    iface_data->repo,
-					    NULL, typelib, entry->offset);
-    }
-}
-
 /**
  * g_irepository_get_info:
  * @repository: (allow-none): A #GIRepository, may be %NULL for the default
@@ -634,26 +532,48 @@ g_irepository_get_info (GIRepository *repository,
 			const gchar  *namespace,
 			gint          index)
 {
-  IfaceData data;
   GITypelib *typelib;
+  DirEntry *entry;
 
   g_return_val_if_fail (namespace != NULL, NULL);
 
   repository = get_repository (repository);
 
-  data.repo = repository;
-  data.name = NULL;
-  data.type = NULL;
-  data.index = index + 1;
-  data.iface = NULL;
-
   typelib = get_registered (repository, namespace, NULL);
 
   g_return_val_if_fail (typelib != NULL, NULL);
 
-  find_interface ((void *)namespace, typelib, &data);
+  entry = g_typelib_get_dir_entry (typelib, index);
+  if (entry == NULL)
+    return NULL;
+  return _g_info_new_full (entry->blob_type,
+			   repository,
+			   NULL, typelib, entry->offset);
+}
 
-  return data.iface;
+typedef struct {
+  GIRepository *repository;
+  GType type;
+
+  gboolean fastpass;
+  GITypelib *result_typelib;
+  DirEntry *result;
+} FindByGTypeData;
+
+static void
+find_by_gtype_foreach (gpointer key,
+		       gpointer value,
+		       gpointer datap)
+{
+  GITypelib *typelib = (GITypelib*)value;
+  FindByGTypeData *data = datap;
+
+  if (data->result != NULL)
+    return;
+
+  data->result = g_typelib_get_dir_entry_by_gtype (typelib, data->fastpass, data->type);
+  if (data->result)
+    data->result_typelib = typelib;
 }
 
 /**
@@ -674,40 +594,48 @@ GIBaseInfo *
 g_irepository_find_by_gtype (GIRepository *repository,
 			     GType         gtype)
 {
-  IfaceData data;
+  FindByGTypeData data;
+  GIBaseInfo *cached;
 
   repository = get_repository (repository);
 
-  data.iface = g_hash_table_lookup (repository->priv->info_by_gtype,
-                                    (gpointer)gtype);
+  cached = g_hash_table_lookup (repository->priv->info_by_gtype,
+				(gpointer)gtype);
 
-  if (data.iface)
-    return g_base_info_ref (data.iface);
+  if (cached != NULL)
+    return g_base_info_ref (cached);
 
-  data.repo = repository;
-  data.name = NULL;
-  data.type_firstpass = TRUE;
-  data.type = g_type_name (gtype);
-  data.index = -1;
-  data.iface = NULL;
+  data.repository = repository;
+  data.fastpass = TRUE;
+  data.type = gtype;
+  data.result_typelib = NULL;
+  data.result = NULL;
 
-  g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
-  g_hash_table_foreach (repository->priv->lazy_typelibs, find_interface, &data);
+  g_hash_table_foreach (repository->priv->typelibs, find_by_gtype_foreach, &data);
+  if (data.result == NULL)
+    g_hash_table_foreach (repository->priv->lazy_typelibs, find_by_gtype_foreach, &data);
 
   /* We do two passes; see comment in find_interface */
-  if (!data.iface)
+  if (data.result == NULL)
     {
-      data.type_firstpass = FALSE;
-      g_hash_table_foreach (repository->priv->typelibs, find_interface, &data);
-      g_hash_table_foreach (repository->priv->lazy_typelibs, find_interface, &data);
+      data.fastpass = FALSE;
+      g_hash_table_foreach (repository->priv->typelibs, find_by_gtype_foreach, &data);
     }
+  if (data.result == NULL)
+    g_hash_table_foreach (repository->priv->lazy_typelibs, find_by_gtype_foreach, &data);
 
-  if (data.iface)
-    g_hash_table_insert (repository->priv->info_by_gtype,
-                         (gpointer) gtype,
-                         g_base_info_ref (data.iface));
+  if (data.result != NULL)
+    {
+      cached = _g_info_new_full (data.result->blob_type,
+				 repository,
+				 NULL, data.result_typelib, data.result->offset);
 
-  return data.iface;
+      g_hash_table_insert (repository->priv->info_by_gtype,
+			   (gpointer) gtype,
+			   g_base_info_ref (cached));
+      return cached;
+    }
+  return NULL;
 }
 
 /**
@@ -728,26 +656,21 @@ g_irepository_find_by_name (GIRepository *repository,
 			    const gchar  *namespace,
 			    const gchar  *name)
 {
-  IfaceData data;
   GITypelib *typelib;
+  DirEntry *entry;
 
   g_return_val_if_fail (namespace != NULL, NULL);
 
   repository = get_repository (repository);
-
-  data.repo = repository;
-  data.name = name;
-  data.type = NULL;
-  data.index = -1;
-  data.iface = NULL;
-
   typelib = get_registered (repository, namespace, NULL);
-
   g_return_val_if_fail (typelib != NULL, NULL);
 
-  find_interface ((void *)namespace, typelib, &data);
-
-  return data.iface;
+  entry = g_typelib_get_dir_entry_by_name (typelib, name);
+  if (entry == NULL)
+    return NULL;
+  return _g_info_new_full (entry->blob_type,
+			   repository,
+			   NULL, typelib, entry->offset);
 }
 
 static void

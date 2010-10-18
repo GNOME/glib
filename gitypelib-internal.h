@@ -1100,6 +1100,13 @@ struct _GITypelib {
 DirEntry *g_typelib_get_dir_entry (GITypelib *typelib,
 				   guint16   index);
 
+DirEntry *g_typelib_get_dir_entry_by_name (GITypelib *typelib,
+					   const char *name);
+
+DirEntry *g_typelib_get_dir_entry_by_gtype (GITypelib *typelib,
+					    gboolean   fastpass,
+					    GType      gtype);
+
 void      g_typelib_check_sanity (void);
 
 #define   g_typelib_get_string(typelib,offset) ((const gchar*)&(typelib->data)[(offset)])

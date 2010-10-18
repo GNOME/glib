@@ -139,6 +139,80 @@ g_typelib_get_dir_entry (GITypelib *typelib,
   return (DirEntry *)&typelib->data[header->directory + (index - 1) * header->entry_blob_size];
 }
 
+DirEntry *
+g_typelib_get_dir_entry_by_name (GITypelib  *typelib,
+				 const char *name)
+{
+  Header *header = (Header *)typelib->data;
+  guint n_entries = header->n_local_entries;
+  DirEntry *entry;
+  guint i;
+
+  for (i = 1; i <= n_entries; i++)
+    {
+      const char *entry_name;
+
+      entry = g_typelib_get_dir_entry (typelib, i);
+      entry_name = g_typelib_get_string (typelib, entry->name);
+      if (strcmp (name, entry_name) == 0)
+	return entry;
+    }
+  return NULL;
+}
+
+DirEntry *
+g_typelib_get_dir_entry_by_gtype (GITypelib *typelib,
+				  gboolean   fastpass,
+				  GType      gtype)
+{
+  Header *header = (Header *)typelib->data;
+  guint n_entries = header->n_local_entries;
+  const char *gtype_name = g_type_name (gtype);
+  DirEntry *entry;
+  guint i;
+  const char *c_prefix;
+
+  /* Inside each typelib, we include the "C prefix" which acts as
+   * a namespace mechanism.  For GtkTreeView, the C prefix is Gtk.
+   * Given the assumption that GTypes for a library also use the
+   * C prefix, we know we can skip examining a typelib if our
+   * target type does not have this typelib's C prefix.
+   *
+   * However, not every class library necessarily conforms to this,
+   * e.g. Clutter has Cogl inside it.  So, we split this into two
+   * passes.  First we try a lookup, skipping things which don't
+   * have the prefix.  If that fails then we try a global lookup,
+   * ignoring the prefix.
+   *
+   * See http://bugzilla.gnome.org/show_bug.cgi?id=564016
+   */
+  c_prefix = g_typelib_get_string (typelib, header->c_prefix);
+  if (fastpass && c_prefix != NULL)
+    {
+      if (g_ascii_strncasecmp (c_prefix, gtype_name, strlen (c_prefix)) != 0)
+	return NULL;
+    }
+
+  for (i = 1; i <= n_entries; i++)
+    {
+      RegisteredTypeBlob *blob;
+      const char *type;
+
+      entry = g_typelib_get_dir_entry (typelib, i);
+      if (!BLOB_IS_REGISTERED_TYPE (entry))
+	continue;
+
+      blob = (RegisteredTypeBlob *)(&typelib->data[entry->offset]);
+      if (!blob->gtype_name)
+	continue;
+
+      type = g_typelib_get_string (typelib, blob->gtype_name);
+      if (strcmp (type, gtype_name) == 0)
+	return entry;
+    }
+  return NULL;
+}
+
 void
 g_typelib_check_sanity (void)
 {
