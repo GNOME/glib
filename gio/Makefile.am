@@ -148,6 +148,7 @@ application_sources = \
 	gaction.c				\
 	gsimpleaction.c				\
 	gapplicationcommandline.c		\
+	gapplicationimpl.h			\
 	gapplicationimpl-dbus.c			\
 	gapplication.c
 
