@@ -42,6 +42,7 @@ g_application_register
 g_application_release
 g_application_run
 g_application_run_with_arguments
+g_application_set_action_group
 g_application_set_application_id
 g_application_set_flags
 g_application_set_inactivity_timeout
