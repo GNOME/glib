@@ -398,7 +398,7 @@ libgio_2_0_la_SOURCES =		\
 	$(marshal_sources) 	\
 	$(NULL)
 
-EXTRA_DIST += gnullapplication.c gdbusapplication.c strinfo.c
+EXTRA_DIST += strinfo.c
 
 $(libgio_2_0_la_OBJECTS): $(marshal_sources)
 
