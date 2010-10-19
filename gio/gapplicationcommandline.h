@@ -78,9 +78,9 @@ struct _GApplicationCommandLineClass
   /*< private >*/
   GObjectClass parent_class;
 
-  void (* print_literal)    (GApplicationCommandLine *command_line,
+  void (* print_literal)    (GApplicationCommandLine *cmdline,
                              const gchar             *message);
-  void (* printerr_literal) (GApplicationCommandLine *command_line,
+  void (* printerr_literal) (GApplicationCommandLine *cmdline,
                              const gchar             *message);
 
   gpointer padding[12];
@@ -88,32 +88,25 @@ struct _GApplicationCommandLineClass
 
 GType                   g_application_command_line_get_type             (void) G_GNUC_CONST;
 
-void                    g_application_command_line_get_argc_argv        (GApplicationCommandLine   *command_line,
-                                                                         int                       *argc,
-                                                                         char                    ***argv);
-GVariant *              g_application_command_line_get_arguments        (GApplicationCommandLine   *command_line);
+gchar **                g_application_command_line_get_arguments        (GApplicationCommandLine   *cmdline,
+                                                                         int                       *argc);
 
-const gchar *           g_application_command_line_get_cwd              (GApplicationCommandLine   *command_line);
-GVariant *              g_application_command_line_get_cwd_variant      (GApplicationCommandLine   *command_line);
+const gchar *           g_application_command_line_get_cwd              (GApplicationCommandLine   *cmdline);
 
-gboolean                g_application_command_line_get_is_remote        (GApplicationCommandLine   *command_line);
+gboolean                g_application_command_line_get_is_remote        (GApplicationCommandLine   *cmdline);
 
-void                    g_application_command_line_output               (GApplicationCommandLine   *command_line,
-                                                                         gint                       fd,
-                                                                         gconstpointer              buffer,
-                                                                         gssize                     length);
-void                    g_application_command_line_print                (GApplicationCommandLine   *command_line,
+void                    g_application_command_line_print                (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,
                                                                          ...);
-void                    g_application_command_line_printerr             (GApplicationCommandLine   *command_line,
+void                    g_application_command_line_printerr             (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,
                                                                          ...);
 
-int                     g_application_command_line_get_exit_status      (GApplicationCommandLine   *command_line);
-void                    g_application_command_line_set_exit_status      (GApplicationCommandLine   *command_line,
+int                     g_application_command_line_get_exit_status      (GApplicationCommandLine   *cmdline);
+void                    g_application_command_line_set_exit_status      (GApplicationCommandLine   *cmdline,
                                                                          int                        exit_status);
 
-GVariant *              g_application_command_line_get_platform_data    (GApplicationCommandLine   *command_line);
+GVariant *              g_application_command_line_get_platform_data    (GApplicationCommandLine   *cmdline);
 
 G_END_DECLS
 

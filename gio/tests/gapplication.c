@@ -40,7 +40,7 @@ command_line (GApplication            *application,
   gchar **argv;
   gint argc;
 
-  g_application_command_line_get_argc_argv (cmdline, &argc, &argv);
+  argv = g_application_command_line_get_arguments (cmdline, &argc);
 
   g_application_command_line_print (cmdline, "%d + %d = %d\n", 40, 2, 42);
 
