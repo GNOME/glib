@@ -1458,7 +1458,8 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
-  g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
+  /* XXX bgo#631379
+   * g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp); */
   g_test_add_func ("/gdbus/credentials", test_credentials);
   g_test_add_func ("/gdbus/overflow", test_overflow);
 
