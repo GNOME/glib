@@ -2692,7 +2692,6 @@ g_application_activate
 g_application_open
 <SUBSECTION>
 g_application_run
-g_application_run_with_arguments
 <SUBSECTION Standard>
 G_TYPE_APPLICATION
 G_APPLICATION

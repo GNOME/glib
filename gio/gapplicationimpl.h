@@ -26,7 +26,7 @@ void                    g_application_impl_open                         (GApplic
 
 G_GNUC_INTERNAL
 int                     g_application_impl_command_line                 (GApplicationImpl   *impl,
-                                                                         GVariant           *arguments,
+                                                                         gchar             **arguments,
                                                                          GVariant           *platform_data);
 
 G_GNUC_INTERNAL

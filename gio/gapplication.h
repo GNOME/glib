@@ -84,31 +84,31 @@ struct _GApplicationClass
 
   /*< public >*/
   /* signals */
-  void                      (* startup)             (GApplication             *application);
+  void                      (* startup)             (GApplication              *application);
 
-  void                      (* activate)            (GApplication             *application);
+  void                      (* activate)            (GApplication              *application);
 
-  void                      (* open)                (GApplication             *application,
-                                                     GFile                   **files,
-                                                     gint                      n_files,
-                                                     const gchar              *hint);
+  void                      (* open)                (GApplication              *application,
+                                                     GFile                    **files,
+                                                     gint                       n_files,
+                                                     const gchar               *hint);
 
-  int                       (* command_line)        (GApplication             *application,
-                                                     GApplicationCommandLine  *command_line);
+  int                       (* command_line)        (GApplication              *application,
+                                                     GApplicationCommandLine   *command_line);
 
   /* vfuncs */
-  gboolean                  (* local_command_line)  (GApplication             *application,
-                                                     GVariant                **arguments,
-                                                     int                      *exit_status);
+  gboolean                  (* local_command_line)  (GApplication              *application,
+                                                     gchar                   ***arguments,
+                                                     int                       *exit_status);
 
-  void                      (* before_emit)         (GApplication             *application,
-                                                     GVariant                 *platform_data);
-  void                      (* after_emit)          (GApplication             *application,
-                                                     GVariant                 *platform_data);
-  void                      (* add_platform_data)   (GApplication             *application,
-                                                     GVariantBuilder          *builder);
-  void                      (* quit_mainloop)       (GApplication             *application);
-  void                      (* run_mainloop)        (GApplication             *application);
+  void                      (* before_emit)         (GApplication              *application,
+                                                     GVariant                  *platform_data);
+  void                      (* after_emit)          (GApplication              *application,
+                                                     GVariant                  *platform_data);
+  void                      (* add_platform_data)   (GApplication              *application,
+                                                     GVariantBuilder           *builder);
+  void                      (* quit_mainloop)       (GApplication              *application);
+  void                      (* run_mainloop)        (GApplication              *application);
 
   /*< private >*/
   gpointer padding[12];

@@ -452,9 +452,9 @@ g_application_impl_cmdline_done (GObject      *source,
 }
 
 int
-g_application_impl_command_line (GApplicationImpl *impl,
-                                 GVariant         *arguments,
-                                 GVariant         *platform_data)
+g_application_impl_command_line (GApplicationImpl  *impl,
+                                 gchar            **arguments,
+                                 GVariant          *platform_data)
 {
   const static GDBusInterfaceVTable vtable = {
     g_application_impl_cmdline_method_call
@@ -481,7 +481,7 @@ g_application_impl_command_line (GApplicationImpl *impl,
                           impl->object_path,
                           "org.gtk.Application",
                           "CommandLine",
-                          g_variant_new ("(o@aay@a{sv})", object_path,
+                          g_variant_new ("(o^aay@a{sv})", object_path,
                                          arguments, platform_data),
                           G_VARIANT_TYPE ("(i)"), 0, -1, NULL,
                           g_application_impl_cmdline_done, &data);

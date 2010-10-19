@@ -157,9 +157,9 @@ g_application_real_command_line (GApplication            *application,
 }
 
 static gboolean
-g_application_real_local_command_line (GApplication  *application,
-                                       GVariant     **arguments,
-                                       int           *exit_status)
+g_application_real_local_command_line (GApplication   *application,
+                                       gchar        ***arguments,
+                                       int            *exit_status)
 {
   if (application->priv->flags & G_APPLICATION_HANDLES_COMMAND_LINE)
     return FALSE;
@@ -177,7 +177,7 @@ g_application_real_local_command_line (GApplication  *application,
           return TRUE;
         }
 
-      n_args = g_variant_n_children (*arguments);
+      n_args = g_strv_length (*arguments);
 
       if (application->priv->flags & G_APPLICATION_IS_SERVICE)
         {
@@ -213,12 +213,7 @@ g_application_real_local_command_line (GApplication  *application,
               files = g_new (GFile *, n_files);
 
               for (i = 0; i < n_files; i++)
-                {
-                  const gchar *arg;
-
-                  g_variant_get_child (*arguments, i + 1, "^&ay", &arg);
-                  files[i] = g_file_new_for_commandline_arg (arg);
-                }
+                files[i] = g_file_new_for_commandline_arg ((*arguments)[i + 1]);
 
               g_application_open (application, files, n_files, "");
 
@@ -1014,41 +1009,23 @@ g_application_run (GApplication  *application,
                    int            argc,
                    char         **argv)
 {
+  gchar **arguments;
+  int status;
+  gint i;
+
   g_return_val_if_fail (G_IS_APPLICATION (application), 1);
   g_return_val_if_fail (argc == 0 || argv != NULL, 1);
 
-  return g_application_run_with_arguments (application,
-    g_variant_new_bytestring_array ((const gchar **) argv, argc));
-}
+  arguments = g_new (gchar *, argc + 1);
+  for (i = 0; i < argc; i++)
+    arguments[i] = g_strdup (argv[i]);
+  arguments[i] = NULL;
 
-/**
- * g_application_run_with_arguments:
- * @application: a #GApplication
- * @arguments: a bytestring array #GVariant
- * @returns: the exit status
- *
- * This is a bindings-friendly version of g_application_run().
- *
- * This function will consume @arguments if it is floating.
- **/
-int
-g_application_run_with_arguments (GApplication *application,
-                                  GVariant     *arguments)
-{
-  int status;
-
-  g_return_val_if_fail (G_IS_APPLICATION (application), 1);
-  g_return_val_if_fail (G_IS_APPLICATION (application), 1);
-
-  g_variant_ref_sink (arguments);
-
-  if (g_get_prgname () == NULL && g_variant_n_children (arguments))
+  if (g_get_prgname () == NULL && argc > 0)
     {
-      const gchar *argv0;
       gchar *prgname;
 
-      g_variant_get_child (arguments, 0, "^&ay", &argv0);
-      prgname = g_path_get_basename (argv0);
+      prgname = g_path_get_basename (argv[0]);
       g_set_prgname (prgname);
       g_free (prgname);
     }
@@ -1086,7 +1063,7 @@ g_application_run_with_arguments (GApplication *application,
         }
     }
 
-  g_variant_unref (arguments);
+  g_strfreev (arguments);
 
   if (application->priv->flags & G_APPLICATION_IS_SERVICE &&
       !application->priv->use_count &&
