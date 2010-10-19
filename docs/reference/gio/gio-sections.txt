@@ -2665,23 +2665,34 @@ g_simple_permission_get_type
 <FILE>gapplication</FILE>
 GApplication
 GApplicationClass
-
+<SUBSECTION>
+GApplicationFlags
+g_application_id_is_valid
 g_application_new
+<SUBSECTION>
+g_application_get_application_id
+g_application_set_application_id
+<SUBSECTION>
+g_application_get_inactivity_timeout
+g_application_set_inactivity_timeout
+<SUBSECTION>
+g_application_get_flags
+g_application_set_flags
+<SUBSECTION>
+g_application_set_action_group
+<SUBSECTION>
+g_application_get_is_registered
+g_application_get_is_remote
 g_application_register
-g_application_try_new
-g_application_unregistered_try_new
-g_application_get_instance
-g_application_get_id
-g_application_add_action
-g_application_remove_action
-g_application_list_actions
-g_application_set_action_enabled
-g_application_get_action_enabled
-g_application_get_action_description
-g_application_invoke_action
+<SUBSECTION>
+g_application_hold
+g_application_release
+<SUBSECTION>
+g_application_activate
+g_application_open
+<SUBSECTION>
 g_application_run
-g_application_quit_with_data
-g_application_is_remote
+g_application_run_with_arguments
 <SUBSECTION Standard>
 G_TYPE_APPLICATION
 G_APPLICATION
@@ -2695,6 +2706,37 @@ g_application_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gapplicationcommandline</FILE>
+GApplicationCommandLine
+GApplicationCommandLineClass
+<SUBSECTION>
+g_application_command_line_get_argc_argv
+g_application_command_line_get_arguments
+g_application_command_line_get_cwd
+g_application_command_line_get_cwd_variant
+g_application_command_line_get_is_remote
+g_application_command_line_get_platform_data
+<SUBSECTION>
+g_application_command_line_set_exit_status
+g_application_command_line_get_exit_status
+<SUBSECTION>
+g_application_command_line_output
+g_application_command_line_print
+g_application_command_line_printerr
+<SUBSECTION Standard>
+G_TYPE_APPLICATION_COMMAND_LINE
+G_APPLICATION_COMMAND_LINE
+G_APPLICATION_COMMAND_LINE_CLASS
+G_IS_APPLICATION_COMMAND_LINE
+G_IS_APPLICATION_COMMAND_LINE_CLASS
+G_APPLICATION_COMMAND_LINE_GET_CLASS
+<SUBSECTION Private>
+GApplicationCommandLinePrivate
+g_application_command_line_get_type
+</SECTION>
+
+
+<SECTION>
 <FILE>gactiongroup</FILE>
 <TITLE>GActionGroup</TITLE>
 GActionGroup
@@ -2704,17 +2746,17 @@ g_action_group_has_action
 g_action_group_list_actions
 
 <SUBSECTION>
-g_action_group_get_enabled
-g_action_group_get_parameter_type
-g_action_group_get_state_type
-g_action_group_get_state_hint
+g_action_group_get_action_enabled
+g_action_group_get_action_parameter_type
+g_action_group_get_action_state_type
+g_action_group_get_action_state_hint
 
 <SUBSECTION>
-g_action_group_get_state
-g_action_group_set_state
+g_action_group_get_action_state
+g_action_group_change_action_state
 
 <SUBSECTION>
-g_action_group_activate
+g_action_group_activate_action
 
 <SUBSECTION>
 g_action_group_action_added

@@ -38,7 +38,9 @@ IGNORE_HFILES=				\
 	gdbus-tests.h			\
 	gdummyproxyresolver.h		\
 	testenums.h			\
+	gapplicationimpl.h		\
 	gdelayedsettingsbackend.h	\
+	gregistrysettingsbackend.h	\
 	gdummyfile.h			\
 	gfamdirectorymonitor.h		\
 	gfamfilemonitor.h		\
