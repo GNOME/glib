@@ -111,7 +111,7 @@ static guint g_periodic_tick;
 static guint g_periodic_repair;
 
 static guint64
-g_periodic_get_milliticks (GPeriodic *periodic)
+g_periodic_get_microticks (GPeriodic *periodic)
 {
   guint64 microticks;
   GTimeVal timeval;
@@ -123,7 +123,7 @@ g_periodic_get_milliticks (GPeriodic *periodic)
   microticks += timeval.tv_usec;
   microticks *= periodic->hz;
 
-  return microticks / 1000;
+  return microticks;
 }
 
 static void
@@ -133,16 +133,19 @@ g_periodic_run (GPeriodic *periodic)
 
   if (periodic->ticks)
     {
+      guint64 microseconds;
       GSList *iter;
+
+      microseconds = periodic->last_run / periodic->hz;
 
       periodic->in_tick = TRUE;
       for (iter = periodic->ticks; iter; iter = iter->next)
         {
           GPeriodicTick *tick = iter->data;
 
-          tick->callback (periodic, periodic->last_run, tick->user_data);
+          tick->callback (periodic, microseconds, tick->user_data);
         }
-      g_signal_emit (periodic, g_periodic_tick, 0, periodic->last_run);
+      g_signal_emit (periodic, g_periodic_tick, 0, microseconds);
       periodic->in_tick = FALSE;
     }
 
@@ -180,8 +183,8 @@ g_periodic_prepare (GSource *source,
     {
       gint64 remaining;
      
-      remaining = periodic->last_run + 1000 -
-                  g_periodic_get_milliticks (periodic);
+      remaining = periodic->last_run + 1000000 -
+                  g_periodic_get_microticks (periodic);
 
       if (remaining > 0)
         /* It's too soon.  Wait some more before running. */
@@ -192,7 +195,7 @@ g_periodic_prepare (GSource *source,
            * that not enough time has passed and want to sleep again, so
            * save ourselves the future bother.
            */
-          *timeout = (remaining + periodic->hz - 1) / periodic->hz;
+          *timeout = (remaining + periodic->hz - 1) / periodic->hz / 1000;
 
           return FALSE;
         }
@@ -220,10 +223,10 @@ g_periodic_check (GSource *source)
   if ((periodic->ticks || periodic->repairs) && !periodic->blocked)
     /* We need to run. */
     {
-      guint64 now = g_periodic_get_milliticks (periodic);
+      guint64 now = g_periodic_get_microticks (periodic);
 
       /* Run if it's not too soon. */
-      return !(now < periodic->last_run + 1000);
+      return !(now < periodic->last_run + 1000000);
     }
 
   else
@@ -256,12 +259,12 @@ g_periodic_dispatch (GSource     *source,
    *
    *   - resets our stride if we missed a frame
    */
-  now = g_periodic_get_milliticks (periodic);
-  elapsed_ticks = (now - periodic->last_run) / 1000;
+  now = g_periodic_get_microticks (periodic);
+  elapsed_ticks = (now - periodic->last_run) / 1000000;
   g_assert (elapsed_ticks > 0);
 
   if G_LIKELY (elapsed_ticks == 1)
-    periodic->last_run += 1000;
+    periodic->last_run += 1000000;
   else
     periodic->last_run = now;
 
@@ -416,7 +419,7 @@ g_periodic_unblock (GPeriodic *periodic)
 
   if (--periodic->blocked)
     {
-      periodic->last_run = g_periodic_get_milliticks (periodic);
+      periodic->last_run = g_periodic_get_microticks (periodic);
       g_periodic_run (periodic);
     }
 }
