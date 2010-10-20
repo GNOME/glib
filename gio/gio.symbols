@@ -1948,3 +1948,17 @@ g_simple_action_new_stateful
 g_simple_action_set_enabled
 #endif
 #endif
+
+#if IN_HEADER(__G_PERIODIC_H__)
+#if IN_FILE(__G_PERIODIC_C__)
+g_periodic_block
+g_periodic_damaged
+g_periodic_get_hz
+g_periodic_get_priority
+g_periodic_get_type
+g_periodic_new
+g_periodic_add
+g_periodic_remove
+g_periodic_unblock
+#endif
+#endif

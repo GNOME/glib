@@ -2911,3 +2911,29 @@ G_TYPE_PROXY
 <SUBSECTION Private>
 g_proxy_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gperiodic</FILE>
+<TITLE>GPeriodic</TITLE>
+GPeriodic
+<SUBSECTION>
+g_periodic_new
+g_periodic_get_hz
+g_periodic_get_priority
+<SUBSECTION>
+GPeriodicTickFunc
+g_periodic_add
+g_periodic_remove
+<SUBSECTION>
+g_periodic_block
+g_periodic_unblock
+<SUBSECTION>
+GPeriodicRepairFunc
+g_periodic_damaged
+<SUBSECTION Standard>
+G_TYPE_PERIODIC
+G_PERIODIC
+G_IS_PERIODIC
+<SUBSECTION Private>
+g_periodic_get_type
+</SECTION>
