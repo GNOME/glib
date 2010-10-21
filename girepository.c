@@ -519,11 +519,13 @@ g_irepository_get_n_infos (GIRepository *repository,
  * g_irepository_get_info:
  * @repository: (allow-none): A #GIRepository, may be %NULL for the default
  * @namespace_: Namespace to inspect
- * @index: Offset into namespace metadata for entry
+ * @index: 0-based offset into namespace metadata for entry
  *
  * This function returns a particular metadata entry in the
  * given namespace @namespace_.  The namespace must have
  * already been loaded before calling this function.
+ * See g_irepository_get_n_infos() to find the maximum number of
+ * entries.
  *
  * Returns: (transfer full): #GIBaseInfo containing metadata
  */
@@ -543,7 +545,7 @@ g_irepository_get_info (GIRepository *repository,
 
   g_return_val_if_fail (typelib != NULL, NULL);
 
-  entry = g_typelib_get_dir_entry (typelib, index);
+  entry = g_typelib_get_dir_entry (typelib, index + 1);
   if (entry == NULL)
     return NULL;
   return _g_info_new_full (entry->blob_type,

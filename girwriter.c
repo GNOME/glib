@@ -1349,6 +1349,7 @@ gir_writer_write (const char *filename,
       const gchar *c_prefix;
       const char *ns = namespace;
       const char *version;
+      gint n_infos;
 
       version = g_irepository_get_version (repository, ns);
 
@@ -1361,7 +1362,8 @@ gir_writer_write (const char *filename,
       if (c_prefix)
         xml_printf (xml, " c:prefix=\"%s\"", c_prefix);
 
-      for (j = 0; j < g_irepository_get_n_infos (repository, ns); j++)
+      n_infos = g_irepository_get_n_infos (repository, ns);
+      for (j = 0; j < n_infos; j++)
 	{
 	  GIBaseInfo *info = g_irepository_get_info (repository, ns, j);
 	  switch (g_base_info_get_type (info))
