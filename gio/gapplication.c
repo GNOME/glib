@@ -1053,9 +1053,11 @@ g_application_run (GApplication  *application,
       else
         {
           GApplicationCommandLine *cmdline;
+          GVariant *v;
 
+          v = g_variant_new_bytestring_array ((const gchar **) arguments, -1);
           cmdline = g_object_new (G_TYPE_APPLICATION_COMMAND_LINE,
-                                  "arguments", arguments, NULL);
+                                  "arguments", v, NULL);
           g_signal_emit (application,
                          g_application_signals[SIGNAL_COMMAND_LINE],
                          0, cmdline, &status);
