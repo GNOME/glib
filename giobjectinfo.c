@@ -414,6 +414,63 @@ g_object_info_find_method (GIObjectInfo *info,
 }
 
 /**
+ * g_object_info_find_method_using_interfaces:
+ * @info: a #GIObjectInfo
+ * @name: name of method to obtain
+ * @implementor: (out) (transfer full): The implementor of the interface
+ *
+ * Obtain a method of the object given a @name, searching both the
+ * object @info and any interfaces it implements.  %NULL will be
+ * returned if there's no method available with that name.
+ *
+ * Note that this function does *not* search parent classes; you will have
+ * to chain up if that's desired.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
+GIFunctionInfo *
+g_object_info_find_method_using_interfaces (GIObjectInfo  *info,
+					    const gchar   *name,
+					    GIObjectInfo **implementor)
+{
+  GIFunctionInfo *result = NULL;
+  GIObjectInfo *implementor_result = NULL;
+
+  result = g_object_info_find_method (info, name);
+  if (result)
+    implementor_result = g_base_info_ref ((GIBaseInfo*) info);
+
+  if (result == NULL)
+    {
+      int n_interfaces;
+      int i;
+
+      n_interfaces = g_object_info_get_n_interfaces (info);
+      for (i = 0; i < n_interfaces; ++i)
+	{
+	  GIInterfaceInfo *iface_info;
+
+	  iface_info = g_object_info_get_interface (info, i);
+
+	  result = g_interface_info_find_method (iface_info, name);
+
+	  if (result != NULL)
+	    {
+	      implementor_result = iface_info;
+	      break;
+	    }
+	  g_base_info_unref ((GIBaseInfo*) iface_info);
+	}
+    }
+  if (implementor)
+    *implementor = implementor_result;
+  else
+    g_base_info_unref ((GIBaseInfo*) implementor_result);
+  return result;
+}
+
+/**
  * g_object_info_get_n_signals:
  * @info: a #GIObjectInfo
  *
