@@ -253,8 +253,10 @@ g_application_real_run_mainloop (GApplication *application)
 
 /* GObject implementation stuff {{{1 */
 static void
-g_application_set_property (GObject *object, guint prop_id,
-                            const GValue *value, GParamSpec *pspec)
+g_application_set_property (GObject      *object,
+                            guint         prop_id,
+                            const GValue *value,
+                            GParamSpec   *pspec)
 {
   GApplication *application = G_APPLICATION (object);
 
@@ -315,8 +317,10 @@ g_application_set_action_group (GApplication *application,
 }
 
 static void
-g_application_get_property (GObject *object, guint prop_id,
-                            GValue *value, GParamSpec *pspec)
+g_application_get_property (GObject    *object,
+                            guint       prop_id,
+                            GValue     *value,
+                            GParamSpec *pspec)
 {
   GApplication *application = G_APPLICATION (object);
 
@@ -526,7 +530,7 @@ g_application_id_is_valid (const gchar *application_id)
 
   return TRUE;
 }
-
+ 
 /* Public Constructor {{{1 */
 /**
  * g_application_new:
@@ -986,7 +990,7 @@ g_application_open (GApplication  *application,
  * always being handled in the primary instance.
  *
  * Otherwise, the default implementation of handle_command_line() tries
- * to do a couple of things that are probably reasoanble for most
+ * to do a couple of things that are probably reasonable for most
  * applications.  First, g_application_register() is called to attempt
  * to register the application.  If that works, then the command line
  * arguments are inspected.  If no commandline arguments are given, then
