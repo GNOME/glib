@@ -1816,10 +1816,78 @@ g_get_current_time (GTimeVal *result)
  * GTimeSpec:
  *
  * Represents a precise time, with seconds and nanoseconds.  This is
- * similar to POSIX <structname>struct timespec</structname>.
+ * similar to POSIX <structname>struct timespec</structname>.  This
+ * structure can be filled in with g_get_monotonic_time().
  *
  * Since: 2.28
  **/
+
+/**
+ * g_get_monotonic_time:
+ * @result: #GTimeSpec structure in which to store the time
+ *
+ * Queries the system monotonic time, if available.
+ *
+ * On POSIX systems with clock_gettime() and %CLOCK_MONOTONIC this call
+ * is a very shallow wrapper for that.  Otherwise, we make a best effort
+ * that probably involves returning the wall clock time (with at least
+ * microsecond accuracy, subject to the limitations of the OS kernel).
+ *
+ * Note that, on Windows, "limitations of the OS kernel" is a rather
+ * substantial statement.  Depending on the configuration of the system,
+ * the wall clock time is updated as infrequently as 64 times a second
+ * (which is approximately every 16ms).
+ *
+ * Since: 2.28
+ **/
+void
+g_get_monotonic_time (GTimeSpec *result)
+{
+  g_return_if_fail (result != NULL);
+
+#ifdef HAVE_CLOCK_GETTIME
+  /* librt clock_gettime() is our first choice */
+  {
+    static int clockid = CLOCK_REALTIME;
+    struct timespec ts;
+
+#ifdef HAVE_MONOTONIC_CLOCK
+    /* We have to check if we actually have monotonic clock support.
+     *
+     * There is no thread safety issue here since there is no harm if we
+     * check twice.
+     */
+    {
+      static gboolean checked;
+
+      if G_UNLIKELY (!checked)
+        {
+          if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
+            clockid = CLOCK_MONOTONIC;
+          checked = TRUE;
+        }
+    }
+#endif
+
+    clock_gettime (clockid, &ts);
+    result->tv_sec = ts.tv_sec;
+    result->tv_nsec = ts.tv_nsec;
+  }
+#else
+  /* It may look like we are discarding accuracy on Windows (since its
+   * current time is expressed in 100s of nanoseconds) but according to
+   * many sources, the time is only updated 64 times per second, so
+   * microsecond accuracy is more than enough.
+   */
+  {
+    GTimeVal tv;
+
+    g_get_current_time (&tv);
+    result->tv_sec = tv.tv_sec;
+    result->tv_nsec = tv.tv_usec * 1000;
+  }
+#endif
+}
 
 static void
 g_main_dispatch_free (gpointer dispatch)

@@ -1321,6 +1321,7 @@ g_time_val_to_iso8601
 
 <SUBSECTION>
 GTimeSpec
+g_get_monotonic_time
 
 <SUBSECTION>
 GDate

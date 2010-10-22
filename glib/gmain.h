@@ -380,6 +380,7 @@ GSource *g_timeout_source_new_seconds (guint interval);
 /* Miscellaneous functions
  */
 void g_get_current_time                 (GTimeVal       *result);
+void g_get_monotonic_time               (GTimeSpec      *result);
 
 /* ============== Compat main loop stuff ================== */
 
