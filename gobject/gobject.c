@@ -2587,14 +2587,14 @@ g_object_remove_toggle_ref (GObject       *object,
 	    if (tstack->n_toggle_refs == 0)
 	      g_datalist_unset_flags (&object->qdata, OBJECT_HAS_TOGGLE_REF_FLAG);
 
-	    g_object_unref (object);
-	    
 	    break;
 	  }
     }
   G_UNLOCK (toggle_refs_mutex);
-  
-  if (!found_one)
+
+  if (found_one)
+    g_object_unref (object);
+  else
     g_warning ("%s: couldn't find toggle ref %p(%p)", G_STRFUNC, notify, data);
 }
 
