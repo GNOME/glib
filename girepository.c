@@ -58,12 +58,29 @@
 static GIRepository *default_repository = NULL;
 static GSList *typelib_search_path = NULL;
 
+typedef struct {
+  guint n_interfaces;
+  GIBaseInfo *interfaces[];
+} GTypeInterfaceCache;
+
+static void
+gtype_interface_cache_free (gpointer data)
+{
+  GTypeInterfaceCache *cache = data;
+  guint i;
+
+  for (i = 0; i < cache->n_interfaces; i++)
+    g_base_info_unref ((GIBaseInfo*) cache->interfaces[i]);
+  g_free (cache);
+}
+
 struct _GIRepositoryPrivate
 {
   GHashTable *typelibs; /* (string) namespace -> GITypelib */
   GHashTable *lazy_typelibs; /* (string) namespace-version -> GITypelib */
   GHashTable *info_by_gtype; /* GType -> GIBaseInfo */
   GHashTable *info_by_error_domain; /* GQuark -> GIBaseInfo */
+  GHashTable *interfaces_for_gtype; /* GType -> GTypeInterfaceCache */
 };
 
 G_DEFINE_TYPE_WITH_CODE (GIRepository, g_irepository, G_TYPE_OBJECT, G_ADD_PRIVATE (GIRepository));
@@ -123,6 +140,10 @@ g_irepository_init (GIRepository *repository)
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
                              (GDestroyNotify) g_base_info_unref);
+  repository->priv->interfaces_for_gtype
+    = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                             (GDestroyNotify) NULL,
+                             (GDestroyNotify) gtype_interface_cache_free);
 }
 
 static void
@@ -134,6 +155,7 @@ g_irepository_finalize (GObject *object)
   g_hash_table_destroy (repository->priv->lazy_typelibs);
   g_hash_table_destroy (repository->priv->info_by_gtype);
   g_hash_table_destroy (repository->priv->info_by_error_domain);
+  g_hash_table_destroy (repository->priv->interfaces_for_gtype);
 
   (* G_OBJECT_CLASS (g_irepository_parent_class)->finalize) (G_OBJECT (repository));
 }
@@ -940,6 +962,83 @@ g_irepository_find_by_error_domain (GIRepository *repository,
       return cached;
     }
   return NULL;
+}
+
+/**
+ * g_irepository_get_object_gtype_interfaces:
+ * @repository: (nullable): a #GIRepository, or %NULL for the default repository
+ * @gtype: a #GType whose fundamental type is G_TYPE_OBJECT
+ * @n_interfaces: (out): Number of interfaces
+ * @interfaces: (out) (transfer none) (array length=n_interfaces): Interfaces for @gtype
+ *
+ * Look up the implemented interfaces for @gtype.  This function
+ * cannot fail per se; but for a totally "unknown" #GType, it may
+ * return 0 implemented interfaces.
+ *
+ * The semantics of this function are designed for a dynamic binding,
+ * where in certain cases (such as a function which returns an
+ * interface which may have "hidden" implementation classes), not all
+ * data may be statically known, and will have to be determined from
+ * the #GType of the object.  An example is g_file_new_for_path()
+ * returning a concrete class of #GLocalFile, which is a #GType we
+ * see at runtime, but not statically.
+ *
+ * Since: 1.60
+ */
+void
+g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
+                                           GType              gtype,
+                                           guint             *n_interfaces_out,
+                                           GIInterfaceInfo  **interfaces_out)
+{
+  GTypeInterfaceCache *cache;
+
+  g_return_if_fail (g_type_fundamental (gtype) == G_TYPE_OBJECT);
+
+  repository = get_repository (repository);
+
+  cache = g_hash_table_lookup (repository->priv->interfaces_for_gtype,
+                               (gpointer) gtype);
+  if (cache == NULL)
+    {
+      GType *interfaces;
+      guint n_interfaces;
+      guint i;
+      GList *interface_infos = NULL, *iter;
+
+      interfaces = g_type_interfaces (gtype, &n_interfaces);
+      for (i = 0; i < n_interfaces; i++)
+        {
+          GIBaseInfo *base_info;
+
+          base_info = g_irepository_find_by_gtype (repository, interfaces[i]);
+          if (base_info == NULL)
+            continue;
+
+          if (g_base_info_get_type (base_info) != GI_INFO_TYPE_INTERFACE)
+            {
+              /* FIXME - could this really happen? */
+              g_base_info_unref (base_info);
+              continue;
+            }
+
+          if (!g_list_find (interface_infos, base_info))
+            interface_infos = g_list_prepend (interface_infos, base_info);
+        }
+
+      cache = g_malloc (sizeof (GTypeInterfaceCache)
+                        + sizeof (GIBaseInfo*) * g_list_length (interface_infos));
+      cache->n_interfaces = g_list_length (interface_infos);
+      for (iter = interface_infos, i = 0; iter; iter = iter->next, i++)
+        cache->interfaces[i] = iter->data;
+      g_list_free (interface_infos);
+
+      g_hash_table_insert (repository->priv->interfaces_for_gtype, (gpointer) gtype,
+                           cache);
+    }
+
+  *n_interfaces_out = cache->n_interfaces;
+  *interfaces_out = *((GIInterfaceInfo**)&(cache->interfaces[0]));
 }
 
 static void

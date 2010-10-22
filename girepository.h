@@ -159,6 +159,12 @@ GI_AVAILABLE_IN_ALL
 GIBaseInfo *  g_irepository_find_by_gtype (GIRepository *repository,
 					   GType         gtype);
 
+GI_AVAILABLE_IN_1_60
+void          g_irepository_get_object_gtype_interfaces (GIRepository      *repository,
+                                                         GType              gtype,
+                                                         guint             *n_interfaces_out,
+                                                         GIInterfaceInfo  **interfaces_out);
+
 GI_AVAILABLE_IN_ALL
 gint          g_irepository_get_n_infos   (GIRepository *repository,
 					   const gchar  *namespace_);
