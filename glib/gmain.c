@@ -264,6 +264,8 @@ struct _GMainContext
 
   GPollFunc poll_func;
 
+  GTimeSpec time;
+  gboolean time_is_fresh;
   GTimeVal current_time;
   gboolean current_time_is_fresh;
 };
@@ -608,6 +610,7 @@ g_main_context_new (void)
   
   context->pending_dispatches = g_ptr_array_new ();
   
+  context->time_is_fresh = FALSE;
   context->current_time_is_fresh = FALSE;
   
 #ifdef G_THREADS_ENABLED
@@ -2474,6 +2477,7 @@ g_main_context_prepare (GMainContext *context,
   
   LOCK_CONTEXT (context);
 
+  context->time_is_fresh = FALSE;
   context->current_time_is_fresh = FALSE;
 
   if (context->in_check_or_prepare)
@@ -2638,7 +2642,10 @@ g_main_context_query (GMainContext *context,
     {
       *timeout = context->timeout;
       if (*timeout != 0)
-	context->current_time_is_fresh = FALSE;
+        {
+	  context->time_is_fresh = FALSE;
+	  context->current_time_is_fresh = FALSE;
+        }
     }
   
   UNLOCK_CONTEXT (context);
@@ -3385,6 +3392,44 @@ g_source_get_current_time (GSource  *source,
   UNLOCK_CONTEXT (context);
 }
 
+/**
+ * g_source_get_time:
+ * @source: a #GSource
+ * @timespec: #GTimeSpec structure in which to store the time
+ *
+ * Gets the time to be used when checking this source. The advantage of
+ * calling this function over calling g_get_monotonic_time() directly is
+ * that when checking multiple sources, GLib can cache a single value
+ * instead of having to repeatedly get the system monotonic time.
+ *
+ * The time here is the system monotonic time, if available, or some
+ * other reasonable alternative otherwise.  See g_get_monotonic_time().
+ *
+ * Since: 2.28
+ **/
+void
+g_source_get_time (GSource   *source,
+                   GTimeSpec *timespec)
+{
+  GMainContext *context;
+  
+  g_return_if_fail (source->context != NULL);
+ 
+  context = source->context;
+
+  LOCK_CONTEXT (context);
+
+  if (!context->time_is_fresh)
+    {
+      g_get_monotonic_time (&context->time);
+      context->time_is_fresh = TRUE;
+    }
+  
+  *timespec = context->time;
+  
+  UNLOCK_CONTEXT (context);
+}
+ 
 /**
  * g_main_context_set_poll_func:
  * @context: a #GMainContext

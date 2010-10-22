@@ -365,6 +365,8 @@ void     g_source_remove_poll      (GSource        *source,
 
 void     g_source_get_current_time (GSource        *source,
                                     GTimeVal       *timeval);
+void     g_source_get_time         (GSource        *source,
+                                    GTimeSpec      *timespec);
 
  /* void g_source_connect_closure (GSource        *source,
                                   GClosure       *closure);

@@ -725,6 +725,7 @@ g_source_attach
 g_source_destroy
 g_source_get_can_recurse
 g_source_get_context
+g_source_get_time
 g_source_get_current_time
 g_source_get_id
 g_source_get_name
