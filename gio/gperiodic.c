@@ -114,13 +114,13 @@ static guint64
 g_periodic_get_microticks (GPeriodic *periodic)
 {
   guint64 microticks;
-  GTimeVal timeval;
+  GTimeSpec timespec;
 
-  g_source_get_current_time (periodic->source, &timeval);
+  g_source_get_time (periodic->source, &timespec);
 
-  microticks = timeval.tv_sec;
+  microticks = timespec.tv_sec;
   microticks *= 1000000;
-  microticks += timeval.tv_usec;
+  microticks += timespec.tv_nsec / 1000;
   microticks *= periodic->hz;
 
   return microticks;
