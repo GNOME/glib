@@ -20,6 +20,8 @@
  */
 
 /* Prologue {{{1 */
+#include "config.h"
+
 #include "gapplication.h"
 
 #include "gapplicationcommandline.h"
@@ -31,7 +33,44 @@
 #include "gioenums.h"
 #include "gfile.h"
 
+#include "glibintl.h"
+
 #include <string.h>
+
+/**
+ * SECTION: gapplication
+ * @title: GApplication
+ * @short_description: Core application class
+ *
+ * A #GApplication is the foundation of an application, unique for a
+ * given application identifier.  The GApplication class wraps some
+ * low-level platform-specific services and is intended to act as the
+ * foundation for higher-level application classes such as
+ * #GtkApplication or #MxApplication.  In general, you should not use
+ * this class outside of a higher level framework.
+ *
+ * One of the core features that GApplication provides is process
+ * uniqueness, in the context of a "session".  The session concept is
+ * platform-dependent, but corresponds roughly to a graphical desktop
+ * login.  When your application is launched again, its arguments
+ * are passed through platform communication to the already running
+ * program. The already running instance of the program is called the
+ * <firstterm>primary instance</firstterm>.
+ *
+ * Before using GApplication, you must choose an "application identifier".
+ * The expected form of an application identifier is very close to that of
+ * of a <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface">DBus bus name</ulink>.
+ * Examples include: "com.example.MyApp" "org.example.internal-apps.Calculator"
+ * For convenience, the restrictions on application identifiers are reproduced
+ * here:
+ * <itemizedlist>
+ *   <listitem>Application identifiers must contain only the ASCII characters "[A-Z][a-z][0-9]_-" and must not begin with a digit.</listitem>
+ *   <listitem>Application identifiers must contain at least one '.' (period) character (and thus at least two elements).</listitem>
+ *   <listitem>Application identifiers must not begin with a '.' (period) character.</listitem>
+ *   <listitem>Application identifiers must not contain consecutive '.' (period) characters.</listitem>
+ *   <listitem>Application identifiers must not exceed 255 characters.</listitem>
+ * </itemizedlist>
+ */
 
 struct _GApplicationPrivate
 {
@@ -410,54 +449,95 @@ g_application_class_init (GApplicationClass *class)
   class->run_mainloop = g_application_real_run_mainloop;
 
   g_object_class_install_property (object_class, PROP_APPLICATION_ID,
-    g_param_spec_string ("application-id", "application identifier",
-                         "Unique identifier for the application",
+    g_param_spec_string ("application-id",
+                         P_("Application identifier"),
+                         P_("The unique identifier for the application"),
                          NULL, G_PARAM_READWRITE | G_PARAM_CONSTRUCT |
                          G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_FLAGS,
-    g_param_spec_flags ("flags", "application flags",
-                        "Flags specifying the behaviour of the application",
-                         G_TYPE_APPLICATION_FLAGS, G_APPLICATION_FLAGS_NONE,
-                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+    g_param_spec_flags ("flags",
+                        P_("Application flags"),
+                        P_("Flags specifying the behaviour of the application"),
+                        G_TYPE_APPLICATION_FLAGS, G_APPLICATION_FLAGS_NONE,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_IS_REGISTERED,
-    g_param_spec_boolean ("is-registered", "is registered",
-                          "If g_application_register() has been called",
+    g_param_spec_boolean ("is-registered",
+                          P_("Is registered"),
+                          P_("If g_application_register() has been called"),
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_IS_REMOTE,
-    g_param_spec_boolean ("is-remote", "is remote",
-                          "If this application instance is remote",
+    g_param_spec_boolean ("is-remote",
+                          P_("Is remote"),
+                          P_("If this application instance is remote"),
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_INACTIVITY_TIMEOUT,
-    g_param_spec_boolean ("inactivity-timeout", "inactivity timeout",
-                          "time (ms) to stay alive after becoming idle",
+    g_param_spec_boolean ("inactivity-timeout",
+                          P_("Inactivity timeout"),
+                          P_("Iime (ms) to stay alive after becoming idle"),
                           FALSE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_ACTION_GROUP,
-    g_param_spec_object ("action-group", "action group",
-                         "the group of actions that the application exports",
+    g_param_spec_object ("action-group",
+                         P_("Action group"),
+                         P_("The group of actions that the application exports"),
                          G_TYPE_ACTION_GROUP, 
                          G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
+  /**
+   * GApplication::startup:
+   * @application: the application
+   *
+   * The ::startup signal is emitted on the primary instance immediately
+   * after registration. See g_activation_register().
+   */
   g_application_signals[SIGNAL_STARTUP] =
     g_signal_new ("startup", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, startup),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
+  /**
+   * GApplication::activate:
+   * @application: the application
+   *
+   * The ::activate signal is emitted on the primary instance when an
+   * activation occurs. See g_application_activate().
+   */
   g_application_signals[SIGNAL_ACTIVATE] =
     g_signal_new ("activate", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, activate),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
+
+  /**
+   * GApplication::open:
+   * @application: the application
+   * @files: an array of #GFile objects
+   * @n_files: the length of @files
+   * @hint: a hint provided by the calling instance
+   *
+   * The ::open signal is emitted on the primary instance when there are
+   * files to open. See g_application_open() for more information.
+   */
   g_application_signals[SIGNAL_OPEN] =
     g_signal_new ("open", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, open),
                   NULL, NULL, _gio_marshal_VOID__POINTER_INT_STRING,
                   G_TYPE_NONE, 3, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_STRING);
 
+  /**
+   * GApplication::command-line:
+   * @application: the application
+   * @command_line: a #GApplicationCommandLine representing the
+   *     passed commandline
+   *
+   * The ::command-line signal is emitted on the primary instance when
+   * a commandline is not handled locally. See g_application_run() for
+   * more information.
+   */
   g_application_signals[SIGNAL_COMMAND_LINE] =
     g_signal_new ("command-line", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, command_line),
@@ -938,7 +1018,7 @@ g_application_activate (GApplication *application)
  * for this functionality, you should use "".
  *
  * The application must be registered before calling this function and
- * it must have the %G_APPLICATION_CAN_OPEN flag set.  The open()
+ * it must have the %G_APPLICATION_HANDLES_OPEN flag set.  The open()
  * virtual function should also be implemented in order for anything
  * meaningful to happen.
  *
@@ -980,11 +1060,11 @@ g_application_open (GApplication  *application,
  *
  * First, the handle_command_line() virtual function is invoked.  This
  * function always runs on the local instance.  If that function returns
- * %FALSE then the application is registered and the command_line()
- * virtual function is invoked in the primary instance (which may or may
- * not be this instance).
+ * %FALSE then the application is registered and the #GApplication::command-line
+ * signal is emitted in the primary instance (which may or may not be
+ * this instance).
  *
- * If the application has the %G_APPLICATION_REMOTE_COMMAND_LINE
+ * If the application has the %G_APPLICATION_HANDLES_COMMAND_LINE
  * flag set then the default implementation of handle_command_line()
  * always returns %FALSE immediately, resulting in the commandline
  * always being handled in the primary instance.
@@ -995,7 +1075,7 @@ g_application_open (GApplication  *application,
  * to register the application.  If that works, then the command line
  * arguments are inspected.  If no commandline arguments are given, then
  * g_application_activate() is called.  If commandline arguments are
- * given and the %G_APPLICATION_CAN_OPEN flags is set then they
+ * given and the %G_APPLICATION_HANDLES_OPEN flag is set then they
  * are assumed to be filenames and g_application_open() is called.
  *
  * If you are interested in doing more complicated local handling of the
@@ -1005,6 +1085,10 @@ g_application_open (GApplication  *application,
  * then the exit status is returned immediately.  If the use count is
  * non-zero then the mainloop is run until the use count falls to zero,
  * at which point 0 is returned.
+ *
+ * If the %G_APPLICATION_IS_SERVICE flag is set, then the exiting at
+ * use count of zero is delayed for a while (ie: the instance stays
+ * around to provide its <emphasis>service</emphasis> to others).
  *
  * Since: 2.28
  **/

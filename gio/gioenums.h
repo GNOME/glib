@@ -1219,7 +1219,13 @@ typedef enum
 /**
  * GApplicationFlags:
  * @G_APPLICATION_FLAGS_NONE: Default
- * @G_APPLICATION_FLAGS_HANDLE_OPEN: This application handles opening files.
+ * @G_APPLICATION_IS_SERVICE: Stay around for a while when the use count
+ *      falls to zero.
+ * @G_APPLICATION_IS_LAUNCHER: Don't try to become the primary instance.
+ * @G_APPLICATION_HANDLES_OPEN: This application handles opening files (in the
+ *     primary instance)
+ * @G_APPLICATION_HANDLES_COMMAND_LINE: This application handles command lines
+ *     (in the primary instance)
  *
  * Flags used to define the behaviour of a #GApplication.
  *

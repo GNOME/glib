@@ -19,7 +19,11 @@
  * Authors: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include "gapplicationcommandline.h"
+
+#include "glibintl.h"
 
 #include <string.h>
 #include <stdio.h>
@@ -30,12 +34,12 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * SECTION:gapplicationcommandline
  * @title: GApplicationCommandLine
  * @short_description: A class representing a command-line invocation of
- *                     this application.
+ *                     an application
  * @see_also: #GApplication
  *
  * #GApplicationCommandLine represents a command-line invocation of
- * containing application.  It is created by #GApplication and emitted
- * in the <varname>command-line</varname> signal and virtual function.
+ * an application.  It is created by #GApplication and emitted
+ * in the #GApplication::command-line signal and virtual function.
  *
  * The class contains the list of arguments that the program was invoked
  * with.  It is also possible to query if the commandline invocation was
@@ -102,8 +106,10 @@ g_application_command_line_real_printerr_literal (GApplicationCommandLine *cmdli
 }
 
 static void
-g_application_command_line_get_property (GObject *object, guint prop_id,
-                                         GValue *value, GParamSpec *pspec)
+g_application_command_line_get_property (GObject    *object,
+                                         guint       prop_id,
+                                         GValue     *value,
+                                         GParamSpec *pspec)
 {
   GApplicationCommandLine *cmdline = G_APPLICATION_COMMAND_LINE (object);
 
@@ -190,22 +196,26 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
   class->print_literal = g_application_command_line_real_print_literal;
 
   g_object_class_install_property (object_class, PROP_ARGUMENTS,
-    g_param_spec_variant ("arguments", "commandline arguments",
-                          "the commandline that caused this cmdline",
+    g_param_spec_variant ("arguments",
+                          P_("Commandline arguments"),
+                          P_("The commandline that caused this ::command-line signal emission"),
                           G_VARIANT_TYPE_BYTESTRING_ARRAY, NULL,
                           G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_PLATFORM_DATA,
-    g_param_spec_variant ("platform-data", "platform data",
-                          "platform-specific data for the cmdline",
+    g_param_spec_variant ("platform-data",
+                          P_("Platform data"),
+                          P_("Platform-specific data for the commandline"),
                           G_VARIANT_TYPE ("a{sv}"), NULL,
                           G_PARAM_WRITABLE | G_PARAM_CONSTRUCT_ONLY |
                           G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_IS_REMOTE,
-    g_param_spec_boolean ("is-remote", "is remote",
-                          "TRUE if this is a remote cmdline", FALSE,
+    g_param_spec_boolean ("is-remote",
+                          P_("Is remote"),
+                          P_("TRUE if this is a remote commandline"),
+                          FALSE,
                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (class, sizeof (GApplicationCommandLinePrivate));
@@ -229,8 +239,8 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
  * Since: 2.28
  **/
 gchar **
-g_application_command_line_get_arguments (GApplicationCommandLine   *cmdline,
-                                          int                       *argc)
+g_application_command_line_get_arguments (GApplicationCommandLine *cmdline,
+                                          int                     *argc)
 {
   gchar **argv;
   gsize len;
@@ -248,7 +258,7 @@ g_application_command_line_get_arguments (GApplicationCommandLine   *cmdline,
 /**
  * g_application_command_line_get_cwd:
  * @cmdline: a #GApplicationCommandLine
- * 
+ *
  * Gets the working directory of the command line invocation.  The
  * string may contain non-utf8 data.
  *
@@ -365,7 +375,7 @@ g_application_command_line_printerr (GApplicationCommandLine *cmdline,
  * Sets the exit status that will be used when the invoking process
  * exits.
  *
- * The return value of the <varname>command-line</varname> signal is
+ * The return value of the #GApplication::command-line signal is
  * passed to this function when the handler returns.  This is the usual
  * way of setting the exit status.
  *

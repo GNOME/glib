@@ -36,7 +36,7 @@
 /**
  * SECTION:gdbuserror
  * @title: GDBusError
- * @short_description: Mapping D-Bus errors to and from #GError
+ * @short_description: Mapping D-Bus errors to and from GError
  * @include: gio/gio.h
  *
  * All facilities that return errors from remote methods (such as
