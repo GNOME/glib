@@ -265,7 +265,7 @@ struct _GMainContext
   GPollFunc poll_func;
 
   GTimeVal current_time;
-  gboolean time_is_current;
+  gboolean current_time_is_fresh;
 };
 
 struct _GSourceCallback
@@ -608,7 +608,7 @@ g_main_context_new (void)
   
   context->pending_dispatches = g_ptr_array_new ();
   
-  context->time_is_current = FALSE;
+  context->current_time_is_fresh = FALSE;
   
 #ifdef G_THREADS_ENABLED
   if (g_thread_supported ())
@@ -2474,7 +2474,7 @@ g_main_context_prepare (GMainContext *context,
   
   LOCK_CONTEXT (context);
 
-  context->time_is_current = FALSE;
+  context->current_time_is_fresh = FALSE;
 
   if (context->in_check_or_prepare)
     {
@@ -2638,7 +2638,7 @@ g_main_context_query (GMainContext *context,
     {
       *timeout = context->timeout;
       if (*timeout != 0)
-	context->time_is_current = FALSE;
+	context->current_time_is_fresh = FALSE;
     }
   
   UNLOCK_CONTEXT (context);
@@ -3374,10 +3374,10 @@ g_source_get_current_time (GSource  *source,
 
   LOCK_CONTEXT (context);
 
-  if (!context->time_is_current)
+  if (!context->current_time_is_fresh)
     {
       g_get_current_time (&context->current_time);
-      context->time_is_current = TRUE;
+      context->current_time_is_fresh = TRUE;
     }
   
   *timeval = context->current_time;
