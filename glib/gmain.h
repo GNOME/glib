@@ -363,8 +363,10 @@ void     g_source_add_poll         (GSource        *source,
 void     g_source_remove_poll      (GSource        *source,
                                     GPollFD        *fd);
 
+#ifndef G_DISABLE_DEPRECATED
 void     g_source_get_current_time (GSource        *source,
                                     GTimeVal       *timeval);
+#endif
 void     g_source_get_time         (GSource        *source,
                                     GTimeSpec      *timespec);
 

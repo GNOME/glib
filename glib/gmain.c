@@ -3368,6 +3368,8 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
  * calling g_get_current_time() directly is that when 
  * checking multiple sources, GLib can cache a single value
  * instead of having to repeatedly get the system time.
+ *
+ * Deprecated: 2.28: use g_source_get_time() instead
  **/
 void
 g_source_get_current_time (GSource  *source,
