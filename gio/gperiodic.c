@@ -397,6 +397,7 @@ g_periodic_block (GPeriodic *periodic)
 /**
  * g_periodic_unblock:
  * @periodic: a #GPeriodic clock
+ * @unblock_time: the unblock time, or %NULL
  *
  * Reverses the effect of a previous call to g_periodic_block().
  *
@@ -404,13 +405,18 @@ g_periodic_block (GPeriodic *periodic)
  * run.  The repair signal may also be run if the clock is marked as
  * damaged.
  *
+ * @unblock_time is the monotonic time, as per g_get_monotonic_time(),
+ * at which the event causing the unblock occured.  If it is %NULL then
+ * g_get_monotonic_time() is called internally.
+ *
  * This function may not be called from handlers of any signal emitted
  * by @periodic.
  *
  * Since: 2.28
  **/
 void
-g_periodic_unblock (GPeriodic *periodic)
+g_periodic_unblock (GPeriodic       *periodic,
+                    const GTimeSpec *unblock_time)
 {
   g_return_if_fail (G_IS_PERIODIC (periodic));
   g_return_if_fail (!periodic->in_repair);
@@ -419,7 +425,19 @@ g_periodic_unblock (GPeriodic *periodic)
 
   if (--periodic->blocked)
     {
-      periodic->last_run = g_periodic_get_microticks (periodic);
+      GTimeSpec now;
+
+      if (unblock_time == NULL)
+        {
+          g_get_monotonic_time (&now);
+          unblock_time = &now;
+        }
+
+      periodic->last_run = unblock_time->tv_sec;
+      periodic->last_run *= 1000000;
+      periodic->last_run += unblock_time->tv_nsec / 1000;
+      periodic->last_run *= periodic->hz;
+
       g_periodic_run (periodic);
     }
 }
