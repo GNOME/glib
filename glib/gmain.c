@@ -288,7 +288,7 @@ struct _GMainLoop
 struct _GTimeoutSource
 {
   GSource     source;
-  GTimeVal    expiration;
+  GTimeSpec   expiration;
   guint       interval;
   guint	      granularity;
 };
@@ -3561,16 +3561,16 @@ g_main_context_is_owner (GMainContext *context)
 
 static void
 g_timeout_set_expiration (GTimeoutSource *timeout_source,
-			  GTimeVal       *current_time)
+			  GTimeSpec      *current_time)
 {
   guint seconds = timeout_source->interval / 1000;
   guint msecs = timeout_source->interval - seconds * 1000;
 
   timeout_source->expiration.tv_sec = current_time->tv_sec + seconds;
-  timeout_source->expiration.tv_usec = current_time->tv_usec + msecs * 1000;
-  if (timeout_source->expiration.tv_usec >= 1000000)
+  timeout_source->expiration.tv_nsec = current_time->tv_nsec + msecs * 1000000;
+  if (timeout_source->expiration.tv_nsec >= 1000000000)
     {
-      timeout_source->expiration.tv_usec -= 1000000;
+      timeout_source->expiration.tv_nsec -= 1000000000;
       timeout_source->expiration.tv_sec++;
     }
   if (timer_perturb==-1)
@@ -3591,34 +3591,34 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
   if (timeout_source->granularity)
     {
       gint remainder;
-      gint gran; /* in usecs */
+      gint gran; /* in nsecs */
       gint perturb;
 
-      gran = timeout_source->granularity * 1000;
+      gran = timeout_source->granularity * 1000000;
       perturb = timer_perturb % gran;
       /*
        * We want to give each machine a per machine pertubation;
        * shift time back first, and forward later after the rounding
        */
 
-      timeout_source->expiration.tv_usec -= perturb;
-      if (timeout_source->expiration.tv_usec < 0)
+      timeout_source->expiration.tv_nsec -= perturb;
+      if (timeout_source->expiration.tv_nsec < 0)
         {
-          timeout_source->expiration.tv_usec += 1000000;
+          timeout_source->expiration.tv_nsec += 1000000000;
           timeout_source->expiration.tv_sec--;
         }
 
-      remainder = timeout_source->expiration.tv_usec % gran;
+      remainder = timeout_source->expiration.tv_nsec % gran;
       if (remainder >= gran/4) /* round up */
-        timeout_source->expiration.tv_usec += gran;
-      timeout_source->expiration.tv_usec -= remainder;
+        timeout_source->expiration.tv_nsec += gran;
+      timeout_source->expiration.tv_nsec -= remainder;
       /* shift back */
-      timeout_source->expiration.tv_usec += perturb;
+      timeout_source->expiration.tv_nsec += perturb;
 
-      /* the rounding may have overflown tv_usec */
-      while (timeout_source->expiration.tv_usec > 1000000)
+      /* the rounding may have overflown tv_nsec */
+      while (timeout_source->expiration.tv_nsec > 1000000000)
         {
-          timeout_source->expiration.tv_usec -= 1000000;
+          timeout_source->expiration.tv_nsec -= 1000000000;
           timeout_source->expiration.tv_sec++;
         }
     }
@@ -3630,14 +3630,14 @@ g_timeout_prepare (GSource *source,
 {
   glong sec;
   glong msec;
-  GTimeVal current_time;
+  GTimeSpec now;
   
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
 
-  g_source_get_current_time (source, &current_time);
+  g_source_get_time (source, &now);
 
-  sec = timeout_source->expiration.tv_sec - current_time.tv_sec;
-  msec = (timeout_source->expiration.tv_usec - current_time.tv_usec) / 1000;
+  sec = timeout_source->expiration.tv_sec - now.tv_sec;
+  msec = (timeout_source->expiration.tv_nsec - now.tv_nsec) / 1000000;
 
   /* We do the following in a rather convoluted fashion to deal with
    * the fact that we don't have an integral type big enough to hold
@@ -3663,7 +3663,7 @@ g_timeout_prepare (GSource *source,
 	   * reset the expiration time to now + timeout_source->interval;
 	   * this at least avoids hanging for long periods of time.
 	   */
-	  g_timeout_set_expiration (timeout_source, &current_time);
+	  g_timeout_set_expiration (timeout_source, &now);
 	  msec = MIN (G_MAXINT, timeout_source->interval);
 	}
       else
@@ -3680,14 +3680,14 @@ g_timeout_prepare (GSource *source,
 static gboolean 
 g_timeout_check (GSource *source)
 {
-  GTimeVal current_time;
+  GTimeSpec now;
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
 
-  g_source_get_current_time (source, &current_time);
+  g_source_get_time (source, &now);
   
-  return ((timeout_source->expiration.tv_sec < current_time.tv_sec) ||
-	  ((timeout_source->expiration.tv_sec == current_time.tv_sec) &&
-	   (timeout_source->expiration.tv_usec <= current_time.tv_usec)));
+  return ((timeout_source->expiration.tv_sec < now.tv_sec) ||
+	  ((timeout_source->expiration.tv_sec == now.tv_sec) &&
+	   (timeout_source->expiration.tv_nsec <= now.tv_nsec)));
 }
 
 static gboolean
@@ -3706,10 +3706,10 @@ g_timeout_dispatch (GSource     *source,
  
   if (callback (user_data))
     {
-      GTimeVal current_time;
+      GTimeSpec now;
 
-      g_source_get_current_time (source, &current_time);
-      g_timeout_set_expiration (timeout_source, &current_time);
+      g_source_get_time (source, &now);
+      g_timeout_set_expiration (timeout_source, &now);
 
       return TRUE;
     }
@@ -3734,12 +3734,12 @@ g_timeout_source_new (guint interval)
 {
   GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
-  GTimeVal current_time;
+  GTimeSpec now;
 
   timeout_source->interval = interval;
 
-  g_get_current_time (&current_time);
-  g_timeout_set_expiration (timeout_source, &current_time);
+  g_get_monotonic_time (&now);
+  g_timeout_set_expiration (timeout_source, &now);
   
   return source;
 }
@@ -3766,13 +3766,13 @@ g_timeout_source_new_seconds (guint interval)
 {
   GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
-  GTimeVal current_time;
+  GTimeSpec now;
 
   timeout_source->interval = 1000*interval;
   timeout_source->granularity = 1000;
 
-  g_get_current_time (&current_time);
-  g_timeout_set_expiration (timeout_source, &current_time);
+  g_get_monotonic_time (&now);
+  g_timeout_set_expiration (timeout_source, &now);
 
   return source;
 }
