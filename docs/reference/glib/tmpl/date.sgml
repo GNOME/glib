@@ -134,6 +134,14 @@ length of the sleep.
 @Returns: 
 
 
+<!-- ##### STRUCT GTimeSpec ##### -->
+<para>
+
+</para>
+
+@tv_sec: 
+@tv_nsec: 
+
 <!-- ##### STRUCT GDate ##### -->
 <para>
 Represents a day between January 1, Year 1 and a few thousand years in

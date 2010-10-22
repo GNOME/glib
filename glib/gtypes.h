@@ -33,6 +33,7 @@
 
 #include <glibconfig.h>
 #include <glib/gmacros.h>
+#include <time.h>
 
 G_BEGIN_DECLS
 
@@ -421,6 +422,14 @@ struct _GTimeVal
 {
   glong tv_sec;
   glong tv_usec;
+};
+
+typedef struct _GTimeSpec               GTimeSpec;
+
+struct _GTimeSpec
+{
+  time_t tv_sec;
+  glong  tv_nsec;
 };
 
 G_END_DECLS

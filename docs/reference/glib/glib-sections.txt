@@ -1320,6 +1320,9 @@ g_time_val_from_iso8601
 g_time_val_to_iso8601
 
 <SUBSECTION>
+GTimeSpec
+
+<SUBSECTION>
 GDate
 GTime
 GDateDMY

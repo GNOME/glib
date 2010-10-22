@@ -1812,6 +1812,15 @@ g_get_current_time (GTimeVal *result)
 #endif
 }
 
+/**
+ * GTimeSpec:
+ *
+ * Represents a precise time, with seconds and nanoseconds.  This is
+ * similar to POSIX <structname>struct timespec</structname>.
+ *
+ * Since: 2.28
+ **/
+
 static void
 g_main_dispatch_free (gpointer dispatch)
 {
