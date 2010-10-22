@@ -2411,7 +2411,7 @@ typedef struct {
   GIOCondition  condition;
   GCancellable *cancellable;
   GPollFD       cancel_pollfd;
-  GTimeVal      timeout_time;
+  GTimeSpec     timeout_time;
 } GSocketSource;
 
 static gboolean
@@ -2425,11 +2425,11 @@ socket_source_prepare (GSource *source,
 
   if (socket_source->timeout_time.tv_sec)
     {
-      GTimeVal now;
+      GTimeSpec now;
 
-      g_source_get_current_time (source, &now);
+      g_source_get_time (source, &now);
       *timeout = ((socket_source->timeout_time.tv_sec - now.tv_sec) * 1000 +
-		  (socket_source->timeout_time.tv_usec - now.tv_usec) / 1000);
+		  (socket_source->timeout_time.tv_nsec - now.tv_nsec) / 1000000);
       if (*timeout < 0)
 	{
 	  socket_source->socket->priv->timed_out = TRUE;
@@ -2547,13 +2547,13 @@ socket_source_new (GSocket      *socket,
 
   if (socket->priv->timeout)
     {
-      g_get_current_time (&socket_source->timeout_time);
+      g_get_monotonic_time (&socket_source->timeout_time);
       socket_source->timeout_time.tv_sec += socket->priv->timeout;
     }
   else
     {
       socket_source->timeout_time.tv_sec = 0;
-      socket_source->timeout_time.tv_usec = 0;
+      socket_source->timeout_time.tv_nsec = 0;
     }
 
   return source;
