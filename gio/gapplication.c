@@ -70,6 +70,13 @@
  *   <listitem>Application identifiers must not contain consecutive '.' (period) characters.</listitem>
  *   <listitem>Application identifiers must not exceed 255 characters.</listitem>
  * </itemizedlist>
+ *
+ * GApplication provides convenient life cycle management by maintaining
+ * a <firstterm>use count</firstterm> for the primary application instance.
+ * The use count can be changed using g_application_hold() and
+ * g_application_release(). If it drops to zero, the application exits.
+ *
+ * <example id="gapplication-example-open"><title>Opening files with a GApplication</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-open.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
 
 struct _GApplicationPrivate
@@ -912,7 +919,7 @@ g_application_register (GApplication  *application,
  * Increases the use count of @application.
  *
  * Use this function to indicate that the application has a reason to
- * continue to run.  For example, g_application_hold() is called by Gtk
+ * continue to run.  For example, g_application_hold() is called by GTK+ 
  * when a toplevel window is on the screen.
  *
  * To cancel the hold, call g_application_release().

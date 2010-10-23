@@ -85,6 +85,8 @@ SAMPLE_PROGS = 				\
 	gdbus-connection-flush-helper	\
 	appinfo-test			\
 	proxy				\
+	gapplication-example-open	\
+	gapplication-example-cmdline	\
 	$(NULL)
 
 
@@ -306,6 +308,12 @@ file_LDADD   = $(progs_ldadd)
 
 gapplication_SOURCES = gapplication.c gdbus-sessionbus.c
 gapplication_LDADD = $(progs_ldadd)
+
+gapplication_example_open_SOURCES = gapplication-example-open.c
+gapplication_example_open_LDADD   = $(progs_ldadd)
+
+gapplication_example_cmdline_SOURCES = gapplication-example-cmdline.c
+gapplication_example_cmdline_LDADD   = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
