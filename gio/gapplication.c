@@ -482,10 +482,11 @@ g_application_class_init (GApplicationClass *class)
                           FALSE, G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_INACTIVITY_TIMEOUT,
-    g_param_spec_boolean ("inactivity-timeout",
-                          P_("Inactivity timeout"),
-                          P_("Iime (ms) to stay alive after becoming idle"),
-                          FALSE, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+    g_param_spec_uint ("inactivity-timeout",
+                       P_("Inactivity timeout"),
+                       P_("Iime (ms) to stay alive after becoming idle"),
+                       0, G_MAXUINT, 0,
+                       G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (object_class, PROP_ACTION_GROUP,
     g_param_spec_object ("action-group",
@@ -1159,6 +1160,7 @@ g_application_run (GApplication  *application,
   g_strfreev (arguments);
 
   if (application->priv->flags & G_APPLICATION_IS_SERVICE &&
+      application->priv->is_registered &&
       !application->priv->use_count &&
       !application->priv->inactivity_timeout_id)
     {
