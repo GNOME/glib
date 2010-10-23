@@ -60,23 +60,22 @@
  * Before using GApplication, you must choose an "application identifier".
  * The expected form of an application identifier is very close to that of
  * of a <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#message-protocol-names-interface">DBus bus name</ulink>.
- * Examples include: "com.example.MyApp" "org.example.internal-apps.Calculator"
- * For convenience, the restrictions on application identifiers are reproduced
- * here:
- * <itemizedlist>
- *   <listitem>Application identifiers must contain only the ASCII characters "[A-Z][a-z][0-9]_-" and must not begin with a digit.</listitem>
- *   <listitem>Application identifiers must contain at least one '.' (period) character (and thus at least two elements).</listitem>
- *   <listitem>Application identifiers must not begin with a '.' (period) character.</listitem>
- *   <listitem>Application identifiers must not contain consecutive '.' (period) characters.</listitem>
- *   <listitem>Application identifiers must not exceed 255 characters.</listitem>
- * </itemizedlist>
+ * Examples include: "com.example.MyApp", "org.example.internal-apps.Calculator".
+ * For details on valid application identifiers, see
+ * g_application_id_is_valid().
  *
  * GApplication provides convenient life cycle management by maintaining
  * a <firstterm>use count</firstterm> for the primary application instance.
  * The use count can be changed using g_application_hold() and
  * g_application_release(). If it drops to zero, the application exits.
  *
- * <example id="gapplication-example-open"><title>Opening files with a GApplication</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-open.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * <example id="gapplication-example-open"><title>Opening files with a GApplication</title>
+ * <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-open.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ * </programlisting>
+ * </example>
  */
 
 struct _GApplicationPrivate
@@ -587,9 +586,20 @@ get_platform_data (GApplication *application)
  * @application_id: a potential application identifier
  * @returns: %TRUE if @application_id is valid
  *
- * Checks if @application_id is a valid application ID.  A valid ID is
- * required for calls to g_application_new() and
+ * Checks if @application_id is a valid application identifier.
+ *
+ * A valid ID is required for calls to g_application_new() and
  * g_application_set_application_id().
+ *
+ * For convenience, the restrictions on application identifiers are
+ * reproduced here:
+ * <itemizedlist>
+ *   <listitem>Application identifiers must contain only the ASCII characters "[A-Z][a-z][0-9]_-" and must not begin with a digit.</listitem>
+ *   <listitem>Application identifiers must contain at least one '.' (period) character (and thus at least two elements).</listitem>
+ *   <listitem>Application identifiers must not begin with a '.' (period) character.</listitem>
+ *   <listitem>Application identifiers must not contain consecutive '.' (period) characters.</listitem>
+ *   <listitem>Application identifiers must not exceed 255 characters.</listitem>
+ * </itemizedlist>
  **/
 gboolean
 g_application_id_is_valid (const gchar *application_id)
@@ -862,7 +872,7 @@ g_application_get_is_remote (GApplication *application)
  * If the application has already been registered then %TRUE is
  * returned with no work performed.
  *
- * The startup() virtual function is invoked if registration succeeds
+ * The #GApplication::startup signal is emitted if registration succeeds
  * and @application is the primary instance.
  *
  * In the event of an error (such as @cancellable being cancelled, or a
@@ -979,8 +989,8 @@ g_application_release (GApplication *application)
  *
  * Activates the application.
  *
- * In essence, this results in the activate() virtual function being
- * invoked in the primary instance.
+ * In essence, this results in the #GApplication::activate() signal being
+ * emitted in the primary instance.
  *
  * The application must be registered before calling this function.
  *
@@ -1003,26 +1013,24 @@ g_application_activate (GApplication *application)
 /**
  * g_application_open:
  * @application: a #GApplication
- * @files: an array of #GFile<!-- -->s to open
+ * @files: an array of #GFiles to open
  * @n_files: the length of the @files array
  * @hint: a hint (or ""), but never %NULL
  *
  * Opens the given files.
  *
- * In essence, this results in the open() virtual function being invoked
+ * In essence, this results in the #GApplication::open signal being emitted
  * in the primary instance.
  *
  * @n_files must be greater than zero.
  *
- * @hint is simply passed through to the open() virtual function.  It is
+ * @hint is simply passed through to the ::open signal.  It is
  * intended to be used by applications that have multiple modes for
  * opening files (eg: "view" vs "edit", etc).  Unless you have a need
  * for this functionality, you should use "".
  *
- * The application must be registered before calling this function and
- * it must have the %G_APPLICATION_HANDLES_OPEN flag set.  The open()
- * virtual function should also be implemented in order for anything
- * meaningful to happen.
+ * The application must be registered before calling this function
+ * and it must have the %G_APPLICATION_HANDLES_OPEN flag set.
  *
  * Since: 2.28
  **/
