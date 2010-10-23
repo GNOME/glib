@@ -53,7 +53,9 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * of this object (ie: the process exits when the last reference is
  * dropped).
  *
- * <example id="gapplication-example-open"><title>Handling commandline arguments with GApplication</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ * <example id="gapplication-example-cmdline"><title>Handling commandline arguments with GApplication</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ *
+ * <example id="gapplication-example-cmdline2"><title>Complicated commandline handling</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline2.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  **/
 
 enum

@@ -66,9 +66,10 @@ struct _GApplication
  * @open: invoked on the primary instance when there are files to open
  * @command_line: invoked on the primary instance when a command-line is
  *   not handled locally
- * @local_command_line: invoked (locally) when the process has been invoked via commandline execution.  The
- *   virtual function has the chance to inspect (and possibly replace) the list of command line arguments.  See
- *   g_application_run() for more information.
+ * @local_command_line: invoked (locally) when the process has been invoked
+ *     via commandline execution.  The virtual function has the chance to
+ *     inspect (and possibly replace) the list of command line arguments.
+ *     See g_application_run() for more information.
  * @before_emit: invoked on the primary instance before 'activate', 'open' or any action invocation
  * @after_emit: invoked on the primary instance after 'activate', 'open' or any action invocation
  * @add_platform_data: invoked (locally) to add 'platform data' to be sent to the primary instance when

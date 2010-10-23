@@ -87,6 +87,7 @@ SAMPLE_PROGS = 				\
 	proxy				\
 	gapplication-example-open	\
 	gapplication-example-cmdline	\
+	gapplication-example-cmdline2	\
 	$(NULL)
 
 
@@ -314,6 +315,9 @@ gapplication_example_open_LDADD   = $(progs_ldadd)
 
 gapplication_example_cmdline_SOURCES = gapplication-example-cmdline.c
 gapplication_example_cmdline_LDADD   = $(progs_ldadd)
+
+gapplication_example_cmdline2_SOURCES = gapplication-example-cmdline2.c
+gapplication_example_cmdline2_LDADD   = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\

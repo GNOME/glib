@@ -1065,18 +1065,18 @@ g_application_open (GApplication  *application,
  * This function is intended to be run from main() and its return value
  * is intended to be returned by main().
  *
- * First, the handle_command_line() virtual function is invoked.  This
+ * First, the local_command_line() virtual function is invoked.  This
  * function always runs on the local instance.  If that function returns
  * %FALSE then the application is registered and the #GApplication::command-line
  * signal is emitted in the primary instance (which may or may not be
  * this instance).
  *
  * If the application has the %G_APPLICATION_HANDLES_COMMAND_LINE
- * flag set then the default implementation of handle_command_line()
+ * flag set then the default implementation of local_command_line()
  * always returns %FALSE immediately, resulting in the commandline
  * always being handled in the primary instance.
  *
- * Otherwise, the default implementation of handle_command_line() tries
+ * Otherwise, the default implementation of local_command_line() tries
  * to do a couple of things that are probably reasonable for most
  * applications.  First, g_application_register() is called to attempt
  * to register the application.  If that works, then the command line
@@ -1086,7 +1086,9 @@ g_application_open (GApplication  *application,
  * are assumed to be filenames and g_application_open() is called.
  *
  * If you are interested in doing more complicated local handling of the
- * commandline then you should override handle_command_line().
+ * commandline then you should implement your own #GApplication subclass
+ * and override local_command_line(). See
+ * <xref linkend="gapplication-example-cmdline2"/> for an example.
  *
  * If, after the above is done, the use count of the application is zero
  * then the exit status is returned immediately.  If the use count is
