@@ -884,12 +884,6 @@ g_application_register (GApplication  *application,
   if (!application->priv->is_registered)
     {
       gboolean is_remote;
-      gboolean try;
-
-      /* don't try to be the primary instance if
-       * G_APPLICATION_IS_LAUNCHER was specified.
-       */
-      try = !(application->priv->flags & G_APPLICATION_IS_LAUNCHER);
 
       application->priv->impl =
         g_application_impl_register (application, application->priv->id,

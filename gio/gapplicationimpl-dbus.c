@@ -271,6 +271,9 @@ g_application_impl_register (GApplication       *application,
 
   impl->object_path = application_path_from_appid (appid);
 
+  /* don't try to be the primary instance if
+   * G_APPLICATION_IS_LAUNCHER was specified.
+   */
   if (flags & G_APPLICATION_IS_LAUNCHER)
     {
       impl->object_id = 0;
