@@ -88,6 +88,8 @@ G_BEGIN_DECLS
  * 
  * The type of value transformation functions which can be registered with
  * g_value_register_transform_func().
+ *
+ * @dest_value will be initialized to the correct destination type.
  */
 typedef void (*GValueTransform) (const GValue *src_value,
 				 GValue       *dest_value);
