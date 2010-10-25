@@ -52,7 +52,7 @@ G_BEGIN_DECLS
  *
  * The typelib has the following general format.
  *
- * typelib ::= header, directory, blobs, attributes, attributedata
+ * typelib ::= header, section-index, directory, blobs, attributes, attributedata
  *
  * directory ::= list of entries
  *
@@ -233,6 +233,7 @@ typedef enum {
  * write parser which continue to work if the format is extended by
  * adding new fields before the first flexible array member in
  * variable-size blobs.
+ * @sections: Offset of section blob array
  *
  * The header structure appears exactly once at the beginning of a typelib.  It is a
  * collection of meta-information, such as the number of entries and dependencies.
@@ -278,9 +279,33 @@ typedef struct {
   guint16 interface_blob_size;
   guint16 union_blob_size;
 
+  guint32 sections;
+
   /* <private> */
-  guint16 padding[7];
+  guint16 padding[5];
 } Header;
+
+typedef enum {
+  GI_SECTION_END = 0,
+  GI_SECTION_DIRECTORY_INDEX = 1
+} SectionType;
+
+/**
+ * Section:
+ * @id: A #SectionType
+ * @offset: Integer offset for this section
+ *
+ * A section is a blob of data that's (at least theoretically) optional,
+ * and may or may not be present in the typelib.  Presently, just used
+ * for the directory index.  This allows a form of dynamic extensibility
+ * with different tradeoffs from the format minor version.
+ *
+ */
+typedef struct {
+  guint32 id;
+  guint32 offset;
+} Section;
+
 
 /**
  * DirEntry:

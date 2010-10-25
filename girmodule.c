@@ -23,11 +23,13 @@
 #include <stdlib.h>
 
 #include "girmodule.h"
+#include "gitypelib-internal.h"
 #include "girnode.h"
 
 #define ALIGN_VALUE(this, boundary) \
   (( ((unsigned long)(this)) + (((unsigned long)(boundary)) -1)) & (~(((unsigned long)(boundary))-1)))
 
+#define NUM_SECTIONS 2
 
 GIrModule *
 _g_ir_module_new (const gchar *name,
@@ -220,6 +222,73 @@ node_cmp_offset_func (gconstpointer a,
   return na->offset - nb->offset;
 }
 
+static void
+alloc_section (guint8 *data, SectionType section_id, guint32 offset)
+{
+  int i;
+  Header *header = (Header*)data;
+  Section *section_data = (Section*)&data[header->sections];
+
+  g_assert (section_id != GI_SECTION_END);
+
+  for (i = 0; i < NUM_SECTIONS; i++)
+    {
+      if (section_data->id == GI_SECTION_END)
+	{
+	  section_data->id = section_id;
+	  section_data->offset = offset;
+	  return;
+	}
+      section_data++;
+    }
+  g_assert_not_reached ();
+}
+
+static guint8*
+add_directory_index_section (guint8 *data, GIrModule *module, guint32 *offset2)
+{
+  DirEntry *entry;
+  Header *header = (Header*)data;
+  GITypelibHashBuilder *dirindex_builder;
+  guint i, n_interfaces;
+  guint16 required_size;
+  guint32 new_offset;
+
+  dirindex_builder = _gi_typelib_hash_builder_new ();
+
+  n_interfaces = ((Header *)data)->n_local_entries;
+
+  for (i = 0; i < n_interfaces; i++)
+    {
+      entry = (DirEntry *)&data[header->directory + (i * header->entry_blob_size)];
+      const char *str = (const char *) (&data[entry->name]);
+      _gi_typelib_hash_builder_add_string (dirindex_builder, str, i);
+    }
+
+  if (!_gi_typelib_hash_builder_prepare (dirindex_builder))
+    {
+      /* This happens if CMPH couldn't create a perfect hash.  So
+       * we just punt and leave no directory index section.
+       */
+      _gi_typelib_hash_builder_destroy (dirindex_builder);
+      return data;
+    }
+
+  alloc_section (data, GI_SECTION_DIRECTORY_INDEX, *offset2);
+
+  required_size = _gi_typelib_hash_builder_get_buffer_size (dirindex_builder);
+
+  new_offset = *offset2 + ALIGN_VALUE (required_size, 4);
+
+  data = g_realloc (data, new_offset);
+
+  _gi_typelib_hash_builder_pack (dirindex_builder, ((guint8*)data) + *offset2, required_size);
+
+  *offset2 = new_offset;
+
+  _gi_typelib_hash_builder_destroy (dirindex_builder);
+  return data;
+}
 
 GITypelib *
 _g_ir_module_build_typelib (GIrModule  *module)
@@ -241,6 +310,7 @@ _g_ir_module_build_typelib (GIrModule  *module)
   GList *nodes_with_attributes;
   char *dependencies;
   guchar *data;
+  Section *section;
 
   header_size = ALIGN_VALUE (sizeof (Header), 4);
   n_local_entries = g_list_length (module->entries);
@@ -301,6 +371,8 @@ _g_ir_module_build_typelib (GIrModule  *module)
   if (module->c_prefix != NULL)
     size += ALIGN_VALUE (strlen (module->c_prefix) + 1, 4);
 
+  size += sizeof (Section) * NUM_SECTIONS;
+
   g_message ("allocating %d bytes (%d header, %d directory, %d entries)\n",
 	  size, header_size, dir_size, size - header_size - dir_size);
 
@@ -333,7 +405,6 @@ _g_ir_module_build_typelib (GIrModule  *module)
     header->c_prefix = _g_ir_write_string (module->c_prefix, strings, data, &header_size);
   else
     header->c_prefix = 0;
-  header->directory = ALIGN_VALUE (header_size, 4);
   header->entry_blob_size = sizeof (DirEntry);
   header->function_blob_size = sizeof (FunctionBlob);
   header->callback_blob_size = sizeof (CallbackBlob);
@@ -353,10 +424,26 @@ _g_ir_module_build_typelib (GIrModule  *module)
   header->interface_blob_size = sizeof (InterfaceBlob);
   header->union_blob_size = sizeof (UnionBlob);
 
+  offset2 = ALIGN_VALUE (header_size, 4);
+  header->sections = offset2;
+
+  /* Initialize all the sections to _END/0; we fill them in later using
+   * alloc_section().  (Right now there's just the directory index
+   * though, note)
+   */
+  for (i = 0; i < NUM_SECTIONS; i++)
+    {
+      section = (Section*) &data[offset2];
+      section->id = GI_SECTION_END;
+      section->offset = 0;
+      offset2 += sizeof(Section);
+    }
+  header->directory = offset2;
+
   /* fill in directory and content */
   entry = (DirEntry *)&data[header->directory];
 
-  offset2 = header->directory + dir_size;
+  offset2 += dir_size;
 
   for (e = module->entries, i = 0; e; e = e->next, i++)
     {
@@ -452,6 +539,10 @@ _g_ir_module_build_typelib (GIrModule  *module)
 
   data = g_realloc (data, offset2);
   header = (Header*) data;
+
+  data = add_directory_index_section (data, module, &offset2);
+  header = (Header *)data;
+
   length = header->size = offset2;
   typelib = g_typelib_new_from_memory (data, length, &error);
   if (!typelib)

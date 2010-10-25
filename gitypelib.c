@@ -139,25 +139,61 @@ g_typelib_get_dir_entry (GITypelib *typelib,
   return (DirEntry *)&typelib->data[header->directory + (index - 1) * header->entry_blob_size];
 }
 
-DirEntry *
-g_typelib_get_dir_entry_by_name (GITypelib  *typelib,
-				 const char *name)
+static Section *
+get_section_by_id (GITypelib   *typelib,
+		   SectionType  section_type)
 {
   Header *header = (Header *)typelib->data;
-  guint n_entries = header->n_local_entries;
-  DirEntry *entry;
-  guint i;
+  Section *section;
 
-  for (i = 1; i <= n_entries; i++)
+  if (header->sections == 0)
+    return NULL;
+
+  for (section = (Section*)&typelib->data[header->sections];
+       section->id != GI_SECTION_END;
+       section++)
     {
-      const char *entry_name;
+      if (section->id == section_type)
+	return section;
+    }
+  return NULL;
+}
 
-      entry = g_typelib_get_dir_entry (typelib, i);
+DirEntry *
+g_typelib_get_dir_entry_by_name (GITypelib *typelib,
+				 const char *name)
+{
+  Section *dirindex;
+  gint i;
+  const char *entry_name;
+  DirEntry *entry;
+
+  dirindex = get_section_by_id (typelib, GI_SECTION_DIRECTORY_INDEX);
+
+  if (dirindex == NULL)
+    {
+      gint n_entries = ((Header *)typelib->data)->n_local_entries;
+      for (i = 1; i <= n_entries; i++)
+	{
+	  entry = g_typelib_get_dir_entry (typelib, i);
+	  entry_name = g_typelib_get_string (typelib, entry->name);
+	  if (strcmp (name, entry_name) == 0)
+	    return entry;
+	}
+      return NULL;
+    }
+  else
+    {
+      guint8 *hash = (guint8*) &typelib->data[dirindex->offset];
+      guint16 index;
+
+      index = _gi_typelib_hash_search (hash, name);
+      entry = g_typelib_get_dir_entry (typelib, index + 1);
       entry_name = g_typelib_get_string (typelib, entry->name);
       if (strcmp (name, entry_name) == 0)
 	return entry;
+      return NULL;
     }
-  return NULL;
 }
 
 DirEntry *
