@@ -1145,6 +1145,23 @@ gboolean g_typelib_validate (GITypelib  *typelib,
 AttributeBlob *_attribute_blob_find_first (GIBaseInfo *info,
                                            guint32     blob_offset);
 
+typedef struct _GITypelibHashBuilder GITypelibHashBuilder;
+
+GITypelibHashBuilder * _gi_typelib_hash_builder_new (void);
+
+void _gi_typelib_hash_builder_add_string (GITypelibHashBuilder *builder, const char *str, guint16 value);
+
+gboolean _gi_typelib_hash_builder_prepare (GITypelibHashBuilder *builder);
+
+guint32 _gi_typelib_hash_builder_get_buffer_size (GITypelibHashBuilder *builder);
+
+void _gi_typelib_hash_builder_pack (GITypelibHashBuilder *builder, guint8* mem, guint32 size);
+
+void _gi_typelib_hash_builder_destroy (GITypelibHashBuilder *builder);
+
+guint16 _gi_typelib_hash_search (guint8* memory, const char *str);
+
+
 G_END_DECLS
 
 #endif  /* __G_TYPELIB_H__ */
