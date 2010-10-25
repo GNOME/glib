@@ -159,8 +159,6 @@ void                    g_application_open                              (GApplic
 int                     g_application_run                               (GApplication             *application,
                                                                          int                       argc,
                                                                          char                    **argv);
-int                     g_application_run_with_arguments                (GApplication             *application,
-                                                                         GVariant                 *arguments);
 
 G_END_DECLS
 
