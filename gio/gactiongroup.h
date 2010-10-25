@@ -38,6 +38,15 @@ G_BEGIN_DECLS
 #define G_ACTION_GROUP_GET_IFACE(inst)                      (G_TYPE_INSTANCE_GET_INTERFACE ((inst),                  \
                                                              G_TYPE_ACTION_GROUP, GActionGroupInterface))
 
+#define G_TYPE_ACTION_GROUP                                 (g_action_group_get_type ())
+#define G_ACTION_GROUP(inst)                                (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
+                                                             G_TYPE_ACTION_GROUP, GActionGroup))
+#define G_IS_ACTION_GROUP(inst)                             (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
+                                                             G_TYPE_ACTION_GROUP))
+#define G_ACTION_GROUP_GET_IFACE(inst)                      (G_TYPE_INSTANCE_GET_INTERFACE ((inst),                  \
+                                                             G_TYPE_ACTION_GROUP, GActionGroupInterface))
+
+typedef struct _GContextActionGroupInterface                GContextActionGroupInterface;
 typedef struct _GActionGroupInterface                       GActionGroupInterface;
 
 /**
@@ -101,10 +110,24 @@ struct _GActionGroupInterface
   void                  (* action_enabled_changed)     (GActionGroup  *action_group,
                                                         const gchar   *action_name,
                                                         gboolean       enabled);
-  void                  (* action_state_changed)    (GActionGroup   *action_group,
-                                                     const gchar    *action_name,
-                                                     GVariant       *value);
+  void                  (* action_state_changed)       (GActionGroup   *action_group,
+                                                        const gchar    *action_name,
+                                                        GVariant       *value);
 };
+
+struct _GContextActionGroupInterface
+{
+  void                  (* change_action_state)        (GActionGroup  *action_group,
+                                                        const gchar   *action_name,
+                                                        GVariant      *value,
+                                                        GVariant      *context);
+
+  void                  (* activate_action)            (GActionGroup  *action_group,
+                                                        const gchar   *action_name,
+                                                        GVariant      *parameter,
+                                                        GVariant      *context);
+};
+
 
 GType                   g_action_group_get_type                         (void) G_GNUC_CONST;
 

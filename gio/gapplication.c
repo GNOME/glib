@@ -93,6 +93,7 @@ struct _GApplicationPrivate
   guint              is_registered : 1;
   guint              is_remote : 1;
 
+  GHashTable        *remote_actions;  /* string -> RemoteActionInfo */
   GApplicationImpl  *impl;
 };
 
@@ -350,7 +351,7 @@ g_application_set_action_group (GApplication *application,
                                 GActionGroup *action_group)
 {
   g_return_if_fail (G_IS_APPLICATION (application));
-  g_return_if_fail (application->priv->is_registered);
+  g_return_if_fail (!application->priv->is_registered);
 
   if (application->priv->actions != NULL)
     g_object_unref (application->priv->actions);
@@ -894,22 +895,21 @@ g_application_register (GApplication  *application,
 
   if (!application->priv->is_registered)
     {
-      gboolean is_remote;
-
       application->priv->impl =
         g_application_impl_register (application, application->priv->id,
                                      application->priv->flags,
-                                     &is_remote, cancellable, error);
+                                     &application->priv->remote_actions,
+                                     cancellable, error);
 
       if (application->priv->impl == NULL)
         return FALSE;
 
-      application->priv->is_remote = is_remote;
+      application->priv->is_remote = application->priv->remote_actions != NULL;
       application->priv->is_registered = TRUE;
 
       g_object_notify (G_OBJECT (application), "is-registered");
 
-      if (!is_remote)
+      if (!application->priv->is_remote)
         g_signal_emit (application, g_application_signals[SIGNAL_STARTUP], 0);
     }
 
@@ -1198,6 +1198,10 @@ g_application_has_action (GActionGroup *action_group,
 
   g_return_val_if_fail (application->priv->is_registered, FALSE);
 
+  if (application->priv->remote_actions != NULL)
+    return g_hash_table_lookup (application->priv->remote_actions,
+                                action_name) != NULL;
+
   return application->priv->actions &&
          g_action_group_has_action (application->priv->actions, action_name);
 }
@@ -1209,7 +1213,26 @@ g_application_list_actions (GActionGroup *action_group)
 
   g_return_val_if_fail (application->priv->is_registered, NULL);
 
-  if (application->priv->actions != NULL)
+  if (application->priv->remote_actions != NULL)
+    {
+      GHashTableIter iter;
+      gint n, i = 0;
+      gchar **keys;
+      gpointer key;
+
+      n = g_hash_table_size (application->priv->remote_actions);
+      keys = g_new (gchar *, n + 1);
+
+      g_hash_table_iter_init (&iter, application->priv->remote_actions);
+      while (g_hash_table_iter_next (&iter, &key, NULL))
+        keys[i++] = g_strdup (key);
+      g_assert_cmpint (i, ==, n);
+      keys[n] = NULL;
+
+      return keys;
+    }
+
+  else if (application->priv->actions != NULL)
     return g_action_group_list_actions (application->priv->actions);
 
   else
@@ -1226,6 +1249,16 @@ g_application_get_action_enabled (GActionGroup *action_group,
   g_return_val_if_fail (application->priv->actions != NULL, FALSE);
   g_return_val_if_fail (application->priv->is_registered, FALSE);
 
+  if (application->priv->remote_actions)
+    {
+      RemoteActionInfo *info;
+
+      info = g_hash_table_lookup (application->priv->remote_actions,
+                                  action_name);
+
+      return info && info->enabled;
+    }
+
   return g_action_group_get_action_enabled (application->priv->actions,
                                             action_name);
 }
@@ -1238,6 +1271,19 @@ g_application_get_action_parameter_type (GActionGroup *action_group,
 
   g_return_val_if_fail (application->priv->actions != NULL, NULL);
   g_return_val_if_fail (application->priv->is_registered, NULL);
+
+  if (application->priv->remote_actions)
+    {
+      RemoteActionInfo *info;
+
+      info = g_hash_table_lookup (application->priv->remote_actions,
+                                  action_name);
+
+      if (info)
+        return info->parameter_type;
+      else
+        return NULL;
+    }
 
   return g_action_group_get_action_parameter_type (application->priv->actions,
                                                    action_name);
@@ -1252,20 +1298,20 @@ g_application_get_action_state_type (GActionGroup *action_group,
   g_return_val_if_fail (application->priv->actions != NULL, NULL);
   g_return_val_if_fail (application->priv->is_registered, NULL);
 
+  if (application->priv->remote_actions)
+    {
+      RemoteActionInfo *info;
+
+      info = g_hash_table_lookup (application->priv->remote_actions,
+                                  action_name);
+
+      if (info && info->state)
+        return g_variant_get_type (info->state);
+      else
+        return NULL;
+    }
+
   return g_action_group_get_action_state_type (application->priv->actions,
-                                               action_name);
-}
-
-static GVariant *
-g_application_get_action_state_hint (GActionGroup *action_group,
-                                     const gchar  *action_name)
-{
-  GApplication *application = G_APPLICATION (action_group);
-
-  g_return_val_if_fail (application->priv->actions != NULL, NULL);
-  g_return_val_if_fail (application->priv->is_registered, NULL);
-
-  return g_action_group_get_action_state_hint (application->priv->actions,
                                                action_name);
 }
 
@@ -1278,6 +1324,19 @@ g_application_get_action_state (GActionGroup *action_group,
   g_return_val_if_fail (application->priv->actions != NULL, NULL);
   g_return_val_if_fail (application->priv->is_registered, NULL);
 
+  if (application->priv->remote_actions)
+    {
+      RemoteActionInfo *info;
+
+      info = g_hash_table_lookup (application->priv->remote_actions,
+                                  action_name);
+
+      if (info && info->state)
+        return g_variant_ref (info->state);
+      else
+        return NULL;
+    }
+
   return g_action_group_get_action_state (application->priv->actions,
                                           action_name);
 }
@@ -1289,11 +1348,16 @@ g_application_change_action_state (GActionGroup *action_group,
 {
   GApplication *application = G_APPLICATION (action_group);
 
-  g_return_if_fail (application->priv->actions != NULL);
   g_return_if_fail (application->priv->is_registered);
 
-  g_action_group_change_action_state (application->priv->actions,
-                                      action_name, value);
+  if (application->priv->is_remote)
+    g_application_impl_change_action_state (application->priv->impl,
+                                            action_name, value,
+                                            get_platform_data (application));
+
+  else
+    g_action_group_change_action_state (application->priv->actions,
+                                        action_name, value);
 }
 
 static void
@@ -1303,11 +1367,16 @@ g_application_activate_action (GActionGroup *action_group,
 {
   GApplication *application = G_APPLICATION (action_group);
 
-  g_return_if_fail (application->priv->actions != NULL);
   g_return_if_fail (application->priv->is_registered);
 
-  g_action_group_activate_action (application->priv->actions,
-                                  action_name, parameter);
+  if (application->priv->is_remote)
+    g_application_impl_activate_action (application->priv->impl,
+                                        action_name, parameter,
+                                        get_platform_data (application));
+
+  else
+    g_action_group_activate_action (application->priv->actions,
+                                    action_name, parameter);
 }
 
 static void
@@ -1319,7 +1388,6 @@ g_application_action_group_iface_init (GActionGroupInterface *iface)
   iface->get_action_enabled = g_application_get_action_enabled;
   iface->get_action_parameter_type = g_application_get_action_parameter_type;
   iface->get_action_state_type = g_application_get_action_state_type;
-  iface->get_action_state_hint = g_application_get_action_state_hint;
   iface->get_action_state = g_application_get_action_state;
   iface->change_action_state = g_application_change_action_state;
   iface->activate_action = g_application_activate_action;

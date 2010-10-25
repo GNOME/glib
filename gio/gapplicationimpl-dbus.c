@@ -21,6 +21,7 @@
 
 #include "gapplicationimpl.h"
 
+#include "gactiongroup.h"
 #include "gapplication.h"
 #include "gfile.h"
 #include "gdbusconnection.h"
@@ -82,6 +83,40 @@ const GDBusInterfaceInfo org_gtk_Application = {
   (GDBusMethodInfo **) application_methods
 };
 
+static const GDBusArgInfo list_arg = { -1, (gchar *) "list", (gchar *) "a(savbav)" };
+static const GDBusArgInfo *describe_all_out[] = { &list_arg, NULL };
+
+static const GDBusArgInfo action_name_arg = { -1, (gchar *) "action_name", (gchar *) "s" };
+static const GDBusArgInfo value_arg = { -1, (gchar *) "value", (gchar *) "v" };
+static const GDBusArgInfo *set_action_state_in[] = { &action_name_arg, &value_arg, &platform_data_arg, NULL };
+
+static const GDBusArgInfo parameter_arg = { -1, (gchar *) "parameter", (gchar *) "av" };
+static const GDBusArgInfo *activate_action_in[] = { &action_name_arg, &parameter_arg, &platform_data_arg, NULL };
+
+static const GDBusMethodInfo describe_all_method = {
+  -1, (gchar *) "DescribeAll", NULL,
+  (GDBusArgInfo **) describe_all_out
+};
+
+static const GDBusMethodInfo set_action_state_method = {
+  -1, (gchar *) "SetState",
+  (GDBusArgInfo **) set_action_state_in
+};
+
+static const GDBusMethodInfo activate_action_method = {
+  -1, (gchar *) "Activate",
+  (GDBusArgInfo **) activate_action_in
+};
+
+static const GDBusMethodInfo *actions_methods[] = {
+  &describe_all_method, &set_action_state_method, &activate_action_method, NULL
+};
+
+const GDBusInterfaceInfo org_gtk_Actions = {
+  -1, (gchar *) "org.gtk.Actions",
+  (GDBusMethodInfo **) actions_methods
+};
+
 static const GDBusArgInfo message_arg = { -1, (gchar *) "message", (gchar *) "s" };
 static const GDBusArgInfo *print_in[] = { &message_arg, NULL };
 static const GDBusArgInfo *print_out[] = { NULL };
@@ -107,7 +142,6 @@ const GDBusInterfaceInfo org_gtk_private_Cmdline = {
   (GDBusMethodInfo **) cmdline_methods
 };
 
-
 /* GApplication implementation {{{1 */
 struct _GApplicationImpl
 {
@@ -115,7 +149,11 @@ struct _GApplicationImpl
   const gchar     *bus_name;
   gchar           *object_path;
   guint            object_id;
+  guint            action_id;
   gpointer         app;
+
+  GHashTable      *actions;
+  guint            signal_id;
 };
 
 
@@ -147,6 +185,8 @@ g_application_impl_method_call (GDBusConnection       *connection,
       g_signal_emit_by_name (impl->app, "activate");
       class->after_emit (impl->app, platform_data);
       g_variant_unref (platform_data);
+
+      g_dbus_method_invocation_return_value (invocation, NULL);
     }
 
   else if (strcmp (method_name, "Open") == 0)
@@ -182,6 +222,8 @@ g_application_impl_method_call (GDBusConnection       *connection,
       for (i = 0; i < n; i++)
         g_object_unref (files[i]);
       g_free (files);
+
+      g_dbus_method_invocation_return_value (invocation, NULL);
     }
 
   else if (strcmp (method_name, "CommandLine") == 0)
@@ -198,6 +240,135 @@ g_application_impl_method_call (GDBusConnection       *connection,
       class->after_emit (impl->app, platform_data);
       g_variant_unref (platform_data);
       g_object_unref (cmdline);
+    }
+  else
+    g_assert_not_reached ();
+}
+
+static void
+g_application_impl_actions_method_call (GDBusConnection       *connection,
+                                        const gchar           *sender,
+                                        const gchar           *object_path,
+                                        const gchar           *interface_name,
+                                        const gchar           *method_name,
+                                        GVariant              *parameters,
+                                        GDBusMethodInvocation *invocation,
+                                        gpointer               user_data)
+{
+  GApplicationImpl *impl = user_data;
+  GActionGroup *action_group;
+  GApplicationClass *class;
+
+  class = G_APPLICATION_GET_CLASS (impl->app);
+  action_group = G_ACTION_GROUP (impl->app);
+
+  if (strcmp (method_name, "DescribeAll") == 0)
+    {
+      GVariantBuilder builder;
+      gchar **actions;
+      gint i;
+
+      actions = g_action_group_list_actions (action_group);
+      g_variant_builder_init (&builder, G_VARIANT_TYPE ("(a(savbav))"));
+      g_variant_builder_open (&builder, G_VARIANT_TYPE ("a(savbav)"));
+
+      for (i = 0; actions[i]; i++)
+        {
+          /* Open */
+          g_variant_builder_open (&builder, G_VARIANT_TYPE ("(savbav)"));
+
+          /* Name */
+          g_variant_builder_add (&builder, "s", actions[i]);
+
+          /* Parameter type */
+          g_variant_builder_open (&builder, G_VARIANT_TYPE ("av"));
+            {
+              const GVariantType *type;
+
+              type = g_action_group_get_action_parameter_type (action_group,
+                                                               actions[i]);
+              if (type != NULL)
+                {
+                  GVariantType *array_type;
+
+                  array_type = g_variant_type_new_array (type);
+                  g_variant_builder_open (&builder, G_VARIANT_TYPE_VARIANT);
+                  g_variant_builder_open (&builder, array_type);
+                  g_variant_builder_close (&builder);
+                  g_variant_builder_close (&builder);
+                  g_variant_type_free (array_type);
+                }
+            }
+          g_variant_builder_close (&builder);
+
+          /* Enabled */
+          {
+            gboolean enabled = g_action_group_get_action_enabled (action_group,
+                                                                  actions[i]);
+            g_variant_builder_add (&builder, "b", enabled);
+          }
+
+          /* State */
+          g_variant_builder_open (&builder, G_VARIANT_TYPE ("av"));
+          {
+            GVariant *state = g_action_group_get_action_state (action_group,
+                                                               actions[i]);
+            if (state != NULL)
+              {
+                g_variant_builder_add (&builder, "v", state);
+                g_variant_unref (state);
+              }
+          }
+          g_variant_builder_close (&builder);
+
+          /* Close */
+          g_variant_builder_close (&builder);
+        }
+      g_variant_builder_close (&builder);
+
+      g_dbus_method_invocation_return_value (invocation,
+                                             g_variant_builder_end (&builder));
+    }
+
+  else if (strcmp (method_name, "SetState") == 0)
+    {
+      const gchar *action_name;
+      GVariant *platform_data;
+      GVariant *state;
+
+      g_variant_get (parameters, "(&sv@a{sv})",
+                     &action_name, &state, &platform_data);
+
+      class->before_emit (impl->app, platform_data);
+      g_action_group_change_action_state (action_group, action_name, state);
+      class->after_emit (impl->app, platform_data);
+      g_variant_unref (platform_data);
+      g_variant_unref (state);
+
+      g_dbus_method_invocation_return_value (invocation, NULL);
+    }
+
+  else if (strcmp (method_name, "Activate") == 0)
+    {
+      const gchar *action_name;
+      GVariant *platform_data;
+      GVariantIter *param;
+      GVariant *parameter;
+
+      g_variant_get (parameters, "(&sav@a{sv})",
+                     &action_name, &param, &platform_data);
+      parameter = g_variant_iter_next_value (param);
+      g_variant_iter_free (param);
+
+      class->before_emit (impl->app, platform_data);
+      g_action_group_activate_action (action_group, action_name, parameter);
+      class->after_emit (impl->app, platform_data);
+      g_variant_unref (platform_data);
+
+      if (parameter)
+        g_variant_unref (parameter);
+
+      g_dbus_method_invocation_return_value (invocation, NULL);
     }
 
   else
@@ -240,16 +411,131 @@ g_application_impl_destroy (GApplicationImpl *impl)
   g_slice_free (GApplicationImpl, impl);
 }
 
+RemoteActionInfo *
+remote_action_info_new_from_iter (GVariantIter *iter)
+{
+  RemoteActionInfo *info;
+  const gchar *name;
+  GVariant *param_type;
+  gboolean enabled;
+  GVariant *state;
+
+  if (!g_variant_iter_next (iter, "(s@avb@av)", &name,
+                            &param_type, &enabled, &state))
+    return NULL;
+
+  info = g_slice_new (RemoteActionInfo);
+  info->parameter_type = g_variant_type_copy (
+                           g_variant_type_element (
+                             g_variant_get_type (param_type)));
+  info->enabled = enabled;
+  info->state = state;
+
+  g_variant_unref (param_type);
+
+  return info;
+}
+
+static void
+g_application_impl_action_signal (GDBusConnection *connection,
+                                  const gchar     *sender_name,
+                                  const gchar     *object_path,
+                                  const gchar     *interface_name,
+                                  const gchar     *signal_name,
+                                  GVariant        *parameters,
+                                  gpointer         user_data)
+{
+  GApplicationImpl *impl = user_data;
+  GActionGroup *action_group;
+
+  action_group = G_ACTION_GROUP (impl->app);
+
+  if (strcmp (signal_name, "Added") == 0 &&
+      g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(a(savbav))")))
+    {
+      RemoteActionInfo *info;
+      GVariantIter *iter;
+
+      g_variant_get_child (parameters, 0, "a(savbav)", &iter);
+
+      while ((info = remote_action_info_new_from_iter (iter)))
+        {
+          g_hash_table_replace (impl->actions, info->name, info);
+          g_action_group_action_added (action_group, info->name);
+        }
+
+      g_variant_iter_free (iter);
+    }
+
+  else if (strcmp (signal_name, "Removed") == 0 &&
+           g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(as)")))
+    {
+      GVariantIter *iter;
+      const gchar *name;
+
+      g_variant_get_child (parameters, 0, "as", &iter);
+      while (g_variant_iter_next (iter, "&s", &name))
+        if (g_hash_table_remove (impl->actions, name))
+          g_action_group_action_removed (action_group, name);
+      g_variant_iter_free (iter);
+    }
+
+  else if (strcmp (signal_name, "EnabledChanged") == 0 &&
+           g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sb)")))
+    {
+      RemoteActionInfo *info;
+      const gchar *name;
+      gboolean enabled;
+
+      g_variant_get (parameters, "(&sb)", &name, &enabled);
+      info = g_hash_table_lookup (impl->actions, name);
+
+      if (info && enabled != info->enabled)
+        {
+          info->enabled = enabled;
+          g_action_group_action_enabled_changed (action_group,
+                                                 info->name,
+                                                 enabled);
+        }
+    }
+
+  else if (strcmp (signal_name, "StateChanged") == 0 &&
+           g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sv)")))
+    {
+      RemoteActionInfo *info;
+      const gchar *name;
+      GVariant *state;
+
+      g_variant_get (parameters, "(&sv)", &name, &state);
+      info = g_hash_table_lookup (impl->actions, name);
+      
+      if (info && info->state &&
+          g_variant_is_of_type (state, g_variant_get_type (info->state)) &&
+          !g_variant_equal (state, info->state))
+        {
+          g_variant_unref (info->state);
+          info->state = g_variant_ref (state);
+          g_action_group_action_state_changed (action_group,
+                                               info->name,
+                                               state);
+        }
+      g_variant_unref (state);
+    }
+}
+
 GApplicationImpl *
 g_application_impl_register (GApplication       *application,
                              const gchar        *appid,
                              GApplicationFlags   flags,
-                             gboolean           *is_remote,
+                             GHashTable        **remote_actions,
                              GCancellable       *cancellable,
                              GError            **error)
 {
   const static GDBusInterfaceVTable vtable = {
     g_application_impl_method_call
+  };
+  const static GDBusInterfaceVTable actions_vtable = {
+    g_application_impl_actions_method_call
   };
   GApplicationImpl *impl;
   GVariant *reply;
@@ -271,68 +557,91 @@ g_application_impl_register (GApplication       *application,
 
   impl->object_path = application_path_from_appid (appid);
 
-  /* don't try to be the primary instance if
-   * G_APPLICATION_IS_LAUNCHER was specified.
+  /* Only try to be the primary instance if
+   * G_APPLICATION_IS_LAUNCHER was not specified.
    */
-  if (flags & G_APPLICATION_IS_LAUNCHER)
+  if (~flags & G_APPLICATION_IS_LAUNCHER)
     {
-      impl->object_id = 0;
-      *is_remote = TRUE;
+      /* Attempt to become primary instance. */
+      impl->object_id =
+        g_dbus_connection_register_object (impl->session_bus,
+                                           impl->object_path,
+                                           (GDBusInterfaceInfo *)
+                                             &org_gtk_Application,
+                                           &vtable, impl, NULL, error);
 
-      return impl;
-    }
+      if (impl->object_id == 0)
+        {
+          g_object_unref (impl->session_bus);
+          g_free (impl->object_path);
+          impl->session_bus = NULL;
+          impl->object_path = NULL;
 
-  impl->object_id = g_dbus_connection_register_object (impl->session_bus,
-                                                       impl->object_path,
-                                                       (GDBusInterfaceInfo *)
-                                                         &org_gtk_Application,
-                                                       &vtable,
-                                                       impl, NULL,
-                                                       error);
+          g_slice_free (GApplicationImpl, impl);
+          return NULL;
+        }
 
-  if (impl->object_id == 0)
-    {
-      g_object_unref (impl->session_bus);
-      g_free (impl->object_path);
-      impl->session_bus = NULL;
-      impl->object_path = NULL;
+      impl->action_id =
+        g_dbus_connection_register_object (impl->session_bus,
+                                           impl->object_path,
+                                           (GDBusInterfaceInfo *)
+                                             &org_gtk_Actions,
+                                           &actions_vtable,
+                                           impl, NULL, error);
 
-      g_slice_free (GApplicationImpl, impl);
-      return NULL;
-    }
+      if (impl->action_id == 0)
+        {
+          g_dbus_connection_unregister_object (impl->session_bus,
+                                               impl->object_id);
 
-  reply = g_dbus_connection_call_sync (impl->session_bus,
-                                       "org.freedesktop.DBus",
-                                       "/org/freedesktop/DBus",
-                                       "org.freedesktop.DBus",
-                                       "RequestName",
-                                       g_variant_new ("(su)",
-                                       /* DBUS_NAME_FLAG_DO_NOT_QUEUE: 0x4 */
-                                                      impl->bus_name, 0x4),
-                                       G_VARIANT_TYPE ("(u)"),
-                                       0, -1, cancellable, error);
+          g_object_unref (impl->session_bus);
+          g_free (impl->object_path);
+          impl->session_bus = NULL;
+          impl->object_path = NULL;
 
-  if (reply == NULL)
-    {
-      g_dbus_connection_unregister_object (impl->session_bus,
-                                           impl->object_id);
-      impl->object_id = 0;
+          g_slice_free (GApplicationImpl, impl);
+          return NULL;
+        }
 
-      g_object_unref (impl->session_bus);
-      g_free (impl->object_path);
-      impl->session_bus = NULL;
-      impl->object_path = NULL;
+      /* DBUS_NAME_FLAG_DO_NOT_QUEUE: 0x4 */
+      reply = g_dbus_connection_call_sync (impl->session_bus,
+                                           "org.freedesktop.DBus",
+                                           "/org/freedesktop/DBus",
+                                           "org.freedesktop.DBus",
+                                           "RequestName",
+                                           g_variant_new ("(su)",
+                                                          impl->bus_name,
+                                                          0x4),
+                                           G_VARIANT_TYPE ("(u)"),
+                                           0, -1, cancellable, error);
 
-      g_slice_free (GApplicationImpl, impl);
-      return NULL;
-    }
+      if (reply == NULL)
+        {
+          g_dbus_connection_unregister_object (impl->session_bus,
+                                               impl->object_id);
+          impl->object_id = 0;
 
-  g_variant_get (reply, "(u)", &rval);
-  g_variant_unref (reply);
+          g_object_unref (impl->session_bus);
+          g_free (impl->object_path);
+          impl->session_bus = NULL;
+          impl->object_path = NULL;
 
-  /* DBUS_REQUEST_NAME_REPLY_EXISTS: 3 */
-  if ((*is_remote = (rval == 3)))
-    {
+          g_slice_free (GApplicationImpl, impl);
+          return NULL;
+        }
+
+      g_variant_get (reply, "(u)", &rval);
+      g_variant_unref (reply);
+
+      /* DBUS_REQUEST_NAME_REPLY_EXISTS: 3 */
+      if (rval != 3)
+        {
+          /* We are the primary instance. */
+          *remote_actions = NULL;
+          return impl;
+        }
+
+      /* We didn't make it.  Drop our service-side stuff. */
       g_dbus_connection_unregister_object (impl->session_bus,
                                            impl->object_id);
       impl->object_id = 0;
@@ -348,6 +657,70 @@ g_application_impl_register (GApplication       *application,
           impl = NULL;
         }
     }
+
+  /* We are non-primary.  Try to get the primary's list of actions.
+   * This also serves as a mechanism to ensure that the primary exists
+   * (ie: DBus service files installed correctly, etc).
+   */
+  impl->signal_id = 
+    g_dbus_connection_signal_subscribe (impl->session_bus, impl->bus_name,
+                                        "org.gtk.Actions", NULL,
+                                        impl->object_path, NULL,
+                                        G_DBUS_SIGNAL_FLAGS_NONE,
+                                        g_application_impl_action_signal,
+                                        impl, NULL);
+
+  reply = g_dbus_connection_call_sync (impl->session_bus, impl->bus_name,
+                                       impl->object_path, "org.gtk.Actions",
+                                       "DescribeAll", NULL,
+                                       G_VARIANT_TYPE ("(a(savbav))"),
+                                       G_DBUS_CALL_FLAGS_NONE, -1,
+                                       cancellable, error);
+
+  if (reply == NULL)
+    {
+      /* The primary appears not to exist.  Fail the registration. */
+      g_object_unref (impl->session_bus);
+      g_free (impl->object_path);
+      impl->session_bus = NULL;
+      impl->object_path = NULL;
+
+      g_slice_free (GApplicationImpl, impl);
+      return NULL;
+    }
+
+  /* Create and populate the hashtable */
+  {
+    GVariant *descriptions;
+    GVariantIter iter;
+    GVariant *param_type;
+    gboolean enabled;
+    GVariant *state;
+    gchar *name;
+
+    *remote_actions = g_hash_table_new (g_str_hash, g_str_equal);
+    descriptions = g_variant_get_child_value (reply, 0);
+    g_variant_iter_init (&iter, descriptions);
+
+    while (g_variant_iter_next (&iter, "(s@avb@av)", &name,
+                                &param_type, &enabled, &state))
+      {
+        RemoteActionInfo *action;
+
+        action = g_slice_new (RemoteActionInfo);
+        action->parameter_type = g_variant_type_copy (
+                                   g_variant_type_element (
+                                     g_variant_get_type (param_type)));
+        action->enabled = enabled;
+        action->state = state;
+
+        g_hash_table_insert (*remote_actions, name, action);
+        g_variant_unref (param_type);
+      }
+
+    g_variant_unref (descriptions);
+  }
+
 
   return impl;
 }
@@ -496,6 +869,46 @@ g_application_impl_command_line (GApplicationImpl  *impl,
   g_main_loop_unref (data.loop);
 
   return data.status;
+}
+
+void
+g_application_impl_change_action_state (GApplicationImpl *impl,
+                                        const gchar      *action_name,
+                                        GVariant         *value,
+                                        GVariant         *platform_data)
+{
+  g_dbus_connection_call (impl->session_bus,
+                          impl->bus_name,
+                          impl->object_path,
+                          "org.gtk.Actions",
+                          "SetState",
+                          g_variant_new ("(sv@a{sv})", action_name,
+                                         value, platform_data),
+                          NULL, 0, -1, NULL, NULL, NULL);
+}
+
+void
+g_application_impl_activate_action (GApplicationImpl *impl,
+                                    const gchar      *action_name,
+                                    GVariant         *parameter,
+                                    GVariant         *platform_data)
+{
+  GVariant *param;
+
+  if (parameter)
+    parameter = g_variant_new_variant (parameter);
+
+  param = g_variant_new_array (G_VARIANT_TYPE_VARIANT,
+                               &parameter, parameter != NULL);
+
+  g_dbus_connection_call (impl->session_bus,
+                          impl->bus_name,
+                          impl->object_path,
+                          "org.gtk.Actions",
+                          "Activate",
+                          g_variant_new ("(s@av@a{sv})", action_name,
+                                         param, platform_data),
+                          NULL, 0, -1, NULL, NULL, NULL);
 }
 
 void
