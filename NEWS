@@ -1,3 +1,91 @@
+Overview of Changes from GLib 2.27.0 to 2.27.1
+==============================================
+
+* GDateTime now has full week number support.
+  New API: g_date_time_get_week_numbering_year
+
+* The GSettings schema compiler will now skip over
+  broken .xml schema files instead of aborting altogether
+
+* GSettings now works properly on bigendian systems
+
+* GSettings has more complete support for ranges
+  New API:
+    g_settings_get_range
+    g_settings_range_check
+  The gsettings commandline tool supports ranges too.
+
+* GApplication has been rewritten; see the API docs for details
+  and examples. The action support is not complete yet.
+
+* The GLib mainloop has gained 'dispatch to context' functionality,
+  which can replace manually created idles in many cases.
+  New API:
+    g_main_context_invoke
+    g_main_context_invoke_full
+
+* The gio-desktop-app-info-lookup extension point has been
+  removed from GIO. GIO now uses x-scheme-handler mimetypes when
+  looking for default applications.
+
+* On win32, make g_get_user_data_dir() return the CSIDL_LOCAL_APPDATA
+  folder on Windows, and not CSIDL_PERSONAL. This matches what Qt does,
+  and has been widely requested. Also make g_get_user_config_dir() return
+  this and not the (roaming) CSIDL_APPDATA folder.
+
+* A periodic event clock has been added in GIO: GPeriodic. Note that this
+  API is still experimental and expected to undergo changes before it
+  will be incorporated into a stable GLib release. Use at your own risk.
+
+Bug fixes:
+ 613822 gobject signal connect/disconnect not thread safe
+ 618737 "dispatch to context" functionality
+ 620710 g_get_user_data_dir() uses CSIDL_PERSONAL and not CSIDL_APPDATA
+ 623400 acquire context before dispatching
+ 627126 gsettings schema files don't get installed on FreeBSD
+ 627171 g_socket_new_from_fd() doesn't set the right protocol
+ 628876 Wrong error description
+ 628937 gracefully handle broken schemas
+ 629274 GNetworkService doesn't fallback when there is no SRV record
+ 629289 g_error() used wrong, produces core dump
+ 629687 leaks class refcount in gsocketcontrolmessage
+ 629849 GLib-CRITICAL **: g_source_get_context: assertion `!SOURCE_...
+ 629945 GDBus deadlock in g_bus_get_sync()
+ 630000 g_date_time_difference
+ 630077 GDateTime week number support
+ 630185 Allow NULL strings in g_quark_try_string()
+ 630797 docs mention non-existent g_object_dispose()
+ 630968 gschema-compile problems on power g5
+ 631263 GSettings needs range/choice APIs
+ 631264 gsettings-tool choice/range support
+ 631379 GDBus nonce-tcp test failing
+ 631410 Port gapplookupgconf.c to using x-scheme-handler/
+ 632884 Possible deadlock in g_object_remove_toggle_ref()
+
+Transation updates:
+ Basque
+ Brazilian Portuguese
+ British English
+ Bulgarian
+ Czech
+ Dutch
+ Estonian
+ French
+ Galician
+ German
+ Greek
+ Hebrew
+ Hungarian
+ Japanese
+ Lithuanian
+ Polish
+ Portuguese
+ Romanian
+ Simplified Chinese
+ Slovenian
+ Spanish
+
+
 Overview of Changes from GLib 2.25.15 to GLib 2.27.0
 ====================================================
 
