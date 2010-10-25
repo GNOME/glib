@@ -97,10 +97,10 @@ gboolean                g_application_command_line_get_is_remote        (GApplic
 
 void                    g_application_command_line_print                (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,
-                                                                         ...);
+                                                                         ...) G_GNUC_PRINTF(2, 3);
 void                    g_application_command_line_printerr             (GApplicationCommandLine   *cmdline,
                                                                          const gchar               *format,
-                                                                         ...);
+                                                                         ...) G_GNUC_PRINTF(2, 3);
 
 int                     g_application_command_line_get_exit_status      (GApplicationCommandLine   *cmdline);
 void                    g_application_command_line_set_exit_status      (GApplicationCommandLine   *cmdline,
