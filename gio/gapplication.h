@@ -152,7 +152,7 @@ void                    g_application_release                           (GApplic
 void                    g_application_activate                          (GApplication             *application);
 
 void                    g_application_open                              (GApplication             *application,
-                                                                         GFile                   **file,
+                                                                         GFile                   **files,
                                                                          gint                      n_files,
                                                                          const gchar              *hint);
 

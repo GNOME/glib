@@ -1329,6 +1329,8 @@ g_data_input_stream_read_upto (GDataInputStream  *stream,
  * @stop_chars: characters to terminate the read
  * @stop_chars_len: length of @stop_chars. May be -1 if @stop_chars is
  *     nul-terminated
+ * @io_priority: the <link linkend="io-priority">I/O priority</link>
+ *     of the request.
  * @cancellable: optional #GCancellable object, %NULL to ignore
  * @callback: callback to call when the request is satisfied
  * @user_data: the data to pass to callback function

@@ -1388,9 +1388,6 @@ g_desktop_app_info_new
 g_desktop_app_info_get_filename
 g_desktop_app_info_get_is_hidden
 g_desktop_app_info_set_desktop_env
-GDesktopAppInfoLookup
-G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME
-g_desktop_app_info_lookup_get_default_for_uri_scheme
 <SUBSECTION Standard>
 GDesktopAppInfoClass
 G_TYPE_DESKTOP_APP_INFO
@@ -1399,14 +1396,8 @@ G_DESKTOP_APP_INFO_CLASS
 G_IS_DESKTOP_APP_INFO
 G_IS_DESKTOP_APP_INFO_CLASS
 G_DESKTOP_APP_INFO_GET_CLASS
-GDesktopAppInfoLookupIface
-G_DESKTOP_APP_INFO_LOOKUP
-G_TYPE_DESKTOP_APP_INFO_LOOKUP
-G_DESKTOP_APP_INFO_LOOKUP_GET_IFACE
-G_IS_DESKTOP_APP_INFO_LOOKUP
 <SUBSECTION Private>
 g_desktop_app_info_get_type
-g_desktop_app_info_lookup_get_type
 </SECTION>
 
 <SECTION>
@@ -2717,7 +2708,6 @@ g_application_command_line_get_platform_data
 g_application_command_line_set_exit_status
 g_application_command_line_get_exit_status
 <SUBSECTION>
-g_application_command_line_output
 g_application_command_line_print
 g_application_command_line_printerr
 <SUBSECTION Standard>
@@ -2766,7 +2756,7 @@ g_action_group_get_type
 GActionGroupPrivate
 G_TYPE_ACTION_GROUP
 G_IS_ACTION_GROUP
-G_ACTION_GROUP_GET_INTERFACE
+G_ACTION_GROUP_GET_IFACE
 G_ACTION_GROUP
 </SECTION>
 
@@ -2793,7 +2783,7 @@ g_action_activate
 g_action_get_type
 G_TYPE_ACTION
 G_IS_ACTION
-G_ACTION_GET_INTERFACE
+G_ACTION_GET_IFACE
 G_ACTION
 </SECTION>
 
