@@ -94,6 +94,10 @@ GIFunctionInfo *  g_object_info_find_method      (GIObjectInfo *info,
 gint              g_object_info_get_n_signals    (GIObjectInfo *info);
 GISignalInfo *    g_object_info_get_signal       (GIObjectInfo *info,
 						  gint          n);
+
+GISignalInfo *    g_object_info_find_signal      (GIObjectInfo *info,
+						  const gchar  *name);
+
 gint              g_object_info_get_n_vfuncs     (GIObjectInfo *info);
 GIVFuncInfo *     g_object_info_get_vfunc        (GIObjectInfo *info,
 						  gint          n);

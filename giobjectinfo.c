@@ -472,6 +472,37 @@ g_object_info_get_signal (GIObjectInfo *info,
 }
 
 /**
+ * g_object_info_find_signal:
+ * @info: a #GIObjectInfo
+ * @name: Name of signal
+ *
+ * Returns: Info for the signal with name @name in @info, or %NULL on failure.
+ */
+GISignalInfo *
+g_object_info_find_signal (GIObjectInfo *info,
+			   const gchar  *name)
+{
+  gint n_signals;
+  gint i;
+
+  n_signals = g_object_info_get_n_signals (info);
+  for (i = 0; i < n_signals; i++)
+    {
+      GISignalInfo *siginfo = g_object_info_get_signal (info, i);
+
+      if (g_strcmp0 (g_base_info_get_name (siginfo), name) != 0)
+	{
+	  g_base_info_unref ((GIBaseInfo*)siginfo);
+	  continue;
+	}
+
+      return siginfo;
+    }
+  return NULL;
+}
+
+
+/**
  * g_object_info_get_n_vfuncs:
  * @info: a #GIObjectInfo
  *
