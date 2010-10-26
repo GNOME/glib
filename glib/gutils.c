@@ -801,11 +801,32 @@ g_path_get_basename (const gchar   *file_name)
  * g_path_is_absolute:
  * @file_name: a file name.
  *
- * Returns %TRUE if the given @file_name is an absolute file name,
- * i.e. it contains a full path from the root directory such as "/usr/local"
- * on UNIX or "C:\windows" on Windows systems.
+ * Returns %TRUE if the given @file_name is an absolute file name.
+ * Note that this is a somewhat vague concept on Windows.
  *
- * Returns: %TRUE if @file_name is an absolute path. 
+ * On POSIX systems, an absolute file name is well-defined. It always
+ * starts from the single root directory. For example "/usr/local".
+ *
+ * On Windows, the concepts of current drive and drive-specific
+ * current directory introduce vagueness. This function interprets as
+ * an absolute file name one that either begins with a directory
+ * separator such as "\Users\tml" or begins with the root on a drive,
+ * for example "C:\Windows". The first case also includes UNC paths
+ * such as "\\myserver\docs\foo". In all cases, either slashes or
+ * backslashes are accepted.
+ *
+ * Note that a file name relative to the current drive root does not
+ * truly specify a file uniquely over time and across processes, as
+ * the current drive is a per-process value and can be changed.
+ *
+ * File names relative the current directory on some specific drive,
+ * such as "D:foo/bar", are not interpreted as absolute by this
+ * function, but they obviously are not relative to the normal current
+ * directory as returned by getcwd() or g_get_current_dir()
+ * either. Such paths should be avoided, or need to be handled using
+ * Windows-specific code.
+ *
+ * Returns: %TRUE if @file_name is absolute. 
  */
 gboolean
 g_path_is_absolute (const gchar *file_name)
