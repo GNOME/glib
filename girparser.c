@@ -396,6 +396,7 @@ static BasicTypeInfo basic_types[] = {
     { "GType",     GI_TYPE_TAG_GTYPE,   0 },
     { "utf8",      GI_TYPE_TAG_UTF8,    1 },
     { "filename",  GI_TYPE_TAG_FILENAME,1 },
+    { "gunichar",  GI_TYPE_TAG_UNICHAR, 0 },
 };
 
 static const BasicTypeInfo *
@@ -579,7 +580,7 @@ parse_type_internal (GIrModule *module,
 
   if (next)
     *next = (char*)str;
-  g_assert (type->tag >= 0 && type->tag <= GI_TYPE_TAG_ERROR);
+  g_assert (type->tag >= 0 && type->tag < GI_TYPE_TAG_N_TYPES);
   g_free (temporary_type);
   return type;
 

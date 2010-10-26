@@ -56,6 +56,7 @@ gi_type_tag_get_ffi_type (GITypeTag   tag,
     case GI_TYPE_TAG_INT32:
       return &ffi_type_sint32;
     case GI_TYPE_TAG_UINT32:
+    case GI_TYPE_TAG_UNICHAR:
       return &ffi_type_uint32;
     case GI_TYPE_TAG_INT64:
       return &ffi_type_sint64;

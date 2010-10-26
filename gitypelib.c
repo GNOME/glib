@@ -652,6 +652,7 @@ validate_type_blob (GITypelib     *typelib,
 	}
 
       if (simple->flags.tag >= GI_TYPE_TAG_UTF8 &&
+	  simple->flags.tag != GI_TYPE_TAG_UNICHAR &&
 	  !simple->flags.pointer)
 	{
 	  g_set_error (error,
@@ -1010,11 +1011,12 @@ validate_constant_blob (GITypelib     *typelib,
     0, /* GSLIST */
     0, /* GHASH */
     0, /* ERROR */
+    4 /* UNICHAR */
   };
   ConstantBlob *blob;
   SimpleTypeBlob *type;
 
-  g_assert (G_N_ELEMENTS (value_size) == GI_TYPE_TAG_ERROR + 1);
+  g_assert (G_N_ELEMENTS (value_size) == GI_TYPE_TAG_N_TYPES);
 
   if (typelib->len < offset + sizeof (ConstantBlob))
     {

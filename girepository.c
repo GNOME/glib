@@ -1408,6 +1408,8 @@ g_type_tag_to_string (GITypeTag type)
       return "gfloat";
     case GI_TYPE_TAG_DOUBLE:
       return "gdouble";
+    case GI_TYPE_TAG_UNICHAR:
+      return "gunichar";
     case GI_TYPE_TAG_GTYPE:
       return "GType";
     case GI_TYPE_TAG_UTF8:

@@ -220,6 +220,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	  break;
 	case GI_TYPE_TAG_INT32:
 	case GI_TYPE_TAG_UINT32:
+	case GI_TYPE_TAG_UNICHAR:
 	  value->v_uint32 = G_STRUCT_MEMBER (guint32, mem, offset);
 	  result = TRUE;
 	  break;
@@ -399,6 +400,7 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	  break;
 	case GI_TYPE_TAG_INT32:
 	case GI_TYPE_TAG_UINT32:
+	case GI_TYPE_TAG_UNICHAR:
 	  G_STRUCT_MEMBER (guint32, mem, offset) = value->v_uint32;
 	  result = TRUE;
 	  break;

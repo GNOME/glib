@@ -322,6 +322,7 @@ typedef enum {
  * @GI_TYPE_TAG_UINT64: 64-bit unsigned integer
  * @GI_TYPE_TAG_FLOAT: float
  * @GI_TYPE_TAG_DOUBLE: double floating point
+ * @GI_TYPE_TAG_UNICHAR: Unicode character
  * @GI_TYPE_TAG_GTYPE: a #GType
  * @GI_TYPE_TAG_UTF8: a UTF-8 encoded string
  * @GI_TYPE_TAG_FILENAME: a filename, encoded in the same encoding
@@ -352,18 +353,20 @@ typedef enum {
   GI_TYPE_TAG_GTYPE     = 12,
   GI_TYPE_TAG_UTF8      = 13,
   GI_TYPE_TAG_FILENAME  = 14,
-  /* Non-basic types */
+  /* Non-basic types; compare with G_TYPE_TAG_IS_BASIC */
   GI_TYPE_TAG_ARRAY     = 15,
   GI_TYPE_TAG_INTERFACE = 16,
   GI_TYPE_TAG_GLIST     = 17,
   GI_TYPE_TAG_GSLIST    = 18,
   GI_TYPE_TAG_GHASH     = 19,
-  GI_TYPE_TAG_ERROR     = 20
+  GI_TYPE_TAG_ERROR     = 20,
+  /* Another basic type */
+  GI_TYPE_TAG_UNICHAR   = 21
   /* Note - there is only room currently for 32 tags.
    * See docs/typelib-format.txt SimpleTypeBlob definition */
 } GITypeTag;
 
-#define GI_TYPE_TAG_N_TYPES (GI_TYPE_TAG_ERROR+1)
+#define GI_TYPE_TAG_N_TYPES (GI_TYPE_TAG_UNICHAR+1)
 
 /* These were removed and no longer appear in the typelib;
  * instead, the machine-specific versions like INT32 are

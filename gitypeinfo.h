@@ -33,7 +33,7 @@ G_BEGIN_DECLS
 #define GI_IS_TYPE_INFO(info) \
     (g_base_info_get_type((GIBaseInfo*)info) ==  GI_INFO_TYPE_TYPE)
 
-#define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY)
+#define G_TYPE_TAG_IS_BASIC(tag) (tag < GI_TYPE_TAG_ARRAY || tag == GI_TYPE_TAG_UNICHAR)
 
 const gchar*           g_type_tag_to_string            (GITypeTag   type);
 const gchar*           g_info_type_to_string           (GIInfoType  type);

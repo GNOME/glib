@@ -1415,7 +1415,7 @@ g_ir_node_build_typelib (GIrNode         *node,
 
 	*offset += sizeof (SimpleTypeBlob);
 
-	if (G_TYPE_TAG_IS_BASIC(type->tag))
+	if (G_TYPE_TAG_IS_BASIC (type->tag))
 	  {
 	    blob->flags.reserved = 0;
 	    blob->flags.reserved2 = 0;
