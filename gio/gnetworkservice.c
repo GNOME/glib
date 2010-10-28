@@ -435,7 +435,7 @@ g_network_service_address_enumerator_next (GSocketAddressEnumerator  *enumerator
             g_clear_error (&my_error);
         }
 
-      if (!targets)
+      if (my_error)
         {
           g_propagate_error (error, my_error);
           return NULL;
