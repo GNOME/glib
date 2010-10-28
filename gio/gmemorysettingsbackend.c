@@ -44,7 +44,7 @@ table_pair_free (gpointer data)
   TablePair *pair = data;
 
   g_hash_table_unref (pair->values);
-  g_hash_table_unref (pair->list);
+  g_hash_table_unref (pair->lists);
 }
 
 static TablePair *
@@ -53,10 +53,10 @@ table_pair_new (void)
   TablePair *pair;
 
   pair = g_slice_new (TablePair);
-  pair->values = g_hash_table_new (g_str_hash, g_str_equal, g_free,
-                                   (GDestroyNotify) g_variant_unref);
-  pair->lists = g_hash_table_new (g_str_hash, g_str_equal, g_free,
-                                  (GDestroyNotify) g_hash_table_unref);
+  pair->values = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
+					(GDestroyNotify) g_variant_unref);
+  pair->lists = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
+				       (GDestroyNotify) g_hash_table_unref);
 
   return pair;
 }
@@ -68,6 +68,7 @@ typedef struct
 {
   GSettingsBackend parent_instance;
   TablePair *root;
+  GHashTable *table;
 } GMemorySettingsBackend;
 
 G_DEFINE_TYPE_WITH_CODE (GMemorySettingsBackend,
@@ -126,14 +127,14 @@ g_memory_settings_backend_get_table (GHashTable   *table,
       if (!g_hash_table_lookup_extended (table, prefix, NULL, &value))
         g_hash_table_insert (table, prefix,
                              value = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                            g_free, g_hash_table_unref));
+                                                            g_free, (GDestroyNotify) g_hash_table_unref));
 
       table = value;
 
       if (!g_hash_table_lookup_extended (table, prefix, NULL, &value))
         g_hash_table_insert (table, prefix,
                              value = g_hash_table_new_full (g_str_hash, g_str_equal,
-                                                            g_free, g_hash_table_unref));
+                                                            g_free, (GDestroyNotify) g_hash_table_unref));
     }
 
     if (key[i] == ':' && key[i + 1] == '/')
@@ -144,15 +145,15 @@ g_memory_settings_backend_get_table (GHashTable   *table,
 
         i += 2;
 
-        for (j = i; (*key)[j] != '/'; j++)
+        for (j = i; key[j] != '/'; j++)
           /* found a path of the form /a:/b
            * which is never a valid spot for a key.
            */
-          if ((*key)[j] == '\0')
+          if (key[j] == '\0')
             return NULL;
 
-        name = g_strndup (*key + i, j - i);
-        prefix = g_strndup (*key, i);
+        name = g_strndup ((const gchar *) key + i, j - i);
+        prefix = g_strndup (key, i);
         table = g_hash_table_lookup (table, prefix);
         g_free (prefix);
       }
