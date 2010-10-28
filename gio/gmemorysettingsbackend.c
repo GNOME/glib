@@ -32,42 +32,10 @@
                                          G_TYPE_MEMORY_SETTINGS_BACKEND,     \
                                          GMemorySettingsBackend))
 
-typedef struct
-{
-  GHashTable/*<string, GVariant>*/                     *values;
-  GHashTable/*<string, GHashTable<string, TablePair>*/ *lists;
-} TablePair;
-
-static void
-table_pair_free (gpointer data)
-{
-  TablePair *pair = data;
-
-  g_hash_table_unref (pair->values);
-  g_hash_table_unref (pair->lists);
-}
-
-static TablePair *
-table_pair_new (void)
-{
-  TablePair *pair;
-
-  pair = g_slice_new (TablePair);
-  pair->values = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
-					(GDestroyNotify) g_variant_unref);
-  pair->lists = g_hash_table_new_full (g_str_hash, g_str_equal, g_free,
-				       (GDestroyNotify) g_hash_table_unref);
-
-  return pair;
-}
-
-
-
 typedef GSettingsBackendClass GMemorySettingsBackendClass;
 typedef struct
 {
   GSettingsBackend parent_instance;
-  TablePair *root;
   GHashTable *table;
 } GMemorySettingsBackend;
 
