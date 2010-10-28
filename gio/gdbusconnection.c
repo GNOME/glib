@@ -1776,14 +1776,17 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
                               (GDestroyNotify) g_object_unref);
     }
 
-  data->timeout_source = g_timeout_source_new (timeout_msec);
-  g_source_set_priority (data->timeout_source, G_PRIORITY_DEFAULT);
-  g_source_set_callback (data->timeout_source,
-                         send_message_with_reply_timeout_cb,
-                         send_message_data_ref (data),
-                         (GDestroyNotify) send_message_data_unref);
-  g_source_attach (data->timeout_source, data->main_context);
-  g_source_unref (data->timeout_source);
+  if (timeout_msec != G_MAXINT)
+    {
+      data->timeout_source = g_timeout_source_new (timeout_msec);
+      g_source_set_priority (data->timeout_source, G_PRIORITY_DEFAULT);
+      g_source_set_callback (data->timeout_source,
+                             send_message_with_reply_timeout_cb,
+                             send_message_data_ref (data),
+                             (GDestroyNotify) send_message_data_unref);
+      g_source_attach (data->timeout_source, data->main_context);
+      g_source_unref (data->timeout_source);
+    }
 
   g_hash_table_insert (connection->map_method_serial_to_send_message_data,
                        GUINT_TO_POINTER (*out_serial),
@@ -1798,7 +1801,8 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
  * @flags: Flags affecting how the message is sent.
- * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
@@ -1940,7 +1944,8 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
  * @flags: Flags affecting how the message is sent.
- * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
@@ -4995,7 +5000,8 @@ g_dbus_connection_call_done (GObject      *source,
  * @parameters: A #GVariant tuple with parameters for the method or %NULL if not passing parameters.
  * @reply_type: The expected type of the reply, or %NULL.
  * @flags: Flags from the #GDBusCallFlags enumeration.
- * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
  * care about the result of the method invocation.
@@ -5161,7 +5167,8 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * @parameters: A #GVariant tuple with parameters for the method or %NULL if not passing parameters.
  * @reply_type: The expected type of the reply, or %NULL.
  * @flags: Flags from the #GDBusCallFlags enumeration.
- * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
