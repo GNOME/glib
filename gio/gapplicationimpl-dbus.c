@@ -859,7 +859,7 @@ g_application_impl_command_line (GApplicationImpl  *impl,
                           "CommandLine",
                           g_variant_new ("(o^aay@a{sv})", object_path,
                                          arguments, platform_data),
-                          G_VARIANT_TYPE ("(i)"), 0, -1, NULL,
+                          G_VARIANT_TYPE ("(i)"), 0, G_MAXINT, NULL,
                           g_application_impl_cmdline_done, &data);
 
   g_main_loop_run (data.loop);
