@@ -1453,6 +1453,45 @@ g_listenv (void)
 #endif
 }
 
+/**
+ * g_get_environ:
+ * 
+ * Gets the list of environment variables for the current process.  The
+ * list is %NULL terminated and each item in the list is of the form
+ * 'NAME=VALUE'.
+ *
+ * This is equivalent to direct access to the 'environ' global variable,
+ * except portable.
+ *
+ * The return value is freshly allocated and it should be freed with
+ * g_strfreev() when it is no longer needed.
+ *
+ * Returns: the list of environment variables
+ *
+ * Since: 2.28
+ */
+gchar **
+g_get_environ (void)
+{
+#ifndef G_OS_WIN32
+  return g_strdupv (environ);
+#else
+  gunichar2 *strings;
+  gchar **result;
+  gint i, n;
+
+  strings = GetEnvironmentStringsW ();
+  for (n = 0; strings[n]; n += wcslen (strings + n) + 1);
+  result = g_new (char *, n + 1);
+  for (i = 0; strings[i]; i += wcslen (strings + i) + 1)
+    result[i] = g_utf16_to_utf8 (strings + i, -1, NULL, NULL, NULL);
+  FreeEnvironmentStringsW (strings);
+  result[i] = NULL;
+
+  return result;
+#endif
+}
+
 G_LOCK_DEFINE_STATIC (g_utils_global);
 
 static	gchar	*g_tmp_dir = NULL;

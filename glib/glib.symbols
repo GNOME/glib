@@ -1642,6 +1642,7 @@ g_get_host_name
 g_setenv PRIVATE
 #endif
 g_listenv
+g_get_environ
 #ifdef G_OS_WIN32
 g_find_program_in_path_utf8
 g_get_current_dir_utf8
