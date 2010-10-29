@@ -1227,6 +1227,8 @@ typedef enum
  *     primary instance)
  * @G_APPLICATION_HANDLES_COMMAND_LINE: This application handles command line
  *     arguments (in the primary instance)
+ * @G_APPLICATION_SEND_ENVIRONMENT: Send the environment of the
+ *     launching process to the primary instance
  *
  * Flags used to define the behaviour of a #GApplication.
  *
@@ -1239,7 +1241,8 @@ typedef enum
   G_APPLICATION_IS_LAUNCHER =          (1 << 1),
 
   G_APPLICATION_HANDLES_OPEN =         (1 << 2),
-  G_APPLICATION_HANDLES_COMMAND_LINE = (1 << 3)
+  G_APPLICATION_HANDLES_COMMAND_LINE = (1 << 3),
+  G_APPLICATION_SEND_ENVIRONMENT    =  (1 << 4)
 } GApplicationFlags;
 
 G_END_DECLS

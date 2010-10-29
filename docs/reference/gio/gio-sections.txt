@@ -2702,6 +2702,8 @@ GApplicationCommandLineClass
 <SUBSECTION>
 g_application_command_line_get_arguments
 g_application_command_line_get_cwd
+g_application_command_line_get_environ
+g_application_command_line_getenv
 g_application_command_line_get_is_remote
 g_application_command_line_get_platform_data
 <SUBSECTION>

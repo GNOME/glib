@@ -83,6 +83,8 @@ struct _GApplicationCommandLinePrivate
   GVariant *platform_data;
   GVariant *arguments;
   GVariant *cwd;
+
+  const gchar **environ;
   gint exit_status;
 };
 
@@ -104,6 +106,12 @@ grok_platform_data (GApplicationCommandLine *cmdline)
       {
         if (!cmdline->priv->cwd)
           cmdline->priv->cwd = g_variant_ref (value);
+      }
+
+    else if (strcmp (key, "environ") == 0)
+      {
+        if (!cmdline->priv->environ)
+          cmdline->priv->environ = g_variant_get_strv (value, NULL);
       }
 }
 
@@ -295,6 +303,69 @@ g_application_command_line_get_cwd (GApplicationCommandLine *cmdline)
     return g_variant_get_bytestring (cmdline->priv->cwd);
   else
     return NULL;
+}
+
+/**
+ * g_application_command_line_get_environ:
+ * @cmdline: a #GApplicationCommandLine
+ *
+ * Gets the contents of the 'environ' variable of the command line
+ * invocation, as would be returned by g_get_environ().  The strings may
+ * contain non-utf8 data.
+ *
+ * The remote application usually does not send an environment.  Use
+ * %G_APPLICATION_SEND_ENVIRONMENT to affect that.  Even with this flag
+ * set it is possible that the environment is still not available (due
+ * to invocation messages from other applications).
+ *
+ * The return value should not be modified or freed and is valid for as
+ * long as @cmdline exists.
+ *
+ * Returns: the environment strings, or %NULL if they were not sent
+ * 
+ * Since: 2.28
+ **/
+const gchar * const *
+g_application_command_line_get_environ (GApplicationCommandLine *cmdline)
+{
+  return cmdline->priv->environ;
+}
+
+/**
+ * g_application_command_line_getenv:
+ * @cmdline: a #GApplicationCommandLine
+ *
+ * Gets the value of a particular environment variable of the command
+ * line invocation, as would be returned by g_getenv().  The strings may
+ * contain non-utf8 data.
+ *
+ * The remote application usually does not send an environment.  Use
+ * %G_APPLICATION_SEND_ENVIRONMENT to affect that.  Even with this flag
+ * set it is possible that the environment is still not available (due
+ * to invocation messages from other applications).
+ *
+ * The return value should not be modified or freed and is valid for as
+ * long as @cmdline exists.
+ *
+ * Returns: the value of the variable, or %NULL if unset or unsent
+ * 
+ * Since: 2.28
+ **/
+const gchar *
+g_application_command_line_getenv (GApplicationCommandLine *cmdline,
+                                   const gchar             *name)
+{
+  gint length = strlen (name);
+  gint i;
+
+  /* TODO: expand on windows */
+  if (cmdline->priv->environ)
+    for (i = 0; cmdline->priv->environ[i]; i++)
+      if (strncmp (cmdline->priv->environ[i], name, length) == 0 &&
+          cmdline->priv->environ[i][length] == '=')
+        return cmdline->priv->environ[i] + length + 1;
+
+  return NULL;
 }
 
 /**

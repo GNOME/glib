@@ -571,6 +571,14 @@ get_platform_data (GApplication *application)
     g_free (cwd);
   }
 
+  if (application->priv->flags & G_APPLICATION_SEND_ENVIRONMENT)
+    {
+      gchar **envp = g_get_environ ();
+      g_variant_builder_add (builder, "{sv}", "environ",
+                             g_variant_new_strv ((const gchar **) envp, -1));
+      g_strfreev (envp);
+    }
+
   G_APPLICATION_GET_CLASS (application)->
     add_platform_data (application, builder);
 

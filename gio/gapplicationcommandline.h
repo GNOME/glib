@@ -91,6 +91,11 @@ GType                   g_application_command_line_get_type             (void) G
 gchar **                g_application_command_line_get_arguments        (GApplicationCommandLine   *cmdline,
                                                                          int                       *argc);
 
+const gchar * const *   g_application_command_line_get_environ          (GApplicationCommandLine   *cmdline);
+
+const gchar *           g_application_command_line_getenv               (GApplicationCommandLine   *cmdline,
+                                                                         const gchar               *name);
+
 const gchar *           g_application_command_line_get_cwd              (GApplicationCommandLine   *cmdline);
 
 gboolean                g_application_command_line_get_is_remote        (GApplicationCommandLine   *cmdline);
