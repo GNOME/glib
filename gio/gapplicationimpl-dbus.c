@@ -637,6 +637,14 @@ g_application_impl_register (GApplication       *application,
       if (rval != 3)
         {
           /* We are the primary instance. */
+          g_dbus_connection_emit_signal (impl->session_bus,
+                                         NULL,
+                                         impl->object_path,
+                                         "org.gtk.Application",
+                                         "Hello",
+                                         g_variant_new ("(s)",
+                                                        impl->bus_name),
+                                         NULL);
           *remote_actions = NULL;
           return impl;
         }
