@@ -573,10 +573,14 @@ get_platform_data (GApplication *application)
 
   if (application->priv->flags & G_APPLICATION_SEND_ENVIRONMENT)
     {
-      gchar **envp = g_get_environ ();
-      g_variant_builder_add (builder, "{sv}", "environ",
-                             g_variant_new_strv ((const gchar **) envp, -1));
+      GVariant *array;
+      gchar **envp;
+     
+      envp = g_get_environ ();
+      array = g_variant_new_bytestring_array ((const gchar **) envp, -1);
       g_strfreev (envp);
+
+      g_variant_builder_add (builder, "{sv}", "environ", array);
     }
 
   G_APPLICATION_GET_CLASS (application)->

@@ -111,7 +111,8 @@ grok_platform_data (GApplicationCommandLine *cmdline)
     else if (strcmp (key, "environ") == 0)
       {
         if (!cmdline->priv->environ)
-          cmdline->priv->environ = g_variant_get_strv (value, NULL);
+          cmdline->priv->environ =
+            g_variant_get_bytestring_array (value, NULL);
       }
 }
 
