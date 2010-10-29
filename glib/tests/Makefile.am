@@ -148,6 +148,9 @@ TEST_PROGS          += gdatetime
 gdatetime_SOURCES    = gdatetime.c
 gdatetime_LDADD      = $(progs_ldadd)
 
+TEST_PROGS       += environment
+environment_LDADD = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality
