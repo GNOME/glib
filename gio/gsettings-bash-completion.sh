@@ -9,15 +9,15 @@ __gsettings() {
 
   case "${COMP_CWORD}" in
     1)
-      choices=$'help \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nget \nrange \nset \nreset \nwritable \nmonitor'
+      choices=$'help \nlist-schemas\nlist-relocatable-schemas\nlist-keys \nlist-children \nlist-recursively \nget \nrange \nset \nreset \nwritable \nmonitor'
       ;;
 
     2)
       case "${COMP_WORDS[1]}" in
         help)
-          choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nget\nrange\nset\nreset\nwritable\nmonitor'
+          choices=$'list-schemas\nlist-relocatable-schemas\nlist-keys\nlist-children\nlist-recursively\nget\nrange\nset\nreset\nwritable\nmonitor'
           ;;
-        list-keys|list-children)
+        list-keys|list-children|list-recursively)
           choices="$(gsettings list-schemas)"$'\n'"$(gsettings list-relocatable-schemas | sed -e 's.$.:/.')"
           ;;
 

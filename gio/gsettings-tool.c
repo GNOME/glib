@@ -210,6 +210,62 @@ gsettings_list_children (GSettings   *settings,
 }
 
 static void
+enumerate (GSettings *settings)
+{
+  gchar **keys;
+  gchar *schema;
+  gint i;
+
+  g_object_get (settings, "schema", &schema, NULL);
+
+  keys = g_settings_list_keys (settings);
+  for (i = 0; keys[i]; i++)
+    {
+      GVariant *value;
+      gchar *printed;
+
+      value = g_settings_get_value (settings, keys[i]);
+      printed = g_variant_print (value, TRUE);
+      g_print ("%s %s %s\n", schema, keys[i], printed);
+      g_variant_unref (value);
+      g_free (printed);
+    }
+
+  g_free (schema);
+  g_strfreev (keys);
+}
+
+static void
+gsettings_list_recursively (GSettings   *settings,
+                            const gchar *key,
+                            const gchar *value)
+{
+  gchar **children;
+  gint i;
+
+  enumerate (settings);
+
+  children = g_settings_list_children (settings);
+
+  for (i = 0; children[i]; i++)
+    {
+      GSettings *child;
+      gchar *schema;
+
+      child = g_settings_get_child (settings, children[i]);
+      g_object_get (child, "schema", &schema, NULL);
+
+      if (is_schema (schema))
+        enumerate (child);
+
+      g_object_unref (child);
+      g_free (schema);
+    }
+
+  g_strfreev (children);
+}
+
+static void
 gsettings_range (GSettings   *settings,
                  const gchar *key,
                  const gchar *value)
@@ -401,6 +457,12 @@ gsettings_help (gboolean     requested,
       synopsis = N_("SCHEMA[:PATH]");
     }
 
+  else if (strcmp (command, "list-recursively") == 0)
+    {
+      description = _("List keys and values, recursively");
+      synopsis = N_("SCHEMA[:PATH]");
+    }
+
   else if (strcmp (command, "get") == 0)
     {
       description = _("Gets the value of KEY");
@@ -457,6 +519,7 @@ gsettings_help (gboolean     requested,
         "  list-relocatable-schemas  List relocatable schemas\n"
         "  list-keys                 List keys in a schema\n"
         "  list-children             List children of a schema\n"
+        "  list-recursively          List keys and values, recursively\n"
         "  range                     Queries the range of a key\n"
         "  get                       Get the value of a key\n"
         "  set                       Set the value of a key\n"
@@ -533,6 +596,9 @@ main (int argc, char **argv)
 
   else if (argc == 3 && strcmp (argv[1], "list-children") == 0)
     function = gsettings_list_children;
+
+  else if (argc == 3 && strcmp (argv[1], "list-recursively") == 0)
+    function = gsettings_list_recursively;
 
   else if (argc == 4 && strcmp (argv[1], "range") == 0)
     function = gsettings_range;
