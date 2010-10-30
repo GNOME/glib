@@ -38,6 +38,24 @@ __gsettings() {
           ;;
       esac
       ;;
+
+    4)
+      case "${COMP_WORDS[1]}" in
+        set)
+          range=($(gsettings range ${COMP_WORDS[2]} ${COMP_WORDS[3]} 2> /dev/null))
+          case "${range[0]}" in
+            enum)
+              unset range[0]
+             ;;
+            *)
+              unset range
+             ;;
+          esac
+          local IFS=$'\n'
+          choices="${range[*]}"
+          ;;
+      esac
+      ;;
   esac
 
   local IFS=$'\n'

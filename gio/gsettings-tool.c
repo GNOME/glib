@@ -394,11 +394,26 @@ gsettings_set (GSettings   *settings,
   GError *error = NULL;
   GVariant *existing;
   GVariant *new;
+  gchar *freeme = NULL;
 
   existing = g_settings_get_value (settings, key);
   type = g_variant_get_type (existing);
 
+parse:
   new = g_variant_parse (type, value, NULL, NULL, &error);
+
+  /* A common error is to specify a string with single quotes
+   * (or use completion for that), and forget that the shell
+   * will eat one level of quoting, resulting in 'unknown keyword'
+   * error from the gvariant parser.
+   * To handle this case, try to parse again with an extra level
+   * of quotes.
+   */
+  if (new == NULL && !freeme && strstr (error->message, "unknown keyword"))
+    {
+      value = freeme = g_strdup_printf ("\"%s\"", value);
+      goto parse;
+    }
 
   if (new == NULL)
     {
@@ -418,6 +433,8 @@ gsettings_set (GSettings   *settings,
   g_variant_unref (new);
 
   g_settings_sync ();
+
+  g_free (freeme);
 }
 
 static int
