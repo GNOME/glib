@@ -19,7 +19,11 @@
  * Author: Ryan Lortie <desrt@desrt.ca>
  */
 
+#include "config.h"
+
 #include <gio/gio.h>
+#include <gi18n.h>
+#include <locale.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -53,12 +57,12 @@ check_relocatable_schema (const gchar *schema)
     return TRUE;
 
   if (is_schema (schema))
-    g_printerr ("Schema '%s' is not relocatable "
-                "(path must not be specified)\n",
+    g_printerr (_("Schema '%s' is not relocatable "
+                  "(path must not be specified)\n"),
                 schema);
 
   else
-    g_printerr ("No such schema '%s'\n", schema);
+    g_printerr (_("No such schema '%s'\n"), schema);
 
   return FALSE;
 }
@@ -70,12 +74,12 @@ check_schema (const gchar *schema)
     return TRUE;
 
   if (is_relocatable_schema (schema))
-    g_printerr ("Schema '%s' is relocatable "
-                "(path must be specified)\n",
+    g_printerr (_("Schema '%s' is relocatable "
+                  "(path must be specified)\n"),
                 schema);
 
   else
-    g_printerr ("No such schema '%s'\n", schema);
+    g_printerr (_("No such schema '%s'\n"), schema);
 
   return FALSE;
 }
@@ -85,25 +89,25 @@ check_path (const gchar *path)
 {
   if (path[0] == '\0')
     {
-      g_printerr ("Empty path given.\n");
+      g_printerr (_("Empty path given.\n"));
       return FALSE;
     }
 
   if (path[0] != '/')
     {
-      g_printerr ("Path must begin with a slash (/)\n");
+      g_printerr (_("Path must begin with a slash (/)\n"));
       return FALSE;
     }
 
   if (!g_str_has_suffix (path, "/"))
     {
-      g_printerr ("Path must end with a slash (/)\n");
+      g_printerr (_("Path must end with a slash (/)\n"));
       return FALSE;
     }
 
   if (strstr (path, "//"))
     {
-      g_printerr ("Path must not contain two adjacent slashes (//)\n");
+      g_printerr (_("Path must not contain two adjacent slashes (//)\n"));
       return FALSE;
     }
 
@@ -124,7 +128,7 @@ check_key (GSettings   *settings,
   if (good)
     return TRUE;
 
-  g_printerr ("No such key '%s'\n", key);
+  g_printerr (_("No such key '%s'\n"), key);
 
   return FALSE;
 }
@@ -348,7 +352,7 @@ gsettings_set (GSettings   *settings,
 
   if (!g_settings_range_check (settings, key, new))
     {
-      g_printerr ("The provided value is outside of the valid range\n");
+      g_printerr (_("The provided value is outside of the valid range\n"));
       g_variant_unref (new);
       exit (1);
     }
@@ -375,68 +379,68 @@ gsettings_help (gboolean     requested,
 
   else if (strcmp (command, "list-schemas") == 0)
     {
-      description = "List the installed (non-relocatable) schemas";
+      description = _("List the installed (non-relocatable) schemas");
       synopsis = "";
     }
 
   else if (strcmp (command, "list-relocatable-schemas") == 0)
     {
-      description = "List the installed relocatable schemas";
+      description = _("List the installed relocatable schemas");
       synopsis = "";
     }
 
   else if (strcmp (command, "list-keys") == 0)
     {
-      description = "Lists the keys in SCHEMA";
-      synopsis = "SCHEMA[:PATH]";
+      description = _("Lists the keys in SCHEMA");
+      synopsis = N_("SCHEMA[:PATH]");
     }
 
   else if (strcmp (command, "list-children") == 0)
     {
-      description = "Lists the children of SCHEMA";
-      synopsis = "SCHEMA[:PATH]";
+      description = _("Lists the children of SCHEMA");
+      synopsis = N_("SCHEMA[:PATH]");
     }
 
   else if (strcmp (command, "get") == 0)
     {
-      description = "Gets the value of KEY";
-      synopsis = "SCHEMA[:PATH] KEY";
+      description = _("Gets the value of KEY");
+      synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
   else if (strcmp (command, "range") == 0)
     {
-      description = "Queries the range of valid values for KEY";
-      synopsis = "SCHEMA[:PATH] KEY";
+      description = _("Queries the range of valid values for KEY");
+      synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
   else if (strcmp (command, "set") == 0)
     {
-      description = "Sets the value of KEY to VALUE";
-      synopsis = "SCHEMA[:PATH] KEY VALUE";
+      description = _("Sets the value of KEY to VALUE");
+      synopsis = N_("SCHEMA[:PATH] KEY VALUE");
     }
 
   else if (strcmp (command, "reset") == 0)
     {
-      description = "Resets KEY to its default value";
-      synopsis = "SCHEMA[:PATH] KEY";
+      description = _("Resets KEY to its default value");
+      synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
   else if (strcmp (command, "writable") == 0)
     {
-      description = "Checks if KEY is writable";
-      synopsis = "SCHEMA[:PATH] KEY";
+      description = _("Checks if KEY is writable");
+      synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
   else if (strcmp (command, "monitor") == 0)
     {
-      description = "Monitors KEY for changes.\n"
+      description = _("Monitors KEY for changes.\n"
                     "If no KEY is specified, monitor all keys in SCHEMA.\n"
-                    "Use ^C to stop monitoring.\n";
-      synopsis = "SCHEMA[:PATH] [KEY]";
+                    "Use ^C to stop monitoring.\n");
+      synopsis = N_("SCHEMA[:PATH] [KEY]");
     }
   else
     {
-      g_string_printf (string, "Unknown command %s\n\n", command);
+      g_string_printf (string, _("Unknown command %s\n\n"), command);
       requested = FALSE;
       command = NULL;
     }
@@ -444,7 +448,7 @@ gsettings_help (gboolean     requested,
   if (command == NULL)
     {
       g_string_append (string,
-        "Usage:\n"
+      _("Usage:\n"
         "  gsettings COMMAND [ARGS...]\n"
         "\n"
         "Commands:\n"
@@ -460,33 +464,33 @@ gsettings_help (gboolean     requested,
         "  writable                  Check if a key is writable\n"
         "  monitor                   Watch for changes\n"
         "\n"
-        "Use 'gsettings help COMMAND' to get detailed help.\n\n");
+        "Use 'gsettings help COMMAND' to get detailed help.\n\n"));
     }
   else
     {
-      g_string_append_printf (string, "Usage:\n  gsettings %s %s\n\n%s\n\n",
-                              command, synopsis, description);
+      g_string_append_printf (string, _("Usage:\n  gsettings %s %s\n\n%s\n\n"),
+                              command, _(synopsis), description);
 
       if (synopsis[0])
         {
-          g_string_append (string, "Arguments:\n");
+          g_string_append (string, _("Arguments:\n"));
 
           if (strstr (synopsis, "SCHEMA"))
             g_string_append (string,
-                             "  SCHEMA    The name of the schema\n"
-                             "  PATH      The path, for relocatable schemas\n");
+                           _("  SCHEMA    The name of the schema\n"
+                             "  PATH      The path, for relocatable schemas\n"));
 
           if (strstr (synopsis, "[KEY]"))
             g_string_append (string,
-                             "  KEY       The (optional) key within the schema\n");
+                           _("  KEY       The (optional) key within the schema\n"));
 
           else if (strstr (synopsis, "KEY"))
             g_string_append (string,
-                             "  KEY       The key within the schema\n");
+                           _("  KEY       The key within the schema\n"));
 
           if (strstr (synopsis, "VALUE"))
             g_string_append (string,
-                             "  VALUE     The value to set\n");
+                           _("  VALUE     The value to set\n"));
 
           g_string_append (string, "\n");
         }
@@ -509,6 +513,8 @@ main (int argc, char **argv)
   void (* function) (GSettings *, const gchar *, const gchar *);
   GSettings *settings;
   const gchar *key;
+
+  setlocale (LC_ALL, "");
 
   if (argc < 2)
     return gsettings_help (FALSE, NULL);
@@ -557,7 +563,7 @@ main (int argc, char **argv)
 
       if (argv[2][0] == '\0')
         {
-          g_printerr ("Empty schema name given");
+          g_printerr (_("Empty schema name given"));
           return 1;
         }
 
