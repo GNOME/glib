@@ -26,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-09-23 15:55+0000\n"
-"PO-Revision-Date: 2010-09-19 18:20+0900\n"
+"PO-Revision-Date: 2010-11-01 01:25+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -1664,7 +1664,7 @@ msgstr ""
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の2番目のトークンが不正です<"
+"'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の2番目のトークンが不正です"
 
 #: ../gio/gdbusauthmechanismsha1.c:458
 #, c-format
