@@ -481,7 +481,7 @@ g_date_time_from_instant (GTimeZone *tz,
   GDateTime *datetime;
   gint64 offset;
 
-  if (instant < 0 || instant > 1000000000000000000)
+  if (instant < 0 || instant > G_GINT64_CONSTANT (1000000000000000000))
     return NULL;
 
   datetime = g_date_time_alloc (tz);
