@@ -1814,16 +1814,6 @@ g_get_current_time (GTimeVal *result)
 }
 
 /**
- * GTimeSpec:
- *
- * Represents a precise time, with seconds and nanoseconds.  This is
- * similar to POSIX <structname>struct timespec</structname>.  This
- * structure can be filled in with g_get_monotonic_time().
- *
- * Since: 2.28
- **/
-
-/**
  * g_get_monotonic_time:
  *
  * Queries the system monotonic time, if available.
