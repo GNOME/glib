@@ -290,7 +290,7 @@ struct _GTimeoutSource
   GSource     source;
   GTimeSpec   expiration;
   guint       interval;
-  guint	      granularity;
+  gboolean    seconds;
 };
 
 struct _GChildWatchSource
@@ -392,8 +392,6 @@ static gint child_watch_wake_up_pipe[2] = {0, 0};
 #endif /* !G_OS_WIN32 */
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
-
-static gint timer_perturb = -1;
 
 GSourceFuncs g_timeout_funcs =
 {
@@ -3575,54 +3573,36 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
       timeout_source->expiration.tv_nsec -= 1000000000;
       timeout_source->expiration.tv_sec++;
     }
-  if (timer_perturb==-1)
+  if (timeout_source->seconds)
     {
-      /*
-       * we want a per machine/session unique 'random' value; try the dbus
-       * address first, that has a UUID in it. If there is no dbus, use the
-       * hostname for hashing.
-       */
-      const char *session_bus_address = g_getenv ("DBUS_SESSION_BUS_ADDRESS");
-      if (!session_bus_address)
-        session_bus_address = g_getenv ("HOSTNAME");
-      if (session_bus_address)
-        timer_perturb = ABS ((gint) g_str_hash (session_bus_address));
-      else
-        timer_perturb = 0;
-    }
-  if (timeout_source->granularity)
-    {
-      gint remainder;
-      gint gran; /* in nsecs */
-      gint perturb;
+      static gint timer_perturb = -1;
 
-      gran = timeout_source->granularity * 1000000;
-      perturb = timer_perturb % gran;
-      /*
-       * We want to give each machine a per machine pertubation;
-       * shift time back first, and forward later after the rounding
-       */
-
-      timeout_source->expiration.tv_nsec -= perturb;
-      if (timeout_source->expiration.tv_nsec < 0)
+      if (timer_perturb == -1)
         {
-          timeout_source->expiration.tv_nsec += 1000000000;
-          timeout_source->expiration.tv_sec--;
+          /*
+           * we want a per machine/session unique 'random' value; try the dbus
+           * address first, that has a UUID in it. If there is no dbus, use the
+           * hostname for hashing.
+           */
+          const char *session_bus_address = g_getenv ("DBUS_SESSION_BUS_ADDRESS");
+          if (!session_bus_address)
+            session_bus_address = g_getenv ("HOSTNAME");
+          if (session_bus_address)
+            timer_perturb = ABS ((gint) g_str_hash (session_bus_address)) % 1000000;
+          else
+            timer_perturb = 0;
         }
 
-      remainder = timeout_source->expiration.tv_nsec % gran;
-      if (remainder >= gran/4) /* round up */
-        timeout_source->expiration.tv_nsec += gran;
-      timeout_source->expiration.tv_nsec -= remainder;
-      /* shift back */
-      timeout_source->expiration.tv_nsec += perturb;
+      /* We want the microseconds part of the timeout to land on the
+       * 'timer_perturb' mark, but we need to make sure we don't try to
+       * set the timeout in the past.  We do this by ensuring that we
+       * always only *increase* the expiration time by adding a full
+       * second in the case that the microsecond portion decreases.
+       */
+      if (timer_perturb * 1000 < timeout_source->expiration.tv_nsec)
+        timeout_source->expiration.tv_sec++;
 
-      /* the rounding may have overflown tv_nsec */
-      while (timeout_source->expiration.tv_nsec > 1000000000)
-        {
-          timeout_source->expiration.tv_nsec -= 1000000000;
-          timeout_source->expiration.tv_sec++;
-        }
+      timeout_source->expiration.tv_nsec = timer_perturb * 1000;
     }
 }
 
@@ -3770,8 +3750,8 @@ g_timeout_source_new_seconds (guint interval)
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
   GTimeSpec now;
 
-  timeout_source->interval = 1000*interval;
-  timeout_source->granularity = 1000;
+  timeout_source->interval = 1000 * interval;
+  timeout_source->seconds = TRUE;
 
   g_get_monotonic_time (&now);
   g_timeout_set_expiration (timeout_source, &now);
