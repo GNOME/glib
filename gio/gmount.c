@@ -39,7 +39,7 @@
  * SECTION:gmount
  * @short_description: Mount management
  * @include: gio/gio.h
- * @see also: GVolume, GUnixMount
+ * @see_also: GVolume, GUnixMount
  *
  * The #GMount interface represents user-visible mounts. Note, when 
  * porting from GnomeVFS, #GMount is the moral equivalent of #GnomeVFSVolume.
