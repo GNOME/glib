@@ -1584,7 +1584,7 @@ g_date_time_get_day_of_month (GDateTime *datetime)
 /* Week of year / day of week getters {{{1 */
 /**
  * g_date_time_get_week_numbering_year:
- * @date: a #GDateTime
+ * @datetime: a #GDateTime
  *
  * Returns the ISO 8601 week-numbering year in which the week containing
  * @datetime falls.
