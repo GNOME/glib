@@ -685,6 +685,7 @@ g_child_watch_add_full
 g_child_watch_source_new
 g_get_current_time
 g_get_monotonic_time
+g_get_real_time
 g_main_context_acquire
 g_main_context_add_poll
 g_main_context_check

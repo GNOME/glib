@@ -384,6 +384,7 @@ GSource *g_timeout_source_new_seconds (guint interval);
  */
 void   g_get_current_time                 (GTimeVal       *result);
 gint64 g_get_monotonic_time               (void);
+gint64 g_get_real_time                    (void);
 
 /* ============== Compat main loop stuff ================== */
 

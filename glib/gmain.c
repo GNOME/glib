@@ -1777,8 +1777,10 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
 /**
  * g_get_current_time:
  * @result: #GTimeVal structure in which to store current time.
- * 
+ *
  * Equivalent to the UNIX gettimeofday() function, but portable.
+ *
+ * You may find g_get_real_time() to be more convenient.
  **/
 void
 g_get_current_time (GTimeVal *result)
@@ -1811,6 +1813,33 @@ g_get_current_time (GTimeVal *result)
   result->tv_sec = time64 / 1000000;
   result->tv_usec = time64 % 1000000;
 #endif
+}
+
+/**
+ * g_get_real_time:
+ *
+ * Queries the system wall-clock time.
+ *
+ * This call is functionally equivalent to g_get_current_time() except
+ * that the return value is often more convenient than dealing with a
+ * #GTimeVal.
+ *
+ * You should only use this call if you are actually interested in the real
+ * wall-clock time.  g_get_monotonic_time() is probably more useful for
+ * measuring intervals.
+ *
+ * Returns: the number of microseconds since January 1, 1970 UTC.
+ *
+ * Since: 2.28
+ **/
+gint64
+g_get_real_time (void)
+{
+  GTimeVal tv;
+
+  g_get_current_time (&tv);
+
+  return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
 }
 
 /**
