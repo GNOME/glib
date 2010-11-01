@@ -387,7 +387,7 @@ g_action_group_change_action_state (GActionGroup *action_group,
 }
 
 /**
- * g_action_group_activate:
+ * g_action_group_activate_action:
  * @action_group: a #GActionGroup
  * @action_name: the name of the action to activate
  * @parameter: (allow-none): parameters to the activation
