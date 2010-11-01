@@ -1,3 +1,39 @@
+Overview of Changes from GLib 2.27.1 to 2.27.2
+==============================================
+
+* GApplication
+ - Export actions over DBus and support activating them from remote instances
+ - Support environment passing
+
+* GSettings
+ - The gsettings utility has a list-recursively command
+ - The gsettings utility has commandline completion for enum values
+
+* GLib is now linked against librt and uses monotonic time for
+  timeouts and GPeriod sources. GSource has a new g_source_get_time()
+  which returns monotonic time, and g_source_get_current_time() has
+  been deprecated
+
+* Bugs fixed:
+ 158725 free linked list with data
+ 626320 GVariant: Avoid locking in g_variant_get_child_value() if possible
+ 629247 add gsimpleasyncresult methods to take over a GError
+ 629274 GNetworkService does not do fallback when there is no SRV record
+ 631264 gsettings-tool choice/range support
+ 631482 g_date_time_from_instant: 1000000000000000000
+ 632169 docs for manual use of gsettings-data-convert
+ 632571 Add equivalent to gconftool-2's -R option
+ 633115 GSettings m4 doesn't fail the build for broken schemas
+ 633206 Default g_application_local_command_line() doesn't set exit_status...
+ 633339 support more complex gapplication setups
+ 633356 Make timeout G_MAXINT mean "no timeout"
+
+* Translation updates:
+ Catalan (Valencian)
+ Indonesian
+ Japanese
+
+
 Overview of Changes from GLib 2.27.0 to 2.27.1
 ==============================================
 
