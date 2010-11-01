@@ -399,7 +399,6 @@ gsettings_set (GSettings   *settings,
   existing = g_settings_get_value (settings, key);
   type = g_variant_get_type (existing);
 
-parse:
   new = g_variant_parse (type, value, NULL, NULL, &error);
 
   /* A common error is to specify a string with single quotes
@@ -409,10 +408,12 @@ parse:
    * To handle this case, try to parse again with an extra level
    * of quotes.
    */
-  if (new == NULL && !freeme && strstr (error->message, "unknown keyword"))
+  if (new == NULL && strstr (error->message, "unknown keyword"))
     {
       value = freeme = g_strdup_printf ("\"%s\"", value);
-      goto parse;
+      new = g_variant_parse (type, value, NULL, NULL, NULL);
+      if (new != NULL)
+        g_clear_error (&error);
     }
 
   if (new == NULL)
