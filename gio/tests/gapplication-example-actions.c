@@ -38,6 +38,7 @@ activate_toggle_action (GAction  *action,
   b = g_variant_get_boolean (state);
   g_variant_unref (state);
   g_action_set_state (action, g_variant_new_boolean (!b));
+  g_print ("state change %d -> %d\n", b, !b);
 
   g_application_release (application);
 }
@@ -76,6 +77,19 @@ main (int argc, char **argv)
   g_application_set_inactivity_timeout (app, 10000);
 
   add_actions (app);
+
+  if (argc > 1 && strcmp (argv[1], "--simple-action") == 0)
+    {
+      g_application_register (app, NULL, NULL);
+      g_action_group_activate_action (G_ACTION_GROUP (app), "simple-action", NULL);
+      exit (0);
+    }
+  else if (argc > 1 && strcmp (argv[1], "--toggle-action") == 0)
+    {
+      g_application_register (app, NULL, NULL);
+      g_action_group_activate_action (G_ACTION_GROUP (app), "toggle-action", NULL);
+      exit (0);
+    }
 
   status = g_application_run (app, argc, argv);
 
