@@ -1152,6 +1152,7 @@ GSimpleAsyncThreadFunc
 g_simple_async_result_new
 g_simple_async_result_new_error
 g_simple_async_result_new_from_error
+g_simple_async_result_new_take_error
 g_simple_async_result_set_op_res_gpointer
 g_simple_async_result_get_op_res_gpointer
 g_simple_async_result_set_op_res_gssize
@@ -1165,6 +1166,7 @@ g_simple_async_result_complete
 g_simple_async_result_complete_in_idle
 g_simple_async_result_run_in_thread
 g_simple_async_result_set_from_error
+g_simple_async_result_take_error
 g_simple_async_result_propagate_error
 g_simple_async_result_set_error
 g_simple_async_result_set_error_va
@@ -2767,6 +2769,7 @@ G_ACTION_GROUP
 <TITLE>GAction</TITLE>
 GAction
 
+
 <SUBSECTION>
 g_action_get_name
 g_action_get_parameter_type
@@ -2826,9 +2829,6 @@ g_simple_action_group_lookup
 g_simple_action_group_insert
 g_simple_action_group_remove
 
-<SUBSECTION>
-g_simple_action_group_set_enabled
-
 <SUBSECTION Standard>
 GSimpleActionGroupClass
 GSimpleActionGroupPrivate
@@ -2845,7 +2845,7 @@ G_SIMPLE_ACTION_GROUP
 <FILE>gproxyresolver</FILE>
 <TITLE>GProxyResolver</TITLE>
 GProxyResolver
-GProxyResolverIface
+GProxyResolverInterface
 G_PROXY_RESOLVER_EXTENSION_POINT_NAME
 g_proxy_resolver_get_default
 g_proxy_resolver_is_supported
@@ -2888,7 +2888,7 @@ g_proxy_address_get_type
 <FILE>gproxy</FILE>
 <TITLE>GProxy</TITLE>
 GProxy
-GProxyIface
+GProxyInterface
 G_PROXY_EXTENSION_POINT_NAME
 g_proxy_connect
 g_proxy_connect_async

@@ -476,13 +476,13 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * a textual uri you want to pass in as argument, consider using
  * g_app_info_launch_uris() instead.
  *
- * On UNIX, this function sets the <envvar>GIO_LAUNCHED_DESKTOP_FILE</envvar>
+ * On UNIX, this function sets the <envar>GIO_LAUNCHED_DESKTOP_FILE</envar>
  * environment variable with the path of the launched desktop file and
- * <envvar>GIO_LAUNCHED_DESKTOP_FILE_PID</envvar> to the process
+ * <envar>GIO_LAUNCHED_DESKTOP_FILE_PID</envar> to the process
  * id of the launched process. This can be used to ignore
- * <envvar>GIO_LAUNCHED_DESKTOP_FILE</envvar>, should it be inherited
- * by further processes. The <envvar>DISPLAY</envvar> and
- * <envvar>DESKTOP_STARTUP_ID</envvar> environment variables are also
+ * <envar>GIO_LAUNCHED_DESKTOP_FILE</envar>, should it be inherited
+ * by further processes. The <envar>DISPLAY</envar> and
+ * <envar>DESKTOP_STARTUP_ID</envar> environment variables are also
  * set, based on information provided in @launch_context.
  *
  * Returns: %TRUE on successful launch, %FALSE otherwise.

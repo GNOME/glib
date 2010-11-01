@@ -335,6 +335,7 @@ g_application_command_line_get_environ (GApplicationCommandLine *cmdline)
 /**
  * g_application_command_line_getenv:
  * @cmdline: a #GApplicationCommandLine
+ * @name: the environment variable to get
  *
  * Gets the value of a particular environment variable of the command
  * line invocation, as would be returned by g_getenv().  The strings may

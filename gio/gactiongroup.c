@@ -196,7 +196,7 @@ g_action_group_has_action (GActionGroup *action_group,
 }
 
 /**
- * g_action_group_get_parameter_type:
+ * g_action_group_get_action_parameter_type:
  * @action_group: a #GActionGroup
  * @action_name: the name of the action to query
  *
@@ -229,7 +229,7 @@ g_action_group_get_action_parameter_type (GActionGroup *action_group,
 }
 
 /**
- * g_action_group_get_state_type:
+ * g_action_group_get_action_state_type:
  * @action_group: a #GActionGroup
  * @action_name: the name of the action to query
  *
@@ -264,7 +264,7 @@ g_action_group_get_action_state_type (GActionGroup *action_group,
 }
 
 /**
- * g_action_group_get_state_hint:
+ * g_action_group_get_action_state_hint:
  * @action_group: a #GActionGroup
  * @action_name: the name of the action to query
  *
@@ -302,7 +302,7 @@ g_action_group_get_action_state_hint (GActionGroup *action_group,
 }
 
 /**
- * g_action_group_get_enabled:
+ * g_action_group_get_action_enabled:
  * @action_group: a #GActionGroup
  * @action_name: the name of the action to query
  *
@@ -326,7 +326,7 @@ g_action_group_get_action_enabled (GActionGroup *action_group,
 }
 
 /**
- * g_action_group_get_state:
+ * g_action_group_get_action_state:
  * @action_group: a #GActionGroup
  * @action_name: the name of the action to query
  *
@@ -354,7 +354,7 @@ g_action_group_get_action_state (GActionGroup *action_group,
 }
 
 /**
- * g_action_group_set_state:
+ * g_action_group_change_action_state:
  * @action_group: a #GActionGroup
  * @action_name: the name of the action to request the change on
  * @value: the new state
