@@ -52,7 +52,7 @@
 #include "gmem.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
-#include "gthread.h"
+#include "gmain.h"
 
 /**
  * SECTION: timers
@@ -63,18 +63,7 @@
  * that time. This is done somewhat differently on different platforms,
  * and can be tricky to get exactly right, so #GTimer provides a
  * portable/convenient interface.
- *
- * <note><para>
- *  #GTimer uses a higher-quality clock when thread support is available.
- *  Therefore, calling g_thread_init() while timers are running may lead to
- *  unreliable results. It is best to call g_thread_init() before starting any
- *  timers, if you are using threads at all.
- * </para></note>
  **/
-
-#define G_NSEC_PER_SEC 1000000000
-
-#define GETTIME(v) (v = g_thread_gettime ())
 
 /**
  * GTimer:
@@ -104,7 +93,7 @@ g_timer_new (void)
   timer = g_new (GTimer, 1);
   timer->active = TRUE;
 
-  GETTIME (timer->start);
+  timer->start = g_get_monotonic_time ();
 
   return timer;
 }
@@ -139,7 +128,7 @@ g_timer_start (GTimer *timer)
 
   timer->active = TRUE;
 
-  GETTIME (timer->start);
+  timer->start = g_get_monotonic_time ();
 }
 
 /**
@@ -156,7 +145,7 @@ g_timer_stop (GTimer *timer)
 
   timer->active = FALSE;
 
-  GETTIME (timer->end);
+  timer->end = g_get_monotonic_time ();
 }
 
 /**
@@ -172,7 +161,7 @@ g_timer_reset (GTimer *timer)
 {
   g_return_if_fail (timer != NULL);
 
-  GETTIME (timer->start);
+  timer->start = g_get_monotonic_time ();
 }
 
 /**
@@ -200,7 +189,7 @@ g_timer_continue (GTimer *timer)
 
   elapsed = timer->end - timer->start;
 
-  GETTIME (timer->start);
+  timer->start = g_get_monotonic_time ();
 
   timer->start -= elapsed;
 
@@ -230,7 +219,7 @@ g_timer_continue (GTimer *timer)
  **/
 gdouble
 g_timer_elapsed (GTimer *timer,
-		 gulong *microseconds)
+                 gulong *microseconds)
 {
   gdouble total;
   gint64 elapsed;
@@ -238,7 +227,7 @@ g_timer_elapsed (GTimer *timer,
   g_return_val_if_fail (timer != NULL, 0);
 
   if (timer->active)
-    GETTIME (timer->end);
+    timer->end = g_get_monotonic_time ();
 
   elapsed = timer->end - timer->start;
 
