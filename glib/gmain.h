@@ -367,8 +367,7 @@ void     g_source_remove_poll      (GSource        *source,
 void     g_source_get_current_time (GSource        *source,
                                     GTimeVal       *timeval);
 #endif
-void     g_source_get_time         (GSource        *source,
-                                    GTimeSpec      *timespec);
+gint64   g_source_get_time         (GSource        *source);
 
  /* void g_source_connect_closure (GSource        *source,
                                   GClosure       *closure);
@@ -383,8 +382,8 @@ GSource *g_timeout_source_new_seconds (guint interval);
 
 /* Miscellaneous functions
  */
-void g_get_current_time                 (GTimeVal       *result);
-void g_get_monotonic_time               (GTimeSpec      *result);
+void   g_get_current_time                 (GTimeVal       *result);
+gint64 g_get_monotonic_time               (void);
 
 /* ============== Compat main loop stuff ================== */
 

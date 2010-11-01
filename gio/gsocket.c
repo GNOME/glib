@@ -2411,7 +2411,7 @@ typedef struct {
   GIOCondition  condition;
   GCancellable *cancellable;
   GPollFD       cancel_pollfd;
-  GTimeSpec     timeout_time;
+  gint64        timeout_time;
 } GSocketSource;
 
 static gboolean
@@ -2423,19 +2423,20 @@ socket_source_prepare (GSource *source,
   if (g_cancellable_is_cancelled (socket_source->cancellable))
     return TRUE;
 
-  if (socket_source->timeout_time.tv_sec)
+  if (socket_source->timeout_time)
     {
-      GTimeSpec now;
+      gint64 now;
 
-      g_source_get_time (source, &now);
-      *timeout = ((socket_source->timeout_time.tv_sec - now.tv_sec) * 1000 +
-		  (socket_source->timeout_time.tv_nsec - now.tv_nsec) / 1000000);
+      now = g_source_get_time (source);
+      /* Round up to ensure that we don't try again too early */
+      *timeout = (socket_source->timeout_time - now + 999) / 1000;
       if (*timeout < 0)
-	{
-	  socket_source->socket->priv->timed_out = TRUE;
-	  socket_source->pollfd.revents = socket_source->condition & (G_IO_IN | G_IO_OUT);
-	  return TRUE;
-	}
+        {
+          socket_source->socket->priv->timed_out = TRUE;
+          socket_source->pollfd.revents = socket_source->condition & (G_IO_IN | G_IO_OUT);
+          *timeout = 0;
+          return TRUE;
+        }
     }
   else
     *timeout = -1;
@@ -2546,15 +2547,11 @@ socket_source_new (GSocket      *socket,
   g_source_add_poll (source, &socket_source->pollfd);
 
   if (socket->priv->timeout)
-    {
-      g_get_monotonic_time (&socket_source->timeout_time);
-      socket_source->timeout_time.tv_sec += socket->priv->timeout;
-    }
+    socket_source->timeout_time = g_get_monotonic_time () +
+                                  socket->priv->timeout * 1000000;
+
   else
-    {
-      socket_source->timeout_time.tv_sec = 0;
-      socket_source->timeout_time.tv_nsec = 0;
-    }
+    socket_source->timeout_time = 0;
 
   return source;
 }

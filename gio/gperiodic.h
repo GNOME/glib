@@ -58,7 +58,7 @@ void                    g_periodic_remove                               (GPeriod
 
 void                    g_periodic_block                                (GPeriodic           *periodic);
 void                    g_periodic_unblock                              (GPeriodic           *periodic,
-                                                                         const GTimeSpec     *unblock_time);
+                                                                         gint64               unblock_time);
 
 void                    g_periodic_damaged                              (GPeriodic           *periodic,
                                                                          GPeriodicRepairFunc  callback,

@@ -264,7 +264,7 @@ struct _GMainContext
 
   GPollFunc poll_func;
 
-  GTimeSpec time;
+  gint64   time;
   gboolean time_is_fresh;
   GTimeVal current_time;
   gboolean current_time_is_fresh;
@@ -288,7 +288,7 @@ struct _GMainLoop
 struct _GTimeoutSource
 {
   GSource     source;
-  GTimeSpec   expiration;
+  gint64      expiration;
   guint       interval;
   gboolean    seconds;
 };
@@ -1825,7 +1825,6 @@ g_get_current_time (GTimeVal *result)
 
 /**
  * g_get_monotonic_time:
- * @result: #GTimeSpec structure in which to store the time
  *
  * Queries the system monotonic time, if available.
  *
@@ -1839,13 +1838,13 @@ g_get_current_time (GTimeVal *result)
  * the wall clock time is updated as infrequently as 64 times a second
  * (which is approximately every 16ms).
  *
+ * Returns: the monotonic time, in microseconds
+ *
  * Since: 2.28
  **/
-void
-g_get_monotonic_time (GTimeSpec *result)
+gint64
+g_get_monotonic_time (void)
 {
-  g_return_if_fail (result != NULL);
-
 #ifdef HAVE_CLOCK_GETTIME
   /* librt clock_gettime() is our first choice */
   {
@@ -1871,8 +1870,30 @@ g_get_monotonic_time (GTimeSpec *result)
 #endif
 
     clock_gettime (clockid, &ts);
-    result->tv_sec = ts.tv_sec;
-    result->tv_nsec = ts.tv_nsec;
+
+    /* In theory monotonic time can have any epoch.
+     *
+     * glib presently assumes the following:
+     *
+     *   1) The epoch comes some time after the birth of Jesus of Nazareth, but
+     *      not more than 10000 years later.
+     *
+     *   2) The current time also falls sometime within this range.
+     *
+     * These two reasonable assumptions leave us with a maximum deviation from
+     * the epoch of 10000 years, or 315569520000000000 seconds.
+     *
+     * If we restrict ourselves to this range then the number of microseconds
+     * will always fit well inside the constraints of a int64 (by a factor of
+     * about 29).
+     *
+     * If you actually hit the following assertion, probably you should file a
+     * bug against your operating system for being excessively silly.
+     **/
+    g_assert (G_GINT64_CONSTANT (-315569520000000000) < ts.tv_sec &&
+              ts.tv_sec < G_GINT64_CONSTANT (315569520000000000));
+
+    return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
   }
 #else
   /* It may look like we are discarding accuracy on Windows (since its
@@ -1884,8 +1905,8 @@ g_get_monotonic_time (GTimeSpec *result)
     GTimeVal tv;
 
     g_get_current_time (&tv);
-    result->tv_sec = tv.tv_sec;
-    result->tv_nsec = tv.tv_usec * 1000;
+
+    return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
   }
 #endif
 }
@@ -3395,7 +3416,6 @@ g_source_get_current_time (GSource  *source,
 /**
  * g_source_get_time:
  * @source: a #GSource
- * @timespec: #GTimeSpec structure in which to store the time
  *
  * Gets the time to be used when checking this source. The advantage of
  * calling this function over calling g_get_monotonic_time() directly is
@@ -3405,31 +3425,35 @@ g_source_get_current_time (GSource  *source,
  * The time here is the system monotonic time, if available, or some
  * other reasonable alternative otherwise.  See g_get_monotonic_time().
  *
+ * Returns: the monotonic time in microseconds
+ *
  * Since: 2.28
  **/
-void
-g_source_get_time (GSource   *source,
-                   GTimeSpec *timespec)
+gint64
+g_source_get_time (GSource *source)
 {
   GMainContext *context;
-  
-  g_return_if_fail (source->context != NULL);
- 
+  gint64 result;
+
+  g_return_val_if_fail (source->context != NULL, 0);
+
   context = source->context;
 
   LOCK_CONTEXT (context);
 
   if (!context->time_is_fresh)
     {
-      g_get_monotonic_time (&context->time);
+      context->time = g_get_monotonic_time ();
       context->time_is_fresh = TRUE;
     }
-  
-  *timespec = context->time;
-  
+
+  result = context->time;
+
   UNLOCK_CONTEXT (context);
+
+  return result;
 }
- 
+
 /**
  * g_main_context_set_poll_func:
  * @context: a #GMainContext
@@ -3561,18 +3585,10 @@ g_main_context_is_owner (GMainContext *context)
 
 static void
 g_timeout_set_expiration (GTimeoutSource *timeout_source,
-			  GTimeSpec      *current_time)
+                          gint64          current_time)
 {
-  guint seconds = timeout_source->interval / 1000;
-  guint msecs = timeout_source->interval - seconds * 1000;
+  timeout_source->expiration = current_time + timeout_source->interval * 1000;
 
-  timeout_source->expiration.tv_sec = current_time->tv_sec + seconds;
-  timeout_source->expiration.tv_nsec = current_time->tv_nsec + msecs * 1000000;
-  if (timeout_source->expiration.tv_nsec >= 1000000000)
-    {
-      timeout_source->expiration.tv_nsec -= 1000000000;
-      timeout_source->expiration.tv_sec++;
-    }
   if (timeout_source->seconds)
     {
       static gint timer_perturb = -1;
@@ -3599,104 +3615,62 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
        * always only *increase* the expiration time by adding a full
        * second in the case that the microsecond portion decreases.
        */
-      if (timer_perturb * 1000 < timeout_source->expiration.tv_nsec)
-        timeout_source->expiration.tv_sec++;
+      if (timer_perturb < timeout_source->expiration % 1000000)
+        timeout_source->expiration += 1000000;
 
-      timeout_source->expiration.tv_nsec = timer_perturb * 1000;
+      timeout_source->expiration =
+        ((timeout_source->expiration / 1000000) * 1000000) + timer_perturb;
     }
 }
 
 static gboolean
 g_timeout_prepare (GSource *source,
-		   gint    *timeout)
+                   gint    *timeout)
 {
-  glong sec;
-  glong msec;
-  GTimeSpec now;
-  
-  GTimeoutSource *timeout_source = (GTimeoutSource *)source;
+  GTimeoutSource *timeout_source = (GTimeoutSource *) source;
+  gint64 now = g_source_get_time (source);
 
-  g_source_get_time (source, &now);
-
-  sec = timeout_source->expiration.tv_sec - now.tv_sec;
-  msec = (timeout_source->expiration.tv_nsec - now.tv_nsec) / 1000000;
-
-  /* We do the following in a rather convoluted fashion to deal with
-   * the fact that we don't have an integral type big enough to hold
-   * the difference of two timevals in millseconds.
-   */
-  if (sec < 0 || (sec == 0 && msec < 0))
-    msec = 0;
-  else
+  if (now < timeout_source->expiration)
     {
-      glong interval_sec = timeout_source->interval / 1000;
-      glong interval_msec = timeout_source->interval % 1000;
-
-      if (msec < 0)
-	{
-	  msec += 1000;
-	  sec -= 1;
-	}
-      
-      if (sec > interval_sec ||
-	  (sec == interval_sec && msec > interval_msec))
-	{
-	  /* The system time has been set backwards, so we
-	   * reset the expiration time to now + timeout_source->interval;
-	   * this at least avoids hanging for long periods of time.
-	   */
-	  g_timeout_set_expiration (timeout_source, &now);
-	  msec = MIN (G_MAXINT, timeout_source->interval);
-	}
-      else
-	{
-	  msec = MIN (G_MAXINT, (guint)msec + 1000 * (guint)sec);
-	}
+      /* Round up to ensure that we don't try again too early */
+      *timeout = (timeout_source->expiration - now + 999) / 1000;
+      return FALSE;
     }
 
-  *timeout = (gint)msec;
-  
-  return msec == 0;
+  *timeout = 0;
+  return TRUE;
 }
 
 static gboolean 
 g_timeout_check (GSource *source)
 {
-  GTimeSpec now;
-  GTimeoutSource *timeout_source = (GTimeoutSource *)source;
+  GTimeoutSource *timeout_source = (GTimeoutSource *) source;
+  gint64 now = g_source_get_time (source);
 
-  g_source_get_time (source, &now);
-  
-  return ((timeout_source->expiration.tv_sec < now.tv_sec) ||
-	  ((timeout_source->expiration.tv_sec == now.tv_sec) &&
-	   (timeout_source->expiration.tv_nsec <= now.tv_nsec)));
+  return timeout_source->expiration <= now;
 }
 
 static gboolean
 g_timeout_dispatch (GSource     *source,
-		    GSourceFunc  callback,
-		    gpointer     user_data)
+                    GSourceFunc  callback,
+                    gpointer     user_data)
 {
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
+  gboolean again;
 
   if (!callback)
     {
       g_warning ("Timeout source dispatched without callback\n"
-		 "You must call g_source_set_callback().");
+                 "You must call g_source_set_callback().");
       return FALSE;
     }
- 
-  if (callback (user_data))
-    {
-      GTimeSpec now;
 
-      g_source_get_time (source, &now);
-      g_timeout_set_expiration (timeout_source, &now);
+  again = callback (user_data);
 
-      return TRUE;
-    }
-  else
-    return FALSE;
+  if (again)
+    g_timeout_set_expiration (timeout_source, g_source_get_time (source));
+
+  return again;
 }
 
 /**
@@ -3716,13 +3690,10 @@ g_timeout_source_new (guint interval)
 {
   GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
-  GTimeSpec now;
 
   timeout_source->interval = interval;
+  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
 
-  g_get_monotonic_time (&now);
-  g_timeout_set_expiration (timeout_source, &now);
-  
   return source;
 }
 
@@ -3748,13 +3719,11 @@ g_timeout_source_new_seconds (guint interval)
 {
   GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
-  GTimeSpec now;
 
   timeout_source->interval = 1000 * interval;
   timeout_source->seconds = TRUE;
 
-  g_get_monotonic_time (&now);
-  g_timeout_set_expiration (timeout_source, &now);
+  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
 
   return source;
 }
