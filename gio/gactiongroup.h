@@ -46,7 +46,6 @@ G_BEGIN_DECLS
 #define G_ACTION_GROUP_GET_IFACE(inst)                      (G_TYPE_INSTANCE_GET_INTERFACE ((inst),                  \
                                                              G_TYPE_ACTION_GROUP, GActionGroupInterface))
 
-typedef struct _GContextActionGroupInterface                GContextActionGroupInterface;
 typedef struct _GActionGroupInterface                       GActionGroupInterface;
 
 /**
@@ -114,20 +113,6 @@ struct _GActionGroupInterface
                                                         const gchar    *action_name,
                                                         GVariant       *value);
 };
-
-struct _GContextActionGroupInterface
-{
-  void                  (* change_action_state)        (GActionGroup  *action_group,
-                                                        const gchar   *action_name,
-                                                        GVariant      *value,
-                                                        GVariant      *context);
-
-  void                  (* activate_action)            (GActionGroup  *action_group,
-                                                        const gchar   *action_name,
-                                                        GVariant      *parameter,
-                                                        GVariant      *context);
-};
-
 
 GType                   g_action_group_get_type                         (void) G_GNUC_CONST;
 
