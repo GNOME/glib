@@ -372,7 +372,7 @@ g_simple_async_result_new_from_error (GObject             *source_object,
  *
  * Returns: a #GSimpleAsyncResult
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GSimpleAsyncResult *
 g_simple_async_result_new_take_error (GObject             *source_object,
@@ -639,7 +639,7 @@ g_simple_async_result_set_from_error (GSimpleAsyncResult *simple,
  * Sets the result from @error, and takes over the caller's ownership
  * of @error, so the caller does not need to free it any more.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_simple_async_result_take_error (GSimpleAsyncResult *simple,
