@@ -244,57 +244,13 @@ g_usleep (gulong microseconds)
 {
 #ifdef G_OS_WIN32
   Sleep (microseconds / 1000);
-#else /* !G_OS_WIN32 */
-# ifdef HAVE_NANOSLEEP
+#else
   struct timespec request, remaining;
   request.tv_sec = microseconds / G_USEC_PER_SEC;
   request.tv_nsec = 1000 * (microseconds % G_USEC_PER_SEC);
   while (nanosleep (&request, &remaining) == -1 && errno == EINTR)
     request = remaining;
-# else /* !HAVE_NANOSLEEP */
-#  ifdef HAVE_NSLEEP
-  /* on AIX, nsleep is analogous to nanosleep */
-  struct timespec request, remaining;
-  request.tv_sec = microseconds / G_USEC_PER_SEC;
-  request.tv_nsec = 1000 * (microseconds % G_USEC_PER_SEC);
-  while (nsleep (&request, &remaining) == -1 && errno == EINTR)
-    request = remaining;
-#  else /* !HAVE_NSLEEP */
-  if (g_thread_supported ())
-    {
-      static GStaticMutex mutex = G_STATIC_MUTEX_INIT;
-      static GCond* cond = NULL;
-      GTimeVal end_time;
-      
-      g_get_current_time (&end_time);
-      if (microseconds > G_MAXLONG)
-	{
-	  microseconds -= G_MAXLONG;
-	  g_time_val_add (&end_time, G_MAXLONG);
-	}
-      g_time_val_add (&end_time, microseconds);
-
-      g_static_mutex_lock (&mutex);
-      
-      if (!cond)
-	cond = g_cond_new ();
-      
-      while (g_cond_timed_wait (cond, g_static_mutex_get_mutex (&mutex), 
-				&end_time))
-	/* do nothing */;
-      
-      g_static_mutex_unlock (&mutex);
-    }
-  else
-    {
-      struct timeval tv;
-      tv.tv_sec = microseconds / G_USEC_PER_SEC;
-      tv.tv_usec = microseconds % G_USEC_PER_SEC;
-      select(0, NULL, NULL, NULL, &tv);
-    }
-#  endif /* !HAVE_NSLEEP */
-# endif /* !HAVE_NANOSLEEP */
-#endif /* !G_OS_WIN32 */
+#endif
 }
 
 /**
