@@ -53,13 +53,16 @@ add_actions (GApplication *app)
   action = g_simple_action_new ("simple-action", NULL);
   g_signal_connect (action, "activate", G_CALLBACK (activate_action), app);
   g_simple_action_group_insert (actions, G_ACTION (action));
+  g_object_unref (action);
 
   action = g_simple_action_new_stateful ("toggle-action", NULL,
                                          g_variant_new_boolean (FALSE));
   g_signal_connect (action, "activate", G_CALLBACK (activate_toggle_action), app);
   g_simple_action_group_insert (actions, G_ACTION (action));
+  g_object_unref (action);
 
   g_application_set_action_group (app, G_ACTION_GROUP (actions));
+  g_object_unref (actions);
 }
 
 int
