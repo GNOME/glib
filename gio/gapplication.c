@@ -69,9 +69,22 @@
  * The use count can be changed using g_application_hold() and
  * g_application_release(). If it drops to zero, the application exits.
  *
+ * GApplication also implements the #GActionGroup interface and lets you
+ * easily export actions by adding them with g_application_set_action_group().
+ * When invoking an action by calling g_action_group_activate_action() on
+ * the application, it is always invoked in the primary instance.
+ *
  * <example id="gapplication-example-open"><title>Opening files with a GApplication</title>
  * <programlisting>
  * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-open.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ * </programlisting>
+ * </example>
+ *
+ * <example id="gapplication-example-actions"><title>A GApplication with actions</title>
+ * <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-actions.c">
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
  * </xi:include>
  * </programlisting>
