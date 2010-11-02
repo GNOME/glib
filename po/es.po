@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-10-31 16:30+0000\n"
-"PO-Revision-Date: 2010-11-01 18:49+0100\n"
+"PO-Revision-Date: 2010-11-02 10:44+0100\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -3239,81 +3239,75 @@ msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "La ruta no debe contener dos barras adyacentes (//)\n"
 
 #: ../gio/gsettings-tool.c:131
-#, fuzzy, c-format
+#, c-format
 #| msgid "No such property `%s'"
 msgid "No such key '%s'\n"
-msgstr "No existe la propiedad «%s»"
+msgstr "No existe la clave «%s»\n"
 
 #: ../gio/gsettings-tool.c:426
 #, c-format
 msgid "The provided value is outside of the valid range\n"
-msgstr ""
+msgstr "El valor proporcionado está fuera del rango válido\n"
 
 #: ../gio/gsettings-tool.c:455
 msgid "List the installed (non-relocatable) schemas"
-msgstr ""
+msgstr "Listar los esquemas instalados (no reubicables)"
 
 #: ../gio/gsettings-tool.c:461
 msgid "List the installed relocatable schemas"
-msgstr ""
+msgstr "Listar los esquemas reubicables instalados"
 
 #: ../gio/gsettings-tool.c:467
 msgid "Lists the keys in SCHEMA"
-msgstr ""
+msgstr "Lista las claves en el ESQUEMA"
 
 #: ../gio/gsettings-tool.c:468 ../gio/gsettings-tool.c:474
 #: ../gio/gsettings-tool.c:480
 msgid "SCHEMA[:PATH]"
-msgstr ""
+msgstr "ESQUEMA[:RUTA]"
 
 #: ../gio/gsettings-tool.c:473
 msgid "Lists the children of SCHEMA"
-msgstr ""
+msgstr "Lista los hijos del ESQUEMA"
 
 #: ../gio/gsettings-tool.c:479
 msgid "List keys and values, recursively"
-msgstr ""
+msgstr "Listar las claves y valores recursivamente"
 
 #: ../gio/gsettings-tool.c:485
-#, fuzzy
 #| msgid "Get the value of KEY"
 msgid "Gets the value of KEY"
-msgstr "Obtener el valor de la CLAVE"
+msgstr "Obtiene el valor de la CLAVE"
 
 #: ../gio/gsettings-tool.c:486 ../gio/gsettings-tool.c:492
 #: ../gio/gsettings-tool.c:504 ../gio/gsettings-tool.c:510
-#, fuzzy
 #| msgid "SCHEMA KEY"
 msgid "SCHEMA[:PATH] KEY"
-msgstr "CLAVE DE ESQUEMA"
+msgstr "ESQUEMA[:RUTA] CLAVE"
 
 #: ../gio/gsettings-tool.c:491
 msgid "Queries the range of valid values for KEY"
-msgstr ""
+msgstr "Consulta el rango de valores válidos para la CLAVE"
 
 #: ../gio/gsettings-tool.c:497
-#, fuzzy
 #| msgid "Set the value of KEY"
 msgid "Sets the value of KEY to VALUE"
-msgstr "Establecer el valor de la CLAVE"
+msgstr "Establece el valor de la CLAVE a VALOR"
 
 #: ../gio/gsettings-tool.c:498
-#, fuzzy
 #| msgid "SCHEMA KEY VALUE"
 msgid "SCHEMA[:PATH] KEY VALUE"
-msgstr "VALOR DE LA CLAVE DEL ESQUEMA"
+msgstr "ESQUEMA[:RUTA] CLAVE VALOR"
 
 #: ../gio/gsettings-tool.c:503
-#, fuzzy
 #| msgid "Sets KEY to its default value"
 msgid "Resets KEY to its default value"
-msgstr "Establece la CLAVE a su valor predeterminado"
+msgstr "Restablece la CLAVE a su valor predeterminado"
 
 #: ../gio/gsettings-tool.c:509
-#, fuzzy
 #| msgid "Find out whether KEY is writable"
 msgid "Checks if KEY is writable"
-msgstr "Averiguar si la CLAVE se puede escribir"
+msgstr "Comprueba si la CLAVE se puede escribir"
 
 #: ../gio/gsettings-tool.c:515
 msgid ""
@@ -3321,20 +3315,24 @@ msgid ""
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
+"Monitoriza cambios en la CLAVE.\n"
+"Si no se especifica una CLAVE, monitoriza todas las claves en el ESQUEMA.\n"
+"Use ^C para detener la monitorización.\n"
 
 #: ../gio/gsettings-tool.c:518
-#, fuzzy
 #| msgid "SCHEMA KEY"
 msgid "SCHEMA[:PATH] [KEY]"
-msgstr "CLAVE DE ESQUEMA"
+msgstr "ESQUEMA[:RUTA] [CLAVE]"
 
 #: ../gio/gsettings-tool.c:522
-#, fuzzy, c-format
+#, c-format
 #| msgid "Unknown command '%s'\n"
 msgid ""
 "Unknown command %s\n"
 "\n"
-msgstr "Comando «%s» desconocido\n"
+msgstr ""
+"Comando «%s» desconocido\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:530
 msgid ""
@@ -3358,6 +3356,25 @@ msgid ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
+"Uso:\n"
+"  gsettings COMANDO [ARGUMENTOS…]\n"
+"\n"
+"Comandos:\n"
+"  help                      Mostrar esta información\n"
+"  list-schemas              Listar los esquemas instalados\n"
+"  list-relocatable-schemas  Listar los esquemas reubicables\n"
+"  list-keys                 Listar las claves en un esquema\n"
+"  list-children             Listar los hijos de un esquema\n"
+"  list-recursively          Listar claves y valores recursivamente\n"
+"  range                     Consulta el rango de una clave\n"
+"  get                       Obtener el valor de una clave\n"
+"  set                       Establecer el valor de una clave\n"
+"  reset                     Restablecer el valor de una clave\n"
+"  writable                  Comprobar si una clave se puede escribir\n"
+"  monitor                   Monitorizar cambios\n"
+"\n"
+"Use «gsettings help COMANDO» para obtener una ayuda detallada.\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:551
 #, c-format
@@ -3368,13 +3385,17 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"Uso:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:556
 msgid "Arguments:\n"
-msgstr ""
+msgstr "Argumentos:\n"
 
 #: ../gio/gsettings-tool.c:560
-#, fuzzy
 #| msgid ""
 #| "Arguments:\n"
 #| "  SCHEMA      The id of the schema\n"
@@ -3383,21 +3404,20 @@ msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 msgstr ""
-"Argumentos:\n"
-"  SCHEMA      El ID del esquema\n"
-"  KEY         El nombre de la clave\n"
+"  SCHEMA      El nombre del esquema\n"
+"  RUTA        La ruta, para esquemas reubicables\n"
 
 #: ../gio/gsettings-tool.c:565
 msgid "  KEY       The (optional) key within the schema\n"
-msgstr ""
+msgstr "  CLAVE      La clave (opcional) para el esquema\n"
 
 #: ../gio/gsettings-tool.c:569
 msgid "  KEY       The key within the schema\n"
-msgstr ""
+msgstr "  CLAVE      La clave para el esquema\n"
 
 #: ../gio/gsettings-tool.c:573
 msgid "  VALUE     The value to set\n"
-msgstr ""
+msgstr "  VALOR     El valor para establecer\n"
 
 #: ../gio/gsettings-tool.c:649
 #, c-format
