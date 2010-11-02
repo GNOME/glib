@@ -34,16 +34,17 @@
 #include <gio/gsocketconnection.h>
 #include <gio/gproxyaddressenumerator.h>
 #include <gio/gproxyaddress.h>
-#include <gio/gproxyconnection.h>
 #include <gio/gsimpleasyncresult.h>
 #include <gio/gcancellable.h>
 #include <gio/gioerror.h>
 #include <gio/gsocket.h>
 #include <gio/gnetworkaddress.h>
 #include <gio/gnetworkservice.h>
+#include <gio/gpollableiostream.h>
 #include <gio/gproxy.h>
 #include <gio/gsocketaddress.h>
 #include <gio/gtcpconnection.h>
+#include <gio/gtcpwrapperconnection.h>
 #include "glibintl.h"
 
 
@@ -679,13 +680,14 @@ g_socket_client_connect (GSocketClient       *client,
       g_clear_error (&last_error);
 
       socket = create_socket (client, address, &last_error);
-      if (socket != NULL)
+      if (socket == NULL)
 	{
-	  if (g_socket_connect (socket, address, cancellable, &last_error))
-	    connection = g_socket_connection_factory_create_connection (socket);
-
-	  g_object_unref (socket);
+	  g_object_unref (address);
+	  continue;
 	}
+
+      if (g_socket_connect (socket, address, cancellable, &last_error))
+	connection = g_socket_connection_factory_create_connection (socket);
 
       if (connection &&
 	  G_IS_PROXY_ADDRESS (address) &&
@@ -716,31 +718,30 @@ g_socket_client_connect (GSocketClient       *client,
           else if (proxy)
 	    {
               GIOStream *io_stream;
-              GTcpConnection *old_connection = G_TCP_CONNECTION (connection);
 
 	      io_stream = g_proxy_connect (proxy,
-					   G_IO_STREAM (old_connection),
+					   G_IO_STREAM (connection),
 					   proxy_addr,
 					   cancellable,
 					   &last_error);
+	      g_object_unref (connection);
+	      g_object_unref (proxy);
 
               if (io_stream)
                 {
                   if (G_IS_SOCKET_CONNECTION (io_stream))
-                    connection = G_SOCKET_CONNECTION (g_object_ref (io_stream));
+                    connection = G_SOCKET_CONNECTION (io_stream);
                   else
-                    connection = _g_proxy_connection_new (old_connection,
-                                                          io_stream);
-
-                  g_object_unref (io_stream);
+		    {
+		      connection = g_tcp_wrapper_connection_new (G_POLLABLE_IO_STREAM (io_stream),
+								 socket);
+		      g_object_unref (io_stream);
+		    }
                 }
               else
                 {
                   connection = NULL;
                 }
-
-              g_object_unref (old_connection);
-	      g_object_unref (proxy);
 	    }
 	  else if (!g_hash_table_lookup_extended (client->priv->app_proxies,
 						  protocol, NULL, NULL))
@@ -753,6 +754,7 @@ g_socket_client_connect (GSocketClient       *client,
 	    }
 	}
 
+      g_object_unref (socket);
       g_object_unref (address);
     }
   g_object_unref (enumerator);
@@ -991,27 +993,29 @@ g_socket_client_proxy_connect_callback (GObject      *object,
 {
   GSocketClientAsyncConnectData *data = user_data;
   GIOStream *io_stream;
-  GTcpConnection *old_connection = G_TCP_CONNECTION (data->connection);
 
   io_stream = g_proxy_connect_finish (G_PROXY (object),
 				      result,
 				      &data->last_error);
+  g_object_unref (data->connection);
 
   if (io_stream)
     {
       if (G_IS_SOCKET_CONNECTION (io_stream))
-        data->connection = G_SOCKET_CONNECTION (g_object_ref (io_stream));
+        data->connection = G_SOCKET_CONNECTION (io_stream);
       else
-        data->connection = _g_proxy_connection_new (old_connection,
-                                                    io_stream);
-      g_object_unref (io_stream);
+	{
+	  data->connection = g_tcp_wrapper_connection_new (G_POLLABLE_IO_STREAM (io_stream),
+							   data->current_socket);
+	  g_object_unref (io_stream);
+	}
     }
   else
     {
       data->connection = NULL;
+      g_object_unref (data->current_socket);
+      data->current_socket = NULL;
     }
-
-  g_object_unref (old_connection);
 
   g_socket_client_async_connect_complete (data);
 }
@@ -1038,6 +1042,8 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
 
       g_object_unref (data->connection);
       data->connection = NULL;
+      g_object_unref (data->current_socket);
+      data->current_socket = NULL;
 
       enumerator_next_async (data);
     }
@@ -1062,6 +1068,8 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
 
       g_object_unref (data->connection);
       data->connection = NULL;
+      g_object_unref (data->current_socket);
+      data->current_socket = NULL;
 
       enumerator_next_async (data);
     }
@@ -1074,8 +1082,6 @@ g_socket_client_socket_connected (GSocketClientAsyncConnectData *data)
 
   data->connection =
     g_socket_connection_factory_create_connection (data->current_socket);
-  g_object_unref (data->current_socket);
-  data->current_socket = NULL;
 
   if (data->proxy_addr)
     g_socket_client_proxy_connect (data);

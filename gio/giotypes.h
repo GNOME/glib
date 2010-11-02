@@ -191,6 +191,7 @@ typedef struct _GSrvTarget                    GSrvTarget;
  * Since: 2.22
  **/
 typedef struct _GTcpConnection                              GTcpConnection;
+typedef struct _GTcpWrapperConnection                       GTcpWrapperConnection;
 /**
  * GThreadedSocketService:
  *

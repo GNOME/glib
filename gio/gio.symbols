@@ -1994,3 +1994,11 @@ g_pollable_output_stream_is_writable
 g_pollable_output_stream_write_nonblocking
 #endif
 #endif
+
+#if IN_HEADER(__G_TCP_WRAPPER_CONNECTION_H__)
+#if IN_FILE(__G_TCP_WRAPPER_CONNECTION_C__)
+g_tcp_wrapper_connection_get_type G_GNUC_CONST
+g_tcp_wrapper_connection_get_base_io_stream
+g_tcp_wrapper_connection_new
+#endif
+#endif

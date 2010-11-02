@@ -117,6 +117,7 @@
 #include <gio/gsocketservice.h>
 #include <gio/gsrvtarget.h>
 #include <gio/gtcpconnection.h>
+#include <gio/gtcpwrapperconnection.h>
 #include <gio/gthemedicon.h>
 #include <gio/gthreadedsocketservice.h>
 #include <gio/gvfs.h>
