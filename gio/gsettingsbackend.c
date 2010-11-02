@@ -1051,6 +1051,15 @@ g_settings_backend_sync_default (void)
     class->sync (backend);
 }
 
+gchar **
+g_settings_backend_list (GSettingsBackend    *backend,
+			 const gchar         *path,
+			 const gchar * const *schema_items)
+{
+  return G_SETTINGS_BACKEND_GET_CLASS (backend)
+    ->list (backend, path, schema_items);
+}
+
 gboolean
 g_settings_backend_can_insert (GSettingsBackend *backend,
                                const gchar      *path)
