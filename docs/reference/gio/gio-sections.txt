@@ -2911,7 +2911,8 @@ GPeriodic
 <SUBSECTION>
 g_periodic_new
 g_periodic_get_hz
-g_periodic_get_priority
+g_periodic_get_high_priority
+g_periodic_get_low_priority
 <SUBSECTION>
 GPeriodicTickFunc
 g_periodic_add

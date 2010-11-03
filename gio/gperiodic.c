@@ -43,6 +43,44 @@
  * while the clock is not running, in which case the rate of repairs
  * will be rate limited as if the clock were running.
  *
+ * #GPeriodic has a configurable priority range consisting of a high and
+ * low value.  Other sources with a priority higher than the high value
+ * might starve #GPeriodic and sources with the priority lower than the
+ * low value may be starved by #GPeriodic.
+ *
+ * #GPeriodic will engage in dynamic scheduling with respect to sources
+ * that have their priorities within the high to low range.  A given
+ * #GPeriodic will ensure that the events dispatched from itself are
+ * generally using less than 50% of the CPU (on average) if other tasks
+ * are pending.  If no other sources within the range are pending then
+ * #GPeriodic will use up to all of the available CPU (which can lead to
+ * starvation of lower-priority sources, as mentioned above).  The 50%
+ * figure is entirely arbitrary and may change or become configurable in
+ * the future.
+ *
+ * For example, if a #GPeriodic has been set to run at 10Hz and a
+ * particular iteration uses 140ms of time, then 2 ticks will be
+ * "skipped" to give other sources a chance to run (ie: the next tick
+ * will occur 300ms later rather than 100ms later, giving 160ms of time
+ * for other sources).
+ *
+ * This means that the high priority value for #GPeriodic should be set
+ * quite high (above anything else) and the low priority value for
+ * #GPeriodic should be set lower than everything except true "idle"
+ * handlers (ie: things that you want to run only when the program is
+ * truly idle).
+ *
+ * #GPeriodic generally assumes that although the things attached to it
+ * may be poorly behaved in terms of non-yielding behaviour (either
+ * individually or in aggregate), the other sources on the main loop
+ * should be "well behaved".  Other sources should try not to block the
+ * CPU for a substantial portion of the periodic interval.
+ *
+ * The sources attached to a #GPeriodic are permitted to be somewhat
+ * less well-behaved because they are generally rendering the UI for the
+ * user (which should be done smoothly) and also because they will be
+ * throttled by #GPeriodic.
+ *
  * #GPeriodic is intended to be used as a paint clock for managing
  * geometry updates and painting of windows.
  *
@@ -87,6 +125,9 @@ struct _GPeriodic
   guint64  last_run;
   guint    blocked;
   guint    hz;
+  guint    skip_frames;
+  guint    stop_skip_id;
+  gint     low_priority;
 
   GSList  *ticks;             /* List<GPeriodicTick> */
   GSList  *repairs;           /* List<GPeriodicRepair> */
@@ -104,7 +145,8 @@ enum
 {
   PROP_NONE,
   PROP_HZ,
-  PROP_PRIORITY
+  PROP_HIGH_PRIORITY,
+  PROP_LOW_PRIORITY
 };
 
 static guint g_periodic_tick;
@@ -116,10 +158,28 @@ g_periodic_get_microticks (GPeriodic *periodic)
   return g_source_get_time (periodic->source) * periodic->hz;
 }
 
+static gboolean
+g_periodic_stop_skip (gpointer data)
+{
+  GPeriodic *periodic = data;
+
+  periodic->skip_frames = 0;
+
+  g_message ("Skipping frames ends");
+
+  periodic->stop_skip_id = 0;
+
+  return FALSE;
+}
+
 static void
 g_periodic_run (GPeriodic *periodic)
 {
+  gint64 start, usec;
+
   g_assert (periodic->blocked == 0);
+
+  start = g_get_monotonic_time ();
 
   if (periodic->ticks)
     {
@@ -160,6 +220,43 @@ g_periodic_run (GPeriodic *periodic)
       g_signal_emit (periodic, g_periodic_repair, 0);
       periodic->in_repair = FALSE;
     }
+
+  usec = g_get_monotonic_time () - start;
+  g_assert (usec >= 0);
+
+  /* Take the time it took to render, multiply by two and round down to
+   * a whole number of frames.  This ensures that we don't take more
+   * than 50% of the CPU with rendering.
+   *
+   * Examples (at 10fps for easy math.  1 frame = 100ms):
+   *
+   *   0-49ms to render: no frames skipped
+   *
+   *     We used less than half of the time to render.  OK.  We will run
+   *     the next frame 100ms after this one ran (no skips).
+   *
+   *   50-99ms to render: 1 frame skipped
+   *
+   *     We used more than half the time.  Skip one frame so that we run
+   *     200ms later rather than 100ms later.  We already used up to
+   *     99ms worth of that 200ms window, so that gives 101ms for other
+   *     things to run (50%).  For figures closer to 50ms the other
+   *     stuff will actually get more than 50%.
+   *
+   *   100-150ms to render: 2 frames skipped, etc.
+   */
+  periodic->skip_frames = 2 * usec * periodic->hz / 1000000;
+
+  if (periodic->skip_frames)
+    {
+      g_message ("Slow painting; (possibly) skipping %d frames\n",
+                 periodic->skip_frames);
+
+      if (periodic->stop_skip_id == 0)
+        periodic->stop_skip_id = g_idle_add_full (periodic->low_priority,
+                                                  g_periodic_stop_skip,
+                                                  periodic, NULL);
+    }
 }
 
 static gboolean
@@ -173,7 +270,7 @@ g_periodic_prepare (GSource *source,
     {
       gint64 remaining;
      
-      remaining = periodic->last_run + 1000000 -
+      remaining = periodic->last_run + 1000000 * (1 + periodic->skip_frames) -
                   g_periodic_get_microticks (periodic);
 
       if (remaining > 0)
@@ -216,7 +313,7 @@ g_periodic_check (GSource *source)
       guint64 now = g_periodic_get_microticks (periodic);
 
       /* Run if it's not too soon. */
-      return !(now < periodic->last_run + 1000000);
+      return !(now < periodic->last_run + 1000000 * (periodic->skip_frames + 1));
     }
 
   else
@@ -271,8 +368,12 @@ g_periodic_get_property (GObject *object, guint prop_id,
 
   switch (prop_id)
     {
-    case PROP_PRIORITY:
+    case PROP_HIGH_PRIORITY:
       g_value_set_int (value, g_source_get_priority (periodic->source));
+      break;
+
+    case PROP_LOW_PRIORITY:
+      g_value_set_int (value, periodic->low_priority);
       break;
 
     case PROP_HZ:
@@ -292,8 +393,12 @@ g_periodic_set_property (GObject *object, guint prop_id,
 
   switch (prop_id)
     {
-    case PROP_PRIORITY:
+    case PROP_HIGH_PRIORITY:
       g_source_set_priority (periodic->source, g_value_get_int (value));
+      break;
+
+    case PROP_LOW_PRIORITY:
+      periodic->low_priority = g_value_get_int (value);
       break;
 
     case PROP_HZ:
@@ -351,9 +456,15 @@ g_periodic_class_init (GObjectClass *class)
                        1, 120, 1, G_PARAM_READWRITE |
                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
-  g_object_class_install_property (class, PROP_PRIORITY,
-    g_param_spec_int ("priority", "priority level",
+  g_object_class_install_property (class, PROP_HIGH_PRIORITY,
+    g_param_spec_int ("high-priority", "high priority level",
                       "the GSource priority level to run at",
+                      G_MININT, G_MAXINT, 0, G_PARAM_READWRITE |
+                      G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+
+  g_object_class_install_property (class, PROP_LOW_PRIORITY,
+    g_param_spec_int ("low-priority", "low priority level",
+                      "ignore tasks below this priority level",
                       G_MININT, G_MAXINT, 0, G_PARAM_READWRITE |
                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 }
@@ -582,19 +693,37 @@ g_periodic_get_hz (GPeriodic *periodic)
 }
 
 /**
- * g_periodic_get_priority:
+ * g_periodic_get_high_priority:
  * @periodic: a #GPeriodic clock
  *
  * Gets the #GSource priority of the clock.
  *
- * Returns: the priority level
+ * Returns: the high priority level
  *
  * Since: 2.28
  **/
 gint
-g_periodic_get_priority (GPeriodic *periodic)
+g_periodic_get_high_priority (GPeriodic *periodic)
 {
   return g_source_get_priority (periodic->source);
+}
+
+/**
+ * g_periodic_get_low_priority:
+ * @periodic: a #GPeriodic clock
+ *
+ * Gets the priority level that #GPeriodic uses to check for mainloop
+ * inactivity.  Other sources scheduled below this level of priority are
+ * effectively ignored by #GPeriodic and may be starved.
+ *
+ * Returns: the low priority level
+ *
+ * Since: 2.28
+ **/
+gint
+g_periodic_get_low_priority (GPeriodic *periodic)
+{
+  return periodic->low_priority;
 }
 
 /**
@@ -618,12 +747,14 @@ g_periodic_get_priority (GPeriodic *periodic)
  **/
 GPeriodic *
 g_periodic_new (guint hz,
-                gint  priority)
+                gint  high_priority,
+                gint  low_priority)
 {
   g_return_val_if_fail (1 <= hz && hz <= 120, NULL);
 
   return g_object_new (G_TYPE_PERIODIC,
                        "hz", hz,
-                       "priority", priority,
+                       "high-priority", high_priority,
+                       "low-priority", low_priority,
                        NULL);
 }

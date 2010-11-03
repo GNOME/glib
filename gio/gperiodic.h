@@ -45,9 +45,11 @@ typedef void         (* GPeriodicRepairFunc)                            (GPeriod
 
 GType                   g_periodic_get_type                             (void);
 GPeriodic *             g_periodic_new                                  (guint                hz,
-                                                                         gint                 priority);
+                                                                         gint                 high_priority,
+                                                                         gint                 low_priority);
 guint                   g_periodic_get_hz                               (GPeriodic           *periodic);
-gint                    g_periodic_get_priority                         (GPeriodic           *periodic);
+gint                    g_periodic_get_high_priority                    (GPeriodic           *periodic);
+gint                    g_periodic_get_low_priority                     (GPeriodic           *periodic);
 
 guint                   g_periodic_add                                  (GPeriodic           *periodic,
                                                                          GPeriodicTickFunc    callback,

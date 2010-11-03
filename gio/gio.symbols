@@ -1958,7 +1958,8 @@ g_simple_action_set_enabled
 g_periodic_block
 g_periodic_damaged
 g_periodic_get_hz
-g_periodic_get_priority
+g_periodic_get_high_priority
+g_periodic_get_low_priority
 g_periodic_get_type
 g_periodic_new
 g_periodic_add
