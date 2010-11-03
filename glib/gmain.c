@@ -266,8 +266,8 @@ struct _GMainContext
 
   gint64   time;
   gboolean time_is_fresh;
-  GTimeVal current_time;
-  gboolean current_time_is_fresh;
+  gint64   real_time;
+  gboolean real_time_is_fresh;
 };
 
 struct _GSourceCallback
@@ -609,7 +609,7 @@ g_main_context_new (void)
   context->pending_dispatches = g_ptr_array_new ();
   
   context->time_is_fresh = FALSE;
-  context->current_time_is_fresh = FALSE;
+  context->real_time_is_fresh = FALSE;
   
 #ifdef G_THREADS_ENABLED
   if (g_thread_supported ())
@@ -2516,7 +2516,7 @@ g_main_context_prepare (GMainContext *context,
   LOCK_CONTEXT (context);
 
   context->time_is_fresh = FALSE;
-  context->current_time_is_fresh = FALSE;
+  context->real_time_is_fresh = FALSE;
 
   if (context->in_check_or_prepare)
     {
@@ -2682,7 +2682,7 @@ g_main_context_query (GMainContext *context,
       if (*timeout != 0)
         {
 	  context->time_is_fresh = FALSE;
-	  context->current_time_is_fresh = FALSE;
+	  context->real_time_is_fresh = FALSE;
         }
     }
   
@@ -3421,13 +3421,14 @@ g_source_get_current_time (GSource  *source,
 
   LOCK_CONTEXT (context);
 
-  if (!context->current_time_is_fresh)
+  if (!context->real_time_is_fresh)
     {
-      g_get_current_time (&context->current_time);
-      context->current_time_is_fresh = TRUE;
+      context->real_time = g_get_real_time ();
+      context->real_time_is_fresh = TRUE;
     }
   
-  *timeval = context->current_time;
+  timeval->tv_sec = context->real_time / 1000000;
+  timeval->tv_usec = context->real_time % 1000000;
   
   UNLOCK_CONTEXT (context);
 }
