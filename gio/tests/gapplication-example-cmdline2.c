@@ -10,16 +10,12 @@ command_line (GApplication            *application,
   gint argc;
   gint i;
 
-  g_application_hold (application);
-
   argv = g_application_command_line_get_arguments (cmdline, &argc);
 
   for (i = 0; i < argc; i++)
     g_print ("handling argument %s remotely\n", argv[i]);
 
   g_strfreev (argv);
-
-  g_application_release (application);
 
   return 0;
 }

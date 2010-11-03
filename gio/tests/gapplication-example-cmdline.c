@@ -10,8 +10,6 @@ command_line (GApplication            *application,
   gint argc;
   gint i;
 
-  g_application_hold (application);
-
   argv = g_application_command_line_get_arguments (cmdline, &argc);
 
   g_application_command_line_print (cmdline,
@@ -22,8 +20,6 @@ command_line (GApplication            *application,
     g_print ("argument %d: %s\n", i, argv[i]);
 
   g_strfreev (argv);
-
-  g_application_release (application);
 
   return 0;
 }

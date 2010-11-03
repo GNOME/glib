@@ -5,9 +5,7 @@
 static void
 activate (GApplication *application)
 {
-  g_application_hold (application);
   g_print ("activated\n");
-  g_application_release (application);
 }
 
 static void
@@ -17,9 +15,7 @@ activate_action (GAction  *action,
 {
   GApplication *application = data;
 
-  g_application_hold (application);
   g_print ("action %s activated\n", g_action_get_name (action));
-  g_application_release (application);
 }
 
 static void
@@ -31,7 +27,6 @@ activate_toggle_action (GAction  *action,
   GVariant *state;
   gboolean b;
 
-  g_application_hold (application);
   g_print ("action %s activated\n", g_action_get_name (action));
 
   state = g_action_get_state (action);
@@ -39,8 +34,6 @@ activate_toggle_action (GAction  *action,
   g_variant_unref (state);
   g_action_set_state (action, g_variant_new_boolean (!b));
   g_print ("state change %d -> %d\n", b, !b);
-
-  g_application_release (application);
 }
 
 static void

@@ -74,6 +74,15 @@
  * When invoking an action by calling g_action_group_activate_action() on
  * the application, it is always invoked in the primary instance.
  *
+ * There is a number of different entry points into a #GApplication:
+ * <itemizedlist>
+ * <listitem>via 'Activate' (i.e. just starting the application)</listitem>
+ * <listitem>via 'Open' (i.e. opening some files)</listitem>
+ * <listitem>via activating an action</listitem>
+ * </itemizedlist>
+ * The #GApplication::startup signal lets you handle the application
+ * initialization for all of these in a single place.
+ *
  * <example id="gapplication-example-open"><title>Opening files with a GApplication</title>
  * <programlisting>
  * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-open.c">

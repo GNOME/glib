@@ -5,9 +5,13 @@
 static void
 activate (GApplication *application)
 {
-  g_application_hold (application);
   g_print ("activated\n");
-  g_application_release (application);
+
+  /* Note: when doing a longer-lasting action here that returns
+   * to the mainloop, you should use g_application_hold() and
+   * g_application_release() to keep the application alive until
+   * the action is completed.
+   */
 }
 
 static void
@@ -18,8 +22,6 @@ open (GApplication  *application,
 {
   gint i;
 
-  g_application_hold (application);
-
   for (i = 0; i < n_files; i++)
     {
       gchar *uri = g_file_get_uri (files[i]);
@@ -27,7 +29,11 @@ open (GApplication  *application,
       g_free (uri);
     }
 
-  g_application_release (application);
+  /* Note: when doing a longer-lasting action here that returns
+   * to the mainloop, you should use g_application_hold() and
+   * g_application_release() to keep the application alive until
+   * the action is completed.
+   */
 }
 
 int
