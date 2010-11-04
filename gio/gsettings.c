@@ -2826,7 +2826,7 @@ g_settings_list_keys (GSettings *settings)
  * time and you should connect to the "children-changed" signal to watch
  * for those changes.  Note that there is a race condition here: you may
  * request a child after listing it only for it to have been destroyed
- * in the meantime.  For this reason, g_settings_get_chuld() may return
+ * in the meantime.  For this reason, g_settings_get_child() may return
  * %NULL even for a child that was listed by this function.
  *
  * For GSettings objects that are not lists, you should probably not be

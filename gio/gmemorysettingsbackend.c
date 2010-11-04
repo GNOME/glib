@@ -16,7 +16,8 @@
  * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * Author: Ryan Lortie <desrt@desrt.ca>
+ * Authors: Ryan Lortie <desrt@desrt.ca>
+ *          Rodrigo Moya <rodrigo@gnome.org>
  */
 
 #include "config.h"
@@ -226,6 +227,59 @@ g_memory_settings_backend_get_permission (GSettingsBackend *backend,
   return g_simple_permission_new (TRUE);
 }
 
+static gchar **
+g_memory_settings_backend_list (GSettingsBackend    *backend,
+				const gchar         *path,
+				const gchar * const *schema_items)
+{
+  gchar **result = NULL;
+  GHashTable *table;
+  GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
+
+  table = g_memory_settings_backend_get_table (memory, &path);
+  if (table != NULL)
+    {
+      GHashTableIter iter;
+      gchar *key_name;
+      guint i;
+      GSList *list = NULL;
+
+      while (g_hash_table_iter_next (&iter, (gpointer *) &key_name, NULL))
+        {
+	  gboolean in_schema_items = FALSE;
+
+	  for (i = 0; i < g_strv_length (schema_items); i++)
+	    {
+	      if (g_str_equal (key_name, schema_items[i]))
+	        {
+		  /* It's in both lists, so return it */
+		  list = g_slist_append (list, key_name);
+		  in_schema_items = TRUE;
+		}
+	    }
+	  if (!in_schema_items)
+	    {
+	      /* Has been added by the user */
+	      list = g_slist_append (list, key_name);
+	    }
+	}
+
+      result = g_new0 (gchar *, g_slist_length (list) + 1);
+      i = 0;
+      while (list != NULL)
+        {
+	  result[i] = g_strdup ((const gchar *) list->data);
+	  i++;
+
+	  list = g_slist_remove (list, list->data);
+	}
+
+      result[i] = NULL;
+    }
+
+  return result;
+}
+
 static void
 g_memory_settings_backend_finalize (GObject *object)
 {
@@ -256,5 +310,6 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
   backend_class->reset = g_memory_settings_backend_reset;
   backend_class->get_writable = g_memory_settings_backend_get_writable;
   backend_class->get_permission = g_memory_settings_backend_get_permission;
+  backend_class->list = g_memory_settings_backend_list;
   object_class->finalize = g_memory_settings_backend_finalize;
 }

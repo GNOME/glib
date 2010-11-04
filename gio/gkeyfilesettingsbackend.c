@@ -19,6 +19,7 @@
  *
  * Authors: Vincent Untz <vuntz@gnome.org>
  *          Ryan Lortie <desrt@desrt.ca>
+ *          Rodrigo Moya <rodrigo@gnome.org>
  */
 
 #include "config.h"
@@ -369,6 +370,14 @@ g_keyfile_settings_backend_get_permission (GSettingsBackend *backend,
   return g_object_ref (kfsb->permission);
 }
 
+static gchar **
+g_keyfile_settings_backend_list (GSettingsBackend    *backend,
+				 const gchar         *path,
+				 const gchar * const *schema_items)
+{
+  GKeyfileSettingsBackend *kfsb = G_KEYFILE_SETTINGS_BACKEND (backend);
+}
+
 static void
 keyfile_to_tree (GKeyfileSettingsBackend *kfsb,
                  GTree                   *tree,
@@ -536,6 +545,7 @@ g_keyfile_settings_backend_class_init (GKeyfileSettingsBackendClass *class)
   class->reset = g_keyfile_settings_backend_reset;
   class->get_writable = g_keyfile_settings_backend_get_writable;
   class->get_permission = g_keyfile_settings_backend_get_permission;
+  class->list = g_keyfile_settings_backend_list;
   /* No need to implement subscribed/unsubscribe: the only point would be to
    * stop monitoring the file when there's no GSettings anymore, which is no
    * big win. */
