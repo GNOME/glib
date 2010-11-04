@@ -47,9 +47,11 @@ install-data-am: install-gsettings-schemas
 
 install-gsettings-schemas: $(gsettings_SCHEMAS) $(gsettings__enum_file)
 	@$(NORMAL_INSTALL)
-	test -z "$(gsettingsschemadir)" || $(MKDIR_P) "$(DESTDIR)$(gsettingsschemadir)"
-	$(INSTALL_DATA) $^ "$(DESTDIR)$(gsettingsschemadir)"
-	test -n "$(GSETTINGS_DISABLE_SCHEMAS_COMPILE)$(DESTDIR)" || $(GLIB_COMPILE_SCHEMAS) $(gsettingsschemadir)
+	if test -n "$^"; then \
+		test -z "$(gsettingsschemadir)" || $(MKDIR_P) "$(DESTDIR)$(gsettingsschemadir)"; \
+		$(INSTALL_DATA) $^ "$(DESTDIR)$(gsettingsschemadir)"; \
+		test -n "$(GSETTINGS_DISABLE_SCHEMAS_COMPILE)$(DESTDIR)" || $(GLIB_COMPILE_SCHEMAS) $(gsettingsschemadir); \
+	fi
 
 uninstall-gsettings-schemas:
 	@$(NORMAL_UNINSTALL)
