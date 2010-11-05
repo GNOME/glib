@@ -86,8 +86,8 @@
  * style to a DBus bus name, e.g. "org.gnome.font-rendering".
  *
  * In addition to #GVariant types, keys can have types that have enumerated
- * types. These can be described by a <starttag>choice</starttag>,
- * <starttag>enum</starttag> or <starttag>flags</starttag> element, see
+ * types. These can be described by a <tag class="starttag">choice</tag>,
+ * <tag class="starttag">enum</tag> or <tag class="starttag">flags</tag> element, see
  * <xref linkend="schema-enumerated"/>. The underlying type of
  * such a key is string, but you can use g_settings_get_enum(),
  * g_settings_set_enum(), g_settings_get_flags(), g_settings_set_flags()
