@@ -1458,8 +1458,28 @@ g_settings_set_value (GSettings   *settings,
   g_return_val_if_fail (key != NULL, FALSE);
 
   g_settings_get_key_info (&info, settings, key);
-  g_return_val_if_fail (g_settings_type_check (&info, value), FALSE);
-  g_return_val_if_fail (g_settings_key_info_range_check (&info, value), FALSE);
+
+  if (!g_settings_type_check (&info, value))
+    {
+      g_critical ("g_settings_set_value: key '%s' in '%s' expects type '%s', but a GVariant of type '%s' was given",
+                  key,
+                  settings->priv->schema_name,
+                  g_variant_type_peek_string (info.type),
+                  g_variant_get_type_string (value));
+
+        return FALSE;
+      }
+
+  if (!g_settings_key_info_range_check (&info, value))
+    {
+      g_warning ("gsettings_set_value: value for key '%s' in schema '%s' "
+                 "is outside of valid range",
+                 key,
+                 settings->priv->schema_name);
+
+        return FALSE;
+    }
+
   g_settings_free_key_info (&info);
 
   return g_settings_write_to_backend (&info, value);
