@@ -67,6 +67,7 @@ test_application_init (TestApplication *app)
 static void
 test_application_class_init (TestApplicationClass *class)
 {
+  G_OBJECT_CLASS (class)->finalize = test_application_finalize;
   G_APPLICATION_CLASS (class)->local_command_line = test_local_cmdline;
 }
 
