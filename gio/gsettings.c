@@ -85,7 +85,16 @@
  * convention for schema ids is to use a dotted name, similar in
  * style to a DBus bus name, e.g. "org.gnome.font-rendering".
  *
- * <example><title>Default values</title>
+ * In addition to #GVariant types, keys can have types that have enumerated
+ * types. These can be described by a <starttag>choice</starttag>,
+ * <starttag>enum</starttag> or <starttag>flags</starttag> element, see
+ * <xref linkend="schema-enumerated"/>. The underlying type of
+ * such a key is string, but you can use g_settings_get_enum(),
+ * g_settings_set_enum(), g_settings_get_flags(), g_settings_set_flags()
+ * access the numeric values corresponding to the string value of enum
+ * and flags keys.
+ *
+ * <example id="schema-default-values"><title>Default values</title>
  * <programlisting><![CDATA[
  * <schemalist>
  *   <schema id="org.gtk.test" path="/tests/" gettext-domain="test">
@@ -106,13 +115,19 @@
  * </schemalist>
  * ]]></programlisting></example>
  *
- * <example><title>Ranges, choices and enumerated types</title>
+ * <example id="schema-enumerated"><title>Ranges, choices and enumerated types</title>
  * <programlisting><![CDATA[
  * <schemalist>
  *
  *   <enum id="myenum">
  *     <value nick="first" value="1"/>
  *     <value nick="second" value="2"/>
+ *   </enum>
+ *
+ *   <enum id="myflags">
+ *     <value nick="flag1" value="1"/>
+ *     <value nick="flag2" value="2"/>
+ *     <value nick="flag3" value="4"/>
  *   </enum>
  *
  *   <schema id="org.gtk.test">
@@ -139,6 +154,9 @@
  *       <default>'first'</default>
  *     </key>
  *
+ *     <key name='flags-key' flags='myflags'>
+ *       <default>["flag1",flag2"]</default>
+ *     </key>
  *   </schema>
  * </schemalist>
  * ]]></programlisting></example>
