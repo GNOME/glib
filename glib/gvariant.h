@@ -134,6 +134,13 @@ void                            g_variant_get_child                     (GVarian
                                                                          ...);
 GVariant *                      g_variant_get_child_value               (GVariant             *value,
                                                                          gsize                 index_);
+gboolean                        g_variant_lookup                        (GVariant             *value,
+                                                                         const gchar          *key,
+                                                                         const gchar          *format_string,
+                                                                         ...);
+GVariant *                      g_variant_lookup_value                  (GVariant             *value,
+                                                                         const gchar          *key,
+                                                                         const GVariantType   *type);
 gconstpointer                   g_variant_get_fixed_array               (GVariant             *value,
                                                                          gsize                *n_elements,
                                                                          gsize                 element_size);

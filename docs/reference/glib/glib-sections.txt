@@ -3015,6 +3015,8 @@ g_variant_get_maybe
 g_variant_n_children
 g_variant_get_child_value
 g_variant_get_child
+g_variant_lookup_value
+g_variant_lookup
 g_variant_get_fixed_array
 
 <SUBSECTION>

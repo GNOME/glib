@@ -3897,6 +3897,78 @@ test_bytestring (void)
   g_variant_unref (untrusted_empty);
 }
 
+static void
+test_lookup_value (void)
+{
+  struct {
+    const gchar *dict, *key, *value;
+  } cases[] = {
+    { "@a{ss} {'x':  'y'}",   "x",  "'y'" },
+    { "@a{ss} {'x':  'y'}",   "y"         },
+    { "@a{os} {'/x': 'y'}",   "/x", "'y'" },
+    { "@a{os} {'/x': 'y'}",   "/y"        },
+    { "@a{sv} {'x':  <'y'>}", "x",  "'y'" },
+    { "@a{sv} {'x':  <5>}",   "x",  "5"   },
+    { "@a{sv} {'x':  <'y'>}", "y"         }
+  };
+  gint i;
+
+  for (i = 0; i < G_N_ELEMENTS (cases); i++)
+    {
+      GVariant *dictionary;
+      GVariant *value;
+      gchar *p;
+      
+      dictionary = g_variant_parse (NULL, cases[i].dict, NULL, NULL, NULL);
+      value = g_variant_lookup_value (dictionary, cases[i].key, NULL);
+      g_variant_unref (dictionary);
+
+      if (value == NULL && cases[i].value == NULL)
+        continue;
+
+      g_assert (value && cases[i].value);
+      p = g_variant_print (value, FALSE);
+      g_assert_cmpstr (cases[i].value, ==, p);
+      g_variant_unref (value);
+      g_free (p);
+    }
+}
+
+static void
+test_lookup (void)
+{
+  const gchar *str;
+  GVariant *dict;
+  gboolean ok;
+  gint num;
+
+  dict = g_variant_parse (NULL,
+                          "{'a': <5>, 'b': <'c'>}",
+                          NULL, NULL, NULL);
+
+  ok = g_variant_lookup (dict, "a", "i", &num);
+  g_assert (ok);
+  g_assert_cmpint (num, ==, 5);
+
+  ok = g_variant_lookup (dict, "a", "&s", &str);
+  g_assert (!ok);
+
+  ok = g_variant_lookup (dict, "q", "&s", &str);
+  g_assert (!ok);
+
+  ok = g_variant_lookup (dict, "b", "i", &num);
+  g_assert (!ok);
+
+  ok = g_variant_lookup (dict, "b", "&s", &str);
+  g_assert (ok);
+  g_assert_cmpstr (str, ==, "c");
+
+  ok = g_variant_lookup (dict, "q", "&s", &str);
+  g_assert (!ok);
+
+  g_variant_unref (dict);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -3937,6 +4009,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
   g_test_add_func ("/gvariant/floating", test_floating);
   g_test_add_func ("/gvariant/bytestring", test_bytestring);
+  g_test_add_func ("/gvariant/lookup-value", test_lookup_value);
+  g_test_add_func ("/gvariant/lookup", test_lookup);
 
   return g_test_run ();
 }

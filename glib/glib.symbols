@@ -1880,6 +1880,8 @@ g_variant_get
 
 g_variant_builder_add
 g_variant_get_child
+g_variant_lookup_value
+g_variant_lookup
 g_variant_iter_next
 g_variant_iter_loop
 
