@@ -951,7 +951,7 @@ g_variant_lookup (GVariant    *dictionary,
 }
 
 /**
- * g_variant_lookup:
+ * g_variant_lookup_value:
  * @dictionary: a dictionary #GVariant
  * @key: the key to lookup in the dictionary
  * @expected_type: a #GVariantType, or %NULL
