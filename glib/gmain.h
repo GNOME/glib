@@ -53,6 +53,7 @@ typedef struct _GMainLoop               GMainLoop;
  * representing an event source.
  */
 typedef struct _GSource                 GSource;
+typedef struct _GSourcePrivate          GSourcePrivate;
 
 /**
  * GSourceCallbackFuncs:
@@ -157,7 +158,8 @@ struct _GSource
   GSource *next;
 
   char    *name;
-  gpointer reserved2;
+
+  GSourcePrivate *priv;
 };
 
 struct _GSourceCallbackFuncs
@@ -358,10 +360,15 @@ void g_source_set_callback_indirect (GSource              *source,
                                      gpointer              callback_data,
                                      GSourceCallbackFuncs *callback_funcs);
 
-void     g_source_add_poll         (GSource        *source,
-                                    GPollFD        *fd);
-void     g_source_remove_poll      (GSource        *source,
-                                    GPollFD        *fd);
+void     g_source_add_poll            (GSource        *source,
+				       GPollFD        *fd);
+void     g_source_remove_poll         (GSource        *source,
+				       GPollFD        *fd);
+
+void     g_source_add_child_source    (GSource        *source,
+				       GSource        *child_source);
+void     g_source_remove_child_source (GSource        *source,
+				       GSource        *child_source);
 
 #ifndef G_DISABLE_DEPRECATED
 void     g_source_get_current_time (GSource        *source,

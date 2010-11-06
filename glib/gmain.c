@@ -313,6 +313,12 @@ struct _GPollRec
   gint priority;
 };
 
+struct _GSourcePrivate
+{
+  GSList *child_sources;
+  GSource *parent_source;
+};
+
 #ifdef G_THREADS_ENABLED
 #define LOCK_CONTEXT(context) g_static_mutex_lock (&context->mutex)
 #define UNLOCK_CONTEXT(context) g_static_mutex_unlock (&context->mutex)
@@ -344,6 +350,9 @@ static void g_source_unref_internal             (GSource      *source,
 static void g_source_destroy_internal           (GSource      *source,
 						 GMainContext *context,
 						 gboolean      have_lock);
+static void g_source_set_priority_unlocked      (GSource      *source,
+						 GMainContext *context,
+						 gint          priority);
 static void g_main_context_poll                 (GMainContext *context,
 						 gint          timeout,
 						 gint          priority,
@@ -848,12 +857,21 @@ g_source_list_add (GSource      *source,
 {
   GSource *tmp_source, *last_source;
   
-  last_source = NULL;
-  tmp_source = context->source_list;
-  while (tmp_source && tmp_source->priority <= source->priority)
+  if (source->priv && source->priv->parent_source)
     {
-      last_source = tmp_source;
-      tmp_source = tmp_source->next;
+      /* Put the source immediately before its parent */
+      tmp_source = source->priv->parent_source;
+      last_source = source->priv->parent_source->prev;
+    }
+  else
+    {
+      last_source = NULL;
+      tmp_source = context->source_list;
+      while (tmp_source && tmp_source->priority <= source->priority)
+	{
+	  last_source = tmp_source;
+	  tmp_source = tmp_source->next;
+	}
     }
 
   source->next = tmp_source;
@@ -885,6 +903,39 @@ g_source_list_remove (GSource      *source,
   source->next = NULL;
 }
 
+static guint
+g_source_attach_unlocked (GSource      *source,
+			  GMainContext *context)
+{
+  guint result = 0;
+  GSList *tmp_list;
+
+  source->context = context;
+  result = source->source_id = context->next_id++;
+
+  source->ref_count++;
+  g_source_list_add (source, context);
+
+  tmp_list = source->poll_fds;
+  while (tmp_list)
+    {
+      g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
+      tmp_list = tmp_list->next;
+    }
+
+  if (source->priv)
+    {
+      tmp_list = source->priv->child_sources;
+      while (tmp_list)
+	{
+	  g_source_attach_unlocked (tmp_list->data, context);
+	  tmp_list = tmp_list->next;
+	}
+    }
+
+  return result;
+}
+
 /**
  * g_source_attach:
  * @source: a #GSource
@@ -901,7 +952,6 @@ g_source_attach (GSource      *source,
 		 GMainContext *context)
 {
   guint result = 0;
-  GSList *tmp_list;
 
   g_return_val_if_fail (source->context == NULL, 0);
   g_return_val_if_fail (!SOURCE_DESTROYED (source), 0);
@@ -911,18 +961,7 @@ g_source_attach (GSource      *source,
 
   LOCK_CONTEXT (context);
 
-  source->context = context;
-  result = source->source_id = context->next_id++;
-
-  source->ref_count++;
-  g_source_list_add (source, context);
-
-  tmp_list = source->poll_fds;
-  while (tmp_list)
-    {
-      g_main_context_add_poll_unlocked (context, source->priority, tmp_list->data);
-      tmp_list = tmp_list->next;
-    }
+  result = g_source_attach_unlocked (source, context);
 
 #ifdef G_THREADS_ENABLED
   /* Now wake up the main loop if it is waiting in the poll() */
@@ -971,6 +1010,24 @@ g_source_destroy_internal (GSource      *source,
 	      g_main_context_remove_poll_unlocked (context, tmp_list->data);
 	      tmp_list = tmp_list->next;
 	    }
+	}
+
+      if (source->priv && source->priv->child_sources)
+	{
+	  /* This is safe because even if a child_source finalizer or
+	   * closure notify tried to modify source->priv->child_sources
+	   * from outside the lock, it would fail since
+	   * SOURCE_DESTROYED(source) is now TRUE.
+	   */
+	  tmp_list = source->priv->child_sources;
+	  while (tmp_list)
+	    {
+	      g_source_destroy_internal (tmp_list->data, context, TRUE);
+	      g_source_unref_internal (tmp_list->data, context, TRUE);
+	      tmp_list = tmp_list->next;
+	    }
+	  g_slist_free (source->priv->child_sources);
+	  source->priv->child_sources = NULL;
 	}
 	  
       g_source_unref_internal (source, context, TRUE);
@@ -1119,6 +1176,94 @@ g_source_remove_poll (GSource *source,
 }
 
 /**
+ * g_source_add_child_source:
+ * @source:a #GSource
+ * @child_source: a second #GSource that @source should "poll"
+ *
+ * Adds @child_source to @source as a "polled" source; when @source is
+ * added to a #GMainContext, @child_source will be automatically added
+ * with the same priority, when @child_source is triggered, it will
+ * cause @source to dispatch (and won't call @child_source's own
+ * callback), and when @source is destroyed, it will destroy
+ * @child_source as well. (@source will also still be dispatched if
+ * its own prepare/check functions indicate that it is ready.)
+ *
+ * If you need @child_source to do anything on its own when it
+ * triggers, you can call g_source_set_dummy_callback() on it to set a
+ * callback that does nothing (except return %TRUE if appropriate).
+ *
+ * @source will hold a reference on @child_source while @child_source
+ * is attached to it.
+ **/
+void
+g_source_add_child_source (GSource *source,
+			   GSource *child_source)
+{
+  GMainContext *context;
+
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (child_source != NULL);
+  g_return_if_fail (!SOURCE_DESTROYED (source));
+  g_return_if_fail (!SOURCE_DESTROYED (child_source));
+  g_return_if_fail (child_source->context == NULL);
+  g_return_if_fail (child_source->priv == NULL || child_source->priv->parent_source == NULL);
+
+  context = source->context;
+
+  if (context)
+    LOCK_CONTEXT (context);
+
+  if (!source->priv)
+    source->priv = g_slice_new0 (GSourcePrivate);
+  if (!child_source->priv)
+    child_source->priv = g_slice_new0 (GSourcePrivate);
+
+  source->priv->child_sources = g_slist_prepend (source->priv->child_sources,
+						 g_source_ref (child_source));
+  child_source->priv->parent_source = source;
+  g_source_set_priority_unlocked (child_source, context, source->priority);
+
+  if (context)
+    {
+      UNLOCK_CONTEXT (context);
+      g_source_attach (child_source, context);
+    }
+}
+
+/**
+ * g_source_remove_child_source:
+ * @source:a #GSource
+ * @child_source: a #GSource previously passed to
+ *     g_source_add_child_source().
+ *
+ * Detaches @child_source from @source and destroys it.
+ **/
+void
+g_source_remove_child_source (GSource *source,
+			      GSource *child_source)
+{
+  GMainContext *context;
+
+  g_return_if_fail (source != NULL);
+  g_return_if_fail (child_source != NULL);
+  g_return_if_fail (child_source->priv != NULL && child_source->priv->parent_source == source);
+  g_return_if_fail (!SOURCE_DESTROYED (source));
+  g_return_if_fail (!SOURCE_DESTROYED (child_source));
+
+  context = source->context;
+
+  if (context)
+    LOCK_CONTEXT (context);
+
+  source->priv->child_sources = g_slist_remove (source->priv->child_sources, child_source);
+  g_source_destroy_internal (child_source, context, TRUE);
+  g_source_unref_internal (child_source, context, TRUE);
+
+  if (context)
+    UNLOCK_CONTEXT (context);
+}
+
+/**
  * g_source_set_callback_indirect:
  * @source: the source
  * @callback_data: pointer to callback data "object"
@@ -1263,35 +1408,19 @@ g_source_set_funcs (GSource     *source,
   source->source_funcs = funcs;
 }
 
-/**
- * g_source_set_priority:
- * @source: a #GSource
- * @priority: the new priority.
- * 
- * Sets the priority of a source. While the main loop is being
- * run, a source will be dispatched if it is ready to be dispatched and no sources 
- * at a higher (numerically smaller) priority are ready to be dispatched.
- **/
-void
-g_source_set_priority (GSource  *source,
-		       gint      priority)
+static void
+g_source_set_priority_unlocked (GSource      *source,
+				GMainContext *context,
+				gint          priority)
 {
   GSList *tmp_list;
-  GMainContext *context;
-  
-  g_return_if_fail (source != NULL);
-
-  context = source->context;
-
-  if (context)
-    LOCK_CONTEXT (context);
   
   source->priority = priority;
 
   if (context)
     {
       /* Remove the source from the context's source and then
-       * add it back so it is sorted in the correct plcae
+       * add it back so it is sorted in the correct place
        */
       g_source_list_remove (source, source->context);
       g_source_list_add (source, source->context);
@@ -1307,9 +1436,44 @@ g_source_set_priority (GSource  *source,
 	      tmp_list = tmp_list->next;
 	    }
 	}
-      
-      UNLOCK_CONTEXT (source->context);
     }
+
+  if (source->priv && source->priv->child_sources)
+    {
+      tmp_list = source->priv->child_sources;
+      while (tmp_list)
+	{
+	  g_source_set_priority_unlocked (tmp_list->data, context, priority);
+	  tmp_list = tmp_list->next;
+	}
+    }
+}
+
+/**
+ * g_source_set_priority:
+ * @source: a #GSource
+ * @priority: the new priority.
+ *
+ * Sets the priority of a source. While the main loop is being run, a
+ * source will be dispatched if it is ready to be dispatched and no
+ * sources at a higher (numerically smaller) priority are ready to be
+ * dispatched.
+ **/
+void
+g_source_set_priority (GSource  *source,
+		       gint      priority)
+{
+  GMainContext *context;
+
+  g_return_if_fail (source != NULL);
+
+  context = source->context;
+
+  if (context)
+    LOCK_CONTEXT (context);
+  g_source_set_priority_unlocked (source, context, priority);
+  if (context)
+    UNLOCK_CONTEXT (source->context);
 }
 
 /**
@@ -2596,7 +2760,15 @@ g_main_context_prepare (GMainContext *context,
 	  context->in_check_or_prepare--;
 
 	  if (result)
-	    source->flags |= G_SOURCE_READY;
+	    {
+	      GSource *ready_source = source;
+
+	      while (ready_source)
+		{
+		  ready_source->flags |= G_SOURCE_READY;
+		  ready_source = ready_source->priv ? ready_source->priv->parent_source : NULL;
+		}
+	    }
 	}
 
       if (source->flags & G_SOURCE_READY)
@@ -2788,7 +2960,15 @@ g_main_context_check (GMainContext *context,
 	  context->in_check_or_prepare--;
 	  
 	  if (result)
-	    source->flags |= G_SOURCE_READY;
+	    {
+	      GSource *ready_source = source;
+
+	      while (ready_source)
+		{
+		  ready_source->flags |= G_SOURCE_READY;
+		  ready_source = ready_source->priv ? ready_source->priv->parent_source : NULL;
+		}
+	    }
 	}
 
       if (source->flags & G_SOURCE_READY)
