@@ -1511,13 +1511,12 @@ g_source_unref_internal (GSource      *source,
       source->callback_data = NULL;
       source->callback_funcs = NULL;
 
-      if (context && !SOURCE_DESTROYED (source))
+      if (context)
 	{
-	  g_warning (G_STRLOC ": ref_count == 0, but source is still attached to a context!");
-	  source->ref_count++;
+	  if (!SOURCE_DESTROYED (source))
+	    g_warning (G_STRLOC ": ref_count == 0, but source was still attached to a context!");
+	  g_source_list_remove (source, context);
 	}
-      else if (context)
-	g_source_list_remove (source, context);
 
       if (source->source_funcs->finalize)
 	{
