@@ -2977,11 +2977,14 @@ args_to_rule (const gchar *sender,
               const gchar *interface_name,
               const gchar *member,
               const gchar *object_path,
-              const gchar *arg0)
+              const gchar *arg0,
+              gboolean     negate)
 {
   GString *rule;
 
   rule = g_string_new ("type='signal'");
+  if (negate)
+    g_string_prepend_c (rule, '-');
   if (sender != NULL)
     g_string_append_printf (rule, ",sender='%s'", sender);
   if (interface_name != NULL)
@@ -3010,6 +3013,9 @@ add_match_rule (GDBusConnection *connection,
   GError *error;
   GDBusMessage *message;
 
+  if (match_rule[0] == '-')
+    return;
+
   message = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
                                             "/org/freedesktop/DBus", /* path */
                                             "org.freedesktop.DBus", /* interface */
@@ -3037,6 +3043,9 @@ remove_match_rule (GDBusConnection *connection,
 {
   GError *error;
   GDBusMessage *message;
+
+  if (match_rule[0] == '-')
+    return;
 
   message = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
                                             "/org/freedesktop/DBus", /* path */
@@ -3141,7 +3150,16 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
   CONNECTION_LOCK (connection);
 
-  rule = args_to_rule (sender, interface_name, member, object_path, arg0);
+  /* If G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE was specified, we will end up
+   * with a '-' character to prefix the rule (which will otherwise be
+   * normal).
+   *
+   * This allows us to hash the rule and do our lifecycle tracking in
+   * the usual way, but the '-' prevents the match rule from ever
+   * actually being send to the bus (either for add or remove).
+   */
+  rule = args_to_rule (sender, interface_name, member, object_path, arg0,
+                       (flags & G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE) != 0);
 
   if (sender != NULL && (g_dbus_is_unique_name (sender) || g_strcmp0 (sender, "org.freedesktop.DBus") == 0))
     sender_unique_name = sender;
