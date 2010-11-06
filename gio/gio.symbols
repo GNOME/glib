@@ -193,6 +193,7 @@ g_cancellable_reset
 g_cancellable_cancel
 g_cancellable_connect
 g_cancellable_disconnect
+g_cancellable_source_new
 #endif
 #endif
 

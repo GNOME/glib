@@ -43,18 +43,14 @@ typedef struct
 {
   GSource source;
   GPollFD pollfd;
-  GCancellable *cancellable;
-  gulong cancelled_tag;
 } FDSource;
 
 static gboolean 
 fd_source_prepare (GSource *source,
 		   gint    *timeout)
 {
-  FDSource *fd_source = (FDSource *)source;
   *timeout = -1;
-  
-  return g_cancellable_is_cancelled (fd_source->cancellable);
+  return FALSE;
 }
 
 static gboolean 
@@ -62,9 +58,7 @@ fd_source_check (GSource *source)
 {
   FDSource *fd_source = (FDSource *)source;
 
-  return
-    g_cancellable_is_cancelled  (fd_source->cancellable) ||
-    fd_source->pollfd.revents != 0;
+  return fd_source->pollfd.revents != 0;
 }
 
 static gboolean
@@ -84,18 +78,6 @@ fd_source_dispatch (GSource     *source,
 static void 
 fd_source_finalize (GSource *source)
 {
-  FDSource *fd_source = (FDSource *)source;
-
-  /* we don't use g_cancellable_disconnect() here, since we are holding
-   * the main context lock here, and the ::disconnect signal handler
-   * will try to grab that, and deadlock looms.
-   */
-  if (fd_source->cancelled_tag)
-    g_signal_handler_disconnect (fd_source->cancellable,
-                                 fd_source->cancelled_tag);
-
-  if (fd_source->cancellable)
-    g_object_unref (fd_source->cancellable);
 }
 
 static gboolean
@@ -160,15 +142,6 @@ static GSourceFuncs fd_source_funcs = {
   (GSourceDummyMarshal)fd_source_closure_marshal,
 };
 
-/* Might be called on another thread */
-static void
-fd_source_cancelled_cb (GCancellable *cancellable,
-			gpointer      data)
-{
-  /* Wake up the mainloop in case we're waiting on async calls with FDSource */
-  g_main_context_wakeup (NULL);
-}
-
 GSource *
 _g_fd_source_new (int           fd,
 		  gushort       events,
@@ -180,18 +153,18 @@ _g_fd_source_new (int           fd,
   source = g_source_new (&fd_source_funcs, sizeof (FDSource));
   fd_source = (FDSource *)source;
 
-  if (cancellable)
-    fd_source->cancellable = g_object_ref (cancellable);
-  
   fd_source->pollfd.fd = fd;
   fd_source->pollfd.events = events;
   g_source_add_poll (source, &fd_source->pollfd);
 
   if (cancellable)
-    fd_source->cancelled_tag =
-      g_cancellable_connect (cancellable, 
-			     (GCallback)fd_source_cancelled_cb,
-			     NULL, NULL);
-  
+    {
+      GSource *cancellable_source = g_cancellable_source_new (cancellable);
+
+      g_source_set_dummy_callback (cancellable_source);
+      g_source_add_child_source (source, cancellable_source);
+      g_source_unref (cancellable_source);
+    }
+
   return source;
 }

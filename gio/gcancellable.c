@@ -32,6 +32,7 @@
 #include <io.h>
 #endif
 #include "gcancellable.h"
+#include "gio-marshal.h"
 #include "glibintl.h"
 
 
@@ -769,4 +770,119 @@ g_cancellable_disconnect (GCancellable  *cancellable,
 
   g_signal_handler_disconnect (cancellable, handler_id);
   G_UNLOCK (cancellable);
+}
+
+typedef struct {
+  GSource       source;
+
+  GCancellable *cancellable;
+  GPollFD       pollfd;
+} GCancellableSource;
+
+static gboolean
+cancellable_source_prepare (GSource *source,
+			    gint    *timeout)
+{
+  GCancellableSource *cancellable_source = (GCancellableSource *)source;
+
+  *timeout = -1;
+  return g_cancellable_is_cancelled (cancellable_source->cancellable);
+}
+
+static gboolean
+cancellable_source_check (GSource *source)
+{
+  GCancellableSource *cancellable_source = (GCancellableSource *)source;
+
+  return g_cancellable_is_cancelled (cancellable_source->cancellable);
+}
+
+static gboolean
+cancellable_source_dispatch (GSource     *source,
+			     GSourceFunc  callback,
+			     gpointer     user_data)
+{
+  GCancellableSourceFunc func = (GCancellableSourceFunc)callback;
+  GCancellableSource *cancellable_source = (GCancellableSource *)source;
+
+  return (*func) (cancellable_source->cancellable, user_data);
+}
+
+static void
+cancellable_source_finalize (GSource *source)
+{
+  GCancellableSource *cancellable_source = (GCancellableSource *)source;
+
+  if (cancellable_source->cancellable)
+    g_object_unref (cancellable_source->cancellable);
+}
+
+static gboolean
+cancellable_source_closure_callback (GCancellable *cancellable,
+				     gpointer      data)
+{
+  GClosure *closure = data;
+
+  GValue params = { 0, };
+  GValue result_value = { 0, };
+  gboolean result;
+
+  g_value_init (&result_value, G_TYPE_BOOLEAN);
+
+  g_value_init (&params, G_TYPE_CANCELLABLE);
+  g_value_set_object (&params, cancellable);
+
+  g_closure_invoke (closure, &result_value, 1, &params, NULL);
+
+  result = g_value_get_boolean (&result_value);
+  g_value_unset (&result_value);
+  g_value_unset (&params);
+
+  return result;
+}
+
+static GSourceFuncs cancellable_source_funcs =
+{
+  cancellable_source_prepare,
+  cancellable_source_check,
+  cancellable_source_dispatch,
+  cancellable_source_finalize,
+  (GSourceFunc)cancellable_source_closure_callback,
+  (GSourceDummyMarshal)_gio_marshal_BOOLEAN__VOID,
+};
+
+/**
+ * g_cancellable_source_new:
+ * @cancellable: a #GCancellable, or %NULL
+ *
+ * Creates a source that triggers if @cancellable is cancelled and
+ * calls its callback of type #GCancellableSourceFunc. This is
+ * primarily useful for attaching to another (non-cancellable) source
+ * with g_source_add_child_source() to add cancellability to it.
+ *
+ * For convenience, you can call this with a %NULL #GCancellable,
+ * in which case the source will never trigger.
+ *
+ * Return value: the new #GSource.
+ *
+ * Since: 2.28
+ */
+GSource *
+g_cancellable_source_new (GCancellable *cancellable)
+{
+  GSource *source;
+  GCancellableSource *cancellable_source;
+
+  source = g_source_new (&cancellable_source_funcs, sizeof (GCancellableSource));
+  g_source_set_name (source, "GCancellable");
+  cancellable_source = (GCancellableSource *)source;
+
+  if (g_cancellable_make_pollfd (cancellable,
+                                 &cancellable_source->pollfd))
+    {
+      cancellable_source->cancellable = g_object_ref (cancellable);
+      g_source_add_poll (source, &cancellable_source->pollfd);
+    }
+
+  return source;
 }

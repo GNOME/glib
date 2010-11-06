@@ -376,6 +376,21 @@ typedef struct _GDBusPropertyInfo             GDBusPropertyInfo;
 typedef struct _GDBusInterfaceInfo            GDBusInterfaceInfo;
 typedef struct _GDBusNodeInfo                 GDBusNodeInfo;
 
+/**
+ * GCancellableSourceFunc:
+ * @cancellable: the #GCancellable
+ * @user_data: data passed in by the user.
+ *
+ * This is the function type of the callback used for the #GSource
+ * returned by g_cancellable_source_new().
+ *
+ * Returns: it should return %FALSE if the source should be removed.
+ *
+ * Since: 2.28
+ */
+typedef gboolean (*GCancellableSourceFunc) (GCancellable *cancellable,
+					    gpointer      user_data);
+
 G_END_DECLS
 
 #endif /* __GIO_TYPES_H__ */
