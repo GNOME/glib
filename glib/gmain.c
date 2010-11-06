@@ -1520,7 +1520,13 @@ g_source_unref_internal (GSource      *source,
 	g_source_list_remove (source, context);
 
       if (source->source_funcs->finalize)
-	source->source_funcs->finalize (source);
+	{
+	  if (context)
+	    UNLOCK_CONTEXT (context);
+	  source->source_funcs->finalize (source);
+	  if (context)
+	    LOCK_CONTEXT (context);
+	}
 
       g_free (source->name);
       source->name = NULL;
