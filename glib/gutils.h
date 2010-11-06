@@ -153,6 +153,8 @@ _g_win32_get_system_data_dirs (void)
 
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_config_dirs (void);
 
+const gchar * g_get_user_runtime_dir (void);
+
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_language_names (void);
 
 /**

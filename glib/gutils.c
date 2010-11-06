@@ -2290,6 +2290,55 @@ g_get_user_cache_dir (void)
   return cache_dir;
 }
 
+/**
+ * g_get_user_runtime_dir:
+ *
+ * Returns a directory that is unique to the current user on the local
+ * system.
+ *
+ * On UNIX platforms this is determined using the mechanisms described in
+ * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
+ * XDG Base Directory Specification</ulink>.  This is the directory
+ * specified in the XDG_RUNTIME_DIR environment variable.  In the case
+ * that this variable is not set, glib will issue a warning message to
+ * stderr and return the value of g_get_user_cache_dir().
+ *
+ * On Windows this is the folder to use for local (as opposed to
+ * roaming) application data. See documentation for
+ * CSIDL_LOCAL_APPDATA.  Note that on Windows it thus is the same as
+ * what g_get_user_config_dir() returns.
+ *
+ * Returns: a string owned by GLib that must not be modified or freed.
+ **/
+const gchar *
+g_get_user_runtime_dir (void)
+{
+#ifndef G_OS_WIN32
+  static const gchar *runtime_dir;
+  static gsize initialised;
+
+  if (g_once_init_enter (&initialised))
+    {
+      runtime_dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
+      
+      if (runtime_dir == NULL)
+        g_warning ("XDG_RUNTIME_DIR variable not set.  "
+                   "Falling back to XDG cache dir.");
+
+      g_once_init_leave (&initialised, 1);
+    }
+
+  if (runtime_dir)
+    return runtime_dir;
+
+  /* Both fallback for UNIX and the default
+   * in Windows: use the user cache directory.
+   */
+#endif
+
+  return g_get_user_cache_dir ();
+}
+
 #ifdef HAVE_CARBON
 
 static gchar *
