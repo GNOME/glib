@@ -1490,7 +1490,7 @@ g_settings_set_value (GSettings   *settings,
 
   if (!g_settings_key_info_range_check (&info, value))
     {
-      g_warning ("gsettings_set_value: value for key '%s' in schema '%s' "
+      g_warning ("g_settings_set_value: value for key '%s' in schema '%s' "
                  "is outside of valid range",
                  key,
                  settings->priv->schema_name);
