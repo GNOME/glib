@@ -17,6 +17,10 @@ file
 filter-cat
 filter-streams
 gapplication
+gapplication-example-open
+gapplication-example-cmdline
+gapplication-example-cmdline2
+gapplication-example-actions
 gdbus-addresses
 gdbus-bz627724
 gdbus-connection
