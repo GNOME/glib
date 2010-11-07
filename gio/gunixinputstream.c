@@ -422,9 +422,9 @@ typedef struct {
 } ReadAsyncData;
 
 static gboolean
-read_async_cb (ReadAsyncData *data,
+read_async_cb (int            fd,
                GIOCondition   condition,
-               int            fd)
+               ReadAsyncData *data)
 {
   GSimpleAsyncResult *simple;
   GError *error = NULL;

@@ -27,9 +27,9 @@
 
 G_BEGIN_DECLS
 
-typedef gboolean (*GFDSourceFunc) (gpointer     user_data,
+typedef gboolean (*GFDSourceFunc) (int          fd,
 				   GIOCondition condition,
-				   int          fd);
+				   gpointer     user_data);
 
 GSource *_g_fd_source_new      (int              fd,
 				gushort          events,

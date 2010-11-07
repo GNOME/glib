@@ -409,9 +409,9 @@ typedef struct {
 } WriteAsyncData;
 
 static gboolean
-write_async_cb (WriteAsyncData *data,
+write_async_cb (int             fd,
 		GIOCondition    condition,
-		int             fd)
+		WriteAsyncData *data)
 {
   GSimpleAsyncResult *simple;
   GError *error = NULL;

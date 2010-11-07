@@ -78,7 +78,7 @@ fd_source_dispatch (GSource     *source,
 
   g_warn_if_fail (func != NULL);
 
-  return (*func) (user_data, fd_source->pollfd.revents, fd_source->pollfd.fd);
+  return (*func) (fd_source->pollfd.fd, fd_source->pollfd.revents, user_data);
 }
 
 static void 
@@ -98,11 +98,66 @@ fd_source_finalize (GSource *source)
     g_object_unref (fd_source->cancellable);
 }
 
+static gboolean
+fd_source_closure_callback (int           fd,
+			    GIOCondition  condition,
+			    gpointer      data)
+{
+  GClosure *closure = data;
+
+  GValue params[2] = { { 0, }, { 0, } };
+  GValue result_value = { 0, };
+  gboolean result;
+
+  g_value_init (&result_value, G_TYPE_BOOLEAN);
+
+  g_value_init (&params[0], G_TYPE_INT);
+  g_value_set_int (&params[0], fd);
+
+  g_value_init (&params[1], G_TYPE_IO_CONDITION);
+  g_value_set_flags (&params[1], condition);
+
+  g_closure_invoke (closure, &result_value, 2, params, NULL);
+
+  result = g_value_get_boolean (&result_value);
+  g_value_unset (&result_value);
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+
+  return result;
+}
+
+static void
+fd_source_closure_marshal (GClosure     *closure,
+			   GValue       *return_value,
+			   guint         n_param_values,
+			   const GValue *param_values,
+			   gpointer      invocation_hint,
+			   gpointer      marshal_data)
+{
+  GFDSourceFunc callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gboolean v_return;
+
+  g_return_if_fail (return_value != NULL);
+  g_return_if_fail (n_param_values == 0);
+
+  callback = (GFDSourceFunc) (marshal_data ? marshal_data : cc->callback);
+
+  v_return = callback (g_value_get_int (param_values),
+                       g_value_get_flags (param_values + 1),
+		       closure->data);
+
+  g_value_set_boolean (return_value, v_return);
+}
+
 static GSourceFuncs fd_source_funcs = {
   fd_source_prepare,
   fd_source_check,
   fd_source_dispatch,
-  fd_source_finalize
+  fd_source_finalize,
+  (GSourceFunc)fd_source_closure_callback,
+  (GSourceDummyMarshal)fd_source_closure_marshal,
 };
 
 /* Might be called on another thread */
