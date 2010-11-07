@@ -828,6 +828,7 @@ g_closure_set_marshal
 g_closure_add_marshal_guards
 g_closure_set_meta_marshal
 g_source_set_closure
+g_source_set_dummy_callback
 G_TYPE_IO_CHANNEL
 G_TYPE_IO_CONDITION
 

@@ -27,8 +27,10 @@
 
 G_BEGIN_DECLS
 
-void g_source_set_closure (GSource  *source,
-			   GClosure *closure);
+void g_source_set_closure        (GSource  *source,
+				  GClosure *closure);
+
+void g_source_set_dummy_callback (GSource  *source);
 
 GType g_io_channel_get_type   (void);
 GType g_io_condition_get_type (void);
