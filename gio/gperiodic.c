@@ -95,7 +95,15 @@
  * Since: 2.28
  **/
 
-typedef GObjectClass GPeriodicClass;
+typedef struct _GPeriodicClass GPeriodicClass;
+struct _GPeriodicClass
+{
+  GObjectClass parent_class;
+  
+  void (*tick)   (GPeriodic *periodic,
+                  gint64     timestamp);
+  void (*repair) (GPeriodic *periodic);
+};
 
 typedef struct
 {
@@ -104,13 +112,6 @@ typedef struct
   GDestroyNotify    notify;
   guint             id;
 } GPeriodicTick;
-
-typedef struct
-{
-  GPeriodicRepairFunc callback;
-  gpointer            user_data;
-  GDestroyNotify      notify;
-} GPeriodicRepair;
 
 typedef struct
 {
@@ -130,7 +131,8 @@ struct _GPeriodic
   gint     low_priority;
 
   GSList  *ticks;             /* List<GPeriodicTick> */
-  GSList  *repairs;           /* List<GPeriodicRepair> */
+
+  guint    damaged   : 1;
 
   /* debug */
   guint    in_tick   : 1;
@@ -173,6 +175,26 @@ g_periodic_stop_skip (gpointer data)
 }
 
 static void
+g_periodic_real_tick (GPeriodic *periodic,
+                      gint64     timestamp)
+{
+  GSList *iter;
+
+  for (iter = periodic->ticks; iter; iter = iter->next)
+    {
+      GPeriodicTick *tick = iter->data;
+
+      tick->callback (periodic, timestamp, tick->user_data);
+    }
+}
+
+static void
+g_periodic_real_repair (GPeriodic *periodic)
+{
+  periodic->damaged = FALSE;
+}
+
+static void
 g_periodic_run (GPeriodic *periodic)
 {
   gint64 start, usec;
@@ -184,42 +206,23 @@ g_periodic_run (GPeriodic *periodic)
   if (periodic->ticks)
     {
       guint64 microseconds;
-      GSList *iter;
-
-      microseconds = periodic->last_run / periodic->hz;
 
       periodic->in_tick = TRUE;
-      for (iter = periodic->ticks; iter; iter = iter->next)
-        {
-          GPeriodicTick *tick = iter->data;
-
-          tick->callback (periodic, microseconds, tick->user_data);
-        }
+      microseconds = periodic->last_run / periodic->hz;
       g_signal_emit (periodic, g_periodic_tick, 0, microseconds);
       periodic->in_tick = FALSE;
     }
 
   g_assert (periodic->blocked == 0);
 
-  if (periodic->repairs)
+  if (periodic->damaged)
     {
       periodic->in_repair = TRUE;
-      while (periodic->repairs)
-        {
-          GPeriodicRepair *repair = periodic->repairs->data;
-
-          repair->callback (periodic, repair->user_data);
-
-          periodic->repairs = g_slist_remove (periodic->repairs, repair);
-
-          if (repair->notify)
-            repair->notify (repair->user_data);
-
-          g_slice_free (GPeriodicRepair, repair);
-        }
       g_signal_emit (periodic, g_periodic_repair, 0);
       periodic->in_repair = FALSE;
     }
+
+  g_assert (!periodic->damaged);
 
   usec = g_get_monotonic_time () - start;
   g_assert (usec >= 0);
@@ -265,7 +268,7 @@ g_periodic_prepare (GSource *source,
 {
   GPeriodic *periodic = PERIODIC_FROM_SOURCE (source);
 
-  if ((periodic->ticks || periodic->repairs) && !periodic->blocked)
+  if ((periodic->ticks || periodic->damaged) && !periodic->blocked)
     /* We need to run. */
     {
       gint64 remaining;
@@ -307,7 +310,7 @@ g_periodic_check (GSource *source)
 {
   GPeriodic *periodic = PERIODIC_FROM_SOURCE (source);
 
-  if ((periodic->ticks || periodic->repairs) && !periodic->blocked)
+  if ((periodic->ticks || periodic->damaged) && !periodic->blocked)
     /* We need to run. */
     {
       guint64 now = g_periodic_get_microticks (periodic);
@@ -435,34 +438,41 @@ g_periodic_init (GPeriodic *periodic)
 }
 
 static void
-g_periodic_class_init (GObjectClass *class)
+g_periodic_class_init (GPeriodicClass *class)
 {
-  class->get_property = g_periodic_get_property;
-  class->set_property = g_periodic_set_property;
-  class->finalize = g_periodic_finalize;
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  class->tick = g_periodic_real_tick;
+  class->repair = g_periodic_real_repair;
+
+  object_class->get_property = g_periodic_get_property;
+  object_class->set_property = g_periodic_set_property;
+  object_class->finalize = g_periodic_finalize;
 
   g_periodic_tick = g_signal_new ("tick", G_TYPE_PERIODIC,
-                                  G_SIGNAL_RUN_LAST, 0, NULL, NULL,
-                                  _gio_marshal_VOID__UINT64,
-                                  G_TYPE_NONE, 1, G_TYPE_UINT64);
+                                  G_SIGNAL_RUN_LAST,
+                                  G_STRUCT_OFFSET(GPeriodicClass, tick),
+                                  NULL, NULL, _gio_marshal_VOID__INT64,
+                                  G_TYPE_NONE, 1, G_TYPE_INT64);
   g_periodic_repair = g_signal_new ("repair", G_TYPE_PERIODIC,
-                                    G_SIGNAL_RUN_LAST, 0, NULL, NULL,
-                                    g_cclosure_marshal_VOID__VOID,
+                                    G_SIGNAL_RUN_LAST,
+                                    G_STRUCT_OFFSET (GPeriodicClass, repair),
+                                    NULL, NULL, g_cclosure_marshal_VOID__VOID,
                                     G_TYPE_NONE, 0);
 
-  g_object_class_install_property (class, PROP_HZ,
+  g_object_class_install_property (object_class, PROP_HZ,
     g_param_spec_uint ("hz", "ticks per second",
                        "rate (in Hz) at which the 'tick' signal is emitted",
                        1, 120, 1, G_PARAM_READWRITE |
                        G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
-  g_object_class_install_property (class, PROP_HIGH_PRIORITY,
+  g_object_class_install_property (object_class, PROP_HIGH_PRIORITY,
     g_param_spec_int ("high-priority", "high priority level",
                       "the GSource priority level to run at",
                       G_MININT, G_MAXINT, 0, G_PARAM_READWRITE |
                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
 
-  g_object_class_install_property (class, PROP_LOW_PRIORITY,
+  g_object_class_install_property (object_class, PROP_LOW_PRIORITY,
     g_param_spec_int ("low-priority", "low priority level",
                       "ignore tasks below this priority level",
                       G_MININT, G_MAXINT, 0, G_PARAM_READWRITE |
@@ -635,45 +645,21 @@ g_periodic_remove (GPeriodic *periodic,
 /**
  * g_periodic_damaged:
  * @periodic: a #GPeriodic clock
- * @callback: a #GPeriodicRepairFunc
- * @user_data: data for @callback
- * @notify: for freeing @user_data when it is no longer needed
  *
- * Report damage and schedule @callback to be called during the next
- * repair phase.  Multiple registrations result in multiple invocations,
- * so you should track for yourself if you are already registered.
+ * Report damage and schedule the "repair" signal to be emitted during
+ * the next repair phase.
  *
  * You may not call this function during the repair phase.
  *
  * Since: 2.28
  **/
-/**
- * GPeriodicRepairFunc:
- * @periodic: the #GPeriodic clock that the damage was reported to
- * @user_data: the user data given to g_periodic_damaged()
- *
- * The signature of the callback function that is called during the
- * repair phase when damaged was reported using g_periodic_damaged().
- *
- * Since: 2.28
- **/
 void
-g_periodic_damaged (GPeriodic           *periodic,
-                    GPeriodicRepairFunc  callback,
-                    gpointer             user_data,
-                    GDestroyNotify       notify)
+g_periodic_damaged (GPeriodic *periodic)
 {
-  GPeriodicRepair *repair;
-
   g_return_if_fail (G_IS_PERIODIC (periodic));
   g_return_if_fail (!periodic->in_repair);
 
-  repair = g_slice_new (GPeriodicRepair);
-  repair->callback = callback;
-  repair->user_data = user_data;
-  repair->notify = notify;
-
-  periodic->repairs = g_slist_prepend (periodic->repairs, repair);
+  periodic->damaged = TRUE;
 }
 
 /**

@@ -38,9 +38,7 @@ G_BEGIN_DECLS
 typedef struct _GPeriodic                                   GPeriodic;
 
 typedef void         (* GPeriodicTickFunc)                              (GPeriodic           *periodic,
-                                                                         guint64              timestamp,
-                                                                         gpointer             user_data);
-typedef void         (* GPeriodicRepairFunc)                            (GPeriodic           *periodic,
+                                                                         gint64               timestamp,
                                                                          gpointer             user_data);
 
 GType                   g_periodic_get_type                             (void);
@@ -62,10 +60,7 @@ void                    g_periodic_block                                (GPeriod
 void                    g_periodic_unblock                              (GPeriodic           *periodic,
                                                                          gint64               unblock_time);
 
-void                    g_periodic_damaged                              (GPeriodic           *periodic,
-                                                                         GPeriodicRepairFunc  callback,
-                                                                         gpointer             user_data,
-                                                                         GDestroyNotify       notify);
+void                    g_periodic_damaged                              (GPeriodic           *periodic);
 
 G_END_DECLS
 

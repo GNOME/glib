@@ -2922,7 +2922,6 @@ g_periodic_remove
 g_periodic_block
 g_periodic_unblock
 <SUBSECTION>
-GPeriodicRepairFunc
 g_periodic_damaged
 <SUBSECTION Standard>
 G_TYPE_PERIODIC
