@@ -257,6 +257,7 @@ GParameter
 g_object_ref
 g_object_unref
 g_object_ref_sink
+g_clear_object
 GInitiallyUnowned
 GInitiallyUnownedClass
 G_TYPE_INITIALLY_UNOWNED

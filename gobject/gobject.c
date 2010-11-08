@@ -2729,6 +2729,44 @@ g_object_unref (gpointer _object)
 }
 
 /**
+ * g_clear_object:
+ * @object_ptr: a pointer to a #GObject reference
+ *
+ * Clears a reference to a #GObject.
+ *
+ * @object_ptr must not be %NULL.
+ *
+ * If the reference is %NULL then this function does nothing.
+ * Otherwise, the reference count of the object is decreased and the
+ * pointer is set to %NULL.
+ *
+ * This function is threadsafe and modifies the pointer atomically,
+ * using memory barriers where needed.
+ *
+ * A macro is also included that allows this function to be used without
+ * pointer casts.
+ *
+ * Since: 2.28
+ **/
+#undef g_clear_object
+void
+g_clear_object (volatile GObject **object_ptr)
+{
+  gpointer *ptr = (gpointer) object_ptr;
+  gpointer old;
+
+  /* This is a little frustrating.
+   * Would be nice to have an atomic exchange (with no compare).
+   */
+  do
+    old = g_atomic_pointer_get (ptr);
+  while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (ptr, old, NULL));
+
+  if (old)
+    g_object_unref (old);
+}
+
+/**
  * g_object_get_qdata:
  * @object: The GObject to get a stored user data pointer from
  * @quark: A #GQuark, naming the user data pointer

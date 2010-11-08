@@ -562,6 +562,21 @@ G_STMT_START { \
 #define G_OBJECT_WARN_INVALID_PROPERTY_ID(object, property_id, pspec) \
     G_OBJECT_WARN_INVALID_PSPEC ((object), "property", (property_id), (pspec))
 
+void    g_clear_object (volatile GObject **object_ptr);
+#define g_clear_object(object_ptr) \
+  G_STMT_START {                                                             \
+    /* Only one access, please */                                            \
+    gpointer *_p = (gpointer) (object_ptr);                                  \
+    gpointer _o;                                                             \
+                                                                             \
+    do                                                                       \
+      _o = g_atomic_pointer_get (_p);                                        \
+    while G_UNLIKELY (!g_atomic_pointer_compare_and_exchange (_p, _o, NULL));\
+                                                                             \
+    if (_o)                                                                  \
+      g_object_unref (_o);                                                   \
+  } G_STMT_END
+
 G_END_DECLS
 
 #endif /* __G_OBJECT_H__ */
