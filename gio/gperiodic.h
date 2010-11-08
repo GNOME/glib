@@ -35,7 +35,28 @@ G_BEGIN_DECLS
                                                              G_TYPE_PERIODIC, GPeriodic))
 #define G_IS_PERIODIC(inst)                                 (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_PERIODIC))
 
+typedef struct _GPeriodicPrivate                            GPeriodicPrivate;
+typedef struct _GPeriodicClass                              GPeriodicClass;
 typedef struct _GPeriodic                                   GPeriodic;
+
+struct _GPeriodicClass
+{
+  GObjectClass parent_class;
+
+  void (*tick)   (GPeriodic *periodic,
+                  gint64     timestamp);
+  void (*repair) (GPeriodic *periodic);
+
+  /*< private >*/
+  gpointer padding[14];
+};
+
+struct _GPeriodic
+{
+  GObject parent_instance;
+  /*< private >*/
+  GPeriodicPrivate *priv;
+};
 
 typedef void         (* GPeriodicTickFunc)                              (GPeriodic           *periodic,
                                                                          gint64               timestamp,

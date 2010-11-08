@@ -95,16 +95,6 @@
  * Since: 2.28
  **/
 
-typedef struct _GPeriodicClass GPeriodicClass;
-struct _GPeriodicClass
-{
-  GObjectClass parent_class;
-  
-  void (*tick)   (GPeriodic *periodic,
-                  gint64     timestamp);
-  void (*repair) (GPeriodic *periodic);
-};
-
 typedef struct
 {
   GPeriodicTickFunc callback;
@@ -119,9 +109,8 @@ typedef struct
   GPeriodic *periodic;
 } GPeriodicSource;
 
-struct _GPeriodic
+struct _GPeriodicPrivate
 {
-  GObject  parent_instance;
   GSource *source;            /* GPeriodicSource */
   guint64  last_run;
   guint    blocked;
@@ -157,7 +146,7 @@ static guint g_periodic_repair;
 static guint64
 g_periodic_get_microticks (GPeriodic *periodic)
 {
-  return g_source_get_time (periodic->source) * periodic->hz;
+  return g_source_get_time (periodic->priv->source) * periodic->priv->hz;
 }
 
 static gboolean
@@ -165,11 +154,11 @@ g_periodic_stop_skip (gpointer data)
 {
   GPeriodic *periodic = data;
 
-  periodic->skip_frames = 0;
+  periodic->priv->skip_frames = 0;
 
   g_message ("Skipping frames ends");
 
-  periodic->stop_skip_id = 0;
+  periodic->priv->stop_skip_id = 0;
 
   return FALSE;
 }
@@ -180,7 +169,7 @@ g_periodic_real_tick (GPeriodic *periodic,
 {
   GSList *iter;
 
-  for (iter = periodic->ticks; iter; iter = iter->next)
+  for (iter = periodic->priv->ticks; iter; iter = iter->next)
     {
       GPeriodicTick *tick = iter->data;
 
@@ -191,7 +180,7 @@ g_periodic_real_tick (GPeriodic *periodic,
 static void
 g_periodic_real_repair (GPeriodic *periodic)
 {
-  periodic->damaged = FALSE;
+  periodic->priv->damaged = FALSE;
 }
 
 static void
@@ -199,30 +188,30 @@ g_periodic_run (GPeriodic *periodic)
 {
   gint64 start, usec;
 
-  g_assert (periodic->blocked == 0);
+  g_assert (periodic->priv->blocked == 0);
 
   start = g_get_monotonic_time ();
 
-  if (periodic->ticks)
+  if (periodic->priv->ticks)
     {
       guint64 microseconds;
 
-      periodic->in_tick = TRUE;
-      microseconds = periodic->last_run / periodic->hz;
+      periodic->priv->in_tick = TRUE;
+      microseconds = periodic->priv->last_run / periodic->priv->hz;
       g_signal_emit (periodic, g_periodic_tick, 0, microseconds);
-      periodic->in_tick = FALSE;
+      periodic->priv->in_tick = FALSE;
     }
 
-  g_assert (periodic->blocked == 0);
+  g_assert (periodic->priv->blocked == 0);
 
-  if (periodic->damaged)
+  if (periodic->priv->damaged)
     {
-      periodic->in_repair = TRUE;
+      periodic->priv->in_repair = TRUE;
       g_signal_emit (periodic, g_periodic_repair, 0);
-      periodic->in_repair = FALSE;
+      periodic->priv->in_repair = FALSE;
     }
 
-  g_assert (!periodic->damaged);
+  g_assert (!periodic->priv->damaged);
 
   usec = g_get_monotonic_time () - start;
   g_assert (usec >= 0);
@@ -248,17 +237,18 @@ g_periodic_run (GPeriodic *periodic)
    *
    *   100-150ms to render: 2 frames skipped, etc.
    */
-  periodic->skip_frames = 2 * usec * periodic->hz / 1000000;
+  periodic->priv->skip_frames = 2 * usec * periodic->priv->hz / 1000000;
 
-  if (periodic->skip_frames)
+  if (periodic->priv->skip_frames)
     {
       g_message ("Slow painting; (possibly) skipping %d frames\n",
-                 periodic->skip_frames);
+                 periodic->priv->skip_frames);
 
-      if (periodic->stop_skip_id == 0)
-        periodic->stop_skip_id = g_idle_add_full (periodic->low_priority,
-                                                  g_periodic_stop_skip,
-                                                  periodic, NULL);
+      if (periodic->priv->stop_skip_id == 0)
+        periodic->priv->stop_skip_id =
+          g_idle_add_full (periodic->priv->low_priority,
+                           g_periodic_stop_skip,
+                           periodic, NULL);
     }
 }
 
@@ -268,12 +258,12 @@ g_periodic_prepare (GSource *source,
 {
   GPeriodic *periodic = PERIODIC_FROM_SOURCE (source);
 
-  if ((periodic->ticks || periodic->damaged) && !periodic->blocked)
+  if ((periodic->priv->ticks || periodic->priv->damaged) && !periodic->priv->blocked)
     /* We need to run. */
     {
       gint64 remaining;
      
-      remaining = periodic->last_run + 1000000 * (1 + periodic->skip_frames) -
+      remaining = periodic->priv->last_run + 1000000 * (1 + periodic->priv->skip_frames) -
                   g_periodic_get_microticks (periodic);
 
       if (remaining > 0)
@@ -285,7 +275,7 @@ g_periodic_prepare (GSource *source,
            * that not enough time has passed and want to sleep again, so
            * save ourselves the future bother.
            */
-          *timeout = (remaining + periodic->hz - 1) / periodic->hz / 1000;
+          *timeout = (remaining + periodic->priv->hz - 1) / periodic->priv->hz / 1000;
 
           return FALSE;
         }
@@ -310,13 +300,13 @@ g_periodic_check (GSource *source)
 {
   GPeriodic *periodic = PERIODIC_FROM_SOURCE (source);
 
-  if ((periodic->ticks || periodic->damaged) && !periodic->blocked)
+  if ((periodic->priv->ticks || periodic->priv->damaged) && !periodic->priv->blocked)
     /* We need to run. */
     {
       guint64 now = g_periodic_get_microticks (periodic);
 
       /* Run if it's not too soon. */
-      return !(now < periodic->last_run + 1000000 * (periodic->skip_frames + 1));
+      return !(now < periodic->priv->last_run + 1000000 * (periodic->priv->skip_frames + 1));
     }
 
   else
@@ -333,7 +323,7 @@ g_periodic_dispatch (GSource     *source,
   guint64 elapsed_ticks;
   guint64 now;
 
-  g_assert (periodic->blocked == 0);
+  g_assert (periodic->priv->blocked == 0);
 
   /* Update the last_run.
    *
@@ -350,13 +340,13 @@ g_periodic_dispatch (GSource     *source,
    *   - resets our stride if we missed a frame
    */
   now = g_periodic_get_microticks (periodic);
-  elapsed_ticks = (now - periodic->last_run) / 1000000;
+  elapsed_ticks = (now - periodic->priv->last_run) / 1000000;
   g_assert (elapsed_ticks > 0);
 
   if G_LIKELY (elapsed_ticks == 1)
-    periodic->last_run += 1000000;
+    periodic->priv->last_run += 1000000;
   else
-    periodic->last_run = now;
+    periodic->priv->last_run = now;
 
   g_periodic_run (periodic);
 
@@ -372,15 +362,15 @@ g_periodic_get_property (GObject *object, guint prop_id,
   switch (prop_id)
     {
     case PROP_HIGH_PRIORITY:
-      g_value_set_int (value, g_source_get_priority (periodic->source));
+      g_value_set_int (value, g_source_get_priority (periodic->priv->source));
       break;
 
     case PROP_LOW_PRIORITY:
-      g_value_set_int (value, periodic->low_priority);
+      g_value_set_int (value, periodic->priv->low_priority);
       break;
 
     case PROP_HZ:
-      g_value_set_uint (value, periodic->hz);
+      g_value_set_uint (value, periodic->priv->hz);
       break;
 
     default:
@@ -397,15 +387,15 @@ g_periodic_set_property (GObject *object, guint prop_id,
   switch (prop_id)
     {
     case PROP_HIGH_PRIORITY:
-      g_source_set_priority (periodic->source, g_value_get_int (value));
+      g_source_set_priority (periodic->priv->source, g_value_get_int (value));
       break;
 
     case PROP_LOW_PRIORITY:
-      periodic->low_priority = g_value_get_int (value);
+      periodic->priv->low_priority = g_value_get_int (value);
       break;
 
     case PROP_HZ:
-      periodic->hz = g_value_get_uint (value);
+      periodic->priv->hz = g_value_get_uint (value);
       break;
 
     default:
@@ -418,8 +408,8 @@ g_periodic_finalize (GObject *object)
 {
   GPeriodic *periodic = G_PERIODIC (object);
 
-  g_source_destroy (periodic->source);
-  g_source_unref (periodic->source);
+  g_source_destroy (periodic->priv->source);
+  g_source_unref (periodic->priv->source);
 
   G_OBJECT_CLASS (g_periodic_parent_class)
     ->finalize (object);
@@ -432,9 +422,15 @@ g_periodic_init (GPeriodic *periodic)
     g_periodic_prepare, g_periodic_check, g_periodic_dispatch
   };
 
-  periodic->source = g_source_new (&source_funcs, sizeof (GPeriodicSource));
-  ((GPeriodicSource *) periodic->source)->periodic = periodic;
-  g_source_attach (periodic->source, g_main_context_get_thread_default ());
+  periodic->priv = G_TYPE_INSTANCE_GET_PRIVATE (periodic,
+                                                G_TYPE_PERIODIC,
+                                                GPeriodicPrivate);
+
+  periodic->priv->source = g_source_new (&source_funcs,
+                                         sizeof (GPeriodicSource));
+  ((GPeriodicSource *) periodic->priv->source)->periodic = periodic;
+  g_source_attach (periodic->priv->source,
+                   g_main_context_get_thread_default ());
 }
 
 static void
@@ -477,6 +473,8 @@ g_periodic_class_init (GPeriodicClass *class)
                       "ignore tasks below this priority level",
                       G_MININT, G_MAXINT, 0, G_PARAM_READWRITE |
                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_STATIC_STRINGS));
+
+  g_type_class_add_private (class, sizeof (GPeriodicPrivate));
 }
 
 /**
@@ -500,9 +498,9 @@ void
 g_periodic_block (GPeriodic *periodic)
 {
   g_return_if_fail (G_IS_PERIODIC (periodic));
-  g_return_if_fail (periodic->in_repair);
+  g_return_if_fail (periodic->priv->in_repair);
 
-  periodic->blocked++;
+  periodic->priv->blocked++;
 }
 
 /**
@@ -529,13 +527,13 @@ g_periodic_unblock (GPeriodic       *periodic,
                     gint64           unblock_time)
 {
   g_return_if_fail (G_IS_PERIODIC (periodic));
-  g_return_if_fail (!periodic->in_repair);
-  g_return_if_fail (!periodic->in_tick);
-  g_return_if_fail (periodic->blocked);
+  g_return_if_fail (!periodic->priv->in_repair);
+  g_return_if_fail (!periodic->priv->in_tick);
+  g_return_if_fail (periodic->priv->blocked);
 
-  if (--periodic->blocked)
+  if (--periodic->priv->blocked)
     {
-      periodic->last_run = unblock_time * periodic->hz;
+      periodic->priv->last_run = unblock_time * periodic->priv->hz;
       g_periodic_run (periodic);
     }
 }
@@ -585,7 +583,7 @@ g_periodic_add (GPeriodic         *periodic,
   static guint id;
 
   g_return_val_if_fail (G_IS_PERIODIC (periodic), 0);
-  g_return_val_if_fail (!periodic->in_repair, 0);
+  g_return_val_if_fail (!periodic->priv->in_repair, 0);
 
   tick = g_slice_new (GPeriodicTick);
   tick->callback = callback;
@@ -593,7 +591,7 @@ g_periodic_add (GPeriodic         *periodic,
   tick->notify = notify;
   tick->id = ++id;
 
-  periodic->ticks = g_slist_prepend (periodic->ticks, tick);
+  periodic->priv->ticks = g_slist_prepend (periodic->priv->ticks, tick);
 
   return tick->id;
 }
@@ -620,9 +618,9 @@ g_periodic_remove (GPeriodic *periodic,
   GSList **iter;
 
   g_return_if_fail (G_IS_PERIODIC (periodic));
-  g_return_if_fail (!periodic->in_repair);
+  g_return_if_fail (!periodic->priv->in_repair);
 
-  for (iter = &periodic->ticks; *iter; iter = &(*iter)->next)
+  for (iter = &periodic->priv->ticks; *iter; iter = &(*iter)->next)
     {
       GPeriodicTick *tick = (*iter)->data;
 
@@ -657,9 +655,9 @@ void
 g_periodic_damaged (GPeriodic *periodic)
 {
   g_return_if_fail (G_IS_PERIODIC (periodic));
-  g_return_if_fail (!periodic->in_repair);
+  g_return_if_fail (!periodic->priv->in_repair);
 
-  periodic->damaged = TRUE;
+  periodic->priv->damaged = TRUE;
 }
 
 /**
@@ -675,7 +673,7 @@ g_periodic_damaged (GPeriodic *periodic)
 guint
 g_periodic_get_hz (GPeriodic *periodic)
 {
-  return periodic->hz;
+  return periodic->priv->hz;
 }
 
 /**
@@ -691,7 +689,7 @@ g_periodic_get_hz (GPeriodic *periodic)
 gint
 g_periodic_get_high_priority (GPeriodic *periodic)
 {
-  return g_source_get_priority (periodic->source);
+  return g_source_get_priority (periodic->priv->source);
 }
 
 /**
@@ -709,7 +707,7 @@ g_periodic_get_high_priority (GPeriodic *periodic)
 gint
 g_periodic_get_low_priority (GPeriodic *periodic)
 {
-  return periodic->low_priority;
+  return periodic->priv->low_priority;
 }
 
 /**
