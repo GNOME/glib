@@ -42,16 +42,16 @@
 #include <unistd.h>
 #endif
 
-#ifdef G_OS_WIN32
-#include <io.h> /* For _read() */
-#endif
-
 #include "gscanner.h"
 
 #include "gprintfint.h"
 #include "gstrfuncs.h"
 #include "gstring.h"
 #include "gtestutils.h"
+
+#ifdef G_OS_WIN32
+#include <io.h> /* For _read() */
+#endif
 
 /* --- defines --- */
 #define	to_lower(c)				( \
