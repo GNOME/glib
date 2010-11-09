@@ -1,3 +1,52 @@
+Overview of Changes from GLib 2.27.2 to 2.27.3
+==============================================
+
+* The GTimeSpec type that was introduced in the 2.27.2 has been
+  dropped again in favour of APIs that return microseconds as
+  64-bit integer.
+  Affected functions:
+  g_source_get_time
+  g_periodic_unblock
+  g_get_monotonic_time
+  g_get_real_time
+  The similar GTimeVal struct is still around, but its use is
+  discouraged.
+
+* GTimer is now using monotonic time unconditionally
+
+* There are some new functions to facilitate error reporting
+  in async GIO APIs:
+  g_simple_async_result_take_error
+  g_simple_async_result_new_take_error
+  g_simple_async_report_take_gerror_in_idle
+
+* There is new convenience API to us GVariant dictionaries:
+  g_variant_lookup
+
+* It is now possible to delay sending match rules to the
+  D-Bus daemon in GDBus:
+  G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE
+
+* Support has been added for XDG_RUNTIME_DIR:
+  g_get_user_runtime_dir
+
+* Various fixes for Win64/MSVC builds have been committed
+
+* Bugs fixed:
+ 620263 Add g_clear_object, g_clear_pointer, g_clear_boxed
+ 633075 update Project Files and sources for MSVC 2008/C89
+ 633381 gsettings Makefile rules should handle empty list...
+ 633685 Use g_simple_async_result_{new_,}take_error
+ 633686 Add g_simple_async_report_take_gerror_in_idle
+
+* Translation updates:
+  Belarusian
+  Galician
+  Hebrew
+  Punjabi
+  Spanish
+
+
 Overview of Changes from GLib 2.27.1 to 2.27.2
 ==============================================
 
