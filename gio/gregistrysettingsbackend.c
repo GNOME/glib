@@ -569,6 +569,7 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
   RegistryCacheItem *item;
   gchar *component = key_name,
         *c         = strchr (component, '/');
+  GNode *child;
 
   if (c != NULL)
     *c = 0;
@@ -581,7 +582,7 @@ registry_cache_get_node_for_key_recursive (GNode    *node,
   if (item->subscription_count > 0)
     n_parent_watches ++;  
 
-  GNode *child = registry_cache_find_immediate_child (node, component);
+  child = registry_cache_find_immediate_child (node, component);
   if (child == NULL && create_if_not_found)
     {
       item = g_slice_new (RegistryCacheItem);
@@ -904,6 +905,8 @@ g_registry_backend_write_one (const char *key_name,
   GNode    *node;
   gboolean  changed;
 
+  const gchar *type_string = g_variant_get_type_string (variant);
+
   action = user_data;
   self = G_REGISTRY_BACKEND (action->self);
   hroot = action->hroot;
@@ -911,7 +914,6 @@ g_registry_backend_write_one (const char *key_name,
   value.type = REG_NONE;
   value.ptr = NULL;
 
-  const gchar *type_string = g_variant_get_type_string (variant);
   switch (type_string[0])
     {
       case 'b': case 'y': case 'n': case 'q': case 'i': case 'u':
@@ -984,7 +986,7 @@ g_registry_backend_write_one (const char *key_name,
 
   result = RegSetValueExA (hpath, value_name, 0, value.type, value_data, value_data_size);
   if (result != ERROR_SUCCESS)
-      g_message_win32_error (result, "gregistrybackend: setting value %s\%s\\%s failed.\n",
+      g_message_win32_error (result, "gregistrybackend: setting value %s\\%s\\%s failed.\n",
                              self->base_path, path_name, value_name);
 
   /* If the write fails then it will seem like the value has changed until the
@@ -1011,6 +1013,7 @@ g_registry_backend_write (GSettingsBackend *backend,
   GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
   LONG result;
   HKEY hroot;
+  RegistryWrite action;
 
   result = RegCreateKeyExA (HKEY_CURRENT_USER, self->base_path, 0, NULL, 0,
                             KEY_WRITE, NULL, &hroot, NULL);
@@ -1019,7 +1022,8 @@ g_registry_backend_write (GSettingsBackend *backend,
     return FALSE;
   }
 
-  RegistryWrite action = { self, hroot };
+  action.self = self;
+  action.hroot = hroot;
   g_registry_backend_write_one (key_name, value, &action);
   g_settings_backend_changed (backend, key_name, origin_tag);
 
@@ -1036,6 +1040,7 @@ g_registry_backend_write_tree (GSettingsBackend *backend,
   GRegistryBackend *self = G_REGISTRY_BACKEND (backend);
   LONG result;
   HKEY hroot;
+  RegistryWrite action;
 
   result = RegCreateKeyExA (HKEY_CURRENT_USER, self->base_path, 0, NULL, 0,
                             KEY_WRITE, NULL, &hroot, NULL);
@@ -1044,7 +1049,8 @@ g_registry_backend_write_tree (GSettingsBackend *backend,
     return FALSE;
   }
 
-  RegistryWrite action = { self, hroot };
+  action.self =  self;
+  action.hroot = hroot;
   g_tree_foreach (values, (GTraverseFunc)g_registry_backend_write_one,
                   &action);
 
@@ -1144,11 +1150,11 @@ registry_cache_destroy_tree (GNode            *node,
 
   if (item->subscription_count > 0)
     {
+	  gint i;
       /* There must be some watches active if this node is a watch point */
       g_warn_if_fail (self->cache_nodes->len > 1);
 
       /* This is a watch point that has been deleted. Let's free the watch! */
-      gint i;
       for (i=1; i<self->cache_nodes->len; i++)
         if (g_ptr_array_index (self->cache_nodes, i) == node)
           break;
@@ -1953,9 +1959,10 @@ g_registry_backend_class_init (GRegistryBackendClass *class)
 static void
 g_registry_backend_init (GRegistryBackend *self)
 {
+  RegistryCacheItem *item;
   self->base_path = g_strdup_printf ("Software\\GSettings");
 
-  RegistryCacheItem *item = g_slice_new (RegistryCacheItem);
+  item = g_slice_new (RegistryCacheItem);
   item->value.type = REG_NONE;
   item->value.ptr = NULL;
   item->name = g_strdup ("<root>");
