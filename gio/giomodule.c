@@ -36,13 +36,16 @@
 #include "gsocks4aproxy.h"
 #include "gsocks5proxy.h"
 #include "gvfs.h"
-#ifdef G_OS_UNIX
-#include "gdesktopappinfo.h"
-#endif
 #ifdef G_OS_WIN32
 #include "gregistrysettingsbackend.h"
 #endif
 #include <glib/gstdio.h>
+
+#undef G_DISABLE_DEPRECATED
+
+#ifdef G_OS_UNIX
+#include "gdesktopappinfo.h"
+#endif
 
 /**
  * SECTION:giomodule
@@ -522,6 +525,13 @@ _g_io_modules_ensure_extension_points_registered (void)
   if (!registered_extensions)
     {
       registered_extensions = TRUE;
+      
+#ifdef G_OS_UNIX
+#if !GLIB_CHECK_VERSION (3, 0, 0)
+      ep = g_io_extension_point_register (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_DESKTOP_APP_INFO_LOOKUP);
+#endif
+#endif
       
       ep = g_io_extension_point_register (G_LOCAL_DIRECTORY_MONITOR_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_LOCAL_DIRECTORY_MONITOR);

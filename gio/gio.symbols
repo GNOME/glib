@@ -131,6 +131,8 @@ g_desktop_app_info_get_filename
 g_desktop_app_info_get_type G_GNUC_CONST
 g_desktop_app_info_get_is_hidden
 g_desktop_app_info_set_desktop_env
+g_desktop_app_info_lookup_get_type G_GNUC_CONST
+g_desktop_app_info_lookup_get_default_for_uri_scheme
 #endif
 #endif
 #endif

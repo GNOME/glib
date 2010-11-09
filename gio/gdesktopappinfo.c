@@ -32,6 +32,8 @@
 #include <crt_externs.h>
 #endif
 
+#undef G_DISABLE_DEPRECATED
+
 #include "gcontenttypeprivate.h"
 #include "gdesktopappinfo.h"
 #include "gfile.h"
@@ -2638,3 +2640,43 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type,
   return desktop_entries;
 }
 
+/* GDesktopAppInfoLookup interface: */
+
+typedef GDesktopAppInfoLookupIface GDesktopAppInfoLookupInterface;
+G_DEFINE_INTERFACE (GDesktopAppInfoLookup, g_desktop_app_info_lookup, G_TYPE_OBJECT)
+
+static void
+g_desktop_app_info_lookup_default_init (GDesktopAppInfoLookupInterface *iface)
+{
+}
+
+/**
+ * g_desktop_app_info_lookup_get_default_for_uri_scheme:
+ * @lookup: a #GDesktopAppInfoLookup
+ * @uri_scheme: a string containing a URI scheme.
+ *
+ * Gets the default application for launching applications 
+ * using this URI scheme for a particular GDesktopAppInfoLookup
+ * implementation.
+ *
+ * The GDesktopAppInfoLookup interface and this function is used
+ * to implement g_app_info_get_default_for_uri_scheme() backends
+ * in a GIO module. There is no reason for applications to use it
+ * directly. Applications should use g_app_info_get_default_for_uri_scheme().
+ * 
+ * Returns: (transfer full): #GAppInfo for given @uri_scheme or %NULL on error.
+ *
+ * Deprecated: The #GDesktopAppInfoLookup interface is deprecated and unused by gio.
+ */
+GAppInfo *
+g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
+						      const char            *uri_scheme)
+{
+  GDesktopAppInfoLookupIface *iface;
+  
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO_LOOKUP (lookup), NULL);
+
+  iface = G_DESKTOP_APP_INFO_LOOKUP_GET_IFACE (lookup);
+
+  return (* iface->get_default_for_uri_scheme) (lookup, uri_scheme);
+}
