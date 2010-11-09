@@ -52,6 +52,38 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug_ExtPCRE|Win32"
+			InheritedPropertySheets=".\glib.vsprops"
+			ConfigurationType="2"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GLIB_COMPILATION;DLL_EXPORT;G_LOG_DOMAIN=\&quot;Glib\&quot;;G_ENABLE_DEBUG"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="4"
+				CompileAs="1"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="ws2_32.lib pcred.lib"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(IntDir)\glib.def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
+				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Debug|x64"
 			InheritedPropertySheets=".\glib.vsprops"
 			ConfigurationType="2"
@@ -84,6 +116,38 @@
 			/>
 		</Configuration>
 		<Configuration
+			Name="Debug_ExtPCRE|x64"
+			InheritedPropertySheets=".\glib.vsprops"
+			ConfigurationType="2"
+			CharacterSet="2"
+			>
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;GLIB_COMPILATION;DLL_EXPORT;G_LOG_DOMAIN=\&quot;Glib\&quot;;G_ENABLE_DEBUG"
+				MinimalRebuild="true"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CompileAs="1"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="ws2_32.lib pcred.lib"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
+				LinkIncremental="2"
+				ModuleDefinitionFile="$(IntDir)\glib.def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
+				TargetMachine="17"
+			/>
+		</Configuration>
+		<Configuration
 			Name="Release|Win32"
 			InheritedPropertySheets=".\glib.vsprops"
 			ConfigurationType="2"
@@ -102,6 +166,38 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="ws2_32.lib"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(IntDir)\glib.def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
+				TargetMachine="1"
+			/>
+		</Configuration>
+		<Configuration
+			Name="Release_ExtPCRE|Win32"
+			InheritedPropertySheets=".\glib.vsprops"
+			ConfigurationType="2"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCCLCompilerTool"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GLIB_COMPILATION;DLL_EXPORT;G_LOG_DOMAIN=\&quot;Glib\&quot;"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CompileAs="1"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="ws2_32.lib pcre.lib"
 				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="$(IntDir)\glib.def"
@@ -147,6 +243,38 @@
 				TargetMachine="17"
 			/>
 		</Configuration>
+		<Configuration
+			Name="Release_ExtPCRE|x64"
+			InheritedPropertySheets=".\glib.vsprops"
+			ConfigurationType="2"
+			CharacterSet="2"
+			WholeProgramOptimization="1"
+			>
+			<Tool
+				Name="VCCLCompilerTool"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;GLIB_COMPILATION;DLL_EXPORT;G_LOG_DOMAIN=\&quot;Glib\&quot;"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				DebugInformationFormat="3"
+				CompileAs="1"
+			/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="ws2_32.lib pcre.lib"
+				OutputFile="$(OutDir)\$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll"
+				LinkIncremental="1"
+				ModuleDefinitionFile="$(IntDir)\glib.def"
+				GenerateDebugInformation="true"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				RandomizedBaseAddress="1"
+				DataExecutionPrevention="0"
+				ImportLibrary="$(TargetDir)$(ProjectName)-2.0.lib"
+				TargetMachine="17"
+			/>
+		</Configuration>
 	</Configurations>
 	<References>
 	</References>
@@ -176,7 +304,23 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
+						Name="Debug_ExtPCRE|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="LIBDIR=&quot;/irrelevant/lib&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Debug|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="LIBDIR=&quot;/irrelevant/lib&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Debug_ExtPCRE|x64"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -192,7 +336,23 @@
 						/>
 					</FileConfiguration>
 					<FileConfiguration
+						Name="Release_ExtPCRE|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="LIBDIR=&quot;/irrelevant/lib&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
 						Name="Release|x64"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							PreprocessorDefinitions="LIBDIR=&quot;/irrelevant/lib&quot;"
+						/>
+					</FileConfiguration>
+					<FileConfiguration
+						Name="Release_ExtPCRE|x64"
 						>
 						<Tool
 							Name="VCCLCompilerTool"
@@ -213,26 +373,96 @@
 			<Filter
 				Name="pcre"
 				>
-				<File RelativePath="..\..\..\glib\pcre\pcre_chartables.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_compile.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_config.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_dfa_exec.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_exec.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_fullinfo.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_get.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_globals.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_info.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_maketables.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_newline.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_ord2utf8.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_refcount.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_study.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_tables.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_try_flipped.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_ucp_searchfuncs.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_valid_utf8.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_version.c" />
-				<File RelativePath="..\..\..\glib\pcre\pcre_xclass.c" />
+				<File RelativePath="..\..\..\glib\pcre\pcre_chartables.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_compile.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_config.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_dfa_exec.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_exec.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_fullinfo.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_get.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_globals.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_newline.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_ord2utf8.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_study.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_tables.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_try_flipped.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_ucp_searchfuncs.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
+				<File RelativePath="..\..\..\glib\pcre\pcre_xclass.c" >
+					<FileConfiguration Name="Debug_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|Win32" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Debug_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+					<FileConfiguration Name="Release_ExtPCRE|x64" ExcludedFromBuild="true" ><Tool Name="VCCLCompilerTool" /></FileConfiguration>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -264,12 +494,32 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Debug|x64"
+					Name="Debug_ExtPCRE|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating glib.def"
 						CommandLine="$(GlibGenerateGlibDef)"
+						Outputs="$(IntDir)\glib.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib.def"
+						CommandLine="$(GlibGenerateGlibDefW64)"
+						Outputs="$(IntDir)\glib.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug_ExtPCRE|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib.def"
+						CommandLine="$(GlibGenerateGlibDefW64)"
 						Outputs="$(IntDir)\glib.def"
 					/>
 				</FileConfiguration>
@@ -284,12 +534,32 @@
 					/>
 				</FileConfiguration>
 				<FileConfiguration
-					Name="Release|x64"
+					Name="Release_ExtPCRE|Win32"
 					>
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating glib.def"
 						CommandLine="$(GlibGenerateGlibDef)"
+						Outputs="$(IntDir)\glib.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib.def"
+						CommandLine="$(GlibGenerateGlibDefW64)"
+						Outputs="$(IntDir)\glib.def"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release_ExtPCRE|x64"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Generating glib.def"
+						CommandLine="$(GlibGenerateGlibDefW64)"
 						Outputs="$(IntDir)\glib.def"
 					/>
 				</FileConfiguration>
