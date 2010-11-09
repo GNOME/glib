@@ -18,7 +18,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
-#include "girepository-private.h"
+#include "girffi.h"
 #include "girnode.h"
 #include <string.h>
 
@@ -296,7 +296,7 @@ get_type_size_alignment (GIrTypelibBuild   *build,
 	}
       else
 	{
-	  type_ffi = _gi_type_tag_get_ffi_type (type->tag, type->is_pointer);
+	  type_ffi = gi_type_tag_get_ffi_type (type->tag, type->is_pointer);
 
 	  if (type_ffi == &ffi_type_void)
 	    {

@@ -108,8 +108,6 @@ GIVFuncInfo * _g_base_info_find_vfunc (GIRealInfo   *rinfo,
 				       gint          n_vfuncs,
 				       const gchar  *name);
 
-ffi_type *    _gi_type_tag_get_ffi_type (GITypeTag type_tag, gboolean is_pointer);
-
 extern ffi_status ffi_prep_closure_loc (ffi_closure *,
                                         ffi_cif *,
                                         void (*fun)(ffi_cif *, void *, void **, void *),

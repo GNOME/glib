@@ -30,9 +30,16 @@
 #include "girepository.h"
 #include "girepository-private.h"
 
+/**
+ * gi_type_tag_get_ffi_type:
+ * @tag: A #GITypeTag
+ * @is_pointer: Whether or not this is a pointer type
+ *
+ * Returns: A #ffi_type corresponding to the platform default C ABI for @tag and @is_pointer.
+ */
 ffi_type *
-_gi_type_tag_get_ffi_type (GITypeTag   tag,
-			   gboolean    is_pointer)
+gi_type_tag_get_ffi_type (GITypeTag   tag,
+			  gboolean    is_pointer)
 {
   switch (tag)
     {
@@ -96,7 +103,7 @@ _gi_type_tag_get_ffi_type (GITypeTag   tag,
 ffi_type *
 g_type_info_get_ffi_type (GITypeInfo *info)
 {
-  return _gi_type_tag_get_ffi_type (g_type_info_get_tag (info), g_type_info_is_pointer (info));
+  return gi_type_tag_get_ffi_type (g_type_info_get_tag (info), g_type_info_is_pointer (info));
 }
 
 /**
