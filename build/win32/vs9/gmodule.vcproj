@@ -191,7 +191,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gmodule.def"
-						CommandLine="$(GlibGenerateGmoduleDef)"
+						CommandLine="$(GlibGenerateGmoduleDefW64)"
 						Outputs="$(IntDir)/gmodule.def"
 					/>
 				</FileConfiguration>
@@ -211,7 +211,7 @@
 					<Tool
 						Name="VCCustomBuildTool"
 						Description="Generating gmodule.def"
-						CommandLine="$(GlibGenerateGmoduleDef)"
+						CommandLine="$(GlibGenerateGmoduleDefW64)"
 						Outputs="$(IntDir)/gmodule.def"
 					/>
 				</FileConfiguration>
