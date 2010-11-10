@@ -95,7 +95,7 @@ g_emblemed_icon_init (GEmblemedIcon *emblemed)
 /**
  * g_emblemed_icon_new:
  * @icon: a #GIcon
- * @emblem: a #GEmblem
+ * @emblem: (allow-none): a #GEmblem, or %NULL
  *
  * Creates a new emblemed icon for @icon with the emblem @emblem.
  *
@@ -111,12 +111,12 @@ g_emblemed_icon_new (GIcon   *icon,
   
   g_return_val_if_fail (G_IS_ICON (icon), NULL);
   g_return_val_if_fail (!G_IS_EMBLEM (icon), NULL);
-  g_return_val_if_fail (G_IS_EMBLEM (emblem), NULL);
 
   emblemed = G_EMBLEMED_ICON (g_object_new (G_TYPE_EMBLEMED_ICON, NULL));
   emblemed->icon = g_object_ref (icon);
-  
-  g_emblemed_icon_add_emblem (emblemed, emblem);
+
+  if (emblem != NULL)
+    g_emblemed_icon_add_emblem (emblemed, emblem);
 
   return G_ICON (emblemed);
 }
