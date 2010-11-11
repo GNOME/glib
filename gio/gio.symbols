@@ -1801,3 +1801,4 @@ g_task_return_error_if_cancelled
 g_task_return_int
 g_task_return_new_error
 g_task_return_pointer
+g_networking_init

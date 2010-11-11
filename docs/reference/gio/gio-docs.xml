@@ -122,6 +122,7 @@
       <xi:include href="xml/gunixcredentialsmessage.xml"/>
       <xi:include href="xml/gproxy.xml"/>
       <xi:include href="xml/gproxyaddress.xml"/>
+      <xi:include href="xml/gnetworking.xml"/>
     </chapter>
     <chapter id="highlevel-socket">
       <title>High-level network functionallity</title>

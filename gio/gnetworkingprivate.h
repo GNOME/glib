@@ -21,60 +21,7 @@
 #ifndef __G_NETWORKINGPRIVATE_H__
 #define __G_NETWORKINGPRIVATE_H__
 
-#ifdef G_OS_WIN32
-
-#include <winsock2.h>
-#undef interface
-#include <ws2tcpip.h>
-#include <windns.h>
-#include <mswsock.h>
-
-#ifdef HAVE_WSPIAPI_H
-/* <wspiapi.h> in the Windows SDK and in mingw-w64 has wrappers for
- * inline workarounds for getaddrinfo, getnameinfo and freeaddrinfo if
- * they aren't present at run-time (on Windows 2000).
- */
-#include <wspiapi.h>
-#endif
-
-#else /* !G_OS_WIN32 */
-
-#include <sys/types.h>
-
-#include <netdb.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <resolv.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <arpa/inet.h>
-#include <arpa/nameser.h>
-#if defined(HAVE_ARPA_NAMESER_COMPAT_H) && !defined(GETSHORT)
-#include <arpa/nameser_compat.h>
-#endif
-#include <net/if.h>
-
-#ifndef T_SRV
-#define T_SRV 33
-#endif
-
-#ifndef _PATH_RESCONF
-#define _PATH_RESCONF "/etc/resolv.conf"
-#endif
-
-#ifndef CMSG_LEN
-/* CMSG_LEN and CMSG_SPACE are defined by RFC 2292, but missing on
- * some older platforms.
- */
-#define CMSG_LEN(len) ((size_t)CMSG_DATA((struct cmsghdr *)NULL) + (len))
-
-/* CMSG_SPACE must add at least as much padding as CMSG_NXTHDR()
- * adds. We overestimate here.
- */
-#define ALIGN_TO_SIZEOF(len, obj) (((len) + sizeof (obj) - 1) & ~(sizeof (obj) - 1))
-#define CMSG_SPACE(len) ALIGN_TO_SIZEOF (CMSG_LEN (len), struct cmsghdr)
-#endif
-#endif
+#include "gnetworking.h"
 
 G_BEGIN_DECLS
 

@@ -35,7 +35,7 @@
 /* for g_unlink() */
 #include <glib/gstdio.h>
 
-#include <gio/gnetworkingprivate.h>
+#include <gio/gnetworking.h>
 #include <gio/gunixsocketaddress.h>
 #include <gio/gunixfdlist.h>
 

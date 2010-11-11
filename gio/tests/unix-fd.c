@@ -1,7 +1,7 @@
 #include <gio/gio.h>
+#include <gio/gnetworking.h>
 #include <gio/gunixfdmessage.h>
 #include <gio/gunixsocketaddress.h>
-#include <sys/socket.h>
 #include <string.h>
 #include <unistd.h>
 

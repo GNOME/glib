@@ -22,11 +22,10 @@
 
 #ifdef G_OS_UNIX
 #include <errno.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <stdlib.h>
+#include <gio/gnetworking.h>
 #include <gio/gunixconnection.h>
 #endif
 

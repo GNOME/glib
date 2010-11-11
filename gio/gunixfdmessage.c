@@ -36,8 +36,6 @@
 
 #include "config.h"
 
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <unistd.h>
 #include <string.h>
 #include <fcntl.h>
@@ -45,6 +43,7 @@
 
 #include "gunixfdmessage.h"
 #include "gunixfdlist.h"
+#include "gnetworking.h"
 #include "gioerror.h"
 
 

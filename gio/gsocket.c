@@ -59,7 +59,7 @@
 #include "gioerror.h"
 #include "gioenums.h"
 #include "gioerror.h"
-#include "gnetworkingprivate.h"
+#include "gnetworking.h"
 #include "gsocketaddress.h"
 #include "gsocketcontrolmessage.h"
 #include "gcredentials.h"
@@ -69,7 +69,7 @@
  * SECTION:gsocket
  * @short_description: Low-level socket object
  * @include: gio/gio.h
- * @see_also: #GInitable
+ * @see_also: #GInitable, <link linkend="gio-gnetworking.h">gnetworking.h</link>
  *
  * A #GSocket is a low-level networking primitive. It is a more or less
  * direct mapping of the BSD socket API in a portable GObject based API.
@@ -127,6 +127,7 @@ static gboolean g_socket_initable_init       (GInitable       *initable,
 					      GError         **error);
 
 G_DEFINE_TYPE_WITH_CODE (GSocket, g_socket, G_TYPE_OBJECT,
+			 g_networking_init ();
 			 G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
 						g_socket_initable_iface_init));
 
@@ -780,9 +781,6 @@ static void
 g_socket_class_init (GSocketClass *klass)
 {
   GObjectClass *gobject_class G_GNUC_UNUSED = G_OBJECT_CLASS (klass);
-
-  /* Make sure winsock has been initialized */
-  g_type_ensure (G_TYPE_INET_ADDRESS);
 
 #ifdef SIGPIPE
   /* There is no portable, thread-safe way to avoid having the process

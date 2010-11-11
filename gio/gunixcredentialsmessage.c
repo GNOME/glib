@@ -37,19 +37,8 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 #ifdef __linux__
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <unistd.h>
-#include <fcntl.h>
 #define G_UNIX_CREDENTIALS_MESSAGE_SUPPORTED 1
-
 #elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/un.h>
-#include <unistd.h>
-#include <fcntl.h>
 #define G_UNIX_CREDENTIALS_MESSAGE_SUPPORTED 1
 #else
 /* TODO: please add support for your UNIX flavor */
@@ -58,11 +47,14 @@
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-#include <string.h>
+#include <fcntl.h>
 #include <errno.h>
+#include <string.h>
+#include <unistd.h>
 
 #include "gunixcredentialsmessage.h"
 #include "gcredentials.h"
+#include "gnetworking.h"
 
 #include "glibintl.h"
 

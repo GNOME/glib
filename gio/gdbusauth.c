@@ -39,8 +39,7 @@
 #include "gdataoutputstream.h"
 
 #ifdef G_OS_UNIX
-#include <sys/types.h>
-#include <sys/socket.h>
+#include "gnetworking.h"
 #include "gunixconnection.h"
 #include "gunixcredentialsmessage.h"
 #endif

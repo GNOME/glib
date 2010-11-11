@@ -27,7 +27,7 @@
 
 #include "gunixsocketaddress.h"
 #include "glibintl.h"
-#include "gnetworkingprivate.h"
+#include "gnetworking.h"
 
 
 /**

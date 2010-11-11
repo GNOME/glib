@@ -56,21 +56,8 @@
  * An IPv4 or IPv6 internet address.
  */
 
-/* Networking initialization function, called from inside the g_once of
- * g_inet_address_get_type()
- */
-static void
-_g_networking_init (void)
-{
-#ifdef G_OS_WIN32
-  WSADATA wsadata;
-  if (WSAStartup (MAKEWORD (2, 0), &wsadata) != 0)
-    g_error ("Windows Sockets could not be initialized");
-#endif
-}
-
 G_DEFINE_TYPE_WITH_CODE (GInetAddress, g_inet_address, G_TYPE_OBJECT,
-			 _g_networking_init ();)
+			 g_networking_init ();)
 
 struct _GInetAddressPrivate
 {
@@ -411,8 +398,11 @@ g_inet_address_new_from_string (const gchar *string)
   struct in6_addr in6_addr;
 #endif
 
-  /* Make sure _g_networking_init() has been called */
-  g_type_ensure (G_TYPE_INET_ADDRESS);
+  /* If this GInetAddress is the first networking-related object to be
+   * created, then we won't have called g_networking_init() yet at
+   * this point.
+   */
+  g_networking_init ();
 
 #ifdef G_OS_WIN32
   memset (&sa, 0, sizeof (sa));

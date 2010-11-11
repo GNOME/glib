@@ -39,16 +39,12 @@
 
 #include <gio/gsocketcontrolmessage.h>
 #include <gio/gunixfdmessage.h>
+#include <gio/gnetworking.h>
 #include <gio/gsocket.h>
-#include <unistd.h>
 
-#ifdef __linux__
-/* for getsockopt() and setsockopt() */
-#include <sys/types.h>          /* See NOTES */
-#include <sys/socket.h>
 #include <errno.h>
 #include <string.h>
-#endif
+#include <unistd.h>
 
 
 G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,

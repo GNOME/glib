@@ -22,22 +22,13 @@
 
 #include "config.h"
 
-#if defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <string.h>
-#endif
-#ifdef __OpenBSD__
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <string.h>
-#endif
 #include <stdlib.h>
+#include <string.h>
 
 #include <gobject/gvaluecollector.h>
 
 #include "gcredentials.h"
-#include "gnetworkingprivate.h"
+#include "gnetworking.h"
 #include "gioerror.h"
 
 #include "glibintl.h"

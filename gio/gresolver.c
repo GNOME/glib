@@ -76,7 +76,8 @@ struct _GResolverPrivate {
  * The object that handles DNS resolution. Use g_resolver_get_default()
  * to get the default resolver.
  */
-G_DEFINE_TYPE (GResolver, g_resolver, G_TYPE_OBJECT)
+G_DEFINE_TYPE_WITH_CODE (GResolver, g_resolver, G_TYPE_OBJECT,
+			 g_networking_init ();)
 
 static GList *
 srv_records_to_targets (GList *records)
@@ -152,9 +153,6 @@ g_resolver_class_init (GResolverClass *resolver_class)
   resolver_class->lookup_service_finish = g_resolver_real_lookup_service_finish;
 
   g_type_class_add_private (resolver_class, sizeof (GResolverPrivate));
-
-  /* Make sure _g_networking_init() has been called */
-  g_type_ensure (G_TYPE_INET_ADDRESS);
 
   /**
    * GResolver::reload:

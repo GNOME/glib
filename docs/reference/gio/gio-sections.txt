@@ -3981,3 +3981,9 @@ G_IS_TASK_CLASS
 G_TASK_GET_CLASS
 g_task_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gnetworking</FILE>
+<TITLE>gnetworking.h</TITLE>
+g_networking_init
+</SECTION>

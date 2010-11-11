@@ -400,6 +400,7 @@ libgio_2_0_la_SOURCES =		\
 	gnativevolumemonitor.c 	\
 	gnativevolumemonitor.h 	\
 	gnetworkaddress.c	\
+	gnetworking.c		\
 	gnetworkingprivate.h	\
 	gnetworkmonitor.c	\
 	gnetworkmonitorbase.c	\
@@ -581,6 +582,7 @@ gio_headers =			\
 	gmountoperation.h 	\
 	gnativevolumemonitor.h 	\
 	gnetworkaddress.h	\
+	gnetworking.h		\
 	gnetworkmonitor.h	\
 	gnetworkservice.h	\
 	goutputstream.h 	\
@@ -643,6 +645,7 @@ BUILT_SOURCES = 		\
 	gioenumtypes.c		\
 	gdbus-daemon-generated.c \
 	gdbus-daemon-generated.h \
+	gnetworking.h		\
 	$(NULL)
 
 EXTRA_DIST += 			\

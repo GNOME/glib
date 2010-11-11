@@ -10,6 +10,7 @@ gio-querymodules
 gioenumtypes.[ch]
 glib-compile-resources
 glib-compile-schemas
+gnetworking.h
 gresource
 gschema-compile
 gsettings
