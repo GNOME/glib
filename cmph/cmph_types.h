@@ -1,36 +1,19 @@
+#include <glib.h>
+
 #ifndef __CMPH_TYPES_H__
 #define __CMPH_TYPES_H__
 
-typedef char cmph_int8;
-typedef unsigned char cmph_uint8;
+typedef gint8 cmph_int8;
+typedef guint8 cmph_uint8;
 
-typedef short cmph_int16;
-typedef unsigned short cmph_uint16;
+typedef gint16 cmph_int16;
+typedef guint16 cmph_uint16;
 
-typedef int cmph_int32;
-typedef unsigned int cmph_uint32;
+typedef gint32 cmph_int32;
+typedef guint32 cmph_uint32;
 
-#if defined(__ia64) || defined(__x86_64__)
-  /** \typedef long cmph_int64;
-   *  \brief 64-bit integer for a 64-bit achitecture.
-   */
-  typedef long cmph_int64;
-
-  /** \typedef unsigned long cmph_uint64;
-   *  \brief Unsigned 64-bit integer for a 64-bit achitecture.
-   */
-  typedef unsigned long cmph_uint64;
-#else
-  /** \typedef long long cmph_int64;
-   *  \brief 64-bit integer for a 32-bit achitecture.
-   */
-  typedef long long cmph_int64;
-
-  /** \typedef unsigned long long cmph_uint64;
-   *  \brief Unsigned 64-bit integer for a 32-bit achitecture.
-   */
-  typedef unsigned long long cmph_uint64;
-#endif
+typedef gint64 cmph_int64;
+typedef guint64 cmph_uint64;
 
 typedef enum { CMPH_HASH_JENKINS, CMPH_HASH_COUNT } CMPH_HASH;
 extern const char *cmph_hash_names[];
