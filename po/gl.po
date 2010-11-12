@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-01 17:03+0100\n"
-"PO-Revision-Date: 2010-11-01 17:13+0100\n"
+"POT-Creation-Date: 2010-11-13 00:59+0100\n"
+"PO-Revision-Date: 2010-11-13 00:59+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -1416,19 +1416,19 @@ msgstr "Non é posíbel interpretar o valor «%s» como un booleano."
 
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
-#: ../gio/ginputstream.c:556 ../gio/ginputstream.c:681
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:725
+#: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
+#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:726
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "O valor de conta pasado a %s é demasiado longo"
 
-#: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:891
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1200
+#: ../gio/gbufferedinputstream.c:880 ../gio/ginputstream.c:888
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1197
 msgid "Stream is already closed"
 msgstr "O fluxo xa se pechou"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1642
-#: ../gio/gdbusconnection.c:1731 ../gio/gdbusconnection.c:1917
+#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1636
+#: ../gio/gdbusconnection.c:1725 ../gio/gdbusconnection.c:1911
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:811
 #: ../gio/gsimpleasyncresult.c:837
 msgid "Operation was cancelled"
@@ -1587,39 +1587,39 @@ msgstr ""
 "Produciuse un erro ao gravar os contidos do ficheiro de uso de unha vez «%s» "
 "ao fluxo:"
 
-#: ../gio/gdbusaddress.c:942
+#: ../gio/gdbusaddress.c:939
 msgid "The given address is empty"
 msgstr "O enderezo fornecido está baleiro"
 
-#: ../gio/gdbusaddress.c:1011
+#: ../gio/gdbusaddress.c:1008
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr ""
 "Non é posíbel iniciar (|«spawn») unha mensaxe ao bus sen un ID de máquina:"
 
-#: ../gio/gdbusaddress.c:1048
+#: ../gio/gdbusaddress.c:1045
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Produciuse un erro ao iniciar («spawn») a orde «%s»:"
 
-#: ../gio/gdbusaddress.c:1059
+#: ../gio/gdbusaddress.c:1056
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Terminación anómala do programa ao iniciar («spawn») a orde «%s»:%s"
 
-#: ../gio/gdbusaddress.c:1073
+#: ../gio/gdbusaddress.c:1070
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr ""
 "A orde de liña «%s» rematou con un estado de saída distinto de cero %d: %s"
 
-#: ../gio/gdbusaddress.c:1146
+#: ../gio/gdbusaddress.c:1143
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (non está implementado "
 "para este SO)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6158
+#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6167
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1628,7 +1628,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6167
+#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6176
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1636,7 +1636,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus xa que a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE non está estabelecida"
 
-#: ../gio/gdbusaddress.c:1264
+#: ../gio/gdbusaddress.c:1261
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tipo de bus %d descoñecido"
@@ -1740,23 +1740,23 @@ msgstr "Produciuse un erro ao abrir o anel de chaves «%s» para escribir:"
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Ademais, a liberación do bloqueo para «%s» tamén fallou: %s) "
 
-#: ../gio/gdbusconnection.c:1151 ../gio/gdbusconnection.c:1380
-#: ../gio/gdbusconnection.c:1419 ../gio/gdbusconnection.c:1742
+#: ../gio/gdbusconnection.c:1148 ../gio/gdbusconnection.c:1374
+#: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1736
 msgid "The connection is closed"
 msgstr "O socket engadido está pechado"
 
-#: ../gio/gdbusconnection.c:1686
+#: ../gio/gdbusconnection.c:1680
 msgid "Timeout was reached"
 msgstr "Tempo de espera máximo alcanzado"
 
-#: ../gio/gdbusconnection.c:2305
+#: ../gio/gdbusconnection.c:2299
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Encontraronse bandeiras non compatíbeis ao construír a conexión da parte "
 "cliente"
 
-#: ../gio/gdbusconnection.c:3739 ../gio/gdbusconnection.c:4057
+#: ../gio/gdbusconnection.c:3751 ../gio/gdbusconnection.c:4069
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1764,68 +1764,68 @@ msgstr ""
 "Non existe a interface «org.freedesktop.DBus.Properties» no obxecto co "
 "camiño %s"
 
-#: ../gio/gdbusconnection.c:3811
+#: ../gio/gdbusconnection.c:3823
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Produciuse un erro ao estabelecer a propiedade «%s»: Esperábase o tipo «%s» "
 "pero obtívose «%s»"
 
-#: ../gio/gdbusconnection.c:3906
+#: ../gio/gdbusconnection.c:3918
 #, c-format
 msgid "No such property `%s'"
 msgstr "Non existe a propiedade «%s»"
 
-#: ../gio/gdbusconnection.c:3918
+#: ../gio/gdbusconnection.c:3930
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3929
+#: ../gio/gdbusconnection.c:3941
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3999 ../gio/gdbusconnection.c:5592
+#: ../gio/gdbusconnection.c:4011 ../gio/gdbusconnection.c:5601
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
 
-#: ../gio/gdbusconnection.c:4187
+#: ../gio/gdbusconnection.c:4199
 msgid "No such interface"
 msgstr "Non existe a interface"
 
-#: ../gio/gdbusconnection.c:4403 ../gio/gdbusconnection.c:6108
+#: ../gio/gdbusconnection.c:4415 ../gio/gdbusconnection.c:6117
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Non existe a interface «%s» no obxecto co camiño %s"
 
-#: ../gio/gdbusconnection.c:4455
+#: ../gio/gdbusconnection.c:4467
 #, c-format
 msgid "No such method `%s'"
 msgstr "Non existe o método «%s»"
 
-#: ../gio/gdbusconnection.c:4486
+#: ../gio/gdbusconnection.c:4498
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "O tipo da mensaxe, «%s», non coincide co tipo «%s» esperado"
 
-#: ../gio/gdbusconnection.c:4705
+#: ../gio/gdbusconnection.c:4717
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 
-#: ../gio/gdbusconnection.c:4899
+#: ../gio/gdbusconnection.c:4911
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "O método «%s» devolveu un tipo «%s» máis esperábase «%s»"
 
-#: ../gio/gdbusconnection.c:5703
+#: ../gio/gdbusconnection.c:5712
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:5821
+#: ../gio/gdbusconnection.c:5830
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
@@ -2012,13 +2012,13 @@ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr ""
 "O tipo do valor de retorno é incorrecto, obtívose «%s» e esperábase «%s»"
 
-#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:2995
-#: ../gio/gsocket.c:3076
+#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:2992
+#: ../gio/gsocket.c:3073
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Produciuse un erro ao enviar a mensaxe: %s"
 
-#: ../gio/gdbusprivate.c:1759
+#: ../gio/gdbusprivate.c:1756
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: "
 
@@ -2031,17 +2031,17 @@ msgstr ""
 "Tentouse estabelecer a propiedade %s do tipo %s pero segundo á interface "
 "esperada o tipo é %s"
 
-#: ../gio/gdbusproxy.c:1235
+#: ../gio/gdbusproxy.c:1234
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Produciuse un erro ao chamar a StartServiceByName para %s:"
 
-#: ../gio/gdbusproxy.c:1256
+#: ../gio/gdbusproxy.c:1255
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Resposta %d non esperada desde o método StartServiceByName(«%s»)"
 
-#: ../gio/gdbusproxy.c:2316 ../gio/gdbusproxy.c:2474
+#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2237,36 +2237,36 @@ msgstr "Camiño do obxecto a monitorizar"
 msgid "Monitor a remote object."
 msgstr "Monitoriza un obxecto remoto."
 
-#: ../gio/gdesktopappinfo.c:467 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:469 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Sen nome"
 
-#: ../gio/gdesktopappinfo.c:751
+#: ../gio/gdesktopappinfo.c:753
 msgid "Desktop file didn't specify Exec field"
 msgstr "O ficheiro de escritorio non especificou o campo Exec"
 
-#: ../gio/gdesktopappinfo.c:944
+#: ../gio/gdesktopappinfo.c:946
 msgid "Unable to find terminal required for application"
 msgstr "Non é posíbel encontrar o terminal requirido polo aplicativo"
 
-#: ../gio/gdesktopappinfo.c:1153
+#: ../gio/gdesktopappinfo.c:1155
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Non é posíbel crear o cartafol de configuración do aplicativo de usuario %s: "
 "%s"
 
-#: ../gio/gdesktopappinfo.c:1157
+#: ../gio/gdesktopappinfo.c:1159
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Non é posíbel crear o cartafol de configuración MIME %s do usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1565
+#: ../gio/gdesktopappinfo.c:1567
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Non é posíbel crear o ficheiro de escritorio %s do usuario"
 
-#: ../gio/gdesktopappinfo.c:1679
+#: ../gio/gdesktopappinfo.c:1681
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -2328,8 +2328,8 @@ msgstr "Esperábase un GEmblem para o GEmblemedIcon"
 #: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3861
 #: ../gio/gfile.c:4263 ../gio/gfile.c:4349 ../gio/gfile.c:4438
 #: ../gio/gfile.c:4536 ../gio/gfile.c:4623 ../gio/gfile.c:4717
-#: ../gio/gfile.c:5047 ../gio/gfile.c:5327 ../gio/gfile.c:5396
-#: ../gio/gfile.c:6988 ../gio/gfile.c:7078 ../gio/gfile.c:7164
+#: ../gio/gfile.c:5038 ../gio/gfile.c:5305 ../gio/gfile.c:5370
+#: ../gio/gfile.c:6944 ../gio/gfile.c:7034 ../gio/gfile.c:7120
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operación non permitida"
@@ -2389,11 +2389,11 @@ msgstr "Non se asiste o Lixo"
 msgid "File names cannot contain '%c'"
 msgstr "Os nomes de ficheiro non poden conter '%c'"
 
-#: ../gio/gfile.c:6045 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6003 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "o volume non implementa o montado"
 
-#: ../gio/gfile.c:6156
+#: ../gio/gfile.c:6114
 msgid "No application is registered as handling this file"
 msgstr "Non hai ningún aplicativo rexistrado para manexar este ficheiro"
 
@@ -2419,22 +2419,22 @@ msgstr "Non é posíbel manipular a versión %d da codificación de GFileIcon"
 msgid "Malformed input data for GFileIcon"
 msgstr "Datos de entrada formados incorrectamente para o GFileIcon"
 
-#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:421
+#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:420
 #: ../gio/gfileiostream.c:170 ../gio/gfileoutputstream.c:169
-#: ../gio/gfileoutputstream.c:524
+#: ../gio/gfileoutputstream.c:523
 msgid "Stream doesn't support query_info"
 msgstr "O fluxo non permite query_info"
 
-#: ../gio/gfileinputstream.c:336 ../gio/gfileiostream.c:388
-#: ../gio/gfileoutputstream.c:382
+#: ../gio/gfileinputstream.c:335 ../gio/gfileiostream.c:387
+#: ../gio/gfileoutputstream.c:381
 msgid "Seek not supported on stream"
 msgstr "Non se permite buscar no fluxo"
 
-#: ../gio/gfileinputstream.c:380
+#: ../gio/gfileinputstream.c:379
 msgid "Truncate not allowed on input stream"
 msgstr "Non se permite truncar no fluxo de entrada"
 
-#: ../gio/gfileiostream.c:464 ../gio/gfileoutputstream.c:458
+#: ../gio/gfileiostream.c:463 ../gio/gfileoutputstream.c:457
 msgid "Truncate not supported on stream"
 msgstr "Non se permite truncar no fluxo"
 
@@ -2482,8 +2482,8 @@ msgstr "O fluxo de entrada non implementa a lectura"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:901 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1210
+#: ../gio/ginputstream.c:898 ../gio/giostream.c:316
+#: ../gio/goutputstream.c:1207
 msgid "Stream has outstanding operation"
 msgstr "O fluxo ten unha operación excepcional"
 
@@ -3399,7 +3399,7 @@ msgstr "  VALUE     O valor a estabelecer\n"
 #: ../gio/gsettings-tool.c:650
 #, c-format
 msgid "Empty schema name given"
-msgstr ""
+msgstr "Forneceuse un nome de esquema baleiros"
 
 #: ../gio/gsocket.c:276
 msgid "Invalid socket, not initialized"
@@ -3414,7 +3414,7 @@ msgstr "O socket non é correcto, a inicialización fallou debido a: %s"
 msgid "Socket is already closed"
 msgstr "O fluxo de orixe xa está pechado"
 
-#: ../gio/gsocket.c:299 ../gio/gsocket.c:2737 ../gio/gsocket.c:2781
+#: ../gio/gsocket.c:299 ../gio/gsocket.c:2734 ../gio/gsocket.c:2778
 msgid "Socket I/O timed out"
 msgstr "Tempo de espera do Socket de E/S superado"
 
@@ -3470,7 +3470,7 @@ msgstr "Conexión en marcha"
 msgid "Error connecting: %s"
 msgstr "Produciuse un erro ao conectar: %s"
 
-#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3500
+#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3497
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Non é posíbel obter o erro pendente: %s"
@@ -3490,35 +3490,35 @@ msgstr "Produciuse un erro ao enviar datos: %s"
 msgid "Error closing socket: %s"
 msgstr "Produciuse un erro ao pechar o socket: %s"
 
-#: ../gio/gsocket.c:2730
+#: ../gio/gsocket.c:2727
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Agardando pola situación do socket: %s"
 
-#: ../gio/gsocket.c:3020
+#: ../gio/gsocket.c:3017
 msgid "GSocketControlMessage not supported on windows"
 msgstr "O GSocketControlMessage non está permitido en windows"
 
-#: ../gio/gsocket.c:3279 ../gio/gsocket.c:3420
+#: ../gio/gsocket.c:3276 ../gio/gsocket.c:3417
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Produciuse un erro ao recibir a mensaxe: %s"
 
-#: ../gio/gsocket.c:3515
+#: ../gio/gsocket.c:3512
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials non está implementado para este sistema operativo"
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1153
+#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1152
 msgid "Unknown error on connect"
 msgstr "Erro descoñecido ao conectar"
 
-#: ../gio/gsocketclient.c:711 ../gio/gsocketclient.c:1038
+#: ../gio/gsocketclient.c:711 ../gio/gsocketclient.c:1037
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr ""
 "Non se permite a conexión ao proxy mediante unha conexión que non sexa TCP."
 
-#: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1061
+#: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1060
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Non é posíbel usar o proxy co protocolo «%s»"
@@ -3691,8 +3691,8 @@ msgstr "Produciuse un erro ao desactivar SO_PASSCRED: %s"
 msgid "Error reading from unix: %s"
 msgstr "Produciuse un erro ao ler de unix: %s"
 
-#: ../gio/gunixinputstream.c:406 ../gio/gunixinputstream.c:589
-#: ../gio/gunixoutputstream.c:393 ../gio/gunixoutputstream.c:545
+#: ../gio/gunixinputstream.c:406 ../gio/gunixinputstream.c:586
+#: ../gio/gunixoutputstream.c:393 ../gio/gunixoutputstream.c:542
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Produciuse un erro ao pechar unix: %s"
