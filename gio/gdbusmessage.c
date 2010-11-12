@@ -1186,10 +1186,7 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           v = g_data_input_stream_read_uint64 (dis, NULL, &local_error);
           if (local_error != NULL)
             goto fail;
-		  if (1)
-		  {
-			G_STATIC_ASSERT (sizeof (gdouble) == sizeof (guint64));
-		  }
+          G_STATIC_ASSERT (sizeof (gdouble) == sizeof (guint64));
           encoded = (gdouble *) &v;
           ret = g_variant_new_double (*encoded);
         }
