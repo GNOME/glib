@@ -153,6 +153,12 @@ GdkColor *favourite = traveller_get_favourite_colour (traveller);
 The G_STATIC_ASSERT macro lets the programmer check a condition at compile time,
 the condition needs to be compile time computable.
 The macro can be used in any place where a <literal>typedef</literal> is valid.
+</para>
+<note><para>
+A <literal>typedef</literal> is generally allowed in exactly the same
+places that a variable declaration is allowed.  For this reason, you should not use <literal>G_STATIC_ASSERT</literal> in the middle of blocks of code.
+</para></note>
+<para>
 The macro should only be used once per source code line.
 </para>
 
