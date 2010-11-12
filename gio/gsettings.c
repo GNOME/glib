@@ -813,6 +813,18 @@ typedef struct
   GVariant *default_value;
 } GSettingsKeyInfo;
 
+static inline void
+endian_fixup (GVariant **value)
+{
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  GVariant *tmp;
+
+  tmp = g_variant_byteswap (*value);
+  g_variant_unref (*value);
+  *value = tmp;
+#endif
+}
+
 static void
 g_settings_get_key_info (GSettingsKeyInfo *info,
                          GSettings        *settings,
@@ -827,6 +839,7 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
   iter = g_settings_schema_get_value (settings->priv->schema, key);
 
   info->default_value = g_variant_iter_next_value (iter);
+  endian_fixup (&info->default_value);
   info->type = g_variant_get_type (info->default_value);
   info->settings = g_object_ref (settings);
   info->key = g_intern_string (key);
@@ -859,6 +872,8 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
 
         case 'r':
           g_variant_get (data, "(**)", &info->minimum, &info->maximum);
+          endian_fixup (&info->minimum);
+          endian_fixup (&info->maximum);
           break;
 
         default:

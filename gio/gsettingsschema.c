@@ -181,7 +181,7 @@ g_settings_schema_get_string (GSettingsSchema *schema,
   const gchar *result = NULL;
   GVariant *value;
 
-  if ((value = gvdb_table_get_value (schema->priv->table, key)))
+  if ((value = gvdb_table_get_raw_value (schema->priv->table, key)))
     {
       result = g_variant_get_string (value, NULL);
       g_variant_unref (value);
@@ -231,20 +231,10 @@ g_settings_schema_get_value (GSettingsSchema *schema,
   GVariantIter *iter;
   GVariant *value;
 
-  value = gvdb_table_get_value (schema->priv->table, key);
+  value = gvdb_table_get_raw_value (schema->priv->table, key);
 
   if G_UNLIKELY (value == NULL)
     g_error ("schema does not contain a key named '%s'", key);
-
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-  {
-    GVariant *tmp;
-
-    tmp = g_variant_byteswap (value);
-    g_variant_unref (value);
-    value = tmp;
-  }
-#endif
 
   iter = g_variant_iter_new (value);
   g_variant_unref (value);

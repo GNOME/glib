@@ -4566,23 +4566,37 @@ g_variant_get_normal_form (GVariant *value)
 GVariant *
 g_variant_byteswap (GVariant *value)
 {
-  GVariantSerialised serialised;
-  GVariant *trusted;
-  GBuffer *buffer;
+  GVariantTypeInfo *type_info;
+  guint alignment;
   GVariant *new;
 
-  trusted = g_variant_get_normal_form (value);
-  serialised.type_info = g_variant_get_type_info (trusted);
-  serialised.size = g_variant_get_size (trusted);
-  serialised.data = g_malloc (serialised.size);
-  g_variant_store (trusted, serialised.data);
-  g_variant_unref (trusted);
+  type_info = g_variant_get_type_info (value);
 
-  g_variant_serialised_byteswap (serialised);
+  g_variant_type_info_query (type_info, &alignment, NULL);
 
-  buffer = g_buffer_new_take_data (serialised.data, serialised.size);
-  new = g_variant_new_from_buffer (g_variant_get_type (value), buffer, TRUE);
-  g_buffer_unref (buffer);
+  if (alignment)
+    /* (potentially) contains multi-byte numeric data */
+    {
+      GVariantSerialised serialised;
+      GVariant *trusted;
+      GBuffer *buffer;
+
+      trusted = g_variant_get_normal_form (value);
+      serialised.type_info = g_variant_get_type_info (trusted);
+      serialised.size = g_variant_get_size (trusted);
+      serialised.data = g_malloc (serialised.size);
+      g_variant_store (trusted, serialised.data);
+      g_variant_unref (trusted);
+
+      g_variant_serialised_byteswap (serialised);
+
+      buffer = g_buffer_new_take_data (serialised.data, serialised.size);
+      new = g_variant_new_from_buffer (g_variant_get_type (value), buffer, TRUE);
+      g_buffer_unref (buffer);
+    }
+  else
+    /* contains no multi-byte data */
+    new = value;
 
   return g_variant_ref_sink (new);
 }

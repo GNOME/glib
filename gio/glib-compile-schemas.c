@@ -623,11 +623,17 @@ key_state_serialise (KeyState *state)
           if (state->strinfo->len)
             {
               GVariant *array;
+              guint32 *words;
               gpointer data;
               gsize size;
+              gint i;
 
               data = state->strinfo->str;
               size = state->strinfo->len;
+
+              words = data;
+              for (i = 0; i < size / sizeof (guint32); i++)
+                words[i] = GUINT32_TO_LE (words[i]);
 
               array = g_variant_new_from_data (G_VARIANT_TYPE ("au"),
                                                data, size, TRUE,

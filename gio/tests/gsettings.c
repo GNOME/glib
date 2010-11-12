@@ -942,6 +942,8 @@ test_simple_binding (void)
   gint i;
   gint16 n;
   guint16 q;
+  gint n2;
+  guint q2;
   gint64 i64;
   guint64 u64;
   gdouble d;
@@ -991,9 +993,9 @@ test_simple_binding (void)
   g_assert_cmpint (n, ==, 1234);
 
   g_settings_set (settings, "int16", "n", 4321);
-  n = 1111;
-  g_object_get (obj, "int16", &n, NULL);
-  g_assert_cmpint (n, ==, 4321);
+  n2 = 1111;
+  g_object_get (obj, "int16", &n2, NULL);
+  g_assert_cmpint (n2, ==, 4321);
 
   g_settings_bind (settings, "uint16", obj, "uint16", G_SETTINGS_BIND_DEFAULT);
 
@@ -1003,9 +1005,9 @@ test_simple_binding (void)
   g_assert_cmpuint (q, ==, G_MAXUINT16);
 
   g_settings_set (settings, "uint16", "q", (guint16) G_MAXINT16);
-  q = 1111;
-  g_object_get (obj, "uint16", &q, NULL);
-  g_assert_cmpuint (q, ==, (guint16) G_MAXINT16);
+  q2 = 1111;
+  g_object_get (obj, "uint16", &q2, NULL);
+  g_assert_cmpuint (q2, ==, (guint16) G_MAXINT16);
 
   g_settings_bind (settings, "int", obj, "int", G_SETTINGS_BIND_DEFAULT);
 
