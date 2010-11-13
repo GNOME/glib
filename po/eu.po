@@ -3166,7 +3166,7 @@ msgstr "SOCKSv5 proxy-ak autentifikazioa eskatzen du."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 require an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr ""
 "OCKSv5-ek autentifikatzeko metodo bat eskatzen du (Glib-ek onartzen ez "
 "duena)."

@@ -3509,7 +3509,7 @@ msgstr "Le serveur mandataire SOCKSv5 nécessite une authentification."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 require an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr ""
 "Le protocole SOCKSv5 nécessite une méthode d'authentification qui n'est pas "
 "prise en charge par GLib."

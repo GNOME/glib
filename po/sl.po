@@ -3332,7 +3332,7 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr "SOCKSv5 posredniški strežnik zahteva overitev."
 
 #: ../gio/gsocks5proxy.c:179
-msgid "The SOCKSv5 require an authentication method that is not supported by GLib."
+msgid "The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr "SOCKSv5 zahteva overitveni način, ki ni podprta v GLib."
 
 #: ../gio/gsocks5proxy.c:208

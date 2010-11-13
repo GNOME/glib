@@ -3457,7 +3457,7 @@ msgstr "Der SOCKSv5-Proxy erfordert Legitimierung."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 require an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr ""
 "Der SOCKSv5 erfordert eine Legitimierungsmethode, die durch GLib nicht "
 "unterstützt wird."
