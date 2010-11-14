@@ -1,3 +1,38 @@
+Overview of Changes from GLib 2.26.0 to GLib 2.26.1
+===================================================
+
+GSettings should now work on bigendian systems
+
+Bugs fixed:
+ 613822 gobject signal connect/disconnect not thread safe
+ 627126 gsettings schema files don't get installed on FreeBSD
+ 627171 g_socket_new_from_fd() doesn't set the right protocol
+ 629274 GNetworkService does not do fallback when there is no SRV...
+ 630797 "Object memory management" docs mention non-existent...
+ 632169 docs for manual use of gsettings-data-convert
+
+Updated translations:
+  Basque
+  Brazilian Portuguese
+  British English
+  Bulgarian
+  Catalan (Valencian)
+  Czech
+  French
+  Galician
+  German
+  Greek
+  Hebrew
+  Hungarian
+  Indonesian
+  Japanese
+  Lithuanian
+  Polish
+  Portuguese
+  Russian
+  Slovenian
+
+
 Overview of Changes from GLib 2.25.17 to GLib 2.26.0
 ====================================================
 
