@@ -59,18 +59,18 @@ struct _GIrModule
   GHashTable *disguised_structures;
 };
 
-GIrModule *g_ir_module_new            (const gchar *name,
-				       const gchar *nsversion,
-				       const gchar *module_filename,
-				       const gchar *c_prefix);
-void       g_ir_module_free           (GIrModule  *module);
+GIrModule *_g_ir_module_new            (const gchar *name,
+					const gchar *nsversion,
+					const gchar *module_filename,
+					const gchar *c_prefix);
+void       _g_ir_module_free           (GIrModule  *module);
 
-void       g_ir_module_add_include_module (GIrModule  *module,
+void       _g_ir_module_add_include_module (GIrModule  *module,
 					   GIrModule  *include_module);
 
-GITypelib * g_ir_module_build_typelib  (GIrModule  *module);
+GITypelib * _g_ir_module_build_typelib  (GIrModule  *module);
 
-void       g_ir_module_fatal (GIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
+void       _g_ir_module_fatal (GIrTypelibBuild  *build, guint line, const char *msg, ...) G_GNUC_PRINTF (3, 4) G_GNUC_NORETURN;
 
 void _g_irnode_init_stats (void);
 void _g_irnode_dump_stats (void);

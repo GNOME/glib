@@ -30,10 +30,10 @@
 
 
 GIrModule *
-g_ir_module_new (const gchar *name,
-		 const gchar *version,
-		 const gchar *shared_library,
-		 const gchar *c_prefix)
+_g_ir_module_new (const gchar *name,
+		  const gchar *version,
+		  const gchar *shared_library,
+		  const gchar *c_prefix)
 {
   GIrModule *module;
 
@@ -56,14 +56,14 @@ g_ir_module_new (const gchar *name,
 }
 
 void
-g_ir_module_free (GIrModule *module)
+_g_ir_module_free (GIrModule *module)
 {
   GList *e;
 
   g_free (module->name);
 
   for (e = module->entries; e; e = e->next)
-    g_ir_node_free ((GIrNode *)e->data);
+    _g_ir_node_free ((GIrNode *)e->data);
 
   g_list_free (module->entries);
   /* Don't free dependencies, we inherit that from the parser */
@@ -77,7 +77,7 @@ g_ir_module_free (GIrModule *module)
 }
 
 /**
- * g_ir_module_fatal:
+ * _g_ir_module_fatal:
  * @build: Current build
  * @line: Origin line number, or 0 if unknown
  * @msg: printf-format string
@@ -86,10 +86,10 @@ g_ir_module_free (GIrModule *module)
  * Report a fatal error, then exit.
  */
 void
-g_ir_module_fatal (GIrTypelibBuild  *build,
-                   guint       line,
-                   const char *msg,
-                   ...)
+_g_ir_module_fatal (GIrTypelibBuild  *build,
+		    guint       line,
+		    const char *msg,
+		    ...)
 {
   GString *context;
   char *formatted;
@@ -149,8 +149,8 @@ add_disguised_structure_foreach (gpointer key,
 }
 
 void
-g_ir_module_add_include_module (GIrModule  *module,
-				GIrModule  *include_module)
+_g_ir_module_add_include_module (GIrModule  *module,
+				 GIrModule  *include_module)
 {
   module->include_modules = g_list_prepend (module->include_modules,
 					    include_module);
@@ -184,8 +184,8 @@ write_attribute (gpointer key, gpointer value, gpointer datap)
   *(data->offset) += sizeof (AttributeBlob);
 
   blob->offset = data->node->offset;
-  blob->name = write_string ((const char*) key, data->strings, data->databuf, data->offset2);
-  blob->value = write_string ((const char*) value, data->strings, data->databuf, data->offset2);
+  blob->name = _g_ir_write_string ((const char*) key, data->strings, data->databuf, data->offset2);
+  blob->value = _g_ir_write_string ((const char*) value, data->strings, data->databuf, data->offset2);
 
   data->count++;
 }
@@ -222,7 +222,7 @@ node_cmp_offset_func (gconstpointer a,
 
 
 GITypelib *
-g_ir_module_build_typelib (GIrModule  *module)
+_g_ir_module_build_typelib (GIrModule  *module)
 {
   GError *error = NULL;
   GITypelib *typelib;
@@ -286,7 +286,7 @@ g_ir_module_build_typelib (GIrModule  *module)
     {
       GIrNode *node = e->data;
 
-      size += g_ir_node_get_full_size (node);
+      size += _g_ir_node_get_full_size (node);
 
       /* Also reset the offset here */
       node->offset = 0;
@@ -320,17 +320,17 @@ g_ir_module_build_typelib (GIrModule  *module)
    * the size calculations above.
    */
   if (dependencies != NULL)
-    header->dependencies = write_string (dependencies, strings, data, &header_size);
+    header->dependencies = _g_ir_write_string (dependencies, strings, data, &header_size);
   else
     header->dependencies = 0;
   header->size = 0; /* filled in later */
-  header->namespace = write_string (module->name, strings, data, &header_size);
-  header->nsversion = write_string (module->version, strings, data, &header_size);
+  header->namespace = _g_ir_write_string (module->name, strings, data, &header_size);
+  header->nsversion = _g_ir_write_string (module->version, strings, data, &header_size);
   header->shared_library = (module->shared_library?
-                             write_string (module->shared_library, strings, data, &header_size)
+                             _g_ir_write_string (module->shared_library, strings, data, &header_size)
                              : 0);
   if (module->c_prefix != NULL)
-    header->c_prefix = write_string (module->c_prefix, strings, data, &header_size);
+    header->c_prefix = _g_ir_write_string (module->c_prefix, strings, data, &header_size);
   else
     header->c_prefix = 0;
   header->directory = ALIGN_VALUE (header_size, 4);
@@ -398,18 +398,18 @@ g_ir_module_build_typelib (GIrModule  *module)
 
 	  entry->blob_type = 0;
 	  entry->local = FALSE;
-	  entry->offset = write_string (namespace, strings, data, &offset2);
-	  entry->name = write_string (node->name, strings, data, &offset2);
+	  entry->offset = _g_ir_write_string (namespace, strings, data, &offset2);
+	  entry->name = _g_ir_write_string (node->name, strings, data, &offset2);
 	}
       else
 	{
 	  old_offset = offset;
-	  offset2 = offset + g_ir_node_get_size (node);
+	  offset2 = offset + _g_ir_node_get_size (node);
 
 	  entry->blob_type = node->type;
 	  entry->local = TRUE;
 	  entry->offset = offset;
-	  entry->name = write_string (node->name, strings, data, &offset2);
+	  entry->name = _g_ir_write_string (node->name, strings, data, &offset2);
 
 	  memset (&build, 0, sizeof (build));
 	  build.module = module;
@@ -418,13 +418,13 @@ g_ir_module_build_typelib (GIrModule  *module)
 	  build.nodes_with_attributes = nodes_with_attributes;
 	  build.n_attributes = header->n_attributes;
 	  build.data = data;
-	  g_ir_node_build_typelib (node, NULL, &build, &offset, &offset2);
+	  _g_ir_node_build_typelib (node, NULL, &build, &offset, &offset2);
 
 	  nodes_with_attributes = build.nodes_with_attributes;
 	  header->n_attributes = build.n_attributes;
 
-	  if (offset2 > old_offset + g_ir_node_get_full_size (node))
-	    g_error ("left a hole of %d bytes\n", offset2 - old_offset - g_ir_node_get_full_size (node));
+	  if (offset2 > old_offset + _g_ir_node_get_full_size (node))
+	    g_error ("left a hole of %d bytes\n", offset2 - old_offset - _g_ir_node_get_full_size (node));
 	}
 
       entry++;

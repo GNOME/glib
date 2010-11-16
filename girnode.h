@@ -354,36 +354,36 @@ struct _GIrNodeErrorDomain
 };
 
 
-GIrNode * g_ir_node_new             (GIrNodeTypeId type,
+GIrNode * _g_ir_node_new             (GIrNodeTypeId type,
 				     GIrModule     *module);
-void      g_ir_node_free            (GIrNode    *node);
-guint32   g_ir_node_get_size        (GIrNode    *node);
-guint32   g_ir_node_get_full_size   (GIrNode    *node);
-void      g_ir_node_build_typelib   (GIrNode         *node,
-                                     GIrNode         *parent,
-                                     GIrTypelibBuild *build,
-                                     guint32         *offset,
-                                     guint32         *offset2);
-int       g_ir_node_cmp             (GIrNode    *node,
+void      _g_ir_node_free            (GIrNode    *node);
+guint32   _g_ir_node_get_size        (GIrNode    *node);
+guint32   _g_ir_node_get_full_size   (GIrNode    *node);
+void      _g_ir_node_build_typelib   (GIrNode         *node,
+				      GIrNode         *parent,
+				      GIrTypelibBuild *build,
+				      guint32         *offset,
+				      guint32         *offset2);
+int       _g_ir_node_cmp             (GIrNode    *node,
 				     GIrNode    *other);
-gboolean  g_ir_node_can_have_member (GIrNode    *node);
-void      g_ir_node_add_member      (GIrNode         *node,
-				     GIrNodeFunction *member);
-guint32   write_string              (const gchar *str,
-				     GHashTable  *strings,
-				     guchar      *data,
-				     guint32     *offset);
+gboolean  _g_ir_node_can_have_member (GIrNode    *node);
+void      _g_ir_node_add_member      (GIrNode         *node,
+				      GIrNodeFunction *member);
+guint32   _g_ir_write_string              (const gchar *str,
+					   GHashTable  *strings,
+					   guchar      *data,
+					   guint32     *offset);
 
-const gchar * g_ir_node_param_direction_string (GIrNodeParam * node);
-const gchar * g_ir_node_type_to_string         (GIrNodeTypeId type);
+const gchar * _g_ir_node_param_direction_string (GIrNodeParam * node);
+const gchar * _g_ir_node_type_to_string         (GIrNodeTypeId type);
 
-GIrNode *g_ir_find_node (GIrTypelibBuild  *build,
+GIrNode *_g_ir_find_node (GIrTypelibBuild  *build,
 			 GIrModule        *module,
 			 const char       *name);
 
 /* In giroffsets.c */
 
-void g_ir_node_compute_offsets (GIrTypelibBuild *build, 
+void _g_ir_node_compute_offsets (GIrTypelibBuild *build,
 				GIrNode         *node);
 
 
