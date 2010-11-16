@@ -236,7 +236,7 @@ g_memory_settings_backend_list (GSettingsBackend    *backend,
   GHashTable *table;
   GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
 
-  table = g_memory_settings_backend_get_table (memory, &path);
+  table = g_memory_settings_backend_get_table (memory->table, &path);
   if (table != NULL)
     {
       GHashTableIter iter;
@@ -248,7 +248,7 @@ g_memory_settings_backend_list (GSettingsBackend    *backend,
         {
 	  gboolean in_schema_items = FALSE;
 
-	  for (i = 0; i < g_strv_length (schema_items); i++)
+	  for (i = 0; i < g_strv_length ((gchar **) schema_items); i++)
 	    {
 	      if (g_str_equal (key_name, schema_items[i]))
 	        {
@@ -278,6 +278,39 @@ g_memory_settings_backend_list (GSettingsBackend    *backend,
     }
 
   return result;
+}
+
+static gboolean
+g_memory_settings_backend_can_insert (GSettingsBackend *backend,
+				      const gchar      *path)
+{
+  return FALSE;
+}
+
+static gboolean
+g_memory_settings_backend_can_remove (GSettingsBackend *backend,
+				      const gchar      *path,
+				      const gchar      *id)
+{
+  return FALSE;
+}
+
+static gboolean
+g_memory_settings_backend_insert (GSettingsBackend *backend,
+				  const gchar      *path,
+				  gint              index_,
+				  const gchar      *prefix,
+				  gchar           **name)
+{
+  return FALSE;
+}
+
+static gboolean
+g_memory_settings_backend_remove (GSettingsBackend *backend,
+				  const gchar      *path,
+				  const gchar      *id)
+{
+  return FALSE;
 }
 
 static void
@@ -311,5 +344,9 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
   backend_class->get_writable = g_memory_settings_backend_get_writable;
   backend_class->get_permission = g_memory_settings_backend_get_permission;
   backend_class->list = g_memory_settings_backend_list;
+  backend_class->can_insert = g_memory_settings_backend_can_insert;
+  backend_class->can_remove = g_memory_settings_backend_can_remove;
+  backend_class->insert = g_memory_settings_backend_insert;
+  backend_class->remove = g_memory_settings_backend_remove;
   object_class->finalize = g_memory_settings_backend_finalize;
 }
