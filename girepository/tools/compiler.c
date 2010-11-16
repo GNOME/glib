@@ -174,11 +174,11 @@ main (int argc, char ** argv)
     for (i = 0; includedirs[i]; i++)
       g_irepository_prepend_search_path (includedirs[i]);
 
-  parser = g_ir_parser_new ();
+  parser = _g_ir_parser_new ();
 
-  g_ir_parser_set_includes (parser, (const char*const*) includedirs);
+  _g_ir_parser_set_includes (parser, (const char*const*) includedirs);
 
-  module = g_ir_parser_parse_file (parser, input[0], &error);
+  module = _g_ir_parser_parse_file (parser, input[0], &error);
   if (module == NULL) 
     {
       g_fprintf (stderr, "error parsing file %s: %s\n", 
@@ -203,7 +203,7 @@ main (int argc, char ** argv)
 
       g_debug ("[building] module %s", module->name);
 
-      typelib = g_ir_module_build_typelib (module);
+      typelib = _g_ir_module_build_typelib (module);
       if (typelib == NULL)
 	g_error ("Failed to build typelib for module '%s'\n", module->name);
       if (!g_typelib_validate (typelib, &error))
@@ -219,7 +219,7 @@ main (int argc, char ** argv)
 
 #if 0
   /* No point */
-  g_ir_parser_free (parser);
+  _g_ir_parser_free (parser);
 #endif  
 
   return 0; 
