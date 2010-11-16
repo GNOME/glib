@@ -32,10 +32,36 @@
 /* all tests rely on a shared mainloop */
 static GMainLoop *loop = NULL;
 
+G_GNUC_UNUSED static void
+_log (const gchar *format, ...)
+{
+  GTimeVal now;
+  time_t now_time;
+  struct tm *now_tm;
+  gchar time_buf[128];
+  gchar *str;
+  va_list var_args;
+
+  va_start (var_args, format);
+  str = g_strdup_vprintf (format, var_args);
+  va_end (var_args);
+
+  g_get_current_time (&now);
+  now_time = (time_t) now.tv_sec;
+  now_tm = localtime (&now_time);
+  strftime (time_buf, sizeof time_buf, "%H:%M:%S", now_tm);
+
+  g_print ("%s.%06d: %s\n",
+           time_buf, (gint) now.tv_usec / 1000,
+           str);
+  g_free (str);
+}
+
 static gboolean
 test_connection_quit_mainloop (gpointer user_data)
 {
-  gboolean *quit_mainloop_fired = user_data;
+  volatile gboolean *quit_mainloop_fired = user_data;
+  //_log ("quit_mainloop_fired");
   *quit_mainloop_fired = TRUE;
   g_main_loop_quit (loop);
   return TRUE;
@@ -85,9 +111,9 @@ on_name_owner_changed (GDBusConnection *connection,
 static void
 a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop (gpointer user_data)
 {
-  gboolean *val = user_data;
+  volatile gboolean *val = user_data;
   *val = TRUE;
-
+  //_log ("destroynotify fired for %p", val);
   g_main_loop_quit (loop);
 }
 
@@ -98,10 +124,10 @@ test_connection_life_cycle (void)
   GDBusConnection *c;
   GDBusConnection *c2;
   GError *error;
-  gboolean on_signal_registration_freed_called;
-  gboolean on_filter_freed_called;
-  gboolean on_register_object_freed_called;
-  gboolean quit_mainloop_fired;
+  volatile gboolean on_signal_registration_freed_called;
+  volatile gboolean on_filter_freed_called;
+  volatile gboolean on_register_object_freed_called;
+  volatile gboolean quit_mainloop_fired;
   guint quit_mainloop_id;
   guint registration_id;
 
@@ -116,13 +142,13 @@ test_connection_life_cycle (void)
   g_assert (!g_dbus_error_is_remote_error (error));
   g_assert (c == NULL);
   g_error_free (error);
-  error = NULL;
 
   /*
    *  Check for correct behavior when a bus is present
    */
   session_bus_up ();
   /* case 1 */
+  error = NULL;
   c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
   g_assert (c != NULL);
@@ -131,6 +157,7 @@ test_connection_life_cycle (void)
   /*
    * Check that singleton handling work
    */
+  error = NULL;
   c2 = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
   g_assert_no_error (error);
   g_assert (c2 != NULL);
@@ -181,13 +208,13 @@ test_connection_life_cycle (void)
                                       NULL,                   /* arg0 */
                                       G_DBUS_SIGNAL_FLAGS_NONE,
                                       on_name_owner_changed,
-                                      &on_signal_registration_freed_called,
+                                      (gpointer) &on_signal_registration_freed_called,
                                       a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop);
   /* filter func */
   on_filter_freed_called = FALSE;
   g_dbus_connection_add_filter (c2,
                                 some_filter_func,
-                                &on_filter_freed_called,
+                                (gpointer) &on_filter_freed_called,
                                 a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop);
   /* object registration */
   on_register_object_freed_called = FALSE;
@@ -196,7 +223,7 @@ test_connection_life_cycle (void)
                                                        "/foo",
                                                        (GDBusInterfaceInfo *) &boo_interface_info,
                                                        &boo_vtable,
-                                                       &on_register_object_freed_called,
+                                                       (gpointer) &on_register_object_freed_called,
                                                        a_gdestroynotify_that_sets_a_gboolean_to_true_and_quits_loop,
                                                        &error);
   g_assert_no_error (error);
@@ -204,7 +231,14 @@ test_connection_life_cycle (void)
   /* ok, finalize the connection and check that all the GDestroyNotify functions are invoked as expected */
   g_object_unref (c2);
   quit_mainloop_fired = FALSE;
-  quit_mainloop_id = g_timeout_add (1000, test_connection_quit_mainloop, &quit_mainloop_fired);
+  quit_mainloop_id = g_timeout_add (30000, test_connection_quit_mainloop, (gpointer) &quit_mainloop_fired);
+  //_log ("destroynotifies for\n"
+  //      " register_object %p\n"
+  //      " filter          %p\n"
+  //      " signal          %p",
+  //      &on_register_object_freed_called,
+  //      &on_filter_freed_called,
+  //      &on_signal_registration_freed_called);
   while (TRUE)
     {
       if (on_signal_registration_freed_called &&
@@ -213,7 +247,9 @@ test_connection_life_cycle (void)
         break;
       if (quit_mainloop_fired)
         break;
+      //_log ("entering loop");
       g_main_loop_run (loop);
+      //_log ("exiting loop");
     }
   g_source_remove (quit_mainloop_id);
   g_assert (on_signal_registration_freed_called);
@@ -653,7 +689,7 @@ test_connection_signals (void)
   gboolean quit_mainloop_fired;
   guint quit_mainloop_id;
   quit_mainloop_fired = FALSE;
-  quit_mainloop_id = g_timeout_add (5000, test_connection_quit_mainloop, &quit_mainloop_fired);
+  quit_mainloop_id = g_timeout_add (30000, test_connection_quit_mainloop, &quit_mainloop_fired);
   while (count_name_owner_changed < 2 && !quit_mainloop_fired)
     g_main_loop_run (loop);
   g_source_remove (quit_mainloop_id);
@@ -786,7 +822,7 @@ test_connection_filter_name_owner_changed_signal_handler (GDBusConnection  *conn
 static gboolean
 test_connection_filter_on_timeout (gpointer user_data)
 {
-  g_printerr ("Timeout waiting 1000 msec on service\n");
+  g_printerr ("Timeout waiting 30 sec on service\n");
   g_assert_not_reached ();
   return FALSE;
 }
@@ -889,7 +925,7 @@ test_connection_filter (void)
                                                           NULL,
                                                           NULL);
   g_assert_cmpint (signal_handler_id, !=, 0);
-  timeout_mainloop_id = g_timeout_add (1000, test_connection_filter_on_timeout, NULL);
+  timeout_mainloop_id = g_timeout_add (30000, test_connection_filter_on_timeout, NULL);
   g_main_loop_run (loop);
   g_source_remove (timeout_mainloop_id);
   g_dbus_connection_signal_unsubscribe (c, signal_handler_id);
@@ -948,85 +984,6 @@ test_connection_filter (void)
   session_bus_down ();
 }
 
-/* ---------------------------------------------------------------------------------------------------- */
-
-static void
-test_connection_flush_signal_handler (GDBusConnection  *connection,
-                                      const gchar      *sender_name,
-                                      const gchar      *object_path,
-                                      const gchar      *interface_name,
-                                      const gchar      *signal_name,
-                                      GVariant         *parameters,
-                                      gpointer         user_data)
-{
-  g_main_loop_quit (loop);
-}
-
-static gboolean
-test_connection_flush_on_timeout (gpointer user_data)
-{
-  guint iteration = GPOINTER_TO_UINT (user_data);
-  g_printerr ("Timeout waiting 1000 msec on iteration %d\n", iteration);
-  g_assert_not_reached ();
-  return FALSE;
-}
-
-static void
-test_connection_flush (void)
-{
-  GDBusConnection *connection;
-  GError *error;
-  guint n;
-  guint signal_handler_id;
-
-  session_bus_up ();
-
-  error = NULL;
-  connection = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
-  g_assert_no_error (error);
-  g_assert (connection != NULL);
-
-  signal_handler_id = g_dbus_connection_signal_subscribe (connection,
-                                                          NULL, /* sender */
-                                                          "org.gtk.GDBus.FlushInterface",
-                                                          "SomeSignal",
-                                                          "/org/gtk/GDBus/FlushObject",
-                                                          NULL,
-                                                          G_DBUS_SIGNAL_FLAGS_NONE,
-                                                          test_connection_flush_signal_handler,
-                                                          NULL,
-                                                          NULL);
-  g_assert_cmpint (signal_handler_id, !=, 0);
-
-  for (n = 0; n < 50; n++)
-    {
-      gboolean ret;
-      gint exit_status;
-      guint timeout_mainloop_id;
-
-      error = NULL;
-      ret = g_spawn_command_line_sync ("./gdbus-connection-flush-helper",
-                                       NULL, /* stdout */
-                                       NULL, /* stderr */
-                                       &exit_status,
-                                       &error);
-      g_assert_no_error (error);
-      g_assert (WIFEXITED (exit_status));
-      g_assert_cmpint (WEXITSTATUS (exit_status), ==, 0);
-      g_assert (ret);
-
-      timeout_mainloop_id = g_timeout_add (1000, test_connection_flush_on_timeout, GUINT_TO_POINTER (n));
-      g_main_loop_run (loop);
-      g_source_remove (timeout_mainloop_id);
-    }
-
-  g_dbus_connection_signal_unsubscribe (connection, signal_handler_id);
-  _g_object_wait_for_single_ref (connection);
-  g_object_unref (connection);
-
-  session_bus_down ();
-}
-
 static void
 test_connection_basic (void)
 {
@@ -1070,90 +1027,12 @@ test_connection_basic (void)
   g_assert (exit_on_close);
   g_assert (flags == G_DBUS_CAPABILITY_FLAGS_NONE ||
             flags == G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
-
   g_object_unref (stream);
-  g_object_unref (connection);
   g_free (name);
   g_free (guid);
 
-  session_bus_down ();
-}
-
-/* ---------------------------------------------------------------------------------------------------- */
-
-/* Message size > 20MiB ... should be enough to make sure the message
- * is fragmented when shoved across any transport
- */
-#define LARGE_MESSAGE_STRING_LENGTH (20*1024*1024)
-
-static void
-large_message_on_name_appeared (GDBusConnection *connection,
-                                const gchar *name,
-                                const gchar *name_owner,
-                                gpointer user_data)
-{
-  GError *error;
-  gchar *request;
-  const gchar *reply;
-  GVariant *result;
-  guint n;
-
-  request = g_new (gchar, LARGE_MESSAGE_STRING_LENGTH + 1);
-  for (n = 0; n < LARGE_MESSAGE_STRING_LENGTH; n++)
-    request[n] = '0' + (n%10);
-  request[n] = '\0';
-
-  error = NULL;
-  result = g_dbus_connection_call_sync (connection,
-                                        "com.example.TestService",      /* bus name */
-                                        "/com/example/TestObject",      /* object path */
-                                        "com.example.Frob",             /* interface name */
-                                        "HelloWorld",                   /* method name */
-                                        g_variant_new ("(s)", request), /* parameters */
-                                        G_VARIANT_TYPE ("(s)"),         /* return type */
-                                        G_DBUS_CALL_FLAGS_NONE,
-                                        -1,
-                                        NULL,
-                                        &error);
-  g_assert_no_error (error);
-  g_assert (result != NULL);
-  g_variant_get (result, "(&s)", &reply);
-  g_assert_cmpint (strlen (reply), >, LARGE_MESSAGE_STRING_LENGTH);
-  g_assert (g_str_has_prefix (reply, "You greeted me with '01234567890123456789012"));
-  g_assert (g_str_has_suffix (reply, "6789'. Thanks!"));
-  g_variant_unref (result);
-
-  g_free (request);
-
-  g_main_loop_quit (loop);
-}
-
-static void
-large_message_on_name_vanished (GDBusConnection *connection,
-                                const gchar *name,
-                                gpointer user_data)
-{
-}
-
-static void
-test_connection_large_message (void)
-{
-  guint watcher_id;
-
-  session_bus_up ();
-
-  /* this is safe; testserver will exit once the bus goes away */
-  g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));
-
-  watcher_id = g_bus_watch_name (G_BUS_TYPE_SESSION,
-                                 "com.example.TestService",
-                                 G_BUS_NAME_WATCHER_FLAGS_NONE,
-                                 large_message_on_name_appeared,
-                                 large_message_on_name_vanished,
-                                 NULL,  /* user_data */
-                                 NULL); /* GDestroyNotify */
-  g_main_loop_run (loop);
-  g_bus_unwatch_name (watcher_id);
+  _g_object_wait_for_single_ref (connection);
+  g_object_unref (connection);
 
   session_bus_down ();
 }
@@ -1181,7 +1060,5 @@ main (int   argc,
   g_test_add_func ("/gdbus/connection/send", test_connection_send);
   g_test_add_func ("/gdbus/connection/signals", test_connection_signals);
   g_test_add_func ("/gdbus/connection/filter", test_connection_filter);
-  g_test_add_func ("/gdbus/connection/flush", test_connection_flush);
-  g_test_add_func ("/gdbus/connection/large_message", test_connection_large_message);
   return g_test_run();
 }

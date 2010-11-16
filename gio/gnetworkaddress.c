@@ -251,7 +251,7 @@ g_network_address_set_addresses (GNetworkAddress *addr,
  * Creates a new #GSocketConnectable for connecting to the given
  * @hostname and @port.
  *
- * Return value: the new #GNetworkAddress
+ * Return value: (transfer full): the new #GNetworkAddress
  *
  * Since: 2.22
  */
@@ -275,7 +275,7 @@ g_network_address_new (const gchar *hostname,
  * @hostname and @port. May fail and return %NULL in case
  * parsing @host_and_port fails.
  *
- * @host_and_port may be in any of a number of recognised formats: an IPv6
+ * @host_and_port may be in any of a number of recognised formats; an IPv6
  * address, an IPv4 address, or a domain name (in which case a DNS
  * lookup is performed). Quoting with [] is supported for all address
  * types. A port override may be specified in the usual way with a
@@ -289,7 +289,7 @@ g_network_address_new (const gchar *hostname,
  * (allowing them to give the hostname, and a port overide if necessary)
  * and @default_port is expected to be provided by the application.
  *
- * Return value: the new #GNetworkAddress, or %NULL on error
+ * Return value: (transfer full): the new #GNetworkAddress, or %NULL on error
  *
  * Since: 2.22
  */
@@ -680,7 +680,7 @@ _g_uri_from_authority (const gchar *protocol,
  * g_network_address_parse_host() allows #GSocketClient to determine
  * when to use application-specific proxy protocols.
  *
- * Return value: the new #GNetworkAddress, or %NULL on error
+ * Return value: (transfer full): the new #GNetworkAddress, or %NULL on error
  *
  * Since: 2.26
  */
@@ -855,8 +855,7 @@ got_addresses (GObject      *source_object,
     {
       if (error)
         {
-          g_simple_async_result_set_from_error (simple, error);
-          g_error_free (error);
+          g_simple_async_result_take_error (simple, error);
         }
       else
         {

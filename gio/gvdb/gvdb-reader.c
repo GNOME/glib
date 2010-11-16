@@ -34,11 +34,11 @@ struct _GvdbTable {
   gboolean byteswapped;
   gboolean trusted;
 
-  const guint32 *bloom_words;
+  const guint32_le *bloom_words;
   guint32 n_bloom_words;
   guint bloom_shift;
 
-  const guint32 *hash_buckets;
+  const guint32_le *hash_buckets;
   guint32 n_buckets;
 
   struct gvdb_hash_item *hash_items;
@@ -206,7 +206,7 @@ gvdb_table_bloom_filter (GvdbTable *file,
   mask = 1 << (hash_value & 31);
   mask |= 1 << ((hash_value >> file->bloom_shift) & 31);
 
-  return (file->bloom_words[word] & mask) == mask;
+  return (guint32_from_le (file->bloom_words[word]) & mask) == mask;
 }
 
 static gboolean
@@ -262,10 +262,10 @@ gvdb_table_lookup (GvdbTable   *file,
     return NULL;
 
   bucket = hash_value % file->n_buckets;
-  itemno = file->hash_buckets[bucket];
+  itemno = guint32_from_le (file->hash_buckets[bucket]);
 
   if (bucket == file->n_buckets - 1 ||
-      (lastno = file->hash_buckets[bucket + 1]) > file->n_hash_items)
+      (lastno = guint32_from_le(file->hash_buckets[bucket + 1])) > file->n_hash_items)
     lastno = file->n_hash_items;
 
   while G_LIKELY (itemno < lastno)
@@ -438,11 +438,46 @@ gvdb_table_get_value (GvdbTable    *file,
                       const gchar  *key)
 {
   const struct gvdb_hash_item *item;
+  GVariant *value;
 
   if ((item = gvdb_table_lookup (file, key, 'v')) == NULL)
     return NULL;
 
-  return gvdb_table_value_from_item (file, item);
+  value = gvdb_table_value_from_item (file, item);
+
+  if (value && file->byteswapped)
+    {
+      GVariant *tmp;
+
+      tmp = g_variant_byteswap (value);
+      g_variant_unref (value);
+      value = tmp;
+    }
+
+  return value;
+}
+
+/**
+ * gvdb_table_get_raw_value:
+ * @table: a #GvdbTable
+ * @key: a string
+ * @returns: a #GVariant, or %NULL
+ *
+ * Looks up a value named @key in @file.
+ *
+ * This call is equivalent to gvdb_table_get_value() except that it
+ * never byteswaps the value.
+ **/
+GVariant *
+gvdb_table_get_raw_value (GvdbTable   *table,
+                          const gchar *key)
+{
+  const struct gvdb_hash_item *item;
+
+  if ((item = gvdb_table_lookup (table, key, 'v')) == NULL)
+    return NULL;
+
+  return gvdb_table_value_from_item (table, item);
 }
 
 /**
@@ -522,6 +557,23 @@ gvdb_table_unref (GvdbTable *file)
     }
 }
 
+/**
+ * gvdb_table_is_valid:
+ * @table: a #GvdbTable
+ * @returns: %TRUE if @table is still valid
+ *
+ * Checks if the table is still valid.
+ *
+ * An on-disk GVDB can be marked as invalid.  This happens when the file
+ * has been replaced.  The appropriate action is typically to reopen the
+ * file.
+ **/
+gboolean
+gvdb_table_is_valid (GvdbTable *table)
+{
+  return !!*table->data;
+}
+
 void
 gvdb_table_walk (GvdbTable         *table,
                  const gchar       *key,
@@ -560,7 +612,7 @@ gvdb_table_walk (GvdbTable         *table,
                 {
                   if (open_func (name, name_len, user_data))
                     {
-                      guint length;
+                      guint length = 0;
 
                       index++;
                       g_assert (index < 64);
@@ -579,6 +631,15 @@ gvdb_table_walk (GvdbTable         *table,
 
                   if (value != NULL)
                     {
+                      if (table->byteswapped)
+                        {
+                          GVariant *tmp;
+
+                          tmp = g_variant_byteswap (value);
+                          g_variant_unref (value);
+                          value = tmp;
+                        }
+
                       value_func (name, name_len, value, user_data);
                       g_variant_unref (value);
                     }

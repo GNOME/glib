@@ -8,11 +8,11 @@
   <para>
     The two previous chapters discussed the details of GLib's Dynamic Type System
     and its signal control system. The GObject library also contains an implementation
-    for a base fundamental type named <type><link linkend="GObject">GObject</link></type>.
+    for a base fundamental type named <link linkend="GObject"><type>GObject</type></link>.
   </para>
 
   <para>
-    <type><link linkend="GObject">GObject</link></type> is a fundamental classed instantiable type. It implements:
+    <link linkend="GObject"><type>GObject</type></link> is a fundamental classed instantiable type. It implements:
     <itemizedlist>
       <listitem><para>Memory management with reference counting</para></listitem>
       <listitem><para>Construction/Destruction of instances</para></listitem>
@@ -20,7 +20,7 @@
       <listitem><para>Easy use of signals</para></listitem>
     </itemizedlist>
     All the GNOME libraries which use the GLib type system (like GTK+ and GStreamer)
-    inherit from <type><link linkend="GObject">GObject</link></type> which is why it is important to understand
+    inherit from <link linkend="GObject"><type>GObject</type></link> which is why it is important to understand
     the details of how it works.
   </para>
 
@@ -97,10 +97,7 @@ maman_bar_constructor (GType                  gtype,
 
   {
     /* Always chain up to the parent constructor */
-    MamanBarClass *klass;
-    GObjectClass *parent_class;  
-    parent_class = G_OBJECT_CLASS (maman_bar_parent_class);
-    obj = parent_class-&gt;constructor (gtype, n_properties, properties);
+    obj = G_OBJECT_CLASS (maman_bar_parent_class)-&gt;constructor (gtype, n_properties, properties);
   }
   
   /* update the object state depending on constructor properties */
@@ -459,7 +456,7 @@ void g_object_run_dispose         (GObject     *object);
       <para>
         This two-step destruction process is very useful to break reference counting cycles.
         While the detection of the cycles is up to the external code, once the cycles have been
-        detected, the external code can invoke <function><link linkend="g-object-dispose">g_object_dispose</link></function> which 
+        detected, the external code can invoke <function><link linkend="g-object-run-dispose">g_object_run_dispose</link></function> which 
         will indeed break any existing cycles since it will run the dispose handler associated
         to the object and thus release all references to other objects.
       </para>
@@ -469,7 +466,7 @@ void g_object_run_dispose         (GObject     *object);
         we stated a bit sooner: the dispose handler can be invoked multiple times. Let's say we
         have a reference count cycle: object A references B which itself references object A.
         Let's say we have detected the cycle and we want to destroy the two objects. One way to 
-        do this would be to invoke <function><link linkend="g-object-dispose">g_object_dispose</link></function> on one of the 
+        do this would be to invoke <function><link linkend="g-object-run-dispose">g_object_run_dispose</link></function> on one of the 
         objects.
       </para>
   
@@ -644,13 +641,14 @@ g_value_unset (&amp;val);
     </para>
   
     <para>
-      After transformation, the <type><link linkend="GValue">GValue</link></type> is validated by 
+      After transformation, the <link linkend="GValue"><type>GValue</type></link> is validated by 
       <function><link linkend="g-param-value-validate">g_param_value_validate</link></function> which makes sure the user's
-      data stored in the <type><link linkend="GValue">GValue</link></type> matches the characteristics specified by
-      the property's <type><link linkend="GParamSpec">GParamSpec</link></type>.  Here, the <type><link linkend="GParamSpec">GParamSpec</link></type> we 
+      data stored in the <link linkend="GValue"><type>GValue</type></link> matches the characteristics specified by
+      the property's <link linkend="GParamSpec"><type>GParamSpec</type></link>.
+      Here, the <link linkend="GParamSpec"><type>GParamSpec</type></link> we 
       provided in class_init has a validation function which makes sure that the GValue
       contains a value which respects the minimum and maximum bounds of the 
-      <type><link linkend="GParamSpec">GParamSpec</link></type>. In the example above, the client's GValue does not
+      <link linkend="GParamSpec"><type>GParamSpec</type></link>. In the example above, the client's GValue does not
       respect these constraints (it is set to 11, while the maximum is 10). As such, the
       <function><link linkend="g-object-set-property">g_object_set_property</link></function> function will return with an error.
     </para>
@@ -660,11 +658,11 @@ g_value_unset (&amp;val);
       would have proceeded with calling the object's set_property class method. Here, since our
       implementation of Foo did override this method, the code path would jump to
       <function>foo_set_property</function> after having retrieved from the 
-      <type><link linkend="GParamSpec">GParamSpec</link></type> the <emphasis>param_id</emphasis>
+      <link linkend="GParamSpec"><type>GParamSpec</type></link> the <emphasis>param_id</emphasis>
       <footnote>
         <para>
           It should be noted that the param_id used here need only to uniquely identify each 
-          <type><link linkend="GParamSpec">GParamSpec</link></type> within the <type><link linkend="FooClass">FooClass</link></type> such that the switch
+          <link linkend="GParamSpec"><type>GParamSpec</type></link> within the <link linkend="FooClass"><type>FooClass</type></link> such that the switch
           used in the set and get methods actually works. Of course, this locally-unique 
           integer is purely an optimization: it would have been possible to use a set of 
           <emphasis>if (strcmp (a, b) == 0) {} else if (strcmp (a, b) == 0) {}</emphasis> statements.

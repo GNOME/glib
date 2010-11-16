@@ -21,8 +21,8 @@ m4_define(glib_configure_ac)
 # set glib_binary_age _and_ glib_interface_age to 0.
 #
 m4_define([glib_major_version], [2])
-m4_define([glib_minor_version], [25])
-m4_define([glib_micro_version], [16])
+m4_define([glib_minor_version], [27])
+m4_define([glib_micro_version], [4])
 m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
@@ -955,7 +955,6 @@ AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strn
 AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link statvfs statfs utimes getgrgid getpwuid)
 AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getmntinfo)
 # Check for high-resolution sleep functions
-AC_CHECK_FUNCS(nanosleep nsleep)
 AC_CHECK_FUNCS(splice)
 
 AC_CHECK_HEADERS(crt_externs.h)
@@ -2384,8 +2383,10 @@ AC_CHECK_FUNCS(clock_gettime, [], [
     AC_DEFINE(HAVE_CLOCK_GETTIME, 1)
     G_THREAD_LIBS="$G_THREAD_LIBS -lrt"
     G_THREAD_LIBS_FOR_GTHREAD="$G_THREAD_LIBS_FOR_GTHREAD -lrt"
+    GLIB_RT_LIBS="-lrt"
   ])
 ])
+AC_SUBST(GLIB_RT_LIBS)
 
 AC_CACHE_CHECK(for monotonic clocks,
     glib_cv_monotonic_clock,AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
@@ -2785,11 +2786,12 @@ if test "x$enable_dtrace" != xno; then
       if test "x$enable_dtrace" = xyes; then
         AC_MSG_ERROR([dtrace not found])
       fi
+    else
+      AC_CHECK_HEADER([sys/sdt.h],have_dtrace=yes,
+                      [if test "x$enable_dtrace" = xyes; then
+                        AC_MSG_ERROR([dtrace support needs sys/sdt.h header])
+                       fi])
     fi
-    AC_CHECK_HEADER([sys/sdt.h],have_dtrace=yes,
-                    [if test "x$enable_dtrace" = xyes; then
-                      AC_MSG_ERROR([dtrace support needs sys/sdt.h header])
-                     fi])
   fi
 else
   AC_MSG_RESULT([no])

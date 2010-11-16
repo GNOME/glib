@@ -153,8 +153,7 @@ _g_socket_read_with_control_messages_ready (GSocket      *socket,
   else
     {
       g_assert (error != NULL);
-      g_simple_async_result_set_from_error (data->simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (data->simple, error);
     }
 
   if (data->from_mainloop)
@@ -876,7 +875,8 @@ static void
 message_to_write_data_free (MessageToWriteData *data)
 {
   _g_dbus_worker_unref (data->worker);
-  g_object_unref (data->message);
+  if (data->message)
+    g_object_unref (data->message);
   g_free (data->blob);
   g_free (data);
 }
@@ -907,8 +907,7 @@ write_message_async_cb (GObject      *source_object,
                                                 &error);
   if (bytes_written == -1)
     {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete (simple);
       g_object_unref (simple);
       goto out;
@@ -1027,8 +1026,7 @@ write_message_continue_writing (MessageToWriteData *data)
               g_error_free (error);
               goto out;
             }
-          g_simple_async_result_set_from_error (simple, error);
-          g_error_free (error);
+          g_simple_async_result_take_error (simple, error);
           g_simple_async_result_complete (simple);
           g_object_unref (simple);
           goto out;
@@ -1443,22 +1441,14 @@ _g_dbus_worker_new (GIOStream                              *stream,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* This can be called from any thread - frees worker - guarantees no callbacks
- * will ever be issued again
+/* This can be called from any thread - frees worker. Note that
+ * callbacks might still happen if called from another thread than the
+ * worker - use your own synchronization primitive in the callbacks.
  */
 void
 _g_dbus_worker_stop (GDBusWorker *worker)
 {
-  /* If we're called in the worker thread it means we are called from
-   * a worker callback. This is fine, we just can't lock in that case since
-   * we're already holding the lock...
-   */
-  if (g_thread_self () != worker->thread)
-    g_mutex_lock (worker->read_lock);
   worker->stopped = TRUE;
-  if (g_thread_self () != worker->thread)
-    g_mutex_unlock (worker->read_lock);
-
   g_cancellable_cancel (worker->cancellable);
   _g_dbus_worker_unref (worker);
 }

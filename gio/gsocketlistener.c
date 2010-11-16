@@ -581,7 +581,7 @@ accept_callback (GSocket      *socket,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Returns: a #GSocket on success, %NULL on error.
+ * Returns: (transfer full): a #GSocket on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -655,7 +655,7 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -710,8 +710,7 @@ accept_ready (GSocket      *accept_socket,
     }
   else
     {
-      g_simple_async_result_set_from_error (data->simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (data->simple, error);
     }
 
   g_simple_async_result_complete_in_idle (data->simple);
@@ -748,10 +747,9 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
 
   if (!check_listener (listener, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (listener),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (listener),
 					    callback, user_data,
 					    error);
-      g_error_free (error);
       return;
     }
 
@@ -777,7 +775,7 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
  *
  * Finishes an async accept operation. See g_socket_listener_accept_socket_async()
  *
- * Returns: a #GSocket on success, %NULL on error.
+ * Returns: (transfer full): a #GSocket on success, %NULL on error.
  *
  * Since: 2.22
  */
@@ -844,7 +842,7 @@ g_socket_listener_accept_async (GSocketListener     *listener,
  *
  * Finishes an async accept operation. See g_socket_listener_accept_async()
  *
- * Returns: a #GSocketConnection on success, %NULL on error.
+ * Returns: (transfer full): a #GSocketConnection on success, %NULL on error.
  *
  * Since: 2.22
  */

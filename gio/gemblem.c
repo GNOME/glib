@@ -220,7 +220,7 @@ g_emblem_new_with_origin (GIcon         *icon,
  *
  * Gives back the icon from @emblem.
  *
- * Returns: a #GIcon. The returned object belongs to the emblem
+ * Returns: (transfer full): a #GIcon. The returned object belongs to the emblem
  *    and should not be modified or freed.
  *
  * Since: 2.18

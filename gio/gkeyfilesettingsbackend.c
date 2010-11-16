@@ -581,7 +581,7 @@ dir_changed (GFileMonitor       *monitor,
  * @root_path: the path under which all settings keys appear
  * @root_group: (allow-none): the group name corresponding to
  *              @root_path, or %NULL
- * @returns: a keyfile-backed #GSettingsBackend
+ * @returns: (transfer full): a keyfile-backed #GSettingsBackend
  *
  * Creates a keyfile-backed #GSettingsBackend.
  *

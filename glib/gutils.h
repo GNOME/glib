@@ -153,6 +153,8 @@ _g_win32_get_system_data_dirs (void)
 
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_config_dirs (void);
 
+const gchar * g_get_user_runtime_dir (void);
+
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_language_names (void);
 
 /**
@@ -258,6 +260,7 @@ gboolean              g_setenv             (const gchar *variable,
 					    gboolean     overwrite);
 void                  g_unsetenv           (const gchar *variable);
 gchar**               g_listenv            (void);
+gchar**               g_get_environ        (void);
 
 /* private */
 const gchar*	     _g_getenv_nomalloc	   (const gchar	*variable,

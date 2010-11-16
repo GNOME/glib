@@ -264,8 +264,10 @@ struct _GMainContext
 
   GPollFunc poll_func;
 
-  GTimeVal current_time;
-  gboolean time_is_current;
+  gint64   time;
+  gboolean time_is_fresh;
+  gint64   real_time;
+  gboolean real_time_is_fresh;
 };
 
 struct _GSourceCallback
@@ -286,9 +288,9 @@ struct _GMainLoop
 struct _GTimeoutSource
 {
   GSource     source;
-  GTimeVal    expiration;
+  gint64      expiration;
   guint       interval;
-  guint	      granularity;
+  gboolean    seconds;
 };
 
 struct _GChildWatchSource
@@ -390,8 +392,6 @@ static gint child_watch_wake_up_pipe[2] = {0, 0};
 #endif /* !G_OS_WIN32 */
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
-
-static gint timer_perturb = -1;
 
 GSourceFuncs g_timeout_funcs =
 {
@@ -608,7 +608,8 @@ g_main_context_new (void)
   
   context->pending_dispatches = g_ptr_array_new ();
   
-  context->time_is_current = FALSE;
+  context->time_is_fresh = FALSE;
+  context->real_time_is_fresh = FALSE;
   
 #ifdef G_THREADS_ENABLED
   if (g_thread_supported ())
@@ -1776,8 +1777,10 @@ g_source_remove_by_funcs_user_data (GSourceFuncs *funcs,
 /**
  * g_get_current_time:
  * @result: #GTimeVal structure in which to store current time.
- * 
+ *
  * Equivalent to the UNIX gettimeofday() function, but portable.
+ *
+ * You may find g_get_real_time() to be more convenient.
  **/
 void
 g_get_current_time (GTimeVal *result)
@@ -1809,6 +1812,121 @@ g_get_current_time (GTimeVal *result)
 
   result->tv_sec = time64 / 1000000;
   result->tv_usec = time64 % 1000000;
+#endif
+}
+
+/**
+ * g_get_real_time:
+ *
+ * Queries the system wall-clock time.
+ *
+ * This call is functionally equivalent to g_get_current_time() except
+ * that the return value is often more convenient than dealing with a
+ * #GTimeVal.
+ *
+ * You should only use this call if you are actually interested in the real
+ * wall-clock time.  g_get_monotonic_time() is probably more useful for
+ * measuring intervals.
+ *
+ * Returns: the number of microseconds since January 1, 1970 UTC.
+ *
+ * Since: 2.28
+ **/
+gint64
+g_get_real_time (void)
+{
+  GTimeVal tv;
+
+  g_get_current_time (&tv);
+
+  return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
+}
+
+/**
+ * g_get_monotonic_time:
+ *
+ * Queries the system monotonic time, if available.
+ *
+ * On POSIX systems with clock_gettime() and %CLOCK_MONOTONIC this call
+ * is a very shallow wrapper for that.  Otherwise, we make a best effort
+ * that probably involves returning the wall clock time (with at least
+ * microsecond accuracy, subject to the limitations of the OS kernel).
+ *
+ * Note that, on Windows, "limitations of the OS kernel" is a rather
+ * substantial statement.  Depending on the configuration of the system,
+ * the wall clock time is updated as infrequently as 64 times a second
+ * (which is approximately every 16ms).
+ *
+ * Returns: the monotonic time, in microseconds
+ *
+ * Since: 2.28
+ **/
+gint64
+g_get_monotonic_time (void)
+{
+#ifdef HAVE_CLOCK_GETTIME
+  /* librt clock_gettime() is our first choice */
+  {
+    static int clockid = CLOCK_REALTIME;
+    struct timespec ts;
+
+#ifdef HAVE_MONOTONIC_CLOCK
+    /* We have to check if we actually have monotonic clock support.
+     *
+     * There is no thread safety issue here since there is no harm if we
+     * check twice.
+     */
+    {
+      static gboolean checked;
+
+      if G_UNLIKELY (!checked)
+        {
+          if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
+            clockid = CLOCK_MONOTONIC;
+          checked = TRUE;
+        }
+    }
+#endif
+
+    clock_gettime (clockid, &ts);
+
+    /* In theory monotonic time can have any epoch.
+     *
+     * glib presently assumes the following:
+     *
+     *   1) The epoch comes some time after the birth of Jesus of Nazareth, but
+     *      not more than 10000 years later.
+     *
+     *   2) The current time also falls sometime within this range.
+     *
+     * These two reasonable assumptions leave us with a maximum deviation from
+     * the epoch of 10000 years, or 315569520000000000 seconds.
+     *
+     * If we restrict ourselves to this range then the number of microseconds
+     * will always fit well inside the constraints of a int64 (by a factor of
+     * about 29).
+     *
+     * If you actually hit the following assertion, probably you should file a
+     * bug against your operating system for being excessively silly.
+     **/
+    g_assert (G_GINT64_CONSTANT (-315569520000000000) < ts.tv_sec &&
+              ts.tv_sec < G_GINT64_CONSTANT (315569520000000000));
+
+    return (((gint64) ts.tv_sec) * 1000000) + (ts.tv_nsec / 1000);
+  }
+#else
+  /* It may look like we are discarding accuracy on Windows (since its
+   * current time is expressed in 100s of nanoseconds) but according to
+   * many sources, the time is only updated 64 times per second, so
+   * microsecond accuracy is more than enough.
+   */
+  {
+    GTimeVal tv;
+
+    g_get_current_time (&tv);
+
+    return (((gint64) tv.tv_sec) * 1000000) + tv.tv_usec;
+  }
 #endif
 }
 
@@ -2397,7 +2515,8 @@ g_main_context_prepare (GMainContext *context,
   
   LOCK_CONTEXT (context);
 
-  context->time_is_current = FALSE;
+  context->time_is_fresh = FALSE;
+  context->real_time_is_fresh = FALSE;
 
   if (context->in_check_or_prepare)
     {
@@ -2561,7 +2680,10 @@ g_main_context_query (GMainContext *context,
     {
       *timeout = context->timeout;
       if (*timeout != 0)
-	context->time_is_current = FALSE;
+        {
+	  context->time_is_fresh = FALSE;
+	  context->real_time_is_fresh = FALSE;
+        }
     }
   
   UNLOCK_CONTEXT (context);
@@ -3284,6 +3406,8 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
  * calling g_get_current_time() directly is that when 
  * checking multiple sources, GLib can cache a single value
  * instead of having to repeatedly get the system time.
+ *
+ * Deprecated: 2.28: use g_source_get_time() instead
  **/
 void
 g_source_get_current_time (GSource  *source,
@@ -3297,15 +3421,57 @@ g_source_get_current_time (GSource  *source,
 
   LOCK_CONTEXT (context);
 
-  if (!context->time_is_current)
+  if (!context->real_time_is_fresh)
     {
-      g_get_current_time (&context->current_time);
-      context->time_is_current = TRUE;
+      context->real_time = g_get_real_time ();
+      context->real_time_is_fresh = TRUE;
     }
   
-  *timeval = context->current_time;
+  timeval->tv_sec = context->real_time / 1000000;
+  timeval->tv_usec = context->real_time % 1000000;
   
   UNLOCK_CONTEXT (context);
+}
+
+/**
+ * g_source_get_time:
+ * @source: a #GSource
+ *
+ * Gets the time to be used when checking this source. The advantage of
+ * calling this function over calling g_get_monotonic_time() directly is
+ * that when checking multiple sources, GLib can cache a single value
+ * instead of having to repeatedly get the system monotonic time.
+ *
+ * The time here is the system monotonic time, if available, or some
+ * other reasonable alternative otherwise.  See g_get_monotonic_time().
+ *
+ * Returns: the monotonic time in microseconds
+ *
+ * Since: 2.28
+ **/
+gint64
+g_source_get_time (GSource *source)
+{
+  GMainContext *context;
+  gint64 result;
+
+  g_return_val_if_fail (source->context != NULL, 0);
+
+  context = source->context;
+
+  LOCK_CONTEXT (context);
+
+  if (!context->time_is_fresh)
+    {
+      context->time = g_get_monotonic_time ();
+      context->time_is_fresh = TRUE;
+    }
+
+  result = context->time;
+
+  UNLOCK_CONTEXT (context);
+
+  return result;
 }
 
 /**
@@ -3439,160 +3605,92 @@ g_main_context_is_owner (GMainContext *context)
 
 static void
 g_timeout_set_expiration (GTimeoutSource *timeout_source,
-			  GTimeVal       *current_time)
+                          gint64          current_time)
 {
-  guint seconds = timeout_source->interval / 1000;
-  guint msecs = timeout_source->interval - seconds * 1000;
+  timeout_source->expiration = current_time + timeout_source->interval * 1000;
 
-  timeout_source->expiration.tv_sec = current_time->tv_sec + seconds;
-  timeout_source->expiration.tv_usec = current_time->tv_usec + msecs * 1000;
-  if (timeout_source->expiration.tv_usec >= 1000000)
+  if (timeout_source->seconds)
     {
-      timeout_source->expiration.tv_usec -= 1000000;
-      timeout_source->expiration.tv_sec++;
-    }
-  if (timer_perturb==-1)
-    {
-      /*
-       * we want a per machine/session unique 'random' value; try the dbus
-       * address first, that has a UUID in it. If there is no dbus, use the
-       * hostname for hashing.
-       */
-      const char *session_bus_address = g_getenv ("DBUS_SESSION_BUS_ADDRESS");
-      if (!session_bus_address)
-        session_bus_address = g_getenv ("HOSTNAME");
-      if (session_bus_address)
-        timer_perturb = ABS ((gint) g_str_hash (session_bus_address));
-      else
-        timer_perturb = 0;
-    }
-  if (timeout_source->granularity)
-    {
-      gint remainder;
-      gint gran; /* in usecs */
-      gint perturb;
+      static gint timer_perturb = -1;
 
-      gran = timeout_source->granularity * 1000;
-      perturb = timer_perturb % gran;
-      /*
-       * We want to give each machine a per machine pertubation;
-       * shift time back first, and forward later after the rounding
-       */
-
-      timeout_source->expiration.tv_usec -= perturb;
-      if (timeout_source->expiration.tv_usec < 0)
+      if (timer_perturb == -1)
         {
-          timeout_source->expiration.tv_usec += 1000000;
-          timeout_source->expiration.tv_sec--;
+          /*
+           * we want a per machine/session unique 'random' value; try the dbus
+           * address first, that has a UUID in it. If there is no dbus, use the
+           * hostname for hashing.
+           */
+          const char *session_bus_address = g_getenv ("DBUS_SESSION_BUS_ADDRESS");
+          if (!session_bus_address)
+            session_bus_address = g_getenv ("HOSTNAME");
+          if (session_bus_address)
+            timer_perturb = ABS ((gint) g_str_hash (session_bus_address)) % 1000000;
+          else
+            timer_perturb = 0;
         }
 
-      remainder = timeout_source->expiration.tv_usec % gran;
-      if (remainder >= gran/4) /* round up */
-        timeout_source->expiration.tv_usec += gran;
-      timeout_source->expiration.tv_usec -= remainder;
-      /* shift back */
-      timeout_source->expiration.tv_usec += perturb;
+      /* We want the microseconds part of the timeout to land on the
+       * 'timer_perturb' mark, but we need to make sure we don't try to
+       * set the timeout in the past.  We do this by ensuring that we
+       * always only *increase* the expiration time by adding a full
+       * second in the case that the microsecond portion decreases.
+       */
+      if (timer_perturb < timeout_source->expiration % 1000000)
+        timeout_source->expiration += 1000000;
 
-      /* the rounding may have overflown tv_usec */
-      while (timeout_source->expiration.tv_usec > 1000000)
-        {
-          timeout_source->expiration.tv_usec -= 1000000;
-          timeout_source->expiration.tv_sec++;
-        }
+      timeout_source->expiration =
+        ((timeout_source->expiration / 1000000) * 1000000) + timer_perturb;
     }
 }
 
 static gboolean
 g_timeout_prepare (GSource *source,
-		   gint    *timeout)
+                   gint    *timeout)
 {
-  glong sec;
-  glong msec;
-  GTimeVal current_time;
-  
-  GTimeoutSource *timeout_source = (GTimeoutSource *)source;
+  GTimeoutSource *timeout_source = (GTimeoutSource *) source;
+  gint64 now = g_source_get_time (source);
 
-  g_source_get_current_time (source, &current_time);
-
-  sec = timeout_source->expiration.tv_sec - current_time.tv_sec;
-  msec = (timeout_source->expiration.tv_usec - current_time.tv_usec) / 1000;
-
-  /* We do the following in a rather convoluted fashion to deal with
-   * the fact that we don't have an integral type big enough to hold
-   * the difference of two timevals in millseconds.
-   */
-  if (sec < 0 || (sec == 0 && msec < 0))
-    msec = 0;
-  else
+  if (now < timeout_source->expiration)
     {
-      glong interval_sec = timeout_source->interval / 1000;
-      glong interval_msec = timeout_source->interval % 1000;
-
-      if (msec < 0)
-	{
-	  msec += 1000;
-	  sec -= 1;
-	}
-      
-      if (sec > interval_sec ||
-	  (sec == interval_sec && msec > interval_msec))
-	{
-	  /* The system time has been set backwards, so we
-	   * reset the expiration time to now + timeout_source->interval;
-	   * this at least avoids hanging for long periods of time.
-	   */
-	  g_timeout_set_expiration (timeout_source, &current_time);
-	  msec = MIN (G_MAXINT, timeout_source->interval);
-	}
-      else
-	{
-	  msec = MIN (G_MAXINT, (guint)msec + 1000 * (guint)sec);
-	}
+      /* Round up to ensure that we don't try again too early */
+      *timeout = (timeout_source->expiration - now + 999) / 1000;
+      return FALSE;
     }
 
-  *timeout = (gint)msec;
-  
-  return msec == 0;
+  *timeout = 0;
+  return TRUE;
 }
 
 static gboolean 
 g_timeout_check (GSource *source)
 {
-  GTimeVal current_time;
-  GTimeoutSource *timeout_source = (GTimeoutSource *)source;
+  GTimeoutSource *timeout_source = (GTimeoutSource *) source;
+  gint64 now = g_source_get_time (source);
 
-  g_source_get_current_time (source, &current_time);
-  
-  return ((timeout_source->expiration.tv_sec < current_time.tv_sec) ||
-	  ((timeout_source->expiration.tv_sec == current_time.tv_sec) &&
-	   (timeout_source->expiration.tv_usec <= current_time.tv_usec)));
+  return timeout_source->expiration <= now;
 }
 
 static gboolean
 g_timeout_dispatch (GSource     *source,
-		    GSourceFunc  callback,
-		    gpointer     user_data)
+                    GSourceFunc  callback,
+                    gpointer     user_data)
 {
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
+  gboolean again;
 
   if (!callback)
     {
       g_warning ("Timeout source dispatched without callback\n"
-		 "You must call g_source_set_callback().");
+                 "You must call g_source_set_callback().");
       return FALSE;
     }
- 
-  if (callback (user_data))
-    {
-      GTimeVal current_time;
 
-      g_source_get_current_time (source, &current_time);
-      g_timeout_set_expiration (timeout_source, &current_time);
+  again = callback (user_data);
 
-      return TRUE;
-    }
-  else
-    return FALSE;
+  if (again)
+    g_timeout_set_expiration (timeout_source, g_source_get_time (source));
+
+  return again;
 }
 
 /**
@@ -3612,13 +3710,10 @@ g_timeout_source_new (guint interval)
 {
   GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
-  GTimeVal current_time;
 
   timeout_source->interval = interval;
+  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
 
-  g_get_current_time (&current_time);
-  g_timeout_set_expiration (timeout_source, &current_time);
-  
   return source;
 }
 
@@ -3644,13 +3739,11 @@ g_timeout_source_new_seconds (guint interval)
 {
   GSource *source = g_source_new (&g_timeout_funcs, sizeof (GTimeoutSource));
   GTimeoutSource *timeout_source = (GTimeoutSource *)source;
-  GTimeVal current_time;
 
-  timeout_source->interval = 1000*interval;
-  timeout_source->granularity = 1000;
+  timeout_source->interval = 1000 * interval;
+  timeout_source->seconds = TRUE;
 
-  g_get_current_time (&current_time);
-  g_timeout_set_expiration (timeout_source, &current_time);
+  g_timeout_set_expiration (timeout_source, g_get_monotonic_time ());
 
   return source;
 }
@@ -4355,4 +4448,114 @@ gboolean
 g_idle_remove_by_data (gpointer data)
 {
   return g_source_remove_by_funcs_user_data (&g_idle_funcs, data);
+}
+
+/**
+ * g_main_context_invoke:
+ * @context: a #GMainContext, or %NULL
+ * @function: function to call
+ * @data: data to pass to @function
+ *
+ * Invokes a function in such a way that @context is owned during the
+ * invocation of @function.
+ *
+ * If @context is %NULL then the global default main context — as
+ * returned by g_main_context_default() — is used.
+ *
+ * If @context is owned by the current thread, @function is called
+ * directly.  Otherwise, if @context is the thread-default main context
+ * of the current thread and g_main_context_acquire() succeeds, then
+ * @function is called and g_main_context_release() is called
+ * afterwards.
+ *
+ * In any other case, an idle source is created to call @function and
+ * that source is attached to @context (presumably to be run in another
+ * thread).  The idle source is attached with #G_PRIORITY_DEFAULT
+ * priority.  If you want a different priority, use
+ * g_main_context_invoke_full().
+ *
+ * Note that, as with normal idle functions, @function should probably
+ * return %FALSE.  If it returns %TRUE, it will be continuously run in a
+ * loop (and may prevent this call from returning).
+ *
+ * Since: 2.28
+ **/
+void
+g_main_context_invoke (GMainContext *context,
+                       GSourceFunc   function,
+                       gpointer      data)
+{
+  g_main_context_invoke_full (context,
+                              G_PRIORITY_DEFAULT,
+                              function, data, NULL);
+}
+
+/**
+ * g_main_context_invoke_full:
+ * @context: a #GMainContext, or %NULL
+ * @priority: the priority at which to run @function
+ * @function: function to call
+ * @data: data to pass to @function
+ * @notify: a function to call when @data is no longer in use, or %NULL.
+ *
+ * Invokes a function in such a way that @context is owned during the
+ * invocation of @function.
+ *
+ * This function is the same as g_main_context_invoke() except that it
+ * lets you specify the priority incase @function ends up being
+ * scheduled as an idle and also lets you give a #GDestroyNotify for @data.
+ *
+ * @notify should not assume that it is called from any particular
+ * thread or with any particular context acquired.
+ *
+ * Since: 2.28
+ **/
+void
+g_main_context_invoke_full (GMainContext   *context,
+                            gint            priority,
+                            GSourceFunc     function,
+                            gpointer        data,
+                            GDestroyNotify  notify)
+{
+  g_return_if_fail (function != NULL);
+
+  if (!context)
+    context = g_main_context_default ();
+
+  if (g_main_context_is_owner (context))
+    {
+      while (function (data));
+      if (notify != NULL)
+        notify (data);
+    }
+
+  else
+    {
+      GMainContext *thread_default;
+
+      thread_default = g_main_context_get_thread_default ();
+
+      if (!thread_default)
+        thread_default = g_main_context_default ();
+
+      if (thread_default == context && g_main_context_acquire (context))
+        {
+          while (function (data));
+
+          g_main_context_release (context);
+
+          if (notify != NULL)
+            notify (data);
+        }
+      else
+        {
+          GSource *source;
+
+          source = g_idle_source_new ();
+          g_source_set_priority (source, priority);
+          g_source_set_callback (source, function, data, notify);
+          g_source_attach (source, context);
+          g_source_unref (source);
+        }
+    }
 }

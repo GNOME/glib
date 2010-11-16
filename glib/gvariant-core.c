@@ -503,11 +503,33 @@ g_variant_new_from_buffer (const GVariantType *type,
                            gboolean            trusted)
 {
   GVariant *value;
+  guint alignment;
+  gsize size;
 
   value = g_variant_alloc (type, TRUE, trusted);
+
   value->contents.serialised.buffer = g_buffer_ref (buffer);
-  value->contents.serialised.data = buffer->data;
-  value->size = buffer->size;
+
+  g_variant_type_info_query (value->type_info,
+                             &alignment, &size);
+
+  if (size && buffer->size != size)
+    {
+      /* Creating a fixed-sized GVariant with a buffer of the wrong
+       * size.
+       *
+       * We should do the equivalent of pulling a fixed-sized child out
+       * of a brozen container (ie: data is NULL size is equal to the correct
+       * fixed size).
+       */
+      value->contents.serialised.data = NULL;
+      value->size = size;
+    }
+  else
+    {
+      value->contents.serialised.data = buffer->data;
+      value->size = buffer->size;
+    }
 
   return value;
 }
@@ -825,41 +847,50 @@ GVariant *
 g_variant_get_child_value (GVariant *value,
                            gsize     index_)
 {
-  GVariant *child = NULL;
-
-  g_variant_lock (value);
-
-  if (value->state & STATE_SERIALISED)
+  if (~g_atomic_int_get (&value->state) & STATE_SERIALISED)
     {
-      GVariantSerialised serialised = {
-        value->type_info,
-        (gpointer) value->contents.serialised.data,
-        value->size
-      };
-      GVariantSerialised s_child;
+      g_variant_lock (value);
 
-      /* get the serialiser to extract the serialised data for the child
-       * from the serialised data for the container
-       */
-      s_child = g_variant_serialised_get_child (serialised, index_);
+      if (~value->state & STATE_SERIALISED)
+        {
+          GVariant *child;
 
-      /* create a new serialised instance out of it */
-      child = g_slice_new (GVariant);
-      child->type_info = s_child.type_info;
-      child->state = (value->state & STATE_TRUSTED) |
-                     STATE_SERIALISED;
-      child->size = s_child.size;
-      child->ref_count = 1;
-      child->contents.serialised.buffer =
-        g_buffer_ref (value->contents.serialised.buffer);
-      child->contents.serialised.data = s_child.data;
-     }
-  else
-    child = g_variant_ref (value->contents.tree.children[index_]);
+          child = g_variant_ref (value->contents.tree.children[index_]);
+          g_variant_unlock (value);
 
-  g_variant_unlock (value);
+          return child;
+        }
 
-  return child;
+      g_variant_unlock (value);
+    }
+
+  {
+    GVariantSerialised serialised = {
+      value->type_info,
+      (gpointer) value->contents.serialised.data,
+      value->size
+    };
+    GVariantSerialised s_child;
+    GVariant *child;
+
+    /* get the serialiser to extract the serialised data for the child
+     * from the serialised data for the container
+     */
+    s_child = g_variant_serialised_get_child (serialised, index_);
+
+    /* create a new serialised instance out of it */
+    child = g_slice_new (GVariant);
+    child->type_info = s_child.type_info;
+    child->state = (value->state & STATE_TRUSTED) |
+                   STATE_SERIALISED;
+    child->size = s_child.size;
+    child->ref_count = 1;
+    child->contents.serialised.buffer =
+      g_buffer_ref (value->contents.serialised.buffer);
+    child->contents.serialised.data = s_child.data;
+
+    return child;
+  }
 }
 
 /**

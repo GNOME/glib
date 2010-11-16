@@ -32,6 +32,8 @@
 #include <crt_externs.h>
 #endif
 
+#undef G_DISABLE_DEPRECATED
+
 #include "gcontenttypeprivate.h"
 #include "gdesktopappinfo.h"
 #include "gfile.h"
@@ -1635,7 +1637,7 @@ g_desktop_app_info_delete (GAppInfo *appinfo)
  *
  * Creates a new #GAppInfo from the given information.
  *
- * Returns: new #GAppInfo for given command.
+ * Returns: (transfer full): new #GAppInfo for given command.
  **/
 GAppInfo *
 g_app_info_create_from_commandline (const char           *commandline,
@@ -1838,56 +1840,17 @@ g_app_info_get_default_for_type (const char *content_type,
 GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
 {
-  static gsize lookup = 0;
-  
-  if (g_once_init_enter (&lookup))
-    {
-      gsize setup_value = 1;
-      GDesktopAppInfoLookup *lookup_instance;
-      const char *use_this;
-      GIOExtensionPoint *ep;
-      GIOExtension *extension;
-      GList *l;
+  GAppInfo *app_info;
+  char *content_type, *scheme_down;
 
-      use_this = g_getenv ("GIO_USE_URI_ASSOCIATION");
-      
-      /* Ensure vfs in modules loaded */
-      _g_io_modules_ensure_loaded ();
-      
-      ep = g_io_extension_point_lookup (G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME);
+  scheme_down = g_ascii_strdown (uri_scheme, -1);
+  content_type = g_strdup_printf ("x-scheme-handler/%s", scheme_down);
+  g_free (scheme_down);
+  app_info = g_app_info_get_default_for_type (content_type, FALSE);
+  g_free (content_type);
 
-      lookup_instance = NULL;
-      if (use_this)
-	{
-	  extension = g_io_extension_point_get_extension_by_name (ep, use_this);
-	  if (extension)
-	    lookup_instance = g_object_new (g_io_extension_get_type (extension), NULL);
-	}
-      
-      if (lookup_instance == NULL)
-	{
-	  for (l = g_io_extension_point_get_extensions (ep); l != NULL; l = l->next)
-	    {
-	      extension = l->data;
-	      lookup_instance = g_object_new (g_io_extension_get_type (extension), NULL);
-	      if (lookup_instance != NULL)
-		break;
-	    }
-	}
-
-      if (lookup_instance != NULL)
-	setup_value = (gsize)lookup_instance;
-      
-      g_once_init_leave (&lookup, setup_value);
-    }
-
-  if (lookup == 1)
-    return NULL;
-
-  return g_desktop_app_info_lookup_get_default_for_uri_scheme (G_DESKTOP_APP_INFO_LOOKUP (lookup),
-							       uri_scheme);
+  return app_info;
 }
-
 
 static void
 get_apps_from_dir (GHashTable *apps, 
@@ -2701,7 +2664,9 @@ g_desktop_app_info_lookup_default_init (GDesktopAppInfoLookupInterface *iface)
  * in a GIO module. There is no reason for applications to use it
  * directly. Applications should use g_app_info_get_default_for_uri_scheme().
  * 
- * Returns: #GAppInfo for given @uri_scheme or %NULL on error.
+ * Returns: (transfer full): #GAppInfo for given @uri_scheme or %NULL on error.
+ *
+ * Deprecated: The #GDesktopAppInfoLookup interface is deprecated and unused by gio.
  */
 GAppInfo *
 g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,

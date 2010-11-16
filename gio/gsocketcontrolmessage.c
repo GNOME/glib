@@ -48,6 +48,7 @@
 #include "glibintl.h"
 
 #ifndef G_OS_WIN32
+#include "gunixcredentialsmessage.h"
 #include "gunixfdmessage.h"
 #endif
 
@@ -162,7 +163,7 @@ g_socket_control_message_class_init (GSocketControlMessageClass *class)
  * If there is no implementation for this kind of control message, %NULL
  * will be returned.
  *
- * Returns: the deserialized message or %NULL
+ * Returns: (transfer full): the deserialized message or %NULL
  *
  * Since: 2.22
  */
@@ -172,7 +173,6 @@ g_socket_control_message_deserialize (int      level,
 				      gsize    size,
 				      gpointer data)
 {
-  GSocketControlMessageClass *klass;
   GSocketControlMessage *message;
   GType *message_types;
   guint n_message_types;
@@ -183,6 +183,7 @@ g_socket_control_message_deserialize (int      level,
 
   /* Ensure we know about the built in types */
 #ifndef G_OS_WIN32
+  a_type = g_unix_credentials_message_get_type ();
   a_type = g_unix_fd_message_get_type ();
 #endif
 
@@ -191,16 +192,14 @@ g_socket_control_message_deserialize (int      level,
   message = NULL;
   for (i = 0; i < n_message_types; i++)
     {
-      klass = (GSocketControlMessageClass *)g_type_class_ref (message_types[i]);
+      GSocketControlMessageClass *class;
 
-      if (klass && klass->deserialize)
-	{
-	  message = klass->deserialize (level, type, size, data);
-	  g_type_class_unref ((GTypeClass *) klass);
-	}
+      class = g_type_class_ref (message_types[i]);
+      message = class->deserialize (level, type, size, data);
+      g_type_class_unref (class);
 
       if (message != NULL)
-	break;
+        break;
     }
 
   g_free (message_types);

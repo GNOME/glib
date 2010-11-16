@@ -42,11 +42,13 @@ TEST_PROGS +=	 		\
 	gdbus-addresses		\
 	network-address		\
 	gdbus-message		\
+	socket			\
 	$(NULL)
 
 if OS_UNIX
 TEST_PROGS +=			\
 	gdbus-connection	\
+	gdbus-connection-slow	\
 	gdbus-names		\
 	gdbus-proxy		\
 	gdbus-proxy-well-known-name \
@@ -58,8 +60,6 @@ TEST_PROGS +=			\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
 	gdbus-bz627724		\
-	application		\
-	testapps		\
 	appinfo			\
 	contenttype		\
 	file			\
@@ -83,14 +83,17 @@ SAMPLE_PROGS = 				\
 	gdbus-example-peer		\
 	gdbus-example-proxy-subclass	\
 	gdbus-connection-flush-helper	\
-	testapp				\
 	appinfo-test			\
 	proxy				\
+	gapplication-example-open	\
+	gapplication-example-cmdline	\
+	gapplication-example-cmdline2	\
+	gapplication-example-actions	\
 	$(NULL)
 
 
 if OS_UNIX
-TEST_PROGS += live-g-file desktop-app-info unix-fd unix-streams
+TEST_PROGS += live-g-file desktop-app-info unix-fd unix-streams gapplication
 SAMPLE_PROGS +=	gdbus-example-unix-fd-client
 endif
 
@@ -198,6 +201,9 @@ srvtarget_LDADD		  = $(progs_ldadd)
 network_address_SOURCE	  = network-address.c
 network_address_LDADD	  = $(progs_ldadd)
 
+socket_SOURCE		  = socket.c
+socket_LDADD		  = $(progs_ldadd)
+
 contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
@@ -223,6 +229,9 @@ gdbus_bz627724_LDADD = $(progs_ldadd)
 
 gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_connection_LDADD = $(progs_ldadd)
+
+gdbus_connection_slow_SOURCES = gdbus-connection-slow.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_connection_slow_LDADD = $(progs_ldadd)
 
 gdbus_message_SOURCES = gdbus-message.c
 gdbus_message_LDADD = $(progs_ldadd)
@@ -287,26 +296,32 @@ gdbus_example_export_LDADD   = $(progs_ldadd)
 gdbus_connection_flush_helper_SOURCES = gdbus-connection-flush-helper.c
 gdbus_connection_flush_helper_LDADD = $(progs_ldadd)
 
-application_SOURCES = application.c gdbus-sessionbus.c gdbus-sessionbus.h
-application_LDADD   = $(progs_ldadd)
-
 appinfo_SOURCES = appinfo.c
 appinfo_LDADD   = $(progs_ldadd)
 
 appinfo_test_SOURCES = appinfo-test.c
 appinfo_test_LDADD   = $(progs_ldadd)
 
-testapp_SOURCES = testapp.c
-testapp_LDADD   = $(progs_ldadd)
-
-testapps_SOURCES = testapps.c gdbus-sessionbus.c gdbus-sessionbus.h
-testapps_LDADD   = $(progs_ldadd)
-
 contenttype_SOURCES = contenttype.c
 contenttype_LDADD   = $(progs_ldadd)
 
 file_SOURCES = file.c
 file_LDADD   = $(progs_ldadd)
+
+gapplication_SOURCES = gapplication.c gdbus-sessionbus.c
+gapplication_LDADD = $(progs_ldadd)
+
+gapplication_example_open_SOURCES = gapplication-example-open.c
+gapplication_example_open_LDADD   = $(progs_ldadd)
+
+gapplication_example_cmdline_SOURCES = gapplication-example-cmdline.c
+gapplication_example_cmdline_LDADD   = $(progs_ldadd)
+
+gapplication_example_cmdline2_SOURCES = gapplication-example-cmdline2.c
+gapplication_example_cmdline2_LDADD   = $(progs_ldadd)
+
+gapplication_example_actions_SOURCES = gapplication-example-actions.c
+gapplication_example_actions_LDADD   = $(progs_ldadd)
 
 schema_tests = \
 	schema-tests/array-default-not-in-choices.gschema.xml		\
@@ -397,7 +412,7 @@ EXTRA_DIST += \
 	appinfo-test-gnome.desktop	\
 	appinfo-test-notgnome.desktop	\
 	gdbus-testserver.py
- 
+
 MISC_STUFF = test.mo
 
 test.mo: de.po

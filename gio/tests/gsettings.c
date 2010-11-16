@@ -14,6 +14,20 @@ static gboolean backend_set;
  * to be compiled and installed in the same directory.
  */
 
+static void
+check_and_free (GVariant    *value,
+                const gchar *expected)
+{
+  gchar *printed;
+
+  printed = g_variant_print (value, TRUE);
+  g_assert_cmpstr (printed, ==, expected);
+  g_free (printed);
+
+  g_variant_unref (value);
+}
+
+
 /* Just to get warmed up: Read and set a string, and
  * verify that can read the changed string back
  */
@@ -48,7 +62,7 @@ test_basic (void)
           abort ();
         }
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_type_check*");
+      g_test_trap_assert_stderr ("*g_settings_set_value*expects type*");
     }
 
   g_settings_get (settings, "greeting", "s", &str);
@@ -942,6 +956,8 @@ test_simple_binding (void)
   gint i;
   gint16 n;
   guint16 q;
+  gint n2;
+  guint q2;
   gint64 i64;
   guint64 u64;
   gdouble d;
@@ -991,9 +1007,9 @@ test_simple_binding (void)
   g_assert_cmpint (n, ==, 1234);
 
   g_settings_set (settings, "int16", "n", 4321);
-  n = 1111;
-  g_object_get (obj, "int16", &n, NULL);
-  g_assert_cmpint (n, ==, 4321);
+  n2 = 1111;
+  g_object_get (obj, "int16", &n2, NULL);
+  g_assert_cmpint (n2, ==, 4321);
 
   g_settings_bind (settings, "uint16", obj, "uint16", G_SETTINGS_BIND_DEFAULT);
 
@@ -1003,9 +1019,9 @@ test_simple_binding (void)
   g_assert_cmpuint (q, ==, G_MAXUINT16);
 
   g_settings_set (settings, "uint16", "q", (guint16) G_MAXINT16);
-  q = 1111;
-  g_object_get (obj, "uint16", &q, NULL);
-  g_assert_cmpuint (q, ==, (guint16) G_MAXINT16);
+  q2 = 1111;
+  g_object_get (obj, "uint16", &q2, NULL);
+  g_assert_cmpuint (q2, ==, (guint16) G_MAXINT16);
 
   g_settings_bind (settings, "int", obj, "int", G_SETTINGS_BIND_DEFAULT);
 
@@ -1558,7 +1574,7 @@ test_enums (void)
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_set_string (settings, "test", "qux");
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_range_check*");
+      g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_get_flags (settings, "test");
@@ -1617,7 +1633,7 @@ test_flags (void)
         g_settings_set_strv (settings, "f-test",
                              (const gchar **) g_strsplit ("rock", ",", 0));
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_range_check*");
+      g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_get_enum (settings, "f-test");
@@ -1676,12 +1692,12 @@ test_range (void)
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_set_int (settings, "val", 45);
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_range_check*");
+      g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
 
       if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
         g_settings_set_int (settings, "val", 1);
       g_test_trap_assert_failed ();
-      g_test_trap_assert_stderr ("*g_settings_range_check*");
+      g_test_trap_assert_stderr ("*g_settings_set_value*valid range*");
     }
 
   g_assert_cmpint (g_settings_get_int (settings, "val"), ==, 33);
@@ -1765,12 +1781,17 @@ static void
 test_list_schemas (void)
 {
   const gchar * const *schemas;
+  const gchar * const *relocs;
 
+  relocs = g_settings_list_relocatable_schemas ();
   schemas = g_settings_list_schemas ();
+
+  g_assert (strv_set_equal ((gchar **)relocs,
+                            "org.gtk.test.no-path",
+                            NULL));
 
   g_assert (strv_set_equal ((gchar **)schemas,
                             "org.gtk.test",
-                            "org.gtk.test.no-path",
                             "org.gtk.test.basic-types",
                             "org.gtk.test.complex-types",
                             "org.gtk.test.localized",
@@ -1833,6 +1854,34 @@ test_get_mapped (void)
   g_assert_cmpint (val, ==, 5);
 
   g_variant_unref (p);
+  g_object_unref (settings);
+}
+
+static void
+test_get_range (void)
+{
+  GSettings *settings;
+  GVariant *range;
+
+  settings = g_settings_new ("org.gtk.test.range");
+  range = g_settings_get_range (settings, "val");
+  check_and_free (range, "('range', <(2, 44)>)");
+  g_object_unref (settings);
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  range = g_settings_get_range (settings, "test");
+  check_and_free (range, "('enum', <['foo', 'bar', 'baz', 'quux']>)");
+  g_object_unref (settings);
+
+  settings = g_settings_new ("org.gtk.test.enums");
+  range = g_settings_get_range (settings, "f-test");
+  check_and_free (range, "('flags', "
+                  "<['mourning', 'laughing', 'talking', 'walking']>)");
+  g_object_unref (settings);
+
+  settings = g_settings_new ("org.gtk.test");
+  range = g_settings_get_range (settings, "greeting");
+  check_and_free (range, "('type', <@as []>)");
   g_object_unref (settings);
 }
 
@@ -1919,6 +1968,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/gsettings/list-items", test_list_items);
   g_test_add_func ("/gsettings/list-schemas", test_list_schemas);
   g_test_add_func ("/gsettings/mapped", test_get_mapped);
+  g_test_add_func ("/gsettings/get-range", test_get_range);
 
   result = g_test_run ();
 

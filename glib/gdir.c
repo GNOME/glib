@@ -70,7 +70,8 @@ struct _GDir
  *         g_dir_open() fails.
  *
  * Opens a directory for reading. The names of the files in the
- * directory can then be retrieved using g_dir_read_name().
+ * directory can then be retrieved using g_dir_read_name().  Note
+ * that the ordering is not defined.
  *
  * Return value: a newly allocated #GDir on success, %NULL on failure.
  *   If non-%NULL, you must free the result with g_dir_close()
@@ -178,9 +179,16 @@ g_dir_open (const gchar  *path,
  * g_dir_read_name:
  * @dir: a #GDir* created by g_dir_open()
  *
- * Retrieves the name of the next entry in the directory.  The '.' and
- * '..' entries are omitted. On Windows, the returned name is in
- * UTF-8. On Unix, it is in the on-disk encoding.
+ * Retrieves the name of another entry in the directory, or %NULL.
+ * The order of entries returned from this function is not defined,
+ * and may vary by file system or other operating-system dependent
+ * factors. 
+ *
+ * On Unix, the '.' and '..' entries are omitted, and the returned
+ * name is in the on-disk encoding.
+ *
+ * On Windows, as is true of all GLib functions which operate on
+ * filenames, the returned name is in UTF-8.
  *
  * Return value: The entry's name or %NULL if there are no 
  *   more entries. The return value is owned by GLib and

@@ -899,6 +899,150 @@ g_variant_new_dict_entry (GVariant *key,
 }
 
 /**
+ * g_variant_lookup:
+ * @dictionary: a dictionary #GVariant
+ * @key: the key to lookup in the dictionary
+ * @format_string: a GVariant format string
+ * @...: the arguments to unpack the value into
+ *
+ * Looks up a value in a dictionary #GVariant.
+ *
+ * This function is a wrapper around g_variant_lookup_value() and
+ * g_variant_get().  In the case that %NULL would have been returned,
+ * this function returns %FALSE.  Otherwise, it unpacks the returned
+ * value and returns %TRUE.
+ *
+ * See g_variant_get() for information about @format_string.
+ *
+ * Returns: %TRUE if a value was unpacked
+ *
+ * Since: 2.28
+ */
+gboolean
+g_variant_lookup (GVariant    *dictionary,
+                  const gchar *key,
+                  const gchar *format_string,
+                  ...)
+{
+  GVariantType *type;
+  GVariant *value;
+
+  /* flatten */
+  g_variant_get_data (dictionary);
+
+  type = g_variant_format_string_scan_type (format_string, NULL, NULL);
+  value = g_variant_lookup_value (dictionary, key, type);
+  g_variant_type_free (type);
+
+  if (value)
+    {
+      va_list ap;
+
+      va_start (ap, format_string);
+      g_variant_get_va (value, format_string, NULL, &ap);
+      g_variant_unref (value);
+      va_end (ap);
+
+      return TRUE;
+    }
+
+  else
+    return FALSE;
+}
+
+/**
+ * g_variant_lookup_value:
+ * @dictionary: a dictionary #GVariant
+ * @key: the key to lookup in the dictionary
+ * @expected_type: a #GVariantType, or %NULL
+ *
+ * Looks up a value in a dictionary #GVariant.
+ *
+ * This function works with dictionaries of the type
+ * <literal>a{s*}</literal> (and equally well with type
+ * <literal>a{o*}</literal>, but we only further discuss the string case
+ * for sake of clarity).
+ *
+ * In the event that @dictionary has the type <literal>a{sv}</literal>,
+ * the @expected_type string specifies what type of value is expected to
+ * be inside of the variant.  If the value inside the variant has a
+ * different type then %NULL is returned.  In the event that @dictionary
+ * has a value type other than <literal>v</literal> then @expected_type
+ * must directly match the key type and it is used to unpack the value
+ * directly or an error occurs.
+ *
+ * In either case, if @key is not found in @dictionary, %NULL is
+ * returned.
+ *
+ * If the key is found and the value has the correct type, it is
+ * returned.  If @expected_type was specified then any non-%NULL return
+ * value will have this type.
+ *
+ * Returns: the value of the dictionary key, or %NULL
+ *
+ * Since: 2.28
+ */
+GVariant *
+g_variant_lookup_value (GVariant           *dictionary,
+                        const gchar        *key,
+                        const GVariantType *expected_type)
+{
+  GVariantIter iter;
+  GVariant *entry;
+  GVariant *value;
+
+  g_return_val_if_fail (g_variant_is_of_type (dictionary,
+                                              G_VARIANT_TYPE ("a{s*}")) ||
+                        g_variant_is_of_type (dictionary,
+                                              G_VARIANT_TYPE ("a{o*}")),
+                        NULL);
+
+  g_variant_iter_init (&iter, dictionary);
+
+  while ((entry = g_variant_iter_next_value (&iter)))
+    {
+      GVariant *entry_key;
+      gboolean matches;
+
+      entry_key = g_variant_get_child_value (entry, 0);
+      matches = strcmp (g_variant_get_string (entry_key, NULL), key) == 0;
+      g_variant_unref (entry_key);
+
+      if (matches)
+        break;
+
+      g_variant_unref (entry);
+    }
+
+  if (entry == NULL)
+    return NULL;
+
+  value = g_variant_get_child_value (entry, 1);
+  g_variant_unref (entry);
+
+  if (g_variant_is_of_type (value, G_VARIANT_TYPE_VARIANT))
+    {
+      GVariant *tmp;
+
+      tmp = g_variant_get_variant (value);
+      g_variant_unref (value);
+
+      if (expected_type && !g_variant_is_of_type (tmp, expected_type))
+        {
+          g_variant_unref (tmp);
+          tmp = NULL;
+        }
+
+      value = tmp;
+    }
+
+  g_return_val_if_fail (expected_type == NULL || value == NULL ||
+                        g_variant_is_of_type (value, expected_type), NULL);
+
+  return value;
+}
+
+/**
  * g_variant_get_fixed_array:
  * @value: a #GVariant array with fixed-sized elements
  * @n_elements: a pointer to the location to store the number of items
@@ -1368,7 +1512,7 @@ g_variant_get_bytestring (GVariant *value)
   string = g_variant_get_data (value);
   size = g_variant_get_size (value);
 
-  if (string[size - 1] == '\0')
+  if (size && string[size - 1] == '\0')
     return string;
   else
     return "";
@@ -3056,7 +3200,7 @@ g_variant_make_array_type (GVariant *element)
 /**
  * g_variant_builder_end:
  * @builder: a #GVariantBuilder
- * @returns: a new, floating, #GVariant
+ * @returns: (transfer none): a new, floating, #GVariant
  *
  * Ends the builder process and returns the constructed value.
  *
@@ -4566,23 +4710,37 @@ g_variant_get_normal_form (GVariant *value)
 GVariant *
 g_variant_byteswap (GVariant *value)
 {
-  GVariantSerialised serialised;
-  GVariant *trusted;
-  GBuffer *buffer;
+  GVariantTypeInfo *type_info;
+  guint alignment;
   GVariant *new;
 
-  trusted = g_variant_get_normal_form (value);
-  serialised.type_info = g_variant_get_type_info (trusted);
-  serialised.size = g_variant_get_size (trusted);
-  serialised.data = g_malloc (serialised.size);
-  g_variant_store (trusted, serialised.data);
-  g_variant_unref (trusted);
+  type_info = g_variant_get_type_info (value);
 
-  g_variant_serialised_byteswap (serialised);
+  g_variant_type_info_query (type_info, &alignment, NULL);
 
-  buffer = g_buffer_new_take_data (serialised.data, serialised.size);
-  new = g_variant_new_from_buffer (g_variant_get_type (value), buffer, TRUE);
-  g_buffer_unref (buffer);
+  if (alignment)
+    /* (potentially) contains multi-byte numeric data */
+    {
+      GVariantSerialised serialised;
+      GVariant *trusted;
+      GBuffer *buffer;
+
+      trusted = g_variant_get_normal_form (value);
+      serialised.type_info = g_variant_get_type_info (trusted);
+      serialised.size = g_variant_get_size (trusted);
+      serialised.data = g_malloc (serialised.size);
+      g_variant_store (trusted, serialised.data);
+      g_variant_unref (trusted);
+
+      g_variant_serialised_byteswap (serialised);
+
+      buffer = g_buffer_new_take_data (serialised.data, serialised.size);
+      new = g_variant_new_from_buffer (g_variant_get_type (value), buffer, TRUE);
+      g_buffer_unref (buffer);
+    }
+  else
+    /* contains no multi-byte data */
+    new = value;
 
   return g_variant_ref_sink (new);
 }

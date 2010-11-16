@@ -74,6 +74,7 @@ struct _GSettings
 GType                   g_settings_get_type                             (void);
 
 const gchar * const *   g_settings_list_schemas                         (void);
+const gchar * const *   g_settings_list_relocatable_schemas             (void);
 GSettings *             g_settings_new                                  (const gchar        *schema);
 GSettings *             g_settings_new_with_path                        (const gchar        *schema,
                                                                          const gchar        *path);
@@ -82,6 +83,13 @@ GSettings *             g_settings_new_with_backend                     (const g
 GSettings *             g_settings_new_with_backend_and_path            (const gchar        *schema,
                                                                          GSettingsBackend   *backend,
                                                                          const gchar        *path);
+gchar **                g_settings_list_children                        (GSettings          *settings);
+gchar **                g_settings_list_keys                            (GSettings          *settings);
+GVariant *              g_settings_get_range                            (GSettings          *settings,
+                                                                         const gchar        *key);
+gboolean                g_settings_range_check                          (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         GVariant           *value);
 
 gboolean                g_settings_set_value                            (GSettings          *settings,
                                                                          const gchar        *key,
@@ -253,9 +261,6 @@ gpointer                g_settings_get_mapped                           (GSettin
                                                                          const gchar             *key,
                                                                          GSettingsGetMapping      mapping,
                                                                          gpointer                 user_data);
-
-gchar **                g_settings_list_children                        (GSettings               *settings);
-gchar **                g_settings_list_keys                            (GSettings               *settings);
 
 gboolean                g_settings_can_add_child                        (GSettings               *settings);
 

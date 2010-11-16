@@ -587,6 +587,7 @@ free_connect_data (ConnectAsyncData *data)
   g_free (data->hostname);
   g_free (data->username);
   g_free (data->password);
+  g_free (data->buffer);
   
   if (data->cancellable)
     g_object_unref (data->cancellable);
@@ -598,9 +599,7 @@ static void
 complete_async_from_error (ConnectAsyncData *data, GError *error)
 {
   GSimpleAsyncResult *simple = data->simple;
-  g_simple_async_result_set_from_error (data->simple,
-					error);
-  g_error_free (error);
+  g_simple_async_result_take_error (data->simple, error);
   g_simple_async_result_set_op_res_gpointer (simple, NULL, NULL);
   g_simple_async_result_complete (simple);
   g_object_unref (simple);

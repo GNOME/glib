@@ -62,6 +62,10 @@ GSimpleAsyncResult *g_simple_async_result_new_error        (GObject             
 GSimpleAsyncResult *g_simple_async_result_new_from_error   (GObject                 *source_object,
 							    GAsyncReadyCallback      callback,
 							    gpointer                 user_data,
+							    const GError            *error);
+GSimpleAsyncResult *g_simple_async_result_new_take_error   (GObject                 *source_object,
+							    GAsyncReadyCallback      callback,
+							    gpointer                 user_data,
 							    GError                  *error);
 
 void                g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult      *simple,
@@ -90,6 +94,8 @@ void                g_simple_async_result_run_in_thread    (GSimpleAsyncResult  
 							    GCancellable            *cancellable);
 void                g_simple_async_result_set_from_error   (GSimpleAsyncResult      *simple,
 							    const GError            *error);
+void                g_simple_async_result_take_error       (GSimpleAsyncResult      *simple,
+							    GError            *error);
 gboolean            g_simple_async_result_propagate_error  (GSimpleAsyncResult      *simple,
 							    GError                 **dest);
 void                g_simple_async_result_set_error        (GSimpleAsyncResult      *simple,
@@ -116,7 +122,11 @@ void g_simple_async_report_error_in_idle  (GObject            *object,
 void g_simple_async_report_gerror_in_idle (GObject            *object,
 					   GAsyncReadyCallback callback,
 					   gpointer            user_data,
-					   GError             *error);
+					   const GError       *error);
+void g_simple_async_report_take_gerror_in_idle (GObject            *object,
+                                                GAsyncReadyCallback callback,
+                                                gpointer            user_data,
+                                                GError             *error);
 
 G_END_DECLS
 

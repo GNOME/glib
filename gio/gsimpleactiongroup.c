@@ -25,7 +25,7 @@
 /**
  * SECTION:gsimpleactiongroup
  * @title: GSimpleActionGroup
- * @short_description: a simple #GActionGroup implementation
+ * @short_description: a simple GActionGroup implementation
  *
  * #GSimpleActionGroup is a hash table filled with #GAction objects,
  * implementing the #GActionGroup interface.
@@ -253,13 +253,13 @@ g_simple_action_group_iface_init (GActionGroupInterface *iface)
 {
   iface->list_actions = g_simple_action_group_list_actions;
   iface->has_action = g_simple_action_group_has_action;
-  iface->get_parameter_type = g_simple_action_group_get_parameter_type;
-  iface->get_state_type = g_simple_action_group_get_state_type;
-  iface->get_state_hint = g_simple_action_group_get_state_hint;
-  iface->get_enabled = g_simple_action_group_get_enabled;
-  iface->get_state = g_simple_action_group_get_state;
-  iface->set_state = g_simple_action_group_set_state;
-  iface->activate = g_simple_action_group_activate;
+  iface->get_action_parameter_type = g_simple_action_group_get_parameter_type;
+  iface->get_action_state_type = g_simple_action_group_get_state_type;
+  iface->get_action_state_hint = g_simple_action_group_get_state_hint;
+  iface->get_action_enabled = g_simple_action_group_get_enabled;
+  iface->get_action_state = g_simple_action_group_get_state;
+  iface->change_action_state = g_simple_action_group_set_state;
+  iface->activate_action = g_simple_action_group_activate;
 }
 
 /**
@@ -269,7 +269,7 @@ g_simple_action_group_iface_init (GActionGroupInterface *iface)
  *
  * Returns: a new #GSimpleActionGroup
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GSimpleActionGroup *
 g_simple_action_group_new (void)
@@ -288,7 +288,7 @@ g_simple_action_group_new (void)
  *
  * Returns: (transfer none): a #GAction, or %NULL
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GAction *
 g_simple_action_group_lookup (GSimpleActionGroup *simple,
@@ -311,7 +311,7 @@ g_simple_action_group_lookup (GSimpleActionGroup *simple,
  *
  * The action group takes its own reference on @action.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_simple_action_group_insert (GSimpleActionGroup *simple,
@@ -359,7 +359,7 @@ g_simple_action_group_insert (GSimpleActionGroup *simple,
  *
  * If no action of this name is in the group then nothing happens.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_simple_action_group_remove (GSimpleActionGroup *simple,

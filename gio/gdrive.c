@@ -159,7 +159,7 @@ g_drive_get_name (GDrive *drive)
  * 
  * Gets the icon for @drive.
  * 
- * Returns: #GIcon for the @drive.
+ * Returns: (transfer full): #GIcon for the @drive.
  *    Free the returned object with g_object_unref().
  **/
 GIcon *
@@ -594,7 +594,7 @@ g_drive_get_identifier (GDrive     *drive,
  * Use g_drive_get_identifer() to obtain the identifiers
  * themselves.
  *
- * Returns: a %NULL-terminated array of strings containing
+ * Returns: (transfer full): a %NULL-terminated array of strings containing
  *     kinds of identifiers. Use g_strfreev() to free.
  */
 char **

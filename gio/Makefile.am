@@ -139,13 +139,17 @@ application_headers = \
 	gsimpleactiongroup.h		\
 	gaction.h			\
 	gsimpleaction.h			\
+	gapplicationcommandline.h	\
 	gapplication.h
 
 application_sources = \
-	gactiongroup.c			\
-	gsimpleactiongroup.c		\
-	gaction.c			\
-	gsimpleaction.c			\
+	gactiongroup.c				\
+	gsimpleactiongroup.c			\
+	gaction.c				\
+	gsimpleaction.c				\
+	gapplicationcommandline.c		\
+	gapplicationimpl.h			\
+	gapplicationimpl-dbus.c			\
 	gapplication.c
 
 local_sources = \
@@ -343,6 +347,7 @@ libgio_2_0_la_SOURCES =		\
 	gnetworkingprivate.h	\
 	gnetworkservice.c	\
 	goutputstream.c 	\
+	gperiodic.c		\
 	gpermission.c 		\
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
@@ -395,7 +400,7 @@ libgio_2_0_la_SOURCES =		\
 	$(marshal_sources) 	\
 	$(NULL)
 
-EXTRA_DIST += gnullapplication.c gdbusapplication.c strinfo.c
+EXTRA_DIST += strinfo.c
 
 $(libgio_2_0_la_OBJECTS): $(marshal_sources)
 
@@ -498,6 +503,7 @@ gio_headers =			\
 	gnetworkaddress.h	\
 	gnetworkservice.h	\
 	goutputstream.h 	\
+	gperiodic.h		\
 	gpermission.h 		\
 	gproxyaddress.h         \
 	gproxy.h		\

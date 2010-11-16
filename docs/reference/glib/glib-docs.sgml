@@ -76,6 +76,7 @@ synchronize their operation.
       <xi:include href="xml/checksum.xml" />
       <xi:include href="xml/i18n.xml" />
       <xi:include href="xml/date.xml" />
+      <xi:include href="xml/timezone.xml" />
       <xi:include href="xml/date-time.xml" />
       <xi:include href="xml/random_numbers.xml" />
       <xi:include href="xml/hooks.xml" />

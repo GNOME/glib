@@ -85,7 +85,16 @@
  * convention for schema ids is to use a dotted name, similar in
  * style to a DBus bus name, e.g. "org.gnome.font-rendering".
  *
- * <example><title>Default values</title>
+ * In addition to #GVariant types, keys can have types that have enumerated
+ * types. These can be described by a <tag class="starttag">choice</tag>,
+ * <tag class="starttag">enum</tag> or <tag class="starttag">flags</tag> element, see
+ * <xref linkend="schema-enumerated"/>. The underlying type of
+ * such a key is string, but you can use g_settings_get_enum(),
+ * g_settings_set_enum(), g_settings_get_flags(), g_settings_set_flags()
+ * access the numeric values corresponding to the string value of enum
+ * and flags keys.
+ *
+ * <example id="schema-default-values"><title>Default values</title>
  * <programlisting><![CDATA[
  * <schemalist>
  *   <schema id="org.gtk.test" path="/tests/" gettext-domain="test">
@@ -106,13 +115,19 @@
  * </schemalist>
  * ]]></programlisting></example>
  *
- * <example><title>Ranges, choices and enumerated types</title>
+ * <example id="schema-enumerated"><title>Ranges, choices and enumerated types</title>
  * <programlisting><![CDATA[
  * <schemalist>
  *
  *   <enum id="myenum">
  *     <value nick="first" value="1"/>
  *     <value nick="second" value="2"/>
+ *   </enum>
+ *
+ *   <enum id="myflags">
+ *     <value nick="flag1" value="1"/>
+ *     <value nick="flag2" value="2"/>
+ *     <value nick="flag3" value="4"/>
  *   </enum>
  *
  *   <schema id="org.gtk.test">
@@ -139,6 +154,9 @@
  *       <default>'first'</default>
  *     </key>
  *
+ *     <key name='flags-key' flags='myflags'>
+ *       <default>["flag1",flag2"]</default>
+ *     </key>
  *   </schema>
  * </schemalist>
  * ]]></programlisting></example>
@@ -416,6 +434,10 @@ g_settings_get_property (GObject    *object,
     {
      case PROP_SCHEMA:
       g_value_set_string (value, settings->priv->schema_name);
+      break;
+
+     case PROP_PATH:
+      g_value_set_string (value, settings->priv->path);
       break;
 
      case PROP_HAS_UNAPPLIED:
@@ -814,6 +836,18 @@ typedef struct
   GVariant *default_value;
 } GSettingsKeyInfo;
 
+static inline void
+endian_fixup (GVariant **value)
+{
+#if G_BYTE_ORDER == G_BIG_ENDIAN
+  GVariant *tmp;
+
+  tmp = g_variant_byteswap (*value);
+  g_variant_unref (*value);
+  *value = tmp;
+#endif
+}
+
 static void
 g_settings_get_key_info (GSettingsKeyInfo *info,
                          GSettings        *settings,
@@ -828,6 +862,7 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
   iter = g_settings_schema_get_value (settings->priv->schema, key);
 
   info->default_value = g_variant_iter_next_value (iter);
+  endian_fixup (&info->default_value);
   info->type = g_variant_get_type (info->default_value);
   info->settings = g_object_ref (settings);
   info->key = g_intern_string (key);
@@ -860,6 +895,8 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
 
         case 'r':
           g_variant_get (data, "(**)", &info->minimum, &info->maximum);
+          endian_fixup (&info->minimum);
+          endian_fixup (&info->maximum);
           break;
 
         default:
@@ -911,8 +948,8 @@ g_settings_type_check (GSettingsKeyInfo *info,
 }
 
 static gboolean
-g_settings_range_check (GSettingsKeyInfo *info,
-                        GVariant         *value)
+g_settings_key_info_range_check (GSettingsKeyInfo *info,
+                                 GVariant         *value)
 {
   if (info->minimum == NULL && info->strinfo == NULL)
     return TRUE;
@@ -926,7 +963,7 @@ g_settings_range_check (GSettingsKeyInfo *info,
       g_variant_iter_init (&iter, value);
       while (ok && (child = g_variant_iter_next_value (&iter)))
         {
-          ok = g_settings_range_check (info, child);
+          ok = g_settings_key_info_range_check (info, child);
           g_variant_unref (child);
         }
 
@@ -950,7 +987,7 @@ g_settings_range_fixup (GSettingsKeyInfo *info,
 {
   const gchar *target;
 
-  if (g_settings_range_check (info, value))
+  if (g_settings_key_info_range_check (info, value))
     return g_variant_ref (value);
 
   if (info->strinfo == NULL)
@@ -1048,7 +1085,7 @@ g_settings_get_translated_default (GSettingsKeyInfo *info)
       g_error_free (error);
     }
 
-  else if (!g_settings_range_check (info, value))
+  else if (!g_settings_key_info_range_check (info, value))
     {
       g_warning ("Translated default `%s' for key `%s' in schema `%s' "
                  "is outside of valid range", info->unparsed, info->key,
@@ -1444,8 +1481,28 @@ g_settings_set_value (GSettings   *settings,
   g_return_val_if_fail (key != NULL, FALSE);
 
   g_settings_get_key_info (&info, settings, key);
-  g_return_val_if_fail (g_settings_type_check (&info, value), FALSE);
-  g_return_val_if_fail (g_settings_range_check (&info, value), FALSE);
+
+  if (!g_settings_type_check (&info, value))
+    {
+      g_critical ("g_settings_set_value: key '%s' in '%s' expects type '%s', but a GVariant of type '%s' was given",
+                  key,
+                  settings->priv->schema_name,
+                  g_variant_type_peek_string (info.type),
+                  g_variant_get_type_string (value));
+
+        return FALSE;
+      }
+
+  if (!g_settings_key_info_range_check (&info, value))
+    {
+      g_warning ("g_settings_set_value: value for key '%s' in schema '%s' "
+                 "is outside of valid range",
+                 key,
+                 settings->priv->schema_name);
+
+        return FALSE;
+    }
+
   g_settings_free_key_info (&info);
 
   return g_settings_write_to_backend (&info, value);
@@ -1530,7 +1587,7 @@ g_settings_set (GSettings   *settings,
  * @mapping: the function to map the value in the settings database to
  *           the value used by the application
  * @user_data: user data for @mapping
- * @returns: the result, which may be %NULL
+ * @returns: (transfer full): the result, which may be %NULL
  *
  * Gets the value that is stored at @key in @settings, subject to
  * application-level validation/mapping.
@@ -1828,12 +1885,13 @@ g_settings_set_boolean (GSettings  *settings,
  * @key: the key to get the value for
  * @returns: a newly-allocated, %NULL-terminated array of strings
  *
- * Gets the value that is stored at @key in @settings.
- *
  * A convenience variant of g_settings_get() for string arrays.
  *
  * It is a programmer error to give a @key that isn't specified as
  * having an array of strings type in the schema for @settings.
+ *
+ * Returns: (array zero-terminated=1) (transfer full): the value that is
+ * stored at @key in @settings.
  *
  * Since: 2.26
  */
@@ -1855,7 +1913,7 @@ g_settings_get_strv (GSettings   *settings,
  * g_settings_set_strv:
  * @settings: a #GSettings object
  * @key: the name of the key to set
- * @value: (allow-none): the value to set it to, or %NULL
+ * @value: (allow-none) (array zero-terminated=1): the value to set it to, or %NULL
  * @returns: %TRUE if setting the key succeeded,
  *     %FALSE if the key was not writable
  *
@@ -1980,7 +2038,7 @@ g_settings_get_has_unapplied (GSettings *settings)
            G_DELAYED_SETTINGS_BACKEND (settings->priv->backend));
 }
 
-/* Extra API (reset, sync, get_child, is_writable) {{{1 */
+/* Extra API (reset, sync, get_child, is_writable, list_*, ranges) {{{1 */
 /**
  * g_settings_reset:
  * @settings: a #GSettings object
@@ -2054,7 +2112,7 @@ g_settings_is_writable (GSettings   *settings,
  * g_settings_get_child:
  * @settings: a #GSettings object
  * @name: the name of the 'child' schema
- * @returns: a 'child' settings object
+ * @returns: (transfer full): a 'child' settings object
  *
  * Creates a 'child' settings object which has a base path of
  * <replaceable>base-path</replaceable>/@name", where
@@ -2092,6 +2150,212 @@ g_settings_get_child (GSettings   *settings,
   g_free (child_name);
 
   return child;
+}
+
+/**
+ * g_settings_list_keys:
+ * @settings: a #GSettings object
+ * @returns: (transfer full) (element-type utf8): a list of the keys on @settings
+ *
+ * Introspects the list of keys on @settings.
+ *
+ * You should probably not be calling this function from "normal" code
+ * (since you should already know what keys are in your schema).  This
+ * function is intended for introspection reasons.
+ *
+ * You should free the return value with g_strfreev() when you are done
+ * with it.
+ */
+gchar **
+g_settings_list_keys (GSettings *settings)
+{
+  const GQuark *keys;
+  gchar **strv;
+  gint n_keys;
+  gint i, j;
+
+  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+  strv = g_new (gchar *, n_keys + 1);
+  for (i = j = 0; i < n_keys; i++)
+    {
+      const gchar *key = g_quark_to_string (keys[i]);
+
+      if (!g_str_has_suffix (key, "/"))
+        strv[j++] = g_strdup (key);
+    }
+  strv[j] = NULL;
+
+  return strv;
+}
+
+/**
+ * g_settings_list_children:
+ * @settings: a #GSettings object
+ * @returns: (transfer full) (element-type utf8): a list of the children on @settings
+ *
+ * Gets the list of children on @settings.
+ *
+ * The list is exactly the list of strings for which it is not an error
+ * to call g_settings_get_child().
+ *
+ * For GSettings objects that are lists, this value can change at any
+ * time and you should connect to the "children-changed" signal to watch
+ * for those changes.  Note that there is a race condition here: you may
+ * request a child after listing it only for it to have been destroyed
+ * in the meantime.  For this reason, g_settings_get_chuld() may return
+ * %NULL even for a child that was listed by this function.
+ *
+ * For GSettings objects that are not lists, you should probably not be
+ * calling this function from "normal" code (since you should already
+ * know what children are in your schema).  This function may still be
+ * useful there for introspection reasons, however.
+ *
+ * You should free the return value with g_strfreev() when you are done
+ * with it.
+ */
+gchar **
+g_settings_list_children (GSettings *settings)
+{
+  const GQuark *keys;
+  gchar **strv;
+  gint n_keys;
+  gint i, j;
+
+  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
+  strv = g_new (gchar *, n_keys + 1);
+  for (i = j = 0; i < n_keys; i++)
+    {
+      const gchar *key = g_quark_to_string (keys[i]);
+
+      if (g_str_has_suffix (key, "/"))
+        {
+          gint length = strlen (key);
+
+          strv[j] = g_memdup (key, length);
+          strv[j][length - 1] = '\0';
+          j++;
+        }
+    }
+  strv[j] = NULL;
+
+  return strv;
+}
+
+/**
+ * g_settings_get_range:
+ * @settings: a #GSettings
+ * @key: the key to query the range of
+ * @returns: a #GVariant describing the range
+ *
+ * Queries the range of a key.
+ *
+ * This function will return a #GVariant that fully describes the range
+ * of values that are valid for @key.
+ *
+ * The type of #GVariant returned is <literal>(sv)</literal>.  The
+ * string describes the type of range restriction in effect.  The type
+ * and meaning of the value contained in the variant depends on the
+ * string.
+ *
+ * If the string is <literal>'type'</literal> then the variant contains
+ * an empty array.  The element type of that empty array is the expected
+ * type of value and all values of that type are valid.
+ *
+ * If the string is <literal>'enum'</literal> then the variant contains
+ * an array enumerating the possible values.  Each item in the array is
+ * a possible valid value and no other values are valid.
+ *
+ * If the string is <literal>'flags'</literal> then the variant contains
+ * an array.  Each item in the array is a value that may appear zero or
+ * one times in an array to be used as the value for this key.  For
+ * example, if the variant contained the array <literal>['x',
+ * 'y']</literal> then the valid values for the key would be
+ * <literal>[]</literal>, <literal>['x']</literal>,
+ * <literal>['y']</literal>, <literal>['x', 'y']</literal> and
+ * <literal>['y', 'x']</literal>.
+ *
+ * Finally, if the string is <literal>'range'</literal> then the variant
+ * contains a pair of like-typed values -- the minimum and maximum
+ * permissible values for this key.
+ *
+ * This information should not be used by normal programs.  It is
+ * considered to be a hint for introspection purposes.  Normal programs
+ * should already know what is permitted by their own schema.  The
+ * format may change in any way in the future -- but particularly, new
+ * forms may be added to the possibilities described above.
+ *
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings.
+ *
+ * You should free the returned value with g_variant_unref() when it is
+ * no longer needed.
+ *
+ * Since: 2.28
+ **/
+GVariant *
+g_settings_get_range (GSettings   *settings,
+                      const gchar *key)
+{
+  GSettingsKeyInfo info;
+  const gchar *type;
+  GVariant *range;
+
+  g_settings_get_key_info (&info, settings, key);
+
+  if (info.minimum)
+    {
+      range = g_variant_new ("(**)", info.minimum, info.maximum);
+      type = "range";
+    }
+  else if (info.strinfo)
+    {
+      range = strinfo_enumerate (info.strinfo, info.strinfo_length);
+      type = info.is_flags ? "flags" : "enum";
+    }
+  else
+    {
+      range = g_variant_new_array (info.type, NULL, 0);
+      type = "type";
+    }
+
+  g_settings_free_key_info (&info);
+
+  return g_variant_ref_sink (g_variant_new ("(sv)", type, range));
+}
+
+/**
+ * g_settings_range_check:
+ * @settings: a #GSettings
+ * @key: the key to check
+ * @value: the value to check
+ * @returns: %TRUE if @value is valid for @key
+ *
+ * Checks if the given @value is of the correct type and within the
+ * permitted range for @key.
+ *
+ * This API is not intended to be used by normal programs -- they should
+ * already know what is permitted by their own schemas.  This API is
+ * meant to be used by programs such as editors or commandline tools.
+ *
+ * It is a programmer error to give a @key that isn't contained in the
+ * schema for @settings.
+ *
+ * Since: 2.28
+ **/
+gboolean
+g_settings_range_check (GSettings   *settings,
+                        const gchar *key,
+                        GVariant    *value)
+{
+  GSettingsKeyInfo info;
+  gboolean good;
+
+  g_settings_get_key_info (&info, settings, key);
+  good = g_settings_type_check (&info, value) &&
+         g_settings_key_info_range_check (&info, value);
+  g_settings_free_key_info (&info);
+
+  return good;
 }
 
 /* Binding {{{1 */
@@ -2249,7 +2513,7 @@ g_settings_binding_property_changed (GObject          *object,
           return;
         }
 
-      if (!g_settings_range_check (&binding->info, variant))
+      if (!g_settings_key_info_range_check (&binding->info, variant))
         {
           g_critical ("GObject property `%s' on a `%s' object is out of "
                       "schema-specified range for key `%s' of `%s': %s",
@@ -2774,95 +3038,6 @@ gboolean
 g_settings_get_destroyed (GSettings *settings)
 {
   return settings->priv->destroyed;
-}
-
-/**
- * g_settings_list_keys:
- * @settings: a #GSettings object
- * @returns: a list of the keys on @settings
- *
- * Introspects the list of keys on @settings.
- *
- * You should probably not be calling this function from "normal" code
- * (since you should already know what keys are in your schema).  This
- * function is intended for introspection reasons.
- *
- * You should free the return value with g_strfreev() when you are done
- * with it.
- */
-gchar **
-g_settings_list_keys (GSettings *settings)
-{
-  const GQuark *keys;
-  gchar **strv;
-  gint n_keys;
-  gint i, j;
-
-  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
-  strv = g_new (gchar *, n_keys + 1);
-  for (i = j = 0; i < n_keys; i++)
-    {
-      const gchar *key = g_quark_to_string (keys[i]);
-
-      if (!g_str_has_suffix (key, "/"))
-        strv[j++] = g_strdup (key);
-    }
-  strv[j] = NULL;
-
-  return strv;
-}
-
-/**
- * g_settings_list_children:
- * @settings: a #GSettings object
- * @returns: a list of the children on @settings
- *
- * Gets the list of children on @settings.
- *
- * The list is exactly the list of strings for which it is not an error
- * to call g_settings_get_child().
- *
- * For GSettings objects that are lists, this value can change at any
- * time and you should connect to the "children-changed" signal to watch
- * for those changes.  Note that there is a race condition here: you may
- * request a child after listing it only for it to have been destroyed
- * in the meantime.  For this reason, g_settings_get_child() may return
- * %NULL even for a child that was listed by this function.
- *
- * For GSettings objects that are not lists, you should probably not be
- * calling this function from "normal" code (since you should already
- * know what children are in your schema).  This function may still be
- * useful there for introspection reasons, however.
- *
- * You should free the return value with g_strfreev() when you are done
- * with it.
- */
-gchar **
-g_settings_list_children (GSettings *settings)
-{
-  const GQuark *keys;
-  gchar **strv;
-  gint n_keys;
-  gint i, j;
-
-  keys = g_settings_schema_list (settings->priv->schema, &n_keys);
-  strv = g_new (gchar *, n_keys + 1);
-  for (i = j = 0; i < n_keys; i++)
-    {
-      const gchar *key = g_quark_to_string (keys[i]);
-
-      if (g_str_has_suffix (key, "/"))
-        {
-          gint length = strlen (key);
-
-          strv[j] = g_memdup (key, length);
-          strv[j][length - 1] = '\0';
-          j++;
-        }
-    }
-  strv[j] = NULL;
-
-  return strv;
 }
 
 /* Epilogue {{{1 */

@@ -407,7 +407,7 @@ g_file_info_copy_into (GFileInfo *src_info,
  * 
  * Duplicates a file info structure.
  * 
- * Returns: a duplicate #GFileInfo of @other.
+ * Returns: (transfer full): a duplicate #GFileInfo of @other.
  **/
 GFileInfo *
 g_file_info_dup (GFileInfo *other)
@@ -921,7 +921,7 @@ g_file_info_get_attribute_byte_string (GFileInfo  *info,
  * Gets the value of a stringv attribute. If the attribute does
  * not contain a stringv, %NULL will be returned.
  *
- * Returns: the contents of the @attribute value as a stringv, or
+ * Returns: (transfer none): the contents of the @attribute value as a stringv, or
  * %NULL otherwise. Do not free.
  *
  * Since: 2.22

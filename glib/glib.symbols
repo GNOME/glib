@@ -329,49 +329,64 @@ g_date_time_add
 g_date_time_add_days
 g_date_time_add_full
 g_date_time_add_hours
-g_date_time_add_milliseconds
 g_date_time_add_minutes
 g_date_time_add_months
 g_date_time_add_seconds
 g_date_time_add_weeks
 g_date_time_add_years
 g_date_time_compare
-g_date_time_copy
-g_date_time_day
 g_date_time_difference
 g_date_time_equal
+g_date_time_format G_GNUC_MALLOC
 g_date_time_get_day_of_month
 g_date_time_get_day_of_week
 g_date_time_get_day_of_year
-g_date_time_get_dmy
 g_date_time_get_hour
-g_date_time_get_julian
 g_date_time_get_microsecond
-g_date_time_get_millisecond
 g_date_time_get_minute
 g_date_time_get_month
 g_date_time_get_second
-g_date_time_get_timezone_name
+g_date_time_get_seconds
+g_date_time_get_timezone_abbreviation
 g_date_time_get_utc_offset
+g_date_time_get_week_numbering_year
 g_date_time_get_week_of_year
 g_date_time_get_year
+g_date_time_get_ymd
 g_date_time_hash
 g_date_time_is_daylight_savings
-g_date_time_is_leap_year
-g_date_time_new_from_date
-g_date_time_new_from_epoch
-g_date_time_new_from_timeval
-g_date_time_new_full
+g_date_time_new
+g_date_time_new_from_timeval_local
+g_date_time_new_from_timeval_utc
+g_date_time_new_from_unix_local
+g_date_time_new_from_unix_utc
+g_date_time_new_local
 g_date_time_new_now
-g_date_time_new_today
-g_date_time_new_utc_now
-g_date_time_printf G_GNUC_MALLOC
+g_date_time_new_now_local
+g_date_time_new_now_utc
+g_date_time_new_utc
 g_date_time_ref
 g_date_time_to_local
-g_date_time_to_epoch
 g_date_time_to_timeval
+g_date_time_to_timezone
+g_date_time_to_unix
 g_date_time_to_utc
 g_date_time_unref
+#endif
+#endif
+
+#if IN_HEADER(__G_TIME_ZONE_H__)
+#if IN_FILE(__G_TIME_ZONE_C__)
+g_time_zone_new
+g_time_zone_new_local
+g_time_zone_new_utc
+g_time_zone_ref
+g_time_zone_unref
+g_time_zone_adjust_time
+g_time_zone_find_interval
+g_time_zone_get_abbreviation
+g_time_zone_get_offset
+g_time_zone_is_dst
 #endif
 #endif
 
@@ -634,6 +649,7 @@ g_list_find_custom
 g_list_first
 g_list_foreach
 g_list_free
+g_list_free_full
 g_list_free_1
 g_list_index
 g_list_insert
@@ -668,6 +684,8 @@ g_child_watch_add
 g_child_watch_add_full
 g_child_watch_source_new
 g_get_current_time
+g_get_monotonic_time
+g_get_real_time
 g_main_context_acquire
 g_main_context_add_poll
 g_main_context_check
@@ -693,6 +711,8 @@ g_main_context_set_poll_func
 g_main_context_unref
 g_main_context_wait
 g_main_context_wakeup
+g_main_context_invoke
+g_main_context_invoke_full
 g_main_depth
 g_main_current_source
 g_main_loop_get_context
@@ -707,7 +727,10 @@ g_source_attach
 g_source_destroy
 g_source_get_can_recurse
 g_source_get_context
+g_source_get_time
+#ifndef G_DISABLE_DEPRECATED
 g_source_get_current_time
+#endif
 g_source_get_id
 g_source_get_name
 g_source_get_priority
@@ -1131,6 +1154,7 @@ g_slist_find
 g_slist_find_custom
 g_slist_foreach
 g_slist_free
+g_slist_free_full
 g_slist_free_1
 g_slist_index
 g_slist_insert
@@ -1619,6 +1643,7 @@ g_get_host_name
 g_setenv PRIVATE
 #endif
 g_listenv
+g_get_environ
 #ifdef G_OS_WIN32
 g_find_program_in_path_utf8
 g_get_current_dir_utf8
@@ -1650,6 +1675,7 @@ g_get_user_cache_dir
 g_get_user_config_dir
 g_get_user_data_dir
 g_reload_user_special_dirs_cache
+g_get_user_runtime_dir
 g_get_user_special_dir
 #ifndef _WIN64
 g_get_user_name PRIVATE
@@ -1855,6 +1881,8 @@ g_variant_get
 
 g_variant_builder_add
 g_variant_get_child
+g_variant_lookup_value
+g_variant_lookup
 g_variant_iter_next
 g_variant_iter_loop
 

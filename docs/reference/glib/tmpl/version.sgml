@@ -22,6 +22,47 @@ typically use the features described here.
 <!-- ##### SECTION Image ##### -->
 
 
+<!-- ##### VARIABLE glib_major_version ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE glib_minor_version ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE glib_micro_version ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE glib_binary_age ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### VARIABLE glib_interface_age ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION glib_check_version ##### -->
+<para>
+
+</para>
+
+@required_major: 
+@required_minor: 
+@required_micro: 
+@Returns: 
+
+
 <!-- ##### MACRO GLIB_MAJOR_VERSION ##### -->
 <para>
 The major version number of the GLib library.

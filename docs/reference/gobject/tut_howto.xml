@@ -57,8 +57,8 @@
         <filename>mamanbar.h</filename> and <filename>mamanbar.c</filename>.
         (this is the convention used by GTK+)</para></listitem>
       </itemizedlist>
-      I personally like the first solution better: it makes reading file names
-      easier for those with poor eyesight like me.
+      Some people like the first two solutions better: it makes reading file
+      names easier for those with poor eyesight.
     </para>
 
     <para>
@@ -339,26 +339,26 @@ maman_bar_init (MamanBar *self)
       Now, if you need special construction properties, install the properties in the class_init function,
       override the set and get methods and implement the get and set methods as described in 
       <xref linkend="gobject-properties"/>. Make sure that these properties use a construct only 
-      <type><link linkend="GParamSpec">GParamSpec</link></type> by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
+      <link linkend="GParamSpec"><type>GParamSpec</type></link> by setting the param spec's flag field to G_PARAM_CONSTRUCT_ONLY: this helps
       GType ensure that these properties are not set again later by malicious user code.
 <programlisting>
 static void
 bar_class_init (MamanBarClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
-  GParamSpec *maman_param_spec;
+  GParamSpec *pspec;
 
   gobject_class->set_property = bar_set_property;
   gobject_class->get_property = bar_get_property;
 
-  maman_param_spec = g_param_spec_string ("maman",
+  pspec = g_param_spec_string ("maman",
                                           "Maman construct prop",
                                           "Set maman's name",
                                           "no-name-set" /* default value */,
                                           G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE);
   g_object_class_install_property (gobject_class,
                                    PROP_MAMAN,
-                                   maman_param_spec);
+                                   pspec);
 }
 </programlisting>
       If you need this, make sure you can build and run code similar to the code shown above. Make sure
@@ -820,8 +820,8 @@ void maman_ibaz_do_action (MamanIbaz *self);
 
 #endif /* __MAMAN_IBAZ_H__ */
 </programlisting>
-    This code is the same as the code for a normal <type><link linkend="GType">GType</link></type>
-    which derives from a <type><link linkend="GObject">GObject</link></type> except for a few details:
+    This code is the same as the code for a normal <link linkend="GType"><type>GType</type></link>
+    which derives from a <link linkend="GObject"><type>GObject</type></link> except for a few details:
     <itemizedlist>
       <listitem><para>
         The <function>_GET_CLASS</function> macro is called <function>_GET_INTERFACE</function>
@@ -1652,7 +1652,7 @@ klass->write_signal_id =
       Usually, the <function><link linkend="g-signal-new">g_signal_new</link></function> function is preferred over
       <function><link linkend="g-signal-newv">g_signal_newv</link></function>. When <function><link linkend="g-signal-new">g_signal_new</link></function>
       is used, the default closure is exported as a class function. For example,
-      <filename>gobject.h</filename> contains the declaration of <type><link linkend="GObjectClass">GObjectClass</link></type>
+      <filename>gobject.h</filename> contains the declaration of <link linkend="GObjectClass"><type>GObjectClass</type></link>
       whose notify class function is the default handler for the <emphasis>notify</emphasis>
       signal:
 <programlisting>
@@ -1693,7 +1693,7 @@ g_object_do_class_init (GObjectClass *class)
                   1, G_TYPE_PARAM);
 }
 </programlisting>
-       <function><link linkend="g-signal-new">g_signal_new</link></function> creates a <type><link linkend="GClosure">GClosure</link></type> which dereferences the
+       <function><link linkend="g-signal-new">g_signal_new</link></function> creates a <link linkend="GClosure"><type>GClosure</type></link> which dereferences the
        type's class structure to access the class function pointer and invoke it if it not NULL. The
        class function is ignored it is set to NULL.
      </para>

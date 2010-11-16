@@ -25,8 +25,11 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <signal.h>
 #include <stdio.h>
+
+#include <gio/gio.h>
 
 #include "gdbus-sessionbus.h"
 
@@ -304,7 +307,6 @@ session_bus_get_temporary_address (void)
 {
   if (temporary_address == NULL)
     {
-      /* TODO: maybe use a more random name etc etc */
       temporary_address = g_strdup_printf ("unix:path=/tmp/g-dbus-tests-pid-%d", getpid ());
     }
 

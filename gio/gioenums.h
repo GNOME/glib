@@ -1157,6 +1157,9 @@ typedef enum
 /**
  * GDBusSignalFlags:
  * @G_DBUS_SIGNAL_FLAGS_NONE: No flags set.
+ * @G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE: Don't actually send the AddMatch
+ * DBus call for this signal subscription.  This gives you more control
+ * over which match rules you add (but you must add them manually).
  *
  * Flags used when subscribing to signals via g_dbus_connection_signal_subscribe().
  *
@@ -1164,7 +1167,8 @@ typedef enum
  */
 typedef enum /*< flags >*/
 {
-  G_DBUS_SIGNAL_FLAGS_NONE = 0
+  G_DBUS_SIGNAL_FLAGS_NONE = 0,
+  G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE = (1<<0)
 } GDBusSignalFlags;
 
 /**
@@ -1215,6 +1219,35 @@ typedef enum
   G_DBUS_MESSAGE_BYTE_ORDER_BIG_ENDIAN    = 'B',
   G_DBUS_MESSAGE_BYTE_ORDER_LITTLE_ENDIAN = 'l'
 } GDBusMessageByteOrder;
+
+/**
+ * GApplicationFlags:
+ * @G_APPLICATION_FLAGS_NONE: Default
+ * @G_APPLICATION_IS_SERVICE: Run as a service. In this mode, registration
+ *      fails if the service is already running, and the application will
+ *      stay around for a while when the use count falls to zero.
+ * @G_APPLICATION_IS_LAUNCHER: Don't try to become the primary instance.
+ * @G_APPLICATION_HANDLES_OPEN: This application handles opening files (in the
+ *     primary instance)
+ * @G_APPLICATION_HANDLES_COMMAND_LINE: This application handles command line
+ *     arguments (in the primary instance)
+ * @G_APPLICATION_SEND_ENVIRONMENT: Send the environment of the
+ *     launching process to the primary instance
+ *
+ * Flags used to define the behaviour of a #GApplication.
+ *
+ * Since: 2.26
+ **/
+typedef enum
+{
+  G_APPLICATION_FLAGS_NONE,
+  G_APPLICATION_IS_SERVICE  =          (1 << 0),
+  G_APPLICATION_IS_LAUNCHER =          (1 << 1),
+
+  G_APPLICATION_HANDLES_OPEN =         (1 << 2),
+  G_APPLICATION_HANDLES_COMMAND_LINE = (1 << 3),
+  G_APPLICATION_SEND_ENVIRONMENT    =  (1 << 4)
+} GApplicationFlags;
 
 G_END_DECLS
 

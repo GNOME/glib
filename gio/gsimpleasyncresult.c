@@ -72,7 +72,8 @@
  *
  * To create a new #GSimpleAsyncResult, call g_simple_async_result_new().
  * If the result needs to be created for a #GError, use
- * g_simple_async_result_new_from_error(). If a #GError is not available
+ * g_simple_async_result_new_from_error() or
+ * g_simple_async_result_new_take_error(). If a #GError is not available
  * (e.g. the asynchronous operation's doesn't take a #GError argument),
  * but the result still needs to be created for an error condition, use
  * g_simple_async_result_new_error() (or g_simple_async_result_set_error_va()
@@ -335,7 +336,7 @@ g_simple_async_result_new (GObject             *source_object,
  * @source_object: a #GObject, or %NULL.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
- * @error: a #GError location.
+ * @error: a #GError
  *
  * Creates a #GSimpleAsyncResult from an error condition.
  *
@@ -343,6 +344,38 @@ g_simple_async_result_new (GObject             *source_object,
  **/
 GSimpleAsyncResult *
 g_simple_async_result_new_from_error (GObject             *source_object,
+                                      GAsyncReadyCallback  callback,
+                                      gpointer             user_data,
+                                      const GError        *error)
+{
+  GSimpleAsyncResult *simple;
+
+  g_return_val_if_fail (!source_object || G_IS_OBJECT (source_object), NULL);
+
+  simple = g_simple_async_result_new (source_object,
+				      callback,
+				      user_data, NULL);
+  g_simple_async_result_set_from_error (simple, error);
+
+  return simple;
+}
+
+/**
+ * g_simple_async_result_new_take_error:
+ * @source_object: (allow-none): a #GObject, or %NULL
+ * @callback: a #GAsyncReadyCallback
+ * @user_data: (allow-none): user data passed to @callback
+ * @error: a #GError
+ *
+ * Creates a #GSimpleAsyncResult from an error condition, and takes over the
+ * caller's ownership of @error, so the caller does not need to free it anymore.
+ *
+ * Returns: a #GSimpleAsyncResult
+ *
+ * Since: 2.28
+ **/
+GSimpleAsyncResult *
+g_simple_async_result_new_take_error (GObject             *source_object,
                                       GAsyncReadyCallback  callback,
                                       gpointer             user_data,
                                       GError              *error)
@@ -354,7 +387,7 @@ g_simple_async_result_new_from_error (GObject             *source_object,
   simple = g_simple_async_result_new (source_object,
 				      callback,
 				      user_data, NULL);
-  g_simple_async_result_set_from_error (simple, error);
+  g_simple_async_result_take_error (simple, error);
 
   return simple;
 }
@@ -439,7 +472,7 @@ g_simple_async_result_set_handle_cancellation (GSimpleAsyncResult *simple,
 }
 
 /**
- * g_simple_async_result_get_source_tag:
+ * g_simple_async_result_get_source_tag: (skip)
  * @simple: a #GSimpleAsyncResult.
  *
  * Gets the source tag for the #GSimpleAsyncResult.
@@ -500,7 +533,7 @@ g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult *simple,
 }
 
 /**
- * g_simple_async_result_get_op_res_gpointer:
+ * g_simple_async_result_get_op_res_gpointer: (skip):
  * @simple: a #GSimpleAsyncResult.
  *
  * Gets a pointer result as returned by the asynchronous function.
@@ -595,6 +628,29 @@ g_simple_async_result_set_from_error (GSimpleAsyncResult *simple,
   if (simple->error)
     g_error_free (simple->error);
   simple->error = g_error_copy (error);
+  simple->failed = TRUE;
+}
+
+/**
+ * g_simple_async_result_take_error:
+ * @simple: a #GSimpleAsyncResult
+ * @error: a #GError
+ *
+ * Sets the result from @error, and takes over the caller's ownership
+ * of @error, so the caller does not need to free it any more.
+ *
+ * Since: 2.28
+ **/
+void
+g_simple_async_result_take_error (GSimpleAsyncResult *simple,
+                                  GError             *error)
+{
+  g_return_if_fail (G_IS_SIMPLE_ASYNC_RESULT (simple));
+  g_return_if_fail (error != NULL);
+
+  if (simple->error)
+    g_error_free (simple->error);
+  simple->error = error;
   simple->failed = TRUE;
 }
 
@@ -931,7 +987,7 @@ void
 g_simple_async_report_gerror_in_idle (GObject *object,
 				      GAsyncReadyCallback callback,
 				      gpointer user_data,
-				      GError *error)
+				      const GError *error)
 {
   GSimpleAsyncResult *simple;
  
@@ -942,6 +998,38 @@ g_simple_async_report_gerror_in_idle (GObject *object,
 						 callback,
 						 user_data,
 						 error);
+  g_simple_async_result_complete_in_idle (simple);
+  g_object_unref (simple);
+}
+
+/**
+ * g_simple_async_report_take_gerror_in_idle:
+ * @object: a #GObject.
+ * @callback: a #GAsyncReadyCallback.
+ * @user_data: user data passed to @callback.
+ * @error: the #GError to report
+ *
+ * Reports an error in an idle function. Similar to
+ * g_simple_async_report_gerror_in_idle(), but takes over the caller's
+ * ownership of @error, so the caller does not have to free it any more.
+ *
+ * Since: 2.28
+ **/
+void
+g_simple_async_report_take_gerror_in_idle (GObject *object,
+                                           GAsyncReadyCallback callback,
+                                           gpointer user_data,
+                                           GError *error)
+{
+  GSimpleAsyncResult *simple;
+
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (error != NULL);
+
+  simple = g_simple_async_result_new_take_error (object,
+                                                 callback,
+                                                 user_data,
+                                                 error);
   g_simple_async_result_complete_in_idle (simple);
   g_object_unref (simple);
 }

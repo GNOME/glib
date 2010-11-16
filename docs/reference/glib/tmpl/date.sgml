@@ -52,10 +52,7 @@ representation is valid. Sometimes neither is valid. Use the API.
 </para>
 
 <para>
-GLib doesn't contain any time-manipulation functions; however, there
-is a #GTime typedef and a #GTimeVal struct which represents a more 
-precise time (with microseconds). You can request the current time as 
-a #GTimeVal with g_get_current_time().
+GLib also features #GDateTime which represents a precise time.
 </para>
 
 <!-- ##### SECTION See_Also ##### -->
@@ -82,6 +79,12 @@ code readability.
 Represents a precise time, with seconds and microseconds. 
 Similar to the <structname>struct timeval</structname> returned by 
 the <function>gettimeofday()</function> UNIX call.
+</para>
+
+<para>
+GLib is attempting to unify around the use of 64bit integers to
+represent microsecond-precision time.  As such, this type will be
+removed from a future version of GLib.
 </para>
 
 @tv_sec: seconds
@@ -133,6 +136,14 @@ length of the sleep.
 @time_: 
 @Returns: 
 
+
+<!-- ##### STRUCT GTimeSpec ##### -->
+<para>
+
+</para>
+
+@tv_sec: 
+@tv_nsec: 
 
 <!-- ##### STRUCT GDate ##### -->
 <para>

@@ -119,26 +119,6 @@ is_path (const gchar *path)
   return TRUE;
 }
 
-GMainContext *
-g_settings_backend_get_active_context (void)
-{
-  GMainContext *context;
-  GSource *source;
-
-  if ((source = g_main_current_source ()))
-    context = g_source_get_context (source);
-
-  else
-    {
-      context = g_main_context_get_thread_default ();
-
-      if (context == NULL)
-        context = g_main_context_default ();
-    }
-
-  return context;
-}
-
 struct _GSettingsBackendWatch
 {
   GObject                       *target;
@@ -316,20 +296,7 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
                                     GBoxedFreeFunc    data1_free,
                                     gpointer          data2)
 {
-  GMainContext *context, *here_and_now;
-  GSettingsBackendWatch *watch;
-
-  /* We need to hold the mutex here (to prevent a node from being
-   * deleted as we are traversing the list).  Since we should not
-   * re-enter user code while holding this mutex, we create a
-   * one-time-use GMainContext and populate it with the events that we
-   * would have called directly.  We dispatch these events after
-   * releasing the lock.  Note that the GObject reference is acquired on
-   * the target while holding the mutex and the mutex needs to be held
-   * as part of the destruction of any GSettings instance (via the weak
-   * reference handling).  This is the key to the safety of the whole
-   * setup.
-   */
+  GSettingsBackendWatch *suffix, *watch, *next;
 
   if (data1_copy == NULL)
     data1_copy = pointer_id;
@@ -337,19 +304,34 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
   if (data1_free == NULL)
     data1_free = pointer_ignore;
 
-  context = g_settings_backend_get_active_context ();
-  here_and_now = g_main_context_new ();
-
-  /* traverse the (immutable while holding lock) list */
+  /* We're in a little bit of a tricky situation here.  We need to hold
+   * a lock while traversing the list, but we don't want to hold the
+   * lock while calling back into user code.
+   *
+   * Since we're not holding the lock while we call user code, we can't
+   * render the list immutable.  We can, however, store a pointer to a
+   * given suffix of the list and render that suffix immutable.
+   *
+   * Adds will never modify the suffix since adds always come in the
+   * form of prepends.  We can also prevent removes from modifying the
+   * suffix since removes only happen in response to the last reference
+   * count dropping -- so just add a reference to everything in the
+   * suffix.
+   */
   g_static_mutex_lock (&backend->priv->lock);
-  for (watch = backend->priv->watches; watch; watch = watch->next)
+  suffix = backend->priv->watches;
+  for (watch = suffix; watch; watch = watch->next)
+    g_object_ref (watch->target);
+  g_static_mutex_unlock (&backend->priv->lock);
+
+  /* The suffix is now immutable, so this is safe. */
+  for (watch = suffix; watch; watch = next)
     {
       GSettingsBackendClosure *closure;
-      GSource *source;
 
       closure = g_slice_new (GSettingsBackendClosure);
       closure->backend = g_object_ref (backend);
-      closure->target = g_object_ref (watch->target);
+      closure->target = watch->target; /* we took our ref above */
       closure->function = G_STRUCT_MEMBER (void *, watch->vtable,
                                            function_offset);
       closure->name = g_strdup (name);
@@ -357,23 +339,18 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
       closure->data1_free = data1_free;
       closure->data2 = data2;
 
-      source = g_idle_source_new ();
-      g_source_set_priority (source, G_PRIORITY_DEFAULT);
-      g_source_set_callback (source,
-                             g_settings_backend_invoke_closure,
-                             closure, NULL);
+      /* we do this here because 'watch' may not live to the end of this
+       * iteration of the loop (since we may unref the target below).
+       */
+      next = watch->next;
 
-      if (watch->context && watch->context != context)
-        g_source_attach (source, watch->context);
+      if (watch->context)
+        g_main_context_invoke (watch->context,
+                               g_settings_backend_invoke_closure,
+                               closure);
       else
-        g_source_attach (source, here_and_now);
-
-      g_source_unref (source);
+        g_settings_backend_invoke_closure (closure);
     }
-  g_static_mutex_unlock (&backend->priv->lock);
-
-  while (g_main_context_iteration (here_and_now, FALSE));
-  g_main_context_unref (here_and_now);
 }
 
 /**
@@ -386,7 +363,7 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
  * implementations should call this if a key has possibly changed its
  * value.
  *
- * @key must be a valid key (ie: starting with a slash, not containing
+ * @key must be a valid key (ie starting with a slash, not containing
  * '//', and not ending with a slash).
  *
  * The implementation must call this function during any call to
@@ -432,7 +409,7 @@ g_settings_backend_changed (GSettingsBackend *backend,
  * implementations should call this if keys have possibly changed their
  * values.
  *
- * @path must be a valid path (ie: starting and ending with a slash and
+ * @path must be a valid path (ie starting and ending with a slash and
  * not containing '//').  Each string in @items must form a valid key
  * name when @path is prefixed to it (ie: each item must not start or
  * end with '/' and must not contain '//').
@@ -483,7 +460,7 @@ g_settings_backend_keys_changed (GSettingsBackend    *backend,
  * Backend implementations should call this if an entire path of keys
  * have possibly changed their values.
  *
- * @path must be a valid path (ie: starting and ending with a slash and
+ * @path must be a valid path (ie starting and ending with a slash and
  * not containing '//').
  *
  * The meaning of this signal is that any of the key which has a name

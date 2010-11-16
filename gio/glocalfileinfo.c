@@ -119,18 +119,18 @@ static GHashTable *gid_cache = NULL;
 char *
 _g_local_file_info_create_etag (GLocalFileStat *statbuf)
 {
-  GTimeVal tv;
-  
-  tv.tv_sec = statbuf->st_mtime;
+  glong sec, usec;
+
+  sec = statbuf->st_mtime;
 #if defined (HAVE_STRUCT_STAT_ST_MTIMENSEC)
-  tv.tv_usec = statbuf->st_mtimensec / 1000;
+  usec = statbuf->st_mtimensec / 1000;
 #elif defined (HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC)
-  tv.tv_usec = statbuf->st_mtim.tv_nsec / 1000;
+  usec = statbuf->st_mtim.tv_nsec / 1000;
 #else
-  tv.tv_usec = 0;
+  usec = 0;
 #endif
 
-  return g_strdup_printf ("%lu:%lu", tv.tv_sec, tv.tv_usec);
+  return g_strdup_printf ("%lu:%lu", sec, usec);
 }
 
 static char *

@@ -32,6 +32,10 @@
 #include "gtypes.h"
 #include "gregex.h"
 #include "glibintl.h"
+#include "glist.h"
+#include "gmessages.h"
+#include "gstrfuncs.h"
+#include "gatomic.h"
 
 /**
  * SECTION:gregex

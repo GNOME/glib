@@ -377,13 +377,34 @@ g_socket_details_from_fd (GSocket *socket)
     {
      case G_SOCKET_FAMILY_IPV4:
      case G_SOCKET_FAMILY_IPV6:
+       socket->priv->family = address.ss_family;
+       switch (socket->priv->type)
+	 {
+	 case G_SOCKET_TYPE_STREAM:
+	   socket->priv->protocol = G_SOCKET_PROTOCOL_TCP;
+	   break;
+
+	 case G_SOCKET_TYPE_DATAGRAM:
+	   socket->priv->protocol = G_SOCKET_PROTOCOL_UDP;
+	   break;
+
+	 case G_SOCKET_TYPE_SEQPACKET:
+	   socket->priv->protocol = G_SOCKET_PROTOCOL_SCTP;
+	   break;
+
+	 default:
+	   break;
+	 }
+       break;
+
      case G_SOCKET_FAMILY_UNIX:
-      socket->priv->family = address.ss_family;
-      break;
+       socket->priv->family = G_SOCKET_FAMILY_UNIX;
+       socket->priv->protocol = G_SOCKET_PROTOCOL_DEFAULT;
+       break;
 
      default:
-      socket->priv->family = G_SOCKET_FAMILY_INVALID;
-      break;
+       socket->priv->family = G_SOCKET_FAMILY_INVALID;
+       break;
     }
 
   if (socket->priv->family != G_SOCKET_FAMILY_INVALID)
@@ -1203,7 +1224,7 @@ g_socket_get_fd (GSocket *socket)
  * useful if the socket has been bound to a local address,
  * either explicitly or implicitly when connecting.
  *
- * Returns: a #GSocketAddress or %NULL on error.
+ * Returns: (transfer full): a #GSocketAddress or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -1236,7 +1257,7 @@ g_socket_get_local_address (GSocket  *socket,
  * Try to get the remove address of a connected socket. This is only
  * useful for connection oriented sockets that have been connected.
  *
- * Returns: a #GSocketAddress or %NULL on error.
+ * Returns: (transfer full): a #GSocketAddress or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -1471,7 +1492,7 @@ g_socket_speaks_ipv4 (GSocket *socket)
  * or return %G_IO_ERROR_WOULD_BLOCK if non-blocking I/O is enabled.
  * To be notified of an incoming connection, wait for the %G_IO_IN condition.
  *
- * Returns: a new #GSocket, or %NULL on error.
+ * Returns: (transfer full): a new #GSocket, or %NULL on error.
  *     Free the returned object with g_object_unref().
  *
  * Since: 2.22
@@ -2390,7 +2411,7 @@ typedef struct {
   GIOCondition  condition;
   GCancellable *cancellable;
   GPollFD       cancel_pollfd;
-  GTimeVal      timeout_time;
+  gint64        timeout_time;
 } GSocketSource;
 
 static gboolean
@@ -2402,19 +2423,20 @@ socket_source_prepare (GSource *source,
   if (g_cancellable_is_cancelled (socket_source->cancellable))
     return TRUE;
 
-  if (socket_source->timeout_time.tv_sec)
+  if (socket_source->timeout_time)
     {
-      GTimeVal now;
+      gint64 now;
 
-      g_source_get_current_time (source, &now);
-      *timeout = ((socket_source->timeout_time.tv_sec - now.tv_sec) * 1000 +
-		  (socket_source->timeout_time.tv_usec - now.tv_usec) / 1000);
+      now = g_source_get_time (source);
+      /* Round up to ensure that we don't try again too early */
+      *timeout = (socket_source->timeout_time - now + 999) / 1000;
       if (*timeout < 0)
-	{
-	  socket_source->socket->priv->timed_out = TRUE;
-	  socket_source->pollfd.revents = socket_source->condition & (G_IO_IN | G_IO_OUT);
-	  return TRUE;
-	}
+        {
+          socket_source->socket->priv->timed_out = TRUE;
+          socket_source->pollfd.revents = socket_source->condition & (G_IO_IN | G_IO_OUT);
+          *timeout = 0;
+          return TRUE;
+        }
     }
   else
     *timeout = -1;
@@ -2525,15 +2547,11 @@ socket_source_new (GSocket      *socket,
   g_source_add_poll (source, &socket_source->pollfd);
 
   if (socket->priv->timeout)
-    {
-      g_get_current_time (&socket_source->timeout_time);
-      socket_source->timeout_time.tv_sec += socket->priv->timeout;
-    }
+    socket_source->timeout_time = g_get_monotonic_time () +
+                                  socket->priv->timeout * 1000000;
+
   else
-    {
-      socket_source->timeout_time.tv_sec = 0;
-      socket_source->timeout_time.tv_usec = 0;
-    }
+    socket_source->timeout_time = 0;
 
   return source;
 }
@@ -2564,7 +2582,7 @@ socket_source_new (GSocket      *socket,
  * marked as having had a timeout, and so the next #GSocket I/O method
  * you call will then fail with a %G_IO_ERROR_TIMED_OUT.
  *
- * Returns: a newly allocated %GSource, free with g_source_unref().
+ * Returns: (transfer full): a newly allocated %GSource, free with g_source_unref().
  *
  * Since: 2.22
  */
@@ -3445,7 +3463,7 @@ g_socket_receive_message (GSocket                 *socket,
  * g_unix_connection_send_credentials() /
  * g_unix_connection_receive_credentials() functions.
  *
- * Returns: %NULL if @error is set, otherwise a #GCredentials object
+ * Returns: (transfer full): %NULL if @error is set, otherwise a #GCredentials object
  * that must be freed with g_object_unref().
  *
  * Since: 2.26

@@ -393,14 +393,9 @@ dest_hostname_lookup_cb (GObject           *object,
 						     result,
 						     &error);
   if (priv->dest_ips)
-    {
-      save_result (priv);
-    }
+    save_result (priv);
   else
-    {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (simple, error);
 
   complete_async (priv); 
 }
@@ -459,10 +454,7 @@ address_enumerate_cb (GObject	   *object,
     }
 
   if (error)
-    {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (simple, error);
 
   complete_async (priv); 
 }
@@ -483,8 +475,7 @@ proxy_lookup_cb (GObject      *object,
 
   if (error)
     {
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
     }
   else
     {

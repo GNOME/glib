@@ -33,7 +33,7 @@ G_DEFINE_TYPE_WITH_CODE (GSimpleAction, g_simple_action, G_TYPE_OBJECT,
 /**
  * SECTION:gsimpleaction
  * @title: GSimpleAction
- * @short_description: a simple #GSimpleAction
+ * @short_description: a simple GSimpleAction
  *
  * A #GSimpleAction is the obvious simple implementation of the #GSimpleAction
  * interface.  This is the easiest way to create an action for purposes of
@@ -318,7 +318,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
    * @parameter will always be of the expected type.  In the event that
    * an incorrect type was given, no signal will be emitted.
    *
-   * Since: 2.26
+   * Since: 2.28
    */
   g_simple_action_signals[SIGNAL_ACTIVATE] =
     g_signal_new (I_("activate"),
@@ -336,7 +336,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
    * The name of the action.  This is mostly meaningful for identifying
    * the action once it has been added to a #GSimpleActionGroup.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_object_class_install_property (object_class, PROP_NAME,
                                    g_param_spec_string ("name",
@@ -353,7 +353,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
    * The type of the parameter that must be given when activating the
    * action.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_object_class_install_property (object_class, PROP_PARAMETER_TYPE,
                                    g_param_spec_boxed ("parameter-type",
@@ -372,7 +372,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
    * If the action is disabled then calls to g_simple_action_activate() and
    * g_simple_action_set_state() have no effect.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_object_class_install_property (object_class, PROP_ENABLED,
                                    g_param_spec_boolean ("enabled",
@@ -389,7 +389,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
    * The #GVariantType of the state that the action has, or %NULL if the
    * action is stateless.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_object_class_install_property (object_class, PROP_STATE_TYPE,
                                    g_param_spec_boxed ("state-type",
@@ -404,7 +404,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
    *
    * The state of the action, or %NULL if the action is stateless.
    *
-   * Since: 2.26
+   * Since: 2.28
    **/
   g_object_class_install_property (object_class, PROP_STATE,
                                    g_param_spec_variant ("state",
@@ -429,7 +429,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
  * An action must be enabled in order to be activated or in order to
  * have its state changed from outside callers.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 void
 g_simple_action_set_enabled (GSimpleAction *simple,
@@ -456,7 +456,7 @@ g_simple_action_set_enabled (GSimpleAction *simple,
  *
  * Returns: a new #GSimpleAction
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GSimpleAction *
 g_simple_action_new (const gchar        *name,
@@ -483,7 +483,7 @@ g_simple_action_new (const gchar        *name,
  *
  * Returns: a new #GSimpleAction
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GSimpleAction *
 g_simple_action_new_stateful (const gchar        *name,

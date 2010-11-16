@@ -193,187 +193,187 @@ msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
 #: glib/gdatetime.c:161
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "January"
 msgstr "يناير"
 
 #: glib/gdatetime.c:163
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "February"
 msgstr "فبراير"
 
 #: glib/gdatetime.c:165
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "March"
 msgstr "مارس"
 
 #: glib/gdatetime.c:167
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "April"
 msgstr "أبريل"
 
 #: glib/gdatetime.c:169 glib/gdatetime.c:206
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "May"
 msgstr "مايو"
 
 #: glib/gdatetime.c:171
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "June"
 msgstr "يونيو"
 
 #: glib/gdatetime.c:173
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "July"
 msgstr "يوليو"
 
 #: glib/gdatetime.c:175
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "August"
 msgstr "أغسطس"
 
 #: glib/gdatetime.c:177
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "September"
 msgstr "سبتمبر"
 
 #: glib/gdatetime.c:179
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "October"
 msgstr "أكتوبر"
 
 #: glib/gdatetime.c:181
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "November"
 msgstr "نوفمبر"
 
 #: glib/gdatetime.c:183
-msgctxt "GDateTime"
+msgctxt "full month name"
 msgid "December"
 msgstr "ديسمبر"
 
 #: glib/gdatetime.c:198
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "يناير"
 
 #: glib/gdatetime.c:200
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "فبراير"
 
 #: glib/gdatetime.c:202
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "مارس"
 
 #: glib/gdatetime.c:204
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "أبريل"
 
 #: glib/gdatetime.c:208
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "يونيو"
 
 #: glib/gdatetime.c:210
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "يوليو"
 
 #: glib/gdatetime.c:212
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "أغسطس"
 
 #: glib/gdatetime.c:214
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "سبتمبر"
 
 #: glib/gdatetime.c:216
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "أكتوبر"
 
 #: glib/gdatetime.c:218
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "نوفمبر"
 
 #: glib/gdatetime.c:220
-msgctxt "GDateTime"
+msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "ديسمبر"
 
 #: glib/gdatetime.c:235
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Monday"
 msgstr "الاثنين"
 
 #: glib/gdatetime.c:237
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "الثلاثاء"
 
 #: glib/gdatetime.c:239
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "الأربعاء"
 
 #: glib/gdatetime.c:241
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "الخميس"
 
 #: glib/gdatetime.c:243
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Friday"
 msgstr "الجمعة"
 
 #: glib/gdatetime.c:245
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "السبت"
 
 #: glib/gdatetime.c:247
-msgctxt "GDateTime"
+msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "الأحد"
 
 #: glib/gdatetime.c:262
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "اثنين"
 
 #: glib/gdatetime.c:264
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "ثلاثاء"
 
 #: glib/gdatetime.c:266
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "أربعاء"
 
 #: glib/gdatetime.c:268
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "خميس"
 
 #: glib/gdatetime.c:270
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "جمعة"
 
 #: glib/gdatetime.c:272
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "سبت"
 
 #: glib/gdatetime.c:274
-msgctxt "GDateTime"
+msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "أحد"
 

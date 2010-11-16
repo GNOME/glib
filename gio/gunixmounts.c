@@ -1083,7 +1083,7 @@ get_mount_points_timestamp (void)
  * timestamp, allowing for checking if the mounts have changed
  * with g_unix_mounts_changed_since().
  *
- * Returns: a #GList of the UNIX mounts.
+ * Returns: (element-type utf8) (transfer full): a #GList of the UNIX mounts.
  **/
 GList *
 g_unix_mounts_get (guint64 *time_read)
@@ -1103,7 +1103,7 @@ g_unix_mounts_get (guint64 *time_read)
  * is set, it will be filled with a unix timestamp for checking
  * if the mounts have changed since with g_unix_mounts_changed_since().
  * 
- * Returns: a #GUnixMount. 
+ * Returns: (transfer full): a #GUnixMount. 
  **/
 GUnixMountEntry *
 g_unix_mount_at (const char *mount_path,
@@ -1138,7 +1138,7 @@ g_unix_mount_at (const char *mount_path,
  * allowing for checking if the mounts have changed with
  * g_unix_mounts_points_changed_since().
  *
- * Returns: a #GList of the UNIX mountpoints.
+ * Returns: (element-type utf8) (transfer full): a #GList of the UNIX mountpoints.
  **/
 GList *
 g_unix_mount_points_get (guint64 *time_read)
@@ -1856,7 +1856,7 @@ g_unix_mount_guess_name (GUnixMountEntry *mount_entry)
  * 
  * Guesses the icon of a Unix mount. 
  *
- * Returns: a #GIcon
+ * Returns: (transfer full): a #GIcon
  */
 GIcon *
 g_unix_mount_guess_icon (GUnixMountEntry *mount_entry)
@@ -1893,7 +1893,7 @@ g_unix_mount_point_guess_name (GUnixMountPoint *mount_point)
  * 
  * Guesses the icon of a Unix mount point. 
  *
- * Returns: a #GIcon
+ * Returns: (transfer full): a #GIcon
  */
 GIcon *
 g_unix_mount_point_guess_icon (GUnixMountPoint *mount_point)

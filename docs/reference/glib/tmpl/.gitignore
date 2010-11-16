@@ -8,6 +8,7 @@ checksum.sgml
 completion.sgml
 datasets.sgml
 datalist.sgml
+date-time.sgml
 ghostutils.sgml
 gurifuncs.sgml
 gvarianttype.sgml
@@ -31,3 +32,4 @@ threads.sgml
 trees-binary.sgml
 trees-nary.sgml
 timers.sgml
+timezone.sgml

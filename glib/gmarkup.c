@@ -1967,7 +1967,7 @@ g_markup_parse_context_get_user_data (GMarkupParseContext *context)
  **/
 void
 g_markup_parse_context_push (GMarkupParseContext *context,
-                             GMarkupParser       *parser,
+                             const GMarkupParser *parser,
                              gpointer             user_data)
 {
   GMarkupRecursionTracker *tracker;

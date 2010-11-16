@@ -671,6 +671,9 @@ g_data_input_stream_read_uint64
 g_data_input_stream_read_line
 g_data_input_stream_read_line_async
 g_data_input_stream_read_line_finish
+g_data_input_stream_read_upto
+g_data_input_stream_read_upto_async
+g_data_input_stream_read_upto_finish
 g_data_input_stream_read_until
 g_data_input_stream_read_until_async
 g_data_input_stream_read_until_finish
@@ -1149,6 +1152,7 @@ GSimpleAsyncThreadFunc
 g_simple_async_result_new
 g_simple_async_result_new_error
 g_simple_async_result_new_from_error
+g_simple_async_result_new_take_error
 g_simple_async_result_set_op_res_gpointer
 g_simple_async_result_get_op_res_gpointer
 g_simple_async_result_set_op_res_gssize
@@ -1162,11 +1166,13 @@ g_simple_async_result_complete
 g_simple_async_result_complete_in_idle
 g_simple_async_result_run_in_thread
 g_simple_async_result_set_from_error
+g_simple_async_result_take_error
 g_simple_async_result_propagate_error
 g_simple_async_result_set_error
 g_simple_async_result_set_error_va
 g_simple_async_report_error_in_idle
 g_simple_async_report_gerror_in_idle
+g_simple_async_report_take_gerror_in_idle
 <SUBSECTION Standard>
 GSimpleAsyncResultClass
 G_SIMPLE_ASYNC_RESULT
@@ -1385,9 +1391,6 @@ g_desktop_app_info_new
 g_desktop_app_info_get_filename
 g_desktop_app_info_get_is_hidden
 g_desktop_app_info_set_desktop_env
-GDesktopAppInfoLookup
-G_DESKTOP_APP_INFO_LOOKUP_EXTENSION_POINT_NAME
-g_desktop_app_info_lookup_get_default_for_uri_scheme
 <SUBSECTION Standard>
 GDesktopAppInfoClass
 G_TYPE_DESKTOP_APP_INFO
@@ -1396,14 +1399,8 @@ G_DESKTOP_APP_INFO_CLASS
 G_IS_DESKTOP_APP_INFO
 G_IS_DESKTOP_APP_INFO_CLASS
 G_DESKTOP_APP_INFO_GET_CLASS
-GDesktopAppInfoLookupIface
-G_DESKTOP_APP_INFO_LOOKUP
-G_TYPE_DESKTOP_APP_INFO_LOOKUP
-G_DESKTOP_APP_INFO_LOOKUP_GET_IFACE
-G_IS_DESKTOP_APP_INFO_LOOKUP
 <SUBSECTION Private>
 g_desktop_app_info_get_type
-g_desktop_app_info_lookup_get_type
 </SECTION>
 
 <SECTION>
@@ -2172,7 +2169,11 @@ g_settings_reset
 
 <SUBSECTION Introspection>
 g_settings_list_schemas
-g_settings_list_items
+g_settings_list_relocatable_schemas
+g_settings_list_keys
+g_settings_list_children
+g_settings_get_range
+g_settings_range_check
 
 <SUBSECTION Convenience>
 g_settings_get
@@ -2658,23 +2659,33 @@ g_simple_permission_get_type
 <FILE>gapplication</FILE>
 GApplication
 GApplicationClass
-
+<SUBSECTION>
+GApplicationFlags
+g_application_id_is_valid
 g_application_new
+<SUBSECTION>
+g_application_get_application_id
+g_application_set_application_id
+<SUBSECTION>
+g_application_get_inactivity_timeout
+g_application_set_inactivity_timeout
+<SUBSECTION>
+g_application_get_flags
+g_application_set_flags
+<SUBSECTION>
+g_application_set_action_group
+<SUBSECTION>
+g_application_get_is_registered
+g_application_get_is_remote
 g_application_register
-g_application_try_new
-g_application_unregistered_try_new
-g_application_get_instance
-g_application_get_id
-g_application_add_action
-g_application_remove_action
-g_application_list_actions
-g_application_set_action_enabled
-g_application_get_action_enabled
-g_application_get_action_description
-g_application_invoke_action
+<SUBSECTION>
+g_application_hold
+g_application_release
+<SUBSECTION>
+g_application_activate
+g_application_open
+<SUBSECTION>
 g_application_run
-g_application_quit_with_data
-g_application_is_remote
 <SUBSECTION Standard>
 G_TYPE_APPLICATION
 G_APPLICATION
@@ -2688,6 +2699,36 @@ g_application_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gapplicationcommandline</FILE>
+GApplicationCommandLine
+GApplicationCommandLineClass
+<SUBSECTION>
+g_application_command_line_get_arguments
+g_application_command_line_get_cwd
+g_application_command_line_get_environ
+g_application_command_line_getenv
+g_application_command_line_get_is_remote
+g_application_command_line_get_platform_data
+<SUBSECTION>
+g_application_command_line_set_exit_status
+g_application_command_line_get_exit_status
+<SUBSECTION>
+g_application_command_line_print
+g_application_command_line_printerr
+<SUBSECTION Standard>
+G_TYPE_APPLICATION_COMMAND_LINE
+G_APPLICATION_COMMAND_LINE
+G_APPLICATION_COMMAND_LINE_CLASS
+G_IS_APPLICATION_COMMAND_LINE
+G_IS_APPLICATION_COMMAND_LINE_CLASS
+G_APPLICATION_COMMAND_LINE_GET_CLASS
+<SUBSECTION Private>
+GApplicationCommandLinePrivate
+g_application_command_line_get_type
+</SECTION>
+
+
+<SECTION>
 <FILE>gactiongroup</FILE>
 <TITLE>GActionGroup</TITLE>
 GActionGroup
@@ -2697,17 +2738,17 @@ g_action_group_has_action
 g_action_group_list_actions
 
 <SUBSECTION>
-g_action_group_get_enabled
-g_action_group_get_parameter_type
-g_action_group_get_state_type
-g_action_group_get_state_hint
+g_action_group_get_action_enabled
+g_action_group_get_action_parameter_type
+g_action_group_get_action_state_type
+g_action_group_get_action_state_hint
 
 <SUBSECTION>
-g_action_group_get_state
-g_action_group_set_state
+g_action_group_get_action_state
+g_action_group_change_action_state
 
 <SUBSECTION>
-g_action_group_activate
+g_action_group_activate_action
 
 <SUBSECTION>
 g_action_group_action_added
@@ -2720,7 +2761,7 @@ g_action_group_get_type
 GActionGroupPrivate
 G_TYPE_ACTION_GROUP
 G_IS_ACTION_GROUP
-G_ACTION_GROUP_GET_INTERFACE
+G_ACTION_GROUP_GET_IFACE
 G_ACTION_GROUP
 </SECTION>
 
@@ -2728,6 +2769,7 @@ G_ACTION_GROUP
 <FILE>gaction</FILE>
 <TITLE>GAction</TITLE>
 GAction
+
 
 <SUBSECTION>
 g_action_get_name
@@ -2747,7 +2789,7 @@ g_action_activate
 g_action_get_type
 G_TYPE_ACTION
 G_IS_ACTION
-G_ACTION_GET_INTERFACE
+G_ACTION_GET_IFACE
 G_ACTION
 </SECTION>
 
@@ -2788,9 +2830,6 @@ g_simple_action_group_lookup
 g_simple_action_group_insert
 g_simple_action_group_remove
 
-<SUBSECTION>
-g_simple_action_group_set_enabled
-
 <SUBSECTION Standard>
 GSimpleActionGroupClass
 GSimpleActionGroupPrivate
@@ -2807,7 +2846,7 @@ G_SIMPLE_ACTION_GROUP
 <FILE>gproxyresolver</FILE>
 <TITLE>GProxyResolver</TITLE>
 GProxyResolver
-GProxyResolverIface
+GProxyResolverInterface
 G_PROXY_RESOLVER_EXTENSION_POINT_NAME
 g_proxy_resolver_get_default
 g_proxy_resolver_is_supported
@@ -2850,7 +2889,7 @@ g_proxy_address_get_type
 <FILE>gproxy</FILE>
 <TITLE>GProxy</TITLE>
 GProxy
-GProxyIface
+GProxyInterface
 G_PROXY_EXTENSION_POINT_NAME
 g_proxy_connect
 g_proxy_connect_async
@@ -2864,4 +2903,30 @@ G_IS_PROXY
 G_TYPE_PROXY
 <SUBSECTION Private>
 g_proxy_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gperiodic</FILE>
+<TITLE>GPeriodic</TITLE>
+GPeriodic
+<SUBSECTION>
+g_periodic_new
+g_periodic_get_hz
+g_periodic_get_high_priority
+g_periodic_get_low_priority
+<SUBSECTION>
+GPeriodicTickFunc
+g_periodic_add
+g_periodic_remove
+<SUBSECTION>
+g_periodic_block
+g_periodic_unblock
+<SUBSECTION>
+g_periodic_damaged
+<SUBSECTION Standard>
+G_TYPE_PERIODIC
+G_PERIODIC
+G_IS_PERIODIC
+<SUBSECTION Private>
+g_periodic_get_type
 </SECTION>

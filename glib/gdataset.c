@@ -1000,8 +1000,10 @@ GQuark
 g_quark_try_string (const gchar *string)
 {
   GQuark quark = 0;
-  g_return_val_if_fail (string != NULL, 0);
-  
+
+  if (string == NULL)
+    return 0;
+
   G_LOCK (g_quark_global);
   if (g_quark_ht)
     quark = GPOINTER_TO_UINT (g_hash_table_lookup (g_quark_ht, string));

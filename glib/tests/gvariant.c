@@ -3489,21 +3489,24 @@ test_gv_byteswap ()
    *
    * just test a few simple cases here to make sure they each work
    */
-  guchar valid_data[] = { 'a', '\0', swapped16(66), 2,
+  guchar validbytes[] = { 'a', '\0', swapped16(66), 2,
                           0,
                           'b', '\0', swapped16(77), 2,
                           5, 11 };
-  guchar corrupt_data[] = { 'a', '\0', swapped16(66), 2,
+  guchar corruptbytes[] = { 'a', '\0', swapped16(66), 2,
                             0,
                             'b', '\0', swapped16(77), 2,
                             6, 11 };
+  guint valid_data[4], corrupt_data[4];
   GVariant *value, *swapped;
   gchar *string, *string2;
 
+  memcpy (valid_data, validbytes, sizeof validbytes);
+  memcpy (corrupt_data, corruptbytes, sizeof corruptbytes);
 
   /* trusted */
   value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
-                                   valid_data, sizeof valid_data, TRUE,
+                                   valid_data, sizeof validbytes, TRUE,
                                    NULL, NULL);
   swapped = g_variant_byteswap (value);
   g_variant_unref (value);
@@ -3515,7 +3518,7 @@ test_gv_byteswap ()
 
   /* untrusted but valid */
   value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
-                                   valid_data, sizeof valid_data, FALSE,
+                                   valid_data, sizeof validbytes, FALSE,
                                    NULL, NULL);
   swapped = g_variant_byteswap (value);
   g_variant_unref (value);
@@ -3527,7 +3530,7 @@ test_gv_byteswap ()
 
   /* untrusted, invalid */
   value = g_variant_new_from_data (G_VARIANT_TYPE ("a(sn)"),
-                                   corrupt_data, sizeof corrupt_data, FALSE,
+                                   corrupt_data, sizeof corruptbytes, FALSE,
                                    NULL, NULL);
   string = g_variant_print (value, FALSE);
   swapped = g_variant_byteswap (value);
@@ -3819,6 +3822,8 @@ test_bytestring (void)
   GVariant *value;
   gchar **strv;
   gchar *str;
+  const gchar *const_str;
+  GVariant *untrusted_empty;
 
   strv = g_strsplit (test_string, ",", 0);
 
@@ -3884,6 +3889,84 @@ test_bytestring (void)
   g_variant_get_child (value, 3, "^&ay", &str);
   g_assert_cmpstr (str, ==, "foo");
   g_variant_unref (value);
+
+  untrusted_empty = g_variant_new_from_data (G_VARIANT_TYPE ("ay"), NULL, 0, FALSE, NULL, NULL);
+  value = g_variant_get_normal_form (untrusted_empty);
+  const_str = g_variant_get_bytestring (value);
+  g_variant_unref (value);
+  g_variant_unref (untrusted_empty);
+}
+
+static void
+test_lookup_value (void)
+{
+  struct {
+    const gchar *dict, *key, *value;
+  } cases[] = {
+    { "@a{ss} {'x':  'y'}",   "x",  "'y'" },
+    { "@a{ss} {'x':  'y'}",   "y"         },
+    { "@a{os} {'/x': 'y'}",   "/x", "'y'" },
+    { "@a{os} {'/x': 'y'}",   "/y"        },
+    { "@a{sv} {'x':  <'y'>}", "x",  "'y'" },
+    { "@a{sv} {'x':  <5>}",   "x",  "5"   },
+    { "@a{sv} {'x':  <'y'>}", "y"         }
+  };
+  gint i;
+
+  for (i = 0; i < G_N_ELEMENTS (cases); i++)
+    {
+      GVariant *dictionary;
+      GVariant *value;
+      gchar *p;
+      
+      dictionary = g_variant_parse (NULL, cases[i].dict, NULL, NULL, NULL);
+      value = g_variant_lookup_value (dictionary, cases[i].key, NULL);
+      g_variant_unref (dictionary);
+
+      if (value == NULL && cases[i].value == NULL)
+        continue;
+
+      g_assert (value && cases[i].value);
+      p = g_variant_print (value, FALSE);
+      g_assert_cmpstr (cases[i].value, ==, p);
+      g_variant_unref (value);
+      g_free (p);
+    }
+}
+
+static void
+test_lookup (void)
+{
+  const gchar *str;
+  GVariant *dict;
+  gboolean ok;
+  gint num;
+
+  dict = g_variant_parse (NULL,
+                          "{'a': <5>, 'b': <'c'>}",
+                          NULL, NULL, NULL);
+
+  ok = g_variant_lookup (dict, "a", "i", &num);
+  g_assert (ok);
+  g_assert_cmpint (num, ==, 5);
+
+  ok = g_variant_lookup (dict, "a", "&s", &str);
+  g_assert (!ok);
+
+  ok = g_variant_lookup (dict, "q", "&s", &str);
+  g_assert (!ok);
+
+  ok = g_variant_lookup (dict, "b", "i", &num);
+  g_assert (!ok);
+
+  ok = g_variant_lookup (dict, "b", "&s", &str);
+  g_assert (ok);
+  g_assert_cmpstr (str, ==, "c");
+
+  ok = g_variant_lookup (dict, "q", "&s", &str);
+  g_assert (!ok);
+
+  g_variant_unref (dict);
 }
 
 int
@@ -3926,6 +4009,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/parse-positional", test_parse_positional);
   g_test_add_func ("/gvariant/floating", test_floating);
   g_test_add_func ("/gvariant/bytestring", test_bytestring);
+  g_test_add_func ("/gvariant/lookup-value", test_lookup_value);
+  g_test_add_func ("/gvariant/lookup", test_lookup);
 
   return g_test_run ();
 }

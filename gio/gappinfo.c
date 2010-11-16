@@ -100,7 +100,7 @@ g_app_info_default_init (GAppInfoInterface *iface)
  * 
  * Creates a duplicate of a #GAppInfo.
  *
- * Returns: a duplicate of @appinfo.
+ * Returns: (transfer full): a duplicate of @appinfo.
  **/
 GAppInfo *
 g_app_info_dup (GAppInfo *appinfo)
@@ -476,13 +476,13 @@ g_app_info_get_icon (GAppInfo *appinfo)
  * a textual uri you want to pass in as argument, consider using
  * g_app_info_launch_uris() instead.
  *
- * On UNIX, this function sets the <envvar>GIO_LAUNCHED_DESKTOP_FILE</envvar>
+ * On UNIX, this function sets the <envar>GIO_LAUNCHED_DESKTOP_FILE</envar>
  * environment variable with the path of the launched desktop file and
- * <envvar>GIO_LAUNCHED_DESKTOP_FILE_PID</envvar> to the process
+ * <envar>GIO_LAUNCHED_DESKTOP_FILE_PID</envar> to the process
  * id of the launched process. This can be used to ignore
- * <envvar>GIO_LAUNCHED_DESKTOP_FILE</envvar>, should it be inherited
- * by further processes. The <envvar>DISPLAY</envvar> and
- * <envvar>DESKTOP_STARTUP_ID</envvar> environment variables are also
+ * <envar>GIO_LAUNCHED_DESKTOP_FILE</envar>, should it be inherited
+ * by further processes. The <envar>DISPLAY</envar> and
+ * <envar>DESKTOP_STARTUP_ID</envar> environment variables are also
  * set, based on information provided in @launch_context.
  *
  * Returns: %TRUE on successful launch, %FALSE otherwise.
@@ -681,7 +681,8 @@ g_app_info_can_delete (GAppInfo *appinfo)
  * On some platforms, there may be a difference between user-defined
  * #GAppInfo<!-- -->s which can be deleted, and system-wide ones which
  * cannot. See g_app_info_can_delete().
- * 
+ *
+ * Virtual: do_delete
  * Returns: %TRUE if @appinfo has been deleted
  *
  * Since: 2.20
@@ -732,7 +733,7 @@ g_app_launch_context_init (GAppLaunchContext *launch_context)
  * g_app_launch_context_get_display:
  * @context: a #GAppLaunchContext
  * @info: a #GAppInfo
- * @files: a #GList of #GFile objects
+ * @files: (element-type GFile): a #GList of #GFile objects
  *
  * Gets the display string for the @context. This is used to ensure new
  * applications are started on the same display as the launching
@@ -762,7 +763,7 @@ g_app_launch_context_get_display (GAppLaunchContext *context,
  * g_app_launch_context_get_startup_notify_id:
  * @context: a #GAppLaunchContext
  * @info: a #GAppInfo
- * @files: a #GList of of #GFile objects
+ * @files: (element-type GFile): a #GList of of #GFile objects
  * 
  * Initiates startup notification for the application and returns the
  * <envvar>DESKTOP_STARTUP_ID</envvar> for the launched operation,

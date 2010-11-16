@@ -122,7 +122,7 @@ g_file_input_stream_init (GFileInputStream *stream)
  * stream is blocked, the stream will set the pending flag internally, and 
  * any other operations on the stream will fail with %G_IO_ERROR_PENDING.
  *
- * Returns: a #GFileInfo, or %NULL on error.
+ * Returns: (transfer full): a #GFileInfo, or %NULL on error.
  **/
 GFileInfo *
 g_file_input_stream_query_info (GFileInputStream  *stream,
@@ -215,11 +215,10 @@ g_file_input_stream_query_info_async (GFileInputStream    *stream,
   
   if (!g_input_stream_set_pending (input_stream, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
 					    callback,
 					    user_data,
 					    error);
-      g_error_free (error);
       return;
     }
 
@@ -240,7 +239,7 @@ g_file_input_stream_query_info_async (GFileInputStream    *stream,
  * 
  * Finishes an asynchronous info query operation.
  * 
- * Returns: #GFileInfo. 
+ * Returns: (transfer full): #GFileInfo. 
  **/
 GFileInfo *
 g_file_input_stream_query_info_finish (GFileInputStream  *stream,
@@ -421,10 +420,7 @@ query_info_async_thread (GSimpleAsyncResult *res,
                          _("Stream doesn't support query_info"));
 
   if (info == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->info = info;
 }

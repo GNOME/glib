@@ -82,6 +82,7 @@
 #include <glib/gthread.h>
 #include <glib/gthreadpool.h>
 #include <glib/gtimer.h>
+#include <glib/gtimezone.h>
 #include <glib/gtree.h>
 #include <glib/gtypes.h>
 #include <glib/gunicode.h>

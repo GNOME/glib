@@ -806,10 +806,7 @@ get_stream_thread_func (GSimpleAsyncResult *res,
                                                  cancellable,
                                                  &error);
   if (data->stream == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 /**
@@ -867,7 +864,7 @@ g_dbus_address_get_stream (const gchar         *address,
  *
  * Finishes an operation started with g_dbus_address_get_stream().
  *
- * Returns: A #GIOStream or %NULL if @error is set.
+ * Returns: (transfer full): A #GIOStream or %NULL if @error is set.
  *
  * Since: 2.26
  */
@@ -913,7 +910,7 @@ g_dbus_address_get_stream_finish (GAsyncResult        *res,
  * This is a synchronous failable function. See
  * g_dbus_address_get_stream() for the asynchronous version.
  *
- * Returns: A #GIOStream or %NULL if @error is set.
+ * Returns: (transfer full): A #GIOStream or %NULL if @error is set.
  *
  * Since: 2.26
  */

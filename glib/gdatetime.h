@@ -1,20 +1,26 @@
-/* gdatetime.h
- *
+/*
  * Copyright (C) 2009-2010 Christian Hergert <chris@dronelabs.com>
+ * Copyright © 2010 Codethink Limited
  *
- * This is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation; either version 2.1 of the
+ * licence, or (at your option) any later version.
  *
- * This is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public
+ * License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301
+ * USA.
+ *
+ * Authors: Christian Hergert <chris@dronelabs.com>
+ *          Thiago Santos <thiago.sousa.santos@collabora.co.uk>
+ *          Emmanuele Bassi <ebassi@linux.intel.com>
+ *          Ryan Lortie <desrt@desrt.ca>
  */
 
 #if defined(G_DISABLE_SINGLE_INCLUDES) && !defined (__GLIB_H_INSIDE__) && !defined (GLIB_COMPILATION)
@@ -24,8 +30,7 @@
 #ifndef __G_DATE_TIME_H__
 #define __G_DATE_TIME_H__
 
-#include <time.h>
-#include <glib/gtypes.h>
+#include <glib/gtimezone.h>
 
 G_BEGIN_DECLS
 
@@ -75,6 +80,15 @@ G_BEGIN_DECLS
 #define G_TIME_SPAN_MILLISECOND         (G_GINT64_CONSTANT (1000))
 
 /**
+ * GTimeSpan:
+ *
+ * A value representing an interval of time, in microseconds.
+ *
+ * Since: 2.26
+ */
+typedef gint64 GTimeSpan;
+
+/**
  * GDateTime:
  *
  * <structname>GDateTime</structname> is an opaque structure whose members
@@ -84,107 +98,119 @@ G_BEGIN_DECLS
  */
 typedef struct _GDateTime GDateTime;
 
-/**
- * GTimeSpan:
- *
- * A value representing an interval of time, in microseconds.
- *
- * Since: 2.26
- */
-typedef gint64 GTimeSpan;
+void                    g_date_time_unref                               (GDateTime      *datetime);
+GDateTime *             g_date_time_ref                                 (GDateTime      *datetime);
 
-GDateTime *           g_date_time_new_now                (void);
-GDateTime *           g_date_time_new_today              (void);
-GDateTime *           g_date_time_new_utc_now            (void);
-GDateTime *           g_date_time_new_from_date          (gint             year,
-                                                          gint             month,
-                                                          gint             day);
-GDateTime *           g_date_time_new_from_epoch         (gint64           secs);
-GDateTime *           g_date_time_new_from_timeval       (GTimeVal        *tv);
-GDateTime *           g_date_time_new_full               (gint             year,
-                                                          gint             month,
-                                                          gint             day,
-                                                          gint             hour,
-                                                          gint             minute,
-                                                          gint             second,
-                                                          const gchar     *time_zone);
+GDateTime *             g_date_time_new_now                             (GTimeZone      *tz);
+GDateTime *             g_date_time_new_now_local                       (void);
+GDateTime *             g_date_time_new_now_utc                         (void);
 
-GDateTime *           g_date_time_copy                   (const GDateTime *datetime);
-GDateTime *           g_date_time_ref                    (GDateTime       *datetime);
-void                  g_date_time_unref                  (GDateTime       *datetime);
+GDateTime *             g_date_time_new_from_unix_local                 (gint64          t);
+GDateTime *             g_date_time_new_from_unix_utc                   (gint64          t);
 
-GDateTime *           g_date_time_add                    (const GDateTime *datetime,
-                                                          GTimeSpan        timespan);
-GDateTime *           g_date_time_add_days               (const GDateTime *datetime,
-                                                          gint             days);
-GDateTime *           g_date_time_add_hours              (const GDateTime *datetime,
-                                                          gint             hours);
-GDateTime *           g_date_time_add_milliseconds       (const GDateTime *datetime,
-                                                          gint             milliseconds);
-GDateTime *           g_date_time_add_minutes            (const GDateTime *datetime,
-                                                          gint             minutes);
-GDateTime *           g_date_time_add_months             (const GDateTime *datetime,
-                                                          gint             months);
-GDateTime *           g_date_time_add_seconds            (const GDateTime *datetime,
-                                                          gint             seconds);
-GDateTime *           g_date_time_add_weeks              (const GDateTime *datetime,
-                                                          gint             weeks);
-GDateTime *           g_date_time_add_years              (const GDateTime *datetime,
-                                                          gint             years);
-GDateTime *           g_date_time_add_full               (const GDateTime *datetime,
-                                                          gint             years,
-                                                          gint             months,
-                                                          gint             days,
-                                                          gint             hours,
-                                                          gint             minutes,
-                                                          gint             seconds);
+GDateTime *             g_date_time_new_from_timeval_local              (const GTimeVal *tv);
+GDateTime *             g_date_time_new_from_timeval_utc                (const GTimeVal *tv);
 
-GDateTime *           g_date_time_day                    (const GDateTime  *datetime);
+GDateTime *             g_date_time_new                                 (GTimeZone      *tz,
+                                                                         gint            year,
+                                                                         gint            month,
+                                                                         gint            day,
+                                                                         gint            hour,
+                                                                         gint            minute,
+                                                                         gdouble         seconds);
+GDateTime *             g_date_time_new_local                           (gint            year,
+                                                                         gint            month,
+                                                                         gint            day,
+                                                                         gint            hour,
+                                                                         gint            minute,
+                                                                         gdouble         seconds);
+GDateTime *             g_date_time_new_utc                             (gint            year,
+                                                                         gint            month,
+                                                                         gint            day,
+                                                                         gint            hour,
+                                                                         gint            minute,
+                                                                         gdouble         seconds);
 
-gint                  g_date_time_compare                (gconstpointer   dt1,
-                                                          gconstpointer   dt2);
-gboolean              g_date_time_equal                  (gconstpointer   dt1,
-                                                          gconstpointer   dt2);
-guint                 g_date_time_hash                   (gconstpointer   datetime);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add                                 (GDateTime      *datetime,
+                                                                         GTimeSpan       timespan);
 
-GTimeSpan             g_date_time_difference             (const GDateTime *begin,
-                                                          const GDateTime *end);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add_years                           (GDateTime      *datetime,
+                                                                         gint            years);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add_months                          (GDateTime      *datetime,
+                                                                         gint            months);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add_weeks                           (GDateTime      *datetime,
+                                                                         gint            weeks);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add_days                            (GDateTime      *datetime,
+                                                                         gint            days);
 
-void                  g_date_time_get_julian             (const GDateTime *datetime,
-                                                          gint            *period,
-                                                          gint            *julian,
-                                                          gint            *hour,
-                                                          gint            *minute,
-                                                          gint            *second);
-gint                  g_date_time_get_hour               (const GDateTime *datetime);
-gint                  g_date_time_get_minute             (const GDateTime *datetime);
-gint                  g_date_time_get_second             (const GDateTime *datetime);
-gint                  g_date_time_get_millisecond        (const GDateTime *datetime);
-gint                  g_date_time_get_microsecond        (const GDateTime *datetime);
-gint                  g_date_time_get_day_of_week        (const GDateTime *datetime);
-gint                  g_date_time_get_day_of_month       (const GDateTime *datetime);
-gint                  g_date_time_get_week_of_year       (const GDateTime *datetime);
-gint                  g_date_time_get_day_of_year        (const GDateTime *datetime);
-gint                  g_date_time_get_month              (const GDateTime *datetime);
-gint                  g_date_time_get_year               (const GDateTime *datetime);
-void                  g_date_time_get_dmy                (const GDateTime *datetime,
-                                                          gint            *day,
-                                                          gint            *month,
-                                                          gint            *year);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add_hours                           (GDateTime      *datetime,
+                                                                         gint            hours);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add_minutes                         (GDateTime      *datetime,
+                                                                         gint            minutes);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add_seconds                         (GDateTime      *datetime,
+                                                                         gdouble         seconds);
 
-GTimeSpan             g_date_time_get_utc_offset         (const GDateTime *datetime);
-G_CONST_RETURN gchar *g_date_time_get_timezone_name      (const GDateTime *datetime);
+G_GNUC_WARN_UNUSED_RESULT
+GDateTime *             g_date_time_add_full                            (GDateTime      *datetime,
+                                                                         gint            years,
+                                                                         gint            months,
+                                                                         gint            days,
+                                                                         gint            hours,
+                                                                         gint            minutes,
+                                                                         gdouble         seconds);
 
-gboolean              g_date_time_is_leap_year           (const GDateTime *datetime);
-gboolean              g_date_time_is_daylight_savings    (const GDateTime *datetime);
+gint                    g_date_time_compare                             (gconstpointer   dt1,
+                                                                         gconstpointer   dt2);
+GTimeSpan               g_date_time_difference                          (GDateTime      *end,
+                                                                         GDateTime      *begin);
+guint                   g_date_time_hash                                (gconstpointer   datetime);
+gboolean                g_date_time_equal                               (gconstpointer   dt1,
+                                                                         gconstpointer   dt2);
 
-GDateTime *           g_date_time_to_local               (const GDateTime *datetime);
-gint64                g_date_time_to_epoch               (const GDateTime *datetime);
-void                  g_date_time_to_timeval             (const GDateTime *datetime,
-                                                          GTimeVal        *tv);
-GDateTime *           g_date_time_to_utc                 (const GDateTime *datetime);
-gchar *               g_date_time_printf                 (const GDateTime *datetime,
-                                                          const gchar     *format) G_GNUC_MALLOC;
+void                    g_date_time_get_ymd                             (GDateTime      *datetime,
+                                                                         gint           *year,
+                                                                         gint           *month,
+                                                                         gint           *day);
+
+gint                    g_date_time_get_year                            (GDateTime      *datetime);
+gint                    g_date_time_get_month                           (GDateTime      *datetime);
+gint                    g_date_time_get_day_of_month                    (GDateTime      *datetime);
+
+gint                    g_date_time_get_week_numbering_year             (GDateTime      *datetime);
+gint                    g_date_time_get_week_of_year                    (GDateTime      *datetime);
+gint                    g_date_time_get_day_of_week                     (GDateTime      *datetime);
+
+gint                    g_date_time_get_day_of_year                     (GDateTime      *datetime);
+
+gint                    g_date_time_get_hour                            (GDateTime      *datetime);
+gint                    g_date_time_get_minute                          (GDateTime      *datetime);
+gint                    g_date_time_get_second                          (GDateTime      *datetime);
+gint                    g_date_time_get_microsecond                     (GDateTime      *datetime);
+gdouble                 g_date_time_get_seconds                         (GDateTime      *datetime);
+
+gint64                  g_date_time_to_unix                             (GDateTime      *datetime);
+gboolean                g_date_time_to_timeval                          (GDateTime      *datetime,
+                                                                         GTimeVal       *tv);
+
+GTimeSpan               g_date_time_get_utc_offset                      (GDateTime      *datetime);
+const gchar *           g_date_time_get_timezone_abbreviation           (GDateTime      *datetime);
+gboolean                g_date_time_is_daylight_savings                 (GDateTime      *datetime);
+
+GDateTime *             g_date_time_to_timezone                         (GDateTime      *datetime,
+                                                                         GTimeZone      *tz);
+GDateTime *             g_date_time_to_local                            (GDateTime      *datetime);
+GDateTime *             g_date_time_to_utc                              (GDateTime      *datetime);
+
+gchar *                 g_date_time_format                              (GDateTime      *datetime,
+                                                                         const gchar    *format) G_GNUC_MALLOC;
 
 G_END_DECLS
 

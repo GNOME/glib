@@ -370,7 +370,7 @@ eject_unmount_do_cb (gpointer user_data)
 handle_error:
   if (error != NULL) {
     GSimpleAsyncResult *simple;
-    simple = g_simple_async_result_new_from_error (G_OBJECT (data->unix_mount),
+    simple = g_simple_async_result_new_take_error (G_OBJECT (data->unix_mount),
                                                    data->callback,
                                                    data->user_data,
                                                    error);
@@ -384,7 +384,6 @@ handle_error:
       g_io_channel_unref (data->error_channel);
 
     g_strfreev (data->argv);
-    g_error_free (error);
     g_free (data);
   }
 

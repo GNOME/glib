@@ -56,6 +56,8 @@ gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
 void             g_desktop_app_info_set_desktop_env   (const char      *desktop_env);
 
 
+#ifndef G_DISABLE_DEPRECATED
+
 #define G_TYPE_DESKTOP_APP_INFO_LOOKUP           (g_desktop_app_info_lookup_get_type ())
 #define G_DESKTOP_APP_INFO_LOOKUP(obj)           (G_TYPE_CHECK_INSTANCE_CAST ((obj), G_TYPE_DESKTOP_APP_INFO_LOOKUP, GDesktopAppInfoLookup))
 #define G_IS_DESKTOP_APP_INFO_LOOKUP(obj)	 (G_TYPE_CHECK_INSTANCE_TYPE ((obj), G_TYPE_DESKTOP_APP_INFO_LOOKUP))
@@ -90,6 +92,8 @@ GType     g_desktop_app_info_lookup_get_type                   (void) G_GNUC_CON
 
 GAppInfo *g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoLookup *lookup,
                                                                 const char            *uri_scheme);
+
+#endif /* G_DISABLE_DEPRECATED */
 
 G_END_DECLS
 

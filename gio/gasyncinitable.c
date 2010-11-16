@@ -266,10 +266,7 @@ async_init_thread (GSimpleAsyncResult *res,
   GError *error = NULL;
 
   if (!g_initable_init (G_INITABLE (object), cancellable, &error))
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 static void
@@ -437,7 +434,7 @@ g_async_initable_new_valist_async (GType                object_type,
  * Finishes the async construction for the various g_async_initable_new calls,
  * returning the created object or %NULL on error.
  *
- * Returns: a newly created #GObject, or %NULL on error. Free with
+ * Returns: (transfer full): a newly created #GObject, or %NULL on error. Free with
  *     g_object_unref().
  *
  * Since: 2.22

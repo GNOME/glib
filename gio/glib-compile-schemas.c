@@ -107,6 +107,12 @@ enum_state_add_value (EnumState    *state,
       return;
     }
 
+  /* Silently drop the null case if it is mentioned.
+   * It is properly denoted with an empty array.
+   */
+  if (state->is_flags && value == 0)
+    return;
+
   if (state->is_flags && (value & (value - 1)))
     {
       g_set_error (error, G_MARKUP_ERROR,
@@ -121,7 +127,6 @@ enum_state_add_value (EnumState    *state,
    * If we loosen the one-bit-set restriction we need an overlap check.
    */
 
-
   strinfo_builder_append_item (state->strinfo, nick, value);
 }
 
@@ -135,9 +140,10 @@ enum_state_end (EnumState **state_ptr,
   *state_ptr = NULL;
 
   if (state->strinfo->len == 0)
-    g_set_error_literal (error,
-                         G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                         "<enum> must contain at least one <value>");
+    g_set_error (error,
+                 G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
+                 "<%s> must contain at least one <value>",
+                 state->is_flags ? "flags" : "enum");
 }
 
 /* Handling of <key> {{{1 */
@@ -496,8 +502,7 @@ key_state_start_aliases (KeyState  *state,
     g_set_error_literal (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
                          "<aliases> already specified for this key");
-
-  if (!state->is_flags && !state->is_enum && !state->has_choices)
+  else if (!state->is_flags && !state->is_enum && !state->has_choices)
     g_set_error_literal (error, G_MARKUP_ERROR,
                          G_MARKUP_ERROR_INVALID_CONTENT,
                          "<aliases> can only be specified for keys with "
@@ -623,11 +628,17 @@ key_state_serialise (KeyState *state)
           if (state->strinfo->len)
             {
               GVariant *array;
+              guint32 *words;
               gpointer data;
               gsize size;
+              gint i;
 
               data = state->strinfo->str;
               size = state->strinfo->len;
+
+              words = data;
+              for (i = 0; i < size / sizeof (guint32); i++)
+                words[i] = GUINT32_TO_LE (words[i]);
 
               array = g_variant_new_from_data (G_VARIANT_TYPE ("au"),
                                                data, size, TRUE,
@@ -992,6 +1003,10 @@ typedef struct
   GHashTable  *flags_table;             /* string -> EnumState */
   GHashTable  *enum_table;              /* string -> EnumState */
 
+  GSList      *this_file_schemas;       /* strings: <schema>s in this file */
+  GSList      *this_file_flagss;        /* strings: <flags>s in this file */
+  GSList      *this_file_enums;         /* strings: <enum>s in this file */
+
   gchar       *schemalist_domain;       /* the <schemalist> gettext domain */
 
   SchemaState *schema_state;            /* non-NULL when inside <schema> */
@@ -1028,6 +1043,7 @@ parse_state_start_schema (ParseState  *state,
                           GError      **error)
 {
   SchemaState *extends;
+  gchar *my_id;
 
   if (g_hash_table_lookup (state->schema_table, id))
     {
@@ -1129,8 +1145,10 @@ parse_state_start_schema (ParseState  *state,
 
   state->schema_state = schema_state_new (path, gettext_domain,
                                           extends, extends_name, list_of);
-  g_hash_table_insert (state->schema_table, g_strdup (id),
-                       state->schema_state);
+
+  my_id = g_strdup (id);
+  state->this_file_schemas = g_slist_prepend (state->this_file_schemas, my_id);
+  g_hash_table_insert (state->schema_table, my_id, state->schema_state);
 }
 
 static void
@@ -1139,7 +1157,9 @@ parse_state_start_enum (ParseState   *state,
                         gboolean      is_flags,
                         GError      **error)
 {
+  GSList **list = is_flags ? &state->this_file_flagss : &state->this_file_enums;
   GHashTable *table = is_flags ? state->flags_table : state->enum_table;
+  gchar *my_id;
 
   if (g_hash_table_lookup (table, id))
     {
@@ -1151,7 +1171,10 @@ parse_state_start_enum (ParseState   *state,
     }
 
   state->enum_state = enum_state_new (is_flags);
-  g_hash_table_insert (table, g_strdup (id), state->enum_state);
+
+  my_id = g_strdup (id);
+  *list = g_slist_prepend (*list, my_id);
+  g_hash_table_insert (table, my_id, state->enum_state);
 }
 
 /* GMarkup Parser Functions {{{1 */
@@ -1569,12 +1592,13 @@ write_to_file (GHashTable   *schema_table,
 
 /* Parser driver {{{1 */
 static GHashTable *
-parse_gschema_files (gchar  **files,
-                     GError **error)
+parse_gschema_files (gchar    **files,
+                     gboolean   strict)
 {
   GMarkupParser parser = { start_element, end_element, text };
   ParseState state = { 0, };
   const gchar *filename;
+  GError *error = NULL;
 
   state.enum_table = g_hash_table_new_full (g_str_hash, g_str_equal,
                                             g_free, enum_state_free);
@@ -1591,28 +1615,62 @@ parse_gschema_files (gchar  **files,
       gchar *contents;
       gsize size;
 
+      if (!g_file_get_contents (filename, &contents, &size, &error))
+        {
+          fprintf (stderr, "%s\n", error->message);
+          g_clear_error (&error);
+          continue;
+        }
+
       context = g_markup_parse_context_new (&parser,
                                             G_MARKUP_PREFIX_ERROR_POSITION,
                                             &state, NULL);
 
-      if (!g_file_get_contents (filename, &contents, &size, error))
-        return NULL;
 
-      if (!g_markup_parse_context_parse (context, contents, size, error))
+      if (!g_markup_parse_context_parse (context, contents, size, &error) ||
+          !g_markup_parse_context_end_parse (context, &error))
         {
-          g_prefix_error (error, "%s: ", filename);
-          return NULL;
+          GSList *item;
+
+          /* back out any changes from this file */
+          for (item = state.this_file_schemas; item; item = item->next)
+            g_hash_table_remove (state.schema_table, item->data);
+
+          for (item = state.this_file_flagss; item; item = item->next)
+            g_hash_table_remove (state.flags_table, item->data);
+
+          for (item = state.this_file_enums; item; item = item->next)
+            g_hash_table_remove (state.enum_table, item->data);
+
+          /* let them know */
+          fprintf (stderr, "%s: %s.  ", filename, error->message);
+          g_clear_error (&error);
+
+          if (strict)
+            {
+              /* Translators: Do not translate "--strict". */
+              fprintf (stderr, _("--strict was specified; exiting.\n"));
+              g_hash_table_unref (state.schema_table);
+              g_hash_table_unref (state.flags_table);
+              g_hash_table_unref (state.enum_table);
+
+              return NULL;
+            }
+          else
+            fprintf (stderr, _("This entire file has been ignored.\n"));
         }
 
-      if (!g_markup_parse_context_end_parse (context, error))
-        {
-          g_prefix_error (error, "%s: ", filename);
-          return NULL;
-        }
-
+      /* cleanup */
       g_markup_parse_context_free (context);
+      g_slist_free (state.this_file_schemas);
+      g_slist_free (state.this_file_flagss);
+      g_slist_free (state.this_file_enums);
+      state.this_file_schemas = NULL;
+      state.this_file_flagss = NULL;
+      state.this_file_enums = NULL;
     }
 
+  g_hash_table_unref (state.flags_table);
   g_hash_table_unref (state.enum_table);
 
   return state.schema_table;
@@ -1638,9 +1696,10 @@ compare_strings (gconstpointer a,
 static gboolean
 set_overrides (GHashTable  *schema_table,
                gchar      **files,
-               GError     **error)
+               gboolean     strict)
 {
   const gchar *filename;
+  GError *error = NULL;
 
   while ((filename = *files++))
     {
@@ -1649,10 +1708,19 @@ set_overrides (GHashTable  *schema_table,
       gint i;
 
       key_file = g_key_file_new ();
-      if (!g_key_file_load_from_file (key_file, filename, 0, error))
+      if (!g_key_file_load_from_file (key_file, filename, 0, &error))
         {
+          fprintf (stderr, "%s: %s.  ", filename, error->message);
           g_key_file_free (key_file);
+          g_clear_error (&error);
 
+          if (!strict)
+            {
+              fprintf (stderr, _("Ignoring this file.\n"));
+              continue;
+            }
+
+          fprintf (stderr, _("--strict was specified; exiting.\n"));
           return FALSE;
         }
 
@@ -1668,16 +1736,11 @@ set_overrides (GHashTable  *schema_table,
           schema = g_hash_table_lookup (schema_table, group);
 
           if (schema == NULL)
-            {
-              g_set_error (error, G_KEY_FILE_ERROR,
-                           G_KEY_FILE_ERROR_GROUP_NOT_FOUND,
-                           _("No such schema `%s' specified in "
-                             "override file `%s'"), group, filename);
-              g_key_file_free (key_file);
-              g_strfreev (groups);
-
-              return FALSE;
-            }
+            /* Having the schema not be installed is expected to be a
+             * common case.  Don't even emit an error message about
+             * that.
+             */
+            continue;
 
           keys = g_key_file_get_keys (key_file, group, NULL, NULL);
           g_assert (keys != NULL);
@@ -1693,11 +1756,17 @@ set_overrides (GHashTable  *schema_table,
 
               if (state == NULL)
                 {
-                  g_set_error (error, G_KEY_FILE_ERROR,
-                               G_KEY_FILE_ERROR_KEY_NOT_FOUND,
-                               _("No such key `%s' in schema `%s' as "
-                                 "specified in override file `%s'"),
-                               key, group, filename);
+                  fprintf (stderr, _("No such key `%s' in schema `%s' as "
+                                     "specified in override file `%s'"),
+                           key, group, filename);
+
+                  if (!strict)
+                    {
+                      fprintf (stderr, _("; ignoring override for this key.\n"));
+                      continue;
+                    }
+
+                  fprintf (stderr, _(" and --strict was specified; exiting.\n"));
                   g_key_file_free (key_file);
                   g_strfreev (groups);
                   g_strfreev (keys);
@@ -1709,14 +1778,28 @@ set_overrides (GHashTable  *schema_table,
               g_assert (string != NULL);
 
               value = g_variant_parse (state->type, string,
-                                       NULL, NULL, error);
+                                       NULL, NULL, &error);
 
               if (value == NULL)
                 {
+                  fprintf (stderr, _("error parsing key `%s' in schema `%s' "
+                                     "as specified in override file `%s': "
+                                     "%s.  "),
+                           key, group, filename, error->message);
+
+                  g_clear_error (&error);
+                  g_free (string);
+
+                  if (!strict)
+                    {
+                      fprintf (stderr, _("Ignoring override for this key.\n"));
+                      continue;
+                    }
+
+                  fprintf (stderr, _("--strict was specified; exiting.\n"));
                   g_key_file_free (key_file);
                   g_strfreev (groups);
                   g_strfreev (keys);
-                  g_free (string);
 
                   return FALSE;
                 }
@@ -1726,18 +1809,25 @@ set_overrides (GHashTable  *schema_table,
                   if (g_variant_compare (value, state->minimum) < 0 ||
                       g_variant_compare (value, state->maximum) > 0)
                     {
-                      g_set_error (error, G_MARKUP_ERROR,
-                                   G_MARKUP_ERROR_INVALID_CONTENT,
-                                   _("override for key `%s' in schema `%s' in "
-                                     "override file `%s' is out of the range "
-                                     "given in the schema"),
-                                   key, group, filename);
+                      fprintf (stderr,
+                               _("override for key `%s' in schema `%s' in "
+                                 "override file `%s' is out of the range "
+                                 "given in the schema"),
+                               key, group, filename);
 
-                      g_key_file_free (key_file);
                       g_variant_unref (value);
+                      g_free (string);
+
+                      if (!strict)
+                        {
+                          fprintf (stderr, _("; ignoring override for this key.\n"));
+                          continue;
+                        }
+
+                      fprintf (stderr, _(" and --strict was specified; exiting.\n"));
+                      g_key_file_free (key_file);
                       g_strfreev (groups);
                       g_strfreev (keys);
-                      g_free (string);
 
                       return FALSE;
                     }
@@ -1747,18 +1837,25 @@ set_overrides (GHashTable  *schema_table,
                 {
                   if (!is_valid_choices (value, state->strinfo))
                     {
-                      g_set_error (error, G_MARKUP_ERROR,
-                                   G_MARKUP_ERROR_INVALID_CONTENT,
-                                   _("override for key `%s' in schema `%s' in "
-                                     "override file `%s' is not in the list "
-                                     "of valid choices"),
-                                   key, group, filename);
+                      fprintf (stderr,
+                               _("override for key `%s' in schema `%s' in "
+                                 "override file `%s' is not in the list "
+                                 "of valid choices"),
+                               key, group, filename);
 
-                      g_key_file_free (key_file);
                       g_variant_unref (value);
+                      g_free (string);
+
+                      if (!strict)
+                        {
+                          fprintf (stderr, _("; ignoring override for this key.\n"));
+                          continue;
+                        }
+
+                      fprintf (stderr, _(" and --strict was specified; exiting.\n"));
+                      g_key_file_free (key_file);
                       g_strfreev (groups);
                       g_strfreev (keys);
-                      g_free (string);
 
                       return FALSE;
                     }
@@ -1766,8 +1863,8 @@ set_overrides (GHashTable  *schema_table,
 
               g_variant_unref (state->default_value);
               state->default_value = value;
+              g_free (string);
             }
-
 
           g_strfreev (keys);
         }
@@ -1790,11 +1887,13 @@ main (int argc, char **argv)
   gchar *target;
   gboolean uninstall = FALSE;
   gboolean dry_run = FALSE;
+  gboolean strict = FALSE;
   gchar **schema_files = NULL;
   gchar **override_files = NULL;
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
+    { "strict", 0, 0, G_OPTION_ARG_NONE, &strict, N_("Abort on any errors in schemas"), NULL },
     { "dry-run", 0, 0, G_OPTION_ARG_NONE, &dry_run, N_("Do not write the gschema.compiled file"), NULL },
     { "uninstall", 0, 0, G_OPTION_ARG_NONE, &uninstall, N_("This option will be removed soon.") },
     { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, N_("Do not enforce key name restrictions") },
@@ -1817,7 +1916,7 @@ main (int argc, char **argv)
   error = NULL;
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
-      fprintf (stderr, "%s", error->message);
+      fprintf (stderr, "%s\n", error->message);
       return 1;
     }
 
@@ -1884,12 +1983,23 @@ main (int argc, char **argv)
       override_files = (gchar **) g_ptr_array_free (overrides, FALSE);
     }
 
+  if ((table = parse_gschema_files (schema_files, strict)) == NULL)
+    {
+      g_free (target);
+      return 1;
+    }
 
-  if (!(table = parse_gschema_files (schema_files, &error)) ||
-      (override_files != NULL && !set_overrides (table, override_files, &error)) ||
-      (!dry_run && !write_to_file (table, target, &error)))
+  if (override_files != NULL &&
+      !set_overrides (table, override_files, strict))
+    {
+      g_free (target);
+      return 1;
+    }
+
+  if (!dry_run && !write_to_file (table, target, &error))
     {
       fprintf (stderr, "%s\n", error->message);
+      g_free (target);
       return 1;
     }
 

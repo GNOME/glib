@@ -49,7 +49,8 @@ do_volume_tests (GDrive *drive, GVolume *volume)
 
   d = g_volume_get_drive (volume);
   g_assert (d == drive);
-  g_object_unref (d);
+  if (d != NULL)
+    g_object_unref (d);
 
   mount = g_volume_get_mount (volume);
   if (mount != NULL)
@@ -126,7 +127,8 @@ test_volumes (void)
 
       drive = g_volume_get_drive (volume);
       do_volume_tests (drive, volume);
-      g_object_unref (drive);
+      if (drive != NULL)
+        g_object_unref (drive);
     }
 
   g_list_foreach (volumes, (GFunc)g_object_unref,  NULL);

@@ -108,8 +108,8 @@ g_type_module_dispose (GObject *object)
   
   if (module->type_infos || module->interface_infos)
     {
-      g_warning (G_STRLOC ": unsolicitated invocation of g_object_dispose() on GTypeModule");
-	     
+      g_warning (G_STRLOC ": unsolicitated invocation of g_object_run_dispose() on GTypeModule");
+
       g_object_ref (object);
     }
 

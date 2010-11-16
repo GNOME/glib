@@ -71,6 +71,7 @@ gio/gioerror.c
 gio/giomodule.c
 gio/gioscheduler.c
 gio/giostream.c
+gio/glib-compile-schemas.c
 gio/gloadableicon.c
 gio/glocaldirectorymonitor.c
 gio/glocalfile.c
@@ -94,11 +95,11 @@ gio/gproxyaddress.c
 gio/gproxyaddressenumerator.c
 gio/gproxyconnection.c
 gio/gresolver.c
-gio/gschema-compile.c
 gio/gseekable.c
 gio/gsettingsbackend.c
 gio/gsettings.c
 gio/gsettings-tool.c
+gio/gsimpleaction.c
 gio/gsimpleasyncresult.c
 gio/gsocket.c
 gio/gsocketaddress.c

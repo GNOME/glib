@@ -95,11 +95,11 @@ g_emblemed_icon_init (GEmblemedIcon *emblemed)
 /**
  * g_emblemed_icon_new:
  * @icon: a #GIcon
- * @emblem: a #GEmblem
+ * @emblem: (allow-none): a #GEmblem, or %NULL
  *
  * Creates a new emblemed icon for @icon with the emblem @emblem.
  *
- * Returns: a new #GIcon
+ * Returns: (transfer full): a new #GIcon
  *
  * Since: 2.18
  **/
@@ -111,12 +111,12 @@ g_emblemed_icon_new (GIcon   *icon,
   
   g_return_val_if_fail (G_IS_ICON (icon), NULL);
   g_return_val_if_fail (!G_IS_EMBLEM (icon), NULL);
-  g_return_val_if_fail (G_IS_EMBLEM (emblem), NULL);
 
   emblemed = G_EMBLEMED_ICON (g_object_new (G_TYPE_EMBLEMED_ICON, NULL));
   emblemed->icon = g_object_ref (icon);
-  
-  g_emblemed_icon_add_emblem (emblemed, emblem);
+
+  if (emblem != NULL)
+    g_emblemed_icon_add_emblem (emblemed, emblem);
 
   return G_ICON (emblemed);
 }
@@ -128,7 +128,7 @@ g_emblemed_icon_new (GIcon   *icon,
  *
  * Gets the main icon for @emblemed.
  *
- * Returns: a #GIcon that is owned by @emblemed
+ * Returns: (transfer full): a #GIcon that is owned by @emblemed
  *
  * Since: 2.18
  **/
@@ -146,7 +146,8 @@ g_emblemed_icon_get_icon (GEmblemedIcon *emblemed)
  *
  * Gets the list of emblems for the @icon.
  *
- * Returns: a #GList of #GEmblem <!-- -->s that is owned by @emblemed
+ * Returns: (element-type utf8) (transfer none): a #GList of #GEmblem <!-- -->s that
+ * is owned by @emblemed
  *
  * Since: 2.18
  **/

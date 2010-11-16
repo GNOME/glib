@@ -222,12 +222,12 @@ compare_target (gconstpointer a, gconstpointer b)
 }
 
 /**
- * g_srv_target_list_sort:
+ * g_srv_target_list_sort: (skip)
  * @targets: a #GList of #GSrvTarget
  *
  * Sorts @targets in place according to the algorithm in RFC 2782.
  *
- * Return value: the head of the sorted list.
+ * Return value: (transfer full): the head of the sorted list.
  *
  * Since: 2.22
  */

@@ -801,11 +801,32 @@ g_path_get_basename (const gchar   *file_name)
  * g_path_is_absolute:
  * @file_name: a file name.
  *
- * Returns %TRUE if the given @file_name is an absolute file name,
- * i.e. it contains a full path from the root directory such as "/usr/local"
- * on UNIX or "C:\windows" on Windows systems.
+ * Returns %TRUE if the given @file_name is an absolute file name.
+ * Note that this is a somewhat vague concept on Windows.
  *
- * Returns: %TRUE if @file_name is an absolute path. 
+ * On POSIX systems, an absolute file name is well-defined. It always
+ * starts from the single root directory. For example "/usr/local".
+ *
+ * On Windows, the concepts of current drive and drive-specific
+ * current directory introduce vagueness. This function interprets as
+ * an absolute file name one that either begins with a directory
+ * separator such as "\Users\tml" or begins with the root on a drive,
+ * for example "C:\Windows". The first case also includes UNC paths
+ * such as "\\myserver\docs\foo". In all cases, either slashes or
+ * backslashes are accepted.
+ *
+ * Note that a file name relative to the current drive root does not
+ * truly specify a file uniquely over time and across processes, as
+ * the current drive is a per-process value and can be changed.
+ *
+ * File names relative the current directory on some specific drive,
+ * such as "D:foo/bar", are not interpreted as absolute by this
+ * function, but they obviously are not relative to the normal current
+ * directory as returned by getcwd() or g_get_current_dir()
+ * either. Such paths should be avoided, or need to be handled using
+ * Windows-specific code.
+ *
+ * Returns: %TRUE if @file_name is absolute. 
  */
 gboolean
 g_path_is_absolute (const gchar *file_name)
@@ -1453,6 +1474,45 @@ g_listenv (void)
 #endif
 }
 
+/**
+ * g_get_environ:
+ * 
+ * Gets the list of environment variables for the current process.  The
+ * list is %NULL terminated and each item in the list is of the form
+ * 'NAME=VALUE'.
+ *
+ * This is equivalent to direct access to the 'environ' global variable,
+ * except portable.
+ *
+ * The return value is freshly allocated and it should be freed with
+ * g_strfreev() when it is no longer needed.
+ *
+ * Returns: the list of environment variables
+ *
+ * Since: 2.28
+ */
+gchar **
+g_get_environ (void)
+{
+#ifndef G_OS_WIN32
+  return g_strdupv (environ);
+#else
+  gunichar2 *strings;
+  gchar **result;
+  gint i, n;
+
+  strings = GetEnvironmentStringsW ();
+  for (n = 0; strings[n]; n += wcslen (strings + n) + 1);
+  result = g_new (char *, n + 1);
+  for (i = 0; strings[i]; i += wcslen (strings + i) + 1)
+    result[i] = g_utf16_to_utf8 (strings + i, -1, NULL, NULL, NULL);
+  FreeEnvironmentStringsW (strings);
+  result[i] = NULL;
+
+  return result;
+#endif
+}
+
 G_LOCK_DEFINE_STATIC (g_utils_global);
 
 static	gchar	*g_tmp_dir = NULL;
@@ -2065,8 +2125,10 @@ g_set_application_name (const gchar *application_name)
  * XDG Base Directory Specification</ulink>.
  * In this case the directory retrieved will be XDG_DATA_HOME.
  *
- * On Windows is the virtual folder that represents the My Documents
- * desktop item. See documentation for CSIDL_PERSONAL.
+ * On Windows this is the folder to use for local (as opposed to
+ * roaming) application data. See documentation for
+ * CSIDL_LOCAL_APPDATA. Note that on Windows it thus is the same as
+ * what g_get_user_config_dir() returns.
  *
  * Return value: a string owned by GLib that must not be modified 
  *               or freed.
@@ -2082,7 +2144,7 @@ g_get_user_data_dir (void)
   if (!g_user_data_dir)
     {
 #ifdef G_OS_WIN32
-      data_dir = get_special_folder (CSIDL_PERSONAL);
+      data_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
 #else
       data_dir = (gchar *) g_getenv ("XDG_DATA_HOME");
 
@@ -2119,7 +2181,7 @@ g_init_user_config_dir (void)
   if (!g_user_config_dir)
     {
 #ifdef G_OS_WIN32
-      config_dir = get_special_folder (CSIDL_APPDATA);
+      config_dir = get_special_folder (CSIDL_LOCAL_APPDATA);
 #else
       config_dir = (gchar *) g_getenv ("XDG_CONFIG_HOME");
 
@@ -2151,10 +2213,10 @@ g_init_user_config_dir (void)
  * XDG Base Directory Specification</ulink>.
  * In this case the directory retrieved will be XDG_CONFIG_HOME.
  *
- * On Windows is the directory that serves as a common repository for
- * application-specific data. A typical path is
- * C:\Documents and Settings\username\Application. See documentation for
- * CSIDL_APPDATA.
+ * On Windows this is the folder to use for local (as opposed to
+ * roaming) application data. See documentation for
+ * CSIDL_LOCAL_APPDATA. Note that on Windows it thus is the same as
+ * what g_get_user_data_dir() returns.
  *
  * Return value: a string owned by GLib that must not be modified 
  *               or freed.
@@ -2226,6 +2288,55 @@ g_get_user_cache_dir (void)
   G_UNLOCK (g_utils_global);
 
   return cache_dir;
+}
+
+/**
+ * g_get_user_runtime_dir:
+ *
+ * Returns a directory that is unique to the current user on the local
+ * system.
+ *
+ * On UNIX platforms this is determined using the mechanisms described in
+ * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
+ * XDG Base Directory Specification</ulink>.  This is the directory
+ * specified in the XDG_RUNTIME_DIR environment variable.  In the case
+ * that this variable is not set, glib will issue a warning message to
+ * stderr and return the value of g_get_user_cache_dir().
+ *
+ * On Windows this is the folder to use for local (as opposed to
+ * roaming) application data. See documentation for
+ * CSIDL_LOCAL_APPDATA.  Note that on Windows it thus is the same as
+ * what g_get_user_config_dir() returns.
+ *
+ * Returns: a string owned by GLib that must not be modified or freed.
+ **/
+const gchar *
+g_get_user_runtime_dir (void)
+{
+#ifndef G_OS_WIN32
+  static const gchar *runtime_dir;
+  static gsize initialised;
+
+  if (g_once_init_enter (&initialised))
+    {
+      runtime_dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
+      
+      if (runtime_dir == NULL)
+        g_warning ("XDG_RUNTIME_DIR variable not set.  "
+                   "Falling back to XDG cache dir.");
+
+      g_once_init_leave (&initialised, 1);
+    }
+
+  if (runtime_dir)
+    return runtime_dir;
+
+  /* Both fallback for UNIX and the default
+   * in Windows: use the user cache directory.
+   */
+#endif
+
+  return g_get_user_cache_dir ();
 }
 
 #ifdef HAVE_CARBON

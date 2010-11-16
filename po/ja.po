@@ -25,8 +25,8 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-09-09 19:17+0000\n"
-"PO-Revision-Date: 2010-09-12 02:57+0900\n"
+"POT-Creation-Date: 2010-09-23 16:04+0000\n"
+"PO-Revision-Date: 2010-11-01 01:30+0900\n"
 "Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
@@ -174,224 +174,233 @@ msgstr "'%s' は絶対パスではありません"
 msgid "Invalid hostname"
 msgstr "無効なホスト名です"
 
-#: ../glib/gdatetime.c:104
+#. Translators: 'before midday' indicator
+#: ../glib/gdatetime.c:149
 msgctxt "GDateTime"
 msgid "am"
 msgstr "午前"
 
-#: ../glib/gdatetime.c:104
+#. Translators: 'before midday' indicator
+#: ../glib/gdatetime.c:151
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "午前"
 
-#: ../glib/gdatetime.c:105
+#. Translators: 'after midday' indicator
+#: ../glib/gdatetime.c:153
 msgctxt "GDateTime"
 msgid "pm"
 msgstr "午後"
 
-#: ../glib/gdatetime.c:105
+#. Translators: 'after midday' indicator
+#: ../glib/gdatetime.c:155
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "午後"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:114
+#: ../glib/gdatetime.c:164
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%Y/%m/%d"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:117
+#: ../glib/gdatetime.c:167
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
-#: ../glib/gdatetime.c:162
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:193
+msgctxt "full month name"
 msgid "January"
 msgstr "1月"
 
-#: ../glib/gdatetime.c:164
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:195
+msgctxt "full month name"
 msgid "February"
 msgstr "2月"
 
-#: ../glib/gdatetime.c:166
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:197
+msgctxt "full month name"
 msgid "March"
 msgstr "3月"
 
-#: ../glib/gdatetime.c:168
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:199
+msgctxt "full month name"
 msgid "April"
 msgstr "4月"
 
-#: ../glib/gdatetime.c:170 ../glib/gdatetime.c:207
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:201
+msgctxt "full month name"
 msgid "May"
 msgstr "5月"
 
-#: ../glib/gdatetime.c:172
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:203
+msgctxt "full month name"
 msgid "June"
 msgstr "6月"
 
-#: ../glib/gdatetime.c:174
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:205
+msgctxt "full month name"
 msgid "July"
 msgstr "7月"
 
-#: ../glib/gdatetime.c:176
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:207
+msgctxt "full month name"
 msgid "August"
 msgstr "8月"
 
-#: ../glib/gdatetime.c:178
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:209
+msgctxt "full month name"
 msgid "September"
 msgstr "9月"
 
-#: ../glib/gdatetime.c:180
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:211
+msgctxt "full month name"
 msgid "October"
 msgstr "10月"
 
-#: ../glib/gdatetime.c:182
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:213
+msgctxt "full month name"
 msgid "November"
 msgstr "11月"
 
-#: ../glib/gdatetime.c:184
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:215
+msgctxt "full month name"
 msgid "December"
 msgstr "12月"
 
-#: ../glib/gdatetime.c:199
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:230
+msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr " 1月"
 
-#: ../glib/gdatetime.c:201
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:232
+msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr " 2月"
 
-#: ../glib/gdatetime.c:203
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:234
+msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr " 3月"
 
-#: ../glib/gdatetime.c:205
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:236
+msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr " 4月"
 
-#: ../glib/gdatetime.c:209
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:238
+msgctxt "abbreviated month name"
+msgid "May"
+msgstr " 5月"
+
+#: ../glib/gdatetime.c:240
+msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr " 6月"
 
-#: ../glib/gdatetime.c:211
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:242
+msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr " 7月"
 
-#: ../glib/gdatetime.c:213
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:244
+msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr " 8月"
 
-#: ../glib/gdatetime.c:215
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:246
+msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr " 9月"
 
-#: ../glib/gdatetime.c:217
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:248
+msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "10月"
 
-#: ../glib/gdatetime.c:219
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:250
+msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "11月"
 
-#: ../glib/gdatetime.c:221
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:252
+msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "12月"
 
-#: ../glib/gdatetime.c:236
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:267
+msgctxt "full weekday name"
 msgid "Monday"
 msgstr "月曜日"
 
-#: ../glib/gdatetime.c:238
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:269
+msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "火曜日"
 
-#: ../glib/gdatetime.c:240
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:271
+msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "水曜日"
 
-#: ../glib/gdatetime.c:242
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:273
+msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "木曜日"
 
-#: ../glib/gdatetime.c:244
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:275
+msgctxt "full weekday name"
 msgid "Friday"
 msgstr "金曜日"
 
-#: ../glib/gdatetime.c:246
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:277
+msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "土曜日"
 
-#: ../glib/gdatetime.c:248
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:279
+msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "日曜日"
 
-#: ../glib/gdatetime.c:263
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:294
+msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "月"
 
-#: ../glib/gdatetime.c:265
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:296
+msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "火"
 
-#: ../glib/gdatetime.c:267
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:298
+msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "水"
 
-#: ../glib/gdatetime.c:269
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:300
+msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "木"
 
-#: ../glib/gdatetime.c:271
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:302
+msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "金"
 
-#: ../glib/gdatetime.c:273
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:304
+msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "土"
 
-#: ../glib/gdatetime.c:275
-msgctxt "GDateTime"
+#: ../glib/gdatetime.c:306
+msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "日"
 
-#: ../glib/gdir.c:114 ../glib/gdir.c:137
+#: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "'%s' を開く時にエラー: %s"
@@ -523,11 +532,11 @@ msgstr "%.1f EB"
 #: ../glib/gfileutils.c:1853
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "シンボリック・リンク '%s' の読み込みが失敗: %s"
+msgstr "シンボリックリンク '%s' の読み込みが失敗: %s"
 
 #: ../glib/gfileutils.c:1874
 msgid "Symbolic links not supported"
-msgstr "シンボリック・リンクはサポートしていません"
+msgstr "シンボリックリンクはサポートしていません"
 
 #: ../glib/giochannel.c:1407
 #, c-format
@@ -767,301 +776,301 @@ msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "ドキュメントがコメントあるいはプロセシング指示子の途中で突然終了しています"
 
-#: ../glib/gregex.c:184
+#: ../glib/gregex.c:188
 msgid "corrupted object"
 msgstr "不正なオブジェクト"
 
-#: ../glib/gregex.c:186
+#: ../glib/gregex.c:190
 msgid "internal error or corrupted object"
 msgstr "内部エラーまたは不正なオブジェクト"
 
-#: ../glib/gregex.c:188
+#: ../glib/gregex.c:192
 msgid "out of memory"
 msgstr "メモリが足りません"
 
-#: ../glib/gregex.c:193
+#: ../glib/gregex.c:197
 msgid "backtracking limit reached"
 msgstr "バックトラック処理の上限に達しました"
 
-#: ../glib/gregex.c:205 ../glib/gregex.c:213
+#: ../glib/gregex.c:209 ../glib/gregex.c:217
 msgid "the pattern contains items not supported for partial matching"
 msgstr "パターンに含まれているアイテムは部分マッチングをサポートしていません"
 
-#: ../glib/gregex.c:207 ../gio/glocalfile.c:2109
+#: ../glib/gregex.c:211 ../gio/glocalfile.c:2109
 msgid "internal error"
 msgstr "内部エラー"
 
-#: ../glib/gregex.c:215
+#: ../glib/gregex.c:219
 msgid "back references as conditions are not supported for partial matching"
 msgstr "条件の後方参照は部分マッチングをサポートしていません"
 
-#: ../glib/gregex.c:224
+#: ../glib/gregex.c:228
 msgid "recursion limit reached"
 msgstr "再帰の上限に達しました"
 
-#: ../glib/gregex.c:226
+#: ../glib/gregex.c:230
 msgid "workspace limit for empty substrings reached"
 msgstr "空の部分文字列に対する作業領域の上限に達しました"
 
-#: ../glib/gregex.c:228
+#: ../glib/gregex.c:232
 msgid "invalid combination of newline flags"
 msgstr "改行フラグの連携が間違っています"
 
-#: ../glib/gregex.c:232
+#: ../glib/gregex.c:236
 msgid "unknown error"
 msgstr "原因不明のエラー"
 
-#: ../glib/gregex.c:252
+#: ../glib/gregex.c:256
 msgid "\\ at end of pattern"
 msgstr "パターンの終端に \\ があります"
 
-#: ../glib/gregex.c:255
+#: ../glib/gregex.c:259
 msgid "\\c at end of pattern"
 msgstr "パターンの終端に \\c があります"
 
-#: ../glib/gregex.c:258
+#: ../glib/gregex.c:262
 msgid "unrecognized character follows \\"
 msgstr "認識できない文字の後ろに \\ があります"
 
-#: ../glib/gregex.c:265
+#: ../glib/gregex.c:269
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr ""
 "ここに大/小文字の変換を行うエスケープ (\\l、\\L、\\u、\\U) を挿入できません"
 
-#: ../glib/gregex.c:268
+#: ../glib/gregex.c:272
 msgid "numbers out of order in {} quantifier"
 msgstr "量指定子 '{}' の中にある数値の順番が間違っています"
 
-#: ../glib/gregex.c:271
+#: ../glib/gregex.c:275
 msgid "number too big in {} quantifier"
 msgstr "量指定子 '{}' の中にある数値が大きすぎます"
 
-#: ../glib/gregex.c:274
+#: ../glib/gregex.c:278
 msgid "missing terminating ] for character class"
 msgstr "文字クラスを表す終端文字 '] ' がありません"
 
-#: ../glib/gregex.c:277
+#: ../glib/gregex.c:281
 msgid "invalid escape sequence in character class"
 msgstr "文字クラスの中に無効なエスケープ・シーケンスがあります"
 
-#: ../glib/gregex.c:280
+#: ../glib/gregex.c:284
 msgid "range out of order in character class"
 msgstr "文字クラスで文字の順番が間違っています"
 
-#: ../glib/gregex.c:283
+#: ../glib/gregex.c:287
 msgid "nothing to repeat"
 msgstr "繰り返すものがありません"
 
-#: ../glib/gregex.c:286
+#: ../glib/gregex.c:290
 msgid "unrecognized character after (?"
 msgstr "'(?' の後ろに認識できない文字があります"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:294
 msgid "unrecognized character after (?<"
 msgstr "'(?<' の後ろに認識できない文字があります"
 
-#: ../glib/gregex.c:294
+#: ../glib/gregex.c:298
 msgid "unrecognized character after (?P"
 msgstr "(?P の後ろに認識できない文字があります"
 
-#: ../glib/gregex.c:297
+#: ../glib/gregex.c:301
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX の名前付きクラスはクラスの内部でのみ利用できます"
 
-#: ../glib/gregex.c:300
+#: ../glib/gregex.c:304
 msgid "missing terminating )"
 msgstr "終端文字の ')' がありません"
 
-#: ../glib/gregex.c:304
+#: ../glib/gregex.c:308
 msgid ") without opening ("
 msgstr "開始文字 '(' が無い終端文字 ')'"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:311
+#: ../glib/gregex.c:315
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R または (?[+-]数値 が続く必要あり )"
 
-#: ../glib/gregex.c:314
+#: ../glib/gregex.c:318
 msgid "reference to non-existent subpattern"
 msgstr "存在しないサブパターンへの参照です"
 
-#: ../glib/gregex.c:317
+#: ../glib/gregex.c:321
 msgid "missing ) after comment"
 msgstr "コメントの後ろに ')' がありません"
 
-#: ../glib/gregex.c:320
+#: ../glib/gregex.c:324
 msgid "regular expression too large"
 msgstr "正規表現が長すぎます"
 
-#: ../glib/gregex.c:323
+#: ../glib/gregex.c:327
 msgid "failed to get memory"
 msgstr "メモリの確保に失敗しました"
 
-#: ../glib/gregex.c:326
+#: ../glib/gregex.c:330
 msgid "lookbehind assertion is not fixed length"
 msgstr "後読み (lookbehind assertion) が固定長ではありません"
 
-#: ../glib/gregex.c:329
+#: ../glib/gregex.c:333
 msgid "malformed number or name after (?("
 msgstr "'(?(' の後ろに不正な形式の数値または名前があります"
 
-#: ../glib/gregex.c:332
+#: ../glib/gregex.c:336
 msgid "conditional group contains more than two branches"
 msgstr "条件グループに二つ以上のブランチがあります"
 
-#: ../glib/gregex.c:335
+#: ../glib/gregex.c:339
 msgid "assertion expected after (?("
 msgstr "assertion expected after (?("
 
-#: ../glib/gregex.c:338
+#: ../glib/gregex.c:342
 msgid "unknown POSIX class name"
 msgstr "不明な POSIX のクラス名"
 
-#: ../glib/gregex.c:341
+#: ../glib/gregex.c:345
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX では照合順序の要素はサポートしていません"
 
-#: ../glib/gregex.c:344
+#: ../glib/gregex.c:348
 msgid "character value in \\x{...} sequence is too large"
 msgstr "\\x{...} の中にある文字値が大きすぎます"
 
-#: ../glib/gregex.c:347
+#: ../glib/gregex.c:351
 msgid "invalid condition (?(0)"
 msgstr "条件の '(?(0)' が間違っています"
 
-#: ../glib/gregex.c:350
+#: ../glib/gregex.c:354
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "後読みのアサーションでは \\C を指定できません"
 
-#: ../glib/gregex.c:353
+#: ../glib/gregex.c:357
 msgid "recursive call could loop indefinitely"
 msgstr "繰り返しの呼び出しが無限ループになっています"
 
-#: ../glib/gregex.c:356
+#: ../glib/gregex.c:360
 msgid "missing terminator in subpattern name"
 msgstr "サブパターンの名前に終端文字がありません"
 
-#: ../glib/gregex.c:359
+#: ../glib/gregex.c:363
 msgid "two named subpatterns have the same name"
 msgstr "二つある名前付きサブパターンが同じ名前です"
 
-#: ../glib/gregex.c:362
+#: ../glib/gregex.c:366
 msgid "malformed \\P or \\p sequence"
 msgstr "不正な \\P または \\p のシーケンスです"
 
-#: ../glib/gregex.c:365
+#: ../glib/gregex.c:369
 msgid "unknown property name after \\P or \\p"
 msgstr "\\P または \\p の後ろにあるプロパティ名が不明です"
 
-#: ../glib/gregex.c:368
+#: ../glib/gregex.c:372
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "サブパターンの名前が長すぎます (32 文字以下にしてください)"
 
-#: ../glib/gregex.c:371
+#: ../glib/gregex.c:375
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "名前付きサブパターンが多すぎます (10,000 個以下にしてください)"
 
-#: ../glib/gregex.c:374
+#: ../glib/gregex.c:378
 msgid "octal value is greater than \\377"
 msgstr "8進数値が \\377 よりも大きいです"
 
-#: ../glib/gregex.c:377
+#: ../glib/gregex.c:381
 msgid "DEFINE group contains more than one branch"
 msgstr "DEFINE グループに1つ以上のブランチが含まれています"
 
-#: ../glib/gregex.c:380
+#: ../glib/gregex.c:384
 msgid "repeating a DEFINE group is not allowed"
 msgstr "DEFINE グループは繰り返せません"
 
-#: ../glib/gregex.c:383
+#: ../glib/gregex.c:387
 msgid "inconsistent NEWLINE options"
 msgstr "NEWLINE オプションに矛盾があります"
 
-#: ../glib/gregex.c:386
+#: ../glib/gregex.c:390
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "ブレース名の後ろに \\g が存在していないか、または0以外の数値でブレースしてい"
 "ます"
 
-#: ../glib/gregex.c:391
+#: ../glib/gregex.c:395
 msgid "unexpected repeat"
 msgstr "想定外の繰り返しです"
 
-#: ../glib/gregex.c:395
+#: ../glib/gregex.c:399
 msgid "code overflow"
 msgstr "コードがオーバーフローしました"
 
-#: ../glib/gregex.c:399
+#: ../glib/gregex.c:403
 msgid "overran compiling workspace"
 msgstr "正規表現をコンパイルする領域で上限を超えました"
 
-#: ../glib/gregex.c:403
+#: ../glib/gregex.c:407
 msgid "previously-checked referenced subpattern not found"
 msgstr "直前にチェックしたサブパターンのリファレンスが見つかりませんでした"
 
-#: ../glib/gregex.c:575 ../glib/gregex.c:1696
+#: ../glib/gregex.c:579 ../glib/gregex.c:1700
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "正規表現 %s でマッチングしている際にエラー: %s"
 
-#: ../glib/gregex.c:1151
+#: ../glib/gregex.c:1155
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "お使いの PCRE ライブラリは UTF-8 をサポートしていません"
 
-#: ../glib/gregex.c:1160
+#: ../glib/gregex.c:1164
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "お使いの PCRE library は UTF-8 のプロパティをサポートしていません"
 
-#: ../glib/gregex.c:1214
+#: ../glib/gregex.c:1218
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "正規表現 %s をコンパイルする際にエラー (%d 文字目): %s"
 
-#: ../glib/gregex.c:1250
+#: ../glib/gregex.c:1254
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "正規表現 %s を最適化する際にエラー: %s"
 
-#: ../glib/gregex.c:2124
+#: ../glib/gregex.c:2128
 msgid "hexadecimal digit or '}' expected"
 msgstr "16進数の数値または '}' を想定していました"
 
-#: ../glib/gregex.c:2140
+#: ../glib/gregex.c:2144
 msgid "hexadecimal digit expected"
 msgstr "16進数の数値を想定していました"
 
-#: ../glib/gregex.c:2180
+#: ../glib/gregex.c:2184
 msgid "missing '<' in symbolic reference"
 msgstr "シンボル参照の中に '<' がありません"
 
-#: ../glib/gregex.c:2189
+#: ../glib/gregex.c:2193
 msgid "unfinished symbolic reference"
 msgstr "中途半端なシンボル参照です"
 
-#: ../glib/gregex.c:2196
+#: ../glib/gregex.c:2200
 msgid "zero-length symbolic reference"
 msgstr "サイズが0のシンボル参照です"
 
-#: ../glib/gregex.c:2207
+#: ../glib/gregex.c:2211
 msgid "digit expected"
 msgstr "数値を想定していました"
 
-#: ../glib/gregex.c:2225
+#: ../glib/gregex.c:2229
 msgid "illegal symbolic reference"
 msgstr "シンボル参照が間違っています"
 
-#: ../glib/gregex.c:2287
+#: ../glib/gregex.c:2291
 msgid "stray final '\\'"
 msgstr "最後の '\\' に対応するシンボルがありません"
 
-#: ../glib/gregex.c:2291
+#: ../glib/gregex.c:2295
 msgid "unknown escape sequence"
 msgstr "不明なエスケープ・シーケンスです"
 
-#: ../glib/gregex.c:2301
+#: ../glib/gregex.c:2305
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "代替文字列 \"%s\" の %lu 文字目を解析する際にエラー: %s"
@@ -1377,18 +1386,18 @@ msgstr "値 '%s' を論理値として解釈できません"
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:681
-#: ../gio/goutputstream.c:197 ../gio/goutputstream.c:724
+#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:725
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "%s に引き渡した値が大きすぎます"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:891
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1199
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1200
 msgid "Stream is already closed"
 msgstr "既にストリームは閉じています"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1549
-#: ../gio/gdbusconnection.c:1638 ../gio/gdbusconnection.c:1820
+#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1552
+#: ../gio/gdbusconnection.c:1641 ../gio/gdbusconnection.c:1823
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:755
 #: ../gio/gsimpleasyncresult.c:781
 msgid "Operation was cancelled"
@@ -1432,7 +1441,7 @@ msgstr "GCredentials はこのOSでは実装されていません"
 msgid "There is no GCredentials support for your platform"
 msgstr "このプラットフォームでは　GCredentials はサポートされていません"
 
-#: ../gio/gdatainputstream.c:310
+#: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
 msgstr "想定していたよりも早くストリームの最後に到達しました"
 
@@ -1573,7 +1582,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "セッションバスのアドレスを決定できません (このOSでは実装されていません)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6013
+#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6016
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1582,7 +1591,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません - 不明な値 '%"
 "s'"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6022
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6025
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1655,7 +1664,7 @@ msgstr ""
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の2番目のトークンが不正です<"
+"'%2$s' のキーリングの、内容が '%3$s' の %1$d 行目の2番目のトークンが不正です"
 
 #: ../gio/gdbusauthmechanismsha1.c:458
 #, c-format
@@ -1692,23 +1701,23 @@ msgstr "キーリング '%s' を書き込み用にオープンする際にエラ
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(さらに、'%s' のロックの解放も失敗しました: %s) "
 
-#: ../gio/gdbusconnection.c:1058 ../gio/gdbusconnection.c:1287
-#: ../gio/gdbusconnection.c:1326 ../gio/gdbusconnection.c:1649
+#: ../gio/gdbusconnection.c:1061 ../gio/gdbusconnection.c:1290
+#: ../gio/gdbusconnection.c:1329 ../gio/gdbusconnection.c:1652
 msgid "The connection is closed"
 msgstr "接続が閉じています"
 
-#: ../gio/gdbusconnection.c:1593
+#: ../gio/gdbusconnection.c:1596
 msgid "Timeout was reached"
 msgstr "タイムアウトしました"
 
-#: ../gio/gdbusconnection.c:2170
+#: ../gio/gdbusconnection.c:2173
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "クライアントサイドの接続を作成しようとしましたがサポートしていないフラグに遭"
 "遇しました"
 
-#: ../gio/gdbusconnection.c:3596 ../gio/gdbusconnection.c:3914
+#: ../gio/gdbusconnection.c:3599 ../gio/gdbusconnection.c:3917
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1716,69 +1725,69 @@ msgstr ""
 "パス %s のオブジェクト上にインターフェイス 'org.freedesktop.DBus.Properties' "
 "がありません"
 
-#: ../gio/gdbusconnection.c:3668
+#: ../gio/gdbusconnection.c:3671
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "プロパティ '%s' の設定時にエラー: 期待した型は '%s' ですが '%s' でした"
 
-#: ../gio/gdbusconnection.c:3763
+#: ../gio/gdbusconnection.c:3766
 #, c-format
 msgid "No such property `%s'"
 msgstr "'%s' というプロパティが存在しません"
 
-#: ../gio/gdbusconnection.c:3775
+#: ../gio/gdbusconnection.c:3778
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "プロパティ '%s' が読み込み可能ではありません"
 
-#: ../gio/gdbusconnection.c:3786
+#: ../gio/gdbusconnection.c:3789
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "プロパティ '%s' が書き込み可能ではありません"
 
-#: ../gio/gdbusconnection.c:3856 ../gio/gdbusconnection.c:5447
+#: ../gio/gdbusconnection.c:3859 ../gio/gdbusconnection.c:5450
 #, c-format
 msgid "No such interface `%s'"
 msgstr "'%s' というインターフェイスがありません"
 
-#: ../gio/gdbusconnection.c:4044
+#: ../gio/gdbusconnection.c:4047
 msgid "No such interface"
 msgstr "そのようなインターフェイスがありません"
 
-#: ../gio/gdbusconnection.c:4260 ../gio/gdbusconnection.c:5963
+#: ../gio/gdbusconnection.c:4263 ../gio/gdbusconnection.c:5966
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "パス %2$s のオブジェクト上にインターフェイス '%1$s' がありません"
 
-#: ../gio/gdbusconnection.c:4312
+#: ../gio/gdbusconnection.c:4315
 #, c-format
 msgid "No such method `%s'"
 msgstr "'%s' というメソッドがありません"
 
-#: ../gio/gdbusconnection.c:4343
+#: ../gio/gdbusconnection.c:4346
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "メッセージの型 '%s' は期待した型 '%s' に一致しません"
 
-#: ../gio/gdbusconnection.c:4562
+#: ../gio/gdbusconnection.c:4565
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 "%2$s のインターフェイス %1$s にオブジェクトは既にエクスポートされています"
 
-#: ../gio/gdbusconnection.c:4756
+#: ../gio/gdbusconnection.c:4759
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "メソッド '%s' は '%s' 型を返しましたが、'%s' を期待していました"
 
-#: ../gio/gdbusconnection.c:5558
+#: ../gio/gdbusconnection.c:5561
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 "シグネチャ '%3$s' を持ったインターフェイス '%2$s' にメソッド '%1$s' が存在し"
 "ません"
 
-#: ../gio/gdbusconnection.c:5676
+#: ../gio/gdbusconnection.c:5679
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "サブツリーは既に %s に export されています"
@@ -1799,8 +1808,8 @@ msgstr "METHOD_RETURN メッセージ: REPLY_SERIAL ヘッダフィールドが�
 #: ../gio/gdbusmessage.c:890
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr ""
-"METHOD_CALL メッセージ: REPLY_SERIAL または ERROR_NAME ヘッダフィールドがあり"
-"ません"
+"エラー: METHOD_CALL メッセージ: REPLY_SERIAL または ERROR_NAME ヘッダフィール"
+"ドがありません"
 
 #: ../gio/gdbusmessage.c:903
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
@@ -1977,7 +1986,7 @@ msgstr ""
 msgid "Error sending message: %s"
 msgstr "メッセージを送信中にエラー: %s"
 
-#: ../gio/gdbusprivate.c:1725
+#: ../gio/gdbusprivate.c:1766
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "/var/lib/dbus/machine-id を読みこめません: "
 
@@ -2285,7 +2294,7 @@ msgstr "GEmblemedIcon に対する GEmblem を想定していました"
 #: ../gio/gfile.c:4259 ../gio/gfile.c:4345 ../gio/gfile.c:4434
 #: ../gio/gfile.c:4532 ../gio/gfile.c:4619 ../gio/gfile.c:4712
 #: ../gio/gfile.c:5042 ../gio/gfile.c:5322 ../gio/gfile.c:5391
-#: ../gio/gfile.c:6982 ../gio/gfile.c:7072 ../gio/gfile.c:7158
+#: ../gio/gfile.c:6983 ../gio/gfile.c:7073 ../gio/gfile.c:7159
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "サポートしていない操作です"
@@ -2334,7 +2343,7 @@ msgstr "特別なファイルはコピーできません"
 
 #: ../gio/gfile.c:3480
 msgid "Invalid symlink value given"
-msgstr "指定したシンボリック・リンクは間違っています"
+msgstr "指定したシンボリックリンクは間違っています"
 
 #: ../gio/gfile.c:3573
 msgid "Trash not supported"
@@ -2345,11 +2354,11 @@ msgstr "ゴミ箱はサポートしていません"
 msgid "File names cannot contain '%c'"
 msgstr "ファイル名に '%c' を含めることはできません"
 
-#: ../gio/gfile.c:6039 ../gio/gvolume.c:330
+#: ../gio/gfile.c:6040 ../gio/gvolume.c:330
 msgid "volume doesn't implement mount"
 msgstr "ボリュームはマウントを実装していません"
 
-#: ../gio/gfile.c:6150
+#: ../gio/gfile.c:6151
 msgid "No application is registered as handling this file"
 msgstr "このファイルを扱うアプリケーションが登録されていません"
 
@@ -2440,7 +2449,7 @@ msgstr "入力ストリームで読み込みを実装していません"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:901 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1209
+#: ../gio/goutputstream.c:1210
 msgid "Stream has outstanding operation"
 msgstr "Stream has outstanding operation"
 
@@ -2452,6 +2461,238 @@ msgstr "ソケット・アドレスを作成するために充分な空きがあ
 #: ../gio/ginetsocketaddress.c:211
 msgid "Unsupported socket address"
 msgstr "サポートしていないソケット・アドレスです"
+
+#: ../gio/glib-compile-schemas.c:702
+msgid "empty names are not permitted"
+msgstr "空の名前は許されていません"
+
+#: ../gio/glib-compile-schemas.c:712
+#, c-format
+msgid "invalid name '%s': names must begin with a lowercase letter"
+msgstr "正しくない名前 '%s': 名前は小文字で始まっていなければなりません"
+
+#: ../gio/glib-compile-schemas.c:724
+#, c-format
+msgid ""
+"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
+"and dash ('-') are permitted."
+msgstr ""
+"正しくない名前 '%s': 正しくない文字 '%c'、小文字、数字、そしてダッシュ ('-') "
+"のみが許可されている文字です"
+
+#: ../gio/glib-compile-schemas.c:733
+#, c-format
+msgid "invalid name '%s': two successive dashes ('--') are not permitted."
+msgstr "正しくない名前 '%s': 2つ連続するダッシュ ('--') は許可されません"
+
+#: ../gio/glib-compile-schemas.c:742
+#, c-format
+msgid "invalid name '%s': the last character may not be a dash ('-')."
+msgstr "正しくない名前 '%s': 最後の文字はダッシュ ('-') ではいけません。"
+
+#: ../gio/glib-compile-schemas.c:750
+#, c-format
+msgid "invalid name '%s': maximum length is 32"
+msgstr "正しくない名前 '%s': 最大長は 32 です"
+
+#: ../gio/glib-compile-schemas.c:819
+#, c-format
+msgid "<child name='%s'> already specified"
+msgstr "<child name='%s'> は既に指定されています"
+
+#: ../gio/glib-compile-schemas.c:845
+msgid "can not add keys to a 'list-of' schema"
+msgstr "キーを 'list-of' スキーマに追加することができません"
+
+#: ../gio/glib-compile-schemas.c:856
+#, c-format
+msgid "<key name='%s'> already specified"
+msgstr "<key name='%s'> は既に指定されています"
+
+#: ../gio/glib-compile-schemas.c:874
+#, c-format
+msgid ""
+"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
+"to modify value"
+msgstr ""
+"<key name='%1$s'> は <schema id='%3$s'> 中の <key name='%2$s'> を隠してしまい"
+"ます。値の変更は <override> を使ってください"
+
+#: ../gio/glib-compile-schemas.c:885
+#, c-format
+msgid ""
+"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
+"to <key>"
+msgstr ""
+"<key> の属性としては、'type'、'enum'、あるいは 'flags' のうち一つだけが指定で"
+"きます"
+
+#: ../gio/glib-compile-schemas.c:904
+#, c-format
+msgid "<%s id='%s'> not (yet) defined."
+msgstr "<%s id='%s'> は (まだ) 定義されていません。"
+
+#: ../gio/glib-compile-schemas.c:919
+#, c-format
+msgid "invalid GVariant type string '%s'"
+msgstr "正しくない GVariant 型の文字列 '%s'"
+
+#: ../gio/glib-compile-schemas.c:949
+msgid "<override> given but schema isn't extending anything"
+msgstr "<override> が指定されましたが、スキーマはまだ何も拡張していません"
+
+#: ../gio/glib-compile-schemas.c:962
+#, c-format
+msgid "no <key name='%s'> to override"
+msgstr "上書きする <key name='%s'> がありません"
+
+#: ../gio/glib-compile-schemas.c:970
+#, c-format
+msgid "<override name='%s'> already specified"
+msgstr "<override name='%s'> は既に指定されています"
+
+#: ../gio/glib-compile-schemas.c:1036
+#, c-format
+msgid "<schema id='%s'> already specified"
+msgstr "<schema id='%s'> は既に指定されています"
+
+#: ../gio/glib-compile-schemas.c:1048
+#, c-format
+msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgstr "<schema id='%s'> がまだ存在していないスキーマ '%s' を拡張しています"
+
+#: ../gio/glib-compile-schemas.c:1064
+#, c-format
+msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgstr "<schema id='%s'> はまだ存在していないスキーマ '%s' のリストです"
+
+#: ../gio/glib-compile-schemas.c:1072
+#, c-format
+msgid "Can not be a list of a schema with a path"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1082
+#, c-format
+msgid "Can not extend a schema with a path"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1092
+#, c-format
+msgid ""
+"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgstr ""
+"<schema id='%s'> はリストですが、リストではない <schema id='%s'> を拡張してい"
+"ます"
+
+#: ../gio/glib-compile-schemas.c:1102
+#, c-format
+msgid ""
+"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
+"does not extend '%s'"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1119
+#, c-format
+msgid "a path, if given, must begin and end with a slash"
+msgstr ""
+"パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはな"
+"りません"
+
+#: ../gio/glib-compile-schemas.c:1126
+#, c-format
+msgid "the path of a list must end with ':/'"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1148
+#, c-format
+msgid "<%s id='%s'> already specified"
+msgstr "<%s id='%s'> は既に指定されています"
+
+#: ../gio/glib-compile-schemas.c:1362
+#, c-format
+msgid "Element <%s> not allowed inside <%s>"
+msgstr "要素 <%s> は <%s> 中では使えません"
+
+#: ../gio/glib-compile-schemas.c:1366
+#, c-format
+msgid "Element <%s> not allowed at toplevel"
+msgstr "要素 <%s> はトップレベルでは使えません"
+
+#: ../gio/glib-compile-schemas.c:1460
+#, c-format
+msgid "text may not appear inside <%s>"
+msgstr "<%s> 中では文字列は出現しません"
+
+#: ../gio/glib-compile-schemas.c:1674
+#, c-format
+msgid "No such schema `%s' specified in override file `%s'"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1698
+#, c-format
+msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1731
+#, c-format
+msgid ""
+"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"range given in the schema"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1752
+#, c-format
+msgid ""
+"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"list of valid choices"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1797
+msgid "where to store the gschemas.compiled file"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1797 ../gio/glib-compile-schemas.c:1809
+msgid "DIRECTORY"
+msgstr "DIRECTORY"
+
+#: ../gio/glib-compile-schemas.c:1798
+msgid "Do not write the gschema.compiled file"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1799
+msgid "This option will be removed soon."
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1800
+msgid "Do not enforce key name restrictions"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1812
+msgid ""
+"Compile all GSettings schema files into a schema cache.\n"
+"Schema files are required to have the extension .gschema.xml,\n"
+"and the cache file is called gschemas.compiled."
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1828
+#, c-format
+msgid "You should give exactly one directory name\n"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1867
+#, c-format
+msgid "No schema files found: "
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1870
+#, c-format
+msgid "doing nothing.\n"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1873
+#, c-format
+msgid "removed existing output file.\n"
+msgstr ""
 
 #: ../gio/glocaldirectorymonitor.c:287
 msgid "Unable to find default local directory monitor type"
@@ -2539,12 +2780,12 @@ msgstr "ディレクトリを生成する際にエラー: %s"
 #: ../gio/glocalfile.c:2164
 #, c-format
 msgid "Filesystem does not support symbolic links"
-msgstr "シンボリック・リンクをファイルシステムがサポートしていません"
+msgstr "シンボリックリンクをファイルシステムがサポートしていません"
 
 #: ../gio/glocalfile.c:2168
 #, c-format
 msgid "Error making symbolic link: %s"
-msgstr "シンボリック・リンクを生成する際にエラー: %s"
+msgstr "シンボリックリンクを生成する際にエラー: %s"
 
 #: ../gio/glocalfile.c:2230 ../gio/glocalfile.c:2324
 #, c-format
@@ -2615,7 +2856,7 @@ msgstr "属性の種類が無効です (バイト型の文字列を想定して�
 
 #: ../gio/glocalfileinfo.c:1905
 msgid "Cannot set permissions on symlinks"
-msgstr "シンボリック・リンクにはアクセス権をセットできません"
+msgstr "シンボリックリンクにはアクセス権をセットできません"
 
 #: ../gio/glocalfileinfo.c:1921
 #, c-format
@@ -2629,17 +2870,17 @@ msgstr "所有者をセットする際にエラー: %s"
 
 #: ../gio/glocalfileinfo.c:1995
 msgid "symlink must be non-NULL"
-msgstr "シンボリック・リンクを NULL にしないでください"
+msgstr "シンボリックリンクを NULL にしないでください"
 
 #: ../gio/glocalfileinfo.c:2005 ../gio/glocalfileinfo.c:2024
 #: ../gio/glocalfileinfo.c:2035
 #, c-format
 msgid "Error setting symlink: %s"
-msgstr "シンボリック・リンクをセットする際にエラー: %s"
+msgstr "シンボリックリンクをセットする際にエラー: %s"
 
 #: ../gio/glocalfileinfo.c:2014
 msgid "Error setting symlink: file is not a symlink"
-msgstr "シンボリック・リンクの指定でエラー: ファイルがリンクではない"
+msgstr "シンボリックリンクの指定でエラー: ファイルがリンクではない"
 
 #: ../gio/glocalfileinfo.c:2140
 #, c-format
@@ -2828,11 +3069,11 @@ msgstr "mount には同期させてメディアの種類を推測するような
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "ホスト名 '%s' に '[' が含まれていますが ']' がありません"
 
-#: ../gio/goutputstream.c:206 ../gio/goutputstream.c:407
+#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:408
 msgid "Output stream doesn't implement write"
 msgstr "出力ストリームは書き込みを実装していません"
 
-#: ../gio/goutputstream.c:368 ../gio/goutputstream.c:848
+#: ../gio/goutputstream.c:369 ../gio/goutputstream.c:849
 msgid "Source stream is already closed"
 msgstr "ソース・ストリームは既に閉じています"
 
@@ -2861,223 +3102,6 @@ msgstr "一時的に '%s' を解決することができません"
 msgid "Error resolving '%s'"
 msgstr "'%s' の解決時にエラー"
 
-#: ../gio/gschema-compile.c:702
-msgid "empty names are not permitted"
-msgstr "空の名前は許されていません"
-
-#: ../gio/gschema-compile.c:712
-#, c-format
-msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr "正しくない名前 '%s': 名前は小文字で始まっていなければなりません"
-
-#: ../gio/gschema-compile.c:724
-#, c-format
-msgid ""
-"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
-"and dash ('-') are permitted."
-msgstr ""
-"正しくない名前 '%s': 正しくない文字 '%c'、小文字、数字、そしてダッシュ ('-') "
-"のみが許可されている文字です"
-
-#: ../gio/gschema-compile.c:733
-#, c-format
-msgid "invalid name '%s': two successive dashes ('--') are not permitted."
-msgstr "正しくない名前 '%s': 2つ連続するダッシュ ('--') は許可されません"
-
-#: ../gio/gschema-compile.c:742
-#, c-format
-msgid "invalid name '%s': the last character may not be a dash ('-')."
-msgstr "正しくない名前 '%s': 最後の文字はダッシュ ('-') ではいけません。"
-
-#: ../gio/gschema-compile.c:750
-#, c-format
-msgid "invalid name '%s': maximum length is 32"
-msgstr "正しくない名前 '%s': 最大長は 32 です"
-
-#: ../gio/gschema-compile.c:819
-#, c-format
-msgid "<child name='%s'> already specified"
-msgstr "<child name='%s'> は既に指定されています"
-
-#: ../gio/gschema-compile.c:845
-msgid "can not add keys to a 'list-of' schema"
-msgstr "キーを 'list-of' スキーマに追加することができません"
-
-#: ../gio/gschema-compile.c:856
-#, c-format
-msgid "<key name='%s'> already specified"
-msgstr "<key name='%s'> は既に指定されています"
-
-#: ../gio/gschema-compile.c:874
-#, c-format
-msgid ""
-"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
-"to modify value"
-msgstr ""
-"<key name='%1$s'> は <schema id='%3$s'> 中の <key name='%2$s'> を隠してしまい"
-"ます。値の変更は <override> を使ってください"
-
-#: ../gio/gschema-compile.c:885
-#, c-format
-msgid ""
-"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
-"to <key>"
-msgstr ""
-"<key> の属性としては、'type'、'enum'、あるいは 'flags' のうち一つだけが指定で"
-"きます"
-
-#: ../gio/gschema-compile.c:904
-#, c-format
-msgid "<%s id='%s'> not (yet) defined."
-msgstr "<%s id='%s'> は (まだ) 定義されていません。"
-
-#: ../gio/gschema-compile.c:919
-#, c-format
-msgid "invalid GVariant type string '%s'"
-msgstr "正しくない GVariant 型の文字列 '%s'"
-
-#: ../gio/gschema-compile.c:949
-msgid "<override> given but schema isn't extending anything"
-msgstr "<override> が指定されましたが、スキーマはまだ何も拡張していません"
-
-#: ../gio/gschema-compile.c:962
-#, c-format
-msgid "no <key name='%s'> to override"
-msgstr "上書きする <key name='%s'> がありません"
-
-#: ../gio/gschema-compile.c:970
-#, c-format
-msgid "<override name='%s'> already specified"
-msgstr "<override name='%s'> は既に指定されています"
-
-#: ../gio/gschema-compile.c:1036
-#, c-format
-msgid "<schema id='%s'> already specified"
-msgstr "<schema id='%s'> は既に指定されています"
-
-#: ../gio/gschema-compile.c:1048
-#, c-format
-msgid "<schema id='%s'> extends not yet existing schema '%s'"
-msgstr "<schema id='%s'> がまだ存在していないスキーマ '%s' を拡張しています"
-
-#: ../gio/gschema-compile.c:1062
-#, c-format
-msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr "<schema id='%s'> はまだ存在していないスキーマ '%s' のリストです"
-
-#: ../gio/gschema-compile.c:1076
-#, c-format
-msgid ""
-"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
-msgstr ""
-"<schema id='%s'> はリストですが、リストではない <schema id='%s'> を拡張してい"
-"ます"
-
-#: ../gio/gschema-compile.c:1086
-#, c-format
-msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
-"does not extend '%s'"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1103
-#, c-format
-msgid "a path, if given, must begin and end with a slash"
-msgstr ""
-"パスは、与えられていれば、スラッシュで始まり、スラッシュで終わってなくてはな"
-"りません"
-
-#: ../gio/gschema-compile.c:1125
-#, c-format
-msgid "<%s id='%s'> already specified"
-msgstr "<%s id='%s'> は既に指定されています"
-
-#: ../gio/gschema-compile.c:1339
-#, c-format
-msgid "Element <%s> not allowed inside <%s>"
-msgstr "要素 <%s> は <%s> 中では使えません"
-
-#: ../gio/gschema-compile.c:1343
-#, c-format
-msgid "Element <%s> not allowed at toplevel"
-msgstr "要素 <%s> はトップレベルでは使えません"
-
-#: ../gio/gschema-compile.c:1437
-#, c-format
-msgid "text may not appear inside <%s>"
-msgstr "<%s> 中では文字列は出現しません"
-
-#: ../gio/gschema-compile.c:1651
-#, c-format
-msgid "No such schema `%s' specified in override file `%s'"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1675
-#, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1708
-#, c-format
-msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
-"range given in the schema"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1729
-#, c-format
-msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
-"list of valid choices"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1774
-msgid "where to store the gschemas.compiled file"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1774 ../gio/gschema-compile.c:1786
-msgid "DIRECTORY"
-msgstr "DIRECTORY"
-
-#: ../gio/gschema-compile.c:1775
-msgid "Do not write the gschema.compiled file"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1776
-msgid "This option will be removed soon."
-msgstr ""
-
-#: ../gio/gschema-compile.c:1777
-msgid "Do not enforce key name restrictions"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1789
-msgid ""
-"Compile all GSettings schema files into a schema cache.\n"
-"Schema files are required to have the extension .gschema.xml,\n"
-"and the cache file is called gschemas.compiled."
-msgstr ""
-
-#: ../gio/gschema-compile.c:1805
-#, c-format
-msgid "You should give exactly one directory name\n"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1844
-#, c-format
-msgid "No schema files found: "
-msgstr ""
-
-#: ../gio/gschema-compile.c:1847
-#, c-format
-msgid "doing nothing.\n"
-msgstr ""
-
-#: ../gio/gschema-compile.c:1850
-#, c-format
-msgid "removed existing output file.\n"
-msgstr ""
-
 #: ../gio/gsettings-tool.c:79
 #, c-format
 msgid ""
@@ -3101,28 +3125,29 @@ msgstr ""
 "\n"
 "'%s COMMAND --help' でここのコマンドのヘルプを表示できます。\n"
 
-#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
-#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
+#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
 #: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr "スキーマのパスを指定してください"
 
-#: ../gio/gsettings-tool.c:222 ../gio/gsettings-tool.c:322
-#: ../gio/gsettings-tool.c:438 ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
+#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
 #: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr "PATH"
 
-#: ../gio/gsettings-tool.c:230 ../gio/gsettings-tool.c:541
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:541
 #: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr "SCHEMA KYE"
 
-#: ../gio/gsettings-tool.c:232
+#: ../gio/gsettings-tool.c:230
 msgid "Get the value of KEY"
 msgstr "KEY の値を取得"
 
-#: ../gio/gsettings-tool.c:234 ../gio/gsettings-tool.c:450
+#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:449
 #: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
@@ -3133,15 +3158,16 @@ msgstr ""
 "  SCHEMA      スキーマのID\n"
 "  KEY         キーの名前\n"
 
-#: ../gio/gsettings-tool.c:330 ../gio/gsettings-tool.c:446
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:329 ../gio/gsettings-tool.c:445
 msgid "SCHEMA KEY VALUE"
 msgstr "SCHEMA KEY VALUE"
 
-#: ../gio/gsettings-tool.c:332
+#: ../gio/gsettings-tool.c:331
 msgid "Set the value of KEY"
 msgstr "KEY の値を設定"
 
-#: ../gio/gsettings-tool.c:334
+#: ../gio/gsettings-tool.c:333
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -3149,12 +3175,12 @@ msgid ""
 "  VALUE       The value to set key to, as a serialized GVariant\n"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:407
+#: ../gio/gsettings-tool.c:406
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "キー %s が書き込み可能ではありません\n"
 
-#: ../gio/gsettings-tool.c:448
+#: ../gio/gsettings-tool.c:447
 msgid "Sets KEY to its default value"
 msgstr ""
 
@@ -3280,7 +3306,7 @@ msgstr "メッセージを受信中にエラー: %s"
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1148
+#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1153
 msgid "Unknown error on connect"
 msgstr "接続時に原因不明のエラー"
 

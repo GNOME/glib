@@ -19,7 +19,7 @@ if libtoolize --version < /dev/null > /dev/null 2>&1 ; then
 			 sed -e 's/^\(.*\)([^)]*)\(.*\)$/\1\2/g' \
 			     -e 's/^[^0-9]*\([0-9.][0-9.]*\).*/\1/'`
 	case $libtool_version in
-	    2.2*)
+	    2.2*|2.4*)
 		have_libtool=true
 		;;
 	esac

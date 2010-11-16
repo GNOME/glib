@@ -113,7 +113,7 @@ gboolean             g_markup_parse_context_parse (GMarkupParseContext *context,
                                                    gssize               text_len,  
                                                    GError             **error);
 void                 g_markup_parse_context_push  (GMarkupParseContext *context,
-                                                   GMarkupParser       *parser,
+                                                   const GMarkupParser *parser,
                                                    gpointer             user_data);
 gpointer             g_markup_parse_context_pop   (GMarkupParseContext *context);
                                                    

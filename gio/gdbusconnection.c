@@ -90,6 +90,15 @@
  *      kind of pitfalls it avoids
  *      - Export objects before claiming names
  *    - Talk about auto-starting services (cf. GBusNameWatcherFlags)
+ *
+ *  - use abstract sockets in test code
+ *   - right now it doesn't work, dbus-daemon(1) fails with
+ *
+ *        /gdbus/connection/filter: Failed to start message bus: Failed to bind
+ *        socket "/tmp/g-dbus-tests-pid-28531": Address already in use
+ *        ** WARNING **: Error reading address from dbus daemon, 0 bytes read
+ *
+ *     or similar.
  */
 
 #include "config.h"
@@ -177,6 +186,77 @@ G_LOCK_DEFINE_STATIC (message_bus_lock);
 
 static GDBusConnection *the_session_bus = NULL;
 static GDBusConnection *the_system_bus = NULL;
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+typedef struct
+{
+  GDestroyNotify              callback;
+  gpointer                    user_data;
+  GMainContext               *context;
+} CallDestroyNotifyData;
+
+static gboolean
+call_destroy_notify_data_in_idle (gpointer user_data)
+{
+  CallDestroyNotifyData *data = user_data;
+  data->callback (data->user_data);
+  return FALSE;
+}
+
+static void
+call_destroy_notify_data_free (CallDestroyNotifyData *data)
+{
+  if (data->context != NULL)
+    g_main_context_unref (data->context);
+  g_free (data);
+}
+
+/*
+ * call_destroy_notify: <internal>
+ * @context: A #GMainContext or %NULL.
+ * @callback: A #GDestroyNotify or %NULL.
+ * @user_data: Data to pass to @callback.
+ *
+ * Schedules @callback to run in @context.
+ */
+static void
+call_destroy_notify (GMainContext  *context,
+                     GDestroyNotify callback,
+                     gpointer       user_data)
+{
+  if (callback == NULL)
+    goto out;
+
+  if (context == g_main_context_get_thread_default ())
+    {
+      callback (user_data);
+    }
+  else
+    {
+      GSource *idle_source;
+      CallDestroyNotifyData *data;
+
+      data = g_new0 (CallDestroyNotifyData, 1);
+      data->callback = callback;
+      data->user_data = user_data;
+      data->context = context;
+      if (data->context != NULL)
+        g_main_context_ref (data->context);
+
+      idle_source = g_idle_source_new ();
+      g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
+      g_source_set_callback (idle_source,
+                             call_destroy_notify_data_in_idle,
+                             data,
+                             (GDestroyNotify) call_destroy_notify_data_free);
+      g_source_attach (idle_source, data->context);
+      g_source_unref (idle_source);
+    }
+
+ out:
+  ;
+}
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -375,13 +455,14 @@ G_DEFINE_TYPE_WITH_CODE (GDBusConnection, g_dbus_connection, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_INITABLE, async_initable_iface_init)
                          );
 
+static GHashTable *alive_connections = NULL;
+
 static void
 g_dbus_connection_dispose (GObject *object)
 {
   GDBusConnection *connection = G_DBUS_CONNECTION (object);
 
   G_LOCK (message_bus_lock);
-  //g_debug ("disposing %p", connection);
   if (connection == the_session_bus)
     {
       the_session_bus = NULL;
@@ -390,11 +471,20 @@ g_dbus_connection_dispose (GObject *object)
     {
       the_system_bus = NULL;
     }
+  CONNECTION_LOCK (connection);
   if (connection->worker != NULL)
     {
       _g_dbus_worker_stop (connection->worker);
       connection->worker = NULL;
+      if (alive_connections != NULL)
+        g_warn_if_fail (g_hash_table_remove (alive_connections, connection));
     }
+  else
+    {
+      if (alive_connections != NULL)
+        g_warn_if_fail (g_hash_table_lookup (alive_connections, connection) == NULL);
+    }
+  CONNECTION_UNLOCK (connection);
   G_UNLOCK (message_bus_lock);
 
   if (G_OBJECT_CLASS (g_dbus_connection_parent_class)->dispose != NULL)
@@ -418,6 +508,9 @@ g_dbus_connection_finalize (GObject *object)
 
   if (connection->auth != NULL)
     g_object_unref (connection->auth);
+
+  if (connection->credentials)
+    g_object_unref (connection->credentials);
 
   if (connection->stream != NULL)
     {
@@ -857,7 +950,7 @@ g_dbus_connection_init (GDBusConnection *connection)
  *
  * Gets the underlying stream used for IO.
  *
- * Returns: the stream used for IO
+ * Returns: (transfer none): the stream used for IO
  *
  * Since: 2.26
  */
@@ -933,10 +1026,7 @@ flush_in_thread_func (GSimpleAsyncResult *res,
   if (!g_dbus_connection_flush_sync (G_DBUS_CONNECTION (object),
                                      cancellable,
                                      &error))
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 /**
@@ -1144,10 +1234,7 @@ close_in_thread_func (GSimpleAsyncResult *res,
   if (!g_dbus_connection_close_sync (G_DBUS_CONNECTION (object),
                                      cancellable,
                                      &error))
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 /**
@@ -1655,7 +1742,7 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
   error = NULL;
   if (!g_dbus_connection_send_message_unlocked (connection, message, flags, out_serial, &error))
     {
-      g_simple_async_result_set_from_error (simple, error);
+      g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
       goto out;
@@ -1683,14 +1770,17 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
                               (GDestroyNotify) g_object_unref);
     }
 
-  data->timeout_source = g_timeout_source_new (timeout_msec);
-  g_source_set_priority (data->timeout_source, G_PRIORITY_DEFAULT);
-  g_source_set_callback (data->timeout_source,
-                         send_message_with_reply_timeout_cb,
-                         send_message_data_ref (data),
-                         (GDestroyNotify) send_message_data_unref);
-  g_source_attach (data->timeout_source, data->main_context);
-  g_source_unref (data->timeout_source);
+  if (timeout_msec != G_MAXINT)
+    {
+      data->timeout_source = g_timeout_source_new (timeout_msec);
+      g_source_set_priority (data->timeout_source, G_PRIORITY_DEFAULT);
+      g_source_set_callback (data->timeout_source,
+                             send_message_with_reply_timeout_cb,
+                             send_message_data_ref (data),
+                             (GDestroyNotify) send_message_data_unref);
+      g_source_attach (data->timeout_source, data->main_context);
+      g_source_unref (data->timeout_source);
+    }
 
   g_hash_table_insert (connection->map_method_serial_to_send_message_data,
                        GUINT_TO_POINTER (*out_serial),
@@ -1705,7 +1795,8 @@ g_dbus_connection_send_message_with_reply_unlocked (GDBusConnection     *connect
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
  * @flags: Flags affecting how the message is sent.
- * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
@@ -1785,7 +1876,7 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
  * linkend="gdbus-unix-fd-client"/> for an example of how to use this
  * low-level API to send and receive UNIX file descriptors.
  *
- * Returns: A locked #GDBusMessage or %NULL if @error is set.
+ * Returns: (transfer full): A locked #GDBusMessage or %NULL if @error is set.
  *
  * Since: 2.26
  */
@@ -1847,7 +1938,8 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * @connection: A #GDBusConnection.
  * @message: A #GDBusMessage.
  * @flags: Flags affecting how the message is sent.
- * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
  * @out_serial: Return location for serial number assigned to @message when sending it or %NULL.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
@@ -1881,7 +1973,7 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * Note that @message must be unlocked, unless @flags contain the
  * %G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL flag.
  *
- * Returns: A locked #GDBusMessage that is the reply to @message or %NULL if @error is set.
+ * Returns: (transfer full): A locked #GDBusMessage that is the reply to @message or %NULL if @error is set.
  *
  * Since: 2.26
  */
@@ -1954,19 +2046,31 @@ on_worker_message_received (GDBusWorker  *worker,
                             GDBusMessage *message,
                             gpointer      user_data)
 {
-  GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
+  GDBusConnection *connection;
   FilterCallback *filters;
   gboolean consumed_by_filter;
   gboolean altered_by_filter;
   guint num_filters;
   guint n;
+  gboolean alive;
+
+  G_LOCK (message_bus_lock);
+  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  if (!alive)
+    {
+      G_UNLOCK (message_bus_lock);
+      return;
+    }
+  connection = G_DBUS_CONNECTION (user_data);
+  g_object_ref (connection);
+  G_UNLOCK (message_bus_lock);
 
   //g_debug ("in on_worker_message_received");
 
   g_object_ref (message);
   g_dbus_message_lock (message);
 
-  g_object_ref (connection);
+  //g_debug ("boo ref_count = %d %p %p", G_OBJECT (connection)->ref_count, connection, connection->worker);
 
   /* First collect the set of callback functions */
   CONNECTION_LOCK (connection);
@@ -2048,13 +2152,24 @@ on_worker_message_about_to_be_sent (GDBusWorker  *worker,
                                     GDBusMessage *message,
                                     gpointer      user_data)
 {
-  GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
+  GDBusConnection *connection;
   FilterCallback *filters;
   guint num_filters;
   guint n;
+  gboolean alive;
+
+  G_LOCK (message_bus_lock);
+  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  if (!alive)
+    {
+      G_UNLOCK (message_bus_lock);
+      return message;
+    }
+  connection = G_DBUS_CONNECTION (user_data);
+  g_object_ref (connection);
+  G_UNLOCK (message_bus_lock);
 
   //g_debug ("in on_worker_message_about_to_be_sent");
-  g_object_ref (connection);
 
   /* First collect the set of callback functions */
   CONNECTION_LOCK (connection);
@@ -2093,7 +2208,19 @@ on_worker_closed (GDBusWorker *worker,
                   GError      *error,
                   gpointer     user_data)
 {
-  GDBusConnection *connection = G_DBUS_CONNECTION (user_data);
+  GDBusConnection *connection;
+  gboolean alive;
+
+  G_LOCK (message_bus_lock);
+  alive = (g_hash_table_lookup (alive_connections, user_data) != NULL);
+  if (!alive)
+    {
+      G_UNLOCK (message_bus_lock);
+      return;
+    }
+  connection = G_DBUS_CONNECTION (user_data);
+  g_object_ref (connection);
+  G_UNLOCK (message_bus_lock);
 
   //g_debug ("in on_worker_closed: %s", error->message);
 
@@ -2101,6 +2228,8 @@ on_worker_closed (GDBusWorker *worker,
   if (!connection->closed)
     set_closed_unlocked (connection, remote_peer_vanished, error);
   CONNECTION_UNLOCK (connection);
+
+  g_object_unref (connection);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -2240,6 +2369,12 @@ initable_init (GInitable     *initable,
       g_socket_set_blocking (g_socket_connection_get_socket (G_SOCKET_CONNECTION (connection->stream)), FALSE);
     }
 #endif
+
+  G_LOCK (message_bus_lock);
+  if (alive_connections == NULL)
+    alive_connections = g_hash_table_new (g_direct_hash, g_direct_equal);
+  g_hash_table_insert (alive_connections, connection, connection);
+  G_UNLOCK (message_bus_lock);
 
   connection->worker = _g_dbus_worker_new (connection->stream,
                                            connection->capabilities,
@@ -2666,7 +2801,7 @@ g_dbus_connection_get_unique_name (GDBusConnection *connection)
  * each application is a client. So this method will always return
  * %NULL for message bus clients.
  *
- * Returns: A #GCredentials or %NULL if not available. Do not free
+ * Returns: (transfer none): A #GCredentials or %NULL if not available. Do not free
  * this object, it is owned by @connection.
  *
  * Since: 2.26
@@ -2842,11 +2977,14 @@ args_to_rule (const gchar *sender,
               const gchar *interface_name,
               const gchar *member,
               const gchar *object_path,
-              const gchar *arg0)
+              const gchar *arg0,
+              gboolean     negate)
 {
   GString *rule;
 
   rule = g_string_new ("type='signal'");
+  if (negate)
+    g_string_prepend_c (rule, '-');
   if (sender != NULL)
     g_string_append_printf (rule, ",sender='%s'", sender);
   if (interface_name != NULL)
@@ -2875,6 +3013,9 @@ add_match_rule (GDBusConnection *connection,
   GError *error;
   GDBusMessage *message;
 
+  if (match_rule[0] == '-')
+    return;
+
   message = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
                                             "/org/freedesktop/DBus", /* path */
                                             "org.freedesktop.DBus", /* interface */
@@ -2902,6 +3043,9 @@ remove_match_rule (GDBusConnection *connection,
 {
   GError *error;
   GDBusMessage *message;
+
+  if (match_rule[0] == '-')
+    return;
 
   message = g_dbus_message_new_method_call ("org.freedesktop.DBus", /* name */
                                             "/org/freedesktop/DBus", /* path */
@@ -3006,7 +3150,16 @@ g_dbus_connection_signal_subscribe (GDBusConnection     *connection,
 
   CONNECTION_LOCK (connection);
 
-  rule = args_to_rule (sender, interface_name, member, object_path, arg0);
+  /* If G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE was specified, we will end up
+   * with a '-' character to prefix the rule (which will otherwise be
+   * normal).
+   *
+   * This allows us to hash the rule and do our lifecycle tracking in
+   * the usual way, but the '-' prevents the match rule from ever
+   * actually being send to the bus (either for add or remove).
+   */
+  rule = args_to_rule (sender, interface_name, member, object_path, arg0,
+                       (flags & G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE) != 0);
 
   if (sender != NULL && (g_dbus_is_unique_name (sender) || g_strcmp0 (sender, "org.freedesktop.DBus") == 0))
     sender_unique_name = sender;
@@ -3178,8 +3331,9 @@ g_dbus_connection_signal_unsubscribe (GDBusConnection *connection,
     {
       SignalSubscriber *subscriber;
       subscriber = &(g_array_index (subscribers, SignalSubscriber, n));
-      if (subscriber->user_data_free_func != NULL)
-        subscriber->user_data_free_func (subscriber->user_data);
+      call_destroy_notify (subscriber->context,
+                           subscriber->user_data_free_func,
+                           subscriber->user_data);
       if (subscriber->context != NULL)
         g_main_context_unref (subscriber->context);
     }
@@ -3425,8 +3579,9 @@ purge_all_signal_subscriptions (GDBusConnection *connection)
     {
       SignalSubscriber *subscriber;
       subscriber = &(g_array_index (subscribers, SignalSubscriber, n));
-      if (subscriber->user_data_free_func != NULL)
-        subscriber->user_data_free_func (subscriber->user_data);
+      call_destroy_notify (subscriber->context,
+                           subscriber->user_data_free_func,
+                           subscriber->user_data);
       if (subscriber->context != NULL)
         g_main_context_unref (subscriber->context);
     }
@@ -3508,9 +3663,9 @@ exported_interface_free (ExportedInterface *ei)
 {
   g_dbus_interface_info_unref ((GDBusInterfaceInfo *) ei->interface_info);
 
-  if (ei->user_data_free_func != NULL)
-    /* TODO: push to thread-default mainloop */
-    ei->user_data_free_func (ei->user_data);
+  call_destroy_notify (ei->context,
+                       ei->user_data_free_func,
+                       ei->user_data);
 
   if (ei->context != NULL)
     g_main_context_unref (ei->context);
@@ -4831,10 +4986,7 @@ g_dbus_connection_call_done (GObject      *source,
     value = NULL;
 
   if (value == NULL)
-    {
-      g_simple_async_result_set_from_error (state->simple, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (state->simple, error);
   else
     g_simple_async_result_set_op_res_gpointer (state->simple, value,
                                                (GDestroyNotify) g_variant_unref);
@@ -4857,7 +5009,8 @@ g_dbus_connection_call_done (GObject      *source,
  * @parameters: A #GVariant tuple with parameters for the method or %NULL if not passing parameters.
  * @reply_type: The expected type of the reply, or %NULL.
  * @flags: Flags from the #GDBusCallFlags enumeration.
- * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
  * care about the result of the method invocation.
@@ -5023,7 +5176,8 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
  * @parameters: A #GVariant tuple with parameters for the method or %NULL if not passing parameters.
  * @reply_type: The expected type of the reply, or %NULL.
  * @flags: Flags from the #GDBusCallFlags enumeration.
- * @timeout_msec: The timeout in milliseconds or -1 to use the default timeout.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
  * @cancellable: A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
@@ -5193,9 +5347,9 @@ struct ExportedSubtree
 static void
 exported_subtree_free (ExportedSubtree *es)
 {
-  if (es->user_data_free_func != NULL)
-    /* TODO: push to thread-default mainloop */
-    es->user_data_free_func (es->user_data);
+  call_destroy_notify (es->context,
+                       es->user_data_free_func,
+                       es->user_data);
 
   if (es->context != NULL)
     g_main_context_unref (es->context);
@@ -6098,7 +6252,7 @@ get_uninitialized_connection (GBusType       bus_type,
  * Note that the returned #GDBusConnection object will (usually) have
  * the #GDBusConnection:exit-on-close property set to %TRUE.
  *
- * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -6139,8 +6293,7 @@ bus_get_async_initable_cb (GObject      *source_object,
                                      &error))
     {
       g_assert (error != NULL);
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
       g_object_unref (source_object);
     }
   else
@@ -6190,8 +6343,7 @@ g_bus_get (GBusType             bus_type,
   if (connection == NULL)
     {
       g_assert (error != NULL);
-      g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+      g_simple_async_result_take_error (simple, error);
       g_simple_async_result_complete_in_idle (simple);
       g_object_unref (simple);
     }
@@ -6221,7 +6373,7 @@ g_bus_get (GBusType             bus_type,
  * Note that the returned #GDBusConnection object will (usually) have
  * the #GDBusConnection:exit-on-close property set to %TRUE.
  *
- * Returns: A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusConnection or %NULL if @error is set. Free with g_object_unref().
  *
  * Since: 2.26
  */

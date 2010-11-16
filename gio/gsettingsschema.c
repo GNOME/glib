@@ -83,65 +83,133 @@ initialise_schema_sources (void)
     }
 }
 
-static void
-add_item (gpointer key,
-          gpointer value,
-          gpointer user_data)
+static gboolean
+steal_item (gpointer key,
+            gpointer value,
+            gpointer user_data)
 {
   gchar ***ptr = user_data;
 
   *(*ptr)++ = (gchar *) key;
+
+  return TRUE;
 }
 
-/**
- * g_settings_list_schemas:
- * @returns: a list of the schemas installed on the system
- *
- * Returns a list of GSettings schemas that are available.  The list
- * must not be modified or freed.
- **/
-const gchar * const *
-g_settings_list_schemas (void)
-{
-  static gsize schema_list;
+static const gchar * const *non_relocatable_schema_list;
+static const gchar * const *relocatable_schema_list;
+static gsize schema_lists_initialised;
 
-  if (g_once_init_enter (&schema_list))
+static void
+ensure_schema_lists (void)
+{
+  if (g_once_init_enter (&schema_lists_initialised))
     {
-      GHashTable *builder;
+      GHashTable *single, *reloc;
+      const gchar **ptr;
       GSList *source;
       gchar **list;
-      gchar **ptr;
       gint i;
 
       initialise_schema_sources ();
 
-      builder = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+      /* We use hash tables to avoid duplicate listings for schemas that
+       * appear in more than one file.
+       */
+      single = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+      reloc = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
 
       for (source = schema_sources; source; source = source->next)
         {
           list = gvdb_table_list (source->data, "");
 
-          if (list)
-            {
-              for (i = 0; list[i]; i++)
-                g_hash_table_insert (builder, list[i], NULL);
+          g_assert (list != NULL);
 
-              /* not strfreev: we stole the strings into the hashtable */
-              g_free (list);
+          for (i = 0; list[i]; i++)
+            {
+              if (!g_hash_table_lookup (single, list[i]) &&
+                  !g_hash_table_lookup (reloc, list[i]))
+                {
+                  GvdbTable *table;
+
+                  table = gvdb_table_get_table (source->data, list[i]);
+                  g_assert (table != NULL);
+
+                  if (gvdb_table_has_value (table, ".path"))
+                    g_hash_table_insert (single, g_strdup (list[i]), NULL);
+                  else
+                    g_hash_table_insert (reloc, g_strdup (list[i]), NULL);
+                }
             }
+
+          g_strfreev (list);
         }
 
-      ptr = list = g_new (gchar *, g_hash_table_size (builder) + 1);
-      g_hash_table_foreach (builder, add_item, &ptr);
+      ptr = g_new (const gchar *, g_hash_table_size (single) + 1);
+      non_relocatable_schema_list = ptr;
+      g_hash_table_foreach_steal (single, steal_item, &ptr);
+      g_hash_table_unref (single);
       *ptr = NULL;
 
-      g_hash_table_steal_all (builder);
-      g_hash_table_unref (builder);
+      ptr = g_new (const gchar *, g_hash_table_size (reloc) + 1);
+      relocatable_schema_list = ptr;
+      g_hash_table_foreach_steal (reloc, steal_item, &ptr);
+      g_hash_table_unref (reloc);
+      *ptr = NULL;
 
-      g_once_init_leave (&schema_list, (gsize) list);
+      g_once_init_leave (&schema_lists_initialised, TRUE);
     }
+}
 
-  return (const gchar **) schema_list;
+/**
+ * g_settings_list_schemas:
+ *
+ * Gets a list of the #GSettings schemas installed on the system.  The
+ * returned list is exactly the list of schemas for which you may call
+ * g_settings_new() without adverse effects.
+ *
+ * This function does not list the schemas that do not provide their own
+ * paths (ie: schemas for which you must use
+ * g_settings_new_with_path()).  See
+ * g_settings_list_relocatable_schemas() for that.
+ *
+ * Returns: (element-type utf8) (transfer none):  a list of #GSettings
+ *   schemas that are available.  The list must not be modified or
+ *   freed.
+ *
+ * Since: 2.26
+ **/
+const gchar * const *
+g_settings_list_schemas (void)
+{
+  ensure_schema_lists ();
+
+  return non_relocatable_schema_list;
+}
+
+/**
+ * g_settings_list_relocatable_schemas:
+ *
+ * Gets a list of the relocatable #GSettings schemas installed on the
+ * system.  These are schemas that do not provide their own path.  It is
+ * usual to instantiate these schemas directly, but if you want to you
+ * can use g_settings_new_with_path() to specify the path.
+ *
+ * The output of this function, tTaken together with the output of
+ * g_settings_list_schemas() represents the complete list of all
+ * installed schemas.
+ *
+ * Returns: (element-type utf8) (transfer none): a list of relocatable
+ *   #GSettings schemas that are available.  The list must not be
+ *   modified or freed.
+ *
+ * Since: 2.28
+ **/
+const gchar * const *
+g_settings_list_relocatable_schemas (void)
+{
+  ensure_schema_lists ();
+
+  return relocatable_schema_list;
 }
 
 static void
@@ -181,7 +249,7 @@ g_settings_schema_get_string (GSettingsSchema *schema,
   const gchar *result = NULL;
   GVariant *value;
 
-  if ((value = gvdb_table_get_value (schema->priv->table, key)))
+  if ((value = gvdb_table_get_raw_value (schema->priv->table, key)))
     {
       result = g_variant_get_string (value, NULL);
       g_variant_unref (value);
@@ -231,20 +299,10 @@ g_settings_schema_get_value (GSettingsSchema *schema,
   GVariantIter *iter;
   GVariant *value;
 
-  value = gvdb_table_get_value (schema->priv->table, key);
+  value = gvdb_table_get_raw_value (schema->priv->table, key);
 
   if G_UNLIKELY (value == NULL)
     g_error ("schema does not contain a key named '%s'", key);
-
-#if G_BYTE_ORDER == G_BIG_ENDIAN
-  {
-    GVariant *tmp;
-
-    tmp = g_variant_byteswap (value);
-    g_variant_unref (value);
-    value = tmp;
-  }
-#endif
 
   iter = g_variant_iter_new (value);
   g_variant_unref (value);

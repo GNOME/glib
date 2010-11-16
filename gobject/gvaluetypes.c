@@ -1339,6 +1339,25 @@ g_strdup_value_contents (const GValue *value)
 	contents = g_strdup_printf ("((%s*) %p)", G_OBJECT_TYPE_NAME (p), p);
       else if (G_VALUE_HOLDS_PARAM (value))
 	contents = g_strdup_printf ("((%s*) %p)", G_PARAM_SPEC_TYPE_NAME (p), p);
+      else if (G_VALUE_HOLDS (value, G_TYPE_STRV))
+        {
+          GStrv strv = g_value_get_boxed (value);
+          GString *tmp = g_string_new ("[");
+
+          while (*strv != NULL)
+            {
+              gchar *escaped = g_strescape (*strv, NULL);
+
+              g_string_append_printf (tmp, "\"%s\"", escaped);
+              g_free (escaped);
+
+              if (*++strv != NULL)
+                g_string_append (tmp, ", ");
+            }
+
+          g_string_append (tmp, "]");
+          contents = g_string_free (tmp, FALSE);
+        }
       else if (G_VALUE_HOLDS_BOXED (value))
 	contents = g_strdup_printf ("((%s*) %p)", g_type_name (G_VALUE_TYPE (value)), p);
       else if (G_VALUE_HOLDS_POINTER (value))

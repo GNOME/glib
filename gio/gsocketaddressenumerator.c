@@ -67,7 +67,7 @@ g_socket_address_enumerator_class_init (GSocketAddressEnumeratorClass *enumerato
  * internal errors (other than @cancellable being triggered) will be
  * ignored.
  *
- * Return value: a #GSocketAddress (owned by the caller), or %NULL on
+ * Return value: (transfer full): a #GSocketAddress (owned by the caller), or %NULL on
  *     error (in which case *@error will be set) or if there are no
  *     more addresses.
  */
@@ -106,10 +106,8 @@ g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerato
   if (address)
     g_simple_async_result_set_op_res_gpointer (result, address, NULL);
   else if (error)
-    {
-      g_simple_async_result_set_from_error (result, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (result, error);
+
   g_simple_async_result_complete_in_idle (result);
   g_object_unref (result);
 }
@@ -168,7 +166,7 @@ g_socket_address_enumerator_real_next_finish (GSocketAddressEnumerator  *enumera
  * g_socket_address_enumerator_next() for more information about
  * error handling.
  *
- * Return value: a #GSocketAddress (owned by the caller), or %NULL on
+ * Return value: (transfer full): a #GSocketAddress (owned by the caller), or %NULL on
  *     error (in which case *@error will be set) or if there are no
  *     more addresses.
  */

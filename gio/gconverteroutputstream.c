@@ -602,7 +602,7 @@ g_converter_output_stream_flush (GOutputStream  *stream,
  *
  * Gets the #GConverter that is used by @converter_stream.
  *
- * Returns: the converter of the converter output stream
+ * Returns: (transfer none): the converter of the converter output stream
  *
  * Since: 2.24
  */

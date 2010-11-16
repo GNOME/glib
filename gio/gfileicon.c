@@ -158,7 +158,7 @@ g_file_icon_init (GFileIcon *file)
  * 
  * Creates a new icon for a file.
  * 
- * Returns: a #GIcon for the given @file, or %NULL on error.
+ * Returns: (transfer full): a #GIcon for the given @file, or %NULL on error.
  **/
 GIcon *
 g_file_icon_new (GFile *file)
@@ -174,7 +174,7 @@ g_file_icon_new (GFile *file)
  * 
  * Gets the #GFile associated with the given @icon.
  * 
- * Returns: a #GFile, or %NULL.
+ * Returns: (transfer none): a #GFile, or %NULL.
  **/
 GFile *
 g_file_icon_get_file (GFileIcon *icon)
@@ -309,11 +309,10 @@ load_async_callback (GObject      *source_object,
   
   if (stream == NULL)
     {
-      simple = g_simple_async_result_new_from_error (G_OBJECT (data->icon),
+      simple = g_simple_async_result_new_take_error (G_OBJECT (data->icon),
 						     data->callback,
 						     data->user_data,
 						     error);
-      g_error_free (error);
     }
   else
     {

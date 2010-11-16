@@ -137,7 +137,7 @@ g_file_output_stream_init (GFileOutputStream *stream)
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be set, and %NULL will 
  * be returned. 
  * 
- * Returns: a #GFileInfo for the @stream, or %NULL on error.
+ * Returns: (transfer full): a #GFileInfo for the @stream, or %NULL on error.
  **/
 GFileInfo *
 g_file_output_stream_query_info (GFileOutputStream      *stream,
@@ -225,11 +225,10 @@ g_file_output_stream_query_info_async (GFileOutputStream     *stream,
  
   if (!g_output_stream_set_pending (output_stream, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
 					    callback,
 					    user_data,
 					    error);
-      g_error_free (error);
       return;
     }
 
@@ -250,7 +249,7 @@ g_file_output_stream_query_info_async (GFileOutputStream     *stream,
  * Finalizes the asynchronous query started 
  * by g_file_output_stream_query_info_async().
  * 
- * Returns: A #GFileInfo for the finished query.
+ * Returns: (transfer full): A #GFileInfo for the finished query.
  **/
 GFileInfo *
 g_file_output_stream_query_info_finish (GFileOutputStream     *stream,
@@ -524,10 +523,7 @@ query_info_async_thread (GSimpleAsyncResult *res,
                          _("Stream doesn't support query_info"));
 
   if (info == NULL)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
   else
     data->info = info;
 }

@@ -244,6 +244,7 @@ G_OBJECT_TYPE_NAME
 G_OBJECT_CLASS_TYPE
 G_OBJECT_CLASS_NAME
 g_object_class_install_property
+g_object_class_install_properties
 g_object_class_find_property
 g_object_class_list_properties
 g_object_class_override_property
@@ -256,6 +257,7 @@ GParameter
 g_object_ref
 g_object_unref
 g_object_ref_sink
+g_clear_object
 GInitiallyUnowned
 GInitiallyUnownedClass
 G_TYPE_INITIALLY_UNOWNED
@@ -788,6 +790,7 @@ g_signal_remove_emission_hook
 g_signal_parse_name
 g_signal_get_invocation_hint
 g_signal_type_cclosure_new
+g_signal_accumulator_first_wins
 g_signal_accumulator_true_handled
 <SUBSECTION Private>
 g_signal_handlers_destroy

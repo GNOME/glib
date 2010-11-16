@@ -560,11 +560,10 @@ g_input_stream_read_async (GInputStream        *stream,
 
   if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
 					    callback,
 					    user_data,
 					    error);
-      g_error_free (error);
       return;
     }
 
@@ -685,11 +684,10 @@ g_input_stream_skip_async (GInputStream        *stream,
 
   if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
 					    callback,
 					    user_data,
 					    error);
-      g_error_free (error);
       return;
     }
 
@@ -784,11 +782,10 @@ g_input_stream_close_async (GInputStream        *stream,
 
   if (!g_input_stream_set_pending (stream, &error))
     {
-      g_simple_async_report_gerror_in_idle (G_OBJECT (stream),
+      g_simple_async_report_take_gerror_in_idle (G_OBJECT (stream),
 					    callback,
 					    user_data,
 					    error);
-      g_error_free (error);
       return;
     }
   
@@ -947,10 +944,7 @@ read_async_thread (GSimpleAsyncResult *res,
 				   op->buffer, op->count_requested,
 				   cancellable, &error);
   if (op->count_read == -1)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 static void
@@ -1012,10 +1006,7 @@ skip_async_thread (GSimpleAsyncResult *res,
 				   op->count_requested,
 				   cancellable, &error);
   if (op->count_skipped == -1)
-    {
-      g_simple_async_result_set_from_error (res, error);
-      g_error_free (error);
-    }
+    g_simple_async_result_take_error (res, error);
 }
 
 typedef struct {
@@ -1066,13 +1057,12 @@ skip_callback_wrapper (GObject      *source_object,
 
   if (ret == -1)
     {
-      if (data->count_skipped && 
-	  error->domain == G_IO_ERROR &&
-	  error->code == G_IO_ERROR_CANCELLED)
-	{ /* No error, return partial read */ }
+      if (data->count_skipped &&
+          g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED))
+	/* No error, return partial read */
+	g_error_free (error);
       else
-	g_simple_async_result_set_from_error (simple, error);
-      g_error_free (error);
+	g_simple_async_result_take_error (simple, error);
     }
 
   /* Complete immediately, not in idle, since we're already in a mainloop callout */
@@ -1164,10 +1154,7 @@ close_async_thread (GSimpleAsyncResult *res,
     {
       result = class->close_fn (G_INPUT_STREAM (object), cancellable, &error);
       if (!result)
-	{
-	  g_simple_async_result_set_from_error (res, error);
-	  g_error_free (error);
-	}
+        g_simple_async_result_take_error (res, error);
     }
 }
 

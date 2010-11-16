@@ -6,10 +6,14 @@
                  path           CDATA #IMPLIED
                  gettext-domain CDATA #IMPLIED >
 
-<!-- defines an enumerated type -->
+<!-- enumerated and flags types -->
 <!-- each value element maps a nick to a numeric value -->
 <!ELEMENT enum (value*) >
 <!ATTLIST enum id CDATA #REQUIRED >
+
+<!ELEMENT flags (value*) >
+<!ATTLIST flags id CDATA #REQUIRED >
+
 <!ELEMENT value EMPTY >
 <!-- nick must be at least 2 characters long -->
 <!-- value must be parsable as a 32-bit integer -->
@@ -19,11 +23,13 @@
 <!ELEMENT key (default|summary?|description?|range?|choices?|aliases?) >
 <!-- name can only contain lowercase letters, numbers and '-' -->
 <!-- type must be a GVariant type string -->
-<!-- enum must be the id of an enum that has been defined earlier -->
-<!-- exactly one of enum or type must be given -->
-<!ATTLIST key name CDATA #REQUIRED
-              type CDATA #IMPLIED
-              enum CDATA #IMPLIED >
+<!-- enum must be the id of an enum type that has been defined earlier -->
+<!-- flags must be the id of a flags type that has been defined earlier -->
+<!-- exactly one of type, enum or flags must be given -->
+<!ATTLIST key name  CDATA #REQUIRED
+              type  CDATA #IMPLIED
+              enum  CDATA #IMPLIED
+              flags CDATA #IMPLIED >
 
 <!-- the default value is specified a a serialized GVariant,
      i.e. you have to include the quotes when specifying a string -->

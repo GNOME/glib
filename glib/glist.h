@@ -50,6 +50,8 @@ GList*   g_list_alloc                   (void) G_GNUC_WARN_UNUSED_RESULT;
 void     g_list_free                    (GList            *list);
 void     g_list_free_1                  (GList            *list);
 #define  g_list_free1                   g_list_free_1
+void     g_list_free_full               (GList            *list,
+					 GDestroyNotify    free_func);
 GList*   g_list_append                  (GList            *list,
 					 gpointer          data) G_GNUC_WARN_UNUSED_RESULT;
 GList*   g_list_prepend                 (GList            *list,

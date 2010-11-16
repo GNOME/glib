@@ -27,22 +27,40 @@ g_vfs_get_local
 #if IN_HEADER(__G_APPLICATION_H__)
 #if IN_FILE(__G_APPLICATION_C__)
 g_application_get_type G_GNUC_CONST
+g_application_activate
+g_application_flags_get_type
+g_application_get_application_id
+g_application_get_flags
+g_application_get_inactivity_timeout
+g_application_get_is_registered
+g_application_get_is_remote
+g_application_hold
+g_application_id_is_valid
 g_application_new
-g_application_get_instance
-g_application_get_id
-g_application_set_action_enabled
-g_application_get_action_enabled
-g_application_get_action_description
-g_application_add_action
-g_application_remove_action
-g_application_invoke_action
-g_application_list_actions
-g_application_run
+g_application_open
 g_application_register
-g_application_try_new
-g_application_unregistered_try_new
-g_application_quit_with_data
-g_application_is_remote
+g_application_release
+g_application_run
+g_application_set_action_group
+g_application_set_application_id
+g_application_set_flags
+g_application_set_inactivity_timeout
+#endif
+#endif
+
+#if IN_HEADER(__G_APPLICATION_COMMAND_LINE_H__)
+#if IN_FILE(__G_APPLICATION_COMMAND_LINE_C__)
+g_application_command_line_get_arguments
+g_application_command_line_get_cwd
+g_application_command_line_get_environ
+g_application_command_line_getenv
+g_application_command_line_get_exit_status
+g_application_command_line_get_is_remote
+g_application_command_line_get_platform_data
+g_application_command_line_get_type
+g_application_command_line_print
+g_application_command_line_printerr
+g_application_command_line_set_exit_status
 #endif
 #endif
 
@@ -247,6 +265,9 @@ g_data_input_stream_read_line_finish
 g_data_input_stream_read_until
 g_data_input_stream_read_until_async
 g_data_input_stream_read_until_finish
+g_data_input_stream_read_upto
+g_data_input_stream_read_upto_async
+g_data_input_stream_read_upto_finish
 #endif
 #endif
 
@@ -771,6 +792,7 @@ g_simple_async_result_get_type  G_GNUC_CONST
 g_simple_async_result_new
 g_simple_async_result_new_error
 g_simple_async_result_new_from_error
+g_simple_async_result_new_take_error
 g_simple_async_result_set_op_res_gpointer
 g_simple_async_result_get_op_res_gpointer
 g_simple_async_result_set_op_res_gssize
@@ -783,12 +805,14 @@ g_simple_async_result_complete
 g_simple_async_result_complete_in_idle
 g_simple_async_result_run_in_thread
 g_simple_async_result_set_from_error
+g_simple_async_result_take_error
 g_simple_async_result_propagate_error
 g_simple_async_result_set_error
 g_simple_async_result_set_error_va
 g_simple_async_result_is_valid
 g_simple_async_report_error_in_idle
 g_simple_async_report_gerror_in_idle
+g_simple_async_report_take_gerror_in_idle
 #endif
 #endif
 
@@ -1517,6 +1541,7 @@ g_keyfile_settings_backend_new
 #if IN_HEADER(__G_SETTINGS_H__)
 #if IN_FILE(__G_SETTINGS_SCHEMA_C__)
 g_settings_list_schemas
+g_settings_list_relocatable_schemas
 #endif
 
 #if IN_FILE(__G_SETTINGS_C__)
@@ -1563,6 +1588,8 @@ g_settings_can_add_child
 g_settings_can_remove_child
 g_settings_remove_child
 g_settings_get_destroyed
+g_settings_get_range
+g_settings_range_check
 #endif
 #endif
 
@@ -1887,16 +1914,16 @@ g_action_group_action_added
 g_action_group_action_enabled_changed
 g_action_group_action_removed
 g_action_group_action_state_changed
-g_action_group_activate
-g_action_group_get_enabled
-g_action_group_get_parameter_type
-g_action_group_get_state
-g_action_group_get_state_hint
-g_action_group_get_state_type
+g_action_group_activate_action
+g_action_group_get_action_enabled
+g_action_group_get_action_parameter_type
+g_action_group_get_action_state
+g_action_group_get_action_state_hint
+g_action_group_get_action_state_type
 g_action_group_get_type
 g_action_group_has_action
 g_action_group_list_actions
-g_action_group_set_state
+g_action_group_change_action_state
 #endif
 #endif
 
@@ -1931,5 +1958,20 @@ g_simple_action_get_type
 g_simple_action_new
 g_simple_action_new_stateful
 g_simple_action_set_enabled
+#endif
+#endif
+
+#if IN_HEADER(__G_PERIODIC_H__)
+#if IN_FILE(__G_PERIODIC_C__)
+g_periodic_block
+g_periodic_damaged
+g_periodic_get_hz
+g_periodic_get_high_priority
+g_periodic_get_low_priority
+g_periodic_get_type
+g_periodic_new
+g_periodic_add
+g_periodic_remove
+g_periodic_unblock
 #endif
 #endif

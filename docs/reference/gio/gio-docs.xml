@@ -170,6 +170,11 @@
         <xi:include href="xml/gaction.xml"/>
         <xi:include href="xml/gsimpleaction.xml"/>
         <xi:include href="xml/gapplication.xml"/>
+        <xi:include href="xml/gapplicationcommandline.xml"/>
+    </chapter>
+    <chapter id="periodic">
+        <title>Periodic Timer</title>
+        <xi:include href="xml/gperiodic.xml"/>
     </chapter>
     <chapter id="extending">
         <title>Extending GIO</title>
