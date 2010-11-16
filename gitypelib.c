@@ -647,7 +647,7 @@ validate_type_blob (GITypelib     *typelib,
 	  g_set_error (error,
 		       G_TYPELIB_ERROR,
 		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Wrong tag in simple type");
+		       "Invalid non-basic tag %d in simple type", simple->flags.tag);
 	  return FALSE;
 	}
 
