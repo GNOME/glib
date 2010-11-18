@@ -354,17 +354,21 @@ g_application_impl_actions_method_call (GDBusConnection       *connection,
       GVariant *platform_data;
       GVariantIter *param;
       GVariant *parameter;
+      GVariant *unboxed_parameter;
 
       g_variant_get (parameters, "(&sav@a{sv})",
                      &action_name, &param, &platform_data);
       parameter = g_variant_iter_next_value (param);
+      unboxed_parameter = parameter ? g_variant_get_variant (parameter) : NULL;
       g_variant_iter_free (param);
 
       class->before_emit (impl->app, platform_data);
-      g_action_group_activate_action (action_group, action_name, parameter);
+      g_action_group_activate_action (action_group, action_name, unboxed_parameter);
       class->after_emit (impl->app, platform_data);
       g_variant_unref (platform_data);
 
+      if (unboxed_parameter)
+        g_variant_unref (unboxed_parameter);
       if (parameter)
         g_variant_unref (parameter);
 
