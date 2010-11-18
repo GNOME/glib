@@ -67,7 +67,8 @@
 
 static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
 static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mime_type,
-						       const char      **except);
+						       const char      **except,
+						       gboolean          include_fallback);
 static void     mime_info_cache_reload                (const char       *dir);
 static gboolean g_desktop_app_info_ensure_saved       (GDesktopAppInfo  *info,
 						       GError          **error);
@@ -1722,6 +1723,72 @@ app_info_in_list (GAppInfo *info,
   return FALSE;
 }
 
+GList *
+g_app_info_get_recommended_for_type (const gchar *content_type)
+{
+  GList *desktop_entries, *l;
+  GList *infos;
+  GDesktopAppInfo *info;
+
+  g_return_val_if_fail (content_type != NULL, NULL);
+
+  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL, FALSE);
+
+  infos = NULL;
+  for (l = desktop_entries; l != NULL; l = l->next)
+    {
+      char *desktop_entry = l->data;
+
+      info = g_desktop_app_info_new (desktop_entry);
+      if (info)
+	{
+	  if (app_info_in_list (G_APP_INFO (info), infos))
+	    g_object_unref (info);
+	  else
+	    infos = g_list_prepend (infos, info);
+	}
+      g_free (desktop_entry);
+    }
+
+  g_list_free (desktop_entries);
+  
+  return g_list_reverse (infos);
+}
+
+GList *
+g_app_info_get_fallback_for_type (const gchar *content_type)
+{
+  GList *desktop_entries, *l;
+  GList *infos, *recommended_infos;
+  GDesktopAppInfo *info;
+
+  g_return_val_if_fail (content_type != NULL, NULL);
+
+  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL, TRUE);
+  recommended_infos = g_app_info_get_recommended_for_type (content_type);
+
+  infos = NULL;
+  for (l = desktop_entries; l != NULL; l = l->next)
+    {
+      char *desktop_entry = l->data;
+
+      info = g_desktop_app_info_new (desktop_entry);
+      if (info)
+	{
+	  if (app_info_in_list (G_APP_INFO (info), infos) ||
+	      app_info_in_list (G_APP_INFO (info), recommended_infos))
+	    g_object_unref (info);
+	  else
+	    infos = g_list_prepend (infos, info);
+	}
+      g_free (desktop_entry);
+    }
+
+  g_list_free (desktop_entries);
+  g_list_free_full (recommended_infos, g_object_unref);
+
+  return g_list_reverse (infos);
+}
 
 /**
  * g_app_info_get_all_for_type:
@@ -1741,7 +1808,7 @@ g_app_info_get_all_for_type (const char *content_type)
 
   g_return_val_if_fail (content_type != NULL, NULL);
   
-  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL);
+  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL, TRUE);
 
   infos = NULL;
   for (l = desktop_entries; l != NULL; l = l->next)
@@ -1800,7 +1867,7 @@ g_app_info_get_default_for_type (const char *content_type,
 
   g_return_val_if_fail (content_type != NULL, NULL);
   
-  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL);
+  desktop_entries = get_all_desktop_entries_for_mime_type (content_type, NULL, TRUE);
 
   info = NULL;
   for (l = desktop_entries; l != NULL; l = l->next)
@@ -2542,7 +2609,8 @@ append_desktop_entry (GList      *list,
  */
 static GList *
 get_all_desktop_entries_for_mime_type (const char *base_mime_type,
-				       const char **except)
+				       const char **except,
+				       gboolean include_fallback)
 {
   GList *desktop_entries, *removed_entries, *list, *dir_list, *tmp;
   MimeInfoCacheDir *dir;
@@ -2556,29 +2624,38 @@ get_all_desktop_entries_for_mime_type (const char *base_mime_type,
   
   mime_info_cache_init ();
 
-  /* collect all ancestors */
-  mime_types = _g_unix_content_type_get_parents (base_mime_type);
-  array = g_ptr_array_new ();
-  for (i = 0; mime_types[i]; i++)
-    g_ptr_array_add (array, mime_types[i]);
-  g_free (mime_types);
-  for (i = 0; i < array->len; i++)
+  if (include_fallback)
     {
-      anc = _g_unix_content_type_get_parents (g_ptr_array_index (array, i));
-      for (j = 0; anc[j]; j++)
-        {
-          for (k = 0; k < array->len; k++)
-            {
-              if (strcmp (anc[j], g_ptr_array_index (array, k)) == 0)
-                break;
-            }
-          if (k == array->len) /* not found */
-            g_ptr_array_add (array, g_strdup (anc[j]));
-        }
-      g_strfreev (anc);
+      /* collect all ancestors */
+      mime_types = _g_unix_content_type_get_parents (base_mime_type);
+      array = g_ptr_array_new ();
+      for (i = 0; mime_types[i]; i++)
+	g_ptr_array_add (array, mime_types[i]);
+      g_free (mime_types);
+      for (i = 0; i < array->len; i++)
+	{
+	  anc = _g_unix_content_type_get_parents (g_ptr_array_index (array, i));
+	  for (j = 0; anc[j]; j++)
+	    {
+	      for (k = 0; k < array->len; k++)
+		{
+		  if (strcmp (anc[j], g_ptr_array_index (array, k)) == 0)
+		    break;
+		}
+	      if (k == array->len) /* not found */
+		g_ptr_array_add (array, g_strdup (anc[j]));
+	    }
+	  g_strfreev (anc);
+	}
+      g_ptr_array_add (array, NULL);
+      mime_types = (char **)g_ptr_array_free (array, FALSE);
     }
-  g_ptr_array_add (array, NULL);
-  mime_types = (char **)g_ptr_array_free (array, FALSE);
+  else
+    {
+      mime_types = g_malloc0 (2 * sizeof (gchar *));
+      mime_types[0] = g_strdup (base_mime_type);
+      mime_types[1] = NULL;
+    }
 
   G_LOCK (mime_info_cache);
   

@@ -175,6 +175,9 @@ gboolean    g_app_info_delete                       (GAppInfo   *appinfo);
 
 GList *   g_app_info_get_all                     (void);
 GList *   g_app_info_get_all_for_type            (const char  *content_type);
+GList *   g_app_info_get_recommended_for_type    (const gchar *content_type);
+GList *   g_app_info_get_fallback_for_type       (const gchar *content_type);
+
 void      g_app_info_reset_type_associations     (const char  *content_type);
 GAppInfo *g_app_info_get_default_for_type        (const char  *content_type,
 						  gboolean     must_support_uris);
