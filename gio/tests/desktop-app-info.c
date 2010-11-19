@@ -175,6 +175,77 @@ test_default (void)
 }
 
 static void
+test_fallback (void)
+{
+  GAppInfo *info1, *info2, *app;
+  GList *apps, *recomm, *fallback, *list, *l, *m;
+  GError *error = NULL;
+  gint old_length;
+
+  info1 = create_app_info ("Test1");
+  info2 = create_app_info ("Test2");
+
+  g_assert (g_content_type_is_a ("text/x-python", "text/plain"));
+
+  apps = g_app_info_get_all_for_type ("text/x-python");
+  old_length = g_list_length (apps);
+  g_list_free_full (apps, g_object_unref);
+
+  g_app_info_set_as_default_for_type (info1, "text/x-python", &error);
+  g_assert (error == NULL);
+
+  g_app_info_set_as_default_for_type (info2, "text/plain", &error);
+  g_assert (error == NULL);
+
+  /* check that both apps are registered */
+  apps = g_app_info_get_all_for_type ("text/x-python");
+  g_assert (g_list_length (apps) == old_length + 2);
+
+  /* check the ordering */
+  app = g_list_nth_data (apps, 0);
+  g_assert (g_app_info_equal (info1, app));
+
+  app = g_list_nth_data (apps, 1);
+  g_assert (g_app_info_equal (info2, app));
+
+  /* check that Test1 is the first recommended app */
+  recomm = g_app_info_get_recommended_for_type ("text/x-python");
+  g_assert (recomm != NULL);
+  app = g_list_nth_data (recomm, 0);
+  g_assert (g_app_info_equal (info1, app));
+
+  /* and that Test2 is the first fallback */
+  fallback = g_app_info_get_fallback_for_type ("text/x-python");
+  g_assert (fallback != NULL);
+  app = g_list_nth_data (fallback, 0);
+  g_assert (g_app_info_equal (info2, app));
+
+  /* check that recomm + fallback = all applications */
+  list = g_list_concat (g_list_copy (recomm), g_list_copy (fallback));
+  g_assert (g_list_length (list) == g_list_length (apps));
+
+  for (l = list, m = apps; l != NULL && m != NULL; l = l->next, m = m->next)
+    {
+      g_assert (g_app_info_equal (l->data, m->data));
+    }
+
+  g_list_free (list);
+
+  g_list_free_full (apps, g_object_unref);
+  g_list_free_full (recomm, g_object_unref);
+  g_list_free_full (fallback, g_object_unref);
+
+  g_app_info_reset_type_associations ("text/x-python");
+  g_app_info_reset_type_associations ("text/plain");
+
+  g_app_info_delete (info1);
+  g_app_info_delete (info2);
+
+  g_object_unref (info1);
+  g_object_unref (info2);
+}
+
+static void
 cleanup_dir_recurse (GFile *parent, GFile *root)
 {
   gboolean res;
@@ -250,6 +321,7 @@ main (int   argc,
   
   g_test_add_func ("/desktop-app-info/delete", test_delete);
   g_test_add_func ("/desktop-app-info/default", test_default);
+  g_test_add_func ("/desktop-app-info/fallback", test_fallback);
 
   result = g_test_run ();
 
