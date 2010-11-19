@@ -587,6 +587,28 @@ g_app_info_get_all_for_type (const char *content_type)
   return g_list_reverse (infos);
 }
 
+GList *
+g_app_info_get_recommended_for_type (const char *content_type)
+{
+  /* FIXME: this should generate a list of applications that are registered
+   * as direct handlers for the given content type, without using MIME subclassing.
+   * See g_app_info_get_recommended_for_type() in gdesktopappinfo.c for a reference
+   * UNIX implementation.
+   */
+  return g_app_info_get_all_for_type (content_type);
+}
+
+GList *
+g_app_info_get_fallback_for_type (const char *content_type)
+{
+  /* FIXME: this should generate a list of applications that are registered
+   * as handlers for a superclass of the given content type, but are not
+   * direct handlers for the content type itself. See g_app_info_get_fallback_for_type()
+   * in gdesktopappinfo.c for a reference UNIX implementation.
+   */
+  return g_app_info_get_all_for_type (content_type);
+}
+
 GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
 				 gboolean    must_support_uris)
