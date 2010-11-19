@@ -1723,6 +1723,17 @@ app_info_in_list (GAppInfo *info,
   return FALSE;
 }
 
+/**
+ * g_app_info_get_recommended_for_type:
+ * @content_type: the content type to find a #GAppInfo for
+ * 
+ * Gets a list of recommended #GAppInfo<!-- -->s for a given content type, i.e.
+ * those applications which claim to support the given content type exactly, and
+ * not by MIME type subclassing.
+ *
+ * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfo<!-- -->s for given @content_type
+ *    or %NULL on error.
+ **/
 GList *
 g_app_info_get_recommended_for_type (const gchar *content_type)
 {
@@ -1755,6 +1766,17 @@ g_app_info_get_recommended_for_type (const gchar *content_type)
   return g_list_reverse (infos);
 }
 
+/**
+ * g_app_info_get_fallback_for_type:
+ * @content_type: the content type to find a #GAppInfo for
+ * 
+ * Gets a list of fallback #GAppInfo<!-- -->s for a given content type, i.e.
+ * those applications which claim to support the given content type by MIME type
+ * subclassing and not directly.
+ *
+ * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfo<!-- -->s for given @content_type
+ *    or %NULL on error.
+ **/
 GList *
 g_app_info_get_fallback_for_type (const gchar *content_type)
 {
