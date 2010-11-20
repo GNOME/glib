@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
-"POT-Creation-Date: 2010-11-10 18:10+0000\n"
+"POT-Creation-Date: 2010-11-16 13:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Gheyret Kenji<gheyret@yahoo.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -562,12 +562,12 @@ msgstr ""
 #: ../glib/gmarkup.c:378
 #, c-format
 msgid "'%s' is not a valid name "
-msgstr ""
+msgstr "'%s' ئىناۋەتلىك ئات ئەمەس "
 
 #: ../glib/gmarkup.c:394
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
-msgstr ""
+msgstr "'%s' ئىناۋەتلىك ئات ئەمەس: '%c' "
 
 #: ../glib/gmarkup.c:498
 #, c-format
@@ -1180,7 +1180,7 @@ msgstr ""
 
 #: ../glib/goption.c:935
 msgid "Application Options:"
-msgstr ""
+msgstr "پروگرامما تاللانمىلىرى:"
 
 #: ../glib/goption.c:997 ../glib/goption.c:1067
 #, c-format
@@ -1366,12 +1366,12 @@ msgstr "نامەلۇم تىپ"
 #: ../gio/gcontenttype.c:180
 #, c-format
 msgid "%s filetype"
-msgstr ""
+msgstr "%s ھۆججەت تىپى"
 
 #: ../gio/gcontenttype.c:679
 #, c-format
 msgid "%s type"
-msgstr ""
+msgstr "%s تىپ"
 
 #: ../gio/gcredentials.c:246 ../gio/gcredentials.c:441
 msgid "GCredentials is not implemented on this OS"
@@ -1752,102 +1752,102 @@ msgstr ""
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1234
+#: ../gio/gdbusmessage.c:1231
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1260
+#: ../gio/gdbusmessage.c:1257
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1314
+#: ../gio/gdbusmessage.c:1311
 #, c-format
 msgid ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1475
+#: ../gio/gdbusmessage.c:1472
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1502
+#: ../gio/gdbusmessage.c:1499
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1686
+#: ../gio/gdbusmessage.c:1683
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1700
+#: ../gio/gdbusmessage.c:1697
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1757
+#: ../gio/gdbusmessage.c:1754
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1771
+#: ../gio/gdbusmessage.c:1768
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1801
+#: ../gio/gdbusmessage.c:1798
 #, c-format
 msgid "No signature header in message but the message body is %u bytes"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:1809
+#: ../gio/gdbusmessage.c:1806
 msgid "Cannot deserialize message: "
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2134
+#: ../gio/gdbusmessage.c:2131
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2275
+#: ../gio/gdbusmessage.c:2272
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2283
+#: ../gio/gdbusmessage.c:2280
 msgid "Cannot serialize message: "
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2327
+#: ../gio/gdbusmessage.c:2324
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2337
+#: ../gio/gdbusmessage.c:2334
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `%"
 "s'"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2353
+#: ../gio/gdbusmessage.c:2350
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2910
+#: ../gio/gdbusmessage.c:2907
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr ""
 
-#: ../gio/gdbusmessage.c:2918
+#: ../gio/gdbusmessage.c:2915
 msgid "Error return with empty body"
 msgstr ""
 
@@ -2354,7 +2354,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:830
 #, c-format
 msgid "<child name='%s'> already specified"
-msgstr ""
+msgstr "<child name='%s'> ئاللىقاچان بېكىتىلگەن"
 
 #: ../gio/glib-compile-schemas.c:856
 msgid "can not add keys to a 'list-of' schema"
@@ -2363,7 +2363,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:867
 #, c-format
 msgid "<key name='%s'> already specified"
-msgstr ""
+msgstr "<key name='%s'> ئاللىقاچان بېكىتىلگەن"
 
 #: ../gio/glib-compile-schemas.c:885
 #, c-format
@@ -2382,7 +2382,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:915
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
-msgstr ""
+msgstr "<%s id='%s'> تېخى بەلگىلەنمىگەن"
 
 #: ../gio/glib-compile-schemas.c:930
 #, c-format
@@ -2401,12 +2401,12 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:981
 #, c-format
 msgid "<override name='%s'> already specified"
-msgstr ""
+msgstr "<override name='%s'> ئاللىقاچان بېكىتىلگەن"
 
 #: ../gio/glib-compile-schemas.c:1052
 #, c-format
 msgid "<schema id='%s'> already specified"
-msgstr ""
+msgstr "<schema id='%s'>ئاللىقاچان بېكىتىلگەن"
 
 #: ../gio/glib-compile-schemas.c:1064
 #, c-format
@@ -2454,7 +2454,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1168
 #, c-format
 msgid "<%s id='%s'> already specified"
-msgstr ""
+msgstr "<%s id='%s'> ئاللىقاچان بەلگىلەنگەن"
 
 #: ../gio/glib-compile-schemas.c:1385
 #, c-format
@@ -2598,7 +2598,7 @@ msgstr ""
 
 #: ../gio/glocalfile.c:1105
 msgid "Can't rename root directory"
-msgstr ""
+msgstr "غول مۇندەرىجە ئاتىنى ئۆزگەرتكىلى بولمايدۇ"
 
 #: ../gio/glocalfile.c:1125 ../gio/glocalfile.c:1151
 #, c-format
@@ -2607,7 +2607,7 @@ msgstr ""
 
 #: ../gio/glocalfile.c:1134
 msgid "Can't rename file, filename already exist"
-msgstr ""
+msgstr "ھۆججەت ئاتىنى ئۆزگەرتكىلى بولمىدى. ھۆججەت ئاتى مەۋجۇت"
 
 #: ../gio/glocalfile.c:1147 ../gio/glocalfile.c:2131 ../gio/glocalfile.c:2160
 #: ../gio/glocalfile.c:2320 ../gio/glocalfileoutputstream.c:571
@@ -2700,7 +2700,7 @@ msgstr ""
 
 #: ../gio/glocalfileinfo.c:720
 msgid "Attribute value must be non-NULL"
-msgstr ""
+msgstr "خاسلىق قىممىتى NULL بولمىسۇن"
 
 #: ../gio/glocalfileinfo.c:727
 msgid "Invalid attribute type (string expected)"
@@ -3288,7 +3288,7 @@ msgstr ""
 
 #: ../gio/gsocketlistener.c:232
 msgid "Added socket is closed"
-msgstr ""
+msgstr "قوشۇلغان socket يېپىلدى"
 
 #: ../gio/gsocks4aproxy.c:121
 #, c-format
@@ -3470,7 +3470,7 @@ msgstr ""
 
 #: ../gio/gwin32appinfo.c:276
 msgid "Can't find application"
-msgstr ""
+msgstr "پروگراممىنى تاپقىلى بولمىدى"
 
 #: ../gio/gwin32appinfo.c:299
 #, c-format
