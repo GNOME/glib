@@ -233,10 +233,10 @@ g_timer_elapsed (GTimer *timer,
 
   elapsed = timer->end - timer->start;
 
-  total = elapsed / 1e9;
+  total = elapsed / 1e6;
 
   if (microseconds)
-    *microseconds = (elapsed / 1000) % 1000000;
+    *microseconds = elapsed % 1000000;
 
   return total;
 }

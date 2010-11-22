@@ -2989,8 +2989,8 @@ file_copy_fallback (GFile                  *source,
  * @destination: destination #GFile
  * @flags: set of #GFileCopyFlags
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @progress_callback: function to callback with progress information
- * @progress_callback_data: user data to pass to @progress_callback
+ * @progress_callback: (scope call): function to callback with progress information
+ * @progress_callback_data: (closure): user data to pass to @progress_callback
  * @error: #GError to set on error, or %NULL
  *
  * Copies the file @source to the location specified by @destination.
@@ -3194,8 +3194,8 @@ g_file_copy_finish (GFile        *file,
  * @destination: #GFile pointing to the destination location.
  * @flags: set of #GFileCopyFlags.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @progress_callback: #GFileProgressCallback function for updates.
- * @progress_callback_data: gpointer to user data for the callback function.
+ * @progress_callback: (scope call): #GFileProgressCallback function for updates.
+ * @progress_callback_data: (closure): gpointer to user data for the callback function.
  * @error: #GError for returning error conditions, or %NULL
  *
  *

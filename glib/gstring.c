@@ -121,21 +121,26 @@ g_str_equal (gconstpointer v1,
  * @v: a string key
  *
  * Converts a string to a hash value.
- * It can be passed to g_hash_table_new() as the @hash_func 
- * parameter, when using strings as keys in a #GHashTable.
+ *
+ * This function implements the widely used "djb" hash apparently posted
+ * by Daniel Bernstein to comp.lang.c some time ago.  The 32 bit
+ * unsigned hash value starts at 5381 and for each byte 'c' in the
+ * string, is updated: <literal>hash = hash * 33 + c</literal>.  This
+ * function uses the signed value of each byte.
+ *
+ * It can be passed to g_hash_table_new() as the @hash_func parameter,
+ * when using strings as keys in a #GHashTable.
  *
  * Returns: a hash value corresponding to the key
- */
+ **/
 guint
 g_str_hash (gconstpointer v)
 {
-  /* 31 bit hash function */
-  const signed char *p = v;
-  guint32 h = *p;
+  const signed char *p;
+  guint32 h = 5381;
 
-  if (h)
-    for (p += 1; *p != '\0'; p++)
-      h = (h << 5) - h + *p;
+  for (p = v; *p != '\0'; p++)
+    h = (h << 5) + h + *p;
 
   return h;
 }

@@ -1944,6 +1944,10 @@ g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
   mount_path = mount_entry->mount_path;
   if (mount_path != NULL)
     {
+      /* Hide mounts within a dot path, suppose it was a purpose to hide this mount */
+      if (g_strstr_len (mount_path, -1, "/.") != NULL)
+        return FALSE;
+
       if (g_str_has_prefix (mount_path, "/media/")) 
         {
           char *path;
