@@ -138,11 +138,16 @@ g_memory_settings_backend_read (GSettingsBackend   *backend,
 {
   GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
   GVariant *value;
+  GHashTable *table;
 
   if (default_value)
     return NULL;
 
-  value = g_hash_table_lookup (memory->table, key);
+  table = g_memory_settings_backend_get_table (memory->table, &key);
+  if (!table)
+    return NULL;
+
+  value = g_hash_table_lookup (table, key);
 
   if (value != NULL)
     g_variant_ref (value);
@@ -158,8 +163,13 @@ g_memory_settings_backend_write (GSettingsBackend *backend,
 {
   GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
   GVariant *old_value;
+  GHashTable *table;
 
-  old_value = g_hash_table_lookup (memory->table, key);
+  table = g_memory_settings_backend_get_table (memory->table, &key);
+  if (!table)
+    return FALSE;
+
+  old_value = g_hash_table_lookup (table, key);
   g_variant_ref_sink (value);
 
   if (old_value == NULL || !g_variant_equal (value, old_value))
@@ -179,11 +189,16 @@ g_memory_settings_backend_write_one (gpointer key,
                                      gpointer data)
 {
   GMemorySettingsBackend *memory = data;
+  GHashTable *table;
+
+  table = g_memory_settings_backend_get_table (memory->table, &key);
+  if (!table)
+    return FALSE;
 
   if (value != NULL)
-    g_hash_table_insert (memory->table, g_strdup (key), g_variant_ref (value));
+    g_hash_table_insert (table, g_strdup (key), g_variant_ref (value));
   else
-    g_hash_table_remove (memory->table, key);
+    g_hash_table_remove (table, key);
 
   return FALSE;
 }
@@ -205,10 +220,15 @@ g_memory_settings_backend_reset (GSettingsBackend *backend,
                                  gpointer          origin_tag)
 {
   GMemorySettingsBackend *memory = G_MEMORY_SETTINGS_BACKEND (backend);
+  GHashTable *table;
 
-  if (g_hash_table_lookup (memory->table, key))
+  table = g_memory_settings_backend_get_table (memory->table, &key);
+  if (!table)
+    return;
+
+  if (g_hash_table_lookup (table, key))
     {
-      g_hash_table_remove (memory->table, key);
+      g_hash_table_remove (table, key);
       g_settings_backend_changed (backend, key, origin_tag);
     }
 }
