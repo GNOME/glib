@@ -1727,12 +1727,14 @@ app_info_in_list (GAppInfo *info,
  * g_app_info_get_recommended_for_type:
  * @content_type: the content type to find a #GAppInfo for
  * 
- * Gets a list of recommended #GAppInfo<!-- -->s for a given content type, i.e.
- * those applications which claim to support the given content type exactly, and
- * not by MIME type subclassing.
+ * Gets a list of recommended #GAppInfos for a given content type, i.e.
+ * those applications which claim to support the given content type exactly,
+ * and not by MIME type subclassing.
  *
- * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfo<!-- -->s for given @content_type
- *    or %NULL on error.
+ * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfos
+ *     for given @content_type or %NULL on error.
+ *
+ * Since: 2.28
  **/
 GList *
 g_app_info_get_recommended_for_type (const gchar *content_type)
@@ -1770,12 +1772,14 @@ g_app_info_get_recommended_for_type (const gchar *content_type)
  * g_app_info_get_fallback_for_type:
  * @content_type: the content type to find a #GAppInfo for
  * 
- * Gets a list of fallback #GAppInfo<!-- -->s for a given content type, i.e.
- * those applications which claim to support the given content type by MIME type
- * subclassing and not directly.
+ * Gets a list of fallback #GAppInfos for a given content type, i.e.
+ * those applications which claim to support the given content type
+ * by MIME type subclassing and not directly.
  *
- * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfo<!-- -->s for given @content_type
- *    or %NULL on error.
+ * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfos
+ *     for given @content_type or %NULL on error.
+ *
+ * Since: 2.28
  **/
 GList *
 g_app_info_get_fallback_for_type (const gchar *content_type)
@@ -1816,10 +1820,10 @@ g_app_info_get_fallback_for_type (const gchar *content_type)
  * g_app_info_get_all_for_type:
  * @content_type: the content type to find a #GAppInfo for
  * 
- * Gets a list of all #GAppInfo<!-- -->s for a given content type.
+ * Gets a list of all #GAppInfos for a given content type.
  *
- * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfo<!-- -->s for given @content_type
- *    or %NULL on error.
+ * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfos
+ *     for given @content_type or %NULL on error.
  **/
 GList *
 g_app_info_get_all_for_type (const char *content_type)
