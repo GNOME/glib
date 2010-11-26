@@ -117,8 +117,10 @@ static const SchemaTest tests[] = {
   { "flags-bad-default",            NULL, "*<default> * not in the specified flags type*"       },
   { "flags-more-than-one-bit",      NULL, "*flags values must have at most 1 bit set*"          },
   { "flags-with-enum-attr",         NULL, "*<enum id='flags'> not (yet) defined*"               },
-  { "flags-with-enum-tag",          NULL, "*<flags id='flags'> not (yet) defined*"              }
+  { "flags-with-enum-tag",          NULL, "*<flags id='flags'> not (yet) defined*"              },
+  { "inherit-gettext-domain",       NULL, NULL                                                  }
 };
+
 
 int
 main (int argc, char *argv[])

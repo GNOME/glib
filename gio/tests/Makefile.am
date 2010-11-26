@@ -374,6 +374,7 @@ schema_tests = \
 	schema-tests/extending.gschema.xml				\
 	schema-tests/from-docs.gschema.xml				\
 	schema-tests/incomplete-list.gschema.xml			\
+	schema-tests/inherit-gettext-domain.gschema.xml			\
 	schema-tests/invalid-path.gschema.xml				\
 	schema-tests/key-in-list-indirect.gschema.xml			\
 	schema-tests/key-in-list.gschema.xml				\
