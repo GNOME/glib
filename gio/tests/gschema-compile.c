@@ -46,7 +46,7 @@ static const SchemaTest tests[] = {
   { "no-default",                   NULL, "*<default> is required in <key>*"                    },
   { "missing-quotes",               NULL, "*unknown keyword*"                                   },
   { "incomplete-list",              NULL, "*to follow array element*"                           },
-  { "wrong-category",               NULL, "*attribute 'l10n' invalid*"                          },
+  { "wrong-category",               NULL, "*unsupported l10n category*"                         },
   { "bad-type",                     NULL, "*invalid GVariant type string*"                      },
   { "overflow",                     NULL, "*out of range*"                                      },
   { "range-wrong-type",             NULL, "*<range> not allowed for keys of type*"              },
