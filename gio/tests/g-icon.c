@@ -258,7 +258,7 @@ test_themed_icon (void)
   g_assert_cmpstr (names[0], ==, "first");
   g_assert_cmpstr (names[1], ==, "testicon");
   g_assert_cmpstr (names[2], ==, "last");
-  g_assert_cmpuint (g_icon_hash (icon1), ==, 3193088045U);
+  g_assert_cmpuint (g_icon_hash (icon1), ==, 2400773466U);
 
   icon2 = g_themed_icon_new_from_names ((gchar**)names2, -1);
   g_assert (g_icon_equal (icon1, icon2));
@@ -299,11 +299,11 @@ test_emblemed_icon (void)
 
   emblem = emblems->data;
   g_assert (g_emblem_get_icon (emblem) == icon2);
-  g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_UNKNOWN);
+  g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_TAG);
 
   emblem = emblems->next->data;
   g_assert (g_emblem_get_icon (emblem) == icon2);
-  g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_TAG);
+  g_assert (g_emblem_get_origin (emblem) == G_EMBLEM_ORIGIN_UNKNOWN);
 
   g_object_unref (icon1);
   g_object_unref (icon2);
