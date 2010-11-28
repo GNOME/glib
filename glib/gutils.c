@@ -3201,8 +3201,29 @@ append_locale_variants (GPtrArray *array,
     g_free (modifier);
 }
 
+/**
+ * g_get_locale_variants:
+ * @locale: a locale identifier
+ *
+ * Returns a list of derived variants of @locale, which can be used to
+ * e.g. construct locale-dependent filenames or search paths. The returned
+ * list is sorted from most desirable to least desirable.
+ * This function handles territory, charset and extra locale modifiers.
+ * 
+ * For example, if @locale is "fr_BE", then the returned list
+ * is "fr_BE", "fr".
+ *
+ * If you need the list of variants for the <emphasis>current locale</emphasis>,
+ * use g_get_language_names().
+ *
+ * Returns: (transfer full) (array zero-terminated="1") (element-type utf8): a newly
+ *   allocated array of newly allocated strings with the locale variants. Free with
+ *   g_strfreev().
+ *
+ * Since: 2.28
+ */
 gchar **
-_g_compute_locale_variants (const gchar *locale)
+g_get_locale_variants (const gchar *locale)
 {
   GPtrArray *array;
 

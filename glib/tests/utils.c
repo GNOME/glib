@@ -73,6 +73,20 @@ test_language_names (void)
 }
 
 static void
+test_locale_variants (void)
+{
+  char **v;
+
+  v = g_get_locale_variants ("fr_BE");
+  g_assert (strv_check ((const gchar * const *) v, "fr_BE", "fr", NULL));
+  g_strfreev (v);
+
+  v = g_get_locale_variants ("sr_SR@latin");
+  g_assert (strv_check ((const gchar * const *) v, "sr_SR@latin", "sr@latin", "sr_SR", "sr", NULL));
+  g_strfreev (v);
+}
+
+static void
 test_version (void)
 {
   g_print ("(header %d.%d.%d library %d.%d.%d) ",
@@ -152,6 +166,7 @@ main (int   argc,
   g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/utils/language-names", test_language_names);
+  g_test_add_func ("/utils/locale-variants", test_locale_variants);
   g_test_add_func ("/utils/version", test_version);
   g_test_add_func ("/utils/appname", test_appname);
   g_test_add_func ("/utils/tmpdir", test_tmpdir);

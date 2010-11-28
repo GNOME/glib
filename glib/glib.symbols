@@ -1657,6 +1657,7 @@ g_setenv_utf8
 g_get_home_dir_utf8
 #endif
 g_get_language_names
+g_get_locale_variants
 g_get_prgname
 #ifndef _WIN64
 g_get_real_name PRIVATE

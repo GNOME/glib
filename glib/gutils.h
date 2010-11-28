@@ -157,6 +157,8 @@ const gchar * g_get_user_runtime_dir (void);
 
 G_CONST_RETURN gchar* G_CONST_RETURN * g_get_language_names (void);
 
+gchar **g_get_locale_variants (const gchar *locale);
+
 /**
  * GUserDirectory:
  * @G_USER_DIRECTORY_DESKTOP: the user's Desktop directory

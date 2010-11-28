@@ -2730,6 +2730,7 @@ g_dpgettext2
 g_strip_context
 <SUBSECTION>
 g_get_language_names
+g_get_locale_variants
 </SECTION>
 
 <SECTION>

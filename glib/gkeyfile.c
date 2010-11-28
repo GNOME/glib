@@ -26,6 +26,7 @@
 #include "config.h"
 
 #include "gkeyfile.h"
+#include "gutils.h"
 
 #include <errno.h>
 #include <fcntl.h>
@@ -1630,8 +1631,6 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
   g_free (value);
 }
 
-extern gchar **_g_compute_locale_variants (const gchar *locale);
-
 /**
  * g_key_file_get_locale_string:
  * @key_file: a #GKeyFile
@@ -1677,7 +1676,7 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
 
   if (locale)
     {
-      languages = _g_compute_locale_variants (locale);
+      languages = g_get_locale_variants (locale);
       free_languages = TRUE;
     }
   else
