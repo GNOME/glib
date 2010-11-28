@@ -327,21 +327,21 @@ g_file_monitor_cancel (GFileMonitor* monitor)
 /**
  * g_file_monitor_set_rate_limit:
  * @monitor: a #GFileMonitor.
- * @limit_msecs: a integer with the limit in milliseconds to 
- * poll for changes.
+ * @limit_msecs: a non-negative integer with the limit in milliseconds
+ *     to poll for changes
  *
  * Sets the rate limit to which the @monitor will report
- * consecutive change events to the same file. 
- * 
- **/
+ * consecutive change events to the same file.
+ */
 void
 g_file_monitor_set_rate_limit (GFileMonitor *monitor,
-			       int           limit_msecs)
+                               gint          limit_msecs)
 {
   GFileMonitorPrivate *priv;
-  
+
   g_return_if_fail (G_IS_FILE_MONITOR (monitor));
-  
+  g_return_if_fail (limit_msecs >= 0);
+
   priv = monitor->priv;
   if (priv->rate_limit_msec != limit_msecs)
     {
