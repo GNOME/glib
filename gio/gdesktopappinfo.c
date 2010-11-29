@@ -48,6 +48,7 @@
 
 /**
  * SECTION:gdesktopappinfo
+ * @title: GDesktopAppInfo
  * @short_description: Application information from desktop files
  * @include: gio/gdesktopappinfo.h
  *

@@ -666,6 +666,8 @@ g_tls_connection_certificate_accumulator (GSignalInvocationHint *ihint,
  * Used by #GTlsConnection implementations to emit the
  * #GTlsConnection::need-certificate signal.
  *
+ * Returns: a new #GTlsCertificate
+ *
  * Since: 2.28
  */
 GTlsCertificate *
@@ -681,9 +683,14 @@ g_tls_connection_emit_need_certificate (GTlsConnection *conn)
 /**
  * g_tls_connection_emit_accept_certificate:
  * @conn: a #GTlsConnection
+ * @peer_cert: the peer's #GTlsCertificate
+ * @errors: the problems with @peer_cert
  *
  * Used by #GTlsConnection implementations to emit the
  * #GTlsConnection::accept-certificate signal.
+ *
+ * Return value: %TRUE if one of the signal handlers has returned
+ *     %TRUE to accept @peer_cert
  *
  * Since: 2.28
  */

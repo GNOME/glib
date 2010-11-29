@@ -13,7 +13,7 @@
 /**
  * SECTION: gtcpconnection
  * @title: GTcpConnection
- * @short_description: a TCP GSocketConnection
+ * @short_description: A TCP GSocketConnection
  * @see_also: #GSocketConnection.
  *
  * This is the subclass of #GSocketConnection that is created

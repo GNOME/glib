@@ -3010,7 +3010,7 @@ GTlsCertificateFlags
 
 <SECTION>
 <FILE>gtlsbackend</FILE>
-<TITLE>GTlsBackend</FILE>
+<TITLE>GTlsBackend</TITLE>
 G_TLS_BACKEND_EXTENSION_POINT_NAME
 GTlsBackend
 GTlsBackendInterface
@@ -3033,7 +3033,6 @@ g_tls_backend_get_type
 <FILE>gtlscertificate</FILE>
 <TITLE>GTlsCertificate</TITLE>
 GTlsCertificate
-g_tls_certificate_new
 g_tls_certificate_new_from_pem
 g_tls_certificate_new_from_file
 g_tls_certificate_new_from_files

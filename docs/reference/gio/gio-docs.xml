@@ -32,6 +32,10 @@
         <title>File System Monitoring</title>
         <xi:include href="xml/gfilemonitor.xml"/>
     </chapter>
+    <chapter id="utils">
+        <title>File-related Utilities</title>
+        <xi:include href="xml/gfilenamecompleter.xml"/>
+    </chapter>
     <chapter id="async">
         <title>Asynchronous I/O</title>
         <xi:include href="xml/gcancellable.xml"/>
@@ -160,10 +164,6 @@
       <xi:include href="xml/gdbusnameowning.xml"/>
       <xi:include href="xml/gdbusnamewatching.xml"/>
       <xi:include href="xml/gdbusproxy.xml"/>
-    </chapter>
-    <chapter id="utils">
-        <title>Utilities</title>
-        <xi:include href="xml/gfilenamecompleter.xml"/>
     </chapter>
     <chapter id="settings">
         <title>Settings</title>

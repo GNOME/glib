@@ -25,7 +25,7 @@
 /**
  * SECTION:gsimpleactiongroup
  * @title: GSimpleActionGroup
- * @short_description: a simple GActionGroup implementation
+ * @short_description: A simple GActionGroup implementation
  *
  * #GSimpleActionGroup is a hash table filled with #GAction objects,
  * implementing the #GActionGroup interface.

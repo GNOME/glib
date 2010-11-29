@@ -36,8 +36,8 @@
  *
  * #GPollableOutputStream is implemented by #GOutputStream<!-- -->s that
  * can be polled for readiness to write. This can be used when
- * interfacing with a non-gio API that expects
- * unix-file-descriptor-style asynchronous I/O rather than gio-style.
+ * interfacing with a non-GIO API that expects
+ * UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
  *
  * Since: 2.28
  */
@@ -126,9 +126,8 @@ g_pollable_output_stream_is_writable (GPollableOutputStream *stream)
  *
  * As with g_pollable_output_stream_is_writable(), it is possible that
  * the stream may not actually be writable even after the source
- * triggers, so you should use
- * g_pollable_output_stream_write_nonblocking() rather than
- * g_output_stream_write() from the callback.
+ * triggers, so you should use g_pollable_output_stream_write_nonblocking()
+ * rather than g_output_stream_write() from the callback.
  *
  * Returns: a new #GSource
  *

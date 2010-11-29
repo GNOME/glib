@@ -29,7 +29,7 @@
 /**
  * SECTION:gtls
  * @title: TLS Overview
- * @short_description: TLS (aka SSL) support for #GSocketConnection
+ * @short_description: TLS (aka SSL) support for GSocketConnection
  * @include: gio/gio.h
  *
  * #GTlsConnection and related classes provide TLS (Transport Layer

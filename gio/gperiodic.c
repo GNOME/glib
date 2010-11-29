@@ -34,7 +34,7 @@
  * of times per second and is capable of being put into synch with an
  * external time source.
  *
- * A number of #GPeriodicTickFunc<!-- -->s are registered with
+ * A number of #GPeriodicTickFuncs are registered with
  * g_periodic_add() and are called each time the clock "ticks".
  *
  * The tick functions can report "damage" (ie: updates that need to be
@@ -262,7 +262,7 @@ g_periodic_prepare (GSource *source,
     /* We need to run. */
     {
       gint64 remaining;
-     
+
       remaining = periodic->priv->last_run + 1000000 * (1 + periodic->priv->skip_frames) -
                   g_periodic_get_microticks (periodic);
 
@@ -354,8 +354,10 @@ g_periodic_dispatch (GSource     *source,
 }
 
 static void
-g_periodic_get_property (GObject *object, guint prop_id,
-                         GValue *value, GParamSpec *pspec)
+g_periodic_get_property (GObject    *object,
+                         guint       prop_id,
+                         GValue     *value,
+                         GParamSpec *pspec)
 {
   GPeriodic *periodic = G_PERIODIC (object);
 
@@ -379,8 +381,10 @@ g_periodic_get_property (GObject *object, guint prop_id,
 }
 
 static void
-g_periodic_set_property (GObject *object, guint prop_id,
-                         const GValue *value, GParamSpec *pspec)
+g_periodic_set_property (GObject      *object,
+                         guint         prop_id,
+                         const GValue *value,
+                         GParamSpec   *pspec)
 {
   GPeriodic *periodic = G_PERIODIC (object);
 
@@ -445,11 +449,25 @@ g_periodic_class_init (GPeriodicClass *class)
   object_class->set_property = g_periodic_set_property;
   object_class->finalize = g_periodic_finalize;
 
+  /**
+   * GPeriodic::tick
+   * @periodic: the #GPeriodic on which the signal was emitted
+   * @timestamp: the timestamp at the time of the tick
+   *
+   * The ::tick signal gets emitted whenever the clock "fires".
+   */
   g_periodic_tick = g_signal_new ("tick", G_TYPE_PERIODIC,
                                   G_SIGNAL_RUN_LAST,
                                   G_STRUCT_OFFSET(GPeriodicClass, tick),
                                   NULL, NULL, _gio_marshal_VOID__INT64,
                                   G_TYPE_NONE, 1, G_TYPE_INT64);
+
+  /**
+   * GPeriodic::repair:
+   * @periodic: the #GPeriodic on which the signal was emitted
+   *
+   * The ::repair signal gets emitted to start the "repair" phase.
+   */
   g_periodic_repair = g_signal_new ("repair", G_TYPE_PERIODIC,
                                     G_SIGNAL_RUN_LAST,
                                     G_STRUCT_OFFSET (GPeriodicClass, repair),
@@ -484,13 +502,14 @@ g_periodic_class_init (GPeriodicClass *class)
  * Temporarily blocks @periodic from running in order to bring it in
  * synch with an external time source.
  *
- * This function must be called from a handler of the "repair" signal.
+ * This function must be called from a handler of the #GPeriodic::repair
+ * signal.
  *
- * If this function is called, emission of the tick signal will be
- * suspended until g_periodic_unblock() is called an equal number of
- * times.  Once that happens, the "tick" signal will run immediately and
- * future "tick" signals will be emitted relative to the time at which
- * the last call to g_periodic_unblock() occured.
+ * If this function is called, emission of the #GPeriodic::tick signal
+ * will be suspended until g_periodic_unblock() is called an equal number
+ * of times. Once that happens, the ::tick signal will run immediately
+ * and future ::tick signals will be emitted relative to the time at
+ * which the last call to g_periodic_unblock() occured.
  *
  * Since: 2.28
  **/
@@ -510,9 +529,9 @@ g_periodic_block (GPeriodic *periodic)
  *
  * Reverses the effect of a previous call to g_periodic_block().
  *
- * If this call removes the last block, the tick signal is immediately
- * run.  The repair signal may also be run if the clock is marked as
- * damaged.
+ * If this call removes the last block, the ::tick signal is
+ * immediately run. The ::repair signal may also be run if the clock
+ * is marked as damaged.
  *
  * @unblock_time is the monotonic time, as per g_get_monotonic_time(),
  * at which the event causing the unblock occured.
@@ -545,20 +564,21 @@ g_periodic_unblock (GPeriodic       *periodic,
  * @user_data: data for @callback
  * @notify: for freeing @user_data when it is no longer needed
  *
- * Request periodic calls to @callback to start.  The periodicity of the
- * calls is determined by the 'hz' property.
+ * Request periodic calls to @callback to start. The periodicity of
+ * the calls is determined by the #GPeriodic:hz property.
  *
- * This function may not be called from a handler of the repair signal,
- * but it is perfectly reasonable to call it from a handler of the tick
- * signal.
+ * This function may not be called from a handler of the ::repair
+ * signal, but it is perfectly reasonable to call it from a handler
+ * of the ::tick signal.
  *
- * The callback may be cancelled later by using g_periodic_remove() on
- * the return value of this function.
+ * The callback may be cancelled later by using g_periodic_remove()
+ * on the return value of this function.
  *
  * Returns: a non-zero tag identifying this callback
  *
  * Since: 2.28
  **/
+
 /**
  * GPeriodicTickFunc:
  * @periodic: the #GPeriodic clock that is ticking
@@ -568,8 +588,8 @@ g_periodic_unblock (GPeriodic       *periodic,
  * The signature of the callback function that is called when the
  * #GPeriodic clock ticks.
  *
- * The @timestamp parameter is equal for all callbacks called during a
- * particular tick on a given clock.
+ * The @timestamp parameter is equal for all callbacks called during
+ * a particular tick on a given clock.
  *
  * Since: 2.28
  **/
@@ -605,9 +625,9 @@ g_periodic_add (GPeriodic         *periodic,
  *
  * @tag is the ID returned by that function.
  *
- * This function may not be called from a handler of the repair signal,
- * but it is perfectly reasonable to call it from a handler of the tick
- * signal.
+ * This function may not be called from a handler of the ::repair
+ * signal, but it is perfectly reasonable to call it from a handler
+ * of the ::tick signal.
  *
  * Since: 2.28
  **/
@@ -626,7 +646,7 @@ g_periodic_remove (GPeriodic *periodic,
 
       if (tick->id == tag)
         {
-          /* do this first incase the destroy notify re-enters */
+          /* do this first, in case the destroy notify re-enters */
           *iter = g_slist_remove (*iter, tick);
 
           if (tick->notify)
@@ -644,8 +664,8 @@ g_periodic_remove (GPeriodic *periodic,
  * g_periodic_damaged:
  * @periodic: a #GPeriodic clock
  *
- * Report damage and schedule the "repair" signal to be emitted during
- * the next repair phase.
+ * Report damage and schedule the ::repair signal to be emitted
+ * during the next repair phase.
  *
  * You may not call this function during the repair phase.
  *
@@ -666,7 +686,7 @@ g_periodic_damaged (GPeriodic *periodic)
  *
  * Gets the frequency of the clock.
  *
- * Returns: the frquency of the clock, in Hz
+ * Returns: the frequency of the clock, in Hz
  *
  * Since: 2.28
  **/
@@ -713,13 +733,14 @@ g_periodic_get_low_priority (GPeriodic *periodic)
 /**
  * g_periodic_new:
  * @hz: the frequency of the new clock in Hz (between 1 and 120)
- * @priority: the #GSource priority to run at
+ * @high_priority: the #GSource priority to run at
+ * @low_priority: ignore tasks below this priority
  *
  * Creates a new #GPeriodic clock.
  *
- * The created clock is attached to the thread-default main context in
- * effect at the time of the call to this function.  See
- * g_main_context_push_thread_default() for more information.
+ * The created clock is attached to the thread-default main context
+ * in effect at the time of the call to this function.
+ * See g_main_context_push_thread_default() for more information.
  *
  * Due to the fact that #GMainContext is only accurate to the nearest
  * millisecond, the frequency can not meaningfully get too close to

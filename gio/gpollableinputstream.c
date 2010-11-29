@@ -35,8 +35,8 @@
  *
  * #GPollableInputStream is implemented by #GInputStream<!-- -->s that
  * can be polled for readiness to read. This can be used when
- * interfacing with a non-gio API that expects
- * unix-file-descriptor-style asynchronous I/O rather than gio-style.
+ * interfacing with a non-GIO API that expects
+ * UNIX-file-descriptor-style asynchronous I/O rather than GIO-style.
  *
  * Since: 2.28
  */
@@ -125,9 +125,8 @@ g_pollable_input_stream_is_readable (GPollableInputStream *stream)
  *
  * As with g_pollable_input_stream_is_readable(), it is possible that
  * the stream may not actually be readable even after the source
- * triggers, so you should use
- * g_pollable_input_stream_read_nonblocking() rather than
- * g_input_stream_read() from the callback.
+ * triggers, so you should use g_pollable_input_stream_read_nonblocking()
+ * rather than g_input_stream_read() from the callback.
  *
  * Returns: a new #GSource
  *

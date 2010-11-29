@@ -31,7 +31,7 @@
 /**
  * SECTION: gtlscertificate
  * @title: GTlsCertificate
- * @short_description: a TLS certificate
+ * @short_description: TLS certificate
  * @see_also: #GTlsConnection
  *
  * A certificate used for TLS authentication and encryption.
