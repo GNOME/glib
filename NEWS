@@ -1,3 +1,42 @@
+Overview of Changes from GLib 2.27.3 to 2.27.4
+==============================================
+
+* GIO
+ - Mounts are treated as hidden if they have a path element
+   that starts with a dot
+ - GAppInfo gained API to differentiate between recommended
+   and fallback mime handlers
+ - g_cancellable_create_source: creates a GSource that triggers
+   when the GCancellable is canceled
+ - GPollableInput/OutputStream: Interfaces for pollable streams
+ - TLS support has landed, with an extension point that is
+   implemented in glib-networking
+
+* GLib
+ - Mainloop sources can now have 'child sources'
+ - g_get_runtime_dir: New function to return the XDG_RUNTIME_DIR
+
+* Bugs fixed:
+ 530786 GFileMonitor "changed" signal underdocumented
+ 588189 TLS support for GSocket*
+ 630357 g_object_new_valist uses uninitialized memory
+ 630559 typo in public string in gsocks: 'The SOCKSv5 require...
+ 632445 Documentation refers to removed GNOME 2.0 porting guide
+ 634239 Child GSources
+ 634241 Add pollable input/output streams
+ 634504 allow passing a NULL emblem to g_emblemed_icon_new()
+ 634613 unsufficient g_get_user_runtime_dir() documentation
+ 635640 schema should inherit gettext-domain from schemalist
+ 635768 Protect g_file_monitor_set_rate_limit() against negative...
+ 635882 Fix the wrong-category schema test
+
+* Updated translations:
+ Galician
+ Italian
+ Norwegian bokmål
+ Uyghur
+
+
 Overview of Changes from GLib 2.27.2 to 2.27.3
 ==============================================
 
