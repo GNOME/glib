@@ -278,7 +278,7 @@ is_valid_module_name (const gchar *basename)
  * g_io_extension_point_get_extension_by_name().
  *
  * If you need to guarantee that all types are loaded in all the modules,
- * use g_io_modules_scan_all_in_directory().
+ * use g_io_modules_load_all_in_directory().
  *
  * Since: 2.24
  **/
