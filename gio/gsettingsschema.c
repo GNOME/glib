@@ -138,6 +138,8 @@ ensure_schema_lists (void)
                     g_hash_table_insert (single, g_strdup (list[i]), NULL);
                   else
                     g_hash_table_insert (reloc, g_strdup (list[i]), NULL);
+
+                  gvdb_table_unref (table);
                 }
             }
 
