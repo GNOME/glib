@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-13 00:59+0100\n"
-"PO-Revision-Date: 2010-11-13 00:59+0100\n"
+"POT-Creation-Date: 2010-11-29 17:34+0100\n"
+"PO-Revision-Date: 2010-11-29 17:35+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -1427,7 +1427,7 @@ msgstr "O valor de conta pasado a %s é demasiado longo"
 msgid "Stream is already closed"
 msgstr "O fluxo xa se pechou"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1636
+#: ../gio/gcancellable.c:433 ../gio/gdbusconnection.c:1636
 #: ../gio/gdbusconnection.c:1725 ../gio/gdbusconnection.c:1911
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:811
 #: ../gio/gsimpleasyncresult.c:837
@@ -1446,7 +1446,7 @@ msgstr "A secuencia de bytes non é válida na entrada da conversión"
 msgid "Not enough space in destination"
 msgstr "Non hai espazo abondo para o enderezo do socket"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:831
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:832
 msgid "Cancellable initialization not supported"
 msgstr "Non se permite a inicialización cancelábel"
 
@@ -2012,8 +2012,8 @@ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr ""
 "O tipo do valor de retorno é incorrecto, obtívose «%s» e esperábase «%s»"
 
-#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:2992
-#: ../gio/gsocket.c:3073
+#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:3023
+#: ../gio/gsocket.c:3104
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Produciuse un erro ao enviar a mensaxe: %s"
@@ -2237,36 +2237,36 @@ msgstr "Camiño do obxecto a monitorizar"
 msgid "Monitor a remote object."
 msgstr "Monitoriza un obxecto remoto."
 
-#: ../gio/gdesktopappinfo.c:469 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:471 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Sen nome"
 
-#: ../gio/gdesktopappinfo.c:753
+#: ../gio/gdesktopappinfo.c:755
 msgid "Desktop file didn't specify Exec field"
 msgstr "O ficheiro de escritorio non especificou o campo Exec"
 
-#: ../gio/gdesktopappinfo.c:946
+#: ../gio/gdesktopappinfo.c:948
 msgid "Unable to find terminal required for application"
 msgstr "Non é posíbel encontrar o terminal requirido polo aplicativo"
 
-#: ../gio/gdesktopappinfo.c:1155
+#: ../gio/gdesktopappinfo.c:1157
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Non é posíbel crear o cartafol de configuración do aplicativo de usuario %s: "
 "%s"
 
-#: ../gio/gdesktopappinfo.c:1159
+#: ../gio/gdesktopappinfo.c:1161
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Non é posíbel crear o cartafol de configuración MIME %s do usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1567
+#: ../gio/gdesktopappinfo.c:1569
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Non é posíbel crear o ficheiro de escritorio %s do usuario"
 
-#: ../gio/gdesktopappinfo.c:1681
+#: ../gio/gdesktopappinfo.c:1683
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -2642,58 +2642,58 @@ msgstr "o camiño dunha lista debe rematar con «:/»"
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> xa especificado"
 
-#: ../gio/glib-compile-schemas.c:1385
+#: ../gio/glib-compile-schemas.c:1387
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Non se permite o elemento <%s> dentro de <%s>"
 
-#: ../gio/glib-compile-schemas.c:1389
+#: ../gio/glib-compile-schemas.c:1391
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Non se permite o elemento <%s> non nivel superior"
 
-#: ../gio/glib-compile-schemas.c:1483
+#: ../gio/glib-compile-schemas.c:1485
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "O texto non debe aparecer dentro de <%s>"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1652 ../gio/glib-compile-schemas.c:1723
-#: ../gio/glib-compile-schemas.c:1799
+#: ../gio/glib-compile-schemas.c:1654 ../gio/glib-compile-schemas.c:1725
+#: ../gio/glib-compile-schemas.c:1801
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "--strict foi especificado; saíndo.\n"
 
-#: ../gio/glib-compile-schemas.c:1660
+#: ../gio/glib-compile-schemas.c:1662
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "Ignorouse este ficheiro completamente.\n"
 
-#: ../gio/glib-compile-schemas.c:1719
+#: ../gio/glib-compile-schemas.c:1721
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "Ignorando este ficheiro.\n"
 
-#: ../gio/glib-compile-schemas.c:1759
+#: ../gio/glib-compile-schemas.c:1761
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
 "Non existe a chave «%s» no esquema «%s» como se especificou no ficheiro de "
 "sobrescritura «%s»"
 
-#: ../gio/glib-compile-schemas.c:1765 ../gio/glib-compile-schemas.c:1823
-#: ../gio/glib-compile-schemas.c:1851
+#: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
+#: ../gio/glib-compile-schemas.c:1853
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; ignorando a sobrescritura para esta chave.\n"
 
-#: ../gio/glib-compile-schemas.c:1769 ../gio/glib-compile-schemas.c:1827
-#: ../gio/glib-compile-schemas.c:1855
+#: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
+#: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr "e --strict foi especificado; saíndo.\n"
 
-#: ../gio/glib-compile-schemas.c:1785
+#: ../gio/glib-compile-schemas.c:1787
 #, c-format
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': "
@@ -2702,12 +2702,12 @@ msgstr ""
 "produciuse un erro ao analizar a chave «%s» no esquema «%s» como se "
 "especificou no ficheiro de sobrescritura «%s»: %s.  "
 
-#: ../gio/glib-compile-schemas.c:1795
+#: ../gio/glib-compile-schemas.c:1797
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "Ignorando a sobrescritura para esta chave.\n"
 
-#: ../gio/glib-compile-schemas.c:1813
+#: ../gio/glib-compile-schemas.c:1815
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -2716,7 +2716,7 @@ msgstr ""
 "a chave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
 "«%s» está fora do rango fornecido no esquema"
 
-#: ../gio/glib-compile-schemas.c:1841
+#: ../gio/glib-compile-schemas.c:1843
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -2725,31 +2725,31 @@ msgstr ""
 "a chave de sobrescritura «%s» no esquema «%s» no ficheiro de sobrescritura "
 "«%s» non está na lista de opcións válidas"
 
-#: ../gio/glib-compile-schemas.c:1895
+#: ../gio/glib-compile-schemas.c:1897
 msgid "where to store the gschemas.compiled file"
 msgstr "onde almacenar o ficheiro compilado de gschemas"
 
-#: ../gio/glib-compile-schemas.c:1895 ../gio/glib-compile-schemas.c:1908
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1910
 msgid "DIRECTORY"
 msgstr "DIRECTORIO"
 
-#: ../gio/glib-compile-schemas.c:1896
+#: ../gio/glib-compile-schemas.c:1898
 msgid "Abort on any errors in schemas"
 msgstr "Abortar ao encontrar calquera erro nos esquemas"
 
-#: ../gio/glib-compile-schemas.c:1897
+#: ../gio/glib-compile-schemas.c:1899
 msgid "Do not write the gschema.compiled file"
 msgstr "Non escribir o ficheiro compilado de gschema"
 
-#: ../gio/glib-compile-schemas.c:1898
+#: ../gio/glib-compile-schemas.c:1900
 msgid "This option will be removed soon."
 msgstr "Esta opción eliminarase pronto"
 
-#: ../gio/glib-compile-schemas.c:1899
+#: ../gio/glib-compile-schemas.c:1901
 msgid "Do not enforce key name restrictions"
 msgstr "Non respetar as restricións de nome de chave"
 
-#: ../gio/glib-compile-schemas.c:1911
+#: ../gio/glib-compile-schemas.c:1913
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2759,22 +2759,22 @@ msgstr ""
 "de esquemas. Os ficheiros de esquema deben ter a extensión\n"
 ".gschema.xml e o ficheiro de caché chámase gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1927
+#: ../gio/glib-compile-schemas.c:1929
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Debería fornecer exactamente un nome de cartafol\n"
 
-#: ../gio/glib-compile-schemas.c:1966
+#: ../gio/glib-compile-schemas.c:1968
 #, c-format
 msgid "No schema files found: "
 msgstr "Non se encontraron ficheiros de esquema: "
 
-#: ../gio/glib-compile-schemas.c:1969
+#: ../gio/glib-compile-schemas.c:1971
 #, c-format
 msgid "doing nothing.\n"
 msgstr "sen facer nada.\n"
 
-#: ../gio/glib-compile-schemas.c:1972
+#: ../gio/glib-compile-schemas.c:1974
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "eliminouse o ficheiro de saída existente.\n"
@@ -3401,124 +3401,124 @@ msgstr "  VALUE     O valor a estabelecer\n"
 msgid "Empty schema name given"
 msgstr "Forneceuse un nome de esquema baleiros"
 
-#: ../gio/gsocket.c:276
+#: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
 msgstr "O socket non é correcto, non se inicialiou"
 
-#: ../gio/gsocket.c:283
+#: ../gio/gsocket.c:284
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "O socket non é correcto, a inicialización fallou debido a: %s"
 
-#: ../gio/gsocket.c:291
+#: ../gio/gsocket.c:292
 msgid "Socket is already closed"
 msgstr "O fluxo de orixe xa está pechado"
 
-#: ../gio/gsocket.c:299 ../gio/gsocket.c:2734 ../gio/gsocket.c:2778
+#: ../gio/gsocket.c:300 ../gio/gsocket.c:2765 ../gio/gsocket.c:2809
 msgid "Socket I/O timed out"
 msgstr "Tempo de espera do Socket de E/S superado"
 
-#: ../gio/gsocket.c:442
+#: ../gio/gsocket.c:443
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "creando o GSocket a partir de fd: %s"
 
-#: ../gio/gsocket.c:476 ../gio/gsocket.c:492 ../gio/gsocket.c:2134
+#: ../gio/gsocket.c:477 ../gio/gsocket.c:493 ../gio/gsocket.c:2135
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Non é posíbel crear o socket: %s"
 
-#: ../gio/gsocket.c:476
+#: ../gio/gsocket.c:477
 msgid "Unknown protocol was specified"
 msgstr "Foi especificado un protocolo descoñecido"
 
-#: ../gio/gsocket.c:1245
+#: ../gio/gsocket.c:1246
 #, c-format
 msgid "could not get local address: %s"
 msgstr "Non foi posíbel obter un enderezo local: %s"
 
-#: ../gio/gsocket.c:1288
+#: ../gio/gsocket.c:1289
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "non foi posíbel obter un enderezo remoto: %s"
 
-#: ../gio/gsocket.c:1349
+#: ../gio/gsocket.c:1350
 #, c-format
 msgid "could not listen: %s"
 msgstr "non foi posíbel escoitar: %s"
 
-#: ../gio/gsocket.c:1423
+#: ../gio/gsocket.c:1424
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Produciuse un erro ao conectar co enderezo: %s"
 
-#: ../gio/gsocket.c:1543
+#: ../gio/gsocket.c:1544
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Produciuse un erro ao aceptar a conexión : %s"
 
-#: ../gio/gsocket.c:1660
+#: ../gio/gsocket.c:1661
 msgid "Error connecting: "
 msgstr "Produciuse un erro ao conectar: "
 
-#: ../gio/gsocket.c:1665
+#: ../gio/gsocket.c:1666
 msgid "Connection in progress"
 msgstr "Conexión en marcha"
 
-#: ../gio/gsocket.c:1672
+#: ../gio/gsocket.c:1673
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Produciuse un erro ao conectar: %s"
 
-#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3497
+#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3528
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Non é posíbel obter o erro pendente: %s"
 
-#: ../gio/gsocket.c:1847
+#: ../gio/gsocket.c:1848
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Produciuse un erro ao recibir datos: %s"
 
-#: ../gio/gsocket.c:2021
+#: ../gio/gsocket.c:2022
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Produciuse un erro ao enviar datos: %s"
 
-#: ../gio/gsocket.c:2213
+#: ../gio/gsocket.c:2214
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Produciuse un erro ao pechar o socket: %s"
 
-#: ../gio/gsocket.c:2727
+#: ../gio/gsocket.c:2758
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Agardando pola situación do socket: %s"
 
-#: ../gio/gsocket.c:3017
+#: ../gio/gsocket.c:3048
 msgid "GSocketControlMessage not supported on windows"
 msgstr "O GSocketControlMessage non está permitido en windows"
 
-#: ../gio/gsocket.c:3276 ../gio/gsocket.c:3417
+#: ../gio/gsocket.c:3307 ../gio/gsocket.c:3448
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Produciuse un erro ao recibir a mensaxe: %s"
 
-#: ../gio/gsocket.c:3512
+#: ../gio/gsocket.c:3543
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials non está implementado para este sistema operativo"
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1152
+#: ../gio/gsocketclient.c:798 ../gio/gsocketclient.c:1364
 msgid "Unknown error on connect"
 msgstr "Erro descoñecido ao conectar"
 
-#: ../gio/gsocketclient.c:711 ../gio/gsocketclient.c:1037
+#: ../gio/gsocketclient.c:836 ../gio/gsocketclient.c:1248
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr ""
 "Non se permite a conexión ao proxy mediante unha conexión que non sexa TCP."
 
-#: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1060
+#: ../gio/gsocketclient.c:858 ../gio/gsocketclient.c:1273
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Non é posíbel usar o proxy co protocolo «%s»"
@@ -3566,7 +3566,8 @@ msgstr "O proxy SOCKSv5 require autenticación."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
 msgstr ""
 "SOCKSv5 require un método de autenticación que non é compatíbel con GLib."
 
@@ -3631,6 +3632,18 @@ msgstr "Produciuse un erro no proxy SOCKSv5 descoñecido."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Non é posíbel manipular a versión %d da codificación de GThemedIcon"
 
+#: ../gio/gtlscertificate.c:270
+msgid "No PEM-encoded certificate found"
+msgstr "Non se encontrou ningún certificado PEM codificado"
+
+#: ../gio/gtlscertificate.c:279
+msgid "Could not parse PEM-encoded certificate"
+msgstr "Non foi posíbel analizar o certificado PEM codificado"
+
+#: ../gio/gtlscertificate.c:300
+msgid "Could not parse PEM-encoded private key"
+msgstr "Non foi posíbel analizar a chave privada PEM codificada"
+
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
 msgid "Expecting 1 control message, got %d"
@@ -3685,14 +3698,14 @@ msgstr ""
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Produciuse un erro ao desactivar SO_PASSCRED: %s"
 
-#: ../gio/gunixinputstream.c:353 ../gio/gunixinputstream.c:373
-#: ../gio/gunixinputstream.c:451
+#: ../gio/gunixinputstream.c:368 ../gio/gunixinputstream.c:388
+#: ../gio/gunixinputstream.c:466
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Produciuse un erro ao ler de unix: %s"
 
-#: ../gio/gunixinputstream.c:406 ../gio/gunixinputstream.c:586
-#: ../gio/gunixoutputstream.c:393 ../gio/gunixoutputstream.c:542
+#: ../gio/gunixinputstream.c:421 ../gio/gunixinputstream.c:601
+#: ../gio/gunixoutputstream.c:407 ../gio/gunixoutputstream.c:556
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Produciuse un erro ao pechar unix: %s"
@@ -3701,8 +3714,8 @@ msgstr "Produciuse un erro ao pechar unix: %s"
 msgid "Filesystem root"
 msgstr "Raíz do sistema de ficheiros"
 
-#: ../gio/gunixoutputstream.c:339 ../gio/gunixoutputstream.c:360
-#: ../gio/gunixoutputstream.c:438
+#: ../gio/gunixoutputstream.c:353 ../gio/gunixoutputstream.c:374
+#: ../gio/gunixoutputstream.c:452
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Produciuse un erro ao escribir a unix: %s"
