@@ -29,6 +29,7 @@ Overview of Changes from GLib 2.27.3 to 2.27.4
  635640 schema should inherit gettext-domain from schemalist
  635768 Protect g_file_monitor_set_rate_limit() against negative...
  635882 Fix the wrong-category schema test
+ 635187 Wrong type of GVariant received in an action...
 
 * Updated translations:
  Galician
