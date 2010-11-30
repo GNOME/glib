@@ -1038,6 +1038,7 @@ hash_table_tests (void)
   g_hash_table_destroy (hash_table);
 }
 
+#ifndef G_DISABLE_DEPRECATED
 static void
 relation_test (void)
 {
@@ -1110,6 +1111,7 @@ relation_test (void)
 
   relation = NULL;
 }
+#endif
 
 static void
 gstring_tests (void)
@@ -1539,7 +1541,9 @@ main (int   argc,
   g_test_add_func ("/testglib/GTree", binary_tree_test);
   g_test_add_func ("/testglib/Arrays", test_arrays);
   g_test_add_func ("/testglib/GHashTable", hash_table_tests);
-  g_test_add_func ("/testglib/Relation", relation_test);
+#ifndef G_DISABLE_DEPRECATED
+  g_test_add_func ("/testglib/Relation (deprecated)", relation_test);
+#endif
   g_test_add_func ("/testglib/File Paths", test_paths);
   g_test_add_func ("/testglib/File Functions", test_file_functions);
   g_test_add_func ("/testglib/Parse Debug Strings", test_g_parse_debug_string);
