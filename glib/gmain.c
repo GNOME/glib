@@ -1194,6 +1194,8 @@ g_source_remove_poll (GSource *source,
  *
  * @source will hold a reference on @child_source while @child_source
  * is attached to it.
+ *
+ * Since: 2.28
  **/
 void
 g_source_add_child_source (GSource *source,
@@ -1237,6 +1239,8 @@ g_source_add_child_source (GSource *source,
  *     g_source_add_child_source().
  *
  * Detaches @child_source from @source and destroys it.
+ *
+ * Since: 2.28
  **/
 void
 g_source_remove_child_source (GSource *source,
