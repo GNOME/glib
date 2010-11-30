@@ -37,7 +37,9 @@
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
 
+#ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
+#endif
 #include <time.h>
 #ifndef G_OS_WIN32
 #include <errno.h>
