@@ -24,8 +24,8 @@ if exist ..\..\..\config.h goto DONE_CONFIG_H&#x0D;&#x0A;
 copy ..\..\..\config.h.win32 ..\..\..\config.h&#x0D;&#x0A;
 :DONE_CONFIG_H&#x0D;&#x0A;
 
-if exist ..\..\..\glibconfig.h goto DONE_GLIBCONFIG_H&#x0D;&#x0A;
-copy ..\..\..\glibconfig.h.win32 ..\..\..\glibconfig.h&#x0D;&#x0A;
+if exist ..\..\..\glib\glibconfig.h goto DONE_GLIBCONFIG_H&#x0D;&#x0A;
+copy ..\..\..\glib\glibconfig.h.win32 ..\..\..\glib\glibconfig.h&#x0D;&#x0A;
 :DONE_GLIBCONFIG_H&#x0D;&#x0A;
 
 if exist ..\..\..\gmodule\gmoduleconf.h goto DONE_GMODULECONF_H&#x0D;&#x0A;
@@ -39,8 +39,10 @@ copy ..\..\..\gmodule\gmoduleconf.h.win32 ..\..\..\gmodule\gmoduleconf.h&#x0D;&#
 mkdir $(OutDir)&#x0D;&#x0A;
 mkdir $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*.dll $(OutDir)\bin&#x0D;&#x0A;
+if exist $(SolutionDir)$(ConfigurationName)_ExtPCRE copy $(SolutionDir)$(ConfigurationName)_ExtPCRE\$(PlatformName)\bin\*.dll $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\glib-genmarshal.exe $(OutDir)\bin&#x0D;&#x0A;
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\gspawn-win32-helper*.exe $(OutDir)\bin&#x0D;&#x0A;
+copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\testglib.exe $(OutDir)\bin&#x0D;&#x0A;
 
 mkdir $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\msvc_recommended_pragmas.h $(OutDir)\include\glib-2.0&#x0D;&#x0A;
@@ -61,6 +63,7 @@ copy ..\..\..\glib\gcompletion.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gconvert.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdataset.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdate.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gdatetime.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gdir.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gerror.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gfileutils.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
@@ -103,6 +106,7 @@ copy ..\..\..\glib\gtestutils.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gthread.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gthreadpool.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gtimer.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
+copy ..\..\..\glib\gtimezone.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gtree.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gtypes.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
 copy ..\..\..\glib\gunicode.h $(OutDir)\include\glib-2.0\glib&#x0D;&#x0A;
@@ -136,7 +140,6 @@ copy ..\..\..\gobject\gvaluetypes.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0
 
 mkdir $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gappinfo.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
-copy ..\..\..\gio\gapplication.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gasyncinitable.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gasyncresult.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gbufferedinputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
@@ -200,9 +203,15 @@ copy ..\..\..\gio\gnetworkaddress.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gnetworkservice.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\goutputstream.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gpermission.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gproxy.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gproxyaddress.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gproxyaddressenumerator.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gproxyresolver.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gresolver.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gseekable.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gsettings.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsimpleasyncresult.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
+copy ..\..\..\gio\gsimplepermission.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsocket.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsocketaddress.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gsocketaddressenumerator.h $(OutDir)\include\glib-2.0\gio&#x0D;&#x0A;
@@ -227,9 +236,10 @@ copy ..\..\..\gio\gwin32inputstream.h $(OutDir)\include\gio-win32-2.0\gio&#x0D;&
 copy ..\..\..\gio\gwin32outputstream.h $(OutDir)\include\gio-win32-2.0\gio&#x0D;&#x0A;
 
 mkdir $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
-copy ..\..\..\glibconfig.h $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
+copy ..\..\..\glib\glibconfig.h $(OutDir)\lib\glib-2.0\include&#x0D;&#x0A;
 
 copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-2.0.lib $(OutDir)\lib&#x0D;&#x0A;
+if exist $(SolutionDir)$(ConfigurationName)_ExtPCRE copy $(SolutionDir)$(ConfigurationName)_ExtPCRE\$(PlatformName)\bin\*-2.0.lib $(OutDir)\lib&#x0D;&#x0A;
 "
 	/>
 	<UserMacro
@@ -237,8 +247,16 @@ copy $(SolutionDir)$(ConfigurationName)\$(PlatformName)\bin\*-2.0.lib $(OutDir)\
 		Value="echo EXPORTS &gt;&quot;$(IntDir)\glib.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;&quot;$(IntDir)\glib.def&quot;"
 	/>
 	<UserMacro
+		Name="GlibGenerateGlibDefW64"
+		Value="echo EXPORTS &gt;&quot;$(IntDir)\glib.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 -D_WIN64 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;&quot;$(IntDir)\glib.def&quot;"
+	/>
+	<UserMacro
 		Name="GlibGenerateGmoduleDef"
 		Value="echo EXPORTS &gt;&quot;$(IntDir)\gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 ..\..\..\gmodule\gmodule.symbols &gt;&gt;&quot;$(IntDir)\gmodule.def&quot;"
+	/>
+	<UserMacro
+		Name="GlibGenerateGmoduleDefW64"
+		Value="echo EXPORTS &gt;&quot;$(IntDir)\gmodule.def&quot; &amp;&amp; cl /EP -DG_OS_WIN32 -D_WIN64 ..\..\..\gmodule\gmodule.symbols &gt;&gt;&quot;$(IntDir)\gmodule.def&quot;"
 	/>
 	<UserMacro
 		Name="GlibGenerateGobjectDef"
