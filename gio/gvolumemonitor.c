@@ -159,7 +159,10 @@ g_volume_monitor_class_init (GVolumeMonitorClass *klass)
    * @volume_monitor: The volume monitor emitting the signal.
    * @mount: a #GMount that is being unmounted.
    *
-   * Emitted when a mount is about to be removed.
+   * May be emitted when a mount is about to be removed.
+   *
+   * This signal depends on the backend and is only emitted if
+   * GIO was used to unmount.
    **/ 
   signals[MOUNT_PRE_UNMOUNT] = g_signal_new (I_("mount-pre-unmount"),
                                              G_TYPE_VOLUME_MONITOR,

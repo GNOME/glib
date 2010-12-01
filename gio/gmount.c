@@ -101,8 +101,11 @@ g_mount_default_init (GMountInterface *iface)
    * GMount::pre-unmount:
    * @mount: the object on which the signal is emitted
    *
-   * This signal is emitted when the #GMount is about to be
+   * This signal may be emitted when the #GMount is about to be
    * unmounted.
+   *
+   * This signal depends on the backend and is only emitted if
+   * GIO was used to unmount.
    *
    * Since: 2.22
    **/
