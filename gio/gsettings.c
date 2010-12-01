@@ -435,6 +435,10 @@ g_settings_get_property (GObject    *object,
       g_value_set_string (value, settings->priv->schema_name);
       break;
 
+     case PROP_BACKEND:
+      g_value_set_object (value, settings->priv->backend);
+      break;
+
      case PROP_PATH:
       g_value_set_string (value, settings->priv->path);
       break;
