@@ -49,26 +49,34 @@ struct _GTlsCertificateClass
 {
   GObjectClass parent_class;
 
+  GTlsCertificateFlags  (* verify) (GTlsCertificate     *cert,
+				    GSocketConnectable  *identity,
+				    GTlsCertificate     *trusted_ca);
+
   /*< private >*/
   /* Padding for future expansion */
   gpointer padding[8];
 };
 
-GType            g_tls_certificate_get_type           (void) G_GNUC_CONST;
+GType                 g_tls_certificate_get_type           (void) G_GNUC_CONST;
 
-GTlsCertificate *g_tls_certificate_new_from_pem       (const gchar      *data,
-						       gssize            length,
-						       GError          **error);
+GTlsCertificate      *g_tls_certificate_new_from_pem       (const gchar         *data,
+							    gssize               length,
+							    GError             **error);
 
-GTlsCertificate *g_tls_certificate_new_from_file      (const gchar      *file,
-						       GError          **error);
-GTlsCertificate *g_tls_certificate_new_from_files     (const gchar      *cert_file,
-						       const gchar      *key_file,
-						       GError          **error);
-GList           *g_tls_certificate_list_new_from_file (const gchar      *file,
-						       GError          **error);
+GTlsCertificate      *g_tls_certificate_new_from_file      (const gchar         *file,
+							    GError             **error);
+GTlsCertificate      *g_tls_certificate_new_from_files     (const gchar         *cert_file,
+							    const gchar         *key_file,
+							    GError             **error);
+GList                *g_tls_certificate_list_new_from_file (const gchar         *file,
+							    GError             **error);
 
-GTlsCertificate *g_tls_certificate_get_issuer         (GTlsCertificate  *cert);
+GTlsCertificate      *g_tls_certificate_get_issuer         (GTlsCertificate     *cert);
+
+GTlsCertificateFlags  g_tls_certificate_verify             (GTlsCertificate     *cert,
+							    GSocketConnectable  *identity,
+							    GTlsCertificate     *trusted_ca);
 
 G_END_DECLS
 

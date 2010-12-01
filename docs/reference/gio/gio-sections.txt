@@ -3038,6 +3038,7 @@ g_tls_certificate_new_from_file
 g_tls_certificate_new_from_files
 g_tls_certificate_list_new_from_file
 g_tls_certificate_get_issuer
+g_tls_certificate_verify
 <SUBSECTION Standard>
 GTlsCertificateClass
 GTlsCertificatePrivate

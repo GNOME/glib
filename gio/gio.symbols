@@ -2031,6 +2031,7 @@ g_tls_certificate_list_new_from_file
 g_tls_certificate_new_from_file
 g_tls_certificate_new_from_files
 g_tls_certificate_new_from_pem
+g_tls_certificate_verify
 #endif
 #endif
 
