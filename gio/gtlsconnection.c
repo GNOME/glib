@@ -84,6 +84,7 @@ enum {
   PROP_BASE_IO_STREAM,
   PROP_REQUIRE_CLOSE_NOTIFY,
   PROP_REHANDSHAKE_MODE,
+  PROP_USE_SYSTEM_CERTDB,
   PROP_CERTIFICATE,
   PROP_PEER_CERTIFICATE
 };
@@ -119,6 +120,23 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 							G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_STATIC_STRINGS));
   /**
+   * GTlsConnection:use-system-certdb:
+   *
+   * Whether or not the system certificate database will be used to
+   * verify peer certificates. See
+   * g_tls_connection_set_use_system_certdb().
+   *
+   * Since: 2.28
+   */
+  g_object_class_install_property (gobject_class, PROP_USE_SYSTEM_CERTDB,
+				   g_param_spec_boolean ("use-system-certdb",
+							 P_("Use system certificate database"),
+							 P_("Whether to verify peer certificates against the system certificate database"),
+							 TRUE,
+							 G_PARAM_READWRITE |
+							 G_PARAM_CONSTRUCT |
+							 G_PARAM_STATIC_STRINGS));
+  /**
    * GTlsConnection:require-close-notify:
    *
    * Whether or not proper TLS close notification is required.
@@ -132,6 +150,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 							 P_("Whether to require proper TLS close notification"),
 							 TRUE,
 							 G_PARAM_READWRITE |
+							 G_PARAM_CONSTRUCT |
 							 G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:rehandshake-mode:
@@ -148,6 +167,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 						      G_TYPE_TLS_REHANDSHAKE_MODE,
 						      G_TLS_REHANDSHAKE_SAFELY,
 						      G_PARAM_READWRITE |
+						      G_PARAM_CONSTRUCT |
 						      G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:certificate:
@@ -340,6 +360,56 @@ g_tls_connection_set_property (GObject      *object,
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
+}
+
+/**
+ * g_tls_connection_set_use_system_certdb:
+ * @conn: a #GTlsConnection
+ * @use_system_certdb: whether to use the system certificate database
+ *
+ * Sets whether @conn uses the system certificate database to verify
+ * peer certificates. This is %TRUE by default. If set to %FALSE, then
+ * peer certificate validation will always set the
+ * %G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
+ * #GTlsConnection::accept-certificate will always be emitted on
+ * client-side connections, unless that bit is not set in
+ * #GTlsClientConnection:validation-flags).
+ *
+ * Since: 2.28
+ */
+void
+g_tls_connection_set_use_system_certdb (GTlsConnection *conn,
+					gboolean        use_system_certdb)
+{
+  g_return_if_fail (G_IS_TLS_CONNECTION (conn));
+
+  g_object_set (G_OBJECT (conn),
+		"use-system-certdb", use_system_certdb,
+		NULL);
+}
+
+/**
+ * g_tls_connection_get_use_system_certdb:
+ * @conn: a #GTlsConnection
+ *
+ * Gets whether @conn uses the system certificate database to verify
+ * peer certificates. See g_tls_connection_set_use_system_certdb().
+ *
+ * Return value: whether @conn uses the system certificate database
+ *
+ * Since: 2.28
+ */
+gboolean
+g_tls_connection_get_use_system_certdb (GTlsConnection *conn)
+{
+  gboolean use_system_certdb;
+
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), TRUE);
+
+  g_object_get (G_OBJECT (conn),
+		"use-system-certdb", &use_system_certdb,
+		NULL);
+  return use_system_certdb;
 }
 
 /**

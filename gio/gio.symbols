@@ -2043,6 +2043,7 @@ g_tls_connection_get_certificate
 g_tls_connection_get_peer_certificate
 g_tls_connection_get_rehandshake_mode
 g_tls_connection_get_require_close_notify
+g_tls_connection_get_use_system_certdb
 g_tls_connection_get_type G_GNUC_CONST
 g_tls_connection_handshake
 g_tls_connection_handshake_async
@@ -2051,6 +2052,7 @@ g_tls_connection_set_certificate
 g_tls_connection_set_peer_certificate
 g_tls_connection_set_rehandshake_mode
 g_tls_connection_set_require_close_notify
+g_tls_connection_set_use_system_certdb
 #endif
 #endif
 

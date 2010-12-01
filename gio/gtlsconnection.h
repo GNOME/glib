@@ -85,6 +85,10 @@ struct _GTlsConnectionClass
 
 GType                g_tls_connection_get_type                 (void) G_GNUC_CONST;
 
+void                 g_tls_connection_set_use_system_certdb    (GTlsConnection       *conn,
+								gboolean              use_system_certdb);
+gboolean             g_tls_connection_get_use_system_certdb    (GTlsConnection       *conn);
+
 void                 g_tls_connection_set_certificate          (GTlsConnection       *conn,
 								GTlsCertificate      *certificate);
 GTlsCertificate     *g_tls_connection_get_certificate          (GTlsConnection       *conn);

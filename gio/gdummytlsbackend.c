@@ -184,6 +184,7 @@ enum
   PROP_BASE_IO_STREAM,
   PROP_REQUIRE_CLOSE_NOTIFY,
   PROP_REHANDSHAKE_MODE,
+  PROP_USE_SYSTEM_CERTDB,
   PROP_VALIDATION_FLAGS,
   PROP_SERVER_IDENTITY,
   PROP_USE_SSL3,
@@ -243,12 +244,12 @@ g_dummy_tls_connection_class_init (GDummyTlsConnectionClass *connection_class)
   g_object_class_override_property (gobject_class, PROP_BASE_IO_STREAM, "base-io-stream");
   g_object_class_override_property (gobject_class, PROP_REQUIRE_CLOSE_NOTIFY, "require-close-notify");
   g_object_class_override_property (gobject_class, PROP_REHANDSHAKE_MODE, "rehandshake-mode");
+  g_object_class_override_property (gobject_class, PROP_USE_SYSTEM_CERTDB, "use-system-certdb");
   g_object_class_override_property (gobject_class, PROP_VALIDATION_FLAGS, "validation-flags");
   g_object_class_override_property (gobject_class, PROP_SERVER_IDENTITY, "server-identity");
   g_object_class_override_property (gobject_class, PROP_USE_SSL3, "use-ssl3");
   g_object_class_override_property (gobject_class, PROP_ACCEPTED_CAS, "accepted-cas");
   g_object_class_override_property (gobject_class, PROP_AUTHENTICATION_MODE, "authentication-mode");
-
 }
 
 static void
