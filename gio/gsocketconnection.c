@@ -60,8 +60,7 @@
  * Since: 2.22
  */
 
-G_DEFINE_TYPE (GSocketConnection,
-	       g_socket_connection, G_TYPE_IO_STREAM);
+G_DEFINE_TYPE (GSocketConnection, g_socket_connection, G_TYPE_IO_STREAM);
 
 enum
 {

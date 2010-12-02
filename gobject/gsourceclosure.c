@@ -168,7 +168,7 @@ g_source_set_closure (GSource  *source,
       source->source_funcs != &g_timeout_funcs &&
       source->source_funcs != &g_idle_funcs)
     {
-      g_critical (G_STRLOC "closure can not be set on closure without GSourceFuncs::closure_callback\n");
+      g_critical (G_STRLOC ": closure can not be set on closure without GSourceFuncs::closure_callback\n");
       return;
     }
 
@@ -190,4 +190,41 @@ g_source_set_closure (GSource  *source,
       if (marshal)
 	g_closure_set_marshal (closure, marshal);
     }
+}
+
+static void
+dummy_closure_marshal (GClosure     *closure,
+		       GValue       *return_value,
+		       guint         n_param_values,
+		       const GValue *param_values,
+		       gpointer      invocation_hint,
+		       gpointer      marshal_data)
+{
+  if (G_VALUE_HOLDS_BOOLEAN (return_value))
+    g_value_set_boolean (return_value, TRUE);
+}
+
+/**
+ * g_source_set_dummy_callback:
+ * @source: the source
+ *
+ * Sets a dummy callback for @source. The callback will do nothing, and
+ * if the source expects a #gboolean return value, it will return %TRUE.
+ * (If the source expects any other type of return value, it will return
+ * a 0/%NULL value; whatever g_value_init() initializes a #GValue to for
+ * that type.)
+ *
+ * If the source is not one of the standard GLib types, the
+ * @closure_callback and @closure_marshal fields of the #GSourceFuncs
+ * structure must have been filled in with pointers to appropriate
+ * functions.
+ */
+void
+g_source_set_dummy_callback (GSource *source)
+{
+  GClosure *closure;
+
+  closure = g_closure_new_simple (sizeof (GClosure), NULL);
+  g_closure_set_meta_marshal (closure, NULL, dummy_closure_marshal);
+  g_source_set_closure (source, closure);
 }

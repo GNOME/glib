@@ -3409,7 +3409,7 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr "SOCKSv5 ਪਰਾਕਸੀ ਲਈ ਪਰਮਾਣਿਕਤਾ ਦੀ ਲੋੜ ਹੈ।"
 
 #: ../gio/gsocks5proxy.c:179
-msgid "The SOCKSv5 require an authentication method that is not supported by GLib."
+msgid "The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr "SOCKSv5 ਲਈ ਅਜਿਹੇ ਪਰਮਾਣਿਕਤਾ ਢੰਗ ਦੀ ਲੋੜ ਹੈ, ਜੋ ਕਿ GLib ਵਲੋਂ ਸਹਾਇਕ ਨਹੀਂ ਹੈ।"
 
 #: ../gio/gsocks5proxy.c:208

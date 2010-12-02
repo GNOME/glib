@@ -28,14 +28,20 @@
 #include "gsocketoutputstream.h"
 #include "gsocket.h"
 
-#include <gio/gsimpleasyncresult.h>
-#include <gio/gcancellable.h>
-#include <gio/gioerror.h>
+#include "gsimpleasyncresult.h"
+#include "gcancellable.h"
+#include "gpollableinputstream.h"
+#include "gpollableoutputstream.h"
+#include "gioerror.h"
 #include "glibintl.h"
 
 
+static void g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
+
 #define g_socket_output_stream_get_type _g_socket_output_stream_get_type
-G_DEFINE_TYPE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM);
+G_DEFINE_TYPE_WITH_CODE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM,
+			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
+			 )
 
 enum
 {
@@ -207,6 +213,44 @@ g_socket_output_stream_write_finish (GOutputStream  *stream,
   return count;
 }
 
+static gboolean
+g_socket_output_stream_pollable_is_writable (GPollableOutputStream *pollable)
+{
+  GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
+
+  return g_socket_condition_check (output_stream->priv->socket, G_IO_OUT);
+}
+
+static GSource *
+g_socket_output_stream_pollable_create_source (GPollableOutputStream *pollable,
+					       GCancellable          *cancellable)
+{
+  GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
+  GSource *socket_source, *pollable_source;
+
+  pollable_source = g_pollable_source_new (G_OBJECT (output_stream));
+  socket_source = g_socket_create_source (output_stream->priv->socket,
+					  G_IO_OUT, cancellable);
+  g_source_set_dummy_callback (socket_source);
+  g_source_add_child_source (pollable_source, socket_source);
+  g_source_unref (socket_source);
+
+  return pollable_source;
+}
+
+static gssize
+g_socket_output_stream_pollable_write_nonblocking (GPollableOutputStream  *pollable,
+						   const void             *buffer,
+						   gsize                   size,
+						   GError                **error)
+{
+  GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (pollable);
+
+  return g_socket_send_with_blocking (output_stream->priv->socket,
+				      buffer, size, FALSE,
+				      NULL, error);
+}
+
 static void
 g_socket_output_stream_class_init (GSocketOutputStreamClass *klass)
 {
@@ -229,6 +273,14 @@ g_socket_output_stream_class_init (GSocketOutputStreamClass *klass)
 							P_("The socket that this stream wraps"),
 							G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+}
+
+static void
+g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface)
+{
+  iface->is_writable = g_socket_output_stream_pollable_is_writable;
+  iface->create_source = g_socket_output_stream_pollable_create_source;
+  iface->write_nonblocking = g_socket_output_stream_pollable_write_nonblocking;
 }
 
 static void

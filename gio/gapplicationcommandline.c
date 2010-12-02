@@ -33,8 +33,7 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
 /**
  * SECTION:gapplicationcommandline
  * @title: GApplicationCommandLine
- * @short_description: A class representing a command-line invocation of
- *                     an application
+ * @short_description: A command-line invocation of an application
  * @see_also: #GApplication
  *
  * #GApplicationCommandLine represents a command-line invocation of

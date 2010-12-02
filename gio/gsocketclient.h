@@ -89,6 +89,13 @@ gboolean                g_socket_client_get_enable_proxy                (GSocket
 void                    g_socket_client_set_enable_proxy                (GSocketClient        *client,
     									 gboolean	      enable);
 
+gboolean                g_socket_client_get_tls                         (GSocketClient        *client);
+void                    g_socket_client_set_tls                         (GSocketClient        *client,
+									 gboolean              tls);
+GTlsCertificateFlags    g_socket_client_get_tls_validation_flags        (GSocketClient        *client);
+void                    g_socket_client_set_tls_validation_flags        (GSocketClient        *client,
+									 GTlsCertificateFlags  flags);
+
 GSocketConnection *     g_socket_client_connect                         (GSocketClient        *client,
                                                                          GSocketConnectable   *connectable,
                                                                          GCancellable         *cancellable,

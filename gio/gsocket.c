@@ -50,6 +50,7 @@
 #include "gioerror.h"
 #include "gioenums.h"
 #include "gioerror.h"
+#include "gio-marshal.h"
 #include "gnetworkingprivate.h"
 #include "gsocketaddress.h"
 #include "gsocketcontrolmessage.h"
@@ -2493,12 +2494,42 @@ socket_source_finalize (GSource *source)
     }
 }
 
+static gboolean
+socket_source_closure_callback (GSocket      *socket,
+				GIOCondition  condition,
+				gpointer      data)
+{
+  GClosure *closure = data;
+
+  GValue params[2] = { { 0, }, { 0, } };
+  GValue result_value = { 0, };
+  gboolean result;
+
+  g_value_init (&result_value, G_TYPE_BOOLEAN);
+
+  g_value_init (&params[0], G_TYPE_SOCKET);
+  g_value_set_object (&params[0], socket);
+  g_value_init (&params[1], G_TYPE_IO_CONDITION);
+  g_value_set_flags (&params[1], condition);
+
+  g_closure_invoke (closure, &result_value, 2, params, NULL);
+
+  result = g_value_get_boolean (&result_value);
+  g_value_unset (&result_value);
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+
+  return result;
+}
+
 static GSourceFuncs socket_source_funcs =
 {
   socket_source_prepare,
   socket_source_check,
   socket_source_dispatch,
-  socket_source_finalize
+  socket_source_finalize,
+  (GSourceFunc)socket_source_closure_callback,
+  (GSourceDummyMarshal)_gio_marshal_BOOLEAN__FLAGS,
 };
 
 static GSource *

@@ -28,7 +28,7 @@
 /**
  * SECTION:gpermission
  * @title: GPermission
- * @short_description: an object representing the permission to perform
+ * @short_description: An object representing the permission to perform
  *                     a certain action
  *
  * A #GPermission represents the status of the caller's permission to

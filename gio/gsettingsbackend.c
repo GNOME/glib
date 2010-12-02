@@ -49,7 +49,7 @@ struct _GSettingsBackendPrivate
 /**
  * SECTION:gsettingsbackend
  * @title: GSettingsBackend
- * @short_description: an interface for settings backend implementations
+ * @short_description: Interface for settings backend implementations
  * @include: gio/gsettingsbackend.h
  * @see_also: #GSettings, #GIOExtensionPoint
  *

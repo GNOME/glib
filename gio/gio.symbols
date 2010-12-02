@@ -103,6 +103,8 @@ g_app_info_get_all
 g_app_info_get_all_for_type
 g_app_info_get_default_for_type
 g_app_info_get_default_for_uri_scheme
+g_app_info_get_fallback_for_type
+g_app_info_get_recommended_for_type
 g_app_info_reset_type_associations
 #endif
 #endif
@@ -191,6 +193,7 @@ g_cancellable_reset
 g_cancellable_cancel
 g_cancellable_connect
 g_cancellable_disconnect
+g_cancellable_source_new
 #endif
 #endif
 
@@ -1064,6 +1067,9 @@ g_dbus_signal_flags_get_type G_GNUC_CONST
 g_dbus_send_message_flags_get_type G_GNUC_CONST
 g_credentials_type_get_type G_GNUC_CONST
 g_dbus_message_byte_order_get_type G_GNUC_CONST
+g_tls_authentication_mode_get_type G_GNUC_CONST
+g_tls_certificate_flags_get_type G_GNUC_CONST
+g_tls_rehandshake_mode_get_type G_GNUC_CONST
 #endif
 #endif
 
@@ -1368,6 +1374,7 @@ g_socket_control_message_serialize
 #if IN_HEADER(__G_SOCKET_CLIENT_H__)
 #if IN_FILE(__G_SOCKET_CLIENT_C__)
 g_socket_client_get_type G_GNUC_CONST
+g_socket_client_add_application_proxy
 g_socket_client_connect
 g_socket_client_connect_async
 g_socket_client_connect_finish
@@ -1380,20 +1387,23 @@ g_socket_client_connect_to_service_finish
 g_socket_client_connect_to_uri
 g_socket_client_connect_to_uri_async
 g_socket_client_connect_to_uri_finish
+g_socket_client_get_enable_proxy
 g_socket_client_get_family
 g_socket_client_get_local_address
 g_socket_client_get_protocol
 g_socket_client_get_socket_type
 g_socket_client_get_timeout
-g_socket_client_get_enable_proxy
+g_socket_client_get_tls
+g_socket_client_get_tls_validation_flags
 g_socket_client_new
+g_socket_client_set_enable_proxy
 g_socket_client_set_family
 g_socket_client_set_local_address
 g_socket_client_set_protocol
 g_socket_client_set_socket_type
 g_socket_client_set_timeout
-g_socket_client_set_enable_proxy
-g_socket_client_add_application_proxy
+g_socket_client_set_tls
+g_socket_client_set_tls_validation_flags
 #endif
 #endif
 
@@ -1973,5 +1983,98 @@ g_periodic_new
 g_periodic_add
 g_periodic_remove
 g_periodic_unblock
+#endif
+#endif
+
+#if IN_HEADER(__G_POLLABLE_INPUT_STREAM_H__)
+#if IN_FILE(__G_POLLABLE_INPUT_STREAM_C__)
+g_pollable_input_stream_get_type G_GNUC_CONST
+g_pollable_input_stream_can_poll
+g_pollable_input_stream_create_source
+g_pollable_input_stream_is_readable
+g_pollable_input_stream_read_nonblocking
+g_pollable_source_new
+#endif
+#endif
+
+#if IN_HEADER(__G_POLLABLE_OUTPUT_STREAM_H__)
+#if IN_FILE(__G_POLLABLE_OUTPUT_STREAM_C__)
+g_pollable_output_stream_get_type G_GNUC_CONST
+g_pollable_output_stream_can_poll
+g_pollable_output_stream_create_source
+g_pollable_output_stream_is_writable
+g_pollable_output_stream_write_nonblocking
+#endif
+#endif
+
+#if IN_HEADER(__G_TCP_WRAPPER_CONNECTION_H__)
+#if IN_FILE(__G_TCP_WRAPPER_CONNECTION_C__)
+g_tcp_wrapper_connection_get_type G_GNUC_CONST
+g_tcp_wrapper_connection_get_base_io_stream
+g_tcp_wrapper_connection_new
+#endif
+#endif
+
+#if IN_HEADER(__G_TLS_BACKEND_H__)
+#if IN_FILE(__G_TLS_BACKEND_C__)
+g_tls_backend_get_certificate_type
+g_tls_backend_get_client_connection_type
+g_tls_backend_get_default
+g_tls_backend_get_server_connection_type
+g_tls_backend_get_type G_GNUC_CONST
+g_tls_backend_supports_tls
+g_tls_error_get_type G_GNUC_CONST
+g_tls_error_quark
+#endif
+#endif
+
+#if IN_HEADER(__G_TLS_CERTIFICATE_H__)
+#if IN_FILE(__G_TLS_CERTIFICATE_C__)
+g_tls_certificate_get_issuer
+g_tls_certificate_get_type G_GNUC_CONST
+g_tls_certificate_list_new_from_file
+g_tls_certificate_new_from_file
+g_tls_certificate_new_from_files
+g_tls_certificate_new_from_pem
+#endif
+#endif
+
+#if IN_HEADER(__G_TLS_CONNECTION_H__)
+#if IN_FILE(__G_TLS_CONNECTION_C__)
+g_tls_connection_emit_accept_certificate
+g_tls_connection_emit_need_certificate
+g_tls_connection_get_certificate
+g_tls_connection_get_peer_certificate
+g_tls_connection_get_rehandshake_mode
+g_tls_connection_get_require_close_notify
+g_tls_connection_get_type G_GNUC_CONST
+g_tls_connection_handshake
+g_tls_connection_handshake_async
+g_tls_connection_handshake_finish
+g_tls_connection_set_certificate
+g_tls_connection_set_peer_certificate
+g_tls_connection_set_rehandshake_mode
+g_tls_connection_set_require_close_notify
+#endif
+#endif
+
+#if IN_HEADER(__G_TLS_CLIENT_CONNECTION_H__)
+#if IN_FILE(__G_TLS_CLIENT_CONNECTION_C__)
+g_tls_client_connection_get_accepted_cas
+g_tls_client_connection_get_server_identity
+g_tls_client_connection_get_type G_GNUC_CONST
+g_tls_client_connection_get_use_ssl3
+g_tls_client_connection_get_validation_flags
+g_tls_client_connection_new
+g_tls_client_connection_set_server_identity
+g_tls_client_connection_set_use_ssl3
+g_tls_client_connection_set_validation_flags
+#endif
+#endif
+
+#if IN_HEADER(__G_TLS_SERVER_CONNECTION_H__)
+#if IN_FILE(__G_TLS_SERVER_CONNECTION_C__)
+g_tls_server_connection_get_type G_GNUC_CONST
+g_tls_server_connection_new
 #endif
 #endif

@@ -56,14 +56,6 @@ with Glib-2.0 that you need to reproduce exactly.
 <refsect1>
 <title>Incompatible changes from 1.2 to 2.0</title>
 
-<para>
-The <ulink url="http://developer.gnome.org/dotplan/porting/">GNOME 2.0
-porting guide</ulink> on <ulink
-url="http://developer.gnome.org">http://developer.gnome.org</ulink>
-has some more detailed discussion of porting from 1.2 to 2.0.
-See the section on GLib.
-</para>
-
 <itemizedlist>
 
 <listitem>

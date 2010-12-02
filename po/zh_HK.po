@@ -3195,7 +3195,7 @@ msgstr "SOCKv5 代理伺服器要求驗證。"
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 require an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr "SOCKSv5 需要的驗證方式尚未被 GLib 支援。"
 
 #: ../gio/gsocks5proxy.c:208

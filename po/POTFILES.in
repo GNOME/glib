@@ -93,7 +93,6 @@ gio/gpermission.c
 gio/gpollfilemonitor.c
 gio/gproxyaddress.c
 gio/gproxyaddressenumerator.c
-gio/gproxyconnection.c
 gio/gresolver.c
 gio/gseekable.c
 gio/gsettingsbackend.c
@@ -114,6 +113,10 @@ gio/gsocks5proxy.c
 gio/gtcpconnection.c
 gio/gthemedicon.c
 gio/gthreadedsocketservice.c
+gio/gtlscertificate.c
+gio/gtlsclientconnection.c
+gio/gtlsconnection.c
+gio/gtlsserverconnection.c
 gio/gunionvolumemonitor.c
 gio/gunixconnection.c
 gio/gunixcredentialsmessage.c

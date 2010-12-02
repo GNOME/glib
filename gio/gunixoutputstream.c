@@ -60,8 +60,12 @@ enum {
   PROP_CLOSE_FD
 };
 
-G_DEFINE_TYPE (GUnixOutputStream, g_unix_output_stream, G_TYPE_OUTPUT_STREAM);
+static void g_unix_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
 
+G_DEFINE_TYPE_WITH_CODE (GUnixOutputStream, g_unix_output_stream, G_TYPE_OUTPUT_STREAM,
+			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM,
+						g_unix_output_stream_pollable_iface_init)
+			 );
 
 struct _GUnixOutputStreamPrivate {
   int fd;
@@ -103,6 +107,9 @@ static gboolean g_unix_output_stream_close_finish (GOutputStream        *stream,
 						   GAsyncResult         *result,
 						   GError              **error);
 
+static gboolean g_unix_output_stream_pollable_is_writable   (GPollableOutputStream *stream);
+static GSource *g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
+							     GCancellable         *cancellable);
 
 static void
 g_unix_output_stream_finalize (GObject *object)
@@ -158,6 +165,13 @@ g_unix_output_stream_class_init (GUnixOutputStreamClass *klass)
 							 P_("Whether to close the file descriptor when the stream is closed"),
 							 TRUE,
 							 G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
+}
+
+static void
+g_unix_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface)
+{
+  iface->is_writable = g_unix_output_stream_pollable_is_writable;
+  iface->create_source = g_unix_output_stream_pollable_create_source;
 }
 
 static void
@@ -409,9 +423,9 @@ typedef struct {
 } WriteAsyncData;
 
 static gboolean
-write_async_cb (WriteAsyncData *data,
+write_async_cb (int             fd,
 		GIOCondition    condition,
-		int             fd)
+		WriteAsyncData *data)
 {
   GSimpleAsyncResult *simple;
   GError *error = NULL;
@@ -592,4 +606,38 @@ g_unix_output_stream_close_finish (GOutputStream  *stream,
 {
   /* Failures handled in generic close_finish code */
   return TRUE;
+}
+
+static gboolean
+g_unix_output_stream_pollable_is_writable (GPollableOutputStream *stream)
+{
+  GUnixOutputStream *unix_stream = G_UNIX_OUTPUT_STREAM (stream);
+  GPollFD poll_fd;
+  gint result;
+
+  poll_fd.fd = unix_stream->priv->fd;
+  poll_fd.events = G_IO_OUT;
+
+  do
+    result = g_poll (&poll_fd, 1, 0);
+  while (result == -1 && errno == EINTR);
+
+  return poll_fd.revents != 0;
+}
+
+static GSource *
+g_unix_output_stream_pollable_create_source (GPollableOutputStream *stream,
+					     GCancellable          *cancellable)
+{
+  GUnixOutputStream *unix_stream = G_UNIX_OUTPUT_STREAM (stream);
+  GSource *inner_source, *pollable_source;
+
+  pollable_source = g_pollable_source_new (G_OBJECT (stream));
+
+  inner_source = _g_fd_source_new (unix_stream->priv->fd, G_IO_OUT, cancellable);
+  g_source_set_dummy_callback (inner_source);
+  g_source_add_child_source (pollable_source, inner_source);
+  g_source_unref (inner_source);
+
+  return pollable_source;
 }

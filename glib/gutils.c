@@ -2299,9 +2299,9 @@ g_get_user_cache_dir (void)
  * On UNIX platforms this is determined using the mechanisms described in
  * the <ulink url="http://www.freedesktop.org/Standards/basedir-spec">
  * XDG Base Directory Specification</ulink>.  This is the directory
- * specified in the XDG_RUNTIME_DIR environment variable.  In the case
- * that this variable is not set, glib will issue a warning message to
- * stderr and return the value of g_get_user_cache_dir().
+ * specified in the <envar>XDG_RUNTIME_DIR</envar> environment variable.
+ * In the case that this variable is not set, GLib will issue a warning
+ * message to stderr and return the value of g_get_user_cache_dir().
  *
  * On Windows this is the folder to use for local (as opposed to
  * roaming) application data. See documentation for
@@ -2309,6 +2309,8 @@ g_get_user_cache_dir (void)
  * what g_get_user_config_dir() returns.
  *
  * Returns: a string owned by GLib that must not be modified or freed.
+ *
+ * Since: 2.28
  **/
 const gchar *
 g_get_user_runtime_dir (void)

@@ -207,6 +207,42 @@ properties_notify (void)
   g_object_unref (obj);
 }
 
+static void
+properties_construct (void)
+{
+  TestObject *obj;
+  gint val;
+
+  g_test_bug ("630357");
+
+  /* more than 16 args triggers a realloc in g_object_new_valist() */
+  obj = g_object_new (test_object_get_type (),
+                      "foo", 1,
+                      "foo", 2,
+                      "foo", 3,
+                      "foo", 4,
+                      "foo", 5,
+                      "foo", 6,
+                      "foo", 7,
+                      "foo", 8,
+                      "foo", 9,
+                      "foo", 10,
+                      "foo", 11,
+                      "foo", 12,
+                      "foo", 13,
+                      "foo", 14,
+                      "foo", 15,
+                      "foo", 16,
+                      "foo", 17,
+                      "foo", 18,
+                      NULL);
+
+  g_object_get (obj, "foo", &val, NULL);
+  g_assert (val == 18);
+
+  g_object_unref (obj);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -217,6 +253,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/properties/install", properties_install);
   g_test_add_func ("/properties/notify", properties_notify);
+  g_test_add_func ("/properties/construct", properties_construct);
 
   return g_test_run ();
 }

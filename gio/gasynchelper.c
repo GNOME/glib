@@ -43,18 +43,14 @@ typedef struct
 {
   GSource source;
   GPollFD pollfd;
-  GCancellable *cancellable;
-  gulong cancelled_tag;
 } FDSource;
 
 static gboolean 
 fd_source_prepare (GSource *source,
 		   gint    *timeout)
 {
-  FDSource *fd_source = (FDSource *)source;
   *timeout = -1;
-  
-  return g_cancellable_is_cancelled (fd_source->cancellable);
+  return FALSE;
 }
 
 static gboolean 
@@ -62,9 +58,7 @@ fd_source_check (GSource *source)
 {
   FDSource *fd_source = (FDSource *)source;
 
-  return
-    g_cancellable_is_cancelled  (fd_source->cancellable) ||
-    fd_source->pollfd.revents != 0;
+  return fd_source->pollfd.revents != 0;
 }
 
 static gboolean
@@ -78,41 +72,75 @@ fd_source_dispatch (GSource     *source,
 
   g_warn_if_fail (func != NULL);
 
-  return (*func) (user_data, fd_source->pollfd.revents, fd_source->pollfd.fd);
+  return (*func) (fd_source->pollfd.fd, fd_source->pollfd.revents, user_data);
 }
 
 static void 
 fd_source_finalize (GSource *source)
 {
-  FDSource *fd_source = (FDSource *)source;
+}
 
-  /* we don't use g_cancellable_disconnect() here, since we are holding
-   * the main context lock here, and the ::disconnect signal handler
-   * will try to grab that, and deadlock looms.
-   */
-  if (fd_source->cancelled_tag)
-    g_signal_handler_disconnect (fd_source->cancellable,
-                                 fd_source->cancelled_tag);
+static gboolean
+fd_source_closure_callback (int           fd,
+			    GIOCondition  condition,
+			    gpointer      data)
+{
+  GClosure *closure = data;
 
-  if (fd_source->cancellable)
-    g_object_unref (fd_source->cancellable);
+  GValue params[2] = { { 0, }, { 0, } };
+  GValue result_value = { 0, };
+  gboolean result;
+
+  g_value_init (&result_value, G_TYPE_BOOLEAN);
+
+  g_value_init (&params[0], G_TYPE_INT);
+  g_value_set_int (&params[0], fd);
+
+  g_value_init (&params[1], G_TYPE_IO_CONDITION);
+  g_value_set_flags (&params[1], condition);
+
+  g_closure_invoke (closure, &result_value, 2, params, NULL);
+
+  result = g_value_get_boolean (&result_value);
+  g_value_unset (&result_value);
+  g_value_unset (&params[0]);
+  g_value_unset (&params[1]);
+
+  return result;
+}
+
+static void
+fd_source_closure_marshal (GClosure     *closure,
+			   GValue       *return_value,
+			   guint         n_param_values,
+			   const GValue *param_values,
+			   gpointer      invocation_hint,
+			   gpointer      marshal_data)
+{
+  GFDSourceFunc callback;
+  GCClosure *cc = (GCClosure*) closure;
+  gboolean v_return;
+
+  g_return_if_fail (return_value != NULL);
+  g_return_if_fail (n_param_values == 0);
+
+  callback = (GFDSourceFunc) (marshal_data ? marshal_data : cc->callback);
+
+  v_return = callback (g_value_get_int (param_values),
+                       g_value_get_flags (param_values + 1),
+		       closure->data);
+
+  g_value_set_boolean (return_value, v_return);
 }
 
 static GSourceFuncs fd_source_funcs = {
   fd_source_prepare,
   fd_source_check,
   fd_source_dispatch,
-  fd_source_finalize
+  fd_source_finalize,
+  (GSourceFunc)fd_source_closure_callback,
+  (GSourceDummyMarshal)fd_source_closure_marshal,
 };
-
-/* Might be called on another thread */
-static void
-fd_source_cancelled_cb (GCancellable *cancellable,
-			gpointer      data)
-{
-  /* Wake up the mainloop in case we're waiting on async calls with FDSource */
-  g_main_context_wakeup (NULL);
-}
 
 GSource *
 _g_fd_source_new (int           fd,
@@ -125,18 +153,18 @@ _g_fd_source_new (int           fd,
   source = g_source_new (&fd_source_funcs, sizeof (FDSource));
   fd_source = (FDSource *)source;
 
-  if (cancellable)
-    fd_source->cancellable = g_object_ref (cancellable);
-  
   fd_source->pollfd.fd = fd;
   fd_source->pollfd.events = events;
   g_source_add_poll (source, &fd_source->pollfd);
 
   if (cancellable)
-    fd_source->cancelled_tag =
-      g_cancellable_connect (cancellable, 
-			     (GCallback)fd_source_cancelled_cb,
-			     NULL, NULL);
-  
+    {
+      GSource *cancellable_source = g_cancellable_source_new (cancellable);
+
+      g_source_set_dummy_callback (cancellable_source);
+      g_source_add_child_source (source, cancellable_source);
+      g_source_unref (cancellable_source);
+    }
+
   return source;
 }

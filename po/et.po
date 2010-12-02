@@ -2511,7 +2511,7 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr ""
 
 msgid ""
-"The SOCKSv5 require an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr ""
 
 #, c-format

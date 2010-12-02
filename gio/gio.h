@@ -95,6 +95,8 @@
 #include <gio/goutputstream.h>
 #include <gio/gperiodic.h>
 #include <gio/gpermission.h>
+#include <gio/gpollableinputstream.h>
+#include <gio/gpollableoutputstream.h>
 #include <gio/gproxy.h>
 #include <gio/gproxyaddress.h>
 #include <gio/gproxyaddressenumerator.h>
@@ -115,8 +117,14 @@
 #include <gio/gsocketservice.h>
 #include <gio/gsrvtarget.h>
 #include <gio/gtcpconnection.h>
+#include <gio/gtcpwrapperconnection.h>
 #include <gio/gthemedicon.h>
 #include <gio/gthreadedsocketservice.h>
+#include <gio/gtlsbackend.h>
+#include <gio/gtlscertificate.h>
+#include <gio/gtlsclientconnection.h>
+#include <gio/gtlsconnection.h>
+#include <gio/gtlsserverconnection.h>
 #include <gio/gvfs.h>
 #include <gio/gvolume.h>
 #include <gio/gvolumemonitor.h>

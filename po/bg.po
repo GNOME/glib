@@ -3411,7 +3411,7 @@ msgstr "Посредникът чрез SOCKSv5 изисква идентифи�
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 require an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr ""
 "Посредникът чрез SOCKSv5 изисква механизъм за идентификация, който не се "
 "поддържа от GLib."

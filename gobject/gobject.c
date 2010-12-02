@@ -1565,6 +1565,7 @@ g_object_new_valist (GType	  object_type,
 	{
 	  n_alloced_params += 16;
 	  params = g_renew (GParameter, params, n_alloced_params);
+	  memset (params + n_params, 0, 16 * (sizeof *params));
 	}
       params[n_params].name = name;
       G_VALUE_COLLECT_INIT (&params[n_params].value, pspec->value_type,

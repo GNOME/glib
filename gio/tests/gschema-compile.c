@@ -46,7 +46,7 @@ static const SchemaTest tests[] = {
   { "no-default",                   NULL, "*<default> is required in <key>*"                    },
   { "missing-quotes",               NULL, "*unknown keyword*"                                   },
   { "incomplete-list",              NULL, "*to follow array element*"                           },
-  { "wrong-category",               NULL, "*attribute 'l10n' invalid*"                          },
+  { "wrong-category",               NULL, "*unsupported l10n category*"                         },
   { "bad-type",                     NULL, "*invalid GVariant type string*"                      },
   { "overflow",                     NULL, "*out of range*"                                      },
   { "range-wrong-type",             NULL, "*<range> not allowed for keys of type*"              },
@@ -117,8 +117,10 @@ static const SchemaTest tests[] = {
   { "flags-bad-default",            NULL, "*<default> * not in the specified flags type*"       },
   { "flags-more-than-one-bit",      NULL, "*flags values must have at most 1 bit set*"          },
   { "flags-with-enum-attr",         NULL, "*<enum id='flags'> not (yet) defined*"               },
-  { "flags-with-enum-tag",          NULL, "*<flags id='flags'> not (yet) defined*"              }
+  { "flags-with-enum-tag",          NULL, "*<flags id='flags'> not (yet) defined*"              },
+  { "inherit-gettext-domain",       NULL, NULL                                                  }
 };
+
 
 int
 main (int argc, char *argv[])

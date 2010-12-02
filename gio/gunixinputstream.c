@@ -60,7 +60,12 @@ enum {
   PROP_CLOSE_FD
 };
 
-G_DEFINE_TYPE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STREAM);
+static void g_unix_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
+
+G_DEFINE_TYPE_WITH_CODE (GUnixInputStream, g_unix_input_stream, G_TYPE_INPUT_STREAM,
+			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM,
+						g_unix_input_stream_pollable_iface_init)
+			 );
 
 struct _GUnixInputStreamPrivate {
   int fd;
@@ -111,6 +116,9 @@ static gboolean g_unix_input_stream_close_finish (GInputStream         *stream,
 						  GAsyncResult         *result,
 						  GError              **error);
 
+static gboolean g_unix_input_stream_pollable_is_readable   (GPollableInputStream *stream);
+static GSource *g_unix_input_stream_pollable_create_source (GPollableInputStream *stream,
+							    GCancellable         *cancellable);
 
 static void
 g_unix_input_stream_finalize (GObject *object)
@@ -172,6 +180,13 @@ g_unix_input_stream_class_init (GUnixInputStreamClass *klass)
 							 P_("Whether to close the file descriptor when the stream is closed"),
 							 TRUE,
 							 G_PARAM_READABLE | G_PARAM_WRITABLE | G_PARAM_STATIC_NAME | G_PARAM_STATIC_NICK | G_PARAM_STATIC_BLURB));
+}
+
+static void
+g_unix_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)
+{
+  iface->is_readable = g_unix_input_stream_pollable_is_readable;
+  iface->create_source = g_unix_input_stream_pollable_create_source;
 }
 
 static void
@@ -422,9 +437,9 @@ typedef struct {
 } ReadAsyncData;
 
 static gboolean
-read_async_cb (ReadAsyncData *data,
+read_async_cb (int            fd,
                GIOCondition   condition,
-               int            fd)
+               ReadAsyncData *data)
 {
   GSimpleAsyncResult *simple;
   GError *error = NULL;
@@ -636,4 +651,38 @@ g_unix_input_stream_close_finish (GInputStream  *stream,
 {
   /* Failures handled in generic close_finish code */
   return TRUE;
+}
+
+static gboolean
+g_unix_input_stream_pollable_is_readable (GPollableInputStream *stream)
+{
+  GUnixInputStream *unix_stream = G_UNIX_INPUT_STREAM (stream);
+  GPollFD poll_fd;
+  gint result;
+
+  poll_fd.fd = unix_stream->priv->fd;
+  poll_fd.events = G_IO_IN;
+
+  do
+    result = g_poll (&poll_fd, 1, 0);
+  while (result == -1 && errno == EINTR);
+
+  return poll_fd.revents != 0;
+}
+
+static GSource *
+g_unix_input_stream_pollable_create_source (GPollableInputStream *stream,
+					    GCancellable         *cancellable)
+{
+  GUnixInputStream *unix_stream = G_UNIX_INPUT_STREAM (stream);
+  GSource *inner_source, *pollable_source;
+
+  pollable_source = g_pollable_source_new (G_OBJECT (stream));
+
+  inner_source = _g_fd_source_new (unix_stream->priv->fd, G_IO_IN, cancellable);
+  g_source_set_dummy_callback (inner_source);
+  g_source_add_child_source (pollable_source, inner_source);
+  g_source_unref (inner_source);
+
+  return pollable_source;
 }

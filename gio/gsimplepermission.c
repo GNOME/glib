@@ -28,7 +28,7 @@
 /**
  * SECTION:gsimplepermission
  * @title: GSimplePermission
- * @short_description: a GPermission that doesn't change value
+ * @short_description: A GPermission that doesn't change value
  *
  * #GSimplePermission is a trivial implementation of #GPermission that
  * represents a permission that is either always or never allowed.  The

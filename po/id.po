@@ -3287,7 +3287,7 @@ msgstr "Proksi SOCKv5 memerlukan otentikasi."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 require an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr "SOCKSv5 memerlukan metoda otentikasi yang tidak didukung oleh GLib."
 
 #: ../gio/gsocks5proxy.c:208

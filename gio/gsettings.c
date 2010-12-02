@@ -42,7 +42,7 @@
 
 /**
  * SECTION:gsettings
- * @short_description: a high-level API for application settings
+ * @short_description: High-level API for application settings
  *
  * The #GSettings class provides a convenient API for storing and retrieving
  * application settings.
@@ -434,6 +434,10 @@ g_settings_get_property (GObject    *object,
     {
      case PROP_SCHEMA:
       g_value_set_string (value, settings->priv->schema_name);
+      break;
+
+     case PROP_BACKEND:
+      g_value_set_object (value, settings->priv->backend);
       break;
 
      case PROP_PATH:
@@ -2202,7 +2206,7 @@ g_settings_list_keys (GSettings *settings)
  * time and you should connect to the "children-changed" signal to watch
  * for those changes.  Note that there is a race condition here: you may
  * request a child after listing it only for it to have been destroyed
- * in the meantime.  For this reason, g_settings_get_chuld() may return
+ * in the meantime.  For this reason, g_settings_get_child() may return
  * %NULL even for a child that was listed by this function.
  *
  * For GSettings objects that are not lists, you should probably not be

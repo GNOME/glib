@@ -43,6 +43,7 @@ TEST_PROGS +=	 		\
 	network-address		\
 	gdbus-message		\
 	socket			\
+	pollable		\
 	$(NULL)
 
 if OS_UNIX
@@ -203,6 +204,9 @@ network_address_LDADD	  = $(progs_ldadd)
 
 socket_SOURCE		  = socket.c
 socket_LDADD		  = $(progs_ldadd)
+
+pollable_SOURCE		  = pollable.c
+pollable_LDADD		  = $(progs_ldadd)
 
 contexts_SOURCES	  = contexts.c
 contexts_LDADD		  = $(progs_ldadd) \
@@ -370,6 +374,7 @@ schema_tests = \
 	schema-tests/extending.gschema.xml				\
 	schema-tests/from-docs.gschema.xml				\
 	schema-tests/incomplete-list.gschema.xml			\
+	schema-tests/inherit-gettext-domain.gschema.xml			\
 	schema-tests/invalid-path.gschema.xml				\
 	schema-tests/key-in-list-indirect.gschema.xml			\
 	schema-tests/key-in-list.gschema.xml				\

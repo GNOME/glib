@@ -202,7 +202,6 @@ platform_libadd += win32/libgiowin32.la
 platform_deps += win32/libgiowin32.la
 endif
 
-
 SUBDIRS += .
 
 if HAVE_FAM
@@ -307,6 +306,8 @@ libgio_2_0_la_SOURCES =		\
 	gdummyfile.c 		\
 	gdummyproxyresolver.c	\
 	gdummyproxyresolver.h	\
+	gdummytlsbackend.c	\
+	gdummytlsbackend.h	\
 	gemblem.h 		\
 	gemblem.c 		\
 	gemblemedicon.h		\
@@ -349,6 +350,8 @@ libgio_2_0_la_SOURCES =		\
 	goutputstream.c 	\
 	gperiodic.c		\
 	gpermission.c 		\
+	gpollableinputstream.c 	\
+	gpollableoutputstream.c \
 	gpollfilemonitor.c 	\
 	gpollfilemonitor.h 	\
 	gproxyresolver.c	\
@@ -371,15 +374,19 @@ libgio_2_0_la_SOURCES =		\
 	gproxy.c		\
 	gproxyaddress.c         \
 	gproxyaddressenumerator.c \
-	gproxyconnection.c      \
-	gproxyconnection.h      \
 	gsocketservice.c	\
 	gsrvtarget.c		\
 	gtcpconnection.c	\
+	gtcpwrapperconnection.c \
 	gthreadedsocketservice.c\
 	gthemedicon.c 		\
 	gthreadedresolver.c	\
 	gthreadedresolver.h	\
+	gtlsbackend.c		\
+	gtlscertificate.c	\
+	gtlsclientconnection.c	\
+	gtlsconnection.c	\
+	gtlsserverconnection.c	\
 	gunionvolumemonitor.c 	\
 	gunionvolumemonitor.h 	\
 	gvfs.c 			\
@@ -505,6 +512,8 @@ gio_headers =			\
 	goutputstream.h 	\
 	gperiodic.h		\
 	gpermission.h 		\
+	gpollableinputstream.h 	\
+	gpollableoutputstream.h \
 	gproxyaddress.h         \
 	gproxy.h		\
 	gproxyaddressenumerator.h \
@@ -524,8 +533,14 @@ gio_headers =			\
 	gsocketservice.h	\
 	gsrvtarget.h		\
 	gtcpconnection.h	\
+	gtcpwrapperconnection.h \
 	gthreadedsocketservice.h\
 	gthemedicon.h 		\
+	gtlsbackend.h		\
+	gtlscertificate.h	\
+	gtlsclientconnection.h	\
+	gtlsconnection.h	\
+	gtlsserverconnection.h	\
 	gvfs.h 			\
 	gvolume.h 		\
 	gvolumemonitor.h 	\

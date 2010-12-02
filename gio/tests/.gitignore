@@ -60,6 +60,7 @@ memory-input-stream
 memory-output-stream
 network-address
 org.gtk.test.enums.xml
+pollable
 proxy
 readwrite
 resolver

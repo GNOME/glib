@@ -3529,7 +3529,7 @@ msgstr "Το SOCKSv5 proxy απαιτεί επικύρωση."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 require an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr ""
 "Το SOCKSv5 απαιτεί μια μέθοδο επικύρωσης που δεν υποστηρίζεται από GLib."
 

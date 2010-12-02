@@ -109,6 +109,7 @@ typedef struct _GIOExtension                  GIOExtension;
  * Opaque class for definining and scheduling IO jobs.
  **/
 typedef struct _GIOSchedulerJob               GIOSchedulerJob;
+typedef struct _GIOStreamAdapter              GIOStreamAdapter;
 typedef struct _GLoadableIcon                 GLoadableIcon; /* Dummy typedef */
 typedef struct _GMemoryInputStream            GMemoryInputStream;
 typedef struct _GMemoryOutputStream           GMemoryOutputStream;
@@ -124,6 +125,8 @@ typedef struct _GNetworkAddress               GNetworkAddress;
 typedef struct _GNetworkService               GNetworkService;
 typedef struct _GOutputStream                 GOutputStream;
 typedef struct _GIOStream                     GIOStream;
+typedef struct _GPollableInputStream          GPollableInputStream; /* Dummy typedef */
+typedef struct _GPollableOutputStream         GPollableOutputStream; /* Dummy typedef */
 typedef struct _GResolver                     GResolver;
 typedef struct _GSeekable                     GSeekable;
 typedef struct _GSimpleAsyncResult            GSimpleAsyncResult;
@@ -189,6 +192,7 @@ typedef struct _GSrvTarget                    GSrvTarget;
  * Since: 2.22
  **/
 typedef struct _GTcpConnection                              GTcpConnection;
+typedef struct _GTcpWrapperConnection                       GTcpWrapperConnection;
 /**
  * GThreadedSocketService:
  *
@@ -199,6 +203,13 @@ typedef struct _GTcpConnection                              GTcpConnection;
  **/
 typedef struct _GThreadedSocketService                      GThreadedSocketService;
 typedef struct _GThemedIcon                   GThemedIcon;
+typedef struct _GTlsCertificate               GTlsCertificate;
+typedef struct _GTlsClientConnection          GTlsClientConnection; /* Dummy typedef */
+typedef struct _GTlsClientContext             GTlsClientContext; /* Dummy typedef */
+typedef struct _GTlsConnection                GTlsConnection;
+typedef struct _GTlsContext                   GTlsContext;
+typedef struct _GTlsServerConnection          GTlsServerConnection; /* Dummy typedef */
+typedef struct _GTlsServerContext             GTlsServerContext; /* Dummy typedef */
 typedef struct _GVfs                          GVfs; /* Dummy typedef */
 
 /**
@@ -375,6 +386,37 @@ typedef struct _GDBusSignalInfo               GDBusSignalInfo;
 typedef struct _GDBusPropertyInfo             GDBusPropertyInfo;
 typedef struct _GDBusInterfaceInfo            GDBusInterfaceInfo;
 typedef struct _GDBusNodeInfo                 GDBusNodeInfo;
+
+/**
+ * GCancellableSourceFunc:
+ * @cancellable: the #GCancellable
+ * @user_data: data passed in by the user.
+ *
+ * This is the function type of the callback used for the #GSource
+ * returned by g_cancellable_source_new().
+ *
+ * Returns: it should return %FALSE if the source should be removed.
+ *
+ * Since: 2.28
+ */
+typedef gboolean (*GCancellableSourceFunc) (GCancellable *cancellable,
+					    gpointer      user_data);
+
+/**
+ * GPollableSourceFunc:
+ * @pollable_stream: the #GPollableInputStream or #GPollableOutputStream
+ * @user_data: data passed in by the user.
+ *
+ * This is the function type of the callback used for the #GSource
+ * returned by g_pollable_input_stream_create_source() and
+ * g_pollable_output_stream_create_source().
+ *
+ * Returns: it should return %FALSE if the source should be removed.
+ *
+ * Since: 2.28
+ */
+typedef gboolean (*GPollableSourceFunc) (GObject  *pollable_stream,
+					 gpointer  user_data);
 
 G_END_DECLS
 

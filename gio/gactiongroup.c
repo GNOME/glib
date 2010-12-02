@@ -28,7 +28,7 @@
 /**
  * SECTION:gactiongroup
  * @title: GActionGroup
- * @short_description: a group of actions
+ * @short_description: A group of actions
  *
  * #GActionGroup represents a group of actions.
  *

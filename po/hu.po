@@ -3363,7 +3363,7 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr "A SOCKSv5 proxy hitelesítést igényel."
 
 #: ../gio/gsocks5proxy.c:179
-msgid "The SOCKSv5 require an authentication method that is not supported by GLib."
+msgid "The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
 msgstr "A SOCKSv5 a GLib által nem támogatott hitelesítési módszert igényel."
 
 #: ../gio/gsocks5proxy.c:208

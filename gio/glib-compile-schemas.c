@@ -1228,7 +1228,9 @@ start_element (GMarkupParseContext  *context,
                        OPTIONAL | STRING, "gettext-domain", &gettext_domain,
                        OPTIONAL | STRING, "extends", &extends,
                        OPTIONAL | STRING, "list-of", &list_of))
-            parse_state_start_schema (state, id, path, gettext_domain,
+            parse_state_start_schema (state, id, path,
+                                      gettext_domain ? gettext_domain
+                                                     : state->schemalist_domain,
                                       extends, list_of, error);
           return;
         }

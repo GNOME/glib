@@ -224,10 +224,16 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
    * GFileMonitor::changed:
    * @monitor: a #GFileMonitor.
    * @file: a #GFile.
-   * @other_file: a #GFile.
+   * @other_file: a #GFile or #NULL.
    * @event_type: a #GFileMonitorEvent.
-   * 
-   * Emitted when a file has been changed. 
+   *
+   * Emitted when @file has been changed.
+   *
+   * If using #G_FILE_MONITOR_SEND_MOVED flag and @event_type is
+   * #G_FILE_MONITOR_SEND_MOVED, @file will be set to a #GFile containing the
+   * old path, and @other_file will be set to a #GFile containing the new path.
+   *
+   * In all the other cases, @other_file will be set to #NULL.
    **/
   signals[CHANGED] =
     g_signal_new (I_("changed"),
@@ -327,21 +333,21 @@ g_file_monitor_cancel (GFileMonitor* monitor)
 /**
  * g_file_monitor_set_rate_limit:
  * @monitor: a #GFileMonitor.
- * @limit_msecs: a integer with the limit in milliseconds to 
- * poll for changes.
+ * @limit_msecs: a non-negative integer with the limit in milliseconds
+ *     to poll for changes
  *
  * Sets the rate limit to which the @monitor will report
- * consecutive change events to the same file. 
- * 
- **/
+ * consecutive change events to the same file.
+ */
 void
 g_file_monitor_set_rate_limit (GFileMonitor *monitor,
-			       int           limit_msecs)
+                               gint          limit_msecs)
 {
   GFileMonitorPrivate *priv;
-  
+
   g_return_if_fail (G_IS_FILE_MONITOR (monitor));
-  
+  g_return_if_fail (limit_msecs >= 0);
+
   priv = monitor->priv;
   if (priv->rate_limit_msec != limit_msecs)
     {

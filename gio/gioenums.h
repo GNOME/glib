@@ -1249,6 +1249,106 @@ typedef enum
   G_APPLICATION_SEND_ENVIRONMENT    =  (1 << 4)
 } GApplicationFlags;
 
+/**
+ * GTlsError:
+ * @G_TLS_ERROR_MISC: Miscellaneous TLS error
+ * @G_TLS_ERROR_BAD_CERTIFICATE: A certificate could not be parsed
+ * @G_TLS_ERROR_NOT_TLS: The TLS handshake failed because the
+ *   peer does not seem to be a TLS server.
+ * @G_TLS_ERROR_HANDSHAKE: The TLS handshake failed because the
+ *   peer's certificate was not acceptable.
+ * @G_TLS_ERROR_CERTIFICATE_REQUIRED: The TLS handshake failed because
+ *   the server requested a client-side certificate, but none was
+ *   provided. See #GTlsConnection::need-certificate.
+ * @G_TLS_ERROR_EOF: The TLS connection was closed without proper
+ *   notice, which may indicate an attack. See
+ *   g_tls_connection_set_require_close_notify().
+ *
+ * An error code used with %G_TLS_ERROR in a #GError returned from a
+ * TLS-related routine.
+ *
+ * Since: 2.28
+ */
+typedef enum {
+  G_TLS_ERROR_MISC,
+  G_TLS_ERROR_BAD_CERTIFICATE,
+  G_TLS_ERROR_NOT_TLS,
+  G_TLS_ERROR_HANDSHAKE,
+  G_TLS_ERROR_CERTIFICATE_REQUIRED,
+  G_TLS_ERROR_EOF
+} GTlsError;
+
+/**
+ * GTlsCertificateFlags:
+ * @G_TLS_CERTIFICATE_UNKNOWN_CA: The signing certificate authority is
+ *   not known.
+ * @G_TLS_CERTIFICATE_BAD_IDENTITY: The certificate does not match the
+ *   expected identity of the site that it was retrieved from.
+ * @G_TLS_CERTIFICATE_NOT_ACTIVATED: The certificate's activation time
+ *   is still in the future
+ * @G_TLS_CERTIFICATE_EXPIRED: The certificate has expired
+ * @G_TLS_CERTIFICATE_REVOKED: The certificate has been revoked
+ *   according to the #GTlsContext's certificate revocation list.
+ * @G_TLS_CERTIFICATE_INSECURE: The certificate's algorithm is
+ *   considered insecure.
+ * @G_TLS_CERTIFICATE_GENERIC_ERROR: Some other error occurred validating
+ *   the certificate
+ * @G_TLS_CERTIFICATE_VALIDATE_ALL: the combination of all of the above
+ *   flags
+ *
+ * A set of flags describing TLS certification validation. This can be
+ * used to set which validation steps to perform (eg, with
+ * g_tls_client_connection_set_validation_flags()), or to describe why
+ * a particular certificate was rejected (eg, in
+ * #GTlsConnection::accept-certificate).
+ *
+ * Since: 2.28
+ */
+typedef enum {
+  G_TLS_CERTIFICATE_UNKNOWN_CA    = (1 << 0),
+  G_TLS_CERTIFICATE_BAD_IDENTITY  = (1 << 1),
+  G_TLS_CERTIFICATE_NOT_ACTIVATED = (1 << 2),
+  G_TLS_CERTIFICATE_EXPIRED       = (1 << 3),
+  G_TLS_CERTIFICATE_REVOKED       = (1 << 4),
+  G_TLS_CERTIFICATE_INSECURE      = (1 << 5),
+  G_TLS_CERTIFICATE_GENERIC_ERROR = (1 << 6),
+
+  G_TLS_CERTIFICATE_VALIDATE_ALL  = 0x007f
+} GTlsCertificateFlags;
+
+/**
+ * GTlsAuthenticationMode:
+ * @G_TLS_AUTHENTICATION_NONE: client authentication not required
+ * @G_TLS_AUTHENTICATION_REQUESTED: client authentication is requested
+ * @G_TLS_AUTHENTICATION_REQUIRED: client authentication is required
+ *
+ * The client authentication mode for a #GTlsServerConnection.
+ *
+ * Since: 2.28
+ */
+typedef enum {
+  G_TLS_AUTHENTICATION_NONE,
+  G_TLS_AUTHENTICATION_REQUESTED,
+  G_TLS_AUTHENTICATION_REQUIRED
+} GTlsAuthenticationMode;
+
+/**
+ * GTlsRehandshakeMode:
+ * @G_TLS_REHANDSHAKE_NEVER: Never allow rehandshaking
+ * @G_TLS_REHANDSHAKE_SAFELY: Allow safe rehandshaking only
+ * @G_TLS_REHANDSHAKE_UNSAFELY: Allow unsafe rehandshaking
+ *
+ * When to allow rehandshaking. See
+ * g_tls_connection_set_rehandshake_mode().
+ *
+ * Since: 2.28
+ */
+typedef enum {
+  G_TLS_REHANDSHAKE_NEVER,
+  G_TLS_REHANDSHAKE_SAFELY,
+  G_TLS_REHANDSHAKE_UNSAFELY
+} GTlsRehandshakeMode;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */
