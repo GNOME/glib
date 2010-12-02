@@ -1083,6 +1083,7 @@ delayed_message_processing (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#ifdef BUG_631379_FIXED
 static gboolean
 nonce_tcp_on_authorize_authenticated_peer (GDBusAuthObserver *observer,
                                            GIOStream         *stream,
@@ -1284,6 +1285,7 @@ test_nonce_tcp (void)
   g_main_loop_quit (service_loop);
   g_thread_join (service_thread);
 }
+#endif
 
 static void
 test_credentials (void)
@@ -1458,8 +1460,9 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
-  /* XXX bgo#631379
-   * g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp); */
+#ifdef BUG_631379_FIXED
+  g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
+#endif
   g_test_add_func ("/gdbus/credentials", test_credentials);
   g_test_add_func ("/gdbus/overflow", test_overflow);
 
