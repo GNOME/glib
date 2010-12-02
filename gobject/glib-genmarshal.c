@@ -690,7 +690,7 @@ main (int   argc,
 	{
 	  guint expected_token = G_TOKEN_NONE;
 
-	  switch (g_scanner_peek_next_token (scanner))
+	  switch ((guint) g_scanner_peek_next_token (scanner))
 	    {
 	    case '\n':
 	      /* eat newline and restart */
