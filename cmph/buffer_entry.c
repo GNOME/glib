@@ -43,7 +43,7 @@ cmph_uint32 buffer_entry_get_capacity(buffer_entry_t * buffer_entry)
 	return buffer_entry->capacity;
 }
 
-void buffer_entry_load(buffer_entry_t * buffer_entry)
+static void buffer_entry_load(buffer_entry_t * buffer_entry)
 {
 	free(buffer_entry->buff);
 	buffer_entry->buff = (cmph_uint8 *)calloc((size_t)buffer_entry->capacity, sizeof(cmph_uint8));

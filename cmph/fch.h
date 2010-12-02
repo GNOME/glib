@@ -12,7 +12,7 @@ double fch_calc_p1(cmph_uint32 m);
 double fch_calc_p2(cmph_uint32 b);
 cmph_uint32 mixh10h11h12(cmph_uint32 b, double p1, double p2, cmph_uint32 initial_index);
 
-fch_config_data_t *fch_config_new();
+fch_config_data_t *fch_config_new(void);
 void fch_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs);
 void fch_config_destroy(cmph_config_t *mph);
 cmph_t *fch_new(cmph_config_t *mph, double c);

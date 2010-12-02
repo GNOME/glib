@@ -13,7 +13,7 @@ struct __vstack_t
 	cmph_uint32 capacity;
 };
 
-vstack_t *vstack_new()
+vstack_t *vstack_new(void)
 {
 	vstack_t *stack = (vstack_t *)malloc(sizeof(vstack_t));
 	assert(stack);

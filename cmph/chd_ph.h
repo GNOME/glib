@@ -7,7 +7,7 @@ typedef struct __chd_ph_data_t chd_ph_data_t;
 typedef struct __chd_ph_config_data_t chd_ph_config_data_t;
 
 /* Config API */
-chd_ph_config_data_t *chd_ph_config_new();
+chd_ph_config_data_t *chd_ph_config_new(void);
 void chd_ph_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs);
 
 /** \fn void chd_ph_config_set_keys_per_bin(cmph_config_t *mph, cmph_uint32 keys_per_bin);

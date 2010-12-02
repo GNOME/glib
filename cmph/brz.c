@@ -24,7 +24,7 @@ static cmph_uint32 brz_min_index(cmph_uint32 * vector, cmph_uint32 n);
 static void brz_destroy_keys_vd(cmph_uint8 ** keys_vd, cmph_uint32 nkeys);
 static char * brz_copy_partial_fch_mphf(brz_config_data_t *brz, fch_data_t * fchf, cmph_uint32 index,  cmph_uint32 *buflen);
 static char * brz_copy_partial_bmz8_mphf(brz_config_data_t *brz, bmz8_data_t * bmzf, cmph_uint32 index,  cmph_uint32 *buflen);
-brz_config_data_t *brz_config_new()
+brz_config_data_t *brz_config_new(void)
 {
 	brz_config_data_t *brz = NULL; 	
 	brz = (brz_config_data_t *)malloc(sizeof(brz_config_data_t));

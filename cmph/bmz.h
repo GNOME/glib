@@ -6,7 +6,7 @@
 typedef struct __bmz_data_t bmz_data_t;
 typedef struct __bmz_config_data_t bmz_config_data_t;
 
-bmz_config_data_t *bmz_config_new();
+bmz_config_data_t *bmz_config_new(void);
 void bmz_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs);
 void bmz_config_destroy(cmph_config_t *mph);
 cmph_t *bmz_new(cmph_config_t *mph, double c);

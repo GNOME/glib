@@ -6,7 +6,7 @@
 typedef struct __brz_data_t brz_data_t;
 typedef struct __brz_config_data_t brz_config_data_t;
 
-brz_config_data_t *brz_config_new();
+brz_config_data_t *brz_config_new(void);
 void brz_config_set_hashfuncs(cmph_config_t *mph, CMPH_HASH *hashfuncs);
 void brz_config_set_tmp_dir(cmph_config_t *mph, cmph_uint8 *tmp_dir);
 void brz_config_set_mphf_fd(cmph_config_t *mph, FILE *mphf_fd);

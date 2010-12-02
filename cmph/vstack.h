@@ -4,7 +4,7 @@
 #include "cmph_types.h"
 typedef struct __vstack_t vstack_t;
 
-vstack_t *vstack_new();
+vstack_t *vstack_new(void);
 void vstack_destroy(vstack_t *stack);
 
 void vstack_push(vstack_t *stack, cmph_uint32 val);

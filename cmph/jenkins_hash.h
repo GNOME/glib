@@ -43,7 +43,7 @@ void jenkins_state_pack(jenkins_state_t *state, void *jenkins_packed);
  *  \brief Return the amount of space needed to pack a jenkins function.
  *  \return the size of the packed function or zero for failures
  */ 
-cmph_uint32 jenkins_state_packed_size();
+cmph_uint32 jenkins_state_packed_size(void);
 
 
 /** \fn cmph_uint32 jenkins_hash_packed(void *jenkins_packed, const char *k, cmph_uint32 keylen);

@@ -17,7 +17,7 @@
 static int chm_gen_edges(cmph_config_t *mph);
 static void chm_traverse(chm_config_data_t *chm, cmph_uint8 *visited, cmph_uint32 v);
 
-chm_config_data_t *chm_config_new()
+chm_config_data_t *chm_config_new(void)
 {
 	chm_config_data_t *chm = NULL;
 	chm = (chm_config_data_t *)malloc(sizeof(chm_config_data_t));

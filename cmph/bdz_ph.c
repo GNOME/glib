@@ -94,7 +94,7 @@ static void bdz_ph_add_edge(bdz_ph_graph3_t * graph3, cmph_uint32 v0, cmph_uint3
 
 static void bdz_ph_dump_graph(bdz_ph_graph3_t* graph3, cmph_uint32 nedges, cmph_uint32 nvertices)
 {
-	int i;
+	cmph_uint32 i;
 	for(i=0;i<nedges;i++){
 		printf("\nedge %d %d %d %d ",i,graph3->edges[i].vertices[0],
 			graph3->edges[i].vertices[1],graph3->edges[i].vertices[2]);
@@ -202,7 +202,7 @@ static int bdz_ph_mapping(cmph_config_t *mph, bdz_ph_graph3_t* graph3, bdz_ph_qu
 static void assigning(bdz_ph_config_data_t *bdz_ph, bdz_ph_graph3_t* graph3, bdz_ph_queue_t queue);
 static void bdz_ph_optimization(bdz_ph_config_data_t *bdz_ph);
 
-bdz_ph_config_data_t *bdz_ph_config_new()
+bdz_ph_config_data_t *bdz_ph_config_new(void)
 {
 	bdz_ph_config_data_t *bdz_ph;
 	bdz_ph = (bdz_ph_config_data_t *)malloc(sizeof(bdz_ph_config_data_t));

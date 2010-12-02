@@ -20,7 +20,7 @@ static cmph_uint8 bmz_traverse_critical_nodes(bmz_config_data_t *bmz, cmph_uint3
 static cmph_uint8 bmz_traverse_critical_nodes_heuristic(bmz_config_data_t *bmz, cmph_uint32 v, cmph_uint32 * biggest_g_value, cmph_uint32 * biggest_edge_value, cmph_uint8 * used_edges, cmph_uint8 * visited);
 static void bmz_traverse_non_critical_nodes(bmz_config_data_t *bmz, cmph_uint8 * used_edges, cmph_uint8 * visited);
 
-bmz_config_data_t *bmz_config_new()
+bmz_config_data_t *bmz_config_new(void)
 {
 	bmz_config_data_t *bmz = NULL;
 	bmz = (bmz_config_data_t *)malloc(sizeof(bmz_config_data_t));

@@ -172,7 +172,7 @@ cmph_uint32 fch_buckets_get_nbuckets(fch_buckets_t * buckets)
 
 cmph_uint32 * fch_buckets_get_indexes_sorted_by_size(fch_buckets_t * buckets) 
 {
-	int i = 0;
+	cmph_uint32 i = 0;
 	cmph_uint32 sum = 0, value;
 	cmph_uint32 *nbuckets_size = (cmph_uint32 *) calloc((size_t)buckets->max_size + 1, sizeof(cmph_uint32));
 	cmph_uint32 * sorted_indexes = (cmph_uint32 *) calloc((size_t)buckets->nbuckets, sizeof(cmph_uint32));

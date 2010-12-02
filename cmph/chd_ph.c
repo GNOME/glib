@@ -77,7 +77,7 @@ void chd_ph_bucket_clean(chd_ph_bucket_t * buckets, cmph_uint32 nbuckets)
 	for(i = 0; i < nbuckets; i++)
 		buckets[i].size = 0;
 }
-cmph_uint8 chd_ph_bucket_insert(chd_ph_bucket_t * buckets,chd_ph_map_item_t * map_items, chd_ph_item_t * items,
+static cmph_uint8 chd_ph_bucket_insert(chd_ph_bucket_t * buckets,chd_ph_map_item_t * map_items, chd_ph_item_t * items,
 				cmph_uint32 nbuckets,cmph_uint32 item_idx)
 {
 	register cmph_uint32 i = 0;
@@ -141,7 +141,7 @@ static inline double chd_ph_get_entropy(cmph_uint32 * disp_table, cmph_uint32 n,
 	return entropy;
 };
 
-chd_ph_config_data_t *chd_ph_config_new()
+chd_ph_config_data_t *chd_ph_config_new(void)
 {
 	chd_ph_config_data_t *chd_ph;
 	chd_ph = (chd_ph_config_data_t *)malloc(sizeof(chd_ph_config_data_t));
