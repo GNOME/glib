@@ -193,7 +193,11 @@ main (int argc,
   g_object_unref (src_address);
 
   if (use_udp)
-    connection = NULL;
+    {
+      connection = NULL;
+      istream = NULL;
+      ostream = NULL;
+    }
   else
     connection = G_IO_STREAM (g_socket_connection_factory_create_connection (socket));
 

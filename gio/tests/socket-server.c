@@ -238,6 +238,12 @@ main (int argc,
       istream = g_io_stream_get_input_stream (connection);
       ostream = g_io_stream_get_output_stream (connection);
     }
+  else
+    {
+      g_assert (use_udp);
+      istream = NULL;
+      ostream = NULL;
+    }
 
   while (TRUE)
     {
