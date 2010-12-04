@@ -75,6 +75,10 @@ test_language_names (void)
 static void
 test_version (void)
 {
+  g_print ("(header %d.%d.%d library %d.%d.%d) ",
+                  GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION,
+                  glib_major_version, glib_minor_version, glib_micro_version);
+
   g_assert (glib_check_version (GLIB_MAJOR_VERSION,
                                 GLIB_MINOR_VERSION,
                                 GLIB_MICRO_VERSION) == NULL);
@@ -90,9 +94,12 @@ test_version (void)
   g_assert (glib_check_version (GLIB_MAJOR_VERSION,
                                 GLIB_MINOR_VERSION + 1,
                                 0) != NULL);
+  /* don't use + 1 here, since a +/-1 difference can
+   * happen due to post-release version bumps in git
+   */
   g_assert (glib_check_version (GLIB_MAJOR_VERSION,
                                 GLIB_MINOR_VERSION,
-                                GLIB_MICRO_VERSION + 1) != NULL);
+                                GLIB_MICRO_VERSION + 3) != NULL);
 }
 
 static const gchar *argv0;
