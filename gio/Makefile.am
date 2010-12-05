@@ -116,9 +116,7 @@ settings_sources = \
 	gdelayedsettingsbackend.h	\
 	gdelayedsettingsbackend.c	\
 	gkeyfilesettingsbackend.c	\
-	gmemorysettingsbackend.h	\
 	gmemorysettingsbackend.c	\
-	gnullsettingsbackend.h		\
 	gnullsettingsbackend.c		\
 	gsettingsbackendinternal.h	\
 	gsettingsbackend.c		\

@@ -129,9 +129,15 @@ void                    g_settings_backend_changed_tree                 (GSettin
                                                                          GTree               *tree,
                                                                          gpointer             origin_tag);
 
+GSettingsBackend *      g_settings_backend_get_default                  (void);
+
 GSettingsBackend *      g_keyfile_settings_backend_new                  (const gchar         *filename,
                                                                          const gchar         *root_path,
                                                                          const gchar         *root_group);
+
+GSettingsBackend *      g_null_settings_backend_new                     (void);
+
+GSettingsBackend *      g_memory_settings_backend_new                   (void);
 
 G_END_DECLS
 

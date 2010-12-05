@@ -2158,6 +2158,7 @@ G_TYPE_FILE_DESCRIPTOR_BASED
 GSettingsBackend
 GSettingsBackendClass
 G_SETTINGS_BACKEND_EXTENSION_POINT_NAME
+g_settings_backend_get_default
 g_settings_backend_changed
 g_settings_backend_path_changed
 g_settings_backend_keys_changed
@@ -2166,6 +2167,8 @@ g_settings_backend_writable_changed
 g_settings_backend_changed_tree
 g_settings_backend_flatten_tree
 g_keyfile_settings_backend_new
+g_memory_settings_backend_new
+g_null_settings_backend_new
 
 <SUBSECTION Standard>
 G_IS_SETTINGS_BACKEND

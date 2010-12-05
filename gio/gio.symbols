@@ -1544,12 +1544,19 @@ g_settings_backend_path_changed
 g_settings_backend_path_writable_changed
 g_settings_backend_writable_changed
 g_settings_backend_changed_tree
-#endif
+g_settings_backend_get_default
 #endif
 
-#if IN_HEADER(__G_SETTINGS_BACKEND_H__)
 #if IN_FILE(__G_KEYFILE_SETTINGS_BACKEND_C__)
 g_keyfile_settings_backend_new
+#endif
+
+#if IN_FILE(__G_MEMORY_SETTINGS_BACKEND_C__)
+g_memory_settings_backend_new
+#endif
+
+#if IN_FILE(__G_NULL_SETTINGS_BACKEND_C__)
+g_null_settings_backend_new
 #endif
 #endif
 

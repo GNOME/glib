@@ -21,7 +21,8 @@
 
 #include "config.h"
 
-#include "gnullsettingsbackend.h"
+#include "gsettingsbackendinternal.h"
+#include "giomodule.h"
 #include "gsimplepermission.h"
 
 
@@ -34,10 +35,11 @@
 typedef GSettingsBackendClass GNullSettingsBackendClass;
 typedef GSettingsBackend      GNullSettingsBackend;
 
-static GType g_null_settings_backend_get_type (void);
-G_DEFINE_TYPE (GNullSettingsBackend,
-               g_null_settings_backend,
-               G_TYPE_SETTINGS_BACKEND)
+G_DEFINE_TYPE_WITH_CODE (GNullSettingsBackend,
+                         g_null_settings_backend,
+                         G_TYPE_SETTINGS_BACKEND,
+                         g_io_extension_point_implement (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
+                                                         g_define_type_id, "null", 10))
 
 static GVariant *
 g_null_settings_backend_read (GSettingsBackend   *backend,

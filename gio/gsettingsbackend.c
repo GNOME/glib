@@ -24,7 +24,6 @@
 #include "config.h"
 
 #include "gsettingsbackendinternal.h"
-#include "gnullsettingsbackend.h"
 #include "gsimplepermission.h"
 #include "giomodule-priv.h"
 #include "gio-marshal.h"
@@ -925,7 +924,7 @@ g_settings_backend_create_tree (void)
                           g_free, (GDestroyNotify) g_variant_unref);
 }
 
-/*< private >
+/**
  * g_settings_backend_get_default:
  * @returns: the default #GSettingsBackend
  *
@@ -934,6 +933,8 @@ g_settings_backend_create_tree (void)
  * environment variable to the name of a settings backend.
  *
  * The user gets a reference to the backend.
+ *
+ * Since: 2.28
  */
 GSettingsBackend *
 g_settings_backend_get_default (void)
