@@ -159,6 +159,12 @@ g_slist_alloc (void)
  *
  * Frees all of the memory used by a #GSList.
  * The freed elements are returned to the slice allocator.
+ *
+ * <note><para>
+ * If list elements contain dynamically-allocated memory,
+ * you should either use g_slist_free_full() or free them manually
+ * first.
+ * </para></note>
  */
 void
 g_slist_free (GSList *list)
