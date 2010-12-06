@@ -58,8 +58,6 @@ struct _GTlsConnectionClass
   GIOStreamClass parent_class;
 
   /* signals */
-  GTlsCertificate * ( *need_certificate)   (GTlsConnection       *connection);
-
   gboolean          ( *accept_certificate) (GTlsConnection       *connection,
 					    GTlsCertificate      *peer_cert,
 					    GTlsCertificateFlags  errors);
@@ -128,7 +126,6 @@ GQuark g_tls_error_quark (void);
 
 
 /*< protected >*/
-GTlsCertificate     *g_tls_connection_emit_need_certificate    (GTlsConnection       *conn);
 gboolean             g_tls_connection_emit_accept_certificate  (GTlsConnection       *conn,
 								GTlsCertificate      *peer_cert,
 								GTlsCertificateFlags  errors);

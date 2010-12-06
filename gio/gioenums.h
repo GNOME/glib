@@ -1259,7 +1259,7 @@ typedef enum
  *   peer's certificate was not acceptable.
  * @G_TLS_ERROR_CERTIFICATE_REQUIRED: The TLS handshake failed because
  *   the server requested a client-side certificate, but none was
- *   provided. See #GTlsConnection::need-certificate.
+ *   provided. See g_tls_connection_set_certificate().
  * @G_TLS_ERROR_EOF: The TLS connection was closed without proper
  *   notice, which may indicate an attack. See
  *   g_tls_connection_set_require_close_notify().

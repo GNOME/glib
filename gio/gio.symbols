@@ -2038,7 +2038,6 @@ g_tls_certificate_verify
 #if IN_HEADER(__G_TLS_CONNECTION_H__)
 #if IN_FILE(__G_TLS_CONNECTION_C__)
 g_tls_connection_emit_accept_certificate
-g_tls_connection_emit_need_certificate
 g_tls_connection_get_certificate
 g_tls_connection_get_peer_certificate
 g_tls_connection_get_rehandshake_mode

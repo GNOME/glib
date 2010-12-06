@@ -71,7 +71,6 @@ static gboolean g_tls_connection_certificate_accumulator (GSignalInvocationHint 
 							  gpointer               dummy);
 
 enum {
-  NEED_CERTIFICATE,
   ACCEPT_CERTIFICATE,
 
   LAST_SIGNAL
@@ -201,56 +200,6 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 							G_PARAM_STATIC_STRINGS));
 
   /**
-   * GTlsConnection::need-certificate:
-   * @conn: a #GTlsConnection
-   *
-   * Emitted during the TLS handshake if a certificate is needed and
-   * one has not been set via g_tls_connection_set_certificate().
-   *
-   * For server-side connections, a certificate is always needed, and
-   * the connection will fail if none is provided.
-   *
-   * For client-side connections, the signal will be emitted only if
-   * the server has requested a certificate; you can call
-   * g_tls_client_connection_get_accepted_cas() to get a list of
-   * Certificate Authorities that the server will accept certificates
-   * from. If you do not return a certificate (and have not provided
-   * one via g_tls_connection_set_certificate()) then the server may
-   * reject the handshake, in which case the operation will eventually
-   * fail with %G_TLS_ERROR_CERTIFICATE_REQUIRED.
-   *
-   * Note that if this signal is emitted as part of asynchronous I/O
-   * in the main thread, then you should not attempt to interact with
-   * the user before returning from the signal handler. If you want to
-   * let the user choose a certificate to return, you would have to
-   * return %NULL from the signal handler on the first attempt, and
-   * then after the connection attempt returns a
-   * %G_TLS_ERROR_CERTIFICATE_REQUIRED, you can interact with the
-   * user, create a new connection, and call
-   * g_tls_connection_set_certificate() on it before handshaking (or
-   * just connect to the signal again and return the certificate the
-   * next time).
-   *
-   * If you are doing I/O in another thread, you do not
-   * need to worry about this, and can simply block in the signal
-   * handler until the UI thread returns an answer.
-   *
-   * Return value: the certificate to send to the peer, or %NULL to
-   * send no certificate. If you return a certificate, the signal
-   * emission will be stopped and further handlers will not be called.
-   *
-   * Since: 2.28
-   */
-  signals[NEED_CERTIFICATE] =
-    g_signal_new (I_("need-certificate"),
-		  G_TYPE_TLS_CONNECTION,
-		  G_SIGNAL_RUN_LAST,
-		  G_STRUCT_OFFSET (GTlsConnectionClass, need_certificate),
-		  g_tls_connection_certificate_accumulator, NULL,
-		  _gio_marshal_OBJECT__VOID,
-		  G_TYPE_TLS_CERTIFICATE, 0);
-
-  /**
    * GTlsConnection::accept-certificate:
    * @conn: a #GTlsConnection
    * @peer_cert: the peer's #GTlsCertificate
@@ -275,10 +224,20 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * certificate, and the certificate will only be accepted if a
    * handler returns %TRUE.
    *
-   * As with #GTlsConnection::need_certificate, you should not
-   * interact with the user during the signal emission if the signal
-   * was emitted as part of an asynchronous operation in the main
-   * thread.
+   * Note that if this signal is emitted as part of asynchronous I/O
+   * in the main thread, then you should not attempt to interact with
+   * the user before returning from the signal handler. If you want to
+   * let the user decide whether or not to accept the certificate, you
+   * would have to return %FALSE from the signal handler on the first
+   * attempt, and then after the connection attempt returns a
+   * %G_TLS_ERROR_HANDSHAKE, you can interact with the user, and if
+   * the user decides to accept the certificate, remember that fact,
+   * create a new connection, and return %TRUE from the signal handler
+   * the next time.
+   *
+   * If you are doing I/O in another thread, you do not
+   * need to worry about this, and can simply block in the signal
+   * handler until the UI thread returns an answer.
    *
    * Return value: %TRUE to accept @peer_cert (which will also
    * immediately end the signal emission). %FALSE to allow the signal
@@ -418,9 +377,23 @@ g_tls_connection_get_use_system_certdb (GTlsConnection *conn)
  * @certificate: the certificate to use for @conn
  *
  * This sets the certificate that @conn will present to its peer
- * during the TLS handshake. If this is not set,
- * #GTlsConnection::need-certificate will be emitted during the
- * handshake if needed.
+ * during the TLS handshake. For a #GTlsServerConnection, it is
+ * mandatory to set this, and that will normally be done at construct
+ * time.
+ *
+ * For a #GTlsClientConnection, this is optional. If a handshake fails
+ * with %G_TLS_ERROR_CERTIFICATE_REQUIRED, that means that the server
+ * requires a certificate, and if you try connecting again, you should
+ * call this method first. You can call
+ * g_tls_client_connection_get_accepted_cas() on the failed connection
+ * to get a list of Certificate Authorities that the server will
+ * accept certificates from.
+ *
+ * (It is also possible that a server will allow the connection with
+ * or without a certificate; in that case, if you don't provide a
+ * certificate, you can tell that the server requested one by the fact
+ * that g_tls_client_connection_get_accepted_cas() will return
+ * non-%NULL.)
  *
  * Since: 2.28
  */
@@ -442,8 +415,7 @@ g_tls_connection_set_certificate (GTlsConnection  *conn,
  * @conn: a #GTlsConnection
  *
  * Gets @conn's certificate, as set by
- * g_tls_connection_set_certificate() or returned from one of the
- * signals.
+ * g_tls_connection_set_certificate().
  *
  * Return value: @conn's certificate, or %NULL
  *
@@ -628,8 +600,7 @@ g_tls_connection_get_rehandshake_mode (GTlsConnection       *conn)
  * However, you may call g_tls_connection_handshake() later on to
  * renegotiate parameters (encryption methods, etc) with the client.
  *
- * #GTlsConnection::accept_certificate and
- * #GTlsConnection::need_certificate may be emitted during the
+ * #GTlsConnection::accept_certificate may be emitted during the
  * handshake.
  *
  * Return value: success or failure
@@ -713,42 +684,6 @@ g_tls_error_quark (void)
   return g_quark_from_static_string ("g-tls-error-quark");
 }
 
-
-static gboolean
-g_tls_connection_certificate_accumulator (GSignalInvocationHint *ihint,
-					  GValue                *return_accu,
-					  const GValue          *handler_return,
-					  gpointer               dummy)
-{
-  GTlsCertificate *cert;
-
-  cert = g_value_get_object (handler_return);
-  if (cert)
-    g_value_set_object (return_accu, cert);
-
-  return cert != NULL;
-}
-
-/**
- * g_tls_connection_emit_need_certificate:
- * @conn: a #GTlsConnection
- *
- * Used by #GTlsConnection implementations to emit the
- * #GTlsConnection::need-certificate signal.
- *
- * Returns: a new #GTlsCertificate
- *
- * Since: 2.28
- */
-GTlsCertificate *
-g_tls_connection_emit_need_certificate (GTlsConnection *conn)
-{
-  GTlsCertificate *cert = NULL;
-
-  g_signal_emit (conn, signals[NEED_CERTIFICATE], 0,
-		 &cert);
-  return cert;
-}
 
 /**
  * g_tls_connection_emit_accept_certificate:

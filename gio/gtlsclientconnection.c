@@ -131,8 +131,7 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    * A list of the distinguished names of the Certificate Authorities
    * that the server will accept client certificates signed by. If the
    * server requests a client certificate during the handshake, then
-   * this property will be set by the time the
-   * #GTlsConnection::need-certificate signal is emitted.
+   * this property will be set after the handshake completes.
    *
    * Since: 2.28
    */

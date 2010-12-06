@@ -3073,7 +3073,6 @@ g_tls_connection_handshake_finish
 <SUBSECTION>
 g_tls_connection_set_peer_certificate
 g_tls_connection_emit_accept_certificate
-g_tls_connection_emit_need_certificate
 <SUBSECTION Standard>
 GTlsConnectionClass
 GTlsConnectionPrivate
