@@ -688,12 +688,15 @@ introspectable_prelude (GMarkupParseContext *context,
 		    ParseState           new_state)
 {
   const gchar *introspectable_arg;
+  const gchar *shadowed_by;
   gboolean introspectable;
 
   g_assert (ctx->state != STATE_PASSTHROUGH);
 
   introspectable_arg = find_attribute ("introspectable", attribute_names, attribute_values);
-  introspectable = !(introspectable_arg && atoi (introspectable_arg) == 0);
+  shadowed_by = find_attribute ("shadowed-by", attribute_names, attribute_values);
+
+  introspectable = !(introspectable_arg && atoi (introspectable_arg) == 0) && shadowed_by == NULL;
 
   if (introspectable)
     state_switch (ctx, new_state);
