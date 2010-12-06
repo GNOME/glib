@@ -1019,7 +1019,9 @@ g_socket_client_connect_to_service (GSocketClient  *client,
  *
  * @uri may be any valid URI containing an "authority" (hostname/port)
  * component. If a port is not specified in the URI, @default_port
- * will be used.
+ * will be used. TLS will be negotiated if #GSocketClient:tls is %TRUE.
+ * (#GSocketClient does not know to automatically assume TLS for
+ * certain URI schemes.)
  *
  * Using this rather than g_socket_client_connect() or
  * g_socket_client_connect_to_host() allows #GSocketClient to
