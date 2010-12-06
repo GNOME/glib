@@ -1251,6 +1251,7 @@ typedef enum
 
 /**
  * GTlsError:
+ * @G_TLS_ERROR_UNAVAILABLE: No TLS provider is available
  * @G_TLS_ERROR_MISC: Miscellaneous TLS error
  * @G_TLS_ERROR_BAD_CERTIFICATE: A certificate could not be parsed
  * @G_TLS_ERROR_NOT_TLS: The TLS handshake failed because the
@@ -1270,6 +1271,7 @@ typedef enum
  * Since: 2.28
  */
 typedef enum {
+  G_TLS_ERROR_UNAVAILABLE,
   G_TLS_ERROR_MISC,
   G_TLS_ERROR_BAD_CERTIFICATE,
   G_TLS_ERROR_NOT_TLS,

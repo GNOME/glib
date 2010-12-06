@@ -150,7 +150,7 @@ g_dummy_tls_certificate_initable_init (GInitable       *initable,
 				       GCancellable    *cancellable,
 				       GError         **error)
 {
-  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_MISC,
+  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_UNAVAILABLE,
 		       _("TLS support is not available"));
   return FALSE;
 }
@@ -262,7 +262,7 @@ g_dummy_tls_connection_initable_init (GInitable       *initable,
 				      GCancellable    *cancellable,
 				      GError         **error)
 {
-  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_MISC,
+  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_UNAVAILABLE,
 		       _("TLS support is not available"));
   return FALSE;
 }
