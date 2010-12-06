@@ -465,7 +465,7 @@ g_object_info_find_method_using_interfaces (GIObjectInfo  *info,
     }
   if (implementor)
     *implementor = implementor_result;
-  else
+  else if (implementor_result != NULL)
     g_base_info_unref ((GIBaseInfo*) implementor_result);
   return result;
 }
