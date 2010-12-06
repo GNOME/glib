@@ -453,13 +453,12 @@ g_tls_connection_get_peer_certificate (GTlsConnection *conn)
  * @conn: a #GTlsConnection
  * @require_close_notify: whether or not to require close notification
  *
- * Sets whether or not @conn requires a proper TLS close notification
- * before closing the connection. If this is %TRUE (the default), then
- * calling g_io_stream_close() on @conn will send a TLS close
- * notification, and likewise it will expect to receive a close
- * notification before the connection is closed when reading, and will
- * return a %G_TLS_ERROR_EOF error if the connection is closed without
- * proper notification (since this may indicate a network error, or
+ * Sets whether or not @conn expects a proper TLS close notification
+ * before the connection is closed. If this is %TRUE (the default),
+ * then @conn will expect to receive a TLS close notification from its
+ * peer before the connection is closed, and will return a
+ * %G_TLS_ERROR_EOF error if the connection is closed without proper
+ * notification (since this may indicate a network error, or
  * man-in-the-middle attack).
  *
  * In some protocols, the application will know whether or not the
@@ -468,9 +467,18 @@ g_tls_connection_get_peer_certificate (GTlsConnection *conn)
  * somehow self-delimiting); in this case, the close notify is
  * redundant and sometimes omitted. (TLS 1.1 explicitly allows this;
  * in TLS 1.0 it is technically an error, but often done anyway.) You
- * can use g_tls_connection_set_require_close_notify() to tell @conn to
- * allow an "unannounced" connection close, in which case it is up to
- * the application to check that the data has been fully received.
+ * can use g_tls_connection_set_require_close_notify() to tell @conn
+ * to allow an "unannounced" connection close, in which case the close
+ * will show up as a 0-length read, as in a non-TLS
+ * #GSocketConnection, and it is up to the application to check that
+ * the data has been fully received.
+ *
+ * Note that this only affects the behavior when the peer closes the
+ * connection; when the application calls g_io_stream_close() itself
+ * on @conn, this will send a close notification regardless of the
+ * setting of this property. If you explicitly want to do an unclean
+ * close, you can close @conn's #GTlsConnection:base-io-stream rather
+ * than closing @conn itself.
  *
  * Since: 2.28
  */
@@ -489,8 +497,8 @@ g_tls_connection_set_require_close_notify (GTlsConnection *conn,
  * g_tls_connection_get_require_close_notify:
  * @conn: a #GTlsConnection
  *
- * Tests whether or not @conn requires a proper TLS close notification
- * before closing the connection. See
+ * Tests whether or not @conn expects a proper TLS close notification
+ * when the connection is closed. See
  * g_tls_connection_set_require_close_notify() for details.
  *
  * Return value: %TRUE if @conn requires a proper TLS close
