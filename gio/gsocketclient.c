@@ -864,15 +864,16 @@ g_socket_client_connect (GSocketClient       *client,
 
       if (connection && client->priv->tls)
 	{
-	  GTlsClientConnection *tlsconn;
+	  GIOStream *tlsconn;
 
 	  tlsconn = g_tls_client_connection_new (connection, connectable, &last_error);
 	  g_object_unref (connection);
-	  connection = (GIOStream *)tlsconn;
+	  connection = tlsconn;
 
 	  if (tlsconn)
 	    {
-	      g_tls_client_connection_set_validation_flags (tlsconn, client->priv->tls_validation_flags);
+	      g_tls_client_connection_set_validation_flags (G_TLS_CLIENT_CONNECTION (tlsconn),
+                                                            client->priv->tls_validation_flags);
 	      if (!g_tls_connection_handshake (G_TLS_CONNECTION (tlsconn),
 					       cancellable, &last_error))
 		{
@@ -1168,7 +1169,7 @@ g_socket_client_tls_handshake_callback (GObject      *object,
 static void
 g_socket_client_tls_handshake (GSocketClientAsyncConnectData *data)
 {
-  GTlsClientConnection *tlsconn;
+  GIOStream *tlsconn;
 
   if (!data->client->priv->tls)
     {
@@ -1181,7 +1182,8 @@ g_socket_client_tls_handshake (GSocketClientAsyncConnectData *data)
 					 &data->last_error);
   if (tlsconn)
     {
-      g_tls_client_connection_set_validation_flags (tlsconn, data->client->priv->tls_validation_flags);
+      g_tls_client_connection_set_validation_flags (G_TLS_CLIENT_CONNECTION (tlsconn),
+                                                    data->client->priv->tls_validation_flags);
       g_tls_connection_handshake_async (G_TLS_CONNECTION (tlsconn),
 					G_PRIORITY_DEFAULT,
 					data->cancellable,

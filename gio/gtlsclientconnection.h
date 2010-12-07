@@ -52,7 +52,7 @@ struct _GTlsClientConnectionInterface
 
 GType                 g_tls_client_connection_get_type             (void) G_GNUC_CONST;
 
-GTlsClientConnection *g_tls_client_connection_new                  (GIOStream               *base_io_stream,
+GIOStream *           g_tls_client_connection_new                  (GIOStream               *base_io_stream,
 								    GSocketConnectable      *server_identity,
 								    GError                 **error);
 

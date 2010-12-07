@@ -211,7 +211,7 @@ main (int argc,
 
   if (tlscert)
     {
-      GTlsServerConnection *tls_conn;
+      GIOStream *tls_conn;
 
       tls_conn = g_tls_server_connection_new (connection, tlscert, &error);
       if (!tls_conn)
@@ -230,7 +230,7 @@ main (int argc,
        }
 
       g_object_unref (connection);
-      connection = G_IO_STREAM (tls_conn);
+      connection = tls_conn;
     }
 
   if (connection)

@@ -158,7 +158,7 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
  *
  * Since: 2.28
  */
-GTlsClientConnection *
+GIOStream *
 g_tls_client_connection_new (GIOStream           *base_io_stream,
 			     GSocketConnectable  *server_identity,
 			     GError             **error)
@@ -172,7 +172,7 @@ g_tls_client_connection_new (GIOStream           *base_io_stream,
 			 "base-io-stream", base_io_stream,
 			 "server-identity", server_identity,
 			 NULL);
-  return G_TLS_CLIENT_CONNECTION (conn);
+  return G_IO_STREAM (conn);
 }
 
 /**
