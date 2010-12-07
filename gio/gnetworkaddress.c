@@ -781,7 +781,8 @@ typedef struct {
   GSocketAddressEnumerator parent_instance;
 
   GNetworkAddress *addr;
-  GList *a;
+  GList *addresses;
+  GList *next;
 } GNetworkAddressAddressEnumerator;
 
 typedef struct {
@@ -811,31 +812,34 @@ g_network_address_address_enumerator_next (GSocketAddressEnumerator  *enumerator
     G_NETWORK_ADDRESS_ADDRESS_ENUMERATOR (enumerator);
   GSocketAddress *sockaddr;
 
-  if (!addr_enum->addr->priv->sockaddrs)
+  if (addr_enum->addresses == NULL)
     {
-      GResolver *resolver = g_resolver_get_default ();
-      GList *addresses;
+      if (!addr_enum->addr->priv->sockaddrs)
+        {
+          GResolver *resolver = g_resolver_get_default ();
+          GList *addresses;
 
-      addresses = g_resolver_lookup_by_name (resolver,
-                                             addr_enum->addr->priv->hostname,
-                                             cancellable, error);
-      g_object_unref (resolver);
+          addresses = g_resolver_lookup_by_name (resolver,
+                                                 addr_enum->addr->priv->hostname,
+                                                 cancellable, error);
+          g_object_unref (resolver);
 
-      if (!addresses)
-        return NULL;
+          if (!addresses)
+            return NULL;
 
-      g_network_address_set_addresses (addr_enum->addr, addresses);
-      addr_enum->a = addr_enum->addr->priv->sockaddrs;
+          g_network_address_set_addresses (addr_enum->addr, addresses);
+        }
+          
+      addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
+      addr_enum->next = addr_enum->addresses;
     }
 
-  if (!addr_enum->a)
+  if (addr_enum->next == NULL)
     return NULL;
-  else
-    {
-      sockaddr = addr_enum->a->data;
-      addr_enum->a = addr_enum->a->next;
-      return g_object_ref (sockaddr);
-    }
+
+  sockaddr = addr_enum->next->data;
+  addr_enum->next = addr_enum->next->next;
+  return g_object_ref (sockaddr);
 }
 
 static void
@@ -850,23 +854,20 @@ got_addresses (GObject      *source_object,
   GList *addresses;
   GError *error = NULL;
 
-  addresses = g_resolver_lookup_by_name_finish (resolver, result, &error);
   if (!addr_enum->addr->priv->sockaddrs)
     {
+      addresses = g_resolver_lookup_by_name_finish (resolver, result, &error);
+
       if (error)
-        {
-          g_simple_async_result_take_error (simple, error);
-        }
+        g_simple_async_result_take_error (simple, error);
       else
-        {
-          g_network_address_set_addresses (addr_enum->addr, addresses);
-          addr_enum->a = addr_enum->addr->priv->sockaddrs;
-        }
+        g_network_address_set_addresses (addr_enum->addr, addresses);
     }
-  else if (error)
-    g_error_free (error);
 
   g_object_unref (resolver);
+
+  addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
+  addr_enum->next = addr_enum->addresses;
 
   g_simple_async_result_complete (simple);
   g_object_unref (simple);
@@ -886,21 +887,26 @@ g_network_address_address_enumerator_next_async (GSocketAddressEnumerator  *enum
                                       callback, user_data,
                                       g_network_address_address_enumerator_next_async);
 
-  if (!addr_enum->addr->priv->sockaddrs)
+  if (addr_enum->addresses == NULL)
     {
-      GResolver *resolver = g_resolver_get_default ();
+      if (!addr_enum->addr->priv->sockaddrs)
+        {
+          GResolver *resolver = g_resolver_get_default ();
 
-      g_simple_async_result_set_op_res_gpointer (simple, g_object_ref (addr_enum), g_object_unref);
-      g_resolver_lookup_by_name_async (resolver,
-                                       addr_enum->addr->priv->hostname,
-                                       cancellable,
-                                       got_addresses, simple);
+          g_simple_async_result_set_op_res_gpointer (simple, g_object_ref (addr_enum), g_object_unref);
+          g_resolver_lookup_by_name_async (resolver,
+                                           addr_enum->addr->priv->hostname,
+                                           cancellable,
+                                           got_addresses, simple);
+          return;
+        }
+
+      addr_enum->addresses = addr_enum->addr->priv->sockaddrs;
+      addr_enum->next = addr_enum->addresses;
     }
-  else
-    {
-      g_simple_async_result_complete_in_idle (simple);
-      g_object_unref (simple);
-    }
+
+  g_simple_async_result_complete_in_idle (simple);
+  g_object_unref (simple);
 }
 
 static GSocketAddress *
@@ -915,12 +921,12 @@ g_network_address_address_enumerator_next_finish (GSocketAddressEnumerator  *enu
 
   if (g_simple_async_result_propagate_error (simple, error))
     return NULL;
-  else if (!addr_enum->a)
+  else if (!addr_enum->next)
     return NULL;
   else
     {
-      sockaddr = addr_enum->a->data;
-      addr_enum->a = addr_enum->a->next;
+      sockaddr = addr_enum->next->data;
+      addr_enum->next = addr_enum->next->next;
       return g_object_ref (sockaddr);
     }
 }
