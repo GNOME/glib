@@ -199,10 +199,11 @@ g_tls_client_connection_get_validation_flags (GTlsClientConnection *conn)
 /**
  * g_tls_client_connection_set_validation_flags:
  * @conn: the #GTlsClientConnection
- * @flags: the #GTlsCertificatelags to use
+ * @flags: the #GTlsCertificateFlags to use
  *
  * Sets @conn's validation flags, to override the default set of
- * checks performed when validating a server certificate.
+ * checks performed when validating a server certificate. By default,
+ * %G_TLS_CERTIFICATE_VALIDATE_ALL is used.
  *
  * Since: 2.28
  */
