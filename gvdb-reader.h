@@ -62,7 +62,8 @@ typedef void          (*GvdbWalkValueFunc)                              (const g
 typedef gboolean      (*GvdbWalkOpenFunc)                               (const gchar       *name,
                                                                          gsize              name_len,
                                                                          gpointer           user_data);
-typedef void          (*GvdbWalkCloseFunc)                              (gpointer           user_data);
+typedef void          (*GvdbWalkCloseFunc)                              (gsize              name_len,
+                                                                         gpointer           user_data);
 
 void                    gvdb_table_walk                                 (GvdbTable         *table,
                                                                          const gchar       *key,
