@@ -901,7 +901,7 @@ g_queue_remove (GQueue        *queue,
  * @queue: a #GQueue
  * @data: data to remove
  * 
- * Remove all elemeents in @queue which contains @data.
+ * Remove all elements whose data equals @data from @queue.
  * 
  * Since: 2.4
  **/

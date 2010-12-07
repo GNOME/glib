@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-01 08:14+0200\n"
-"PO-Revision-Date: 2010-11-01 08:16+0200\n"
+"POT-Creation-Date: 2010-12-05 13:17+0200\n"
+"PO-Revision-Date: 2010-12-05 13:18+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "MIME-Version: 1.0\n"
@@ -1369,19 +1369,19 @@ msgstr "Value '%s' cannot be interpreted as a boolean."
 
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
-#: ../gio/ginputstream.c:556 ../gio/ginputstream.c:681
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:725
+#: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
+#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:726
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Too large count value passed to %s"
 
-#: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:891
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1200
+#: ../gio/gbufferedinputstream.c:880 ../gio/ginputstream.c:888
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1197
 msgid "Stream is already closed"
 msgstr "Stream is already closed"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1642
-#: ../gio/gdbusconnection.c:1731 ../gio/gdbusconnection.c:1917
+#: ../gio/gcancellable.c:433 ../gio/gdbusconnection.c:1636
+#: ../gio/gdbusconnection.c:1725 ../gio/gdbusconnection.c:1911
 #: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:811
 #: ../gio/gsimpleasyncresult.c:837
 msgid "Operation was cancelled"
@@ -1399,7 +1399,7 @@ msgstr "Incomplete multibyte sequence in input"
 msgid "Not enough space in destination"
 msgstr "Not enough space in destination"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:831
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:832
 msgid "Cancellable initialization not supported"
 msgstr "Cancellable initialization not supported"
 
@@ -1534,35 +1534,35 @@ msgstr "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Error writing contents of nonce file `%s' to stream:"
 
-#: ../gio/gdbusaddress.c:942
+#: ../gio/gdbusaddress.c:939
 msgid "The given address is empty"
 msgstr "The given address is empty"
 
-#: ../gio/gdbusaddress.c:1011
+#: ../gio/gdbusaddress.c:1008
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Cannot spawn a message bus without a machine-id: "
 
-#: ../gio/gdbusaddress.c:1048
+#: ../gio/gdbusaddress.c:1045
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Error spawning command line `%s': "
 
-#: ../gio/gdbusaddress.c:1059
+#: ../gio/gdbusaddress.c:1056
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Abnormal program termination spawning command line `%s': %s"
 
-#: ../gio/gdbusaddress.c:1073
+#: ../gio/gdbusaddress.c:1070
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "Command line `%s' exited with non-zero exit status %d: %s"
 
-#: ../gio/gdbusaddress.c:1146
+#: ../gio/gdbusaddress.c:1143
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Cannot determine session bus address (not implemented for this OS)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6158
+#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6167
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1571,7 +1571,7 @@ msgstr ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6167
+#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6176
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1579,7 +1579,7 @@ msgstr ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 
-#: ../gio/gdbusaddress.c:1264
+#: ../gio/gdbusaddress.c:1261
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Unknown bus type %d"
@@ -1679,88 +1679,88 @@ msgstr "Error opening keyring `%s' for writing: "
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Additionally, releasing the lock for `%s' also failed: %s) "
 
-#: ../gio/gdbusconnection.c:1151 ../gio/gdbusconnection.c:1380
-#: ../gio/gdbusconnection.c:1419 ../gio/gdbusconnection.c:1742
+#: ../gio/gdbusconnection.c:1148 ../gio/gdbusconnection.c:1374
+#: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1736
 msgid "The connection is closed"
 msgstr "The connection is closed"
 
-#: ../gio/gdbusconnection.c:1686
+#: ../gio/gdbusconnection.c:1680
 msgid "Timeout was reached"
 msgstr "Timeout was reached"
 
-#: ../gio/gdbusconnection.c:2305
+#: ../gio/gdbusconnection.c:2299
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Unsupported flags encountered when constructing a client-side connection"
 
-#: ../gio/gdbusconnection.c:3739 ../gio/gdbusconnection.c:4057
+#: ../gio/gdbusconnection.c:3751 ../gio/gdbusconnection.c:4069
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 
-#: ../gio/gdbusconnection.c:3811
+#: ../gio/gdbusconnection.c:3823
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "Error setting property `%s': Expected type `%s' but got `%s'"
 
-#: ../gio/gdbusconnection.c:3906
+#: ../gio/gdbusconnection.c:3918
 #, c-format
 msgid "No such property `%s'"
 msgstr "No such property `%s'"
 
-#: ../gio/gdbusconnection.c:3918
+#: ../gio/gdbusconnection.c:3930
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Property `%s' is not readable"
 
-#: ../gio/gdbusconnection.c:3929
+#: ../gio/gdbusconnection.c:3941
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Property `%s' is not writable"
 
-#: ../gio/gdbusconnection.c:3999 ../gio/gdbusconnection.c:5592
+#: ../gio/gdbusconnection.c:4011 ../gio/gdbusconnection.c:5601
 #, c-format
 msgid "No such interface `%s'"
 msgstr "No such interface `%s'"
 
-#: ../gio/gdbusconnection.c:4187
+#: ../gio/gdbusconnection.c:4199
 msgid "No such interface"
 msgstr "No such interface"
 
-#: ../gio/gdbusconnection.c:4403 ../gio/gdbusconnection.c:6108
+#: ../gio/gdbusconnection.c:4415 ../gio/gdbusconnection.c:6117
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No such interface `%s' on object at path %s"
 
-#: ../gio/gdbusconnection.c:4455
+#: ../gio/gdbusconnection.c:4467
 #, c-format
 msgid "No such method `%s'"
 msgstr "No such method `%s'"
 
-#: ../gio/gdbusconnection.c:4486
+#: ../gio/gdbusconnection.c:4498
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Type of message, `%s', does not match expected type `%s'"
 
-#: ../gio/gdbusconnection.c:4705
+#: ../gio/gdbusconnection.c:4717
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "An object is already exported for the interface %s at %s"
 
-#: ../gio/gdbusconnection.c:4899
+#: ../gio/gdbusconnection.c:4911
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Method `%s' returned type `%s', but expected `%s'"
 
-#: ../gio/gdbusconnection.c:5703
+#: ../gio/gdbusconnection.c:5712
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Method `%s' on interface `%s' with signature `%s' does not exist"
 
-#: ../gio/gdbusconnection.c:5821
+#: ../gio/gdbusconnection.c:5830
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "A subtree is already exported for %s"
@@ -1931,13 +1931,13 @@ msgstr "Error return with empty body"
 msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr "Type of return value is incorrect, got `%s', expected `%s'"
 
-#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:2995
-#: ../gio/gsocket.c:3076
+#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:3023
+#: ../gio/gsocket.c:3104
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Error sending message: %s"
 
-#: ../gio/gdbusprivate.c:1759
+#: ../gio/gdbusprivate.c:1756
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Unable to load /var/lib/dbus/machine-id: "
 
@@ -1950,17 +1950,17 @@ msgstr ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
 
-#: ../gio/gdbusproxy.c:1235
+#: ../gio/gdbusproxy.c:1234
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Error calling StartServiceByName for %s: "
 
-#: ../gio/gdbusproxy.c:1256
+#: ../gio/gdbusproxy.c:1255
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Unexpected reply %d from StartServiceByName(\"%s\") method"
 
-#: ../gio/gdbusproxy.c:2316 ../gio/gdbusproxy.c:2474
+#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2155,34 +2155,34 @@ msgstr "Object path to monitor"
 msgid "Monitor a remote object."
 msgstr "corrupted object"
 
-#: ../gio/gdesktopappinfo.c:467 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:471 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Unnamed"
 
-#: ../gio/gdesktopappinfo.c:751
+#: ../gio/gdesktopappinfo.c:755
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop file didn't specify Exec field"
 
-#: ../gio/gdesktopappinfo.c:944
+#: ../gio/gdesktopappinfo.c:948
 msgid "Unable to find terminal required for application"
 msgstr "Unable to find terminal required for application"
 
-#: ../gio/gdesktopappinfo.c:1153
+#: ../gio/gdesktopappinfo.c:1157
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Can't create user application configuration folder %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1157
+#: ../gio/gdesktopappinfo.c:1161
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Can't create user MIME configuration folder %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1565
+#: ../gio/gdesktopappinfo.c:1569
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Can't create user desktop file %s"
 
-#: ../gio/gdesktopappinfo.c:1679
+#: ../gio/gdesktopappinfo.c:1683
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Custom definition for %s"
@@ -2241,8 +2241,8 @@ msgstr "Expected a GEmblem for GEmblemedIcon"
 #: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3861
 #: ../gio/gfile.c:4263 ../gio/gfile.c:4349 ../gio/gfile.c:4438
 #: ../gio/gfile.c:4536 ../gio/gfile.c:4623 ../gio/gfile.c:4717
-#: ../gio/gfile.c:5047 ../gio/gfile.c:5327 ../gio/gfile.c:5396
-#: ../gio/gfile.c:6988 ../gio/gfile.c:7078 ../gio/gfile.c:7164
+#: ../gio/gfile.c:5038 ../gio/gfile.c:5305 ../gio/gfile.c:5370
+#: ../gio/gfile.c:6944 ../gio/gfile.c:7034 ../gio/gfile.c:7120
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operation not supported"
@@ -2302,11 +2302,11 @@ msgstr "Trash not supported"
 msgid "File names cannot contain '%c'"
 msgstr "File names cannot contain '%c'"
 
-#: ../gio/gfile.c:6045 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6003 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "volume doesn't implement mount"
 
-#: ../gio/gfile.c:6156
+#: ../gio/gfile.c:6114
 msgid "No application is registered as handling this file"
 msgstr "No application is registered as handling this file"
 
@@ -2332,22 +2332,22 @@ msgstr "Can't handle version %d of GFileIcon encoding"
 msgid "Malformed input data for GFileIcon"
 msgstr "Malformed input data for GFileIcon"
 
-#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:421
+#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:420
 #: ../gio/gfileiostream.c:170 ../gio/gfileoutputstream.c:169
-#: ../gio/gfileoutputstream.c:524
+#: ../gio/gfileoutputstream.c:523
 msgid "Stream doesn't support query_info"
 msgstr "Stream doesn't support query_info"
 
-#: ../gio/gfileinputstream.c:336 ../gio/gfileiostream.c:388
-#: ../gio/gfileoutputstream.c:382
+#: ../gio/gfileinputstream.c:335 ../gio/gfileiostream.c:387
+#: ../gio/gfileoutputstream.c:381
 msgid "Seek not supported on stream"
 msgstr "Seek not supported on stream"
 
-#: ../gio/gfileinputstream.c:380
+#: ../gio/gfileinputstream.c:379
 msgid "Truncate not allowed on input stream"
 msgstr "Truncate not allowed on input stream"
 
-#: ../gio/gfileiostream.c:464 ../gio/gfileoutputstream.c:458
+#: ../gio/gfileiostream.c:463 ../gio/gfileoutputstream.c:457
 msgid "Truncate not supported on stream"
 msgstr "Truncate not supported on stream"
 
@@ -2395,8 +2395,8 @@ msgstr "Input stream doesn't implement read"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:901 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1210
+#: ../gio/ginputstream.c:898 ../gio/giostream.c:316
+#: ../gio/goutputstream.c:1207
 msgid "Stream has outstanding operation"
 msgstr "Stream has outstanding operation"
 
@@ -2554,56 +2554,56 @@ msgstr "the path of a list must end with ':/'"
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> already specified"
 
-#: ../gio/glib-compile-schemas.c:1385
+#: ../gio/glib-compile-schemas.c:1387
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Element <%s> not allowed inside <%s>"
 
-#: ../gio/glib-compile-schemas.c:1389
+#: ../gio/glib-compile-schemas.c:1391
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Element <%s> not allowed at toplevel"
 
-#: ../gio/glib-compile-schemas.c:1483
+#: ../gio/glib-compile-schemas.c:1485
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "text may not appear inside <%s>"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1652 ../gio/glib-compile-schemas.c:1723
-#: ../gio/glib-compile-schemas.c:1799
+#: ../gio/glib-compile-schemas.c:1654 ../gio/glib-compile-schemas.c:1725
+#: ../gio/glib-compile-schemas.c:1801
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "--strict was specified; exiting.\n"
 
-#: ../gio/glib-compile-schemas.c:1660
+#: ../gio/glib-compile-schemas.c:1662
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "This entire file has been ignored.\n"
 
-#: ../gio/glib-compile-schemas.c:1719
+#: ../gio/glib-compile-schemas.c:1721
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "Ignoring this file.\n"
 
-#: ../gio/glib-compile-schemas.c:1759
+#: ../gio/glib-compile-schemas.c:1761
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr "No such key `%s' in schema `%s' as specified in override file `%s'"
 
-#: ../gio/glib-compile-schemas.c:1765 ../gio/glib-compile-schemas.c:1823
-#: ../gio/glib-compile-schemas.c:1851
+#: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
+#: ../gio/glib-compile-schemas.c:1853
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; ignoring override for this key.\n"
 
-#: ../gio/glib-compile-schemas.c:1769 ../gio/glib-compile-schemas.c:1827
-#: ../gio/glib-compile-schemas.c:1855
+#: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
+#: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr " and --strict was specified; exiting.\n"
 
-#: ../gio/glib-compile-schemas.c:1785
+#: ../gio/glib-compile-schemas.c:1787
 #, c-format
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %"
@@ -2612,12 +2612,12 @@ msgstr ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %"
 "s.  "
 
-#: ../gio/glib-compile-schemas.c:1795
+#: ../gio/glib-compile-schemas.c:1797
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "Ignoring override for this key.\n"
 
-#: ../gio/glib-compile-schemas.c:1813
+#: ../gio/glib-compile-schemas.c:1815
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -2626,7 +2626,7 @@ msgstr ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 
-#: ../gio/glib-compile-schemas.c:1841
+#: ../gio/glib-compile-schemas.c:1843
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -2635,31 +2635,31 @@ msgstr ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 
-#: ../gio/glib-compile-schemas.c:1895
+#: ../gio/glib-compile-schemas.c:1897
 msgid "where to store the gschemas.compiled file"
 msgstr "where to store the gschemas.compiled file"
 
-#: ../gio/glib-compile-schemas.c:1895 ../gio/glib-compile-schemas.c:1908
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1910
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
-#: ../gio/glib-compile-schemas.c:1896
+#: ../gio/glib-compile-schemas.c:1898
 msgid "Abort on any errors in schemas"
 msgstr "Abort on any errors in schemas"
 
-#: ../gio/glib-compile-schemas.c:1897
+#: ../gio/glib-compile-schemas.c:1899
 msgid "Do not write the gschema.compiled file"
 msgstr "Do not write the gschema.compiled file"
 
-#: ../gio/glib-compile-schemas.c:1898
+#: ../gio/glib-compile-schemas.c:1900
 msgid "This option will be removed soon."
 msgstr "This option will be removed soon."
 
-#: ../gio/glib-compile-schemas.c:1899
+#: ../gio/glib-compile-schemas.c:1901
 msgid "Do not enforce key name restrictions"
 msgstr "Do not enforce key name restrictions"
 
-#: ../gio/glib-compile-schemas.c:1911
+#: ../gio/glib-compile-schemas.c:1913
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2669,22 +2669,22 @@ msgstr ""
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1927
+#: ../gio/glib-compile-schemas.c:1929
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "You should give exactly one directory name\n"
 
-#: ../gio/glib-compile-schemas.c:1966
+#: ../gio/glib-compile-schemas.c:1968
 #, c-format
 msgid "No schema files found: "
 msgstr "No schema files found: "
 
-#: ../gio/glib-compile-schemas.c:1969
+#: ../gio/glib-compile-schemas.c:1971
 #, c-format
 msgid "doing nothing.\n"
 msgstr "doing nothing.\n"
 
-#: ../gio/glib-compile-schemas.c:1972
+#: ../gio/glib-compile-schemas.c:1974
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "removed existing output file.\n"
@@ -3303,122 +3303,122 @@ msgstr "  VALUE     The value to set\n"
 msgid "Empty schema name given"
 msgstr "Empty schema name given"
 
-#: ../gio/gsocket.c:276
+#: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
 msgstr "Invalid socket, not initialized"
 
-#: ../gio/gsocket.c:283
+#: ../gio/gsocket.c:284
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Invalid socket, initialization failed due to: %s"
 
-#: ../gio/gsocket.c:291
+#: ../gio/gsocket.c:292
 msgid "Socket is already closed"
 msgstr "Socket is already closed"
 
-#: ../gio/gsocket.c:299 ../gio/gsocket.c:2737 ../gio/gsocket.c:2781
+#: ../gio/gsocket.c:300 ../gio/gsocket.c:2765 ../gio/gsocket.c:2809
 msgid "Socket I/O timed out"
 msgstr "Socket I/O timed out"
 
-#: ../gio/gsocket.c:442
+#: ../gio/gsocket.c:443
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "creating GSocket from fd: %s"
 
-#: ../gio/gsocket.c:476 ../gio/gsocket.c:492 ../gio/gsocket.c:2134
+#: ../gio/gsocket.c:477 ../gio/gsocket.c:493 ../gio/gsocket.c:2135
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Unable to create socket: %s"
 
-#: ../gio/gsocket.c:476
+#: ../gio/gsocket.c:477
 msgid "Unknown protocol was specified"
 msgstr "Unknown protocol was specified"
 
-#: ../gio/gsocket.c:1245
+#: ../gio/gsocket.c:1246
 #, c-format
 msgid "could not get local address: %s"
 msgstr "could not get local address: %s"
 
-#: ../gio/gsocket.c:1288
+#: ../gio/gsocket.c:1289
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "could not get remote address: %s"
 
-#: ../gio/gsocket.c:1349
+#: ../gio/gsocket.c:1350
 #, c-format
 msgid "could not listen: %s"
 msgstr "could not listen: %s"
 
-#: ../gio/gsocket.c:1423
+#: ../gio/gsocket.c:1424
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Error binding to address: %s"
 
-#: ../gio/gsocket.c:1543
+#: ../gio/gsocket.c:1544
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Error accepting connection: %s"
 
-#: ../gio/gsocket.c:1660
+#: ../gio/gsocket.c:1661
 msgid "Error connecting: "
 msgstr "Error connecting: "
 
-#: ../gio/gsocket.c:1665
+#: ../gio/gsocket.c:1666
 msgid "Connection in progress"
 msgstr "Connection in progress"
 
-#: ../gio/gsocket.c:1672
+#: ../gio/gsocket.c:1673
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Error connecting: %s"
 
-#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3500
+#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3528
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Unable to get pending error: %s"
 
-#: ../gio/gsocket.c:1847
+#: ../gio/gsocket.c:1848
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Error receiving data: %s"
 
-#: ../gio/gsocket.c:2021
+#: ../gio/gsocket.c:2022
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Error sending data: %s"
 
-#: ../gio/gsocket.c:2213
+#: ../gio/gsocket.c:2214
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Error closing socket: %s"
 
-#: ../gio/gsocket.c:2730
+#: ../gio/gsocket.c:2758
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Waiting for socket condition: %s"
 
-#: ../gio/gsocket.c:3020
+#: ../gio/gsocket.c:3048
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage not supported on windows"
 
-#: ../gio/gsocket.c:3279 ../gio/gsocket.c:3420
+#: ../gio/gsocket.c:3307 ../gio/gsocket.c:3448
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Error receiving message: %s"
 
-#: ../gio/gsocket.c:3515
+#: ../gio/gsocket.c:3543
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials not implemented for this OS"
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1153
+#: ../gio/gsocketclient.c:798 ../gio/gsocketclient.c:1364
 msgid "Unknown error on connect"
 msgstr "Unknown error on connect"
 
-#: ../gio/gsocketclient.c:711 ../gio/gsocketclient.c:1038
+#: ../gio/gsocketclient.c:836 ../gio/gsocketclient.c:1248
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr "Trying to proxy over non-TCP connection is not supported."
 
-#: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1061
+#: ../gio/gsocketclient.c:858 ../gio/gsocketclient.c:1273
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Proxy protocol '%s' is not supported."
@@ -3465,9 +3465,11 @@ msgstr "The SOCKSv5 proxy requires authentication."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
 msgstr ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
 
 #: ../gio/gsocks5proxy.c:208
 #, c-format
@@ -3524,6 +3526,18 @@ msgstr "Unkown SOCKSv5 proxy error."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Can't handle version %d of GThemedIcon encoding"
 
+#: ../gio/gtlscertificate.c:270
+msgid "No PEM-encoded certificate found"
+msgstr "No PEM-encoded certificate found"
+
+#: ../gio/gtlscertificate.c:279
+msgid "Could not parse PEM-encoded certificate"
+msgstr "Could not parse PEM-encoded certificate"
+
+#: ../gio/gtlscertificate.c:300
+msgid "Could not parse PEM-encoded private key"
+msgstr "Could not parse PEM-encoded private key"
+
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
 msgid "Expecting 1 control message, got %d"
@@ -3576,14 +3590,14 @@ msgstr ""
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Error while disabling SO_PASSCRED: %s"
 
-#: ../gio/gunixinputstream.c:353 ../gio/gunixinputstream.c:373
-#: ../gio/gunixinputstream.c:451
+#: ../gio/gunixinputstream.c:368 ../gio/gunixinputstream.c:388
+#: ../gio/gunixinputstream.c:466
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Error reading from unix: %s"
 
-#: ../gio/gunixinputstream.c:406 ../gio/gunixinputstream.c:589
-#: ../gio/gunixoutputstream.c:393 ../gio/gunixoutputstream.c:545
+#: ../gio/gunixinputstream.c:421 ../gio/gunixinputstream.c:601
+#: ../gio/gunixoutputstream.c:407 ../gio/gunixoutputstream.c:556
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Error closing unix: %s"
@@ -3592,8 +3606,8 @@ msgstr "Error closing unix: %s"
 msgid "Filesystem root"
 msgstr "Filesystem root"
 
-#: ../gio/gunixoutputstream.c:339 ../gio/gunixoutputstream.c:360
-#: ../gio/gunixoutputstream.c:438
+#: ../gio/gunixoutputstream.c:353 ../gio/gunixoutputstream.c:374
+#: ../gio/gunixoutputstream.c:452
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Error writing to unix: %s"

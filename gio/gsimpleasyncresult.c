@@ -533,7 +533,7 @@ g_simple_async_result_set_op_res_gpointer (GSimpleAsyncResult *simple,
 }
 
 /**
- * g_simple_async_result_get_op_res_gpointer: (skip):
+ * g_simple_async_result_get_op_res_gpointer: (skip)
  * @simple: a #GSimpleAsyncResult.
  *
  * Gets a pointer result as returned by the asynchronous function.
@@ -904,6 +904,8 @@ g_simple_async_result_run_in_thread (GSimpleAsyncResult     *simple,
  * _finish function from which this function is called).
  *
  * Returns: #TRUE if all checks passed or #FALSE if any failed.
+ *
+ * Since: 2.20
  **/
 gboolean
 g_simple_async_result_is_valid (GAsyncResult *result,

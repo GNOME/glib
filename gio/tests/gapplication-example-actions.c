@@ -13,8 +13,6 @@ activate_action (GAction  *action,
                  GVariant *parameter,
                  gpointer  data)
 {
-  GApplication *application = data;
-
   g_print ("action %s activated\n", g_action_get_name (action));
 }
 
@@ -23,7 +21,6 @@ activate_toggle_action (GAction  *action,
                         GVariant *parameter,
                         gpointer  data)
 {
-  GApplication *application = data;
   GVariant *state;
   gboolean b;
 

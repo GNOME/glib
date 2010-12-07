@@ -497,7 +497,9 @@ g_string_new_len (const gchar *init,
  * @free_segment: if %TRUE the actual character data is freed as well
  *
  * Frees the memory allocated for the #GString.
- * If @free_segment is %TRUE it also frees the character data.
+ * If @free_segment is %TRUE it also frees the character data.  If 
+ * it's %FALSE, the caller gains ownership of the buffer and must
+ * free it after use with g_free().
  *
  * Returns: the character data of @string 
  *          (i.e. %NULL if @free_segment is %TRUE)

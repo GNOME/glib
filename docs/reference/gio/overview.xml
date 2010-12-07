@@ -520,7 +520,7 @@
       <para>
         This extension point has been discontinued in GLib 2.28. It is
         still available to keep API and ABI stability, but GIO is no
-        longer using to for default handlers. Instead, the mime handler
+        longer using it for default handlers. Instead, the mime handler
         mechanism is used, together with x-scheme-handler pseudo-mimetypes.
       </para>
    </formalpara>
