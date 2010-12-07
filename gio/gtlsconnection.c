@@ -63,12 +63,6 @@ static void g_tls_connection_set_property (GObject      *object,
 					   guint         prop_id,
 					   const GValue *value,
 					   GParamSpec   *pspec);
-static void g_tls_connection_finalize     (GObject      *object);
-
-static gboolean g_tls_connection_certificate_accumulator (GSignalInvocationHint *ihint,
-							  GValue                *return_accu,
-							  const GValue          *handler_return,
-							  gpointer               dummy);
 
 enum {
   ACCEPT_CERTIFICATE,
@@ -85,11 +79,8 @@ enum {
   PROP_REHANDSHAKE_MODE,
   PROP_USE_SYSTEM_CERTDB,
   PROP_CERTIFICATE,
-  PROP_PEER_CERTIFICATE
-};
-
-struct _GTlsConnectionPrivate {
-  GTlsCertificate *certificate, *peer_certificate;
+  PROP_PEER_CERTIFICATE,
+  PROP_PEER_CERTIFICATE_ERRORS
 };
 
 static void
@@ -97,11 +88,8 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
-  g_type_class_add_private (klass, sizeof (GTlsConnectionPrivate));
-
   gobject_class->get_property = g_tls_connection_get_property;
   gobject_class->set_property = g_tls_connection_set_property;
-  gobject_class->finalize = g_tls_connection_finalize;
 
   /**
    * GTlsConnection:base-io-stream:
@@ -186,8 +174,13 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
   /**
    * GTlsConnection:peer-certificate:
    *
-   * The connection's peer's certificate, after it has been set during
-   * the TLS handshake.
+   * The connection's peer's certificate, after the TLS handshake has
+   * completed and the certificate has been accepted. Note in
+   * particular that this is not yet set during the emission of
+   * #GTlsConnection::accept-certificate.
+   *
+   * (You can watch for a #GObject::notify signal on this property to
+   * detect when a handshake has occurred.)
    *
    * Since: 2.28
    */
@@ -198,6 +191,26 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 							G_TYPE_TLS_CERTIFICATE,
 							G_PARAM_READABLE |
 							G_PARAM_STATIC_STRINGS));
+  /**
+   * GTlsConnection:peer-certificate-errors:
+   *
+   * The errors noticed-and-ignored while verifying
+   * #GTlsConnection:peer-certificate. Normally this should be %0, but
+   * it may not be if #GTlsClientConnection::validation-flags is not
+   * %G_TLS_CERTIFICATE_VALIDATE_ALL, or if
+   * #GTlsConnection::accept-certificate overrode the default
+   * behavior.
+   *
+   * Since: 2.28
+   */
+  g_object_class_install_property (gobject_class, PROP_PEER_CERTIFICATE_ERRORS,
+				   g_param_spec_flags ("peer-certificate-errors",
+						       P_("Peer Certificate Errors"),
+						       P_("Errors found with the peer's certificate"),
+						       G_TYPE_TLS_CERTIFICATE_FLAGS,
+						       0,
+						       G_PARAM_READABLE |
+						       G_PARAM_STATIC_STRINGS));
 
   /**
    * GTlsConnection::accept-certificate:
@@ -261,20 +274,6 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 static void
 g_tls_connection_init (GTlsConnection *conn)
 {
-  conn->priv = G_TYPE_INSTANCE_GET_PRIVATE (conn, G_TYPE_TLS_CONNECTION, GTlsConnectionPrivate);
-}
-
-static void
-g_tls_connection_finalize (GObject *object)
-{
-  GTlsConnection *conn = G_TLS_CONNECTION (object);
-
-  if (conn->priv->certificate)
-    g_object_unref (conn->priv->certificate);
-  if (conn->priv->peer_certificate)
-    g_object_unref (conn->priv->peer_certificate);
-
-  G_OBJECT_CLASS (g_tls_connection_parent_class)->finalize (object);
 }
 
 static void
@@ -283,22 +282,7 @@ g_tls_connection_get_property (GObject    *object,
 			       GValue     *value,
 			       GParamSpec *pspec)
 {
-  GTlsConnection *conn = G_TLS_CONNECTION (object);
-
-  switch (prop_id)
-    {
-    case PROP_CERTIFICATE:
-      g_value_set_object (value, conn->priv->certificate);
-      break;
-
-    case PROP_PEER_CERTIFICATE:
-      g_value_set_object (value, conn->priv->peer_certificate);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
+  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 }
 
 static void
@@ -307,18 +291,7 @@ g_tls_connection_set_property (GObject      *object,
 			       const GValue *value,
 			       GParamSpec   *pspec)
 {
-  GTlsConnection *conn = G_TLS_CONNECTION (object);
-
-  switch (prop_id)
-    {
-    case PROP_CERTIFICATE:
-      g_tls_connection_set_certificate (conn, g_value_get_object (value));
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-      break;
-    }
+  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 }
 
 /**
@@ -404,10 +377,7 @@ g_tls_connection_set_certificate (GTlsConnection  *conn,
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
   g_return_if_fail (G_IS_TLS_CERTIFICATE (certificate));
 
-  if (conn->priv->certificate)
-    g_object_unref (conn->priv->certificate);
-  conn->priv->certificate = certificate ? g_object_ref (certificate) : NULL;
-  g_object_notify (G_OBJECT (conn), "certificate");
+  g_object_set (G_OBJECT (conn), "certificate", certificate, NULL);
 }
 
 /**
@@ -417,35 +387,71 @@ g_tls_connection_set_certificate (GTlsConnection  *conn,
  * Gets @conn's certificate, as set by
  * g_tls_connection_set_certificate().
  *
- * Return value: @conn's certificate, or %NULL
+ * Return value: (transfer none): @conn's certificate, or %NULL
  *
  * Since: 2.28
  */
 GTlsCertificate *
 g_tls_connection_get_certificate (GTlsConnection *conn)
 {
+  GTlsCertificate *certificate;
+
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
 
-  return conn->priv->certificate;
+  g_object_get (G_OBJECT (conn), "certificate", &certificate, NULL);
+  if (certificate)
+    g_object_unref (certificate);
+
+  return certificate;
 }
 
 /**
  * g_tls_connection_get_peer_certificate:
  * @conn: a #GTlsConnection
  *
- * Gets @conn's peer's certificate after it has been set during the
- * handshake.
+ * Gets @conn's peer's certificate after the handshake has completed.
+ * (It is not set during the emission of
+ * #GTlsConnection::accept-certificate.)
  *
- * Return value: @conn's peer's certificate, or %NULL
+ * Return value: (transfer none): @conn's peer's certificate, or %NULL
  *
  * Since: 2.28
  */
 GTlsCertificate *
 g_tls_connection_get_peer_certificate (GTlsConnection *conn)
 {
+  GTlsCertificate *peer_certificate;
+
   g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
 
-  return conn->priv->peer_certificate;
+  g_object_get (G_OBJECT (conn), "peer-certificate", &peer_certificate, NULL);
+  if (peer_certificate)
+    g_object_unref (peer_certificate);
+
+  return peer_certificate;
+}
+
+/**
+ * g_tls_connection_get_peer_certificate_errors:
+ * @conn: a #GTlsConnection
+ *
+ * Gets the errors associated with validating @conn's peer's
+ * certificate, after the handshake has completed. (It is not set
+ * during the emission of #GTlsConnection::accept-certificate.)
+ *
+ * Return value: @conn's peer's certificate errors
+ *
+ * Since: 2.28
+ */
+GTlsCertificateFlags
+g_tls_connection_get_peer_certificate_errors (GTlsConnection *conn)
+{
+  GTlsCertificateFlags errors;
+
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), 0);
+
+  g_object_get (G_OBJECT (conn), "peer-certificate-errors", &errors, NULL);
+  return errors;
 }
 
 /**
@@ -717,24 +723,4 @@ g_tls_connection_emit_accept_certificate (GTlsConnection       *conn,
   g_signal_emit (conn, signals[ACCEPT_CERTIFICATE], 0,
 		 peer_cert, errors, &accept);
   return accept;
-}
-
-/**
- * g_tls_connection_set_peer_certificate:
- * @conn: a #GTlsConnection
- * @certificate: the peer certificate
- *
- * Used by #GTlsConnection implementations to set the connection's
- * peer certificate.
- *
- * Since: 2.28
- */
-void
-g_tls_connection_set_peer_certificate (GTlsConnection  *conn,
-				       GTlsCertificate *certificate)
-{
-  if (conn->priv->peer_certificate)
-    g_object_unref (conn->priv->peer_certificate);
-  conn->priv->peer_certificate = certificate ? g_object_ref (certificate) : NULL;
-  g_object_notify (G_OBJECT (conn), "peer-certificate");
 }

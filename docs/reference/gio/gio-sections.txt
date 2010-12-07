@@ -3059,6 +3059,7 @@ GTlsConnection
 g_tls_connection_set_certificate
 g_tls_connection_get_certificate
 g_tls_connection_get_peer_certificate
+g_tls_connection_get_peer_certificate_errors
 g_tls_connection_set_require_close_notify
 g_tls_connection_get_require_close_notify
 GTlsRehandshakeMode
@@ -3071,7 +3072,6 @@ g_tls_connection_handshake
 g_tls_connection_handshake_async
 g_tls_connection_handshake_finish
 <SUBSECTION>
-g_tls_connection_set_peer_certificate
 g_tls_connection_emit_accept_certificate
 <SUBSECTION Standard>
 GTlsConnectionClass
