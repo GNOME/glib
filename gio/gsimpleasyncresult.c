@@ -187,7 +187,7 @@
  *       return;
  *     }
  *
- *   _baker_prepare_cake (self, radius, baked_cb, user_data);
+ *   _baker_prepare_cake (self, radius, baked_cb, simple);
  * }
  *
  * Cake *
