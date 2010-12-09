@@ -56,6 +56,7 @@ GIcon *g_emblemed_icon_get_icon    (GEmblemedIcon *emblemed);
 GList *g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed);
 void   g_emblemed_icon_add_emblem  (GEmblemedIcon *emblemed,
                                     GEmblem       *emblem);
+void   g_emblemed_icon_clear_emblems  (GEmblemedIcon *emblemed);
 
 G_END_DECLS
 

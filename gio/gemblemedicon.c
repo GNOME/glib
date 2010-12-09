@@ -160,6 +160,18 @@ g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed)
   return emblemed->emblems;
 }
 
+void
+g_emblemed_icon_clear_emblems (GEmblemedIcon *emblemed)
+{
+  g_return_if_fail (G_IS_EMBLEMED_ICON (emblemed));
+
+  if (emblemed->emblems == NULL)
+    return;
+
+  g_list_free_full (emblemed->emblems, g_object_unref);
+  emblemed->emblems = NULL;
+}
+
 static gint
 g_emblem_comp (GEmblem *a,
                GEmblem *b)
