@@ -47,6 +47,20 @@ G_BEGIN_DECLS
  **/
 typedef struct _GEmblemedIcon        GEmblemedIcon;
 typedef struct _GEmblemedIconClass   GEmblemedIconClass;
+typedef struct _GEmblemedIconPrivate GEmblemedIconPrivate;
+
+struct _GEmblemedIcon
+{
+  GObject parent_instance;
+
+  /*< private >*/
+  GEmblemedIconPrivate *priv;
+};
+
+struct _GEmblemedIconClass
+{
+  GObjectClass parent_class;
+};
 
 GType  g_emblemed_icon_get_type    (void) G_GNUC_CONST;
 
