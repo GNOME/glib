@@ -95,7 +95,8 @@ enum
   PROP_CERTIFICATE,
   PROP_CERTIFICATE_PEM,
   PROP_PRIVATE_KEY,
-  PROP_PRIVATE_KEY_PEM
+  PROP_PRIVATE_KEY_PEM,
+  PROP_ISSUER
 };
 
 static void g_dummy_tls_certificate_initable_iface_init (GInitableIface *iface);
@@ -138,6 +139,7 @@ g_dummy_tls_certificate_class_init (GDummyTlsCertificateClass *certificate_class
   g_object_class_override_property (gobject_class, PROP_CERTIFICATE_PEM, "certificate-pem");
   g_object_class_override_property (gobject_class, PROP_PRIVATE_KEY, "private-key");
   g_object_class_override_property (gobject_class, PROP_PRIVATE_KEY_PEM, "private-key-pem");
+  g_object_class_override_property (gobject_class, PROP_ISSUER, "issuer");
 }
 
 static void
