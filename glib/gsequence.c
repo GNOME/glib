@@ -761,6 +761,9 @@ g_sequence_sort_changed (GSequenceIter    *iter,
  * Returns an iterator pointing to the position where @data would
  * be inserted according to @cmp_func and @cmp_data.
  *
+ * If you are simply searching for an existing element of the sequence,
+ * consider using g_sequence_lookup().
+ *
  * Return value: an #GSequenceIter pointing to the position where @data
  * would have been inserted according to @cmp_func and @cmp_data.
  *
@@ -1014,6 +1017,9 @@ g_sequence_insert_sorted_iter (GSequence                *seq,
  * Like g_sequence_search(), but uses
  * a #GSequenceIterCompareFunc instead of a #GCompareDataFunc as
  * the compare function.
+ *
+ * If you are simply searching for an existing element of the sequence,
+ * consider using g_sequence_lookup_iter().
  *
  * Return value: a #GSequenceIter pointing to the position in @seq
  * where @data would have been inserted according to @iter_cmp and @cmp_data.
