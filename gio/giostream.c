@@ -766,6 +766,8 @@ splice_cancelled_cb (GCancellable       *cancellable,
  * When the operation is finished @callback will be called.
  * You can then call g_io_stream_splice_finish() to get the
  * result of the operation.
+ *
+ * Since: 2.28
  **/
 void
 g_io_stream_splice_async (GIOStream            *stream1,
@@ -835,6 +837,8 @@ g_io_stream_splice_async (GIOStream            *stream1,
  * Finishes an asynchronous io stream splice operation.
  *
  * Returns: %TRUE on success, %FALSE otherwise.
+ *
+ * Since: 2.28
  **/
 gboolean
 g_io_stream_splice_finish (GAsyncResult  *result,

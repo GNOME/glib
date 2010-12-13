@@ -582,6 +582,8 @@ typedef enum {
  *     before calling the callback.
  *
  * GIOStreamSpliceFlags determine how streams should be spliced.
+ *
+ * Since: 2.28
  **/
 typedef enum {
   G_IO_STREAM_SPLICE_NONE          = 0,
