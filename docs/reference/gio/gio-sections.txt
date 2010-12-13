@@ -892,6 +892,7 @@ GUnixOutputStreamPrivate
 <SECTION>
 <FILE>giostream</FILE>
 <TITLE>GIOStream</TITLE>
+GIOStreamSpliceFlags
 GIOStream
 g_io_stream_get_input_stream
 g_io_stream_get_output_stream
