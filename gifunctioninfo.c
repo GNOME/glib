@@ -26,7 +26,6 @@
 #include <girepository.h>
 #include "girepository-private.h"
 #include "gitypelib-internal.h"
-#include "girffi.h"
 
 /**
  * SECTION:gifunctioninfo
@@ -249,20 +248,10 @@ g_function_info_invoke (GIFunctionInfo *info,
 			GIArgument        *return_value,
 			GError          **error)
 {
-  ffi_cif cif;
-  ffi_type *rtype;
-  ffi_type **atypes;
   const gchar *symbol;
   gpointer func;
-  GITypeInfo *tinfo;
-  GIArgInfo *ainfo;
   gboolean is_method;
   gboolean throws;
-  gint n_args, n_invoke_args, in_pos, out_pos, i;
-  gpointer *args;
-  gboolean success = FALSE;
-  GError *local_error = NULL;
-  gpointer error_address = &local_error;
 
   symbol = g_function_info_get_symbol (info);
 
@@ -281,150 +270,14 @@ g_function_info_invoke (GIFunctionInfo *info,
     && (g_function_info_get_flags (info) & GI_FUNCTION_IS_CONSTRUCTOR) == 0;
   throws = g_function_info_get_flags (info) & GI_FUNCTION_THROWS;
 
-  tinfo = g_callable_info_get_return_type ((GICallableInfo *)info);
-  rtype = g_type_info_get_ffi_type (tinfo);
-  g_base_info_unref ((GIBaseInfo *)tinfo);
-
-  in_pos = 0;
-  out_pos = 0;
-
-  n_args = g_callable_info_get_n_args ((GICallableInfo *)info);
-  if (is_method)
-    {
-      if (n_in_args == 0)
-	{
-	  g_set_error (error,
-		       G_INVOKE_ERROR,
-		       G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-		       "Too few \"in\" arguments (handling this)");
-	  goto out;
-	}
-      n_invoke_args = n_args+1;
-      in_pos++;
-    }
-  else
-    n_invoke_args = n_args;
-
-  if (throws)
-    /* Add an argument for the GError */
-    n_invoke_args ++;
-
-  atypes = g_alloca (sizeof (ffi_type*) * n_invoke_args);
-  args = g_alloca (sizeof (gpointer) * n_invoke_args);
-
-  if (is_method)
-    {
-      atypes[0] = &ffi_type_pointer;
-      args[0] = (gpointer) &in_args[0];
-    }
-  for (i = 0; i < n_args; i++)
-    {
-      int offset = (is_method ? 1 : 0);
-      ainfo = g_callable_info_get_arg ((GICallableInfo *)info, i);
-      switch (g_arg_info_get_direction (ainfo))
-	{
-	case GI_DIRECTION_IN:
-	  tinfo = g_arg_info_get_type (ainfo);
-	  atypes[i+offset] = g_type_info_get_ffi_type (tinfo);
-	  g_base_info_unref ((GIBaseInfo *)tinfo);
-
-	  if (in_pos >= n_in_args)
-	    {
-	      g_set_error (error,
-			   G_INVOKE_ERROR,
-			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"in\" arguments (handling in)");
-	      goto out;
-	    }
-
-	  args[i+offset] = (gpointer)&in_args[in_pos];
-	  in_pos++;
-
-	  break;
-	case GI_DIRECTION_OUT:
-	  atypes[i+offset] = &ffi_type_pointer;
-
-	  if (out_pos >= n_out_args)
-	    {
-	      g_set_error (error,
-			   G_INVOKE_ERROR,
-			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"out\" arguments (handling out)");
-	      goto out;
-	    }
-
-	  args[i+offset] = (gpointer)&out_args[out_pos];
-	  out_pos++;
-	  break;
-	case GI_DIRECTION_INOUT:
-	  atypes[i+offset] = &ffi_type_pointer;
-
-	  if (in_pos >= n_in_args)
-	    {
-	      g_set_error (error,
-			   G_INVOKE_ERROR,
-			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"in\" arguments (handling inout)");
-	      goto out;
-	    }
-
-	  if (out_pos >= n_out_args)
-	    {
-	      g_set_error (error,
-			   G_INVOKE_ERROR,
-			   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-			   "Too few \"out\" arguments (handling inout)");
-	      goto out;
-	    }
-
-	  args[i+offset] = (gpointer)&in_args[in_pos];
-	  in_pos++;
-	  out_pos++;
-	  break;
-	default:
-	  g_assert_not_reached ();
-	}
-      g_base_info_unref ((GIBaseInfo *)ainfo);
-    }
-
-  if (throws)
-    {
-      args[n_invoke_args - 1] = &error_address;
-      atypes[n_invoke_args - 1] = &ffi_type_pointer;
-    }
-
-  if (in_pos < n_in_args)
-    {
-      g_set_error (error,
-		   G_INVOKE_ERROR,
-		   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-		   "Too many \"in\" arguments (at end)");
-      goto out;
-    }
-  if (out_pos < n_out_args)
-    {
-      g_set_error (error,
-		   G_INVOKE_ERROR,
-		   G_INVOKE_ERROR_ARGUMENT_MISMATCH,
-		   "Too many \"out\" arguments (at end)");
-      goto out;
-    }
-
-  if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_invoke_args, rtype, atypes) != FFI_OK)
-    goto out;
-
-  g_return_val_if_fail (return_value, FALSE);
-  ffi_call (&cif, func, return_value, args);
-
-  if (local_error)
-    {
-      g_propagate_error (error, local_error);
-      success = FALSE;
-    }
-  else
-    {
-      success = TRUE;
-    }
- out:
-  return success;
+  return _g_callable_info_invoke ((GICallableInfo*) info,
+                                  func,
+                                  in_args,
+                                  n_in_args,
+                                  out_args,
+                                  n_out_args,
+                                  return_value,
+                                  is_method,
+                                  throws,
+                                  error);
 }

@@ -37,6 +37,17 @@ GIVFuncInfoFlags  g_vfunc_info_get_flags   (GIVFuncInfo *info);
 gint              g_vfunc_info_get_offset  (GIVFuncInfo *info);
 GISignalInfo *    g_vfunc_info_get_signal  (GIVFuncInfo *info);
 GIFunctionInfo *  g_vfunc_info_get_invoker (GIVFuncInfo *info);
+gpointer          g_vfunc_info_get_address (GIVFuncInfo *info,
+                                            GType        implementor_gtype,
+                                            GError     **error);
+gboolean          g_vfunc_info_invoke      (GIVFuncInfo      *info,
+                                            GType             implementor,
+                                            const GIArgument *in_args,
+                                            int               n_in_args,
+                                            const GIArgument *out_args,
+                                            int               n_out_args,
+                                            GIArgument       *return_value,
+                                            GError          **error);
 
 G_END_DECLS
 

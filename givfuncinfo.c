@@ -196,3 +196,122 @@ g_vfunc_info_get_invoker (GIVFuncInfo *info)
     g_assert_not_reached ();
 }
 
+/**
+ * g_vfunc_info_get_address:
+ * @info: a #GIVFuncInfo
+ * @implementor_gtype: #GType implementing this virtual function
+ * @error: return location for a #GError
+ *
+ * This method will look up where inside the type struct of @implementor_gtype
+ * is the implementation for @info.
+ *
+ * Returns: address to a function or %NULL if an error happened
+ */
+gpointer
+g_vfunc_info_get_address (GIVFuncInfo      *vfunc_info,
+                          GType             implementor_gtype,
+                          GError          **error)
+{
+  GIObjectInfo *object_info;
+  GIStructInfo *struct_info;
+  GIFieldInfo *field_info = NULL;
+  int length, i, offset;
+  gpointer implementor_vtable, func;
+
+  object_info = (GIObjectInfo *) g_base_info_get_container (vfunc_info);
+  struct_info = g_object_info_get_class_struct (object_info);
+
+  length = g_struct_info_get_n_fields (struct_info);
+  for (i = 0; i < length; i++)
+    {
+      field_info = g_struct_info_get_field (struct_info, i);
+
+      if (strcmp (g_base_info_get_name ( (GIBaseInfo*) field_info),
+                  g_base_info_get_name ( (GIBaseInfo*) vfunc_info)) != 0) {
+          g_base_info_unref (field_info);
+          field_info = NULL;
+          continue;
+      }
+
+      break;
+    }
+
+  if (field_info == NULL)
+    {
+      g_set_error (error,
+                   G_INVOKE_ERROR,
+                   G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+                   "Couldn't find struct field for this vfunc");
+      return NULL;
+    }
+
+  implementor_vtable = g_type_class_ref (implementor_gtype);
+  offset = g_field_info_get_offset (field_info);
+  func = *(gpointer*) G_STRUCT_MEMBER_P (implementor_vtable, offset);
+  g_type_class_unref (implementor_vtable);
+
+  if (func == NULL)
+    {
+      g_set_error (error,
+                   G_INVOKE_ERROR,
+                   G_INVOKE_ERROR_SYMBOL_NOT_FOUND,
+                   "Class %s doesn't implement %s",
+                   g_type_name (implementor_gtype),
+                   g_base_info_get_name ( (GIBaseInfo*) vfunc_info));
+      return NULL;
+    }
+
+  return func;
+}
+
+/**
+ * g_vfunc_info_invoke: (skip)
+ * @info: a #GIVFuncInfo describing the virtual function to invoke
+ * @implementor: #GType of the type that implements this virtual function
+ * @in_args: an array of #GIArgument<!-- -->s, one for each in
+ *    parameter of @info. If there are no in parameter, @in_args
+ *    can be %NULL
+ * @n_in_args: the length of the @in_args array
+ * @out_args: an array of #GIArgument<!-- -->s, one for each out
+ *    parameter of @info. If there are no out parameters, @out_args
+ *    may be %NULL
+ * @n_out_args: the length of the @out_args array
+ * @return_value: return location for the return value of the
+ *    function. If the function returns void, @return_value may be
+ *    %NULL
+ * @error: return location for detailed error information, or %NULL
+ *
+ * Invokes the function described in @info with the given
+ * arguments. Note that inout parameters must appear in both
+ * argument lists.
+ *
+ * Returns: %TRUE if the function has been invoked, %FALSE if an
+ *   error occurred.
+ */
+gboolean
+g_vfunc_info_invoke (GIVFuncInfo      *info,
+                     GType             implementor,
+                     const GIArgument *in_args,
+                     int               n_in_args,
+                     const GIArgument *out_args,
+                     int               n_out_args,
+                     GIArgument       *return_value,
+                     GError          **error)
+{
+  gpointer func;
+
+  func = g_vfunc_info_get_address (info, implementor, error);
+  if (*error != NULL)
+    return FALSE;
+
+  return _g_callable_info_invoke ((GICallableInfo*) info,
+                                  func,
+                                  in_args,
+                                  n_in_args,
+                                  out_args,
+                                  n_out_args,
+                                  return_value,
+                                  TRUE,
+                                  FALSE,
+                                  error);
+}
