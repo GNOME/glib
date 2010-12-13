@@ -880,6 +880,18 @@ test_connection_filter (void)
 
   m2 = g_dbus_message_copy (m, &error);
   g_assert_no_error (error);
+  g_dbus_message_set_serial (m2, data.serial);
+  /* lock the message to test PRESERVE_SERIAL flag. */
+  g_dbus_message_lock (m2);
+  g_dbus_connection_send_message (c, m2, G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL, &data.serial, &error);
+  g_object_unref (m2);
+  g_assert_no_error (error);
+
+  while (data.num_handled == 2)
+    g_thread_yield ();
+
+  m2 = g_dbus_message_copy (m, &error);
+  g_assert_no_error (error);
   r = g_dbus_connection_send_message_with_reply_sync (c,
                                                       m2,
                                                       G_DBUS_SEND_MESSAGE_FLAGS_NONE,
@@ -891,7 +903,7 @@ test_connection_filter (void)
   g_assert_no_error (error);
   g_assert (r != NULL);
   g_object_unref (r);
-  g_assert_cmpint (data.num_handled, ==, 3);
+  g_assert_cmpint (data.num_handled, ==, 4);
 
   g_dbus_connection_remove_filter (c, filter_id);
 
@@ -908,8 +920,8 @@ test_connection_filter (void)
   g_assert_no_error (error);
   g_assert (r != NULL);
   g_object_unref (r);
-  g_assert_cmpint (data.num_handled, ==, 3);
-  g_assert_cmpint (data.num_outgoing, ==, 3);
+  g_assert_cmpint (data.num_handled, ==, 4);
+  g_assert_cmpint (data.num_outgoing, ==, 4);
 
   /* this is safe; testserver will exit once the bus goes away */
   g_assert (g_spawn_command_line_async (SRCDIR "/gdbus-testserver.py", NULL));

@@ -1449,7 +1449,8 @@ g_dbus_connection_send_message_unlocked (GDBusConnection   *connection,
   if (out_serial != NULL)
     *out_serial = serial_to_use;
 
-  g_dbus_message_set_serial (message, serial_to_use);
+  if (!(flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL))
+    g_dbus_message_set_serial (message, serial_to_use);
 
   g_dbus_message_lock (message);
   _g_dbus_worker_send_message (connection->worker,
