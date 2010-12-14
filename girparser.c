@@ -366,8 +366,10 @@ static IntegerAliasInfo integer_aliases[] = {
   { "guint",    SIZEOF_INT,       0 },
   { "glong",    SIZEOF_LONG,      1 },
   { "gulong",   SIZEOF_LONG,      0 },
-  { "gsize",    GLIB_SIZEOF_SIZE_T,    0 },
   { "gssize",   GLIB_SIZEOF_SIZE_T,    1 },
+  { "gsize",    GLIB_SIZEOF_SIZE_T,    0 },
+  { "gintptr",  GLIB_SIZEOF_SIZE_T,    1 },
+  { "guintptr", GLIB_SIZEOF_SIZE_T,    0 },
 };
 
 typedef struct {
@@ -407,12 +409,12 @@ parse_basic (const char *str)
 
   for (i = 0; i < n_basic; i++)
     {
-      if (g_str_has_prefix (str, basic_types[i].str))
+      if (strcmp (str, basic_types[i].str) == 0)
 	return &(basic_types[i]);
     }
   for (i = 0; i < G_N_ELEMENTS (integer_aliases); i++)
     {
-      if (g_str_has_prefix (str, integer_aliases[i].str))
+      if (strcmp (str, integer_aliases[i].str) == 0)
 	{
 	  switch (integer_aliases[i].size)
 	    {
