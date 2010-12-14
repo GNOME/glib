@@ -205,9 +205,6 @@ test_fallback (void)
   app = g_list_nth_data (apps, 0);
   g_assert (g_app_info_equal (info1, app));
 
-  app = g_list_nth_data (apps, 1);
-  g_assert (g_app_info_equal (info2, app));
-
   /* check that Test1 is the first recommended app */
   recomm = g_app_info_get_recommended_for_type ("text/x-python");
   g_assert (recomm != NULL);
