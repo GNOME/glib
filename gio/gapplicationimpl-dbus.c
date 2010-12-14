@@ -328,6 +328,8 @@ g_application_impl_actions_method_call (GDBusConnection       *connection,
 
       g_dbus_method_invocation_return_value (invocation,
                                              g_variant_builder_end (&builder));
+
+      g_strfreev (actions);
     }
 
   else if (strcmp (method_name, "SetState") == 0)
