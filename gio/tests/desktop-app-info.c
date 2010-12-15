@@ -243,6 +243,56 @@ test_fallback (void)
 }
 
 static void
+test_last_used (void)
+{
+  GList *applications;
+  GAppInfo *info1, *info2, *default_app;
+  GError *error = NULL;
+
+  info1 = create_app_info ("Test1");
+  info2 = create_app_info ("Test2");
+
+  g_app_info_set_as_default_for_type (info1, "application/x-test", &error);
+  g_assert (error == NULL);
+
+  g_app_info_add_supports_type (info2, "application/x-test", &error);
+  g_assert (error == NULL);
+
+  applications = g_app_info_get_recommended_for_type ("application/x-test");
+  g_assert (g_list_length (applications) == 2);
+
+  /* the first should be the default app now */
+  g_assert (g_app_info_equal (g_list_nth_data (applications, 0), info1));
+  g_assert (g_app_info_equal (g_list_nth_data (applications, 1), info2));
+
+  g_list_free_full (applications, g_object_unref);
+
+  g_app_info_set_as_last_used_for_type (info2, "application/x-test", &error);
+  g_assert (error == NULL);
+
+  applications = g_app_info_get_recommended_for_type ("application/x-test");
+  g_assert (g_list_length (applications) == 2);
+
+  default_app = g_app_info_get_default_for_type ("application/x-test", FALSE);
+  g_assert (g_app_info_equal (default_app, info1));
+
+  /* the first should be the other app now */
+  g_assert (g_app_info_equal (g_list_nth_data (applications, 0), info2));
+  g_assert (g_app_info_equal (g_list_nth_data (applications, 1), info1));
+
+  g_list_free_full (applications, g_object_unref);
+
+  g_app_info_reset_type_associations ("application/x-test");
+
+  g_app_info_delete (info1);
+  g_app_info_delete (info2);
+
+  g_object_unref (info1);
+  g_object_unref (info2);
+  g_object_unref (default_app);
+}
+
+static void
 cleanup_dir_recurse (GFile *parent, GFile *root)
 {
   gboolean res;
@@ -319,6 +369,7 @@ main (int   argc,
   g_test_add_func ("/desktop-app-info/delete", test_delete);
   g_test_add_func ("/desktop-app-info/default", test_default);
   g_test_add_func ("/desktop-app-info/fallback", test_fallback);
+  g_test_add_func ("/desktop-app-info/lastused", test_last_used);
 
   result = g_test_run ();
 
