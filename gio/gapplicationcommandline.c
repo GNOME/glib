@@ -249,7 +249,7 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
 /**
  * g_application_command_line_get_arguments:
  * @cmdline: a #GApplicationCommandLine
- * @argc: the length of the arguments array, or %NULL
+ * @argc: (out): the length of the arguments array, or %NULL
  *
  * Gets the list of arguments that was passed on the command line.
  *
@@ -258,7 +258,8 @@ g_application_command_line_class_init (GApplicationCommandLineClass *class)
  * The return value is %NULL-terminated and should be freed using
  * g_strfreev().
  *
- * Returns: the string array containing the arguments (the argv)
+ * Returns: (array length=argc) (transfer full): the string array
+ * containing the arguments (the argv)
  *
  * Since: 2.28
  **/
@@ -321,7 +322,8 @@ g_application_command_line_get_cwd (GApplicationCommandLine *cmdline)
  * The return value should not be modified or freed and is valid for as
  * long as @cmdline exists.
  *
- * Returns: the environment strings, or %NULL if they were not sent
+ * Returns: (array zero-terminated=1) (transfer none): the environment
+ * strings, or %NULL if they were not sent
  * 
  * Since: 2.28
  **/
