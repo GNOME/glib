@@ -348,7 +348,6 @@ libgio_2_0_la_SOURCES =		\
 	gnetworkingprivate.h	\
 	gnetworkservice.c	\
 	goutputstream.c 	\
-	gperiodic.c		\
 	gpermission.c 		\
 	gpollableinputstream.c 	\
 	gpollableoutputstream.c \
@@ -510,7 +509,6 @@ gio_headers =			\
 	gnetworkaddress.h	\
 	gnetworkservice.h	\
 	goutputstream.h 	\
-	gperiodic.h		\
 	gpermission.h 		\
 	gpollableinputstream.h 	\
 	gpollableoutputstream.h \

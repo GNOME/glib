@@ -93,7 +93,6 @@
 #include <gio/gnetworkaddress.h>
 #include <gio/gnetworkservice.h>
 #include <gio/goutputstream.h>
-#include <gio/gperiodic.h>
 #include <gio/gpermission.h>
 #include <gio/gpollableinputstream.h>
 #include <gio/gpollableoutputstream.h>
