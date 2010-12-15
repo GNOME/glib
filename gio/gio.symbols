@@ -1081,6 +1081,7 @@ g_emblemed_icon_new
 g_emblemed_icon_get_icon
 g_emblemed_icon_get_emblems
 g_emblemed_icon_add_emblem
+g_emblemed_icon_clear_emblems
 #endif
 #endif
 
