@@ -164,7 +164,7 @@ g_emblemed_icon_get_emblems (GEmblemedIcon *emblemed)
  * g_emblemed_icon_clear_emblems:
  * @emblemed: a #GEmblemedIcon
  *
- * Remove alls the emblems from @icon.
+ * Removes all the emblems from @icon.
  *
  * Since: 2.28
  **/
