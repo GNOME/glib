@@ -178,6 +178,14 @@ hash_table_new (gint n_buckets)
 }
 
 static void
+hash_table_free (HashTable *table)
+{
+  g_free (table->buckets);
+
+  g_slice_free (HashTable, table);
+}
+
+static void
 hash_table_insert (gpointer key,
                    gpointer value,
                    gpointer data)
@@ -417,6 +425,8 @@ file_builder_add_hash (FileBuilder         *fb,
           index++;
         }
     }
+
+  hash_table_free (mytable);
 }
 
 static FileBuilder *
@@ -472,6 +482,8 @@ file_builder_serialise (FileBuilder          *fb,
 
       g_string_append_len (result, chunk->data, chunk->size);
       g_free (chunk->data);
+
+      g_slice_free (FileChunk, chunk);
     }
 
   g_queue_free (fb->chunks);
