@@ -224,10 +224,6 @@ AC_ARG_ENABLE(rebuilds,
               [AC_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
               [enable_rebuilds=yes])
-AC_ARG_ENABLE(visibility,
-              [AC_HELP_STRING([--disable-visibility],
-                              [don't use ELF visibility attributes])],,
-              [enable_visibility=yes])
 
 if test "x$enable_threads" != "xyes"; then
   enable_threads=no
@@ -294,10 +290,6 @@ else
   if test "x$enable_debug" = "xno"; then
     GLIB_DEBUG_FLAGS="$GLIB_DEBUG_FLAGS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
   fi
-fi
-
-if test "x$enable_visibility" = "xno"; then
-  GLIB_DEBUG_FLAGS="$GLIB_DEBUG_FLAGS -DDISABLE_VISIBILITY"
 fi
 
 # Ensure MSVC-compatible struct packing convention is used when
