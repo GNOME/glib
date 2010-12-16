@@ -2553,7 +2553,7 @@ g_settings_bind_invert_boolean_set_mapping (const GValue       *value,
  * g_settings_bind:
  * @settings: a #GSettings object
  * @key: the key to bind
- * @object: (type GObject.GObject): a #GObject
+ * @object: (type GObject.Object): a #GObject
  * @property: the name of the property to bind
  * @flags: flags for the binding
  *
@@ -2607,7 +2607,7 @@ g_settings_bind (GSettings          *settings,
  * g_settings_bind_with_mapping:
  * @settings: a #GSettings object
  * @key: the key to bind
- * @object: (type GObject.GObject): a #GObject
+ * @object: (type GObject.Object): a #GObject
  * @property: the name of the property to bind
  * @flags: flags for the binding
  * @get_mapping: a function that gets called to convert values
@@ -2820,7 +2820,7 @@ g_settings_binding_writable_changed (GSettings   *settings,
  * g_settings_bind_writable:
  * @settings: a #GSettings object
  * @key: the key to bind
- * @object: (type GObject.GObject):a #GObject
+ * @object: (type GObject.Object):a #GObject
  * @property: the name of a boolean property to bind
  * @inverted: whether to 'invert' the value
  *
