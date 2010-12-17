@@ -22,7 +22,8 @@
 #include "glib.h"
 
 /* Outputs tested against the reference implementation mt19937ar.c from
-   http://www.math.keio.ac.jp/~matumoto/MT2002/emt19937ar.html */
+ * http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/MT2002/emt19937ar.html
+ */
 
 /* Tests for a simple seed, first number is the seed */
 const guint32 first_numbers[] = 
