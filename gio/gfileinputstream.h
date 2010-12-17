@@ -79,7 +79,7 @@ struct _GFileInputStreamClass
                                      GAsyncReadyCallback   callback,
                                      gpointer              user_data);
   GFileInfo * (* query_info_finish) (GFileInputStream     *stream,
-                                     GAsyncResult         *res,
+                                     GAsyncResult         *result,
                                      GError              **error);
 
   /*< private >*/

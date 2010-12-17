@@ -139,7 +139,7 @@ g_input_stream_init (GInputStream *stream)
  * @stream: a #GInputStream.
  * @buffer: a buffer to read data into (which should be at least count bytes long).
  * @count: the number of bytes that will be read from the stream
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Tries to read @count bytes from the stream into the buffer starting at
@@ -216,8 +216,8 @@ g_input_stream_read  (GInputStream  *stream,
  * @stream: a #GInputStream.
  * @buffer: a buffer to read data into (which should be at least count bytes long).
  * @count: the number of bytes that will be read from the stream
- * @bytes_read: location to store the number of bytes that was read from the stream
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @bytes_read: (out): location to store the number of bytes that was read from the stream
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Tries to read @count bytes from the stream into the buffer starting at
@@ -277,7 +277,7 @@ g_input_stream_read_all (GInputStream  *stream,
  * g_input_stream_skip:
  * @stream: a #GInputStream.
  * @count: the number of bytes that will be skipped from the stream
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Tries to skip @count bytes from the stream. Will block during the operation.
@@ -393,7 +393,7 @@ g_input_stream_real_skip (GInputStream  *stream,
 /**
  * g_input_stream_close:
  * @stream: A #GInputStream.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it.
@@ -492,9 +492,9 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * @count: the number of bytes that will be read from the stream
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  * of the request. 
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: callback to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
  *
  * Request an asynchronous read of @count bytes from the stream into the buffer
  * starting at @buffer. When the operation is finished @callback will be called. 
@@ -617,9 +617,9 @@ g_input_stream_read_finish (GInputStream  *stream,
  * @count: the number of bytes that will be skipped from the stream
  * @io_priority: the <link linkend="io-priority">I/O priority</link>
  * of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: callback to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
  *
  * Request an asynchronous skip of @count bytes from the stream.
  * When the operation is finished @callback will be called.
@@ -740,9 +740,9 @@ g_input_stream_skip_finish (GInputStream  *stream,
  * @stream: A #GInputStream.
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  * of the request. 
- * @cancellable: optional cancellable object
- * @callback: callback to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @cancellable: (allow-none): optional cancellable object
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
  *
  * Requests an asynchronous closes of the stream, releasing resources related to it.
  * When the operation is finished @callback will be called. 
