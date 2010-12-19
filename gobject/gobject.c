@@ -3444,7 +3444,7 @@ g_cclosure_new_object (GCallback callback_func,
 }
 
 /**
- * g_cclosure_new_object_swap:
+ * g_cclosure_new_object_swap: (skip)
  * @callback_func: the function to invoke
  * @object: a #GObject pointer to pass to @callback_func
  *
