@@ -3181,7 +3181,7 @@ g_value_take_object (GValue  *value,
  * 
  * Get the contents of a %G_TYPE_OBJECT derived #GValue.
  * 
- * Returns: object contents of @value
+ * Returns: (type GObject.Object) (transfer none): object contents of @value
  */
 gpointer
 g_value_get_object (const GValue *value)
@@ -3198,8 +3198,8 @@ g_value_get_object (const GValue *value)
  * Get the contents of a %G_TYPE_OBJECT derived #GValue, increasing
  * its reference count.
  *
- * Returns: object content of @value, should be unreferenced when no
- *          longer needed.
+ * Returns: (type GObject.Object) (transfer full): object content of
+ *          @value, should be unreferenced when no longer needed.
  */
 gpointer
 g_value_dup_object (const GValue *value)

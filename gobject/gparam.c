@@ -1474,7 +1474,7 @@ g_value_take_param (GValue     *value,
  *
  * Get the contents of a %G_TYPE_PARAM #GValue.
  *
- * Returns: #GParamSpec content of @value
+ * Returns: (transfer none): #GParamSpec content of @value
  */
 GParamSpec*
 g_value_get_param (const GValue *value)
@@ -1485,7 +1485,7 @@ g_value_get_param (const GValue *value)
 }
 
 /**
- * g_value_dup_param:
+ * g_value_dup_param: (skip)
  * @value: a valid #GValue whose type is derived from %G_TYPE_PARAM
  *
  * Get the contents of a %G_TYPE_PARAM #GValue, increasing its
