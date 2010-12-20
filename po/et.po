@@ -15,10 +15,11 @@ msgstr ""
 "Project-Id-Version: glib MASTER\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
-"POT-Creation-Date: 2010-09-02 19:40+0000\n"
+"POT-Creation-Date: 2010-12-17 16:41+0000\n"
 "PO-Revision-Date: 2010-09-19 14:51+0300\n"
 "Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
+"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -120,18 +121,22 @@ msgstr "Rajanimi '%s' ei ole absoluutne rada"
 msgid "Invalid hostname"
 msgstr "Vigane hostinimi"
 
+#. Translators: 'before midday' indicator
 msgctxt "GDateTime"
 msgid "am"
 msgstr "el"
 
+#. Translators: 'before midday' indicator
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "EL"
 
+#. Translators: 'after midday' indicator
 msgctxt "GDateTime"
 msgid "pm"
 msgstr "pl"
 
+#. Translators: 'after midday' indicator
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PL"
@@ -146,151 +151,193 @@ msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "January"
 msgstr "Jaanuar"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "February"
 msgstr "Veebruar"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "March"
 msgstr "Märts"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "April"
 msgstr "Aprill"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "June"
 msgstr "Juuni"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "July"
 msgstr "Juuli"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "October"
 msgstr "Oktoober"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full month name"
 msgid "December"
 msgstr "Detsember"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jaan"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Veebr"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Märts"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
+msgid "May"
+msgstr "Mai"
+
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Juun"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Juul"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sept"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dets"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Esmaspäev"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Teisipäev"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Kolmapäev"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Neljapäev"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Reede"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Laupäev"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Pühapäev"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "E"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "T"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "K"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "N"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "R"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "L"
 
-msgctxt "GDateTime"
+#, fuzzy
+msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "P"
 
@@ -1841,6 +1888,216 @@ msgstr "Sokliaadressi jaoks ei ole piisavalt vaba ruumi"
 msgid "Unsupported socket address"
 msgstr "Toetamata sokliaadress"
 
+#, fuzzy
+msgid "empty names are not permitted"
+msgstr "Abstraktne nimeruum pole toetatud"
+
+#, c-format
+msgid "invalid name '%s': names must begin with a lowercase letter"
+msgstr ""
+
+#, c-format
+msgid ""
+"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
+"and dash ('-') are permitted."
+msgstr ""
+
+#, c-format
+msgid "invalid name '%s': two successive dashes ('--') are not permitted."
+msgstr ""
+
+#, c-format
+msgid "invalid name '%s': the last character may not be a dash ('-')."
+msgstr ""
+
+#, c-format
+msgid "invalid name '%s': maximum length is 32"
+msgstr ""
+
+#, c-format
+msgid "<child name='%s'> already specified"
+msgstr ""
+
+msgid "can not add keys to a 'list-of' schema"
+msgstr ""
+
+#, c-format
+msgid "<key name='%s'> already specified"
+msgstr ""
+
+#, c-format
+msgid ""
+"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
+"to modify value"
+msgstr ""
+
+#, c-format
+msgid ""
+"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
+"to <key>"
+msgstr ""
+
+#, c-format
+msgid "<%s id='%s'> not (yet) defined."
+msgstr ""
+
+#, fuzzy, c-format
+msgid "invalid GVariant type string '%s'"
+msgstr "Vigane rekvisiidi tüüp (oodatakse stringi)"
+
+msgid "<override> given but schema isn't extending anything"
+msgstr ""
+
+#, c-format
+msgid "no <key name='%s'> to override"
+msgstr ""
+
+#, c-format
+msgid "<override name='%s'> already specified"
+msgstr ""
+
+#, c-format
+msgid "<schema id='%s'> already specified"
+msgstr ""
+
+#, c-format
+msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgstr ""
+
+#, c-format
+msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgstr ""
+
+#, c-format
+msgid "Can not be a list of a schema with a path"
+msgstr ""
+
+#, c-format
+msgid "Can not extend a schema with a path"
+msgstr ""
+
+#, c-format
+msgid ""
+"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgstr ""
+
+#, c-format
+msgid ""
+"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
+"does not extend '%s'"
+msgstr ""
+
+#, c-format
+msgid "a path, if given, must begin and end with a slash"
+msgstr ""
+
+#, c-format
+msgid "the path of a list must end with ':/'"
+msgstr ""
+
+#, c-format
+msgid "<%s id='%s'> already specified"
+msgstr ""
+
+#, c-format
+msgid "Element <%s> not allowed inside <%s>"
+msgstr ""
+
+#, c-format
+msgid "Element <%s> not allowed at toplevel"
+msgstr ""
+
+#, c-format
+msgid "text may not appear inside <%s>"
+msgstr ""
+
+#. Translators: Do not translate "--strict".
+#, c-format
+msgid "--strict was specified; exiting.\n"
+msgstr ""
+
+#, c-format
+msgid "This entire file has been ignored.\n"
+msgstr ""
+
+#, c-format
+msgid "Ignoring this file.\n"
+msgstr ""
+
+#, c-format
+msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgstr ""
+
+#, c-format
+msgid "; ignoring override for this key.\n"
+msgstr ""
+
+#, c-format
+msgid " and --strict was specified; exiting.\n"
+msgstr ""
+
+#, c-format
+msgid ""
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
+msgstr ""
+
+#, c-format
+msgid "Ignoring override for this key.\n"
+msgstr ""
+
+#, c-format
+msgid ""
+"override for key `%s' in schema `%s' in override file `%s' is out of the "
+"range given in the schema"
+msgstr ""
+
+#, c-format
+msgid ""
+"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"list of valid choices"
+msgstr ""
+
+msgid "where to store the gschemas.compiled file"
+msgstr ""
+
+msgid "DIRECTORY"
+msgstr ""
+
+msgid "Abort on any errors in schemas"
+msgstr ""
+
+msgid "Do not write the gschema.compiled file"
+msgstr ""
+
+msgid "This option will be removed soon."
+msgstr ""
+
+msgid "Do not enforce key name restrictions"
+msgstr ""
+
+msgid ""
+"Compile all GSettings schema files into a schema cache.\n"
+"Schema files are required to have the extension .gschema.xml,\n"
+"and the cache file is called gschemas.compiled."
+msgstr ""
+
+#, c-format
+msgid "You should give exactly one directory name\n"
+msgstr ""
+
+#, c-format
+msgid "No schema files found: "
+msgstr ""
+
+#, c-format
+msgid "doing nothing.\n"
+msgstr ""
+
+#, c-format
+msgid "removed existing output file.\n"
+msgstr ""
+
 msgid "Unable to find default local directory monitor type"
 msgstr "Vaikimisi kohaliku kataloogimonitori liiki pole võimalik leida"
 
@@ -2155,236 +2412,147 @@ msgstr "Ajutiselt pole võimalik '%s' lahendada"
 msgid "Error resolving '%s'"
 msgstr "Viga '%s' lahendamisel"
 
-#, fuzzy
-msgid "empty names are not permitted"
-msgstr "Abstraktne nimeruum pole toetatud"
-
 #, c-format
-msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr ""
-
-#, c-format
-msgid ""
-"invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
-"and dash ('-') are permitted."
-msgstr ""
-
-#, c-format
-msgid "invalid name '%s': two successive dashes ('--') are not permitted."
-msgstr ""
-
-#, c-format
-msgid "invalid name '%s': the last character may not be a dash ('-')."
-msgstr ""
-
-#, c-format
-msgid "invalid name '%s': maximum length is 32"
-msgstr ""
-
-#, c-format
-msgid "<child name='%s'> already specified"
-msgstr ""
-
-msgid "can not add keys to a 'list-of' schema"
-msgstr ""
-
-#, c-format
-msgid "<key name='%s'> already specified"
-msgstr ""
-
-#, c-format
-msgid ""
-"<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
-"to modify value"
-msgstr ""
-
-#, c-format
-msgid ""
-"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
-"to <key>"
-msgstr ""
-
-#, c-format
-msgid "<%s id='%s'> not (yet) defined."
+msgid "Schema '%s' is not relocatable (path must not be specified)\n"
 msgstr ""
 
 #, fuzzy, c-format
-msgid "invalid GVariant type string '%s'"
-msgstr "Vigane rekvisiidi tüüp (oodatakse stringi)"
+msgid "No such schema '%s'\n"
+msgstr "Liidest '%s' pole"
 
-msgid "<override> given but schema isn't extending anything"
+#, c-format
+msgid "Schema '%s' is relocatable (path must be specified)\n"
 msgstr ""
 
 #, c-format
-msgid "no <key name='%s'> to override"
+msgid "Empty path given.\n"
 msgstr ""
 
 #, c-format
-msgid "<override name='%s'> already specified"
+msgid "Path must begin with a slash (/)\n"
 msgstr ""
 
 #, c-format
-msgid "<schema id='%s'> already specified"
+msgid "Path must end with a slash (/)\n"
 msgstr ""
 
 #, c-format
-msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr ""
+
+#, fuzzy, c-format
+msgid "No such key '%s'\n"
+msgstr "Omadust '%s' pole"
 
 #, c-format
-msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgid "The provided value is outside of the valid range\n"
 msgstr ""
 
-#, c-format
-msgid ""
-"<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgid "List the installed (non-relocatable) schemas"
 msgstr ""
 
-#, c-format
-msgid ""
-"<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
-"does not extend '%s'"
+msgid "List the installed relocatable schemas"
 msgstr ""
 
-#, c-format
-msgid "a path, if given, must begin and end with a slash"
+msgid "Lists the keys in SCHEMA"
 msgstr ""
 
-#, c-format
-msgid "<%s id='%s'> already specified"
+msgid "SCHEMA[:PATH]"
 msgstr ""
 
-#, c-format
-msgid "Element <%s> not allowed inside <%s>"
+msgid "Lists the children of SCHEMA"
 msgstr ""
 
-#, c-format
-msgid "Element <%s> not allowed at toplevel"
+msgid "List keys and values, recursively"
 msgstr ""
 
-#, c-format
-msgid "text may not appear inside <%s>"
+msgid "Gets the value of KEY"
 msgstr ""
 
-#, c-format
-msgid "No such schema `%s' specified in override file `%s'"
+msgid "SCHEMA[:PATH] KEY"
 msgstr ""
 
-#, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgid "Queries the range of valid values for KEY"
 msgstr ""
 
-#, c-format
-msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is out of the "
-"range given in the schema"
+msgid "Sets the value of KEY to VALUE"
 msgstr ""
 
-#, c-format
-msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the "
-"list of valid choices"
+msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr ""
 
-msgid "where to store the gschemas.compiled file"
+msgid "Resets KEY to its default value"
 msgstr ""
 
-msgid "DIRECTORY"
-msgstr ""
-
-msgid "Do not write the gschema.compiled file"
-msgstr ""
-
-msgid "This option will be removed soon."
-msgstr ""
-
-msgid "Do not enforce key name restrictions"
+msgid "Checks if KEY is writable"
 msgstr ""
 
 msgid ""
-"Compile all GSettings schema files into a schema cache.\n"
-"Schema files are required to have the extension .gschema.xml,\n"
-"and the cache file is called gschemas.compiled."
+"Monitors KEY for changes.\n"
+"If no KEY is specified, monitor all keys in SCHEMA.\n"
+"Use ^C to stop monitoring.\n"
 msgstr ""
 
-#, c-format
-msgid "You should give exactly one directory name\n"
+msgid "SCHEMA[:PATH] [KEY]"
 msgstr ""
 
-#, c-format
-msgid "No schema files found: "
-msgstr ""
-
-#, c-format
-msgid "doing nothing.\n"
-msgstr ""
-
-#, c-format
-msgid "removed existing output file.\n"
-msgstr ""
-
-#, c-format
+#, fuzzy, c-format
 msgid ""
-"Commands:\n"
-"  help        Show this information\n"
-"  get         Get the value of a key\n"
-"  set         Set the value of a key\n"
-"  reset       Reset the value of a key\n"
-"  monitor     Monitor a key for changes\n"
-"  writable    Check if a key is writable\n"
+"Unknown command %s\n"
 "\n"
-"Use '%s COMMAND --help' to get help for individual commands.\n"
-msgstr ""
-
-msgid "Specify the path for the schema"
-msgstr ""
-
-msgid "PATH"
-msgstr ""
-
-msgid "SCHEMA KEY"
-msgstr ""
-
-msgid "Get the value of KEY"
-msgstr ""
-
-msgid ""
-"Arguments:\n"
-"  SCHEMA      The id of the schema\n"
-"  KEY         The name of the key\n"
-msgstr ""
-
-msgid "SCHEMA KEY VALUE"
-msgstr ""
-
-msgid "Set the value of KEY"
-msgstr ""
-
-msgid ""
-"Arguments:\n"
-"  SCHEMA      The id of the schema\n"
-"  KEY         The name of the key\n"
-"  VALUE       The value to set key to, as a serialized GVariant\n"
-msgstr ""
-
-#, c-format
-msgid "Key %s is not writable\n"
-msgstr "Võti %s pole kirjutatav\n"
-
-msgid "Sets KEY to its default value"
-msgstr ""
-
-msgid "Find out whether KEY is writable"
-msgstr ""
-
-msgid ""
-"Monitor KEY for changes and print the changed values.\n"
-"Monitoring will continue until the process is terminated."
-msgstr ""
-
-#, c-format
-msgid "Unknown command '%s'\n"
 msgstr "Tundmatu käsk '%s'\n"
+
+msgid ""
+"Usage:\n"
+"  gsettings COMMAND [ARGS...]\n"
+"\n"
+"Commands:\n"
+"  help                      Show this information\n"
+"  list-schemas              List installed schemas\n"
+"  list-relocatable-schemas  List relocatable schemas\n"
+"  list-keys                 List keys in a schema\n"
+"  list-children             List children of a schema\n"
+"  list-recursively          List keys and values, recursively\n"
+"  range                     Queries the range of a key\n"
+"  get                       Get the value of a key\n"
+"  set                       Set the value of a key\n"
+"  reset                     Reset the value of a key\n"
+"  writable                  Check if a key is writable\n"
+"  monitor                   Watch for changes\n"
+"\n"
+"Use 'gsettings help COMMAND' to get detailed help.\n"
+"\n"
+msgstr ""
+
+#, c-format
+msgid ""
+"Usage:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+
+msgid "Arguments:\n"
+msgstr ""
+
+msgid ""
+"  SCHEMA    The name of the schema\n"
+"  PATH      The path, for relocatable schemas\n"
+msgstr ""
+
+msgid "  KEY       The (optional) key within the schema\n"
+msgstr ""
+
+msgid "  KEY       The key within the schema\n"
+msgstr ""
+
+msgid "  VALUE     The value to set\n"
+msgstr ""
+
+#, c-format
+msgid "Empty schema name given"
+msgstr ""
 
 msgid "Invalid socket, not initialized"
 msgstr "Vigane sokkel, käivitamata"
@@ -2511,7 +2679,8 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr ""
 
 msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
 msgstr ""
 
 #, c-format
@@ -2555,6 +2724,15 @@ msgstr ""
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "GThemedIcon kodeeringu versiooni %d pole võimalik käsitseda"
+
+msgid "No PEM-encoded certificate found"
+msgstr ""
+
+msgid "Could not parse PEM-encoded certificate"
+msgstr ""
+
+msgid "Could not parse PEM-encoded private key"
+msgstr ""
 
 #, c-format
 msgid "Expecting 1 control message, got %d"
@@ -2664,6 +2842,9 @@ msgstr "Vaja on rohkem sisendit"
 
 msgid "Invalid compressed data"
 msgstr "Vigaselt pakitud andmed"
+
+#~ msgid "Key %s is not writable\n"
+#~ msgstr "Võti %s pole kirjutatav\n"
 
 #, fuzzy
 #~ msgid "Do not give error for empty directory"
