@@ -1,3 +1,48 @@
+Overview of Changes from GLib 2.27.4 to 2.27.5
+==============================================
+
+* Network support:
+ - Add g_tls_certificate_verify() to verify a certificate
+ - Add GTlsConnection:use-system-certdb
+ - Other TLS api additions
+
+* GIO:
+ - Add g_io_stream_splice_async()/_finish() to splice two iostreams
+ - Add g_emblemed_icon_clear_emblems() and make GEmblemedIcon derivable
+ - Remove GPeriodic; it did not receive the necessary review and
+   integration work to declare it stable
+
+* GSequence:
+ - New methods g_sequence_lookup() and g_sequence_lookup_iter()
+
+* Bugs fixed:
+ 617254 Missing g_sequence_lookup
+ 632544 g_dbus_connection_send_message can not send a locked message...
+ 633350 g_hostname_to_ascii() ignores non-ascii dots
+ 634583 Better error reporting for g_variant_parse()
+ 635007 gsetting enum rule don't work for out-of-srcdir builds
+ 635626 GDBus message idle can execute while flushes are pending
+ 636100 Can't read GSettings:backend property
+ 636305 Typo on g_queue_remove_all() function description
+ 636311 appinfo: tweak application positioning for content-types
+ 636351 g_simple_async_result_is_valid lacks a version tag
+ 636387 gdb autoload files shadow the "dir" builtin
+ 636673 g_simple_async_report_error_in_idle should allow object...
+ 637147 Add a "delay-apply" property to GSettings
+ 637171 emblemedicon: add g_emblemed_icon_clear_emblems()
+ 637237 gapplication: plug a memory leak
+
+* Translation updates:
+ Estonian
+ Galician
+ Hebrew
+ Norwegian bokmål
+ Simplified Chinese
+ Spanish
+ Traditional Chinese
+ Vietnamese
+
+
 Overview of Changes from GLib 2.27.3 to 2.27.4
 ==============================================
 
