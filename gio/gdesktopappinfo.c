@@ -1184,8 +1184,9 @@ update_mimeapps_list (const char  *desktop_id,
 {
   char *dirname, *filename, *string;
   GKeyFile *key_file;
-  gboolean load_succeeded, res;
+  gboolean load_succeeded, res, explicit_default;
   char **old_list, **list;
+  GList *system_list;
   gsize length, data_size;
   char *data;
   int i, j, k;
@@ -1221,6 +1222,8 @@ update_mimeapps_list (const char  *desktop_id,
       content_types = g_key_file_get_keys (key_file, DEFAULT_APPLICATIONS_GROUP, NULL, NULL);
     }
 
+  explicit_default = FALSE;
+
   for (k = 0; content_types && content_types[k]; k++)
     {
       /* set as default, if requested so */
@@ -1245,10 +1248,14 @@ update_mimeapps_list (const char  *desktop_id,
                                content_types[k],
                                NULL);
       else
-        g_key_file_set_string (key_file,
-                               DEFAULT_APPLICATIONS_GROUP,
-                               content_types[k],
-                               string);
+        {
+          g_key_file_set_string (key_file,
+                                 DEFAULT_APPLICATIONS_GROUP,
+                                 content_types[k],
+                                 string);
+
+          explicit_default = TRUE;
+        }
 
       g_free (string);
     }
@@ -1319,10 +1326,32 @@ update_mimeapps_list (const char  *desktop_id,
 			       content_types[k],
 			       NULL);
       else
-        g_key_file_set_string_list (key_file,
-			            ADDED_ASSOCIATIONS_GROUP,
-			            content_types[k],
-			            (const char * const *)list, i);
+        {
+          g_key_file_set_string_list (key_file,
+                                      ADDED_ASSOCIATIONS_GROUP,
+                                      content_types[k],
+                                      (const char * const *)list, i);
+
+          /* if we had no explicit default set, we should add the system default to the
+           * list, to avoid overriding it with applications from this list.
+           */
+          if (!explicit_default)
+            {
+              system_list = get_all_desktop_entries_for_mime_type (content_type, (const char **) list, FALSE, NULL);
+
+              if (system_list != NULL)
+                {
+                  string = system_list->data;
+
+                  g_key_file_set_string (key_file,
+                                         DEFAULT_APPLICATIONS_GROUP,
+                                         content_types[k],
+                                         string);
+                }
+
+              g_list_free_full (system_list, g_free);
+            }
+        }
    
       g_strfreev (list);
     }
