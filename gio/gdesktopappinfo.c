@@ -898,6 +898,8 @@ create_files_for_uris (GList *uris)
 
 typedef struct
 {
+  GSpawnChildSetupFunc user_setup;
+  gpointer user_setup_data;
   char *display;
   char *sn_id;
   char *desktop_file;
@@ -923,6 +925,9 @@ child_setup (gpointer user_data)
       g_snprintf (pid, 20, "%ld", (long)getpid ());
       g_setenv ("GIO_LAUNCHED_DESKTOP_FILE_PID", pid, TRUE);
     }
+
+  if (data->user_setup)
+    data->user_setup (data->user_setup_data);
 }
 
 static void
@@ -968,11 +973,18 @@ notify_desktop_launch (GDBusConnection  *session_bus,
   g_object_unref (msg);
 }
 
+#define _SPAWN_FLAGS_DEFAULT (G_SPAWN_SEARCH_PATH)
+
 static gboolean
-g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
-				GList              *uris,
-				GAppLaunchContext  *launch_context,
-				GError            **error)
+_g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
+					  GList                      *uris,
+					  GAppLaunchContext          *launch_context,
+					  GSpawnFlags                 spawn_flags,
+					  GSpawnChildSetupFunc        user_setup,
+					  gpointer                    user_setup_data,
+					  GDesktopAppLaunchCallback   pid_callback,
+					  gpointer                    pid_callback_data,
+					  GError                     **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
   GDBusConnection *session_bus;
@@ -1012,6 +1024,8 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 	  goto out;
 	}
 
+      data.user_setup = user_setup;
+      data.user_setup_data = user_setup_data;
       data.display = NULL;
       data.sn_id = NULL;
       data.desktop_file = info->filename;
@@ -1035,7 +1049,7 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
       if (!g_spawn_async (info->path,
 			  argv,
 			  NULL,
-			  G_SPAWN_SEARCH_PATH,
+			  spawn_flags,
 			  child_setup,
 			  &data,
 			  &pid,
@@ -1050,6 +1064,9 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 
 	  goto out;
 	}
+
+      if (pid_callback != NULL)
+	pid_callback (info, pid, pid_callback_data);
 
       notify_desktop_launch (session_bus,
 			     info->filename,
@@ -1079,6 +1096,19 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
   g_strfreev (argv);
 
   return completed;
+}
+
+static gboolean
+g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
+				GList              *uris,
+				GAppLaunchContext  *launch_context,
+				GError            **error)
+{
+  return _g_desktop_app_info_launch_uris_internal (appinfo, uris,
+						   launch_context,
+						   _SPAWN_FLAGS_DEFAULT,
+						   NULL, NULL, NULL, NULL,
+						   error);
 }
 
 static gboolean
@@ -1127,6 +1157,55 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
   g_list_free (uris);
   
   return res;
+}
+
+/**
+ * g_desktop_app_info_launch_uris_as_manager:
+ * @appinfo: a #GDesktopAppInfo
+ * @uris: (element-type utf8): List of URIs
+ * @launch_context: a #GAppLaunchContext
+ * @spawn_flags: #GSpawnFlags, used for each process
+ * @user_setup: a #GSpawnChildSetupFunc, used once for each process.
+ * @user_setup_data: (closure user_setup): User data for @user_setup
+ * @pid_callback: (scope call): Callback for child processes
+ * @pid_callback_data: (closure pid_callback): User data for @callback
+ * @error: a #GError
+ *
+ * This function performs the equivalent of g_app_info_launch_uris(),
+ * but is intended primarily for operating system components that
+ * launch applications.  Ordinary applications should use
+ * g_app_info_launch_uris().
+ *
+ * In contrast to g_app_info_launch_uris(), all processes created will
+ * always be run directly as children as if by the UNIX fork()/exec()
+ * calls.
+ *
+ * This guarantee allows additional control over the exact environment
+ * of the child processes, which is provided via a setup function
+ * @setup, as well as the process identifier of each child process via
+ * @pid_callback.  See g_spawn_async() for more information about the
+ * semantics of the @setup function.
+ */
+gboolean
+g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
+					   GList                      *uris,
+					   GAppLaunchContext          *launch_context,
+					   GSpawnFlags                 spawn_flags,
+					   GSpawnChildSetupFunc        user_setup,
+					   gpointer                    user_setup_data,
+					   GDesktopAppLaunchCallback   pid_callback,
+					   gpointer                    pid_callback_data,
+					   GError                    **error)
+{
+  return _g_desktop_app_info_launch_uris_internal ((GAppInfo*)appinfo,
+						   uris,
+						   launch_context,
+						   spawn_flags,
+						   user_setup,
+						   user_setup_data,
+						   pid_callback,
+						   pid_callback_data,
+						   error);
 }
 
 G_LOCK_DEFINE_STATIC (g_desktop_env);
