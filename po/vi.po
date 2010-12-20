@@ -2,14 +2,14 @@
 # Copyright © 2010 GNOME i18n Project for Vietnamese.
 # T.M.Thanh <tmthanh@yahoo.com>, 2002.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2010.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009-2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-07 21:37-0400\n"
-"PO-Revision-Date: 2010-03-22 21:32+0930\n"
+"PO-Revision-Date: 2010-12-20 17:25+0700\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -92,45 +92,44 @@ msgstr "Lỗi mở rộng dòng thực hiện '%s' bằng URI '%s'"
 #: gio/gcharsetconverter.c:459
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
-msgstr "Không hỗ trợ khả năng chuyển đổi từ bộ ký tự '%s' sang '%s'"
+msgstr "Không hỗ trợ  việc chuyển từ đặt ký tự '%s' thành '%s'"
 
 #: glib/gconvert.c:441 glib/gconvert.c:519 gio/gcharsetconverter.c:463
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Không thể mở bộ chuyển đổi từ '%s' sang '%s'"
+msgstr "Không thể mở trình chuyển đổi từ '%s' sang '%s'"
 
 #: glib/gconvert.c:638 glib/gconvert.c:1031 glib/giochannel.c:1576
 #: glib/giochannel.c:1618 glib/giochannel.c:2462 glib/gutf8.c:989
 #: glib/gutf8.c:1444 gio/gcharsetconverter.c:346
 msgid "Invalid byte sequence in conversion input"
-msgstr "Gặp dây byte không hợp lệ trong dữ liệu nhập chuyển đổi"
+msgstr "Byte sequence không hợp lệ trong phần nhập chuyển đổi"
 
 #: glib/gconvert.c:646 glib/gconvert.c:956 glib/giochannel.c:1583
 #: glib/giochannel.c:2474 gio/gcharsetconverter.c:351
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "Gặp lỗi khi chuyển đổi: %s"
+msgstr "Lỗi khi chuyển đổi: %s"
 
 #: glib/gconvert.c:678 glib/gutf8.c:985 glib/gutf8.c:1195 glib/gutf8.c:1336
 #: glib/gutf8.c:1440
 msgid "Partial character sequence at end of input"
-msgstr "Dây ký tự riêng phần ở cuối dữ liệu nhập"
+msgstr "Character sequence riêng phần ở cuối đầu vào"
 
 #: glib/gconvert.c:928
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
-msgstr "Không thể chuyển đổi đồ dữ trữ '%s' thành bộ mã '%s'"
+msgstr "Không thể chuyển đổi fallback '%s' thành codeset '%s'"
 
 #: glib/gconvert.c:1751
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr ""
-"URI '%s' không phải là một URI tuyệt đối sử dụng lược đồ 'file' (tập tin)"
+msgstr "URI '%s' không phải URI tuyệt đối sử dụng lược đồ tập tin"
 
 #: glib/gconvert.c:1761
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "Không cho phép URI tập tin cục bộ '%s' chứa dấu thăng '#'"
+msgstr "URI tập tin cục bộ '%s' có thể không bao gồm '#'"
 
 #: glib/gconvert.c:1778
 #, c-format
@@ -140,36 +139,36 @@ msgstr "URI '%s' không hợp lệ"
 #: glib/gconvert.c:1790
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
-msgstr "Tên máy của URI '%s' không hợp lệ"
+msgstr "Tên chủ của URI '%s' không hợp lệ"
 
 #: glib/gconvert.c:1806
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "URI '%s' chứa một số ký tự đã thoát không hợp lệ"
+msgstr "URI '%s' chứa không hợp lệ các ký tự thoát"
 
 #: glib/gconvert.c:1901
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
-msgstr "Tên đường dẫn '%s' không phải là một đường dẫn tuyệt đối"
+msgstr "Tên đường dẫn '%s' không phải một đường dẫn tuyệt đối"
 
 #: glib/gconvert.c:1911
 msgid "Invalid hostname"
-msgstr "Tên máy không hợp lệ"
+msgstr "Tên chủ không hợp lệ"
 
 #: glib/gdir.c:112 glib/gdir.c:135
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Gặp lỗi khi mở thư mục '%s': %s"
+msgstr "Lỗi khi mở thư mục '%s': %s"
 
 #: glib/gfileutils.c:536 glib/gfileutils.c:624
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Không thẻ cấp phát %lu byte để đọc tập tin '%s'"
+msgstr "Không thẻ cấp phát %lu bytes để đọc tập tin \"%s\""
 
 #: glib/gfileutils.c:551
 #, c-format
 msgid "Error reading file '%s': %s"
-msgstr "Gặp lỗi khi đọc tập tin '%s': %s"
+msgstr "Lỗi khi đọc tập tin '%s': %s"
 
 #: glib/gfileutils.c:565
 #, c-format
@@ -179,42 +178,43 @@ msgstr "Tập tin \"%s\" quá lớn"
 #: glib/gfileutils.c:648
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Lỗi đọc từ tập tin '%s': %s"
+msgstr "Không đọc được từ tập tin '%s': %s"
 
 #: glib/gfileutils.c:699 glib/gfileutils.c:786
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Lỗi mở tập tin '%s': %s"
+msgstr "Lỗi khi mở tập tin '%s': %s"
 
 #: glib/gfileutils.c:716 glib/gmappedfile.c:170
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
-msgstr "Lỗi lấy các thuộc tính của tập tin '%s': lỗi 'fstat()': %s"
+msgstr "Không lấy được các thuộc tính của tập tin '%s': fstat() không được: %s"
 
 #: glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Lỗi mở tập tin '%s': lỗi 'fdopen()': %s"
+msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
 #: glib/gfileutils.c:858
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
-msgstr "Lỗi thay đổi tên tập tin '%s' thành '%s': lỗi 'g_rename()': %s"
+msgstr ""
+"Không đổi tên tập tin « %s » thành « %s » được: « g_rename() » không được: %s"
 
 #: glib/gfileutils.c:900 glib/gfileutils.c:1366
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Lỗi tạo tập tin '%s': %s"
+msgstr "Không tạo được tập tin '%s': %s"
 
 #: glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "Lỗi mở tập tin '%s': lỗi 'fdopen()': %s"
+msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
 #: glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "Lỗi ghi tập tin '%s': lỗi 'fdopen()': %s"
+msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
 #: glib/gfileutils.c:958
 #, c-format
@@ -229,17 +229,17 @@ msgstr "Lỗi ghi tập tin '%s': lỗi fsync(): %s"
 #: glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "Lỗi đóng tập tin '%s': lỗi 'fclose()': %s"
+msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
 #: glib/gfileutils.c:1124
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
-msgstr "Không thể gỡ bỏ tập tin tồn tại '%s': lỗi 'g_unlink()': %s"
+msgstr "Không thể gỡ bỏ tập tin tồn tại « %s »: « g_unlink() » thất bại: %s"
 
 #: glib/gfileutils.c:1328
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Biểu mẫu '%s' không hợp lệ, không nên chứa '%s'"
+msgstr "Template '%s' không hợp lệ, không nên chứa '%s'"
 
 #: glib/gfileutils.c:1341
 #, c-format
@@ -250,7 +250,7 @@ msgstr "Biểu mẫu '%s' không chứa XXXXXX"
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
+msgstr[0] "%u byte"
 
 #: glib/gfileutils.c:1782
 #, c-format
@@ -289,7 +289,7 @@ msgstr "Lỗi đọc liên kết tượng trưng '%s': %s"
 
 #: glib/gfileutils.c:1871
 msgid "Symbolic links not supported"
-msgstr "Không hỗ trợ khả năng sử dụng liên kết tượng trưng"
+msgstr "Không hỗ trợ liên kết tượng trưng"
 
 #: glib/giochannel.c:1408
 #, c-format
@@ -298,12 +298,11 @@ msgstr "Không thể mở bộ chuyển đổi từ '%s' sang '%s': %s"
 
 #: glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
-msgstr ""
-"Không thể thực hiện tiến trình đọc thô trong 'g_io_channel_read_line_string'"
+msgstr "Không thể thực hiện đọc thô trong g_io_channel_read_line_string"
 
 #: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
-msgstr "Có dữ liệu chưa được chuyển đổi còn lại nằm trong bộ đệm đọc"
+msgstr "Để lại dữ liệu chưa được chuyển đổi trong buffer đọc"
 
 #: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
@@ -311,18 +310,17 @@ msgstr "Kênh tận hết trong ký tự riêng phần"
 
 #: glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
-msgstr ""
-"Không thể thực hiện tiến trình đọc thô trong 'g_io_channel_read_to_end'"
+msgstr "Không thể thực hiện đọc thô trong g_io_channel_read_to_end"
 
 #: glib/gmappedfile.c:151
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Lỗi mở tập tin '%s': lỗi 'fdopen()': %s"
+msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
 #: glib/gmappedfile.c:230
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "Lỗi ánh xạ tập tin '%s': lỗi 'mmap()': %s"
+msgstr "Không mở được tập tin '%s': fdopen() không được: %s"
 
 #: glib/gmarkup.c:303 glib/gmarkup.c:343
 #, c-format
@@ -355,8 +353,8 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Lỗi phân tách '%-.*s', nó nên là một chữ số bên trong một tham chiếu ký tự "
-"(v.d. '&#234') — có lẽ chư số quá lớn."
+"Không phân tách được « %-.*s », nó nên là một con số bên trong một tham chiếu "
+"ký tự (v.d. « &#234 ») — có lẽ con số quá lớn."
 
 #: glib/gmarkup.c:590
 msgid ""
@@ -364,20 +362,21 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"Tham chiếu ký tự không có dấu chấm phẩy cuối cùng; dường như bạn đã dùng một "
-"dấu và mà không định bắt đầu một thực thể — hãy thoát dấu và như là '&amp;'"
+"Tham chiếu ký tự đã không kết thúc bằng dấu chấm phẩy; dường như bạn đã dùng "
+"một ký tự (và) mà không phải để bắt đầu một thự thể - thoát dấu (và) như là "
+"&amp"
 
 #: glib/gmarkup.c:616
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
-msgstr "Tham chiếu ký tự '%-.*s' không mã hóa một ký tự được phép."
+msgstr "Tham chiếu ký tự « %-.*s » không mã hóa một ký tự cho phép."
 
 #: glib/gmarkup.c:654
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
-"Thấy thực thể rỗng '&;'; những thực thể hợp lệ là: &amp; &quot; &lt; &gt; "
-"&apos;"
+"Thực thể trống '&;' được thấy; những mục nhập hợp lệ là: &amp; &quot; &lt; "
+"&gt; &apos;"
 
 #: glib/gmarkup.c:662
 #, c-format
@@ -389,12 +388,12 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"Thực thể không có dấu chấm phẩy cuối cùng; dường như bạn đã dùng dấu và mà "
-"không định bắt đầu một thực thể — hãy thoát dấu và như là '&amp;'"
+"Thực thể đã không kết thúc bằng dấu chấm phẩy; dường như bạn đã dùng ký tự "
+"(và) mà không phải để bắt đầu một thự thể - thoát khỏi dấu (và) như là &amp;"
 
 #: glib/gmarkup.c:1014
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "Tài liệu phải bắt đầu bằng một yếu tố (v.d. <book> [quyển sách])"
+msgstr "Tài liệu phải bắt đầu bằng một phần tử (vd: <book>)"
 
 #: glib/gmarkup.c:1054
 #, c-format
@@ -402,8 +401,8 @@ msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
 msgstr ""
-"'%s' không phải là một ký tự hợp lệ đi theo một dấu ngoặc nhọn mở '<' ; "
-"không cho phép nó bắt đầu một tên yếu tố"
+"'%s' không phải một ký tự hợp lệ đi theo ký tự '<' ; nó có thể không bắt đầu "
+"tên phần tử"
 
 #: glib/gmarkup.c:1122
 #, c-format
@@ -417,9 +416,7 @@ msgstr ""
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu bằng '=' nằm sau tên thuộc tính '%s' của yếu "
-"tố '%s'"
+msgstr "Ký tự lẻ '%s', mong muốn '=' sau tên thuộc tính '%s' của phần tử '%s'"
 
 #: glib/gmarkup.c:1247
 #, c-format
@@ -428,9 +425,9 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu ngoặc nhọn đóng '>' hay dấu xuyệc '/' để kết "
-"thúc thẻ khởi đầu của yếu tố '%s', hay tùy ý một thuộc tính; có lẽ bạn đã "
-"dùng một ký tự không hợp lệ trong một tên thuộc tính."
+"Ký tự lẻ '%s', mong muốn một ký tự '>' hay '/' để kết thúc tag khởi đầu của "
+"phần ỷư '%s', hay tùy ý một thuộc tính; có lẽ bạn đã dùng một ký tự bát hợp "
+"lệ trong một tên thuộc tính"
 
 #: glib/gmarkup.c:1291
 #, c-format
@@ -438,8 +435,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Ký tự lạ '%s', mong đợi một dấu nháy kép mở nằm sau dấu bằng khi đưa giá trị "
-"cho thuộc tính '%s' của yếu tố '%s'"
+"Ký tự lẻ '%s' , mong muốn một dấu ngoặc kép sau dấu bằng khi nhận giá trị "
+"cho thuộc tính '%s' của phần tử '%s'"
 
 #: glib/gmarkup.c:1425
 #, c-format
@@ -447,8 +444,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"'%s' không phải là một ký tự hợp lệ nằm theo các ký tự '</' ; không cho phép "
-"'%s' bắt đầu một tên yếu tố"
+"'%s' không phải một ký tự hợp lệ đi theo các ký tự '</' ; '%s' có thể không "
+"khởi đầu một tên phần tử"
 
 #: glib/gmarkup.c:1461
 #, c-format
@@ -456,26 +453,27 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"'%s'  không phải là một ký tự hợp lệ nằm theo tên yếu tố đóng '%s'; ký tự "
-"được phép là '>'."
+"'%s' không phải một ký tự hợp lệ đi theo tên phần tử đóng '%s'; ký tự được "
+"phép là '>'"
 
 #: glib/gmarkup.c:1472
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
-msgstr "Yếu tố '%s' đã được đóng, không có yếu tố mở hiện thời"
+msgstr "Phần tử '%s' đã được đóng, không có phần tử mở hiện thời"
 
 #: glib/gmarkup.c:1481
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr "Yếu tố '%s' đã được đóng, nhưng yếu tố mở hiện thời là '%s'"
+msgstr "Phần tử '%s' đã được đóng, nhưng phần tử mở hiện thời là '%s'"
 
 #: glib/gmarkup.c:1648
 msgid "Document was empty or contained only whitespace"
-msgstr "Tài liệu rỗng hay chứa chỉ khoảng trắng"
+msgstr "Tài liệu trống hay chỉ chứa không gian trống"
 
 #: glib/gmarkup.c:1662
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "Tài liệu đã kết thúc bất thường ngay sau một dấu ngoặc nhọn mở '<'"
+msgstr ""
+"Tài liệu đã kết thúc không mong muốn ngay sau một dấu ngoặc nhọn mở '<'"
 
 #: glib/gmarkup.c:1670 glib/gmarkup.c:1715
 #, c-format
@@ -483,8 +481,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Tài liệu đã kết thúc bất thường với các yếu tố vẫn còn mở — '%s' là yếu tố "
-"đã mở cuối cùng"
+"Tài liệu đã kết thúc không mong muốn với các phần tử vẫn còn mở - '%s' là "
+"phần tử đã mở cuối cùng"
 
 #: glib/gmarkup.c:1678
 #, c-format
@@ -492,43 +490,46 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"Tài liệu kết thúc bất thường, mong đợi thấy dấu ngoặc nhọn đóng kết thúc thẻ "
-"'<%s/>'"
+"Tài liệu kết thúc không mong muốn, được cho là thấy dấu ngoặc nhọn kết thúc "
+"tag <%s/>"
 
 #: glib/gmarkup.c:1684
 msgid "Document ended unexpectedly inside an element name"
-msgstr "Tài liệu đã kết thúc bất thường bên trong một tên yếu tố"
+msgstr "Tài liệu được kết thúc không mong muốn bên trong tên phần tử"
 
 #: glib/gmarkup.c:1690
 msgid "Document ended unexpectedly inside an attribute name"
-msgstr "Tài liệu đã kết thúc bất thường bên trong một tên thuộc tính"
+msgstr "Tài liệu được kết thúc không mong muốn bên trong tên thuộc tính"
 
 #: glib/gmarkup.c:1695
 msgid "Document ended unexpectedly inside an element-opening tag."
-msgstr "Tài liệu đã kết thúc bất thường bên trong một thẻ mở yếu tố"
+msgstr "Tài liệu được kết thúc không mong muốn bên trong tag của phần tử mở."
 
 #: glib/gmarkup.c:1701
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"Tài liệu đã kết thúc bất thường sau dấu bằng nằm sau một tên thuộc tính; "
+"Tài liệu kết thúc không mong muốn sau dấu bằng đi theo một tên thuộc tính; "
 "không có giá trị thuộc tính"
 
 #: glib/gmarkup.c:1708
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
-"Tài liệu đã kết thúc bất thường trong khi nằm trong một giá trị thuộc tính"
+"Tài liệu được kết thúc không mong muốn trong khi nằm trong một giá trị thuộc "
+"tính"
 
 #: glib/gmarkup.c:1724
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "Tài liệu đã kết thúc bất thường bên trong thẻ đóng cho yếu tố '%s'"
+msgstr ""
+"Tài liệu được kết thúc không mong muốn bên trong tag đóng cho phần tử '%s'"
 
 #: glib/gmarkup.c:1730
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
-"Tài liệu đã kết thúc bất thường bên trong một chú thích hay hướng dẫn xử lý"
+"Tài liệu được kết thúc không mong muốn bên trong một ghi chú hay hướng dẫn "
+"tiến trình"
 
 #: glib/gregex.c:131
 msgid "corrupted object"
@@ -837,48 +838,46 @@ msgstr "Văn bản trích dẫn không bắt đầu bằng một dấu trích d�
 #: glib/gshell.c:182
 msgid "Unmatched quotation mark in command line or other shell-quoted text"
 msgstr ""
-"Dấu ngoặc kép không ăn khớp nằm trên dòng lệnh hay trong văn bản khác đã "
-"trích dẫn trong trình bao"
+"Dấu ngoặc kép không ăn khớp trong dòng lệnh hay một shell-quoted text khác"
 
 #: glib/gshell.c:560
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "Văn bản đã kết thúc ngay sau dấu xuyệc ngược '\\' (văn bản là '%s')"
+msgstr "Văn bản được kết thúc ngay sau ký tự '\\'. (văn bản đã là '%s')"
 
 #: glib/gshell.c:567
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"Văn bản đã kết thúc trước khi tìm dấu ngoặc kép tương ứng với '%c' (văn bản "
-"là '%s')"
+"Text đã kết thúc trước khi làm khớp dấu ngoặc kép cho %c. (text là '%s')"
 
 #: glib/gshell.c:579
 msgid "Text was empty (or contained only whitespace)"
-msgstr "Văn bản rỗng (hay chưa chỉ khoảng trắng)"
+msgstr "Văn bản trống (hay chỉ gồm các ký tự trắng)"
 
 #: glib/gspawn-win32.c:283
 msgid "Failed to read data from child process"
-msgstr "Lỗi đọc dữ liệu từ tiến trình con"
+msgstr "Không đọc được dữ liệu từ tiến trình con"
 
 #: glib/gspawn-win32.c:300 glib/gspawn.c:1480
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Lỗi tạo ống dẫn để liên lạc với tiến trình con (%s)"
+msgstr "Không tạo được pipe để liên lạc với tiến trình con (%s)"
 
 #: glib/gspawn-win32.c:339 glib/gspawn-win32.c:347 glib/gspawn.c:1139
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Lỗi đọc từ ống dẫn con (%s)"
+msgstr "Không đọc được từ pipe con (%s)"
 
 #: glib/gspawn-win32.c:370 glib/gspawn.c:1346
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Lỗi chuyển đổi sang thư mục '%s' (%s)"
+msgstr "Không thay đổi được thư mục '%s' (%s)"
 
 #: glib/gspawn-win32.c:376 glib/gspawn-win32.c:495
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Lỗi thực hiện tiến trình con (%s)"
+msgstr "Không thực thi được tiến trình con (%s)"
 
 #: glib/gspawn-win32.c:445
 #, c-format
@@ -888,12 +887,12 @@ msgstr "Tên chương trình không hợp lệ: %s"
 #: glib/gspawn-win32.c:455 glib/gspawn-win32.c:723 glib/gspawn-win32.c:1279
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
-msgstr "Gặp chuỗi không hợp lệ nằm trong véc-tơ đối số tại %d: %s"
+msgstr "Gặp chuỗi không hợp lệ trong véc-tơ đối số tại %d: %s"
 
 #: glib/gspawn-win32.c:466 glib/gspawn-win32.c:738 glib/gspawn-win32.c:1312
 #, c-format
 msgid "Invalid string in environment: %s"
-msgstr "Gặp chuỗi không hợp lệ nằm trong môi trường: %s"
+msgstr "Gặp chuỗi không hợp lệ trong môi trường: %s"
 
 #: glib/gspawn-win32.c:719 glib/gspawn-win32.c:1260
 #, c-format
@@ -903,75 +902,73 @@ msgstr "Thư mục làm việc không hợp lệ: %s"
 #: glib/gspawn-win32.c:784
 #, c-format
 msgid "Failed to execute helper program (%s)"
-msgstr "Lỗi thực hiện chương trình bổ trợ (%s)"
+msgstr "Lỗi thực thi chương trình bổ trợ (%s)"
 
 #: glib/gspawn-win32.c:998
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
 msgstr ""
-"Gặp lỗi bất thường nằm trong 'g_io_channel_win32_poll()' khi đọc dữ liệu từ "
-"tiến trình con"
+"Lỗi không mong muốn trong g_io_channel_win32_poll() đọc dữ liệu từ tiến "
+"trình con"
 
 #: glib/gspawn.c:190
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Lỗi đọc dữ liệu từ tiến trình con (%s)"
+msgstr "Không đọc được dữ liệu từ tiến trình con (%s)"
 
 #: glib/gspawn.c:329
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr ""
-"Gặp lỗi bất thường nằm trong 'select()' khi đọc dữ liệu từ tiến trình con (%"
-"s)"
+msgstr "Lỗi không mong muốn trong select() đọc dữ liệu từ tiến trình con (%s)"
 
 #: glib/gspawn.c:414
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
-msgstr "Gặp lỗi bất thường nằm trong 'waitpid()' (%s)"
+msgstr "Lỗi không mong muốn trong waitpid() (%s)"
 
 #: glib/gspawn.c:1206
 #, c-format
 msgid "Failed to fork (%s)"
-msgstr "Lỗi tạo tiến trình con (%s)"
+msgstr "Không rẽ nhánh được (%s)"
 
 #: glib/gspawn.c:1356
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Lỗi thực hiện tiến trình con '%s' (%s)"
+msgstr "Không thự thi được tiến trình con \"%s\" (%s)"
 
 #: glib/gspawn.c:1366
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Lỗi chuyển hướng kết nhập hay kết xuất của tiến trình con (%s)"
+msgstr "Không gửi được lần nữa đầu ra hay đầu vào của tiến trình con (%s)"
 
 #: glib/gspawn.c:1375
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Lỗi tạo tiến trình con (%s)"
+msgstr "Không rẽ nhánh được tiến trình con (%s)"
 
 #: glib/gspawn.c:1383
 #, c-format
 msgid "Unknown error executing child process \"%s\""
-msgstr "Gặp lỗi không rõ khi thực hiện tiến trình con '%s'"
+msgstr "Lỗi không xác định khi thực thi tiến trình con \"%s\""
 
 #: glib/gspawn.c:1407
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
-msgstr "Lỗi đọc đủ dữ liệu từ ống dẫn PID con (%s)"
+msgstr "Không đọc được đủ dữ liệu từ pid pipe con(%s)"
 
 #: glib/gutf8.c:1063
 msgid "Character out of range for UTF-8"
-msgstr "Ký tự ở ngoại phạm vi UTF-8"
+msgstr "Ký tự nằm ngoài vùng UTF-8"
 
 #: glib/gutf8.c:1163 glib/gutf8.c:1172 glib/gutf8.c:1304 glib/gutf8.c:1313
 #: glib/gutf8.c:1454 glib/gutf8.c:1550
 msgid "Invalid sequence in conversion input"
-msgstr "Dãy không hợp lệ nằm trong dữ liệu nhập việc chuyển đổi"
+msgstr "Sequence bất hợp lệ trong đầu vào chuyển đổi"
 
 #: glib/gutf8.c:1465 glib/gutf8.c:1561
 msgid "Character out of range for UTF-16"
-msgstr "Ký tự ở ngoại phạm vi UTF-16"
+msgstr "Ký tự nằm ngoài vùng UTF-16"
 
 #: glib/goption.c:755
 msgid "Usage:"
@@ -1000,12 +997,12 @@ msgstr "Tùy chọn ứng dụng:"
 #: glib/goption.c:992 glib/goption.c:1062
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
-msgstr "Không thể phân tách giá trị số nguyên '%s' cho %s"
+msgstr "Không phân tách giá trị số nguyên « %s » cho %s."
 
 #: glib/goption.c:1002 glib/goption.c:1070
 #, c-format
 msgid "Integer value '%s' for %s out of range"
-msgstr "Giá trị số nguyên '%s' cho %s ở ngoại phạm vi"
+msgstr "Giá trị số nguyên '%s' cho %s ở ngoài phạm vi."
 
 #: glib/goption.c:1027
 #, c-format
@@ -1015,7 +1012,7 @@ msgstr "Không thể phân tách giá trị đôi '%s' cho %s"
 #: glib/goption.c:1035
 #, c-format
 msgid "Double value '%s' for %s out of range"
-msgstr "Giá trị đôi '%s' cho %s ở ngoại phạm vi"
+msgstr "Giá trị đôi '%s' cho %s ở ngoài phạm vi"
 
 #: glib/goption.c:1298 glib/goption.c:1377
 #, c-format
@@ -1030,7 +1027,7 @@ msgstr "Thiếu đối số cho %s"
 #: glib/goption.c:1917
 #, c-format
 msgid "Unknown option %s"
-msgstr "Không biết tùy chọn %s"
+msgstr "Không biết tùy chọn %s."
 
 #: glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
@@ -1038,19 +1035,19 @@ msgstr "Không tìm thấy tập tin khoá hợp lệ nằm trong thư mục tì
 
 #: glib/gkeyfile.c:398
 msgid "Not a regular file"
-msgstr "Không phải là một tập tin chuẩn"
+msgstr "Không phải là một tập tin chuẩn."
 
 #: glib/gkeyfile.c:406
 msgid "File is empty"
-msgstr "Tập tin rỗng"
+msgstr "Tập tin rỗng."
 
 #: glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"Tập tin khóa chứa dòng '%s' mà không phải là một cặp giá trị khóa, nhóm, hay "
-"chú thích"
+"Tập tin khóa chứa dòng « %s » mà không phải là cặp giá trị khóa, nhóm, hoặc "
+"chú thích."
 
 #: glib/gkeyfile.c:825
 #, c-format
@@ -1059,7 +1056,7 @@ msgstr "Tên nhóm không hợp lệ: %s"
 
 #: glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
-msgstr "Tập tin khóa không bắt đầu với nhóm"
+msgstr "Tập tin khóa không bắt đầu với nhóm."
 
 #: glib/gkeyfile.c:873
 #, c-format
@@ -1069,29 +1066,29 @@ msgstr "Tên khoá không hợp lệ: %s"
 #: glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
-msgstr "Tập tin khóa chứa bảng mã không được hỗ trợ '%s'"
+msgstr "Tập tin khóa chứa bảng mã không được hỗ trợ « %s »."
 
 #: glib/gkeyfile.c:1116 glib/gkeyfile.c:1278 glib/gkeyfile.c:2657
 #: glib/gkeyfile.c:2723 glib/gkeyfile.c:2858 glib/gkeyfile.c:2991
 #: glib/gkeyfile.c:3144 glib/gkeyfile.c:3331 glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have group '%s'"
-msgstr "Tập tin khóa không có nhóm '%s'"
+msgstr "Tập tin khóa không có nhóm « %s »."
 
 #: glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
-msgstr "Tập tin khóa không có khóa '%s'"
+msgstr "Tập tin khóa không có khóa « %s »."
 
 #: glib/gkeyfile.c:1397 glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
-msgstr "Tập tin khóa chứa khóa '%s' với giá trị '%s' mà không phải là UTF-8"
+msgstr "Tập tin khóa chứa khóa « %s » có giá trị « %s » không phải là UTF-8."
 
 #: glib/gkeyfile.c:1417 glib/gkeyfile.c:1911
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr "Tập tin khóa chứa khóa '%s' mà có giá trị không có khả năng giải dịch."
+msgstr "Tập tin khóa chứa khóa « %s » có giá trị không có khả năng giải dịch."
 
 #: glib/gkeyfile.c:1532
 #, c-format
@@ -1105,22 +1102,22 @@ msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 msgstr ""
-"Tập tin khóa chứa khóa '%s' trong nhóm '%s' mà có giá trị không có khả năng "
+"Tập tin khóa chứa khóa « %s » trong nhóm « %s » có giá trị không có khả năng "
 "giải dịch."
 
 #: glib/gkeyfile.c:2672 glib/gkeyfile.c:2873 glib/gkeyfile.c:3403
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
-msgstr "Tập tin khóa không có khóa '%s' trong nhóm '%s'"
+msgstr "Tập tin khóa không chứa khóa « %s » trong nhóm « %s »."
 
 #: glib/gkeyfile.c:3637
 msgid "Key file contains escape character at end of line"
-msgstr "Tập tin khóa chứa ký tự thoát tại kết thúc của dòng"
+msgstr "Tập tin khóa chứa ký tự thoạt tại kết thức dòng."
 
 #: glib/gkeyfile.c:3659
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
-msgstr "Tập tin khóa chứa dãy thoát không hợp lệ '%s'"
+msgstr "URI '%s' chứa không hợp lệ các ký tự thoát"
 
 #: glib/gkeyfile.c:3801
 #, c-format
@@ -1130,7 +1127,7 @@ msgstr "Không thể giải dịch giá trị '%s' dạng con số."
 #: glib/gkeyfile.c:3815
 #, c-format
 msgid "Integer value '%s' out of range"
-msgstr "Giá trị số nguyên '%s' ở ngoại phạm vi"
+msgstr "Giá trị số nguyên '%s' ở ngoài phạm vi"
 
 #: glib/gkeyfile.c:3848
 #, c-format
@@ -1192,392 +1189,391 @@ msgstr "kiểu %s"
 
 #: gio/gcredentials.c:203 gio/gcredentials.c:338
 msgid "GCredentials is not implemented on this OS"
-msgstr ""
+msgstr "GCredentials không được hỗ trợ trên hệ điều hành này"
 
 #: gio/gcredentials.c:296
 msgid "There is no GCredentials support for your platform"
-msgstr ""
+msgstr "Không có hỗ trợ GCredentials trên hệ điều hành của bạn"
 
 #: gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
 msgstr "Kết thúc luồng sớm bất thường"
 
 #: gio/gdbusaddress.c:135 gio/gdbusaddress.c:226 gio/gdbusaddress.c:300
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Địa chỉ ổ cắm không hỗ trợ"
+msgstr "Khoá không hỗ trợ `%s' ở đầu nhập địa chỉ `%s'"
 
 #: gio/gdbusaddress.c:165
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
-msgstr ""
+msgstr "Địa chỉ `%s' không hợp lệ (cần chính xác một đường dẫn, tmpdir hoặc khoá tổng quát)"
 
 #: gio/gdbusaddress.c:178
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr ""
+msgstr "Cặp khoá/giá trị vô nghĩa ở địa chỉ `%s'"
 
 #: gio/gdbusaddress.c:241 gio/gdbusaddress.c:315
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
-msgstr ""
+msgstr "Lỗi ở địa chỉ `%s' - thuộc tính cổng bị hư"
 
 #: gio/gdbusaddress.c:252 gio/gdbusaddress.c:326
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
-msgstr ""
+msgstr "Lỗi ở địa chỉ `%s' - thuộc tính họ (family) bị hư"
 
 #: gio/gdbusaddress.c:428
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
-msgstr ""
+msgstr "Thành phần địa chỉ `%s', không chứ dấu hai chấm (:)"
 
 #: gio/gdbusaddress.c:449
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
-msgstr ""
+msgstr "Cặp khoá/giá trị %d, `%s', ở địa chỉ `%s', không chứa dấu bằng"
 
 #: gio/gdbusaddress.c:523
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
-msgstr ""
+msgstr "Lỗi ở địa chỉ `%s' - phương thức vận chuyển unix cần đặt chính xác một trong những khoá `path' hoặc `abstract'"
 
 #: gio/gdbusaddress.c:559
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
-msgstr ""
+msgstr "Lỗi ở địa chỉ `%s' - thuộc tính máy thiếu hoặc bị hư"
 
 #: gio/gdbusaddress.c:573
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
-msgstr ""
+msgstr "Lỗi ở địa chỉ `%s' - thuộc tính cổng thiếu hoặc bị hư"
 
 #: gio/gdbusaddress.c:587
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
-msgstr ""
+msgstr "Lỗi ở địa chỉ `%s' - thuộc tính noncefile thiếu hoặc bị hư"
 
 #: gio/gdbusaddress.c:601
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr ""
+msgstr "Phương thức vận chuyển `%s' cho địa chỉ `%s' không được hỗ trợ, hoặc không nhận ra"
 
 #: gio/gdbusaddress.c:635
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading nonce file `%s':"
-msgstr "Gặp lỗi khi đọc tập tin '%s': %s"
+msgstr "Gặp lỗi khi đọc tập tin '%s':"
 
 #: gio/gdbusaddress.c:646
 msgid "The nonce-file `%s' was %"
-msgstr ""
+msgstr "nonce-file `%s' là %"
 
 #: gio/gdbusaddress.c:662
 #, c-format
 msgid "Error write contents of nonce file `%s' to stream:"
-msgstr ""
+msgstr "Lỗi ghi nội dung nonce-file `%s' vào luồng:"
 
 #: gio/gdbusaddress.c:978
 #, c-format
 msgid ""
 "Cannot determine session bus address (TODO: run dbus-launch to find out)"
-msgstr ""
+msgstr "Không thể xác định địa chỉ tuyến phiên làm việc (TODO: chạy dbus-launch để tìm ra)"
 
 #: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5309
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
-msgstr ""
+msgstr "Không thể xác định địa chỉ tuyến từ biến môi trường DBUS_STARTER_BUS_TYPE - giá trị lạ `%s'"
 
 #: gio/gdbusaddress.c:1011 gio/gdbusconnection.c:5318
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
-msgstr ""
+msgstr "Không thể xác định địa chỉ tuyến vì không có biến môi trường DBUS_STARTER_BUS_TYPE"
 
 #: gio/gdbusaddress.c:1021
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown bus type %d"
-msgstr "Không rõ kiểu"
+msgstr "Không rõ kiểu tuyến %d"
 
 #: gio/gdbusauth.c:289
 msgid "Unexpected lack of content trying to read a line"
-msgstr ""
+msgstr "Nội dung bị thiếu bất thường khi đọc một dòng"
 
 #: gio/gdbusauth.c:333
 msgid "Unexpected lack of content trying to (safely) read a line"
-msgstr ""
+msgstr "Nội dung bị thiếu bất thường khi đọc (an toàn) một dòng"
 
 #: gio/gdbusauth.c:504
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
-msgstr ""
+msgstr "Cạn kiệt các phương thức xác thực hiện có (thử: %s) (còn: %s)"
 
 #: gio/gdbusauth.c:1146
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
-msgstr ""
+msgstr "Đã huỷ thông qua GDBusAuthObserver::authorize-authenticated-peer"
 
 #: gio/gdbusauthmechanismsha1.c:264
-#, fuzzy, c-format
+#, c-format
 msgid "Error statting directory `%s': %s"
-msgstr "Gặp lỗi khi mở thư mục '%s': %s"
+msgstr "Gặp lỗi khi stat() thư mục '%s': %s"
 
 #: gio/gdbusauthmechanismsha1.c:276
 #, c-format
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
-msgstr ""
+msgstr "Quyền của thư mục `%s' bị hư. Giá trị là 0%o trong khi lẽ ra phải là 0700."
 
 #: gio/gdbusauthmechanismsha1.c:295
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating directory `%s': %s"
-msgstr "Lỗi tạo thư mục: %s"
+msgstr "Lỗi tạo thư mục `%s': %s"
 
 #: gio/gdbusauthmechanismsha1.c:378
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring `%s' for reading: "
-msgstr "Gặp lỗi khi mở tập tin '%s': %s"
+msgstr "Lỗi mở keyring `%s' để đọc: "
 
 #: gio/gdbusauthmechanismsha1.c:402 gio/gdbusauthmechanismsha1.c:711
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
+msgstr "Dòng %d của keyring tại `%s' với nội dung `%s' bị hư"
 
 #: gio/gdbusauthmechanismsha1.c:416 gio/gdbusauthmechanismsha1.c:725
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
+msgstr "Token đầu tiên của dòng %d của keyring tại `%s' với nội dung `%s' bị hư"
 
 #: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:739
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
+msgstr "Token thứ hai của dòng %d của keyring tại `%s' với nội dung `%s' bị hư"
 
 #: gio/gdbusauthmechanismsha1.c:454
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr ""
+msgstr "Không tìm thấy cookie với id %d trong keyring ở `%s'"
 
 #: gio/gdbusauthmechanismsha1.c:531
-#, fuzzy, c-format
+#, c-format
 msgid "Error deleting stale lock-file `%s': %s"
-msgstr "Gặp lỗi khi đọc tập tin '%s': %s"
+msgstr "Lỗi khi xoá tập tin khoá không dùng nữa '%s': %s"
 
 #: gio/gdbusauthmechanismsha1.c:562
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating lock-file `%s': %s"
-msgstr "Gặp lỗi khi đọc tập tin '%s': %s"
+msgstr "Gặp lỗi khi tạo tập tin khoá '%s': %s"
 
 #: gio/gdbusauthmechanismsha1.c:592
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing (unlinked) lock-file `%s': %s"
-msgstr "Gặp lỗi khi đóng tập tin: %s"
+msgstr "Gặp lỗi khi đóng (unlink) tập tin khoá `%s': %s"
 
 #: gio/gdbusauthmechanismsha1.c:602
-#, fuzzy, c-format
+#, c-format
 msgid "Error unlinking lock-file `%s': %s"
-msgstr "Gặp lỗi khi mở tập tin '%s': %s"
+msgstr "Gặp lỗi xoá tập tin khoá '%s': %s"
 
 #: gio/gdbusauthmechanismsha1.c:678
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring `%s' for writing: "
-msgstr "Gặp lỗi khi mở tập tin '%s': %s"
+msgstr "Gặp lỗi khi mở keyring '%s' để ghi: "
 
 #: gio/gdbusauthmechanismsha1.c:873
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr ""
+msgstr "(Ngoài ra, giải phóng khoá cho `%s' cũng thất bại: %s)"
 
 #: gio/gdbusconnection.c:1001 gio/gdbusconnection.c:1311
-#, fuzzy
 msgid "The connection is closed"
-msgstr "Ổ cắm được thêm đã đóng"
+msgstr "Kết nối đã đóng"
 
 #: gio/gdbusconnection.c:1256
 msgid "Timeout was reached"
-msgstr ""
+msgstr "Quá hạn"
 
 #: gio/gdbusconnection.c:1757
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
-msgstr ""
+msgstr "Phát hiện cờ không hỗ trợ khi tạo kết nối phía client"
 
 #: gio/gdbusconnection.c:3158
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
-msgstr ""
+msgstr "Lỗi đặt thuộc tính `%s': nhận được `%s' trong khi lẽ ra phải là `%s'"
 
 #: gio/gdbusconnection.c:3250
 #, c-format
 msgid "No such property `%s'"
-msgstr ""
+msgstr "Không có thuộc tính `%s'"
 
 #: gio/gdbusconnection.c:3262
-#, fuzzy, c-format
+#, c-format
 msgid "Property `%s' is not readable"
-msgstr "Kiểu %s không được đặt hạng"
+msgstr "Thuộc tính `%s' không đọc được"
 
 #: gio/gdbusconnection.c:3273
-#, fuzzy, c-format
+#, c-format
 msgid "Property `%s' is not writable"
-msgstr "Kiểu %s không được đặt hạng"
+msgstr "Thuộc tính `%s' không ghi được"
 
 #: gio/gdbusconnection.c:3341 gio/gdbusconnection.c:4768
 #, c-format
 msgid "No such interface `%s'"
-msgstr ""
+msgstr "Không có giao diện `%s'"
 
 #: gio/gdbusconnection.c:3504
 msgid "No such interface"
-msgstr ""
+msgstr "Không có giao diện như vậy"
 
 #: gio/gdbusconnection.c:3748
 #, c-format
 msgid "No such method `%s'"
-msgstr ""
+msgstr "Không có phương thức `%s'"
 
 #: gio/gdbusconnection.c:3779
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr ""
+msgstr "Kiểu thông điệp, `%s', không khớp với kiểu đang cần `%s'"
 
 #: gio/gdbusconnection.c:3993
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
-msgstr ""
+msgstr "Đối tượng đã được xuất cho giao diện %s tại %s rồi"
 
 #: gio/gdbusconnection.c:4173
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr ""
+msgstr "Phương thức `%s' trả về kiểu `%s', nhưng đang muốn `%s'"
 
 #: gio/gdbusconnection.c:4866
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr ""
+msgstr "Phương thức `%s' trên giao diện `%s' với ký hiệu `%s' không tồn tại"
 
 #: gio/gdbusconnection.c:4981
-#, fuzzy, c-format
+#, c-format
 msgid "A subtree is already exported for %s"
-msgstr "Bên lắng nghe đã đóng"
+msgstr "Cây con đã được xuất cho %s"
 
 #: gio/gdbusconnection.c:5089
 #, c-format
 msgid "Unable to load /var/lib/dbus/machine-id: %s"
-msgstr ""
+msgstr "Không thể nạp /var/lib/dbus/machine-id: %s"
 
 #: gio/gdbusconnection.c:5259
 #, c-format
 msgid "No such interface `%s' on object at path %s"
-msgstr ""
+msgstr "Không có giao diện `%s' trên đối tượng tại đường dẫn %s"
 
 #: gio/gdbusmessage.c:723
 msgid "Wanted to read %"
-msgstr ""
+msgstr "Muốn đọc %s"
 
 #: gio/gdbusmessage.c:744
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found `%c' (%d)"
-msgstr ""
+msgstr "Chờ byte NUL sau chuỗi `%s' nhưng lại nhận `%c' (%d)"
 
 #: gio/gdbusmessage.c:927
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr ""
+msgstr "Giá trị đã phân tích `%s' không phải là đường dẫn đối tượng D-Bus hợp lệ"
 
 #: gio/gdbusmessage.c:953
-#, fuzzy, c-format
+#, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "'%s' không phải là tên hợp lệ"
+msgstr "Giá trị đã phân tích `%s' không phải là ký hiệu D-Bus hợp lệ"
 
 #: gio/gdbusmessage.c:979
 msgid "Encountered array of length %"
-msgstr ""
+msgstr "Bắt gặp mảng dài %"
 
 #: gio/gdbusmessage.c:1116
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr ""
+msgstr "Giá trị đã phân tích `%s' cho biến thể không phải là ký hiệu D-Bus hợp lệ"
 
 #: gio/gdbusmessage.c:1141
 #, c-format
 msgid ""
 "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
-msgstr ""
+msgstr "Lỗi thôi tuần tự hoá GVariant với kiểu chuỗi `%s' từ D-Bus"
 
 #: gio/gdbusmessage.c:1286
 #, c-format
 msgid "Invalid endianness value. Expected 'l' or 'B' but found '%c' (%d)"
-msgstr ""
+msgstr "Giá trị endianness không hợp lệ. Chờ 'l' hoặc 'B' nhưng nhận được '%c' (%d)"
 
 #: gio/gdbusmessage.c:1300
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
-msgstr ""
+msgstr "Phiên bản chính của phương thức không hợp lệ. Chờ 1 nhưng nhận %d"
 
 #: gio/gdbusmessage.c:1342
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
-msgstr ""
+msgstr "Ký hiệu header `%s' nhưng phần thân trống rỗng"
 
 #: gio/gdbusmessage.c:1356
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr ""
+msgstr "Giá trị đã phân tích `%s' không phải là ký hiệu D-Bus hợp lệ (cho phần thân)"
 
 #: gio/gdbusmessage.c:1385
 msgid "No signature header in message but the message body is %"
-msgstr ""
+msgstr "Không có header ký hiệu trong thông điệp, nhưng phần thân thông điệp là %"
 
 #: gio/gdbusmessage.c:1694
 #, c-format
 msgid ""
 "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
-msgstr ""
+msgstr "Lỗi tuần tự hoá GVariant với kiểu chuỗi `%s' sang định dạng D-Bus"
 
 #: gio/gdbusmessage.c:1823
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
-msgstr ""
+msgstr "Thông điệp có %d fd nhưng header chỉ ra %d fd"
 
 #: gio/gdbusmessage.c:1869
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
-msgstr ""
+msgstr "Phần thân thông điệp có ký hiệu `%s' nhưng không có header ký hiệu"
 
 #: gio/gdbusmessage.c:1879
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `%"
 "s'"
-msgstr ""
+msgstr "Phần thân thông điệp có ký hiệu `%s' nhưng header lại có ký hiệu `%s'"
 
 #: gio/gdbusmessage.c:1895
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr ""
+msgstr "Thân thông điệp trống rỗng như ký hiệu trong header là `(%s)'"
 
 #: gio/gdbusmessage.c:2448
-#, fuzzy, c-format
+#, c-format
 msgid "Error return with body of type `%s'"
-msgstr "Gặp lỗi khi ghi vào tập tin: %s"
+msgstr "Lỗi tra ề thân của kiểu `%s'"
 
 #: gio/gdbusmessage.c:2456
 msgid "Error return with empty body"
-msgstr ""
+msgstr "Lỗi trả về thân trống rỗng"
 
 #: gio/gdbusmethodinvocation.c:357
 #, c-format
 msgid "Type of return value is incorrect, got `%s', expected `%s'"
-msgstr ""
+msgstr "Kiểu giá trị trả về không đúng, nhận `%s' nhưng muốn `%s'"
 
 #: gio/gdbusmethodinvocation.c:371 gio/gsocket.c:2859 gio/gsocket.c:2940
 #, c-format
@@ -1586,42 +1582,41 @@ msgstr "Lỗi gửi thông điệp: %s"
 
 #: gio/gdbusprivate.c:775
 msgid "Error writing first 16 bytes of message to socket: "
-msgstr ""
+msgstr "Lỗi ghi 16 byte đầu tiên của thông điệp vào socket: "
 
 #: gio/gdbusproxy.c:633
 #, c-format
 msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
-msgstr ""
+msgstr "Thử đặt thuộc tính %s của kiểu %s nhưng theo giao diện muốn dùng thì kiểu là %s"
 
 #: gio/gdbusserver.c:669
-#, fuzzy
 msgid "Abstract name space not supported"
-msgstr "Thùng rác không được hỗ trợ"
+msgstr "Không hỗ trợ vùng tên tổng quát"
 
 #: gio/gdbusserver.c:759
 msgid "Cannot specify nonce file when creating a server"
-msgstr ""
+msgstr "Không thể xác định nonce-file khi tạo máy chủ"
 
 #: gio/gdbusserver.c:836
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing nonce file at `%s': %s"
-msgstr "Gặp lỗi khi ghi vào tập tin: %s"
+msgstr "Lỗi ghi nonce-file tại `%s': %s"
 
 #: gio/gdbusserver.c:988
-#, fuzzy, c-format
+#, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "'%s' không phải là tên hợp lệ"
+msgstr "Chuỗi '%s' không phải là D-BUS GUID hợp lệ"
 
 #: gio/gdbusserver.c:1028
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
-msgstr ""
+msgstr "Không thể listen trên phương thức vận chuyển không hỗ trợ `%s'"
 
 #: gio/gdbus-tool.c:87 gio/gsettings-tool.c:38
 msgid "COMMAND"
-msgstr ""
+msgstr "LỆNH"
 
 #: gio/gdbus-tool.c:92
 #, c-format
@@ -1634,143 +1629,147 @@ msgid ""
 "\n"
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
+"Lệnh:\n"
+"  help         Hiện những thông tin này\n"
+"  introspect   Xem xét đối tượng từ xa\n"
+"  monitor      Theo dõi đối tượng từ xa\n"
+"  call         Gọi hàm trên đối tượng từ xa\n"
+"\n"
+"Dùng \"%s LỆNH --help\" để có trợ giúp của từng lệnh.\n"
 
 #: gio/gdbus-tool.c:160 gio/gdbus-tool.c:216 gio/gdbus-tool.c:288
 #: gio/gdbus-tool.c:312 gio/gdbus-tool.c:814 gio/gdbus-tool.c:1322
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s\n"
-msgstr "Lỗi trên dòng %d: %s"
+msgstr "Lỗi: %s\n"
 
 #: gio/gdbus-tool.c:171 gio/gdbus-tool.c:229 gio/gdbus-tool.c:1332
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr "Gặp lỗi khi phân tách tùy chọn %s"
+msgstr "Lỗi phân tích introspection XML: %s\n"
 
 #: gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
-msgstr ""
+msgstr "Không thể kết nối vào tuyến hệ thống"
 
 #: gio/gdbus-tool.c:347
 msgid "Connect to the session bus"
-msgstr ""
+msgstr "Không thể kết nối vào tuyến phiên làm việc"
 
 #: gio/gdbus-tool.c:348
-#, fuzzy
 msgid "Connect to given D-Bus address"
-msgstr "Kết nối đang hình thành"
+msgstr "Kết nối đến địa chỉ D-Bus đã cho"
 
 #: gio/gdbus-tool.c:358
-#, fuzzy
 msgid "Connection Endpoint Options:"
-msgstr "Kết nối đang hình thành"
+msgstr "Tuỳ chọn đầu kết nối:"
 
 #: gio/gdbus-tool.c:359
 msgid "Options specifying the connection endpoint"
-msgstr ""
+msgstr "Tuỳ chọn xác định đầu nối"
 
 #: gio/gdbus-tool.c:379
 #, c-format
 msgid "No connection endpoint specified"
-msgstr ""
+msgstr "Chưa xác định đầu nối"
 
 #: gio/gdbus-tool.c:389
 #, c-format
 msgid "Multiple connection endpoints specified"
-msgstr ""
+msgstr "Xác định nhiều đầu nối"
 
 #: gio/gdbus-tool.c:459
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr ""
+msgstr "Chú ý: theo dữ liệu introspection, giao diện `%s' không tồn tại\n"
 
 #: gio/gdbus-tool.c:468
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
-msgstr ""
+msgstr "Chú ý: theo dữ liệu introspection, phương thức `%s' không tồn tại trên giao diện `%s'\n"
 
 #: gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
-msgstr ""
+msgstr "Tên dích để gọi hàm"
 
 #: gio/gdbus-tool.c:531
 msgid "Object path to invoke method on"
-msgstr ""
+msgstr "Đường dẫn đối tượng để gọi hàm"
 
 #: gio/gdbus-tool.c:532
 msgid "Method and interface name"
-msgstr ""
+msgstr "Tên phương thức vào giao diện"
 
 #: gio/gdbus-tool.c:571
 msgid "Invoke a method on a remote object."
-msgstr ""
+msgstr "Gọi hàm trên đối tượng từ xa."
 
 #: gio/gdbus-tool.c:626 gio/gdbus-tool.c:1243 gio/gdbus-tool.c:1495
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting: %s\n"
-msgstr "Lỗi kết nối: %s"
+msgstr "Lỗi kết nối: %s\n"
 
 #: gio/gdbus-tool.c:646 gio/gdbus-tool.c:1262 gio/gdbus-tool.c:1514
 #, c-format
 msgid "Error: Destination is not specified\n"
-msgstr ""
+msgstr "Lỗi: chưa xác định đích\n"
 
 #: gio/gdbus-tool.c:667 gio/gdbus-tool.c:1281
 #, c-format
 msgid "Error: Object path is not specified\n"
-msgstr ""
+msgstr "Lỗi: chưa xác định đường dẫn đối tượng\n"
 
 #: gio/gdbus-tool.c:687 gio/gdbus-tool.c:1301 gio/gdbus-tool.c:1554
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr "'%s' không phải là tên hợp lệ"
+msgstr "Lỗi: '%s' không phải là đường dẫn đối tượng hợp lệ\n"
 
 #: gio/gdbus-tool.c:702
 #, c-format
 msgid "Error: Method name is not specified\n"
-msgstr ""
+msgstr "Lỗi: chưa xác định tên phương thức\n"
 
 #: gio/gdbus-tool.c:713
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
-msgstr ""
+msgstr "Lỗi: tên phương thức `%s' không hợp lệ\n"
 
 #: gio/gdbus-tool.c:778
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Gặp lỗi khi mở thư mục '%s': %s"
+msgstr "Lỗi phân tích tham số %d kiểu `%s': %s\n"
 
 #: gio/gdbus-tool.c:786
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "Gặp lỗi khi phân tách tùy chọn %s"
+msgstr "Lỗi phân tích tham số %d: %s\n"
 
 #: gio/gdbus-tool.c:1161
 msgid "Destination name to introspect"
-msgstr ""
+msgstr "Tên đích cần xem xét"
 
 #: gio/gdbus-tool.c:1162
 msgid "Object path to introspect"
-msgstr ""
+msgstr "Đường dẫn đối tượng cần xem xét"
 
 #: gio/gdbus-tool.c:1195
 msgid "Introspect a remote object."
-msgstr ""
+msgstr "Xem xét đối tượng từ xa."
 
 #: gio/gdbus-tool.c:1413
 msgid "Destination name to monitor"
-msgstr ""
+msgstr "Tên đích cần theo dõi"
 
 #: gio/gdbus-tool.c:1414
 msgid "Object path to monitor"
-msgstr ""
+msgstr "Đường dẫn đối tượng cần theo dõi"
 
 #: gio/gdbus-tool.c:1447
-#, fuzzy
 msgid "Monitor a remote object."
-msgstr "đối tượng bị hỏng"
+msgstr "Theo dõi đối tượng từ xa."
 
 #: gio/gdesktopappinfo.c:468 gio/gwin32appinfo.c:222
 msgid "Unnamed"
@@ -2436,24 +2435,23 @@ msgstr "Lỗi phân giải '%s'"
 
 #: gio/gschema-compile.c:659
 msgid "where to store the gschemas.compiled file"
-msgstr ""
+msgstr "nơi lưu tập tin gschemas.compiled"
 
 #: gio/gschema-compile.c:659 gio/gschema-compile.c:671
 msgid "DIRECTORY"
-msgstr ""
+msgstr "THƯ MỤC"
 
 #: gio/gschema-compile.c:660
 msgid "Do not write the gschema.compiled file"
-msgstr ""
+msgstr "Không ghi tập tin gschemas.compiled"
 
 #: gio/gschema-compile.c:661
-#, fuzzy
 msgid "Do not give error for empty directory"
-msgstr "Không thể di chuyển thư mục đè lên thư mục"
+msgstr "Không thông báo lỗi với thư mục rỗng"
 
 #: gio/gschema-compile.c:662
 msgid "Do not enforce key name restrictions"
-msgstr ""
+msgstr "Không áp đặt ràng buộc tên khoá"
 
 #: gio/gschema-compile.c:674
 msgid ""
@@ -2461,16 +2459,19 @@ msgid ""
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
+"Biên dịch tất cả tập tin GSettings schema thành schema cache.\n"
+"Tập tin schema cần có phần mở rộng .gschema.xml,\n"
+"và tập tin cache tên là gschemas.compiled."
 
 #: gio/gschema-compile.c:690
 #, c-format
 msgid "You should give exactly one directory name\n"
-msgstr ""
+msgstr "Bạn nên đưa chính xác một tên thư mục\n"
 
 #: gio/gschema-compile.c:729
 #, c-format
 msgid "No schema files found\n"
-msgstr ""
+msgstr "Không tìm thấy tập tin schema\n"
 
 #: gio/gsettings-tool.c:41
 #, c-format
@@ -2484,24 +2485,32 @@ msgid ""
 "\n"
 "Use '%s COMMAND --help' to get help for individual commands.\n"
 msgstr ""
+"Lệnh:\n"
+"  help        Hiện những thông tin này\n"
+"  get         Lấy giá trị của khoá\n"
+"  set         Đặt giá trị cho khoá\n"
+"  monitor     Theo dõi thay đổi của khoá\n"
+"  writable    Kiểm tra khoá ghi được không\n"
+"\n"
+"Dùng '%s LỆNH --help' để biết thêm chi tiết.\n"
 
 #: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:252
 #: gio/gsettings-tool.c:325
 msgid "Specify the path for the schema"
-msgstr ""
+msgstr "Xác định đường dẫn cho schema"
 
 #: gio/gsettings-tool.c:102 gio/gsettings-tool.c:161 gio/gsettings-tool.c:252
 #: gio/gsettings-tool.c:325
 msgid "PATH"
-msgstr ""
+msgstr "ĐƯỜNG DẪN"
 
 #: gio/gsettings-tool.c:110 gio/gsettings-tool.c:260 gio/gsettings-tool.c:333
 msgid "SCHEMA KEY"
-msgstr ""
+msgstr "KHOÁ SCHEMA"
 
 #: gio/gsettings-tool.c:112
 msgid "Get the value of KEY"
-msgstr ""
+msgstr "Lấy giá trị của KHOÁ"
 
 #: gio/gsettings-tool.c:114 gio/gsettings-tool.c:264 gio/gsettings-tool.c:340
 msgid ""
@@ -2509,14 +2518,17 @@ msgid ""
 "  SCHEMA      The id of the schema\n"
 "  KEY         The name of the key\n"
 msgstr ""
+"Đối số:\n"
+"  SCHEMA      id của schema\n"
+"  KEY         Tên khoá\n"
 
 #: gio/gsettings-tool.c:169
 msgid "SCHEMA KEY VALUE"
-msgstr ""
+msgstr "SCHEMA KHOÁ GIÁ TRỊ"
 
 #: gio/gsettings-tool.c:171
 msgid "Set the value of KEY"
-msgstr ""
+msgstr "Đặt giá trị cho KHOÁ"
 
 #: gio/gsettings-tool.c:173
 msgid ""
@@ -2525,26 +2537,32 @@ msgid ""
 "  KEY         The name of the key\n"
 "  VALUE       The value to set key to, as a serialized GVariant\n"
 msgstr ""
+"Đối số:\n"
+"  SCHEMA      id của schema\n"
+"  KEY         Tên khoá\n"
+"  VALUE       Giá trị cần đặt, theo kiểu GVariant tuần tự hoá\n"
 
 #: gio/gsettings-tool.c:212
-#, fuzzy, c-format
+#, c-format
 msgid "Key %s is not writable\n"
-msgstr "Kiểu %s không được đặt hạng"
+msgstr "Khoá %s không ghi được\n"
 
 #: gio/gsettings-tool.c:262
 msgid "Find out whether KEY is writable"
-msgstr ""
+msgstr "Tìm hiểu xem KHOÁ có ghi được không"
 
 #: gio/gsettings-tool.c:336
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
 msgstr ""
+"Theo dõi các thay đổi trên KHOÁ và in ra.\n"
+"Theo dõi sẽ tiếp tục đến khi tiến trình kết thúc."
 
 #: gio/gsettings-tool.c:399
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown command '%s'\n"
-msgstr "Không biết tùy chọn %s"
+msgstr "Lệnh lạ '%s'\n"
 
 #: gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
@@ -2561,7 +2579,7 @@ msgstr "Ổ cắm đã được đóng"
 
 #: gio/gsocket.c:298 gio/gsocket.c:2609 gio/gsocket.c:2653
 msgid "Socket I/O timed out"
-msgstr ""
+msgstr "Hết giờ Socket I/O"
 
 #: gio/gsocket.c:420
 #, c-format
@@ -2685,36 +2703,35 @@ msgid "Received invalid fd"
 msgstr "Nhận fd không hợp lệ"
 
 #: gio/gunixconnection.c:359
-#, fuzzy
 msgid "Error sending credentials: "
-msgstr "Lỗi gửi dữ liệu: %s"
+msgstr "Lỗi gửi giấy uỷ nhiệm: "
 
 #: gio/gunixconnection.c:436
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr ""
+msgstr "Lỗi kiểm tra nếu SO_PASSCRED được bật cho socket: %s"
 
 #: gio/gunixconnection.c:445
 #, c-format
 msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
 "socket. Expected %d bytes, got %d"
-msgstr ""
+msgstr "Chiều dài tuỳ chọn bất thường khi kiểm tra SO_PASSCRED có được bật cho socket. Chờ %d byte, nhận %d"
 
 #: gio/gunixconnection.c:462
-#, fuzzy, c-format
+#, c-format
 msgid "Error enabling SO_PASSCRED: %s"
-msgstr "Gặp lỗi khi thay đổi tên của tập tin: %s"
+msgstr "Lỗi bật SO_PASSCRED: %s"
 
 #: gio/gunixconnection.c:492
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
-msgstr ""
+msgstr "Cần đọc một byte duy nhất để nhận giấy uỷ nhiệm nhưng không đọc được byte nào"
 
 #: gio/gunixconnection.c:535
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr ""
+msgstr "Lỗi khi tắt SO_PASSCRED: %s"
 
 #: gio/gunixinputstream.c:354 gio/gunixinputstream.c:374
 #: gio/gunixinputstream.c:452 gio/gunixoutputstream.c:439
@@ -2776,19 +2793,19 @@ msgid "Association creation not supported on win32"
 msgstr "chức năng tạo sự liên quan không được hỗ trợ trên win32"
 
 #: gio/gwin32inputstream.c:319
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from handle: %s"
-msgstr "Gặp lỗi khi đọc từ tập tin: %s"
+msgstr "Gặp lỗi khi đọc từ handle: %s"
 
 #: gio/gwin32inputstream.c:349 gio/gwin32outputstream.c:349
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing handle: %s"
-msgstr "Gặp lỗi khi đóng tập tin: %s"
+msgstr "Gặp lỗi khi đóng handle: %s"
 
 #: gio/gwin32outputstream.c:319
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to handle: %s"
-msgstr "Gặp lỗi khi ghi vào tập tin: %s"
+msgstr "Gặp lỗi khi ghi vào handle: %s"
 
 #: gio/gzlibcompressor.c:279 gio/gzlibdecompressor.c:250
 msgid "Not enough memory"
