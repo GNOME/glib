@@ -880,18 +880,17 @@ prepend_terminal_to_vector (int    *argc,
 }
 
 static GList *
-uri_list_segment_to_files (GList *start,
-			   GList *end)
+create_files_for_uris (GList *uris)
 {
   GList *res;
-  GFile *file;
+  GList *iter;
 
   res = NULL;
-  while (start != NULL && start != end)
+
+  for (iter = uris; iter; iter = iter->next)
     {
-      file = g_file_new_for_uri ((char *)start->data);
+      GFile *file = g_file_new_for_uri ((char *)iter->data);
       res = g_list_prepend (res, file);
-      start = start->next;
     }
 
   return g_list_reverse (res);
@@ -926,6 +925,49 @@ child_setup (gpointer user_data)
     }
 }
 
+static void
+notify_desktop_launch (GDBusConnection  *session_bus,
+		       const char       *desktop_file, /* filename */
+		       long              pid,
+		       const char       *display,
+		       const char       *sn_id,
+		       GList            *uris)
+{
+  GDBusMessage *msg;
+  GVariantBuilder uri_variant;
+  GVariantBuilder extras_variant;
+  GList *iter;
+
+  if (session_bus == NULL)
+    return;
+
+  g_variant_builder_init (&uri_variant, G_VARIANT_TYPE ("as"));
+  for (iter = uris; iter; iter = iter->next)
+    g_variant_builder_add (&uri_variant, "s", iter->data);
+
+  g_variant_builder_init (&extras_variant, G_VARIANT_TYPE ("a{sv}"));
+  if (sn_id != NULL && g_utf8_validate (sn_id, -1, NULL))
+    g_variant_builder_add (&extras_variant, "{sv}",
+			   "startup-id",
+			   g_variant_new ("s",
+					  sn_id));
+  
+  msg = g_dbus_message_new_signal ("/org/gtk/gio/DesktopAppInfo",
+				   "org.gtk.gio.DesktopAppInfo",
+				   "Launched");
+  g_dbus_message_set_body (msg, g_variant_new ("(@aysxasa{sv})",
+					       g_variant_new_bytestring (desktop_file),
+					       display ? display : "",
+					       (gint64)pid,
+					       &uri_variant,
+					       &extras_variant));
+  g_dbus_connection_send_message (session_bus,
+				  msg, 0,
+				  NULL,
+				  NULL);
+  g_object_unref (msg);
+}
+
 static gboolean
 g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 				GList              *uris,
@@ -933,9 +975,9 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 				GError            **error)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
+  GDBusConnection *session_bus;
   gboolean completed = FALSE;
   GList *old_uris;
-  GList *launched_files;
   char **argv;
   int argc;
   ChildSetupData data;
@@ -944,12 +986,24 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 
   argv = NULL;
 
+  session_bus = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, NULL);
+
   do
     {
+      GPid pid;
+      GList *launched_uris;
+      GList *iter;
+
       old_uris = uris;
       if (!expand_application_parameters (info, &uris,
 					  &argc, &argv, error))
 	goto out;
+
+      /* Get the subset of URIs we're launching with this process */
+      launched_uris = NULL;
+      for (iter = old_uris; iter != NULL && iter != uris; iter = iter->next)
+	launched_uris = g_list_prepend (launched_uris, iter->data);
+      launched_uris = g_list_reverse (launched_uris);
       
       if (info->terminal && !prepend_terminal_to_vector (&argc, &argv))
 	{
@@ -964,7 +1018,7 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 
       if (launch_context)
 	{
-	  launched_files = uri_list_segment_to_files (old_uris, uris);
+	  GList *launched_files = create_files_for_uris (launched_uris);
 
 	  data.display = g_app_launch_context_get_display (launch_context,
 						           appinfo,
@@ -984,7 +1038,7 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 			  G_SPAWN_SEARCH_PATH,
 			  child_setup,
 			  &data,
-			  NULL,
+			  &pid,
 			  error))
 	{
 	  if (data.sn_id)
@@ -992,17 +1046,32 @@ g_desktop_app_info_launch_uris (GAppInfo           *appinfo,
 
 	  g_free (data.sn_id);
 	  g_free (data.display);
+	  g_list_free (launched_uris);
 
 	  goto out;
 	}
 
+      notify_desktop_launch (session_bus,
+			     info->filename,
+			     pid,
+			     data.display,
+			     data.sn_id,
+			     launched_uris);
+
       g_free (data.sn_id);
       g_free (data.display);
+      g_list_free (launched_uris);
 
       g_strfreev (argv);
       argv = NULL;
     }
   while (uris != NULL);
+
+  /* TODO - need to handle the process exiting immediately
+   * after launching an app.  See http://bugzilla.gnome.org/606960
+   */
+  if (session_bus != NULL)
+    g_object_unref (session_bus);
 
   completed = TRUE;
 
