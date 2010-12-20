@@ -975,7 +975,7 @@ g_simple_async_report_error_in_idle (GObject             *object,
 
 /**
  * g_simple_async_report_gerror_in_idle:
- * @object: a #GObject.
+ * @object: (allow-none): a #GObject, or %NULL
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
  * @error: the #GError to report
@@ -992,7 +992,7 @@ g_simple_async_report_gerror_in_idle (GObject *object,
 {
   GSimpleAsyncResult *simple;
  
-  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (!object || G_IS_OBJECT (object));
   g_return_if_fail (error != NULL);
 
   simple = g_simple_async_result_new_from_error (object,
