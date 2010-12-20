@@ -55,6 +55,7 @@ gsettings
 gsettings.store
 httpd
 icons
+io-stream
 live-g-file
 memory-input-stream
 memory-output-stream
