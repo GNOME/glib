@@ -222,6 +222,7 @@ enum
   PROP_BACKEND,
   PROP_PATH,
   PROP_HAS_UNAPPLIED,
+  PROP_DELAY_APPLY
 };
 
 enum
@@ -445,6 +446,10 @@ g_settings_get_property (GObject    *object,
 
      case PROP_HAS_UNAPPLIED:
       g_value_set_boolean (value, g_settings_get_has_unapplied (settings));
+      break;
+
+     case PROP_DELAY_APPLY:
+      g_value_set_boolean (value, settings->priv->delayed != NULL);
       break;
 
      default:
@@ -696,6 +701,20 @@ g_settings_class_init (GSettingsClass *class)
                            FALSE,
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
+   /**
+    * GSettings:delay-apply:
+    *
+    * Whether the #GSettings object is in 'delay-apply' mode. See
+    * g_settings_delay() for details.
+    *
+    * Since: 2.28
+    */
+   g_object_class_install_property (object_class, PROP_DELAY_APPLY,
+     g_param_spec_boolean ("delay-apply",
+                           P_("Delay-apply mode"),
+                           P_("Whether this settings object is in 'delay-apply' mode"),
+                           FALSE,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }
 
 /* Construction (new, new_with_path, etc.) {{{1 */
@@ -1971,6 +1990,8 @@ g_settings_delay (GSettings *settings)
   g_settings_backend_watch (settings->priv->backend,
                             &listener_vtable, G_OBJECT (settings),
                             settings->priv->main_context);
+
+  g_object_notify (G_OBJECT (settings), "delay-apply");
 }
 
 /**
