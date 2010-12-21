@@ -59,8 +59,8 @@ struct _GAsyncResultIface
 
   /* Virtual Table */
 
-  gpointer  (* get_user_data)     (GAsyncResult *async_result);
-  GObject * (* get_source_object) (GAsyncResult *async_result);
+  gpointer  (* get_user_data)     (GAsyncResult *res);
+  GObject * (* get_source_object) (GAsyncResult *res);
 };
 
 GType    g_async_result_get_type          (void) G_GNUC_CONST;

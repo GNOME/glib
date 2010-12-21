@@ -300,8 +300,8 @@ g_simple_async_result_init (GSimpleAsyncResult *simple)
 /**
  * g_simple_async_result_new:
  * @source_object: (allow-none): a #GObject, or %NULL.
- * @callback: a #GAsyncReadyCallback.
- * @user_data: user data passed to @callback.
+ * @callback: (scope async): a #GAsyncReadyCallback.
+ * @user_data: (closure): user data passed to @callback.
  * @source_tag: the asynchronous function.
  *
  * Creates a #GSimpleAsyncResult.
@@ -333,8 +333,8 @@ g_simple_async_result_new (GObject             *source_object,
 /**
  * g_simple_async_result_new_from_error:
  * @source_object: (allow-none): a #GObject, or %NULL.
- * @callback: a #GAsyncReadyCallback.
- * @user_data: user data passed to @callback.
+ * @callback: (scope async): a #GAsyncReadyCallback.
+ * @user_data: (closure): user data passed to @callback.
  * @error: a #GError
  *
  * Creates a #GSimpleAsyncResult from an error condition.
@@ -360,10 +360,10 @@ g_simple_async_result_new_from_error (GObject             *source_object,
 }
 
 /**
- * g_simple_async_result_new_take_error:
+ * g_simple_async_result_new_take_error: (skip)
  * @source_object: (allow-none): a #GObject, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: (allow-none): user data passed to @callback
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data passed to @callback
  * @error: a #GError
  *
  * Creates a #GSimpleAsyncResult from an error condition, and takes over the
@@ -394,8 +394,8 @@ g_simple_async_result_new_take_error (GObject             *source_object,
 /**
  * g_simple_async_result_new_error:
  * @source_object: (allow-none): a #GObject, or %NULL.
- * @callback: a #GAsyncReadyCallback.
- * @user_data: user data passed to @callback.
+ * @callback: (scope async): a #GAsyncReadyCallback.
+ * @user_data: (closure): user data passed to @callback.
  * @domain: a #GQuark.
  * @code: an error code.
  * @format: a string with format characters.
@@ -488,7 +488,7 @@ g_simple_async_result_get_source_tag (GSimpleAsyncResult *simple)
 /**
  * g_simple_async_result_propagate_error:
  * @simple: a #GSimpleAsyncResult.
- * @dest: a location to propegate the error to.
+ * @dest: (out): a location to propagate the error to.
  *
  * Propagates an error from within the simple asynchronous result to
  * a given destination.
@@ -512,7 +512,7 @@ g_simple_async_result_propagate_error (GSimpleAsyncResult  *simple,
 }
 
 /**
- * g_simple_async_result_set_op_res_gpointer:
+ * g_simple_async_result_set_op_res_gpointer: (skip)
  * @simple: a #GSimpleAsyncResult.
  * @op_res: a pointer result from an asynchronous function.
  * @destroy_op_res: a #GDestroyNotify function.
@@ -631,7 +631,7 @@ g_simple_async_result_set_from_error (GSimpleAsyncResult *simple,
 }
 
 /**
- * g_simple_async_result_take_error:
+ * g_simple_async_result_take_error: (skip)
  * @simple: a #GSimpleAsyncResult
  * @error: a #GError
  *
@@ -654,7 +654,7 @@ g_simple_async_result_take_error (GSimpleAsyncResult *simple,
 }
 
 /**
- * g_simple_async_result_set_error_va:
+ * g_simple_async_result_set_error_va: (skip)
  * @simple: a #GSimpleAsyncResult.
  * @domain: a #GQuark (usually #G_IO_ERROR).
  * @code: an error code.
@@ -682,7 +682,7 @@ g_simple_async_result_set_error_va (GSimpleAsyncResult *simple,
 }
 
 /**
- * g_simple_async_result_set_error:
+ * g_simple_async_result_set_error: (skip)
  * @simple: a #GSimpleAsyncResult.
  * @domain: a #GQuark (usually #G_IO_ERROR).
  * @code: an error code.
@@ -850,11 +850,11 @@ run_in_thread (GIOSchedulerJob *job,
 }
 
 /**
- * g_simple_async_result_run_in_thread:
+ * g_simple_async_result_run_in_thread: (skip)
  * @simple: a #GSimpleAsyncResult.
  * @func: a #GSimpleAsyncThreadFunc.
  * @io_priority: the io priority of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  *
  * Runs the asynchronous job in a separate thread and then calls
  * g_simple_async_result_complete_in_idle() on @simple to return
@@ -933,7 +933,7 @@ g_simple_async_result_is_valid (GAsyncResult *result,
 }
 
 /**
- * g_simple_async_report_error_in_idle:
+ * g_simple_async_report_error_in_idle: (skip)
  * @object: (allow-none): a #GObject, or %NULL.
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
@@ -976,8 +976,8 @@ g_simple_async_report_error_in_idle (GObject             *object,
 /**
  * g_simple_async_report_gerror_in_idle:
  * @object: (allow-none): a #GObject, or %NULL
- * @callback: a #GAsyncReadyCallback.
- * @user_data: user data passed to @callback.
+ * @callback: (scope async): a #GAsyncReadyCallback.
+ * @user_data: (closure): user data passed to @callback.
  * @error: the #GError to report
  *
  * Reports an error in an idle function. Similar to
@@ -1004,7 +1004,7 @@ g_simple_async_report_gerror_in_idle (GObject *object,
 }
 
 /**
- * g_simple_async_report_take_gerror_in_idle:
+ * g_simple_async_report_take_gerror_in_idle: (skip)
  * @object: (allow-none): a #GObject, or %NULL
  * @callback: a #GAsyncReadyCallback.
  * @user_data: user data passed to @callback.
