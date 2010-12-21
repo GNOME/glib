@@ -399,7 +399,7 @@ parse_connect_reply (const guint8 *data, gint *atype, GError **error)
 
       default: /* Unknown error */
 	g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			     _("Unkown SOCKSv5 proxy error."));
+			     _("Unknown SOCKSv5 proxy error."));
 	return FALSE;
 	break;
     }
