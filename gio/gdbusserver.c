@@ -990,11 +990,16 @@ on_run (GSocketService    *service,
 
   if (server->flags & G_DBUS_SERVER_FLAGS_RUN_IN_THREAD)
     {
+      gboolean claimed;
+
+      claimed = FALSE;
       g_signal_emit (server,
                      _signals[NEW_CONNECTION_SIGNAL],
                      0,
-                     connection);
-      g_dbus_connection_start_message_processing (connection);
+                     connection,
+                     &claimed);
+      if (claimed)
+        g_dbus_connection_start_message_processing (connection);
       g_object_unref (connection);
     }
   else
