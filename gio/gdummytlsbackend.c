@@ -92,11 +92,11 @@ enum
 {
   PROP_CERTIFICATE_0,
 
-  PROP_CERTIFICATE,
-  PROP_CERTIFICATE_PEM,
-  PROP_PRIVATE_KEY,
-  PROP_PRIVATE_KEY_PEM,
-  PROP_ISSUER
+  PROP_CERT_CERTIFICATE,
+  PROP_CERT_CERTIFICATE_PEM,
+  PROP_CERT_PRIVATE_KEY,
+  PROP_CERT_PRIVATE_KEY_PEM,
+  PROP_CERT_ISSUER
 };
 
 static void g_dummy_tls_certificate_initable_iface_init (GInitableIface *iface);
@@ -135,11 +135,11 @@ g_dummy_tls_certificate_class_init (GDummyTlsCertificateClass *certificate_class
   gobject_class->get_property = g_dummy_tls_certificate_get_property;
   gobject_class->set_property = g_dummy_tls_certificate_set_property;
 
-  g_object_class_override_property (gobject_class, PROP_CERTIFICATE, "certificate");
-  g_object_class_override_property (gobject_class, PROP_CERTIFICATE_PEM, "certificate-pem");
-  g_object_class_override_property (gobject_class, PROP_PRIVATE_KEY, "private-key");
-  g_object_class_override_property (gobject_class, PROP_PRIVATE_KEY_PEM, "private-key-pem");
-  g_object_class_override_property (gobject_class, PROP_ISSUER, "issuer");
+  g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE, "certificate");
+  g_object_class_override_property (gobject_class, PROP_CERT_CERTIFICATE_PEM, "certificate-pem");
+  g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY, "private-key");
+  g_object_class_override_property (gobject_class, PROP_CERT_PRIVATE_KEY_PEM, "private-key-pem");
+  g_object_class_override_property (gobject_class, PROP_CERT_ISSUER, "issuer");
 }
 
 static void
@@ -183,15 +183,18 @@ enum
 {
   PROP_CONNECTION_0,
 
-  PROP_BASE_IO_STREAM,
-  PROP_REQUIRE_CLOSE_NOTIFY,
-  PROP_REHANDSHAKE_MODE,
-  PROP_USE_SYSTEM_CERTDB,
-  PROP_VALIDATION_FLAGS,
-  PROP_SERVER_IDENTITY,
-  PROP_USE_SSL3,
-  PROP_ACCEPTED_CAS,
-  PROP_AUTHENTICATION_MODE
+  PROP_CONN_BASE_IO_STREAM,
+  PROP_CONN_USE_SYSTEM_CERTDB,
+  PROP_CONN_REQUIRE_CLOSE_NOTIFY,
+  PROP_CONN_REHANDSHAKE_MODE,
+  PROP_CONN_CERTIFICATE,
+  PROP_CONN_PEER_CERTIFICATE,
+  PROP_CONN_PEER_CERTIFICATE_ERRORS,
+  PROP_CONN_VALIDATION_FLAGS,
+  PROP_CONN_SERVER_IDENTITY,
+  PROP_CONN_USE_SSL3,
+  PROP_CONN_ACCEPTED_CAS,
+  PROP_CONN_AUTHENTICATION_MODE
 };
 
 static void g_dummy_tls_connection_initable_iface_init (GInitableIface *iface);
@@ -243,15 +246,18 @@ g_dummy_tls_connection_class_init (GDummyTlsConnectionClass *connection_class)
    */
   io_stream_class->close_fn = g_dummy_tls_connection_close;
 
-  g_object_class_override_property (gobject_class, PROP_BASE_IO_STREAM, "base-io-stream");
-  g_object_class_override_property (gobject_class, PROP_REQUIRE_CLOSE_NOTIFY, "require-close-notify");
-  g_object_class_override_property (gobject_class, PROP_REHANDSHAKE_MODE, "rehandshake-mode");
-  g_object_class_override_property (gobject_class, PROP_USE_SYSTEM_CERTDB, "use-system-certdb");
-  g_object_class_override_property (gobject_class, PROP_VALIDATION_FLAGS, "validation-flags");
-  g_object_class_override_property (gobject_class, PROP_SERVER_IDENTITY, "server-identity");
-  g_object_class_override_property (gobject_class, PROP_USE_SSL3, "use-ssl3");
-  g_object_class_override_property (gobject_class, PROP_ACCEPTED_CAS, "accepted-cas");
-  g_object_class_override_property (gobject_class, PROP_AUTHENTICATION_MODE, "authentication-mode");
+  g_object_class_override_property (gobject_class, PROP_CONN_BASE_IO_STREAM, "base-io-stream");
+  g_object_class_override_property (gobject_class, PROP_CONN_USE_SYSTEM_CERTDB, "use-system-certdb");
+  g_object_class_override_property (gobject_class, PROP_CONN_REQUIRE_CLOSE_NOTIFY, "require-close-notify");
+  g_object_class_override_property (gobject_class, PROP_CONN_REHANDSHAKE_MODE, "rehandshake-mode");
+  g_object_class_override_property (gobject_class, PROP_CONN_CERTIFICATE, "certificate");
+  g_object_class_override_property (gobject_class, PROP_CONN_PEER_CERTIFICATE, "peer-certificate");
+  g_object_class_override_property (gobject_class, PROP_CONN_PEER_CERTIFICATE_ERRORS, "peer-certificate-errors");
+  g_object_class_override_property (gobject_class, PROP_CONN_VALIDATION_FLAGS, "validation-flags");
+  g_object_class_override_property (gobject_class, PROP_CONN_SERVER_IDENTITY, "server-identity");
+  g_object_class_override_property (gobject_class, PROP_CONN_USE_SSL3, "use-ssl3");
+  g_object_class_override_property (gobject_class, PROP_CONN_ACCEPTED_CAS, "accepted-cas");
+  g_object_class_override_property (gobject_class, PROP_CONN_AUTHENTICATION_MODE, "authentication-mode");
 }
 
 static void
