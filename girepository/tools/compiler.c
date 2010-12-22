@@ -45,7 +45,7 @@ gboolean include_cwd = FALSE;
 gboolean debug = FALSE;
 gboolean verbose = FALSE;
 
-static void
+static gboolean
 write_out_typelib (gchar *prefix,
 		   GITypelib *typelib)
 {
@@ -56,6 +56,7 @@ write_out_typelib (gchar *prefix,
   GFile *tmp_file_obj;
   gchar *tmp_filename;
   GError *error = NULL;
+  gboolean success = FALSE;
 
   if (output == NULL)
     {
@@ -81,16 +82,16 @@ write_out_typelib (gchar *prefix,
 
       if (file == NULL)
 	{
-	  g_fprintf (stderr, "failed to open '%s': %s\n",
-		     tmp_filename, g_strerror (errno));
-	  goto out;
+          g_fprintf (stderr, "failed to open '%s': %s\n",
+                     tmp_filename, g_strerror (errno));
+          goto out;
 	}
     }
 
   written = fwrite (typelib->data, 1, typelib->len, file);
   if (written < typelib->len) {
-    g_error ("ERROR: Could not write the whole output: %s",
-	     strerror(errno));
+    g_fprintf (stderr, "ERROR: Could not write the whole output: %s",
+	       strerror(errno));
     goto out;
   }
 
@@ -100,13 +101,17 @@ write_out_typelib (gchar *prefix,
     {
       if (!g_file_move (tmp_file_obj, file_obj, G_FILE_COPY_OVERWRITE, NULL, NULL, NULL, &error))
         {
-          g_error ("ERROR: failed to rename %s to %s: %s", tmp_filename, filename, error->message);
+	  g_fprintf (stderr, "ERROR: failed to rename %s to %s: %s", tmp_filename, filename, error->message);
           g_clear_error (&error);
+	  goto out;
         }
     }
+  success = TRUE;
 out:
   g_free (filename);
   g_free (tmp_filename);
+
+  return success;
 }
 
 GLogLevelFlags logged_levels;
@@ -210,7 +215,8 @@ main (int argc, char ** argv)
 	g_error ("Invalid typelib for module '%s': %s", 
 		 module->name, error->message);
 
-      write_out_typelib (NULL, typelib);
+      if (!write_out_typelib (NULL, typelib))
+	return 1;
       g_typelib_free (typelib);
       typelib = NULL;
     }
