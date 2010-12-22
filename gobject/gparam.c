@@ -187,7 +187,7 @@ g_param_spec_finalize (GParamSpec *pspec)
 }
 
 /**
- * g_param_spec_ref:
+ * g_param_spec_ref: (skip)
  * @pspec: a valid #GParamSpec
  *
  * Increments the reference count of @pspec.
@@ -206,7 +206,7 @@ g_param_spec_ref (GParamSpec *pspec)
 }
 
 /**
- * g_param_spec_unref:
+ * g_param_spec_unref: (skip)
  * @pspec: a valid #GParamSpec
  *
  * Decrements the reference count of a @pspec.
@@ -255,7 +255,7 @@ g_param_spec_sink (GParamSpec *pspec)
 }
 
 /**
- * g_param_spec_ref_sink:
+ * g_param_spec_ref_sink: (skip)
  * @pspec: a valid #GParamSpec
  *
  * Convenience function to ref and sink a #GParamSpec.
@@ -381,7 +381,7 @@ is_canonical (const gchar *key)
 }
 
 /**
- * g_param_spec_internal:
+ * g_param_spec_internal: (skip)
  * @param_type: the #GType for the property; must be derived from #G_TYPE_PARAM
  * @name: the canonical name of the property
  * @nick: the nickname of the property
@@ -459,7 +459,7 @@ g_param_spec_internal (GType        param_type,
  *
  * Gets back user data pointers stored via g_param_spec_set_qdata().
  *
- * Returns: the user data pointer set, or %NULL
+ * Returns: (transfer none): the user data pointer set, or %NULL
  */
 gpointer
 g_param_spec_get_qdata (GParamSpec *pspec,
@@ -495,7 +495,7 @@ g_param_spec_set_qdata (GParamSpec *pspec,
 }
 
 /**
- * g_param_spec_set_qdata_full:
+ * g_param_spec_set_qdata_full: (skip)
  * @pspec: the #GParamSpec to set store a user data pointer
  * @quark: a #GQuark, naming the user data pointer
  * @data: an opaque user data pointer
@@ -530,7 +530,7 @@ g_param_spec_set_qdata_full (GParamSpec    *pspec,
  * function (if any was set).  Usually, calling this function is only
  * required to update user data pointers with a destroy notifier.
  *
- * Returns: the user data pointer set, or %NULL
+ * Returns: (transfer none): the user data pointer set, or %NULL
  */
 gpointer
 g_param_spec_steal_qdata (GParamSpec *pspec,
@@ -556,8 +556,8 @@ g_param_spec_steal_qdata (GParamSpec *pspec,
  *
  * Since: 2.4
  *
- * Returns: paramspec to which requests on this paramspec should
- *          be redirected, or %NULL if none.
+ * Returns: (transfer none): paramspec to which requests on this
+ *          paramspec should be redirected, or %NULL if none.
  */
 GParamSpec*
 g_param_spec_get_redirect_target (GParamSpec *pspec)
@@ -887,7 +887,7 @@ param_spec_pool_equals (gconstpointer key_spec_1,
  * property name, like "GtkContainer:border-width". This feature is
  * deprecated, so you should always set @type_prefixing to %FALSE.
  *
- * Returns: a newly allocated #GParamSpecPool.
+ * Returns: (transfer none): a newly allocated #GParamSpecPool.
  */
 GParamSpecPool*
 g_param_spec_pool_new (gboolean type_prefixing)
@@ -1030,7 +1030,8 @@ param_spec_ht_lookup (GHashTable  *hash_table,
  *
  * Looks up a #GParamSpec in the pool.
  *
- * Returns: The found #GParamSpec, or %NULL if no matching #GParamSpec was found.
+ * Returns: (transfer none): The found #GParamSpec, or %NULL if no
+ * matching #GParamSpec was found.
  */
 GParamSpec*
 g_param_spec_pool_lookup (GParamSpecPool *pool,
@@ -1117,8 +1118,9 @@ pool_list (gpointer key,
  * Gets an #GList of all #GParamSpec<!-- -->s owned by @owner_type in
  * the pool.
  *
- * Returns: a #GList of all #GParamSpec<!-- -->s owned by @owner_type
- *          in the pool#GParamSpec<!-- -->s.
+ * Returns: (transfer container) (element-type GObject.ParamSpec): a
+ *          #GList of all #GParamSpec<!-- -->s owned by @owner_type in
+ *          the pool#GParamSpec<!-- -->s.
  */
 GList*
 g_param_spec_pool_list_owned (GParamSpecPool *pool,
@@ -1253,13 +1255,14 @@ pool_depth_list_for_interface (gpointer key,
  * g_param_spec_pool_list:
  * @pool: a #GParamSpecPool
  * @owner_type: the owner to look for
- * @n_pspecs_p: return location for the length of the returned array
+ * @n_pspecs_p: (out): return location for the length of the returned array
  *
  * Gets an array of all #GParamSpec<!-- -->s owned by @owner_type in
  * the pool.
  *
- * Returns: a newly allocated array containing pointers to all
- *          #GParamSpec<!-- -->s owned by @owner_type in the pool
+ * Returns: (array length=n_pspecs_p) (transfer container): a newly
+ *          allocated array containing pointers to all #GParamSpecs
+ *          owned by @owner_type in the pool
  */
 GParamSpec**
 g_param_spec_pool_list (GParamSpecPool *pool,
@@ -1429,7 +1432,7 @@ g_value_set_param (GValue     *value,
 }
 
 /**
- * g_value_set_param_take_ownership:
+ * g_value_set_param_take_ownership: (skip)
  * @value: a valid #GValue of type %G_TYPE_PARAM
  * @param: the #GParamSpec to be set
  *
@@ -1445,7 +1448,7 @@ g_value_set_param_take_ownership (GValue     *value,
 }
 
 /**
- * g_value_take_param:
+ * g_value_take_param: (skip)
  * @value: a valid #GValue of type %G_TYPE_PARAM
  * @param: the #GParamSpec to be set
  *
