@@ -654,9 +654,9 @@ g_tls_connection_handshake_async (GTlsConnection       *conn,
 {
   g_return_if_fail (G_IS_TLS_CONNECTION (conn));
 
-  return G_TLS_CONNECTION_GET_CLASS (conn)->handshake_async (conn, io_priority,
-							     cancellable,
-							     callback, user_data);
+  G_TLS_CONNECTION_GET_CLASS (conn)->handshake_async (conn, io_priority,
+						      cancellable,
+						      callback, user_data);
 }
 
 /**
