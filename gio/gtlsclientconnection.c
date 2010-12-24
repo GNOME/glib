@@ -133,15 +133,19 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    * server requests a client certificate during the handshake, then
    * this property will be set after the handshake completes.
    *
+   * Each item in the list is a #GByteArray which contains the complete
+   * subject DN of the certificate authority.
+   *
+   * Type: GList<GByteArray>
+   * Transfer: full
    * Since: 2.28
    */
   g_object_interface_install_property (iface,
-				       g_param_spec_boxed ("accepted-cas",
-							   P_("Accepted CAs"),
-							   P_("Distinguished names of the CAs the server accepts certificates from"),
-							   G_TYPE_STRV,
-							   G_PARAM_READABLE |
-							   G_PARAM_STATIC_STRINGS));
+				       g_param_spec_pointer ("accepted-cas",
+							     P_("Accepted CAs"),
+							     P_("Distinguished names of the CAs the server accepts certificates from"),
+							     G_PARAM_READABLE |
+							     G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -316,15 +320,19 @@ g_tls_client_connection_set_use_ssl3 (GTlsClientConnection *conn,
  * during the TLS handshake if the server requests a certificate.
  * Otherwise, it will be %NULL.
  *
- * Return value: (transfer full) (array zero-terminated=1): the list
- * of CA names, which you must free (eg, with g_strfreev()).
+ * Each item in the list is a #GByteArray which contains the complete
+ * subject DN of the certificate authority.
+ *
+ * Return value: (element-type GByteArray) (transfer full): the list of
+ * CA DNs. You should unref each element with g_byte_array_unref() and then
+ * the free the list with g_list_free().
  *
  * Since: 2.28
  */
-char **
+GList *
 g_tls_client_connection_get_accepted_cas (GTlsClientConnection *conn)
 {
-  char **accepted_cas = NULL;
+  GList *accepted_cas = NULL;
 
   g_return_val_if_fail (G_IS_TLS_CLIENT_CONNECTION (conn), NULL);
 
