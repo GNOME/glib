@@ -194,7 +194,7 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
                                                        G_PARAM_STATIC_STRINGS));
 
   /**
-   * GMemoryOutputStream:realloc-function:
+   * GMemoryOutputStream:realloc-function: (skip)
    *
    * Function with realloc semantics called to enlarge the buffer.
    *
@@ -209,7 +209,7 @@ g_memory_output_stream_class_init (GMemoryOutputStreamClass *klass)
                                                          G_PARAM_STATIC_STRINGS));
 
   /**
-   * GMemoryOutputStream:destroy-function:
+   * GMemoryOutputStream:destroy-function: (skip)
    *
    * Function called with the buffer as argument when the stream is destroyed.
    *
@@ -328,7 +328,7 @@ g_memory_output_stream_init (GMemoryOutputStream *stream)
 }
 
 /**
- * g_memory_output_stream_new:
+ * g_memory_output_stream_new: (skip)
  * @data: pointer to a chunk of memory to use, or %NULL
  * @size: the size of @data
  * @realloc_function: a function with realloc() semantics (like g_realloc())
@@ -376,7 +376,7 @@ g_memory_output_stream_new (gpointer       data,
 }
 
 /**
- * g_memory_output_stream_get_data: (skip)
+ * g_memory_output_stream_get_data:
  * @ostream: a #GMemoryOutputStream
  *
  * Gets any loaded data from the @ostream.
@@ -384,7 +384,7 @@ g_memory_output_stream_new (gpointer       data,
  * Note that the returned pointer may become invalid on the next
  * write or truncate operation on the stream.
  *
- * Returns: pointer to the stream's data
+ * Returns: (transfer none): pointer to the stream's data
  **/
 gpointer
 g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
@@ -398,7 +398,7 @@ g_memory_output_stream_get_data (GMemoryOutputStream *ostream)
  * g_memory_output_stream_get_size:
  * @ostream: a #GMemoryOutputStream
  *
- * Gets the size of the currently allocated data area (availible from
+ * Gets the size of the currently allocated data area (available from
  * g_memory_output_stream_get_data()). If the stream isn't
  * growable (no realloc was passed to g_memory_output_stream_new()) then
  * this is the maximum size of the stream and further writes

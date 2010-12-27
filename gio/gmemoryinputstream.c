@@ -203,9 +203,9 @@ g_memory_input_stream_new (void)
 
 /**
  * g_memory_input_stream_new_from_data:
- * @data: input data
+ * @data: (array length=len) (element-type guint8): input data
  * @len: length of the data, may be -1 if @data is a nul-terminated string
- * @destroy: function that is called to free @data, or %NULL
+ * @destroy: (allow-none): function that is called to free @data, or %NULL
  *
  * Creates a new #GMemoryInputStream with data in memory of a given size.
  * 
@@ -229,9 +229,9 @@ g_memory_input_stream_new_from_data (const void     *data,
 /**
  * g_memory_input_stream_add_data:
  * @stream: a #GMemoryInputStream
- * @data: input data
+ * @data: (array length=len) (element-type guint8): input data
  * @len: length of the data, may be -1 if @data is a nul-terminated string
- * @destroy: function that is called to free @data, or %NULL
+ * @destroy: (allow-none): function that is called to free @data, or %NULL
  *
  * Appends @data to data that can be read from the input stream
  */
