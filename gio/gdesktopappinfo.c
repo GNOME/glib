@@ -1997,7 +1997,8 @@ g_app_info_reset_type_associations (const char *content_type)
  * 
  * Gets the #GAppInfo that corresponds to a given content type.
  *
- * Returns: #GAppInfo for given @content_type or %NULL on error.
+ * Returns: (transfer full): #GAppInfo for given @content_type or
+ *     %NULL on error.
  **/
 GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
@@ -2069,7 +2070,7 @@ g_app_info_get_default_for_type (const char *content_type,
  * of the URI, up to but not including the ':', e.g. "http", 
  * "ftp" or "sip".
  * 
- * Returns: #GAppInfo for given @uri_scheme or %NULL on error.
+ * Returns: (transfer full): #GAppInfo for given @uri_scheme or %NULL on error.
  **/
 GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)

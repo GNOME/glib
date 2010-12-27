@@ -575,7 +575,7 @@ g_app_info_supports_files (GAppInfo *appinfo)
 /**
  * g_app_info_launch_uris:
  * @appinfo: a #GAppInfo
- * @uris: (element-type char*): a #GList containing URIs to launch.
+ * @uris: (element-type utf8): a #GList containing URIs to launch.
  * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
@@ -632,7 +632,7 @@ g_app_info_should_show (GAppInfo *appinfo)
 /**
  * g_app_info_launch_default_for_uri:
  * @uri: the uri to show
- * @launch_context: an optional #GAppLaunchContext.
+ * @launch_context: (allow-none): an optional #GAppLaunchContext.
  * @error: a #GError.
  *
  * Utility function that launches the default application

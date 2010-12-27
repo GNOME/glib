@@ -99,7 +99,7 @@ struct _GAppInfoIface
   const char * (* get_executable)               (GAppInfo           *appinfo);
   GIcon *      (* get_icon)                     (GAppInfo           *appinfo);
   gboolean     (* launch)                       (GAppInfo           *appinfo,
-                                                 GList              *filenames,
+                                                 GList              *files,
                                                  GAppLaunchContext  *launch_context,
                                                  GError            **error);
   gboolean     (* supports_uris)                (GAppInfo           *appinfo);
