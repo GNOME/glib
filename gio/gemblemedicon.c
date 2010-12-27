@@ -201,8 +201,8 @@ g_emblemed_icon_get_icon (GEmblemedIcon *emblemed)
  *
  * Gets the list of emblems for the @icon.
  *
- * Returns: (element-type utf8) (transfer none): a #GList of #GEmblem <!-- -->s that
- * is owned by @emblemed
+ * Returns: (element-type Gio.Emblem) (transfer none): a #GList of
+ *          #GEmblem <!-- -->s that is owned by @emblemed
  *
  * Since: 2.18
  **/
