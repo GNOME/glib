@@ -3058,6 +3058,9 @@ g_variant_builder_make_room (struct stack_builder *builder)
  * types or number of items in a tuple, putting more than one value into
  * a variant, etc.
  *
+ * If @value is a floating reference (see g_variant_ref_sink()),
+ * the @builder instance takes ownership of @value.
+ *
  * Since: 2.24
  **/
 void
