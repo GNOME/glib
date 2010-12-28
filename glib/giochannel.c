@@ -1987,39 +1987,38 @@ g_io_channel_read_to_end (GIOChannel  *channel,
  * g_io_channel_read_chars:
  * @channel: a #GIOChannel
  * @buf: a buffer to read data into
- * @count: the size of the buffer. Note that the buffer may
- *         not be complelely filled even if there is data
- *         in the buffer if the remaining data is not a
- *         complete character.
- * @bytes_read: The number of bytes read. This may be zero even on
- *              success if count < 6 and the channel's encoding is non-%NULL.
- *              This indicates that the next UTF-8 character is too wide for
- *              the buffer.
+ * @count: the size of the buffer. Note that the buffer may not be
+ *     complelely filled even if there is data in the buffer if the
+ *     remaining data is not a complete character.
+ * @bytes_read: (allow-none): The number of bytes read. This may be
+ *     zero even on success if count < 6 and the channel's encoding
+ *     is non-%NULL. This indicates that the next UTF-8 character is
+ *     too wide for the buffer.
  * @error: a location to return an error of type #GConvertError
- *         or #GIOChannelError.
+ *     or #GIOChannelError.
  *
  * Replacement for g_io_channel_read() with the new API.
  *
  * Return value: the status of the operation.
- **/
+ */
 GIOStatus
 g_io_channel_read_chars (GIOChannel  *channel,
-                         gchar	     *buf,
-                         gsize	      count,
-			 gsize       *bytes_read,
+                         gchar       *buf,
+                         gsize        count,
+                         gsize       *bytes_read,
                          GError     **error)
 {
   GIOStatus status;
   gsize got_bytes;
 
   g_return_val_if_fail (channel != NULL, G_IO_STATUS_ERROR);
-  g_return_val_if_fail ((error == NULL) || (*error == NULL),
-			G_IO_STATUS_ERROR);
+  g_return_val_if_fail ((error == NULL) || (*error == NULL), G_IO_STATUS_ERROR);
   g_return_val_if_fail (channel->is_readable, G_IO_STATUS_ERROR);
 
   if (count == 0)
     {
-      *bytes_read = 0;
+      if (bytes_read)
+        *bytes_read = 0;
       return G_IO_STATUS_NORMAL;
     }
   g_return_val_if_fail (buf != NULL, G_IO_STATUS_ERROR);
@@ -2027,13 +2026,13 @@ g_io_channel_read_chars (GIOChannel  *channel,
   if (!channel->use_buffer)
     {
       gsize tmp_bytes;
-      
+
       g_assert (!channel->read_buf || channel->read_buf->len == 0);
 
       status = channel->funcs->io_read (channel, buf, count, &tmp_bytes, error);
-      
+
       if (bytes_read)
-	*bytes_read = tmp_bytes;
+        *bytes_read = tmp_bytes;
 
       return status;
     }
