@@ -82,7 +82,7 @@ test_delete (void)
 
   if (g_file_test ("/usr/share/applications/gedit.desktop", G_FILE_TEST_EXISTS))
     {
-      info = (GAppInfo*)g_desktop_app_info_new ("gedit.desktop");
+      info = (GAppInfo*)g_desktop_app_info_new_from_filename ("/usr/share/applications/gedit.desktop");
       g_assert (info);
      
       res = g_app_info_can_delete (info);
