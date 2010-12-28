@@ -1189,10 +1189,12 @@ object_interface_check_properties (gpointer func_data,
 				   gpointer g_iface)
 {
   GTypeInterface *iface_class = g_iface;
-  GObjectClass *class = g_type_class_peek (iface_class->g_instance_type);
+  GObjectClass *class;
   GType iface_type = iface_class->g_type;
   GParamSpec **pspecs;
   guint n;
+
+  class = g_type_class_ref (iface_class->g_instance_type);
 
   if (!G_IS_OBJECT_CLASS (class))
     return;
@@ -1205,7 +1207,7 @@ object_interface_check_properties (gpointer func_data,
 							  pspecs[n]->name,
 							  G_OBJECT_CLASS_TYPE (class),
 							  TRUE);
-      
+
       if (!class_pspec)
 	{
 	  g_critical ("Object class %s doesn't implement property "
@@ -1237,9 +1239,9 @@ object_interface_check_properties (gpointer func_data,
 		      g_type_name (G_PARAM_SPEC_VALUE_TYPE (pspecs[n])),
 		      g_type_name (iface_type));
 	}
-      
+
 #define SUBSET(a,b,mask) (((a) & ~(b) & (mask)) == 0)
-      
+
       /* CONSTRUCT and CONSTRUCT_ONLY add restrictions.
        * READABLE and WRITABLE remove restrictions. The implementation
        * paramspec must have less restrictive flags.
@@ -1259,10 +1261,12 @@ object_interface_check_properties (gpointer func_data,
 		      g_type_name (G_OBJECT_CLASS_TYPE (class)),
 		      g_type_name (iface_type));
 	}
-#undef SUBSET	  
+#undef SUBSET
     }
-  
+
   g_free (pspecs);
+
+  g_type_class_unref (class);
 }
 
 GType
