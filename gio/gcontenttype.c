@@ -1651,8 +1651,8 @@ match_match (TreeMatch    *match,
  * This function is useful in the implementation of
  * g_mount_guess_content_type().
  *
- * Returns: (transfer full): an %NULL-terminated array of zero or more content types,
- *     or %NULL. Free with g_strfreev()
+ * Returns: (transfer full) (array zero-terminated=1): an %NULL-terminated
+ *     array of zero or more content types, or %NULL. Free with g_strfreev()
  *
  * Since: 2.18
  */
