@@ -3237,7 +3237,7 @@ g_type_default_interface_peek (GType g_type)
 }
 
 /**
- * g_type_default_interface_unref
+ * g_type_default_interface_unref:
  * @g_iface: (type GObject.Typeinterface): the default vtable
  *  structure for a interface, as returned by
  *  g_type_default_interface_ref()
