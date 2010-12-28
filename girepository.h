@@ -110,7 +110,7 @@ GITypelib *    g_irepository_require       (GIRepository *repository,
 					   GError      **error);
 GITypelib *    g_irepository_require_private (GIRepository  *repository,
 					     const gchar   *typelib_dir,
-					     const gchar   *namespace,
+					     const gchar   *namespace_,
 					     const gchar   *version,
 					     GIRepositoryLoadFlags flags,
 					     GError       **error);
