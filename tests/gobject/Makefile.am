@@ -61,7 +61,6 @@ test_programs =					\
 	ifacecheck				\
 	ifaceinit				\
 	ifaceinherit				\
-	ifaceproperties				\
 	override				\
 	performance				\
 	performance-threaded			\
