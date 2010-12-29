@@ -233,8 +233,10 @@ g_proxy_address_init (GProxyAddress *proxy)
  * @protocol: The proxy protocol to support, in lower case (e.g. socks, http).
  * @dest_hostname: The destination hostname the the proxy should tunnel to.
  * @dest_port: The destination port to tunnel to.
- * @username: The username to authenticate to the proxy server (or %NULL).
- * @password: The password to authenticate to the proxy server (or %NULL).
+ * @username: (allow-none): The username to authenticate to the proxy server
+ *     (or %NULL).
+ * @password: (allow-none): The password to authenticate to the proxy server
+ *     (or %NULL).
  *
  * Creates a new #GProxyAddress for @inetaddr with @protocol that should
  * tunnel through @dest_hostname and @dest_port.

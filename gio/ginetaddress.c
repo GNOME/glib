@@ -570,7 +570,7 @@ g_inet_address_to_string (GInetAddress *address)
 }
 
 /**
- * g_inet_address_to_bytes:
+ * g_inet_address_to_bytes: (skip)
  * @address: a #GInetAddress
  *
  * Gets the raw binary address data from @address.

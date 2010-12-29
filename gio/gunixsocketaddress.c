@@ -349,7 +349,7 @@ g_unix_socket_address_new (const gchar *path)
 
 /**
  * g_unix_socket_address_new_abstract:
- * @path: the abstract name
+ * @path: (array length=path_len) (element-type gchar): the abstract name
  * @path_len: the length of @path, or -1
  *
  * Creates a new %G_UNIX_SOCKET_ADDRESS_ABSTRACT_PADDED
@@ -369,7 +369,7 @@ g_unix_socket_address_new_abstract (const gchar *path,
 
 /**
  * g_unix_socket_address_new_with_type:
- * @path: the name
+ * @path: (array length=path_len) (element-type gchar): the name
  * @path_len: the length of @path, or -1
  * @type: a #GUnixSocketAddressType
  *

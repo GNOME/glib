@@ -153,7 +153,7 @@ g_socket_control_message_class_init (GSocketControlMessageClass *class)
  * @level: a socket level
  * @type: a socket control message type for the given @level
  * @size: the size of the data in bytes
- * @data: pointer to the message data
+ * @data: (array length=size) (element-type guint8): pointer to the message data
  *
  * Tries to deserialize a socket control message of a given
  * @level and @type. This will ask all known (to GType) subclasses
