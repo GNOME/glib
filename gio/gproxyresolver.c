@@ -141,7 +141,7 @@ g_proxy_resolver_is_supported (GProxyResolver *resolver)
  * g_proxy_resolver_lookup:
  * @resolver: a #GProxyResolver
  * @uri: a URI representing the destination to connect to
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Looks into the system proxy configuration to determine what proxy,
@@ -160,8 +160,9 @@ g_proxy_resolver_is_supported (GProxyResolver *resolver)
  * Direct connection should not be attempted unless it is part of the
  * returned array of proxies.
  *
- * Return value: (transfer full) (element-type utf8): A NULL-terminated array of proxy URIs. Must be freed with
- *               g_strfreev().
+ * Return value: (transfer full) (array zero-terminated=1): A
+ *               NULL-terminated array of proxy URIs. Must be freed
+ *               with g_strfreev().
  *
  * Since: 2.26
  */
@@ -185,9 +186,9 @@ g_proxy_resolver_lookup (GProxyResolver  *resolver,
  * g_proxy_resolver_lookup_async:
  * @resolver: a #GProxyResolver
  * @uri: a URI representing the destination to connect to
- * @cancellable: a #GCancellable, or %NULL
- * @callback: callback to call after resolution completes
- * @user_data: data for @callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): callback to call after resolution completes
+ * @user_data: (closure): data for @callback
  *
  * Asynchronous lookup of proxy. See g_proxy_resolver_lookup() for more
  * details.
@@ -221,8 +222,9 @@ g_proxy_resolver_lookup_async (GProxyResolver      *resolver,
  * g_proxy_resolver_lookup_async() is complete. See
  * g_proxy_resolver_lookup() for more details.
  *
- * Return value: (transfer full) (element-type utf8): A NULL-terminated array of proxy URIs. Must be freed with
- *               g_strfreev().
+ * Return value: (transfer full) (array zero-terminated=1): A
+ *               NULL-terminated array of proxy URIs. Must be freed
+ *               with g_strfreev().
  *
  * Since: 2.26
  */
