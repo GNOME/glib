@@ -199,7 +199,7 @@ check_listener (GSocketListener *listener,
  * g_socket_listener_add_socket:
  * @listener: a #GSocketListener
  * @socket: a listening #GSocket
- * @source_object: Optional #GObject identifying this source
+ * @source_object: (allow-none): Optional #GObject identifying this source
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Adds @socket to the set of sockets that we try to accept
@@ -253,7 +253,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  * @address: a #GSocketAddress
  * @type: a #GSocketType
  * @protocol: a #GSocketProtocol
- * @source_object: Optional #GObject identifying this source
+ * @source_object: (allow-none): Optional #GObject identifying this source
  * @effective_address: (out) (allow-none): location to store the address that was bound to, or %NULL.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
@@ -344,7 +344,7 @@ g_socket_listener_add_address (GSocketListener  *listener,
  * g_socket_listener_add_inet_port:
  * @listener: a #GSocketListener
  * @port: an IP port number (non-zero)
- * @source_object: Optional #GObject identifying this source
+ * @source_object: (allow-none): Optional #GObject identifying this source
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Helper function for g_socket_listener_add_address() that
@@ -563,7 +563,7 @@ accept_callback (GSocket      *socket,
  * g_socket_listener_accept_socket:
  * @listener: a #GSocketListener
  * @source_object: (out) (transfer none) (allow-none): location where #GObject pointer will be stored, or %NULL.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Blocks waiting for a client to connect to any of the sockets added
@@ -640,7 +640,7 @@ g_socket_listener_accept_socket (GSocketListener  *listener,
  * g_socket_listener_accept:
  * @listener: a #GSocketListener
  * @source_object: (out) (transfer none) (allow-none): location where #GObject pointer will be stored, or %NULL
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Blocks waiting for a client to connect to any of the sockets added
@@ -724,9 +724,9 @@ accept_ready (GSocket      *accept_socket,
 /**
  * g_socket_listener_accept_socket_async:
  * @listener: a #GSocketListener
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of g_socket_listener_accept_socket().
  *
@@ -769,7 +769,7 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
  * g_socket_listener_accept_socket_finish:
  * @listener: a #GSocketListener
  * @result: a #GAsyncResult.
- * @source_object: Optional #GObject identifying this source
+ * @source_object: (out) (transfer none) (allow-none): Optional #GObject identifying this source
  * @error: a #GError location to store the error occuring, or %NULL to
  * ignore.
  *
@@ -808,9 +808,9 @@ g_socket_listener_accept_socket_finish (GSocketListener  *listener,
 /**
  * g_socket_listener_accept_async:
  * @listener: a #GSocketListener
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of g_socket_listener_accept().
  *
@@ -836,7 +836,7 @@ g_socket_listener_accept_async (GSocketListener     *listener,
  * g_socket_listener_accept_finish:
  * @listener: a #GSocketListener
  * @result: a #GAsyncResult.
- * @source_object: Optional #GObject identifying this source
+ * @source_object: (out) (transfer none) (allow-none): Optional #GObject identifying this source
  * @error: a #GError location to store the error occuring, or %NULL to
  * ignore.
  *
@@ -927,7 +927,7 @@ g_socket_listener_close (GSocketListener *listener)
 /**
  * g_socket_listener_add_any_inet_port:
  * @listener: a #GSocketListener
- * @source_object: Optional #GObject identifying this source
+ * @source_object: (allow-none): Optional #GObject identifying this source
  * @error: a #GError location to store the error occuring, or %NULL to
  * ignore.
  *

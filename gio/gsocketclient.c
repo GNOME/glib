@@ -723,7 +723,7 @@ g_socket_client_class_init (GSocketClientClass *class)
  * g_socket_client_connect:
  * @client: a #GSocketClient.
  * @connectable: a #GSocketConnectable specifying the remote address.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Tries to resolve the @connectable and make a network connection to it..
@@ -905,7 +905,7 @@ g_socket_client_connect (GSocketClient       *client,
  * @client: a #GSocketClient
  * @host_and_port: the name and optionally port of the host to connect to
  * @default_port: the default port to connect to
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
  *
  * This is a helper function for g_socket_client_connect().
@@ -969,7 +969,7 @@ g_socket_client_connect_to_host (GSocketClient  *client,
  * @client: a #GSocketConnection
  * @domain: a domain name
  * @service: the name of the service to connect to
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
  * @returns: (transfer full): a #GSocketConnection if successful, or %NULL on error
  *
@@ -1011,7 +1011,7 @@ g_socket_client_connect_to_service (GSocketClient  *client,
  * @client: a #GSocketClient
  * @uri: A network URI
  * @default_port: the default port to connect to
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
  *
  * This is a helper function for g_socket_client_connect().
@@ -1422,9 +1422,9 @@ g_socket_client_enumerator_callback (GObject      *object,
  * g_socket_client_connect_async:
  * @client: a #GTcpClient
  * @connectable: a #GSocketConnectable specifying the remote address.
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect().
  *
@@ -1471,9 +1471,9 @@ g_socket_client_connect_async (GSocketClient       *client,
  * @client: a #GTcpClient
  * @host_and_port: the name and optionally the port of the host to connect to
  * @default_port: the default port to connect to
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect_to_host().
  *
@@ -1516,9 +1516,9 @@ g_socket_client_connect_to_host_async (GSocketClient        *client,
  * @client: a #GSocketClient
  * @domain: a domain name
  * @service: the name of the service to connect to
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of
  * g_socket_client_connect_to_service().
@@ -1547,9 +1547,9 @@ g_socket_client_connect_to_service_async (GSocketClient       *client,
  * @client: a #GSocketClient
  * @uri: a network uri
  * @default_port: the default port to connect to
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect_to_uri().
  *
