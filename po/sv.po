@@ -7,10 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-12 20:16+0200\n"
-"PO-Revision-Date: 2010-09-12 20:25+0100\n"
+"POT-Creation-Date: 2010-12-31 15:56+0100\n"
+"PO-Revision-Date: 2010-12-31 15:58+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -184,226 +185,234 @@ msgstr "Sökvägen \"%s\" är ingen absolut sökväg"
 msgid "Invalid hostname"
 msgstr "Ogiltigt värdnamn"
 
-#: ../glib/gdatetime.c:104
+#. Translators: 'before midday' indicator
+#: ../glib/gdatetime.c:149
 msgctxt "GDateTime"
 msgid "am"
 msgstr "am"
 
-#: ../glib/gdatetime.c:104
+#. Translators: 'before midday' indicator
+#: ../glib/gdatetime.c:151
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
-#: ../glib/gdatetime.c:105
+#. Translators: 'after midday' indicator
+#: ../glib/gdatetime.c:153
 msgctxt "GDateTime"
 msgid "pm"
 msgstr "pm"
 
-#: ../glib/gdatetime.c:105
+#. Translators: 'after midday' indicator
+#: ../glib/gdatetime.c:155
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:114
+#: ../glib/gdatetime.c:164
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%y-%m-%d"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:117
+#: ../glib/gdatetime.c:167
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H.%M.%S"
 
-#: ../glib/gdatetime.c:162
+#: ../glib/gdatetime.c:193
 msgctxt "full month name"
 msgid "January"
 msgstr "Januari"
 
-#: ../glib/gdatetime.c:164
+#: ../glib/gdatetime.c:195
 msgctxt "full month name"
 msgid "February"
 msgstr "Februari"
 
-#: ../glib/gdatetime.c:166
+#: ../glib/gdatetime.c:197
 msgctxt "full month name"
 msgid "March"
 msgstr "Mars"
 
-#: ../glib/gdatetime.c:168
+#: ../glib/gdatetime.c:199
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:170
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:201
 msgctxt "full month name"
 msgid "May"
 msgstr "Maj"
 
-#: ../glib/gdatetime.c:172
+#: ../glib/gdatetime.c:203
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:174
+#: ../glib/gdatetime.c:205
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:176
+#: ../glib/gdatetime.c:207
 msgctxt "full month name"
 msgid "August"
 msgstr "Augusti"
 
-#: ../glib/gdatetime.c:178
+#: ../glib/gdatetime.c:209
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:180
+#: ../glib/gdatetime.c:211
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:182
+#: ../glib/gdatetime.c:213
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:184
+#: ../glib/gdatetime.c:215
 msgctxt "full month name"
 msgid "December"
 msgstr "December"
 
-#: ../glib/gdatetime.c:199
+#: ../glib/gdatetime.c:230
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:201
+#: ../glib/gdatetime.c:232
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:234
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:236
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:209
+#: ../glib/gdatetime.c:238
+msgctxt "abbreviated month name"
+msgid "May"
+msgstr "Maj"
+
+#: ../glib/gdatetime.c:240
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:242
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:244
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:215
+#: ../glib/gdatetime.c:246
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:217
+#: ../glib/gdatetime.c:248
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:219
+#: ../glib/gdatetime.c:250
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:221
+#: ../glib/gdatetime.c:252
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dec"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:267
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Måndag"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:269
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Tisdag"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:271
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:273
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:275
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Fredag"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:277
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Lördag"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:279
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Söndag"
 
-#: ../glib/gdatetime.c:263
+#: ../glib/gdatetime.c:294
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Mån"
 
-#: ../glib/gdatetime.c:265
+#: ../glib/gdatetime.c:296
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Tis"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:298
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Ons"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:300
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Tor"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:302
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Fre"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:304
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Lör"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:306
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Sön"
 
-#: ../glib/gdir.c:114
-#: ../glib/gdir.c:137
+#: ../glib/gdir.c:115
+#: ../glib/gdir.c:138
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Fel vid öppning av katalogen \"%s\": %s"
@@ -728,300 +737,300 @@ msgstr "Dokumentet tog oväntat slut inuti stängningstaggen för elementet \"%s
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Dokumentet tog oväntat slut inuti en kommentar eller behandlingsinstruktion"
 
-#: ../glib/gregex.c:184
+#: ../glib/gregex.c:188
 msgid "corrupted object"
 msgstr "skadat objekt"
 
-#: ../glib/gregex.c:186
+#: ../glib/gregex.c:190
 msgid "internal error or corrupted object"
 msgstr "internt fel eller skadat objekt"
 
-#: ../glib/gregex.c:188
+#: ../glib/gregex.c:192
 msgid "out of memory"
 msgstr "slut på minne"
 
-#: ../glib/gregex.c:193
+#: ../glib/gregex.c:197
 msgid "backtracking limit reached"
 msgstr "bakåtspårningsgräns nådd"
 
-#: ../glib/gregex.c:205
-#: ../glib/gregex.c:213
+#: ../glib/gregex.c:209
+#: ../glib/gregex.c:217
 msgid "the pattern contains items not supported for partial matching"
 msgstr "mönstret innehåller objekt som inte stöds för delvis matchning"
 
-#: ../glib/gregex.c:207
+#: ../glib/gregex.c:211
 #: ../gio/glocalfile.c:2109
 msgid "internal error"
 msgstr "internt fel"
 
-#: ../glib/gregex.c:215
+#: ../glib/gregex.c:219
 msgid "back references as conditions are not supported for partial matching"
 msgstr "bakreferenser som villkor stöds inte för delvis matchning"
 
-#: ../glib/gregex.c:224
+#: ../glib/gregex.c:228
 msgid "recursion limit reached"
 msgstr "rekursionsgräns nådd"
 
-#: ../glib/gregex.c:226
+#: ../glib/gregex.c:230
 msgid "workspace limit for empty substrings reached"
 msgstr "arbetsytans gräns för tomma understrängar nådd"
 
-#: ../glib/gregex.c:228
+#: ../glib/gregex.c:232
 msgid "invalid combination of newline flags"
 msgstr "ogiltig kombination av nyradsflaggor"
 
-#: ../glib/gregex.c:232
+#: ../glib/gregex.c:236
 msgid "unknown error"
 msgstr "okänt fel"
 
-#: ../glib/gregex.c:252
+#: ../glib/gregex.c:256
 msgid "\\ at end of pattern"
 msgstr "\\ på slutet av mönster"
 
-#: ../glib/gregex.c:255
+#: ../glib/gregex.c:259
 msgid "\\c at end of pattern"
 msgstr "\\c på slutet av mönster"
 
-#: ../glib/gregex.c:258
+#: ../glib/gregex.c:262
 msgid "unrecognized character follows \\"
 msgstr "okänt tecken efter \\"
 
-#: ../glib/gregex.c:265
+#: ../glib/gregex.c:269
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr "skiftlägesändrade escape-tecken (\\l, \\L, \\u, \\U) tillåts inte här"
 
-#: ../glib/gregex.c:268
+#: ../glib/gregex.c:272
 msgid "numbers out of order in {} quantifier"
 msgstr "tal är inte i ordning i {}-kvantifierare"
 
-#: ../glib/gregex.c:271
+#: ../glib/gregex.c:275
 msgid "number too big in {} quantifier"
 msgstr "tal för stort i {}-kvantifierare"
 
-#: ../glib/gregex.c:274
+#: ../glib/gregex.c:278
 msgid "missing terminating ] for character class"
 msgstr "saknar avslutande ] för teckenklass"
 
-#: ../glib/gregex.c:277
+#: ../glib/gregex.c:281
 msgid "invalid escape sequence in character class"
 msgstr "ogiltig escape-sekvens i teckenklass"
 
-#: ../glib/gregex.c:280
+#: ../glib/gregex.c:284
 msgid "range out of order in character class"
 msgstr "intervall är inte i ordning i teckenklass"
 
-#: ../glib/gregex.c:283
+#: ../glib/gregex.c:287
 msgid "nothing to repeat"
 msgstr "ingenting att upprepa"
 
-#: ../glib/gregex.c:286
+#: ../glib/gregex.c:290
 msgid "unrecognized character after (?"
 msgstr "okänt tecken efter (?"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:294
 msgid "unrecognized character after (?<"
 msgstr "okänt tecken efter (?<"
 
-#: ../glib/gregex.c:294
+#: ../glib/gregex.c:298
 msgid "unrecognized character after (?P"
 msgstr "okänt tecken efter (?P"
 
-#: ../glib/gregex.c:297
+#: ../glib/gregex.c:301
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX-namngivna klasser stöds endast inom en klass"
 
-#: ../glib/gregex.c:300
+#: ../glib/gregex.c:304
 msgid "missing terminating )"
 msgstr "saknar avslutande )"
 
-#: ../glib/gregex.c:304
+#: ../glib/gregex.c:308
 msgid ") without opening ("
 msgstr ") utan öppnande ("
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:311
+#: ../glib/gregex.c:315
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R eller (?[+-]siffror måste efterföljas av )"
 
-#: ../glib/gregex.c:314
+#: ../glib/gregex.c:318
 msgid "reference to non-existent subpattern"
 msgstr "referens till icke-existerande undermönster"
 
-#: ../glib/gregex.c:317
+#: ../glib/gregex.c:321
 msgid "missing ) after comment"
 msgstr "saknar ) efter kommentar"
 
-#: ../glib/gregex.c:320
+#: ../glib/gregex.c:324
 msgid "regular expression too large"
 msgstr "reguljärt uttryck för stort"
 
-#: ../glib/gregex.c:323
+#: ../glib/gregex.c:327
 msgid "failed to get memory"
 msgstr "misslyckades med att få minne"
 
-#: ../glib/gregex.c:326
+#: ../glib/gregex.c:330
 msgid "lookbehind assertion is not fixed length"
 msgstr "lookbehind-assertion är inte av fast längd"
 
-#: ../glib/gregex.c:329
+#: ../glib/gregex.c:333
 msgid "malformed number or name after (?("
 msgstr "felformulerat tal eller namn efter (?("
 
-#: ../glib/gregex.c:332
+#: ../glib/gregex.c:336
 msgid "conditional group contains more than two branches"
 msgstr "villkorsgrupp innehåller fler än två grenar"
 
-#: ../glib/gregex.c:335
+#: ../glib/gregex.c:339
 msgid "assertion expected after (?("
 msgstr "assertion förväntades efter (?("
 
-#: ../glib/gregex.c:338
+#: ../glib/gregex.c:342
 msgid "unknown POSIX class name"
 msgstr "okänt POSIX-klassnamn"
 
-#: ../glib/gregex.c:341
+#: ../glib/gregex.c:345
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX-sorteringselement stöds inte"
 
-#: ../glib/gregex.c:344
+#: ../glib/gregex.c:348
 msgid "character value in \\x{...} sequence is too large"
 msgstr "teckenvärde i \\x{...}-sekvens är för stort"
 
-#: ../glib/gregex.c:347
+#: ../glib/gregex.c:351
 msgid "invalid condition (?(0)"
 msgstr "ogiltigt tillstånd (?(0)"
 
-#: ../glib/gregex.c:350
+#: ../glib/gregex.c:354
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C tillåts inte i lookbehind-assertion"
 
-#: ../glib/gregex.c:353
+#: ../glib/gregex.c:357
 msgid "recursive call could loop indefinitely"
 msgstr "rekursivt anrop kan gå in i en oändlig slinga"
 
-#: ../glib/gregex.c:356
+#: ../glib/gregex.c:360
 msgid "missing terminator in subpattern name"
 msgstr "saknar avslutstecken i undermönstrets namn"
 
-#: ../glib/gregex.c:359
+#: ../glib/gregex.c:363
 msgid "two named subpatterns have the same name"
 msgstr "två namngivna undermönster har samma namn"
 
-#: ../glib/gregex.c:362
+#: ../glib/gregex.c:366
 msgid "malformed \\P or \\p sequence"
 msgstr "felformulerad \\P eller \\p-sekvens"
 
-#: ../glib/gregex.c:365
+#: ../glib/gregex.c:369
 msgid "unknown property name after \\P or \\p"
 msgstr "okänt egenskapsnamn efter \\P eller \\p"
 
-#: ../glib/gregex.c:368
+#: ../glib/gregex.c:372
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "undermönstrets namn är för långt (maximalt 32 tecken)"
 
-#: ../glib/gregex.c:371
+#: ../glib/gregex.c:375
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "för många namngivna undermönster (maximalt 10,000)"
 
-#: ../glib/gregex.c:374
+#: ../glib/gregex.c:378
 msgid "octal value is greater than \\377"
 msgstr "oktalt värde är större än \\377"
 
-#: ../glib/gregex.c:377
+#: ../glib/gregex.c:381
 msgid "DEFINE group contains more than one branch"
 msgstr "DEFINE-grupp innehåller fler än en gren"
 
-#: ../glib/gregex.c:380
+#: ../glib/gregex.c:384
 msgid "repeating a DEFINE group is not allowed"
 msgstr "upprepning av en DEFINE-grupp tillåts inte"
 
-#: ../glib/gregex.c:383
+#: ../glib/gregex.c:387
 msgid "inconsistent NEWLINE options"
 msgstr "inkonsistenta NEWLINE-flaggor"
 
-#: ../glib/gregex.c:386
+#: ../glib/gregex.c:390
 msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr "\\g följs inte av ett namn inom klamrar eller ett valfri (icke-noll) tal inom klamrar"
 
-#: ../glib/gregex.c:391
+#: ../glib/gregex.c:395
 msgid "unexpected repeat"
 msgstr "oväntad upprepning"
 
-#: ../glib/gregex.c:395
+#: ../glib/gregex.c:399
 msgid "code overflow"
 msgstr "överflöde i kod"
 
-#: ../glib/gregex.c:399
+#: ../glib/gregex.c:403
 msgid "overran compiling workspace"
 msgstr "fyllde över kompileringsutrymme"
 
-#: ../glib/gregex.c:403
+#: ../glib/gregex.c:407
 msgid "previously-checked referenced subpattern not found"
 msgstr "tidigare kontrollerad refererande undermönster hittades inte"
 
-#: ../glib/gregex.c:575
-#: ../glib/gregex.c:1696
+#: ../glib/gregex.c:579
+#: ../glib/gregex.c:1700
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Fel vid matchning av reguljära uttrycket %s: %s"
 
-#: ../glib/gregex.c:1151
+#: ../glib/gregex.c:1155
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE-biblioteket är byggt utan stöd för UTF8"
 
-#: ../glib/gregex.c:1160
+#: ../glib/gregex.c:1164
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE-biblioteket är byggt utan stöd för UTF8-egenskaper"
 
-#: ../glib/gregex.c:1214
+#: ../glib/gregex.c:1218
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Fel vid kompilering av reguljära uttrycket %s vid tecknet %d: %s"
 
-#: ../glib/gregex.c:1250
+#: ../glib/gregex.c:1254
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Fel vid optimering av reguljära uttrycket %s: %s"
 
-#: ../glib/gregex.c:2124
+#: ../glib/gregex.c:2128
 msgid "hexadecimal digit or '}' expected"
 msgstr "hexadecimal siffra eller \"}\" förväntades"
 
-#: ../glib/gregex.c:2140
+#: ../glib/gregex.c:2144
 msgid "hexadecimal digit expected"
 msgstr "hexadecimal siffra förväntades"
 
-#: ../glib/gregex.c:2180
+#: ../glib/gregex.c:2184
 msgid "missing '<' in symbolic reference"
 msgstr "saknar \"<\" i symbolisk referens"
 
-#: ../glib/gregex.c:2189
+#: ../glib/gregex.c:2193
 msgid "unfinished symbolic reference"
 msgstr "oavslutad symbolisk referens"
 
-#: ../glib/gregex.c:2196
+#: ../glib/gregex.c:2200
 msgid "zero-length symbolic reference"
 msgstr "symbolisk referens med noll-längd"
 
-#: ../glib/gregex.c:2207
+#: ../glib/gregex.c:2211
 msgid "digit expected"
 msgstr "siffra förväntades"
 
-#: ../glib/gregex.c:2225
+#: ../glib/gregex.c:2229
 msgid "illegal symbolic reference"
 msgstr "otillåten symbolisk referens"
 
-#: ../glib/gregex.c:2287
+#: ../glib/gregex.c:2291
 msgid "stray final '\\'"
 msgstr "felplacerad avslutande \"\\\""
 
-#: ../glib/gregex.c:2291
+#: ../glib/gregex.c:2295
 msgid "unknown escape sequence"
 msgstr "okänd escape-sekvens"
 
-#: ../glib/gregex.c:2301
+#: ../glib/gregex.c:2305
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Fel vid tolkning av ersättningstexten \"%s\" vid tecknet %lu: %s"
@@ -1356,8 +1365,8 @@ msgstr "Värdet \"%s\" kan inte tolkas som ett booleskt värde."
 #: ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556
 #: ../gio/ginputstream.c:681
-#: ../gio/goutputstream.c:197
-#: ../gio/goutputstream.c:724
+#: ../gio/goutputstream.c:198
+#: ../gio/goutputstream.c:725
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "För stort räknevärde skickat till %s"
@@ -1365,14 +1374,14 @@ msgstr "För stort räknevärde skickat till %s"
 #: ../gio/gbufferedinputstream.c:881
 #: ../gio/ginputstream.c:891
 #: ../gio/giostream.c:306
-#: ../gio/goutputstream.c:1199
+#: ../gio/goutputstream.c:1200
 msgid "Stream is already closed"
 msgstr "Strömmen är redan stängd"
 
 #: ../gio/gcancellable.c:432
-#: ../gio/gdbusconnection.c:1549
-#: ../gio/gdbusconnection.c:1638
-#: ../gio/gdbusconnection.c:1820
+#: ../gio/gdbusconnection.c:1634
+#: ../gio/gdbusconnection.c:1723
+#: ../gio/gdbusconnection.c:1905
 #: ../gio/glocalfile.c:2102
 #: ../gio/gsimpleasyncresult.c:755
 #: ../gio/gsimpleasyncresult.c:781
@@ -1394,7 +1403,7 @@ msgid "Not enough space in destination"
 msgstr "Inte tillräckligt med utrymme i målet"
 
 #: ../gio/gcharsetconverter.c:447
-#: ../gio/gsocket.c:810
+#: ../gio/gsocket.c:831
 msgid "Cancellable initialization not supported"
 msgstr "Avbrytningsbar initiering stöds inte"
 
@@ -1421,7 +1430,7 @@ msgstr "GCredentials har inte implementerats för detta operativsystem"
 msgid "There is no GCredentials support for your platform"
 msgstr "Det finns inget stöd för GCredentials för din plattform"
 
-#: ../gio/gdatainputstream.c:310
+#: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
 msgstr "Oväntat tidig end-of-stream"
 
@@ -1548,13 +1557,13 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 
 #: ../gio/gdbusaddress.c:1245
-#: ../gio/gdbusconnection.c:6013
+#: ../gio/gdbusconnection.c:6143
 #, c-format
 msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value `%s'"
 msgstr ""
 
 #: ../gio/gdbusaddress.c:1254
-#: ../gio/gdbusconnection.c:6022
+#: ../gio/gdbusconnection.c:6152
 msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
 msgstr ""
 
@@ -1653,89 +1662,89 @@ msgstr "Fel vid öppning av nyckelringen \"%s\" för skrivning: "
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr ""
 
-#: ../gio/gdbusconnection.c:1058
-#: ../gio/gdbusconnection.c:1287
-#: ../gio/gdbusconnection.c:1326
-#: ../gio/gdbusconnection.c:1649
+#: ../gio/gdbusconnection.c:1142
+#: ../gio/gdbusconnection.c:1371
+#: ../gio/gdbusconnection.c:1410
+#: ../gio/gdbusconnection.c:1734
 msgid "The connection is closed"
 msgstr "Anslutningen är stängd"
 
-#: ../gio/gdbusconnection.c:1593
+#: ../gio/gdbusconnection.c:1678
 msgid "Timeout was reached"
 msgstr "Tidsgränsen uppnåddes"
 
-#: ../gio/gdbusconnection.c:2170
+#: ../gio/gdbusconnection.c:2292
 msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 
-#: ../gio/gdbusconnection.c:3596
-#: ../gio/gdbusconnection.c:3914
+#: ../gio/gdbusconnection.c:3726
+#: ../gio/gdbusconnection.c:4044
 #, c-format
 msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 
-#: ../gio/gdbusconnection.c:3668
+#: ../gio/gdbusconnection.c:3798
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 
-#: ../gio/gdbusconnection.c:3763
+#: ../gio/gdbusconnection.c:3893
 #, c-format
 msgid "No such property `%s'"
 msgstr "Ingen sådan egenskap \"%s\""
 
-#: ../gio/gdbusconnection.c:3775
+#: ../gio/gdbusconnection.c:3905
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Egenskapen \"%s\" är inte läsbar"
 
-#: ../gio/gdbusconnection.c:3786
+#: ../gio/gdbusconnection.c:3916
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Egenskapen \"%s\" är inte skrivbar"
 
-#: ../gio/gdbusconnection.c:3856
-#: ../gio/gdbusconnection.c:5447
+#: ../gio/gdbusconnection.c:3986
+#: ../gio/gdbusconnection.c:5577
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Inget sådan gränssnitt \"%s\""
 
-#: ../gio/gdbusconnection.c:4044
+#: ../gio/gdbusconnection.c:4174
 msgid "No such interface"
 msgstr "Inget sådant gränssnitt"
 
-#: ../gio/gdbusconnection.c:4260
-#: ../gio/gdbusconnection.c:5963
+#: ../gio/gdbusconnection.c:4390
+#: ../gio/gdbusconnection.c:6093
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr ""
 
-#: ../gio/gdbusconnection.c:4312
+#: ../gio/gdbusconnection.c:4442
 #, c-format
 msgid "No such method `%s'"
 msgstr "Ingen sådan metod \"%s\""
 
-#: ../gio/gdbusconnection.c:4343
+#: ../gio/gdbusconnection.c:4473
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr ""
 
-#: ../gio/gdbusconnection.c:4562
+#: ../gio/gdbusconnection.c:4692
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 
-#: ../gio/gdbusconnection.c:4756
+#: ../gio/gdbusconnection.c:4886
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr ""
+msgstr "Metoden \"%s\" returnerade typen \"%s\", men förväntade \"%s\""
 
-#: ../gio/gdbusconnection.c:5558
+#: ../gio/gdbusconnection.c:5688
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr ""
+msgstr "Metoden \"%s\" på gränssnittet \"%s\" med signaturen \"%s\" finns inte"
 
-#: ../gio/gdbusconnection.c:5676
+#: ../gio/gdbusconnection.c:5806
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ett underträd har redan exporterats för %s"
@@ -1881,13 +1890,13 @@ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr ""
 
 #: ../gio/gdbusmethodinvocation.c:406
-#: ../gio/gsocket.c:2974
-#: ../gio/gsocket.c:3055
+#: ../gio/gsocket.c:2995
+#: ../gio/gsocket.c:3076
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Fel vid sändning av meddelande: %s"
 
-#: ../gio/gdbusprivate.c:1766
+#: ../gio/gdbusprivate.c:1771
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Kunde inte läsa in /var/lib/dbus/machine-id: "
 
@@ -2381,7 +2390,7 @@ msgstr "Inmatningsströmmen har inte implementerat läsning"
 #. * you try to start one
 #: ../gio/ginputstream.c:901
 #: ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1209
+#: ../gio/goutputstream.c:1210
 msgid "Stream has outstanding operation"
 msgstr "Strömmen har kvarstående åtgärd"
 
@@ -2394,6 +2403,257 @@ msgstr "Inte tillräckligt med utrymme för uttagsadress"
 #: ../gio/ginetsocketaddress.c:211
 msgid "Unsupported socket address"
 msgstr "Uttagsadressen stöds inte"
+
+#: ../gio/glib-compile-schemas.c:708
+msgid "empty names are not permitted"
+msgstr "tomma namn tillåts inte"
+
+#: ../gio/glib-compile-schemas.c:718
+#, c-format
+msgid "invalid name '%s': names must begin with a lowercase letter"
+msgstr "ogiltigt namn \"%s\": namn måste börja med en liten bokstav"
+
+#: ../gio/glib-compile-schemas.c:730
+#, c-format
+msgid "invalid name '%s': invalid character '%c'; only lowercase letters, numbers and dash ('-') are permitted."
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:739
+#, c-format
+msgid "invalid name '%s': two successive dashes ('--') are not permitted."
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:748
+#, c-format
+msgid "invalid name '%s': the last character may not be a dash ('-')."
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:756
+#, c-format
+msgid "invalid name '%s': maximum length is 32"
+msgstr "ogiltigt namn \"%s\": maximal längd är 32"
+
+#: ../gio/glib-compile-schemas.c:825
+#, c-format
+msgid "<child name='%s'> already specified"
+msgstr "<child name='%s'> redan angiven"
+
+#: ../gio/glib-compile-schemas.c:851
+msgid "can not add keys to a 'list-of' schema"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:862
+#, c-format
+msgid "<key name='%s'> already specified"
+msgstr "<key name='%s'> redan angiven"
+
+#: ../gio/glib-compile-schemas.c:880
+#, c-format
+msgid "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to modify value"
+msgstr "<key name='%s'> skuggar <key name='%s'> i <schema id='%s'>; använd <override> för att ändra värdet"
+
+#: ../gio/glib-compile-schemas.c:891
+#, c-format
+msgid "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute to <key>"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:910
+#, c-format
+msgid "<%s id='%s'> not (yet) defined."
+msgstr "<%s id='%s'> inte (ännu) angiven."
+
+#: ../gio/glib-compile-schemas.c:925
+#, c-format
+msgid "invalid GVariant type string '%s'"
+msgstr "ogiltig GVariant-typsträng \"%s\""
+
+#: ../gio/glib-compile-schemas.c:955
+msgid "<override> given but schema isn't extending anything"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:968
+#, c-format
+msgid "no <key name='%s'> to override"
+msgstr "ingen <key name='%s'> att åsidosätta"
+
+#: ../gio/glib-compile-schemas.c:976
+#, c-format
+msgid "<override name='%s'> already specified"
+msgstr "<override name='%s'> redan angiven"
+
+#: ../gio/glib-compile-schemas.c:1047
+#, c-format
+msgid "<schema id='%s'> already specified"
+msgstr "<schema id='%s'> redan angiven"
+
+#: ../gio/glib-compile-schemas.c:1059
+#, c-format
+msgid "<schema id='%s'> extends not yet existing schema '%s'"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1075
+#, c-format
+msgid "<schema id='%s'> is list of not yet existing schema '%s'"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1083
+#, c-format
+msgid "Can not be a list of a schema with a path"
+msgstr "Kan inte vara en lista för ett schema med en sökväg"
+
+#: ../gio/glib-compile-schemas.c:1093
+#, c-format
+msgid "Can not extend a schema with a path"
+msgstr "Kan inte utöka ett schema med en sökväg"
+
+#: ../gio/glib-compile-schemas.c:1103
+#, c-format
+msgid "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1113
+#, c-format
+msgid "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' does not extend '%s'"
+msgstr "<schema id='%s' list-of='%s'> utökar <schema id='%s' list-of='%s'> men \"%s\" utökar inte \"%s\""
+
+#: ../gio/glib-compile-schemas.c:1130
+#, c-format
+msgid "a path, if given, must begin and end with a slash"
+msgstr "en sökväg, om angiven, måste börja och sluta med ett snedstreck"
+
+#: ../gio/glib-compile-schemas.c:1137
+#, c-format
+msgid "the path of a list must end with ':/'"
+msgstr "sökvägen för en lista måste sluta med \":/\""
+
+#: ../gio/glib-compile-schemas.c:1163
+#, c-format
+msgid "<%s id='%s'> already specified"
+msgstr "<%s id='%s'> redan angiven"
+
+#: ../gio/glib-compile-schemas.c:1380
+#, c-format
+msgid "Element <%s> not allowed inside <%s>"
+msgstr "Elementet <%s> tillåts inte inuti <%s>"
+
+#: ../gio/glib-compile-schemas.c:1384
+#, c-format
+msgid "Element <%s> not allowed at toplevel"
+msgstr "Elementet <%s> tillåts inte på toppnivå"
+
+#: ../gio/glib-compile-schemas.c:1478
+#, c-format
+msgid "text may not appear inside <%s>"
+msgstr "text får inte vara inuti <%s>"
+
+#. Translators: Do not translate "--strict".
+#: ../gio/glib-compile-schemas.c:1647
+#: ../gio/glib-compile-schemas.c:1718
+#: ../gio/glib-compile-schemas.c:1794
+#, c-format
+msgid "--strict was specified; exiting.\n"
+msgstr "--strict angavs; avslutar.\n"
+
+#: ../gio/glib-compile-schemas.c:1655
+#, c-format
+msgid "This entire file has been ignored.\n"
+msgstr "Hela denna filen har ignorerats.\n"
+
+#: ../gio/glib-compile-schemas.c:1714
+#, c-format
+msgid "Ignoring this file.\n"
+msgstr "Ignorerar denna fil.\n"
+
+#: ../gio/glib-compile-schemas.c:1754
+#, c-format
+msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1760
+#: ../gio/glib-compile-schemas.c:1818
+#: ../gio/glib-compile-schemas.c:1846
+#, c-format
+msgid "; ignoring override for this key.\n"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1764
+#: ../gio/glib-compile-schemas.c:1822
+#: ../gio/glib-compile-schemas.c:1850
+#, c-format
+msgid " and --strict was specified; exiting.\n"
+msgstr " och --strict angavs; avslutar.\n"
+
+#: ../gio/glib-compile-schemas.c:1780
+#, c-format
+msgid "error parsing key `%s' in schema `%s' as specified in override file `%s': %s.  "
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1790
+#, c-format
+msgid "Ignoring override for this key.\n"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1808
+#, c-format
+msgid "override for key `%s' in schema `%s' in override file `%s' is out of the range given in the schema"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1836
+#, c-format
+msgid "override for key `%s' in schema `%s' in override file `%s' is not in the list of valid choices"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1890
+msgid "where to store the gschemas.compiled file"
+msgstr "var filen gschemas.compiled ska lagras"
+
+#: ../gio/glib-compile-schemas.c:1890
+#: ../gio/glib-compile-schemas.c:1903
+msgid "DIRECTORY"
+msgstr "KATALOG"
+
+#: ../gio/glib-compile-schemas.c:1891
+msgid "Abort on any errors in schemas"
+msgstr "Avbryt vid alla möjliga fel i scheman"
+
+#: ../gio/glib-compile-schemas.c:1892
+msgid "Do not write the gschema.compiled file"
+msgstr "Skriv inte filen gschema.compiled"
+
+#: ../gio/glib-compile-schemas.c:1893
+msgid "This option will be removed soon."
+msgstr "Denna flagga kommer snart att försvinna."
+
+#: ../gio/glib-compile-schemas.c:1894
+msgid "Do not enforce key name restrictions"
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1906
+msgid ""
+"Compile all GSettings schema files into a schema cache.\n"
+"Schema files are required to have the extension .gschema.xml,\n"
+"and the cache file is called gschemas.compiled."
+msgstr ""
+
+#: ../gio/glib-compile-schemas.c:1922
+#, c-format
+msgid "You should give exactly one directory name\n"
+msgstr "Du bör ange exakt ett katalognamn\n"
+
+#: ../gio/glib-compile-schemas.c:1961
+#, c-format
+msgid "No schema files found: "
+msgstr "Inga schemafiler hittades: "
+
+#: ../gio/glib-compile-schemas.c:1964
+#, c-format
+msgid "doing nothing.\n"
+msgstr "gör ingenting.\n"
+
+#: ../gio/glib-compile-schemas.c:1967
+#, c-format
+msgid "removed existing output file.\n"
+msgstr ""
 
 #: ../gio/glocaldirectorymonitor.c:287
 msgid "Unable to find default local directory monitor type"
@@ -2790,13 +3050,13 @@ msgstr "mount har inte implementerat synkron estimering av innehållstyp"
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Värdnamnet \"%s\" innehåller \"[\" men inte \"]\""
 
-#: ../gio/goutputstream.c:206
-#: ../gio/goutputstream.c:407
+#: ../gio/goutputstream.c:207
+#: ../gio/goutputstream.c:408
 msgid "Output stream doesn't implement write"
 msgstr "Utmatningsström har inte implementerat skrivning"
 
-#: ../gio/goutputstream.c:368
-#: ../gio/goutputstream.c:848
+#: ../gio/goutputstream.c:369
+#: ../gio/goutputstream.c:849
 msgid "Source stream is already closed"
 msgstr "Källströmmen är redan stängd"
 
@@ -2829,7 +3089,7 @@ msgid "Error resolving '%s'"
 msgstr "Fel vid uppslag av \"%s\""
 
 #: ../gio/gsettings-tool.c:79
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Commands:\n"
 "  help        Show this information\n"
@@ -2841,26 +3101,34 @@ msgid ""
 "\n"
 "Use '%s COMMAND --help' to get help for individual commands.\n"
 msgstr ""
+"Kommandon:\n"
+"  help         Visar denna information\n"
+"  introspect   Introspektera ett fjärrobjekt\n"
+"  monitor      Övervaka ett fjärrobjekt\n"
+"  call         Anropa en metod på ett fjärrobjekt\n"
+"\n"
+"Använd \"%s KOMMANDO --help\" för att få hjälp för varje kommando.\n"
 
 #: ../gio/gsettings-tool.c:220
 #: ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436
-#: ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:437
+#: ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:646
 msgid "Specify the path for the schema"
 msgstr "Ange sökvägen för schemat"
 
 #: ../gio/gsettings-tool.c:220
 #: ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436
-#: ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:437
+#: ../gio/gsettings-tool.c:532
+#: ../gio/gsettings-tool.c:646
 msgid "PATH"
 msgstr "SÖKVÄG"
 
+#. Translators: Please keep order of words (command parameters)
 #: ../gio/gsettings-tool.c:228
-#: ../gio/gsettings-tool.c:539
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:654
 msgid "SCHEMA KEY"
 msgstr "SCHEMANYCKEL"
 
@@ -2869,25 +3137,26 @@ msgid "Get the value of KEY"
 msgstr "Hämta värdet för NYCKEL"
 
 #: ../gio/gsettings-tool.c:232
-#: ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:543
-#: ../gio/gsettings-tool.c:659
+#: ../gio/gsettings-tool.c:449
+#: ../gio/gsettings-tool.c:545
+#: ../gio/gsettings-tool.c:661
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
 "  KEY         The name of the key\n"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:328
-#: ../gio/gsettings-tool.c:444
+#. Translators: Please keep order of words (command parameters)
+#: ../gio/gsettings-tool.c:329
+#: ../gio/gsettings-tool.c:445
 msgid "SCHEMA KEY VALUE"
-msgstr ""
+msgstr "SCHEMA NYCKELVÄRDE"
 
-#: ../gio/gsettings-tool.c:330
+#: ../gio/gsettings-tool.c:331
 msgid "Set the value of KEY"
 msgstr "Ställ in värdet för NYCKEL"
 
-#: ../gio/gsettings-tool.c:332
+#: ../gio/gsettings-tool.c:333
 msgid ""
 "Arguments:\n"
 "  SCHEMA      The id of the schema\n"
@@ -2895,26 +3164,26 @@ msgid ""
 "  VALUE       The value to set key to, as a serialized GVariant\n"
 msgstr ""
 
-#: ../gio/gsettings-tool.c:405
+#: ../gio/gsettings-tool.c:406
 #, c-format
 msgid "Key %s is not writable\n"
 msgstr "Nyckeln %s är inte skrivbar\n"
 
-#: ../gio/gsettings-tool.c:446
+#: ../gio/gsettings-tool.c:447
 msgid "Sets KEY to its default value"
 msgstr "Ställer in NYCKEL till dess standardvärde"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:543
 msgid "Find out whether KEY is writable"
-msgstr "Ta reda på huruvida NYCKEL är skrivbar"
+msgstr "Kontrollera om NYCKEL är skrivbar"
 
-#: ../gio/gsettings-tool.c:655
+#: ../gio/gsettings-tool.c:657
 msgid ""
 "Monitor KEY for changes and print the changed values.\n"
 "Monitoring will continue until the process is terminated."
 msgstr ""
 
-#: ../gio/gsettings-tool.c:831
+#: ../gio/gsettings-tool.c:833
 #, c-format
 msgid "Unknown command '%s'\n"
 msgstr "Okänt kommando \"%s\"\n"
@@ -2933,102 +3202,102 @@ msgid "Socket is already closed"
 msgstr "Uttaget är redan stängt"
 
 #: ../gio/gsocket.c:299
-#: ../gio/gsocket.c:2716
-#: ../gio/gsocket.c:2760
+#: ../gio/gsocket.c:2737
+#: ../gio/gsocket.c:2781
 msgid "Socket I/O timed out"
 msgstr ""
 
-#: ../gio/gsocket.c:421
+#: ../gio/gsocket.c:442
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "skapar GSocket från fd: %s"
 
-#: ../gio/gsocket.c:455
-#: ../gio/gsocket.c:471
-#: ../gio/gsocket.c:2113
+#: ../gio/gsocket.c:476
+#: ../gio/gsocket.c:492
+#: ../gio/gsocket.c:2134
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Kunde inte skapa uttag: %s"
 
-#: ../gio/gsocket.c:455
+#: ../gio/gsocket.c:476
 msgid "Unknown protocol was specified"
 msgstr "Okänt protokoll angavs"
 
-#: ../gio/gsocket.c:1224
+#: ../gio/gsocket.c:1245
 #, c-format
 msgid "could not get local address: %s"
 msgstr "kunde inte få lokal adress: %s"
 
-#: ../gio/gsocket.c:1267
+#: ../gio/gsocket.c:1288
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "Kunde inte få fjärradress: %s"
 
-#: ../gio/gsocket.c:1328
+#: ../gio/gsocket.c:1349
 #, c-format
 msgid "could not listen: %s"
 msgstr "kunde inte lyssna: %s"
 
-#: ../gio/gsocket.c:1402
+#: ../gio/gsocket.c:1423
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Fel vid bindning till adress: %s"
 
-#: ../gio/gsocket.c:1522
+#: ../gio/gsocket.c:1543
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Fel vid godkännande av anslutning: %s"
 
-#: ../gio/gsocket.c:1639
+#: ../gio/gsocket.c:1660
 msgid "Error connecting: "
 msgstr "Fel vid anslutning: "
 
-#: ../gio/gsocket.c:1644
+#: ../gio/gsocket.c:1665
 msgid "Connection in progress"
 msgstr "Anslutningsförsök pågår"
 
-#: ../gio/gsocket.c:1651
+#: ../gio/gsocket.c:1672
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Fel vid anslutning: %s"
 
-#: ../gio/gsocket.c:1694
-#: ../gio/gsocket.c:3479
+#: ../gio/gsocket.c:1715
+#: ../gio/gsocket.c:3500
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kunde inte få tag på väntande fel: %s"
 
-#: ../gio/gsocket.c:1826
+#: ../gio/gsocket.c:1847
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Fel vid mottagning av data: %s"
 
-#: ../gio/gsocket.c:2000
+#: ../gio/gsocket.c:2021
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Fel vid sändning av data: %s"
 
-#: ../gio/gsocket.c:2192
+#: ../gio/gsocket.c:2213
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Fel vid stängning av uttag: %s"
 
-#: ../gio/gsocket.c:2709
+#: ../gio/gsocket.c:2730
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Väntar på uttagstillstånd: %s"
 
-#: ../gio/gsocket.c:2999
+#: ../gio/gsocket.c:3020
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage stöds inte på Windows"
 
-#: ../gio/gsocket.c:3258
-#: ../gio/gsocket.c:3399
+#: ../gio/gsocket.c:3279
+#: ../gio/gsocket.c:3420
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Fel vid mottagning av meddelande: %s"
 
-#: ../gio/gsocket.c:3494
+#: ../gio/gsocket.c:3515
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials har inte implementerats för detta operativsystem"
 
@@ -3090,6 +3359,7 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr "SOCKSv5-proxyservern kräver autentisering."
 
 #: ../gio/gsocks5proxy.c:179
+#, fuzzy
 msgid "The SOCKSv5 require an authentication method that is not supported by GLib."
 msgstr "SOCKSv5 kräver en autentiseringsmetod som inte stöds av GLib."
 
@@ -3296,215 +3566,44 @@ msgstr "Behöver mer inmatning"
 msgid "Invalid compressed data"
 msgstr "Ogiltigt komprimerat data"
 
-#: ../gio/glib-compile-schemas.c:702
-msgid "empty names are not permitted"
-msgstr "tomma namn tillåts inte"
+#~ msgid "No such schema '%s'\n"
+#~ msgstr "Inget sådant schema \"%s\"\n"
+#~ msgid "Empty path given.\n"
+#~ msgstr "Tom sökväg angavs.\n"
 
-#: ../gio/glib-compile-schemas.c:712
-#, c-format
-msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr "ogiltigt namn \"%s\": namn måste börja med en liten bokstav"
+#, fuzzy
+#~ msgid "Path must begin with a slash (/)\n"
+#~ msgstr "en sökväg, om angiven, måste börja och sluta med ett snedstreck"
 
-#: ../gio/glib-compile-schemas.c:724
-#, c-format
-msgid "invalid name '%s': invalid character '%c'; only lowercase letters, numbers and dash ('-') are permitted."
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:733
-#, c-format
-msgid "invalid name '%s': two successive dashes ('--') are not permitted."
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:742
-#, c-format
-msgid "invalid name '%s': the last character may not be a dash ('-')."
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:750
-#, c-format
-msgid "invalid name '%s': maximum length is 32"
-msgstr "ogiltigt namn \"%s\": maximal längd är 32"
-
-#: ../gio/glib-compile-schemas.c:819
-#, c-format
-msgid "<child name='%s'> already specified"
-msgstr "<child name='%s'> redan angiven"
-
-#: ../gio/glib-compile-schemas.c:845
-msgid "can not add keys to a 'list-of' schema"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:856
-#, c-format
-msgid "<key name='%s'> already specified"
-msgstr "<key name='%s'> redan angiven"
-
-#: ../gio/glib-compile-schemas.c:874
-#, c-format
-msgid "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> to modify value"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:885
-#, c-format
-msgid "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute to <key>"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:904
-#, c-format
-msgid "<%s id='%s'> not (yet) defined."
-msgstr "<%s id='%s'> inte (ännu) angiven."
-
-#: ../gio/glib-compile-schemas.c:919
-#, c-format
-msgid "invalid GVariant type string '%s'"
-msgstr "ogiltig GVariant-typsträng \"%s\""
-
-#: ../gio/glib-compile-schemas.c:949
-msgid "<override> given but schema isn't extending anything"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:962
-#, c-format
-msgid "no <key name='%s'> to override"
-msgstr "ingen <key name='%s'> att åsidosätta"
-
-#: ../gio/glib-compile-schemas.c:970
-#, c-format
-msgid "<override name='%s'> already specified"
-msgstr "<override name='%s'> redan angiven"
-
-#: ../gio/glib-compile-schemas.c:1036
-#, c-format
-msgid "<schema id='%s'> already specified"
-msgstr "<schema id='%s'> redan angiven"
-
-#: ../gio/glib-compile-schemas.c:1048
-#, c-format
-msgid "<schema id='%s'> extends not yet existing schema '%s'"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1064
-#, c-format
-msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1072
-#, c-format
-msgid "Can not be a list of a schema with a path"
-msgstr "Kan inte vara en lista för ett schema med en sökväg"
-
-#: ../gio/glib-compile-schemas.c:1082
-#, c-format
-msgid "Can not extend a schema with a path"
-msgstr "Kan inte utöka ett schema med en sökväg"
-
-#: ../gio/glib-compile-schemas.c:1092
-#, c-format
-msgid "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1102
-#, c-format
-msgid "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' does not extend '%s'"
-msgstr "<schema id='%s' list-of='%s'> utökar <schema id='%s' list-of='%s'> men \"%s\" utökar inte \"%s\""
-
-#: ../gio/glib-compile-schemas.c:1119
-#, c-format
-msgid "a path, if given, must begin and end with a slash"
-msgstr "en sökväg, om angiven, måste börja och sluta med ett snedstreck"
-
-#: ../gio/glib-compile-schemas.c:1126
-#, c-format
-msgid "the path of a list must end with ':/'"
-msgstr "sökvägen för en lista måste sluta med \":/\""
-
-#: ../gio/glib-compile-schemas.c:1148
-#, c-format
-msgid "<%s id='%s'> already specified"
-msgstr "<%s id='%s'> redan angiven"
-
-#: ../gio/glib-compile-schemas.c:1362
-#, c-format
-msgid "Element <%s> not allowed inside <%s>"
-msgstr "Elementet <%s> tillåts inte inuti <%s>"
-
-#: ../gio/glib-compile-schemas.c:1366
-#, c-format
-msgid "Element <%s> not allowed at toplevel"
-msgstr "Elementet <%s> tillåts inte på toppnivå"
-
-#: ../gio/glib-compile-schemas.c:1460
-#, c-format
-msgid "text may not appear inside <%s>"
-msgstr "text får inte vara inuti <%s>"
-
-#: ../gio/glib-compile-schemas.c:1674
-#, c-format
-msgid "No such schema `%s' specified in override file `%s'"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1698
-#, c-format
-msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1731
-#, c-format
-msgid "override for key `%s' in schema `%s' in override file `%s' is out of the range given in the schema"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1752
-#, c-format
-msgid "override for key `%s' in schema `%s' in override file `%s' is not in the list of valid choices"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1797
-msgid "where to store the gschemas.compiled file"
-msgstr "var filen gschemas.compiled ska lagras"
-
-#: ../gio/glib-compile-schemas.c:1797
-#: ../gio/glib-compile-schemas.c:1809
-msgid "DIRECTORY"
-msgstr "KATALOG"
-
-#: ../gio/glib-compile-schemas.c:1798
-msgid "Do not write the gschema.compiled file"
-msgstr "Skriv inte filen gschema.compiled"
-
-#: ../gio/glib-compile-schemas.c:1799
-msgid "This option will be removed soon."
-msgstr "Denna flagga kommer snart att försvinna."
-
-#: ../gio/glib-compile-schemas.c:1800
-msgid "Do not enforce key name restrictions"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1812
-msgid ""
-"Compile all GSettings schema files into a schema cache.\n"
-"Schema files are required to have the extension .gschema.xml,\n"
-"and the cache file is called gschemas.compiled."
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1828
-#, c-format
-msgid "You should give exactly one directory name\n"
-msgstr ""
-
-#: ../gio/glib-compile-schemas.c:1867
-#, c-format
-msgid "No schema files found: "
-msgstr "Inga schemafiler hittades: "
-
-#: ../gio/glib-compile-schemas.c:1870
-#, c-format
-msgid "doing nothing.\n"
-msgstr "gör ingenting.\n"
-
-#: ../gio/glib-compile-schemas.c:1873
-#, c-format
-msgid "removed existing output file.\n"
-msgstr ""
+#, fuzzy
+#~ msgid "Path must end with a slash (/)\n"
+#~ msgstr "en sökväg, om angiven, måste börja och sluta med ett snedstreck"
+#~ msgid "No such key '%s'\n"
+#~ msgstr "Ingen sådan nyckel \"%s\"\n"
+#~ msgid "Lists the keys in SCHEMA"
+#~ msgstr "Listar nycklarna i SCHEMA"
+#~ msgid "SCHEMA[:PATH]"
+#~ msgstr "SCHEMA[:SÖKVÄG]"
+#~ msgid "Sets the value of KEY to VALUE"
+#~ msgstr "Ställer in värdet för NYCKEL till VÄRDE"
+#~ msgid "SCHEMA[:PATH] [KEY]"
+#~ msgstr "SCHEMA[:SÖKVÄG] [NYCKEL]"
+#~ msgid ""
+#~ "Usage:\n"
+#~ "  gsettings %s %s\n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Användning:\n"
+#~ "  gsettings %s %s\n"
+#~ "\n"
+#~ "%s\n"
+#~ "\n"
+#~ msgid "Arguments:\n"
+#~ msgstr "Argument:\n"
+#~ msgid "  VALUE     The value to set\n"
+#~ msgstr "  VÄRDE     Värdet att ställa in\n"
 
 #, fuzzy
 #~ msgid "Do not give error for empty directory"
