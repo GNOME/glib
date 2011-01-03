@@ -2468,6 +2468,10 @@ socket_source_dispatch (GSource     *source,
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
   GSocketSource *socket_source = (GSocketSource *)source;
 
+#ifdef G_OS_WIN32
+  socket_source->pollfd.revents = update_condition (socket_source->socket);
+#endif
+
   return (*func) (socket_source->socket,
 		  socket_source->pollfd.revents & socket_source->condition,
 		  user_data);
