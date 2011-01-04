@@ -968,7 +968,7 @@ write_to_temp_file (const gchar  *contents,
       goto out;
     }
 
-#ifdef __linux__
+#ifdef BTRFS_SUPER_MAGIC
   {
     struct statfs buf;
 
