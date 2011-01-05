@@ -111,9 +111,9 @@ gboolean    g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo          
 						       GList                      *uris,
 						       GAppLaunchContext          *launch_context,
 						       GSpawnFlags                 spawn_flags,
-						       GSpawnChildSetupFunc        setup,
+						       GSpawnChildSetupFunc        user_setup,
 						       gpointer                    user_setup_data,
-						       GDesktopAppLaunchCallback   callback,
+						       GDesktopAppLaunchCallback   pid_callback,
 						       gpointer                    pid_callback_data,
 						       GError                    **error);
 
