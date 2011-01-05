@@ -103,9 +103,9 @@ GAppInfo *g_desktop_app_info_lookup_get_default_for_uri_scheme (GDesktopAppInfoL
  * create one or more child processes.  This callback is invoked once
  * for each, providing the process ID.
  */
-typedef void (GDesktopAppLaunchCallback) (GDesktopAppInfo  *appinfo,
-					  GPid              pid,
-					  gpointer          user_data);
+typedef void (*GDesktopAppLaunchCallback) (GDesktopAppInfo  *appinfo,
+					   GPid              pid,
+					   gpointer          user_data);
 
 gboolean    g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
 						       GList                      *uris,
