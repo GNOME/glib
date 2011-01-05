@@ -1,3 +1,46 @@
+Overview of Changes from GLib 2.27.5 to 2.27.90
+===============================================
+
+* Test reports created by gtester-report can now
+  include revision information
+
+* The g_desktop_app_info_launch_* family of functions
+  now emit a DBus signal when an application is launched.
+  Additionally, there is a new variant
+  g_desktop_app_info_launch_uris_as_manager(), which
+  gives more control over the launched process.
+
+* The memory and null GSettings backends are now available
+  as public API
+
+* g_get_locale_variants() is a new function that returns a
+  list of variants of a locale identifier
+
+* Bugs fixed:
+ 587898 I/O timeouts for GSocket
+ 606960 gio: Add extension point for informing parties...
+ 631980 Handle an optional <revision> node in the report...
+ 634569 Document that g_variant_builder_add_value consumes...
+ 635998 Make _g_compute_locale_variants public
+ 636806 Add g_{memory,null}_settings_backend_get_default
+ 637262 Need a binary DER version of ::accepted-cas
+ 637544 Skip fsync() on btrfs
+ 637720 void functions should not return a value.
+ 637738 object_interface_check_properties never actually...
+ 637759 GIOChannel: fix a crash in g_io_channel_read_chars()
+ 637852 Updates to glib.vsprops file for MSVC 2008 builds...
+ 637858 Updates to test/testglib.c...
+
+* Translation updates:
+ Hebrew
+ Norwegian bokmål
+ Simplified Chinese
+ Spanish
+ Swedish
+ Uyghur
+ Vietnamese
+
+
 Overview of Changes from GLib 2.27.4 to 2.27.5
 ==============================================
 
