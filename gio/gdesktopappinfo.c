@@ -1165,7 +1165,8 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  * @uris: (element-type utf8): List of URIs
  * @launch_context: a #GAppLaunchContext
  * @spawn_flags: #GSpawnFlags, used for each process
- * @user_setup: a #GSpawnChildSetupFunc, used once for each process.
+ * @user_setup: (scope call): a #GSpawnChildSetupFunc, used once for
+ *     each process.
  * @user_setup_data: (closure user_setup): User data for @user_setup
  * @pid_callback: (scope call): Callback for child processes
  * @pid_callback_data: (closure pid_callback): User data for @callback
