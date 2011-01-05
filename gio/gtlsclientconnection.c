@@ -38,8 +38,6 @@
  *
  * #GTlsClientConnection is the client-side subclass of
  * #GTlsConnection, representing a client-side TLS connection.
- *
- * Since: 2.28
  */
 
 /**
@@ -136,8 +134,6 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    * Each item in the list is a #GByteArray which contains the complete
    * subject DN of the certificate authority.
    *
-   * Type: GList<GByteArray>
-   * Transfer: full
    * Since: 2.28
    */
   g_object_interface_install_property (iface,
