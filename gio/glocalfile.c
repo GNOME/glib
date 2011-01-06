@@ -701,6 +701,8 @@ get_fs_type (long f_type)
       return "xfs";
     case 0x012FD16D:
       return "xiafs";
+    case 0x52345362:
+      return "reiser4";
     default:
       return NULL;
     }
