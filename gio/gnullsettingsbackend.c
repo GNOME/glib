@@ -56,6 +56,18 @@ g_null_settings_backend_write (GSettingsBackend *backend,
                                GVariant         *value,
                                gpointer          origin_tag)
 {
+  if (value)
+    g_variant_unref (g_variant_ref_sink (value));
+  return FALSE;
+}
+
+static gboolean
+g_null_settings_backend_write_one (gpointer key,
+                                   gpointer value,
+                                   gpointer data)
+{
+  if (value)
+    g_variant_unref (g_variant_ref_sink (value));
   return FALSE;
 }
 
@@ -64,6 +76,7 @@ g_null_settings_backend_write_tree (GSettingsBackend *backend,
                                     GTree            *tree,
                                     gpointer          origin_tag)
 {
+  g_tree_foreach (tree, g_null_settings_backend_write_one, backend);
   return FALSE;
 }
 
