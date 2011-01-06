@@ -932,7 +932,7 @@ child_setup (gpointer user_data)
 
 static void
 notify_desktop_launch (GDBusConnection  *session_bus,
-		       const char       *desktop_file, /* filename */
+		       GDesktopAppInfo  *info,
 		       long              pid,
 		       const char       *display,
 		       const char       *sn_id,
@@ -942,6 +942,7 @@ notify_desktop_launch (GDBusConnection  *session_bus,
   GVariantBuilder uri_variant;
   GVariantBuilder extras_variant;
   GList *iter;
+  const char *desktop_file_id;
 
   if (session_bus == NULL)
     return;
@@ -956,12 +957,19 @@ notify_desktop_launch (GDBusConnection  *session_bus,
 			   "startup-id",
 			   g_variant_new ("s",
 					  sn_id));
+
+  if (info->filename)
+    desktop_file_id = info->filename;
+  else if (info->desktop_id)
+    desktop_file_id = info->desktop_id;
+  else
+    desktop_file_id = "";
   
   msg = g_dbus_message_new_signal ("/org/gtk/gio/DesktopAppInfo",
 				   "org.gtk.gio.DesktopAppInfo",
 				   "Launched");
   g_dbus_message_set_body (msg, g_variant_new ("(@aysxasa{sv})",
-					       g_variant_new_bytestring (desktop_file),
+					       g_variant_new_bytestring (desktop_file_id),
 					       display ? display : "",
 					       (gint64)pid,
 					       &uri_variant,
@@ -1069,7 +1077,7 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
 	pid_callback (info, pid, pid_callback_data);
 
       notify_desktop_launch (session_bus,
-			     info->filename,
+			     info,
 			     pid,
 			     data.display,
 			     data.sn_id,
