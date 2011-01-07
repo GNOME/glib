@@ -49,6 +49,7 @@ AC_INIT(glib, [glib_version],
 
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([glib/glib.h])
+AC_CONFIG_MACRO_DIR([m4macros])
 
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
