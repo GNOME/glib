@@ -185,8 +185,9 @@ typedef gboolean      (*GSettingsBindGetMapping)                        (GValue 
 /**
  * GSettingsGetMapping:
  * @value: the #GVariant to map, or %NULL
- * @result: the result of the mapping
- * @user_data: the user data that was passed to g_settings_get_mapped()
+ * @result: (out): the result of the mapping
+ * @user_data: (closure): the user data that was passed to
+ * g_settings_get_mapped()
  * @returns: %TRUE if the conversion succeeded, %FALSE in case of an error
  *
  * The type of the function that is used to convert from a value stored

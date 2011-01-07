@@ -567,7 +567,8 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings::change-event:
    * @settings: the object on which the signal was emitted
-   * @keys: an array of #GQuark<!-- -->s for the changed keys, or %NULL
+   * @keys: (array length=n_keys) (element-type GQuark) (allow-none):
+   *        an array of #GQuark<!-- -->s for the changed keys, or %NULL
    * @n_keys: the length of the @keys array, or 0
    * @returns: %TRUE to stop other handlers from being invoked for the
    *           event. FALSE to propagate the event further.
@@ -1602,8 +1603,8 @@ g_settings_set (GSettings   *settings,
  * g_settings_get_mapped:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @mapping: the function to map the value in the settings database to
- *           the value used by the application
+ * @mapping: (scope call): the function to map the value in the
+ *           settings database to the value used by the application
  * @user_data: user data for @mapping
  * @returns: (transfer full): the result, which may be %NULL
  *
@@ -1901,15 +1902,14 @@ g_settings_set_boolean (GSettings  *settings,
  * g_settings_get_strv:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: a newly-allocated, %NULL-terminated array of strings
+ * @returns: (array zero-terminated=1) (transfer full): a
+ * newly-allocated, %NULL-terminated array of strings, the value that
+ * is stored at @key in @settings.
  *
  * A convenience variant of g_settings_get() for string arrays.
  *
  * It is a programmer error to give a @key that isn't specified as
  * having an array of strings type in the schema for @settings.
- *
- * Returns: (array zero-terminated=1) (transfer full): the value that is
- * stored at @key in @settings.
  *
  * Since: 2.26
  */
@@ -2135,7 +2135,7 @@ g_settings_is_writable (GSettings   *settings,
  * @returns: (transfer full): a 'child' settings object
  *
  * Creates a 'child' settings object which has a base path of
- * <replaceable>base-path</replaceable>/@name", where
+ * <replaceable>base-path</replaceable>/@name, where
  * <replaceable>base-path</replaceable> is the base path of @settings.
  *
  * The schema for the child settings object must have been declared
@@ -2625,7 +2625,7 @@ g_settings_bind (GSettings          *settings,
 }
 
 /**
- * g_settings_bind_with_mapping:
+ * g_settings_bind_with_mapping: (skip)
  * @settings: a #GSettings object
  * @key: the key to bind
  * @object: (type GObject.Object): a #GObject
