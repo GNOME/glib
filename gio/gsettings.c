@@ -613,7 +613,7 @@ g_settings_class_init (GSettingsClass *class)
   g_settings_signals[SIGNAL_WRITABLE_CHANGED] =
     g_signal_new ("writable-changed", G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
-                  G_STRUCT_OFFSET (GSettingsClass, changed),
+                  G_STRUCT_OFFSET (GSettingsClass, writable_changed),
                   NULL, NULL, g_cclosure_marshal_VOID__STRING, G_TYPE_NONE,
                   1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
 
