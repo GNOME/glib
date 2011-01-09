@@ -1,10 +1,12 @@
 <!ELEMENT schemalist (schema|enum)* >
 <!ATTLIST schemalist gettext-domain #IMPLIED >
 
-<!ELEMENT schema (key|child)* >
+<!ELEMENT schema (key|child|override)* >
 <!ATTLIST schema id             CDATA #REQUIRED
                  path           CDATA #IMPLIED
-                 gettext-domain CDATA #IMPLIED >
+                 gettext-domain CDATA #IMPLIED
+                 extends        CDATA #IMPLIED
+                 list-of        CDATA #IMPLIED >
 
 <!-- enumerated and flags types -->
 <!-- each value element maps a nick to a numeric value -->
@@ -64,3 +66,8 @@
 <!ELEMENT child EMPTY >
 <!ATTLIST child name   CDATA #REQUIRED
                 schema CDATA #REQUIRED >
+
+<!ELEMENT override (#PCDATA) >
+<!ATTLIST override name    CDATA #REQUIRED
+                   l10n    CDATA #IMPLIED
+                   context CDATA #IMPLIED >
