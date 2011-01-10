@@ -2,11 +2,11 @@
 # Estonian translation of GLib.
 #
 # Copyright (C) 2002, 2005, 2006 Free Software Foundation, Inc.
-# Copyright (C) 2007-2010 The GNOME Project.
+# Copyright (C) 2007–2011 The GNOME Project.
 # This file is distributed under the same license as the GLib package.
 #
 # Allan Sims <allsi eau ee>, 2002.
-# Ivar Smolin <okul linux ee>, 2005-2010.
+# Ivar Smolin <okul linux ee>, 2005–2011.
 # Priit Laes <plaes plaes org>, 2005, 2007, 2009
 # Mattias Põldaru <mahfiaz gmail com>, 2009.
 #
@@ -16,8 +16,8 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-12-17 16:41+0000\n"
-"PO-Revision-Date: 2010-09-19 14:51+0300\n"
-"Last-Translator: Mattias Põldaru <mahfiaz gmail com>\n"
+"PO-Revision-Date: 2011-01-10 13:27+0200\n"
+"Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "Language: et\n"
 "MIME-Version: 1.0\n"
@@ -151,192 +151,154 @@ msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "January"
 msgstr "Jaanuar"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "February"
 msgstr "Veebruar"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "March"
 msgstr "Märts"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "April"
 msgstr "Aprill"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "June"
 msgstr "Juuni"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "July"
 msgstr "Juuli"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktoober"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#, fuzzy
 msgctxt "full month name"
 msgid "December"
 msgstr "Detsember"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jaan"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Veebr"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Märts"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Juun"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Juul"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sept"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dets"
 
-#, fuzzy
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Esmaspäev"
 
-#, fuzzy
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Teisipäev"
 
-#, fuzzy
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Kolmapäev"
 
-#, fuzzy
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Neljapäev"
 
-#, fuzzy
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Reede"
 
-#, fuzzy
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Laupäev"
 
-#, fuzzy
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Pühapäev"
 
-#, fuzzy
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "E"
 
-#, fuzzy
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "T"
 
-#, fuzzy
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "K"
 
-#, fuzzy
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "N"
 
-#, fuzzy
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "R"
 
-#, fuzzy
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "L"
 
-#, fuzzy
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "P"
@@ -1320,21 +1282,21 @@ msgstr ""
 msgid "Didn't find cookie with id %d in the keyring at `%s'"
 msgstr "Küpsist id-ga %d võtmerõngas kohas '%s' ei leitud"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error deleting stale lock file `%s': %s"
-msgstr "Viga failist '%s' lugemisel: %s"
+msgstr "Viga iganenud lukufaili '%s' kustutamisel: %s"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating lock file `%s': %s"
-msgstr "Viga likufaili '%s' loomisel: %s"
+msgstr "Viga lukufaili '%s' loomisel: %s"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "Viga faili '%s' avamisel: %s"
+msgstr "Viga (kustutatud) lukufaili '%s' sulgemisel: %s"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error unlinking lock file `%s': %s"
-msgstr "Viga faili '%s' avamisel: %s"
+msgstr "Viga lukufaili '%s' kustutamisel: %s"
 
 #, c-format
 msgid "Error opening keyring `%s' for writing: "
@@ -1595,9 +1557,9 @@ msgstr ""
 msgid "Error: %s\n"
 msgstr "Viga: %s\n"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr "Viga võtme parsimisel: %s"
+msgstr ""
 
 msgid "Connect to the system bus"
 msgstr ""
@@ -1605,13 +1567,11 @@ msgstr ""
 msgid "Connect to the session bus"
 msgstr ""
 
-#, fuzzy
 msgid "Connect to given D-Bus address"
-msgstr "Ühendumise edenemine"
+msgstr "Ühendumine määratud D-Bus aadressiga"
 
-#, fuzzy
 msgid "Connection Endpoint Options:"
-msgstr "Ühendumise edenemine"
+msgstr ""
 
 msgid "Options specifying the connection endpoint"
 msgstr ""
@@ -1888,9 +1848,8 @@ msgstr "Sokliaadressi jaoks ei ole piisavalt vaba ruumi"
 msgid "Unsupported socket address"
 msgstr "Toetamata sokliaadress"
 
-#, fuzzy
 msgid "empty names are not permitted"
-msgstr "Abstraktne nimeruum pole toetatud"
+msgstr "tühjad nimed pole lubatud"
 
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
@@ -2496,11 +2455,13 @@ msgstr ""
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr ""
 
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unknown command %s\n"
 "\n"
-msgstr "Tundmatu käsk '%s'\n"
+msgstr ""
+"Tundmatu käsk '%s'\n"
+"\n"
 
 msgid ""
 "Usage:\n"
@@ -2644,9 +2605,9 @@ msgstr "Tundmatu viga ühendumisel"
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr ""
 
-#, fuzzy, c-format
+#, c-format
 msgid "Proxy protocol '%s' is not supported."
-msgstr "Omadus `%s' pole loetav"
+msgstr "Proksi protokoll `%s' pole toetatud."
 
 msgid "Listener is already closed"
 msgstr "Kuulaja on juba suletud"
@@ -2656,7 +2617,7 @@ msgstr "Lisatud sokkel on suletud"
 
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address '%s'"
-msgstr ""
+msgstr "SOCKSv4 ei toeta IPv6-aadressi '%s'"
 
 #, c-format
 msgid "SOCKSv4 implementation limits username to %i characters"
@@ -2667,13 +2628,13 @@ msgid "SOCKSv4a implementation limits hostname to %i characters"
 msgstr ""
 
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr ""
+msgstr "Server ei ole SOCKSv4 proksiserver."
 
 msgid "Connection through SOCKSv4 server was rejected"
 msgstr ""
 
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr ""
+msgstr "Server ei ole SOCKSv5 proksiserver."
 
 msgid "The SOCKSv5 proxy requires authentication."
 msgstr ""
@@ -2748,9 +2709,8 @@ msgstr "Eeldati ühte fd-d, aga saadi %d\n"
 msgid "Received invalid fd"
 msgstr "Saadi vigane fd"
 
-#, fuzzy
 msgid "Error sending credentials: "
-msgstr "Viga andmete saatmisel: %s"
+msgstr "Viga tõendite saatmisel: "
 
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
@@ -2842,10 +2802,3 @@ msgstr "Vaja on rohkem sisendit"
 
 msgid "Invalid compressed data"
 msgstr "Vigaselt pakitud andmed"
-
-#~ msgid "Key %s is not writable\n"
-#~ msgstr "Võti %s pole kirjutatav\n"
-
-#, fuzzy
-#~ msgid "Do not give error for empty directory"
-#~ msgstr "Kataloogi pole võimalik kataloogi peale liigutada"
