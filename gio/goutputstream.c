@@ -150,7 +150,7 @@ g_output_stream_init (GOutputStream *stream)
  * @stream: a #GOutputStream.
  * @buffer: (array length=count) (element-type guint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
- * @cancellable: optional cancellable object
+ * @cancellable: (allow-none): optional cancellable object
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Tries to write @count bytes from @buffer into the stream. Will block
@@ -229,9 +229,9 @@ g_output_stream_write (GOutputStream  *stream,
  * @stream: a #GOutputStream.
  * @buffer: (array length=count) (element-type guint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
- * @bytes_written: location to store the number of bytes that was 
+ * @bytes_written: (out): location to store the number of bytes that was 
  *     written to the stream
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Tries to write @count bytes from @buffer into the stream. Will block
@@ -290,7 +290,7 @@ g_output_stream_write_all (GOutputStream  *stream,
 /**
  * g_output_stream_flush:
  * @stream: a #GOutputStream.
- * @cancellable: optional cancellable object
+ * @cancellable: (allow-none): optional cancellable object
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Flushed any outstanding buffers in the stream. Will block during 
@@ -341,7 +341,7 @@ g_output_stream_flush (GOutputStream  *stream,
  * @stream: a #GOutputStream.
  * @source: a #GInputStream.
  * @flags: a set of #GOutputStreamSpliceFlags.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError location to store the error occuring, or %NULL to
  * ignore.
  *
@@ -468,7 +468,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
 /**
  * g_output_stream_close:
  * @stream: A #GOutputStream.
- * @cancellable: optional cancellable object
+ * @cancellable: (allow-none): optional cancellable object
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it.
@@ -655,9 +655,9 @@ async_ready_close_flushed_callback_wrapper (GObject      *source_object,
  * @buffer: (array length=count) (element-type guint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
  * @io_priority: the io priority of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: callback to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
  *
  * Request an asynchronous write of @count bytes from @buffer into 
  * the stream. When the operation is finished @callback will be called.
@@ -812,9 +812,9 @@ async_ready_splice_callback_wrapper (GObject      *source_object,
  * @source: a #GInputStream. 
  * @flags: a set of #GOutputStreamSpliceFlags.
  * @io_priority: the io priority of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @callback: a #GAsyncReadyCallback. 
- * @user_data: user data passed to @callback.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
+ * @callback: (scope async): a #GAsyncReadyCallback. 
+ * @user_data: (closure): user data passed to @callback.
  * 
  * Splices a stream asynchronously.
  * When the operation is finished @callback will be called.
@@ -908,9 +908,9 @@ g_output_stream_splice_finish (GOutputStream  *stream,
  * g_output_stream_flush_async:
  * @stream: a #GOutputStream.
  * @io_priority: the io priority of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): a #GAsyncReadyCallback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
  * 
  * Flushes a stream asynchronously.
  * For behaviour details see g_output_stream_flush().
@@ -1003,9 +1003,9 @@ g_output_stream_flush_finish (GOutputStream  *stream,
  * g_output_stream_close_async:
  * @stream: A #GOutputStream.
  * @io_priority: the io priority of the request.
- * @callback: callback to call when the request is satisfied
- * @user_data: the data to pass to callback function
- * @cancellable: optional cancellable object
+ * @cancellable: (allow-none): optional cancellable object
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
  *
  * Requests an asynchronous close of the stream, releasing resources 
  * related to it. When the operation is finished @callback will be 

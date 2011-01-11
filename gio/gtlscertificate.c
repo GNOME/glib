@@ -53,11 +53,6 @@
 
 G_DEFINE_ABSTRACT_TYPE (GTlsCertificate, g_tls_certificate, G_TYPE_OBJECT);
 
-struct _GTlsCertificatePrivate
-{
-  GTlsCertificate *issuer;
-};
-
 enum
 {
   PROP_0,
@@ -72,9 +67,6 @@ enum
 static void
 g_tls_certificate_init (GTlsCertificate *cert)
 {
-  cert->priv = G_TYPE_INSTANCE_GET_PRIVATE (cert,
-					    G_TYPE_TLS_CERTIFICATE,
-					    GTlsCertificatePrivate);
 }
 
 static void
@@ -83,17 +75,7 @@ g_tls_certificate_get_property (GObject    *object,
 				GValue     *value,
 				GParamSpec *pspec)
 {
-  GTlsCertificate *cert = G_TLS_CERTIFICATE (object);
-
-  switch (prop_id)
-    {
-    case PROP_ISSUER:
-      g_value_set_object (value, cert->priv->issuer);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-    }
+  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 }
 
 static void
@@ -102,28 +84,7 @@ g_tls_certificate_set_property (GObject      *object,
 				const GValue *value,
 				GParamSpec   *pspec)
 {
-  GTlsCertificate *cert = G_TLS_CERTIFICATE (object);
-
-  switch (prop_id)
-    {
-    case PROP_ISSUER:
-      cert->priv->issuer = g_value_dup_object (value);
-      break;
-
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-    }
-}
-
-static void
-g_tls_certificate_finalize (GObject *object)
-{
-  GTlsCertificate *cert = G_TLS_CERTIFICATE (object);
-
-  if (cert->priv->issuer)
-    g_object_unref (cert->priv->issuer);
-
-  G_OBJECT_CLASS (g_tls_certificate_parent_class)->finalize (object);
+  G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
 }
 
 static void
@@ -131,11 +92,8 @@ g_tls_certificate_class_init (GTlsCertificateClass *class)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (class);
 
-  g_type_class_add_private (class, sizeof (GTlsCertificatePrivate));
-
   gobject_class->set_property = g_tls_certificate_set_property;
   gobject_class->get_property = g_tls_certificate_get_property;
-  gobject_class->finalize = g_tls_certificate_finalize;
 
   /**
    * GTlsCertificate:certificate:
@@ -482,5 +440,49 @@ g_tls_certificate_list_new_from_file (const gchar  *file,
 GTlsCertificate *
 g_tls_certificate_get_issuer (GTlsCertificate  *cert)
 {
-  return cert->priv->issuer;
+  GTlsCertificate *issuer;
+
+  g_object_get (G_OBJECT (cert), "issuer", &issuer, NULL);
+  if (issuer)
+    g_object_unref (issuer);
+
+  return issuer;
+}
+
+/**
+ * g_tls_certificate_verify:
+ * @cert: a #GTlsCertificate
+ * @identity: (allow-none): the expected peer identity
+ * @trusted_ca: (allow-none): the certificate of a trusted authority
+ *
+ * This verifies @cert and returns a set of #GTlsCertificateFlags
+ * indicating any problems found with it. This can be used to verify a
+ * certificate outside the context of making a connection, or to
+ * check a certificate against a CA that is not part of the system
+ * CA database.
+ *
+ * If @identity is not %NULL, @cert's name(s) will be compared against
+ * it, and %G_TLS_CERTIFICATE_BAD_IDENTITY will be set in the return
+ * value if it does not match. If @identity is %NULL, that bit will
+ * never be set in the return value.
+ *
+ * If @trusted_ca is not %NULL, then @cert (or one of the certificates
+ * in its chain) must be signed by it, or else
+ * %G_TLS_CERTIFICATE_UNKNOWN_CA will be set in the return value. If
+ * @trusted_ca is %NULL, that bit will never be set in the return
+ * value.
+ *
+ * (All other #GTlsCertificateFlags values will always be set or unset
+ * as appropriate.)
+ *
+ * Return value: the appropriate #GTlsCertificateFlags
+ *
+ * Since: 2.28
+ */
+GTlsCertificateFlags
+g_tls_certificate_verify (GTlsCertificate     *cert,
+			  GSocketConnectable  *identity,
+			  GTlsCertificate     *trusted_ca)
+{
+  return G_TLS_CERTIFICATE_GET_CLASS (cert)->verify (cert, identity, trusted_ca);
 }

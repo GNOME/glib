@@ -11,14 +11,14 @@
 # Suso Baleato <suso.baleato@xunta.es>,2009.
 # Antón Méixome <meixome@mancomun.org>, 2009.
 # Fran Dieguez <frandieguez@ubuntu.com>, 2010.
-# Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010.
+# Fran Diéguez <frandieguez@ubuntu.com>, 2009, 2010, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-29 17:34+0100\n"
-"PO-Revision-Date: 2010-11-29 17:35+0100\n"
+"POT-Creation-Date: 2011-01-09 16:35+0100\n"
+"PO-Revision-Date: 2011-01-09 16:35+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -113,13 +113,13 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Non foi posíbel abrir o conversor de «%s» a «%s»"
 
 #: ../glib/gconvert.c:768 ../glib/gconvert.c:1161 ../glib/giochannel.c:1575
-#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2461 ../glib/gutf8.c:992
+#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2460 ../glib/gutf8.c:992
 #: ../glib/gutf8.c:1447 ../gio/gcharsetconverter.c:345
 msgid "Invalid byte sequence in conversion input"
 msgstr "A secuencia de bytes non é válida na entrada da conversión"
 
 #: ../glib/gconvert.c:776 ../glib/gconvert.c:1086 ../glib/giochannel.c:1582
-#: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
+#: ../glib/giochannel.c:2472 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversión: %s"
@@ -401,141 +401,141 @@ msgstr "Dom"
 msgid "Error opening directory '%s': %s"
 msgstr "Produciuse un erro ao abrir o directorio «%s»: %s"
 
-#: ../glib/gfileutils.c:536 ../glib/gfileutils.c:624
+#: ../glib/gfileutils.c:540 ../glib/gfileutils.c:628
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Non foi posíbel asignar %lu bytes para ler o ficheiro «%s»"
 
-#: ../glib/gfileutils.c:551
+#: ../glib/gfileutils.c:555
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Produciuse un erro ao ler o ficheiro «%s»: %s"
 
-#: ../glib/gfileutils.c:565
+#: ../glib/gfileutils.c:569
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "O ficheiro «%s» é demasiado grande"
 
-#: ../glib/gfileutils.c:648
+#: ../glib/gfileutils.c:652
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Produciuse un fallo ao ler desde o ficheiro «%s»: %s"
 
-#: ../glib/gfileutils.c:699 ../glib/gfileutils.c:786
+#: ../glib/gfileutils.c:703 ../glib/gfileutils.c:790
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Produciuse un fallo ao abrir o ficheiro «%s»: %s"
 
-#: ../glib/gfileutils.c:716 ../glib/gmappedfile.c:169
+#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:169
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Produciuse un fallo ao obter os atributos do ficheiro «%s»: fstat() fallou: "
 "%s"
 
-#: ../glib/gfileutils.c:750
+#: ../glib/gfileutils.c:754
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Produciuse un fallo ao abrir o ficheiro «%s»: fdopen() fallou: %s"
 
-#: ../glib/gfileutils.c:858
+#: ../glib/gfileutils.c:862
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Produciuse un fallo ao renomear o ficheiro «%s» como «%s»: g_rename() "
 "fallou: %s"
 
-#: ../glib/gfileutils.c:900 ../glib/gfileutils.c:1369
+#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1388
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Produciuse un fallo ao crear o ficheiro «%s»: %s"
 
-#: ../glib/gfileutils.c:914
+#: ../glib/gfileutils.c:918
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Produciuse un fallo ao abrir o ficheiro «%s» para escritura: fdopen() "
 "fallou: %s"
 
-#: ../glib/gfileutils.c:939
+#: ../glib/gfileutils.c:943
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Produciuse un fallo ao escribir o ficheiro «%s»: fwrite() fallou: %s"
 
-#: ../glib/gfileutils.c:958
+#: ../glib/gfileutils.c:962
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "Produciuse un fallo ao escribir o ficheiro «%s»: fflush() fallou: %s"
 
-#: ../glib/gfileutils.c:987
+#: ../glib/gfileutils.c:1005
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Produciuse un fallo ao escribir o ficheiro «%s»: fsync() fallou: %s"
 
-#: ../glib/gfileutils.c:1006
+#: ../glib/gfileutils.c:1025
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Produciuse un fallo ao pechar o ficheiro «%s»: fclose() fallou: %s"
 
-#: ../glib/gfileutils.c:1127
+#: ../glib/gfileutils.c:1146
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Non foi posíbel eliminar o ficheiro existente «%s»: g_unlink() fallou: %s"
 
-#: ../glib/gfileutils.c:1331
+#: ../glib/gfileutils.c:1350
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "O modelo «%s» non é válido, non debería conter «%s»"
 
-#: ../glib/gfileutils.c:1344
+#: ../glib/gfileutils.c:1363
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "O modelo «%s» non contén XXXXXX"
 
-#: ../glib/gfileutils.c:1777
+#: ../glib/gfileutils.c:1796
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gfileutils.c:1785
+#: ../glib/gfileutils.c:1804
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1790
+#: ../glib/gfileutils.c:1809
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1795
+#: ../glib/gfileutils.c:1814
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1800
+#: ../glib/gfileutils.c:1819
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:1805
+#: ../glib/gfileutils.c:1824
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:1810
+#: ../glib/gfileutils.c:1829
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#: ../glib/gfileutils.c:1853
+#: ../glib/gfileutils.c:1872
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Produciuse un fallo ao ler a ligazón simbólica «%s»: %s"
 
-#: ../glib/gfileutils.c:1874
+#: ../glib/gfileutils.c:1893
 msgid "Symbolic links not supported"
 msgstr "As ligazóns simbólicas non se admiten"
 
@@ -549,8 +549,8 @@ msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Non é posíbel facer unha lectura en bruto en g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1799 ../glib/giochannel.c:2057
-#: ../glib/giochannel.c:2144
+#: ../glib/giochannel.c:1799 ../glib/giochannel.c:2056
+#: ../glib/giochannel.c:2143
 msgid "Leftover unconverted data in read buffer"
 msgstr "Datos restantes non convertidos no búfer de lectura"
 
@@ -805,7 +805,7 @@ msgstr "alcanzouse o límite de \"backtracking\""
 msgid "the pattern contains items not supported for partial matching"
 msgstr "o patrón contén elementos non permitidos na coincidencia parcial"
 
-#: ../glib/gregex.c:211 ../gio/glocalfile.c:2109
+#: ../glib/gregex.c:211 ../gio/glocalfile.c:2111
 msgid "internal error"
 msgstr "erro interno"
 
@@ -1298,21 +1298,21 @@ msgstr "Argumento que falta para %s"
 msgid "Unknown option %s"
 msgstr "Opción %s descoñecida"
 
-#: ../glib/gkeyfile.c:362
+#: ../glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
 "Non é posíbel encontrar unha chave de ficheiro válida nos directorios de "
 "busca"
 
-#: ../glib/gkeyfile.c:397
+#: ../glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "Non é un ficheiro normal"
 
-#: ../glib/gkeyfile.c:405
+#: ../glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "O ficheiro está baleiro"
 
-#: ../glib/gkeyfile.c:764
+#: ../glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1320,50 +1320,50 @@ msgstr ""
 "O ficheiro chave contén a liña «%s» que non é un par valor-chave, grupo ou "
 "comentario"
 
-#: ../glib/gkeyfile.c:824
+#: ../glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nome de grupo non válido: %s"
 
-#: ../glib/gkeyfile.c:846
+#: ../glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "O ficheiro chave non comeza cun grupo"
 
-#: ../glib/gkeyfile.c:872
+#: ../glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nome de chave non válido: %s"
 
-#: ../glib/gkeyfile.c:899
+#: ../glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "O ficheiro chave contén unha codificación non permitida «%s»"
 
-#: ../glib/gkeyfile.c:1115 ../glib/gkeyfile.c:1277 ../glib/gkeyfile.c:2656
-#: ../glib/gkeyfile.c:2722 ../glib/gkeyfile.c:2857 ../glib/gkeyfile.c:2990
-#: ../glib/gkeyfile.c:3143 ../glib/gkeyfile.c:3330 ../glib/gkeyfile.c:3391
+#: ../glib/gkeyfile.c:1116 ../glib/gkeyfile.c:1278 ../glib/gkeyfile.c:2646
+#: ../glib/gkeyfile.c:2712 ../glib/gkeyfile.c:2847 ../glib/gkeyfile.c:2980
+#: ../glib/gkeyfile.c:3133 ../glib/gkeyfile.c:3320 ../glib/gkeyfile.c:3381
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "O ficheiro chave non ten un grupo «%s»"
 
-#: ../glib/gkeyfile.c:1289
+#: ../glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "O ficheiro chave non ten a chave «%s»"
 
-#: ../glib/gkeyfile.c:1396 ../glib/gkeyfile.c:1511
+#: ../glib/gkeyfile.c:1397 ../glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "O ficheiro chave contén a chave «%s» co valor «%s» que non é UTF-8"
 
-#: ../glib/gkeyfile.c:1416 ../glib/gkeyfile.c:1910
+#: ../glib/gkeyfile.c:1417 ../glib/gkeyfile.c:1900
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "O ficheiro chave contén a chave «%s» que ten un valor que non pode ser "
 "interpretado."
 
-#: ../glib/gkeyfile.c:1531
+#: ../glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -1371,7 +1371,7 @@ msgstr ""
 "O ficheiro chave contén a chave «%s» que ten un valor que non pode ser "
 "interpretado."
 
-#: ../glib/gkeyfile.c:2125 ../glib/gkeyfile.c:2487
+#: ../glib/gkeyfile.c:2115 ../glib/gkeyfile.c:2477
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1380,36 +1380,36 @@ msgstr ""
 "O ficheiro chave contén a chave «%s» no grupo «%s» que ten un valor que non "
 "pode ser interpretado."
 
-#: ../glib/gkeyfile.c:2671 ../glib/gkeyfile.c:2872 ../glib/gkeyfile.c:3402
+#: ../glib/gkeyfile.c:2661 ../glib/gkeyfile.c:2862 ../glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "O ficheiro chave non ten a chave «%s» no grupo «%s»"
 
-#: ../glib/gkeyfile.c:3636
+#: ../glib/gkeyfile.c:3626
 msgid "Key file contains escape character at end of line"
 msgstr "O ficheiro chave contén un carácter de escape ao final da liña"
 
-#: ../glib/gkeyfile.c:3658
+#: ../glib/gkeyfile.c:3648
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "O ficheiro chave contén a secuencia de escape non válida «%s»"
 
-#: ../glib/gkeyfile.c:3800
+#: ../glib/gkeyfile.c:3790
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Non é posíbel interpretar o valor «%s» como un número."
 
-#: ../glib/gkeyfile.c:3814
+#: ../glib/gkeyfile.c:3804
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "O valor enteiro «%s» está fóra do intervalo"
 
-#: ../glib/gkeyfile.c:3847
+#: ../glib/gkeyfile.c:3837
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Non é posíbel interpretar o valor «%s» como un número flotante."
 
-#: ../glib/gkeyfile.c:3871
+#: ../glib/gkeyfile.c:3861
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Non é posíbel interpretar o valor «%s» como un booleano."
@@ -1422,15 +1422,15 @@ msgstr "Non é posíbel interpretar o valor «%s» como un booleano."
 msgid "Too large count value passed to %s"
 msgstr "O valor de conta pasado a %s é demasiado longo"
 
-#: ../gio/gbufferedinputstream.c:880 ../gio/ginputstream.c:888
+#: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
 #: ../gio/giostream.c:306 ../gio/goutputstream.c:1197
 msgid "Stream is already closed"
 msgstr "O fluxo xa se pechou"
 
-#: ../gio/gcancellable.c:433 ../gio/gdbusconnection.c:1636
-#: ../gio/gdbusconnection.c:1725 ../gio/gdbusconnection.c:1911
-#: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:811
-#: ../gio/gsimpleasyncresult.c:837
+#: ../gio/gcancellable.c:433 ../gio/gdbusconnection.c:1637
+#: ../gio/gdbusconnection.c:1726 ../gio/gdbusconnection.c:1912
+#: ../gio/glocalfile.c:2104 ../gio/gsimpleasyncresult.c:810
+#: ../gio/gsimpleasyncresult.c:836
 msgid "Operation was cancelled"
 msgstr "A operación foi cancelada"
 
@@ -1619,7 +1619,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus de sesión (non está implementado "
 "para este SO)"
 
-#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6167
+#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6168
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1628,7 +1628,7 @@ msgstr ""
 "Non é posíbel determinar o enderezo do bus desde a variábel de contorno "
 "DBUS_STARTER_BUS_TYPE - valor descoñecido «%s»"
 
-#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6176
+#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6177
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1741,22 +1741,22 @@ msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Ademais, a liberación do bloqueo para «%s» tamén fallou: %s) "
 
 #: ../gio/gdbusconnection.c:1148 ../gio/gdbusconnection.c:1374
-#: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1736
+#: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1737
 msgid "The connection is closed"
 msgstr "O socket engadido está pechado"
 
-#: ../gio/gdbusconnection.c:1680
+#: ../gio/gdbusconnection.c:1681
 msgid "Timeout was reached"
 msgstr "Tempo de espera máximo alcanzado"
 
-#: ../gio/gdbusconnection.c:2299
+#: ../gio/gdbusconnection.c:2300
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Encontraronse bandeiras non compatíbeis ao construír a conexión da parte "
 "cliente"
 
-#: ../gio/gdbusconnection.c:3751 ../gio/gdbusconnection.c:4069
+#: ../gio/gdbusconnection.c:3752 ../gio/gdbusconnection.c:4070
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1764,68 +1764,68 @@ msgstr ""
 "Non existe a interface «org.freedesktop.DBus.Properties» no obxecto co "
 "camiño %s"
 
-#: ../gio/gdbusconnection.c:3823
+#: ../gio/gdbusconnection.c:3824
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Produciuse un erro ao estabelecer a propiedade «%s»: Esperábase o tipo «%s» "
 "pero obtívose «%s»"
 
-#: ../gio/gdbusconnection.c:3918
+#: ../gio/gdbusconnection.c:3919
 #, c-format
 msgid "No such property `%s'"
 msgstr "Non existe a propiedade «%s»"
 
-#: ../gio/gdbusconnection.c:3930
+#: ../gio/gdbusconnection.c:3931
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:3941
+#: ../gio/gdbusconnection.c:3942
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Non é posíbel escribir a chave %s"
 
-#: ../gio/gdbusconnection.c:4011 ../gio/gdbusconnection.c:5601
+#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5602
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Non existe a interface «%s»"
 
-#: ../gio/gdbusconnection.c:4199
+#: ../gio/gdbusconnection.c:4200
 msgid "No such interface"
 msgstr "Non existe a interface"
 
-#: ../gio/gdbusconnection.c:4415 ../gio/gdbusconnection.c:6117
+#: ../gio/gdbusconnection.c:4416 ../gio/gdbusconnection.c:6118
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Non existe a interface «%s» no obxecto co camiño %s"
 
-#: ../gio/gdbusconnection.c:4467
+#: ../gio/gdbusconnection.c:4468
 #, c-format
 msgid "No such method `%s'"
 msgstr "Non existe o método «%s»"
 
-#: ../gio/gdbusconnection.c:4498
+#: ../gio/gdbusconnection.c:4499
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "O tipo da mensaxe, «%s», non coincide co tipo «%s» esperado"
 
-#: ../gio/gdbusconnection.c:4717
+#: ../gio/gdbusconnection.c:4718
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Xa hai un obxecto exportado para a interface %s en %s"
 
-#: ../gio/gdbusconnection.c:4911
+#: ../gio/gdbusconnection.c:4912
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "O método «%s» devolveu un tipo «%s» máis esperábase «%s»"
 
-#: ../gio/gdbusconnection.c:5712
+#: ../gio/gdbusconnection.c:5713
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 
-#: ../gio/gdbusconnection.c:5830
+#: ../gio/gdbusconnection.c:5831
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
@@ -2012,13 +2012,13 @@ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr ""
 "O tipo do valor de retorno é incorrecto, obtívose «%s» e esperábase «%s»"
 
-#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:3023
-#: ../gio/gsocket.c:3104
+#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:3027
+#: ../gio/gsocket.c:3108
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Produciuse un erro ao enviar a mensaxe: %s"
 
-#: ../gio/gdbusprivate.c:1756
+#: ../gio/gdbusprivate.c:1768
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Non é posíbel ler /var/lib/dbus/machine-id: "
 
@@ -2237,36 +2237,36 @@ msgstr "Camiño do obxecto a monitorizar"
 msgid "Monitor a remote object."
 msgstr "Monitoriza un obxecto remoto."
 
-#: ../gio/gdesktopappinfo.c:471 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:480 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Sen nome"
 
-#: ../gio/gdesktopappinfo.c:755
+#: ../gio/gdesktopappinfo.c:764
 msgid "Desktop file didn't specify Exec field"
 msgstr "O ficheiro de escritorio non especificou o campo Exec"
 
-#: ../gio/gdesktopappinfo.c:948
+#: ../gio/gdesktopappinfo.c:1031
 msgid "Unable to find terminal required for application"
 msgstr "Non é posíbel encontrar o terminal requirido polo aplicativo"
 
-#: ../gio/gdesktopappinfo.c:1157
+#: ../gio/gdesktopappinfo.c:1323
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Non é posíbel crear o cartafol de configuración do aplicativo de usuario %s: "
 "%s"
 
-#: ../gio/gdesktopappinfo.c:1161
+#: ../gio/gdesktopappinfo.c:1327
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Non é posíbel crear o cartafol de configuración MIME %s do usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1569
+#: ../gio/gdesktopappinfo.c:1820
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Non é posíbel crear o ficheiro de escritorio %s do usuario"
 
-#: ../gio/gdesktopappinfo.c:1683
+#: ../gio/gdesktopappinfo.c:1936
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -2278,19 +2278,19 @@ msgstr "a unidade non implementa a expulsión"
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gdrive.c:443
+#: ../gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "a unidade non implementa a expulsión ou operación_de_expulsión"
 
-#: ../gio/gdrive.c:520
+#: ../gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
 msgstr "a unidade non implementa a consulta para medios"
 
-#: ../gio/gdrive.c:725
+#: ../gio/gdrive.c:728
 msgid "drive doesn't implement start"
 msgstr "a unidade non implementa o inicio"
 
-#: ../gio/gdrive.c:827
+#: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "a unidade non implementa a detención"
 
@@ -2305,31 +2305,31 @@ msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr ""
 "Número formado incorrectamente de tokens (%d) na codificación de GEmblem"
 
-#: ../gio/gemblemedicon.c:293
+#: ../gio/gemblemedicon.c:368
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "Non é posíbel manipular a versión %d da codificación de GEmblemedicon"
 
-#: ../gio/gemblemedicon.c:303
+#: ../gio/gemblemedicon.c:378
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr ""
 "Número formado incorrectamente de tokens (%d) na codificación de "
 "GEmblemedicon"
 
-#: ../gio/gemblemedicon.c:326
+#: ../gio/gemblemedicon.c:401
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Esperábase un GEmblem para o GEmblemedIcon"
 
-#: ../gio/gfile.c:872 ../gio/gfile.c:1102 ../gio/gfile.c:1237
-#: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
-#: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
-#: ../gio/gfile.c:1837 ../gio/gfile.c:3307 ../gio/gfile.c:3361
-#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3861
-#: ../gio/gfile.c:4263 ../gio/gfile.c:4349 ../gio/gfile.c:4438
-#: ../gio/gfile.c:4536 ../gio/gfile.c:4623 ../gio/gfile.c:4717
-#: ../gio/gfile.c:5038 ../gio/gfile.c:5305 ../gio/gfile.c:5370
-#: ../gio/gfile.c:6944 ../gio/gfile.c:7034 ../gio/gfile.c:7120
+#: ../gio/gfile.c:872 ../gio/gfile.c:1103 ../gio/gfile.c:1238
+#: ../gio/gfile.c:1475 ../gio/gfile.c:1529 ../gio/gfile.c:1586
+#: ../gio/gfile.c:1669 ../gio/gfile.c:1724 ../gio/gfile.c:1784
+#: ../gio/gfile.c:1838 ../gio/gfile.c:3308 ../gio/gfile.c:3362
+#: ../gio/gfile.c:3494 ../gio/gfile.c:3535 ../gio/gfile.c:3862
+#: ../gio/gfile.c:4264 ../gio/gfile.c:4350 ../gio/gfile.c:4439
+#: ../gio/gfile.c:4537 ../gio/gfile.c:4624 ../gio/gfile.c:4718
+#: ../gio/gfile.c:5039 ../gio/gfile.c:5306 ../gio/gfile.c:5371
+#: ../gio/gfile.c:6945 ../gio/gfile.c:7035 ../gio/gfile.c:7121
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operación non permitida"
@@ -2342,58 +2342,58 @@ msgstr "Operación non permitida"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1059 ../gio/glocalfile.c:1070
-#: ../gio/glocalfile.c:1083
+#: ../gio/gfile.c:1359 ../gio/glocalfile.c:1061 ../gio/glocalfile.c:1072
+#: ../gio/glocalfile.c:1085
 msgid "Containing mount does not exist"
 msgstr "O punto de montaxe contido non existe"
 
-#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2258
+#: ../gio/gfile.c:2412 ../gio/glocalfile.c:2260
 msgid "Can't copy over directory"
 msgstr "Non é posíbel copiar sobre o directorio"
 
-#: ../gio/gfile.c:2472
+#: ../gio/gfile.c:2473
 msgid "Can't copy directory over directory"
 msgstr "Non é posíbel copiar un directorio sobre o directorio"
 
-#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2267
+#: ../gio/gfile.c:2481 ../gio/glocalfile.c:2269
 msgid "Target file exists"
 msgstr "O ficheiro de destino xa existe"
 
-#: ../gio/gfile.c:2498
+#: ../gio/gfile.c:2499
 msgid "Can't recursively copy directory"
 msgstr "Non é posíbel copiar o directorio recursivamente"
 
-#: ../gio/gfile.c:2758
+#: ../gio/gfile.c:2759
 msgid "Splice not supported"
 msgstr "Non se admite a unión"
 
-#: ../gio/gfile.c:2762
+#: ../gio/gfile.c:2763
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Produciuse un erro ao empalmar o ficheiro: %s"
 
-#: ../gio/gfile.c:2909
+#: ../gio/gfile.c:2910
 msgid "Can't copy special file"
 msgstr "Non é posíbel copiar o ficheiro especial"
 
-#: ../gio/gfile.c:3483
+#: ../gio/gfile.c:3484
 msgid "Invalid symlink value given"
 msgstr "O valor da ligazón simbólica dada non é válido"
 
-#: ../gio/gfile.c:3577
+#: ../gio/gfile.c:3578
 msgid "Trash not supported"
 msgstr "Non se asiste o Lixo"
 
-#: ../gio/gfile.c:3626
+#: ../gio/gfile.c:3627
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Os nomes de ficheiro non poden conter '%c'"
 
-#: ../gio/gfile.c:6003 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6004 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "o volume non implementa o montado"
 
-#: ../gio/gfile.c:6114
+#: ../gio/gfile.c:6115
 msgid "No application is registered as handling this file"
 msgstr "Non hai ningún aplicativo rexistrado para manexar este ficheiro"
 
@@ -2790,110 +2790,110 @@ msgstr ""
 msgid "Invalid filename %s"
 msgstr "O nome do ficheiro non é válido %s"
 
-#: ../gio/glocalfile.c:967
+#: ../gio/glocalfile.c:969
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Produciuse un erro ao obter a información do sistema de ficheiros: %s"
 
-#: ../gio/glocalfile.c:1105
+#: ../gio/glocalfile.c:1107
 msgid "Can't rename root directory"
 msgstr "Non é posíbel renomear o directorio raíz"
 
-#: ../gio/glocalfile.c:1125 ../gio/glocalfile.c:1151
+#: ../gio/glocalfile.c:1127 ../gio/glocalfile.c:1153
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Produciuse un erro ao renomear o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1134
+#: ../gio/glocalfile.c:1136
 msgid "Can't rename file, filename already exist"
 msgstr "Non é posíbel renomear o ficheiro; o ficheiro xa existe"
 
-#: ../gio/glocalfile.c:1147 ../gio/glocalfile.c:2131 ../gio/glocalfile.c:2160
-#: ../gio/glocalfile.c:2320 ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfile.c:1149 ../gio/glocalfile.c:2133 ../gio/glocalfile.c:2162
+#: ../gio/glocalfile.c:2322 ../gio/glocalfileoutputstream.c:571
 #: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
 #: ../gio/glocalfileoutputstream.c:1151
 msgid "Invalid filename"
 msgstr "O nome do ficheiro non é válido"
 
-#: ../gio/glocalfile.c:1308
+#: ../gio/glocalfile.c:1310
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Produciuse un erro ao abrir o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1318
+#: ../gio/glocalfile.c:1320
 msgid "Can't open directory"
 msgstr "Non é posíbel abrir o directorio"
 
-#: ../gio/glocalfile.c:1443
+#: ../gio/glocalfile.c:1445
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Produciuse un erro ao eliminar o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1810
+#: ../gio/glocalfile.c:1812
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Produciuse un erro ao mover ao lixo o ficheiro: %s"
 
-#: ../gio/glocalfile.c:1833
+#: ../gio/glocalfile.c:1835
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Non é posíbel crear o directorio do lixo %s: %s"
 
-#: ../gio/glocalfile.c:1854
+#: ../gio/glocalfile.c:1856
 msgid "Unable to find toplevel directory for trash"
 msgstr "Non é posíbel encontrar o directorio de nivel superior para o lixo"
 
-#: ../gio/glocalfile.c:1933 ../gio/glocalfile.c:1953
+#: ../gio/glocalfile.c:1935 ../gio/glocalfile.c:1955
 msgid "Unable to find or create trash directory"
 msgstr "Non é posíbel encontrar ou crear o directorio do lixo"
 
-#: ../gio/glocalfile.c:1987
+#: ../gio/glocalfile.c:1989
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Non é posíbel crear a información de lixo para o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2016 ../gio/glocalfile.c:2021 ../gio/glocalfile.c:2101
-#: ../gio/glocalfile.c:2108
+#: ../gio/glocalfile.c:2018 ../gio/glocalfile.c:2023 ../gio/glocalfile.c:2103
+#: ../gio/glocalfile.c:2110
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Non é posíbel mover ao lixo o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2135
+#: ../gio/glocalfile.c:2137
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Produciuse un erro ao crear o directorio: %s"
 
-#: ../gio/glocalfile.c:2164
+#: ../gio/glocalfile.c:2166
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "O sistema de ficheiros non é compatíbel coas ligazóns simbólicas"
 
-#: ../gio/glocalfile.c:2168
+#: ../gio/glocalfile.c:2170
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Produciuse un erro ao crear a ligazón simbolica: %s"
 
-#: ../gio/glocalfile.c:2230 ../gio/glocalfile.c:2324
+#: ../gio/glocalfile.c:2232 ../gio/glocalfile.c:2326
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Produciuse un erro ao mover o ficheiro: %s"
 
-#: ../gio/glocalfile.c:2253
+#: ../gio/glocalfile.c:2255
 msgid "Can't move directory over directory"
 msgstr "Non é posíbel mover o directorio sobre un directorio"
 
-#: ../gio/glocalfile.c:2280 ../gio/glocalfileoutputstream.c:949
+#: ../gio/glocalfile.c:2282 ../gio/glocalfileoutputstream.c:949
 #: ../gio/glocalfileoutputstream.c:963 ../gio/glocalfileoutputstream.c:978
 #: ../gio/glocalfileoutputstream.c:994 ../gio/glocalfileoutputstream.c:1008
 msgid "Backup file creation failed"
 msgstr "Fallou a creación do ficheiro de seguranza"
 
-#: ../gio/glocalfile.c:2299
+#: ../gio/glocalfile.c:2301
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Produciuse un erro ao eliminar o ficheiro obxectivo: %s"
 
-#: ../gio/glocalfile.c:2313
+#: ../gio/glocalfile.c:2315
 msgid "Move between mounts not supported"
 msgstr "Non se permite mover entre puntos de montaxe"
 
@@ -3122,7 +3122,7 @@ msgstr "mount non implementa \"extraer\""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: ../gio/gmount.c:522
+#: ../gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
 "a montaxe non implementa o \"desmontado\" ou a \"operación_con_desmontado\""
@@ -3130,28 +3130,28 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gmount.c:609
+#: ../gio/gmount.c:611
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr "a montaxe non implementa a expulsión ou a \"operación_con_expulsión\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: ../gio/gmount.c:698
+#: ../gio/gmount.c:701
 msgid "mount doesn't implement \"remount\""
 msgstr "a montaxe non implementa a \"remontaxe\""
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:782
+#: ../gio/gmount.c:785
 msgid "mount doesn't implement content type guessing"
 msgstr "a montaxe non implementa a averiguación do tipo de contido"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:871
+#: ../gio/gmount.c:874
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "a montaxe non implementa a averiguación síncrona do tipo de contido"
 
@@ -3233,66 +3233,66 @@ msgstr "A ruta non debe conter dúas barras adxacentes (//)\n"
 msgid "No such key '%s'\n"
 msgstr "Non existe a chave «%s»\n"
 
-#: ../gio/gsettings-tool.c:427
+#: ../gio/gsettings-tool.c:429
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "O valor fornecido está fora do rango válido\n"
 
-#: ../gio/gsettings-tool.c:456
+#: ../gio/gsettings-tool.c:458
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Lista dos esquemas instalados (non reposicionábeis)"
 
-#: ../gio/gsettings-tool.c:462
+#: ../gio/gsettings-tool.c:464
 msgid "List the installed relocatable schemas"
 msgstr "Lista dos esquemas instalados reposicionábeis"
 
-#: ../gio/gsettings-tool.c:468
+#: ../gio/gsettings-tool.c:470
 msgid "Lists the keys in SCHEMA"
 msgstr "Lista das chaves en ESQUEMA"
 
-#: ../gio/gsettings-tool.c:469 ../gio/gsettings-tool.c:475
-#: ../gio/gsettings-tool.c:481
+#: ../gio/gsettings-tool.c:471 ../gio/gsettings-tool.c:477
+#: ../gio/gsettings-tool.c:483
 msgid "SCHEMA[:PATH]"
 msgstr "ESQUEMA[:RUTA]"
 
-#: ../gio/gsettings-tool.c:474
+#: ../gio/gsettings-tool.c:476
 msgid "Lists the children of SCHEMA"
 msgstr "Lista dos fillos de SCHEMA"
 
-#: ../gio/gsettings-tool.c:480
+#: ../gio/gsettings-tool.c:482
 msgid "List keys and values, recursively"
 msgstr "Lista das chaves e valores, recursivo"
 
-#: ../gio/gsettings-tool.c:486
+#: ../gio/gsettings-tool.c:488
 msgid "Gets the value of KEY"
 msgstr "Obtén o valor de CHAVE"
 
-#: ../gio/gsettings-tool.c:487 ../gio/gsettings-tool.c:493
-#: ../gio/gsettings-tool.c:505 ../gio/gsettings-tool.c:511
+#: ../gio/gsettings-tool.c:489 ../gio/gsettings-tool.c:495
+#: ../gio/gsettings-tool.c:507 ../gio/gsettings-tool.c:513
 msgid "SCHEMA[:PATH] KEY"
 msgstr "ESQUEMA[:RUTA] CHAVE"
 
-#: ../gio/gsettings-tool.c:492
+#: ../gio/gsettings-tool.c:494
 msgid "Queries the range of valid values for KEY"
 msgstr "Consulta o rango de valores válidos de CHAVE"
 
-#: ../gio/gsettings-tool.c:498
+#: ../gio/gsettings-tool.c:500
 msgid "Sets the value of KEY to VALUE"
 msgstr "Estabelece o valor de CHAVE a VALOR"
 
-#: ../gio/gsettings-tool.c:499
+#: ../gio/gsettings-tool.c:501
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "ESQUEMA[:RUTA] CHAVE VALOR"
 
-#: ../gio/gsettings-tool.c:504
+#: ../gio/gsettings-tool.c:506
 msgid "Resets KEY to its default value"
 msgstr "Estabelece a CHAVE ao seu valor predeterminado"
 
-#: ../gio/gsettings-tool.c:510
+#: ../gio/gsettings-tool.c:512
 msgid "Checks if KEY is writable"
 msgstr "Comproba se a CHAVE é escribíbel"
 
-#: ../gio/gsettings-tool.c:516
+#: ../gio/gsettings-tool.c:518
 msgid ""
 "Monitors KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3302,11 +3302,11 @@ msgstr ""
 "Se non se especifica a CHAVE, monitoriza todos os cambios en ESQUEMA.\n"
 "Use ^C para deter a monitorización.\n"
 
-#: ../gio/gsettings-tool.c:519
+#: ../gio/gsettings-tool.c:521
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ESQUEMA[:RUTA] [CHAVE]"
 
-#: ../gio/gsettings-tool.c:523
+#: ../gio/gsettings-tool.c:525
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -3315,7 +3315,7 @@ msgstr ""
 "Orde «%s» descoñecida\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:531
+#: ../gio/gsettings-tool.c:533
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3357,7 +3357,7 @@ msgstr ""
 "Use 'gsettings help ORDE' para obter axuda máis extensa.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:552
+#: ../gio/gsettings-tool.c:554
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3372,11 +3372,11 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:557
+#: ../gio/gsettings-tool.c:559
 msgid "Arguments:\n"
 msgstr "Argumentos:\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:563
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3384,19 +3384,19 @@ msgstr ""
 "  SCHEMA      O nome do esquema\n"
 "  KEY         A ruta, para os esquemas reposicionábeis\n"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:568
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       A chave (opcional) no esquema\n"
 
-#: ../gio/gsettings-tool.c:570
+#: ../gio/gsettings-tool.c:572
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       A chave nun esquema\n"
 
-#: ../gio/gsettings-tool.c:574
+#: ../gio/gsettings-tool.c:576
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     O valor a estabelecer\n"
 
-#: ../gio/gsettings-tool.c:650
+#: ../gio/gsettings-tool.c:652
 #, c-format
 msgid "Empty schema name given"
 msgstr "Forneceuse un nome de esquema baleiros"
@@ -3414,7 +3414,7 @@ msgstr "O socket non é correcto, a inicialización fallou debido a: %s"
 msgid "Socket is already closed"
 msgstr "O fluxo de orixe xa está pechado"
 
-#: ../gio/gsocket.c:300 ../gio/gsocket.c:2765 ../gio/gsocket.c:2809
+#: ../gio/gsocket.c:300 ../gio/gsocket.c:2769 ../gio/gsocket.c:2813
 msgid "Socket I/O timed out"
 msgstr "Tempo de espera do Socket de E/S superado"
 
@@ -3470,7 +3470,7 @@ msgstr "Conexión en marcha"
 msgid "Error connecting: %s"
 msgstr "Produciuse un erro ao conectar: %s"
 
-#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3528
+#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3532
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Non é posíbel obter o erro pendente: %s"
@@ -3490,35 +3490,35 @@ msgstr "Produciuse un erro ao enviar datos: %s"
 msgid "Error closing socket: %s"
 msgstr "Produciuse un erro ao pechar o socket: %s"
 
-#: ../gio/gsocket.c:2758
+#: ../gio/gsocket.c:2762
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Agardando pola situación do socket: %s"
 
-#: ../gio/gsocket.c:3048
+#: ../gio/gsocket.c:3052
 msgid "GSocketControlMessage not supported on windows"
 msgstr "O GSocketControlMessage non está permitido en windows"
 
-#: ../gio/gsocket.c:3307 ../gio/gsocket.c:3448
+#: ../gio/gsocket.c:3311 ../gio/gsocket.c:3452
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Produciuse un erro ao recibir a mensaxe: %s"
 
-#: ../gio/gsocket.c:3543
+#: ../gio/gsocket.c:3547
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials non está implementado para este sistema operativo"
 
-#: ../gio/gsocketclient.c:798 ../gio/gsocketclient.c:1364
+#: ../gio/gsocketclient.c:798 ../gio/gsocketclient.c:1368
 msgid "Unknown error on connect"
 msgstr "Erro descoñecido ao conectar"
 
-#: ../gio/gsocketclient.c:836 ../gio/gsocketclient.c:1248
+#: ../gio/gsocketclient.c:836 ../gio/gsocketclient.c:1252
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr ""
 "Non se permite a conexión ao proxy mediante unha conexión que non sexa TCP."
 
-#: ../gio/gsocketclient.c:858 ../gio/gsocketclient.c:1273
+#: ../gio/gsocketclient.c:858 ../gio/gsocketclient.c:1277
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Non é posíbel usar o proxy co protocolo «%s»"
@@ -3624,23 +3624,23 @@ msgid "SOCKSv5 proxy does not support provided address type."
 msgstr "O proxy SOCKSv5 non é compatíbel co tipo de enderezo fornecido."
 
 #: ../gio/gsocks5proxy.c:402
-msgid "Unkown SOCKSv5 proxy error."
-msgstr "Produciuse un erro no proxy SOCKSv5 descoñecido."
+msgid "Unknown SOCKSv5 proxy error."
+msgstr "Erro no proxy SOCKSv5 descoñecido."
 
 #: ../gio/gthemedicon.c:498
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Non é posíbel manipular a versión %d da codificación de GThemedIcon"
 
-#: ../gio/gtlscertificate.c:270
+#: ../gio/gtlscertificate.c:228
 msgid "No PEM-encoded certificate found"
 msgstr "Non se encontrou ningún certificado PEM codificado"
 
-#: ../gio/gtlscertificate.c:279
+#: ../gio/gtlscertificate.c:237
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Non foi posíbel analizar o certificado PEM codificado"
 
-#: ../gio/gtlscertificate.c:300
+#: ../gio/gtlscertificate.c:258
 msgid "Could not parse PEM-encoded private key"
 msgstr "Non foi posíbel analizar a chave privada PEM codificada"
 
@@ -3710,7 +3710,7 @@ msgstr "Produciuse un erro ao ler de unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Produciuse un erro ao pechar unix: %s"
 
-#: ../gio/gunixmounts.c:1846 ../gio/gunixmounts.c:1883
+#: ../gio/gunixmounts.c:1848 ../gio/gunixmounts.c:1885
 msgid "Filesystem root"
 msgstr "Raíz do sistema de ficheiros"
 
@@ -3733,7 +3733,7 @@ msgstr "o volume non implementa a expulsión"
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gvolume.c:487
+#: ../gio/gvolume.c:488
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "o volume non implementa a expulsión ou a operación_de_expulsión"
 

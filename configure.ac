@@ -22,7 +22,7 @@ m4_define(glib_configure_ac)
 #
 m4_define([glib_major_version], [2])
 m4_define([glib_minor_version], [27])
-m4_define([glib_micro_version], [5])
+m4_define([glib_micro_version], [91])
 m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
@@ -49,6 +49,7 @@ AC_INIT(glib, [glib_version],
 
 AC_CONFIG_HEADER([config.h])
 AC_CONFIG_SRCDIR([glib/glib.h])
+AC_CONFIG_MACRO_DIR([m4macros])
 
 # Save this value here, since automake will set cflags later
 cflags_set=${CFLAGS+set}
@@ -224,10 +225,6 @@ AC_ARG_ENABLE(rebuilds,
               [AC_HELP_STRING([--disable-rebuilds],
                               [disable all source autogeneration rules])],,
               [enable_rebuilds=yes])
-AC_ARG_ENABLE(visibility,
-              [AC_HELP_STRING([--disable-visibility],
-                              [don't use ELF visibility attributes])],,
-              [enable_visibility=yes])
 
 if test "x$enable_threads" != "xyes"; then
   enable_threads=no
@@ -294,10 +291,6 @@ else
   if test "x$enable_debug" = "xno"; then
     GLIB_DEBUG_FLAGS="$GLIB_DEBUG_FLAGS -DG_DISABLE_ASSERT -DG_DISABLE_CHECKS"
   fi
-fi
-
-if test "x$enable_visibility" = "xno"; then
-  GLIB_DEBUG_FLAGS="$GLIB_DEBUG_FLAGS -DDISABLE_VISIBILITY"
 fi
 
 # Ensure MSVC-compatible struct packing convention is used when

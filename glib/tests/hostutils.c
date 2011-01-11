@@ -19,6 +19,7 @@
 
 #include <glib/glib.h>
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -48,6 +49,23 @@ static const struct {
 };
 static const gint num_idn_test_domains = G_N_ELEMENTS (idn_test_domains);
 
+static const struct {
+  const gchar *orig_name, *ascii_name;
+  gboolean orig_is_unicode, ascii_is_encoded;
+} non_round_trip_names[] = {
+  /* uppercase characters */
+  { "EXAMPLE.COM", "example.com", FALSE, FALSE },
+  { "\xc3\x89XAMPLE.COM", "xn--xample-9ua.com", TRUE, TRUE },
+
+  /* unicode that decodes to ascii */
+  { "\xe2\x93\x94\xe2\x93\xa7\xe2\x93\x90\xe2\x93\x9c\xe2\x93\x9f\xe2\x93\x9b\xe2\x93\x94.com", "example.com", TRUE, FALSE },
+
+  /* non-standard dot characters */
+  { "example\xe3\x80\x82" "com", "example.com", TRUE, FALSE },
+  { "\xc3\xa9xample\xe3\x80\x82" "com", "xn--xample-9ua.com", TRUE, TRUE }
+};
+static const gint num_non_round_trip_names = G_N_ELEMENTS (non_round_trip_names);
+
 static const gchar *bad_names[] = {
   "disallowed\xef\xbf\xbd" "character",
   "non-utf\x88",
@@ -70,6 +88,27 @@ test_to_ascii (void)
 
       ascii = g_hostname_to_ascii (idn_test_domains[i].ascii_name);
       g_assert_cmpstr (idn_test_domains[i].ascii_name, ==, ascii);
+      g_free (ascii);
+    }
+
+  for (i = 0; i < num_non_round_trip_names; i++)
+    {
+      if (non_round_trip_names[i].orig_is_unicode)
+	g_assert (g_hostname_is_non_ascii (non_round_trip_names[i].orig_name));
+      else
+	g_assert (!g_hostname_is_non_ascii (non_round_trip_names[i].orig_name));
+
+      if (non_round_trip_names[i].ascii_is_encoded)
+	g_assert (g_hostname_is_ascii_encoded (non_round_trip_names[i].ascii_name));
+      else
+	g_assert (!g_hostname_is_ascii_encoded (non_round_trip_names[i].ascii_name));
+
+      ascii = g_hostname_to_ascii (non_round_trip_names[i].orig_name);
+      g_assert_cmpstr (non_round_trip_names[i].ascii_name, ==, ascii);
+      g_free (ascii);
+
+      ascii = g_hostname_to_ascii (non_round_trip_names[i].ascii_name);
+      g_assert_cmpstr (non_round_trip_names[i].ascii_name, ==, ascii);
       g_free (ascii);
     }
 
@@ -278,6 +317,28 @@ main (int   argc,
 {
   g_test_init (&argc, &argv, NULL);
   
+  if (argc == 2 && argv[1][0] != '-')
+    {
+      const gchar *hostname = argv[1];
+      gchar *converted;
+
+      if (g_hostname_is_non_ascii (hostname))
+	{
+	  converted = g_hostname_to_ascii (hostname);
+	  printf ("to_ascii: %s\n", converted);
+	  g_free (converted);
+	}
+      else if (g_hostname_is_ascii_encoded (hostname))
+	{
+	  converted = g_hostname_to_unicode (hostname);
+	  printf ("to_unicode: %s\n", converted);
+	  g_free (converted);
+	}
+      else
+	printf ("hostname is neither unicode nor ACE encoded\n");
+      return 0;
+    }
+
   g_test_add_func ("/hostutils/to_ascii", test_to_ascii);
   g_test_add_func ("/hostutils/to_unicode", test_to_unicode);
   g_test_add_func ("/hostutils/is_ip_addr", test_is_ip_addr);

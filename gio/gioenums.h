@@ -572,6 +572,27 @@ typedef enum {
 
 
 /**
+ * GIOStreamSpliceFlags:
+ * @G_IO_STREAM_SPLICE_NONE: Do not close either stream.
+ * @G_IO_STREAM_SPLICE_CLOSE_STREAM1: Close the first stream after
+ *     the splice.
+ * @G_IO_STREAM_SPLICE_CLOSE_STREAM2: Close the second stream after
+ *     the splice.
+ * @G_IO_STREAM_SPLICE_WAIT_FOR_BOTH: Wait for both splice operations to finish
+ *     before calling the callback.
+ *
+ * GIOStreamSpliceFlags determine how streams should be spliced.
+ *
+ * Since: 2.28
+ **/
+typedef enum {
+  G_IO_STREAM_SPLICE_NONE          = 0,
+  G_IO_STREAM_SPLICE_CLOSE_STREAM1 = (1 << 0),
+  G_IO_STREAM_SPLICE_CLOSE_STREAM2 = (1 << 1),
+  G_IO_STREAM_SPLICE_WAIT_FOR_BOTH = (1 << 2)
+} GIOStreamSpliceFlags;
+
+/**
  * GEmblemOrigin:
  * @G_EMBLEM_ORIGIN_UNKNOWN: Emblem of unknown origin
  * @G_EMBLEM_ORIGIN_DEVICE: Emblem adds device-specific information
@@ -1251,6 +1272,7 @@ typedef enum
 
 /**
  * GTlsError:
+ * @G_TLS_ERROR_UNAVAILABLE: No TLS provider is available
  * @G_TLS_ERROR_MISC: Miscellaneous TLS error
  * @G_TLS_ERROR_BAD_CERTIFICATE: A certificate could not be parsed
  * @G_TLS_ERROR_NOT_TLS: The TLS handshake failed because the
@@ -1259,7 +1281,7 @@ typedef enum
  *   peer's certificate was not acceptable.
  * @G_TLS_ERROR_CERTIFICATE_REQUIRED: The TLS handshake failed because
  *   the server requested a client-side certificate, but none was
- *   provided. See #GTlsConnection::need-certificate.
+ *   provided. See g_tls_connection_set_certificate().
  * @G_TLS_ERROR_EOF: The TLS connection was closed without proper
  *   notice, which may indicate an attack. See
  *   g_tls_connection_set_require_close_notify().
@@ -1270,6 +1292,7 @@ typedef enum
  * Since: 2.28
  */
 typedef enum {
+  G_TLS_ERROR_UNAVAILABLE,
   G_TLS_ERROR_MISC,
   G_TLS_ERROR_BAD_CERTIFICATE,
   G_TLS_ERROR_NOT_TLS,

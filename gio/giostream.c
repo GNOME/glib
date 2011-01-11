@@ -361,7 +361,7 @@ g_io_stream_real_close (GIOStream     *stream,
 /**
  * g_io_stream_close:
  * @stream: a #GIOStream
- * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it. This will also
@@ -454,9 +454,9 @@ async_ready_close_callback_wrapper (GObject      *source_object,
  * g_io_stream_close_async:
  * @stream: a #GIOStream
  * @io_priority: the io priority of the request
- * @callback: callback to call when the request is satisfied
- * @user_data: the data to pass to callback function
- * @cancellable: optional cancellable object
+ * @cancellable: (allow-none): optional cancellable object
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
  *
  * Requests an asynchronous close of the stream, releasing resources
  * related to it. When the operation is finished @callback will be
@@ -604,5 +604,257 @@ g_io_stream_real_close_finish (GIOStream     *stream,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (result);
   g_warn_if_fail (g_simple_async_result_get_source_tag (simple) ==
 		  g_io_stream_real_close_async);
+  return TRUE;
+}
+
+typedef struct
+{
+  GIOStream *stream1;
+  GIOStream *stream2;
+  GIOStreamSpliceFlags flags;
+  gint io_priority;
+  GCancellable *cancellable;
+  gulong cancelled_id;
+  GCancellable *op1_cancellable;
+  GCancellable *op2_cancellable;
+  guint completed;
+  GError *error;
+} SpliceContext;
+
+static void
+splice_context_free (SpliceContext *ctx)
+{
+  g_object_unref (ctx->stream1);
+  g_object_unref (ctx->stream2);
+  if (ctx->cancellable != NULL)
+    g_object_unref (ctx->cancellable);
+  g_object_unref (ctx->op1_cancellable);
+  g_object_unref (ctx->op2_cancellable);
+  g_clear_error (&ctx->error);
+  g_slice_free (SpliceContext, ctx);
+}
+
+static void
+splice_complete (GSimpleAsyncResult *simple,
+                 SpliceContext      *ctx)
+{
+  if (ctx->cancelled_id != 0)
+    g_cancellable_disconnect (ctx->cancellable, ctx->cancelled_id);
+  ctx->cancelled_id = 0;
+
+  if (ctx->error != NULL)
+    g_simple_async_result_set_from_error (simple, ctx->error);
+  g_simple_async_result_complete (simple);
+}
+
+static void
+splice_close_cb (GObject      *iostream,
+                 GAsyncResult *res,
+                 gpointer      user_data)
+{
+  GSimpleAsyncResult *simple = user_data;
+  SpliceContext *ctx;
+  GError *error = NULL;
+
+  g_io_stream_close_finish (G_IO_STREAM (iostream), res, &error);
+
+  ctx = g_simple_async_result_get_op_res_gpointer (simple);
+  ctx->completed++;
+
+  /* Keep the first error that occured */
+  if (error != NULL && ctx->error == NULL)
+    ctx->error = error;
+  else
+    g_clear_error (&error);
+
+  /* If all operations are done, complete now */
+  if (ctx->completed == 4)
+    splice_complete (simple, ctx);
+
+  g_object_unref (simple);
+}
+
+static void
+splice_cb (GObject      *ostream,
+           GAsyncResult *res,
+           gpointer      user_data)
+{
+  GSimpleAsyncResult *simple = user_data;
+  SpliceContext *ctx;
+  GError *error = NULL;
+
+  g_output_stream_splice_finish (G_OUTPUT_STREAM (ostream), res, &error);
+
+  ctx = g_simple_async_result_get_op_res_gpointer (simple);
+  ctx->completed++;
+
+  /* ignore cancellation error if it was not requested by the user */
+  if (error != NULL &&
+      g_error_matches (error, G_IO_ERROR, G_IO_ERROR_CANCELLED) &&
+      (ctx->cancellable == NULL ||
+       !g_cancellable_is_cancelled (ctx->cancellable)))
+    g_clear_error (&error);
+
+  /* Keep the first error that occured */
+  if (error != NULL && ctx->error == NULL)
+    ctx->error = error;
+  else
+    g_clear_error (&error);
+
+   if (ctx->completed == 1 &&
+       (ctx->flags & G_IO_STREAM_SPLICE_WAIT_FOR_BOTH) == 0)
+    {
+      /* We don't want to wait for the 2nd operation to finish, cancel it */
+      g_cancellable_cancel (ctx->op1_cancellable);
+      g_cancellable_cancel (ctx->op2_cancellable);
+    }
+  else if (ctx->completed == 2)
+    {
+      if (ctx->cancellable == NULL ||
+          !g_cancellable_is_cancelled (ctx->cancellable))
+        {
+          g_cancellable_reset (ctx->op1_cancellable);
+          g_cancellable_reset (ctx->op2_cancellable);
+        }
+
+      /* Close the IO streams if needed */
+      if ((ctx->flags & G_IO_STREAM_SPLICE_CLOSE_STREAM1) != 0)
+        g_io_stream_close_async (ctx->stream1, ctx->io_priority,
+            ctx->op1_cancellable, splice_close_cb, g_object_ref (simple));
+      else
+        ctx->completed++;
+
+      if ((ctx->flags & G_IO_STREAM_SPLICE_CLOSE_STREAM2) != 0)
+        g_io_stream_close_async (ctx->stream2, ctx->io_priority,
+            ctx->op2_cancellable, splice_close_cb, g_object_ref (simple));
+      else
+        ctx->completed++;
+
+      /* If all operations are done, complete now */
+      if (ctx->completed == 4)
+        splice_complete (simple, ctx);
+    }
+
+  g_object_unref (simple);
+}
+
+static void
+splice_cancelled_cb (GCancellable       *cancellable,
+                     GSimpleAsyncResult *simple)
+{
+  SpliceContext *ctx;
+
+  ctx = g_simple_async_result_get_op_res_gpointer (simple);
+  g_cancellable_cancel (ctx->op1_cancellable);
+  g_cancellable_cancel (ctx->op2_cancellable);
+}
+
+/**
+ * g_io_stream_splice_async:
+ * @stream1: a #GIOStream.
+ * @stream2: a #GIOStream.
+ * @flags: a set of #GIOStreamSpliceFlags.
+ * @io_priority: the io priority of the request.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): a #GAsyncReadyCallback.
+ * @user_data: (closure): user data passed to @callback.
+ *
+ * Asyncronously splice the output stream of @stream1 to the input stream of
+ * @stream2, and splice the output stream of @stream2 to the input stream of
+ * @stream1.
+ *
+ * When the operation is finished @callback will be called.
+ * You can then call g_io_stream_splice_finish() to get the
+ * result of the operation.
+ *
+ * Since: 2.28
+ **/
+void
+g_io_stream_splice_async (GIOStream            *stream1,
+                          GIOStream            *stream2,
+                          GIOStreamSpliceFlags  flags,
+                          gint                  io_priority,
+                          GCancellable         *cancellable,
+                          GAsyncReadyCallback   callback,
+                          gpointer              user_data)
+{
+  GSimpleAsyncResult *simple;
+  SpliceContext *ctx;
+  GInputStream *istream;
+  GOutputStream *ostream;
+
+  if (cancellable != NULL && g_cancellable_is_cancelled (cancellable))
+    {
+      g_simple_async_report_error_in_idle (NULL, callback,
+          user_data, G_IO_ERROR, G_IO_ERROR_CANCELLED,
+          "Operation has been cancelled");
+      return;
+    }
+
+  ctx = g_slice_new0 (SpliceContext);
+  ctx->stream1 = g_object_ref (stream1);
+  ctx->stream2 = g_object_ref (stream2);
+  ctx->flags = flags;
+  ctx->io_priority = io_priority;
+  ctx->op1_cancellable = g_cancellable_new ();
+  ctx->op2_cancellable = g_cancellable_new ();
+  ctx->completed = 0;
+
+  simple = g_simple_async_result_new (NULL, callback, user_data,
+      g_io_stream_splice_finish);
+  g_simple_async_result_set_op_res_gpointer (simple, ctx,
+      (GDestroyNotify) splice_context_free);
+
+  if (cancellable != NULL)
+    {
+      ctx->cancellable = g_object_ref (cancellable);
+      ctx->cancelled_id = g_cancellable_connect (cancellable,
+          G_CALLBACK (splice_cancelled_cb), g_object_ref (simple),
+          g_object_unref);
+    }
+
+  istream = g_io_stream_get_input_stream (stream1);
+  ostream = g_io_stream_get_output_stream (stream2);
+  g_output_stream_splice_async (ostream, istream, G_OUTPUT_STREAM_SPLICE_NONE,
+      io_priority, ctx->op1_cancellable, splice_cb,
+      g_object_ref (simple));
+
+  istream = g_io_stream_get_input_stream (stream2);
+  ostream = g_io_stream_get_output_stream (stream1);
+  g_output_stream_splice_async (ostream, istream, G_OUTPUT_STREAM_SPLICE_NONE,
+      io_priority, ctx->op2_cancellable, splice_cb,
+      g_object_ref (simple));
+
+  g_object_unref (simple);
+}
+
+/**
+ * g_io_stream_splice_finish:
+ * @result: a #GAsyncResult.
+ * @error: a #GError location to store the error occuring, or %NULL to
+ * ignore.
+ *
+ * Finishes an asynchronous io stream splice operation.
+ *
+ * Returns: %TRUE on success, %FALSE otherwise.
+ *
+ * Since: 2.28
+ **/
+gboolean
+g_io_stream_splice_finish (GAsyncResult  *result,
+                           GError       **error)
+{
+  GSimpleAsyncResult *simple;
+
+  g_return_val_if_fail (G_IS_SIMPLE_ASYNC_RESULT (result), FALSE);
+
+  simple = G_SIMPLE_ASYNC_RESULT (result);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return FALSE;
+
+  g_return_val_if_fail (g_simple_async_result_is_valid (result, NULL,
+      g_io_stream_splice_finish), FALSE);
+
   return TRUE;
 }

@@ -126,8 +126,12 @@ gboolean                g_settings_backend_can_remove                   (GSettin
                                                                          const gchar                    *id);
 
 G_GNUC_INTERNAL
-GSettingsBackend *      g_settings_backend_get_default                  (void);
-G_GNUC_INTERNAL
 void                    g_settings_backend_sync_default                 (void);
+
+G_GNUC_INTERNAL
+GType                   g_null_settings_backend_get_type                (void);
+
+G_GNUC_INTERNAL
+GType                   g_memory_settings_backend_get_type              (void);
 
 #endif  /* __G_SETTINGS_BACKEND_INTERNAL_H__ */

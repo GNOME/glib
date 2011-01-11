@@ -288,7 +288,7 @@ g_cancellable_new (void)
  * @cancellable: a #GCancellable object
  *
  * Pushes @cancellable onto the cancellable stack. The current
- * cancllable can then be recieved using g_cancellable_get_current().
+ * cancellable can then be recieved using g_cancellable_get_current().
  *
  * This is useful when implementing cancellable operations in
  * code that does not allow you to pass down the cancellable object.
@@ -852,7 +852,7 @@ static GSourceFuncs cancellable_source_funcs =
 };
 
 /**
- * g_cancellable_source_new:
+ * g_cancellable_source_new: (skip)
  * @cancellable: a #GCancellable, or %NULL
  *
  * Creates a source that triggers if @cancellable is cancelled and
@@ -863,7 +863,7 @@ static GSourceFuncs cancellable_source_funcs =
  * For convenience, you can call this with a %NULL #GCancellable,
  * in which case the source will never trigger.
  *
- * Return value: the new #GSource.
+ * Return value: (transfer full): the new #GSource.
  *
  * Since: 2.28
  */

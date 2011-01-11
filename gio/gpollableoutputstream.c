@@ -116,9 +116,9 @@ g_pollable_output_stream_is_writable (GPollableOutputStream *stream)
 }
 
 /**
- * g_pollable_output_stream_create_source:
+ * g_pollable_output_stream_create_source: (skip)
  * @stream: a #GPollableOutputStream.
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  *
  * Creates a #GSource that triggers when @stream can be written, or
  * @cancellable is triggered or an error occurs. The callback on the
@@ -129,7 +129,7 @@ g_pollable_output_stream_is_writable (GPollableOutputStream *stream)
  * triggers, so you should use g_pollable_output_stream_write_nonblocking()
  * rather than g_output_stream_write() from the callback.
  *
- * Returns: a new #GSource
+ * Returns: (transfer full): a new #GSource
  *
  * Since: 2.28
  */
@@ -163,9 +163,10 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
 /**
  * g_pollable_output_stream_write_nonblocking:
  * @stream: a #GPollableOutputStream
- * @buffer: a buffer to write data from
+ * @buffer: (array length=size) (element-type guint8): a buffer to write
+ *     data from
  * @size: the number of bytes you want to write
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Attempts to write up to @size bytes from @buffer to @stream, as
@@ -180,6 +181,7 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
  * may happen if you call this method after a source triggers due
  * to having been cancelled.
  *
+ * Virtual: write_nonblocking
  * Return value: the number of bytes written, or -1 on error (including
  *   %G_IO_ERROR_WOULD_BLOCK).
  */

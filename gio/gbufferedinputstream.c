@@ -360,7 +360,7 @@ g_buffered_input_stream_new_sized (GInputStream *base_stream,
  * g_buffered_input_stream_fill:
  * @stream: a #GBufferedInputStream
  * @count: the number of bytes that will be read from the stream
- * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Tries to read @count bytes from the stream into the buffer.
@@ -447,9 +447,9 @@ async_fill_callback_wrapper (GObject      *source_object,
  * @count: the number of bytes that will be read from the stream
  * @io_priority: the <link linkend="io-priority">I/O priority</link>
  *     of the request
- * @cancellable: optional #GCancellable object
- * @callback: a #GAsyncReadyCallback
- * @user_data: a #gpointer
+ * @cancellable: (allow-none): optional #GCancellable object
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): a #gpointer
  *
  * Reads data into @stream's buffer asynchronously, up to @count size.
  * @io_priority can be used to prioritize reads. For the synchronous
@@ -602,13 +602,14 @@ g_buffered_input_stream_peek (GBufferedInputStream *stream,
 /**
  * g_buffered_input_stream_peek_buffer:
  * @stream: a #GBufferedInputStream
- * @count: a #gsize to get the number of bytes available in the buffer
+ * @count: (out): a #gsize to get the number of bytes available in the buffer
  *
  * Returns the buffer with the currently available bytes. The returned
  * buffer must not be modified and will become invalid when reading from
  * the stream or filling the buffer.
  *
- * Returns: read-only buffer
+ * Returns: (array length=count) (element-type guint8) (transfer none):
+ *          read-only buffer
  */
 const void*
 g_buffered_input_stream_peek_buffer (GBufferedInputStream *stream,
@@ -839,7 +840,7 @@ g_buffered_input_stream_read (GInputStream *stream,
 /**
  * g_buffered_input_stream_read_byte:
  * @stream: a #GBufferedInputStream
- * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * Tries to read a single byte from the stream or the buffer. Will block

@@ -160,7 +160,7 @@ g_simple_action_group_set_state (GActionGroup *group,
   if (action == NULL)
     return;
 
-  return g_action_set_state (action, value);
+  g_action_set_state (action, value);
 }
 
 static void
@@ -176,7 +176,7 @@ g_simple_action_group_activate (GActionGroup *group,
   if (action == NULL)
     return;
 
-  return g_action_activate (action, parameter);
+  g_action_activate (action, parameter);
 }
 
 static void

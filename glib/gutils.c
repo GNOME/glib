@@ -68,6 +68,7 @@
 #include "gtestutils.h"
 #include "gunicode.h"
 #include "gstrfuncs.h"
+#include "garray.h"
 #include "glibintl.h"
 
 #ifdef G_PLATFORM_WIN32
@@ -3157,36 +3158,39 @@ explode_locale (const gchar *locale,
  *       but it is big, ugly, and complicated, so I'm reluctant
  *       to do so when this should handle 99% of the time...
  */
-GSList *
-_g_compute_locale_variants (const gchar *locale)
+static void
+append_locale_variants (GPtrArray *array,
+                        const gchar *locale)
 {
-  GSList *retval = NULL;
-
   gchar *language = NULL;
   gchar *territory = NULL;
   gchar *codeset = NULL;
   gchar *modifier = NULL;
 
   guint mask;
-  guint i;
+  guint i, j;
 
-  g_return_val_if_fail (locale != NULL, NULL);
+  g_return_if_fail (locale != NULL);
 
   mask = explode_locale (locale, &language, &territory, &codeset, &modifier);
 
   /* Iterate through all possible combinations, from least attractive
    * to most attractive.
    */
-  for (i = 0; i <= mask; i++)
-    if ((i & ~mask) == 0)
-      {
-	gchar *val = g_strconcat (language,
-				  (i & COMPONENT_TERRITORY) ? territory : "",
-				  (i & COMPONENT_CODESET) ? codeset : "",
-				  (i & COMPONENT_MODIFIER) ? modifier : "",
-				  NULL);
-	retval = g_slist_prepend (retval, val);
-      }
+  for (j = 0; j <= mask; ++j)
+    {
+      i = mask - j;
+
+      if ((i & ~mask) == 0)
+        {
+          gchar *val = g_strconcat (language,
+                                    (i & COMPONENT_TERRITORY) ? territory : "",
+                                    (i & COMPONENT_CODESET) ? codeset : "",
+                                    (i & COMPONENT_MODIFIER) ? modifier : "",
+                                    NULL);
+          g_ptr_array_add (array, val);
+        }
+    }
 
   g_free (language);
   if (mask & COMPONENT_CODESET)
@@ -3195,8 +3199,41 @@ _g_compute_locale_variants (const gchar *locale)
     g_free (territory);
   if (mask & COMPONENT_MODIFIER)
     g_free (modifier);
+}
 
-  return retval;
+/**
+ * g_get_locale_variants:
+ * @locale: a locale identifier
+ *
+ * Returns a list of derived variants of @locale, which can be used to
+ * e.g. construct locale-dependent filenames or search paths. The returned
+ * list is sorted from most desirable to least desirable.
+ * This function handles territory, charset and extra locale modifiers.
+ * 
+ * For example, if @locale is "fr_BE", then the returned list
+ * is "fr_BE", "fr".
+ *
+ * If you need the list of variants for the <emphasis>current locale</emphasis>,
+ * use g_get_language_names().
+ *
+ * Returns: (transfer full) (array zero-terminated="1") (element-type utf8): a newly
+ *   allocated array of newly allocated strings with the locale variants. Free with
+ *   g_strfreev().
+ *
+ * Since: 2.28
+ */
+gchar **
+g_get_locale_variants (const gchar *locale)
+{
+  GPtrArray *array;
+
+  g_return_val_if_fail (locale != NULL, NULL);
+
+  array = g_ptr_array_sized_new (8);
+  append_locale_variants (array, locale);
+  g_ptr_array_add (array, NULL);
+
+  return (gchar **) g_ptr_array_free (array, FALSE);
 }
 
 /* The following is (partly) taken from the gettext package.
@@ -3305,31 +3342,23 @@ g_get_language_names (void)
 
   if (!(cache->languages && strcmp (cache->languages, value) == 0))
     {
-      gchar **languages;
+      GPtrArray *array;
       gchar **alist, **a;
-      GSList *list, *l;
-      gint i;
 
       g_free (cache->languages);
       g_strfreev (cache->language_names);
       cache->languages = g_strdup (value);
 
+      array = g_ptr_array_sized_new (8);
+
       alist = g_strsplit (value, ":", 0);
-      list = NULL;
       for (a = alist; *a; a++)
-	{
-	  gchar *b = unalias_lang (*a);
-	  list = g_slist_concat (list, _g_compute_locale_variants (b));
-	}
+        append_locale_variants (array, unalias_lang (*a));
       g_strfreev (alist);
-      list = g_slist_append (list, g_strdup ("C"));
+      g_ptr_array_add (array, g_strdup ("C"));
+      g_ptr_array_add (array, NULL);
 
-      cache->language_names = languages = g_new (gchar *, g_slist_length (list) + 1);
-      for (l = list, i = 0; l; l = l->next, i++)
-	languages[i] = l->data;
-      languages[i] = NULL;
-
-      g_slist_free (list);
+      cache->language_names = (gchar **) g_ptr_array_free (array, FALSE);
     }
 
   return (G_CONST_RETURN gchar * G_CONST_RETURN *) cache->language_names;

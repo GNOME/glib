@@ -1075,15 +1075,16 @@ get_mount_points_timestamp (void)
 }
 
 /**
- * g_unix_mounts_get:
- * @time_read: (allow-none): guint64 to contain a timestamp, or %NULL
+ * g_unix_mounts_get: (skip)
+ * @time_read: (out) (allow-none): guint64 to contain a timestamp, or %NULL
  *
  * Gets a #GList of #GUnixMountEntry containing the unix mounts.
  * If @time_read is set, it will be filled with the mount
  * timestamp, allowing for checking if the mounts have changed
  * with g_unix_mounts_changed_since().
  *
- * Returns: (element-type utf8) (transfer full): a #GList of the UNIX mounts.
+ * Returns: (element-type GUnixMountEntry) (transfer full):
+ *     a #GList of the UNIX mounts.
  **/
 GList *
 g_unix_mounts_get (guint64 *time_read)
@@ -1095,15 +1096,15 @@ g_unix_mounts_get (guint64 *time_read)
 }
 
 /**
- * g_unix_mount_at:
+ * g_unix_mount_at: (skip)
  * @mount_path: path for a possible unix mount.
- * @time_read: guint64 to contain a timestamp.
+ * @time_read: (out) (allow-none): guint64 to contain a timestamp.
  * 
  * Gets a #GUnixMountEntry for a given mount path. If @time_read
  * is set, it will be filled with a unix timestamp for checking
  * if the mounts have changed since with g_unix_mounts_changed_since().
  * 
- * Returns: (transfer full): a #GUnixMount. 
+ * Returns: (transfer full): a #GUnixMountEntry.
  **/
 GUnixMountEntry *
 g_unix_mount_at (const char *mount_path,
@@ -1130,15 +1131,16 @@ g_unix_mount_at (const char *mount_path,
 }
 
 /**
- * g_unix_mount_points_get:
- * @time_read: (allow-none): guint64 to contain a timestamp.
+ * g_unix_mount_points_get: (skip)
+ * @time_read: (out) (allow-none): guint64 to contain a timestamp.
  *
  * Gets a #GList of #GUnixMountPoint containing the unix mount points.
  * If @time_read is set, it will be filled with the mount timestamp,
  * allowing for checking if the mounts have changed with
  * g_unix_mounts_points_changed_since().
  *
- * Returns: (element-type utf8) (transfer full): a #GList of the UNIX mountpoints.
+ * Returns: (element-type GUnixMountPoint) (transfer full):
+ *     a #GList of the UNIX mountpoints.
  **/
 GList *
 g_unix_mount_points_get (guint64 *time_read)

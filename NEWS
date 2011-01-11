@@ -1,3 +1,92 @@
+Overview of Changes from GLib 2.27.5 to 2.27.90
+===============================================
+
+* Test reports created by gtester-report can now
+  include revision information
+
+* The g_desktop_app_info_launch_* family of functions
+  now emit a DBus signal when an application is launched.
+  Additionally, there is a new variant
+  g_desktop_app_info_launch_uris_as_manager(), which
+  gives more control over the launched process.
+
+* The memory and null GSettings backends are now available
+  as public API
+
+* g_get_locale_variants() is a new function that returns a
+  list of variants of a locale identifier
+
+* Bugs fixed:
+ 587898 I/O timeouts for GSocket
+ 606960 gio: Add extension point for informing parties...
+ 631980 Handle an optional <revision> node in the report...
+ 634569 Document that g_variant_builder_add_value consumes...
+ 635998 Make _g_compute_locale_variants public
+ 636806 Add g_{memory,null}_settings_backend_get_default
+ 637262 Need a binary DER version of ::accepted-cas
+ 637544 Skip fsync() on btrfs
+ 637720 void functions should not return a value.
+ 637738 object_interface_check_properties never actually...
+ 637759 GIOChannel: fix a crash in g_io_channel_read_chars()
+ 637852 Updates to glib.vsprops file for MSVC 2008 builds...
+ 637858 Updates to test/testglib.c...
+ 638349 parameter name of g_variant_new_* may conflict...
+
+* Translation updates:
+ Hebrew
+ Norwegian bokmål
+ Simplified Chinese
+ Spanish
+ Swedish
+ Uyghur
+ Vietnamese
+
+
+Overview of Changes from GLib 2.27.4 to 2.27.5
+==============================================
+
+* Network support:
+ - Add g_tls_certificate_verify() to verify a certificate
+ - Add GTlsConnection:use-system-certdb
+ - Other TLS api additions
+
+* GIO:
+ - Add g_io_stream_splice_async()/_finish() to splice two iostreams
+ - Add g_emblemed_icon_clear_emblems() and make GEmblemedIcon derivable
+ - Remove GPeriodic; it did not receive the necessary review and
+   integration work to declare it stable
+
+* GSequence:
+ - New methods g_sequence_lookup() and g_sequence_lookup_iter()
+
+* Bugs fixed:
+ 617254 Missing g_sequence_lookup
+ 632544 g_dbus_connection_send_message can not send a locked message...
+ 633350 g_hostname_to_ascii() ignores non-ascii dots
+ 634583 Better error reporting for g_variant_parse()
+ 635007 gsetting enum rule don't work for out-of-srcdir builds
+ 635626 GDBus message idle can execute while flushes are pending
+ 636100 Can't read GSettings:backend property
+ 636305 Typo on g_queue_remove_all() function description
+ 636311 appinfo: tweak application positioning for content-types
+ 636351 g_simple_async_result_is_valid lacks a version tag
+ 636387 gdb autoload files shadow the "dir" builtin
+ 636673 g_simple_async_report_error_in_idle should allow object...
+ 637147 Add a "delay-apply" property to GSettings
+ 637171 emblemedicon: add g_emblemed_icon_clear_emblems()
+ 637237 gapplication: plug a memory leak
+
+* Translation updates:
+ Estonian
+ Galician
+ Hebrew
+ Norwegian bokmål
+ Simplified Chinese
+ Spanish
+ Traditional Chinese
+ Vietnamese
+
+
 Overview of Changes from GLib 2.27.3 to 2.27.4
 ==============================================
 

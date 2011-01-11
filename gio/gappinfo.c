@@ -308,6 +308,33 @@ g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
   return (* iface->set_as_default_for_type) (appinfo, content_type, error);
 }
 
+/**
+ * g_app_info_set_as_last_used_for_type:
+ * @appinfo: a #GAppInfo.
+ * @content_type: the content type.
+ * @error: a #GError.
+ * 
+ * Sets the application as the last used application for a given type.
+ * This will make the application appear as first in the list returned by
+ * #g_app_info_get_recommended_for_type, regardless of the default application
+ * for that content type.
+ *
+ * Returns: %TRUE on success, %FALSE on error.
+ **/
+gboolean
+g_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
+                                      const char  *content_type,
+                                      GError     **error)
+{
+  GAppInfoIface *iface;
+  
+  g_return_val_if_fail (G_IS_APP_INFO (appinfo), FALSE);
+  g_return_val_if_fail (content_type != NULL, FALSE);
+
+  iface = G_APP_INFO_GET_IFACE (appinfo);
+
+  return (* iface->set_as_last_used_for_type) (appinfo, content_type, error);
+}
 
 /**
  * g_app_info_set_as_default_for_extension:
@@ -548,7 +575,7 @@ g_app_info_supports_files (GAppInfo *appinfo)
 /**
  * g_app_info_launch_uris:
  * @appinfo: a #GAppInfo
- * @uris: (element-type char*): a #GList containing URIs to launch.
+ * @uris: (element-type utf8): a #GList containing URIs to launch.
  * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
@@ -605,7 +632,7 @@ g_app_info_should_show (GAppInfo *appinfo)
 /**
  * g_app_info_launch_default_for_uri:
  * @uri: the uri to show
- * @launch_context: an optional #GAppLaunchContext.
+ * @launch_context: (allow-none): an optional #GAppLaunchContext.
  * @error: a #GError.
  *
  * Utility function that launches the default application

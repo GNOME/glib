@@ -161,7 +161,7 @@ g_unix_fd_list_new (void)
 
 /**
  * g_unix_fd_list_new_from_array:
- * @fds: the initial list of file descriptors
+ * @fds: (array length=n_fds): the initial list of file descriptors
  * @n_fds: the length of #fds, or -1
  *
  * Creates a new #GUnixFDList containing the file descriptors given in
@@ -201,7 +201,8 @@ g_unix_fd_list_new_from_array (const gint *fds,
 /**
  * g_unix_fd_list_steal_fds:
  * @list: a #GUnixFDList
- * @length: pointer to the length of the returned array, or %NULL
+ * @length: (out) (allow-none): pointer to the length of the returned
+ *     array, or %NULL
  *
  * Returns the array of file descriptors that is contained in this
  * object.
@@ -222,7 +223,8 @@ g_unix_fd_list_new_from_array (const gint *fds,
  * This function never returns %NULL. In case there are no file
  * descriptors contained in @list, an empty array is returned.
  *
- * Returns: an array of file descriptors
+ * Returns: (array length=length) (transfer full): an array of file
+ *     descriptors
  *
  * Since: 2.24
  */
@@ -255,7 +257,8 @@ g_unix_fd_list_steal_fds (GUnixFDList *list,
 /**
  * g_unix_fd_list_peek_fds:
  * @list: a #GUnixFDList
- * @length: pointer to the length of the returned array, or %NULL
+ * @length: (out) (allow-none): pointer to the length of the returned
+ *     array, or %NULL
  *
  * Returns the array of file descriptors that is contained in this
  * object.
@@ -271,7 +274,8 @@ g_unix_fd_list_steal_fds (GUnixFDList *list,
  * This function never returns %NULL. In case there are no file
  * descriptors contained in @list, an empty array is returned.
  *
- * Returns: an array of file descriptors
+ * Returns: (array length=length) (transfer none): an array of file
+ *     descriptors
  *
  * Since: 2.24
  */

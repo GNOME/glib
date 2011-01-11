@@ -58,8 +58,6 @@ struct _GTlsConnectionClass
   GIOStreamClass parent_class;
 
   /* signals */
-  GTlsCertificate * ( *need_certificate)   (GTlsConnection       *connection);
-
   gboolean          ( *accept_certificate) (GTlsConnection       *connection,
 					    GTlsCertificate      *peer_cert,
 					    GTlsCertificateFlags  errors);
@@ -83,34 +81,39 @@ struct _GTlsConnectionClass
   gpointer padding[8];
 };
 
-GType                g_tls_connection_get_type                 (void) G_GNUC_CONST;
+GType                 g_tls_connection_get_type                    (void) G_GNUC_CONST;
 
-void                 g_tls_connection_set_certificate          (GTlsConnection       *conn,
-								GTlsCertificate      *certificate);
-GTlsCertificate     *g_tls_connection_get_certificate          (GTlsConnection       *conn);
+void                  g_tls_connection_set_use_system_certdb       (GTlsConnection       *conn,
+								    gboolean              use_system_certdb);
+gboolean              g_tls_connection_get_use_system_certdb       (GTlsConnection       *conn);
 
-GTlsCertificate     *g_tls_connection_get_peer_certificate     (GTlsConnection       *conn);
+void                  g_tls_connection_set_certificate             (GTlsConnection       *conn,
+								    GTlsCertificate      *certificate);
+GTlsCertificate      *g_tls_connection_get_certificate             (GTlsConnection       *conn);
 
-void                 g_tls_connection_set_require_close_notify (GTlsConnection       *conn,
-								gboolean              require_close_notify);
-gboolean             g_tls_connection_get_require_close_notify (GTlsConnection       *conn);
+GTlsCertificate      *g_tls_connection_get_peer_certificate        (GTlsConnection       *conn);
+GTlsCertificateFlags  g_tls_connection_get_peer_certificate_errors (GTlsConnection       *conn);
 
-void                 g_tls_connection_set_rehandshake_mode     (GTlsConnection       *conn,
-								GTlsRehandshakeMode   mode);
-GTlsRehandshakeMode  g_tls_connection_get_rehandshake_mode     (GTlsConnection       *conn);
+void                  g_tls_connection_set_require_close_notify    (GTlsConnection       *conn,
+								    gboolean              require_close_notify);
+gboolean              g_tls_connection_get_require_close_notify    (GTlsConnection       *conn);
 
-gboolean             g_tls_connection_handshake                (GTlsConnection       *conn,
-								GCancellable         *cancellable,
-								GError              **error);
+void                  g_tls_connection_set_rehandshake_mode        (GTlsConnection       *conn,
+								    GTlsRehandshakeMode   mode);
+GTlsRehandshakeMode   g_tls_connection_get_rehandshake_mode        (GTlsConnection       *conn);
 
-void                 g_tls_connection_handshake_async          (GTlsConnection       *conn,
-								int                   io_priority,
-								GCancellable         *cancellable,
-								GAsyncReadyCallback   callback,
-								gpointer              user_data);
-gboolean             g_tls_connection_handshake_finish         (GTlsConnection       *conn,
-								GAsyncResult         *result,
-								GError              **error);
+gboolean              g_tls_connection_handshake                   (GTlsConnection       *conn,
+								    GCancellable         *cancellable,
+								    GError              **error);
+
+void                  g_tls_connection_handshake_async             (GTlsConnection       *conn,
+								    int                   io_priority,
+								    GCancellable         *cancellable,
+								    GAsyncReadyCallback   callback,
+								    gpointer              user_data);
+gboolean              g_tls_connection_handshake_finish            (GTlsConnection       *conn,
+								    GAsyncResult         *result,
+								    GError              **error);
 
 /**
  * G_TLS_ERROR:
@@ -124,13 +127,9 @@ GQuark g_tls_error_quark (void);
 
 
 /*< protected >*/
-GTlsCertificate     *g_tls_connection_emit_need_certificate    (GTlsConnection       *conn);
-gboolean             g_tls_connection_emit_accept_certificate  (GTlsConnection       *conn,
-								GTlsCertificate      *peer_cert,
-								GTlsCertificateFlags  errors);
-
-void                 g_tls_connection_set_peer_certificate     (GTlsConnection       *conn,
-								GTlsCertificate      *certificate);
+gboolean              g_tls_connection_emit_accept_certificate     (GTlsConnection       *conn,
+								    GTlsCertificate      *peer_cert,
+								    GTlsCertificateFlags  errors);
 
 G_END_DECLS
 

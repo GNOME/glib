@@ -99,6 +99,14 @@ GSequenceIter *g_sequence_search_iter        (GSequence                *seq,
                                               gpointer                  data,
                                               GSequenceIterCompareFunc  iter_cmp,
                                               gpointer                  cmp_data);
+GSequenceIter *g_sequence_lookup             (GSequence                *seq,
+                                              gpointer                  data,
+                                              GCompareDataFunc          cmp_func,
+                                              gpointer                  cmp_data);
+GSequenceIter *g_sequence_lookup_iter        (GSequence                *seq,
+                                              gpointer                  data,
+                                              GSequenceIterCompareFunc  iter_cmp,
+                                              gpointer                  cmp_data);
 
 
 /* Dereferencing */

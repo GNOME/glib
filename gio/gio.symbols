@@ -84,6 +84,7 @@ g_app_info_launch_uris
 g_app_info_should_show
 g_app_info_set_as_default_for_type
 g_app_info_set_as_default_for_extension
+g_app_info_set_as_last_used_for_type
 g_app_info_add_supports_type
 g_app_info_can_remove_supports_type
 g_app_info_remove_supports_type
@@ -130,11 +131,12 @@ g_desktop_app_info_new_from_filename
 g_desktop_app_info_new_from_keyfile
 g_desktop_app_info_new
 g_desktop_app_info_get_filename
-g_desktop_app_info_get_type G_GNUC_CONST
 g_desktop_app_info_get_is_hidden
-g_desktop_app_info_set_desktop_env
+g_desktop_app_info_get_type G_GNUC_CONST
+g_desktop_app_info_launch_uris_as_manager
 g_desktop_app_info_lookup_get_type G_GNUC_CONST
 g_desktop_app_info_lookup_get_default_for_uri_scheme
+g_desktop_app_info_set_desktop_env
 #endif
 #endif
 #endif
@@ -663,6 +665,8 @@ g_io_stream_is_closed
 g_io_stream_has_pending
 g_io_stream_set_pending
 g_io_stream_clear_pending
+g_io_stream_splice_async
+g_io_stream_splice_finish
 #endif
 #endif
 
@@ -1033,6 +1037,7 @@ g_file_query_info_flags_get_type G_GNUC_CONST
 g_file_type_get_type G_GNUC_CONST
 g_filesystem_preview_type_get_type G_GNUC_CONST
 g_io_error_enum_get_type G_GNUC_CONST
+g_io_stream_splice_flags_get_type G_GNUC_CONST
 g_mount_mount_flags_get_type G_GNUC_CONST
 g_mount_operation_result_get_type G_GNUC_CONST
 g_drive_start_flags_get_type G_GNUC_CONST
@@ -1081,6 +1086,7 @@ g_emblemed_icon_new
 g_emblemed_icon_get_icon
 g_emblemed_icon_get_emblems
 g_emblemed_icon_add_emblem
+g_emblemed_icon_clear_emblems
 #endif
 #endif
 
@@ -1539,12 +1545,19 @@ g_settings_backend_path_changed
 g_settings_backend_path_writable_changed
 g_settings_backend_writable_changed
 g_settings_backend_changed_tree
-#endif
+g_settings_backend_get_default
 #endif
 
-#if IN_HEADER(__G_SETTINGS_BACKEND_H__)
 #if IN_FILE(__G_KEYFILE_SETTINGS_BACKEND_C__)
 g_keyfile_settings_backend_new
+#endif
+
+#if IN_FILE(__G_MEMORY_SETTINGS_BACKEND_C__)
+g_memory_settings_backend_new
+#endif
+
+#if IN_FILE(__G_NULL_SETTINGS_BACKEND_C__)
+g_null_settings_backend_new
 #endif
 #endif
 
@@ -1971,21 +1984,6 @@ g_simple_action_set_enabled
 #endif
 #endif
 
-#if IN_HEADER(__G_PERIODIC_H__)
-#if IN_FILE(__G_PERIODIC_C__)
-g_periodic_block
-g_periodic_damaged
-g_periodic_get_hz
-g_periodic_get_high_priority
-g_periodic_get_low_priority
-g_periodic_get_type
-g_periodic_new
-g_periodic_add
-g_periodic_remove
-g_periodic_unblock
-#endif
-#endif
-
 #if IN_HEADER(__G_POLLABLE_INPUT_STREAM_H__)
 #if IN_FILE(__G_POLLABLE_INPUT_STREAM_C__)
 g_pollable_input_stream_get_type G_GNUC_CONST
@@ -2036,25 +2034,27 @@ g_tls_certificate_list_new_from_file
 g_tls_certificate_new_from_file
 g_tls_certificate_new_from_files
 g_tls_certificate_new_from_pem
+g_tls_certificate_verify
 #endif
 #endif
 
 #if IN_HEADER(__G_TLS_CONNECTION_H__)
 #if IN_FILE(__G_TLS_CONNECTION_C__)
 g_tls_connection_emit_accept_certificate
-g_tls_connection_emit_need_certificate
 g_tls_connection_get_certificate
 g_tls_connection_get_peer_certificate
+g_tls_connection_get_peer_certificate_errors
 g_tls_connection_get_rehandshake_mode
 g_tls_connection_get_require_close_notify
+g_tls_connection_get_use_system_certdb
 g_tls_connection_get_type G_GNUC_CONST
 g_tls_connection_handshake
 g_tls_connection_handshake_async
 g_tls_connection_handshake_finish
 g_tls_connection_set_certificate
-g_tls_connection_set_peer_certificate
 g_tls_connection_set_rehandshake_mode
 g_tls_connection_set_require_close_notify
+g_tls_connection_set_use_system_certdb
 #endif
 #endif
 

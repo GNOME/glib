@@ -402,7 +402,7 @@ g_boxed_free (GType    boxed_type,
  *
  * Get the contents of a %G_TYPE_BOXED derived #GValue.
  *
- * Returns: boxed contents of @value
+ * Returns: (transfer none): boxed contents of @value
  */
 gpointer
 g_value_get_boxed (const GValue *value)
@@ -414,7 +414,7 @@ g_value_get_boxed (const GValue *value)
 }
 
 /**
- * g_value_dup_boxed:
+ * g_value_dup_boxed: (skip)
  * @value: a valid #GValue of %G_TYPE_BOXED derived type
  *
  * Get the contents of a %G_TYPE_BOXED derived #GValue.  Upon getting,

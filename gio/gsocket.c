@@ -1479,7 +1479,7 @@ g_socket_speaks_ipv4 (GSocket *socket)
 /**
  * g_socket_accept:
  * @socket: a #GSocket.
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Accept incoming connections on a connection-based socket. This removes
@@ -1591,7 +1591,7 @@ g_socket_accept (GSocket       *socket,
  * g_socket_connect:
  * @socket: a #GSocket.
  * @address: a #GSocketAddress specifying the remote address.
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Connect the socket to the specified remote address.
@@ -1737,7 +1737,7 @@ g_socket_check_connect_result (GSocket  *socket,
  * @buffer: a buffer to read data into (which should be at least @size
  *     bytes long).
  * @size: the number of bytes you want to read from the socket
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Receive data (up to @size bytes) from a socket. This is mainly used by
@@ -1786,7 +1786,7 @@ g_socket_receive (GSocket       *socket,
  *     bytes long).
  * @size: the number of bytes you want to read from the socket
  * @blocking: whether to do blocking or non-blocking I/O
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * This behaves exactly the same as g_socket_receive(), except that
@@ -1864,7 +1864,7 @@ g_socket_receive_with_blocking (GSocket       *socket,
  * @buffer: a buffer to read data into (which should be at least @size
  *     bytes long).
  * @size: the number of bytes you want to read from the socket
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Receive data (up to @size bytes) from a socket.
@@ -1913,9 +1913,9 @@ g_socket_receive_from (GSocket         *socket,
 /**
  * g_socket_send:
  * @socket: a #GSocket
- * @buffer: the buffer containing the data to send.
+ * @buffer: (array length=size): the buffer containing the data to send.
  * @size: the number of bytes to send
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Tries to send @size bytes from @buffer on the socket. This is
@@ -1953,10 +1953,10 @@ g_socket_send (GSocket       *socket,
 /**
  * g_socket_send_with_blocking:
  * @socket: a #GSocket
- * @buffer: the buffer containing the data to send.
+ * @buffer: (array length=size): the buffer containing the data to send.
  * @size: the number of bytes to send
  * @blocking: whether to do blocking or non-blocking I/O
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * This behaves exactly the same as g_socket_send(), except that
@@ -2032,9 +2032,9 @@ g_socket_send_with_blocking (GSocket       *socket,
  * g_socket_send_to:
  * @socket: a #GSocket
  * @address: a #GSocketAddress, or %NULL
- * @buffer: the buffer containing the data to send.
+ * @buffer: (array length=size): the buffer containing the data to send.
  * @size: the number of bytes to send
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Tries to send @size bytes from @buffer to @address. If @address is
@@ -2468,6 +2468,10 @@ socket_source_dispatch (GSource     *source,
   GSocketSourceFunc func = (GSocketSourceFunc)callback;
   GSocketSource *socket_source = (GSocketSource *)source;
 
+#ifdef G_OS_WIN32
+  socket_source->pollfd.revents = update_condition (socket_source->socket);
+#endif
+
   return (*func) (socket_source->socket,
 		  socket_source->pollfd.revents & socket_source->condition,
 		  user_data);
@@ -2588,10 +2592,10 @@ socket_source_new (GSocket      *socket,
 }
 
 /**
- * g_socket_create_source:
+ * g_socket_create_source: (skip)
  * @socket: a #GSocket
  * @condition: a #GIOCondition mask to monitor
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  *
  * Creates a %GSource that can be attached to a %GMainContext to monitor
  * for the availibility of the specified @condition on the socket.
@@ -2692,7 +2696,7 @@ g_socket_condition_check (GSocket      *socket,
  * g_socket_condition_wait:
  * @socket: a #GSocket
  * @condition: a #GIOCondition mask to wait for
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a #GError pointer, or %NULL
  *
  * Waits for @condition to become true on @socket. When the condition
@@ -2819,13 +2823,13 @@ g_socket_condition_wait (GSocket       *socket,
  * g_socket_send_message:
  * @socket: a #GSocket
  * @address: a #GSocketAddress, or %NULL
- * @vectors: an array of #GOutputVector structs
+ * @vectors: (array length=num_vectors): an array of #GOutputVector structs
  * @num_vectors: the number of elements in @vectors, or -1
- * @messages: a pointer to an array of #GSocketControlMessages, or
- *   %NULL.
+ * @messages: (array length=num_messages) (allow-none): a pointer to an
+ *   array of #GSocketControlMessages, or %NULL.
  * @num_messages: number of elements in @messages, or -1.
  * @flags: an int containing #GSocketMsgFlags flags
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Send data to @address on @socket.  This is the most complicated and
@@ -3117,14 +3121,14 @@ g_socket_send_message (GSocket                *socket,
  * g_socket_receive_message:
  * @socket: a #GSocket
  * @address: a pointer to a #GSocketAddress pointer, or %NULL
- * @vectors: an array of #GInputVector structs
+ * @vectors: (array length=num_vectors): an array of #GInputVector structs
  * @num_vectors: the number of elements in @vectors, or -1
- * @messages: a pointer which may be filled with an array of
- *     #GSocketControlMessages, or %NULL
+ * @messages: (array length=num_messages) (allow-none): a pointer which
+ *    may be filled with an array of #GSocketControlMessages, or %NULL
  * @num_messages: a pointer which will be filled with the number of
  *    elements in @messages, or %NULL
  * @flags: a pointer to an int containing #GSocketMsgFlags flags
- * @cancellable: a %GCancellable or %NULL
+ * @cancellable: (allow-none): a %GCancellable or %NULL
  * @error: a #GError pointer, or %NULL
  *
  * Receive data from a socket.  This is the most complicated and

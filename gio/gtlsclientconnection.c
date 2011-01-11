@@ -38,8 +38,6 @@
  *
  * #GTlsClientConnection is the client-side subclass of
  * #GTlsConnection, representing a client-side TLS connection.
- *
- * Since: 2.28
  */
 
 /**
@@ -131,18 +129,19 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
    * A list of the distinguished names of the Certificate Authorities
    * that the server will accept client certificates signed by. If the
    * server requests a client certificate during the handshake, then
-   * this property will be set by the time the
-   * #GTlsConnection::need-certificate signal is emitted.
+   * this property will be set after the handshake completes.
+   *
+   * Each item in the list is a #GByteArray which contains the complete
+   * subject DN of the certificate authority.
    *
    * Since: 2.28
    */
   g_object_interface_install_property (iface,
-				       g_param_spec_boxed ("accepted-cas",
-							   P_("Accepted CAs"),
-							   P_("Distinguished names of the CAs the server accepts certificates from"),
-							   G_TYPE_STRV,
-							   G_PARAM_READABLE |
-							   G_PARAM_STATIC_STRINGS));
+				       g_param_spec_pointer ("accepted-cas",
+							     P_("Accepted CAs"),
+							     P_("Distinguished names of the CAs the server accepts certificates from"),
+							     G_PARAM_READABLE |
+							     G_PARAM_STATIC_STRINGS));
 }
 
 /**
@@ -159,7 +158,7 @@ g_tls_client_connection_default_init (GTlsClientConnectionInterface *iface)
  *
  * Since: 2.28
  */
-GTlsClientConnection *
+GIOStream *
 g_tls_client_connection_new (GIOStream           *base_io_stream,
 			     GSocketConnectable  *server_identity,
 			     GError             **error)
@@ -173,7 +172,7 @@ g_tls_client_connection_new (GIOStream           *base_io_stream,
 			 "base-io-stream", base_io_stream,
 			 "server-identity", server_identity,
 			 NULL);
-  return G_TLS_CLIENT_CONNECTION (conn);
+  return G_IO_STREAM (conn);
 }
 
 /**
@@ -200,10 +199,11 @@ g_tls_client_connection_get_validation_flags (GTlsClientConnection *conn)
 /**
  * g_tls_client_connection_set_validation_flags:
  * @conn: the #GTlsClientConnection
- * @flags: the #GTlsCertificatelags to use
+ * @flags: the #GTlsCertificateFlags to use
  *
  * Sets @conn's validation flags, to override the default set of
- * checks performed when validating a server certificate.
+ * checks performed when validating a server certificate. By default,
+ * %G_TLS_CERTIFICATE_VALIDATE_ALL is used.
  *
  * Since: 2.28
  */
@@ -316,15 +316,19 @@ g_tls_client_connection_set_use_ssl3 (GTlsClientConnection *conn,
  * during the TLS handshake if the server requests a certificate.
  * Otherwise, it will be %NULL.
  *
- * Return value: (transfer full) (array zero-terminated=1): the list
- * of CA names, which you must free (eg, with g_strfreev()).
+ * Each item in the list is a #GByteArray which contains the complete
+ * subject DN of the certificate authority.
+ *
+ * Return value: (element-type GByteArray) (transfer full): the list of
+ * CA DNs. You should unref each element with g_byte_array_unref() and then
+ * the free the list with g_list_free().
  *
  * Since: 2.28
  */
-char **
+GList *
 g_tls_client_connection_get_accepted_cas (GTlsClientConnection *conn)
 {
-  char **accepted_cas = NULL;
+  GList *accepted_cas = NULL;
 
   g_return_val_if_fail (G_IS_TLS_CLIENT_CONNECTION (conn), NULL);
 

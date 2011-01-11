@@ -112,7 +112,7 @@ g_file_input_stream_init (GFileInputStream *stream)
  * g_file_input_stream_query_info:
  * @stream: a #GFileInputStream.
  * @attributes: a file attribute query string.
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
  * @error: a #GError location to store the error occuring, or %NULL to 
  * ignore.
  *
@@ -180,9 +180,9 @@ async_ready_callback_wrapper (GObject      *source_object,
  * @attributes: a file attribute query string.
  * @io_priority: the <link linkend="io-priority">I/O priority</link> 
  *     of the request.
- * @cancellable: optional #GCancellable object, %NULL to ignore. 
- * @callback: callback to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
+ * @callback: (scope async): callback to call when the request is satisfied
+ * @user_data: (closure): the data to pass to callback function
  * 
  * Queries the stream information asynchronously.
  * When the operation is finished @callback will be called. 

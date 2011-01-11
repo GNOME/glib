@@ -2357,6 +2357,8 @@ main (int argc, char *argv[])
   TEST_SPLIT_SIMPLE3(",\\s*", "a, b, c", "a", "b", "c");
   TEST_SPLIT_SIMPLE3("(,)\\s*", "a,b", "a", ",", "b");
   TEST_SPLIT_SIMPLE3("(,)\\s*", "a, b", "a", ",", "b");
+  TEST_SPLIT_SIMPLE2("\\s", "ab c", "ab", "c");
+  TEST_SPLIT_SIMPLE3("\\s*", "ab c", "a", "b", "c");
   /* Not matched sub-strings. */
   TEST_SPLIT_SIMPLE2("a|(b)", "xay", "x", "y");
   TEST_SPLIT_SIMPLE3("a|(b)", "xby", "x", "b", "y");

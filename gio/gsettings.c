@@ -223,6 +223,7 @@ enum
   PROP_BACKEND,
   PROP_PATH,
   PROP_HAS_UNAPPLIED,
+  PROP_DELAY_APPLY
 };
 
 enum
@@ -448,6 +449,10 @@ g_settings_get_property (GObject    *object,
       g_value_set_boolean (value, g_settings_get_has_unapplied (settings));
       break;
 
+     case PROP_DELAY_APPLY:
+      g_value_set_boolean (value, settings->priv->delayed != NULL);
+      break;
+
      default:
       g_assert_not_reached ();
     }
@@ -567,7 +572,8 @@ g_settings_class_init (GSettingsClass *class)
   /**
    * GSettings::change-event:
    * @settings: the object on which the signal was emitted
-   * @keys: an array of #GQuark<!-- -->s for the changed keys, or %NULL
+   * @keys: (array length=n_keys) (element-type GQuark) (allow-none):
+   *        an array of #GQuark<!-- -->s for the changed keys, or %NULL
    * @n_keys: the length of the @keys array, or 0
    * @returns: %TRUE to stop other handlers from being invoked for the
    *           event. FALSE to propagate the event further.
@@ -612,7 +618,7 @@ g_settings_class_init (GSettingsClass *class)
   g_settings_signals[SIGNAL_WRITABLE_CHANGED] =
     g_signal_new ("writable-changed", G_TYPE_SETTINGS,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
-                  G_STRUCT_OFFSET (GSettingsClass, changed),
+                  G_STRUCT_OFFSET (GSettingsClass, writable_changed),
                   NULL, NULL, g_cclosure_marshal_VOID__STRING, G_TYPE_NONE,
                   1, G_TYPE_STRING | G_SIGNAL_TYPE_STATIC_SCOPE);
 
@@ -701,6 +707,20 @@ g_settings_class_init (GSettingsClass *class)
                            FALSE,
                            G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
+   /**
+    * GSettings:delay-apply:
+    *
+    * Whether the #GSettings object is in 'delay-apply' mode. See
+    * g_settings_delay() for details.
+    *
+    * Since: 2.28
+    */
+   g_object_class_install_property (object_class, PROP_DELAY_APPLY,
+     g_param_spec_boolean ("delay-apply",
+                           P_("Delay-apply mode"),
+                           P_("Whether this settings object is in 'delay-apply' mode"),
+                           FALSE,
+                           G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 }
 
 /* Construction (new, new_with_path, etc.) {{{1 */
@@ -1588,8 +1608,8 @@ g_settings_set (GSettings   *settings,
  * g_settings_get_mapped:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @mapping: the function to map the value in the settings database to
- *           the value used by the application
+ * @mapping: (scope call): the function to map the value in the
+ *           settings database to the value used by the application
  * @user_data: user data for @mapping
  * @returns: (transfer full): the result, which may be %NULL
  *
@@ -1887,15 +1907,14 @@ g_settings_set_boolean (GSettings  *settings,
  * g_settings_get_strv:
  * @settings: a #GSettings object
  * @key: the key to get the value for
- * @returns: a newly-allocated, %NULL-terminated array of strings
+ * @returns: (array zero-terminated=1) (transfer full): a
+ * newly-allocated, %NULL-terminated array of strings, the value that
+ * is stored at @key in @settings.
  *
  * A convenience variant of g_settings_get() for string arrays.
  *
  * It is a programmer error to give a @key that isn't specified as
  * having an array of strings type in the schema for @settings.
- *
- * Returns: (array zero-terminated=1) (transfer full): the value that is
- * stored at @key in @settings.
  *
  * Since: 2.26
  */
@@ -1976,6 +1995,8 @@ g_settings_delay (GSettings *settings)
   g_settings_backend_watch (settings->priv->backend,
                             &listener_vtable, G_OBJECT (settings),
                             settings->priv->main_context);
+
+  g_object_notify (G_OBJECT (settings), "delay-apply");
 }
 
 /**
@@ -2119,7 +2140,7 @@ g_settings_is_writable (GSettings   *settings,
  * @returns: (transfer full): a 'child' settings object
  *
  * Creates a 'child' settings object which has a base path of
- * <replaceable>base-path</replaceable>/@name", where
+ * <replaceable>base-path</replaceable>/@name, where
  * <replaceable>base-path</replaceable> is the base path of @settings.
  *
  * The schema for the child settings object must have been declared
@@ -2558,7 +2579,7 @@ g_settings_bind_invert_boolean_set_mapping (const GValue       *value,
  * g_settings_bind:
  * @settings: a #GSettings object
  * @key: the key to bind
- * @object: a #GObject
+ * @object: (type GObject.Object): a #GObject
  * @property: the name of the property to bind
  * @flags: flags for the binding
  *
@@ -2609,10 +2630,10 @@ g_settings_bind (GSettings          *settings,
 }
 
 /**
- * g_settings_bind_with_mapping:
+ * g_settings_bind_with_mapping: (skip)
  * @settings: a #GSettings object
  * @key: the key to bind
- * @object: a #GObject
+ * @object: (type GObject.Object): a #GObject
  * @property: the name of the property to bind
  * @flags: flags for the binding
  * @get_mapping: a function that gets called to convert values
@@ -2825,7 +2846,7 @@ g_settings_binding_writable_changed (GSettings   *settings,
  * g_settings_bind_writable:
  * @settings: a #GSettings object
  * @key: the key to bind
- * @object: a #GObject
+ * @object: (type GObject.Object):a #GObject
  * @property: the name of a boolean property to bind
  * @inverted: whether to 'invert' the value
  *

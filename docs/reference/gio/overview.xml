@@ -247,14 +247,13 @@
     </formalpara>
 
     <formalpara>
-      <title><envar>GIO_USE_URI_ASSOCIATION</envar></title>
+      <title><envar>GIO_USE_TLS</envar></title>
 
       <para>
-        This variable can be set to the name of a #GDesktopAppInfoLookup
+        This variable can be set to the name of a #GTlsBackend
         implementation to override the default for debugging purposes.
-        GIO does not include a #GDesktopAppInfoLookup implementation,
-        the GConf-based implementation in the gvfs module has the name
-        "gconf".
+        GIO does not include a #GTlsBackend implementation, the gnutls-based
+        implementation in the glib-networking module has the name "gnutls".
       </para>
     </formalpara>
 

@@ -723,7 +723,7 @@ g_socket_client_class_init (GSocketClientClass *class)
  * g_socket_client_connect:
  * @client: a #GSocketClient.
  * @connectable: a #GSocketConnectable specifying the remote address.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
  * Tries to resolve the @connectable and make a network connection to it..
@@ -864,15 +864,16 @@ g_socket_client_connect (GSocketClient       *client,
 
       if (connection && client->priv->tls)
 	{
-	  GTlsClientConnection *tlsconn;
+	  GIOStream *tlsconn;
 
 	  tlsconn = g_tls_client_connection_new (connection, connectable, &last_error);
 	  g_object_unref (connection);
-	  connection = (GIOStream *)tlsconn;
+	  connection = tlsconn;
 
 	  if (tlsconn)
 	    {
-	      g_tls_client_connection_set_validation_flags (tlsconn, client->priv->tls_validation_flags);
+	      g_tls_client_connection_set_validation_flags (G_TLS_CLIENT_CONNECTION (tlsconn),
+                                                            client->priv->tls_validation_flags);
 	      if (!g_tls_connection_handshake (G_TLS_CONNECTION (tlsconn),
 					       cancellable, &last_error))
 		{
@@ -904,7 +905,7 @@ g_socket_client_connect (GSocketClient       *client,
  * @client: a #GSocketClient
  * @host_and_port: the name and optionally port of the host to connect to
  * @default_port: the default port to connect to
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
  *
  * This is a helper function for g_socket_client_connect().
@@ -968,7 +969,7 @@ g_socket_client_connect_to_host (GSocketClient  *client,
  * @client: a #GSocketConnection
  * @domain: a domain name
  * @service: the name of the service to connect to
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
  * @returns: (transfer full): a #GSocketConnection if successful, or %NULL on error
  *
@@ -1010,7 +1011,7 @@ g_socket_client_connect_to_service (GSocketClient  *client,
  * @client: a #GSocketClient
  * @uri: A network URI
  * @default_port: the default port to connect to
- * @cancellable: a #GCancellable, or %NULL
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @error: a pointer to a #GError, or %NULL
  *
  * This is a helper function for g_socket_client_connect().
@@ -1019,7 +1020,9 @@ g_socket_client_connect_to_service (GSocketClient  *client,
  *
  * @uri may be any valid URI containing an "authority" (hostname/port)
  * component. If a port is not specified in the URI, @default_port
- * will be used.
+ * will be used. TLS will be negotiated if #GSocketClient:tls is %TRUE.
+ * (#GSocketClient does not know to automatically assume TLS for
+ * certain URI schemes.)
  *
  * Using this rather than g_socket_client_connect() or
  * g_socket_client_connect_to_host() allows #GSocketClient to
@@ -1166,7 +1169,7 @@ g_socket_client_tls_handshake_callback (GObject      *object,
 static void
 g_socket_client_tls_handshake (GSocketClientAsyncConnectData *data)
 {
-  GTlsClientConnection *tlsconn;
+  GIOStream *tlsconn;
 
   if (!data->client->priv->tls)
     {
@@ -1179,7 +1182,8 @@ g_socket_client_tls_handshake (GSocketClientAsyncConnectData *data)
 					 &data->last_error);
   if (tlsconn)
     {
-      g_tls_client_connection_set_validation_flags (tlsconn, data->client->priv->tls_validation_flags);
+      g_tls_client_connection_set_validation_flags (G_TLS_CLIENT_CONNECTION (tlsconn),
+                                                    data->client->priv->tls_validation_flags);
       g_tls_connection_handshake_async (G_TLS_CONNECTION (tlsconn),
 					G_PRIORITY_DEFAULT,
 					data->cancellable,
@@ -1418,9 +1422,9 @@ g_socket_client_enumerator_callback (GObject      *object,
  * g_socket_client_connect_async:
  * @client: a #GTcpClient
  * @connectable: a #GSocketConnectable specifying the remote address.
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect().
  *
@@ -1467,9 +1471,9 @@ g_socket_client_connect_async (GSocketClient       *client,
  * @client: a #GTcpClient
  * @host_and_port: the name and optionally the port of the host to connect to
  * @default_port: the default port to connect to
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect_to_host().
  *
@@ -1512,9 +1516,9 @@ g_socket_client_connect_to_host_async (GSocketClient        *client,
  * @client: a #GSocketClient
  * @domain: a domain name
  * @service: the name of the service to connect to
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of
  * g_socket_client_connect_to_service().
@@ -1543,9 +1547,9 @@ g_socket_client_connect_to_service_async (GSocketClient       *client,
  * @client: a #GSocketClient
  * @uri: a network uri
  * @default_port: the default port to connect to
- * @cancellable: a #GCancellable, or %NULL
- * @callback: a #GAsyncReadyCallback
- * @user_data: user data for the callback
+ * @cancellable: (allow-none): a #GCancellable, or %NULL
+ * @callback: (scope async): a #GAsyncReadyCallback
+ * @user_data: (closure): user data for the callback
  *
  * This is the asynchronous version of g_socket_client_connect_to_uri().
  *

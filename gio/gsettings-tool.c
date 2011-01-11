@@ -408,7 +408,9 @@ gsettings_set (GSettings   *settings,
    * To handle this case, try to parse again with an extra level
    * of quotes.
    */
-  if (new == NULL && strstr (error->message, "unknown keyword"))
+  if (new == NULL &&
+      g_error_matches (error, G_VARIANT_PARSE_ERROR,
+                       G_VARIANT_PARSE_ERROR_UNKNOWN_KEYWORD))
     {
       value = freeme = g_strdup_printf ("\"%s\"", value);
       new = g_variant_parse (type, value, NULL, NULL, NULL);

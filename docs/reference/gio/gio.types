@@ -74,7 +74,6 @@ g_network_service_get_type
 g_output_stream_get_type
 g_output_stream_splice_flags_get_type
 g_password_save_get_type
-g_periodic_get_type
 g_permission_get_type
 g_pollable_input_stream_get_type
 g_pollable_output_stream_get_type

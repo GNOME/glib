@@ -133,6 +133,11 @@ static GSequenceNode *node_get_next      (GSequenceNode            *node);
 static gint           node_get_pos       (GSequenceNode            *node);
 static GSequenceNode *node_get_by_pos    (GSequenceNode            *node,
                                           gint                      pos);
+static GSequenceNode *node_find          (GSequenceNode            *haystack,
+                                          GSequenceNode            *needle,
+                                          GSequenceNode            *end,
+                                          GSequenceIterCompareFunc  cmp,
+                                          gpointer                  user_data);
 static GSequenceNode *node_find_closest  (GSequenceNode            *haystack,
                                           GSequenceNode            *needle,
                                           GSequenceNode            *end,
@@ -756,6 +761,9 @@ g_sequence_sort_changed (GSequenceIter    *iter,
  * Returns an iterator pointing to the position where @data would
  * be inserted according to @cmp_func and @cmp_data.
  *
+ * If you are simply searching for an existing element of the sequence,
+ * consider using g_sequence_lookup().
+ *
  * Return value: an #GSequenceIter pointing to the position where @data
  * would have been inserted according to @cmp_func and @cmp_data.
  *
@@ -777,6 +785,46 @@ g_sequence_search (GSequence        *seq,
   check_seq_access (seq);
 
   return g_sequence_search_iter (seq, data, iter_compare, &info);
+}
+
+/**
+ * g_sequence_lookup:
+ * @seq: a #GSequence
+ * @data: data to lookup
+ * @cmp_func: the #GCompareDataFunc used to compare items in the sequence. It
+ *     is called with two items of the @seq and @user_data. It should
+ *     return 0 if the items are equal, a negative value if the first
+ *     item comes before the second, and a positive value if the second
+ *     item comes before the first.
+ * @cmp_data: user data passed to @cmp_func.
+ *
+ * Returns an iterator pointing to the position of the first item found
+ * equal to @data according to @cmp_func and @cmp_data. If more than one item
+ * is equal, it is not guaranteed that it is the first which is returned.
+ * In that case, you can use g_sequence_iter_next() and g_sequence_iter_prev()
+ * to get others.
+ *
+ * Return value: an #GSequenceIter pointing to the position of the first item
+ * found equal to @data according to @cmp_func and @cmp_data.
+ *
+ * Since: 2.26
+ **/
+GSequenceIter *
+g_sequence_lookup (GSequence *seq,
+                   gpointer data,
+                   GCompareDataFunc cmp_func,
+                   gpointer cmp_data)
+{
+  SortInfo info;
+
+  g_return_val_if_fail (seq != NULL, NULL);
+
+  info.cmp_func = cmp_func;
+  info.cmp_data = cmp_data;
+  info.end_node = seq->end_node;
+  check_seq_access (seq);
+
+  return g_sequence_lookup_iter (seq, data, iter_compare, &info);
 }
 
 /**
@@ -970,6 +1018,9 @@ g_sequence_insert_sorted_iter (GSequence                *seq,
  * a #GSequenceIterCompareFunc instead of a #GCompareDataFunc as
  * the compare function.
  *
+ * If you are simply searching for an existing element of the sequence,
+ * consider using g_sequence_lookup_iter().
+ *
  * Return value: a #GSequenceIter pointing to the position in @seq
  * where @data would have been inserted according to @iter_cmp and @cmp_data.
  *
@@ -998,6 +1049,57 @@ g_sequence_search_iter (GSequence                *seq,
 
   node = node_find_closest (seq->end_node, dummy,
                             seq->end_node, iter_cmp, cmp_data);
+
+  g_sequence_free (tmp_seq);
+
+  seq->access_prohibited = FALSE;
+
+  return node;
+}
+
+/**
+ * g_sequence_lookup_iter:
+ * @seq: a #GSequence
+ * @data: data to lookup
+ * @iter_cmp: the #GSequenceIterCompare function used to compare iterators
+ *     in the sequence. It is called with two iterators pointing into @seq.
+ *     It should return 0 if the iterators are equal, a negative value if the
+ *     first iterator comes before the second, and a positive value if the
+ *     second iterator comes before the first.
+ * @cmp_data: user data passed to @iter_cmp
+ *
+ * Like g_sequence_lookup(), but uses
+ * a #GSequenceIterCompareFunc instead of a #GCompareDataFunc as
+ * the compare function.
+ *
+ * Return value: an #GSequenceIter pointing to the position of the first item
+ * found equal to @data according to @cmp_func and @cmp_data.
+ *
+ * Since: 2.26
+ **/
+GSequenceIter *
+g_sequence_lookup_iter (GSequence *seq,
+                        gpointer data,
+                        GSequenceIterCompareFunc iter_cmp,
+                        gpointer cmp_data)
+{
+  GSequenceNode *node;
+  GSequenceNode *dummy;
+  GSequence *tmp_seq;
+
+  g_return_val_if_fail (seq != NULL, NULL);
+
+  check_seq_access (seq);
+
+  seq->access_prohibited = TRUE;
+
+  tmp_seq = g_sequence_new (NULL);
+  tmp_seq->real_sequence = seq;
+
+  dummy = g_sequence_append (tmp_seq, data);
+
+  node = node_find (seq->end_node, dummy,
+                    seq->end_node, iter_cmp, cmp_data);
 
   g_sequence_free (tmp_seq);
 
@@ -1549,6 +1651,40 @@ node_get_by_pos (GSequenceNode *node,
 }
 
 static GSequenceNode *
+node_find (GSequenceNode            *haystack,
+           GSequenceNode            *needle,
+           GSequenceNode            *end,
+           GSequenceIterCompareFunc  iter_cmp,
+           gpointer                  cmp_data)
+{
+  gint c;
+
+  haystack = find_root (haystack);
+
+  do
+    {
+      /* iter_cmp can't be passed the end node, since the function may
+       * be user-supplied
+       */
+      if (haystack == end)
+        c = 1;
+      else
+        c = iter_cmp (haystack, needle, cmp_data);
+
+      if (c == 0)
+        break;
+
+      if (c > 0)
+        haystack = haystack->left;
+      else
+        haystack = haystack->right;
+    }
+  while (haystack != NULL);
+
+  return haystack;
+}
+
+static GSequenceNode *
 node_find_closest (GSequenceNode            *haystack,
                    GSequenceNode            *needle,
                    GSequenceNode            *end,
@@ -1572,7 +1708,7 @@ node_find_closest (GSequenceNode            *haystack,
       else
         c = iter_cmp (haystack, needle, cmp_data);
 
-      /* In the following we don't break even if c == 0. Instaed we go on
+      /* In the following we don't break even if c == 0. Instead we go on
        * searching along the 'bigger' nodes, so that we find the last one
        * that is equal to the needle.
        */

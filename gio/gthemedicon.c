@@ -275,7 +275,7 @@ g_themed_icon_new (const char *iconname)
 
 /**
  * g_themed_icon_new_from_names:
- * @iconnames: an array of strings containing icon names.
+ * @iconnames: (array length=len): an array of strings containing icon names.
  * @len: the length of the @iconnames array, or -1 if @iconnames is 
  *     %NULL-terminated
  * 

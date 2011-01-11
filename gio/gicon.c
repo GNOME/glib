@@ -397,8 +397,8 @@ ensure_builtin_icon_types (void)
  * implementations you need to ensure that each #GType is registered
  * with the type system prior to calling g_icon_new_for_string().
  *
- * Returns: An object implementing the #GIcon interface or %NULL if
- * @error is set.
+ * Returns: (transfer full): An object implementing the #GIcon
+ *          interface or %NULL if @error is set.
  *
  * Since: 2.20
  **/

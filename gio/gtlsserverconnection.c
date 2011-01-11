@@ -78,7 +78,7 @@ g_tls_server_connection_default_init (GTlsServerConnectionInterface *iface)
  *
  * Since: 2.28
  */
-GTlsServerConnection *
+GIOStream *
 g_tls_server_connection_new (GIOStream        *base_io_stream,
 			     GTlsCertificate  *certificate,
 			     GError          **error)
@@ -92,5 +92,5 @@ g_tls_server_connection_new (GIOStream        *base_io_stream,
 			 "base-io-stream", base_io_stream,
 			 "certificate", certificate,
 			 NULL);
-  return G_TLS_SERVER_CONNECTION (conn);
+  return G_IO_STREAM (conn);
 }

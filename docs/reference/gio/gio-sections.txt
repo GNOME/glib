@@ -506,6 +506,7 @@ g_emblemed_icon_new
 g_emblemed_icon_get_icon
 g_emblemed_icon_get_emblems
 g_emblemed_icon_add_emblem
+g_emblemed_icon_clear_emblems
 <SUBSECTION Standard>
 GEmblemedIconClass
 G_EMBLEMED_ICON
@@ -892,9 +893,12 @@ GUnixOutputStreamPrivate
 <SECTION>
 <FILE>giostream</FILE>
 <TITLE>GIOStream</TITLE>
+GIOStreamSpliceFlags
 GIOStream
 g_io_stream_get_input_stream
 g_io_stream_get_output_stream
+g_io_stream_splice_async
+g_io_stream_splice_finish
 g_io_stream_close
 g_io_stream_close_async
 g_io_stream_close_finish
@@ -1252,6 +1256,7 @@ g_app_info_delete
 g_app_info_reset_type_associations
 g_app_info_set_as_default_for_type
 g_app_info_set_as_default_for_extension
+g_app_info_set_as_last_used_for_type
 g_app_info_add_supports_type
 g_app_info_can_remove_supports_type
 g_app_info_remove_supports_type
@@ -2153,6 +2158,7 @@ G_TYPE_FILE_DESCRIPTOR_BASED
 GSettingsBackend
 GSettingsBackendClass
 G_SETTINGS_BACKEND_EXTENSION_POINT_NAME
+g_settings_backend_get_default
 g_settings_backend_changed
 g_settings_backend_path_changed
 g_settings_backend_keys_changed
@@ -2161,6 +2167,8 @@ g_settings_backend_writable_changed
 g_settings_backend_changed_tree
 g_settings_backend_flatten_tree
 g_keyfile_settings_backend_new
+g_memory_settings_backend_new
+g_null_settings_backend_new
 
 <SUBSECTION Standard>
 G_IS_SETTINGS_BACKEND
@@ -2933,32 +2941,6 @@ g_proxy_get_type
 </SECTION>
 
 <SECTION>
-<FILE>gperiodic</FILE>
-<TITLE>GPeriodic</TITLE>
-GPeriodic
-<SUBSECTION>
-g_periodic_new
-g_periodic_get_hz
-g_periodic_get_high_priority
-g_periodic_get_low_priority
-<SUBSECTION>
-GPeriodicTickFunc
-g_periodic_add
-g_periodic_remove
-<SUBSECTION>
-g_periodic_block
-g_periodic_unblock
-<SUBSECTION>
-g_periodic_damaged
-<SUBSECTION Standard>
-G_TYPE_PERIODIC
-G_PERIODIC
-G_IS_PERIODIC
-<SUBSECTION Private>
-g_periodic_get_type
-</SECTION>
-
-<SECTION>
 <FILE>gpollableinputstream</FILE>
 <TITLE>GPollableInputStream</TITLE>
 GPollableInputStream
@@ -3038,6 +3020,7 @@ g_tls_certificate_new_from_file
 g_tls_certificate_new_from_files
 g_tls_certificate_list_new_from_file
 g_tls_certificate_get_issuer
+g_tls_certificate_verify
 <SUBSECTION Standard>
 GTlsCertificateClass
 GTlsCertificatePrivate
@@ -3058,19 +3041,20 @@ GTlsConnection
 g_tls_connection_set_certificate
 g_tls_connection_get_certificate
 g_tls_connection_get_peer_certificate
+g_tls_connection_get_peer_certificate_errors
 g_tls_connection_set_require_close_notify
 g_tls_connection_get_require_close_notify
 GTlsRehandshakeMode
 g_tls_connection_set_rehandshake_mode
 g_tls_connection_get_rehandshake_mode
+g_tls_connection_set_use_system_certdb
+g_tls_connection_get_use_system_certdb
 <SUBSECTION>
 g_tls_connection_handshake
 g_tls_connection_handshake_async
 g_tls_connection_handshake_finish
 <SUBSECTION>
-g_tls_connection_set_peer_certificate
 g_tls_connection_emit_accept_certificate
-g_tls_connection_emit_need_certificate
 <SUBSECTION Standard>
 GTlsConnectionClass
 GTlsConnectionPrivate

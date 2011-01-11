@@ -81,6 +81,7 @@ enum {
   GET_BEGIN_ITER, GET_END_ITER, GET_ITER_AT_POS, APPEND, PREPEND,
   INSERT_BEFORE, MOVE, SWAP, INSERT_SORTED, INSERT_SORTED_ITER, SORT_CHANGED,
   SORT_CHANGED_ITER, REMOVE, REMOVE_RANGE, MOVE_RANGE, SEARCH, SEARCH_ITER,
+  LOOKUP, LOOKUP_ITER,
 
   /* dereferencing */
   GET, SET,
@@ -197,6 +198,42 @@ seq_foreach (gpointer data,
   item->number = g_random_int();
 
   *link = (*link)->next;
+}
+
+static gint
+simple_items_cmp (gconstpointer a,
+	          gconstpointer b,
+	          gpointer data)
+{
+  const Item *item_a = fix_pointer (a);
+  const Item *item_b = fix_pointer (b);
+
+  if (item_a->number > item_b->number)
+    return +1;
+  else if (item_a->number < item_b->number)
+    return -1;
+  else
+    return 0;
+}
+
+static gint
+simple_iters_cmp (gconstpointer a,
+	          gconstpointer b,
+	          gpointer data)
+{
+  GSequence *seq = data;
+  GSequenceIter *iter_a = (GSequenceIter *)a;
+  GSequenceIter *iter_b = (GSequenceIter *)b;
+  gpointer item_a = g_sequence_get (iter_a);
+  gpointer item_b = g_sequence_get (iter_b);
+
+  if (seq)
+    {
+      g_assert (g_sequence_iter_get_sequence (iter_a) == seq);
+      g_assert (g_sequence_iter_get_sequence (iter_b) == seq);
+    }
+
+  return simple_items_cmp (item_a, item_b, data);
 }
 
 static gint
@@ -882,6 +919,45 @@ run_random_tests (gconstpointer d)
             g_assert (search_iter == g_sequence_iter_next (insert_iter));
 
             g_queue_insert_sorted (seq->queue, insert_iter, compare_iters, NULL);
+          }
+          break;
+        case LOOKUP:
+          {
+            Item *item;
+            GSequenceIter *lookup_iter;
+            GSequenceIter *insert_iter;
+
+            g_sequence_sort (seq->sequence, compare_items, NULL);
+            g_queue_sort (seq->queue, compare_iters, NULL);
+
+            check_sorted (seq);
+
+            item = new_item (seq);
+            insert_iter = g_sequence_insert_sorted (seq->sequence, item, compare_items, NULL);
+            g_queue_insert_sorted (seq->queue, insert_iter, compare_iters, NULL);
+
+            lookup_iter = g_sequence_lookup (seq->sequence, item, simple_items_cmp, NULL);
+            g_assert (simple_iters_cmp (insert_iter, lookup_iter, NULL) == 0);
+          }
+          break;
+        case LOOKUP_ITER:
+          {
+            Item *item;
+            GSequenceIter *lookup_iter;
+            GSequenceIter *insert_iter;
+
+            g_sequence_sort (seq->sequence, compare_items, NULL);
+            g_queue_sort (seq->queue, compare_iters, NULL);
+
+            check_sorted (seq);
+
+            item = new_item (seq);
+            insert_iter = g_sequence_insert_sorted (seq->sequence, item, compare_items, NULL);
+            g_queue_insert_sorted (seq->queue, insert_iter, compare_iters, NULL);
+
+            lookup_iter = g_sequence_lookup_iter (seq->sequence, item,
+                (GSequenceIterCompareFunc) simple_iters_cmp, NULL);
+            g_assert (simple_iters_cmp (insert_iter, lookup_iter, NULL) == 0);
           }
           break;
 

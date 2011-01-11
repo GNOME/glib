@@ -24,7 +24,6 @@
 #include "config.h"
 
 #include "gsettingsbackendinternal.h"
-#include "gnullsettingsbackend.h"
 #include "gsimplepermission.h"
 #include "giomodule-priv.h"
 #include "gio-marshal.h"
@@ -402,7 +401,7 @@ g_settings_backend_changed (GSettingsBackend *backend,
  * g_settings_backend_keys_changed:
  * @backend: a #GSettingsBackend implementation
  * @path: the path containing the changes
- * @items: the %NULL-terminated list of changed keys
+ * @items: (array zero-terminated=1): the %NULL-terminated list of changed keys
  * @origin_tag: the origin tag
  *
  * Signals that a list of keys have possibly changed.  Backend
@@ -610,9 +609,11 @@ g_settings_backend_flatten_one (gpointer key,
 /**
  * g_settings_backend_flatten_tree:
  * @tree: a #GTree containing the changes
- * @path: the location to save the path
- * @keys: the location to save the relative keys
- * @values: the location to save the values, or %NULL
+ * @path: (out): the location to save the path
+ * @keys: (out) (transfer container) (array zero-terminated=1): the
+ *        location to save the relative keys
+ * @values: (out) (allow-none) (transfer container) (array zero-terminated=1):
+ *          the location to save the values, or %NULL
  *
  * Calculate the longest common prefix of all keys in a tree and write
  * out an array of the key names relative to that prefix and,
@@ -925,15 +926,17 @@ g_settings_backend_create_tree (void)
                           g_free, (GDestroyNotify) g_variant_unref);
 }
 
-/*< private >
+/**
  * g_settings_backend_get_default:
- * @returns: the default #GSettingsBackend
+ * @returns: (transfer full): the default #GSettingsBackend
  *
  * Returns the default #GSettingsBackend. It is possible to override
  * the default by setting the <envar>GSETTINGS_BACKEND</envar>
  * environment variable to the name of a settings backend.
  *
  * The user gets a reference to the backend.
+ *
+ * Since: 2.28
  */
 GSettingsBackend *
 g_settings_backend_get_default (void)

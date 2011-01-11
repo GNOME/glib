@@ -159,7 +159,7 @@ value_meminit (GValue *value,
  *
  * Initializes @value with the default value of @type.
  *
- * Returns: the #GValue structure that has been passed in
+ * Returns: (transfer none): the #GValue structure that has been passed in
  */
 GValue*
 g_value_init (GValue *value,
@@ -301,11 +301,10 @@ g_value_fits_pointer (const GValue *value)
  * g_value_peek_pointer:
  * @value: An initialized #GValue structure.
  *
- * Return the value contents as pointer. This function asserts that
- * g_value_fits_pointer() returned %TRUE for the passed in value.
- * This is an internal function introduced mainly for C marshallers.
- *
- * Returns: %TRUE if @value will fit inside a pointer value.
+ * Returns: (transfer none): the value contents as pointer. This
+ * function asserts that g_value_fits_pointer() returned %TRUE for the
+ * passed in value.  This is an internal function introduced mainly
+ * for C marshallers.
  */
 gpointer
 g_value_peek_pointer (const GValue *value)
@@ -424,7 +423,7 @@ transform_entries_cmp (gconstpointer bsearch_node1,
 }
 
 /**
- * g_value_register_transform_func:
+ * g_value_register_transform_func: (skip)
  * @src_type: Source type.
  * @dest_type: Target type.
  * @transform_func: a function which transforms values of type @src_type

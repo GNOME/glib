@@ -329,8 +329,8 @@ g_mount_can_eject (GMount *mount)
  * g_mount_unmount:
  * @mount: a #GMount.
  * @flags: flags affecting the operation
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  * 
  * Unmounts a mount. This is an asynchronous operation, and is 
@@ -408,8 +408,8 @@ g_mount_unmount_finish (GMount        *mount,
  * g_mount_eject:
  * @mount: a #GMount.
  * @flags: flags affecting the unmount if required for eject
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  * 
  * Ejects a mount. This is an asynchronous operation, and is 
@@ -486,9 +486,10 @@ g_mount_eject_finish (GMount        *mount,
  * g_mount_unmount_with_operation:
  * @mount: a #GMount.
  * @flags: flags affecting the operation
- * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid
+ *     user interaction.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  *
  * Unmounts a mount. This is an asynchronous operation, and is
@@ -573,9 +574,10 @@ g_mount_unmount_with_operation_finish (GMount        *mount,
  * g_mount_eject_with_operation:
  * @mount: a #GMount.
  * @flags: flags affecting the unmount if required for eject
- * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid
+ *     user interaction.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  *
  * Ejects a mount. This is an asynchronous operation, and is
@@ -658,9 +660,10 @@ g_mount_eject_with_operation_finish (GMount        *mount,
  * g_mount_remount:
  * @mount: a #GMount.
  * @flags: flags affecting the operation
- * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid
+ *     user interaction.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  * 
  * Remounts a mount. This is an asynchronous operation, and is 
@@ -741,7 +744,7 @@ g_mount_remount_finish (GMount        *mount,
  * @mount: a #GMount
  * @force_rescan: Whether to force a rescan of the content. 
  *     Otherwise a cached result will be used if available
- * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
  * @callback: a #GAsyncReadyCallback
  * @user_data: user data passed to @callback
  * 
@@ -831,7 +834,7 @@ g_mount_guess_content_type_finish (GMount        *mount,
  * @mount: a #GMount
  * @force_rescan: Whether to force a rescan of the content.
  *     Otherwise a cached result will be used if available
- * @cancellable: optional #GCancellable object, %NULL to ignore
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
  * @error: a #GError location to store the error occuring, or %NULL to
  *     ignore
  *

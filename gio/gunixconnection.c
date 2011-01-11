@@ -304,7 +304,7 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
 /**
  * g_unix_connection_send_credentials:
  * @connection: A #GUnixConnection.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Passes the credentials of the current user the receiving side
@@ -372,7 +372,7 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
 /**
  * g_unix_connection_receive_credentials:
  * @connection: A #GUnixConnection.
- * @cancellable: A #GCancellable or %NULL.
+ * @cancellable: (allow-none): A #GCancellable or %NULL.
  * @error: Return location for error or %NULL.
  *
  * Receives credentials from the sending end of the connection.  The

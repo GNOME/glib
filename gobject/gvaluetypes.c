@@ -1119,7 +1119,7 @@ g_value_set_pointer (GValue  *value,
  *
  * Get the contents of a pointer #GValue.
  *
- * Returns: pointer contents of @value
+ * Returns: (transfer none): pointer contents of @value
  */
 gpointer
 g_value_get_pointer (const GValue *value)

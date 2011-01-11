@@ -41,11 +41,12 @@ static void G_GNUC_NORETURN
 usage (void)
 {
 	fprintf (stderr, "Usage: resolver [-t] [-s] [hostname | IP | service/protocol/domain ] ...\n");
-	fprintf (stderr, "       resolver [-t] [-s] -c [hostname | IP | service/protocol/domain ]\n");
+	fprintf (stderr, "       resolver [-t] [-s] -c NUMBER [hostname | IP | service/protocol/domain ]\n");
 	fprintf (stderr, "       Use -t to enable threading.\n");
 	fprintf (stderr, "       Use -s to do synchronous lookups.\n");
 	fprintf (stderr, "       Both together will result in simultaneous lookups in multiple threads\n");
-	fprintf (stderr, "       Use -c (and only a single resolvable argument) to test GSocketConnectable.\n");
+	fprintf (stderr, "       Use -c NUMBER(and only a single resolvable argument) to test GSocketConnectable.\n");
+	fprintf (stderr, "       The given NUMBER determines how often the connectable will be enumerated.\n");
 	exit (1);
 }
 
@@ -360,7 +361,7 @@ do_async_connectable (GSocketAddressEnumerator *enumerator)
 }
 
 static void
-do_connectable (const char *arg, gboolean synchronous)
+do_connectable (const char *arg, gboolean synchronous, guint count)
 {
   char **parts;
   GSocketConnectable *connectable;
@@ -400,13 +401,17 @@ do_connectable (const char *arg, gboolean synchronous)
         connectable = g_network_address_new (arg, port);
     }
 
-  enumerator = g_socket_connectable_enumerate (connectable);
-  g_object_unref (connectable);
+  while (count--)
+    {
+      enumerator = g_socket_connectable_enumerate (connectable);
 
-  if (synchronous)
-    do_sync_connectable (enumerator);
-  else
-    do_async_connectable (enumerator);
+      if (synchronous)
+        do_sync_connectable (enumerator);
+      else
+        do_async_connectable (enumerator);
+    }
+  
+  g_object_unref (connectable);
 }
 
 #ifdef G_OS_UNIX
@@ -434,7 +439,7 @@ int
 main (int argc, char **argv)
 {
   gboolean threaded = FALSE, synchronous = FALSE;
-  gboolean use_connectable = FALSE;
+  guint connectable_count = 0;
 #ifdef G_OS_UNIX
   GIOChannel *chan;
   guint watch;
@@ -453,7 +458,11 @@ main (int argc, char **argv)
       else if (!strcmp (argv[1], "-s"))
         synchronous = TRUE;
       else if (!strcmp (argv[1], "-c"))
-        use_connectable = TRUE;
+        {
+          connectable_count = atoi (argv[2]);
+          argv++;
+          argc--;
+        }
       else
         usage ();
 
@@ -462,7 +471,7 @@ main (int argc, char **argv)
     }
   g_type_init ();
 
-  if (argc < 2 || (argc > 2 && use_connectable))
+  if (argc < 2 || (argc > 2 && connectable_count))
     usage ();
 
   resolver = g_resolver_get_default ();
@@ -488,8 +497,11 @@ main (int argc, char **argv)
   nlookups = argc - 1;
   loop = g_main_loop_new (NULL, TRUE);
 
-  if (use_connectable)
-    do_connectable (argv[1], synchronous);
+  if (connectable_count)
+    {
+      nlookups = connectable_count;
+      do_connectable (argv[1], synchronous, connectable_count);
+    }
   else
     {
       if (threaded && synchronous)

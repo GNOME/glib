@@ -50,7 +50,7 @@ g_socket_address_enumerator_class_init (GSocketAddressEnumeratorClass *enumerato
 /**
  * g_socket_address_enumerator_next:
  * @enumerator: a #GSocketAddressEnumerator
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError.
  *
  * Retrieves the next #GSocketAddress from @enumerator. Note that this
@@ -115,9 +115,10 @@ g_socket_address_enumerator_real_next_async (GSocketAddressEnumerator *enumerato
 /**
  * g_socket_address_enumerator_next_async:
  * @enumerator: a #GSocketAddressEnumerator
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback to call when the request is satisfied
- * @user_data: the data to pass to callback function
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (scope async): a #GAsyncReadyCallback to call when the request
+ *     is satisfied
+ * @user_data: (closure): the data to pass to callback function
  *
  * Asynchronously retrieves the next #GSocketAddress from @enumerator
  * and then calls @callback, which must call

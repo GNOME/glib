@@ -54,13 +54,14 @@ g_converter_default_init (GConverterInterface *iface)
 /**
  * g_converter_convert:
  * @converter: a #GConverter.
- * @inbuf: the buffer containing the data to convert.
+ * @inbuf: (array length=inbuf_size) (element-type guint8): the buffer
+ *         containing the data to convert.
  * @inbuf_size: the number of bytes in @inbuf
  * @outbuf: a buffer to write converted data in.
  * @outbuf_size: the number of bytes in @outbuf, must be at least one
  * @flags: a #GConvertFlags controlling the conversion details
- * @bytes_read: will be set to the number of bytes read from @inbuf on success
- * @bytes_written: will be set to the number of bytes written to @outbuf on success
+ * @bytes_read: (out): will be set to the number of bytes read from @inbuf on success
+ * @bytes_written: (out): will be set to the number of bytes written to @outbuf on success
  * @error: location to store the error occuring, or %NULL to ignore
  *
  * This is the main operation used when converting data. It is to be called

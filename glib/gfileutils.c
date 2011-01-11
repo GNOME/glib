@@ -53,6 +53,10 @@
 #include "gstdio.h"
 #include "glibintl.h"
 
+#ifdef __linux__ /* for btrfs check */
+#include <linux/magic.h>
+#include <sys/vfs.h>
+#endif
 
 /**
  * g_mkdir_with_parents:
@@ -963,6 +967,20 @@ write_to_temp_file (const gchar  *contents,
       
       goto out;
     }
+
+#ifdef BTRFS_SUPER_MAGIC
+  {
+    struct statfs buf;
+
+    /* On Linux, on btrfs, skip the fsync since rename-over-existing is
+     * guaranteed to be atomic and this is the only case in which we
+     * would fsync() anyway.
+     */
+
+    if (fstatfs (fd, &buf) == 0 && buf.f_type == BTRFS_SUPER_MAGIC)
+      goto no_fsync;
+  }
+#endif
   
 #ifdef HAVE_FSYNC
   {
@@ -994,6 +1012,7 @@ write_to_temp_file (const gchar  *contents,
       }
   }
 #endif
+ no_fsync:
   
   errno = 0;
   if (fclose (file) == EOF)

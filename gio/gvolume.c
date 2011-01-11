@@ -301,8 +301,8 @@ g_volume_should_automount (GVolume *volume)
  * @volume: a #GVolume.
  * @flags: flags affecting the operation
  * @mount_operation: (allow-none): a #GMountOperation or %NULL to avoid user interaction.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data that gets passed to @callback
  * 
  * Mounts a volume. This is an asynchronous operation, and is
@@ -378,8 +378,8 @@ g_volume_mount_finish (GVolume       *volume,
  * g_volume_eject:
  * @volume: a #GVolume.
  * @flags: flags affecting the unmount if required for eject
- * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @callback: a #GAsyncReadyCallback, or %NULL.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
+ * @callback: (allow-none): a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data that gets passed to @callback
  * 
  * Ejects a volume. This is an asynchronous operation, and is
@@ -451,8 +451,9 @@ g_volume_eject_finish (GVolume       *volume,
  * g_volume_eject_with_operation:
  * @volume: a #GVolume.
  * @flags: flags affecting the unmount if required for eject
- * @mount_operation: a #GMountOperation or %NULL to avoid user interaction.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @mount_operation: (allow-none): a #GMountOperation or %NULL to
+ *     avoid user interaction.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @callback: a #GAsyncReadyCallback, or %NULL.
  * @user_data: user data passed to @callback.
  *

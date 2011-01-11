@@ -210,7 +210,7 @@ g_data_output_stream_get_byte_order (GDataOutputStream *stream)
  * g_data_output_stream_put_byte:
  * @stream: a #GDataOutputStream.
  * @data: a #guchar.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
  * 
  * Puts a byte into the output stream.
@@ -237,7 +237,7 @@ g_data_output_stream_put_byte (GDataOutputStream  *stream,
  * g_data_output_stream_put_int16:
  * @stream: a #GDataOutputStream.
  * @data: a #gint16.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
  * 
  * Puts a signed 16-bit integer into the output stream.
@@ -277,7 +277,7 @@ g_data_output_stream_put_int16 (GDataOutputStream  *stream,
  * g_data_output_stream_put_uint16:
  * @stream: a #GDataOutputStream.
  * @data: a #guint16.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
  * 
  * Puts an unsigned 16-bit integer into the output stream.
@@ -317,7 +317,7 @@ g_data_output_stream_put_uint16 (GDataOutputStream  *stream,
  * g_data_output_stream_put_int32:
  * @stream: a #GDataOutputStream.
  * @data: a #gint32.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
  * 
  * Puts a signed 32-bit integer into the output stream.
@@ -357,7 +357,7 @@ g_data_output_stream_put_int32 (GDataOutputStream  *stream,
  * g_data_output_stream_put_uint32:
  * @stream: a #GDataOutputStream.
  * @data: a #guint32.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
  * 
  * Puts an unsigned 32-bit integer into the stream.
@@ -397,7 +397,7 @@ g_data_output_stream_put_uint32 (GDataOutputStream  *stream,
  * g_data_output_stream_put_int64:
  * @stream: a #GDataOutputStream.
  * @data: a #gint64.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
  * 
  * Puts a signed 64-bit integer into the stream.
@@ -437,7 +437,7 @@ g_data_output_stream_put_int64 (GDataOutputStream  *stream,
  * g_data_output_stream_put_uint64:
  * @stream: a #GDataOutputStream.
  * @data: a #guint64.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
  * 
  * Puts an unsigned 64-bit integer into the stream.
@@ -477,7 +477,7 @@ g_data_output_stream_put_uint64 (GDataOutputStream  *stream,
  * g_data_output_stream_put_string:
  * @stream: a #GDataOutputStream.
  * @str: a string.
- * @cancellable: optional #GCancellable object, %NULL to ignore.
+ * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: a #GError, %NULL to ignore.
  * 
  * Puts a string into the output stream. 

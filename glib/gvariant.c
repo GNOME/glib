@@ -315,7 +315,7 @@ g_variant_new_from_trusted (const GVariantType *type,
 
 /**
  * g_variant_new_boolean:
- * @boolean: a #gboolean value
+ * @value: a #gboolean value
  * @returns: a floating reference to a new boolean #GVariant instance
  *
  * Creates a new boolean #GVariant instance -- either %TRUE or %FALSE.
@@ -373,7 +373,7 @@ g_variant_get_boolean (GVariant *value)
 
 /**
  * g_variant_new_byte:
- * @byte: a #guint8 value
+ * @value: a #guint8 value
  * @returns: a floating reference to a new byte #GVariant instance
  *
  * Creates a new byte #GVariant instance.
@@ -396,7 +396,7 @@ NUMERIC_TYPE (BYTE, byte, guchar)
 
 /**
  * g_variant_new_int16:
- * @int16: a #gint16 value
+ * @value: a #gint16 value
  * @returns: a floating reference to a new int16 #GVariant instance
  *
  * Creates a new int16 #GVariant instance.
@@ -419,7 +419,7 @@ NUMERIC_TYPE (INT16, int16, gint16)
 
 /**
  * g_variant_new_uint16:
- * @uint16: a #guint16 value
+ * @value: a #guint16 value
  * @returns: a floating reference to a new uint16 #GVariant instance
  *
  * Creates a new uint16 #GVariant instance.
@@ -442,7 +442,7 @@ NUMERIC_TYPE (UINT16, uint16, guint16)
 
 /**
  * g_variant_new_int32:
- * @int32: a #gint32 value
+ * @value: a #gint32 value
  * @returns: a floating reference to a new int32 #GVariant instance
  *
  * Creates a new int32 #GVariant instance.
@@ -465,7 +465,7 @@ NUMERIC_TYPE (INT32, int32, gint32)
 
 /**
  * g_variant_new_uint32:
- * @uint32: a #guint32 value
+ * @value: a #guint32 value
  * @returns: a floating reference to a new uint32 #GVariant instance
  *
  * Creates a new uint32 #GVariant instance.
@@ -488,7 +488,7 @@ NUMERIC_TYPE (UINT32, uint32, guint32)
 
 /**
  * g_variant_new_int64:
- * @int64: a #gint64 value
+ * @value: a #gint64 value
  * @returns: a floating reference to a new int64 #GVariant instance
  *
  * Creates a new int64 #GVariant instance.
@@ -511,7 +511,7 @@ NUMERIC_TYPE (INT64, int64, gint64)
 
 /**
  * g_variant_new_uint64:
- * @uint64: a #guint64 value
+ * @value: a #guint64 value
  * @returns: a floating reference to a new uint64 #GVariant instance
  *
  * Creates a new uint64 #GVariant instance.
@@ -565,7 +565,7 @@ NUMERIC_TYPE (HANDLE, handle, gint32)
 
 /**
  * g_variant_new_double:
- * @floating: a #gdouble floating point value
+ * @value: a #gdouble floating point value
  * @returns: a floating reference to a new double #GVariant instance
  *
  * Creates a new double #GVariant instance.
@@ -3057,6 +3057,9 @@ g_variant_builder_make_room (struct stack_builder *builder)
  * putting different types of items into an array, putting the wrong
  * types or number of items in a tuple, putting more than one value into
  * a variant, etc.
+ *
+ * If @value is a floating reference (see g_variant_ref_sink()),
+ * the @builder instance takes ownership of @value.
  *
  * Since: 2.24
  **/

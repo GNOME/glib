@@ -68,8 +68,8 @@
  * pseudo-random number generator (PRNG). It uses the Mersenne Twister
  * PRNG, which was originally developed by Makoto Matsumoto and Takuji
  * Nishimura. Further information can be found at
- * <ulink url="http://www.math.keio.ac.jp/~matumoto/emt.html">
- * www.math.keio.ac.jp/~matumoto/emt.html</ulink>.
+ * <ulink url="http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html">
+ * http://www.math.sci.hiroshima-u.ac.jp/~m-mat/MT/emt.html</ulink>.
  *
  * If you just need a random number, you simply call the
  * <function>g_random_*</function> functions, which will create a

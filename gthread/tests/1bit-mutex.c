@@ -26,9 +26,6 @@
    */
 
   /* side-step some glib build stuff */
-  #ifndef DISABLE_VISIBILITY
-  #define DISABLE_VISIBILITY
-  #endif
   #define GLIB_COMPILATION
 
   /* rebuild gbitlock.c without futex support,

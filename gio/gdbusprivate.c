@@ -430,6 +430,7 @@ struct GDBusWorker
   gint                                num_writes_pending;
   guint64                             write_num_messages_written;
   GList                              *write_pending_flushes;
+  gboolean                            flush_pending;
 };
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1155,6 +1156,12 @@ ostream_flush_cb (GObject      *source_object,
   if (error != NULL)
     g_error_free (error);
 
+  /* Make sure we tell folks that we don't have additional
+     flushes pending */
+  g_mutex_lock (data->worker->write_lock);
+  data->worker->flush_pending = FALSE;
+  g_mutex_unlock (data->worker->write_lock);
+
   /* OK, cool, finally kick off the next write */
   maybe_write_next_message (data->worker);
 
@@ -1206,6 +1213,10 @@ message_written (GDBusWorker *worker,
           flushers = g_list_append (flushers, f);
           worker->write_pending_flushes = g_list_delete_link (worker->write_pending_flushes, l);
         }
+    }
+  if (flushers != NULL)
+    {
+      worker->flush_pending = TRUE;
     }
   g_mutex_unlock (worker->write_lock);
 
@@ -1341,7 +1352,7 @@ static gboolean
 write_message_in_idle_cb (gpointer user_data)
 {
   GDBusWorker *worker = user_data;
-  if (worker->num_writes_pending == 0)
+  if (worker->num_writes_pending == 0 && !worker->flush_pending)
     maybe_write_next_message (worker);
   return FALSE;
 }
@@ -1424,6 +1435,7 @@ _g_dbus_worker_new (GIOStream                              *stream,
   worker->stream = g_object_ref (stream);
   worker->capabilities = capabilities;
   worker->cancellable = g_cancellable_new ();
+  worker->flush_pending = FALSE;
 
   worker->frozen = initially_frozen;
   worker->received_messages_while_frozen = g_queue_new ();

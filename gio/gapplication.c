@@ -357,7 +357,7 @@ g_application_set_property (GObject      *object,
 /**
  * g_application_set_action_group:
  * @application: a #GApplication
- * @action_group: a #GActionGroup, or %NULL
+ * @action_group: (allow-none): a #GActionGroup, or %NULL
  *
  * Sets or unsets the group of actions associated with the application.
  *
@@ -545,7 +545,7 @@ g_application_class_init (GApplicationClass *class)
   /**
    * GApplication::open:
    * @application: the application
-   * @files: an array of #GFile objects
+   * @files: (array length=n_files) (element-type GFile): an array of #GFiles
    * @n_files: the length of @files
    * @hint: a hint provided by the calling instance
    *
@@ -1047,7 +1047,7 @@ g_application_activate (GApplication *application)
 /**
  * g_application_open:
  * @application: a #GApplication
- * @files: an array of #GFiles to open
+ * @files: (array length=n_files): an array of #GFiles to open
  * @n_files: the length of the @files array
  * @hint: a hint (or ""), but never %NULL
  *
@@ -1094,7 +1094,7 @@ g_application_open (GApplication  *application,
  * g_application_run:
  * @application: a #GApplication
  * @argc: the argc from main()
- * @argv: the argv from main()
+ * @argv: (array length=argc): the argv from main()
  * @returns: the exit status
  *
  * Runs the application.

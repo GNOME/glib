@@ -52,7 +52,7 @@ struct _GTlsClientConnectionInterface
 
 GType                 g_tls_client_connection_get_type             (void) G_GNUC_CONST;
 
-GTlsClientConnection *g_tls_client_connection_new                  (GIOStream               *base_io_stream,
+GIOStream *           g_tls_client_connection_new                  (GIOStream               *base_io_stream,
 								    GSocketConnectable      *server_identity,
 								    GError                 **error);
 
@@ -65,7 +65,7 @@ void                  g_tls_client_connection_set_server_identity  (GTlsClientCo
 gboolean              g_tls_client_connection_get_use_ssl3         (GTlsClientConnection    *conn);
 void                  g_tls_client_connection_set_use_ssl3         (GTlsClientConnection    *conn,
 								    gboolean                 use_ssl3);
-char **               g_tls_client_connection_get_accepted_cas     (GTlsClientConnection    *conn);
+GList *               g_tls_client_connection_get_accepted_cas     (GTlsClientConnection    *conn);
 
 G_END_DECLS
 

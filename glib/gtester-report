@@ -135,6 +135,9 @@ class ReportReader (TreeProcess):
     self.info['package'] = node_as_text (dn)
     dn = find_child (node, 'version')
     self.info['version'] = node_as_text (dn)
+    dn = find_child (node, 'revision')
+    if dn is not None:
+        self.info['revision'] = node_as_text (dn)
   def handle_testcase (self, node):
     self.last_binary.testcases += [ node ]
     result = attribute_as_text (node, 'result', 'status')
@@ -239,6 +242,8 @@ class HTMLReportWriter(ReportWriter):
       self.lastchar = message[-1]
   def handle_info (self):
     self.oprint ('<h3>Package: %(package)s, version: %(version)s</h3>\n' % self.info)
+    if self.info['revision']:
+        self.oprint ('<h5>Report generated from: %(revision)s</h5>\n' % self.info)
   def handle_text (self, node):
     self.oprint (node.nodeValue)
   def handle_testcase (self, node, binary):

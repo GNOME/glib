@@ -1606,14 +1606,16 @@ g_type_interface_add_prerequisite (GType interface_type,
 /**
  * g_type_interface_prerequisites:
  * @interface_type: an interface type
- * @n_prerequisites: location to return the number of prerequisites, or %NULL
+ * @n_prerequisites: (out) (allow-none): location to return the number
+ *                   of prerequisites, or %NULL
  *
  * Returns the prerequisites of an interfaces type.
  *
  * Since: 2.2
  *
- * Returns: a newly-allocated zero-terminated array of #GType containing
- *  the prerequisites of @interface_type
+ * Returns: (array length=n_prerequisites) (transfer full): a
+ *          newly-allocated zero-terminated array of #GType containing
+ *          the prerequisites of @interface_type
  */
 GType*
 g_type_interface_prerequisites (GType  interface_type,
@@ -1818,7 +1820,7 @@ instance_real_class_get (gpointer instance)
 }
 
 /**
- * g_type_create_instance:
+ * g_type_create_instance: (skip)
  * @type: An instantiatable type to create an instance for.
  *
  * Creates and initializes an instance of @type if @type is valid and
@@ -2429,7 +2431,7 @@ type_data_unref_U (TypeNode *node,
 }
 
 /**
- * g_type_add_class_cache_func:
+ * g_type_add_class_cache_func: (skip)
  * @cache_data: data to be passed to @cache_func
  * @cache_func: a #GTypeClassCacheFunc
  *
@@ -2458,7 +2460,7 @@ g_type_add_class_cache_func (gpointer            cache_data,
 }
 
 /**
- * g_type_remove_class_cache_func:
+ * g_type_remove_class_cache_func: (skip)
  * @cache_data: data that was given when adding @cache_func
  * @cache_func: a #GTypeClassCacheFunc
  *
@@ -2497,7 +2499,7 @@ g_type_remove_class_cache_func (gpointer            cache_data,
 
 
 /**
- * g_type_add_interface_check:
+ * g_type_add_interface_check: (skip)
  * @check_data: data to pass to @check_func
  * @check_func: function to be called after each interface
  *              is initialized.
@@ -2531,7 +2533,7 @@ g_type_add_interface_check (gpointer	            check_data,
 }
 
 /**
- * g_type_remove_interface_check:
+ * g_type_remove_interface_check: (skip)
  * @check_data: callback data passed to g_type_add_interface_check()
  * @check_func: callback function passed to g_type_add_interface_check()
  *
@@ -2640,7 +2642,7 @@ g_type_register_fundamental (GType                       type_id,
 }
 
 /**
- * g_type_register_static_simple:
+ * g_type_register_static_simple: (skip)
  * @parent_type: Type from which this type will be derived.
  * @type_name: 0-terminated string used as the name of the new type.
  * @class_size: Size of the class structure (see #GTypeInfo)
@@ -2865,7 +2867,8 @@ g_type_add_interface_dynamic (GType        instance_type,
  * @type. This function will demand-create the class if it doesn't
  * exist already.
  *
- * Returns: The #GTypeClass structure for the given type ID.
+ * Returns: (type GObject.TypeClass) (transfer none): The #GTypeClass
+ *  structure for the given type ID.
  */
 gpointer
 g_type_class_ref (GType type)
@@ -2924,7 +2927,8 @@ g_type_class_ref (GType type)
 
 /**
  * g_type_class_unref:
- * @g_class: The #GTypeClass structure to unreference.
+ * @g_class: (type GObject.TypeClass): The #GTypeClass structure to
+ *  unreference.
  *
  * Decrements the reference count of the class structure being passed in.
  * Once the last reference count of a class has been released, classes
@@ -2948,8 +2952,9 @@ g_type_class_unref (gpointer g_class)
 }
 
 /**
- * g_type_class_unref_uncached:
- * @g_class: The #GTypeClass structure to unreference.
+ * g_type_class_unref_uncached: (skip)
+ * @g_class: (type GObject.TypeClass): The #GTypeClass structure to
+ *  unreference.
  *
  * A variant of g_type_class_unref() for use in #GTypeClassCacheFunc
  * implementations. It unreferences a class without consulting the chain
@@ -2981,8 +2986,9 @@ g_type_class_unref_uncached (gpointer g_class)
  * may return %NULL if the class of the type passed in does not currently
  * exist (hasn't been referenced before).
  *
- * Returns: The #GTypeClass structure for the given type ID or %NULL
- *  if the class does not currently exist.
+ * Returns: (type GObject.TypeClass) (transfer none): The #GTypeClass
+ *  structure for the given type ID or %NULL if the class does not
+ *  currently exist.
  */
 gpointer
 g_type_class_peek (GType type)
@@ -3009,8 +3015,9 @@ g_type_class_peek (GType type)
  * static types.
  * 
  * Since: 2.4
- * Returns: The #GTypeClass structure for the given type ID or %NULL
- *  if the class does not currently exist or is dynamically loaded.
+ * Returns: (type GObject.TypeClass) (transfer none): The #GTypeClass
+ *  structure for the given type ID or %NULL if the class does not
+ *  currently exist or is dynamically loaded.
  */
 gpointer
 g_type_class_peek_static (GType type)
@@ -3032,7 +3039,8 @@ g_type_class_peek_static (GType type)
 
 /**
  * g_type_class_peek_parent:
- * @g_class: The #GTypeClass structure to retrieve the parent class for.
+ * @g_class: (type GObject.TypeClass): The #GTypeClass structure to
+ *  retrieve the parent class for.
  *
  * This is a convenience function often needed in class initializers.
  * It returns the class structure of the immediate parent type of the
@@ -3045,7 +3053,8 @@ g_type_class_peek_static (GType type)
  * g_type_class_peek (g_type_parent (G_TYPE_FROM_CLASS (g_class)));
  * </programlisting>
  *
- * Returns: The parent class of @g_class.
+ * Returns: (type GObject.TypeClass) (transfer none): The parent class
+ *  of @g_class.
  */
 gpointer
 g_type_class_peek_parent (gpointer g_class)
@@ -3073,14 +3082,15 @@ g_type_class_peek_parent (gpointer g_class)
 
 /**
  * g_type_interface_peek:
- * @instance_class: A #GTypeClass structure.
+ * @instance_class: (type GObject.TypeClass): A #GTypeClass structure.
  * @iface_type: An interface ID which this class conforms to.
  *
  * Returns the #GTypeInterface structure of an interface to which the
  * passed in class conforms.
  *
- * Returns: The GTypeInterface structure of iface_type if implemented
- *          by @instance_class, %NULL otherwise
+ * Returns: (type GObject.TypeInterface) (transfer none): The GTypeInterface
+ *  structure of iface_type if implemented by @instance_class, %NULL
+ *  otherwise
  */
 gpointer
 g_type_interface_peek (gpointer instance_class,
@@ -3105,16 +3115,17 @@ g_type_interface_peek (gpointer instance_class,
 
 /**
  * g_type_interface_peek_parent:
- * @g_iface: A #GTypeInterface structure.
+ * @g_iface: (type GObject.TypeInterface): A #GTypeInterface structure.
  *
  * Returns the corresponding #GTypeInterface structure of the parent type
  * of the instance type to which @g_iface belongs. This is useful when
  * deriving the implementation of an interface from the parent type and
  * then possibly overriding some methods.
  *
- * Returns: The corresponding #GTypeInterface structure of the parent
- *          type of the instance type to which @g_iface belongs, or
- *          %NULL if the parent type doesn't conform to the interface.
+ * Returns: (transfer none) (type GObject.TypeInterface): The
+ *  corresponding #GTypeInterface structure of the parent type of the
+ *  instance type to which @g_iface belongs, or %NULL if the parent
+ *  type doesn't conform to the interface.
  */
 gpointer
 g_type_interface_peek_parent (gpointer g_iface)
@@ -3156,9 +3167,9 @@ g_type_interface_peek_parent (gpointer g_iface)
  *
  * Since: 2.4
  *
- * Returns: the default vtable for the interface; call
- *          g_type_default_interface_unref() when you are done using
- *          the interface.
+ * Returns: (type GObject.TypeInterface) (transfer none): the default
+ *  vtable for the interface; call g_type_default_interface_unref()
+ *  when you are done using the interface.
  */
 gpointer
 g_type_default_interface_ref (GType g_type)
@@ -3206,8 +3217,9 @@ g_type_default_interface_ref (GType g_type)
  *
  * Since: 2.4
  *
- * Returns: the default vtable for the interface, or %NULL
- *          if the type is not currently in use.
+ * Returns: (type GObject.TypeInterface) (transfer none): the default
+ *  vtable for the interface, or %NULL if the type is not currently in
+ *  use.
  */
 gpointer
 g_type_default_interface_peek (GType g_type)
@@ -3226,8 +3238,9 @@ g_type_default_interface_peek (GType g_type)
 
 /**
  * g_type_default_interface_unref:
- * @g_iface: the default vtable structure for a interface, as
- *           returned by g_type_default_interface_ref()
+ * @g_iface: (type GObject.TypeInterface): the default vtable
+ *  structure for a interface, as returned by
+ *  g_type_default_interface_ref()
  *
  * Decrements the reference count for the type corresponding to the
  * interface default vtable @g_iface. If the type is dynamic, then
@@ -3490,12 +3503,14 @@ g_type_is_a (GType type,
 /**
  * g_type_children:
  * @type: The parent type.
- * @n_children: Optional #guint pointer to contain the number of child types.
+ * @n_children: (out) (allow-none): Optional #guint pointer to contain
+ *              the number of child types.
  *
  * Return a newly allocated and 0-terminated array of type IDs, listing the
  * child types of @type. The return value has to be g_free()ed after use.
  *
- * Returns: Newly allocated and 0-terminated array of child types.
+ * Returns: (array length=n_children) (transfer full): Newly allocated
+ *          and 0-terminated array of child types.
  */
 GType*
 g_type_children (GType  type,
@@ -3531,14 +3546,15 @@ g_type_children (GType  type,
 /**
  * g_type_interfaces:
  * @type: The type to list interface types for.
- * @n_interfaces: Optional #guint pointer to contain the number of
- *                interface types.
+ * @n_interfaces: (out) (allow-none): Optional #guint pointer to
+ *                contain the number of interface types.
  *
  * Return a newly allocated and 0-terminated array of type IDs, listing the
  * interface types that @type conforms to. The return value has to be
  * g_free()ed after use.
  *
- * Returns: Newly allocated and 0-terminated array of interface types.
+ * Returns: (array length=n_interfaces) (transfer full): Newly
+ *          allocated and 0-terminated array of interface types.
  */
 GType*
 g_type_interfaces (GType  type,
@@ -3636,7 +3652,7 @@ type_get_qdata_L (TypeNode *node,
  * Obtains data which has previously been attached to @type
  * with g_type_set_qdata().
  *
- * Returns: the data, or %NULL if no data was found
+ * Returns: (transfer none): the data, or %NULL if no data was found
  */
 gpointer
 g_type_get_qdata (GType  type,
@@ -3742,8 +3758,8 @@ type_add_flags_W (TypeNode  *node,
 /**
  * g_type_query:
  * @type: the #GType value of a static, classed type.
- * @query: A user provided structure that is filled in with constant values
- *  upon success.
+ * @query: (out caller-allocates): A user provided structure that is
+ *         filled in with constant values upon success.
  *
  * Queries the type system for information about a specific type.
  * This function will fill in a user-provided structure to hold
@@ -3824,8 +3840,8 @@ g_type_test_flags (GType type,
  * Returns the #GTypePlugin structure for @type or
  * %NULL if @type does not have a #GTypePlugin structure.
  *
- * Returns: The corresponding plugin if @type is a dynamic type,
- *  %NULL otherwise.
+ * Returns: (transfer none): The corresponding plugin if @type is a
+ *          dynamic type, %NULL otherwise.
  */
 GTypePlugin*
 g_type_get_plugin (GType type)
@@ -3847,8 +3863,8 @@ g_type_get_plugin (GType type)
  * @interface_type has not been added to @instance_type or does not
  * have a #GTypePlugin structure. See g_type_add_interface_dynamic().
  *
- * Returns: the #GTypePlugin for the dynamic interface @interface_type
- *  of @instance_type.
+ * Returns: (transfer none): the #GTypePlugin for the dynamic
+ *          interface @interface_type of @instance_type.
  */
 GTypePlugin*
 g_type_interface_get_plugin (GType instance_type,
@@ -4123,7 +4139,7 @@ g_type_check_value_holds (GValue *value,
 }
 
 /**
- * g_type_value_table_peek:
+ * g_type_value_table_peek: (skip)
  * @type: A #GType value.
  *
  * Returns the location of the #GTypeValueTable associated with @type.

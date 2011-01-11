@@ -203,7 +203,7 @@ main (int argc,
 
   if (tls)
     {
-      GTlsClientConnection *tls_conn;
+      GIOStream *tls_conn;
 
       tls_conn = g_tls_client_connection_new (connection, connectable, &error);
       if (!tls_conn)
