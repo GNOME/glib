@@ -381,10 +381,12 @@ dump_type (GType type, const char *symbol, GOutputStream *out)
  * Returns: %TRUE on success, %FALSE on error
  */
 #ifndef G_IREPOSITORY_COMPILATION
-static
-#endif
+static gboolean
+dump_irepository (const char *arg, GError **error)
+#else
 gboolean
 g_irepository_dump (const char *arg, GError **error)
+#endif
 {
   GHashTable *output_types;
   char **args;
