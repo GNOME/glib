@@ -16,13 +16,13 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-12-17 16:41+0000\n"
-"PO-Revision-Date: 2011-01-10 13:27+0200\n"
+"PO-Revision-Date: 2011-01-11 10:37+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
-"Language: et\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #, c-format
@@ -2621,28 +2621,28 @@ msgstr "SOCKSv4 ei toeta IPv6-aadressi '%s'"
 
 #, c-format
 msgid "SOCKSv4 implementation limits username to %i characters"
-msgstr ""
+msgstr "SOCKSv4 implementatsioon piirab kasutajanime pikkuse %i märgiga"
 
 #, c-format
 msgid "SOCKSv4a implementation limits hostname to %i characters"
-msgstr ""
+msgstr "SOCKSv4 implementatsioon piirab hostinime pikkuse %i märgiga"
 
 msgid "The server is not a SOCKSv4 proxy server."
 msgstr "Server ei ole SOCKSv4 proksiserver."
 
 msgid "Connection through SOCKSv4 server was rejected"
-msgstr ""
+msgstr "Ühendus läbi SOCKSv4-serveri lükati tagasi"
 
 msgid "The server is not a SOCKSv5 proxy server."
 msgstr "Server ei ole SOCKSv5 proksiserver."
 
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr ""
+msgstr "SOCKSv5 proksi nõuab autentimist."
 
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
-msgstr ""
+msgstr "SOCKSv5 proksi nõuab GLibi poolt toetamata autentimismeetodit."
 
 #, c-format
 msgid "Username or password is too long for SOCKSv5 protocol (max. is %i)."
@@ -2679,21 +2679,21 @@ msgstr ""
 msgid "SOCKSv5 proxy does not support provided address type."
 msgstr ""
 
-msgid "Unkown SOCKSv5 proxy error."
-msgstr ""
+msgid "Unknown SOCKSv5 proxy error."
+msgstr "SOCKSv5 proksi tundmatu viga."
 
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "GThemedIcon kodeeringu versiooni %d pole võimalik käsitseda"
 
 msgid "No PEM-encoded certificate found"
-msgstr ""
+msgstr "PEM-kodeeritud sertifikaati ei leitud"
 
 msgid "Could not parse PEM-encoded certificate"
-msgstr ""
+msgstr "PEM-kodeeritud sertifikaati pole võimalik analüüsida"
 
 msgid "Could not parse PEM-encoded private key"
-msgstr ""
+msgstr "PEM-kodeeritud privaatvõtit pole võimalik analüüsida"
 
 #, c-format
 msgid "Expecting 1 control message, got %d"
@@ -2722,9 +2722,9 @@ msgid ""
 "socket. Expected %d bytes, got %d"
 msgstr ""
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error enabling SO_PASSCRED: %s"
-msgstr "Viga faili nime muutmisel: %s"
+msgstr "Viga SO_PASSCRED lubamisel: %s"
 
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
@@ -2732,7 +2732,7 @@ msgstr ""
 
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr ""
+msgstr "Viga SO_PASSCRED keelamisel: %s"
 
 #, c-format
 msgid "Error reading from unix: %s"
