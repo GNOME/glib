@@ -318,5 +318,5 @@ g_unix_fd_message_append_fd (GUnixFDMessage  *message,
 {
   g_return_val_if_fail (G_UNIX_FD_MESSAGE (message), FALSE);
 
-  return g_unix_fd_list_append (message->priv->list, fd, error) > 0;
+  return g_unix_fd_list_append (message->priv->list, fd, error) >= 0;
 }
