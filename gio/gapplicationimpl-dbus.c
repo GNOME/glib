@@ -668,7 +668,7 @@ g_application_impl_register (GApplication       *application,
           g_free (impl->object_path);
 
           g_slice_free (GApplicationImpl, impl);
-          impl = NULL;
+          return NULL;
         }
     }
 
@@ -676,7 +676,7 @@ g_application_impl_register (GApplication       *application,
    * This also serves as a mechanism to ensure that the primary exists
    * (ie: DBus service files installed correctly, etc).
    */
-  impl->signal_id = 
+  impl->signal_id =
     g_dbus_connection_signal_subscribe (impl->session_bus, impl->bus_name,
                                         "org.gtk.Actions", NULL,
                                         impl->object_path, NULL,
