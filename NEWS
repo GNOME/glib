@@ -1,3 +1,19 @@
+Overview of Changes from GLib 2.27.90 to 2.27.91
+================================================
+
+* Bugs fixed:
+ 638838 gdesktopappinfo: Don't crash if we don't have a desktop filename
+ 638894 Splitting on \s* gives no result
+ 639064 Update gschema.dtd
+ 639084 Copy/paste error in GSettings::writable-changed signal
+ 639177 SIGSEGV for GApplications with G_APPLICATION_IS_SERVICE
+
+* Translation updates:
+ Estonian
+ Galician
+ Indonesian
+
+
 Overview of Changes from GLib 2.27.5 to 2.27.90
 ===============================================
 
