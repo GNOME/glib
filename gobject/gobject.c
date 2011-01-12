@@ -114,6 +114,8 @@
     ((class)->flags & CLASS_HAS_PROPS_FLAG)
 #define CLASS_HAS_CUSTOM_CONSTRUCTOR(class) \
     ((class)->constructor != g_object_constructor)
+#define CLASS_HAS_CUSTOM_CONSTRUCTED(class) \
+    ((class)->constructed != g_object_constructed)
 
 #define CLASS_HAS_DERIVED_CLASS_FLAG 0x2
 #define CLASS_HAS_DERIVED_CLASS(class) \
@@ -141,6 +143,7 @@ static void	g_object_init				(GObject	*object,
 static GObject*	g_object_constructor			(GType                  type,
 							 guint                  n_construct_properties,
 							 GObjectConstructParam *construct_params);
+static void     g_object_constructed                    (GObject        *object);
 static void	g_object_real_dispose			(GObject	*object);
 static void	g_object_finalize			(GObject	*object);
 static void	g_object_do_set_property		(GObject        *object,
@@ -338,8 +341,9 @@ g_object_do_class_init (GObjectClass *class)
   pspec_pool = g_param_spec_pool_new (TRUE);
   property_notify_context.quark_notify_queue = g_quark_from_static_string ("GObject-notify-queue");
   property_notify_context.dispatcher = g_object_notify_dispatcher;
-  
+
   class->constructor = g_object_constructor;
+  class->constructed = g_object_constructed;
   class->set_property = g_object_do_set_property;
   class->get_property = g_object_do_get_property;
   class->dispose = g_object_real_dispose;
@@ -1498,8 +1502,8 @@ g_object_newv (GType       object_type,
 	g_object_notify_queue_thaw (object, nqueue);
     }
 
-  /* run 'constructed' handler if there is one */
-  if (newly_constructed && class->constructed)
+  /* run 'constructed' handler if there is a custom one */
+  if (newly_constructed && CLASS_HAS_CUSTOM_CONSTRUCTED (class))
     class->constructed (object);
 
   /* set remaining properties */
@@ -1632,6 +1636,12 @@ g_object_constructor (GType                  type,
     }
 
   return object;
+}
+
+static void
+g_object_constructed (GObject *object)
+{
+  /* empty default impl to allow unconditional upchaining */
 }
 
 /**
