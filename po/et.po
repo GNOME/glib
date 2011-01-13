@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&component=general\n"
 "POT-Creation-Date: 2010-12-17 16:41+0000\n"
-"PO-Revision-Date: 2011-01-11 10:37+0200\n"
+"PO-Revision-Date: 2011-01-12 10:15+0200\n"
 "Last-Translator: Ivar Smolin <okul@linux.ee>\n"
 "Language-Team: Estonian <gnome-et@linux.ee>\n"
 "MIME-Version: 1.0\n"
@@ -461,8 +461,8 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Viga '%-.*s' parsimisel. See võiks olla märgiviites olev number (näiteks "
-"&#234;) - võibolla on number liiga suur"
+"Viga '%-.*s' analüüsimisel. See võiks olla märgiviites olev number (näiteks "
+"&#234;) - võib-olla on number liiga suur"
 
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
@@ -831,7 +831,7 @@ msgstr "tundmatu paojada"
 
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
-msgstr "Viga asendusteksti \"%s\" parsimisel märgi %lu kohal: %s"
+msgstr "Viga asendusteksti \"%s\" analüüsimisel märgi %lu kohal: %s"
 
 msgid "Quoted text doesn't begin with a quotation mark"
 msgstr "Tsiteeritav tekst ei alga jutumärgiga"
@@ -978,7 +978,7 @@ msgstr "Arv '%s' %s jaoks on väljaspool lubatud piire"
 
 #, c-format
 msgid "Error parsing option %s"
-msgstr "Viga võtme parsimisel: %s"
+msgstr "Viga võtme analüüsimisel: %s"
 
 #, c-format
 msgid "Missing argument for %s"
@@ -1118,9 +1118,9 @@ msgstr "Sinu platvormile puudub GCredentialsi tugi"
 msgid "Unexpected early end-of-stream"
 msgstr "Ootamatult varajane voolõpp"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Toetamata sokliaadress"
+msgstr "Toetamata võti \"%s\" aadressikirjes \"%s\""
 
 #, c-format
 msgid ""
@@ -1413,11 +1413,11 @@ msgstr ""
 
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr ""
+msgstr "Analüüsitud väärtus \"%s\" pole korrektne D-Busi objekti rada"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "'%s' pole korrektne nimi "
+msgstr "Analüüsitud väärtus \"%s\" pole korrektne D-Busi signatuur"
 
 #, c-format
 msgid ""
@@ -1613,31 +1613,31 @@ msgstr "Viga ühendumisel: %s\n"
 
 #, c-format
 msgid "Error: Destination is not specified\n"
-msgstr ""
+msgstr "Viga: sihtkoht on määramata\n"
 
 #, c-format
 msgid "Error: Object path is not specified\n"
-msgstr ""
+msgstr "Viga: objekti rada on määramata\n"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr "'%s' pole korrektne nimi "
+msgstr "Viga: %s pole korrektne objekti rada\n"
 
 #, c-format
 msgid "Error: Method name is not specified\n"
-msgstr ""
+msgstr "Viga: meetodi nimi on määramata\n"
 
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
-msgstr ""
+msgstr "Viga: vigane meetodi nimi \"%s\"\n" 
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Viga kataloogi '%s' avamisel: %s"
+msgstr "Viga \"%2$s\" tüüpi parameetri %1$d analüüsimisel: %3$s\n"
 
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "Viga võtme parsimisel: %s"
+msgstr "Viga parameetri %d analüüsimisel: %s\n"
 
 msgid "Destination name to introspect"
 msgstr ""
