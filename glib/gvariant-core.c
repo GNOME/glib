@@ -903,7 +903,7 @@ g_variant_get_child_value (GVariant *value,
  *
  * The stored data is in machine native byte order but may not be in
  * fully-normalised form if read from an untrusted source.  See
- * g_variant_normalise() for a solution.
+ * g_variant_get_normal_form() for a solution.
  *
  * This function is approximately O(n) in the size of @data.
  *
