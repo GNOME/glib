@@ -937,7 +937,7 @@ g_variant_store (GVariant *value,
  *
  * The main reason to do this is to detect if a given chunk of
  * serialised data is in normal form: load the data into a #GVariant
- * using g_variant_create_from_data() and then use this function to
+ * using g_variant_new_from_data() and then use this function to
  * check.
  *
  * If @value is found to be in normal form then it will be marked as
