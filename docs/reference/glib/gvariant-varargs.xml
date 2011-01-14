@@ -137,7 +137,7 @@
       <entry colsep='1' rowsep='1'>
        <para>
         Used for building or deconstructing variant types.  See
-        <link linkend='gvariant-format-strings-variant'>Variants</link> below.
+        <link linkend='gvariant-format-strings-variants'>Variants</link> below.
        </para>
       </entry>
      </row>
