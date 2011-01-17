@@ -2297,7 +2297,7 @@ g_date_time_format (GDateTime *datetime,
                   g_string_append_printf (outstr, "%02d", g_date_time_get_hour (datetime));
                   break;
                 case 'I':
-                  if (g_date_time_get_hour (datetime) == 0)
+                  if ((g_date_time_get_hour (datetime) % 12) == 0)
                     g_string_append (outstr, "12");
                   else
                     g_string_append_printf (outstr, "%02d", g_date_time_get_hour (datetime) % 12);
@@ -2309,7 +2309,7 @@ g_date_time_format (GDateTime *datetime,
                   g_string_append_printf (outstr, "%2d", g_date_time_get_hour (datetime));
                   break;
                 case 'l':
-                  if (g_date_time_get_hour (datetime) == 0)
+                  if ((g_date_time_get_hour (datetime) % 12) == 0)
                     g_string_append (outstr, "12");
                   else
                     g_string_append_printf (outstr, "%2d", g_date_time_get_hour (datetime) % 12);
