@@ -230,7 +230,7 @@ gvdb_table_check_name (GvdbTable             *file,
     return FALSE;
 
   parent = guint32_from_le (item->parent);
-  if (key_length == 0 && parent == -1)
+  if (key_length == 0 && parent == 0xffffffffu)
     return TRUE;
 
   if G_LIKELY (parent < file->n_hash_items && this_size > 0)
@@ -340,7 +340,7 @@ gvdb_table_list (GvdbTable   *file,
   const guint32_le *list;
   gchar **strv;
   guint length;
-  gint i;
+  guint i;
 
   if ((item = gvdb_table_lookup (file, key, 'L')) == NULL)
     return NULL;
