@@ -83,7 +83,11 @@
  * in the <tag class="attribute">id</tag> attribute of the
  * <tag class="starttag">schema</tag> element). The
  * convention for schema ids is to use a dotted name, similar in
- * style to a DBus bus name, e.g. "org.gnome.font-rendering".
+ * style to a D-Bus bus name, e.g. "org.gnome.SessionManager". In particular,
+ * if the settings are for a specific service that owns a D-Bus bus name,
+ * the D-Bus bus name and schema id should match. For schemas which deal
+ * with settings not associated with one named application, the id should
+ * not use StudlyCaps, e.g. "org.gnome.font-rendering".
  *
  * In addition to #GVariant types, keys can have types that have enumerated
  * types. These can be described by a <tag class="starttag">choice</tag>,
@@ -97,7 +101,7 @@
  * <example id="schema-default-values"><title>Default values</title>
  * <programlisting><![CDATA[
  * <schemalist>
- *   <schema id="org.gtk.test" path="/tests/" gettext-domain="test">
+ *   <schema id="org.gtk.Test" path="/tests/" gettext-domain="test">
  *
  *     <key name="greeting" type="s">
  *       <default l10n="messages">"Hello, earthlings"</default>
@@ -130,7 +134,7 @@
  *     <value nick="flag3" value="4"/>
  *   </enum>
  *
- *   <schema id="org.gtk.test">
+ *   <schema id="org.gtk.Test">
  *
  *     <key name="key-with-range" type="i">
  *       <range min="1" max="100"/>

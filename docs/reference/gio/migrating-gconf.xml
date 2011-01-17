@@ -205,14 +205,16 @@ produces a <filename>org.gnome.font-rendering.gschema.xml</filename> file with t
       </example>
 
       <para>
-        GSettings schemas are identified at runtime by their id (as specified
-        in the XML source file). It is recommended to use a dotted name as schema
-        id, similar in style to a DBus bus name, e.g. "org.gnome.font-rendering".
+       GSettings schemas are identified at runtime by their id (as specified
+       in the XML source file). It is recommended to use a dotted name as schema
+       id, similar in style to a D-Bus bus name, e.g. "org.gnome.SessionManager".
+       In cases where the settings are general and not specific to one application,
+       the id should not use StudlyCaps, e.g. "org.gnome.font-rendering".
        The filename used for the XML schema source is immaterial, but
        schema compiler expects the files to have the extension
        <filename>.gschema.xml</filename>. It is recommended to simply
        use the schema id as the filename, followed by this extension,
-       e.g. <filename>org.gnome.font-rendering.gschema.xml</filename>.
+       e.g. <filename>org.gnome.SessionManager.gschema.xml</filename>.
       </para>
 
       <para>
