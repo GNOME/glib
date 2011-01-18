@@ -241,7 +241,7 @@ parse_time (const gchar *time,
   return *time == '\0';
 }
 
-gboolean
+static gboolean
 parse_constant_offset (const gchar *name,
                        gint32      *offset)
 {
