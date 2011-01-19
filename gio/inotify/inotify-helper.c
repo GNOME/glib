@@ -190,6 +190,30 @@ ih_event_callback (ik_event_t  *event,
   g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
 			     child, other, eflags);
 
+  /* For paired moves or moves whose mask has been changed from IN_MOVED_TO to
+   * IN_CREATE, notify also that it's probably the last change to the file,
+   * emitting CHANGES_DONE_HINT.
+   * The first (first part of the if's guard below) is the case of a normal
+   * move within the monitored tree and in the same mounted volume.
+   * The latter (second part of the guard) is the case of a move within the
+   * same mounted volume, but from a not monitored directory.
+   *
+   * It's not needed in cases like moves across mounted volumes as the IN_CREATE
+   * will be followed by a IN_MODIFY and IN_CLOSE_WRITE events.
+   * Also not needed if sub->pair_moves is set as EVENT_MOVED will be emitted
+   * instead of EVENT_CREATED which implies no further modification will be
+   * applied to the file
+   * See: https://bugzilla.gnome.org/show_bug.cgi?id=640077
+   */
+  if ((!sub->pair_moves &&
+        event->is_second_in_pair && (event->mask & IN_MOVED_TO)) ||
+      (!ih_event_is_paired_move (event) &&
+       (event->original_mask & IN_MOVED_TO) && (event->mask & IN_CREATE)))
+    {
+      g_file_monitor_emit_event (G_FILE_MONITOR (sub->user_data),
+          child, NULL, G_FILE_MONITOR_EVENT_CHANGES_DONE_HINT);
+    }
+
   g_object_unref (child);
   if (other)
     g_object_unref (other);

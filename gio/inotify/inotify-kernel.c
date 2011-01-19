@@ -516,6 +516,7 @@ ik_pair_events (ik_event_internal_t *event1,
   /* Pair the internal structures and the ik_event_t structures */
   event1->pair = event2;
   event1->event->pair = event2->event;
+  event2->event->is_second_in_pair = TRUE;
   
   if (g_timeval_lt (&event1->hold_until, &event2->hold_until))
     event1->hold_until = event2->hold_until;
@@ -634,7 +635,8 @@ ik_process_events (void)
 	   * the event masks */
 	  /* Changeing MOVED_FROM to DELETE and MOVED_TO to create lets us make
 	   * the gaurantee that you will never see a non-matched MOVE event */
-	  
+	  event->event->original_mask = event->event->mask;
+
 	  if (event->event->mask & IN_MOVED_FROM)
 	    {
 	      event->event->mask = IN_DELETE|(event->event->mask & IN_ISDIR);
