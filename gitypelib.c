@@ -2129,10 +2129,6 @@ _g_typelib_do_dlopen (GITypelib *typelib)
             {
               GString *shlib_full = g_string_new (shlibs[i]);
 
-              /* Prefix with "lib", try both .la and .so */
-              if (!g_str_has_prefix (shlib_full->str, "lib"))
-                g_string_prepend (shlib_full, "lib");
-              g_string_append (shlib_full, ".la");
               module = g_module_open (shlib_full->str, G_MODULE_BIND_LAZY);
               if (module == NULL)
                 {
