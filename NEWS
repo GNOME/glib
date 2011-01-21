@@ -1,3 +1,17 @@
+Overview of Changes from GLib 2.27.91 to 2.27.92
+================================================
+
+* Bugs fixed:
+ 637696 g_unix_connection_send_fd() doesn't work
+ 638872 null settings backend bug
+ 640042 GtkApplication's warning about not connecting...
+
+* Translation updates:
+ Arabic
+ Basque
+ Estonian
+ Greek
+
 Overview of Changes from GLib 2.27.90 to 2.27.91
 ================================================
 
