@@ -453,6 +453,12 @@ gsettings_help (gboolean     requested,
   if (command == NULL)
     ;
 
+  else if (strcmp (command, "help") == 0)
+    {
+      description = _("Print help");
+      synopsis = "[COMMAND]";
+    }
+
   else if (strcmp (command, "list-schemas") == 0)
     {
       description = _("List the installed (non-relocatable) schemas");
@@ -467,13 +473,13 @@ gsettings_help (gboolean     requested,
 
   else if (strcmp (command, "list-keys") == 0)
     {
-      description = _("Lists the keys in SCHEMA");
+      description = _("List the keys in SCHEMA");
       synopsis = N_("SCHEMA[:PATH]");
     }
 
   else if (strcmp (command, "list-children") == 0)
     {
-      description = _("Lists the children of SCHEMA");
+      description = _("List the children of SCHEMA");
       synopsis = N_("SCHEMA[:PATH]");
     }
 
@@ -485,37 +491,37 @@ gsettings_help (gboolean     requested,
 
   else if (strcmp (command, "get") == 0)
     {
-      description = _("Gets the value of KEY");
+      description = _("Get the value of KEY");
       synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
   else if (strcmp (command, "range") == 0)
     {
-      description = _("Queries the range of valid values for KEY");
+      description = _("Query the range of valid values for KEY");
       synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
   else if (strcmp (command, "set") == 0)
     {
-      description = _("Sets the value of KEY to VALUE");
+      description = _("Set the value of KEY to VALUE");
       synopsis = N_("SCHEMA[:PATH] KEY VALUE");
     }
 
   else if (strcmp (command, "reset") == 0)
     {
-      description = _("Resets KEY to its default value");
+      description = _("Reset KEY to its default value");
       synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
   else if (strcmp (command, "writable") == 0)
     {
-      description = _("Checks if KEY is writable");
+      description = _("Check if KEY is writable");
       synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
   else if (strcmp (command, "monitor") == 0)
     {
-      description = _("Monitors KEY for changes.\n"
+      description = _("Monitor KEY for changes.\n"
                     "If no KEY is specified, monitor all keys in SCHEMA.\n"
                     "Use ^C to stop monitoring.\n");
       synopsis = N_("SCHEMA[:PATH] [KEY]");
@@ -558,7 +564,11 @@ gsettings_help (gboolean     requested,
         {
           g_string_append (string, _("Arguments:\n"));
 
-          if (strstr (synopsis, "SCHEMA"))
+          if (strstr (synopsis, "[COMMAND]"))
+            g_string_append (string,
+                           _("  COMMAND   The (optional) command to explain\n"));
+
+          else if (strstr (synopsis, "SCHEMA"))
             g_string_append (string,
                            _("  SCHEMA    The name of the schema\n"
                              "  PATH      The path, for relocatable schemas\n"));
