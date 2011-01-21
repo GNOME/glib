@@ -396,6 +396,7 @@ See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
 @G_UNICODE_BREAK_HANGUL_T_JAMO: Hangul T Jamo (JT)
 @G_UNICODE_BREAK_HANGUL_LV_SYLLABLE: Hangul LV Syllable (H2)
 @G_UNICODE_BREAK_HANGUL_LVT_SYLLABLE: Hangul LVT Syllable (H3)
+@G_UNICODE_BREAK_CLOSE_PARANTHESIS: Closing Parenthesis (CP). Since 2.28
 
 <!-- ##### FUNCTION g_unichar_break_type ##### -->
 <para>
@@ -549,10 +550,13 @@ url="http://www.unicode.org/reports/tr24/">Unicode Standard Annex
 @G_UNICODE_SCRIPT_LISU:                   Lisu. Since 2.26
 @G_UNICODE_SCRIPT_MEETEI_MAYEK:           Meetei Mayek. Since 2.26
 @G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN:      Old South Arabian. Since 2.26
-@G_UNICODE_SCRIPT_OLD_TURKISH:            Old Turkish. Since 2.26
+@G_UNICODE_SCRIPT_OLD_TURKIC:             Old Turkic. Since 2.28
 @G_UNICODE_SCRIPT_SAMARITAN:              Samaritan. Since 2.26
 @G_UNICODE_SCRIPT_TAI_THAM:               Tai Tham. Since 2.26
 @G_UNICODE_SCRIPT_TAI_VIET:               Tai Viet. Since 2.26
+@G_UNICODE_SCRIPT_BATAK:                  Batak. Since 2.28
+@G_UNICODE_SCRIPT_BRAHMI:                 Brahmi. Since 2.28
+@G_UNICODE_SCRIPT_MANDAIC:                Mandaic. Since 2.28
 
 <!-- ##### FUNCTION g_unichar_get_script ##### -->
 <para>

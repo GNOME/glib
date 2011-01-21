@@ -147,7 +147,7 @@ enum {
   ucp_Lisu = G_UNICODE_SCRIPT_LISU,
   ucp_Meetei_Mayek = G_UNICODE_SCRIPT_MEETEI_MAYEK,
   ucp_Old_South_Arabian = G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN,
-  ucp_Old_Turkic = G_UNICODE_SCRIPT_OLD_TURKISH,
+  ucp_Old_Turkic = G_UNICODE_SCRIPT_OLD_TURKIC,
   ucp_Samaritan = G_UNICODE_SCRIPT_SAMARITAN,
   ucp_Tai_Tham = G_UNICODE_SCRIPT_TAI_THAM,
   ucp_Tai_Viet = G_UNICODE_SCRIPT_TAI_VIET

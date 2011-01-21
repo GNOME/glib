@@ -191,7 +191,8 @@ test_unichar_break_type (void)
     { G_UNICODE_BREAK_HYPHEN,              0x002D },
     { G_UNICODE_BREAK_NON_STARTER,         0x17D6 },
     { G_UNICODE_BREAK_OPEN_PUNCTUATION,    0x0028 },
-    { G_UNICODE_BREAK_CLOSE_PUNCTUATION,   0x0029 },
+    { G_UNICODE_BREAK_CLOSE_PARANTHESIS,   0x0029 },
+    { G_UNICODE_BREAK_CLOSE_PUNCTUATION,   0x007D },
     { G_UNICODE_BREAK_QUOTATION,           0x0022 },
     { G_UNICODE_BREAK_EXCLAMATION,         0x0021 },
     { G_UNICODE_BREAK_IDEOGRAPHIC,         0x2E80 },
@@ -228,7 +229,7 @@ test_unichar_script (void)
     gunichar          c;
   } examples[] = {
     { G_UNICODE_SCRIPT_COMMON,                  0x002A },
-    /* { G_UNICODE_SCRIPT_INHERITED,               0x1CED }, 5.2 addition */
+    { G_UNICODE_SCRIPT_INHERITED,               0x1CED },
     { G_UNICODE_SCRIPT_INHERITED,               0x0670 },
     { G_UNICODE_SCRIPT_ARABIC,                  0x060D },
     { G_UNICODE_SCRIPT_ARMENIAN,                0x0559 },
@@ -268,7 +269,7 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_THAANA,                  0x07B1 },
     { G_UNICODE_SCRIPT_THAI,                    0x0E31 },
     { G_UNICODE_SCRIPT_TIBETAN,                 0x0FD4 },
-    /* { G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL,     0x1400 }, 5.2 addition */
+    { G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL,     0x1400 },
     { G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL,     0x1401 },
     { G_UNICODE_SCRIPT_YI,                      0xA015 },
     { G_UNICODE_SCRIPT_TAGALOG,                 0x1700 },
@@ -290,7 +291,7 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_SYLOTI_NAGRI,            0xA800 },
     { G_UNICODE_SCRIPT_OLD_PERSIAN,            0x103D0 },
     { G_UNICODE_SCRIPT_KHAROSHTHI,             0x10A3F },
-    /* G_UNICODE_SCRIPT_UNKNOWN */
+    { G_UNICODE_SCRIPT_UNKNOWN,              0x1111111 },
     { G_UNICODE_SCRIPT_BALINESE,                0x1B04 },
     { G_UNICODE_SCRIPT_CUNEIFORM,              0x12000 },
     { G_UNICODE_SCRIPT_PHOENICIAN,             0x10900 },
@@ -307,7 +308,6 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_CARIAN,                 0x102A0 },
     { G_UNICODE_SCRIPT_LYCIAN,                 0x10280 },
     { G_UNICODE_SCRIPT_LYDIAN,                 0x1093F },
-/* 5.2 additions
     { G_UNICODE_SCRIPT_AVESTAN,                0x10B00 },
     { G_UNICODE_SCRIPT_BAMUM,                   0xA6A0 },
     { G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS,   0x13000 },
@@ -319,11 +319,13 @@ test_unichar_script (void)
     { G_UNICODE_SCRIPT_LISU,                    0xA4D0 },
     { G_UNICODE_SCRIPT_MEETEI_MAYEK,            0xABE5 },
     { G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN,      0x10A60 },
-    { G_UNICODE_SCRIPT_OLD_TURKISH,            0x10C00 },
+    { G_UNICODE_SCRIPT_OLD_TURKIC,             0x10C00 },
     { G_UNICODE_SCRIPT_SAMARITAN,               0x0800 },
     { G_UNICODE_SCRIPT_TAI_THAM,                0x1A20 },
-    { G_UNICODE_SCRIPT_TAI_VIET,                0xAA80 }
-*/
+    { G_UNICODE_SCRIPT_TAI_VIET,                0xAA80 },
+    { G_UNICODE_SCRIPT_BATAK,                   0x1BC0 },
+    { G_UNICODE_SCRIPT_BRAHMI,                 0x11000 },
+    { G_UNICODE_SCRIPT_MANDAIC,                 0x0840 }
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
     {
@@ -370,7 +372,7 @@ test_combining_class (void)
     { 232, 0x302C },
     { 233, 0x0362 },
     { 234, 0x0360 },
-    /* { 234, 0x1DCD }, 5.1 addition */
+    { 234, 0x1DCD },
     { 240, 0x0345 }
   };
   for (i = 0; i < G_N_ELEMENTS (examples); i++)
