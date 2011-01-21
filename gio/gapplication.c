@@ -170,7 +170,8 @@ g_application_real_activate (GApplication *application)
 {
   if (!g_signal_has_handler_pending (application,
                                      g_application_signals[SIGNAL_ACTIVATE],
-                                     0, TRUE))
+                                     0, TRUE) &&
+      G_APPLICATION_GET_CLASS (application)->activate == g_application_real_activate)
     {
       static gboolean warned;
 
@@ -192,7 +193,8 @@ g_application_real_open (GApplication  *application,
 {
   if (!g_signal_has_handler_pending (application,
                                      g_application_signals[SIGNAL_OPEN],
-                                     0, TRUE))
+                                     0, TRUE) &&
+      G_APPLICATION_GET_CLASS (application)->open == g_application_real_open)
     {
       static gboolean warned;
 
