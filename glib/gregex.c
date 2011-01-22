@@ -230,6 +230,10 @@ match_error (gint errcode)
       return _("workspace limit for empty substrings reached");
     case PCRE_ERROR_BADNEWLINE:
       return _("invalid combination of newline flags");
+    case PCRE_ERROR_BADOFFSET:
+      return _("bad offset");
+    case PCRE_ERROR_SHORTUTF8:
+      return _("short utf8");
     default:
       break;
     }
@@ -564,6 +568,14 @@ g_match_info_next (GMatchInfo  *match_info,
 
   prev_match_start = match_info->offsets[0];
   prev_match_end = match_info->offsets[1];
+
+  if (match_info->pos > match_info->string_len)
+    {
+      /* we have reached the end of the string */
+      match_info->pos = -1;
+      match_info->matches = PCRE_ERROR_NOMATCH;
+      return FALSE;
+    }
 
   match_info->matches = pcre_exec (match_info->regex->pcre_re,
                                    match_info->regex->extra,
@@ -1197,6 +1209,8 @@ g_regex_new (const gchar         *pattern,
       compile_options |= PCRE_NEWLINE_ANY;
     }
 
+  compile_options |= PCRE_UCP;
+
   /* compile the pattern */
   re = pcre_compile2 (pattern, compile_options, &errcode,
                       &errmsg, &erroffset, NULL);
@@ -1792,6 +1806,7 @@ g_regex_split_simple (const gchar        *pattern,
   regex = g_regex_new (pattern, compile_options, 0, NULL);
   if (!regex)
     return NULL;
+
   result = g_regex_split_full (regex, string, -1, 0, match_options, 0, NULL);
   g_regex_unref (regex);
   return result;
@@ -1924,6 +1939,7 @@ g_regex_split_full (const GRegex      *regex,
 
   match_ok = g_regex_match_full (regex, string, string_len, start_position,
                                  match_options, &match_info, &tmp_error);
+
   while (tmp_error == NULL)
     {
       if (match_ok)
