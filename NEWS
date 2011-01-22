@@ -1,6 +1,10 @@
 Overview of Changes from GLib 2.27.91 to 2.27.92
 ================================================
 
+* Update to Unicode 6.0
+
+* Update PCRE to 8.12
+
 * Bugs fixed:
  637696 g_unix_connection_send_fd() doesn't work
  638872 null settings backend bug
