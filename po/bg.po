@@ -1,17 +1,17 @@
 # Bulgarian translation of glib po-file.
 # Copyright (C) 2002, 2005, 2006, 2007, 2009 Free Software Foundation, Inc.
-# Copyright (C) 2010 Free Software Foundation, Inc.
+# Copyright (C) 2010, 2011 Free Software Foundation, Inc.
 # Borislav Aleksandrov <B.Aleksandrov@cnsys.bg>, 2002.
-# Alexander Shopov <ash@kambanaria.org>, 2002, 2005, 2006, 2007, 2008, 2009, 2010.
+# Alexander Shopov <ash@kambanaria.org>, 2002, 2005, 2006, 2007, 2008, 2009, 2010, 2011.
 # Damyan Ivanov <dam+gnome@ktnx.net>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-10-02 08:56+0300\n"
-"PO-Revision-Date: 2010-10-02 08:56+0300\n"
-"Last-Translator: Damyan Ivanov <dam+gnome@ktnx.net>\n"
+"POT-Creation-Date: 2011-01-22 22:49+0200\n"
+"PO-Revision-Date: 2011-01-22 22:49+0200\n"
+"Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
@@ -102,13 +102,13 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“"
 
 #: ../glib/gconvert.c:768 ../glib/gconvert.c:1161 ../glib/giochannel.c:1575
-#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2461 ../glib/gutf8.c:992
+#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2460 ../glib/gutf8.c:992
 #: ../glib/gutf8.c:1447 ../gio/gcharsetconverter.c:345
 msgid "Invalid byte sequence in conversion input"
 msgstr "Грешна байтова последователност на входа за преобразуване"
 
 #: ../glib/gconvert.c:776 ../glib/gconvert.c:1086 ../glib/giochannel.c:1582
-#: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
+#: ../glib/giochannel.c:2472 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка по време на преобразуване: %s"
@@ -391,144 +391,144 @@ msgstr "нд"
 msgid "Error opening directory '%s': %s"
 msgstr "Грешка при отваряне на папка „%s“: %s"
 
-#: ../glib/gfileutils.c:536 ../glib/gfileutils.c:624
+#: ../glib/gfileutils.c:540 ../glib/gfileutils.c:628
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Неуспех при заделянето на %lu байта за четене на файла „%s“"
 
-#: ../glib/gfileutils.c:551
+#: ../glib/gfileutils.c:555
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Грешка при четене на файл „%s“: %s"
 
-#: ../glib/gfileutils.c:565
+#: ../glib/gfileutils.c:569
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Файлът „%s“ е прекалено голям"
 
-#: ../glib/gfileutils.c:648
+#: ../glib/gfileutils.c:652
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Неуспех при четене от файл „%s“: %s"
 
-#: ../glib/gfileutils.c:699 ../glib/gfileutils.c:786
+#: ../glib/gfileutils.c:703 ../glib/gfileutils.c:790
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Неуспех при отваряне на файл „%s“: %s"
 
-#: ../glib/gfileutils.c:716 ../glib/gmappedfile.c:169
+#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:169
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Неуспех при получаване на атрибутите на файл „%s“: неуспешно изпълнение на "
 "fstat(): %s"
 
-#: ../glib/gfileutils.c:750
+#: ../glib/gfileutils.c:754
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr ""
 "Неуспех при отваряне на файл „%s“: неуспешно изпълнение на fdopen(): %s"
 
-#: ../glib/gfileutils.c:858
+#: ../glib/gfileutils.c:862
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Неуспех при преименуване на файл „%s“ на „%s“: неуспешно изпълнение на "
 "g_rename(): %s"
 
-#: ../glib/gfileutils.c:900 ../glib/gfileutils.c:1369
+#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1388
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Неуспех при създаване на файл „%s“: %s"
 
-#: ../glib/gfileutils.c:914
+#: ../glib/gfileutils.c:918
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Неуспех при отваряне на файл „%s“ за писане: неуспешно изпълнение на fdopen"
 "(): %s"
 
-#: ../glib/gfileutils.c:939
+#: ../glib/gfileutils.c:943
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fwrite(): %s"
 
-#: ../glib/gfileutils.c:958
+#: ../glib/gfileutils.c:962
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fflush(): %s"
 
-#: ../glib/gfileutils.c:987
+#: ../glib/gfileutils.c:1005
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fsync(): %s"
 
-#: ../glib/gfileutils.c:1006
+#: ../glib/gfileutils.c:1025
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr ""
 "Неуспех при затваряне на файл „%s“: неуспешно изпълнение на fclose(): %s"
 
-#: ../glib/gfileutils.c:1127
+#: ../glib/gfileutils.c:1146
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Неуспех при изтриването на съществуващия файл „%s“: неуспешно изпълнение на "
 "g_unlink(): %s"
 
-#: ../glib/gfileutils.c:1331
+#: ../glib/gfileutils.c:1350
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблонът „%s“ е неправилен, не трябва да съдържа „%s“"
 
-#: ../glib/gfileutils.c:1344
+#: ../glib/gfileutils.c:1363
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблонът „%s“ не съдържа XXXXXX"
 
-#: ../glib/gfileutils.c:1777
+#: ../glib/gfileutils.c:1796
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u B"
 msgstr[1] "%u B"
 
-#: ../glib/gfileutils.c:1785
+#: ../glib/gfileutils.c:1804
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1790
+#: ../glib/gfileutils.c:1809
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1795
+#: ../glib/gfileutils.c:1814
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1800
+#: ../glib/gfileutils.c:1819
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:1805
+#: ../glib/gfileutils.c:1824
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:1810
+#: ../glib/gfileutils.c:1829
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#: ../glib/gfileutils.c:1853
+#: ../glib/gfileutils.c:1872
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Неуспех при четене на символната връзка „%s“: %s"
 
-#: ../glib/gfileutils.c:1874
+#: ../glib/gfileutils.c:1893
 msgid "Symbolic links not supported"
 msgstr "Символни връзки не се поддържат"
 
@@ -541,8 +541,8 @@ msgstr "Не може да се отвори конвертор от „%s“ к
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Не може да се чете от g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1799 ../glib/giochannel.c:2057
-#: ../glib/giochannel.c:2144
+#: ../glib/giochannel.c:1799 ../glib/giochannel.c:2056
+#: ../glib/giochannel.c:2143
 msgid "Leftover unconverted data in read buffer"
 msgstr "В буфера за четене останаха непреобразувани данни"
 
@@ -566,32 +566,32 @@ msgstr ""
 "Неуспех при отваряне на файл в паметта „%s“: неуспешно изпълнение на mmap(): "
 "%s"
 
-#: ../glib/gmarkup.c:307 ../glib/gmarkup.c:347
+#: ../glib/gmarkup.c:354 ../glib/gmarkup.c:395
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Грешка на ред %d, знак %d: "
 
-#: ../glib/gmarkup.c:367 ../glib/gmarkup.c:445
+#: ../glib/gmarkup.c:417 ../glib/gmarkup.c:500
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Неправилно кодиран текст в UTF-8 — „%s“ е грешен"
 
-#: ../glib/gmarkup.c:378
+#: ../glib/gmarkup.c:428
 #, c-format
 msgid "'%s' is not a valid name "
 msgstr "„%s“ е неправилно име "
 
-#: ../glib/gmarkup.c:394
+#: ../glib/gmarkup.c:444
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
 msgstr "„%s“ е неправилно име „%c“"
 
-#: ../glib/gmarkup.c:498
+#: ../glib/gmarkup.c:553
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Грешка на ред %d: %s"
 
-#: ../glib/gmarkup.c:582
+#: ../glib/gmarkup.c:637
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -600,7 +600,7 @@ msgstr ""
 "Грешка при анализ на „%-.*s“, което трябва да е число в указател на знак "
 "(напр. &#234;). Вероятно числото е твърде голямо"
 
-#: ../glib/gmarkup.c:594
+#: ../glib/gmarkup.c:649
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -610,24 +610,24 @@ msgstr ""
 "без той да е начало на заместваща последователност. Представете амперсанда "
 "чрез „&amp;“"
 
-#: ../glib/gmarkup.c:620
+#: ../glib/gmarkup.c:675
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Указателят на знак „%-.*s“ не представя разрешен знак при декодиране"
 
-#: ../glib/gmarkup.c:658
+#: ../glib/gmarkup.c:713
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Намерена е празна заместваща последователност: „&;“. Валидни "
 "последователности са: „&amp;“, „&quot;“, „&lt;“, „&gt;“, „&apos;“"
 
-#: ../glib/gmarkup.c:666
+#: ../glib/gmarkup.c:721
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "Името на заместващата последователност „%-.*s“ е неизвестно"
 
-#: ../glib/gmarkup.c:671
+#: ../glib/gmarkup.c:726
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -636,11 +636,11 @@ msgstr ""
 "амперсанд, без той да е начало на заместваща последователност. Представете "
 "амперсанда чрез „&amp;“"
 
-#: ../glib/gmarkup.c:1018
+#: ../glib/gmarkup.c:1077
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Документът трябва да започва с елемент (напр. <book>)"
 
-#: ../glib/gmarkup.c:1058
+#: ../glib/gmarkup.c:1117
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -648,7 +648,7 @@ msgid ""
 msgstr ""
 "„%s“ е неправилен знак след „<“. Името на елемент не може да започне с него"
 
-#: ../glib/gmarkup.c:1126
+#: ../glib/gmarkup.c:1185
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' character to end the empty-element tag "
@@ -657,7 +657,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се етикетът на празния елемент „%s“ да завърши "
 "с „>“"
 
-#: ../glib/gmarkup.c:1210
+#: ../glib/gmarkup.c:1269
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -665,7 +665,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се „=“ след името на атрибут „%s“ на елемент "
 "„%s“"
 
-#: ../glib/gmarkup.c:1251
+#: ../glib/gmarkup.c:1310
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -676,7 +676,7 @@ msgstr ""
 "завърши със знак „>“ или „/“, или евентуално да продължи с атрибут. Най-"
 "вероятно използвате неправилен знак в името на атрибут"
 
-#: ../glib/gmarkup.c:1295
+#: ../glib/gmarkup.c:1354
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -685,7 +685,7 @@ msgstr ""
 "Неподходящ знак „%s“, очаква се знакът „\"“ след знака за равенство, когато "
 "се присвоява стойност на атрибута „%s“ на елемент „%s“"
 
-#: ../glib/gmarkup.c:1429
+#: ../glib/gmarkup.c:1487
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -693,7 +693,7 @@ msgid ""
 msgstr ""
 "„%s“ е неправилен знак след „</“. Името на елемент не може да започва с „%s“"
 
-#: ../glib/gmarkup.c:1465
+#: ../glib/gmarkup.c:1523
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -702,26 +702,26 @@ msgstr ""
 "„%s“ е неправилен знак при завършването на затварящ етикет с име „%s“. "
 "Позволен е знакът „>“"
 
-#: ../glib/gmarkup.c:1476
+#: ../glib/gmarkup.c:1534
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Елементът „%s“ е затворен, няма текущо отворен елемент"
 
-#: ../glib/gmarkup.c:1485
+#: ../glib/gmarkup.c:1543
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Елементът „%s“ е затворен, но текущо е отворен елемент „%s“"
 
-#: ../glib/gmarkup.c:1652
+#: ../glib/gmarkup.c:1711
 msgid "Document was empty or contained only whitespace"
 msgstr "Документът е празен или съдържа само празни знаци"
 
-#: ../glib/gmarkup.c:1666
+#: ../glib/gmarkup.c:1725
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Документът завършва неочаквано веднага след отваряща счупена скоба — „<“"
 
-#: ../glib/gmarkup.c:1674 ../glib/gmarkup.c:1719
+#: ../glib/gmarkup.c:1733 ../glib/gmarkup.c:1778
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -730,7 +730,7 @@ msgstr ""
 "Документът завършва неочаквано — има отворени елементи. Последно отворен е "
 "„%s“"
 
-#: ../glib/gmarkup.c:1682
+#: ../glib/gmarkup.c:1741
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -739,19 +739,19 @@ msgstr ""
 "Документът завършва неочаквано, очаква се затваряща счупена скоба да завърши "
 "етикета <%s/>"
 
-#: ../glib/gmarkup.c:1688
+#: ../glib/gmarkup.c:1747
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Документът завършва неочаквано в името на елемент"
 
-#: ../glib/gmarkup.c:1694
+#: ../glib/gmarkup.c:1753
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Документът завършва неочаквано в името на атрибут"
 
-#: ../glib/gmarkup.c:1699
+#: ../glib/gmarkup.c:1758
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Документът завършва неочаквано в отварящ етикет на елемент "
 
-#: ../glib/gmarkup.c:1705
+#: ../glib/gmarkup.c:1764
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -759,16 +759,16 @@ msgstr ""
 "Документът завършва неочаквано след знака за равенство следващ името на "
 "атрибута. Атрибутът няма стойност"
 
-#: ../glib/gmarkup.c:1712
+#: ../glib/gmarkup.c:1771
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Документът завършва неочаквано вътре в стойността на атрибут"
 
-#: ../glib/gmarkup.c:1728
+#: ../glib/gmarkup.c:1787
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Документът завършва неочаквано в затварящия етикет на елемент „%s“"
 
-#: ../glib/gmarkup.c:1734
+#: ../glib/gmarkup.c:1793
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr "Документът завършва неочаквано в коментар или инструкция за обработка"
 
@@ -793,7 +793,7 @@ msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "шаблонът съдържа елементи, които не се поддържат при частично съвпадение"
 
-#: ../glib/gregex.c:211 ../gio/glocalfile.c:2109
+#: ../glib/gregex.c:211 ../gio/glocalfile.c:2111
 msgid "internal error"
 msgstr "вътрешна грешка"
 
@@ -814,262 +814,270 @@ msgstr "границата на работното пространство за
 msgid "invalid combination of newline flags"
 msgstr "неправилна комбинация от флагове за нов ред"
 
+#: ../glib/gregex.c:234
+msgid "bad offset"
+msgstr "неправилно отместване"
+
 #: ../glib/gregex.c:236
+msgid "short utf8"
+msgstr "прекалено къс utf8"
+
+#: ../glib/gregex.c:240
 msgid "unknown error"
 msgstr "непозната грешка"
 
-#: ../glib/gregex.c:256
+#: ../glib/gregex.c:260
 msgid "\\ at end of pattern"
 msgstr "„\\“ в края на шаблон"
 
-#: ../glib/gregex.c:259
+#: ../glib/gregex.c:263
 msgid "\\c at end of pattern"
 msgstr "„\\c“ в края на шаблон"
 
-#: ../glib/gregex.c:262
+#: ../glib/gregex.c:266
 msgid "unrecognized character follows \\"
 msgstr "след „\\“ следва непознат знак"
 
-#: ../glib/gregex.c:269
+#: ../glib/gregex.c:273
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr ""
 "тук не са позволени екранирания за промяна на регистъра („\\l“, „\\L“, "
 "„\\u“, „\\U“)"
 
-#: ../glib/gregex.c:272
+#: ../glib/gregex.c:276
 msgid "numbers out of order in {} quantifier"
 msgstr "числата не са в правилен ред в определението за брой с „{}“"
 
-#: ../glib/gregex.c:275
+#: ../glib/gregex.c:279
 msgid "number too big in {} quantifier"
 msgstr "прекалено голямо число в определението за брой с „{}“"
 
-#: ../glib/gregex.c:278
+#: ../glib/gregex.c:282
 msgid "missing terminating ] for character class"
 msgstr "липсва завършващ знак „]“ за клас от знаци"
 
-#: ../glib/gregex.c:281
+#: ../glib/gregex.c:285
 msgid "invalid escape sequence in character class"
 msgstr "грешна екранираща последователност в класа от знаци"
 
-#: ../glib/gregex.c:284
+#: ../glib/gregex.c:288
 msgid "range out of order in character class"
 msgstr "знаците са в неправилен ред в класа от знаци"
 
-#: ../glib/gregex.c:287
+#: ../glib/gregex.c:291
 msgid "nothing to repeat"
 msgstr "няма какво да се повтори"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:294
 msgid "unrecognized character after (?"
 msgstr "непознат знак след „(?“"
 
-#: ../glib/gregex.c:294
+#: ../glib/gregex.c:298
 msgid "unrecognized character after (?<"
 msgstr "непознат знак след „(?<“"
 
-#: ../glib/gregex.c:298
+#: ../glib/gregex.c:302
 msgid "unrecognized character after (?P"
 msgstr "непознат знак след „(?P“"
 
-#: ../glib/gregex.c:301
+#: ../glib/gregex.c:305
 msgid "POSIX named classes are supported only within a class"
 msgstr "именованите класове от POSIX се поддържат само в клас"
 
-#: ../glib/gregex.c:304
+#: ../glib/gregex.c:308
 msgid "missing terminating )"
 msgstr "липсва завършваща „)“"
 
-#: ../glib/gregex.c:308
+#: ../glib/gregex.c:312
 msgid ") without opening ("
 msgstr "„)“ без отваряща „(“"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:315
+#: ../glib/gregex.c:319
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "„(?R“ или „(?[+-]цифри“ трябва да се следват от „)“"
 
-#: ../glib/gregex.c:318
+#: ../glib/gregex.c:322
 msgid "reference to non-existent subpattern"
 msgstr "указател към несъществуващ подшаблон"
 
-#: ../glib/gregex.c:321
+#: ../glib/gregex.c:325
 msgid "missing ) after comment"
 msgstr "липсваща „)“ след коментар"
 
-#: ../glib/gregex.c:324
+#: ../glib/gregex.c:328
 msgid "regular expression too large"
 msgstr "регулярният израз е прекалено голям"
 
-#: ../glib/gregex.c:327
+#: ../glib/gregex.c:331
 msgid "failed to get memory"
 msgstr "неуспех при получаването на памет"
 
-#: ../glib/gregex.c:330
+#: ../glib/gregex.c:334
 msgid "lookbehind assertion is not fixed length"
 msgstr "предположението за преглед назад не е с постоянна дължина"
 
-#: ../glib/gregex.c:333
+#: ../glib/gregex.c:337
 msgid "malformed number or name after (?("
 msgstr "неправилен номер или име след „(?(“"
 
-#: ../glib/gregex.c:336
+#: ../glib/gregex.c:340
 msgid "conditional group contains more than two branches"
 msgstr "условната група съдържа повече от две разклонения"
 
-#: ../glib/gregex.c:339
+#: ../glib/gregex.c:343
 msgid "assertion expected after (?("
 msgstr "очаква се предположение след „(?(“"
 
-#: ../glib/gregex.c:342
+#: ../glib/gregex.c:346
 msgid "unknown POSIX class name"
 msgstr "непознато име на клас по POSIX"
 
-#: ../glib/gregex.c:345
+#: ../glib/gregex.c:349
 msgid "POSIX collating elements are not supported"
 msgstr "не се поддържат елементи на POSIX за подредба"
 
-#: ../glib/gregex.c:348
+#: ../glib/gregex.c:352
 msgid "character value in \\x{...} sequence is too large"
 msgstr "знаковата стойност в последователността „\\x{…}“ е прекалено голяма"
 
-#: ../glib/gregex.c:351
+#: ../glib/gregex.c:355
 msgid "invalid condition (?(0)"
 msgstr "неправилно условие „(?(0)“"
 
-#: ../glib/gregex.c:354
+#: ../glib/gregex.c:358
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "предположението за преглед назад не може да съдържа „\\C“"
 
-#: ../glib/gregex.c:357
+#: ../glib/gregex.c:361
 msgid "recursive call could loop indefinitely"
 msgstr "рекурсивно извикване може да доведе до безкраен цикъл"
 
-#: ../glib/gregex.c:360
+#: ../glib/gregex.c:364
 msgid "missing terminator in subpattern name"
 msgstr "липсва краен знак в име на подшаблон"
 
-#: ../glib/gregex.c:363
+#: ../glib/gregex.c:367
 msgid "two named subpatterns have the same name"
 msgstr "два именовани подшаблона са с еднакво име"
 
-#: ../glib/gregex.c:366
+#: ../glib/gregex.c:370
 msgid "malformed \\P or \\p sequence"
 msgstr "неправилни последователности „\\P“ или „\\p“"
 
-#: ../glib/gregex.c:369
+#: ../glib/gregex.c:373
 msgid "unknown property name after \\P or \\p"
 msgstr "непознато име на свойство след „\\P“ или „\\p“"
 
-#: ../glib/gregex.c:372
+#: ../glib/gregex.c:376
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "името на подшаблон е прекалено дълго (максимално е 32 знака)"
 
-#: ../glib/gregex.c:375
+#: ../glib/gregex.c:379
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "прекалено много именовани подшаблони (максимумът е 10 000)"
 
-#: ../glib/gregex.c:378
+#: ../glib/gregex.c:382
 msgid "octal value is greater than \\377"
 msgstr "осмичната стойност е по-голяма от „\\377“"
 
-#: ../glib/gregex.c:381
+#: ../glib/gregex.c:385
 msgid "DEFINE group contains more than one branch"
 msgstr "групата DEFINE съдържа повече от едно разклонение"
 
-#: ../glib/gregex.c:384
+#: ../glib/gregex.c:388
 msgid "repeating a DEFINE group is not allowed"
 msgstr "не можете да повторите група DEFINE"
 
-#: ../glib/gregex.c:387
+#: ../glib/gregex.c:391
 msgid "inconsistent NEWLINE options"
 msgstr "несъвместими опции за нов ред"
 
-#: ../glib/gregex.c:390
+#: ../glib/gregex.c:394
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "„\\g“ не е последвано от име във фигурни скоби или число различно от „0“ "
 "евентуално във фигурни скоби"
 
-#: ../glib/gregex.c:395
+#: ../glib/gregex.c:399
 msgid "unexpected repeat"
 msgstr "неочаквано повторение"
 
-#: ../glib/gregex.c:399
+#: ../glib/gregex.c:403
 msgid "code overflow"
 msgstr "препълване на кода"
 
-#: ../glib/gregex.c:403
+#: ../glib/gregex.c:407
 msgid "overran compiling workspace"
 msgstr "надхвърлено е работното пространство за компилация"
 
-#: ../glib/gregex.c:407
+#: ../glib/gregex.c:411
 msgid "previously-checked referenced subpattern not found"
 msgstr "не е открит указан предварително проверен подшаблон"
 
-#: ../glib/gregex.c:579 ../glib/gregex.c:1700
+#: ../glib/gregex.c:591 ../glib/gregex.c:1714
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Грешка %2$s при напасването на регулярния израз — %1$s"
 
-#: ../glib/gregex.c:1155
+#: ../glib/gregex.c:1167
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Библиотеката PCRE е компилирана без поддръжка на UTF-8"
 
-#: ../glib/gregex.c:1164
+#: ../glib/gregex.c:1176
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Библиотеката PCRE е компилирана без поддръжка на настройки в UTF-8"
 
-#: ../glib/gregex.c:1218
+#: ../glib/gregex.c:1232
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Грешка при компилирането на регулярния израз %s, знак %d: %s"
 
-#: ../glib/gregex.c:1254
+#: ../glib/gregex.c:1268
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Грешка при оптимизирането на регулярния израз %s: %s"
 
-#: ../glib/gregex.c:2128
+#: ../glib/gregex.c:2144
 msgid "hexadecimal digit or '}' expected"
 msgstr "очаква се шестнайсетично число или „}“"
 
-#: ../glib/gregex.c:2144
+#: ../glib/gregex.c:2160
 msgid "hexadecimal digit expected"
 msgstr "очаква се шестнайсетично число"
 
-#: ../glib/gregex.c:2184
+#: ../glib/gregex.c:2200
 msgid "missing '<' in symbolic reference"
 msgstr "в символния указател липсва „<“"
 
-#: ../glib/gregex.c:2193
+#: ../glib/gregex.c:2209
 msgid "unfinished symbolic reference"
 msgstr "незавършен символен указател"
 
-#: ../glib/gregex.c:2200
+#: ../glib/gregex.c:2216
 msgid "zero-length symbolic reference"
 msgstr "символен указател с нулева дължина"
 
-#: ../glib/gregex.c:2211
+#: ../glib/gregex.c:2227
 msgid "digit expected"
 msgstr "очаква се цифра"
 
-#: ../glib/gregex.c:2229
+#: ../glib/gregex.c:2245
 msgid "illegal symbolic reference"
 msgstr "неправилен символен указател"
 
-#: ../glib/gregex.c:2291
+#: ../glib/gregex.c:2307
 msgid "stray final '\\'"
 msgstr "в края има един знак „\\“ в повече"
 
-#: ../glib/gregex.c:2295
+#: ../glib/gregex.c:2311
 msgid "unknown escape sequence"
 msgstr "непозната екранираща последователност"
 
-#: ../glib/gregex.c:2305
+#: ../glib/gregex.c:2321
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Грешка при анализа на текста за замяна „%s“, знак %lu: %s"
@@ -1281,19 +1289,19 @@ msgstr "Липсва аргумент за %s"
 msgid "Unknown option %s"
 msgstr "Непозната опция %s"
 
-#: ../glib/gkeyfile.c:362
+#: ../glib/gkeyfile.c:363
 msgid "Valid key file could not be found in search dirs"
 msgstr "Не може да се открие валиден файл с ключове в папките с данни"
 
-#: ../glib/gkeyfile.c:397
+#: ../glib/gkeyfile.c:398
 msgid "Not a regular file"
 msgstr "Не е обикновен файл"
 
-#: ../glib/gkeyfile.c:405
+#: ../glib/gkeyfile.c:406
 msgid "File is empty"
 msgstr "Файлът е празен"
 
-#: ../glib/gkeyfile.c:764
+#: ../glib/gkeyfile.c:765
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1301,50 +1309,50 @@ msgstr ""
 "Ключовият файл съдържа реда „%s“, който не е нито двойка ключ-стойност, нито "
 "група, нито коментар"
 
-#: ../glib/gkeyfile.c:824
+#: ../glib/gkeyfile.c:825
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Неправилно име на група: %s"
 
-#: ../glib/gkeyfile.c:846
+#: ../glib/gkeyfile.c:847
 msgid "Key file does not start with a group"
 msgstr "Ключовият файл не започва с група"
 
-#: ../glib/gkeyfile.c:872
+#: ../glib/gkeyfile.c:873
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Неправилно име на ключ: %s"
 
-#: ../glib/gkeyfile.c:899
+#: ../glib/gkeyfile.c:900
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Ключовият файл съдържа неподдържаното кодиране „%s“"
 
-#: ../glib/gkeyfile.c:1115 ../glib/gkeyfile.c:1277 ../glib/gkeyfile.c:2656
-#: ../glib/gkeyfile.c:2722 ../glib/gkeyfile.c:2857 ../glib/gkeyfile.c:2990
-#: ../glib/gkeyfile.c:3143 ../glib/gkeyfile.c:3330 ../glib/gkeyfile.c:3391
+#: ../glib/gkeyfile.c:1116 ../glib/gkeyfile.c:1278 ../glib/gkeyfile.c:2646
+#: ../glib/gkeyfile.c:2712 ../glib/gkeyfile.c:2847 ../glib/gkeyfile.c:2980
+#: ../glib/gkeyfile.c:3133 ../glib/gkeyfile.c:3320 ../glib/gkeyfile.c:3381
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Ключовият файл не съдържа групата „%s“"
 
-#: ../glib/gkeyfile.c:1289
+#: ../glib/gkeyfile.c:1290
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Ключовият файл не съдържа ключа „%s“"
 
-#: ../glib/gkeyfile.c:1396 ../glib/gkeyfile.c:1511
+#: ../glib/gkeyfile.c:1397 ../glib/gkeyfile.c:1512
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Ключовият файл съдържа ключ „%s“ със стойност „%s“, която не е в UTF-8"
 
-#: ../glib/gkeyfile.c:1416 ../glib/gkeyfile.c:1910
+#: ../glib/gkeyfile.c:1417 ../glib/gkeyfile.c:1900
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Ключовият файл съдържа ключа „%s“, чиято стойност не може да бъде "
 "анализирана."
 
-#: ../glib/gkeyfile.c:1531
+#: ../glib/gkeyfile.c:1532
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -1352,7 +1360,7 @@ msgstr ""
 "Ключовият файл съдържа ключа „%s“, чиято стойност не може да бъде "
 "анализирана."
 
-#: ../glib/gkeyfile.c:2125 ../glib/gkeyfile.c:2487
+#: ../glib/gkeyfile.c:2115 ../glib/gkeyfile.c:2477
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1361,58 +1369,58 @@ msgstr ""
 "Ключовият файл съдържа ключа „%s“ в групата „%s“, чиято стойност не може да "
 "бъде анализирана."
 
-#: ../glib/gkeyfile.c:2671 ../glib/gkeyfile.c:2872 ../glib/gkeyfile.c:3402
+#: ../glib/gkeyfile.c:2661 ../glib/gkeyfile.c:2862 ../glib/gkeyfile.c:3392
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Ключовият файл не съдържа ключа „%s“ в групата „%s“"
 
-#: ../glib/gkeyfile.c:3636
+#: ../glib/gkeyfile.c:3626
 msgid "Key file contains escape character at end of line"
 msgstr "Ключовият файл съдържа екранираща последователност в край на ред"
 
-#: ../glib/gkeyfile.c:3658
+#: ../glib/gkeyfile.c:3648
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Ключовият файл съдържа грешна екранираща последователност — „%s“"
 
-#: ../glib/gkeyfile.c:3800
+#: ../glib/gkeyfile.c:3790
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Стойността „%s“ не може да се интерпретира като число."
 
-#: ../glib/gkeyfile.c:3814
+#: ../glib/gkeyfile.c:3804
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Целочислената стойност „%s“ е извън интервала на допустими стойности"
 
-#: ../glib/gkeyfile.c:3847
+#: ../glib/gkeyfile.c:3837
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr ""
 "Стойността „%s“ не може да се интерпретира като число с плаваща запетая."
 
-#: ../glib/gkeyfile.c:3871
+#: ../glib/gkeyfile.c:3861
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Стойността „%s“ не може да се интерпретира като булева."
 
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
-#: ../gio/ginputstream.c:556 ../gio/ginputstream.c:681
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:725
+#: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
+#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:726
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Подадена е прекалено голяма стойност на %s"
 
-#: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:891
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1200
+#: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1197
 msgid "Stream is already closed"
 msgstr "Потокът вече е затворен"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1642
-#: ../gio/gdbusconnection.c:1731 ../gio/gdbusconnection.c:1913
-#: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:755
-#: ../gio/gsimpleasyncresult.c:781
+#: ../gio/gcancellable.c:433 ../gio/gdbusconnection.c:1637
+#: ../gio/gdbusconnection.c:1726 ../gio/gdbusconnection.c:1912
+#: ../gio/glocalfile.c:2104 ../gio/gsimpleasyncresult.c:810
+#: ../gio/gsimpleasyncresult.c:836
 msgid "Operation was cancelled"
 msgstr "Действието е прекратено"
 
@@ -1428,7 +1436,7 @@ msgstr "Непълна байтова последователност на вх
 msgid "Not enough space in destination"
 msgstr "Няма достатъчно място в целта"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:810
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:832
 msgid "Cancellable initialization not supported"
 msgstr "Не се поддържа отменима инициализация"
 
@@ -1565,39 +1573,39 @@ msgstr ""
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Грешка при запис на съдържанието на моментен файл „%s“ в поток:"
 
-#: ../gio/gdbusaddress.c:942
+#: ../gio/gdbusaddress.c:939
 msgid "The given address is empty"
 msgstr "Даденият адрес е празен"
 
-#: ../gio/gdbusaddress.c:1011
+#: ../gio/gdbusaddress.c:1008
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr ""
 "Създаването на шина за обмен на съобщения не е възможно без идентификатор на "
 "машина: "
 
-#: ../gio/gdbusaddress.c:1048
+#: ../gio/gdbusaddress.c:1045
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Грешка при изпълняване на външна команда „%s“: "
 
-#: ../gio/gdbusaddress.c:1059
+#: ../gio/gdbusaddress.c:1056
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Аварийно прекъсване при изпълняване на външна команда „%s“: %s"
 
-#: ../gio/gdbusaddress.c:1073
+#: ../gio/gdbusaddress.c:1070
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "Командата „%s“ завърши с ненулев резултат %d: %s"
 
-#: ../gio/gdbusaddress.c:1146
+#: ../gio/gdbusaddress.c:1143
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Адресът на шината на сесията не може да се определи (липсва реализация за "
 "тази операционна система)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6151
+#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6168
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1606,7 +1614,7 @@ msgstr ""
 "Адресът на шината не може да се определи от променливата на обкръжението "
 "DBUS_STARTER_BUS_TYPE — непозната стойност „%s“"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6160
+#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6177
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1614,7 +1622,7 @@ msgstr ""
 "Адресът на шината не може да се определи поради липсваща променлива "
 "DBUS_STARTER_BUS_TYPE в обкръжението"
 
-#: ../gio/gdbusaddress.c:1264
+#: ../gio/gdbusaddress.c:1261
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Непознат вид шина %d"
@@ -1716,12 +1724,12 @@ msgstr "Грешка при отваряне на ключодържателя �
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Допълнително, отключването на „%s“ бе също неуспешно: %s) "
 
-#: ../gio/gdbusconnection.c:1151 ../gio/gdbusconnection.c:1380
-#: ../gio/gdbusconnection.c:1419 ../gio/gdbusconnection.c:1742
+#: ../gio/gdbusconnection.c:1148 ../gio/gdbusconnection.c:1374
+#: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1737
 msgid "The connection is closed"
 msgstr "Връзката е прекъсната"
 
-#: ../gio/gdbusconnection.c:1686
+#: ../gio/gdbusconnection.c:1681
 msgid "Timeout was reached"
 msgstr "Времето за изчакване е просрочено"
 
@@ -1730,73 +1738,73 @@ msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Неподдържани флагове при създаване на изходяща връзка"
 
-#: ../gio/gdbusconnection.c:3734 ../gio/gdbusconnection.c:4052
+#: ../gio/gdbusconnection.c:3752 ../gio/gdbusconnection.c:4070
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "Обектът в %s няма интерфейс „org.freedesktop.DBus.Properties“"
 
-#: ../gio/gdbusconnection.c:3806
+#: ../gio/gdbusconnection.c:3824
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Грешка при промяна на свойството „%s“: Очакван е вид „%s“, а е получен „%s“"
 
-#: ../gio/gdbusconnection.c:3901
+#: ../gio/gdbusconnection.c:3919
 #, c-format
 msgid "No such property `%s'"
 msgstr "Липсва свойство „%s“"
 
-#: ../gio/gdbusconnection.c:3913
+#: ../gio/gdbusconnection.c:3931
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Свойството „%s“ не поддържа четене"
 
-#: ../gio/gdbusconnection.c:3924
+#: ../gio/gdbusconnection.c:3942
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Свойството „%s“ не поддържа запис"
 
-#: ../gio/gdbusconnection.c:3994 ../gio/gdbusconnection.c:5585
+#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5602
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Липсва интерфейс „%s“"
 
-#: ../gio/gdbusconnection.c:4182
+#: ../gio/gdbusconnection.c:4200
 msgid "No such interface"
 msgstr "Липсва такъв интерфейс"
 
-#: ../gio/gdbusconnection.c:4398 ../gio/gdbusconnection.c:6101
+#: ../gio/gdbusconnection.c:4416 ../gio/gdbusconnection.c:6118
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Липсва интерфейс „%s“ към обекта в %s"
 
-#: ../gio/gdbusconnection.c:4450
+#: ../gio/gdbusconnection.c:4468
 #, c-format
 msgid "No such method `%s'"
 msgstr "Липсва метод „%s“"
 
-#: ../gio/gdbusconnection.c:4481
+#: ../gio/gdbusconnection.c:4499
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Видът на съобщението („%s“) не съвпада с очаквания („%s“)"
 
-#: ../gio/gdbusconnection.c:4700
+#: ../gio/gdbusconnection.c:4718
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Вече е наличен обект за интерфейса %s в %s"
 
-#: ../gio/gdbusconnection.c:4894
+#: ../gio/gdbusconnection.c:4912
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Методът „%s“ върна тип „%s“, а се очаква „%s“"
 
-#: ../gio/gdbusconnection.c:5696
+#: ../gio/gdbusconnection.c:5713
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Не съществува метод „%s“ на интерфейса „%s“ със сигнатура „%s“"
 
-#: ../gio/gdbusconnection.c:5814
+#: ../gio/gdbusconnection.c:5831
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Вече има поддърво за %s"
@@ -1976,13 +1984,13 @@ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 msgstr ""
 "Видът на върнатата стойност е неправилен — получен е „%s“, а се очаква „%s“"
 
-#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:2974
-#: ../gio/gsocket.c:3055
+#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:3027
+#: ../gio/gsocket.c:3108
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Грешка при изпращане на съобщение: %s"
 
-#: ../gio/gdbusprivate.c:1759
+#: ../gio/gdbusprivate.c:1768
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Неуспех при зареждане на /var/lib/dbus/machine-id: "
 
@@ -1995,17 +2003,17 @@ msgstr ""
 "Опит за промяна на свойството „%s“ от вид „%s“, а според очаквания интерфейс "
 "видът е „%s“"
 
-#: ../gio/gdbusproxy.c:1235
+#: ../gio/gdbusproxy.c:1234
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Грешка при извикване на StartServiceByName за %s:"
 
-#: ../gio/gdbusproxy.c:1256
+#: ../gio/gdbusproxy.c:1255
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Неочакван отговор „%d“ от метода StartServicebyName(„%s“)"
 
-#: ../gio/gdbusproxy.c:2315 ../gio/gdbusproxy.c:2472
+#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2037,7 +2045,7 @@ msgstr "Низът „%s“ не е допустим глобален идент
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Невъзможно е да се чака за връзки по неподдържан транспорт „%s“"
 
-#: ../gio/gdbus-tool.c:87 ../gio/gsettings-tool.c:76
+#: ../gio/gdbus-tool.c:87
 msgid "COMMAND"
 msgstr "КОМАНДА"
 
@@ -2201,34 +2209,34 @@ msgstr "Път до обекта за наблюдение"
 msgid "Monitor a remote object."
 msgstr "Наблюдение на отдалечен обект."
 
-#: ../gio/gdesktopappinfo.c:467 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:480 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Без име"
 
-#: ../gio/gdesktopappinfo.c:751
+#: ../gio/gdesktopappinfo.c:764
 msgid "Desktop file didn't specify Exec field"
 msgstr "Във файла .desktop липсва поле за изпълнение"
 
-#: ../gio/gdesktopappinfo.c:944
+#: ../gio/gdesktopappinfo.c:1031
 msgid "Unable to find terminal required for application"
 msgstr "Не може да се открие терминал за приложението"
 
-#: ../gio/gdesktopappinfo.c:1153
+#: ../gio/gdesktopappinfo.c:1323
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Не може да се създаде папката с потребителските настройки %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1157
+#: ../gio/gdesktopappinfo.c:1327
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Не може да се създаде папката с настройките за MIME %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1565
+#: ../gio/gdesktopappinfo.c:1820
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Не може да се създаде файл .desktop — „%s“"
 
-#: ../gio/gdesktopappinfo.c:1679
+#: ../gio/gdesktopappinfo.c:1936
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Потребителска дефиниция за %s"
@@ -2240,19 +2248,19 @@ msgstr "устройството не поддържа изваждане"
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gdrive.c:443
+#: ../gio/gdrive.c:444
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "устройството не поддържа нито изваждане, нито изваждане с действие"
 
-#: ../gio/gdrive.c:520
+#: ../gio/gdrive.c:521
 msgid "drive doesn't implement polling for media"
 msgstr "устройството не поддържа следене за носител"
 
-#: ../gio/gdrive.c:725
+#: ../gio/gdrive.c:728
 msgid "drive doesn't implement start"
 msgstr "устройството не поддържа стартиране"
 
-#: ../gio/gdrive.c:827
+#: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "устройството не поддържа спиране"
 
@@ -2266,29 +2274,29 @@ msgstr "Версия %d на кодирането GEmblem не се поддър
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Неправилен брой лексеми (%d) в кодирането GEmblem"
 
-#: ../gio/gemblemedicon.c:293
+#: ../gio/gemblemedicon.c:368
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "Версия %d на кодирането GEmblemedIcon не се поддържа"
 
-#: ../gio/gemblemedicon.c:303
+#: ../gio/gemblemedicon.c:378
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "Неправилен брой лексеми (%d) в кодирането GEmblemedIcon"
 
-#: ../gio/gemblemedicon.c:326
+#: ../gio/gemblemedicon.c:401
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Очакваше се GEmblem за GEmblemedIcon"
 
-#: ../gio/gfile.c:872 ../gio/gfile.c:1102 ../gio/gfile.c:1237
-#: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
-#: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
-#: ../gio/gfile.c:1837 ../gio/gfile.c:3307 ../gio/gfile.c:3361
-#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3861
-#: ../gio/gfile.c:4263 ../gio/gfile.c:4349 ../gio/gfile.c:4438
-#: ../gio/gfile.c:4536 ../gio/gfile.c:4623 ../gio/gfile.c:4717
-#: ../gio/gfile.c:5047 ../gio/gfile.c:5327 ../gio/gfile.c:5396
-#: ../gio/gfile.c:6988 ../gio/gfile.c:7078 ../gio/gfile.c:7164
+#: ../gio/gfile.c:872 ../gio/gfile.c:1103 ../gio/gfile.c:1238
+#: ../gio/gfile.c:1475 ../gio/gfile.c:1529 ../gio/gfile.c:1586
+#: ../gio/gfile.c:1669 ../gio/gfile.c:1724 ../gio/gfile.c:1784
+#: ../gio/gfile.c:1838 ../gio/gfile.c:3308 ../gio/gfile.c:3362
+#: ../gio/gfile.c:3494 ../gio/gfile.c:3535 ../gio/gfile.c:3862
+#: ../gio/gfile.c:4264 ../gio/gfile.c:4350 ../gio/gfile.c:4439
+#: ../gio/gfile.c:4537 ../gio/gfile.c:4624 ../gio/gfile.c:4718
+#: ../gio/gfile.c:5039 ../gio/gfile.c:5306 ../gio/gfile.c:5371
+#: ../gio/gfile.c:6945 ../gio/gfile.c:7035 ../gio/gfile.c:7121
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Действието не се поддържа"
@@ -2301,58 +2309,58 @@ msgstr "Действието не се поддържа"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1059 ../gio/glocalfile.c:1070
-#: ../gio/glocalfile.c:1083
+#: ../gio/gfile.c:1359 ../gio/glocalfile.c:1061 ../gio/glocalfile.c:1072
+#: ../gio/glocalfile.c:1085
 msgid "Containing mount does not exist"
 msgstr "Съдържащият монтиран обект не съществува"
 
-#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2258
+#: ../gio/gfile.c:2412 ../gio/glocalfile.c:2260
 msgid "Can't copy over directory"
 msgstr "Не може да се копира върху папка"
 
-#: ../gio/gfile.c:2472
+#: ../gio/gfile.c:2473
 msgid "Can't copy directory over directory"
 msgstr "Папка не може да се копира върху папка"
 
-#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2267
+#: ../gio/gfile.c:2481 ../gio/glocalfile.c:2269
 msgid "Target file exists"
 msgstr "Целевият файл съществува"
 
-#: ../gio/gfile.c:2498
+#: ../gio/gfile.c:2499
 msgid "Can't recursively copy directory"
 msgstr "Папката не може да се копира рекурсивно"
 
-#: ../gio/gfile.c:2758
+#: ../gio/gfile.c:2759
 msgid "Splice not supported"
 msgstr "Не се поддържа разделяне"
 
-#: ../gio/gfile.c:2762
+#: ../gio/gfile.c:2763
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Грешка при разделяне на файл: %s"
 
-#: ../gio/gfile.c:2909
+#: ../gio/gfile.c:2910
 msgid "Can't copy special file"
 msgstr "Не може да се копира специален файл"
 
-#: ../gio/gfile.c:3483
+#: ../gio/gfile.c:3484
 msgid "Invalid symlink value given"
 msgstr "Зададена е неправилна стойност на символна връзка"
 
-#: ../gio/gfile.c:3577
+#: ../gio/gfile.c:3578
 msgid "Trash not supported"
 msgstr "Не се поддържа кошче"
 
-#: ../gio/gfile.c:3626
+#: ../gio/gfile.c:3627
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Файловите имена не могат да съдържат „%c“"
 
-#: ../gio/gfile.c:6045 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6004 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "томът не поддържа монтиране"
 
-#: ../gio/gfile.c:6156
+#: ../gio/gfile.c:6115
 msgid "No application is registered as handling this file"
 msgstr "Не е регистрирано приложение за обработка на този вид файлове"
 
@@ -2378,22 +2386,22 @@ msgstr "Версия %d на кодирането GFileIcon не се поддъ
 msgid "Malformed input data for GFileIcon"
 msgstr "Неправилни входни данни за GFileIcon"
 
-#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:421
+#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:420
 #: ../gio/gfileiostream.c:170 ../gio/gfileoutputstream.c:169
-#: ../gio/gfileoutputstream.c:524
+#: ../gio/gfileoutputstream.c:523
 msgid "Stream doesn't support query_info"
 msgstr "Потокът не поддържа запитване за информация (query_info)"
 
-#: ../gio/gfileinputstream.c:336 ../gio/gfileiostream.c:388
-#: ../gio/gfileoutputstream.c:382
+#: ../gio/gfileinputstream.c:335 ../gio/gfileiostream.c:387
+#: ../gio/gfileoutputstream.c:381
 msgid "Seek not supported on stream"
 msgstr "Търсенето не се поддържа от потока"
 
-#: ../gio/gfileinputstream.c:380
+#: ../gio/gfileinputstream.c:379
 msgid "Truncate not allowed on input stream"
 msgstr "Входният поток не може да се съкращава"
 
-#: ../gio/gfileiostream.c:464 ../gio/gfileoutputstream.c:458
+#: ../gio/gfileiostream.c:463 ../gio/gfileoutputstream.c:457
 msgid "Truncate not supported on stream"
 msgstr "Потокът не може да се съкращава"
 
@@ -2441,8 +2449,8 @@ msgstr "Входният поток не поддържа четене"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:901 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1210
+#: ../gio/ginputstream.c:898 ../gio/giostream.c:316
+#: ../gio/goutputstream.c:1207
 msgid "Stream has outstanding operation"
 msgstr "Действията върху потока не са привършили"
 
@@ -2455,16 +2463,16 @@ msgstr "Няма достатъчно място за адреса на гнез
 msgid "Unsupported socket address"
 msgstr "Неподдържан адрес на гнездо"
 
-#: ../gio/glib-compile-schemas.c:703
+#: ../gio/glib-compile-schemas.c:713
 msgid "empty names are not permitted"
 msgstr "не се позволяват празни имена"
 
-#: ../gio/glib-compile-schemas.c:713
+#: ../gio/glib-compile-schemas.c:723
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "неправилно име „%s“: имената трябва да започват с малка буква"
 
-#: ../gio/glib-compile-schemas.c:725
+#: ../gio/glib-compile-schemas.c:735
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
@@ -2473,36 +2481,36 @@ msgstr ""
 "неправилно име „%s“: неправилен знак „%c“; позволени са само малки букви, "
 "цифри и тире („-“)."
 
-#: ../gio/glib-compile-schemas.c:734
+#: ../gio/glib-compile-schemas.c:744
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr "неправилно име „%s“: не са позволени две последователни тирета(„--“)."
 
-#: ../gio/glib-compile-schemas.c:743
+#: ../gio/glib-compile-schemas.c:753
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "неправилно име „%s“: последният знак не може да е тире („-“)."
 
-#: ../gio/glib-compile-schemas.c:751
+#: ../gio/glib-compile-schemas.c:761
 #, c-format
 msgid "invalid name '%s': maximum length is 32"
 msgstr "неправилно име „%s“: максималната дължина е 32"
 
-#: ../gio/glib-compile-schemas.c:820
+#: ../gio/glib-compile-schemas.c:830
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> вече е указано"
 
-#: ../gio/glib-compile-schemas.c:846
+#: ../gio/glib-compile-schemas.c:856
 msgid "can not add keys to a 'list-of' schema"
 msgstr "към схема „list-of“ не могат да се добавят ключове"
 
-#: ../gio/glib-compile-schemas.c:857
+#: ../gio/glib-compile-schemas.c:867
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> вече е указано"
 
-#: ../gio/glib-compile-schemas.c:875
+#: ../gio/glib-compile-schemas.c:885
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2511,7 +2519,7 @@ msgstr ""
 "<key name='%s'> покрива <key name='%s'> в <schema id='%s'>; използвайте "
 "<override>, за да промените стойността"
 
-#: ../gio/glib-compile-schemas.c:886
+#: ../gio/glib-compile-schemas.c:896
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
@@ -2520,63 +2528,63 @@ msgstr ""
 "като атрибут на <key> трябва да присъства точно едно от „type“, „enum“ или "
 "„flags“"
 
-#: ../gio/glib-compile-schemas.c:905
+#: ../gio/glib-compile-schemas.c:915
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> не е дефинирано (все още)."
 
-#: ../gio/glib-compile-schemas.c:920
+#: ../gio/glib-compile-schemas.c:930
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "неправилен низ за вид на GVariant: „%s“"
 
-#: ../gio/glib-compile-schemas.c:950
+#: ../gio/glib-compile-schemas.c:960
 msgid "<override> given but schema isn't extending anything"
 msgstr "използвано е <override>, но схемата не разширява нищо"
 
-#: ../gio/glib-compile-schemas.c:963
+#: ../gio/glib-compile-schemas.c:973
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "липсва <key name='%s'> за предефиниране"
 
-#: ../gio/glib-compile-schemas.c:971
+#: ../gio/glib-compile-schemas.c:981
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "вече е указано <override name='%s'>"
 
-#: ../gio/glib-compile-schemas.c:1042
+#: ../gio/glib-compile-schemas.c:1052
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "вече е указано <schema id='%s'>"
 
-#: ../gio/glib-compile-schemas.c:1054
+#: ../gio/glib-compile-schemas.c:1064
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> добавя към схема „%s“, която още не съществува"
 
-#: ../gio/glib-compile-schemas.c:1070
+#: ../gio/glib-compile-schemas.c:1080
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> е списък на схема „%s“, която още не съществува"
 
-#: ../gio/glib-compile-schemas.c:1078
+#: ../gio/glib-compile-schemas.c:1088
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "Не може да е списък от схема с път"
 
-#: ../gio/glib-compile-schemas.c:1088
+#: ../gio/glib-compile-schemas.c:1098
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "Схема не може да се разширява с път"
 
-#: ../gio/glib-compile-schemas.c:1098
+#: ../gio/glib-compile-schemas.c:1108
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
 "<schema id='%s'> е списък, разширяващ <schema id='%s'>, която не е списък"
 
-#: ../gio/glib-compile-schemas.c:1108
+#: ../gio/glib-compile-schemas.c:1118
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
@@ -2585,72 +2593,72 @@ msgstr ""
 "<schema id='%s' list-of='%s'> разширява <schema id='%s' list-of='%s'>, но "
 "„%s“ не разширява „%s“"
 
-#: ../gio/glib-compile-schemas.c:1125
+#: ../gio/glib-compile-schemas.c:1135
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr "всеки път трябва да започва и да завършва с наклонена черта („/“)"
 
-#: ../gio/glib-compile-schemas.c:1132
+#: ../gio/glib-compile-schemas.c:1142
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "пътят на списък трябва да завършва с „:/“"
 
-#: ../gio/glib-compile-schemas.c:1158
+#: ../gio/glib-compile-schemas.c:1168
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "вече е указано <%s id='%s'>"
 
-#: ../gio/glib-compile-schemas.c:1375
+#: ../gio/glib-compile-schemas.c:1387
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Елементът <%s> не е позволен в <%s>"
 
-#: ../gio/glib-compile-schemas.c:1379
+#: ../gio/glib-compile-schemas.c:1391
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Елементът <%s> не е позволен на най-горно ниво"
 
-#: ../gio/glib-compile-schemas.c:1473
+#: ../gio/glib-compile-schemas.c:1485
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "в <%s> не е позволен текст"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1641 ../gio/glib-compile-schemas.c:1712
-#: ../gio/glib-compile-schemas.c:1788
+#: ../gio/glib-compile-schemas.c:1654 ../gio/glib-compile-schemas.c:1725
+#: ../gio/glib-compile-schemas.c:1801
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "Указано е „--strict“, излизане.\n"
 
-#: ../gio/glib-compile-schemas.c:1649
+#: ../gio/glib-compile-schemas.c:1662
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "Целият файл е пренебрегнат.\n"
 
-#: ../gio/glib-compile-schemas.c:1708
+#: ../gio/glib-compile-schemas.c:1721
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "Пренебрегване на файла.\n"
 
-#: ../gio/glib-compile-schemas.c:1748
+#: ../gio/glib-compile-schemas.c:1761
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
 "Липсва ключ „%s“ в схемата „%s“, указан във файла за предефиниране „%s“"
 
-#: ../gio/glib-compile-schemas.c:1754 ../gio/glib-compile-schemas.c:1812
-#: ../gio/glib-compile-schemas.c:1840
+#: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
+#: ../gio/glib-compile-schemas.c:1853
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; пренебрегване на предефинирането на ключа.\n"
 
-#: ../gio/glib-compile-schemas.c:1758 ../gio/glib-compile-schemas.c:1816
-#: ../gio/glib-compile-schemas.c:1844
+#: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
+#: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr "и е указано „--strict“, излизане.\n"
 
-#: ../gio/glib-compile-schemas.c:1774
+#: ../gio/glib-compile-schemas.c:1787
 #, c-format
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': "
@@ -2659,12 +2667,12 @@ msgstr ""
 "грешка при анализиране на ключа „%s“ от схемата „%s“, указан във файла за "
 "предефиниране „%s“ — %s."
 
-#: ../gio/glib-compile-schemas.c:1784
+#: ../gio/glib-compile-schemas.c:1797
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "Пренебрегване на предефинирането на ключа.\n"
 
-#: ../gio/glib-compile-schemas.c:1802
+#: ../gio/glib-compile-schemas.c:1815
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -2673,7 +2681,7 @@ msgstr ""
 "предефинирането на ключа „%s“ в схемата „%s“ във файла за предефиниране „%s“ "
 "е извън обсега, даден в схемата"
 
-#: ../gio/glib-compile-schemas.c:1830
+#: ../gio/glib-compile-schemas.c:1843
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -2682,32 +2690,32 @@ msgstr ""
 "предефинирането на ключа „%s“ в схемата „%s“ във файла за предефиниране „%s“ "
 "не е в списъка с позволени стойности"
 
-#: ../gio/glib-compile-schemas.c:1884
+#: ../gio/glib-compile-schemas.c:1897
 msgid "where to store the gschemas.compiled file"
 msgstr "място за съхраняване на файла gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:1884 ../gio/glib-compile-schemas.c:1897
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1910
 msgid "DIRECTORY"
 msgstr "ПАПКА"
 
 # Явно става дума за обясняване на --strict
-#: ../gio/glib-compile-schemas.c:1885
+#: ../gio/glib-compile-schemas.c:1898
 msgid "Abort on any errors in schemas"
 msgstr "Прекъсване на работа при всякакви грешки в схемите"
 
-#: ../gio/glib-compile-schemas.c:1886
+#: ../gio/glib-compile-schemas.c:1899
 msgid "Do not write the gschema.compiled file"
 msgstr "Без запис на файл gschema.compiled"
 
-#: ../gio/glib-compile-schemas.c:1887
+#: ../gio/glib-compile-schemas.c:1900
 msgid "This option will be removed soon."
 msgstr "Тази опция скоро ще бъде премахната"
 
-#: ../gio/glib-compile-schemas.c:1888
+#: ../gio/glib-compile-schemas.c:1901
 msgid "Do not enforce key name restrictions"
 msgstr "Без налагане на ограниченията за имена на ключове"
 
-#: ../gio/glib-compile-schemas.c:1900
+#: ../gio/glib-compile-schemas.c:1913
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2717,22 +2725,22 @@ msgstr ""
 "Файловете със схемите трябва да завършват на .gschema.xml,\n"
 "а файлът с кеша се нарича gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1916
+#: ../gio/glib-compile-schemas.c:1929
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Изисква се точно едно име на папка\n"
 
-#: ../gio/glib-compile-schemas.c:1955
+#: ../gio/glib-compile-schemas.c:1968
 #, c-format
 msgid "No schema files found: "
 msgstr "Не са открити файлове със схеми: "
 
-#: ../gio/glib-compile-schemas.c:1958
+#: ../gio/glib-compile-schemas.c:1971
 #, c-format
 msgid "doing nothing.\n"
 msgstr "без обработка.\n"
 
-#: ../gio/glib-compile-schemas.c:1961
+#: ../gio/glib-compile-schemas.c:1974
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "съществуващият резултатен файл е премахнат.\n"
@@ -2747,110 +2755,110 @@ msgstr ""
 msgid "Invalid filename %s"
 msgstr "Неправилно име на файл: %s"
 
-#: ../gio/glocalfile.c:967
+#: ../gio/glocalfile.c:969
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Грешка при получаване на информация за файловата система: %s"
 
-#: ../gio/glocalfile.c:1105
+#: ../gio/glocalfile.c:1107
 msgid "Can't rename root directory"
 msgstr "Кореновата папка не може да се преименува"
 
-#: ../gio/glocalfile.c:1125 ../gio/glocalfile.c:1151
+#: ../gio/glocalfile.c:1127 ../gio/glocalfile.c:1153
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Грешка при преименуване на файл: %s"
 
-#: ../gio/glocalfile.c:1134
+#: ../gio/glocalfile.c:1136
 msgid "Can't rename file, filename already exist"
 msgstr "Файлът не може да се преименува — съществува друг файл с такова име"
 
-#: ../gio/glocalfile.c:1147 ../gio/glocalfile.c:2131 ../gio/glocalfile.c:2160
-#: ../gio/glocalfile.c:2320 ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfile.c:1149 ../gio/glocalfile.c:2133 ../gio/glocalfile.c:2162
+#: ../gio/glocalfile.c:2322 ../gio/glocalfileoutputstream.c:571
 #: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
 #: ../gio/glocalfileoutputstream.c:1151
 msgid "Invalid filename"
 msgstr "Неправилно име на файл"
 
-#: ../gio/glocalfile.c:1308
+#: ../gio/glocalfile.c:1310
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Грешка при отваряне на файл: %s"
 
-#: ../gio/glocalfile.c:1318
+#: ../gio/glocalfile.c:1320
 msgid "Can't open directory"
 msgstr "Папката не може да бъде отворена"
 
-#: ../gio/glocalfile.c:1443
+#: ../gio/glocalfile.c:1445
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Грешка при изтриване на файл: %s"
 
-#: ../gio/glocalfile.c:1810
+#: ../gio/glocalfile.c:1812
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Грешка при преместване на файл в кошчето: %s"
 
-#: ../gio/glocalfile.c:1833
+#: ../gio/glocalfile.c:1835
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Неуспех при създаване на папката за кошче „%s“: %s"
 
-#: ../gio/glocalfile.c:1854
+#: ../gio/glocalfile.c:1856
 msgid "Unable to find toplevel directory for trash"
 msgstr "Не може да се открие най-горната папка за кошче"
 
-#: ../gio/glocalfile.c:1933 ../gio/glocalfile.c:1953
+#: ../gio/glocalfile.c:1935 ../gio/glocalfile.c:1955
 msgid "Unable to find or create trash directory"
 msgstr "Не може да се създаде папката за кошче"
 
-#: ../gio/glocalfile.c:1987
+#: ../gio/glocalfile.c:1989
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Неуспех при създаване на файл с информация за кошчето: %s"
 
-#: ../gio/glocalfile.c:2016 ../gio/glocalfile.c:2021 ../gio/glocalfile.c:2101
-#: ../gio/glocalfile.c:2108
+#: ../gio/glocalfile.c:2018 ../gio/glocalfile.c:2023 ../gio/glocalfile.c:2103
+#: ../gio/glocalfile.c:2110
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Неуспех при преместване на файл в кошчето: %s"
 
-#: ../gio/glocalfile.c:2135
+#: ../gio/glocalfile.c:2137
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Грешка при създаване на папка: %s"
 
-#: ../gio/glocalfile.c:2164
+#: ../gio/glocalfile.c:2166
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Файловата система не поддържа символни връзки"
 
-#: ../gio/glocalfile.c:2168
+#: ../gio/glocalfile.c:2170
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Грешка при създаване на символна връзка: %s"
 
-#: ../gio/glocalfile.c:2230 ../gio/glocalfile.c:2324
+#: ../gio/glocalfile.c:2232 ../gio/glocalfile.c:2326
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Грешка при преместване на файл: %s"
 
-#: ../gio/glocalfile.c:2253
+#: ../gio/glocalfile.c:2255
 msgid "Can't move directory over directory"
 msgstr "Папка не може да бъде преместена върху папка"
 
-#: ../gio/glocalfile.c:2280 ../gio/glocalfileoutputstream.c:949
+#: ../gio/glocalfile.c:2282 ../gio/glocalfileoutputstream.c:949
 #: ../gio/glocalfileoutputstream.c:963 ../gio/glocalfileoutputstream.c:978
 #: ../gio/glocalfileoutputstream.c:994 ../gio/glocalfileoutputstream.c:1008
 msgid "Backup file creation failed"
 msgstr "Неуспешно създаване на резервен файл"
 
-#: ../gio/glocalfile.c:2299
+#: ../gio/glocalfile.c:2301
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Грешка при премахване на целевия файл: %s"
 
-#: ../gio/glocalfile.c:2313
+#: ../gio/glocalfile.c:2315
 msgid "Move between mounts not supported"
 msgstr "Не се поддържа местене между монтирани местоположения"
 
@@ -3073,7 +3081,7 @@ msgstr "монтираният обект не поддържа изваждан
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: ../gio/gmount.c:522
+#: ../gio/gmount.c:523
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
 "монтираният обект не поддържа нито демонтиране, нито демонтиране с действие"
@@ -3081,7 +3089,7 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gmount.c:609
+#: ../gio/gmount.c:611
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
 "монтираният обект не поддържа нито изваждане, нито изваждане с действие"
@@ -3089,21 +3097,21 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: ../gio/gmount.c:698
+#: ../gio/gmount.c:701
 msgid "mount doesn't implement \"remount\""
 msgstr "монтираният обект не поддържа повторно монтиране"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:782
+#: ../gio/gmount.c:785
 msgid "mount doesn't implement content type guessing"
 msgstr "монтираният обект не поддържа откриване на вида"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:871
+#: ../gio/gmount.c:874
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "монтираният обект не поддържа синхронно откриване на вида"
 
@@ -3145,226 +3153,343 @@ msgstr "Временно е невъзможно „%s“ да бъде откр
 msgid "Error resolving '%s'"
 msgstr "Грешка при откриване по адрес на %s"
 
-#: ../gio/gsettings-tool.c:79
+#: ../gio/gsettings-tool.c:60
 #, c-format
-msgid ""
-"Commands:\n"
-"  help        Show this information\n"
-"  get         Get the value of a key\n"
-"  set         Set the value of a key\n"
-"  reset       Reset the value of a key\n"
-"  monitor     Monitor a key for changes\n"
-"  writable    Check if a key is writable\n"
-"\n"
-"Use '%s COMMAND --help' to get help for individual commands.\n"
-msgstr ""
-"Команди:\n"
-"  help        Показване на този текст\n"
-"  get         Получаване на стойността на даден ключ\n"
-"  set         Промяна на стойността на даден ключ\n"
-"  reset       Връщане на стойността по подразбиране на даден ключ\n"
-"  monitor     Наблюдаване на промените в даден ключ\n"
-"  writable    Проверка дали даден ключ може да се променя\n"
-"\n"
-"Използвайте „%s КОМАНДА --help“ за допълнителна информация за всяка "
-"команда.\n"
+msgid "Schema '%s' is not relocatable (path must not be specified)\n"
+msgstr "Схемата „%s“ не може да се мести (не трябва да указвате път)\n"
 
-#: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
-#: ../gio/gsettings-tool.c:646
-msgid "Specify the path for the schema"
-msgstr "Указване на пътя до схемата"
+#: ../gio/gsettings-tool.c:65 ../gio/gsettings-tool.c:82
+#, c-format
+msgid "No such schema '%s'\n"
+msgstr "Липсва схема „%s“\n"
 
-#: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:437 ../gio/gsettings-tool.c:532
-#: ../gio/gsettings-tool.c:646
-msgid "PATH"
-msgstr "ПЪТ"
+#: ../gio/gsettings-tool.c:77
+#, c-format
+msgid "Schema '%s' is relocatable (path must be specified)\n"
+msgstr "Схемата „%s“ може да се мести (трябва да укажете път)\n"
 
-#. Translators: Please keep order of words (command parameters)
-#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:541
-#: ../gio/gsettings-tool.c:654
-msgid "SCHEMA KEY"
-msgstr "СХЕМА КЛЮЧ"
+#: ../gio/gsettings-tool.c:92
+#, c-format
+msgid "Empty path given.\n"
+msgstr "Даден е празен път.\n"
 
-#: ../gio/gsettings-tool.c:230
+#: ../gio/gsettings-tool.c:98
+#, c-format
+msgid "Path must begin with a slash (/)\n"
+msgstr "Пътят трябва да започва с наклонена черта („/“)\n"
+
+#: ../gio/gsettings-tool.c:104
+#, c-format
+msgid "Path must end with a slash (/)\n"
+msgstr "Пътят трябва да завършва с наклонена черта („/“)\n"
+
+#: ../gio/gsettings-tool.c:110
+#, c-format
+msgid "Path must not contain two adjacent slashes (//)\n"
+msgstr "Пътят не трябва да съдържа две последователни наклонени черти („//“)\n"
+
+#: ../gio/gsettings-tool.c:131
+#, c-format
+msgid "No such key '%s'\n"
+msgstr "Липсва ключ „%s“\n"
+
+#: ../gio/gsettings-tool.c:429
+#, c-format
+msgid "The provided value is outside of the valid range\n"
+msgstr "Стойността е извън интервала на допустимите стойности\n"
+
+#: ../gio/gsettings-tool.c:458
+msgid "Print help"
+msgstr "Извеждане на помощта"
+
+#: ../gio/gsettings-tool.c:464
+msgid "List the installed (non-relocatable) schemas"
+msgstr "Извеждане на инсталираните схеми (които не се местят)"
+
+#: ../gio/gsettings-tool.c:470
+msgid "List the installed relocatable schemas"
+msgstr "Извеждане на инсталираните схеми, които могат да се местят"
+
+#: ../gio/gsettings-tool.c:476
+msgid "List the keys in SCHEMA"
+msgstr "Извеждане на ключовете в СХЕМАта"
+
+#: ../gio/gsettings-tool.c:477 ../gio/gsettings-tool.c:483
+#: ../gio/gsettings-tool.c:489
+msgid "SCHEMA[:PATH]"
+msgstr "СХЕМА[:ПЪТ]"
+
+#: ../gio/gsettings-tool.c:482
+msgid "List the children of SCHEMA"
+msgstr "Извеждане на наследниците на СХЕМАта"
+
+#: ../gio/gsettings-tool.c:488
+msgid "List keys and values, recursively"
+msgstr "Рекурсивно извеждане на ключовете и стойностите им"
+
+#: ../gio/gsettings-tool.c:494
 msgid "Get the value of KEY"
 msgstr "Получаване на стойността на КЛЮЧ"
 
-#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:449
-#: ../gio/gsettings-tool.c:545 ../gio/gsettings-tool.c:661
-msgid ""
-"Arguments:\n"
-"  SCHEMA      The id of the schema\n"
-"  KEY         The name of the key\n"
-msgstr ""
-"Аргументи:\n"
-"  СХЕМА       Идентификатор на схемата\n"
-"  КЛЮЧ        Име на ключа\n"
+#: ../gio/gsettings-tool.c:495 ../gio/gsettings-tool.c:501
+#: ../gio/gsettings-tool.c:513 ../gio/gsettings-tool.c:519
+msgid "SCHEMA[:PATH] KEY"
+msgstr "СХЕМА[:ПЪТ] КЛЮЧ"
 
-#. Translators: Please keep order of words (command parameters)
-#: ../gio/gsettings-tool.c:329 ../gio/gsettings-tool.c:445
-msgid "SCHEMA KEY VALUE"
-msgstr "СХЕМА КЛЮЧ СТОЙНОСТ"
+#: ../gio/gsettings-tool.c:500
+msgid "Query the range of valid values for KEY"
+msgstr "Запитване за интервала от допустими стойности за КЛЮЧа"
 
-#: ../gio/gsettings-tool.c:331
-msgid "Set the value of KEY"
-msgstr "Промяна на стойността на КЛЮЧ"
+#: ../gio/gsettings-tool.c:506
+msgid "Set the value of KEY to VALUE"
+msgstr "Задаване на СТОЙНОСТта на КЛЮЧ"
 
-#: ../gio/gsettings-tool.c:333
-msgid ""
-"Arguments:\n"
-"  SCHEMA      The id of the schema\n"
-"  KEY         The name of the key\n"
-"  VALUE       The value to set key to, as a serialized GVariant\n"
-msgstr ""
-"Аргументи:\n"
-"  СХЕМА       Идентификатор на схемата\n"
-"  КЛЮЧ        Име на ключа\n"
-"  СТОЙНОСТ    Нова стойност за ключа, във вид на кодиран GVariant\n"
+#: ../gio/gsettings-tool.c:507
+msgid "SCHEMA[:PATH] KEY VALUE"
+msgstr "СХЕМА[:ПЪТ] КЛЮЧ СТОЙНОСТ"
 
-#: ../gio/gsettings-tool.c:406
-#, c-format
-msgid "Key %s is not writable\n"
-msgstr "Ключът „%s“ не може да се променя\n"
-
-#: ../gio/gsettings-tool.c:447
-msgid "Sets KEY to its default value"
+#: ../gio/gsettings-tool.c:512
+msgid "Reset KEY to its default value"
 msgstr "Връща стандартната стойност на КЛЮЧ"
 
-#: ../gio/gsettings-tool.c:543
-msgid "Find out whether KEY is writable"
+#: ../gio/gsettings-tool.c:518
+msgid "Check if KEY is writable"
 msgstr "Проверка дали стойността на КЛЮЧ може да се променя"
 
-#: ../gio/gsettings-tool.c:657
+#: ../gio/gsettings-tool.c:524
 msgid ""
-"Monitor KEY for changes and print the changed values.\n"
-"Monitoring will continue until the process is terminated."
+"Monitor KEY for changes.\n"
+"If no KEY is specified, monitor all keys in SCHEMA.\n"
+"Use ^C to stop monitoring.\n"
 msgstr ""
-"Наблюдаване на КЛЮЧ за промени и извеждане на променените стойности.\n"
-"Наблюдаването продължава до прекъсване на процеса."
+"Следене за промени в КЛЮЧа.\n"
+"Ако не е указан определен КЛЮЧ, се следят всички във СХЕМАта.\n"
+"Следенето се спира с „^C“.\n"
 
-#: ../gio/gsettings-tool.c:833
+#: ../gio/gsettings-tool.c:527
+msgid "SCHEMA[:PATH] [KEY]"
+msgstr "СХЕМА[:ПЪТ] [КЛЮЧ]"
+
+#: ../gio/gsettings-tool.c:531
 #, c-format
-msgid "Unknown command '%s'\n"
-msgstr "Непозната команда „%s“\n"
+msgid ""
+"Unknown command %s\n"
+"\n"
+msgstr ""
+"Непозната команда „%s“\n"
+"\n"
 
-#: ../gio/gsocket.c:276
+#: ../gio/gsettings-tool.c:539
+msgid ""
+"Usage:\n"
+"  gsettings COMMAND [ARGS...]\n"
+"\n"
+"Commands:\n"
+"  help                      Show this information\n"
+"  list-schemas              List installed schemas\n"
+"  list-relocatable-schemas  List relocatable schemas\n"
+"  list-keys                 List keys in a schema\n"
+"  list-children             List children of a schema\n"
+"  list-recursively          List keys and values, recursively\n"
+"  range                     Queries the range of a key\n"
+"  get                       Get the value of a key\n"
+"  set                       Set the value of a key\n"
+"  reset                     Reset the value of a key\n"
+"  writable                  Check if a key is writable\n"
+"  monitor                   Watch for changes\n"
+"\n"
+"Use 'gsettings help COMMAND' to get detailed help.\n"
+"\n"
+msgstr ""
+"Употреба:\n"
+"  gsettings КОМАНДА [АРГУМЕНТИ…]\n"
+"\n"
+"Команди:\n"
+"  help                      Показване на този текст\n"
+"  list-schemas              Извеждане на инсталираните схеми\n"
+"  list-relocatable-schemas  Извеждане на схемите, които могат да се местят\n"
+"  list-keys                 Извеждане на ключовете в схема\n"
+"  list-children             Извеждане на наследниците на схема\n"
+"  list-recursively          Рекурсивно извеждане на ключовете и стойностите "
+"им\n"
+"  range                     Какъв е интервала от допустими стойности за "
+"ключ\n"
+"  get                       Получаване на стойността на даден ключ\n"
+"  set                       Промяна на стойността на даден ключ\n"
+"  reset                     Връщане на стойността по подразбиране на даден "
+"ключ\n"
+"  writable                  Проверка дали даден ключ може да се променя\n"
+"  monitor                   Наблюдаване на промените в даден ключ\n"
+"\n"
+"Използвайте „gsettings help КОМАНДА“ за допълнителна информация.\n"
+"\n"
+
+#: ../gio/gsettings-tool.c:560
+#, c-format
+msgid ""
+"Usage:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
+msgstr ""
+"Уореба:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
+
+#: ../gio/gsettings-tool.c:565
+msgid "Arguments:\n"
+msgstr "Аргументи:\n"
+
+#: ../gio/gsettings-tool.c:569
+msgid "  COMMAND   The (optional) command to explain\n"
+msgstr ""
+"  КОМАНДА     Помощ за командата или обща помощ, ако не е указана команда\n"
+
+#: ../gio/gsettings-tool.c:573
+msgid ""
+"  SCHEMA    The name of the schema\n"
+"  PATH      The path, for relocatable schemas\n"
+msgstr ""
+"Аргументи:\n"
+"  СХЕМА       Името на схемата\n"
+"  ПЪТ         Път (за схеми, които могат да се местят)\n"
+
+#: ../gio/gsettings-tool.c:578
+msgid "  KEY       The (optional) key within the schema\n"
+msgstr "  КЛЮЧ        Ключ в схемата (незадължителен)\n"
+
+#: ../gio/gsettings-tool.c:582
+msgid "  KEY       The key within the schema\n"
+msgstr "  КЛЮЧ        Ключ в схемата\n"
+
+#: ../gio/gsettings-tool.c:586
+msgid "  VALUE     The value to set\n"
+msgstr "  СТОЙНОСТ    Стойност, която да бъде зададена\n"
+
+#: ../gio/gsettings-tool.c:662
+#, c-format
+msgid "Empty schema name given"
+msgstr "Подадено е празно име за схема"
+
+#: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
 msgstr "Неправилно гнездо, не е инициализирано"
 
-#: ../gio/gsocket.c:283
+#: ../gio/gsocket.c:284
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Неправилно гнездо, неуспешна инициализация понеже: %s"
 
-#: ../gio/gsocket.c:291
+#: ../gio/gsocket.c:292
 msgid "Socket is already closed"
 msgstr "Гнездото вече е затворено"
 
-#: ../gio/gsocket.c:299 ../gio/gsocket.c:2716 ../gio/gsocket.c:2760
+#: ../gio/gsocket.c:300 ../gio/gsocket.c:2769 ../gio/gsocket.c:2813
 msgid "Socket I/O timed out"
 msgstr "Просрочено време за отговор при входни-изходна операция с гнездото"
 
-#: ../gio/gsocket.c:421
+#: ../gio/gsocket.c:443
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "създаване на GSocket от файлов дескриптор: %s"
 
-#: ../gio/gsocket.c:455 ../gio/gsocket.c:471 ../gio/gsocket.c:2113
+#: ../gio/gsocket.c:477 ../gio/gsocket.c:493 ../gio/gsocket.c:2135
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Неуспех при създаване на гнездо: %s"
 
-#: ../gio/gsocket.c:455
+#: ../gio/gsocket.c:477
 msgid "Unknown protocol was specified"
 msgstr "Указан е непознат протокол"
 
-#: ../gio/gsocket.c:1224
+#: ../gio/gsocket.c:1246
 #, c-format
 msgid "could not get local address: %s"
 msgstr "локалният адрес не може да бъде получен :%s"
 
-#: ../gio/gsocket.c:1267
+#: ../gio/gsocket.c:1289
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "отдалеченият адрес не може да бъде получен :%s"
 
-#: ../gio/gsocket.c:1328
+#: ../gio/gsocket.c:1350
 #, c-format
 msgid "could not listen: %s"
 msgstr "не може да се слуша: %s"
 
-#: ../gio/gsocket.c:1402
+#: ../gio/gsocket.c:1424
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Грешка при свързване към адрес: %s"
 
-#: ../gio/gsocket.c:1522
+#: ../gio/gsocket.c:1544
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Грешка при приемане на връзка: %s"
 
-#: ../gio/gsocket.c:1639
+#: ../gio/gsocket.c:1661
 msgid "Error connecting: "
 msgstr "Грешка при свързване: "
 
-#: ../gio/gsocket.c:1644
+#: ../gio/gsocket.c:1666
 msgid "Connection in progress"
 msgstr "В момента се осъществява връзка"
 
-#: ../gio/gsocket.c:1651
+#: ../gio/gsocket.c:1673
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Грешка при свързване: %s"
 
-#: ../gio/gsocket.c:1694 ../gio/gsocket.c:3479
+#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3532
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Неуспех при получаване на текущата грешка: %s"
 
-#: ../gio/gsocket.c:1826
+#: ../gio/gsocket.c:1848
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Грешка при получаване на данни: %s"
 
-#: ../gio/gsocket.c:2000
+#: ../gio/gsocket.c:2022
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Грешка при изпращане на данни: %s"
 
-#: ../gio/gsocket.c:2192
+#: ../gio/gsocket.c:2214
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Грешка при затваряне на гнездо: %s"
 
-#: ../gio/gsocket.c:2709
+#: ../gio/gsocket.c:2762
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Изчакване за състояние на гнездо: %s"
 
-#: ../gio/gsocket.c:2999
+#: ../gio/gsocket.c:3052
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage не се поддържа под Уиндоус"
 
-#: ../gio/gsocket.c:3258 ../gio/gsocket.c:3399
+#: ../gio/gsocket.c:3311 ../gio/gsocket.c:3452
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Грешка при изпращане на съобщение: %s"
 
-#: ../gio/gsocket.c:3494
+#: ../gio/gsocket.c:3547
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials не е реализирана на тази операционна система"
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1153
+#: ../gio/gsocketclient.c:798 ../gio/gsocketclient.c:1368
 msgid "Unknown error on connect"
 msgstr "Непозната грешка при свързване"
 
-#: ../gio/gsocketclient.c:711 ../gio/gsocketclient.c:1038
+#: ../gio/gsocketclient.c:836 ../gio/gsocketclient.c:1252
 msgid "Trying to proxy over non-TCP connection is not supported."
 msgstr "Не се поддържа посредничество без използването на TCP."
 
-#: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1061
+#: ../gio/gsocketclient.c:858 ../gio/gsocketclient.c:1277
 #, c-format
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Не се поддържа протоколът за посредничество „%s“."
@@ -3411,7 +3536,8 @@ msgstr "Посредникът чрез SOCKSv5 изисква идентифи�
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
 msgstr ""
 "Посредникът чрез SOCKSv5 изисква механизъм за идентификация, който не се "
 "поддържа от GLib."
@@ -3469,13 +3595,25 @@ msgid "SOCKSv5 proxy does not support provided address type."
 msgstr "Сървърът посредник за SOCKSv5 не поддържа предоставения вид адрес."
 
 #: ../gio/gsocks5proxy.c:402
-msgid "Unkown SOCKSv5 proxy error."
+msgid "Unknown SOCKSv5 proxy error."
 msgstr "Неизвестна грешка със сървъра посредник за SOCKSv5."
 
 #: ../gio/gthemedicon.c:498
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Версия %d на кодирането GThemedIcon не се поддържа"
+
+#: ../gio/gtlscertificate.c:228
+msgid "No PEM-encoded certificate found"
+msgstr "Сертификат, шифриран с PEM, липсва"
+
+#: ../gio/gtlscertificate.c:237
+msgid "Could not parse PEM-encoded certificate"
+msgstr "Сертификатът, шифриран с PEM, не може да бъде анализиран"
+
+#: ../gio/gtlscertificate.c:258
+msgid "Could not parse PEM-encoded private key"
+msgstr "Частният ключ, шифриран с PEM, не може да бъде анализиран"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
@@ -3529,24 +3667,24 @@ msgstr ""
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Грешка при забраняване на SO_PASSCRED: %s"
 
-#: ../gio/gunixinputstream.c:353 ../gio/gunixinputstream.c:373
-#: ../gio/gunixinputstream.c:451
+#: ../gio/gunixinputstream.c:368 ../gio/gunixinputstream.c:388
+#: ../gio/gunixinputstream.c:466
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Грешка при четене от ЮНИКС: %s"
 
-#: ../gio/gunixinputstream.c:406 ../gio/gunixinputstream.c:589
-#: ../gio/gunixoutputstream.c:393 ../gio/gunixoutputstream.c:545
+#: ../gio/gunixinputstream.c:421 ../gio/gunixinputstream.c:601
+#: ../gio/gunixoutputstream.c:407 ../gio/gunixoutputstream.c:556
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Грешка при затваряне на ЮНИКС: %s"
 
-#: ../gio/gunixmounts.c:1846 ../gio/gunixmounts.c:1883
+#: ../gio/gunixmounts.c:1848 ../gio/gunixmounts.c:1885
 msgid "Filesystem root"
 msgstr "Коренова папка на файловата система"
 
-#: ../gio/gunixoutputstream.c:339 ../gio/gunixoutputstream.c:360
-#: ../gio/gunixoutputstream.c:438
+#: ../gio/gunixoutputstream.c:353 ../gio/gunixoutputstream.c:374
+#: ../gio/gunixoutputstream.c:452
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Грешка при запис към ЮНИКС: %s"
@@ -3563,7 +3701,7 @@ msgstr "томът не поддържа изваждане"
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gvolume.c:487
+#: ../gio/gvolume.c:488
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "томът не поддържа нито изваждане, нито изваждане с действие"
 
@@ -3619,7 +3757,3 @@ msgstr "Необходими са още данни от входа"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Неправилни, компресирани данни"
-
-#~ msgid "No such schema `%s' specified in override file `%s'"
-#~ msgstr ""
-#~ "Схемата „%s“, указана във файла за предефиниране „%s“, не съществува"
