@@ -106,7 +106,7 @@ never stored, so we push them well clear of the normal opcodes. */
 
 
 /* This table identifies those opcodes that are followed immediately by a
-character that is to be tested in some way. This makes is possible to
+character that is to be tested in some way. This makes it possible to
 centralize the loading of these characters. In the case of Type * etc, the
 "character" is the opcode for \D, \d, \S, \s, \W, or \w, which will always be a
 small value. Non-zero values in the table are the offsets from the opcode where
@@ -161,8 +161,9 @@ static const uschar coptable[] = {
   0, 0,                          /* RREF, NRREF                            */
   0,                             /* DEF                                    */
   0, 0,                          /* BRAZERO, BRAMINZERO                    */
-  0, 0, 0, 0,                    /* PRUNE, SKIP, THEN, COMMIT              */
-  0, 0, 0, 0                     /* FAIL, ACCEPT, CLOSE, SKIPZERO          */
+  0, 0, 0,                       /* MARK, PRUNE, PRUNE_ARG,                */
+  0, 0, 0, 0,                    /* SKIP, SKIP_ARG, THEN, THEN_ARG,        */
+  0, 0, 0, 0, 0                  /* COMMIT, FAIL, ACCEPT, CLOSE, SKIPZERO  */
 };
 
 /* This table identifies those opcodes that inspect a character. It is used to
@@ -218,8 +219,9 @@ static const uschar poptable[] = {
   0, 0,                          /* RREF, NRREF                            */
   0,                             /* DEF                                    */
   0, 0,                          /* BRAZERO, BRAMINZERO                    */
-  0, 0, 0, 0,                    /* PRUNE, SKIP, THEN, COMMIT              */
-  0, 0, 0, 0                     /* FAIL, ACCEPT, CLOSE, SKIPZERO          */
+  0, 0, 0,                       /* MARK, PRUNE, PRUNE_ARG,                */
+  0, 0, 0, 0,                    /* SKIP, SKIP_ARG, THEN, THEN_ARG,        */
+  0, 0, 0, 0, 0                  /* COMMIT, FAIL, ACCEPT, CLOSE, SKIPZERO  */
 };
 
 /* These 2 tables allow for compact code for testing for \D, \d, \S, \s, \W,
@@ -473,7 +475,7 @@ if (*first_op == OP_REVERSE)
 
     {
     gone_back = (current_subject - max_back < start_subject)?
-      current_subject - start_subject : max_back;
+      (int)(current_subject - start_subject) : max_back;
     current_subject -= gone_back;
     }
 
@@ -490,7 +492,7 @@ if (*first_op == OP_REVERSE)
     int back = GET(end_code, 2+LINK_SIZE);
     if (back <= gone_back)
       {
-      int bstate = end_code - start_code + 2 + 2*LINK_SIZE;
+      int bstate = (int)(end_code - start_code + 2 + 2*LINK_SIZE);
       ADD_NEW_DATA(-bstate, 0, gone_back - back);
       }
     end_code += GET(end_code, 1);
@@ -526,7 +528,7 @@ else
       ((*this_start_code == OP_CBRA || *this_start_code == OP_SCBRA)? 2:0);
     do
       {
-      ADD_NEW(end_code - start_code + length, 0);
+      ADD_NEW((int)(end_code - start_code + length), 0);
       end_code += GET(end_code, 1);
       length = 1 + LINK_SIZE;
       }
@@ -753,8 +755,8 @@ for (;;)
           if (count > 0) memmove(offsets + 2, offsets, count * sizeof(int));
           if (offsetcount >= 2)
             {
-            offsets[0] = current_subject - start_subject;
-            offsets[1] = ptr - start_subject;
+            offsets[0] = (int)(current_subject - start_subject);
+            offsets[1] = (int)(ptr - start_subject);
             DPRINTF(("%.*sSet matched string = \"%.*s\"\n", rlevel*2-2, SP,
               offsets[1] - offsets[0], current_subject));
             }
@@ -776,7 +778,7 @@ for (;;)
       /*-----------------------------------------------------------------*/
       case OP_ALT:
       do { code += GET(code, 1); } while (*code == OP_ALT);
-      ADD_ACTIVE(code - start_code, 0);
+      ADD_ACTIVE((int)(code - start_code), 0);
       break;
 
       /*-----------------------------------------------------------------*/
@@ -784,7 +786,7 @@ for (;;)
       case OP_SBRA:
       do
         {
-        ADD_ACTIVE(code - start_code + 1 + LINK_SIZE, 0);
+        ADD_ACTIVE((int)(code - start_code + 1 + LINK_SIZE), 0);
         code += GET(code, 1);
         }
       while (*code == OP_ALT);
@@ -793,11 +795,11 @@ for (;;)
       /*-----------------------------------------------------------------*/
       case OP_CBRA:
       case OP_SCBRA:
-      ADD_ACTIVE(code - start_code + 3 + LINK_SIZE,  0);
+      ADD_ACTIVE((int)(code - start_code + 3 + LINK_SIZE),  0);
       code += GET(code, 1);
       while (*code == OP_ALT)
         {
-        ADD_ACTIVE(code - start_code + 1 + LINK_SIZE,  0);
+        ADD_ACTIVE((int)(code - start_code + 1 + LINK_SIZE),  0);
         code += GET(code, 1);
         }
       break;
@@ -808,14 +810,14 @@ for (;;)
       ADD_ACTIVE(state_offset + 1, 0);
       code += 1 + GET(code, 2);
       while (*code == OP_ALT) code += GET(code, 1);
-      ADD_ACTIVE(code - start_code + 1 + LINK_SIZE, 0);
+      ADD_ACTIVE((int)(code - start_code + 1 + LINK_SIZE), 0);
       break;
 
       /*-----------------------------------------------------------------*/
       case OP_SKIPZERO:
       code += 1 + GET(code, 2);
       while (*code == OP_ALT) code += GET(code, 1);
-      ADD_ACTIVE(code - start_code + 1 + LINK_SIZE, 0);
+      ADD_ACTIVE((int)(code - start_code + 1 + LINK_SIZE), 0);
       break;
 
       /*-----------------------------------------------------------------*/
@@ -829,7 +831,12 @@ for (;;)
 
       /*-----------------------------------------------------------------*/
       case OP_EOD:
-      if (ptr >= end_subject) { ADD_ACTIVE(state_offset + 1, 0); }
+      if (ptr >= end_subject)
+        {
+        if ((md->moptions & PCRE_PARTIAL_HARD) != 0)
+          could_continue = TRUE;
+        else { ADD_ACTIVE(state_offset + 1, 0); }
+        }
       break;
 
       /*-----------------------------------------------------------------*/
@@ -869,7 +876,9 @@ for (;;)
 
       /*-----------------------------------------------------------------*/
       case OP_EODN:
-      if (clen == 0 || (IS_NEWLINE(ptr) && ptr == end_subject - md->nllen))
+      if (clen == 0 && (md->moptions & PCRE_PARTIAL_HARD) != 0)
+        could_continue = TRUE;
+      else if (clen == 0 || (IS_NEWLINE(ptr) && ptr == end_subject - md->nllen))
         { ADD_ACTIVE(state_offset + 1, 0); }
       break;
 
@@ -877,7 +886,9 @@ for (;;)
       case OP_DOLL:
       if ((md->moptions & PCRE_NOTEOL) == 0)
         {
-        if (clen == 0 ||
+        if (clen == 0 && (md->moptions & PCRE_PARTIAL_HARD) != 0)
+          could_continue = TRUE;
+        else if (clen == 0 ||
             ((md->poptions & PCRE_DOLLAR_ENDONLY) == 0 && IS_NEWLINE(ptr) &&
                ((ims & PCRE_MULTILINE) != 0 || ptr == end_subject - md->nllen)
             ))
@@ -920,13 +931,37 @@ for (;;)
           if (utf8) BACKCHAR(temp);
 #endif
           GETCHARTEST(d, temp);
+#ifdef SUPPORT_UCP
+          if ((md->poptions & PCRE_UCP) != 0)
+            {
+            if (d == '_') left_word = TRUE; else
+              {
+              int cat = UCD_CATEGORY(d);
+              left_word = (cat == ucp_L || cat == ucp_N);
+              }
+            }
+          else
+#endif
           left_word = d < 256 && (ctypes[d] & ctype_word) != 0;
           }
-        else left_word = 0;
+        else left_word = FALSE;
 
         if (clen > 0)
+          {
+#ifdef SUPPORT_UCP
+          if ((md->poptions & PCRE_UCP) != 0)
+            {
+            if (c == '_') right_word = TRUE; else
+              {
+              int cat = UCD_CATEGORY(c);
+              right_word = (cat == ucp_L || cat == ucp_N);
+              }
+            }
+          else
+#endif
           right_word = c < 256 && (ctypes[c] & ctype_word) != 0;
-        else right_word = 0;
+          }
+        else right_word = FALSE;
 
         if ((left_word == right_word) == (codevalue == OP_NOT_WORD_BOUNDARY))
           { ADD_ACTIVE(state_offset + 1, 0); }
@@ -953,7 +988,8 @@ for (;;)
           break;
 
           case PT_LAMP:
-          OK = chartype == ucp_Lu || chartype == ucp_Ll || chartype == ucp_Lt;
+          OK = chartype == ucp_Lu || chartype == ucp_Ll ||
+               chartype == ucp_Lt;
           break;
 
           case PT_GC:
@@ -966,6 +1002,30 @@ for (;;)
 
           case PT_SC:
           OK = UCD_SCRIPT(c) == code[2];
+          break;
+
+          /* These are specials for combination cases. */
+
+          case PT_ALNUM:
+          OK = _pcre_ucp_gentype[chartype] == ucp_L ||
+               _pcre_ucp_gentype[chartype] == ucp_N;
+          break;
+
+          case PT_SPACE:    /* Perl space */
+          OK = _pcre_ucp_gentype[chartype] == ucp_Z ||
+               c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR;
+          break;
+
+          case PT_PXSPACE:  /* POSIX space */
+          OK = _pcre_ucp_gentype[chartype] == ucp_Z ||
+               c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
+               c == CHAR_FF || c == CHAR_CR;
+          break;
+
+          case PT_WORD:
+          OK = _pcre_ucp_gentype[chartype] == ucp_L ||
+               _pcre_ucp_gentype[chartype] == ucp_N ||
+               c == CHAR_UNDERSCORE;
           break;
 
           /* Should never occur, but keep compilers from grumbling. */
@@ -1122,7 +1182,8 @@ for (;;)
           break;
 
           case PT_LAMP:
-          OK = chartype == ucp_Lu || chartype == ucp_Ll || chartype == ucp_Lt;
+          OK = chartype == ucp_Lu || chartype == ucp_Ll ||
+            chartype == ucp_Lt;
           break;
 
           case PT_GC:
@@ -1135,6 +1196,30 @@ for (;;)
 
           case PT_SC:
           OK = UCD_SCRIPT(c) == code[3];
+          break;
+
+          /* These are specials for combination cases. */
+
+          case PT_ALNUM:
+          OK = _pcre_ucp_gentype[chartype] == ucp_L ||
+               _pcre_ucp_gentype[chartype] == ucp_N;
+          break;
+
+          case PT_SPACE:    /* Perl space */
+          OK = _pcre_ucp_gentype[chartype] == ucp_Z ||
+               c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR;
+          break;
+
+          case PT_PXSPACE:  /* POSIX space */
+          OK = _pcre_ucp_gentype[chartype] == ucp_Z ||
+               c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
+               c == CHAR_FF || c == CHAR_CR;
+          break;
+
+          case PT_WORD:
+          OK = _pcre_ucp_gentype[chartype] == ucp_L ||
+               _pcre_ucp_gentype[chartype] == ucp_N ||
+               c == CHAR_UNDERSCORE;
           break;
 
           /* Should never occur, but keep compilers from grumbling. */
@@ -1344,7 +1429,8 @@ for (;;)
           break;
 
           case PT_LAMP:
-          OK = chartype == ucp_Lu || chartype == ucp_Ll || chartype == ucp_Lt;
+          OK = chartype == ucp_Lu || chartype == ucp_Ll ||
+            chartype == ucp_Lt;
           break;
 
           case PT_GC:
@@ -1357,6 +1443,30 @@ for (;;)
 
           case PT_SC:
           OK = UCD_SCRIPT(c) == code[3];
+          break;
+
+          /* These are specials for combination cases. */
+
+          case PT_ALNUM:
+          OK = _pcre_ucp_gentype[chartype] == ucp_L ||
+               _pcre_ucp_gentype[chartype] == ucp_N;
+          break;
+
+          case PT_SPACE:    /* Perl space */
+          OK = _pcre_ucp_gentype[chartype] == ucp_Z ||
+               c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR;
+          break;
+
+          case PT_PXSPACE:  /* POSIX space */
+          OK = _pcre_ucp_gentype[chartype] == ucp_Z ||
+               c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
+               c == CHAR_FF || c == CHAR_CR;
+          break;
+
+          case PT_WORD:
+          OK = _pcre_ucp_gentype[chartype] == ucp_L ||
+               _pcre_ucp_gentype[chartype] == ucp_N ||
+               c == CHAR_UNDERSCORE;
           break;
 
           /* Should never occur, but keep compilers from grumbling. */
@@ -1591,7 +1701,8 @@ for (;;)
           break;
 
           case PT_LAMP:
-          OK = chartype == ucp_Lu || chartype == ucp_Ll || chartype == ucp_Lt;
+          OK = chartype == ucp_Lu || chartype == ucp_Ll ||
+            chartype == ucp_Lt;
           break;
 
           case PT_GC:
@@ -1604,6 +1715,30 @@ for (;;)
 
           case PT_SC:
           OK = UCD_SCRIPT(c) == code[5];
+          break;
+
+          /* These are specials for combination cases. */
+
+          case PT_ALNUM:
+          OK = _pcre_ucp_gentype[chartype] == ucp_L ||
+               _pcre_ucp_gentype[chartype] == ucp_N;
+          break;
+
+          case PT_SPACE:    /* Perl space */
+          OK = _pcre_ucp_gentype[chartype] == ucp_Z ||
+               c == CHAR_HT || c == CHAR_NL || c == CHAR_FF || c == CHAR_CR;
+          break;
+
+          case PT_PXSPACE:  /* POSIX space */
+          OK = _pcre_ucp_gentype[chartype] == ucp_Z ||
+               c == CHAR_HT || c == CHAR_NL || c == CHAR_VT ||
+               c == CHAR_FF || c == CHAR_CR;
+          break;
+
+          case PT_WORD:
+          OK = _pcre_ucp_gentype[chartype] == ucp_L ||
+               _pcre_ucp_gentype[chartype] == ucp_N ||
+               c == CHAR_UNDERSCORE;
           break;
 
           /* Should never occur, but keep compilers from grumbling. */
@@ -2233,7 +2368,7 @@ for (;;)
         points to the byte after the end of the class. If there is a
         quantifier, this is where it will be. */
 
-        next_state_offset = ecode - start_code;
+        next_state_offset = (int)(ecode - start_code);
 
         switch (*ecode)
           {
@@ -2304,7 +2439,7 @@ for (;;)
           md,                                   /* static match data */
           code,                                 /* this subexpression's code */
           ptr,                                  /* where we currently are */
-          ptr - start_subject,                  /* start offset */
+          (int)(ptr - start_subject),           /* start offset */
           local_offsets,                        /* offset vector */
           sizeof(local_offsets)/sizeof(int),    /* size of same */
           local_workspace,                      /* workspace vector */
@@ -2315,7 +2450,7 @@ for (;;)
 
         if (rc == PCRE_ERROR_DFA_UITEM) return rc;
         if ((rc >= 0) == (codevalue == OP_ASSERT || codevalue == OP_ASSERTBACK))
-            { ADD_ACTIVE(endasscode + LINK_SIZE + 1 - start_code, 0); }
+            { ADD_ACTIVE((int)(endasscode + LINK_SIZE + 1 - start_code), 0); }
         }
       break;
 
@@ -2342,9 +2477,9 @@ for (;;)
             cb.callout_number   = code[LINK_SIZE+2];
             cb.offset_vector    = offsets;
             cb.subject          = (PCRE_SPTR)start_subject;
-            cb.subject_length   = end_subject - start_subject;
-            cb.start_match      = current_subject - start_subject;
-            cb.current_position = ptr - start_subject;
+            cb.subject_length   = (int)(end_subject - start_subject);
+            cb.start_match      = (int)(current_subject - start_subject);
+            cb.current_position = (int)(ptr - start_subject);
             cb.pattern_position = GET(code, LINK_SIZE + 3);
             cb.next_item_length = GET(code, 3 + 2*LINK_SIZE);
             cb.capture_top      = 1;
@@ -2395,7 +2530,7 @@ for (;;)
             md,                                   /* fixed match data */
             asscode,                              /* this subexpression's code */
             ptr,                                  /* where we currently are */
-            ptr - start_subject,                  /* start offset */
+            (int)(ptr - start_subject),           /* start offset */
             local_offsets,                        /* offset vector */
             sizeof(local_offsets)/sizeof(int),    /* size of same */
             local_workspace,                      /* workspace vector */
@@ -2407,7 +2542,7 @@ for (;;)
           if (rc == PCRE_ERROR_DFA_UITEM) return rc;
           if ((rc >= 0) ==
                 (condcode == OP_ASSERT || condcode == OP_ASSERTBACK))
-            { ADD_ACTIVE(endasscode + LINK_SIZE + 1 - start_code, 0); }
+            { ADD_ACTIVE((int)(endasscode + LINK_SIZE + 1 - start_code), 0); }
           else
             { ADD_ACTIVE(state_offset + codelink + LINK_SIZE + 1, 0); }
           }
@@ -2428,7 +2563,7 @@ for (;;)
           md,                                   /* fixed match data */
           start_code + GET(code, 1),            /* this subexpression's code */
           ptr,                                  /* where we currently are */
-          ptr - start_subject,                  /* start offset */
+          (int)(ptr - start_subject),           /* start offset */
           local_offsets,                        /* offset vector */
           sizeof(local_offsets)/sizeof(int),    /* size of same */
           local_workspace,                      /* workspace vector */
@@ -2480,7 +2615,7 @@ for (;;)
           md,                                   /* fixed match data */
           code,                                 /* this subexpression's code */
           ptr,                                  /* where we currently are */
-          ptr - start_subject,                  /* start offset */
+          (int)(ptr - start_subject),           /* start offset */
           local_offsets,                        /* offset vector */
           sizeof(local_offsets)/sizeof(int),    /* size of same */
           local_workspace,                      /* workspace vector */
@@ -2497,7 +2632,8 @@ for (;;)
 
           do { end_subpattern += GET(end_subpattern, 1); }
             while (*end_subpattern == OP_ALT);
-          next_state_offset = end_subpattern - start_code + LINK_SIZE + 1;
+          next_state_offset =
+            (int)(end_subpattern - start_code + LINK_SIZE + 1);
 
           /* If the end of this subpattern is KETRMAX or KETRMIN, we must
           arrange for the repeat state also to be added to the relevant list.
@@ -2505,7 +2641,7 @@ for (;;)
 
           repeat_state_offset = (*end_subpattern == OP_KETRMAX ||
                                  *end_subpattern == OP_KETRMIN)?
-            end_subpattern - start_code - GET(end_subpattern, 1) : -1;
+            (int)(end_subpattern - start_code - GET(end_subpattern, 1)) : -1;
 
           /* If we have matched an empty string, add the next state at the
           current character pointer. This is important so that the duplicate
@@ -2569,9 +2705,9 @@ for (;;)
         cb.callout_number   = code[1];
         cb.offset_vector    = offsets;
         cb.subject          = (PCRE_SPTR)start_subject;
-        cb.subject_length   = end_subject - start_subject;
-        cb.start_match      = current_subject - start_subject;
-        cb.current_position = ptr - start_subject;
+        cb.subject_length   = (int)(end_subject - start_subject);
+        cb.start_match      = (int)(current_subject - start_subject);
+        cb.current_position = (int)(ptr - start_subject);
         cb.pattern_position = GET(code, 2);
         cb.next_item_length = GET(code, 2 + LINK_SIZE);
         cb.capture_top      = 1;
@@ -2617,13 +2753,13 @@ for (;;)
         ((md->moptions & PCRE_PARTIAL_SOFT) != 0 &&  /* Soft partial and */
          match_count < 0)                            /* no matches */
         ) &&                                         /* And... */
-        ptr >= end_subject &&                     /* Reached end of subject */
-        ptr > current_subject)                    /* Matched non-empty string */
+        ptr >= end_subject &&                  /* Reached end of subject */
+        ptr > md->start_used_ptr)              /* Inspected non-empty string */
       {
       if (offsetcount >= 2)
         {
-        offsets[0] = md->start_used_ptr - start_subject;
-        offsets[1] = end_subject - start_subject;
+        offsets[0] = (int)(md->start_used_ptr - start_subject);
+        offsets[1] = (int)(end_subject - start_subject);
         }
       match_count = PCRE_ERROR_PARTIAL;
       }
@@ -2708,6 +2844,7 @@ if (re == NULL || subject == NULL || workspace == NULL ||
    (offsets == NULL && offsetcount > 0)) return PCRE_ERROR_NULL;
 if (offsetcount < 0) return PCRE_ERROR_BADCOUNT;
 if (wscount < 20) return PCRE_ERROR_DFA_WSSIZE;
+if (start_offset < 0 || start_offset > length) return PCRE_ERROR_BADOFFSET;
 
 /* We need to find the pointer to any study data before we test for byte
 flipping, so we scan the extra_data block first. This may set two fields in the
@@ -2826,16 +2963,14 @@ back the character offset. */
 #ifdef SUPPORT_UTF8
 if (utf8 && (options & PCRE_NO_UTF8_CHECK) == 0)
   {
-  if (_pcre_valid_utf8((uschar *)subject, length) >= 0)
-    return PCRE_ERROR_BADUTF8;
+  int tb;
+  if ((tb = _pcre_valid_utf8((uschar *)subject, length)) >= 0)
+    return (tb == length && (options & PCRE_PARTIAL_HARD) != 0)?
+      PCRE_ERROR_SHORTUTF8 : PCRE_ERROR_BADUTF8;
   if (start_offset > 0 && start_offset < length)
     {
-    int tb = ((uschar *)subject)[start_offset];
-    if (tb > 127)
-      {
-      tb &= 0xc0;
-      if (tb != 0 && tb != 0xc0) return PCRE_ERROR_BADUTF8_OFFSET;
-      }
+    tb = ((USPTR)subject)[start_offset] & 0xc0;
+    if (tb == 0x80) return PCRE_ERROR_BADUTF8_OFFSET;
     }
   }
 #endif
@@ -2922,9 +3057,11 @@ for (;;)
 
     /* There are some optimizations that avoid running the match if a known
     starting point is not found. However, there is an option that disables
-    these, for testing and for ensuring that all callouts do actually occur. */
+    these, for testing and for ensuring that all callouts do actually occur.
+    The option can be set in the regex by (*NO_START_OPT) or passed in
+    match-time options. */
 
-    if ((options & PCRE_NO_START_OPTIMIZE) == 0)
+    if (((options | re->options) & PCRE_NO_START_OPTIMIZE) == 0)
       {
       /* Advance to a known first byte. */
 
@@ -2982,8 +3119,16 @@ for (;;)
         while (current_subject < end_subject)
           {
           register unsigned int c = *current_subject;
-          if ((start_bits[c/8] & (1 << (c&7))) == 0) current_subject++;
-            else break;
+          if ((start_bits[c/8] & (1 << (c&7))) == 0)
+            {
+            current_subject++;
+#ifdef SUPPORT_UTF8
+            if (utf8)
+              while(current_subject < end_subject &&
+                    (*current_subject & 0xc0) == 0x80) current_subject++;
+#endif
+            }
+          else break;
           }
         }
       }

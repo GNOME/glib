@@ -150,7 +150,10 @@ enum {
   ucp_Old_Turkic = G_UNICODE_SCRIPT_OLD_TURKIC,
   ucp_Samaritan = G_UNICODE_SCRIPT_SAMARITAN,
   ucp_Tai_Tham = G_UNICODE_SCRIPT_TAI_THAM,
-  ucp_Tai_Viet = G_UNICODE_SCRIPT_TAI_VIET
+  ucp_Tai_Viet = G_UNICODE_SCRIPT_TAI_VIET,
+  ucp_Batak = G_UNICODE_SCRIPT_BATAK,
+  ucp_Brahmi = G_UNICODE_SCRIPT_BRAHMI,
+  ucp_Mandaic = G_UNICODE_SCRIPT_MANDAIC
 };
 
 #endif
