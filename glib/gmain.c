@@ -241,7 +241,7 @@ struct _GMainContext
   GSource *source_list;
   gint in_check_or_prepare;
 
-  GPollRec *poll_records;
+  GPollRec *poll_records, *poll_records_tail;
   guint n_poll_records;
   GPollFD *cached_poll_array;
   guint cached_poll_array_size;
@@ -309,6 +309,7 @@ struct _GChildWatchSource
 struct _GPollRec
 {
   GPollFD *fd;
+  GPollRec *prev;
   GPollRec *next;
   gint priority;
 };
@@ -3494,7 +3495,7 @@ g_main_context_add_poll_unlocked (GMainContext *context,
 				  gint          priority,
 				  GPollFD      *fd)
 {
-  GPollRec *lastrec, *pollrec;
+  GPollRec *prevrec, *nextrec;
   GPollRec *newrec = g_slice_new (GPollRec);
 
   /* This file descriptor may be checked before we ever poll */
@@ -3502,20 +3503,26 @@ g_main_context_add_poll_unlocked (GMainContext *context,
   newrec->fd = fd;
   newrec->priority = priority;
 
-  lastrec = NULL;
-  pollrec = context->poll_records;
-  while (pollrec && priority >= pollrec->priority)
+  prevrec = context->poll_records_tail;
+  nextrec = NULL;
+  while (prevrec && priority < prevrec->priority)
     {
-      lastrec = pollrec;
-      pollrec = pollrec->next;
+      nextrec = prevrec;
+      prevrec = prevrec->prev;
     }
-  
-  if (lastrec)
-    lastrec->next = newrec;
+
+  if (prevrec)
+    prevrec->next = newrec;
   else
     context->poll_records = newrec;
 
-  newrec->next = pollrec;
+  newrec->prev = prevrec;
+  newrec->next = nextrec;
+
+  if (nextrec)
+    nextrec->prev = newrec;
+  else 
+    context->poll_records_tail = newrec;
 
   context->n_poll_records++;
 
@@ -3554,27 +3561,33 @@ static void
 g_main_context_remove_poll_unlocked (GMainContext *context,
 				     GPollFD      *fd)
 {
-  GPollRec *pollrec, *lastrec;
+  GPollRec *pollrec, *prevrec, *nextrec;
 
-  lastrec = NULL;
+  prevrec = NULL;
   pollrec = context->poll_records;
 
   while (pollrec)
     {
+      nextrec = pollrec->next;
       if (pollrec->fd == fd)
 	{
-	  if (lastrec != NULL)
-	    lastrec->next = pollrec->next;
+	  if (prevrec != NULL)
+	    prevrec->next = nextrec;
 	  else
-	    context->poll_records = pollrec->next;
+	    context->poll_records = nextrec;
+
+	  if (nextrec != NULL)
+	    nextrec->prev = prevrec;
+	  else
+	    context->poll_records_tail = prevrec;
 
 	  g_slice_free (GPollRec, pollrec);
 
 	  context->n_poll_records--;
 	  break;
 	}
-      lastrec = pollrec;
-      pollrec = pollrec->next;
+      prevrec = pollrec;
+      pollrec = nextrec;
     }
 
 #ifdef G_THREADS_ENABLED
