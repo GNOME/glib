@@ -953,7 +953,9 @@ g_key_file_parse_data (GKeyFile     *key_file,
     {
       if (data[i] == '\n')
         {
-	  if (i > 0 && data[i - 1] == '\r')
+	  if (key_file->parse_buffer->len > 0
+	      && (key_file->parse_buffer->str[key_file->parse_buffer->len - 1]
+		  == '\r'))
 	    g_string_erase (key_file->parse_buffer,
 			    key_file->parse_buffer->len - 1,
 			    1);
