@@ -267,7 +267,7 @@ main (int argc, char *argv[])
     {
       string = g_string_sized_new (0);
       test_file (argv[1]);
-      g_print (string->str);
+      g_print ("%s", string->str);
       return 0;
     }
 
