@@ -1183,12 +1183,12 @@ g_source_remove_poll (GSource *source,
  * Adds @child_source to @source as a "polled" source; when @source is
  * added to a #GMainContext, @child_source will be automatically added
  * with the same priority, when @child_source is triggered, it will
- * cause @source to dispatch (and won't call @child_source's own
+ * cause @source to dispatch (in addition to calling its own
  * callback), and when @source is destroyed, it will destroy
  * @child_source as well. (@source will also still be dispatched if
  * its own prepare/check functions indicate that it is ready.)
  *
- * If you need @child_source to do anything on its own when it
+ * If you don't need @child_source to do anything on its own when it
  * triggers, you can call g_source_set_dummy_callback() on it to set a
  * callback that does nothing (except return %TRUE if appropriate).
  *
