@@ -267,6 +267,8 @@ g_settings_schema_new (const gchar *name)
   GvdbTable *table = NULL;
   GSList *source;
 
+  g_return_val_if_fail (name != NULL, NULL);
+
   initialise_schema_sources ();
 
   for (source = schema_sources; source; source = source->next)
