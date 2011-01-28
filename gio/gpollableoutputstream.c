@@ -151,8 +151,8 @@ g_pollable_output_stream_default_write_nonblocking (GPollableOutputStream  *stre
 {
   if (!g_pollable_output_stream_is_writable (stream))
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK,
-		   g_strerror (EAGAIN));
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_WOULD_BLOCK,
+                           g_strerror (EAGAIN));
       return -1;
     }
 
