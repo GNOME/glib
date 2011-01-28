@@ -2427,10 +2427,15 @@ load_user_special_dirs (void)
     {
       wcp = NULL;
       (*p_SHGetKnownFolderPath) (&FOLDERID_Downloads, 0, NULL, &wcp);
-      g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
-      if (g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] == NULL)
-	g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
-      CoTaskMemFree (wcp);
+      if (wcp)
+        {
+          g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
+          if (g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] == NULL)
+              g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
+          CoTaskMemFree (wcp);
+        }
+      else
+          g_user_special_dirs[G_USER_DIRECTORY_DOWNLOAD] = get_special_folder (CSIDL_DESKTOPDIRECTORY);
     }
 
   g_user_special_dirs[G_USER_DIRECTORY_MUSIC] = get_special_folder (CSIDL_MYMUSIC);
@@ -2445,10 +2450,15 @@ load_user_special_dirs (void)
     {
       wcp = NULL;
       (*p_SHGetKnownFolderPath) (&FOLDERID_Public, 0, NULL, &wcp);
-      g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
-      if (g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] == NULL)
-	g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);
-      CoTaskMemFree (wcp);
+      if (wcp)
+        {
+          g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = g_utf16_to_utf8 (wcp, -1, NULL, NULL, NULL);
+          if (g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] == NULL)
+              g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);
+          CoTaskMemFree (wcp);
+        }
+      else
+          g_user_special_dirs[G_USER_DIRECTORY_PUBLIC_SHARE] = get_special_folder (CSIDL_COMMON_DOCUMENTS);
     }
   
   g_user_special_dirs[G_USER_DIRECTORY_TEMPLATES] = get_special_folder (CSIDL_TEMPLATES);
