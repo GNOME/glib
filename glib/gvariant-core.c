@@ -629,6 +629,7 @@ g_variant_unref (GVariant *value)
       else
         g_variant_release_children (value);
 
+      memset (value, 0, sizeof (GVariant));
       g_slice_free (GVariant, value);
     }
 }
