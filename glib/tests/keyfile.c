@@ -1350,6 +1350,41 @@ test_non_utf8 (void)
 #define SRCDIR "."
 #endif
 
+static void
+test_page_boundary (void)
+{
+  GKeyFile *file;
+  GError *error;
+  gint i;
+
+#define GROUP "main_section"
+#define KEY_PREFIX "fill_abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvw_"
+#define FIRST_KEY 10
+#define LAST_KEY 99
+#define VALUE 92
+
+  g_test_bug ("640695");
+
+  file = g_key_file_new ();
+
+  error = NULL;
+  g_key_file_load_from_file (file, SRCDIR "/pages.ini", G_KEY_FILE_NONE, &error);
+  g_assert_no_error (error);
+
+  for (i = FIRST_KEY; i <= LAST_KEY; i++)
+    {
+      gchar *key;
+      gint val;
+
+      key = g_strdup_printf (KEY_PREFIX "%d", i);
+      val = g_key_file_get_integer (file, GROUP, key, &error);
+      g_free (key);
+      g_assert_no_error (error);
+      g_assert_cmpint (val, ==, VALUE);
+    }
+
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -1380,6 +1415,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/keyfile/int64", test_int64);
   g_test_add_func ("/keyfile/load", test_load);
   g_test_add_func ("/keyfile/non-utf8", test_non_utf8);
-  
+  g_test_add_func ("/keyfile/page-boundary", test_page_boundary);
+
   return g_test_run ();
 }

@@ -168,6 +168,7 @@ CLEANFILES = \
 EXTRA_DIST += \
 	4096-random-bytes	\
 	keyfiletest.ini		\
+	pages.ini		\
 	bookmarks.xbel
 
 dist-hook:
