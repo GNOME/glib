@@ -30,13 +30,6 @@
 
 G_BEGIN_DECLS
 
-#define G_TYPE_ACTION_GROUP                                 (g_action_group_get_type ())
-#define G_ACTION_GROUP(inst)                                (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
-                                                             G_TYPE_ACTION_GROUP, GActionGroup))
-#define G_IS_ACTION_GROUP(inst)                             (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
-                                                             G_TYPE_ACTION_GROUP))
-#define G_ACTION_GROUP_GET_IFACE(inst)                      (G_TYPE_INSTANCE_GET_INTERFACE ((inst),                  \
-                                                             G_TYPE_ACTION_GROUP, GActionGroupInterface))
 
 #define G_TYPE_ACTION_GROUP                                 (g_action_group_get_type ())
 #define G_ACTION_GROUP(inst)                                (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
