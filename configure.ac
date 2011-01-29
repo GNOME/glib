@@ -56,10 +56,10 @@ cflags_set=${CFLAGS+set}
 
 AM_INIT_AUTOMAKE([1.10 no-define])
 
-# Support silent build rules, requires at least automake-1.11. Enable
-# by either passing --enable-silent-rules to configure or passing V=0
+# Support silent build rules, requires at least automake-1.11. Disable
+# by either passing --disable-silent-rules to configure or passing V=1
 # to make
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([no])])
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 GLIB_MAJOR_VERSION=glib_major_version
 GLIB_MINOR_VERSION=glib_minor_version
