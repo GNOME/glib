@@ -1,3 +1,27 @@
+Overview of Changes from GLib 2.27.92 to 2.27.93
+================================================
+
+* Bugs fixed:
+ 637013 gio/gdbusmessage.c fails to compile on Solaris
+ 640192 Error creating a Gio.Settings object through py...
+ 640261 Minimum version for external pcre needs to be..
+ 640262 GActionGroup contains redundant TYPE macros
+ 640436 Make load_user_special_dirs() resistant to non...
+ 640695 g_key_file_load_from_file() mishandles a CR-LF...
+ 640724 can't compile gio due to format string issues
+ 640725 can't compile tests due to format string issue
+ 640807 improve GVariant behaviour with invalid pointers
+ 640823 wrong documentation for g_source_add_child_source
+
+* Translation updates:
+ Bulgarian
+ Galician
+ Hebrew
+ Norwegian bokmål
+ Spanish
+ Traditional Chinese
+
+
 Overview of Changes from GLib 2.27.91 to 2.27.92
 ================================================
 
