@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-27 00:37+0100\n"
-"PO-Revision-Date: 2011-01-26 14:59+0100\n"
+"POT-Creation-Date: 2011-01-30 03:23+0100\n"
+"PO-Revision-Date: 2011-01-30 03:30+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
 "Language: gl\n"
@@ -827,265 +827,273 @@ msgstr "atinxiuse o límite do espazo de traballo para subcadeas baleiras"
 msgid "invalid combination of newline flags"
 msgstr "combinación non válida de marcas de liña nova"
 
+#: ../glib/gregex.c:234
+msgid "bad offset"
+msgstr "desplazamento erróneo"
+
 #: ../glib/gregex.c:236
+msgid "short utf8"
+msgstr "UTF8 curto"
+
+#: ../glib/gregex.c:240
 msgid "unknown error"
 msgstr "erro descoñecido"
 
-#: ../glib/gregex.c:256
+#: ../glib/gregex.c:260
 msgid "\\ at end of pattern"
 msgstr "\\ ao final do patrón"
 
-#: ../glib/gregex.c:259
+#: ../glib/gregex.c:263
 msgid "\\c at end of pattern"
 msgstr "\\c ao final do patrón"
 
-#: ../glib/gregex.c:262
+#: ../glib/gregex.c:266
 msgid "unrecognized character follows \\"
 msgstr "carácter non recoñecido despois de \\"
 
-#: ../glib/gregex.c:269
+#: ../glib/gregex.c:273
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr ""
 "aquí non se permiten as letras con maiúsculas e minúsculas escapadas (\\l, "
 "\\L, \\u, \\U)"
 
-#: ../glib/gregex.c:272
+#: ../glib/gregex.c:276
 msgid "numbers out of order in {} quantifier"
 msgstr "números fóra do intervalo no cuantificador {}"
 
-#: ../glib/gregex.c:275
+#: ../glib/gregex.c:279
 msgid "number too big in {} quantifier"
 msgstr "número demasiado grande no cuantificador {}"
 
-#: ../glib/gregex.c:278
+#: ../glib/gregex.c:282
 msgid "missing terminating ] for character class"
 msgstr "falta a terminación ] para a clase de carácter"
 
-#: ../glib/gregex.c:281
+#: ../glib/gregex.c:285
 msgid "invalid escape sequence in character class"
 msgstr "secuencia de escape non válida na clase de carácter"
 
-#: ../glib/gregex.c:284
+#: ../glib/gregex.c:288
 msgid "range out of order in character class"
 msgstr "intervalo fóra de orde na clase de carácter"
 
-#: ../glib/gregex.c:287
+#: ../glib/gregex.c:291
 msgid "nothing to repeat"
 msgstr "nada que repetir"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:294
 msgid "unrecognized character after (?"
 msgstr "carácter non recoñecido despois de (?"
 
-#: ../glib/gregex.c:294
+#: ../glib/gregex.c:298
 msgid "unrecognized character after (?<"
 msgstr "carácter non recoñecido despois de (?<"
 
-#: ../glib/gregex.c:298
+#: ../glib/gregex.c:302
 msgid "unrecognized character after (?P"
 msgstr "carácter non recoñecido despois de (?P"
 
-#: ../glib/gregex.c:301
+#: ../glib/gregex.c:305
 msgid "POSIX named classes are supported only within a class"
 msgstr "As clases de nomes POSIX só se permiten dentro dunha clase"
 
-#: ../glib/gregex.c:304
+#: ../glib/gregex.c:308
 msgid "missing terminating )"
 msgstr "falta o ) de terminación"
 
-#: ../glib/gregex.c:308
+#: ../glib/gregex.c:312
 msgid ") without opening ("
 msgstr ") sen ( que o abra"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:315
+#: ../glib/gregex.c:319
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R ou os díxitos (?[+-] deben estar seguidos por )"
 
-#: ../glib/gregex.c:318
+#: ../glib/gregex.c:322
 msgid "reference to non-existent subpattern"
 msgstr "referencia a un subpatrón non existente"
 
-#: ../glib/gregex.c:321
+#: ../glib/gregex.c:325
 msgid "missing ) after comment"
 msgstr "falta un ) despois do comentario"
 
-#: ../glib/gregex.c:324
+#: ../glib/gregex.c:328
 msgid "regular expression too large"
 msgstr "a expresión regular é demasiado longa"
 
-#: ../glib/gregex.c:327
+#: ../glib/gregex.c:331
 msgid "failed to get memory"
 msgstr "produciuse un fallo ao obter a memoria"
 
-#: ../glib/gregex.c:330
+#: ../glib/gregex.c:334
 msgid "lookbehind assertion is not fixed length"
 msgstr "a aserción lockbehind non ten unha lonxitude fixa"
 
-#: ../glib/gregex.c:333
+#: ../glib/gregex.c:337
 msgid "malformed number or name after (?("
 msgstr "número ou nome formado incorrectamente despois de (?("
 
-#: ../glib/gregex.c:336
+#: ../glib/gregex.c:340
 msgid "conditional group contains more than two branches"
 msgstr "o grupo condicional contén máis de dúas ramas"
 
-#: ../glib/gregex.c:339
+#: ../glib/gregex.c:343
 msgid "assertion expected after (?("
 msgstr "esperábase unha aserción despois de (?("
 
-#: ../glib/gregex.c:342
+#: ../glib/gregex.c:346
 msgid "unknown POSIX class name"
 msgstr "nome de clase POSIX descoñecida"
 
-#: ../glib/gregex.c:345
+#: ../glib/gregex.c:349
 msgid "POSIX collating elements are not supported"
 msgstr "os elementos de colación POSIX non se admiten"
 
-#: ../glib/gregex.c:348
+#: ../glib/gregex.c:352
 msgid "character value in \\x{...} sequence is too large"
 msgstr "o valor do carácter na secuencia \\x{…} é demasiado longo"
 
-#: ../glib/gregex.c:351
+#: ../glib/gregex.c:355
 msgid "invalid condition (?(0)"
 msgstr "condición non válida (?(0)"
 
-#: ../glib/gregex.c:354
+#: ../glib/gregex.c:358
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "non se permite \\C en asercións lookbehind"
 
-#: ../glib/gregex.c:357
+#: ../glib/gregex.c:361
 msgid "recursive call could loop indefinitely"
 msgstr "unha chamada recursiva pode crear un bucle infinito"
 
-#: ../glib/gregex.c:360
+#: ../glib/gregex.c:364
 msgid "missing terminator in subpattern name"
 msgstr "falta a terminación no nome do subpatrón"
 
-#: ../glib/gregex.c:363
+#: ../glib/gregex.c:367
 msgid "two named subpatterns have the same name"
 msgstr "dous subpatróns teñen o mesmo nome"
 
-#: ../glib/gregex.c:366
+#: ../glib/gregex.c:370
 msgid "malformed \\P or \\p sequence"
 msgstr "secuencia \\P ou \\p formada incorrectamente"
 
-#: ../glib/gregex.c:369
+#: ../glib/gregex.c:373
 msgid "unknown property name after \\P or \\p"
 msgstr "nome de propiedade descoñecido despois de \\P ou \\p"
 
-#: ../glib/gregex.c:372
+#: ../glib/gregex.c:376
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "o nome do subpatrón é demasiado longo (máximo 32 caracteres)"
 
-#: ../glib/gregex.c:375
+#: ../glib/gregex.c:379
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "demasiados subpatróns con nome (máximo 10.000)"
 
-#: ../glib/gregex.c:378
+#: ../glib/gregex.c:382
 msgid "octal value is greater than \\377"
 msgstr "o valor octal é maior que \\377"
 
-#: ../glib/gregex.c:381
+#: ../glib/gregex.c:385
 msgid "DEFINE group contains more than one branch"
 msgstr "o grupo DEFINE contén máis dunha rama"
 
-#: ../glib/gregex.c:384
+#: ../glib/gregex.c:388
 msgid "repeating a DEFINE group is not allowed"
 msgstr "non se permite repetir un grupo DEFINE"
 
-#: ../glib/gregex.c:387
+#: ../glib/gregex.c:391
 msgid "inconsistent NEWLINE options"
 msgstr "opcións NEWLINE inconsistentes"
 
-#: ../glib/gregex.c:390
+#: ../glib/gregex.c:394
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "\\g non está seguido por un nome con chaves ou un número distinto de cero "
 "cunha chave opcional"
 
-#: ../glib/gregex.c:395
+#: ../glib/gregex.c:399
 msgid "unexpected repeat"
 msgstr "repetición inesperada"
 
-#: ../glib/gregex.c:399
+#: ../glib/gregex.c:403
 msgid "code overflow"
 msgstr "desbordamento de código"
 
-#: ../glib/gregex.c:403
+#: ../glib/gregex.c:407
 msgid "overran compiling workspace"
 msgstr "desbordouse o espazo de traballo de compilación"
 
-#: ../glib/gregex.c:407
+#: ../glib/gregex.c:411
 msgid "previously-checked referenced subpattern not found"
 msgstr "non se atopou o subpatrón referenciado comprobado previamente"
 
-#: ../glib/gregex.c:579 ../glib/gregex.c:1700
+#: ../glib/gregex.c:591 ../glib/gregex.c:1714
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr ""
 "Produciuse un erro ao estabelecer a equivalencia da expresión regular %s: %s"
 
-#: ../glib/gregex.c:1155
+#: ../glib/gregex.c:1167
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "A biblioteca PCRE está compilada sen compatibilidade con UTF8"
 
-#: ../glib/gregex.c:1164
+#: ../glib/gregex.c:1176
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr ""
 "A biblioteca PCRE está compilada sen compatibilidade con propiedades UTF8"
 
-#: ../glib/gregex.c:1218
+#: ../glib/gregex.c:1232
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr ""
 "Produciuse un erro ao compilar a expresión regular %s no carácter %d: %s"
 
-#: ../glib/gregex.c:1254
+#: ../glib/gregex.c:1268
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Produciuse un erro ao optimizar a expresión regular %s: %s"
 
-#: ../glib/gregex.c:2128
+#: ../glib/gregex.c:2144
 msgid "hexadecimal digit or '}' expected"
 msgstr "esperábase un díxito hexadecimal ou '}'"
 
-#: ../glib/gregex.c:2144
+#: ../glib/gregex.c:2160
 msgid "hexadecimal digit expected"
 msgstr "esperábase un díxito hexadecimal"
 
-#: ../glib/gregex.c:2184
+#: ../glib/gregex.c:2200
 msgid "missing '<' in symbolic reference"
 msgstr "falta '<' na referencia simbólica"
 
-#: ../glib/gregex.c:2193
+#: ../glib/gregex.c:2209
 msgid "unfinished symbolic reference"
 msgstr "referencia simbólica sen finalizar"
 
-#: ../glib/gregex.c:2200
+#: ../glib/gregex.c:2216
 msgid "zero-length symbolic reference"
 msgstr "referencia simbólica de lonxitude cero"
 
-#: ../glib/gregex.c:2211
+#: ../glib/gregex.c:2227
 msgid "digit expected"
 msgstr "esperábase un díxito"
 
-#: ../glib/gregex.c:2229
+#: ../glib/gregex.c:2245
 msgid "illegal symbolic reference"
 msgstr "referencia simbólica ilegal"
 
-#: ../glib/gregex.c:2291
+#: ../glib/gregex.c:2307
 msgid "stray final '\\'"
 msgstr "'\\' final perdido"
 
-#: ../glib/gregex.c:2295
+#: ../glib/gregex.c:2311
 msgid "unknown escape sequence"
 msgstr "secuencia de escape descoñecida"
 
-#: ../glib/gregex.c:2305
+#: ../glib/gregex.c:2321
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
@@ -1337,31 +1345,31 @@ msgstr "Nome de chave non válido: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "O ficheiro chave contén unha codificación non permitida «%s»"
 
-#: ../glib/gkeyfile.c:1116 ../glib/gkeyfile.c:1278 ../glib/gkeyfile.c:2646
-#: ../glib/gkeyfile.c:2712 ../glib/gkeyfile.c:2847 ../glib/gkeyfile.c:2980
-#: ../glib/gkeyfile.c:3133 ../glib/gkeyfile.c:3320 ../glib/gkeyfile.c:3381
+#: ../glib/gkeyfile.c:1118 ../glib/gkeyfile.c:1280 ../glib/gkeyfile.c:2648
+#: ../glib/gkeyfile.c:2714 ../glib/gkeyfile.c:2849 ../glib/gkeyfile.c:2982
+#: ../glib/gkeyfile.c:3135 ../glib/gkeyfile.c:3322 ../glib/gkeyfile.c:3383
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "O ficheiro chave non ten un grupo «%s»"
 
-#: ../glib/gkeyfile.c:1290
+#: ../glib/gkeyfile.c:1292
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "O ficheiro chave non ten a chave «%s»"
 
-#: ../glib/gkeyfile.c:1397 ../glib/gkeyfile.c:1512
+#: ../glib/gkeyfile.c:1399 ../glib/gkeyfile.c:1514
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "O ficheiro chave contén a chave «%s» co valor «%s» que non é UTF-8"
 
-#: ../glib/gkeyfile.c:1417 ../glib/gkeyfile.c:1900
+#: ../glib/gkeyfile.c:1419 ../glib/gkeyfile.c:1902
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "O ficheiro chave contén a chave «%s» que ten un valor que non pode ser "
 "interpretado."
 
-#: ../glib/gkeyfile.c:1532
+#: ../glib/gkeyfile.c:1534
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -1369,7 +1377,7 @@ msgstr ""
 "O ficheiro chave contén a chave «%s» que ten un valor que non pode ser "
 "interpretado."
 
-#: ../glib/gkeyfile.c:2115 ../glib/gkeyfile.c:2477
+#: ../glib/gkeyfile.c:2117 ../glib/gkeyfile.c:2479
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1378,36 +1386,36 @@ msgstr ""
 "O ficheiro chave contén a chave «%s» no grupo «%s» que ten un valor que non "
 "pode ser interpretado."
 
-#: ../glib/gkeyfile.c:2661 ../glib/gkeyfile.c:2862 ../glib/gkeyfile.c:3392
+#: ../glib/gkeyfile.c:2663 ../glib/gkeyfile.c:2864 ../glib/gkeyfile.c:3394
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "O ficheiro chave non ten a chave «%s» no grupo «%s»"
 
-#: ../glib/gkeyfile.c:3626
+#: ../glib/gkeyfile.c:3628
 msgid "Key file contains escape character at end of line"
 msgstr "O ficheiro chave contén un carácter de escape ao final da liña"
 
-#: ../glib/gkeyfile.c:3648
+#: ../glib/gkeyfile.c:3650
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "O ficheiro chave contén a secuencia de escape non válida «%s»"
 
-#: ../glib/gkeyfile.c:3790
+#: ../glib/gkeyfile.c:3792
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Non é posíbel interpretar o valor «%s» como un número."
 
-#: ../glib/gkeyfile.c:3804
+#: ../glib/gkeyfile.c:3806
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "O valor enteiro «%s» está fóra do intervalo"
 
-#: ../glib/gkeyfile.c:3837
+#: ../glib/gkeyfile.c:3839
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Non é posíbel interpretar o valor «%s» como un número flotante."
 
-#: ../glib/gkeyfile.c:3861
+#: ../glib/gkeyfile.c:3863
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Non é posíbel interpretar o valor «%s» como un booleano."
@@ -1741,7 +1749,7 @@ msgstr "(Ademais, a liberación do bloqueo para «%s» tamén fallou: %s) "
 #: ../gio/gdbusconnection.c:1148 ../gio/gdbusconnection.c:1374
 #: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1737
 msgid "The connection is closed"
-msgstr "O socket engadido está pechado"
+msgstr "A conexión está pechado"
 
 #: ../gio/gdbusconnection.c:1681
 msgid "Timeout was reached"
@@ -1827,27 +1835,27 @@ msgstr "O método «%s» na interface «%s» coa sinatura «%s» non existe"
 msgid "A subtree is already exported for %s"
 msgstr "Xa se exportou un subárbore para %s"
 
-#: ../gio/gdbusmessage.c:856
+#: ../gio/gdbusmessage.c:859
 msgid "type is INVALID"
 msgstr "o tipo é INVALID"
 
-#: ../gio/gdbusmessage.c:867
+#: ../gio/gdbusmessage.c:870
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "mensaxe METHOD_CALL: falta o campo da cabeceira PATH ou MEMBER"
 
-#: ../gio/gdbusmessage.c:878
+#: ../gio/gdbusmessage.c:881
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "mensaxe METHOD_RETURN: falta o campo da cabeceira REPLY_SERIAL"
 
-#: ../gio/gdbusmessage.c:890
+#: ../gio/gdbusmessage.c:893
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "mensaxe ERROR: falta o campo da cabeceira REPLY_SERIAL ou ERROR_NAME"
 
-#: ../gio/gdbusmessage.c:903
+#: ../gio/gdbusmessage.c:906
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "mensaxe SIGNAL: falta o campo da cabeceira PATH, INTERFACE ou MEMBER"
 
-#: ../gio/gdbusmessage.c:911
+#: ../gio/gdbusmessage.c:914
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -1855,7 +1863,7 @@ msgstr ""
 "mensaxe SIGNAL: o campo da cabeceira PATH está usando un valor reservado /"
 "org/freedesktop/DBus/Local"
 
-#: ../gio/gdbusmessage.c:919
+#: ../gio/gdbusmessage.c:922
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -1863,12 +1871,12 @@ msgstr ""
 "mensaxe SIGNAL: O campo da cabeceira INTERFACE está usando un valor "
 "reservado org.freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:994
+#: ../gio/gdbusmessage.c:997
 #, c-format
 msgid "Wanted to read %lu bytes but got EOF"
 msgstr "Quixéronse ler %lu bytes pero obtívose un EOF"
 
-#: ../gio/gdbusmessage.c:1019
+#: ../gio/gdbusmessage.c:1022
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -1878,22 +1886,22 @@ msgstr ""
 "desvío %d (a lonxitude da cadea é %d). A cadea UTF-8 válida até ese punto "
 "foi «%s»"
 
-#: ../gio/gdbusmessage.c:1032
+#: ../gio/gdbusmessage.c:1035
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr "Esperábase un byte NUL despois da cadea «%s» pero atopouse o byte %d"
 
-#: ../gio/gdbusmessage.c:1231
+#: ../gio/gdbusmessage.c:1234
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "O valor analizado «%s» non é unha ruta de obxecto D-Bus válida"
 
-#: ../gio/gdbusmessage.c:1257
+#: ../gio/gdbusmessage.c:1260
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "«%s» non é un nome válido"
 
-#: ../gio/gdbusmessage.c:1311
+#: ../gio/gdbusmessage.c:1314
 #, c-format
 msgid ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
@@ -1901,13 +1909,13 @@ msgstr ""
 "Atopouse unha matriz cunha lonxitude de %u bytes. A lonxitude máxima é 2<<26 "
 "bytes (64 MiB)."
 
-#: ../gio/gdbusmessage.c:1472
+#: ../gio/gdbusmessage.c:1475
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
 "O valor «%s» analizado para a variante non é unha sinatura de D-Bus válida."
 
-#: ../gio/gdbusmessage.c:1499
+#: ../gio/gdbusmessage.c:1502
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
@@ -1915,7 +1923,7 @@ msgstr ""
 "Produciuse un erro ao deserializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
-#: ../gio/gdbusmessage.c:1683
+#: ../gio/gdbusmessage.c:1686
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -1924,36 +1932,36 @@ msgstr ""
 "Valor de «endianness» non válido. Esperábase 0x6c («|») ou 0x42 («B») pero "
 "atopouse 0x%02x"
 
-#: ../gio/gdbusmessage.c:1697
+#: ../gio/gdbusmessage.c:1700
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "A versión maior do protocolo non é válida. Esperábase 1 pero atopouse a %d"
 
-#: ../gio/gdbusmessage.c:1754
+#: ../gio/gdbusmessage.c:1757
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 "Atopouse a cabeceira de sinatura coa sinatura «%s» máis o corpo da mensaxe "
 "está baleiro"
 
-#: ../gio/gdbusmessage.c:1768
+#: ../gio/gdbusmessage.c:1771
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "O valor analizado «%s» non é unha sinatura D-Bus válida (para o corpo)"
 
-#: ../gio/gdbusmessage.c:1798
+#: ../gio/gdbusmessage.c:1801
 #, c-format
 msgid "No signature header in message but the message body is %u bytes"
 msgstr ""
 "Non hai unha cabeceira da sinatura na mensaxe pero o corpo da mensaxe ten %u "
 "bytes"
 
-#: ../gio/gdbusmessage.c:1806
+#: ../gio/gdbusmessage.c:1809
 msgid "Cannot deserialize message: "
 msgstr "Non foi posíbel deserializar a mensaxe: "
 
-#: ../gio/gdbusmessage.c:2131
+#: ../gio/gdbusmessage.c:2134
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
@@ -1961,23 +1969,23 @@ msgstr ""
 "Produciuse un erro ao serializar o GVariant co tipo cadea «%s» desde o "
 "formato ligado D-Bus"
 
-#: ../gio/gdbusmessage.c:2272
+#: ../gio/gdbusmessage.c:2275
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
 msgstr "A mensaxe ten %d fds pero o campo da cabeceira indica %d fds"
 
-#: ../gio/gdbusmessage.c:2280
+#: ../gio/gdbusmessage.c:2283
 msgid "Cannot serialize message: "
 msgstr "Non foi posíbel serializar a mensaxe: "
 
-#: ../gio/gdbusmessage.c:2324
+#: ../gio/gdbusmessage.c:2327
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 "O corpo da mensaxe ten a sinatura «%s» máis non está presente a cabeceira de "
 "sinatura"
 
-#: ../gio/gdbusmessage.c:2334
+#: ../gio/gdbusmessage.c:2337
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `"
@@ -1986,19 +1994,19 @@ msgstr ""
 "O corpo da mensaxe ten a sinatura de tipo «%s» pero a sintura no campo da "
 "cabeceira é «%s»"
 
-#: ../gio/gdbusmessage.c:2350
+#: ../gio/gdbusmessage.c:2353
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 "O corpo da mensaxe está baleiro máis a sinatura do campo da cabeceira é "
 "«(%s)»"
 
-#: ../gio/gdbusmessage.c:2907
+#: ../gio/gdbusmessage.c:2910
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Produciuse un erro ao devolver co corpo de tipo «%s»"
 
-#: ../gio/gdbusmessage.c:2915
+#: ../gio/gdbusmessage.c:2918
 msgid "Error return with empty body"
 msgstr "Produciuse un erro ao devolver co corpo baleiro"
 
@@ -3235,82 +3243,78 @@ msgid "The provided value is outside of the valid range\n"
 msgstr "O valor fornecido está fora do rango válido\n"
 
 #: ../gio/gsettings-tool.c:458
+msgid "Print help"
+msgstr "Imprimir axuda"
+
+#: ../gio/gsettings-tool.c:464
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Lista dos esquemas instalados (non reposicionábeis)"
 
-#: ../gio/gsettings-tool.c:464
+#: ../gio/gsettings-tool.c:470
 msgid "List the installed relocatable schemas"
 msgstr "Lista dos esquemas instalados reposicionábeis"
 
-#: ../gio/gsettings-tool.c:470
-#, fuzzy
-msgid "Lists the keys in SCHEMA"
+#: ../gio/gsettings-tool.c:476
+msgid "List the keys in SCHEMA"
 msgstr "Lista das chaves en ESQUEMA"
 
-#: ../gio/gsettings-tool.c:471 ../gio/gsettings-tool.c:477
-#: ../gio/gsettings-tool.c:483
+#: ../gio/gsettings-tool.c:477 ../gio/gsettings-tool.c:483
+#: ../gio/gsettings-tool.c:489
 msgid "SCHEMA[:PATH]"
 msgstr "ESQUEMA[:RUTA]"
 
-#: ../gio/gsettings-tool.c:476
-#, fuzzy
-msgid "Lists the children of SCHEMA"
-msgstr "Lista dos fillos de SCHEMA"
-
 #: ../gio/gsettings-tool.c:482
+msgid "List the children of SCHEMA"
+msgstr "Lista dos fillos do SCHEMA"
+
+#: ../gio/gsettings-tool.c:488
 msgid "List keys and values, recursively"
 msgstr "Lista das chaves e valores, recursivo"
 
-#: ../gio/gsettings-tool.c:488
-#, fuzzy
-msgid "Gets the value of KEY"
+#: ../gio/gsettings-tool.c:494
+msgid "Get the value of KEY"
 msgstr "Obtén o valor de CHAVE"
 
-#: ../gio/gsettings-tool.c:489 ../gio/gsettings-tool.c:495
-#: ../gio/gsettings-tool.c:507 ../gio/gsettings-tool.c:513
+#: ../gio/gsettings-tool.c:495 ../gio/gsettings-tool.c:501
+#: ../gio/gsettings-tool.c:513 ../gio/gsettings-tool.c:519
 msgid "SCHEMA[:PATH] KEY"
 msgstr "ESQUEMA[:RUTA] CHAVE"
 
-#: ../gio/gsettings-tool.c:494
-#, fuzzy
-msgid "Queries the range of valid values for KEY"
+#: ../gio/gsettings-tool.c:500
+msgid "Query the range of valid values for KEY"
 msgstr "Consulta o rango de valores válidos de CHAVE"
 
-#: ../gio/gsettings-tool.c:500
-#, fuzzy
-msgid "Sets the value of KEY to VALUE"
+#: ../gio/gsettings-tool.c:506
+msgid "Set the value of KEY to VALUE"
 msgstr "Estabelece o valor de CHAVE a VALOR"
 
-#: ../gio/gsettings-tool.c:501
+#: ../gio/gsettings-tool.c:507
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "ESQUEMA[:RUTA] CHAVE VALOR"
 
-#: ../gio/gsettings-tool.c:506
-#, fuzzy
-msgid "Resets KEY to its default value"
+#: ../gio/gsettings-tool.c:512
+msgid "Reset KEY to its default value"
 msgstr "Estabelece a CHAVE ao seu valor predeterminado"
 
-#: ../gio/gsettings-tool.c:512
-#, fuzzy
-msgid "Checks if KEY is writable"
+#: ../gio/gsettings-tool.c:518
+msgid "Check if KEY is writable"
 msgstr "Comproba se a CHAVE é escribíbel"
 
-#: ../gio/gsettings-tool.c:518
-#, fuzzy
+#: ../gio/gsettings-tool.c:524
 msgid ""
-"Monitors KEY for changes.\n"
+"Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
 "Monitorizar os cambios da CHAVE.\n"
-"Se non se especifica a CHAVE, monitoriza todos os cambios en ESQUEMA.\n"
+"Se non se especifica a CHAVE, monitoriza tódolos cambios en ESQUEMA.\n"
 "Use ^C para deter a monitorización.\n"
 
-#: ../gio/gsettings-tool.c:521
+#: ../gio/gsettings-tool.c:527
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ESQUEMA[:RUTA] [CHAVE]"
 
-#: ../gio/gsettings-tool.c:525
+#: ../gio/gsettings-tool.c:531
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -3319,7 +3323,7 @@ msgstr ""
 "Orde «%s» descoñecida\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:539
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3361,7 +3365,7 @@ msgstr ""
 "Use 'gsettings help ORDE' para obter máis axuda.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:554
+#: ../gio/gsettings-tool.c:560
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3376,11 +3380,15 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:565
 msgid "Arguments:\n"
 msgstr "Argumentos:\n"
 
-#: ../gio/gsettings-tool.c:563
+#: ../gio/gsettings-tool.c:569
+msgid "  COMMAND   The (optional) command to explain\n"
+msgstr "  ORDE   A orde (opcional) que explicar\n"
+
+#: ../gio/gsettings-tool.c:573
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3388,19 +3396,19 @@ msgstr ""
 "  SCHEMA      O nome do esquema\n"
 "  KEY         A ruta, para os esquemas reposicionábeis\n"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:578
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       A chave (opcional) no esquema\n"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:582
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       A chave nun esquema\n"
 
-#: ../gio/gsettings-tool.c:576
+#: ../gio/gsettings-tool.c:586
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     O valor a estabelecer\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:662
 #, c-format
 msgid "Empty schema name given"
 msgstr "Forneceuse un nome de esquema baleiros"
@@ -3793,10 +3801,6 @@ msgstr "Necesítase máis entrada"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "O nome do host non é válido"
-
-#~| msgid "Print XML"
-#~ msgid "Print help"
-#~ msgstr "Imprimir axuda"
 
 #~ msgid ""
 #~ "Commands:\n"
