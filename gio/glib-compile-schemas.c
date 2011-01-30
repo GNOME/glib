@@ -1604,7 +1604,7 @@ output_schema (gpointer key,
 
   if (state->list_of)
     gvdb_hash_table_insert_string (data.pair.table, ".list-of",
-                                   state->extends_name);
+                                   state->list_of);
 
   if (data.l10n)
     gvdb_hash_table_insert_string (data.pair.table,
