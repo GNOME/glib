@@ -769,13 +769,14 @@ g_convert_with_iconv (const gchar *str,
 	      have_error = TRUE;
 	      break;
 	    default:
-              {
-                int errsv = errno;
-                
-                g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                             _("Error during conversion: %s"),
-                             g_strerror (errsv));
-              }
+	      if (error)
+                {
+                  int errsv = errno;
+
+                  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+                               _("Error during conversion: %s"),
+                               g_strerror (errsv));
+                }
 	      have_error = TRUE;
 	      break;
 	    }
