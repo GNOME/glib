@@ -64,6 +64,22 @@
  * For details on valid application identifiers, see
  * g_application_id_is_valid().
  *
+ * The application identifier is claimed by the application as a
+ * well-known bus name on the user's session bus.  This means that the
+ * uniqueness of your application is scoped to the current session.  It
+ * also means that your application may provide additional services
+ * (through registration of other object paths) at that bus name.
+ *
+ * The registration of these object paths should be done with the shared
+ * GDBus session bus.  Note that due to the internal architecture of
+ * GDBus, method calls can be dispatched at any time (even if a main
+ * loop is not running).  For this reason, you must ensure that any
+ * object paths that you wish to register are registered before
+ * #GApplication attempts to acquire the bus name of your application
+ * (which happens in g_application_register()).  Unfortunately, this
+ * means that you can not use g_application_get_is_remote() to decide if
+ * you want to register object paths.
+ *
  * GApplication provides convenient life cycle management by maintaining
  * a <firstterm>use count</firstterm> for the primary application instance.
  * The use count can be changed using g_application_hold() and
@@ -904,7 +920,14 @@ g_application_get_is_remote (GApplication *application)
  *
  * This is the point at which the application discovers if it is the
  * primary instance or merely acting as a remote for an already-existing
- * primary instance.
+ * primary instance.  This is implemented by attempting to acquire the
+ * application identifier as a uniue bus name on the session bus using
+ * GDBus.
+ *
+ * Due to the internal architecture of GDBus, method calls can be
+ * dispatched at any time (even if a main loop is not running).  For
+ * this reason, you must ensure that any object paths that you wish to
+ * register are registered before calling this function.
  *
  * If the application has already been registered then %TRUE is
  * returned with no work performed.
