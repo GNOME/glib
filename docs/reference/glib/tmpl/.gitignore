@@ -2,7 +2,10 @@ allocators.sgml
 arrays.sgml
 arrays_byte.sgml
 arrays_pointer.sgml
+async_queues.sgml
+atomic_operations.sgml
 base64.sgml
+bookmarkfile.sgml
 caches.sgml
 checksum.sgml
 completion.sgml
