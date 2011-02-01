@@ -13,7 +13,7 @@
  */
 
 /**
- * SECTION: gunixfdmessage
+ * SECTION:gunixfdmessage
  * @title: GUnixFDMessage
  * @short_description: A GSocketControlMessage containing a GUnixFDList
  * @include: gio/gunixfdmessage.h

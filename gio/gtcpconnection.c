@@ -11,7 +11,7 @@
  */
 
 /**
- * SECTION: gtcpconnection
+ * SECTION:gtcpconnection
  * @title: GTcpConnection
  * @short_description: A TCP GSocketConnection
  * @see_also: #GSocketConnection.

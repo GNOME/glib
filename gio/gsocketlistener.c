@@ -40,7 +40,7 @@
 
 
 /**
- * SECTION: gsocketlistener
+ * SECTION:gsocketlistener
  * @title: GSocketListener
  * @short_description: Helper for accepting network client connections
  * @see_also: #GThreadedSocketService, #GSocketService.

@@ -13,7 +13,7 @@
  */
 
 /**
- * SECTION: gunixfdlist
+ * SECTION:gunixfdlist
  * @title: GUnixFDList
  * @short_description: An object containing a set of UNIX file descriptors
  * @include: gio/gunixfdlist.h

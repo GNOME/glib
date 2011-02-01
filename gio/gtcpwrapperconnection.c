@@ -21,7 +21,7 @@
  */
 
 /**
- * SECTION: gtcpwrapperconnection
+ * SECTION:gtcpwrapperconnection
  * @title: GTcpWrapperConnection
  * @short_description: wrapper for non-GSocketConnection-based, GSocket-based GIOStreams
  * @see_also: #GSocketConnection.

@@ -42,7 +42,7 @@
 
 
 /**
- * SECTION: arrays
+ * SECTION:arrays
  * @title: Arrays
  * @short_description: arrays of arbitrary elements which grow
  *                     automatically as elements are added
@@ -693,7 +693,7 @@ g_array_maybe_expand (GRealArray *array,
 }
 
 /**
- * SECTION: arrays_pointer
+ * SECTION:arrays_pointer
  * @title: Pointer Arrays
  * @short_description: arrays of pointers to any type of data, which
  *                     grow automatically as new elements are added
@@ -1307,7 +1307,7 @@ g_ptr_array_foreach (GPtrArray *array,
 }
 
 /**
- * SECTION: arrays_byte
+ * SECTION:arrays_byte
  * @title: Byte Arrays
  * @short_description: arrays of bytes, which grow automatically as
  *                     elements are added

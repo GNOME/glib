@@ -23,7 +23,7 @@
  */
 
 /**
- * SECTION: gthreadedsocketservice
+ * SECTION:gthreadedsocketservice
  * @title: GThreadedSocketService
  * @short_description: A threaded GSocketService
  * @see_also: #GSocketService.

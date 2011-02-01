@@ -18,7 +18,7 @@
 #include "glibintl.h"
 
 /**
- * SECTION: gunixconnection
+ * SECTION:gunixconnection
  * @title: GUnixConnection
  * @short_description: A UNIX domain GSocketConnection
  * @include: gio/gunixconnection.h

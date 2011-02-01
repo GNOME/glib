@@ -14,7 +14,7 @@
  */
 
 /**
- * SECTION: gunixcredentialsmessage
+ * SECTION:gunixcredentialsmessage
  * @title: GUnixCredentialsMessage
  * @short_description: A GSocketControlMessage containing credentials
  * @include: gio/gunixcredentialsmessage.h

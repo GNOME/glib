@@ -25,7 +25,7 @@
 #include "gmem.h"
 #include "gtestutils.h"
 /**
- * SECTION: sequence
+ * SECTION:sequence
  * @title: Sequences
  * @short_description: scalable lists
  *

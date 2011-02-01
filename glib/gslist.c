@@ -34,7 +34,7 @@
 #include "gtestutils.h"
 
 /**
- * SECTION: linked_lists_single
+ * SECTION:linked_lists_single
  * @title: Singly-Linked Lists
  * @short_description: linked lists containing integer values or
  *                     pointers to data, limited to iterating over the

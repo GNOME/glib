@@ -31,7 +31,7 @@
 
 
 /**
- * SECTION: gvarianttype
+ * SECTION:gvarianttype
  * @title: GVariantType
  * @short_description: introduction to the GVariant type system
  * @see_also: #GVariantType, #GVariant

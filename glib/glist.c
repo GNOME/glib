@@ -35,7 +35,7 @@
 #include "gtestutils.h"
 
 /**
- * SECTION: linked_lists_double
+ * SECTION:linked_lists_double
  * @title: Doubly-Linked Lists
  * @short_description: linked lists containing integer values or
  *                     pointers to data, with the ability to iterate

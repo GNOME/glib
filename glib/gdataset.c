@@ -45,7 +45,7 @@
 #include "glib_trace.h"
 
 /**
- * SECTION: datasets
+ * SECTION:datasets
  * @title: Datasets
  * @short_description: associate groups of data elements with
  *                     particular memory locations
@@ -84,7 +84,7 @@
  **/
 
 /**
- * SECTION: datalist
+ * SECTION:datalist
  * @title: Keyed Data Lists
  * @short_description: lists of data elements which are accessible by a
  *                     string or GQuark identifier
@@ -947,7 +947,7 @@ g_data_initialize (void)
 }
 
 /**
- * SECTION: quarks
+ * SECTION:quarks
  * @title: Quarks
  * @short_description: a 2-way association between a string and a
  *                     unique integer identifier

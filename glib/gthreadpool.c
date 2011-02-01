@@ -34,7 +34,7 @@
 #include "gtimer.h"
 
 /**
- * SECTION: thread_pools
+ * SECTION:thread_pools
  * @title: Thread Pools
  * @short_description: pools of threads to execute work concurrently
  * @see_also: <para> <variablelist> <varlistentry>

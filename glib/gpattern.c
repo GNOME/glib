@@ -30,7 +30,7 @@
 #include "gutils.h" 
 
 /**
- * SECTION: patterns
+ * SECTION:patterns
  * @title: Glob-style pattern matching
  * @short_description: matches strings against patterns containing '*'
  *                     (wildcard) and '?' (joker)

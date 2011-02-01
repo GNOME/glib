@@ -45,7 +45,7 @@
 
 
 /**
- * SECTION: string_chunks
+ * SECTION:string_chunks
  * @title: String Chunks
  * @short_description: efficient storage of groups of strings
  *

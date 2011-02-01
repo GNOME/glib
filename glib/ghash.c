@@ -39,7 +39,7 @@
 
 
 /**
- * SECTION: hash_tables
+ * SECTION:hash_tables
  * @title: Hash Tables
  * @short_description: associations between keys and values so that
  *                     given a key the value can be found quickly

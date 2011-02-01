@@ -38,7 +38,7 @@
 #include <string.h>
 
 /**
- * SECTION: gapplication
+ * SECTION:gapplication
  * @title: GApplication
  * @short_description: Core application class
  *

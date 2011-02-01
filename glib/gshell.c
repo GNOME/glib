@@ -33,7 +33,7 @@
 #include "glibintl.h"
 
 /**
- * SECTION: shell
+ * SECTION:shell
  * @title: Shell-related Utilities
  * @short_description: shell-like commandline handling
  **/

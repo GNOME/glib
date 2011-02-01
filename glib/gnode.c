@@ -38,7 +38,7 @@
 #include "gtestutils.h"
 
 /**
- * SECTION: trees-nary
+ * SECTION:trees-nary
  * @title: N-ary Trees
  * @short_description: trees of data with any number of branches
  *

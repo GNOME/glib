@@ -63,7 +63,7 @@
 
 
 /**
- * SECTION: threads
+ * SECTION:threads
  * @title: Threads
  * @short_description: thread abstraction; including threads, different
  *                     mutexes, conditions and thread private data

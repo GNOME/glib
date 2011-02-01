@@ -35,7 +35,7 @@
 
 
 /**
- * SECTION: async_queues
+ * SECTION:async_queues
  * @title: Asynchronous Queues
  * @short_description: asynchronous communication between threads
  *

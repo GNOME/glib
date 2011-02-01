@@ -32,7 +32,7 @@
 
 
 /**
- * SECTION: checksum
+ * SECTION:checksum
  * @title: Data Checksums
  * @short_description: Computes the checksum for data
  *

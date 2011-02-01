@@ -911,7 +911,7 @@ GMemVTable *glib_mem_profiler_table = &profiler_table;
 
 /* --- MemChunks --- */
 /**
- * SECTION: allocators
+ * SECTION:allocators
  * @title: Memory Allocators
  * @short_description: deprecated way to allocate chunks of memory for
  *                     GList, GSList and GNode
@@ -924,7 +924,7 @@ GMemVTable *glib_mem_profiler_table = &profiler_table;
  **/
 
 /**
- * SECTION: memory_chunks
+ * SECTION:memory_chunks
  * @title: Memory Chunks
  * @short_description: deprecated way to allocate groups of equal-sized
  *                     chunks of memory

@@ -41,7 +41,7 @@
 #include "gcompletion.h"
 
 /**
- * SECTION: completion
+ * SECTION:completion
  * @title: Automatic String Completion
  * @short_description: support for automatic completion using a group
  *                     of target strings

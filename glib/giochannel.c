@@ -50,7 +50,7 @@
 
 
 /**
- * SECTION: iochannels
+ * SECTION:iochannels
  * @title: IO Channels
  * @short_description: portable support for using files, pipes and
  *                     sockets

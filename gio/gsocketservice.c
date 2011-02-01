@@ -23,7 +23,7 @@
  */
 
 /**
- * SECTION: gsocketservice
+ * SECTION:gsocketservice
  * @title: GSocketService
  * @short_description: Make it easy to implement a network service
  * @see_also: #GThreadedSocketService, #GSocketListener.

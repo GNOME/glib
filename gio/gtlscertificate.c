@@ -29,7 +29,7 @@
 #include "glibintl.h"
 
 /**
- * SECTION: gtlscertificate
+ * SECTION:gtlscertificate
  * @title: GTlsCertificate
  * @short_description: TLS certificate
  * @see_also: #GTlsConnection

@@ -36,7 +36,7 @@
 #include "gtestutils.h"
 
 /**
- * SECTION: trees-binary
+ * SECTION:trees-binary
  * @title: Balanced Binary Trees
  * @short_description: a sorted collection of key/value pairs optimized
  *                     for searching and traversing in order

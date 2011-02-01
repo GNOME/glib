@@ -60,7 +60,7 @@
 #endif
 
 /**
- * SECTION: random_numbers
+ * SECTION:random_numbers
  * @title: Random Numbers
  * @short_description: pseudo-random number generator
  *

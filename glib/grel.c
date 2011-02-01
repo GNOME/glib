@@ -42,7 +42,7 @@
 #include "grel.h"
 
 /**
- * SECTION: relations
+ * SECTION:relations
  * @title: Relations and Tuples
  * @short_description: tables of data which can be indexed on any
  *                     number of fields

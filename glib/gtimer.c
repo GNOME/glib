@@ -57,7 +57,7 @@
 #include "gmain.h"
 
 /**
- * SECTION: timers
+ * SECTION:timers
  * @title: Timers
  * @short_description: keep track of elapsed time
  *

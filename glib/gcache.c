@@ -36,7 +36,7 @@
 #include "gtestutils.h"
 
 /**
- * SECTION: caches
+ * SECTION:caches
  * @title: Caches
  * @short_description: caches allow sharing of complex data structures
  *                     to save resources

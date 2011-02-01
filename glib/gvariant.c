@@ -36,7 +36,7 @@
 
 
 /**
- * SECTION: gvariant
+ * SECTION:gvariant
  * @title: GVariant
  * @short_description: strongly typed value datatype
  * @see_also: GVariantType
