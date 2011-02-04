@@ -1096,7 +1096,14 @@ _g_desktop_app_info_launch_uris_internal (GAppInfo                   *appinfo,
    * after launching an app.  See http://bugzilla.gnome.org/606960
    */
   if (session_bus != NULL)
-    g_object_unref (session_bus);
+    {
+      /* This asynchronous flush holds a reference until it completes,
+       * which ensures that the following unref won't immediately kill
+       * the connection if we were the initial owner.
+       */
+      g_dbus_connection_flush (session_bus, NULL, NULL, NULL);
+      g_object_unref (session_bus);
+    }
 
   completed = TRUE;
 
