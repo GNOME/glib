@@ -130,7 +130,18 @@ g_callable_info_get_ffi_arg_types (GICallableInfo *callable_info)
       {
         GIArgInfo *arg_info = g_callable_info_get_arg (callable_info, i);
         GITypeInfo *arg_type = g_arg_info_get_type (arg_info);
-        arg_types[i] = g_type_info_get_ffi_type (arg_type);
+        switch (g_arg_info_get_direction (arg_info))
+          {
+            case GI_DIRECTION_IN:
+              arg_types[i] = g_type_info_get_ffi_type (arg_type);
+              break;
+            case GI_DIRECTION_OUT:
+            case GI_DIRECTION_INOUT:
+              arg_types[i] = &ffi_type_pointer;
+              break;
+            default:
+              g_assert_not_reached ();
+          }
         g_base_info_unref ((GIBaseInfo *)arg_info);
         g_base_info_unref ((GIBaseInfo *)arg_type);
       }
