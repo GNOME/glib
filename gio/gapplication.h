@@ -49,7 +49,7 @@ typedef struct _GApplicationClass                           GApplicationClass;
  * The <structname>GApplication</structname> structure contains private
  * data and should only be accessed using the provided API
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GApplication
 {
@@ -78,7 +78,7 @@ struct _GApplication
  *   after any inactivity timeout, if requested)
  * @run_mainloop: invoked on the primary instance from g_application_run() if the use-count is non-zero
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GApplicationClass
 {

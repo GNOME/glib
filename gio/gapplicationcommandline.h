@@ -55,7 +55,7 @@ typedef struct _GApplicationCommandLineClass                 GApplicationCommand
  * The <structname>GApplicationCommandLine</structname> structure contains private
  * data and should only be accessed using the provided API
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GApplicationCommandLine
 {
@@ -71,7 +71,7 @@ struct _GApplicationCommandLine
  * The <structname>GApplicationCommandLineClass</structname> structure contains
  * private data only
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GApplicationCommandLineClass
 {
