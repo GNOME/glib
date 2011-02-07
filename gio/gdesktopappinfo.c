@@ -943,6 +943,7 @@ notify_desktop_launch (GDBusConnection  *session_bus,
   GVariantBuilder extras_variant;
   GList *iter;
   const char *desktop_file_id;
+  const char *gio_desktop_file;
 
   if (session_bus == NULL)
     return;
@@ -957,6 +958,18 @@ notify_desktop_launch (GDBusConnection  *session_bus,
 			   "startup-id",
 			   g_variant_new ("s",
 					  sn_id));
+  gio_desktop_file = g_getenv ("GIO_LAUNCHED_DESKTOP_FILE");
+  if (gio_desktop_file != NULL)
+    g_variant_builder_add (&extras_variant, "{sv}",
+			   "origin-desktop-file",
+			   g_variant_new_bytestring (gio_desktop_file));
+  g_variant_builder_add (&extras_variant, "{sv}",
+			 "origin-prgname",
+			 g_variant_new_bytestring (g_get_prgname ()));
+  g_variant_builder_add (&extras_variant, "{sv}",
+			 "origin-pid",
+			 g_variant_new ("x",
+					(gint64)getpid ()));
 
   if (info->filename)
     desktop_file_id = info->filename;
