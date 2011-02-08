@@ -1,3 +1,21 @@
+Overview of Changes from GLib 2.27.93 to 2.28.0
+===============================================
+
+* Bugs fixed:
+641363 GInitable documentation isn't clear about that finalize...
+641395 Add more data about the origin application to the "Lau...
+641411 gdesktopappinfo signals lost if it's the session bus...
+641477 glib-mkenums uses unportable #! line
+641572 Add @EXEEXT@ to pkgconfig binary name
+641688 glib installs GSettings.html and gsettings.html
+
+* Translation updates:
+ Galician
+ Italian
+ Korean
+ Punjabi
+
+
 Overview of Changes from GLib 2.27.92 to 2.27.93
 ================================================
 
