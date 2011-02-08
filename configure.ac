@@ -21,8 +21,8 @@ m4_define(glib_configure_ac)
 # set glib_binary_age _and_ glib_interface_age to 0.
 #
 m4_define([glib_major_version], [2])
-m4_define([glib_minor_version], [27])
-m4_define([glib_micro_version], [94])
+m4_define([glib_minor_version], [28])
+m4_define([glib_micro_version], [0])
 m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
