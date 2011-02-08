@@ -2237,7 +2237,6 @@ g_date_time_format (GDateTime *datetime,
   GString  *outstr;
   gchar    *tmp;
   gunichar  c;
-  glong     utf8len;
   gboolean  in_mod;
 
   g_return_val_if_fail (datetime != NULL, NULL);
@@ -2245,10 +2244,9 @@ g_date_time_format (GDateTime *datetime,
   g_return_val_if_fail (g_utf8_validate (format, -1, NULL), NULL);
 
   outstr = g_string_sized_new (strlen (format) * 2);
-  utf8len = g_utf8_strlen (format, -1);
   in_mod = FALSE;
 
-  for (; *format; format = g_utf8_next_char(format))
+  for (; *format; format = g_utf8_next_char (format))
     {
       c = g_utf8_get_char (format);
 
