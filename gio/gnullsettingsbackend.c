@@ -119,6 +119,19 @@ g_null_settings_backend_class_init (GNullSettingsBackendClass *class)
   backend_class->get_permission = g_null_settings_backend_get_permission;
 }
 
+/**
+ * g_null_settings_backend_new:
+ *
+ *
+ * Creates a readonly #GSettingsBackend.
+ *
+ * This backend does not allow changes to settings, so all settings
+ * will always have their default values.
+ *
+ * Returns: (transfer full): a newly created #GSettingsBackend
+ *
+ * Since: 2.28
+ */
 GSettingsBackend *
 g_null_settings_backend_new (void)
 {

@@ -174,6 +174,19 @@ g_memory_settings_backend_class_init (GMemorySettingsBackendClass *class)
   object_class->finalize = g_memory_settings_backend_finalize;
 }
 
+/**
+ * g_memory_settings_backend_new:
+ *
+ * Creates a memory-backed #GSettingsBackend.
+ *
+ * This backend allows changes to settings, but does not write them
+ * to any backing storage, so the next time you run your application,
+ * the memory backend will start out with the default values again.
+ *
+ * Returns: (transfer full): a newly created #GSettingsBackend
+ *
+ * Since: 2.28
+ */
 GSettingsBackend *
 g_memory_settings_backend_new (void)
 {
