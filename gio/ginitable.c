@@ -43,7 +43,8 @@
  * in various ways. For C applications you generally just call
  * g_initable_new() directly, or indirectly via a foo_thing_new() wrapper.
  * This will call g_initable_init() under the cover, returning %NULL and
- * setting a %GError on failure.
+ * setting a #GError on failure (at which point the instance is
+ * unreferenced).
  *
  * For bindings in languages where the native constructor supports
  * exceptions the binding could check for objects implemention %GInitable
