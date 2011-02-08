@@ -506,7 +506,7 @@ g_logv (const gchar   *log_domain,
 	       * in an out-of-memory situation
 	       */
 	      gchar buffer[1025];
-              gsize size;
+              gsize size G_GNUC_UNUSED;
               va_list args2;
 
               G_VA_COPY (args2, args1);

@@ -561,14 +561,14 @@ static void
 g_io_channel_purge (GIOChannel *channel)
 {
   GError *err = NULL;
-  GIOStatus status;
+  GIOStatus status G_GNUC_UNUSED;
 
   g_return_if_fail (channel != NULL);
 
   if (channel->write_buf && channel->write_buf->len > 0)
     {
       GIOFlags flags;
-      
+
       /* Set the channel to blocking, to avoid a busy loop
        */
       flags = g_io_channel_get_flags (channel);
@@ -577,10 +577,10 @@ g_io_channel_purge (GIOChannel *channel)
       status = g_io_channel_flush (channel, &err);
 
       if (err)
-	{ /* No way to return the error */
-	  g_warning ("Error flushing string: %s", err->message);
-	  g_error_free (err);
-	}
+        { /* No way to return the error */
+          g_warning ("Error flushing string: %s", err->message);
+          g_error_free (err);
+        }
     }
 
   /* Flush these in case anyone tries to close without unrefing */
