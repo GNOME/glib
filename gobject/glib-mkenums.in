@@ -1,5 +1,6 @@
-#!@PERL_PATH@ -w
+#!@PERL_PATH@
 
+user warnings;
 use File::Basename;
 use Safe;
 
