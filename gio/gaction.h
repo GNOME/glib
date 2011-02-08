@@ -51,7 +51,7 @@ typedef struct _GActionInterface                            GActionInterface;
  * @activate: the virtual function pointer for g_action_activate().  Note that #GAction does not have an
  *            'activate' signal but that implementations of it may have one.
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GActionInterface
 {

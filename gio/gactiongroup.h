@@ -59,7 +59,7 @@ typedef struct _GActionGroupInterface                       GActionGroupInterfac
  *
  * The virtual function table for #GActionGroup.
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GActionGroupInterface
 {

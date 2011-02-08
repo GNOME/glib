@@ -807,7 +807,7 @@ g_sequence_search (GSequence        *seq,
  * Return value: an #GSequenceIter pointing to the position of the first item
  * found equal to @data according to @cmp_func and @cmp_data.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GSequenceIter *
 g_sequence_lookup (GSequence *seq,
@@ -1075,7 +1075,7 @@ g_sequence_search_iter (GSequence                *seq,
  * Return value: an #GSequenceIter pointing to the position of the first item
  * found equal to @data according to @cmp_func and @cmp_data.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 GSequenceIter *
 g_sequence_lookup_iter (GSequence *seq,

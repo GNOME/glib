@@ -1257,7 +1257,7 @@ typedef enum
  *
  * Flags used to define the behaviour of a #GApplication.
  *
- * Since: 2.26
+ * Since: 2.28
  **/
 typedef enum
 {

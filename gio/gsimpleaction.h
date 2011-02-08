@@ -51,7 +51,7 @@ typedef struct _GSimpleActionClass                          GSimpleActionClass;
  * The <structname>GSimpleAction</structname> structure contains private
  * data and should only be accessed using the provided API
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GSimpleAction
 {
@@ -65,7 +65,7 @@ struct _GSimpleAction
  * GSimpleActionClass:
  * @activate: the class closure for the activate signal
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GSimpleActionClass
 {

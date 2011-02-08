@@ -50,7 +50,7 @@ typedef struct _GSimpleActionGroupClass                     GSimpleActionGroupCl
  *
  * The #GSimpleActionGroup structure contains private data and should only be accessed using the provided API.
  *
- * Since: 2.26
+ * Since: 2.28
  */
 struct _GSimpleActionGroup
 {
