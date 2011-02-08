@@ -24,6 +24,18 @@ Installation
 
 See the file 'INSTALL'
 
+Notes about GLib 2.28
+=====================
+
+* The GApplication API has changed compared to the version that was
+  included in the 2.25 development snapshots. Existing users will need
+  adjustments.
+
+Notes about GLib 2.26
+=====================
+
+* Nothing noteworthy.
+
 Notes about GLib 2.24
 =====================
 
