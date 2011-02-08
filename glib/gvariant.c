@@ -534,7 +534,7 @@ NUMERIC_TYPE (UINT64, uint64, guint64)
 
 /**
  * g_variant_new_handle:
- * @handle: a #gint32 value
+ * @value: a #gint32 value
  * @returns: a floating reference to a new handle #GVariant instance
  *
  * Creates a new handle #GVariant instance.
