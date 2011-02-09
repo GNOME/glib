@@ -47,6 +47,23 @@
  * The #GSettings class provides a convenient API for storing and retrieving
  * application settings.
  *
+ * Reads and writes can be considered to be non-blocking.  Reading
+ * settings with #GSettings is typically extremely fast: on
+ * approximately the same order of magnitude (but slower than) a
+ * #GHashTable lookup.  Writing settings is also extremely fast in terms
+ * of time to return to your application, but can be extremely expensive
+ * in other threads and other processes.  Many settings backends
+ * (including dconf) have lazy initialisation which means in the common
+ * case of the user using their computer without modifying any settings
+ * a lot of work can be avoided.  For dconf, the D-Bus service doesn't
+ * even need to be started in this case.  For this reason, you should
+ * only ever modify #GSettings keys in response to explicit user action.
+ * Particular care should be paid to ensure that modifications are not
+ * made during startup -- for example, when settings the initial value
+ * of preferences widgets.  The build-in g_settings_bind() functionality
+ * is careful not to write settings in response to notify signals as a
+ * result of modifications that it makes to widgets.
+ *
  * When creating a GSettings instance, you have to specify a schema
  * that describes the keys in your settings and their types and default
  * values, as well as some other information.
