@@ -52,7 +52,7 @@
  * approximately the same order of magnitude (but slower than) a
  * #GHashTable lookup.  Writing settings is also extremely fast in terms
  * of time to return to your application, but can be extremely expensive
- * in other threads and other processes.  Many settings backends
+ * for other threads and other processes.  Many settings backends
  * (including dconf) have lazy initialisation which means in the common
  * case of the user using their computer without modifying any settings
  * a lot of work can be avoided.  For dconf, the D-Bus service doesn't
@@ -60,7 +60,7 @@
  * only ever modify #GSettings keys in response to explicit user action.
  * Particular care should be paid to ensure that modifications are not
  * made during startup -- for example, when settings the initial value
- * of preferences widgets.  The build-in g_settings_bind() functionality
+ * of preferences widgets.  The built-in g_settings_bind() functionality
  * is careful not to write settings in response to notify signals as a
  * result of modifications that it makes to widgets.
  *
