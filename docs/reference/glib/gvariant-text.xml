@@ -328,7 +328,7 @@
     <literal>3.75e1</literal> parses the same as the value above.
    </para>
    <para>
-    <literal>uint32 7</literal> parses seven as a uint64.
+    <literal>uint64 7</literal> parses seven as a uint64.
     See <link linkend='gvariant-text-type-annotations'>Type Annotations</link>.
    </para>
   </refsect2>
