@@ -682,6 +682,11 @@ g_variant_unref (value);]]></programlisting></informalexample>
     <link linkend='NULL--CAPS'><literal>NULL</literal></link> becomes a permissable value, to indicate the Nothing case.
    </para>
    <para>
+    Note that the "special exception" introduced in the array section for constructing empty arrays is ignored
+    here.  Using a <literal>NULL</literal> pointer with the format string '<literal>mas</literal>' constructs
+    the Nothing value -- not an empty array.
+   </para>
+   <para>
     The second way is used with all other format strings.  For
     <link linkend='g-variant-new'><function>g_variant_new()</function></link> an additional
     <link linkend='gboolean'><type>gboolean</type></link> argument is collected and for

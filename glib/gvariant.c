@@ -3643,30 +3643,46 @@ g_variant_valist_new_nnp (const gchar **str,
   switch (*(*str)++)
     {
     case 'a':
-      {
-        const GVariantType *type;
-        GVariant *value;
+      if (ptr != NULL)
+        {
+          const GVariantType *type;
+          GVariant *value;
 
-        value = g_variant_builder_end (ptr);
-        type = g_variant_get_type (value);
+          value = g_variant_builder_end (ptr);
+          type = g_variant_get_type (value);
 
-        if G_UNLIKELY (!g_variant_type_is_array (type))
-          g_error ("g_variant_new: expected array GVariantBuilder but "
-                   "the built value has type `%s'",
-                   g_variant_get_type_string (value));
+          if G_UNLIKELY (!g_variant_type_is_array (type))
+            g_error ("g_variant_new: expected array GVariantBuilder but "
+                     "the built value has type `%s'",
+                     g_variant_get_type_string (value));
 
-        type = g_variant_type_element (type);
+          type = g_variant_type_element (type);
 
-        if G_UNLIKELY (!g_variant_type_is_subtype_of (type, (GVariantType *) *str))
-          g_error ("g_variant_new: expected GVariantBuilder array element "
-                   "type `%s' but the built value has element type `%s'",
-                   g_variant_type_dup_string ((GVariantType *) *str),
-                   g_variant_get_type_string (value) + 1);
+          if G_UNLIKELY (!g_variant_type_is_subtype_of (type, (GVariantType *) *str))
+            g_error ("g_variant_new: expected GVariantBuilder array element "
+                     "type `%s' but the built value has element type `%s'",
+                     g_variant_type_dup_string ((GVariantType *) *str),
+                     g_variant_get_type_string (value) + 1);
 
-        g_variant_type_string_scan (*str, NULL, str);
+          g_variant_type_string_scan (*str, NULL, str);
 
-        return value;
-      }
+          return value;
+        }
+      else
+
+        /* special case: NULL pointer for empty array */
+        {
+          const GVariantType *type = (GVariantType *) *str;
+
+          g_variant_type_string_scan (*str, NULL, str);
+
+          if G_UNLIKELY (!g_variant_type_is_definite (type))
+            g_error ("g_variant_new: NULL pointer given with indefinite "
+                     "array type; unable to determine which type of empty "
+                     "array to construct.");
+
+          return g_variant_new_array (type, NULL, 0);
+        }
 
     case 's':
       return g_variant_new_string (ptr);

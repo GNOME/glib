@@ -3331,6 +3331,22 @@ test_varargs (void)
     g_variant_unref (value);
   }
 
+  {
+    GVariant *value;
+    gchar *str;
+
+    value = g_variant_new ("(masas)", NULL, NULL);
+    g_variant_ref_sink (value);
+
+    str = g_variant_print (value, TRUE);
+    g_assert_cmpstr (str, ==, "(@mas nothing, @as [])");
+    g_variant_unref (value);
+    g_free (str);
+
+    if (do_failed_test ("*which type of empty array*"))
+      g_variant_new ("(a{s*})", NULL);
+  }
+
   g_variant_type_info_assert_no_infos ();
 }
 
