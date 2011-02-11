@@ -2234,6 +2234,8 @@ g_variant_print_string (GVariant *value,
  *
  * Pretty-prints @value in the format understood by g_variant_parse().
  *
+ * The format is described <link linkend='gvariant-text'>here</link>.
+ *
  * If @type_annotate is %TRUE, then type information is included in
  * the output.
  */

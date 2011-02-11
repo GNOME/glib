@@ -66,7 +66,8 @@ content_files =				\
 	glib-gettextize.xml		\
 	gtester.xml			\
 	gtester-report.xml		\
-	gvariant-varargs.xml
+	gvariant-varargs.xml		\
+	gvariant-text.xml
 
 # Extra options to supply to gtkdoc-fixref
 FIXXREF_OPTIONS=

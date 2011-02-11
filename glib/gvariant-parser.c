@@ -2290,6 +2290,8 @@ parse (TokenStream  *stream,
  *
  * A single #GVariant is parsed from the content of @text.
  *
+ * The format is described <link linkend='gvariant-text'>here</link>.
+ *
  * The memory at @limit will never be accessed and the parser behaves as
  * if the character at @limit is the nul terminator.  This has the
  * effect of bounding @text.
