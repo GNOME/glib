@@ -18,7 +18,7 @@
 
   <para>
    The functions that deal with GVariant text format absolutely always deal in utf-8.  Conceptually, GVariant
-   text format is a string of unicode characters -- not bytes.  Non-ASCII but otherwise printable unicode
+   text format is a string of Unicode characters -- not bytes.  Non-ASCII but otherwise printable Unicode
    characters are not treated any differently from normal ASCII characters.
   </para>
 
@@ -276,10 +276,10 @@
     completely equivalent (except for the fact that each one is unable to contain itself unescaped).
    </para>
    <para>
-    Strings are unicode strings with no particular encoding.  For example, to specify the character
-    <literal>é</literal>, you just write <literal>'é'</literal>.  You could also give the unicode codepoint of
+    Strings are Unicode strings with no particular encoding.  For example, to specify the character
+    <literal>é</literal>, you just write <literal>'é'</literal>.  You could also give the Unicode codepoint of
     that character (U+E9) as the escape sequence <literal>'\u00e9'</literal>.  Since the strings are pure
-    unicode, you should not attempt to encode the utf-8 byte sequence corresponding to the string using escapes;
+    Unicode, you should not attempt to encode the utf-8 byte sequence corresponding to the string using escapes;
     it won't work and you'll end up with the individual characters corresponding to each byte.
    </para>
    <para>
@@ -293,7 +293,7 @@
    </para>
    <para>
     The usual octal and hexidecimal escapes <literal>\0nnn</literal> and <literal>\xnn</literal> are not
-    supported here.  Those escapes are used to encode byte values and GVariant strings are unicode.
+    supported here.  Those escapes are used to encode byte values and GVariant strings are Unicode.
    </para>
    <para>
     Single-character strings are not interpreted as bytes.  Bytes must be specified by their numerical value.
