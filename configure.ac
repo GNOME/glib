@@ -20,10 +20,15 @@ m4_define(glib_configure_ac)
 # if backwards compatibility has been broken,
 # set glib_binary_age _and_ glib_interface_age to 0.
 #
+# in easier to understand terms:
+#
+# <mclasen> on the stable branch, interface age == micro
+# <mclasen> on the unstable (ie master), interface age = 0
+
 m4_define([glib_major_version], [2])
-m4_define([glib_minor_version], [28])
-m4_define([glib_micro_version], [1])
-m4_define([glib_interface_age], [1])
+m4_define([glib_minor_version], [29])
+m4_define([glib_micro_version], [0])
+m4_define([glib_interface_age], [0])
 m4_define([glib_binary_age],
           [m4_eval(100 * glib_minor_version + glib_micro_version)])
 m4_define([glib_version],
