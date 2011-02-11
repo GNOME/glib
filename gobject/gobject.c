@@ -2389,7 +2389,7 @@ object_floating_flag_handler (GObject        *object,
  * g_object_is_floating:
  * @object: (type GObject.Object): a #GObject
  *
- * Checks wether @object has a <link linkend="floating-ref">floating</link>
+ * Checks whether @object has a <link linkend="floating-ref">floating</link>
  * reference.
  *
  * Since: 2.10
@@ -2442,7 +2442,7 @@ g_object_ref_sink (gpointer _object)
  *
  * This function is intended for #GObject implementations to re-enforce a
  * <link linkend="floating-ref">floating</link> object reference.
- * Doing this is seldomly required, all
+ * Doing this is seldomly required: all
  * #GInitiallyUnowned<!-- -->s are created with a floating reference which
  * usually just needs to be sunken by calling g_object_ref_sink().
  *
