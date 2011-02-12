@@ -558,7 +558,7 @@ gsettings_help (gboolean     requested,
   else
     {
       g_string_append_printf (string, _("Usage:\n  gsettings %s %s\n\n%s\n\n"),
-                              command, _(synopsis), description);
+                              command, synopsis[0] ? _(synopsis) : "", description);
 
       if (synopsis[0])
         {
@@ -592,7 +592,7 @@ gsettings_help (gboolean     requested,
   if (requested)
     g_print ("%s", string->str);
   else
-    g_printerr ("%s", string->str);
+    g_printerr ("%s\n", string->str);
 
   g_string_free (string, TRUE);
 
@@ -608,6 +608,19 @@ main (int argc, char **argv)
   const gchar *key;
 
   setlocale (LC_ALL, "");
+  textdomain (GETTEXT_PACKAGE);
+
+#ifdef G_OS_WIN32
+  gchar *tmp = _glib_get_locale_dir ();
+  bindtextdomain (GETTEXT_PACKAGE, tmp);
+  g_free (tmp);
+#else
+  bindtextdomain (GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+#endif
+
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+#endif
 
   if (argc < 2)
     return gsettings_help (FALSE, NULL);
@@ -659,7 +672,7 @@ main (int argc, char **argv)
 
       if (argv[2][0] == '\0')
         {
-          g_printerr (_("Empty schema name given"));
+          g_printerr (_("Empty schema name given\n"));
           return 1;
         }
 
