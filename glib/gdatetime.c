@@ -1319,7 +1319,7 @@ g_date_time_add_full (GDateTime *datetime,
  * #GCompareFunc-compatible comparison for #GDateTime<!-- -->'s. Both
  * #GDateTime<-- -->'s must be non-%NULL.
  *
- * Returnsvalue: -1, 0 or 1 if @dt1 is less than, equal to or greater
+ * Return value: -1, 0 or 1 if @dt1 is less than, equal to or greater
  *   than @dt2.
  *
  * Since: 2.26
