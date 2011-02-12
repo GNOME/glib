@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
 "POT-Creation-Date: 2011-02-02 21:36+0900\n"
-"PO-Revision-Date: 2011-02-02 21:55+0900\n"
+"PO-Revision-Date: 2011-02-13 07:02+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
 "Language: Korean\n"
@@ -1996,11 +1996,11 @@ msgstr "'%s' 문자열은 올바른 D-BUS GUID가 아닙니다"
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "지원하지 않는 transport `%s'에서 연결을 받아들일 수 없습니다"
 
-#: ../gio/gdbus-tool.c:87
+#: ../gio/gdbus-tool.c:88
 msgid "COMMAND"
 msgstr "<명령>"
 
-#: ../gio/gdbus-tool.c:92
+#: ../gio/gdbus-tool.c:93
 #, c-format
 msgid ""
 "Commands:\n"
@@ -2019,54 +2019,54 @@ msgstr ""
 "\n"
 "각 명령어의 도움말을 보려면 \"%s <명령> --help\" 명령을 사용하십시오.\n"
 
-#: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
-#: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
+#: ../gio/gdbus-tool.c:161 ../gio/gdbus-tool.c:217 ../gio/gdbus-tool.c:289
+#: ../gio/gdbus-tool.c:313 ../gio/gdbus-tool.c:817 ../gio/gdbus-tool.c:1327
 #, c-format
 msgid "Error: %s\n"
 msgstr "오류: %s\n"
 
-#: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
+#: ../gio/gdbus-tool.c:172 ../gio/gdbus-tool.c:230 ../gio/gdbus-tool.c:1343
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "introspection XML을 파싱하는 중에 오류: %s\n"
 
-#: ../gio/gdbus-tool.c:346
+#: ../gio/gdbus-tool.c:347
 msgid "Connect to the system bus"
 msgstr "시스템 버스에 연결"
 
-#: ../gio/gdbus-tool.c:347
+#: ../gio/gdbus-tool.c:348
 msgid "Connect to the session bus"
 msgstr "세션 버스에 연결"
 
-#: ../gio/gdbus-tool.c:348
+#: ../gio/gdbus-tool.c:349
 msgid "Connect to given D-Bus address"
 msgstr "지정된 D-Bus 주소에 연결"
 
-#: ../gio/gdbus-tool.c:358
+#: ../gio/gdbus-tool.c:359
 msgid "Connection Endpoint Options:"
 msgstr "연결 종점 옵션:"
 
-#: ../gio/gdbus-tool.c:359
+#: ../gio/gdbus-tool.c:360
 msgid "Options specifying the connection endpoint"
 msgstr "연결 종점을 지정하는 옵션"
 
-#: ../gio/gdbus-tool.c:379
+#: ../gio/gdbus-tool.c:382
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "연결 종점을 지정하지 않았습니다"
 
-#: ../gio/gdbus-tool.c:389
+#: ../gio/gdbus-tool.c:392
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "여러 개의 연결 종점을 지정했습니다"
 
-#: ../gio/gdbus-tool.c:459
+#: ../gio/gdbus-tool.c:462
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr "경고: introspection 데이터에 따르면 `%s' 인터페이스가 없습니다\n"
 
-#: ../gio/gdbus-tool.c:468
+#: ../gio/gdbus-tool.c:471
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
@@ -2075,87 +2075,87 @@ msgstr ""
 "경고: introspection 데이터에 따르면 `%s' 메소드가 `%s' 인터페이스에 없습니"
 "다\n"
 
-#: ../gio/gdbus-tool.c:530
+#: ../gio/gdbus-tool.c:533
 msgid "Destination name to invoke method on"
 msgstr "메소드를 호출할 대상 이름"
 
-#: ../gio/gdbus-tool.c:531
+#: ../gio/gdbus-tool.c:534
 msgid "Object path to invoke method on"
 msgstr "메소드를 호출할 오브젝트 경로"
 
-#: ../gio/gdbus-tool.c:532
+#: ../gio/gdbus-tool.c:535
 msgid "Method and interface name"
 msgstr "메소드 및 인터페이스 이름"
 
-#: ../gio/gdbus-tool.c:571
+#: ../gio/gdbus-tool.c:574
 msgid "Invoke a method on a remote object."
 msgstr "원격 객체에 대해 메소드를 호출합니다."
 
-#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
+#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:1248 ../gio/gdbus-tool.c:1508
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "연결하는데 오류: %s\n"
 
-#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
+#: ../gio/gdbus-tool.c:649 ../gio/gdbus-tool.c:1267 ../gio/gdbus-tool.c:1527
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "오류: 대상을 지정하지 않았습니다\n"
 
-#: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1283
+#: ../gio/gdbus-tool.c:670 ../gio/gdbus-tool.c:1286
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "오류: 객체 경로를 지정하지 않았습니다\n"
 
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
+#: ../gio/gdbus-tool.c:690 ../gio/gdbus-tool.c:1306 ../gio/gdbus-tool.c:1567
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "오류: '%s'은(는) 올바른 객체 경로가 아닙니다\n"
 
-#: ../gio/gdbus-tool.c:702
+#: ../gio/gdbus-tool.c:705
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "오류: 메소드 이름을 지정하지 않았습니다\n"
 
-#: ../gio/gdbus-tool.c:713
+#: ../gio/gdbus-tool.c:716
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
 msgstr "오류: 메소드 이름 `%s'이(가) 올바르지 않습니다\n"
 
-#: ../gio/gdbus-tool.c:778
+#: ../gio/gdbus-tool.c:781
 #, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
 msgstr "타입 `%2$s'의 파라미터 %1$d번 파싱 오류: %3$s\n"
 
-#: ../gio/gdbus-tool.c:786
+#: ../gio/gdbus-tool.c:789
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "파라미터 %d번 파싱 오류: %s\n"
 
-#: ../gio/gdbus-tool.c:1162
+#: ../gio/gdbus-tool.c:1165
 msgid "Destination name to introspect"
 msgstr "조사할 대상 이름"
 
-#: ../gio/gdbus-tool.c:1163
+#: ../gio/gdbus-tool.c:1166
 msgid "Object path to introspect"
 msgstr "조사할 객체 경로"
 
-#: ../gio/gdbus-tool.c:1164
+#: ../gio/gdbus-tool.c:1167
 msgid "Print XML"
 msgstr "XML을 표시합니다"
 
-#: ../gio/gdbus-tool.c:1197
+#: ../gio/gdbus-tool.c:1200
 msgid "Introspect a remote object."
 msgstr "원격 객체를 조사합니다."
 
-#: ../gio/gdbus-tool.c:1423
+#: ../gio/gdbus-tool.c:1426
 msgid "Destination name to monitor"
 msgstr "감시할 대상 이름"
 
-#: ../gio/gdbus-tool.c:1424
+#: ../gio/gdbus-tool.c:1427
 msgid "Object path to monitor"
 msgstr "감시할 객체 경로"
 
-#: ../gio/gdbus-tool.c:1457
+#: ../gio/gdbus-tool.c:1460
 msgid "Monitor a remote object."
 msgstr "원격 객체를 감시합니다."
 
@@ -2167,26 +2167,26 @@ msgstr "이름없음"
 msgid "Desktop file didn't specify Exec field"
 msgstr "desktop 파일에 Exec 필드를 지정하지 않았습니다"
 
-#: ../gio/gdesktopappinfo.c:1031
+#: ../gio/gdesktopappinfo.c:1044
 msgid "Unable to find terminal required for application"
 msgstr "프로그램에 필요한 터미널을 찾을 수 없습니다"
 
-#: ../gio/gdesktopappinfo.c:1323
+#: ../gio/gdesktopappinfo.c:1343
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "사용자 프로그램 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: ../gio/gdesktopappinfo.c:1327
+#: ../gio/gdesktopappinfo.c:1347
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "사용자 MIME 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: ../gio/gdesktopappinfo.c:1820
+#: ../gio/gdesktopappinfo.c:1840
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "%s 사용자 desktop 파일을 만들 수 없습니다"
 
-#: ../gio/gdesktopappinfo.c:1936
+#: ../gio/gdesktopappinfo.c:1956
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s에 대한 사용자 설정 정의"
@@ -2645,7 +2645,7 @@ msgstr ""
 msgid "where to store the gschemas.compiled file"
 msgstr "gschemas.compiled 파일을 저장할 위치"
 
-#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1910
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1922
 msgid "DIRECTORY"
 msgstr "<디렉터리>"
 
@@ -2669,7 +2669,7 @@ msgstr "이 옵션은 곧 제거될 예정입니다."
 msgid "Do not enforce key name restrictions"
 msgstr "키 이름을 제한하지 않습니다"
 
-#: ../gio/glib-compile-schemas.c:1913
+#: ../gio/glib-compile-schemas.c:1925
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2679,22 +2679,22 @@ msgstr ""
 "스키마 파일 확장자는 .schema.xml이어야 하고,\n"
 "캐시 파일 이름은 gschemas.compile이어야 합니다."
 
-#: ../gio/glib-compile-schemas.c:1929
+#: ../gio/glib-compile-schemas.c:1941
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "정확히 디렉터리 이름을 하나 지정해야 합니다\n"
 
-#: ../gio/glib-compile-schemas.c:1968
+#: ../gio/glib-compile-schemas.c:1980
 #, c-format
 msgid "No schema files found: "
 msgstr "스키마 파일이 없습니다: "
 
-#: ../gio/glib-compile-schemas.c:1971
+#: ../gio/glib-compile-schemas.c:1983
 #, c-format
 msgid "doing nothing.\n"
 msgstr "아무 것도 하지 않습니다.\n"
 
-#: ../gio/glib-compile-schemas.c:1974
+#: ../gio/glib-compile-schemas.c:1986
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "현재 출력 파일을 제거합니다.\n"
@@ -3227,7 +3227,9 @@ msgstr "<스키마>[:<경로>] [<키>]"
 msgid ""
 "Unknown command %s\n"
 "\n"
-msgstr "알 수 없는 명령 %s\n\n"
+msgstr ""
+"알 수 없는 명령 %s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:539
 msgid ""
@@ -3314,10 +3316,10 @@ msgstr "  <키>      스키마 안의 키\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  <값>      설정할 값\n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:675
 #, c-format
-msgid "Empty schema name given"
-msgstr "지정한 스키마 이름이 빈 문자열입니다"
+msgid "Empty schema name given\n"
+msgstr "지정한 스키마 이름이 빈 문자열입니다\n"
 
 #: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
