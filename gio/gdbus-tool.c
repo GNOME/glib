@@ -25,6 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <locale.h>
 
 #include <gio/gio.h>
 
@@ -359,7 +360,9 @@ connection_get_group (void)
                           N_("Options specifying the connection endpoint"),
                           NULL,
                           NULL);
+  g_option_group_set_translation_domain (g, GETTEXT_PACKAGE);
   g_option_group_add_entries (g, connection_entries);
+
   return g;
 }
 
@@ -569,7 +572,7 @@ handle_call (gint        *argc,
   o = g_option_context_new (NULL);
   g_option_context_set_help_enabled (o, FALSE);
   g_option_context_set_summary (o, _("Invoke a method on a remote object."));
-  g_option_context_add_main_entries (o, call_entries, NULL /* GETTEXT_PACKAGE*/);
+  g_option_context_add_main_entries (o, call_entries, GETTEXT_PACKAGE);
   g_option_context_add_group (o, connection_get_group ());
 
   complete_names = FALSE;
@@ -1195,7 +1198,7 @@ handle_introspect (gint        *argc,
     g_option_context_set_ignore_unknown_options (o, TRUE);
   g_option_context_set_help_enabled (o, FALSE);
   g_option_context_set_summary (o, _("Introspect a remote object."));
-  g_option_context_add_main_entries (o, introspect_entries, NULL /* GETTEXT_PACKAGE*/);
+  g_option_context_add_main_entries (o, introspect_entries, GETTEXT_PACKAGE);
   g_option_context_add_group (o, connection_get_group ());
 
   complete_names = FALSE;
@@ -1455,7 +1458,7 @@ handle_monitor (gint        *argc,
     g_option_context_set_ignore_unknown_options (o, TRUE);
   g_option_context_set_help_enabled (o, FALSE);
   g_option_context_set_summary (o, _("Monitor a remote object."));
-  g_option_context_add_main_entries (o, monitor_entries, NULL /* GETTEXT_PACKAGE*/);
+  g_option_context_add_main_entries (o, monitor_entries, GETTEXT_PACKAGE);
   g_option_context_add_group (o, connection_get_group ());
 
   complete_names = FALSE;
@@ -1645,6 +1648,21 @@ main (gint argc, gchar *argv[])
   gboolean request_completion;
   gchar *completion_cur;
   gchar *completion_prev;
+
+  setlocale (LC_ALL, "");
+  textdomain (GETTEXT_PACKAGE);
+
+#ifdef G_OS_WIN32
+  gchar *tmp = _glib_get_locale_dir ();
+  bindtextdomain (GETTEXT_PACKAGE, tmp);
+  g_free (tmp);
+#else
+  bindtextdomain (GETTEXT_PACKAGE, GLIB_LOCALE_DIR);
+#endif
+
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+#endif
 
   ret = 1;
   completion_cur = NULL;
