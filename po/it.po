@@ -3301,7 +3301,7 @@ msgstr "Elenca chiavi e valori, ricorsivamente"
 
 #: ../gio/gsettings-tool.c:488
 #| msgid "Get the value of KEY"
-msgid "Gets the value of KEY"
+msgid "Get the value of KEY"
 msgstr "Ottiene il valore di CHIAVE"
 
 #: ../gio/gsettings-tool.c:489 ../gio/gsettings-tool.c:495
@@ -3316,7 +3316,7 @@ msgstr "Interroga l'intervallo di valori ammessi per CHIAVE"
 
 #: ../gio/gsettings-tool.c:500
 #| msgid "Set the value of KEY"
-msgid "Sets the value of KEY to VALUE"
+msgid "Set the value of KEY to VALUE"
 msgstr "Imposta il valore di CHIAVE a VALORE"
 
 #: ../gio/gsettings-tool.c:501
@@ -3326,12 +3326,12 @@ msgstr "SCHEMA[:PERCORSO] CHIAVE VALORE"
 
 #: ../gio/gsettings-tool.c:506
 #| msgid "Sets KEY to its default value"
-msgid "Resets KEY to its default value"
+msgid "Reset KEY to its default value"
 msgstr "Azzera CHIAVE al suo valore predefinito"
 
 #: ../gio/gsettings-tool.c:512
 #| msgid "Find out whether KEY is writable"
-msgid "Checks if KEY is writable"
+msgid "Check if KEY is writable"
 msgstr "Verifica se CHIAVE è scrivibile"
 
 #: ../gio/gsettings-tool.c:518
@@ -3442,7 +3442,7 @@ msgstr "  CHIAVE    La chiave all'interno dello schema\n"
 
 #: ../gio/gsettings-tool.c:576
 msgid "  VALUE     The value to set\n"
-msgstr "  VALORE   Il valore da impostare\n"
+msgstr "  VALORE    Il valore da impostare\n"
 
 #: ../gio/gsettings-tool.c:652
 #, c-format
