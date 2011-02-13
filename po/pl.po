@@ -7,10 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&component=general\n"
-"POT-Creation-Date: 2011-02-08 15:05+0000\n"
-"PO-Revision-Date: 2011-02-08 18:13+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-02-13 01:17+0100\n"
+"PO-Revision-Date: 2011-02-13 01:18+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -2093,11 +2092,11 @@ msgstr "Ciąg \"%s\" nie jest prawidłowym GUID usługi D-Bus"
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Nie można nasłuchiwać na nieobsługiwanym transporcie \"%s\""
 
-#: ../gio/gdbus-tool.c:87
+#: ../gio/gdbus-tool.c:88
 msgid "COMMAND"
 msgstr "POLECENIE"
 
-#: ../gio/gdbus-tool.c:92
+#: ../gio/gdbus-tool.c:93
 #, c-format
 msgid ""
 "Commands:\n"
@@ -2116,55 +2115,55 @@ msgstr ""
 "\n"
 "Polecenie \"%s POLECENIE --help\" wyświetla pomoc o każdym poleceniu.\n"
 
-#: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
-#: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
+#: ../gio/gdbus-tool.c:161 ../gio/gdbus-tool.c:217 ../gio/gdbus-tool.c:289
+#: ../gio/gdbus-tool.c:313 ../gio/gdbus-tool.c:817 ../gio/gdbus-tool.c:1327
 #, c-format
 msgid "Error: %s\n"
 msgstr "Błąd: %s\n"
 
-#: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
+#: ../gio/gdbus-tool.c:172 ../gio/gdbus-tool.c:230 ../gio/gdbus-tool.c:1343
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Błąd podczas przetwarzania kodu XML introspekcji: %s\n"
 
-#: ../gio/gdbus-tool.c:346
+#: ../gio/gdbus-tool.c:347
 msgid "Connect to the system bus"
 msgstr "Łączy z magistralą systemową"
 
-#: ../gio/gdbus-tool.c:347
+#: ../gio/gdbus-tool.c:348
 msgid "Connect to the session bus"
 msgstr "Łączy z magistralą sesji"
 
-#: ../gio/gdbus-tool.c:348
+#: ../gio/gdbus-tool.c:349
 msgid "Connect to given D-Bus address"
 msgstr "Łączy z podanym adresem usługi D-Bus"
 
-#: ../gio/gdbus-tool.c:358
+#: ../gio/gdbus-tool.c:359
 msgid "Connection Endpoint Options:"
 msgstr "Opcje punktów końcowych połączenia:"
 
-#: ../gio/gdbus-tool.c:359
+#: ../gio/gdbus-tool.c:360
 msgid "Options specifying the connection endpoint"
 msgstr "Opcje określające punkt końcowy połączenia"
 
-#: ../gio/gdbus-tool.c:379
+#: ../gio/gdbus-tool.c:382
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Nie określono żadnych punktów końcowych połączenia"
 
-#: ../gio/gdbus-tool.c:389
+#: ../gio/gdbus-tool.c:392
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Określono wiele punktów końcowych połączenia"
 
-#: ../gio/gdbus-tool.c:459
+#: ../gio/gdbus-tool.c:462
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
 "Ostrzeżenie: według danych introspekcji, interfejs \"%s\" nie istnieje\n"
 
-#: ../gio/gdbus-tool.c:468
+#: ../gio/gdbus-tool.c:471
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
@@ -2173,87 +2172,87 @@ msgstr ""
 "Ostrzeżenie: według danych introspekcji, metoda \"%s\" nie istnieje w "
 "interfejsie \"%s\"\n"
 
-#: ../gio/gdbus-tool.c:530
+#: ../gio/gdbus-tool.c:533
 msgid "Destination name to invoke method on"
 msgstr "Nazwa docelowa do wywołania na niej metody"
 
-#: ../gio/gdbus-tool.c:531
+#: ../gio/gdbus-tool.c:534
 msgid "Object path to invoke method on"
 msgstr "Ścieżka do obiektu do wywołania na niej metody"
 
-#: ../gio/gdbus-tool.c:532
+#: ../gio/gdbus-tool.c:535
 msgid "Method and interface name"
 msgstr "Nazwa metody i interfejsu"
 
-#: ../gio/gdbus-tool.c:571
+#: ../gio/gdbus-tool.c:574
 msgid "Invoke a method on a remote object."
 msgstr "Wywołuje metodę na zdalnym obiekcie."
 
-#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
+#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:1248 ../gio/gdbus-tool.c:1508
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Błąd podczas połączenia: %s\n"
 
-#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
+#: ../gio/gdbus-tool.c:649 ../gio/gdbus-tool.c:1267 ../gio/gdbus-tool.c:1527
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Błąd: nie określono celu\n"
 
-#: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1283
+#: ../gio/gdbus-tool.c:670 ../gio/gdbus-tool.c:1286
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Błąd: nie określono ścieżki do obiektu\n"
 
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
+#: ../gio/gdbus-tool.c:690 ../gio/gdbus-tool.c:1306 ../gio/gdbus-tool.c:1567
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Błąd: %s nie jest prawidłową ścieżką do obiektu\n"
 
-#: ../gio/gdbus-tool.c:702
+#: ../gio/gdbus-tool.c:705
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Błąd: nie określono nazwy metody\n"
 
-#: ../gio/gdbus-tool.c:713
+#: ../gio/gdbus-tool.c:716
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
 msgstr "Błąd: nazwa metody \"%s\" jest nieprawidłowa\n"
 
-#: ../gio/gdbus-tool.c:778
+#: ../gio/gdbus-tool.c:781
 #, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
 msgstr "Błąd podczas przetwarzania parametru %d typu \"%s\": %s\n"
 
-#: ../gio/gdbus-tool.c:786
+#: ../gio/gdbus-tool.c:789
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Błąd podczas przetwarzania parametru %d: %s\n"
 
-#: ../gio/gdbus-tool.c:1162
+#: ../gio/gdbus-tool.c:1165
 msgid "Destination name to introspect"
 msgstr "Nazwa docelowa do zbadania"
 
-#: ../gio/gdbus-tool.c:1163
+#: ../gio/gdbus-tool.c:1166
 msgid "Object path to introspect"
 msgstr "Ścieżka do obiektu do zbadania"
 
-#: ../gio/gdbus-tool.c:1164
+#: ../gio/gdbus-tool.c:1167
 msgid "Print XML"
 msgstr "Wyświetla kod XML"
 
-#: ../gio/gdbus-tool.c:1197
+#: ../gio/gdbus-tool.c:1200
 msgid "Introspect a remote object."
 msgstr "Bada zdalny obiekt."
 
-#: ../gio/gdbus-tool.c:1423
+#: ../gio/gdbus-tool.c:1426
 msgid "Destination name to monitor"
 msgstr "Nazwa docelowa do monitorowania"
 
-#: ../gio/gdbus-tool.c:1424
+#: ../gio/gdbus-tool.c:1427
 msgid "Object path to monitor"
 msgstr "Ścieżka do obiektu do monitorowania"
 
-#: ../gio/gdbus-tool.c:1457
+#: ../gio/gdbus-tool.c:1460
 msgid "Monitor a remote object."
 msgstr "Monitoruje zdalny obiekt."
 
@@ -2748,7 +2747,7 @@ msgstr ""
 msgid "where to store the gschemas.compiled file"
 msgstr "gdzie przechowywać plik schemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1910
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1922
 msgid "DIRECTORY"
 msgstr "KATALOG"
 
@@ -2768,7 +2767,7 @@ msgstr "Ta opcja zostanie niedługo usunięta."
 msgid "Do not enforce key name restrictions"
 msgstr "Bez wymuszania ograniczeń nazw kluczy"
 
-#: ../gio/glib-compile-schemas.c:1913
+#: ../gio/glib-compile-schemas.c:1925
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2779,22 +2778,22 @@ msgstr ""
 "rozszerzenie .gschema.xml, a pliki pamięci podręcznej\n"
 "nazywają się gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1929
+#: ../gio/glib-compile-schemas.c:1941
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Należy podać dokładnie jedną nazwę katalogu\n"
 
-#: ../gio/glib-compile-schemas.c:1968
+#: ../gio/glib-compile-schemas.c:1980
 #, c-format
 msgid "No schema files found: "
 msgstr "Nie odnaleziono plików schematów: "
 
-#: ../gio/glib-compile-schemas.c:1971
+#: ../gio/glib-compile-schemas.c:1983
 #, c-format
 msgid "doing nothing.\n"
 msgstr "nic.\n"
 
-#: ../gio/glib-compile-schemas.c:1974
+#: ../gio/glib-compile-schemas.c:1986
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "usunięto istniejący plik wyjściowy.\n"
@@ -3421,10 +3420,10 @@ msgstr "  KLUCZ     Klucz w schemacie\n"
 msgid "  VALUE     The value to set\n"
 msgstr "  WARTOŚĆ   Wartość do ustawienia\n"
 
-#: ../gio/gsettings-tool.c:662
+#: ../gio/gsettings-tool.c:675
 #, c-format
-msgid "Empty schema name given"
-msgstr "Podano pustą nazwę schematu"
+msgid "Empty schema name given\n"
+msgstr "Podano pustą nazwę schematu\n"
 
 #: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
