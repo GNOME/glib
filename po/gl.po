@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-13 13:55+0100\n"
+"POT-Creation-Date: 2011-02-13 13:57+0100\n"
 "PO-Revision-Date: 2011-02-13 13:55+0100\n"
 "Last-Translator: Fran Diéguez <frandieguez@ubuntu.com>\n"
 "Language-Team: Galician <gnome-gl-list@gnome.org>\n"
@@ -3411,7 +3411,7 @@ msgstr "  VALUE     O valor a estabelecer\n"
 #: ../gio/gsettings-tool.c:675
 #, c-format
 msgid "Empty schema name given\n"
-msgstr "Forneceuse un nome de esquema baleiro"
+msgstr "Forneceuse un nome de esquema baleiro\n"
 
 #: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
