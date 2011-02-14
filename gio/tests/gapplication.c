@@ -221,12 +221,44 @@ basic (void)
   session_bus_down ();
 }
 
+static void
+properties (void)
+{
+  GObject *app;
+  gchar *id;
+  GApplicationFlags flags;
+  gboolean registered;
+  guint timeout;
+
+  app = g_object_new (G_TYPE_APPLICATION,
+                      "application-id", "org.gtk.TestApplication",
+                      NULL);
+
+  g_object_get (app,
+                "application-id", &id,
+                "flags", &flags,
+                "is-registered", &registered,
+                "inactivity-timeout", &timeout,
+                NULL);
+
+  g_assert_cmpstr (id, ==, "org.gtk.TestApplication");
+  g_assert_cmpint (flags, ==, G_APPLICATION_FLAGS_NONE);
+  g_assert (!registered);
+  g_assert_cmpint (timeout, ==, 0);
+
+  g_object_unref (app);
+  g_free (id);
+}
+
 int
 main (int argc, char **argv)
 {
+  g_type_init ();
+
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gapplication/basic", basic);
+  g_test_add_func ("/gapplication/properties", properties);
 
   return g_test_run ();
 }

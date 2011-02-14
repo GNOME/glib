@@ -625,6 +625,28 @@ test_GDateTime_now_utc (void)
 }
 
 static void
+test_GDateTime_new_from_unix_utc (void)
+{
+  GDateTime *dt;
+  gint64 t;
+
+  t = g_get_real_time ();
+
+  dt = g_date_time_new_from_unix_utc (t);
+  g_assert (dt == NULL);
+
+  t = t / 1e6;  /* oops, this was microseconds */
+
+  dt = g_date_time_new_from_unix_utc (t);
+  g_assert (dt != NULL);
+
+  g_assert (dt == g_date_time_ref (dt));
+  g_date_time_unref (dt);
+  g_assert_cmpint (g_date_time_to_unix (dt), ==, t);
+  g_date_time_unref (dt);
+}
+
+static void
 test_GDateTime_get_utc_offset (void)
 {
   GDateTime *dt;
@@ -638,6 +660,9 @@ test_GDateTime_get_utc_offset (void)
   ts = g_date_time_get_utc_offset (dt);
 #ifdef HAVE_STRUCT_TM_TM_GMTOFF
   g_assert_cmpint (ts, ==, (tm.tm_gmtoff * G_TIME_SPAN_SECOND));
+#endif
+#ifdef HAVE_STRUCT_TM___TM_GMTOFF
+  g_assert_cmpint (ts, ==, (tm.__tm_gmtoff * G_TIME_SPAN_SECOND));
 #endif
   g_date_time_unref (dt);
 }
@@ -1029,6 +1054,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/get_year", test_GDateTime_get_year);
   g_test_add_func ("/GDateTime/hash", test_GDateTime_hash);
   g_test_add_func ("/GDateTime/new_from_unix", test_GDateTime_new_from_unix);
+  g_test_add_func ("/GDateTime/new_from_unix_utc", test_GDateTime_new_from_unix_utc);
   g_test_add_func ("/GDateTime/new_from_timeval", test_GDateTime_new_from_timeval);
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);

@@ -151,6 +151,58 @@ test_tmpdir (void)
   g_assert_cmpstr (g_get_tmp_dir (), !=, "");
 }
 
+static void
+test_bits (void)
+{
+  gulong mask;
+  gint max_bit;
+  gint i, pos;
+
+  pos = g_bit_nth_lsf (0, -1);
+  g_assert_cmpint (pos, ==, -1);
+
+  max_bit = sizeof (gulong) * 8;
+  for (i = 0; i < max_bit; i++)
+    {
+      mask = 1UL << i;
+
+      pos = g_bit_nth_lsf (mask, -1);
+      g_assert_cmpint (pos, ==, i);
+
+      pos = g_bit_nth_lsf (mask, i - 3);
+      g_assert_cmpint (pos , ==, i);
+
+      pos = g_bit_nth_lsf (mask, i);
+      g_assert_cmpint (pos , ==, -1);
+
+      pos = g_bit_nth_lsf (mask, i + 1);
+      g_assert_cmpint (pos , ==, -1);
+    }
+
+  pos = g_bit_nth_msf (0, -1);
+  g_assert_cmpint (pos, ==, -1);
+
+  for (i = 0; i < max_bit; i++)
+    {
+      mask = 1UL << i;
+
+      pos = g_bit_nth_msf (mask, -1);
+      g_assert_cmpint (pos, ==, i);
+
+      pos = g_bit_nth_msf (mask, i + 3);
+      g_assert_cmpint (pos , ==, i);
+
+      pos = g_bit_nth_msf (mask, i);
+      g_assert_cmpint (pos , ==, -1);
+
+      if (i > 0)
+        {
+          pos = g_bit_nth_msf (mask, i - 1);
+          g_assert_cmpint (pos , ==, -1);
+        }
+    }
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -170,6 +222,7 @@ main (int   argc,
   g_test_add_func ("/utils/version", test_version);
   g_test_add_func ("/utils/appname", test_appname);
   g_test_add_func ("/utils/tmpdir", test_tmpdir);
+  g_test_add_func ("/utils/bits", test_bits);
 
   return g_test_run();
 }

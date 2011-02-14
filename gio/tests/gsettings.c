@@ -158,7 +158,7 @@ test_wrong_path (void)
 {
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      GSettings *settings;
+      GSettings *settings G_GNUC_UNUSED;
 
       settings = g_settings_new_with_path ("org.gtk.test", "/wrong-path/");
     }
@@ -172,7 +172,7 @@ test_no_path (void)
 {
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      GSettings *settings;
+      GSettings *settings G_GNUC_UNUSED;
 
       settings = g_settings_new ("org.gtk.test.no-path");
     }

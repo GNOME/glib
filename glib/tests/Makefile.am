@@ -151,6 +151,12 @@ gdatetime_LDADD      = $(progs_ldadd)
 TEST_PROGS       += environment
 environment_LDADD = $(progs_ldadd)
 
+TEST_PROGS       += mappedfile
+mappedfile_LDADD  = $(progs_ldadd)
+
+TEST_PROGS    += dataset
+dataset_LDADD  = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality
@@ -169,7 +175,8 @@ EXTRA_DIST += \
 	4096-random-bytes	\
 	keyfiletest.ini		\
 	pages.ini		\
-	bookmarks.xbel
+	bookmarks.xbel		\
+	empty
 
 dist-hook:
 	mkdir $(distdir)/markups;		\
