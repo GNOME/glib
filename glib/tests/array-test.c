@@ -764,7 +764,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
-  g_test_bug_base ("http://bugs.gnome.org/%s");
+  g_test_bug_base ("http://bugs.gnome.org/");
 
   /* array tests */
   g_test_add_func ("/array/append", array_append);
