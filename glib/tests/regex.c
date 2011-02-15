@@ -2059,12 +2059,38 @@ test_recursion (void)
   g_regex_unref (regex);
 }
 
+static void
+test_multiline (void)
+{
+  GRegex *regex;
+  GMatchInfo *info;
+  gint count;
+
+  g_test_bug ("640489");
+
+  regex = g_regex_new ("^a$", G_REGEX_MULTILINE|G_REGEX_DOTALL, 0, NULL);
+
+  count = 0;
+  g_regex_match (regex, "a\nb\na", 0, &info);
+  while (g_match_info_matches (info))
+    {
+      count++;
+      g_match_info_next (info, NULL);
+    }
+  g_match_info_free (info);
+  g_regex_unref (regex);
+
+  g_assert_cmpint (count, ==, 2);
+}
+
 int
 main (int argc, char *argv[])
 {
   setlocale (LC_ALL, "");
 
   g_test_init (&argc, &argv, NULL);
+
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/regex/basic", test_basic);
   g_test_add_func ("/regex/compile", test_compile);
@@ -2075,6 +2101,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/regex/subpattern", test_subpattern);
   g_test_add_func ("/regex/condition", test_condition);
   g_test_add_func ("/regex/recursion", test_recursion);
+  g_test_add_func ("/regex/multiline", test_multiline);
 
   /* TEST_NEW(pattern, compile_opts, match_opts) */
   TEST_NEW("", 0, 0);
