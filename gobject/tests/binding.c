@@ -365,8 +365,8 @@ binding_transform_default (void)
   g_object_set (target, "value", 69.0, NULL);
   g_assert_cmpint (source->foo, ==, 69);
 
-  g_object_unref (source);
   g_object_unref (target);
+  g_object_unref (source);
 }
 
 static void
