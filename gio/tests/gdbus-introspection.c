@@ -75,7 +75,8 @@ test_introspection (GDBusProxy *proxy)
   g_assert (method_info == NULL);
   method_info = g_dbus_interface_info_lookup_method (interface_info, "Introspect");
   g_assert (method_info != NULL);
-  g_assert (method_info->in_args == NULL);
+  g_assert (method_info->in_args != NULL);
+  g_assert (method_info->in_args[0] == NULL);
   g_assert (method_info->out_args != NULL);
   g_assert (method_info->out_args[0] != NULL);
   g_assert (method_info->out_args[1] == NULL);

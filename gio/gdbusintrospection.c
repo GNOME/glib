@@ -420,10 +420,10 @@ g_dbus_node_info_unref (GDBusNodeInfo *info)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-g_dbus_annotation_info_set (ParseData                      *data,
-                            GDBusAnnotationInfo            *info,
-                            const gchar                    *key,
-                            const gchar                    *value,
+g_dbus_annotation_info_set (ParseData            *data,
+                            GDBusAnnotationInfo  *info,
+                            const gchar          *key,
+                            const gchar          *value,
                             GDBusAnnotationInfo **embedded_annotations)
 {
   info->ref_count = 1;
@@ -462,9 +462,7 @@ static void
 g_dbus_method_info_set (ParseData            *data,
                         GDBusMethodInfo      *info,
                         const gchar          *name,
-                        guint                 in_num_args,
                         GDBusArgInfo        **in_args,
-                        guint                 out_num_args,
                         GDBusArgInfo        **out_args,
                         GDBusAnnotationInfo **annotations)
 {
@@ -473,17 +471,11 @@ g_dbus_method_info_set (ParseData            *data,
   if (name != NULL)
     info->name = g_strdup (name);
 
-  if (in_num_args != 0)
-    {
-      //info->in_num_args = in_num_args;
-      info->in_args = in_args;
-    }
+  if (in_args != NULL)
+    info->in_args = in_args;
 
-  if (out_num_args != 0)
-    {
-      //info->out_num_args = out_num_args;
-      info->out_args = out_args;
-    }
+  if (out_args != NULL)
+    info->out_args = out_args;
 
   if (annotations != NULL)
     info->annotations = annotations;
@@ -493,7 +485,6 @@ static void
 g_dbus_signal_info_set (ParseData            *data,
                         GDBusSignalInfo      *info,
                         const gchar          *name,
-                        guint                 num_args,
                         GDBusArgInfo        **args,
                         GDBusAnnotationInfo **annotations)
 {
@@ -502,16 +493,11 @@ g_dbus_signal_info_set (ParseData            *data,
   if (name != NULL)
     info->name = g_strdup (name);
 
-  if (num_args != 0)
-    {
-      //info->num_args = num_args;
-      info->args = args;
-    }
+  if (args != NULL)
+    info->args = args;
 
   if (annotations != NULL)
-    {
-      info->annotations = annotations;
-    }
+    info->annotations = annotations;
 }
 
 static void
@@ -531,66 +517,44 @@ g_dbus_property_info_set (ParseData               *data,
     info->flags = flags;
 
   if (signature != NULL)
-    {
-      info->signature = g_strdup (signature);
-    }
+    info->signature = g_strdup (signature);
 
   if (annotations != NULL)
-    {
-      info->annotations = annotations;
-    }
+    info->annotations = annotations;
 }
 
 static void
 g_dbus_interface_info_set (ParseData            *data,
                            GDBusInterfaceInfo   *info,
                            const gchar          *name,
-                           guint                 num_methods,
                            GDBusMethodInfo     **methods,
-                           guint                 num_signals,
                            GDBusSignalInfo     **signals,
-                           guint                 num_properties,
                            GDBusPropertyInfo   **properties,
                            GDBusAnnotationInfo **annotations)
 {
   info->ref_count = 1;
 
   if (name != NULL)
-    {
-      info->name = g_strdup (name);
-    }
+    info->name = g_strdup (name);
 
-  if (num_methods != 0)
-    {
-      //info->num_methods    = num_methods;
-      info->methods        = methods;
-    }
+  if (methods != NULL)
+    info->methods = methods;
 
-  if (num_signals != 0)
-    {
-      //info->num_signals    = num_signals;
-      info->signals        = signals;
-    }
+  if (signals != NULL)
+    info->signals = signals;
 
-  if (num_properties != 0)
-    {
-      //info->num_properties = num_properties;
-      info->properties     = properties;
-    }
+  if (properties != NULL)
+    info->properties = properties;
 
   if (annotations != NULL)
-    {
-      info->annotations = annotations;
-    }
+    info->annotations = annotations;
 }
 
 static void
 g_dbus_node_info_set (ParseData            *data,
                       GDBusNodeInfo        *info,
                       const gchar          *path,
-                      guint                 num_interfaces,
                       GDBusInterfaceInfo  **interfaces,
-                      guint                 num_nodes,
                       GDBusNodeInfo       **nodes,
                       GDBusAnnotationInfo **annotations)
 {
@@ -602,31 +566,22 @@ g_dbus_node_info_set (ParseData            *data,
       /* TODO: relative / absolute path snafu */
     }
 
-  if (num_interfaces != 0)
-    {
-      //info->num_interfaces = num_interfaces;
-      info->interfaces     = interfaces;
-    }
+  if (interfaces != NULL)
+    info->interfaces = interfaces;
 
-  if (num_nodes != 0)
-    {
-      //info->num_nodes      = num_nodes;
-      info->nodes          = nodes;
-    }
+  if (nodes != NULL)
+    info->nodes = nodes;
 
   if (annotations != NULL)
-    {
-      info->annotations = annotations;
-    }
-
+    info->annotations = annotations;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-g_dbus_annotation_info_generate_xml (GDBusAnnotationInfo        *info,
-                                     guint                       indent,
-                                     GString                    *string_builder)
+g_dbus_annotation_info_generate_xml (GDBusAnnotationInfo *info,
+                                     guint                indent,
+                                     GString             *string_builder)
 {
   guint n;
 
@@ -655,10 +610,10 @@ g_dbus_annotation_info_generate_xml (GDBusAnnotationInfo        *info,
 }
 
 static void
-g_dbus_arg_info_generate_xml (GDBusArgInfo        *info,
-                              guint                indent,
-                              const gchar         *extra_attributes,
-                              GString             *string_builder)
+g_dbus_arg_info_generate_xml (GDBusArgInfo *info,
+                              guint         indent,
+                              const gchar  *extra_attributes,
+                              GString      *string_builder)
 {
   guint n;
 
@@ -691,9 +646,9 @@ g_dbus_arg_info_generate_xml (GDBusArgInfo        *info,
 }
 
 static void
-g_dbus_method_info_generate_xml (GDBusMethodInfo        *info,
-                                 guint                   indent,
-                                 GString                *string_builder)
+g_dbus_method_info_generate_xml (GDBusMethodInfo *info,
+                                 guint            indent,
+                                 GString         *string_builder)
 {
   guint n;
 
@@ -731,9 +686,9 @@ g_dbus_method_info_generate_xml (GDBusMethodInfo        *info,
 }
 
 static void
-g_dbus_signal_info_generate_xml (GDBusSignalInfo        *info,
-                                 guint                   indent,
-                                 GString                *string_builder)
+g_dbus_signal_info_generate_xml (GDBusSignalInfo *info,
+                                 guint            indent,
+                                 GString         *string_builder)
 {
   guint n;
 
@@ -765,9 +720,9 @@ g_dbus_signal_info_generate_xml (GDBusSignalInfo        *info,
 }
 
 static void
-g_dbus_property_info_generate_xml (GDBusPropertyInfo        *info,
-                                   guint                     indent,
-                                   GString                  *string_builder)
+g_dbus_property_info_generate_xml (GDBusPropertyInfo *info,
+                                   guint              indent,
+                                   GString           *string_builder)
 {
   guint n;
   const gchar *access_string;
@@ -830,9 +785,9 @@ g_dbus_property_info_generate_xml (GDBusPropertyInfo        *info,
  * Since: 2.26
  */
 void
-g_dbus_interface_info_generate_xml (GDBusInterfaceInfo        *info,
-                                    guint                      indent,
-                                    GString                   *string_builder)
+g_dbus_interface_info_generate_xml (GDBusInterfaceInfo *info,
+                                    guint               indent,
+                                    GString            *string_builder)
 {
   guint n;
 
@@ -877,9 +832,9 @@ g_dbus_interface_info_generate_xml (GDBusInterfaceInfo        *info,
  * Since: 2.26
  */
 void
-g_dbus_node_info_generate_xml (GDBusNodeInfo        *info,
-                               guint                 indent,
-                               GString              *string_builder)
+g_dbus_node_info_generate_xml (GDBusNodeInfo *info,
+                               guint          indent,
+                               GString       *string_builder)
 {
   guint n;
 
@@ -1276,6 +1231,9 @@ parse_data_free (ParseData *data)
   parse_data_free_methods (data);
   parse_data_free_signals (data);
   parse_data_free_properties (data);
+  parse_data_free_interfaces (data);
+  parse_data_free_annotations (data);
+  parse_data_free_nodes (data);
 
   g_free (data);
 }
@@ -1331,8 +1289,8 @@ parser_start_element (GMarkupParseContext  *context,
       g_dbus_node_info_set (data,
                             parse_data_get_node (data, TRUE),
                             name,
-                            0, NULL,
-                            0, NULL,
+                            NULL,
+                            NULL,
                             NULL);
 
       /* push the currently retrieved interfaces and nodes on the stack and prepare new arrays */
@@ -1368,9 +1326,9 @@ parser_start_element (GMarkupParseContext  *context,
       g_dbus_interface_info_set (data,
                                  parse_data_get_interface (data, TRUE),
                                  name,
-                                 0, NULL,
-                                 0, NULL,
-                                 0, NULL,
+                                 NULL,
+                                 NULL,
+                                 NULL,
                                  NULL);
 
     }
@@ -1397,8 +1355,8 @@ parser_start_element (GMarkupParseContext  *context,
       g_dbus_method_info_set (data,
                               parse_data_get_method (data, TRUE),
                               name,
-                              0, NULL,
-                              0, NULL,
+                              NULL,
+                              NULL,
                               NULL);
 
       data->num_args = 0;
@@ -1427,7 +1385,7 @@ parser_start_element (GMarkupParseContext  *context,
       g_dbus_signal_info_set (data,
                               parse_data_get_signal (data, TRUE),
                               name,
-                              0, NULL,
+                              NULL,
                               NULL);
 
       data->num_args = 0;
@@ -1660,9 +1618,7 @@ parser_end_element (GMarkupParseContext  *context,
       g_dbus_node_info_set (data,
                             parse_data_get_node (data, FALSE),
                             NULL,
-                            num_interfaces,
                             interfaces,
-                            num_nodes,
                             nodes,
                             steal_annotations (data));
 
@@ -1683,11 +1639,8 @@ parser_end_element (GMarkupParseContext  *context,
       g_dbus_interface_info_set (data,
                                  parse_data_get_interface (data, FALSE),
                                  NULL,
-                                 num_methods,
                                  methods,
-                                 num_signals,
                                  signals,
-                                 num_properties,
                                  properties,
                                  steal_annotations (data));
 
@@ -1705,9 +1658,7 @@ parser_end_element (GMarkupParseContext  *context,
       g_dbus_method_info_set (data,
                               parse_data_get_method (data, FALSE),
                               NULL,
-                              in_num_args,
                               in_args,
-                              out_num_args,
                               out_args,
                               steal_annotations (data));
     }
@@ -1721,7 +1672,6 @@ parser_end_element (GMarkupParseContext  *context,
       g_dbus_signal_info_set (data,
                               parse_data_get_signal (data, FALSE),
                               NULL,
-                              num_args,
                               args,
                               steal_annotations (data));
     }
@@ -1838,6 +1788,9 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
                                      error))
     goto out;
 
+  if (!g_markup_parse_context_end_parse (context, error))
+    goto out;
+
   ughret = parse_data_steal_nodes (data, &num_nodes);
 
   if (num_nodes != 1)
@@ -1854,10 +1807,11 @@ g_dbus_node_info_new_for_xml (const gchar  *xml_data,
       for (n = 0; n < num_nodes; n++)
         {
           for (n = 0; n < num_nodes; n++)
-            g_dbus_node_info_unref (&(ret[n]));
+            {
+              g_dbus_node_info_unref (ughret[n]);
+              ughret[n] = NULL;
+            }
         }
-      g_free (ret);
-      ret = NULL;
     }
 
   ret = ughret[0];
