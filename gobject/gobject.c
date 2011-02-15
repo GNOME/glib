@@ -3214,7 +3214,8 @@ g_value_get_object (const GValue *value)
  * @value: a valid #GValue whose type is derived from %G_TYPE_OBJECT
  *
  * Get the contents of a %G_TYPE_OBJECT derived #GValue, increasing
- * its reference count.
+ * its reference count. If the contents of the #GValue are %NULL, then
+ * %NULL will be returned.
  *
  * Returns: (type GObject.Object) (transfer full): object content of @value,
  *          should be unreferenced when no longer needed.
