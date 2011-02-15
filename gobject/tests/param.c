@@ -4,6 +4,7 @@ static void
 test_param_value (void)
 {
   GParamSpec *p, *p2;
+  GParamSpec *pp;
   GValue value = { 0, };
 
   g_value_init (&value, G_TYPE_PARAM);
@@ -15,8 +16,11 @@ test_param_value (void)
   p2 = g_value_get_param (&value);
   g_assert (p2 == p);
 
+  pp = g_param_spec_uint ("my-uint", "My UInt", "Blurb", 0, 10, 5, G_PARAM_READWRITE);
+  g_value_set_param (&value, pp);
+
   p2 = g_value_dup_param (&value);
-  g_assert (p2 == p); /* param specs use ref/unref for copy/free */
+  g_assert (p2 == pp); /* param specs use ref/unref for copy/free */
   g_param_spec_unref (p2);
 
   g_value_unset (&value);
@@ -155,6 +159,31 @@ test_value_transform (void)
   CHECK_INT_CONVERSION(G_TYPE_UINT64, uint64, 12345678)
   CHECK_INT_CONVERSION(G_TYPE_FLOAT, float, 12345678)
   CHECK_INT_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
+
+#define CHECK_UINT_CONVERSION(type, getter, value)                      \
+  g_assert (g_value_type_transformable (G_TYPE_UINT, type));            \
+  g_value_init (&src, G_TYPE_UINT);                                     \
+  g_value_init (&dest, type);                                           \
+  g_value_set_uint (&src, value);                                       \
+  g_assert (g_value_transform (&src, &dest));                           \
+  g_assert_cmpint (g_value_get_##getter (&dest), ==, value);            \
+  g_value_unset (&src);                                                 \
+  g_value_unset (&dest);
+
+  CHECK_UINT_CONVERSION(G_TYPE_CHAR, char, 124)
+  CHECK_UINT_CONVERSION(G_TYPE_CHAR, char, 124)
+  CHECK_UINT_CONVERSION(G_TYPE_UCHAR, uchar, 0)
+  CHECK_UINT_CONVERSION(G_TYPE_UCHAR, uchar, 255)
+  CHECK_UINT_CONVERSION(G_TYPE_INT, int, 12345)
+  CHECK_UINT_CONVERSION(G_TYPE_INT, int, 12345)
+  CHECK_UINT_CONVERSION(G_TYPE_UINT, uint, 0)
+  CHECK_UINT_CONVERSION(G_TYPE_UINT, uint, 12345)
+  CHECK_UINT_CONVERSION(G_TYPE_LONG, long, 12345678)
+  CHECK_UINT_CONVERSION(G_TYPE_ULONG, ulong, 12345678)
+  CHECK_UINT_CONVERSION(G_TYPE_INT64, int64, 12345678)
+  CHECK_UINT_CONVERSION(G_TYPE_UINT64, uint64, 12345678)
+  CHECK_UINT_CONVERSION(G_TYPE_FLOAT, float, 12345678)
+  CHECK_UINT_CONVERSION(G_TYPE_DOUBLE, double, 12345678)
 
 #define CHECK_BOOLEAN_CONVERSION(type, setter, value)                   \
   g_assert (g_value_type_transformable (type, G_TYPE_BOOLEAN));         \
