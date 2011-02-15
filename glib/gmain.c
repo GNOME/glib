@@ -3796,7 +3796,8 @@ static void
 g_timeout_set_expiration (GTimeoutSource *timeout_source,
                           gint64          current_time)
 {
-  timeout_source->expiration = current_time + timeout_source->interval * 1000;
+  timeout_source->expiration = current_time +
+                               (guint64) timeout_source->interval * 1000;
 
   if (timeout_source->seconds)
     {
