@@ -161,6 +161,9 @@ mappedfile_LDADD  = $(progs_ldadd)
 TEST_PROGS    += dataset
 dataset_LDADD  = $(progs_ldadd)
 
+TEST_PROGS    += sort
+sort_LDADD     = $(progs_ldadd)
+
 if OS_UNIX
 
 # some testing of gtester funcitonality

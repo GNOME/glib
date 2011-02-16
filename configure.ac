@@ -573,6 +573,46 @@ AC_FUNC_VPRINTF
 AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2)
 AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r)
+# BSD has a qsort_r with wrong argument order
+AC_MSG_CHECKING([for qsort_r])
+AC_RUN_IFELSE([[
+#define _GNU_SOURCE
+#include <stdlib.h>
+
+static int
+cmp (const void *a, const void *b, void *c)
+{
+  const int *ia = a;
+  const int *ib = b;
+
+  if (*ia < *ib)
+    return -1;
+  else if (*ia > *ib)
+    return 1;
+  else
+    return 0;
+}
+
+int
+main (int argc, char **argv)
+{
+  int arr[3] = { 1, 2, 0 };
+  int d = 3;
+
+  qsort_r (arr, 3, sizeof (int), cmp, &d);
+
+  if (arr[0] == 0 && arr[1] == 1 && arr[2] == 2)
+    return 0;
+  else
+    return 1;
+}]],[have_qsort_r=yes],[have_qsort_r=no])
+
+if test $have_qsort_r = yes ; then
+  AC_MSG_RESULT([yes])
+    AC_DEFINE(HAVE_QSORT_R, 1, [Define to 1 if you have the 'qsort_r' function])
+else
+  AC_MSG_RESULT([no])
+fi
 
 AC_CHECK_SIZEOF(char)
 AC_CHECK_SIZEOF(short)

@@ -34,6 +34,7 @@
 
 #include "config.h"
 
+#define _GNU_SOURCE
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,6 +42,31 @@
 #include "gqsort.h"
 
 #include "gtestutils.h"
+
+#ifdef HAVE_QSORT_R
+
+/**
+ * g_qsort_with_data:
+ * @pbase: start of array to sort
+ * @total_elems: elements in the array
+ * @size: size of each element
+ * @compare_func: function to compare elements
+ * @user_data: data to pass to @compare_func
+ *
+ * This is just like the standard C qsort() function, but
+ * the comparison routine accepts a user data argument.
+ */
+void
+g_qsort_with_data (gconstpointer    pbase,
+                   gint             total_elems,
+                   gsize            size,
+                   GCompareDataFunc compare_func,
+                   gpointer         user_data)
+{
+  qsort_r (pbase, total_elems, size, compare_func, user_data);
+}
+
+#else
 
 /* Byte-wise swap two items of size SIZE. */
 #define SWAP(a, b, size)						      \
@@ -102,18 +128,6 @@ typedef struct
       smaller partition.  This *guarantees* no more than log (total_elems)
       stack size is needed (actually O(1) in this case)!  */
 
-/**
- * g_qsort_with_data:
- * @pbase: start of array to sort
- * @total_elems: elements in the array
- * @size: size of each element
- * @compare_func: function to compare elements
- * @user_data: data to pass to @compare_func
- *
- * This is just like the standard C qsort() function, but
- * the comparison routine accepts a user data argument.
- * 
- **/
 void
 g_qsort_with_data (gconstpointer    pbase,
 		   gint             total_elems,
@@ -283,3 +297,5 @@ g_qsort_with_data (gconstpointer    pbase,
       }
   }
 }
+
+#endif /* HAVE_QSORT_R */
