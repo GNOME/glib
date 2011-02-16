@@ -514,7 +514,7 @@ test_g_parse_debug_string (void)
     { "bar", 2 },
     { "baz", 4 }
   };
-  guint n_keys = 3;
+  guint n_keys = G_N_ELEMENTS (keys);
   guint result;
   
   result = g_parse_debug_string ("bar:foo:blubb", keys, n_keys);
@@ -528,6 +528,9 @@ test_g_parse_debug_string (void)
 
   result = g_parse_debug_string (" : ", keys, n_keys);
   g_assert (result == 0);
+
+  result = g_parse_debug_string ("all", keys, n_keys);
+  g_assert_cmpuint (result, ==, (1 << n_keys) - 1);
 }
 
 static void
