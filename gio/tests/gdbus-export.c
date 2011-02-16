@@ -1385,6 +1385,144 @@ test_object_registration (void)
   g_object_unref (c);
 }
 
+static const GDBusInterfaceInfo test_interface_info1 =
+{
+  -1,
+  "org.example.Foo",
+  (GDBusMethodInfo **) NULL,
+  (GDBusSignalInfo **) NULL,
+  (GDBusPropertyInfo **) NULL,
+  NULL,
+};
+
+static const GDBusInterfaceInfo test_interface_info2 =
+{
+  -1,
+  "org.freedesktop.DBus.Properties",
+  (GDBusMethodInfo **) NULL,
+  (GDBusSignalInfo **) NULL,
+  (GDBusPropertyInfo **) NULL,
+  NULL,
+};
+
+static void
+check_interfaces (GDBusConnection  *c,
+                  const gchar      *object_path,
+                  const gchar     **interfaces)
+{
+  GError *error;
+  GDBusProxy *proxy;
+  gchar *xml_data;
+  GDBusNodeInfo *node_info;
+  gint i, j;
+
+  error = NULL;
+  proxy = g_dbus_proxy_new_sync (c,
+                                 G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES |
+                                 G_DBUS_PROXY_FLAGS_DO_NOT_CONNECT_SIGNALS,
+                                 NULL,
+                                 g_dbus_connection_get_unique_name (c),
+                                 object_path,
+                                 "org.freedesktop.DBus.Introspectable",
+                                 NULL,
+                                 &error);
+  g_assert_no_error (error);
+  g_assert (proxy != NULL);
+
+  /* do this async to avoid libdbus-1 deadlocks */
+  xml_data = NULL;
+  g_dbus_proxy_call (proxy,
+                     "Introspect",
+                     NULL,
+                     G_DBUS_CALL_FLAGS_NONE,
+                     -1,
+                     NULL,
+                     (GAsyncReadyCallback) introspect_callback,
+                     &xml_data);
+  g_main_loop_run (loop);
+  g_assert (xml_data != NULL);
+
+  node_info = g_dbus_node_info_new_for_xml (xml_data, &error);
+  g_assert_no_error (error);
+  g_assert (node_info != NULL);
+
+  g_assert (node_info->interfaces != NULL);
+  for (i = 0; node_info->interfaces[i]; i++) ;
+#if 0
+  if (g_strv_length ((gchar**)interfaces) != i - 1)
+    {
+      g_print ("expected ");
+      for (i = 0; interfaces[i]; i++)
+        g_print ("%s ", interfaces[i]);
+      g_print ("\ngot ");
+      for (i = 0; node_info->interfaces[i]; i++)
+        g_print ("%s ", node_info->interfaces[i]->name);
+      g_print ("\n");
+    }
+#endif
+  g_assert_cmpint (g_strv_length ((gchar**)interfaces), ==, i - 1);
+
+  for (i = 0; interfaces[i]; i++)
+    {
+      for (j = 0; node_info->interfaces[j]; j++)
+        {
+          if (strcmp (interfaces[i], node_info->interfaces[j]->name) == 0)
+            goto found;
+        }
+
+      g_assert_not_reached ();
+
+ found: ;
+    }
+
+  g_object_unref (proxy);
+  g_free (xml_data);
+  g_dbus_node_info_unref (node_info);
+}
+
+static void
+test_registered_interfaces (void)
+{
+  GError *error;
+  guint id1, id2;
+  const gchar *interfaces[] = {
+    "org.example.Foo",
+    "org.freedesktop.DBus.Properties",
+    "org.freedesktop.DBus.Introspectable",
+    NULL,
+  };
+
+  error = NULL;
+  c = g_bus_get_sync (G_BUS_TYPE_SESSION, NULL, &error);
+  g_assert_no_error (error);
+  g_assert (c != NULL);
+
+  id1 = g_dbus_connection_register_object (c,
+                                           "/test",
+                                           (GDBusInterfaceInfo *) &test_interface_info1,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           &error);
+  g_assert_no_error (error);
+  g_assert (id1 > 0);
+  id2 = g_dbus_connection_register_object (c,
+                                           "/test",
+                                           (GDBusInterfaceInfo *) &test_interface_info2,
+                                           NULL,
+                                           NULL,
+                                           NULL,
+                                           &error);
+  g_assert_no_error (error);
+  g_assert (id2 > 0);
+
+  check_interfaces (c, "/test", interfaces);
+
+  g_assert (g_dbus_connection_unregister_object (c, id1));
+  g_assert (g_dbus_connection_unregister_object (c, id2));
+  g_object_unref (c);
+}
+
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -1414,6 +1552,8 @@ main (int   argc,
   usleep (500 * 1000);
 
   g_test_add_func ("/gdbus/object-registration", test_object_registration);
+  g_test_add_func ("/gdbus/registered-interfaces", test_registered_interfaces);
+
   /* TODO: check that we spit out correct introspection data */
   /* TODO: check that registering a whole subtree works */
 
