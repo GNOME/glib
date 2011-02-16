@@ -963,9 +963,10 @@ notify_desktop_launch (GDBusConnection  *session_bus,
     g_variant_builder_add (&extras_variant, "{sv}",
 			   "origin-desktop-file",
 			   g_variant_new_bytestring (gio_desktop_file));
-  g_variant_builder_add (&extras_variant, "{sv}",
-			 "origin-prgname",
-			 g_variant_new_bytestring (g_get_prgname ()));
+  if (g_get_prgname () != NULL)
+    g_variant_builder_add (&extras_variant, "{sv}",
+			   "origin-prgname",
+			   g_variant_new_bytestring (g_get_prgname ()));
   g_variant_builder_add (&extras_variant, "{sv}",
 			 "origin-pid",
 			 g_variant_new ("x",
