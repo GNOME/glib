@@ -4228,7 +4228,7 @@ static const gchar introspect_header[] =
 static const gchar introspect_tail[] =
   "</node>\n";
 
-static const gchar introspect_standard_interfaces[] =
+static const gchar introspect_properties_interface[] =
   "  <interface name=\"org.freedesktop.DBus.Properties\">\n"
   "    <method name=\"Get\">\n"
   "      <arg type=\"s\" name=\"interface_name\" direction=\"in\"/>\n"
@@ -4249,7 +4249,9 @@ static const gchar introspect_standard_interfaces[] =
   "      <arg type=\"a{sv}\" name=\"changed_properties\"/>\n"
   "      <arg type=\"as\" name=\"invalidated_properties\"/>\n"
   "    </signal>\n"
-  "  </interface>\n"
+  "  </interface>\n";
+
+static const gchar introspect_introspectable_interface[] =
   "  <interface name=\"org.freedesktop.DBus.Introspectable\">\n"
   "    <method name=\"Introspect\">\n"
   "      <arg type=\"s\" name=\"xml_data\" direction=\"out\"/>\n"
@@ -4266,12 +4268,6 @@ static void
 introspect_append_header (GString *s)
 {
   g_string_append (s, introspect_header);
-}
-
-static void
-introspect_append_standard_interfaces (GString *s)
-{
-  g_string_append (s, introspect_standard_interfaces);
 }
 
 static void
@@ -4365,10 +4361,17 @@ handle_introspect (GDBusConnection *connection,
 
   /* first the header with the standard interfaces */
   s = g_string_sized_new (sizeof (introspect_header) +
-                          sizeof (introspect_standard_interfaces) +
+                          sizeof (introspect_properties_interface) +
+                          sizeof (introspect_introspectable_interface) +
                           sizeof (introspect_tail));
   introspect_append_header (s);
-  introspect_append_standard_interfaces (s);
+  if (!g_hash_table_lookup (eo->map_if_name_to_ei,
+                            "org.freedesktop.DBus.Properties"))
+    g_string_append (s, introspect_properties_interface);
+
+  if (!g_hash_table_lookup (eo->map_if_name_to_ei,
+                            "org.freedesktop.DBus.Introspectable"))
+    g_string_append (s, introspect_introspectable_interface);
 
   /* then include the registered interfaces */
   g_hash_table_iter_init (&hash_iter, eo->map_if_name_to_ei);
@@ -5377,6 +5380,8 @@ handle_subtree_introspect (GDBusConnection *connection,
   GDBusInterfaceInfo **interfaces;
   guint n;
   gchar **subnode_paths;
+  gboolean has_properties_interface;
+  gboolean has_introspectable_interface;
 
   handled = FALSE;
 
@@ -5416,7 +5421,20 @@ handle_subtree_introspect (GDBusConnection *connection,
                                        es->user_data);
   if (interfaces != NULL)
     {
-      introspect_append_standard_interfaces (s);
+      has_properties_interface = FALSE;
+      has_introspectable_interface = FALSE;
+
+      for (n = 0; interfaces[n] != NULL; n++)
+        {
+          if (strcmp (interfaces[n]->name, "org.freedesktop.DBus.Properties") == 0)
+            has_properties_interface = TRUE;
+          else if (strcmp (interfaces[n]->name, "org.freedesktop.DBus.Introspectable") == 0)
+            has_introspectable_interface = TRUE;
+        }
+      if (!has_properties_interface)
+        g_string_append (s, introspect_properties_interface);
+      if (!has_introspectable_interface)
+        g_string_append (s, introspect_introspectable_interface);
 
       for (n = 0; interfaces[n] != NULL; n++)
         {
