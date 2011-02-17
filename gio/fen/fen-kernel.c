@@ -33,8 +33,7 @@
 #include "fen-dump.h"
 
 #ifdef GIO_COMPILATION
-#define FK_W if (fk_debug_enabled) g_debug
-static gboolean fk_debug_enabled = FALSE;
+#define FK_W if (FALSE) g_debug
 #else
 #include "gam_error.h"
 #define FK_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)
