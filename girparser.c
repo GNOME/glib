@@ -293,7 +293,7 @@ locate_gir (GIrParser  *parser,
   return NULL;
 }
 
-#define MISSING_ATTRIBUTE(ctx,error,element,attribute)			        \
+#define MISSING_ATTRIBUTE(context,error,element,attribute)			        \
   do {                                                                          \
     int line_number, char_number;                                                \
     g_markup_parse_context_get_position (context, &line_number, &char_number);  \
