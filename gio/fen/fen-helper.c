@@ -35,8 +35,7 @@
 #endif
 
 #ifdef GIO_COMPILATION
-#define FH_W if (fh_debug_enabled) g_debug
-static gboolean fh_debug_enabled = FALSE;
+#define FH_W if (FALSE) g_debug
 #else
 #include "gam_error.h"
 #define FH_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)

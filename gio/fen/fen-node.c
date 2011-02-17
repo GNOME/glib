@@ -40,8 +40,7 @@
 #endif
 
 #ifdef GIO_COMPILATION
-#define FN_W if (fn_debug_enabled) g_debug
-static gboolean fn_debug_enabled = FALSE;
+#define FN_W if (FALSE) g_debug
 #else
 #include "gam_error.h"
 #define FN_W(...) GAM_DEBUG(DEBUG_INFO, __VA_ARGS__)
@@ -145,7 +144,6 @@ node_find(node_t* node, const gchar* filename, gboolean create_on_missing)
     for (token = strtok_r (str, G_DIR_SEPARATOR_S, &lasts);
          token != NULL && child != NULL;
          token = strtok_r (NULL, G_DIR_SEPARATOR_S, &lasts)) {
-        FN_W ("%s %s + %s\n", __func__, NODE_NAME(parent), token);
         child = node_get_child(parent, token);
         if (child) {
             parent = child;
@@ -282,7 +280,6 @@ node_try_delete(node_t* node)
     if (!NODE_NEED_MONITOR(node)) {
         /* Clean some flags. */
         /* NODE_CLE_FLAG(node, NODE_FLAG_HAS_SNAPSHOT | NODE_FLAG_STAT_DONE); */
-        node->flag = 0;
 
         /* Now we handle the state. */
         if (NODE_HAS_STATE(node, NODE_STATE_ASSOCIATED)) {
@@ -329,6 +326,8 @@ static void
 node_delete (node_t *f)
 {
     FN_W ("%s 0x%p %s\n", __func__, f, NODE_NAME(f));
+    /* Clean flags. */
+    f->flag = 0;
     g_assert(f->state == 0);
     g_assert(!NODE_IS_ACTIVE(f));
     g_assert(g_hash_table_size (f->children) == 0);
