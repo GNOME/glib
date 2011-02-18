@@ -1227,19 +1227,42 @@ serialize_type (GIrTypelibBuild    *build,
     }
   else if (node->tag == GI_TYPE_TAG_ARRAY)
     {
-      serialize_type (build, node->parameter_type1, str);
-      g_string_append (str, "[");
+      if (node->array_type == GI_ARRAY_TYPE_C)
+	{
+	  serialize_type (build, node->parameter_type1, str);
+	  g_string_append (str, "[");
 
-      if (node->has_length)
-	g_string_append_printf (str, "length=%d", node->length);
-      else if (node->has_size)
-        g_string_append_printf (str, "fixed-size=%d", node->size);
+	  if (node->has_length)
+	    g_string_append_printf (str, "length=%d", node->length);
+	  else if (node->has_size)
+	    g_string_append_printf (str, "fixed-size=%d", node->size);
 
-      if (node->zero_terminated)
-	g_string_append_printf (str, "%szero-terminated=1",
-				node->has_length ? "," : "");
+	  if (node->zero_terminated)
+	    g_string_append_printf (str, "%szero-terminated=1",
+				    node->has_length ? "," : "");
 
-      g_string_append (str, "]");
+	  g_string_append (str, "]");
+	}
+      else if (node->array_type == GI_ARRAY_TYPE_BYTE_ARRAY)
+	{
+	  /* We on purpose skip serializing parameter_type1, which should
+	     always be void*
+	  */
+	  g_string_append (str, "GByteArray");
+	}
+      else
+	{
+	  if (node->array_type == GI_ARRAY_TYPE_ARRAY)
+	    g_string_append (str, "GArray");
+	  else
+	    g_string_append (str, "GPtrArray");
+	  if (node->parameter_type1)
+	    {
+	      g_string_append (str, "<");
+	      serialize_type (build, node->parameter_type1, str);
+	      g_string_append (str, ">");
+	    }
+	}
     }
   else if (node->tag == GI_TYPE_TAG_INTERFACE)
     {
@@ -1284,7 +1307,7 @@ serialize_type (GIrTypelibBuild    *build,
     }
   else if (node->tag == GI_TYPE_TAG_GHASH)
     {
-      g_string_append (str, "GHashTable<");
+      g_string_append (str, "GHashTable");
       if (node->parameter_type1)
 	{
 	  g_string_append (str, "<");
