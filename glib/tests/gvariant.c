@@ -3838,7 +3838,7 @@ test_bytestring (void)
   GVariant *value;
   gchar **strv;
   gchar *str;
-  const gchar *const_str;
+  const gchar *const_str G_GNUC_UNUSED;
   GVariant *untrusted_empty;
 
   strv = g_strsplit (test_string, ",", 0);

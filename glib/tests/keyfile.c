@@ -892,7 +892,7 @@ test_group_names (void)
   GKeyFile *keyfile;
   GError *error = NULL;
   const gchar *data;
-  gchar *value;
+  gchar *value G_GNUC_UNUSED;
 
   /* [ in group name */
   data = "[a[b]\n"
