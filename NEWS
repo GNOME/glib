@@ -1,3 +1,31 @@
+Overview of Changes from GLib 2.28.0 to 2.29.2
+==============================================
+
+* The format accepted by the GVariant parser has beend documented
+
+* The return value of g_datetime_compare() has been fixed to
+  match strcmp() semantics
+
+* Commandline utilities are now fully translated
+
+* Bugs fixed:
+ 635099 Memory leak in gdbus introspection when parsing xml
+ 640489 $ and ^ do not match lines if G_REGEX_MULTILINE|G_R...
+ 642042 Overriding GDBus org.freedesktop.DBus.Properties im...
+ 642052 g_timeout_add(_seconds) cannot handle large intervals
+ 642490 notify_desktop_launch() "g_variant_new_bytestring:...
+
+* Translation updates
+ Bulgarian
+ Bengali India
+ Korean
+ Polish
+ Galician
+ Hebrew
+ Italian
+ Spanish
+
+
 Overview of Changes from GLib 2.27.93 to 2.28.0
 ===============================================
 
