@@ -219,6 +219,132 @@ test_multithreaded_dynamic_type_init (void)
   }
 }
 
+enum
+{
+  PROP_0,
+  PROP_FOO
+};
+
+typedef struct _DynObj DynObj;
+typedef struct _DynObjClass DynObjClass;
+typedef struct _DynIfaceInterface DynIfaceInterface;
+
+struct _DynObj
+{
+  GObject obj;
+
+  gint foo;
+};
+
+struct _DynObjClass
+{
+  GObjectClass class;
+};
+
+struct _DynIfaceInterface
+{
+  GTypeInterface iface;
+};
+
+static void dyn_obj_iface_init (DynIfaceInterface *iface);
+
+G_DEFINE_INTERFACE (DynIface, dyn_iface, G_TYPE_OBJECT)
+
+G_DEFINE_DYNAMIC_TYPE_EXTENDED(DynObj, dyn_obj, G_TYPE_OBJECT, 0,
+                      G_IMPLEMENT_INTERFACE_DYNAMIC(dyn_iface_get_type (), dyn_obj_iface_init))
+
+
+static void
+dyn_iface_default_init (DynIfaceInterface *iface)
+{
+  g_object_interface_install_property (iface,
+    g_param_spec_int ("foo", NULL, NULL, 0, 100, 0, G_PARAM_READWRITE));
+}
+
+static void
+dyn_obj_iface_init (DynIfaceInterface *iface)
+{
+}
+
+static void
+dyn_obj_init (DynObj *obj)
+{
+  obj->foo = 0;
+}
+
+static void
+set_prop (GObject      *object,
+          guint         prop_id,
+          const GValue *value,
+          GParamSpec   *pspec)
+{
+  DynObj *obj = (DynObj *)object;
+
+  switch (prop_id)
+    {
+    case PROP_FOO:
+      obj->foo = g_value_get_int (value);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+get_prop (GObject    *object,
+          guint       prop_id,
+          GValue     *value,
+          GParamSpec *pspec)
+{
+  DynObj *obj = (DynObj *)object;
+
+  switch (prop_id)
+    {
+    case PROP_FOO:
+      g_value_set_int (value, obj->foo);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+dyn_obj_class_init (DynObjClass *class)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  object_class->set_property = set_prop;
+  object_class->get_property = get_prop;
+
+  g_object_class_override_property (object_class, PROP_FOO, "foo");
+}
+
+static void
+dyn_obj_class_finalize (DynObjClass *class)
+{
+}
+
+static void
+mod_register (GTypeModule *module)
+{
+  dyn_obj_register_type (module);
+}
+
+static void
+test_dynamic_interface_properties (void)
+{
+  GTypeModule *module;
+  DynObj *obj;
+
+  module = test_module_new (mod_register);
+
+  obj = g_object_new (dyn_obj_get_type (), "foo", 1, NULL);
+
+  g_object_unref (obj);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -230,6 +356,7 @@ main (int   argc,
   sync_mutex = g_mutex_new();
 
   g_test_add_func ("/GObject/threaded-dynamic-ref-unref-init", test_multithreaded_dynamic_type_init);
+  g_test_add_func ("/GObject/dynamic-interface-properties", test_dynamic_interface_properties);
 
   return g_test_run();
 }
