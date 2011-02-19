@@ -1320,6 +1320,8 @@ parser_start_element (GMarkupParseContext  *context,
                                         attribute_values,
                                         error,
                                         G_MARKUP_COLLECT_STRING, "name", &name,
+                                        /* seen in the wild */
+                                        G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "version", NULL,
                                         G_MARKUP_COLLECT_INVALID))
         goto out;
 
@@ -1349,6 +1351,8 @@ parser_start_element (GMarkupParseContext  *context,
                                         attribute_values,
                                         error,
                                         G_MARKUP_COLLECT_STRING, "name", &name,
+                                        /* seen in the wild */
+                                        G_MARKUP_COLLECT_STRING | G_MARKUP_COLLECT_OPTIONAL, "version", NULL,
                                         G_MARKUP_COLLECT_INVALID))
         goto out;
 
