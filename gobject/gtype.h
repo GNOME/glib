@@ -1186,7 +1186,7 @@ struct _GInterfaceInfo
  *    return g_strdup_printf ("object location passed as NULL");
  *  if (!value->data[0].v_pointer)
  *    *object_p = NULL;
- *  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) // always honour
+ *  else if (collect_flags & G_VALUE_NOCOPY_CONTENTS) /&ast; always honour &ast;/
  *    *object_p = value->data[0].v_pointer;
  *  else
  *    *object_p = g_object_ref (value->data[0].v_pointer);
