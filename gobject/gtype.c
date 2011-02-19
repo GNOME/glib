@@ -3652,6 +3652,10 @@ type_get_qdata_L (TypeNode *node,
  * Obtains data which has previously been attached to @type
  * with g_type_set_qdata().
  *
+ * Note that this does not take subtyping into account; data
+ * attached to one type with g_type_set_qdata() cannot
+ * be retrieved from a subtype using g_type_get_qdata().
+ *
  * Returns: (transfer none): the data, or %NULL if no data was found
  */
 gpointer
