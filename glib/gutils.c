@@ -3572,7 +3572,7 @@ _g_utils_thread_init (void)
  * have to use system codepage as bindtextdomain() doesn't have a
  * UTF-8 interface.
  */
-static gchar *
+gchar *
 _glib_get_locale_dir (void)
 {
   gchar *install_dir = NULL, *locale_dir;

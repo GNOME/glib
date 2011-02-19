@@ -1907,7 +1907,8 @@ main (int argc, char **argv)
 
   setlocale (LC_ALL, "");
   textdomain (GETTEXT_PACKAGE);
- #ifdef G_OS_WIN32
+#ifdef G_OS_WIN32
+  extern gchar *_glib_get_locale_dir (void);
   gchar *tmp = _glib_get_locale_dir ();
   bindtextdomain (GETTEXT_PACKAGE, tmp);
   g_free (tmp);

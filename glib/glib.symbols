@@ -1608,6 +1608,9 @@ g_unichar_validate
 #if IN_HEADER(__GLIBINTL_H__)
 #if IN_FILE(__G_UTILS_C__)
 glib_gettext G_GNUC_FORMAT(1)
+#ifdef G_OS_WIN32
+_glib_get_locale_dir
+#endif
 #endif
 #endif
 
