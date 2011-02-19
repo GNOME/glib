@@ -768,6 +768,36 @@ on_signal_received (GDBusConnection *connection,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
+insert_property_checked (GDBusProxy  *proxy,
+			 gchar *property_name,
+			 GVariant *value)
+{
+  if (proxy->priv->expected_interface != NULL)
+    {
+      const GDBusPropertyInfo *info;
+
+      info = g_dbus_interface_info_lookup_property (proxy->priv->expected_interface, property_name);
+      /* Ignore unknown properties */
+      if (info == NULL)
+	goto invalid;
+
+      /* Ignore properties with the wrong type */
+      if (g_strcmp0 (info->signature, g_variant_get_type_string (value)) != 0)
+	goto invalid;
+    }
+
+  g_hash_table_insert (proxy->priv->properties,
+		       property_name, /* adopts string */
+		       value); /* adopts value */
+
+  return;
+
+ invalid:
+  g_variant_unref (value);
+  g_free (property_name);
+}
+
+static void
 on_properties_changed (GDBusConnection *connection,
                        const gchar     *sender_name,
                        const gchar     *object_path,
@@ -815,9 +845,9 @@ on_properties_changed (GDBusConnection *connection,
   g_variant_iter_init (&iter, changed_properties);
   while (g_variant_iter_next (&iter, "{sv}", &key, &value))
     {
-      g_hash_table_insert (proxy->priv->properties,
-                           key, /* adopts string */
-                           value); /* adopts value */
+      insert_property_checked (proxy,
+			       key, /* adopts string */
+			       value); /* adopts value */
     }
 
   for (n = 0; invalidated_properties[n] != NULL; n++)
@@ -857,9 +887,9 @@ process_get_all_reply (GDBusProxy *proxy,
   g_variant_get (result, "(a{sv})", &iter);
   while (g_variant_iter_next (iter, "{sv}", &key, &value))
     {
-      g_hash_table_insert (proxy->priv->properties,
-                           key, /* adopts string */
-                           value); /* adopts value */
+      insert_property_checked (proxy,
+			       key, /* adopts string */
+			       value); /* adopts value */
     }
   g_variant_iter_free (iter);
 
