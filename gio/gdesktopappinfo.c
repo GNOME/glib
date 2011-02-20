@@ -3059,14 +3059,19 @@ get_all_desktop_entries_for_mime_type (const char  *base_mime_type,
 	{
 	  dir = dir_list->data;
 
-          /* Pick the explicit default application */
-          entry = g_hash_table_lookup (dir->mimeapps_list_defaults_map, mime_type);
-
-          if (entry != NULL)
+          /* Pick the explicit default application if we got no result earlier
+           * (ie, for more specific mime types)
+           */
+          if (desktop_entries == NULL)
             {
-              /* Save the default entry if it's the first one we encounter */
-              if (default_entry == NULL)
-                default_entry = g_strdup (entry);
+              entry = g_hash_table_lookup (dir->mimeapps_list_defaults_map, mime_type);
+
+              if (entry != NULL)
+                {
+                  /* Save the default entry if it's the first one we encounter */
+                  if (default_entry == NULL)
+                    default_entry = g_strdup (entry);
+                }
             }
 
 	  /* Then added associations from mimeapps.list */
