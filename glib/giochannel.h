@@ -83,7 +83,7 @@ typedef enum
   G_SEEK_END
 } GSeekType;
 
-typedef enum
+typedef enum /*< flags >*/
 {
   G_IO_IN	GLIB_SYSDEF_POLLIN,
   G_IO_OUT	GLIB_SYSDEF_POLLOUT,
