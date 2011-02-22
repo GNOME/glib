@@ -634,7 +634,7 @@ EXTRA_DIST += $(completion_SCRIPTS)
 
 # ------------------------------------------------------------------------
 
-dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
+dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj ../build/win32/vs10/gio.vcxproj ../build/win32/vs10/gio.vcxproj.filters
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
@@ -650,6 +650,28 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj
 	done | sort -u >libgio.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/gio.vcprojin >$@
 	rm libgio.sourcefiles
+	
+../build/win32/vs10/gio.vcxproj: $(top_srcdir)/build/win32/vs10/gio.vcxprojin
+	for F in `echo $(libgio_2_0_la_SOURCES) $(win32_actual_sources) $(win32_actual_more_sources_for_vcproj) | tr '/' '\\'`; do \
+		case $$F in \
+		gunix*.c|gdesktopappinfo.c) ;; \
+		*.c) echo '    <ClCompile Include="..\..\..\gio\'$$F'" />' \
+		     ;; \
+		esac; \
+	done | sort -u >libgio.vs10.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gio.vcxprojin >$@
+	rm libgio.vs10.sourcefiles
+
+../build/win32/vs10/gio.vcxproj.filters: $(top_srcdir)/build/win32/vs10/gio.vcxproj.filtersin
+	for F in `echo $(libgio_2_0_la_SOURCES) $(win32_actual_sources) $(win32_actual_more_sources_for_vcproj) | tr '/' '\\'`; do \
+		case $$F in \
+		gunix*.c|gdesktopappinfo.c) ;; \
+		*.c) echo '    <ClCompile Include="..\..\..\gio\'$$F'"><Filter>Source Files</Filter></ClCompile>' \
+		     ;; \
+		esac; \
+	done | sort -u >libgio.vs10.sourcefiles.filters
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gio.vcxproj.filtersin >$@
+	rm libgio.vs10.sourcefiles.filters
 
 if HAVE_GLIB_RUNTIME_LIBDIR
 install-data-hook:
