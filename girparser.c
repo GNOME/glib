@@ -1480,6 +1480,7 @@ start_member (GMarkupParseContext *context,
   const gchar *name;
   const gchar *value;
   const gchar *deprecated;
+  const gchar *c_identifier;
   GIrNodeEnum *enum_;
   GIrNodeValue *value_;
 
@@ -1490,6 +1491,7 @@ start_member (GMarkupParseContext *context,
   name = find_attribute ("name", attribute_names, attribute_values);
   value = find_attribute ("value", attribute_names, attribute_values);
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
+  c_identifier = find_attribute ("c:identifier", attribute_names, attribute_values);
 
   if (name == NULL)
     {
@@ -1508,6 +1510,10 @@ start_member (GMarkupParseContext *context,
     value_->deprecated = TRUE;
   else
     value_->deprecated = FALSE;
+
+  g_hash_table_insert (((GIrNode *)value_)->attributes,
+                       g_strdup ("c:identifier"),
+                       g_strdup (c_identifier));
 
   enum_ = (GIrNodeEnum *)CURRENT_NODE (ctx);
   enum_->values = g_list_append (enum_->values, value_);
