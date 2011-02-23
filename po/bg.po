@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-16 22:27+0200\n"
-"PO-Revision-Date: 2011-02-16 22:27+0200\n"
+"POT-Creation-Date: 2011-02-23 08:02+0200\n"
+"PO-Revision-Date: 2011-02-23 08:01+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -2694,7 +2694,7 @@ msgstr ""
 msgid "where to store the gschemas.compiled file"
 msgstr "място за съхраняване на файла gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1922
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1923
 msgid "DIRECTORY"
 msgstr "ПАПКА"
 
@@ -2715,7 +2715,7 @@ msgstr "Тази опция скоро ще бъде премахната"
 msgid "Do not enforce key name restrictions"
 msgstr "Без налагане на ограниченията за имена на ключове"
 
-#: ../gio/glib-compile-schemas.c:1925
+#: ../gio/glib-compile-schemas.c:1926
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2725,22 +2725,22 @@ msgstr ""
 "Файловете със схемите трябва да завършват на .gschema.xml,\n"
 "а файлът с кеша се нарича gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1941
+#: ../gio/glib-compile-schemas.c:1942
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Изисква се точно едно име на папка\n"
 
-#: ../gio/glib-compile-schemas.c:1980
+#: ../gio/glib-compile-schemas.c:1981
 #, c-format
 msgid "No schema files found: "
 msgstr "Не са открити файлове със схеми: "
 
-#: ../gio/glib-compile-schemas.c:1983
+#: ../gio/glib-compile-schemas.c:1984
 #, c-format
 msgid "doing nothing.\n"
 msgstr "без обработка.\n"
 
-#: ../gio/glib-compile-schemas.c:1986
+#: ../gio/glib-compile-schemas.c:1987
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "съществуващият резултатен файл е премахнат.\n"
@@ -3193,70 +3193,77 @@ msgstr "Пътят не трябва да съдържа две последов
 msgid "No such key '%s'\n"
 msgstr "Липсва ключ „%s“\n"
 
-#: ../gio/gsettings-tool.c:429
+#: ../gio/gsettings-tool.c:444
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Стойността е извън интервала на допустимите стойности\n"
 
-#: ../gio/gsettings-tool.c:458
+#: ../gio/gsettings-tool.c:473
 msgid "Print help"
 msgstr "Извеждане на помощта"
 
-#: ../gio/gsettings-tool.c:464
+#: ../gio/gsettings-tool.c:479
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Извеждане на инсталираните схеми (които не се местят)"
 
-#: ../gio/gsettings-tool.c:470
+#: ../gio/gsettings-tool.c:485
 msgid "List the installed relocatable schemas"
 msgstr "Извеждане на инсталираните схеми, които могат да се местят"
 
-#: ../gio/gsettings-tool.c:476
+#: ../gio/gsettings-tool.c:491
 msgid "List the keys in SCHEMA"
 msgstr "Извеждане на ключовете в СХЕМАта"
 
-#: ../gio/gsettings-tool.c:477 ../gio/gsettings-tool.c:483
-#: ../gio/gsettings-tool.c:489
+#: ../gio/gsettings-tool.c:492 ../gio/gsettings-tool.c:498
 msgid "SCHEMA[:PATH]"
 msgstr "СХЕМА[:ПЪТ]"
 
-#: ../gio/gsettings-tool.c:482
+#: ../gio/gsettings-tool.c:497
 msgid "List the children of SCHEMA"
 msgstr "Извеждане на наследниците на СХЕМАта"
 
-#: ../gio/gsettings-tool.c:488
-msgid "List keys and values, recursively"
-msgstr "Рекурсивно извеждане на ключовете и стойностите им"
+#: ../gio/gsettings-tool.c:503
+msgid ""
+"List keys and values, recursively\n"
+"If no SCHEMA is given, list all keys\n"
+msgstr ""
+"Рекурсивно извеждане на ключовете и стойностите им\n"
+"Ако липсва СХЕМА, се извеждат всички ключове\n"
 
-#: ../gio/gsettings-tool.c:494
+#: ../gio/gsettings-tool.c:505
+msgid "[SCHEMA[:PATH]]"
+msgstr "[СХЕМА[:ПЪТ]]"
+
+#: ../gio/gsettings-tool.c:510
 msgid "Get the value of KEY"
 msgstr "Получаване на стойността на КЛЮЧ"
 
-#: ../gio/gsettings-tool.c:495 ../gio/gsettings-tool.c:501
-#: ../gio/gsettings-tool.c:513 ../gio/gsettings-tool.c:519
+#: ../gio/gsettings-tool.c:511 ../gio/gsettings-tool.c:517
+#: ../gio/gsettings-tool.c:529 ../gio/gsettings-tool.c:535
 msgid "SCHEMA[:PATH] KEY"
 msgstr "СХЕМА[:ПЪТ] КЛЮЧ"
 
-#: ../gio/gsettings-tool.c:500
+#: ../gio/gsettings-tool.c:516
 msgid "Query the range of valid values for KEY"
 msgstr "Запитване за интервала от допустими стойности за КЛЮЧа"
 
-#: ../gio/gsettings-tool.c:506
+#: ../gio/gsettings-tool.c:522
 msgid "Set the value of KEY to VALUE"
 msgstr "Задаване на СТОЙНОСТта на КЛЮЧ"
 
-#: ../gio/gsettings-tool.c:507
+#: ../gio/gsettings-tool.c:523
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "СХЕМА[:ПЪТ] КЛЮЧ СТОЙНОСТ"
 
-#: ../gio/gsettings-tool.c:512
+#: ../gio/gsettings-tool.c:528
 msgid "Reset KEY to its default value"
 msgstr "Връща стандартната стойност на КЛЮЧ"
 
-#: ../gio/gsettings-tool.c:518
+#: ../gio/gsettings-tool.c:534
 msgid "Check if KEY is writable"
 msgstr "Проверка дали стойността на КЛЮЧ може да се променя"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:540
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3266,11 +3273,11 @@ msgstr ""
 "Ако не е указан определен КЛЮЧ, се следят всички във СХЕМАта.\n"
 "Следенето се спира с „^C“.\n"
 
-#: ../gio/gsettings-tool.c:527
+#: ../gio/gsettings-tool.c:543
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "СХЕМА[:ПЪТ] [КЛЮЧ]"
 
-#: ../gio/gsettings-tool.c:531
+#: ../gio/gsettings-tool.c:547
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -3279,7 +3286,7 @@ msgstr ""
 "Непозната команда „%s“\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:539
+#: ../gio/gsettings-tool.c:555
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3324,7 +3331,7 @@ msgstr ""
 "Използвайте „gsettings help КОМАНДА“ за допълнителна информация.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:576
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3339,16 +3346,16 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:565
+#: ../gio/gsettings-tool.c:581
 msgid "Arguments:\n"
 msgstr "Аргументи:\n"
 
-#: ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:585
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr ""
 "  КОМАНДА     Помощ за командата или обща помощ, ако не е указана команда\n"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:589
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3357,19 +3364,19 @@ msgstr ""
 "  СХЕМА       Името на схемата\n"
 "  ПЪТ         Път (за схеми, които могат да се местят)\n"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:594
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  КЛЮЧ        Ключ в схемата (незадължителен)\n"
 
-#: ../gio/gsettings-tool.c:582
+#: ../gio/gsettings-tool.c:598
 msgid "  KEY       The key within the schema\n"
 msgstr "  КЛЮЧ        Ключ в схемата\n"
 
-#: ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:602
 msgid "  VALUE     The value to set\n"
 msgstr "  СТОЙНОСТ    Стойност, която да бъде зададена\n"
 
-#: ../gio/gsettings-tool.c:675
+#: ../gio/gsettings-tool.c:691
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Подадено е празно име за схема\n"
