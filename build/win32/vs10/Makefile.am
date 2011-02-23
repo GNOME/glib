@@ -26,5 +26,4 @@ EXTRA_DIST = \
 	gio.vcxproj.filtersin \
 	testglib.vcxproj \
 	testglib.vcxproj.filters \
-	install.vcxproj \
-	install.vcxproj.filters
+	install.vcxproj 
