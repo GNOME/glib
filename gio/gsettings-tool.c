@@ -240,29 +240,44 @@ gsettings_list_recursively (GSettings   *settings,
                             const gchar *key,
                             const gchar *value)
 {
-  gchar **children;
-  gint i;
-
-  enumerate (settings);
-
-  children = g_settings_list_children (settings);
-
-  for (i = 0; children[i]; i++)
+  if (settings)
     {
-      GSettings *child;
-      gchar *schema;
+      gchar **children;
+      gint i;
 
-      child = g_settings_get_child (settings, children[i]);
-      g_object_get (child, "schema", &schema, NULL);
+      enumerate (settings);
+      children = g_settings_list_children (settings);
+      for (i = 0; children[i]; i++)
+        {
+          GSettings *child;
+          gchar *schema;
 
-      if (is_schema (schema))
-        enumerate (child);
+          child = g_settings_get_child (settings, children[i]);
+          g_object_get (child, "schema", &schema, NULL);
 
-      g_object_unref (child);
-      g_free (schema);
+          if (is_schema (schema))
+            enumerate (child);
+
+          g_object_unref (child);
+          g_free (schema);
+        }
+
+      g_strfreev (children);
     }
+  else
+    {
+      const gchar * const *schemas;
+      gint i;
 
-  g_strfreev (children);
+      schemas = g_settings_list_schemas ();
+
+      for (i = 0; schemas[i]; i++)
+        {
+          settings = g_settings_new (schemas[i]);
+          enumerate (settings);
+          g_object_unref (settings);
+        }
+    }
 }
 
 static void
@@ -485,8 +500,9 @@ gsettings_help (gboolean     requested,
 
   else if (strcmp (command, "list-recursively") == 0)
     {
-      description = _("List keys and values, recursively");
-      synopsis = N_("SCHEMA[:PATH]");
+      description = _("List keys and values, recursively\n"
+                      "If no SCHEMA is given, list all keys\n");
+      synopsis = N_("[SCHEMA[:PATH]]");
     }
 
   else if (strcmp (command, "get") == 0)
@@ -640,7 +656,7 @@ main (int argc, char **argv)
   else if (argc == 3 && strcmp (argv[1], "list-children") == 0)
     function = gsettings_list_children;
 
-  else if (argc == 3 && strcmp (argv[1], "list-recursively") == 0)
+  else if ((argc == 2 || argc == 3) && strcmp (argv[1], "list-recursively") == 0)
     function = gsettings_list_recursively;
 
   else if (argc == 4 && strcmp (argv[1], "range") == 0)

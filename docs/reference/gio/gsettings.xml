@@ -22,7 +22,7 @@
     <command>gsettings</command>
     <arg choice="plain">monitor</arg>
     <arg choice="plain"><replaceable>SCHEMA</replaceable><arg choice="opt">:<replaceable>PATH</replaceable></arg></arg>
-    <arg choice="plain"><replaceable>KEY</replaceable></arg>
+    <arg choice="opt"><replaceable>KEY</replaceable></arg>
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gsettings</command>
@@ -70,7 +70,7 @@
   <cmdsynopsis>
     <command>gsettings</command>
     <arg choice="plain">list-recursively</arg>
-    <arg choice="plain"><replaceable>SCHEMA</replaceable><arg choice="opt">:<replaceable>PATH</replaceable></arg></arg>
+    <arg choice="opt"><replaceable>SCHEMA</replaceable><arg choice="opt">:<replaceable>PATH</replaceable></arg></arg>
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gsettings</command>
@@ -116,7 +116,8 @@ The value is printed out as a serialised
 <term><option>monitor</option></term>
 <listitem><para>
 Monitors <replaceable>KEY</replaceable> for changes and prints the changed
-values. Monitoring will continue until the process is terminated.
+values. If no <replaceable>KEY</replaceable> is specified, all keys in the
+schema are monitored. Monitoring will continue until the process is terminated.
 </para></listitem>
 </varlistentry>
 
@@ -185,7 +186,8 @@ Lists the children of <replaceable>SCHEMA</replaceable>.
 <varlistentry>
 <term><option>list-recursively</option></term>
 <listitem><para>
-Lists keys and values, recursively.
+Lists keys and values, recursively. If no <replaceable>SCHEMA</replaceable>
+is given, list keys in all schemas.
 </para></listitem>
 </varlistentry>
 
