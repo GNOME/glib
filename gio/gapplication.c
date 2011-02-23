@@ -540,7 +540,7 @@ g_application_class_init (GApplicationClass *class)
    * @application: the application
    *
    * The ::startup signal is emitted on the primary instance immediately
-   * after registration. See g_activation_register().
+   * after registration. See g_application_register().
    */
   g_application_signals[SIGNAL_STARTUP] =
     g_signal_new ("startup", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
