@@ -283,12 +283,13 @@ g_hash_table_set_shift_from_size (GHashTable *hash_table, gint size)
 /*
  * g_hash_table_lookup_node:
  * @hash_table: our #GHashTable
- * @key: the key to lookup against
+ * @key: the key to lookup against (may be %NULL)
  * @hash_return: optional key hash return location
  * Return value: index of the described #GHashNode
  *
- * Performs a lookup in the hash table.  Virtually all hash operations
- * will use this function internally.
+ * Performs a lookup in the hash table.
+ *
+ * Virtually all hash operations will use this function internally.
  *
  * This function first computes the hash value of the key using the
  * user's hash function.
@@ -917,7 +918,8 @@ g_hash_table_lookup (GHashTable   *hash_table,
  * for example before calling g_hash_table_remove().
  *
  * You can actually pass %NULL for @lookup_key to test
- * whether the %NULL key exists.
+ * whether the %NULL key exists, provided the hash and equal functions
+ * of @hash_table are %NULL-safe.
  *
  * Return value: %TRUE if the key was found in the #GHashTable.
  **/
