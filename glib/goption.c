@@ -2112,13 +2112,26 @@ g_option_group_add_entries (GOptionGroup       *group,
     {
       gchar c = group->entries[i].short_name;
 
-      if (c)
+      if (c == '-' || (c != 0 && !g_ascii_isprint (c)))
         {
-          if (c == '-' || !g_ascii_isprint (c))
-            {
-              g_warning (G_STRLOC": ignoring invalid short option '%c' (%d)", c, c);
-              group->entries[i].short_name = 0;
-            }
+          g_warning (G_STRLOC ": ignoring invalid short option '%c' (%d)", c, c);
+          group->entries[i].short_name = 0;
+        }
+
+      if (group->entries[i].arg != G_OPTION_ARG_NONE &&
+          (group->entries[i].flags & G_OPTION_FLAG_REVERSE) != 0)
+        {
+          g_warning (G_STRLOC ": ignoring reverse flag on option of type %d", group->entries[i].arg);
+
+          group->entries[i].flags &= ~G_OPTION_FLAG_REVERSE;
+        }
+
+      if (group->entries[i].arg != G_OPTION_ARG_CALLBACK &&
+          (group->entries[i].flags & (G_OPTION_FLAG_NO_ARG|G_OPTION_FLAG_OPTIONAL_ARG|G_OPTION_FLAG_FILENAME)) != 0)
+        {
+          g_warning (G_STRLOC ": ignoring no-arg, optional-arg or filename flags (%d) on option of type %d", group->entries[i].flags, group->entries[i].arg);
+
+          group->entries[i].flags &= ~(G_OPTION_FLAG_NO_ARG|G_OPTION_FLAG_OPTIONAL_ARG|G_OPTION_FLAG_FILENAME);
         }
     }
 
