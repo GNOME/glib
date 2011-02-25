@@ -1485,7 +1485,7 @@ parse_long_option (GOptionContext *context,
                 value = arg + len + 1;
               else if (*idx < *argc - 1)
                 {
-                  if (!(group->entries[j].flags & G_OPTION_FLAG_OPTIONAL_ARG))
+                  if (!OPTIONAL_ARG (&group->entries[j]))
                     {
                       value = (*argv)[*idx + 1];
                       add_pending_null (context, &((*argv)[*idx + 1]), NULL);
@@ -1510,8 +1510,7 @@ parse_long_option (GOptionContext *context,
                         }
                     }
                 }
-              else if (*idx >= *argc - 1 &&
-                       group->entries[j].flags & G_OPTION_FLAG_OPTIONAL_ARG)
+              else if (*idx >= *argc - 1 && OPTIONAL_ARG (&group->entries[j]))
                 {
                     gboolean retval;
                     retval = parse_arg (context, group, &group->entries[j],
