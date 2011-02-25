@@ -647,9 +647,9 @@ get_platform_data (GApplication *application)
  * For convenience, the restrictions on application identifiers are
  * reproduced here:
  * <itemizedlist>
- *   <listitem>Application identifiers must contain only the ASCII characters "[A-Z][a-z][0-9]_-" and must not begin with a digit.</listitem>
- *   <listitem>Application identifiers must contain at least one '.' (period) character (and thus at least two elements).</listitem>
- *   <listitem>Application identifiers must not begin with a '.' (period) character.</listitem>
+ *   <listitem>Application identifiers must contain only the ASCII characters "[A-Z][a-z][0-9]_-." and must not begin with a digit.</listitem>
+ *   <listitem>Application identifiers must contain at least one '.' (period) character (and thus at least three elements).</listitem>
+ *   <listitem>Application identifiers must not begin or end with a '.' (period) character.</listitem>
  *   <listitem>Application identifiers must not contain consecutive '.' (period) characters.</listitem>
  *   <listitem>Application identifiers must not exceed 255 characters.</listitem>
  * </itemizedlist>
@@ -657,27 +657,43 @@ get_platform_data (GApplication *application)
 gboolean
 g_application_id_is_valid (const gchar *application_id)
 {
+  gsize len;
   gboolean allow_dot;
+  gboolean has_dot;
 
-  if (strlen (application_id) > 255)
+  len = strlen (application_id);
+
+  if (len > 255)
     return FALSE;
 
-  if (!g_ascii_isalpha (*application_id))
+  if (!g_ascii_isalpha (application_id[0]))
+    return FALSE;
+
+  if (application_id[len-1] == '.')
     return FALSE;
 
   application_id++;
-  allow_dot = FALSE;
+  allow_dot = TRUE;
+  has_dot = FALSE;
   for (; *application_id; application_id++)
     {
       if (g_ascii_isalnum (*application_id) ||
           (*application_id == '-') ||
           (*application_id == '_'))
-        allow_dot = TRUE;
+        {
+          allow_dot = TRUE;
+        }
       else if (allow_dot && *application_id == '.')
-        allow_dot = FALSE;
+        {
+          has_dot = TRUE;
+          allow_dot = FALSE;
+        }
       else
         return FALSE;
     }
+
+  if (!has_dot)
+    return FALSE;
 
   return TRUE;
 }
