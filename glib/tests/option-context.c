@@ -980,6 +980,66 @@ callback_test_optional_8 (void)
   g_option_context_free (context);
 }
 
+void
+callback_test_optional_9 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  gchar *string = NULL;
+  GOptionEntry entries [] =
+    { { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_STRING,
+                &string, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program -t", &argc);
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  g_assert (!retval);
+  g_assert (string == NULL);
+
+  g_error_free (error);
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
+void
+callback_test_optional_10 (void)
+{
+  GOptionContext *context;
+  gboolean retval;
+  GError *error = NULL;
+  gchar **argv;
+  int argc;
+  gchar *string = NULL;
+  GOptionEntry entries [] =
+    { { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_STRING,
+                &string, NULL, NULL },
+      { NULL } };
+
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
+
+  /* Now try parsing */
+  argv = split_string ("program --test", &argc);
+
+  retval = g_option_context_parse (context, &argc, &argv, &error);
+  g_assert_error (error, G_OPTION_ERROR, G_OPTION_ERROR_BAD_VALUE);
+  g_assert (!retval);
+  g_assert (string == NULL);
+
+  g_error_free (error);
+  g_strfreev (argv);
+  g_option_context_free (context);
+}
+
 static GPtrArray *callback_remaining_args;
 static gboolean
 callback_remaining_test1_callback (const gchar *option_name, const gchar *value,
@@ -1864,6 +1924,67 @@ test_error_hook (void)
   g_option_context_free (context);
 }
 
+static void
+flag_reverse_string (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      GOptionContext *context;
+      gchar *arg = NULL;
+      GOptionEntry entries [] =
+        { { "test", 't', G_OPTION_FLAG_REVERSE, G_OPTION_ARG_STRING, &arg, NULL, NULL },
+          { NULL } };
+      gchar **argv;
+      gint argc;
+      gboolean retval;
+      GError *error = NULL;
+
+      context = g_option_context_new (NULL);
+      g_option_context_add_main_entries (context, entries, NULL);
+
+      argv = split_string ("program --test bla", &argc);
+
+      retval = g_option_context_parse (context, &argc, &argv, &error);
+      g_assert (retval == FALSE);
+      g_clear_error (&error);
+      g_strfreev (argv);
+      g_option_context_free (context);
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ignoring reverse flag*");
+}
+
+static void
+flag_optional_int (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      GOptionContext *context;
+      gint arg = 0;
+      GOptionEntry entries [] =
+        { { "test", 't', G_OPTION_FLAG_OPTIONAL_ARG, G_OPTION_ARG_INT, &arg, NULL, NULL },
+          { NULL } };
+      gchar **argv;
+      gint argc;
+      gboolean retval;
+      GError *error = NULL;
+
+      context = g_option_context_new (NULL);
+      g_option_context_add_main_entries (context, entries, NULL);
+
+      argv = split_string ("program --test 5", &argc);
+
+      retval = g_option_context_parse (context, &argc, &argv, &error);
+      g_assert (retval == FALSE);
+      g_clear_error (&error);
+      g_strfreev (argv);
+      g_option_context_free (context);
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*ignoring no-arg, optional-arg or filename flags*");
+}
 int
 main (int   argc,
       char *argv[])
@@ -1881,7 +2002,7 @@ main (int   argc,
   g_test_add_func ("/option/restoration/int", error_test1);
   g_test_add_func ("/option/restoration/string", error_test2);
   g_test_add_func ("/option/restoration/boolean", error_test3);
-  
+
   /* Test that special argument parsing works */
   g_test_add_func ("/option/arg/repetition/int", arg_test1);
   g_test_add_func ("/option/arg/repetition/string", arg_test2);
@@ -1909,15 +2030,14 @@ main (int   argc,
 
   /* Test callback with G_OPTION_REMAINING */
   g_test_add_func ("/option/arg/remaining/callback", callback_remaining_test1);
-  
+
   /* Test callbacks which return FALSE */
   g_test_add_func ("/option/arg/remaining/callback-false", callback_returns_false);
-  
+
   /* Test ignoring options */
   g_test_add_func ("/option/arg/ignore/long", ignore_test1);
   g_test_add_func ("/option/arg/ignore/short", ignore_test2);
   g_test_add_func ("/option/arg/ignore/arg", ignore_test3);
-
   g_test_add_func ("/option/context/add", add_test1);
 
   /* Test parsing empty args */
@@ -1935,6 +2055,10 @@ main (int   argc,
   g_test_add_func ("/option/arg/remaining/non-option", rest_test3);
   g_test_add_func ("/option/arg/remaining/separator", rest_test4);
   g_test_add_func ("/option/arg/remaining/array", rest_test5);
+
+  /* Test some invalid flag combinations */
+  g_test_add_func ("/option/arg/reverse-string", flag_reverse_string);
+  g_test_add_func ("/option/arg/optional-int", flag_optional_int);
 
   /* regression tests for individual bugs */
   g_test_add_func ("/option/bug/unknown-short", unknown_short_test);
