@@ -608,10 +608,52 @@ test_hash_ref (void)
   g_assert_cmpint (destroy_counter, ==, 3);
 }
 
+static guint
+null_safe_str_hash (gconstpointer key)
+{
+  if (key == NULL)
+    return 0;
+  else
+    return g_str_hash (key);
+}
+
+static gboolean
+null_safe_str_equal (gconstpointer a, gconstpointer b)
+{
+  return g_strcmp0 (a, b) == 0;
+}
+
+static void
+test_lookup_null_key (void)
+{
+  GHashTable *h;
+  gboolean res;
+  gpointer key;
+  gpointer value;
+
+  g_test_bug ("642944");
+
+  h = g_hash_table_new (null_safe_str_hash, null_safe_str_equal);
+  g_hash_table_insert (h, "abc", "ABC");
+
+  res = g_hash_table_lookup_extended (h, NULL, &key, &value);
+  g_assert (!res);
+
+  g_hash_table_insert (h, NULL, "NULL");
+
+  res = g_hash_table_lookup_extended (h, NULL, &key, &value);
+  g_assert (res);
+  g_assert_cmpstr (value, ==, "NULL");
+
+  g_hash_table_unref (h);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
+
+  g_test_bug_base ("http://bugzilla.gnome.org/");
 
   g_test_add_func ("/hash/misc", test_hash_misc);
   g_test_add_data_func ("/hash/one", GINT_TO_POINTER (TRUE), second_hash_test);
@@ -621,6 +663,9 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/double", double_hash_test);
   g_test_add_func ("/hash/string", string_hash_test);
   g_test_add_func ("/hash/ref", test_hash_ref);
+
+  /* tests for individual bugs */
+  g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);
 
   return g_test_run ();
 
