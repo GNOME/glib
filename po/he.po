@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-14 07:51+0200\n"
-"PO-Revision-Date: 2011-02-14 07:52+0200\n"
+"POT-Creation-Date: 2011-02-27 22:56+0200\n"
+"PO-Revision-Date: 2011-02-27 22:56+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "MIME-Version: 1.0\n"
@@ -1255,12 +1255,12 @@ msgstr "Double value '%s' for %s out of range"
 msgid "Error parsing option %s"
 msgstr "Error parsing option %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1527
+#: ../glib/goption.c:1413 ../glib/goption.c:1526
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Missing·argument·for·%s"
 
-#: ../glib/goption.c:1922
+#: ../glib/goption.c:1921
 #, c-format
 msgid "Unknown option %s"
 msgstr "Unknown option %s"
@@ -1570,7 +1570,7 @@ msgstr "Command line `%s' exited with non-zero exit status %d: %s"
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Cannot determine session bus address (not implemented for this OS)"
 
-#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6168
+#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6186
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1579,7 +1579,7 @@ msgstr ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 
-#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6177
+#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6195
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1729,7 +1729,7 @@ msgstr "Property `%s' is not readable"
 msgid "Property `%s' is not writable"
 msgstr "Property `%s' is not writable"
 
-#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5602
+#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5620
 #, c-format
 msgid "No such interface `%s'"
 msgstr "No such interface `%s'"
@@ -1738,37 +1738,37 @@ msgstr "No such interface `%s'"
 msgid "No such interface"
 msgstr "No such interface"
 
-#: ../gio/gdbusconnection.c:4416 ../gio/gdbusconnection.c:6118
+#: ../gio/gdbusconnection.c:4419 ../gio/gdbusconnection.c:6136
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No such interface `%s' on object at path %s"
 
-#: ../gio/gdbusconnection.c:4468
+#: ../gio/gdbusconnection.c:4471
 #, c-format
 msgid "No such method `%s'"
 msgstr "No such method `%s'"
 
-#: ../gio/gdbusconnection.c:4499
+#: ../gio/gdbusconnection.c:4502
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Type of message, `%s', does not match expected type `%s'"
 
-#: ../gio/gdbusconnection.c:4718
+#: ../gio/gdbusconnection.c:4721
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "An object is already exported for the interface %s at %s"
 
-#: ../gio/gdbusconnection.c:4912
+#: ../gio/gdbusconnection.c:4915
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Method `%s' returned type `%s', but expected `%s'"
 
-#: ../gio/gdbusconnection.c:5713
+#: ../gio/gdbusconnection.c:5731
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Method `%s' on interface `%s' with signature `%s' does not exist"
 
-#: ../gio/gdbusconnection.c:5831
+#: ../gio/gdbusconnection.c:5849
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "A subtree is already exported for %s"
@@ -2171,26 +2171,26 @@ msgstr "Unnamed"
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop file didn't specify Exec field"
 
-#: ../gio/gdesktopappinfo.c:1044
+#: ../gio/gdesktopappinfo.c:1045
 msgid "Unable to find terminal required for application"
 msgstr "Unable to find terminal required for application"
 
-#: ../gio/gdesktopappinfo.c:1343
+#: ../gio/gdesktopappinfo.c:1344
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Can't create user application configuration folder %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1347
+#: ../gio/gdesktopappinfo.c:1348
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Can't create user MIME configuration folder %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1840
+#: ../gio/gdesktopappinfo.c:1841
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Can't create user desktop file %s"
 
-#: ../gio/gdesktopappinfo.c:1956
+#: ../gio/gdesktopappinfo.c:1957
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Custom definition for %s"
@@ -2647,7 +2647,7 @@ msgstr ""
 msgid "where to store the gschemas.compiled file"
 msgstr "where to store the gschemas.compiled file"
 
-#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1922
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1923
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
@@ -2667,7 +2667,7 @@ msgstr "This option will be removed soon."
 msgid "Do not enforce key name restrictions"
 msgstr "Do not enforce key name restrictions"
 
-#: ../gio/glib-compile-schemas.c:1925
+#: ../gio/glib-compile-schemas.c:1926
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2677,22 +2677,22 @@ msgstr ""
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1941
+#: ../gio/glib-compile-schemas.c:1942
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "You should give exactly one directory name\n"
 
-#: ../gio/glib-compile-schemas.c:1980
+#: ../gio/glib-compile-schemas.c:1981
 #, c-format
 msgid "No schema files found: "
 msgstr "No schema files found: "
 
-#: ../gio/glib-compile-schemas.c:1983
+#: ../gio/glib-compile-schemas.c:1984
 #, c-format
 msgid "doing nothing.\n"
 msgstr "doing nothing.\n"
 
-#: ../gio/glib-compile-schemas.c:1986
+#: ../gio/glib-compile-schemas.c:1987
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "removed existing output file.\n"
@@ -3143,70 +3143,77 @@ msgstr "Path must not contain two adjacent slashes (//)\n"
 msgid "No such key '%s'\n"
 msgstr "No such key '%s'\n"
 
-#: ../gio/gsettings-tool.c:429
+#: ../gio/gsettings-tool.c:444
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "The provided value is outside of the valid range\n"
 
-#: ../gio/gsettings-tool.c:458
+#: ../gio/gsettings-tool.c:473
 msgid "Print help"
 msgstr "Print help"
 
-#: ../gio/gsettings-tool.c:464
+#: ../gio/gsettings-tool.c:479
 msgid "List the installed (non-relocatable) schemas"
 msgstr "List the installed (non-relocatable) schemas"
 
-#: ../gio/gsettings-tool.c:470
+#: ../gio/gsettings-tool.c:485
 msgid "List the installed relocatable schemas"
 msgstr "List the installed relocatable schemas"
 
-#: ../gio/gsettings-tool.c:476
+#: ../gio/gsettings-tool.c:491
 msgid "List the keys in SCHEMA"
 msgstr "List the keys in SCHEMA"
 
-#: ../gio/gsettings-tool.c:477 ../gio/gsettings-tool.c:483
-#: ../gio/gsettings-tool.c:489
+#: ../gio/gsettings-tool.c:492 ../gio/gsettings-tool.c:498
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PATH]"
 
-#: ../gio/gsettings-tool.c:482
+#: ../gio/gsettings-tool.c:497
 msgid "List the children of SCHEMA"
 msgstr "List the children of SCHEMA"
 
-#: ../gio/gsettings-tool.c:488
-msgid "List keys and values, recursively"
-msgstr "List keys and values, recursively"
+#: ../gio/gsettings-tool.c:503
+msgid ""
+"List keys and values, recursively\n"
+"If no SCHEMA is given, list all keys\n"
+msgstr ""
+"List keys and values, recursively\n"
+"If no SCHEMA is given, list all keys\n"
 
-#: ../gio/gsettings-tool.c:494
+#: ../gio/gsettings-tool.c:505
+msgid "[SCHEMA[:PATH]]"
+msgstr "[SCHEMA[:PATH]]"
+
+#: ../gio/gsettings-tool.c:510
 msgid "Get the value of KEY"
 msgstr "Get the value of KEY"
 
-#: ../gio/gsettings-tool.c:495 ../gio/gsettings-tool.c:501
-#: ../gio/gsettings-tool.c:513 ../gio/gsettings-tool.c:519
+#: ../gio/gsettings-tool.c:511 ../gio/gsettings-tool.c:517
+#: ../gio/gsettings-tool.c:529 ../gio/gsettings-tool.c:535
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
-#: ../gio/gsettings-tool.c:500
+#: ../gio/gsettings-tool.c:516
 msgid "Query the range of valid values for KEY"
 msgstr "Query the range of valid values for KEY"
 
-#: ../gio/gsettings-tool.c:506
+#: ../gio/gsettings-tool.c:522
 msgid "Set the value of KEY to VALUE"
 msgstr "Set the value of KEY to VALUE"
 
-#: ../gio/gsettings-tool.c:507
+#: ../gio/gsettings-tool.c:523
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:512
+#: ../gio/gsettings-tool.c:528
 msgid "Reset KEY to its default value"
 msgstr "Reset KEY to its default value"
 
-#: ../gio/gsettings-tool.c:518
+#: ../gio/gsettings-tool.c:534
 msgid "Check if KEY is writable"
 msgstr "Check if KEY is writable"
 
-#: ../gio/gsettings-tool.c:524
+#: ../gio/gsettings-tool.c:540
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3216,11 +3223,11 @@ msgstr ""
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 
-#: ../gio/gsettings-tool.c:527
+#: ../gio/gsettings-tool.c:543
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:531
+#: ../gio/gsettings-tool.c:547
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -3229,7 +3236,7 @@ msgstr ""
 "Unknown command %s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:539
+#: ../gio/gsettings-tool.c:555
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3271,7 +3278,7 @@ msgstr ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:560
+#: ../gio/gsettings-tool.c:576
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3286,15 +3293,15 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:565
+#: ../gio/gsettings-tool.c:581
 msgid "Arguments:\n"
 msgstr "Arguments:\n"
 
-#: ../gio/gsettings-tool.c:569
+#: ../gio/gsettings-tool.c:585
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMMAND   The (optional) command to explain\n"
 
-#: ../gio/gsettings-tool.c:573
+#: ../gio/gsettings-tool.c:589
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3302,19 +3309,19 @@ msgstr ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:594
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       The (optional) key within the schema\n"
 
-#: ../gio/gsettings-tool.c:582
+#: ../gio/gsettings-tool.c:598
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       The key within the schema\n"
 
-#: ../gio/gsettings-tool.c:586
+#: ../gio/gsettings-tool.c:602
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     The value to set\n"
 
-#: ../gio/gsettings-tool.c:675
+#: ../gio/gsettings-tool.c:691
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Empty schema name given\n"
