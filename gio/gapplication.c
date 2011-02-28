@@ -255,18 +255,24 @@ static int
 g_application_real_command_line (GApplication            *application,
                                  GApplicationCommandLine *cmdline)
 {
-  static gboolean warned;
+  if (!g_signal_has_handler_pending (application,
+                                     g_application_signals[SIGNAL_COMMAND_LINE],
+                                     0, TRUE) &&
+      G_APPLICATION_GET_CLASS (application)->command_line == g_application_real_command_line)
+    {
+      static gboolean warned;
 
-  if (warned) 
+      if (warned) 
+        return 1;
+
+      g_warning ("Your application claims to support custom command line "
+                 "handling but does not implement g_application_command_line() "
+                 "and has no handlers connected to the 'command-line' signal.");
+
+      warned = TRUE;
+    }
+
     return 1;
-
-  g_warning ("Your application claims to support custom command line "
-             "handling but does not implement g_application_command_line() "
-             "and has no handlers connected to the 'command-line' signal.");
-
-  warned = TRUE;
-
-  return 1;
 }
 
 static gboolean
