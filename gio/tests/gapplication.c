@@ -250,6 +250,37 @@ properties (void)
   g_free (id);
 }
 
+static void
+appid (void)
+{
+  gchar *id;
+
+  g_assert (!g_application_id_is_valid (""));
+  g_assert (!g_application_id_is_valid ("."));
+  g_assert (!g_application_id_is_valid ("a"));
+  g_assert (!g_application_id_is_valid ("abc"));
+  g_assert (!g_application_id_is_valid (".abc"));
+  g_assert (!g_application_id_is_valid ("abc."));
+  g_assert (!g_application_id_is_valid ("a..b"));
+  g_assert (!g_application_id_is_valid ("a/b"));
+  g_assert (!g_application_id_is_valid ("a\nb"));
+  g_assert (!g_application_id_is_valid ("a\nb"));
+  g_assert (!g_application_id_is_valid ("_a.b"));
+  g_assert (!g_application_id_is_valid ("-a.b"));
+  id = g_new0 (gchar, 261);
+  memset (id, 'a', 260);
+  id[1] = '.';
+  id[260] = 0;
+  g_assert (!g_application_id_is_valid (id));
+  g_free (id);
+
+  g_assert (g_application_id_is_valid ("a.b"));
+  g_assert (g_application_id_is_valid ("A.B"));
+  g_assert (g_application_id_is_valid ("A-.B"));
+  g_assert (g_application_id_is_valid ("a_b.c-d"));
+  g_assert (g_application_id_is_valid ("org.gnome.SessionManager"));
+}
+
 int
 main (int argc, char **argv)
 {
@@ -259,6 +290,7 @@ main (int argc, char **argv)
 
   g_test_add_func ("/gapplication/basic", basic);
   g_test_add_func ("/gapplication/properties", properties);
+  g_test_add_func ("/gapplication/app-id", appid);
 
   return g_test_run ();
 }
