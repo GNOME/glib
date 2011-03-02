@@ -1340,7 +1340,8 @@ g_signal_new (const gchar	 *signal_name,
 
   /* optimize NOP emissions with NULL class handlers */
   if (signal_id && G_TYPE_IS_INSTANTIATABLE (itype) && return_type == G_TYPE_NONE &&
-      class_offset && class_offset < MAX_TEST_CLASS_OFFSET)
+      class_offset && class_offset < MAX_TEST_CLASS_OFFSET &&
+      ~signal_flags & G_SIGNAL_MUST_COLLECT)
     {
       SignalNode *node;
 
@@ -1632,7 +1633,9 @@ g_signal_newv (const gchar       *signal_name,
   node->emission_hooks = NULL;
   if (class_closure)
     signal_add_class_closure (node, 0, class_closure);
-  else if (G_TYPE_IS_INSTANTIATABLE (itype) && return_type == G_TYPE_NONE)
+  else if (G_TYPE_IS_INSTANTIATABLE (itype) &&
+           return_type == G_TYPE_NONE &&
+           ~signal_flags & G_SIGNAL_MUST_COLLECT)
     {
       /* optimize NOP emissions */
       node->test_class_offset = TEST_CLASS_MAGIC;
@@ -2913,7 +2916,7 @@ g_signal_emit_valist (gpointer instance,
   GValue *param_values;
   SignalNode *node;
   guint i, n_params;
-  
+
   g_return_if_fail (G_TYPE_CHECK_INSTANCE (instance));
   g_return_if_fail (signal_id > 0);
 
@@ -2976,6 +2979,7 @@ g_signal_emit_valist (gpointer instance,
       SIGNAL_LOCK ();
     }
   SIGNAL_UNLOCK ();
+
   instance_and_params->g_type = 0;
   g_value_init (instance_and_params, G_TYPE_FROM_INSTANCE (instance));
   g_value_set_instance (instance_and_params, instance);

@@ -9,6 +9,7 @@ TEST_PROGS += 		\
 	boxed		\
 	enums		\
 	param		\
+	signals		\
 	threadtests	\
 	dynamictests	\
 	binding		\
