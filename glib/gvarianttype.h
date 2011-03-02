@@ -255,6 +255,14 @@ typedef struct _GVariantType GVariantType;
  **/
 #define G_VARIANT_TYPE_BYTESTRING_ARRAY     ((const GVariantType *) "aay")
 
+/**
+ * G_VARIANT_TYPE_VARDICT:
+ *
+ * The type of a dictionary mapping strings to variants (the ubiquitous
+ * "a{sv}" type).
+ **/
+#define G_VARIANT_TYPE_VARDICT              ((const GVariantType *) "a{sv}")
+
 
 /**
  * G_VARIANT_TYPE:
