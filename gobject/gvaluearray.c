@@ -261,7 +261,9 @@ g_value_array_insert (GValueArray  *value_array,
 /**
  * g_value_array_remove:
  * @value_array: #GValueArray to remove an element from
- * @index_: position of value to remove, must be &lt; value_array->n_values
+ * @index_: position of value to remove, which must be less than
+ *          <code>value_array-><link
+ *          linkend="GValueArray.n-values">n_values</link></code>
  *
  * Remove the value at position @index_ from @value_array.
  *
