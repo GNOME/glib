@@ -1169,11 +1169,12 @@ g_application_open (GApplication  *application,
  *
  * First, the local_command_line() virtual function is invoked.
  * This function always runs on the local instance. It gets passed
- * pointers to @argc and @argv and is expected to remove the arguments
- * that it handled from @argv (shifting up remaining arguments, and
- * reducing @argc accordingly). See <xref linkend="gapplication-example-cmdline2"/> for an example. The last argument to local_command_line() is a
- * pointer to the @status variable which can used to set the exit
- * status that is returned from g_application_run().
+ * a pointer to a copy of @argv and is expected to remove the arguments
+ * that it handled (shifting up remaining arguments). See
+ * <xref linkend="gapplication-example-cmdline2"/> for an example.
+ * The last argument to local_command_line() is a pointer to the @status
+ * variable which can used to set the exit status that is returned from
+ * g_application_run().
  *
  * If local_command_line() returns %TRUE, the command line is expected
  * to be completely handled, including possibly registering as the primary
