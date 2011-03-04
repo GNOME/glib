@@ -497,7 +497,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   signals[PROPERTIES_CHANGED_SIGNAL] = g_signal_new ("g-properties-changed",
                                                      G_TYPE_DBUS_PROXY,
-                                                     G_SIGNAL_RUN_LAST,
+                                                     G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
                                                      G_STRUCT_OFFSET (GDBusProxyClass, g_properties_changed),
                                                      NULL,
                                                      NULL,
@@ -520,7 +520,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
    */
   signals[SIGNAL_SIGNAL] = g_signal_new ("g-signal",
                                          G_TYPE_DBUS_PROXY,
-                                         G_SIGNAL_RUN_LAST,
+                                         G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
                                          G_STRUCT_OFFSET (GDBusProxyClass, g_signal),
                                          NULL,
                                          NULL,
@@ -1029,14 +1029,13 @@ on_name_owner_changed (GDBusConnection *connection,
           g_hash_table_size (proxy->priv->properties) > 0)
         {
           GVariantBuilder builder;
-          GVariant *changed_properties;
           GPtrArray *invalidated_properties;
           GHashTableIter iter;
           const gchar *key;
 
           /* Build changed_properties (always empty) and invalidated_properties ... */
           g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));
-          changed_properties = g_variant_builder_end (&builder);
+
           invalidated_properties = g_ptr_array_new_with_free_func (g_free);
           g_hash_table_iter_init (&iter, proxy->priv->properties);
           while (g_hash_table_iter_next (&iter, (gpointer) &key, NULL))
@@ -1049,9 +1048,8 @@ on_name_owner_changed (GDBusConnection *connection,
           /* ... and finally emit the ::g-properties-changed signal */
           g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
                          0,
-                         changed_properties,
+                         g_variant_builder_end (&builder) /* consumed */,
                          (const gchar* const *) invalidated_properties->pdata);
-          g_variant_unref (changed_properties);
           g_ptr_array_unref (invalidated_properties);
         }
       g_object_notify (G_OBJECT (proxy), "g-name-owner");
