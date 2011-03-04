@@ -52,7 +52,23 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * of this object (ie: the process exits when the last reference is
  * dropped).
  *
+ * The main use for #GApplicationCommandline (and the
+ * #GApplication::command-line signal) is 'Emacs server' like use cases:
+ * You can set the <envvar>EDITOR</envvar> environment variable to have
+ * e.g. git use your favourite editor to edit commit messages, and if you
+ * already have an instance of the editor running, the editing will happen
+ * in the running instance, instead of opening a new one. An important
+ * aspect of this use case is that the process that gets started by git
+ * does not return until the editing is done.
+ *
  * <example id="gapplication-example-cmdline"><title>Handling commandline arguments with GApplication</title>
+ * <para>
+ * A simple example where the commandline is completely handled
+ * in the ::command-line handler. The calling process exits once the
+ * signal handler in the main instance has returned, and the return
+ * value of the signal handler becomes the exit status of the calling
+ * process.
+ * </para>
  * <programlisting>
  * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline.c">
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
@@ -60,9 +76,29 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * </programlisting>
  * </example>
  *
- * <example id="gapplication-example-cmdline2"><title>Complicated commandline handling</title>
+ * <example id="gapplication-example-cmdline2"><title>Split commandline handling</title>
+ * <para>
+ * An example of split commandline handling. Options that start with
+ * <literal>--local-</literal> are handled locally, all other options are
+ * passed to the ::command-line handler which runs in the main instance.
+ * </para>
  * <programlisting>
  * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline2.c">
+ *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
+ * </xi:include>
+ * </programlisting>
+ * </example>
+ *
+ * <example id="gapplication-example-cmdline3"><title>Deferred commandline handling</title>
+ * <para>
+ * An example of deferred commandline handling. Here, the commandline is
+ * not completely handled in the ::command-line handler. Instead, we keep
+ * a reference to the GApplicationCommandline object and handle it later
+ * (in this example, in an idle). Note that it is necessary to hold the
+ * application until you are done with the commandline.
+ * </para>
+ * <programlisting>
+ * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline3.c">
  *   <xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback>
  * </xi:include>
  * </programlisting>
