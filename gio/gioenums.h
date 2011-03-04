@@ -1248,12 +1248,16 @@ typedef enum
  *      fails if the service is already running, and the application will
  *      stay around for a while when the use count falls to zero.
  * @G_APPLICATION_IS_LAUNCHER: Don't try to become the primary instance.
- * @G_APPLICATION_HANDLES_OPEN: This application handles opening files (in the
- *     primary instance)
+ * @G_APPLICATION_HANDLES_OPEN: This application handles opening files (in
+ *     the primary instance). See g_application_run() for details.
  * @G_APPLICATION_HANDLES_COMMAND_LINE: This application handles command line
- *     arguments (in the primary instance)
+ *     arguments (in the primary instance). See g_application_run() for details.
  * @G_APPLICATION_SEND_ENVIRONMENT: Send the environment of the
- *     launching process to the primary instance
+ *     launching process to the primary instance. Set this flag if your
+ *     application is expected to behave differently depending on certain
+ *     environment variables. For instance, an editor might be expected
+ *     to use the <envvar>GIT_COMMITTER_NAME</envvar> environment variable
+ *     when editing a git commit message.
  *
  * Flags used to define the behaviour of a #GApplication.
  *

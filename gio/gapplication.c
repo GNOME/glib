@@ -94,10 +94,28 @@
  * <itemizedlist>
  * <listitem>via 'Activate' (i.e. just starting the application)</listitem>
  * <listitem>via 'Open' (i.e. opening some files)</listitem>
+ * <listitem>by handling a command-line</listitem>
  * <listitem>via activating an action</listitem>
  * </itemizedlist>
  * The #GApplication::startup signal lets you handle the application
  * initialization for all of these in a single place.
+ *
+ * Regardless of which of these entry points is used to start the application,
+ * GApplication passes some <firstterm id="platform-data">platform
+ * data</firstterm> from the launching instance to the primary instance,
+ * in the form of a #GVariant dictionary mapping strings to variants.
+ * To use platform data, override the @before_emit or @after_emit virtual
+ * functions in your #GApplication subclass.
+ *
+ * As the name indicates, the platform data may vary depending on the
+ * operating system, but it always includes the current directory (key
+ * "cwd"), and optionally the environment (ie the set of environment
+ * variables and their values) of the calling process (key "environ").
+ * The environment is only added to the platform data if the
+ * #G_APPLICATION_SEND_ENVIONMENT flag is set. GApplication subclasses
+ * can add their own platform data by overriding the @add_platform_data
+ * virtual function. For instance, #GtkApplication adds startup notification
+ * information in this way.
  *
  * <example id="gapplication-example-open"><title>Opening files with a GApplication</title>
  * <programlisting>
@@ -1146,11 +1164,11 @@ g_application_open (GApplication  *application,
  * This function is intended to be run from main() and its return value
  * is intended to be returned by main().
  *
- * First, the local_command_line() virtual function is invoked.  This
- * function always runs on the local instance.  If that function returns
- * %FALSE then the application is registered and the #GApplication::command-line
- * signal is emitted in the primary instance (which may or may not be
- * this instance).
+ * First, the local_command_line() virtual function is invoked.
+ * This function always runs on the local instance.  If it returns
+ * %FALSE then the application is registered and the
+ * #GApplication::command-line signal is emitted in the primary
+ * instance (which may or may not be this instance).
  *
  * If the application has the %G_APPLICATION_HANDLES_COMMAND_LINE
  * flag set then the default implementation of local_command_line()
