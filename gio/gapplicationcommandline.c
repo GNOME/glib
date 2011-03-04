@@ -46,6 +46,11 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * invocation) or remote (ie: some other process forwarded the
  * commandline to this process).
  *
+ * The GApplicationCommandLine object can provide the @argc and @argv
+ * parameters for use with the #GOptionContext command-line parsing API,
+ * with the g_application_command_line_get_arguments() function. See
+ * <xref linkend="gapplication-example-cmdline3"> for an example.
+ *
  * The exit status of the originally-invoked process may be set and
  * messages can be printed to stdout or stderr of that process.  The
  * lifecycle of the originally-invoked process is tied to the lifecycle
@@ -96,6 +101,10 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * a reference to the GApplicationCommandline object and handle it later
  * (in this example, in an idle). Note that it is necessary to hold the
  * application until you are done with the commandline.
+ * </para>
+ * <para>
+ * This example also shows how to use #GOptionContext for parsing the
+ * commandline arguments.
  * </para>
  * <programlisting>
  * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline3.c">

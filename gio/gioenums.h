@@ -1256,7 +1256,7 @@ typedef enum
  *     launching process to the primary instance. Set this flag if your
  *     application is expected to behave differently depending on certain
  *     environment variables. For instance, an editor might be expected
- *     to use the <envvar>GIT_COMMITTER_NAME</envvar> environment variable
+ *     to use the <envar>GIT_COMMITTER_NAME</envar> environment variable
  *     when editing a git commit message.
  *
  * Flags used to define the behaviour of a #GApplication.
