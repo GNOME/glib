@@ -1155,14 +1155,17 @@ g_application_open (GApplication  *application,
 /**
  * g_application_run:
  * @application: a #GApplication
- * @argc: the argc from main()
- * @argv: (array length=argc): the argv from main()
+ * @argc: the argc from main() (or 0 if @argv is %NULL)
+ * @argv: (array length=argc): the argv from main(), or %NULL
  * @returns: the exit status
  *
  * Runs the application.
  *
  * This function is intended to be run from main() and its return value
- * is intended to be returned by main().
+ * is intended to be returned by main(). Although you are expected to pass
+ * the @argc, @argv parameters from main() to this function, it is possible
+ * to pass %NULL if @argv is not available or commandline handling is not
+ * required.
  *
  * First, the local_command_line() virtual function is invoked.
  * This function always runs on the local instance. It gets passed
