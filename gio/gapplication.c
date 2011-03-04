@@ -105,7 +105,11 @@
  * data</firstterm> from the launching instance to the primary instance,
  * in the form of a #GVariant dictionary mapping strings to variants.
  * To use platform data, override the @before_emit or @after_emit virtual
- * functions in your #GApplication subclass.
+ * functions in your #GApplication subclass. When dealing with
+ * #GApplicationCommandline objects, the platform data is directly
+ * available via g_application_command_line_get_cwd(),
+ * g_application_command_line_get_environ() and
+ * g_application_command_line_get_platform_data().
  *
  * As the name indicates, the platform data may vary depending on the
  * operating system, but it always includes the current directory (key
@@ -115,7 +119,12 @@
  * #G_APPLICATION_SEND_ENVIONMENT flag is set. GApplication subclasses
  * can add their own platform data by overriding the @add_platform_data
  * virtual function. For instance, #GtkApplication adds startup notification
- * information in this way.
+ * data in this way.
+ *
+ * To parse commandline arguments you may handle the
+ * #GApplication::command-line signal or override the local_command_line()
+ * vfunc, to parse them in either the primary instance or the local instance,
+ * respectively.
  *
  * <example id="gapplication-example-open"><title>Opening files with a GApplication</title>
  * <programlisting>
@@ -1168,10 +1177,13 @@ g_application_open (GApplication  *application,
  * required.
  *
  * First, the local_command_line() virtual function is invoked.
- * This function always runs on the local instance. It gets passed
- * a pointer to a copy of @argv and is expected to remove the arguments
+ * This function always runs on the local instance. It gets passed a pointer
+ * to a %NULL-terminated copy of @argv and is expected to remove the arguments
  * that it handled (shifting up remaining arguments). See
- * <xref linkend="gapplication-example-cmdline2"/> for an example.
+ * <xref linkend="gapplication-example-cmdline2"/> for an example of
+ * parsing @argv manually. Alternatively, you may use the #GOptionContext API,
+ * after setting <literal>argc = g_strv_length (argv);</literal>.
+ *
  * The last argument to local_command_line() is a pointer to the @status
  * variable which can used to set the exit status that is returned from
  * g_application_run().
