@@ -1200,7 +1200,10 @@ g_application_open (GApplication  *application,
  *
  * If local_command_line() returns %FALSE then the application is registered
  * and the #GApplication::command-line signal is emitted in the primary
- * instance (which may or may not be this instance).
+ * instance (which may or may not be this instance). The signal handler
+ * gets passed a #GApplicationCommandline object that (among other things)
+ * contains the remaining commandline arguments that have not been handled
+ * by local_command_line().
  *
  * If the application has the %G_APPLICATION_HANDLES_COMMAND_LINE
  * flag set then the default implementation of local_command_line()
@@ -1215,6 +1218,12 @@ g_application_open (GApplication  *application,
  * g_application_activate() is called.  If commandline arguments are
  * given and the %G_APPLICATION_HANDLES_OPEN flag is set then they
  * are assumed to be filenames and g_application_open() is called.
+ *
+ * If you need to handle commandline arguments that are not filenames,
+ * and you don't mind commandline handling to happen in the primary
+ * instance, you should set %G_APPLICATION_HANDLED_COMMAND_LINE and
+ * process the commandline arguments in your #GApplication::command-line
+ * signal handler, either manually or using the #GOptionContext API.
  *
  * If you are interested in doing more complicated local handling of the
  * commandline then you should implement your own #GApplication subclass
