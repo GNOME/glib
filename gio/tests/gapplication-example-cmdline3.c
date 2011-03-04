@@ -6,22 +6,52 @@ static gboolean
 my_cmdline_handler (gpointer data)
 {
   GApplicationCommandLine *cmdline = data;
+  gchar **args;
   gchar **argv;
   gint argc;
+  gint arg1;
+  gboolean arg2;
+  GOptionContext *context;
+  GOptionEntry entries[] = {
+    { "arg1", 0, 0, G_OPTION_ARG_INT, &arg1, NULL, NULL },
+    { "arg2", 0, 0, G_OPTION_ARG_NONE, &arg2, NULL, NULL },
+    { NULL }
+  };
+  GError *error;
   gint i;
 
-  argv = g_application_command_line_get_arguments (cmdline, &argc);
+  args = g_application_command_line_get_arguments (cmdline, &argc);
 
-  g_application_command_line_print (cmdline,
-                                    "This text is written back\n"
-                                    "to stdout of the caller\n");
+  /* We have to make an extra copy of the array, since g_option_context_parse()
+   * assumes that it can remove strings from the array without freeing them.
+   */
+  argv = g_new (gchar*, argc + 1);
+  for (i = 0; i <= argc; i++)
+    argv[i] = args[i];
 
-  for (i = 0; i < argc; i++)
-    g_print ("argument %d: %s\n", i, argv[i]);
+  context = g_option_context_new (NULL);
+  g_option_context_add_main_entries (context, entries, NULL);
 
-  g_strfreev (argv);
+  arg1 = 0;
+  arg2 = FALSE;
+  error = NULL;
+  if (!g_option_context_parse (context, &argc, &argv, &error))
+    {
+      g_application_command_line_printerr (cmdline, "%s\n", error->message);
+      g_error_free (error);
+      g_application_command_line_set_exit_status (cmdline, 1);
+    }
+  else
+    {
+      g_application_command_line_print (cmdline, "arg1 is %d and arg2 is %s\n",
+                                        arg1, arg2 ? "TRUE" : "FALSE");
+      g_application_command_line_set_exit_status (cmdline, 0);
+    }
 
-  g_application_command_line_set_exit_status (cmdline, 1);
+  g_free (argv);
+  g_strfreev (args);
+
+  g_option_context_free (context);
 
   /* we are done handling this commandline */
   g_object_unref (cmdline);
