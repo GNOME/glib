@@ -583,8 +583,11 @@ g_application_class_init (GApplicationClass *class)
    *     passed commandline
    *
    * The ::command-line signal is emitted on the primary instance when
-   * a commandline is not handled locally. See g_application_run() for
-   * more information.
+   * a commandline is not handled locally. See g_application_run() and
+   * the #GApplicationCommandline documentation for more information.
+   *
+   * Returns: An integer that is set as the exit status for the calling
+   *   process. See g_application_command_line_set_exit_status().
    */
   g_application_signals[SIGNAL_COMMAND_LINE] =
     g_signal_new ("command-line", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
@@ -937,7 +940,7 @@ g_application_get_is_remote (GApplication *application)
  * This is the point at which the application discovers if it is the
  * primary instance or merely acting as a remote for an already-existing
  * primary instance.  This is implemented by attempting to acquire the
- * application identifier as a uniue bus name on the session bus using
+ * application identifier as a unique bus name on the session bus using
  * GDBus.
  *
  * Due to the internal architecture of GDBus, method calls can be
