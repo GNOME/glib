@@ -1,3 +1,28 @@
+Overview of Changes from GLib 2.28.1 to 2.28.2
+==============================================
+
+* Improved documentation
+ - GApplication details are explained a lot more thoroughly
+
+* GVariant now supports NULL for empty arrays in varargs
+
+* Bugs fixed:
+ 613269 g_type_get_qdata() doesn't work as I expected on subtypes
+ 624943 G_VALUE_NOCOPY_CONTENTS is undocumented
+ 637738 object_interface_check_properties never actually executes
+ 638185 GIOCondition should be annotated as "flags"
+ 642797 g_app_info_get_default_for_type() broken for subtypes
+ 642825 Unnecessary assertion failure in g_option_context_parse()
+ 642944 NULL key lookup using g_hash_table_lookup_extended()
+ 643197 g_application_id_is_valid docs imply no valid ids
+ 643468 Warn that handling "command-line" means manual activating...
+ 643478 GApplication::local_command_line vfunc documentation seems...
+ 643649 g_application_run() should say that argc/argv can be NULL
+
+* Translation updates:
+ British English
+
+
 Overview of Changes from GLib 2.28.0 to 2.28.1
 ==============================================
 
