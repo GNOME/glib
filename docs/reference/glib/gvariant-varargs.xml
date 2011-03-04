@@ -219,12 +219,12 @@
         Used as a prefix on a GVariant type string (not format string).  Denotes that a pointer to a
         <link linkend='GVariant'>GVariant</link> should be used in place of the normal C type or types.  For
         <link linkend='g-variant-new'><function>g_variant_new()</function></link> this means that you must pass a
-        non-<link linkend='NULL--CAPS'><literal>NULL</literal></link> <code>(<link linkend='GVariant'>GVariant</link>
+        non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> <code>(<link linkend='GVariant'>GVariant</link>
         *)</code>; if it is a floating reference, ownership will be taken, as
         if by using <link linkend="g-variant-ref-sink"><function>g_variant_ref_sink()</function></link>.
         For <link linkend='g-variant-get'><function>g_variant_get()</function></link> this means that you
         must pass a pointer to a <code>(<link linkend='GVariant'>GVariant</link> *)</code> for the value to be returned
-        by reference or <link linkend='NULL--CAPS'><literal>NULL</literal></link> to ignore the value.  See
+        by reference or <link linkend='NULL:CAPS'><literal>NULL</literal></link> to ignore the value.  See
         <link linkend='gvariant-format-strings-gvariant'><code>GVariant *</code></link> below.
        </para>
       </entry>
@@ -294,7 +294,7 @@
     Variable argument conversions from numeric types work in the most obvious way possible.  Upon encountering one of
     these characters, <link linkend='g-variant-new'><function>g_variant_new()</function></link> takes the equivalent C
     type as an argument.  <link linkend='g-variant-get'><function>g_variant_get()</function></link> takes a pointer to
-    the equivalent C type (or <link linkend='NULL--CAPS'><literal>NULL</literal></link> to ignore the value).
+    the equivalent C type (or <link linkend='NULL:CAPS'><literal>NULL</literal></link> to ignore the value).
    </para>
 
    <para>
@@ -475,8 +475,8 @@
    <para>
     When using the '<literal>x</literal>' and '<literal>t</literal>' characters, you must ensure that the value that you
     provide is 64 bit.  This means that you should use a cast or make use of the
-    <link linkend='G-GINT64-CONSTANT--CAPS'><literal>G_GINT64_CONSTANT</literal></link> or
-    <link linkend='G-GUINT64-CONSTANT--CAPS'><literal>G_GUINT64_CONSTANT</literal></link> macros.
+    <link linkend='G-GINT64-CONSTANT:CAPS'><literal>G_GINT64_CONSTANT</literal></link> or
+    <link linkend='G-GUINT64-CONSTANT:CAPS'><literal>G_GUINT64_CONSTANT</literal></link> macros.
    </para>
 
    <para>
@@ -521,7 +521,7 @@ value4 = g_variant_new ("x", G_GINT64_CONSTANT (998877665544332211));
     '<literal>s</literal>', '<literal>o</literal>' or '<literal>g</literal>' in a format string,
     <link linkend='g-variant-new'><function>g_variant_new()</function></link> takes a <code>(const
     <link linkend='gchar'>gchar</link> *)</code> and makes a copy of it.
-    <link linkend='NULL--CAPS'><literal>NULL</literal></link> is not a valid string.  If the '<literal>o</literal>' or
+    <link linkend='NULL:CAPS'><literal>NULL</literal></link> is not a valid string.  If the '<literal>o</literal>' or
     '<literal>g</literal>' characters are used, care must be taken to ensure that the passed string is a valid DBus
     object path or DBus type signature, respectively.
    </para>
@@ -531,7 +531,7 @@ value4 = g_variant_new ("x", G_GINT64_CONSTANT (998877665544332211));
     <code>(<link linkend='gchar'>gchar</link> *)</code> (ie: <code>(<link linkend='gchar'>gchar</link> **)</code>) and
     sets it to a newly-allocated copy of the string.  It is appropriate to free this copy using
     <link linkend='g-free'><function>g_free()</function></link>.
-    <link linkend='NULL--CAPS'><literal>NULL</literal></link> may also be passed to indicate that the value of the
+    <link linkend='NULL:CAPS'><literal>NULL</literal></link> may also be passed to indicate that the value of the
     string should be ignored (in which case no copy is made).
    </para>
 
@@ -579,7 +579,7 @@ value3 = g_variant_new ("g", "iias");
     </code>).  It is set to a new reference to a <link linkend='GVariant'><type>GVariant</type></link> instance
     containing the contents of the variant value.  It is appropriate to free this reference using
     <link linkend='g-variant-unref'><function>g_variant_unref()</function></link>.
-    <link linkend='NULL--CAPS'><literal>NULL</literal></link> may also be passed to indicate that the value should be
+    <link linkend='NULL:CAPS'><literal>NULL</literal></link> may also be passed to indicate that the value should be
     ignored (in which case no new reference is created).
    </para>
 
@@ -614,7 +614,7 @@ y = g_variant_get_variant (x);]]></programlisting></informalexample>
     for an array of the type given in the type string.  The builder will have
     <link linkend='g-variant-builder-end'><function>g_variant_builder_end()</function></link> called on it and the
     result will be used as the value.  As a special exception, if the given type string is a definite type, then
-    <link linkend='NULL--CAPS'><literal>NULL</literal></link> may be given to mean an empty array of that type.
+    <link linkend='NULL:CAPS'><literal>NULL</literal></link> may be given to mean an empty array of that type.
    </para>
 
    <para>
@@ -625,7 +625,7 @@ y = g_variant_get_variant (x);]]></programlisting></informalexample>
     A new heap-allocated iterator is created and returned, initialised for iterating over the elements of the array.
     This iterator should be freed when you are done with it, using
     <link linkend='g-variant-iter-free'><function>g_variant_iter_free()</function></link>.
-    <link linkend='NULL--CAPS'><literal>NULL</literal></link> may also be given to indicate that the value of the array
+    <link linkend='NULL:CAPS'><literal>NULL</literal></link> may also be given to indicate that the value of the array
     should be ignored.
    </para>
 
@@ -675,11 +675,11 @@ g_variant_unref (value);]]></programlisting></informalexample>
     '<literal>g</literal>', '<literal>v</literal>', '<literal>@</literal>', '<literal>*</literal>',
     '<literal>?</literal>', '<literal>r</literal>', '<literal>&amp;</literal>', or '<literal>^</literal>'.  In all of
     these cases, for non-maybe types, <link linkend='g-variant-new'><function>g_variant_new()</function></link> takes
-    a pointer to a non-<link linkend='NULL--CAPS'><literal>NULL</literal></link> value and
+    a pointer to a non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> value and
     <link linkend='g-variant-get'><function>g_variant_get()</function></link> returns (by reference) a
-    non-<link linkend='NULL--CAPS'><literal>NULL</literal></link> pointer.  When any of these format strings are
+    non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> pointer.  When any of these format strings are
     prefixed with an '<literal>m</literal>', the type of arguments that are collected does not change in any way, but
-    <link linkend='NULL--CAPS'><literal>NULL</literal></link> becomes a permissable value, to indicate the Nothing case.
+    <link linkend='NULL:CAPS'><literal>NULL</literal></link> becomes a permissable value, to indicate the Nothing case.
    </para>
    <para>
     Note that the "special exception" introduced in the array section for constructing empty arrays is ignored
@@ -695,20 +695,20 @@ g_variant_unref (value);]]></programlisting></informalexample>
     collected for the equivalent non-maybe type will be collected.
    </para>
    <para>
-    If <link linkend='FALSE--CAPS'><literal>FALSE</literal></link> is given to
+    If <link linkend='FALSE:CAPS'><literal>FALSE</literal></link> is given to
     <link linkend='g-variant-new'><function>g_variant_new()</function></link> then the Nothing value is constructed and
-    the collected arguments are ignored.  Otherwise (if <link linkend='TRUE--CAPS'><literal>TRUE</literal></link> was
+    the collected arguments are ignored.  Otherwise (if <link linkend='TRUE:CAPS'><literal>TRUE</literal></link> was
     given), the arguments are used in the normal way to create the Just value.
    </para>
    <para>
-    If <link linkend='NULL--CAPS'><literal>NULL</literal></link> is given to
+    If <link linkend='NULL:CAPS'><literal>NULL</literal></link> is given to
     <link linkend='g-variant-get'><function>g_variant_get()</function></link> then the value is ignored.  If a
-    non-<link linkend='NULL--CAPS'><literal>NULL</literal></link> pointer is given then it is used to return by reference
+    non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> pointer is given then it is used to return by reference
     whether the value was Just.  In the case that the value was Just, the
     <link linkend='gboolean'><type>gboolean</type></link> will be set to
-    <link linkend='TRUE--CAPS'><literal>TRUE</literal></link> and the value will be stored in the arguments in the usual
+    <link linkend='TRUE:CAPS'><literal>TRUE</literal></link> and the value will be stored in the arguments in the usual
     way.  In the case that the value was Nothing, the <link linkend='gboolean'><type>gboolean</type></link> will be set to
-    <link linkend='FALSE--CAPS'><literal>FALSE</literal></link> and the arguments will be collected in the normal way
+    <link linkend='FALSE:CAPS'><literal>FALSE</literal></link> and the arguments will be collected in the normal way
     but have their values set to binary zero.
    </para>
 
@@ -842,7 +842,7 @@ dict = g_variant_builder_end (b);]]></programlisting></informalexample>
    <para>
     Upon encountering a '<literal>@</literal>' in front of a type string,
     <link linkend='g-variant-new'><function>g_variant_new()</function></link> takes a
-    non-<link linkend='NULL--CAPS'><literal>NULL</literal></link> pointer to a
+    non-<link linkend='NULL:CAPS'><literal>NULL</literal></link> pointer to a
     <link linkend='GVariant'><type>GVariant</type></link> and uses its value directly instead of collecting arguments to
     create the value.  The provided <link linkend='GVariant'><type>GVariant</type></link> must have a type that matches the
     type string following the '<literal>@</literal>'.  '<literal>*</literal>' is
@@ -857,7 +857,7 @@ dict = g_variant_builder_end (b);]]></programlisting></informalexample>
     takes a pointer to a <code>(<link linkend='GVariant'>GVariant</link> *)</code> (ie: a
     <code>(<link linkend='GVariant'>GVariant</link> **)</code>) and sets it to a new reference to a
     <link linkend='GVariant'><type>GVariant</type></link> containing the value (instead of deconstructing the value into
-    C types in the usual way).  <link linkend='NULL--CAPS'><literal>NULL</literal></link> can be given to ignore the
+    C types in the usual way).  <link linkend='NULL:CAPS'><literal>NULL</literal></link> can be given to ignore the
     value.  '<literal>*</literal>', '<literal>?</literal>' and '<literal>r</literal>' are handled in a way analogous to
     what is stated above.
    </para>

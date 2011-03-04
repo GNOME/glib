@@ -667,7 +667,7 @@ g_variant_get_maybe (GVariant *value)
 
 /**
  * g_variant_new_variant:
- * @value: a #GVariance instance
+ * @value: a #GVariant instance
  * @returns: a floating reference to a new variant #GVariant instance
  *
  * Boxes @value.  The result is a #GVariant instance representing a
@@ -692,7 +692,7 @@ g_variant_new_variant (GVariant *value)
 
 /**
  * g_variant_get_variant:
- * @value: a variant #GVariance instance
+ * @value: a variant #GVariant instance
  * @returns: the item contained in the variant
  *
  * Unboxes @value.  The result is the #GVariant instance that was
@@ -2888,7 +2888,7 @@ g_variant_builder_ref (GVariantBuilder *builder)
  * through.  This function need not be called if you call
  * g_variant_builder_end() and it also doesn't need to be called on
  * builders allocated with g_variant_builder_new (see
- * g_variant_builder_free() for that).
+ * g_variant_builder_unref() for that).
  *
  * This function leaves the #GVariantBuilder structure set to all-zeros.
  * It is valid to call this function on either an initialised
