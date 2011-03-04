@@ -70,13 +70,19 @@ struct _GApplication
  *     via commandline execution.  The virtual function has the chance to
  *     inspect (and possibly replace) the list of command line arguments.
  *     See g_application_run() for more information.
- * @before_emit: invoked on the primary instance before 'activate', 'open' or any action invocation
- * @after_emit: invoked on the primary instance after 'activate', 'open' or any action invocation
- * @add_platform_data: invoked (locally) to add 'platform data' to be sent to the primary instance when
- *   activating, opening or invoking actions
- * @quit_mainloop: invoked on the primary instance when the use count of the application drops to zero (and
- *   after any inactivity timeout, if requested)
- * @run_mainloop: invoked on the primary instance from g_application_run() if the use-count is non-zero
+ * @before_emit: invoked on the primary instance before 'activate', 'open',
+ *     'command-line' or any action invocation, gets the 'platform data' from
+ *     the calling instance
+ * @after_emit: invoked on the primary instance after 'activate', 'open',
+ *     'command-line' or any action invocation, gets the 'platform data' from
+ *     the calling instance
+ * @add_platform_data: invoked (locally) to add 'platform data' to be sent to
+ *     the primary instance when activating, opening or invoking actions
+ * @quit_mainloop: invoked on the primary instance when the use count of the
+ *     application drops to zero (and after any inactivity timeout, if
+ *     requested)
+ * @run_mainloop: invoked on the primary instance from g_application_run()
+ *     if the use-count is non-zero
  *
  * Since: 2.28
  */
