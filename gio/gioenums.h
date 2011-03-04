@@ -1249,15 +1249,22 @@ typedef enum
  *      stay around for a while when the use count falls to zero.
  * @G_APPLICATION_IS_LAUNCHER: Don't try to become the primary instance.
  * @G_APPLICATION_HANDLES_OPEN: This application handles opening files (in
- *     the primary instance). See g_application_run() for details.
+ *     the primary instance). Note that this flag only affects the default
+ *     implementation of local_command_line(), and has no effect if
+ *     %G_APPLICATION_HANDLES_COMMAND_LINE is given.
+ *     See g_application_run() for details.
  * @G_APPLICATION_HANDLES_COMMAND_LINE: This application handles command line
- *     arguments (in the primary instance). See g_application_run() for details.
+ *     arguments (in the primary instance). Note that this flag only affect
+ *     the default implementation of local_command_line().
+ *     See g_application_run() for details.
  * @G_APPLICATION_SEND_ENVIRONMENT: Send the environment of the
  *     launching process to the primary instance. Set this flag if your
  *     application is expected to behave differently depending on certain
  *     environment variables. For instance, an editor might be expected
  *     to use the <envar>GIT_COMMITTER_NAME</envar> environment variable
- *     when editing a git commit message.
+ *     when editing a git commit message. The environment is available
+ *     to the #GApplication::command-line signal handler, via
+ *     g_application_command_line_getenv().
  *
  * Flags used to define the behaviour of a #GApplication.
  *
