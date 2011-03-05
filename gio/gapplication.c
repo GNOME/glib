@@ -1171,7 +1171,7 @@ g_application_open (GApplication  *application,
  * g_application_run:
  * @application: a #GApplication
  * @argc: the argc from main() (or 0 if @argv is %NULL)
- * @argv: (array length=argc): the argv from main(), or %NULL
+ * @argv: (array length=argc) (allow-none): the argv from main(), or %NULL
  * @returns: the exit status
  *
  * Runs the application.
