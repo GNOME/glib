@@ -18,10 +18,12 @@ Overview of Changes from GLib 2.28.1 to 2.28.2
  643468 Warn that handling "command-line" means manual activating...
  643478 GApplication::local_command_line vfunc documentation seems...
  643649 g_application_run() should say that argc/argv can be NULL
+ 643780 shouldn't need to create an action group to use actions...
+ 643795 g_timeout_add_seconds fires with intervals 1 second longer...
 
 * Translation updates:
  British English
-
+ Italian
 
 Overview of Changes from GLib 2.28.0 to 2.28.1
 ==============================================
