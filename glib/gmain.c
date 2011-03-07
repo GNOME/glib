@@ -3801,6 +3801,7 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
 
   if (timeout_source->seconds)
     {
+      gint64 remainder;
       static gint timer_perturb = -1;
 
       if (timer_perturb == -1)
@@ -3825,11 +3826,14 @@ g_timeout_set_expiration (GTimeoutSource *timeout_source,
        * always only *increase* the expiration time by adding a full
        * second in the case that the microsecond portion decreases.
        */
-      if (timer_perturb < timeout_source->expiration % 1000000)
+      timeout_source->expiration -= timer_perturb;
+
+      remainder = timeout_source->expiration % 1000000;
+      if (remainder >= 1000000/4)
         timeout_source->expiration += 1000000;
 
-      timeout_source->expiration =
-        ((timeout_source->expiration / 1000000) * 1000000) + timer_perturb;
+      timeout_source->expiration -= remainder;
+      timeout_source->expiration += timer_perturb;
     }
 }
 

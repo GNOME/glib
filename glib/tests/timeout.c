@@ -1,4 +1,5 @@
 #include <glib.h>
+#include <unistd.h>
 
 static GMainLoop *loop;
 
@@ -42,12 +43,52 @@ test_seconds (void)
   g_main_loop_run (loop);
 }
 
+static gint64 last_time;
+static gint count;
+
+static gboolean
+test_func (gpointer data)
+{
+  gint64 current_time;
+
+  current_time = g_get_monotonic_time ();
+
+  g_assert (current_time / 1000000 - last_time / 1000000 == 1);
+
+  last_time = current_time;
+  count++;
+
+  /* Make the timeout take up to 0.1 seconds.
+   * We should still get scheduled for the next second.
+   */
+  usleep (count * 10000);
+
+  if (count < 10)
+    return TRUE;
+
+  g_main_loop_quit (loop);
+
+  return FALSE;
+}
+
+static void
+test_rounding (void)
+{
+  loop = g_main_loop_new (NULL, FALSE);
+
+  last_time = g_get_monotonic_time ();
+  g_timeout_add_seconds (1, test_func, NULL);
+
+  g_main_loop_run (loop);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/timeout/seconds", test_seconds);
+  g_test_add_func ("/timeout/rounding", test_rounding);
 
   return g_test_run ();
 }
