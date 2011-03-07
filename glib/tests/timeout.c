@@ -63,7 +63,7 @@ test_func (gpointer data)
    */
   usleep (count * 10000);
 
-  if (count < 10)
+  if (count < 8)
     return TRUE;
 
   g_main_loop_quit (loop);
