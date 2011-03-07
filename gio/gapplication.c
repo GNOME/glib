@@ -1385,7 +1385,8 @@ g_application_get_action_enabled (GActionGroup *action_group,
 {
   GApplication *application = G_APPLICATION (action_group);
 
-  g_return_val_if_fail (application->priv->actions != NULL, FALSE);
+  g_return_val_if_fail (application->priv->remote_actions != NULL ||
+                        application->priv->actions != NULL, FALSE);
   g_return_val_if_fail (application->priv->is_registered, FALSE);
 
   if (application->priv->remote_actions)
@@ -1408,7 +1409,8 @@ g_application_get_action_parameter_type (GActionGroup *action_group,
 {
   GApplication *application = G_APPLICATION (action_group);
 
-  g_return_val_if_fail (application->priv->actions != NULL, NULL);
+  g_return_val_if_fail (application->priv->remote_actions != NULL ||
+                        application->priv->actions != NULL, NULL);
   g_return_val_if_fail (application->priv->is_registered, NULL);
 
   if (application->priv->remote_actions)
@@ -1434,7 +1436,8 @@ g_application_get_action_state_type (GActionGroup *action_group,
 {
   GApplication *application = G_APPLICATION (action_group);
 
-  g_return_val_if_fail (application->priv->actions != NULL, NULL);
+  g_return_val_if_fail (application->priv->remote_actions != NULL ||
+                        application->priv->actions != NULL, NULL);
   g_return_val_if_fail (application->priv->is_registered, NULL);
 
   if (application->priv->remote_actions)
@@ -1460,7 +1463,8 @@ g_application_get_action_state (GActionGroup *action_group,
 {
   GApplication *application = G_APPLICATION (action_group);
 
-  g_return_val_if_fail (application->priv->actions != NULL, NULL);
+  g_return_val_if_fail (application->priv->remote_actions != NULL ||
+                        application->priv->actions != NULL, NULL);
   g_return_val_if_fail (application->priv->is_registered, NULL);
 
   if (application->priv->remote_actions)
@@ -1487,6 +1491,8 @@ g_application_change_action_state (GActionGroup *action_group,
 {
   GApplication *application = G_APPLICATION (action_group);
 
+  g_return_if_fail (application->priv->is_remote ||
+                    application->priv->actions != NULL);
   g_return_if_fail (application->priv->is_registered);
 
   if (application->priv->is_remote)
@@ -1506,6 +1512,8 @@ g_application_activate_action (GActionGroup *action_group,
 {
   GApplication *application = G_APPLICATION (action_group);
 
+  g_return_if_fail (application->priv->is_remote ||
+                    application->priv->actions != NULL);
   g_return_if_fail (application->priv->is_registered);
 
   if (application->priv->is_remote)
