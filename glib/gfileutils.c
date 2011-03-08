@@ -53,7 +53,7 @@
 #include "gstdio.h"
 #include "glibintl.h"
 
-#ifdef __linux__ /* for btrfs check */
+#ifdef HAVE_LINUX_MAGIC_H /* for btrfs check */
 #include <linux/magic.h>
 #include <sys/vfs.h>
 #endif
