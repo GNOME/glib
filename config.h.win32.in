@@ -269,6 +269,9 @@
 #ifndef _MSC_VER
 #define HAVE_INTMAX_T 1
 #else /* _MSC_VER */
+#if (_MSC_VER >= 1600)
+#define HAVE_INTMAX_T 1
+#endif
 /* #undef HAVE_INTMAX_T */
 #endif /* _MSC_VER */
 
@@ -446,6 +449,9 @@
 #ifndef _MSC_VER
 #define HAVE_STDINT_H 1
 #else /* _MSC_VER */
+#if (_MSC_VER >= 1600)
+#define HAVE_STDINT_H 1
+#endif
 /* #undef HAVE_STDINT_H */
 #endif /* _MSC_VER */
 
@@ -454,6 +460,9 @@
 #ifndef _MSC_VER
 #define HAVE_STDINT_H_WITH_UINTMAX 1
 #else /* _MSC_VER */
+#if (_MSC_VER >= 1600)
+#define HAVE_STDINT_H_WITH_UINTMAX 1
+#endif
 /* #undef HAVE_STDINT_H_WITH_UINTMAX */
 #endif /* _MSC_VER */
 
