@@ -20,6 +20,7 @@ gio/gaction.c
 gio/gactiongroup.c
 gio/gappinfo.c
 gio/gapplication.c
+gio/gapplicationcommandline.c
 gio/gasynchelper.c
 gio/gasyncinitable.c
 gio/gasyncresult.c
@@ -48,6 +49,7 @@ gio/gdbus-tool.c
 gio/gdesktopappinfo.c
 gio/gdrive.c
 gio/gdummyfile.c
+gio/gdummytlsbackend.c
 gio/gemblem.c
 gio/gemblemedicon.c
 gio/gfileattribute.c
@@ -111,6 +113,7 @@ gio/gsocketoutputstream.c
 gio/gsocks4aproxy.c
 gio/gsocks5proxy.c
 gio/gtcpconnection.c
+gio/gtcpwrapperconnection.c
 gio/gthemedicon.c
 gio/gthreadedsocketservice.c
 gio/gtlscertificate.c
