@@ -9,6 +9,7 @@
  * See the included COPYING file for more information.
  */
 
+#include <stdlib.h>
 #include <string.h>
 #include <glib.h>
 
@@ -169,6 +170,48 @@ test_collect (gconstpointer d)
   g_clear_error (&error);
 }
 
+#define XML "<element a='1' b='2' c='3'/>"
+
+static void
+start_element (GMarkupParseContext  *context,
+               const gchar          *element_name,
+               const gchar         **attribute_names,
+               const gchar         **attribute_values,
+               gpointer              user_data,
+               GError              **error)
+{
+  /* Omitting "c" attribute intentionally to trigger crash. */
+  g_markup_collect_attributes (element_name,
+                               attribute_names,
+                               attribute_values,
+                               error,
+                               G_MARKUP_COLLECT_STRING, "a", NULL,
+                               G_MARKUP_COLLECT_STRING, "b", NULL,
+                               G_MARKUP_COLLECT_INVALID);
+}
+
+static GMarkupParser cleanup_parser = {
+  start_element
+};
+
+static void
+test_cleanup (void)
+{
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      GMarkupParseContext *context;
+
+      context = g_markup_parse_context_new (&cleanup_parser, 0, NULL, NULL);
+      g_markup_parse_context_parse (context, XML, -1, NULL);
+      g_markup_parse_context_end_parse (context, NULL);
+      g_markup_parse_context_free (context);
+
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+  g_test_trap_assert_stderr ("*assertion `context->state != STATE_ERROR' failed*");
+}
+
 int
 main (int argc, char **argv)
 {
@@ -183,6 +226,8 @@ main (int argc, char **argv)
       g_test_add_data_func (path, &tests[i], test_collect);
       g_free (path);
     }
+
+  g_test_add_func ("/markup/collect/cleanup", test_cleanup);
 
   return g_test_run ();
 }
