@@ -61,7 +61,7 @@ test_func (gpointer data)
   /* Make the timeout take up to 0.1 seconds.
    * We should still get scheduled for the next second.
    */
-  usleep (count * 10000);
+  g_usleep (count * 10000);
 
   if (count < 8)
     return TRUE;
