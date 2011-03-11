@@ -2794,33 +2794,30 @@ failure:
 
       ptr = va_arg (ap, gpointer);
 
-      if (ptr == NULL)
-        continue;
-
-      switch (type & (G_MARKUP_COLLECT_OPTIONAL - 1))
+      if (ptr != NULL)
         {
-        case G_MARKUP_COLLECT_STRDUP:
-          if (written)
-            g_free (*(char **) ptr);
+          switch (type & (G_MARKUP_COLLECT_OPTIONAL - 1))
+            {
+            case G_MARKUP_COLLECT_STRDUP:
+              if (written)
+                g_free (*(char **) ptr);
 
-        case G_MARKUP_COLLECT_STRING:
-          *(char **) ptr = NULL;
-          break;
+            case G_MARKUP_COLLECT_STRING:
+              *(char **) ptr = NULL;
+              break;
 
-        case G_MARKUP_COLLECT_BOOLEAN:
-          *(gboolean *) ptr = FALSE;
-          break;
+            case G_MARKUP_COLLECT_BOOLEAN:
+              *(gboolean *) ptr = FALSE;
+              break;
 
-        case G_MARKUP_COLLECT_TRISTATE:
-          *(gboolean *) ptr = -1;
-          break;
+            case G_MARKUP_COLLECT_TRISTATE:
+              *(gboolean *) ptr = -1;
+              break;
+            }
         }
 
       type = va_arg (ap, GMarkupCollectType);
       attr = va_arg (ap, const char *);
-
-      if (written)
-        written--;
     }
   va_end (ap);
 
