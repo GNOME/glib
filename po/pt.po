@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-02 00:56+0000\n"
+"POT-Creation-Date: 2011-03-12 01:06+0000\n"
 "PO-Revision-Date: 2011-03-02 01:05+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
@@ -2257,6 +2257,10 @@ msgstr "a unidade não implementa a reprodução"
 msgid "drive doesn't implement stop"
 msgstr "a unidade não implementa o parar"
 
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "O suporte TLS não está disponível"
+
 #: ../gio/gemblem.c:324
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
@@ -2660,8 +2664,8 @@ msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': "
 "%s.  "
 msgstr ""
-"erro ao processar a chave `%s' no esquema `%s' tal como especificado no ficheiro de "
-"sobreposição `%s': %s.  "
+"erro ao processar a chave `%s' no esquema `%s' tal como especificado no "
+"ficheiro de sobreposição `%s': %s.  "
 
 #: ../gio/glib-compile-schemas.c:1797
 #, c-format
