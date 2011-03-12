@@ -53,7 +53,13 @@ test_func (gpointer data)
 
   current_time = g_get_monotonic_time ();
 
-  g_assert (current_time / 1000000 - last_time / 1000000 == 1);
+  /* We accept 2 on the first iteration because _add_seconds() can
+   * have an initial latency of 1 second, see its documentation.
+   */
+  if (count == 0)
+    g_assert (current_time / 1000000 - last_time / 1000000 <= 2);
+  else
+    g_assert (current_time / 1000000 - last_time / 1000000 == 1);
 
   last_time = current_time;
   count++;

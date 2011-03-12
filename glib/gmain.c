@@ -4118,7 +4118,11 @@ g_timeout_add_seconds_full (gint           priority,
  * g_timeout_source_new_seconds() and attaches it to the main loop context 
  * using g_source_attach(). You can do these steps manually if you need 
  * greater control. Also see g_timout_add_seconds_full().
- * 
+ *
+ * Note that the first call of the timer may not be precise for timeouts
+ * of one second. If you need finer precision and have such a timeout,
+ * you may want to use g_timeout_add() instead.
+ *
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.14
