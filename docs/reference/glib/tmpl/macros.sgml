@@ -226,5 +226,6 @@ turn it off. This macro should only be used for return values and for
 <emphasis>in</emphasis> parameters. 
 </para>
 
-
-
+@Deprecated: 2.30: API providers should replace all existing uses with
+  <literal>const</literal> and API consumers should adjust their code
+  accordingly.
