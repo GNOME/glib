@@ -3611,18 +3611,8 @@ _glib_get_locale_dir (void)
 
 #endif /* G_OS_WIN32 */
 
-/**
- * glib_gettext:
- * @str: The string to be translated
- *
- * Returns the translated string from the glib translations.
- * This is an internal function and should only be used by
- * the internals of glib (such as libgio).
- *
- * Returns: the transation of @str to the current locale
- */
-G_CONST_RETURN gchar *
-glib_gettext (const gchar *str)
+static void
+ensure_gettext_initialized(void)
 {
   static gboolean _glib_gettext_initialized = FALSE;
 
@@ -3640,8 +3630,48 @@ glib_gettext (const gchar *str)
 #    endif
       _glib_gettext_initialized = TRUE;
     }
-  
+}
+
+/**
+ * glib_gettext:
+ * @str: The string to be translated
+ *
+ * Returns the translated string from the glib translations.
+ * This is an internal function and should only be used by
+ * the internals of glib (such as libgio).
+ *
+ * Returns: the transation of @str to the current locale
+ */
+G_CONST_RETURN gchar *
+glib_gettext (const gchar *str)
+{
+  ensure_gettext_initialized();
+
   return g_dgettext (GETTEXT_PACKAGE, str);
+}
+
+/**
+ * glib_pgettext:
+ * @msgctxtid: a combined message context and message id, separated
+ *   by a \004 character
+ * @msgidoffset: the offset of the message id in @msgctxid
+ *
+ * This function is a variant of glib_gettext() which supports
+ * a disambiguating message context. See g_dpgettext() for full
+ * details.
+ *
+ * This is an internal function and should only be used by
+ * the internals of glib (such as libgio).
+ *
+ * Returns: the transation of @str to the current locale
+ */
+G_CONST_RETURN gchar *
+glib_pgettext(const gchar *msgctxtid,
+              gsize        msgidoffset)
+{
+  ensure_gettext_initialized();
+
+  return g_dpgettext (GETTEXT_PACKAGE, msgctxtid, msgidoffset);
 }
 
 #if defined (G_OS_WIN32) && !defined (_WIN64)
