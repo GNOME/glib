@@ -277,7 +277,7 @@ g_param_spec_ref_sink (GParamSpec *pspec)
  *
  * Returns: the name of @pspec.
  */
-G_CONST_RETURN gchar*
+const gchar *
 g_param_spec_get_name (GParamSpec *pspec)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
@@ -293,7 +293,7 @@ g_param_spec_get_name (GParamSpec *pspec)
  *
  * Returns: the nickname of @pspec.
  */
-G_CONST_RETURN gchar*
+const gchar *
 g_param_spec_get_nick (GParamSpec *pspec)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
@@ -320,7 +320,7 @@ g_param_spec_get_nick (GParamSpec *pspec)
  *
  * Returns: the short description of @pspec.
  */
-G_CONST_RETURN gchar*
+const gchar *
 g_param_spec_get_blurb (GParamSpec *pspec)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);

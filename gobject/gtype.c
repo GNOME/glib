@@ -3275,7 +3275,7 @@ g_type_default_interface_unref (gpointer g_iface)
  *
  * Returns: Static type name or %NULL.
  */
-G_CONST_RETURN gchar*
+const gchar *
 g_type_name (GType type)
 {
   TypeNode *node;
@@ -4197,7 +4197,7 @@ g_type_value_table_peek (GType type)
   return NULL;
 }
 
-G_CONST_RETURN gchar*
+const gchar *
 g_type_name_from_instance (GTypeInstance *instance)
 {
   if (!instance)
@@ -4206,7 +4206,7 @@ g_type_name_from_instance (GTypeInstance *instance)
     return g_type_name_from_class (instance->g_class);
 }
 
-G_CONST_RETURN gchar*
+const gchar *
 g_type_name_from_class (GTypeClass *g_class)
 {
   if (!g_class)

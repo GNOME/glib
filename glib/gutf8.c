@@ -553,7 +553,7 @@ charset_cache_free (gpointer data)
  * Return value: %TRUE if the returned charset is UTF-8
  **/
 gboolean
-g_get_charset (G_CONST_RETURN char **charset) 
+g_get_charset (const char **charset) 
 {
   static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
   GCharsetCache *cache = g_static_private_get (&cache_private);

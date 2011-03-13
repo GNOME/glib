@@ -153,7 +153,7 @@ gchar *g_filename_to_uri   (const gchar *filename,
 			    const gchar *hostname,
 			    GError     **error) G_GNUC_MALLOC;
 gchar *g_filename_display_name (const gchar *filename) G_GNUC_MALLOC;
-gboolean g_get_filename_charsets (G_CONST_RETURN gchar ***charsets);
+gboolean g_get_filename_charsets (const gchar ***charsets);
 
 gchar *g_filename_display_basename (const gchar *filename) G_GNUC_MALLOC;
 

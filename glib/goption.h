@@ -310,10 +310,10 @@ struct _GOptionEntry
 GOptionContext *g_option_context_new              (const gchar         *parameter_string);
 void            g_option_context_set_summary      (GOptionContext      *context,
                                                    const gchar         *summary);
-G_CONST_RETURN gchar *g_option_context_get_summary (GOptionContext     *context);
+const gchar *   g_option_context_get_summary      (GOptionContext     *context);
 void            g_option_context_set_description  (GOptionContext      *context,
                                                    const gchar         *description);
-G_CONST_RETURN gchar *g_option_context_get_description (GOptionContext     *context);
+const gchar *   g_option_context_get_description  (GOptionContext     *context);
 void            g_option_context_free             (GOptionContext      *context);
 void		g_option_context_set_help_enabled (GOptionContext      *context,
 						   gboolean		help_enabled);

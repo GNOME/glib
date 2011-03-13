@@ -921,7 +921,7 @@ g_io_channel_set_line_term (GIOChannel	*channel,
  * Return value: The line termination string. This value
  *   is owned by GLib and must not be freed.
  **/
-G_CONST_RETURN gchar*
+const gchar *
 g_io_channel_get_line_term (GIOChannel *channel,
 			    gint       *length)
 {
@@ -1459,7 +1459,7 @@ g_io_channel_set_encoding (GIOChannel	*channel,
  * Return value: A string containing the encoding, this string is
  *   owned by GLib and must not be freed.
  **/
-G_CONST_RETURN gchar*
+const gchar *
 g_io_channel_get_encoding (GIOChannel *channel)
 {
   g_return_val_if_fail (channel != NULL, NULL);

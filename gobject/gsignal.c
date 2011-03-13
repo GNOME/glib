@@ -1223,7 +1223,7 @@ g_signal_list_ids (GType  itype,
  *
  * Returns: the signal name, or %NULL if the signal number was invalid.
  */
-G_CONST_RETURN gchar*
+const gchar *
 g_signal_name (guint signal_id)
 {
   SignalNode *node;

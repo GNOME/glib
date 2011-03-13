@@ -2382,7 +2382,7 @@ g_option_context_set_summary (GOptionContext *context,
  *
  * Since: 2.12
  */
-G_CONST_RETURN gchar *
+const gchar *
 g_option_context_get_summary (GOptionContext *context)
 {
   g_return_val_if_fail (context != NULL, NULL);
@@ -2426,7 +2426,7 @@ g_option_context_set_description (GOptionContext *context,
  *
  * Since: 2.12
  */
-G_CONST_RETURN gchar *
+const gchar *
 g_option_context_get_description (GOptionContext *context)
 {
   g_return_val_if_fail (context != NULL, NULL);

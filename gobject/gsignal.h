@@ -308,7 +308,7 @@ void                  g_signal_emit_by_name (gpointer            instance,
 					     ...);
 guint                 g_signal_lookup       (const gchar        *name,
 					     GType               itype);
-G_CONST_RETURN gchar* g_signal_name         (guint               signal_id);
+const gchar *         g_signal_name         (guint               signal_id);
 void                  g_signal_query        (guint               signal_id,
 					     GSignalQuery       *query);
 guint*                g_signal_list_ids     (GType               itype,
