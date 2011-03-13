@@ -250,10 +250,12 @@
  * (usually char*) are const or not.  Don't try using this feature for
  * functions with C++ linkage.
  */
+#ifndef G_DISABLE_DEPRECATED
 #ifdef G_DISABLE_CONST_RETURNS
 #define G_CONST_RETURN
 #else
 #define G_CONST_RETURN const
+#endif
 #endif
 
 /*
