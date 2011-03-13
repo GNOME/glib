@@ -5,7 +5,9 @@
 #error "config.h must be included prior to glibintl.h"
 #endif
 
-G_CONST_RETURN gchar *glib_gettext (const gchar *str) G_GNUC_FORMAT(1);
+G_CONST_RETURN gchar *glib_gettext  (const gchar *str) G_GNUC_FORMAT(1);
+G_CONST_RETURN gchar *glib_pgettext (const gchar *msgctxtid,
+                                     gsize        msgidoffset) G_GNUC_FORMAT(1);
 
 #ifdef ENABLE_NLS
 
@@ -13,7 +15,7 @@ G_CONST_RETURN gchar *glib_gettext (const gchar *str) G_GNUC_FORMAT(1);
 #define _(String) glib_gettext(String)
 /* Split out this in the code, but keep it in the same domain for now */
 #define P_(String) glib_gettext(String)
-#define C_(Context,String) g_dpgettext (NULL, Context "\004" String, strlen (Context) + 1)
+#define C_(Context,String) glib_pgettext (Context "\004" String, strlen (Context) + 1)
 
 #ifdef gettext_noop
 #define N_(String) gettext_noop(String)
