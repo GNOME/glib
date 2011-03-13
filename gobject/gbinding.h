@@ -106,8 +106,8 @@ GType                 g_binding_get_type            (void) G_GNUC_CONST;
 GBindingFlags         g_binding_get_flags           (GBinding *binding);
 GObject *             g_binding_get_source          (GBinding *binding);
 GObject *             g_binding_get_target          (GBinding *binding);
-G_CONST_RETURN gchar *g_binding_get_source_property (GBinding *binding);
-G_CONST_RETURN gchar *g_binding_get_target_property (GBinding *binding);
+const gchar *         g_binding_get_source_property (GBinding *binding);
+const gchar *         g_binding_get_target_property (GBinding *binding);
 
 GBinding *g_object_bind_property               (gpointer               source,
                                                 const gchar           *source_property,

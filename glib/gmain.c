@@ -1591,7 +1591,7 @@ g_source_set_name (GSource    *source,
  * Return value: the name of the source
  * Since: 2.26
  **/
-G_CONST_RETURN char*
+const char *
 g_source_get_name (GSource *source)
 {
   g_return_val_if_fail (source != NULL, NULL);

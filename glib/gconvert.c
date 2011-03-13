@@ -1318,7 +1318,7 @@ filename_charset_cache_free (gpointer data)
  * Since: 2.6
  */
 gboolean
-g_get_filename_charsets (G_CONST_RETURN gchar ***filename_charsets)
+g_get_filename_charsets (const gchar ***filename_charsets)
 {
   static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
   GFilenameCharsetCache *cache = g_static_private_get (&cache_private);
@@ -1383,7 +1383,7 @@ g_get_filename_charsets (G_CONST_RETURN gchar ***filename_charsets)
 #else /* G_PLATFORM_WIN32 */
 
 gboolean
-g_get_filename_charsets (G_CONST_RETURN gchar ***filename_charsets) 
+g_get_filename_charsets (const gchar ***filename_charsets) 
 {
   static const gchar *charsets[] = {
     "UTF-8",

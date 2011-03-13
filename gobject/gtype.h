@@ -666,7 +666,7 @@ typedef enum	/*< skip >*/
 /* --- prototypes --- */
 void                  g_type_init                    (void);
 void                  g_type_init_with_debug_flags   (GTypeDebugFlags  debug_flags);
-G_CONST_RETURN gchar* g_type_name                    (GType            type);
+const gchar *         g_type_name                    (GType            type);
 GQuark                g_type_qname                   (GType            type);
 GType                 g_type_from_name               (const gchar     *name);
 GType                 g_type_parent                  (GType            type);
@@ -1657,8 +1657,8 @@ gboolean         g_type_test_flags              (GType               type,
 
 
 /* --- debugging functions --- */
-G_CONST_RETURN gchar* g_type_name_from_instance	(GTypeInstance	*instance);
-G_CONST_RETURN gchar* g_type_name_from_class	(GTypeClass	*g_class);
+const gchar *    g_type_name_from_instance	(GTypeInstance	*instance);
+const gchar *    g_type_name_from_class	(GTypeClass	*g_class);
 
 
 /* --- internal functions --- */
