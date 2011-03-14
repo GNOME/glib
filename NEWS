@@ -1,3 +1,18 @@
+Overview of Changes from GLib 2.28.2 to 2.28.3
+==============================================
+
+* Fix build with linux < 2.6.19
+
+* Bugs fixed:
+ 644465 undefined reference to `_usleep'
+ 644552 g_timeout_add_seconds(1, ...) may have a latency...
+ 644607 Correct internal definition of C_()
+
+* Translation updates:
+ French
+ Hungarian
+
+
 Overview of Changes from GLib 2.28.1 to 2.28.2
 ==============================================
 
