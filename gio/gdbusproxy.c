@@ -156,7 +156,8 @@ g_dbus_proxy_finalize (GObject *object)
     g_dbus_connection_signal_unsubscribe (proxy->priv->connection,
                                           proxy->priv->signals_subscriber_id);
 
-  g_object_unref (proxy->priv->connection);
+  if (proxy->priv->connection != NULL)
+    g_object_unref (proxy->priv->connection);
   g_free (proxy->priv->name);
   g_free (proxy->priv->name_owner);
   g_free (proxy->priv->object_path);
