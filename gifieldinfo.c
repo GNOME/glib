@@ -512,6 +512,23 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	  }
 	  break;
 	}
+    } else {
+      switch (g_type_info_get_tag (type_info))
+        {
+        case GI_TYPE_TAG_INTERFACE:
+          {
+	    GIBaseInfo *interface = g_type_info_get_interface (type_info);
+	    switch (g_base_info_get_type (interface))
+              {
+                case GI_INFO_TYPE_OBJECT:
+                case GI_INFO_TYPE_INTERFACE:
+                  G_STRUCT_MEMBER (gpointer, mem, offset) = (gpointer)value->v_pointer;
+                  result = TRUE;
+                  break;
+              }
+              g_base_info_unref ((GIBaseInfo *)interface);
+          }
+        }
     }
 
   g_base_info_unref ((GIBaseInfo *)type_info);
