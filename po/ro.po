@@ -3,15 +3,17 @@
 # Marius Andreiana <mandreiana@yahoo.com>, 2001.
 # Mișu Moldovan <dumol@gnome.ro>, 2004 - 2010.
 # Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2010.
+# Lupescu Mircea <mircea.crazy@gmail.com>, 2010.
+# Lupescu Mircea <mircea.crazy@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&component=general\n"
-"POT-Creation-Date: 2011-03-10 11:34+0000\n"
-"PO-Revision-Date: 2010-09-25 11:38+0300\n"
-"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
-"Language-Team: Romanian Gnome Team <gnomero-list@lists.sourceforge.net>\n"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-14 19:50+0000\n"
+"PO-Revision-Date: 2010-12-05 16:09+0200\n"
+"Last-Translator: Lupescu Mircea <mircea.crazy@gmail.com>\n"
+"Language-Team: GNOME-ro Team\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -323,7 +325,7 @@ msgstr "Luni"
 #: ../glib/gdatetime.c:269
 msgctxt "full weekday name"
 msgid "Tuesday"
-msgstr "Marţi"
+msgstr "Marți"
 
 #: ../glib/gdatetime.c:271
 msgctxt "full weekday name"
@@ -1498,11 +1500,13 @@ msgstr ""
 "semn de egalitate"
 
 #: ../gio/gdbusaddress.c:469
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr ""
+"Eroare la coversia din format „escaped” a cheii sau valorii din perechea Cheie/Valoare %d, „%"
+"s”, în elementul de adresă „%s”"
 
 #: ../gio/gdbusaddress.c:547
 #, c-format
@@ -1988,7 +1992,7 @@ msgstr "Eroare la trimiterea mesajului: %s"
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Nu s-a putut încărca /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:714
+#: ../gio/gdbusproxy.c:715
 #, c-format
 msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
@@ -1997,17 +2001,17 @@ msgstr ""
 "S-a încercat definirea proprietății %s cu tipul %s, dar conform interfeței "
 "așteptate tipul este %s"
 
-#: ../gio/gdbusproxy.c:1234
+#: ../gio/gdbusproxy.c:1235
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Eroare la apelul StartServiceByName pentru %s:"
 
-#: ../gio/gdbusproxy.c:1255
+#: ../gio/gdbusproxy.c:1256
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Răspuns neașteptat %d de la metoda StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
+#: ../gio/gdbusproxy.c:2312 ../gio/gdbusproxy.c:2470
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2629,17 +2633,17 @@ msgstr "textul nu are voie să apară în <%s>"
 #: ../gio/glib-compile-schemas.c:1801
 #, c-format
 msgid "--strict was specified; exiting.\n"
-msgstr ""
+msgstr "--strict a fost specificat; se iese.\n"
 
 #: ../gio/glib-compile-schemas.c:1662
 #, c-format
 msgid "This entire file has been ignored.\n"
-msgstr ""
+msgstr "Întregul fișier a fost ignorat.\n"
 
 #: ../gio/glib-compile-schemas.c:1721
 #, c-format
 msgid "Ignoring this file.\n"
-msgstr ""
+msgstr "Se ignoră acest fișier.\n"
 
 #: ../gio/glib-compile-schemas.c:1761
 #, c-format
@@ -2652,28 +2656,27 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1853
 #, c-format
 msgid "; ignoring override for this key.\n"
-msgstr ""
+msgstr "; se ignoră suprascrierea pentru această cheie.\n"
 
 #: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
 #: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid " and --strict was specified; exiting.\n"
-msgstr ""
+msgstr "și --strict a fost specificat; se iese.\n"
 
 #: ../gio/glib-compile-schemas.c:1787
-#, fuzzy, c-format
-#| msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
+#, c-format
 msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %"
 "s.  "
 msgstr ""
-"Nu există cheia „%s” în schema „%s” specificată în fișierul de suprascriere "
-"„%s”"
+"eroare la analizarea cheii „%s” în schema „%s” specificată în fișierul de "
+"suprascriere „%s”: %s."
 
 #: ../gio/glib-compile-schemas.c:1797
 #, c-format
 msgid "Ignoring override for this key.\n"
-msgstr ""
+msgstr "Se ignoră suprascrierea pentru această cheie.\n"
 
 #: ../gio/glib-compile-schemas.c:1815
 #, c-format
@@ -2703,7 +2706,7 @@ msgstr "DOSAR"
 
 #: ../gio/glib-compile-schemas.c:1898
 msgid "Abort on any errors in schemas"
-msgstr ""
+msgstr "Abandonează execuția la detectarea oricăror erori în scheme"
 
 #: ../gio/glib-compile-schemas.c:1899
 msgid "Do not write the gschema.compiled file"
@@ -3163,55 +3166,47 @@ msgstr "Eroare la rezolvarea „%s”"
 #: ../gio/gsettings-tool.c:60
 #, c-format
 msgid "Schema '%s' is not relocatable (path must not be specified)\n"
-msgstr ""
+msgstr "Schema „%s” nu este relocalizabilă (nu trebuie specificată calea)\n"
 
 #: ../gio/gsettings-tool.c:65 ../gio/gsettings-tool.c:82
-#, fuzzy, c-format
-#| msgid "No such interface `%s'"
+#, c-format
 msgid "No such schema '%s'\n"
-msgstr "Nu există interfața „%s”"
+msgstr "Nu există schema „%s”\n"
 
 #: ../gio/gsettings-tool.c:77
 #, c-format
 msgid "Schema '%s' is relocatable (path must be specified)\n"
-msgstr ""
+msgstr "Schema „%s” este relocalizabilă (trebuie specificată calea)\n"
 
 #: ../gio/gsettings-tool.c:92
 #, c-format
 msgid "Empty path given.\n"
-msgstr ""
+msgstr "Calea dată este goală.\n"
 
 #: ../gio/gsettings-tool.c:98
-#, fuzzy, c-format
-#| msgid "a path, if given, must begin and end with a slash"
+#, c-format
 msgid "Path must begin with a slash (/)\n"
-msgstr ""
-"dacă este specificată, calea trebuie să înceapă și să se termine cu o bară "
-"oblică („/”)"
+msgstr "Calea trebuie să înceapă cu o bară oblică (/)\n"
 
 #: ../gio/gsettings-tool.c:104
-#, fuzzy, c-format
-#| msgid "a path, if given, must begin and end with a slash"
+#, c-format
 msgid "Path must end with a slash (/)\n"
-msgstr ""
-"dacă este specificată, calea trebuie să înceapă și să se termine cu o bară "
-"oblică („/”)"
+msgstr "Calea trebuie să se termine cu o bară oblică (/)\n"
 
 #: ../gio/gsettings-tool.c:110
 #, c-format
 msgid "Path must not contain two adjacent slashes (//)\n"
-msgstr ""
+msgstr "Calea trebuie să nu conțină două bare oblice adiacente (//)\n"
 
 #: ../gio/gsettings-tool.c:131
-#, fuzzy, c-format
-#| msgid "No such property `%s'"
+#, c-format
 msgid "No such key '%s'\n"
-msgstr "Nu există proprietatea „%s”"
+msgstr "Nu există cheia „%s”\n"
 
 #: ../gio/gsettings-tool.c:444
 #, c-format
 msgid "The provided value is outside of the valid range\n"
-msgstr ""
+msgstr "Valoarea furnizată este în afara intervalului valid\n"
 
 #: ../gio/gsettings-tool.c:473
 #, fuzzy
@@ -3221,93 +3216,109 @@ msgstr "Afișează XML"
 
 #: ../gio/gsettings-tool.c:479
 msgid "List the installed (non-relocatable) schemas"
-msgstr ""
+msgstr "Listează schemele (nerelocalizabile) instalate"
 
 #: ../gio/gsettings-tool.c:485
 msgid "List the installed relocatable schemas"
-msgstr ""
+msgstr "Listează schemele relocalizabile instalate"
 
 #: ../gio/gsettings-tool.c:491
+#, fuzzy
+#| msgid "Lists the keys in SCHEMA"
 msgid "List the keys in SCHEMA"
-msgstr ""
+msgstr "Listează cheile din SCHEMĂ"
 
 #: ../gio/gsettings-tool.c:492 ../gio/gsettings-tool.c:498
 msgid "SCHEMA[:PATH]"
-msgstr ""
+msgstr "SCHEMĂ[:CALE]"
 
 #: ../gio/gsettings-tool.c:497
+#, fuzzy
+#| msgid "Lists the children of SCHEMA"
 msgid "List the children of SCHEMA"
-msgstr ""
+msgstr "Listează copiii SCHEMEI"
 
 #: ../gio/gsettings-tool.c:503
+#, fuzzy
+#| msgid "List keys and values, recursively"
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
-msgstr ""
+msgstr "Listează chei și valori, recursiv"
 
 #: ../gio/gsettings-tool.c:505
+#, fuzzy
+#| msgid "SCHEMA[:PATH]"
 msgid "[SCHEMA[:PATH]]"
-msgstr ""
+msgstr "SCHEMĂ[:CALE]"
 
 #: ../gio/gsettings-tool.c:510
+#, fuzzy
+#| msgid "Gets the value of KEY"
 msgid "Get the value of KEY"
-msgstr "Obține valoarea cheii CHEIE"
+msgstr "Primește valoarea CHEII"
 
 #: ../gio/gsettings-tool.c:511 ../gio/gsettings-tool.c:517
 #: ../gio/gsettings-tool.c:529 ../gio/gsettings-tool.c:535
-#, fuzzy
-#| msgid "SCHEMA KEY"
 msgid "SCHEMA[:PATH] KEY"
-msgstr "SCHEMĂ CHEIE"
+msgstr "SCHEMĂ[:CALE] CHEIE"
 
 #: ../gio/gsettings-tool.c:516
+#, fuzzy
+#| msgid "Queries the range of valid values for KEY"
 msgid "Query the range of valid values for KEY"
-msgstr ""
+msgstr "Interoghează intervalul valorilor valide pentru CHEIE"
 
 #: ../gio/gsettings-tool.c:522
 #, fuzzy
-#| msgid "Set the value of KEY"
+#| msgid "Sets the value of KEY to VALUE"
 msgid "Set the value of KEY to VALUE"
-msgstr "Definește valoarea cheii CHEIE"
+msgstr "Definește valoarea CHEII la VALOARE"
 
 #: ../gio/gsettings-tool.c:523
-#, fuzzy
-#| msgid "SCHEMA KEY VALUE"
 msgid "SCHEMA[:PATH] KEY VALUE"
-msgstr "SCHEMĂ CHEIE VALOARE"
+msgstr "SCHEMĂ[:CALE] CHEIE VALOARE"
 
 #: ../gio/gsettings-tool.c:528
 #, fuzzy
-#| msgid "Sets KEY to its default value"
+#| msgid "Resets KEY to its default value"
 msgid "Reset KEY to its default value"
-msgstr "Definește CHEIE la valoarea implicită"
+msgstr "Restabilește CHEIA la valoarea ei implicită"
 
 #: ../gio/gsettings-tool.c:534
 #, fuzzy
-#| msgid "Find out whether KEY is writable"
+#| msgid "Checks if KEY is writable"
 msgid "Check if KEY is writable"
-msgstr "Află dacă cheia CHEIE poate fi scrisă"
+msgstr "Verifică dacă CHEIA poate fi scrisă"
 
 #: ../gio/gsettings-tool.c:540
+#, fuzzy
+#| msgid ""
+#| "Monitors KEY for changes.\n"
+#| "If no KEY is specified, monitor all keys in SCHEMA.\n"
+#| "Use ^C to stop monitoring.\n"
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
+"Monitorizează CHEIA pentru modificări.\n"
+"Dacă nicio CHEIE nu este specificată, monitorizează toate cheile din "
+"SCHEMĂ.\n"
+"Folosiți ^C pentru a opri monitorizarea.\n"
 
 #: ../gio/gsettings-tool.c:543
-#, fuzzy
-#| msgid "SCHEMA KEY"
 msgid "SCHEMA[:PATH] [KEY]"
-msgstr "SCHEMĂ CHEIE"
+msgstr "SCHEMĂ[:CALE] [CHEIE]"
 
 #: ../gio/gsettings-tool.c:547
-#, fuzzy, c-format
-#| msgid "Unknown command '%s'\n"
+#, c-format
 msgid ""
 "Unknown command %s\n"
 "\n"
-msgstr "Comandă necunoscută „%s”\n"
+msgstr ""
+"Comandă necunoscută %s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:555
 msgid ""
@@ -3331,6 +3342,25 @@ msgid ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
+"Utilizare:\n"
+"  gsettings COMANDĂ [ARGUMENTE...]\n"
+"\n"
+"Comenzi:\n"
+"  help                      Arată aceste informații\n"
+"  list-schemas              Listează schemele instalate\n"
+"  list-relocatable-schemas  Listează schemele relocalizabile\n"
+"  list-keys                 Listează cheile dintr-o schemă\n"
+"  list-children             Listează copiii unei scheme\n"
+"  list-recursively          Listează cheile și valorile, recursiv\n"
+"  range                     Interoghează intervalul unei chei\n"
+"  get                       Obține valoarea unei chei\n"
+"  set                       Setează valoarea unei chei\n"
+"  reset                     Resetează valoarea unei chei\n"
+"  writable                  Verifică dacă o cheie poate fi scrisă\n"
+"  monitor                   Monitorizează modificările\n"
+"\n"
+"Folosiți comanda „gsettings help COMANDĂ” pentru a obține ajutor detaliat.\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:576
 #, c-format
@@ -3341,45 +3371,45 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"Utilizare:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:581
 msgid "Arguments:\n"
-msgstr ""
+msgstr "Argumente:\n"
 
 #: ../gio/gsettings-tool.c:585
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr ""
 
 #: ../gio/gsettings-tool.c:589
-#, fuzzy
-#| msgid ""
-#| "Arguments:\n"
-#| "  SCHEMA      The id of the schema\n"
-#| "  KEY         The name of the key\n"
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 msgstr ""
-"Argumente:\n"
-"  SCHEMĂ      Identificatorul schemei\n"
-"  CHEIE       Numele cheii\n"
+"  SCHEMĂ    Numele schemei\n"
+"  CALE      Calea, pentru schemele relocalizabile\n"
 
 #: ../gio/gsettings-tool.c:594
 msgid "  KEY       The (optional) key within the schema\n"
-msgstr ""
+msgstr "  CHEIE     Cheia (opțională) din schemă\n"
 
 #: ../gio/gsettings-tool.c:598
 msgid "  KEY       The key within the schema\n"
-msgstr ""
+msgstr "  CHEIE     Cheia din schemă\n"
 
 #: ../gio/gsettings-tool.c:602
 msgid "  VALUE     The value to set\n"
-msgstr ""
+msgstr "  VALOARE   Valoarea de stabilit\n"
 
 #: ../gio/gsettings-tool.c:691
-#, c-format
+#, fuzzy, c-format
+#| msgid "Empty schema name given"
 msgid "Empty schema name given\n"
-msgstr ""
+msgstr "Numele schemei dat este gol "
 
 #: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
@@ -3559,7 +3589,7 @@ msgstr ""
 #: ../gio/gsocks5proxy.c:239
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
-"Autentificarea SOCKSv5 a eşuat din cauza unui nume de utilizator sau a unei "
+"Autentificarea SOCKSv5 a eșuat din cauza unui nume de utilizator sau a unei "
 "parole greșite."
 
 #: ../gio/gsocks5proxy.c:289
@@ -3602,8 +3632,6 @@ msgid "SOCKSv5 proxy does not support provided address type."
 msgstr "Proxy-ul SOCKSv5 nu acceptă tipul de adresă furnizat."
 
 #: ../gio/gsocks5proxy.c:402
-#, fuzzy
-#| msgid "Unkown SOCKSv5 proxy error."
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "Eroare necunoscută a proxy-ului SOCKSv5."
 
@@ -3614,15 +3642,15 @@ msgstr "Nu se poate gestiona versiunea %d a codării GThemedIcon"
 
 #: ../gio/gtlscertificate.c:228
 msgid "No PEM-encoded certificate found"
-msgstr ""
+msgstr "Nu s-a găsit niciun certificat codificat PEM"
 
 #: ../gio/gtlscertificate.c:237
 msgid "Could not parse PEM-encoded certificate"
-msgstr ""
+msgstr "Nu s-a putut analiza certificatul codificat PEM"
 
 #: ../gio/gtlscertificate.c:258
 msgid "Could not parse PEM-encoded private key"
-msgstr ""
+msgstr "Nu s-a putut analiza cheia privată codificată PEM"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
