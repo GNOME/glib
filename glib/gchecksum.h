@@ -69,7 +69,7 @@ void                  g_checksum_free               (GChecksum       *checksum);
 void                  g_checksum_update             (GChecksum       *checksum,
                                                      const guchar    *data,
                                                      gssize           length);
-const gchar *         g_checksum_get_string         (GChecksum       *checksum);
+G_CONST_RETURN gchar *g_checksum_get_string         (GChecksum       *checksum);
 void                  g_checksum_get_digest         (GChecksum       *checksum,
                                                      guint8          *buffer,
                                                      gsize           *digest_len);

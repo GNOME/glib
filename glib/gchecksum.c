@@ -1289,7 +1289,7 @@ g_checksum_update (GChecksum    *checksum,
  *
  * Since: 2.16
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_checksum_get_string (GChecksum *checksum)
 {
   gchar *str = NULL;

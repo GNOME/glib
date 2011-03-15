@@ -742,7 +742,7 @@ g_binding_get_target (GBinding *binding)
  *
  * Since: 2.26
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_binding_get_source_property (GBinding *binding)
 {
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);
@@ -761,7 +761,7 @@ g_binding_get_source_property (GBinding *binding)
  *
  * Since: 2.26
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_binding_get_target_property (GBinding *binding)
 {
   g_return_val_if_fail (G_IS_BINDING (binding), NULL);

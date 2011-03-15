@@ -1819,7 +1819,7 @@ g_markup_parse_context_end_parse (GMarkupParseContext  *context,
  *
  * Since: 2.2
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_markup_parse_context_get_element (GMarkupParseContext *context)
 {
   g_return_val_if_fail (context != NULL, NULL);
@@ -1850,7 +1850,7 @@ g_markup_parse_context_get_element (GMarkupParseContext *context)
  *
  * Since: 2.16
  */
-const GSList *
+G_CONST_RETURN GSList *
 g_markup_parse_context_get_element_stack (GMarkupParseContext *context)
 {
   g_return_val_if_fail (context != NULL, NULL);

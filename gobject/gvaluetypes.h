@@ -214,7 +214,7 @@ void		      g_value_set_string	(GValue	      *value,
 						 const gchar  *v_string);
 void		      g_value_set_static_string (GValue	      *value,
 						 const gchar  *v_string);
-const gchar *         g_value_get_string	(const GValue *value);
+G_CONST_RETURN gchar* g_value_get_string	(const GValue *value);
 gchar*		      g_value_dup_string	(const GValue *value);
 void		      g_value_set_pointer	(GValue	      *value,
 						 gpointer      v_pointer);

@@ -598,7 +598,7 @@ g_module_make_resident (GModule *module)
   module->is_resident = TRUE;
 }
 
-const gchar *
+G_CONST_RETURN gchar*
 g_module_error (void)
 {
   return g_static_private_get (&module_error_private);
@@ -648,7 +648,7 @@ g_module_symbol (GModule	*module,
   return !module_error;
 }
 
-const gchar *
+G_CONST_RETURN gchar*
 g_module_name (GModule *module)
 {
   g_return_val_if_fail (module != NULL, NULL);
@@ -663,7 +663,7 @@ g_module_name (GModule *module)
 
 #undef g_module_name
 
-const gchar *
+G_CONST_RETURN gchar*
 g_module_name (GModule *module)
 {
   g_return_val_if_fail (module != NULL, NULL);

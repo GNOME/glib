@@ -711,7 +711,7 @@ g_parse_debug_string  (const gchar     *string,
  * g_path_get_basename() allocates new memory for the returned string, unlike
  * this function which returns a pointer into the argument.
  **/
-const gchar *
+G_CONST_RETURN gchar*
 g_basename (const gchar	   *file_name)
 {
   register gchar *base;
@@ -857,7 +857,7 @@ g_path_is_absolute (const gchar *file_name)
  *
  * Returns: a pointer into @file_name after the root component.
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_path_skip_root (const gchar *file_name)
 {
   g_return_val_if_fail (file_name != NULL, NULL);
@@ -1108,7 +1108,7 @@ g_get_current_dir (void)
  * overwritten by the next call to g_getenv(), g_setenv() or
  * g_unsetenv().
  **/
-const gchar *
+G_CONST_RETURN gchar*
 g_getenv (const gchar *variable)
 {
 #ifndef G_OS_WIN32
@@ -1872,7 +1872,7 @@ g_get_any_init_locked (void)
  *
  * Returns: the user name of the current user.
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_get_user_name (void)
 {
   g_get_any_init_locked ();
@@ -1890,7 +1890,7 @@ g_get_user_name (void)
  *
  * Returns: the user's real name.
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_get_real_name (void)
 {
   g_get_any_init_locked ();
@@ -1928,7 +1928,7 @@ g_get_real_name (void)
  *
  * Returns: the current user's home directory
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
   g_get_any_init_locked ();
@@ -1947,7 +1947,7 @@ g_get_home_dir (void)
  *
  * Returns: the directory to use for temporary files.
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_get_tmp_dir (void)
 {
   g_get_any_init_locked ();
@@ -2066,7 +2066,7 @@ static gchar *g_application_name = NULL;
  *
  * Since: 2.2
  **/
-const gchar *
+G_CONST_RETURN gchar*
 g_get_application_name (void)
 {
   gchar* retval;
@@ -2135,7 +2135,7 @@ g_set_application_name (const gchar *application_name)
  *               or freed.
  * Since: 2.6
  **/
-const gchar *
+G_CONST_RETURN gchar*
 g_get_user_data_dir (void)
 {
   gchar *data_dir;  
@@ -2223,7 +2223,7 @@ g_init_user_config_dir (void)
  *               or freed.
  * Since: 2.6
  **/
-const gchar *
+G_CONST_RETURN gchar*
 g_get_user_config_dir (void)
 {
   G_LOCK (g_utils_global);
@@ -2255,7 +2255,7 @@ g_get_user_config_dir (void)
  *               or freed.
  * Since: 2.6
  **/
-const gchar *
+G_CONST_RETURN gchar*
 g_get_user_cache_dir (void)
 {
   gchar *cache_dir;  
@@ -2700,7 +2700,7 @@ g_reload_user_special_dirs_cache (void)
  *
  * Since: 2.14
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_get_user_special_dir (GUserDirectory directory)
 {
   g_return_val_if_fail (directory >= G_USER_DIRECTORY_DESKTOP &&
@@ -2785,7 +2785,7 @@ get_module_share_dir (gconstpointer address)
   return retval;
 }
 
-const gchar * const *
+G_CONST_RETURN gchar * G_CONST_RETURN *
 g_win32_get_system_data_dirs_for_module (void (*address_of_function)())
 {
   GArray *data_dirs;
@@ -2810,7 +2810,7 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)())
 	      if (retval != NULL)
 		{
 		  G_UNLOCK (g_utils_global);
-		  return (const gchar * const *) retval;
+		  return (G_CONST_RETURN gchar * G_CONST_RETURN *) retval;
 		}
 	    }
 	}
@@ -2878,7 +2878,7 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)())
       G_UNLOCK (g_utils_global);
     }
 
-  return (const gchar * const *) retval;
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) retval;
 }
 
 #endif
@@ -2920,7 +2920,7 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)())
  *               not be modified or freed.
  * Since: 2.6
  **/
-const gchar * const * 
+G_CONST_RETURN gchar * G_CONST_RETURN * 
 g_get_system_data_dirs (void)
 {
   gchar **data_dir_vector;
@@ -2947,7 +2947,7 @@ g_get_system_data_dirs (void)
 
   G_UNLOCK (g_utils_global);
 
-  return (const gchar * const *) data_dir_vector;
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) data_dir_vector;
 }
 
 /**
@@ -2972,7 +2972,7 @@ g_get_system_data_dirs (void)
  *               not be modified or freed.
  * Since: 2.6
  **/
-const gchar * const *
+G_CONST_RETURN gchar * G_CONST_RETURN *
 g_get_system_config_dirs (void)
 {
   gchar *conf_dirs, **conf_dir_vector;
@@ -3008,7 +3008,7 @@ g_get_system_config_dirs (void)
     conf_dir_vector = g_system_config_dirs;
   G_UNLOCK (g_utils_global);
 
-  return (const gchar * const *) conf_dir_vector;
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) conf_dir_vector;
 }
 
 #ifndef G_OS_WIN32
@@ -3333,7 +3333,7 @@ language_names_cache_free (gpointer data)
  *
  * Since: 2.6
  **/
-const gchar * const * 
+G_CONST_RETURN gchar * G_CONST_RETURN * 
 g_get_language_names (void)
 {
   static GStaticPrivate cache_private = G_STATIC_PRIVATE_INIT;
@@ -3371,7 +3371,7 @@ g_get_language_names (void)
       cache->language_names = (gchar **) g_ptr_array_free (array, FALSE);
     }
 
-  return (const gchar * const *) cache->language_names;
+  return (G_CONST_RETURN gchar * G_CONST_RETURN *) cache->language_names;
 }
 
 /**
@@ -3642,7 +3642,7 @@ ensure_gettext_initialized(void)
  *
  * Returns: the transation of @str to the current locale
  */
-const gchar *
+G_CONST_RETURN gchar *
 glib_gettext (const gchar *str)
 {
   ensure_gettext_initialized();
@@ -3665,7 +3665,7 @@ glib_gettext (const gchar *str)
  *
  * Returns: the transation of @str to the current locale
  */
-const gchar *
+G_CONST_RETURN gchar *
 glib_pgettext(const gchar *msgctxtid,
               gsize        msgidoffset)
 {
@@ -3709,7 +3709,7 @@ g_get_current_dir (void)
 
 #undef g_getenv
 
-const gchar *
+G_CONST_RETURN gchar*
 g_getenv (const gchar *variable)
 {
   gchar *utf8_variable = g_locale_to_utf8 (variable, -1, NULL, NULL, NULL);
@@ -3758,7 +3758,7 @@ g_unsetenv (const gchar *variable)
 
 #undef g_get_user_name
 
-const gchar *
+G_CONST_RETURN gchar*
 g_get_user_name (void)
 {
   g_get_any_init_locked ();
@@ -3767,7 +3767,7 @@ g_get_user_name (void)
 
 #undef g_get_real_name
 
-const gchar *
+G_CONST_RETURN gchar*
 g_get_real_name (void)
 {
   g_get_any_init_locked ();
@@ -3776,7 +3776,7 @@ g_get_real_name (void)
 
 #undef g_get_home_dir
 
-const gchar *
+G_CONST_RETURN gchar*
 g_get_home_dir (void)
 {
   g_get_any_init_locked ();
@@ -3785,7 +3785,7 @@ g_get_home_dir (void)
 
 #undef g_get_tmp_dir
 
-const gchar *
+G_CONST_RETURN gchar*
 g_get_tmp_dir (void)
 {
   g_get_any_init_locked ();

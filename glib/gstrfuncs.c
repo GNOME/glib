@@ -933,7 +933,7 @@ g_ascii_strtoll (const gchar *nptr,
  *     is unknown, it returns "unknown error (&lt;code&gt;)". The string
  *     can only be used until the next call to g_strerror()
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_strerror (gint errnum)
 {
   static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT;
@@ -1414,7 +1414,7 @@ g_strerror (gint errnum)
  *     it returns "unknown signal (&lt;signum&gt;)". The string can only be
  *     used until the next call to g_strsignal()
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_strsignal (gint signum)
 {
   static GStaticPrivate msg_private = G_STATIC_PRIVATE_INIT;
@@ -2968,7 +2968,7 @@ g_str_has_prefix (const gchar  *str,
  *
  * Since: 2.4
  **/
-const gchar *
+G_CONST_RETURN gchar *
 g_strip_context  (const gchar *msgid,
                   const gchar *msgval)
 {
@@ -3034,7 +3034,7 @@ g_strv_length (gchar **str_array)
  *
  * Since: 2.16
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_dpgettext (const gchar *domain,
              const gchar *msgctxtid,
              gsize        msgidoffset)
@@ -3095,7 +3095,7 @@ g_dpgettext (const gchar *domain,
  *
  * Since: 2.18
  */
-const char *
+G_CONST_RETURN char *
 g_dpgettext2 (const char *domain,
               const char *msgctxt,
               const char *msgid)
@@ -3216,7 +3216,7 @@ _g_dgettext_should_translate (void)
  *
  * Since: 2.18
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_dgettext (const gchar *domain,
             const gchar *msgid)
 {
@@ -3242,7 +3242,7 @@ g_dgettext (const gchar *domain,
  *
  * Since: 2.26
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_dcgettext (const gchar *domain,
              const gchar *msgid,
              int          category)
@@ -3272,7 +3272,7 @@ g_dcgettext (const gchar *domain,
  *
  * Since: 2.18
  */
-const gchar *
+G_CONST_RETURN gchar *
 g_dngettext (const gchar *domain,
              const gchar *msgid,
              const gchar *msgid_plural,

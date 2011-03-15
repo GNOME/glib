@@ -103,9 +103,9 @@ gchar*	              g_strdelimit     (gchar	     *string,
 gchar*	              g_strcanon       (gchar        *string,
 					const gchar  *valid_chars,
 					gchar         substitutor);
-const gchar *         g_strerror       (gint	      errnum) G_GNUC_CONST;
-const gchar *         g_strsignal      (gint	      signum) G_GNUC_CONST;
-gchar *	              g_strreverse     (gchar	     *string);
+G_CONST_RETURN gchar* g_strerror       (gint	      errnum) G_GNUC_CONST;
+G_CONST_RETURN gchar* g_strsignal      (gint	      signum) G_GNUC_CONST;
+gchar*	              g_strreverse     (gchar	     *string);
 gsize	              g_strlcpy	       (gchar	     *dest,
 					const gchar  *src,
 					gsize         dest_size);
@@ -245,22 +245,22 @@ guint                 g_strv_length    (gchar       **str_array);
 gchar*                g_stpcpy         (gchar        *dest,
                                         const char   *src);
 
-const gchar *         g_strip_context  (const gchar *msgid, 
+G_CONST_RETURN gchar *g_strip_context  (const gchar *msgid, 
 					const gchar *msgval) G_GNUC_FORMAT(1);
 
-const gchar *         g_dgettext       (const gchar *domain,
+G_CONST_RETURN gchar *g_dgettext       (const gchar *domain,
 					const gchar *msgid) G_GNUC_FORMAT(2);
-const gchar *         g_dcgettext      (const gchar *domain,
+G_CONST_RETURN gchar *g_dcgettext      (const gchar *domain,
 					const gchar *msgid,
                                         int          category) G_GNUC_FORMAT(2);
-const gchar *         g_dngettext      (const gchar *domain,
+G_CONST_RETURN gchar *g_dngettext      (const gchar *domain,
 					const gchar *msgid,
 					const gchar *msgid_plural,
 					gulong       n) G_GNUC_FORMAT(3);
-const gchar *         g_dpgettext      (const gchar *domain,
+G_CONST_RETURN gchar *g_dpgettext      (const gchar *domain,
                                         const gchar *msgctxtid,
                                         gsize        msgidoffset) G_GNUC_FORMAT(2);
-const gchar *         g_dpgettext2     (const gchar *domain,
+G_CONST_RETURN gchar *g_dpgettext2     (const gchar *domain,
                                         const gchar *context,
                                         const gchar *msgid) G_GNUC_FORMAT(3);
 

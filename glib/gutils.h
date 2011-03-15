@@ -117,25 +117,25 @@ G_BEGIN_DECLS
 #define g_get_tmp_dir g_get_tmp_dir_utf8
 #endif
 
-const gchar *         g_get_user_name        (void);
-const gchar *         g_get_real_name        (void);
-const gchar *         g_get_home_dir         (void);
-const gchar *         g_get_tmp_dir          (void);
-const gchar *         g_get_host_name	     (void);
-gchar *               g_get_prgname          (void);
+G_CONST_RETURN gchar* g_get_user_name        (void);
+G_CONST_RETURN gchar* g_get_real_name        (void);
+G_CONST_RETURN gchar* g_get_home_dir         (void);
+G_CONST_RETURN gchar* g_get_tmp_dir          (void);
+G_CONST_RETURN gchar* g_get_host_name	     (void);
+gchar*                g_get_prgname          (void);
 void                  g_set_prgname          (const gchar *prgname);
-const gchar *         g_get_application_name (void);
+G_CONST_RETURN gchar* g_get_application_name (void);
 void                  g_set_application_name (const gchar *application_name);
 
 void    g_reload_user_special_dirs_cache     (void);
-const gchar *         g_get_user_data_dir      (void);
-const gchar *         g_get_user_config_dir    (void);
-const gchar *         g_get_user_cache_dir     (void);
-const gchar * const * g_get_system_data_dirs   (void);
+G_CONST_RETURN gchar*    g_get_user_data_dir      (void);
+G_CONST_RETURN gchar*    g_get_user_config_dir    (void);
+G_CONST_RETURN gchar*    g_get_user_cache_dir     (void);
+G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_data_dirs   (void);
 
 #ifdef G_OS_WIN32
 /* This functions is not part of the public GLib API */
-const gchar* const * g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void));
+G_CONST_RETURN gchar* G_CONST_RETURN * g_win32_get_system_data_dirs_for_module (void (*address_of_function)(void));
 #endif
 
 #if defined (G_OS_WIN32) && defined (G_CAN_INLINE) && !defined (__cplusplus)
@@ -143,7 +143,7 @@ const gchar* const * g_win32_get_system_data_dirs_for_module (void (*address_of_
  * g_get_system_data_dirs() in your code, never mind that that is
  * actually a macro and you will in fact call this inline function.
  */
-static inline const gchar * const *
+static inline G_CONST_RETURN gchar * G_CONST_RETURN *
 _g_win32_get_system_data_dirs (void)
 {
   return g_win32_get_system_data_dirs_for_module ((void (*)(void)) &_g_win32_get_system_data_dirs);
@@ -151,11 +151,11 @@ _g_win32_get_system_data_dirs (void)
 #define g_get_system_data_dirs _g_win32_get_system_data_dirs
 #endif
 
-const gchar * const * g_get_system_config_dirs (void);
+G_CONST_RETURN gchar* G_CONST_RETURN * g_get_system_config_dirs (void);
 
 const gchar * g_get_user_runtime_dir (void);
 
-const gchar * const * g_get_language_names (void);
+G_CONST_RETURN gchar* G_CONST_RETURN * g_get_language_names (void);
 
 gchar **g_get_locale_variants (const gchar *locale);
 
@@ -194,7 +194,7 @@ typedef enum {
   G_USER_N_DIRECTORIES
 } GUserDirectory;
 
-const gchar * g_get_user_special_dir (GUserDirectory directory);
+G_CONST_RETURN gchar* g_get_user_special_dir (GUserDirectory directory);
 
 typedef struct _GDebugKey	GDebugKey;
 struct _GDebugKey
@@ -222,7 +222,7 @@ gint                  g_vsnprintf          (gchar       *string,
 gboolean              g_path_is_absolute   (const gchar *file_name);
 
 /* In case of absolute paths, skip the root part */
-const gchar *         g_path_skip_root     (const gchar *file_name);
+G_CONST_RETURN gchar* g_path_skip_root     (const gchar *file_name);
 
 #ifndef G_DISABLE_DEPRECATED
 
@@ -230,7 +230,7 @@ const gchar *         g_path_skip_root     (const gchar *file_name);
  * major release of GLib. Use g_path_get_dirname/g_path_get_basename
  * instead. Whatch out! The string returned by g_path_get_basename
  * must be g_freed, while the string returned by g_basename must not.*/
-const gchar *         g_basename           (const gchar *file_name);
+G_CONST_RETURN gchar* g_basename           (const gchar *file_name);
 #define g_dirname g_path_get_dirname
 
 #endif /* G_DISABLE_DEPRECATED */
@@ -256,7 +256,7 @@ void                  g_nullify_pointer    (gpointer    *nullify_location);
 #define g_find_program_in_path g_find_program_in_path_utf8
 #endif
 
-const gchar *         g_getenv             (const gchar *variable);
+G_CONST_RETURN gchar* g_getenv             (const gchar *variable);
 gboolean              g_setenv             (const gchar *variable,
 					    const gchar *value,
 					    gboolean     overwrite);

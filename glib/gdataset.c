@@ -1129,7 +1129,7 @@ g_quark_from_static_string (const gchar *string)
  *
  * Gets the string associated with the given #GQuark.
  **/
-const gchar *
+G_CONST_RETURN gchar*
 g_quark_to_string (GQuark quark)
 {
   gchar* result = NULL;
@@ -1175,7 +1175,7 @@ g_quark_new (gchar *string)
  *
  * Since: 2.10
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_intern_string (const gchar *string)
 {
   const gchar *result;
@@ -1205,7 +1205,7 @@ g_intern_string (const gchar *string)
  *
  * Since: 2.10
  */
-const gchar *
+G_CONST_RETURN gchar*
 g_intern_static_string (const gchar *string)
 {
   GQuark quark;

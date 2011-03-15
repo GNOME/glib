@@ -350,7 +350,7 @@ gboolean g_source_is_destroyed    (GSource        *source);
 
 void                 g_source_set_name       (GSource        *source,
                                               const char     *name);
-const char *         g_source_get_name       (GSource        *source);
+G_CONST_RETURN char* g_source_get_name       (GSource        *source);
 void                 g_source_set_name_by_id (guint           tag,
                                               const char     *name);
 

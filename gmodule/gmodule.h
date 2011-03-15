@@ -71,7 +71,7 @@ gboolean              g_module_close         (GModule      *module);
 void                  g_module_make_resident (GModule      *module);
 
 /* query the last module error as a string */
-const gchar *         g_module_error         (void);
+G_CONST_RETURN gchar* g_module_error         (void);
 
 /* retrieve a symbol pointer from `module', returns TRUE on success */
 gboolean              g_module_symbol        (GModule      *module,
@@ -79,7 +79,7 @@ gboolean              g_module_symbol        (GModule      *module,
 					      gpointer     *symbol);
 
 /* retrieve the file name from an existing module */
-const gchar *         g_module_name          (GModule      *module);
+G_CONST_RETURN gchar* g_module_name          (GModule      *module);
 
 /* Build the actual file name containing a module. `directory' is the
  * directory where the module file is supposed to be, or NULL or empty
