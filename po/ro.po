@@ -2,22 +2,22 @@
 # Copyright (C) 2001 - 2010 Free Software Foundation, Inc.
 # Marius Andreiana <mandreiana@yahoo.com>, 2001.
 # Mișu Moldovan <dumol@gnome.ro>, 2004 - 2010.
-# Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2010.
+# Lucian Adrian Grijincu <lucian.grijincu@gmail.com>, 2010, 2011.
 # Lupescu Mircea <mircea.crazy@gmail.com>, 2010.
 # Lupescu Mircea <mircea.crazy@gmail.com>, 2011.
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&k"
+"eywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-14 19:50+0000\n"
-"PO-Revision-Date: 2010-12-05 16:09+0200\n"
-"Last-Translator: Lupescu Mircea <mircea.crazy@gmail.com>\n"
-"Language-Team: GNOME-ro Team\n"
+"PO-Revision-Date: 2011-03-15 14:03+0200\n"
+"Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
+"Language-Team: Romanian Gnome Team <gnomero-list@lists.sourceforge.net>\n"
+"Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ro\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
 "20)) ? 1 : 2);;\n"
 "X-Generator: Virtaal 0.6.1\n"
@@ -1514,8 +1514,8 @@ msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 msgstr ""
-"Eroare în adresa „%s” - transportul unix necesită exact o cheie „path” sau "
-"„abstract” să fie definită"
+"Eroare în adresa „%s” - transportul unix necesită exact una din cheile „path” sau "
+"„abstract” să fie setată"
 
 #: ../gio/gdbusaddress.c:583
 #, c-format
@@ -1609,7 +1609,7 @@ msgid ""
 "variable is not set"
 msgstr ""
 "Nu s-a putut determina adresa magistralei pentru că variabila de mediu "
-"DBUS_STARTER_BUS_TYPE nu este definită"
+"DBUS_STARTER_BUS_TYPE nu este setată"
 
 #: ../gio/gdbusaddress.c:1261
 #, c-format
@@ -1746,7 +1746,7 @@ msgstr ""
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
-"Eroare la definirea proprietății „%s”: Se aștepta tipul „%s”, dar s-a primit "
+"Eroare la setarea proprietății „%s”: Se aștepta tipul „%s”, dar s-a primit "
 "„%s”"
 
 #: ../gio/gdbusconnection.c:3919
@@ -1998,7 +1998,7 @@ msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
 msgstr ""
-"S-a încercat definirea proprietății %s cu tipul %s, dar conform interfeței "
+"S-a încercat setarea proprietății %s cu tipul %s, dar conform interfeței "
 "așteptate tipul este %s"
 
 #: ../gio/gdbusproxy.c:1235
@@ -2884,7 +2884,7 @@ msgstr "Nume incorect de atribut extins"
 #: ../gio/glocalfileinfo.c:774
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
-msgstr "Eroare la stabilirea atributului extins „%s”: %s"
+msgstr "Eroare la setarea atributului extins „%s”: %s"
 
 #: ../gio/glocalfileinfo.c:1483 ../gio/glocalfileoutputstream.c:833
 #, c-format
@@ -3273,7 +3273,7 @@ msgstr "Interoghează intervalul valorilor valide pentru CHEIE"
 #, fuzzy
 #| msgid "Sets the value of KEY to VALUE"
 msgid "Set the value of KEY to VALUE"
-msgstr "Definește valoarea CHEII la VALOARE"
+msgstr "Setează valoarea CHEII la VALOARE"
 
 #: ../gio/gsettings-tool.c:523
 msgid "SCHEMA[:PATH] KEY VALUE"
@@ -3283,7 +3283,7 @@ msgstr "SCHEMĂ[:CALE] CHEIE VALOARE"
 #, fuzzy
 #| msgid "Resets KEY to its default value"
 msgid "Reset KEY to its default value"
-msgstr "Restabilește CHEIA la valoarea ei implicită"
+msgstr "Resetează CHEIA la valoarea ei implicită"
 
 #: ../gio/gsettings-tool.c:534
 #, fuzzy
@@ -3403,7 +3403,7 @@ msgstr "  CHEIE     Cheia din schemă\n"
 
 #: ../gio/gsettings-tool.c:602
 msgid "  VALUE     The value to set\n"
-msgstr "  VALOARE   Valoarea de stabilit\n"
+msgstr "  VALOARE   Valoarea de setat\n"
 
 #: ../gio/gsettings-tool.c:691
 #, fuzzy, c-format
@@ -3814,7 +3814,7 @@ msgstr "Date comprimate nevalid"
 #~ "Comenzi:\n"
 #~ "  help        Afișează aceste informații\n"
 #~ "  get         Obține valoarea unei chei\n"
-#~ "  set         Definește valoarea unei chei\n"
+#~ "  set         Setează valoarea unei chei\n"
 #~ "  reset       Resetează valoarea unei chei\n"
 #~ "  monitor     Monitorizează o cheie pentru schimbări\n"
 #~ "  writable    Verifică dacă o cheie poate fi scrisă\n"
