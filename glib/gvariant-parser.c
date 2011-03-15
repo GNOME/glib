@@ -1014,6 +1014,12 @@ tuple_get_value (AST                 *ast,
     {
       GVariant *child;
 
+      if (childtype == NULL)
+        {
+          g_variant_builder_clear (&builder);
+          return ast_type_error (ast, type, error);
+        }
+
       if (!(child = ast_get_value (tuple->children[i], childtype, error)))
         {
           g_variant_builder_clear (&builder);
@@ -1022,6 +1028,12 @@ tuple_get_value (AST                 *ast,
 
       g_variant_builder_add_value (&builder, child);
       childtype = g_variant_type_next (childtype);
+    }
+
+  if (childtype != NULL)
+    {
+      g_variant_builder_clear (&builder);
+      return ast_type_error (ast, type, error);
     }
 
   return g_variant_builder_end (&builder);
