@@ -588,7 +588,7 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"Nu s-a putut procesa „%-.*s”, care ar fi trebuit să fie o cifră într-un "
+"Nu s-a putut parsa „%-.*s”, care ar fi trebuit să fie o cifră într-un "
 "caracter referință (de exemplu &#234;). Poate cifra este prea mare"
 
 #: ../glib/gmarkup.c:649
@@ -1252,7 +1252,7 @@ msgstr "Opțiuni aplicație:"
 #: ../glib/goption.c:997 ../glib/goption.c:1067
 #, c-format
 msgid "Cannot parse integer value '%s' for %s"
-msgstr "Nu se poate prelucra valoarea întregului „%s” pentru %s"
+msgstr "Nu se poate parsa valoarea întregului „%s” pentru %s"
 
 #: ../glib/goption.c:1007 ../glib/goption.c:1075
 #, c-format
@@ -1262,7 +1262,7 @@ msgstr "Valoarea întregului „%s” pentru %s este în afara limitelor"
 #: ../glib/goption.c:1032
 #, c-format
 msgid "Cannot parse double value '%s' for %s"
-msgstr "Nu se poate prelucra valoarea dublă „%s” pentru %s"
+msgstr "Nu se poate parsa valoarea dublă „%s” pentru %s"
 
 #: ../glib/goption.c:1040
 #, c-format
@@ -2670,7 +2670,7 @@ msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %"
 "s.  "
 msgstr ""
-"eroare la analizarea cheii „%s” în schema „%s” specificată în fișierul de "
+"eroare la parsarea cheii „%s” în schema „%s” specificată în fișierul de "
 "suprascriere „%s”: %s."
 
 #: ../gio/glib-compile-schemas.c:1797
@@ -3636,11 +3636,11 @@ msgstr "Nu s-a găsit niciun certificat codificat PEM"
 
 #: ../gio/gtlscertificate.c:237
 msgid "Could not parse PEM-encoded certificate"
-msgstr "Nu s-a putut analiza certificatul codificat PEM"
+msgstr "Nu s-a putut parsa certificatul codificat PEM"
 
 #: ../gio/gtlscertificate.c:258
 msgid "Could not parse PEM-encoded private key"
-msgstr "Nu s-a putut analiza cheia privată codificată PEM"
+msgstr "Nu s-a putut parsa cheia privată codificată PEM"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
