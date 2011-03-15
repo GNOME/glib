@@ -96,6 +96,8 @@
  * described by the following DTD:
  * |[<xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/gschema.dtd"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include>]|
  *
+ * glib-compile-schemas expects schema files to have the extension <filename>.gschema.xml</filename>
+ *
  * At runtime, schemas are identified by their id (as specified
  * in the <tag class="attribute">id</tag> attribute of the
  * <tag class="starttag">schema</tag> element). The
@@ -199,6 +201,10 @@
  *     key1='string'
  *     key2=1.5
  *     </programlisting></informalexample>
+ *   </para>
+ *   <para>
+ *     glib-compile-schemas expects schema files to have the extension
+ *     <filename>.gschema.override</filename>
  *   </para>
  * </refsect2>
  *
