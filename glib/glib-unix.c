@@ -1,7 +1,7 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 2011 Red Hat, Inc.
  *
- * glib-unix.c: Unix specific API wrappers and convenience functions 
+ * glib-unix.c: UNIX specific API wrappers and convenience functions 
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@
 
 /**
  * SECTION:gunix
- * @short_description: Unix-specific utilities and integration
+ * @short_description: UNIX-specific utilities and integration
  * @include: glib-unix.h
  *
  * Most of GLib is intended to be portable; in constrast, this set of
@@ -77,15 +77,14 @@ g_unix_set_error_from_errno_saved (GError **error,
  * @flags: Bitfield of file descriptor flags, see "man 2 fcntl"
  * @error: a #GError
  *
- * Similar to the Unix pipe() call, but on modern systems like
- * Linux uses the pipe2 system call, which atomically creates
- * a pipe with the configured flags.  The only supported flag
- * currently is FD_CLOEXEC.  If for example you want to configure
- * O_NONBLOCK, that must still be done separately with fcntl().
+ * Similar to the UNIX pipe() call, but on modern systems like Linux
+ * uses the pipe2 system call, which atomically creates a pipe with
+ * the configured flags.  The only supported flag currently is
+ * FD_CLOEXEC.  If for example you want to configure O_NONBLOCK, that
+ * must still be done separately with fcntl().
  *
- * Note in particular this function does *not* take O_CLOEXEC, it
- * takes FD_CLOEXEC as if for fcntl(); these are different on
- * Linux/glibc.
+ * <note>This function does *not* take O_CLOEXEC, it takes FD_CLOEXEC as if
+ * for fcntl(); these are different on Linux/glibc.</note>
  *
  * Returns: %TRUE on success, %FALSE if not (and errno will be set).
  *

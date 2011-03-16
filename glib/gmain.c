@@ -77,6 +77,7 @@
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
 #include <errno.h>
+#include <string.h>
 
 #ifdef G_OS_WIN32
 #define STRICT
@@ -364,6 +365,8 @@ static void g_main_context_remove_poll_unlocked (GMainContext *context,
 						 GPollFD      *fd);
 static void g_main_context_wakeup_unlocked      (GMainContext *context);
 
+static void _g_main_wake_up_all_contexts        (void);
+
 static gboolean g_timeout_prepare  (GSource     *source,
 				    gint        *timeout);
 static gboolean g_timeout_check    (GSource     *source);
@@ -388,6 +391,15 @@ static GMainContext *default_main_context;
 static GSList *main_contexts_without_pipe = NULL;
 
 #ifndef G_OS_WIN32
+
+/* The UNIX signal pipe contains a single byte specifying which
+ * signal was received.
+ */ 
+#define _UNIX_SIGNAL_PIPE_SIGCHLD_CHAR 'C'
+/* Guards unix_signal_wake_up_pipe */
+G_LOCK_DEFINE_STATIC (unix_signal_lock);
+static gint unix_signal_wake_up_pipe[2] = {-1, -1};
+
 /* Child status monitoring code */
 enum {
   CHILD_WATCH_UNINITIALIZED,
@@ -396,7 +408,6 @@ enum {
 };
 static gint child_watch_init_state = CHILD_WATCH_UNINITIALIZED;
 static gint child_watch_count = 1;
-static gint child_watch_wake_up_pipe[2] = {0, 0};
 #endif /* !G_OS_WIN32 */
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
@@ -3717,6 +3728,30 @@ g_main_context_get_poll_func (GMainContext *context)
   return result;
 }
 
+static void
+_g_main_wake_up_all_contexts (void)
+{
+  GSList *list;
+
+  /* We were woken up.  Wake up all other contexts in all other threads */
+  G_LOCK (main_context_list);
+  for (list = main_context_list; list; list = list->next)
+    {
+      GMainContext *context;
+
+      context = list->data;
+      if (g_atomic_int_get (&context->ref_count) > 0)
+	/* Due to racing conditions we can find ref_count == 0, in
+	 * that case, however, the context is still not destroyed
+	 * and no poll can be active, otherwise the ref_count
+	 * wouldn't be 0
+	 */
+	g_main_context_wakeup (context);
+    }
+  G_UNLOCK (main_context_list);
+}
+
+
 /* HOLDS: context's lock */
 /* Wake the main loop up from a poll() */
 static void
@@ -4263,7 +4298,8 @@ g_child_watch_signal_handler (int signum)
 
   if (child_watch_init_state == CHILD_WATCH_INITIALIZED_THREADED)
     {
-      write (child_watch_wake_up_pipe[1], "B", 1);
+      char buf[1] = { _UNIX_SIGNAL_PIPE_SIGCHLD_CHAR };
+      write (unix_signal_wake_up_pipe[1], buf, 1);
     }
   else
     {
@@ -4288,52 +4324,92 @@ g_child_watch_source_init_single (void)
   sigaction (SIGCHLD, &action, NULL);
 }
 
-G_GNUC_NORETURN static gpointer
-child_watch_helper_thread (gpointer data) 
+static gpointer unix_signal_helper_thread (gpointer data) G_GNUC_NORETURN;
+
+/*
+ * This thread is created whenever anything in GLib needs
+ * to deal with UNIX signals; at present, just SIGCHLD
+ * from g_child_watch_source_new().
+ *
+ * Note: We could eventually make this thread a more public interface
+ * and allow e.g. GDBus to use it instead of its own worker thread.
+ */
+static gpointer
+unix_signal_helper_thread (gpointer data) 
 {
   while (1)
     {
-      gchar b[20];
-      GSList *list;
+      gchar b[128];
+      ssize_t i, bytes_read;
 
-      read (child_watch_wake_up_pipe[0], b, 20);
-
-      /* We were woken up.  Wake up all other contexts in all other threads */
-      G_LOCK (main_context_list);
-      for (list = main_context_list; list; list = list->next)
+      bytes_read = read (unix_signal_wake_up_pipe[0], b, sizeof (b));
+      if (bytes_read < 0)
 	{
-	  GMainContext *context;
-
-	  context = list->data;
-	  if (g_atomic_int_get (&context->ref_count) > 0)
-	    /* Due to racing conditions we can find ref_count == 0, in
-	     * that case, however, the context is still not destroyed
-	     * and no poll can be active, otherwise the ref_count
-	     * wouldn't be 0 */
-	    g_main_context_wakeup (context);
+	  g_warning ("Failed to read from child watch wake up pipe: %s",
+		     strerror (errno));
+	  /* Not much we can do here sanely; just wait a second and hope
+	   * it was transient.
+	   */
+	  g_usleep (G_USEC_PER_SEC);
+	  continue;
 	}
-      G_UNLOCK (main_context_list);
+      for (i = 0; i < bytes_read; i++)
+	{
+	  switch (b[i])
+	    {
+	    case _UNIX_SIGNAL_PIPE_SIGCHLD_CHAR:
+	      /* The child watch source will call waitpid() in its
+	       * prepare() and check() methods; however, we don't
+	       * know which pid exited, so we need to wake up
+	       * all contexts.  Note: actually we could get the pid
+	       * from the "siginfo_t" via the handler, but to pass
+	       * that info down the pipe would require a more structured
+	       * data stream (as opposed to a single byte).
+	       */
+	      _g_main_wake_up_all_contexts ();
+	      break;
+	    default:
+	      g_warning ("Invalid char '%c' read from child watch pipe", b[i]);
+	      break;
+	    }
+	}
     }
+}
+
+static void
+_g_main_init_unix_signal_wakeup_pipe (void)
+{
+  GError *error = NULL;
+
+  G_LOCK (unix_signal_lock);
+
+  if (unix_signal_wake_up_pipe[0] >= 0)
+    goto out;
+
+  g_assert (g_thread_supported());
+
+  if (!g_unix_pipe_flags (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
+    g_error ("Cannot create UNIX signal wake up pipe: %s\n", error->message);
+  fcntl (unix_signal_wake_up_pipe[1], F_SETFL, O_NONBLOCK | fcntl (unix_signal_wake_up_pipe[1], F_GETFL));
+
+  /* We create a helper thread that polls on the wakeup pipe indefinitely */
+  /* FIXME: Think this through for races */
+  if (g_thread_create (unix_signal_helper_thread, NULL, FALSE, &error) == NULL)
+    g_error ("Cannot create a thread to monitor UNIX signals: %s\n", error->message);
+
+ out:
+  G_UNLOCK (unix_signal_lock);
 }
 
 static void
 g_child_watch_source_init_multi_threaded (void)
 {
-  GError *error = NULL;
   struct sigaction action;
+  
+  _g_main_init_unix_signal_wakeup_pipe ();
 
-  g_assert (g_thread_supported());
-
-  if (!g_unix_pipe_flags (child_watch_wake_up_pipe, FD_CLOEXEC, &error))
-    g_error ("Cannot create wake up pipe: %s\n", error->message);
-  fcntl (child_watch_wake_up_pipe[1], F_SETFL, O_NONBLOCK | fcntl (child_watch_wake_up_pipe[1], F_GETFL));
-
-  /* We create a helper thread that polls on the wakeup pipe indefinitely */
-  /* FIXME: Think this through for races */
-  if (g_thread_create (child_watch_helper_thread, NULL, FALSE, &error) == NULL)
-    g_error ("Cannot create a thread to monitor child exit status: %s\n", error->message);
   child_watch_init_state = CHILD_WATCH_INITIALIZED_THREADED;
- 
+
   action.sa_handler = g_child_watch_signal_handler;
   sigemptyset (&action.sa_mask);
   action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
