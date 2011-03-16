@@ -62,6 +62,10 @@
 #define G_MAIN_POLL_DEBUG
 #endif
 
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
+#endif
+
 #include <signal.h>
 #include <sys/types.h>
 #include <time.h>
@@ -83,11 +87,6 @@
 #include <sys/socket.h>
 #include <sys/wait.h>
 #endif /* G_OS_BEOS */
-
-#ifdef G_OS_UNIX
-#include <fcntl.h>
-#include <sys/wait.h>
-#endif
 
 #include "gmain.h"
 
@@ -515,23 +514,14 @@ g_main_context_unref (GMainContext *context)
 static void 
 g_main_context_init_pipe (GMainContext *context)
 {
+  GError *error = NULL;
+
 # ifndef G_OS_WIN32
   if (context->wake_up_pipe[0] != -1)
     return;
 
-#ifdef HAVE_PIPE2
-  /* if this fails, we fall through and try pipe */
-  pipe2 (context->wake_up_pipe, O_CLOEXEC);
-#endif
-  if (context->wake_up_pipe[0] == -1)
-    {
-      if (pipe (context->wake_up_pipe) < 0)
-        g_error ("Cannot create pipe main loop wake-up: %s\n",
-  	         g_strerror (errno));
- 
-      fcntl (context->wake_up_pipe[0], F_SETFD, FD_CLOEXEC);
-      fcntl (context->wake_up_pipe[1], F_SETFD, FD_CLOEXEC);
-    }
+  if (!g_unix_pipe_flags (context->wake_up_pipe, FD_CLOEXEC, &error))
+    g_error ("Cannot create pipe main loop wake-up: %s", error->message);
 
   context->wake_up_rec.fd = context->wake_up_pipe[0];
   context->wake_up_rec.events = G_IO_IN;
@@ -4334,8 +4324,8 @@ g_child_watch_source_init_multi_threaded (void)
 
   g_assert (g_thread_supported());
 
-  if (pipe (child_watch_wake_up_pipe) < 0)
-    g_error ("Cannot create wake up pipe: %s\n", g_strerror (errno));
+  if (!g_unix_pipe_flags (child_watch_wake_up_pipe, FD_CLOEXEC, &error))
+    g_error ("Cannot create wake up pipe: %s\n", error->message);
   fcntl (child_watch_wake_up_pipe[1], F_SETFL, O_NONBLOCK | fcntl (child_watch_wake_up_pipe[1], F_GETFL));
 
   /* We create a helper thread that polls on the wakeup pipe indefinitely */

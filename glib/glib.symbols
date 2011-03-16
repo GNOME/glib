@@ -1978,6 +1978,15 @@ g_hostname_to_unicode
 #endif
 #endif
 
+#if IN_HEADER(__G_UNIX_H__)
+#if IN_FILE(__G_UNIX_C__)
+#ifdef G_OS_UNIX
+g_unix_pipe_flags
+g_unix_error_quark
+#endif
+#endif
+#endif
+
 #ifdef INCLUDE_VARIABLES
 g_ascii_table
 g_utf8_skip

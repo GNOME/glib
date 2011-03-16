@@ -206,6 +206,9 @@ libglib_2_0_la_SOURCES = 	\
 	gprintf.c		\
 	gprintfint.h
 
+if OS_UNIX
+libglib_2_0_la_SOURCES += glib-unix.c
+endif	
 
 EXTRA_libglib_2_0_la_SOURCES = \
 	giounix.c	\
@@ -218,6 +221,10 @@ glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
 	glib-object.h	\
 	glib.h
+
+if OS_UNIX
+glibinclude_HEADERS += glib-unix.h
+endif
 
 glibsubincludedir=$(includedir)/glib-2.0/glib
 glibsubinclude_HEADERS =   \

@@ -1924,6 +1924,14 @@ g_win32_ftruncate
 
 </SECTION>
 
+<SECTION>
+<TITLE>UNIX Compatibility Functions</TITLE>
+<FILE>gunix</FILE>
+G_UNIX_ERROR
+g_unix_pipe_flags
+
+</SECTION>
+
 # Data Structures
 
 <SECTION>

@@ -170,6 +170,9 @@ sort_LDADD     = $(progs_ldadd)
 
 if OS_UNIX
 
+TEST_PROGS    += unix
+unix_LDADD  = $(progs_ldadd)
+
 # some testing of gtester funcitonality
 XMLLINT=xmllint
 gtester-xmllint-check: # check testreport xml with xmllint if present
