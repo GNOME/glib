@@ -1,13 +1,13 @@
-# translation of glib.master.gu.po to Gujarati
+# translation of gu.po to Gujarati
 # Ankit Patel <ankit644@yahoo.com>, 2005, 2006.
 # Ankit Patel <ankit@redhat.com>, 2007, 2008.
-# Sweta Kothari <swkothar@redhat.com>, 2009, 2010.
+# Sweta Kothari <swkothar@redhat.com>, 2009, 2010, 2011.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.master.gu\n"
+"Project-Id-Version: gu\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-06-07 21:37-0400\n"
-"PO-Revision-Date: 2010-04-15 16:38+0530\n"
+"PO-Revision-Date: 2011-03-17 16:17+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
@@ -259,8 +259,8 @@ msgstr "ટેમ્પલેટ '%s' એ XXXXXX સમાવતું નથી
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u બાઇટ"
+msgstr[1] "%u બાઇટ"
 
 #: glib/gfileutils.c:1782
 #, c-format
@@ -312,8 +312,7 @@ msgstr "g_10_channe_lread_line_string માં આડી હરોળ માં
 
 #: glib/giochannel.c:1800 glib/giochannel.c:2058 glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
-msgstr ""
-"વાંચવા માટેના બફર(થોડા સમય માટેનું સંગ્રહસ્થાન) માં ઢાંકેલી ન હોય તે માહિતી છોડી દીધેલ છે"
+msgstr "વાંચવા માટેના બફર(થોડા સમય માટેનું સંગ્રહસ્થાન) માં ઢાંકેલી ન હોય તે માહિતી છોડી દીધેલ છે"
 
 #: glib/giochannel.c:1881 glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
@@ -382,8 +381,7 @@ msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "અક્ષર સંદર્ભ '%-.*s' પરવાનગી આપેલ અક્ષરને એનકોડ કરતો નથી"
 
 #: glib/gmarkup.c:654
-msgid ""
-"Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
+msgid "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr "'&;' વસ્તુ ખાલી દેખાય છે: યોગ્ય વસ્તુઓ છે:&amp; &quot; &lt; &gt; &apos;"
 
 #: glib/gmarkup.c:662
@@ -419,8 +417,7 @@ msgstr "અસંગત અક્ષર '%s', વસ્તુ ટેગ '%s' ન
 
 #: glib/gmarkup.c:1206
 #, c-format
-msgid ""
-"Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
+msgid "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr "અસંગત અક્ષર '%s', '%s' વસ્તુના '%s' લાક્ષણિકતા નામ પછી '=' જરુરી છે"
 
 #: glib/gmarkup.c:1247
@@ -735,10 +732,8 @@ msgid "inconsistent NEWLINE options"
 msgstr "વિચલ NEWLINE વિકલ્પો"
 
 #: glib/gregex.c:333
-msgid ""
-"\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr ""
-"\\g એ કૌંસવાળા નામ દ્વારા અનુસરવામાં આવતું નથી કે વૈકલ્પિક રીતે કૌંસવાળા બિન-શૂન્ય નંબરથી"
+msgid "\\g is not followed by a braced name or an optionally braced non-zero number"
+msgstr "\\g એ કૌંસવાળા નામ દ્વારા અનુસરવામાં આવતું નથી કે વૈકલ્પિક રીતે કૌંસવાળા બિન-શૂન્ય નંબરથી"
 
 #: glib/gregex.c:338
 msgid "unexpected repeat"
@@ -895,8 +890,7 @@ msgstr "મદદગાર કાર્યક્રમ (%s) ચલાવવા�
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr ""
-"બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
+msgstr "બાળ-પ્રક્રિયામાંથી માહિતી વાંચતી વખતે g_io_channel_win32_poll() માં આવતી અણધારી ભૂલ"
 
 #: glib/gspawn.c:190
 #, c-format
@@ -1029,8 +1023,7 @@ msgstr "ફાઈલ ખાલી છે"
 
 #: glib/gkeyfile.c:765
 #, c-format
-msgid ""
-"Key file contains line '%s' which is not a key-value pair, group, or comment"
+msgid "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr "કી ફાઈલ વાક્ય '%s' સમાવે છે કે જે કી-કિંમત જોડ, જૂથ, અથવા ટિપ્પણી નથી"
 
 #: glib/gkeyfile.c:825
@@ -1076,8 +1069,7 @@ msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેન�
 
 #: glib/gkeyfile.c:1532
 #, c-format
-msgid ""
-"Key file contains key '%s' which has a value that cannot be interpreted."
+msgid "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "કી ફાઈલ '%s' કી સમાવે છે કે જેની પાસે કિંમત છે જે ઈન્ટરપ્રીટ કરી શકાતી નથી."
 
 #: glib/gkeyfile.c:2126 glib/gkeyfile.c:2488
@@ -1177,7 +1169,7 @@ msgstr ""
 
 #: gio/gcredentials.c:296
 msgid "There is no GCredentials support for your platform"
-msgstr ""
+msgstr "તમારાં પ્લેટફોર્મ માટે GCredentials આધાર નથી"
 
 #: gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
@@ -1190,8 +1182,7 @@ msgstr "બિનઆધારિત સોકેટ સરનામું"
 
 #: gio/gdbusaddress.c:165
 #, c-format
-msgid ""
-"Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
+msgid "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
 
 #: gio/gdbusaddress.c:178
@@ -1264,8 +1255,7 @@ msgstr ""
 
 #: gio/gdbusaddress.c:978
 #, c-format
-msgid ""
-"Cannot determine session bus address (TODO: run dbus-launch to find out)"
+msgid "Cannot determine session bus address (TODO: run dbus-launch to find out)"
 msgstr ""
 
 #: gio/gdbusaddress.c:1002 gio/gdbusconnection.c:5309
@@ -1296,8 +1286,7 @@ msgstr ""
 
 #: gio/gdbusauth.c:504
 #, c-format
-msgid ""
-"Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
+msgid "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
 
 #: gio/gdbusauth.c:1146
@@ -1311,8 +1300,7 @@ msgstr "'%s' ડિરેક્ટરી ખોલતા ભૂલ: %s"
 
 #: gio/gdbusauthmechanismsha1.c:276
 #, c-format
-msgid ""
-"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+msgid "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
 
 #: gio/gdbusauthmechanismsha1.c:295
@@ -1332,14 +1320,12 @@ msgstr ""
 
 #: gio/gdbusauthmechanismsha1.c:416 gio/gdbusauthmechanismsha1.c:725
 #, c-format
-msgid ""
-"First token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
 
 #: gio/gdbusauthmechanismsha1.c:430 gio/gdbusauthmechanismsha1.c:739
 #, c-format
-msgid ""
-"Second token of line %d of the keyring at `%s' with content `%s' is malformed"
+msgid "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
 
 #: gio/gdbusauthmechanismsha1.c:454
@@ -1387,8 +1373,7 @@ msgid "Timeout was reached"
 msgstr ""
 
 #: gio/gdbusconnection.c:1757
-msgid ""
-"Unsupported flags encountered when constructing a client-side connection"
+msgid "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 
 #: gio/gdbusconnection.c:3158
@@ -1490,8 +1475,7 @@ msgstr ""
 
 #: gio/gdbusmessage.c:1141
 #, c-format
-msgid ""
-"Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
+msgid "Error deserializing GVariant with type-string `%s' from the D-Bus wire format"
 msgstr ""
 
 #: gio/gdbusmessage.c:1286
@@ -1520,8 +1504,7 @@ msgstr ""
 
 #: gio/gdbusmessage.c:1694
 #, c-format
-msgid ""
-"Error serializing GVariant with type-string `%s' to the D-Bus wire format"
+msgid "Error serializing GVariant with type-string `%s' to the D-Bus wire format"
 msgstr ""
 
 #: gio/gdbusmessage.c:1823
@@ -1661,8 +1644,7 @@ msgstr ""
 
 #: gio/gdbus-tool.c:459
 #, c-format
-msgid ""
-"Warning: According to introspection data, interface `%s' does not exist\n"
+msgid "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
 
 #: gio/gdbus-tool.c:468
@@ -2680,8 +2662,7 @@ msgid "Error enabling SO_PASSCRED: %s"
 msgstr "ફાઈલનું નામ બદલવામાં ભૂલ: %s"
 
 #: gio/gunixconnection.c:492
-msgid ""
-"Expecting to read a single byte for receiving credentials but read zero bytes"
+msgid "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 
 #: gio/gunixconnection.c:535
@@ -2777,3 +2758,4 @@ msgstr "વધારે ઇનપુટની જરૂર"
 #: gio/gzlibdecompressor.c:243
 msgid "Invalid compressed data"
 msgstr "અયોગ્ય સંકોચાયેલ માહિતી"
+
