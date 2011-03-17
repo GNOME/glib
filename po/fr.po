@@ -8,16 +8,17 @@
 # Robert-André Mauchin <zebob.m@pengzone.org>, 2006-2008.
 # Stéphane Raimbault <stephane.raimbault@gmail.com>, 2007.
 # Claude Paroz <claude@2xlibre.net>, 2007-2010.
-# Bruno Brouard <annoa.b@gmail.com>, 2010.
+# Bruno Brouard <annoa.b@gmail.com>, 2010-2011.
 # Gérard Baylard <Geodebay@gmail.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib HEAD\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-12 11:17+0100\n"
-"PO-Revision-Date: 2011-03-12 11:19+0100\n"
-"Last-Translator: Gérard Baylard <Geodebay@gmail.com>\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-17 13:35+0000\n"
+"PO-Revision-Date: 2011-03-17 21:38+0100\n"
+"Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2345,6 +2346,10 @@ msgstr "le lecteur n'implémente pas le démarrage (« start »)"
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "le lecteur n'implémente pas l'arrêt (« stop »)"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "La prise en charge TLS n'est pas disponible"
 
 #: ../gio/gemblem.c:324
 #, c-format
