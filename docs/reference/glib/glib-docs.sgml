@@ -96,6 +96,7 @@ synchronize their operation.
       <xi:include href="xml/keyfile.xml" />
       <xi:include href="xml/bookmarkfile.xml" />
       <xi:include href="xml/testing.xml" />
+      <xi:include href="xml/gunix.xml" />
       <xi:include href="xml/windows.xml" />
   </chapter>
 

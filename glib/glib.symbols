@@ -1983,6 +1983,8 @@ g_hostname_to_unicode
 #ifdef G_OS_UNIX
 g_unix_pipe_flags
 g_unix_error_quark
+g_unix_signal_source_new
+g_unix_signal_add_watch_full
 #endif
 #endif
 #endif

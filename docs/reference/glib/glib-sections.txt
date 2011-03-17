@@ -1925,10 +1925,12 @@ g_win32_ftruncate
 </SECTION>
 
 <SECTION>
-<TITLE>UNIX Compatibility Functions</TITLE>
+<TITLE>UNIX-specific utilities and integration</TITLE>
 <FILE>gunix</FILE>
 G_UNIX_ERROR
 g_unix_pipe_flags
+g_unix_signal_source_new
+g_unix_signal_add_watch_full
 
 </SECTION>
 

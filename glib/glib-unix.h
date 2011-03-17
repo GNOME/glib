@@ -44,19 +44,23 @@
 
 #include <glib.h>
 
+#ifndef G_OS_UNIX
+#error "This header may only be used on UNIX"
+#endif
+
 /**
  * G_UNIX_ERROR:
  * 
  * Error domain for API in the "g_unix_" namespace.  Note that there
- * is no exported enumeration mapping "errno".  Instead, all functions
- * ensure that "errno" is relevant.  The code for all G_UNIX_ERROR is
- * always 0, and the error message is always generated via
+ * is no exported enumeration mapping %errno.  Instead, all functions
+ * ensure that %errno is relevant.  The code for all #G_UNIX_ERROR is
+ * always %0, and the error message is always generated via
  * g_strerror().
  *
- * It is expected that most code will not look at "errno" from these
+ * It is expected that most code will not look at %errno from these
  * APIs. Important cases where one would want to differentiate between
  * errors are already covered by existing cross-platform GLib API,
- * such as e.g. GFile wrapping "ENOENT".  However, it is provided for
+ * such as e.g. #GFile wrapping %ENOENT.  However, it is provided for
  * completeness, at least.
  */
 #define G_UNIX_ERROR (g_unix_error_quark())
@@ -66,5 +70,13 @@ GQuark g_unix_error_quark (void);
 gboolean g_unix_pipe_flags (int      *fds,
 			    int       flags,
 			    GError  **error);
+
+GSource *g_unix_signal_source_new     (int signum);
+
+guint    g_unix_signal_add_watch_full (int            signum,
+				       int            priority,
+				       GSourceFunc    handler,
+				       gpointer       user_data,
+				       GDestroyNotify notify);
 
 #endif

@@ -171,7 +171,11 @@ sort_LDADD     = $(progs_ldadd)
 if OS_UNIX
 
 TEST_PROGS    += unix
-unix_LDADD  = $(progs_ldadd)
+unix_LDADD  = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la 
+
+TEST_PROGS    += unix-nothreads
+unix_nothreads_SOURCES = unix.c
+unix_nothreads_LDADD  = $(progs_ldadd)
 
 # some testing of gtester funcitonality
 XMLLINT=xmllint

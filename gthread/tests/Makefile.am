@@ -13,3 +13,8 @@ TEST_PROGS	      += 1bit-emufutex
 1bit_emufutex_SOURCES  = 1bit-mutex.c
 1bit_emufutex_CFLAGS   = -DTEST_EMULATED_FUTEX
 1bit_emufutex_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
+
+TEST_PROGS += unix-multithreaded
+unix_multithreaded_SOURCES = $(top_srcdir)/glib/tests/unix.c
+unix_multithreaded_CFLAGS   = -DTEST_THREADED
+unix_multithreaded_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la

@@ -24,12 +24,14 @@
 #include "config.h"
 
 #include "glib-unix.h"
+#include "gmain-internal.h"
 
 #include <string.h>
 
 /**
  * SECTION:gunix
- * @short_description: UNIX-specific utilities and integration
+ * @title: UNIX-specific utilities and integration
+ * @short_description: pipes, signal handling
  * @include: glib-unix.h
  *
  * Most of GLib is intended to be portable; in constrast, this set of
@@ -78,12 +80,12 @@ g_unix_set_error_from_errno_saved (GError **error,
  * @error: a #GError
  *
  * Similar to the UNIX pipe() call, but on modern systems like Linux
- * uses the pipe2 system call, which atomically creates a pipe with
+ * uses the pipe2() system call, which atomically creates a pipe with
  * the configured flags.  The only supported flag currently is
- * FD_CLOEXEC.  If for example you want to configure O_NONBLOCK, that
+ * %FD_CLOEXEC.  If for example you want to configure %O_NONBLOCK, that
  * must still be done separately with fcntl().
  *
- * <note>This function does *not* take O_CLOEXEC, it takes FD_CLOEXEC as if
+ * <note>This function does *not* take %O_CLOEXEC, it takes %FD_CLOEXEC as if
  * for fcntl(); these are different on Linux/glibc.</note>
  *
  * Returns: %TRUE on success, %FALSE if not (and errno will be set).
@@ -131,4 +133,82 @@ g_unix_pipe_flags (int     *fds,
       return g_unix_set_error_from_errno_saved (error, saved_errno);
     }
   return TRUE;
+}
+
+/**
+ * g_unix_signal_source_new:
+ * @signum: A signal number
+ *
+ * Create a #GSource that will be dispatched upon delivery of the UNIX
+ * signal @signum.  Currently only %SIGHUP, %SIGINT, and %SIGTERM can
+ * be monitored.  Note that unlike the UNIX default, all sources which
+ * have created a watch will be dispatched, regardless of which
+ * underlying thread invoked g_unix_signal_create_watch().
+ * 
+ * For example, an effective use of this function is to handle SIGTERM
+ * cleanly; flushing any outstanding files, and then calling
+ * g_main_loop_quit ().  It is not safe to do any of this a regular
+ * UNIX signal handler; your handler may be invoked while malloc() or
+ * another library function is running, causing reentrancy if you
+ * attempt to use it from the handler.  None of the GLib/GObject API
+ * is safe against this kind of reentrancy.
+ *
+ * The interaction of this source when combined with native UNIX
+ * functions like sigprocmask() is not defined.
+ *
+ * <note>For reliable behavior, if your program links to gthread
+ * (either directly or indirectly via GObject, GIO, or a higher level
+ * library), you should ensure g_thread_init() is called before using
+ * this function.  For example, if your program uses GObject, call
+ * g_type_init().</note>
+ *
+ * The source will not initially be associated with any #GMainContext
+ * and must be added to one with g_source_attach() before it will be
+ * executed.
+ *
+ * Returns: A newly created #GSource
+ */
+GSource *
+g_unix_signal_source_new (int signum)
+{
+  g_return_val_if_fail (signum == SIGHUP || signum == SIGINT || signum == SIGTERM, NULL);
+
+  return _g_main_create_unix_signal_watch (signum);
+}
+
+/**
+ * g_unix_signal_add_watch_full:
+ * @signum: Signal number
+ * @priority: the priority of the signal source. Typically this will be in
+ *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
+ * @handler: Callback
+ * @user_data: Data for @handler
+ * @notify: #GDestroyNotify for @handler
+ *
+ * A convenience function for g_unix_signal_source_new(), which
+ * attaches to the default #GMainContext.  You can remove the watch
+ * using g_source_remove().
+ *
+ * Returns: An ID (greater than 0) for the event source
+ */
+guint
+g_unix_signal_add_watch_full (int            signum,
+			      int            priority,
+			      GSourceFunc    handler,
+			      gpointer       user_data,
+			      GDestroyNotify notify)
+{
+  guint id;
+  GSource *source;
+
+  source = g_unix_signal_source_new (signum);
+
+  if (priority != G_PRIORITY_DEFAULT)
+    g_source_set_priority (source, priority);
+
+  g_source_set_callback (source, handler, user_data, notify);
+  id = g_source_attach (source, NULL);
+  g_source_unref (source);
+
+  return id;
 }
