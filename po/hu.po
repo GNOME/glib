@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-13 02:21+0100\n"
-"PO-Revision-Date: 2011-03-13 02:21+0100\n"
+"POT-Creation-Date: 2011-03-18 17:10+0100\n"
+"PO-Revision-Date: 2011-03-18 17:11+0100\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
 "Language: \n"
@@ -2220,6 +2220,10 @@ msgstr "a meghajtó nem valósítja meg a indítást"
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "a meghajtó nem valósítja meg a leállítást"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "A TLS-támogatás nem érhető el"
 
 #: ../gio/gemblem.c:324
 #, c-format
