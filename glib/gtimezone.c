@@ -132,25 +132,6 @@ struct _GTimeZone
 G_LOCK_DEFINE_STATIC (time_zones);
 static GHashTable/*<string?, GTimeZone>*/ *time_zones;
 
-static guint
-g_str_hash0 (gconstpointer data)
-{
-  return data ? g_str_hash (data) : 0;
-}
-
-static gboolean
-g_str_equal0 (gconstpointer a,
-              gconstpointer b)
-{
-  if (a == b)
-    return TRUE;
-
-  if (!a || !b)
-    return FALSE;
-
-  return g_str_equal (a, b);
-}
-
 /**
  * g_time_zone_unref:
  * @tz: a #GTimeZone
@@ -166,9 +147,12 @@ g_time_zone_unref (GTimeZone *tz)
 
   if (g_atomic_int_dec_and_test (&tz->ref_count))
     {
-      G_LOCK(time_zones);
-      g_hash_table_remove (time_zones, tz->name);
-      G_UNLOCK(time_zones);
+      if (tz->name != NULL)
+        {
+          G_LOCK(time_zones);
+          g_hash_table_remove (time_zones, tz->name);
+          G_UNLOCK(time_zones);
+        }
 
       if (tz->zoneinfo)
         g_buffer_unref (tz->zoneinfo);
@@ -345,10 +329,13 @@ g_time_zone_new (const gchar *identifier)
 
   G_LOCK (time_zones);
   if (time_zones == NULL)
-    time_zones = g_hash_table_new (g_str_hash0,
-                                   g_str_equal0);
+    time_zones = g_hash_table_new (g_str_hash, g_str_equal);
 
-  tz = g_hash_table_lookup (time_zones, identifier);
+  if (identifier)
+    tz = g_hash_table_lookup (time_zones, identifier);
+  else
+    tz = NULL;
+
   if (tz == NULL)
     {
       tz = g_slice_new0 (GTimeZone);
@@ -412,7 +399,8 @@ g_time_zone_new (const gchar *identifier)
             }
         }
 
-      g_hash_table_insert (time_zones, tz->name, tz);
+      if (identifier)
+        g_hash_table_insert (time_zones, tz->name, tz);
     }
   g_atomic_int_inc (&tz->ref_count);
   G_UNLOCK (time_zones);
