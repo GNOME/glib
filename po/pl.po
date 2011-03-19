@@ -3287,7 +3287,7 @@ msgid ""
 "If no SCHEMA is given, list all keys\n"
 msgstr ""
 "Wyświetla listę kluczy i wartości, rekursywnie\n"
-"Jeśli nie podano SCHEMATU, to wyświetla listę wszystkich kluczy"
+"Jeśli nie podano SCHEMATU, to wyświetla listę wszystkich kluczy\n"
 
 #: ../gio/gsettings-tool.c:505
 msgid "[SCHEMA[:PATH]]"
