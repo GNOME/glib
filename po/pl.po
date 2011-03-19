@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-23 22:01+0100\n"
-"PO-Revision-Date: 2011-02-23 22:02+0100\n"
+"POT-Creation-Date: 2011-03-19 16:29+0100\n"
+"PO-Revision-Date: 2011-03-19 16:30+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -1305,12 +1305,12 @@ msgstr ""
 msgid "Error parsing option %s"
 msgstr "Błąd podczas przetwarzania opcji %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1527
+#: ../glib/goption.c:1413 ../glib/goption.c:1526
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Brak parametru dla %s"
 
-#: ../glib/goption.c:1922
+#: ../glib/goption.c:1921
 #, c-format
 msgid "Unknown option %s"
 msgstr "Nieznana opcja %s"
@@ -2041,7 +2041,7 @@ msgstr "Błąd podczas wysyłania komunikatu: %s"
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Nie można wczytać pliku /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:714
+#: ../gio/gdbusproxy.c:715
 #, c-format
 msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
@@ -2050,17 +2050,17 @@ msgstr ""
 "Próba ustawienia własności %s typu %s, ale według oczekiwanego interfejsu "
 "typ to %s"
 
-#: ../gio/gdbusproxy.c:1234
+#: ../gio/gdbusproxy.c:1235
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Błąd podczas wywoływania metody StartServiceByName dla %s: "
 
-#: ../gio/gdbusproxy.c:1255
+#: ../gio/gdbusproxy.c:1256
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Nieoczekiwana odpowiedź %d od metody StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
+#: ../gio/gdbusproxy.c:2312 ../gio/gdbusproxy.c:2470
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2311,6 +2311,10 @@ msgstr "napęd nie obsługuje rozpoczęcia"
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "napęd nie obsługuje zatrzymania"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "Obsługa TLS jest niedostępna"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -3283,7 +3287,7 @@ msgid ""
 "If no SCHEMA is given, list all keys\n"
 msgstr ""
 "Wyświetla listę kluczy i wartości, rekursywnie\n"
-"Jeśli nie podano SCHEMATU, wyświetla listę wszystkich kluczy\n"
+"Jeśli nie podano SCHEMATU, to wyświetla listę wszystkich kluczy"
 
 #: ../gio/gsettings-tool.c:505
 msgid "[SCHEMA[:PATH]]"
