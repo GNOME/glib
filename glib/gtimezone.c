@@ -129,6 +129,9 @@ struct _GTimeZone
   gint     ref_count;
 };
 
+G_LOCK_DEFINE_STATIC (local_timezone);
+static GTimeZone *local_timezone;
+
 G_LOCK_DEFINE_STATIC (time_zones);
 static GHashTable/*<string?, GTimeZone>*/ *time_zones;
 
@@ -147,6 +150,22 @@ g_time_zone_unref (GTimeZone *tz)
 
   if (g_atomic_int_dec_and_test (&tz->ref_count))
     {
+      if G_UNLIKELY (tz == local_timezone)
+        {
+          g_critical ("The last reference on the local timezone was just "
+                      "dropped, but GTimeZone itself still owns one.  This "
+                      "means that g_time_zone_unref() was called too many "
+                      "times.  Restoring the refcount to 1.");
+
+          /* We don't want to just inc this back again since if there
+           * are refcounting bugs in the code then maybe we are already
+           * at -1 and inc will just take us back to 0.  Set to 1 to be
+           * sure.
+           */
+          tz->ref_count = 1;
+          return;
+        }
+
       if (tz->name != NULL)
         {
           G_LOCK(time_zones);
@@ -449,7 +468,43 @@ g_time_zone_new_utc (void)
 GTimeZone *
 g_time_zone_new_local (void)
 {
-  return g_time_zone_new (getenv ("TZ"));
+  GTimeZone *result;
+
+  G_LOCK (local_timezone);
+  if (local_timezone == NULL)
+    local_timezone = g_time_zone_new (getenv ("TZ"));
+
+  result = g_time_zone_ref (local_timezone);
+  G_UNLOCK (local_timezone);
+
+  return result;
+}
+
+/**
+ * g_time_zone_refresh_local:
+ *
+ * Notifies #GTimeZone that the local timezone may have changed.
+ *
+ * In response, #GTimeZone will drop its cache of the local time zone.
+ * No existing #GTimeZone will be modified and no #GDateTime will change
+ * its timezone but future calls to g_time_zone_new_local() will start
+ * returning the new timezone.
+ *
+ * #GTimeZone does no monitoring of the local timezone on its own, which
+ * is why you have to call this function to notify it of the change.
+ **/
+void
+g_time_zone_refresh_local (void)
+{
+  GTimeZone *drop_this_ref = NULL;
+
+  G_LOCK (local_timezone);
+  drop_this_ref = local_timezone;
+  local_timezone = NULL;
+  G_UNLOCK (local_timezone);
+
+  if (drop_this_ref)
+    g_time_zone_unref (drop_this_ref);
 }
 
 /* Internal helpers {{{1 */
