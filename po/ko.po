@@ -8,15 +8,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
-"POT-Creation-Date: 2011-02-02 21:36+0900\n"
-"PO-Revision-Date: 2011-02-02 21:55+0900\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-17 20:43+0000\n"
+"PO-Revision-Date: 2011-03-19 23:53+0900\n"
 "Last-Translator: Changwoo Ryu <cwryu@debian.org>\n"
 "Language-Team: GNOME Korea <gnome-kr@googlegroups.com>\n"
-"Language: Korean\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: Korean\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../glib/gbookmarkfile.c:780
@@ -637,8 +638,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1185
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "이상한 문자 '%s'.  빈 엘리먼트 '%s' 태그를 끝내는 '>' 문자가 나타나야 합니다"
 
@@ -1259,12 +1260,12 @@ msgstr "%2$s에 대한 배정도 실수 값 '%1$s'이(가) 범위를 벗어났�
 msgid "Error parsing option %s"
 msgstr "옵션 읽는 중에 오류: %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1527
+#: ../glib/goption.c:1413 ../glib/goption.c:1526
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s에 대한 인자가 빠졌습니다"
 
-#: ../glib/goption.c:1922
+#: ../glib/goption.c:1921
 #, c-format
 msgid "Unknown option %s"
 msgstr "알 수 없는 옵션 %s"
@@ -1570,7 +1571,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "세션 버스 주소를 알아낼 수 없습니다 (이 운영체제에서는 구현되지 않았습니다)"
 
-#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6168
+#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6186
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1579,7 +1580,7 @@ msgstr ""
 "DBUS_STARTER_BUS_TYPE 환경 변수에서 세션 버스 주소를 알아낼 수 없습니다 - 알 "
 "수 없는 값 `%s'"
 
-#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6177
+#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6195
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1729,7 +1730,7 @@ msgstr "`%s' 속성을 읽을 수 없습니다"
 msgid "Property `%s' is not writable"
 msgstr "`%s' 속성을 쓸 수 없습니다"
 
-#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5602
+#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5620
 #, c-format
 msgid "No such interface `%s'"
 msgstr "`%s' 인터페이스가 없습니다"
@@ -1738,37 +1739,37 @@ msgstr "`%s' 인터페이스가 없습니다"
 msgid "No such interface"
 msgstr "인터페이스가 없습니다"
 
-#: ../gio/gdbusconnection.c:4416 ../gio/gdbusconnection.c:6118
+#: ../gio/gdbusconnection.c:4419 ../gio/gdbusconnection.c:6136
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "`%s' 인터페이스가 경로 %s의 객체에 없습니다"
 
-#: ../gio/gdbusconnection.c:4468
+#: ../gio/gdbusconnection.c:4471
 #, c-format
 msgid "No such method `%s'"
 msgstr "`%s' 메소드가 없습니다"
 
-#: ../gio/gdbusconnection.c:4499
+#: ../gio/gdbusconnection.c:4502
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "메시지의 타입이 (`%s') 예상한 `%s' 타입에 맞지 않습니다."
 
-#: ../gio/gdbusconnection.c:4718
+#: ../gio/gdbusconnection.c:4721
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "%2$s의 %1$s 인터페이스 용도로 객체를 이미 내보냈습니다"
 
-#: ../gio/gdbusconnection.c:4912
+#: ../gio/gdbusconnection.c:4915
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "`%s' 메소드가 `%s' 타입을 리턴했지만, `%s' 타입이어야 합니다"
 
-#: ../gio/gdbusconnection.c:5713
+#: ../gio/gdbusconnection.c:5731
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "`%s' 메소드가 (인터페이스 `%s', 시그너쳐 `%s') 없습니다"
 
-#: ../gio/gdbusconnection.c:5831
+#: ../gio/gdbusconnection.c:5849
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "하위 트리를 이미 %s 용도로 내보냈습니다"
@@ -1912,8 +1913,8 @@ msgstr "메시지 본문에 `%s' 시그너쳐가 있지만 시그너쳐 헤더�
 #: ../gio/gdbusmessage.c:2337
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "메시지 본문에 `%s' 타입 시그너쳐가 있지만 헤더 필드의 시그너쳐가 `%s'입니다"
 
@@ -2167,26 +2168,26 @@ msgstr "이름없음"
 msgid "Desktop file didn't specify Exec field"
 msgstr "desktop 파일에 Exec 필드를 지정하지 않았습니다"
 
-#: ../gio/gdesktopappinfo.c:1031
+#: ../gio/gdesktopappinfo.c:1045
 msgid "Unable to find terminal required for application"
 msgstr "프로그램에 필요한 터미널을 찾을 수 없습니다"
 
-#: ../gio/gdesktopappinfo.c:1323
+#: ../gio/gdesktopappinfo.c:1344
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "사용자 프로그램 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: ../gio/gdesktopappinfo.c:1327
+#: ../gio/gdesktopappinfo.c:1348
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "사용자 MIME 설정 폴더(%s)를 만들 수 없습니다: %s"
 
-#: ../gio/gdesktopappinfo.c:1820
+#: ../gio/gdesktopappinfo.c:1841
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "%s 사용자 desktop 파일을 만들 수 없습니다"
 
-#: ../gio/gdesktopappinfo.c:1936
+#: ../gio/gdesktopappinfo.c:1957
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s에 대한 사용자 설정 정의"
@@ -2213,6 +2214,10 @@ msgstr "드라이브가 start 기능을 구현하지 않았습니다"
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "드라이브가 stop 기능을 구현하지 않았습니다"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "TLS 지원 기능이 없습니다"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -2614,8 +2619,8 @@ msgstr " 그리고 --strict 옵션을 지정했습니다. 끝납니다.\n"
 #: ../gio/glib-compile-schemas.c:1787
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr "`%s' 키를 (`%s' 스키마) 파싱하는데 오류 (override 파일 `%s'): %s.  "
 
 #: ../gio/glib-compile-schemas.c:1797
@@ -3227,7 +3232,9 @@ msgstr "<스키마>[:<경로>] [<키>]"
 msgid ""
 "Unknown command %s\n"
 "\n"
-msgstr "알 수 없는 명령 %s\n\n"
+msgstr ""
+"알 수 없는 명령 %s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:539
 msgid ""
