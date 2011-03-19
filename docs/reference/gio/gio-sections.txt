@@ -3106,3 +3106,16 @@ G_TYPE_TLS_SERVER_CONNECTION
 <SUBSECTION Private>
 g_tls_server_connection_get_type
 </SECTION>
+
+<SECTION>
+<FILE>gtimezonemonitor</FILE>
+<TITLE>GTimeZoneMonitor</TITLE>
+GTimeZoneMonitor
+g_time_zone_monitor_get
+<SUBSECTION Standard>
+G_IS_TIME_ZONE_MONITOR
+G_TIME_ZONE_MONITOR
+G_TYPE_TIME_ZONE_MONITOR
+<SUBSECTION Private>
+g_time_zone_monitor_get_type
+</SECTION>

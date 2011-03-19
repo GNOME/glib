@@ -492,6 +492,9 @@ g_time_zone_new_local (void)
  *
  * #GTimeZone does no monitoring of the local timezone on its own, which
  * is why you have to call this function to notify it of the change.
+ *
+ * If you use #GTimeZoneMonitor to watch for changes then this function
+ * will automatically be called for you.
  **/
 void
 g_time_zone_refresh_local (void)
