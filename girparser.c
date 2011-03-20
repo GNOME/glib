@@ -2884,7 +2884,7 @@ start_element_handler (GMarkupParseContext *context,
 	  name = find_attribute ("name", attribute_names, attribute_values);
 	  version = find_attribute ("version", attribute_names, attribute_values);
 	  shared_library = find_attribute ("shared-library", attribute_names, attribute_values);
-	  cprefix = find_attribute ("c:prefix", attribute_names, attribute_values);
+	  cprefix = find_attribute ("c:identifier-prefixes", attribute_names, attribute_values);
 
 	  if (name == NULL)
 	    MISSING_ATTRIBUTE (context, error, element_name, "name");
