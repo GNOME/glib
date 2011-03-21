@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.28.3 to 2.28.4
+==============================================
+
+* Improve documentation of GSettings vendor override files
+
+* Translation updates:
+ French
+ Galician
+ German
+ Gujarati
+ Hungarian
+ Korean
+ Norwegian bokmål
+ Polish
+ Romanian
+ Russian
+ Spanish
+
+
 Overview of Changes from GLib 2.28.2 to 2.28.3
 ==============================================
 
