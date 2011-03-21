@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: gu\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&component=general\n"
-"POT-Creation-Date: 2011-03-10 12:45+0000\n"
-"PO-Revision-Date: 2011-03-17 16:08+0530\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-20 07:51+0000\n"
+"PO-Revision-Date: 2011-03-21 16:28+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
@@ -205,7 +205,7 @@ msgstr "%H:%M:%S"
 #: ../glib/gdatetime.c:193
 msgctxt "full month name"
 msgid "January"
-msgstr "જાન્યુઅરી"
+msgstr "જાન્યુઆરી"
 
 #: ../glib/gdatetime.c:195
 msgctxt "full month name"
@@ -245,12 +245,12 @@ msgstr "ઑગસ્ટ"
 #: ../glib/gdatetime.c:209
 msgctxt "full month name"
 msgid "September"
-msgstr "સપ્ટેમ્બર"
+msgstr "સેપ્ટેમ્બર"
 
 #: ../glib/gdatetime.c:211
 msgctxt "full month name"
 msgid "October"
-msgstr "ઑક્ટોમ્બર"
+msgstr "ઑક્ટોબર"
 
 #: ../glib/gdatetime.c:213
 msgctxt "full month name"
@@ -265,12 +265,12 @@ msgstr "ડિસેમ્બર"
 #: ../glib/gdatetime.c:230
 msgctxt "abbreviated month name"
 msgid "Jan"
-msgstr "જાન"
+msgstr "જાન્યુઆરી"
 
 #: ../glib/gdatetime.c:232
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr "ફેબ"
+msgstr "ફેબ્રુઆરી"
 
 #: ../glib/gdatetime.c:234
 msgctxt "abbreviated month name"
@@ -305,22 +305,22 @@ msgstr "ઑગસ્ટ"
 #: ../glib/gdatetime.c:246
 msgctxt "abbreviated month name"
 msgid "Sep"
-msgstr "સપ્ટે"
+msgstr "સેપ્ટેમ્બર"
 
 #: ../glib/gdatetime.c:248
 msgctxt "abbreviated month name"
 msgid "Oct"
-msgstr "ઑક્ટ"
+msgstr "ઑક્ટો"
 
 #: ../glib/gdatetime.c:250
 msgctxt "abbreviated month name"
 msgid "Nov"
-msgstr "નવે"
+msgstr "નવેમ્બર"
 
 #: ../glib/gdatetime.c:252
 msgctxt "abbreviated month name"
 msgid "Dec"
-msgstr "ડિસે"
+msgstr "ડિસેમ્બર"
 
 #: ../glib/gdatetime.c:267
 msgctxt "full weekday name"
@@ -790,7 +790,7 @@ msgstr "નવીલીટી ફ્લેગોનું અયોગ્ય જ
 
 #: ../glib/gregex.c:234
 msgid "bad offset"
-msgstr "ખરાબ ઓફસેટ"
+msgstr ""
 
 #: ../glib/gregex.c:236
 msgid "short utf8"
@@ -1409,7 +1409,7 @@ msgstr ""
 
 #: ../gio/gcredentials.c:396
 msgid "There is no GCredentials support for your platform"
-msgstr ""
+msgstr "તમારાં પ્લેટફોર્મ માટે GCredentials આધાર નથી"
 
 #: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
@@ -1556,9 +1556,9 @@ msgid ""
 msgstr ""
 
 #: ../gio/gdbusaddress.c:1261
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown bus type %d"
-msgstr "અજ્ઞાત પ્રકાર"
+msgstr "અજ્ઞાત બસ પ્રકાર %d"
 
 #: ../gio/gdbusauth.c:288
 msgid "Unexpected lack of content trying to read a line"
@@ -1649,9 +1649,8 @@ msgstr ""
 
 #: ../gio/gdbusconnection.c:1148 ../gio/gdbusconnection.c:1374
 #: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1737
-#, fuzzy
 msgid "The connection is closed"
-msgstr "ઉમેરાયેલ સોકેટ બંધ થયેલ છે"
+msgstr "જોડાણ બંધ થયેલ છે"
 
 #: ../gio/gdbusconnection.c:1681
 msgid "Timeout was reached"
@@ -1674,7 +1673,7 @@ msgstr ""
 #: ../gio/gdbusconnection.c:3919
 #, c-format
 msgid "No such property `%s'"
-msgstr ""
+msgstr "આવો પ્રૉપર્ટી `%s' નથી"
 
 #: ../gio/gdbusconnection.c:3931
 #, fuzzy, c-format
@@ -1693,7 +1692,7 @@ msgstr "આવો ઇન્ટરફેસ `%s' નથી"
 
 #: ../gio/gdbusconnection.c:4200
 msgid "No such interface"
-msgstr "આવુ ઇન્ટરફેસ નથી"
+msgstr "આવો ઇન્ટરફેસ નથી"
 
 #: ../gio/gdbusconnection.c:4419 ../gio/gdbusconnection.c:6136
 #, c-format
@@ -1736,19 +1735,19 @@ msgstr "પ્રકાર INVALID છે"
 
 #: ../gio/gdbusmessage.c:870
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
-msgstr ""
+msgstr "METHOD_CALL સંદેશો: PATH અથવા MEMBER હેડર ક્ષેત્ર ગેરહાજર છે"
 
 #: ../gio/gdbusmessage.c:881
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr ""
+msgstr "METHOD_RETURN સંદેશો: REPLY_SERIAL હેડર ક્ષેત્ર ગેરહાજર છે"
 
 #: ../gio/gdbusmessage.c:893
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
-msgstr ""
+msgstr "ERROR સંદેશો: REPLY_SERIAL અથવા ERROR_NAME હેડર ક્ષેત્ર ગેરહાજર છે"
 
 #: ../gio/gdbusmessage.c:906
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
-msgstr ""
+msgstr "SIGNAL સંદેશો: PATH, INTERFACE અથવા MEMBER હેડર ક્ષેત્ર ગેરહાજર છે"
 
 #: ../gio/gdbusmessage.c:914
 msgid ""
@@ -2040,9 +2039,9 @@ msgid "Error: Object path is not specified\n"
 msgstr "ભૂલ: ઑબ્જેક્ટ પાથ સ્પષ્ટ થયેલ નથી\n"
 
 #: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr "'%s' એ યોગ્ય નામ નથી"
+msgstr "ભૂલ: %s એ યોગ્ય ઑબ્જેક્ટ પાથ નથી\n"
 
 #: ../gio/gdbus-tool.c:702
 #, c-format
@@ -2060,9 +2059,9 @@ msgid "Error parsing parameter %d of type `%s': %s\n"
 msgstr "'%s' ડિરેક્ટરી ખોલતા ભૂલ: %s"
 
 #: ../gio/gdbus-tool.c:786
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "ભૂલ પદચ્છેદન વિકલ્પ %s"
+msgstr "પરિમાણ %d ને પદચ્છેદન કરતી વખતે ભૂલ: %s\n"
 
 #: ../gio/gdbus-tool.c:1162
 msgid "Destination name to introspect"
@@ -2082,16 +2081,15 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:1423
 msgid "Destination name to monitor"
-msgstr "મોનિટર કરવા માટે લક્ષ્ય નામ"
+msgstr "મોનિટર કરવા માટે લક્ષ્ય પાથ"
 
 #: ../gio/gdbus-tool.c:1424
 msgid "Object path to monitor"
 msgstr "મોનિટર કરવા માટે ઑબ્જેક્ટ પાથ"
 
 #: ../gio/gdbus-tool.c:1457
-#, fuzzy
 msgid "Monitor a remote object."
-msgstr "ભાંગી પડેલ ઓબ્જેક્ટ"
+msgstr "દૂરસ્થ ઑબ્જેક્ટને મોનિટર કરો."
 
 #: ../gio/gdesktopappinfo.c:480 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
@@ -2147,6 +2145,10 @@ msgstr "ડ્રાઈવ શરૂ કરો નું અમલીકરમ �
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "ડ્રાઇવ એ બંધ કરોનું અમલીકરણ કરતુ નથી"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "TLS આધાર ઉપલબ્ધ નથી"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -2348,14 +2350,13 @@ msgid "Unsupported socket address"
 msgstr "બિનઆધારિત સોકેટ સરનામું"
 
 #: ../gio/glib-compile-schemas.c:713
-#, fuzzy
 msgid "empty names are not permitted"
-msgstr "કચરાપેટી આધારભૂત નથી"
+msgstr "ખાલી નામોને પરવાનગી આપેલ નથી"
 
 #: ../gio/glib-compile-schemas.c:723
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr ""
+msgstr "અયોગ્ય નામ '%s': નામો નાનાં અક્ષરોથી જ શરૂ થવા જોઇએ"
 
 #: ../gio/glib-compile-schemas.c:735
 #, c-format
@@ -2382,7 +2383,7 @@ msgstr "અયોગ્ય નામ '%s': મહત્તમ લંબાઇ 32
 #: ../gio/glib-compile-schemas.c:830
 #, c-format
 msgid "<child name='%s'> already specified"
-msgstr "<child name='%s'> પહેલેથી સ્પષ્ટ થયેલ છે"
+msgstr "<child name='%s'> પહેલેથી જ સ્પષ્ટ થયેલ છે"
 
 #: ../gio/glib-compile-schemas.c:856
 msgid "can not add keys to a 'list-of' schema"
@@ -2410,7 +2411,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:915
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
-msgstr "<%s id='%s'> હજુ વ્યાખ્યાયિત થયેલ નથી."
+msgstr "<%s id='%s'> હજુ વ્યાખ્યાયિત નથી."
 
 #: ../gio/glib-compile-schemas.c:930
 #, fuzzy, c-format
@@ -2482,7 +2483,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1168
 #, c-format
 msgid "<%s id='%s'> already specified"
-msgstr "<%s id='%s'> પહેલેથી સ્પષ્ટ થયેલ છે"
+msgstr "<%s id='%s'> પહેલેથી જ સ્પષ્ટ થયેલ છે"
 
 #: ../gio/glib-compile-schemas.c:1387
 #, c-format
@@ -2497,7 +2498,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1485
 #, c-format
 msgid "text may not appear inside <%s>"
-msgstr ""
+msgstr "લખાણ કદાચ <%s> માં દેખાશે નહિં"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1654 ../gio/glib-compile-schemas.c:1725
@@ -2509,7 +2510,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1662
 #, c-format
 msgid "This entire file has been ignored.\n"
-msgstr ""
+msgstr "આખી ફાઇલને અવગણી દેવામાં આવી છે.\n"
 
 #: ../gio/glib-compile-schemas.c:1721
 #, c-format
@@ -2577,7 +2578,7 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1900
 msgid "This option will be removed soon."
-msgstr ""
+msgstr "આ વિકલ્પ ઝલ્દીથી દૂર થઇ જશે."
 
 #: ../gio/glib-compile-schemas.c:1901
 msgid "Do not enforce key name restrictions"
@@ -2603,12 +2604,12 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1971
 #, c-format
 msgid "doing nothing.\n"
-msgstr "કશુ કરી રહ્યા નથી.\n"
+msgstr "કઇ જ કરી રહ્યા નથી.\n"
 
 #: ../gio/glib-compile-schemas.c:1974
 #, c-format
 msgid "removed existing output file.\n"
-msgstr "દૂર કરેલ હાલની આઉટપુટ ફાઇલ.\n"
+msgstr "હાલની આઉટપુટ ફાઇલને દૂર કરેલ છે.\n"
 
 #: ../gio/glocaldirectorymonitor.c:287
 msgid "Unable to find default local directory monitor type"
@@ -3031,7 +3032,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:92
 #, c-format
 msgid "Empty path given.\n"
-msgstr "ખાલી પાથ આપેલ છે.\n"
+msgstr ""
 
 #: ../gio/gsettings-tool.c:98
 #, c-format
@@ -3220,7 +3221,7 @@ msgstr "સોકેટ પહેલેથી જ બંધ થયેલ છે"
 
 #: ../gio/gsocket.c:300 ../gio/gsocket.c:2769 ../gio/gsocket.c:2813
 msgid "Socket I/O timed out"
-msgstr ""
+msgstr "સોકેટ I/O સમય સમાપ્તિ"
 
 #: ../gio/gsocket.c:443
 #, c-format
@@ -3310,7 +3311,7 @@ msgstr "ભૂલ મેળવી રહ્યા હોય ત્યારે �
 
 #: ../gio/gsocket.c:3547
 msgid "g_socket_get_credentials not implemented for this OS"
-msgstr ""
+msgstr "g_socket_get_credentials આ OS માટે અમલીકરણ થયેલ નથી"
 
 #: ../gio/gsocketclient.c:798 ../gio/gsocketclient.c:1368
 msgid "Unknown error on connect"
@@ -3336,7 +3337,7 @@ msgstr "ઉમેરાયેલ સોકેટ બંધ થયેલ છે"
 #: ../gio/gsocks4aproxy.c:121
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address '%s'"
-msgstr "SOCKSv4 એ IPv6 સરનામાં '%s' ને આધાર આપતુ નથી"
+msgstr "SOCKSv4 એ IPv6 સરનામું '%s' ને આધાર આપતુ નથી"
 
 #: ../gio/gsocks4aproxy.c:139
 #, c-format
@@ -3350,7 +3351,7 @@ msgstr ""
 
 #: ../gio/gsocks4aproxy.c:183
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr ""
+msgstr "સર્વર SOCKSv4 પ્રોક્સી સર્વર નથી."
 
 #: ../gio/gsocks4aproxy.c:190
 msgid "Connection through SOCKSv4 server was rejected"
@@ -3359,11 +3360,11 @@ msgstr ""
 #: ../gio/gsocks5proxy.c:155 ../gio/gsocks5proxy.c:328
 #: ../gio/gsocks5proxy.c:338
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr ""
+msgstr "સર્વર SOCKSv5 પ્રોક્સી સર્વર નથી."
 
 #: ../gio/gsocks5proxy.c:169
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr ""
+msgstr "SOCKSv5 પ્રોક્સીને સત્તાધિકરણની જરૂર છે."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
@@ -3428,15 +3429,15 @@ msgstr "GThemedIcon એનકોડીંગ ની આવૃત્તિ %d ન
 
 #: ../gio/gtlscertificate.c:228
 msgid "No PEM-encoded certificate found"
-msgstr ""
+msgstr "PEM-એનકોડ થયેલ પ્રમાણપત્ર મળ્યુ નથી"
 
 #: ../gio/gtlscertificate.c:237
 msgid "Could not parse PEM-encoded certificate"
-msgstr ""
+msgstr "PEM-એનકોડ થયેલ પ્રમાણપત્રનું પદચ્છેદન કરી શક્યા નહિં"
 
 #: ../gio/gtlscertificate.c:258
 msgid "Could not parse PEM-encoded private key"
-msgstr ""
+msgstr "PEM-એનકોડ થયેલ ખાનગી કીનું પદચ્છેદન કરી શક્યા નહિં"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
@@ -3474,9 +3475,9 @@ msgid ""
 msgstr ""
 
 #: ../gio/gunixconnection.c:465
-#, fuzzy, c-format
+#, c-format
 msgid "Error enabling SO_PASSCRED: %s"
-msgstr "ફાઈલનું નામ બદલવામાં ભૂલ: %s"
+msgstr "SO_PASSCRED ને સક્રિય કરતી વખતે ભૂલ: %s"
 
 #: ../gio/gunixconnection.c:495
 msgid "Expecting to read a single byte for receiving credentials but read zero bytes"
@@ -3485,7 +3486,7 @@ msgstr ""
 #: ../gio/gunixconnection.c:538
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr "જ્યારે SO_PASSCRED નિષ્ક્રિય કરી રહ્યા હોય ત્યારે ભૂલ (_P): %s"
+msgstr "જ્યારે SO_PASSCRED નિષ્ક્રિય કરી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../gio/gunixinputstream.c:368 ../gio/gunixinputstream.c:388
 #: ../gio/gunixinputstream.c:466
