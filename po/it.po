@@ -17,15 +17,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.28.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-27 21:26+0100\n"
-"PO-Revision-Date: 2011-02-27 21:46+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-17 13:35+0000\n"
+"PO-Revision-Date: 2011-03-22 14:40+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../glib/gbookmarkfile.c:780
@@ -1951,7 +1952,10 @@ msgstr "Si volevano leggere %lu byte ma si è ottenuto EOF"
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was `%s'"
-msgstr "Attesa stringa UTF-8 valida, ma trovati byte non validi a %d byte di offset (la lunghezza della stringa è %d). La stringa UTF-8 valida fino a quel punto era \"%s\""
+msgstr ""
+"Attesa stringa UTF-8 valida, ma trovati byte non validi a %d byte di offset "
+"(la lunghezza della stringa è %d). La stringa UTF-8 valida fino a quel punto "
+"era \"%s\""
 
 # FIXME? plurale?
 #: ../gio/gdbusmessage.c:1035
@@ -1973,20 +1977,26 @@ msgstr "Il valore \"%s\" analizzato non è una firma D-Bus valida"
 #, c-format
 msgid ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr "Incontrato un array lungo %u byte. La lunghezza massima è 2<<26 byte (64 MiB). "
+msgstr ""
+"Incontrato un array lungo %u byte. La lunghezza massima è 2<<26 byte (64 "
+"MiB). "
 
 # VARIANT è uno dei container type di D-Bus
 # anche signature sono cose specifiche del protocollo
 #: ../gio/gdbusmessage.c:1475
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
-msgstr "Il valore \"%s\" analizzato per il variant non è una signature D-Bus valida"
+msgstr ""
+"Il valore \"%s\" analizzato per il variant non è una signature D-Bus valida"
 
+# eeeehh?????
 #: ../gio/gdbusmessage.c:1502
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
+"Errore nel deserializzare il GVariant con la stringa di tipo \"%s\" dal "
+"formato wire D-Bus"
 
 #: ../gio/gdbusmessage.c:1686
 #, c-format
@@ -1994,6 +2004,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
+"Valore endianness non valido. Atteso 0x6c (\"l\") o 0x42 (\"B\"), trovato "
+"invece il valore 0x%02x"
 
 #: ../gio/gdbusmessage.c:1700
 #, c-format
@@ -2003,17 +2015,21 @@ msgstr "Versione major del protocollo non valida. Atteso 1, ma trovato %d"
 #: ../gio/gdbusmessage.c:1757
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
-msgstr "Trovata signature header con signature \"%s\", ma il corpo del messaggio è vuoto"
+msgstr ""
+"Trovata signature header con signature \"%s\", ma il corpo del messaggio è "
+"vuoto"
 
 #: ../gio/gdbusmessage.c:1771
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
-msgstr "Il valore \"%s\" analizzato non è una signature D-Bus valida (per il corpo)"
+msgstr ""
+"Il valore \"%s\" analizzato non è una signature D-Bus valida (per il corpo)"
 
 #: ../gio/gdbusmessage.c:1801
 #, c-format
 msgid "No signature header in message but the message body is %u bytes"
-msgstr "Nessun signature header nel messaggio, ma il corpo del messaggio è di %u byte"
+msgstr ""
+"Nessun signature header nel messaggio, ma il corpo del messaggio è di %u byte"
 
 #: ../gio/gdbusmessage.c:1809
 msgid "Cannot deserialize message: "
@@ -2024,11 +2040,14 @@ msgstr "Impossibile deserializzare il messaggio: "
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
+"Errore nel serializzare il GVariant con la stringa di tipo \"%s\" al formato "
+"wire D-Bus"
 
+# fds == plurale per file descriptor (I suppose)
 #: ../gio/gdbusmessage.c:2275
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
-msgstr ""
+msgstr "Il messaggio presentava %d FD, ma il campo header indica %d FD"
 
 #: ../gio/gdbusmessage.c:2283
 msgid "Cannot serialize message: "
@@ -2037,33 +2056,42 @@ msgstr "Impossibile serializzare il messaggio: "
 #: ../gio/gdbusmessage.c:2327
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
-msgstr "Il corpo del messaggio presenta la signature \"%s\", ma non c'è alcun signature header"
+msgstr ""
+"Il corpo del messaggio presenta la signature \"%s\", ma non c'è alcun "
+"signature header"
 
 #: ../gio/gdbusmessage.c:2337
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `"
 "%s'"
-msgstr "Il corpo del messaggio presenta la signature \"%s\", ma la signature nel campo header è \"%s\""
+msgstr ""
+"Il corpo del messaggio presenta la signature \"%s\", ma la signature nel "
+"campo header è \"%s\""
 
 #: ../gio/gdbusmessage.c:2353
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr "Il corpo del messaggio è vuoto, ma la signature nel campo header è \"(%s)\""
+msgstr ""
+"Il corpo del messaggio è vuoto, ma la signature nel campo header è \"(%s)\""
 
+# non mi convincono "di ritorno" e "corpo"
+# ma altrove corpo non ci stava male
 #: ../gio/gdbusmessage.c:2910
 #, c-format
 msgid "Error return with body of type `%s'"
-msgstr ""
+msgstr "Errore di ritorno con corpo di tipo \"%s\""
 
+# come sopra
 #: ../gio/gdbusmessage.c:2918
 msgid "Error return with empty body"
-msgstr ""
+msgstr "Errore di ritorno con corpo vuoto"
 
 #: ../gio/gdbusmethodinvocation.c:375
 #, c-format
 msgid "Type of return value is incorrect, got `%s', expected `%s'"
-msgstr "Il tipo del valore di ritorno non è corretto, ottenuto \"%s\", atteso \"%s\""
+msgstr ""
+"Il tipo del valore di ritorno non è corretto, ottenuto \"%s\", atteso \"%s\""
 
 #: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:3027
 #: ../gio/gsocket.c:3108
@@ -2081,6 +2109,8 @@ msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
 msgstr ""
+"Tentata l'impostazione della proprietà %s di tipo %s, ma in accordo alla "
+"interfaccia attesa il tipo %s"
 
 #: ../gio/gdbusproxy.c:1234
 #, c-format
@@ -2097,6 +2127,9 @@ msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
+"Impossibile invocare il metodo; il proxy è per un nome well-known senza un "
+"owner e il proxy è stato costruito con il flag "
+"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
 #: ../gio/gdbusserver.c:715
 msgid "Abstract name space not supported"
@@ -2122,11 +2155,11 @@ msgstr "La stringa \"%s\" non è un GUID D-Bus valido"
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Impossibile ascoltare sul transport \"%s\" non supportato"
 
-#: ../gio/gdbus-tool.c:88
+#: ../gio/gdbus-tool.c:87
 msgid "COMMAND"
 msgstr "COMANDO"
 
-#: ../gio/gdbus-tool.c:93
+#: ../gio/gdbus-tool.c:92
 #, c-format
 msgid ""
 "Commands:\n"
@@ -2145,48 +2178,48 @@ msgstr ""
 "\n"
 "Usare \"%s COMANDO --help\" per informazioni su ciascun comando.\n"
 
-#: ../gio/gdbus-tool.c:161 ../gio/gdbus-tool.c:217 ../gio/gdbus-tool.c:289
-#: ../gio/gdbus-tool.c:313 ../gio/gdbus-tool.c:817 ../gio/gdbus-tool.c:1327
+#: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
+#: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
 #, c-format
 msgid "Error: %s\n"
 msgstr "Errore: %s\n"
 
-#: ../gio/gdbus-tool.c:172 ../gio/gdbus-tool.c:230 ../gio/gdbus-tool.c:1343
+#: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Errore nell'analizzare XML introspection: %s\n"
 
-#: ../gio/gdbus-tool.c:347
+#: ../gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
 msgstr "Connette al bus di sistema"
 
-#: ../gio/gdbus-tool.c:348
+#: ../gio/gdbus-tool.c:347
 msgid "Connect to the session bus"
 msgstr "Connette al bus di sessione"
 
-#: ../gio/gdbus-tool.c:349
+#: ../gio/gdbus-tool.c:348
 msgid "Connect to given D-Bus address"
 msgstr "Connette all'indirizzo D-Bus fornito"
 
-#: ../gio/gdbus-tool.c:359
+#: ../gio/gdbus-tool.c:358
 msgid "Connection Endpoint Options:"
 msgstr "Opzioni endpoint connessione:"
 
-#: ../gio/gdbus-tool.c:360
+#: ../gio/gdbus-tool.c:359
 msgid "Options specifying the connection endpoint"
 msgstr "Opzioni per specificare gli endpoint di connessione"
 
-#: ../gio/gdbus-tool.c:382
+#: ../gio/gdbus-tool.c:379
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Nessun endpoint di connessione specificato"
 
-#: ../gio/gdbus-tool.c:392
+#: ../gio/gdbus-tool.c:389
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Specificati endpoint di connessione multipli"
 
-#: ../gio/gdbus-tool.c:462
+#: ../gio/gdbus-tool.c:459
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
@@ -2194,7 +2227,7 @@ msgstr ""
 "Attenzione: in accordo ai dati di introspezione, l'interfaccia \"%s\" non "
 "esiste\n"
 
-#: ../gio/gdbus-tool.c:471
+#: ../gio/gdbus-tool.c:468
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
@@ -2203,90 +2236,92 @@ msgstr ""
 "Attenzione: in accordo ai dati di introspezione, il metodo \"%s\" non esiste "
 "sull'interfaccia \"%s\"\n"
 
-#: ../gio/gdbus-tool.c:533
+#: ../gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
 msgstr "Nome della destinazione su cui invocare il metodo"
 
-#: ../gio/gdbus-tool.c:534
+#: ../gio/gdbus-tool.c:531
 msgid "Object path to invoke method on"
 msgstr "Percorso dell'oggetto su cui invocare il metodo"
 
 # oppure "Nome del metodo e dell'interfaccia" ???
-#: ../gio/gdbus-tool.c:535
+#: ../gio/gdbus-tool.c:532
 msgid "Method and interface name"
 msgstr "Metodo e nome dell'interfaccia"
 
-#: ../gio/gdbus-tool.c:574
+#: ../gio/gdbus-tool.c:571
 msgid "Invoke a method on a remote object."
 msgstr "Invoca un metodo su un oggetto remoto."
 
-#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:1248 ../gio/gdbus-tool.c:1508
+#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Errore nel connettersi: %s\n"
 
-#: ../gio/gdbus-tool.c:649 ../gio/gdbus-tool.c:1267 ../gio/gdbus-tool.c:1527
+#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Errore: non è specificata la destinazione\n"
 
-#: ../gio/gdbus-tool.c:670 ../gio/gdbus-tool.c:1286
+#: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1283
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Errore: non è specificato il percorso dell'oggetto\n"
 
-#: ../gio/gdbus-tool.c:690 ../gio/gdbus-tool.c:1306 ../gio/gdbus-tool.c:1567
+#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Errore: \"%s\" non è un percorso di oggetto valido\n"
 
-#: ../gio/gdbus-tool.c:705
+#: ../gio/gdbus-tool.c:702
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Errore: non è specificato il nome del metodo\n"
 
-#: ../gio/gdbus-tool.c:716
+#: ../gio/gdbus-tool.c:713
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
 msgstr "Errore: il nome di metodo \"%s\" non è valido\n"
 
-#: ../gio/gdbus-tool.c:781
+#: ../gio/gdbus-tool.c:778
 #, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
 msgstr "Errore nell'analizzare il parametro %d di tipo \"%s\": %s\n"
 
-#: ../gio/gdbus-tool.c:789
+#: ../gio/gdbus-tool.c:786
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Errore nell'analizzare il parametro %d: %s\n"
 
-#: ../gio/gdbus-tool.c:1165
+# predicato > sostantivo per introspezione, direi che funziona
+#: ../gio/gdbus-tool.c:1162
 msgid "Destination name to introspect"
-msgstr ""
+msgstr "Nome destinazione per l'introspezione"
 
-#: ../gio/gdbus-tool.c:1166
+#: ../gio/gdbus-tool.c:1163
 msgid "Object path to introspect"
-msgstr ""
+msgstr "Percorso oggetto per l'introspezione"
 
-#: ../gio/gdbus-tool.c:1167
+#: ../gio/gdbus-tool.c:1164
 msgid "Print XML"
 msgstr "Stampa XML"
 
-#: ../gio/gdbus-tool.c:1200
+#: ../gio/gdbus-tool.c:1197
 msgid "Introspect a remote object."
-msgstr ""
+msgstr "Esegue l'introspezione su un oggetto remoto."
 
-#: ../gio/gdbus-tool.c:1426
+# predicato > sostantivo per monitor, direi che funziona
+#: ../gio/gdbus-tool.c:1423
 msgid "Destination name to monitor"
-msgstr ""
+msgstr "Nome destinazione per il monitoraggio"
 
-#: ../gio/gdbus-tool.c:1427
+#: ../gio/gdbus-tool.c:1424
 msgid "Object path to monitor"
-msgstr ""
+msgstr "Percorso oggetto per il monitoraggio"
 
-#: ../gio/gdbus-tool.c:1460
+#: ../gio/gdbus-tool.c:1457
 msgid "Monitor a remote object."
-msgstr "Monitora un oggetto remoto."
+msgstr "Esegue il monitoraggio su un oggetto remoto."
 
 # NdT: nome di applicazione (quando manca)
 #: ../gio/gdesktopappinfo.c:480 ../gio/gwin32appinfo.c:221
@@ -2348,6 +2383,10 @@ msgstr "l'unità non implementa l'azione start"
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "l'unità non implementa l'azione stop"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "Non è disponibile il supporto a TLS"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -2610,6 +2649,8 @@ msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 msgstr ""
+"<key name='%s'> esegue lo shadow di <key name='%s'> in <schema id='%s'>; "
+"usare <override> per modificare il valore"
 
 #: ../gio/glib-compile-schemas.c:896
 #, c-format
@@ -2617,6 +2658,8 @@ msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
+"è necessario specificare come un attributo per <key> solo uno tra \"type\", "
+"\"enum\" o \"flags\""
 
 #: ../gio/glib-compile-schemas.c:915
 #, c-format
@@ -2628,14 +2671,15 @@ msgstr "<%s id='%s'> non (ancora) definito."
 msgid "invalid GVariant type string '%s'"
 msgstr "stringa tipo GVariant \"%s\" non valida"
 
+# direi che la doppia negazione qui possiamo lasciarla
 #: ../gio/glib-compile-schemas.c:960
 msgid "<override> given but schema isn't extending anything"
-msgstr ""
+msgstr "<override> indicato, ma lo schema non sta estendendo nulla"
 
 #: ../gio/glib-compile-schemas.c:973
 #, c-format
 msgid "no <key name='%s'> to override"
-msgstr ""
+msgstr "nessun <key name='%s'> da scavalcare"
 
 #: ../gio/glib-compile-schemas.c:981
 #, c-format
@@ -2650,28 +2694,32 @@ msgstr "<schema id='%s'> già specificato"
 #: ../gio/glib-compile-schemas.c:1064
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> estenda lo schema \"%s\" non ancora esistente"
 
+# o esistenti??
 #: ../gio/glib-compile-schemas.c:1080
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> è un elenco di schema \"%s\" non ancora esistente"
 
+# diciamocelo, gira roba forte...
 #: ../gio/glib-compile-schemas.c:1088
 #, c-format
 msgid "Can not be a list of a schema with a path"
-msgstr ""
+msgstr "Non può essere un elenco di una schema con un percorso"
 
 #: ../gio/glib-compile-schemas.c:1098
 #, c-format
 msgid "Can not extend a schema with a path"
-msgstr ""
+msgstr "Non può estendere uno schema con un percorso"
 
 #: ../gio/glib-compile-schemas.c:1108
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
+"<schema id='%s'> è un elenco, che estende <schema id='%s'> che non è un "
+"elenco"
 
 #: ../gio/glib-compile-schemas.c:1118
 #, c-format
@@ -2679,11 +2727,13 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
+"<schema id='%s' list-of='%s'> estende <schema id='%s' list-of='%s'>, ma \"%s"
+"\" non estende \"%s\""
 
 #: ../gio/glib-compile-schemas.c:1135
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
-msgstr ""
+msgstr "un percorso, se fornito, deve iniziare e terminare con uno slash"
 
 #: ../gio/glib-compile-schemas.c:1142
 #, c-format
@@ -2708,14 +2758,14 @@ msgstr "Elemento <%s> non ammesso come primo livello"
 #: ../gio/glib-compile-schemas.c:1485
 #, c-format
 msgid "text may not appear inside <%s>"
-msgstr ""
+msgstr "il testo potrebbe non apparire all'interno di <%s>"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1654 ../gio/glib-compile-schemas.c:1725
 #: ../gio/glib-compile-schemas.c:1801
 #, c-format
 msgid "--strict was specified; exiting.\n"
-msgstr ""
+msgstr "è stato specificato --strict, uscita\n"
 
 #: ../gio/glib-compile-schemas.c:1662
 #, c-format
@@ -2725,24 +2775,27 @@ msgstr "Questo intero file è stato ignorato.\n"
 #: ../gio/glib-compile-schemas.c:1721
 #, c-format
 msgid "Ignoring this file.\n"
-msgstr ""
+msgstr "Ignorato questo file.\n"
 
+# override...
 #: ../gio/glib-compile-schemas.c:1761
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
+"Nessuna chiave \"%s\" nello schema \"%s\" come specificato nel file di "
+"override \"%s\""
 
 #: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
 #: ../gio/glib-compile-schemas.c:1853
 #, c-format
 msgid "; ignoring override for this key.\n"
-msgstr ""
+msgstr "; ignorato lo scavalcamento per questa chiave.\n"
 
 #: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
 #: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid " and --strict was specified; exiting.\n"
-msgstr ""
+msgstr " ed è stato specificato --strict; uscita.\n"
 
 #: ../gio/glib-compile-schemas.c:1787
 #, c-format
@@ -2750,11 +2803,13 @@ msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': "
 "%s.  "
 msgstr ""
+"errore nell'analizzare la chiave \"%s\" nello schema \"%s\" come specificato "
+"nel file di override \"%s\": %s."
 
 #: ../gio/glib-compile-schemas.c:1797
 #, c-format
 msgid "Ignoring override for this key.\n"
-msgstr ""
+msgstr "Ignorato l'override per questa chiave.\n"
 
 #: ../gio/glib-compile-schemas.c:1815
 #, c-format
@@ -2762,6 +2817,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
+"l'override per la chiave \"%s\" nello schema \"%s\" nel file di override \"%s"
+"\" è fuori dall'intervallo indicato nello schema"
 
 #: ../gio/glib-compile-schemas.c:1843
 #, c-format
@@ -2769,13 +2826,15 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 msgstr ""
+"l'override per la chiave \"%s\" nello schema \"%s\" nel file di override \"%s"
+"\" non è nell'elenco delle scelte valide"
 
 # FIXME: le altre sono maiuscole
 #: ../gio/glib-compile-schemas.c:1897
 msgid "where to store the gschemas.compiled file"
 msgstr "Dove memorizzare il file gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1923
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1910
 msgid "DIRECTORY"
 msgstr "DIRECTORY"
 
@@ -2795,7 +2854,7 @@ msgstr "Questa opzione sarà rimossa presto."
 msgid "Do not enforce key name restrictions"
 msgstr "Non forza le limitazioni sui nomi di chiave"
 
-#: ../gio/glib-compile-schemas.c:1926
+#: ../gio/glib-compile-schemas.c:1913
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2805,22 +2864,22 @@ msgstr ""
 "I file schema devo avere estensione .gschema.xml,\n"
 "e il file cache è chiamato gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1942
+#: ../gio/glib-compile-schemas.c:1929
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "È necessario indicare esattamante un nome di directory\n"
 
-#: ../gio/glib-compile-schemas.c:1981
+#: ../gio/glib-compile-schemas.c:1968
 #, c-format
 msgid "No schema files found: "
 msgstr "Nessun file schema trovato: "
 
-#: ../gio/glib-compile-schemas.c:1984
+#: ../gio/glib-compile-schemas.c:1971
 #, c-format
 msgid "doing nothing.\n"
 msgstr "nessuna azione.\n"
 
-#: ../gio/glib-compile-schemas.c:1987
+#: ../gio/glib-compile-schemas.c:1974
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "rimosso file di output.\n"
@@ -3289,77 +3348,70 @@ msgstr "Il percorso non deve contenere due slash adiacenti (//)\n"
 msgid "No such key '%s'\n"
 msgstr "Chiave \"%s\" inesistente\n"
 
-#: ../gio/gsettings-tool.c:444
+#: ../gio/gsettings-tool.c:429
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Il valore fornito è fuori dell'intervallo valido\n"
 
-#: ../gio/gsettings-tool.c:473
+#: ../gio/gsettings-tool.c:458
 msgid "Print help"
 msgstr "Stampa l'aiuto"
 
-#: ../gio/gsettings-tool.c:479
+#: ../gio/gsettings-tool.c:464
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Elenca gli schemi (non rilocabili) installati"
 
-#: ../gio/gsettings-tool.c:485
+#: ../gio/gsettings-tool.c:470
 msgid "List the installed relocatable schemas"
 msgstr "Elenca gli schemi rilocabili installati"
 
-#: ../gio/gsettings-tool.c:491
+#: ../gio/gsettings-tool.c:476
 msgid "List the keys in SCHEMA"
 msgstr "Elenca le chiavi in SCHEMA"
 
-#: ../gio/gsettings-tool.c:492 ../gio/gsettings-tool.c:498
+#: ../gio/gsettings-tool.c:477 ../gio/gsettings-tool.c:483
+#: ../gio/gsettings-tool.c:489
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PERCORSO]"
 
-#: ../gio/gsettings-tool.c:497
+#: ../gio/gsettings-tool.c:482
 msgid "List the children of SCHEMA"
 msgstr "Elenca i figli di SCHEMA"
 
-#: ../gio/gsettings-tool.c:503
-msgid ""
-"List keys and values, recursively\n"
-"If no SCHEMA is given, list all keys\n"
-msgstr ""
-"Elenca chiavi e valori, ricorsivamente\n"
-"Se non è fornito alcuno SCHEMA, elenca tutte le chiavi\n"
+#: ../gio/gsettings-tool.c:488
+msgid "List keys and values, recursively"
+msgstr "Elenca chiavi e valori, ricorsivamente"
 
-#: ../gio/gsettings-tool.c:505
-msgid "[SCHEMA[:PATH]]"
-msgstr "[SCHEMA[:PERCORSO]]"
-
-#: ../gio/gsettings-tool.c:510
+#: ../gio/gsettings-tool.c:494
 msgid "Get the value of KEY"
 msgstr "Ottiene il valore di CHIAVE"
 
-#: ../gio/gsettings-tool.c:511 ../gio/gsettings-tool.c:517
-#: ../gio/gsettings-tool.c:529 ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:495 ../gio/gsettings-tool.c:501
+#: ../gio/gsettings-tool.c:513 ../gio/gsettings-tool.c:519
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PERCORSO] CHIAVE"
 
-#: ../gio/gsettings-tool.c:516
+#: ../gio/gsettings-tool.c:500
 msgid "Query the range of valid values for KEY"
 msgstr "Interroga l'intervallo di valori ammessi per CHIAVE"
 
-#: ../gio/gsettings-tool.c:522
+#: ../gio/gsettings-tool.c:506
 msgid "Set the value of KEY to VALUE"
 msgstr "Imposta il valore di CHIAVE a VALORE"
 
-#: ../gio/gsettings-tool.c:523
+#: ../gio/gsettings-tool.c:507
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PERCORSO] CHIAVE VALORE"
 
-#: ../gio/gsettings-tool.c:528
+#: ../gio/gsettings-tool.c:512
 msgid "Reset KEY to its default value"
 msgstr "Azzera CHIAVE al suo valore predefinito"
 
-#: ../gio/gsettings-tool.c:534
+#: ../gio/gsettings-tool.c:518
 msgid "Check if KEY is writable"
 msgstr "Verifica se CHIAVE è scrivibile"
 
-#: ../gio/gsettings-tool.c:540
+#: ../gio/gsettings-tool.c:524
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3369,11 +3421,11 @@ msgstr ""
 "Se CHIAVE non è specificato, monitorizza tutte le chiavi in SCHEMA.\n"
 "Usare ^C per fermare il monitoraggio.\n"
 
-#: ../gio/gsettings-tool.c:543
+#: ../gio/gsettings-tool.c:527
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PERCORSO] [CHIAVE]"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:531
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -3382,7 +3434,7 @@ msgstr ""
 "Comando \"%s\" sconosciuto\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:539
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3424,7 +3476,7 @@ msgstr ""
 "Usare 'gsettings help COMANDO' per ottenere un aiuto dettagliato.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:576
+#: ../gio/gsettings-tool.c:560
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3439,17 +3491,17 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:581
+#: ../gio/gsettings-tool.c:565
 msgid "Arguments:\n"
 msgstr "Argomenti:\n"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:569
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr ""
 "  COMANDO   Il comando (opzionale) da spiegare\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:589
+#: ../gio/gsettings-tool.c:573
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3457,22 +3509,22 @@ msgstr ""
 "  SCHEMA    Il nome dello schema\n"
 "  PERCORSO  Il percorso, per gli schemi rilocabili\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:578
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  CHIAVE    La chiave (opzionale) all'interno dello schema\n"
 
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:582
 msgid "  KEY       The key within the schema\n"
 msgstr "  CHIAVE    La chiave all'interno dello schema\n"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:586
 msgid "  VALUE     The value to set\n"
 msgstr "  VALORE    Il valore da impostare\n"
 
-#: ../gio/gsettings-tool.c:691
+#: ../gio/gsettings-tool.c:662
 #, c-format
-msgid "Empty schema name given\n"
-msgstr "Fornito un nome di schema vuoto\n"
+msgid "Empty schema name given"
+msgstr "Fornito un nome di schema vuoto"
 
 #: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
@@ -3865,3 +3917,6 @@ msgstr "Necessario maggiore input"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Dati compressi non validi"
+
+#~ msgid "[SCHEMA[:PATH]]"
+#~ msgstr "[SCHEMA[:PERCORSO]]"
