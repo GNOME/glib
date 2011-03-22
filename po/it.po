@@ -17,15 +17,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.28.x\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-07 12:56+0100\n"
-"PO-Revision-Date: 2011-03-07 12:57+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-17 13:35+0000\n"
+"PO-Revision-Date: 2011-03-22 14:40+0100\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
 "Language-Team: Italian <tp@lists.linux.it>\n"
-"Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: ../glib/gbookmarkfile.c:780
@@ -1988,11 +1989,14 @@ msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
 "Il valore \"%s\" analizzato per il variant non è una signature D-Bus valida"
 
+# eeeehh?????
 #: ../gio/gdbusmessage.c:1502
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
+"Errore nel deserializzare il GVariant con la stringa di tipo \"%s\" dal "
+"formato wire D-Bus"
 
 #: ../gio/gdbusmessage.c:1686
 #, c-format
@@ -2000,6 +2004,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
+"Valore endianness non valido. Atteso 0x6c (\"l\") o 0x42 (\"B\"), trovato "
+"invece il valore 0x%02x"
 
 #: ../gio/gdbusmessage.c:1700
 #, c-format
@@ -2034,11 +2040,14 @@ msgstr "Impossibile deserializzare il messaggio: "
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
+"Errore nel serializzare il GVariant con la stringa di tipo \"%s\" al formato "
+"wire D-Bus"
 
+# fds == plurale per file descriptor (I suppose)
 #: ../gio/gdbusmessage.c:2275
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
-msgstr ""
+msgstr "Il messaggio presentava %d FD, ma il campo header indica %d FD"
 
 #: ../gio/gdbusmessage.c:2283
 msgid "Cannot serialize message: "
@@ -2066,14 +2075,17 @@ msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 "Il corpo del messaggio è vuoto, ma la signature nel campo header è \"(%s)\""
 
+# non mi convincono "di ritorno" e "corpo"
+# ma altrove corpo non ci stava male
 #: ../gio/gdbusmessage.c:2910
 #, c-format
 msgid "Error return with body of type `%s'"
-msgstr ""
+msgstr "Errore di ritorno con corpo di tipo \"%s\""
 
+# come sopra
 #: ../gio/gdbusmessage.c:2918
 msgid "Error return with empty body"
-msgstr ""
+msgstr "Errore di ritorno con corpo vuoto"
 
 #: ../gio/gdbusmethodinvocation.c:375
 #, c-format
@@ -2097,6 +2109,8 @@ msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
 msgstr ""
+"Tentata l'impostazione della proprietà %s di tipo %s, ma in accordo alla "
+"interfaccia attesa il tipo %s"
 
 #: ../gio/gdbusproxy.c:1234
 #, c-format
@@ -2113,6 +2127,9 @@ msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
+"Impossibile invocare il metodo; il proxy è per un nome well-known senza un "
+"owner e il proxy è stato costruito con il flag "
+"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
 #: ../gio/gdbusserver.c:715
 msgid "Abstract name space not supported"
@@ -2276,13 +2293,14 @@ msgstr "Errore nell'analizzare il parametro %d di tipo \"%s\": %s\n"
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Errore nell'analizzare il parametro %d: %s\n"
 
+# predicato > sostantivo per introspezione, direi che funziona
 #: ../gio/gdbus-tool.c:1162
 msgid "Destination name to introspect"
-msgstr ""
+msgstr "Nome destinazione per l'introspezione"
 
 #: ../gio/gdbus-tool.c:1163
 msgid "Object path to introspect"
-msgstr ""
+msgstr "Percorso oggetto per l'introspezione"
 
 #: ../gio/gdbus-tool.c:1164
 msgid "Print XML"
@@ -2290,19 +2308,20 @@ msgstr "Stampa XML"
 
 #: ../gio/gdbus-tool.c:1197
 msgid "Introspect a remote object."
-msgstr ""
+msgstr "Esegue l'introspezione su un oggetto remoto."
 
+# predicato > sostantivo per monitor, direi che funziona
 #: ../gio/gdbus-tool.c:1423
 msgid "Destination name to monitor"
-msgstr ""
+msgstr "Nome destinazione per il monitoraggio"
 
 #: ../gio/gdbus-tool.c:1424
 msgid "Object path to monitor"
-msgstr ""
+msgstr "Percorso oggetto per il monitoraggio"
 
 #: ../gio/gdbus-tool.c:1457
 msgid "Monitor a remote object."
-msgstr "Monitora un oggetto remoto."
+msgstr "Esegue il monitoraggio su un oggetto remoto."
 
 # NdT: nome di applicazione (quando manca)
 #: ../gio/gdesktopappinfo.c:480 ../gio/gwin32appinfo.c:221
@@ -2364,6 +2383,10 @@ msgstr "l'unità non implementa l'azione start"
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "l'unità non implementa l'azione stop"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "Non è disponibile il supporto a TLS"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -2626,6 +2649,8 @@ msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 msgstr ""
+"<key name='%s'> esegue lo shadow di <key name='%s'> in <schema id='%s'>; "
+"usare <override> per modificare il valore"
 
 #: ../gio/glib-compile-schemas.c:896
 #, c-format
@@ -2633,6 +2658,8 @@ msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
+"è necessario specificare come un attributo per <key> solo uno tra \"type\", "
+"\"enum\" o \"flags\""
 
 #: ../gio/glib-compile-schemas.c:915
 #, c-format
@@ -2644,14 +2671,15 @@ msgstr "<%s id='%s'> non (ancora) definito."
 msgid "invalid GVariant type string '%s'"
 msgstr "stringa tipo GVariant \"%s\" non valida"
 
+# direi che la doppia negazione qui possiamo lasciarla
 #: ../gio/glib-compile-schemas.c:960
 msgid "<override> given but schema isn't extending anything"
-msgstr ""
+msgstr "<override> indicato, ma lo schema non sta estendendo nulla"
 
 #: ../gio/glib-compile-schemas.c:973
 #, c-format
 msgid "no <key name='%s'> to override"
-msgstr ""
+msgstr "nessun <key name='%s'> da scavalcare"
 
 #: ../gio/glib-compile-schemas.c:981
 #, c-format
@@ -2666,28 +2694,32 @@ msgstr "<schema id='%s'> già specificato"
 #: ../gio/glib-compile-schemas.c:1064
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> estenda lo schema \"%s\" non ancora esistente"
 
+# o esistenti??
 #: ../gio/glib-compile-schemas.c:1080
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> è un elenco di schema \"%s\" non ancora esistente"
 
+# diciamocelo, gira roba forte...
 #: ../gio/glib-compile-schemas.c:1088
 #, c-format
 msgid "Can not be a list of a schema with a path"
-msgstr ""
+msgstr "Non può essere un elenco di una schema con un percorso"
 
 #: ../gio/glib-compile-schemas.c:1098
 #, c-format
 msgid "Can not extend a schema with a path"
-msgstr ""
+msgstr "Non può estendere uno schema con un percorso"
 
 #: ../gio/glib-compile-schemas.c:1108
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
+"<schema id='%s'> è un elenco, che estende <schema id='%s'> che non è un "
+"elenco"
 
 #: ../gio/glib-compile-schemas.c:1118
 #, c-format
@@ -2695,11 +2727,13 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
+"<schema id='%s' list-of='%s'> estende <schema id='%s' list-of='%s'>, ma \"%s"
+"\" non estende \"%s\""
 
 #: ../gio/glib-compile-schemas.c:1135
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
-msgstr ""
+msgstr "un percorso, se fornito, deve iniziare e terminare con uno slash"
 
 #: ../gio/glib-compile-schemas.c:1142
 #, c-format
@@ -2724,14 +2758,14 @@ msgstr "Elemento <%s> non ammesso come primo livello"
 #: ../gio/glib-compile-schemas.c:1485
 #, c-format
 msgid "text may not appear inside <%s>"
-msgstr ""
+msgstr "il testo potrebbe non apparire all'interno di <%s>"
 
 #. Translators: Do not translate "--strict".
 #: ../gio/glib-compile-schemas.c:1654 ../gio/glib-compile-schemas.c:1725
 #: ../gio/glib-compile-schemas.c:1801
 #, c-format
 msgid "--strict was specified; exiting.\n"
-msgstr ""
+msgstr "è stato specificato --strict, uscita\n"
 
 #: ../gio/glib-compile-schemas.c:1662
 #, c-format
@@ -2741,24 +2775,27 @@ msgstr "Questo intero file è stato ignorato.\n"
 #: ../gio/glib-compile-schemas.c:1721
 #, c-format
 msgid "Ignoring this file.\n"
-msgstr ""
+msgstr "Ignorato questo file.\n"
 
+# override...
 #: ../gio/glib-compile-schemas.c:1761
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
+"Nessuna chiave \"%s\" nello schema \"%s\" come specificato nel file di "
+"override \"%s\""
 
 #: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
 #: ../gio/glib-compile-schemas.c:1853
 #, c-format
 msgid "; ignoring override for this key.\n"
-msgstr ""
+msgstr "; ignorato lo scavalcamento per questa chiave.\n"
 
 #: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
 #: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid " and --strict was specified; exiting.\n"
-msgstr ""
+msgstr " ed è stato specificato --strict; uscita.\n"
 
 #: ../gio/glib-compile-schemas.c:1787
 #, c-format
@@ -2766,11 +2803,13 @@ msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': "
 "%s.  "
 msgstr ""
+"errore nell'analizzare la chiave \"%s\" nello schema \"%s\" come specificato "
+"nel file di override \"%s\": %s."
 
 #: ../gio/glib-compile-schemas.c:1797
 #, c-format
 msgid "Ignoring override for this key.\n"
-msgstr ""
+msgstr "Ignorato l'override per questa chiave.\n"
 
 #: ../gio/glib-compile-schemas.c:1815
 #, c-format
@@ -2778,6 +2817,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
+"l'override per la chiave \"%s\" nello schema \"%s\" nel file di override \"%s"
+"\" è fuori dall'intervallo indicato nello schema"
 
 #: ../gio/glib-compile-schemas.c:1843
 #, c-format
@@ -2785,6 +2826,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 msgstr ""
+"l'override per la chiave \"%s\" nello schema \"%s\" nel file di override \"%s"
+"\" non è nell'elenco delle scelte valide"
 
 # FIXME: le altre sono maiuscole
 #: ../gio/glib-compile-schemas.c:1897
