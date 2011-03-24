@@ -494,15 +494,6 @@ g_dbus_server_new_sync (const gchar        *address,
                            "guid", guid,
                            "authentication-observer", observer,
                            NULL);
-  if (server != NULL)
-    {
-      /* Right now we don't have any transport not using the listener... */
-      g_assert (server->is_using_listener);
-      server->run_signal_handler_id = g_signal_connect (G_SOCKET_SERVICE (server->listener),
-                                                        "run",
-                                                        G_CALLBACK (on_run),
-                                                        server);
-    }
 
   return server;
 }
@@ -1103,9 +1094,6 @@ initable_init (GInitable     *initable,
         }
     }
 
-  if (!ret)
-    goto out;
-
  out:
 
   g_strfreev (addr_array);
@@ -1114,6 +1102,13 @@ initable_init (GInitable     *initable,
     {
       if (last_error != NULL)
         g_error_free (last_error);
+
+      /* Right now we don't have any transport not using the listener... */
+      g_assert (server->is_using_listener);
+      server->run_signal_handler_id = g_signal_connect (G_SOCKET_SERVICE (server->listener),
+                                                        "run",
+                                                        G_CALLBACK (on_run),
+                                                        server);
     }
   else
     {
