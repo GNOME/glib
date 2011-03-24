@@ -83,7 +83,7 @@
  * values is permitted (eg: 0 to 255 is a valid byte).  Special checks
  * need to be performed for booleans (only 0 or 1 allowed), strings
  * (properly nul-terminated) and object paths and signature strings
- * (meeting the DBus specification requirements).
+ * (meeting the D-Bus specification requirements).
  */
 
 /* < private >
@@ -1600,12 +1600,12 @@ g_variant_serialiser_is_string (gconstpointer data,
 
 /* < private >
  * g_variant_serialiser_is_object_path:
- * @data: a possible DBus object path
+ * @data: a possible D-Bus object path
  * @size: the size of @data
  *
  * Performs the checks for being a valid string.
  *
- * Also, ensures that @data is a valid DBus object path, as per the DBus
+ * Also, ensures that @data is a valid DBus object path, as per the D-Bus
  * specification.
  */
 gboolean
@@ -1652,13 +1652,13 @@ g_variant_serialiser_is_object_path (gconstpointer data,
 
 /* < private >
  * g_variant_serialiser_is_signature:
- * @data: a possible DBus signature
+ * @data: a possible D-Bus signature
  * @size: the size of @data
  *
  * Performs the checks for being a valid string.
  *
- * Also, ensures that @data is a valid DBus type signature, as per the
- * DBus specification.
+ * Also, ensures that @data is a valid D-Bus type signature, as per the
+ * D-Bus specification.
  */
 gboolean
 g_variant_serialiser_is_signature (gconstpointer data,
