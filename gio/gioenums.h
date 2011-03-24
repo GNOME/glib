@@ -1179,7 +1179,7 @@ typedef enum
  * GDBusSignalFlags:
  * @G_DBUS_SIGNAL_FLAGS_NONE: No flags set.
  * @G_DBUS_SIGNAL_FLAGS_NO_MATCH_RULE: Don't actually send the AddMatch
- * DBus call for this signal subscription.  This gives you more control
+ * D-Bus call for this signal subscription.  This gives you more control
  * over which match rules you add (but you must add them manually).
  *
  * Flags used when subscribing to signals via g_dbus_connection_signal_subscribe().

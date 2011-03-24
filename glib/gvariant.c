@@ -65,8 +65,8 @@
  * small constant time, usually touching only a single memory page.
  * Serialised #GVariant data can also be sent over the network.
  *
- * #GVariant is largely compatible with DBus.  Almost all types of
- * #GVariant instances can be sent over DBus.  See #GVariantType for
+ * #GVariant is largely compatible with D-Bus.  Almost all types of
+ * #GVariant instances can be sent over D-Bus.  See #GVariantType for
  * exceptions.
  *
  * For convenience to C programmers, #GVariant features powerful
@@ -540,8 +540,8 @@ NUMERIC_TYPE (UINT64, uint64, guint64)
  * Creates a new handle #GVariant instance.
  *
  * By convention, handles are indexes into an array of file descriptors
- * that are sent alongside a DBus message.  If you're not interacting
- * with DBus, you probably don't need them.
+ * that are sent alongside a D-Bus message.  If you're not interacting
+ * with D-Bus, you probably don't need them.
  *
  * Since: 2.24
  **/
@@ -556,8 +556,8 @@ NUMERIC_TYPE (UINT64, uint64, guint64)
  * than %G_VARIANT_TYPE_HANDLE.
  *
  * By convention, handles are indexes into an array of file descriptors
- * that are sent alongside a DBus message.  If you're not interacting
- * with DBus, you probably don't need them.
+ * that are sent alongside a D-Bus message.  If you're not interacting
+ * with D-Bus, you probably don't need them.
  *
  * Since: 2.24
  **/
@@ -1141,8 +1141,8 @@ g_variant_new_string (const gchar *string)
  * @object_path: a normal C nul-terminated string
  * @returns: a floating reference to a new object path #GVariant instance
  *
- * Creates a DBus object path #GVariant with the contents of @string.
- * @string must be a valid DBus object path.  Use
+ * Creates a D-Bus object path #GVariant with the contents of @string.
+ * @string must be a valid D-Bus object path.  Use
  * g_variant_is_object_path() if you're not sure.
  *
  * Since: 2.24
@@ -1159,10 +1159,10 @@ g_variant_new_object_path (const gchar *object_path)
 /**
  * g_variant_is_object_path:
  * @string: a normal C nul-terminated string
- * @returns: %TRUE if @string is a DBus object path
+ * @returns: %TRUE if @string is a D-Bus object path
  *
- * Determines if a given string is a valid DBus object path.  You
- * should ensure that a string is a valid DBus object path before
+ * Determines if a given string is a valid D-Bus object path.  You
+ * should ensure that a string is a valid D-Bus object path before
  * passing it to g_variant_new_object_path().
  *
  * A valid object path starts with '/' followed by zero or more
@@ -1185,8 +1185,8 @@ g_variant_is_object_path (const gchar *string)
  * @signature: a normal C nul-terminated string
  * @returns: a floating reference to a new signature #GVariant instance
  *
- * Creates a DBus type signature #GVariant with the contents of
- * @string.  @string must be a valid DBus type signature.  Use
+ * Creates a D-Bus type signature #GVariant with the contents of
+ * @string.  @string must be a valid D-Bus type signature.  Use
  * g_variant_is_signature() if you're not sure.
  *
  * Since: 2.24
@@ -1203,13 +1203,13 @@ g_variant_new_signature (const gchar *signature)
 /**
  * g_variant_is_signature:
  * @string: a normal C nul-terminated string
- * @returns: %TRUE if @string is a DBus type signature
+ * @returns: %TRUE if @string is a D-Bus type signature
  *
- * Determines if a given string is a valid DBus type signature.  You
- * should ensure that a string is a valid DBus type signature before
+ * Determines if a given string is a valid D-Bus type signature.  You
+ * should ensure that a string is a valid D-Bus type signature before
  * passing it to g_variant_new_signature().
  *
- * DBus type signatures consist of zero or more definite #GVariantType
+ * D-Bus type signatures consist of zero or more definite #GVariantType
  * strings in sequence.
  *
  * Since: 2.24
@@ -1784,9 +1784,9 @@ g_variant_is_container (GVariant *value)
  * @G_VARIANT_CLASS_DOUBLE: The #GVariant is a double precision floating 
  *                          point value.
  * @G_VARIANT_CLASS_STRING: The #GVariant is a normal string.
- * @G_VARIANT_CLASS_OBJECT_PATH: The #GVariant is a DBus object path 
+ * @G_VARIANT_CLASS_OBJECT_PATH: The #GVariant is a D-Bus object path 
  *                               string.
- * @G_VARIANT_CLASS_SIGNATURE: The #GVariant is a DBus signature string.
+ * @G_VARIANT_CLASS_SIGNATURE: The #GVariant is a D-Bus signature string.
  * @G_VARIANT_CLASS_VARIANT: The #GVariant is a variant.
  * @G_VARIANT_CLASS_MAYBE: The #GVariant is a maybe-typed value.
  * @G_VARIANT_CLASS_ARRAY: The #GVariant is an array.
