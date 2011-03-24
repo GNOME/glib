@@ -951,12 +951,12 @@ g_io_channel_get_line_term (GIOChannel *channel,
  *                      %O_NONBLOCK/%O_NDELAY (see the documentation of
  *                      the UNIX open() syscall).
  * @G_IO_FLAG_IS_READABLE: indicates that the io channel is readable.
- *                         This flag can not be changed.
+ *                         This flag cannot be changed.
  * @G_IO_FLAG_IS_WRITEABLE: indicates that the io channel is writable.
- *                          This flag can not be changed.
+ *                          This flag cannot be changed.
  * @G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable,
  *                         i.e. that g_io_channel_seek_position() can
- *                         be used on it.  This flag can not be changed.
+ *                         be used on it.  This flag cannot be changed.
  * @G_IO_FLAG_MASK: the mask that specifies all the valid flags.
  * @G_IO_FLAG_GET_MASK: the mask of the flags that are returned from
  *                      g_io_channel_get_flags().

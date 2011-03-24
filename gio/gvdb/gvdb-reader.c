@@ -135,7 +135,7 @@ gvdb_table_setup_root (GvdbTable                 *file,
  * Creates a new #GvdbTable from the contents of the file found at
  * @filename.
  *
- * The only time this function fails is if the file can not be opened.
+ * The only time this function fails is if the file cannot be opened.
  * In that case, the #GError that is returned will be an error from
  * g_mapped_file_new().
  *

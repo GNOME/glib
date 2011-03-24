@@ -2161,7 +2161,7 @@ g_uri_list_extract_uris (const gchar *uri_list)
  * for instance there might be problems converting it to UTF-8, and some files
  * can be translated in the display.
  *
- * If GLib can not make sense of the encoding of @filename, as a last resort it 
+ * If GLib cannot make sense of the encoding of @filename, as a last resort it 
  * replaces unknown characters with U+FFFD, the Unicode replacement character.
  * You can search the result for the UTF-8 encoding of this character (which is
  * "\357\277\275" in octal notation) to find out if @filename was in an invalid
@@ -2202,7 +2202,7 @@ g_filename_display_basename (const gchar *filename)
  * Unlike g_filename_to_utf8(), the result is guaranteed to be non-%NULL 
  * even if the filename actually isn't in the GLib file name encoding.
  *
- * If GLib can not make sense of the encoding of @filename, as a last resort it 
+ * If GLib cannot make sense of the encoding of @filename, as a last resort it 
  * replaces unknown characters with U+FFFD, the Unicode replacement character.
  * You can search the result for the UTF-8 encoding of this character (which is
  * "\357\277\275" in octal notation) to find out if @filename was in an invalid

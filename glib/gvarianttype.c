@@ -80,7 +80,7 @@
  * that are subtypes of indefinite types.  That is to say,
  * g_variant_get_type() will never return an indefinite type, but
  * calling g_variant_is_of_type() with an indefinite type may return
- * %TRUE.  For example, you can not have a value that represents "an
+ * %TRUE.  For example, you cannot have a value that represents "an
  * array of no particular type", but you can have an "array of integers"
  * which certainly matches the type of "an array of no particular type",
  * since "array of integers" is a subtype of "array of no particular

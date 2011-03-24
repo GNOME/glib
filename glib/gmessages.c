@@ -821,7 +821,7 @@ _g_log_fallback_handler (const gchar   *log_domain,
   gboolean is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   int fd;
 
-  /* we can not call _any_ GLib functions in this fallback handler,
+  /* we cannot call _any_ GLib functions in this fallback handler,
    * which is why we skip UTF-8 conversion, etc.
    * since we either recursed or ran out of memory, we're in a pretty
    * pathologic situation anyways, what we can do is giving the

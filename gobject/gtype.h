@@ -335,7 +335,7 @@ G_BEGIN_DECLS
  * G_TYPE_IS_ABSTRACT:
  * @type: A #GType value.
  * 
- * Checks if @type is an abstract type.  An abstract type can not be
+ * Checks if @type is an abstract type.  An abstract type cannot be
  * instantiated and is normally used as an abstract base class for
  * derived classes.
  *

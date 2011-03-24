@@ -77,7 +77,7 @@
  * object paths that you wish to register are registered before
  * #GApplication attempts to acquire the bus name of your application
  * (which happens in g_application_register()).  Unfortunately, this
- * means that you can not use g_application_get_is_remote() to decide if
+ * means that you cannot use g_application_get_is_remote() to decide if
  * you want to register object paths.
  *
  * GApplication provides convenient life cycle management by maintaining
@@ -945,7 +945,7 @@ g_application_get_is_registered (GApplication *application)
  * perform actions on @application will result in the actions being
  * performed by the primary instance.
  *
- * The value of this property can not be accessed before
+ * The value of this property cannot be accessed before
  * g_application_register() has been called.  See
  * g_application_get_is_registered().
  *

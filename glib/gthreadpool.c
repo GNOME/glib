@@ -901,7 +901,7 @@ g_thread_pool_stop_unused_threads (void)
  * just in the order in which they were added to the pool.
  *
  * Note, if the maximum number of threads is more than 1, the order
- * that threads are executed can not be guranteed 100%. Threads are
+ * that threads are executed cannot be guranteed 100%. Threads are
  * scheduled by the operating system and are executed at random. It
  * cannot be assumed that threads are executed in the order they are
  * created. 

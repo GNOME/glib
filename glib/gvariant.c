@@ -49,7 +49,7 @@
  * #GVariant instances always have a type and a value (which are given
  * at construction time).  The type and value of a #GVariant instance
  * can never change other than by the #GVariant itself being
- * destroyed.  A #GVariant can not contain a pointer.
+ * destroyed.  A #GVariant cannot contain a pointer.
  *
  * #GVariant is reference counted using g_variant_ref() and
  * g_variant_unref().  #GVariant also has floating reference counts --
@@ -2419,7 +2419,7 @@ g_variant_equal (gconstpointer one,
  *
  * It is a programmer error to attempt to compare container values or
  * two values that have types that are not exactly equal.  For example,
- * you can not compare a 32-bit signed integer with a 32-bit unsigned
+ * you cannot compare a 32-bit signed integer with a 32-bit unsigned
  * integer.  Also note that this function is not particularly
  * well-behaved when it comes to comparison of doubles; in particular,
  * the handling of incomparable values (ie: NaN) is undefined.

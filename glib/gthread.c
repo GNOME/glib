@@ -443,7 +443,7 @@ GThreadFunctions g_thread_functions_for_glib_use = {
  * #GStaticMutex provides a simpler and safer way of doing this.
  *
  * If you want to use a mutex, and your code should also work without
- * calling g_thread_init() first, then you can not use a #GMutex, as
+ * calling g_thread_init() first, then you cannot use a #GMutex, as
  * g_mutex_new() requires that the thread system be initialized. Use a
  * #GStaticMutex instead.
  *
@@ -736,7 +736,7 @@ GThreadFunctions g_thread_functions_for_glib_use = {
  * <note><para>@destructor is used quite differently from @notify in
  * g_static_private_set().</para></note>
  *
- * <note><para>A #GPrivate can not be freed. Reuse it instead, if you
+ * <note><para>A #GPrivate cannot be freed. Reuse it instead, if you
  * can, to avoid shortage, or use #GStaticPrivate.</para></note>
  *
  * <note><para>This function will abort if g_thread_init() has not been

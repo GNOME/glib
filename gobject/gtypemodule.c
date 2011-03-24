@@ -49,7 +49,7 @@
  * types and interface implementations are in use, the module is kept
  * loaded. When the types and interfaces are gone, the module may be
  * unloaded. If the types and interfaces become used again, the module
- * will be reloaded. Note that the last unref can not happen in module
+ * will be reloaded. Note that the last unref cannot happen in module
  * code, since that would lead to the caller's code being unloaded before
  * g_object_unref() returns to it.
  *

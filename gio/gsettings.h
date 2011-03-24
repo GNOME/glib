@@ -217,7 +217,7 @@ typedef gboolean      (*GSettingsGetMapping)                            (GVarian
  *     value initially from the setting, but do not listen for changes of the setting
  * @G_SETTINGS_BIND_INVERT_BOOLEAN: When passed to g_settings_bind(), uses a pair of mapping functions that invert
  *     the boolean value when mapping between the setting and the property.  The setting and property must both
- *     be booleans.  You can not pass this flag to g_settings_bind_with_mapping().
+ *     be booleans.  You cannot pass this flag to g_settings_bind_with_mapping().
  *
  * Flags used when creating a binding. These flags determine in which
  * direction the binding works. The default is to synchronize in both
