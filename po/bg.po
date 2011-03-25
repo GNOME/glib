@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-23 08:02+0200\n"
-"PO-Revision-Date: 2011-02-23 08:01+0200\n"
+"POT-Creation-Date: 2011-03-25 22:13+0200\n"
+"PO-Revision-Date: 2011-03-25 22:13+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -1279,12 +1279,12 @@ msgstr ""
 msgid "Error parsing option %s"
 msgstr "Грешка при анализа на опцията: %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1527
+#: ../glib/goption.c:1413 ../glib/goption.c:1526
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Липсва аргумент за %s"
 
-#: ../glib/goption.c:1922
+#: ../glib/goption.c:1921
 #, c-format
 msgid "Unknown option %s"
 msgstr "Непозната опция %s"
@@ -1994,7 +1994,7 @@ msgstr "Грешка при изпращане на съобщение: %s"
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Неуспех при зареждане на /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:714
+#: ../gio/gdbusproxy.c:715
 #, c-format
 msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
@@ -2003,17 +2003,17 @@ msgstr ""
 "Опит за промяна на свойството „%s“ от вид „%s“, а според очаквания интерфейс "
 "видът е „%s“"
 
-#: ../gio/gdbusproxy.c:1234
+#: ../gio/gdbusproxy.c:1235
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Грешка при извикване на StartServiceByName за %s:"
 
-#: ../gio/gdbusproxy.c:1255
+#: ../gio/gdbusproxy.c:1256
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Неочакван отговор „%d“ от метода StartServicebyName(„%s“)"
 
-#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
+#: ../gio/gdbusproxy.c:2312 ../gio/gdbusproxy.c:2470
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2022,25 +2022,25 @@ msgstr ""
 "дефинирано име без собственик, а е създаден с флага "
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:715
+#: ../gio/gdbusserver.c:706
 msgid "Abstract name space not supported"
 msgstr "Не се поддържа абстрактно пространство за имена"
 
-#: ../gio/gdbusserver.c:805
+#: ../gio/gdbusserver.c:796
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Не може да се задава моментен файл при създаване на сървър"
 
-#: ../gio/gdbusserver.c:882
+#: ../gio/gdbusserver.c:873
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Грешка при запис в моментен файл „%s“: %s"
 
-#: ../gio/gdbusserver.c:1044
+#: ../gio/gdbusserver.c:1035
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "Низът „%s“ не е допустим глобален идентификатор в D-Bus"
 
-#: ../gio/gdbusserver.c:1084
+#: ../gio/gdbusserver.c:1075
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Невъзможно е да се чака за връзки по неподдържан транспорт „%s“"
@@ -2263,6 +2263,10 @@ msgstr "устройството не поддържа стартиране"
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "устройството не поддържа спиране"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "Липсва поддръжка на TLS"
 
 #: ../gio/gemblem.c:324
 #, c-format
