@@ -76,7 +76,7 @@ static const SchemaTest tests[] = {
   { "enum-with-repeated-value",     NULL, "*value='1' already specified*"                       },
   { "enum-with-chained-alias",      NULL, "*'sausages' is not in enumerated type*"              },
   { "enum-with-shadow-alias",       NULL, "*'mash' is already a member of the enum*"            },
-  { "enum-with-choice",             NULL, "*<choices> cannot be specified*"                    },
+  { "enum-with-choice",             NULL, "*<choices> can not be specified*"                    },
   { "enum-with-bad-default",        NULL, "*<default> is not a valid member*"                   },
   { "choice",                       NULL, NULL                                                  },
   { "choice-upside-down",           NULL, NULL                                                  },
