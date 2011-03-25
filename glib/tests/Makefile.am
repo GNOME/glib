@@ -17,6 +17,10 @@ TEST_PROGS       	 += option-context
 option_context_SOURCES	  = option-context.c
 option_context_LDADD	  = $(progs_ldadd)
 
+TEST_PROGS       	 += option-argv0
+option_argv0_SOURCES	  = option-argv0.c
+option_argv0_LDADD	  = $(progs_ldadd)
+
 TEST_PROGS     	 += keyfile
 keyfile_SOURCES	  = keyfile.c
 keyfile_LDADD	  = $(progs_ldadd)

@@ -1657,6 +1657,39 @@ free_pending_nulls (GOptionContext *context,
   context->pending_nulls = NULL;
 }
 
+/* Use a platform-specific mechanism to look up the first argument to
+ * the current process. 
+ * Note if you implement this for other platforms, also add it to
+ * tests/option-argv0.c
+ */
+static char *
+platform_get_argv0 (void)
+{
+#ifdef __linux
+  char *cmdline;
+  char *base_arg0;
+  gsize len;
+
+  if (!g_file_get_contents ("/proc/self/cmdline",
+			    &cmdline,
+			    &len,
+			    NULL))
+    return NULL;
+  /* Sanity check for a NUL terminator. */
+  if (!memchr (cmdline, 0, len))
+    return NULL;
+  /* We could just return cmdline, but I think it's better
+   * to hold on to a smaller malloc block; the arguments
+   * could be large.
+   */
+  base_arg0 = g_path_get_basename (cmdline);
+  g_free (cmdline);
+  return base_arg0;
+#endif
+
+  return NULL;
+}
+
 /**
  * g_option_context_parse:
  * @context: a #GOptionContext
@@ -1704,16 +1737,19 @@ g_option_context_parse (GOptionContext   *context,
   /* Set program name */
   if (!g_get_prgname())
     {
-      if (argc && argv && *argc)
-        {
-          gchar *prgname;
+      gchar *prgname;
 
-          prgname = g_path_get_basename ((*argv)[0]);
-          g_set_prgname (prgname);
-          g_free (prgname);
-        }
+      if (argc && argv && *argc)
+	prgname = g_path_get_basename ((*argv)[0]);
       else
-        g_set_prgname ("<unknown>");
+	prgname = platform_get_argv0 ();
+
+      if (prgname)
+	g_set_prgname (prgname);
+      else
+	g_set_prgname ("<unknown>");
+
+      g_free (prgname);
     }
 
   /* Call pre-parse hooks */

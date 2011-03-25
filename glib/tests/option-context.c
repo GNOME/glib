@@ -1308,27 +1308,6 @@ add_test1 (void)
 }
 
 void
-empty_test1 (void)
-{
-  GOptionContext *context;
-  GOptionEntry entries [] =
-    { { NULL } };
-  char *prgname;
-
-  g_set_prgname (NULL);
-  context = g_option_context_new (NULL);
-
-  g_option_context_add_main_entries (context, entries, NULL);
-  
-  g_option_context_parse (context, NULL, NULL, NULL);
-
-  prgname = g_get_prgname ();
-  g_assert (prgname && strcmp (prgname, "<unknown>") == 0);
-  
-  g_option_context_free (context);
-}
-
-void
 empty_test2 (void)
 {
   GOptionContext *context;
@@ -2031,7 +2010,9 @@ main (int   argc,
   g_test_add_func ("/option/context/add", add_test1);
 
   /* Test parsing empty args */
-  g_test_add_func ("/option/context/empty1", empty_test1);
+  /* Note there used to be an empty1 here, but it effectively moved
+   * to option-argv0.c.
+   */
   g_test_add_func ("/option/context/empty2", empty_test2);
   g_test_add_func ("/option/context/empty3", empty_test3);
 
