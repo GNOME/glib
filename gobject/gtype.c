@@ -4408,6 +4408,8 @@ g_type_init (void)
  * <structname>MyObject</structname> defined in the standard GObject
  * fashion.
  * type's class_init() function.
+ * Note the use of a structure member "priv" to avoid the overhead
+ * of repeatedly calling MY_OBJECT_GET_PRIVATE().
  *
  * |[
  * typedef struct _MyObject        MyObject;
@@ -4440,7 +4442,11 @@ g_type_init (void)
  * static int
  * my_object_get_some_field (MyObject *my_object)
  * {
- *   MyObjectPrivate *priv = my_object->priv;
+ *   MyObjectPrivate *priv;
+ *
+ *   g_return_val_if_fail (MY_IS_OBJECT (my_object), 0);
+ *
+ *   priv = my_object->priv;
  *
  *   return priv->some_field;
  * }
