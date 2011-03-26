@@ -8,16 +8,17 @@
 # Philipp Kerling <k.philipp@gmail.com>, 2008.
 # Mario Blättermann <mariobl@gnome.org>, 2010, 2011.
 # Christian Kirbach  <Christian.Kirbach@googlemail.com>, 2009, 2010.
+# Wolfgang Stöggl <c72578@yahoo.de>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&component=general\n"
-"POT-Creation-Date: 2011-03-10 12:45+0000\n"
-"PO-Revision-Date: 2011-03-17 12:37+0100\n"
-"Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
-"Language-Team: Deutsch <gnome-de@gnome.org>\n"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-25 20:20+0000\n"
+"PO-Revision-Date: 2011-03-26 08:24+0100\n"
+"Last-Translator: Wolfgang Stoeggl <c72578@yahoo.de>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -99,7 +100,7 @@ msgstr ""
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr ""
-"Die Befehlzeile »%s« konnte nicht mit der Adresse »%s« verknüpft werden."
+"Die Befehlszeile »%s« konnte nicht mit der Adresse »%s« verknüpft werden."
 
 #: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1403
 #: ../gio/gcharsetconverter.c:458
@@ -107,7 +108,8 @@ msgstr ""
 msgid "Conversion from character set '%s' to '%s' is not supported"
 msgstr "Umwandlung von Zeichensatz »%s« in »%s« wird nicht unterstützt"
 
-#: ../glib/gconvert.c:571 ../glib/gconvert.c:649 ../gio/gcharsetconverter.c:462
+#: ../glib/gconvert.c:571 ../glib/gconvert.c:649
+#: ../gio/gcharsetconverter.c:462
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Konverter von »%s« in »%s« konnte nicht geöffnet werden"
@@ -404,7 +406,7 @@ msgstr "Fehler beim Öffnen des Ordners »%s«: %s"
 #: ../glib/gfileutils.c:540 ../glib/gfileutils.c:628
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "%lu byte konnten nicht alloziiert werden, um Datei »%s« zu lesen"
+msgstr "%lu Bytes konnten nicht zugeordnet werden, um Datei »%s« zu lesen"
 
 #: ../glib/gfileutils.c:555
 #, c-format
@@ -442,8 +444,8 @@ msgstr "Datei »%s« konnte nicht geöffnet werden: fdopen() gescheitert: %s"
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
-"Datei »%s« konnte nicht in »%s« umbenannt werden: g_rename() ist gescheitert: "
-"%s"
+"Datei »%s« konnte nicht in »%s« umbenannt werden: g_rename() ist gescheitert: %"
+"s"
 
 #: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1388
 #, c-format
@@ -573,7 +575,7 @@ msgstr "Datei »%s« konnte nicht geöffnet werden: open() ist gescheitert: %s"
 #: ../glib/gmappedfile.c:229
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
-msgstr "Datei »%s« konnte nicht gemappt werden: mmap() ist gescheitert: %s"
+msgstr "Datei »%s« konnte nicht abgebildet werden: mmap() ist gescheitert: %s"
 
 #: ../glib/gmarkup.c:354 ../glib/gmarkup.c:395
 #, c-format
@@ -616,8 +618,8 @@ msgid ""
 "as &amp;"
 msgstr ""
 "Zeichenangabe endete nicht mit einem Semikolon; wahrscheinlich haben Sie ein "
-"&-Zeichen benutzt, ohne eine Entität beginnen zu wollen - umschreiben Sie das "
-"»&« als &amp;"
+"&-Zeichen benutzt, ohne eine Entität beginnen zu wollen - umschreiben Sie "
+"das »&« als &amp;"
 
 #: ../glib/gmarkup.c:675
 #, c-format
@@ -661,7 +663,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1185
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Seltsames Zeichen »%s«, »>« erwartet um Start-Tag des leeren Elements »%s« "
 "abzuschließen"
@@ -671,7 +674,8 @@ msgstr ""
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
 msgstr ""
-"Seltsames Zeichen »%s«, »=« erwartet nach Attributname »%s« des Elements »%s«"
+"Seltsames Zeichen »%s«, »=« wird nach dem Attributnamen »%s« des Elements »%s« "
+"erwartet"
 
 #: ../glib/gmarkup.c:1310
 #, c-format
@@ -708,8 +712,8 @@ msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
 msgstr ""
-"»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen "
-"»%s« folgt; das erlaubte Zeichen ist »>«"
+"»%s« ist kein gültiges Zeichen, wenn es auf den schließenden Elementnamen »%s« "
+"folgt; das erlaubte Zeichen ist »>«"
 
 #: ../glib/gmarkup.c:1534
 #, c-format
@@ -719,8 +723,7 @@ msgstr "Element »%s« wurde geschlossen, kein Element ist derzeit offen"
 #: ../glib/gmarkup.c:1543
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
-msgstr ""
-"Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
+msgstr "Element »%s« wurde geschlossen, aber das derzeit offene Element ist »%s«"
 
 #: ../glib/gmarkup.c:1711
 msgid "Document was empty or contained only whitespace"
@@ -742,8 +745,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1741
 #, c-format
 msgid ""
-"Document ended unexpectedly, expected to see a close angle bracket ending the "
-"tag <%s/>"
+"Document ended unexpectedly, expected to see a close angle bracket ending "
+"the tag <%s/>"
 msgstr ""
 "Dokument endete unerwartet, es wurde eine spitze Klammer »>«, die das Tag <%s/"
 "> schließt, erwartet"
@@ -799,7 +802,7 @@ msgstr "Nicht genügend freier Speicher"
 
 #: ../glib/gregex.c:197
 msgid "backtracking limit reached"
-msgstr "Backtracking-Limit wurde erreicht"
+msgstr "Rückverfolgungsgrenze wurde erreicht"
 
 #: ../glib/gregex.c:209 ../glib/gregex.c:217
 msgid "the pattern contains items not supported for partial matching"
@@ -831,7 +834,7 @@ msgstr "Ungültige Kombination von newline-Markierungen"
 
 #: ../glib/gregex.c:234
 msgid "bad offset"
-msgstr ""
+msgstr "fehlerhafter Versatz"
 
 #: ../glib/gregex.c:236
 msgid "short utf8"
@@ -1375,7 +1378,8 @@ msgstr ""
 
 #: ../glib/gkeyfile.c:1534
 #, c-format
-msgid "Key file contains key '%s' which has a value that cannot be interpreted."
+msgid ""
+"Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Die Schlüsselwertedatei enthält den Schlüssel »%s« mit einem Wert, der nicht "
 "interpretiert werden konnte."
@@ -1533,8 +1537,8 @@ msgstr ""
 #: ../gio/gdbusaddress.c:469
 #, c-format
 msgid ""
-"Error unescaping key or value in Key/Value pair %d, `%s', in address element `"
-"%s'"
+"Error unescaping key or value in Key/Value pair %d, `%s', in address element "
+"`%s'"
 msgstr ""
 "Fehler beim Entfernen von Escape-Zeichen im Schlüssel-Wert-Paar %d, »%s« im "
 "Adresselement »%s«"
@@ -1602,7 +1606,8 @@ msgstr "Die angegebene Adresse ist leer"
 
 #: ../gio/gdbusaddress.c:1008
 msgid "Cannot spawn a message bus without a machine-id: "
-msgstr "Ein Nachrichtenbus kann nicht ohne eine Rechner-Kennung erzeugt werden:"
+msgstr ""
+"Ein Nachrichtenbus kann nicht ohne eine Rechner-Kennung erzeugt werden:"
 
 #: ../gio/gdbusaddress.c:1045
 #, c-format
@@ -1613,8 +1618,8 @@ msgstr "Fehler beim Erzeugen der Befehlszeile »%s«:"
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr ""
-"Außergewöhnlicher Abbruch des Programms beim Erzeugen der Befehlszeile »%s«: "
-"%s"
+"Außergewöhnlicher Abbruch des Programms beim Erzeugen der Befehlszeile »%s«: %"
+"s"
 
 #: ../gio/gdbusaddress.c:1070
 #, c-format
@@ -1679,10 +1684,11 @@ msgstr "Fehler bei der Statusermittlung des Ordners »%s«: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
-msgid "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
+msgid ""
+"Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Zugriffsrechte des Ordners »%s« sind inkorrekt. Erwarteter Modus ist 0700, "
-"0%o wurd erhalten"
+"Zugriffsrechte des Ordners »%s« sind inkorrekt. Erwarteter Modus ist 0700, 0%"
+"o wurde erhalten"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -1761,14 +1767,16 @@ msgid "Timeout was reached"
 msgstr "Zeitüberschreitung wurde erreicht"
 
 #: ../gio/gdbusconnection.c:2300
-msgid "Unsupported flags encountered when constructing a client-side connection"
+msgid ""
+"Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Beim Erstellen einer client-seitigen Verbindung wurden nicht unterstützte "
 "Flags entdeckt"
 
 #: ../gio/gdbusconnection.c:3752 ../gio/gdbusconnection.c:4070
 #, c-format
-msgid "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
+msgid ""
+"No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Keine derartige Schnittstelle »org.freedesktop.DBus.Properties« des Objekts "
 "im Pfad %s"
@@ -1883,8 +1891,8 @@ msgstr "%lu Bytes sollten gelesen werden, aber Dateiende wurde erreicht"
 #: ../gio/gdbusmessage.c:1022
 #, c-format
 msgid ""
-"Expected valid UTF-8 string but found invalid bytes at byte offset %d (length "
-"of string is %d). The valid UTF-8 string up until that point was `%s'"
+"Expected valid UTF-8 string but found invalid bytes at byte offset %d "
+"(length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr ""
 "Gültige UTF-8-Zeichenkette wurde erwartet, aber ungültige Bytes am Byte-"
 "Versatz %d gefunden (Länge der Zeichenkette ist %d). Die gültige UTF-8-"
@@ -1931,11 +1939,11 @@ msgstr ""
 #: ../gio/gdbusmessage.c:1686
 #, c-format
 msgid ""
-"Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x"
-"%02x"
+"Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
+"0x%02x"
 msgstr ""
-"Ungültiger Wert für die Speicherreihenfolge. Es wird entweder 0x6c ('l') oder "
-"0x42 ('B') erwartet, aber der Wert  0x%02x gefunden"
+"Ungültiger Wert für die Speicherreihenfolge. Es wird entweder 0x6c ('l') "
+"oder 0x42 ('B') erwartet, aber der Wert  0x%02x gefunden"
 
 #: ../gio/gdbusmessage.c:1700
 #, c-format
@@ -1993,7 +2001,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2337
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "Nachrichtenrumpf hat den Signaturtyp »%s«, aber die Signatur im "
 "Kopfzeilenfeld ist »%s«"
@@ -2260,8 +2269,8 @@ msgstr "Für die Anwendung benötigtes Terminal konnte nicht gefunden werden"
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
-"Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt werden: "
-"%s"
+"Konfigurationsordner %s für Benutzeranwendungen konnte nicht erstellt "
+"werden: %s"
 
 #: ../gio/gdesktopappinfo.c:1348
 #, c-format
@@ -2301,6 +2310,10 @@ msgstr "Laufwerk unterstützt keinen Startvorgang"
 #: ../gio/gdrive.c:831
 msgid "drive doesn't implement stop"
 msgstr "Laufwerk unterstützt keinen Stoppvorgang"
+
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "TLS-Unterstützung ist nicht verfügbar"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -2487,7 +2500,8 @@ msgstr "Eingabedatenstrom unterstützt kein Lesen"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:898 ../gio/giostream.c:316 ../gio/goutputstream.c:1207
+#: ../gio/ginputstream.c:898 ../gio/giostream.c:316
+#: ../gio/goutputstream.c:1207
 msgid "Stream has outstanding operation"
 msgstr "Datenstrom hat noch einen ausstehenden Vorgang"
 
@@ -2528,8 +2542,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:753
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
-msgstr ""
-"Ungültiger Name »%s«: das letzte Zeichen darf kein Bindestrich »-« sein."
+msgstr "Ungültiger Name »%s«: das letzte Zeichen darf kein Bindestrich »-« sein."
 
 #: ../gio/glib-compile-schemas.c:761
 #, c-format
@@ -2562,8 +2575,8 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:896
 #, c-format
 msgid ""
-"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute to "
-"<key>"
+"exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
+"to <key>"
 msgstr ""
 "Genau eines von »type«, »enum« oder »flags« muss als Attribut für <key> "
 "angegeben werden"
@@ -2622,8 +2635,8 @@ msgstr "Ein Schema darf nicht um einem Pfad erweitert werden"
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
-"<schema id='%s'> ist eine Liste, welche <schema id='%s'> erweitert, das keine "
-"Liste ist"
+"<schema id='%s'> ist eine Liste, welche <schema id='%s'> erweitert, das "
+"keine Liste ist"
 
 #: ../gio/glib-compile-schemas.c:1118
 #, c-format
@@ -2686,8 +2699,7 @@ msgstr "Diese Datei wird ignoriert.\n"
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
-"Kein Schlüssel »%s« in Schema »%s« wie angegeben in überschreibender Datei "
-"»%s«"
+"Kein Schlüssel »%s« in Schema »%s« wie angegeben in überschreibender Datei »%s«"
 
 #: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
 #: ../gio/glib-compile-schemas.c:1853
@@ -2704,8 +2716,8 @@ msgstr " und --strict wurde angegeben; Abbruch.\n"
 #: ../gio/glib-compile-schemas.c:1787
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 "Fehler beim Verarbeiten des Schlüssels »%s« in Schema »%s« wie angegeben in "
 "überschreibender Datei »%s«: %s"
@@ -2721,17 +2733,17 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
-"Überschreiben für Schlüssel »%s« in Schema »%s« in überschreibender Datei "
-"»%s« liegt außerhalb des im Schema angegebenen Bereichs"
+"Überschreiben für Schlüssel »%s« in Schema »%s« in überschreibender Datei »%s« "
+"liegt außerhalb des im Schema angegebenen Bereichs"
 
 #: ../gio/glib-compile-schemas.c:1843
 #, c-format
 msgid ""
-"override for key `%s' in schema `%s' in override file `%s' is not in the list "
-"of valid choices"
+"override for key `%s' in schema `%s' in override file `%s' is not in the "
+"list of valid choices"
 msgstr ""
-"Überschreiben für Schlüssel »%s« in Schema »%s« in überschreibender Datei "
-"»%s« befindet sich nicht in der Liste gültiger Auswahlmöglichkeiten"
+"Überschreiben für Schlüssel »%s« in Schema »%s« in überschreibender Datei »%s« "
+"befindet sich nicht in der Liste gültiger Auswahlmöglichkeiten"
 
 #: ../gio/glib-compile-schemas.c:1897
 msgid "where to store the gschemas.compiled file"
@@ -3595,7 +3607,8 @@ msgstr ""
 #: ../gio/gsocks5proxy.c:239
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
-"SOCKSv5-Legitimierung scheiterte wegen falschen Benutzernamens oder Passworts."
+"SOCKSv5-Legitimierung scheiterte wegen falschen Benutzernamens oder "
+"Passworts."
 
 #: ../gio/gsocks5proxy.c:289
 #, c-format
@@ -3681,13 +3694,14 @@ msgstr "Fehler beim Senden der Anmeldedaten:"
 #: ../gio/gunixconnection.c:439
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr "Fehler bei der Überprüfung, ob SO_PASSCRED für Socket aktiviert ist: %s"
+msgstr ""
+"Fehler bei der Überprüfung, ob SO_PASSCRED für Socket aktiviert ist: %s"
 
 #: ../gio/gunixconnection.c:448
 #, c-format
 msgid ""
-"Unexpected option length while checking if SO_PASSCRED is enabled for socket. "
-"Expected %d bytes, got %d"
+"Unexpected option length while checking if SO_PASSCRED is enabled for "
+"socket. Expected %d bytes, got %d"
 msgstr ""
 "Unerwartete Länge der Option bei der Überprüfung, ob SO_PASSCRED für den "
 "Socket aktiviert ist. Erwartet wurden %d Bytes, jedoch %d erhalten"
@@ -3734,7 +3748,8 @@ msgstr "Fehler beim Schreiben in Unix-Datenstrom: %s"
 #: ../gio/gunixsocketaddress.c:244
 msgid "Abstract unix domain socket addresses not supported on this system"
 msgstr ""
-"Abstrakte Unix Domänen-Socket-Adresse wird auf diesem System nicht unterstützt"
+"Abstrakte Unix Domänen-Socket-Adresse wird auf diesem System nicht "
+"unterstützt"
 
 #: ../gio/gvolume.c:408
 msgid "volume doesn't implement eject"
