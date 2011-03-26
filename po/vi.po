@@ -2,16 +2,15 @@
 # Copyright © 2010 GNOME i18n Project for Vietnamese.
 # T.M.Thanh <tmthanh@yahoo.com>, 2002.
 # Clytie Siddall <clytie@riverland.net.au>, 2005-2010.
-# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009-2010.
+# Nguyễn Thái Ngọc Duy <pclouds@gmail.com>, 2009-2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.19.6\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-03-17 13:35+0000\n"
-"PO-Revision-Date: 2010-12-21 19:51+0700\n"
-"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"PO-Revision-Date: 2011-03-27 00:37+0700\n"
+"Last-Translator: Nguyễn Thái Ngọc Duy <pclouds@gmail.com>\n"
 "Language-Team: Vietnamese <vi-VN@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -802,11 +801,11 @@ msgstr "kết hợp cờ dòng mới một cách không hợp lệ"
 
 #: ../glib/gregex.c:234
 msgid "bad offset"
-msgstr ""
+msgstr "độ lệch sai"
 
 #: ../glib/gregex.c:236
 msgid "short utf8"
-msgstr ""
+msgstr "utf8 ngắn"
 
 #: ../glib/gregex.c:240
 msgid "unknown error"
@@ -2227,7 +2226,7 @@ msgstr "ổ đĩa không thực hiện chức năng dừng (stop)"
 
 #: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
 msgid "TLS support is not available"
-msgstr ""
+msgstr "Không hỗ trợ TLS"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -3168,10 +3167,9 @@ msgid "The provided value is outside of the valid range\n"
 msgstr "Giá trị cung cấp ngoài phạm vi hợp lệ\n"
 
 #: ../gio/gsettings-tool.c:458
-#, fuzzy
 #| msgid "Print XML"
 msgid "Print help"
-msgstr "In XML"
+msgstr "In trợ giúp"
 
 #: ../gio/gsettings-tool.c:464
 msgid "List the installed (non-relocatable) schemas"
@@ -3182,10 +3180,9 @@ msgid "List the installed relocatable schemas"
 msgstr "Danh sách schema (có thể thể tái định vị) đã cài đặt"
 
 #: ../gio/gsettings-tool.c:476
-#, fuzzy
 #| msgid "Lists the keys in SCHEMA"
 msgid "List the keys in SCHEMA"
-msgstr "Danh sách khoá trong SCHEMA"
+msgstr "Liệt kê khoá trong SCHEMA"
 
 #: ../gio/gsettings-tool.c:477 ../gio/gsettings-tool.c:483
 #: ../gio/gsettings-tool.c:489
@@ -3193,17 +3190,15 @@ msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:ĐƯỜNG DẪN]"
 
 #: ../gio/gsettings-tool.c:482
-#, fuzzy
 #| msgid "Lists the children of SCHEMA"
 msgid "List the children of SCHEMA"
-msgstr "Danh sách con của SCHEMA"
+msgstr "Liệt kê con của SCHEMA"
 
 #: ../gio/gsettings-tool.c:488
 msgid "List keys and values, recursively"
 msgstr "Danh sách khoá và giá trị, đệ quy"
 
 #: ../gio/gsettings-tool.c:494
-#, fuzzy
 #| msgid "Gets the value of KEY"
 msgid "Get the value of KEY"
 msgstr "Lấy giá trị của KHOÁ"
@@ -3214,13 +3209,11 @@ msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:ĐƯỜNG DẪN] KHOÁ"
 
 #: ../gio/gsettings-tool.c:500
-#, fuzzy
 #| msgid "Queries the range of valid values for KEY"
 msgid "Query the range of valid values for KEY"
 msgstr "Truy vấn khoảng giá trị hợp lệ cho KHOÁ"
 
 #: ../gio/gsettings-tool.c:506
-#, fuzzy
 #| msgid "Sets the value of KEY to VALUE"
 msgid "Set the value of KEY to VALUE"
 msgstr "Đặt giá trị GIÁ TRỊ cho KHOÁ"
@@ -3230,19 +3223,16 @@ msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:ĐƯỜNG DẪN] KHOÁ GIÁ-TRỊ"
 
 #: ../gio/gsettings-tool.c:512
-#, fuzzy
 #| msgid "Resets KEY to its default value"
 msgid "Reset KEY to its default value"
-msgstr "Phục hồi KHOÁ về giá trị mặc định"
+msgstr "Phục hồi giá trị mặc định cho KHOÁ"
 
 #: ../gio/gsettings-tool.c:518
-#, fuzzy
 #| msgid "Checks if KEY is writable"
 msgid "Check if KEY is writable"
-msgstr "Tìm xem KHOÁ ghi được không"
+msgstr "Kiểm tra quyền ghi của KHOÁ"
 
 #: ../gio/gsettings-tool.c:524
-#, fuzzy
 #| msgid ""
 #| "Monitors KEY for changes.\n"
 #| "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3254,7 +3244,7 @@ msgid ""
 msgstr ""
 "Theo dõi thay đổi của KHOÁ.\n"
 "Nếu không xác định KHOÁ, theo dõi mọi khoá trong SCHEMA.\n"
-"Dùng ^c để ngưng.\n"
+"Nhấn ^C để ngưng.\n"
 
 #: ../gio/gsettings-tool.c:527
 msgid "SCHEMA[:PATH] [KEY]"
@@ -3332,7 +3322,7 @@ msgstr "Đối số:\n"
 
 #: ../gio/gsettings-tool.c:569
 msgid "  COMMAND   The (optional) command to explain\n"
-msgstr ""
+msgstr "  COMMAND   Lệnh để giải thích (tuỳ chọn)\n"
 
 #: ../gio/gsettings-tool.c:573
 msgid ""
@@ -3576,10 +3566,9 @@ msgid "SOCKSv5 proxy does not support provided address type."
 msgstr "Uỷ nhiệm SOCKSv5 không hỗ trợ kiểu địa chỉ cung cấp."
 
 #: ../gio/gsocks5proxy.c:402
-#, fuzzy
 #| msgid "Unkown SOCKSv5 proxy error."
 msgid "Unknown SOCKSv5 proxy error."
-msgstr "Lỗi SOCKSv5 lạ."
+msgstr "Lỗi uỷ nhiệm SOCKSv5 lạ."
 
 #: ../gio/gthemedicon.c:498
 #, c-format
