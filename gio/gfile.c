@@ -6124,7 +6124,7 @@ g_file_query_default_handler (GFile                  *file,
  * g_file_load_contents:
  * @file: input #GFile.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @contents: (out) (transfer full): a location to place the contents of the file.
+ * @contents: (out) (transfer full) (element-type guint8) (array length=length): a location to place the contents of the file.
  * @length: (out) (allow-none): a location to place the length of the contents of the file,
  *    or %NULL if the length is not needed
  * @etag_out: (out) (allow-none): a location to place the current entity tag for the file,
@@ -6431,7 +6431,7 @@ g_file_load_partial_contents_async (GFile                 *file,
  * g_file_load_partial_contents_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @contents: (out) (transfer full): a location to place the contents of the file.
+ * @contents: (out) (transfer full) (element-type guint8) (array length=length): a location to place the contents of the file.
  * @length: (out) (allow-none): a location to place the length of the contents of the file,
  *     or %NULL if the length is not needed
  * @etag_out: (out) (allow-none): a location to place the current entity tag for the file,
@@ -6537,7 +6537,7 @@ g_file_load_contents_async (GFile               *file,
  * g_file_load_contents_finish:
  * @file: input #GFile.
  * @res: a #GAsyncResult. 
- * @contents: (out) (transfer full): a location to place the contents of the file.
+ * @contents: (out) (transfer full) (element-type guint8) (array length=length): a location to place the contents of the file.
  * @length: (out) (allow-none): a location to place the length of the contents of the file,
  *     or %NULL if the length is not needed
  * @etag_out: (out) (allow-none): a location to place the current entity tag for the file,
@@ -6572,7 +6572,7 @@ g_file_load_contents_finish (GFile         *file,
 /**
  * g_file_replace_contents:
  * @file: input #GFile.
- * @contents: a string containing the new contents for @file.
+ * @contents: (element-type guint8) (array length=length): a string containing the new contents for @file.
  * @length: the length of @contents in bytes.
  * @etag: (allow-none): the old <link linkend="gfile-etag">entity tag</link> 
  *     for the document, or %NULL
@@ -6785,7 +6785,7 @@ replace_contents_open_callback (GObject      *obj,
 /**
  * g_file_replace_contents_async:
  * @file: input #GFile.
- * @contents: string of contents to replace the file with.
+ * @contents: (element-type guint8) (array length=length): string of contents to replace the file with.
  * @length: the length of @contents in bytes.
  * @etag: (allow-none): a new <link linkend="gfile-etag">entity tag</link> for the @file, or %NULL
  * @make_backup: %TRUE if a backup should be created.
