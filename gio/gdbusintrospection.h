@@ -182,6 +182,9 @@ GDBusSignalInfo    *g_dbus_interface_info_lookup_signal    (GDBusInterfaceInfo  
                                                             const gchar          *name);
 GDBusPropertyInfo  *g_dbus_interface_info_lookup_property  (GDBusInterfaceInfo   *info,
                                                             const gchar          *name);
+void                g_dbus_interface_info_cache_build      (GDBusInterfaceInfo   *info);
+void                g_dbus_interface_info_cache_release    (GDBusInterfaceInfo   *info);
+
 void                g_dbus_interface_info_generate_xml     (GDBusInterfaceInfo   *info,
                                                             guint                 indent,
                                                             GString              *string_builder);
