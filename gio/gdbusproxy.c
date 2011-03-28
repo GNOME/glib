@@ -758,9 +758,17 @@ on_signal_received (GDBusConnection *connection,
   if (proxy->priv->expected_interface != NULL)
     {
       const GDBusSignalInfo *info;
+      GVariantType *expected_type;
       info = g_dbus_interface_info_lookup_signal (proxy->priv->expected_interface, signal_name);
       if (info == NULL)
         goto out;
+      expected_type = _g_dbus_compute_complete_signature (info->args);
+      if (!g_variant_type_equal (expected_type, g_variant_get_type (parameters)))
+        {
+          g_variant_type_free (expected_type);
+          goto out;
+        }
+      g_variant_type_free (expected_type);
     }
 
   g_signal_emit (proxy,
