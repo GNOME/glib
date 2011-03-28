@@ -755,6 +755,14 @@ on_signal_received (GDBusConnection *connection,
   if (proxy->priv->name_owner != NULL && g_strcmp0 (sender_name, proxy->priv->name_owner) != 0)
     goto out;
 
+  if (proxy->priv->expected_interface != NULL)
+    {
+      const GDBusSignalInfo *info;
+      info = g_dbus_interface_info_lookup_signal (proxy->priv->expected_interface, signal_name);
+      if (info == NULL)
+        goto out;
+    }
+
   g_signal_emit (proxy,
                  signals[SIGNAL_SIGNAL],
                  0,
