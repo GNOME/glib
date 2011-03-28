@@ -166,7 +166,10 @@ g_dbus_proxy_finalize (GObject *object)
     g_hash_table_unref (proxy->priv->properties);
 
   if (proxy->priv->expected_interface != NULL)
-    g_dbus_interface_info_unref (proxy->priv->expected_interface);
+    {
+      g_dbus_interface_info_cache_release (proxy->priv->expected_interface);
+      g_dbus_interface_info_unref (proxy->priv->expected_interface);
+    }
 
   G_OBJECT_CLASS (g_dbus_proxy_parent_class)->finalize (object);
 }
@@ -2093,8 +2096,13 @@ g_dbus_proxy_set_interface_info (GDBusProxy         *proxy,
 {
   g_return_if_fail (G_IS_DBUS_PROXY (proxy));
   if (proxy->priv->expected_interface != NULL)
-    g_dbus_interface_info_unref (proxy->priv->expected_interface);
+    {
+      g_dbus_interface_info_cache_release (proxy->priv->expected_interface);
+      g_dbus_interface_info_unref (proxy->priv->expected_interface);
+    }
   proxy->priv->expected_interface = info != NULL ? g_dbus_interface_info_ref (info) : NULL;
+  if (proxy->priv->expected_interface != NULL)
+    g_dbus_interface_info_cache_build (proxy->priv->expected_interface);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
