@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-20 16:41+0000\n"
-"PO-Revision-Date: 2011-02-20 16:44+0100\n"
+"POT-Creation-Date: 2011-03-30 15:21+0100\n"
+"PO-Revision-Date: 2011-03-30 15:22+0100\n"
 "Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
 "Language-Team: British English <en@li.org>\n"
 "Language: en_GB\n"
@@ -1248,12 +1248,12 @@ msgstr "Double value '%s' for %s out of range"
 msgid "Error parsing option %s"
 msgstr "Error parsing option %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1527
+#: ../glib/goption.c:1413 ../glib/goption.c:1526
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Missing argument for %s"
 
-#: ../glib/goption.c:1922
+#: ../glib/goption.c:1921
 #, c-format
 msgid "Unknown option %s"
 msgstr "Unknown option %s"
@@ -2210,6 +2210,10 @@ msgstr "drive doesn't implement start"
 msgid "drive doesn't implement stop"
 msgstr "drive doesn't implement stop"
 
+#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+msgid "TLS support is not available"
+msgstr "TLS support is not available"
+
 #: ../gio/gemblem.c:324
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
@@ -3125,7 +3129,7 @@ msgid "Path must end with a slash (/)\n"
 msgstr "Path must end with a slash (/)\n"
 
 #: ../gio/gsettings-tool.c:110
-#, c-format, 
+#, c-format
 msgid "Path must not contain two adjacent slashes (//)\n"
 msgstr "Path must not contain two adjacent slashes (//)\n"
 
