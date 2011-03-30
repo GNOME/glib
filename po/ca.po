@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-29 00:57+0200\n"
-"PO-Revision-Date: 2011-03-26 13:17+0200\n"
+"POT-Creation-Date: 2011-03-30 23:17+0200\n"
+"PO-Revision-Date: 2011-03-30 22:17+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -827,11 +827,11 @@ msgstr "la combinació de senyaladors de línia nova no és vàlida"
 
 #: ../glib/gregex.c:234
 msgid "bad offset"
-msgstr ""
+msgstr "desplaçament incorrecte"
 
 #: ../glib/gregex.c:236
 msgid "short utf8"
-msgstr ""
+msgstr "UTF-8 curt"
 
 #: ../glib/gregex.c:240
 msgid "unknown error"
@@ -1634,7 +1634,7 @@ msgstr ""
 "No s'ha pogut determinar l'adreça del bus de sessió (no està implementat en "
 "aquest sistema operatiu)"
 
-#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6188
+#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6186
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1643,7 +1643,7 @@ msgstr ""
 "No es pot determinar l'adreça del bus a través de la variable d'entorn "
 "«DBUS_STARTER_BUS_TYPE»: conté un valor desconegut «%s»"
 
-#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6197
+#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6195
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1781,7 +1781,7 @@ msgstr ""
 "S'han trobat senyaladors no implementats en construir-se la part de la "
 "connexió del client"
 
-#: ../gio/gdbusconnection.c:3753 ../gio/gdbusconnection.c:4071
+#: ../gio/gdbusconnection.c:3752 ../gio/gdbusconnection.c:4070
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1789,68 +1789,68 @@ msgstr ""
 "No existeix la interfície «org.freedesktop.DBus.Properties» en l'objecte al "
 "camí %s"
 
-#: ../gio/gdbusconnection.c:3825
+#: ../gio/gdbusconnection.c:3824
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "S'ha produït un error en establir la propietat «%s»: s'esperava el tipus "
 "«%s» però s'ha obtingut el «%s»"
 
-#: ../gio/gdbusconnection.c:3920
+#: ../gio/gdbusconnection.c:3919
 #, c-format
 msgid "No such property `%s'"
 msgstr "No existeix la propietat «%s»"
 
-#: ../gio/gdbusconnection.c:3932
+#: ../gio/gdbusconnection.c:3931
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "La propietat «%s» no és de lectura"
 
-#: ../gio/gdbusconnection.c:3943
+#: ../gio/gdbusconnection.c:3942
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "La propietat «%s» no és d'escriptura"
 
-#: ../gio/gdbusconnection.c:4013 ../gio/gdbusconnection.c:5622
+#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5620
 #, c-format
 msgid "No such interface `%s'"
 msgstr "No existeix la interfície «%s»"
 
-#: ../gio/gdbusconnection.c:4201
+#: ../gio/gdbusconnection.c:4200
 msgid "No such interface"
 msgstr "No existeix la interfície"
 
-#: ../gio/gdbusconnection.c:4420 ../gio/gdbusconnection.c:6138
+#: ../gio/gdbusconnection.c:4419 ../gio/gdbusconnection.c:6136
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No existeix la interfície «%s» en l'objecte al camí %s"
 
-#: ../gio/gdbusconnection.c:4472
+#: ../gio/gdbusconnection.c:4471
 #, c-format
 msgid "No such method `%s'"
 msgstr "No existeix el mètode «%s»"
 
-#: ../gio/gdbusconnection.c:4503
+#: ../gio/gdbusconnection.c:4502
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "El tipus de missatge «%s» no correspon al tipus «%s» que s'esperava"
 
-#: ../gio/gdbusconnection.c:4722
+#: ../gio/gdbusconnection.c:4721
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Ja hi ha un objecte exportat per a la interfície %s a %s"
 
-#: ../gio/gdbusconnection.c:4917
+#: ../gio/gdbusconnection.c:4915
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "El mètode «%s» ha retornat un tipus «%s» però s'esperava «%s»"
 
-#: ../gio/gdbusconnection.c:5733
+#: ../gio/gdbusconnection.c:5731
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "No existeix el mètode «%s» a la interfície «%s» amb la signatura «%s»"
 
-#: ../gio/gdbusconnection.c:5851
+#: ../gio/gdbusconnection.c:5849
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ja està exportat un subarbre per a %s"
@@ -2051,7 +2051,7 @@ msgstr "S'ha produït un error en enviar el missatge: %s"
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "No s'ha pogut carregar «/var/lib/dbus/machine-id»: "
 
-#: ../gio/gdbusproxy.c:718
+#: ../gio/gdbusproxy.c:714
 #, c-format
 msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
@@ -2060,19 +2060,19 @@ msgstr ""
 "S'ha intentat establir la propietat %s de tipus %s però segons la interfície "
 "esperada el tipus és %s"
 
-#: ../gio/gdbusproxy.c:1284
+#: ../gio/gdbusproxy.c:1234
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "S'ha produït un error en cridar «StartServiceByName» per a %s: "
 
-#: ../gio/gdbusproxy.c:1305
+#: ../gio/gdbusproxy.c:1255
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr ""
 "S'ha obtingut una resposta inesperada %d per al mètode «StartServiceByName"
 "(\"%s\")»"
 
-#: ../gio/gdbusproxy.c:2366 ../gio/gdbusproxy.c:2524
+#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2081,34 +2081,34 @@ msgstr ""
 "conegut sense cap propietari i el servidor intermediari s'ha construït amb "
 "el senyalador «G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START»"
 
-#: ../gio/gdbusserver.c:706
+#: ../gio/gdbusserver.c:715
 msgid "Abstract name space not supported"
 msgstr "No es pot utilitzar l'espai de noms abstracte"
 
-#: ../gio/gdbusserver.c:796
+#: ../gio/gdbusserver.c:805
 msgid "Cannot specify nonce file when creating a server"
 msgstr "No es pot especificar el fitxer «nonce» quan es crea un servidor"
 
-#: ../gio/gdbusserver.c:873
+#: ../gio/gdbusserver.c:882
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "S'ha produït un error en escriure el fitxer «nonce» a «%s»: %s"
 
-#: ../gio/gdbusserver.c:1035
+#: ../gio/gdbusserver.c:1044
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "La cadena «%s» no és un GUID vàlid de D-Bus"
 
-#: ../gio/gdbusserver.c:1075
+#: ../gio/gdbusserver.c:1084
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "No es pot escoltar «%s», és un transport desconegut"
 
-#: ../gio/gdbus-tool.c:88
+#: ../gio/gdbus-tool.c:87
 msgid "COMMAND"
 msgstr "ORDRE"
 
-#: ../gio/gdbus-tool.c:93
+#: ../gio/gdbus-tool.c:92
 #, c-format
 msgid ""
 "Commands:\n"
@@ -2128,55 +2128,55 @@ msgstr ""
 "Utilitzeu \"%s ORDRE --help\" per veure l'ajuda de cada ordre en "
 "particular.\n"
 
-#: ../gio/gdbus-tool.c:161 ../gio/gdbus-tool.c:217 ../gio/gdbus-tool.c:289
-#: ../gio/gdbus-tool.c:313 ../gio/gdbus-tool.c:817 ../gio/gdbus-tool.c:1327
+#: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
+#: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
 #, c-format
 msgid "Error: %s\n"
 msgstr "S'ha produït un error: %s\n"
 
-#: ../gio/gdbus-tool.c:172 ../gio/gdbus-tool.c:230 ../gio/gdbus-tool.c:1343
+#: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "S'ha produït un error en analitzar la introspecció XML: %s\n"
 
-#: ../gio/gdbus-tool.c:347
+#: ../gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
 msgstr "Connecta al bus del sistema"
 
-#: ../gio/gdbus-tool.c:348
+#: ../gio/gdbus-tool.c:347
 msgid "Connect to the session bus"
 msgstr "Connecta al bus de la sessió"
 
-#: ../gio/gdbus-tool.c:349
+#: ../gio/gdbus-tool.c:348
 msgid "Connect to given D-Bus address"
 msgstr "Connecta a l'adreça de D-Bus donada"
 
-#: ../gio/gdbus-tool.c:359
+#: ../gio/gdbus-tool.c:358
 msgid "Connection Endpoint Options:"
 msgstr "Opcions del punt final de connexió:"
 
-#: ../gio/gdbus-tool.c:360
+#: ../gio/gdbus-tool.c:359
 msgid "Options specifying the connection endpoint"
 msgstr "Opcions d'especificació del punt final de connexió"
 
-#: ../gio/gdbus-tool.c:382
+#: ../gio/gdbus-tool.c:379
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "No s'ha especificat el punt final de connexió"
 
-#: ../gio/gdbus-tool.c:392
+#: ../gio/gdbus-tool.c:389
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "S'han especificat més d'un punt final de connexió"
 
-#: ../gio/gdbus-tool.c:462
+#: ../gio/gdbus-tool.c:459
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
 "Avís: d'acord amb les dades d'introspecció no existeix la interfície «%s»\n"
 
-#: ../gio/gdbus-tool.c:471
+#: ../gio/gdbus-tool.c:468
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
@@ -2185,88 +2185,88 @@ msgstr ""
 "Avís: d'acord amb les dades d'introspecció no existeix el mètode «%s» a la "
 "interfície «%s»\n"
 
-#: ../gio/gdbus-tool.c:533
+#: ../gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
 msgstr "Nom de destinació on invocar el mètode"
 
-#: ../gio/gdbus-tool.c:534
+#: ../gio/gdbus-tool.c:531
 msgid "Object path to invoke method on"
 msgstr "Camí a l'objecte on invocar el mètode"
 
-#: ../gio/gdbus-tool.c:535
+#: ../gio/gdbus-tool.c:532
 msgid "Method and interface name"
 msgstr "Mètode i nom d'interfície"
 
-#: ../gio/gdbus-tool.c:574
+#: ../gio/gdbus-tool.c:571
 msgid "Invoke a method on a remote object."
 msgstr "Invoca un mètode en un objecte remot."
 
-#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:1248 ../gio/gdbus-tool.c:1508
+#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "S'ha produït un error en connectar-se: %s\n"
 
-#: ../gio/gdbus-tool.c:649 ../gio/gdbus-tool.c:1267 ../gio/gdbus-tool.c:1527
+#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
 #, c-format
 msgid "Error: Destination is not specified\n"
 msgstr "Error: no s'ha especificat la destinació\n"
 
-#: ../gio/gdbus-tool.c:670 ../gio/gdbus-tool.c:1286
+#: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1283
 #, c-format
 msgid "Error: Object path is not specified\n"
 msgstr "Error: no s'ha especificat el camí a l'objecte\n"
 
-#: ../gio/gdbus-tool.c:690 ../gio/gdbus-tool.c:1306 ../gio/gdbus-tool.c:1567
+#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Error: «%s» no és un camí d'objecte vàlid\n"
 
-#: ../gio/gdbus-tool.c:705
+#: ../gio/gdbus-tool.c:702
 #, c-format
 msgid "Error: Method name is not specified\n"
 msgstr "Error: no s'ha especificat el nom del mètode\n"
 
-#: ../gio/gdbus-tool.c:716
+#: ../gio/gdbus-tool.c:713
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
 msgstr "Error: el nom del mètode «%s» no és vàlid\n"
 
-#: ../gio/gdbus-tool.c:781
+#: ../gio/gdbus-tool.c:778
 #, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
 msgstr ""
 "S'ha produït un error en analitzar el paràmetre %d del tipus «%s»: %s\n"
 
-#: ../gio/gdbus-tool.c:789
+#: ../gio/gdbus-tool.c:786
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "S'ha produït un error en analitzar el paràmetre %d: %s\n"
 
-#: ../gio/gdbus-tool.c:1165
+#: ../gio/gdbus-tool.c:1162
 msgid "Destination name to introspect"
 msgstr "Nom de destinació a introspeccionar"
 
-#: ../gio/gdbus-tool.c:1166
+#: ../gio/gdbus-tool.c:1163
 msgid "Object path to introspect"
 msgstr "Camí a l'objecte a introspeccionar"
 
-#: ../gio/gdbus-tool.c:1167
+#: ../gio/gdbus-tool.c:1164
 msgid "Print XML"
 msgstr "Imprimeix XML"
 
-#: ../gio/gdbus-tool.c:1200
+#: ../gio/gdbus-tool.c:1197
 msgid "Introspect a remote object."
 msgstr "Introspecciona un objecte remot."
 
-#: ../gio/gdbus-tool.c:1426
+#: ../gio/gdbus-tool.c:1423
 msgid "Destination name to monitor"
 msgstr "Nom de destinació al qual se li vol fer un seguiment"
 
-#: ../gio/gdbus-tool.c:1427
+#: ../gio/gdbus-tool.c:1424
 msgid "Object path to monitor"
 msgstr "Camí a l'objecte al qual se li vol fer un seguiment"
 
-#: ../gio/gdbus-tool.c:1460
+#: ../gio/gdbus-tool.c:1457
 msgid "Monitor a remote object."
 msgstr "Fes el seguiment a un objecte remot."
 
@@ -2330,7 +2330,7 @@ msgstr "la unitat no implementa l'aturada"
 
 #: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
 msgid "TLS support is not available"
-msgstr ""
+msgstr "El TLS no està implementat"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -2705,17 +2705,17 @@ msgstr "no pot haver-hi text dins de <%s>"
 #: ../gio/glib-compile-schemas.c:1801
 #, c-format
 msgid "--strict was specified; exiting.\n"
-msgstr ""
+msgstr "S'ha especificat «--strict», es surt.\n"
 
 #: ../gio/glib-compile-schemas.c:1662
 #, c-format
 msgid "This entire file has been ignored.\n"
-msgstr ""
+msgstr "S'ha ignorat el fitxer sencer.\n"
 
 #: ../gio/glib-compile-schemas.c:1721
 #, c-format
 msgid "Ignoring this file.\n"
-msgstr ""
+msgstr "S'està ignorant aquest fitxer.\n"
 
 #: ../gio/glib-compile-schemas.c:1761
 #, c-format
@@ -2728,13 +2728,13 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1853
 #, c-format
 msgid "; ignoring override for this key.\n"
-msgstr ""
+msgstr "; s'està ignorant la sobreescriptura d'aquesta clau.\n"
 
 #: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
 #: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid " and --strict was specified; exiting.\n"
-msgstr ""
+msgstr " i s'havia especificat «--strict», es surt.\n"
 
 #: ../gio/glib-compile-schemas.c:1787
 #, c-format
@@ -2748,7 +2748,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1797
 #, c-format
 msgid "Ignoring override for this key.\n"
-msgstr ""
+msgstr "S'està ignorant la sobreescriptura d'aquesta clau.\n"
 
 #: ../gio/glib-compile-schemas.c:1815
 #, c-format
@@ -2772,13 +2772,13 @@ msgstr ""
 msgid "where to store the gschemas.compiled file"
 msgstr "on desar el fitxer gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1923
+#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1910
 msgid "DIRECTORY"
 msgstr "DIRECTORI"
 
 #: ../gio/glib-compile-schemas.c:1898
 msgid "Abort on any errors in schemas"
-msgstr ""
+msgstr "Aborta si hi ha cap error en els esquemes"
 
 #: ../gio/glib-compile-schemas.c:1899
 msgid "Do not write the gschema.compiled file"
@@ -2792,7 +2792,7 @@ msgstr "Aquesta opció se suprimirà aviat."
 msgid "Do not enforce key name restrictions"
 msgstr "No siguis estricte amb les restriccions dels noms de les claus"
 
-#: ../gio/glib-compile-schemas.c:1926
+#: ../gio/glib-compile-schemas.c:1913
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2802,22 +2802,22 @@ msgstr ""
 "Els fitxers d'esquema han de tenir l'extensió .gschema.xml\n"
 "i el fitxer de memòria cau es dirà gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1942
+#: ../gio/glib-compile-schemas.c:1929
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Heu de donar un sol nom de directori\n"
 
-#: ../gio/glib-compile-schemas.c:1981
+#: ../gio/glib-compile-schemas.c:1968
 #, c-format
 msgid "No schema files found: "
 msgstr "No s'ha trobat cap fitxer d'esquemes: "
 
-#: ../gio/glib-compile-schemas.c:1984
+#: ../gio/glib-compile-schemas.c:1971
 #, c-format
 msgid "doing nothing.\n"
 msgstr "no facis res.\n"
 
-#: ../gio/glib-compile-schemas.c:1987
+#: ../gio/glib-compile-schemas.c:1974
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "suprimeix el fitxer de sortida actual.\n"
@@ -3244,136 +3244,131 @@ msgstr "S'ha produït un error en resoldre «%s»"
 #, c-format
 msgid "Schema '%s' is not relocatable (path must not be specified)\n"
 msgstr ""
+"No es pot canviar de lloc l'esquema «%s» (no s'ha d'especificar el camí)\n"
 
 #: ../gio/gsettings-tool.c:65 ../gio/gsettings-tool.c:82
-#, fuzzy, c-format
+#, c-format
 msgid "No such schema '%s'\n"
-msgstr "No existeix la interfície «%s»"
+msgstr "No existeix l'esquema «%s»\n"
 
 #: ../gio/gsettings-tool.c:77
 #, c-format
 msgid "Schema '%s' is relocatable (path must be specified)\n"
-msgstr ""
+msgstr "Es pot canviar de lloc l'esquema «%s» (s'ha d'especificar el camí)\n"
 
 #: ../gio/gsettings-tool.c:92
 #, c-format
 msgid "Empty path given.\n"
-msgstr ""
+msgstr "S'ha donat un camí buit.\n"
 
 #: ../gio/gsettings-tool.c:98
-#, fuzzy, c-format
+#, c-format
 msgid "Path must begin with a slash (/)\n"
-msgstr "si es dóna un camí ha de començar i acabar amb una barra inclinada"
+msgstr "El camí ha de començar amb una barra inclinada (/)\n"
 
 #: ../gio/gsettings-tool.c:104
-#, fuzzy, c-format
+#, c-format
 msgid "Path must end with a slash (/)\n"
-msgstr "si es dóna un camí ha de començar i acabar amb una barra inclinada"
+msgstr "El camí ha d'acabar amb una barra inclinada (/)\n"
 
 #: ../gio/gsettings-tool.c:110
 #, c-format
 msgid "Path must not contain two adjacent slashes (//)\n"
-msgstr ""
+msgstr "El camí no pot contenir dues barres inclinades seguides (//)\n"
 
 #: ../gio/gsettings-tool.c:131
-#, fuzzy, c-format
+#, c-format
 msgid "No such key '%s'\n"
-msgstr "No existeix la propietat «%s»"
+msgstr "No existeix la clau «%s»\n"
 
-#: ../gio/gsettings-tool.c:444
+#: ../gio/gsettings-tool.c:429
 #, c-format
 msgid "The provided value is outside of the valid range\n"
-msgstr ""
+msgstr "El valor proporcionat està fora del rang vàlid\n"
 
-#: ../gio/gsettings-tool.c:473
-#, fuzzy
+#: ../gio/gsettings-tool.c:458
 msgid "Print help"
-msgstr "Imprimeix XML"
+msgstr "Mostra l'ajuda"
 
-#: ../gio/gsettings-tool.c:479
+#: ../gio/gsettings-tool.c:464
 msgid "List the installed (non-relocatable) schemas"
-msgstr ""
+msgstr "Llista els esquemes instal·lats (que no es poden canviar de lloc)"
 
-#: ../gio/gsettings-tool.c:485
+#: ../gio/gsettings-tool.c:470
 msgid "List the installed relocatable schemas"
-msgstr ""
+msgstr "Llista els esquemes instal·lats que es poden canviar de lloc"
 
-#: ../gio/gsettings-tool.c:491
+#: ../gio/gsettings-tool.c:476
 msgid "List the keys in SCHEMA"
-msgstr ""
+msgstr "Llista les claus a l'ESQUEMA"
 
-#: ../gio/gsettings-tool.c:492 ../gio/gsettings-tool.c:498
+#: ../gio/gsettings-tool.c:477 ../gio/gsettings-tool.c:483
+#: ../gio/gsettings-tool.c:489
 msgid "SCHEMA[:PATH]"
-msgstr ""
+msgstr "ESQUEMA[:CAMÍ]"
 
-#: ../gio/gsettings-tool.c:497
+#: ../gio/gsettings-tool.c:482
 msgid "List the children of SCHEMA"
-msgstr ""
+msgstr "Llista els fills de l'ESQUEMA"
 
-#: ../gio/gsettings-tool.c:503
-msgid ""
-"List keys and values, recursively\n"
-"If no SCHEMA is given, list all keys\n"
-msgstr ""
+#: ../gio/gsettings-tool.c:488
+msgid "List keys and values, recursively"
+msgstr "Llista les claus i els valors recursivament"
 
-#: ../gio/gsettings-tool.c:505
-msgid "[SCHEMA[:PATH]]"
-msgstr ""
-
-#: ../gio/gsettings-tool.c:510
+#: ../gio/gsettings-tool.c:494
 msgid "Get the value of KEY"
 msgstr "Obtén el valor de la CLAU"
 
-#: ../gio/gsettings-tool.c:511 ../gio/gsettings-tool.c:517
-#: ../gio/gsettings-tool.c:529 ../gio/gsettings-tool.c:535
-#, fuzzy
+#: ../gio/gsettings-tool.c:495 ../gio/gsettings-tool.c:501
+#: ../gio/gsettings-tool.c:513 ../gio/gsettings-tool.c:519
 msgid "SCHEMA[:PATH] KEY"
-msgstr "ESQUEMA CLAU"
+msgstr "ESQUEMA[:CAMÍ] CLAU"
 
-#: ../gio/gsettings-tool.c:516
+#: ../gio/gsettings-tool.c:500
 msgid "Query the range of valid values for KEY"
-msgstr ""
+msgstr "Consulta el rang de valors vàlids per a la CLAU"
 
-#: ../gio/gsettings-tool.c:522
-#, fuzzy
+#: ../gio/gsettings-tool.c:506
 msgid "Set the value of KEY to VALUE"
-msgstr "Estableix el valor de la CLAU"
+msgstr "Estableix el valor de la CLAU a VALOR"
 
-#: ../gio/gsettings-tool.c:523
-#, fuzzy
+#: ../gio/gsettings-tool.c:507
 msgid "SCHEMA[:PATH] KEY VALUE"
-msgstr "ESQUEMA CLAU VALOR"
+msgstr "ESQUEMA[:CAMÍ] CLAU VALOR"
 
-#: ../gio/gsettings-tool.c:528
-#, fuzzy
+#: ../gio/gsettings-tool.c:512
 msgid "Reset KEY to its default value"
-msgstr "Estableix la CLAU al seu valor predeterminat"
+msgstr "Reinicia la CLAU al seu valor predeterminat"
 
-#: ../gio/gsettings-tool.c:534
-#, fuzzy
+#: ../gio/gsettings-tool.c:518
 msgid "Check if KEY is writable"
-msgstr "Descobreix si la CLAU és d'escriptura"
+msgstr "Comprova si la CLAU és d'escriptura"
 
-#: ../gio/gsettings-tool.c:540
+#: ../gio/gsettings-tool.c:524
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
+"Fes un seguiment de la CLAU per si hi ha canvis.\n"
+"Si no s'especifica cap CLAU, es farà un seguiment a \n"
+"totes les claus de l'ESQUEMA.\n"
+"Utilitzeu ^C per deixar de fer el seguiment.\n"
 
-#: ../gio/gsettings-tool.c:543
-#, fuzzy
+#: ../gio/gsettings-tool.c:527
 msgid "SCHEMA[:PATH] [KEY]"
-msgstr "ESQUEMA CLAU"
+msgstr "ESQUEMA[:CAMÍ] [CLAU]"
 
-#: ../gio/gsettings-tool.c:547
-#, fuzzy, c-format
+#: ../gio/gsettings-tool.c:531
+#, c-format
 msgid ""
 "Unknown command %s\n"
 "\n"
-msgstr "Es desconeix l'ordre «%s»\n"
+msgstr ""
+"Es desconeix l'ordre «%s»\n"
+"\n"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:539
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3395,8 +3390,28 @@ msgid ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
+"Útilització:\n"
+"  gsettings ORDRE [ARGUMENTS...]\n"
+"\n"
+"Ordres:\n"
+"  help                      Mostra aquesta informació\n"
+"  list-schemas              Llista els esquemes instal·lats\n"
+"  list-relocatable-schemas  Llista els esquemes que es poden canviar de "
+"lloc\n"
+"  list-keys                 Llista les claus en un esquema\n"
+"  list-children             Llista els fills d'un esquema\n"
+"  list-recursively          Llista les claus i els valors recursivament\n"
+"  range                     Consulta el rang d'una clau\n"
+"  get                       Obtén el valor d'una clau\n"
+"  set                       Estableix el valor d'una clau\n"
+"  reset                     Reinicia el valor d'una clau\n"
+"  writable                  Comprova si es pot escriure a la clau\n"
+"  monitor                   Fa un seguiment per si hi ha canvis\n"
+"\n"
+"Utilitzeu «gsettings help ORDRE» per veure l'ajuda més detallada.\n"
+"\n"
 
-#: ../gio/gsettings-tool.c:576
+#: ../gio/gsettings-tool.c:560
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3405,41 +3420,44 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"Utilització:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
-#: ../gio/gsettings-tool.c:581
+#: ../gio/gsettings-tool.c:565
 msgid "Arguments:\n"
-msgstr ""
+msgstr "Arguments:\n"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:569
 msgid "  COMMAND   The (optional) command to explain\n"
-msgstr ""
+msgstr "  ORDRE     L'ordre (opcional) que s'explicarà\n"
 
-#: ../gio/gsettings-tool.c:589
-#, fuzzy
+#: ../gio/gsettings-tool.c:573
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 msgstr ""
-"Arguments:\n"
-"  SCHEMA      L'identificador de l'esquema\n"
-"  KEY         El nom de la clau\n"
+"  ESQUEMA   El nom de l'esquema\n"
+"  CAMÍ      El camí, pels esquemes que es poden canviar de lloc\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:578
 msgid "  KEY       The (optional) key within the schema\n"
-msgstr ""
+msgstr "  CLAU      La clau (opcional) de l'esquema\n"
 
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:582
 msgid "  KEY       The key within the schema\n"
-msgstr ""
+msgstr "  CLAU      La clau de l'esquema\n"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:586
 msgid "  VALUE     The value to set\n"
-msgstr ""
+msgstr "  VALOR     El valor a establir\n"
 
-#: ../gio/gsettings-tool.c:691
+#: ../gio/gsettings-tool.c:662
 #, c-format
-msgid "Empty schema name given\n"
-msgstr ""
+msgid "Empty schema name given"
+msgstr "S'ha donat un nom d'esquema buit"
 
 #: ../gio/gsocket.c:277
 msgid "Invalid socket, not initialized"
@@ -3605,13 +3623,12 @@ msgid "The SOCKSv5 proxy requires authentication."
 msgstr "El servidor intermediari SOCKSv5 requereix autenticació."
 
 #: ../gio/gsocks5proxy.c:179
-#, fuzzy
 msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
 msgstr ""
-"El SOCKSv5 requereix un mètode d'autenticació que encara no està implementat "
-"a la GLib."
+"El servidor intermediari SOCKSv5 requereix un mètode d'autenticació que "
+"encara no està implementat a la GLib."
 
 #: ../gio/gsocks5proxy.c:208
 #, c-format
@@ -3671,7 +3688,6 @@ msgstr ""
 "proporcionada."
 
 #: ../gio/gsocks5proxy.c:402
-#, fuzzy
 msgid "Unknown SOCKSv5 proxy error."
 msgstr "S'ha produït un error desconegut en el servidor intermediari SOCKSv5."
 
@@ -3682,15 +3698,15 @@ msgstr "No es pot gestionar la versió %d de la codificació del GThemedIcon"
 
 #: ../gio/gtlscertificate.c:228
 msgid "No PEM-encoded certificate found"
-msgstr ""
+msgstr "No s'ha trobat cap certificat codificat amb PEM"
 
 #: ../gio/gtlscertificate.c:237
 msgid "Could not parse PEM-encoded certificate"
-msgstr ""
+msgstr "No s'ha pogut analitzar el certificat codificat amb PEM"
 
 #: ../gio/gtlscertificate.c:258
 msgid "Could not parse PEM-encoded private key"
-msgstr ""
+msgstr "No s'ha pogut analitzar la clau privada codificada amb PEM"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
