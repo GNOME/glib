@@ -328,6 +328,23 @@ key_state_set_range (KeyState     *state,
                      const gchar  *max_str,
                      GError      **error)
 {
+  const struct {
+    const gchar  type;
+    const gchar *min;
+    const gchar *max;
+  } table[] = {
+    { 'y',                    "0",                  "255" },
+    { 'n',               "-32768",                "32767" },
+    { 'q',                    "0",                "65535" },
+    { 'i',          "-2147483648",           "2147483647" },
+    { 'u',                    "0",           "4294967295" },
+    { 'x', "-9223372036854775808",  "9223372036854775807" },
+    { 't',                    "0", "18446744073709551615" },
+    { 'd',                 "-inf",                  "inf" },
+  };
+  gboolean type_ok = FALSE;
+  gint i;
+
   if (state->minimum)
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
@@ -336,7 +353,16 @@ key_state_set_range (KeyState     *state,
       return;
     }
 
-  if (strchr ("ynqiuxtd", *(char *) state->type) == NULL)
+  for (i = 0; i < G_N_ELEMENTS (table); i++)
+    if (*(char *) state->type == table[i].type)
+      {
+        min_str = min_str ? min_str : table[i].min;
+        max_str = max_str ? max_str : table[i].max;
+        type_ok = TRUE;
+        break;
+      }
+
+  if (!type_ok)
     {
       gchar *type = g_variant_type_dup_string (state->type);
       g_set_error (error, G_MARKUP_ERROR,
@@ -1320,7 +1346,8 @@ start_element (GMarkupParseContext  *context,
       else if (strcmp (element_name, "range") == 0)
         {
           const gchar *min, *max;
-          if (COLLECT (STRING, "min", &min, STRING, "max", &max))
+          if (COLLECT (STRING | OPTIONAL, "min", &min,
+                       STRING | OPTIONAL, "max", &max))
             key_state_set_range (state->key_state, min, max, error);
           return;
         }
