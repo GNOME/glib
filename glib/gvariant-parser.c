@@ -160,14 +160,14 @@ token_stream_set_error (TokenStream  *stream,
   va_end (ap);
 }
 
-static void
+static gboolean
 token_stream_prepare (TokenStream *stream)
 {
   gint brackets = 0;
   const gchar *end;
 
   if (stream->this != NULL)
-    return;
+    return TRUE;
 
   while (stream->stream != stream->end && g_ascii_isspace (*stream->stream))
     stream->stream++;
@@ -175,7 +175,7 @@ token_stream_prepare (TokenStream *stream)
   if (stream->stream == stream->end || *stream->stream == '\0')
     {
       stream->this = stream->stream;
-      return;
+      return FALSE;
     }
 
   switch (stream->stream[0])
@@ -248,6 +248,8 @@ token_stream_prepare (TokenStream *stream)
 
   stream->this = stream->stream;
   stream->stream = end;
+
+  return TRUE;
 }
 
 static void
@@ -260,7 +262,8 @@ static gboolean
 token_stream_peek (TokenStream *stream,
                    gchar        first_char)
 {
-  token_stream_prepare (stream);
+  if (!token_stream_prepare (stream))
+    return FALSE;
 
   return stream->this[0] == first_char;
 }
@@ -270,7 +273,8 @@ token_stream_peek2 (TokenStream *stream,
                     gchar        first_char,
                     gchar        second_char)
 {
-  token_stream_prepare (stream);
+  if (!token_stream_prepare (stream))
+    return FALSE;
 
   return stream->this[0] == first_char &&
          stream->this[1] == second_char;
@@ -279,7 +283,8 @@ token_stream_peek2 (TokenStream *stream,
 static gboolean
 token_stream_is_keyword (TokenStream *stream)
 {
-  token_stream_prepare (stream);
+  if (!token_stream_prepare (stream))
+    return FALSE;
 
   return g_ascii_isalpha (stream->this[0]) &&
          g_ascii_isalpha (stream->this[1]);
@@ -288,7 +293,8 @@ token_stream_is_keyword (TokenStream *stream)
 static gboolean
 token_stream_is_numeric (TokenStream *stream)
 {
-  token_stream_prepare (stream);
+  if (!token_stream_prepare (stream))
+    return FALSE;
 
   return (g_ascii_isdigit (stream->this[0]) ||
           stream->this[0] == '-' ||
@@ -302,7 +308,8 @@ token_stream_consume (TokenStream *stream,
 {
   gint length = strlen (token);
 
-  token_stream_prepare (stream);
+  if (!token_stream_prepare (stream))
+    return FALSE;
 
   if (stream->stream - stream->this == length &&
       memcmp (stream->this, token, length) == 0)
@@ -347,7 +354,8 @@ token_stream_get (TokenStream *stream)
 {
   gchar *result;
 
-  token_stream_prepare (stream);
+  if (!token_stream_prepare (stream))
+    return NULL;
 
   result = g_strndup (stream->this, stream->stream - stream->this);
 
