@@ -303,22 +303,25 @@ token_stream_is_numeric (TokenStream *stream)
 }
 
 static gboolean
-token_stream_consume (TokenStream *stream,
-                      const gchar *token)
+token_stream_peek_string (TokenStream *stream,
+                          const gchar *token)
 {
   gint length = strlen (token);
 
-  if (!token_stream_prepare (stream))
+  return token_stream_prepare (stream) &&
+         stream->stream - stream->this == length &&
+         memcmp (stream->this, token, length) == 0;
+}
+
+static gboolean
+token_stream_consume (TokenStream *stream,
+                      const gchar *token)
+{
+  if (!token_stream_peek_string (stream, token))
     return FALSE;
 
-  if (stream->stream - stream->this == length &&
-      memcmp (stream->this, token, length) == 0)
-    {
-      token_stream_next (stream);
-      return TRUE;
-    }
-
-  return FALSE;
+  token_stream_next (stream);
+  return TRUE;
 }
 
 static gboolean
