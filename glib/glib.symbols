@@ -378,6 +378,7 @@ g_date_time_unref
 #if IN_HEADER(__G_TIME_ZONE_H__)
 #if IN_FILE(__G_TIME_ZONE_C__)
 g_time_zone_new
+g_time_zone_refresh_local
 g_time_zone_new_local
 g_time_zone_new_utc
 g_time_zone_ref
@@ -1607,6 +1608,7 @@ g_unichar_validate
 
 #if IN_HEADER(__GLIBINTL_H__)
 #if IN_FILE(__G_UTILS_C__)
+glib_pgettext G_GNUC_FORMAT(1)
 glib_gettext G_GNUC_FORMAT(1)
 #ifdef G_OS_WIN32
 _glib_get_locale_dir
