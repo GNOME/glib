@@ -1,5 +1,10 @@
 binding
+boxed
 dynamictests
+enums
+ifaceproperties
+param
 properties
 reference
+signals
 threadtests

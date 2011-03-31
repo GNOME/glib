@@ -4,6 +4,7 @@ bookmarkfile
 checksum
 collate
 convert
+dataset
 date
 dir
 environment
@@ -16,6 +17,7 @@ hostutils
 keyfile
 list
 logging
+mappedfile
 markup-collect
 markup-escape
 markup-parse
@@ -35,7 +37,9 @@ shell
 slist
 strfuncs
 string
+sort
 testing
+timeout
 tmpsample.xml
 tree
 uri
