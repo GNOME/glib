@@ -574,7 +574,7 @@ AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2)
 AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r)
 # BSD has a qsort_r with wrong argument order
-AC_MSG_CHECKING([for qsort_r])
+AC_CACHE_CHECK([for qsort_r], glib_cv_have_qsort_r, [
 AC_RUN_IFELSE([[
 #define _GNU_SOURCE
 #include <stdlib.h>
@@ -605,9 +605,9 @@ main (int argc, char **argv)
     return 0;
   else
     return 1;
-}]],[have_qsort_r=yes],[have_qsort_r=no])
+}]],[glib_cv_have_qsort_r=yes],[glib_cv_have_qsort_r=no])])
 
-if test $have_qsort_r = yes ; then
+if test $glib_cv_have_qsort_r = yes ; then
   AC_MSG_RESULT([yes])
     AC_DEFINE(HAVE_QSORT_R, 1, [Define to 1 if you have the 'qsort_r' function])
 else

@@ -110,6 +110,15 @@ chmod a-w win32.cache   # prevent configure from changing it
 	</para>
       </formalpara>
       <formalpara>
+         <title>glib_cv_have_qsort_r=[yes/no]</title>
+
+         <para>
+           Whether you have <function>qsort_r()</function> that matches
+           BSD. Defaults to "no", which is safe, since GLib uses a
+           built-in version in that case.
+         </para>
+      </formalpara>
+      <formalpara>
          <title>glib_cv_va_val_copy=[yes/no]</title>
    
          <para>
