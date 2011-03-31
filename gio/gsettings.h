@@ -110,6 +110,11 @@ gint                    g_settings_get_int                              (GSettin
 gboolean                g_settings_set_int                              (GSettings          *settings,
                                                                          const gchar        *key,
                                                                          gint                value);
+guint                   g_settings_get_uint                             (GSettings          *settings,
+                                                                         const gchar        *key);
+gboolean                g_settings_set_uint                             (GSettings          *settings,
+                                                                         const gchar        *key,
+                                                                         guint               value);
 gchar *                 g_settings_get_string                           (GSettings          *settings,
                                                                          const gchar        *key);
 gboolean                g_settings_set_string                           (GSettings          *settings,

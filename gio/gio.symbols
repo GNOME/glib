@@ -1592,6 +1592,8 @@ g_settings_set_value
 g_settings_unbind
 g_settings_get_int
 g_settings_set_int
+g_settings_get_uint
+g_settings_set_uint
 g_settings_get_string
 g_settings_set_string
 g_settings_get_strv

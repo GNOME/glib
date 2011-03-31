@@ -1818,6 +1818,62 @@ g_settings_set_int (GSettings   *settings,
 }
 
 /**
+ * g_settings_get_uint:
+ * @settings: a #GSettings object
+ * @key: the key to get the value for
+ * @returns: an unsigned integer
+ *
+ * Gets the value that is stored at @key in @settings.
+ *
+ * A convenience variant of g_settings_get() for 32-bit unsigned
+ * integers.
+ *
+ * It is a programmer error to give a @key that isn't specified as
+ * having a uint32 type in the schema for @settings.
+ *
+ * Since: 2.30
+ */
+guint
+g_settings_get_uint (GSettings   *settings,
+                     const gchar *key)
+{
+  GVariant *value;
+  guint result;
+
+  value = g_settings_get_value (settings, key);
+  result = g_variant_get_uint32 (value);
+  g_variant_unref (value);
+
+  return result;
+}
+
+/**
+ * g_settings_set_uint:
+ * @settings: a #GSettings object
+ * @key: the name of the key to set
+ * @value: the value to set it to
+ * @returns: %TRUE if setting the key succeeded,
+ *     %FALSE if the key was not writable
+ *
+ * Sets @key in @settings to @value.
+ *
+ * A convenience variant of g_settings_set() for 32-bit unsigned
+ * integers.
+ *
+ * It is a programmer error to give a @key that isn't specified as
+ * having a uint32 type in the schema for @settings.
+ *
+ * Since: 2.30
+ */
+gboolean
+g_settings_set_uint (GSettings   *settings,
+                     const gchar *key,
+                     guint        value)
+{
+  return g_settings_set_value (settings, key, g_variant_new_uint32 (value));
+}
+
+/**
  * g_settings_get_double:
  * @settings: a #GSettings object
  * @key: the key to get the value for
