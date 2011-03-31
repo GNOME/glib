@@ -1,8 +1,8 @@
 <schemalist>
     <schema id="test">
       <key name="test" type="i">
-        <range min="100" />
-        <default>2</default>
+        <range min="100"/>
+        <default>200</default>
       </key>
     </schema>
 </schemalist>
