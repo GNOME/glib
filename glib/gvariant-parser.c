@@ -1777,8 +1777,9 @@ number_get_pattern (AST     *ast,
   Number *number = (Number *) ast;
 
   if (strchr (number->token, '.') ||
-      (!g_str_has_prefix (number->token, "0x") &&
-       strchr (number->token, 'e')))
+      (!g_str_has_prefix (number->token, "0x") && strchr (number->token, 'e')) ||
+      strstr (number->token, "inf") ||
+      strstr (number->token, "nan"))
     return g_strdup ("Md");
 
   return g_strdup ("MN");
@@ -2264,6 +2265,11 @@ parse (TokenStream  *stream,
   else if (token_stream_consume (stream, "false"))
     result = boolean_new (FALSE);
 
+  else if (token_stream_is_numeric (stream) ||
+           token_stream_peek_string (stream, "inf") ||
+           token_stream_peek_string (stream, "nan"))
+    result = number_parse (stream, app, error);
+
   else if (token_stream_peek (stream, 'n') ||
            token_stream_peek (stream, 'j'))
     result = maybe_parse (stream, app, error);
@@ -2271,9 +2277,6 @@ parse (TokenStream  *stream,
   else if (token_stream_peek (stream, '@') ||
            token_stream_is_keyword (stream))
     result = typedecl_parse (stream, app, error);
-
-  else if (token_stream_is_numeric (stream))
-    result = number_parse (stream, app, error);
 
   else if (token_stream_peek (stream, '\'') ||
            token_stream_peek (stream, '"'))
