@@ -63,7 +63,7 @@ g_qsort_with_data (gconstpointer    pbase,
                    GCompareDataFunc compare_func,
                    gpointer         user_data)
 {
-  qsort_r (pbase, total_elems, size, compare_func, user_data);
+  qsort_r ((gpointer)pbase, total_elems, size, compare_func, user_data);
 }
 
 #else
