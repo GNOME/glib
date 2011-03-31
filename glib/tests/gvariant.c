@@ -3662,6 +3662,23 @@ test_parses (void)
     g_free (printed);
   }
 
+  /* inf/nan mini test */
+  {
+    const gchar *tests[] = { "inf", "-inf", "nan" };
+    GVariant *value;
+    gchar *printed;
+    gint i;
+
+    for (i = 0; i < G_N_ELEMENTS (tests); i++)
+      {
+        GError *error = NULL;
+        value = g_variant_parse (NULL, tests[i], NULL, NULL, &error);
+        printed = g_variant_print (value, FALSE);
+        g_assert_cmpstr (tests[i], ==, printed);
+        g_free (printed);
+      }
+  }
+
   g_variant_type_info_assert_no_infos ();
 }
 
