@@ -1916,7 +1916,7 @@ msgstr "%s కొరకు StartServiceByName కాల్ చేయుటలో
 #: ../gio/gdbusproxy.c:1255
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
-msgstr "StartServiceByName(\"%s\") పద్దతినుండి అనుకోని ప్రత్యుత్తరం %d"
+msgstr "అనుకోని ప్రత్యుత్తరం %d StartServiceByName(\"%s\") పద్దతినుండి"
 
 #: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
 msgid ""
