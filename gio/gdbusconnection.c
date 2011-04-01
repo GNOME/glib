@@ -4624,13 +4624,13 @@ obj_message_func (GDBusConnection *connection,
 
 /**
  * g_dbus_connection_register_object:
- * @connection: A #GDBusConnection.
- * @object_path: The object path to register at.
- * @interface_info: Introspection data for the interface.
- * @vtable: A #GDBusInterfaceVTable to call into or %NULL.
- * @user_data: Data to pass to functions in @vtable.
- * @user_data_free_func: Function to call when the object path is unregistered.
- * @error: Return location for error or %NULL.
+ * @connection: A #GDBusConnection
+ * @object_path: The object path to register at
+ * @interface_info: Introspection data for the interface
+ * @vtable: A #GDBusInterfaceVTable to call into, or %NULL
+ * @user_data: Data to pass to functions in @vtable
+ * @user_data_free_func: Function to call when the object path is unregistered
+ * @error: Return location for error or %NULL
  *
  * Registers callbacks for exported objects at @object_path with the
  * D-Bus interface that is described in @interface_info.
@@ -4669,7 +4669,12 @@ obj_message_func (GDBusConnection *connection,
  * reference count is -1, see g_dbus_interface_info_ref()) for as long
  * as the object is exported. Also note that @vtable will be copied.
  *
- * See <xref linkend="gdbus-server"/> for an example of how to use this method.
+ * A %NULL @vtable can be used for
+ * <ulink url="http://en.wikipedia.org/wiki/Marker_interface_pattern">marker
+ * interfaces</ulink>.
+ *
+ * See <xref linkend="gdbus-server"/> for an example of how to use this
+ * method.
  *
  * Returns: 0 if @error is set, otherwise a registration id (never 0)
  * that can be used with g_dbus_connection_unregister_object() .
