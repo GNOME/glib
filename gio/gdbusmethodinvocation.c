@@ -249,9 +249,10 @@ g_dbus_method_invocation_get_message (GDBusMethodInvocation *invocation)
  * g_dbus_method_invocation_get_parameters:
  * @invocation: A #GDBusMethodInvocation.
  *
- * Gets the parameters of the method invocation.
+ * Gets the parameters of the method invocation. If there are no input
+ * parameters then this will return a GVariant with 0 children rather than NULL.
  *
- * Returns: A #GVariant. Do not free, it is owned by @invocation.
+ * Returns: (transfer none): A #GVariant tuple. Do not unref this because it is owned by @invocation.
  *
  * Since: 2.26
  */
