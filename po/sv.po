@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-25 17:28+0100\n"
-"PO-Revision-Date: 2011-03-25 18:21+0100\n"
+"POT-Creation-Date: 2011-04-02 15:45+0200\n"
+"PO-Revision-Date: 2011-04-02 15:46+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -1564,13 +1564,13 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Kan inte fastställa adress för sessionsbuss (inte implementerat för detta operativsystem)"
 
 #: ../gio/gdbusaddress.c:1242
-#: ../gio/gdbusconnection.c:6186
+#: ../gio/gdbusconnection.c:6191
 #, c-format
 msgid "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable - unknown value `%s'"
 msgstr "Kan inte fastställa bussadressen från miljövariabeln DBUS_STARTER_BUS_TYPE - okänt värde \"%s\""
 
 #: ../gio/gdbusaddress.c:1251
-#: ../gio/gdbusconnection.c:6195
+#: ../gio/gdbusconnection.c:6200
 msgid "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment variable is not set"
 msgstr "Kan inte fastställa bussadress därför att miljövariabeln DBUS_STARTER_BUS_TYPE inte är inställd"
 
@@ -1711,7 +1711,7 @@ msgid "Property `%s' is not writable"
 msgstr "Egenskapen \"%s\" är inte skrivbar"
 
 #: ../gio/gdbusconnection.c:4012
-#: ../gio/gdbusconnection.c:5620
+#: ../gio/gdbusconnection.c:5625
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Inget sådan gränssnitt \"%s\""
@@ -1721,7 +1721,7 @@ msgid "No such interface"
 msgstr "Inget sådant gränssnitt"
 
 #: ../gio/gdbusconnection.c:4419
-#: ../gio/gdbusconnection.c:6136
+#: ../gio/gdbusconnection.c:6141
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Inget sådant gränssnitt \"%s\" på objekt med sökvägen %s"
@@ -1736,22 +1736,22 @@ msgstr "Ingen sådan metod \"%s\""
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Typ av meddelande, \"%s\", matchar inte förväntade typen \"%s\""
 
-#: ../gio/gdbusconnection.c:4721
+#: ../gio/gdbusconnection.c:4726
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Ett objekt är redan exporterat för gränssnittet %s vid %s"
 
-#: ../gio/gdbusconnection.c:4915
+#: ../gio/gdbusconnection.c:4920
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Metoden \"%s\" returnerade typen \"%s\", men förväntade \"%s\""
 
-#: ../gio/gdbusconnection.c:5731
+#: ../gio/gdbusconnection.c:5736
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Metoden \"%s\" på gränssnittet \"%s\" med signaturen \"%s\" finns inte"
 
-#: ../gio/gdbusconnection.c:5849
+#: ../gio/gdbusconnection.c:5854
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ett underträd har redan exporterats för %s"
@@ -1922,30 +1922,30 @@ msgstr "Fel vid anrop av StartServiceByName för %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Oväntat svar %d från StartServiceByName(\"%s\")-metod"
 
-#: ../gio/gdbusproxy.c:2311
-#: ../gio/gdbusproxy.c:2469
+#: ../gio/gdbusproxy.c:2312
+#: ../gio/gdbusproxy.c:2471
 msgid "Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr "Kan inte anropa metod; proxy är för ett välkänt namn utan en ägare och proxy konstruerades med flaggan G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:715
+#: ../gio/gdbusserver.c:714
 msgid "Abstract name space not supported"
 msgstr "Abstrakt namnrymd stöds inte"
 
-#: ../gio/gdbusserver.c:805
+#: ../gio/gdbusserver.c:804
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Kan inte ange nonce-filen när en server skapas"
 
-#: ../gio/gdbusserver.c:882
+#: ../gio/gdbusserver.c:881
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Fel vid skrivning av nonce-fil i \"%s\": %s"
 
-#: ../gio/gdbusserver.c:1044
+#: ../gio/gdbusserver.c:1043
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "Strängen \"%s\" är inte ett giltigt D-Bus GUID"
 
-#: ../gio/gdbusserver.c:1084
+#: ../gio/gdbusserver.c:1083
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Kan inte lyssna på transport som inte stöds \"%s\""
@@ -3293,7 +3293,7 @@ msgstr "Argument:\n"
 
 #: ../gio/gsettings-tool.c:569
 msgid "  COMMAND   The (optional) command to explain\n"
-msgstr "  COMMAND   (Valfritt) kommando att förklara\n"
+msgstr "  KOMMANDO  (Valfritt) kommando att förklara\n"
 
 #: ../gio/gsettings-tool.c:573
 msgid ""
@@ -3305,11 +3305,11 @@ msgstr ""
 
 #: ../gio/gsettings-tool.c:578
 msgid "  KEY       The (optional) key within the schema\n"
-msgstr "  KEY       (Valfri) nyckel inom schemat\n"
+msgstr "  NYCKEL    (Valfri) nyckel inom schemat\n"
 
 #: ../gio/gsettings-tool.c:582
 msgid "  KEY       The key within the schema\n"
-msgstr "  KEY       Nyckeln inom schemat\n"
+msgstr "  NYCKEL    Nyckeln inom schemat\n"
 
 #: ../gio/gsettings-tool.c:586
 msgid "  VALUE     The value to set\n"
