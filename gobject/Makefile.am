@@ -91,6 +91,7 @@ libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) $(gobject_def)
 #
 # GObject library header files for public installation
 gobject_public_h_sources = \
+	glib-types.h		\
 	gbinding.h		\
 	gboxed.h		\
 	gclosure.h		\
@@ -292,7 +293,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj ../build/win32/
 	done >libgobject.vs10.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gobject.vcxprojin >$@
 	rm libgobject.vs10.sourcefiles
-	
+
 ../build/win32/vs10/gobject.vcxproj.filters: $(top_srcdir)/build/win32/vs10/gobject.vcxproj.filtersin
 	for F in $(libgobject_2_0_la_SOURCES); do \
 		case $$F in \
@@ -300,9 +301,9 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj ../build/win32/
 		     ;; \
 		esac; \
 	done >libgobject.vs10.sourcefiles.filters
-	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gobject.vcxproj.filtersin >$@	
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gobject.vcxproj.filtersin >$@
 	rm libgobject.vs10.sourcefiles.filters
-	
+
 install-data-local: install-ms-lib install-def-file
 
 uninstall-local: uninstall-ms-lib uninstall-def-file uninstall-gdb

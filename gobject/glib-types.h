@@ -1,0 +1,192 @@
+/* GObject - GLib Type, Object, Parameter and Signal Library
+ * Copyright (C) 2000-2001 Red Hat, Inc.
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General
+ * Public License along with this library; if not, write to the
+ * Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ */
+#if !defined (__GLIB_GOBJECT_H_INSIDE__) && !defined (GOBJECT_COMPILATION) && !defined(GLIB_COMPILATION)
+#error "Only <glib-object.h> can be included directly."
+#endif
+
+#ifndef __GLIB_TYPES_H__
+#define __GLIB_TYPES_H__
+
+G_BEGIN_DECLS
+
+/* A hack necesssary to preprocess this file with g-ir-scanner */
+#ifdef __GI_SCANNER__
+typedef gsize GType;
+#endif
+
+/* --- GLib boxed types --- */
+/**
+ * G_TYPE_DATE:
+ *
+ * The #GType for #GDate.
+ */
+#define G_TYPE_DATE (g_date_get_type ())
+
+/**
+ * G_TYPE_STRV:
+ *
+ * The #GType for a boxed type holding a %NULL-terminated array of strings.
+ *
+ * The code fragments in the following example show the use of a property of
+ * type #G_TYPE_STRV with g_object_class_install_property(), g_object_set()
+ * and g_object_get().
+ *
+ * |[
+ * g_object_class_install_property (object_class,
+ *                                  PROP_AUTHORS,
+ *                                  g_param_spec_boxed ("authors",
+ *                                                      _("Authors"),
+ *                                                      _("List of authors"),
+ *                                                      G_TYPE_STRV,
+ *                                                      G_PARAM_READWRITE));
+ *
+ * gchar *authors[] = { "Owen", "Tim", NULL };
+ * g_object_set (obj, "authors", authors, NULL);
+ *
+ * gchar *writers[];
+ * g_object_get (obj, "authors", &writers, NULL);
+ * /&ast; do something with writers &ast;/
+ * g_strfreev (writers);
+ * ]|
+ *
+ * Since: 2.4
+ */
+#define G_TYPE_STRV (g_strv_get_type ())
+
+/**
+ * G_TYPE_GSTRING:
+ *
+ * The #GType for #GString.
+ */
+#define G_TYPE_GSTRING (g_gstring_get_type ())
+
+/**
+ * G_TYPE_HASH_TABLE:
+ *
+ * The #GType for a boxed type holding a #GHashTable reference.
+ *
+ * Since: 2.10
+ */
+#define G_TYPE_HASH_TABLE (g_hash_table_get_type ())
+
+/**
+ * G_TYPE_REGEX:
+ *
+ * The #GType for a boxed type holding a #GRegex reference.
+ *
+ * Since: 2.14
+ */
+#define G_TYPE_REGEX (g_regex_get_type ())
+
+/**
+ * G_TYPE_ARRAY:
+ *
+ * The #GType for a boxed type holding a #GArray reference.
+ *
+ * Since: 2.22
+ */
+#define G_TYPE_ARRAY (g_array_get_type ())
+
+/**
+ * G_TYPE_BYTE_ARRAY:
+ *
+ * The #GType for a boxed type holding a #GByteArray reference.
+ *
+ * Since: 2.22
+ */
+#define G_TYPE_BYTE_ARRAY (g_byte_array_get_type ())
+
+/**
+ * G_TYPE_PTR_ARRAY:
+ *
+ * The #GType for a boxed type holding a #GPtrArray reference.
+ *
+ * Since: 2.22
+ */
+#define G_TYPE_PTR_ARRAY (g_ptr_array_get_type ())
+
+/**
+ * G_TYPE_VARIANT_TYPE:
+ *
+ * The #GType for a boxed type holding a #GVariantType.
+ *
+ * Since: 2.24
+ */
+#define G_TYPE_VARIANT_TYPE (g_variant_type_get_gtype ())
+
+/**
+ * G_TYPE_ERROR:
+ *
+ * The #GType for a boxed type holding a #GError.
+ *
+ * Since: 2.26
+ */
+#define G_TYPE_ERROR (g_error_get_type ())
+
+/**
+ * G_TYPE_DATE_TIME:
+ *
+ * The #GType for a boxed type holding a #GDateTime.
+ *
+ * Since: 2.26
+ */
+#define G_TYPE_DATE_TIME (g_date_time_get_type ())
+
+/**
+ * G_TYPE_IO_CHANNEL:
+ *
+ * The #GType for #GIOChannel.
+ */
+#define G_TYPE_IO_CHANNEL (g_io_channel_get_type ())
+
+/**
+ * G_TYPE_IO_CONDITION:
+ *
+ * The #GType for #GIOCondition.
+ */
+#define G_TYPE_IO_CONDITION (g_io_condition_get_type ())
+
+GType   g_date_get_type            (void) G_GNUC_CONST;
+GType   g_strv_get_type            (void) G_GNUC_CONST;
+GType   g_gstring_get_type         (void) G_GNUC_CONST;
+GType   g_hash_table_get_type      (void) G_GNUC_CONST;
+GType   g_array_get_type           (void) G_GNUC_CONST;
+GType   g_byte_array_get_type      (void) G_GNUC_CONST;
+GType   g_ptr_array_get_type       (void) G_GNUC_CONST;
+GType   g_variant_type_get_gtype   (void) G_GNUC_CONST;
+GType   g_regex_get_type           (void) G_GNUC_CONST;
+GType   g_error_get_type           (void) G_GNUC_CONST;
+GType   g_date_time_get_type       (void) G_GNUC_CONST;
+GType   g_io_channel_get_type      (void) G_GNUC_CONST;
+GType   g_io_condition_get_type    (void) G_GNUC_CONST;
+
+#if !defined(G_DISABLE_DEPRECATED) || defined(__GI_SCANNER__)
+GType   g_variant_get_gtype        (void) G_GNUC_CONST;
+#endif
+
+/**
+ * GStrv:
+ *
+ * A C representable type name for #G_TYPE_STRV.
+ */
+typedef gchar** GStrv;
+
+G_END_DECLS
+
+#endif  /* __GLIB_TYPES_H__ */
