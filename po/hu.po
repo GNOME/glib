@@ -7,15 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-18 17:10+0100\n"
-"PO-Revision-Date: 2011-03-18 17:11+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-03-31 12:02+0000\n"
+"PO-Revision-Date: 2011-04-03 10:12+0200\n"
 "Last-Translator: Gabor Kelemen <kelemeng at gnome dot hu>\n"
 "Language-Team: Hungarian <gnome at fsf dot hu>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
@@ -28,7 +28,7 @@ msgstr "Váratlan attribútum („%s”) a(z) „%s” elemhez"
 #: ../glib/gbookmarkfile.c:872 ../glib/gbookmarkfile.c:979
 #, c-format
 msgid "Attribute '%s' of element '%s' not found"
-msgstr "A(z) „$2%s” elem „$1%s” attribútuma nem található"
+msgstr "A(z) „%2$s” elem „%1$s” attribútuma nem található"
 
 #: ../glib/gbookmarkfile.c:1149 ../glib/gbookmarkfile.c:1214
 #: ../glib/gbookmarkfile.c:1278 ../glib/gbookmarkfile.c:1288
@@ -430,8 +430,8 @@ msgstr "Nem sikerült megnyitni a(z) „%s” fájlt. Az fdopen() sikertelen: %s
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
-"Nem sikerült átnevezni a(z) „%s” fájlt erre: „%s”. A g_rename() sikertelen: "
-"%s"
+"Nem sikerült átnevezni a(z) „%s” fájlt erre: „%s”. A g_rename() sikertelen: %"
+"s"
 
 #: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1388
 #, c-format
@@ -635,8 +635,8 @@ msgstr "„%s” nem érvényes karakter a „<” karakter után; elem neve nem
 #: ../glib/gmarkup.c:1185
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Furcsa karakter („%s”), „>” karakternek kellett volna jönnie, hogy lezárja a"
 "(z) „%s” üres elemcímkét"
@@ -1254,8 +1254,8 @@ msgstr "Nem dolgozható fel a(z) „%s” dupla hosszúságú érték a követke
 #, c-format
 msgid "Double value '%s' for %s out of range"
 msgstr ""
-"A(z) „%s” dupla hosszúságú érték a tartományon kívülre esik a következőhöz: "
-"%s"
+"A(z) „%s” dupla hosszúságú érték a tartományon kívülre esik a következőhöz: %"
+"s"
 
 #: ../glib/goption.c:1303 ../glib/goption.c:1382
 #, c-format
@@ -1614,8 +1614,8 @@ msgstr "A tartalom váratlanul hiányzik a sor (biztonságos) olvasásakor"
 #, c-format
 msgid "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
-"Minden elérhető hitelesítési mechanizmus kimerítve (próbálva: %s, elérhető: "
-"%s)"
+"Minden elérhető hitelesítési mechanizmus kimerítve (próbálva: %s, elérhető: %"
+"s)"
 
 #: ../gio/gdbusauth.c:1150
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -1870,8 +1870,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
-"Érvénytelen bájtsorrend-érték. A várt  0x6c („l”) vagy 0x42 („B”) helyett 0x"
-"%02x érték található"
+"Érvénytelen bájtsorrend-érték. A várt  0x6c („l”) vagy 0x42 („B”) helyett 0x%"
+"02x érték található"
 
 #: ../gio/gdbusmessage.c:1700
 #, c-format
@@ -1919,8 +1919,8 @@ msgstr "Az üzenettörzs „%s” aláírással rendelkezik, de nincs aláírás
 #: ../gio/gdbusmessage.c:2337
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "Az üzenettörzs „%s” típusaláírással rendelkezik, de az aláírásfejlécben lévő "
 "aláírás: „%s”"
@@ -1973,7 +1973,7 @@ msgstr "Hiba a StartServiceByName hívásakor ehhez: %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Váratlan válasz (%d) a StartServiceByName(\"%s\") metódustól"
 
-#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
+#: ../gio/gdbusproxy.c:2312 ../gio/gdbusproxy.c:2471
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2547,8 +2547,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"a <schema id='%s' list-of='%s'> kiterjeszti ezt: <schema id='%s' list-"
-"of='%s'>, de „%s” nem terjeszti ki ezt: „%s”"
+"a <schema id='%s' list-of='%s'> kiterjeszti ezt: <schema id='%s' list-of='%"
+"s'>, de „%s” nem terjeszti ki ezt: „%s”"
 
 #: ../gio/glib-compile-schemas.c:1135
 #, c-format
@@ -2619,8 +2619,8 @@ msgstr " és a --strict meg lett adva, kilépés.\n"
 #: ../gio/glib-compile-schemas.c:1787
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 "hiba a(z) „%s” kulcs feldolgozásakor a(z) „%s” sémában a(z) „%s” "
 "felülbírálási fájlban megadott módon: %s. "
