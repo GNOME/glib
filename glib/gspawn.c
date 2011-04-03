@@ -84,13 +84,13 @@ g_spawn_error_quark (void)
 
 /**
  * g_spawn_async:
- * @working_directory: child's current working directory, or %NULL to inherit parent's
- * @argv: child's argument vector
- * @envp: child's environment, or %NULL to inherit parent's
+ * @working_directory: (allow-none): child's current working directory, or %NULL to inherit parent's
+ * @argv: (array zero-terminated=1): child's argument vector
+ * @envp: (array zero-terminated=1) (allow-none): child's environment, or %NULL to inherit parent's
  * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before exec()
- * @user_data: user data for @child_setup
- * @child_pid: return location for child process reference, or %NULL
+ * @child_setup: (scope async) (allow-none): function to run in the child just before exec()
+ * @user_data: (closure): user data for @child_setup
+ * @child_pid: (out) (allow-none): return location for child process reference, or %NULL
  * @error: return location for error
  * 
  * See g_spawn_async_with_pipes() for a full description; this function
@@ -204,15 +204,15 @@ read_data (GString *str,
 
 /**
  * g_spawn_sync:
- * @working_directory: child's current working directory, or %NULL to inherit parent's
- * @argv: child's argument vector
- * @envp: child's environment, or %NULL to inherit parent's
- * @flags: flags from #GSpawnFlags 
- * @child_setup: function to run in the child just before exec()
- * @user_data: user data for @child_setup
- * @standard_output: return location for child output, or %NULL
- * @standard_error: return location for child error messages, or %NULL
- * @exit_status: return location for child exit status, as returned by waitpid(), or %NULL
+ * @working_directory: (allow-none): child's current working directory, or %NULL to inherit parent's
+ * @argv: (array zero-terminated=1): child's argument vector
+ * @envp: (array zero-terminated=1) (allow-none): child's environment, or %NULL to inherit parent's
+ * @flags: flags from #GSpawnFlags
+ * @child_setup: (scope async) (allow-none): function to run in the child just before exec()
+ * @user_data: (closure): user data for @child_setup
+ * @standard_output: (out) (array zero-terminated=1) (element-type uint8) (allow-none): return location for child output, or %NULL
+ * @standard_error: (out) (array zero-terminated=1) (element-type uint8) (allow-none): return location for child error messages, or %NULL
+ * @exit_status: (out) (allow-none): return location for child exit status, as returned by waitpid(), or %NULL
  * @error: return location for error, or %NULL
  *
  * Executes a child synchronously (waits for the child to exit before returning).
@@ -449,16 +449,16 @@ g_spawn_sync (const gchar          *working_directory,
 
 /**
  * g_spawn_async_with_pipes:
- * @working_directory: child's current working directory, or %NULL to inherit parent's, in the GLib file name encoding
- * @argv: child's argument vector, in the GLib file name encoding
- * @envp: child's environment, or %NULL to inherit parent's, in the GLib file name encoding
+ * @working_directory: (allow-none): child's current working directory, or %NULL to inherit parent's, in the GLib file name encoding
+ * @argv: (array zero-terminated=1): child's argument vector, in the GLib file name encoding
+ * @envp: (array zero-terminated=1) (allow-none): child's environment, or %NULL to inherit parent's, in the GLib file name encoding
  * @flags: flags from #GSpawnFlags
- * @child_setup: function to run in the child just before exec()
- * @user_data: user data for @child_setup
- * @child_pid: return location for child process ID, or %NULL
- * @standard_input: return location for file descriptor to write to child's stdin, or %NULL
- * @standard_output: return location for file descriptor to read child's stdout, or %NULL
- * @standard_error: return location for file descriptor to read child's stderr, or %NULL
+ * @child_setup: (scope async) (allow-none): function to run in the child just before exec()
+ * @user_data: (closure): user data for @child_setup
+ * @child_pid: (out) (allow-none): return location for child process ID, or %NULL
+ * @standard_input: (out) (allow-none): return location for file descriptor to write to child's stdin, or %NULL
+ * @standard_output: (out) (allow-none): return location for file descriptor to read child's stdout, or %NULL
+ * @standard_error: (out) (allow-none): return location for file descriptor to read child's stderr, or %NULL
  * @error: return location for error
  *
  * Executes a child program asynchronously (your program will not
@@ -656,9 +656,9 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
 /**
  * g_spawn_command_line_sync:
  * @command_line: a command line 
- * @standard_output: return location for child output
- * @standard_error: return location for child errors
- * @exit_status: return location for child exit status, as returned by waitpid()
+ * @standard_output: (out) (array zero-terminated=1) (element-type uint8) (allow-none): return location for child output
+ * @standard_error: (out) (array zero-terminated=1) (element-type uint8) (allow-none): return location for child errors
+ * @exit_status: (out) (allow-none): return location for child exit status, as returned by waitpid()
  * @error: return location for errors
  *
  * A simple version of g_spawn_sync() with little-used parameters

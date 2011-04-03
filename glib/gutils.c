@@ -293,7 +293,7 @@ g_memmove (gpointer      dest,
 
 /**
  * g_atexit:
- * @func: the function to call on normal program termination.
+ * @func: (scope async): the function to call on normal program termination.
  * 
  * Specifies a function to be called at normal program termination.
  *
@@ -628,9 +628,9 @@ debug_key_matches (const gchar *key,
 
 /**
  * g_parse_debug_string:
- * @string: a list of debug options separated by colons, spaces, or
+ * @string: (allow-none): a list of debug options separated by colons, spaces, or
  * commas, or %NULL.
- * @keys: pointer to an array of #GDebugKey which associate 
+ * @keys: (array length=nkeys): pointer to an array of #GDebugKey which associate 
  *     strings with bit flags.
  * @nkeys: the number of #GDebugKey<!-- -->s in the array.
  *
