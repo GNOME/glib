@@ -58,12 +58,12 @@ static const char base64_alphabet[] =
 
 /**
  * g_base64_encode_step:
- * @in: the binary data to encode
+ * @in: (array length=len) (element-type guint8): the binary data to encode
  * @len: the length of @in
  * @break_lines: whether to break long lines
- * @out: pointer to destination buffer
- * @state: Saved state between steps, initialize to 0
- * @save: Saved state between steps, initialize to 0
+ * @out: (out) (array) (element-type guint8): pointer to destination buffer
+ * @state: (inout): Saved state between steps, initialize to 0
+ * @save: (inout): Saved state between steps, initialize to 0
  *
  * Incrementally encode a sequence of binary data into its Base-64 stringified
  * representation. By calling this function multiple times you can convert
@@ -179,9 +179,9 @@ g_base64_encode_step (const guchar *in,
 /**
  * g_base64_encode_close:
  * @break_lines: whether to break long lines
- * @out: pointer to destination buffer
- * @state: Saved state from g_base64_encode_step()
- * @save: Saved state from g_base64_encode_step()
+ * @out: (out) (array) (element-type guint8): pointer to destination buffer
+ * @state: (inout): Saved state from g_base64_encode_step()
+ * @save: (inout): Saved state from g_base64_encode_step()
  *
  * Flush the status from a sequence of calls to g_base64_encode_step().
  *
@@ -235,14 +235,14 @@ g_base64_encode_close (gboolean  break_lines,
 
 /**
  * g_base64_encode:
- * @data: the binary data to encode
+ * @data: (array length=len) (element-type guint8): the binary data to encode
  * @len: the length of @data
  *
  * Encode a sequence of binary data into its Base-64 stringified
  * representation.
  *
- * Return value: a newly allocated, zero-terminated Base-64 encoded
- *               string representing @data. The returned string must
+ * Return value: (transfer full): a newly allocated, zero-terminated Base-64
+ *               encoded string representing @data. The returned string must
  *               be freed with g_free().
  *
  * Since: 2.12
@@ -293,11 +293,11 @@ static const unsigned char mime_base64_rank[256] = {
 
 /**
  * g_base64_decode_step:
- * @in: binary input data
+ * @in: (array length=len) (element-type guint8): binary input data
  * @len: max length of @in data to decode
- * @out: output buffer
- * @state: Saved state between steps, initialize to 0
- * @save: Saved state between steps, initialize to 0
+ * @out: (out) (array) (element-type guint8): output buffer
+ * @state: (inout): Saved state between steps, initialize to 0
+ * @save: (inout): Saved state between steps, initialize to 0
  *
  * Incrementally decode a sequence of binary data from its Base-64 stringified
  * representation. By calling this function multiple times you can convert
@@ -374,11 +374,12 @@ g_base64_decode_step (const gchar  *in,
 /**
  * g_base64_decode:
  * @text: zero-terminated string with base64 text to decode
- * @out_len: The length of the decoded data is written here
+ * @out_len: (out): The length of the decoded data is written here
  *
  * Decode a sequence of Base-64 encoded text into binary data
  *
- * Return value: a newly allocated buffer containing the binary data
+ * Return value: (transfer full) (array length=out_len) (element-type guint8):
+ *               newly allocated buffer containing the binary data
  *               that @text represents. The returned buffer must
  *               be freed with g_free().
  *
@@ -409,13 +410,14 @@ g_base64_decode (const gchar *text,
 
 /**
  * g_base64_decode_inplace:
- * @text: zero-terminated string with base64 text to decode
- * @out_len: The length of the decoded data is written here
+ * @text: (inout) (array length=out_len) (element-type guint8): zero-terminated
+ *        string with base64 text to decode
+ * @out_len: (inout): The length of the decoded data is written here
  *
  * Decode a sequence of Base-64 encoded text into binary data
  * by overwriting the input data.
  *
- * Return value: The binary data that @text responds. This pointer
+ * Return value: (transfer none): The binary data that @text responds. This pointer
  *               is the same as the input @text.
  *
  * Since: 2.20
