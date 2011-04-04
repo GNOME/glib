@@ -421,6 +421,7 @@ g_tls_certificate_list_new_from_file (const gchar  *file,
       list = g_list_prepend (list, cert);
     }
 
+  g_free (contents);
   return g_list_reverse (list);
 }
 

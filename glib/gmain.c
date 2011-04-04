@@ -1700,6 +1700,13 @@ g_source_unref_internal (GSource      *source,
 
       g_slist_free (source->poll_fds);
       source->poll_fds = NULL;
+
+      if (source->priv)
+	{
+	  g_slice_free (GSourcePrivate, source->priv);
+	  source->priv = NULL;
+	}
+
       g_free (source);
     }
   
