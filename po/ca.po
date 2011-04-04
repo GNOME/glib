@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-03-30 23:17+0200\n"
-"PO-Revision-Date: 2011-03-30 22:17+0200\n"
+"PO-Revision-Date: 2011-04-04 21:16+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -151,7 +151,7 @@ msgstr "El nom de l'ordinador de l'URI «%s» no és vàlid"
 #: ../glib/gconvert.c:1937
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
-msgstr "L'URI «%s» conté caràcters d'escapada invàlids"
+msgstr "L'URI «%s» conté caràcters d'escapada no vàlids"
 
 #: ../glib/gconvert.c:2032
 #, c-format
@@ -1187,7 +1187,7 @@ msgstr ""
 #: ../glib/gspawn.c:196
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "No s'ha pogut llegir dades des del procés fill (%s)"
+msgstr "No s'han pogut llegir dades des del procés fill (%s)"
 
 #: ../glib/gspawn.c:335
 #, c-format
@@ -1890,7 +1890,7 @@ msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
-"missatge «SIGNAL»; el camp de capçalera «INTERFACE» utilitza el valor "
+"missatge «SIGNAL»: el camp de capçalera «INTERFACE» utilitza el valor "
 "reservat «org.freedesktop.DBus.Local»"
 
 #: ../gio/gdbusmessage.c:997
@@ -1971,7 +1971,7 @@ msgstr ""
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr ""
-"El valor analitzat «%s» no és una signatura de D-Bus vàlida (per el cos)"
+"El valor analitzat «%s» no és una signatura de D-Bus vàlida (pel cos)"
 
 #: ../gio/gdbusmessage.c:1801
 #, c-format
@@ -2077,7 +2077,7 @@ msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
-"No és pot invocar el mètode: el servidor intermediari és per a un nom ben "
+"No es pot invocar el mètode: el servidor intermediari és per a un nom ben "
 "conegut sense cap propietari i el servidor intermediari s'ha construït amb "
 "el senyalador «G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START»"
 
@@ -2435,7 +2435,7 @@ msgstr "el volum no implementa el muntatge"
 #: ../gio/gfile.c:6115
 msgid "No application is registered as handling this file"
 msgstr ""
-"No hi ha cap aplicació que s'hagi registrat per a gestionar aquest fitxer"
+"No hi ha cap aplicació que s'hagi registrat per gestionar aquest fitxer"
 
 #: ../gio/gfileenumerator.c:205
 msgid "Enumerator is closed"
@@ -2778,7 +2778,7 @@ msgstr "DIRECTORI"
 
 #: ../gio/glib-compile-schemas.c:1898
 msgid "Abort on any errors in schemas"
-msgstr "Aborta si hi ha cap error en els esquemes"
+msgstr "Interromp si hi ha cap error en els esquemes"
 
 #: ../gio/glib-compile-schemas.c:1899
 msgid "Do not write the gschema.compiled file"
@@ -3120,7 +3120,7 @@ msgstr "El GSeekType proporcionat no és vàlid"
 
 #: ../gio/gmemoryinputstream.c:496
 msgid "Invalid seek request"
-msgstr "La sol·licitud de cerca és invàlida"
+msgstr "La sol·licitud de cerca és no vàlida"
 
 #: ../gio/gmemoryinputstream.c:520
 msgid "Cannot truncate GMemoryInputStream"
@@ -3390,7 +3390,7 @@ msgid ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
-"Útilització:\n"
+"Utilització:\n"
 "  gsettings ORDRE [ARGUMENTS...]\n"
 "\n"
 "Ordres:\n"
