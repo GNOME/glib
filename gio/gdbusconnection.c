@@ -2712,11 +2712,18 @@ g_dbus_connection_new_for_address_sync (const gchar           *address,
  * g_dbus_connection_set_exit_on_close:
  * @connection: A #GDBusConnection.
  * @exit_on_close: Whether the process should be terminated
- * when @connection is closed by the remote peer.
+ *     when @connection is closed by the remote peer.
  *
  * Sets whether the process should be terminated when @connection is
  * closed by the remote peer. See #GDBusConnection:exit-on-close for
  * more details.
+ *
+ * Note that this function should be used with care. Most modern UNIX
+ * desktops tie the notion of a user session the session bus, and expect
+ * all of a users applications to quit when their bus connection goes away.
+ * If you are setting @exit_on_close to %FALSE for the shared session
+ * bus connection, you should make sure that your application exits
+ * when the user session ends.
  *
  * Since: 2.26
  */
