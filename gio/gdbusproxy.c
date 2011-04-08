@@ -44,7 +44,7 @@
 
 /**
  * SECTION:gdbusproxy
- * @short_description: Client-side proxies
+ * @short_description: Client-side D-Bus interface proxy
  * @include: gio/gio.h
  *
  * #GDBusProxy is a base class used for proxies to access a D-Bus
