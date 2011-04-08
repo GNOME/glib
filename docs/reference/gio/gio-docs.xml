@@ -164,7 +164,15 @@
       <title>Highlevel D-Bus Support</title>
       <xi:include href="xml/gdbusnameowning.xml"/>
       <xi:include href="xml/gdbusnamewatching.xml"/>
+      <xi:include href="xml/gdbusinterface.xml"/>
+      <xi:include href="xml/gdbusinterfacestub.xml"/>
       <xi:include href="xml/gdbusproxy.xml"/>
+      <xi:include href="xml/gdbusobject.xml"/>
+      <xi:include href="xml/gdbusobjectstub.xml"/>
+      <xi:include href="xml/gdbusobjectproxy.xml"/>
+      <xi:include href="xml/gdbusobjectmanager.xml"/>
+      <xi:include href="xml/gdbusobjectmanagerserver.xml"/>
+      <xi:include href="xml/gdbusobjectmanagerclient.xml"/>
     </chapter>
     <chapter id="settings">
         <title>Settings</title>
