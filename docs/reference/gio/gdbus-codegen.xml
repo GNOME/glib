@@ -1,0 +1,674 @@
+<refentry id="gdbus-codegen" lang="en">
+
+<refmeta>
+  <refentrytitle>gdbus-codegen</refentrytitle>
+  <manvolnum>1</manvolnum>
+  <refmiscinfo class="manual">User Commands</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+  <refname>gdbus-codegen</refname>
+  <refpurpose>D-Bus Code Generator</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+  <cmdsynopsis>
+    <command>gdbus-codegen</command>
+    <arg><option>--interface-prefix</option> <replaceable>org.project.Prefix</replaceable></arg>
+    <arg><option>--c-namespace</option> <replaceable>YourProject</replaceable></arg>
+    <arg><option>--generate-c-code</option> <replaceable>OUTFILES</replaceable></arg>
+    <arg><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></arg>
+    <group choice="plain" rep="repeat">
+      <arg>
+        <option>--annotate</option>
+        <replaceable>element</replaceable>
+        <option>--key</option>
+        <replaceable>key</replaceable>
+        <option>--value</option>
+        <replaceable>key</replaceable>
+      </arg>
+    </group>
+    <arg choice="plain">FILE</arg>
+    <arg>
+      <arg choice="plain" rep="repeat">FILE</arg>
+    </arg>
+  </cmdsynopsis>
+</refsynopsisdiv>
+
+<refsect1>
+  <title>Description</title>
+  <para>
+    <command>gdbus-codegen</command> is used to generate code and/or
+    documentation for one or more D-Bus interfaces. The tool reads
+    D-Bus Introspection XML files and generates output files. The tool
+    currently supports generating C code (via
+    <option>--generate-c-code</option>) and Docbook XML (via
+    <option>--generate-docbook</option>).
+  </para>
+  <para>
+    When generating C code, an abstract
+    <type>GInterface</type>-derived type is generated for each D-Bus
+    interface. Additionally, for every generated type,
+    <type>FooBar</type>, two concrete instantiable types,
+    <type>FooBarProxy</type> and <type>FooBarStub</type>, implementing
+    said interface are also generated. The former is derived from
+    <type>GDBusProxy</type> and intended for use on the client side
+    while the latter is derived from the
+    <type>GDBusInterfaceStub</type> type making it easy to export on a
+    <type>GDBusConnection</type> either directly or via a
+    <type>GDBusObjectManagerServer</type>.
+  </para>
+</refsect1>
+
+<refsect1>
+  <title>Options</title>
+  <para>
+    The following options are supported:
+  </para>
+  <variablelist>
+
+    <varlistentry>
+      <term><option>--interface-prefix</option> <replaceable>org.project.Prefix.</replaceable></term>
+      <listitem>
+        <para>
+          A prefix to strip from all D-Bus interface names when
+          calculating the typename for the C binding and the Docbook
+          <ulink
+          url="http://www.docbook.org/tdg/en/html/primary.html">sortas
+          attribute</ulink>.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></term>
+      <listitem>
+        <para>
+          Generate Docbook Documentation for each D-Bus interface and
+          put it in
+          <filename>OUTFILES-org.Project.IfaceName.xml</filename> (where
+          <literal>org.Project.IfaceName</literal> is a place-holder for
+          the interface name).
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--generate-c-code</option> <replaceable>OUTFILES</replaceable></term>
+      <listitem>
+        <para>
+          Generate C code for all D-Bus interfaces and put it in
+          <filename>OUTFILES.c</filename> and
+          <filename>OUTFILES.h</filename>.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--c-namespace</option> <replaceable>YourProject</replaceable></term>
+      <listitem>
+        <para>
+          The namespace to use for generated C code. This must be
+          provided in CamelCase format.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--annotate</option></term>
+      <listitem>
+        <para>
+          Used together with <option>--key</option> and
+          <option>--value</option> to annotate the given XML files. It
+          can be used with interfaces, methods, signals, properties
+          and arguments in the following way:
+        </para>
+<informalexample><programlisting><![CDATA[
+gdbus-codegen --c-namespace MyApp                           \
+  --generate-c-code myapp-generated                         \
+  --annotate "org.project.InterfaceName"                    \
+    --key org.gtk.GDBus.Name --value MyFrobnicator          \
+  --annotate "org.project.InterfaceName:Property"           \
+    --key bar --value bat                                   \
+  --annotate "org.project.InterfaceName.Method()"           \
+    --key org.freedesktop.DBus.Deprecated --value true      \
+  --annotate "org.project.InterfaceName.Method()[arg_name]" \
+    --key snake --value hiss                                \
+  --annotate "org.project.InterfaceName::Signal"            \
+    --key cat --value meow                                  \
+  --annotate "org.project.InterfaceName::Signal[arg_name]"  \
+    --key dog --value wuff                                  \
+  myapp-dbus-interfaces.xml
+]]></programlisting></informalexample>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+
+<refsect1>
+  <title>Supported D-Bus Annotations</title>
+  <para>
+    The following D-Bus annotations are supported by
+    <command>gdbus-codegen</command>:
+  </para>
+
+  <variablelist>
+
+    <varlistentry>
+      <term><literal>org.gtk.GDBus.Name</literal></term>
+      <listitem>
+        <para>
+          Can be used on any <literal>&lt;interface&gt;</literal>,
+          <literal>&lt;method&gt;</literal>,
+          <literal>&lt;signal&gt;</literal> and
+          <literal>&lt;property&gt;</literal> element to specify the
+          name to use.
+        </para>
+        <para>
+          For interfaces where this annotation is not specified, the
+          name used is the D-Bus interface name stripped with the
+          prefix given with <option>--interface-prefix</option> and with
+          the dots removed and initial characters capitalized. For
+          example the D-Bus interface
+          <literal>com.acme.Coyote</literal> the name used is
+          <type>ComAcmeCoyote</type>. For the D-Bus interface
+          <literal>org.project.Bar.Frobnicator</literal> with
+          <option>--interface-prefix</option>
+          <literal>org.project.</literal>, the name used is
+          <type>BarFrobnicator</type>.
+        </para>
+        <para>
+          For methods, signals and properties the name used is
+          calculated by transforming
+          <literal>NameGivenThisWay</literal> into
+          <literal>name_given_this_way</literal>, e.g. roughly
+          converting from camel-case to lower-case with underscores
+          using certain heuristics.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>org.gtk.GDBus.C.ForceGVariant</literal></term>
+      <listitem>
+        <para>
+          If set to a non-empty string, a <type>GVariant</type> will
+          be used instead of the natural C type. This annotation can
+          be used on any <literal>&lt;arg&gt;</literal> and
+          <literal>&lt;property&gt;</literal> element.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>org.gtk.GDBus.DocString</literal></term>
+      <listitem>
+        <para>
+          A string with Docbook content for documentation. This annotation can
+          be used on <literal>&lt;interface&gt;</literal>,
+          <literal>&lt;method&gt;</literal>,
+          <literal>&lt;signal&gt;</literal>,
+          <literal>&lt;property&gt;</literal> and
+          <literal>&lt;arg&gt;</literal> elements.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>org.gtk.GDBus.DocString.Short</literal></term>
+      <listitem>
+        <para>
+          A string with Docbook content for short/brief
+          documentation. This annotation can only be used on
+          <literal>&lt;interface&gt;</literal> elements.
+        </para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+
+  <para>
+    As an easier alternative to using the
+    <literal>org.gtk.GDBus.DocString</literal> annotation, note that
+    XML parser used by <command>gdbus-codegen</command> parses XML
+    comments in a way similar to <ulink
+    url="http://www.gtk.org/gtk-doc/">gtk-doc</ulink>:
+<informalexample><programlisting><![CDATA[
+<!--
+  net.Corp.Bar:
+  @short_description: A short description
+
+  A <emphasis>longer</emphasis> description.
+
+  This is a new paragraph.
+-->
+<interface name="net.corp.Bar">
+  <!--
+    FooMethod:
+    @greeting: The docs for greeting parameter.
+    @response: The docs for response parameter.
+
+    The docs for the actual method.
+  -->
+  <method name="FooMethod">
+    <arg name="greeting" direction="in" type="s"/>
+    <arg name="response" direction="out" type="s"/>
+  </method>
+
+  <!--
+    BarSignal:
+    @blah: The docs for blah parameter.
+    @boo: The docs for boo parameter.
+
+    The docs for the actual signal.
+  -->
+  <signal name="BarSignal">
+    <arg name="blah" type="s"/>
+    <arg name="boo" type="s"/>
+  </signal>
+
+  <!-- BazProperty: The docs for the property. -->
+  <property name="BazProperty" type="s" access="read"/>
+</interface>
+]]></programlisting></informalexample>
+  </para>
+  <para>
+    For the <literal>org.gtk.GDBus.DocString</literal> annotation (and
+    inline comments), note that substrings of the form
+    <literal>#net.Corp.Bar</literal>,
+    <literal>net.Corp.Bar.FooMethod()</literal>,
+    <literal>#net.Corp.Bar::BarSignal</literal> and
+    <literal>#net.Corp.InlineDocs:BazProperty</literal> are all expanded
+    to links to the respective interface, method, signal and property.
+  </para>
+</refsect1>
+
+<refsect1>
+  <title>Example</title>
+  <para>
+    Consider the following D-Bus Introspection XML.
+  </para>
+  <informalexample><programlisting><![CDATA[
+<interface name="net.Corp.MyApp.Frobber">
+  <method name="HelloWorld">
+    <arg name="greeting" direction="in" type="s"/>
+    <arg name="response" direction="out" type="s"/>
+  </method>
+
+  <signal name="Notification">
+    <arg name="icon_blob" type="ay"/>
+    <arg name="height" type="i"/>
+    <arg name="messages" type="as"/>
+  </signal>
+
+  <property name="Verbose" type="b" access="readwrite"/>
+</interface>
+]]></programlisting>
+  </informalexample>
+  <para>
+    If <command>gdbus-codegen</command> is used on this file like this:
+  </para>
+<informalexample><programlisting><![CDATA[
+gdbus-codegen --generate-c-code myapp-generated       \
+              --c-namespace MyApp                     \
+              --interface-prefix net.corp.MyApp.      \
+              net.Corp.MyApp.Frobber.xml
+]]></programlisting></informalexample>
+  <para>
+    two files called
+    <filename>myapp-generated.[ch]</filename> are
+    generated. The files provide an abstract
+    <type>GInterface</type>-derived type called
+    <type>MyAppFrobber</type> as well as two instantiable types with
+    the same name but suffixed with <type>Proxy</type> and
+    <type>Stub</type>. The generated file, roughly, contains the
+    following facilities:
+  </para>
+<informalexample><programlisting><![CDATA[
+/* GType macros for the three generated types */
+#define MY_APP_TYPE_FROBBER (my_app_frobber_get_type ())
+#define MY_APP_TYPE_FROBBER_STUB (my_app_frobber_stub_get_type ())
+#define MY_APP_TYPE_FROBBER_PROXY (my_app_frobber_proxy_get_type ())
+
+typedef struct _MyAppFrobber MyAppFrobber; /* Dummy typedef */
+
+typedef struct
+{
+  GTypeInterface parent_iface;
+
+  /* Signal handler for the ::notification signal */
+  void (*notification) (MyAppFrobber *proxy,
+                        GVariant *icon_blob,
+                        gint height,
+                        const gchar* const *messages);
+
+  /* Signal handler for the ::handle-hello-world signal */
+  gboolean (*handle_hello_world) (MyAppFrobber *proxy,
+                                  GDBusMethodInvocation *invocation,
+                                  const gchar *greeting);
+} MyAppFrobberIface;
+
+/* Asynchronously calls HelloWorld() */
+void
+my_app_frobber_call_hello_world (MyAppFrobber *proxy,
+                                 const gchar *greeting,
+                                 GCancellable *cancellable,
+                                 GAsyncReadyCallback callback,
+                                 gpointer user_data);
+gboolean
+my_app_frobber_call_hello_world_finish (MyAppFrobber *proxy,
+                                        gchar **out_response,
+                                        GAsyncResult *res,
+                                        GError **error);
+
+/* Synchronously calls HelloWorld(). Blocks calling thread. */
+gboolean
+my_app_frobber_call_hello_world_sync (MyAppFrobber *proxy,
+                                      const gchar *greeting,
+                                      gchar **out_response,
+                                      GCancellable *cancellable,
+                                      GError **error);
+
+/* Completes handling the HelloWorld() method call */
+void
+my_app_frobber_complete_hello_world (MyAppFrobber *object,
+                                     GDBusMethodInvocation *invocation,
+                                     const gchar *response);
+
+/* Emits the ::notification signal / Notification() D-Bus signal */
+void
+my_app_frobber_emit_notification (MyAppFrobber *object,
+                                  GVariant *icon_blob,
+                                  gint height,
+                                  const gchar* const *messages);
+
+/* Gets the :verbose GObject property / Verbose D-Bus property.
+ * Does no blocking I/O.
+ */
+gboolean my_app_frobber_get_verbose (MyAppFrobber *object);
+
+/* Sets the :verbose GObject property / Verbose D-Bus property.
+ * Does no blocking I/O.
+ */
+void my_app_frobber_set_verbose (MyAppFrobber *object,
+                                 gboolean      value);
+
+/* Gets the interface info */
+GDBusInterfaceInfo *my_app_frobber_interface_info (void);
+
+/* Creates a new stub object, ready to be exported */
+MyAppFrobber *my_app_frobber_stub_new (void);
+
+/* Client-side proxy constructors.
+ *
+ * Additionally, _new_for_bus(), _new_for_bus_finish() and
+ * _new_for_bus_sync() proxy constructors are also generated.
+ */
+void
+my_app_frobber_proxy_new        (GDBusConnection     *connection,
+                                 GDBusProxyFlags      flags,
+                                 const gchar         *name,
+                                 const gchar         *object_path,
+                                 GCancellable        *cancellable,
+                                 GAsyncReadyCallback  callback,
+                                 gpointer             user_data);
+MyAppFrobber *
+my_app_frobber_proxy_new_finish (GAsyncResult        *res,
+                                 GError             **error);
+MyAppFrobber *
+my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
+                                 GDBusProxyFlags      flags,
+                                 const gchar         *name,
+                                 const gchar         *object_path,
+                                 GCancellable        *cancellable,
+                                 GError             **error);
+]]></programlisting></informalexample>
+  <para>
+    Thus, for every D-Bus method, there will be three C functions for
+    calling the method, one <type>GObject</type> signal for handling
+    an incoming call and one C function for completing an incoming
+    call. For every D-Bus signal, there's one <type>GObject</type>
+    signal and one C function for emitting it. For every D-Bus
+    property, two C functions are generated (one setter, one getter)
+    and one <type>GObject</type> property. The following table
+    summarizes the generated facilities and where they are applicable:
+  </para>
+  <informaltable>
+    <tgroup cols="3">
+      <thead>
+        <row>
+          <entry></entry>
+          <entry>Client</entry>
+          <entry>Server</entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>Types</entry>
+          <entry>Use <type>MyAppFrobberProxy</type></entry>
+          <entry>Any type implementing the <type>MyAppFrobber</type> interface</entry>
+        </row>
+        <row>
+          <entry>Methods</entry>
+          <entry>Use <function>m_a_f_hello_world()</function> to call.</entry>
+          <entry>Receive via the <function>handle_hello_world()</function> signal handler. Complete the call with <function>m_a_f_complete_hello_world()</function></entry>
+        </row>
+        <row>
+          <entry>Signals</entry>
+          <entry>Connect to the <function>::notification</function> GObject signal.</entry>
+          <entry>Use <function>m_a_f_emit_notification()</function> to emit signal.</entry>
+        </row>
+        <row>
+          <entry>Properties (Reading)</entry>
+          <entry>Use <function>m_a_f_get_verbose()</function> or <parameter>:verbose</parameter>.</entry>
+          <entry>Implement <type>GObject</type>'s <function>get_property()</function> vfunc.</entry>
+        </row>
+        <row>
+          <entry>Properties (writing)</entry>
+          <entry>Use <function>m_a_f_set_verbose()</function> or <parameter>:verbose</parameter>.</entry>
+          <entry>Implement <type>GObject</type>'s <function>set_property()</function> vfunc.</entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </informaltable>
+
+  <refsect2>
+    <title>Client-side usage</title>
+    <para>
+      You can use the generated proxy type with the generated
+      constructors:
+    </para>
+    <informalexample><programlisting><![CDATA[
+    MyAppFrobber *proxy;
+    GError *error;
+
+    error = NULL;
+    proxy = my_app_frobber_proxy_new_for_bus_sync (
+                G_BUS_TYPE_SESSION,
+                G_DBUS_PROXY_FLAGS_NONE,
+                "net.Corp.MyApp",              /* bus name */
+                "/net/Corp/MyApp/SomeFrobber", /* object */
+                NULL,                          /* GCancellable* */
+                &error);
+    /* do stuff with proxy */
+    g_object_unref (proxy);
+]]></programlisting></informalexample>
+    <para>
+      Instead of using the generic <type>GDBusProxy</type> facilities,
+      one can use the generated methods such as
+      <function>my_app_frobber_call_hello_world()</function> to invoke
+      the <function>net.Corp.MyApp.Frobber.HelloWorld()</function>
+      D-Bus method, connect to the the
+      <function>::notification</function> GObject signal to receive
+      the <function>net.Corp.MyApp.Frobber::Notication</function> D-Bus
+      signal and get/set the
+      <parameter>net.Corp.MyApp.Frobber:Verbose</parameter> D-Bus
+      Property using either the GObject property
+      <parameter>:verbose</parameter> or the
+      <function>my_app_get_verbose()</function> and
+      <function>my_app_set_verbose()</function> methods. Use the
+      standard <function>GObject::notify</function> signal to listen
+      to property changes.
+    </para>
+    <para>
+      Note that all property access is via <type>GDBusProxy</type>'s
+      property cache so no IO is ever done when reading properties.
+      Also note that setting a property will cause
+      <function>org.freedesktop.DBus.Properties.Set()</function> to be
+      called on the remote object. This call, however, is asynchronous
+      so setting a property won't block. Further, the change is
+      delayed and no error checking is possible.
+    </para>
+  </refsect2>
+
+  <refsect2>
+    <title>Server-side usage</title>
+    <para>
+      The generated <type>MyAppFrobber</type> interface is designed so
+      it is easy to implement it in a <type>GObject</type>
+      subclass. For example, to handle
+      <function>HelloWorld()</function> method invocations, set the
+      vfunc for <function>handle_hello_hello_world()</function> in the
+      <type>MyAppFrobberIface</type> structure. Similary, to handle
+      the <parameter>net.Corp.MyApp.Frobber:Verbose</parameter>
+      property override the <parameter>:verbose</parameter> GObject
+      property from the subclass. To emit a signal, use
+      e.g. <function>my_app_emit_signal()</function> or
+      <function>g_signal_emit_by_name()</function>.
+    </para>
+    <para>
+      Instead of subclassing, it is often easier to use the generated
+      <type>MyAppFrobberStub</type> subclass. To handle incoming
+      method calls, use <function>g_signal_connect()</function> with
+      the <function>::handle-*</function> signals and instead of
+      overriding <type>GObject</type>'s
+      <function>get_property()</function> and
+      <function>set_property()</function> vfuncs, use
+      <function>g_object_get()</function> and
+      <function>g_object_set()</function> or the generated property
+      getters and setters (the generated class has an internal
+      property bag implementation).
+    </para>
+    <informalexample><programlisting><![CDATA[
+static gboolean
+on_handle_hello_world (MyAppFrobber           *object,
+                       GDBusMethodInvocation  *invocation,
+                       const gchar            *greeting,
+                       gpointer                user_data)
+{
+  if (g_strcmp0 (greeting, "Boo") != 0)
+    {
+      gchar *response;
+      response = g_strdup_printf ("Word! You said `%s'.", greeting);
+      my_app_complete_hello_world (object, invocation, response);
+      g_free (response);
+    }
+  else
+    {
+      g_dbus_method_invocation_return_error (MY_APP_ERROR,
+                 MY_APP_ERROR_NO_WHINING,
+                 "Hey, %s, there will be no whining!",
+                 g_dbus_method_invocation_get_sender (invocation));
+    }
+  return TRUE;
+}
+
+  [...]
+
+  object = my_app_frobber_stub_new ();
+  my_app_frobber_set_verbose (object, TRUE);
+
+  g_signal_connect (object,
+                    "handle-hello-world",
+                    G_CALLBACK (on_handle_hello-world),
+                    some_user_data);
+
+  [...]
+
+  error = NULL;
+  id = g_dbus_interface_register_object (G_DBUS_INTERFACE (object),
+                                         connection,
+                                         "/path/of/object",
+                                         &error);
+]]></programlisting></informalexample>
+    <para>
+      To facility atomic changesets (multiple properties changing at
+      the same time), <function>GObject::notify</function> signals are
+      queued up when received. The queue is drained in an idle handler
+      and will cause emissions of the
+      <function>org.freedesktop.DBus.Properties::PropertiesChanged</function>
+      signal with all the properties that has changed. Use
+      <function>g_dbus_interface_stub_flush()</function> to empty the
+      queue immediately.
+    </para>
+  </refsect2>
+</refsect1>
+
+<refsect1>
+  <title>C Type Mapping</title>
+  <para>
+    Scalar types, strings (including object paths (type-string
+    <literal>o</literal>), signatures (type-string
+    <literal>g</literal>) and bytestrings (type-string
+    <literal>ay</literal>)) and arrays of string (type-string
+    <literal>as</literal>) and arrays of bytestrings (type-string
+    <literal>aay</literal>) are mapped to the natural types,
+    e.g. <type>gboolean</type>, <type>gdouble</type>,
+    <type>gint</type>, <type>gchar*</type>, <type>gchar **</type> and
+    so on. Everything else is mapped to the <type>GVariant</type>
+    type.
+  </para>
+  <para>
+    This automatic mapping can be turned off by using the annotation
+    <literal>org.gtk.GDBus.C.ForceGVariant</literal> - if used then a
+    <type>GVariant</type> is always exchanged instead of the
+    corresponding native C type. This annotation may be convenient to
+    use when using the type-string <literal>ay</literal> for data with
+    embedded NUL bytes.
+  </para>
+</refsect1>
+
+<refsect1>
+  <title>Stability Guarantees</title>
+  <para>
+    No guarantees about the API and ABI of the code generated by
+    <command>gdbus-codegen</command> are given. This means that code
+    generated by future versions of this program may have a different
+    API or ABI even if the underlying D-Bus interface hasn't
+    changed. As such, always include the generated code in
+    distribution tarballs and never expose the code in any stable
+    interfaces.
+  </para>
+  <para>
+    Future versions of <command>gdbus-codegen</command> will provide
+    ABI and API guarantees on the generated code.
+  </para>
+</refsect1>
+
+<refsect1>
+  <title>Author</title>
+  <para>
+    Written by David Zeuthen <email>zeuthen@gmail.com</email> with
+    a lot of help from many others.
+  </para>
+</refsect1>
+
+<refsect1>
+  <title>Bugs</title>
+  <para>
+    Please send bug reports to either the distribution bug tracker
+    or the upstream bug tracker at
+    <ulink url="https://bugzilla.gnome.org/enter_bug.cgi?product=glib"/>.
+  </para>
+</refsect1>
+
+<refsect1>
+  <title>See also</title>
+  <para>
+    <citerefentry>
+      <refentrytitle>gdbus</refentrytitle><manvolnum>1</manvolnum>
+    </citerefentry>
+  </para>
+</refsect1>
+
+</refentry>

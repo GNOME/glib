@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+import os
+import sys
+
+path = os.path.join('@libdir@', 'gdbus-codegen')
+sys.path.insert(0, path)
+
+from codegen_main import codegen_main
+
+sys.exit(codegen_main())

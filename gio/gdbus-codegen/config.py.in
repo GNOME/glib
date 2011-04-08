@@ -1,0 +1,6 @@
+# -*- Mode: Python -*-
+
+DATADIR = "@datarootdir@"
+DATADIR = DATADIR.replace(
+    "${prefix}", "@prefix@")
+VERSION = "@VERSION@"

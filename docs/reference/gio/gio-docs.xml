@@ -205,6 +205,7 @@
         <xi:include href="gsettings.xml"/>
         <xi:include href="glib-compile-schemas.xml"/>
         <xi:include href="gdbus.xml"/>
+        <xi:include href="gdbus-codegen.xml"/>
     </chapter>
   </part>
 

@@ -149,6 +149,7 @@ content_files =			\
 	glib-compile-schemas.xml\
 	gsettings.xml		\
 	gdbus.xml		\
+	gdbus-codegen.xml	\
 	$(NULL)
 
 expand_content_files =		\
@@ -170,8 +171,9 @@ EXTRA_DIST +=			\
 man_MANS =			\
 	gio-querymodules.1	\
 	glib-compile-schemas.1	\
-	gsettings.1	\
-	gdbus.1
+	gsettings.1		\
+	gdbus.1			\
+	gdbus-codegen.1
 
 if ENABLE_MAN
 
