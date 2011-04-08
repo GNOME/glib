@@ -311,7 +311,17 @@ settings_backend_changed (GObject             *target,
   gboolean ignore_this;
   gint i;
 
-  g_assert (settings->priv->backend == backend);
+  /* We used to assert here:
+   *
+   *   settings->priv->backend == backend
+   *
+   * but it could be the case that a notification is queued for delivery
+   * while someone calls g_settings_delay() (which changes the backend).
+   *
+   * Since the delay backend would just pass that straight through
+   * anyway, it doesn't make sense to try to detect this case.
+   * Therefore, we just accept it.
+   */
 
   for (i = 0; key[i] == settings->priv->path[i]; i++);
 
@@ -335,8 +345,6 @@ settings_backend_path_changed (GObject          *target,
   GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
 
-  g_assert (settings->priv->backend == backend);
-
   if (g_str_has_prefix (settings->priv->path, path))
     g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
                    0, NULL, 0, &ignore_this);
@@ -352,8 +360,6 @@ settings_backend_keys_changed (GObject             *target,
   GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
   gint i;
-
-  g_assert (settings->priv->backend == backend);
 
   for (i = 0; settings->priv->path[i] &&
               settings->priv->path[i] == path[i]; i++);
@@ -395,8 +401,6 @@ settings_backend_writable_changed (GObject          *target,
   gboolean ignore_this;
   gint i;
 
-  g_assert (settings->priv->backend == backend);
-
   for (i = 0; key[i] == settings->priv->path[i]; i++);
 
   if (settings->priv->path[i] == '\0' &&
@@ -412,8 +416,6 @@ settings_backend_path_writable_changed (GObject          *target,
 {
   GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
-
-  g_assert (settings->priv->backend == backend);
 
   if (g_str_has_prefix (settings->priv->path, path))
     g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
