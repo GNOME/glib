@@ -418,6 +418,39 @@ typedef gboolean (*GCancellableSourceFunc) (GCancellable *cancellable,
 typedef gboolean (*GPollableSourceFunc) (GObject  *pollable_stream,
 					 gpointer  user_data);
 
+typedef struct _GDBusInterface              GDBusInterface; /* Dummy typedef */
+typedef struct _GDBusInterfaceStub          GDBusInterfaceStub;
+typedef struct _GDBusObject                 GDBusObject;  /* Dummy typedef */
+typedef struct _GDBusObjectStub             GDBusObjectStub;
+typedef struct _GDBusObjectProxy            GDBusObjectProxy;
+typedef struct _GDBusObjectManager          GDBusObjectManager;  /* Dummy typedef */
+typedef struct _GDBusObjectManagerClient    GDBusObjectManagerClient;
+typedef struct _GDBusObjectManagerServer    GDBusObjectManagerServer;
+
+/**
+ * GDBusProxyTypeFunc:
+ * @manager: A #GDBusObjectManagerClient.
+ * @object_path: The object path of the remote object.
+ * @interface_name: The interface name of the remote object.
+ * @user_data: User data.
+ *
+ * Function signature for a function used to determine the #GType to
+ * use for an interface proxy.
+ *
+ * This function is called in the
+ * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+ * that @manager was constructed in.
+ *
+ * Returns: A #GType to use for the remote object. The returned type
+ * must be a #GDBusProxy derived type.
+ *
+ * Since: 2.30
+ */
+typedef GType (*GDBusProxyTypeFunc) (GDBusObjectManagerClient   *manager,
+                                     const gchar                *object_path,
+                                     const gchar                *interface_name,
+                                     gpointer                    user_data);
+
 G_END_DECLS
 
 #endif /* __GIO_TYPES_H__ */

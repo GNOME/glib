@@ -2086,3 +2086,99 @@ g_time_zone_monitor_get_type G_GNUC_CONST
 g_time_zone_monitor_get
 #endif
 #endif
+
+#if IN_HEADER(__G_DBUS_INTERFACE_H__)
+#if IN_FILE(__G_DBUS_INTERFACE_C__)
+g_dbus_interface_get_info
+g_dbus_interface_get_object
+g_dbus_interface_get_type
+g_dbus_interface_set_object
+g_dbus_gvalue_to_gvariant
+g_dbus_gvariant_to_gvalue
+#endif
+#endif
+
+#if IN_HEADER(__G_DBUS_INTERFACE_STUB_H__)
+#if IN_FILE(__G_DBUS_INTERFACE_STUB_C__)
+g_dbus_interface_stub_export
+g_dbus_interface_stub_flags_get_type
+g_dbus_interface_stub_flush
+g_dbus_interface_stub_get_connection
+g_dbus_interface_stub_get_flags
+g_dbus_interface_stub_get_info
+g_dbus_interface_stub_get_object_path
+g_dbus_interface_stub_get_properties
+g_dbus_interface_stub_get_type
+g_dbus_interface_stub_get_vtable
+g_dbus_interface_stub_set_flags
+g_dbus_interface_stub_unexport
+#endif
+#endif
+
+#if IN_HEADER(__G_DBUS_OBJECT_H__)
+#if IN_FILE(__G_DBUS_OBJECT_C__)
+g_dbus_object_get_interface
+g_dbus_object_get_interfaces
+g_dbus_object_get_object_path
+g_dbus_object_get_type
+g_dbus_object_lookup_with_typecheck
+g_dbus_object_peek_with_typecheck
+#endif
+#endif
+
+#if IN_HEADER(__G_DBUS_OBJECT_PROXY_H__)
+#if IN_FILE(__G_DBUS_OBJECT_PROXY_C__)
+g_dbus_object_proxy_get_connection
+g_dbus_object_proxy_get_type
+#endif
+#endif
+
+#if IN_HEADER(__G_DBUS_OBJECT_STUB_H__)
+#if IN_FILE(__G_DBUS_OBJECT_STUB_C__)
+g_dbus_object_stub_add_interface
+g_dbus_object_stub_flush
+g_dbus_object_stub_get_type
+g_dbus_object_stub_new
+g_dbus_object_stub_remove_interface
+g_dbus_object_stub_remove_interface_by_name
+g_dbus_object_stub_set_object_path
+#endif
+#endif
+
+#if IN_HEADER(__G_DBUS_OBJECT_MANAGER_H__)
+#if IN_FILE(__G_DBUS_OBJECT_MANAGER_C__)
+g_dbus_object_manager_get_interface
+g_dbus_object_manager_get_object
+g_dbus_object_manager_get_object_path
+g_dbus_object_manager_get_objects
+g_dbus_object_manager_get_type
+#endif
+#endif
+
+#if IN_HEADER(__G_DBUS_OBJECT_MANAGER_CLIENT_H__)
+#if IN_FILE(__G_DBUS_OBJECT_MANAGER_CLIENT_C__)
+g_dbus_object_manager_client_flags_get_type
+g_dbus_object_manager_client_get_connection
+g_dbus_object_manager_client_get_flags
+g_dbus_object_manager_client_get_name
+g_dbus_object_manager_client_get_name_owner
+g_dbus_object_manager_client_get_type
+g_dbus_object_manager_client_new
+g_dbus_object_manager_client_new_finish
+g_dbus_object_manager_client_new_for_bus
+g_dbus_object_manager_client_new_for_bus_finish
+g_dbus_object_manager_client_new_for_bus_sync
+g_dbus_object_manager_client_new_sync
+#endif
+#endif
+
+#if IN_HEADER(__G_DBUS_OBJECT_MANAGER_SERVER_H__)
+#if IN_FILE(__G_DBUS_OBJECT_MANAGER_SERVER_C__)
+g_dbus_object_manager_server_export
+g_dbus_object_manager_server_export_and_uniquify
+g_dbus_object_manager_server_get_connection
+g_dbus_object_manager_server_get_type
+g_dbus_object_manager_server_new
+g_dbus_object_manager_server_unexport
+#endif
+#endif

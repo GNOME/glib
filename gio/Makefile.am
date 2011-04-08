@@ -82,6 +82,14 @@ gdbus_headers = 			\
 	gdbusintrospection.h		\
 	gdbusmethodinvocation.h		\
 	gdbusserver.h			\
+	gdbusinterface.h		\
+	gdbusinterfacestub.h		\
+	gdbusobject.h			\
+	gdbusobjectstub.h		\
+	gdbusobjectproxy.h		\
+	gdbusobjectmanager.h		\
+	gdbusobjectmanagerclient.h	\
+	gdbusobjectmanagerserver.h	\
 	$(NULL)
 
 gdbus_sources = 							\
@@ -103,6 +111,14 @@ gdbus_sources = 							\
 	gdbusintrospection.h		gdbusintrospection.c		\
 	gdbusmethodinvocation.h		gdbusmethodinvocation.c		\
 	gdbusserver.h			gdbusserver.c			\
+	gdbusinterface.h		gdbusinterface.c		\
+	gdbusinterfacestub.h		gdbusinterfacestub.c		\
+	gdbusobject.h			gdbusobject.c			\
+	gdbusobjectstub.h		gdbusobjectstub.c		\
+	gdbusobjectproxy.h		gdbusobjectproxy.c		\
+	gdbusobjectmanager.h		gdbusobjectmanager.c		\
+	gdbusobjectmanagerclient.h	gdbusobjectmanagerclient.c	\
+	gdbusobjectmanagerserver.h	gdbusobjectmanagerserver.c	\
 	$(NULL)
 
 settings_headers = \

@@ -1383,6 +1383,42 @@ typedef enum {
   G_TLS_REHANDSHAKE_UNSAFELY
 } GTlsRehandshakeMode;
 
+/**
+ * GDBusInterfaceStubFlags:
+ * @G_DBUS_INTERFACE_STUB_FLAGS_NONE: No flags set.
+ * @G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD: Each method invocation is handled in
+ *   a thread dedicated to the invocation. This means that the method implementation can use blocking IO
+ *   without blocking any other part of the process. It also means that the method implementation must
+ *   use locking to access data structures used by other threads.
+ *
+ * Flags describing the behavior of a #GDBusInterfaceStub class.
+ *
+ * Since: 2.30
+ */
+typedef enum
+{
+  G_DBUS_INTERFACE_STUB_FLAGS_NONE = 0,
+  G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD = (1<<0)
+} GDBusInterfaceStubFlags;
+
+/**
+ * GDBusObjectManagerClientFlags:
+ * @G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE: No flags set.
+ * @G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START: If not set and the
+ *   manager is for a well-known name, then request the bus to launch
+ *   an owner for the name if no-one owns the name. This flag can only
+ *   be used in managers for well-known names.
+ *
+ * Flags used when constructing a #GDBusObjectManagerClient.
+ *
+ * Since: 2.30
+ */
+typedef enum
+{
+  G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE = 0,
+  G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START = (1<<0),
+} GDBusObjectManagerClientFlags;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */

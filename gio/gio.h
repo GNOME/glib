@@ -130,6 +130,14 @@
 #include <gio/gvolumemonitor.h>
 #include <gio/gzlibcompressor.h>
 #include <gio/gzlibdecompressor.h>
+#include <gio/gdbusinterface.h>
+#include <gio/gdbusinterfacestub.h>
+#include <gio/gdbusobject.h>
+#include <gio/gdbusobjectstub.h>
+#include <gio/gdbusobjectproxy.h>
+#include <gio/gdbusobjectmanager.h>
+#include <gio/gdbusobjectmanagerclient.h>
+#include <gio/gdbusobjectmanagerserver.h>
 
 #undef __GIO_GIO_H_INSIDE__
 

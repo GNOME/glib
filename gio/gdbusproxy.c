@@ -38,6 +38,7 @@
 #include "gasyncresult.h"
 #include "gsimpleasyncresult.h"
 #include "gcancellable.h"
+#include "gdbusinterface.h"
 
 #include "glibintl.h"
 
@@ -129,10 +130,12 @@ enum
 
 guint signals[LAST_SIGNAL] = {0};
 
+static void dbus_interface_iface_init (GDBusInterfaceIface *dbus_interface_iface);
 static void initable_iface_init       (GInitableIface *initable_iface);
 static void async_initable_iface_init (GAsyncInitableIface *async_initable_iface);
 
 G_DEFINE_TYPE_WITH_CODE (GDBusProxy, g_dbus_proxy, G_TYPE_OBJECT,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_INTERFACE, dbus_interface_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE, initable_iface_init)
                          G_IMPLEMENT_INTERFACE (G_TYPE_ASYNC_INITABLE, async_initable_iface_init)
                          );
@@ -2545,6 +2548,39 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
   g_free (split_interface_name);
 
   return ret;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+/* Hack until this is merged into libgio (extending types at run-time isn't really safe in any way) */
+
+static GDBusInterfaceInfo *
+_g_dbus_proxy_get_info (GDBusInterface *interface)
+{
+  GDBusProxy *proxy = G_DBUS_PROXY (interface);
+  return g_dbus_proxy_get_interface_info (proxy);
+}
+
+static GDBusObject *
+_g_dbus_proxy_get_object (GDBusInterface *interface)
+{
+  /* TODO */
+  return g_object_get_data (G_OBJECT (interface), "-x-gdbus-binding-tool-object");
+}
+
+static void
+_g_dbus_proxy_set_object (GDBusInterface *interface,
+                          GDBusObject    *object)
+{
+  /* TODO */
+  g_object_set_data (G_OBJECT (interface), "-x-gdbus-binding-tool-object", object);
+}
+
+static void
+dbus_interface_iface_init (GDBusInterfaceIface *dbus_interface_iface)
+{
+  dbus_interface_iface->get_info   = _g_dbus_proxy_get_info;
+  dbus_interface_iface->get_object = _g_dbus_proxy_get_object;
+  dbus_interface_iface->set_object = _g_dbus_proxy_set_object;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

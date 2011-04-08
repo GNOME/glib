@@ -1869,3 +1869,21 @@ read_message_print_transport_debug (gssize bytes_read,
  out:
   ;
 }
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+gboolean
+_g_signal_accumulator_false_handled (GSignalInvocationHint *ihint,
+                                     GValue                *return_accu,
+                                     const GValue          *handler_return,
+                                     gpointer               dummy)
+{
+  gboolean continue_emission;
+  gboolean signal_return;
+
+  signal_return = g_value_get_boolean (handler_return);
+  g_value_set_boolean (return_accu, signal_return);
+  continue_emission = signal_return;
+
+  return continue_emission;
+}
