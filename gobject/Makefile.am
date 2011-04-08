@@ -80,7 +80,9 @@ libgobject_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
   -version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
   -export-dynamic $(no_undefined) $(export_symbols)
 
-libgobject_2_0_la_LIBADD = $(libglib)
+libgobject_2_0_la_CFLAGS = $(LIBFFI_CFLAGS)
+
+libgobject_2_0_la_LIBADD = $(libglib) $(LIBFFI_LIBS)
 
 libgobject_2_0_la_DEPENDENCIES = $(gobject_win32_res) $(gobject_def)
 

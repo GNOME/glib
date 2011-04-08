@@ -246,6 +246,13 @@ void	  g_closure_invoke			(GClosure 	*closure,
    - provide marshaller collection, virtually covering anything out there
 */
 
+void g_cclosure_marshal_generic (GClosure     *closure,
+                                 GValue       *return_gvalue,
+                                 guint         n_param_values,
+                                 const GValue *param_values,
+                                 gpointer      invocation_hint,
+                                 gpointer      marshal_data);
+
 G_END_DECLS
 
 #endif /* __G_CLOSURE_H__ */

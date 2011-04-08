@@ -814,6 +814,7 @@ g_cclosure_new
 g_cclosure_new_swap
 g_cclosure_new_object
 g_cclosure_new_object_swap
+g_cclosure_marshal_generic
 g_closure_new_object
 g_closure_ref
 g_closure_sink

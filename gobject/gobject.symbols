@@ -101,6 +101,7 @@ g_closure_set_meta_marshal
 g_closure_sink
 g_closure_unref
 g_signal_type_cclosure_new
+g_cclosure_marshal_generic
 #endif
 #endif
 
