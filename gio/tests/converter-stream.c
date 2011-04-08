@@ -92,13 +92,10 @@ g_expander_converter_convert (GConverter *converter,
 			      gsize      *bytes_written,
 			      GError    **error)
 {
-  GExpanderConverter  *conv;
   const guint8 *in, *in_end;
   guint8 v, *out;
   int i;
   gsize block_size;
-
-  conv = G_EXPANDER_CONVERTER (converter);
 
   in = inbuf;
   out = outbuf;
@@ -211,13 +208,10 @@ g_compressor_converter_convert (GConverter *converter,
 				gsize      *bytes_written,
 				GError    **error)
 {
-  GCompressorConverter  *conv;
   const guint8 *in, *in_end;
   guint8 v, *out;
   int i;
   gsize block_size;
-
-  conv = G_COMPRESSOR_CONVERTER (converter);
 
   in = inbuf;
   out = outbuf;

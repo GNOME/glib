@@ -1442,9 +1442,6 @@ static void
 schema_state_end (SchemaState **state_ptr,
                   GError      **error)
 {
-  SchemaState *state;
-
-  state = *state_ptr;
   *state_ptr = NULL;
 }
 

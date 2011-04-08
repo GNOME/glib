@@ -125,7 +125,6 @@ g_dbus_is_name (const gchar *string)
   guint len;
   gboolean ret;
   const gchar *s;
-  const gchar *end;
 
   g_return_val_if_fail (string != NULL, FALSE);
 
@@ -136,7 +135,6 @@ g_dbus_is_name (const gchar *string)
     goto out;
 
   s = string;
-  end = s + len;
   if (*s == ':')
     {
       /* handle unique name */
@@ -248,7 +246,6 @@ g_dbus_is_interface_name (const gchar *string)
   guint len;
   gboolean ret;
   const gchar *s;
-  const gchar *end;
 
   g_return_val_if_fail (string != NULL, FALSE);
 
@@ -259,7 +256,6 @@ g_dbus_is_interface_name (const gchar *string)
     goto out;
 
   s = string;
-  end = s + len;
   if (G_UNLIKELY (*s == '.'))
     {
       /* can't start with a . */

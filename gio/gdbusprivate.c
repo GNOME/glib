@@ -1632,6 +1632,7 @@ _g_dbus_initialize (void)
       const gchar *debug;
 
       g_dbus_error_domain = G_DBUS_ERROR;
+      (g_dbus_error_domain); /* To avoid -Wunused-but-set-variable */
 
       debug = g_getenv ("G_DBUS_DEBUG");
       if (debug != NULL)

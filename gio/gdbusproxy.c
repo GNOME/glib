@@ -643,8 +643,7 @@ g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
   value = g_hash_table_lookup (proxy->priv->properties, property_name);
   if (value == NULL)
     {
-      const GDBusPropertyInfo *info;
-      info = lookup_property_info_or_warn (proxy, property_name);
+      lookup_property_info_or_warn (proxy, property_name);
       /* no difference */
       goto out;
     }
@@ -823,7 +822,6 @@ on_properties_changed (GDBusConnection *connection,
                        gpointer         user_data)
 {
   GDBusProxy *proxy = G_DBUS_PROXY (user_data);
-  GError *error;
   const gchar *interface_name_for_signal;
   GVariant *changed_properties;
   gchar **invalidated_properties;
@@ -832,7 +830,6 @@ on_properties_changed (GDBusConnection *connection,
   GVariant *value;
   guint n;
 
-  error = NULL;
   changed_properties = NULL;
   invalidated_properties = NULL;
 

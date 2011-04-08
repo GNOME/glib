@@ -448,6 +448,7 @@ init_builtin_types (void)
   a_type = g_unix_connection_get_type ();
 #endif
   a_type = g_tcp_connection_get_type ();
+  (a_type); /* To avoid -Wunused-but-set-variable */
 }
 
 /**

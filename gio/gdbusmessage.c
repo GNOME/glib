@@ -1525,6 +1525,8 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           g_free (s);
         }
     }
+#else
+  is_leaf = is_leaf; /* To avoid -Wunused-but-set-variable */
 #endif /* DEBUG_SERIALIZER */
 
   /* sink the reference */
@@ -2151,11 +2153,8 @@ append_body_to_blob (GVariant             *value,
                      GDataOutputStream    *dos,
                      GError              **error)
 {
-  gboolean ret;
   GVariant *item;
   GVariantIter iter;
-
-  ret = FALSE;
 
   if (!g_variant_is_of_type (value, G_VARIANT_TYPE_TUPLE))
     {

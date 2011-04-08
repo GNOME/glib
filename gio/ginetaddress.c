@@ -414,6 +414,7 @@ g_inet_address_new_from_string (const gchar *string)
 
   /* Make sure _g_networking_init() has been called */
   type = g_inet_address_get_type ();
+  (type); /* To avoid -Wunused-but-set-variable */
 
 #ifdef G_OS_WIN32
   memset (&sa, 0, sizeof (sa));

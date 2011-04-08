@@ -426,6 +426,7 @@ keyring_lookup_entry (const gchar  *cookie_context,
         }
 
       line_when = g_ascii_strtoll (tokens[1], &endp, 10);
+      line_when = line_when; /* To avoid -Wunused-but-set-variable */
       if (*endp != '\0')
         {
           g_set_error (error,
@@ -560,6 +561,7 @@ keyring_acquire_lock (const gchar  *path,
             goto again;
         }
 #endif
+      num_create_tries = num_create_tries; /* To avoid -Wunused-but-set-variable */
       g_set_error (error,
                    G_IO_ERROR,
                    g_io_error_from_errno (errno),
@@ -747,6 +749,8 @@ keyring_generate_entry (const gchar  *cookie_context,
               g_strfreev (tokens);
               goto out;
             }
+          line_when = line_when; /* To avoid -Wunused-but-set-variable */
+
 
           /* D-Bus spec says:
            *

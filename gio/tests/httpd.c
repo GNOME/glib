@@ -72,6 +72,7 @@ handler (GThreadedSocketService *service,
       *tmp = 0;
       version = tmp + 1;
     }
+  version = version; /* To avoid -Wunused-but-set-variable */
 
   query = strchr (escaped, '?');
   if (query != NULL)

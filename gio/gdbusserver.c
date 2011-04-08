@@ -773,21 +773,18 @@ try_tcp (GDBusServer  *server,
   gboolean ret;
   const gchar *host;
   const gchar *port;
-  const gchar *family;
   gint port_num;
-  GSocketAddress *address;
   GResolver *resolver;
   GList *resolved_addresses;
   GList *l;
 
   ret = FALSE;
-  address = NULL;
   resolver = NULL;
   resolved_addresses = NULL;
 
   host = g_hash_table_lookup (key_value_pairs, "host");
   port = g_hash_table_lookup (key_value_pairs, "port");
-  family = g_hash_table_lookup (key_value_pairs, "family");
+  /* family = g_hash_table_lookup (key_value_pairs, "family"); */
   if (g_hash_table_lookup (key_value_pairs, "noncefile") != NULL)
     {
       g_set_error_literal (error,

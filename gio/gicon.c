@@ -124,7 +124,6 @@ g_icon_equal (GIcon *icon1,
 static gboolean
 g_icon_to_string_tokenized (GIcon *icon, GString *s)
 {
-  char *ret;
   GPtrArray *tokens;
   gint version;
   GIconIface *icon_iface;
@@ -132,8 +131,6 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
 
   g_return_val_if_fail (icon != NULL, FALSE);
   g_return_val_if_fail (G_IS_ICON (icon), FALSE);
-
-  ret = NULL;
 
   icon_iface = G_ICON_GET_IFACE (icon);
   if (icon_iface->to_tokens == NULL)
@@ -383,6 +380,7 @@ ensure_builtin_icon_types (void)
   t = g_file_icon_get_type ();
   t = g_emblemed_icon_get_type ();
   t = g_emblem_get_type ();
+  (t); /* To avoid -Wunused-but-set-variable */
 }
 
 /**

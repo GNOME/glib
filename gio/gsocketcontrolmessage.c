@@ -185,6 +185,7 @@ g_socket_control_message_deserialize (int      level,
 #ifndef G_OS_WIN32
   a_type = g_unix_credentials_message_get_type ();
   a_type = g_unix_fd_message_get_type ();
+  (a_type); /* To avoid -Wunused-but-set-variable */
 #endif
 
   message_types = g_type_children (G_TYPE_SOCKET_CONTROL_MESSAGE, &n_message_types);

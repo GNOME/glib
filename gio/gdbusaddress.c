@@ -258,6 +258,25 @@ is_valid_nonce_tcp (const gchar  *address_entry,
       goto out;
     }
 
+  if (nonce_file == NULL)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Error in address `%s' - missing noncefile attribute"),
+                   address_entry);
+      goto out;
+    }
+  if (host == NULL)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Error in address `%s' - missing host attribute"),
+                   address_entry);
+      goto out;
+    }
+
   ret= TRUE;
 
  out:
@@ -328,6 +347,16 @@ is_valid_tcp (const gchar  *address_entry,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
                    _("Error in address `%s' - the family attribute is malformed"),
+                   address_entry);
+      goto out;
+    }
+
+  if (host == NULL)
+    {
+      g_set_error (error,
+                   G_IO_ERROR,
+                   G_IO_ERROR_INVALID_ARGUMENT,
+                   _("Error in address `%s' - missing host attribute"),
                    address_entry);
       goto out;
     }

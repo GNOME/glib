@@ -2049,8 +2049,6 @@ on_worker_message_received (GDBusWorker  *worker,
 {
   GDBusConnection *connection;
   FilterCallback *filters;
-  gboolean consumed_by_filter;
-  gboolean altered_by_filter;
   guint num_filters;
   guint n;
   gboolean alive;
@@ -2086,8 +2084,6 @@ on_worker_message_received (GDBusWorker  *worker,
   CONNECTION_UNLOCK (connection);
 
   /* then call the filters in order (without holding the lock) */
-  consumed_by_filter = FALSE;
-  altered_by_filter = FALSE;
   for (n = 0; n < num_filters; n++)
     {
       message = filters[n].func (connection,
@@ -4065,7 +4061,6 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
 {
   PropertyGetAllData *data = _data;
   GVariantBuilder builder;
-  GError *error;
   GDBusMessage *reply;
   guint n;
 
@@ -4081,8 +4076,6 @@ invoke_get_all_properties_in_idle_cb (gpointer _data)
       g_object_unref (reply);
       goto out;
     }
-
-  error = NULL;
 
   /* TODO: Right now we never fail this call - we just omit values if
    *       a get_property() call is failing.
@@ -6061,7 +6054,6 @@ distribute_method_call (GDBusConnection *connection,
   const gchar *object_path;
   const gchar *interface_name;
   const gchar *member;
-  const gchar *signature;
   const gchar *path;
   gchar *subtree_path;
   gchar *needle;
@@ -6070,7 +6062,6 @@ distribute_method_call (GDBusConnection *connection,
 
   interface_name = g_dbus_message_get_interface (message);
   member = g_dbus_message_get_member (message);
-  signature = g_dbus_message_get_signature (message);
   path = g_dbus_message_get_path (message);
   subtree_path = g_strdup (path);
   needle = strrchr (subtree_path, '/');
@@ -6100,14 +6091,6 @@ distribute_method_call (GDBusConnection *connection,
                g_dbus_message_get_serial (message));
       _g_dbus_debug_print_unlock ();
     }
-
-#if 0
-  g_debug ("interface    = `%s'", interface_name);
-  g_debug ("member       = `%s'", member);
-  g_debug ("signature    = `%s'", signature);
-  g_debug ("path         = `%s'", path);
-  g_debug ("subtree_path = `%s'", subtree_path != NULL ? subtree_path : "N/A");
-#endif
 
   object_path = g_dbus_message_get_path (message);
   g_assert (object_path != NULL);

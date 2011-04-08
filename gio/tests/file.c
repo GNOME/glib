@@ -206,10 +206,9 @@ ipending_cb (GObject      *source,
 {
   CreateDeleteData *data = user_data;
   GError *error;
-  gssize size;
 
   error = NULL;
-  size = g_input_stream_read_finish (data->istream, res, &error);
+  g_input_stream_read_finish (data->istream, res, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PENDING);
   g_error_free (error);
 }
@@ -334,10 +333,9 @@ opending_cb (GObject      *source,
 {
   CreateDeleteData *data = user_data;
   GError *error;
-  gssize size;
 
   error = NULL;
-  size = g_output_stream_write_finish (data->ostream, res, &error);
+  g_output_stream_write_finish (data->ostream, res, &error);
   g_assert_error (error, G_IO_ERROR, G_IO_ERROR_PENDING);
   g_error_free (error);
 }
@@ -512,11 +510,10 @@ replaced_cb (GObject      *source,
              gpointer      user_data)
 {
   ReplaceLoadData *data = user_data;
-  gboolean ret;
   GError *error;
 
   error = NULL;
-  ret = g_file_replace_contents_finish (data->file, res, NULL, &error);
+  g_file_replace_contents_finish (data->file, res, NULL, &error);
   g_assert_no_error (error);
 
   g_file_load_contents_async (data->file, NULL, loaded_cb, data);

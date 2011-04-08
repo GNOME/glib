@@ -87,7 +87,6 @@ gvdb_table_setup_root (GvdbTable                 *file,
 {
   const struct gvdb_hash_header *header;
   guint32 n_bloom_words;
-  guint32 bloom_shift;
   guint32 n_buckets;
   gsize size;
 
@@ -100,7 +99,6 @@ gvdb_table_setup_root (GvdbTable                 *file,
 
   n_bloom_words = guint32_from_le (header->n_bloom_words);
   n_buckets = guint32_from_le (header->n_buckets);
-  bloom_shift = n_bloom_words >> 27;
   n_bloom_words &= (1u << 27) - 1;
 
   if G_UNLIKELY (n_bloom_words * sizeof (guint32_le) > size)

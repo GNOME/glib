@@ -473,6 +473,7 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
 
   /* ensure the type of GUnixCredentialsMessage has been registered with the type system */
   credentials_message_gtype = G_TYPE_UNIX_CREDENTIALS_MESSAGE;
+  (credentials_message_gtype); /* To avoid -Wunused-but-set-variable */
   num_bytes_read = g_socket_receive_message (socket,
                                              NULL, /* GSocketAddress **address */
                                              NULL,

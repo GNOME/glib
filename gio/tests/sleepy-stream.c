@@ -164,10 +164,7 @@ read_line (GDataInputStream  *stream,
            GError           **error)
 {
   gsize length;
-  int eol_len;
   char *str;
-
-  eol_len = 1 + (eol[1] != '\0');
 
   str = g_data_input_stream_read_line (stream, &length, NULL, error);
 

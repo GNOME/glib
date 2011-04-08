@@ -126,7 +126,6 @@ create_empty_file (GFile * parent, const char *filename,
 		   GFileCreateFlags create_flags)
 {
   GFile *child;
-  gboolean res;
   GError *error;
   GFileOutputStream *outs;
 
@@ -138,7 +137,7 @@ create_empty_file (GFile * parent, const char *filename,
   g_assert_no_error (error);
   g_assert (outs != NULL);
   error = NULL;
-  res = g_output_stream_close (G_OUTPUT_STREAM (outs), NULL, &error);
+  g_output_stream_close (G_OUTPUT_STREAM (outs), NULL, &error);
   g_object_unref (outs);
   return child;
 }

@@ -678,6 +678,7 @@ g_socket_class_init (GSocketClass *klass)
 
   /* Make sure winsock has been initialized */
   type = g_inet_address_get_type ();
+  (type); /* To avoid -Wunused-but-set-variable */
 
 #ifdef SIGPIPE
   /* There is no portable, thread-safe way to avoid having the process
@@ -3328,12 +3329,7 @@ g_socket_receive_message (GSocket                 *socket,
     /* decode control messages */
     {
       GPtrArray *my_messages = NULL;
-      const gchar *scm_pointer;
       struct cmsghdr *cmsg;
-      gsize scm_size;
-
-      scm_pointer = (const gchar *) msg.msg_control;
-      scm_size = msg.msg_controllen;
 
       for (cmsg = CMSG_FIRSTHDR (&msg); cmsg; cmsg = CMSG_NXTHDR (&msg, cmsg))
 	{

@@ -90,6 +90,7 @@ g_resolver_class_init (GResolverClass *resolver_class)
 
   /* Make sure _g_networking_init() has been called */
   type = g_inet_address_get_type ();
+  (type); /* To avoid -Wunused-but-set-variable */
 
   /* Initialize _g_resolver_addrinfo_hints */
 #ifdef AI_ADDRCONFIG
@@ -858,6 +859,7 @@ _g_resolver_targets_from_res_query (const gchar      *rrname,
       GETSHORT (type, p);
       GETSHORT (qclass, p);
       GETLONG  (ttl, p);
+      ttl = ttl; /* To avoid -Wunused-but-set-variable */
       GETSHORT (rdlength, p);
 
       if (type != T_SRV || qclass != C_IN)
