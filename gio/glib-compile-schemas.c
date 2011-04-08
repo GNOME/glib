@@ -1532,6 +1532,13 @@ gvdb_pair_init (GvdbPair *pair)
 
 typedef struct
 {
+  GHashTable *schema_table;
+  GvdbPair root_pair;
+} WriteToFileData;
+
+typedef struct
+{
+  GHashTable *schema_table;
   GvdbPair pair;
   gboolean l10n;
 } OutputSchemaData;
@@ -1556,6 +1563,11 @@ output_key (gpointer key,
 
   if (state->l10n)
     data->l10n = TRUE;
+
+  if (state->child_schema &&
+      !g_hash_table_lookup (data->schema_table, state->child_schema))
+    g_printerr ("warning: undefined reference to <schema id='%s'/>\n",
+                state->child_schema);
 }
 
 static void
@@ -1563,6 +1575,7 @@ output_schema (gpointer key,
                gpointer value,
                gpointer user_data)
 {
+  WriteToFileData *wtf_data = user_data;
   OutputSchemaData data;
   GvdbPair *root_pair;
   SchemaState *state;
@@ -1571,8 +1584,9 @@ output_schema (gpointer key,
 
   id = key;
   state = value;
-  root_pair = user_data;
+  root_pair = &wtf_data->root_pair;
 
+  data.schema_table = wtf_data->schema_table;
   gvdb_pair_init (&data.pair);
   data.l10n = FALSE;
 
@@ -1604,17 +1618,19 @@ write_to_file (GHashTable   *schema_table,
                const gchar  *filename,
                GError      **error)
 {
+  WriteToFileData data;
   gboolean success;
-  GvdbPair pair;
 
-  gvdb_pair_init (&pair);
+  data.schema_table = schema_table;
 
-  g_hash_table_foreach (schema_table, output_schema, &pair);
+  gvdb_pair_init (&data.root_pair);
 
-  success = gvdb_table_write_contents (pair.table, filename,
+  g_hash_table_foreach (schema_table, output_schema, &data);
+
+  success = gvdb_table_write_contents (data.root_pair.table, filename,
                                        G_BYTE_ORDER != G_LITTLE_ENDIAN,
                                        error);
-  g_hash_table_unref (pair.table);
+  g_hash_table_unref (data.root_pair.table);
 
   return success;
 }
