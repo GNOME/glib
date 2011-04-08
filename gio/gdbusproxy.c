@@ -105,6 +105,8 @@ struct _GDBusProxyPrivate
   guint signals_subscriber_id;
 
   gboolean initialized;
+
+  GDBusObject *object;
 };
 
 enum
@@ -173,6 +175,9 @@ g_dbus_proxy_finalize (GObject *object)
       g_dbus_interface_info_cache_release (proxy->priv->expected_interface);
       g_dbus_interface_info_unref (proxy->priv->expected_interface);
     }
+
+  if (proxy->priv->object != NULL)
+    g_object_remove_weak_pointer (G_OBJECT (proxy->priv->object), (gpointer *) &proxy->priv->object);
 
   G_OBJECT_CLASS (g_dbus_proxy_parent_class)->finalize (object);
 }
@@ -2551,7 +2556,6 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
-/* Hack until this is merged into libgio (extending types at run-time isn't really safe in any way) */
 
 static GDBusInterfaceInfo *
 _g_dbus_proxy_get_info (GDBusInterface *interface)
@@ -2563,16 +2567,20 @@ _g_dbus_proxy_get_info (GDBusInterface *interface)
 static GDBusObject *
 _g_dbus_proxy_get_object (GDBusInterface *interface)
 {
-  /* TODO */
-  return g_object_get_data (G_OBJECT (interface), "-x-gdbus-binding-tool-object");
+  GDBusProxy *proxy = G_DBUS_PROXY (interface);
+  return proxy->priv->object;
 }
 
 static void
 _g_dbus_proxy_set_object (GDBusInterface *interface,
                           GDBusObject    *object)
 {
-  /* TODO */
-  g_object_set_data (G_OBJECT (interface), "-x-gdbus-binding-tool-object", object);
+  GDBusProxy *proxy = G_DBUS_PROXY (interface);
+  if (proxy->priv->object != NULL)
+    g_object_remove_weak_pointer (G_OBJECT (proxy->priv->object), (gpointer *) &proxy->priv->object);
+  proxy->priv->object = object;
+  if (proxy->priv->object != NULL)
+    g_object_add_weak_pointer (G_OBJECT (proxy->priv->object), (gpointer *) &proxy->priv->object);
 }
 
 static void
