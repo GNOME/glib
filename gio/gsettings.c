@@ -311,7 +311,17 @@ settings_backend_changed (GObject             *target,
   gboolean ignore_this;
   gint i;
 
-  g_assert (settings->priv->backend == backend);
+  /* We used to assert here:
+   *
+   *   settings->priv->backend == backend
+   *
+   * but it could be the case that a notification is queued for delivery
+   * while someone calls g_settings_delay() (which changes the backend).
+   *
+   * Since the delay backend would just pass that straight through
+   * anyway, it doesn't make sense to try to detect this case.
+   * Therefore, we just accept it.
+   */
 
   for (i = 0; key[i] == settings->priv->path[i]; i++);
 
