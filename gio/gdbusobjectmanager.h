@@ -47,6 +47,8 @@ typedef struct _GDBusObjectManagerIface GDBusObjectManagerIface;
  * @interface_removed: Signal handler for the #GDBusObjectManager::interface-removed signal.
  *
  * Base type for D-Bus object managers.
+ *
+ * Since: 2.30
  */
 struct _GDBusObjectManagerIface
 {

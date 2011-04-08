@@ -42,6 +42,8 @@ typedef struct _GDBusInterfaceStubPrivate GDBusInterfaceStubPrivate;
  *
  * The #GDBusInterfaceStub structure contains private data and should
  * only be accessed using the provided API.
+ *
+ * Since: 2.30
  */
 struct _GDBusInterfaceStub
 {
@@ -60,6 +62,8 @@ struct _GDBusInterfaceStub
  * @g_authorize_method: Signal class handler for the #GDBusInterfaceStub::g-authorize-method signal.
  *
  * Class structure for #GDBusInterfaceStub.
+ *
+ * Since: 2.30
  */
 struct _GDBusInterfaceStubClass
 {

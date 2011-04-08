@@ -147,6 +147,8 @@ g_dbus_object_stub_class_init (GDBusObjectStubClass *klass)
    * GDBusObjectStub:object-path:
    *
    * The object path where the object is exported.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_OBJECT_PATH,
@@ -175,6 +177,8 @@ g_dbus_object_stub_class_init (GDBusObjectStubClass *klass)
    * The default class handler just returns %TRUE.
    *
    * Returns: %TRUE if the call is authorized, %FALSE otherwise.
+   *
+   * Since: 2.30
    */
   signals[AUTHORIZE_METHOD_SIGNAL] =
     g_signal_new ("authorize-method",
@@ -209,6 +213,8 @@ g_dbus_object_stub_init (GDBusObjectStub *object)
  * Creates a new #GDBusObjectStub.
  *
  * Returns: A #GDBusObjectStub. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusObjectStub *
 g_dbus_object_stub_new (const gchar *object_path)
@@ -225,6 +231,8 @@ g_dbus_object_stub_new (const gchar *object_path)
  * @object_path: A valid D-Bus object path.
  *
  * Sets the object path for @object.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_stub_set_object_path (GDBusObjectStub *object,
@@ -260,6 +268,8 @@ g_dbus_object_stub_get_object_path (GDBusObject *_object)
  *
  * Note that @object takes its own reference on @interface and holds
  * it until removed.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_stub_add_interface (GDBusObjectStub     *object,
@@ -288,6 +298,8 @@ g_dbus_object_stub_add_interface (GDBusObjectStub     *object,
  * @interface: A #GDBusInterfaceStub.
  *
  * Removes @interface from @object.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_stub_remove_interface  (GDBusObjectStub    *object,
@@ -340,6 +352,8 @@ g_dbus_object_stub_remove_interface  (GDBusObjectStub    *object,
  *
  * If no D-Bus interface of the given interface exists, this function
  * does nothing.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_stub_remove_interface_by_name (GDBusObjectStub *object,
@@ -405,6 +419,8 @@ g_dbus_object_stub_get_interfaces (GDBusObject *_object)
  * This method simply calls g_dbus_interface_stub_flush() on all
  * interfaces stubs belonging to @object. See that method for when
  * flushing is useful.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_stub_flush (GDBusObjectStub *object)

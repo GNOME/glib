@@ -42,6 +42,8 @@ typedef struct _GDBusObjectProxyPrivate GDBusObjectProxyPrivate;
  *
  * The #GDBusObjectProxy structure contains private data and should
  * only be accessed using the provided API.
+ *
+ * Since: 2.30
  */
 struct _GDBusObjectProxy
 {
@@ -55,6 +57,8 @@ struct _GDBusObjectProxy
  * @parent_class: The parent class.
  *
  * Class structure for #GDBusObjectProxy.
+ *
+ * Since: 2.30
  */
 struct _GDBusObjectProxyClass
 {

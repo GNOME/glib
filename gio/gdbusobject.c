@@ -52,6 +52,8 @@ g_dbus_object_default_init (GDBusObjectIface *iface)
    * @interface: The #GDBusInterface that was added.
    *
    * Emitted when @interface is added to @object.
+   *
+   * Since: 2.30
    */
   g_signal_new ("interface-added",
                 G_TYPE_FROM_INTERFACE (iface),
@@ -70,6 +72,8 @@ g_dbus_object_default_init (GDBusObjectIface *iface)
    * @interface: The #GDBusInterface that was removed.
    *
    * Emitted when @interface is removed from @object.
+   *
+   * Since: 2.30
    */
   g_signal_new ("interface-removed",
                 G_TYPE_FROM_INTERFACE (iface),
@@ -92,6 +96,8 @@ g_dbus_object_default_init (GDBusObjectIface *iface)
  * Gets the object path for @object.
  *
  * Returns: A string owned by @object. Do not free.
+ *
+ * Since: 2.30
  */
 const gchar *
 g_dbus_object_get_object_path (GDBusObject *object)
@@ -109,6 +115,8 @@ g_dbus_object_get_object_path (GDBusObject *object)
  * Returns: (element-type GDBusInterface) (transfer full) : A list of #GDBusInterface instances.
  *   The returned list must be freed by g_list_free() after each element has been freed
  *   with g_object_unref().
+ *
+ * Since: 2.30
  */
 GList *
 g_dbus_object_get_interfaces (GDBusObject *object)
@@ -127,6 +135,8 @@ g_dbus_object_get_interfaces (GDBusObject *object)
  *
  * Returns: %NULL if not found, otherwise a #GDBusInterface that must
  *   be freed with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusInterface *
 g_dbus_object_get_interface (GDBusObject *object,
@@ -153,6 +163,8 @@ g_dbus_object_get_interface (GDBusObject *object,
  * Returns: A #GDBusInterface implementing @type or %NULL if
  * not found. Do not free the returned object, it is owned by
  * @object.
+ *
+ * Since: 2.30
  */
 gpointer
 g_dbus_object_peek_with_typecheck (GDBusObject *object,
@@ -178,6 +190,8 @@ g_dbus_object_peek_with_typecheck (GDBusObject *object,
  *
  * Returns: A #GDBusInterface implementing @type or %NULL if
  * not found. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 gpointer
 g_dbus_object_lookup_with_typecheck (GDBusObject *object,

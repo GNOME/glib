@@ -39,9 +39,11 @@ typedef struct _GDBusObjectManagerServerPrivate GDBusObjectManagerServerPrivate;
 
 /**
  * GDBusObjectManagerServer:
-  *
+ *
  * The #GDBusObjectManagerServer structure contains private data and should
  * only be accessed using the provided API.
+ *
+ * Since: 2.30
  */
 struct _GDBusObjectManagerServer
 {
@@ -55,6 +57,8 @@ struct _GDBusObjectManagerServer
  * @parent_class: The parent class.
  *
  * Class structure for #GDBusObjectManagerServer.
+ *
+ * Since: 2.30
  */
 struct _GDBusObjectManagerServerClass
 {

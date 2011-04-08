@@ -56,6 +56,8 @@ g_dbus_interface_default_init (GDBusInterfaceIface *iface)
  * implemented by @interface.
  *
  * Returns: (transfer none): A #GDBusInterfaceInfo. Do not free.
+ *
+ * Since: 2.30
  */
 GDBusInterfaceInfo *
 g_dbus_interface_get_info (GDBusInterface *interface)
@@ -72,6 +74,8 @@ g_dbus_interface_get_info (GDBusInterface *interface)
  *
  * Returns: (transfer none): A #GDBusObject or %NULL. The returned
  * reference belongs to @interface and should not be freed.
+ *
+ * Since: 2.30
  */
 GDBusObject *
 g_dbus_interface_get_object (GDBusInterface *interface)
@@ -88,6 +92,8 @@ g_dbus_interface_get_object (GDBusInterface *interface)
  * Sets the #GDBusObject for @interface to @object.
  *
  * Note that @interface will hold a weak reference to @object.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_interface_set_object (GDBusInterface    *interface,
@@ -112,6 +118,8 @@ g_dbus_interface_set_object (GDBusInterface    *interface,
  * Note that the passed @out_gvalue does not have to have a #GType set.
  *
  * Returns: %TRUE if the conversion succeeded, %FALSE otherwise.
+ *
+ * Since: 2.30
  */
 gboolean
 g_dbus_gvariant_to_gvalue (GVariant             *value,
@@ -257,6 +265,8 @@ g_dbus_gvariant_to_gvalue (GVariant             *value,
  *
  * Returns: A #GVariant (never floating) holding the data from @gvalue
  * or %NULL in case of error. Free with g_variant_unref().
+ *
+ * Since: 2.30
  */
 GVariant *
 g_dbus_gvalue_to_gvariant (const GValue         *gvalue,

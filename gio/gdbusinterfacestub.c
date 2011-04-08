@@ -153,6 +153,8 @@ g_dbus_interface_stub_class_init (GDBusInterfaceStubClass *klass)
    * GDBusInterfaceStub:g-flags:
    *
    * Flags from the #GDBusInterfaceStubFlags enumeration.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_G_FLAGS,
@@ -205,6 +207,8 @@ g_dbus_interface_stub_class_init (GDBusInterfaceStubClass *klass)
    * to was exported in.
    *
    * Returns: %TRUE if the call is authorized, %FALSE otherwise.
+   *
+   * Since: 2.30
    */
   signals[G_AUTHORIZE_METHOD_SIGNAL] =
     g_signal_new ("g-authorize-method",
@@ -237,6 +241,8 @@ g_dbus_interface_stub_init (GDBusInterfaceStub *stub)
  * of @stub
  *
  * Returns: One or more flags from the #GDBusInterfaceStubFlags enumeration.
+ *
+ * Since: 2.30
  */
 GDBusInterfaceStubFlags
 g_dbus_interface_stub_get_flags (GDBusInterfaceStub  *stub)
@@ -251,6 +257,8 @@ g_dbus_interface_stub_get_flags (GDBusInterfaceStub  *stub)
  * @flags: Flags from the #GDBusInterfaceStubFlags enumeration.
  *
  * Sets flags describing what the behavior of @stub should be.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_interface_stub_set_flags (GDBusInterfaceStub      *stub,
@@ -272,6 +280,8 @@ g_dbus_interface_stub_set_flags (GDBusInterfaceStub      *stub,
  * implemented by @interface.
  *
  * Returns: (transfer none): A #GDBusInterfaceInfo (never %NULL). Do not free.
+ *
+ * Since: 2.30
  */
 GDBusInterfaceInfo *
 g_dbus_interface_stub_get_info (GDBusInterfaceStub *stub)
@@ -292,6 +302,8 @@ g_dbus_interface_stub_get_info (GDBusInterfaceStub *stub)
  * itself to be passed as @user_data.
  *
  * Returns: A #GDBusInterfaceVTable (never %NULL).
+ *
+ * Since: 2.30
  */
 GDBusInterfaceVTable *
 g_dbus_interface_stub_get_vtable (GDBusInterfaceStub *stub)
@@ -310,6 +322,8 @@ g_dbus_interface_stub_get_vtable (GDBusInterfaceStub *stub)
  * Gets all D-Bus properties for @stub.
  *
  * Returns: A new, floating, #GVariant. Free with g_variant_unref().
+ *
+ * Since: 2.30
  */
 GVariant *
 g_dbus_interface_stub_get_properties (GDBusInterfaceStub *stub)
@@ -333,6 +347,8 @@ g_dbus_interface_stub_get_properties (GDBusInterfaceStub *stub)
  * <literal>org.freedesktop.DBus.Properties::PropertiesChanged</literal>
  * signal later (e.g. in an idle handler). This technique is useful
  * for collapsing multiple property changes into one.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_interface_stub_flush (GDBusInterfaceStub *stub)
@@ -572,6 +588,8 @@ stub_intercept_handle_method_call(GDBusConnection *connection,
  *
  * Returns: (transfer none): A #GDBusConnection or %NULL if @stub is
  * not exported anywhere. Do not free, the object belongs to @stub.
+ *
+ * Since: 2.30
  */
 GDBusConnection *
 g_dbus_interface_stub_get_connection (GDBusInterfaceStub *stub)
@@ -588,6 +606,8 @@ g_dbus_interface_stub_get_connection (GDBusInterfaceStub *stub)
  *
  * Returns: A string owned by @stub or %NULL if stub is not exported
  * anywhere. Do not free, the string belongs to @stub.
+ *
+ * Since: 2.30
  */
 const gchar *
 g_dbus_interface_stub_get_object_path (GDBusInterfaceStub *stub)
@@ -609,6 +629,8 @@ g_dbus_interface_stub_get_object_path (GDBusInterfaceStub *stub)
  *
  * Returns: %TRUE if the interface was exported, other %FALSE with
  * @error set.
+ *
+ * Since: 2.30
  */
 gboolean
 g_dbus_interface_stub_export (GDBusInterfaceStub  *stub,
@@ -668,6 +690,8 @@ g_dbus_interface_stub_export (GDBusInterfaceStub  *stub,
  *
  * Stops exporting an interface previously exported with
  * g_dbus_interface_stub_export().
+ *
+ * Since: 2.30
  */
 void
 g_dbus_interface_stub_unexport (GDBusInterfaceStub *stub)

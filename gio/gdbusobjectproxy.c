@@ -40,6 +40,8 @@
  * with one or more D-Bus interfaces. You cannot instantiate a
  * #GDBusObjectProxy yourself - you need to use a
  * #GDBusObjectManagerClient to get one.
+ *
+ * Since: 2.30
  */
 
 struct _GDBusObjectProxyPrivate
@@ -123,6 +125,8 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
    * GDBusObjectProxy:object-path:
    *
    * The object path of the proxy.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_OBJECT_PATH,
@@ -137,6 +141,8 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
    * GDBusObjectProxy:connection:
    *
    * The connection of the proxy.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CONNECTION,
@@ -176,6 +182,8 @@ g_dbus_object_proxy_get_object_path (GDBusObject *object)
  * Gets the connection that @proxy is for.
  *
  * Returns: A #GDBusConnection. Do not free, the object is owned by @proxy.
+ *
+ * Since: 2.30
  */
 GDBusConnection *
 g_dbus_object_proxy_get_connection (GDBusObjectProxy *proxy)

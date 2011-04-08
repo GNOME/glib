@@ -42,6 +42,8 @@ typedef struct _GDBusObjectManagerClientPrivate GDBusObjectManagerClientPrivate;
   *
  * The #GDBusObjectManagerClient structure contains private data and should
  * only be accessed using the provided API.
+ *
+ * Since: 2.30
  */
 struct _GDBusObjectManagerClient
 {
@@ -57,6 +59,8 @@ struct _GDBusObjectManagerClient
  * @interface_proxy_properties_changed: Signal class handler for the #GDBusObjectManagerClient::interface-proxy-properties-changed signal.
  *
  * Class structure for #GDBusObjectManagerClient.
+ *
+ * Since: 2.30
  */
 struct _GDBusObjectManagerClientClass
 {

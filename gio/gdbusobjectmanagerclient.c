@@ -314,6 +314,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * GDBusObjectManagerClient:connection:
    *
    * The #GDBusConnection to use.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CONNECTION,
@@ -333,6 +335,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * #GDBusObjectManagerClient:connection must be %NULL and will be set to the
    * #GDBusConnection obtained by calling g_bus_get() with the value
    * of this property.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_BUS_TYPE,
@@ -351,6 +355,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * GDBusObjectManagerClient:flags:
    *
    * Flags from the #GDBusObjectManagerClientFlags enumeration.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_FLAGS,
@@ -370,6 +376,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * GDBusObjectManagerClient:object-path:
    *
    * The object path the manager is for.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_OBJECT_PATH,
@@ -386,6 +394,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * GDBusObjectManagerClient:name:
    *
    * The well-known name or unique name that the manager is for.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_NAME,
@@ -404,6 +414,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * The unique name that owns #GDBusObjectManagerClient:name or %NULL if
    * no-one is currently owning the name. Connect to the
    * #GObject::notify signal to track changes to this property.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_NAME_OWNER,
@@ -419,6 +431,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    *
    * The #GDBusProxyTypeFunc to use when determining what #GType to
    * use for interface proxies or %NULL.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_GET_PROXY_TYPE_FUNC,
@@ -434,6 +448,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * GDBusObjectManagerClient:get-proxy-type-user-data:
    *
    * The #gpointer user_data to pass to #GDBusObjectManagerClient:get-proxy-type-func.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_GET_PROXY_TYPE_USER_DATA,
@@ -462,6 +478,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * This signal is emitted in the
    * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
    * that @manager was constructed in.
+   *
+   * Since: 2.30
    */
   signals[INTERFACE_PROXY_SIGNAL_SIGNAL] =
     g_signal_new ("interface-proxy-signal",
@@ -498,6 +516,8 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
    * This signal is emitted in the
    * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
    * that @manager was constructed in.
+   *
+   * Since: 2.30
    */
   signals[INTERFACE_PROXY_PROPERTIES_CHANGED_SIGNAL] =
     g_signal_new ("interface-proxy-properties-changed",
@@ -550,6 +570,8 @@ g_dbus_object_manager_client_init (GDBusObjectManagerClient *manager)
  *
  * Returns: A #GDBusObjectManagerClient object or %NULL if @error is
  * set. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusObjectManager *
 g_dbus_object_manager_client_new_sync (GDBusConnection               *connection,
@@ -605,6 +627,8 @@ g_dbus_object_manager_client_new_sync (GDBusConnection               *connection
  * of the thread you are calling this method from. You can
  * then call g_dbus_object_manager_client_new_finish() to get the result. See
  * g_dbus_object_manager_client_new_sync() for the synchronous version.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_manager_client_new (GDBusConnection               *connection,
@@ -645,6 +669,8 @@ g_dbus_object_manager_client_new (GDBusConnection               *connection,
  *
  * Returns: A #GDBusObjectManagerClient object or %NULL if @error is
  * set. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusObjectManager *
 g_dbus_object_manager_client_new_finish (GAsyncResult   *res,
@@ -689,6 +715,8 @@ g_dbus_object_manager_client_new_finish (GAsyncResult   *res,
  *
  * Returns: A #GDBusObjectManagerClient object or %NULL if @error is
  * set. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusObjectManager *
 g_dbus_object_manager_client_new_for_bus_sync (GBusType                       bus_type,
@@ -744,6 +772,8 @@ g_dbus_object_manager_client_new_for_bus_sync (GBusType                       bu
  * of the thread you are calling this method from. You can
  * then call g_dbus_object_manager_client_new_for_bus_finish() to get the result. See
  * g_dbus_object_manager_client_new_for_bus_sync() for the synchronous version.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_manager_client_new_for_bus (GBusType                       bus_type,
@@ -783,6 +813,8 @@ g_dbus_object_manager_client_new_for_bus (GBusType                       bus_typ
  *
  * Returns: A #GDBusObjectManagerClient object or %NULL if @error is
  * set. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusObjectManager *
 g_dbus_object_manager_client_new_for_bus_finish (GAsyncResult   *res,
@@ -815,6 +847,8 @@ g_dbus_object_manager_client_new_for_bus_finish (GAsyncResult   *res,
  *
  * Returns: A #GDBusConnection object. Do not free, the object belongs
  * to @manager.
+ *
+ * Since: 2.30
  */
 GDBusConnection *
 g_dbus_object_manager_client_get_connection (GDBusObjectManagerClient *manager)
@@ -831,6 +865,8 @@ g_dbus_object_manager_client_get_connection (GDBusObjectManagerClient *manager)
  *
  * Returns: A unique or well-known name. Do not free, the string
  * belongs to @manager.
+ *
+ * Since: 2.30
  */
 const gchar *
 g_dbus_object_manager_client_get_name (GDBusObjectManagerClient *manager)
@@ -847,6 +883,8 @@ g_dbus_object_manager_client_get_name (GDBusObjectManagerClient *manager)
  *
  * Returns: Zero of more flags from the #GDBusObjectManagerClientFlags
  * enumeration.
+ *
+ * Since: 2.30
  */
 GDBusObjectManagerClientFlags
 g_dbus_object_manager_client_get_flags (GDBusObjectManagerClient *manager)
@@ -866,6 +904,8 @@ g_dbus_object_manager_client_get_flags (GDBusObjectManagerClient *manager)
  *
  * Returns: The name owner or %NULL if no name owner exists. Free with
  * g_free().
+ *
+ * Since: 2.30
  */
 gchar *
 g_dbus_object_manager_client_get_name_owner (GDBusObjectManagerClient *manager)

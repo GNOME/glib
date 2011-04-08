@@ -36,6 +36,8 @@ G_BEGIN_DECLS
  * GDBusInterface:
  *
  * Base type for D-Bus interfaces.
+ *
+ * Since: 2.30
  */
 typedef struct _GDBusInterface GDBusInterface; /* Dummy typedef */
 
@@ -49,6 +51,8 @@ typedef struct _GDBusInterfaceIface GDBusInterfaceIface;
  * @set_object: Sets the enclosing #GDBusObject. See g_dbus_interface_set_object().
  *
  * Base type for D-Bus interfaces.
+ *
+ * Since: 2.30
  */
 struct _GDBusInterfaceIface
 {

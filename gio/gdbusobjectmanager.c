@@ -44,12 +44,6 @@
  * and #GDBusObjectManagerServer for the service-side implementation.
  */
 
-/**
- * GDBusObjectManager:
- *
- * A D-Bus object.
- */
-
 typedef GDBusObjectManagerIface GDBusObjectManagerInterface;
 G_DEFINE_INTERFACE (GDBusObjectManager, g_dbus_object_manager, G_TYPE_OBJECT)
 
@@ -62,6 +56,8 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
    * @object: The #GDBusObject that was added.
    *
    * Emitted when @object is added to @manager.
+   *
+   * Since: 2.30
    */
   g_signal_new ("object-added",
                 G_TYPE_FROM_INTERFACE (iface),
@@ -80,6 +76,8 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
    * @object: The #GDBusObject that was removed.
    *
    * Emitted when @object is removed from @manager.
+   *
+   * Since: 2.30
    */
   g_signal_new ("object-removed",
                 G_TYPE_FROM_INTERFACE (iface),
@@ -102,6 +100,8 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
    *
    * This signal exists purely as a convenience to avoid having to
    * connect signals to all objects managed by @manager.
+   *
+   * Since: 2.30
    */
   g_signal_new ("interface-added",
                 G_TYPE_FROM_INTERFACE (iface),
@@ -125,6 +125,8 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
    *
    * This signal exists purely as a convenience to avoid having to
    * connect signals to all objects managed by @manager.
+   *
+   * Since: 2.30
    */
   g_signal_new ("interface-removed",
                 G_TYPE_FROM_INTERFACE (iface),
@@ -149,6 +151,8 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
  * Gets the object path that @manager is for.
  *
  * Returns: A string owned by @manager. Do not free.
+ *
+ * Since: 2.30
  */
 const gchar *
 g_dbus_object_manager_get_object_path (GDBusObjectManager *manager)
@@ -167,6 +171,8 @@ g_dbus_object_manager_get_object_path (GDBusObjectManager *manager)
  *   #GDBusObject objects. The returned list should be freed with
  *   g_list_free() after each element has been freed with
  *   g_object_unref().
+ *
+ * Since: 2.30
  */
 GList *
 g_dbus_object_manager_get_objects (GDBusObjectManager *manager)
@@ -183,6 +189,8 @@ g_dbus_object_manager_get_objects (GDBusObjectManager *manager)
  * Gets the #GDBusObjectProxy at @object_path, if any.
  *
  * Returns: A #GDBusObject or %NULL. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusObject *
 g_dbus_object_manager_get_object (GDBusObjectManager *manager,
@@ -203,6 +211,8 @@ g_dbus_object_manager_get_object (GDBusObjectManager *manager,
  * any.
  *
  * Returns: A #GDBusInterface instance or %NULL. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusInterface *
 g_dbus_object_manager_get_interface (GDBusObjectManager *manager,

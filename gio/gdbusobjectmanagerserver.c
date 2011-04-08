@@ -176,6 +176,8 @@ g_dbus_object_manager_server_class_init (GDBusObjectManagerServerClass *klass)
    * GDBusObjectManagerServer:connection:
    *
    * The #GDBusConnection to export objects on.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CONNECTION,
@@ -192,6 +194,8 @@ g_dbus_object_manager_server_class_init (GDBusObjectManagerServerClass *klass)
    * GDBusObjectManagerServer:object-path:
    *
    * The object path to register the manager object at.
+   *
+   * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
                                    PROP_OBJECT_PATH,
@@ -230,6 +234,8 @@ g_dbus_object_manager_server_init (GDBusObjectManagerServer *manager)
  * e.g. start()/stop() semantics.
  *
  * Returns: A #GDBusObjectManagerServer object. Free with g_object_unref().
+ *
+ * Since: 2.30
  */
 GDBusObjectManagerServer *
 g_dbus_object_manager_server_new (GDBusConnection *connection,
@@ -251,6 +257,8 @@ g_dbus_object_manager_server_new (GDBusConnection *connection,
  *
  * Returns: A #GDBusConnection object. Do not free, the object belongs
  * to @manager.
+ *
+ * Since: 2.30
  */
 GDBusConnection *
 g_dbus_object_manager_server_get_connection (GDBusObjectManagerServer *manager)
@@ -392,6 +400,8 @@ registration_data_free (RegistrationData *data)
  *
  * Note that @manager will take a reference on @object for as long as
  * it is exported.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
@@ -467,6 +477,8 @@ g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
  * @object<!-- -->'s object path if an object with the given path
  * already exists. As such, the #GDBusObjectProxy:object-path property
  * of @object may be modified.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_manager_server_export_and_uniquify (GDBusObjectManagerServer  *manager,
@@ -518,6 +530,8 @@ g_dbus_object_manager_server_export_and_uniquify (GDBusObjectManagerServer  *man
  *
  * Note that @object_path must be in the hierarchy rooted by the
  * object path for @manager.
+ *
+ * Since: 2.30
  */
 void
 g_dbus_object_manager_server_unexport (GDBusObjectManagerServer  *manager,
