@@ -106,7 +106,10 @@ G_DEFINE_TYPE (GApplicationCommandLine, g_application_command_line, G_TYPE_OBJEC
  * </para>
  * <para>
  * This example also shows how to use #GOptionContext for parsing the
- * commandline arguments.
+ * commandline arguments. Note that it is necessary to disable the
+ * built-in help-handling of #GOptionContext, since it calls exit()
+ * after printing help, which is not what you want to happen in
+ * the primary instance.
  * </para>
  * <programlisting>
  * <xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gapplication-example-cmdline3.c">

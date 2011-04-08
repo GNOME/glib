@@ -11,10 +11,12 @@ my_cmdline_handler (gpointer data)
   gint argc;
   gint arg1;
   gboolean arg2;
+  gboolean help;
   GOptionContext *context;
   GOptionEntry entries[] = {
     { "arg1", 0, 0, G_OPTION_ARG_INT, &arg1, NULL, NULL },
     { "arg2", 0, 0, G_OPTION_ARG_NONE, &arg2, NULL, NULL },
+    { "help", '?', 0, G_OPTION_ARG_NONE, &help, NULL, NULL },
     { NULL }
   };
   GError *error;
@@ -30,16 +32,25 @@ my_cmdline_handler (gpointer data)
     argv[i] = args[i];
 
   context = g_option_context_new (NULL);
+  g_option_context_set_help_enabled (context, FALSE);
   g_option_context_add_main_entries (context, entries, NULL);
 
   arg1 = 0;
   arg2 = FALSE;
+  help = FALSE;
   error = NULL;
   if (!g_option_context_parse (context, &argc, &argv, &error))
     {
       g_application_command_line_printerr (cmdline, "%s\n", error->message);
       g_error_free (error);
       g_application_command_line_set_exit_status (cmdline, 1);
+    }
+  else if (help)
+    {
+      gchar *text;
+      text = g_option_context_get_help (context, FALSE, NULL);
+      g_application_command_line_print (cmdline, "%s",  text);
+      g_free (text);
     }
   else
     {
