@@ -345,8 +345,6 @@ settings_backend_path_changed (GObject          *target,
   GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
 
-  g_assert (settings->priv->backend == backend);
-
   if (g_str_has_prefix (settings->priv->path, path))
     g_signal_emit (settings, g_settings_signals[SIGNAL_CHANGE_EVENT],
                    0, NULL, 0, &ignore_this);
@@ -362,8 +360,6 @@ settings_backend_keys_changed (GObject             *target,
   GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
   gint i;
-
-  g_assert (settings->priv->backend == backend);
 
   for (i = 0; settings->priv->path[i] &&
               settings->priv->path[i] == path[i]; i++);
@@ -405,8 +401,6 @@ settings_backend_writable_changed (GObject          *target,
   gboolean ignore_this;
   gint i;
 
-  g_assert (settings->priv->backend == backend);
-
   for (i = 0; key[i] == settings->priv->path[i]; i++);
 
   if (settings->priv->path[i] == '\0' &&
@@ -422,8 +416,6 @@ settings_backend_path_writable_changed (GObject          *target,
 {
   GSettings *settings = G_SETTINGS (target);
   gboolean ignore_this;
-
-  g_assert (settings->priv->backend == backend);
 
   if (g_str_has_prefix (settings->priv->path, path))
     g_signal_emit (settings, g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT],
