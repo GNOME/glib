@@ -30,16 +30,20 @@ test_local_cmdline (GApplication   *application,
 
   argv = *arguments;
 
-  for (i = 0; argv[i]; i++)
+  i = 1;
+  while (argv[i])
     {
       if (g_str_has_prefix (argv[i], "--local-"))
         {
           g_print ("handling argument %s locally\n", argv[i]);
-          for (j = i + 1; argv[j]; j++)
-            {
-              argv[j - 1] = argv[j];
-              argv[j] = NULL;
-            }
+          g_free (argv[i]);
+          for (j = i; argv[j]; j++)
+            argv[j] = argv[j + 1];
+        }
+      else
+        {
+          g_print ("not handling argument %s locally\n", argv[i]);
+          i++;
         }
     }
 
