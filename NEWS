@@ -1,3 +1,22 @@
+Overview of Changes from GLib 2.28.5 to 2.28.6
+==============================================
+
+* Fix a possible crash when using g_settings_delay()
+
+* Various documentation clarifications
+
+* Translation updates
+ Assamese
+ Basque
+ Catalan
+ Czech
+ Hungarian
+ Japanese
+ Marathi
+ Slovenian
+ Swedish
+
+
 Overview of Changes from GLib 2.28.4 to 2.28.5
 ==============================================
 
