@@ -2320,6 +2320,8 @@ g_dbus_is_name
 g_dbus_is_unique_name
 g_dbus_is_member_name
 g_dbus_is_interface_name
+g_dbus_gvalue_to_gvariant
+g_dbus_gvariant_to_gvalue
 </SECTION>
 
 <SECTION>
@@ -3137,8 +3139,6 @@ G_TYPE_DBUS_INTERFACE
 g_dbus_interface_get_type
 G_DBUS_INTERFACE_GET_IFACE
 <SUBSECTION Private>
-g_dbus_gvalue_to_gvariant
-g_dbus_gvariant_to_gvalue
 g_dbus_object_lookup_with_typecheck
 g_dbus_object_peek_with_typecheck
 </SECTION>

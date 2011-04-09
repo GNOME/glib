@@ -351,3 +351,388 @@ g_dbus_is_guid (const gchar *string)
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
+
+/**
+ * g_dbus_gvariant_to_gvalue:
+ * @value: A #GVariant.
+ * @out_gvalue: Return location for the #GValue.
+ *
+ * Convert a #GVariant to a #GValue. If @value is floating, it is consumed.
+ *
+ * The rules specified in g_dbus_gvalue_to_gvariant() are used.
+ *
+ * Note that the passed @out_gvalue does not have to have a #GType
+ * set, as it will be initialized to the #GType corresponding to
+ * @value.
+ *
+ * This conversion can never fail.
+ *
+ * Since: 2.30
+ */
+void
+g_dbus_gvariant_to_gvalue (GVariant  *value,
+                           GValue    *out_gvalue)
+{
+  const GVariantType *type;
+  gchar **array;
+
+  g_return_if_fail (value != NULL);
+  g_return_if_fail (out_gvalue != NULL);
+
+  memset (out_gvalue, '\0', sizeof (GValue));
+
+  switch (g_variant_classify (value))
+    {
+    case G_VARIANT_CLASS_BOOLEAN:
+      g_value_init (out_gvalue, G_TYPE_BOOLEAN);
+      g_value_set_boolean (out_gvalue, g_variant_get_boolean (value));
+      break;
+
+    case G_VARIANT_CLASS_BYTE:
+      g_value_init (out_gvalue, G_TYPE_UCHAR);
+      g_value_set_uchar (out_gvalue, g_variant_get_byte (value));
+      break;
+
+    case G_VARIANT_CLASS_INT16:
+      g_value_init (out_gvalue, G_TYPE_INT);
+      g_value_set_int (out_gvalue, g_variant_get_int16 (value));
+      break;
+
+    case G_VARIANT_CLASS_UINT16:
+      g_value_init (out_gvalue, G_TYPE_UINT);
+      g_value_set_uint (out_gvalue, g_variant_get_uint16 (value));
+      break;
+
+    case G_VARIANT_CLASS_INT32:
+      g_value_init (out_gvalue, G_TYPE_INT);
+      g_value_set_int (out_gvalue, g_variant_get_int32 (value));
+      break;
+
+    case G_VARIANT_CLASS_UINT32:
+      g_value_init (out_gvalue, G_TYPE_UINT);
+      g_value_set_uint (out_gvalue, g_variant_get_uint32 (value));
+      break;
+
+    case G_VARIANT_CLASS_INT64:
+      g_value_init (out_gvalue, G_TYPE_INT64);
+      g_value_set_int64 (out_gvalue, g_variant_get_int64 (value));
+      break;
+
+    case G_VARIANT_CLASS_UINT64:
+      g_value_init (out_gvalue, G_TYPE_UINT64);
+      g_value_set_uint64 (out_gvalue, g_variant_get_uint64 (value));
+      break;
+
+    case G_VARIANT_CLASS_HANDLE:
+      g_value_init (out_gvalue, G_TYPE_INT);
+      g_value_set_int (out_gvalue, g_variant_get_int32 (value));
+      break;
+
+    case G_VARIANT_CLASS_DOUBLE:
+      g_value_init (out_gvalue, G_TYPE_DOUBLE);
+      g_value_set_double (out_gvalue, g_variant_get_double (value));
+      break;
+
+    case G_VARIANT_CLASS_STRING:
+      g_value_init (out_gvalue, G_TYPE_STRING);
+      g_value_set_string (out_gvalue, g_variant_get_string (value, NULL));
+      break;
+
+    case G_VARIANT_CLASS_OBJECT_PATH:
+      g_value_init (out_gvalue, G_TYPE_STRING);
+      g_value_set_string (out_gvalue, g_variant_get_string (value, NULL));
+      break;
+
+    case G_VARIANT_CLASS_SIGNATURE:
+      g_value_init (out_gvalue, G_TYPE_STRING);
+      g_value_set_string (out_gvalue, g_variant_get_string (value, NULL));
+      break;
+
+    case G_VARIANT_CLASS_ARRAY:
+      type = g_variant_get_type (value);
+      switch (g_variant_type_peek_string (type)[1])
+        {
+        case G_VARIANT_CLASS_BYTE:
+          g_value_init (out_gvalue, G_TYPE_STRING);
+          g_value_set_string (out_gvalue, g_variant_get_bytestring (value));
+          break;
+
+        case G_VARIANT_CLASS_STRING:
+          g_value_init (out_gvalue, G_TYPE_STRV);
+          array = g_variant_dup_strv (value, NULL);
+          g_value_take_boxed (out_gvalue, array);
+          break;
+
+        case G_VARIANT_CLASS_ARRAY:
+          switch (g_variant_type_peek_string (type)[2])
+            {
+            case G_VARIANT_CLASS_BYTE:
+              g_value_init (out_gvalue, G_TYPE_STRV);
+              array = g_variant_dup_bytestring_array (value, NULL);
+              g_value_take_boxed (out_gvalue, array);
+              break;
+
+            default:
+              g_value_init (out_gvalue, G_TYPE_VARIANT);
+              g_value_set_variant (out_gvalue, value);
+              break;
+            }
+          break;
+
+        default:
+          g_value_init (out_gvalue, G_TYPE_VARIANT);
+          g_value_set_variant (out_gvalue, value);
+          break;
+        }
+      break;
+
+    case G_VARIANT_CLASS_VARIANT:
+    case G_VARIANT_CLASS_MAYBE:
+    case G_VARIANT_CLASS_TUPLE:
+    case G_VARIANT_CLASS_DICT_ENTRY:
+      g_value_init (out_gvalue, G_TYPE_VARIANT);
+      g_value_set_variant (out_gvalue, value);
+      break;
+    }
+}
+
+
+/**
+ * g_dbus_gvalue_to_gvariant:
+ * @gvalue: A #GValue to convert to a #GVariant.
+ * @expected_type: The #GVariantType to create.
+ *
+ * Convert a #GValue to #GVariant.
+ *
+ * The conversion is using the following rules:
+ * <table frame='all'>
+ *   <title>#GValue / #GVariant Conversion rules</title>
+ *   <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+ *     <thead>
+ *       <row>
+ *         <entry>If the #GType for @gvalue is...</entry>
+ *         <entry>... then @expected_type must be</entry>
+ *       </row>
+ *     </thead>
+ *     <tbody>
+ *       <row>
+ *         <entry>#G_TYPE_STRING</entry>
+ *         <entry>s, o, g, ay</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_STRV</entry>
+ *         <entry>as, ao, ag, aay</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_BOOLEAN</entry>
+ *         <entry>b</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_UCHAR</entry>
+ *         <entry>y</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_INT</entry>
+ *         <entry>n</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_UINT</entry>
+ *         <entry>q</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_INT</entry>
+ *         <entry>i</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_UINT</entry>
+ *         <entry>u</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_INT64</entry>
+ *         <entry>x</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_UINT64</entry>
+ *         <entry>t</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_INT</entry>
+ *         <entry>h</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_DOUBLE</entry>
+ *         <entry>d</entry>
+ *       </row>
+ *       <row>
+ *         <entry>#G_TYPE_VARIANT</entry>
+ *         <entry>Any #GVariantType</entry>
+ *       </row>
+ *     </tbody>
+ *   </tgroup>
+ * </table>
+ * This can fail if e.g. @gvalue is of type #G_TYPE_STRING and
+ * @expected_type is <literal>'i'</literal>. It will also fail for any
+ * #GType (including e.g. #G_TYPE_OBJECT and #G_TYPE_BOXED
+ * derived-types) not in the table above.
+ *
+ * Note that if @gvalue is of type #G_TYPE_VARIANT and its value is
+ * %NULL, the <emphasis>empty</emphasis> #GVariant instance (never
+ * %NULL) for @expected_type is returned (e.g. 0 for scalar types, the
+ * empty string for string types and so on).
+ *
+ * Returns: A #GVariant (never floating) of #GVariantType
+ * @expected_type holding the data from @gvalue or %NULL in case of
+ * failure. Free with g_variant_unref().
+ *
+ * Since: 2.30
+ */
+GVariant *
+g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
+                           const GVariantType   *expected_type)
+{
+  GVariant *ret;
+  const gchar *s;
+  const gchar * const *as;
+  const gchar *empty_strv[1] = {NULL};
+
+  g_return_val_if_fail (gvalue != NULL, NULL);
+  g_return_val_if_fail (expected_type != NULL, NULL);
+
+  ret = NULL;
+
+  /* The expected type could easily be e.g. "s" with the GValue holding a string.
+   * because of the UseGVariant annotation
+   */
+  if (G_VALUE_TYPE (gvalue) == G_TYPE_VARIANT)
+    {
+      ret = g_value_dup_variant (gvalue);
+    }
+  else
+    {
+      switch (g_variant_type_peek_string (expected_type)[0])
+        {
+        case G_VARIANT_CLASS_BOOLEAN:
+          ret = g_variant_ref_sink (g_variant_new_boolean (g_value_get_boolean (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_BYTE:
+          ret = g_variant_ref_sink (g_variant_new_byte (g_value_get_uchar (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_INT16:
+          ret = g_variant_ref_sink (g_variant_new_int16 (g_value_get_int (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_UINT16:
+          ret = g_variant_ref_sink (g_variant_new_uint16 (g_value_get_uint (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_INT32:
+          ret = g_variant_ref_sink (g_variant_new_int32 (g_value_get_int (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_UINT32:
+          ret = g_variant_ref_sink (g_variant_new_uint32 (g_value_get_uint (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_INT64:
+          ret = g_variant_ref_sink (g_variant_new_int64 (g_value_get_int64 (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_UINT64:
+          ret = g_variant_ref_sink (g_variant_new_uint64 (g_value_get_uint64 (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_HANDLE:
+          ret = g_variant_ref_sink (g_variant_new_handle (g_value_get_int (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_DOUBLE:
+          ret = g_variant_ref_sink (g_variant_new_double (g_value_get_double (gvalue)));
+          break;
+
+        case G_VARIANT_CLASS_STRING:
+          s = g_value_get_string (gvalue);
+          if (s == NULL)
+            s = "";
+          ret = g_variant_ref_sink (g_variant_new_string (s));
+          break;
+
+        case G_VARIANT_CLASS_OBJECT_PATH:
+          s = g_value_get_string (gvalue);
+          if (s == NULL)
+            s = "/";
+          ret = g_variant_ref_sink (g_variant_new_object_path (s));
+          break;
+
+        case G_VARIANT_CLASS_SIGNATURE:
+          s = g_value_get_string (gvalue);
+          if (s == NULL)
+            s = "";
+          ret = g_variant_ref_sink (g_variant_new_signature (s));
+          break;
+
+        case G_VARIANT_CLASS_ARRAY:
+          switch (g_variant_type_peek_string (expected_type)[1])
+            {
+            case G_VARIANT_CLASS_BYTE:
+              s = g_value_get_string (gvalue);
+              if (s == NULL)
+                s = "";
+              ret = g_variant_ref_sink (g_variant_new_bytestring (s));
+              break;
+
+            case G_VARIANT_CLASS_STRING:
+              as = g_value_get_boxed (gvalue);
+              if (as == NULL)
+                as = empty_strv;
+              ret = g_variant_ref_sink (g_variant_new_strv (as, -1));
+              break;
+
+            case G_VARIANT_CLASS_ARRAY:
+              switch (g_variant_type_peek_string (expected_type)[2])
+                {
+                case G_VARIANT_CLASS_BYTE:
+                  as = g_value_get_boxed (gvalue);
+                  if (as == NULL)
+                    as = empty_strv;
+                  ret = g_variant_ref_sink (g_variant_new_bytestring_array (as, -1));
+                  break;
+
+                default:
+                  ret = g_value_dup_variant (gvalue);
+                  break;
+                }
+              break;
+
+            default:
+              ret = g_value_dup_variant (gvalue);
+              break;
+            }
+          break;
+
+        default:
+        case G_VARIANT_CLASS_VARIANT:
+        case G_VARIANT_CLASS_MAYBE:
+        case G_VARIANT_CLASS_TUPLE:
+        case G_VARIANT_CLASS_DICT_ENTRY:
+          ret = g_value_dup_variant (gvalue);
+          break;
+        }
+    }
+
+  /* Could be that the GValue is holding a NULL GVariant - in that case,
+   * we return an "empty" GVariant instead of a NULL GVariant
+   */
+  if (ret == NULL)
+    {
+      GVariant *untrusted_empty;
+      untrusted_empty = g_variant_new_from_data (expected_type, NULL, 0, FALSE, NULL, NULL);
+      ret = g_variant_ref_sink (g_variant_get_normal_form (untrusted_empty));
+      g_variant_unref (untrusted_empty);
+    }
+
+  g_assert (!g_variant_is_floating (ret));
+
+  return ret;
+}

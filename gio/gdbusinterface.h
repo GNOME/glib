@@ -71,13 +71,6 @@ GDBusObject          *g_dbus_interface_get_object       (GDBusInterface      *in
 void                  g_dbus_interface_set_object       (GDBusInterface      *interface,
                                                          GDBusObject         *object);
 
-/* Keep it here for now. TODO: move */
-
-gboolean g_dbus_gvariant_to_gvalue (GVariant             *value,
-                                    GValue               *out_gvalue);
-GVariant *g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
-                                     const GVariantType   *expected_type);
-
 G_END_DECLS
 
 #endif /* __G_DBUS_INTERFACE_H__ */

@@ -1894,6 +1894,8 @@ g_dbus_is_interface_name
 g_dbus_is_member_name
 g_dbus_is_name
 g_dbus_is_unique_name
+g_dbus_gvalue_to_gvariant
+g_dbus_gvariant_to_gvalue
 #endif
 #endif
 
@@ -2093,8 +2095,6 @@ g_dbus_interface_get_info
 g_dbus_interface_get_object
 g_dbus_interface_get_type
 g_dbus_interface_set_object
-g_dbus_gvalue_to_gvariant
-g_dbus_gvariant_to_gvalue
 #endif
 #endif
 
