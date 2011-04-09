@@ -453,6 +453,10 @@ if test "x$found_zlib" = "xno" ; then
   AC_SUBST(ZLIB_LIBS)
 fi
 
+PKG_CHECK_MODULES(LIBFFI, [libffi >= 3.0.0])
+AC_SUBST(LIBFFI_CFLAGS)
+AC_SUBST(LIBFFI_LIBS)
+
 dnl
 dnl gettext support
 dnl
