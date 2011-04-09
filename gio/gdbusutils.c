@@ -506,7 +506,7 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *
  * The conversion is using the following rules:
  * <table frame='all'>
- *   <title>#GValue / #GVariant Conversion rules</title>
+ *   <title>#GValue / #GVariant conversion rules</title>
  *   <tgroup cols='2' align='left' colsep='1' rowsep='1'>
  *     <thead>
  *       <row>
@@ -517,51 +517,43 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *     <tbody>
  *       <row>
  *         <entry>#G_TYPE_STRING</entry>
- *         <entry>s, o, g, ay</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-STRING:CAPS">s</link>, <link linkend="G-VARIANT-TYPE-OBJECT-PATH:CAPS">o</link>, <link linkend="G-VARIANT-TYPE-SIGNATURE:CAPS">g</link>, <link linkend="G-VARIANT-TYPE-BYTESTRING:CAPS">ay</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_STRV</entry>
- *         <entry>as, ao, ag, aay</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">as</link>, <link linkend="G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS">aay</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_BOOLEAN</entry>
- *         <entry>b</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-BOOLEAN:CAPS">b</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UCHAR</entry>
- *         <entry>y</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-BYTE:CAPS">y</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_INT</entry>
- *         <entry>n</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-INT32:CAPS">i</link>, <link linkend="G-VARIANT-TYPE-INT16:CAPS">n</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UINT</entry>
- *         <entry>q</entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_INT</entry>
- *         <entry>i</entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_UINT</entry>
- *         <entry>u</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-UINT32:CAPS">u</link>, <link linkend="G-VARIANT-TYPE-UINT16:CAPS">q</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_INT64</entry>
- *         <entry>x</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-INT64:CAPS">x</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UINT64</entry>
- *         <entry>t</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-UINT64:CAPS">t</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_INT</entry>
- *         <entry>h</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-HANDLE:CAPS">h</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_DOUBLE</entry>
- *         <entry>d</entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-DOUBLE:CAPS">d</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_VARIANT</entry>
