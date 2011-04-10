@@ -221,6 +221,79 @@ basic (void)
   session_bus_down ();
 }
 
+
+static GApplication *recently_activated;
+static GMainLoop *loop;
+
+static void
+nonunique_activate (GApplication *application)
+{
+  recently_activated = application;
+
+  if (loop != NULL)
+    g_main_loop_quit (loop);
+}
+
+static GApplication *
+make_app (gboolean non_unique)
+{
+  GApplication *app;
+  gboolean ok;
+
+  app = g_application_new ("org.gtk.TestApplication",
+                           non_unique ? G_APPLICATION_NON_UNIQUE : 0);
+  g_signal_connect (app, "activate", G_CALLBACK (nonunique_activate), NULL);
+  ok = g_application_register (app, NULL, NULL);
+  if (!ok)
+    {
+      g_object_unref (app);
+      return NULL;
+    }
+
+  g_application_activate (app);
+
+  return app;
+}
+
+static void
+test_nonunique (void)
+{
+  GApplication *first, *second, *third, *fourth;
+
+  session_bus_up ();
+
+  first = make_app (TRUE);
+  /* non-remote because it is non-unique */
+  g_assert (!g_application_get_is_remote (first));
+  g_assert (recently_activated == first);
+  recently_activated = NULL;
+
+  second = make_app (FALSE);
+  /* non-remote because it is first */
+  g_assert (!g_application_get_is_remote (second));
+  g_assert (recently_activated == second);
+  recently_activated = NULL;
+
+  third = make_app (TRUE);
+  /* non-remote because it is non-unique */
+  g_assert (!g_application_get_is_remote (third));
+  g_assert (recently_activated == third);
+  recently_activated = NULL;
+
+  fourth = make_app (FALSE);
+  /* should have failed to register due to being
+   * unable to register the object paths
+   */
+  g_assert (fourth == NULL);
+  g_assert (recently_activated == NULL);
+
+  g_object_unref (first);
+  g_object_unref (second);
+  g_object_unref (third);
+
+  session_bus_down ();
+}
+
 static void
 properties (void)
 {
@@ -289,6 +362,7 @@ main (int argc, char **argv)
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/gapplication/basic", basic);
+  g_test_add_func ("/gapplication/non-unique", test_nonunique);
   g_test_add_func ("/gapplication/properties", properties);
   g_test_add_func ("/gapplication/app-id", appid);
 
