@@ -42,7 +42,7 @@ gboolean g_dbus_is_interface_name (const gchar *string);
 void g_dbus_gvariant_to_gvalue (GVariant  *value,
                                 GValue    *out_gvalue);
 GVariant *g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
-                                     const GVariantType   *expected_type);
+                                     const GVariantType   *type);
 
 G_END_DECLS
 

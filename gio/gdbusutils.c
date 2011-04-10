@@ -355,17 +355,15 @@ g_dbus_is_guid (const gchar *string)
 /**
  * g_dbus_gvariant_to_gvalue:
  * @value: A #GVariant.
- * @out_gvalue: Return location for the #GValue.
+ * @out_gvalue: Return location pointing to a zero-filled (uninitialized) #GValue.
  *
- * Convert a #GVariant to a #GValue. If @value is floating, it is consumed.
+ * Converts a #GVariant to a #GValue. If @value is floating, it is consumed.
  *
- * The rules specified in g_dbus_gvalue_to_gvariant() are used.
+ * The rules specified in the g_dbus_gvalue_to_gvariant() function are
+ * used - this function is essentially its reverse form.
  *
- * Note that the passed @out_gvalue does not have to have a #GType
- * set, as it will be initialized to the #GType corresponding to
- * @value.
- *
- * This conversion can never fail.
+ * The conversion never fails - a valid #GValue is always returned in
+ * @out_gvalue.
  *
  * Since: 2.30
  */
@@ -500,9 +498,9 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
 /**
  * g_dbus_gvalue_to_gvariant:
  * @gvalue: A #GValue to convert to a #GVariant.
- * @expected_type: The #GVariantType to create.
+ * @type: A #GVariantType.
  *
- * Convert a #GValue to #GVariant.
+ * Converts a #GValue to a #GVariant of the type indicated by the @type parameter.
  *
  * The conversion is using the following rules:
  * <table frame='all'>
@@ -511,49 +509,49 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *     <thead>
  *       <row>
  *         <entry>If the #GType for @gvalue is...</entry>
- *         <entry>... then @expected_type must be</entry>
+ *         <entry>... then @type must be</entry>
  *       </row>
  *     </thead>
  *     <tbody>
  *       <row>
  *         <entry>#G_TYPE_STRING</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-STRING:CAPS">s</link>, <link linkend="G-VARIANT-TYPE-OBJECT-PATH:CAPS">o</link>, <link linkend="G-VARIANT-TYPE-SIGNATURE:CAPS">g</link>, <link linkend="G-VARIANT-TYPE-BYTESTRING:CAPS">ay</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-STRING:CAPS">'s'</link>, <link linkend="G-VARIANT-TYPE-OBJECT-PATH:CAPS">'o'</link>, <link linkend="G-VARIANT-TYPE-SIGNATURE:CAPS">'g'</link> or <link linkend="G-VARIANT-TYPE-BYTESTRING:CAPS">'ay'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_STRV</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">as</link>, <link linkend="G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS">aay</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">'as'</link> or <link linkend="G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS">'aay'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_BOOLEAN</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-BOOLEAN:CAPS">b</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-BOOLEAN:CAPS">'b'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UCHAR</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-BYTE:CAPS">y</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-BYTE:CAPS">'y'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_INT</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-INT32:CAPS">i</link>, <link linkend="G-VARIANT-TYPE-INT16:CAPS">n</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-INT32:CAPS">'i'</link> or <link linkend="G-VARIANT-TYPE-INT16:CAPS">'n'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UINT</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-UINT32:CAPS">u</link>, <link linkend="G-VARIANT-TYPE-UINT16:CAPS">q</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-UINT32:CAPS">'u'</link> or <link linkend="G-VARIANT-TYPE-UINT16:CAPS">'q'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_INT64</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-INT64:CAPS">x</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-INT64:CAPS">'x'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_UINT64</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-UINT64:CAPS">t</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-UINT64:CAPS">'t'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_INT</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-HANDLE:CAPS">h</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-HANDLE:CAPS">'h'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_DOUBLE</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-DOUBLE:CAPS">d</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-DOUBLE:CAPS">'d'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_VARIANT</entry>
@@ -562,25 +560,29 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *     </tbody>
  *   </tgroup>
  * </table>
- * This can fail if e.g. @gvalue is of type #G_TYPE_STRING and
- * @expected_type is <literal>'i'</literal>. It will also fail for any
- * #GType (including e.g. #G_TYPE_OBJECT and #G_TYPE_BOXED
- * derived-types) not in the table above.
+ * This can fail if e.g. @gvalue is of type #G_TYPE_STRING and @type
+ * is <link linkend="G-VARIANT-TYPE-INT32:CAPS">'i'</link>. It will
+ * also fail for any #GType (including e.g. #G_TYPE_OBJECT and
+ * #G_TYPE_BOXED derived-types) not in the table above.
  *
  * Note that if @gvalue is of type #G_TYPE_VARIANT and its value is
  * %NULL, the <emphasis>empty</emphasis> #GVariant instance (never
- * %NULL) for @expected_type is returned (e.g. 0 for scalar types, the
- * empty string for string types and so on).
+ * %NULL) for @type is returned (e.g. 0 for scalar types, the empty
+ * string for string types, <literal>'/'</literal> for object path
+ * types, the empty array for any array type and so on).
+ *
+ * See the g_dbus_gvariant_to_gvalue() function for how to convert a
+ * #GVariant to a #GValue.
  *
  * Returns: A #GVariant (never floating) of #GVariantType
- * @expected_type holding the data from @gvalue or %NULL in case of
+ * @type holding the data from @gvalue or %NULL in case of
  * failure. Free with g_variant_unref().
  *
  * Since: 2.30
  */
 GVariant *
-g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
-                           const GVariantType   *expected_type)
+g_dbus_gvalue_to_gvariant (const GValue       *gvalue,
+                           const GVariantType *type)
 {
   GVariant *ret;
   const gchar *s;
@@ -588,12 +590,13 @@ g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
   const gchar *empty_strv[1] = {NULL};
 
   g_return_val_if_fail (gvalue != NULL, NULL);
-  g_return_val_if_fail (expected_type != NULL, NULL);
+  g_return_val_if_fail (type != NULL, NULL);
 
   ret = NULL;
 
-  /* The expected type could easily be e.g. "s" with the GValue holding a string.
-   * because of the UseGVariant annotation
+  /* @type can easily be e.g. "s" with the GValue holding a GVariant - for example this
+   * can happen when using the org.gtk.GDBus.C.ForceGVariant annotation with the
+   * gdbus-codegen(1) tool.
    */
   if (G_VALUE_TYPE (gvalue) == G_TYPE_VARIANT)
     {
@@ -601,7 +604,7 @@ g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
     }
   else
     {
-      switch (g_variant_type_peek_string (expected_type)[0])
+      switch (g_variant_type_peek_string (type)[0])
         {
         case G_VARIANT_CLASS_BOOLEAN:
           ret = g_variant_ref_sink (g_variant_new_boolean (g_value_get_boolean (gvalue)));
@@ -665,7 +668,7 @@ g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
           break;
 
         case G_VARIANT_CLASS_ARRAY:
-          switch (g_variant_type_peek_string (expected_type)[1])
+          switch (g_variant_type_peek_string (type)[1])
             {
             case G_VARIANT_CLASS_BYTE:
               s = g_value_get_string (gvalue);
@@ -682,7 +685,7 @@ g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
               break;
 
             case G_VARIANT_CLASS_ARRAY:
-              switch (g_variant_type_peek_string (expected_type)[2])
+              switch (g_variant_type_peek_string (type)[2])
                 {
                 case G_VARIANT_CLASS_BYTE:
                   as = g_value_get_boxed (gvalue);
@@ -719,7 +722,7 @@ g_dbus_gvalue_to_gvariant (const GValue         *gvalue,
   if (ret == NULL)
     {
       GVariant *untrusted_empty;
-      untrusted_empty = g_variant_new_from_data (expected_type, NULL, 0, FALSE, NULL, NULL);
+      untrusted_empty = g_variant_new_from_data (type, NULL, 0, FALSE, NULL, NULL);
       ret = g_variant_ref_sink (g_variant_get_normal_form (untrusted_empty));
       g_variant_unref (untrusted_empty);
     }
