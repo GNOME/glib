@@ -659,6 +659,9 @@ g_application_impl_register (GApplication       *application,
       g_dbus_connection_unregister_object (impl->session_bus,
                                            impl->object_id);
       impl->object_id = 0;
+      g_dbus_connection_unregister_object (impl->session_bus,
+                                           impl->action_id);
+      impl->action_id = 0;
 
       if (flags & G_APPLICATION_IS_SERVICE)
         {
