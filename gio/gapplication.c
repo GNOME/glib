@@ -1006,14 +1006,17 @@ g_application_register (GApplication  *application,
 
   if (!application->priv->is_registered)
     {
-      application->priv->impl =
-        g_application_impl_register (application, application->priv->id,
-                                     application->priv->flags,
-                                     &application->priv->remote_actions,
-                                     cancellable, error);
+      if (~application->priv->flags & G_APPLICATION_NON_UNIQUE)
+        {
+          application->priv->impl =
+            g_application_impl_register (application, application->priv->id,
+                                         application->priv->flags,
+                                         &application->priv->remote_actions,
+                                         cancellable, error);
 
-      if (application->priv->impl == NULL)
-        return FALSE;
+          if (application->priv->impl == NULL)
+            return FALSE;
+        }
 
       application->priv->is_remote = application->priv->remote_actions != NULL;
       application->priv->is_registered = TRUE;
