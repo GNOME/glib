@@ -1,12 +1,38 @@
 Overview of Changes from GLib 2.28.0 to 2.29.2
 ==============================================
 
-* The format accepted by the GVariant parser has beend documented
+* GApplication
+ - The documentation has been enhanced and clarified
+ - An opt-out for uniqueness has been added: G_APPLICATION_NON_UNIQUE
+ - GApplication now syncs settings before g_application_run() returns
 
-* The return value of g_datetime_compare() has been fixed to
-  match strcmp() semantics
+* GDBus
+ - Interface lookups are now happening in constant time
+ - Signature checking and handling of various unexpected
+   situations has been improved
+
+* GVariant
+ - The format accepted by the GVariant parser has beend documented
+ - GVariant accepts G_VARIANT_TYPE_VARDICT for a{sv}
+
+* GDateTime:
+ - The return value of g_datetime_compare() has been fixed to
+   match strcmp() semantics
+ - In order to handle problems with changing timezones, a GTimeZoneMonitor
+   has been added to GIO, and g_time_zone_refresh_local() can be
+   called to update the cached information about the local timezone
+
+* GOption now uses /proc/self/cmdline to set the program name instead
+  and only falls back to "<unknown>" if that is unavailable
+
+* GSettings:
+ - The schema compiler now warns about references to non-existing schemas
 
 * Commandline utilities are now fully translated
+
+* Signals can now indicate that collecting their arguments must
+  always happen, even in the absence of connected signal handlers,
+  using the G_SIGNAL_MUST_COLLECT flag.
 
 * Bugs fixed:
  635099 Memory leak in gdbus introspection when parsing xml
@@ -14,16 +40,38 @@ Overview of Changes from GLib 2.28.0 to 2.29.2
  642042 Overriding GDBus org.freedesktop.DBus.Properties im...
  642052 g_timeout_add(_seconds) cannot handle large intervals
  642490 notify_desktop_launch() "g_variant_new_bytestring:...
+613269,624943,637738,642797,638185,642825,642944,643197,643468,643478,643649,643795,643780,644428,644465,644552,644607,643624,639478,645789,641755,646310,644309,646420,646843,646039,641768,643074,646985
 
 * Translation updates
+ Afrikaans
  Bulgarian
  Bengali India
- Korean
- Polish
+ British English
+ Bulgarian
+ Catalan
+ Czech
+ Danish
+ French
  Galician
+ German
+ Greek
+ Gujarati
  Hebrew
+ Hungarian
  Italian
+ Japanese
+ Korean
+ Lithuanian
+ Polish
+ Portuguese
+ Romanian
+ Serbian
+ Simplified Chinese
  Spanish
+ Swedish
+ Traditional Chinese
+ Uighur
+ Vietnamese
 
 
 Overview of Changes from GLib 2.27.93 to 2.28.0
