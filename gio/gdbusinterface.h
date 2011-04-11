@@ -59,16 +59,16 @@ struct _GDBusInterfaceIface
   GTypeInterface parent_iface;
 
   /* Virtual Functions */
-  GDBusInterfaceInfo   *(*get_info)   (GDBusInterface      *interface);
-  GDBusObject          *(*get_object) (GDBusInterface      *interface);
-  void                  (*set_object) (GDBusInterface      *interface,
+  GDBusInterfaceInfo   *(*get_info)   (GDBusInterface      *interface_);
+  GDBusObject          *(*get_object) (GDBusInterface      *interface_);
+  void                  (*set_object) (GDBusInterface      *interface_,
                                        GDBusObject         *object);
 };
 
 GType                 g_dbus_interface_get_type         (void) G_GNUC_CONST;
-GDBusInterfaceInfo   *g_dbus_interface_get_info         (GDBusInterface      *interface);
-GDBusObject          *g_dbus_interface_get_object       (GDBusInterface      *interface);
-void                  g_dbus_interface_set_object       (GDBusInterface      *interface,
+GDBusInterfaceInfo   *g_dbus_interface_get_info         (GDBusInterface      *interface_);
+GDBusObject          *g_dbus_interface_get_object       (GDBusInterface      *interface_);
+void                  g_dbus_interface_set_object       (GDBusInterface      *interface_,
                                                          GDBusObject         *object);
 
 G_END_DECLS

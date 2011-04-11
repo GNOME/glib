@@ -71,10 +71,10 @@ struct _GDBusObjectManagerIface
 
   void    (*interface_added)              (GDBusObjectManager   *manager,
                                            GDBusObject          *object,
-                                           GDBusInterface       *interface);
+                                           GDBusInterface       *interface_);
   void    (*interface_removed)            (GDBusObjectManager   *manager,
                                            GDBusObject          *object,
-                                           GDBusInterface       *interface);
+                                           GDBusInterface       *interface_);
 };
 
 GType            g_dbus_object_manager_get_type        (void) G_GNUC_CONST;

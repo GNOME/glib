@@ -73,9 +73,9 @@ struct _GDBusObjectIface
 
   /* Signals */
   void (*interface_added)   (GDBusObject     *object,
-                             GDBusInterface  *interface);
+                             GDBusInterface  *interface_);
   void (*interface_removed) (GDBusObject     *object,
-                             GDBusInterface  *interface);
+                             GDBusInterface  *interface_);
 
 };
 

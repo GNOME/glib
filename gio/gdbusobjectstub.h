@@ -78,9 +78,9 @@ GType                g_dbus_object_stub_get_type                  (void) G_GNUC_
 GDBusObjectStub     *g_dbus_object_stub_new                       (const gchar        *object_path);
 void                 g_dbus_object_stub_flush                     (GDBusObjectStub    *object);
 void                 g_dbus_object_stub_add_interface             (GDBusObjectStub    *object,
-                                                                   GDBusInterfaceStub *interface);
+                                                                   GDBusInterfaceStub *interface_);
 void                 g_dbus_object_stub_remove_interface          (GDBusObjectStub    *object,
-                                                                   GDBusInterfaceStub *interface);
+                                                                   GDBusInterfaceStub *interface_);
 void                 g_dbus_object_stub_remove_interface_by_name  (GDBusObjectStub    *object,
                                                                    const gchar        *interface_name);
 void                 g_dbus_object_stub_set_object_path           (GDBusObjectStub    *object,
