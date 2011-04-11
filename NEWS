@@ -40,7 +40,35 @@ Overview of Changes from GLib 2.28.0 to 2.29.2
  642042 Overriding GDBus org.freedesktop.DBus.Properties im...
  642052 g_timeout_add(_seconds) cannot handle large intervals
  642490 notify_desktop_launch() "g_variant_new_bytestring:...
-613269,624943,637738,642797,638185,642825,642944,643197,643468,643478,643649,643795,643780,644428,644465,644552,644607,643624,639478,645789,641755,646310,644309,646420,646843,646039,641768,643074,646985
+ 613269 g_type_get_qdata() doesn't work as I expected on subtypes
+ 624943 G_VALUE_NOCOPY_CONTENTS is undocumented
+ 637738 object_interface_check_properties never actually executes
+ 638185 GIOCondition should be annotated as "flags"
+ 639478 GDBusServer's g_dbus_server_new_sync() function should just...
+ 641755 Add g_settings_get/set_uint() helpers
+ 641768 dconf gsettings backend silently drops writes if it can't...
+ 642797 g_app_info_get_default_for_type() broken for subtypes
+ 642825 Unnecessary assertion failure in g_option_context_parse()
+ 642944 NULL key lookup using g_hash_table_lookup_extended()
+ 643074 Incorrect documentation for g_socket_receive() and g_socket...
+ 643197 g_application_id_is_valid docs imply no valid ids
+ 643468 GApplication docs: Warn that handling "command-line" means...
+ 643478 GApplication::local_command_line vfunc documentation seems wrong
+ 643624 Can g_variant_unref() on an already free'd variant
+ 643649 g_application_run() should say that argc/argv can be NULL
+ 643780 shouldn't need to create an action group to use actions...
+ 643795 g_timeout_add_seconds fires with intervals 1 second longer...
+ 644309 Program name is not set when using GtkApplication
+ 644428 Crash in failure section of g_markup_collect_attributes()
+ 644465 undefined reference to `_usleep'
+ 644552 g_timeout_add_seconds(1, ...) may have a latency of up to 2...
+ 644607 Correct internal definition of C_()
+ 645789 annotations for g_file_*_contents
+ 646039 g_settings_list_children() returns child that cannot be opened
+ 646310 Accept range with only min or max
+ 646420 g_dbus_method_invocation_get_parameters() docs should say...
+ 646843 occasional abort on autologin
+ 646985 add G_APPLICATION_NON_UNIQUE flag
 
 * Translation updates
  Afrikaans
