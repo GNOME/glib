@@ -1,3 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+                  "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+<!ENTITY % local.common.attrib "xmlns:xi  CDATA  #FIXED 'http://www.w3.org/2003/XInclude'">
+<!ENTITY version SYSTEM "version.xml">
+]>
 <chapter>
   <title>Migrating to GDBus</title>
 
@@ -11,22 +17,48 @@
       differences:
       <itemizedlist>
         <listitem><para>
-          dbus-glib uses libdbus, GDBus doesn't. Instead, it relies on GIO
-          streams as transport layer, and has its own implementation for the
-          the D-Bus connection setup and authentication. Apart from using
-          streams as transport, avoiding libdbus also lets GDBus avoid some
-          thorny multithreading issues.
+          dbus-glib uses the <ulink
+          url="http://www.freedesktop.org/wiki/Software/dbus#ReferenceImplementation.28dbus-daemonandlibdbus.29">libdbus
+          reference implementation</ulink>, GDBus doesn't. Instead, it
+          relies on GIO streams as transport layer, and has its own
+          implementation for the the D-Bus connection setup and
+          authentication. Apart from using streams as transport,
+          avoiding libdbus also lets GDBus avoid some thorny
+          multithreading issues.
         </para></listitem>
         <listitem><para>
           dbus-glib uses the GObject type system for method arguments and
           return values, including a homegrown container specialization
-          mechanism. GDBus relies uses the #GVariant type system which is
+          mechanism. GDBus relies on the #GVariant type system which is
           explicitly designed to match D-Bus types.
         </para></listitem>
         <listitem><para>
-          The typical way to export an object in dbus-glib involves generating
-          glue code from XML introspection data using <command>dbus-binding-tool</command>. GDBus does not (yet?) use code generation; you are expected to
-          embed the introspection data in your application code.
+          dbus-glib models only D-Bus interfaces and does not provide
+          any types for objects. GDBus models both D-Bus interfaces
+          (via the #GDBusInterface, #GDBusProxy and
+          #GDBusInterfaceStub types) and objects (via the
+          #GDBusObject, #GDBusObjectStub and #GDBusObjectProxy types).
+        </para></listitem>
+        <listitem><para>
+          GDBus includes native support for the <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties</ulink> (via the #GDBusProxy type) and <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager">org.freedesktop.DBus.ObjectManager</ulink> D-Bus interfaces, dbus-glib doesn't.
+        </para></listitem>
+        <listitem><para>
+          The typical way to export an object in dbus-glib involves
+          generating glue code from XML introspection data using
+          <command>dbus-binding-tool</command>. GDBus provides a
+          similar tool called <command><link
+          linkend="gdbus-codegen">gdbus-codegen</link></command> that
+          can also generate Docbook D-Bus interface documentation.
+        </para></listitem>
+        <listitem><para>
+          dbus-glib doesn't provide any convenience API for owning and
+          watching bus names, GDBus provides the g_bus_own_name() and
+          g_bus_watch_name() family of convenience functions.
+        </para></listitem>
+        <listitem><para>
+          GDBus provides API to parse, generate and work with <link
+          linkend="gio-D-Bus-Introspection-Data">Introspection
+          XML</link>, dbus-glib doesn't.
         </para></listitem>
       </itemizedlist>
     </para>
@@ -43,7 +75,8 @@
         </thead>
         <tbody>
           <row><entry>#DBusGConnection</entry><entry>#GDBusConnection</entry></row>
-          <row><entry>#DBusGProxy</entry><entry>#GDBusProxy</entry></row>
+          <row><entry>#DBusGProxy</entry><entry>#GDBusProxy, #GDBusInterface - also see #GDBusObjectProxy</entry></row>
+          <row><entry>#DBusGObject</entry><entry>#GDBusInterfaceStub, #GDBusInterface - also see #GDBusObjectStub</entry></row>
           <row><entry>#DBusGMethodInvocation</entry><entry>#GDBusMethodInvocation</entry></row>
           <row><entry>dbus_g_bus_get()</entry><entry>g_bus_get_sync(), also see
                g_bus_get()</entry></row>
@@ -192,149 +225,63 @@ on_name_acquired (GDBusConnection *connection,
       </programlisting></informalexample>
       For an added layer of safety, you can specify what D-Bus
       interface the proxy is expected to conform to by using the
-      #GDBusInterfaceInfo type.
+      #GDBusInterfaceInfo type.  Additionally, #GDBusProxy loads,
+      caches and tracks changes to the D-Bus properties on the remote
+      object. It also sets up match rules so D-Bus signals from the
+      remote object are delivered locally.
     </para>
     <para>
-      Additionally, #GDBusProxy loads, caches and tracks changes to
-      the D-Bus properties on the remote object. It also sets up match
-      rules so D-Bus signals from the remote object are delivered
-      locally.
+      The #GDBusProxy type normally isn't used directly - instead
+      proxies subclassing #GDBusProxy generated by <command><link
+      linkend="gdbus-codegen">gdbus-codegen</link></command> is used, see <xref linkend="gdbus-example-gdbus-codegen"/>
     </para>
   </section>
-  <section>
-    <title>Client-side GObject bindings</title>
+
+  <section id="gdbus-example-gdbus-codegen">
+    <title>Generating code with gdbus-codegen</title>
 
     <para>
       dbus-glib comes with <command>dbus-binding-tool</command>, which
-      can produce somewhat nice client-side wrappers for a D-Bus interface.
-      GDBus does not have code-generation at this point, but #GDBusProxy
-      is designed to allow the creating of client-side wrappers by
-      subclassing #GDBusProxy.
+      can produce somewhat nice client- and server-side wrappers for a D-Bus interface.
+      With GDBus, <command><link
+      linkend="gdbus-codegen">gdbus-codegen</link></command> is used and like
+      its counterpart, it also takes D-Bus Introspection XML as input:
+    </para>
+    <example id="gdbus-example-codegen-input"><title>Example D-Bus Introspection XML</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-objectmanager.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+    <para>
+      If this XML is processed like this
+<informalexample><programlisting><![CDATA[
+gdbus-codegen --c-namespace Example 				      \
+              --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
+              --generate-c-code generated-code	                      \
+              --generate-docbook generated-docs                       \
+              gdbus-example-objectmanager.xml
+]]></programlisting></informalexample>
+      then two files <filename>generated-code.h</filename> and
+      <filename>generated-code.c</filename> are
+      generated. Additionally a single XML file
+      <filename>generated-docs-org.gtk.GDBus.Example.ObjectManager.Animal</filename>
+      with Docbook XML is generated. For an example of what the docs look
+      like see <link
+      linkend="gdbus-interface-org-gtk-GDBus-Example-ObjectManager-Animal">this page</link>.
     </para>
     <para>
-      For an example of a #GDBusProxy-derived class that wraps a D-Bus
-      interface in a type-safe way, see <xref
-      linkend="gdbus-example-proxy-subclass"/>. The comparison is as
-      follows:
-      <table id="gdbus-example-type-safe-proxy">
-        <title>Wrapping the org.freedesktop.Accounts.User D-Bus interface in the AccountUser GObject type</title>
-        <tgroup cols="2">
-          <thead>
-            <row><entry>D-Bus concept</entry><entry>GObject concept</entry></row>
-          </thead>
-          <tbody>
-            <row>
-              <entry>AutomaticLogin property</entry>
-              <entry>
-                <para><literal>AccountsUser:automatic-login</literal> GObject property</para>
-                <para>C getter: accounts_user_get_automatic_login()</para>
-                <para>Watch changes via the <literal>notify::automatic-login</literal> signal</para>
-              </entry>
-            </row>
-            <row>
-              <entry>RealName property</entry>
-              <entry>
-                <para><literal>AccountsUser:real-name</literal> GObject property</para>
-                <para>C getter: accounts_user_get_real_name()</para>
-                <para>Watch changes via the <literal>notify::real-name signal</literal></para>
-              </entry>
-            </row>
-            <row>
-              <entry>UserName property</entry>
-              <entry>
-                <para><literal>AccountsUser:user-name</literal> GObject property</para>
-                <para>C getter: accounts_user_get_user_name()</para>
-                <para>Watch changes via the <literal>notify::user-name</literal> signal</para>
-              </entry>
-            </row>
-            <row>
-              <entry>Changed signal</entry>
-              <entry>
-                <para><literal>AccountsUser::changed</literal> GObject signal</para>
-                <para>Watch via e.g. g_signal_connect()</para>
-              </entry>
-            </row>
-            <row>
-              <entry>Frobnicate method</entry>
-              <entry>
-                <para>Use accounts_user_frobnicate() + accounts_user_frobnicate_finish() or accounts_user_frobnicate_sync() to invoke</para>
-              </entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
+      While the contents of <filename>generated-code.h</filename> and
+      <filename>generated-code.c</filename> are best described by the
+      <command><link
+      linkend="gdbus-codegen">gdbus-codegen</link></command> manual
+      page, brief examples of how this generated code can be used can be found in
+      <xref linkend="gdbus-example-codegen-server"/>
+      and
+      <xref linkend="gdbus-example-codegen-client"/>.
     </para>
-    <example id="gdbus-example-proxy-subclass"><title>GDBusProxy subclass example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-proxy-subclass.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+
+    <example id="gdbus-example-codegen-server"><title>Server-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-objectmanager-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+
+    <example id="gdbus-example-codegen-client"><title>Client-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-objectmanager-client.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+
   </section>
 
-  <section>
-    <title>Exporting objects</title>
-
-    <para>
-      With dbus-glib, exporting an object over D-Bus works by generating
-      a bunch of glue code from your introspection XML with
-      <command>dbus-binding-tool</command>. The glue code gets included in
-      your source, and you need to call
-      <informalexample><programlisting>
-  dbus_g_object_type_install_info (TYPE_MYOBJECT,
-                                   &amp;dbus_glib_myobject_object_info);
-      </programlisting></informalexample>
-      in your class_init() function to tell dbus-glib about your type.
-      To actually export an instance, you call
-      <informalexample><programlisting>
-  dbus_g_connection_register_g_object (system_bus_connection,
-                                       my_object_path,
-                                       G_OBJECT (my_object));
-      </programlisting></informalexample>
-
-    </para>
-    <para>
-      The GDBus way of exporting an object works by embedding the
-      introspection XML in the source, creating introspection data
-      structures from it with g_dbus_node_info_new_for_xml(), and
-      passing that along when you register the object:
-      <informalexample><programlisting><![CDATA[
-
-  static const gchar introspection_xml[] =
-    "<node>"
-    "  <interface name='org.gtk.GDBus.TestPeerInterface'>"
-    "    <method name='HelloWorld'>"
-    "      <arg type='s' name='greeting' direction='in'/>"
-    "      <arg type='s' name='response' direction='out'/>"
-    "    </method>"
-    "  </interface>"
-    "</node>";
-
-  /* parse introspection data */
-  introspection_data = g_dbus_node_info_new_for_xml (introspection_xml, NULL);
-
-  /
-  id = g_dbus_connection_register_object (connection,
-                                          "/org/gtk/GDBus/TestObject",
-                                          "org.gtk.GDBus.TestPeerInterface",
-                                          introspection_data->interfaces[0],
-                                          &interface_vtable,
-                                          NULL,  /* user_data */
-                                          NULL,  /* user_data_free_func */
-                                          NULL); /* GError** */
-
-]]>
-    </programlisting></informalexample>
-    </para>
-    <para>
-      The actual implementation of the exported object is done by specifying
-      a #GDBusInterfaceVTable that has method_call(), get_property() and
-      set_property() methods. There is no direct support beyond that for
-      exporting #GObjects, so there is quite a bit of manual work involved,
-      as you can see in the following example.
-    </para>
-    <para>
-      Since the VTable methods don't have any direct #GObject support, we
-      pass the exported object as @user_data. Also note that we have to handle
-      the emission of the PropertiesChanged signal ourselves, by connecting
-      to ::notify.
-    </para>
-     <example id="gdbus-export"><title>Exporting a GObject</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-export.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
-  </section>
+  <xi:include href="../../../../gio/tests/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
 
 </chapter>

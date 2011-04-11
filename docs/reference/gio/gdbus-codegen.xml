@@ -8,7 +8,7 @@
 
 <refnamediv>
   <refname>gdbus-codegen</refname>
-  <refpurpose>D-Bus Code Generator</refpurpose>
+  <refpurpose>GLib D-Bus code generator</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
