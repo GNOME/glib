@@ -1,4 +1,5 @@
 NULL =
+BUILT_SOURCES =
 
 include $(top_srcdir)/Makefile.decl
 
@@ -93,6 +94,8 @@ SAMPLE_PROGS = 				\
 	gapplication-example-cmdline2	\
 	gapplication-example-cmdline3	\
 	gapplication-example-actions	\
+	gdbus-example-objectmanager-server \
+	gdbus-example-objectmanager-client \
 	$(NULL)
 
 
@@ -253,6 +256,8 @@ gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
 		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8  		\
 		test-codegen.xml 									\
 		$(NULL)
+
+BUILT_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
 
 gdbus_test_codegen_SOURCES  = gdbus-test-codegen.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_test_codegen_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
@@ -434,6 +439,29 @@ proxy_SOURCES = proxy.c
 proxy_LDADD   = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
+# ----------------------------------------------------------------------------------------------------
+
+gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c : gdbus-example-objectmanager.xml
+	$(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
+		--c-namespace Example 						\
+		--interface-prefix org.gtk.GDBus.Example.ObjectManager.		\
+		--generate-c-code gdbus-example-objectmanager-generated		\
+		--generate-docbook gdbus-example-objectmanager-generated	\
+		gdbus-example-objectmanager.xml					\
+		$(NULL)
+
+BUILT_SOURCES += gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
+
+gdbus_example_objectmanager_server_SOURCES  = gdbus-example-objectmanager-server.c
+gdbus_example_objectmanager_server_SOURCES += gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
+gdbus_example_objectmanager_server_LDADD= $(progs_ldadd)
+
+gdbus_example_objectmanager_client_SOURCES  = gdbus-example-objectmanager-client.c
+gdbus_example_objectmanager_client_SOURCES += gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
+gdbus_example_objectmanager_client_LDADD= $(progs_ldadd)
+
+# ----------------------------------------------------------------------------------------------------
+
 EXTRA_DIST += \
 	socket-common.c			\
 	org.gtk.test.gschema		\
@@ -448,6 +476,7 @@ EXTRA_DIST += \
 	appinfo-test-notgnome.desktop	\
 	gdbus-testserver.py		\
 	test-codegen.xml		\
+	gdbus-example-objectmanager.xml \
 	$(NULL)
 
 MISC_STUFF = test.mo

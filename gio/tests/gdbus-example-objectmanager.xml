@@ -1,0 +1,33 @@
+<node>
+
+  <!-- org.gtk.GDBus.Example.ObjectManager.Animal:
+       @short_description: Simple Animal
+
+       This interface is used to describe a simple animal.
+    -->
+  <interface name="org.gtk.GDBus.Example.ObjectManager.Animal">
+
+    <!-- Mood: The mood of the animal.
+
+         Known values for this property include
+         <literal>Happy</literal> and <literal>Sad</literal>. Use the
+         org.gtk.GDBus.Example.ObjectManager.Animal.Poke() method to
+         change this property -->
+    <property name="Mood" type="s" access="read"/>
+
+    <!--
+        Poke:
+        @make_sad: Whether to make the animal sad.
+        @make_angry: Whether to make the animal angry.
+
+        Method used to changing the mood of the animal. See also the
+        #org.gtk.GDBus.Example.ObjectManager.Animal:Mood property.
+      -->
+    <method name="Poke">
+      <arg direction="in" type="b" name="make_sad"/>
+      <arg direction="in" type="b" name="make_happy"/>
+    </method>
+
+  </interface>
+
+</node>
