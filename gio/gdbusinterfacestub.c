@@ -76,17 +76,17 @@ G_DEFINE_ABSTRACT_TYPE_WITH_CODE (GDBusInterfaceStub, g_dbus_interface_stub, G_T
 static void
 g_dbus_interface_stub_finalize (GObject *object)
 {
-  GDBusInterfaceStub *stub = G_DBUS_INTERFACE_STUB (object);
+  GDBusInterfaceStub *interface = G_DBUS_INTERFACE_STUB (object);
   /* unexport if already exported */
-  if (stub->priv->registration_id > 0)
-    g_dbus_interface_stub_unexport (stub);
+  if (interface->priv->registration_id > 0)
+    g_dbus_interface_stub_unexport (interface);
 
-  g_assert (stub->priv->connection == NULL);
-  g_assert (stub->priv->object_path == NULL);
-  g_assert (stub->priv->hooked_vtable == NULL);
+  g_assert (interface->priv->connection == NULL);
+  g_assert (interface->priv->object_path == NULL);
+  g_assert (interface->priv->hooked_vtable == NULL);
 
-  if (stub->priv->object != NULL)
-    g_object_remove_weak_pointer (G_OBJECT (stub->priv->object), (gpointer *) &stub->priv->object);
+  if (interface->priv->object != NULL)
+    g_object_remove_weak_pointer (G_OBJECT (interface->priv->object), (gpointer *) &interface->priv->object);
   G_OBJECT_CLASS (g_dbus_interface_stub_parent_class)->finalize (object);
 }
 
@@ -96,12 +96,12 @@ g_dbus_interface_stub_get_property (GObject      *object,
                                     GValue       *value,
                                     GParamSpec   *pspec)
 {
-  GDBusInterfaceStub *stub = G_DBUS_INTERFACE_STUB (object);
+  GDBusInterfaceStub *interface = G_DBUS_INTERFACE_STUB (object);
 
   switch (prop_id)
     {
     case PROP_G_FLAGS:
-      g_value_set_flags (value, g_dbus_interface_stub_get_flags (stub));
+      g_value_set_flags (value, g_dbus_interface_stub_get_flags (interface));
       break;
 
     default:
@@ -116,12 +116,12 @@ g_dbus_interface_stub_set_property (GObject      *object,
                                     const GValue *value,
                                     GParamSpec   *pspec)
 {
-  GDBusInterfaceStub *stub = G_DBUS_INTERFACE_STUB (object);
+  GDBusInterfaceStub *interface = G_DBUS_INTERFACE_STUB (object);
 
   switch (prop_id)
     {
     case PROP_G_FLAGS:
-      g_dbus_interface_stub_set_flags (stub, g_value_get_flags (value));
+      g_dbus_interface_stub_set_flags (interface, g_value_get_flags (value));
       break;
 
     default:
@@ -131,7 +131,7 @@ g_dbus_interface_stub_set_property (GObject      *object,
 }
 
 static gboolean
-g_dbus_interface_stub_g_authorize_method_default (GDBusInterfaceStub    *stub,
+g_dbus_interface_stub_g_authorize_method_default (GDBusInterfaceStub    *interface,
                                                   GDBusMethodInvocation *invocation)
 {
   return TRUE;
@@ -226,34 +226,34 @@ g_dbus_interface_stub_class_init (GDBusInterfaceStubClass *klass)
 }
 
 static void
-g_dbus_interface_stub_init (GDBusInterfaceStub *stub)
+g_dbus_interface_stub_init (GDBusInterfaceStub *interface)
 {
-  stub->priv = G_TYPE_INSTANCE_GET_PRIVATE (stub, G_TYPE_DBUS_INTERFACE_STUB, GDBusInterfaceStubPrivate);
+  interface->priv = G_TYPE_INSTANCE_GET_PRIVATE (interface, G_TYPE_DBUS_INTERFACE_STUB, GDBusInterfaceStubPrivate);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
 
 /**
  * g_dbus_interface_stub_get_flags:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  *
  * Gets the #GDBusInterfaceStubFlags that describes what the behavior
- * of @stub
+ * of @interface
  *
  * Returns: One or more flags from the #GDBusInterfaceStubFlags enumeration.
  *
  * Since: 2.30
  */
 GDBusInterfaceStubFlags
-g_dbus_interface_stub_get_flags (GDBusInterfaceStub  *stub)
+g_dbus_interface_stub_get_flags (GDBusInterfaceStub  *interface)
 {
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (stub), G_DBUS_INTERFACE_STUB_FLAGS_NONE);
-  return stub->priv->flags;
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (interface), G_DBUS_INTERFACE_STUB_FLAGS_NONE);
+  return interface->priv->flags;
 }
 
 /**
  * g_dbus_interface_stub_set_flags:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  * @flags: Flags from the #GDBusInterfaceStubFlags enumeration.
  *
  * Sets flags describing what the behavior of @stub should be.
@@ -261,20 +261,20 @@ g_dbus_interface_stub_get_flags (GDBusInterfaceStub  *stub)
  * Since: 2.30
  */
 void
-g_dbus_interface_stub_set_flags (GDBusInterfaceStub      *stub,
+g_dbus_interface_stub_set_flags (GDBusInterfaceStub      *interface,
                                  GDBusInterfaceStubFlags  flags)
 {
-  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (stub));
-  if (stub->priv->flags != flags)
+  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (interface));
+  if (interface->priv->flags != flags)
     {
-      stub->priv->flags = flags;
-      g_object_notify (G_OBJECT (stub), "g-flags");
+      interface->priv->flags = flags;
+      g_object_notify (G_OBJECT (interface), "g-flags");
     }
 }
 
 /**
  * g_dbus_interface_stub_get_info:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  *
  * Gets D-Bus introspection information for the D-Bus interface
  * implemented by @interface.
@@ -284,21 +284,21 @@ g_dbus_interface_stub_set_flags (GDBusInterfaceStub      *stub,
  * Since: 2.30
  */
 GDBusInterfaceInfo *
-g_dbus_interface_stub_get_info (GDBusInterfaceStub *stub)
+g_dbus_interface_stub_get_info (GDBusInterfaceStub *interface)
 {
   GDBusInterfaceInfo *ret;
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (stub), NULL);
-  ret = G_DBUS_INTERFACE_STUB_GET_CLASS (stub)->get_info (stub);
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (interface), NULL);
+  ret = G_DBUS_INTERFACE_STUB_GET_CLASS (interface)->get_info (interface);
   g_warn_if_fail (ret != NULL);
   return ret;
 }
 
 /**
  * g_dbus_interface_stub_get_vtable:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  *
  * Gets the interface vtable for the D-Bus interface implemented by
- * @interface. The returned function pointers should expect @stub
+ * @interface. The returned function pointers should expect @interface
  * itself to be passed as @user_data.
  *
  * Returns: A #GDBusInterfaceVTable (never %NULL).
@@ -306,40 +306,40 @@ g_dbus_interface_stub_get_info (GDBusInterfaceStub *stub)
  * Since: 2.30
  */
 GDBusInterfaceVTable *
-g_dbus_interface_stub_get_vtable (GDBusInterfaceStub *stub)
+g_dbus_interface_stub_get_vtable (GDBusInterfaceStub *interface)
 {
   GDBusInterfaceVTable *ret;
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (stub), NULL);
-  ret = G_DBUS_INTERFACE_STUB_GET_CLASS (stub)->get_vtable (stub);
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (interface), NULL);
+  ret = G_DBUS_INTERFACE_STUB_GET_CLASS (interface)->get_vtable (interface);
   g_warn_if_fail (ret != NULL);
   return ret;
 }
 
 /**
  * g_dbus_interface_stub_get_properties:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  *
- * Gets all D-Bus properties for @stub.
+ * Gets all D-Bus properties for @interface.
  *
  * Returns: A new, floating, #GVariant. Free with g_variant_unref().
  *
  * Since: 2.30
  */
 GVariant *
-g_dbus_interface_stub_get_properties (GDBusInterfaceStub *stub)
+g_dbus_interface_stub_get_properties (GDBusInterfaceStub *interface)
 {
   GVariant *ret;
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (stub), NULL);
-  ret = G_DBUS_INTERFACE_STUB_GET_CLASS (stub)->get_properties (stub);
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (interface), NULL);
+  ret = G_DBUS_INTERFACE_STUB_GET_CLASS (interface)->get_properties (interface);
   g_warn_if_fail (g_variant_is_floating (ret));
   return ret;
 }
 
 /**
  * g_dbus_interface_stub_flush:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  *
- * If @stub has outstanding changes, request for these changes to be
+ * If @interface has outstanding changes, request for these changes to be
  * emitted immediately.
  *
  * For example, an exported D-Bus interface may queue up property
@@ -351,38 +351,38 @@ g_dbus_interface_stub_get_properties (GDBusInterfaceStub *stub)
  * Since: 2.30
  */
 void
-g_dbus_interface_stub_flush (GDBusInterfaceStub *stub)
+g_dbus_interface_stub_flush (GDBusInterfaceStub *interface)
 {
-  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (stub));
-  G_DBUS_INTERFACE_STUB_GET_CLASS (stub)->flush (stub);
+  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (interface));
+  G_DBUS_INTERFACE_STUB_GET_CLASS (interface)->flush (interface);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
 
 static GDBusInterfaceInfo *
-_g_dbus_interface_stub_get_info (GDBusInterface *interface)
+_g_dbus_interface_stub_get_info (GDBusInterface *interface_)
 {
-  GDBusInterfaceStub *stub = G_DBUS_INTERFACE_STUB (interface);
-  return g_dbus_interface_stub_get_info (stub);
+  GDBusInterfaceStub *interface = G_DBUS_INTERFACE_STUB (interface_);
+  return g_dbus_interface_stub_get_info (interface);
 }
 
 static GDBusObject *
-g_dbus_interface_stub_get_object (GDBusInterface *interface)
+g_dbus_interface_stub_get_object (GDBusInterface *interface_)
 {
-  GDBusInterfaceStub *stub = G_DBUS_INTERFACE_STUB (interface);
-  return stub->priv->object;
+  GDBusInterfaceStub *interface = G_DBUS_INTERFACE_STUB (interface_);
+  return interface->priv->object;
 }
 
 static void
-g_dbus_interface_stub_set_object (GDBusInterface *interface,
+g_dbus_interface_stub_set_object (GDBusInterface *interface_,
                                   GDBusObject    *object)
 {
-  GDBusInterfaceStub *stub = G_DBUS_INTERFACE_STUB (interface);
-  if (stub->priv->object != NULL)
-    g_object_remove_weak_pointer (G_OBJECT (stub->priv->object), (gpointer *) &stub->priv->object);
-  stub->priv->object = object;
+  GDBusInterfaceStub *interface = G_DBUS_INTERFACE_STUB (interface_);
+  if (interface->priv->object != NULL)
+    g_object_remove_weak_pointer (G_OBJECT (interface->priv->object), (gpointer *) &interface->priv->object);
+  interface->priv->object = object;
   if (object != NULL)
-    g_object_add_weak_pointer (G_OBJECT (stub->priv->object), (gpointer *) &stub->priv->object);
+    g_object_add_weak_pointer (G_OBJECT (interface->priv->object), (gpointer *) &interface->priv->object);
 }
 
 static void
@@ -398,7 +398,7 @@ dbus_interface_interface_init (GDBusInterfaceIface *iface)
 typedef struct
 {
   volatile gint ref_count;
-  GDBusInterfaceStub           *stub;
+  GDBusInterfaceStub           *interface;
   GDBusInterfaceMethodCallFunc  method_call_func;
   GDBusMethodInvocation        *invocation;
   GMainContext                 *context;
@@ -447,17 +447,17 @@ dispatch_in_thread_func (GIOSchedulerJob *job,
 
   /* first check on the enclosing object (if any), then the interface */
   authorized = TRUE;
-  if (data->stub->priv->object != NULL)
+  if (data->interface->priv->object != NULL)
     {
-      g_signal_emit_by_name (data->stub->priv->object,
+      g_signal_emit_by_name (data->interface->priv->object,
                              "authorize-method",
-                             data->stub,
+                             data->interface,
                              data->invocation,
                              &authorized);
     }
   if (authorized)
     {
-      g_signal_emit (data->stub,
+      g_signal_emit (data->interface,
                      signals[G_AUTHORIZE_METHOD_SIGNAL],
                      0,
                      data->invocation,
@@ -467,7 +467,7 @@ dispatch_in_thread_func (GIOSchedulerJob *job,
   if (authorized)
     {
       gboolean run_in_thread;
-      run_in_thread = (data->stub->priv->flags & G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
+      run_in_thread = (data->interface->priv->flags & G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
       if (run_in_thread)
         {
           /* might as well just re-use the existing thread */
@@ -499,7 +499,7 @@ dispatch_in_thread_func (GIOSchedulerJob *job,
 }
 
 static void
-g_dbus_interface_method_dispatch_helper (GDBusInterfaceStub           *stub,
+g_dbus_interface_method_dispatch_helper (GDBusInterfaceStub           *interface,
                                          GDBusInterfaceMethodCallFunc  method_call_func,
                                          GDBusMethodInvocation        *invocation)
 {
@@ -508,7 +508,7 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceStub           *stub,
   gboolean emit_authorized_signal;
   gboolean run_in_thread;
 
-  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (stub));
+  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (interface));
   g_return_if_fail (method_call_func != NULL);
   g_return_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation));
 
@@ -517,21 +517,21 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceStub           *stub,
    *  a) no handler is connected and class handler is not overridden (both interface and object); and
    *  b) method calls are not dispatched in a thread
    */
-  has_handlers = g_signal_has_handler_pending (stub,
+  has_handlers = g_signal_has_handler_pending (interface,
                                                signals[G_AUTHORIZE_METHOD_SIGNAL],
                                                0,
                                                TRUE);
-  has_default_class_handler = (G_DBUS_INTERFACE_STUB_GET_CLASS (stub)->g_authorize_method ==
+  has_default_class_handler = (G_DBUS_INTERFACE_STUB_GET_CLASS (interface)->g_authorize_method ==
                                g_dbus_interface_stub_g_authorize_method_default);
 
   emit_authorized_signal = (has_handlers || !has_default_class_handler);
   if (!emit_authorized_signal)
     {
-      if (stub->priv->object != NULL)
-        emit_authorized_signal = _g_dbus_object_stub_has_authorize_method_handlers (G_DBUS_OBJECT_STUB (stub->priv->object));
+      if (interface->priv->object != NULL)
+        emit_authorized_signal = _g_dbus_object_stub_has_authorize_method_handlers (G_DBUS_OBJECT_STUB (interface->priv->object));
     }
 
-  run_in_thread = (stub->priv->flags & G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
+  run_in_thread = (interface->priv->flags & G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
   if (!emit_authorized_signal && !run_in_thread)
     {
       method_call_func (g_dbus_method_invocation_get_connection (invocation),
@@ -547,7 +547,7 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceStub           *stub,
     {
       DispatchData *data;
       data = g_new0 (DispatchData, 1);
-      data->stub = stub;
+      data->interface = interface;
       data->method_call_func = method_call_func;
       data->invocation = invocation;
       data->context = g_main_context_get_thread_default ();
@@ -572,9 +572,9 @@ stub_intercept_handle_method_call(GDBusConnection *connection,
                                   GDBusMethodInvocation *invocation,
                                   gpointer user_data)
 {
-  GDBusInterfaceStub *stub = G_DBUS_INTERFACE_STUB (user_data);
-  g_dbus_interface_method_dispatch_helper (stub,
-                                           g_dbus_interface_stub_get_vtable (stub)->method_call,
+  GDBusInterfaceStub *interface = G_DBUS_INTERFACE_STUB (user_data);
+  g_dbus_interface_method_dispatch_helper (interface,
+                                           g_dbus_interface_stub_get_vtable (interface)->method_call,
                                            invocation);
 }
 
@@ -582,48 +582,48 @@ stub_intercept_handle_method_call(GDBusConnection *connection,
 
 /**
  * g_dbus_interface_stub_get_connection:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  *
- * Gets the connection that @stub is exported on, if any.
+ * Gets the connection that @interface is exported on, if any.
  *
- * Returns: (transfer none): A #GDBusConnection or %NULL if @stub is
- * not exported anywhere. Do not free, the object belongs to @stub.
+ * Returns: (transfer none): A #GDBusConnection or %NULL if @interface is
+ * not exported anywhere. Do not free, the object belongs to @interface.
  *
  * Since: 2.30
  */
 GDBusConnection *
-g_dbus_interface_stub_get_connection (GDBusInterfaceStub *stub)
+g_dbus_interface_stub_get_connection (GDBusInterfaceStub *interface)
 {
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (stub), NULL);
-  return stub->priv->connection;
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (interface), NULL);
+  return interface->priv->connection;
 }
 
 /**
  * g_dbus_interface_stub_get_object_path:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  *
- * Gets the object that that @stub is exported on, if any.
+ * Gets the object that that @interface is exported on, if any.
  *
- * Returns: A string owned by @stub or %NULL if stub is not exported
- * anywhere. Do not free, the string belongs to @stub.
+ * Returns: A string owned by @interface or %NULL if @interface is not exported
+ * anywhere. Do not free, the string belongs to @interface.
  *
  * Since: 2.30
  */
 const gchar *
-g_dbus_interface_stub_get_object_path (GDBusInterfaceStub *stub)
+g_dbus_interface_stub_get_object_path (GDBusInterfaceStub *interface)
 {
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (stub), NULL);
-  return stub->priv->object_path;
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (interface), NULL);
+  return interface->priv->object_path;
 }
 
 /**
  * g_dbus_interface_stub_export:
- * @stub: The D-Bus interface to export.
- * @connection: A #GDBusConnection to export @stub on.
+ * @interface: The D-Bus interface to export.
+ * @connection: A #GDBusConnection to export @interface on.
  * @object_path: The path to export the interface at.
  * @error: Return location for error or %NULL.
  *
- * Exports @stubs at @object_path on @connection.
+ * Exports @interface at @object_path on @connection.
  *
  * Use g_dbus_interface_stub_unexport() to unexport the object.
  *
@@ -633,20 +633,20 @@ g_dbus_interface_stub_get_object_path (GDBusInterfaceStub *stub)
  * Since: 2.30
  */
 gboolean
-g_dbus_interface_stub_export (GDBusInterfaceStub  *stub,
+g_dbus_interface_stub_export (GDBusInterfaceStub  *interface,
                               GDBusConnection     *connection,
                               const gchar         *object_path,
                               GError             **error)
 {
   gboolean ret;
 
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (stub), 0);
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE_STUB (interface), 0);
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
   g_return_val_if_fail (g_variant_is_object_path (object_path), 0);
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
 
   ret = FALSE;
-  if (stub->priv->registration_id > 0)
+  if (interface->priv->registration_id > 0)
     {
       g_set_error_literal (error,
                            G_IO_ERROR,
@@ -655,27 +655,27 @@ g_dbus_interface_stub_export (GDBusInterfaceStub  *stub,
       goto out;
     }
 
-  g_assert (stub->priv->connection == NULL);
-  g_assert (stub->priv->object_path == NULL);
-  g_assert (stub->priv->hooked_vtable == NULL);
+  g_assert (interface->priv->connection == NULL);
+  g_assert (interface->priv->object_path == NULL);
+  g_assert (interface->priv->hooked_vtable == NULL);
 
   /* Hook the vtable since we need to intercept method calls for
    * ::g-authorize-method and for dispatching in thread vs
    * context
    */
-  stub->priv->hooked_vtable = g_memdup (g_dbus_interface_stub_get_vtable (stub), sizeof (GDBusInterfaceVTable));
-  stub->priv->hooked_vtable->method_call = stub_intercept_handle_method_call;
+  interface->priv->hooked_vtable = g_memdup (g_dbus_interface_stub_get_vtable (interface), sizeof (GDBusInterfaceVTable));
+  interface->priv->hooked_vtable->method_call = stub_intercept_handle_method_call;
 
-  stub->priv->connection = g_object_ref (connection);
-  stub->priv->object_path = g_strdup (object_path);
-  stub->priv->registration_id = g_dbus_connection_register_object (connection,
-                                                                   object_path,
-                                                                   g_dbus_interface_stub_get_info (stub),
-                                                                   stub->priv->hooked_vtable,
-                                                                   stub,
-                                                                   NULL, /* user_data_free_func */
-                                                                   error);
-  if (stub->priv->registration_id == 0)
+  interface->priv->connection = g_object_ref (connection);
+  interface->priv->object_path = g_strdup (object_path);
+  interface->priv->registration_id = g_dbus_connection_register_object (connection,
+                                                                        object_path,
+                                                                        g_dbus_interface_stub_get_info (interface),
+                                                                        interface->priv->hooked_vtable,
+                                                                        interface,
+                                                                        NULL, /* user_data_free_func */
+                                                                        error);
+  if (interface->priv->registration_id == 0)
     goto out;
 
   ret = TRUE;
@@ -686,7 +686,7 @@ g_dbus_interface_stub_export (GDBusInterfaceStub  *stub,
 
 /**
  * g_dbus_interface_stub_unexport:
- * @stub: A #GDBusInterfaceStub.
+ * @interface: A #GDBusInterfaceStub.
  *
  * Stops exporting an interface previously exported with
  * g_dbus_interface_stub_export().
@@ -694,24 +694,24 @@ g_dbus_interface_stub_export (GDBusInterfaceStub  *stub,
  * Since: 2.30
  */
 void
-g_dbus_interface_stub_unexport (GDBusInterfaceStub *stub)
+g_dbus_interface_stub_unexport (GDBusInterfaceStub *interface)
 {
-  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (stub));
-  g_return_if_fail (stub->priv->registration_id > 0);
+  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (interface));
+  g_return_if_fail (interface->priv->registration_id > 0);
 
-  g_assert (stub->priv->connection != NULL);
-  g_assert (stub->priv->object_path != NULL);
-  g_assert (stub->priv->hooked_vtable != NULL);
+  g_assert (interface->priv->connection != NULL);
+  g_assert (interface->priv->object_path != NULL);
+  g_assert (interface->priv->hooked_vtable != NULL);
 
-  g_warn_if_fail (g_dbus_connection_unregister_object (stub->priv->connection,
-                                                       stub->priv->registration_id));
+  g_warn_if_fail (g_dbus_connection_unregister_object (interface->priv->connection,
+                                                       interface->priv->registration_id));
 
-  g_object_unref (stub->priv->connection);
-  g_free (stub->priv->object_path);
-  stub->priv->connection = NULL;
-  stub->priv->object_path = NULL;
-  stub->priv->hooked_vtable = NULL;
-  stub->priv->registration_id = 0;
+  g_object_unref (interface->priv->connection);
+  g_free (interface->priv->object_path);
+  interface->priv->connection = NULL;
+  interface->priv->object_path = NULL;
+  interface->priv->hooked_vtable = NULL;
+  interface->priv->registration_id = 0;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */

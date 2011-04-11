@@ -70,17 +70,17 @@ struct _GDBusInterfaceStubClass
   GObjectClass parent_class;
 
   /* Virtual Functions */
-  GDBusInterfaceInfo   *(*get_info)       (GDBusInterfaceStub  *stub);
-  GDBusInterfaceVTable *(*get_vtable)     (GDBusInterfaceStub  *stub);
-  GVariant             *(*get_properties) (GDBusInterfaceStub  *stub);
-  void                  (*flush)          (GDBusInterfaceStub  *stub);
+  GDBusInterfaceInfo   *(*get_info)       (GDBusInterfaceStub  *interface_);
+  GDBusInterfaceVTable *(*get_vtable)     (GDBusInterfaceStub  *interface_);
+  GVariant             *(*get_properties) (GDBusInterfaceStub  *interface_);
+  void                  (*flush)          (GDBusInterfaceStub  *interface_);
 
   /*< private >*/
   gpointer vfunc_padding[8];
   /*< public >*/
 
   /* Signals */
-  gboolean (*g_authorize_method) (GDBusInterfaceStub    *stub,
+  gboolean (*g_authorize_method) (GDBusInterfaceStub    *interface_,
                                   GDBusMethodInvocation *invocation);
 
   /*< private >*/
@@ -88,21 +88,21 @@ struct _GDBusInterfaceStubClass
 };
 
 GType                    g_dbus_interface_stub_get_type       (void) G_GNUC_CONST;
-GDBusInterfaceStubFlags  g_dbus_interface_stub_get_flags      (GDBusInterfaceStub      *stub);
-void                     g_dbus_interface_stub_set_flags      (GDBusInterfaceStub      *stub,
+GDBusInterfaceStubFlags  g_dbus_interface_stub_get_flags      (GDBusInterfaceStub      *interface_);
+void                     g_dbus_interface_stub_set_flags      (GDBusInterfaceStub      *interface_,
                                                                GDBusInterfaceStubFlags  flags);
-GDBusInterfaceInfo      *g_dbus_interface_stub_get_info       (GDBusInterfaceStub      *stub);
-GDBusInterfaceVTable    *g_dbus_interface_stub_get_vtable     (GDBusInterfaceStub      *stub);
-GVariant                *g_dbus_interface_stub_get_properties (GDBusInterfaceStub      *stub);
-void                     g_dbus_interface_stub_flush          (GDBusInterfaceStub      *stub);
+GDBusInterfaceInfo      *g_dbus_interface_stub_get_info       (GDBusInterfaceStub      *interface_);
+GDBusInterfaceVTable    *g_dbus_interface_stub_get_vtable     (GDBusInterfaceStub      *interface_);
+GVariant                *g_dbus_interface_stub_get_properties (GDBusInterfaceStub      *interface_);
+void                     g_dbus_interface_stub_flush          (GDBusInterfaceStub      *interface_);
 
-gboolean                 g_dbus_interface_stub_export          (GDBusInterfaceStub      *stub,
+gboolean                 g_dbus_interface_stub_export          (GDBusInterfaceStub      *interface_,
                                                                 GDBusConnection         *connection,
                                                                 const gchar             *object_path,
                                                                 GError                 **error);
-void                     g_dbus_interface_stub_unexport        (GDBusInterfaceStub      *stub);
-GDBusConnection         *g_dbus_interface_stub_get_connection  (GDBusInterfaceStub      *stub);
-const gchar             *g_dbus_interface_stub_get_object_path (GDBusInterfaceStub      *stub);
+void                     g_dbus_interface_stub_unexport        (GDBusInterfaceStub      *interface_);
+GDBusConnection         *g_dbus_interface_stub_get_connection  (GDBusInterfaceStub      *interface_);
+const gchar             *g_dbus_interface_stub_get_object_path (GDBusInterfaceStub      *interface_);
 
 G_END_DECLS
 
