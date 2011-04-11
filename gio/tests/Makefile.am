@@ -446,7 +446,9 @@ EXTRA_DIST += \
 	appinfo-test2.desktop		\
 	appinfo-test-gnome.desktop	\
 	appinfo-test-notgnome.desktop	\
-	gdbus-testserver.py
+	gdbus-testserver.py		\
+	test-codegen.xml		\
+	$(NULL)
 
 MISC_STUFF = test.mo
 
