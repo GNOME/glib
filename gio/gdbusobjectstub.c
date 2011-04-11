@@ -259,59 +259,59 @@ g_dbus_object_stub_get_object_path (GDBusObject *_object)
 /**
  * g_dbus_object_stub_add_interface:
  * @object: A #GDBusObjectStub.
- * @interface: A #GDBusInterfaceStub.
+ * @interface_: A #GDBusInterfaceStub.
  *
- * Adds @interface to @object.
+ * Adds @interface_ to @object.
  *
  * If @object already contains a #GDBusInterfaceStub with the same
- * interface name, it is removed before @interface is added.
+ * interface name, it is removed before @interface_ is added.
  *
- * Note that @object takes its own reference on @interface and holds
+ * Note that @object takes its own reference on @interface_ and holds
  * it until removed.
  *
  * Since: 2.30
  */
 void
 g_dbus_object_stub_add_interface (GDBusObjectStub     *object,
-                                  GDBusInterfaceStub  *interface)
+                                  GDBusInterfaceStub  *interface_)
 {
   GDBusInterfaceInfo *info;
 
   g_return_if_fail (G_IS_DBUS_OBJECT_STUB (object));
-  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (interface));
+  g_return_if_fail (G_IS_DBUS_INTERFACE_STUB (interface_));
 
-  info = g_dbus_interface_stub_get_info (interface);
-  g_object_ref (interface);
+  info = g_dbus_interface_stub_get_info (interface_);
+  g_object_ref (interface_);
   g_dbus_object_stub_remove_interface_by_name (object, info->name);
   g_hash_table_insert (object->priv->map_name_to_iface,
                        g_strdup (info->name),
-                       interface);
-  g_dbus_interface_set_object (G_DBUS_INTERFACE (interface), G_DBUS_OBJECT (object));
+                       interface_);
+  g_dbus_interface_set_object (G_DBUS_INTERFACE (interface_), G_DBUS_OBJECT (object));
   g_signal_emit_by_name (object,
                          "interface-added",
-                         interface);
+                         interface_);
 }
 
 /**
  * g_dbus_object_stub_remove_interface:
  * @object: A #GDBusObjectStub.
- * @interface: A #GDBusInterfaceStub.
+ * @interface_: A #GDBusInterfaceStub.
  *
- * Removes @interface from @object.
+ * Removes @interface_ from @object.
  *
  * Since: 2.30
  */
 void
 g_dbus_object_stub_remove_interface  (GDBusObjectStub    *object,
-                                      GDBusInterfaceStub *interface)
+                                      GDBusInterfaceStub *interface_)
 {
   GDBusInterfaceStub *other_interface;
   GDBusInterfaceInfo *info;
 
   g_return_if_fail (G_IS_DBUS_OBJECT_STUB (object));
-  g_return_if_fail (G_IS_DBUS_INTERFACE (interface));
+  g_return_if_fail (G_IS_DBUS_INTERFACE (interface_));
 
-  info = g_dbus_interface_stub_get_info (interface);
+  info = g_dbus_interface_stub_get_info (interface_);
 
   other_interface = g_hash_table_lookup (object->priv->map_name_to_iface, info->name);
   if (other_interface == NULL)
@@ -321,24 +321,24 @@ g_dbus_object_stub_remove_interface  (GDBusObjectStub    *object,
                  info->name,
                  object->priv->object_path);
     }
-  else if (other_interface != interface)
+  else if (other_interface != interface_)
     {
       g_warning ("Tried to remove interface %p with name %s from object "
                  "at path %s but the object has the interface %p",
-                 interface,
+                 interface_,
                  info->name,
                  object->priv->object_path,
                  other_interface);
     }
   else
     {
-      g_object_ref (interface);
+      g_object_ref (interface_);
       g_warn_if_fail (g_hash_table_remove (object->priv->map_name_to_iface, info->name));
-      g_dbus_interface_set_object (G_DBUS_INTERFACE (interface), NULL);
+      g_dbus_interface_set_object (G_DBUS_INTERFACE (interface_), NULL);
       g_signal_emit_by_name (object,
                              "interface-removed",
-                             interface);
-      g_object_unref (interface);
+                             interface_);
+      g_object_unref (interface_);
     }
 }
 

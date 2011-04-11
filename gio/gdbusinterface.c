@@ -50,56 +50,56 @@ g_dbus_interface_default_init (GDBusInterfaceIface *iface)
 
 /**
  * g_dbus_interface_get_info:
- * @interface: An exported D-Bus interface.
+ * @interface_: An exported D-Bus interface.
  *
  * Gets D-Bus introspection information for the D-Bus interface
- * implemented by @interface.
+ * implemented by @interface_.
  *
  * Returns: (transfer none): A #GDBusInterfaceInfo. Do not free.
  *
  * Since: 2.30
  */
 GDBusInterfaceInfo *
-g_dbus_interface_get_info (GDBusInterface *interface)
+g_dbus_interface_get_info (GDBusInterface *interface_)
 {
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE (interface), NULL);
-  return G_DBUS_INTERFACE_GET_IFACE (interface)->get_info (interface);
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE (interface_), NULL);
+  return G_DBUS_INTERFACE_GET_IFACE (interface_)->get_info (interface_);
 }
 
 /**
  * g_dbus_interface_get_object:
- * @interface: An exported D-Bus interface.
+ * @interface_: An exported D-Bus interface.
  *
- * Gets the #GDBusObject that @interface belongs to, if any.
+ * Gets the #GDBusObject that @interface_ belongs to, if any.
  *
  * Returns: (transfer none): A #GDBusObject or %NULL. The returned
- * reference belongs to @interface and should not be freed.
+ * reference belongs to @interface_ and should not be freed.
  *
  * Since: 2.30
  */
 GDBusObject *
-g_dbus_interface_get_object (GDBusInterface *interface)
+g_dbus_interface_get_object (GDBusInterface *interface_)
 {
-  g_return_val_if_fail (G_IS_DBUS_INTERFACE (interface), NULL);
-  return G_DBUS_INTERFACE_GET_IFACE (interface)->get_object (interface);
+  g_return_val_if_fail (G_IS_DBUS_INTERFACE (interface_), NULL);
+  return G_DBUS_INTERFACE_GET_IFACE (interface_)->get_object (interface_);
 }
 
 /**
  * g_dbus_interface_set_object:
- * @interface: An exported D-Bus interface.
+ * @interface_: An exported D-Bus interface.
  * @object: A #GDBusObject or %NULL.
  *
- * Sets the #GDBusObject for @interface to @object.
+ * Sets the #GDBusObject for @interface_ to @object.
  *
- * Note that @interface will hold a weak reference to @object.
+ * Note that @interface_ will hold a weak reference to @object.
  *
  * Since: 2.30
  */
 void
-g_dbus_interface_set_object (GDBusInterface    *interface,
+g_dbus_interface_set_object (GDBusInterface    *interface_,
                              GDBusObject       *object)
 {
-  g_return_if_fail (G_IS_DBUS_INTERFACE (interface));
+  g_return_if_fail (G_IS_DBUS_INTERFACE (interface_));
   g_return_if_fail (object == NULL || G_IS_DBUS_OBJECT (object));
-  G_DBUS_INTERFACE_GET_IFACE (interface)->set_object (interface, object);
+  G_DBUS_INTERFACE_GET_IFACE (interface_)->set_object (interface_, object);
 }
