@@ -62,6 +62,7 @@ TEST_PROGS +=			\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
 	gdbus-bz627724		\
+	gdbus-test-codegen	\
 	appinfo			\
 	contenttype		\
 	file			\
@@ -235,6 +236,27 @@ gdbus_addresses_LDADD = $(progs_ldadd)
 
 gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_bz627724_LDADD = $(progs_ldadd)
+
+gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
+	$(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 				\
+		--c-namespace Foo 									\
+		--interface-prefix org.project.								\
+		--generate-c-code gdbus-test-codegen-generated						\
+		--generate-docbook gdbus-test-codegen-generated-doc					\
+		--annotate "org.project.Bar" Key1 Value1  						\
+		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2  				\
+		--annotate "org.project.Bar.HelloWorld()" Key3 Value3  					\
+		--annotate "org.project.Bar::TestSignal" Key4 Value4  					\
+		--annotate "org.project.Bar:ay" Key5 Value5	  					\
+		--annotate "org.project.Bar.TestPrimitiveTypes()[val_int32]" Key6 Value6  		\
+		--annotate "org.project.Bar.TestPrimitiveTypes()[ret_uint32]" Key7 Value7 		\
+		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8  		\
+		test-codegen.xml 									\
+		$(NULL)
+
+gdbus_test_codegen_SOURCES  = gdbus-test-codegen.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_test_codegen_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
+gdbus_test_codegen_LDADD = $(progs_ldadd)
 
 gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_connection_LDADD = $(progs_ldadd)
@@ -432,6 +454,8 @@ test.mo: de.po
 	$(MSGFMT) -o test.mo $(srcdir)/de.po; \
 	$(MKDIR_P) de/LC_MESSAGES; \
 	cp -f test.mo de/LC_MESSAGES
+
+CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
 
 DISTCLEANFILES = \
 	applications/mimeinfo.cache	\
