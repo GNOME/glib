@@ -594,27 +594,27 @@ interval_valid (GTimeZone *tz,
 /**
  * g_time_zone_adjust_time:
  * @tz: a #GTimeZone
- * @type: the #GTimeType of @time
- * @time: a pointer to a number of seconds since January 1, 1970
+ * @type: the #GTimeType of @time_
+ * @time_: a pointer to a number of seconds since January 1, 1970
  *
- * Finds an interval within @tz that corresponds to the given @time,
- * possibly adjusting @time if required to fit into an interval.
- * The meaning of @time depends on @type.
+ * Finds an interval within @tz that corresponds to the given @time_,
+ * possibly adjusting @time_ if required to fit into an interval.
+ * The meaning of @time_ depends on @type.
  *
  * This function is similar to g_time_zone_find_interval(), with the
  * difference that it always succeeds (by making the adjustments
  * described below).
  *
  * In any of the cases where g_time_zone_find_interval() succeeds then
- * this function returns the same value, without modifying @time.
+ * this function returns the same value, without modifying @time_.
  *
- * This function may, however, modify @time in order to deal with
- * non-existent times.  If the non-existent local @time of 02:30 were
+ * This function may, however, modify @time_ in order to deal with
+ * non-existent times.  If the non-existent local @time_ of 02:30 were
  * requested on March 13th 2010 in Toronto then this function would
- * adjust @time to be 03:00 and return the interval containing the
+ * adjust @time_ to be 03:00 and return the interval containing the
  * adjusted time.
  *
- * Returns: the interval containing @time, never -1
+ * Returns: the interval containing @time_, never -1
  *
  * Since: 2.26
  **/
