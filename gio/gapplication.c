@@ -1329,6 +1329,8 @@ g_application_run (GApplication  *application,
   if (application->priv->impl)
     g_application_impl_flush (application->priv->impl);
 
+  g_settings_sync ();
+
   return status;
 }
 
