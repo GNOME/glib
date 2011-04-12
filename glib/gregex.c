@@ -139,8 +139,8 @@ struct _GMatchInfo
   GRegexMatchFlags match_opts;  /* options used at match time on the regex */
   gint matches;                 /* number of matching sub patterns */
   gint pos;                     /* position in the string where last match left off */
+  gint  n_offsets;              /* number of offsets */
   gint *offsets;                /* array of offsets paired 0,1 ; 2,3 ; 3,4 etc */
-  gint n_offsets;               /* number of offsets */
   gint *workspace;              /* workspace for pcre_dfa_exec() */
   gint n_workspace;             /* number of workspace elements */
   const gchar *string;          /* string passed to the match function */
