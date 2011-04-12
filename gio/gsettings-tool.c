@@ -358,6 +358,53 @@ gsettings_reset (GSettings   *settings,
 }
 
 static void
+reset_all_keys (GSettings   *settings)
+{
+  gchar **keys;
+  gint i;
+
+  keys = g_settings_list_keys (settings);
+  for (i = 0; keys[i]; i++)
+    {
+      g_settings_reset (settings, keys[i]);
+    }
+
+  g_strfreev (keys);
+}
+
+static void
+gsettings_reset_recursively (GSettings   *settings,
+			     const gchar *key,
+			     const gchar *value)
+{
+  gchar **children;
+  gint i;
+
+  g_settings_delay (settings);
+  
+  reset_all_keys (settings);
+  children = g_settings_list_children (settings);
+  for (i = 0; children[i]; i++)
+    {
+      GSettings *child;
+      gchar *schema;
+      
+      child = g_settings_get_child (settings, children[i]);
+      g_object_get (child, "schema", &schema, NULL);
+      
+      if (is_schema (schema))
+	reset_all_keys (child);
+      
+      g_object_unref (child);
+      g_free (schema);
+    }
+  
+  g_strfreev (children);
+  
+  g_settings_sync ();
+}
+
+static void
 gsettings_writable (GSettings   *settings,
                     const gchar *key,
                     const gchar *value)
@@ -537,6 +584,12 @@ gsettings_help (gboolean     requested,
       synopsis = N_("SCHEMA[:PATH] KEY");
     }
 
+  else if (strcmp (command, "reset-recursively") == 0)
+    {
+      description = _("Reset all keys in SCHEMA to their defaults");
+      synopsis = N_("SCHEMA[:PATH]");
+    }
+
   else if (strcmp (command, "writable") == 0)
     {
       description = _("Check if KEY is writable");
@@ -574,6 +627,7 @@ gsettings_help (gboolean     requested,
         "  get                       Get the value of a key\n"
         "  set                       Set the value of a key\n"
         "  reset                     Reset the value of a key\n"
+        "  reset-recursively         Reset all values in a given schema\n"
         "  writable                  Check if a key is writable\n"
         "  monitor                   Watch for changes\n"
         "\n"
@@ -678,6 +732,9 @@ main (int argc, char **argv)
 
   else if (argc == 4 && strcmp (argv[1], "reset") == 0)
     function = gsettings_reset;
+
+  else if (argc == 3 && strcmp (argv[1], "reset-recursively") == 0)
+    function = gsettings_reset_recursively;
 
   else if (argc == 4 && strcmp (argv[1], "writable") == 0)
     function = gsettings_writable;
