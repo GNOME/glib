@@ -401,6 +401,7 @@ gsettings_reset_recursively (GSettings   *settings,
   
   g_strfreev (children);
   
+  g_settings_apply (settings);
   g_settings_sync ();
 }
 
