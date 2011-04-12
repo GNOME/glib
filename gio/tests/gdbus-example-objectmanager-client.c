@@ -4,13 +4,59 @@
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
+print_objects (GDBusObjectManager *manager)
+{
+  GList *objects;
+  GList *l;
+
+  g_print ("Object manager at %s\n", g_dbus_object_manager_get_object_path (manager));
+  objects = g_dbus_object_manager_get_objects (manager);
+  for (l = objects; l != NULL; l = l->next)
+    {
+      GDBusObject *object = G_DBUS_OBJECT (l->data);
+      GList *interfaces;
+      GList *ll;
+      g_print (" - Object at %s\n", g_dbus_object_get_object_path (object));
+
+      interfaces = g_dbus_object_get_interfaces (object);
+      for (ll = interfaces; ll != NULL; ll = ll->next)
+        {
+          GDBusInterface *interface = G_DBUS_INTERFACE (ll->data);
+          g_print ("   - Interface %s\n", g_dbus_interface_get_info (interface)->name);
+
+          /* Note that @interface is really a GDBusProxy instance - and additionally also
+           * an ExampleAnimal or ExampleCat instance - either of these can be used to
+           * invoke methods on the remote object. For example, the generated function
+           *
+           *  void example_animal_call_poke_sync (ExampleAnimal  *proxy,
+           *                                      gboolean        make_sad,
+           *                                      gboolean        make_happy,
+           *                                      GCancellable   *cancellable,
+           *                                      GError        **error);
+           *
+           * can be used to call the Poke() D-Bus method on the .Animal interface.
+           * Additionally, the generated function
+           *
+           *  const gchar *example_animal_get_mood (ExampleAnimal *object);
+           *
+           * can be used to get the value of the :Mood property.
+           */
+        }
+      g_list_foreach (interfaces, (GFunc) g_object_unref, NULL);
+      g_list_free (interfaces);
+    }
+  g_list_foreach (objects, (GFunc) g_object_unref, NULL);
+  g_list_free (objects);
+}
+
+static void
 on_object_added (GDBusObjectManager *manager,
                  GDBusObject        *object,
                  gpointer            user_data)
 {
   gchar *owner;
   owner = g_dbus_object_manager_client_get_name_owner (G_DBUS_OBJECT_MANAGER_CLIENT (manager));
-  g_debug ("added object at %s (owner %s)", g_dbus_object_get_object_path (object), owner);
+  g_print ("Added object at %s (owner %s)\n", g_dbus_object_get_object_path (object), owner);
   g_free (owner);
 }
 
@@ -21,7 +67,7 @@ on_object_removed (GDBusObjectManager *manager,
 {
   gchar *owner;
   owner = g_dbus_object_manager_client_get_name_owner (G_DBUS_OBJECT_MANAGER_CLIENT (manager));
-  g_debug ("removed object at %s (owner %s)", g_dbus_object_get_object_path (object), owner);
+  g_print ("Removed object at %s (owner %s)\n", g_dbus_object_get_object_path (object), owner);
   g_free (owner);
 }
 
@@ -34,7 +80,7 @@ on_notify_name_owner (GObject    *object,
   gchar *name_owner;
 
   name_owner = g_dbus_object_manager_client_get_name_owner (manager);
-  g_debug ("name-owner: %s", name_owner);
+  g_print ("name-owner: %s\n", name_owner);
   g_free (name_owner);
 }
 
@@ -69,8 +115,6 @@ main (gint argc, gchar *argv[])
   GMainLoop *loop;
   GError *error;
   gchar *name_owner;
-  GList *objects;
-  GList *l;
 
   manager = NULL;
   loop = NULL;
@@ -94,17 +138,10 @@ main (gint argc, gchar *argv[])
     }
 
   name_owner = g_dbus_object_manager_client_get_name_owner (G_DBUS_OBJECT_MANAGER_CLIENT (manager));
-  g_debug ("name-owner: %s", name_owner);
+  g_print ("name-owner: %s\n", name_owner);
   g_free (name_owner);
 
-  objects = g_dbus_object_manager_get_objects (manager);
-  for (l = objects; l != NULL; l = l->next)
-    {
-      GDBusObject *object = G_DBUS_OBJECT (l->data);
-      g_debug ("proxy has object at %s", g_dbus_object_get_object_path (object));
-    }
-  g_list_foreach (objects, (GFunc) g_object_unref, NULL);
-  g_list_free (objects);
+  print_objects (manager);
 
   g_signal_connect (manager,
                     "notify::name-owner",

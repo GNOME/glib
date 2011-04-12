@@ -84,8 +84,8 @@
                g_dbus_proxy_new_for_bus_sync(), also see g_dbus_proxy_new()</entry></row>
           <row><entry>dbus_g_proxy_add_signal()</entry><entry>not needed, use the generic #GDBusProxy::g-signal</entry></row>
           <row><entry>dbus_g_proxy_connect_signal()</entry><entry>use g_signal_connect() with #GDBusProxy::g-signal</entry></row>
-          <row><entry>dbus_g_connection_register_g_object()</entry><entry>g_dbus_connection_register_object()</entry></row>
-          <row><entry>dbus_g_connection_unregister_g_object()</entry><entry>g_dbus_connection_unregister_object()</entry></row>
+          <row><entry>dbus_g_connection_register_g_object()</entry><entry>g_dbus_connection_register_object() - also see g_dbus_object_manager_server_export()</entry></row>
+          <row><entry>dbus_g_connection_unregister_g_object()</entry><entry>g_dbus_connection_unregister_object() - also see g_dbus_object_manager_server_unexport()</entry></row>
           <row><entry>dbus_g_object_type_install_info()</entry><entry>introspection data is installed while registering
                an object, see g_dbus_connection_register_object()</entry></row>
           <row><entry>dbus_g_proxy_begin_call()</entry><entry>g_dbus_proxy_call()</entry></row>
@@ -259,11 +259,15 @@ gdbus-codegen --c-namespace Example 				      \
 ]]></programlisting></informalexample>
       then two files <filename>generated-code.h</filename> and
       <filename>generated-code.c</filename> are
-      generated. Additionally a single XML file
-      <filename>generated-docs-org.gtk.GDBus.Example.ObjectManager.Animal</filename>
-      with Docbook XML is generated. For an example of what the docs look
+      generated. Additionally, two XML files
+      <filename>generated-docs-org.gtk.GDBus.Example.ObjectManager.Animal</filename> and
+      <filename>generated-docs-org.gtk.GDBus.Example.ObjectManager.Cat</filename>
+      with Docbook XML are generated. For an example of what the docs look
       like see <link
-      linkend="gdbus-interface-org-gtk-GDBus-Example-ObjectManager-Animal">this page</link>.
+      linkend="gdbus-interface-org-gtk-GDBus-Example-ObjectManager-Animal">the Animal D-Bus interface documentation</link>.
+      and
+      <link
+      linkend="gdbus-interface-org-gtk-GDBus-Example-ObjectManager-Cat">the Cat D-Bus interface documentation</link>.
     </para>
     <para>
       While the contents of <filename>generated-code.h</filename> and
@@ -283,5 +287,6 @@ gdbus-codegen --c-namespace Example 				      \
   </section>
 
   <xi:include href="../../../../gio/tests/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
+  <xi:include href="../../../../gio/tests/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
 
 </chapter>

@@ -486,7 +486,7 @@ test.mo: de.po
 	$(MKDIR_P) de/LC_MESSAGES; \
 	cp -f test.mo de/LC_MESSAGES
 
-CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
+CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml gdbus-example-objectmanager-generated-*.xml
 
 DISTCLEANFILES = \
 	applications/mimeinfo.cache	\

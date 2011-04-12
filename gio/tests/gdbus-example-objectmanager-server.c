@@ -12,7 +12,6 @@ on_animal_poke (ExampleAnimal          *animal,
                 gboolean                make_happy,
                 gpointer                user_data)
 {
-
   if ((make_sad && make_happy) || (!make_sad && !make_happy))
     {
       g_dbus_method_invocation_return_dbus_error (invocation,
@@ -66,30 +65,49 @@ on_bus_acquired (GDBusConnection *connection,
   GDBusObjectStub *object;
   guint n;
 
-  g_debug ("bus acquired");
+  g_print ("Acquired a message bus connection\n");
 
+  /* Create a new org.freedesktop.DBus.ObjectManager rooted at /example/Animals */
   manager = g_dbus_object_manager_server_new (connection, "/example/Animals");
+
   for (n = 0; n < 10; n++)
     {
       gchar *s;
       ExampleAnimal *animal;
 
+      /* Create a new D-Bus object at the path /example/Animals/N where N is 000..009 */
       s = g_strdup_printf ("/example/Animals/%03d", n);
       object = g_dbus_object_stub_new (s);
       g_free (s);
 
+      /* Make the newly created object export the interface
+       * org.gtk.GDBus.Example.ObjectManager.Animal (note
+       * that @object takes its own reference to @animal).
+       */
       animal = example_animal_stub_new ();
       example_animal_set_mood (animal, "Happy");
+      g_dbus_object_stub_add_interface (object, G_DBUS_INTERFACE_STUB (animal));
+      g_object_unref (animal);
 
-      /* Handle Poke() method invocations */
+      /* Cats are odd animals - so some of our objects implement the
+       * org.gtk.GDBus.Example.ObjectManager.Cat interface in addition
+       * to the .Animal interface
+       */
+      if (n % 2 == 1)
+        {
+          ExampleCat *cat;
+          cat = example_cat_stub_new ();
+          g_dbus_object_stub_add_interface (object, G_DBUS_INTERFACE_STUB (cat));
+          g_object_unref (cat);
+        }
+
+      /* Handle Poke() D-Bus method invocations on the .Animal interface */
       g_signal_connect (animal,
                         "handle-poke",
                         G_CALLBACK (on_animal_poke),
                         NULL); /* user_data */
 
-      g_dbus_object_stub_add_interface (object, G_DBUS_INTERFACE_STUB (animal));
-      g_object_unref (animal);
-
+      /* Export the object (@manager takes its own reference to @object) */
       g_dbus_object_manager_server_export (manager, object);
       g_object_unref (object);
     }
@@ -100,7 +118,7 @@ on_name_acquired (GDBusConnection *connection,
                   const gchar     *name,
                   gpointer         user_data)
 {
-  g_debug ("name acquired");
+  g_print ("Acquired the name %s\n", name);
 }
 
 static void
@@ -108,7 +126,7 @@ on_name_lost (GDBusConnection *connection,
               const gchar     *name,
               gpointer         user_data)
 {
-  g_debug ("name lost");
+  g_print ("Lost the name %s\n", name);
 }
 
 
