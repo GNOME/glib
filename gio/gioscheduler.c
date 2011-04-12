@@ -51,11 +51,10 @@ struct _GIOSchedulerJob {
   GSourceFunc cancel_func; /* Runs under job map lock */
   gpointer data;
   GDestroyNotify destroy_notify;
-
-  gint io_priority;
   GCancellable *cancellable;
   GMainContext *context;
 
+  gint io_priority;
   guint idle_tag;
 };
 
