@@ -124,6 +124,8 @@ struct _GMarkupParseContext
   gint line_number;
   gint char_number;
 
+  GMarkupParseState state;
+
   gpointer user_data;
   GDestroyNotify dnotify;
 
@@ -134,7 +136,6 @@ struct _GMarkupParseContext
   GString *partial_chunk;
   GSList *spare_chunks;
 
-  GMarkupParseState state;
   GSList *tag_stack;
   GSList *tag_stack_gstr;
   GSList *spare_list_nodes;
