@@ -399,10 +399,10 @@ struct GDBusWorker
    * only user) - we might want it to affect messages sent to the other peer too?
    */
   gboolean                            frozen;
+  GDBusCapabilityFlags                capabilities;
   GQueue                             *received_messages_while_frozen;
 
   GIOStream                          *stream;
-  GDBusCapabilityFlags                capabilities;
   GCancellable                       *cancellable;
   GDBusWorkerMessageReceivedCallback  message_received_callback;
   GDBusWorkerMessageAboutToBeSentCallback message_about_to_be_sent_callback;
@@ -425,9 +425,9 @@ struct GDBusWorker
   gint                                read_num_ancillary_messages;
 
   /* used for writing */
+  gint                                num_writes_pending;
   GMutex                             *write_lock;
   GQueue                             *write_queue;
-  gint                                num_writes_pending;
   guint64                             write_num_messages_written;
   GList                              *write_pending_flushes;
   gboolean                            flush_pending;
