@@ -82,9 +82,9 @@
 struct _GDBusProxyPrivate
 {
   GBusType bus_type;
+  GDBusProxyFlags flags;
   GDBusConnection *connection;
 
-  GDBusProxyFlags flags;
   gchar *name;
   gchar *name_owner;
   gchar *object_path;
