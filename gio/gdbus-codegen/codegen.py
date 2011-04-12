@@ -2,6 +2,7 @@
 
 import sys
 import argparse
+import distutils.version
 
 import config
 import utils
@@ -201,27 +202,60 @@ class CodeGenerator:
             self.h.write('struct _%sIface\n'%(i.camel_name))
             self.h.write('{\n')
             self.h.write('  GTypeInterface parent_iface;\n')
+
+            function_pointers = {}
+
             if len(i.methods) > 0:
                 self.h.write('\n')
-                self.h.write('  /* GObject signal class handlers for incoming D-Bus method calls: */\n')
                 for m in i.methods:
-                    self.h.write('  gboolean (*handle_%s) (\n'
-                                 '    %s *object,\n'
-                                 '    GDBusMethodInvocation *invocation'%(m.name_lower, i.camel_name))
+                    key = (m.since, '_method_%s'%m.name_lower)
+                    value  = '  gboolean (*handle_%s) (\n'%(m.name_lower)
+                    value += '    %s *object,\n'%(i.camel_name)
+                    value += '    GDBusMethodInvocation *invocation'%()
                     for a in m.in_args:
-                        self.h.write(',\n    %s%s'%(a.ctype_in, a.name))
-                    self.h.write(');\n')
-                    self.h.write('\n')
+                        value += ',\n    %s%s'%(a.ctype_in, a.name)
+                    value += ');\n\n'
+                    function_pointers[key] = value
+
             if len(i.signals) > 0:
                 self.h.write('\n')
-                self.h.write('  /* GObject signal class handlers for received D-Bus signals: */\n')
                 for s in i.signals:
-                    self.h.write('  void (*%s) (\n'
-                                 '    %s *object'%(s.name_lower, i.camel_name))
+                    key = (s.since, '_signal_%s'%s.name_lower)
+                    value  = '  void (*%s) (\n'%(s.name_lower)
+                    value += '    %s *object'%(i.camel_name)
                     for a in s.args:
-                        self.h.write(',\n    %s%s'%(a.ctype_in, a.name))
-                    self.h.write(');\n')
-                    self.h.write('\n')
+                        value += ',\n    %s%s'%(a.ctype_in, a.name)
+                    value += ');\n\n'
+                    function_pointers[key] = value
+
+            # Sort according to @since tag, then name.. this ensures
+            # that the function pointers don't change order assuming
+            # judicious use of @since
+            #
+            # Also use a proper version comparison function so e.g.
+            # 10.0 comes after 2.0.
+            #
+            # See https://bugzilla.gnome.org/show_bug.cgi?id=647577#c5
+            # for discussion
+
+            # I'm sure this could be a lot more elegant if I was
+            # more fluent in python...
+            def my_version_cmp(a, b):
+                if len(a[0]) > 0 and len(b[0]) > 0:
+                    va = distutils.version.LooseVersion(a[0])
+                    vb = distutils.version.LooseVersion(b[0])
+                    ret = va.__cmp__(vb)
+                else:
+                    ret = cmp(a[0], b[0])
+                if ret != 0:
+                    return ret
+                return cmp(a[1], b[1])
+            keys = function_pointers.keys()
+            if len(keys) > 0:
+                keys.sort(cmp=my_version_cmp)
+                for key in keys:
+                    self.h.write('%s'%function_pointers[key])
+
             self.h.write('};\n')
             self.h.write('\n')
             self.h.write('GType %s_get_gtype (void) G_GNUC_CONST;\n'%(i.name_lower))

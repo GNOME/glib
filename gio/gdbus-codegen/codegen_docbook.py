@@ -163,6 +163,8 @@ class DocbookCodeGenerator:
             self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string)))
             self.out.write('</varlistentry>\n'%())
         self.out.write('</variablelist>\n')
+        if len(m.since) > 0:
+            self.out.write('<para role="since">Since %s</para>\n'%(m.since))
         self.out.write('</refsect2>\n')
 
     def print_signal(self, i, s):
@@ -180,6 +182,8 @@ class DocbookCodeGenerator:
             self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string)))
             self.out.write('</varlistentry>\n'%())
         self.out.write('</variablelist>\n')
+        if len(s.since) > 0:
+            self.out.write('<para role="since">Since %s</para>\n'%(s.since))
         self.out.write('</refsect2>\n')
 
     def print_property(self, i, p):
@@ -190,6 +194,8 @@ class DocbookCodeGenerator:
         self.print_property_prototype(i, p, in_synopsis=False)
         self.out.write('</programlisting>\n')
         self.out.write('<para>%s</para>\n'%(self.expand(p.doc_string)))
+        if len(p.since) > 0:
+            self.out.write('<para role="since">Since %s</para>\n'%(p.since))
         self.out.write('</refsect2>\n')
 
     def expand(self, s):
@@ -255,6 +261,8 @@ class DocbookCodeGenerator:
             self.out.write('<refsect1 role="desc" id="gdbus-interface-%s">\n'%(utils.dots_to_hyphens(i.name)))
             self.out.write('  <title role="desc.title">Description</title>\n'%())
             self.out.write('  <para>%s</para>\n'%(self.expand(i.doc_string)))
+            if len(i.since) > 0:
+                self.out.write('  <para role="since">Since %s</para>\n'%(i.since))
             self.out.write('</refsect1>\n'%())
 
             if len(i.methods) > 0:

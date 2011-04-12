@@ -133,6 +133,8 @@ class DBusXMLParser:
                 if self.doc_comment_params.has_key('short_description'):
                     short_description = self.doc_comment_params['short_description']
                     self._cur_object.doc_string_brief = short_description
+                if self.doc_comment_params.has_key('since'):
+                    self._cur_object.since = self.doc_comment_params['since']
 
         elif self.state == DBusXMLParser.STATE_INTERFACE:
             if name == DBusXMLParser.STATE_METHOD:
@@ -161,6 +163,8 @@ class DBusXMLParser:
             # assign docs, if any
             if attrs.has_key('name') and self.doc_comment_last_symbol == attrs['name']:
                 self._cur_object.doc_string = self.doc_comment_body
+                if self.doc_comment_params.has_key('since'):
+                    self._cur_object.since = self.doc_comment_params['since']
 
         elif self.state == DBusXMLParser.STATE_METHOD:
             if name == DBusXMLParser.STATE_ARG:
@@ -191,6 +195,8 @@ class DBusXMLParser:
                     doc_string = self.doc_comment_params[attrs['name']]
                     if doc_string != None:
                         self._cur_object.doc_string = doc_string
+                    if self.doc_comment_params.has_key('since'):
+                        self._cur_object.since = self.doc_comment_params['since']
 
         elif self.state == DBusXMLParser.STATE_SIGNAL:
             if name == DBusXMLParser.STATE_ARG:
@@ -215,6 +221,8 @@ class DBusXMLParser:
                     doc_string = self.doc_comment_params[attrs['name']]
                     if doc_string != None:
                         self._cur_object.doc_string = doc_string
+                    if self.doc_comment_params.has_key('since'):
+                        self._cur_object.since = self.doc_comment_params['since']
 
         elif self.state == DBusXMLParser.STATE_PROPERTY:
             if name == DBusXMLParser.STATE_ANNOTATION:

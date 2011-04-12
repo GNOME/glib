@@ -216,6 +216,28 @@ gdbus-codegen --c-namespace MyApp                           \
     </varlistentry>
 
     <varlistentry>
+      <term><literal>org.gtk.GDBus.Since</literal></term>
+      <listitem>
+        <para>
+          Can be used on any <literal>&lt;interface&gt;</literal>,
+          <literal>&lt;method&gt;</literal>,
+          <literal>&lt;signal&gt;</literal> and
+          <literal>&lt;property&gt;</literal> element to specify the
+          version (any free-form string but compared using a
+          version-aware sort function) the element appeared in.
+        </para>
+        <para>
+          When generating C code, this field is used to ensure
+          function pointer order for preserving ABI/API.
+        </para>
+        <para>
+          When generating Docbook XML, the value of this tag appears
+          in the documentation.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term><literal>org.gtk.GDBus.C.ForceGVariant</literal></term>
       <listitem>
         <para>

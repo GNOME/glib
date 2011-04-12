@@ -14,10 +14,13 @@ class Arg:
         self.signature = signature
         self.annotations = []
         self.doc_string = ''
+        self.since = ''
 
     def post_process(self, interface_prefix, c_namespace, arg_number):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
+        if len(self.since) == 0:
+            self.since = utils.lookup_since(self.annotations)
 
         if self.name == None:
             self.name = 'unnamed_arg%d'%arg_number
@@ -158,10 +161,13 @@ class Method:
         self.out_args = []
         self.annotations = []
         self.doc_string = ''
+        self.since = ''
 
     def post_process(self, interface_prefix, c_namespace):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
+        if len(self.since) == 0:
+            self.since = utils.lookup_since(self.annotations)
 
         name = self.name
         overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.Name')
@@ -186,10 +192,13 @@ class Signal:
         self.args = []
         self.annotations = []
         self.doc_string = ''
+        self.since = ''
 
     def post_process(self, interface_prefix, c_namespace):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
+        if len(self.since) == 0:
+            self.since = utils.lookup_since(self.annotations)
 
         name = self.name
         overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.Name')
@@ -224,10 +233,13 @@ class Property:
         else:
             raise RuntimeError('Invalid access type %s'%self.access)
         self.doc_string = ''
+        self.since = ''
 
     def post_process(self, interface_prefix, c_namespace):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
+        if len(self.since) == 0:
+            self.since = utils.lookup_since(self.annotations)
 
         name = self.name
         overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.Name')
@@ -250,12 +262,15 @@ class Interface:
         self.annotations = []
         self.doc_string = ''
         self.doc_string_brief = ''
+        self.since = ''
 
     def post_process(self, interface_prefix, c_namespace):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
         if len(self.doc_string_brief) == 0:
             self.doc_string_brief = utils.lookup_brief_docs(self.annotations)
+        if len(self.since) == 0:
+            self.since = utils.lookup_since(self.annotations)
 
         overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.Name')
         if overridden_name:

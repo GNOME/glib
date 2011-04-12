@@ -338,4 +338,64 @@
     <property name="FancyProperty" type="s" access="read"/>
   </interface>
 
+  <interface name="ChangingInterfaceV1">
+    <method name="FooMethod"/>
+    <method name="BarMethod"/>
+    <method name="BazMethod"/>
+    <signal name="FooSignal"/>
+    <signal name="BarSignal"/>
+    <signal name="BazSignal"/>
+  </interface>
+
+  <interface name="ChangingInterfaceV2">
+    <!--
+      NewSignalIn2:
+      @since: 2.0
+    -->
+    <signal name="NewSignalIn2"/>
+    <!--
+      NewMethodIn2:
+      @since: 2.0
+    -->
+    <method name="NewMethodIn2"/>
+
+    <!-- reverse order -->
+    <signal name="BazSignal"/>
+    <signal name="BarSignal"/>
+    <signal name="FooSignal"/>
+    <method name="BazMethod"/>
+    <method name="BarMethod"/>
+    <method name="FooMethod"/>
+  </interface>
+
+  <interface name="ChangingInterfaceV10">
+    <!--
+      AddedSignalIn10:
+      @since: 10.0
+    -->
+    <signal name="AddedSignalIn10"/>
+    <method name="AddedMethodIn10">
+      <annotation name="org.gtk.GDBus.Since" value="10.0"/>
+    </method>
+
+    <!--
+      NewSignalIn2:
+      @since: 2.0
+    -->
+    <signal name="NewSignalIn2"/>
+    <!--
+      NewMethodIn2:
+      @since: 2.0
+    -->
+    <method name="NewMethodIn2"/>
+
+    <!-- reverse order -->
+    <signal name="BazSignal"/>
+    <signal name="BarSignal"/>
+    <signal name="FooSignal"/>
+    <method name="BazMethod"/>
+    <method name="BarMethod"/>
+    <method name="FooMethod"/>
+  </interface>
+
 </node>

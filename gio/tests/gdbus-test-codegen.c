@@ -2144,6 +2144,27 @@ gpointer name_forcing_4 = foo_rocket123_get_speed_xyz;
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* See https://bugzilla.gnome.org/show_bug.cgi?id=647577#c5 for details */
+
+#define CHECK_FIELD(name, v1, v2) g_assert_cmpint (G_STRUCT_OFFSET (FooChangingInterface##v1##Iface, name), ==, G_STRUCT_OFFSET (FooChangingInterface##v2##Iface, name));
+
+static void
+test_interface_stability (void)
+{
+  CHECK_FIELD(handle_foo_method, V1, V2);
+  CHECK_FIELD(handle_bar_method, V1, V2);
+  CHECK_FIELD(handle_baz_method, V1, V2);
+  CHECK_FIELD(foo_signal, V1, V2);
+  CHECK_FIELD(bar_signal, V1, V2);
+  CHECK_FIELD(baz_signal, V1, V2);
+  CHECK_FIELD(handle_new_method_in2, V2, V10);
+  CHECK_FIELD(new_signal_in2, V2, V10);
+}
+
+#undef CHECK_FIELD
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -2167,6 +2188,7 @@ main (int   argc,
   usleep (500 * 1000);
 
   g_test_add_func ("/gdbus/codegen/annotations", test_annotations);
+  g_test_add_func ("/gdbus/codegen/interface_stability", test_interface_stability);
   g_test_add_func ("/gdbus/codegen/object-manager", test_object_manager);
 
   ret = g_test_run();
