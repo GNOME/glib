@@ -157,7 +157,9 @@ expand_content_files =		\
 	migrating-posix.xml	\
 	migrating-gnome-vfs.xml	\
 	migrating-gconf.xml	\
-	migrating-gdbus.xml
+	migrating-gdbus.xml	\
+	gdbus-codegen.xml	\
+	$(NULL)
 
 extra_files =			\
 	version.xml.in		\

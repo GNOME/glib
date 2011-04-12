@@ -8,15 +8,16 @@
 
 <refnamediv>
   <refname>gdbus-codegen</refname>
-  <refpurpose>GLib D-Bus code generator</refpurpose>
+  <refpurpose>GLib D-Bus code and documentation generator</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
   <cmdsynopsis>
     <command>gdbus-codegen</command>
     <arg><option>--interface-prefix</option> <replaceable>org.project.Prefix</replaceable></arg>
-    <arg><option>--c-namespace</option> <replaceable>YourProject</replaceable></arg>
     <arg><option>--generate-c-code</option> <replaceable>OUTFILES</replaceable></arg>
+    <arg><option>--c-namespace</option> <replaceable>YourProject</replaceable></arg>
+    <arg><option>--c-generate-object-manager</option></arg>
     <arg><option>--generate-docbook</option> <replaceable>OUTFILES</replaceable></arg>
     <group choice="plain" rep="repeat">
       <arg>
@@ -40,23 +41,39 @@
   <para>
     <command>gdbus-codegen</command> is used to generate code and/or
     documentation for one or more D-Bus interfaces. The tool reads
-    D-Bus Introspection XML files and generates output files. The tool
-    currently supports generating C code (via
+    <ulink
+    url="http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format">D-Bus
+    Introspection XML</ulink> files and generates output files. The
+    tool currently supports generating C code (via
     <option>--generate-c-code</option>) and Docbook XML (via
     <option>--generate-docbook</option>).
   </para>
+</refsect1>
+
+<refsect1>
+  <title>Generating C code</title>
   <para>
     When generating C code, an abstract
-    <type>GInterface</type>-derived type is generated for each D-Bus
+    #GTypeInterface<!-- -->-derived type is generated for each D-Bus
     interface. Additionally, for every generated type,
     <type>FooBar</type>, two concrete instantiable types,
     <type>FooBarProxy</type> and <type>FooBarStub</type>, implementing
     said interface are also generated. The former is derived from
-    <type>GDBusProxy</type> and intended for use on the client side
+    #GDBusProxy and intended for use on the client side
     while the latter is derived from the
-    <type>GDBusInterfaceStub</type> type making it easy to export on a
-    <type>GDBusConnection</type> either directly or via a
-    <type>GDBusObjectManagerServer</type>.
+    #GDBusInterfaceStub type making it easy to export on a
+    #GDBusConnection either directly or via a
+    #GDBusObjectManagerServer instance.
+  </para>
+</refsect1>
+
+<refsect1>
+  <title>Generating Docbook documentation</title>
+  <para>
+    Each generated Docbook XML file (see the
+    <option>--generate-docbook</option> option for details) is a <ulink
+    url="http://www.docbook.org/tdg/en/html/refentry.html"><literal>RefEntry</literal></ulink>
+    article describing the D-Bus interface.
   </para>
 </refsect1>
 
@@ -85,10 +102,9 @@
       <listitem>
         <para>
           Generate Docbook Documentation for each D-Bus interface and
-          put it in
-          <filename>OUTFILES-org.Project.IfaceName.xml</filename> (where
-          <literal>org.Project.IfaceName</literal> is a place-holder for
-          the interface name).
+          put it in <filename>OUTFILES-NAME.xml</filename> where
+          <literal>NAME</literal> is a place-holder for the interface
+          name, e.g. <literal>net.Corp.FooBar</literal> and so on.
         </para>
       </listitem>
     </varlistentry>
@@ -110,6 +126,17 @@
         <para>
           The namespace to use for generated C code. This must be
           provided in CamelCase format.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><option>--c-generate-object-manager</option></term>
+      <listitem>
+        <para>
+          If this option is passed a #GDBusObjectManagerClient
+          subclass with an appropriate #GDBusProxyTypeFunc is
+          generated.
         </para>
       </listitem>
     </varlistentry>
@@ -192,7 +219,7 @@ gdbus-codegen --c-namespace MyApp                           \
       <term><literal>org.gtk.GDBus.C.ForceGVariant</literal></term>
       <listitem>
         <para>
-          If set to a non-empty string, a <type>GVariant</type> will
+          If set to a non-empty string, a #GVariant instance will
           be used instead of the natural C type. This annotation can
           be used on any <literal>&lt;arg&gt;</literal> and
           <literal>&lt;property&gt;</literal> element.
@@ -318,7 +345,7 @@ gdbus-codegen --generate-c-code myapp-generated       \
     two files called
     <filename>myapp-generated.[ch]</filename> are
     generated. The files provide an abstract
-    <type>GInterface</type>-derived type called
+    #GTypeInterface<!-- -->-derived type called
     <type>MyAppFrobber</type> as well as two instantiable types with
     the same name but suffixed with <type>Proxy</type> and
     <type>Stub</type>. The generated file, roughly, contains the
@@ -425,13 +452,13 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
 ]]></programlisting></informalexample>
   <para>
     Thus, for every D-Bus method, there will be three C functions for
-    calling the method, one <type>GObject</type> signal for handling
-    an incoming call and one C function for completing an incoming
-    call. For every D-Bus signal, there's one <type>GObject</type>
-    signal and one C function for emitting it. For every D-Bus
-    property, two C functions are generated (one setter, one getter)
-    and one <type>GObject</type> property. The following table
-    summarizes the generated facilities and where they are applicable:
+    calling the method, one #GObject signal for handling an incoming
+    call and one C function for completing an incoming call. For every
+    D-Bus signal, there's one #GObject signal and one C function for
+    emitting it. For every D-Bus property, two C functions are
+    generated (one setter, one getter) and one #GObject property. The
+    following table summarizes the generated facilities and where they
+    are applicable:
   </para>
   <informaltable>
     <tgroup cols="3">
@@ -461,12 +488,12 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
         <row>
           <entry>Properties (Reading)</entry>
           <entry>Use <function>m_a_f_get_verbose()</function> or <parameter>:verbose</parameter>.</entry>
-          <entry>Implement <type>GObject</type>'s <function>get_property()</function> vfunc.</entry>
+          <entry>Implement #GObject<!-- -->'s <function>get_property()</function> vfunc.</entry>
         </row>
         <row>
           <entry>Properties (writing)</entry>
           <entry>Use <function>m_a_f_set_verbose()</function> or <parameter>:verbose</parameter>.</entry>
-          <entry>Implement <type>GObject</type>'s <function>set_property()</function> vfunc.</entry>
+          <entry>Implement #GObject<!-- -->'s <function>set_property()</function> vfunc.</entry>
         </row>
       </tbody>
     </tgroup>
@@ -494,27 +521,26 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
     g_object_unref (proxy);
 ]]></programlisting></informalexample>
     <para>
-      Instead of using the generic <type>GDBusProxy</type> facilities,
-      one can use the generated methods such as
+      Instead of using the generic #GDBusProxy facilities, one can use
+      the generated methods such as
       <function>my_app_frobber_call_hello_world()</function> to invoke
       the <function>net.Corp.MyApp.Frobber.HelloWorld()</function>
       D-Bus method, connect to the the
       <function>::notification</function> GObject signal to receive
-      the <function>net.Corp.MyApp.Frobber::Notication</function> D-Bus
-      signal and get/set the
+      the <function>net.Corp.MyApp.Frobber::Notication</function>
+      D-Bus signal and get/set the
       <parameter>net.Corp.MyApp.Frobber:Verbose</parameter> D-Bus
       Property using either the GObject property
       <parameter>:verbose</parameter> or the
       <function>my_app_get_verbose()</function> and
       <function>my_app_set_verbose()</function> methods. Use the
-      standard <function>GObject::notify</function> signal to listen
-      to property changes.
+      standard #GObject::notify signal to listen to property changes.
     </para>
     <para>
-      Note that all property access is via <type>GDBusProxy</type>'s
+      Note that all property access is via #GDBusProxy<!-- -->'s
       property cache so no IO is ever done when reading properties.
-      Also note that setting a property will cause
-      <function>org.freedesktop.DBus.Properties.Set()</function> to be
+      Also note that setting a property will cause the
+      <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties.Set</ulink> method to be
       called on the remote object. This call, however, is asynchronous
       so setting a property won't block. Further, the change is
       delayed and no error checking is possible.
@@ -525,27 +551,27 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
     <title>Server-side usage</title>
     <para>
       The generated <type>MyAppFrobber</type> interface is designed so
-      it is easy to implement it in a <type>GObject</type>
+      it is easy to implement it in a #GObject
       subclass. For example, to handle
       <function>HelloWorld()</function> method invocations, set the
       vfunc for <function>handle_hello_hello_world()</function> in the
       <type>MyAppFrobberIface</type> structure. Similary, to handle
       the <parameter>net.Corp.MyApp.Frobber:Verbose</parameter>
-      property override the <parameter>:verbose</parameter> GObject
+      property override the <parameter>:verbose</parameter> #GObject
       property from the subclass. To emit a signal, use
       e.g. <function>my_app_emit_signal()</function> or
-      <function>g_signal_emit_by_name()</function>.
+      g_signal_emit_by_name().
     </para>
     <para>
       Instead of subclassing, it is often easier to use the generated
       <type>MyAppFrobberStub</type> subclass. To handle incoming
       method calls, use <function>g_signal_connect()</function> with
       the <function>::handle-*</function> signals and instead of
-      overriding <type>GObject</type>'s
+      overriding #GObject<!-- -->'s
       <function>get_property()</function> and
       <function>set_property()</function> vfuncs, use
-      <function>g_object_get()</function> and
-      <function>g_object_set()</function> or the generated property
+      g_object_get() and
+      g_object_set() or the generated property
       getters and setters (the generated class has an internal
       property bag implementation).
     </para>
@@ -593,13 +619,13 @@ on_handle_hello_world (MyAppFrobber           *object,
 ]]></programlisting></informalexample>
     <para>
       To facility atomic changesets (multiple properties changing at
-      the same time), <function>GObject::notify</function> signals are
-      queued up when received. The queue is drained in an idle handler
-      and will cause emissions of the
-      <function>org.freedesktop.DBus.Properties::PropertiesChanged</function>
+      the same time), #GObject::notify signals are queued up when
+      received. The queue is drained in an idle handler and will cause
+      emissions of the <ulink
+      url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties::PropertiesChanged</ulink>
       signal with all the properties that has changed. Use
-      <function>g_dbus_interface_stub_flush()</function> to empty the
-      queue immediately.
+      g_dbus_interface_stub_flush() or g_dbus_object_stub_flush() to
+      empty the queue immediately.
     </para>
   </refsect2>
 </refsect1>
@@ -607,24 +633,41 @@ on_handle_hello_world (MyAppFrobber           *object,
 <refsect1>
   <title>C Type Mapping</title>
   <para>
-    Scalar types, strings (including object paths (type-string
-    <literal>o</literal>), signatures (type-string
-    <literal>g</literal>) and bytestrings (type-string
-    <literal>ay</literal>)) and arrays of string (type-string
-    <literal>as</literal>) and arrays of bytestrings (type-string
-    <literal>aay</literal>) are mapped to the natural types,
-    e.g. <type>gboolean</type>, <type>gdouble</type>,
-    <type>gint</type>, <type>gchar*</type>, <type>gchar **</type> and
-    so on. Everything else is mapped to the <type>GVariant</type>
+    Scalar types
+    (type-strings
+    <link linkend="G-VARIANT-TYPE-BOOLEAN:CAPS">'b'</link>,
+    <link linkend="G-VARIANT-TYPE-BYTE:CAPS">'y'</link>,
+    <link linkend="G-VARIANT-TYPE-INT16:CAPS">'n'</link>,
+    <link linkend="G-VARIANT-TYPE-UINT16:CAPS">'q'</link>,
+    <link linkend="G-VARIANT-TYPE-INT32:CAPS">'i'</link>,
+    <link linkend="G-VARIANT-TYPE-UINT32:CAPS">'u'</link>,
+    <link linkend="G-VARIANT-TYPE-INT64:CAPS">'x'</link>,
+    <link linkend="G-VARIANT-TYPE-UINT64:CAPS">'t'</link>,
+    <link linkend="G-VARIANT-TYPE-HANDLE:CAPS">'h'</link> and
+    <link linkend="G-VARIANT-TYPE-DOUBLE:CAPS">'d'</link>)
+    ),
+    strings (type-strings
+    <link linkend="G-VARIANT-TYPE-STRING:CAPS">'s'</link>,
+    <link linkend="G-VARIANT-TYPE-BYTESTRING:CAPS">'ay'</link>,
+    <link linkend="G-VARIANT-TYPE-OBJECT-PATH:CAPS">'o'</link> and
+    <link linkend="G-VARIANT-TYPE-SIGNATURE:CAPS">'g'</link>) and
+    arrays of string (type-strings
+    <link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">'as'</link> and
+    <link linkend="G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS">'aay'</link>)
+    are mapped to the natural types,
+    e.g. #gboolean, #gdouble, #gint, <link linkend="gchararray">gchar*</link>,
+    <link linkend="GStrv">gchar**</link> and
+    so on. Everything else is mapped to the #GVariant
     type.
   </para>
   <para>
     This automatic mapping can be turned off by using the annotation
     <literal>org.gtk.GDBus.C.ForceGVariant</literal> - if used then a
-    <type>GVariant</type> is always exchanged instead of the
+    #GVariant is always exchanged instead of the
     corresponding native C type. This annotation may be convenient to
-    use when using the type-string <literal>ay</literal> for data with
-    embedded NUL bytes.
+    use when using
+    bytestrings (type-string <link linkend="G-VARIANT-TYPE-BYTESTRING:CAPS">'ay'</link>)
+    for data that could have embedded NUL bytes.
   </para>
 </refsect1>
 
@@ -648,7 +691,7 @@ on_handle_hello_world (MyAppFrobber           *object,
 <refsect1>
   <title>Author</title>
   <para>
-    Written by David Zeuthen <email>zeuthen@gmail.com</email> with
+    Written by David Zeuthen <email>zeuthen(at)gmail.com</email> with
     a lot of help from many others.
   </para>
 </refsect1>

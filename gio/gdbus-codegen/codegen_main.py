@@ -132,6 +132,8 @@ def codegen_main():
                             help='String to strip from D-Bus interface names for code and docs')
     arg_parser.add_argument('--c-namespace', nargs='?', metavar='NAMESPACE', default='',
                             help='The namespace to use for generated C code')
+    arg_parser.add_argument('--c-generate-object-manager', action='store_true',
+                            help='Generate a GDBusObjectManagerClient subclass when generating C code')
     arg_parser.add_argument('--generate-c-code', nargs='?', metavar='OUTFILES',
                             help='Generate C code in OUTFILES.[ch]')
     arg_parser.add_argument('--generate-docbook', nargs='?', metavar='OUTFILES',
@@ -154,10 +156,15 @@ def codegen_main():
         i.post_process(args.interface_prefix, args.c_namespace)
 
     c_code = args.generate_c_code
+    print "args.c_generate_object_manager=", args.c_generate_object_manager
     if c_code:
         h = file(c_code + '.h', 'w')
         c = file(c_code + '.c', 'w')
-        gen = codegen.CodeGenerator(all_ifaces, args.c_namespace, args.interface_prefix, h, c);
+        gen = codegen.CodeGenerator(all_ifaces,
+                                    args.c_namespace,
+                                    args.interface_prefix,
+                                    args.c_generate_object_manager,
+                                    h, c);
         ret = gen.generate()
 
     docbook = args.generate_docbook

@@ -10,7 +10,8 @@ import dbustypes
 # ----------------------------------------------------------------------------------------------------
 
 class CodeGenerator:
-    def __init__(self, ifaces, namespace, interface_prefix, h, c):
+    def __init__(self, ifaces, namespace, interface_prefix, generate_objmanager, h, c):
+        self.generate_objmanager = generate_objmanager
         self.ifaces = ifaces
         self.h = h
         self.c = c
@@ -417,79 +418,80 @@ class CodeGenerator:
             self.h.write('\n')
 
         # Finally, the proxy manager
-        self.h.write('\n')
-        self.h.write('/* ---- */\n')
-        self.h.write('\n')
-        self.h.write('#define %sTYPE_OBJECT_MANAGER_CLIENT (%sobject_manager_client_get_gtype ())\n'%(self.ns_upper, self.ns_lower))
-        self.h.write('#define %sOBJECT_MANAGER_CLIENT(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClient))\n'%(self.ns_upper, self.ns_upper, self.namespace))
-        self.h.write('#define %sOBJECT_MANAGER_CLIENT_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClientClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
-        self.h.write('#define %sOBJECT_MANAGER_CLIENT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClientClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
-        self.h.write('#define %sIS_OBJECT_MANAGER_CLIENT(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_OBJECT_MANAGER_CLIENT))\n'%(self.ns_upper, self.ns_upper))
-        self.h.write('#define %sIS_OBJECT_MANAGER_CLIENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), %sTYPE_OBJECT_MANAGER_CLIENT))\n'%(self.ns_upper, self.ns_upper))
-        self.h.write('\n')
-        self.h.write('typedef struct _%sObjectManagerClient %sObjectManagerClient;\n'%(self.namespace, self.namespace))
-        self.h.write('typedef struct _%sObjectManagerClientClass %sObjectManagerClientClass;\n'%(self.namespace, self.namespace))
-        self.h.write('typedef struct _%sObjectManagerClientPrivate %sObjectManagerClientPrivate;\n'%(self.namespace, self.namespace))
-        self.h.write('\n')
-        self.h.write('struct _%sObjectManagerClient\n'%(self.namespace))
-        self.h.write('{\n')
-        self.h.write('  GDBusObjectManagerClient parent_instance;\n')
-        self.h.write('  %sObjectManagerClientPrivate *priv;\n'%(self.namespace))
-        self.h.write('};\n')
-        self.h.write('\n')
-        self.h.write('struct _%sObjectManagerClientClass\n'%(self.namespace))
-        self.h.write('{\n')
-        self.h.write('  GDBusObjectManagerClientClass parent_class;\n')
-        self.h.write('};\n')
-        self.h.write('\n')
-        self.h.write('GType %sobject_manager_client_get_gtype (void) G_GNUC_CONST;\n'%(self.ns_lower))
-        self.h.write('\n')
-        self.h.write('GDBusProxyTypeFunc %sobject_manager_client_get_proxy_type_func (void);\n'%(self.ns_lower))
-        self.h.write('\n')
-        self.h.write('void %sobject_manager_client_new (\n'
-                     '    GDBusConnection        *connection,\n'
-                     '    GDBusObjectManagerClientFlags  flags,\n'
-                     '    const gchar            *name,\n'
-                     '    const gchar            *object_path,\n'
-                     '    GCancellable           *cancellable,\n'
-                     '    GAsyncReadyCallback     callback,\n'
-                     '    gpointer                user_data);\n'
-                     %(self.ns_lower))
-        self.h.write('GDBusObjectManager *%sobject_manager_client_new_finish (\n'
-                     '    GAsyncResult        *res,\n'
-                     '    GError             **error);\n'
-                     %(self.ns_lower))
-        self.h.write('GDBusObjectManager *%sobject_manager_client_new_sync (\n'
-                     '    GDBusConnection        *connection,\n'
-                     '    GDBusObjectManagerClientFlags  flags,\n'
-                     '    const gchar            *name,\n'
-                     '    const gchar            *object_path,\n'
-                     '    GCancellable           *cancellable,\n'
-                     '    GError                **error);\n'
-                     %(self.ns_lower))
-        self.h.write('\n')
-        self.h.write('void %sobject_manager_client_new_for_bus (\n'
-                     '    GBusType                bus_type,\n'
-                     '    GDBusObjectManagerClientFlags  flags,\n'
-                     '    const gchar            *name,\n'
-                     '    const gchar            *object_path,\n'
-                     '    GCancellable           *cancellable,\n'
-                     '    GAsyncReadyCallback     callback,\n'
-                     '    gpointer                user_data);\n'
-                     %(self.ns_lower))
-        self.h.write('GDBusObjectManager *%sobject_manager_client_new_for_bus_finish (\n'
-                     '    GAsyncResult        *res,\n'
-                     '    GError             **error);\n'
-                     %(self.ns_lower))
-        self.h.write('GDBusObjectManager *%sobject_manager_client_new_for_bus_sync (\n'
-                     '    GBusType                bus_type,\n'
-                     '    GDBusObjectManagerClientFlags  flags,\n'
-                     '    const gchar            *name,\n'
-                     '    const gchar            *object_path,\n'
-                     '    GCancellable           *cancellable,\n'
-                     '    GError                **error);\n'
-                     %(self.ns_lower))
-        self.h.write('\n')
+        if self.generate_objmanager:
+            self.h.write('\n')
+            self.h.write('/* ---- */\n')
+            self.h.write('\n')
+            self.h.write('#define %sTYPE_OBJECT_MANAGER_CLIENT (%sobject_manager_client_get_gtype ())\n'%(self.ns_upper, self.ns_lower))
+            self.h.write('#define %sOBJECT_MANAGER_CLIENT(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClient))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sOBJECT_MANAGER_CLIENT_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClientClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sOBJECT_MANAGER_CLIENT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClientClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sIS_OBJECT_MANAGER_CLIENT(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_OBJECT_MANAGER_CLIENT))\n'%(self.ns_upper, self.ns_upper))
+            self.h.write('#define %sIS_OBJECT_MANAGER_CLIENT_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), %sTYPE_OBJECT_MANAGER_CLIENT))\n'%(self.ns_upper, self.ns_upper))
+            self.h.write('\n')
+            self.h.write('typedef struct _%sObjectManagerClient %sObjectManagerClient;\n'%(self.namespace, self.namespace))
+            self.h.write('typedef struct _%sObjectManagerClientClass %sObjectManagerClientClass;\n'%(self.namespace, self.namespace))
+            self.h.write('typedef struct _%sObjectManagerClientPrivate %sObjectManagerClientPrivate;\n'%(self.namespace, self.namespace))
+            self.h.write('\n')
+            self.h.write('struct _%sObjectManagerClient\n'%(self.namespace))
+            self.h.write('{\n')
+            self.h.write('  GDBusObjectManagerClient parent_instance;\n')
+            self.h.write('  %sObjectManagerClientPrivate *priv;\n'%(self.namespace))
+            self.h.write('};\n')
+            self.h.write('\n')
+            self.h.write('struct _%sObjectManagerClientClass\n'%(self.namespace))
+            self.h.write('{\n')
+            self.h.write('  GDBusObjectManagerClientClass parent_class;\n')
+            self.h.write('};\n')
+            self.h.write('\n')
+            self.h.write('GType %sobject_manager_client_get_gtype (void) G_GNUC_CONST;\n'%(self.ns_lower))
+            self.h.write('\n')
+            self.h.write('GDBusProxyTypeFunc %sobject_manager_client_get_proxy_type_func (void);\n'%(self.ns_lower))
+            self.h.write('\n')
+            self.h.write('void %sobject_manager_client_new (\n'
+                         '    GDBusConnection        *connection,\n'
+                         '    GDBusObjectManagerClientFlags  flags,\n'
+                         '    const gchar            *name,\n'
+                         '    const gchar            *object_path,\n'
+                         '    GCancellable           *cancellable,\n'
+                         '    GAsyncReadyCallback     callback,\n'
+                         '    gpointer                user_data);\n'
+                         %(self.ns_lower))
+            self.h.write('GDBusObjectManager *%sobject_manager_client_new_finish (\n'
+                         '    GAsyncResult        *res,\n'
+                         '    GError             **error);\n'
+                         %(self.ns_lower))
+            self.h.write('GDBusObjectManager *%sobject_manager_client_new_sync (\n'
+                         '    GDBusConnection        *connection,\n'
+                         '    GDBusObjectManagerClientFlags  flags,\n'
+                         '    const gchar            *name,\n'
+                         '    const gchar            *object_path,\n'
+                         '    GCancellable           *cancellable,\n'
+                         '    GError                **error);\n'
+                         %(self.ns_lower))
+            self.h.write('\n')
+            self.h.write('void %sobject_manager_client_new_for_bus (\n'
+                         '    GBusType                bus_type,\n'
+                         '    GDBusObjectManagerClientFlags  flags,\n'
+                         '    const gchar            *name,\n'
+                         '    const gchar            *object_path,\n'
+                         '    GCancellable           *cancellable,\n'
+                         '    GAsyncReadyCallback     callback,\n'
+                         '    gpointer                user_data);\n'
+                         %(self.ns_lower))
+            self.h.write('GDBusObjectManager *%sobject_manager_client_new_for_bus_finish (\n'
+                         '    GAsyncResult        *res,\n'
+                         '    GError             **error);\n'
+                         %(self.ns_lower))
+            self.h.write('GDBusObjectManager *%sobject_manager_client_new_for_bus_sync (\n'
+                         '    GBusType                bus_type,\n'
+                         '    GDBusObjectManagerClientFlags  flags,\n'
+                         '    const gchar            *name,\n'
+                         '    const gchar            *object_path,\n'
+                         '    GCancellable           *cancellable,\n'
+                         '    GError                **error);\n'
+                         %(self.ns_lower))
+            self.h.write('\n')
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -1915,5 +1917,6 @@ class CodeGenerator:
             self.generate_method_completers(i)
             self.generate_proxy(i)
             self.generate_stub(i)
-        self.generate_object_manager_client()
+        if self.generate_objmanager:
+            self.generate_object_manager_client()
         self.generate_outro()

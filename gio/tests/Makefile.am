@@ -242,9 +242,10 @@ gdbus_bz627724_LDADD = $(progs_ldadd)
 
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
 	$(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 				\
-		--c-namespace Foo 									\
 		--interface-prefix org.project.								\
 		--generate-c-code gdbus-test-codegen-generated						\
+		--c-generate-object-manager								\
+		--c-namespace Foo 									\
 		--generate-docbook gdbus-test-codegen-generated-doc					\
 		--annotate "org.project.Bar" Key1 Value1  						\
 		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2  				\
@@ -443,8 +444,9 @@ proxy_LDADD   = $(progs_ldadd) \
 
 gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c : gdbus-example-objectmanager.xml
 	$(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
-		--c-namespace Example 						\
 		--interface-prefix org.gtk.GDBus.Example.ObjectManager.		\
+		--c-namespace Example 						\
+		--c-generate-object-manager					\
 		--generate-c-code gdbus-example-objectmanager-generated		\
 		--generate-docbook gdbus-example-objectmanager-generated	\
 		gdbus-example-objectmanager.xml					\

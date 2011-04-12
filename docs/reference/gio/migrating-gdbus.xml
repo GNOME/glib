@@ -238,7 +238,7 @@ on_name_acquired (GDBusConnection *connection,
   </section>
 
   <section id="gdbus-example-gdbus-codegen">
-    <title>Generating code with gdbus-codegen</title>
+    <title>Using gdbus-codegen</title>
 
     <para>
       dbus-glib comes with <command>dbus-binding-tool</command>, which
@@ -251,9 +251,10 @@ on_name_acquired (GDBusConnection *connection,
     <para>
       If this XML is processed like this
 <informalexample><programlisting><![CDATA[
-gdbus-codegen --c-namespace Example 				      \
-              --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
+gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
               --generate-c-code generated-code	                      \
+              --c-namespace Example 				      \
+              --c-generate-object-manager			      \
               --generate-docbook generated-docs                       \
               gdbus-example-objectmanager.xml
 ]]></programlisting></informalexample>
