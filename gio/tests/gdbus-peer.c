@@ -1438,6 +1438,97 @@ test_overflow (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+#ifdef BUG_631379_FIXED
+static gboolean
+tcp_anonymous_on_new_connection (GDBusServer     *server,
+                                 GDBusConnection *connection,
+                                 gpointer         user_data)
+{
+  gboolean *seen_connection = user_data;
+  *seen_connection = TRUE;
+  return TRUE;
+}
+
+static gpointer
+tcp_anonymous_service_thread_func (gpointer user_data)
+{
+  gboolean *seen_connection = user_data;
+  GMainContext *service_context;
+  GError *error;
+
+  service_context = g_main_context_new ();
+  g_main_context_push_thread_default (service_context);
+
+  error = NULL;
+  server = g_dbus_server_new_sync ("tcp:",
+                                   G_DBUS_SERVER_FLAGS_AUTHENTICATION_ALLOW_ANONYMOUS,
+                                   test_guid,
+                                   NULL, /* GDBusObserver* */
+                                   NULL, /* GCancellable* */
+                                   &error);
+  g_assert_no_error (error);
+
+  g_signal_connect (server,
+                    "new-connection",
+                    G_CALLBACK (tcp_anonymous_on_new_connection),
+                    seen_connection);
+
+  g_dbus_server_start (server);
+
+  service_loop = g_main_loop_new (service_context, FALSE);
+  g_main_loop_run (service_loop);
+
+  g_main_context_pop_thread_default (service_context);
+
+  g_main_loop_unref (service_loop);
+  g_main_context_unref (service_context);
+
+  return NULL;
+}
+
+static void
+test_tcp_anonymous (void)
+{
+  gboolean seen_connection;
+  GThread *service_thread;
+  GDBusConnection *connection;
+  GError *error;
+
+  seen_connection = FALSE;
+  service_loop = NULL;
+  service_thread = g_thread_create (tcp_anonymous_service_thread_func,
+                                    &seen_connection, /* user_data */
+                                    TRUE, /* joinable */
+                                    &error);
+  while (service_loop == NULL)
+    g_thread_yield ();
+  g_assert (server != NULL);
+
+  error = NULL;
+  connection = g_dbus_connection_new_for_address_sync (g_dbus_server_get_client_address (server),
+                                                       G_DBUS_CONNECTION_FLAGS_AUTHENTICATION_CLIENT,
+                                                       NULL, /* GDBusAuthObserver* */
+                                                       NULL, /* GCancellable */
+                                                       &error);
+  g_assert_no_error (error);
+  g_assert (connection != NULL);
+
+  while (!seen_connection)
+    g_thread_yield ();
+
+  g_object_unref (connection);
+
+  g_main_loop_quit (service_loop);
+  g_dbus_server_stop (server);
+  g_object_unref (server);
+  server = NULL;
+
+  g_thread_join (service_thread);
+}
+#endif
+
+/* ---------------------------------------------------------------------------------------------------- */
+
 int
 main (int   argc,
       char *argv[])
@@ -1462,6 +1553,7 @@ main (int   argc,
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
 #ifdef BUG_631379_FIXED
   g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
+  g_test_add_func ("/gdbus/tcp-anonymous", test_tcp_anonymous);
 #endif
   g_test_add_func ("/gdbus/credentials", test_credentials);
   g_test_add_func ("/gdbus/overflow", test_overflow);
