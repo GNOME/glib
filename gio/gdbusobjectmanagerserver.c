@@ -468,7 +468,7 @@ g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
 }
 
 /**
- * g_dbus_object_manager_server_export_and_uniquify:
+ * g_dbus_object_manager_server_export_uniquely:
  * @manager: A #GDBusObjectManagerServer.
  * @object: An object.
  *
@@ -481,8 +481,8 @@ g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
  * Since: 2.30
  */
 void
-g_dbus_object_manager_server_export_and_uniquify (GDBusObjectManagerServer  *manager,
-                                           GDBusObjectStub     *object)
+g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer  *manager,
+                                              GDBusObjectStub     *object)
 {
   gchar *orig_object_path;
   gchar *object_path;

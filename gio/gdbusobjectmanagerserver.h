@@ -74,7 +74,7 @@ GDBusObjectManagerServer *g_dbus_object_manager_server_new                 (GDBu
 GDBusConnection          *g_dbus_object_manager_server_get_connection      (GDBusObjectManagerServer  *manager);
 void                      g_dbus_object_manager_server_export              (GDBusObjectManagerServer  *manager,
                                                                             GDBusObjectStub           *object);
-void                      g_dbus_object_manager_server_export_and_uniquify (GDBusObjectManagerServer  *manager,
+void                      g_dbus_object_manager_server_export_uniquely     (GDBusObjectManagerServer  *manager,
                                                                             GDBusObjectStub           *object);
 void                      g_dbus_object_manager_server_unexport            (GDBusObjectManagerServer  *manager,
                                                                             const gchar               *object_path);
