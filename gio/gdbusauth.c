@@ -663,7 +663,8 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
           if (line == NULL)
             goto out;
           debug_print ("CLIENT: WaitingForReject, read '%s'", line);
-        foobar:
+
+        choose_mechanism:
           if (!g_str_has_prefix (line, "REJECTED "))
             {
               g_set_error (error,
@@ -739,7 +740,7 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
             }
           else if (g_str_has_prefix (line, "REJECTED "))
             {
-              goto foobar;
+              goto choose_mechanism;
             }
           else
             {
@@ -840,6 +841,13 @@ _g_dbus_auth_run_client (GDBusAuth     *auth,
                   g_free (s);
                 }
               state = CLIENT_STATE_WAITING_FOR_OK;
+            }
+          else if (g_str_has_prefix (line, "REJECTED "))
+            {
+              /* could be the chosen authentication method just doesn't work. Try
+               * another one...
+               */
+              goto choose_mechanism;
             }
           else
             {
