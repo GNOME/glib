@@ -59,7 +59,7 @@
  * even need to be started in this case.  For this reason, you should
  * only ever modify #GSettings keys in response to explicit user action.
  * Particular care should be paid to ensure that modifications are not
- * made during startup -- for example, when settings the initial value
+ * made during startup -- for example, when setting the initial value
  * of preferences widgets.  The built-in g_settings_bind() functionality
  * is careful not to write settings in response to notify signals as a
  * result of modifications that it makes to widgets.
