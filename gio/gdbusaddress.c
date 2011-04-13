@@ -258,24 +258,12 @@ is_valid_nonce_tcp (const gchar  *address_entry,
       goto out;
     }
 
-  if (nonce_file == NULL)
+  if (host != NULL)
     {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error in address `%s' - missing noncefile attribute"),
-                   address_entry);
-      goto out;
+      /* TODO: validate host */
     }
-  if (host == NULL)
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error in address `%s' - missing host attribute"),
-                   address_entry);
-      goto out;
-    }
+
+  nonce_file = nonce_file; /* To avoid -Wunused-but-set-variable */
 
   ret= TRUE;
 
@@ -351,14 +339,9 @@ is_valid_tcp (const gchar  *address_entry,
       goto out;
     }
 
-  if (host == NULL)
+  if (host != NULL)
     {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error in address `%s' - missing host attribute"),
-                   address_entry);
-      goto out;
+      /* TODO: validate host */
     }
 
   ret= TRUE;
