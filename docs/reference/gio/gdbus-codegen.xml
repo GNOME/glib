@@ -323,15 +323,15 @@ gdbus-codegen --c-namespace MyApp                           \
 ]]></programlisting></informalexample>
   </para>
   <para>
-    Note that <literal>since</literal> can be used in any inline
+    Note that <literal><![CDATA[@since]]></literal> can be used in any inline
     documentation bit (e.g. for interfaces, methods, signals and
     properties) to set the <literal>org.gtk.GDBus.Since</literal>
     annotation. For the <literal>org.gtk.GDBus.DocString</literal>
     annotation (and inline comments), note that substrings of the form
-    <literal>#net.Corp.Bar</literal>,
-    <literal>net.Corp.Bar.FooMethod()</literal>,
-    <literal>#net.Corp.Bar::BarSignal</literal> and
-    <literal>#net.Corp.InlineDocs:BazProperty</literal> are all
+    <literal><![CDATA[#net.Corp.Bar]]></literal>,
+    <literal><![CDATA[net.Corp.Bar.FooMethod()]]></literal>,
+    <literal><![CDATA[#net.Corp.Bar::BarSignal]]></literal> and
+    <literal><![CDATA[#net.Corp.InlineDocs:BazProperty]]></literal> are all
     expanded to links to the respective interface, method, signal and
     property.
   </para>
@@ -718,7 +718,7 @@ on_handle_hello_world (MyAppFrobber           *object,
 <refsect1>
   <title>Author</title>
   <para>
-    Written by David Zeuthen <email>zeuthen(at)gmail.com</email> with
+    Written by David Zeuthen <email><![CDATA[zeuthen@gmail.com]]></email> with
     a lot of help from many others.
   </para>
 </refsect1>
