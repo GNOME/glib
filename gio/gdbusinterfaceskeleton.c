@@ -184,7 +184,7 @@ g_dbus_interface_skeleton_class_init (GDBusInterfaceSkeletonClass *klass)
    * url="http://hal.freedesktop.org/docs/polkit/PolkitAuthority.html#POLKIT-CHECK-AUTHORIZATION-FLAGS-ALLOW-USER-INTERACTION:CAPS">POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION</ulink> flag set.
    *
    * If %FALSE is returned then no further handlers are run and the
-   * signal handler must take ownership of @invocation and finish
+   * signal handler must take a reference to @invocation and finish
    * handling the call (e.g. return an error via
    * g_dbus_method_invocation_return_error()).
    *

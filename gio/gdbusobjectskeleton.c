@@ -164,7 +164,7 @@ g_dbus_object_skeleton_class_init (GDBusObjectSkeletonClass *klass)
   /**
    * GDBusObjectSkeleton::authorize-method:
    * @object: The #GDBusObjectSkeleton emitting the signal.
-   * @interface: The #GDBusInterfaceSkeleton that @invocation is on.
+   * @interface: The #GDBusInterfaceSkeleton that @invocation is for.
    * @invocation: A #GDBusMethodInvocation.
    *
    * Emitted when a method is invoked by a remote caller and used to
