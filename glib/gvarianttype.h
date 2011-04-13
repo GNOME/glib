@@ -260,6 +260,8 @@ typedef struct _GVariantType GVariantType;
  *
  * The type of a dictionary mapping strings to variants (the ubiquitous
  * "a{sv}" type).
+ *
+ * Since: 2.30
  **/
 #define G_VARIANT_TYPE_VARDICT              ((const GVariantType *) "a{sv}")
 
