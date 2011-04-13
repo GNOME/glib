@@ -1,5 +1,9 @@
+#include <config.h>
 #include <glib.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 static void
 test_empty (void)
@@ -37,6 +41,12 @@ test_writable (void)
   gchar *contents;
   const gchar *old = "MMMMMMMMMMMMMMMMMMMMMMMMM";
   const gchar *new = "abcdefghijklmnopqrstuvxyz";
+
+  if (access (SRCDIR "/4096-random-bytes", W_OK) != 0)
+    {
+      g_test_message ("Skipping writable mapping test");
+      return;
+    }
 
   error = NULL;
   file = g_mapped_file_new (SRCDIR "/4096-random-bytes", TRUE, &error);
