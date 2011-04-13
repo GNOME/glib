@@ -2268,15 +2268,20 @@ initable_init (GInitable     *initable,
 
   ret = FALSE;
 
+  /* First, handle the case where the connection already has an
+   * initialization error set.
+   */
+  if (connection->initialization_error != NULL)
+    goto out;
+
+  /* Also make this a no-op if we're already initialized fine */
   if (connection->is_initialized)
     {
-      if (connection->stream != NULL)
-        ret = TRUE;
-      else
-        g_assert (connection->initialization_error != NULL);
+      ret = TRUE;
       goto out;
     }
-  g_assert (connection->initialization_error == NULL);
+
+  g_assert (connection->initialization_error == NULL && !connection->is_initialized);
 
   /* The user can pass multiple (but mutally exclusive) construct
    * properties:
