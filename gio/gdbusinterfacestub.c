@@ -315,17 +315,13 @@ g_dbus_interface_stub_get_vtable (GDBusInterfaceStub *interface_)
   return ret;
 }
 
-/* TODO: use G_VARIANT_TYPE_TYPE_ASV below when that is in GVariant.
- * See https://bugzilla.gnome.org/show_bug.cgi?id=647614
- */
-
 /**
  * g_dbus_interface_stub_get_properties:
  * @interface_: A #GDBusInterfaceStub.
  *
  * Gets all D-Bus properties for @interface_.
  *
- * Returns: A new, floating, #GVariant of type <link linkend="G-VARIANT-TYPE-DICTIONARY:CAPS">'a{sv}'</link>. Free with g_variant_unref().
+ * Returns: A new, floating, #GVariant of type <link linkend="G-VARIANT-TYPE-VARDICT:CAPS">'a{sv}'</link>. Free with g_variant_unref().
  *
  * Since: 2.30
  */
