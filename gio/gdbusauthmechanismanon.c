@@ -187,8 +187,7 @@ mechanism_server_initiate (GDBusAuthMechanism   *mechanism,
   g_return_if_fail (G_IS_DBUS_AUTH_MECHANISM_ANON (mechanism));
   g_return_if_fail (!m->priv->is_server && !m->priv->is_client);
 
-  if (initial_response != NULL)
-    g_debug ("ANONYMOUS: initial_response was `%s'", initial_response);
+  //g_debug ("ANONYMOUS: initial_response was `%s'", initial_response);
 
   m->priv->is_server = TRUE;
   m->priv->state = G_DBUS_AUTH_MECHANISM_STATE_ACCEPTED;
