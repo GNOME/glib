@@ -62,7 +62,7 @@ on_bus_acquired (GDBusConnection *connection,
                  const gchar     *name,
                  gpointer         user_data)
 {
-  GDBusObjectStub *object;
+  GDBusObjectSkeleton *object;
   guint n;
 
   g_print ("Acquired a message bus connection\n");
@@ -77,16 +77,16 @@ on_bus_acquired (GDBusConnection *connection,
 
       /* Create a new D-Bus object at the path /example/Animals/N where N is 000..009 */
       s = g_strdup_printf ("/example/Animals/%03d", n);
-      object = g_dbus_object_stub_new (s);
+      object = g_dbus_object_skeleton_new (s);
       g_free (s);
 
       /* Make the newly created object export the interface
        * org.gtk.GDBus.Example.ObjectManager.Animal (note
        * that @object takes its own reference to @animal).
        */
-      animal = example_animal_stub_new ();
+      animal = example_animal_skeleton_new ();
       example_animal_set_mood (animal, "Happy");
-      g_dbus_object_stub_add_interface (object, G_DBUS_INTERFACE_STUB (animal));
+      g_dbus_object_skeleton_add_interface (object, G_DBUS_INTERFACE_SKELETON (animal));
       g_object_unref (animal);
 
       /* Cats are odd animals - so some of our objects implement the
@@ -96,8 +96,8 @@ on_bus_acquired (GDBusConnection *connection,
       if (n % 2 == 1)
         {
           ExampleCat *cat;
-          cat = example_cat_stub_new ();
-          g_dbus_object_stub_add_interface (object, G_DBUS_INTERFACE_STUB (cat));
+          cat = example_cat_skeleton_new ();
+          g_dbus_object_skeleton_add_interface (object, G_DBUS_INTERFACE_SKELETON (cat));
           g_object_unref (cat);
         }
 

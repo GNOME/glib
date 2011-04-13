@@ -419,9 +419,9 @@ typedef gboolean (*GPollableSourceFunc) (GObject  *pollable_stream,
 					 gpointer  user_data);
 
 typedef struct _GDBusInterface              GDBusInterface; /* Dummy typedef */
-typedef struct _GDBusInterfaceStub          GDBusInterfaceStub;
+typedef struct _GDBusInterfaceSkeleton      GDBusInterfaceSkeleton;
 typedef struct _GDBusObject                 GDBusObject;  /* Dummy typedef */
-typedef struct _GDBusObjectStub             GDBusObjectStub;
+typedef struct _GDBusObjectSkeleton         GDBusObjectSkeleton;
 typedef struct _GDBusObjectProxy            GDBusObjectProxy;
 typedef struct _GDBusObjectManager          GDBusObjectManager;  /* Dummy typedef */
 typedef struct _GDBusObjectManagerClient    GDBusObjectManagerClient;

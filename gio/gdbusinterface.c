@@ -34,8 +34,8 @@
  * @include: gio/gio.h
  *
  * The #GDBusInterface type is the base type for D-Bus interfaces both
- * on the service side (see #GDBusInterfaceStub) and client side (see
- * #GDBusProxy).
+ * on the service side (see #GDBusInterfaceSkeleton) and client side
+ * (see #GDBusProxy).
  */
 
 typedef GDBusInterfaceIface GDBusInterfaceInterface;

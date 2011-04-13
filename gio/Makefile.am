@@ -83,9 +83,9 @@ gdbus_headers = 			\
 	gdbusmethodinvocation.h		\
 	gdbusserver.h			\
 	gdbusinterface.h		\
-	gdbusinterfacestub.h		\
+	gdbusinterfaceskeleton.h	\
 	gdbusobject.h			\
-	gdbusobjectstub.h		\
+	gdbusobjectskeleton.h		\
 	gdbusobjectproxy.h		\
 	gdbusobjectmanager.h		\
 	gdbusobjectmanagerclient.h	\
@@ -112,9 +112,9 @@ gdbus_sources = 							\
 	gdbusmethodinvocation.h		gdbusmethodinvocation.c		\
 	gdbusserver.h			gdbusserver.c			\
 	gdbusinterface.h		gdbusinterface.c		\
-	gdbusinterfacestub.h		gdbusinterfacestub.c		\
+	gdbusinterfaceskeleton.h	gdbusinterfaceskeleton.c	\
 	gdbusobject.h			gdbusobject.c			\
-	gdbusobjectstub.h		gdbusobjectstub.c		\
+	gdbusobjectskeleton.h		gdbusobjectskeleton.c		\
 	gdbusobjectproxy.h		gdbusobjectproxy.c		\
 	gdbusobjectmanager.h		gdbusobjectmanager.c		\
 	gdbusobjectmanagerclient.h	gdbusobjectmanagerclient.c	\

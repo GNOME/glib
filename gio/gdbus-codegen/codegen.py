@@ -419,35 +419,35 @@ class CodeGenerator:
             self.h.write('#define %sPEEK_%s(object) (g_dbus_object_peek_with_typecheck (G_DBUS_OBJECT (object), "%s", %sTYPE_%s))\n'%(i.ns_upper, i.name_upper, i.name, i.ns_upper, i.name_upper))
             self.h.write('\n')
 
-            # Then the stub
+            # Then the skeleton
             self.h.write('\n')
             self.h.write('/* ---- */\n')
             self.h.write('\n')
-            self.h.write('#define %sTYPE_%s_STUB (%s_stub_get_gtype ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
-            self.h.write('#define %s%s_STUB(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_%s_STUB, %sStub))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
-            self.h.write('#define %s%s_STUB_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_%s_STUB, %sStubClass))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
-            self.h.write('#define %s%s_STUB_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_%s_STUB, %sStubClass))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
-            self.h.write('#define %sIS_%s_STUB(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_%s_STUB))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper))
-            self.h.write('#define %sIS_%s_STUB_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), %sTYPE_%s_STUB))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper))
+            self.h.write('#define %sTYPE_%s_SKELETON (%s_skeleton_get_gtype ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
+            self.h.write('#define %s%s_SKELETON(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_%s_SKELETON, %sSkeleton))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
+            self.h.write('#define %s%s_SKELETON_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_%s_SKELETON, %sSkeletonClass))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
+            self.h.write('#define %s%s_SKELETON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_%s_SKELETON, %sSkeletonClass))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
+            self.h.write('#define %sIS_%s_SKELETON(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_%s_SKELETON))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper))
+            self.h.write('#define %sIS_%s_SKELETON_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), %sTYPE_%s_SKELETON))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper))
             self.h.write('\n')
-            self.h.write('typedef struct _%sStub %sStub;\n'%(i.camel_name, i.camel_name))
-            self.h.write('typedef struct _%sStubClass %sStubClass;\n'%(i.camel_name, i.camel_name))
-            self.h.write('typedef struct _%sStubPrivate %sStubPrivate;\n'%(i.camel_name, i.camel_name))
+            self.h.write('typedef struct _%sSkeleton %sSkeleton;\n'%(i.camel_name, i.camel_name))
+            self.h.write('typedef struct _%sSkeletonClass %sSkeletonClass;\n'%(i.camel_name, i.camel_name))
+            self.h.write('typedef struct _%sSkeletonPrivate %sSkeletonPrivate;\n'%(i.camel_name, i.camel_name))
             self.h.write('\n')
-            self.h.write('struct _%sStub\n'%(i.camel_name))
+            self.h.write('struct _%sSkeleton\n'%(i.camel_name))
             self.h.write('{\n')
-            self.h.write('  GDBusInterfaceStub parent_instance;\n')
-            self.h.write('  %sStubPrivate *priv;\n'%(i.camel_name))
+            self.h.write('  GDBusInterfaceSkeleton parent_instance;\n')
+            self.h.write('  %sSkeletonPrivate *priv;\n'%(i.camel_name))
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('struct _%sStubClass\n'%(i.camel_name))
+            self.h.write('struct _%sSkeletonClass\n'%(i.camel_name))
             self.h.write('{\n')
-            self.h.write('  GDBusInterfaceStubClass parent_class;\n')
+            self.h.write('  GDBusInterfaceSkeletonClass parent_class;\n')
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('GType %s_stub_get_gtype (void) G_GNUC_CONST;\n'%(i.name_lower))
+            self.h.write('GType %s_skeleton_get_gtype (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
-            self.h.write('%s *%s_stub_new (void);\n'%(i.camel_name, i.name_lower))
+            self.h.write('%s *%s_skeleton_new (void);\n'%(i.camel_name, i.name_lower))
 
             self.h.write('\n')
 
@@ -1327,12 +1327,12 @@ class CodeGenerator:
 
     # ---------------------------------------------------------------------------------------------------
 
-    def generate_stub(self, i):
+    def generate_skeleton(self, i):
         # class boilerplate
         self.c.write('/* ------------------------------------------------------------------------ */\n'
                      '\n')
 
-        self.c.write('struct _%sStubPrivate\n'
+        self.c.write('struct _%sSkeletonPrivate\n'
                      '{\n'
                      '  GValueArray *properties;\n'
                      '  GList *changed_properties;\n'
@@ -1342,7 +1342,7 @@ class CodeGenerator:
                      '\n'%i.camel_name)
 
         self.c.write('static void\n'
-                     '_%s_stub_handle_method_call (\n'
+                     '_%s_skeleton_handle_method_call (\n'
                      '  GDBusConnection *connection,\n'
                      '  const gchar *sender,\n'
                      '  const gchar *object_path,\n'
@@ -1352,7 +1352,7 @@ class CodeGenerator:
                      '  GDBusMethodInvocation *invocation,\n'
                      '  gpointer user_data)\n'
                      '{\n'
-                     '  %sStub *stub = %s%s_STUB (user_data);\n'
+                     '  %sSkeleton *skeleton = %s%s_SKELETON (user_data);\n'
                      '  _ExtendedGDBusMethodInfo *info;\n'
                      '  GVariantIter iter;\n'
                      '  GVariant *child;\n'
@@ -1368,7 +1368,7 @@ class CodeGenerator:
         self.c.write ('  num_params = g_variant_n_children (parameters);\n'
                       '  paramv = g_new0 (GValue, num_params + 2);\n'
                       '  g_value_init (&paramv[0], %sTYPE_%s);\n'
-                      '  g_value_set_object (&paramv[0], stub);\n'
+                      '  g_value_set_object (&paramv[0], skeleton);\n'
                       '  g_value_init (&paramv[1], G_TYPE_DBUS_METHOD_INVOCATION);\n'
                       '  g_value_set_object (&paramv[1], invocation);\n'
                       %(i.ns_upper, i.name_upper))
@@ -1403,7 +1403,7 @@ class CodeGenerator:
                      '\n')
 
         self.c.write('static GVariant *\n'
-                     '_%s_stub_handle_get_property (\n'
+                     '_%s_skeleton_handle_get_property (\n'
                      '  GDBusConnection *connection,\n'
                      '  const gchar *sender,\n'
                      '  const gchar *object_path,\n'
@@ -1412,7 +1412,7 @@ class CodeGenerator:
                      '  GError **error,\n'
                      '  gpointer user_data)\n'
                      '{\n'
-                     '  %sStub *stub = %s%s_STUB (user_data);\n'
+                     '  %sSkeleton *skeleton = %s%s_SKELETON (user_data);\n'
                      '  GValue value = {0};\n'
                      '  GParamSpec *pspec;\n'
                      '  _ExtendedGDBusPropertyInfo *info;\n'
@@ -1421,7 +1421,7 @@ class CodeGenerator:
         self.c.write('  ret = NULL;\n'
                      '  info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, property_name);\n'
                      '  g_assert (info != NULL);\n'
-                     '  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (stub), info->hyphen_name);\n'
+                     '  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (skeleton), info->hyphen_name);\n'
                      '  if (pspec == NULL)\n'
                      '    {\n'
                      '      g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS, "No property with name %%s", property_name);\n'
@@ -1429,7 +1429,7 @@ class CodeGenerator:
                      '  else\n'
                      '    {\n'
                      '      g_value_init (&value, pspec->value_type);\n'
-                     '      g_object_get_property (G_OBJECT (stub), info->hyphen_name, &value);\n'
+                     '      g_object_get_property (G_OBJECT (skeleton), info->hyphen_name, &value);\n'
                      '      ret = g_dbus_gvalue_to_gvariant (&value, G_VARIANT_TYPE (info->parent_struct.signature));\n'
                      '      g_value_unset (&value);\n'
                      '    }\n'
@@ -1439,7 +1439,7 @@ class CodeGenerator:
                      %(i.name_lower))
 
         self.c.write('static gboolean\n'
-                     '_%s_stub_handle_set_property (\n'
+                     '_%s_skeleton_handle_set_property (\n'
                      '  GDBusConnection *connection,\n'
                      '  const gchar *sender,\n'
                      '  const gchar *object_path,\n'
@@ -1449,7 +1449,7 @@ class CodeGenerator:
                      '  GError **error,\n'
                      '  gpointer user_data)\n'
                      '{\n'
-                     '  %sStub *stub = %s%s_STUB (user_data);\n'
+                     '  %sSkeleton *skeleton = %s%s_SKELETON (user_data);\n'
                      '  GValue value = {0};\n'
                      '  GParamSpec *pspec;\n'
                      '  _ExtendedGDBusPropertyInfo *info;\n'
@@ -1458,7 +1458,7 @@ class CodeGenerator:
         self.c.write('  ret = FALSE;\n'
                      '  info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, property_name);\n'
                      '  g_assert (info != NULL);\n'
-                     '  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (stub), info->hyphen_name);\n'
+                     '  pspec = g_object_class_find_property (G_OBJECT_GET_CLASS (skeleton), info->hyphen_name);\n'
                      '  if (pspec == NULL)\n'
                      '    {\n'
                      '      g_set_error (error, G_DBUS_ERROR, G_DBUS_ERROR_INVALID_ARGS, "No property with name %%s", property_name);\n'
@@ -1469,7 +1469,7 @@ class CodeGenerator:
                      '        g_value_set_variant (&value, variant);\n'
                      '      else\n'
                      '        g_dbus_gvariant_to_gvalue (variant, &value);\n'
-                     '      g_object_set_property (G_OBJECT (stub), info->hyphen_name, &value);\n'
+                     '      g_object_set_property (G_OBJECT (skeleton), info->hyphen_name, &value);\n'
                      '      g_value_unset (&value);\n'
                      '      ret = TRUE;\n'
                      '    }\n'
@@ -1479,16 +1479,16 @@ class CodeGenerator:
                      %(i.name_lower))
 
 
-        self.c.write('static const GDBusInterfaceVTable _%s_stub_vtable =\n'
+        self.c.write('static const GDBusInterfaceVTable _%s_skeleton_vtable =\n'
                      '{\n'
-                     '  _%s_stub_handle_method_call,\n'
-                     '  _%s_stub_handle_get_property,\n'
-                     '  _%s_stub_handle_set_property\n'
+                     '  _%s_skeleton_handle_method_call,\n'
+                     '  _%s_skeleton_handle_get_property,\n'
+                     '  _%s_skeleton_handle_set_property\n'
                      '};\n'
                      '\n'%(i.name_lower, i.name_lower, i.name_lower, i.name_lower))
 
         self.c.write('static GDBusInterfaceInfo *\n'
-                     '%s_stub_dbus_interface_get_info (GDBusInterfaceStub *stub)\n'
+                     '%s_skeleton_dbus_interface_get_info (GDBusInterfaceSkeleton *skeleton)\n'
                      '{\n'
                      '  return %s_interface_info ();\n'
                      %(i.name_lower, i.name_lower))
@@ -1496,17 +1496,17 @@ class CodeGenerator:
                      '\n')
 
         self.c.write('static GDBusInterfaceVTable *\n'
-                     '%s_stub_dbus_interface_get_vtable (GDBusInterfaceStub *stub)\n'
+                     '%s_skeleton_dbus_interface_get_vtable (GDBusInterfaceSkeleton *skeleton)\n'
                      '{\n'
-                     '  return (GDBusInterfaceVTable *) &_%s_stub_vtable;\n'
+                     '  return (GDBusInterfaceVTable *) &_%s_skeleton_vtable;\n'
                      %(i.name_lower, i.name_lower))
         self.c.write('}\n'
                      '\n')
 
         self.c.write('static GVariant *\n'
-                     '%s_stub_dbus_interface_get_properties (GDBusInterfaceStub *_stub)\n'
+                     '%s_skeleton_dbus_interface_get_properties (GDBusInterfaceSkeleton *_skeleton)\n'
                      '{\n'
-                     '  %sStub *stub = %s%s_STUB (_stub);\n'
+                     '  %sSkeleton *skeleton = %s%s_SKELETON (_skeleton);\n'
                      %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper))
         self.c.write('\n'
                      '  GVariantBuilder builder;\n'
@@ -1520,7 +1520,7 @@ class CodeGenerator:
                      '      if (info->flags & G_DBUS_PROPERTY_INFO_FLAGS_READABLE)\n'
                      '        {\n'
                      '          GVariant *value;\n'
-                     '          value = _%s_stub_handle_get_property (g_dbus_interface_stub_get_connection (G_DBUS_INTERFACE_STUB (stub)), NULL, g_dbus_interface_stub_get_object_path (G_DBUS_INTERFACE_STUB (stub)), "%s", info->name, NULL, stub);\n'
+                     '          value = _%s_skeleton_handle_get_property (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)), NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "%s", info->name, NULL, skeleton);\n'
                      '          if (value != NULL)\n'
                      '            {\n'
                      '              if (g_variant_is_floating (value))\n'
@@ -1542,16 +1542,16 @@ class CodeGenerator:
                          %(i.name_lower))
 
         self.c.write('static void\n'
-                     '%s_stub_dbus_interface_flush (GDBusInterfaceStub *_stub)\n'
+                     '%s_skeleton_dbus_interface_flush (GDBusInterfaceSkeleton *_skeleton)\n'
                      '{\n'
                      %(i.name_lower))
         if len(i.properties) > 0:
-            self.c.write('  %sStub *stub = %s%s_STUB (_stub);\n'
-                         '  if (stub->priv->changed_properties_idle_source != NULL)\n'
+            self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (_skeleton);\n'
+                         '  if (skeleton->priv->changed_properties_idle_source != NULL)\n'
                          '    {\n'
-                         '      g_source_destroy (stub->priv->changed_properties_idle_source);\n'
-                         '      stub->priv->changed_properties_idle_source = NULL;\n'
-                         '      _%s_emit_changed (stub);\n'
+                         '      g_source_destroy (skeleton->priv->changed_properties_idle_source);\n'
+                         '      skeleton->priv->changed_properties_idle_source = NULL;\n'
+                         '      _%s_emit_changed (skeleton);\n'
                          '    }\n'
                          %(i.camel_name, i.ns_upper, i.name_upper, i.name_lower))
         self.c.write('}\n'
@@ -1565,13 +1565,13 @@ class CodeGenerator:
                 self.c.write(',\n    %s%s'%(a.ctype_in, a.name))
             self.c.write(')\n'
                          '{\n'
-                         '  %sStub *stub = %s%s_STUB (object);\n'
-                         '  GDBusConnection *connection = g_dbus_interface_stub_get_connection (G_DBUS_INTERFACE_STUB (stub));\n'
+                         '  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
+                         '  GDBusConnection *connection = g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton));\n'
                          %(i.camel_name, i.ns_upper, i.name_upper))
             self.c.write('  if (connection == NULL)\n'
                          '    return;\n'
                          '  g_dbus_connection_emit_signal (connection,\n'
-                         '    NULL, g_dbus_interface_stub_get_object_path (G_DBUS_INTERFACE_STUB (stub)), "%s", "%s",\n'
+                         '    NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)), "%s", "%s",\n'
                          '    g_variant_new ("('
                          %(i.name, s.name))
             for a in s.args:
@@ -1584,7 +1584,7 @@ class CodeGenerator:
                          '\n')
 
         self.c.write('static void\n'
-                     '%s_stub_iface_init (%sIface *iface)\n'
+                     '%s_skeleton_iface_init (%sIface *iface)\n'
                      '{\n'
                      %(i.name_lower, i.camel_name))
         for s in i.signals:
@@ -1592,39 +1592,39 @@ class CodeGenerator:
                          %(s.name_lower, i.name_lower, s.name_lower))
         self.c.write('}\n'
                      '\n')
-        self.c.write('#define %s_stub_get_type %s_stub_get_gtype\n'%(i.name_lower, i.name_lower))
-        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sStub, %s_stub, G_TYPE_DBUS_INTERFACE_STUB,\n'%(i.camel_name, i.name_lower))
-        self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_stub_iface_init));\n'%(i.ns_upper, i.name_upper, i.name_lower))
-        self.c.write('#undef %s_stub_get_type\n'
+        self.c.write('#define %s_skeleton_get_type %s_skeleton_get_gtype\n'%(i.name_lower, i.name_lower))
+        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
+        self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init));\n'%(i.ns_upper, i.name_upper, i.name_lower))
+        self.c.write('#undef %s_skeleton_get_type\n'
                      '\n'%(i.name_lower))
 
         # finalize
         self.c.write('static void\n'
-                     '%s_stub_finalize (GObject *object)\n'
+                     '%s_skeleton_finalize (GObject *object)\n'
                      '{\n'%(i.name_lower))
-        self.c.write('  %sStub *stub = %s%s_STUB (object);\n'%(i.camel_name, i.ns_upper, i.name_upper))
+        self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'%(i.camel_name, i.ns_upper, i.name_upper))
         if len(i.properties) > 0:
-            self.c.write('  g_value_array_free (stub->priv->properties);\n')
-        self.c.write('  g_list_foreach (stub->priv->changed_properties, (GFunc) _changed_property_free, NULL);\n')
-        self.c.write('  g_list_free (stub->priv->changed_properties);\n')
-        self.c.write('  if (stub->priv->changed_properties_idle_source != NULL)\n')
-        self.c.write('    g_source_destroy (stub->priv->changed_properties_idle_source);\n')
-        self.c.write('  if (stub->priv->context != NULL)\n')
-        self.c.write('    g_main_context_unref (stub->priv->context);\n')
-        self.c.write('  G_OBJECT_CLASS (%s_stub_parent_class)->finalize (object);\n'
+            self.c.write('  g_value_array_free (skeleton->priv->properties);\n')
+        self.c.write('  g_list_foreach (skeleton->priv->changed_properties, (GFunc) _changed_property_free, NULL);\n')
+        self.c.write('  g_list_free (skeleton->priv->changed_properties);\n')
+        self.c.write('  if (skeleton->priv->changed_properties_idle_source != NULL)\n')
+        self.c.write('    g_source_destroy (skeleton->priv->changed_properties_idle_source);\n')
+        self.c.write('  if (skeleton->priv->context != NULL)\n')
+        self.c.write('    g_main_context_unref (skeleton->priv->context);\n')
+        self.c.write('  G_OBJECT_CLASS (%s_skeleton_parent_class)->finalize (object);\n'
                      '}\n'
                      '\n'%(i.name_lower))
 
         # property accessors (TODO: generate PropertiesChanged signals in setter)
         self.c.write('static void\n'
-                     '%s_stub_get_property (GObject      *object,\n'
+                     '%s_skeleton_get_property (GObject      *object,\n'
                      '  guint         prop_id,\n'
                      '  GValue       *value,\n'
                      '  GParamSpec   *pspec)\n'
                      '{\n'%(i.name_lower))
-        self.c.write('  %sStub *stub = %s%s_STUB (object);\n'
+        self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
                      '  g_assert (prop_id - 1 >= 0 && prop_id - 1 < %d);\n'
-                     '  g_value_copy (&stub->priv->properties->values[prop_id - 1], value);\n'
+                     '  g_value_copy (&skeleton->priv->properties->values[prop_id - 1], value);\n'
                      %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties)))
         self.c.write('}\n'
                      '\n')
@@ -1632,14 +1632,14 @@ class CodeGenerator:
             self.c.write('static gboolean\n'
                          '_%s_emit_changed (gpointer user_data)\n'
                          '{\n'
-                         '  %sStub *stub = %s%s_STUB (user_data);\n'
+                         '  %sSkeleton *skeleton = %s%s_SKELETON (user_data);\n'
                          %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper))
             self.c.write('  GList *l;\n'
                          '  GVariantBuilder builder;\n'
                          '  GVariantBuilder invalidated_builder;\n'
                          '  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));\n'
                          '  g_variant_builder_init (&invalidated_builder, G_VARIANT_TYPE ("as"));\n'
-                         '  for (l = stub->priv->changed_properties; l != NULL; l = l->next)\n'
+                         '  for (l = skeleton->priv->changed_properties; l != NULL; l = l->next)\n'
                          '    {\n'
                          '      ChangedProperty *cp = l->data;\n'
                          '      GVariant *variant;\n'
@@ -1647,8 +1647,8 @@ class CodeGenerator:
                          '      g_variant_builder_add (&builder, "{sv}", cp->info->parent_struct.name, variant);\n'
                          '      g_variant_unref (variant);\n'
                          '    }\n'
-                         '  g_dbus_connection_emit_signal (g_dbus_interface_stub_get_connection (G_DBUS_INTERFACE_STUB (stub)),\n'
-                         '                                 NULL, g_dbus_interface_stub_get_object_path (G_DBUS_INTERFACE_STUB (stub)),\n'
+                         '  g_dbus_connection_emit_signal (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)),\n'
+                         '                                 NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)),\n'
                          '                                 "org.freedesktop.DBus.Properties",\n'
                          '                                 "PropertiesChanged",\n'
                          '                                 g_variant_new ("(sa{sv}as)",\n'
@@ -1656,21 +1656,21 @@ class CodeGenerator:
                          '                                                &builder, &invalidated_builder),\n'
                          '                                 NULL);\n'
                          %(i.name))
-            self.c.write('  g_list_foreach (stub->priv->changed_properties, (GFunc) _changed_property_free, NULL);\n')
-            self.c.write('  g_list_free (stub->priv->changed_properties);\n')
-            self.c.write('  stub->priv->changed_properties = NULL;\n')
-            self.c.write('  stub->priv->changed_properties_idle_source = NULL;\n')
+            self.c.write('  g_list_foreach (skeleton->priv->changed_properties, (GFunc) _changed_property_free, NULL);\n')
+            self.c.write('  g_list_free (skeleton->priv->changed_properties);\n')
+            self.c.write('  skeleton->priv->changed_properties = NULL;\n')
+            self.c.write('  skeleton->priv->changed_properties_idle_source = NULL;\n')
             self.c.write('  return FALSE;\n'
                          '}\n'
                          '\n')
             # if property is already scheduled then re-use entry
             self.c.write('static void\n'
-                         '_%s_schedule_emit_changed (%sStub *stub, const _ExtendedGDBusPropertyInfo *info, GParamSpec *pspec, const GValue *value)\n'
+                         '_%s_schedule_emit_changed (%sSkeleton *skeleton, const _ExtendedGDBusPropertyInfo *info, GParamSpec *pspec, const GValue *value)\n'
                          '{\n'
                          '  ChangedProperty *cp;\n'
                          '  GList *l;\n'
                          '  cp = NULL;\n'
-                         '  for (l = stub->priv->changed_properties; l != NULL; l = l->next)\n'
+                         '  for (l = skeleton->priv->changed_properties; l != NULL; l = l->next)\n'
                          '    {\n'
                          '      ChangedProperty *i_cp = l->data;\n'
                          '      if (i_cp->info == info)\n'
@@ -1685,88 +1685,88 @@ class CodeGenerator:
                          '      cp = g_new0 (ChangedProperty, 1);\n'
                          '      cp->pspec = pspec;\n'
                          '      cp->info = info;\n'
-                         '      stub->priv->changed_properties = g_list_prepend (stub->priv->changed_properties, cp);\n'
+                         '      skeleton->priv->changed_properties = g_list_prepend (skeleton->priv->changed_properties, cp);\n'
                          '    }\n'
                          '  g_value_init (&cp->value, G_VALUE_TYPE (value));\n'
                          '  g_value_copy (value, &cp->value);\n'
-                         '  if (stub->priv->changed_properties_idle_source == NULL)\n'
+                         '  if (skeleton->priv->changed_properties_idle_source == NULL)\n'
                          '    {\n'
-                         '      stub->priv->changed_properties_idle_source = g_idle_source_new ();\n'
-                         '      g_source_set_priority (stub->priv->changed_properties_idle_source, G_PRIORITY_DEFAULT);\n'
-                         '      g_source_set_callback (stub->priv->changed_properties_idle_source, _%s_emit_changed, g_object_ref (stub), (GDestroyNotify) g_object_unref);\n'
-                         '      g_source_attach (stub->priv->changed_properties_idle_source, stub->priv->context);\n'
-                         '      g_source_unref (stub->priv->changed_properties_idle_source);\n'
+                         '      skeleton->priv->changed_properties_idle_source = g_idle_source_new ();\n'
+                         '      g_source_set_priority (skeleton->priv->changed_properties_idle_source, G_PRIORITY_DEFAULT);\n'
+                         '      g_source_set_callback (skeleton->priv->changed_properties_idle_source, _%s_emit_changed, g_object_ref (skeleton), (GDestroyNotify) g_object_unref);\n'
+                         '      g_source_attach (skeleton->priv->changed_properties_idle_source, skeleton->priv->context);\n'
+                         '      g_source_unref (skeleton->priv->changed_properties_idle_source);\n'
                          '    }\n'
                          '}\n'
                          '\n'
                          %(i.name_lower, i.camel_name, i.name_lower))
         self.c.write('static void\n'
-                     '%s_stub_set_property (GObject      *object,\n'
+                     '%s_skeleton_set_property (GObject      *object,\n'
                      '  guint         prop_id,\n'
                      '  const GValue *value,\n'
                      '  GParamSpec   *pspec)\n'
                      '{\n'%(i.name_lower))
         if len(i.properties) > 0:
-            self.c.write('  %sStub *stub = %s%s_STUB (object);\n'
+            self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
                          '  g_assert (prop_id - 1 >= 0 && prop_id - 1 < %d);\n'
-                         '  if (!_g_value_equal (value, &stub->priv->properties->values[prop_id - 1]))\n'
+                         '  if (!_g_value_equal (value, &skeleton->priv->properties->values[prop_id - 1]))\n'
                          '    {\n'
-                         '      g_value_copy (value, &stub->priv->properties->values[prop_id - 1]);\n'
+                         '      g_value_copy (value, &skeleton->priv->properties->values[prop_id - 1]);\n'
                          '      g_object_notify_by_pspec (object, pspec);\n'
-                         '      if (g_dbus_interface_stub_get_connection (G_DBUS_INTERFACE_STUB (stub)) != NULL)\n'
-                         '        _%s_schedule_emit_changed (stub, _%s_property_info_pointers[prop_id - 1], pspec, value);\n'
+                         '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
+                         '        _%s_schedule_emit_changed (skeleton, _%s_property_info_pointers[prop_id - 1], pspec, value);\n'
                          '    }\n'
                          %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties), i.name_lower, i.name_lower))
         self.c.write('}\n'
                      '\n')
 
         self.c.write('static void\n'
-                     '%s_stub_init (%sStub *stub)\n'
+                     '%s_skeleton_init (%sSkeleton *skeleton)\n'
                      '{\n'
-                     '  stub->priv = G_TYPE_INSTANCE_GET_PRIVATE (stub, %sTYPE_%s_STUB, %sStubPrivate);\n'
+                     '  skeleton->priv = G_TYPE_INSTANCE_GET_PRIVATE (skeleton, %sTYPE_%s_SKELETON, %sSkeletonPrivate);\n'
                      %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.camel_name))
-        self.c.write('  stub->priv->context = g_main_context_get_thread_default ();\n')
-        self.c.write('  if (stub->priv->context != NULL)\n')
-        self.c.write('    g_main_context_ref (stub->priv->context);\n')
+        self.c.write('  skeleton->priv->context = g_main_context_get_thread_default ();\n')
+        self.c.write('  if (skeleton->priv->context != NULL)\n')
+        self.c.write('    g_main_context_ref (skeleton->priv->context);\n')
         if len(i.properties) > 0:
-            self.c.write('  stub->priv->properties = g_value_array_new (%d);\n'%(len(i.properties)))
+            self.c.write('  skeleton->priv->properties = g_value_array_new (%d);\n'%(len(i.properties)))
             n = 0
             for p in i.properties:
-                self.c.write('  g_value_array_append (stub->priv->properties, NULL);\n')
-                self.c.write('  g_value_init (&stub->priv->properties->values[%d], %s);\n'%(n, p.arg.gtype))
+                self.c.write('  g_value_array_append (skeleton->priv->properties, NULL);\n')
+                self.c.write('  g_value_init (&skeleton->priv->properties->values[%d], %s);\n'%(n, p.arg.gtype))
                 n += 1
         self.c.write('}\n'
                      '\n')
         self.c.write('static void\n'
-                     '%s_stub_class_init (%sStubClass *klass)\n'
+                     '%s_skeleton_class_init (%sSkeletonClass *klass)\n'
                      '{\n'
                      '  GObjectClass *gobject_class;\n'
-                     '  GDBusInterfaceStubClass *stub_class;\n'
+                     '  GDBusInterfaceSkeletonClass *skeleton_class;\n'
                      '\n'
-                     '  g_type_class_add_private (klass, sizeof (%sStubPrivate));\n'
+                     '  g_type_class_add_private (klass, sizeof (%sSkeletonPrivate));\n'
                      '\n'
                      '  gobject_class = G_OBJECT_CLASS (klass);\n'
-                     '  gobject_class->finalize = %s_stub_finalize;\n'
-                     '  gobject_class->get_property = %s_stub_get_property;\n'
-                     '  gobject_class->set_property = %s_stub_set_property;\n'
+                     '  gobject_class->finalize = %s_skeleton_finalize;\n'
+                     '  gobject_class->get_property = %s_skeleton_get_property;\n'
+                     '  gobject_class->set_property = %s_skeleton_set_property;\n'
                      '\n'%(i.name_lower, i.camel_name, i.camel_name, i.name_lower, i.name_lower, i.name_lower))
         if len(i.properties) > 0:
             self.c.write('\n'
                          '  %s_override_properties (gobject_class, 1);\n'%(i.name_lower))
         self.c.write('\n'
-                     '  stub_class = G_DBUS_INTERFACE_STUB_CLASS (klass);\n');
-        self.c.write('  stub_class->get_info = %s_stub_dbus_interface_get_info;\n'%(i.name_lower))
-        self.c.write('  stub_class->get_properties = %s_stub_dbus_interface_get_properties;\n'%(i.name_lower))
-        self.c.write('  stub_class->flush = %s_stub_dbus_interface_flush;\n'%(i.name_lower))
-        self.c.write('  stub_class->get_vtable = %s_stub_dbus_interface_get_vtable;\n'%(i.name_lower))
+                     '  skeleton_class = G_DBUS_INTERFACE_SKELETON_CLASS (klass);\n');
+        self.c.write('  skeleton_class->get_info = %s_skeleton_dbus_interface_get_info;\n'%(i.name_lower))
+        self.c.write('  skeleton_class->get_properties = %s_skeleton_dbus_interface_get_properties;\n'%(i.name_lower))
+        self.c.write('  skeleton_class->flush = %s_skeleton_dbus_interface_flush;\n'%(i.name_lower))
+        self.c.write('  skeleton_class->get_vtable = %s_skeleton_dbus_interface_get_vtable;\n'%(i.name_lower))
         self.c.write('}\n'
                      '\n')
 
         # constructors
         self.c.write('%s *\n'
-                     '%s_stub_new (void)\n'
+                     '%s_skeleton_new (void)\n'
                      '{\n'
-                     '  return %s%s (g_object_new (%sTYPE_%s_STUB, NULL));\n'
+                     '  return %s%s (g_object_new (%sTYPE_%s_SKELETON, NULL));\n'
                      '}\n'
                      '\n'%(i.camel_name, i.name_lower, i.ns_upper, i.name_upper, i.ns_upper, i.name_upper))
 
@@ -1950,7 +1950,7 @@ class CodeGenerator:
             self.generate_method_calls(i)
             self.generate_method_completers(i)
             self.generate_proxy(i)
-            self.generate_stub(i)
+            self.generate_skeleton(i)
         if self.generate_objmanager:
             self.generate_object_manager_client()
         self.generate_outro()

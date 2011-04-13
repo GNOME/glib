@@ -1384,22 +1384,22 @@ typedef enum {
 } GTlsRehandshakeMode;
 
 /**
- * GDBusInterfaceStubFlags:
- * @G_DBUS_INTERFACE_STUB_FLAGS_NONE: No flags set.
- * @G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD: Each method invocation is handled in
+ * GDBusInterfaceSkeletonFlags:
+ * @G_DBUS_INTERFACE_SKELETON_FLAGS_NONE: No flags set.
+ * @G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD: Each method invocation is handled in
  *   a thread dedicated to the invocation. This means that the method implementation can use blocking IO
  *   without blocking any other part of the process. It also means that the method implementation must
  *   use locking to access data structures used by other threads.
  *
- * Flags describing the behavior of a #GDBusInterfaceStub class.
+ * Flags describing the behavior of a #GDBusInterfaceSkeleton instance.
  *
  * Since: 2.30
  */
 typedef enum
 {
-  G_DBUS_INTERFACE_STUB_FLAGS_NONE = 0,
-  G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD = (1<<0)
-} GDBusInterfaceStubFlags;
+  G_DBUS_INTERFACE_SKELETON_FLAGS_NONE = 0,
+  G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD = (1<<0)
+} GDBusInterfaceSkeletonFlags;
 
 /**
  * GDBusObjectManagerClientFlags:

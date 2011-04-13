@@ -131,9 +131,9 @@
 #include <gio/gzlibcompressor.h>
 #include <gio/gzlibdecompressor.h>
 #include <gio/gdbusinterface.h>
-#include <gio/gdbusinterfacestub.h>
+#include <gio/gdbusinterfaceskeleton.h>
 #include <gio/gdbusobject.h>
-#include <gio/gdbusobjectstub.h>
+#include <gio/gdbusobjectskeleton.h>
 #include <gio/gdbusobjectproxy.h>
 #include <gio/gdbusobjectmanager.h>
 #include <gio/gdbusobjectmanagerclient.h>

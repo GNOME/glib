@@ -93,7 +93,7 @@ on_handle_hello_world (FooBar                 *object,
                        gpointer                user_data)
 {
   gchar *response;
-  response = g_strdup_printf ("Word! You said `%s'. I'm Stub, btw!", greeting);
+  response = g_strdup_printf ("Word! You said `%s'. I'm Skeleton, btw!", greeting);
   foo_bar_complete_hello_world (object, invocation, response);
   g_free (response);
   return TRUE;
@@ -205,7 +205,7 @@ on_handle_request_multi_property_mods (FooBar                 *object,
   foo_bar_set_i (object, foo_bar_get_i (object) + 1);
   foo_bar_set_y (object, foo_bar_get_y (object) + 1);
   foo_bar_set_i (object, foo_bar_get_i (object) + 1);
-  g_dbus_interface_stub_flush (G_DBUS_INTERFACE_STUB (object));
+  g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (object));
   foo_bar_set_y (object, foo_bar_get_y (object) + 1);
   foo_bar_set_i (object, foo_bar_get_i (object) + 1);
   foo_bar_complete_request_multi_property_mods (object, invocation);
@@ -271,9 +271,9 @@ on_handle_force_method (FooBat                 *object,
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gboolean
-my_g_authorize_method_handler (GDBusInterfaceStub    *interface,
-                               GDBusMethodInvocation *invocation,
-                               gpointer               user_data)
+my_g_authorize_method_handler (GDBusInterfaceSkeleton *interface,
+                               GDBusMethodInvocation  *invocation,
+                               gpointer                user_data)
 {
   const gchar *method_name;
   gboolean authorized;
@@ -309,10 +309,10 @@ my_g_authorize_method_handler (GDBusInterfaceStub    *interface,
 }
 
 static gboolean
-my_object_authorize_method_handler (GDBusObjectStub       *object,
-                                    GDBusInterfaceStub    *interface,
-                                    GDBusMethodInvocation *invocation,
-                                    gpointer               user_data)
+my_object_authorize_method_handler (GDBusObjectSkeleton     *object,
+                                    GDBusInterfaceSkeleton  *interface,
+                                    GDBusMethodInvocation   *invocation,
+                                    gpointer                 user_data)
 {
   const gchar *method_name;
   gboolean authorized;
@@ -395,7 +395,7 @@ static GThread *method_handler_thread = NULL;
 static FooBar *exported_bar_object = NULL;
 static FooBat *exported_bat_object = NULL;
 static FooAuthorize *exported_authorize_object = NULL;
-static GDBusObjectStub *authorize_enclosing_object = NULL;
+static GDBusObjectSkeleton *authorize_enclosing_object = NULL;
 static FooMethodThreads *exported_thread_object_1 = NULL;
 static FooMethodThreads *exported_thread_object_2 = NULL;
 
@@ -407,7 +407,7 @@ on_bus_acquired (GDBusConnection *connection,
   GError *error;
 
   /* Test that we can export an object using the generated
-   * FooBarStub subclass. Notes:
+   * FooBarSkeleton subclass. Notes:
    *
    * 1. We handle methods by simply connecting to the appropriate
    * GObject signal.
@@ -417,23 +417,23 @@ on_bus_acquired (GDBusConnection *connection,
    *    C bindings at will)
    */
   error = NULL;
-  exported_bar_object = foo_bar_stub_new ();
+  exported_bar_object = foo_bar_skeleton_new ();
   foo_bar_set_ay (exported_bar_object, "ABCabc");
   foo_bar_set_y (exported_bar_object, 42);
   foo_bar_set_d (exported_bar_object, 43.0);
   foo_bar_set_finally_normal_name (exported_bar_object, "There aint no place like home");
   foo_bar_set_writeonly_property (exported_bar_object, "Mr. Burns");
 
-  /* The following works because it's on the Stub object - it will
+  /* The following works because it's on the Skeleton object - it will
    * fail (at run-time) on a Proxy (see on_proxy_appeared() below)
    */
   foo_bar_set_readonly_property (exported_bar_object, "blah");
   g_assert_cmpstr (foo_bar_get_writeonly_property (exported_bar_object), ==, "Mr. Burns");
 
-  g_dbus_interface_stub_export (G_DBUS_INTERFACE_STUB (exported_bar_object),
-                                connection,
-                                "/bar",
-                                &error);
+  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_bar_object),
+                                    connection,
+                                    "/bar",
+                                    &error);
   g_assert_no_error (error);
   g_signal_connect (exported_bar_object,
                     "handle-hello-world",
@@ -456,11 +456,11 @@ on_bus_acquired (GDBusConnection *connection,
                     G_CALLBACK (on_handle_request_multi_property_mods),
                     NULL);
 
-  exported_bat_object = foo_bat_stub_new ();
-  g_dbus_interface_stub_export (G_DBUS_INTERFACE_STUB (exported_bat_object),
-                                connection,
-                                "/bat",
-                                &error);
+  exported_bat_object = foo_bat_skeleton_new ();
+  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_bat_object),
+                                    connection,
+                                    "/bat",
+                                    &error);
   g_assert_no_error (error);
   g_signal_connect (exported_bat_object,
                     "handle-force-method",
@@ -473,18 +473,18 @@ on_bus_acquired (GDBusConnection *connection,
                 "force-struct", g_variant_new ("(i)", 4300),
                 NULL);
 
-  authorize_enclosing_object = g_dbus_object_stub_new ("/authorize");
+  authorize_enclosing_object = g_dbus_object_skeleton_new ("/authorize");
   g_signal_connect (authorize_enclosing_object,
                     "authorize-method",
                     G_CALLBACK (my_object_authorize_method_handler),
                     NULL);
-  exported_authorize_object = foo_authorize_stub_new ();
-  g_dbus_object_stub_add_interface (authorize_enclosing_object,
-                                    G_DBUS_INTERFACE_STUB (exported_authorize_object));
-  g_dbus_interface_stub_export (G_DBUS_INTERFACE_STUB (exported_authorize_object),
-                                connection,
-                                "/authorize",
-                                &error);
+  exported_authorize_object = foo_authorize_skeleton_new ();
+  g_dbus_object_skeleton_add_interface (authorize_enclosing_object,
+                                        G_DBUS_INTERFACE_SKELETON (exported_authorize_object));
+  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_authorize_object),
+                                    connection,
+                                    "/authorize",
+                                    &error);
   g_assert_no_error (error);
   g_signal_connect (exported_authorize_object,
                     "g-authorize-method",
@@ -504,25 +504,25 @@ on_bus_acquired (GDBusConnection *connection,
                     NULL);
 
 
-  /* only object 1 has the G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD flag set */
-  exported_thread_object_1 = foo_method_threads_stub_new ();
-  g_dbus_interface_stub_set_flags (G_DBUS_INTERFACE_STUB (exported_thread_object_1),
-                                   G_DBUS_INTERFACE_STUB_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
-  g_dbus_interface_stub_export (G_DBUS_INTERFACE_STUB (exported_thread_object_1),
-                                connection,
-                                "/method_threads_1",
-                                &error);
+  /* only object 1 has the G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD flag set */
+  exported_thread_object_1 = foo_method_threads_skeleton_new ();
+  g_dbus_interface_skeleton_set_flags (G_DBUS_INTERFACE_SKELETON (exported_thread_object_1),
+                                       G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
+  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_thread_object_1),
+                                    connection,
+                                    "/method_threads_1",
+                                    &error);
   g_assert_no_error (error);
   g_signal_connect (exported_thread_object_1,
                     "handle-get-self",
                     G_CALLBACK (on_handle_get_self),
                     NULL);
 
-  exported_thread_object_2 = foo_method_threads_stub_new ();
-  g_dbus_interface_stub_export (G_DBUS_INTERFACE_STUB (exported_thread_object_2),
-                                connection,
-                                "/method_threads_2",
-                                &error);
+  exported_thread_object_2 = foo_method_threads_skeleton_new ();
+  g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_thread_object_2),
+                                    connection,
+                                    "/method_threads_2",
+                                    &error);
   g_assert_no_error (error);
   g_signal_connect (exported_thread_object_2,
                     "handle-get-self",
@@ -1648,29 +1648,29 @@ on_object_proxy_removed (GDBusObjectManagerClient  *manager,
 
 static void
 om_check_property_and_signal_emission (GMainLoop  *loop,
-                                       FooBar     *stub,
+                                       FooBar     *skeleton,
                                        FooBar     *proxy)
 {
   /* First PropertiesChanged */
-  g_assert_cmpint (foo_bar_get_i (stub), ==, 0);
+  g_assert_cmpint (foo_bar_get_i (skeleton), ==, 0);
   g_assert_cmpint (foo_bar_get_i (proxy), ==, 0);
-  foo_bar_set_i (stub, 1);
+  foo_bar_set_i (skeleton, 1);
   _g_assert_property_notify (proxy, "i");
-  g_assert_cmpint (foo_bar_get_i (stub), ==, 1);
+  g_assert_cmpint (foo_bar_get_i (skeleton), ==, 1);
   g_assert_cmpint (foo_bar_get_i (proxy), ==, 1);
 
   /* Then just a regular signal */
-  foo_bar_emit_another_signal (stub, "word");
+  foo_bar_emit_another_signal (skeleton, "word");
   _g_assert_signal_received (proxy, "another-signal");
 }
 
 static void
 check_object_manager (void)
 {
-  GDBusObjectStub *o;
-  GDBusObjectStub *o2;
-  GDBusInterfaceStub *i;
-  GDBusInterfaceStub *i2;
+  GDBusObjectSkeleton *o;
+  GDBusObjectSkeleton *o2;
+  GDBusInterfaceSkeleton *i;
+  GDBusInterfaceSkeleton *i2;
   GDBusConnection *c;
   GDBusObjectManagerServer *manager;
   GDBusNodeInfo *info;
@@ -1683,7 +1683,7 @@ check_object_manager (void)
   GList *proxies;
   GDBusObject *op;
   GDBusProxy *p;
-  FooBar *bar_stub;
+  FooBar *bar_skeleton;
   FooBar *bar_p;
   FooBar *bar_p2;
   FooComAcmeCoyote *coyote_p;
@@ -1777,19 +1777,19 @@ check_object_manager (void)
   /* First, export an object with a single interface (also check that
    * g_dbus_interface_get_object() works and that the object isn't reffed)
    */
-  o = g_dbus_object_stub_new ("/managed/first");
-  i = G_DBUS_INTERFACE_STUB (foo_bar_stub_new ());
+  o = g_dbus_object_skeleton_new ("/managed/first");
+  i = G_DBUS_INTERFACE_SKELETON (foo_bar_skeleton_new ());
   g_assert (g_dbus_interface_get_object (G_DBUS_INTERFACE (i)) == NULL);
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
-  g_dbus_object_stub_add_interface (o, i);
+  g_dbus_object_skeleton_add_interface (o, i);
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
   g_assert (g_dbus_interface_get_object (G_DBUS_INTERFACE (i)) == G_DBUS_OBJECT (o));
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
-  g_dbus_object_stub_remove_interface (o, i);
+  g_dbus_object_skeleton_remove_interface (o, i);
   g_assert (g_dbus_interface_get_object (G_DBUS_INTERFACE (i)) == NULL);
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
-  g_dbus_object_stub_add_interface (o, i);
+  g_dbus_object_skeleton_add_interface (o, i);
   g_assert (g_dbus_interface_get_object (G_DBUS_INTERFACE (i)) == G_DBUS_OBJECT (o));
   g_assert_cmpint (G_OBJECT (o)->ref_count, ==, 1);
   g_dbus_object_manager_server_export (manager, o);
@@ -1809,7 +1809,7 @@ check_object_manager (void)
   g_dbus_node_info_unref (info);
 
   /* Now, check adding the same interface replaces the existing one */
-  g_dbus_object_stub_add_interface (o, i);
+  g_dbus_object_skeleton_add_interface (o, i);
   /* ... check we get the InterfacesRemoved */
   om_data->state = 3;
   g_main_loop_run (om_data->loop);
@@ -1827,8 +1827,8 @@ check_object_manager (void)
   g_object_unref (i);
 
   /* check adding an interface of same type (but not same object) replaces the existing one */
-  i = G_DBUS_INTERFACE_STUB (foo_bar_stub_new ());
-  g_dbus_object_stub_add_interface (o, i);
+  i = G_DBUS_INTERFACE_SKELETON (foo_bar_skeleton_new ());
+  g_dbus_object_skeleton_add_interface (o, i);
   /* ... check we get the InterfacesRemoved and then InterfacesAdded */
   om_data->state = 7;
   g_main_loop_run (om_data->loop);
@@ -1845,8 +1845,8 @@ check_object_manager (void)
   g_object_unref (i);
 
   /* check adding an interface of another type doesn't replace the existing one */
-  i = G_DBUS_INTERFACE_STUB (foo_bat_stub_new ());
-  g_dbus_object_stub_add_interface (o, i);
+  i = G_DBUS_INTERFACE_SKELETON (foo_bat_skeleton_new ());
+  g_dbus_object_skeleton_add_interface (o, i);
   g_object_unref (i);
   /* ... check we get the InterfacesAdded */
   om_data->state = 11;
@@ -1864,7 +1864,7 @@ check_object_manager (void)
   g_dbus_node_info_unref (info);
 
   /* check we can remove an interface */
-  g_dbus_object_stub_remove_interface_by_name (o, "org.project.Bar");
+  g_dbus_object_skeleton_remove_interface_by_name (o, "org.project.Bar");
   /* ... check we get the InterfacesRemoved */
   om_data->state = 13;
   g_main_loop_run (om_data->loop);
@@ -1883,7 +1883,7 @@ check_object_manager (void)
    * (Note: if a signal was emitted we'd assert in the signal handler
    * because we're in state 14)
    */
-  g_dbus_object_stub_remove_interface_by_name (o, "org.project.Bar");
+  g_dbus_object_skeleton_remove_interface_by_name (o, "org.project.Bar");
   /* ... check introspection data */
   info = introspect (c, g_dbus_connection_get_unique_name (c), "/managed/first", loop);
   g_assert_cmpint (count_interfaces (info), ==, 4); /* Bat + Properties,Introspectable,Peer */
@@ -1891,7 +1891,7 @@ check_object_manager (void)
   g_dbus_node_info_unref (info);
 
   /* remove the last interface */
-  g_dbus_object_stub_remove_interface_by_name (o, "org.project.Bat");
+  g_dbus_object_skeleton_remove_interface_by_name (o, "org.project.Bat");
   /* ... check we get the InterfacesRemoved */
   om_data->state = 15;
   g_main_loop_run (om_data->loop);
@@ -1906,8 +1906,8 @@ check_object_manager (void)
   g_dbus_node_info_unref (info);
 
   /* and add an interface again */
-  i = G_DBUS_INTERFACE_STUB (foo_com_acme_coyote_stub_new ());
-  g_dbus_object_stub_add_interface (o, i);
+  i = G_DBUS_INTERFACE_SKELETON (foo_com_acme_coyote_skeleton_new ());
+  g_dbus_object_skeleton_add_interface (o, i);
   g_object_unref (i);
   /* ... check we get the InterfacesAdded */
   om_data->state = 17;
@@ -1930,13 +1930,13 @@ check_object_manager (void)
   /* -------------------------------------------------- */
 
   /* create a new object with two interfaces */
-  o2 = g_dbus_object_stub_new ("/managed/second");
-  i = G_DBUS_INTERFACE_STUB (foo_bar_stub_new ());
-  bar_stub = FOO_BAR (i); /* save for later test */
-  g_dbus_object_stub_add_interface (o2, i);
+  o2 = g_dbus_object_skeleton_new ("/managed/second");
+  i = G_DBUS_INTERFACE_SKELETON (foo_bar_skeleton_new ());
+  bar_skeleton = FOO_BAR (i); /* save for later test */
+  g_dbus_object_skeleton_add_interface (o2, i);
   g_object_unref (i);
-  i = G_DBUS_INTERFACE_STUB (foo_bat_stub_new ());
-  g_dbus_object_stub_add_interface (o2, i);
+  i = G_DBUS_INTERFACE_SKELETON (foo_bat_skeleton_new ());
+  g_dbus_object_skeleton_add_interface (o2, i);
   g_object_unref (i);
   /* ... add it */
   g_dbus_object_manager_server_export (manager, o2);
@@ -1962,9 +1962,9 @@ check_object_manager (void)
   g_assert (i == NULL);
   i = FOO_PEEK_COM_ACME_COYOTE (o);
   g_assert (i != NULL);
-  g_assert (g_type_is_a (G_TYPE_FROM_INSTANCE (i), G_TYPE_DBUS_INTERFACE_STUB));
+  g_assert (g_type_is_a (G_TYPE_FROM_INSTANCE (i), G_TYPE_DBUS_INTERFACE_SKELETON));
   g_assert (g_type_is_a (G_TYPE_FROM_INSTANCE (i), FOO_TYPE_COM_ACME_COYOTE));
-  g_assert (g_type_is_a (G_TYPE_FROM_INSTANCE (i), FOO_TYPE_COM_ACME_COYOTE_STUB));
+  g_assert (g_type_is_a (G_TYPE_FROM_INSTANCE (i), FOO_TYPE_COM_ACME_COYOTE_SKELETON));
   /* ... and that PEEK doesn't increase the ref_count but GET does */
   g_assert_cmpint (G_OBJECT (i)->ref_count, ==, 2);
   i2 = FOO_PEEK_COM_ACME_COYOTE (o);
@@ -2018,7 +2018,7 @@ check_object_manager (void)
   /* ... now that we have a Bar instance around, also check that we get signals
    *     and property changes...
    */
-  om_check_property_and_signal_emission (loop, bar_stub, FOO_BAR (p));
+  om_check_property_and_signal_emission (loop, bar_skeleton, FOO_BAR (p));
   g_object_unref (p);
   p = (GDBusProxy *) g_dbus_object_get_interface (op, "org.project.NonExisting");
   g_assert (p == NULL);

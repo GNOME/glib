@@ -131,7 +131,7 @@ gboolean _g_signal_accumulator_false_handled (GSignalInvocationHint *ihint,
                                               const GValue          *handler_return,
                                               gpointer               dummy);
 
-gboolean _g_dbus_object_stub_has_authorize_method_handlers (GDBusObjectStub *stub);
+gboolean _g_dbus_object_skeleton_has_authorize_method_handlers (GDBusObjectSkeleton *object);
 
 GDBusObjectProxy *_g_dbus_object_proxy_new (GDBusConnection *connection,
                                             const gchar *object_path);

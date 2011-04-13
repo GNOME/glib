@@ -25,8 +25,8 @@
 #include "gdbusobjectmanager.h"
 #include "gdbusobjectmanagerserver.h"
 #include "gdbusobject.h"
-#include "gdbusobjectstub.h"
-#include "gdbusinterfacestub.h"
+#include "gdbusobjectskeleton.h"
+#include "gdbusinterfaceskeleton.h"
 #include "gdbusconnection.h"
 #include "gdbusintrospection.h"
 #include "gdbusmethodinvocation.h"
@@ -54,7 +54,7 @@
 
 typedef struct
 {
-  GDBusObjectStub *object;
+  GDBusObjectSkeleton *object;
   GDBusObjectManagerServer *manager;
   GHashTable *map_iface_name_to_iface;
   gboolean exported;
@@ -270,8 +270,8 @@ g_dbus_object_manager_server_get_connection (GDBusObjectManagerServer *manager)
 /* ---------------------------------------------------------------------------------------------------- */
 
 static void
-registration_data_export_interface (RegistrationData     *data,
-                                    GDBusInterfaceStub   *interface_stub)
+registration_data_export_interface (RegistrationData        *data,
+                                    GDBusInterfaceSkeleton  *interface_skeleton)
 {
   GDBusInterfaceInfo *info;
   GError *error;
@@ -279,12 +279,12 @@ registration_data_export_interface (RegistrationData     *data,
 
   object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (data->object));
 
-  info = g_dbus_interface_stub_get_info (interface_stub);
+  info = g_dbus_interface_skeleton_get_info (interface_skeleton);
   error = NULL;
-  if (!g_dbus_interface_stub_export (interface_stub,
-                                     data->manager->priv->connection,
-                                     object_path,
-                                     &error))
+  if (!g_dbus_interface_skeleton_export (interface_skeleton,
+                                         data->manager->priv->connection,
+                                         object_path,
+                                         &error))
     {
       /* TODO: probably wrong to complain on stderr */
       g_warning ("%s: Error registering object at %s with interface %s: %s",
@@ -299,7 +299,7 @@ registration_data_export_interface (RegistrationData     *data,
   g_assert (g_hash_table_lookup (data->map_iface_name_to_iface, info->name) == NULL);
   g_hash_table_insert (data->map_iface_name_to_iface,
                        info->name,
-                       g_object_ref (interface_stub));
+                       g_object_ref (interface_skeleton));
 
   /* if we are already exported, then... */
   if (data->exported)
@@ -316,17 +316,17 @@ registration_data_export_interface (RegistrationData     *data,
 }
 
 static void
-registration_data_unexport_interface (RegistrationData     *data,
-                                      GDBusInterfaceStub   *interface_stub)
+registration_data_unexport_interface (RegistrationData       *data,
+                                      GDBusInterfaceSkeleton *interface_skeleton)
 {
   GDBusInterfaceInfo *info;
-  GDBusInterfaceStub *iface;
+  GDBusInterfaceSkeleton *iface;
 
-  info = g_dbus_interface_stub_get_info (interface_stub);
+  info = g_dbus_interface_skeleton_get_info (interface_skeleton);
   iface = g_hash_table_lookup (data->map_iface_name_to_iface, info->name);
   g_assert (iface != NULL);
 
-  g_dbus_interface_stub_unexport (iface);
+  g_dbus_interface_skeleton_unexport (iface);
 
   g_warn_if_fail (g_hash_table_remove (data->map_iface_name_to_iface, info->name));
 
@@ -349,7 +349,7 @@ on_interface_added (GDBusObject    *object,
                     gpointer        user_data)
 {
   RegistrationData *data = user_data;
-  registration_data_export_interface (data, G_DBUS_INTERFACE_STUB (interface));
+  registration_data_export_interface (data, G_DBUS_INTERFACE_SKELETON (interface));
 }
 
 static void
@@ -358,7 +358,7 @@ on_interface_removed (GDBusObject    *object,
                       gpointer        user_data)
 {
   RegistrationData *data = user_data;
-  registration_data_unexport_interface (data, G_DBUS_INTERFACE_STUB (interface));
+  registration_data_unexport_interface (data, G_DBUS_INTERFACE_SKELETON (interface));
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -368,13 +368,13 @@ static void
 registration_data_free (RegistrationData *data)
 {
   GHashTableIter iter;
-  GDBusInterfaceStub *iface;
+  GDBusInterfaceSkeleton *iface;
 
   data->exported = FALSE;
 
   g_hash_table_iter_init (&iter, data->map_iface_name_to_iface);
   while (g_hash_table_iter_next (&iter, NULL, (gpointer) &iface))
-    g_dbus_interface_stub_unexport (iface);
+    g_dbus_interface_skeleton_unexport (iface);
 
   g_signal_handlers_disconnect_by_func (data->object, G_CALLBACK (on_interface_added), data);
   g_signal_handlers_disconnect_by_func (data->object, G_CALLBACK (on_interface_removed), data);
@@ -388,7 +388,7 @@ registration_data_free (RegistrationData *data)
 /**
  * g_dbus_object_manager_server_export:
  * @manager: A #GDBusObjectManagerServer.
- * @object: A #GDBusObjectStub.
+ * @object: A #GDBusObjectSkeleton.
  *
  * Exports @object on @manager.
  *
@@ -405,7 +405,7 @@ registration_data_free (RegistrationData *data)
  */
 void
 g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
-                              GDBusObjectStub     *object)
+                                     GDBusObjectSkeleton       *object)
 {
   RegistrationData *data;
   GList *existing_interfaces;
@@ -448,9 +448,9 @@ g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
   existing_interfaces = g_dbus_object_get_interfaces (G_DBUS_OBJECT (object));
   for (l = existing_interfaces; l != NULL; l = l->next)
     {
-      GDBusInterfaceStub *interface_stub = G_DBUS_INTERFACE_STUB (l->data);
-      registration_data_export_interface (data, interface_stub);
-      g_ptr_array_add (interface_names, g_dbus_interface_stub_get_info (interface_stub)->name);
+      GDBusInterfaceSkeleton *interface_skeleton = G_DBUS_INTERFACE_SKELETON (l->data);
+      registration_data_export_interface (data, interface_skeleton);
+      g_ptr_array_add (interface_names, g_dbus_interface_skeleton_get_info (interface_skeleton)->name);
     }
   g_list_foreach (existing_interfaces, (GFunc) g_object_unref, NULL);
   g_list_free (existing_interfaces);
@@ -481,8 +481,8 @@ g_dbus_object_manager_server_export (GDBusObjectManagerServer  *manager,
  * Since: 2.30
  */
 void
-g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer  *manager,
-                                              GDBusObjectStub     *object)
+g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
+                                              GDBusObjectSkeleton      *object)
 {
   gchar *orig_object_path;
   gchar *object_path;
@@ -512,7 +512,7 @@ g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer  *manager
     }
 
   if (modified)
-    g_dbus_object_stub_set_object_path (G_DBUS_OBJECT_STUB (object), object_path);
+    g_dbus_object_skeleton_set_object_path (G_DBUS_OBJECT_SKELETON (object), object_path);
 
   g_dbus_object_manager_server_export (manager, object);
 
@@ -705,7 +705,7 @@ manager_method_call (GDBusConnection       *connection,
         {
           GVariantBuilder interfaces_builder;
           GHashTableIter interface_iter;
-          GDBusInterfaceStub *iface;
+          GDBusInterfaceSkeleton *iface;
           const gchar *iter_object_path;
 
           g_variant_builder_init (&interfaces_builder, G_VARIANT_TYPE ("a{sa{sv}}"));
@@ -714,8 +714,8 @@ manager_method_call (GDBusConnection       *connection,
             {
               g_variant_builder_add_value (&interfaces_builder,
                                            g_variant_new ("{s@a{sv}}",
-                                                          g_dbus_interface_stub_get_info (iface)->name,
-                                                          g_dbus_interface_stub_get_properties (iface)));
+                                                          g_dbus_interface_skeleton_get_info (iface)->name,
+                                                          g_dbus_interface_skeleton_get_properties (iface)));
             }
           iter_object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (data->object));
           g_variant_builder_add (&array_builder,
@@ -788,13 +788,13 @@ g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *ma
   g_variant_builder_init (&array_builder, G_VARIANT_TYPE ("a{sa{sv}}"));
   for (n = 0; interfaces[n] != NULL; n++)
     {
-      GDBusInterfaceStub *iface;
+      GDBusInterfaceSkeleton *iface;
       iface = g_hash_table_lookup (data->map_iface_name_to_iface, interfaces[n]);
       g_assert (iface != NULL);
       g_variant_builder_add_value (&array_builder,
                                    g_variant_new ("{s@a{sv}}",
                                                   interfaces[n],
-                                                  g_dbus_interface_stub_get_properties (iface)));
+                                                  g_dbus_interface_skeleton_get_properties (iface)));
     }
 
   error = NULL;
