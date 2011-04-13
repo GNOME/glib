@@ -69,6 +69,8 @@ Overview of Changes from GLib 2.28.0 to 2.29.2
  646420 g_dbus_method_invocation_get_parameters() docs should say...
  646843 occasional abort on autologin
  646985 add G_APPLICATION_NON_UNIQUE flag
+ 647579 gsettings: Implement reset-recursively
+ 647600 gsettings description has typo
 
 * Translation updates
  Afrikaans
