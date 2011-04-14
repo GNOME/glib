@@ -558,7 +558,7 @@ g_application_class_init (GApplicationClass *class)
   g_object_class_install_property (object_class, PROP_INACTIVITY_TIMEOUT,
     g_param_spec_uint ("inactivity-timeout",
                        P_("Inactivity timeout"),
-                       P_("Iime (ms) to stay alive after becoming idle"),
+                       P_("Time (ms) to stay alive after becoming idle"),
                        0, G_MAXUINT, 0,
                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
