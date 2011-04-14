@@ -1083,7 +1083,6 @@ delayed_message_processing (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-#ifdef BUG_631379_FIXED
 static gboolean
 nonce_tcp_on_authorize_authenticated_peer (GDBusAuthObserver *observer,
                                            GIOStream         *stream,
@@ -1285,7 +1284,6 @@ test_nonce_tcp (void)
   g_main_loop_quit (service_loop);
   g_thread_join (service_thread);
 }
-#endif
 
 static void
 test_credentials (void)
@@ -1438,7 +1436,6 @@ test_overflow (void)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-#ifdef BUG_631379_FIXED
 static gboolean
 tcp_anonymous_on_new_connection (GDBusServer     *server,
                                  GDBusConnection *connection,
@@ -1525,7 +1522,6 @@ test_tcp_anonymous (void)
 
   g_thread_join (service_thread);
 }
-#endif
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -1551,10 +1547,8 @@ main (int   argc,
 
   g_test_add_func ("/gdbus/peer-to-peer", test_peer);
   g_test_add_func ("/gdbus/delayed-message-processing", delayed_message_processing);
-#ifdef BUG_631379_FIXED
   g_test_add_func ("/gdbus/nonce-tcp", test_nonce_tcp);
   g_test_add_func ("/gdbus/tcp-anonymous", test_tcp_anonymous);
-#endif
   g_test_add_func ("/gdbus/credentials", test_credentials);
   g_test_add_func ("/gdbus/overflow", test_overflow);
 
