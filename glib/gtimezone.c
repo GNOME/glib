@@ -146,29 +146,41 @@ static GHashTable/*<string?, GTimeZone>*/ *time_zones;
 void
 g_time_zone_unref (GTimeZone *tz)
 {
-  g_assert (tz->ref_count > 0);
+  int ref_count;
 
-  if (g_atomic_int_dec_and_test (&tz->ref_count))
+again:
+  ref_count = g_atomic_int_get (&tz->ref_count);
+
+  g_assert (ref_count > 0);
+
+  if (ref_count == 1)
     {
       if G_UNLIKELY (tz == local_timezone)
         {
           g_critical ("The last reference on the local timezone was just "
                       "dropped, but GTimeZone itself still owns one.  This "
                       "means that g_time_zone_unref() was called too many "
-                      "times.  Restoring the refcount to 1.");
+                      "times.  Returning without lowering the refcount.");
 
           /* We don't want to just inc this back again since if there
            * are refcounting bugs in the code then maybe we are already
            * at -1 and inc will just take us back to 0.  Set to 1 to be
            * sure.
            */
-          tz->ref_count = 1;
           return;
         }
 
       if (tz->name != NULL)
         {
           G_LOCK(time_zones);
+
+          /* someone else might have grabbed a ref in the meantime */
+          if G_UNLIKELY (g_atomic_int_get (&tz->ref_count) != 1)
+            {
+              G_UNLOCK(time_zones);
+              goto again;
+            }
+
           g_hash_table_remove (time_zones, tz->name);
           G_UNLOCK(time_zones);
         }
@@ -180,6 +192,11 @@ g_time_zone_unref (GTimeZone *tz)
 
       g_slice_free (GTimeZone, tz);
     }
+
+  else if G_UNLIKELY (!g_atomic_int_compare_and_exchange (&tz->ref_count,
+                                                          ref_count,
+                                                          ref_count - 1))
+    goto again;
 }
 
 /**
