@@ -177,7 +177,6 @@ def codegen_main():
         i.post_process(args.interface_prefix, args.c_namespace)
 
     c_code = args.generate_c_code
-    print "args.c_generate_object_manager=", args.c_generate_object_manager
     if c_code:
         h = file(c_code + '.h', 'w')
         c = file(c_code + '.c', 'w')
