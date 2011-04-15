@@ -278,7 +278,7 @@ use_inet_address (gboolean synchronous)
 {
   GSocketAddressEnumerator *enumerator;
   GSocketAddress *sockaddr;
-  GInetAddress *addr;
+  GInetAddress *addr = NULL;
   guint port = 0;
   gchar **ip_and_port;
 

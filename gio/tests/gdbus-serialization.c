@@ -784,7 +784,6 @@ message_serialize_invalid (void)
       DBusMessage *dbus_message;
       char *blob;
       int blob_len;
-      int i;
       /* these are in pairs with matching length */
       const gchar *valid_utf8_str = "this is valid...";
       const gchar *invalid_utf8_str = "this is invalid\xff";
