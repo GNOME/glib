@@ -27,6 +27,7 @@
 #include "gapplicationcommandline.h"
 #include "gapplicationimpl.h"
 #include "gactiongroup.h"
+#include "gsettings.h"
 
 #include "gioenumtypes.h"
 #include "gio-marshal.h"
