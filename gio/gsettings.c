@@ -810,8 +810,8 @@ g_settings_new_with_path (const gchar *schema,
  *
  * Creates a new #GSettings object with a given schema and backend.
  *
- * Creating settings objects with an different backend allows accessing settings
- * from a database other than the usual one.  For example, it may make
+ * Creating a #GSettings object with a different backend allows accessing
+ * settings from a database other than the usual one. For example, it may make
  * sense to pass a backend corresponding to the "defaults" settings database on
  * the system to get a settings object that modifies the system default
  * settings instead of the settings for this user.
