@@ -186,6 +186,8 @@ class DocbookCodeGenerator:
         self.out.write('</variablelist>\n')
         if len(m.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n'%(m.since))
+        if m.deprecated:
+            self.out.write('<warning><para>The %s() method is deprecated.</para></warning>'%(m.name))
         self.out.write('</refsect2>\n')
 
     def print_signal(self, i, s):
@@ -205,6 +207,8 @@ class DocbookCodeGenerator:
         self.out.write('</variablelist>\n')
         if len(s.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n'%(s.since))
+        if s.deprecated:
+            self.out.write('<warning><para>The "%s" signal is deprecated.</para></warning>'%(s.name))
         self.out.write('</refsect2>\n')
 
     def print_property(self, i, p):
@@ -217,6 +221,8 @@ class DocbookCodeGenerator:
         self.out.write('<para>%s</para>\n'%(self.expand(p.doc_string)))
         if len(p.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n'%(p.since))
+        if p.deprecated:
+            self.out.write('<warning><para>The "%s" property is deprecated.</para></warning>'%(p.name))
         self.out.write('</refsect2>\n')
 
     def expand(self, s):
@@ -284,6 +290,8 @@ class DocbookCodeGenerator:
             self.out.write('  <para>%s</para>\n'%(self.expand(i.doc_string)))
             if len(i.since) > 0:
                 self.out.write('  <para role="since">Since %s</para>\n'%(i.since))
+            if i.deprecated:
+                self.out.write('<warning><para>The %s interface is deprecated.</para></warning>'%(i.name))
             self.out.write('</refsect1>\n'%())
 
             if len(i.methods) > 0:

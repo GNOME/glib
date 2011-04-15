@@ -183,6 +183,7 @@ class Method:
         self.annotations = []
         self.doc_string = ''
         self.since = ''
+        self.deprecated = False
 
     def post_process(self, interface_prefix, c_namespace):
         if len(self.doc_string) == 0:
@@ -209,6 +210,9 @@ class Method:
             a.post_process(interface_prefix, c_namespace, arg_count)
             arg_count += 1
 
+        if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
+            self.deprecated = True
+
 class Signal:
     def __init__(self, name):
         self.name = name
@@ -216,6 +220,7 @@ class Signal:
         self.annotations = []
         self.doc_string = ''
         self.since = ''
+        self.deprecated = False
 
     def post_process(self, interface_prefix, c_namespace):
         if len(self.doc_string) == 0:
@@ -238,6 +243,9 @@ class Signal:
             a.post_process(interface_prefix, c_namespace, arg_count)
             arg_count += 1
 
+        if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
+            self.deprecated = True
+
 class Property:
     def __init__(self, name, signature, access):
         self.name = name
@@ -259,6 +267,7 @@ class Property:
             raise RuntimeError('Invalid access type %s'%self.access)
         self.doc_string = ''
         self.since = ''
+        self.deprecated = False
 
     def post_process(self, interface_prefix, c_namespace):
         if len(self.doc_string) == 0:
@@ -280,6 +289,9 @@ class Property:
         self.arg.annotations = self.annotations
         self.arg.post_process(interface_prefix, c_namespace, 0)
 
+        if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
+            self.deprecated = True
+
 class Interface:
     def __init__(self, name):
         self.name = name
@@ -290,6 +302,7 @@ class Interface:
         self.doc_string = ''
         self.doc_string_brief = ''
         self.since = ''
+        self.deprecated = False
 
     def post_process(self, interface_prefix, c_namespace):
         if len(self.doc_string) == 0:
@@ -333,6 +346,9 @@ class Interface:
                 self.ns_upper = ''
                 self.name_lower = utils.camel_case_to_uscore(name_with_ns)
             self.name_upper = utils.camel_case_to_uscore(name).upper()
+
+        if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
+            self.deprecated = True
 
         for m in self.methods:
             m.post_process(interface_prefix, c_namespace)

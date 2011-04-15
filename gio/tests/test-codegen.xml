@@ -414,4 +414,26 @@
     </property>
   </interface>
 
+  <!--
+    OldieInterface:
+    @short_description: A an example of an deprecated interface
+
+    This is an example of a deprecated interface.
+    -->
+  <interface name="OldieInterface">
+    <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+
+    <method name="Foo">
+      <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+    </method>
+
+    <signal name="Bar">
+      <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+    </signal>
+
+    <property name="Bat" type="i" access="readwrite">
+      <annotation name="org.freedesktop.DBus.Deprecated" value="true"/>
+    </property>
+  </interface>
+
 </node>

@@ -295,6 +295,8 @@ class CodeGenerator:
                 self.h.write('\n')
                 self.h.write('/* D-Bus method call completion functions: */\n')
                 for m in i.methods:
+                    if m.deprecated:
+                        self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('void %s_complete_%s (\n'
                                  '    %s *object,\n'
                                  '    GDBusMethodInvocation *invocation'%(i.name_lower, m.name_lower, i.camel_name))
@@ -309,6 +311,8 @@ class CodeGenerator:
                 self.h.write('\n')
                 self.h.write('/* D-Bus signal emissions functions: */\n')
                 for s in i.signals:
+                    if s.deprecated:
+                        self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('void %s_emit_%s (\n'
                                  '    %s *object'%(i.name_lower, s.name_lower, i.camel_name))
                     for a in s.args:
@@ -323,6 +327,8 @@ class CodeGenerator:
                 self.h.write('/* D-Bus method calls: */\n')
                 for m in i.methods:
                     # async begin
+                    if m.deprecated:
+                        self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('void %s_call_%s (\n'
                                  '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.in_args:
@@ -333,6 +339,8 @@ class CodeGenerator:
                                  '    gpointer user_data);\n')
                     self.h.write('\n')
                     # async finish
+                    if m.deprecated:
+                        self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('gboolean %s_call_%s_finish (\n'
                                  '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.out_args:
@@ -342,6 +350,8 @@ class CodeGenerator:
                                  '    GError **error);\n')
                     self.h.write('\n')
                     # sync
+                    if m.deprecated:
+                        self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('gboolean %s_call_%s_sync (\n'
                                  '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.in_args:
@@ -360,8 +370,12 @@ class CodeGenerator:
                 self.h.write('/* D-Bus property accessors: */\n')
                 for p in i.properties:
                     # getter
+                    if p.deprecated:
+                        self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('%s%s_get_%s (%s *object);\n'%(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name))
                     # setter
+                    if p.deprecated:
+                        self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('void %s_set_%s (%s *object, %svalue);\n'%(i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in, ))
                     self.h.write('\n')
 
@@ -394,6 +408,8 @@ class CodeGenerator:
             self.h.write('GType %s_proxy_get_gtype (void) G_GNUC_CONST;\n'%(i.name_lower))
 
             self.h.write('\n')
+            if i.deprecated:
+                self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('void %s_proxy_new (\n'
                          '    GDBusConnection     *connection,\n'
                          '    GDBusProxyFlags      flags,\n'
@@ -403,10 +419,14 @@ class CodeGenerator:
                          '    GAsyncReadyCallback  callback,\n'
                          '    gpointer             user_data);\n'
                          %(i.name_lower))
+            if i.deprecated:
+                self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('%s *%s_proxy_new_finish (\n'
                          '    GAsyncResult        *res,\n'
                          '    GError             **error);\n'
                          %(i.camel_name, i.name_lower))
+            if i.deprecated:
+                self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('%s *%s_proxy_new_sync (\n'
                          '    GDBusConnection     *connection,\n'
                          '    GDBusProxyFlags      flags,\n'
@@ -416,6 +436,8 @@ class CodeGenerator:
                          '    GError             **error);\n'
                          %(i.camel_name, i.name_lower))
             self.h.write('\n')
+            if i.deprecated:
+                self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('void %s_proxy_new_for_bus (\n'
                          '    GBusType             bus_type,\n'
                          '    GDBusProxyFlags      flags,\n'
@@ -425,10 +447,14 @@ class CodeGenerator:
                          '    GAsyncReadyCallback  callback,\n'
                          '    gpointer             user_data);\n'
                          %(i.name_lower))
+            if i.deprecated:
+                self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('%s *%s_proxy_new_for_bus_finish (\n'
                          '    GAsyncResult        *res,\n'
                          '    GError             **error);\n'
                          %(i.camel_name, i.name_lower))
+            if i.deprecated:
+                self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('%s *%s_proxy_new_for_bus_sync (\n'
                          '    GBusType             bus_type,\n'
                          '    GDBusProxyFlags      flags,\n'
@@ -472,6 +498,8 @@ class CodeGenerator:
             self.h.write('\n')
             self.h.write('GType %s_skeleton_get_gtype (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
+            if i.deprecated:
+                self.h.write('G_GNUC_DEPRECATED ')
             self.h.write('%s *%s_skeleton_new (void);\n'%(i.camel_name, i.name_lower))
 
             self.h.write('\n')

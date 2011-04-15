@@ -182,6 +182,83 @@ gdbus-codegen --c-namespace MyApp                           \
   <variablelist>
 
     <varlistentry>
+      <term><literal>org.freedesktop.DBus.Deprecated</literal></term>
+      <listitem>
+        <para>
+          Can be used on any <literal>&lt;interface&gt;</literal>,
+          <literal>&lt;method&gt;</literal>,
+          <literal>&lt;signal&gt;</literal> and
+          <literal>&lt;property&gt;</literal> element to specify that
+          the element is deprecated if its value is
+          <literal>true</literal>. Note that this annotation is
+          defined in the <ulink
+          url="http://dbus.freedesktop.org/doc/dbus-specification.html#introspection-format">D-Bus
+          specification</ulink> and can only assume the values
+          <literal>true</literal> and <literal>false</literal>. In
+          particular, you cannot specify the version that the element
+          was deprecated in nor any helpful deprecation message. Such
+          information should be added to the element documentation
+          instead.
+        </para>
+        <para>
+          When generating C code, this annotation is used to add
+          #G_GNUC_DEPRECATED to generated functions for the element.
+        </para>
+        <para>
+          When generating Docbook XML, a deprecation warning will
+          appear along the documentation for the element.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>org.gtk.GDBus.Since</literal></term>
+      <listitem>
+        <para>
+          Can be used on any <literal>&lt;interface&gt;</literal>,
+          <literal>&lt;method&gt;</literal>,
+          <literal>&lt;signal&gt;</literal> and
+          <literal>&lt;property&gt;</literal> element to specify the
+          version (any free-form string but compared using a
+          version-aware sort function) the element appeared in.
+        </para>
+        <para>
+          When generating C code, this field is used to ensure
+          function pointer order for preserving ABI/API.
+        </para>
+        <para>
+          When generating Docbook XML, the value of this tag appears
+          in the documentation.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>org.gtk.GDBus.DocString</literal></term>
+      <listitem>
+        <para>
+          A string with Docbook content for documentation. This annotation can
+          be used on <literal>&lt;interface&gt;</literal>,
+          <literal>&lt;method&gt;</literal>,
+          <literal>&lt;signal&gt;</literal>,
+          <literal>&lt;property&gt;</literal> and
+          <literal>&lt;arg&gt;</literal> elements.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term><literal>org.gtk.GDBus.DocString.Short</literal></term>
+      <listitem>
+        <para>
+          A string with Docbook content for short/brief
+          documentation. This annotation can only be used on
+          <literal>&lt;interface&gt;</literal> elements.
+        </para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
       <term><literal>org.gtk.GDBus.C.Name</literal></term>
       <listitem>
         <para>
@@ -238,28 +315,6 @@ gdbus-codegen --c-namespace MyApp                           \
     </varlistentry>
 
     <varlistentry>
-      <term><literal>org.gtk.GDBus.Since</literal></term>
-      <listitem>
-        <para>
-          Can be used on any <literal>&lt;interface&gt;</literal>,
-          <literal>&lt;method&gt;</literal>,
-          <literal>&lt;signal&gt;</literal> and
-          <literal>&lt;property&gt;</literal> element to specify the
-          version (any free-form string but compared using a
-          version-aware sort function) the element appeared in.
-        </para>
-        <para>
-          When generating C code, this field is used to ensure
-          function pointer order for preserving ABI/API.
-        </para>
-        <para>
-          When generating Docbook XML, the value of this tag appears
-          in the documentation.
-        </para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
       <term><literal>org.gtk.GDBus.C.ForceGVariant</literal></term>
       <listitem>
         <para>
@@ -267,31 +322,6 @@ gdbus-codegen --c-namespace MyApp                           \
           be used instead of the natural C type. This annotation can
           be used on any <literal>&lt;arg&gt;</literal> and
           <literal>&lt;property&gt;</literal> element.
-        </para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term><literal>org.gtk.GDBus.DocString</literal></term>
-      <listitem>
-        <para>
-          A string with Docbook content for documentation. This annotation can
-          be used on <literal>&lt;interface&gt;</literal>,
-          <literal>&lt;method&gt;</literal>,
-          <literal>&lt;signal&gt;</literal>,
-          <literal>&lt;property&gt;</literal> and
-          <literal>&lt;arg&gt;</literal> elements.
-        </para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term><literal>org.gtk.GDBus.DocString.Short</literal></term>
-      <listitem>
-        <para>
-          A string with Docbook content for short/brief
-          documentation. This annotation can only be used on
-          <literal>&lt;interface&gt;</literal> elements.
         </para>
       </listitem>
     </varlistentry>
