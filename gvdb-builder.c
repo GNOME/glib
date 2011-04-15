@@ -24,7 +24,9 @@
 
 #include <glib.h>
 #include <fcntl.h>
+#if !defined(G_OS_WIN32) || !defined(_MSC_VER)
 #include <unistd.h>
+#endif
 #include <string.h>
 
 
