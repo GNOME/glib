@@ -2798,6 +2798,7 @@ GTestDataFunc
 g_test_add_data_func
 g_test_add
 
+g_test_fail
 g_test_message
 g_test_bug_base
 g_test_bug

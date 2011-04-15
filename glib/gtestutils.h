@@ -107,6 +107,8 @@ void    g_test_add_func                 (const char     *testpath,
 void    g_test_add_data_func            (const char     *testpath,
                                          gconstpointer   test_data,
                                          GTestDataFunc   test_func);
+/* tell about failure */
+void    g_test_fail                     (void);
 
 /* hook up a test with fixture under test path */
 #define g_test_add(testpath, Fixture, tdata, fsetup, ftest, fteardown) \

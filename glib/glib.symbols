@@ -1451,6 +1451,7 @@ g_test_config_vars
 #endif
 g_test_create_case
 g_test_create_suite
+g_test_fail
 g_test_get_root
 g_test_init
 g_test_log_buffer_free

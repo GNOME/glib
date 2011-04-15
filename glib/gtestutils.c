@@ -101,6 +101,7 @@ static GRand      *test_run_rand = NULL;
 static gchar      *test_run_name = "";
 static guint       test_run_forks = 0;
 static guint       test_run_count = 0;
+static guint       test_run_success = FALSE;
 static guint       test_skip_count = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
@@ -998,6 +999,31 @@ g_test_add_vtable (const char       *testpath,
 }
 
 /**
+ * g_test_fail:
+ *
+ * Indicates that a test failed. This function can be called
+ * multiple times from the same test. You can use this function
+ * if your test failed in a recoverable way.
+ * 
+ * Do not use this function if the failure of a test could cause
+ * other tests to malfunction.
+ *
+ * Calling this function will not stop the test from running, you
+ * need to return from the test function yourself. So you can
+ * produce additional diagnostic messages or even continue running
+ * the test.
+ *
+ * If not called from inside a test, this function does nothing.
+ *
+ * @Since: 2.30
+ **/
+void
+g_test_fail (void)
+{
+  test_run_success = FALSE;
+}
+
+/**
  * GTestFunc:
  *
  * The type used for test case functions.
@@ -1166,6 +1192,7 @@ static gboolean
 test_case_run (GTestCase *tc)
 {
   gchar *old_name = test_run_name, *old_base = g_strdup (test_uri_base);
+  gboolean success = TRUE;
 
   test_run_name = g_strconcat (old_name, "/", tc->name, NULL);
   if (++test_run_count <= test_skip_count)
@@ -1182,6 +1209,7 @@ test_case_run (GTestCase *tc)
       void *fixture;
       g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
       test_run_forks = 0;
+      test_run_success = TRUE;
       g_test_log_set_fatal_handler (NULL, NULL);
       g_timer_start (test_run_timer);
       fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
@@ -1202,7 +1230,9 @@ test_case_run (GTestCase *tc)
       if (tc->fixture_size)
         g_free (fixture);
       g_timer_stop (test_run_timer);
-      largs[0] = 0; /* OK */
+      success = test_run_success;
+      test_run_success = FALSE;
+      largs[0] = success ? 0 : 1; /* OK */
       largs[1] = test_run_forks;
       largs[2] = g_timer_elapsed (test_run_timer, NULL);
       g_test_log (G_TEST_LOG_STOP_CASE, NULL, NULL, G_N_ELEMENTS (largs), largs);
@@ -1213,7 +1243,7 @@ test_case_run (GTestCase *tc)
   g_free (test_uri_base);
   test_uri_base = old_base;
 
-  return TRUE;
+  return success;
 }
 
 static int
