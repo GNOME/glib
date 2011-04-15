@@ -909,10 +909,16 @@ handle_overwrite_open (const char    *filename,
 	    )
 	  )
 	{
-	  struct stat tmp_statbuf;
-	  
+          GLocalFileStat tmp_statbuf;
+          int tres;
+
+#ifdef G_OS_WIN32
+          tres = _fstati64 (tmpfd, &tmp_statbuf);
+#else
+          tres = fstat (tmpfd, &tmp_statbuf);
+#endif
 	  /* Check that we really needed to change something */
-	  if (fstat (tmpfd, &tmp_statbuf) != 0 ||
+	  if (tres != 0 ||
 	      original_stat.st_uid != tmp_statbuf.st_uid ||
 	      original_stat.st_gid != tmp_statbuf.st_gid ||
 	      original_stat.st_mode != tmp_statbuf.st_mode)

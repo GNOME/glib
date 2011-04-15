@@ -1297,8 +1297,8 @@ g_local_file_read (GFile         *file,
 		   GError       **error)
 {
   GLocalFile *local = G_LOCAL_FILE (file);
-  int fd;
-  struct stat buf;
+  int fd, ret;
+  GLocalFileStat buf;
   
   fd = g_open (local->filename, O_RDONLY|O_BINARY, 0);
   if (fd == -1)
@@ -1312,7 +1312,13 @@ g_local_file_read (GFile         *file,
       return NULL;
     }
 
-  if (fstat(fd, &buf) == 0 && S_ISDIR (buf.st_mode))
+#ifdef G_OS_WIN32
+  ret = _fstati64 (fd, &buf);
+#else
+  ret = fstat (fd, &buf);
+#endif
+
+  if (ret == 0 && S_ISDIR (buf.st_mode))
     {
       close (fd);
       g_set_error_literal (error, G_IO_ERROR,
