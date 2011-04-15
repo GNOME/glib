@@ -170,11 +170,13 @@ class Method:
             self.since = utils.lookup_since(self.annotations)
 
         name = self.name
-        overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.Name')
-        if overridden_name:
-            name = overridden_name
-
-        self.name_lower = utils.camel_case_to_uscore(name).lower().replace('-', '_')
+        overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
+        if utils.is_ugly_case(overridden_name):
+            self.name_lower = overridden_name.lower()
+        else:
+            if overridden_name:
+                name = overridden_name
+            self.name_lower = utils.camel_case_to_uscore(name).lower().replace('-', '_')
         self.name_hyphen = self.name_lower.replace('_', '-')
 
         arg_count = 0
@@ -201,11 +203,13 @@ class Signal:
             self.since = utils.lookup_since(self.annotations)
 
         name = self.name
-        overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.Name')
-        if overridden_name:
-            name = overridden_name
-
-        self.name_lower = utils.camel_case_to_uscore(name).lower().replace('-', '_')
+        overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
+        if utils.is_ugly_case(overridden_name):
+            self.name_lower = overridden_name.lower()
+        else:
+            if overridden_name:
+                name = overridden_name
+            self.name_lower = utils.camel_case_to_uscore(name).lower().replace('-', '_')
         self.name_hyphen = self.name_lower.replace('_', '-')
 
         arg_count = 0
@@ -242,11 +246,13 @@ class Property:
             self.since = utils.lookup_since(self.annotations)
 
         name = self.name
-        overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.Name')
-        if overridden_name:
-            name = overridden_name
-
-        self.name_lower = utils.camel_case_to_uscore(name).lower().replace('-', '_')
+        overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
+        if utils.is_ugly_case(overridden_name):
+            self.name_lower = overridden_name.lower()
+        else:
+            if overridden_name:
+                name = overridden_name
+            self.name_lower = utils.camel_case_to_uscore(name).lower().replace('-', '_')
         self.name_hyphen = self.name_lower.replace('_', '-')
 
         # recalculate arg
@@ -272,26 +278,40 @@ class Interface:
         if len(self.since) == 0:
             self.since = utils.lookup_since(self.annotations)
 
-        overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.Name')
-        if overridden_name:
-            name = overridden_name
-        else:
-            name = self.name
-            if name.startswith(interface_prefix):
-                name = name[len(interface_prefix):]
-        self.name_without_prefix = name
-        name = utils.strip_dots(name)
-        name_with_ns = utils.strip_dots(c_namespace + '.' + name)
+        overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
+        if utils.is_ugly_case(overridden_name):
+            name = overridden_name.replace('_', '')
+            name_with_ns = c_namespace + name
+            self.name_without_prefix = name
+            self.camel_name = name_with_ns
+            if len(c_namespace) > 0:
+                self.ns_upper = utils.camel_case_to_uscore(c_namespace).upper() + '_'
+                self.name_lower = utils.camel_case_to_uscore(c_namespace) + '_' + overridden_name.lower()
+            else:
+                self.ns_upper = ''
+                self.name_lower = overridden_name.lower()
+            self.name_upper = overridden_name.upper()
 
-
-        self.camel_name = name_with_ns
-        if len(c_namespace) > 0:
-            self.ns_upper = utils.camel_case_to_uscore(c_namespace).upper() + '_'
-            self.name_lower = utils.camel_case_to_uscore(c_namespace) + '_' + utils.camel_case_to_uscore(name)
+            #raise RuntimeError('handle Ugly_Case ', overridden_name)
         else:
-            self.ns_upper = ''
-            self.name_lower = utils.camel_case_to_uscore(name_with_ns)
-        self.name_upper = utils.camel_case_to_uscore(name).upper()
+            if overridden_name:
+                name = overridden_name
+            else:
+                name = self.name
+                if name.startswith(interface_prefix):
+                    name = name[len(interface_prefix):]
+            self.name_without_prefix = name
+            name = utils.strip_dots(name)
+            name_with_ns = utils.strip_dots(c_namespace + '.' + name)
+
+            self.camel_name = name_with_ns
+            if len(c_namespace) > 0:
+                self.ns_upper = utils.camel_case_to_uscore(c_namespace).upper() + '_'
+                self.name_lower = utils.camel_case_to_uscore(c_namespace) + '_' + utils.camel_case_to_uscore(name)
+            else:
+                self.ns_upper = ''
+                self.name_lower = utils.camel_case_to_uscore(name_with_ns)
+            self.name_upper = utils.camel_case_to_uscore(name).upper()
 
         for m in self.methods:
             m.post_process(interface_prefix, c_namespace)

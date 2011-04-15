@@ -34,6 +34,11 @@ def camel_case_to_uscore(s):
         insert_uscore = False
     return ret
 
+def is_ugly_case(s):
+    if s and s.find('_') > 0:
+        return True
+    return False
+
 def lookup_annotation(annotations, key):
     if annotations:
         for a in annotations:

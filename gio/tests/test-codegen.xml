@@ -135,21 +135,21 @@
   <!-- force various names -->
   <interface name="com.acme.Rocket">
     <!-- Forcing the typename via an annotation -->
-    <annotation name="org.gtk.GDBus.Name" value="Rocket123"/>
+    <annotation name="org.gtk.GDBus.C.Name" value="Rocket123"/>
 
     <!-- ditto method -->
     <method name="Ignite">
-      <annotation name="org.gtk.GDBus.Name" value="ignite_xyz"/>
+      <annotation name="org.gtk.GDBus.C.Name" value="ignite_xyz"/>
     </method>
 
     <!-- ditto signal -->
     <signal name="Exploded">
-      <annotation name="org.gtk.GDBus.Name" value="exploded-xyz"/>
+      <annotation name="org.gtk.GDBus.C.Name" value="exploded-xyz"/>
     </signal>
 
     <!-- ditto property -->
     <property name="Speed" type="d" access="read">
-      <annotation name="org.gtk.GDBus.Name" value="speed-xyz"/>
+      <annotation name="org.gtk.GDBus.C.Name" value="speed-xyz"/>
     </property>
 
     <property name="Direction" type="(ddd)" access="read"/>
@@ -396,6 +396,22 @@
     <method name="BazMethod"/>
     <method name="BarMethod"/>
     <method name="FooMethod"/>
+  </interface>
+
+  <interface name="TestUglyCaseInterface">
+    <annotation name="org.gtk.GDBus.C.Name" value="TesT_ugly_CASE_Interface"/>
+
+    <method name="GetiSCSIServers">
+      <annotation name="org.gtk.GDBus.C.Name" value="Get_iSCSI_Servers"/>
+    </method>
+
+    <signal name="serversUPDATEDNOW">
+      <annotation name="org.gtk.GDBus.C.Name" value="Servers_UPDATED_NOW"/>
+    </signal>
+
+    <property name="UGLYNAME" type="i" access="readwrite">
+      <annotation name="org.gtk.GDBus.C.Name" value="UGLY_NAME"/>
+    </property>
   </interface>
 
 </node>

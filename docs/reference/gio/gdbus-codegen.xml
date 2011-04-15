@@ -154,7 +154,7 @@
 gdbus-codegen --c-namespace MyApp                           \
   --generate-c-code myapp-generated                         \
   --annotate "org.project.InterfaceName"                    \
-    --key org.gtk.GDBus.Name --value MyFrobnicator          \
+    --key org.gtk.GDBus.C.Name --value MyFrobnicator        \
   --annotate "org.project.InterfaceName:Property"           \
     --key bar --value bat                                   \
   --annotate "org.project.InterfaceName.Method()"           \
@@ -182,35 +182,57 @@ gdbus-codegen --c-namespace MyApp                           \
   <variablelist>
 
     <varlistentry>
-      <term><literal>org.gtk.GDBus.Name</literal></term>
+      <term><literal>org.gtk.GDBus.C.Name</literal></term>
       <listitem>
         <para>
           Can be used on any <literal>&lt;interface&gt;</literal>,
           <literal>&lt;method&gt;</literal>,
           <literal>&lt;signal&gt;</literal> and
           <literal>&lt;property&gt;</literal> element to specify the
-          name to use.
+          name to use when generating C code. The value is always
+          expected to be in <ulink
+          url="http://en.wikipedia.org/wiki/CamelCase">CamelCase</ulink>
+          or <emphasis>Ugly_Case</emphasis> (see below).
         </para>
         <para>
-          For interfaces where this annotation is not specified, the
-          name used is the D-Bus interface name stripped with the
-          prefix given with <option>--interface-prefix</option> and with
-          the dots removed and initial characters capitalized. For
-          example the D-Bus interface
-          <literal>com.acme.Coyote</literal> the name used is
-          <type>ComAcmeCoyote</type>. For the D-Bus interface
-          <literal>org.project.Bar.Frobnicator</literal> with
-          <option>--interface-prefix</option>
+          For interfaces, if not specified, the name defaults to the
+          D-Bus interface name stripped with the prefix given with
+          <option>--interface-prefix</option> and with the dots
+          removed and initial characters capitalized. For example, for
+          the D-Bus interface <literal>com.acme.Coyote</literal> the
+          name used is <literal>ComAcmeCoyote</literal>. For the D-Bus
+          interface <literal>org.project.Bar.Frobnicator</literal>
+          with <option>--interface-prefix</option>
           <literal>org.project.</literal>, the name used is
-          <type>BarFrobnicator</type>.
+          <literal>BarFrobnicator</literal>.
         </para>
         <para>
-          For methods, signals and properties the name used is
-          calculated by transforming
-          <literal>NameGivenThisWay</literal> into
-          <literal>name_given_this_way</literal>, e.g. roughly
-          converting from camel-case to lower-case with underscores
-          using certain heuristics.
+          For methods, signals and properties, if not specified, the
+          name defaults to the name of the method, signal or property.
+        </para>
+        <para>
+          Two forms of the name are used - the CamelCase form and
+          the lower-case form. The CamelCase form is used for the #GType
+          and struct name, while lower-case form is used in function
+          names. The lower-case form is calculated by converting from
+          CamelCase to lower-case and inserting underscores at word
+          boundaries (using certain heuristics).
+        </para>
+        <para>
+          If the value given by the annotation contains an underscore
+          (sometimes called <emphasis>Ugly_Case</emphasis>), then the
+          camel-case name is derived by removing all underscores, and
+          the lower-case name is derived by lower-casing the
+          string. This is useful in some situations where
+          abbreviations are used. For example, if the annotation is
+          used on the interface
+          <literal>net.MyCorp.MyApp.iSCSITarget</literal> with the
+          value <literal>iSCSI_Target</literal> the CamelCase form is
+          <literal>iSCSITarget</literal> while the lower-case form is
+          <literal>iscsi_target</literal>. If the annotation is used
+          on the method <literal>EjectTheiPod</literal> with the value
+          <literal>Eject_The_iPod</literal>, the lower-case form is
+          <literal>eject_the_ipod</literal>.
         </para>
       </listitem>
     </varlistentry>
