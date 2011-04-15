@@ -50,6 +50,8 @@ GDesktopAppInfo *g_desktop_app_info_new_from_keyfile  (GKeyFile        *key_file
 
 const char *     g_desktop_app_info_get_filename      (GDesktopAppInfo *info);
 
+const char *     g_desktop_app_info_get_categories    (GDesktopAppInfo *info);
+
 GDesktopAppInfo *g_desktop_app_info_new               (const char      *desktop_id);
 gboolean         g_desktop_app_info_get_is_hidden     (GDesktopAppInfo *info);
 

@@ -104,6 +104,7 @@ struct _GDesktopAppInfo
   char *exec;
   char *binary;
   char *path;
+  char *categories;
 
   guint nodisplay       : 1;
   guint hidden          : 1;
@@ -177,6 +178,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->exec);
   g_free (info->binary);
   g_free (info->path);
+  g_free (info->categories);
   
   G_OBJECT_CLASS (g_desktop_app_info_parent_class)->finalize (object);
 }
@@ -319,6 +321,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
   info->startup_notify = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, NULL) != FALSE;
   info->no_fuse = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, "X-GIO-NoFuse", NULL) != FALSE;
   info->hidden = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, NULL) != FALSE;
+  info->categories = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_CATEGORIES, NULL);
   
   info->icon = NULL;
   if (info->icon_name)
@@ -635,6 +638,19 @@ g_desktop_app_info_get_icon (GAppInfo *appinfo)
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
 
   return info->icon;
+}
+
+/**
+ * g_desktop_app_info_get_categories:
+ * @info: a #GDesktopAppInfo
+ *
+ * Returns: The unparsed Categories key from the file; i.e. no attempt
+ *   is made to split it by ';' or validate it.
+ */
+const char *
+g_desktop_app_info_get_categories    (GDesktopAppInfo *info)
+{
+  return info->categories;
 }
 
 static char *
