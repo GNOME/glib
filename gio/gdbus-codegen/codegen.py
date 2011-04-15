@@ -96,14 +96,14 @@ class CodeGenerator:
         self.c.write('typedef struct\n'
                      '{\n'
                      '  const _ExtendedGDBusPropertyInfo *info;\n'
-                     '  GParamSpec *pspec;\n'
-                     '  GValue value;\n'
+                     '  guint prop_id;\n'
+                     '  GValue orig_value; /* the value before the change */\n'
                      '} ChangedProperty;\n'
                      '\n'
                      'static void\n'
                      '_changed_property_free (ChangedProperty *data)\n'
                      '{\n'
-                     '  g_value_unset (&data->value);\n'
+                     '  g_value_unset (&data->orig_value);\n'
                      '  g_free (data);\n'
                      '}\n'
                      '\n')
@@ -1685,6 +1685,18 @@ class CodeGenerator:
         self.c.write('}\n'
                      '\n')
         if len(i.properties) > 0:
+            # if property is already scheduled then re-use entry.. though it could be
+            # that the user did
+            #
+            #  foo_set_prop_bar (object, "");
+            #  foo_set_prop_bar (object, "blah");
+            #
+            # say, every update... In this case, where nothing happens, we obviously
+            # don't want a PropertiesChanged() event. We can easily check for this
+            # by comparing against the _original value_ recorded before the first
+            # change event. If the latest value is not different from the original
+            # one, we can simply ignore the ChangedProperty
+            #
             self.c.write('static gboolean\n'
                          '_%s_emit_changed (gpointer user_data)\n'
                          '{\n'
@@ -1699,9 +1711,15 @@ class CodeGenerator:
                          '    {\n'
                          '      ChangedProperty *cp = l->data;\n'
                          '      GVariant *variant;\n'
-                         '      variant = g_dbus_gvalue_to_gvariant (&cp->value, G_VARIANT_TYPE (cp->info->parent_struct.signature));\n'
-                         '      g_variant_builder_add (&builder, "{sv}", cp->info->parent_struct.name, variant);\n'
-                         '      g_variant_unref (variant);\n'
+                         '      const GValue *cur_value;\n'
+                         '\n'
+                         '      cur_value = &skeleton->priv->properties->values[cp->prop_id - 1];\n'
+                         '      if (!_g_value_equal (cur_value, &cp->orig_value))\n'
+                         '        {\n'
+                         '          variant = g_dbus_gvalue_to_gvariant (cur_value, G_VARIANT_TYPE (cp->info->parent_struct.signature));\n'
+                         '          g_variant_builder_add (&builder, "{sv}", cp->info->parent_struct.name, variant);\n'
+                         '          g_variant_unref (variant);\n'
+                         '        }\n'
                          '    }\n'
                          '  g_dbus_connection_emit_signal (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)),\n'
                          '                                 NULL, g_dbus_interface_skeleton_get_object_path (G_DBUS_INTERFACE_SKELETON (skeleton)),\n'
@@ -1719,9 +1737,8 @@ class CodeGenerator:
             self.c.write('  return FALSE;\n'
                          '}\n'
                          '\n')
-            # if property is already scheduled then re-use entry
             self.c.write('static void\n'
-                         '_%s_schedule_emit_changed (%sSkeleton *skeleton, const _ExtendedGDBusPropertyInfo *info, GParamSpec *pspec, const GValue *value)\n'
+                         '_%s_schedule_emit_changed (%sSkeleton *skeleton, const _ExtendedGDBusPropertyInfo *info, guint prop_id, const GValue *orig_value)\n'
                          '{\n'
                          '  ChangedProperty *cp;\n'
                          '  GList *l;\n'
@@ -1732,19 +1749,19 @@ class CodeGenerator:
                          '      if (i_cp->info == info)\n'
                          '        {\n'
                          '          cp = i_cp;\n'
-                         '          g_value_unset (&cp->value);\n'
                          '          break;\n'
                          '        }\n'
                          '    }\n'
-                         '  if (cp == NULL)\n'
+                         %(i.name_lower, i.camel_name))
+            self.c.write('  if (cp == NULL)\n'
                          '    {\n'
                          '      cp = g_new0 (ChangedProperty, 1);\n'
-                         '      cp->pspec = pspec;\n'
+                         '      cp->prop_id = prop_id;\n'
                          '      cp->info = info;\n'
                          '      skeleton->priv->changed_properties = g_list_prepend (skeleton->priv->changed_properties, cp);\n'
+                         '      g_value_init (&cp->orig_value, G_VALUE_TYPE (orig_value));\n'
+                         '      g_value_copy (orig_value, &cp->orig_value);\n'
                          '    }\n'
-                         '  g_value_init (&cp->value, G_VALUE_TYPE (value));\n'
-                         '  g_value_copy (value, &cp->value);\n'
                          '  if (skeleton->priv->changed_properties_idle_source == NULL)\n'
                          '    {\n'
                          '      skeleton->priv->changed_properties_idle_source = g_idle_source_new ();\n'
@@ -1755,7 +1772,7 @@ class CodeGenerator:
                          '    }\n'
                          '}\n'
                          '\n'
-                         %(i.name_lower, i.camel_name, i.name_lower))
+                         %(i.name_lower))
         self.c.write('static void\n'
                      '%s_skeleton_set_property (GObject      *object,\n'
                      '  guint         prop_id,\n'
@@ -1767,10 +1784,10 @@ class CodeGenerator:
                          '  g_assert (prop_id - 1 >= 0 && prop_id - 1 < %d);\n'
                          '  if (!_g_value_equal (value, &skeleton->priv->properties->values[prop_id - 1]))\n'
                          '    {\n'
+                         '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
+                         '        _%s_schedule_emit_changed (skeleton, _%s_property_info_pointers[prop_id - 1], prop_id, &skeleton->priv->properties->values[prop_id - 1]);\n'
                          '      g_value_copy (value, &skeleton->priv->properties->values[prop_id - 1]);\n'
                          '      g_object_notify_by_pspec (object, pspec);\n'
-                         '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
-                         '        _%s_schedule_emit_changed (skeleton, _%s_property_info_pointers[prop_id - 1], pspec, value);\n'
                          '    }\n'
                          %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties), i.name_lower, i.name_lower))
         self.c.write('}\n'

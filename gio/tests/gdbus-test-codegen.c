@@ -212,6 +212,26 @@ on_handle_request_multi_property_mods (FooBar                 *object,
   return TRUE;
 }
 
+static gboolean
+on_handle_property_cancellation (FooBar                 *object,
+                                 GDBusMethodInvocation  *invocation,
+                                 gpointer                user_data)
+{
+  guint n;
+  n = foo_bar_get_n (object);
+  /* This queues up a PropertiesChange event */
+  foo_bar_set_n (object, n + 1);
+  /* this modifies the queued up event */
+  foo_bar_set_n (object, n);
+  /* this flushes all PropertiesChanges event (sends the D-Bus message right
+   * away, if any - there should not be any)
+   */
+  g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (object));
+  /* this makes us return the reply D-Bus method */
+  foo_bar_complete_property_cancellation (object, invocation);
+  return TRUE;
+}
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 static gboolean
@@ -455,6 +475,10 @@ on_bus_acquired (GDBusConnection *connection,
                     "handle-request-multi-property-mods",
                     G_CALLBACK (on_handle_request_multi_property_mods),
                     NULL);
+  g_signal_connect (exported_bar_object,
+                    "handle-property-cancellation",
+                    G_CALLBACK (on_handle_property_cancellation),
+                    NULL);
 
   exported_bat_object = foo_bat_skeleton_new ();
   g_dbus_interface_skeleton_export (G_DBUS_INTERFACE_SKELETON (exported_bat_object),
@@ -637,6 +661,23 @@ on_test_signal (FooBar              *proxy,
   g_assert (array_of_bytestrings[2] == NULL);
 
   data->received_test_signal = TRUE;
+  g_main_loop_quit (data->thread_loop);
+}
+
+static void
+on_property_cancellation_cb (FooBar        *proxy,
+                             GAsyncResult  *res,
+                             gpointer       user_data)
+{
+  ClientData *data = user_data;
+  gboolean ret;
+  GError *error = NULL;
+
+  error = NULL;
+  ret = foo_bar_call_property_cancellation_finish (proxy, res, &error);
+  g_assert_no_error (error);
+  g_assert (ret);
+
   g_main_loop_quit (data->thread_loop);
 }
 
@@ -949,9 +990,25 @@ check_bar_proxy (FooBar    *proxy,
   _g_assert_property_notify (proxy, "n");
   g_assert_cmpint (foo_bar_get_n (proxy), ==, 10042);
   g_assert_cmpint (data->num_notify_n, ==, 2);
-
   /* Checks that u didn't change at all */
   g_assert_cmpint (data->num_notify_u, ==, 3);
+
+  /* Now we check that if the service does
+   *
+   *   guint n = foo_bar_get_n (foo);
+   *   foo_bar_set_n (foo, n + 1);
+   *   foo_bar_set_n (foo, n);
+   *
+   *  then no PropertiesChanged() signal is emitted!
+   */
+  error = NULL;
+  foo_bar_call_property_cancellation (proxy,
+                                      NULL, /* GCancellable */
+                                      (GAsyncReadyCallback) on_property_cancellation_cb,
+                                      data);
+  g_main_loop_run (thread_loop);
+  /* Checks that n didn't change at all */
+  g_assert_cmpint (data->num_notify_n, ==, 2);
 
   /* cleanup */
   g_free (data);

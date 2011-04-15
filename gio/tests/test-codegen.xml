@@ -64,6 +64,8 @@
 
     <method name="UnimplementedMethod"/>
 
+    <method name="PropertyCancellation"/>
+
     <signal name="TestSignal">
       <annotation name="org.gtk.GDBus.DocString" value="Signal documentation."/>
       <arg type="i" name="val_int32">
