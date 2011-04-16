@@ -91,6 +91,7 @@ void                          g_dbus_object_manager_client_new                (G
                                                                                const gchar                   *object_path,
                                                                                GDBusProxyTypeFunc             get_proxy_type_func,
                                                                                gpointer                       get_proxy_type_user_data,
+                                                                               GDestroyNotify                 get_proxy_type_destroy_notify,
                                                                                GCancellable                  *cancellable,
                                                                                GAsyncReadyCallback            callback,
                                                                                gpointer                       user_data);
@@ -102,6 +103,7 @@ GDBusObjectManager           *g_dbus_object_manager_client_new_sync           (G
                                                                                const gchar                   *object_path,
                                                                                GDBusProxyTypeFunc             get_proxy_type_func,
                                                                                gpointer                       get_proxy_type_user_data,
+                                                                               GDestroyNotify                 get_proxy_type_destroy_notify,
                                                                                GCancellable                  *cancellable,
                                                                                GError                       **error);
 void                          g_dbus_object_manager_client_new_for_bus        (GBusType                       bus_type,
@@ -110,6 +112,7 @@ void                          g_dbus_object_manager_client_new_for_bus        (G
                                                                                const gchar                   *object_path,
                                                                                GDBusProxyTypeFunc             get_proxy_type_func,
                                                                                gpointer                       get_proxy_type_user_data,
+                                                                               GDestroyNotify                 get_proxy_type_destroy_notify,
                                                                                GCancellable                  *cancellable,
                                                                                GAsyncReadyCallback            callback,
                                                                                gpointer                       user_data);
@@ -121,6 +124,7 @@ GDBusObjectManager           *g_dbus_object_manager_client_new_for_bus_sync   (G
                                                                                const gchar                   *object_path,
                                                                                GDBusProxyTypeFunc             get_proxy_type_func,
                                                                                gpointer                       get_proxy_type_user_data,
+                                                                               GDestroyNotify                 get_proxy_type_destroy_notify,
                                                                                GCancellable                  *cancellable,
                                                                                GError                       **error);
 GDBusConnection              *g_dbus_object_manager_client_get_connection     (GDBusObjectManagerClient      *manager);

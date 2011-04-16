@@ -142,6 +142,7 @@ struct _GDBusObjectManagerClientPrivate
 
   GDBusProxyTypeFunc get_proxy_type_func;
   gpointer get_proxy_type_user_data;
+  GDestroyNotify get_proxy_type_destroy_notify;
 };
 
 enum
@@ -154,7 +155,8 @@ enum
   PROP_NAME,
   PROP_NAME_OWNER,
   PROP_GET_PROXY_TYPE_FUNC,
-  PROP_GET_PROXY_TYPE_USER_DATA
+  PROP_GET_PROXY_TYPE_USER_DATA,
+  PROP_GET_PROXY_TYPE_DESTROY_NOTIFY
 };
 
 enum
@@ -207,6 +209,9 @@ g_dbus_object_manager_client_finalize (GObject *object)
   g_free (manager->priv->object_path);
   g_free (manager->priv->name);
   g_free (manager->priv->name_owner);
+
+  if (manager->priv->get_proxy_type_destroy_notify != NULL)
+    manager->priv->get_proxy_type_destroy_notify (manager->priv->get_proxy_type_user_data);
 
   if (G_OBJECT_CLASS (g_dbus_object_manager_client_parent_class)->finalize != NULL)
     G_OBJECT_CLASS (g_dbus_object_manager_client_parent_class)->finalize (object);
@@ -293,6 +298,10 @@ g_dbus_object_manager_client_set_property (GObject       *_object,
 
     case PROP_GET_PROXY_TYPE_USER_DATA:
       manager->priv->get_proxy_type_user_data = g_value_get_pointer (value);
+      break;
+
+    case PROP_GET_PROXY_TYPE_DESTROY_NOTIFY:
+      manager->priv->get_proxy_type_destroy_notify = g_value_get_pointer (value);
       break;
 
     default:
@@ -462,6 +471,23 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
                                                          G_PARAM_STATIC_STRINGS));
 
   /**
+   * GDBusObjectManagerClient:get-proxy-type-destroy-notify:
+   *
+   * A #GDestroyNotify for the #gpointer user_data in #GDBusObjectManagerClient:get-proxy-type-user-data.
+   *
+   * Since: 2.30
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_GET_PROXY_TYPE_DESTROY_NOTIFY,
+                                   g_param_spec_pointer ("get-proxy-type-destroy-notify",
+                                                         "GDBusProxyTypeFunc user data free function",
+                                                         "The GDBusProxyTypeFunc user data free function",
+                                                         G_PARAM_READABLE |
+                                                         G_PARAM_WRITABLE |
+                                                         G_PARAM_CONSTRUCT_ONLY |
+                                                         G_PARAM_STATIC_STRINGS));
+
+  /**
    * GDBusObjectManagerClient::interface-proxy-signal:
    * @manager: The #GDBusObjectManagerClient emitting the signal.
    * @object_proxy: The #GDBusObjectProxy on which an interface is emitting a D-Bus signal.
@@ -559,6 +585,7 @@ g_dbus_object_manager_client_init (GDBusObjectManagerClient *manager)
  * @object_path: The object path of the control object.
  * @get_proxy_type_func: A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
+ * @get_proxy_type_destroy_notify: (allow-none): Free function for @get_proxy_type_user_data or %NULL.
  * @cancellable: A #GCancellable or %NULL
  * @error: Return location for error or %NULL.
  *
@@ -581,6 +608,7 @@ g_dbus_object_manager_client_new_sync (GDBusConnection               *connection
                                        const gchar                   *object_path,
                                        GDBusProxyTypeFunc             get_proxy_type_func,
                                        gpointer                       get_proxy_type_user_data,
+                                       GDestroyNotify                 get_proxy_type_destroy_notify,
                                        GCancellable                  *cancellable,
                                        GError                       **error)
 {
@@ -601,6 +629,7 @@ g_dbus_object_manager_client_new_sync (GDBusConnection               *connection
                              "object-path", object_path,
                              "get-proxy-type-func", get_proxy_type_func,
                              "get-proxy-type-user-data", get_proxy_type_user_data,
+                             "get-proxy-type-destroy-notify", get_proxy_type_destroy_notify,
                              NULL);
   if (initable != NULL)
     return G_DBUS_OBJECT_MANAGER (initable);
@@ -616,6 +645,7 @@ g_dbus_object_manager_client_new_sync (GDBusConnection               *connection
  * @object_path: The object path of the control object.
  * @get_proxy_type_func: A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
+ * @get_proxy_type_destroy_notify: (allow-none): Free function for @get_proxy_type_user_data or %NULL.
  * @cancellable: A #GCancellable or %NULL
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
@@ -638,6 +668,7 @@ g_dbus_object_manager_client_new (GDBusConnection               *connection,
                                   const gchar                   *object_path,
                                   GDBusProxyTypeFunc             get_proxy_type_func,
                                   gpointer                       get_proxy_type_user_data,
+                                  GDestroyNotify                 get_proxy_type_destroy_notify,
                                   GCancellable                  *cancellable,
                                   GAsyncReadyCallback            callback,
                                   gpointer                       user_data)
@@ -658,6 +689,7 @@ g_dbus_object_manager_client_new (GDBusConnection               *connection,
                               "object-path", object_path,
                               "get-proxy-type-func", get_proxy_type_func,
                               "get-proxy-type-user-data", get_proxy_type_user_data,
+                              "get-proxy-type-destroy-notify", get_proxy_type_destroy_notify,
                               NULL);
 }
 
@@ -705,6 +737,7 @@ g_dbus_object_manager_client_new_finish (GAsyncResult   *res,
  * @object_path: The object path of the control object.
  * @get_proxy_type_func: A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
+ * @get_proxy_type_destroy_notify: (allow-none): Free function for @get_proxy_type_user_data or %NULL.
  * @cancellable: A #GCancellable or %NULL
  * @error: Return location for error or %NULL.
  *
@@ -728,6 +761,7 @@ g_dbus_object_manager_client_new_for_bus_sync (GBusType                       bu
                                                const gchar                   *object_path,
                                                GDBusProxyTypeFunc             get_proxy_type_func,
                                                gpointer                       get_proxy_type_user_data,
+                                               GDestroyNotify                 get_proxy_type_destroy_notify,
                                                GCancellable                  *cancellable,
                                                GError                       **error)
 {
@@ -747,6 +781,7 @@ g_dbus_object_manager_client_new_for_bus_sync (GBusType                       bu
                              "object-path", object_path,
                              "get-proxy-type-func", get_proxy_type_func,
                              "get-proxy-type-user-data", get_proxy_type_user_data,
+                             "get-proxy-type-destroy-notify", get_proxy_type_destroy_notify,
                              NULL);
   if (initable != NULL)
     return G_DBUS_OBJECT_MANAGER (initable);
@@ -762,6 +797,7 @@ g_dbus_object_manager_client_new_for_bus_sync (GBusType                       bu
  * @object_path: The object path of the control object.
  * @get_proxy_type_func: A #GDBusProxyTypeFunc function or %NULL to always construct #GDBusProxy proxies.
  * @get_proxy_type_user_data: User data to pass to @get_proxy_type_func.
+ * @get_proxy_type_destroy_notify: (allow-none): Free function for @get_proxy_type_user_data or %NULL.
  * @cancellable: A #GCancellable or %NULL
  * @callback: A #GAsyncReadyCallback to call when the request is satisfied.
  * @user_data: The data to pass to @callback.
@@ -785,6 +821,7 @@ g_dbus_object_manager_client_new_for_bus (GBusType                       bus_typ
                                           const gchar                   *object_path,
                                           GDBusProxyTypeFunc             get_proxy_type_func,
                                           gpointer                       get_proxy_type_user_data,
+                                          GDestroyNotify                 get_proxy_type_destroy_notify,
                                           GCancellable                  *cancellable,
                                           GAsyncReadyCallback            callback,
                                           gpointer                       user_data)
@@ -804,6 +841,7 @@ g_dbus_object_manager_client_new_for_bus (GBusType                       bus_typ
                               "object-path", object_path,
                               "get-proxy-type-func", get_proxy_type_func,
                               "get-proxy-type-user-data", get_proxy_type_user_data,
+                              "get-proxy-type-destroy-notify", get_proxy_type_destroy_notify,
                               NULL);
 }
 

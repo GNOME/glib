@@ -1783,6 +1783,7 @@ check_object_manager (void)
                                               "/managed",
                                               get_proxy_type,
                                               GUINT_TO_POINTER (42),
+                                              NULL, /* GDestroyNotify */
                                               NULL, /* GCancellable */
                                               &error);
   g_assert_error (error, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD);
@@ -1805,14 +1806,15 @@ check_object_manager (void)
   /* Now try to create the the proxy manager again - this time it should work */
   error = NULL;
   g_dbus_object_manager_client_new (c,
-                            G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE,
-                            g_dbus_connection_get_unique_name (c),
-                            "/managed",
-                            get_proxy_type,
-                            GUINT_TO_POINTER (42),
-                            NULL, /* GCancellable */
-                            (GAsyncReadyCallback) om_pm_start_cb,
-                            loop);
+                                    G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE,
+                                    g_dbus_connection_get_unique_name (c),
+                                    "/managed",
+                                    get_proxy_type,
+                                    GUINT_TO_POINTER (42),
+                                    NULL, /* GDestroyNotify */
+                                    NULL, /* GCancellable */
+                                    (GAsyncReadyCallback) om_pm_start_cb,
+                                    loop);
   g_main_loop_run (loop);
   error = NULL;
   pm = g_dbus_object_manager_client_new_finish (om_res, &error);
