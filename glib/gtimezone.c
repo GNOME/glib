@@ -164,11 +164,10 @@ g_time_zone_unref (GTimeZone *tz)
 {
   g_assert (tz->ref_count > 0);
 
+  G_LOCK(time_zones);
   if (g_atomic_int_dec_and_test (&tz->ref_count))
     {
-      G_LOCK(time_zones);
       g_hash_table_remove (time_zones, tz->name);
-      G_UNLOCK(time_zones);
 
       if (tz->zoneinfo)
         g_buffer_unref (tz->zoneinfo);
@@ -177,6 +176,7 @@ g_time_zone_unref (GTimeZone *tz)
 
       g_slice_free (GTimeZone, tz);
     }
+  G_UNLOCK(time_zones);
 }
 
 /**
