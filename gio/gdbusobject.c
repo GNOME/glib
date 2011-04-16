@@ -133,8 +133,8 @@ g_dbus_object_get_interfaces (GDBusObject *object)
  * Gets the D-Bus interface with name @interface_name associated with
  * @object, if any.
  *
- * Returns: %NULL if not found, otherwise a #GDBusInterface that must
- *   be freed with g_object_unref().
+ * Returns: (transfer full): %NULL if not found, otherwise a
+ *   #GDBusInterface that must be freed with g_object_unref().
  *
  * Since: 2.30
  */
@@ -160,9 +160,9 @@ g_dbus_object_get_interface (GDBusObject *object,
  * <note><para>This function is intended to only be used in type
  * implementations.</para></note>
  *
- * Returns: A #GDBusInterface implementing @type or %NULL if
- * not found. Do not free the returned object, it is owned by
- * @object.
+ * Returns: (transfer none): A #GDBusInterface implementing @type or
+ *   %NULL if not found. Do not free the returned object, it is owned
+ *   by @object.
  *
  * Since: 2.30
  */
@@ -188,8 +188,8 @@ g_dbus_object_peek_with_typecheck (GDBusObject *object,
  * <note><para>This function is intended to only be used in type
  * implementations.</para></note>
  *
- * Returns: A #GDBusInterface implementing @type or %NULL if
- * not found. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusInterface implementing @type or
+ *   %NULL if not found. Free with g_object_unref().
  *
  * Since: 2.30
  */

@@ -181,7 +181,8 @@ g_dbus_object_proxy_get_object_path (GDBusObject *object)
  *
  * Gets the connection that @proxy is for.
  *
- * Returns: A #GDBusConnection. Do not free, the object is owned by @proxy.
+ * Returns: (transfer none): A #GDBusConnection. Do not free, the
+ *   object is owned by @proxy.
  *
  * Since: 2.30
  */

@@ -255,8 +255,8 @@ g_dbus_object_manager_server_new (GDBusConnection *connection,
  *
  * Gets the #GDBusConnection used by @manager.
  *
- * Returns: A #GDBusConnection object. Do not free, the object belongs
- * to @manager.
+ * Returns: (transfer none): A #GDBusConnection object. Do not free,
+ *   the object belongs to @manager.
  *
  * Since: 2.30
  */

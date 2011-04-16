@@ -188,7 +188,8 @@ g_dbus_object_manager_get_objects (GDBusObjectManager *manager)
  *
  * Gets the #GDBusObjectProxy at @object_path, if any.
  *
- * Returns: A #GDBusObject or %NULL. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusObject or %NULL. Free with
+ *   g_object_unref().
  *
  * Since: 2.30
  */
@@ -210,7 +211,8 @@ g_dbus_object_manager_get_object (GDBusObjectManager *manager,
  * Gets the interface proxy for @interface_name at @object_path, if
  * any.
  *
- * Returns: A #GDBusInterface instance or %NULL. Free with g_object_unref().
+ * Returns: (transfer full): A #GDBusInterface instance or %NULL. Free
+ *   with g_object_unref().
  *
  * Since: 2.30
  */

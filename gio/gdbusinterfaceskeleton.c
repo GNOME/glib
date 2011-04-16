@@ -294,7 +294,7 @@ g_dbus_interface_skeleton_get_info (GDBusInterfaceSkeleton *interface_)
 }
 
 /**
- * g_dbus_interface_skeleton_get_vtable:
+ * g_dbus_interface_skeleton_get_vtable: (skip)
  * @interface_: A #GDBusInterfaceSkeleton.
  *
  * Gets the interface vtable for the D-Bus interface implemented by

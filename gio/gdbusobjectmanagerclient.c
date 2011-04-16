@@ -568,8 +568,9 @@ g_dbus_object_manager_client_init (GDBusObjectManagerClient *manager)
  * blocked until a reply is received. See g_dbus_object_manager_client_new()
  * for the asynchronous version.
  *
- * Returns: A #GDBusObjectManagerClient object or %NULL if @error is
- * set. Free with g_object_unref().
+ * Returns: (transfer full) (type GDBusObjectManagerClient): A
+ *   #GDBusObjectManagerClient object or %NULL if @error is set. Free
+ *   with g_object_unref().
  *
  * Since: 2.30
  */
@@ -667,8 +668,9 @@ g_dbus_object_manager_client_new (GDBusConnection               *connection,
  *
  * Finishes an operation started with g_dbus_object_manager_client_new().
  *
- * Returns: A #GDBusObjectManagerClient object or %NULL if @error is
- * set. Free with g_object_unref().
+ * Returns: (transfer full) (type GDBusObjectManagerClient): A
+ *   #GDBusObjectManagerClient object or %NULL if @error is set. Free
+ *   with g_object_unref().
  *
  * Since: 2.30
  */
@@ -713,8 +715,9 @@ g_dbus_object_manager_client_new_finish (GAsyncResult   *res,
  * blocked until a reply is received. See g_dbus_object_manager_client_new_for_bus()
  * for the asynchronous version.
  *
- * Returns: A #GDBusObjectManagerClient object or %NULL if @error is
- * set. Free with g_object_unref().
+ * Returns: (transfer full) (type GDBusObjectManagerClient): A
+ *   #GDBusObjectManagerClient object or %NULL if @error is set. Free
+ *   with g_object_unref().
  *
  * Since: 2.30
  */
@@ -811,8 +814,9 @@ g_dbus_object_manager_client_new_for_bus (GBusType                       bus_typ
  *
  * Finishes an operation started with g_dbus_object_manager_client_new_for_bus().
  *
- * Returns: A #GDBusObjectManagerClient object or %NULL if @error is
- * set. Free with g_object_unref().
+ * Returns: (transfer full) (type GDBusObjectManagerClient): A
+ *   #GDBusObjectManagerClient object or %NULL if @error is set. Free
+ *   with g_object_unref().
  *
  * Since: 2.30
  */
@@ -845,8 +849,8 @@ g_dbus_object_manager_client_new_for_bus_finish (GAsyncResult   *res,
  *
  * Gets the #GDBusConnection used by @manager.
  *
- * Returns: A #GDBusConnection object. Do not free, the object belongs
- * to @manager.
+ * Returns: (transfer none): A #GDBusConnection object. Do not free,
+ *   the object belongs to @manager.
  *
  * Since: 2.30
  */
