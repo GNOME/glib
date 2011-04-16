@@ -2197,7 +2197,7 @@ extern gpointer name_forcing_4;
 extern gpointer name_forcing_5;
 extern gpointer name_forcing_6;
 extern gpointer name_forcing_7;
-gpointer name_forcing_1 = foo_rocket123_get_gtype;
+gpointer name_forcing_1 = foo_rocket123_get_type;
 gpointer name_forcing_2 = foo_rocket123_call_ignite_xyz;
 gpointer name_forcing_3 = foo_rocket123_emit_exploded_xyz;
 gpointer name_forcing_4 = foo_rocket123_get_speed_xyz;

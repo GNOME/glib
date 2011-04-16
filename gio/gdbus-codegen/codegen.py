@@ -218,7 +218,7 @@ class CodeGenerator:
             self.h.write('\n')
 
             # First the GInterface
-            self.h.write('#define %sTYPE_%s (%s_get_gtype ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
+            self.h.write('#define %sTYPE_%s (%s_get_type ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
             self.h.write('#define %s%s(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_%s, %s))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
             self.h.write('#define %sIS_%s(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_%s))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper))
             self.h.write('#define %s%s_GET_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), %sTYPE_%s, %s))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
@@ -286,7 +286,7 @@ class CodeGenerator:
 
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('GType %s_get_gtype (void) G_GNUC_CONST;\n'%(i.name_lower))
+            self.h.write('GType %s_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
             self.h.write('GDBusInterfaceInfo *%s_interface_info (void);\n'%(i.name_lower))
             if len(i.properties) > 0:
@@ -386,7 +386,7 @@ class CodeGenerator:
             self.h.write('\n')
             self.h.write('/* ---- */\n')
             self.h.write('\n')
-            self.h.write('#define %sTYPE_%s_PROXY (%s_proxy_get_gtype ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
+            self.h.write('#define %sTYPE_%s_PROXY (%s_proxy_get_type ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
             self.h.write('#define %s%s_PROXY(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_%s_PROXY, %sProxy))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
             self.h.write('#define %s%s_PROXY_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_%s_PROXY, %sProxyClass))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
             self.h.write('#define %s%s_PROXY_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_%s_PROXY, %sProxyClass))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
@@ -408,7 +408,7 @@ class CodeGenerator:
             self.h.write('  GDBusProxyClass parent_class;\n')
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('GType %s_proxy_get_gtype (void) G_GNUC_CONST;\n'%(i.name_lower))
+            self.h.write('GType %s_proxy_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
 
             self.h.write('\n')
             if i.deprecated:
@@ -477,7 +477,7 @@ class CodeGenerator:
             self.h.write('\n')
             self.h.write('/* ---- */\n')
             self.h.write('\n')
-            self.h.write('#define %sTYPE_%s_SKELETON (%s_skeleton_get_gtype ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
+            self.h.write('#define %sTYPE_%s_SKELETON (%s_skeleton_get_type ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
             self.h.write('#define %s%s_SKELETON(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_%s_SKELETON, %sSkeleton))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
             self.h.write('#define %s%s_SKELETON_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_%s_SKELETON, %sSkeletonClass))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
             self.h.write('#define %s%s_SKELETON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_%s_SKELETON, %sSkeletonClass))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
@@ -499,7 +499,7 @@ class CodeGenerator:
             self.h.write('  GDBusInterfaceSkeletonClass parent_class;\n')
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('GType %s_skeleton_get_gtype (void) G_GNUC_CONST;\n'%(i.name_lower))
+            self.h.write('GType %s_skeleton_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
             if i.deprecated:
                 self.h.write('G_GNUC_DEPRECATED ')
@@ -512,7 +512,7 @@ class CodeGenerator:
             self.h.write('\n')
             self.h.write('/* ---- */\n')
             self.h.write('\n')
-            self.h.write('#define %sTYPE_OBJECT_MANAGER_CLIENT (%sobject_manager_client_get_gtype ())\n'%(self.ns_upper, self.ns_lower))
+            self.h.write('#define %sTYPE_OBJECT_MANAGER_CLIENT (%sobject_manager_client_get_type ())\n'%(self.ns_upper, self.ns_lower))
             self.h.write('#define %sOBJECT_MANAGER_CLIENT(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClient))\n'%(self.ns_upper, self.ns_upper, self.namespace))
             self.h.write('#define %sOBJECT_MANAGER_CLIENT_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClientClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
             self.h.write('#define %sOBJECT_MANAGER_CLIENT_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_OBJECT_MANAGER_CLIENT, %sObjectManagerClientClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
@@ -534,9 +534,9 @@ class CodeGenerator:
             self.h.write('  GDBusObjectManagerClientClass parent_class;\n')
             self.h.write('};\n')
             self.h.write('\n')
-            self.h.write('GType %sobject_manager_client_get_gtype (void) G_GNUC_CONST;\n'%(self.ns_lower))
+            self.h.write('GType %sobject_manager_client_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
             self.h.write('\n')
-            self.h.write('GDBusProxyTypeFunc %sobject_manager_client_get_proxy_type_func (void);\n'%(self.ns_lower))
+            self.h.write('GType %sobject_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data);\n'%(self.ns_lower))
             self.h.write('\n')
             self.h.write('void %sobject_manager_client_new (\n'
                          '    GDBusConnection        *connection,\n'
@@ -914,9 +914,7 @@ class CodeGenerator:
                      '\n')
 
         self.c.write('typedef %sIface %sInterface;\n'%(i.camel_name, i.camel_name))
-        self.c.write('#define %s_get_type %s_get_gtype\n'%(i.name_lower, i.name_lower))
         self.c.write('G_DEFINE_INTERFACE (%s, %s, G_TYPE_OBJECT);\n'%(i.camel_name, i.name_lower))
-        self.c.write('#undef %s_get_type\n'%(i.name_lower))
         self.c.write('\n')
 
     # ----------------------------------------------------------------------------------------------------
@@ -924,6 +922,13 @@ class CodeGenerator:
     def generate_property_accessors(self, i):
         for p in i.properties:
             # getter
+            self.c.write('/**\n'
+                         ' * %s_get_%s:\n'
+                         ' * @object: \n'
+                         ' *\n'
+                         ' * Returns: (transfer none): \n'
+                         %(i.name_lower, p.name_lower))
+            self.c.write(' */\n')
             self.c.write('%s\n'
                          '%s_get_%s (%s *object)\n'
                          '{\n'
@@ -939,6 +944,13 @@ class CodeGenerator:
             self.c.write('}\n')
             self.c.write('\n')
             # setter
+            self.c.write('/**\n'
+                         ' * %s_set_%s:\n'
+                         ' * @object: \n'
+                         ' * @value: \n'
+                         ' *\n'
+                         %(i.name_lower, p.name_lower))
+            self.c.write(' */\n')
             self.c.write('void\n'
                          '%s_set_%s (%s *object, %svalue)\n'
                          '{\n'%(i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in, ))
@@ -969,6 +981,17 @@ class CodeGenerator:
     def generate_method_calls(self, i):
         for m in i.methods:
             # async begin
+            self.c.write('/**\n'
+                         ' * %s_call_%s:\n'
+                         ' * @proxy: \n'
+                         %(i.name_lower, m.name_lower))
+            for a in m.in_args:
+                self.c.write(' * @%s: \n'%(a.name))
+            self.c.write(' * @cancellable: \n'
+                         ' * @callback: \n'
+                         ' * @user_data: \n'
+                         ' *\n')
+            self.c.write(' */\n')
             self.c.write('void\n'
                          '%s_call_%s (\n'
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
@@ -996,6 +1019,17 @@ class CodeGenerator:
             self.c.write('}\n'
                          '\n')
             # async finish
+            self.c.write('/**\n'
+                         ' * %s_call_%s_finish:\n'
+                         ' * @proxy: \n'
+                         %(i.name_lower, m.name_lower))
+            for a in m.out_args:
+                self.c.write(' * @out_%s: (out): \n'%(a.name))
+            self.c.write(' * @res: \n'
+                         ' * @error: \n'
+                         ' *\n'
+                         ' * Returns: \n')
+            self.c.write(' */\n')
             self.c.write('gboolean\n'
                          '%s_call_%s_finish (\n'
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
@@ -1025,6 +1059,19 @@ class CodeGenerator:
 
 
             # sync
+            self.c.write('/**\n'
+                         ' * %s_call_%s_sync:\n'
+                         ' * @proxy: \n'
+                         %(i.name_lower, m.name_lower))
+            for a in m.in_args:
+                self.c.write(' * @%s: \n'%(a.name))
+            for a in m.out_args:
+                self.c.write(' * @out_%s: (out): \n'%(a.name))
+            self.c.write(' * @cancellable: \n'
+                         ' * @error: \n'
+                         ' *\n'
+                         ' * Returns: \n')
+            self.c.write(' */\n')
             self.c.write('gboolean\n'
                          '%s_call_%s_sync (\n'
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
@@ -1101,7 +1148,7 @@ class CodeGenerator:
                      '{\n'
                      '}\n'
                      '\n'%(i.name_lower, i.camel_name))
-        self.c.write('#define %s_proxy_get_type %s_proxy_get_gtype\n'%(i.name_lower, i.name_lower))
+        self.c.write('#define %s_proxy_get_type %s_proxy_get_type\n'%(i.name_lower, i.name_lower))
         self.c.write('G_DEFINE_TYPE_WITH_CODE (%sProxy, %s_proxy, G_TYPE_DBUS_PROXY,\n'%(i.camel_name, i.name_lower))
         self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_proxy_iface_init));\n'%(i.ns_upper, i.name_upper, i.name_lower))
         self.c.write('#undef %s_proxy_get_type\n'
@@ -1280,6 +1327,17 @@ class CodeGenerator:
         self.c.write('}\n')
 
         # constructors
+        self.c.write('/**\n'
+                     ' * %s_proxy_new:\n'
+                     ' * @connection: \n'
+                     ' * @flags: \n'
+                     ' * @name: \n'
+                     ' * @object_path: \n'
+                     ' * @callback: \n'
+                     ' * @user_data: \n'
+                     ' *\n'
+                     %(i.name_lower))
+        self.c.write(' */\n')
         self.c.write('void\n'
                      '%s_proxy_new (\n'
                      '    GDBusConnection     *connection,\n'
@@ -1294,6 +1352,14 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(i.name_lower, i.ns_upper, i.name_upper, i.name))
+        self.c.write('/**\n'
+                     ' * %s_proxy_new_finish:\n'
+                     ' * @res: \n'
+                     ' * @error: \n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sProxy):\n'
+                     %(i.name_lower, i.camel_name))
+        self.c.write(' */\n')
         self.c.write('%s *\n'
                      '%s_proxy_new_finish (\n'
                      '    GAsyncResult        *res,\n'
@@ -1311,6 +1377,18 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(i.camel_name, i.name_lower, i.ns_upper, i.name_upper))
+        self.c.write('/**\n'
+                     ' * %s_proxy_new_sync:\n'
+                     ' * @connection: \n'
+                     ' * @flags: \n'
+                     ' * @name: \n'
+                     ' * @object_path: \n'
+                     ' * @cancellable: \n'
+                     ' * @error: \n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sProxy):\n'
+                     %(i.name_lower, i.camel_name))
+        self.c.write(' */\n')
         self.c.write('%s *\n'
                      '%s_proxy_new_sync (\n'
                      '    GDBusConnection     *connection,\n'
@@ -1330,6 +1408,17 @@ class CodeGenerator:
                      '\n'
                      %(i.camel_name, i.name_lower, i.ns_upper, i.name_upper, i.name, i.ns_upper, i.name_upper))
         self.c.write('\n')
+        self.c.write('/**\n'
+                     ' * %s_proxy_new_for_bus:\n'
+                     ' * @bus_type: \n'
+                     ' * @flags: \n'
+                     ' * @name: \n'
+                     ' * @object_path: \n'
+                     ' * @callback: \n'
+                     ' * @user_data: \n'
+                     ' *\n'
+                     %(i.name_lower))
+        self.c.write(' */\n')
         self.c.write('void\n'
                      '%s_proxy_new_for_bus (\n'
                      '    GBusType             bus_type,\n'
@@ -1344,6 +1433,14 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(i.name_lower, i.ns_upper, i.name_upper, i.name))
+        self.c.write('/**\n'
+                     ' * %s_proxy_new_for_bus_finish:\n'
+                     ' * @res: \n'
+                     ' * @error: \n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sProxy):\n'
+                     %(i.name_lower, i.camel_name))
+        self.c.write(' */\n')
         self.c.write('%s *\n'
                      '%s_proxy_new_for_bus_finish (\n'
                      '    GAsyncResult        *res,\n'
@@ -1361,6 +1458,18 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(i.camel_name, i.name_lower, i.ns_upper, i.name_upper))
+        self.c.write('/**\n'
+                     ' * %s_proxy_new_for_bus_sync:\n'
+                     ' * @bus_type: \n'
+                     ' * @flags: \n'
+                     ' * @name: \n'
+                     ' * @object_path: \n'
+                     ' * @cancellable: \n'
+                     ' * @error: \n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sProxy):\n'
+                     %(i.name_lower, i.camel_name))
+        self.c.write(' */\n')
         self.c.write('%s *\n'
                      '%s_proxy_new_for_bus_sync (\n'
                      '    GBusType             bus_type,\n'
@@ -1648,7 +1757,7 @@ class CodeGenerator:
                          %(s.name_lower, i.name_lower, s.name_lower))
         self.c.write('}\n'
                      '\n')
-        self.c.write('#define %s_skeleton_get_type %s_skeleton_get_gtype\n'%(i.name_lower, i.name_lower))
+        self.c.write('#define %s_skeleton_get_type %s_skeleton_get_type\n'%(i.name_lower, i.name_lower))
         self.c.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
         self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init));\n'%(i.ns_upper, i.name_upper, i.name_lower))
         self.c.write('#undef %s_skeleton_get_type\n'
@@ -1846,6 +1955,12 @@ class CodeGenerator:
                      '\n')
 
         # constructors
+        self.c.write('/**\n'
+                     ' * %s_skeleton_new:\n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sSkeleton):\n'
+                     %(i.name_lower, i.camel_name))
+        self.c.write(' */\n')
         self.c.write('%s *\n'
                      '%s_skeleton_new (void)\n'
                      '{\n'
@@ -1865,7 +1980,7 @@ class CodeGenerator:
         # class boilerplate
         self.c.write('/* ------------------------------------------------------------------------ */\n'
                      '\n')
-        self.c.write('#define %sobject_manager_client_get_type %sobject_manager_client_get_gtype\n'%(self.ns_lower, self.ns_lower))
+        self.c.write('#define %sobject_manager_client_get_type %sobject_manager_client_get_type\n'%(self.ns_lower, self.ns_lower))
         self.c.write('G_DEFINE_TYPE (%sObjectManagerClient, %sobject_manager_client, G_TYPE_DBUS_OBJECT_MANAGER_CLIENT);\n'%(self.namespace, self.ns_lower))
         self.c.write('#undef %sobject_manager_client_get_type\n'
                      '\n'%(self.ns_lower))
@@ -1882,8 +1997,8 @@ class CodeGenerator:
                      '}\n'
                      '\n'%(self.ns_lower, self.namespace))
 
-        self.c.write('static GType\n'
-                     '_%sobject_manager_client_get_proxy_type_func (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data)\n'
+        self.c.write('GType\n'
+                     '%sobject_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data)\n'
                      '{\n'
                      %(self.ns_lower))
         self.c.write('  static gsize once_init_value = 0;\n'
@@ -1905,15 +2020,19 @@ class CodeGenerator:
                      '}\n'
                      '\n')
 
-        self.c.write('GDBusProxyTypeFunc\n'
-                     '%sobject_manager_client_get_proxy_type_func (void)\n'
-                     '{\n'
-                     '  return _%sobject_manager_client_get_proxy_type_func;\n'
-                     '}\n'
-                     '\n'
-                     %(self.ns_lower, self.ns_lower))
-
         # constructors
+        self.c.write('/**\n'
+                     ' * %sobject_manager_client_new:\n'
+                     ' * @connection: \n'
+                     ' * @flags: \n'
+                     ' * @name: \n'
+                     ' * @object_path: \n'
+                     ' * @cancellable: \n'
+                     ' * @callback: \n'
+                     ' * @user_data: \n'
+                     ' *\n'
+                     %(self.ns_lower))
+        self.c.write(' */\n')
         self.c.write('void\n'
                      '%sobject_manager_client_new (\n'
                      '    GDBusConnection        *connection,\n'
@@ -1924,10 +2043,18 @@ class CodeGenerator:
                      '    GAsyncReadyCallback     callback,\n'
                      '    gpointer                user_data)\n'
                      '{\n'
-                     '  g_async_initable_new_async (%sTYPE_OBJECT_MANAGER_CLIENT, G_PRIORITY_DEFAULT, cancellable, callback, user_data, "flags", flags, "name", name, "connection", connection, "object-path", object_path, "get-proxy-type-func", _%sobject_manager_client_get_proxy_type_func, NULL);\n'
+                     '  g_async_initable_new_async (%sTYPE_OBJECT_MANAGER_CLIENT, G_PRIORITY_DEFAULT, cancellable, callback, user_data, "flags", flags, "name", name, "connection", connection, "object-path", object_path, "get-proxy-type-func", %sobject_manager_client_get_proxy_type, NULL);\n'
                      '}\n'
                      '\n'
                      %(self.ns_lower, self.ns_upper, self.ns_lower))
+        self.c.write('/**\n'
+                     ' * %sobject_manager_client_new_finish:\n'
+                     ' * @res: \n'
+                     ' * @error: \n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sObjectManagerClient):\n'
+                     %(self.ns_lower, self.namespace))
+        self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_finish (\n'
                      '    GAsyncResult        *res,\n'
@@ -1945,6 +2072,18 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(self.ns_lower))
+        self.c.write('/**\n'
+                     ' * %sobject_manager_client_new_sync:\n'
+                     ' * @connection: \n'
+                     ' * @flags: \n'
+                     ' * @name: \n'
+                     ' * @object_path: \n'
+                     ' * @cancellable: \n'
+                     ' * @error: \n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sObjectManagerClient):\n'
+                     %(self.ns_lower, self.namespace))
+        self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_sync (\n'
                      '    GDBusConnection        *connection,\n'
@@ -1955,7 +2094,7 @@ class CodeGenerator:
                      '    GError                **error)\n'
                      '{\n'
                      '  GInitable *ret;\n'
-                     '  ret = g_initable_new (%sTYPE_OBJECT_MANAGER_CLIENT, cancellable, error, "flags", flags, "name", name, "connection", connection, "object-path", object_path, "get-proxy-type-func", _%sobject_manager_client_get_proxy_type_func, NULL);\n'
+                     '  ret = g_initable_new (%sTYPE_OBJECT_MANAGER_CLIENT, cancellable, error, "flags", flags, "name", name, "connection", connection, "object-path", object_path, "get-proxy-type-func", %sobject_manager_client_get_proxy_type, NULL);\n'
                      '  if (ret != NULL)\n'
                      '    return G_DBUS_OBJECT_MANAGER (ret);\n'
                      '  else\n'
@@ -1964,6 +2103,18 @@ class CodeGenerator:
                      '\n'
                      %(self.ns_lower, self.ns_upper, self.ns_lower))
         self.c.write('\n')
+        self.c.write('/**\n'
+                     ' * %sobject_manager_client_new_for_bus:\n'
+                     ' * @bus_type: \n'
+                     ' * @flags: \n'
+                     ' * @name: \n'
+                     ' * @object_path: \n'
+                     ' * @cancellable: \n'
+                     ' * @callback: \n'
+                     ' * @user_data: \n'
+                     ' *\n'
+                     %(self.ns_lower))
+        self.c.write(' */\n')
         self.c.write('void\n'
                      '%sobject_manager_client_new_for_bus (\n'
                      '    GBusType                bus_type,\n'
@@ -1974,10 +2125,18 @@ class CodeGenerator:
                      '    GAsyncReadyCallback     callback,\n'
                      '    gpointer                user_data)\n'
                      '{\n'
-                     '  g_async_initable_new_async (%sTYPE_OBJECT_MANAGER_CLIENT, G_PRIORITY_DEFAULT, cancellable, callback, user_data, "flags", flags, "name", name, "bus-type", bus_type, "object-path", object_path, "get-proxy-type-func", _%sobject_manager_client_get_proxy_type_func, NULL);\n'
+                     '  g_async_initable_new_async (%sTYPE_OBJECT_MANAGER_CLIENT, G_PRIORITY_DEFAULT, cancellable, callback, user_data, "flags", flags, "name", name, "bus-type", bus_type, "object-path", object_path, "get-proxy-type-func", %sobject_manager_client_get_proxy_type, NULL);\n'
                      '}\n'
                      '\n'
                      %(self.ns_lower, self.ns_upper, self.ns_lower))
+        self.c.write('/**\n'
+                     ' * %sobject_manager_client_new_for_bus_finish:\n'
+                     ' * @res: \n'
+                     ' * @error: \n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sObjectManagerClient):\n'
+                     %(self.ns_lower, self.namespace))
+        self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_for_bus_finish (\n'
                      '    GAsyncResult        *res,\n'
@@ -1995,6 +2154,18 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(self.ns_lower))
+        self.c.write('/**\n'
+                     ' * %sobject_manager_client_new_for_bus_sync:\n'
+                     ' * @bus_type: \n'
+                     ' * @flags: \n'
+                     ' * @name: \n'
+                     ' * @object_path: \n'
+                     ' * @cancellable: \n'
+                     ' * @error: \n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sObjectManagerClient):\n'
+                     %(self.ns_lower, self.namespace))
+        self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_for_bus_sync (\n'
                      '    GBusType                bus_type,\n'
@@ -2005,7 +2176,7 @@ class CodeGenerator:
                      '    GError                **error)\n'
                      '{\n'
                      '  GInitable *ret;\n'
-                     '  ret = g_initable_new (%sTYPE_OBJECT_MANAGER_CLIENT, cancellable, error, "flags", flags, "name", name, "bus-type", bus_type, "object-path", object_path, "get-proxy-type-func", _%sobject_manager_client_get_proxy_type_func, NULL);\n'
+                     '  ret = g_initable_new (%sTYPE_OBJECT_MANAGER_CLIENT, cancellable, error, "flags", flags, "name", name, "bus-type", bus_type, "object-path", object_path, "get-proxy-type-func", %sobject_manager_client_get_proxy_type, NULL);\n'
                      '  if (ret != NULL)\n'
                      '    return G_DBUS_OBJECT_MANAGER (ret);\n'
                      '  else\n'

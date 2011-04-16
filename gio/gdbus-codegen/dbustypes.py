@@ -283,6 +283,8 @@ class Property:
             if overridden_name:
                 name = overridden_name
             self.name_lower = utils.camel_case_to_uscore(name).lower().replace('-', '_')
+        if self.name_lower == 'type':
+            self.name_lower = 'type_'
         self.name_hyphen = self.name_lower.replace('_', '-')
 
         # recalculate arg
