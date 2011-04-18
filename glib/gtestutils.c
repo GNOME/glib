@@ -1146,7 +1146,7 @@ g_test_queue_destroy (GDestroyNotify destroy_func,
   test_destroy_queue = dentry;
 }
 
-static int
+static gboolean
 test_case_run (GTestCase *tc)
 {
   gchar *old_name = test_run_name, *old_base = g_strdup (test_uri_base);
@@ -1195,7 +1195,7 @@ test_case_run (GTestCase *tc)
   test_run_name = old_name;
   g_free (test_uri_base);
   test_uri_base = old_base;
-  return 0;
+  return TRUE;
 }
 
 static int
@@ -1220,7 +1220,8 @@ g_test_run_suite_internal (GTestSuite *suite,
       if (l == n && strncmp (path, tc->name, n) == 0)
         {
           n_good++;
-          n_bad += test_case_run (tc) != 0;
+          if (!test_case_run (tc))
+            n_bad++;
         }
     }
   g_slist_free (reversed);
