@@ -1202,7 +1202,7 @@ static int
 g_test_run_suite_internal (GTestSuite *suite,
                            const char *path)
 {
-  guint n_bad = 0, bad_suite = 0, l;
+  guint n_bad = 0, l;
   gchar *rest, *old_name = test_run_name;
   GSList *slist, *reversed;
   g_return_val_if_fail (suite != NULL, -1);
@@ -1230,12 +1230,12 @@ g_test_run_suite_internal (GTestSuite *suite,
       GTestSuite *ts = slist->data;
       guint n = l ? strlen (ts->name) : 0;
       if (l == n && strncmp (path, ts->name, n) == 0)
-        bad_suite += g_test_run_suite_internal (ts, rest ? rest : "") != 0;
+        n_bad += g_test_run_suite_internal (ts, rest ? rest : "");
     }
   g_slist_free (reversed);
   g_free (test_run_name);
   test_run_name = old_name;
-  return n_bad || bad_suite;
+  return n_bad;
 }
 
 /**
@@ -1271,7 +1271,7 @@ g_test_run_suite (GTestSuite *suite)
         path++;
       if (!n) /* root suite, run unconditionally */
         {
-          n_bad += 0 != g_test_run_suite_internal (suite, path);
+          n_bad += g_test_run_suite_internal (suite, path);
           continue;
         }
       /* regular suite, match path */
@@ -1279,7 +1279,7 @@ g_test_run_suite (GTestSuite *suite)
       l = strlen (path);
       l = rest ? MIN (l, rest - path) : l;
       if ((!l || l == n) && strncmp (path, suite->name, n) == 0)
-        n_bad += 0 != g_test_run_suite_internal (suite, rest ? rest : "");
+        n_bad += g_test_run_suite_internal (suite, rest ? rest : "");
     }
   return n_bad;
 }
