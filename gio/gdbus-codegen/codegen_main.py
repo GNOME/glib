@@ -176,6 +176,11 @@ def codegen_main():
     for i in parsed_ifaces:
         i.post_process(args.interface_prefix, args.c_namespace)
 
+    docbook = args.generate_docbook
+    docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces, docbook);
+    if docbook:
+        ret = docbook_gen.generate()
+
     c_code = args.generate_c_code
     if c_code:
         h = file(c_code + '.h', 'w')
@@ -184,12 +189,8 @@ def codegen_main():
                                     args.c_namespace,
                                     args.interface_prefix,
                                     args.c_generate_object_manager,
+                                    docbook_gen,
                                     h, c);
-        ret = gen.generate()
-
-    docbook = args.generate_docbook
-    if docbook:
-        gen = codegen_docbook.DocbookCodeGenerator(all_ifaces, docbook);
         ret = gen.generate()
 
     sys.exit(0)

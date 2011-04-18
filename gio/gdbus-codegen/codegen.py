@@ -23,7 +23,6 @@
 
 import sys
 import argparse
-import distutils.version
 
 import config
 import utils
@@ -32,7 +31,8 @@ import dbustypes
 # ----------------------------------------------------------------------------------------------------
 
 class CodeGenerator:
-    def __init__(self, ifaces, namespace, interface_prefix, generate_objmanager, h, c):
+    def __init__(self, ifaces, namespace, interface_prefix, generate_objmanager, docbook_gen, h, c):
+        self.docbook_gen = docbook_gen
         self.generate_objmanager = generate_objmanager
         self.ifaces = ifaces
         self.h = h
@@ -265,22 +265,9 @@ class CodeGenerator:
             #
             # See https://bugzilla.gnome.org/show_bug.cgi?id=647577#c5
             # for discussion
-
-            # I'm sure this could be a lot more elegant if I was
-            # more fluent in python...
-            def my_version_cmp(a, b):
-                if len(a[0]) > 0 and len(b[0]) > 0:
-                    va = distutils.version.LooseVersion(a[0])
-                    vb = distutils.version.LooseVersion(b[0])
-                    ret = va.__cmp__(vb)
-                else:
-                    ret = cmp(a[0], b[0])
-                if ret != 0:
-                    return ret
-                return cmp(a[1], b[1])
             keys = function_pointers.keys()
             if len(keys) > 0:
-                keys.sort(cmp=my_version_cmp)
+                keys.sort(cmp=utils.my_version_cmp)
                 for key in keys:
                     self.h.write('%s'%function_pointers[key])
 
@@ -805,6 +792,15 @@ class CodeGenerator:
             self.c.write('};\n'
                          '\n')
             self.c.write('\n')
+            self.c.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %s_interface_info:\n'
+                    ' *\n'
+                    ' * Gets a machine-readable description of the #%s D-Bus interface.\n'
+                    ' *\n'
+                    ' * Returns: (transfer none): A #GDBusInterfaceInfo. Do not free.\n'
+                    %(i.name_lower, i.name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
             self.c.write('GDBusInterfaceInfo *\n'
                          '%s_interface_info (void)\n'
                          '{\n'
@@ -813,6 +809,18 @@ class CodeGenerator:
                          '\n'%(i.name_lower, i.name_lower))
 
             if len(i.properties) > 0:
+                self.c.write(self.docbook_gen.expand(
+                        '/**\n'
+                        ' * %s_override_properties:\n'
+                        ' * @klass: The class structure for a #GObject<!-- -->-derived class.\n'
+                        ' * @property_id_begin: The property id to assign to the first overridden property.\n'
+                        ' *\n'
+                        ' * Overrides all #GObject properties in the #%s interface for a concrete class.\n'
+                        ' * The properties are overridden in the order they are defined.\n'
+                        ' *\n'
+                        ' * Returns: The last property id.\n'
+                        %(i.name_lower, i.camel_name)))
+                self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
                 self.c.write('guint\n'
                              '%s_override_properties (GObjectClass *klass, guint property_id_begin)\n'
                              '{\n'%(i.name_lower))
@@ -828,6 +836,46 @@ class CodeGenerator:
     def generate_interface(self, i):
         self.c.write('\n')
 
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %s:\n'
+                ' *\n'
+                ' * Abstract interface type for the D-Bus interface #%s.\n'
+                %(i.camel_name, i.name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+        self.c.write('\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sIface:\n'
+                ' * @parent_iface: The parent interface.\n'
+                %(i.camel_name)))
+
+        doc_bits = {}
+        if len(i.methods) > 0:
+            for m in i.methods:
+                key = (m.since, '_method_%s'%m.name_lower)
+                value  = '@handle_%s: '%(m.name_lower)
+                value += 'Handler for the #%s::handle-%s signal.'%(i.camel_name, m.name_hyphen)
+                doc_bits[key] = value
+        if len(i.signals) > 0:
+            for s in i.signals:
+                key = (s.since, '_signal_%s'%s.name_lower)
+                value  = '@%s: '%(s.name_lower)
+                value += 'Handler for the #%s::%s signal.'%(i.camel_name, s.name_hyphen)
+                doc_bits[key] = value
+        keys = doc_bits.keys()
+        if len(keys) > 0:
+            keys.sort(cmp=utils.my_version_cmp)
+            for key in keys:
+                self.c.write(' * %s\n'%doc_bits[key])
+        self.c.write(self.docbook_gen.expand(
+                ' *\n'
+                ' * Virtual table for the D-Bus interface #%s.\n'
+                %(i.name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+        self.c.write('\n')
+
         self.c.write('static void\n'
                      '%s_default_init (%sIface *iface)\n'
                      '{\n'%(i.name_lower, i.camel_name));
@@ -835,6 +883,23 @@ class CodeGenerator:
         if len(i.methods) > 0:
             self.c.write('  /* GObject signals for incoming D-Bus method calls: */\n')
             for m in i.methods:
+                self.c.write(self.docbook_gen.expand(
+                        '  /**\n'
+                        '   * %s::handle-%s:\n'
+                        '   * @object: A #%s.\n'
+                        '   * @invocation: A #GDBusMethodInvocation.\n'
+                        %(i.camel_name, m.name_hyphen, i.camel_name, )))
+                for a in m.in_args:
+                    self.c.write ('   * @%s: Argument passed by remote caller.\n'%(a.name))
+                self.c.write(self.docbook_gen.expand(
+                        '   *\n'
+                        '   * Signal emitted when a remote caller is invoking the %s.%s() D-Bus method.\n'
+                        '   *\n'
+                        '   * If a signal handler returns %%TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call %s_complete_%s() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %%G_DBUS_ERROR_UNKNOWN_METHOD error is returned.\n'
+                        '   *\n'
+                        '   * Returns: %%TRUE if the invocation was handled, %%FALSE to let other signal handlers run.\n'
+                        %(i.name, m.name, i.name_lower, m.name_lower)))
+                self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 2)
                 self.c.write('  g_signal_new ("handle-%s",\n'
                              '    G_TYPE_FROM_INTERFACE (iface),\n'
                              '    G_SIGNAL_RUN_LAST,\n'
@@ -854,6 +919,20 @@ class CodeGenerator:
         if len(i.signals) > 0:
             self.c.write('  /* GObject signals for received D-Bus signals: */\n')
             for s in i.signals:
+                self.c.write(self.docbook_gen.expand(
+                        '  /**\n'
+                        '   * %s::%s:\n'
+                        '   * @object: A #%s.\n'
+                        %(i.camel_name, s.name_hyphen, i.camel_name, )))
+                for a in s.args:
+                    self.c.write ('   * @%s: Argument.\n'%(a.name))
+                self.c.write(self.docbook_gen.expand(
+                        '   *\n'
+                        '   * On the client-side, this signal is emitted whenever the D-Bus signal #%s::%s is received.\n'
+                        '   *\n'
+                        '   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.\n'
+                        %(i.name, s.name)))
+                self.write_gtkdoc_deprecated_and_since_and_close(s, self.c, 2)
                 self.c.write('  g_signal_new ("%s",\n'
                              '    G_TYPE_FROM_INTERFACE (iface),\n'
                              '    G_SIGNAL_RUN_LAST,\n'
@@ -872,6 +951,23 @@ class CodeGenerator:
         if len(i.properties) > 0:
             self.c.write('  /* GObject properties for D-Bus properties: */\n')
             for p in i.properties:
+                if p.readable and p.writable:
+                    hint = 'Since the D-Bus property for this #GObject property is both readable and writable, it is meaningful to both read from it and write to it on both the service- and client-side.'
+                elif p.readable:
+                    hint = 'Since the D-Bus property for this #GObject property is readable but not writable, it is meaningful to read from it on both the client- and service-side. It is only meaningful, however, to write to it on the service-side.'
+                elif p.writable:
+                    hint = 'Since the D-Bus property for this #GObject property is writable but not readable, it is meaningful to write to it on both the client- and service-side. It is only meaningful, however, to read from it on the service-side.'
+                else:
+                    raise RuntimeError('Cannot handle property %s that neither readable nor writable'%(p.name))
+                self.c.write(self.docbook_gen.expand(
+                        '  /**\n'
+                        '   * %s:%s:\n'
+                        '   *\n'
+                        '   * Represents the D-Bus property #%s:%s.\n'
+                        '   *\n'
+                        '   * %s\n'
+                        %(i.camel_name, p.name_hyphen, i.name, p.name, hint)))
+                self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 2)
                 self.c.write('  g_object_interface_install_property (iface,\n')
                 if p.arg.gtype == 'G_TYPE_VARIANT':
                     s = 'g_param_spec_variant ("%s", NULL, NULL, G_VARIANT_TYPE ("%s"), NULL'%(p.name_hyphen, p.arg.signature)
@@ -922,13 +1018,26 @@ class CodeGenerator:
     def generate_property_accessors(self, i):
         for p in i.properties:
             # getter
-            self.c.write('/**\n'
-                         ' * %s_get_%s:\n'
-                         ' * @object: \n'
-                         ' *\n'
-                         ' * Returns: (transfer none): \n'
-                         %(i.name_lower, p.name_lower))
-            self.c.write(' */\n')
+            if p.readable and p.writable:
+                hint = 'Since this D-Bus property is both readable and writable, it is meaningful to use this function on both the client- and service-side.'
+            elif p.readable:
+                hint = 'Since this D-Bus property is readable, it is meaningful to use this function on both the client- and service-side.'
+            elif p.writable:
+                hint = 'Since this D-Bus property is not readable, it is only meaningful to use this function on the service-side.'
+            else:
+                raise RuntimeError('Cannot handle property %s that neither readable nor writable'%(p.name))
+            self.c.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %s_get_%s:\n'
+                    ' * @object: A #%s.\n'
+                    ' *\n'
+                    ' * Gets the value of the #%s:%s D-Bus property.\n'
+                    ' *\n'
+                    ' * %s\n'
+                    ' *\n'
+                    ' * Returns: (transfer none): The property value.\n'
+                    %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint)))
+            self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 0)
             self.c.write('%s\n'
                          '%s_get_%s (%s *object)\n'
                          '{\n'
@@ -944,13 +1053,25 @@ class CodeGenerator:
             self.c.write('}\n')
             self.c.write('\n')
             # setter
-            self.c.write('/**\n'
-                         ' * %s_set_%s:\n'
-                         ' * @object: \n'
-                         ' * @value: \n'
-                         ' *\n'
-                         %(i.name_lower, p.name_lower))
-            self.c.write(' */\n')
+            if p.readable and p.writable:
+                hint = 'Since this D-Bus property is both readable and writable, it is meaningful to use this function on both the client- and service-side.'
+            elif p.readable:
+                hint = 'Since this D-Bus property is not writable, it is only meaningful to use this function on the service-side.'
+            elif p.writable:
+                hint = 'Since this D-Bus property is writable, it is meaningful to use this function on both the client- and service-side.'
+            else:
+                raise RuntimeError('Cannot handle property %s that neither readable nor writable'%(p.name))
+            self.c.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %s_set_%s:\n'
+                    ' * @object: A #%s.\n'
+                    ' * @value: The value to set.\n'
+                    ' *\n'
+                    ' * Sets the #%s:%s D-Bus property to @value.\n'
+                    ' *\n'
+                    ' * %s\n'
+                    %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint)))
+            self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 0)
             self.c.write('void\n'
                          '%s_set_%s (%s *object, %svalue)\n'
                          '{\n'%(i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in, ))
@@ -962,6 +1083,18 @@ class CodeGenerator:
 
     def generate_signal_emitters(self, i):
         for s in i.signals:
+            self.c.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %s_emit_%s:\n'
+                    ' * @object: A #%s.\n'
+                    %(i.name_lower, s.name_lower, i.camel_name)))
+            for a in s.args:
+                self.c.write(' * @%s: Argument to pass with the signal.\n'%(a.name))
+            self.c.write(self.docbook_gen.expand(
+                    ' *\n'
+                    ' * Emits the #%s::%s D-Bus signal.\n'
+                    %(i.name, s.name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(s, self.c, 0)
             self.c.write('void\n'
                          '%s_emit_%s (\n'
                          '    %s *object'%(i.name_lower, s.name_lower, i.camel_name))
@@ -983,15 +1116,22 @@ class CodeGenerator:
             # async begin
             self.c.write('/**\n'
                          ' * %s_call_%s:\n'
-                         ' * @proxy: \n'
-                         %(i.name_lower, m.name_lower))
+                         ' * @proxy: A #%sProxy.\n'
+                         %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
-                self.c.write(' * @%s: \n'%(a.name))
-            self.c.write(' * @cancellable: \n'
-                         ' * @callback: \n'
-                         ' * @user_data: \n'
-                         ' *\n')
-            self.c.write(' */\n')
+                self.c.write(' * @%s: Argument to pass with the method invocation.\n'%(a.name))
+            self.c.write(self.docbook_gen.expand(
+                    ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                    ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %%NULL.\n'
+                    ' * @user_data: User data to pass to @callback.\n'
+                    ' *\n'
+                    ' * Asynchronously invokes the %s.%s() D-Bus method on @proxy.\n'
+                    ' * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.\n'
+                    ' * You can then call %s_call_%s_finish() to get the result of the operation.\n'
+                    ' *\n'
+                    ' * See %s_call_%s_sync() for the synchronous, blocking version of this method.\n'
+                    %(i.name, m.name, i.name_lower, m.name_lower, i.name_lower, m.name_lower)))
+            self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('void\n'
                          '%s_call_%s (\n'
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
@@ -1021,15 +1161,19 @@ class CodeGenerator:
             # async finish
             self.c.write('/**\n'
                          ' * %s_call_%s_finish:\n'
-                         ' * @proxy: \n'
-                         %(i.name_lower, m.name_lower))
+                         ' * @proxy: A #%sProxy.\n'
+                         %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.out_args:
-                self.c.write(' * @out_%s: (out): \n'%(a.name))
-            self.c.write(' * @res: \n'
-                         ' * @error: \n'
-                         ' *\n'
-                         ' * Returns: \n')
-            self.c.write(' */\n')
+                self.c.write(' * @out_%s: (out): Return location for return parameter or %%NULL to ignore.\n'%(a.name))
+            self.c.write(self.docbook_gen.expand(
+                    ' * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to %s_call_%s().\n'
+                    ' * @error: Return location for error or %%NULL.\n'
+                    ' *\n'
+                    ' * Finishes an operation started with %s_call_%s().\n'
+                    ' *\n'
+                    ' * Returns: %%TRUE if the call succeded, %%FALSE if @error is set.\n'
+                    %(i.name_lower, m.name_lower, i.name_lower, m.name_lower)))
+            self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('gboolean\n'
                          '%s_call_%s_finish (\n'
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
@@ -1061,17 +1205,23 @@ class CodeGenerator:
             # sync
             self.c.write('/**\n'
                          ' * %s_call_%s_sync:\n'
-                         ' * @proxy: \n'
-                         %(i.name_lower, m.name_lower))
+                         ' * @proxy: A #%sProxy.\n'
+                         %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
-                self.c.write(' * @%s: \n'%(a.name))
+                self.c.write(' * @%s: Argument to pass with the method invocation.\n'%(a.name))
             for a in m.out_args:
-                self.c.write(' * @out_%s: (out): \n'%(a.name))
-            self.c.write(' * @cancellable: \n'
-                         ' * @error: \n'
-                         ' *\n'
-                         ' * Returns: \n')
-            self.c.write(' */\n')
+                self.c.write(' * @out_%s: (out): Return location for return parameter or %%NULL to ignore.\n'%(a.name))
+            self.c.write(self.docbook_gen.expand(
+                    ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                    ' * @error: Return location for error or %%NULL.\n'
+                    ' *\n'
+                    ' * Synchronously invokes the %s.%s() D-Bus method on @proxy. The calling thread is blocked until a reply is received.\n'
+                    ' *\n'
+                    ' * See %s_call_%s() for the asynchronous version of this method.\n'
+                    ' *\n'
+                    ' * Returns: %%TRUE if the call succeded, %%FALSE if @error is set.\n'
+                    %(i.name, m.name, i.name_lower, m.name_lower)))
+            self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('gboolean\n'
                          '%s_call_%s_sync (\n'
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
@@ -1117,6 +1267,20 @@ class CodeGenerator:
 
     def generate_method_completers(self, i):
         for m in i.methods:
+            self.c.write('/**\n'
+                         ' * %s_complete_%s:\n'
+                         ' * @object: A #%s.\n'
+                         ' * @invocation: (transfer full): A #GDBusMethodInvocation.\n'
+                         %(i.name_lower, m.name_lower, i.camel_name))
+            for a in m.out_args:
+                self.c.write(' * @%s: Parameter to return.\n'%(a.name))
+            self.c.write(self.docbook_gen.expand(
+                    ' *\n'
+                    ' * Helper function used in service implementations to finish handling invocations of the %s.%s() D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.\n'
+                    ' *\n'
+                    ' * This method will free @invocation, you cannot use it afterwards.\n'
+                    %(i.name, m.name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('void\n'
                          '%s_complete_%s (\n'
                          '    %s *object,\n'
@@ -1143,6 +1307,26 @@ class CodeGenerator:
         # class boilerplate
         self.c.write('/* ------------------------------------------------------------------------ */\n'
                      '\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sProxy:\n'
+                ' *\n'
+                ' * The #%sProxy structure contains only private data and should only be accessed using the provided API.\n'
+                %(i.camel_name, i.camel_name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+        self.c.write('\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sProxyClass:\n'
+                ' * @parent_class: The parent class.\n'
+                ' *\n'
+                ' * Class structure for #%sProxy.\n'
+                %(i.camel_name, i.camel_name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+        self.c.write('\n')
+
         self.c.write('static void\n'
                      '%s_proxy_iface_init (%sIface *iface)\n'
                      '{\n'
@@ -1324,20 +1508,29 @@ class CodeGenerator:
         if len(i.properties) > 0:
             self.c.write('\n'
                          '  %s_override_properties (gobject_class, 1);\n'%(i.name_lower))
-        self.c.write('}\n')
+        self.c.write('}\n'
+                     '\n')
 
         # constructors
-        self.c.write('/**\n'
-                     ' * %s_proxy_new:\n'
-                     ' * @connection: \n'
-                     ' * @flags: \n'
-                     ' * @name: \n'
-                     ' * @object_path: \n'
-                     ' * @callback: \n'
-                     ' * @user_data: \n'
-                     ' *\n'
-                     %(i.name_lower))
-        self.c.write(' */\n')
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %s_proxy_new:\n'
+                ' * @connection: A #GDBusConnection.\n'
+                ' * @flags: Flags from the #GDBusProxyFlags enumeration.\n'
+                ' * @name: (allow-none): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
+                ' * @object_path: An object path.\n'
+                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied.\n'
+                ' * @user_data: User data to pass to @callback.\n'
+                ' *\n'
+                ' * Asynchronously creates a proxy for the D-Bus interface #%s. See g_dbus_proxy_new() for more details.\n'
+                ' *\n'
+                ' * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.\n'
+                ' * You can then call %s_proxy_new_finish() to get the result of the operation.\n'
+                ' *\n'
+                ' * See %s_proxy_new_sync() for the synchronous, blocking version of this constructor.\n'
+                %(i.name_lower, i.name, i.name_lower, i.name_lower)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('void\n'
                      '%s_proxy_new (\n'
                      '    GDBusConnection     *connection,\n'
@@ -1354,12 +1547,14 @@ class CodeGenerator:
                      %(i.name_lower, i.ns_upper, i.name_upper, i.name))
         self.c.write('/**\n'
                      ' * %s_proxy_new_finish:\n'
-                     ' * @res: \n'
-                     ' * @error: \n'
+                     ' * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to %s_proxy_new().\n'
+                     ' * @error: Return location for error or %%NULL\n'
                      ' *\n'
-                     ' * Returns: (transfer full) (type %sProxy):\n'
-                     %(i.name_lower, i.camel_name))
-        self.c.write(' */\n')
+                     ' * Finishes an operation started with %s_proxy_new().\n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sProxy): The constructed proxy object or %%NULL if @error is set.\n'
+                     %(i.name_lower, i.name_lower, i.name_lower, i.camel_name))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('%s *\n'
                      '%s_proxy_new_finish (\n'
                      '    GAsyncResult        *res,\n'
@@ -1377,18 +1572,25 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(i.camel_name, i.name_lower, i.ns_upper, i.name_upper))
-        self.c.write('/**\n'
-                     ' * %s_proxy_new_sync:\n'
-                     ' * @connection: \n'
-                     ' * @flags: \n'
-                     ' * @name: \n'
-                     ' * @object_path: \n'
-                     ' * @cancellable: \n'
-                     ' * @error: \n'
-                     ' *\n'
-                     ' * Returns: (transfer full) (type %sProxy):\n'
-                     %(i.name_lower, i.camel_name))
-        self.c.write(' */\n')
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %s_proxy_new_sync:\n'
+                ' * @connection: A #GDBusConnection.\n'
+                ' * @flags: Flags from the #GDBusProxyFlags enumeration.\n'
+                ' * @name: (allow-none): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
+                ' * @object_path: An object path.\n'
+                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @error: Return location for error or %%NULL\n'
+                ' *\n'
+                ' * Synchronously creates a proxy for the D-Bus interface #%s. See g_dbus_proxy_new_sync() for more details.\n'
+                ' *\n'
+                ' * The calling thread is blocked until a reply is received.\n'
+                ' *\n'
+                ' * See %s_proxy_new() for the asynchronous version of this constructor.\n'
+                ' *\n'
+                ' * Returns: (transfer full) (type %sProxy): The constructed proxy object or %%NULL if @error is set.\n'
+                %(i.name_lower, i.name, i.name_lower, i.camel_name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('%s *\n'
                      '%s_proxy_new_sync (\n'
                      '    GDBusConnection     *connection,\n'
@@ -1408,17 +1610,25 @@ class CodeGenerator:
                      '\n'
                      %(i.camel_name, i.name_lower, i.ns_upper, i.name_upper, i.name, i.ns_upper, i.name_upper))
         self.c.write('\n')
-        self.c.write('/**\n'
-                     ' * %s_proxy_new_for_bus:\n'
-                     ' * @bus_type: \n'
-                     ' * @flags: \n'
-                     ' * @name: \n'
-                     ' * @object_path: \n'
-                     ' * @callback: \n'
-                     ' * @user_data: \n'
-                     ' *\n'
-                     %(i.name_lower))
-        self.c.write(' */\n')
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %s_proxy_new_for_bus:\n'
+                ' * @bus_type: A #GBusType.\n'
+                ' * @flags: Flags from the #GDBusProxyFlags enumeration.\n'
+                ' * @name: A bus name (well-known or unique).\n'
+                ' * @object_path: An object path.\n'
+                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied.\n'
+                ' * @user_data: User data to pass to @callback.\n'
+                ' *\n'
+                ' * Like %s_proxy_new() but takes a #GBusType instead of a #GDBusConnection.\n'
+                ' *\n'
+                ' * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.\n'
+                ' * You can then call %s_proxy_new_for_bus_finish() to get the result of the operation.\n'
+                ' *\n'
+                ' * See %s_proxy_new_for_bus_sync() for the synchronous, blocking version of this constructor.\n'
+                %(i.name_lower, i.name_lower, i.name_lower, i.name_lower)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('void\n'
                      '%s_proxy_new_for_bus (\n'
                      '    GBusType             bus_type,\n'
@@ -1435,12 +1645,14 @@ class CodeGenerator:
                      %(i.name_lower, i.ns_upper, i.name_upper, i.name))
         self.c.write('/**\n'
                      ' * %s_proxy_new_for_bus_finish:\n'
-                     ' * @res: \n'
-                     ' * @error: \n'
+                     ' * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to %s_proxy_new_for_bus().\n'
+                     ' * @error: Return location for error or %%NULL\n'
                      ' *\n'
-                     ' * Returns: (transfer full) (type %sProxy):\n'
-                     %(i.name_lower, i.camel_name))
-        self.c.write(' */\n')
+                     ' * Finishes an operation started with %s_proxy_new_for_bus().\n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sProxy): The constructed proxy object or %%NULL if @error is set.\n'
+                     %(i.name_lower, i.name_lower, i.name_lower, i.camel_name))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('%s *\n'
                      '%s_proxy_new_for_bus_finish (\n'
                      '    GAsyncResult        *res,\n'
@@ -1458,18 +1670,25 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(i.camel_name, i.name_lower, i.ns_upper, i.name_upper))
-        self.c.write('/**\n'
-                     ' * %s_proxy_new_for_bus_sync:\n'
-                     ' * @bus_type: \n'
-                     ' * @flags: \n'
-                     ' * @name: \n'
-                     ' * @object_path: \n'
-                     ' * @cancellable: \n'
-                     ' * @error: \n'
-                     ' *\n'
-                     ' * Returns: (transfer full) (type %sProxy):\n'
-                     %(i.name_lower, i.camel_name))
-        self.c.write(' */\n')
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %s_proxy_new_for_bus_sync:\n'
+                ' * @bus_type: A #GBusType.\n'
+                ' * @flags: Flags from the #GDBusProxyFlags enumeration.\n'
+                ' * @name: A bus name (well-known or unique).\n'
+                ' * @object_path: An object path.\n'
+                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @error: Return location for error or %%NULL\n'
+                ' *\n'
+                ' * Like %s_proxy_new_sync() but takes a #GBusType instead of a #GDBusConnection.\n'
+                ' *\n'
+                ' * The calling thread is blocked until a reply is received.\n'
+                ' *\n'
+                ' * See %s_proxy_new_for_bus() for the asynchronous version of this constructor.\n'
+                ' *\n'
+                ' * Returns: (transfer full) (type %sProxy): The constructed proxy object or %%NULL if @error is set.\n'
+                %(i.name_lower, i.name_lower, i.name_lower, i.camel_name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('%s *\n'
                      '%s_proxy_new_for_bus_sync (\n'
                      '    GBusType             bus_type,\n'
@@ -1496,6 +1715,25 @@ class CodeGenerator:
         # class boilerplate
         self.c.write('/* ------------------------------------------------------------------------ */\n'
                      '\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sSkeleton:\n'
+                ' *\n'
+                ' * The #%sSkeleton structure contains only private data and should only be accessed using the provided API.\n'
+                %(i.camel_name, i.camel_name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+        self.c.write('\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sSkeletonClass:\n'
+                ' * @parent_class: The parent class.\n'
+                ' *\n'
+                ' * Class structure for #%sSkeleton.\n'
+                %(i.camel_name, i.camel_name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+        self.c.write('\n')
 
         self.c.write('struct _%sSkeletonPrivate\n'
                      '{\n'
@@ -1955,12 +2193,15 @@ class CodeGenerator:
                      '\n')
 
         # constructors
-        self.c.write('/**\n'
-                     ' * %s_skeleton_new:\n'
-                     ' *\n'
-                     ' * Returns: (transfer full) (type %sSkeleton):\n'
-                     %(i.name_lower, i.camel_name))
-        self.c.write(' */\n')
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %s_skeleton_new:\n'
+                ' *\n'
+                ' * Creates a skeleton object for the D-Bus interface #%s.\n'
+                ' *\n'
+                ' * Returns: (transfer full) (type %sSkeleton): The skeleton object.\n'
+                %(i.name_lower, i.name, i.camel_name)))
+        self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('%s *\n'
                      '%s_skeleton_new (void)\n'
                      '{\n'
@@ -1972,18 +2213,15 @@ class CodeGenerator:
 
     def generate_object_manager_client(self):
         self.c.write('/* ------------------------------------------------------------------------\n'
-                     ' * Code for proxy manager\n'
+                     ' * Code for ObjectManager client\n'
                      ' * ------------------------------------------------------------------------\n'
                      ' */\n'
                      '\n')
 
         # class boilerplate
-        self.c.write('/* ------------------------------------------------------------------------ */\n'
-                     '\n')
-        self.c.write('#define %sobject_manager_client_get_type %sobject_manager_client_get_type\n'%(self.ns_lower, self.ns_lower))
-        self.c.write('G_DEFINE_TYPE (%sObjectManagerClient, %sobject_manager_client, G_TYPE_DBUS_OBJECT_MANAGER_CLIENT);\n'%(self.namespace, self.ns_lower))
-        self.c.write('#undef %sobject_manager_client_get_type\n'
-                     '\n'%(self.ns_lower))
+        self.c.write('G_DEFINE_TYPE (%sObjectManagerClient, %sobject_manager_client, G_TYPE_DBUS_OBJECT_MANAGER_CLIENT);\n'
+                     '\n'
+                     %(self.namespace, self.ns_lower))
 
         # class boilerplate
         self.c.write('static void\n'
@@ -1997,6 +2235,17 @@ class CodeGenerator:
                      '}\n'
                      '\n'%(self.ns_lower, self.namespace))
 
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sobject_manager_client_get_proxy_type:\n'
+                ' * @manager: A #GDBusObjectManagerClient.\n'
+                ' * @object_path: The object path of the remote object (unused).\n'
+                ' * @interface_name: Interface name of the remote object.\n'
+                ' * @user_data: User data (unused).\n'
+                ' *\n'
+                ' * A #GDBusProxyFunc that maps @interface_name to the generated #GDBusProxy<!-- -->-derived types.\n'
+                %(self.ns_lower)))
+        self.c.write(' */\n')
         self.c.write('GType\n'
                      '%sobject_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data)\n'
                      '{\n'
@@ -2021,17 +2270,24 @@ class CodeGenerator:
                      '\n')
 
         # constructors
-        self.c.write('/**\n'
-                     ' * %sobject_manager_client_new:\n'
-                     ' * @connection: \n'
-                     ' * @flags: \n'
-                     ' * @name: \n'
-                     ' * @object_path: \n'
-                     ' * @cancellable: \n'
-                     ' * @callback: \n'
-                     ' * @user_data: \n'
-                     ' *\n'
-                     %(self.ns_lower))
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sobject_manager_client_new:\n'
+                ' * @connection: A #GDBusConnection.\n'
+                ' * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.\n'
+                ' * @name: (allow-none): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
+                ' * @object_path: An object path.\n'
+                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied.\n'
+                ' * @user_data: User data to pass to @callback.\n'
+                ' *\n'
+                ' * Asynchronously creates #GDBusObjectManagerClient using %sobject_manager_client_get_proxy_type() as the #GDBusProxyFunc. See g_dbus_object_manager_client_new() for more details.\n'
+                ' *\n'
+                ' * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.\n'
+                ' * You can then call %sobject_manager_client_new_finish() to get the result of the operation.\n'
+                ' *\n'
+                ' * See %sobject_manager_client_new_sync() for the synchronous, blocking version of this constructor.\n'
+                %(self.ns_lower, self.ns_lower, self.ns_lower, self.ns_lower)))
         self.c.write(' */\n')
         self.c.write('void\n'
                      '%sobject_manager_client_new (\n'
@@ -2049,11 +2305,13 @@ class CodeGenerator:
                      %(self.ns_lower, self.ns_upper, self.ns_lower))
         self.c.write('/**\n'
                      ' * %sobject_manager_client_new_finish:\n'
-                     ' * @res: \n'
-                     ' * @error: \n'
+                     ' * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to %sobject_manager_client_new().\n'
+                     ' * @error: Return location for error or %%NULL\n'
                      ' *\n'
-                     ' * Returns: (transfer full) (type %sObjectManagerClient):\n'
-                     %(self.ns_lower, self.namespace))
+                     ' * Finishes an operation started with %sobject_manager_client_new().\n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sObjectManagerClient): The constructed object manager client or %%NULL if @error is set.\n'
+                     %(self.ns_lower, self.ns_lower, self.ns_lower, self.namespace))
         self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_finish (\n'
@@ -2072,17 +2330,24 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(self.ns_lower))
-        self.c.write('/**\n'
-                     ' * %sobject_manager_client_new_sync:\n'
-                     ' * @connection: \n'
-                     ' * @flags: \n'
-                     ' * @name: \n'
-                     ' * @object_path: \n'
-                     ' * @cancellable: \n'
-                     ' * @error: \n'
-                     ' *\n'
-                     ' * Returns: (transfer full) (type %sObjectManagerClient):\n'
-                     %(self.ns_lower, self.namespace))
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sobject_manager_client_new_sync:\n'
+                ' * @connection: A #GDBusConnection.\n'
+                ' * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.\n'
+                ' * @name: (allow-none): A bus name (well-known or unique) or %%NULL if @connection is not a message bus connection.\n'
+                ' * @object_path: An object path.\n'
+                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @error: Return location for error or %%NULL\n'
+                ' *\n'
+                ' * Synchronously creates #GDBusObjectManagerClient using %sobject_manager_client_get_proxy_type() as the #GDBusProxyFunc. See g_dbus_object_manager_client_new_sync() for more details.\n'
+                ' *\n'
+                ' * The calling thread is blocked until a reply is received.\n'
+                ' *\n'
+                ' * See %sobject_manager_client_new() for the asynchronous version of this constructor.\n'
+                ' *\n'
+                ' * Returns: (transfer full) (type %sObjectManagerClient): The constructed object manager client or %%NULL if @error is set.\n'
+                %(self.ns_lower, self.ns_lower, self.ns_lower, self.namespace)))
         self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_sync (\n'
@@ -2103,17 +2368,24 @@ class CodeGenerator:
                      '\n'
                      %(self.ns_lower, self.ns_upper, self.ns_lower))
         self.c.write('\n')
-        self.c.write('/**\n'
-                     ' * %sobject_manager_client_new_for_bus:\n'
-                     ' * @bus_type: \n'
-                     ' * @flags: \n'
-                     ' * @name: \n'
-                     ' * @object_path: \n'
-                     ' * @cancellable: \n'
-                     ' * @callback: \n'
-                     ' * @user_data: \n'
-                     ' *\n'
-                     %(self.ns_lower))
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sobject_manager_client_new_for_bus:\n'
+                ' * @bus_type: A #GBusType.\n'
+                ' * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.\n'
+                ' * @name: A bus name (well-known or unique).\n'
+                ' * @object_path: An object path.\n'
+                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied.\n'
+                ' * @user_data: User data to pass to @callback.\n'
+                ' *\n'
+                ' * Like %sobject_manager_client_new() but takes a #GBusType instead of a #GDBusConnection.\n'
+                ' *\n'
+                ' * When the operation is finished, @callback will be invoked in the <link linkend="g-main-context-push-thread-default">thread-default main loop</link> of the thread you are calling this method from.\n'
+                ' * You can then call %sobject_manager_client_new_for_bus_finish() to get the result of the operation.\n'
+                ' *\n'
+                ' * See %sobject_manager_client_new_for_bus_sync() for the synchronous, blocking version of this constructor.\n'
+                %(self.ns_lower, self.ns_lower, self.ns_lower, self.ns_lower)))
         self.c.write(' */\n')
         self.c.write('void\n'
                      '%sobject_manager_client_new_for_bus (\n'
@@ -2131,11 +2403,13 @@ class CodeGenerator:
                      %(self.ns_lower, self.ns_upper, self.ns_lower))
         self.c.write('/**\n'
                      ' * %sobject_manager_client_new_for_bus_finish:\n'
-                     ' * @res: \n'
-                     ' * @error: \n'
+                     ' * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to %sobject_manager_client_new_for_bus().\n'
+                     ' * @error: Return location for error or %%NULL\n'
                      ' *\n'
-                     ' * Returns: (transfer full) (type %sObjectManagerClient):\n'
-                     %(self.ns_lower, self.namespace))
+                     ' * Finishes an operation started with %sobject_manager_client_new_for_bus().\n'
+                     ' *\n'
+                     ' * Returns: (transfer full) (type %sObjectManagerClient): The constructed object manager client or %%NULL if @error is set.\n'
+                     %(self.ns_lower, self.ns_lower, self.ns_lower, self.namespace))
         self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_for_bus_finish (\n'
@@ -2154,17 +2428,24 @@ class CodeGenerator:
                      '}\n'
                      '\n'
                      %(self.ns_lower))
-        self.c.write('/**\n'
-                     ' * %sobject_manager_client_new_for_bus_sync:\n'
-                     ' * @bus_type: \n'
-                     ' * @flags: \n'
-                     ' * @name: \n'
-                     ' * @object_path: \n'
-                     ' * @cancellable: \n'
-                     ' * @error: \n'
-                     ' *\n'
-                     ' * Returns: (transfer full) (type %sObjectManagerClient):\n'
-                     %(self.ns_lower, self.namespace))
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sobject_manager_client_new_for_bus_sync:\n'
+                ' * @bus_type: A #GBusType.\n'
+                ' * @flags: Flags from the #GDBusObjectManagerClientFlags enumeration.\n'
+                ' * @name: A bus name (well-known or unique).\n'
+                ' * @object_path: An object path.\n'
+                ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
+                ' * @error: Return location for error or %%NULL\n'
+                ' *\n'
+                ' * Like %sobject_manager_client_new_sync() but takes a #GBusType instead of a #GDBusConnection.\n'
+                ' *\n'
+                ' * The calling thread is blocked until a reply is received.\n'
+                ' *\n'
+                ' * See %sobject_manager_client_new_for_bus() for the asynchronous version of this constructor.\n'
+                ' *\n'
+                ' * Returns: (transfer full) (type %sObjectManagerClient): The constructed object manager client or %%NULL if @error is set.\n'
+                %(self.ns_lower, self.ns_lower, self.ns_lower, self.namespace)))
         self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_for_bus_sync (\n'
@@ -2185,6 +2466,30 @@ class CodeGenerator:
                      '\n'
                      %(self.ns_lower, self.ns_upper, self.ns_lower))
         self.c.write('\n')
+
+    # ---------------------------------------------------------------------------------------------------
+
+    def write_gtkdoc_deprecated_and_since_and_close(self, obj, f, indent):
+        if len(obj.since) > 0:
+            f.write('%*s *\n'
+                    '%*s * Since: %s\n'
+                    %(indent, '', indent, '', obj.since))
+        if obj.deprecated:
+            if isinstance(obj, dbustypes.Interface):
+                thing = 'The D-Bus interface'
+            elif isinstance(obj, dbustypes.Method):
+                thing = 'The D-Bus method'
+            elif isinstance(obj, dbustypes.Signal):
+                thing = 'The D-Bus signal'
+            elif isinstance(obj, dbustypes.Property):
+                thing = 'The D-Bus property'
+            else:
+                raise RuntimeError('Cannot handle object ', obj)
+            f.write(self.docbook_gen.expand(
+                    '%*s *\n'
+                    '%*s * Deprecated: %s has been deprecated.\n'
+                    %(indent, '', indent, '', thing)))
+        f.write('%*s */\n'%(indent, ''))
 
     # ---------------------------------------------------------------------------------------------------
 

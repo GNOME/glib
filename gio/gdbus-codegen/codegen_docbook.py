@@ -35,6 +35,7 @@ class DocbookCodeGenerator:
     def __init__(self, ifaces, docbook):
         self.ifaces = ifaces
         self.docbook = docbook
+        self.generate_expand_dicts()
 
     def print_method_prototype(self, i, m, in_synopsis):
         max_method_len = 0
@@ -259,7 +260,6 @@ class DocbookCodeGenerator:
         self.expand_iface_dict_keys.sort(reverse=True)
 
     def generate(self):
-        self.generate_expand_dicts()
         for i in self.ifaces:
             self.out = file('%s-%s.xml'%(self.docbook, i.name), 'w')
             self.out.write(''%())

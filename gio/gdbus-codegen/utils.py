@@ -21,6 +21,8 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
+import distutils.version
+
 def strip_dots(s):
     ret = ''
     force_upper = False
@@ -87,3 +89,16 @@ def lookup_brief_docs(annotations):
         return ''
     else:
         return s
+
+# I'm sure this could be a lot more elegant if I was
+# more fluent in python...
+def my_version_cmp(a, b):
+    if len(a[0]) > 0 and len(b[0]) > 0:
+        va = distutils.version.LooseVersion(a[0])
+        vb = distutils.version.LooseVersion(b[0])
+        ret = va.__cmp__(vb)
+    else:
+        ret = cmp(a[0], b[0])
+    if ret != 0:
+        return ret
+    return cmp(a[1], b[1])
