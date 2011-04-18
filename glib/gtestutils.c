@@ -1202,7 +1202,7 @@ static int
 g_test_run_suite_internal (GTestSuite *suite,
                            const char *path)
 {
-  guint n_bad = 0, n_good = 0, bad_suite = 0, l;
+  guint n_bad = 0, bad_suite = 0, l;
   gchar *rest, *old_name = test_run_name;
   GSList *slist, *reversed;
   g_return_val_if_fail (suite != NULL, -1);
@@ -1219,7 +1219,6 @@ g_test_run_suite_internal (GTestSuite *suite,
       guint n = l ? strlen (tc->name) : 0;
       if (l == n && strncmp (path, tc->name, n) == 0)
         {
-          n_good++;
           if (!test_case_run (tc))
             n_bad++;
         }
