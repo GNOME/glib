@@ -2218,6 +2218,25 @@ class CodeGenerator:
                      ' */\n'
                      '\n')
 
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sObjectManagerClient:\n'
+                ' *\n'
+                ' * The #%sObjectManagerClient structure contains only private data and should only be accessed using the provided API.\n'
+                %(self.namespace, self.namespace)))
+        self.c.write(' */\n')
+        self.c.write('\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sObjectManagerClientClass:\n'
+                ' * @parent_class: The parent class.\n'
+                ' *\n'
+                ' * Class structure for #%sObjectManagerClient.\n'
+                %(self.namespace, self.namespace)))
+        self.c.write(' */\n')
+        self.c.write('\n')
+
         # class boilerplate
         self.c.write('G_DEFINE_TYPE (%sObjectManagerClient, %sobject_manager_client, G_TYPE_DBUS_OBJECT_MANAGER_CLIENT);\n'
                      '\n'
