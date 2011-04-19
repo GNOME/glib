@@ -970,37 +970,37 @@ class CodeGenerator:
                 self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 2)
                 self.c.write('  g_object_interface_install_property (iface,\n')
                 if p.arg.gtype == 'G_TYPE_VARIANT':
-                    s = 'g_param_spec_variant ("%s", NULL, NULL, G_VARIANT_TYPE ("%s"), NULL'%(p.name_hyphen, p.arg.signature)
+                    s = 'g_param_spec_variant ("%s", "%s", "%s", G_VARIANT_TYPE ("%s"), NULL'%(p.name_hyphen, p.name, p.name, p.arg.signature)
                 elif p.arg.signature == 'b':
-                    s = 'g_param_spec_boolean ("%s", NULL, NULL, FALSE'%(p.name_hyphen)
+                    s = 'g_param_spec_boolean ("%s", "%s", "%s", FALSE'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'y':
-                    s = 'g_param_spec_uchar ("%s", NULL, NULL, 0, 255, 0'%(p.name_hyphen)
+                    s = 'g_param_spec_uchar ("%s", "%s", "%s", 0, 255, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'n':
-                    s = 'g_param_spec_int ("%s", NULL, NULL, G_MININT16, G_MAXINT16, 0'%(p.name_hyphen)
+                    s = 'g_param_spec_int ("%s", "%s", "%s", G_MININT16, G_MAXINT16, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'q':
-                    s = 'g_param_spec_uint ("%s", NULL, NULL, 0, G_MAXUINT16, 0'%(p.name_hyphen)
+                    s = 'g_param_spec_uint ("%s", "%s", "%s", 0, G_MAXUINT16, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'i':
-                    s = 'g_param_spec_int ("%s", NULL, NULL, G_MININT32, G_MAXINT32, 0'%(p.name_hyphen)
+                    s = 'g_param_spec_int ("%s", "%s", "%s", G_MININT32, G_MAXINT32, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'u':
-                    s = 'g_param_spec_uint ("%s", NULL, NULL, 0, G_MAXUINT32, 0'%(p.name_hyphen)
+                    s = 'g_param_spec_uint ("%s", "%s", "%s", 0, G_MAXUINT32, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'x':
-                    s = 'g_param_spec_int64 ("%s", NULL, NULL, G_MININT64, G_MAXINT64, 0'%(p.name_hyphen)
+                    s = 'g_param_spec_int64 ("%s", "%s", "%s", G_MININT64, G_MAXINT64, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 't':
-                    s = 'g_param_spec_uint64 ("%s", NULL, NULL, 0, G_MAXUINT64, 0'%(p.name_hyphen)
+                    s = 'g_param_spec_uint64 ("%s", "%s", "%s", 0, G_MAXUINT64, 0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'd':
-                    s = 'g_param_spec_double ("%s", NULL, NULL, -G_MAXDOUBLE, G_MAXDOUBLE, 0.0'%(p.name_hyphen)
+                    s = 'g_param_spec_double ("%s", "%s", "%s", -G_MAXDOUBLE, G_MAXDOUBLE, 0.0'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 's':
-                    s = 'g_param_spec_string ("%s", NULL, NULL, NULL'%(p.name_hyphen)
+                    s = 'g_param_spec_string ("%s", "%s", "%s", NULL'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'o':
-                    s = 'g_param_spec_string ("%s", NULL, NULL, NULL'%(p.name_hyphen)
+                    s = 'g_param_spec_string ("%s", "%s", "%s", NULL'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'g':
-                    s = 'g_param_spec_string ("%s", NULL, NULL, NULL'%(p.name_hyphen)
+                    s = 'g_param_spec_string ("%s", "%s", "%s", NULL'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'ay':
-                    s = 'g_param_spec_string ("%s", NULL, NULL, NULL'%(p.name_hyphen)
+                    s = 'g_param_spec_string ("%s", "%s", "%s", NULL'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'as':
-                    s = 'g_param_spec_boxed ("%s", NULL, NULL, G_TYPE_STRV'%(p.name_hyphen)
+                    s = 'g_param_spec_boxed ("%s", "%s", "%s", G_TYPE_STRV'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'aay':
-                    s = 'g_param_spec_boxed ("%s", NULL, NULL, G_TYPE_STRV'%(p.name_hyphen)
+                    s = 'g_param_spec_boxed ("%s", "%s", "%s", G_TYPE_STRV'%(p.name_hyphen, p.name, p.name)
                 else:
                     raise RuntimeError('Unsupported gtype %s for GParamSpec'%(p.arg.gtype))
                 self.c.write('    %s, G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));'%s);
