@@ -2244,6 +2244,8 @@ class CodeGenerator:
                 ' * @user_data: User data (unused).\n'
                 ' *\n'
                 ' * A #GDBusProxyFunc that maps @interface_name to the generated #GDBusProxy<!-- -->-derived types.\n'
+                ' *\n'
+                ' * Returns: A #GDBusProxy<!-- -->-derived #GType.\n'
                 %(self.ns_lower)))
         self.c.write(' */\n')
         self.c.write('GType\n'
