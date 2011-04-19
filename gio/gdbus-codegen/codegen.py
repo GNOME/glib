@@ -2220,6 +2220,17 @@ class CodeGenerator:
 
         self.c.write(self.docbook_gen.expand(
                 '/**\n'
+                ' * SECTION:%sObjectManagerClient\n'
+                ' * @title: %sObjectManagerClient\n'
+                ' * @short_description: Generated #GDBusObjectManagerClient subclass\n'
+                ' *\n'
+                ' * This section contains a #GDBusObjectManagerClient that uses %sobject_manager_client_get_proxy_type() as the #GDBusProxyTypeFunc.\n'
+                ' */\n'
+                %(self.namespace, self.namespace, self.ns_lower)))
+        self.c.write('\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
                 ' * %sObjectManagerClient:\n'
                 ' *\n'
                 ' * The #%sObjectManagerClient structure contains only private data and should only be accessed using the provided API.\n'
@@ -2514,15 +2525,29 @@ class CodeGenerator:
 
     # ---------------------------------------------------------------------------------------------------
 
+    def generate_interface_intro(self, i):
+        self.c.write('/* ------------------------------------------------------------------------\n'
+                     ' * Code for interface %s\n'
+                     ' * ------------------------------------------------------------------------\n'
+                     ' */\n'
+                     '\n'%(i.name))
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * SECTION:%s\n'
+                ' * @title: %s\n'
+                ' * @short_description: Generated C code for the %s D-Bus interface\n'
+                ' *\n'
+                ' * This section contains code for working with the #%s D-Bus interface in C.\n'
+                ' */\n'
+                %(i.camel_name, i.camel_name, i.name, i.name)))
+        self.c.write('\n')
+
     def generate(self):
         self.generate_intro()
         self.declare_types()
         for i in self.ifaces:
-            self.c.write('/* ------------------------------------------------------------------------\n'
-                         ' * Code for interface %s\n'
-                         ' * ------------------------------------------------------------------------\n'
-                         ' */\n'
-                         '\n'%(i.name))
+            self.generate_interface_intro(i)
             self.generate_introspection_for_interface(i)
             self.generate_interface(i)
             self.generate_property_accessors(i)
