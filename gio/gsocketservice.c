@@ -260,6 +260,9 @@ g_socket_service_class_init (GSocketServiceClass *class)
    * handling of @connection, but may not block; in essence,
    * asynchronous operations must be used.
    *
+   * @connection will be unreffed once the signal handler returns, so
+   * you need to ref it yourself if you are planning to use it.
+   *
    * Returns: %TRUE to stop other handlers from being called
    *
    * Since: 2.22
