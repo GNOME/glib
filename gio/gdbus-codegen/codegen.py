@@ -456,7 +456,37 @@ class CodeGenerator:
             self.h.write('\n')
 
             # Interface proxy accessors
+            self.h.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %sGET_%s:\n'
+                    ' * @object: A #GDBusObject.\n'
+                    ' *\n'
+                    ' * Gets the #%s instance corresponding to the D-Bus interface #%s, if any.\n'
+                    ' *\n'
+                    ' * This macro can be used on both the client-side (passing a #GDBusObjectProxy) or the service-side (passing a #GDBusObjectSkeleton).\n'
+                    ' *\n'
+                    ' * This macro is just C convenience - other languages will use g_dbus_object_get_interface() to achieve the same result.\n'
+                    ' *\n'
+                    ' * Returns: (transfer full): A #%s or %%NULL if @object does not have said interface. Free with g_object_unref().\n'
+                    %(i.ns_upper, i.name_upper, i.camel_name, i.name, i.camel_name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(i, self.h, 0)
             self.h.write('#define %sGET_%s(object) (g_dbus_object_lookup_with_typecheck (G_DBUS_OBJECT (object), "%s", %sTYPE_%s))\n'%(i.ns_upper, i.name_upper, i.name, i.ns_upper, i.name_upper))
+            self.h.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %sPEEK_%s:\n'
+                    ' * @object: A #GDBusObject.\n'
+                    ' *\n'
+                    ' * Like the %sGET_%s() macro but doesn\'t increase the reference count on the returned object.\n'
+                    ' *\n'
+                    ' * This macro can be used on both the client-side (passing a #GDBusObjectProxy) or the service-side (passing a #GDBusObjectSkeleton).\n'
+                    ' *\n'
+                    ' * This macro is just C convenience - other languages will use g_dbus_object_get_interface() to achieve the same result..\n'
+                    ' *\n'
+                    ' * <warning>It is not safe to use the returned object if you are on another thread than where the #GDBusObjectManagerClient is running</warning>\n'
+                    ' *\n'
+                    ' * Returns: (transfer none): A #%s or %%NULL if @object does not have said interface. Do not free the returned object, it belongs to @object.\n'
+                    %(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(i, self.h, 0)
             self.h.write('#define %sPEEK_%s(object) (g_dbus_object_peek_with_typecheck (G_DBUS_OBJECT (object), "%s", %sTYPE_%s))\n'%(i.ns_upper, i.name_upper, i.name, i.ns_upper, i.name_upper))
             self.h.write('\n')
 
