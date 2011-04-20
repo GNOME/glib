@@ -531,17 +531,22 @@ g_dbus_object_manager_server_export_uniquely (GDBusObjectManagerServer *manager,
  * Note that @object_path must be in the hierarchy rooted by the
  * object path for @manager.
  *
+ * Returns: %TRUE if object at @object_path was removed, %FALSE otherwise.
+ *
  * Since: 2.30
  */
-void
+gboolean
 g_dbus_object_manager_server_unexport (GDBusObjectManagerServer  *manager,
-                                const gchar         *object_path)
+                                       const gchar         *object_path)
 {
   RegistrationData *data;
+  gboolean ret;
 
-  g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
-  g_return_if_fail (g_variant_is_object_path (object_path));
-  g_return_if_fail (g_str_has_prefix (object_path, manager->priv->object_path_ending_in_slash));
+  g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager), FALSE);
+  g_return_val_if_fail (g_variant_is_object_path (object_path), FALSE);
+  g_return_val_if_fail (g_str_has_prefix (object_path, manager->priv->object_path_ending_in_slash), FALSE);
+
+  ret = FALSE;
 
   data = g_hash_table_lookup (manager->priv->map_object_path_to_data, object_path);
   if (data != NULL)
@@ -560,7 +565,10 @@ g_dbus_object_manager_server_unexport (GDBusObjectManagerServer  *manager,
       g_ptr_array_unref (interface_names);
 
       g_hash_table_remove (manager->priv->map_object_path_to_data, object_path);
+      ret = TRUE;
     }
+
+  return ret;
 }
 
 

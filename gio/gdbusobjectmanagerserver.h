@@ -76,7 +76,7 @@ void                      g_dbus_object_manager_server_export              (GDBu
                                                                             GDBusObjectSkeleton       *object);
 void                      g_dbus_object_manager_server_export_uniquely     (GDBusObjectManagerServer  *manager,
                                                                             GDBusObjectSkeleton       *object);
-void                      g_dbus_object_manager_server_unexport            (GDBusObjectManagerServer  *manager,
+gboolean                  g_dbus_object_manager_server_unexport            (GDBusObjectManagerServer  *manager,
                                                                             const gchar               *object_path);
 
 G_END_DECLS
