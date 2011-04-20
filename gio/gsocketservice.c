@@ -34,8 +34,8 @@
  * signal is emitted.
  *
  * A #GSocketService is a subclass of #GSocketListener and you need
- * to add the addresses you want to accept connections on to the
- * with the #GSocketListener APIs.
+ * to add the addresses you want to accept connections on with the
+ * #GSocketListener APIs.
  *
  * There are two options for implementing a network service based on
  * #GSocketService. The first is to create the service using

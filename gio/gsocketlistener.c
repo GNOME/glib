@@ -263,7 +263,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  *
  * Note that adding an IPv6 address, depending on the platform,
  * may or may not result in a listener that also accepts IPv4
- * connections.  For more determinstic behaviour, see
+ * connections.  For more deterministic behavior, see
  * g_socket_listener_add_inet_port().
  *
  * @source_object will be passed out in the various calls
@@ -272,7 +272,7 @@ g_socket_listener_add_socket (GSocketListener  *listener,
  * different things depending on what address is connected to.
  *
  * If successful and @effective_address is non-%NULL then it will
- * be set to the address that the binding actually occured at.  This
+ * be set to the address that the binding actually occurred at.  This
  * is helpful for determining the port number that was used for when
  * requesting a binding to port 0 (ie: "any port").  This address, if
  * requested, belongs to the caller and must be freed.
@@ -770,7 +770,7 @@ g_socket_listener_accept_socket_async (GSocketListener     *listener,
  * @listener: a #GSocketListener
  * @result: a #GAsyncResult.
  * @source_object: (out) (transfer none) (allow-none): Optional #GObject identifying this source
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Finishes an async accept operation. See g_socket_listener_accept_socket_async()
@@ -837,7 +837,7 @@ g_socket_listener_accept_async (GSocketListener     *listener,
  * @listener: a #GSocketListener
  * @result: a #GAsyncResult.
  * @source_object: (out) (transfer none) (allow-none): Optional #GObject identifying this source
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Finishes an async accept operation. See g_socket_listener_accept_async()
@@ -928,11 +928,11 @@ g_socket_listener_close (GSocketListener *listener)
  * g_socket_listener_add_any_inet_port:
  * @listener: a #GSocketListener
  * @source_object: (allow-none): Optional #GObject identifying this source
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Listens for TCP connections on any available port number for both
- * IPv6 and IPv4 (if each are available).
+ * IPv6 and IPv4 (if each is available).
  *
  * This is useful if you need to have a socket for incoming connections
  * but don't care about the specific port number.

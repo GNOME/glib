@@ -37,7 +37,7 @@
  * until the connection is closed.
  *
  * The service is implemented using a thread pool, so there is a
- * limited amount of threads availible to serve incomming requests.
+ * limited amount of threads available to serve incoming requests.
  * The service automatically stops the #GSocketService from accepting
  * new connections when all threads are busy.
  *
@@ -234,7 +234,7 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
    * @connection and may perform blocking IO. The signal handler need
    * not return until the connection is closed.
    *
-   * Returns: %TRUE to stope further signal handlers from being called
+   * Returns: %TRUE to stop further signal handlers from being called
    */
   g_threaded_socket_service_run_signal =
     g_signal_new ("run", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,

@@ -58,7 +58,7 @@
  * #GSocketClient is a high-level utility class for connecting to a
  * network host using a connection oriented socket type.
  *
- * You create a #GSocketClient object, set any options you want, then
+ * You create a #GSocketClient object, set any options you want, and then
  * call a sync or async connect operation, which returns a #GSocketConnection
  * subclass on success.
  *
@@ -442,7 +442,7 @@ g_socket_client_get_local_address (GSocketClient *client)
  * The sockets created by this object will bound to the
  * specified address (if not %NULL) before connecting.
  *
- * This is useful if you want to ensure the the local
+ * This is useful if you want to ensure that the local
  * side of the connection is on a specific port, or on
  * a specific interface.
  *
@@ -726,7 +726,7 @@ g_socket_client_class_init (GSocketClientClass *class)
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting, or %NULL to ignore.
  *
- * Tries to resolve the @connectable and make a network connection to it..
+ * Tries to resolve the @connectable and make a network connection to it.
  *
  * Upon a successful connection, a new #GSocketConnection is constructed
  * and returned.  The caller owns this new object and must drop their
@@ -736,7 +736,7 @@ g_socket_client_class_init (GSocketClientClass *class)
  * the underlying socket that is used. For instance, for a TCP/IP connection
  * it will be a #GTcpConnection.
  *
- * The socket created will be the same family as the the address that the
+ * The socket created will be the same family as the address that the
  * @connectable resolves to, unless family is set with g_socket_client_set_family()
  * or indirectly via g_socket_client_set_local_address(). The socket type
  * defaults to %G_SOCKET_TYPE_STREAM but can be set with
@@ -912,7 +912,7 @@ g_socket_client_connect (GSocketClient       *client,
  *
  * Attempts to create a TCP connection to the named host.
  *
- * @host_and_port may be in any of a number of recognised formats; an IPv6
+ * @host_and_port may be in any of a number of recognized formats; an IPv6
  * address, an IPv4 address, or a domain name (in which case a DNS
  * lookup is performed).  Quoting with [] is supported for all address
  * types.  A port override may be specified in the usual way with a
@@ -923,7 +923,7 @@ g_socket_client_connect (GSocketClient       *client,
  * used as the port number to connect to.
  *
  * In general, @host_and_port is expected to be provided by the user (allowing
- * them to give the hostname, and a port overide if necessary) and
+ * them to give the hostname, and a port override if necessary) and
  * @default_port is expected to be provided by the application.
  *
  * In the case that an IP address is given, a single connection
@@ -1591,7 +1591,7 @@ g_socket_client_connect_to_uri_async (GSocketClient        *client,
  * g_socket_client_connect_finish:
  * @client: a #GSocketClient.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Finishes an async connect operation. See g_socket_client_connect_async()
@@ -1617,7 +1617,7 @@ g_socket_client_connect_finish (GSocketClient  *client,
  * g_socket_client_connect_to_host_finish:
  * @client: a #GSocketClient.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Finishes an async connect operation. See g_socket_client_connect_to_host_async()
@@ -1638,7 +1638,7 @@ g_socket_client_connect_to_host_finish (GSocketClient  *client,
  * g_socket_client_connect_to_service_finish:
  * @client: a #GSocketClient.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Finishes an async connect operation. See g_socket_client_connect_to_service_async()
@@ -1659,7 +1659,7 @@ g_socket_client_connect_to_service_finish (GSocketClient  *client,
  * g_socket_client_connect_to_uri_finish:
  * @client: a #GSocketClient.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Finishes an async connect operation. See g_socket_client_connect_to_uri_async()
@@ -1684,7 +1684,7 @@ g_socket_client_connect_to_uri_finish (GSocketClient  *client,
  * Enable proxy protocols to be handled by the application. When the
  * indicated proxy protocol is returned by the #GProxyResolver,
  * #GSocketClient will consider this protocol as supported but will
- * not try find a #GProxy instance to handle handshaking. The
+ * not try to find a #GProxy instance to handle handshaking. The
  * application must check for this case by calling
  * g_socket_connection_get_remote_address() on the returned
  * #GSocketConnection, and seeing if it's a #GProxyAddress of the
