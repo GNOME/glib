@@ -744,9 +744,13 @@ g_simple_async_result_complete (GSimpleAsyncResult *simple)
 #endif
 
   if (simple->callback)
-    simple->callback (simple->source_object,
-		      G_ASYNC_RESULT (simple),
-		      simple->user_data);
+    {
+      g_main_context_push_thread_default (simple->context);
+      simple->callback (simple->source_object,
+			G_ASYNC_RESULT (simple),
+			simple->user_data);
+      g_main_context_pop_thread_default (simple->context);
+    }
 }
 
 static gboolean
