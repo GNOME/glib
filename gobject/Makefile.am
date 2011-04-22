@@ -265,7 +265,7 @@ gobject-win32-res.o: gobject.rc
 gobject-2.0.lib: libgobject-2.0.la gobject.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgobject-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:gobject.def -out:$@
 
-dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj
+dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj ../build/win32/vs10/gobject.vcxproj ../build/win32/vs10/gobject.vcxproj.filters
 	files='$(BUILT_EXTRA_DIST)'; \
 	for f in $$files; do \
 	  if test -f $$f; then d=.; else d=$(srcdir); fi; \
@@ -279,7 +279,28 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gobject.vcproj
 		esac; \
 	done >libgobject.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/gobject.vcprojin >$@
+	rm libgobject.sourcefiles
 
+../build/win32/vs10/gobject.vcxproj: $(top_srcdir)/build/win32/vs10/gobject.vcxprojin
+	for F in $(libgobject_2_0_la_SOURCES); do \
+		case $$F in \
+		*.c) echo '    <ClCompile Include="..\..\..\gobject\'$$F'" />' \
+		     ;; \
+		esac; \
+	done >libgobject.vs10.sourcefiles
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gobject.vcxprojin >$@
+	rm libgobject.vs10.sourcefiles
+	
+../build/win32/vs10/gobject.vcxproj.filters: $(top_srcdir)/build/win32/vs10/gobject.vcxproj.filtersin
+	for F in $(libgobject_2_0_la_SOURCES); do \
+		case $$F in \
+		*.c) echo '    <ClCompile Include="..\..\..\gobject\'$$F'"><Filter>Source Files</Filter></ClCompile>' \
+		     ;; \
+		esac; \
+	done >libgobject.vs10.sourcefiles.filters
+	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/gobject.vcxproj.filtersin >$@	
+	rm libgobject.vs10.sourcefiles.filters
+	
 install-data-local: install-ms-lib install-def-file
 
 uninstall-local: uninstall-ms-lib uninstall-def-file uninstall-gdb
