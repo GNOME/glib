@@ -3708,6 +3708,7 @@ build/Makefile
 build/win32/Makefile
 build/win32/dirent/Makefile
 build/win32/vs9/Makefile
+build/win32/vs10/Makefile
 glib/Makefile
 glib/glib.stp
 glib/libcharset/Makefile
