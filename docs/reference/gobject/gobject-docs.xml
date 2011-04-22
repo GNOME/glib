@@ -83,6 +83,7 @@
       <xi:include href="xml/signals.xml" />
       <xi:include href="xml/gclosure.xml" />
       <xi:include href="xml/value_arrays.xml" />
+      <xi:include href="xml/gproperty.xml" />
       <xi:include href="xml/gbinding.xml" />
   </reference>
   <reference label="III">

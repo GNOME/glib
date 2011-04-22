@@ -97,6 +97,7 @@ gobject_public_h_sources = \
 	gobject.h		\
 	gparam.h		\
 	gparamspecs.h		\
+	gproperty.h		\
 	gsignal.h		\
 	gsourceclosure.h	\
 	gtype.h			\
@@ -126,6 +127,7 @@ gobject_c_sources = \
 	gobject_trace.h		\
 	gparam.c		\
 	gparamspecs.c		\
+	gproperty.c		\
 	gsignal.c		\
 	gsourceclosure.c	\
 	gtype.c			\

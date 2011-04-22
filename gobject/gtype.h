@@ -1264,6 +1264,10 @@ gpointer  g_type_class_get_private      (GTypeClass 		    *klass,
 GLIB_AVAILABLE_IN_2_34
 void      g_type_ensure                 (GType                       type);
 
+GLIB_AVAILABLE_IN_2_36
+gssize    g_type_class_get_instance_private_offset      (gpointer g_class,
+                                                         GType    private_type);
+
 /* --- GType boilerplate --- */
 /**
  * G_DEFINE_TYPE:

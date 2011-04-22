@@ -402,6 +402,15 @@ GParamSpec* g_object_interface_find_property    (gpointer     g_iface,
 GParamSpec**g_object_interface_list_properties  (gpointer     g_iface,
 						 guint       *n_properties_p);
 
+GLIB_AVAILABLE_IN_2_36
+void        g_object_class_override_property_default       (GObjectClass *oclass,
+                                                            const gchar  *property_name,
+                                                            ...);
+GLIB_AVAILABLE_IN_2_36
+void        g_object_class_override_property_default_value (GObjectClass *oclass,
+                                                            const gchar  *property_name,
+                                                            const GValue *default_value);
+
 GType       g_object_get_type                 (void) G_GNUC_CONST;
 gpointer    g_object_new                      (GType           object_type,
 					       const gchar    *first_property_name,

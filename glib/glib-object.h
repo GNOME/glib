@@ -28,6 +28,7 @@
 #include <gobject/gobject.h>
 #include <gobject/gparam.h>
 #include <gobject/gparamspecs.h>
+#include <gobject/gproperty.h>
 #include <gobject/gsignal.h>
 #include <gobject/gsourceclosure.h>
 #include <gobject/gtype.h>

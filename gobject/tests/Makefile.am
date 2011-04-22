@@ -11,8 +11,8 @@ else
   glib_genmarshal=$(top_builddir)/gobject/glib-genmarshal
 endif
 
-noinst_PROGRAMS  = $(TEST_PROGS)
 LDADD = ../libgobject-2.0.la $(top_builddir)/gthread/libgthread-2.0.la $(top_builddir)/glib/libglib-2.0.la
+noinst_PROGRAMS  = $(TEST_PROGS) $(SAMPLE_PROGS)
 
 TEST_PROGS += 		\
 	qdata		\
@@ -26,7 +26,14 @@ TEST_PROGS += 		\
 	properties	\
 	reference	\
 	ifaceproperties	\
-	valuearray
+	valuearray	\
+	autoproperties	\
+	$(NULL)
+
+SAMPLE_PROGS =				\
+	gproperty-example-base		\
+	gproperty-example-derived	\
+	$(NULL)
 
 signals_SOURCES = signals.c marshalers.c
 

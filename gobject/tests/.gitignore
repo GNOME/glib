@@ -1,7 +1,10 @@
+autoproperties
 binding
 boxed
 dynamictests
 enums
+gproperty-example-base
+gproperty-example-derived
 ifaceproperties
 param
 properties

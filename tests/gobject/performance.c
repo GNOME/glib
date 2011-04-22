@@ -424,6 +424,333 @@ complex_object_init (ComplexObject *complex_object)
   complex_object->val2 = 43;
 }
 
+/****************************************************************
+ * ParamspecObject is an object using GParamSpec for properties *
+ ****************************************************************/
+
+#define PARAMSPEC_TYPE_OBJECT           (paramspec_object_get_type ())
+typedef struct _ParamspecObject         ParamspecObject;
+typedef struct _ParamspecObjectClass    ParamspecObjectClass;
+typedef struct _ParamspecObjectPrivate  ParamspecObjectPrivate;
+
+struct _ParamspecObject
+{
+  GObject parent_instance;
+
+  ParamspecObjectPrivate *priv;
+};
+
+struct _ParamspecObjectClass
+{
+  GObjectClass parent_class;
+};
+
+GType paramspec_object_get_type (void); /* for -Wmissing-prototypes */
+
+G_DEFINE_TYPE (ParamspecObject, paramspec_object, G_TYPE_OBJECT)
+
+#define PARAMSPEC_OBJECT(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), PARAMSPEC_TYPE_OBJECT, ParamspecObject))
+
+struct _ParamspecObjectPrivate
+{
+  int foo;
+  gchar *bar;
+  float baz;
+};
+
+enum {
+  PROP_PSPEC_0,
+  PROP_PSPEC_FOO,
+  PROP_PSPEC_BAR,
+  PROP_PSPEC_BAZ,
+  PROP_PSPEC_LAST
+};
+
+static GParamSpec *pspec_props[PROP_PSPEC_LAST] = { NULL, };
+
+static void
+paramspec_object_finalize (GObject *object)
+{
+  ParamspecObjectPrivate *priv = PARAMSPEC_OBJECT (object)->priv;
+
+  g_free (priv->bar);
+
+  G_OBJECT_CLASS (paramspec_object_parent_class)->finalize (object);
+}
+
+static void
+paramspec_object_set_foo (ParamspecObject *object,
+                          int              value)
+{
+  if (object->priv->foo == value)
+    return;
+
+  object->priv->foo = value;
+
+  g_object_notify_by_pspec (G_OBJECT (object), pspec_props[PROP_PSPEC_FOO]);
+}
+
+static int
+paramspec_object_get_foo (ParamspecObject *object)
+{
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object, paramspec_object_get_type ()), 0);
+
+  return object->priv->foo;
+}
+
+static void
+paramspec_object_set_bar (ParamspecObject *object,
+                          const char      *value)
+{
+  if (g_strcmp0 (object->priv->bar, value) == 0)
+    return;
+
+  g_free (object->priv->bar);
+  object->priv->bar = g_strdup (value);
+
+  g_object_notify_by_pspec (G_OBJECT (object), pspec_props[PROP_PSPEC_BAR]);
+}
+
+static void
+paramspec_object_set_baz (ParamspecObject *object,
+                          float            value)
+{
+  if (object->priv->baz == value)
+    return;
+
+  object->priv->baz = value;
+
+  g_object_notify_by_pspec (G_OBJECT (object), pspec_props[PROP_PSPEC_BAZ]);
+}
+
+static float
+paramspec_object_get_baz (ParamspecObject *object)
+{
+  g_return_val_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (object, paramspec_object_get_type ()), 0.0);
+
+  return object->priv->baz;
+}
+
+static void
+paramspec_object_set_property (GObject         *object,
+                               guint            prop_id,
+                               const GValue    *value,
+                               GParamSpec      *pspec)
+{
+  switch (prop_id)
+    {
+    case PROP_PSPEC_FOO:
+      paramspec_object_set_foo (PARAMSPEC_OBJECT (object), g_value_get_int (value));
+      break;
+    case PROP_PSPEC_BAR:
+      paramspec_object_set_bar (PARAMSPEC_OBJECT (object), g_value_get_string (value));
+      break;
+    case PROP_PSPEC_BAZ:
+      paramspec_object_set_baz (PARAMSPEC_OBJECT (object), g_value_get_float (value));
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+paramspec_object_get_property (GObject         *object,
+                               guint            prop_id,
+                               GValue          *value,
+                               GParamSpec      *pspec)
+{
+  switch (prop_id)
+    {
+    case PROP_PSPEC_FOO:
+      g_value_set_int (value, PARAMSPEC_OBJECT (object)->priv->foo);
+      break;
+    case PROP_PSPEC_BAR:
+      g_value_set_string (value, PARAMSPEC_OBJECT (object)->priv->bar);
+      break;
+    case PROP_PSPEC_BAZ:
+      g_value_set_float (value, PARAMSPEC_OBJECT (object)->priv->baz);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+paramspec_object_class_init (ParamspecObjectClass *class)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  g_type_class_add_private (class, sizeof (ParamspecObjectPrivate));
+
+  object_class->finalize = paramspec_object_finalize;
+  object_class->set_property = paramspec_object_set_property;
+  object_class->get_property = paramspec_object_get_property;
+
+  pspec_props[PROP_PSPEC_FOO] =
+    g_param_spec_int ("foo",
+                      NULL, NULL,
+                      -100, 100, 50,
+                      G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  pspec_props[PROP_PSPEC_BAR] =
+    g_param_spec_string ("bar",
+                         NULL, NULL,
+                         "Hello",
+                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+  pspec_props[PROP_PSPEC_BAZ] =
+    g_param_spec_float ("baz",
+                        NULL, NULL,
+                        0.0f, G_MAXFLOAT, 0.0f,
+                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+
+  g_object_class_install_properties (object_class, PROP_PSPEC_LAST, pspec_props);
+}
+
+static void
+paramspec_object_init (ParamspecObject *self)
+{
+  self->priv = g_type_instance_get_private ((GTypeInstance *) self, PARAMSPEC_TYPE_OBJECT);
+
+  self->priv->foo = 50;
+  self->priv->bar = g_strdup ("Hello");
+  self->priv->baz = 0.0f;
+}
+
+/**************************************************************
+ * PropertyObject is an object using GProperty for properties *
+ **************************************************************/
+
+#define PROPERTY_TYPE_OBJECT           (property_object_get_type ())
+typedef struct _PropertyObject         PropertyObject;
+typedef struct _PropertyObjectClass    PropertyObjectClass;
+typedef struct _PropertyObjectPrivate  PropertyObjectPrivate;
+
+struct _PropertyObject
+{
+  GObject parent_instance;
+
+  PropertyObjectPrivate *priv;
+};
+
+struct _PropertyObjectClass
+{
+  GObjectClass parent_class;
+};
+
+GType property_object_get_type (void); /* for -Wmissing-prototypes */
+
+G_DEFINE_TYPE (PropertyObject, property_object, G_TYPE_OBJECT)
+
+#define PROPERTY_OBJECT(object) (G_TYPE_CHECK_INSTANCE_CAST ((object), PROPERTY_TYPE_OBJECT, PropertyObject))
+
+struct _PropertyObjectPrivate
+{
+  int foo;
+  gchar *bar;
+  float baz;
+};
+
+enum {
+  PROP_PROPERTY_0,
+  PROP_PROPERTY_FOO,
+  PROP_PROPERTY_BAR,
+  PROP_PROPERTY_BAZ,
+  PROP_PROPERTY_LAST
+};
+
+static GParamSpec *property_props[PROP_PROPERTY_LAST] = { NULL, };
+
+static void
+property_object_finalize (GObject *object)
+{
+  PropertyObjectPrivate *priv = PROPERTY_OBJECT (object)->priv;
+
+  g_free (priv->bar);
+
+  G_OBJECT_CLASS (property_object_parent_class)->finalize (object);
+}
+
+static void
+property_object_class_init (PropertyObjectClass *class)
+{
+  GObjectClass *object_class = G_OBJECT_CLASS (class);
+
+  g_type_class_add_private (class, sizeof (PropertyObjectPrivate));
+
+  object_class->finalize = property_object_finalize;
+
+  property_props[PROP_PROPERTY_FOO] =
+    g_int_property_new ("foo", G_PROPERTY_READWRITE,
+                        G_STRUCT_OFFSET (PropertyObjectPrivate, foo),
+                        NULL, NULL);
+  g_property_set_range ((GProperty *) property_props[PROP_PROPERTY_FOO], -100, 100);
+  g_property_set_default ((GProperty *) property_props[PROP_PROPERTY_FOO], 50);
+
+  property_props[PROP_PROPERTY_BAR] =
+    g_string_property_new ("bar", G_PROPERTY_READWRITE,
+                           G_STRUCT_OFFSET (PropertyObjectPrivate, bar),
+                           NULL, NULL);
+  g_property_set_default ((GProperty *) property_props[PROP_PROPERTY_BAR], "Hello");
+
+  property_props[PROP_PROPERTY_BAZ] =
+    g_float_property_new ("baz", G_PROPERTY_READWRITE,
+                          G_STRUCT_OFFSET (PropertyObjectPrivate, baz),
+                          NULL, NULL);
+  g_property_set_range ((GProperty *) property_props[PROP_PROPERTY_BAZ], 0.0f, G_MAXFLOAT);
+  g_property_set_default ((GProperty *) property_props[PROP_PROPERTY_BAZ], 0.0f);
+
+  g_object_class_install_properties (object_class, PROP_PROPERTY_LAST, property_props);
+}
+
+static void
+property_object_init (PropertyObject *self)
+{
+  self->priv = g_type_instance_get_private ((GTypeInstance *) self, PROPERTY_TYPE_OBJECT);
+
+  g_property_get_default ((GProperty *) property_props[PROP_PROPERTY_FOO],
+                          self,
+                          &(self->priv->foo));
+  g_property_get_default ((GProperty *) property_props[PROP_PROPERTY_BAR],
+                          self,
+                          &(self->priv->bar));
+  g_property_get_default ((GProperty *) property_props[PROP_PROPERTY_BAZ],
+                          self,
+                          &(self->priv->baz));
+}
+
+static void
+property_object_set_foo (PropertyObject *self, int value)
+{
+  g_property_set (((GProperty *) property_props[PROP_PROPERTY_FOO]), self, value);
+}
+
+static int
+property_object_get_foo (PropertyObject *self)
+{
+  gint value;
+
+  g_property_get (((GProperty *) property_props[PROP_PROPERTY_FOO]), self, &value);
+
+  return value;
+}
+
+static void
+property_object_set_baz (PropertyObject *self, float value)
+{
+  g_property_set (((GProperty *) property_props[PROP_PROPERTY_BAZ]), self, value);
+}
+
+static float
+property_object_get_baz (PropertyObject *self)
+{
+  float value;
+
+  g_property_get (((GProperty *) property_props[PROP_PROPERTY_BAZ]), self, &value);
+
+  return value;
+}
+
 /*************************************************************
  * Test object construction performance
  *************************************************************/
@@ -506,6 +833,186 @@ test_construction_print_result (PerformanceTest *test,
 
   g_print ("Number of constructed objects per second: %.0f\n",
 	   data->n_objects / time);
+}
+
+/*************************************************************
+ * Test property accessors using GParamSpec
+ *************************************************************/
+
+#define NUM_ACCESSES_PER_ROUND  10000
+
+struct PropertyTest {
+  gpointer object;
+  int n_accesses;
+};
+
+static gpointer
+test_property_setup (PerformanceTest *test)
+{
+  struct PropertyTest *data;
+  GType gtype;
+
+  gtype = ((GType (*)())test->extra_data)();
+
+  data = g_new0 (struct PropertyTest, 1);
+  data->object = g_object_new (gtype, NULL);
+
+  return data;
+}
+
+static void
+test_property_init (PerformanceTest *test,
+                    gpointer _data,
+                    double factor)
+{
+  struct PropertyTest *data = _data;
+
+  data->n_accesses = factor * NUM_ACCESSES_PER_ROUND;
+}
+
+static void
+test_paramspec_direct_set_run (PerformanceTest *test,
+                               gpointer _data)
+{
+  struct PropertyTest *data = _data;
+  int n_accesses, i;
+
+  n_accesses = data->n_accesses;
+  for (i = 0; i < n_accesses; i++)
+    {
+      gint foo = i % 16;
+      gfloat baz = foo * 3.14f;
+
+      paramspec_object_set_foo (data->object, foo);
+      paramspec_object_set_baz (data->object, baz);
+    }
+}
+
+static void
+test_paramspec_direct_get_run (PerformanceTest *test,
+                               gpointer _data)
+{
+  struct PropertyTest *data = _data;
+  int n_accesses, i;
+
+  n_accesses = data->n_accesses;
+  for (i = 0; i < n_accesses; i++)
+    {
+      gint foo;
+      gfloat baz;
+
+      foo = paramspec_object_get_foo (data->object);
+      baz = paramspec_object_get_baz (data->object);
+
+      g_assert_cmpfloat (baz, ==, 0);
+      g_assert_cmpint (foo, ==, 50);
+    }
+}
+
+
+static void
+test_paramspec_object_run (PerformanceTest *test,
+                           gpointer _data)
+{
+  struct PropertyTest *data = _data;
+  int n_accesses, i;
+
+  n_accesses = data->n_accesses;
+  for (i = 0; i < n_accesses; i++)
+    {
+      gint foo = i % 16;
+      gfloat baz = foo * 3.14f;
+
+      g_object_set (data->object,
+                    "foo", foo,
+                    "baz", baz,
+                    NULL);
+    }
+}
+
+static void
+test_property_direct_set_run (PerformanceTest *test,
+                              gpointer _data)
+{
+  struct PropertyTest *data = _data;
+  int n_accesses, i;
+
+  n_accesses = data->n_accesses;
+  for (i = 0; i < n_accesses; i++)
+    {
+      gint foo = i % 16;
+      gfloat baz = foo * 3.14f;
+
+      property_object_set_foo (data->object, foo);
+      property_object_set_baz (data->object, baz);
+    }
+}
+
+static void
+test_property_direct_get_run (PerformanceTest *test,
+                              gpointer _data)
+{
+  struct PropertyTest *data = _data;
+  int n_accesses, i;
+
+  n_accesses = data->n_accesses;
+  for (i = 0; i < n_accesses; i++)
+    {
+      gint foo;
+      gfloat baz;
+
+      foo = property_object_get_foo (data->object);
+      baz = property_object_get_baz (data->object);
+
+      g_assert_cmpfloat (baz, ==, 0);
+      g_assert_cmpint (foo, ==, 50);
+    }
+}
+
+static void
+test_property_object_run (PerformanceTest *test,
+                          gpointer _data)
+{
+  struct PropertyTest *data = _data;
+  int n_accesses, i;
+
+  n_accesses = data->n_accesses;
+  for (i = 0; i < n_accesses; i++)
+    {
+      gint foo = i % 16;
+      gfloat baz = foo * 3.14f;
+
+      g_object_set (data->object,
+                    "foo", foo,
+                    "baz", baz,
+                    NULL);
+    }
+}
+
+static void
+test_property_finish (PerformanceTest *test,
+                      gpointer _data)
+{
+}
+
+static void
+test_property_print_result (PerformanceTest *test,
+                            gpointer _data,
+                            gdouble time)
+{
+  struct PropertyTest *data = _data;
+  g_print ("Number of accesses per second: %.0f\n",
+           data->n_accesses / time);
+}
+
+static void
+test_property_teardown (PerformanceTest *test,
+                        gpointer _data)
+{
+  struct PropertyTest *data = _data;
+
+  g_object_unref (data->object);
+  g_free (data);
 }
 
 /*************************************************************
@@ -780,6 +1287,66 @@ static PerformanceTest tests[] = {
     test_construction_finish,
     test_construction_teardown,
     test_construction_print_result
+  },
+  {
+    "gparamspec-direct-get",
+    paramspec_object_get_type,
+    test_property_setup,
+    test_property_init,
+    test_paramspec_direct_get_run,
+    test_property_finish,
+    test_property_teardown,
+    test_property_print_result
+  },
+  {
+    "gproperty-direct-get",
+    property_object_get_type,
+    test_property_setup,
+    test_property_init,
+    test_property_direct_get_run,
+    test_property_finish,
+    test_property_teardown,
+    test_property_print_result
+  },
+  {
+    "gparamspec-direct-set",
+    paramspec_object_get_type,
+    test_property_setup,
+    test_property_init,
+    test_paramspec_direct_set_run,
+    test_property_finish,
+    test_property_teardown,
+    test_property_print_result
+  },
+  {
+    "gproperty-direct-set",
+    property_object_get_type,
+    test_property_setup,
+    test_property_init,
+    test_property_direct_set_run,
+    test_property_finish,
+    test_property_teardown,
+    test_property_print_result
+  },
+  {
+    "gparamspec-gobject-access",
+    paramspec_object_get_type,
+    test_property_setup,
+    test_property_init,
+    test_paramspec_object_run,
+    test_property_finish,
+    test_property_teardown,
+    test_property_print_result
+  },
+  {
+    "gproperty-gobject-access",
+    property_object_get_type,
+    test_property_setup,
+    test_property_init,
+    test_property_object_run,
+    test_property_finish,
+    test_property_teardown,
+    test_property_print_result
   },
   {
     "type-check",

@@ -4501,15 +4501,81 @@ g_type_class_add_private (gpointer g_class,
   G_WRITE_UNLOCK (&type_rw_lock);
 }
 
-gpointer
-g_type_instance_get_private (GTypeInstance *instance,
-			     GType          private_type)
+static gssize
+lookup_instance_private_offset (GTypeClass *class,
+                                GType       private_type)
 {
   TypeNode *instance_node;
   TypeNode *private_node;
   TypeNode *parent_node;
-  GTypeClass *class;
   gsize offset;
+
+  g_return_val_if_fail (class != NULL, -1);
+
+  instance_node = lookup_type_node_I (class->g_type);
+  if (G_UNLIKELY (!instance_node || !instance_node->is_instantiatable))
+    {
+      g_warning ("class of invalid non-instantiatable type `%s'",
+		 type_descriptive_name_I (class->g_type));
+      return -1;
+    }
+
+  private_node = lookup_type_node_I (private_type);
+  if (G_UNLIKELY (!private_node || !NODE_IS_ANCESTOR (private_node, instance_node)))
+    {
+      g_warning ("attempt to retrieve private data for invalid type '%s'",
+		 type_descriptive_name_I (private_type));
+      return -1;
+    }
+
+  offset = ALIGN_STRUCT (instance_node->data->instance.instance_size);
+
+  if (NODE_PARENT_TYPE (private_node))
+    {
+      parent_node = lookup_type_node_I (NODE_PARENT_TYPE (private_node));
+      g_assert (parent_node->data && NODE_REFCOUNT (parent_node) > 0);
+
+      if (G_UNLIKELY (private_node->data->instance.private_size == parent_node->data->instance.private_size))
+	{
+	  g_warning ("g_type_class_get_instance_private_offset() requires a "
+                     "prior call to g_type_class_add_private()");
+          return -1;
+	}
+
+      offset += ALIGN_STRUCT (parent_node->data->instance.private_size);
+    }
+
+  return offset;
+}
+
+gssize
+g_type_class_get_instance_private_offset (gpointer g_class,
+                                          GType    private_type)
+{
+  gssize offset;
+
+  g_return_val_if_fail (g_class != NULL, -1);
+
+  /* unlike with g_type_instance_get_private(), we need to acquire the
+   * read lock here because we may be called during class initialization
+   * type, which means that nodes may not be filled yet.
+   */
+  G_READ_LOCK (&type_rw_lock);
+
+  offset = lookup_instance_private_offset (g_class, private_type);
+  
+  G_READ_UNLOCK (&type_rw_lock);
+
+  return offset;
+}
+
+gpointer
+g_type_instance_get_private (GTypeInstance *instance,
+			     GType          private_type)
+{
+  GTypeClass *class;
+  TypeNode *instance_node;
+  gssize offset;
 
   g_return_val_if_fail (instance != NULL && instance->g_class != NULL, NULL);
 
@@ -4524,15 +4590,7 @@ g_type_instance_get_private (GTypeInstance *instance,
   if (G_UNLIKELY (!instance_node || !instance_node->is_instantiatable))
     {
       g_warning ("instance of invalid non-instantiatable type `%s'",
-		 type_descriptive_name_I (instance->g_class->g_type));
-      return NULL;
-    }
-
-  private_node = lookup_type_node_I (private_type);
-  if (G_UNLIKELY (!private_node || !NODE_IS_ANCESTOR (private_node, instance_node)))
-    {
-      g_warning ("attempt to retrieve private data for invalid type '%s'",
-		 type_descriptive_name_I (private_type));
+		 type_descriptive_name_I (class->g_type));
       return NULL;
     }
 
@@ -4542,22 +4600,9 @@ g_type_instance_get_private (GTypeInstance *instance,
    * and node->data->instance.private_size are not going to be changed.
    * for any of the relevant types.
    */
-
-  offset = ALIGN_STRUCT (instance_node->data->instance.instance_size);
-
-  if (NODE_PARENT_TYPE (private_node))
-    {
-      parent_node = lookup_type_node_I (NODE_PARENT_TYPE (private_node));
-      g_assert (parent_node->data && NODE_REFCOUNT (parent_node) > 0);
-
-      if (G_UNLIKELY (private_node->data->instance.private_size == parent_node->data->instance.private_size))
-	{
-	  g_warning ("g_type_instance_get_private() requires a prior call to g_type_class_add_private()");
-	  return NULL;
-	}
-
-      offset += ALIGN_STRUCT (parent_node->data->instance.private_size);
-    }
+  offset = lookup_instance_private_offset (class, private_type);
+  if (offset < 0)
+    return NULL;
 
   return G_STRUCT_MEMBER_P (instance, offset);
 }
