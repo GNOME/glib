@@ -446,7 +446,11 @@
 #ifndef _MSC_VER
 #define HAVE_STDINT_H 1
 #else /* _MSC_VER */
+#if (_MSC_VER >= 1600) /*VS 2010 ships with stdint.h*/
+#define HAVE_STDINT_H 1
+#else
 /* #undef HAVE_STDINT_H */
+#endif
 #endif /* _MSC_VER */
 
 /* Define if <stdint.h> exists, doesn't clash with <sys/types.h>, and declares
@@ -454,7 +458,11 @@
 #ifndef _MSC_VER
 #define HAVE_STDINT_H_WITH_UINTMAX 1
 #else /* _MSC_VER */
+#if (_MSC_VER >= 1600)
+#define HAVE_STDINT_H_WITH_UINTMAX 1
+#else
 /* #undef HAVE_STDINT_H_WITH_UINTMAX */
+#endif
 #endif /* _MSC_VER */
 
 /* Define to 1 if you have the <stdlib.h> header file. */
