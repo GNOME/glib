@@ -442,25 +442,11 @@ proxy_LDADD   = $(progs_ldadd) \
 
 # ----------------------------------------------------------------------------------------------------
 
-gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c : gdbus-example-objectmanager.xml
-	$(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
-		--interface-prefix org.gtk.GDBus.Example.ObjectManager.		\
-		--c-namespace Example 						\
-		--c-generate-object-manager					\
-		--generate-c-code gdbus-example-objectmanager-generated		\
-		--generate-docbook gdbus-example-objectmanager-generated	\
-		gdbus-example-objectmanager.xml					\
-		$(NULL)
-
-BUILT_SOURCES += gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
-
 gdbus_example_objectmanager_server_SOURCES  = gdbus-example-objectmanager-server.c
-gdbus_example_objectmanager_server_SOURCES += gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
-gdbus_example_objectmanager_server_LDADD= $(progs_ldadd)
+gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/libgdbus-example-objectmanager.la $(progs_ldadd)
 
 gdbus_example_objectmanager_client_SOURCES  = gdbus-example-objectmanager-client.c
-gdbus_example_objectmanager_client_SOURCES += gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
-gdbus_example_objectmanager_client_LDADD= $(progs_ldadd)
+gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/libgdbus-example-objectmanager.la $(progs_ldadd)
 
 # ----------------------------------------------------------------------------------------------------
 
@@ -478,7 +464,6 @@ EXTRA_DIST += \
 	appinfo-test-notgnome.desktop	\
 	gdbus-testserver.py		\
 	test-codegen.xml		\
-	gdbus-example-objectmanager.xml \
 	$(NULL)
 
 MISC_STUFF = test.mo
@@ -488,7 +473,7 @@ test.mo: de.po
 	$(MKDIR_P) de/LC_MESSAGES; \
 	cp -f test.mo de/LC_MESSAGES
 
-CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml gdbus-example-objectmanager-generated-*.xml
+CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
 
 DISTCLEANFILES = \
 	applications/mimeinfo.cache	\

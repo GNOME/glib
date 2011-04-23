@@ -247,7 +247,7 @@ on_name_acquired (GDBusConnection *connection,
       linkend="gdbus-codegen">gdbus-codegen</link></command> is used and like
       its counterpart, it also takes D-Bus Introspection XML as input:
     </para>
-    <example id="gdbus-example-codegen-input"><title>Example D-Bus Introspection XML</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-objectmanager.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+    <example id="gdbus-example-codegen-input"><title>Example D-Bus Introspection XML</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/gdbus-example-objectmanager.xml"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
     <para>
       If this XML is processed like this
 <informalexample><programlisting><![CDATA[
@@ -277,8 +277,11 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
       linkend="gdbus-codegen">gdbus-codegen</link></command> manual
       page, brief examples of how this generated code can be used can be found in
       <xref linkend="gdbus-example-codegen-server"/>
-      and
-      <xref linkend="gdbus-example-codegen-client"/>.
+      and <xref
+      linkend="gdbus-example-codegen-client"/>. Additionally, since
+      the generated code has 100% gtk-doc coverage, see
+      #ExampleAnimal, #ExampleCat and #ExampleObjectManagerClient
+      pages for documentation
     </para>
 
     <example id="gdbus-example-codegen-server"><title>Server-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-objectmanager-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
@@ -287,7 +290,10 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
 
   </section>
 
-  <xi:include href="../../../../gio/tests/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
-  <xi:include href="../../../../gio/tests/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
+  <xi:include href="../../../../gio/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
+  <xi:include href="../../../../gio/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
+  <xi:include href="ExampleAnimal.xml"/>
+  <xi:include href="ExampleCat.xml"/>
+  <xi:include href="ExampleObjectManagerClient.xml"/>
 
 </chapter>
