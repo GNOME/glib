@@ -15,6 +15,10 @@ copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-genmarshal.exe $(CopyDi
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gspawn-win32-helper*.exe $(CopyDir)\bin
 
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-compile-schemas.exe $(CopyDir)\bin
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gsettings.exe $(CopyDir)\bin
+
 
 mkdir $(CopyDir)\include\glib-$(ApiVersion)\glib
 
@@ -428,6 +432,10 @@ copy ..\..\..\glib\glibconfig.h $(CopyDir)\lib\glib-$(ApiVersion)\include
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
 
 if exist $(SolutionDir)$(Configuration)_ExtPCRE copy $(SolutionDir)$(Configuration)_ExtPCRE\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
+
+
+mkdir $(CopyDir)\share\glib-2.0\schemas
+copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-2.0\schemas
 
 </GlibDoInstall>
     <GlibGenerateGlibDef>echo EXPORTS &gt;"$(DefDir)glib.def" &amp;&amp; cl /EP -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;"$(DefDir)glib.def"</GlibGenerateGlibDef>

@@ -26,4 +26,8 @@ EXTRA_DIST = \
 	gio.vcxproj.filtersin \
 	testglib.vcxproj \
 	testglib.vcxproj.filters \
+	glib-compile-schemas.vcxproj \
+	glib-compile-schemas.vcxproj.filters \
+	gsettings.vcxproj \
+	gsettings.vcxproj.filters \
 	install.vcxproj 
