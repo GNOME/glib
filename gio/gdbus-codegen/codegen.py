@@ -2374,7 +2374,7 @@ class CodeGenerator:
                     ' * Gets the #%s instance for the D-Bus interface #%s on @object, if any.\n'
                     ' *\n'
                     ' * Returns: (transfer full): A #%s that must be freed with g_object_unref() or %%NULL if @object does not implement the interface.\n'
-                    %(self.ns_lower, i.name_upper.lower(), i.camel_name, i.camel_name, i.name, i.camel_name)))
+                    %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name, i.name, i.camel_name)))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
             self.c.write ('%s *%sobject_get_%s (%sObject *object)\n'
                           %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
@@ -2399,7 +2399,7 @@ class CodeGenerator:
                     ' * <warning>It is not safe to use the returned object if you are on another thread than the one where the #GDBusObjectManagerClient or #GDBusObjectManagerServer for @object is running.</warning>\n'
                     ' *\n'
                     ' * Returns: (transfer none): A #%s or %%NULL if @object does not implement the interface. Do not free the returned object, it is owned by @object.\n'
-                    %(self.ns_lower, i.name_upper.lower(), i.camel_name, self.ns_lower, i.name_upper.lower(), i.camel_name)))
+                    %(self.ns_lower, i.name_upper.lower(), self.namespace, self.ns_lower, i.name_upper.lower(), i.camel_name)))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
             self.c.write ('%s *%sobject_peek_%s (%sObject *object)\n'
                           %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
