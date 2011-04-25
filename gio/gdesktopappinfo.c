@@ -1932,10 +1932,10 @@ g_app_info_create_from_commandline (const char           *commandline,
   info->filename = NULL;
   info->desktop_id = NULL;
   
-  info->terminal = flags & G_APP_INFO_CREATE_NEEDS_TERMINAL;
-  info->startup_notify = flags & G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION;
+  info->terminal = (flags & G_APP_INFO_CREATE_NEEDS_TERMINAL) != 0;
+  info->startup_notify = (flags & G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION) != 0;
   info->hidden = FALSE;
-  if (flags & G_APP_INFO_CREATE_SUPPORTS_URIS)
+  if ((flags & G_APP_INFO_CREATE_SUPPORTS_URIS) != 0)
     info->exec = g_strconcat (commandline, " %u", NULL);
   else
     info->exec = g_strconcat (commandline, " %f", NULL);
