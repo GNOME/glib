@@ -431,18 +431,20 @@ typedef struct _GDBusObjectManagerServer    GDBusObjectManagerServer;
  * GDBusProxyTypeFunc:
  * @manager: A #GDBusObjectManagerClient.
  * @object_path: The object path of the remote object.
- * @interface_name: The interface name of the remote object.
+ * @interface_name: (allow-none): The interface name of the remote object or %NULL if a #GDBusObjectProxy #GType is requested.
  * @user_data: User data.
  *
  * Function signature for a function used to determine the #GType to
- * use for an interface proxy.
+ * use for an interface proxy (if @interface_name is not %NULL) or
+ * object proxy (if @interface_name is %NULL).
  *
  * This function is called in the
  * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
  * that @manager was constructed in.
  *
  * Returns: A #GType to use for the remote object. The returned type
- * must be a #GDBusProxy derived type.
+ *   must be a #GDBusProxy<!-- -->- or #GDBusObjectProxy<!-- -->-derived
+ *   type.
  *
  * Since: 2.30
  */

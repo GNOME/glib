@@ -1387,7 +1387,23 @@ add_interfaces (GDBusObjectManagerClient *manager,
   op = g_hash_table_lookup (manager->priv->map_object_path_to_object_proxy, object_path);
   if (op == NULL)
     {
-      op = _g_dbus_object_proxy_new (manager->priv->connection, object_path);
+      GType object_proxy_type;
+      if (manager->priv->get_proxy_type_func != NULL)
+        {
+          object_proxy_type = manager->priv->get_proxy_type_func (manager,
+                                                                  object_path,
+                                                                  NULL,
+                                                                  manager->priv->get_proxy_type_user_data);
+          g_warn_if_fail (g_type_is_a (object_proxy_type, G_TYPE_DBUS_OBJECT_PROXY));
+        }
+      else
+        {
+          object_proxy_type = G_TYPE_DBUS_OBJECT_PROXY;
+        }
+      op = g_object_new (object_proxy_type,
+                         "connection", manager->priv->connection,
+                         "object-path", object_path,
+                         NULL);
       added = TRUE;
     }
 

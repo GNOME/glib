@@ -280,8 +280,8 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
       and <xref
       linkend="gdbus-example-codegen-client"/>. Additionally, since
       the generated code has 100% gtk-doc coverage, see
-      #ExampleAnimal, #ExampleCat and #ExampleObjectManagerClient
-      pages for documentation
+      #ExampleAnimal, #ExampleCat, #ExampleObject and
+      #ExampleObjectManagerClient pages for documentation.
     </para>
 
     <example id="gdbus-example-codegen-server"><title>Server-side application using generated code</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-objectmanager-server.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
@@ -294,6 +294,7 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
   <xi:include href="../../../../gio/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
   <xi:include href="ExampleAnimal.xml"/>
   <xi:include href="ExampleCat.xml"/>
+  <xi:include href="ExampleObject.xml"/>
   <xi:include href="ExampleObjectManagerClient.xml"/>
 
 </chapter>

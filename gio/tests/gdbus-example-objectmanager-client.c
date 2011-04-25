@@ -13,12 +13,12 @@ print_objects (GDBusObjectManager *manager)
   objects = g_dbus_object_manager_get_objects (manager);
   for (l = objects; l != NULL; l = l->next)
     {
-      GDBusObject *object = G_DBUS_OBJECT (l->data);
+      ExampleObject *object = EXAMPLE_OBJECT (l->data);
       GList *interfaces;
       GList *ll;
-      g_print (" - Object at %s\n", g_dbus_object_get_object_path (object));
+      g_print (" - Object at %s\n", g_dbus_object_get_object_path (G_DBUS_OBJECT (object)));
 
-      interfaces = g_dbus_object_get_interfaces (object);
+      interfaces = g_dbus_object_get_interfaces (G_DBUS_OBJECT (object));
       for (ll = interfaces; ll != NULL; ll = ll->next)
         {
           GDBusInterface *interface = G_DBUS_INTERFACE (ll->data);

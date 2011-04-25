@@ -435,43 +435,12 @@ g_dbus_object_skeleton_flush (GDBusObjectSkeleton *object)
     }
 }
 
-static gpointer
-g_dbus_object_skeleton_lookup_with_typecheck (GDBusObject *object,
-                                              const gchar *interface_name,
-                                              GType        type)
-{
-  GDBusObjectSkeleton *skeleton = G_DBUS_OBJECT_SKELETON (object);
-  GDBusProxy *ret;
-
-  ret = g_hash_table_lookup (skeleton->priv->map_name_to_iface, interface_name);
-  if (ret != NULL)
-    {
-      g_warn_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (ret, type));
-      g_object_ref (ret);
-    }
-  return ret;
-}
-
-static gpointer
-g_dbus_object_skeleton_peek_with_typecheck   (GDBusObject *object,
-                                              const gchar *interface_name,
-                                              GType        type)
-{
-  GDBusInterfaceSkeleton *ret;
-  ret = g_dbus_object_skeleton_lookup_with_typecheck (object, interface_name, type);
-  if (ret != NULL)
-    g_object_unref (ret);
-  return ret;
-}
-
 static void
 dbus_object_interface_init (GDBusObjectIface *iface)
 {
   iface->get_object_path = g_dbus_object_skeleton_get_object_path;
   iface->get_interfaces  = g_dbus_object_skeleton_get_interfaces;
   iface->get_interface  = g_dbus_object_skeleton_get_interface;
-  iface->lookup_with_typecheck = g_dbus_object_skeleton_lookup_with_typecheck;
-  iface->peek_with_typecheck = g_dbus_object_skeleton_peek_with_typecheck;
 }
 
 gboolean

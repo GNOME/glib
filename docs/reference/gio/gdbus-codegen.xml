@@ -134,9 +134,9 @@
       <term><option>--c-generate-object-manager</option></term>
       <listitem>
         <para>
-          If this option is passed a #GDBusObjectManagerClient
-          subclass with an appropriate #GDBusProxyTypeFunc is
-          generated.
+          If this option is passed, suitable #GDBusObject,
+          #GDBusObjectProxy, #GDBusObjectSkeleton and
+          #GDBusObjectManagerClient subclasses are generated.
         </para>
       </listitem>
     </varlistentry>

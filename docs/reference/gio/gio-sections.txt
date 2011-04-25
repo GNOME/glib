@@ -3195,6 +3195,7 @@ G_DBUS_OBJECT_GET_IFACE
 <TITLE>GDBusObjectProxy</TITLE>
 GDBusObjectProxy
 GDBusObjectProxyClass
+g_dbus_object_proxy_new
 g_dbus_object_proxy_get_connection
 <SUBSECTION Standard>
 G_DBUS_OBJECT_PROXY
@@ -3393,6 +3394,47 @@ EXAMPLE_IS_CAT_PROXY
 EXAMPLE_IS_CAT_PROXY_CLASS
 EXAMPLE_IS_CAT_SKELETON
 EXAMPLE_IS_CAT_SKELETON_CLASS
+</SECTION>
+
+<SECTION>
+<FILE>ExampleObject</FILE>
+<TITLE>ExampleObject</TITLE>
+ExampleObject
+ExampleObjectIface
+example_object_get_animal
+example_object_get_cat
+example_object_peek_animal
+example_object_peek_cat
+ExampleObjectProxy
+ExampleObjectProxyClass
+example_object_proxy_new
+ExampleObjectSkeleton
+ExampleObjectSkeletonClass
+example_object_skeleton_new
+example_object_skeleton_set_animal
+example_object_skeleton_set_cat
+<SUBSECTION Standard>
+example_object_get_type
+example_object_proxy_get_type
+example_object_skeleton_get_type
+ExampleObjectProxyPrivate
+ExampleObjectSkeletonPrivate
+EXAMPLE_IS_OBJECT
+EXAMPLE_IS_OBJECT_PROXY
+EXAMPLE_IS_OBJECT_PROXY_CLASS
+EXAMPLE_IS_OBJECT_SKELETON
+EXAMPLE_IS_OBJECT_SKELETON_CLASS
+EXAMPLE_OBJECT
+EXAMPLE_OBJECT_GET_IFACE
+EXAMPLE_OBJECT_PROXY
+EXAMPLE_OBJECT_PROXY_CLASS
+EXAMPLE_OBJECT_PROXY_GET_CLASS
+EXAMPLE_OBJECT_SKELETON
+EXAMPLE_OBJECT_SKELETON_CLASS
+EXAMPLE_OBJECT_SKELETON_GET_CLASS
+EXAMPLE_TYPE_OBJECT
+EXAMPLE_TYPE_OBJECT_PROXY
+EXAMPLE_TYPE_OBJECT_SKELETON
 </SECTION>
 
 <SECTION>

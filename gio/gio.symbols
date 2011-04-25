@@ -2121,13 +2121,12 @@ g_dbus_object_get_interface
 g_dbus_object_get_interfaces
 g_dbus_object_get_object_path
 g_dbus_object_get_type
-g_dbus_object_lookup_with_typecheck
-g_dbus_object_peek_with_typecheck
 #endif
 #endif
 
 #if IN_HEADER(__G_DBUS_OBJECT_PROXY_H__)
 #if IN_FILE(__G_DBUS_OBJECT_PROXY_C__)
+g_dbus_object_proxy_new
 g_dbus_object_proxy_get_connection
 g_dbus_object_proxy_get_type
 #endif

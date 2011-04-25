@@ -40,9 +40,6 @@ typedef struct _GDBusObjectIface GDBusObjectIface;
  * @get_object_path: Returns the object path. See g_dbus_object_get_object_path().
  * @get_interfaces: Returns all interfaces. See g_dbus_object_get_interfaces().
  * @get_interface: Returns an interface by name. See g_dbus_object_get_interface().
- * @lookup_with_typecheck: Like @get_interface but warns on stderr if the returned object, if any,
- *   does not conform to @type. Returned object must be freed by the caller.
- * @peek_with_typecheck: Like @lookup_with_typecheck but does not transfer the reference.
  * @interface_added: Signal handler for the #GDBusObject::interface-added signal.
  * @interface_removed: Signal handler for the #GDBusObject::interface-removed signal.
  *
@@ -64,13 +61,6 @@ struct _GDBusObjectIface
   GDBusInterface  *(*get_interface)   (GDBusObject  *object,
                                        const gchar  *interface_name);
 
-  gpointer         (*lookup_with_typecheck) (GDBusObject *object,
-                                             const gchar *interface_name,
-                                             GType        type);
-  gpointer         (*peek_with_typecheck)   (GDBusObject *object,
-                                             const gchar *interface_name,
-                                             GType        type);
-
   /* Signals */
   void (*interface_added)   (GDBusObject     *object,
                              GDBusInterface  *interface_);
@@ -84,13 +74,6 @@ const gchar     *g_dbus_object_get_object_path (GDBusObject  *object);
 GList           *g_dbus_object_get_interfaces  (GDBusObject  *object);
 GDBusInterface  *g_dbus_object_get_interface   (GDBusObject  *object,
                                                 const gchar  *interface_name);
-
-gpointer         g_dbus_object_peek_with_typecheck   (GDBusObject *object,
-                                                      const gchar *interface_name,
-                                                      GType        type);
-gpointer         g_dbus_object_lookup_with_typecheck (GDBusObject *object,
-                                                      const gchar *interface_name,
-                                                      GType        type);
 
 G_END_DECLS
 

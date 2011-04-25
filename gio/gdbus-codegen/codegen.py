@@ -95,6 +95,13 @@ class CodeGenerator:
 
         self.c.write('typedef struct\n'
                      '{\n'
+                     '  GDBusInterfaceInfo parent_struct;\n'
+                     '  const gchar *hyphen_name;\n'
+                     '} _ExtendedGDBusInterfaceInfo;\n'
+                     '\n')
+
+        self.c.write('typedef struct\n'
+                     '{\n'
                      '  const _ExtendedGDBusPropertyInfo *info;\n'
                      '  guint prop_id;\n'
                      '  GValue orig_value; /* the value before the change */\n'
@@ -455,41 +462,6 @@ class CodeGenerator:
                          %(i.camel_name, i.name_lower))
             self.h.write('\n')
 
-            # Interface proxy accessors
-            self.h.write(self.docbook_gen.expand(
-                    '/**\n'
-                    ' * %sGET_%s:\n'
-                    ' * @object: A #GDBusObject.\n'
-                    ' *\n'
-                    ' * Gets the #%s instance corresponding to the D-Bus interface #%s, if any.\n'
-                    ' *\n'
-                    ' * This macro can be used on both the client-side (passing a #GDBusObjectProxy) or the service-side (passing a #GDBusObjectSkeleton).\n'
-                    ' *\n'
-                    ' * This macro is just C convenience - other languages will use g_dbus_object_get_interface() to achieve the same result.\n'
-                    ' *\n'
-                    ' * Returns: (transfer full): A #%s or %%NULL if @object does not have said interface. Free with g_object_unref().\n'
-                    %(i.ns_upper, i.name_upper, i.camel_name, i.name, i.camel_name)))
-            self.write_gtkdoc_deprecated_and_since_and_close(i, self.h, 0)
-            self.h.write('#define %sGET_%s(object) (g_dbus_object_lookup_with_typecheck (G_DBUS_OBJECT (object), "%s", %sTYPE_%s))\n'%(i.ns_upper, i.name_upper, i.name, i.ns_upper, i.name_upper))
-            self.h.write(self.docbook_gen.expand(
-                    '/**\n'
-                    ' * %sPEEK_%s:\n'
-                    ' * @object: A #GDBusObject.\n'
-                    ' *\n'
-                    ' * Like the %sGET_%s() macro but doesn\'t increase the reference count on the returned object.\n'
-                    ' *\n'
-                    ' * This macro can be used on both the client-side (passing a #GDBusObjectProxy) or the service-side (passing a #GDBusObjectSkeleton).\n'
-                    ' *\n'
-                    ' * This macro is just C convenience - other languages will use g_dbus_object_get_interface() to achieve the same result..\n'
-                    ' *\n'
-                    ' * <warning>It is not safe to use the returned object if you are on another thread than where the #GDBusObjectManagerClient is running</warning>\n'
-                    ' *\n'
-                    ' * Returns: (transfer none): A #%s or %%NULL if @object does not have said interface. Do not free the returned object, it belongs to @object.\n'
-                    %(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name)))
-            self.write_gtkdoc_deprecated_and_since_and_close(i, self.h, 0)
-            self.h.write('#define %sPEEK_%s(object) (g_dbus_object_peek_with_typecheck (G_DBUS_OBJECT (object), "%s", %sTYPE_%s))\n'%(i.ns_upper, i.name_upper, i.name, i.ns_upper, i.name_upper))
-            self.h.write('\n')
-
             # Then the skeleton
             self.h.write('\n')
             self.h.write('/* ---- */\n')
@@ -524,9 +496,96 @@ class CodeGenerator:
 
             self.h.write('\n')
 
-        # Finally, the proxy manager
+        # Finally, the Object, ObjectProxy, ObjectSkeleton and ObjectManagerClient
         if self.generate_objmanager:
             self.h.write('\n')
+            self.h.write('/* ---- */\n')
+            self.h.write('\n')
+            self.h.write('#define %sTYPE_OBJECT (%sobject_get_type ())\n'%(self.ns_upper, self.ns_lower))
+            self.h.write('#define %sOBJECT(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_OBJECT, %sObject))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sIS_OBJECT(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_OBJECT))\n'%(self.ns_upper, self.ns_upper))
+            self.h.write('#define %sOBJECT_GET_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), %sTYPE_OBJECT, %sObject))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('\n')
+            self.h.write('struct _%sObject;\n'%(self.namespace))
+            self.h.write('typedef struct _%sObject %sObject;\n'%(self.namespace, self.namespace))
+            self.h.write('typedef struct _%sObjectIface %sObjectIface;\n'%(self.namespace, self.namespace))
+            self.h.write('\n')
+            self.h.write('struct _%sObjectIface\n'%(self.namespace))
+            self.h.write('{\n'
+                         '  GTypeInterface parent_iface;\n'
+                         '};\n'
+                         '\n')
+            self.h.write('GType %sobject_get_type (void) G_GNUC_CONST;\n'
+                         '\n'
+                         %(self.ns_lower))
+            for i in self.ifaces:
+                if i.deprecated:
+                    self.h.write('G_GNUC_DEPRECATED ')
+                self.h.write ('%s *%sobject_get_%s (%sObject *object);\n'
+                              %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
+            for i in self.ifaces:
+                if i.deprecated:
+                    self.h.write('G_GNUC_DEPRECATED ')
+                self.h.write ('%s *%sobject_peek_%s (%sObject *object);\n'
+                              %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
+            self.h.write('\n')
+            self.h.write('#define %sTYPE_OBJECT_PROXY (%sobject_proxy_get_type ())\n'%(self.ns_upper, self.ns_lower))
+            self.h.write('#define %sOBJECT_PROXY(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_OBJECT_PROXY, %sObjectProxy))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sOBJECT_PROXY_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_OBJECT_PROXY, %sObjectProxyClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sOBJECT_PROXY_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_OBJECT_PROXY, %sObjectProxyClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sIS_OBJECT_PROXY(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_OBJECT_PROXY))\n'%(self.ns_upper, self.ns_upper))
+            self.h.write('#define %sIS_OBJECT_PROXY_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), %sTYPE_OBJECT_PROXY))\n'%(self.ns_upper, self.ns_upper))
+            self.h.write('\n')
+            self.h.write('typedef struct _%sObjectProxy %sObjectProxy;\n'%(self.namespace, self.namespace))
+            self.h.write('typedef struct _%sObjectProxyClass %sObjectProxyClass;\n'%(self.namespace, self.namespace))
+            self.h.write('typedef struct _%sObjectProxyPrivate %sObjectProxyPrivate;\n'%(self.namespace, self.namespace))
+            self.h.write('\n')
+            self.h.write('struct _%sObjectProxy\n'%(self.namespace))
+            self.h.write('{\n')
+            self.h.write('  GDBusObjectProxy parent_instance;\n')
+            self.h.write('  %sObjectProxyPrivate *priv;\n'%(self.namespace))
+            self.h.write('};\n')
+            self.h.write('\n')
+            self.h.write('struct _%sObjectProxyClass\n'%(self.namespace))
+            self.h.write('{\n')
+            self.h.write('  GDBusObjectProxyClass parent_class;\n')
+            self.h.write('};\n')
+            self.h.write('\n')
+            self.h.write('GType %sobject_proxy_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
+            self.h.write('%sObjectProxy *%sobject_proxy_new (GDBusConnection *connection, const gchar *object_path);\n'%(self.namespace, self.ns_lower))
+            self.h.write('\n')
+            self.h.write('#define %sTYPE_OBJECT_SKELETON (%sobject_skeleton_get_type ())\n'%(self.ns_upper, self.ns_lower))
+            self.h.write('#define %sOBJECT_SKELETON(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_OBJECT_SKELETON, %sObjectSkeleton))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sOBJECT_SKELETON_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), %sTYPE_OBJECT_SKELETON, %sObjectSkeletonClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sOBJECT_SKELETON_GET_CLASS(o) (G_TYPE_INSTANCE_GET_CLASS ((o), %sTYPE_OBJECT_SKELETON, %sObjectSkeletonClass))\n'%(self.ns_upper, self.ns_upper, self.namespace))
+            self.h.write('#define %sIS_OBJECT_SKELETON(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_OBJECT_SKELETON))\n'%(self.ns_upper, self.ns_upper))
+            self.h.write('#define %sIS_OBJECT_SKELETON_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), %sTYPE_OBJECT_SKELETON))\n'%(self.ns_upper, self.ns_upper))
+            self.h.write('\n')
+            self.h.write('typedef struct _%sObjectSkeleton %sObjectSkeleton;\n'%(self.namespace, self.namespace))
+            self.h.write('typedef struct _%sObjectSkeletonClass %sObjectSkeletonClass;\n'%(self.namespace, self.namespace))
+            self.h.write('typedef struct _%sObjectSkeletonPrivate %sObjectSkeletonPrivate;\n'%(self.namespace, self.namespace))
+            self.h.write('\n')
+            self.h.write('struct _%sObjectSkeleton\n'%(self.namespace))
+            self.h.write('{\n')
+            self.h.write('  GDBusObjectSkeleton parent_instance;\n')
+            self.h.write('  %sObjectSkeletonPrivate *priv;\n'%(self.namespace))
+            self.h.write('};\n')
+            self.h.write('\n')
+            self.h.write('struct _%sObjectSkeletonClass\n'%(self.namespace))
+            self.h.write('{\n')
+            self.h.write('  GDBusObjectSkeletonClass parent_class;\n')
+            self.h.write('};\n')
+            self.h.write('\n')
+            self.h.write('GType %sobject_skeleton_get_type (void) G_GNUC_CONST;\n'%(self.ns_lower))
+            self.h.write('%sObjectSkeleton *%sobject_skeleton_new (const gchar *object_path);\n'
+                         %(self.namespace, self.ns_lower))
+            for i in self.ifaces:
+                if i.deprecated:
+                    self.h.write('G_GNUC_DEPRECATED ')
+                self.h.write ('void %sobject_skeleton_set_%s (%sObjectSkeleton *object, %s *interface_);\n'
+                              %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name))
+            self.h.write('\n')
+
             self.h.write('/* ---- */\n')
             self.h.write('\n')
             self.h.write('#define %sTYPE_OBJECT_MANAGER_CLIENT (%sobject_manager_client_get_type ())\n'%(self.ns_upper, self.ns_lower))
@@ -799,28 +858,32 @@ class CodeGenerator:
                              '\n')
 
             num_anno = self.generate_annotations('_%s_annotation_info'%(i.name_lower), i.annotations)
-            self.c.write('static const GDBusInterfaceInfo _%s_interface_info =\n'
+            self.c.write('static const _ExtendedGDBusInterfaceInfo _%s_interface_info =\n'
                          '{\n'
-                         '  -1,\n'
-                         '  "%s",\n'%(i.name_lower, i.name))
+                         '  {\n'
+                         '    -1,\n'
+                         '    "%s",\n'%(i.name_lower, i.name))
             if len(i.methods) == 0:
-                self.c.write('  NULL,\n')
+                self.c.write('    NULL,\n')
             else:
-                self.c.write('  (GDBusMethodInfo **) &_%s_method_info_pointers,\n'%(i.name_lower))
+                self.c.write('    (GDBusMethodInfo **) &_%s_method_info_pointers,\n'%(i.name_lower))
             if len(i.signals) == 0:
-                self.c.write('  NULL,\n')
+                self.c.write('    NULL,\n')
             else:
-                self.c.write('  (GDBusSignalInfo **) &_%s_signal_info_pointers,\n'%(i.name_lower))
+                self.c.write('    (GDBusSignalInfo **) &_%s_signal_info_pointers,\n'%(i.name_lower))
             if len(i.properties) == 0:
-                self.c.write('  NULL,\n')
+                self.c.write('    NULL,\n')
             else:
-                self.c.write('  (GDBusPropertyInfo **) &_%s_property_info_pointers,\n'%(i.name_lower))
+                self.c.write('    (GDBusPropertyInfo **) &_%s_property_info_pointers,\n'%(i.name_lower))
             if num_anno == 0:
-                self.c.write('  NULL\n')
+                self.c.write('    NULL\n')
             else:
-                self.c.write('  (GDBusAnnotationInfo **) &_%s_annotation_info_pointers\n'%(i.name_lower))
-            self.c.write('};\n'
-                         '\n')
+                self.c.write('    (GDBusAnnotationInfo **) &_%s_annotation_info_pointers\n'%(i.name_lower))
+            self.c.write('  },\n'
+                         '  "%s",\n'
+                         '};\n'
+                         '\n'
+                         %(i.name_hyphen))
             self.c.write('\n')
             self.c.write(self.docbook_gen.expand(
                     '/**\n'
@@ -1945,11 +2008,11 @@ class CodeGenerator:
                      '  GVariantBuilder builder;\n'
                      '  guint n;\n'
                      '  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));\n'
-                     '  if (_%s_interface_info.properties == NULL)\n'
+                     '  if (_%s_interface_info.parent_struct.properties == NULL)\n'
                      '    goto out;\n'
-                     '  for (n = 0; _%s_interface_info.properties[n] != NULL; n++)\n'
+                     '  for (n = 0; _%s_interface_info.parent_struct.properties[n] != NULL; n++)\n'
                      '    {\n'
-                     '      GDBusPropertyInfo *info = _%s_interface_info.properties[n];\n'
+                     '      GDBusPropertyInfo *info = _%s_interface_info.parent_struct.properties[n];\n'
                      '      if (info->flags & G_DBUS_PROPERTY_INFO_FLAGS_READABLE)\n'
                      '        {\n'
                      '          GVariant *value;\n'
@@ -2241,6 +2304,405 @@ class CodeGenerator:
 
     # ---------------------------------------------------------------------------------------------------
 
+    def generate_object(self):
+        self.c.write('/* ------------------------------------------------------------------------\n'
+                     ' * Code for Object, ObjectProxy and ObjectSkeleton\n'
+                     ' * ------------------------------------------------------------------------\n'
+                     ' */\n'
+                     '\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * SECTION:%sObject\n'
+                ' * @title: %sObject\n'
+                ' * @short_description: Specialized GDBusObject types\n'
+                ' *\n'
+                ' * This section contains the #%sObject, #%sObjectProxy, and #%sObjectSkeleton types which make it easier to work with objects implementing generated types for D-Bus interfaces.\n'
+                ' */\n'
+                %(self.namespace, self.namespace, self.namespace, self.namespace, self.namespace)))
+        self.c.write('\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sObject:\n'
+                ' *\n'
+                ' * The #%sObject type is a specialized container of interfaces.\n'
+                ' */\n'
+                %(self.namespace, self.namespace)))
+        self.c.write('\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sObjectIface:\n'
+                ' * @parent_iface: The parent interface.\n'
+                ' *\n'
+                ' * Virtual table for the #%sObject interface.\n'
+                ' */\n'
+                %(self.namespace, self.namespace)))
+        self.c.write('\n')
+
+        self.c.write('static void\n'
+                     '%sobject_default_init (%sObjectIface *iface)\n'
+                     '{\n'
+                     %(self.ns_lower, self.namespace));
+        for i in self.ifaces:
+            self.c.write(self.docbook_gen.expand(
+                    '  /**\n'
+                    '   * %sObject:%s:\n'
+                    '   *\n'
+                    '   * The #%s instance corresponding to the D-Bus interface #%s, if any.\n'
+                    '   *\n'
+                    '   * Connect to the #GObject::notify signal to get informed of property changes.\n'
+                    %(self.namespace, i.name_hyphen, i.camel_name, i.name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 2)
+            self.c.write('  g_object_interface_install_property (iface, g_param_spec_object ("%s", "%s", "%s", %sTYPE_%s, G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS));\n'
+                         '\n'
+                         %(i.name_hyphen, i.name_hyphen, i.name_hyphen, self.ns_upper, i.name_upper))
+        self.c.write('}\n'
+                     '\n')
+
+        self.c.write('typedef %sObjectIface %sObjectInterface;\n'%(self.namespace, self.namespace))
+        self.c.write('G_DEFINE_INTERFACE_WITH_CODE (%sObject, %sobject, G_TYPE_OBJECT, g_type_interface_add_prerequisite (g_define_type_id, G_TYPE_DBUS_OBJECT));\n'%(self.namespace, self.ns_lower))
+        self.c.write('\n')
+
+        for i in self.ifaces:
+            self.c.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %sobject_get_%s:\n'
+                    ' * @object: A #%sObject.\n'
+                    ' *\n'
+                    ' * Gets the #%s instance for the D-Bus interface #%s on @object, if any.\n'
+                    ' *\n'
+                    ' * Returns: (transfer full): A #%s that must be freed with g_object_unref() or %%NULL if @object does not implement the interface.\n'
+                    %(self.ns_lower, i.name_upper.lower(), i.camel_name, i.camel_name, i.name, i.camel_name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+            self.c.write ('%s *%sobject_get_%s (%sObject *object)\n'
+                          %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
+            self.c.write('{\n'
+                         '  GDBusInterface *ret;\n'
+                         '  ret = g_dbus_object_get_interface (G_DBUS_OBJECT (object), "%s");\n'
+                         '  if (ret == NULL)\n'
+                         '    return NULL;\n'
+                         '  return %s%s (ret);\n'
+                         '}\n'
+                         '\n'
+                         %(i.name, self.ns_upper, i.name_upper))
+        self.c.write('\n')
+        for i in self.ifaces:
+            self.c.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %sobject_peek_%s: (skip)\n'
+                    ' * @object: A #%sObject.\n'
+                    ' *\n'
+                    ' * Like %sobject_get_%s() but doesn\' increase the reference count on the returned object.\n'
+                    ' *\n'
+                    ' * <warning>It is not safe to use the returned object if you are on another thread than the one where the #GDBusObjectManagerClient or #GDBusObjectManagerServer for @object is running.</warning>\n'
+                    ' *\n'
+                    ' * Returns: (transfer none): A #%s or %%NULL if @object does not implement the interface. Do not free the returned object, it is owned by @object.\n'
+                    %(self.ns_lower, i.name_upper.lower(), i.camel_name, self.ns_lower, i.name_upper.lower(), i.camel_name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+            self.c.write ('%s *%sobject_peek_%s (%sObject *object)\n'
+                          %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
+            self.c.write('{\n'
+                         '  GDBusInterface *ret;\n'
+                         '  ret = g_dbus_object_get_interface (G_DBUS_OBJECT (object), "%s");\n'
+                         '  if (ret == NULL)\n'
+                         '    return NULL;\n'
+                         '  g_object_unref (ret);\n'
+                         '  return %s%s (ret);\n'
+                         '}\n'
+                         '\n'
+                         %(i.name, self.ns_upper, i.name_upper))
+        self.c.write('\n')
+        # shared by ObjectProxy and ObjectSkeleton classes
+        self.c.write('static void\n'
+                     '%sobject_notify (GDBusObject *object, GDBusInterface *interface)\n'
+                     '{\n'
+                     '  g_object_notify (G_OBJECT (object), ((_ExtendedGDBusInterfaceInfo *) g_dbus_interface_get_info (interface))->hyphen_name);\n'
+                     '}\n'
+                     '\n'
+                     %(self.ns_lower))
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sObjectProxy:\n'
+                ' *\n'
+                ' * The #%sObjectProxy structure contains only private data and should only be accessed using the provided API.\n'
+                %(self.namespace, self.namespace)))
+        self.c.write(' */\n')
+        self.c.write('\n')
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sObjectProxyClass:\n'
+                ' * @parent_class: The parent class.\n'
+                ' *\n'
+                ' * Class structure for #%sObjectProxy.\n'
+                %(self.namespace, self.namespace)))
+        self.c.write(' */\n')
+        self.c.write('\n')
+        # class boilerplate
+        self.c.write('static void\n'
+                     '%sobject_proxy__%sobject_iface_init (%sObjectIface *iface)\n'
+                     '{\n'
+                     '}\n'
+                     '\n'
+                     %(self.ns_lower, self.ns_lower, self.namespace))
+        self.c.write('static void\n'
+                     '%sobject_proxy__g_dbus_object_iface_init (GDBusObjectIface *iface)\n'
+                     '{\n'
+                     '  iface->interface_added = %sobject_notify;\n'
+                     '  iface->interface_removed = %sobject_notify;\n'
+                     '}\n'
+                     '\n'
+                     %(self.ns_lower, self.ns_lower, self.ns_lower))
+        self.c.write('\n')
+        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sObjectProxy, %sobject_proxy, G_TYPE_DBUS_OBJECT_PROXY,\n'
+                     '                         G_IMPLEMENT_INTERFACE (%sTYPE_OBJECT, %sobject_proxy__%sobject_iface_init)\n'
+                     '                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT, %sobject_proxy__g_dbus_object_iface_init));\n'
+                     '\n'
+                     %(self.namespace, self.ns_lower, self.ns_upper, self.ns_lower, self.ns_lower, self.ns_lower))
+        # class boilerplate
+        self.c.write('static void\n'
+                     '%sobject_proxy_init (%sObjectProxy *object)\n'
+                     '{\n'
+                     '}\n'
+                     '\n'%(self.ns_lower, self.namespace))
+        self.c.write('static void\n'
+                     '%sobject_proxy_set_property (GObject      *_object,\n'
+                     '  guint         prop_id,\n'
+                     '  const GValue *value,\n'
+                     '  GParamSpec   *pspec)\n'
+                     '{\n'
+                     '  G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);\n'
+                     %(self.ns_lower))
+        self.c.write('}\n'
+                     '\n'%())
+        self.c.write('static void\n'
+                     '%sobject_proxy_get_property (GObject      *_object,\n'
+                     '  guint         prop_id,\n'
+                     '  GValue       *value,\n'
+                     '  GParamSpec   *pspec)\n'
+                     '{\n'
+                     '  %sObjectProxy *object = %sOBJECT_PROXY (_object);\n'
+                     '  GDBusInterface *interface;\n'
+                     '\n'
+                     '  switch (prop_id)\n'
+                     '    {\n'
+                     %(self.ns_lower, self.namespace, self.ns_upper))
+        n = 1
+        for i in self.ifaces:
+            self.c.write('    case %d:\n'
+                         '      interface = g_dbus_object_get_interface (G_DBUS_OBJECT (object), "%s");\n'
+                         '      g_value_take_object (value, interface);\n'
+                         '      break;\n'
+                         '\n'
+                         %(n, i.name))
+            n += 1
+        self.c.write('    default:\n'
+                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);\n'
+                     '      break;\n'
+                     '  }\n'
+                     '}\n'
+                     '\n'%())
+        self.c.write('static void\n'
+                     '%sobject_proxy_class_init (%sObjectProxyClass *klass)\n'
+                     '{\n'
+                     '  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);\n'
+                     '\n'
+                     '  gobject_class->set_property = %sobject_proxy_set_property;\n'
+                     '  gobject_class->get_property = %sobject_proxy_get_property;\n'
+                     '\n'
+                     %(self.ns_lower, self.namespace, self.ns_lower, self.ns_lower))
+        n = 1
+        for i in self.ifaces:
+            self.c.write('  g_object_class_override_property (gobject_class, %d, "%s");'
+                         '\n'
+                         %(n, i.name_hyphen))
+            n += 1
+        self.c.write('}\n'
+                     '\n')
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sobject_proxy_new:\n'
+                ' * @connection: A #GDBusConnection.\n'
+                ' * @object_path: An object path.\n'
+                ' *\n'
+                ' * Creates a new proxy object.\n'
+                ' *\n'
+                ' * Returns: (transfer full): The proxy object.\n'
+                ' */\n'
+                %(self.ns_lower)))
+        self.c.write('%sObjectProxy *\n'
+                     '%sobject_proxy_new (GDBusConnection *connection,\n'
+                     '  const gchar *object_path)\n'
+                     '{\n'
+                     '  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);\n'
+                     '  g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);\n'
+                     '  return %sOBJECT_PROXY (g_object_new (%sTYPE_OBJECT_PROXY, "connection", connection, "object-path", object_path, NULL));\n'
+                     '}\n'
+                     '\n'%(self.namespace, self.ns_lower, self.ns_upper, self.ns_upper))
+
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sObjectSkeleton:\n'
+                ' *\n'
+                ' * The #%sObjectSkeleton structure contains only private data and should only be accessed using the provided API.\n'
+                %(self.namespace, self.namespace)))
+        self.c.write(' */\n')
+        self.c.write('\n')
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sObjectSkeletonClass:\n'
+                ' * @parent_class: The parent class.\n'
+                ' *\n'
+                ' * Class structure for #%sObjectSkeleton.\n'
+                %(self.namespace, self.namespace)))
+        self.c.write(' */\n')
+        self.c.write('\n')
+        # class boilerplate
+        self.c.write('static void\n'
+                     '%sobject_skeleton__%sobject_iface_init (%sObjectIface *iface)\n'
+                     '{\n'
+                     '}\n'
+                     '\n'
+                     %(self.ns_lower, self.ns_lower, self.namespace))
+        self.c.write('\n')
+        self.c.write('static void\n'
+                     '%sobject_skeleton__g_dbus_object_iface_init (GDBusObjectIface *iface)\n'
+                     '{\n'
+                     '  iface->interface_added = %sobject_notify;\n'
+                     '  iface->interface_removed = %sobject_notify;\n'
+                     '}\n'
+                     '\n'
+                     %(self.ns_lower, self.ns_lower, self.ns_lower))
+        self.c.write('G_DEFINE_TYPE_WITH_CODE (%sObjectSkeleton, %sobject_skeleton, G_TYPE_DBUS_OBJECT_SKELETON,\n'
+                     '                         G_IMPLEMENT_INTERFACE (%sTYPE_OBJECT, %sobject_skeleton__%sobject_iface_init)\n'
+                     '                         G_IMPLEMENT_INTERFACE (G_TYPE_DBUS_OBJECT, %sobject_skeleton__g_dbus_object_iface_init));\n'
+                     '\n'
+                     %(self.namespace, self.ns_lower, self.ns_upper, self.ns_lower, self.ns_lower, self.ns_lower))
+        # class boilerplate
+        self.c.write('static void\n'
+                     '%sobject_skeleton_init (%sObjectSkeleton *object)\n'
+                     '{\n'
+                     '}\n'
+                     '\n'%(self.ns_lower, self.namespace))
+        self.c.write('static void\n'
+                     '%sobject_skeleton_set_property (GObject      *_object,\n'
+                     '  guint         prop_id,\n'
+                     '  const GValue *value,\n'
+                     '  GParamSpec   *pspec)\n'
+                     '{\n'
+                     '  %sObjectSkeleton *object = %sOBJECT_SKELETON (_object);\n'
+                     '  GDBusInterfaceSkeleton *interface;\n'
+                     '\n'
+                     '  switch (prop_id)\n'
+                     '    {\n'
+                     %(self.ns_lower, self.namespace, self.ns_upper))
+        n = 1
+        for i in self.ifaces:
+            self.c.write('    case %d:\n'
+                         '      interface = g_value_get_object (value);\n'
+                         '      if (interface != NULL)\n'
+                         '        {\n'
+                         '          g_warn_if_fail (%sIS_%s (interface));\n'
+                         '          g_dbus_object_skeleton_add_interface (G_DBUS_OBJECT_SKELETON (object), interface);\n'
+                         '        }\n'
+                         '      else\n'
+                         '        {\n'
+                         '          g_dbus_object_skeleton_remove_interface_by_name (G_DBUS_OBJECT_SKELETON (object), "%s");\n'
+                         '        }\n'
+                         '      break;\n'
+                         '\n'
+                         %(n, self.ns_upper, i.name_upper, i.name))
+            n += 1
+        self.c.write('    default:\n'
+                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);\n'
+                     '      break;\n'
+                     '  }\n'
+                     '}\n'
+                     '\n'%())
+        self.c.write('static void\n'
+                     '%sobject_skeleton_get_property (GObject      *_object,\n'
+                     '  guint         prop_id,\n'
+                     '  GValue       *value,\n'
+                     '  GParamSpec   *pspec)\n'
+                     '{\n'
+                     '  %sObjectSkeleton *object = %sOBJECT_SKELETON (_object);\n'
+                     '  GDBusInterface *interface;\n'
+                     '\n'
+                     '  switch (prop_id)\n'
+                     '    {\n'
+                     %(self.ns_lower, self.namespace, self.ns_upper))
+        n = 1
+        for i in self.ifaces:
+            self.c.write('    case %d:\n'
+                         '      interface = g_dbus_object_get_interface (G_DBUS_OBJECT (object), "%s");\n'
+                         '      g_value_take_object (value, interface);\n'
+                         '      break;\n'
+                         '\n'
+                         %(n, i.name))
+            n += 1
+        self.c.write('    default:\n'
+                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);\n'
+                     '      break;\n'
+                     '  }\n'
+                     '}\n'
+                     '\n'%())
+        self.c.write('static void\n'
+                     '%sobject_skeleton_class_init (%sObjectSkeletonClass *klass)\n'
+                     '{\n'
+                     '  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);\n'
+                     '\n'
+                     '  gobject_class->set_property = %sobject_skeleton_set_property;\n'
+                     '  gobject_class->get_property = %sobject_skeleton_get_property;\n'
+                     '\n'
+                     %(self.ns_lower, self.namespace, self.ns_lower, self.ns_lower))
+        n = 1
+        for i in self.ifaces:
+            self.c.write('  g_object_class_override_property (gobject_class, %d, "%s");'
+                         '\n'
+                         %(n, i.name_hyphen))
+            n += 1
+        self.c.write('}\n'
+                     '\n')
+        self.c.write(self.docbook_gen.expand(
+                '/**\n'
+                ' * %sobject_skeleton_new:\n'
+                ' * @object_path: An object path.\n'
+                ' *\n'
+                ' * Creates a new skeleton object.\n'
+                ' *\n'
+                ' * Returns: (transfer full): The skeleton object.\n'
+                ' */\n'
+                %(self.ns_lower)))
+        self.c.write('%sObjectSkeleton *\n'
+                     '%sobject_skeleton_new (const gchar *object_path)\n'
+                     '{\n'
+                     '  g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);\n'
+                     '  return %sOBJECT_SKELETON (g_object_new (%sTYPE_OBJECT_SKELETON, "object-path", object_path, NULL));\n'
+                     '}\n'
+                     '\n'%(self.namespace, self.ns_lower, self.ns_upper, self.ns_upper))
+        for i in self.ifaces:
+            self.c.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %sobject_skeleton_set_%s:\n'
+                    ' * @object: A #%sObjectSkeleton.\n'
+                    ' * @interface_: (allow-none): A #%s or %%NULL to clear the interface.\n'
+                    ' *\n'
+                    ' * Sets the #%s instance for the D-Bus interface #%s on @object.\n'
+                    %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name, i.camel_name, i.name)))
+            self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+            self.c.write ('void %sobject_skeleton_set_%s (%sObjectSkeleton *object, %s *interface_)\n'
+                          %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name))
+            self.c.write('{\n'
+                         '  g_object_set (G_OBJECT (object), "%s", interface_, NULL);\n'
+                         '}\n'
+                         '\n'
+                         %(i.name_hyphen))
+        self.c.write('\n')
+
+
     def generate_object_manager_client(self):
         self.c.write('/* ------------------------------------------------------------------------\n'
                      ' * Code for ObjectManager client\n'
@@ -2252,7 +2714,7 @@ class CodeGenerator:
                 '/**\n'
                 ' * SECTION:%sObjectManagerClient\n'
                 ' * @title: %sObjectManagerClient\n'
-                ' * @short_description: Generated #GDBusObjectManagerClient subclass\n'
+                ' * @short_description: Generated GDBusObjectManagerClient type\n'
                 ' *\n'
                 ' * This section contains a #GDBusObjectManagerClient that uses %sobject_manager_client_get_proxy_type() as the #GDBusProxyTypeFunc.\n'
                 ' */\n'
@@ -2300,13 +2762,13 @@ class CodeGenerator:
                 ' * %sobject_manager_client_get_proxy_type:\n'
                 ' * @manager: A #GDBusObjectManagerClient.\n'
                 ' * @object_path: The object path of the remote object (unused).\n'
-                ' * @interface_name: Interface name of the remote object.\n'
+                ' * @interface_name: (allow-none): Interface name of the remote object or %%NULL to get the object proxy #GType.\n'
                 ' * @user_data: User data (unused).\n'
                 ' *\n'
-                ' * A #GDBusProxyTypeFunc that maps @interface_name to the generated #GDBusProxy<!-- -->-derived types.\n'
+                ' * A #GDBusProxyTypeFunc that maps @interface_name to the generated #GDBusObjectProxy<!-- -->- and #GDBusProxy<!-- -->-derived types.\n'
                 ' *\n'
-                ' * Returns: A #GDBusProxy<!-- -->-derived #GType.\n'
-                %(self.ns_lower)))
+                ' * Returns: A #GDBusProxy<!-- -->-derived #GType if @interface_name is not %%NULL, otherwise the #GType for #%sObjectProxy.\n'
+                %(self.ns_lower, self.namespace)))
         self.c.write(' */\n')
         self.c.write('GType\n'
                      '%sobject_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data)\n'
@@ -2316,9 +2778,12 @@ class CodeGenerator:
                      '  static GHashTable *lookup_hash;\n'
                      '  GType ret;\n'
                      '\n'
+                     '  if (interface_name == NULL)\n'
+                     '    return %sTYPE_OBJECT_PROXY;\n'
                      '  if (g_once_init_enter (&once_init_value))\n'
                      '    {\n'
-                     '      lookup_hash = g_hash_table_new (g_str_hash, g_str_equal);\n')
+                     '      lookup_hash = g_hash_table_new (g_str_hash, g_str_equal);\n'
+                     %(self.ns_upper))
         for i in self.ifaces:
             self.c.write('      g_hash_table_insert (lookup_hash, "%s", GSIZE_TO_POINTER (%sTYPE_%s_PROXY));\n'
                          %(i.name, i.ns_upper, i.name_upper))
@@ -2587,5 +3052,6 @@ class CodeGenerator:
             self.generate_proxy(i)
             self.generate_skeleton(i)
         if self.generate_objmanager:
+            self.generate_object()
             self.generate_object_manager_client()
         self.generate_outro()

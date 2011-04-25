@@ -133,8 +133,6 @@ gboolean _g_signal_accumulator_false_handled (GSignalInvocationHint *ihint,
 
 gboolean _g_dbus_object_skeleton_has_authorize_method_handlers (GDBusObjectSkeleton *object);
 
-GDBusObjectProxy *_g_dbus_object_proxy_new (GDBusConnection *connection,
-                                            const gchar *object_path);
 void _g_dbus_object_proxy_add_interface (GDBusObjectProxy *proxy,
                                          GDBusProxy       *interface_proxy);
 void _g_dbus_object_proxy_remove_interface (GDBusObjectProxy *proxy,

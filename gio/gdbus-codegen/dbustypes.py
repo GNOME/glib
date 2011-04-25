@@ -349,6 +349,8 @@ class Interface:
                 self.name_lower = utils.camel_case_to_uscore(name_with_ns)
             self.name_upper = utils.camel_case_to_uscore(name).upper()
 
+        self.name_hyphen = self.name_upper.lower().replace('_', '-')
+
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
             self.deprecated = True
 

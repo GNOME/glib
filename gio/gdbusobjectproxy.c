@@ -37,9 +37,9 @@
  * @include: gio/gio.h
  *
  * A #GDBusObjectProxy is an object used to represent a remote object
- * with one or more D-Bus interfaces. You cannot instantiate a
- * #GDBusObjectProxy yourself - you need to use a
- * #GDBusObjectManagerClient to get one.
+ * with one or more D-Bus interfaces. Normally, you don't instantiate
+ * a #GDBusObjectProxy yourself - typically #GDBusObjectManagerClient
+ * is used to obtain it.
  *
  * Since: 2.30
  */
@@ -104,8 +104,18 @@ g_dbus_object_proxy_set_property (GObject       *object,
                                   const GValue  *value,
                                   GParamSpec    *pspec)
 {
+  GDBusObjectProxy *proxy = G_DBUS_OBJECT_PROXY (object);
+
   switch (prop_id)
     {
+    case PROP_OBJECT_PATH:
+      proxy->priv->object_path = g_value_dup_string (value);
+      break;
+
+    case PROP_CONNECTION:
+      proxy->priv->connection = g_value_dup_object (value);
+      break;
+
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);
       break;
@@ -134,7 +144,8 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
                                                         "Object Path",
                                                         "The object path of the proxy",
                                                         NULL,
-                                                        G_PARAM_READABLE |
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
 
   /**
@@ -146,11 +157,12 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
    */
   g_object_class_install_property (gobject_class,
                                    PROP_CONNECTION,
-                                   g_param_spec_string ("connection",
+                                   g_param_spec_object ("connection",
                                                         "Connection",
                                                         "The connection of the proxy",
-                                                        NULL,
-                                                        G_PARAM_READABLE |
+                                                        G_TYPE_DBUS_CONNECTION,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
 
   g_type_class_add_private (klass, sizeof (GDBusObjectProxyPrivate));
@@ -231,18 +243,15 @@ g_dbus_object_proxy_get_interfaces (GDBusObject *object)
 /* ---------------------------------------------------------------------------------------------------- */
 
 GDBusObjectProxy *
-_g_dbus_object_proxy_new (GDBusConnection *connection,
-                          const gchar *object_path)
+g_dbus_object_proxy_new (GDBusConnection *connection,
+                         const gchar *object_path)
 {
-  GDBusObjectProxy *proxy;
-
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);
-
-  proxy = G_DBUS_OBJECT_PROXY (g_object_new (G_TYPE_DBUS_OBJECT_PROXY, NULL));
-  proxy->priv->object_path = g_strdup (object_path);
-  proxy->priv->connection = g_object_ref (connection);
-  return proxy;
+  return G_DBUS_OBJECT_PROXY (g_object_new (G_TYPE_DBUS_OBJECT_PROXY,
+                                            "object-path", object_path,
+                                            "connection", connection,
+                                            NULL));
 }
 
 void
@@ -281,44 +290,10 @@ _g_dbus_object_proxy_remove_interface (GDBusObjectProxy *proxy,
     }
 }
 
-static gpointer
-g_dbus_object_proxy_lookup_with_typecheck (GDBusObject *object,
-                                           const gchar *interface_name,
-                                           GType        type)
-{
-  GDBusObjectProxy *proxy = G_DBUS_OBJECT_PROXY (object);
-  GDBusProxy *ret;
-
-  g_return_val_if_fail (G_IS_DBUS_OBJECT_PROXY (proxy), NULL);
-  g_return_val_if_fail (g_dbus_is_interface_name (interface_name), NULL);
-
-  ret = g_hash_table_lookup (proxy->priv->map_name_to_iface, interface_name);
-  if (ret != NULL)
-    {
-      g_warn_if_fail (G_TYPE_CHECK_INSTANCE_TYPE (ret, type));
-      g_object_ref (ret);
-    }
-  return ret;
-}
-
-static gpointer
-g_dbus_object_proxy_peek_with_typecheck (GDBusObject  *object,
-                                         const gchar  *interface_name,
-                                         GType         type)
-{
-  GDBusProxy *ret;
-  ret = g_dbus_object_proxy_lookup_with_typecheck (object, interface_name, type);
-  if (ret != NULL)
-    g_object_unref (ret);
-  return ret;
-}
-
 static void
 dbus_object_interface_init (GDBusObjectIface *iface)
 {
   iface->get_object_path       = g_dbus_object_proxy_get_object_path;
   iface->get_interfaces        = g_dbus_object_proxy_get_interfaces;
   iface->get_interface         = g_dbus_object_proxy_get_interface;
-  iface->peek_with_typecheck   = g_dbus_object_proxy_peek_with_typecheck;
-  iface->lookup_with_typecheck = g_dbus_object_proxy_lookup_with_typecheck;
 }

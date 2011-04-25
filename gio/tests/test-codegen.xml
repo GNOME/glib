@@ -349,6 +349,9 @@
     <signal name="BazSignal"/>
   </interface>
 
+  <!-- ChangingInterfaceV2:
+       @since: 2.0
+  -->
   <interface name="ChangingInterfaceV2">
     <!--
       NewSignalIn2:
@@ -370,6 +373,9 @@
     <method name="FooMethod"/>
   </interface>
 
+  <!-- ChangingInterfaceV10:
+       @since: 10.0
+  -->
   <interface name="ChangingInterfaceV10">
     <!--
       AddedSignalIn10:
