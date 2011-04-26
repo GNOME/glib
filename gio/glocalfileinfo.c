@@ -1883,7 +1883,7 @@ set_unix_mode (char                       *filename,
 	       const GFileAttributeValue  *value,
 	       GError                    **error)
 {
-  guint32 val;
+  guint32 val = 0;
   int res = 0;
   
   if (!get_uint32 (value, &val, error))
@@ -1934,7 +1934,7 @@ set_unix_uid_gid (char                       *filename,
 		  GError                    **error)
 {
   int res;
-  guint32 val;
+  guint32 val = 0;
   uid_t uid;
   gid_t gid;
   
@@ -2070,8 +2070,8 @@ set_mtime_atime (char                       *filename,
 		 GError                    **error)
 {
   int res;
-  guint64 val;
-  guint32 val_usec;
+  guint64 val = 0;
+  guint32 val_usec = 0;
   struct stat statbuf;
   gboolean got_stat = FALSE;
   struct timeval times[2] = { {0, 0}, {0, 0} };
