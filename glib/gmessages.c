@@ -548,14 +548,10 @@ g_logv (const gchar   *log_domain,
 	      else
 		abort ();
 #else
-#if defined (G_ENABLE_DEBUG) && defined (SIGTRAP)
 	      if (!(test_level & G_LOG_FLAG_RECURSION))
 		G_BREAKPOINT ();
 	      else
 		abort ();
-#else /* !G_ENABLE_DEBUG || !SIGTRAP */
-	      abort ();
-#endif /* !G_ENABLE_DEBUG || !SIGTRAP */
 #endif /* !G_OS_WIN32 */
 	    }
 	  
@@ -818,7 +814,6 @@ _g_log_fallback_handler (const gchar   *log_domain,
 #ifndef G_OS_WIN32
   gchar pid_string[FORMAT_UNSIGNED_BUFSIZE];
 #endif
-  gboolean is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   int fd;
 
   /* we cannot call _any_ GLib functions in this fallback handler,
@@ -855,10 +850,6 @@ _g_log_fallback_handler (const gchar   *log_domain,
   write_string (fd, level_prefix);
   write_string (fd, ": ");
   write_string (fd, message);
-  if (is_fatal)
-    write_string (fd, "\naborting...\n");
-  else
-    write_string (fd, "\n");
 }
 
 static void
@@ -927,7 +918,6 @@ g_log_default_handler (const gchar   *log_domain,
 		       const gchar   *message,
 		       gpointer	      unused_data)
 {
-  gboolean is_fatal = (log_level & G_LOG_FLAG_FATAL) != 0;
   gchar level_prefix[STRING_BUFFER_SIZE], *string;
   GString *gstring;
   int fd;
@@ -988,10 +978,7 @@ g_log_default_handler (const gchar   *log_domain,
 
       g_string_free (msg, TRUE);
     }
-  if (is_fatal)
-    g_string_append (gstring, "\naborting...\n");
-  else
-    g_string_append (gstring, "\n");
+  g_string_append (gstring, "\n");
 
   string = g_string_free (gstring, FALSE);
 
