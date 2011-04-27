@@ -64,6 +64,7 @@
 #define ADDED_ASSOCIATIONS_GROUP    "Added Associations"
 #define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations"
 #define MIME_CACHE_GROUP            "MIME Cache"
+#define GENERIC_NAME_KEY            "GenericName"
 #define FULL_NAME_KEY               "X-GNOME-FullName"
 
 enum {
@@ -93,7 +94,7 @@ struct _GDesktopAppInfo
   char *filename;
 
   char *name;
-  /* FIXME: what about GenericName ? */
+  char *generic_name;
   char *fullname;
   char *comment;
   char *icon_name;
@@ -167,6 +168,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->desktop_id);
   g_free (info->filename);
   g_free (info->name);
+  g_free (info->generic_name);
   g_free (info->fullname);
   g_free (info->comment);
   g_free (info->icon_name);
@@ -308,6 +310,7 @@ g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info,
     }
 
   info->name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
+  info->generic_name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, GENERIC_NAME_KEY, NULL, NULL);
   info->fullname = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, FULL_NAME_KEY, NULL, NULL);
   info->comment = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
   info->nodisplay = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, NULL) != FALSE;
@@ -515,6 +518,7 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->desktop_id = g_strdup (info->desktop_id);
   
   new_info->name = g_strdup (info->name);
+  new_info->generic_name = g_strdup (info->generic_name);
   new_info->fullname = g_strdup (info->fullname);
   new_info->comment = g_strdup (info->comment);
   new_info->nodisplay = info->nodisplay;
@@ -651,6 +655,18 @@ const char *
 g_desktop_app_info_get_categories    (GDesktopAppInfo *info)
 {
   return info->categories;
+}
+
+/**
+ * g_desktop_app_info_get_generic_name:
+ * @info: a #GDesktopAppInfo
+ *
+ * Returns: The value of the GenericName key
+ */
+const char *
+g_desktop_app_info_get_generic_name  (GDesktopAppInfo *info)
+{
+  return info->generic_name;
 }
 
 static char *
@@ -1910,6 +1926,10 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
 
   g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
 			 G_KEY_FILE_DESKTOP_KEY_NAME, info->name);
+
+  if (info->generic_name != NULL)
+    g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			   GENERIC_NAME_KEY, info->generic_name);
 
   if (info->fullname != NULL)
     g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
