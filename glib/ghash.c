@@ -278,68 +278,6 @@ g_hash_table_set_shift_from_size (GHashTable *hash_table, gint size)
 /*
  * g_hash_table_lookup_node:
  * @hash_table: our #GHashTable
- * @key: the key to lookup against (may be %NULL)
- * @hash_return: optional key hash return location
- * Return value: index of the described node
- *
- * Performs a lookup in the hash table.
- *
- * Virtually all hash operations will use this function internally.
- *
- * This function first computes the hash value of the key using the
- * user's hash function.
- *
- * If an entry in the table matching @key is found then this function
- * returns the index of that entry in the table, and if not, the
- * index of an empty node (never a tombstone).
- */
-static inline guint
-g_hash_table_lookup_node (GHashTable    *hash_table,
-                          gconstpointer  key)
-{
-  guint node_index;
-  guint hash_value;
-  guint step = 0;
-
-  hash_value = (* hash_table->hash_func) (key);
-  if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
-    hash_value = 2;
-
-  node_index = hash_value % hash_table->mod;
-
-  while (!HASH_IS_UNUSED (hash_table->hashes[node_index]))
-    {
-      /*  We first check if our full hash values
-       *  are equal so we can avoid calling the full-blown
-       *  key equality function in most cases.
-       */
-
-      if (hash_table->hashes[node_index] == hash_value)
-        {
-	  gpointer node_key = hash_table->keys[node_index];
-
-          if (hash_table->key_equal_func)
-            {
-              if (hash_table->key_equal_func (node_key, key))
-                break;
-            }
-          else if (node_key == key)
-            {
-              break;
-            }
-        }
-
-      step++;
-      node_index += step;
-      node_index &= hash_table->mask;
-    }
-
-  return node_index;
-}
-
-/*
- * g_hash_table_lookup_node_for_insertion:
- * @hash_table: our #GHashTable
  * @key: the key to lookup against
  * @hash_return: key hash return location
  * Return value: index of the described node
@@ -360,9 +298,9 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
  * the hash record again for the new record.
  */
 static inline guint
-g_hash_table_lookup_node_for_insertion (GHashTable    *hash_table,
-                                        gconstpointer  key,
-                                        guint         *hash_return)
+g_hash_table_lookup_node (GHashTable    *hash_table,
+			  gconstpointer  key,
+			  guint         *hash_return)
 {
   guint node_index;
   guint hash_value;
@@ -899,11 +837,12 @@ gpointer
 g_hash_table_lookup (GHashTable   *hash_table,
                      gconstpointer key)
 {
-  guint      node_index;
+  guint node_index;
+  guint node_hash;
 
   g_return_val_if_fail (hash_table != NULL, NULL);
 
-  node_index = g_hash_table_lookup_node (hash_table, key);
+  node_index = g_hash_table_lookup_node (hash_table, key, &node_hash);
 
   return HASH_IS_REAL (hash_table->hashes[node_index])
     ? hash_table->values[node_index]
@@ -934,11 +873,12 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
                               gpointer      *orig_key,
                               gpointer      *value)
 {
-  guint      node_index;
+  guint node_index;
+  guint node_hash;
 
   g_return_val_if_fail (hash_table != NULL, FALSE);
 
-  node_index = g_hash_table_lookup_node (hash_table, lookup_key);
+  node_index = g_hash_table_lookup_node (hash_table, lookup_key, &node_hash);
 
   if (!HASH_IS_REAL (hash_table->hashes[node_index]))
     return FALSE;
@@ -981,7 +921,7 @@ g_hash_table_insert_internal (GHashTable *hash_table,
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (hash_table->ref_count > 0);
 
-  node_index = g_hash_table_lookup_node_for_insertion (hash_table, key, &key_hash);
+  node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
   old_hash = hash_table->hashes[node_index];
 
@@ -1087,10 +1027,11 @@ g_hash_table_remove_internal (GHashTable    *hash_table,
                               gboolean       notify)
 {
   guint node_index;
+  guint node_hash;
 
   g_return_val_if_fail (hash_table != NULL, FALSE);
 
-  node_index = g_hash_table_lookup_node (hash_table, key);
+  node_index = g_hash_table_lookup_node (hash_table, key, &node_hash);
 
   if (!HASH_IS_REAL (hash_table->hashes[node_index]))
     return FALSE;
