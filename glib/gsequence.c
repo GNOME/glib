@@ -1422,12 +1422,18 @@ g_sequence_iter_move (GSequenceIter *iter,
                       gint           delta)
 {
   gint new_pos;
+  gint len;
 
   g_return_val_if_fail (iter != NULL, NULL);
 
+  len = g_sequence_get_length (get_sequence (iter));
+
   new_pos = node_get_pos (iter) + delta;
 
-  new_pos = clamp_position (get_sequence (iter), new_pos);
+  if (new_pos < 0)
+    new_pos = 0;
+  else if (new_pos > len)
+    new_pos = len;
 
   return node_get_by_pos (iter, new_pos);
 }
