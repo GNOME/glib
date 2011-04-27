@@ -459,7 +459,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs1
 	done >libglib.vs10.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/glib.vcxprojin >$@
 	rm libglib.vs10.sourcefiles
-	
+
 ../build/win32/vs10/glib.vcxproj.filters: $(top_srcdir)/build/win32/vs10/glib.vcxproj.filtersin
 	for F in $(libglib_2_0_la_SOURCES); do \
 		case $$F in \
