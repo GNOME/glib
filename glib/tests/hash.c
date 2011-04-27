@@ -656,6 +656,42 @@ test_lookup_null_key (void)
   g_hash_table_unref (h);
 }
 
+static gint destroy_key_counter;
+
+static void
+key_destroy (gpointer key)
+{
+  destroy_key_counter++;
+}
+
+static void
+test_remove_all (void)
+{
+  GHashTable *h;
+
+  h = g_hash_table_new_full (g_str_hash, g_str_equal, key_destroy, value_destroy);
+  g_hash_table_insert (h, "abc", "ABC");
+  g_hash_table_insert (h, "cde", "CDE");
+  g_hash_table_insert (h, "xyz", "XYZ");
+
+  destroy_counter = 0;
+  destroy_key_counter = 0;
+
+  g_hash_table_steal_all (h);
+  g_assert_cmpint (destroy_counter, ==, 0);
+  g_assert_cmpint (destroy_key_counter, ==, 0);
+
+  g_hash_table_insert (h, "abc", "ABC");
+  g_hash_table_insert (h, "cde", "CDE");
+  g_hash_table_insert (h, "xyz", "XYZ");
+
+  g_hash_table_remove_all (h);
+  g_assert_cmpint (destroy_counter, ==, 3);
+  g_assert_cmpint (destroy_key_counter, ==, 3);
+
+  g_hash_table_unref (h);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -671,6 +707,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/double", double_hash_test);
   g_test_add_func ("/hash/string", string_hash_test);
   g_test_add_func ("/hash/ref", test_hash_ref);
+  g_test_add_func ("/hash/remove-all", test_remove_all);
 
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);
