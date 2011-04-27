@@ -154,6 +154,10 @@
 
 #define HASH_TABLE_MIN_SHIFT 3  /* 1 << 3 == 8 buckets */
 
+#define HASH_IS_UNUSED(h_) ((h_) == 0)
+#define HASH_IS_TOOMBSTONE(h_) ((h_) == 1)
+#define HASH_IS_REAL(h_) ((h_) >= 2)
+
 typedef struct _GHashNode      GHashNode;
 
 struct _GHashNode
@@ -307,17 +311,14 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
   guint hash_value;
   guint step = 0;
 
-  /* Empty buckets have hash_value set to 0, and for tombstones, it's 1.
-   * We need to make sure our hash value is not one of these. */
-
   hash_value = (* hash_table->hash_func) (key);
-  if (G_UNLIKELY (hash_value <= 1))
+  if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
     hash_value = 2;
 
   node_index = hash_value % hash_table->mod;
   node = &hash_table->nodes [node_index];
 
-  while (node->key_hash)
+  while (!HASH_IS_UNUSED (node->key_hash))
     {
       /*  We first check if our full hash values
        *  are equal so we can avoid calling the full-blown
@@ -380,11 +381,8 @@ g_hash_table_lookup_node_for_insertion (GHashTable    *hash_table,
   gboolean have_tombstone = FALSE;
   guint step = 0;
 
-  /* Empty buckets have hash_value set to 0, and for tombstones, it's 1.
-   * We need to make sure our hash value is not one of these. */
-
   hash_value = (* hash_table->hash_func) (key);
-  if (G_UNLIKELY (hash_value <= 1))
+  if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
     hash_value = 2;
 
   *hash_return = hash_value;
@@ -392,7 +390,7 @@ g_hash_table_lookup_node_for_insertion (GHashTable    *hash_table,
   node_index = hash_value % hash_table->mod;
   node = &hash_table->nodes [node_index];
 
-  while (node->key_hash)
+  while (!HASH_IS_UNUSED (node->key_hash))
     {
       /*  We first check if our full hash values
        *  are equal so we can avoid calling the full-blown
@@ -411,7 +409,7 @@ g_hash_table_lookup_node_for_insertion (GHashTable    *hash_table,
               return node_index;
             }
         }
-      else if (node->key_hash == 1 && !have_tombstone)
+      else if (HASH_IS_TOOMBSTONE (node->key_hash) && !have_tombstone)
         {
           first_tombstone = node_index;
           have_tombstone = TRUE;
@@ -487,7 +485,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
         {
           GHashNode *node = &hash_table->nodes [i];
 
-          if (node->key_hash > 1)
+          if (HASH_IS_REAL (node->key_hash))
             {
               if (hash_table->key_destroy_func != NULL)
                 hash_table->key_destroy_func (node->key);
@@ -539,13 +537,13 @@ g_hash_table_resize (GHashTable *hash_table)
       guint hash_val;
       guint step = 0;
 
-      if (node->key_hash <= 1)
+      if (!HASH_IS_REAL (node->key_hash))
         continue;
 
       hash_val = node->key_hash % hash_table->mod;
       new_node = &new_nodes [hash_val];
 
-      while (new_node->key_hash)
+      while (!HASH_IS_UNUSED (new_node->key_hash))
         {
           step++;
           hash_val += step;
@@ -729,7 +727,7 @@ g_hash_table_iter_next (GHashTableIter *iter,
 
       node = &ri->hash_table->nodes [position];
     }
-  while (node->key_hash <= 1);
+  while (!HASH_IS_REAL (node->key_hash));
 
   if (key != NULL)
     *key = node->key;
@@ -908,7 +906,7 @@ g_hash_table_lookup (GHashTable   *hash_table,
   node_index = g_hash_table_lookup_node (hash_table, key);
   node = &hash_table->nodes [node_index];
 
-  return node->key_hash ? node->value : NULL;
+  return HASH_IS_REAL (node->key_hash) ? node->value : NULL;
 }
 
 /**
@@ -943,7 +941,7 @@ g_hash_table_lookup_extended (GHashTable    *hash_table,
   node_index = g_hash_table_lookup_node (hash_table, lookup_key);
   node = &hash_table->nodes [node_index];
 
-  if (!node->key_hash)
+  if (!HASH_IS_REAL (node->key_hash))
     return FALSE;
 
   if (orig_key)
@@ -990,7 +988,7 @@ g_hash_table_insert_internal (GHashTable *hash_table,
 
   old_hash = node->key_hash;
 
-  if (old_hash > 1)
+  if (HASH_IS_REAL (old_hash))
     {
       if (keep_new_key)
         {
@@ -1017,7 +1015,7 @@ g_hash_table_insert_internal (GHashTable *hash_table,
 
       hash_table->nnodes++;
 
-      if (old_hash == 0)
+      if (HASH_IS_UNUSED (old_hash))
         {
           /* We replaced an empty node, and not a tombstone */
           hash_table->noccupied++;
@@ -1099,8 +1097,7 @@ g_hash_table_remove_internal (GHashTable    *hash_table,
   node_index = g_hash_table_lookup_node (hash_table, key);
   node = &hash_table->nodes [node_index];
 
-  /* g_hash_table_lookup_node() never returns a tombstone, so this is safe */
-  if (!node->key_hash)
+  if (!HASH_IS_REAL (node->key_hash))
     return FALSE;
 
   g_hash_table_remove_node (hash_table, node, notify);
@@ -1231,7 +1228,8 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
     {
       GHashNode *node = &hash_table->nodes [i];
 
-      if (node->key_hash > 1 && (* func) (node->key, node->value, user_data))
+      if (HASH_IS_REAL (node->key_hash) &&
+	  (* func) (node->key, node->value, user_data))
         {
           g_hash_table_remove_node (hash_table, node, notify);
           deleted++;
@@ -1332,7 +1330,7 @@ g_hash_table_foreach (GHashTable *hash_table,
     {
       GHashNode *node = &hash_table->nodes [i];
 
-      if (node->key_hash > 1)
+      if (HASH_IS_REAL (node->key_hash))
         (* func) (node->key, node->value, user_data);
     }
 }
@@ -1377,7 +1375,8 @@ g_hash_table_find (GHashTable      *hash_table,
     {
       GHashNode *node = &hash_table->nodes [i];
 
-      if (node->key_hash > 1 && predicate (node->key, node->value, user_data))
+      if (HASH_IS_REAL (node->key_hash) &&
+	  predicate (node->key, node->value, user_data))
         return node->value;
     }
 
@@ -1427,7 +1426,7 @@ g_hash_table_get_keys (GHashTable *hash_table)
     {
       GHashNode *node = &hash_table->nodes [i];
 
-      if (node->key_hash > 1)
+      if (HASH_IS_REAL (node->key_hash))
         retval = g_list_prepend (retval, node->key);
     }
 
@@ -1461,7 +1460,7 @@ g_hash_table_get_values (GHashTable *hash_table)
     {
       GHashNode *node = &hash_table->nodes [i];
 
-      if (node->key_hash > 1)
+      if (HASH_IS_REAL (node->key_hash))
         retval = g_list_prepend (retval, node->value);
     }
 
