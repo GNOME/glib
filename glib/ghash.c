@@ -479,22 +479,28 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
 {
   int i;
 
-  for (i = 0; i < hash_table->size; i++)
+  if (notify &&
+      (hash_table->key_destroy_func != NULL ||
+       hash_table->value_destroy_func != NULL))
     {
-      GHashNode *node = &hash_table->nodes [i];
-
-      if (node->key_hash > 1)
+      for (i = 0; i < hash_table->size; i++)
         {
-          if (notify && hash_table->key_destroy_func)
-            hash_table->key_destroy_func (node->key);
+          GHashNode *node = &hash_table->nodes [i];
 
-          if (notify && hash_table->value_destroy_func)
-            hash_table->value_destroy_func (node->value);
+          if (node->key_hash > 1)
+            {
+              if (hash_table->key_destroy_func != NULL)
+                hash_table->key_destroy_func (node->key);
+
+              if (hash_table->value_destroy_func != NULL)
+                hash_table->value_destroy_func (node->value);
+            }
         }
     }
 
   /* We need to set node->key_hash = 0 for all nodes - might as well be GC
-   * friendly and clear everything */
+   * friendly and clear everything
+   */
   memset (hash_table->nodes, 0, hash_table->size * sizeof (GHashNode));
 
   hash_table->nnodes = 0;
