@@ -3197,8 +3197,8 @@ g_dbus_message_lock (GDBusMessage *message)
  * This operation can fail if e.g. @message contains file descriptors
  * and the per-process or system-wide open files limit is reached.
  *
- * Returns: (transfer full): A new #GDBusMessage or %NULL if @error is set. Free with
- * g_object_unref().
+ * Returns: (transfer full): A new #GDBusMessage or %NULL if @error is set.
+ *     Free with g_object_unref().
  *
  * Since: 2.26
  */
@@ -3212,7 +3212,7 @@ g_dbus_message_copy (GDBusMessage  *message,
   GVariant *header_value;
 
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   ret = g_dbus_message_new ();
   ret->type                   = message->type;
@@ -3255,4 +3255,3 @@ g_dbus_message_copy (GDBusMessage  *message,
  out:
   return ret;
 }
-
