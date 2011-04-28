@@ -2693,7 +2693,7 @@ g_variant_iter_free (GVariantIter *iter)
  *     GVariantIter iter;
  *     GVariant *child;
  *
- *     g_variant_iter_init (&iter, dictionary);
+ *     g_variant_iter_init (&iter, container);
  *     while ((child = g_variant_iter_next_value (&iter)))
  *       {
  *         g_print ("type '%s'\n", g_variant_get_type_string (child));
