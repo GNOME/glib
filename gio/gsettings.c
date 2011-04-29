@@ -59,7 +59,7 @@
  * even need to be started in this case.  For this reason, you should
  * only ever modify #GSettings keys in response to explicit user action.
  * Particular care should be paid to ensure that modifications are not
- * made during startup -- for example, when settings the initial value
+ * made during startup -- for example, when setting the initial value
  * of preferences widgets.  The built-in g_settings_bind() functionality
  * is careful not to write settings in response to notify signals as a
  * result of modifications that it makes to widgets.
@@ -810,8 +810,8 @@ g_settings_new_with_path (const gchar *schema,
  *
  * Creates a new #GSettings object with a given schema and backend.
  *
- * Creating settings objects with an different backend allows accessing settings
- * from a database other than the usual one.  For example, it may make
+ * Creating a #GSettings object with a different backend allows accessing
+ * settings from a database other than the usual one. For example, it may make
  * sense to pass a backend corresponding to the "defaults" settings database on
  * the system to get a settings object that modifies the system default
  * settings instead of the settings for this user.

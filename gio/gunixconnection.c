@@ -66,8 +66,8 @@ G_DEFINE_TYPE_WITH_CODE (GUnixConnection, g_unix_connection,
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: (allow-none): #GError for error reporting, or %NULL to ignore.
  *
- * Passes a file descriptor to the recieving side of the
- * connection. The recieving end has to call g_unix_connection_receive_fd()
+ * Passes a file descriptor to the receiving side of the
+ * connection. The receiving end has to call g_unix_connection_receive_fd()
  * to accept the file descriptor.
  *
  * As well as sending the fd this also writes a single byte to the
@@ -308,7 +308,7 @@ gboolean                g_unix_connection_create_pair                   (GUnixCo
  * @error: Return location for error or %NULL.
  *
  * Passes the credentials of the current user the receiving side
- * of the connection. The recieving end has to call
+ * of the connection. The receiving end has to call
  * g_unix_connection_receive_credentials() (or similar) to accept the
  * credentials.
  *

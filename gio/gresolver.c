@@ -212,6 +212,36 @@ g_resolver_maybe_reload (GResolver *resolver)
 #endif
 }
 
+/* filter out duplicates, cf. https://bugzilla.gnome.org/show_bug.cgi?id=631379 */
+static void
+remove_duplicates (GList *addrs)
+{
+  GList *l;
+  GList *ll;
+  GList *lll;
+
+  /* TODO: if this is too slow (it's O(n^2) but n is typically really
+   * small), we can do something more clever but note that we must not
+   * change the order of elements...
+   */
+  for (l = addrs; l != NULL; l = l->next)
+    {
+      GInetAddress *address = G_INET_ADDRESS (l->data);
+      for (ll = l->next; ll != NULL; ll = lll)
+        {
+          GInetAddress *other_address = G_INET_ADDRESS (ll->data);
+          lll = ll->next;
+          if (g_inet_address_equal (address, other_address))
+            {
+              g_object_unref (other_address);
+              /* we never return the first element */
+              g_warn_if_fail (g_list_delete_link (addrs, ll) == addrs);
+            }
+        }
+    }
+}
+
+
 /**
  * g_resolver_lookup_by_name:
  * @resolver: a #GResolver
@@ -225,9 +255,12 @@ g_resolver_maybe_reload (GResolver *resolver)
  * a wrapper around g_inet_address_new_from_string()).
  *
  * On success, g_resolver_lookup_by_name() will return a #GList of
- * #GInetAddress, sorted in order of preference. (That is, you should
- * attempt to connect to the first address first, then the second if
- * the first fails, etc.)
+ * #GInetAddress, sorted in order of preference and guaranteed to not
+ * contain duplicates. That is, if using the result to connect to
+ * @hostname, you should attempt to connect to the first address
+ * first, then the second if the first fails, etc. If you are using
+ * the result to listen on a socket, it is appropriate to add each
+ * result using e.g. g_socket_listener_add_address().
  *
  * If the DNS resolution fails, @error (if non-%NULL) will be set to a
  * value from #GResolverError.
@@ -271,6 +304,8 @@ g_resolver_lookup_by_name (GResolver     *resolver,
   g_resolver_maybe_reload (resolver);
   addrs = G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_name (resolver, hostname, cancellable, error);
+
+  remove_duplicates (addrs);
 
   g_free (ascii_hostname);
   return addrs;
@@ -354,6 +389,8 @@ g_resolver_lookup_by_name_finish (GResolver     *resolver,
                                   GAsyncResult  *result,
                                   GError       **error)
 {
+  GList *addrs;
+
   g_return_val_if_fail (G_IS_RESOLVER (resolver), NULL);
 
   if (G_IS_SIMPLE_ASYNC_RESULT (result))
@@ -373,8 +410,12 @@ g_resolver_lookup_by_name_finish (GResolver     *resolver,
         }
     }
 
-  return G_RESOLVER_GET_CLASS (resolver)->
+  addrs = G_RESOLVER_GET_CLASS (resolver)->
     lookup_by_name_finish (resolver, result, error);
+
+  remove_duplicates (addrs);
+
+  return addrs;
 }
 
 /**

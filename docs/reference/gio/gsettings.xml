@@ -51,6 +51,11 @@
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gsettings</command>
+    <arg choice="plain">reset-recursively</arg>
+    <arg choice="plain"><replaceable>SCHEMA</replaceable><arg choice="opt">:<replaceable>PATH</replaceable></arg></arg>
+  </cmdsynopsis>
+  <cmdsynopsis>
+    <command>gsettings</command>
     <arg choice="plain">list-schemas</arg>
   </cmdsynopsis>
   <cmdsynopsis>
@@ -148,6 +153,13 @@ Sets the value of <replaceable>KEY</replaceable> to
 <term><option>reset</option></term>
 <listitem><para>
 Resets <replaceable>KEY</replaceable> to its default value.
+</para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term><option>reset-recursively</option></term>
+<listitem><para>
+Reset all keys under the given <replaceable>SCHEMA</replaceable>.
 </para></listitem>
 </varlistentry>
 

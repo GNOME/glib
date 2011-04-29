@@ -2096,12 +2096,13 @@ typedef struct {
 struct _GFileAttributeMatcher {
   gboolean all;
   SubMatcher sub_matchers[ON_STACK_MATCHERS];
+  gint ref;
+
   GArray *more_sub_matchers;
 
   /* Interator */
   guint32 iterator_ns;
-  int iterator_pos;
-  int ref;
+  gint iterator_pos;
 };
 
 static void

@@ -64,7 +64,13 @@
 #define ADDED_ASSOCIATIONS_GROUP    "Added Associations"
 #define REMOVED_ASSOCIATIONS_GROUP  "Removed Associations"
 #define MIME_CACHE_GROUP            "MIME Cache"
+#define GENERIC_NAME_KEY            "GenericName"
 #define FULL_NAME_KEY               "X-GNOME-FullName"
+
+enum {
+  PROP_0,
+  PROP_FILENAME
+};
 
 static void     g_desktop_app_info_iface_init         (GAppInfoIface    *iface);
 static GList *  get_all_desktop_entries_for_mime_type (const char       *base_mime_type,
@@ -88,7 +94,7 @@ struct _GDesktopAppInfo
   char *filename;
 
   char *name;
-  /* FIXME: what about GenericName ? */
+  char *generic_name;
   char *fullname;
   char *comment;
   char *icon_name;
@@ -99,6 +105,7 @@ struct _GDesktopAppInfo
   char *exec;
   char *binary;
   char *path;
+  char *categories;
 
   guint nodisplay       : 1;
   guint hidden          : 1;
@@ -161,6 +168,7 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->desktop_id);
   g_free (info->filename);
   g_free (info->name);
+  g_free (info->generic_name);
   g_free (info->fullname);
   g_free (info->comment);
   g_free (info->icon_name);
@@ -172,8 +180,48 @@ g_desktop_app_info_finalize (GObject *object)
   g_free (info->exec);
   g_free (info->binary);
   g_free (info->path);
+  g_free (info->categories);
   
   G_OBJECT_CLASS (g_desktop_app_info_parent_class)->finalize (object);
+}
+
+static void
+g_desktop_app_info_set_property(GObject         *object,
+				guint            prop_id,
+				const GValue    *value,
+				GParamSpec      *pspec)
+{
+  GDesktopAppInfo *self = G_DESKTOP_APP_INFO (object);
+
+  switch (prop_id)
+    {
+    case PROP_FILENAME:
+      self->filename = g_value_dup_string (value);
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+g_desktop_app_info_get_property(GObject         *object,
+				guint            prop_id,
+				GValue          *value,
+				GParamSpec      *pspec)
+{
+  GDesktopAppInfo *self = G_DESKTOP_APP_INFO (object);
+
+  switch (prop_id)
+    {
+    case PROP_FILENAME:
+      g_value_set_string (value, self->filename);
+      break;
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
 }
 
 static void
@@ -181,7 +229,20 @@ g_desktop_app_info_class_init (GDesktopAppInfoClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
   
+  gobject_class->get_property = g_desktop_app_info_get_property;
+  gobject_class->set_property = g_desktop_app_info_set_property;
   gobject_class->finalize = g_desktop_app_info_finalize;
+
+  /**
+   * GDesktopAppInfo:filename
+   *
+   * The origin filename of this #GDesktopAppInfo
+   */
+  g_object_class_install_property (gobject_class,
+                                   PROP_FILENAME,
+                                   g_param_spec_string ("filename", "Filename", "",
+							NULL,
+                                                        G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY));
 }
 
 static void
@@ -205,29 +266,19 @@ binary_from_exec (const char *exec)
   
 }
 
-/**
- * g_desktop_app_info_new_from_keyfile:
- * @key_file: an opened #GKeyFile
- * 
- * Creates a new #GDesktopAppInfo.
- *
- * Returns: a new #GDesktopAppInfo or %NULL on error.
- *
- * Since: 2.18
- **/
-GDesktopAppInfo *
-g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
+static gboolean
+g_desktop_app_info_load_from_keyfile (GDesktopAppInfo *info, 
+				      GKeyFile        *key_file)
 {
-  GDesktopAppInfo *info;
   char *start_group;
   char *type;
   char *try_exec;
-  
+
   start_group = g_key_file_get_start_group (key_file);
   if (start_group == NULL || strcmp (start_group, G_KEY_FILE_DESKTOP_GROUP) != 0)
     {
       g_free (start_group);
-      return NULL;
+      return FALSE;
     }
   g_free (start_group);
 
@@ -238,7 +289,7 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
   if (type == NULL || strcmp (type, G_KEY_FILE_DESKTOP_TYPE_APPLICATION) != 0)
     {
       g_free (type);
-      return NULL;
+      return FALSE;
     }
   g_free (type);
 
@@ -253,15 +304,13 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
       if (t == NULL)
 	{
 	  g_free (try_exec);
-	  return NULL;
+	  return FALSE;
 	}
       g_free (t);
     }
 
-  info = g_object_new (G_TYPE_DESKTOP_APP_INFO, NULL);
-  info->filename = NULL;
-
   info->name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NAME, NULL, NULL);
+  info->generic_name = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, GENERIC_NAME_KEY, NULL, NULL);
   info->fullname = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, FULL_NAME_KEY, NULL, NULL);
   info->comment = g_key_file_get_locale_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_COMMENT, NULL, NULL);
   info->nodisplay = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, NULL) != FALSE;
@@ -275,6 +324,7 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
   info->startup_notify = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_STARTUP_NOTIFY, NULL) != FALSE;
   info->no_fuse = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, "X-GIO-NoFuse", NULL) != FALSE;
   info->hidden = g_key_file_get_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_HIDDEN, NULL) != FALSE;
+  info->categories = g_key_file_get_string (key_file, G_KEY_FILE_DESKTOP_GROUP, G_KEY_FILE_DESKTOP_KEY_CATEGORIES, NULL);
   
   info->icon = NULL;
   if (info->icon_name)
@@ -311,6 +361,53 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
       info->path = NULL;
     }
 
+  return TRUE;
+}
+
+static gboolean
+g_desktop_app_info_load_file (GDesktopAppInfo *self)
+{
+  GKeyFile *key_file;
+  gboolean retval = FALSE;
+  
+  g_return_val_if_fail (self->filename != NULL, FALSE);
+
+  key_file = g_key_file_new ();
+  
+  if (g_key_file_load_from_file (key_file,
+				 self->filename,
+				 G_KEY_FILE_NONE,
+				 NULL))
+    {
+      retval = g_desktop_app_info_load_from_keyfile (self, key_file);
+    }
+
+  g_key_file_free (key_file);
+  return retval;
+}
+
+/**
+ * g_desktop_app_info_new_from_keyfile:
+ * @key_file: an opened #GKeyFile
+ * 
+ * Creates a new #GDesktopAppInfo.
+ *
+ * Returns: a new #GDesktopAppInfo or %NULL on error.
+ *
+ * Since: 2.18
+ **/
+GDesktopAppInfo *
+g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
+{
+  GDesktopAppInfo *info;
+
+  info = g_object_new (G_TYPE_DESKTOP_APP_INFO, NULL);
+  info->filename = NULL;
+  if (!g_desktop_app_info_load_from_keyfile (info, key_file))
+    {
+      g_object_unref (info);
+      return NULL;
+    }
   return info;
 }
 
@@ -325,23 +422,14 @@ g_desktop_app_info_new_from_keyfile (GKeyFile *key_file)
 GDesktopAppInfo *
 g_desktop_app_info_new_from_filename (const char *filename)
 {
-  GKeyFile *key_file;
   GDesktopAppInfo *info = NULL;
 
-  key_file = g_key_file_new ();
-  
-  if (g_key_file_load_from_file (key_file,
-				 filename,
-				 G_KEY_FILE_NONE,
-				 NULL))
+  info = g_object_new (G_TYPE_DESKTOP_APP_INFO, "filename", filename, NULL);
+  if (!g_desktop_app_info_load_file (info))
     {
-      info = g_desktop_app_info_new_from_keyfile (key_file);
-      if (info)
-        info->filename = g_strdup (filename);
-    }  
-
-  g_key_file_free (key_file);
-
+      g_object_unref (info);
+      return NULL;
+    }
   return info;
 }
 
@@ -430,6 +518,7 @@ g_desktop_app_info_dup (GAppInfo *appinfo)
   new_info->desktop_id = g_strdup (info->desktop_id);
   
   new_info->name = g_strdup (info->name);
+  new_info->generic_name = g_strdup (info->generic_name);
   new_info->fullname = g_strdup (info->fullname);
   new_info->comment = g_strdup (info->comment);
   new_info->nodisplay = info->nodisplay;
@@ -553,6 +642,31 @@ g_desktop_app_info_get_icon (GAppInfo *appinfo)
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
 
   return info->icon;
+}
+
+/**
+ * g_desktop_app_info_get_categories:
+ * @info: a #GDesktopAppInfo
+ *
+ * Returns: The unparsed Categories key from the file; i.e. no attempt
+ *   is made to split it by ';' or validate it.
+ */
+const char *
+g_desktop_app_info_get_categories    (GDesktopAppInfo *info)
+{
+  return info->categories;
+}
+
+/**
+ * g_desktop_app_info_get_generic_name:
+ * @info: a #GDesktopAppInfo
+ *
+ * Returns: The value of the GenericName key
+ */
+const char *
+g_desktop_app_info_get_generic_name  (GDesktopAppInfo *info)
+{
+  return info->generic_name;
 }
 
 static char *
@@ -1813,6 +1927,10 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
   g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
 			 G_KEY_FILE_DESKTOP_KEY_NAME, info->name);
 
+  if (info->generic_name != NULL)
+    g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			   GENERIC_NAME_KEY, info->generic_name);
+
   if (info->fullname != NULL)
     g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
 			   FULL_NAME_KEY, info->fullname);
@@ -1932,10 +2050,10 @@ g_app_info_create_from_commandline (const char           *commandline,
   info->filename = NULL;
   info->desktop_id = NULL;
   
-  info->terminal = flags & G_APP_INFO_CREATE_NEEDS_TERMINAL;
-  info->startup_notify = flags & G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION;
+  info->terminal = (flags & G_APP_INFO_CREATE_NEEDS_TERMINAL) != 0;
+  info->startup_notify = (flags & G_APP_INFO_CREATE_SUPPORTS_STARTUP_NOTIFICATION) != 0;
   info->hidden = FALSE;
-  if (flags & G_APP_INFO_CREATE_SUPPORTS_URIS)
+  if ((flags & G_APP_INFO_CREATE_SUPPORTS_URIS) != 0)
     info->exec = g_strconcat (commandline, " %u", NULL);
   else
     info->exec = g_strconcat (commandline, " %f", NULL);

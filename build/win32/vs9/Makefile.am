@@ -14,4 +14,6 @@ EXTRA_DIST = \
 	gio.vcproj \
 	gio.vcprojin \
 	testglib.vcproj \
+	glib-compile-schemas.vcproj \
+	gsettings.vcproj \
 	install.vcproj

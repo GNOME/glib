@@ -141,7 +141,9 @@ g_action_group_default_init (GActionGroupInterface *class)
   g_action_group_signals[SIGNAL_ACTION_STATE_CHANGED] =
     g_signal_new (I_("action-state-changed"),
                   G_TYPE_ACTION_GROUP,
-                  G_SIGNAL_RUN_LAST | G_SIGNAL_DETAILED,
+                  G_SIGNAL_RUN_LAST |
+                  G_SIGNAL_DETAILED |
+                  G_SIGNAL_MUST_COLLECT,
                   G_STRUCT_OFFSET (GActionGroupInterface,
                                    action_state_changed),
                   NULL, NULL,

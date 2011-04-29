@@ -27,6 +27,7 @@
 #include "gapplicationcommandline.h"
 #include "gapplicationimpl.h"
 #include "gactiongroup.h"
+#include "gsettings.h"
 
 #include "gioenumtypes.h"
 #include "gio-marshal.h"
@@ -557,7 +558,7 @@ g_application_class_init (GApplicationClass *class)
   g_object_class_install_property (object_class, PROP_INACTIVITY_TIMEOUT,
     g_param_spec_uint ("inactivity-timeout",
                        P_("Inactivity timeout"),
-                       P_("Iime (ms) to stay alive after becoming idle"),
+                       P_("Time (ms) to stay alive after becoming idle"),
                        0, G_MAXUINT, 0,
                        G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 
@@ -1006,14 +1007,17 @@ g_application_register (GApplication  *application,
 
   if (!application->priv->is_registered)
     {
-      application->priv->impl =
-        g_application_impl_register (application, application->priv->id,
-                                     application->priv->flags,
-                                     &application->priv->remote_actions,
-                                     cancellable, error);
+      if (~application->priv->flags & G_APPLICATION_NON_UNIQUE)
+        {
+          application->priv->impl =
+            g_application_impl_register (application, application->priv->id,
+                                         application->priv->flags,
+                                         &application->priv->remote_actions,
+                                         cancellable, error);
 
-      if (application->priv->impl == NULL)
-        return FALSE;
+          if (application->priv->impl == NULL)
+            return FALSE;
+        }
 
       application->priv->is_remote = application->priv->remote_actions != NULL;
       application->priv->is_registered = TRUE;
@@ -1325,6 +1329,8 @@ g_application_run (GApplication  *application,
 
   if (application->priv->impl)
     g_application_impl_flush (application->priv->impl);
+
+  g_settings_sync ();
 
   return status;
 }

@@ -49,7 +49,7 @@
 #include "gstrfuncs.h"
 #include "gtimer.h"
 
- 
+
 /* Global variable for storing assertion messages; this is the counterpart to
  * glibc's (private) __abort_msg variable, and allows developers and crash
  * analysis systems like Apport and ABRT to fish out assertion messages from
@@ -101,6 +101,7 @@ static GRand      *test_run_rand = NULL;
 static gchar      *test_run_name = "";
 static guint       test_run_forks = 0;
 static guint       test_run_count = 0;
+static guint       test_run_success = FALSE;
 static guint       test_skip_count = 0;
 static GTimer     *test_user_timer = NULL;
 static double      test_user_stamp = 0;
@@ -722,9 +723,11 @@ g_test_minimized_result (double          minimized_quantity,
   long double largs = minimized_quantity;
   gchar *buffer;
   va_list args;
+
   va_start (args, format);
   buffer = g_strdup_vprintf (format, args);
   va_end (args);
+
   g_test_log (G_TEST_LOG_MIN_RESULT, buffer, NULL, 1, &largs);
   g_free (buffer);
 }
@@ -751,9 +754,11 @@ g_test_maximized_result (double          maximized_quantity,
   long double largs = maximized_quantity;
   gchar *buffer;
   va_list args;
+
   va_start (args, format);
   buffer = g_strdup_vprintf (format, args);
   va_end (args);
+
   g_test_log (G_TEST_LOG_MAX_RESULT, buffer, NULL, 1, &largs);
   g_free (buffer);
 }
@@ -773,9 +778,11 @@ g_test_message (const char *format,
 {
   gchar *buffer;
   va_list args;
+
   va_start (args, format);
   buffer = g_strdup_vprintf (format, args);
   va_end (args);
+
   g_test_log (G_TEST_LOG_MESSAGE, buffer, NULL, 0, NULL);
   g_free (buffer);
 }
@@ -820,8 +827,10 @@ void
 g_test_bug (const char *bug_uri_snippet)
 {
   char *c;
+
   g_return_if_fail (test_uri_base != NULL);
   g_return_if_fail (bug_uri_snippet != NULL);
+
   c = strstr (test_uri_base, "%s");
   if (c)
     {
@@ -853,6 +862,7 @@ g_test_get_root (void)
       g_free (test_suite_root->name);
       test_suite_root->name = g_strdup ("");
     }
+
   return test_suite_root;
 }
 
@@ -914,10 +924,12 @@ g_test_create_case (const char       *test_name,
                     GTestFixtureFunc  data_teardown)
 {
   GTestCase *tc;
+
   g_return_val_if_fail (test_name != NULL, NULL);
   g_return_val_if_fail (strchr (test_name, '/') == NULL, NULL);
   g_return_val_if_fail (test_name[0] != 0, NULL);
   g_return_val_if_fail (data_test != NULL, NULL);
+
   tc = g_slice_new0 (GTestCase);
   tc->name = g_strdup (test_name);
   tc->test_data = (gpointer) test_data;
@@ -925,6 +937,7 @@ g_test_create_case (const char       *test_name,
   tc->fixture_setup = (void*) data_setup;
   tc->fixture_test = (void*) data_test;
   tc->fixture_teardown = (void*) data_teardown;
+
   return tc;
 }
 
@@ -983,6 +996,31 @@ g_test_add_vtable (const char       *testpath,
         }
     }
   g_strfreev (segments);
+}
+
+/**
+ * g_test_fail:
+ *
+ * Indicates that a test failed. This function can be called
+ * multiple times from the same test. You can use this function
+ * if your test failed in a recoverable way.
+ * 
+ * Do not use this function if the failure of a test could cause
+ * other tests to malfunction.
+ *
+ * Calling this function will not stop the test from running, you
+ * need to return from the test function yourself. So you can
+ * produce additional diagnostic messages or even continue running
+ * the test.
+ *
+ * If not called from inside a test, this function does nothing.
+ *
+ * @Since: 2.30
+ **/
+void
+g_test_fail (void)
+{
+  test_run_success = FALSE;
 }
 
 /**
@@ -1081,6 +1119,7 @@ g_test_suite_add (GTestSuite     *suite,
 {
   g_return_if_fail (suite != NULL);
   g_return_if_fail (test_case != NULL);
+
   suite->cases = g_slist_prepend (suite->cases, test_case);
 }
 
@@ -1099,6 +1138,7 @@ g_test_suite_add_suite (GTestSuite     *suite,
 {
   g_return_if_fail (suite != NULL);
   g_return_if_fail (nestedsuite != NULL);
+
   suite->suites = g_slist_prepend (suite->suites, nestedsuite);
 }
 
@@ -1138,7 +1178,9 @@ g_test_queue_destroy (GDestroyNotify destroy_func,
                       gpointer       destroy_data)
 {
   DestroyEntry *dentry;
+
   g_return_if_fail (destroy_func != NULL);
+
   dentry = g_slice_new0 (DestroyEntry);
   dentry->destroy_func = destroy_func;
   dentry->destroy_data = destroy_data;
@@ -1146,10 +1188,12 @@ g_test_queue_destroy (GDestroyNotify destroy_func,
   test_destroy_queue = dentry;
 }
 
-static int
+static gboolean
 test_case_run (GTestCase *tc)
 {
   gchar *old_name = test_run_name, *old_base = g_strdup (test_uri_base);
+  gboolean success = TRUE;
+
   test_run_name = g_strconcat (old_name, "/", tc->name, NULL);
   if (++test_run_count <= test_skip_count)
     g_test_log (G_TEST_LOG_SKIP_CASE, test_run_name, NULL, 0, NULL);
@@ -1165,6 +1209,7 @@ test_case_run (GTestCase *tc)
       void *fixture;
       g_test_log (G_TEST_LOG_START_CASE, test_run_name, NULL, 0, NULL);
       test_run_forks = 0;
+      test_run_success = TRUE;
       g_test_log_set_fatal_handler (NULL, NULL);
       g_timer_start (test_run_timer);
       fixture = tc->fixture_size ? g_malloc0 (tc->fixture_size) : tc->test_data;
@@ -1185,7 +1230,9 @@ test_case_run (GTestCase *tc)
       if (tc->fixture_size)
         g_free (fixture);
       g_timer_stop (test_run_timer);
-      largs[0] = 0; /* OK */
+      success = test_run_success;
+      test_run_success = FALSE;
+      largs[0] = success ? 0 : 1; /* OK */
       largs[1] = test_run_forks;
       largs[2] = g_timer_elapsed (test_run_timer, NULL);
       g_test_log (G_TEST_LOG_STOP_CASE, NULL, NULL, G_N_ELEMENTS (largs), largs);
@@ -1195,17 +1242,20 @@ test_case_run (GTestCase *tc)
   test_run_name = old_name;
   g_free (test_uri_base);
   test_uri_base = old_base;
-  return 0;
+
+  return success;
 }
 
 static int
 g_test_run_suite_internal (GTestSuite *suite,
                            const char *path)
 {
-  guint n_bad = 0, n_good = 0, bad_suite = 0, l;
+  guint n_bad = 0, l;
   gchar *rest, *old_name = test_run_name;
   GSList *slist, *reversed;
+
   g_return_val_if_fail (suite != NULL, -1);
+
   while (path[0] == '/')
     path++;
   l = strlen (path);
@@ -1219,8 +1269,8 @@ g_test_run_suite_internal (GTestSuite *suite,
       guint n = l ? strlen (tc->name) : 0;
       if (l == n && strncmp (path, tc->name, n) == 0)
         {
-          n_good++;
-          n_bad += test_case_run (tc) != 0;
+          if (!test_case_run (tc))
+            n_bad++;
         }
     }
   g_slist_free (reversed);
@@ -1230,12 +1280,13 @@ g_test_run_suite_internal (GTestSuite *suite,
       GTestSuite *ts = slist->data;
       guint n = l ? strlen (ts->name) : 0;
       if (l == n && strncmp (path, ts->name, n) == 0)
-        bad_suite += g_test_run_suite_internal (ts, rest ? rest : "") != 0;
+        n_bad += g_test_run_suite_internal (ts, rest ? rest : "");
     }
   g_slist_free (reversed);
   g_free (test_run_name);
   test_run_name = old_name;
-  return n_bad || bad_suite;
+
+  return n_bad;
 }
 
 /**
@@ -1257,9 +1308,12 @@ int
 g_test_run_suite (GTestSuite *suite)
 {
   guint n_bad = 0;
+
   g_return_val_if_fail (g_test_config_vars->test_initialized, -1);
   g_return_val_if_fail (g_test_run_once == TRUE, -1);
+
   g_test_run_once = FALSE;
+
   if (!test_paths)
     test_paths = g_slist_prepend (test_paths, "");
   while (test_paths)
@@ -1271,7 +1325,7 @@ g_test_run_suite (GTestSuite *suite)
         path++;
       if (!n) /* root suite, run unconditionally */
         {
-          n_bad += 0 != g_test_run_suite_internal (suite, path);
+          n_bad += g_test_run_suite_internal (suite, path);
           continue;
         }
       /* regular suite, match path */
@@ -1279,8 +1333,9 @@ g_test_run_suite (GTestSuite *suite)
       l = strlen (path);
       l = rest ? MIN (l, rest - path) : l;
       if ((!l || l == n) && strncmp (path, suite->name, n) == 0)
-        n_bad += 0 != g_test_run_suite_internal (suite, rest ? rest : "");
+        n_bad += g_test_run_suite_internal (suite, rest ? rest : "");
     }
+
   return n_bad;
 }
 
@@ -1294,6 +1349,7 @@ gtest_default_log_handler (const gchar    *log_domain,
   gboolean fatal = FALSE;
   gchar *msg;
   guint i = 0;
+
   if (log_domain)
     {
       strv[i++] = log_domain;
@@ -1321,9 +1377,11 @@ gtest_default_log_handler (const gchar    *log_domain,
   strv[i++] = ": ";
   strv[i++] = message;
   strv[i++] = NULL;
+
   msg = g_strjoinv ("", (gchar**) strv);
   g_test_log (fatal ? G_TEST_LOG_ERROR : G_TEST_LOG_MESSAGE, msg, NULL, 0, NULL);
   g_log_default_handler (log_domain, log_level, message, unused_data);
+
   g_free (msg);
 }
 
@@ -1336,6 +1394,7 @@ g_assertion_message (const char     *domain,
 {
   char lstr[32];
   char *s;
+
   if (!message)
     message = "code should not be reached";
   g_snprintf (lstr, 32, "%d", line);

@@ -1400,6 +1400,8 @@ g_desktop_app_info_new
 g_desktop_app_info_get_filename
 g_desktop_app_info_get_is_hidden
 g_desktop_app_info_set_desktop_env
+GDesktopAppLaunchCallback
+g_desktop_app_info_launch_uris_as_manager
 <SUBSECTION Standard>
 GDesktopAppInfoClass
 G_TYPE_DESKTOP_APP_INFO
@@ -1484,6 +1486,7 @@ g_inet_address_new_from_string
 g_inet_address_new_from_bytes
 g_inet_address_new_any
 g_inet_address_new_loopback
+g_inet_address_equal
 g_inet_address_to_bytes
 g_inet_address_get_native_size
 g_inet_address_to_string

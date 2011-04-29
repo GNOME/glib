@@ -62,6 +62,10 @@
 #define G_MAIN_POLL_DEBUG
 #endif
 
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
+#endif
+
 #include <signal.h>
 #include <sys/types.h>
 #include <time.h>
@@ -73,6 +77,7 @@
 #include <unistd.h>
 #endif /* HAVE_UNISTD_H */
 #include <errno.h>
+#include <string.h>
 
 #ifdef G_OS_WIN32
 #define STRICT
@@ -83,11 +88,6 @@
 #include <sys/socket.h>
 #include <sys/wait.h>
 #endif /* G_OS_BEOS */
-
-#ifdef G_OS_UNIX
-#include <fcntl.h>
-#include <sys/wait.h>
-#endif
 
 #include "gmain.h"
 
@@ -188,6 +188,7 @@
 
 typedef struct _GTimeoutSource GTimeoutSource;
 typedef struct _GChildWatchSource GChildWatchSource;
+typedef struct _GUnixSignalWatchSource GUnixSignalWatchSource;
 typedef struct _GPollRec GPollRec;
 typedef struct _GSourceCallback GSourceCallback;
 
@@ -306,6 +307,13 @@ struct _GChildWatchSource
 #endif /* G_OS_WIN32 */
 };
 
+struct _GUnixSignalWatchSource
+{
+  GSource     source;
+  int         signum;
+  gboolean    pending;
+};
+
 struct _GPollRec
 {
   GPollFD *fd;
@@ -365,6 +373,8 @@ static void g_main_context_remove_poll_unlocked (GMainContext *context,
 						 GPollFD      *fd);
 static void g_main_context_wakeup_unlocked      (GMainContext *context);
 
+static void _g_main_wake_up_all_contexts        (void);
+
 static gboolean g_timeout_prepare  (GSource     *source,
 				    gint        *timeout);
 static gboolean g_timeout_check    (GSource     *source);
@@ -377,6 +387,18 @@ static gboolean g_child_watch_check    (GSource     *source);
 static gboolean g_child_watch_dispatch (GSource     *source,
 					GSourceFunc  callback,
 					gpointer     user_data);
+#ifdef G_OS_UNIX
+static void g_unix_signal_handler (int signum);
+static void init_unix_signal_wakeup_state_unlocked (void);
+static void init_unix_signal_wakeup_state (void);
+static gboolean g_unix_signal_watch_prepare  (GSource     *source,
+					      gint        *timeout);
+static gboolean g_unix_signal_watch_check    (GSource     *source);
+static gboolean g_unix_signal_watch_dispatch (GSource     *source,
+					      GSourceFunc  callback,
+					      gpointer     user_data);
+static void     g_unix_signal_watch_finalize  (GSource     *source);
+#endif
 static gboolean g_idle_prepare     (GSource     *source,
 				    gint        *timeout);
 static gboolean g_idle_check       (GSource     *source);
@@ -389,15 +411,47 @@ static GMainContext *default_main_context;
 static GSList *main_contexts_without_pipe = NULL;
 
 #ifndef G_OS_WIN32
-/* Child status monitoring code */
+
+/* The UNIX signal pipe contains a single byte specifying which
+ * signal was received.
+ */ 
+#define _UNIX_SIGNAL_PIPE_SIGCHLD_CHAR 'C'
+#define _UNIX_SIGNAL_PIPE_SIGHUP_CHAR  'H'
+#define _UNIX_SIGNAL_PIPE_SIGINT_CHAR  'I'
+#define _UNIX_SIGNAL_PIPE_SIGTERM_CHAR 'T'
+/* Guards all the data below */ 
+G_LOCK_DEFINE_STATIC (unix_signal_lock);
 enum {
-  CHILD_WATCH_UNINITIALIZED,
-  CHILD_WATCH_INITIALIZED_SINGLE,
-  CHILD_WATCH_INITIALIZED_THREADED
+  UNIX_SIGNAL_UNINITIALIZED = 0,
+  UNIX_SIGNAL_INITIALIZED_SINGLE,
+  UNIX_SIGNAL_INITIALIZED_THREADED
 };
-static gint child_watch_init_state = CHILD_WATCH_UNINITIALIZED;
+static gint unix_signal_init_state = UNIX_SIGNAL_UNINITIALIZED;
+typedef struct {
+  gboolean sigchld_handler_installed : 1;
+  gboolean sighup_handler_installed : 1;
+  gboolean sigint_handler_installed : 1;
+  gboolean sigterm_handler_installed : 1;
+  
+  /* These are only used in the UNIX_SIGNAL_INITIALIZED_SINGLE case */
+  gboolean sighup_delivered : 1;
+  gboolean sigint_delivered : 1;
+  gboolean sigterm_delivered : 1;
+} UnixSignalState;
+static UnixSignalState unix_signal_state;
+static gint unix_signal_wake_up_pipe[2];
+GSList *unix_signal_watches;
+
+/* Not guarded ( FIXME should it be? ) */
 static gint child_watch_count = 1;
-static gint child_watch_wake_up_pipe[2] = {0, 0};
+
+static GSourceFuncs g_unix_signal_funcs =
+{
+  g_unix_signal_watch_prepare,
+  g_unix_signal_watch_check,
+  g_unix_signal_watch_dispatch,
+  g_unix_signal_watch_finalize
+};
 #endif /* !G_OS_WIN32 */
 G_LOCK_DEFINE_STATIC (main_context_list);
 static GSList *main_context_list = NULL;
@@ -515,23 +569,14 @@ g_main_context_unref (GMainContext *context)
 static void 
 g_main_context_init_pipe (GMainContext *context)
 {
+  GError *error = NULL;
+
 # ifndef G_OS_WIN32
   if (context->wake_up_pipe[0] != -1)
     return;
 
-#ifdef HAVE_PIPE2
-  /* if this fails, we fall through and try pipe */
-  pipe2 (context->wake_up_pipe, O_CLOEXEC);
-#endif
-  if (context->wake_up_pipe[0] == -1)
-    {
-      if (pipe (context->wake_up_pipe) < 0)
-        g_error ("Cannot create pipe main loop wake-up: %s\n",
-  	         g_strerror (errno));
- 
-      fcntl (context->wake_up_pipe[0], F_SETFD, FD_CLOEXEC);
-      fcntl (context->wake_up_pipe[1], F_SETFD, FD_CLOEXEC);
-    }
+  if (!g_unix_pipe_flags (context->wake_up_pipe, FD_CLOEXEC, &error))
+    g_error ("Cannot create pipe main loop wake-up: %s", error->message);
 
   context->wake_up_rec.fd = context->wake_up_pipe[0];
   context->wake_up_rec.events = G_IO_IN;
@@ -3727,6 +3772,30 @@ g_main_context_get_poll_func (GMainContext *context)
   return result;
 }
 
+static void
+_g_main_wake_up_all_contexts (void)
+{
+  GSList *list;
+
+  /* We were woken up.  Wake up all other contexts in all other threads */
+  G_LOCK (main_context_list);
+  for (list = main_context_list; list; list = list->next)
+    {
+      GMainContext *context;
+
+      context = list->data;
+      if (g_atomic_int_get (&context->ref_count) > 0)
+	/* Due to racing conditions we can find ref_count == 0, in
+	 * that case, however, the context is still not destroyed
+	 * and no poll can be active, otherwise the ref_count
+	 * wouldn't be 0
+	 */
+	g_main_context_wakeup (context);
+    }
+  G_UNLOCK (main_context_list);
+}
+
+
 /* HOLDS: context's lock */
 /* Wake the main loop up from a poll() */
 static void
@@ -4232,11 +4301,167 @@ g_child_watch_prepare (GSource *source,
   return check_for_child_exited (source);
 }
 
-
 static gboolean 
 g_child_watch_check (GSource  *source)
 {
   return check_for_child_exited (source);
+}
+
+static gboolean
+check_for_signal_delivery (GSource *source)
+{
+  GUnixSignalWatchSource *unix_signal_source = (GUnixSignalWatchSource*) source;
+  gboolean delivered;
+
+  G_LOCK (unix_signal_lock);
+  if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_SINGLE)
+    {
+      switch (unix_signal_source->signum)
+	{
+	case SIGHUP:
+	  delivered = unix_signal_state.sighup_delivered;
+	  break;
+	case SIGINT:
+	  delivered = unix_signal_state.sigint_delivered;
+	  break;
+	case SIGTERM:
+	  delivered = unix_signal_state.sigterm_delivered;
+	  break;
+	default:
+	  g_assert_not_reached ();
+	  delivered = FALSE;
+	  break;
+	}
+    }
+  else
+    {
+      g_assert (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED);
+      delivered = unix_signal_source->pending;
+    }
+  G_UNLOCK (unix_signal_lock);
+
+  return delivered;
+}
+
+static gboolean
+g_unix_signal_watch_prepare (GSource *source,
+			     gint    *timeout)
+{
+  *timeout = -1;
+
+  return check_for_signal_delivery (source);
+}
+
+static gboolean 
+g_unix_signal_watch_check (GSource  *source)
+{
+  return check_for_signal_delivery (source);
+}
+
+static gboolean
+g_unix_signal_watch_dispatch (GSource    *source, 
+			      GSourceFunc callback,
+			      gpointer    user_data)
+{
+  GUnixSignalWatchSource *unix_signal_source;
+
+  unix_signal_source = (GUnixSignalWatchSource *) source;
+
+  if (!callback)
+    {
+      g_warning ("Unix signal source dispatched without callback\n"
+		 "You must call g_source_set_callback().");
+      return FALSE;
+    }
+
+  (callback) (user_data);
+  
+  G_LOCK (unix_signal_lock);
+  if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_SINGLE)
+    {
+      switch (unix_signal_source->signum)
+	{
+	case SIGHUP:
+	  unix_signal_state.sighup_delivered = FALSE;
+	  break;
+	case SIGINT:
+	  unix_signal_state.sigint_delivered = FALSE;
+	  break;
+	case SIGTERM:
+	  unix_signal_state.sigterm_delivered = FALSE;
+	  break;
+	}
+    }
+  else
+    {
+      g_assert (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED);
+      unix_signal_source->pending = FALSE;
+    }
+  G_UNLOCK (unix_signal_lock);
+
+  return TRUE;
+}
+
+static void
+ensure_unix_signal_handler_installed_unlocked (int signum)
+{
+  struct sigaction action;
+
+  switch (signum)
+    {
+    case SIGHUP:
+      if (unix_signal_state.sighup_handler_installed)
+	return;
+      unix_signal_state.sighup_handler_installed = TRUE;
+      break;
+    case SIGINT:
+      if (unix_signal_state.sigint_handler_installed)
+	return;
+      unix_signal_state.sigint_handler_installed = TRUE;
+      break;
+    case SIGTERM:
+      if (unix_signal_state.sigterm_handler_installed)
+	return;
+      unix_signal_state.sigterm_handler_installed = TRUE;
+      break;
+    }
+
+  init_unix_signal_wakeup_state_unlocked ();
+
+  action.sa_handler = g_unix_signal_handler;
+  sigemptyset (&action.sa_mask);
+  action.sa_flags = 0;
+  sigaction (signum, &action, NULL);
+}
+
+GSource *
+_g_main_create_unix_signal_watch (int signum)
+{
+  GSource *source;
+  GUnixSignalWatchSource *unix_signal_source;
+
+  init_unix_signal_wakeup_state ();
+
+  source = g_source_new (&g_unix_signal_funcs, sizeof (GUnixSignalWatchSource));
+  unix_signal_source = (GUnixSignalWatchSource *) source;
+
+  unix_signal_source->signum = signum;
+  unix_signal_source->pending = FALSE;
+
+  G_LOCK (unix_signal_lock);
+  ensure_unix_signal_handler_installed_unlocked (signum);
+  unix_signal_watches = g_slist_prepend (unix_signal_watches, unix_signal_source);
+  G_UNLOCK (unix_signal_lock);
+
+  return source;
+}
+
+static void 
+g_unix_signal_watch_finalize (GSource    *source)
+{
+  G_LOCK (unix_signal_lock);
+  unix_signal_watches = g_slist_remove (unix_signal_watches, source);
+  G_UNLOCK (unix_signal_lock);
 }
 
 #endif /* G_OS_WIN32 */
@@ -4267,110 +4492,202 @@ g_child_watch_dispatch (GSource    *source,
 #ifndef G_OS_WIN32
 
 static void
-g_child_watch_signal_handler (int signum)
+g_unix_signal_handler (int signum)
 {
-  child_watch_count ++;
+  if (signum == SIGCHLD)
+    child_watch_count ++;
 
-  if (child_watch_init_state == CHILD_WATCH_INITIALIZED_THREADED)
+  if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED)
     {
-      write (child_watch_wake_up_pipe[1], "B", 1);
+      char buf[1];
+      switch (signum)
+	{
+	case SIGCHLD:
+	  buf[0] = _UNIX_SIGNAL_PIPE_SIGCHLD_CHAR;
+	  break;
+	case SIGHUP:
+	  buf[0] = _UNIX_SIGNAL_PIPE_SIGHUP_CHAR;
+	  break;
+	case SIGINT:
+	  buf[0] = _UNIX_SIGNAL_PIPE_SIGINT_CHAR;
+	  break;
+	case SIGTERM:
+	  buf[0] = _UNIX_SIGNAL_PIPE_SIGTERM_CHAR;
+	  break;
+	default:
+	  /* Shouldn't happen */
+	  return;
+	}
+      write (unix_signal_wake_up_pipe[1], buf, 1);
     }
   else
     {
-      /* We count on the signal interrupting the poll in the same thread.
-       */
+      /* We count on the signal interrupting the poll in the same thread. */
+      switch (signum)
+	{
+	case SIGCHLD:
+	  /* Nothing to do - the handler will call waitpid() */
+	  break;
+	case SIGHUP:
+	  unix_signal_state.sighup_delivered = TRUE;
+	  break;
+	case SIGINT:
+	  unix_signal_state.sigint_delivered = TRUE;
+	  break;
+	case SIGTERM:
+	  unix_signal_state.sigterm_delivered = TRUE;
+	  break;
+	default:
+	  g_assert_not_reached ();
+	  break;
+	}
     }
 }
  
 static void
-g_child_watch_source_init_single (void)
+deliver_unix_signal (int signum)
 {
-  struct sigaction action;
+  GSList *iter;
+  g_assert (signum == SIGHUP || signum == SIGINT || signum == SIGTERM);
 
-  g_assert (! g_thread_supported());
-  g_assert (child_watch_init_state == CHILD_WATCH_UNINITIALIZED);
+  G_LOCK (unix_signal_lock);
+  for (iter = unix_signal_watches; iter; iter = iter->next)
+    {
+      GUnixSignalWatchSource *source = iter->data;
 
-  child_watch_init_state = CHILD_WATCH_INITIALIZED_SINGLE;
-
-  action.sa_handler = g_child_watch_signal_handler;
-  sigemptyset (&action.sa_mask);
-  action.sa_flags = SA_NOCLDSTOP;
-  sigaction (SIGCHLD, &action, NULL);
+      if (source->signum != signum)
+	continue;
+      
+      source->pending = TRUE;
+    }
+  G_UNLOCK (unix_signal_lock);
 }
 
-G_GNUC_NORETURN static gpointer
-child_watch_helper_thread (gpointer data) 
+static gpointer unix_signal_helper_thread (gpointer data) G_GNUC_NORETURN;
+
+/*
+ * This thread is created whenever anything in GLib needs
+ * to deal with UNIX signals; at present, just SIGCHLD
+ * from g_child_watch_source_new().
+ *
+ * Note: We could eventually make this thread a more public interface
+ * and allow e.g. GDBus to use it instead of its own worker thread.
+ */
+static gpointer
+unix_signal_helper_thread (gpointer data) 
 {
   while (1)
     {
-      gchar b[20];
-      GSList *list;
+      gchar b[128];
+      ssize_t i, bytes_read;
+      gboolean sigterm_received = FALSE;
+      gboolean sigint_received = FALSE;
+      gboolean sighup_received = FALSE;
 
-      read (child_watch_wake_up_pipe[0], b, 20);
-
-      /* We were woken up.  Wake up all other contexts in all other threads */
-      G_LOCK (main_context_list);
-      for (list = main_context_list; list; list = list->next)
+      bytes_read = read (unix_signal_wake_up_pipe[0], b, sizeof (b));
+      if (bytes_read < 0)
 	{
-	  GMainContext *context;
-
-	  context = list->data;
-	  if (g_atomic_int_get (&context->ref_count) > 0)
-	    /* Due to racing conditions we can find ref_count == 0, in
-	     * that case, however, the context is still not destroyed
-	     * and no poll can be active, otherwise the ref_count
-	     * wouldn't be 0 */
-	    g_main_context_wakeup (context);
+	  g_warning ("Failed to read from child watch wake up pipe: %s",
+		     strerror (errno));
+	  /* Not much we can do here sanely; just wait a second and hope
+	   * it was transient.
+	   */
+	  g_usleep (G_USEC_PER_SEC);
+	  continue;
 	}
-      G_UNLOCK (main_context_list);
+      for (i = 0; i < bytes_read; i++)
+	{
+	  switch (b[i])
+	    {
+	    case _UNIX_SIGNAL_PIPE_SIGCHLD_CHAR:
+	      /* The child watch source will call waitpid() in its
+	       * prepare() and check() methods; however, we don't
+	       * know which pid exited, so we need to wake up
+	       * all contexts.  Note: actually we could get the pid
+	       * from the "siginfo_t" via the handler, but to pass
+	       * that info down the pipe would require a more structured
+	       * data stream (as opposed to a single byte).
+	       */
+	      break;
+	    case _UNIX_SIGNAL_PIPE_SIGTERM_CHAR:
+	      sigterm_received = TRUE;
+	      break;
+	    case _UNIX_SIGNAL_PIPE_SIGHUP_CHAR:
+	      sighup_received = TRUE;
+	      break;
+	    case _UNIX_SIGNAL_PIPE_SIGINT_CHAR:
+	      sigint_received = TRUE;
+	      break;
+	    default:
+	      g_warning ("Invalid char '%c' read from child watch pipe", b[i]);
+	      break;
+	    }
+	  if (sigterm_received)
+	    deliver_unix_signal (SIGTERM);
+	  if (sigint_received)
+	    deliver_unix_signal (SIGINT);
+	  if (sighup_received)
+	    deliver_unix_signal (SIGHUP);
+	  _g_main_wake_up_all_contexts ();
+	}
     }
 }
 
 static void
-g_child_watch_source_init_multi_threaded (void)
+init_unix_signal_wakeup_state_unlocked (void)
 {
   GError *error = NULL;
-  struct sigaction action;
 
-  g_assert (g_thread_supported());
+  if (!g_thread_supported ())
+    {
+      /* There is nothing to do for initializing in the non-threaded
+       * case.
+       */
+      if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED)
+	unix_signal_init_state = UNIX_SIGNAL_INITIALIZED_SINGLE;
+      return;
+    }
 
-  if (pipe (child_watch_wake_up_pipe) < 0)
-    g_error ("Cannot create wake up pipe: %s\n", g_strerror (errno));
-  fcntl (child_watch_wake_up_pipe[1], F_SETFL, O_NONBLOCK | fcntl (child_watch_wake_up_pipe[1], F_GETFL));
+  if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED)
+    return;
+
+  if (!g_unix_pipe_flags (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
+    g_error ("Cannot create UNIX signal wake up pipe: %s\n", error->message);
+  fcntl (unix_signal_wake_up_pipe[1], F_SETFL, O_NONBLOCK | fcntl (unix_signal_wake_up_pipe[1], F_GETFL));
 
   /* We create a helper thread that polls on the wakeup pipe indefinitely */
-  /* FIXME: Think this through for races */
-  if (g_thread_create (child_watch_helper_thread, NULL, FALSE, &error) == NULL)
-    g_error ("Cannot create a thread to monitor child exit status: %s\n", error->message);
-  child_watch_init_state = CHILD_WATCH_INITIALIZED_THREADED;
- 
-  action.sa_handler = g_child_watch_signal_handler;
-  sigemptyset (&action.sa_mask);
-  action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
-  sigaction (SIGCHLD, &action, NULL);
+  if (g_thread_create (unix_signal_helper_thread, NULL, FALSE, &error) == NULL)
+    g_error ("Cannot create a thread to monitor UNIX signals: %s\n", error->message);
+
+  unix_signal_init_state = UNIX_SIGNAL_INITIALIZED_THREADED;
 }
 
 static void
-g_child_watch_source_init_promote_single_to_threaded (void)
+init_unix_signal_wakeup_state (void)
 {
-  g_child_watch_source_init_multi_threaded ();
+  G_LOCK (unix_signal_lock);
+
+  init_unix_signal_wakeup_state_unlocked ();
+
+  G_UNLOCK (unix_signal_lock);
 }
 
 static void
 g_child_watch_source_init (void)
 {
-  if (g_thread_supported())
+  init_unix_signal_wakeup_state ();
+  
+  G_LOCK (unix_signal_lock);
+  if (!unix_signal_state.sigchld_handler_installed)
     {
-      if (child_watch_init_state == CHILD_WATCH_UNINITIALIZED)
-	g_child_watch_source_init_multi_threaded ();
-      else if (child_watch_init_state == CHILD_WATCH_INITIALIZED_SINGLE)
-	g_child_watch_source_init_promote_single_to_threaded ();
+      struct sigaction action;
+      action.sa_handler = g_unix_signal_handler;
+      sigemptyset (&action.sa_mask);
+      action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
+      sigaction (SIGCHLD, &action, NULL);
+      unix_signal_state.sigchld_handler_installed = TRUE;
     }
-  else
-    {
-      if (child_watch_init_state == CHILD_WATCH_UNINITIALIZED)
-	g_child_watch_source_init_single ();
-    }
+  G_UNLOCK (unix_signal_lock);
 }
 
 #endif /* !G_OS_WIN32 */

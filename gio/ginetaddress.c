@@ -866,3 +866,32 @@ g_inet_address_get_is_mc_site_local (GInetAddress *address)
   else
     return IN6_IS_ADDR_MC_SITELOCAL (&address->priv->addr.ipv6);
 }
+
+/**
+ * g_inet_address_equal:
+ * @address: A #GInetAddress.
+ * @other_address: Another #GInetAddress.
+ *
+ * Checks if two #GInetAddress instances are equal, e.g. the same address.
+ *
+ * Returns: %TRUE if @address and @other_address are equal, %FALSE otherwise.
+ *
+ * Since: 2.30
+ */
+gboolean
+g_inet_address_equal (GInetAddress *address,
+                      GInetAddress *other_address)
+{
+  g_return_val_if_fail (G_IS_INET_ADDRESS (address), FALSE);
+  g_return_val_if_fail (G_IS_INET_ADDRESS (other_address), FALSE);
+
+  if (g_inet_address_get_family (address) != g_inet_address_get_family (other_address))
+    return FALSE;
+
+  if (memcmp (g_inet_address_to_bytes (address),
+              g_inet_address_to_bytes (other_address),
+              g_inet_address_get_native_size (address)) != 0)
+    return FALSE;
+
+  return TRUE;
+}

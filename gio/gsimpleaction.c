@@ -323,7 +323,7 @@ g_simple_action_class_init (GSimpleActionClass *class)
   g_simple_action_signals[SIGNAL_ACTIVATE] =
     g_signal_new (I_("activate"),
                   G_TYPE_SIMPLE_ACTION,
-                  G_SIGNAL_RUN_LAST,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
                   G_STRUCT_OFFSET (GSimpleActionClass, activate),
                   NULL, NULL,
                   g_cclosure_marshal_VOID__VARIANT,

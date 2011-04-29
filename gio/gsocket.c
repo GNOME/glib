@@ -1756,15 +1756,17 @@ g_socket_check_connect_result (GSocket  *socket,
  * received, the additional data will be returned in future calls to
  * g_socket_receive().
  *
- * If the socket is in blocking mode the call will block until there is
- * some data to receive or there is an error. If there is no data available
- * and the socket is in non-blocking mode, a %G_IO_ERROR_WOULD_BLOCK error
- * will be returned. To be notified when data is available, wait for the
+ * If the socket is in blocking mode the call will block until there
+ * is some data to receive, the connection is closed, or there is an
+ * error. If there is no data available and the socket is in
+ * non-blocking mode, a %G_IO_ERROR_WOULD_BLOCK error will be
+ * returned. To be notified when data is available, wait for the
  * %G_IO_IN condition.
  *
  * On error -1 is returned and @error is set accordingly.
  *
- * Returns: Number of bytes read, or -1 on error
+ * Returns: Number of bytes read, or 0 if the connection was closed by
+ * the peer, or -1 on error
  *
  * Since: 2.22
  */
@@ -1794,7 +1796,8 @@ g_socket_receive (GSocket       *socket,
  * the choice of blocking or non-blocking behavior is determined by
  * the @blocking argument rather than by @socket's properties.
  *
- * Returns: Number of bytes read, or -1 on error
+ * Returns: Number of bytes read, or 0 if the connection was closed by
+ * the peer, or -1 on error
  *
  * Since: 2.26
  */
@@ -1876,7 +1879,8 @@ g_socket_receive_with_blocking (GSocket       *socket,
  *
  * See g_socket_receive() for additional information.
  *
- * Returns: Number of bytes read, or -1 on error
+ * Returns: Number of bytes read, or 0 if the connection was closed by
+ * the peer, or -1 on error
  *
  * Since: 2.22
  */
@@ -3182,14 +3186,16 @@ g_socket_send_message (GSocket                *socket,
  * sufficiently-large buffer.
  *
  * If the socket is in blocking mode the call will block until there
- * is some data to receive or there is an error. If there is no data
- * available and the socket is in non-blocking mode, a
- * %G_IO_ERROR_WOULD_BLOCK error will be returned. To be notified when
- * data is available, wait for the %G_IO_IN condition.
+ * is some data to receive, the connection is closed, or there is an
+ * error. If there is no data available and the socket is in
+ * non-blocking mode, a %G_IO_ERROR_WOULD_BLOCK error will be
+ * returned. To be notified when data is available, wait for the
+ * %G_IO_IN condition.
  *
  * On error -1 is returned and @error is set accordingly.
  *
- * Returns: Number of bytes read, or -1 on error
+ * Returns: Number of bytes read, or 0 if the connection was closed by
+ * the peer, or -1 on error
  *
  * Since: 2.22
  */

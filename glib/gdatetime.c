@@ -2385,10 +2385,9 @@ g_date_time_format (GDateTime *datetime,
                       gint64 offset = g_date_time_get_utc_offset (datetime)
                                     / USEC_PER_SECOND;
 
-                      g_string_append_printf (outstr, "%c%02d%02d",
-                                              offset >= 0 ? '+' : '-',
+                      g_string_append_printf (outstr, "%+03d%02d",
                                               (int) offset / 3600,
-                                              (int) offset / 60 % 60);
+                                              (int) abs(offset) / 60 % 60);
                     }
                   else
                     g_string_append (outstr, "+0000");

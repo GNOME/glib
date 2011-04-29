@@ -1,12 +1,38 @@
 Overview of Changes from GLib 2.28.0 to 2.29.2
 ==============================================
 
-* The format accepted by the GVariant parser has beend documented
+* GApplication
+ - The documentation has been enhanced and clarified
+ - An opt-out for uniqueness has been added: G_APPLICATION_NON_UNIQUE
+ - GApplication now syncs settings before g_application_run() returns
 
-* The return value of g_datetime_compare() has been fixed to
-  match strcmp() semantics
+* GDBus
+ - Interface lookups are now happening in constant time
+ - Signature checking and handling of various unexpected
+   situations has been improved
+
+* GVariant
+ - The format accepted by the GVariant parser has beend documented
+ - GVariant accepts G_VARIANT_TYPE_VARDICT for a{sv}
+
+* GDateTime:
+ - The return value of g_datetime_compare() has been fixed to
+   match strcmp() semantics
+ - In order to handle problems with changing timezones, a GTimeZoneMonitor
+   has been added to GIO, and g_time_zone_refresh_local() can be
+   called to update the cached information about the local timezone
+
+* GOption now uses /proc/self/cmdline to set the program name instead
+  and only falls back to "<unknown>" if that is unavailable
+
+* GSettings:
+ - The schema compiler now warns about references to non-existing schemas
 
 * Commandline utilities are now fully translated
+
+* Signals can now indicate that collecting their arguments must
+  always happen, even in the absence of connected signal handlers,
+  using the G_SIGNAL_MUST_COLLECT flag.
 
 * Bugs fixed:
  635099 Memory leak in gdbus introspection when parsing xml
@@ -14,16 +40,68 @@ Overview of Changes from GLib 2.28.0 to 2.29.2
  642042 Overriding GDBus org.freedesktop.DBus.Properties im...
  642052 g_timeout_add(_seconds) cannot handle large intervals
  642490 notify_desktop_launch() "g_variant_new_bytestring:...
+ 613269 g_type_get_qdata() doesn't work as I expected on subtypes
+ 624943 G_VALUE_NOCOPY_CONTENTS is undocumented
+ 637738 object_interface_check_properties never actually executes
+ 638185 GIOCondition should be annotated as "flags"
+ 639478 GDBusServer's g_dbus_server_new_sync() function should just...
+ 641755 Add g_settings_get/set_uint() helpers
+ 641768 dconf gsettings backend silently drops writes if it can't...
+ 642797 g_app_info_get_default_for_type() broken for subtypes
+ 642825 Unnecessary assertion failure in g_option_context_parse()
+ 642944 NULL key lookup using g_hash_table_lookup_extended()
+ 643074 Incorrect documentation for g_socket_receive() and g_socket...
+ 643197 g_application_id_is_valid docs imply no valid ids
+ 643468 GApplication docs: Warn that handling "command-line" means...
+ 643478 GApplication::local_command_line vfunc documentation seems wrong
+ 643624 Can g_variant_unref() on an already free'd variant
+ 643649 g_application_run() should say that argc/argv can be NULL
+ 643780 shouldn't need to create an action group to use actions...
+ 643795 g_timeout_add_seconds fires with intervals 1 second longer...
+ 644309 Program name is not set when using GtkApplication
+ 644428 Crash in failure section of g_markup_collect_attributes()
+ 644465 undefined reference to `_usleep'
+ 644552 g_timeout_add_seconds(1, ...) may have a latency of up to 2...
+ 644607 Correct internal definition of C_()
+ 645789 annotations for g_file_*_contents
+ 646039 g_settings_list_children() returns child that cannot be opened
+ 646310 Accept range with only min or max
+ 646420 g_dbus_method_invocation_get_parameters() docs should say...
+ 646843 occasional abort on autologin
+ 646985 add G_APPLICATION_NON_UNIQUE flag
+ 647579 gsettings: Implement reset-recursively
+ 647600 gsettings description has typo
 
 * Translation updates
+ Afrikaans
  Bulgarian
  Bengali India
- Korean
- Polish
+ British English
+ Bulgarian
+ Catalan
+ Czech
+ Danish
+ French
  Galician
+ German
+ Greek
+ Gujarati
  Hebrew
+ Hungarian
  Italian
+ Japanese
+ Korean
+ Lithuanian
+ Polish
+ Portuguese
+ Romanian
+ Serbian
+ Simplified Chinese
  Spanish
+ Swedish
+ Traditional Chinese
+ Uighur
+ Vietnamese
 
 
 Overview of Changes from GLib 2.27.93 to 2.28.0

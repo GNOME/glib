@@ -1992,7 +1992,7 @@ g_dbus_connection_send_message_with_reply_sync (GDBusConnection   *connection,
 
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (G_IS_DBUS_MESSAGE (message), NULL);
-  g_return_val_if_fail ((flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL) || !g_dbus_message_get_locked (message), FALSE);
+  g_return_val_if_fail ((flags & G_DBUS_SEND_MESSAGE_FLAGS_PRESERVE_SERIAL) || !g_dbus_message_get_locked (message), NULL);
   g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
@@ -2264,15 +2264,20 @@ initable_init (GInitable     *initable,
 
   ret = FALSE;
 
+  /* First, handle the case where the connection already has an
+   * initialization error set.
+   */
+  if (connection->initialization_error != NULL)
+    goto out;
+
+  /* Also make this a no-op if we're already initialized fine */
   if (connection->is_initialized)
     {
-      if (connection->stream != NULL)
-        ret = TRUE;
-      else
-        g_assert (connection->initialization_error != NULL);
+      ret = TRUE;
       goto out;
     }
-  g_assert (connection->initialization_error == NULL);
+
+  g_assert (connection->initialization_error == NULL && !connection->is_initialized);
 
   /* The user can pass multiple (but mutally exclusive) construct
    * properties:

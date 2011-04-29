@@ -64,8 +64,8 @@ struct _GFilenameCompleter {
 
   GFile *basenames_dir;
   gboolean basenames_are_escaped;
-  GList *basenames;
   gboolean dirs_only;
+  GList *basenames;
 
   LoadBasenamesData *basename_loader;
 };

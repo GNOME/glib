@@ -69,6 +69,9 @@ GInetAddress *        g_inet_address_new_loopback         (GSocketFamily        
 
 GInetAddress *        g_inet_address_new_any              (GSocketFamily         family);
 
+gboolean              g_inet_address_equal                (GInetAddress         *address,
+                                                           GInetAddress         *other_address);
+
 gchar *               g_inet_address_to_string            (GInetAddress         *address);
 
 const guint8 *        g_inet_address_to_bytes             (GInetAddress         *address);

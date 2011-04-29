@@ -652,6 +652,7 @@ keyring_generate_entry (const gchar  *cookie_context,
   lines = NULL;
   new_contents = NULL;
   have_id = FALSE;
+  use_id = 0;
   use_cookie = NULL;
   lock_fd = -1;
 

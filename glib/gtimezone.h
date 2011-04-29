@@ -65,11 +65,11 @@ void                    g_time_zone_unref                               (GTimeZo
 
 gint                    g_time_zone_find_interval                       (GTimeZone   *tz,
                                                                          GTimeType    type,
-                                                                         gint64       time);
+                                                                         gint64       time_);
 
 gint                    g_time_zone_adjust_time                         (GTimeZone   *tz,
                                                                          GTimeType    type,
-                                                                         gint64      *time);
+                                                                         gint64      *time_);
 
 const gchar *           g_time_zone_get_abbreviation                    (GTimeZone   *tz,
                                                                          gint         interval);

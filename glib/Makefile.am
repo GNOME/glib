@@ -206,6 +206,9 @@ libglib_2_0_la_SOURCES = 	\
 	gprintf.c		\
 	gprintfint.h
 
+if OS_UNIX
+libglib_2_0_la_SOURCES += glib-unix.c
+endif	
 
 EXTRA_libglib_2_0_la_SOURCES = \
 	giounix.c	\
@@ -218,6 +221,10 @@ glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
 	glib-object.h	\
 	glib.h
+
+if OS_UNIX
+glibinclude_HEADERS += glib-unix.h
+endif
 
 glibsubincludedir=$(includedir)/glib-2.0/glib
 glibsubinclude_HEADERS =   \
@@ -452,7 +459,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs1
 	done >libglib.vs10.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs10/glib.vcxprojin >$@
 	rm libglib.vs10.sourcefiles
-	
+
 ../build/win32/vs10/glib.vcxproj.filters: $(top_srcdir)/build/win32/vs10/glib.vcxproj.filtersin
 	for F in $(libglib_2_0_la_SOURCES); do \
 		case $$F in \

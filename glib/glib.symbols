@@ -1451,6 +1451,7 @@ g_test_config_vars
 #endif
 g_test_create_case
 g_test_create_suite
+g_test_fail
 g_test_get_root
 g_test_init
 g_test_log_buffer_free
@@ -1974,6 +1975,17 @@ g_hostname_is_ascii_encoded
 g_hostname_is_ip_address
 g_hostname_to_ascii
 g_hostname_to_unicode
+#endif
+#endif
+
+#if IN_HEADER(__G_UNIX_H__)
+#if IN_FILE(__G_UNIX_C__)
+#ifdef G_OS_UNIX
+g_unix_pipe_flags
+g_unix_error_quark
+g_unix_signal_source_new
+g_unix_signal_add_watch_full
+#endif
 #endif
 #endif
 

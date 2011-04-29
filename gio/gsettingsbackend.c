@@ -45,6 +45,13 @@ struct _GSettingsBackendPrivate
   GStaticMutex lock;
 };
 
+/* For g_settings_backend_sync_default(), we only want to actually do
+ * the sync if the backend already exists.  This avoids us creating an
+ * entire GSettingsBackend in order to call a do-nothing sync()
+ * operation on it.  This variable lets us avoid that.
+ */
+static gboolean g_settings_has_backend;
+
 /**
  * SECTION:gsettingsbackend
  * @title: GSettingsBackend
@@ -982,6 +989,7 @@ g_settings_backend_get_default (void)
 
       extension_type = g_io_extension_get_type (extension);
       instance = g_object_new (extension_type, NULL);
+      g_settings_has_backend = TRUE;
 
       g_once_init_leave (&backend, (gsize) instance);
     }
@@ -1021,12 +1029,15 @@ g_settings_backend_get_permission (GSettingsBackend *backend,
 void
 g_settings_backend_sync_default (void)
 {
-  GSettingsBackendClass *class;
-  GSettingsBackend *backend;
+  if (g_settings_has_backend)
+    {
+      GSettingsBackendClass *class;
+      GSettingsBackend *backend;
 
-  backend = g_settings_backend_get_default ();
-  class = G_SETTINGS_BACKEND_GET_CLASS (backend);
+      backend = g_settings_backend_get_default ();
+      class = G_SETTINGS_BACKEND_GET_CLASS (backend);
 
-  if (class->sync)
-    class->sync (backend);
+      if (class->sync)
+        class->sync (backend);
+    }
 }

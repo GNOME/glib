@@ -63,7 +63,13 @@
  * @include: gio/gio.h
  *
  * #GDBusServer is a helper for listening to and accepting D-Bus
- * connections.
+ * connections. This can be used to create a new D-Bus server, allowing two
+ * peers to use the D-Bus protocol for their own specialized communication.
+ * A server instance provided in this way will not perform message routing or
+ * implement the org.freedesktop.DBus interface.
+ *
+ * To just export an object on a well-known name on a message bus, such as the
+ * session or system bus, you should instead use g_bus_own_name().
  *
  * <example id="gdbus-peer-to-peer"><title>D-Bus peer-to-peer example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-peer.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
@@ -979,11 +985,16 @@ on_run (GSocketService    *service,
 
   if (server->flags & G_DBUS_SERVER_FLAGS_RUN_IN_THREAD)
     {
+      gboolean claimed;
+
+      claimed = FALSE;
       g_signal_emit (server,
                      _signals[NEW_CONNECTION_SIGNAL],
                      0,
-                     connection);
-      g_dbus_connection_start_message_processing (connection);
+                     connection,
+                     &claimed);
+      if (claimed)
+        g_dbus_connection_start_message_processing (connection);
       g_object_unref (connection);
     }
   else

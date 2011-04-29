@@ -1,5 +1,9 @@
+#include <config.h>
 #include <glib.h>
 #include <string.h>
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 static void
 test_empty (void)
@@ -8,7 +12,7 @@ test_empty (void)
   GError *error;
 
   error = NULL;
-  file = g_mapped_file_new ("empty", FALSE, &error);
+  file = g_mapped_file_new (SRCDIR "/empty", FALSE, &error);
   g_assert_no_error (error);
 
   g_assert (g_mapped_file_get_contents (file) == NULL);
@@ -38,8 +42,14 @@ test_writable (void)
   const gchar *old = "MMMMMMMMMMMMMMMMMMMMMMMMM";
   const gchar *new = "abcdefghijklmnopqrstuvxyz";
 
+  if (access (SRCDIR "/4096-random-bytes", W_OK) != 0)
+    {
+      g_test_message ("Skipping writable mapping test");
+      return;
+    }
+
   error = NULL;
-  file = g_mapped_file_new ("4096-random-bytes", TRUE, &error);
+  file = g_mapped_file_new (SRCDIR "/4096-random-bytes", TRUE, &error);
   g_assert_no_error (error);
 
   contents = g_mapped_file_get_contents (file);
@@ -51,7 +61,7 @@ test_writable (void)
   g_mapped_file_free (file);
 
   error = NULL;
-  file = g_mapped_file_new ("4096-random-bytes", TRUE, &error);
+  file = g_mapped_file_new (SRCDIR "/4096-random-bytes", TRUE, &error);
   g_assert_no_error (error);
 
   contents = g_mapped_file_get_contents (file);

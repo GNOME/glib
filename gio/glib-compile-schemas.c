@@ -24,12 +24,15 @@
 #include "config.h"
 
 #include <gstdio.h>
-#include <locale.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdio.h>
-
 #include <gi18n.h>
+
+#include <string.h>
+#include <stdio.h>
+#include <locale.h>
+
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
+#endif
 
 #include "gvdb/gvdb-builder.h"
 #include "strinfo.c"
