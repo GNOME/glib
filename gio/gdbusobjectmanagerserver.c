@@ -48,8 +48,10 @@
  * clients can keep caches up to date by only listening to D-Bus
  * signals.
  *
- * See #GDBusObjectManagerClient for the client-side code that is intended to
- * be used with #GDBusObjectManagerServer.
+ * See #GDBusObjectManagerClient for the client-side code that is
+ * intended to be used with #GDBusObjectManagerServer or any D-Bus
+ * object implementing the org.freedesktop.DBus.ObjectManager
+ * interface.
  */
 
 typedef struct

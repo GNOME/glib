@@ -237,6 +237,9 @@ on_name_acquired (GDBusConnection *connection,
     </para>
   </section>
 
+  <section>
+    <title>Generating code and docs</title>
+
   <section id="gdbus-example-gdbus-codegen">
     <title>Using gdbus-codegen</title>
 
@@ -296,5 +299,7 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
   <xi:include href="ExampleCat.xml"/>
   <xi:include href="ExampleObject.xml"/>
   <xi:include href="ExampleObjectManagerClient.xml"/>
+
+  </section>
 
 </chapter>

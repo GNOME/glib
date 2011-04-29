@@ -53,8 +53,8 @@
 <refsect1>
   <title>Generating C code</title>
   <para>
-    When generating C code, an abstract
-    #GTypeInterface<!-- -->-derived type is generated for each D-Bus
+    When generating C code, a
+    #GInterface<!-- -->-derived type is generated for each D-Bus
     interface. Additionally, for every generated type,
     <type>FooBar</type>, two concrete instantiable types,
     <type>FooBarProxy</type> and <type>FooBarSkeleton</type>, implementing
@@ -142,11 +142,11 @@
     </varlistentry>
 
     <varlistentry>
-      <term><option>--annotate</option></term>
+      <term><option>--annotate</option> <option>--key</option> <replaceable>KEY</replaceable> <option>--value</option> <replaceable>VALUE</replaceable></term>
       <listitem>
         <para>
           Used together with <option>--key</option> and
-          <option>--value</option> to annotate the given XML files. It
+          <option>--value</option> to annotate the given XML files (for each <option>--annotate</option>, there must be exactly one <option>--key</option> and <option>--value</option>). It
           can be used with interfaces, methods, signals, properties
           and arguments in the following way:
         </para>
@@ -167,8 +167,13 @@ gdbus-codegen --c-namespace MyApp                           \
     --key dog --value wuff                                  \
   myapp-dbus-interfaces.xml
 ]]></programlisting></informalexample>
+        <para>
+          Any UTF-8 string can be used for the value of
+          <option>--key</option> and <option>--value</option>.
+        </para>
       </listitem>
     </varlistentry>
+
   </variablelist>
 </refsect1>
 
@@ -224,7 +229,8 @@ gdbus-codegen --c-namespace MyApp                           \
         </para>
         <para>
           When generating C code, this field is used to ensure
-          function pointer order for preserving ABI/API.
+          function pointer order for preserving ABI/API, see <xref
+          linkend="gdbus-code-stability"/>.
         </para>
         <para>
           When generating Docbook XML, the value of this tag appears
@@ -331,7 +337,7 @@ gdbus-codegen --c-namespace MyApp                           \
   <para>
     As an easier alternative to using the
     <literal>org.gtk.GDBus.DocString</literal> annotation, note that
-    XML parser used by <command>gdbus-codegen</command> parses XML
+    parser used by <command>gdbus-codegen</command> parses XML
     comments in a way similar to <ulink
     url="http://www.gtk.org/gtk-doc/">gtk-doc</ulink>:
 <informalexample><programlisting><![CDATA[
@@ -386,6 +392,12 @@ gdbus-codegen --c-namespace MyApp                           \
     <literal><![CDATA[#net.Corp.InlineDocs:BazProperty]]></literal> are all
     expanded to links to the respective interface, method, signal and
     property.
+  </para>
+  <para>
+    If both XML comments and
+    <literal>org.gtk.GDBus.DocString</literal> or
+    <literal>org.gtk.GDBus.DocString.Short</literal> annotations are
+    present, the latter wins.
   </para>
 </refsect1>
 
@@ -617,7 +629,7 @@ my_app_frobber_proxy_new_sync   (GDBusConnection     *connection,
     </para>
     <para>
       Note that all property access is via #GDBusProxy<!-- -->'s
-      property cache so no IO is ever done when reading properties.
+      property cache so no I/O is ever done when reading properties.
       Also note that setting a property will cause the
       <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties.Set</ulink> method to be
       called on the remote object. This call, however, is asynchronous
@@ -697,14 +709,14 @@ on_handle_hello_world (MyAppFrobber           *object,
                                          &error);
 ]]></programlisting></informalexample>
     <para>
-      To facility atomic changesets (multiple properties changing at
+      To facilitate atomic changesets (multiple properties changing at
       the same time), #GObject::notify signals are queued up when
       received. The queue is drained in an idle handler and will cause
       emissions of the <ulink
       url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties::PropertiesChanged</ulink>
-      signal with all the properties that has changed. Use
-      g_dbus_interface_skeleton_flush() or g_dbus_object_skeleton_flush() to
-      empty the queue immediately.
+      signal with all the properties that have changed. Use
+      g_dbus_interface_skeleton_flush() or
+      g_dbus_object_skeleton_flush() to empty the queue immediately.
     </para>
   </refsect2>
 </refsect1>
@@ -750,20 +762,40 @@ on_handle_hello_world (MyAppFrobber           *object,
   </para>
 </refsect1>
 
-<refsect1>
+<refsect1 id="gdbus-code-stability">
   <title>Stability Guarantees</title>
   <para>
-    No guarantees about the API and ABI of the code generated by
-    <command>gdbus-codegen</command> are given. This means that code
-    generated by future versions of this program may have a different
-    API or ABI even if the underlying D-Bus interface hasn't
-    changed. As such, always include the generated code in
-    distribution tarballs and never expose the code in any stable
-    interfaces.
+    The generated C functions are guaranteed to not change their ABI
+    that is, if a method, signal or property does not change its
+    signature in the introspection XML, the generated C functions will
+    not change its C ABI either. One exception to this guarantee is if
+    you are using type <link
+    linkend="G-VARIANT-TYPE-HANDLE:CAPS">'h'</link> for passing file
+    descriptors on Unix. Future versions of gdbus-codegen will include
+    guarantees for this type as well.
   </para>
   <para>
-    Future versions of <command>gdbus-codegen</command> will provide
-    ABI and API guarantees on the generated code.
+    The ABI of the generated #GType<!-- -->s will be preserved only if
+    the <literal>org.gtk.GDBus.Since</literal> annotation is used
+    judiciously — this is because the VTable for the #GInterface
+    relies on functions pointers for signal handlers. Specifically, if
+    a D-Bus method, property or signal or is added to a D-Bus
+    interface, then ABI of the generated #GInterface type is preserved
+    if, and only if, each added method, property signal is annotated
+    with they <literal>org.gtk.GDBus.Since</literal> annotation using
+    a greater version number than previous versions.
+  </para>
+  <para>
+    The generated C code currently happens to be annotated with <ulink
+    url="http://www.gtk.org/gtk-doc/">gtk-doc</ulink> / <ulink
+    url="https://live.gnome.org/GObjectIntrospection">GObject
+    Introspection</ulink> comments / annotations. The layout and
+    contents might change in the future so no guarantees about
+    e.g. <literal>SECTION</literal> usage etc. is given.
+  </para>
+  <para>
+    While the generated Docbook for D-Bus interfaces isn't expected to
+    change, no guarantees are given at this point.
   </para>
 </refsect1>
 
