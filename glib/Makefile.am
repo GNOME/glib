@@ -82,6 +82,7 @@ MIRRORING_TAB_SOURCE = 				\
 EXTRA_DIST += 			\
 	makefile.msc.in		\
 	glib.rc.in		\
+	gen-iswide-table.py	\
 	gen-unicode-tables.pl	\
 	gen-script-table.pl	\
 	glibconfig.h.win32.in	\
