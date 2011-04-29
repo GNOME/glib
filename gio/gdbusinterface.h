@@ -39,7 +39,6 @@ G_BEGIN_DECLS
  *
  * Since: 2.30
  */
-typedef struct _GDBusInterface GDBusInterface; /* Dummy typedef */
 
 typedef struct _GDBusInterfaceIface GDBusInterfaceIface;
 
