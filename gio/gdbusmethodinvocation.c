@@ -373,8 +373,8 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
         {
           gchar *type_string = g_variant_type_dup_string (type);
 
-          g_warning (_("Type of return value is incorrect, got `%s', expected `%s'"),
-                     g_variant_get_type_string (parameters), type_string);
+          g_warning ("Type of return value is incorrect, got `%s', expected `%s'",
+		     g_variant_get_type_string (parameters), type_string);
           g_variant_type_free (type);
           g_free (type_string);
           goto out;
@@ -404,7 +404,7 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
   error = NULL;
   if (!g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, &error))
     {
-      g_warning (_("Error sending message: %s"), error->message);
+      g_warning ("Error sending message: %s", error->message);
       g_error_free (error);
     }
   g_object_unref (reply);

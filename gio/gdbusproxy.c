@@ -722,8 +722,8 @@ g_dbus_proxy_set_cached_property (GDBusProxy   *proxy,
         {
           if (g_strcmp0 (info->signature, g_variant_get_type_string (value)) != 0)
             {
-              g_warning (_("Trying to set property %s of type %s but according to the expected "
-                           "interface the type is %s"),
+              g_warning ("Trying to set property %s of type %s but according to the expected "
+			 "interface the type is %s",
                          property_name,
                          g_variant_get_type_string (value),
                          info->signature);
