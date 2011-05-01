@@ -487,6 +487,47 @@ string_hash_test (void)
 }
 
 static void
+set_check (gpointer key,
+           gpointer value,
+           gpointer user_data)
+{
+  int *pi = user_data;
+  if (key != value)
+    g_assert_not_reached ();
+
+  g_assert_cmpint (atoi (key) % 7, ==, 2);
+
+  (*pi)++;
+}
+
+static void
+set_hash_test (void)
+{
+  GHashTable *hash_table =
+    g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  int i;
+
+  for (i = 2; i < 5000; i += 7)
+    {
+      char *s = g_strdup_printf ("%d", i);
+      g_hash_table_insert (hash_table, s, s);
+    }
+
+  i = 0;
+  g_hash_table_foreach (hash_table, set_check, &i);
+  g_assert_cmpint (i, ==, g_hash_table_size (hash_table));
+
+  /* this will cause the hash table to loose set nature */
+  g_hash_table_insert (hash_table, g_strdup ("a"), "b");
+
+  g_assert_cmpstr (g_hash_table_lookup (hash_table, "2"), ==, "2");
+  g_assert_cmpstr (g_hash_table_lookup (hash_table, "a"), ==, "b");
+
+  g_hash_table_destroy (hash_table);
+}
+
+
+static void
 test_hash_misc (void)
 {
   GHashTable *hash_table;
@@ -706,6 +747,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/int64", int64_hash_test);
   g_test_add_func ("/hash/double", double_hash_test);
   g_test_add_func ("/hash/string", string_hash_test);
+  g_test_add_func ("/hash/set", set_hash_test);
   g_test_add_func ("/hash/ref", test_hash_ref);
   g_test_add_func ("/hash/remove-all", test_remove_all);
 

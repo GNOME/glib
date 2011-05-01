@@ -34,6 +34,7 @@
 
 #include "ghash.h"
 
+#include "gstrfuncs.h"
 #include "gatomic.h"
 #include "gtestutils.h"
 
@@ -69,6 +70,9 @@
  * To lookup a value corresponding to a given key, use
  * g_hash_table_lookup() and g_hash_table_lookup_extended().
  *
+ * g_hash_table_lookup_extended() can also be used to simply
+ * check if a key is present in the hash table.
+ *
  * To remove a key and value, use g_hash_table_remove().
  *
  * To call a function for each key and value pair use
@@ -76,7 +80,49 @@
  * key/value pairs in the hash table, see #GHashTableIter.
  *
  * To destroy a #GHashTable use g_hash_table_destroy().
- **/
+ *
+ * <example>
+ * <title>Using a GHashTable as a set</title>
+ * <para>
+ * A common use-case for hash tables is to store information about
+ * a set of keys, without associating any particular value with each
+ * key. GHashTable optimizes one way of doing so: If you store only
+ * key-value pairs where key == value, then GHashTable does not
+ * allocate memory to store the values, which can be a considerable
+ * space saving, if your set is large.
+ * </para>
+ * <programlisting>
+ * GHashTable *
+ * set_new (GHashFunc      hash_func,
+ *          GEqualFunc     equal_func,
+ *          GDestroyNotify destroy)
+ * {
+ *   return g_hash_table_new_full (hash_func, equal_func, destroy);
+ * }
+ *
+ * void
+ * set_insert (GHashTable *set,
+ *             gpointer    element)
+ * {
+ *   g_hash_table_insert (set, element, element);
+ * }
+ *
+ * gboolean
+ * set_contains (GHashTable *set,
+ *               gpointer    element)
+ * {
+ *   return g_hash_table_lookup_extended (set, element, NULL, NULL);
+ * }
+ *
+ * gboolean
+ * set_remove (GHashTable *set,
+ *             gpointer    element)
+ * {
+ *   return g_hash_table_remove (set, element);
+ * }
+ * </programlisting>
+ * </example>
+ */
 
 /**
  * GHashTable:
@@ -459,8 +505,11 @@ g_hash_table_resize (GHashTable *hash_table)
   old_size = hash_table->size;
   g_hash_table_set_shift_from_size (hash_table, hash_table->nnodes * 2);
 
-  new_keys   = g_new0 (gpointer, hash_table->size);
-  new_values = g_new0 (gpointer, hash_table->size);
+  new_keys = g_new0 (gpointer, hash_table->size);
+  if (hash_table->keys == hash_table->values)
+    new_values = new_keys;
+  else
+    new_values = g_new0 (gpointer, hash_table->size);
   new_hashes = g_new0 (guint, hash_table->size);
 
   for (i = 0; i < old_size; i++)
@@ -486,8 +535,10 @@ g_hash_table_resize (GHashTable *hash_table)
       new_values[hash_val] = hash_table->values[i];
     }
 
+  if (hash_table->keys != hash_table->values)
+    g_free (hash_table->values);
+
   g_free (hash_table->keys);
-  g_free (hash_table->values);
   g_free (hash_table->hashes);
 
   hash_table->keys = new_keys;
@@ -582,7 +633,7 @@ g_hash_table_new_full (GHashFunc       hash_func,
   hash_table->key_destroy_func   = key_destroy_func;
   hash_table->value_destroy_func = value_destroy_func;
   hash_table->keys               = g_new0 (gpointer, hash_table->size);
-  hash_table->values             = g_new0 (gpointer, hash_table->size);
+  hash_table->values             = hash_table->keys;
   hash_table->hashes             = g_new0 (guint, hash_table->size);
 
   return hash_table;
@@ -793,8 +844,9 @@ g_hash_table_unref (GHashTable *hash_table)
   if (g_atomic_int_exchange_and_add (&hash_table->ref_count, -1) - 1 == 0)
     {
       g_hash_table_remove_all_nodes (hash_table, TRUE);
+      if (hash_table->keys != hash_table->values)
+        g_free (hash_table->values);
       g_free (hash_table->keys);
-      g_free (hash_table->values);
       g_free (hash_table->hashes);
       g_slice_free (GHashTable, hash_table);
     }
@@ -920,6 +972,9 @@ g_hash_table_insert_internal (GHashTable *hash_table,
 
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (hash_table->ref_count > 0);
+
+  if (G_UNLIKELY (hash_table->keys == hash_table->values && key != value))
+    hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
 
   node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
