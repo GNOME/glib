@@ -12,7 +12,11 @@ proxy-libintl-dev and zlib-dev zipfiles from
 http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/ for 32-bit
 builds, and correspondingly
 http://ftp.gnome.org/pub/GNOME/binaries/win64/dependencies/ for 64-bit
-builds. 
+builds.
+
+One may wish to build his/her own ZLib-It is recommended that ZLib is
+built using the win32/Makefile.msc makefile with VS10 with the ASM routines
+to avoid linking problems-see win32/Makefile.msc in ZLib for more details.
 
 One may optionally use his/her own PCRE installation by selecting the
 (BuildType)_ExtPCRE configuration, but please note the PCRE must be built
