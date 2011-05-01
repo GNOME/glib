@@ -733,6 +733,98 @@ test_remove_all (void)
   g_hash_table_unref (h);
 }
 
+typedef struct {
+  gint ref_count;
+  const gchar *key;
+} RefCountedKey;
+
+static guint
+hash_func (gconstpointer key)
+{
+  const RefCountedKey *rkey = key;
+
+  return g_str_hash (rkey->key);
+}
+
+static gboolean
+eq_func (gconstpointer a, gconstpointer b)
+{
+  const RefCountedKey *aa = a;
+  const RefCountedKey *bb = b;
+
+  return g_strcmp0 (aa->key, bb->key) == 0;
+}
+
+static void
+key_unref (gpointer data)
+{
+  RefCountedKey *key = data;
+
+  g_assert (key->ref_count > 0);
+
+  key->ref_count -= 1;
+
+  if (key->ref_count == 0)
+    g_free (key);
+}
+
+static RefCountedKey *
+key_ref (RefCountedKey *key)
+{
+  key->ref_count += 1;
+
+  return key;
+}
+
+static RefCountedKey *
+key_new (const gchar *key)
+{
+  RefCountedKey *rkey;
+
+  rkey = g_new (RefCountedKey, 1);
+
+  rkey->ref_count = 1;
+  rkey->key = key;
+
+  return rkey;
+}
+
+static void
+set_ref_hash_test (void)
+{
+  GHashTable *h;
+  RefCountedKey *key1;
+  RefCountedKey *key2;
+
+  h = g_hash_table_new_full (hash_func, eq_func, key_unref, key_unref);
+
+  key1 = key_new ("a");
+  key2 = key_new ("a");
+
+  g_assert_cmpint (key1->ref_count, ==, 1);
+  g_assert_cmpint (key2->ref_count, ==, 1);
+
+  g_hash_table_insert (h, key_ref (key1), key_ref (key1));
+
+  g_assert_cmpint (key1->ref_count, ==, 3);
+  g_assert_cmpint (key2->ref_count, ==, 1);
+
+  g_hash_table_replace (h, key_ref (key2), key_ref (key2));
+
+  g_assert_cmpint (key1->ref_count, ==, 1);
+  g_assert_cmpint (key2->ref_count, ==, 3);
+
+  g_hash_table_remove (h, key1);
+
+  g_assert_cmpint (key1->ref_count, ==, 1);
+  g_assert_cmpint (key2->ref_count, ==, 1);
+
+  g_hash_table_unref (h);
+
+  key_unref (key1);
+  key_unref (key2);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -748,6 +840,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/double", double_hash_test);
   g_test_add_func ("/hash/string", string_hash_test);
   g_test_add_func ("/hash/set", set_hash_test);
+  g_test_add_func ("/hash/set-ref", set_ref_hash_test);
   g_test_add_func ("/hash/ref", test_hash_ref);
   g_test_add_func ("/hash/remove-all", test_remove_all);
 

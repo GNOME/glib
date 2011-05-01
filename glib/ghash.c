@@ -982,6 +982,9 @@ g_hash_table_insert_internal (GHashTable *hash_table,
 
   if (HASH_IS_REAL (old_hash))
     {
+      if (hash_table->value_destroy_func)
+        hash_table->value_destroy_func (hash_table->values[node_index]);
+
       if (keep_new_key)
         {
           if (hash_table->key_destroy_func)
@@ -993,9 +996,6 @@ g_hash_table_insert_internal (GHashTable *hash_table,
           if (hash_table->key_destroy_func)
             hash_table->key_destroy_func (key);
         }
-
-      if (hash_table->value_destroy_func)
-        hash_table->value_destroy_func (hash_table->values[node_index]);
 
       hash_table->values[node_index] = value;
     }
