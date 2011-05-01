@@ -23,7 +23,7 @@
 #define N_PAGES                 (101)                   /* number of pages to sample */
 #define SAMPLE_SIZE             (7)
 #define PAGE_SIZE               (128)                   /* must be <= minimum GSlice alignment block */
-#define MAGAZINE_PROBES         { 81, 265, 347 }        /* block sizes hopefully unused by g_thread_init */
+#define MAGAZINE_PROBES         { 97, 265, 347 }        /* block sizes hopefully unused by g_thread_init */
 #define MAX_PROBE_TRIALS        (1031)                  /* must be >= maximum magazine size */
 
 #define ALIGN(size, base)       ((base) * (gsize) (((size) + (base) - 1) / (base)))
