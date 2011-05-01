@@ -20,6 +20,8 @@
  * Author: David Zeuthen <davidz@redhat.com>
  */
 
+#include "config.h"
+
 #include <gio/gio.h>
 #include <unistd.h>
 #include <string.h>

@@ -206,6 +206,10 @@ if test "x$glib_have_carbon" = "xyes"; then
   LDFLAGS="$LDFLAGS -framework Carbon"
 fi
 
+gl_GLIBC21
+if test "x$GLIBC21" = "xyes"; then
+  AC_DEFINE([_GNU_SOURCE], 1, [Make all glibc extensions visible])
+fi
 
 dnl declare --enable-* args and collect ac_help strings
 AC_ARG_ENABLE(debug,
@@ -412,7 +416,6 @@ else
   fi
 fi
 
-gl_GLIBC21
 AC_ARG_ENABLE(iconv-cache, 
               [AC_HELP_STRING([--enable-iconv-cache=@<:@yes/no/auto@:>@],
                               [cache iconv descriptors [default=auto]])],,
@@ -929,7 +932,6 @@ AC_CHECK_MEMBERS([struct tm.tm_gmtoff, struct tm.__tm_gmtoff],,,[#include <time.
 
 # Checks for libcharset
 AM_LANGINFO_CODESET
-gl_GLIBC21
 AC_CHECK_HEADERS([stddef.h stdlib.h string.h])
 AC_CHECK_FUNCS(setlocale)
 

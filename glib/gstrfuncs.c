@@ -30,8 +30,6 @@
 
 #include "config.h"
 
-#define _GNU_SOURCE             /* For stpcpy */
-
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>

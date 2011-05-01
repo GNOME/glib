@@ -20,7 +20,6 @@
  */
 
 /* Prologue {{{1 */
-#define _GNU_SOURCE
 #include "config.h"
 
 #include <gstdio.h>

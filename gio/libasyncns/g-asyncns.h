@@ -20,8 +20,6 @@
 
 #include "config.h"
 
-#define _GNU_SOURCE
-
 /* We want to build the fork-based version, not the threaded version. */
 #undef HAVE_PTHREAD
 

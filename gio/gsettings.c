@@ -20,7 +20,6 @@
  */
 
 /* Prelude {{{1 */
-#define _GNU_SOURCE
 #include "config.h"
 
 #include <glib.h>

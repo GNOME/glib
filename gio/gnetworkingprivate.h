@@ -40,37 +40,23 @@
 
 #else /* !G_OS_WIN32 */
 
-/* need this for struct ucred on Linux */
-#ifdef __linux__
-#define __USE_GNU
 #include <sys/types.h>
-#include <sys/socket.h>
-#undef __USE_GNU
-#endif
 
-#include <sys/types.h>
 #include <arpa/inet.h>
 #include <arpa/nameser.h>
 #if defined(HAVE_ARPA_NAMESER_COMPAT_H) && !defined(GETSHORT)
 #include <arpa/nameser_compat.h>
 #endif
-
-#ifndef T_SRV
-#define T_SRV 33
-#endif
-
-/* We're supposed to define _GNU_SOURCE to get EAI_NODATA, but that
- * won't actually work since <features.h> has already been included at
- * this point. So we define __USE_GNU instead.
- */
-#define __USE_GNU
 #include <netdb.h>
-#undef __USE_GNU
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <resolv.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+
+#ifndef T_SRV
+#define T_SRV 33
+#endif
 
 #ifndef _PATH_RESCONF
 #define _PATH_RESCONF "/etc/resolv.conf"

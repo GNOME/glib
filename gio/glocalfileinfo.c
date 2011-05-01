@@ -33,7 +33,6 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
-#define _GNU_SOURCE
 #include <fcntl.h>
 #include <errno.h>
 #ifdef HAVE_GRP_H

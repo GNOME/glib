@@ -25,7 +25,7 @@
 #  define HAVE_COMPLIANT_POSIX_MEMALIGN 1
 #endif
 
-#ifdef HAVE_COMPLIANT_POSIX_MEMALIGN
+#if defined(HAVE_COMPLIANT_POSIX_MEMALIGN) && !defined(_XOPEN_SOURCE)
 #define _XOPEN_SOURCE 600       /* posix_memalign() */
 #endif
 #include <stdlib.h>             /* posix_memalign() */

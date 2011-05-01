@@ -26,10 +26,6 @@
  * system, work around it here (or better, fix the system or tell
  * people to use a better one).
  */
-#ifndef _GNU_SOURCE
-#define _G_GNU_SOURCE_TEMPORARILY_DEFINED
-#define _GNU_SOURCE
-#endif
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
@@ -37,10 +33,6 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#ifdef _G_GNU_SOURCE_TEMPORARILY_DEFINED
-#undef _GNU_SOURCE
-#undef _G_GNU_SOURCE_TEMPORARILY_DEFINED
-#endif
 
 #include <glib.h>
 

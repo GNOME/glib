@@ -31,8 +31,6 @@
  * <filename>gio-unix-2.0.pc</filename> pkg-config file when using it.
  */
 
-#define _GNU_SOURCE /* for F_DUPFD_CLOEXEC */
-
 #include "config.h"
 
 #include <sys/types.h>

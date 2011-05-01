@@ -19,10 +19,6 @@
 
 #include "config.h"
 
-#ifndef _WIN32
-#define _GNU_SOURCE		/* For vasprintf */
-#endif
-
 #include <stdarg.h>
 #include <stdlib.h>
 #include <stdio.h>

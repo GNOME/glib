@@ -24,7 +24,6 @@
 
 #include "config.h"
 #ifdef HAVE_SPLICE
-#define _GNU_SOURCE
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
