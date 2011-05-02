@@ -26,9 +26,7 @@
  * system, work around it here (or better, fix the system or tell
  * people to use a better one).
  */
-#ifdef HAVE_UNISTD_H
 #include <unistd.h>
-#endif
 #include <errno.h>
 #include <sys/wait.h>
 #include <stdlib.h>
