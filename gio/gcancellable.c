@@ -194,34 +194,18 @@ g_cancellable_class_init (GCancellableClass *klass)
 #ifndef G_OS_WIN32
 
 static void
-set_fd_close_exec (int fd)
-{
-  int flags;
-
-  flags = fcntl (fd, F_GETFD, 0);
-  if (flags != -1 && (flags & FD_CLOEXEC) == 0)
-    {
-      flags |= FD_CLOEXEC;
-      fcntl (fd, F_SETFD, flags);
-    }
-}
-
-
-static void
 g_cancellable_open_pipe (GCancellable *cancellable)
 {
   GCancellablePrivate *priv;
 
   priv = cancellable->priv;
-  if (pipe (priv->cancel_pipe) == 0)
+  if (g_unix_pipe_flags (priv->cancel_pipe, FD_CLOEXEC, NULL))
     {
       /* Make them nonblocking, just to be sure we don't block
        * on errors and stuff
        */
       g_unix_set_fd_nonblocking (priv->cancel_pipe[0], TRUE, NULL);
       g_unix_set_fd_nonblocking (priv->cancel_pipe[1], TRUE, NULL);
-      set_fd_close_exec (priv->cancel_pipe[0]);
-      set_fd_close_exec (priv->cancel_pipe[1]);
       
       if (priv->cancelled)
         {
