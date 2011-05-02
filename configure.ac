@@ -579,7 +579,7 @@ AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2)
 AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r)
 # BSD has a qsort_r with wrong argument order
 AC_CACHE_CHECK([for qsort_r], glib_cv_have_qsort_r, [
-AC_RUN_IFELSE([[
+AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #define _GNU_SOURCE
 #include <stdlib.h>
 
@@ -609,7 +609,7 @@ main (int argc, char **argv)
     return 0;
   else
     return 1;
-}]],[glib_cv_have_qsort_r=yes],[glib_cv_have_qsort_r=no])])
+}]])],[glib_cv_have_qsort_r=yes],[glib_cv_have_qsort_r=no])])
 
 if test $glib_cv_have_qsort_r = yes ; then
   AC_MSG_RESULT([yes])
@@ -724,10 +724,10 @@ dnl AC_C_INLINE is useless to us since it bails out too early, we need to
 dnl truely know which ones of `inline', `__inline' and `__inline__' are
 dnl actually supported.
 AC_CACHE_CHECK([for __inline],glib_cv_has__inline,[
-        AC_COMPILE_IFELSE([
+        AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 	__inline int foo () { return 0; }
 	int main () { return foo (); }
-       	],
+	]])],
 	glib_cv_has__inline=yes
         ,
 	glib_cv_has__inline=no
@@ -737,10 +737,10 @@ case x$glib_cv_has__inline in
 xyes) AC_DEFINE(G_HAVE___INLINE,1,[Have __inline keyword])
 esac
 AC_CACHE_CHECK([for __inline__],glib_cv_has__inline__,[
-        AC_COMPILE_IFELSE([
+        AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 	__inline__ int foo () { return 0; }
 	int main () { return foo (); }
-       	],
+	]])],
 	glib_cv_has__inline__=yes
         ,
 	glib_cv_has__inline__=no
@@ -750,11 +750,11 @@ case x$glib_cv_has__inline__ in
 xyes) AC_DEFINE(G_HAVE___INLINE__,1,[Have __inline__ keyword])
 esac
 AC_CACHE_CHECK([for inline], glib_cv_hasinline,[
-        AC_COMPILE_IFELSE([
+        AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 	#undef inline
 	inline int foo () { return 0; }
 	int main () { return foo (); }
-       	],
+	]])],
 	glib_cv_hasinline=yes
         ,
 	glib_cv_hasinline=no
@@ -766,7 +766,7 @@ esac
 
 # if we can use inline functions in headers
 AC_MSG_CHECKING(if inline functions in headers work)
-AC_LINK_IFELSE([
+AC_LINK_IFELSE([AC_LANG_SOURCE([[
 #if defined (G_HAVE_INLINE) && defined (__GNUC__) && defined (__STRICT_ANSI__)
 #  undef inline
 #  define inline __inline__
@@ -789,7 +789,7 @@ glib_test_func1 (void) {
 int
 main (void) {
   int i = 1;
-}],[g_can_inline=yes],[g_can_inline=no])
+}]])],[g_can_inline=yes],[g_can_inline=no])
 AC_MSG_RESULT($g_can_inline)
 
 dnl *** check for working do while(0) macros ***
@@ -841,7 +841,7 @@ AC_MSG_RESULT($g_have_gnuc_varargs)
 
 # check for GNUC visibility support
 AC_MSG_CHECKING(for GNUC visibility attribute)
-GLIB_CHECK_COMPILE_WARNINGS([
+GLIB_CHECK_COMPILE_WARNINGS([AC_LANG_SOURCE([[
 void
 __attribute__ ((visibility ("hidden")))
      f_hidden (void)
@@ -870,7 +870,7 @@ int main (int argc, char **argv)
 	f_default();
 	return 0;
 }
-],g_have_gnuc_visibility=yes,g_have_gnuc_visibility=no)
+]])],g_have_gnuc_visibility=yes,g_have_gnuc_visibility=no)
 AC_MSG_RESULT($g_have_gnuc_visibility)
 AM_CONDITIONAL(HAVE_GNUC_VISIBILITY, [test x$g_have_gnuc_visibility = xyes])
 
@@ -965,7 +965,7 @@ dnl on AIX with xlc)
 dnl
 if test $ac_cv_sizeof_size_t = $ac_cv_sizeof_int &&
    test $ac_cv_sizeof_size_t = $ac_cv_sizeof_long ; then
-  GLIB_CHECK_COMPILE_WARNINGS([
+  GLIB_CHECK_COMPILE_WARNINGS([AC_LANG_SOURCE([[
 #if defined(_AIX) && !defined(__GNUC__)
 #pragma options langlvl=stdc89
 #endif
@@ -976,8 +976,8 @@ int main ()
   unsigned int *size_int = &s;
   return (int)*size_int;
 }
-    ],glib_size_type=int,
-      [GLIB_CHECK_COMPILE_WARNINGS([
+    ]])],glib_size_type=int,
+      [GLIB_CHECK_COMPILE_WARNINGS([AC_LANG_SOURCE([[
 #if defined(_AIX) && !defined(__GNUC__)
 #pragma options langlvl=stdc89
 #endif
@@ -988,7 +988,7 @@ int main ()
    unsigned long *size_long = &s;
    return (int)*size_long;
 }
-        ],glib_size_type=long)])
+        ]])],glib_size_type=long)])
 fi
 
 AC_MSG_RESULT(unsigned $glib_size_type)
@@ -1346,7 +1346,7 @@ dnl **********************
 dnl we currently check for all three va_copy possibilities, so we get
 dnl all results in config.log for bug reports.
 AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
-	AC_LINK_IFELSE([#include <stdarg.h>
+	AC_LINK_IFELSE([AC_LANG_SOURCE([[#include <stdarg.h>
 #include <stdlib.h>
 	void f (int i, ...) {
 	va_list args1, args2;
@@ -1359,12 +1359,12 @@ AC_CACHE_CHECK([for an implementation of va_copy()],glib_cv_va_copy,[
 	int main() {
 	  f (0, 42);
 	  return 0;
-	}],
+	}]])],
 	[glib_cv_va_copy=yes],
 	[glib_cv_va_copy=no])
 ])
 AC_CACHE_CHECK([for an implementation of __va_copy()],glib_cv___va_copy,[
-	AC_LINK_IFELSE([#include <stdarg.h>
+	AC_LINK_IFELSE([AC_LANG_SOURCE([[#include <stdarg.h>
 #include <stdlib.h>
 	void f (int i, ...) {
 	va_list args1, args2;
@@ -1377,7 +1377,7 @@ AC_CACHE_CHECK([for an implementation of __va_copy()],glib_cv___va_copy,[
 	int main() {
 	  f (0, 42);
 	  return 0;
-	}],
+	}]])],
 	[glib_cv___va_copy=yes],
 	[glib_cv___va_copy=no])
 ])
@@ -1668,12 +1668,12 @@ dnl *********************************
 dnl ** Check for Solaris FEN (GIO) **
 dnl *********************************
 fen_support=no
-AC_COMPILE_IFELSE([ 
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 #include <port.h> 
 #ifndef PORT_SOURCE_FILE 
 #error "Please upgrade to Nevada 72 or above to suppoert FEN" 
 #endif 
-int main() { return 0; } ],
+int main() { return 0; } ]])],
 [
 	fen_support=yes
 ],)
@@ -1980,7 +1980,7 @@ if test x"$have_threads" != xno; then
           AC_TRY_RUN(glib_thread_test(0),
                      glib_flag_works=yes,
                      glib_flag_works=no,
-                     [AC_LINK_IFELSE(glib_thread_test(0),
+                     [AC_LINK_IFELSE([AC_LANG_SOURCE(glib_thread_test(0))],
                                      glib_flag_works=yes,
                                      glib_flag_works=no)])
           CFLAGS="$glib_save_CFLAGS"
@@ -2104,7 +2104,7 @@ case $have_threads in
 			AC_TRY_RUN(glib_thread_test($defattr),
                                    glib_result=yes,
                                    glib_result=no,
-                                   [AC_LINK_IFELSE(glib_thread_test($defattr),
+                                   [AC_LINK_IFELSE([AC_LANG_SOURCE(glib_thread_test($defattr))],
                                                    glib_result=yes,
                                                    glib_result=no)])
                         AC_MSG_RESULT($glib_result)
@@ -2137,7 +2137,7 @@ case $have_threads in
 	    AC_TRY_RUN(glib_sched_priority_test,
                        glib_result=yes,
                        glib_result=no,
-                       [AC_LINK_IFELSE(glib_sched_priority_test,
+                       [AC_LINK_IFELSE([AC_LANG_SOURCE(glib_sched_priority_test)],
                                        glib_result=yes,
                                        glib_result=no)])
 	    AC_MSG_RESULT($glib_result)
@@ -2487,13 +2487,13 @@ if test x"$GCC" = xyes; then
 			 operations much faster. The resulting code will not run
 			 on very old sparcs though."
 
-        AC_LINK_IFELSE([[
+        AC_LINK_IFELSE([AC_LANG_SOURCE([[
           main ()
           {
             int tmp1, tmp2, tmp3;
             __asm__ __volatile__("casx [%2], %0, %1"
                                  : "=&r" (tmp1), "=&r" (tmp2) : "r" (&tmp3));
-          }]],
+          }]])],
           AC_MSG_RESULT([sparcv9])
           AC_DEFINE_UNQUOTED(G_ATOMIC_SPARCV9, 1,
 			     [sparcv9 atomic implementation]),
@@ -2580,11 +2580,11 @@ dnl ************************
 dnl ** Check for futex(2) **
 dnl ************************
 AC_MSG_CHECKING([for futex(2) system call])
-AC_COMPILE_IFELSE([ 
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #include <linux/futex.h>
 #include <syscall.h>
 #include <unistd.h>
-
+],[
 int
 main (void)
 {
@@ -2592,7 +2592,7 @@ main (void)
   syscall (SYS_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
   return 0;
 }
-],
+])],
 [
   AC_MSG_RESULT(yes)
   AC_DEFINE(HAVE_FUTEX, [test "$have_futex" = "yes"],
