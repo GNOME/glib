@@ -1124,6 +1124,13 @@ object_get_property (GObject     *object,
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
   GParamSpec *redirect;
 
+  if (class == NULL)
+    {
+      g_warning ("'%s::%s' is not a valid property name; '%s' is not a GObject subtype",
+                 g_type_name (pspec->owner_type), pspec->name, g_type_name (pspec->owner_type));
+      return;
+    }
+
   redirect = g_param_spec_get_redirect_target (pspec);
   if (redirect)
     pspec = redirect;    
@@ -1142,6 +1149,13 @@ object_set_property (GObject             *object,
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
   GParamSpec *redirect;
   static gchar* enable_diagnostic = NULL;
+
+  if (class == NULL)
+    {
+      g_warning ("'%s::%s' is not a valid property name; '%s' is not a GObject subtype",
+                 g_type_name (pspec->owner_type), pspec->name, g_type_name (pspec->owner_type));
+      return;
+    }
 
   redirect = g_param_spec_get_redirect_target (pspec);
   if (redirect)
