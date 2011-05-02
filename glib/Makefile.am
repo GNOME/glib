@@ -148,6 +148,7 @@ libglib_2_0_la_SOURCES = 	\
 	glibintl.h		\
 	glib_trace.h		\
 	glist.c			\
+	gmain-internal.h	\
 	gmain.c	 		\
 	gmappedfile.c		\
 	gmarkup.c		\
