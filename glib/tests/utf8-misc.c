@@ -124,7 +124,7 @@ test_unichar_validate (void)
 static void
 test_unichar_character_type (void)
 {
-  gint i;
+  guint i;
   struct {
     GUnicodeType type;
     gunichar     c;
@@ -170,7 +170,7 @@ test_unichar_character_type (void)
 static void
 test_unichar_break_type (void)
 {
-  gint i;
+  guint i;
   struct {
     GUnicodeBreakType type;
     gunichar          c;
@@ -223,7 +223,7 @@ test_unichar_break_type (void)
 static void
 test_unichar_script (void)
 {
-  gint i;
+  guint i;
   struct {
     GUnicodeScript script;
     gunichar          c;
@@ -336,7 +336,7 @@ test_unichar_script (void)
 static void
 test_combining_class (void)
 {
-  gint i;
+  guint i;
   struct {
     gint class;
     gunichar          c;
@@ -427,6 +427,88 @@ test_title (void)
   g_assert (g_unichar_totitle ('A') == 'A');
 }
 
+static void
+test_wide (void)
+{
+  guint i;
+  struct {
+    gunichar c;
+    enum {
+      NOT_WIDE,
+      WIDE_CJK,
+      WIDE
+    } wide;
+  } examples[] = {
+    /* Neutral */
+    {   0x0000, NOT_WIDE },
+    {   0x0483, NOT_WIDE },
+    {   0x0641, NOT_WIDE },
+    {   0xFFFC, NOT_WIDE },
+    {  0x10000, NOT_WIDE },
+    {  0xE0001, NOT_WIDE },
+
+    /* Narrow */
+    {   0x0020, NOT_WIDE },
+    {   0x0041, NOT_WIDE },
+    {   0x27E6, NOT_WIDE },
+
+    /* Halfwidth */
+    {   0x20A9, NOT_WIDE },
+    {   0xFF61, NOT_WIDE },
+    {   0xFF69, NOT_WIDE },
+    {   0xFFEE, NOT_WIDE },
+
+    /* Ambiguous */
+    {   0x00A1, WIDE_CJK },
+    {   0x00BE, WIDE_CJK },
+    {   0x02DD, WIDE_CJK },
+    {   0x2020, WIDE_CJK },
+    {   0xFFFD, WIDE_CJK },
+    {   0x00A1, WIDE_CJK },
+    {  0x1F100, WIDE_CJK },
+    {  0xE0100, WIDE_CJK },
+    { 0x100000, WIDE_CJK },
+    { 0x10FFFD, WIDE_CJK },
+
+    /* Fullwidth */
+    {   0x3000, WIDE },
+    {   0xFF60, WIDE },
+
+    /* Wide */
+    {   0x2329, WIDE },
+    {   0x3001, WIDE },
+    {   0xFE69, WIDE },
+    {  0x30000, WIDE },
+    {  0x3FFFD, WIDE },
+
+    /* Default Wide blocks */
+    {   0x4DBF, WIDE },
+    {   0x9FFF, WIDE },
+    {   0xFAFF, WIDE },
+    {  0x2A6DF, WIDE },
+    {  0x2B73F, WIDE },
+    {  0x2B81F, WIDE },
+    {  0x2FA1F, WIDE },
+
+    /* Uniode-5.2 character additions */
+    /* Wide */
+    {   0x115F, WIDE },
+
+    /* Uniode-6.0 character additions */
+    /* Wide */
+    {  0x2B740, WIDE },
+    {  0x1B000, WIDE },
+
+    { 0x111111, NOT_WIDE }
+  };
+
+  for (i = 0; i < G_N_ELEMENTS (examples); i++)
+    {
+      g_assert (g_unichar_iswide (examples[i].c) == (examples[i].wide == WIDE));
+      g_assert (g_unichar_iswide_cjk (examples[i].c) == (examples[i].wide != NOT_WIDE));
+    }
+};
+
 int
 main (int   argc,
       char *argv[])
@@ -445,6 +527,7 @@ main (int   argc,
   g_test_add_func ("/unicode/mirror", test_mirror);
   g_test_add_func ("/unicode/mark", test_mark);
   g_test_add_func ("/unicode/title", test_title);
+  g_test_add_func ("/unicode/wide", test_wide);
 
   return g_test_run();
 }
