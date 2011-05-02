@@ -1399,6 +1399,8 @@ g_desktop_app_info_new_from_keyfile
 g_desktop_app_info_new
 g_desktop_app_info_get_filename
 g_desktop_app_info_get_is_hidden
+g_desktop_app_info_get_generic_name
+g_desktop_app_info_get_categories
 g_desktop_app_info_set_desktop_env
 GDesktopAppLaunchCallback
 g_desktop_app_info_launch_uris_as_manager
@@ -1412,6 +1414,8 @@ G_IS_DESKTOP_APP_INFO_CLASS
 G_DESKTOP_APP_INFO_GET_CLASS
 <SUBSECTION Private>
 g_desktop_app_info_get_type
+g_desktop_app_info_lookup_get_default_for_uri_scheme
+g_desktop_app_info_lookup_get_type
 </SECTION>
 
 <SECTION>

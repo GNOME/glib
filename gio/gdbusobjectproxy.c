@@ -189,7 +189,7 @@ g_dbus_object_proxy_get_object_path (GDBusObject *object)
 
 /**
  * g_dbus_object_proxy_get_connection:
- * @proxy: A #GDBusObjectProxy.
+ * @proxy: a #GDBusObjectProxy
  *
  * Gets the connection that @proxy is for.
  *
@@ -242,9 +242,21 @@ g_dbus_object_proxy_get_interfaces (GDBusObject *object)
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/**
+ * g_dbus_object_proxy_new:
+ * @connection: a #GDBusConnection
+ * @object_path: the object path
+ *
+ * Creates a new #GDBusObjectProxy for the given connection and
+ * object path.
+ *
+ * Returns: a new #GDBusObjectProxy
+ *
+ * Since: 2.30
+ */
 GDBusObjectProxy *
 g_dbus_object_proxy_new (GDBusConnection *connection,
-                         const gchar *object_path)
+                         const gchar     *object_path)
 {
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);

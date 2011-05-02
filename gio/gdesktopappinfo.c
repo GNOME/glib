@@ -1,5 +1,5 @@
 /* GIO - GLib Input, Output and Streaming Library
- * 
+ *
  * Copyright (C) 2006-2007 Red Hat, Inc.
  * Copyright © 2007 Ryan Lortie
  *
@@ -648,11 +648,13 @@ g_desktop_app_info_get_icon (GAppInfo *appinfo)
  * g_desktop_app_info_get_categories:
  * @info: a #GDesktopAppInfo
  *
- * Returns: The unparsed Categories key from the file; i.e. no attempt
- *   is made to split it by ';' or validate it.
+ * Gets the categories from the desktop file.
+ *
+ * Returns: The unparsed Categories key from the desktop file;
+ *     i.e. no attempt is made to split it by ';' or validate it.
  */
 const char *
-g_desktop_app_info_get_categories    (GDesktopAppInfo *info)
+g_desktop_app_info_get_categories (GDesktopAppInfo *info)
 {
   return info->categories;
 }
@@ -661,10 +663,12 @@ g_desktop_app_info_get_categories    (GDesktopAppInfo *info)
  * g_desktop_app_info_get_generic_name:
  * @info: a #GDesktopAppInfo
  *
+ * Gets the generic name from the destkop file.
+ *
  * Returns: The value of the GenericName key
  */
 const char *
-g_desktop_app_info_get_generic_name  (GDesktopAppInfo *info)
+g_desktop_app_info_get_generic_name (GDesktopAppInfo *info)
 {
   return info->generic_name;
 }
@@ -1313,7 +1317,7 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  * @user_setup_data: (closure user_setup): User data for @user_setup
  * @pid_callback: (scope call): Callback for child processes
  * @pid_callback_data: (closure pid_callback): User data for @callback
- * @error: a #GError
+ * @error: return location for a #GError, or %NULL
  *
  * This function performs the equivalent of g_app_info_launch_uris(),
  * but is intended primarily for operating system components that
@@ -1329,6 +1333,8 @@ g_desktop_app_info_launch (GAppInfo           *appinfo,
  * @setup, as well as the process identifier of each child process via
  * @pid_callback.  See g_spawn_async() for more information about the
  * semantics of the @setup function.
+ *
+ * Returns: %TRUE on successful launch, %FALSE otherwise.
  */
 gboolean
 g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
