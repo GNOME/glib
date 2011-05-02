@@ -4,13 +4,13 @@
 # Gheyret Kenji<gheyret@yahoo.com>,2010.
 # Sahran <sahran.ug@gmail.com>, 2010.
 # Zeper <zeper@msn.com>, 2010.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-04-25 23:50+0000\n"
+"POT-Creation-Date: 2011-05-01 18:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Gheyret Kenji<gheyret@yahoo.com>\n"
 "Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
@@ -1855,8 +1855,8 @@ msgid ""
 "(length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr ""
 "ئىناۋەتلىك UTF-8 تېكىستىنى ئۈمىد قىلغان ئەمما ھەرپ ئېغىشنىڭ %d ئورنىدا (ھەرپ "
-"تېكىستنىڭ ئۇزۇنلۇقى %d) ئىناۋەتسىز تېكىستكە يولۇقتى. بۇ نۇقتىنىڭ "
-"ئىناۋەتلىك UTF-8 تېكىستى ئەسلىدە `%s'"
+"تېكىستنىڭ ئۇزۇنلۇقى %d) ئىناۋەتسىز تېكىستكە يولۇقتى. بۇ نۇقتىنىڭ ئىناۋەتلىك "
+"UTF-8 تېكىستى ئەسلىدە `%s'"
 
 #: ../gio/gdbusmessage.c:1035
 #, c-format
@@ -1891,8 +1891,8 @@ msgstr "تەھلىل قىلغان شالغۇت خاسلىق قىممەت `%s' ئ
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
-"D-Bus سىزىق فورماتىدا تىپ تېكىستى `%s' نى ئىشلىتىپ قارشى "
-"تەرتىپلەشتۈرۈشتە GVariant قىلغاندا خاتالىق كۆرۈلدى"
+"D-Bus سىزىق فورماتىدا تىپ تېكىستى `%s' نى ئىشلىتىپ قارشى تەرتىپلەشتۈرۈشتە "
+"GVariant قىلغاندا خاتالىق كۆرۈلدى"
 
 #: ../gio/gdbusmessage.c:1686
 #, c-format
@@ -1934,8 +1934,8 @@ msgstr "ئۇچۇرنى يېشەلمىدى: "
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
-"D-Bus سىزىق فورماتىدا تىپ تېكىستى `%s' نى ئىشلىتىپ GVariant "
-"تەرتىپلەشتۈرۈشتە خاتالىق كۆرۈلدى"
+"D-Bus سىزىق فورماتىدا تىپ تېكىستى `%s' نى ئىشلىتىپ GVariant تەرتىپلەشتۈرۈشتە "
+"خاتالىق كۆرۈلدى"
 
 #: ../gio/gdbusmessage.c:2275
 #, c-format
@@ -2646,8 +2646,7 @@ msgstr "بۇ ھۆججەتكە پەرۋا قىلمايدۇ.\n"
 #: ../gio/glib-compile-schemas.c:1761
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
-msgstr ""
-"%3$s قاپلاش ھۆججىتىدە بەلگىلەنگەن لايىھە `%2$s' دا %1$s كۇنۇپكا يوق"
+msgstr "%3$s قاپلاش ھۆججىتىدە بەلگىلەنگەن لايىھە `%2$s' دا %1$s كۇنۇپكا يوق"
 
 #: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
 #: ../gio/glib-compile-schemas.c:1853
@@ -2667,8 +2666,8 @@ msgid ""
 "error parsing key `%s' in schema `%s' as specified in override file `%s': %"
 "s.  "
 msgstr ""
-"%3$s قاپلاش ھۆججىتىدە بەلگىلەنگەن  `%2$s' دىكى %1$s كۇنۇپكىنى تەھلىل "
-"قىلىشتا خاتالىق كۆرۈلدى: %4$s  "
+"%3$s قاپلاش ھۆججىتىدە بەلگىلەنگەن  `%2$s' دىكى %1$s كۇنۇپكىنى تەھلىل قىلىشتا "
+"خاتالىق كۆرۈلدى: %4$s  "
 
 #: ../gio/glib-compile-schemas.c:1797
 #, c-format
@@ -2681,8 +2680,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
-"%3$s قاپلاش ھۆججىتىدىكى لايىھە  `%2$s' دىكى %1$s كۇنۇپكىنىڭ قاپلىشى "
-"لايىھىدە بېرىلگەن دائىرىدىن چىقىپ كەتتى."
+"%3$s قاپلاش ھۆججىتىدىكى لايىھە  `%2$s' دىكى %1$s كۇنۇپكىنىڭ قاپلىشى لايىھىدە "
+"بېرىلگەن دائىرىدىن چىقىپ كەتتى."
 
 #: ../gio/glib-compile-schemas.c:1843
 #, c-format
@@ -2690,8 +2689,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 msgstr ""
-"%3$s قاپلاش ھۆججىتىدىكى لايىھە  `%2$s' دىكى %1$s كۇنۇپكىنىڭ قاپلىغان "
-"قىممىتى ئىناۋەتلىك قىممەت دائىرىسى ئىچىدە."
+"%3$s قاپلاش ھۆججىتىدىكى لايىھە  `%2$s' دىكى %1$s كۇنۇپكىنىڭ قاپلىغان قىممىتى "
+"ئىناۋەتلىك قىممەت دائىرىسى ئىچىدە."
 
 #: ../gio/glib-compile-schemas.c:1897
 msgid "where to store the gschemas.compiled file"
@@ -3229,7 +3228,6 @@ msgid "List the children of SCHEMA"
 msgstr "SCHEMA دىكى تارماق نەڭنى كۆرسىتىدۇ"
 
 #: ../gio/gsettings-tool.c:488
-#| msgid "List keys and values, recursively"
 msgid "List keys and values, recursively"
 msgstr "كۇنۇپكا ۋە قىممەت تىزىمىنى قايتىلانما كۆرسىتىدۇ"
 
@@ -3287,26 +3285,6 @@ msgstr ""
 "\n"
 
 #: ../gio/gsettings-tool.c:539
-#| msgid ""
-#| "Usage:\n"
-#| "  gsettings COMMAND [ARGS...]\n"
-#| "\n"
-#| "Commands:\n"
-#| "  help                      Show this information\n"
-#| "  list-schemas              List installed schemas\n"
-#| "  list-relocatable-schemas  List relocatable schemas\n"
-#| "  list-keys                 List keys in a schema\n"
-#| "  list-children             List children of a schema\n"
-#| "  list-recursively          List keys and values, recursively\n"
-#| "  range                     Queries the range of a key\n"
-#| "  get                       Get the value of a key\n"
-#| "  set                       Set the value of a key\n"
-#| "  reset                     Reset the value of a key\n"
-#| "  writable                  Check if a key is writable\n"
-#| "  monitor                   Watch for changes\n"
-#| "\n"
-#| "Use 'gsettings help COMMAND' to get detailed help.\n"
-#| "\n"
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3394,7 +3372,7 @@ msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     تەڭشەيدىغان قىممەت\n"
 
 #: ../gio/gsettings-tool.c:662
-#| msgid "Empty schema name given"
+#, c-format
 msgid "Empty schema name given"
 msgstr "بېرىلگەن لايىھە ئاتى بوش"
 
