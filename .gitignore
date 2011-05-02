@@ -31,6 +31,7 @@ install-sh
 glib-gettextize
 glib-zip
 gtk-doc.make
+py-compile
 
 INSTALL
 README

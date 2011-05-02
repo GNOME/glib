@@ -32,6 +32,8 @@ gdbus-example-export
 gdbus-example-own-name
 gdbus-example-peer
 gdbus-example-proxy-subclass
+gdbus-example-objectmanager-client
+gdbus-example-objectmanager-server
 gdbus-example-server
 gdbus-example-subtree
 gdbus-example-unix-fd-client
@@ -47,6 +49,8 @@ gdbus-peer
 gdbus-proxy
 gdbus-proxy-well-known-name
 gdbus-serialization
+gdbus-test-codegen
+gdbus-test-codegen-generated*
 gdbus-threading
 g-file
 g-file-info

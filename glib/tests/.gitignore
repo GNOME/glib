@@ -24,6 +24,7 @@ markup-parse
 markup-subparser
 mem-overflow
 node
+option-argv0
 option-context
 pattern
 printf
@@ -42,6 +43,8 @@ testing
 timeout
 tmpsample.xml
 tree
+unix
+unix-nothreads
 uri
 utf8-misc
 utf8-pointer

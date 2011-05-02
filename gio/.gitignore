@@ -5,3 +5,4 @@ gioenumtypes.[ch]
 glib-compile-schemas
 gdbus
 gsettings
+gdbus-example-objectmanager-generated.[ch]
