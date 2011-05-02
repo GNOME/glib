@@ -350,7 +350,7 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
 {
   guint node_index;
   guint hash_value;
-  guint first_tombstone;
+  guint first_tombstone = 0;
   gboolean have_tombstone = FALSE;
   guint step = 0;
 

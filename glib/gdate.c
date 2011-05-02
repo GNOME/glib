@@ -673,7 +673,7 @@ g_date_prepare_to_parse (const gchar      *str,
           ++i;
         }
       
-#ifdef G_ENABLE_DEBUG
+#if defined(G_ENABLE_DEBUG) && 0
       DEBUG_MSG (("**GDate prepared a new set of locale-specific parse rules."));
       i = 1;
       while (i < 13) 

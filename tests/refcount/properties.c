@@ -104,10 +104,6 @@ my_test_init (GTest * test)
 static void
 my_test_dispose (GObject * object)
 {
-  GTest *test;
-
-  test = MY_TEST (object);
-
   G_OBJECT_CLASS (parent_class)->dispose (object);
 }
 

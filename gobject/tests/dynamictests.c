@@ -198,6 +198,8 @@ test_multithreaded_dynamic_type_init (void)
   guint i;
 
   module = test_module_new (module_register);
+  g_assert (module != NULL);
+
   /* Not loaded until we call ref for the first time */
   class = g_type_class_peek (DYNAMIC_OBJECT_TYPE);
   g_assert (class == NULL);
@@ -339,6 +341,7 @@ test_dynamic_interface_properties (void)
   DynObj *obj;
 
   module = test_module_new (mod_register);
+  g_assert (module != NULL);
 
   obj = g_object_new (dyn_obj_get_type (), "foo", 1, NULL);
 

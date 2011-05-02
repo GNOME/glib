@@ -2096,47 +2096,46 @@ g_object_connect (gpointer     _object,
     {
       GCallback callback = va_arg (var_args, GCallback);
       gpointer data = va_arg (var_args, gpointer);
-      gulong sid;
 
       if (strncmp (signal_spec, "signal::", 8) == 0)
-	sid = g_signal_connect_data (object, signal_spec + 8,
-				     callback, data, NULL,
-				     0);
+	g_signal_connect_data (object, signal_spec + 8,
+			       callback, data, NULL,
+			       0);
       else if (strncmp (signal_spec, "object_signal::", 15) == 0 ||
                strncmp (signal_spec, "object-signal::", 15) == 0)
-	sid = g_signal_connect_object (object, signal_spec + 15,
-				       callback, data,
-				       0);
+	g_signal_connect_object (object, signal_spec + 15,
+				 callback, data,
+				 0);
       else if (strncmp (signal_spec, "swapped_signal::", 16) == 0 ||
                strncmp (signal_spec, "swapped-signal::", 16) == 0)
-	sid = g_signal_connect_data (object, signal_spec + 16,
-				     callback, data, NULL,
-				     G_CONNECT_SWAPPED);
+	g_signal_connect_data (object, signal_spec + 16,
+			       callback, data, NULL,
+			       G_CONNECT_SWAPPED);
       else if (strncmp (signal_spec, "swapped_object_signal::", 23) == 0 ||
                strncmp (signal_spec, "swapped-object-signal::", 23) == 0)
-	sid = g_signal_connect_object (object, signal_spec + 23,
-				       callback, data,
-				       G_CONNECT_SWAPPED);
+	g_signal_connect_object (object, signal_spec + 23,
+				 callback, data,
+				 G_CONNECT_SWAPPED);
       else if (strncmp (signal_spec, "signal_after::", 14) == 0 ||
                strncmp (signal_spec, "signal-after::", 14) == 0)
-	sid = g_signal_connect_data (object, signal_spec + 14,
-				     callback, data, NULL,
-				     G_CONNECT_AFTER);
+	g_signal_connect_data (object, signal_spec + 14,
+			       callback, data, NULL,
+			       G_CONNECT_AFTER);
       else if (strncmp (signal_spec, "object_signal_after::", 21) == 0 ||
                strncmp (signal_spec, "object-signal-after::", 21) == 0)
-	sid = g_signal_connect_object (object, signal_spec + 21,
-				       callback, data,
-				       G_CONNECT_AFTER);
+	g_signal_connect_object (object, signal_spec + 21,
+				 callback, data,
+				 G_CONNECT_AFTER);
       else if (strncmp (signal_spec, "swapped_signal_after::", 22) == 0 ||
                strncmp (signal_spec, "swapped-signal-after::", 22) == 0)
-	sid = g_signal_connect_data (object, signal_spec + 22,
-				     callback, data, NULL,
-				     G_CONNECT_SWAPPED | G_CONNECT_AFTER);
+	g_signal_connect_data (object, signal_spec + 22,
+			       callback, data, NULL,
+			       G_CONNECT_SWAPPED | G_CONNECT_AFTER);
       else if (strncmp (signal_spec, "swapped_object_signal_after::", 29) == 0 ||
                strncmp (signal_spec, "swapped-object-signal-after::", 29) == 0)
-	sid = g_signal_connect_object (object, signal_spec + 29,
-				       callback, data,
-				       G_CONNECT_SWAPPED | G_CONNECT_AFTER);
+	g_signal_connect_object (object, signal_spec + 29,
+				 callback, data,
+				 G_CONNECT_SWAPPED | G_CONNECT_AFTER);
       else
 	{
 	  g_warning ("%s: invalid signal spec \"%s\"", G_STRFUNC, signal_spec);
@@ -2451,11 +2450,10 @@ g_object_ref_sink (gpointer _object)
 void
 g_object_force_floating (GObject *object)
 {
-  gboolean was_floating;
   g_return_if_fail (G_IS_OBJECT (object));
   g_return_if_fail (object->ref_count >= 1);
 
-  was_floating = floating_flag_handler (object, +1);
+  floating_flag_handler (object, +1);
 }
 
 typedef struct {

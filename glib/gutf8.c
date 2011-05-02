@@ -1292,13 +1292,11 @@ g_utf16_to_ucs4 (const gunichar2  *str,
   while ((len < 0 || in - str < len) && *in)
     {
       gunichar2 c = *in;
-      gunichar wc;
 
       if (c >= 0xdc00 && c < 0xe000) /* low surrogate */
 	{
 	  if (high_surrogate)
 	    {
-	      wc = SURROGATE_VALUE (high_surrogate, c);
 	      high_surrogate = 0;
 	    }
 	  else
@@ -1322,8 +1320,6 @@ g_utf16_to_ucs4 (const gunichar2  *str,
 	      high_surrogate = c;
 	      goto next1;
 	    }
-	  else
-	    wc = c;
 	}
 
       /********** DIFFERENT for UTF8/UCS4 **********/

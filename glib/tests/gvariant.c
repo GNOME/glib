@@ -3926,6 +3926,7 @@ test_bytestring (void)
   untrusted_empty = g_variant_new_from_data (G_VARIANT_TYPE ("ay"), NULL, 0, FALSE, NULL, NULL);
   value = g_variant_get_normal_form (untrusted_empty);
   const_str = g_variant_get_bytestring (value);
+  (void) const_str;
   g_variant_unref (value);
   g_variant_unref (untrusted_empty);
 }
