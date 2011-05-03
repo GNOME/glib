@@ -337,8 +337,8 @@ _g_dbus_method_invocation_new (const gchar           *sender,
 
 /**
  * g_dbus_method_invocation_return_value:
- * @invocation: A #GDBusMethodInvocation.
- * @parameters: A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ * @parameters: (allow-none): A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
  *
  * Finishes handling a D-Bus method call by returning @parameters.
  * If the @parameters GVariant is floating, it is consumed.
@@ -417,7 +417,7 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
 
 /**
  * g_dbus_method_invocation_return_error:
- * @invocation: A #GDBusMethodInvocation.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
  * @domain: A #GQuark for the #GError error domain.
  * @code: The error code.
  * @format: printf()-style format.
@@ -464,7 +464,7 @@ g_dbus_method_invocation_return_error (GDBusMethodInvocation *invocation,
 
 /**
  * g_dbus_method_invocation_return_error_valist:
- * @invocation: A #GDBusMethodInvocation.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
  * @domain: A #GQuark for the #GError error domain.
  * @code: The error code.
  * @format: printf()-style format.
@@ -499,7 +499,7 @@ g_dbus_method_invocation_return_error_valist (GDBusMethodInvocation *invocation,
 
 /**
  * g_dbus_method_invocation_return_error_literal:
- * @invocation: A #GDBusMethodInvocation.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
  * @domain: A #GQuark for the #GError error domain.
  * @code: The error code.
  * @message: The error message.
@@ -528,7 +528,7 @@ g_dbus_method_invocation_return_error_literal (GDBusMethodInvocation *invocation
 
 /**
  * g_dbus_method_invocation_return_gerror:
- * @invocation: A #GDBusMethodInvocation.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
  * @error: A #GError.
  *
  * Like g_dbus_method_invocation_return_error() but takes a #GError
@@ -557,7 +557,7 @@ g_dbus_method_invocation_return_gerror (GDBusMethodInvocation *invocation,
 
 /**
  * g_dbus_method_invocation_return_dbus_error:
- * @invocation: A #GDBusMethodInvocation.
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
  * @error_name: A valid D-Bus error name.
  * @error_message: A valid D-Bus error message.
  *
