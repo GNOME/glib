@@ -1015,7 +1015,7 @@ g_test_add_vtable (const char       *testpath,
  *
  * If not called from inside a test, this function does nothing.
  *
- * @Since: 2.30
+ * Since: 2.30
  **/
 void
 g_test_fail (void)
