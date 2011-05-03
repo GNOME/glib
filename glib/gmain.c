@@ -4638,7 +4638,7 @@ init_unix_signal_wakeup_state_unlocked (void)
 
   if (!g_unix_pipe_flags (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
     g_error ("Cannot create UNIX signal wake up pipe: %s\n", error->message);
-  fcntl (unix_signal_wake_up_pipe[1], F_SETFL, O_NONBLOCK | fcntl (unix_signal_wake_up_pipe[1], F_GETFL));
+  g_unix_set_fd_nonblocking (unix_signal_wake_up_pipe[1], TRUE, NULL);
 
   /* We create a helper thread that polls on the wakeup pipe indefinitely */
   if (g_thread_create (unix_signal_helper_thread, NULL, FALSE, &error) == NULL)

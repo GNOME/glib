@@ -136,6 +136,56 @@ g_unix_pipe_flags (int     *fds,
 }
 
 /**
+ * g_unix_set_fd_nonblocking:
+ * @fd: A file descriptor
+ * @nonblock: If %TRUE, set the descriptor to be non-blocking
+ * @error: a #GError
+ *
+ * Control the non-blocking state of the given file descriptor,
+ * according to @nonblock.  On most systems this uses %O_NONBLOCK, but
+ * on some older ones may use %O_NDELAY.
+ *
+ * Returns: %TRUE if successful
+ */
+gboolean
+g_unix_set_fd_nonblocking (gint       fd, 
+			   gboolean   nonblock,
+			   GError   **error)
+{
+#ifdef F_GETFL
+  glong fcntl_flags;
+  fcntl_flags = fcntl (fd, F_GETFL);
+
+  if (fcntl_flags == -1)
+    return g_unix_set_error_from_errno (error);
+
+  if (nonblock)
+    {
+#ifdef O_NONBLOCK
+      fcntl_flags |= O_NONBLOCK;
+#else
+      fcntl_flags |= O_NDELAY;
+#endif
+    }
+  else
+    {
+#ifdef O_NONBLOCK
+      fcntl_flags &= ~O_NONBLOCK;
+#else
+      fcntl_flags &= ~O_NDELAY;
+#endif
+    }
+
+  if (fcntl (fd, F_SETFL, fcntl_flags) == -1)
+    return g_unix_set_error_from_errno (error);
+  return TRUE;
+#else
+  return g_unix_set_error_from_errno_saved (error, EINVAL);
+#endif
+}
+
+
+/**
  * g_unix_signal_source_new:
  * @signum: A signal number
  *

@@ -21,11 +21,10 @@
  */
 
 #include "config.h"
-#ifdef HAVE_UNISTD_H
-#include <unistd.h>
+#include "glib.h"
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
 #endif
-#include <errno.h>
-#include <fcntl.h>
 #include <gioerror.h>
 #ifdef G_OS_WIN32
 #include <windows.h>
@@ -193,22 +192,6 @@ g_cancellable_class_init (GCancellableClass *klass)
 }
 
 #ifndef G_OS_WIN32
-static void
-set_fd_nonblocking (int fd)
-{
-#ifdef F_GETFL
-  glong fcntl_flags;
-  fcntl_flags = fcntl (fd, F_GETFL);
-
-#ifdef O_NONBLOCK
-  fcntl_flags |= O_NONBLOCK;
-#else
-  fcntl_flags |= O_NDELAY;
-#endif
-
-  fcntl (fd, F_SETFL, fcntl_flags);
-#endif
-}
 
 static void
 set_fd_close_exec (int fd)
@@ -235,8 +218,8 @@ g_cancellable_open_pipe (GCancellable *cancellable)
       /* Make them nonblocking, just to be sure we don't block
        * on errors and stuff
        */
-      set_fd_nonblocking (priv->cancel_pipe[0]);
-      set_fd_nonblocking (priv->cancel_pipe[1]);
+      g_unix_set_fd_nonblocking (priv->cancel_pipe[0], TRUE, NULL);
+      g_unix_set_fd_nonblocking (priv->cancel_pipe[1], TRUE, NULL);
       set_fd_close_exec (priv->cancel_pipe[0]);
       set_fd_close_exec (priv->cancel_pipe[1]);
       

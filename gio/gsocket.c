@@ -29,6 +29,10 @@
 
 #include "gsocket.h"
 
+#ifdef G_OS_UNIX
+#include "glib-unix.h"
+#endif
+
 #include <errno.h>
 #include <signal.h>
 #include <string.h>
@@ -240,22 +244,17 @@ static void
 set_fd_nonblocking (int fd)
 {
 #ifndef G_OS_WIN32
-  glong arg;
+  GError *error = NULL;
 #else
   gulong arg;
 #endif
 
 #ifndef G_OS_WIN32
-  if ((arg = fcntl (fd, F_GETFL, NULL)) < 0)
+  if (!g_unix_set_fd_nonblocking (fd, TRUE, &error))
     {
-      g_warning ("Error getting socket status flags: %s", socket_strerror (errno));
-      arg = 0;
+      g_warning ("Error setting socket nonblocking: %s", error->message);
+      g_clear_error (&error);
     }
-
-  arg = arg | O_NONBLOCK;
-
-  if (fcntl (fd, F_SETFL, arg) < 0)
-      g_warning ("Error setting socket status flags: %s", socket_strerror (errno));
 #else
   arg = TRUE;
 
