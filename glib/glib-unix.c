@@ -111,6 +111,8 @@ g_unix_pipe_flags (int     *fds,
     ecode = pipe2 (fds, pipe2_flags);
     if (ecode == -1 && errno != ENOSYS)
       return g_unix_set_error_from_errno (error);
+    else if (ecode == 0)
+      return TRUE;
     /* Fall through on -ENOSYS, we must be running on an old kernel */
   }
 #endif
