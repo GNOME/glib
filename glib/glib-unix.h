@@ -57,9 +57,9 @@
 
 GQuark g_unix_error_quark (void);
 
-gboolean g_unix_pipe_flags (gint      *fds,
-			    gint       flags,
-			    GError   **error);
+gboolean g_unix_open_pipe (gint      *fds,
+			   gint       flags,
+			   GError   **error);
 
 gboolean g_unix_set_fd_nonblocking (gint       fd,
 				    gboolean   nonblock,

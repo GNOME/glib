@@ -199,7 +199,7 @@ g_cancellable_open_pipe (GCancellable *cancellable)
   GCancellablePrivate *priv;
 
   priv = cancellable->priv;
-  if (g_unix_pipe_flags (priv->cancel_pipe, FD_CLOEXEC, NULL))
+  if (g_unix_open_pipe (priv->cancel_pipe, FD_CLOEXEC, NULL))
     {
       /* Make them nonblocking, just to be sure we don't block
        * on errors and stuff

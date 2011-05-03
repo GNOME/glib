@@ -1981,8 +1981,8 @@ g_hostname_to_unicode
 #if IN_HEADER(__G_UNIX_H__)
 #if IN_FILE(__G_UNIX_C__)
 #ifdef G_OS_UNIX
-g_unix_pipe_flags
 g_unix_error_quark
+g_unix_open_pipe
 g_unix_set_fd_nonblocking
 g_unix_signal_source_new
 g_unix_signal_add_watch_full

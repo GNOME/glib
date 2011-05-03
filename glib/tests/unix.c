@@ -34,7 +34,7 @@ test_pipe (void)
   char buf[1024];
   ssize_t bytes_read;
 
-  g_unix_pipe_flags (pipefd, FD_CLOEXEC, NULL);
+  g_unix_open_pipe (pipefd, FD_CLOEXEC, NULL);
   g_assert_no_error (error);
     
   write (pipefd[1], "hello", sizeof ("hello"));

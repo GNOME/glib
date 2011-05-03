@@ -560,7 +560,7 @@ g_main_context_init_pipe (GMainContext *context)
   if (context->wake_up_pipe[0] != -1)
     return;
 
-  if (!g_unix_pipe_flags (context->wake_up_pipe, FD_CLOEXEC, &error))
+  if (!g_unix_open_pipe (context->wake_up_pipe, FD_CLOEXEC, &error))
     g_error ("Cannot create pipe main loop wake-up: %s", error->message);
 
   context->wake_up_rec.fd = context->wake_up_pipe[0];
@@ -4636,7 +4636,7 @@ init_unix_signal_wakeup_state_unlocked (void)
   if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED)
     return;
 
-  if (!g_unix_pipe_flags (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
+  if (!g_unix_open_pipe (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
     g_error ("Cannot create UNIX signal wake up pipe: %s\n", error->message);
   g_unix_set_fd_nonblocking (unix_signal_wake_up_pipe[1], TRUE, NULL);
 

@@ -74,7 +74,7 @@ g_unix_set_error_from_errno_saved (GError **error,
 }
 
 /**
- * g_unix_pipe_flags:
+ * g_unix_open_pipe:
  * @fds: Array of two integers
  * @flags: Bitfield of file descriptor flags, see "man 2 fcntl"
  * @error: a #GError
@@ -93,9 +93,9 @@ g_unix_set_error_from_errno_saved (GError **error,
  * Since: 2.30
  */
 gboolean
-g_unix_pipe_flags (int     *fds,
-		   int      flags,
-		   GError **error)
+g_unix_open_pipe (int     *fds,
+		  int      flags,
+		  GError **error)
 {
   int ecode;
 
