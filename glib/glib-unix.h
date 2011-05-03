@@ -57,20 +57,20 @@
 
 GQuark g_unix_error_quark (void);
 
-gboolean g_unix_pipe_flags (int      *fds,
-			    int       flags,
-			    GError  **error);
+gboolean g_unix_pipe_flags (gint      *fds,
+			    gint       flags,
+			    GError   **error);
 
 gboolean g_unix_set_fd_nonblocking (gint       fd,
 				    gboolean   nonblock,
 				    GError   **error);
 
-GSource *g_unix_signal_source_new     (int signum);
+GSource *g_unix_signal_source_new     (gint signum);
 
-guint    g_unix_signal_add_watch_full (int            signum,
-				       int            priority,
-				       GSourceFunc    handler,
-				       gpointer       user_data,
-				       GDestroyNotify notify);
+guint    g_unix_signal_add_watch_full (gint            signum,
+				       gint            priority,
+				       GSourceFunc     handler,
+				       gpointer        user_data,
+				       GDestroyNotify  notify);
 
 #endif
