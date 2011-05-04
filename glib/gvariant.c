@@ -3687,7 +3687,16 @@ g_variant_valist_new_nnp (const gchar **str,
         }
 
     case 's':
-      return g_variant_new_string (ptr);
+      {
+        GVariant *value;
+
+        value = g_variant_new_string (ptr);
+
+        if (value == NULL)
+          value = g_variant_new_string ("[Invalid UTF-8]");
+
+        return value;
+      }
 
     case 'o':
       return g_variant_new_object_path (ptr);
