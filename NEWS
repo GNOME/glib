@@ -1,3 +1,71 @@
+Overview of changes from GLib 2.29.2 to 2.29.4
+==============================================
+
+* GDBus:
+ - Includes several new types to support modeling D-Bus
+   objects and interfaces more fully, and also introduces
+   an 'object manager' pattern:
+   GDBusInterface, GDBusObject, GDBusObjectManager
+   These interfaces have client-side implementations:
+   GDBusProxy, GDBusObjectProxy, GDBusObjectManagerClient
+   And server-side implementations:
+   GDBusInterfaceSkeleton, GDBusObjectSkeleton, GDBusObjectManagerServer
+ - The new gdbus-codegen utility uses these new classes
+   to generate C code and documentation from D-Bus interface
+   descriptions in XML
+
+* GTest:
+ - There is now a g_test_fail() function to mark
+   tests as failed
+
+* GDesktopAppInfo
+ - Now has a binding-friendly filename property
+ - Other new API to more fully expose desktop file contents:
+   g_desktop_app_info_get_categories(),
+   g_desktop_app_info_get_generic_name()
+
+* GHashTable:
+ - Several optimizations to reduce space consumption of
+   large hash tables, in particular tables that are used
+   to store sets.
+
+* Unix-specific APIs:
+  GLib now installs a separate header, glib-unix.h, that is
+  meant to collect Unix-specific APIs. For now, it contains
+  g_unix_open_pipe(), g_unix_set_fd_non_blocking() for dealing
+  with pipes and fds, as well as APIs to create mainloop
+  sources which can trigger callbacks on certain Unix
+  signals (SIGTERM, SIGHUP, SIGINT).
+
+* Bugs fixed:
+ 631379 GDBus nonce-tcp test failing
+ 632631 GLib-CRITICAL **: g_variant_new_string: assertion `g_utf8_validate (string, -1, NULL)' failed
+ 635694 gdbus aborting due to unauthorized socket in DBUS_SESSION_BUS_ADDRESS
+ 637561 Crash when using G_DBUS_SERVER_FLAGS_RUN_IN_THREAD
+ 642935 g_date_time_format() prints wrong value for %z and timezone -0800
+ 643134 g_dbus_message_copy
+ 644941 glib-unix: New Unix-specific API
+ 646013 g_hash_table_remove_all_nodes optimization
+ 646309 glib cannot be cross-compilled for mingw32
+ 646435 GTimeZone doesn't seem to be thread-safe
+ 646957 GIO chained calls don't work with a thread default context
+ 647594 README link to mailing list is broken
+ 647602 Cannot connect to remote message bus via TCP
+ 647746 The GSocketService documentation is incomplete.
+ 647826 API: gtester: Add g_test_fail()
+ 647903 GDesktopAppInfo: Add g_desktop_app_info_get_categories()
+ 648416 g_app_info_create_from_commandline ignores SUPPORTS_STARTUP_NOTIFICATION
+ 648423 Support G_DEBUG=trap-warnings
+ 648425 GDesktopAppInfo: Add "filename" property for bindings
+ 648966 Update g_unichar_iswide and g_unichar_iswide_cjk
+
+* Updated translations
+ Norwegian bokmål
+ Spanish
+ Turkish
+ Uighur
+
+
 Overview of Changes from GLib 2.28.0 to 2.29.2
 ==============================================
 
