@@ -156,7 +156,7 @@ class CodeGenerator:
                      '\n')
 
         # simplified - only supports the types we use
-        self.c.write('static gboolean\n'
+        self.c.write('G_GNUC_UNUSED static gboolean\n'
                      '_g_value_equal (const GValue *a, const GValue *b)\n'
                      '{\n'
                      '  gboolean ret = FALSE;\n'
