@@ -68,7 +68,7 @@ on_bus_acquired (GDBusConnection *connection,
   g_print ("Acquired a message bus connection\n");
 
   /* Create a new org.freedesktop.DBus.ObjectManager rooted at /example/Animals */
-  manager = g_dbus_object_manager_server_new (connection, "/example/Animals");
+  manager = g_dbus_object_manager_server_new ("/example/Animals");
 
   for (n = 0; n < 10; n++)
     {
@@ -111,6 +111,9 @@ on_bus_acquired (GDBusConnection *connection,
       g_dbus_object_manager_server_export (manager, G_DBUS_OBJECT_SKELETON (object));
       g_object_unref (object);
     }
+
+  /* Export all objects */
+  g_dbus_object_manager_server_set_connection (manager, connection);
 }
 
 static void

@@ -64,6 +64,9 @@ typedef struct
 
 static void registration_data_free (RegistrationData *data);
 
+static void export_all (GDBusObjectManagerServer *manager);
+static void unexport_all (GDBusObjectManagerServer *manager, gboolean only_manager);
+
 static void g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *manager,
                                                          RegistrationData   *data,
                                                          const gchar *const *interfaces);
@@ -100,10 +103,12 @@ g_dbus_object_manager_server_finalize (GObject *object)
 {
   GDBusObjectManagerServer *manager = G_DBUS_OBJECT_MANAGER_SERVER (object);
 
+  if (manager->priv->connection != NULL)
+    {
+      unexport_all (manager, TRUE);
+      g_object_unref (manager->priv->connection);
+    }
   g_hash_table_unref (manager->priv->map_object_path_to_data);
-  if (manager->priv->manager_reg_id > 0)
-    g_warn_if_fail (g_dbus_connection_unregister_object (manager->priv->connection, manager->priv->manager_reg_id));
-  g_object_unref (manager->priv->connection);
   g_free (manager->priv->object_path);
   g_free (manager->priv->object_path_ending_in_slash);
 
@@ -112,17 +117,17 @@ g_dbus_object_manager_server_finalize (GObject *object)
 }
 
 static void
-g_dbus_object_manager_server_get_property (GObject    *_object,
-                                    guint       prop_id,
-                                    GValue     *value,
-                                    GParamSpec *pspec)
+g_dbus_object_manager_server_get_property (GObject    *object,
+                                           guint       prop_id,
+                                           GValue     *value,
+                                           GParamSpec *pspec)
 {
-  GDBusObjectManagerServer *manager = G_DBUS_OBJECT_MANAGER_SERVER (_object);
+  GDBusObjectManagerServer *manager = G_DBUS_OBJECT_MANAGER_SERVER (object);
 
   switch (prop_id)
     {
     case PROP_CONNECTION:
-      g_value_set_object (value, g_dbus_object_manager_server_get_connection (manager));
+      g_value_set_object (value, manager->priv->connection);
       break;
 
     case PROP_OBJECT_PATH:
@@ -130,25 +135,23 @@ g_dbus_object_manager_server_get_property (GObject    *_object,
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
 
 static void
-g_dbus_object_manager_server_set_property (GObject       *_object,
-                                    guint          prop_id,
-                                    const GValue  *value,
-                                    GParamSpec    *pspec)
+g_dbus_object_manager_server_set_property (GObject       *object,
+                                           guint          prop_id,
+                                           const GValue  *value,
+                                           GParamSpec    *pspec)
 {
-  GDBusObjectManagerServer *manager = G_DBUS_OBJECT_MANAGER_SERVER (_object);
+  GDBusObjectManagerServer *manager = G_DBUS_OBJECT_MANAGER_SERVER (object);
 
   switch (prop_id)
     {
     case PROP_CONNECTION:
-      g_assert (manager->priv->connection == NULL);
-      g_assert (G_IS_DBUS_CONNECTION (g_value_get_object (value)));
-      manager->priv->connection = g_value_dup_object (value);
+      g_dbus_object_manager_server_set_connection (manager, g_value_get_object (value));
       break;
 
     case PROP_OBJECT_PATH:
@@ -159,7 +162,7 @@ g_dbus_object_manager_server_set_property (GObject       *_object,
       break;
 
     default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
     }
 }
@@ -189,7 +192,6 @@ g_dbus_object_manager_server_class_init (GDBusObjectManagerServerClass *klass)
                                                         G_TYPE_DBUS_CONNECTION,
                                                         G_PARAM_READABLE |
                                                         G_PARAM_WRITABLE |
-                                                        G_PARAM_CONSTRUCT_ONLY |
                                                         G_PARAM_STATIC_STRINGS));
 
   /**
@@ -227,28 +229,61 @@ g_dbus_object_manager_server_init (GDBusObjectManagerServer *manager)
 
 /**
  * g_dbus_object_manager_server_new:
- * @connection: A #GDBusConnection.
  * @object_path: The object path to export the manager object at.
  *
  * Creates a new #GDBusObjectManagerServer object.
  *
- * TODO: make it so that the objects are not exported yet -
- * e.g. start()/stop() semantics.
+ * The returned server isn't yet exported on any connection. To do so,
+ * use g_dbus_object_manager_server_set_connection(). Normally you
+ * want to export all of your objects before doing so to avoid <ulink
+ * url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager">InterfacesAdded</ulink>
+ * signals being emitted.
  *
  * Returns: A #GDBusObjectManagerServer object. Free with g_object_unref().
  *
  * Since: 2.30
  */
 GDBusObjectManagerServer *
-g_dbus_object_manager_server_new (GDBusConnection *connection,
-                           const gchar     *object_path)
+g_dbus_object_manager_server_new (const gchar     *object_path)
 {
-  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);
   return G_DBUS_OBJECT_MANAGER_SERVER (g_object_new (G_TYPE_DBUS_OBJECT_MANAGER_SERVER,
-                                              "connection", connection,
-                                              "object-path", object_path,
-                                              NULL));
+                                                     "object-path", object_path,
+                                                     NULL));
+}
+
+/**
+ * g_dbus_object_manager_server_set_connection:
+ * @manager: A #GDBusObjectManagerServer.
+ * @connection: (allow-none): A #GDBusConnection or %NULL.
+ *
+ * Exports all objects managed by @manager on @connection. If
+ * @connection is %NULL, stops exporting objects.
+ */
+void
+g_dbus_object_manager_server_set_connection (GDBusObjectManagerServer  *manager,
+                                             GDBusConnection           *connection)
+{
+  g_return_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager));
+  g_return_if_fail (connection == NULL || G_IS_DBUS_CONNECTION (connection));
+
+  if (manager->priv->connection == connection)
+    goto out;
+
+  if (manager->priv->connection != NULL)
+    {
+      unexport_all (manager, FALSE);
+      g_object_unref (manager->priv->connection);
+      manager->priv->connection = NULL;
+    }
+
+  manager->priv->connection = connection != NULL ? g_object_ref (connection) : NULL;
+  if (manager->priv->connection != NULL)
+    export_all (manager);
+
+  g_object_notify (G_OBJECT (manager), "connection");
+ out:
+  ;
 }
 
 /**
@@ -257,8 +292,9 @@ g_dbus_object_manager_server_new (GDBusConnection *connection,
  *
  * Gets the #GDBusConnection used by @manager.
  *
- * Returns: (transfer none): A #GDBusConnection object. Do not free,
- *   the object belongs to @manager.
+ * Returns: (transfer full): A #GDBusConnection object or %NULL if
+ *   @manager isn't exported on a connection. The returned object should
+ *   be freed with g_object_unref().
  *
  * Since: 2.30
  */
@@ -266,7 +302,7 @@ GDBusConnection *
 g_dbus_object_manager_server_get_connection (GDBusObjectManagerServer *manager)
 {
   g_return_val_if_fail (G_IS_DBUS_OBJECT_MANAGER_SERVER (manager), NULL);
-  return manager->priv->connection;
+  return manager->priv->connection != NULL ? g_object_ref (manager->priv->connection) : NULL;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -283,19 +319,20 @@ registration_data_export_interface (RegistrationData        *data,
 
   info = g_dbus_interface_skeleton_get_info (interface_skeleton);
   error = NULL;
-  if (!g_dbus_interface_skeleton_export (interface_skeleton,
-                                         data->manager->priv->connection,
-                                         object_path,
-                                         &error))
+  if (data->manager->priv->connection != NULL)
     {
-      /* TODO: probably wrong to complain on stderr */
-      g_warning ("%s: Error registering object at %s with interface %s: %s",
-                 G_STRLOC,
-                 object_path,
-                 info->name,
-                 error->message);
-      g_error_free (error);
-      goto out;
+      if (!g_dbus_interface_skeleton_export (interface_skeleton,
+                                             data->manager->priv->connection,
+                                             object_path,
+                                             &error))
+        {
+          g_warning ("%s: Error registering object at %s with interface %s: %s",
+                     G_STRLOC,
+                     object_path,
+                     info->name,
+                     error->message);
+          g_error_free (error);
+        }
     }
 
   g_assert (g_hash_table_lookup (data->map_iface_name_to_iface, info->name) == NULL);
@@ -312,9 +349,6 @@ registration_data_export_interface (RegistrationData        *data,
       interfaces[1] = NULL;
       g_dbus_object_manager_server_emit_interfaces_added (data->manager, data, interfaces);
     }
-
- out:
-  ;
 }
 
 static void
@@ -328,7 +362,8 @@ registration_data_unexport_interface (RegistrationData       *data,
   iface = g_hash_table_lookup (data->map_iface_name_to_iface, info->name);
   g_assert (iface != NULL);
 
-  g_dbus_interface_skeleton_unexport (iface);
+  if (data->manager->priv->connection != NULL)
+    g_dbus_interface_skeleton_unexport (iface);
 
   g_warn_if_fail (g_hash_table_remove (data->map_iface_name_to_iface, info->name));
 
@@ -376,7 +411,10 @@ registration_data_free (RegistrationData *data)
 
   g_hash_table_iter_init (&iter, data->map_iface_name_to_iface);
   while (g_hash_table_iter_next (&iter, NULL, (gpointer) &iface))
-    g_dbus_interface_skeleton_unexport (iface);
+    {
+      if (data->manager->priv->connection != NULL)
+        g_dbus_interface_skeleton_unexport (iface);
+    }
 
   g_signal_handlers_disconnect_by_func (data->object, G_CALLBACK (on_interface_added), data);
   g_signal_handlers_disconnect_by_func (data->object, G_CALLBACK (on_interface_removed), data);
@@ -761,25 +799,9 @@ static void
 g_dbus_object_manager_server_constructed (GObject *object)
 {
   GDBusObjectManagerServer *manager = G_DBUS_OBJECT_MANAGER_SERVER (object);
-  GError *error;
 
-  error = NULL;
-  manager->priv->manager_reg_id = g_dbus_connection_register_object (manager->priv->connection,
-                                                                     manager->priv->object_path,
-                                                                     (GDBusInterfaceInfo *) &manager_interface_info,
-                                                                     &manager_interface_vtable,
-                                                                     manager,
-                                                                     NULL, /* user_data_free_func */
-                                                                     &error);
-  if (manager->priv->manager_reg_id == 0)
-    {
-      /* TODO: probably wrong to complain on stderr */
-      g_warning ("%s: Error registering manager at %s: %s",
-                 G_STRLOC,
-                 manager->priv->object_path,
-                 error->message);
-      g_error_free (error);
-    }
+  if (manager->priv->connection != NULL)
+    export_all (manager);
 
   if (G_OBJECT_CLASS (g_dbus_object_manager_server_parent_class)->constructed != NULL)
     G_OBJECT_CLASS (g_dbus_object_manager_server_parent_class)->constructed (object);
@@ -787,13 +809,16 @@ g_dbus_object_manager_server_constructed (GObject *object)
 
 static void
 g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *manager,
-                                             RegistrationData   *data,
-                                             const gchar *const *interfaces)
+                                                    RegistrationData   *data,
+                                                    const gchar *const *interfaces)
 {
   GVariantBuilder array_builder;
   GError *error;
   guint n;
   const gchar *object_path;
+
+  if (data->manager->priv->connection == NULL)
+    goto out;
 
   g_variant_builder_init (&array_builder, G_VARIANT_TYPE ("a{sa{sv}}"));
   for (n = 0; interfaces[n] != NULL; n++)
@@ -819,17 +844,22 @@ g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *ma
                                                 &array_builder),
                                  &error);
   g_assert_no_error (error);
+ out:
+  ;
 }
 
 static void
 g_dbus_object_manager_server_emit_interfaces_removed (GDBusObjectManagerServer *manager,
-                                               RegistrationData   *data,
-                                               const gchar *const *interfaces)
+                                                      RegistrationData   *data,
+                                                      const gchar *const *interfaces)
 {
   GVariantBuilder array_builder;
   GError *error;
   guint n;
   const gchar *object_path;
+
+  if (data->manager->priv->connection == NULL)
+    goto out;
 
   g_variant_builder_init (&array_builder, G_VARIANT_TYPE ("as"));
   for (n = 0; interfaces[n] != NULL; n++)
@@ -847,6 +877,8 @@ g_dbus_object_manager_server_emit_interfaces_removed (GDBusObjectManagerServer *
                                                 &array_builder),
                                  &error);
   g_assert_no_error (error);
+ out:
+  ;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -920,3 +952,95 @@ dbus_object_manager_interface_init (GDBusObjectManagerIface *iface)
   iface->get_object      = g_dbus_object_manager_server_get_object;
   iface->get_interface   = g_dbus_object_manager_server_get_interface;
 }
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static void
+export_all (GDBusObjectManagerServer *manager)
+{
+  GHashTableIter iter;
+  const gchar *object_path;
+  RegistrationData *data;
+  GHashTableIter iface_iter;
+  GDBusInterfaceSkeleton *iface;
+  GError *error;
+
+  g_return_if_fail (manager->priv->connection != NULL);
+
+  error = NULL;
+  g_warn_if_fail (manager->priv->manager_reg_id == 0);
+  manager->priv->manager_reg_id = g_dbus_connection_register_object (manager->priv->connection,
+                                                                     manager->priv->object_path,
+                                                                     (GDBusInterfaceInfo *) &manager_interface_info,
+                                                                     &manager_interface_vtable,
+                                                                     manager,
+                                                                     NULL, /* user_data_free_func */
+                                                                     &error);
+  if (manager->priv->manager_reg_id == 0)
+    {
+      g_warning ("%s: Error registering manager at %s: %s",
+                 G_STRLOC,
+                 manager->priv->object_path,
+                 error->message);
+      g_error_free (error);
+    }
+
+  g_hash_table_iter_init (&iter, manager->priv->map_object_path_to_data);
+  while (g_hash_table_iter_next (&iter, (gpointer) &object_path, (gpointer) &data))
+    {
+      g_hash_table_iter_init (&iface_iter, data->map_iface_name_to_iface);
+      while (g_hash_table_iter_next (&iface_iter, NULL, (gpointer) &iface))
+        {
+          g_warn_if_fail (g_dbus_interface_skeleton_get_connection (iface) == NULL);
+          error = NULL;
+          if (!g_dbus_interface_skeleton_export (iface,
+                                                 manager->priv->connection,
+                                                 object_path,
+                                                 &error))
+            {
+              g_warning ("%s: Error registering object at %s with interface %s: %s",
+                         G_STRLOC,
+                         object_path,
+                         g_dbus_interface_skeleton_get_info (iface)->name,
+                         error->message);
+              g_error_free (error);
+            }
+        }
+    }
+}
+
+static void
+unexport_all (GDBusObjectManagerServer *manager, gboolean only_manager)
+{
+  GHashTableIter iter;
+  RegistrationData *data;
+  GHashTableIter iface_iter;
+  GDBusInterfaceSkeleton *iface;
+
+  g_return_if_fail (manager->priv->connection != NULL);
+
+  g_warn_if_fail (manager->priv->manager_reg_id > 0);
+  if (manager->priv->manager_reg_id > 0)
+    {
+      g_warn_if_fail (g_dbus_connection_unregister_object (manager->priv->connection,
+                                                           manager->priv->manager_reg_id));
+      manager->priv->manager_reg_id = 0;
+    }
+  if (only_manager)
+    goto out;
+
+  g_hash_table_iter_init (&iter, manager->priv->map_object_path_to_data);
+  while (g_hash_table_iter_next (&iter, NULL, (gpointer) &data))
+    {
+      g_hash_table_iter_init (&iface_iter, data->map_iface_name_to_iface);
+      while (g_hash_table_iter_next (&iface_iter, NULL, (gpointer) &iface))
+        {
+          g_warn_if_fail (g_dbus_interface_skeleton_get_connection (iface) != NULL);
+          g_dbus_interface_skeleton_unexport (iface);
+        }
+    }
+ out:
+  ;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */

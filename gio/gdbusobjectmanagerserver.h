@@ -69,9 +69,10 @@ struct _GDBusObjectManagerServerClass
 };
 
 GType                     g_dbus_object_manager_server_get_type            (void) G_GNUC_CONST;
-GDBusObjectManagerServer *g_dbus_object_manager_server_new                 (GDBusConnection           *connection,
-                                                                            const gchar               *object_path);
+GDBusObjectManagerServer *g_dbus_object_manager_server_new                 (const gchar               *object_path);
 GDBusConnection          *g_dbus_object_manager_server_get_connection      (GDBusObjectManagerServer  *manager);
+void                      g_dbus_object_manager_server_set_connection      (GDBusObjectManagerServer  *manager,
+                                                                            GDBusConnection           *connection);
 void                      g_dbus_object_manager_server_export              (GDBusObjectManagerServer  *manager,
                                                                             GDBusObjectSkeleton       *object);
 void                      g_dbus_object_manager_server_export_uniquely     (GDBusObjectManagerServer  *manager,

@@ -1762,7 +1762,8 @@ check_object_manager (void)
   g_error_free (error);
   g_assert (pm == NULL);
 
-  manager = g_dbus_object_manager_server_new (c, "/managed");
+  manager = g_dbus_object_manager_server_new ("/managed");
+  g_dbus_object_manager_server_set_connection (manager, c);
 
   /* Check that the manager object is visible */
   info = introspect (c, g_dbus_connection_get_unique_name (c), "/managed", loop);
@@ -1982,6 +1983,17 @@ check_object_manager (void)
   /* Now that we have a couple of objects with interfaces, check
    * that ObjectManager.GetManagedObjects() works
    */
+  om_check_get_all (c, loop,
+                    "({objectpath '/managed/first': {'com.acme.Coyote': {'Mood': <''>}}, '/managed/second': {'org.project.Bar': {'y': <byte 0x00>, 'b': <false>, 'n': <int16 0>, 'q': <uint16 0>, 'i': <0>, 'u': <uint32 0>, 'x': <int64 0>, 't': <uint64 0>, 'd': <0.0>, 's': <''>, 'o': <objectpath '/'>, 'g': <signature ''>, 'ay': <b''>, 'as': <@as []>, 'aay': <@aay []>, 'ao': <@ao []>, 'ag': <@ag []>, 'FinallyNormalName': <''>, 'ReadonlyProperty': <''>, 'unset_i': <0>, 'unset_d': <0.0>, 'unset_s': <''>, 'unset_o': <objectpath '/'>, 'unset_g': <signature ''>, 'unset_ay': <b''>, 'unset_as': <@as []>, 'unset_ao': <@ao []>, 'unset_ag': <@ag []>, 'unset_struct': <(0, 0.0, '', objectpath '/', signature '', @ay [], @as [], @ao [], @ag [])>}, 'org.project.Bat': {'force_i': <0>, 'force_s': <''>, 'force_ay': <@ay []>, 'force_struct': <(0,)>}}},)");
+
+  /* Set connection to NULL, causing everything to be unexported.. verify this.. and
+   * then set the connection back.. and then check things still work
+   */
+  g_dbus_object_manager_server_set_connection (manager, NULL);
+  info = introspect (c, g_dbus_connection_get_unique_name (c), "/managed", loop);
+  g_assert_cmpint (count_interfaces (info), ==, 0); /* nothing */
+  g_dbus_node_info_unref (info);
+  g_dbus_object_manager_server_set_connection (manager, c);
   om_check_get_all (c, loop,
                     "({objectpath '/managed/first': {'com.acme.Coyote': {'Mood': <''>}}, '/managed/second': {'org.project.Bar': {'y': <byte 0x00>, 'b': <false>, 'n': <int16 0>, 'q': <uint16 0>, 'i': <0>, 'u': <uint32 0>, 'x': <int64 0>, 't': <uint64 0>, 'd': <0.0>, 's': <''>, 'o': <objectpath '/'>, 'g': <signature ''>, 'ay': <b''>, 'as': <@as []>, 'aay': <@aay []>, 'ao': <@ao []>, 'ag': <@ag []>, 'FinallyNormalName': <''>, 'ReadonlyProperty': <''>, 'unset_i': <0>, 'unset_d': <0.0>, 'unset_s': <''>, 'unset_o': <objectpath '/'>, 'unset_g': <signature ''>, 'unset_ay': <b''>, 'unset_as': <@as []>, 'unset_ao': <@ao []>, 'unset_ag': <@ag []>, 'unset_struct': <(0, 0.0, '', objectpath '/', signature '', @ay [], @as [], @ao [], @ag [])>}, 'org.project.Bat': {'force_i': <0>, 'force_s': <''>, 'force_ay': <@ay []>, 'force_struct': <(0,)>}}},)");
 
