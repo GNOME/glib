@@ -8,6 +8,7 @@ INCLUDES = 			\
 	$(gio_INCLUDES)		\
 	$(GLIB_DEBUG_FLAGS)	\
 	-I$(top_builddir)/gio	\
+	-I$(top_srcdir)/gio	\
 	-DSRCDIR=\""$(srcdir)"\"
 
 noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
