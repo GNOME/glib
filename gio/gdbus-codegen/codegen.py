@@ -1445,7 +1445,7 @@ class CodeGenerator:
         if len(i.properties) > 0:
             self.c.write('  const _ExtendedGDBusPropertyInfo *info;\n'
                          '  GVariant *variant;\n'
-                         '  g_assert (prop_id - 1 >= 0 && prop_id - 1 < %d);\n'
+                         '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
                          '  info = _%s_property_info_pointers[prop_id - 1];\n'
                          '  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (object), info->parent_struct.name);\n'
                          '  if (info->use_gvariant)\n'
@@ -1485,7 +1485,7 @@ class CodeGenerator:
         if len(i.properties) > 0:
             self.c.write('  const _ExtendedGDBusPropertyInfo *info;\n'
                          '  GVariant *variant;\n'
-                         '  g_assert (prop_id - 1 >= 0 && prop_id - 1 < %d);\n'
+                         '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
                          '  info = _%s_property_info_pointers[prop_id - 1];\n'
                          '  variant = g_dbus_gvalue_to_gvariant (value, G_VARIANT_TYPE (info->parent_struct.signature));\n'
                          '  g_dbus_proxy_call (G_DBUS_PROXY (object),\n'
@@ -2119,7 +2119,7 @@ class CodeGenerator:
                      '  GParamSpec   *pspec)\n'
                      '{\n'%(i.name_lower))
         self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
-                     '  g_assert (prop_id - 1 >= 0 && prop_id - 1 < %d);\n'
+                     '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
                      '  g_value_copy (&skeleton->priv->properties->values[prop_id - 1], value);\n'
                      %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties)))
         self.c.write('}\n'
@@ -2231,7 +2231,7 @@ class CodeGenerator:
                      '{\n'%(i.name_lower))
         if len(i.properties) > 0:
             self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
-                         '  g_assert (prop_id - 1 >= 0 && prop_id - 1 < %d);\n'
+                         '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
                          '  if (!_g_value_equal (value, &skeleton->priv->properties->values[prop_id - 1]))\n'
                          '    {\n'
                          '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
