@@ -1,6 +1,7 @@
 
 NULL =
 bin_SCRIPTS =
+CLEANFILES =
 EXTRA_DIST =
 
 codegendir = $(libdir)/gdbus-codegen
@@ -16,7 +17,7 @@ codegen_PYTHON =						\
 	$(NULL)
 
 bin_SCRIPTS += gdbus-codegen
-
+CLEANFILES += gdbus-codegen
 EXTRA_DIST += gdbus-codegen.in
 
 gdbus-codegen: gdbus-codegen.in Makefile
