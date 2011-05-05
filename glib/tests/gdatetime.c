@@ -23,6 +23,7 @@
 #include <time.h>
 #include <glib.h>
 #include <glib/gstdio.h>
+#include <locale.h>
 
 #define ASSERT_DATE(dt,y,m,d) G_STMT_START { \
   g_assert_cmpint ((y), ==, g_date_time_get_year ((dt))); \
@@ -846,6 +847,71 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
 }
 
 static void
+test_modifiers (void)
+{
+  const gchar *oldlocale;
+
+  TEST_PRINTF_DATE (2009, 1,  1,  "%d", "01");
+  TEST_PRINTF_DATE (2009, 1,  1, "%_d", " 1");
+  TEST_PRINTF_DATE (2009, 1,  1, "%-d", "1");
+  TEST_PRINTF_DATE (2009, 1,  1, "%0d", "01");
+  TEST_PRINTF_DATE (2009, 1, 21,  "%d", "21");
+  TEST_PRINTF_DATE (2009, 1, 21, "%_d", "21");
+  TEST_PRINTF_DATE (2009, 1, 21, "%-d", "21");
+  TEST_PRINTF_DATE (2009, 1, 21, "%0d", "21");
+
+  TEST_PRINTF_DATE (2009, 1,  1,  "%e", "1");
+  TEST_PRINTF_DATE (2009, 1,  1, "%_e", " 1");
+  TEST_PRINTF_DATE (2009, 1,  1, "%-e", "1");
+  TEST_PRINTF_DATE (2009, 1,  1, "%0e", "01");
+  TEST_PRINTF_DATE (2009, 1, 21,  "%e", "21");
+  TEST_PRINTF_DATE (2009, 1, 21, "%_e", "21");
+  TEST_PRINTF_DATE (2009, 1, 21, "%-e", "21");
+  TEST_PRINTF_DATE (2009, 1, 21, "%0e", "21");
+
+  TEST_PRINTF_TIME ( 1, 0, 0,  "%H", "01");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%_H", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%-H", "1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%0H", "01");
+  TEST_PRINTF_TIME (21, 0, 0,  "%H", "21");
+  TEST_PRINTF_TIME (21, 0, 0, "%_H", "21");
+  TEST_PRINTF_TIME (21, 0, 0, "%-H", "21");
+  TEST_PRINTF_TIME (21, 0, 0, "%0H", "21");
+
+  TEST_PRINTF_TIME ( 1, 0, 0,  "%I", "01");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%_I", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%-I", "1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%0I", "01");
+  TEST_PRINTF_TIME (23, 0, 0,  "%I", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%_I", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%-I", "11");
+  TEST_PRINTF_TIME (23, 0, 0, "%0I", "11");
+
+  TEST_PRINTF_TIME ( 1, 0, 0,  "%k", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%_k", " 1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%-k", "1");
+  TEST_PRINTF_TIME ( 1, 0, 0, "%0k", "01");
+
+  oldlocale = setlocale (LC_ALL, "fa_IR.UTF-8");
+  if (strstr (setlocale (LC_ALL, NULL), "fa_IR") != NULL)
+    {
+      TEST_PRINTF_TIME (23, 0, 0, "%OH", "\333\262\333\263");
+      TEST_PRINTF_TIME (23, 0, 0, "%OI", "\333\261\333\261");
+
+      TEST_PRINTF_DATE (2011, 7, 1, "%Om", "\333\267");
+      TEST_PRINTF_DATE (2011, 7, 1, "%-Om", "\333\267");
+/* These do not currently work as expected, since glib's printf
+   counts arabic digits as two characters for some reason
+      TEST_PRINTF_DATE (2011, 7, 1, "%0Om", "0\333\267");
+      TEST_PRINTF_DATE (2011, 7, 1, "%_Om", " \333\267");
+*/
+    }
+  else
+    g_test_message ("locale fa_IR not available, skipping O modifier tests");
+  setlocale (LC_ALL, oldlocale);
+}
+
+static void
 test_GDateTime_dst (void)
 {
   GDateTime *dt1, *dt2;
@@ -1039,7 +1105,6 @@ test_z (void)
   g_free (p);
 }
 
-
 gint
 main (gint   argc,
       gchar *argv[])
@@ -1077,6 +1142,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
+  g_test_add_func ("/GDateTime/modifiers", test_modifiers);
   g_test_add_func ("/GDateTime/to_local", test_GDateTime_to_local);
   g_test_add_func ("/GDateTime/to_unix", test_GDateTime_to_unix);
   g_test_add_func ("/GDateTime/to_timeval", test_GDateTime_to_timeval);
