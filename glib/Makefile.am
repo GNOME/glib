@@ -441,7 +441,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs1
 ../build/win32/vs9/glib.vcproj: $(top_srcdir)/build/win32/vs9/glib.vcprojin
 	for F in $(libglib_2_0_la_SOURCES); do \
 		case $$F in \
-		*-gcc.c) \
+		*-gcc.c|*-unix.c) \
 			;; \
 		*.c)	echo '   <File RelativePath="..\..\..\glib\'$$F'" />' \
 			;; \
@@ -453,7 +453,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs1
 ../build/win32/vs10/glib.vcxproj: $(top_srcdir)/build/win32/vs10/glib.vcxprojin
 	for F in $(libglib_2_0_la_SOURCES); do \
 		case $$F in \
-		*-gcc.c) \
+		*-gcc.c|*-unix.c) \
 			;; \
 		*.c) echo '    <ClCompile Include="..\..\..\glib\'$$F'" />' \
 		     ;; \
@@ -465,7 +465,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/glib.vcproj ../build/win32/vs1
 ../build/win32/vs10/glib.vcxproj.filters: $(top_srcdir)/build/win32/vs10/glib.vcxproj.filtersin
 	for F in $(libglib_2_0_la_SOURCES); do \
 		case $$F in \
-		*-gcc.c) \
+		*-gcc.c|*-unix.c) \
 			;; \
 		*.c) echo '    <ClCompile Include="..\..\..\glib\'$$F'"><Filter>Source Files</Filter></ClCompile>' \
 		     ;; \
