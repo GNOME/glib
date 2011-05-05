@@ -27,6 +27,7 @@
 #endif
 #include <gioerror.h>
 #ifdef G_OS_WIN32
+#include <errno.h>
 #include <windows.h>
 #include <io.h>
 #endif
