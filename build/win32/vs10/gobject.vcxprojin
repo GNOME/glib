@@ -82,6 +82,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>libffi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)gobject.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -104,6 +105,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>libffi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)gobject.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -132,6 +134,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>libffi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)gobject.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -154,6 +157,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>libffi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(GlibDllPrefix)$(ProjectName)$(GlibDllSuffix).dll</OutputFile>
       <ModuleDefinitionFile>$(IntDir)gobject.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
