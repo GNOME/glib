@@ -2088,6 +2088,12 @@ get_numeric_format (gchar    *fmt,
  *
  * Creates a newly allocated string representing the requested @format.
  *
+ * The format strings understood by this function are a subset of the
+ * strftime() format language. In contrast to strftime(), this function
+ * always produces a UTF-8 string, regardless of the current locale.
+ * Note that the rendering of many formats is locale-dependent and may
+ * not match the strftime() output exactly.
+ *
  * The following format specifiers are supported:
  *
  * <variablelist>
@@ -2262,6 +2268,41 @@ get_numeric_format (gchar    *fmt,
  *   </term><listitem><simpara>
  *    a literal <literal>%%</literal> character
  *  </simpara></listitem></varlistentry>
+ * </variablelist>
+ *
+ * Some conversion specifications can be modified by preceding the
+ * conversion specifier by one or more modifier characters. The
+ * following modifiers are supported for many of the numeric
+ * conversions:
+ * <variablelist>
+ *   <varlistentry>
+ *     <term>O</term>
+ *     <listitem>
+ *       Use alternative numeric symbols, if the current locale
+ *       supports those.
+ *     </listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>_</term>
+ *     <listitem>
+ *       Pad a numeric result with spaces.
+ *       This overrides the default padding for the specifier.
+ *     </listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>-</term>
+ *     <listitem>
+ *       Do not pad a numeric result.
+ *       This overrides the default padding for the specifier.
+ *     </listitem>
+ *   </varlistentry>
+ *   <varlistentry>
+ *     <term>0</term>
+ *     <listitem>
+ *       Pad a numeric result with zeros.
+ *       This overrides the default padding for the specifier.
+ *     </listitem>
+ *   </varlistentry>
  * </variablelist>
  *
  * Returns: a newly allocated string formatted to the requested format
