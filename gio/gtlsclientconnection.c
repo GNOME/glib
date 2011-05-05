@@ -222,7 +222,7 @@ g_tls_client_connection_set_validation_flags (GTlsClientConnection  *conn,
  *
  * Gets @conn's expected server identity
  *
- * Return value: a #GSocketConnectable describing the
+ * Return value: (transfer none): a #GSocketConnectable describing the
  * expected server identity, or %NULL if the expected identity is not
  * known.
  *

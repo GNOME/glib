@@ -115,7 +115,7 @@ get_default_tls_backend (gpointer arg)
  *
  * Gets the default #GTlsBackend for the system.
  *
- * Returns: a #GTlsBackend
+ * Returns: (transfer none): a #GTlsBackend
  *
  * Since: 2.28
  */
