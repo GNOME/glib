@@ -130,6 +130,14 @@
       <Project>{64e09909-5599-40c0-b808-27f55f7b823c}</Project>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+	<ProjectReference Include="glib-compile-schemas.vcxproj">
+      <Project>{015d69d0-8b42-438a-adae-052ac036e065}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+	<ProjectReference Include="gsettings.vcxproj">
+      <Project>{05041c63-f1c5-49ba-a7de-61ebb5307eaa}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
