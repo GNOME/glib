@@ -101,6 +101,10 @@ g_unix_fd_message_deserialize (int      level,
   fds = data;
   n = size / sizeof (gint);
 
+  /* Note we probably handled this in gsocket.c already if we're on
+   * Linux and have MSG_CMSG_CLOEXEC, but this code remains as a fallback
+   * in case the kernel is too old for MSG_CMSG_CLOEXEC.
+   */
   for (i = 0; i < n; i++)
     {
       do

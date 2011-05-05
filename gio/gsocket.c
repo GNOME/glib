@@ -3290,6 +3290,14 @@ g_socket_receive_message (GSocket                 *socket,
     else
       msg.msg_flags = 0;
 
+    /* We always set the close-on-exec flag so we don't leak file
+     * descriptors into child processes.  Note that gunixfdmessage.c
+     * will later call fcntl (fd, FD_CLOEXEC), but that isn't atomic.
+     */
+#ifdef MSG_CMSG_CLOEXEC
+    msg.msg_flags |= MSG_CMSG_CLOEXEC;
+#endif
+
     /* do it */
     while (1)
       {
@@ -3299,6 +3307,14 @@ g_socket_receive_message (GSocket                 *socket,
 	  return -1;
 
 	result = recvmsg (socket->priv->fd, &msg, msg.msg_flags);
+#ifdef MSG_CMSG_CLOEXEC	
+	if (result < 0 && get_socket_errno () == EINVAL)
+	  {
+	    /* We must be running on an old kernel.  Call without the flag. */
+	    msg.msg_flags &= ~(MSG_CMSG_CLOEXEC);
+	    result = recvmsg (socket->priv->fd, &msg, msg.msg_flags);
+	  }
+#endif
 
 	if (result < 0)
 	  {
