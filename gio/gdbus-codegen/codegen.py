@@ -1449,9 +1449,16 @@ class CodeGenerator:
                          '  info = _%s_property_info_pointers[prop_id - 1];\n'
                          '  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (object), info->parent_struct.name);\n'
                          '  if (info->use_gvariant)\n'
-                         '    g_value_set_variant (value, variant);\n'
+                         '    {\n'
+                         '      g_value_set_variant (value, variant);\n'
+                         '    }\n'
                          '  else\n'
-                         '    g_dbus_gvariant_to_gvalue (variant, value);\n'
+                         '    {\n'
+                         # could be that we don't have the value in cache - in that case, we do
+                         # nothing and the user gets the default value for the GType
+                         '      if (variant != NULL)\n'
+                         '        g_dbus_gvariant_to_gvalue (variant, value);\n'
+                         '    }\n'
                          '  if (variant != NULL)\n'
                          '    g_variant_unref (variant);\n'
                          %(len(i.properties), i.name_lower))
