@@ -956,7 +956,9 @@ g_test_create_case (const char       *test_name,
  * @fixture will be a pointer to the area of memory allocated by the
  * test framework, of the size requested.  If the requested size was
  * zero then @fixture will be equal to @user_data.
- **/
+ *
+ * Since: 2.28
+ */
 void
 g_test_add_vtable (const char       *testpath,
                    gsize             data_size,
@@ -1027,7 +1029,10 @@ g_test_fail (void)
  * GTestFunc:
  *
  * The type used for test case functions.
- **/
+ *
+ * Since: 2.28
+ */
+
 /**
  * g_test_add_func:
  * @testpath:   Slash-separated test case path name for the test.
@@ -1056,7 +1061,10 @@ g_test_add_func (const char *testpath,
  *
  * The type used for test case functions that take an extra pointer
  * argument.
- **/
+ *
+ * Since: 2.28
+ */
+
 /**
  * g_test_add_data_func:
  * @testpath:   Slash-separated test case path name for the test.
