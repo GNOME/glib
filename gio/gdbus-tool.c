@@ -527,12 +527,14 @@ _g_variant_parse_me_harder (GVariantType   *type,
 static gchar *opt_call_dest = NULL;
 static gchar *opt_call_object_path = NULL;
 static gchar *opt_call_method = NULL;
+static gint opt_call_timeout = -1;
 
 static const GOptionEntry call_entries[] =
 {
   { "dest", 'd', 0, G_OPTION_ARG_STRING, &opt_call_dest, N_("Destination name to invoke method on"), NULL},
   { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_call_object_path, N_("Object path to invoke method on"), NULL},
   { "method", 'm', 0, G_OPTION_ARG_STRING, &opt_call_method, N_("Method and interface name"), NULL},
+  { "timeout", 't', 0, G_OPTION_ARG_INT, &opt_call_timeout, N_("Timeout in seconds"), NULL},
   { NULL }
 };
 
@@ -809,7 +811,7 @@ handle_call (gint        *argc,
                                         parameters,
                                         NULL,
                                         G_DBUS_CALL_FLAGS_NONE,
-                                        -1,
+                                        opt_call_timeout > 0 ? opt_call_timeout * 1000 : opt_call_timeout,
                                         NULL,
                                         &error);
   if (result == NULL)

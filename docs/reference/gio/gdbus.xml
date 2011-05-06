@@ -48,6 +48,9 @@
     <arg choice="plain">--dest <replaceable>bus_name</replaceable></arg>
     <arg choice="plain">--object-path <replaceable>/path/to/object</replaceable></arg>
     <arg choice="plain">--method <replaceable>org.project.InterfaceName.MethodName</replaceable></arg>
+    <group>
+      <arg choice="plain">--timeout <replaceable>seconds</replaceable></arg>
+    </group>
     <arg choice="plain">ARG1</arg>
     <arg choice="plain" rep="repeat">ARG2</arg>
   </cmdsynopsis>
