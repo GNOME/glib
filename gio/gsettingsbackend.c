@@ -918,6 +918,13 @@ g_settings_backend_class_init (GSettingsBackendClass *class)
   g_type_class_add_private (class, sizeof (GSettingsBackendPrivate));
 }
 
+static void
+g_settings_backend_variant_unref0 (gpointer data)
+{
+  if (data != NULL)
+    g_variant_unref (data);
+}
+
 /*< private >
  * g_settings_backend_create_tree:
  * @returns: a new #GTree
@@ -930,7 +937,7 @@ GTree *
 g_settings_backend_create_tree (void)
 {
   return g_tree_new_full ((GCompareDataFunc) strcmp, NULL,
-                          g_free, (GDestroyNotify) g_variant_unref);
+                          g_free, g_settings_backend_variant_unref0);
 }
 
 /**
