@@ -315,11 +315,16 @@ delayed_backend_writable_changed (GObject          *target,
 
   g_static_mutex_lock (&delayed->priv->lock);
 
-  if (g_tree_lookup (delayed->priv->delayed, key) &&
+  if (g_tree_lookup (delayed->priv->delayed, key) != NULL &&
       !g_settings_backend_get_writable (delayed->priv->backend, key))
     {
       /* drop the key from our changeset if it just became read-only.
        * no need to signal since the writable change below implies it.
+       *
+       * note that the item in the tree may very well be set to NULL in
+       * the case that the user stored a reset.  we intentionally don't
+       * drop the key in this case since a reset will always succeed
+       * (even against a non-writable key).
        */
       g_tree_remove (delayed->priv->delayed, key);
 
@@ -378,9 +383,12 @@ delayed_backend_path_writable_changed (GObject          *target,
       /* collect a list of possibly-affected keys (ie: matching the path) */
       g_tree_foreach (delayed->priv->delayed, check_prefix, &state);
 
-      /* drop the keys that have been affected */
+      /* drop the keys that have been affected.
+       *
+       * don't drop 'reset' keys (see above) */
       for (i = 0; i < state.index; i++)
-        if (!g_settings_backend_get_writable (delayed->priv->backend,
+        if (g_tree_lookup (delayed->priv->delayed, state.keys[i]) != NULL &&
+            !g_settings_backend_get_writable (delayed->priv->backend,
                                               state.keys[i]))
           g_tree_remove (delayed->priv->delayed, state.keys[i]);
 
