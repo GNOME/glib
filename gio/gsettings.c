@@ -141,16 +141,16 @@
  * <programlisting><![CDATA[
  * <schemalist>
  *
- *   <enum id="myenum">
+ *   <enum id="org.gtk.Test.myenum">
  *     <value nick="first" value="1"/>
  *     <value nick="second" value="2"/>
  *   </enum>
  *
- *   <enum id="myflags">
+ *   <flags id="org.gtk.Test.myflags">
  *     <value nick="flag1" value="1"/>
  *     <value nick="flag2" value="2"/>
  *     <value nick="flag3" value="4"/>
- *   </enum>
+ *   </flags>
  *
  *   <schema id="org.gtk.Test">
  *
@@ -172,11 +172,11 @@
  *       <default>'Joe'</default>
  *     </key>
  *
- *     <key name='enumerated-key' enum='myenum'>
+ *     <key name='enumerated-key' enum='org.gtk.Test.myenum'>
  *       <default>'first'</default>
  *     </key>
  *
- *     <key name='flags-key' flags='myflags'>
+ *     <key name='flags-key' flags='org.gtk.Test.myflags'>
  *       <default>["flag1",flag2"]</default>
  *     </key>
  *   </schema>
