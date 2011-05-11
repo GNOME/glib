@@ -22,7 +22,7 @@
 # Author: David Zeuthen <davidz@redhat.com>
 
 import sys
-import argparse
+import optparse
 
 import config
 import utils
@@ -146,49 +146,50 @@ def apply_annotations(iface_list, annotation_list):
                     apply_annotation(iface_list, iface, None, None, None, None, key, value)
 
 def codegen_main():
-    arg_parser = argparse.ArgumentParser(description='GDBus Code Generator')
-    arg_parser.add_argument('xml_files', metavar='FILE', type=file, nargs='+',
-                            help='D-Bus introspection XML file')
-    arg_parser.add_argument('--interface-prefix', nargs='?', metavar='PREFIX', default='',
+    arg_parser = optparse.OptionParser('%prog [options]')
+    arg_parser.add_option('', '--xml-files', metavar='FILE', action='append',
+                          help='D-Bus introspection XML file')
+    arg_parser.add_option('', '--interface-prefix', metavar='PREFIX', default='',
                             help='String to strip from D-Bus interface names for code and docs')
-    arg_parser.add_argument('--c-namespace', nargs='?', metavar='NAMESPACE', default='',
+    arg_parser.add_option('', '--c-namespace', metavar='NAMESPACE', default='',
                             help='The namespace to use for generated C code')
-    arg_parser.add_argument('--c-generate-object-manager', action='store_true',
+    arg_parser.add_option('', '--c-generate-object-manager', action='store_true',
                             help='Generate a GDBusObjectManagerClient subclass when generating C code')
-    arg_parser.add_argument('--generate-c-code', nargs='?', metavar='OUTFILES',
-                            help='Generate C code in OUTFILES.[ch]')
-    arg_parser.add_argument('--generate-docbook', nargs='?', metavar='OUTFILES',
-                            help='Generate Docbook in OUTFILES-org.Project.IFace.xml')
-    arg_parser.add_argument('--annotate', nargs=3, action='append', metavar=('WHAT', 'KEY', 'VALUE'),
-                            help='Add annotation (may be used several times)')
-    args = arg_parser.parse_args();
+    arg_parser.add_option('', '--generate-c-code', metavar='OUTFILES',
+                          help='Generate C code in OUTFILES.[ch]')
+    arg_parser.add_option('', '--generate-docbook', metavar='OUTFILES',
+                          help='Generate Docbook in OUTFILES-org.Project.IFace.xml')
+    arg_parser.add_option('', '--annotate', action='append', metavar='WHAT,KEY,VALUE',
+                          help='Add annotation (may be used several times)')
+    (opts, args) = arg_parser.parse_args();
 
     all_ifaces = []
-    for f in args.xml_files:
+    for fname in args:
+        f = open(fname)
         xml_data = f.read()
         f.close()
         parsed_ifaces = parser.parse_dbus_xml(xml_data)
         all_ifaces.extend(parsed_ifaces)
 
-    if args.annotate != None:
-        apply_annotations(all_ifaces, args.annotate)
+    if opts.annotate != None:
+        apply_annotations(all_ifaces, opts.annotate)
 
     for i in parsed_ifaces:
-        i.post_process(args.interface_prefix, args.c_namespace)
+        i.post_process(opts.interface_prefix, opts.c_namespace)
 
-    docbook = args.generate_docbook
+    docbook = opts.generate_docbook
     docbook_gen = codegen_docbook.DocbookCodeGenerator(all_ifaces, docbook);
     if docbook:
         ret = docbook_gen.generate()
 
-    c_code = args.generate_c_code
+    c_code = opts.generate_c_code
     if c_code:
         h = file(c_code + '.h', 'w')
         c = file(c_code + '.c', 'w')
         gen = codegen.CodeGenerator(all_ifaces,
-                                    args.c_namespace,
-                                    args.interface_prefix,
-                                    args.c_generate_object_manager,
+                                    opts.c_namespace,
+                                    opts.interface_prefix,
+                                    opts.c_generate_object_manager,
                                     docbook_gen,
                                     h, c);
         ret = gen.generate()

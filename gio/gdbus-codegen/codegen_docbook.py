@@ -22,7 +22,6 @@
 # Author: David Zeuthen <davidz@redhat.com>
 
 import sys
-import argparse
 
 import config
 import utils
