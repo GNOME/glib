@@ -2318,10 +2318,10 @@ g_date_time_format (GDateTime *datetime,
   GString  *outstr;
   gchar    *tmp;
   gunichar  c;
-  gboolean  in_mod;
-  gboolean  alt_digits;
-  gboolean  pad_set;
-  gchar     pad;
+  gboolean  in_mod = FALSE;
+  gboolean  alt_digits = FALSE;
+  gboolean  pad_set = FALSE;
+  gchar     pad = '\0';
   gchar     fmt[20];
 
   g_return_val_if_fail (datetime != NULL, NULL);
