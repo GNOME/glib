@@ -159,7 +159,7 @@ def codegen_main():
                           help='Generate C code in OUTFILES.[ch]')
     arg_parser.add_option('', '--generate-docbook', metavar='OUTFILES',
                           help='Generate Docbook in OUTFILES-org.Project.IFace.xml')
-    arg_parser.add_option('', '--annotate', action='append', metavar='WHAT,KEY,VALUE',
+    arg_parser.add_option('', '--annotate', nargs=3, action='append', metavar='WHAT KEY VALUE',
                           help='Add annotation (may be used several times)')
     (opts, args) = arg_parser.parse_args();
 
