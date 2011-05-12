@@ -675,6 +675,9 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
    *
    * The underlying #GIOStream used for I/O.
    *
+   * If this is passed on construction and is a #GSocketConnection,
+   * then the corresponding #GSocket will be put into non-blocking mode.
+   *
    * Since: 2.26
    */
   g_object_class_install_property (gobject_class,
@@ -2363,11 +2366,8 @@ initable_init (GInitable     *initable,
   //g_debug ("haz unix fd passing powers: %d", connection->capabilities & G_DBUS_CAPABILITY_FLAGS_UNIX_FD_PASSING);
 
 #ifdef G_OS_UNIX
-  /* Hack used until
-   *
-   *  https://bugzilla.gnome.org/show_bug.cgi?id=616458
-   *
-   * has been resolved
+  /* We want all IO operations to be non-blocking since they happen in
+   * the worker thread which is shared by _all_ connections.
    */
   if (G_IS_SOCKET_CONNECTION (connection->stream))
     {
@@ -2467,6 +2467,9 @@ async_initable_iface_init (GAsyncInitableIface *async_initable_iface)
  * Asynchronously sets up a D-Bus connection for exchanging D-Bus messages
  * with the end represented by @stream.
  *
+ * If @stream is a #GSocketConnection, then the corresponding #GSocket
+ * will be put into non-blocking mode.
+ *
  * If @observer is not %NULL it may be used to control the
  * authentication process.
  *
@@ -2546,6 +2549,9 @@ g_dbus_connection_new_finish (GAsyncResult  *res,
  *
  * Synchronously sets up a D-Bus connection for exchanging D-Bus messages
  * with the end represented by @stream.
+ *
+ * If @stream is a #GSocketConnection, then the corresponding #GSocket
+ * will be put into non-blocking mode.
  *
  * If @observer is not %NULL it may be used to control the
  * authentication process.
