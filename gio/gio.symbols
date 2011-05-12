@@ -1824,6 +1824,7 @@ g_dbus_method_invocation_return_error
 g_dbus_method_invocation_return_error_literal
 g_dbus_method_invocation_return_error_valist
 g_dbus_method_invocation_return_gerror
+g_dbus_method_invocation_take_error
 g_dbus_method_invocation_return_value
 #endif
 #endif

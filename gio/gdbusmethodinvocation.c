@@ -556,6 +556,28 @@ g_dbus_method_invocation_return_gerror (GDBusMethodInvocation *invocation,
 }
 
 /**
+ * g_dbus_method_invocation_take_error: (skip)
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ * @error: (transfer full): A #GError.
+ *
+ * Like g_dbus_method_invocation_return_gerror() but takes ownership
+ * of @error so the caller does not need to free it.
+ *
+ * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.30
+ */
+void
+g_dbus_method_invocation_take_error (GDBusMethodInvocation *invocation,
+                                     GError                *error)
+{
+  g_return_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation));
+  g_return_if_fail (error != NULL);
+  g_dbus_method_invocation_return_gerror (invocation, error);
+  g_error_free (error);
+}
+
+/**
  * g_dbus_method_invocation_return_dbus_error:
  * @invocation: (transfer full): A #GDBusMethodInvocation.
  * @error_name: A valid D-Bus error name.

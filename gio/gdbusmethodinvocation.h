@@ -64,6 +64,8 @@ void                   g_dbus_method_invocation_return_error_literal (GDBusMetho
                                                                       const gchar           *message);
 void                   g_dbus_method_invocation_return_gerror        (GDBusMethodInvocation *invocation,
                                                                       const GError          *error);
+void                   g_dbus_method_invocation_take_error           (GDBusMethodInvocation *invocation,
+                                                                      GError                *error);
 void                   g_dbus_method_invocation_return_dbus_error    (GDBusMethodInvocation *invocation,
                                                                       const gchar           *error_name,
                                                                       const gchar           *error_message);
