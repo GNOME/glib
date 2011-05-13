@@ -482,6 +482,9 @@ write_callable_info (const gchar    *namespace,
   if (g_callable_info_may_return_null (info))
     xml_printf (file, " allow-none=\"1\"");
 
+  if (g_callable_info_skip_return (info))
+    xml_printf (file, " skip=\"1\"");
+
   write_return_value_attributes (file, info);
 
   write_type_info (namespace, type, file);
@@ -544,6 +547,9 @@ write_callable_info (const gchar    *namespace,
 
       if (g_arg_info_get_destroy (arg) >= 0)
         xml_printf (file, " destroy=\"%d\"", g_arg_info_get_destroy (arg));
+
+      if (g_arg_info_is_skip (arg))
+        xml_printf (file, " skip=\"1\"");
 
       write_attributes (file, (GIBaseInfo*) arg);
 

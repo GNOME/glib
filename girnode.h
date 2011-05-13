@@ -147,6 +147,7 @@ struct _GIrNodeParam
   gboolean optional;
   gboolean retval;
   gboolean allow_none;
+  gboolean skip;
   gboolean transfer;
   gboolean shallow_transfer;
   GIScopeType scope;

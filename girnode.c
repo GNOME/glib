@@ -1685,6 +1685,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob2->may_return_null = function->result->allow_none;
 	blob2->caller_owns_return_value = function->result->transfer;
 	blob2->caller_owns_return_container = function->result->shallow_transfer;
+	blob2->skip_return = function->result->skip;
 	blob2->reserved = 0;
 	blob2->n_arguments = n;
 
@@ -1869,6 +1870,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->out = param->out;
 	blob->caller_allocates = param->caller_allocates;
 	blob->allow_none = param->allow_none;
+	blob->skip = param->skip;
 	blob->optional = param->optional;
 	blob->transfer_ownership = param->transfer;
 	blob->transfer_container_ownership = param->shallow_transfer;

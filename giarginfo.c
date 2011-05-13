@@ -165,6 +165,28 @@ g_arg_info_may_be_null (GIArgInfo *info)
 }
 
 /**
+ * g_arg_info_is_skip:
+ * @info: a #GIArgInfo
+ *
+ * Obtain if an argument is only useful in C.
+ *
+ * Returns: %TRUE if argument is only useful in C.
+ */
+gboolean
+g_arg_info_is_skip (GIArgInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  ArgBlob *blob;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (GI_IS_ARG_INFO (info), FALSE);
+
+  blob = (ArgBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  return blob->skip;
+}
+
+/**
  * g_arg_info_get_ownership_transfer:
  * @info: a #GIArgInfo
  *

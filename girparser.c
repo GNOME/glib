@@ -1030,6 +1030,7 @@ start_parameter (GMarkupParseContext *context,
   const gchar *scope;
   const gchar *closure;
   const gchar *destroy;
+  const gchar *skip;
   GIrNodeParam *param;
 
   if (!(strcmp (element_name, "parameter") == 0 &&
@@ -1046,6 +1047,7 @@ start_parameter (GMarkupParseContext *context,
   scope = find_attribute ("scope", attribute_names, attribute_values);
   closure = find_attribute ("closure", attribute_names, attribute_values);
   destroy = find_attribute ("destroy", attribute_names, attribute_values);
+  skip = find_attribute ("skip", attribute_names, attribute_values);
 
   if (name == NULL)
     name = "unknown";
@@ -1094,6 +1096,11 @@ start_parameter (GMarkupParseContext *context,
     param->allow_none = TRUE;
   else
     param->allow_none = FALSE;
+
+  if (skip && strcmp (skip, "1") == 0)
+    param->skip = TRUE;
+  else
+    param->skip = FALSE;
 
   if (!parse_param_transfer (param, transfer, name, error))
     return FALSE;
@@ -2200,6 +2207,7 @@ start_return_value (GMarkupParseContext *context,
 {
   GIrNodeParam *param;
   const gchar  *transfer;
+  const gchar  *skip;
 
   if (!(strcmp (element_name, "return-value") == 0 &&
 	ctx->state == STATE_FUNCTION))
@@ -2214,6 +2222,12 @@ start_return_value (GMarkupParseContext *context,
   ctx->current_typed = (GIrNode*) param;
 
   state_switch (ctx, STATE_FUNCTION_RETURN);
+
+  skip = find_attribute ("skip", attribute_names, attribute_values);
+  if (skip && strcmp (skip, "1") == 0)
+    param->skip = TRUE;
+  else
+    param->skip = FALSE;
 
   transfer = find_attribute ("transfer-ownership", attribute_names, attribute_values);
   if (!parse_param_transfer (param, transfer, NULL, error))

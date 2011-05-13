@@ -47,6 +47,7 @@ gboolean               g_callable_info_iterate_return_attributes (GICallableInfo
                                                                   char          **value);
 GITransfer             g_callable_info_get_caller_owns (GICallableInfo *info);
 gboolean               g_callable_info_may_return_null (GICallableInfo *info);
+gboolean               g_callable_info_skip_return     (GICallableInfo *info);
 gint                   g_callable_info_get_n_args      (GICallableInfo *info);
 GIArgInfo *            g_callable_info_get_arg         (GICallableInfo *info,
                                                         gint            n);

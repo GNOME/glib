@@ -409,6 +409,7 @@ typedef union
  * @destroy: Index of the destroy notfication callback parameter associated with
  * the callback, or -1.
  * @arg_type: Describes the type of the parameter. See details below.
+ * @skip: Indicates that the parameter is only useful in C and should be skipped.
  *
  * Types are specified by four bytes. If the three high bytes are zero,
  * the low byte describes a basic type, otherwise the 32bit number is an
@@ -426,8 +427,9 @@ typedef struct {
   guint          transfer_container_ownership : 1;
   guint          return_value                 : 1;
   guint          scope                        : 3;
+  guint          skip                         : 1;
   /* <private> */
-  guint          reserved                     :21;
+  guint          reserved                     :20;
   /* <public> */
   gint8        closure;
   gint8        destroy;
@@ -445,6 +447,7 @@ typedef struct {
  * @caller_owns_return_container: This flag is only relevant if the return type is a container type.
  * If the flag is set, the caller is resonsible for freeing the
  * container, but not its contents.
+ * @skip_return: Indicates that the return value is only useful in C and should be skipped.
  * @n_arguments: The number of arguments that this function expects, also the length
  * of the array of ArgBlobs.
  * @arguments: An array of ArgBlob for the arguments of the function.
@@ -455,7 +458,8 @@ typedef struct {
   guint16        may_return_null              : 1;
   guint16        caller_owns_return_value     : 1;
   guint16        caller_owns_return_container : 1;
-  guint16        reserved                     :13;
+  guint16        skip_return                  : 1;
+  guint16        reserved                     :12;
 
   guint16        n_arguments;
 

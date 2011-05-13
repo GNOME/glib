@@ -153,6 +153,28 @@ g_callable_info_may_return_null (GICallableInfo *info)
 }
 
 /**
+ * g_callable_info_skip_return:
+ * @info: a #GICallableInfo
+ *
+ * See if a callable's return value is only useful in C.
+ *
+ * Returns: %TRUE if return value is only useful in C.
+ */
+gboolean
+g_callable_info_skip_return (GICallableInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  SignatureBlob *blob;
+
+  g_return_val_if_fail (info != NULL, FALSE);
+  g_return_val_if_fail (GI_IS_CALLABLE_INFO (info), FALSE);
+
+  blob = (SignatureBlob *)&rinfo->typelib->data[signature_offset (info)];
+
+  return blob->skip_return;
+}
+
+/**
  * g_callable_info_get_caller_owns:
  * @info: a #GICallableInfo
  *
