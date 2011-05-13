@@ -1268,7 +1268,7 @@ class CodeGenerator:
                     ' *\n'
                     ' * Finishes an operation started with %s_call_%s().\n'
                     ' *\n'
-                    ' * Returns: %%TRUE if the call succeded, %%FALSE if @error is set.\n'
+                    ' * Returns: (skip): %%TRUE if the call succeded, %%FALSE if @error is set.\n'
                     %(i.name_lower, m.name_lower, i.name_lower, m.name_lower)))
             self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('gboolean\n'
@@ -1316,7 +1316,7 @@ class CodeGenerator:
                     ' *\n'
                     ' * See %s_call_%s() for the asynchronous version of this method.\n'
                     ' *\n'
-                    ' * Returns: %%TRUE if the call succeded, %%FALSE if @error is set.\n'
+                    ' * Returns: (skip): %%TRUE if the call succeded, %%FALSE if @error is set.\n'
                     %(i.name, m.name, i.name_lower, m.name_lower)))
             self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('gboolean\n'
