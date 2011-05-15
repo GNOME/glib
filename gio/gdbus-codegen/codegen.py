@@ -1845,6 +1845,7 @@ class CodeGenerator:
                      '  GList *changed_properties;\n'
                      '  GSource *changed_properties_idle_source;\n'
                      '  GMainContext *context;\n'
+                     '  GMutex *lock;\n'
                      '};\n'
                      '\n'%i.camel_name)
 
@@ -2054,12 +2055,19 @@ class CodeGenerator:
                      %(i.name_lower))
         if len(i.properties) > 0:
             self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (_skeleton);\n'
+                         '  gboolean emit_changed = FALSE;\n'
+                         '\n'
+                         '  g_mutex_lock (skeleton->priv->lock);\n'
                          '  if (skeleton->priv->changed_properties_idle_source != NULL)\n'
                          '    {\n'
                          '      g_source_destroy (skeleton->priv->changed_properties_idle_source);\n'
                          '      skeleton->priv->changed_properties_idle_source = NULL;\n'
-                         '      _%s_emit_changed (skeleton);\n'
+                         '      emit_changed = TRUE;\n'
                          '    }\n'
+                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         '\n'
+                         '  if (emit_changed)\n'
+                         '    _%s_emit_changed (skeleton);\n'
                          %(i.camel_name, i.ns_upper, i.name_upper, i.name_lower))
         self.c.write('}\n'
                      '\n')
@@ -2118,24 +2126,28 @@ class CodeGenerator:
         self.c.write('    g_source_destroy (skeleton->priv->changed_properties_idle_source);\n')
         self.c.write('  if (skeleton->priv->context != NULL)\n')
         self.c.write('    g_main_context_unref (skeleton->priv->context);\n')
+        self.c.write('  g_mutex_free (skeleton->priv->lock);\n')
         self.c.write('  G_OBJECT_CLASS (%s_skeleton_parent_class)->finalize (object);\n'
                      '}\n'
                      '\n'%(i.name_lower))
 
         # property accessors (TODO: generate PropertiesChanged signals in setter)
-        self.c.write('static void\n'
-                     '%s_skeleton_get_property (GObject      *object,\n'
-                     '  guint         prop_id,\n'
-                     '  GValue       *value,\n'
-                     '  GParamSpec   *pspec)\n'
-                     '{\n'%(i.name_lower))
-        self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
-                     '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
-                     '  g_value_copy (&skeleton->priv->properties->values[prop_id - 1], value);\n'
-                     %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties)))
-        self.c.write('}\n'
-                     '\n')
         if len(i.properties) > 0:
+            self.c.write('static void\n'
+                         '%s_skeleton_get_property (GObject      *object,\n'
+                         '  guint         prop_id,\n'
+                         '  GValue       *value,\n'
+                         '  GParamSpec   *pspec)\n'
+                         '{\n'%(i.name_lower))
+            self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
+                         '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
+                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  g_value_copy (&skeleton->priv->properties->values[prop_id - 1], value);\n'
+                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties)))
+            self.c.write('}\n'
+                         '\n')
+
             # if property is already scheduled then re-use entry.. though it could be
             # that the user did
             #
@@ -2157,6 +2169,8 @@ class CodeGenerator:
                          '  GVariantBuilder builder;\n'
                          '  GVariantBuilder invalidated_builder;\n'
                          '  guint num_changes;\n'
+                         '\n'
+                         '  g_mutex_lock (skeleton->priv->lock);\n'
                          '  g_variant_builder_init (&builder, G_VARIANT_TYPE ("a{sv}"));\n'
                          '  g_variant_builder_init (&invalidated_builder, G_VARIANT_TYPE ("as"));\n'
                          '  for (l = skeleton->priv->changed_properties, num_changes = 0; l != NULL; l = l->next)\n'
@@ -2195,9 +2209,11 @@ class CodeGenerator:
             self.c.write('  g_list_free (skeleton->priv->changed_properties);\n')
             self.c.write('  skeleton->priv->changed_properties = NULL;\n')
             self.c.write('  skeleton->priv->changed_properties_idle_source = NULL;\n')
+            self.c.write('  g_mutex_unlock (skeleton->priv->lock);\n')
             self.c.write('  return FALSE;\n'
                          '}\n'
                          '\n')
+            # holding lock while being called
             self.c.write('static void\n'
                          '_%s_schedule_emit_changed (%sSkeleton *skeleton, const _ExtendedGDBusPropertyInfo *info, guint prop_id, const GValue *orig_value)\n'
                          '{\n'
@@ -2223,7 +2239,22 @@ class CodeGenerator:
                          '      g_value_init (&cp->orig_value, G_VALUE_TYPE (orig_value));\n'
                          '      g_value_copy (orig_value, &cp->orig_value);\n'
                          '    }\n'
-                         '  if (skeleton->priv->changed_properties_idle_source == NULL)\n'
+                         '}\n'
+                         '\n'
+                         %())
+
+            # Postpone setting up the refresh source until the ::notify signal is emitted as
+            # this allows use of g_object_freeze_notify()/g_object_thaw_notify() ...
+            # This is useful when updating several properties from another thread than
+            # where the idle will be emitted from
+            self.c.write('static void\n'
+                         '%s_skeleton_notify (GObject      *object,\n'
+                         '  GParamSpec *pspec)\n'
+                         '{\n'
+                         '  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
+                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  if (skeleton->priv->changed_properties != NULL &&\n'
+                         '      skeleton->priv->changed_properties_idle_source == NULL)\n'
                          '    {\n'
                          '      skeleton->priv->changed_properties_idle_source = g_idle_source_new ();\n'
                          '      g_source_set_priority (skeleton->priv->changed_properties_idle_source, G_PRIORITY_DEFAULT);\n'
@@ -2231,18 +2262,21 @@ class CodeGenerator:
                          '      g_source_attach (skeleton->priv->changed_properties_idle_source, skeleton->priv->context);\n'
                          '      g_source_unref (skeleton->priv->changed_properties_idle_source);\n'
                          '    }\n'
+                         '  g_mutex_unlock (skeleton->priv->lock);\n'
                          '}\n'
                          '\n'
-                         %(i.name_lower))
-        self.c.write('static void\n'
-                     '%s_skeleton_set_property (GObject      *object,\n'
-                     '  guint         prop_id,\n'
-                     '  const GValue *value,\n'
-                     '  GParamSpec   *pspec)\n'
-                     '{\n'%(i.name_lower))
-        if len(i.properties) > 0:
+                         %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.name_lower))
+
+            self.c.write('static void\n'
+                         '%s_skeleton_set_property (GObject      *object,\n'
+                         '  guint         prop_id,\n'
+                         '  const GValue *value,\n'
+                         '  GParamSpec   *pspec)\n'
+                         '{\n'%(i.name_lower))
             self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
                          '  g_assert (prop_id != 0 && prop_id - 1 < %d);\n'
+                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  g_object_freeze_notify (object);\n'
                          '  if (!_g_value_equal (value, &skeleton->priv->properties->values[prop_id - 1]))\n'
                          '    {\n'
                          '      if (g_dbus_interface_skeleton_get_connection (G_DBUS_INTERFACE_SKELETON (skeleton)) != NULL)\n'
@@ -2250,15 +2284,18 @@ class CodeGenerator:
                          '      g_value_copy (value, &skeleton->priv->properties->values[prop_id - 1]);\n'
                          '      g_object_notify_by_pspec (object, pspec);\n'
                          '    }\n'
+                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         '  g_object_thaw_notify (object);\n'
                          %(i.camel_name, i.ns_upper, i.name_upper, len(i.properties), i.name_lower, i.name_lower))
-        self.c.write('}\n'
-                     '\n')
+            self.c.write('}\n'
+                         '\n')
 
         self.c.write('static void\n'
                      '%s_skeleton_init (%sSkeleton *skeleton)\n'
                      '{\n'
                      '  skeleton->priv = G_TYPE_INSTANCE_GET_PRIVATE (skeleton, %sTYPE_%s_SKELETON, %sSkeletonPrivate);\n'
                      %(i.name_lower, i.camel_name, i.ns_upper, i.name_upper, i.camel_name))
+        self.c.write('  skeleton->priv->lock = g_mutex_new ();\n')
         self.c.write('  skeleton->priv->context = g_main_context_get_thread_default ();\n')
         self.c.write('  if (skeleton->priv->context != NULL)\n')
         self.c.write('    g_main_context_ref (skeleton->priv->context);\n')
@@ -2281,10 +2318,12 @@ class CodeGenerator:
                      '\n'
                      '  gobject_class = G_OBJECT_CLASS (klass);\n'
                      '  gobject_class->finalize = %s_skeleton_finalize;\n'
-                     '  gobject_class->get_property = %s_skeleton_get_property;\n'
-                     '  gobject_class->set_property = %s_skeleton_set_property;\n'
-                     '\n'%(i.name_lower, i.camel_name, i.camel_name, i.name_lower, i.name_lower, i.name_lower))
+                     %(i.name_lower, i.camel_name, i.camel_name, i.name_lower))
         if len(i.properties) > 0:
+            self.c.write('  gobject_class->get_property = %s_skeleton_get_property;\n'
+                         '  gobject_class->set_property = %s_skeleton_set_property;\n'
+                         '  gobject_class->notify       = %s_skeleton_notify;\n'
+                         '\n'%(i.name_lower, i.name_lower, i.name_lower))
             self.c.write('\n'
                          '  %s_override_properties (gobject_class, 1);\n'%(i.name_lower))
         self.c.write('\n'

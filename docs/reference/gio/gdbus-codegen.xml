@@ -711,12 +711,17 @@ on_handle_hello_world (MyAppFrobber           *object,
     <para>
       To facilitate atomic changesets (multiple properties changing at
       the same time), #GObject::notify signals are queued up when
-      received. The queue is drained in an idle handler and will cause
-      emissions of the <ulink
+      received. The queue is drained in an idle handler (which is called from the
+      <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+      of the thread where the skeleton object was
+      contructed) and will cause emissions of the <ulink
       url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties::PropertiesChanged</ulink>
       signal with all the properties that have changed. Use
       g_dbus_interface_skeleton_flush() or
-      g_dbus_object_skeleton_flush() to empty the queue immediately.
+      g_dbus_object_skeleton_flush() to empty the queue
+      immediately. Use g_object_freeze_notify() and
+      g_object_thaw_notify() for atomic changesets if on a different
+      thread.
     </para>
   </refsect2>
 </refsect1>
