@@ -1560,7 +1560,10 @@ g_byte_array_remove_range (GByteArray *array,
  * first arg is greater than second arg).
  *
  * If two array elements compare equal, their order in the sorted array
- * is undefined.
+ * is undefined. If you want equal elements to keep their order - ie
+ * you want a stable sort - you can write a comparison function that,
+ * if two elements would otherwise compare equal, it compares them by
+ * their addresses.
  **/
 void
 g_byte_array_sort (GByteArray   *array,
