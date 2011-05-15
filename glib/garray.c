@@ -616,9 +616,9 @@ g_array_remove_range (GArray *farray,
  * greater than second arg).
  *
  * If two array elements compare equal, their order in the sorted array
- * is undefined. If you want equal elements to keep their order - ie
- * you want a stable sort - you can write a comparison function that,
- * if two elements would otherwise compare equal, it compares them by
+ * is undefined. If you want equal elements to keep their order &#8211; i.e.
+ * you want a stable sort &#8211; you can write a comparison function that,
+ * if two elements would otherwise compare equal, compares them by
  * their addresses.
  **/
 void
@@ -1241,9 +1241,9 @@ g_ptr_array_add (GPtrArray *farray,
  * greater than second arg).
  *
  * If two array elements compare equal, their order in the sorted array
- * is undefined. If you want equal elements to keep their order - ie
- * you want a stable sort - you can write a comparison function that,
- * if two elements would otherwise compare equal, it compares them by
+ * is undefined. If you want equal elements to keep their order &#8211; i.e.
+ * you want a stable sort &#8211; you can write a comparison function that,
+ * if two elements would otherwise compare equal, compares them by
  * their addresses.
  *
  * <note><para>The comparison function for g_ptr_array_sort() doesn't
@@ -1566,9 +1566,9 @@ g_byte_array_remove_range (GByteArray *array,
  * first arg is greater than second arg).
  *
  * If two array elements compare equal, their order in the sorted array
- * is undefined. If you want equal elements to keep their order - ie
- * you want a stable sort - you can write a comparison function that,
- * if two elements would otherwise compare equal, it compares them by
+ * is undefined. If you want equal elements to keep their order &#8211; i.e.
+ * you want a stable sort &#8211; you can write a comparison function that,
+ * if two elements would otherwise compare equal, compares them by
  * their addresses.
  **/
 void
