@@ -616,7 +616,10 @@ g_array_remove_range (GArray *farray,
  * greater than second arg).
  *
  * If two array elements compare equal, their order in the sorted array
- * is undefined.
+ * is undefined. If you want equal elements to keep their order - ie
+ * you want a stable sort - you can write a comparison function that,
+ * if two elements would otherwise compare equal, it compares them by
+ * their addresses.
  **/
 void
 g_array_sort (GArray       *farray,
@@ -1238,7 +1241,10 @@ g_ptr_array_add (GPtrArray *farray,
  * greater than second arg).
  *
  * If two array elements compare equal, their order in the sorted array
- * is undefined.
+ * is undefined. If you want equal elements to keep their order - ie
+ * you want a stable sort - you can write a comparison function that,
+ * if two elements would otherwise compare equal, it compares them by
+ * their addresses.
  *
  * <note><para>The comparison function for g_ptr_array_sort() doesn't
  * take the pointers from the array as arguments, it takes pointers to
