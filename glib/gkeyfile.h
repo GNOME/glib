@@ -94,6 +94,11 @@ gboolean  g_key_file_has_key                (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
 					     GError              **error);
+gboolean  g_key_file_has_key_full           (GKeyFile             *key_file,
+					     const gchar          *group_name,
+					     const gchar          *key,
+					     gboolean             *has_key,
+					     GError              **error);
 gchar    *g_key_file_get_value              (GKeyFile             *key_file,
 					     const gchar          *group_name,
 					     const gchar          *key,
