@@ -7,7 +7,7 @@ AC_DEFUN([GLIB_GSETTINGS],
 [
   m4_pattern_allow([AM_V_GEN])
   AC_ARG_ENABLE(schemas-compile,
-                AC_HELP_STRING([--disable-schemas-compile],
+                AS_HELP_STRING([--disable-schemas-compile],
                                [Disable regeneration of gschemas.compiled on install]),
                 [case ${enableval} in
                   yes) GSETTINGS_DISABLE_SCHEMAS_COMPILE=""  ;;
