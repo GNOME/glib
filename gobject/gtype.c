@@ -81,10 +81,6 @@
  * not ->supers[]), as all those memory portions can get realloc()ed during
  * callback invocation.
  *
- * TODO:
- * - g_type_from_name() should do an ordered array lookup after fetching the
- *   the quark, instead of a second hashtable lookup.
- *
  * LOCKING:
  * lock handling issues when calling static functions are indicated by
  * uppercase letter postfixes, all static functions have to have
@@ -492,7 +488,7 @@ type_node_any_new_W (TypeNode             *pnode,
   node->global_gdata = NULL;
   
   g_hash_table_insert (static_type_nodes_ht,
-		       GUINT_TO_POINTER (node->qname),
+		       g_quark_to_string (node->qname),
 		       (gpointer) type);
   return node;
 }
@@ -3328,13 +3324,9 @@ g_type_from_name (const gchar *name)
   
   g_return_val_if_fail (name != NULL, 0);
   
-  quark = g_quark_try_string (name);
-  if (quark)
-    {
-      G_READ_LOCK (&type_rw_lock);
-      type = (GType) g_hash_table_lookup (static_type_nodes_ht, GUINT_TO_POINTER (quark));
-      G_READ_UNLOCK (&type_rw_lock);
-    }
+  G_READ_LOCK (&type_rw_lock);
+  type = (GType) g_hash_table_lookup (static_type_nodes_ht, name);
+  G_READ_UNLOCK (&type_rw_lock);
   
   return type;
 }
@@ -4308,7 +4300,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   static_quark_dependants_array = g_quark_from_static_string ("-g-type-private--dependants-array");
   
   /* type qname hash table */
-  static_type_nodes_ht = g_hash_table_new (g_direct_hash, g_direct_equal);
+  static_type_nodes_ht = g_hash_table_new (g_str_hash, g_str_equal);
   
   /* invalid type G_TYPE_INVALID (0)
    */
