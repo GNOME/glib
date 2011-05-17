@@ -139,6 +139,9 @@ static void                  g_key_file_remove_key_value_pair_node (GKeyFile    
                                                                     GKeyFileGroup *group,
                                                                     GList         *pair_node);
 
+static void                  g_key_file_add_key_value_pair     (GKeyFile               *key_file,
+                                                                GKeyFileGroup          *group,
+                                                                GKeyFileKeyValuePair   *pair);
 static void                  g_key_file_add_key                (GKeyFile               *key_file,
 								GKeyFileGroup          *group,
 								const gchar            *key,
@@ -912,11 +915,22 @@ g_key_file_parse_key_value_pair (GKeyFile     *key_file,
   locale = key_get_locale (key);
 
   if (locale == NULL || g_key_file_locale_is_interesting (key_file, locale))
-    g_key_file_add_key (key_file, key_file->current_group, key, value);
+    {
+      GKeyFileKeyValuePair *pair;
+
+      pair = g_slice_new (GKeyFileKeyValuePair);
+      pair->key = key;
+      pair->value = value;
+
+      g_key_file_add_key_value_pair (key_file, key_file->current_group, pair);
+    }
+  else
+    {
+      g_free (key);
+      g_free (value);
+    }
 
   g_free (locale);
-  g_free (key);
-  g_free (value);
 }
 
 static gchar *
@@ -3330,6 +3344,17 @@ g_key_file_remove_group (GKeyFile     *key_file,
 }
 
 static void
+g_key_file_add_key_value_pair (GKeyFile             *key_file,
+                               GKeyFileGroup        *group,
+                               GKeyFileKeyValuePair *pair)
+{
+  g_hash_table_replace (group->lookup_map, pair->key, pair);
+  group->key_value_pairs = g_list_prepend (group->key_value_pairs, pair);
+  group->has_trailing_blank_line = FALSE;
+  key_file->approximate_size += strlen (pair->key) + strlen (pair->value) + 2;
+}
+
+static void
 g_key_file_add_key (GKeyFile      *key_file,
 		    GKeyFileGroup *group,
 		    const gchar   *key,
@@ -3341,10 +3366,7 @@ g_key_file_add_key (GKeyFile      *key_file,
   pair->key = g_strdup (key);
   pair->value = g_strdup (value);
 
-  g_hash_table_replace (group->lookup_map, pair->key, pair);
-  group->key_value_pairs = g_list_prepend (group->key_value_pairs, pair);
-  group->has_trailing_blank_line = FALSE;
-  key_file->approximate_size += strlen (key) + strlen (value) + 2;
+  g_key_file_add_key_value_pair (key_file, group, pair);
 }
 
 /**
