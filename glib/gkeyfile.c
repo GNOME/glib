@@ -963,7 +963,8 @@ g_key_file_parse_data (GKeyFile     *key_file,
 
   parse_error = NULL;
 
-  for (i = 0; i < length; i++)
+  i = 0;
+  while (i < length)
     {
       if (data[i] == '\n')
         {
@@ -988,9 +989,25 @@ g_key_file_parse_data (GKeyFile     *key_file,
               g_propagate_error (error, parse_error);
               return;
             }
+          i++;
         }
       else
-        g_string_append_c (key_file->parse_buffer, data[i]);
+        {
+          const gchar *start_of_line;
+          const gchar *end_of_line;
+          gsize line_length;
+
+          start_of_line = data + i;
+          end_of_line = memchr (start_of_line, '\n', length - i);
+
+          if (end_of_line == NULL)
+            end_of_line = data + length;
+
+          line_length = end_of_line - start_of_line;
+
+          g_string_append_len (key_file->parse_buffer, start_of_line, line_length);
+          i += line_length;
+        }
     }
 
   key_file->approximate_size += length;
