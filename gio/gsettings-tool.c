@@ -401,21 +401,33 @@ gsettings_set (GSettings   *settings,
 
   new = g_variant_parse (type, value, NULL, NULL, &error);
 
-  /* A common error is to specify a string with single quotes
-   * (or use completion for that), and forget that the shell
-   * will eat one level of quoting, resulting in 'unknown keyword'
-   * error from the gvariant parser.
-   * To handle this case, try to parse again with an extra level
-   * of quotes.
+  /* If that didn't work and the type is string then we should assume
+   * that the user is just trying to set a string directly and forgot
+   * the quotes (or had them consumed by the shell).
+   *
+   * If the user started with a quote then we assume that some deeper
+   * problem is at play and we want the failure in that case.
+   *
+   * Consider:
+   *
+   *   gsettings set x.y.z key "'i don't expect this to work'"
+   *
+   * Note that we should not just add quotes and try parsing again, but
+   * rather assume that the user is providing us with a bare string.
+   * Assume we added single quotes, then consider this case:
+   *
+   *   gsettings set x.y.z key "i'd expect this to work"
+   *
+   * A similar example could be given for double quotes.
+   *
+   * Avoid that whole mess by just using g_variant_new_string().
    */
   if (new == NULL &&
-      g_error_matches (error, G_VARIANT_PARSE_ERROR,
-                       G_VARIANT_PARSE_ERROR_UNKNOWN_KEYWORD))
+      g_variant_type_equal (type, G_VARIANT_TYPE_STRING) &&
+      value[0] != '\'' && value[0] != '"')
     {
-      value = freeme = g_strdup_printf ("\"%s\"", value);
-      new = g_variant_parse (type, value, NULL, NULL, NULL);
-      if (new != NULL)
-        g_clear_error (&error);
+      g_clear_error (&error);
+      new = g_variant_new_string (value);
     }
 
   if (new == NULL)
