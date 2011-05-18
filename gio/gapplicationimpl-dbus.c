@@ -417,27 +417,50 @@ g_application_impl_destroy (GApplicationImpl *impl)
   g_slice_free (GApplicationImpl, impl);
 }
 
+static void
+unwrap_fake_maybe (GVariant **value)
+{
+  GVariant *tmp;
+
+  if (g_variant_n_children (*value))
+    g_variant_get_child (*value, 0, "v", &tmp);
+  else
+    tmp = NULL;
+
+  g_variant_unref (*value);
+  *value = tmp;
+}
+
 RemoteActionInfo *
 remote_action_info_new_from_iter (GVariantIter *iter)
 {
   RemoteActionInfo *info;
-  const gchar *name;
   GVariant *param_type;
   gboolean enabled;
   GVariant *state;
+  gchar *name;
 
   if (!g_variant_iter_next (iter, "(s@avb@av)", &name,
                             &param_type, &enabled, &state))
     return NULL;
 
+  unwrap_fake_maybe (&param_type);
+  unwrap_fake_maybe (&state);
+
   info = g_slice_new (RemoteActionInfo);
-  info->parameter_type = g_variant_type_copy (
-                           g_variant_type_element (
-                             g_variant_get_type (param_type)));
+  info->name = name;
   info->enabled = enabled;
   info->state = state;
 
-  g_variant_unref (param_type);
+  if (param_type != NULL)
+    {
+      info->parameter_type = g_variant_type_copy (
+                               g_variant_type_element (
+                                 g_variant_get_type (param_type)));
+      g_variant_unref (param_type);
+    }
+  else
+    info->parameter_type = NULL;
 
   return info;
 }
@@ -705,32 +728,16 @@ g_application_impl_register (GApplication       *application,
 
   /* Create and populate the hashtable */
   {
+    RemoteActionInfo *info;
     GVariant *descriptions;
     GVariantIter iter;
-    GVariant *param_type;
-    gboolean enabled;
-    GVariant *state;
-    gchar *name;
 
     *remote_actions = g_hash_table_new (g_str_hash, g_str_equal);
     descriptions = g_variant_get_child_value (reply, 0);
     g_variant_iter_init (&iter, descriptions);
 
-    while (g_variant_iter_next (&iter, "(s@avb@av)", &name,
-                                &param_type, &enabled, &state))
-      {
-        RemoteActionInfo *action;
-
-        action = g_slice_new (RemoteActionInfo);
-        action->parameter_type = g_variant_type_copy (
-                                   g_variant_type_element (
-                                     g_variant_get_type (param_type)));
-        action->enabled = enabled;
-        action->state = state;
-
-        g_hash_table_insert (*remote_actions, name, action);
-        g_variant_unref (param_type);
-      }
+    while ((info = remote_action_info_new_from_iter (&iter)))
+      g_hash_table_insert (*remote_actions, info->name, info);
 
     g_variant_unref (descriptions);
   }
