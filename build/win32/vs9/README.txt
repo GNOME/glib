@@ -32,11 +32,11 @@ the (BuildType) configuration.
 Set up the source tree as follows under some arbitrary top
 folder <root>:
 
-<root>\glib\<this-glib-source-tree>
+<root>\<this-glib-source-tree>
 <root>\vs9\<PlatformName>
 
 *this* file you are now reading is thus located at
-<root>\glib\<this-glib-source-tree>\build\win32\vs9\README.
+<root>\<this-glib-source-tree>\build\win32\vs9\README.
 
 <PlatformName> is either Win32 or x64, as in VS9 project files.
 
