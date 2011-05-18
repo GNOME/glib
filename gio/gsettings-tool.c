@@ -374,33 +374,33 @@ reset_all_keys (GSettings   *settings)
 
 static void
 gsettings_reset_recursively (GSettings   *settings,
-			     const gchar *key,
-			     const gchar *value)
+                             const gchar *key,
+                             const gchar *value)
 {
   gchar **children;
   gint i;
 
   g_settings_delay (settings);
-  
+
   reset_all_keys (settings);
   children = g_settings_list_children (settings);
   for (i = 0; children[i]; i++)
     {
       GSettings *child;
       gchar *schema;
-      
+
       child = g_settings_get_child (settings, children[i]);
       g_object_get (child, "schema", &schema, NULL);
-      
+
       if (is_schema (schema))
-	reset_all_keys (child);
-      
+        reset_all_keys (child);
+
       g_object_unref (child);
       g_free (schema);
     }
-  
+
   g_strfreev (children);
-  
+
   g_settings_apply (settings);
   g_settings_sync ();
 }

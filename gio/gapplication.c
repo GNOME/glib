@@ -263,7 +263,7 @@ g_application_real_command_line (GApplication            *application,
     {
       static gboolean warned;
 
-      if (warned) 
+      if (warned)
         return 1;
 
       g_warning ("Your application claims to support custom command line "
@@ -566,7 +566,7 @@ g_application_class_init (GApplicationClass *class)
     g_param_spec_object ("action-group",
                          P_("Action group"),
                          P_("The group of actions that the application exports"),
-                         G_TYPE_ACTION_GROUP, 
+                         G_TYPE_ACTION_GROUP,
                          G_PARAM_WRITABLE | G_PARAM_STATIC_STRINGS));
 
   /**
@@ -652,7 +652,7 @@ get_platform_data (GApplication *application)
     {
       GVariant *array;
       gchar **envp;
-     
+
       envp = g_get_environ ();
       array = g_variant_new_bytestring_array ((const gchar **) envp, -1);
       g_strfreev (envp);
@@ -734,7 +734,7 @@ g_application_id_is_valid (const gchar *application_id)
 
   return TRUE;
 }
- 
+
 /* Public Constructor {{{1 */
 /**
  * g_application_new:
@@ -1039,7 +1039,7 @@ g_application_register (GApplication  *application,
  * Increases the use count of @application.
  *
  * Use this function to indicate that the application has a reason to
- * continue to run.  For example, g_application_hold() is called by GTK+ 
+ * continue to run.  For example, g_application_hold() is called by GTK+
  * when a toplevel window is on the screen.
  *
  * To cancel the hold, call g_application_release().

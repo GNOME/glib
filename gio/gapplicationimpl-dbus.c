@@ -537,7 +537,7 @@ g_application_impl_action_signal (GDBusConnection *connection,
 
       g_variant_get (parameters, "(&sv)", &name, &state);
       info = g_hash_table_lookup (impl->actions, name);
-      
+
       if (info && info->state &&
           g_variant_is_of_type (state, g_variant_get_type (info->state)) &&
           !g_variant_equal (state, info->state))

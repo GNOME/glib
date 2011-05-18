@@ -378,7 +378,7 @@ g_application_command_line_get_cwd (GApplicationCommandLine *cmdline)
  *
  * Returns: (array zero-terminated=1) (transfer none): the environment
  * strings, or %NULL if they were not sent
- * 
+ *
  * Since: 2.28
  **/
 const gchar * const *
@@ -405,7 +405,7 @@ g_application_command_line_get_environ (GApplicationCommandLine *cmdline)
  * long as @cmdline exists.
  *
  * Returns: the value of the variable, or %NULL if unset or unsent
- * 
+ *
  * Since: 2.28
  **/
 const gchar *
