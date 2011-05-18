@@ -28,6 +28,7 @@
 #endif
 
 #include "gatomic.h"
+#include "gthread.h"
 #include "gthreadprivate.h"
 
 /**
