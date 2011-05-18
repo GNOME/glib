@@ -3320,7 +3320,6 @@ GType
 g_type_from_name (const gchar *name)
 {
   GType type = 0;
-  GQuark quark;
   
   g_return_val_if_fail (name != NULL, 0);
   
