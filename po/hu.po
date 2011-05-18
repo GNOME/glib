@@ -354,27 +354,27 @@ msgstr "Vasárnap"
 #: ../glib/gdatetime.c:294
 msgctxt "abbreviated weekday name"
 msgid "Mon"
-msgstr "Hét"
+msgstr "Hé"
 
 #: ../glib/gdatetime.c:296
 msgctxt "abbreviated weekday name"
 msgid "Tue"
-msgstr "Ked"
+msgstr "Ke"
 
 #: ../glib/gdatetime.c:298
 msgctxt "abbreviated weekday name"
 msgid "Wed"
-msgstr "Szer"
+msgstr "Sze"
 
 #: ../glib/gdatetime.c:300
 msgctxt "abbreviated weekday name"
 msgid "Thu"
-msgstr "Csüt"
+msgstr "Csü"
 
 #: ../glib/gdatetime.c:302
 msgctxt "abbreviated weekday name"
 msgid "Fri"
-msgstr "Pén"
+msgstr "Pé"
 
 #: ../glib/gdatetime.c:304
 msgctxt "abbreviated weekday name"
@@ -384,7 +384,7 @@ msgstr "Szo"
 #: ../glib/gdatetime.c:306
 msgctxt "abbreviated weekday name"
 msgid "Sun"
-msgstr "Vas"
+msgstr "Va"
 
 #: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
