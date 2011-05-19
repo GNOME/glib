@@ -41,7 +41,6 @@ typedef struct _GIrNodeEnum GIrNodeEnum;
 typedef struct _GIrNodeBoxed GIrNodeBoxed;
 typedef struct _GIrNodeStruct GIrNodeStruct;
 typedef struct _GIrNodeConstant GIrNodeConstant;
-typedef struct _GIrNodeErrorDomain GIrNodeErrorDomain;
 typedef struct _GIrNodeXRef GIrNodeXRef;
 typedef struct _GIrNodeUnion GIrNodeUnion;
 
@@ -57,7 +56,7 @@ typedef enum
   G_IR_NODE_OBJECT       =  7,
   G_IR_NODE_INTERFACE    =  8,
   G_IR_NODE_CONSTANT     =  9,
-  G_IR_NODE_ERROR_DOMAIN = 10,
+  G_IR_NODE_INVALID_0    = 10, /* DELETED - used to be ERROR_DOMAIN */
   G_IR_NODE_UNION        = 11,
   G_IR_NODE_PARAM        = 12,
   G_IR_NODE_TYPE         = 13,
@@ -340,18 +339,6 @@ struct _GIrNodeUnion
 
   gint discriminator_offset;
   GIrNodeType *discriminator_type;
-};
-
-
-struct _GIrNodeErrorDomain
-{
-  GIrNode node;
-
-  gboolean deprecated;
-
-  gchar *name;
-  gchar *getquark;
-  gchar *codes;
 };
 
 

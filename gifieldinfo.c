@@ -322,7 +322,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	      case GI_INFO_TYPE_INTERFACE:
 	      case GI_INFO_TYPE_FUNCTION:
 	      case GI_INFO_TYPE_CONSTANT:
-	      case GI_INFO_TYPE_ERROR_DOMAIN:
+	      case GI_INFO_TYPE_INVALID_0:
 	      case GI_INFO_TYPE_VALUE:
 	      case GI_INFO_TYPE_SIGNAL:
 	      case GI_INFO_TYPE_PROPERTY:
@@ -498,7 +498,7 @@ g_field_info_set_field (GIFieldInfo     *field_info,
 	      case GI_INFO_TYPE_INTERFACE:
 	      case GI_INFO_TYPE_FUNCTION:
 	      case GI_INFO_TYPE_CONSTANT:
-	      case GI_INFO_TYPE_ERROR_DOMAIN:
+	      case GI_INFO_TYPE_INVALID_0:
 	      case GI_INFO_TYPE_VALUE:
 	      case GI_INFO_TYPE_SIGNAL:
 	      case GI_INFO_TYPE_PROPERTY:

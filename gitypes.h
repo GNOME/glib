@@ -151,13 +151,6 @@ typedef GIBaseInfo GIArgInfo;
 typedef GIBaseInfo GITypeInfo;
 
 /**
- * GIErrorDomainInfo:
- *
- * Represents a #GError error domain.
- */
-typedef GIBaseInfo GIErrorDomainInfo;
-
-/**
  * GIUnresolvedInfo:
  *
  * Represents a unresolved type in a typelib.
@@ -202,7 +195,6 @@ typedef union _GIArgument GIArgument;
  * @GI_INFO_TYPE_OBJECT: object, see #GIObjectInfo
  * @GI_INFO_TYPE_INTERFACE: interface, see #GIInterfaceInfo
  * @GI_INFO_TYPE_CONSTANT: contant, see #GIConstantInfo
- * @GI_INFO_TYPE_ERROR_DOMAIN: error domain for a #GError, see #GIErrorDomainInfo
  * @GI_INFO_TYPE_UNION: union, see #GIUnionInfo
  * @GI_INFO_TYPE_VALUE: enum value, see #GIValueInfo
  * @GI_INFO_TYPE_SIGNAL: signal, see #GISignalInfo
@@ -228,7 +220,7 @@ typedef enum
   GI_INFO_TYPE_OBJECT,
   GI_INFO_TYPE_INTERFACE,
   GI_INFO_TYPE_CONSTANT,
-  GI_INFO_TYPE_ERROR_DOMAIN, /* 10 */
+  GI_INFO_TYPE_INVALID_0,    /* 10 */  /** DELETED - used to be ERROR_DOMAIN **/
   GI_INFO_TYPE_UNION,
   GI_INFO_TYPE_VALUE,
   GI_INFO_TYPE_SIGNAL,

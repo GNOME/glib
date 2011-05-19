@@ -32,7 +32,6 @@
 #include <gicallableinfo.h>
 #include <giconstantinfo.h>
 #include <gienuminfo.h>
-#include <gierrordomaininfo.h>
 #include <gifieldinfo.h>
 #include <gifunctioninfo.h>
 #include <giinterfaceinfo.h>

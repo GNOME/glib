@@ -101,8 +101,6 @@ _g_ir_node_type_to_string (GIrNodeTypeId type)
       return "value";
     case G_IR_NODE_CONSTANT:
       return "constant";
-    case G_IR_NODE_ERROR_DOMAIN:
-      return "error-domain";
     case G_IR_NODE_XREF:
       return "xref";
     case G_IR_NODE_UNION:
@@ -173,10 +171,6 @@ _g_ir_node_new (GIrNodeTypeId  type,
 
     case G_IR_NODE_CONSTANT:
       node = g_malloc0 (sizeof (GIrNodeConstant));
-      break;
-
-    case G_IR_NODE_ERROR_DOMAIN:
-      node = g_malloc0 (sizeof (GIrNodeErrorDomain));
       break;
 
     case G_IR_NODE_XREF:
@@ -379,16 +373,6 @@ _g_ir_node_free (GIrNode *node)
       }
       break;
 
-    case G_IR_NODE_ERROR_DOMAIN:
-      {
-	GIrNodeErrorDomain *domain = (GIrNodeErrorDomain *)node;
-
-	g_free (node->name);
-	g_free (domain->getquark);
-	g_free (domain->codes);
-      }
-      break;
-
     case G_IR_NODE_XREF:
       {
 	GIrNodeXRef *xref = (GIrNodeXRef *)node;
@@ -535,10 +519,6 @@ _g_ir_node_get_size (GIrNode *node)
       size = sizeof (ConstantBlob);
       break;
 
-    case G_IR_NODE_ERROR_DOMAIN:
-      size = sizeof (ErrorDomainBlob);
-      break;
-
     case G_IR_NODE_XREF:
       size = 0;
       break;
@@ -665,16 +645,7 @@ _g_ir_node_get_full_size_internal (GIrNode *parent,
 		  size += _g_ir_node_get_full_size_internal (node, (GIrNode *)type->parameter_type2);
 		break;
 	      case GI_TYPE_TAG_ERROR:
-		{
-		  gint n;
-
-		  if (type->errors)
-		    n = g_strv_length (type->errors);
-		  else
-		    n = 0;
-
-		  size += sizeof (ErrorTypeBlob) + 2 * (n + n % 2);
-		}
+		size += sizeof (ErrorTypeBlob);
 		break;
 	      default:
 		g_error ("Unknown type tag %d\n", type->tag);
@@ -844,16 +815,6 @@ _g_ir_node_get_full_size_internal (GIrNode *parent,
       }
       break;
 
-    case G_IR_NODE_ERROR_DOMAIN:
-      {
-	GIrNodeErrorDomain *domain = (GIrNodeErrorDomain *)node;
-
-	size = sizeof (ErrorDomainBlob);
-	size += ALIGN_VALUE (strlen (node->name) + 1, 4);
-	size += ALIGN_VALUE (strlen (domain->getquark) + 1, 4);
-      }
-      break;
-
     case G_IR_NODE_XREF:
       {
 	GIrNodeXRef *xref = (GIrNodeXRef *)node;
@@ -935,7 +896,7 @@ _g_ir_node_can_have_member (GIrNode    *node)
     case G_IR_NODE_ENUM:
     case G_IR_NODE_FLAGS:
     case G_IR_NODE_CONSTANT:
-    case G_IR_NODE_ERROR_DOMAIN:
+    case G_IR_NODE_INVALID_0:
     case G_IR_NODE_PARAM:
     case G_IR_NODE_TYPE:
     case G_IR_NODE_PROPERTY:
@@ -1559,21 +1520,14 @@ _g_ir_node_build_typelib (GIrNode         *node,
 		  case GI_TYPE_TAG_ERROR:
 		    {
 		      ErrorTypeBlob *blob = (ErrorTypeBlob *)&data[*offset2];
-		      gint i;
 
 		      blob->pointer = 1;
 		      blob->reserved = 0;
 		      blob->tag = type->tag;
 		      blob->reserved2 = 0;
-		      if (type->errors)
-			blob->n_domains = g_strv_length (type->errors);
-		      else
-			blob->n_domains = 0;
+		      blob->n_domains = 0;
 
-		      *offset2 = ALIGN_VALUE (*offset2 + G_STRUCT_OFFSET (ErrorTypeBlob, domains)
-		                              + 2 * blob->n_domains, 4);
-		      for (i = 0; i < blob->n_domains; i++)
-			blob->domains[i] = find_entry (build, type->errors[i]);
+		      *offset2 += sizeof (ErrorTypeBlob);
 		    }
 		    break;
 
@@ -2231,22 +2185,6 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	blob->unsigned_value = value->value >= 0 ? 1 : 0;
 	blob->name = _g_ir_write_string (node->name, strings, data, offset2);
 	blob->value = (gint32)value->value;
-      }
-      break;
-
-    case G_IR_NODE_ERROR_DOMAIN:
-      {
-	GIrNodeErrorDomain *domain = (GIrNodeErrorDomain *)node;
-	ErrorDomainBlob *blob = (ErrorDomainBlob *)&data[*offset];
-	*offset += sizeof (ErrorDomainBlob);
-
-	blob->blob_type = BLOB_TYPE_ERROR_DOMAIN;
-	blob->deprecated = domain->deprecated;
-	blob->reserved = 0;
-	blob->name = _g_ir_write_string (node->name, strings, data, offset2);
-	blob->get_quark = _g_ir_write_string (domain->getquark, strings, data, offset2);
-	blob->error_codes = find_entry (build, domain->codes);
-	blob->reserved2 = 0;
       }
       break;
 

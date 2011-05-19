@@ -212,7 +212,6 @@ write_type_info (const gchar *namespace,
 		 Xml         *file)
 {
   gint tag;
-  gint i;
   GITypeInfo *type;
   gboolean is_pointer;
 
@@ -329,24 +328,8 @@ write_type_info (const gchar *namespace,
     }
   else if (tag == GI_TYPE_TAG_ERROR)
     {
-      gint n;
-
       xml_start_element (file, "type");
       xml_printf (file, " name=\"GLib.Error\"");
-
-      n = g_type_info_get_n_error_domains (info);
-      if (n > 0)
-	{
-	  for (i = 0; i < n; i++)
-	    {
-	      GIErrorDomainInfo *ed = g_type_info_get_error_domain (info, i);
-	      xml_start_element (file, "type");
-	      write_type_name_attribute (namespace, (GIBaseInfo *)ed, "name", file);
-	      xml_end_element (file, "type");
-	      g_base_info_unref ((GIBaseInfo *)ed);
-	    }
-	}
-
       xml_end_element (file, "type");
     }
   else
@@ -1194,25 +1177,6 @@ write_interface_info (const gchar     *namespace,
 }
 
 static void
-write_error_domain_info (const gchar       *namespace,
-			 GIErrorDomainInfo *info,
-			 Xml               *file)
-{
-  GIBaseInfo *enum_;
-  const gchar *name, *quark;
-
-  name = g_base_info_get_name ((GIBaseInfo *)info);
-  quark = g_error_domain_info_get_quark (info);
-  enum_ = (GIBaseInfo *)g_error_domain_info_get_codes (info);
-  xml_start_element (file, "errordomain");
-  xml_printf (file, " name=\"%s\" get-quark=\"%s\"",
-              name, quark);
-  write_type_name_attribute (namespace, enum_, "codes", file);
-  xml_end_element (file, "errordomain");
-  g_base_info_unref (enum_);
-}
-
-static void
 write_union_info (const gchar *namespace,
 		  GIUnionInfo *info,
 		  Xml         *file)
@@ -1409,10 +1373,6 @@ gir_writer_write (const char *filename,
 
 	    case GI_INFO_TYPE_INTERFACE:
 	      write_interface_info (ns, (GIInterfaceInfo *)info, xml);
-	      break;
-
-	    case GI_INFO_TYPE_ERROR_DOMAIN:
-	      write_error_domain_info (ns, (GIErrorDomainInfo *)info, xml);
 	      break;
 
 	    default:

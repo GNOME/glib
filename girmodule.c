@@ -415,7 +415,7 @@ _g_ir_module_build_typelib (GIrModule  *module)
   header->field_blob_size = sizeof (FieldBlob);
   header->value_blob_size = sizeof (ValueBlob);
   header->constant_blob_size = sizeof (ConstantBlob);
-  header->error_domain_blob_size = sizeof (ErrorDomainBlob);
+  header->error_domain_blob_size = 16; /* No longer used */
   header->attribute_blob_size = sizeof (AttributeBlob);
   header->signature_blob_size = sizeof (SignatureBlob);
   header->enum_blob_size = sizeof (EnumBlob);

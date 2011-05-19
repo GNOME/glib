@@ -48,9 +48,6 @@ gint                   g_type_info_get_array_fixed_size(GITypeInfo *info);
 gboolean               g_type_info_is_zero_terminated  (GITypeInfo *info);
 GIArrayType            g_type_info_get_array_type      (GITypeInfo *info);
 
-gint                   g_type_info_get_n_error_domains (GITypeInfo *info);
-GIErrorDomainInfo     *g_type_info_get_error_domain    (GITypeInfo *info,
-							gint       n);
 G_END_DECLS
 
 

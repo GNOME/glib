@@ -57,7 +57,7 @@ G_BEGIN_DECLS
  * directory ::= list of entries
  *
  * entry ::= blob type, name, namespace, offset
- * blob ::= function|callback|struct|boxed|enum|flags|object|interface|constant|errordomain|union
+ * blob ::= function|callback|struct|boxed|enum|flags|object|interface|constant|union
  * attributes ::= list of attributes, sorted by offset
  * attribute ::= offset, key, value
  * attributedata ::= string data for attributes
@@ -156,7 +156,6 @@ Changes since 0.1:
  * @BLOB_TYPE_OBJECT: An #ObjectBlob
  * @BLOB_TYPE_INTERFACE: An #InterfaceBlob
  * @BLOB_TYPE_CONSTANT: A #ConstantBlob
- * @BLOB_TYPE_ERROR_DOMAIN: A #ErrorDomainBlob
  * @BLOB_TYPE_UNION: A #UnionBlob
  *
  * The integral value of this enumeration appears in each "Blob"
@@ -173,7 +172,7 @@ typedef enum {
   BLOB_TYPE_OBJECT,
   BLOB_TYPE_INTERFACE,
   BLOB_TYPE_CONSTANT,
-  BLOB_TYPE_ERROR_DOMAIN,
+  BLOB_TYPE_INVALID_0, /* DELETED - used to be ErrorDomain */
   BLOB_TYPE_UNION
 } GTypelibBlobType;
 
@@ -624,8 +623,6 @@ typedef struct {
 
 /**
  * ErrorTypeBlob:
- * @n_domains: The number of domains to follow
- * @domains:  Indices of the directory entries for the error domains
  */
 typedef struct {
   guint8  pointer  :1;
@@ -633,30 +630,10 @@ typedef struct {
   guint8  tag      :5;
 
   guint8  reserved2;
-  guint16 n_domains;
 
+  guint16 n_domains; /* Must be 0 */
   guint16 domains[];
 }  ErrorTypeBlob;
-
-/**
- * ErrorDomainBlob:
- * @get_quark: The symbol name of the function which must be called to obtain the
- * GQuark for the error domain.
- * @error_codes: Index of the InterfaceBlob describing the enumeration which lists
- * the possible error codes.
- */
-typedef struct {
-  guint16 blob_type;  /* 10 */
-
-  guint16 deprecated : 1;
-  guint16 reserved   :15;
-
-  guint32 name;
-
-  guint32 get_quark;
-  guint16 error_codes;
-  guint16 reserved2;
-} ErrorDomainBlob;
 
 /**
  * ValueBlob:
