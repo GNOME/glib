@@ -1332,6 +1332,7 @@ start_enum (GMarkupParseContext *context,
   const gchar *typename;
   const gchar *typeinit;
   const gchar *deprecated;
+  const gchar *error_domain;
   GIrNodeEnum *enum_;
 
   if (!((strcmp (element_name, "enumeration") == 0 && ctx->state == STATE_NAMESPACE) ||
@@ -1344,6 +1345,7 @@ start_enum (GMarkupParseContext *context,
   name = find_attribute ("name", attribute_names, attribute_values);
   typename = find_attribute ("glib:type-name", attribute_names, attribute_values);
   typeinit = find_attribute ("glib:get-type", attribute_names, attribute_values);
+  error_domain = find_attribute ("glib:error-domain", attribute_names, attribute_values);
   deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
 
   if (name == NULL)
@@ -1361,6 +1363,8 @@ start_enum (GMarkupParseContext *context,
   ((GIrNode *)enum_)->name = g_strdup (name);
   enum_->gtype_name = g_strdup (typename);
   enum_->gtype_init = g_strdup (typeinit);
+  enum_->error_domain = g_strdup (error_domain);
+
   if (deprecated)
     enum_->deprecated = TRUE;
   else

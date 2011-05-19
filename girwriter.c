@@ -805,6 +805,7 @@ write_enum_info (const gchar *namespace,
   const gchar *name;
   const gchar *type_name;
   const gchar *type_init;
+  const gchar *error_domain;
   gboolean deprecated;
   gint i;
 
@@ -813,6 +814,7 @@ write_enum_info (const gchar *namespace,
 
   type_name = g_registered_type_info_get_type_name ((GIRegisteredTypeInfo*)info);
   type_init = g_registered_type_info_get_type_init ((GIRegisteredTypeInfo*)info);
+  error_domain = g_enum_info_get_error_domain (info);
 
   if (g_base_info_get_type ((GIBaseInfo *)info) == GI_INFO_TYPE_ENUM)
     xml_start_element (file, "enumeration");
@@ -822,6 +824,8 @@ write_enum_info (const gchar *namespace,
 
   if (type_init)
     xml_printf (file, " glib:type-name=\"%s\" glib:get-type=\"%s\"", type_name, type_init);
+  if (error_domain)
+    xml_printf (file, " glib:error-domain=\"%s\"", error_domain);
 
   if (deprecated)
     xml_printf (file, " deprecated=\"1\"");

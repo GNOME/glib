@@ -70,6 +70,7 @@ goutput_write (GOutputStream *out, const char *str)
 }
 
 typedef GType (*GetTypeFunc)(void);
+typedef GQuark (*ErrorQuarkFunc)(void);
 
 static GType
 invoke_get_type (GModule *self, const char *symbol, GError **error)
@@ -95,6 +96,23 @@ invoke_get_type (GModule *self, const char *symbol, GError **error)
 		   "Function '%s' returned G_TYPE_INVALID", symbol);
     }
   return ret;
+}
+
+static GQuark
+invoke_error_quark (GModule *self, const char *symbol, GError **error)
+{
+  ErrorQuarkFunc sym;
+
+  if (!g_module_symbol (self, symbol, (void**)&sym))
+    {
+      g_set_error (error,
+		   G_IO_ERROR,
+		   G_IO_ERROR_FAILED,
+		   "Failed to find symbol '%s'", symbol);
+      return G_TYPE_INVALID;
+    }
+
+  return sym ();
 }
 
 static void
@@ -365,6 +383,13 @@ dump_type (GType type, const char *symbol, GOutputStream *out)
     }
 }
 
+static void
+dump_error_quark (GQuark quark, const char *symbol, GOutputStream *out)
+{
+  escaped_printf (out, "  <error-quark function=\"%s\" domain=\"%s\"/>\n",
+		  symbol, g_quark_to_string (quark));
+}
+
 /**
  * g_irepository_dump:
  * @arg: Comma-separated pair of input and output filenames
@@ -437,29 +462,55 @@ g_irepository_dump (const char *arg, GError **error)
     {
       gsize len;
       char *line = g_data_input_stream_read_line (in, &len, NULL, NULL);
-      GType type;
+      const char *function;
 
       if (line == NULL || *line == '\0')
-	{
-	  g_free (line);
-	  break;
-	}
+        {
+          g_free (line);
+          break;
+        }
 
       g_strchomp (line);
-      type = invoke_get_type (self, line, error);
 
-      if (type == G_TYPE_INVALID)
-	{
-          caught_error = TRUE;
-	  g_free (line);
-	  break;
-	}
+      if (strncmp (line, "get-type:", strlen ("get-type:")) == 0)
+        {
+          GType type;
 
-      if (g_hash_table_lookup (output_types, (gpointer) type))
-	goto next;
-      g_hash_table_insert (output_types, (gpointer) type, (gpointer) type);
+          function = line + strlen ("get-type:");
 
-      dump_type (type, line, G_OUTPUT_STREAM (output));
+          type = invoke_get_type (self, function, error);
+
+          if (type == G_TYPE_INVALID)
+            {
+              g_printerr ("Invalid GType function: '%s'\n", function);
+              caught_error = TRUE;
+              g_free (line);
+              break;
+            }
+
+          if (g_hash_table_lookup (output_types, (gpointer) type))
+            goto next;
+          g_hash_table_insert (output_types, (gpointer) type, (gpointer) type);
+
+          dump_type (type, function, G_OUTPUT_STREAM (output));
+        }
+      else if (strncmp (line, "error-quark:", strlen ("error-quark:")) == 0)
+        {
+          GQuark quark;
+          function = line + strlen ("error-quark:");
+          quark = invoke_error_quark (self, function, error);
+
+          if (quark == 0)
+            {
+              g_printerr ("Invalid error quark function: '%s'\n", function);
+              caught_error = TRUE;
+              g_free (line);
+              break;
+            }
+
+          dump_error_quark (quark, function, G_OUTPUT_STREAM (output));
+        }
+
 
     next:
       g_free (line);

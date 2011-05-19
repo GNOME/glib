@@ -798,6 +798,8 @@ typedef struct {
  * (will be a signed or unsigned integral type)
  * @gtype_name: String name of the associated #GType
  * @gtype_init: String naming the symbol which gets the runtime #GType
+ * @error_domain: String naming the #GError domain this enum is
+ *   associated with
  * @n_values: The lengths of the values arrays.
  * @values: Describes the enum values.
  */
@@ -817,7 +819,7 @@ typedef struct {
   guint16   n_values;
   guint16   reserved2;
 
-  guint32   reserved3;
+  guint32   error_domain;
 
   ValueBlob values[];
 } EnumBlob;

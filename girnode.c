@@ -328,6 +328,7 @@ _g_ir_node_free (GIrNode *node)
 	g_free (node->name);
 	g_free (enum_->gtype_name);
 	g_free (enum_->gtype_init);
+	g_free (enum_->error_domain);
 
 	for (l = enum_->values; l; l = l->next)
 	  _g_ir_node_free ((GIrNode *)l->data);
@@ -712,6 +713,8 @@ _g_ir_node_get_full_size_internal (GIrNode *parent,
 	    size += ALIGN_VALUE (strlen (enum_->gtype_name) + 1, 4);
 	    size += ALIGN_VALUE (strlen (enum_->gtype_init) + 1, 4);
 	  }
+	if (enum_->error_domain)
+	  size += ALIGN_VALUE (strlen (enum_->error_domain) + 1, 4);
 
 	for (l = enum_->values; l; l = l->next)
 	  size += _g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
@@ -2021,6 +2024,10 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	    blob->gtype_name = 0;
 	    blob->gtype_init = 0;
 	  }
+	if (enum_->error_domain)
+	  blob->error_domain = _g_ir_write_string (enum_->error_domain, strings, data, offset2);
+	else
+	  blob->error_domain = 0;
 
 	blob->n_values = 0;
 	blob->reserved2 = 0;
