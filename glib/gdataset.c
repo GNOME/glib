@@ -136,7 +136,7 @@
  **/
 
 /* --- defines --- */
-#define	G_QUARK_BLOCK_SIZE			(512)
+#define	G_QUARK_BLOCK_SIZE			(2048)
 
 #define G_DATALIST_FLAGS_MASK_INTERNAL 0x7
 
@@ -207,7 +207,7 @@ static GDataset     *g_dataset_cached = NULL; /* should this be
 G_LOCK_DEFINE_STATIC (g_quark_global);
 static GHashTable   *g_quark_ht = NULL;
 static gchar       **g_quarks = NULL;
-static GQuark        g_quark_seq_id = 0;
+static int           g_quark_seq_id = 0;
 
 /* --- functions --- */
 
@@ -1217,11 +1217,14 @@ G_CONST_RETURN gchar*
 g_quark_to_string (GQuark quark)
 {
   gchar* result = NULL;
+  gchar **quarks;
+  gint quark_seq_id;
 
-  G_LOCK (g_quark_global);
-  if (quark < g_quark_seq_id)
-    result = g_quarks[quark];
-  G_UNLOCK (g_quark_global);
+  quark_seq_id = g_atomic_int_get (&g_quark_seq_id);
+  quarks = g_atomic_pointer_get (&g_quarks);
+
+  if (quark < quark_seq_id)
+    result = quarks[quark];
 
   return result;
 }
@@ -1231,20 +1234,32 @@ static inline GQuark
 g_quark_new (gchar *string)
 {
   GQuark quark;
+  gchar **g_quarks_new;
   
   if (g_quark_seq_id % G_QUARK_BLOCK_SIZE == 0)
-    g_quarks = g_renew (gchar*, g_quarks, g_quark_seq_id + G_QUARK_BLOCK_SIZE);
+    {
+      g_quarks_new = g_new (gchar*, g_quark_seq_id + G_QUARK_BLOCK_SIZE);
+      if (g_quark_seq_id != 0)
+	memcpy (g_quarks_new, g_quarks, sizeof (char *) * g_quark_seq_id);
+      memset (g_quarks_new + g_quark_seq_id, 0, sizeof (char *) * G_QUARK_BLOCK_SIZE);
+      /* This leaks the old quarks array. Its unfortunate, but it allows
+	 us to do lockless lookup of the arrays, and there shouldn't be that
+	 many quarks in an app */
+      g_atomic_pointer_set (&g_quarks, g_quarks_new);
+    }
   if (!g_quark_ht)
     {
       g_assert (g_quark_seq_id == 0);
       g_quark_ht = g_hash_table_new (g_str_hash, g_str_equal);
-      g_quarks[g_quark_seq_id++] = NULL;
+      g_quarks[g_quark_seq_id] = NULL;
+      g_atomic_int_inc (&g_quark_seq_id);
     }
 
-  quark = g_quark_seq_id++;
-  g_quarks[quark] = string;
+  quark = g_quark_seq_id;
+  g_atomic_pointer_set (&g_quarks[quark], string);
   g_hash_table_insert (g_quark_ht, string, GUINT_TO_POINTER (quark));
-  
+  g_atomic_int_inc (&g_quark_seq_id);
+
   return quark;
 }
 
