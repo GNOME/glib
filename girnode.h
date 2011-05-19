@@ -285,6 +285,7 @@ struct _GIrNodeEnum
 
   gchar *gtype_name;
   gchar *gtype_init;
+  gchar *error_domain;
 
   GList *values;
 };

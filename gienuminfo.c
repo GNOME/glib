@@ -66,6 +66,23 @@ g_enum_info_get_n_values (GIEnumInfo *info)
   return blob->n_values;
 }
 
+const gchar *
+g_enum_info_get_error_domain (GIEnumInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  EnumBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_ENUM_INFO (info), 0);
+
+  blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  if (blob->error_domain)
+    return g_typelib_get_string (rinfo->typelib, blob->error_domain);
+  else
+    return NULL;
+}
+
 /**
  * g_enum_info_get_value:
  * @info: a #GIEnumInfo
