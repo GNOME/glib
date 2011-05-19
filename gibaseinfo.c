@@ -202,7 +202,6 @@ _g_type_info_init (GIBaseInfo *info,
  *    +----<link linkend="gi-GIArgInfo">GIArgInfo</link>
  *    +----<link linkend="gi-GICallableInfo">GICallableInfo</link>
  *    +----<link linkend="gi-GIConstantInfo">GIConstantInfo</link>
- *    +----<link linkend="gi-GIErrorDomainInfo">GIErrorDomainInfo</link>
  *    +----<link linkend="gi-GIFieldInfo">GIFieldInfo</link>
  *    +----<link linkend="gi-GIPropertyInfo">GIPropertyInfo</link>
  *    +----<link linkend="gi-GIRegisteredTypeInfo">GIRegisteredTypeInfo</link>
@@ -299,7 +298,7 @@ g_base_info_get_name (GIBaseInfo *info)
     case GI_INFO_TYPE_OBJECT:
     case GI_INFO_TYPE_INTERFACE:
     case GI_INFO_TYPE_CONSTANT:
-    case GI_INFO_TYPE_ERROR_DOMAIN:
+    case GI_INFO_TYPE_INVALID_0:
     case GI_INFO_TYPE_UNION:
       {
         CommonBlob *blob = (CommonBlob *)&rinfo->typelib->data[rinfo->offset];
@@ -421,7 +420,7 @@ g_base_info_is_deprecated (GIBaseInfo *info)
     case GI_INFO_TYPE_OBJECT:
     case GI_INFO_TYPE_INTERFACE:
     case GI_INFO_TYPE_CONSTANT:
-    case GI_INFO_TYPE_ERROR_DOMAIN:
+    case GI_INFO_TYPE_INVALID_0:
       {
         CommonBlob *blob = (CommonBlob *)&rinfo->typelib->data[rinfo->offset];
 

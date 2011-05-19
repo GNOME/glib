@@ -68,13 +68,12 @@ typedef enum
   STATE_BOXED_FIELD,
   STATE_STRUCT,
   STATE_STRUCT_FIELD,
-  STATE_ERRORDOMAIN, /* 25 */
-  STATE_UNION,
+  STATE_UNION,           /* 25 */
   STATE_UNION_FIELD,
   STATE_NAMESPACE_CONSTANT,
   STATE_CLASS_CONSTANT,
-  STATE_INTERFACE_CONSTANT,  /* 30 */
-  STATE_ALIAS,
+  STATE_INTERFACE_CONSTANT,
+  STATE_ALIAS,           /* 30 */
   STATE_TYPE,
   STATE_ATTRIBUTE,
   STATE_DOC,
@@ -1615,68 +1614,6 @@ start_constant (GMarkupParseContext *context,
 }
 
 static gboolean
-start_errordomain (GMarkupParseContext *context,
-		   const gchar         *element_name,
-		   const gchar        **attribute_names,
-		   const gchar        **attribute_values,
-		   ParseContext        *ctx,
-		   GError             **error)
-{
-  const gchar *name;
-  const gchar *getquark;
-  const gchar *codes;
-  const gchar *deprecated;
-  GIrNodeErrorDomain *domain;
-
-  if (!(strcmp (element_name, "errordomain") == 0 &&
-	ctx->state == STATE_NAMESPACE))
-    return FALSE;
-
-  if (!introspectable_prelude (context, attribute_names, attribute_values, ctx, STATE_ERRORDOMAIN))
-    return TRUE;
-
-
-  name = find_attribute ("name", attribute_names, attribute_values);
-  getquark = find_attribute ("get-quark", attribute_names, attribute_values);
-  codes = find_attribute ("codes", attribute_names, attribute_values);
-  deprecated = find_attribute ("deprecated", attribute_names, attribute_values);
-
-  if (name == NULL)
-    {
-      MISSING_ATTRIBUTE (context, error, element_name, "name");
-      return FALSE;
-    }
-  else if (getquark == NULL)
-    {
-      MISSING_ATTRIBUTE (context, error, element_name, "getquark");
-      return FALSE;
-    }
-  else if (codes == NULL)
-    {
-      MISSING_ATTRIBUTE (context, error, element_name, "codes");
-      return FALSE;
-    }
-
-  domain = (GIrNodeErrorDomain *) _g_ir_node_new (G_IR_NODE_ERROR_DOMAIN,
-						 ctx->current_module);
-
-  ((GIrNode *)domain)->name = g_strdup (name);
-  domain->getquark = g_strdup (getquark);
-  domain->codes = g_strdup (codes);
-
-  if (deprecated)
-    domain->deprecated = TRUE;
-  else
-    domain->deprecated = FALSE;
-
-  push_node (ctx, (GIrNode *) domain);
-  ctx->current_module->entries =
-    g_list_append (ctx->current_module->entries, domain);
-
-  return TRUE;
-}
-
-static gboolean
 start_interface (GMarkupParseContext *context,
 		 const gchar         *element_name,
 		 const gchar        **attribute_names,
@@ -2788,10 +2725,6 @@ start_element_handler (GMarkupParseContext *context,
 		      attribute_names, attribute_values,
 		      ctx, error))
 	goto out;
-      else if (start_errordomain (context, element_name,
-		      attribute_names, attribute_values,
-		      ctx, error))
-	goto out;
       break;
 
     case 'f':
@@ -3284,14 +3217,6 @@ end_element_handler (GMarkupParseContext *context,
 
     case STATE_CLASS:
       if (require_end_element (context, ctx, "class", element_name, error))
-	{
-	  pop_node (ctx);
-	  state_switch (ctx, STATE_NAMESPACE);
-	}
-      break;
-
-    case STATE_ERRORDOMAIN:
-      if (require_end_element (context, ctx, "errordomain", element_name, error))
 	{
 	  pop_node (ctx);
 	  state_switch (ctx, STATE_NAMESPACE);

@@ -1466,8 +1466,6 @@ g_info_type_to_string (GIInfoType type)
       return "interface";
     case GI_INFO_TYPE_CONSTANT:
       return "constant";
-    case GI_INFO_TYPE_ERROR_DOMAIN:
-      return "error domain";
     case GI_INFO_TYPE_UNION:
       return "union";
     case GI_INFO_TYPE_VALUE:

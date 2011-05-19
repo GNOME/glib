@@ -284,7 +284,6 @@ g_typelib_check_sanity (void)
   CHECK_SIZE (ArrayTypeBlob, 8);
   CHECK_SIZE (ParamTypeBlob, 4);
   CHECK_SIZE (ErrorTypeBlob, 4);
-  CHECK_SIZE (ErrorDomainBlob, 16);
   CHECK_SIZE (ValueBlob, 12);
   CHECK_SIZE (FieldBlob, 16);
   CHECK_SIZE (RegisteredTypeBlob, 16);
@@ -446,7 +445,6 @@ validate_header_basic (const guint8   *memory,
       header->field_blob_size != sizeof (FieldBlob) ||
       header->value_blob_size != sizeof (ValueBlob) ||
       header->constant_blob_size != sizeof (ConstantBlob) ||
-      header->error_domain_blob_size != sizeof (ErrorDomainBlob) ||
       header->attribute_blob_size != sizeof (AttributeBlob) ||
       header->signature_blob_size != sizeof (SignatureBlob) ||
       header->enum_blob_size != sizeof (EnumBlob) ||
@@ -607,8 +605,6 @@ validate_error_type_blob (GITypelib     *typelib,
 {
   ErrorTypeBlob *blob;
   Header *header;
-  gint i;
-  DirEntry *entry;
 
   blob = (ErrorTypeBlob*)&typelib->data[offset];
 
@@ -621,30 +617,6 @@ validate_error_type_blob (GITypelib     *typelib,
 		   G_TYPELIB_ERROR_INVALID_BLOB,
 		   "Pointer type exected for tag %d", blob->tag);
       return FALSE;
-    }
-
-  for (i = 0; i < blob->n_domains; i++)
-    {
-      if (blob->domains[i] == 0 || blob->domains[i] > header->n_entries)
-	{
-	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Invalid directory index %d", blob->domains[i]);
-	  return FALSE;
-	}
-
-      entry = g_typelib_get_dir_entry (typelib, blob->domains[i]);
-
-      if (entry->blob_type != BLOB_TYPE_ERROR_DOMAIN &&
-	  (entry->local || entry->blob_type != BLOB_TYPE_INVALID))
-	{
-	  g_set_error (error,
-		       G_TYPELIB_ERROR,
-		       G_TYPELIB_ERROR_INVALID_BLOB,
-		       "Wrong blob type");
-	  return FALSE;
-	}
     }
 
   return TRUE;
@@ -1825,14 +1797,6 @@ validate_interface_blob (ValidateContext *ctx,
 }
 
 static gboolean
-validate_errordomain_blob (GITypelib     *typelib,
-			   guint32        offset,
-			   GError       **error)
-{
-  return TRUE;
-}
-
-static gboolean
 validate_union_blob (GITypelib     *typelib,
 		     guint32        offset,
 		     GError       **error)
@@ -1889,10 +1853,6 @@ validate_blob (ValidateContext *ctx,
       break;
     case BLOB_TYPE_CONSTANT:
       if (!validate_constant_blob (typelib, offset, error))
-	return FALSE;
-      break;
-    case BLOB_TYPE_ERROR_DOMAIN:
-      if (!validate_errordomain_blob (typelib, offset, error))
 	return FALSE;
       break;
     case BLOB_TYPE_UNION:
