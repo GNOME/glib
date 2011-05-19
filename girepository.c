@@ -45,6 +45,7 @@ struct _GIRepositoryPrivate
   GHashTable *typelibs; /* (string) namespace -> GITypelib */
   GHashTable *lazy_typelibs; /* (string) namespace-version -> GITypelib */
   GHashTable *info_by_gtype; /* GType -> GIBaseInfo */
+  GHashTable *info_by_error_domain; /* GQuark -> GIBaseInfo */
 };
 
 G_DEFINE_TYPE (GIRepository, g_irepository, G_TYPE_OBJECT);
@@ -64,6 +65,10 @@ g_irepository_init (GIRepository *repository)
     = g_hash_table_new_full (g_direct_hash, g_direct_equal,
                              (GDestroyNotify) NULL,
                              (GDestroyNotify) g_base_info_unref);
+  repository->priv->info_by_error_domain
+    = g_hash_table_new_full (g_direct_hash, g_direct_equal,
+                             (GDestroyNotify) NULL,
+                             (GDestroyNotify) g_base_info_unref);
 }
 
 static void
@@ -74,6 +79,7 @@ g_irepository_finalize (GObject *object)
   g_hash_table_destroy (repository->priv->typelibs);
   g_hash_table_destroy (repository->priv->lazy_typelibs);
   g_hash_table_destroy (repository->priv->info_by_gtype);
+  g_hash_table_destroy (repository->priv->info_by_error_domain);
 
   (* G_OBJECT_CLASS (g_irepository_parent_class)->finalize) (G_OBJECT (repository));
 }
@@ -673,6 +679,83 @@ g_irepository_find_by_name (GIRepository *repository,
   return _g_info_new_full (entry->blob_type,
 			   repository,
 			   NULL, typelib, entry->offset);
+}
+
+typedef struct {
+  GIRepository *repository;
+  GQuark domain;
+
+  GITypelib *result_typelib;
+  DirEntry *result;
+} FindByErrorDomainData;
+
+static void
+find_by_error_domain_foreach (gpointer key,
+			      gpointer value,
+			      gpointer datap)
+{
+  GITypelib *typelib = (GITypelib*)value;
+  FindByErrorDomainData *data = datap;
+
+  if (data->result != NULL)
+    return;
+
+  data->result = g_typelib_get_dir_entry_by_error_domain (typelib, data->domain);
+  if (data->result)
+    data->result_typelib = typelib;
+}
+
+/**
+ * g_irepository_find_by_error_domain:
+ * @repository: (allow-none): A #GIRepository, may be %NULL for the default
+ * @domain: a #GError domain
+ *
+ * Searches for the enum type corresponding to the given #GError
+ * domain. Before calling this function for a particular namespace,
+ * you must call g_irepository_require() once to load the namespace, or
+ * otherwise ensure the namespace has already been loaded.
+ *
+ * Returns: (transfer full): #GIEnumInfo representing metadata about @domain's
+ * enum type, or %NULL
+ *
+ * Since: 1.29.17
+ */
+GIEnumInfo *
+g_irepository_find_by_error_domain (GIRepository *repository,
+				    GQuark        domain)
+{
+  FindByErrorDomainData data;
+  GIEnumInfo *cached;
+
+  repository = get_repository (repository);
+
+  cached = g_hash_table_lookup (repository->priv->info_by_error_domain,
+				GUINT_TO_POINTER (domain));
+
+  if (cached != NULL)
+    return g_base_info_ref ((GIBaseInfo *)cached);
+
+  data.repository = repository;
+  data.domain = domain;
+  data.result_typelib = NULL;
+  data.result = NULL;
+
+  g_hash_table_foreach (repository->priv->typelibs, find_by_error_domain_foreach, &data);
+  if (data.result == NULL)
+    g_hash_table_foreach (repository->priv->lazy_typelibs, find_by_error_domain_foreach, &data);
+
+  if (data.result != NULL)
+    {
+      cached = _g_info_new_full (data.result->blob_type,
+				 repository,
+				 NULL, data.result_typelib, data.result->offset);
+
+      g_hash_table_insert (repository->priv->info_by_error_domain,
+			   GUINT_TO_POINTER (domain),
+			   g_base_info_ref (cached));
+      return cached;
+    }
+  return NULL;
 }
 
 static void

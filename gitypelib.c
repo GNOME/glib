@@ -249,6 +249,36 @@ g_typelib_get_dir_entry_by_gtype (GITypelib *typelib,
   return NULL;
 }
 
+DirEntry *
+g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
+					 GQuark     error_domain)
+{
+  Header *header = (Header *)typelib->data;
+  guint n_entries = header->n_local_entries;
+  const char *domain_string = g_quark_to_string (error_domain);
+  DirEntry *entry;
+  guint i;
+
+  for (i = 1; i <= n_entries; i++)
+    {
+      EnumBlob *blob;
+      const char *enum_domain_string;
+
+      entry = g_typelib_get_dir_entry (typelib, i);
+      if (entry->blob_type != BLOB_TYPE_ENUM)
+	continue;
+
+      blob = (EnumBlob *)(&typelib->data[entry->offset]);
+      if (!blob->error_domain)
+	continue;
+
+      enum_domain_string = g_typelib_get_string (typelib, blob->error_domain);
+      if (strcmp (domain_string, enum_domain_string) == 0)
+	return entry;
+    }
+  return NULL;
+}
+
 void
 g_typelib_check_sanity (void)
 {

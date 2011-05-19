@@ -1117,6 +1117,9 @@ DirEntry *g_typelib_get_dir_entry_by_gtype (GITypelib *typelib,
 					    gboolean   fastpass,
 					    GType      gtype);
 
+DirEntry *g_typelib_get_dir_entry_by_error_domain (GITypelib *typelib,
+						   GQuark     error_domain);
+
 void      g_typelib_check_sanity (void);
 
 #define   g_typelib_get_string(typelib,offset) ((const gchar*)&(typelib->data)[(offset)])
