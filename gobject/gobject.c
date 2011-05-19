@@ -2938,14 +2938,10 @@ gpointer
 g_object_get_data (GObject     *object,
                    const gchar *key)
 {
-  GQuark quark;
-
   g_return_val_if_fail (G_IS_OBJECT (object), NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
-  quark = g_quark_try_string (key);
-
-  return quark ? g_datalist_id_get_data (&object->qdata, quark) : NULL;
+  return g_datalist_get_data (&object->qdata, key);
 }
 
 /**
