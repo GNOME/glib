@@ -776,16 +776,6 @@ g_dataset_id_get_data (gconstpointer  dataset_location,
  *
  * Retrieves the data element corresponding to @key_id.
  **/
-/**
- * g_datalist_get_data:
- * @dl: a datalist.
- * @k: the string identifying a data element.
- * @Returns: the data element, or %NULL if it is not found.
- *
- * Gets a data element, using its string identifer. This is slower than
- * g_datalist_id_get_data() because the string is first converted to a
- * #GQuark.
- **/
 gpointer
 g_datalist_id_get_data (GData	 **datalist,
 			GQuark     key_id)
@@ -818,6 +808,48 @@ g_datalist_id_get_data (GData	 **datalist,
 
       g_datalist_unlock (datalist);
     }
+
+  return res;
+}
+
+/**
+ * g_datalist_get_data:
+ * @dl: a datalist.
+ * @k: the string identifying a data element.
+ * @Returns: the data element, or %NULL if it is not found.
+ *
+ * Gets a data element, using its string identifer. This is slower than
+ * g_datalist_id_get_data() because it compares strings.
+ **/
+gpointer
+g_datalist_get_data (GData	 **datalist,
+		     const gchar *key)
+{
+  gpointer res = NULL;
+  GData *d;
+  GDataElt *data, *data_end;
+
+  g_return_val_if_fail (datalist != NULL, NULL);
+
+  g_datalist_lock (datalist);
+
+  d = G_DATALIST_GET_POINTER (datalist);
+  if (d)
+    {
+      data = d->data;
+      data_end = data + d->len;
+      while (data < data_end)
+	{
+	  if (strcmp (g_quark_to_string (data->key), key) == 0)
+	    {
+	      res = data->data;
+	      break;
+	    }
+	  data++;
+	}
+    }
+
+  g_datalist_unlock (datalist);
 
   return res;
 }

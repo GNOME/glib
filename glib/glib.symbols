@@ -184,6 +184,7 @@ g_filename_to_utf8_utf8
 g_uri_list_extract_uris
 g_datalist_clear
 g_datalist_foreach
+g_datalist_get_data
 g_datalist_get_flags
 g_datalist_id_get_data
 g_datalist_id_remove_no_notify

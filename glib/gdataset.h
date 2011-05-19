@@ -76,8 +76,6 @@ guint    g_datalist_get_flags           (GData            **datalist);
      g_datalist_id_set_data_full ((dl), (q), (d), NULL)
 #define   g_datalist_id_remove_data(dl, q)      \
      g_datalist_id_set_data ((dl), (q), NULL)
-#define   g_datalist_get_data(dl, k)            \
-     (g_datalist_id_get_data ((dl), g_quark_try_string (k)))
 #define   g_datalist_set_data_full(dl, k, d, f) \
      g_datalist_id_set_data_full ((dl), g_quark_from_string (k), (d), (f))
 #define   g_datalist_remove_no_notify(dl, k)    \
@@ -93,6 +91,8 @@ guint    g_datalist_get_flags           (GData            **datalist);
 void      g_dataset_destroy             (gconstpointer    dataset_location);
 gpointer  g_dataset_id_get_data         (gconstpointer    dataset_location,
                                          GQuark           key_id);
+gpointer  g_datalist_get_data            (GData	 **datalist,
+					  const gchar *key);
 void      g_dataset_id_set_data_full    (gconstpointer    dataset_location,
                                          GQuark           key_id,
                                          gpointer         data,
