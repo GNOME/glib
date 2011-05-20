@@ -825,6 +825,34 @@ set_ref_hash_test (void)
   key_unref (key2);
 }
 
+GHashTable *h;
+
+static void
+value_destroy_insert (gpointer value)
+{
+  g_hash_table_remove_all (h);
+}
+
+static void
+test_destroy_modify (void)
+{
+  g_test_bug ("650459");
+
+  h = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, value_destroy_insert);
+
+  g_hash_table_insert (h, g_strdup ("a"), g_strdup ("b"));
+  g_hash_table_insert (h, g_strdup ("c"), g_strdup ("d"));
+  g_hash_table_insert (h, g_strdup ("e"), g_strdup ("f"));
+  g_hash_table_insert (h, g_strdup ("g"), g_strdup ("h"));
+  g_hash_table_insert (h, g_strdup ("h"), g_strdup ("k"));
+  g_hash_table_insert (h, g_strdup ("a"), g_strdup ("c"));
+
+  g_hash_table_remove (h, "c");
+  g_hash_table_remove (h, "e");
+
+  g_hash_table_unref (h);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -846,6 +874,7 @@ main (int argc, char *argv[])
 
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);
+  g_test_add_func ("/hash/destroy-modify", test_destroy_modify);
 
   return g_test_run ();
 

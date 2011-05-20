@@ -345,8 +345,8 @@ g_hash_table_set_shift_from_size (GHashTable *hash_table, gint size)
  */
 static inline guint
 g_hash_table_lookup_node (GHashTable    *hash_table,
-			  gconstpointer  key,
-			  guint         *hash_return)
+                          gconstpointer  key,
+                          guint         *hash_return)
 {
   guint node_index;
   guint hash_value;
@@ -373,7 +373,7 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
 
       if (node_hash == hash_value)
         {
-	  gpointer node_key = hash_table->keys[node_index];
+          gpointer node_key = hash_table->keys[node_index];
 
           if (hash_table->key_equal_func)
             {
@@ -419,11 +419,11 @@ g_hash_table_remove_node (GHashTable   *hash_table,
                           int           i,
                           gboolean      notify)
 {
-  if (notify && hash_table->key_destroy_func)
-    hash_table->key_destroy_func (hash_table->keys[i]);
+  gpointer key;
+  gpointer value;
 
-  if (notify && hash_table->value_destroy_func)
-    hash_table->value_destroy_func (hash_table->values[i]);
+  key = hash_table->keys[i];
+  value = hash_table->values[i];
 
   /* Erect tombstone */
   hash_table->hashes[i] = 1;
@@ -433,6 +433,13 @@ g_hash_table_remove_node (GHashTable   *hash_table,
   hash_table->values[i] = NULL;
 
   hash_table->nnodes--;
+
+  if (notify && hash_table->key_destroy_func)
+    hash_table->key_destroy_func (key);
+
+  if (notify && hash_table->value_destroy_func)
+    hash_table->value_destroy_func (value);
+
 }
 
 /*
@@ -451,33 +458,41 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
                                gboolean    notify)
 {
   int i;
-
-  if (notify &&
-      (hash_table->key_destroy_func != NULL ||
-       hash_table->value_destroy_func != NULL))
-    {
-      for (i = 0; i < hash_table->size; i++)
-        {
-          if (HASH_IS_REAL (hash_table->hashes[i]))
-            {
-              if (hash_table->key_destroy_func != NULL)
-                hash_table->key_destroy_func (hash_table->keys[i]);
-
-              if (hash_table->value_destroy_func != NULL)
-                hash_table->value_destroy_func (hash_table->values[i]);
-            }
-        }
-    }
-
-  /* We need to set node->key_hash = 0 for all nodes - might as well be GC
-   * friendly and clear everything
-   */
-  memset (hash_table->hashes, 0, hash_table->size * sizeof (guint));
-  memset (hash_table->keys, 0, hash_table->size * sizeof (gpointer));
-  memset (hash_table->values, 0, hash_table->size * sizeof (gpointer));
+  gpointer key;
+  gpointer value;
 
   hash_table->nnodes = 0;
   hash_table->noccupied = 0;
+
+  if (!notify ||
+      (hash_table->key_destroy_func == NULL &&
+       hash_table->value_destroy_func == NULL))
+    {
+      memset (hash_table->hashes, 0, hash_table->size * sizeof (guint));
+      memset (hash_table->keys, 0, hash_table->size * sizeof (gpointer));
+      memset (hash_table->values, 0, hash_table->size * sizeof (gpointer));
+
+      return;
+    }
+
+  for (i = 0; i < hash_table->size; i++)
+    {
+      if (HASH_IS_REAL (hash_table->hashes[i]))
+        {
+          key = hash_table->keys[i];
+          value = hash_table->values[i];
+
+          hash_table->hashes[i] = 0;
+          hash_table->keys[i] = NULL;
+          hash_table->values[i] = NULL;
+
+          if (hash_table->key_destroy_func != NULL)
+            hash_table->key_destroy_func (key);
+
+          if (hash_table->value_destroy_func != NULL)
+            hash_table->value_destroy_func (value);
+        }
+    }
 }
 
 /*
@@ -662,7 +677,7 @@ g_hash_table_new_full (GHashFunc       hash_func,
  **/
 void
 g_hash_table_iter_init (GHashTableIter *iter,
-			GHashTable     *hash_table)
+                        GHashTable     *hash_table)
 {
   RealIter *ri = (RealIter *) iter;
 
@@ -692,8 +707,8 @@ g_hash_table_iter_init (GHashTableIter *iter,
  **/
 gboolean
 g_hash_table_iter_next (GHashTableIter *iter,
-			gpointer       *key,
-			gpointer       *value)
+                        gpointer       *key,
+                        gpointer       *value)
 {
   RealIter *ri = (RealIter *) iter;
   gint position;
@@ -969,6 +984,8 @@ g_hash_table_insert_internal (GHashTable *hash_table,
   guint node_index;
   guint key_hash;
   guint old_hash;
+  gpointer old_key;
+  gpointer old_value;
 
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (hash_table->ref_count > 0);
@@ -979,24 +996,13 @@ g_hash_table_insert_internal (GHashTable *hash_table,
   node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
   old_hash = hash_table->hashes[node_index];
+  old_key = hash_table->keys[node_index];
+  old_value = hash_table->values[node_index];
 
   if (HASH_IS_REAL (old_hash))
     {
-      if (hash_table->value_destroy_func)
-        hash_table->value_destroy_func (hash_table->values[node_index]);
-
       if (keep_new_key)
-        {
-          if (hash_table->key_destroy_func)
-            hash_table->key_destroy_func (hash_table->keys[node_index]);
-          hash_table->keys[node_index] = key;
-        }
-      else
-        {
-          if (hash_table->key_destroy_func)
-            hash_table->key_destroy_func (key);
-        }
-
+        hash_table->keys[node_index] = key;
       hash_table->values[node_index] = value;
     }
   else
@@ -1017,6 +1023,14 @@ g_hash_table_insert_internal (GHashTable *hash_table,
 #ifndef G_DISABLE_ASSERT
       hash_table->version++;
 #endif
+    }
+
+  if (HASH_IS_REAL (old_hash))
+    {
+      if (hash_table->key_destroy_func)
+        hash_table->key_destroy_func (keep_new_key ? old_key : key);
+      if (hash_table->value_destroy_func)
+        hash_table->value_destroy_func (old_value);
     }
 }
 
@@ -1208,7 +1222,7 @@ g_hash_table_steal_all (GHashTable *hash_table)
  */
 static guint
 g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
-                                      GHRFunc	  func,
+                                      GHRFunc     func,
                                       gpointer    user_data,
                                       gboolean    notify)
 {
@@ -1222,7 +1236,7 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
       gpointer node_value = hash_table->values[i];
 
       if (HASH_IS_REAL (node_hash) &&
-	  (* func) (node_key, node_value, user_data))
+          (* func) (node_key, node_value, user_data))
         {
           g_hash_table_remove_node (hash_table, i, notify);
           deleted++;
@@ -1373,7 +1387,7 @@ g_hash_table_find (GHashTable      *hash_table,
       gpointer node_value = hash_table->values[i];
 
       if (HASH_IS_REAL (node_hash) &&
-	  predicate (node_key, node_value, user_data))
+          predicate (node_key, node_value, user_data))
         return node_value;
     }
 
