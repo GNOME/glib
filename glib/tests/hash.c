@@ -853,6 +853,85 @@ test_destroy_modify (void)
   g_hash_table_unref (h);
 }
 
+static gboolean
+find_str (gpointer key, gpointer value, gpointer data)
+{
+  return g_str_equal (key, data);
+}
+
+static void
+test_find (void)
+{
+  GHashTable *hash;
+  const gchar *value;
+
+  hash = g_hash_table_new (g_str_hash, g_str_equal);
+
+  g_hash_table_insert (hash, "a", "A");
+  g_hash_table_insert (hash, "b", "B");
+  g_hash_table_insert (hash, "c", "C");
+  g_hash_table_insert (hash, "d", "D");
+  g_hash_table_insert (hash, "e", "E");
+  g_hash_table_insert (hash, "f", "F");
+
+  value = g_hash_table_find (hash, find_str, "a");
+  g_assert_cmpstr (value, ==, "A");
+
+  value = g_hash_table_find (hash, find_str, "b");
+  g_assert_cmpstr (value, ==, "B");
+
+  value = g_hash_table_find (hash, find_str, "c");
+  g_assert_cmpstr (value, ==, "C");
+
+  value = g_hash_table_find (hash, find_str, "d");
+  g_assert_cmpstr (value, ==, "D");
+
+  value = g_hash_table_find (hash, find_str, "e");
+  g_assert_cmpstr (value, ==, "E");
+
+  value = g_hash_table_find (hash, find_str, "f");
+  g_assert_cmpstr (value, ==, "F");
+
+  value = g_hash_table_find (hash, find_str, "0");
+  g_assert (value == NULL);
+
+  g_hash_table_unref (hash);
+}
+
+gboolean seen_key[6];
+
+static void
+foreach_func (gpointer key, gpointer value, gpointer data)
+{
+  seen_key[((char*)key)[0] - 'a'] = TRUE;
+}
+
+static void
+test_foreach (void)
+{
+  GHashTable *hash;
+  gint i;
+
+  hash = g_hash_table_new (g_str_hash, g_str_equal);
+
+  g_hash_table_insert (hash, "a", "A");
+  g_hash_table_insert (hash, "b", "B");
+  g_hash_table_insert (hash, "c", "C");
+  g_hash_table_insert (hash, "d", "D");
+  g_hash_table_insert (hash, "e", "E");
+  g_hash_table_insert (hash, "f", "F");
+
+  for (i = 0; i < 6; i++)
+    seen_key[i] = FALSE;
+
+  g_hash_table_foreach (hash, foreach_func, NULL);
+
+  for (i = 0; i < 6; i++)
+    g_assert (seen_key[i]);
+
+  g_hash_table_unref (hash);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -871,6 +950,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/hash/set-ref", set_ref_hash_test);
   g_test_add_func ("/hash/ref", test_hash_ref);
   g_test_add_func ("/hash/remove-all", test_remove_all);
+  g_test_add_func ("/hash/find", test_find);
+  g_test_add_func ("/hash/foreach", test_foreach);
 
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);

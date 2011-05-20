@@ -1228,6 +1228,9 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
 {
   guint deleted = 0;
   gint i;
+#ifndef G_DISABLE_ASSERT
+  gint version = hash_table->version;
+#endif
 
   for (i = 0; i < hash_table->size; i++)
     {
@@ -1241,6 +1244,10 @@ g_hash_table_foreach_remove_or_steal (GHashTable *hash_table,
           g_hash_table_remove_node (hash_table, i, notify);
           deleted++;
         }
+
+#ifndef G_DISABLE_ASSERT
+      g_return_val_if_fail (version == hash_table->version, 0);
+#endif
     }
 
   g_hash_table_maybe_resize (hash_table);
@@ -1291,7 +1298,7 @@ g_hash_table_foreach_remove (GHashTable *hash_table,
  * If the function returns %TRUE, then the key/value pair is removed from the
  * #GHashTable, but no key or value destroy functions are called.
  *
- * See #GHashTableIter for an alternative way to loop over the 
+ * See #GHashTableIter for an alternative way to loop over the
  * key/value pairs in the hash table.
  *
  * Return value: the number of key/value pairs removed.
@@ -1329,6 +1336,9 @@ g_hash_table_foreach (GHashTable *hash_table,
                       gpointer    user_data)
 {
   gint i;
+#ifndef G_DISABLE_ASSERT
+  gint version = hash_table->version;
+#endif
 
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (func != NULL);
@@ -1341,6 +1351,10 @@ g_hash_table_foreach (GHashTable *hash_table,
 
       if (HASH_IS_REAL (node_hash))
         (* func) (node_key, node_value, user_data);
+
+#ifndef G_DISABLE_ASSERT
+      g_return_if_fail (version == hash_table->version);
+#endif
     }
 }
 
@@ -1364,21 +1378,27 @@ g_hash_table_foreach (GHashTable *hash_table,
  * operation issued for all n values in a hash table ends up needing O(n*n)
  * operations).
  *
- * Return value: The value of the first key/value pair is returned, for which
- * func evaluates to %TRUE. If no pair with the requested property is found,
- * %NULL is returned.
+ * Return value: The value of the first key/value pair is returned,
+ *     for which @predicate evaluates to %TRUE. If no pair with the
+ *     requested property is found, %NULL is returned.
  *
  * Since: 2.4
  **/
 gpointer
-g_hash_table_find (GHashTable      *hash_table,
-                   GHRFunc          predicate,
-                   gpointer         user_data)
+g_hash_table_find (GHashTable *hash_table,
+                   GHRFunc     predicate,
+                   gpointer    user_data)
 {
   gint i;
+#ifndef G_DISABLE_ASSERT
+  gint version = hash_table->version;
+#endif
+  gboolean match;
 
   g_return_val_if_fail (hash_table != NULL, NULL);
   g_return_val_if_fail (predicate != NULL, NULL);
+
+  match = FALSE;
 
   for (i = 0; i < hash_table->size; i++)
     {
@@ -1386,8 +1406,14 @@ g_hash_table_find (GHashTable      *hash_table,
       gpointer node_key = hash_table->keys[i];
       gpointer node_value = hash_table->values[i];
 
-      if (HASH_IS_REAL (node_hash) &&
-          predicate (node_key, node_value, user_data))
+      if (HASH_IS_REAL (node_hash))
+        match = predicate (node_key, node_value, user_data);
+
+#ifndef G_DISABLE_ASSERT
+      g_return_val_if_fail (version == hash_table->version, NULL);
+#endif
+
+      if (match)
         return node_value;
     }
 
