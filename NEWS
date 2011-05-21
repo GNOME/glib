@@ -1,3 +1,27 @@
+Overview of Changes from GLib 2.28.6 to 2.28.7
+==============================================
+
+* Bugs fixed:
+ 635694 gdbus aborting due to unauthorized socket...
+ 637561 Crash when using G_DBUS_SERVER_FLAGS_RUN_IN_THREAD
+ 642935 g_date_time_format() prints wrong value for %z...
+ 643134 g_dbus_message_copy
+ 646326 /gdbus/message-serialize-invalid test relies on...
+ 646435 GTimeZone doesn't seem to be thread-safe
+ 647594 README link to mailing list is broken
+ 647602 Cannot connect to remote message bus via TCP
+ 648416 g_app_info_create_from_commandline ignores SUPP...
+ 648966 Update g_unichar_iswide and g_unichar_iswide_cjk
+ 649915 gsettings accepts unquoted strings longer than two...
+ 650078 forkbomb building glib/tests/protocol
+ 650211 Optimization in key file parsing
+ 650236 GApplication over DBus implements action state...
+
+* Translation updates:
+ Turkish
+ Uighur
+
+
 Overview of Changes from GLib 2.28.5 to 2.28.6
 ==============================================
 
