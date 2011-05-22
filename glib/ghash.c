@@ -201,7 +201,7 @@
 #define HASH_TABLE_MIN_SHIFT 3  /* 1 << 3 == 8 buckets */
 
 #define HASH_IS_UNUSED(h_) ((h_) == 0)
-#define HASH_IS_TOOMBSTONE(h_) ((h_) == 1)
+#define HASH_IS_TOMBSTONE(h_) ((h_) == 1)
 #define HASH_IS_REAL(h_) ((h_) >= 2)
 
 struct _GHashTable
@@ -385,7 +385,7 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
               return node_index;
             }
         }
-      else if (HASH_IS_TOOMBSTONE (node_hash) && !have_tombstone)
+      else if (HASH_IS_TOMBSTONE (node_hash) && !have_tombstone)
         {
           first_tombstone = node_index;
           have_tombstone = TRUE;
