@@ -165,6 +165,24 @@ The macro should only be used once per source code line.
 @expr: a constant expression.
 @Since: 2.20
 
+<!-- ##### MACRO G_STATIC_ASSERT_EXPR ##### -->
+<para>
+The G_STATIC_ASSERT_EXPR macro lets the programmer check a condition at
+compile time.  The condition needs to be compile time computable.
+</para>
+<para>
+Unlike <literal>G_STATIC_ASSERT</literal>, this macro evaluates to an
+expression and, as such, can be used in the middle of other expressions.
+Its value should be ignored.  This can be accomplished by placing it as
+the first argument of a comma expression.
+</para>
+<informalexample><programlisting>
+#define ADD_ONE_TO_INT(x) \
+  (G_STATIC_ASSERT_EXPR(sizeof (x) == sizeof (int)), ((x) + 1))
+</programlisting></informalexample>
+
+@expr: a constant expression.
+@Since: 2.30
 
 <!-- ##### MACRO G_GNUC_EXTENSION ##### -->
 <para>
