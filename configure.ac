@@ -2590,15 +2590,16 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 int
 main (void)
 {
-  /* it's not like this actually runs or anything... */
+  /* not like this actually runs or anything... */
   syscall (SYS_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
   return 0;
 }
 ])],
 [
   AC_MSG_RESULT(yes)
-  AC_DEFINE(HAVE_FUTEX, [test "$have_futex" = "yes"],
-            [we have the futex(2) system call])
+  if test "$have_futex" = "yes"; then
+    AC_DEFINE(HAVE_FUTEX, 1, [we have the futex(2) system call])
+  fi
 ],
 [
   AC_MSG_RESULT(no)
