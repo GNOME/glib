@@ -2533,21 +2533,20 @@ dnl ************************
 AC_MSG_CHECKING([for futex(2) system call])
 AC_COMPILE_IFELSE([ 
 #include <linux/futex.h>
-#include <syscall.h>
+#include <sys/syscall.h>
 #include <unistd.h>
 
 int
 main (void)
 {
-  /* it's not like this actually runs or anything... */
-  syscall (SYS_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
+  /* it is not like this actually runs or anything... */
+  syscall (__NR_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
   return 0;
 }
 ],
 [
   AC_MSG_RESULT(yes)
-  AC_DEFINE(HAVE_FUTEX, [test "$have_futex" = "yes"],
-            [we have the futex(2) system call])
+  AC_DEFINE(HAVE_FUTEX, 1, [we have the futex(2) system call])
 ],
 [
   AC_MSG_RESULT(no)
