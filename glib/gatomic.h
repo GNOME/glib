@@ -56,12 +56,41 @@ gpointer g_atomic_pointer_get                  (volatile gpointer G_GNUC_MAY_ALI
 void     g_atomic_pointer_set                  (volatile gpointer G_GNUC_MAY_ALIAS *atomic,
 						gpointer           newval);
 
-#ifndef G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
+#if defined(__GNUC__) && defined(G_ATOMIC_OP_USE_GCC_BUILTINS)
+
+#define g_atomic_int_exchange_and_add(atomic,val) \
+  __sync_fetch_and_add((atomic),(val))
+
+#define g_atomic_int_add(atomic,val) \
+  __sync_fetch_and_add((atomic),(val))
+
+#define g_atomic_int_compare_and_exchange(atomic,oldval,newval) \
+  __sync_bool_compare_and_swap((atomic),(oldval),(newval))
+
+#define g_atomic_int_get(atomic) \
+  __extension__ ({ __sync_synchronize(); *(atomic); })
+
+#define g_atomic_int_set(atomic,newval) \
+  __extension__ ({ *(atomic) = (newval); __sync_synchronize(); })
+
+#define g_atomic_pointer_compare_and_exchange(atomic,oldval,newval) \
+  __sync_bool_compare_and_swap((atomic),(oldval),(newval))
+
+#define g_atomic_pointer_get(atomic) \
+  __extension__ ({ __sync_synchronize(); *(atomic); })
+
+#define g_atomic_pointer_set(atomic,newval) \
+  __extension__ ({ *(atomic) = (newval); __sync_synchronize(); })
+
+#elif !defined(G_ATOMIC_OP_MEMORY_BARRIER_NEEDED)
+
 # define g_atomic_int_get(atomic) 		((gint)*(atomic))
 # define g_atomic_int_set(atomic, newval) 	((void) (*(atomic) = (newval)))
 # define g_atomic_pointer_get(atomic) 		((gpointer)*(atomic))
 # define g_atomic_pointer_set(atomic, newval)	((void) (*(atomic) = (newval)))
+
 #else
+
 # define g_atomic_int_get(atomic) \
  ((void) sizeof (gchar [sizeof (*(atomic)) == sizeof (gint) ? 1 : -1]), \
   (g_atomic_int_get) ((volatile gint G_GNUC_MAY_ALIAS *) (volatile void *) (atomic)))
@@ -74,6 +103,7 @@ void     g_atomic_pointer_set                  (volatile gpointer G_GNUC_MAY_ALI
 # define g_atomic_pointer_set(atomic, newval) \
  ((void) sizeof (gchar [sizeof (*(atomic)) == sizeof (gpointer) ? 1 : -1]), \
   (g_atomic_pointer_set) ((volatile gpointer G_GNUC_MAY_ALIAS *) (volatile void *) (atomic), (newval)))
+
 #endif /* G_ATOMIC_OP_MEMORY_BARRIER_NEEDED */
 
 /**

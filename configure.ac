@@ -2468,9 +2468,6 @@ if test x"$GCC" = xyes; then
 	      [glib_cv_gcc_has_builtin_atomic_operations=no])
 
   AC_MSG_RESULT($glib_cv_gcc_has_builtin_atomic_operations)
-  if test $glib_cv_gcc_has_builtin_atomic_operations = yes; then
-    glib_memory_barrier_needed=yes
-  else
     case $host_cpu in
       i386)
         AC_MSG_RESULT([none])
@@ -2567,7 +2564,6 @@ if test x"$GCC" = xyes; then
         glib_memory_barrier_needed=yes
         ;;
     esac
-  fi
 else
   if test $glib_native_win32 = yes; then
     # For Windows but not using gcc. No barriers needed then either.
@@ -2590,7 +2586,7 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 int
 main (void)
 {
-  /* not like this actually runs or anything... */
+  /* it is not like this actually runs or anything... */
   syscall (SYS_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
   return 0;
 }
@@ -3257,7 +3253,10 @@ _______EOF
 	  echo >>$outfile
 	  echo "#define G_ATOMIC_OP_MEMORY_BARRIER_NEEDED 1" >>$outfile
 	fi
-
+	if test x"$g_gcc_atomic_ops" != xno; then
+          echo >>$outfile
+          echo "#define G_ATOMIC_OP_USE_GCC_BUILTINS 1" >>$outfile
+        fi
 	echo >>$outfile
 	g_bit_sizes="16 32 64"
 	for bits in $g_bit_sizes; do
@@ -3634,6 +3633,7 @@ g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
 g_mutex_contents="$glib_cv_byte_contents_gmutex"
 
 g_memory_barrier_needed="$glib_memory_barrier_needed"
+g_gcc_atomic_ops="$glib_cv_gcc_has_builtin_atomic_operations"
 
 g_module_suffix="$glib_gmodule_suffix"
 
