@@ -457,7 +457,6 @@ gsettings_set (GSettings   *settings,
   GError *error = NULL;
   GVariant *existing;
   GVariant *new;
-  GVariant *stored;
   gchar *freeme = NULL;
 
   existing = g_settings_get_value (settings, key);
@@ -503,22 +502,15 @@ gsettings_set (GSettings   *settings,
   if (!g_settings_range_check (settings, key, new))
     {
       g_printerr (_("The provided value is outside of the valid range\n"));
+      g_variant_unref (new);
       exit (1);
     }
 
   g_settings_set_value (settings, key, new);
-  g_settings_sync ();
-
-  stored = g_settings_get_value (settings, key);
-  if (g_variant_equal (stored, existing))
-    {
-      g_printerr (_("Failed to set value\n"));
-      exit (1);
-    }
-
-  g_variant_unref (stored);
   g_variant_unref (existing);
   g_variant_unref (new);
+
+  g_settings_sync ();
 
   g_free (freeme);
 }
