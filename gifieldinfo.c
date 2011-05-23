@@ -528,9 +528,13 @@ g_field_info_set_field (GIFieldInfo     *field_info,
                   G_STRUCT_MEMBER (gpointer, mem, offset) = (gpointer)value->v_pointer;
                   result = TRUE;
                   break;
+	        default:
+		  break;
               }
               g_base_info_unref ((GIBaseInfo *)interface);
           }
+	default:
+	  break;
         }
     }
 
