@@ -1110,7 +1110,7 @@ g_regex_unref (GRegex *regex)
 {
   g_return_if_fail (regex != NULL);
 
-  if (g_atomic_int_exchange_and_add (&regex->ref_count, -1) - 1 == 0)
+  if (g_atomic_int_dec_and_test (&regex->ref_count))
     {
       g_free (regex->pattern);
       if (regex->pcre_re != NULL)
