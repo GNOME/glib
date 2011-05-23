@@ -349,28 +349,27 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
                           guint         *hash_return)
 {
   guint node_index;
+  guint node_hash;
   guint hash_value;
   guint first_tombstone = 0;
   gboolean have_tombstone = FALSE;
   guint step = 0;
 
-  hash_value = (* hash_table->hash_func) (key);
+  hash_value = hash_table->hash_func (key);
   if (G_UNLIKELY (!HASH_IS_REAL (hash_value)))
     hash_value = 2;
 
   *hash_return = hash_value;
 
   node_index = hash_value % hash_table->mod;
+  node_hash = hash_table->hashes[node_index];
 
-  while (!HASH_IS_UNUSED (hash_table->hashes[node_index]))
+  while (!HASH_IS_UNUSED (node_hash))
     {
-      guint node_hash = hash_table->hashes[node_index];
-
-      /*  We first check if our full hash values
-       *  are equal so we can avoid calling the full-blown
-       *  key equality function in most cases.
+      /* We first check if our full hash values
+       * are equal so we can avoid calling the full-blown
+       * key equality function in most cases.
        */
-
       if (node_hash == hash_value)
         {
           gpointer node_key = hash_table->keys[node_index];
@@ -394,6 +393,7 @@ g_hash_table_lookup_node (GHashTable    *hash_table,
       step++;
       node_index += step;
       node_index &= hash_table->mask;
+      node_hash = hash_table->hashes[node_index];
     }
 
   if (have_tombstone)
@@ -835,7 +835,8 @@ g_hash_table_ref (GHashTable *hash_table)
   g_return_val_if_fail (hash_table != NULL, NULL);
   g_return_val_if_fail (hash_table->ref_count > 0, hash_table);
 
-  g_atomic_int_add (&hash_table->ref_count, 1);
+  g_atomic_int_inc (&hash_table->ref_count);
+
   return hash_table;
 }
 
@@ -856,7 +857,7 @@ g_hash_table_unref (GHashTable *hash_table)
   g_return_if_fail (hash_table != NULL);
   g_return_if_fail (hash_table->ref_count > 0);
 
-  if (g_atomic_int_exchange_and_add (&hash_table->ref_count, -1) - 1 == 0)
+  if (g_atomic_int_dec_and_test (&hash_table->ref_count))
     {
       g_hash_table_remove_all_nodes (hash_table, TRUE);
       if (hash_table->keys != hash_table->values)
