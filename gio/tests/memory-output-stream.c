@@ -118,6 +118,10 @@ test_properties (void)
   GDataOutputStream *o;
   int i;
   GError *error = NULL;
+  gsize data_size_fun;
+  gsize data_size_prop;
+  gpointer data_fun;
+  gpointer data_prop;
 
   g_test_bug ("605733");
 
@@ -133,13 +137,11 @@ test_properties (void)
       g_assert_no_error (error);
     }
 
-  gsize data_size_fun = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo));
-  gsize data_size_prop;
+  data_size_fun = g_memory_output_stream_get_data_size (G_MEMORY_OUTPUT_STREAM (mo));
   g_object_get (mo, "data-size", &data_size_prop, NULL);
   g_assert_cmpint (data_size_fun, ==, data_size_prop);
 
-  gpointer data_fun = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
-  gpointer data_prop;
+  data_fun = g_memory_output_stream_get_data (G_MEMORY_OUTPUT_STREAM (mo));
   g_object_get (mo, "data", &data_prop, NULL);
   g_assert_cmphex (GPOINTER_TO_SIZE (data_fun), ==, GPOINTER_TO_SIZE (data_prop));
 

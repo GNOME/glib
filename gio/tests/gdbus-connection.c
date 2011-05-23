@@ -529,6 +529,8 @@ test_connection_signals (void)
   GError *error;
   gboolean ret;
   GVariant *result;
+  gboolean quit_mainloop_fired;
+  guint quit_mainloop_id;
 
   error = NULL;
 
@@ -686,8 +688,6 @@ test_connection_signals (void)
    * Also to check the total amount of NameOwnerChanged signals - use a 5 second ceiling
    * to avoid spinning forever
    */
-  gboolean quit_mainloop_fired;
-  guint quit_mainloop_id;
   quit_mainloop_fired = FALSE;
   quit_mainloop_id = g_timeout_add (30000, test_connection_quit_mainloop, &quit_mainloop_fired);
   while (count_name_owner_changed < 2 && !quit_mainloop_fired)
