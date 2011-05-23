@@ -1,16 +1,6 @@
 /* This file lists all exported symbols. It is used to generate
  * the glib.def file used to control exports on Windows.
- * 
- * Every symbol must be included in the right
- * #ifdef IN_HEADER(sym) #endif and
- * #ifdef IN_FILE(sym) #endif sections. 
  */
-#ifdef ALL_FILES
-#define IN_FILE(x) 1
-#define IN_HEADER(x) 1
-#endif
-#if IN_HEADER(__G_ARRAY_H__)
-#if IN_FILE(__G_ARRAY_C__)
 g_array_append_vals
 g_array_free
 g_array_insert_vals
@@ -56,11 +46,6 @@ g_ptr_array_set_size
 g_ptr_array_sized_new
 g_ptr_array_sort
 g_ptr_array_sort_with_data
-#endif
-#endif
-
-#if IN_HEADER(__G_ASYNCQUEUE_H__)
-#if IN_FILE(__G_ASYNCQUEUE_C__)
 g_async_queue_length
 g_async_queue_length_unlocked
 g_async_queue_lock
@@ -81,49 +66,24 @@ g_async_queue_try_pop
 g_async_queue_try_pop_unlocked
 g_async_queue_unlock
 g_async_queue_unref
-#ifndef G_DISABLE_DEPRECATED
 g_async_queue_ref_unlocked
 g_async_queue_unref_and_unlock
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_ATOMIC_H__)
-#if IN_FILE(__G_ATOMIC_C__)
 g_atomic_int_add
 g_atomic_int_compare_and_exchange
 g_atomic_int_exchange_and_add
 g_atomic_pointer_compare_and_exchange
-#ifdef INCLUDE_INTERNAL_SYMBOLS
- /* these are not internal, but we don't want to alias them */
 g_atomic_int_get
 g_atomic_pointer_get
 g_atomic_int_set
 g_atomic_pointer_set
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_BACKTRACE_H__)
-#if IN_FILE(__G_BACKTRACE_C__)
 g_on_error_query
 g_on_error_stack_trace
-#endif
-#endif
-
-#if IN_HEADER(__G_BASE64_H__)
-#if IN_FILE(__G_BASE64_C__)
 g_base64_encode_step
 g_base64_encode_close
-g_base64_encode G_GNUC_MALLOC
+g_base64_encode
 g_base64_decode_step
-g_base64_decode G_GNUC_MALLOC
+g_base64_decode
 g_base64_decode_inplace
-#endif
-#endif
-
-#if IN_HEADER(__G_BOOKMARK_FILE_H__)
-#if IN_FILE(__G_BOOKMARK_FILE_C__)
 g_bookmark_file_error_quark
 g_bookmark_file_new
 g_bookmark_file_free
@@ -133,18 +93,18 @@ g_bookmark_file_load_from_data_dirs
 g_bookmark_file_to_data
 g_bookmark_file_to_file
 g_bookmark_file_set_title
-g_bookmark_file_get_title G_GNUC_MALLOC
+g_bookmark_file_get_title
 g_bookmark_file_set_description
-g_bookmark_file_get_description G_GNUC_MALLOC
+g_bookmark_file_get_description
 g_bookmark_file_set_mime_type
-g_bookmark_file_get_mime_type G_GNUC_MALLOC
+g_bookmark_file_get_mime_type
 g_bookmark_file_set_groups
 g_bookmark_file_add_group
 g_bookmark_file_has_group
-g_bookmark_file_get_groups G_GNUC_MALLOC
+g_bookmark_file_get_groups
 g_bookmark_file_add_application
 g_bookmark_file_has_application
-g_bookmark_file_get_applications G_GNUC_MALLOC
+g_bookmark_file_get_applications
 g_bookmark_file_set_app_info
 g_bookmark_file_get_app_info
 g_bookmark_file_set_is_private
@@ -159,29 +119,17 @@ g_bookmark_file_set_visited
 g_bookmark_file_get_visited
 g_bookmark_file_has_item
 g_bookmark_file_get_size
-g_bookmark_file_get_uris G_GNUC_MALLOC
+g_bookmark_file_get_uris
 g_bookmark_file_remove_group
 g_bookmark_file_remove_application
 g_bookmark_file_remove_item
 g_bookmark_file_move_item
-#endif
-#endif
-
-#if IN_HEADER(__G_CACHE_H__)
-#if IN_FILE(__G_CACHE_C__)
 g_cache_destroy
 g_cache_insert
 g_cache_key_foreach
 g_cache_new
 g_cache_remove
-#ifndef G_DISABLE_DEPRECATED
 g_cache_value_foreach
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_CHECKSUM_H__)
-#if IN_FILE(__G_CHECKSUM_C__)
 g_checksum_type_get_length
 g_checksum_new
 g_checksum_copy
@@ -192,11 +140,6 @@ g_checksum_get_string
 g_checksum_get_digest
 g_compute_checksum_for_data
 g_compute_checksum_for_string
-#endif
-#endif
-
-#if IN_HEADER(__G_COMPLETION_H__)
-#if IN_FILE(__G_COMPLETION_C__)
 g_completion_add_items
 g_completion_clear_items
 g_completion_complete
@@ -205,41 +148,31 @@ g_completion_free
 g_completion_new
 g_completion_remove_items
 g_completion_set_compare
-#endif
-#endif
-
-#if IN_HEADER(__G_CONVERT_H__)
-#if IN_FILE(__G_CONVERT_C__)
 g_get_filename_charsets
-g_convert G_GNUC_MALLOC
+g_convert
 g_convert_error_quark
-g_convert_with_fallback G_GNUC_MALLOC
-g_convert_with_iconv G_GNUC_MALLOC
+g_convert_with_fallback
+g_convert_with_iconv
 g_iconv
 g_iconv_close
 g_iconv_open
-g_locale_from_utf8 G_GNUC_MALLOC
-g_locale_to_utf8 G_GNUC_MALLOC
-g_filename_display_name G_GNUC_MALLOC
-g_filename_display_basename G_GNUC_MALLOC
+g_locale_from_utf8
+g_locale_to_utf8
+g_filename_display_name
+g_filename_display_basename
 #ifndef _WIN64
-g_filename_from_uri PRIVATE G_GNUC_MALLOC
-g_filename_from_utf8 PRIVATE G_GNUC_MALLOC
-g_filename_to_uri PRIVATE G_GNUC_MALLOC
-g_filename_to_utf8 PRIVATE G_GNUC_MALLOC 
+g_filename_from_uri PRIVATE
+g_filename_from_utf8 PRIVATE
+g_filename_to_uri PRIVATE
+g_filename_to_utf8 PRIVATE
 #endif
 #ifdef G_OS_WIN32
-g_filename_from_uri_utf8 G_GNUC_MALLOC
+g_filename_from_uri_utf8
 g_filename_from_utf8_utf8
-g_filename_to_uri_utf8 G_GNUC_MALLOC
+g_filename_to_uri_utf8
 g_filename_to_utf8_utf8
 #endif
-g_uri_list_extract_uris G_GNUC_MALLOC
-#endif
-#endif
-
-#if IN_HEADER(__G_DATASET_H__)
-#if IN_FILE(__G_DATASET_C__)
+g_uri_list_extract_uris
 g_datalist_clear
 g_datalist_foreach
 g_datalist_get_flags
@@ -254,22 +187,12 @@ g_dataset_foreach
 g_dataset_id_get_data
 g_dataset_id_remove_no_notify
 g_dataset_id_set_data_full
-#endif
-#endif
-
-#if IN_HEADER(__G_QUARK_H__)
-#if IN_FILE(__G_DATASET_C__)
 g_quark_from_static_string
 g_quark_from_string
-g_quark_to_string G_GNUC_CONST
+g_quark_to_string
 g_quark_try_string
 g_intern_string
 g_intern_static_string
-#endif
-#endif
-
-#if IN_HEADER(__G_DATE_H__)
-#if IN_FILE(__G_DATE_C__)
 g_date_add_days
 g_date_add_months
 g_date_add_years
@@ -284,15 +207,15 @@ g_date_get_days_in_month
 g_date_get_iso8601_week_of_year
 g_date_get_julian
 g_date_get_monday_week_of_year
-g_date_get_monday_weeks_in_year G_GNUC_CONST
+g_date_get_monday_weeks_in_year
 g_date_get_month
 g_date_get_sunday_week_of_year
-g_date_get_sunday_weeks_in_year G_GNUC_CONST
+g_date_get_sunday_weeks_in_year
 g_date_get_weekday
 g_date_get_year
 g_date_is_first_of_month
 g_date_is_last_of_month
-g_date_is_leap_year G_GNUC_CONST
+g_date_is_leap_year
 g_date_new
 g_date_new_dmy
 g_date_new_julian
@@ -302,9 +225,7 @@ g_date_set_dmy
 g_date_set_julian
 g_date_set_month
 g_date_set_parse
-#ifndef G_DISABLE_DEPRECATED
 g_date_set_time
-#endif
 g_date_set_time_t
 g_date_set_time_val
 g_date_set_year
@@ -314,17 +235,12 @@ g_date_subtract_months
 g_date_subtract_years
 g_date_to_struct_tm
 g_date_valid
-g_date_valid_day G_GNUC_CONST
+g_date_valid_day
 g_date_valid_dmy
-g_date_valid_julian G_GNUC_CONST
-g_date_valid_month G_GNUC_CONST
-g_date_valid_weekday G_GNUC_CONST
-g_date_valid_year G_GNUC_CONST
-#endif
-#endif
-
-#if IN_HEADER(__G_DATE_TIME_H__)
-#if IN_FILE(__G_DATE_TIME_C__)
+g_date_valid_julian
+g_date_valid_month
+g_date_valid_weekday
+g_date_valid_year
 g_date_time_add
 g_date_time_add_days
 g_date_time_add_full
@@ -337,7 +253,7 @@ g_date_time_add_years
 g_date_time_compare
 g_date_time_difference
 g_date_time_equal
-g_date_time_format G_GNUC_MALLOC
+g_date_time_format
 g_date_time_get_day_of_month
 g_date_time_get_day_of_week
 g_date_time_get_day_of_year
@@ -372,11 +288,6 @@ g_date_time_to_timezone
 g_date_time_to_unix
 g_date_time_to_utc
 g_date_time_unref
-#endif
-#endif
-
-#if IN_HEADER(__G_TIME_ZONE_H__)
-#if IN_FILE(__G_TIME_ZONE_C__)
 g_time_zone_new
 g_time_zone_refresh_local
 g_time_zone_new_local
@@ -388,11 +299,6 @@ g_time_zone_find_interval
 g_time_zone_get_abbreviation
 g_time_zone_get_offset
 g_time_zone_is_dst
-#endif
-#endif
-
-#if IN_HEADER(__G_DIR_H__)
-#if IN_FILE(__G_DIR_C__)
 g_dir_close
 #ifndef _WIN64
 g_dir_open PRIVATE
@@ -403,32 +309,22 @@ g_dir_open_utf8
 g_dir_read_name_utf8
 #endif
 g_dir_rewind
-#endif
-#endif
-
-#if IN_HEADER(__G_ERROR_H__)
-#if IN_FILE(__G_ERROR_C__)
 g_clear_error
 g_error_copy
 g_error_free
 g_error_matches
-g_error_new G_GNUC_PRINTF(3,4)
+g_error_new
 g_error_new_literal
 g_error_new_valist
 g_propagate_error
-g_set_error G_GNUC_PRINTF(4,5)
+g_set_error
 g_set_error_literal
-g_prefix_error G_GNUC_PRINTF(2,3)
-g_propagate_prefixed_error G_GNUC_PRINTF(3,4)
-#endif
-#endif
-
-#if IN_HEADER(__G_FILEUTILS_H__)
-#if IN_FILE(__G_FILEUTILS_C__)
-g_build_filename G_GNUC_MALLOC G_GNUC_NULL_TERMINATED
-g_build_filenamev G_GNUC_MALLOC
-g_build_path G_GNUC_MALLOC G_GNUC_NULL_TERMINATED
-g_build_pathv G_GNUC_MALLOC 
+g_prefix_error
+g_propagate_prefixed_error
+g_build_filename
+g_build_filenamev
+g_build_path
+g_build_pathv
 g_file_error_from_errno
 g_file_error_quark
 #ifndef _WIN64
@@ -452,11 +348,6 @@ g_file_open_tmp_utf8
 g_file_test_utf8
 g_mkstemp_utf8
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_HASH_H__)
-#if IN_FILE(__G_HASH_C__)
 g_hash_table_destroy
 g_hash_table_unref
 g_hash_table_ref
@@ -482,11 +373,6 @@ g_hash_table_iter_next
 g_hash_table_iter_get_hash_table
 g_hash_table_iter_remove
 g_hash_table_iter_steal
-#endif
-#endif
-
-#if IN_HEADER(__G_HOOK_H__)
-#if IN_FILE(__G_HOOK_C__)
 g_hook_alloc
 g_hook_compare_ids
 g_hook_destroy
@@ -510,11 +396,6 @@ g_hook_next_valid
 g_hook_prepend
 g_hook_ref
 g_hook_unref
-#endif
-#endif
-
-#if IN_HEADER(__G_IOCHANNEL_H__)
-#if IN_FILE(__G_IOCHANNEL_C__)
 g_io_add_watch
 g_io_add_watch_full
 g_io_create_watch
@@ -544,29 +425,17 @@ g_io_channel_set_flags
 g_io_channel_set_line_term
 g_io_channel_shutdown
 g_io_channel_unref
-#ifndef G_DISABLE_DEPRECATED
 g_io_channel_close
 g_io_channel_read
 g_io_channel_seek
 g_io_channel_write
-#endif
 g_io_channel_write_chars
 g_io_channel_write_unichar
-#endif
-#endif
-
-#if IN_HEADER(__G_IOCHANNEL_H__)
-#if IN_FILE(__G_IO_UNIX_C__)
 #ifdef G_OS_UNIX
 g_io_channel_unix_get_fd
 g_io_channel_unix_new
-g_io_channel_new_file PRIVATE
+g_io_channel_new_file
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_IOCHANNEL_H__)
-#if IN_FILE(__G_IO_WIN32_C__)
 #ifdef G_OS_WIN32
 g_io_channel_unix_get_fd
 g_io_channel_unix_new
@@ -585,30 +454,25 @@ g_io_channel_win32_new_stream_socket PRIVATE
 g_io_channel_win32_poll
 g_io_channel_win32_set_debug
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_KEY_FILE_H__)
-#if IN_FILE(__G_KEY_FILE_C__)
 g_key_file_error_quark
 g_key_file_free
 g_key_file_get_boolean
-g_key_file_get_boolean_list G_GNUC_MALLOC
-g_key_file_get_comment G_GNUC_MALLOC
-g_key_file_get_groups G_GNUC_MALLOC
+g_key_file_get_boolean_list
+g_key_file_get_comment
+g_key_file_get_groups
 g_key_file_get_double
-g_key_file_get_double_list G_GNUC_MALLOC
+g_key_file_get_double_list
 g_key_file_get_integer
 g_key_file_get_int64
 g_key_file_get_uint64
-g_key_file_get_integer_list G_GNUC_MALLOC
-g_key_file_get_keys G_GNUC_MALLOC
-g_key_file_get_locale_string G_GNUC_MALLOC
-g_key_file_get_locale_string_list G_GNUC_MALLOC
-g_key_file_get_start_group G_GNUC_MALLOC
-g_key_file_get_string G_GNUC_MALLOC
-g_key_file_get_string_list G_GNUC_MALLOC
-g_key_file_get_value G_GNUC_MALLOC
+g_key_file_get_integer_list
+g_key_file_get_keys
+g_key_file_get_locale_string
+g_key_file_get_locale_string_list
+g_key_file_get_start_group
+g_key_file_get_string
+g_key_file_get_string_list
+g_key_file_get_value
 g_key_file_has_group
 g_key_file_has_key
 g_key_file_has_key_full
@@ -635,12 +499,7 @@ g_key_file_set_locale_string_list
 g_key_file_set_string
 g_key_file_set_string_list
 g_key_file_set_value
-g_key_file_to_data G_GNUC_MALLOC
-#endif
-#endif
-
-#if IN_HEADER(__G_LIST_H__)
-#if IN_FILE(__G_LIST_C__)
+g_key_file_to_data
 g_list_alloc
 g_list_append
 g_list_concat
@@ -663,25 +522,16 @@ g_list_length
 g_list_nth
 g_list_nth_data
 g_list_nth_prev
-#ifndef G_DISABLE_DEPRECATED
 g_list_pop_allocator
-#endif
 g_list_position
 g_list_prepend
-#ifndef G_DISABLE_DEPRECATED
 g_list_push_allocator
-#endif
 g_list_remove
 g_list_remove_all
 g_list_remove_link
 g_list_reverse
 g_list_sort
 g_list_sort_with_data
-#endif
-#endif
-
-#if IN_HEADER(__G_MAIN_H__)
-#if IN_FILE(__G_MAIN_C__)
 g_child_watch_add
 g_child_watch_add_full
 g_child_watch_source_new
@@ -731,9 +581,7 @@ g_source_destroy
 g_source_get_can_recurse
 g_source_get_context
 g_source_get_time
-#ifndef G_DISABLE_DEPRECATED
 g_source_get_current_time
-#endif
 g_source_get_id
 g_source_get_name
 g_source_get_priority
@@ -763,24 +611,12 @@ g_timeout_add_full
 g_timeout_add_seconds_full
 g_timeout_source_new
 g_timeout_source_new_seconds
-#endif
-#endif
-
-#if IN_HEADER(__G_MAPPED_FILE_H__)
-#if IN_FILE(__G_MAPPED_FILE_C__)
-g_mapped_file_new G_GNUC_MALLOC
+g_mapped_file_new
 g_mapped_file_get_length
 g_mapped_file_get_contents
 g_mapped_file_ref
 g_mapped_file_unref
-#ifndef G_DISABLE_DEPRECATED
 g_mapped_file_free
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_MARKUP_H__)
-#if IN_FILE(__G_MARKUP_C__)
 g_markup_error_quark
 g_markup_escape_text
 g_markup_parse_context_end_parse
@@ -793,31 +629,25 @@ g_markup_parse_context_new
 g_markup_parse_context_parse
 g_markup_parse_context_push
 g_markup_parse_context_pop
-g_markup_printf_escaped G_GNUC_PRINTF(1,2)
+g_markup_printf_escaped
 g_markup_vprintf_escaped
 g_markup_collect_attributes
-#endif
-#endif
-
-#if IN_HEADER(__G_MEM_H__)
-#if IN_FILE(__G_MEM_C__)
 g_free
-g_malloc G_GNUC_MALLOC
-g_malloc0 G_GNUC_MALLOC
-g_malloc_n G_GNUC_MALLOC
-g_malloc0_n G_GNUC_MALLOC
+g_malloc
+g_malloc0
+g_malloc_n
+g_malloc0_n
 g_mem_is_system_malloc
 g_mem_profile
 g_mem_set_vtable
 g_realloc
 g_realloc_n
-g_try_malloc G_GNUC_MALLOC
-g_try_malloc0 G_GNUC_MALLOC
-g_try_malloc_n G_GNUC_MALLOC
-g_try_malloc0_n G_GNUC_MALLOC
+g_try_malloc
+g_try_malloc0
+g_try_malloc_n
+g_try_malloc0_n
 g_try_realloc
 g_try_realloc_n
-#ifndef G_DISABLE_DEPRECATED
 g_allocator_free
 g_allocator_new
 g_mem_chunk_alloc
@@ -830,32 +660,19 @@ g_mem_chunk_new
 g_mem_chunk_print
 g_mem_chunk_reset
 g_blow_chunks
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_SLICE_H__)
-#if IN_FILE(__G_SLICE_C__)
-g_slice_alloc G_GNUC_MALLOC
-g_slice_alloc0 G_GNUC_MALLOC
-g_slice_copy G_GNUC_MALLOC
+g_slice_alloc
+g_slice_alloc0
+g_slice_copy
 g_slice_free1
 g_slice_free_chain_with_offset
 g_slice_set_config
 g_slice_get_config
 g_slice_get_config_state
 #ifdef G_ENABLE_DEBUG
-#ifdef INCLUDE_INTERNAL_SYMBOLS
 g_slice_debug_tree_statistics
 #endif
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_MESSAGES_H__)
-#if IN_FILE(__G_MESSAGES_C__)
 g_printf_string_upper_bound
-g_log G_GNUC_PRINTF(3,4)
+g_log
 g_log_default_handler
 g_log_remove_handler
 g_log_set_always_fatal
@@ -865,18 +682,11 @@ g_log_set_handler
 g_logv
 g_return_if_fail_warning
 g_warn_message
-#ifndef G_DISABLE_DEPRECATED
-g_assert_warning G_GNUC_NORETURN
-#endif
-g_print G_GNUC_PRINTF(1,2)
-g_printerr G_GNUC_PRINTF(1,2)
+g_assert_warning
+g_print
+g_printerr
 g_set_printerr_handler
 g_set_print_handler
-#endif
-#endif
-
-#if IN_HEADER(__G_NODE_H__)
-#if IN_FILE(__G_NODE_C__)
 g_node_child_index
 g_node_child_position
 g_node_children_foreach
@@ -899,21 +709,12 @@ g_node_n_children
 g_node_new
 g_node_n_nodes
 g_node_nth_child
-#ifndef G_DISABLE_DEPRECATED
 g_node_pop_allocator
-#endif
 g_node_prepend
-#ifndef G_DISABLE_DEPRECATED
 g_node_push_allocator
-#endif
 g_node_reverse_children
 g_node_traverse
 g_node_unlink
-#endif
-#endif
-
-#if IN_HEADER(__G_OPTION_H__)
-#if IN_FILE(__G_OPTION_C__)
 g_option_context_add_group
 g_option_context_add_main_entries
 g_option_error_quark
@@ -940,59 +741,24 @@ g_option_group_set_error_hook
 g_option_group_set_parse_hooks
 g_option_group_set_translate_func
 g_option_group_set_translation_domain
-#endif
-#endif
-
-#if IN_HEADER(__G_PATTERN_H__)
-#if IN_FILE(__G_PATTERN_C__)
 g_pattern_match
 g_pattern_match_simple
 g_pattern_match_string
 g_pattern_spec_equal
 g_pattern_spec_free
 g_pattern_spec_new
-#endif
-#endif
-
-#if IN_HEADER(__G_POLL_H__)
-#if IN_FILE(__G_POLL_C__)
 g_poll
-#endif
-#endif
-
-#if IN_HEADER(__G_PRIMES_H__)
-#if IN_FILE(__G_PRIMES_C__)
-g_spaced_primes_closest G_GNUC_CONST
-#endif
-#endif
-
-#if IN_HEADER(__G_PRINTF_H__)
-#if IN_FILE(__G_PRINTF_C__)
-g_fprintf G_GNUC_PRINTF(2,3)
-g_printf G_GNUC_PRINTF(1,2)
-g_sprintf G_GNUC_PRINTF(2,3)
+g_spaced_primes_closest
+g_fprintf
+g_printf
+g_sprintf
 g_vasprintf
 g_vfprintf
 g_vprintf
 g_vsprintf
-#endif
-#endif
-
-#if IN_HEADER(__G_UTILS_H__)
-#if IN_FILE(__G_PRINTF_C__)
-g_snprintf G_GNUC_PRINTF(3,4)
+g_snprintf
 g_vsnprintf
-#endif
-#endif
-
-#if IN_HEADER(__G_QSORT_H__)
-#if IN_FILE(__G_QSORT_C__)
 g_qsort_with_data
-#endif
-#endif
-
-#if IN_HEADER(__G_QUEUE_H__)
-#if IN_FILE(__G_QUEUE_C__)
 g_queue_clear
 g_queue_copy
 g_queue_delete_link
@@ -1032,11 +798,6 @@ g_queue_remove_all
 g_queue_reverse
 g_queue_sort
 g_queue_unlink
-#endif
-#endif
-
-#if IN_HEADER(__G_RAND_H__)
-#if IN_FILE(__G_RAND_C__)
 g_rand_copy
 g_rand_double
 g_rand_double_range
@@ -1053,11 +814,6 @@ g_random_int_range
 g_random_set_seed
 g_rand_set_seed
 g_rand_set_seed_array
-#endif
-#endif
-
-#if IN_HEADER(__G_REL_H__)
-#if IN_FILE(__G_REL_C__)
 g_relation_count
 g_relation_delete
 g_relation_destroy
@@ -1069,18 +825,13 @@ g_relation_print
 g_relation_select
 g_tuples_destroy
 g_tuples_index
-#endif
-#endif
-
-#if IN_HEADER(__G_SCANNER_H__)
-#if IN_FILE(__G_SCANNER_C__)
 g_scanner_cur_line
 g_scanner_cur_position
 g_scanner_cur_token
 g_scanner_cur_value
 g_scanner_destroy
 g_scanner_eof
-g_scanner_error G_GNUC_PRINTF(2,3)
+g_scanner_error
 g_scanner_get_next_token
 g_scanner_input_file
 g_scanner_input_text
@@ -1094,12 +845,7 @@ g_scanner_scope_remove_symbol
 g_scanner_set_scope
 g_scanner_sync_file_offset
 g_scanner_unexp_token
-g_scanner_warn G_GNUC_PRINTF(2,3)
-#endif
-#endif
-
-#if IN_HEADER(__G_SEQUENCE_H__)
-#if IN_FILE(__G_SEQUENCE_C__)
+g_scanner_warn
 g_sequence_new
 g_sequence_free
 g_sequence_get_length
@@ -1137,20 +883,10 @@ g_sequence_iter_move
 g_sequence_iter_get_sequence
 g_sequence_iter_compare
 g_sequence_range_get_midpoint
-#endif
-#endif
-
-#if IN_HEADER(__G_SHELL_H__)
-#if IN_FILE(__G_SHELL_C__)
 g_shell_error_quark
 g_shell_parse_argv
 g_shell_quote
 g_shell_unquote
-#endif
-#endif
-
-#if IN_HEADER(__G_SLIST_H__)
-#if IN_FILE(__G_SLIST_C__)
 g_slist_alloc
 g_slist_append
 g_slist_concat
@@ -1171,25 +907,16 @@ g_slist_last
 g_slist_length
 g_slist_nth
 g_slist_nth_data
-#ifndef G_DISABLE_DEPRECATED
 g_slist_pop_allocator
-#endif
 g_slist_position
 g_slist_prepend
-#ifndef G_DISABLE_DEPRECATED
 g_slist_push_allocator
-#endif
 g_slist_remove
 g_slist_remove_all
 g_slist_remove_link
 g_slist_reverse
 g_slist_sort
 g_slist_sort_with_data
-#endif
-#endif
-
-#if IN_HEADER(__G_SPAWN_H__)
-#if IN_FILE(__G_SPAWN_C__)
 #ifndef _WIN64
 g_spawn_async PRIVATE
 g_spawn_async_with_pipes PRIVATE
@@ -1210,11 +937,6 @@ g_spawn_command_line_async_utf8
 g_spawn_command_line_sync_utf8
 g_spawn_sync_utf8
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_STDIO_H__)
-#if IN_FILE(__G_STDIO_C__)
 #if !defined(G_OS_UNIX) || defined(G_STDIO_NO_WRAP_ON_UNIX)
 /* gstdio wrappers */
 g_chmod
@@ -1233,85 +955,68 @@ g_access
 g_chdir
 g_unlink
 g_rmdir
-#endif
-#endif
-
-#if IN_HEADER(__G_STRFUNCS_H__)
-#if IN_FILE(__G_STRFUNCS_C__)
-g_ascii_digit_value G_GNUC_CONST
+g_ascii_digit_value
 g_ascii_dtostr
 g_ascii_formatd
-g_ascii_strdown G_GNUC_MALLOC
+g_ascii_strdown
 g_ascii_strtod
 g_ascii_strtoull
 g_ascii_strtoll
-g_ascii_strup G_GNUC_MALLOC
-g_ascii_tolower G_GNUC_CONST
-g_ascii_toupper G_GNUC_CONST
-g_ascii_xdigit_value G_GNUC_CONST
+g_ascii_strup
+g_ascii_tolower
+g_ascii_toupper
+g_ascii_xdigit_value
 g_ascii_strcasecmp
 g_ascii_strncasecmp
-g_memdup G_GNUC_MALLOC
+g_memdup
 g_stpcpy
 g_strcanon
 g_strchomp
 g_strchug
-g_strcompress G_GNUC_MALLOC
-g_strconcat G_GNUC_MALLOC G_GNUC_NULL_TERMINATED
+g_strcompress
+g_strconcat
 g_strdelimit
-g_strdup G_GNUC_MALLOC
-g_strdup_printf G_GNUC_PRINTF(1,2) G_GNUC_MALLOC
-g_strdupv G_GNUC_MALLOC
-g_strdup_vprintf G_GNUC_MALLOC
-g_strerror G_GNUC_CONST
-g_strescape G_GNUC_MALLOC
+g_strdup
+g_strdup_printf
+g_strdupv
+g_strdup_vprintf
+g_strerror
+g_strescape
 g_strfreev
 g_str_has_prefix
 g_str_has_suffix
-g_strjoin G_GNUC_MALLOC G_GNUC_NULL_TERMINATED
-g_strjoinv G_GNUC_MALLOC
+g_strjoin
+g_strjoinv
 g_strlcat
 g_strlcpy
-g_strndup G_GNUC_MALLOC
-g_strnfill G_GNUC_MALLOC
+g_strndup
+g_strnfill
 g_strreverse
 g_strrstr
 g_strrstr_len
-g_strsignal G_GNUC_CONST
-g_strsplit G_GNUC_MALLOC
-g_strsplit_set G_GNUC_MALLOC
+g_strsignal
+g_strsplit
+g_strsplit_set
 g_strstr_len
 g_strtod
-#ifndef G_DISABLE_DEPRECATED
 g_strcasecmp
 g_strncasecmp
 g_strup
 g_strdown
-#endif
 g_strv_length
-g_strip_context G_GNUC_FORMAT(1)
-g_dgettext G_GNUC_FORMAT(2)
-g_dcgettext G_GNUC_FORMAT(2)
-g_dngettext G_GNUC_FORMAT(3)
-g_dpgettext G_GNUC_FORMAT(2)
-g_dpgettext2 G_GNUC_FORMAT(3)
-#endif
-#endif
-
-#if IN_HEADER(__G_URI_FUNCS_H__)
-#if IN_FILE(__G_URI_FUNCS_C__)
-g_uri_unescape_string 
-g_uri_unescape_segment 
-g_uri_parse_scheme 
-g_uri_escape_string 
-#endif
-#endif
-
-#if IN_HEADER(__G_STRING_H__)
-#if IN_FILE(__G_STRING_C__)
+g_strip_context
+g_dgettext
+g_dcgettext
+g_dngettext
+g_dpgettext
+g_dpgettext2
+g_uri_unescape_string
+g_uri_unescape_segment
+g_uri_parse_scheme
+g_uri_escape_string
 g_string_append
 g_string_append_len
-g_string_append_printf G_GNUC_PRINTF(2,3)
+g_string_append_printf
 g_string_append_unichar
 g_string_append_vprintf
 g_string_ascii_down
@@ -1339,46 +1044,27 @@ g_string_prepend
 g_string_prepend_c
 g_string_prepend_len
 g_string_prepend_unichar
-g_string_printf G_GNUC_PRINTF(2,3)
+g_string_printf
 g_string_set_size
 g_string_sized_new
 g_string_truncate
 g_string_append_uri_escaped
-#ifndef G_DISABLE_DEPRECATED
 g_string_down
 g_string_up
-#endif
 g_string_vprintf
-#ifdef INCLUDE_INTERNAL_SYMBOLS
- /* these are not internal, but we don't want to alias them */
 g_string_append_c
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_BITLOCK_H__)
-#if IN_FILE(__G_BITLOCK_C__)
 g_bit_lock
 g_bit_trylock
 g_bit_unlock
-#endif
-#endif
-
-#if IN_HEADER(__G_THREAD_H__)
-#if IN_FILE(__G_THREAD_C__)
 g_once_impl
 g_once_init_enter_impl
 g_once_init_leave
-#ifdef INCLUDE_INTERNAL_SYMBOLS
 g_thread_init_glib
 g_once_init_enter
-#endif
-#ifdef INCLUDE_VARIABLES
 g_thread_functions_for_glib_use
 g_threads_got_initialized
 g_thread_use_default_impl
 g_thread_gettime
-#endif
 g_thread_create_full
 g_thread_error_quark
 g_thread_exit
@@ -1409,11 +1095,6 @@ g_static_rw_lock_writer_trylock
 g_static_rw_lock_writer_unlock
 g_thread_foreach
 g_thread_get_initialized
-#endif
-#endif
-
-#if IN_HEADER(__G_THREADPOOL_H__)
-#if IN_FILE(__G_THREADPOOL_C__)
 g_thread_pool_free
 g_thread_pool_get_max_threads
 g_thread_pool_get_max_unused_threads
@@ -1428,28 +1109,19 @@ g_thread_pool_set_max_idle_time
 g_thread_pool_stop_unused_threads
 g_thread_pool_unprocessed
 g_thread_pool_set_sort_function
-#endif
-#endif
-
-#if IN_HEADER(__G_TEST_UTILS_H__)
-#if IN_FILE(__G_MESSAGES_C__)
 g_test_log_set_fatal_handler
-#endif
-#if IN_FILE(__G_TEST_UTILS_C__)
-g_assertion_message G_GNUC_NORETURN
-g_assertion_message_cmpnum G_GNUC_NORETURN
-g_assertion_message_cmpstr G_GNUC_NORETURN
-g_assertion_message_expr G_GNUC_NORETURN
-g_assertion_message_error G_GNUC_NORETURN
+g_assertion_message
+g_assertion_message_cmpnum
+g_assertion_message_cmpstr
+g_assertion_message_expr
+g_assertion_message_error
 g_strcmp0
 g_test_add_data_func
 g_test_add_func
 g_test_add_vtable
 g_test_bug
 g_test_bug_base
-#ifdef INCLUDE_VARIABLES
 g_test_config_vars
-#endif
 g_test_create_case
 g_test_create_suite
 g_test_fail
@@ -1481,11 +1153,6 @@ g_test_trap_assertions
 g_test_trap_fork
 g_test_trap_has_passed
 g_test_trap_reached_timeout
-#endif
-#endif
-
-#if IN_HEADER(__G_TIMER_H__)
-#if IN_FILE(__G_TIMER_C__)
 g_timer_continue
 g_timer_destroy
 g_timer_elapsed
@@ -1495,13 +1162,8 @@ g_timer_start
 g_timer_stop
 g_time_val_add
 g_time_val_from_iso8601
-g_time_val_to_iso8601 G_GNUC_MALLOC
+g_time_val_to_iso8601
 g_usleep
-#endif
-#endif
-
-#if IN_HEADER(__G_TREE_H__)
-#if IN_FILE(__G_TREE_C__)
 g_tree_destroy
 g_tree_foreach
 g_tree_height
@@ -1518,75 +1180,48 @@ g_tree_remove
 g_tree_replace
 g_tree_search
 g_tree_steal
-#ifndef G_DISABLE_DEPRECATED
 g_tree_traverse
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_UNICODE_H__)
-#if IN_FILE(__G_UNIBREAK_C__)
-g_unichar_break_type G_GNUC_CONST
-#endif
-#endif
-
-#if IN_HEADER(__G_UNICODE_H__)
-#if IN_FILE(__G_UNICOLLATE_C__)
+g_unichar_break_type
 g_utf8_collate
-g_utf8_collate_key G_GNUC_MALLOC
-g_utf8_collate_key_for_filename G_GNUC_MALLOC
-#endif
-#endif
-
-#if IN_HEADER(__G_UNICODE_H__)
-#if IN_FILE(__G_UNIDECOMP_C__)
-g_unicode_canonical_decomposition G_GNUC_MALLOC
+g_utf8_collate_key
+g_utf8_collate_key_for_filename
+g_unicode_canonical_decomposition
 g_unicode_canonical_ordering
-g_unichar_combining_class G_GNUC_CONST
+g_unichar_combining_class
 g_utf8_normalize
-#endif
-#endif
-
-#if IN_HEADER(__G_UNICODE_H__)
-#if IN_FILE(__G_UNIPROP_C__)
-g_unichar_isalnum G_GNUC_CONST
-g_unichar_isalpha G_GNUC_CONST
-g_unichar_iscntrl G_GNUC_CONST
-g_unichar_isdefined G_GNUC_CONST
-g_unichar_isdigit G_GNUC_CONST
-g_unichar_isgraph G_GNUC_CONST
-g_unichar_islower G_GNUC_CONST
-g_unichar_isprint G_GNUC_CONST
-g_unichar_ispunct G_GNUC_CONST
-g_unichar_isspace G_GNUC_CONST
-g_unichar_istitle G_GNUC_CONST
-g_unichar_isupper G_GNUC_CONST
-g_unichar_iswide G_GNUC_CONST
-g_unichar_iswide_cjk G_GNUC_CONST
-g_unichar_isxdigit G_GNUC_CONST
-g_unichar_iszerowidth G_GNUC_CONST
-g_unichar_tolower G_GNUC_CONST
-g_unichar_totitle G_GNUC_CONST
-g_unichar_toupper G_GNUC_CONST
-g_unichar_ismark G_GNUC_CONST
+g_unichar_isalnum
+g_unichar_isalpha
+g_unichar_iscntrl
+g_unichar_isdefined
+g_unichar_isdigit
+g_unichar_isgraph
+g_unichar_islower
+g_unichar_isprint
+g_unichar_ispunct
+g_unichar_isspace
+g_unichar_istitle
+g_unichar_isupper
+g_unichar_iswide
+g_unichar_iswide_cjk
+g_unichar_isxdigit
+g_unichar_iszerowidth
+g_unichar_tolower
+g_unichar_totitle
+g_unichar_toupper
+g_unichar_ismark
 g_unichar_get_mirror_char
 g_unichar_get_script
-g_unichar_digit_value G_GNUC_CONST
-g_unichar_xdigit_value G_GNUC_CONST
-g_unichar_type G_GNUC_CONST
-g_utf8_casefold G_GNUC_MALLOC
-g_utf8_strup G_GNUC_MALLOC
-g_utf8_strdown G_GNUC_MALLOC
-#endif
-#endif
-
-#if IN_HEADER(__G_UNICODE_H__)
-#if IN_FILE(__G_UTF8_C__)
+g_unichar_digit_value
+g_unichar_xdigit_value
+g_unichar_type
+g_utf8_casefold
+g_utf8_strup
+g_utf8_strdown
 g_get_charset
-g_ucs4_to_utf16 G_GNUC_MALLOC
-g_ucs4_to_utf8 G_GNUC_MALLOC
-g_utf16_to_ucs4 G_GNUC_MALLOC
-g_utf16_to_utf8 G_GNUC_MALLOC
+g_ucs4_to_utf16
+g_ucs4_to_utf8
+g_utf16_to_ucs4
+g_utf16_to_utf8
 g_utf8_find_next_char
 g_utf8_find_prev_char
 g_utf8_get_char
@@ -1599,48 +1234,29 @@ g_utf8_strlen
 g_utf8_strncpy
 g_utf8_strrchr
 g_utf8_strreverse
-g_utf8_to_ucs4 G_GNUC_MALLOC
-g_utf8_to_ucs4_fast G_GNUC_MALLOC
-g_utf8_to_utf16 G_GNUC_MALLOC
+g_utf8_to_ucs4
+g_utf8_to_ucs4_fast
+g_utf8_to_utf16
 g_utf8_validate
 g_unichar_to_utf8
 g_unichar_validate
-#endif
-#endif
-
-#if IN_HEADER(__GLIBINTL_H__)
-#if IN_FILE(__G_UTILS_C__)
-glib_pgettext G_GNUC_FORMAT(1)
-glib_gettext G_GNUC_FORMAT(1)
+glib_pgettext
+glib_gettext
 #ifdef G_OS_WIN32
 _glib_get_locale_dir
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_HASH_H__)
-#if IN_FILE(__G_UTILS_C__)
 g_int_equal
 g_int_hash
 g_int64_equal
 g_int64_hash
 g_double_equal
 g_double_hash
-g_direct_equal G_GNUC_CONST
-g_direct_hash G_GNUC_CONST
-#endif
-#if IN_FILE(__G_STRING_C__)
+g_direct_equal
+g_direct_hash
 g_str_equal
 g_str_hash
-#endif
-#endif
-
-#if IN_HEADER(__G_UTILS_H__)
-#if IN_FILE(__G_UTILS_C__)
 g_atexit
-#ifndef G_DISABLE_DEPRECATED
 g_basename
-#endif
 g_get_application_name
 #ifndef _WIN64
 g_find_program_in_path PRIVATE
@@ -1648,11 +1264,9 @@ g_get_current_dir PRIVATE
 g_getenv PRIVATE
 g_unsetenv PRIVATE
 g_get_home_dir PRIVATE
-#endif
-g_get_host_name
-#ifndef _WIN64
 g_setenv PRIVATE
 #endif
+g_get_host_name
 g_listenv
 g_get_environ
 #ifdef G_OS_WIN32
@@ -1698,13 +1312,12 @@ g_get_user_name_utf8
 glib_check_version
 g_nullify_pointer
 g_parse_debug_string
-g_path_get_basename G_GNUC_MALLOC
-g_path_get_dirname G_GNUC_MALLOC
+g_path_get_basename
+g_path_get_dirname
 g_path_is_absolute
 g_path_skip_root
 g_set_application_name
 g_set_prgname
-#ifdef INCLUDE_INTERNAL_SYMBOLS
 g_bit_nth_lsf
 g_bit_nth_msf
 g_bit_storage
@@ -1713,12 +1326,6 @@ g_trash_stack_peek
 g_trash_stack_pop
 g_trash_stack_push
 g_get_codeset
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_REGEX_H__)
-#if IN_FILE(__G_REGEX_C__)
 g_regex_error_quark
 g_regex_new
 g_regex_ref
@@ -1755,11 +1362,6 @@ g_match_info_fetch_pos
 g_match_info_fetch_named
 g_match_info_fetch_named_pos
 g_match_info_fetch_all
-#endif
-#endif
-
-#if IN_HEADER(__G_VARIANT_TYPE_H__)
-#if IN_FILE(__G_VARIANT_TYPE_C__)
 g_variant_type_string_is_valid
 g_variant_type_string_scan
 g_variant_type_free
@@ -1790,11 +1392,6 @@ g_variant_type_new_maybe
 g_variant_type_new_tuple
 g_variant_type_new_dict_entry
 g_variant_type_checked_
-#endif
-#endif
-
-#if IN_HEADER(__G_VARIANT_H__)
-#if IN_FILE(__G_VARIANT_CORE_C__)
 g_variant_unref
 g_variant_ref
 g_variant_ref_sink
@@ -1805,16 +1402,12 @@ g_variant_get_size
 g_variant_get_data
 g_variant_store
 g_variant_is_normal_form
-#endif
-
-#if IN_FILE(__G_VARIANT_C__)
 g_variant_get_type
 g_variant_get_type_string
 g_variant_is_of_type
 g_variant_is_container
 g_variant_classify
 g_variant_compare
-
 g_variant_new_boolean
 g_variant_new_byte
 g_variant_new_int16
@@ -1834,7 +1427,6 @@ g_variant_new_variant
 g_variant_new_strv
 g_variant_new_bytestring
 g_variant_new_bytestring_array
-
 g_variant_get_boolean
 g_variant_get_byte
 g_variant_get_int16
@@ -1854,28 +1446,22 @@ g_variant_get_bytestring
 g_variant_dup_bytestring
 g_variant_get_bytestring_array
 g_variant_dup_bytestring_array
-
 g_variant_new_maybe
 g_variant_new_array
 g_variant_new_tuple
 g_variant_new_dict_entry
-
 g_variant_get_maybe
 g_variant_get_fixed_array
-
 g_variant_print
 g_variant_print_string
-
 g_variant_hash
 g_variant_equal
-
 g_variant_iter_copy
 g_variant_iter_free
 g_variant_iter_init
 g_variant_iter_n_children
 g_variant_iter_new
 g_variant_iter_next_value
-
 g_variant_builder_add_value
 g_variant_builder_init
 g_variant_builder_clear
@@ -1885,35 +1471,24 @@ g_variant_builder_end
 g_variant_builder_new
 g_variant_builder_unref
 g_variant_builder_ref
-
 g_variant_new_va
 g_variant_get_va
 g_variant_new
 g_variant_get
-
 g_variant_builder_add
 g_variant_get_child
 g_variant_lookup_value
 g_variant_lookup
 g_variant_iter_next
 g_variant_iter_loop
-
 g_variant_new_from_data
 g_variant_get_normal_form
 g_variant_byteswap
-#endif
-
-#if IN_FILE(__G_VARIANT_PARSER_C__)
 g_variant_new_parsed
 g_variant_new_parsed_va
 g_variant_builder_add_parsed
 g_variant_parse
 g_variant_parser_get_error_quark
-#endif
-#endif
-
-#if IN_HEADER(__G_VARIANT_TYPE_INFO_H__)
-#if IN_FILE(__G_VARIANT_TYPE_INFO_C__)
 g_variant_type_info_get_type_string
 g_variant_type_info_query
 g_variant_type_info_element
@@ -1924,11 +1499,6 @@ g_variant_type_info_get
 g_variant_type_info_ref
 g_variant_type_info_unref
 g_variant_type_info_assert_no_infos
-#endif
-#endif
-
-#if IN_HEADER(__G_VARIANT_SERIALISER_H__)
-#if IN_FILE(__G_VARIANT_SERIALISER_C__)
 g_variant_serialised_byteswap
 g_variant_serialised_get_child
 g_variant_serialised_is_normal
@@ -1938,18 +1508,8 @@ g_variant_serialiser_is_signature
 g_variant_serialiser_is_string
 g_variant_serialiser_needed_size
 g_variant_serialiser_serialise
-#endif
-#endif
-
-#if IN_HEADER(__G_VARIANT_INTERNAL_H__)
-#if IN_FILE(__G_VARIANT_C__)
 g_variant_format_string_scan_type
 g_variant_format_string_scan
-#endif
-#endif
-
-#if IN_HEADER(__G_WIN32_H__)
-#if IN_FILE(__G_WIN32_H__)
 #ifdef G_OS_WIN32
 g_win32_error_message
 g_win32_ftruncate
@@ -1966,21 +1526,11 @@ g_win32_get_windows_version
 g_win32_getlocale
 g_win32_locale_filename_from_utf8
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_HOST_UTILS_H__)
-#if IN_FILE(__G_HOST_UTILS_C__)
 g_hostname_is_non_ascii
 g_hostname_is_ascii_encoded
 g_hostname_is_ip_address
 g_hostname_to_ascii
 g_hostname_to_unicode
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_H__)
-#if IN_FILE(__G_UNIX_C__)
 #ifdef G_OS_UNIX
 g_unix_error_quark
 g_unix_open_pipe
@@ -1988,10 +1538,6 @@ g_unix_set_fd_nonblocking
 g_unix_signal_source_new
 g_unix_signal_add_watch_full
 #endif
-#endif
-#endif
-
-#ifdef INCLUDE_VARIABLES
 g_ascii_table
 g_utf8_skip
 g_idle_funcs
@@ -2006,4 +1552,3 @@ glib_micro_version
 glib_minor_version
 glib_on_error_halt
 g_mem_gc_friendly
-#endif

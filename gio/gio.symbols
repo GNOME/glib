@@ -1,19 +1,8 @@
 /* This file lists all exported symbols. It is used to generate
  * the gio.def file used to control exports on Windows.
- *
- * Every symbol must be included in the right
- * #ifdef IN_HEADER(sym) #endif and
- * #ifdef IN_FILE(sym) #endif sections.
  */
 
-#ifdef ALL_FILES
-#define IN_FILE(x) 1
-#define IN_HEADER(x) 1
-#endif
-
-#if IN_HEADER(__G_VFS_H__)
-#if IN_FILE(__G_VFS_C__)
-g_vfs_get_type G_GNUC_CONST
+g_vfs_get_type
 g_vfs_is_active
 g_vfs_get_file_for_path
 g_vfs_get_file_for_uri
@@ -21,12 +10,7 @@ g_vfs_get_supported_uri_schemes
 g_vfs_parse_name
 g_vfs_get_default
 g_vfs_get_local
-#endif
-#endif
-
-#if IN_HEADER(__G_APPLICATION_H__)
-#if IN_FILE(__G_APPLICATION_C__)
-g_application_get_type G_GNUC_CONST
+g_application_get_type
 g_application_activate
 g_application_flags_get_type
 g_application_get_application_id
@@ -45,11 +29,6 @@ g_application_set_action_group
 g_application_set_application_id
 g_application_set_flags
 g_application_set_inactivity_timeout
-#endif
-#endif
-
-#if IN_HEADER(__G_APPLICATION_COMMAND_LINE_H__)
-#if IN_FILE(__G_APPLICATION_COMMAND_LINE_C__)
 g_application_command_line_get_arguments
 g_application_command_line_get_cwd
 g_application_command_line_get_environ
@@ -61,13 +40,8 @@ g_application_command_line_get_type
 g_application_command_line_print
 g_application_command_line_printerr
 g_application_command_line_set_exit_status
-#endif
-#endif
-
-#if IN_HEADER(__G_APP_INFO_H__)
-#if IN_FILE(__G_APP_INFO_C__)
-g_app_info_get_type G_GNUC_CONST
-g_app_launch_context_get_type G_GNUC_CONST
+g_app_info_get_type
+g_app_launch_context_get_type
 g_app_info_dup
 g_app_info_equal
 g_app_info_get_id
@@ -95,9 +69,6 @@ g_app_launch_context_new
 g_app_launch_context_get_display
 g_app_launch_context_get_startup_notify_id
 g_app_launch_context_launch_failed
-#endif
-
-#if IN_FILE(__G_DESKTOP_APP_INFO_C__)
 #ifdef G_OS_UNIX
 g_app_info_create_from_commandline
 g_app_info_get_all
@@ -108,11 +79,6 @@ g_app_info_get_fallback_for_type
 g_app_info_get_recommended_for_type
 g_app_info_reset_type_associations
 #endif
-#endif
-#endif
-
-
-#if IN_FILE(__G_WIN32_APP_INFO_C__)
 #ifdef G_OS_WIN32
 g_app_info_create_from_commandline
 g_app_info_get_all
@@ -123,11 +89,6 @@ g_app_info_get_fallback_for_type
 g_app_info_get_recommended_for_type
 g_app_info_reset_type_associations
 #endif
-#endif
-
-
-#if IN_HEADER(__G_DESKTOP_APP_INFO_H__)
-#if IN_FILE(__G_DESKTOP_APP_INFO_C__)
 #ifdef G_OS_UNIX
 g_desktop_app_info_new_from_filename
 g_desktop_app_info_new_from_keyfile
@@ -136,27 +97,16 @@ g_desktop_app_info_get_categories
 g_desktop_app_info_get_filename
 g_desktop_app_info_get_generic_name
 g_desktop_app_info_get_is_hidden
-g_desktop_app_info_get_type G_GNUC_CONST
+g_desktop_app_info_get_type
 g_desktop_app_info_launch_uris_as_manager
-g_desktop_app_info_lookup_get_type G_GNUC_CONST
+g_desktop_app_info_lookup_get_type
 g_desktop_app_info_lookup_get_default_for_uri_scheme
 g_desktop_app_info_set_desktop_env
 #endif
-#endif
-#endif
-
-
-#if IN_HEADER(__G_ASYNC_RESULT_H__)
-#if IN_FILE(__G_ASYNC_RESULT_C__)
-g_async_result_get_type G_GNUC_CONST
+g_async_result_get_type
 g_async_result_get_user_data
 g_async_result_get_source_object
-#endif
-#endif
-
-#if IN_HEADER(__G_BUFFERED_INPUT_STREAM_H__)
-#if IN_FILE(__G_BUFFERED_INPUT_STREAM_C__)
-g_buffered_input_stream_get_type G_GNUC_CONST
+g_buffered_input_stream_get_type
 g_buffered_input_stream_new
 g_buffered_input_stream_new_sized
 g_buffered_input_stream_get_buffer_size
@@ -168,24 +118,14 @@ g_buffered_input_stream_fill
 g_buffered_input_stream_fill_async
 g_buffered_input_stream_fill_finish
 g_buffered_input_stream_read_byte
-#endif
-#endif
-
-#if IN_HEADER(__G_BUFFERED_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_BUFFERED_OUTPUT_STREAM_C__)
-g_buffered_output_stream_get_type G_GNUC_CONST;
+g_buffered_output_stream_get_type
 g_buffered_output_stream_new
 g_buffered_output_stream_new_sized
 g_buffered_output_stream_get_buffer_size
 g_buffered_output_stream_set_buffer_size
 g_buffered_output_stream_get_auto_grow
 g_buffered_output_stream_set_auto_grow
-#endif
-#endif
-
-#if IN_HEADER(__G_CANCELLABLE_H__)
-#if IN_FILE(__G_CANCELLABLE_C__)
-g_cancellable_get_type G_GNUC_CONST
+g_cancellable_get_type
 g_cancellable_new
 g_cancellable_is_cancelled
 g_cancellable_set_error_if_cancelled
@@ -200,11 +140,6 @@ g_cancellable_cancel
 g_cancellable_connect
 g_cancellable_disconnect
 g_cancellable_source_new
-#endif
-#endif
-
-#if IN_HEADER(__G_CONTENT_TYPE_H__)
-#if IN_FILE(__G_CONTENT_TYPE_C__)
 g_content_type_equals
 g_content_type_is_a
 g_content_type_is_unknown
@@ -216,46 +151,21 @@ g_content_type_from_mime_type
 g_content_type_guess
 g_content_type_guess_for_tree
 g_content_types_get_registered
-#endif
-#endif
-
-#if IN_HEADER(__G_CONVERTER_H__)
-#if IN_FILE(__G_CONVERTER_C__)
-g_converter_get_type G_GNUC_CONST
+g_converter_get_type
 g_converter_reset
 g_converter_convert
-#endif
-#endif
-
-#if IN_HEADER(__G_CONVERTER_INPUT_STREAM_H__)
-#if IN_FILE(__G_CONVERTER_INPUT_STREAM_C__)
 g_converter_input_stream_get_type
 g_converter_input_stream_new
 g_converter_input_stream_get_converter
-#endif
-#endif
-
-#if IN_HEADER(__G_CONVERTER_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_CONVERTER_OUTPUT_STREAM_C__)
 g_converter_output_stream_get_type
 g_converter_output_stream_new
 g_converter_output_stream_get_converter
-#endif
-#endif
-
-#if IN_HEADER(__G_CHARSET_CONVERTER_H__)
-#if IN_FILE(__G_CHARSET_CONVERTER_C__)
 g_charset_converter_get_type
 g_charset_converter_new
 g_charset_converter_get_num_fallbacks
 g_charset_converter_get_use_fallback
 g_charset_converter_set_use_fallback
-#endif
-#endif
-
-#if IN_HEADER(__G_DATA_INPUT_STREAM_H__)
-#if IN_FILE(__G_DATA_INPUT_STREAM_C__)
-g_data_input_stream_get_type G_GNUC_CONST
+g_data_input_stream_get_type
 g_data_input_stream_new
 g_data_input_stream_set_byte_order
 g_data_input_stream_get_byte_order
@@ -277,12 +187,7 @@ g_data_input_stream_read_until_finish
 g_data_input_stream_read_upto
 g_data_input_stream_read_upto_async
 g_data_input_stream_read_upto_finish
-#endif
-#endif
-
-#if IN_HEADER(__G_DATA_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_DATA_OUTPUT_STREAM_C__)
-g_data_output_stream_get_type G_GNUC_CONST
+g_data_output_stream_get_type
 g_data_output_stream_new
 g_data_output_stream_set_byte_order
 g_data_output_stream_get_byte_order
@@ -294,12 +199,7 @@ g_data_output_stream_put_uint32
 g_data_output_stream_put_int64
 g_data_output_stream_put_uint64
 g_data_output_stream_put_string
-#endif
-#endif
-
-#if IN_HEADER(__G_DRIVE_H__)
-#if IN_FILE(__G_DRIVE_C__)
-g_drive_get_type G_GNUC_CONST
+g_drive_get_type
 g_drive_get_name
 g_drive_get_icon
 g_drive_has_volumes
@@ -323,28 +223,16 @@ g_drive_start_finish
 g_drive_can_stop
 g_drive_stop
 g_drive_stop_finish
-#ifndef G_DISABLE_DEPRECATED
 g_drive_eject
 g_drive_eject_finish
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_ATTRIBUTE_H__)
-#if IN_FILE(__G_FILE_ATTRIBUTE_C__)
 g_file_attribute_info_list_new
 g_file_attribute_info_list_ref
 g_file_attribute_info_list_unref
 g_file_attribute_info_list_dup
-g_file_attribute_info_list_get_type G_GNUC_CONST
+g_file_attribute_info_list_get_type
 g_file_attribute_info_list_lookup
 g_file_attribute_info_list_add
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_H__)
-#if IN_FILE(__G_FILE_C__)
-g_file_get_type G_GNUC_CONST
+g_file_get_type
 g_file_new_for_path
 g_file_new_for_uri
 g_file_new_for_commandline_arg
@@ -453,18 +341,11 @@ g_file_stop_mountable_finish
 g_file_supports_thread_contexts
 g_file_poll_mountable
 g_file_poll_mountable_finish
-#ifndef G_DISABLE_DEPRECATED
 g_file_unmount_mountable
 g_file_unmount_mountable_finish
 g_file_eject_mountable
 g_file_eject_mountable_finish
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_ENUMERATOR_H__)
-#if IN_FILE(__G_FILE_ENUMERATOR_C__)
-g_file_enumerator_get_type G_GNUC_CONST
+g_file_enumerator_get_type
 g_file_enumerator_next_file
 g_file_enumerator_close
 g_file_enumerator_next_files_async
@@ -475,20 +356,10 @@ g_file_enumerator_is_closed
 g_file_enumerator_has_pending
 g_file_enumerator_set_pending
 g_file_enumerator_get_container
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_ICON_H__)
-#if IN_FILE(__G_FILE_ICON_C__)
-g_file_icon_get_type G_GNUC_CONST
+g_file_icon_get_type
 g_file_icon_new
 g_file_icon_get_file
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_INFO_H__)
-#if IN_FILE(__G_FILE_INFO_C__)
-g_file_info_get_type  G_GNUC_CONST
+g_file_info_get_type
 g_file_info_new
 g_file_info_dup
 g_file_info_copy_into
@@ -549,7 +420,7 @@ g_file_info_set_size
 g_file_info_set_modification_time
 g_file_info_set_symlink_target
 g_file_info_set_sort_order
-g_file_attribute_matcher_get_type G_GNUC_CONST
+g_file_attribute_matcher_get_type
 g_file_attribute_matcher_new
 g_file_attribute_matcher_ref
 g_file_attribute_matcher_unref
@@ -557,89 +428,44 @@ g_file_attribute_matcher_matches
 g_file_attribute_matcher_matches_only
 g_file_attribute_matcher_enumerate_namespace
 g_file_attribute_matcher_enumerate_next
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_INPUT_STREAM_H__)
-#if IN_FILE(__G_FILE_INPUT_STREAM_C__)
-g_file_input_stream_get_type  G_GNUC_CONST
+g_file_input_stream_get_type
 g_file_input_stream_query_info
 g_file_input_stream_query_info_async
 g_file_input_stream_query_info_finish
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_MONITOR_H__)
-#if IN_FILE(__G_FILE_MONITOR_C__)
-g_file_monitor_get_type  G_GNUC_CONST
+g_file_monitor_get_type
 g_file_monitor_cancel
 g_file_monitor_is_cancelled
 g_file_monitor_set_rate_limit
 g_file_monitor_emit_event
-#endif
-#endif
-
-#if IN_HEADER(__G_FILENAME_COMPLETER_H__)
-#if IN_FILE(__G_FILENAME_COMPLETER_C__)
-g_filename_completer_get_type  G_GNUC_CONST
+g_filename_completer_get_type
 g_filename_completer_new
 g_filename_completer_get_completion_suffix
 g_filename_completer_get_completions
 g_filename_completer_set_dirs_only
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_FILE_OUTPUT_STREAM_C__)
-g_file_output_stream_get_type  G_GNUC_CONST
+g_file_output_stream_get_type
 g_file_output_stream_query_info
 g_file_output_stream_query_info_async
 g_file_output_stream_query_info_finish
 g_file_output_stream_get_etag
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_IO_STREAM_H__)
-#if IN_FILE(__G_FILE_IO_STREAM_C__)
-g_file_io_stream_get_type  G_GNUC_CONST
+g_file_io_stream_get_type
 g_file_io_stream_query_info
 g_file_io_stream_query_info_async
 g_file_io_stream_query_info_finish
 g_file_io_stream_get_etag
-#endif
-#endif
-
-#if IN_HEADER(__G_FILTER_INPUT_STREAM_H__)
-#if IN_FILE(__G_FILTER_INPUT_STREAM_C__)
-g_filter_input_stream_get_type  G_GNUC_CONST
+g_filter_input_stream_get_type
 g_filter_input_stream_get_base_stream
 g_filter_input_stream_get_close_base_stream
 g_filter_input_stream_set_close_base_stream
-#endif
-#endif
-
-#if IN_HEADER(__G_FILTER_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_FILTER_OUTPUT_STREAM_C__)
-g_filter_output_stream_get_type  G_GNUC_CONST
+g_filter_output_stream_get_type
 g_filter_output_stream_get_base_stream
 g_filter_output_stream_get_close_base_stream
 g_filter_output_stream_set_close_base_stream
-#endif
-#endif
-
-#if IN_HEADER(__G_ICON_H__)
-#if IN_FILE(__G_ICON_C__)
-g_icon_get_type  G_GNUC_CONST
+g_icon_get_type
 g_icon_hash
 g_icon_equal
 g_icon_to_string
 g_icon_new_for_string
-#endif
-#endif
-
-#if IN_HEADER(__G_INPUT_STREAM_H__)
-#if IN_FILE(__G_INPUT_STREAM_C__)
-g_input_stream_get_type  G_GNUC_CONST
+g_input_stream_get_type
 g_input_stream_read
 g_input_stream_read_all
 g_input_stream_skip
@@ -654,12 +480,7 @@ g_input_stream_is_closed
 g_input_stream_has_pending
 g_input_stream_set_pending
 g_input_stream_clear_pending
-#endif
-#endif
-
-#if IN_HEADER(__G_IO_STREAM_H__)
-#if IN_FILE(__G_IO_STREAM_C__)
-g_io_stream_get_type  G_GNUC_CONST
+g_io_stream_get_type
 g_io_stream_get_input_stream
 g_io_stream_get_output_stream
 g_io_stream_close
@@ -671,22 +492,12 @@ g_io_stream_set_pending
 g_io_stream_clear_pending
 g_io_stream_splice_async
 g_io_stream_splice_finish
-#endif
-#endif
-
-#if IN_HEADER(__G_IO_ERROR_H__)
-#if IN_FILE(__G_IO_ERROR_C__)
 g_io_error_quark
 g_io_error_from_errno
 #ifdef G_OS_WIN32
 g_io_error_from_win32_error
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_IO_MODULE_H__)
-#if IN_FILE(__G_IO_MODULE_C__)
-g_io_module_get_type  G_GNUC_CONST
+g_io_module_get_type
 g_io_module_new
 g_io_modules_scan_all_in_directory
 g_io_modules_load_all_in_directory
@@ -701,50 +512,25 @@ g_io_extension_get_type
 g_io_extension_get_name
 g_io_extension_get_priority
 g_io_extension_ref_class
-#endif
-#endif
-
-#if IN_HEADER(__G_IO_SCHEDULER_H__)
-#if IN_FILE(__G_IO_SCHEDULER_C__)
 g_io_scheduler_push_job
 g_io_scheduler_cancel_all_jobs
 g_io_scheduler_job_send_to_mainloop
 g_io_scheduler_job_send_to_mainloop_async
-#endif
-#endif
-
-#if IN_HEADER(__G_LOADABLE_ICON_H__)
-#if IN_FILE(__G_LOADABLE_ICON_C__)
-g_loadable_icon_get_type  G_GNUC_CONST
+g_loadable_icon_get_type
 g_loadable_icon_load
 g_loadable_icon_load_async
 g_loadable_icon_load_finish
-#endif
-#endif
-
-#if IN_HEADER(__G_MEMORY_INPUT_STREAM_H__)
-#if IN_FILE(__G_MEMORY_INPUT_STREAM_C__)
-g_memory_input_stream_get_type  G_GNUC_CONST
+g_memory_input_stream_get_type
 g_memory_input_stream_new
 g_memory_input_stream_new_from_data
 g_memory_input_stream_add_data
-#endif
-#endif
-
-#if IN_HEADER(__G_MEMORY_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_MEMORY_OUTPUT_STREAM_C__)
-g_memory_output_stream_get_type  G_GNUC_CONST
+g_memory_output_stream_get_type
 g_memory_output_stream_new
 g_memory_output_stream_get_data
 g_memory_output_stream_get_data_size
 g_memory_output_stream_get_size
 g_memory_output_stream_steal_data
-#endif
-#endif
-
-#if IN_HEADER(__G_MOUNT_OPERATION_H__)
-#if IN_FILE(__G_MOUNT_OPERATION_C__)
-g_mount_operation_get_type  G_GNUC_CONST
+g_mount_operation_get_type
 g_mount_operation_new
 g_mount_operation_get_username
 g_mount_operation_set_username
@@ -759,12 +545,7 @@ g_mount_operation_set_password_save
 g_mount_operation_get_choice
 g_mount_operation_set_choice
 g_mount_operation_reply
-#endif
-#endif
-
-#if IN_HEADER(__G_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_OUTPUT_STREAM_C__)
-g_output_stream_get_type  G_GNUC_CONST
+g_output_stream_get_type
 g_output_stream_write
 g_output_stream_write_all
 g_output_stream_splice
@@ -783,23 +564,13 @@ g_output_stream_is_closing
 g_output_stream_has_pending
 g_output_stream_set_pending
 g_output_stream_clear_pending
-#endif
-#endif
-
-#if IN_HEADER(__G_SEEKABLE_H__)
-#if IN_FILE(__G_SEEKABLE_C__)
-g_seekable_get_type  G_GNUC_CONST
+g_seekable_get_type
 g_seekable_tell
 g_seekable_can_seek
 g_seekable_seek
 g_seekable_can_truncate
 g_seekable_truncate
-#endif
-#endif
-
-#if IN_HEADER(__G_SIMPLE_ASYNC_RESULT_H__)
-#if IN_FILE(__G_SIMPLE_ASYNC_RESULT_C__)
-g_simple_async_result_get_type  G_GNUC_CONST
+g_simple_async_result_get_type
 g_simple_async_result_new
 g_simple_async_result_new_error
 g_simple_async_result_new_from_error
@@ -824,23 +595,13 @@ g_simple_async_result_is_valid
 g_simple_async_report_error_in_idle
 g_simple_async_report_gerror_in_idle
 g_simple_async_report_take_gerror_in_idle
-#endif
-#endif
-
-#if IN_HEADER(__G_THEMED_ICON_H__)
-#if IN_FILE(__G_THEMED_ICON_C__)
-g_themed_icon_get_type  G_GNUC_CONST
+g_themed_icon_get_type
 g_themed_icon_new
 g_themed_icon_new_with_default_fallbacks
 g_themed_icon_new_from_names
 g_themed_icon_get_names
 g_themed_icon_prepend_name
 g_themed_icon_append_name
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_MOUNTS_H__)
-#if IN_FILE(__G_UNIX_MOUNTS_C__)
 #ifdef G_OS_UNIX
 g_unix_mount_free
 g_unix_mount_point_free
@@ -869,65 +630,40 @@ g_unix_mounts_get
 g_unix_mount_at
 g_unix_mounts_changed_since
 g_unix_mount_points_changed_since
-g_unix_mount_monitor_get_type  G_GNUC_CONST
+g_unix_mount_monitor_get_type
 g_unix_mount_monitor_new
 g_unix_mount_monitor_set_rate_limit
 g_unix_is_mount_path_system_internal
 #endif /* G_OS_UNIX */
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_INPUT_STREAM_H__)
-#if IN_FILE(__G_UNIX_INPUT_STREAM_C__)
 #ifdef G_OS_UNIX
-g_unix_input_stream_get_type  G_GNUC_CONST
+g_unix_input_stream_get_type
 g_unix_input_stream_new
 g_unix_input_stream_set_close_fd
 g_unix_input_stream_get_close_fd
 g_unix_input_stream_get_fd
 #endif /* G_OS_UNIX */
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_UNIX_OUTPUT_STREAM_C__)
 #ifdef G_OS_UNIX
-g_unix_output_stream_get_type  G_GNUC_CONST
+g_unix_output_stream_get_type
 g_unix_output_stream_new
 g_unix_output_stream_set_close_fd
 g_unix_output_stream_get_close_fd
 g_unix_output_stream_get_fd
 #endif /* G_OS_UNIX */
-#endif
-#endif
-
-#if IN_HEADER(__G_WIN32_INPUT_STREAM_H__)
-#if IN_FILE(__G_WIN32_INPUT_STREAM_C__)
 #ifdef G_OS_WIN32
-g_win32_input_stream_get_type  G_GNUC_CONST
+g_win32_input_stream_get_type
 g_win32_input_stream_new
 g_win32_input_stream_set_close_handle
 g_win32_input_stream_get_close_handle
 g_win32_input_stream_get_handle
 #endif /* G_OS_WIN32 */
-#endif
-#endif
-
-#if IN_HEADER(__G_WIN32_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_WIN32_OUTPUT_STREAM_C__)
 #ifdef G_OS_WIN32
-g_win32_output_stream_get_type  G_GNUC_CONST
+g_win32_output_stream_get_type
 g_win32_output_stream_new
 g_win32_output_stream_set_close_handle
 g_win32_output_stream_get_close_handle
 g_win32_output_stream_get_handle
 #endif /* G_OS_WIN32 */
-#endif
-#endif
-
-#if IN_HEADER(__G_MOUNT_H__)
-#if IN_FILE(__G_MOUNT_C__)
-g_mount_get_type  G_GNUC_CONST
+g_mount_get_type
 g_mount_get_root
 g_mount_get_name
 g_mount_get_icon
@@ -949,18 +685,11 @@ g_mount_guess_content_type_sync
 g_mount_is_shadowed
 g_mount_shadow
 g_mount_unshadow
-#ifndef G_DISABLE_DEPRECATED
 g_mount_unmount
 g_mount_unmount_finish
 g_mount_eject
 g_mount_eject_finish
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_VOLUME_H__)
-#if IN_FILE(__G_VOLUME_C__)
-g_volume_get_type  G_GNUC_CONST
+g_volume_get_type
 g_volume_get_name
 g_volume_get_icon
 g_volume_get_uuid
@@ -976,142 +705,95 @@ g_volume_eject_with_operation_finish
 g_volume_get_identifier
 g_volume_enumerate_identifiers
 g_volume_get_activation_root
-#ifndef G_DISABLE_DEPRECATED
 g_volume_eject
 g_volume_eject_finish
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_VOLUME_MONITOR_H__)
-#if IN_FILE(__G_VOLUME_MONITOR_C__)
-g_volume_monitor_get_type  G_GNUC_CONST
+g_volume_monitor_get_type
 g_volume_monitor_get_connected_drives
 g_volume_monitor_get_volume_for_uuid
 g_volume_monitor_get_volumes
 g_volume_monitor_get_mounts
 g_volume_monitor_get_mount_for_uuid
-#endif
-#if IN_FILE(__G_UNION_VOLUME_MONITOR_C__)
 g_volume_monitor_get
-#ifndef G_DISABLE_DEPRECATED
 g_volume_monitor_adopt_orphan_mount
-#endif
-#endif
-#endif
-
-#if IN_HEADER(__G_NATIVE_VOLUME_MONITOR_H__)
-#if IN_FILE(__G_NATIVE_VOLUME_MONITOR_C__)
-g_native_volume_monitor_get_type  G_GNUC_CONST
-#endif
-#endif
-
-#if IN_HEADER(__G_LOCAL_FILE_MONITOR_H__)
-#if IN_FILE(__G_LOCAL_FILE_MONITOR_C__)
+g_native_volume_monitor_get_type
 #ifdef G_OS_UNIX
-g_local_file_monitor_get_type  G_GNUC_CONST
+g_local_file_monitor_get_type
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_LOCAL_DIRECTORY_MONITOR_H__)
-#if IN_FILE(__G_LOCAL_DIRECTORY_MONITOR_C__)
 #ifdef G_OS_UNIX
-g_local_directory_monitor_get_type  G_GNUC_CONST
+g_local_directory_monitor_get_type
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__GIO_ENUM_TYPES_H__)
-#if IN_FILE(__GIO_ENUM_TYPES_C__)
-g_mount_unmount_flags_get_type G_GNUC_CONST
-g_app_info_create_flags_get_type G_GNUC_CONST
-g_converter_flags_get_type G_GNUC_CONST
-g_converter_result_get_type G_GNUC_CONST
-g_data_stream_byte_order_get_type G_GNUC_CONST
-g_data_stream_newline_type_get_type G_GNUC_CONST
-g_file_attribute_info_flags_get_type G_GNUC_CONST
-g_file_attribute_status_get_type G_GNUC_CONST
-g_file_attribute_type_get_type G_GNUC_CONST
-g_file_copy_flags_get_type G_GNUC_CONST
-g_file_create_flags_get_type G_GNUC_CONST
-g_file_monitor_event_get_type G_GNUC_CONST
-g_file_monitor_flags_get_type G_GNUC_CONST
-g_file_query_info_flags_get_type G_GNUC_CONST
-g_file_type_get_type G_GNUC_CONST
-g_filesystem_preview_type_get_type G_GNUC_CONST
-g_io_error_enum_get_type G_GNUC_CONST
-g_io_stream_splice_flags_get_type G_GNUC_CONST
-g_mount_mount_flags_get_type G_GNUC_CONST
-g_mount_operation_result_get_type G_GNUC_CONST
-g_drive_start_flags_get_type G_GNUC_CONST
-g_drive_start_stop_type_get_type G_GNUC_CONST
-g_output_stream_splice_flags_get_type G_GNUC_CONST
-g_ask_password_flags_get_type G_GNUC_CONST
-g_password_save_get_type G_GNUC_CONST
-g_emblem_origin_get_type G_GNUC_CONST
-g_socket_family_get_type G_GNUC_CONST
-g_socket_type_get_type G_GNUC_CONST
-g_socket_protocol_get_type G_GNUC_CONST
-g_socket_msg_flags_get_type G_GNUC_CONST
-g_unix_socket_address_type_get_type G_GNUC_CONST
-g_resolver_error_get_type G_GNUC_CONST
+g_mount_unmount_flags_get_type
+g_app_info_create_flags_get_type
+g_converter_flags_get_type
+g_converter_result_get_type
+g_data_stream_byte_order_get_type
+g_data_stream_newline_type_get_type
+g_file_attribute_info_flags_get_type
+g_file_attribute_status_get_type
+g_file_attribute_type_get_type
+g_file_copy_flags_get_type
+g_file_create_flags_get_type
+g_file_monitor_event_get_type
+g_file_monitor_flags_get_type
+g_file_query_info_flags_get_type
+g_file_type_get_type
+g_filesystem_preview_type_get_type
+g_io_error_enum_get_type
+g_io_stream_splice_flags_get_type
+g_mount_mount_flags_get_type
+g_mount_operation_result_get_type
+g_drive_start_flags_get_type
+g_drive_start_stop_type_get_type
+g_output_stream_splice_flags_get_type
+g_ask_password_flags_get_type
+g_password_save_get_type
+g_emblem_origin_get_type
+g_socket_family_get_type
+g_socket_type_get_type
+g_socket_protocol_get_type
+g_socket_msg_flags_get_type
+g_unix_socket_address_type_get_type
+g_resolver_error_get_type
 g_zlib_compressor_format_get_type
 g_settings_bind_flags_get_type
-g_dbus_error_get_type G_GNUC_CONST
-g_bus_type_get_type G_GNUC_CONST
-g_bus_name_owner_flags_get_type G_GNUC_CONST
-g_bus_name_watcher_flags_get_type G_GNUC_CONST
-g_dbus_proxy_flags_get_type G_GNUC_CONST
-g_dbus_connection_flags_get_type G_GNUC_CONST
-g_dbus_capability_flags_get_type G_GNUC_CONST
-g_dbus_call_flags_get_type G_GNUC_CONST
-g_dbus_message_type_get_type G_GNUC_CONST
-g_dbus_message_flags_get_type G_GNUC_CONST
-g_dbus_message_header_field_get_type G_GNUC_CONST
-g_dbus_property_info_flags_get_type G_GNUC_CONST
-g_dbus_subtree_flags_get_type G_GNUC_CONST
-g_dbus_server_flags_get_type G_GNUC_CONST
-g_dbus_signal_flags_get_type G_GNUC_CONST
-g_dbus_send_message_flags_get_type G_GNUC_CONST
-g_credentials_type_get_type G_GNUC_CONST
-g_dbus_message_byte_order_get_type G_GNUC_CONST
-g_tls_authentication_mode_get_type G_GNUC_CONST
-g_tls_certificate_flags_get_type G_GNUC_CONST
-g_tls_rehandshake_mode_get_type G_GNUC_CONST
-#endif
-#endif
-
-
-#if IN_HEADER(__G_EMBLEMED_ICON_H__)
-#if IN_FILE(__G_EMBLEMED_ICON_C__)
-g_emblemed_icon_get_type G_GNUC_CONST
+g_dbus_error_get_type
+g_bus_type_get_type
+g_bus_name_owner_flags_get_type
+g_bus_name_watcher_flags_get_type
+g_dbus_proxy_flags_get_type
+g_dbus_connection_flags_get_type
+g_dbus_capability_flags_get_type
+g_dbus_call_flags_get_type
+g_dbus_message_type_get_type
+g_dbus_message_flags_get_type
+g_dbus_message_header_field_get_type
+g_dbus_property_info_flags_get_type
+g_dbus_subtree_flags_get_type
+g_dbus_server_flags_get_type
+g_dbus_signal_flags_get_type
+g_dbus_send_message_flags_get_type
+g_credentials_type_get_type
+g_dbus_message_byte_order_get_type
+g_tls_authentication_mode_get_type
+g_tls_certificate_flags_get_type
+g_tls_rehandshake_mode_get_type
+g_emblemed_icon_get_type
 g_emblemed_icon_new
 g_emblemed_icon_get_icon
 g_emblemed_icon_get_emblems
 g_emblemed_icon_add_emblem
 g_emblemed_icon_clear_emblems
-#endif
-#endif
-
-#if IN_HEADER(__G_EMBLEM_H__)
-#if IN_FILE(__G_EMBLEM_C__)
-g_emblem_get_type G_GNUC_CONST
+g_emblem_get_type
 g_emblem_new
 g_emblem_new_with_origin
 g_emblem_get_icon
 g_emblem_get_origin
-#endif
-#endif
-
-#if IN_HEADER(__G_INET_ADDRESS_H__)
-#if IN_FILE(__G_INET_ADDRESS_C__)
 g_inet_address_new_from_string
 g_inet_address_new_from_bytes
 g_inet_address_new_any
 g_inet_address_new_loopback
 g_inet_address_get_family
-g_inet_address_get_type G_GNUC_CONST
+g_inet_address_get_type
 g_inet_address_get_is_any
 g_inet_address_get_is_link_local
 g_inet_address_get_is_loopback
@@ -1126,72 +808,38 @@ g_inet_address_to_bytes
 g_inet_address_get_native_size
 g_inet_address_to_string
 g_inet_address_equal
-#endif
-#endif
-
-#if IN_HEADER(__G_INET_SOCKET_ADDRESS_H__)
-#if IN_FILE(__G_INET_SOCKET_ADDRESS_C__)
 g_inet_socket_address_get_address
 g_inet_socket_address_get_port
-g_inet_socket_address_get_type G_GNUC_CONST
+g_inet_socket_address_get_type
 g_inet_socket_address_new
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_SOCKET_ADDRESS_H__)
-#if IN_FILE(__G_UNIX_SOCKET_ADDRESS_C__)
 #ifdef G_OS_UNIX
-g_unix_socket_address_get_type G_GNUC_CONST
+g_unix_socket_address_get_type
 g_unix_socket_address_new
-#ifndef G_DISABLE_DEPRECATED
 g_unix_socket_address_new_abstract
-#endif
 g_unix_socket_address_new_with_type
 g_unix_socket_address_abstract_names_supported
-#ifndef G_DISABLE_DEPRECATED
 g_unix_socket_address_get_is_abstract
-#endif
 g_unix_socket_address_get_address_type
 g_unix_socket_address_get_path
 g_unix_socket_address_get_path_len
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_ADDRESS_H__)
-#if IN_FILE(__G_SOCKET_ADDRESS_C__)
 g_socket_address_new_from_native
-g_socket_address_get_type G_GNUC_CONST
+g_socket_address_get_type
 g_socket_address_get_family
 g_socket_address_get_native_size
 g_socket_address_to_native
-#endif
-#endif
-
-#if IN_HEADER(__G_PROXY_H__)
-#if IN_FILE(__G_PROXY_C__)
 g_proxy_get_type
 g_proxy_get_default_for_protocol
 g_proxy_connect
 g_proxy_connect_async
 g_proxy_connect_finish
 g_proxy_supports_hostname
-#endif
-#endif
-
-#if IN_HEADER(__G_PROXY_RESOLVER_H__)
-#if IN_FILE(__G_PROXY_RESOLVER_C__)
 g_proxy_resolver_get_default
 g_proxy_resolver_get_type
 g_proxy_resolver_is_supported
 g_proxy_resolver_lookup
 g_proxy_resolver_lookup_async
 g_proxy_resolver_lookup_finish
-#endif
-#endif
-
-#if IN_HEADER(__G_PROXY_ADDRESS_H__)
-#if IN_FILE(__G_PROXY_ADDRESS_C__)
 g_proxy_address_get_type
 g_proxy_address_new
 g_proxy_address_get_protocol
@@ -1199,21 +847,11 @@ g_proxy_address_get_destination_hostname
 g_proxy_address_get_destination_port
 g_proxy_address_get_username
 g_proxy_address_get_password
-#endif
-#endif
-
-#if IN_HEADER(__G_PROXY_ADDRESS_ENUMERATOR_H__)
-#if IN_FILE(__G_PROXY_ADDRESS_ENUMERATOR_C__)
 g_proxy_address_enumerator_get_type
-#endif
-#endif
-
-#if IN_HEADER(__G_RESOLVER_H__)
-#if IN_FILE(__G_RESOLVER_C__)
 g_resolver_error_quark
 g_resolver_free_addresses
 g_resolver_free_targets
-g_resolver_get_type G_GNUC_CONST
+g_resolver_get_type
 g_resolver_get_default
 g_resolver_set_default
 g_resolver_lookup_by_name
@@ -1225,34 +863,14 @@ g_resolver_lookup_by_address_finish
 g_resolver_lookup_service
 g_resolver_lookup_service_async
 g_resolver_lookup_service_finish
-#endif
-#endif
-
-#if IN_HEADER(__G_THREADED_RESOLVER_H__)
-#if IN_FILE(__G_THREADED_RESOLVER_C__)
-g_threaded_resolver_get_type G_GNUC_CONST
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_RESOLVER_H__)
-#if IN_FILE(__G_UNIX_RESOLVER_C__)
+g_threaded_resolver_get_type
 #ifdef G_OS_UNIX
-g_unix_resolver_get_type G_GNUC_CONST
+g_unix_resolver_get_type
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_WIN32_RESOLVER_H__)
-#if IN_FILE(__G_WIN32_RESOLVER_C__)
 #ifdef G_OS_WIN32
-g_win32_resolver_get_type G_GNUC_CONST
+g_win32_resolver_get_type
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_SRV_TARGET_H__)
-#if IN_FILE(__G_SRV_TARGET_C__)
-g_srv_target_get_type G_GNUC_CONST
+g_srv_target_get_type
 g_srv_target_new
 g_srv_target_copy
 g_srv_target_free
@@ -1261,75 +879,40 @@ g_srv_target_get_port
 g_srv_target_get_priority
 g_srv_target_get_weight
 g_srv_target_list_sort
-#endif
-#endif
-
-#if IN_HEADER(__G_NETWORK_ADDRESS_H__)
-#if IN_FILE(__G_NETWORK_ADDRESS_C__)
-g_network_address_get_type G_GNUC_CONST
+g_network_address_get_type
 g_network_address_get_hostname
 g_network_address_get_port
 g_network_address_get_scheme
 g_network_address_new
 g_network_address_parse
 g_network_address_parse_uri
-#endif
-#endif
-
-#if IN_HEADER(__G_NETWORK_SERVICE_H__)
-#if IN_FILE(__G_NETWORK_SERVICE_C__)
-g_network_service_get_type G_GNUC_CONST
+g_network_service_get_type
 g_network_service_get_service
 g_network_service_get_protocol
 g_network_service_get_domain
 g_network_service_get_scheme
 g_network_service_set_scheme
 g_network_service_new
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_CONNECTABLE_H__)
-#if IN_FILE(__G_SOCKET_CONNECTABLE_C__)
-g_socket_connectable_get_type G_GNUC_CONST
+g_socket_connectable_get_type
 g_socket_connectable_enumerate
 g_socket_connectable_proxy_enumerate
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_ADDRESS_ENUMERATOR_H__)
-#if IN_FILE(__G_SOCKET_ADDRESS_ENUMERATOR_C__)
-g_socket_address_enumerator_get_type G_GNUC_CONST
+g_socket_address_enumerator_get_type
 g_socket_address_enumerator_next
 g_socket_address_enumerator_next_async
 g_socket_address_enumerator_next_finish
-#endif
-#endif
-
-#if IN_HEADER(__G_ASYNC_INITABLE_H__)
-#if IN_FILE(__G_ASYNC_INITABLE_C__)
-g_async_initable_get_type G_GNUC_CONST
+g_async_initable_get_type
 g_async_initable_init_async
 g_async_initable_init_finish
 g_async_initable_new_async
 g_async_initable_new_finish
 g_async_initable_new_valist_async
 g_async_initable_newv_async
-#endif
-#endif
-
-#if IN_HEADER(__G_INITABLE_H__)
-#if IN_FILE(__G_INITABLE_C__)
-g_initable_get_type G_GNUC_CONST
+g_initable_get_type
 g_initable_init
 g_initable_new
 g_initable_newv
 g_initable_new_valist
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_H__)
-#if IN_FILE(__G_SOCKET_C__)
-g_socket_get_type G_GNUC_CONST
+g_socket_get_type
 g_socket_accept
 g_socket_bind
 g_socket_check_connect_result
@@ -1368,23 +951,13 @@ g_socket_set_keepalive
 g_socket_set_listen_backlog
 g_socket_speaks_ipv4
 g_socket_get_credentials
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_CONTROL_MESSAGE_H__)
-#if IN_FILE(__G_SOCKET_CONTROL_MESSAGE_C__)
-g_socket_control_message_get_type G_GNUC_CONST
+g_socket_control_message_get_type
 g_socket_control_message_deserialize
 g_socket_control_message_get_level
 g_socket_control_message_get_msg_type
 g_socket_control_message_get_size
 g_socket_control_message_serialize
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_CLIENT_H__)
-#if IN_FILE(__G_SOCKET_CLIENT_C__)
-g_socket_client_get_type G_GNUC_CONST
+g_socket_client_get_type
 g_socket_client_add_application_proxy
 g_socket_client_connect
 g_socket_client_connect_async
@@ -1415,24 +988,14 @@ g_socket_client_set_socket_type
 g_socket_client_set_timeout
 g_socket_client_set_tls
 g_socket_client_set_tls_validation_flags
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_CONNECTION_H__)
-#if IN_FILE(__G_SOCKET_CONNECTION_C__)
-g_socket_connection_get_type G_GNUC_CONST
+g_socket_connection_get_type
 g_socket_connection_factory_create_connection
 g_socket_connection_factory_lookup_type
 g_socket_connection_factory_register_type
 g_socket_connection_get_local_address
 g_socket_connection_get_remote_address
 g_socket_connection_get_socket
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_LISTENER_H__)
-#if IN_FILE(__G_SOCKET_LISTENER_C__)
-g_socket_listener_get_type G_GNUC_CONST
+g_socket_listener_get_type
 g_socket_listener_accept
 g_socket_listener_accept_async
 g_socket_listener_accept_finish
@@ -1446,102 +1009,52 @@ g_socket_listener_add_socket
 g_socket_listener_close
 g_socket_listener_new
 g_socket_listener_set_backlog
-#endif
-#endif
-
-#if IN_HEADER(__G_SOCKET_SERVICE_H__)
-#if IN_FILE(__G_SOCKET_SERVICE_C__)
-g_socket_service_get_type G_GNUC_CONST
+g_socket_service_get_type
 g_socket_service_is_active
 g_socket_service_new
 g_socket_service_start
 g_socket_service_stop
-#endif
-#endif
-
-#if IN_HEADER(__G_THREADED_SOCKET_SERVICE_H__)
-#if IN_FILE(__G_THREADED_SOCKET_SERVICE_C__)
-g_threaded_socket_service_get_type G_GNUC_CONST
+g_threaded_socket_service_get_type
 g_threaded_socket_service_new
-#endif
-#endif
-
-#if IN_HEADER(__G_TCP_CONNECTION_H__)
-#if IN_FILE(__G_TCP_CONNECTION_C__)
-g_tcp_connection_get_type G_GNUC_CONST
+g_tcp_connection_get_type
 g_tcp_connection_set_graceful_disconnect
 g_tcp_connection_get_graceful_disconnect
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_CONNECTION_H__)
-#if IN_FILE(__G_UNIX_CONNECTION_C__)
 #ifndef G_OS_WIN32
-g_unix_connection_get_type G_GNUC_CONST
+g_unix_connection_get_type
 g_unix_connection_receive_fd
 g_unix_connection_send_fd
 g_unix_connection_receive_credentials
 g_unix_connection_send_credentials
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_FD_MESSAGE_H__)
-#if IN_FILE(__G_UNIX_FD_MESSAGE_C__)
 #ifndef G_OS_WIN32
-g_unix_fd_message_get_type G_GNUC_CONST
+g_unix_fd_message_get_type
 g_unix_fd_message_append_fd
 g_unix_fd_message_new
 g_unix_fd_message_steal_fds
 g_unix_fd_message_get_fd_list
 g_unix_fd_message_new_with_fd_list
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_FD_LIST_H__)
-#if IN_FILE(__G_UNIX_FD_LIST_C__)
 #ifndef G_OS_WIN32
 g_unix_fd_list_append
 g_unix_fd_list_get
 g_unix_fd_list_get_length
-g_unix_fd_list_get_type G_GNUC_CONST
+g_unix_fd_list_get_type
 g_unix_fd_list_new
 g_unix_fd_list_new_from_array
 g_unix_fd_list_peek_fds
 g_unix_fd_list_steal_fds
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_ZLIB_COMPRESSOR_H__)
-#if IN_FILE(__G_ZLIB_COMPRESSOR_C__)
-g_zlib_compressor_get_type G_GNUC_CONST
+g_zlib_compressor_get_type
 g_zlib_compressor_new
 g_zlib_compressor_get_file_info
 g_zlib_compressor_set_file_info
-#endif
-#endif
-
-#if IN_HEADER(__G_ZLIB_DECOMPRESSOR_H__)
-#if IN_FILE(__G_ZLIB_DECOMPRESSOR_C__)
-g_zlib_decompressor_get_type G_GNUC_CONST
+g_zlib_decompressor_get_type
 g_zlib_decompressor_new
 g_zlib_decompressor_get_file_info
-#endif
-#endif
-
-#if IN_HEADER(__G_FILE_DESCRIPTOR_BASED_H__)
-#if IN_FILE(__G_FILE_DESCRIPTOR_BASED_C__)
 #ifdef G_OS_UNIX
-g_file_descriptor_based_get_type G_GNUC_CONST
+g_file_descriptor_based_get_type
 g_file_descriptor_based_get_fd
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_SETTINGS_BACKEND_H__)
-#if IN_FILE(__G_SETTINGS_BACKEND_C__)
 g_settings_backend_get_type
 g_settings_backend_changed
 g_settings_backend_flatten_tree
@@ -1551,28 +1064,11 @@ g_settings_backend_path_writable_changed
 g_settings_backend_writable_changed
 g_settings_backend_changed_tree
 g_settings_backend_get_default
-#endif
-
-#if IN_FILE(__G_KEYFILE_SETTINGS_BACKEND_C__)
 g_keyfile_settings_backend_new
-#endif
-
-#if IN_FILE(__G_MEMORY_SETTINGS_BACKEND_C__)
 g_memory_settings_backend_new
-#endif
-
-#if IN_FILE(__G_NULL_SETTINGS_BACKEND_C__)
 g_null_settings_backend_new
-#endif
-#endif
-
-#if IN_HEADER(__G_SETTINGS_H__)
-#if IN_FILE(__G_SETTINGS_SCHEMA_C__)
 g_settings_list_schemas
 g_settings_list_relocatable_schemas
-#endif
-
-#if IN_FILE(__G_SETTINGS_C__)
 g_settings_apply
 g_settings_bind
 g_settings_bind_writable
@@ -1615,12 +1111,7 @@ g_settings_list_children
 g_settings_get_mapped
 g_settings_get_range
 g_settings_range_check
-#endif
-#endif
-
-#if IN_HEADER(__G_CREDENTIALS_H__)
-#if IN_FILE(__G_CREDENTIALS_C__)
-g_credentials_get_type G_GNUC_CONST
+g_credentials_get_type
 g_credentials_new
 g_credentials_to_string
 g_credentials_get_native
@@ -1630,31 +1121,16 @@ g_credentials_is_same_user
 g_credentials_get_unix_user
 g_credentials_set_unix_user
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_ADDRESS_H__)
-#if IN_FILE(__G_DBUS_ADDRESS_C__)
 g_dbus_is_address
 g_dbus_is_supported_address
 g_dbus_address_get_for_bus_sync
 g_dbus_address_get_stream
 g_dbus_address_get_stream_finish
 g_dbus_address_get_stream_sync
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_AUTH_OBSERVER_H__)
-#if IN_FILE(__G_DBUS_AUTH_OBSERVER_C__)
-g_dbus_auth_observer_get_type G_GNUC_CONST
+g_dbus_auth_observer_get_type
 g_dbus_auth_observer_new
 g_dbus_auth_observer_authorize_authenticated_peer
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_CONNECTION_H__)
-#if IN_FILE(__G_DBUS_CONNECTION_C__)
-g_dbus_connection_get_type G_GNUC_CONST
+g_dbus_connection_get_type
 g_bus_get
 g_bus_get_finish
 g_bus_get_sync
@@ -1695,11 +1171,6 @@ g_dbus_connection_register_object
 g_dbus_connection_unregister_object
 g_dbus_connection_register_subtree
 g_dbus_connection_unregister_subtree
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_ERROR_H__)
-#if IN_FILE(__G_DBUS_ERROR_C__)
 g_dbus_error_quark
 g_dbus_error_new_for_dbus_error
 g_dbus_error_is_remote_error
@@ -1711,18 +1182,13 @@ g_dbus_error_register_error_domain
 g_dbus_error_set_dbus_error
 g_dbus_error_set_dbus_error_valist
 g_dbus_error_unregister_error
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_INTROSPECTION_H__)
-#if IN_FILE(__G_DBUS_INTROSPECTION_C__)
-g_dbus_annotation_info_get_type G_GNUC_CONST
-g_dbus_arg_info_get_type G_GNUC_CONST
-g_dbus_property_info_get_type G_GNUC_CONST
-g_dbus_interface_info_get_type G_GNUC_CONST
-g_dbus_method_info_get_type G_GNUC_CONST
-g_dbus_signal_info_get_type G_GNUC_CONST
-g_dbus_node_info_get_type G_GNUC_CONST
+g_dbus_annotation_info_get_type
+g_dbus_arg_info_get_type
+g_dbus_property_info_get_type
+g_dbus_interface_info_get_type
+g_dbus_method_info_get_type
+g_dbus_signal_info_get_type
+g_dbus_node_info_get_type
 g_dbus_annotation_info_lookup
 g_dbus_annotation_info_ref
 g_dbus_annotation_info_unref
@@ -1747,12 +1213,7 @@ g_dbus_interface_info_ref
 g_dbus_interface_info_unref
 g_dbus_node_info_ref
 g_dbus_node_info_unref
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_MESSAGE_H__)
-#if IN_FILE(__G_DBUS_MESSAGE_C__)
-g_dbus_message_get_type G_GNUC_CONST
+g_dbus_message_get_type
 g_dbus_message_new
 g_dbus_message_new_from_blob
 g_dbus_message_new_method_call
@@ -1804,12 +1265,7 @@ g_dbus_message_to_gerror
 g_dbus_message_get_unix_fd_list
 g_dbus_message_set_unix_fd_list
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_METHOD_INVOCATION_H__)
-#if IN_FILE(__G_DBUS_METHOD_INVOCATION_C__)
-g_dbus_method_invocation_get_type G_GNUC_CONST
+g_dbus_method_invocation_get_type
 g_dbus_method_invocation_get_connection
 g_dbus_method_invocation_get_interface_name
 g_dbus_method_invocation_get_message
@@ -1826,32 +1282,17 @@ g_dbus_method_invocation_return_error_valist
 g_dbus_method_invocation_return_gerror
 g_dbus_method_invocation_take_error
 g_dbus_method_invocation_return_value
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_NAME_OWNING_H__)
-#if IN_FILE(__G_DBUS_NAME_OWNING_C__)
 g_bus_own_name
 g_bus_own_name_on_connection
 g_bus_unown_name
 g_bus_own_name_with_closures
 g_bus_own_name_on_connection_with_closures
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_NAME_WATCHING_H__)
-#if IN_FILE(__G_DBUS_NAME_WATCHING_C__)
 g_bus_watch_name
 g_bus_watch_name_on_connection
 g_bus_unwatch_name
 g_bus_watch_name_with_closures
 g_bus_watch_name_on_connection_with_closures
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_PROXY_H__)
-#if IN_FILE(__G_DBUS_PROXY_C__)
-g_dbus_proxy_get_type G_GNUC_CONST
+g_dbus_proxy_get_type
 g_dbus_proxy_new
 g_dbus_proxy_new_finish
 g_dbus_proxy_new_sync
@@ -1874,12 +1315,7 @@ g_dbus_proxy_set_interface_info
 g_dbus_proxy_call
 g_dbus_proxy_call_finish
 g_dbus_proxy_call_sync
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_SERVER_H__)
-#if IN_FILE(__G_DBUS_SERVER_C__)
-g_dbus_server_get_type G_GNUC_CONST
+g_dbus_server_get_type
 g_dbus_server_new_sync
 g_dbus_server_is_active
 g_dbus_server_start
@@ -1887,11 +1323,6 @@ g_dbus_server_stop
 g_dbus_server_get_client_address
 g_dbus_server_get_flags
 g_dbus_server_get_guid
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_UTILS_H__)
-#if IN_FILE(__G_DBUS_UTILS_C__)
 g_dbus_generate_guid
 g_dbus_is_guid
 g_dbus_is_interface_name
@@ -1900,23 +1331,13 @@ g_dbus_is_name
 g_dbus_is_unique_name
 g_dbus_gvalue_to_gvariant
 g_dbus_gvariant_to_gvalue
-#endif
-#endif
-
-#if IN_HEADER(__G_UNIX_CREDENTIALS_MESSAGE_H__)
-#if IN_FILE(__G_UNIX_CREDENTIALS_MESSAGE_C__)
 #ifdef G_OS_UNIX
-g_unix_credentials_message_get_type G_GNUC_CONST
+g_unix_credentials_message_get_type
 g_unix_credentials_message_new
 g_unix_credentials_message_new_with_credentials
 g_unix_credentials_message_get_credentials
 g_unix_credentials_message_is_supported
 #endif
-#endif
-#endif
-
-#if IN_HEADER(__G_PERMISSION_H__)
-#if IN_FILE(__G_PERMISSION_C__)
 g_permission_acquire
 g_permission_acquire_async
 g_permission_acquire_finish
@@ -1928,18 +1349,8 @@ g_permission_impl_update
 g_permission_release
 g_permission_release_async
 g_permission_release_finish
-#endif
-#endif
-
-#if IN_HEADER(__G_SIMPLE_PERMISSION_H__)
-#if IN_FILE(__G_SIMPLE_PERMISSION_C__)
 g_simple_permission_get_type
 g_simple_permission_new
-#endif
-#endif
-
-#if IN_HEADER(__G_ACTION_GROUP_H__)
-#if IN_FILE(__G_ACTION_GROUP_C__)
 g_action_group_action_added
 g_action_group_action_enabled_changed
 g_action_group_action_removed
@@ -1954,11 +1365,6 @@ g_action_group_get_type
 g_action_group_has_action
 g_action_group_list_actions
 g_action_group_change_action_state
-#endif
-#endif
-
-#if IN_HEADER(__G_ACTION_H__)
-#if IN_FILE(__G_ACTION_C__)
 g_action_activate
 g_action_get_enabled
 g_action_get_name
@@ -1968,85 +1374,45 @@ g_action_get_state_hint
 g_action_get_state_type
 g_action_get_type
 g_action_set_state
-#endif
-#endif
-
-#if IN_HEADER(__G_SIMPLE_ACTION_GROUP_H__)
-#if IN_FILE(__G_SIMPLE_ACTION_GROUP_C__)
-g_simple_action_group_get_type G_GNUC_CONST
+g_simple_action_group_get_type
 g_simple_action_group_insert
 g_simple_action_group_lookup
 g_simple_action_group_new
 g_simple_action_group_remove
-#endif
-#endif
-
-#if IN_HEADER(__G_SIMPLE_ACTION_H__)
-#if IN_FILE(__G_SIMPLE_ACTION_C__)
 g_simple_action_get_parameter_type
 g_simple_action_get_type
 g_simple_action_new
 g_simple_action_new_stateful
 g_simple_action_set_enabled
-#endif
-#endif
-
-#if IN_HEADER(__G_POLLABLE_INPUT_STREAM_H__)
-#if IN_FILE(__G_POLLABLE_INPUT_STREAM_C__)
-g_pollable_input_stream_get_type G_GNUC_CONST
+g_pollable_input_stream_get_type
 g_pollable_input_stream_can_poll
 g_pollable_input_stream_create_source
 g_pollable_input_stream_is_readable
 g_pollable_input_stream_read_nonblocking
 g_pollable_source_new
-#endif
-#endif
-
-#if IN_HEADER(__G_POLLABLE_OUTPUT_STREAM_H__)
-#if IN_FILE(__G_POLLABLE_OUTPUT_STREAM_C__)
-g_pollable_output_stream_get_type G_GNUC_CONST
+g_pollable_output_stream_get_type
 g_pollable_output_stream_can_poll
 g_pollable_output_stream_create_source
 g_pollable_output_stream_is_writable
 g_pollable_output_stream_write_nonblocking
-#endif
-#endif
-
-#if IN_HEADER(__G_TCP_WRAPPER_CONNECTION_H__)
-#if IN_FILE(__G_TCP_WRAPPER_CONNECTION_C__)
-g_tcp_wrapper_connection_get_type G_GNUC_CONST
+g_tcp_wrapper_connection_get_type
 g_tcp_wrapper_connection_get_base_io_stream
 g_tcp_wrapper_connection_new
-#endif
-#endif
-
-#if IN_HEADER(__G_TLS_BACKEND_H__)
-#if IN_FILE(__G_TLS_BACKEND_C__)
 g_tls_backend_get_certificate_type
 g_tls_backend_get_client_connection_type
 g_tls_backend_get_default
 g_tls_backend_get_server_connection_type
-g_tls_backend_get_type G_GNUC_CONST
+g_tls_backend_get_type
 g_tls_backend_supports_tls
-g_tls_error_get_type G_GNUC_CONST
+g_tls_error_get_type
 g_tls_error_quark
-#endif
-#endif
-
-#if IN_HEADER(__G_TLS_CERTIFICATE_H__)
-#if IN_FILE(__G_TLS_CERTIFICATE_C__)
 g_tls_certificate_get_issuer
-g_tls_certificate_get_type G_GNUC_CONST
+g_tls_certificate_get_type
 g_tls_certificate_list_new_from_file
 g_tls_certificate_new_from_file
 g_tls_certificate_new_from_files
 g_tls_certificate_new_from_pem
 g_tls_certificate_verify
-#endif
-#endif
-
-#if IN_HEADER(__G_TLS_CONNECTION_H__)
-#if IN_FILE(__G_TLS_CONNECTION_C__)
 g_tls_connection_emit_accept_certificate
 g_tls_connection_get_certificate
 g_tls_connection_get_peer_certificate
@@ -2054,7 +1420,7 @@ g_tls_connection_get_peer_certificate_errors
 g_tls_connection_get_rehandshake_mode
 g_tls_connection_get_require_close_notify
 g_tls_connection_get_use_system_certdb
-g_tls_connection_get_type G_GNUC_CONST
+g_tls_connection_get_type
 g_tls_connection_handshake
 g_tls_connection_handshake_async
 g_tls_connection_handshake_finish
@@ -2062,48 +1428,23 @@ g_tls_connection_set_certificate
 g_tls_connection_set_rehandshake_mode
 g_tls_connection_set_require_close_notify
 g_tls_connection_set_use_system_certdb
-#endif
-#endif
-
-#if IN_HEADER(__G_TLS_CLIENT_CONNECTION_H__)
-#if IN_FILE(__G_TLS_CLIENT_CONNECTION_C__)
 g_tls_client_connection_get_accepted_cas
 g_tls_client_connection_get_server_identity
-g_tls_client_connection_get_type G_GNUC_CONST
+g_tls_client_connection_get_type
 g_tls_client_connection_get_use_ssl3
 g_tls_client_connection_get_validation_flags
 g_tls_client_connection_new
 g_tls_client_connection_set_server_identity
 g_tls_client_connection_set_use_ssl3
 g_tls_client_connection_set_validation_flags
-#endif
-#endif
-
-#if IN_HEADER(__G_TLS_SERVER_CONNECTION_H__)
-#if IN_FILE(__G_TLS_SERVER_CONNECTION_C__)
-g_tls_server_connection_get_type G_GNUC_CONST
+g_tls_server_connection_get_type
 g_tls_server_connection_new
-#endif
-#endif
-
-#if IN_HEADER(__G_TIME_ZONE_MONITOR_H__)
-#if IN_FILE(__G_TIME_ZONE_MONITOR_C__)
-g_time_zone_monitor_get_type G_GNUC_CONST
+g_time_zone_monitor_get_type
 g_time_zone_monitor_get
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_INTERFACE_H__)
-#if IN_FILE(__G_DBUS_INTERFACE_C__)
 g_dbus_interface_get_info
 g_dbus_interface_get_object
 g_dbus_interface_get_type
 g_dbus_interface_set_object
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_INTERFACE_SKELETON_H__)
-#if IN_FILE(__G_DBUS_INTERFACE_SKELETON_C__)
 g_dbus_interface_skeleton_export
 g_dbus_interface_skeleton_flags_get_type
 g_dbus_interface_skeleton_flush
@@ -2116,28 +1457,13 @@ g_dbus_interface_skeleton_get_type
 g_dbus_interface_skeleton_get_vtable
 g_dbus_interface_skeleton_set_flags
 g_dbus_interface_skeleton_unexport
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_OBJECT_H__)
-#if IN_FILE(__G_DBUS_OBJECT_C__)
 g_dbus_object_get_interface
 g_dbus_object_get_interfaces
 g_dbus_object_get_object_path
 g_dbus_object_get_type
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_OBJECT_PROXY_H__)
-#if IN_FILE(__G_DBUS_OBJECT_PROXY_C__)
 g_dbus_object_proxy_new
 g_dbus_object_proxy_get_connection
 g_dbus_object_proxy_get_type
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_OBJECT_SKELETON_H__)
-#if IN_FILE(__G_DBUS_OBJECT_SKELETON_C__)
 g_dbus_object_skeleton_add_interface
 g_dbus_object_skeleton_flush
 g_dbus_object_skeleton_get_type
@@ -2145,21 +1471,11 @@ g_dbus_object_skeleton_new
 g_dbus_object_skeleton_remove_interface
 g_dbus_object_skeleton_remove_interface_by_name
 g_dbus_object_skeleton_set_object_path
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_OBJECT_MANAGER_H__)
-#if IN_FILE(__G_DBUS_OBJECT_MANAGER_C__)
 g_dbus_object_manager_get_interface
 g_dbus_object_manager_get_object
 g_dbus_object_manager_get_object_path
 g_dbus_object_manager_get_objects
 g_dbus_object_manager_get_type
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_OBJECT_MANAGER_CLIENT_H__)
-#if IN_FILE(__G_DBUS_OBJECT_MANAGER_CLIENT_C__)
 g_dbus_object_manager_client_flags_get_type
 g_dbus_object_manager_client_get_connection
 g_dbus_object_manager_client_get_flags
@@ -2172,11 +1488,6 @@ g_dbus_object_manager_client_new_for_bus
 g_dbus_object_manager_client_new_for_bus_finish
 g_dbus_object_manager_client_new_for_bus_sync
 g_dbus_object_manager_client_new_sync
-#endif
-#endif
-
-#if IN_HEADER(__G_DBUS_OBJECT_MANAGER_SERVER_H__)
-#if IN_FILE(__G_DBUS_OBJECT_MANAGER_SERVER_C__)
 g_dbus_object_manager_server_export
 g_dbus_object_manager_server_export_uniquely
 g_dbus_object_manager_server_get_connection
@@ -2184,5 +1495,3 @@ g_dbus_object_manager_server_set_connection
 g_dbus_object_manager_server_get_type
 g_dbus_object_manager_server_new
 g_dbus_object_manager_server_unexport
-#endif
-#endif
