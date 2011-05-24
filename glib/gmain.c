@@ -2133,7 +2133,7 @@ get_dispatch (void)
  *  That is, when called from the toplevel, it gives 0. When
  * called from within a callback from g_main_context_iteration()
  * (or g_main_loop_run(), etc.) it returns 1. When called from within 
- * a callback to a recursive call to g_main_context_iterate(),
+ * a callback to a recursive call to g_main_context_iteration(),
  * it returns 2. And so forth.
  *
  * This function is useful in a situation like the following:
