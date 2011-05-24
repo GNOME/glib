@@ -22,6 +22,7 @@
 # Author: David Zeuthen <davidz@redhat.com>
 
 import sys
+import re
 
 import config
 import utils
@@ -171,17 +172,17 @@ class DocbookCodeGenerator:
         self.out.write('<programlisting>\n')
         self.print_method_prototype(i, m, in_synopsis=False)
         self.out.write('</programlisting>\n')
-        self.out.write('<para>%s</para>\n'%(self.expand(m.doc_string)))
+        self.out.write('<para>%s</para>\n'%(self.expand(m.doc_string, True)))
         self.out.write('<variablelist role="params">\n')
         for a in m.in_args:
             self.out.write('<varlistentry>\n'%())
             self.out.write('  <term><literal>IN %s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string)))
+            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
             self.out.write('</varlistentry>\n'%())
         for a in m.out_args:
             self.out.write('<varlistentry>\n'%())
             self.out.write('  <term><literal>OUT %s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string)))
+            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
             self.out.write('</varlistentry>\n'%())
         self.out.write('</variablelist>\n')
         if len(m.since) > 0:
@@ -197,12 +198,12 @@ class DocbookCodeGenerator:
         self.out.write('<programlisting>\n')
         self.print_signal_prototype(i, s, in_synopsis=False)
         self.out.write('</programlisting>\n')
-        self.out.write('<para>%s</para>\n'%(self.expand(s.doc_string)))
+        self.out.write('<para>%s</para>\n'%(self.expand(s.doc_string, True)))
         self.out.write('<variablelist role="params">\n')
         for a in s.args:
             self.out.write('<varlistentry>\n'%())
             self.out.write('  <term><literal>%s <parameter>%s</parameter></literal>:</term>\n'%(a.signature, a.name))
-            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string)))
+            self.out.write('  <listitem><para>%s</para></listitem>\n'%(self.expand(a.doc_string, True)))
             self.out.write('</varlistentry>\n'%())
         self.out.write('</variablelist>\n')
         if len(s.since) > 0:
@@ -218,18 +219,23 @@ class DocbookCodeGenerator:
         self.out.write('<programlisting>\n')
         self.print_property_prototype(i, p, in_synopsis=False)
         self.out.write('</programlisting>\n')
-        self.out.write('<para>%s</para>\n'%(self.expand(p.doc_string)))
+        self.out.write('<para>%s</para>\n'%(self.expand(p.doc_string, True)))
         if len(p.since) > 0:
             self.out.write('<para role="since">Since %s</para>\n'%(p.since))
         if p.deprecated:
             self.out.write('<warning><para>The "%s" property is deprecated.</para></warning>'%(p.name))
         self.out.write('</refsect2>\n')
 
-    def expand(self, s):
+    def expand(self, s, expandParamsAndConstants):
         for key in self.expand_member_dict_keys:
             s = s.replace(key, self.expand_member_dict[key])
         for key in self.expand_iface_dict_keys:
             s = s.replace(key, self.expand_iface_dict[key])
+        if expandParamsAndConstants:
+            # replace @foo with <parameter>foo</parameter>
+            s = re.sub('@[a-zA-Z0-9_]*', lambda m: '<parameter>' + m.group(0)[1:] + '</parameter>', s)
+            # replace e.g. %TRUE with <constant>TRUE</constant>
+            s = re.sub('%[a-zA-Z0-9_]*', lambda m: '<constant>' + m.group(0)[1:] + '</constant>', s)
         return s
 
     def generate_expand_dicts(self):
@@ -286,7 +292,7 @@ class DocbookCodeGenerator:
 
             self.out.write('<refsect1 role="desc" id="gdbus-interface-%s">\n'%(utils.dots_to_hyphens(i.name)))
             self.out.write('  <title role="desc.title">Description</title>\n'%())
-            self.out.write('  <para>%s</para>\n'%(self.expand(i.doc_string)))
+            self.out.write('  <para>%s</para>\n'%(self.expand(i.doc_string, True)))
             if len(i.since) > 0:
                 self.out.write('  <para role="since">Since %s</para>\n'%(i.since))
             if i.deprecated:

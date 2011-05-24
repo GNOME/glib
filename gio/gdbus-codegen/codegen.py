@@ -896,7 +896,7 @@ class CodeGenerator:
                     ' * Gets a machine-readable description of the #%s D-Bus interface.\n'
                     ' *\n'
                     ' * Returns: (transfer none): A #GDBusInterfaceInfo. Do not free.\n'
-                    %(i.name_lower, i.name)))
+                    %(i.name_lower, i.name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
             self.c.write('GDBusInterfaceInfo *\n'
                          '%s_interface_info (void)\n'
@@ -916,7 +916,7 @@ class CodeGenerator:
                         ' * The properties are overridden in the order they are defined.\n'
                         ' *\n'
                         ' * Returns: The last property id.\n'
-                        %(i.name_lower, i.camel_name)))
+                        %(i.name_lower, i.camel_name), False))
                 self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
                 self.c.write('guint\n'
                              '%s_override_properties (GObjectClass *klass, guint property_id_begin)\n'
@@ -938,7 +938,7 @@ class CodeGenerator:
                 ' * %s:\n'
                 ' *\n'
                 ' * Abstract interface type for the D-Bus interface #%s.\n'
-                %(i.camel_name, i.name)))
+                %(i.camel_name, i.name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('\n')
 
@@ -946,7 +946,7 @@ class CodeGenerator:
                 '/**\n'
                 ' * %sIface:\n'
                 ' * @parent_iface: The parent interface.\n'
-                %(i.camel_name)))
+                %(i.camel_name), False))
 
         doc_bits = {}
         if len(i.methods) > 0:
@@ -969,7 +969,7 @@ class CodeGenerator:
         self.c.write(self.docbook_gen.expand(
                 ' *\n'
                 ' * Virtual table for the D-Bus interface #%s.\n'
-                %(i.name)))
+                %(i.name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('\n')
 
@@ -985,7 +985,7 @@ class CodeGenerator:
                         '   * %s::handle-%s:\n'
                         '   * @object: A #%s.\n'
                         '   * @invocation: A #GDBusMethodInvocation.\n'
-                        %(i.camel_name, m.name_hyphen, i.camel_name, )))
+                        %(i.camel_name, m.name_hyphen, i.camel_name), False))
                 for a in m.in_args:
                     self.c.write ('   * @%s: Argument passed by remote caller.\n'%(a.name))
                 self.c.write(self.docbook_gen.expand(
@@ -995,7 +995,7 @@ class CodeGenerator:
                         '   * If a signal handler returns %%TRUE, it means the signal handler will handle the invocation (e.g. take a reference to @invocation and eventually call %s_complete_%s() or e.g. g_dbus_method_invocation_return_error() on it) and no order signal handlers will run. If no signal handler handles the invocation, the %%G_DBUS_ERROR_UNKNOWN_METHOD error is returned.\n'
                         '   *\n'
                         '   * Returns: %%TRUE if the invocation was handled, %%FALSE to let other signal handlers run.\n'
-                        %(i.name, m.name, i.name_lower, m.name_lower)))
+                        %(i.name, m.name, i.name_lower, m.name_lower), False))
                 self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 2)
                 self.c.write('  g_signal_new ("handle-%s",\n'
                              '    G_TYPE_FROM_INTERFACE (iface),\n'
@@ -1020,7 +1020,7 @@ class CodeGenerator:
                         '  /**\n'
                         '   * %s::%s:\n'
                         '   * @object: A #%s.\n'
-                        %(i.camel_name, s.name_hyphen, i.camel_name, )))
+                        %(i.camel_name, s.name_hyphen, i.camel_name), False))
                 for a in s.args:
                     self.c.write ('   * @%s: Argument.\n'%(a.name))
                 self.c.write(self.docbook_gen.expand(
@@ -1028,7 +1028,7 @@ class CodeGenerator:
                         '   * On the client-side, this signal is emitted whenever the D-Bus signal #%s::%s is received.\n'
                         '   *\n'
                         '   * On the service-side, this signal can be used with e.g. g_signal_emit_by_name() to make the object emit the D-Bus signal.\n'
-                        %(i.name, s.name)))
+                        %(i.name, s.name), False))
                 self.write_gtkdoc_deprecated_and_since_and_close(s, self.c, 2)
                 self.c.write('  g_signal_new ("%s",\n'
                              '    G_TYPE_FROM_INTERFACE (iface),\n'
@@ -1063,7 +1063,7 @@ class CodeGenerator:
                         '   * Represents the D-Bus property #%s:%s.\n'
                         '   *\n'
                         '   * %s\n'
-                        %(i.camel_name, p.name_hyphen, i.name, p.name, hint)))
+                        %(i.camel_name, p.name_hyphen, i.name, p.name, hint), False))
                 self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 2)
                 self.c.write('  g_object_interface_install_property (iface,\n')
                 if p.arg.gtype == 'G_TYPE_VARIANT':
@@ -1133,7 +1133,7 @@ class CodeGenerator:
                     ' * %s\n'
                     ' *\n'
                     ' * Returns: (transfer none): The property value.\n'
-                    %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint)))
+                    %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint), False))
             self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 0)
             self.c.write('%s\n'
                          '%s_get_%s (%s *object)\n'
@@ -1167,7 +1167,7 @@ class CodeGenerator:
                     ' * Sets the #%s:%s D-Bus property to @value.\n'
                     ' *\n'
                     ' * %s\n'
-                    %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint)))
+                    %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint), False))
             self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 0)
             self.c.write('void\n'
                          '%s_set_%s (%s *object, %svalue)\n'
@@ -1184,13 +1184,13 @@ class CodeGenerator:
                     '/**\n'
                     ' * %s_emit_%s:\n'
                     ' * @object: A #%s.\n'
-                    %(i.name_lower, s.name_lower, i.camel_name)))
+                    %(i.name_lower, s.name_lower, i.camel_name), False))
             for a in s.args:
                 self.c.write(' * @%s: Argument to pass with the signal.\n'%(a.name))
             self.c.write(self.docbook_gen.expand(
                     ' *\n'
                     ' * Emits the #%s::%s D-Bus signal.\n'
-                    %(i.name, s.name)))
+                    %(i.name, s.name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(s, self.c, 0)
             self.c.write('void\n'
                          '%s_emit_%s (\n'
@@ -1227,7 +1227,7 @@ class CodeGenerator:
                     ' * You can then call %s_call_%s_finish() to get the result of the operation.\n'
                     ' *\n'
                     ' * See %s_call_%s_sync() for the synchronous, blocking version of this method.\n'
-                    %(i.name, m.name, i.name_lower, m.name_lower, i.name_lower, m.name_lower)))
+                    %(i.name, m.name, i.name_lower, m.name_lower, i.name_lower, m.name_lower), False))
             self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('void\n'
                          '%s_call_%s (\n'
@@ -1269,7 +1269,7 @@ class CodeGenerator:
                     ' * Finishes an operation started with %s_call_%s().\n'
                     ' *\n'
                     ' * Returns: (skip): %%TRUE if the call succeded, %%FALSE if @error is set.\n'
-                    %(i.name_lower, m.name_lower, i.name_lower, m.name_lower)))
+                    %(i.name_lower, m.name_lower, i.name_lower, m.name_lower), False))
             self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('gboolean\n'
                          '%s_call_%s_finish (\n'
@@ -1317,7 +1317,7 @@ class CodeGenerator:
                     ' * See %s_call_%s() for the asynchronous version of this method.\n'
                     ' *\n'
                     ' * Returns: (skip): %%TRUE if the call succeded, %%FALSE if @error is set.\n'
-                    %(i.name, m.name, i.name_lower, m.name_lower)))
+                    %(i.name, m.name, i.name_lower, m.name_lower), False))
             self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('gboolean\n'
                          '%s_call_%s_sync (\n'
@@ -1376,7 +1376,7 @@ class CodeGenerator:
                     ' * Helper function used in service implementations to finish handling invocations of the %s.%s() D-Bus method. If you instead want to finish handling an invocation by returning an error, use g_dbus_method_invocation_return_error() or similar.\n'
                     ' *\n'
                     ' * This method will free @invocation, you cannot use it afterwards.\n'
-                    %(i.name, m.name)))
+                    %(i.name, m.name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 0)
             self.c.write('void\n'
                          '%s_complete_%s (\n'
@@ -1410,7 +1410,7 @@ class CodeGenerator:
                 ' * %sProxy:\n'
                 ' *\n'
                 ' * The #%sProxy structure contains only private data and should only be accessed using the provided API.\n'
-                %(i.camel_name, i.camel_name)))
+                %(i.camel_name, i.camel_name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('\n')
 
@@ -1420,7 +1420,7 @@ class CodeGenerator:
                 ' * @parent_class: The parent class.\n'
                 ' *\n'
                 ' * Class structure for #%sProxy.\n'
-                %(i.camel_name, i.camel_name)))
+                %(i.camel_name, i.camel_name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('\n')
 
@@ -1633,7 +1633,7 @@ class CodeGenerator:
                 ' * You can then call %s_proxy_new_finish() to get the result of the operation.\n'
                 ' *\n'
                 ' * See %s_proxy_new_sync() for the synchronous, blocking version of this constructor.\n'
-                %(i.name_lower, i.name, i.name_lower, i.name_lower)))
+                %(i.name_lower, i.name, i.name_lower, i.name_lower), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('void\n'
                      '%s_proxy_new (\n'
@@ -1693,7 +1693,7 @@ class CodeGenerator:
                 ' * See %s_proxy_new() for the asynchronous version of this constructor.\n'
                 ' *\n'
                 ' * Returns: (transfer full) (type %sProxy): The constructed proxy object or %%NULL if @error is set.\n'
-                %(i.name_lower, i.name, i.name_lower, i.camel_name)))
+                %(i.name_lower, i.name, i.name_lower, i.camel_name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('%s *\n'
                      '%s_proxy_new_sync (\n'
@@ -1731,7 +1731,7 @@ class CodeGenerator:
                 ' * You can then call %s_proxy_new_for_bus_finish() to get the result of the operation.\n'
                 ' *\n'
                 ' * See %s_proxy_new_for_bus_sync() for the synchronous, blocking version of this constructor.\n'
-                %(i.name_lower, i.name_lower, i.name_lower, i.name_lower)))
+                %(i.name_lower, i.name_lower, i.name_lower, i.name_lower), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('void\n'
                      '%s_proxy_new_for_bus (\n'
@@ -1791,7 +1791,7 @@ class CodeGenerator:
                 ' * See %s_proxy_new_for_bus() for the asynchronous version of this constructor.\n'
                 ' *\n'
                 ' * Returns: (transfer full) (type %sProxy): The constructed proxy object or %%NULL if @error is set.\n'
-                %(i.name_lower, i.name_lower, i.name_lower, i.camel_name)))
+                %(i.name_lower, i.name_lower, i.name_lower, i.camel_name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('%s *\n'
                      '%s_proxy_new_for_bus_sync (\n'
@@ -1825,7 +1825,7 @@ class CodeGenerator:
                 ' * %sSkeleton:\n'
                 ' *\n'
                 ' * The #%sSkeleton structure contains only private data and should only be accessed using the provided API.\n'
-                %(i.camel_name, i.camel_name)))
+                %(i.camel_name, i.camel_name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('\n')
 
@@ -1835,7 +1835,7 @@ class CodeGenerator:
                 ' * @parent_class: The parent class.\n'
                 ' *\n'
                 ' * Class structure for #%sSkeleton.\n'
-                %(i.camel_name, i.camel_name)))
+                %(i.camel_name, i.camel_name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('\n')
 
@@ -2343,7 +2343,7 @@ class CodeGenerator:
                 ' * Creates a skeleton object for the D-Bus interface #%s.\n'
                 ' *\n'
                 ' * Returns: (transfer full) (type %sSkeleton): The skeleton object.\n'
-                %(i.name_lower, i.name, i.camel_name)))
+                %(i.name_lower, i.name, i.camel_name), False))
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('%s *\n'
                      '%s_skeleton_new (void)\n'
@@ -2369,7 +2369,7 @@ class CodeGenerator:
                 ' *\n'
                 ' * This section contains the #%sObject, #%sObjectProxy, and #%sObjectSkeleton types which make it easier to work with objects implementing generated types for D-Bus interfaces.\n'
                 ' */\n'
-                %(self.namespace, self.namespace, self.namespace, self.namespace, self.namespace)))
+                %(self.namespace, self.namespace, self.namespace, self.namespace, self.namespace), False))
         self.c.write('\n')
 
         self.c.write(self.docbook_gen.expand(
@@ -2378,7 +2378,7 @@ class CodeGenerator:
                 ' *\n'
                 ' * The #%sObject type is a specialized container of interfaces.\n'
                 ' */\n'
-                %(self.namespace, self.namespace)))
+                %(self.namespace, self.namespace), False))
         self.c.write('\n')
 
         self.c.write(self.docbook_gen.expand(
@@ -2388,7 +2388,7 @@ class CodeGenerator:
                 ' *\n'
                 ' * Virtual table for the #%sObject interface.\n'
                 ' */\n'
-                %(self.namespace, self.namespace)))
+                %(self.namespace, self.namespace), False))
         self.c.write('\n')
 
         self.c.write('static void\n'
@@ -2403,7 +2403,7 @@ class CodeGenerator:
                     '   * The #%s instance corresponding to the D-Bus interface #%s, if any.\n'
                     '   *\n'
                     '   * Connect to the #GObject::notify signal to get informed of property changes.\n'
-                    %(self.namespace, i.name_hyphen, i.camel_name, i.name)))
+                    %(self.namespace, i.name_hyphen, i.camel_name, i.name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 2)
             self.c.write('  g_object_interface_install_property (iface, g_param_spec_object ("%s", "%s", "%s", %sTYPE_%s, G_PARAM_READWRITE|G_PARAM_STATIC_STRINGS));\n'
                          '\n'
@@ -2424,7 +2424,7 @@ class CodeGenerator:
                     ' * Gets the #%s instance for the D-Bus interface #%s on @object, if any.\n'
                     ' *\n'
                     ' * Returns: (transfer full): A #%s that must be freed with g_object_unref() or %%NULL if @object does not implement the interface.\n'
-                    %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name, i.name, i.camel_name)))
+                    %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name, i.name, i.camel_name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
             self.c.write ('%s *%sobject_get_%s (%sObject *object)\n'
                           %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
@@ -2449,7 +2449,7 @@ class CodeGenerator:
                     ' * <warning>It is not safe to use the returned object if you are on another thread than the one where the #GDBusObjectManagerClient or #GDBusObjectManagerServer for @object is running.</warning>\n'
                     ' *\n'
                     ' * Returns: (transfer none): A #%s or %%NULL if @object does not implement the interface. Do not free the returned object, it is owned by @object.\n'
-                    %(self.ns_lower, i.name_upper.lower(), self.namespace, self.ns_lower, i.name_upper.lower(), i.camel_name)))
+                    %(self.ns_lower, i.name_upper.lower(), self.namespace, self.ns_lower, i.name_upper.lower(), i.camel_name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
             self.c.write ('%s *%sobject_peek_%s (%sObject *object)\n'
                           %(i.camel_name, self.ns_lower, i.name_upper.lower(), self.namespace))
@@ -2478,7 +2478,7 @@ class CodeGenerator:
                 ' * %sObjectProxy:\n'
                 ' *\n'
                 ' * The #%sObjectProxy structure contains only private data and should only be accessed using the provided API.\n'
-                %(self.namespace, self.namespace)))
+                %(self.namespace, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('\n')
         self.c.write(self.docbook_gen.expand(
@@ -2487,7 +2487,7 @@ class CodeGenerator:
                 ' * @parent_class: The parent class.\n'
                 ' *\n'
                 ' * Class structure for #%sObjectProxy.\n'
-                %(self.namespace, self.namespace)))
+                %(self.namespace, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('\n')
         # class boilerplate
@@ -2582,7 +2582,7 @@ class CodeGenerator:
                 ' *\n'
                 ' * Returns: (transfer full): The proxy object.\n'
                 ' */\n'
-                %(self.ns_lower)))
+                %(self.ns_lower), False))
         self.c.write('%sObjectProxy *\n'
                      '%sobject_proxy_new (GDBusConnection *connection,\n'
                      '  const gchar *object_path)\n'
@@ -2598,7 +2598,7 @@ class CodeGenerator:
                 ' * %sObjectSkeleton:\n'
                 ' *\n'
                 ' * The #%sObjectSkeleton structure contains only private data and should only be accessed using the provided API.\n'
-                %(self.namespace, self.namespace)))
+                %(self.namespace, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('\n')
         self.c.write(self.docbook_gen.expand(
@@ -2607,7 +2607,7 @@ class CodeGenerator:
                 ' * @parent_class: The parent class.\n'
                 ' *\n'
                 ' * Class structure for #%sObjectSkeleton.\n'
-                %(self.namespace, self.namespace)))
+                %(self.namespace, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('\n')
         # class boilerplate
@@ -2725,7 +2725,7 @@ class CodeGenerator:
                 ' *\n'
                 ' * Returns: (transfer full): The skeleton object.\n'
                 ' */\n'
-                %(self.ns_lower)))
+                %(self.ns_lower), False))
         self.c.write('%sObjectSkeleton *\n'
                      '%sobject_skeleton_new (const gchar *object_path)\n'
                      '{\n'
@@ -2741,7 +2741,7 @@ class CodeGenerator:
                     ' * @interface_: (allow-none): A #%s or %%NULL to clear the interface.\n'
                     ' *\n'
                     ' * Sets the #%s instance for the D-Bus interface #%s on @object.\n'
-                    %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name, i.camel_name, i.name)))
+                    %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name, i.camel_name, i.name), False))
             self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
             self.c.write ('void %sobject_skeleton_set_%s (%sObjectSkeleton *object, %s *interface_)\n'
                           %(self.ns_lower, i.name_upper.lower(), self.namespace, i.camel_name))
@@ -2768,7 +2768,7 @@ class CodeGenerator:
                 ' *\n'
                 ' * This section contains a #GDBusObjectManagerClient that uses %sobject_manager_client_get_proxy_type() as the #GDBusProxyTypeFunc.\n'
                 ' */\n'
-                %(self.namespace, self.namespace, self.ns_lower)))
+                %(self.namespace, self.namespace, self.ns_lower), False))
         self.c.write('\n')
 
         self.c.write(self.docbook_gen.expand(
@@ -2776,7 +2776,7 @@ class CodeGenerator:
                 ' * %sObjectManagerClient:\n'
                 ' *\n'
                 ' * The #%sObjectManagerClient structure contains only private data and should only be accessed using the provided API.\n'
-                %(self.namespace, self.namespace)))
+                %(self.namespace, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('\n')
 
@@ -2786,7 +2786,7 @@ class CodeGenerator:
                 ' * @parent_class: The parent class.\n'
                 ' *\n'
                 ' * Class structure for #%sObjectManagerClient.\n'
-                %(self.namespace, self.namespace)))
+                %(self.namespace, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('\n')
 
@@ -2818,7 +2818,7 @@ class CodeGenerator:
                 ' * A #GDBusProxyTypeFunc that maps @interface_name to the generated #GDBusObjectProxy<!-- -->- and #GDBusProxy<!-- -->-derived types.\n'
                 ' *\n'
                 ' * Returns: A #GDBusProxy<!-- -->-derived #GType if @interface_name is not %%NULL, otherwise the #GType for #%sObjectProxy.\n'
-                %(self.ns_lower, self.namespace)))
+                %(self.ns_lower, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('GType\n'
                      '%sobject_manager_client_get_proxy_type (GDBusObjectManagerClient *manager, const gchar *object_path, const gchar *interface_name, gpointer user_data)\n'
@@ -2864,7 +2864,7 @@ class CodeGenerator:
                 ' * You can then call %sobject_manager_client_new_finish() to get the result of the operation.\n'
                 ' *\n'
                 ' * See %sobject_manager_client_new_sync() for the synchronous, blocking version of this constructor.\n'
-                %(self.ns_lower, self.ns_lower, self.ns_lower, self.ns_lower)))
+                %(self.ns_lower, self.ns_lower, self.ns_lower, self.ns_lower), False))
         self.c.write(' */\n')
         self.c.write('void\n'
                      '%sobject_manager_client_new (\n'
@@ -2924,7 +2924,7 @@ class CodeGenerator:
                 ' * See %sobject_manager_client_new() for the asynchronous version of this constructor.\n'
                 ' *\n'
                 ' * Returns: (transfer full) (type %sObjectManagerClient): The constructed object manager client or %%NULL if @error is set.\n'
-                %(self.ns_lower, self.ns_lower, self.ns_lower, self.namespace)))
+                %(self.ns_lower, self.ns_lower, self.ns_lower, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_sync (\n'
@@ -2962,7 +2962,7 @@ class CodeGenerator:
                 ' * You can then call %sobject_manager_client_new_for_bus_finish() to get the result of the operation.\n'
                 ' *\n'
                 ' * See %sobject_manager_client_new_for_bus_sync() for the synchronous, blocking version of this constructor.\n'
-                %(self.ns_lower, self.ns_lower, self.ns_lower, self.ns_lower)))
+                %(self.ns_lower, self.ns_lower, self.ns_lower, self.ns_lower), False))
         self.c.write(' */\n')
         self.c.write('void\n'
                      '%sobject_manager_client_new_for_bus (\n'
@@ -3022,7 +3022,7 @@ class CodeGenerator:
                 ' * See %sobject_manager_client_new_for_bus() for the asynchronous version of this constructor.\n'
                 ' *\n'
                 ' * Returns: (transfer full) (type %sObjectManagerClient): The constructed object manager client or %%NULL if @error is set.\n'
-                %(self.ns_lower, self.ns_lower, self.ns_lower, self.namespace)))
+                %(self.ns_lower, self.ns_lower, self.ns_lower, self.namespace), False))
         self.c.write(' */\n')
         self.c.write('GDBusObjectManager *\n'
                      '%sobject_manager_client_new_for_bus_sync (\n'
@@ -3065,7 +3065,7 @@ class CodeGenerator:
             f.write(self.docbook_gen.expand(
                     '%*s *\n'
                     '%*s * Deprecated: %s has been deprecated.\n'
-                    %(indent, '', indent, '', thing)))
+                    %(indent, '', indent, '', thing), False))
         f.write('%*s */\n'%(indent, ''))
 
     # ---------------------------------------------------------------------------------------------------
@@ -3085,7 +3085,7 @@ class CodeGenerator:
                 ' *\n'
                 ' * This section contains code for working with the #%s D-Bus interface in C.\n'
                 ' */\n'
-                %(i.camel_name, i.camel_name, i.name, i.name)))
+                %(i.camel_name, i.camel_name, i.name, i.name), False))
         self.c.write('\n')
 
     def generate(self):

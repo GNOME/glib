@@ -392,6 +392,9 @@ gdbus-codegen --c-namespace MyApp                           \
     <literal><![CDATA[#net.Corp.InlineDocs:BazProperty]]></literal> are all
     expanded to links to the respective interface, method, signal and
     property.
+    Additionally, substrings starting with <literal>@</literal> and <literal>%</literal> characters are rendered as
+    <ulink url="http://www.docbook.org/tdg/en/html/parameter.html">parameter</ulink> and
+    <ulink url="http://www.docbook.org/tdg/en/html/constant.html">constant</ulink> respectively.
   </para>
   <para>
     If both XML comments and
