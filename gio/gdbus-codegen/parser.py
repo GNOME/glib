@@ -35,6 +35,7 @@ class DBusXMLParser:
     STATE_PROPERTY = 'property'
     STATE_ARG = 'arg'
     STATE_ANNOTATION = 'annotation'
+    STATE_IGNORED = 'ignored'
 
     def __init__(self, xml_data):
         self._parser = xml.parsers.expat.ParserCreate()
@@ -129,11 +130,13 @@ class DBusXMLParser:
     def handle_start_element(self, name, attrs):
         old_state = self.state
         old_cur_object = self._cur_object
-        if self.state == DBusXMLParser.STATE_TOP:
+        if self.state == DBusXMLParser.STATE_IGNORED:
+            self.state = DBusXMLParser.STATE_IGNORED
+        elif self.state == DBusXMLParser.STATE_TOP:
             if name == DBusXMLParser.STATE_NODE:
                 self.state = DBusXMLParser.STATE_NODE
             else:
-                raise RuntimeError('Cannot go from state "%s" to element with name "%s"'%(self.state, name))
+                self.state = DBusXMLParser.STATE_IGNORED
         elif self.state == DBusXMLParser.STATE_NODE:
             if name == DBusXMLParser.STATE_INTERFACE:
                 self.state = DBusXMLParser.STATE_INTERFACE
@@ -146,10 +149,10 @@ class DBusXMLParser:
                 self._cur_object.annotations.append(anno)
                 self._cur_object = anno
             else:
-                raise RuntimeError('Cannot go from state "%s" to element with name "%s"'%(self.state, name))
+                self.state = DBusXMLParser.STATE_IGNORED
 
             # assign docs, if any
-            if self.doc_comment_last_symbol == attrs['name']:
+            if attrs.has_key('name') and self.doc_comment_last_symbol == attrs['name']:
                 self._cur_object.doc_string = self.doc_comment_body
                 if self.doc_comment_params.has_key('short_description'):
                     short_description = self.doc_comment_params['short_description']
@@ -179,7 +182,7 @@ class DBusXMLParser:
                 self._cur_object.annotations.append(anno)
                 self._cur_object = anno
             else:
-                raise RuntimeError('Cannot go from state "%s" to element with name "%s"'%(self.state, name))
+                self.state = DBusXMLParser.STATE_IGNORED
 
             # assign docs, if any
             if attrs.has_key('name') and self.doc_comment_last_symbol == attrs['name']:
@@ -208,7 +211,7 @@ class DBusXMLParser:
                 self._cur_object.annotations.append(anno)
                 self._cur_object = anno
             else:
-                raise RuntimeError('Cannot go from state "%s" to element with name "%s"'%(self.state, name))
+                self.state = DBusXMLParser.STATE_IGNORED
 
             # assign docs, if any
             if self.doc_comment_last_symbol == old_cur_object.name:
@@ -234,7 +237,7 @@ class DBusXMLParser:
                 self._cur_object.annotations.append(anno)
                 self._cur_object = anno
             else:
-                raise RuntimeError('Cannot go from state "%s" to element with name "%s"'%(self.state, name))
+                self.state = DBusXMLParser.STATE_IGNORED
 
             # assign docs, if any
             if self.doc_comment_last_symbol == old_cur_object.name:
@@ -252,7 +255,8 @@ class DBusXMLParser:
                 self._cur_object.annotations.append(anno)
                 self._cur_object = anno
             else:
-                raise RuntimeError('Cannot go from state "%s" to element with name "%s"'%(self.state, name))
+                self.state = DBusXMLParser.STATE_IGNORED
+
         elif self.state == DBusXMLParser.STATE_ARG:
             if name == DBusXMLParser.STATE_ANNOTATION:
                 self.state = DBusXMLParser.STATE_ANNOTATION
@@ -260,7 +264,8 @@ class DBusXMLParser:
                 self._cur_object.annotations.append(anno)
                 self._cur_object = anno
             else:
-                raise RuntimeError('Cannot go from state "%s" to element with name "%s"'%(self.state, name))
+                self.state = DBusXMLParser.STATE_IGNORED
+
         elif self.state == DBusXMLParser.STATE_ANNOTATION:
             if name == DBusXMLParser.STATE_ANNOTATION:
                 self.state = DBusXMLParser.STATE_ANNOTATION
@@ -268,7 +273,8 @@ class DBusXMLParser:
                 self._cur_object.annotations.append(anno)
                 self._cur_object = anno
             else:
-                raise RuntimeError('Cannot go from state "%s" to element with name "%s"'%(self.state, name))
+                self.state = DBusXMLParser.STATE_IGNORED
+
         else:
             raise RuntimeError('Unhandled state "%s" while entering element with name "%s"'%(self.state, name))
 

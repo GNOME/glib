@@ -444,4 +444,27 @@
     </property>
   </interface>
 
+  <!-- ensure we don't choke on unknown/unexpected XML tags or unknown/unexpected attribyutes (#650874) -->
+  <interface name="UnknownXmlTags" unexpected="boo">
+    <someUnknownTag>
+      <anotherTagWeIgnore>yadaydaydaydayda</anotherTagWeIgnore>
+    </someUnknownTag>
+    <method name="CanSetTimezone" also_unexpected="1">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value="" also_unexpected="1">
+        <unknownTag/>
+      </annotation>
+      <arg name="value" direction="out" type="i" also_unexpected="1">
+        <unknownTag/>
+      </arg>
+      <unknownTag/>
+    </method>
+    <signal name="SomeSignal" also_unexpected="1">
+      <unknownTag/>
+    </signal>
+    <property name="SomeProperty" type="s" access="readwrite" also_unexpected="1">
+      <unknownTag/>
+    </property>
+  </interface>
+  <unknownTag/>
+
 </node>
