@@ -57,10 +57,10 @@
 #include <string.h>
 
 #include "garray.h"
+#include "gbitlock.h"
 #include "gslist.h"
 #include "gtestutils.h"
 #include "gtimer.h"
-
 
 /**
  * SECTION:threads
@@ -262,11 +262,17 @@ typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
   GThread thread;
-  gpointer private_data;
+  /* Bit 0 protects private_data. To avoid deadlocks, do not block while
+   * holding this (particularly on the g_thread lock). */
+  volatile gint private_data_lock;
+  GArray *private_data;
   GRealThread *next;
   gpointer retval;
   GSystemThread system_thread;
 };
+
+#define LOCK_PRIVATE_DATA(self)   g_bit_lock (&(self)->private_data_lock, 0)
+#define UNLOCK_PRIVATE_DATA(self) g_bit_unlock (&(self)->private_data_lock, 0)
 
 typedef struct _GStaticPrivateNode GStaticPrivateNode;
 struct _GStaticPrivateNode
@@ -1655,12 +1661,15 @@ g_static_private_get (GStaticPrivate *private_key)
   GArray *array;
   gpointer ret = NULL;
 
+  LOCK_PRIVATE_DATA (self);
+
   array = self->private_data;
 
   if (array && private_key->index != 0 && private_key->index <= array->len)
     ret = g_array_index (array, GStaticPrivateNode,
                          private_key->index - 1).data;
 
+  UNLOCK_PRIVATE_DATA (self);
   return ret;
 }
 
@@ -1717,6 +1726,8 @@ g_static_private_set (GStaticPrivate *private_key,
       G_UNLOCK (g_thread);
     }
 
+  LOCK_PRIVATE_DATA (self);
+
   array = self->private_data;
   if (!array)
     {
@@ -1734,6 +1745,8 @@ g_static_private_set (GStaticPrivate *private_key,
 
   node->data = data;
   node->destroy = notify;
+
+  UNLOCK_PRIVATE_DATA (self);
 
   if (ddestroy)
     ddestroy (ddata);
@@ -1772,6 +1785,8 @@ g_static_private_free (GStaticPrivate *private_key)
 
       next = thread->next;
 
+      LOCK_PRIVATE_DATA (thread);
+
       array = thread->private_data;
 
       if (array && idx <= array->len)
@@ -1801,6 +1816,8 @@ g_static_private_free (GStaticPrivate *private_key)
               node->destroy = ddestroy;
             }
 	}
+
+      UNLOCK_PRIVATE_DATA (thread);
     }
   g_thread_free_indeces = g_slist_prepend (g_thread_free_indeces,
 					   GUINT_TO_POINTER (idx));
@@ -1831,8 +1848,10 @@ g_thread_cleanup (gpointer data)
       GRealThread* thread = data;
       GArray *array;
 
+      LOCK_PRIVATE_DATA (thread);
       array = thread->private_data;
       thread->private_data = NULL;
+      UNLOCK_PRIVATE_DATA (thread);
 
       if (array)
 	{
