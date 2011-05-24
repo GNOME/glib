@@ -258,7 +258,6 @@ g_thread_error_quark (void)
 }
 
 /* Miscellaneous Structures {{{1 ------------------------------------------ */
-/* Keep this in sync with GRealThread in gmain.c! */
 typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
