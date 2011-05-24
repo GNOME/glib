@@ -1653,18 +1653,15 @@ g_static_private_get (GStaticPrivate *private_key)
 {
   GRealThread *self = (GRealThread*) g_thread_self ();
   GArray *array;
+  gpointer ret = NULL;
 
   array = self->private_data;
-  if (!array)
-    return NULL;
 
-  if (!private_key->index)
-    return NULL;
-  else if (private_key->index <= array->len)
-    return g_array_index (array, GStaticPrivateNode,
-			  private_key->index - 1).data;
-  else
-    return NULL;
+  if (array && private_key->index != 0 && private_key->index <= array->len)
+    ret = g_array_index (array, GStaticPrivateNode,
+                         private_key->index - 1).data;
+
+  return ret;
 }
 
 /**
@@ -1696,13 +1693,8 @@ g_static_private_set (GStaticPrivate *private_key,
   GArray *array;
   static guint next_index = 0;
   GStaticPrivateNode *node;
-
-  array = self->private_data;
-  if (!array)
-    {
-      array = g_array_new (FALSE, TRUE, sizeof (GStaticPrivateNode));
-      self->private_data = array;
-    }
+  gpointer ddata = NULL;
+  GDestroyNotify ddestroy = NULL;
 
   if (!private_key->index)
     {
@@ -1725,25 +1717,26 @@ g_static_private_set (GStaticPrivate *private_key,
       G_UNLOCK (g_thread);
     }
 
+  array = self->private_data;
+  if (!array)
+    {
+      array = g_array_new (FALSE, TRUE, sizeof (GStaticPrivateNode));
+      self->private_data = array;
+    }
+
   if (private_key->index > array->len)
     g_array_set_size (array, private_key->index);
 
   node = &g_array_index (array, GStaticPrivateNode, private_key->index - 1);
-  if (node->destroy)
-    {
-      gpointer ddata = node->data;
-      GDestroyNotify ddestroy = node->destroy;
 
-      node->data = data;
-      node->destroy = notify;
+  ddata = node->data;
+  ddestroy = node->destroy;
 
-      ddestroy (ddata);
-    }
-  else
-    {
-      node->data = data;
-      node->destroy = notify;
-    }
+  node->data = data;
+  node->destroy = notify;
+
+  if (ddestroy)
+    ddestroy (ddata);
 }
 
 /**
@@ -1761,7 +1754,7 @@ void
 g_static_private_free (GStaticPrivate *private_key)
 {
   guint idx = private_key->index;
-  GRealThread *thread;
+  GRealThread *thread, *next;
   GArray *garbage = NULL;
 
   if (!idx)
@@ -1772,10 +1765,14 @@ g_static_private_free (GStaticPrivate *private_key)
   G_LOCK (g_thread);
 
   thread = g_thread_all_threads;
-  while (thread)
+
+  for (thread = g_thread_all_threads; thread; thread = next)
     {
-      GArray *array = thread->private_data;
-      thread = thread->next;
+      GArray *array;
+
+      next = thread->next;
+
+      array = thread->private_data;
 
       if (array && idx <= array->len)
 	{
@@ -1832,9 +1829,13 @@ g_thread_cleanup (gpointer data)
   if (data)
     {
       GRealThread* thread = data;
-      if (thread->private_data)
+      GArray *array;
+
+      array = thread->private_data;
+      thread->private_data = NULL;
+
+      if (array)
 	{
-	  GArray* array = thread->private_data;
 	  guint i;
 
 	  for (i = 0; i < array->len; i++ )
