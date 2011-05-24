@@ -1762,6 +1762,7 @@ g_static_private_free (GStaticPrivate *private_key)
 {
   guint idx = private_key->index;
   GRealThread *thread;
+  GArray *garbage = NULL;
 
   if (!idx)
     return;
@@ -1789,15 +1790,39 @@ g_static_private_free (GStaticPrivate *private_key)
 
           if (ddestroy)
             {
-              G_UNLOCK (g_thread);
-              ddestroy (ddata);
-              G_LOCK (g_thread);
+              /* defer non-trivial destruction til after we've finished
+               * iterating, since we must continue to hold the lock */
+              if (garbage == NULL)
+                garbage = g_array_new (FALSE, TRUE,
+                                       sizeof (GStaticPrivateNode));
+
+              g_array_set_size (garbage, garbage->len + 1);
+
+              node = &g_array_index (garbage, GStaticPrivateNode,
+                                     garbage->len - 1);
+              node->data = ddata;
+              node->destroy = ddestroy;
             }
 	}
     }
   g_thread_free_indeces = g_slist_prepend (g_thread_free_indeces,
 					   GUINT_TO_POINTER (idx));
   G_UNLOCK (g_thread);
+
+  if (garbage)
+    {
+      guint i;
+
+      for (i = 0; i < garbage->len; i++)
+        {
+          GStaticPrivateNode *node;
+
+          node = &g_array_index (garbage, GStaticPrivateNode, i);
+          node->destroy (node->data);
+        }
+
+      g_array_free (garbage, TRUE);
+    }
 }
 
 /* GThread Extra Functions {{{1 ------------------------------------------- */
