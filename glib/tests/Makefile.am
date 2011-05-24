@@ -177,6 +177,10 @@ TEST_PROGS    += unix-nothreads
 unix_nothreads_SOURCES = unix.c
 unix_nothreads_LDADD  = $(progs_ldadd)
 
+noinst_PROGRAMS += atomic
+atomic_CFLAGS = -Wstrict-aliasing=2 $(INCLUDES)
+atomic_LDADD = $(progs_ldadd)
+
 # some testing of gtester funcitonality
 XMLLINT=xmllint
 gtester-xmllint-check: # check testreport xml with xmllint if present
