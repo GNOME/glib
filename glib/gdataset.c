@@ -992,16 +992,10 @@ void
 g_datalist_set_flags (GData **datalist,
 		      guint   flags)
 {
-  gpointer oldvalue;
   g_return_if_fail (datalist != NULL);
   g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
-  
-  do
-    {
-      oldvalue = g_atomic_pointer_get (datalist);
-    }
-  while (!g_atomic_pointer_compare_and_exchange ((void**) datalist, oldvalue,
-                                                 (gpointer) ((gsize) oldvalue | flags)));
+
+  g_atomic_pointer_or (datalist, (gsize)flags);
 }
 
 /**
@@ -1021,16 +1015,10 @@ void
 g_datalist_unset_flags (GData **datalist,
 			guint   flags)
 {
-  gpointer oldvalue;
   g_return_if_fail (datalist != NULL);
   g_return_if_fail ((flags & ~G_DATALIST_FLAGS_MASK) == 0);
-  
-  do
-    {
-      oldvalue = g_atomic_pointer_get (datalist);
-    }
-  while (!g_atomic_pointer_compare_and_exchange ((void**) datalist, oldvalue,
-                                                 (gpointer) ((gsize) oldvalue & ~(gsize) flags)));
+
+  g_atomic_pointer_and (datalist, ~(gsize)flags);
 }
 
 /**
