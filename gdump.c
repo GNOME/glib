@@ -177,7 +177,7 @@ dump_object_type (GType type, const char *symbol, GOutputStream *out)
 
       parent = g_type_parent (type);
       parent_str = g_string_new ("");
-      while (parent != G_TYPE_OBJECT && parent != G_TYPE_INVALID)
+      while (parent != G_TYPE_INVALID)
         {
           if (first)
             first = FALSE;
