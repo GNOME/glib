@@ -326,8 +326,9 @@ resolve_sync (GThreadedResolver         *gtr,
     }
 
   req->cond = g_cond_new ();
-  g_thread_pool_push (gtr->thread_pool, req, NULL);
-  g_cond_wait (req->cond, req->mutex);
+  g_thread_pool_push (gtr->thread_pool, req, &req->error);
+  if (!req->error)
+    g_cond_wait (req->cond, req->mutex);
   g_mutex_unlock (req->mutex);
 
   if (req->error)
