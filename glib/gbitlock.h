@@ -38,6 +38,35 @@ gboolean  g_bit_trylock                   (volatile gint *address,
 void      g_bit_unlock                    (volatile gint *address,
                                            gint           lock_bit);
 
+void      g_pointer_bit_lock              (volatile void *address,
+                                           gint           lock_bit);
+gboolean  g_pointer_bit_trylock           (volatile void *address,
+                                           gint           lock_bit);
+void      g_pointer_bit_unlock            (volatile void *address,
+                                           gint           lock_bit);
+
+#ifdef __GNUC__
+
+#define g_pointer_bit_lock(address, lock_bit) \
+  (G_GNUC_EXTENSION ({                                                       \
+    G_STATIC_ASSERT (sizeof *(address) == sizeof (gpointer));                \
+    g_pointer_bit_lock ((address), (lock_bit));                              \
+  }))
+
+#define g_pointer_bit_trylock(address, lock_bit) \
+  (G_GNUC_EXTENSION ({                                                       \
+    G_STATIC_ASSERT (sizeof *(address) == sizeof (gpointer));                \
+    g_pointer_bit_trylock ((address), (lock_bit));                           \
+  }))
+
+#define g_pointer_bit_unlock(address, lock_bit) \
+  (G_GNUC_EXTENSION ({                                                       \
+    G_STATIC_ASSERT (sizeof *(address) == sizeof (gpointer));                \
+    g_pointer_bit_unlock ((address), (lock_bit));                            \
+  }))
+
+#endif
+
 G_END_DECLS
 
 #endif /* __G_BITLOCK_H_ */

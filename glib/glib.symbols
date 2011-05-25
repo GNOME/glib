@@ -1065,6 +1065,9 @@ g_string_append_c
 g_bit_lock
 g_bit_trylock
 g_bit_unlock
+g_pointer_bit_lock
+g_pointer_bit_trylock
+g_pointer_bit_unlock
 g_once_impl
 g_once_init_enter_impl
 g_once_init_leave
