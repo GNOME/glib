@@ -70,18 +70,20 @@
  * the message bus launching an owner (unless
  * %G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START is set).
  *
- * The generic #GDBusProxy::g-properties-changed and #GDBusProxy::g-signal
- * signals are not very convenient to work with. Therefore, the recommended
- * way of working with proxies is to subclass #GDBusProxy, and have
- * more natural properties and signals in your derived class.
+ * The generic #GDBusProxy::g-properties-changed and
+ * #GDBusProxy::g-signal signals are not very convenient to work
+ * with. Therefore, the recommended way of working with proxies is to
+ * subclass #GDBusProxy, and have more natural properties and signals
+ * in your derived class. See <xref linkend="gdbus-example-gdbus-codegen"/>
+ * for how this can easily be done using the
+ * <command><link linkend="gdbus-codegen">gdbus-codegen</link></command>
+ * tool.
  *
  * A #GDBusProxy instance can be used from multiple threads but note
- * that all signals (e.g. #GDBusProxy::g-signal, #GDBusProxy::g-properties
+ * that all signals (e.g. #GDBusProxy::g-signal, #GDBusProxy::g-properties-changed
  * and #GObject::notify) are emitted in the
  * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
  * of the thread where the instance was constructed.
- *
- * See <xref linkend="gdbus-example-proxy-subclass"/> for an example.
  *
  * <example id="gdbus-wellknown-proxy"><title>GDBusProxy for a well-known-name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-watch-proxy.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
