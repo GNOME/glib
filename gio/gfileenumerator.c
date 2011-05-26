@@ -586,7 +586,7 @@ g_file_enumerator_set_pending (GFileEnumerator *enumerator,
  *
  * Get the #GFile container which is being enumerated.
  *
- * Returns: (transfer full): the #GFile which is being enumerated.
+ * Returns: (transfer none): the #GFile which is being enumerated.
  *
  * Since: 2.18
  */
