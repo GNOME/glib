@@ -75,10 +75,19 @@
  * way of working with proxies is to subclass #GDBusProxy, and have
  * more natural properties and signals in your derived class.
  *
+ * A #GDBusProxy instance can be used from multiple threads but note
+ * that all signals (e.g. #GDBusProxy::g-signal, #GDBusProxy::g-properties
+ * and #GObject::notify) are emitted in the
+ * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+ * of the thread where the instance was constructed.
+ *
  * See <xref linkend="gdbus-example-proxy-subclass"/> for an example.
  *
  * <example id="gdbus-wellknown-proxy"><title>GDBusProxy for a well-known-name</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../gio/tests/gdbus-example-watch-proxy.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
  */
+
+/* lock protecting the properties GHashTable */
+G_LOCK_DEFINE_STATIC (properties_lock);
 
 /* ---------------------------------------------------------------------------------------------------- */
 
@@ -633,6 +642,8 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy)
 
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
 
+  G_LOCK (properties_lock);
+
   names = NULL;
   if (g_hash_table_size (proxy->priv->properties) == 0)
     goto out;
@@ -648,6 +659,7 @@ g_dbus_proxy_get_cached_property_names (GDBusProxy  *proxy)
   names = (gchar **) g_ptr_array_free (p, FALSE);
 
  out:
+  G_UNLOCK (properties_lock);
   return names;
 }
 
@@ -698,6 +710,8 @@ g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
   g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
   g_return_val_if_fail (property_name != NULL, NULL);
 
+  G_LOCK (properties_lock);
+
   value = g_hash_table_lookup (proxy->priv->properties, property_name);
   if (value == NULL)
     {
@@ -709,6 +723,7 @@ g_dbus_proxy_get_cached_property (GDBusProxy   *proxy,
   g_variant_ref (value);
 
  out:
+  G_UNLOCK (properties_lock);
   return value;
 }
 
@@ -765,6 +780,8 @@ g_dbus_proxy_set_cached_property (GDBusProxy   *proxy,
   g_return_if_fail (G_IS_DBUS_PROXY (proxy));
   g_return_if_fail (property_name != NULL);
 
+  G_LOCK (properties_lock);
+
   if (value != NULL)
     {
       info = lookup_property_info_or_warn (proxy, property_name);
@@ -790,7 +807,7 @@ g_dbus_proxy_set_cached_property (GDBusProxy   *proxy,
     }
 
  out:
-  ;
+  G_UNLOCK (properties_lock);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -849,6 +866,7 @@ on_signal_received (GDBusConnection *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* must hold properties_lock */
 static void
 insert_property_checked (GDBusProxy  *proxy,
 			 gchar *property_name,
@@ -930,6 +948,8 @@ on_properties_changed (GDBusConnection *connection,
   if (g_strcmp0 (interface_name_for_signal, proxy->priv->interface_name) != 0)
     goto out;
 
+  G_LOCK (properties_lock);
+
   g_variant_iter_init (&iter, changed_properties);
   while (g_variant_iter_next (&iter, "{sv}", &key, &value))
     {
@@ -942,6 +962,8 @@ on_properties_changed (GDBusConnection *connection,
     {
       g_hash_table_remove (proxy->priv->properties, invalidated_properties[n]);
     }
+
+  G_UNLOCK (properties_lock);
 
   /* emit signal */
   g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
@@ -966,6 +988,7 @@ process_get_all_reply (GDBusProxy *proxy,
   GVariantIter *iter;
   gchar *key;
   GVariant *value;
+  guint num_properties;
 
   if (!g_variant_is_of_type (result, G_VARIANT_TYPE ("(a{sv})")))
     {
@@ -973,6 +996,8 @@ process_get_all_reply (GDBusProxy *proxy,
                  g_variant_get_type_string (result));
       goto out;
     }
+
+  G_LOCK (properties_lock);
 
   g_variant_get (result, "(a{sv})", &iter);
   while (g_variant_iter_next (iter, "{sv}", &key, &value))
@@ -983,8 +1008,11 @@ process_get_all_reply (GDBusProxy *proxy,
     }
   g_variant_iter_free (iter);
 
+  num_properties = g_hash_table_size (proxy->priv->properties);
+  G_UNLOCK (properties_lock);
+
   /* Synthesize ::g-properties-changed changed */
-  if (g_hash_table_size (proxy->priv->properties) > 0)
+  if (num_properties > 0)
     {
       GVariant *changed_properties;
       const gchar *invalidated_properties[1] = {NULL};
@@ -1051,7 +1079,9 @@ on_name_owner_changed_get_all_cb (GDBusConnection *connection,
       data->proxy->priv->name_owner = data->name_owner;
       data->name_owner = NULL; /* to avoid an extra copy, we steal the string */
 
+      G_LOCK (properties_lock);
       g_hash_table_remove_all (data->proxy->priv->properties);
+      G_UNLOCK (properties_lock);
       if (result != NULL)
         {
           process_get_all_reply (data->proxy, result);
@@ -1109,6 +1139,8 @@ on_name_owner_changed (GDBusConnection *connection,
       g_free (proxy->priv->name_owner);
       proxy->priv->name_owner = NULL;
 
+      G_LOCK (properties_lock);
+
       /* Synthesize ::g-properties-changed changed */
       if (!(proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES) &&
           g_hash_table_size (proxy->priv->properties) > 0)
@@ -1130,12 +1162,18 @@ on_name_owner_changed (GDBusConnection *connection,
           /* ... throw out the properties ... */
           g_hash_table_remove_all (proxy->priv->properties);
 
+          G_UNLOCK (properties_lock);
+
           /* ... and finally emit the ::g-properties-changed signal */
           g_signal_emit (proxy, signals[PROPERTIES_CHANGED_SIGNAL],
                          0,
                          g_variant_builder_end (&builder) /* consumed */,
                          (const gchar* const *) invalidated_properties->pdata);
           g_ptr_array_unref (invalidated_properties);
+        }
+      else
+        {
+          G_UNLOCK (properties_lock);
         }
       g_object_notify (G_OBJECT (proxy), "g-name-owner");
     }
@@ -1149,7 +1187,9 @@ on_name_owner_changed (GDBusConnection *connection,
         {
           g_free (proxy->priv->name_owner);
           proxy->priv->name_owner = g_strdup (new_owner);
+          G_LOCK (properties_lock);
           g_hash_table_remove_all (proxy->priv->properties);
+          G_UNLOCK (properties_lock);
           g_object_notify (G_OBJECT (proxy), "g-name-owner");
         }
       else
@@ -2383,8 +2423,8 @@ get_destination_for_call (GDBusProxy *proxy)
  *
  * This is an asynchronous method. When the operation is finished,
  * @callback will be invoked in the
- * <link linkend="g-main-context-push-thread-default">thread-default
- * main loop</link> of the thread you are calling this method from.
+ * <link linkend="g-main-context-push-thread-default">thread-default main loop</link>
+ * of the thread you are calling this method from.
  * You can then call g_dbus_proxy_call_finish() to get the result of
  * the operation. See g_dbus_proxy_call_sync() for the synchronous
  * version of this method.
