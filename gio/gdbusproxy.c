@@ -827,9 +827,15 @@ on_signal_received (GDBusConnection *connection,
   G_LOCK (signal_subscription_lock);
   proxy = data->proxy;
   if (proxy == NULL)
-    goto out;
-  g_object_ref (proxy);
-  G_UNLOCK (signal_subscription_lock);
+    {
+      G_UNLOCK (signal_subscription_lock);
+      goto out;
+    }
+  else
+    {
+      g_object_ref (proxy);
+      G_UNLOCK (signal_subscription_lock);
+    }
 
   if (!proxy->priv->initialized)
     goto out;
@@ -919,9 +925,15 @@ on_properties_changed (GDBusConnection *connection,
   G_LOCK (signal_subscription_lock);
   proxy = data->proxy;
   if (proxy == NULL)
-    goto out;
-  g_object_ref (proxy);
-  G_UNLOCK (signal_subscription_lock);
+    {
+      G_UNLOCK (signal_subscription_lock);
+      goto out;
+    }
+  else
+    {
+      g_object_ref (proxy);
+      G_UNLOCK (signal_subscription_lock);
+    }
 
   changed_properties = NULL;
   invalidated_properties = NULL;
@@ -1117,9 +1129,15 @@ on_name_owner_changed (GDBusConnection *connection,
   G_LOCK (signal_subscription_lock);
   proxy = data->proxy;
   if (proxy == NULL)
-    goto out;
-  g_object_ref (proxy);
-  G_UNLOCK (signal_subscription_lock);
+    {
+      G_UNLOCK (signal_subscription_lock);
+      goto out;
+    }
+  else
+    {
+      g_object_ref (proxy);
+      G_UNLOCK (signal_subscription_lock);
+    }
 
   /* if we are already trying to load properties, cancel that */
   if (proxy->priv->get_all_cancellable != NULL)
