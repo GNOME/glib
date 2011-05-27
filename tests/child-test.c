@@ -175,7 +175,7 @@ main (int argc, char *argv[])
 #ifdef G_OS_WIN32
   system ("ipconfig /all");
 #else
-  system ("/bin/true");
+  system ("true");
 #endif
 
   alive = 2;
