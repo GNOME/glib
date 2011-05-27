@@ -860,15 +860,13 @@ g_variant_make_dict_entry_type (GVariant *key,
 }
 
 /**
- * g_variant_new_dict_entry:
+ * g_variant_new_dict_entry: (constructor)
  * @key: a basic #GVariant, the key
  * @value: a #GVariant, the value
  * @returns: (transfer none): a floating reference to a new dictionary entry #GVariant
  *
- * Creates a new dictionary entry #GVariant.  @key and @value must be
- * non-%NULL.
- *
- * @key must be a value of a basic type (ie: not a container).
+ * Creates a new dictionary entry #GVariant. @key and @value must be
+ * non-%NULL. @key must be a value of a basic type (ie: not a container).
  *
  * If the @key or @value are floating references (see g_variant_ref_sink()),
  * the new instance takes ownership of them as if via g_variant_ref_sink().
@@ -1523,7 +1521,7 @@ g_variant_get_bytestring (GVariant *value)
  * @value: an array-of-bytes #GVariant instance
  * @length: (out) (allow-none) (default NULL): a pointer to a #gsize, to store
  *          the length (not including the nul terminator)
- * @returns: (transfer full) (array null-terminated=1): a newly allocated string
+ * @returns: (transfer full) (array zero-terminated=1): a newly allocated string
  *
  * Similar to g_variant_get_bytestring() except that instead of
  * returning a constant string, the string is duplicated.
