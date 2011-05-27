@@ -3531,11 +3531,16 @@ g_socket_get_credentials (GSocket   *socket,
 
   ret = NULL;
 
-#ifdef __linux__
+#if defined(__linux__) || defined(__OpenBSD__)
   {
-    struct ucred native_creds;
     socklen_t optlen;
+#if defined(__linux__)
+    struct ucred native_creds;
     optlen = sizeof (struct ucred);
+#elif defined(__OpenBSD__)
+    struct sockpeercred native_creds;
+    optlen = sizeof (struct sockpeercred);
+#endif
     if (getsockopt (socket->priv->fd,
                     SOL_SOCKET,
                     SO_PEERCRED,
@@ -3553,7 +3558,11 @@ g_socket_get_credentials (GSocket   *socket,
       {
         ret = g_credentials_new ();
         g_credentials_set_native (ret,
+#if defined(__linux__)
                                   G_CREDENTIALS_TYPE_LINUX_UCRED,
+#elif defined(__OpenBSD__)
+                                  G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED,
+#endif
                                   &native_creds);
       }
   }

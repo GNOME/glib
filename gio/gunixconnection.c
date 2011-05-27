@@ -334,6 +334,7 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
   gboolean ret;
   GOutputVector vector;
   guchar nul_byte[1] = {'\0'};
+  gint num_messages;
 
   g_return_val_if_fail (G_IS_UNIX_CONNECTION (connection), FALSE);
   g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
@@ -344,14 +345,25 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
 
   vector.buffer = &nul_byte;
   vector.size = 1;
-  scm = g_unix_credentials_message_new_with_credentials (credentials);
+
+  if (g_unix_credentials_message_is_supported ())
+    {
+      scm = g_unix_credentials_message_new_with_credentials (credentials);
+      num_messages = 1;
+    }
+  else
+    {
+      scm = NULL;
+      num_messages = 0;
+    }
+
   g_object_get (connection, "socket", &socket, NULL);
   if (g_socket_send_message (socket,
                              NULL, /* address */
                              &vector,
                              1,
                              &scm,
-                             1,
+                             num_messages,
                              G_SOCKET_MSG_NONE,
                              cancellable,
                              error) != 1)
@@ -364,7 +376,8 @@ g_unix_connection_send_credentials (GUnixConnection      *connection,
 
  out:
   g_object_unref (socket);
-  g_object_unref (scm);
+  if (scm != NULL)
+    g_object_unref (scm);
   g_object_unref (credentials);
   return ret;
 }
@@ -498,27 +511,46 @@ g_unix_connection_receive_credentials (GUnixConnection      *connection,
       goto out;
     }
 
-  if (nscm != 1)
+  if (g_unix_credentials_message_is_supported ())
     {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_FAILED,
-		   _("Expecting 1 control message, got %d"),
-                   nscm);
-      goto out;
-    }
+      if (nscm != 1)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_FAILED,
+                       _("Expecting 1 control message, got %d"),
+                       nscm);
+          goto out;
+        }
 
-  if (!G_IS_UNIX_CREDENTIALS_MESSAGE (scms[0]))
+      if (!G_IS_UNIX_CREDENTIALS_MESSAGE (scms[0]))
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_FAILED,
+                               _("Unexpected type of ancillary data"));
+          goto out;
+        }
+
+      ret = g_unix_credentials_message_get_credentials (G_UNIX_CREDENTIALS_MESSAGE (scms[0]));
+      g_object_ref (ret);
+    }
+  else
     {
-      g_set_error_literal (error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_FAILED,
-			   _("Unexpected type of ancillary data"));
-      goto out;
+      if (nscm != 0)
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_FAILED,
+                       _("Not expecting control message, but got %d"),
+                       nscm);
+          goto out;
+        }
+      else
+        {
+          ret = g_socket_get_credentials (socket, error);
+        }
     }
-
-  ret = g_unix_credentials_message_get_credentials (G_UNIX_CREDENTIALS_MESSAGE (scms[0]));
-  g_object_ref (ret);
 
  out:
 

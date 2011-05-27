@@ -1214,6 +1214,7 @@ typedef enum
  * @G_CREDENTIALS_TYPE_INVALID: Indicates an invalid native credential type.
  * @G_CREDENTIALS_TYPE_LINUX_UCRED: The native credentials type is a <type>struct ucred</type>.
  * @G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED: The native credentials type is a <type>struct cmsgcred</type>.
+ * @G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED: The native credentials type is a <type>struct sockpeercred</type>. Added in 2.30.
  *
  * Enumeration describing different kinds of native credential types.
  *
@@ -1223,7 +1224,8 @@ typedef enum
 {
   G_CREDENTIALS_TYPE_INVALID,
   G_CREDENTIALS_TYPE_LINUX_UCRED,
-  G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED
+  G_CREDENTIALS_TYPE_FREEBSD_CMSGCRED,
+  G_CREDENTIALS_TYPE_OPENBSD_SOCKPEERCRED
 } GCredentialsType;
 
 /**
