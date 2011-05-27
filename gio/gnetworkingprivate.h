@@ -42,17 +42,17 @@
 
 #include <sys/types.h>
 
-#include <arpa/inet.h>
-#include <arpa/nameser.h>
-#if defined(HAVE_ARPA_NAMESER_COMPAT_H) && !defined(GETSHORT)
-#include <arpa/nameser_compat.h>
-#endif
 #include <netdb.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <resolv.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <arpa/inet.h>
+#include <arpa/nameser.h>
+#if defined(HAVE_ARPA_NAMESER_COMPAT_H) && !defined(GETSHORT)
+#include <arpa/nameser_compat.h>
+#endif
 
 #ifndef T_SRV
 #define T_SRV 33
