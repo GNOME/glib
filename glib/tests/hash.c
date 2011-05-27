@@ -932,6 +932,138 @@ test_foreach (void)
   g_hash_table_unref (hash);
 }
 
+struct _GHashTable
+{
+  gint             size;
+  gint             mod;
+  guint            mask;
+  gint             nnodes;
+  gint             noccupied;  /* nnodes + tombstones */
+
+  gpointer        *keys;
+  guint           *hashes;
+  gpointer        *values;
+
+  GHashFunc        hash_func;
+  GEqualFunc       key_equal_func;
+  volatile gint    ref_count;
+
+#ifndef G_DISABLE_ASSERT
+  int              version;
+#endif
+  GDestroyNotify   key_destroy_func;
+  GDestroyNotify   value_destroy_func;
+};
+
+static void
+count_keys (GHashTable *h, gint *unused, gint *occupied, gint *tombstones)
+{
+  gint i;
+
+  *unused = 0;
+  *occupied = 0;
+  *tombstones = 0;
+  for (i = 0; i < h->size; i++)
+    {
+      if (h->hashes[i] == 0)
+        (*unused)++;
+      else if (h->hashes[i] == 1)
+        (*tombstones)++;
+      else
+        (*occupied)++;
+    }
+}
+
+static void
+check_data (GHashTable *h)
+{
+  gint i;
+
+  for (i = 0; i < h->size; i++)
+    {
+      if (h->hashes[i] < 2)
+        {
+          g_assert (h->keys[i] == NULL);
+          g_assert (h->values[i] == NULL);
+        }
+      else
+        {
+          g_assert_cmpint (h->hashes[i], ==, h->hash_func (h->keys[i]));
+        }
+    }
+}
+
+static void
+check_consistency (GHashTable *h)
+{
+  gint unused;
+  gint occupied;
+  gint tombstones;
+
+  count_keys (h, &unused, &occupied, &tombstones);
+
+  g_assert_cmpint (occupied, ==, h->nnodes);
+  g_assert_cmpint (occupied + tombstones, ==, h->noccupied);
+  g_assert_cmpint (occupied + tombstones + unused, ==, h->size);
+
+  check_data (h);
+}
+
+static void
+check_counts (GHashTable *h, gint occupied, gint tombstones)
+{
+  g_assert_cmpint (occupied, ==, h->nnodes);
+  g_assert_cmpint (occupied + tombstones, ==, h->noccupied);
+}
+
+static void
+trivial_key_destroy (gpointer key)
+{
+}
+
+static void
+test_internal_consistency (void)
+{
+  GHashTable *h;
+
+  h = g_hash_table_new_full (g_str_hash, g_str_equal, trivial_key_destroy, NULL);
+
+  check_counts (h, 0, 0);
+  check_consistency (h);
+
+  g_hash_table_insert (h, "a", "A");
+  g_hash_table_insert (h, "b", "B");
+  g_hash_table_insert (h, "c", "C");
+  g_hash_table_insert (h, "d", "D");
+  g_hash_table_insert (h, "e", "E");
+  g_hash_table_insert (h, "f", "F");
+
+  check_counts (h, 6, 0);
+  check_consistency (h);
+
+  g_hash_table_remove (h, "a");
+  check_counts (h, 5, 1);
+  check_consistency (h);
+
+  g_hash_table_remove (h, "b");
+  check_counts (h, 4, 2);
+  check_consistency (h);
+
+  g_hash_table_insert (h, "c", "c");
+  check_counts (h, 4, 2);
+  check_consistency (h);
+
+  g_hash_table_insert (h, "a", "A");
+  check_counts (h, 5, 1);
+  check_consistency (h);
+
+  g_hash_table_remove_all (h);
+  check_counts (h, 0, 0);
+  check_consistency (h);
+
+  g_hash_table_unref (h);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -956,6 +1088,7 @@ main (int argc, char *argv[])
   /* tests for individual bugs */
   g_test_add_func ("/hash/lookup-null-key", test_lookup_null_key);
   g_test_add_func ("/hash/destroy-modify", test_destroy_modify);
+  g_test_add_func ("/hash/consistency", test_internal_consistency);
 
   return g_test_run ();
 
