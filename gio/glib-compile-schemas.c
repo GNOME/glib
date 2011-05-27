@@ -1968,13 +1968,13 @@ main (int argc, char **argv)
 
       if (files->len == 0)
         {
-          fprintf (stderr, _("No schema files found: "));
+          fprintf (stdout, _("No schema files found: "));
 
           if (g_unlink (target))
-            fprintf (stderr, _("doing nothing.\n"));
+            fprintf (stdout, _("doing nothing.\n"));
 
           else
-            fprintf (stderr, _("removed existing output file.\n"));
+            fprintf (stdout, _("removed existing output file.\n"));
 
           return 0;
         }
