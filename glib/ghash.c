@@ -200,8 +200,10 @@
 
 #define HASH_TABLE_MIN_SHIFT 3  /* 1 << 3 == 8 buckets */
 
-#define HASH_IS_UNUSED(h_) ((h_) == 0)
-#define HASH_IS_TOMBSTONE(h_) ((h_) == 1)
+#define UNUSED_HASH_VALUE 0
+#define TOMBSTONE_HASH_VALUE 1
+#define HASH_IS_UNUSED(h_) ((h_) == UNUSED_HASH_VALUE)
+#define HASH_IS_TOMBSTONE(h_) ((h_) == TOMBSTONE_HASH_VALUE)
 #define HASH_IS_REAL(h_) ((h_) >= 2)
 
 struct _GHashTable
@@ -426,7 +428,7 @@ g_hash_table_remove_node (GHashTable   *hash_table,
   value = hash_table->values[i];
 
   /* Erect tombstone */
-  hash_table->hashes[i] = 1;
+  hash_table->hashes[i] = TOMBSTONE_HASH_VALUE;
 
   /* Be GC friendly */
   hash_table->keys[i] = NULL;
@@ -482,7 +484,7 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
           key = hash_table->keys[i];
           value = hash_table->values[i];
 
-          hash_table->hashes[i] = 0;
+          hash_table->hashes[i] = UNUSED_HASH_VALUE;
           hash_table->keys[i] = NULL;
           hash_table->values[i] = NULL;
 
@@ -491,6 +493,10 @@ g_hash_table_remove_all_nodes (GHashTable *hash_table,
 
           if (hash_table->value_destroy_func != NULL)
             hash_table->value_destroy_func (value);
+        }
+      else if (HASH_IS_TOMBSTONE (hash_table->hashes[i]))
+        {
+          hash_table->hashes[i] = UNUSED_HASH_VALUE;
         }
     }
 }
