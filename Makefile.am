@@ -102,6 +102,9 @@ endif
 
 $(pkgconfig_DATA): config.status
 
+makedir = $(datadir)/glib-2.0
+dist_make_DATA = Makefile.glib
+
 # build documentation when doing distcheck
 DISTCHECK_CONFIGURE_FLAGS = --enable-debug --enable-gtk-doc --enable-man --disable-maintainer-mode
 

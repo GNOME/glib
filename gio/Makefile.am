@@ -1,5 +1,7 @@
 include $(top_srcdir)/Makefile.decl
 
+include $(GLIB_MAKEFILE)
+
 NULL =
 
 SUBDIRS = gdbus-2.0/codegen
@@ -33,6 +35,8 @@ AM_CPPFLAGS = \
 AM_CFLAGS = $(GLIB_WARN_CFLAGS)
 
 lib_LTLIBRARIES = libgio-2.0.la
+
+gioenumtypes_sources = $(gioinclude_HEADERS)
 
 gdbus_headers = 			\
 	gdbusauthobserver.h		\
@@ -514,7 +518,8 @@ libgio_2_0_la_DEPENDENCIES = $(gio_win32_res) $(gio_def) $(platform_deps)
 gio-win32-res.o: gio.rc
 	$(WINDRES) gio.rc $@
 
-gio_headers =			\
+gioincludedir=$(includedir)/glib-2.0/gio/
+gioinclude_HEADERS = 		\
 	gappinfo.h 		\
 	gasyncinitable.h	\
 	gasyncresult.h 		\
@@ -553,6 +558,7 @@ gio_headers =			\
 	gio.h			\
 	giotypes.h		\
 	gioenums.h		\
+	gioenumtypes.h		\
 	gioerror.h 		\
 	giomodule.h 		\
 	gioscheduler.h 		\
@@ -616,25 +622,22 @@ gio_headers =			\
 	$(gdbus_headers)	\
 	$(NULL)
 
-gioincludedir=$(includedir)/glib-2.0/gio/
-gioinclude_HEADERS = 		\
-	$(gio_headers)		\
-	gioenumtypes.h
-
 # these sources (also mentioned above) are generated.
+GLIB_GENERATED =	\
+	gioenumtypes.h	\
+	gioenumtypes.c
+GLIB_MKENUMS_H_FLAGS = --vhead "GLIB_AVAILABLE_IN_ALL\n"
+
 BUILT_SOURCES = 		\
 	gconstructor_as_data.h	\
-	gioenumtypes.h		\
-	gioenumtypes.c		\
 	gdbus-daemon-generated.c \
 	gdbus-daemon-generated.h \
 	gnetworking.h		\
+	$(GLIB_GENERATED)	\
 	$(NULL)
 
 EXTRA_DIST += 			\
 	data-to-c.pl		\
-	gioenumtypes.h.template	\
-	gioenumtypes.c.template	\
 	makefile.msc		\
 	gio.rc.in		\
 	gschema.dtd		\
@@ -657,14 +660,6 @@ DISTCLEANFILES = 		\
 	gioenumtypes.c
 
 all-local: gio-public-headers.txt
-
-gioenumtypes.h: $(gio_headers) gioenumtypes.h.template
-	$(AM_V_GEN) $(top_builddir)/gobject/glib-mkenums --template $(filter %.template,$^) $(filter-out %.template,$^) > \
-	    gioenumtypes.h.tmp && mv gioenumtypes.h.tmp gioenumtypes.h
-
-gioenumtypes.c: $(gio_headers) gioenumtypes.c.template
-	$(AM_V_GEN) $(top_builddir)/gobject/glib-mkenums --template $(filter %.template,$^) $(filter-out %.template,$^) > \
-	    gioenumtypes.c.tmp && mv gioenumtypes.c.tmp gioenumtypes.c
 
 gio-2.0.lib: libgio-2.0.la gio.def
 	lib -machine:@LIB_EXE_MACHINE_FLAG@ -name:libgio-2.0-$(LT_CURRENT_MINUS_AGE).dll -def:$(builddir)/gio.def -out:$@

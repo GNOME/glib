@@ -1,6 +1,44 @@
 # Configure paths for GLIB
 # Owen Taylor     1997-2001
 
+dnl GLIB_CONFIG([MODULES [, MIN-VERSION [, MAX-VERSION]]])
+dnl Test for GLIB (and error out if it's not available). Define
+dnl GLIB_CFLAGS and GLIB_LIBS, GLIB_MAKEFILE, and variables for
+dnl various glib developer tools (eg, GLIB_GENMARSHAL). If
+dnl gmodule, gobject, or gio is specified in MODULES, pass to
+dnl pkg-config. If MIN-VERSION is set, it will be passed to
+dnl pkg-config, and also used to set GLIB_VERSION_MIN_REQUIRED.
+dnl If MAX-VERSION is set, it will be used to set
+dnl GLIB_VERSION_MAX_ALLOWED.
+dnl
+AC_DEFUN([GLIB_CONFIG],
+[dnl
+  glib_config_modules="$1"
+  glib_config_min_version=ifelse([$2], ,2.35.5,$2)
+  glib_config_max_version="$3"
+
+  AM_PATH_GLIB_2_0([$glib_config_min_version], , [AC_MSG_ERROR([GLIB not found])], [$glib_config_modules])
+
+  if test -n "$glib_config_min_version"; then
+    GLIB_CFLAGS="$GLIB_CFLAGS -DGLIB_VERSION_MIN_REQUIRED=`echo $glib_config_min_version | sed -e 's/\([[0-9]]*\)\.\([[0-9]]*\).*/GLIB_VERSION_\1_\2/'`"
+  fi
+  if test -n "$glib_config_max_version"; then
+    GLIB_CFLAGS="$GLIB_CFLAGS -DGLIB_VERSION_MAX_ALLOWED=`echo $glib_config_max_version | sed -e 's/\([[0-9]]*\)\.\([[0-9]]*\).*/GLIB_VERSION_\1_\2/'`"
+  fi
+
+  GLIB_GENMARSHAL=`$PKG_CONFIG --variable=glib_genmarshal glib-2.0`
+  GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
+  GLIB_MAKEFILE=`$PKG_CONFIG --variable=glib_makefile glib-2.0`
+  GLIB_COMPILE_RESOURCES=glib-compile-resources
+
+  AC_SUBST(GLIB_GENMARSHAL)
+  AC_SUBST(GLIB_MKENUMS)
+  AC_SUBST(GLIB_MAKEFILE)
+  AC_SUBST(GLIB_COMPILE_RESOURCES)
+
+  GLIB_GSETTINGS
+])
+
 dnl AM_PATH_GLIB_2_0([MINIMUM-VERSION, [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND [, MODULES]]]])
 dnl Test for GLIB, and define GLIB_CFLAGS and GLIB_LIBS, if gmodule, gobject,
 dnl gthread, or gio is specified in MODULES, pass to pkg-config

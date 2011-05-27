@@ -19,6 +19,7 @@ TAGS
 *.exe
 *.def
 *.test
+*.stamp
 
 # autofoo stuff here
 compile

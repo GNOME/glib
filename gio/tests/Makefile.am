@@ -1,6 +1,7 @@
+include $(GLIB_MAKEFILE)
 
 NULL =
-BUILT_SOURCES =
+BUILT_SOURCES = $(GLIB_GENERATED)
 
 include $(top_srcdir)/Makefile.decl
 
@@ -452,25 +453,16 @@ test.mo: de.po
 	$(MKDIR_P) de/LC_MESSAGES; \
 	cp -f test.mo de/LC_MESSAGES
 
-if CROSS_COMPILING
-  glib_compile_resources=$(GLIB_COMPILE_RESOURCES)
-else
-  glib_compile_resources=$(top_builddir)/gio/glib-compile-resources
-endif
+GLIB_GENERATED =			\
+	test.gresource			\
+	test2-resources.c		\
+	test3-resources.c		\
+	test3-resources.h		\
+	test4-resources.c
 
-BUILT_SOURCES += test2-resources.c test3-resources.c test3-resources.h
-
-test2-resources.c: test2.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test2.gresource.xml)
-	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_test2 $<
-
-test3-resources.h test3-resources.c: test3.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test3.gresource.xml)
-	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate --c-name _g_test3 --manual-register $<
-
-plugin-resources.c: test4.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test4.gresource.xml)
-	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) --generate-source --c-name _g_plugin $<
-
-test.gresource: test.gresource.xml Makefile $(shell $(glib_compile_resources) --sourcedir=$(srcdir) --generate-dependencies $(srcdir)/test.gresource.xml)
-	$(AM_V_GEN) $(glib_compile_resources) --target=$@ --sourcedir=$(srcdir) $<
+test2_resources_COMPILE_RESOURCES_FLAGS = --c-name _g_test2
+test3_resources_COMPILE_RESOURCES_FLAGS = --c-name _g_test3
+test4_resources_COMPILE_RESOURCES_FLAGS = --c-name _g_plugin
 
 if BUILDOPT_INSTALL_TESTS
 insttest_LTLIBRARIES = libresourceplugin.la
@@ -478,19 +470,17 @@ else
 noinst_LTLIBRARIES = libresourceplugin.la
 endif
 
-libresourceplugin_la_SOURCES = resourceplugin.c plugin-resources.c
+libresourceplugin_la_SOURCES = resourceplugin.c test4-resources.c
 libresourceplugin_la_LDFLAGS = -avoid-version -module $(no_undefined) -rpath $(insttestdir)
 libresourceplugin_la_LIBADD = $(LDADD)
 
-CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml test3-resources.[ch] plugin-resources.c
+CLEANFILES = gdbus-test-codegen-generated.[ch] gdbus-test-codegen-generated-doc-*.xml
 
 DISTCLEANFILES = \
 	applications/mimeinfo.cache	\
 	org.gtk.test.enums.xml		\
 	de/LC_MESSAGES/test.mo		\
 	test.mo				\
-	test.gresource			\
-	test2-resources.c		\
 	gsettings.store			\
 	gschemas.compiled 		\
 	schema-source/gschemas.compiled
