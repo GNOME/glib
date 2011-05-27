@@ -227,21 +227,21 @@ test_object_class_init (TestObjectClass *class)
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (TestObjectClass, test_signal1),
 		test_signal1_accumulator, NULL,
-		test_marshal_STRING__INT,
+		_test_marshal_STRING__INT,
 		G_TYPE_STRING, 1, G_TYPE_INT);
   g_signal_new ("test-signal2",
 		G_OBJECT_CLASS_TYPE (class),
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (TestObjectClass, test_signal2),
 		g_signal_accumulator_true_handled, NULL,
-		test_marshal_BOOLEAN__INT,
+		_test_marshal_BOOLEAN__INT,
 		G_TYPE_BOOLEAN, 1, G_TYPE_INT);
   g_signal_new ("test-signal3",
 		G_OBJECT_CLASS_TYPE (class),
 		G_SIGNAL_RUN_LAST,
 		G_STRUCT_OFFSET (TestObjectClass, test_signal3),
 		test_signal3_accumulator, NULL,
-		test_marshal_VARIANT__POINTER,
+		_test_marshal_VARIANT__POINTER,
 		G_TYPE_VARIANT, 1, G_TYPE_POINTER);
 }
 

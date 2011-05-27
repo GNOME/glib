@@ -2588,7 +2588,17 @@ AS_IF([ test $cross_compiling = yes ], [
   if test x$GLIB_COMPILE_RESOURCES = xno; then
     AC_MSG_ERROR(Could not find a glib-compile-resources in your PATH)
   fi
+],[
+  GLIB_GENMARSHAL='$(top_builddir)/gobject/glib-genmarshal'
+  GLIB_COMPILE_SCHEMAS='$(top_builddir)/gio/glib-compile-schemas'
+  GLIB_COMPILE_RESOURCES='$(top_builddir)/gio/glib-compile-resources'
 ])
+
+dnl ************************************
+dnl *** Internal glib-build.mk usage ***
+dnl ************************************
+GLIB_MKENUMS='$(top_builddir)/gobject/glib-mkenums'
+AC_SUBST(GLIB_MKENUMS)
 
 dnl **************************
 dnl *** Checks for gtk-doc ***

@@ -21,6 +21,7 @@ TAGS
 *.test
 *.log
 *.trs
+*.stamp
 
 # autofoo stuff here
 compile

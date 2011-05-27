@@ -21,7 +21,7 @@
 #include <string.h>
 #include <gio/gio.h>
 #include "gconstructor.h"
-#include "test_resources2.h"
+#include "test2_resources.h"
 
 static void
 test_resource (GResource *resource)
