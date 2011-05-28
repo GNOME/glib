@@ -2105,7 +2105,7 @@ g_socket_shutdown (GSocket   *socket,
 
   g_return_val_if_fail (G_IS_SOCKET (socket), TRUE);
 
-  if (!check_socket (socket, NULL))
+  if (!check_socket (socket, error))
     return FALSE;
 
   /* Do nothing? */
@@ -2192,7 +2192,7 @@ g_socket_close (GSocket  *socket,
   if (socket->priv->closed)
     return TRUE; /* Multiple close not an error */
 
-  if (!check_socket (socket, NULL))
+  if (!check_socket (socket, error))
     return FALSE;
 
   while (1)
