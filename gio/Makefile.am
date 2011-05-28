@@ -654,7 +654,7 @@ EXTRA_DIST += $(completion_SCRIPTS)
 # generate code here for the sake of gtk-doc
 
 gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c : gdbus-example-objectmanager.xml
-	$(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
+	$(AM_V_GEN) $(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
 		--interface-prefix org.gtk.GDBus.Example.ObjectManager.		\
 		--c-namespace Example 						\
 		--c-generate-object-manager					\

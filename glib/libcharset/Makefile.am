@@ -51,14 +51,14 @@ uninstall-local: all-local
 	fi
 
 charset.alias: config.charset
-	$(SHELL) $(srcdir)/config.charset '@host@' > t-$@
-	mv t-$@ $@
+	$(AM_V_GEN) $(SHELL) $(srcdir)/config.charset '@host@' > t-$@
+	@mv t-$@ $@
 
 all-local: ref-add.sed ref-del.sed charset.alias
 
 SUFFIXES = .sed .sin
 .sin.sed:
-	sed -e '/^#/d' -e 's/@''PACKAGE''@/@PACKAGE@/g' $< > t-$@
-	mv t-$@ $@
+	$(AM_V_GEN) $(SED) -e '/^#/d' -e 's/@''PACKAGE''@/@PACKAGE@/g' $< > t-$@
+	@mv t-$@ $@
 
 CLEANFILES = charset.alias ref-add.sed ref-del.sed

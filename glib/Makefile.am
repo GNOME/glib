@@ -355,10 +355,10 @@ INSTALL_PROGS=
 
 if ENABLE_DTRACE
 glib_probes.h: glib_probes.d Makefile
-	$(DTRACE) -C -h -s $< -o $@.tmp
-	sed -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
+	$(AM_V_GEN) $(DTRACE) -C -h -s $< -o $@.tmp
+	@$(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
 glib_probes.o: glib_probes.d Makefile
-	$(DTRACE) -G -s $< -o $@
+	$(AM_V_GEN) $(DTRACE) -G -s $< -o $@
 BUILT_SOURCES += glib_probes.h glib_probes.o
 CLEANFILES += glib_probes.h glib_probes.h.tmp
 libglib_2_0_la_LIBADD += glib_probes.o

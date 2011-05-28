@@ -243,7 +243,7 @@ gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h 
 gdbus_bz627724_LDADD = $(progs_ldadd)
 
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
-	$(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 				\
+	$(AM_V_GEN) $(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 				\
 		--interface-prefix org.project.								\
 		--generate-c-code gdbus-test-codegen-generated						\
 		--c-generate-object-manager								\
@@ -442,7 +442,7 @@ proxy_SOURCES = proxy.c
 proxy_LDADD   = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-# ----------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 gdbus_example_objectmanager_server_SOURCES  = gdbus-example-objectmanager-server.c
 gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/libgdbus-example-objectmanager.la $(progs_ldadd)
@@ -450,7 +450,7 @@ gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/libgdbus-examp
 gdbus_example_objectmanager_client_SOURCES  = gdbus-example-objectmanager-client.c
 gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/libgdbus-example-objectmanager.la $(progs_ldadd)
 
-# ----------------------------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 
 EXTRA_DIST += \
 	socket-common.c			\

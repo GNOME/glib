@@ -79,7 +79,7 @@ INSTOBJEXT = @INSTOBJEXT@
 	$(MSGFMT) -o $@ $<
 
 .po.gmo:
-	file=$(srcdir)/`echo $* | sed 's,.*/,,'`.gmo \
+	$(AM_V_GEN) file=$(srcdir)/`echo $* | sed 's,.*/,,'`.gmo \
 	  && rm -f $$file && $(GMSGFMT) $(MSGFMT_OPTS) -o $$file $<
 
 .po.cat:

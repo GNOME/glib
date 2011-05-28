@@ -22,7 +22,7 @@ AM_CPPFLAGS = 					\
 	-DG_DISABLE_CONST_RETURNS
 
 gobject.def: gobject.symbols
-	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | sed -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
+	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | $(SED) -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
@@ -143,10 +143,10 @@ BUILT_SOURCES = gmarshal.h gmarshal.c
 
 if ENABLE_DTRACE
 gobject_probes.h: gobject_probes.d Makefile
-	$(DTRACE) -C -h -s $< -o $@.tmp
-	sed -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
+	$(AM_V_GEN) $(DTRACE) -C -h -s $< -o $@.tmp
+	@$(SED) -e "s,define STAP_HAS_SEMAPHORES 1,undef STAP_HAS_SEMAPHORES," < $@.tmp > $@ && rm -f $@.tmp
 gobject_probes.o: gobject_probes.d Makefile
-	$(DTRACE) -G -s $< -o $@
+	$(AM_V_GEN) $(DTRACE) -G -s $< -o $@
 BUILT_SOURCES += gobject_probes.h gobject_probes.o
 CLEANFILES += gobject_probes.h
 libgobject_2_0_la_LIBADD += gobject_probes.o
@@ -218,7 +218,7 @@ gmarshal.c: @REBUILD@ stamp-gmarshal.h
 
 gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list
 	$(AM_V_GEN) grep '^[A-Z]' $(srcdir)/gmarshal.list \
-	| sed -e 's/^/"g_cclosure_marshal_/' -e 's/:/__/' -e 's/,/_/g' -e 's/$$/",/' > xgen-gms \
+	| $(SED) -e 's/^/"g_cclosure_marshal_/' -e 's/:/__/' -e 's/,/_/g' -e 's/$$/",/' > xgen-gms \
 	&& cp xgen-gms gmarshal.strings \
 	&& rm -f xgen-gms xgen-gms~
 
