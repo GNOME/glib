@@ -205,11 +205,12 @@ void
 g_bit_lock (volatile gint *address,
             gint           lock_bit)
 {
+  guint mask = 1u << lock_bit;
   guint v;
 
  retry:
-  v = g_atomic_int_get (address);
-  if (v & (1u << lock_bit))
+  v = g_atomic_int_or (address, mask);
+  if (v & mask)
     /* already locked */
     {
       guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
@@ -220,9 +221,6 @@ g_bit_lock (volatile gint *address,
 
       goto retry;
     }
-
-  if (!g_atomic_int_compare_and_exchange (address, v, v | (1u << lock_bit)))
-    goto retry;
 }
 
 /**
@@ -250,18 +248,12 @@ gboolean
 g_bit_trylock (volatile gint *address,
                gint           lock_bit)
 {
+  guint mask = 1u << lock_bit;
   guint v;
 
- retry:
-  v = g_atomic_int_get (address);
-  if (v & (1u << lock_bit))
-    /* already locked */
-    return FALSE;
+  v = g_atomic_int_or (address, mask);
 
-  if (!g_atomic_int_compare_and_exchange (address, v, v | (1u << lock_bit)))
-    goto retry;
-
-  return TRUE;
+  return ~v & mask;
 }
 
 /**
@@ -284,12 +276,9 @@ g_bit_unlock (volatile gint *address,
               gint           lock_bit)
 {
   guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
-  guint v;
+  guint mask = 1u << lock_bit;
 
- retry:
-  v = g_atomic_int_get (address);
-  if (!g_atomic_int_compare_and_exchange (address, v, v & ~(1u << lock_bit)))
-    goto retry;
+  g_atomic_int_and (address, ~mask);
 
   if (g_atomic_int_get (&g_bit_lock_contended[class]))
     g_futex_wake (address);
