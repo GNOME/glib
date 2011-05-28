@@ -99,16 +99,28 @@ void     g_atomic_pointer_set                  (volatile gpointer G_GNUC_MAY_ALI
 
 #else
 
-# define g_atomic_int_get(atomic) \
+#define g_atomic_int_exchange_and_add(atomic,val) \
+ (G_STATIC_ASSERT_EXPR(sizeof (*(atomic)) == sizeof (gint)), \
+  (g_atomic_int_exchange_and_add) ((volatile gint G_GNUC_MAY_ALIAS *) (volatile void *) (atomic), (val)))
+#define g_atomic_int_add(atomic,val) \
+ (G_STATIC_ASSERT_EXPR(sizeof (*(atomic)) == sizeof (gint)), \
+  (g_atomic_int_add) ((volatile gint G_GNUC_MAY_ALIAS *) (volatile void *) (atomic), (val)))
+#define g_atomic_int_compare_and_exchange(atomic,oldval,newval) \
+ (G_STATIC_ASSERT_EXPR(sizeof (*(atomic)) == sizeof (gint)), \
+  (g_atomic_int_compare_and_exchange) ((volatile gint G_GNUC_MAY_ALIAS *) (volatile void *) (atomic), (oldval), (newval)))
+#define g_atomic_pointer_compare_and_exchange(atomic,oldval,newval) \
+ (G_STATIC_ASSERT_EXPR(sizeof (*(atomic)) == sizeof (gpointer)), \
+  (g_atomic_pointer_compare_and_exchange) ((volatile gpointer G_GNUC_MAY_ALIAS *) (volatile void *) (atomic), (oldval), (newval)))
+#define g_atomic_int_get(atomic) \
  (G_STATIC_ASSERT_EXPR(sizeof (*(atomic)) == sizeof (gint)), \
   (g_atomic_int_get) ((volatile gint G_GNUC_MAY_ALIAS *) (volatile void *) (atomic)))
-# define g_atomic_int_set(atomic, newval) \
+#define g_atomic_int_set(atomic, newval) \
  (G_STATIC_ASSERT_EXPR(sizeof (*(atomic)) == sizeof (gint)), \
   (g_atomic_int_set) ((volatile gint G_GNUC_MAY_ALIAS *) (volatile void *) (atomic), (newval)))
-# define g_atomic_pointer_get(atomic) \
+#define g_atomic_pointer_get(atomic) \
  (G_STATIC_ASSERT_EXPR(sizeof (*(atomic)) == sizeof (gpointer)), \
   (g_atomic_pointer_get) ((volatile gpointer G_GNUC_MAY_ALIAS *) (volatile void *) (atomic)))
-# define g_atomic_pointer_set(atomic, newval) \
+#define g_atomic_pointer_set(atomic, newval) \
  (G_STATIC_ASSERT_EXPR(sizeof (*(atomic)) == sizeof (gpointer)), \
   (g_atomic_pointer_set) ((volatile gpointer G_GNUC_MAY_ALIAS *) (volatile void *) (atomic), (newval)))
 
