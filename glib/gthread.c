@@ -871,7 +871,7 @@ static GMutex   *g_once_mutex = NULL;
 static GCond    *g_once_cond = NULL;
 static GPrivate *g_thread_specific_private = NULL;
 static GRealThread *g_thread_all_threads = NULL;
-static GSList   *g_thread_free_indeces = NULL;
+static GSList   *g_thread_free_indices = NULL;
 static GSList*   g_once_init_list = NULL;
 
 G_LOCK_DEFINE_STATIC (g_thread);
@@ -1711,13 +1711,13 @@ g_static_private_set (GStaticPrivate *private_key,
 
       if (!private_key->index)
 	{
-	  if (g_thread_free_indeces)
+	  if (g_thread_free_indices)
 	    {
 	      private_key->index =
-		GPOINTER_TO_UINT (g_thread_free_indeces->data);
-	      g_thread_free_indeces =
-		g_slist_delete_link (g_thread_free_indeces,
-				     g_thread_free_indeces);
+		GPOINTER_TO_UINT (g_thread_free_indices->data);
+	      g_thread_free_indices =
+		g_slist_delete_link (g_thread_free_indices,
+				     g_thread_free_indices);
 	    }
 	  else
 	    private_key->index = ++next_index;
@@ -1819,7 +1819,7 @@ g_static_private_free (GStaticPrivate *private_key)
 
       UNLOCK_PRIVATE_DATA (thread);
     }
-  g_thread_free_indeces = g_slist_prepend (g_thread_free_indeces,
+  g_thread_free_indices = g_slist_prepend (g_thread_free_indices,
 					   GUINT_TO_POINTER (idx));
   G_UNLOCK (g_thread);
 
