@@ -83,11 +83,14 @@
  * portable means for writing multi-threaded software. There are
  * primitives for mutexes to protect the access to portions of memory
  * (#GMutex, #GStaticMutex, #G_LOCK_DEFINE, #GStaticRecMutex and
- * #GStaticRWLock). There are primitives for condition variables to
+ * #GStaticRWLock). There is a facility to use individual bits for
+ * locks (g_bit_lock()). There are primitives for condition variables to
  * allow synchronization of threads (#GCond).  There are primitives for
  * thread-private data - data that every thread has a private instance
- * of (#GPrivate, #GStaticPrivate). Last but definitely not least there
- * are primitives to portably create and manage threads (#GThread).
+ * of (#GPrivate, #GStaticPrivate). There are facilities for one-time
+ * initialization (#GOnce, g_once_init_enter()). Last but definitely
+ * not least there are primitives to portably create and manage
+ * threads (#GThread).
  *
  * The threading system is initialized with g_thread_init(), which
  * takes an optional custom thread implementation or %NULL for the
