@@ -2132,7 +2132,7 @@ g_socket_shutdown (GSocket   *socket,
     {
       int errsv = get_socket_errno ();
       g_set_error (error, G_IO_ERROR, socket_io_error_from_errno (errsv),
-		   _("Unable to create socket: %s"), socket_strerror (errsv));
+		   _("Unable to shutdown socket: %s"), socket_strerror (errsv));
       return FALSE;
     }
 
