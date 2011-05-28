@@ -42,12 +42,6 @@ gregex_c =
 gregex_h =
 endif
 
-if HAVE_GCC_BUILTINS_FOR_ATOMIC_OPERATIONS
-gatomic_c = gatomic-gcc.c
-else
-gatomic_c = gatomic.c
-endif
-
 SUBDIRS = libcharset $(PRINTF_SUBDIR) $(MAYBE_PCRE) update-pcre . tests
 
 DIST_SUBDIRS = libcharset gnulib pcre update-pcre tests
@@ -121,7 +115,7 @@ libglib_2_0_la_SOURCES = 	\
 	glib_probes.d		\
 	garray.c		\
 	gasyncqueue.c		\
-	$(gatomic_c)		\
+	gatomic.c		\
 	gbacktrace.c		\
 	gbase64.c		\
 	gbitlock.c		\

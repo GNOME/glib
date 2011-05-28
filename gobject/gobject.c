@@ -2654,7 +2654,7 @@ g_object_ref (gpointer _object)
 #endif  /* G_ENABLE_DEBUG */
 
 
-  old_val = g_atomic_int_exchange_and_add ((int *)&object->ref_count, 1);
+  old_val = g_atomic_int_add (&object->ref_count, 1);
 
   if (old_val == 1 && OBJECT_HAS_TOGGLE_REF (object))
     toggle_refs_notify (object, FALSE);
@@ -2735,7 +2735,7 @@ g_object_unref (gpointer _object)
       g_datalist_id_set_data (&object->qdata, quark_weak_refs, NULL);
       
       /* decrement the last reference */
-      old_ref = g_atomic_int_exchange_and_add ((int *)&object->ref_count, -1);
+      old_ref = g_atomic_int_add (&object->ref_count, -1);
 
       TRACE (GOBJECT_OBJECT_UNREF(object,G_TYPE_FROM_INSTANCE(object),old_ref));
 

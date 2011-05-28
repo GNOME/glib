@@ -12,7 +12,6 @@ main (void)
   g_atomic_int_set (&u, 5);
   g_atomic_int_get (&u);
   g_atomic_int_compare_and_exchange (&u, 6, 7);
-  g_atomic_int_exchange_and_add (&u, 1);
   g_atomic_int_add (&u, 1);
   g_atomic_int_inc (&u);
   (void) g_atomic_int_dec_and_test (&u);
@@ -20,7 +19,6 @@ main (void)
   g_atomic_int_set (&s, 5);
   g_atomic_int_get (&s);
   g_atomic_int_compare_and_exchange (&s, 6, 7);
-  g_atomic_int_exchange_and_add (&s, 1);
   g_atomic_int_add (&s, 1);
   g_atomic_int_inc (&s);
   (void) g_atomic_int_dec_and_test (&s);

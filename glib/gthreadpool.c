@@ -207,7 +207,7 @@ g_thread_pool_wait_for_new_pool (void)
 	    }
 	  else
 	    {
-	      if (g_atomic_int_exchange_and_add (&kill_unused_threads, -1) > 0)
+	      if (g_atomic_int_add (&kill_unused_threads, -1) > 0)
 	        {
 		  pool = NULL;
 		  break;
