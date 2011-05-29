@@ -34,9 +34,9 @@
  * @short_description: pipes, signal handling
  * @include: glib-unix.h
  *
- * Most of GLib is intended to be portable; in constrast, this set of
- * functions is designed for programs which explicitly target UNIX, or
- * are using it to build higher level abstractions which would be
+ * Most of GLib is intended to be portable; in contrast, this set of
+ * functions is designed for programs which explicitly target UNIX,
+ * or are using it to build higher level abstractions which would be
  * conditionally compiled if the platform matches G_OS_UNIX.
  *
  * To use these functions, you must explicitly include the
