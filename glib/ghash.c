@@ -826,7 +826,6 @@ GHashTable*
 g_hash_table_ref (GHashTable *hash_table)
 {
   g_return_val_if_fail (hash_table != NULL, NULL);
-  g_return_val_if_fail (hash_table->ref_count > 0, hash_table);
 
   g_atomic_int_add (&hash_table->ref_count, 1);
   return hash_table;
@@ -847,7 +846,6 @@ void
 g_hash_table_unref (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (hash_table->ref_count > 0);
 
   if (g_atomic_int_exchange_and_add (&hash_table->ref_count, -1) - 1 == 0)
     {
@@ -872,7 +870,6 @@ void
 g_hash_table_destroy (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (hash_table->ref_count > 0);
 
   g_hash_table_remove_all (hash_table);
   g_hash_table_unref (hash_table);
@@ -977,7 +974,6 @@ g_hash_table_insert_internal (GHashTable *hash_table,
   guint old_hash;
 
   g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (hash_table->ref_count > 0);
 
   node_index = g_hash_table_lookup_node_for_insertion (hash_table, key, &key_hash);
   node = &hash_table->nodes [node_index];
