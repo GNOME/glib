@@ -26,7 +26,7 @@
 #ifndef __G_ATOMIC_H__
 #define __G_ATOMIC_H__
 
-#include "glib/gtypes.h"
+#include <glib/gtypes.h>
 
 G_BEGIN_DECLS
 
