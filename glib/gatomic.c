@@ -94,8 +94,8 @@
  *
  * Gets the current value of @atomic.
  *
- * This call acts as a full compiler and hardware memory barrier (before
- * the get).
+ * This call acts as a full compiler and hardware
+ * memory barrier (before the get).
  *
  * Returns: the value of the integer
  *
@@ -114,11 +114,11 @@ gint
  *
  * Sets the value of @atomic to @newval.
  *
- * This call acts as a full compiler and hardware memory barrier (after
- * the set).
+ * This call acts as a full compiler and hardware
+ * memory barrier (after the set).
  *
  * Since: 2.4
- **/
+ */
 void
 (g_atomic_int_set) (volatile gint *atomic,
                     gint           newval)
@@ -131,6 +131,9 @@ void
  * @atomic: a pointer to a #gint or #guint
  *
  * Increments the value of @atomic by 1.
+ *
+ * Think of this operation as an atomic version of
+ * <literal>{ *@atomic += 1; }</literal>
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -147,6 +150,9 @@ void
  * @atomic: a pointer to a #gint or #guint
  *
  * Decrements the value of @atomic by 1.
+ *
+ * Think of this operation as an atomic version of
+ * <literal>{ *@atomic -= 1; return (*@atomic == 0); }</literal>
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -166,10 +172,13 @@ gboolean
  * @oldval: the value to compare with
  * @newval: the value to conditionally replace with
  *
- * Compares @atomic to @oldval and, if equal, sets it to @newval.  If
- * @atomic was not equal to @oldval then no change occurs.
+ * Compares @atomic to @oldval and, if equal, sets it to @newval.
+ * If @atomic was not equal to @oldval then no change occurs.
  *
  * This compare and exchange is done atomically.
+ *
+ * Think of this operation as an atomic version of
+ * <literal>{ if (*@atomic == @oldval) { *@atomic = @newval; return TRUE; } else return FALSE; }</literal>
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -191,6 +200,9 @@ gboolean
  * @val: the value to add
  *
  * Atomically adds @val to the value of @atomic.
+ *
+ * Think of this operation as an atomic version of
+ * <literal>{ tmp = *atomic; *@atomic += @val; return tmp; }</literal>
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -215,6 +227,9 @@ gint
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
+ * Think of this operation as an atomic version of
+ * <literal>{ tmp = *atomic; *@atomic &= @val; return tmp; }</literal>
+ *
  * Returns: the value of @atomic before the operation, unsigned
  *
  * Since: 2.30
@@ -233,6 +248,9 @@ guint
  *
  * Performs an atomic bitwise 'or' of the value of @atomic and @val,
  * storing the result back in @atomic.
+ *
+ * Think of this operation as an atomic version of
+ * <literal>{ tmp = *atomic; *@atomic |= @val; return tmp; }</literal>
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -255,6 +273,9 @@ guint
  * Performs an atomic bitwise 'xor' of the value of @atomic and @val,
  * storing the result back in @atomic.
  *
+ * Think of this operation as an atomic version of
+ * <literal>{ tmp = *atomic; *@atomic ^= @val; return tmp; }</literal>
+ *
  * This call acts as a full compiler and hardware memory barrier.
  *
  * Returns: the value of @atomic before the operation, unsigned
@@ -275,8 +296,8 @@ guint
  *
  * Gets the current value of @atomic.
  *
- * This call acts as a full compiler and hardware memory barrier (before
- * the get).
+ * This call acts as a full compiler and hardware
+ * memory barrier (before the get).
  *
  * Returns: the value of the pointer
  *
@@ -295,8 +316,8 @@ gpointer
  *
  * Sets the value of @atomic to @newval.
  *
- * This call acts as a full compiler and hardware memory barrier (after
- * the set).
+ * This call acts as a full compiler and hardware
+ * memory barrier (after the set).
  *
  * Since: 2.4
  **/
@@ -313,10 +334,13 @@ void
  * @oldval: the value to compare with
  * @newval: the value to conditionally replace with
  *
- * Compares @atomic to @oldval and, if equal, sets it to @newval.  If
- * @atomic was not equal to @oldval then no change occurs.
+ * Compares @atomic to @oldval and, if equal, sets it to @newval.
+ * If @atomic was not equal to @oldval then no change occurs.
  *
  * This compare and exchange is done atomically.
+ *
+ * Think of this operation as an atomic version of
+ * <literal>{ if (*@atomic == @oldval) { *@atomic = @newval; return TRUE; } else return FALSE; }</literal>
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -340,6 +364,9 @@ gboolean
  *
  * Atomically adds @val to the value of @atomic.
  *
+ * Think of this operation as an atomic version of
+ * <literal>{ tmp = *atomic; *@atomic += @val; return tmp; }</literal>
+ *
  * This call acts as a full compiler and hardware memory barrier.
  *
  * Returns: the value of @atomic before the add, signed
@@ -360,6 +387,9 @@ gssize
  *
  * Performs an atomic bitwise 'and' of the value of @atomic and @val,
  * storing the result back in @atomic.
+ *
+ * Think of this operation as an atomic version of
+ * <literal>{ tmp = *atomic; *@atomic &= @val; return tmp; }</literal>
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
@@ -382,6 +412,9 @@ gsize
  * Performs an atomic bitwise 'or' of the value of @atomic and @val,
  * storing the result back in @atomic.
  *
+ * Think of this operation as an atomic version of
+ * <literal>{ tmp = *atomic; *@atomic |= @val; return tmp; }</literal>
+ *
  * This call acts as a full compiler and hardware memory barrier.
  *
  * Returns: the value of @atomic before the operation, unsigned
@@ -402,6 +435,9 @@ gsize
  *
  * Performs an atomic bitwise 'xor' of the value of @atomic and @val,
  * storing the result back in @atomic.
+ *
+ * Think of this operation as an atomic version of
+ * <literal>{ tmp = *atomic; *@atomic ^= @val; return tmp; }</literal>
  *
  * This call acts as a full compiler and hardware memory barrier.
  *

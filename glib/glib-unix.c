@@ -1,7 +1,7 @@
 /* GLIB - Library of useful routines for C programming
  * Copyright (C) 2011 Red Hat, Inc.
  *
- * glib-unix.c: UNIX specific API wrappers and convenience functions 
+ * glib-unix.c: UNIX specific API wrappers and convenience functions
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -10,7 +10,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -54,21 +54,21 @@ g_unix_set_error_from_errno (GError **error)
 {
   int saved_errno = errno;
   g_set_error_literal (error,
-		       G_UNIX_ERROR,
-		       0,
-		       g_strerror (errno));
+                       G_UNIX_ERROR,
+                       0,
+                       g_strerror (errno));
   errno = saved_errno;
   return FALSE;
 }
 
 static gboolean
 g_unix_set_error_from_errno_saved (GError **error,
-				    int      saved_errno)
+                                    int      saved_errno)
 {
   g_set_error_literal (error,
-		       G_UNIX_ERROR,
-		       0,
-		       g_strerror (saved_errno));
+                       G_UNIX_ERROR,
+                       0,
+                       g_strerror (saved_errno));
   errno = saved_errno;
   return FALSE;
 }
@@ -82,11 +82,12 @@ g_unix_set_error_from_errno_saved (GError **error,
  * Similar to the UNIX pipe() call, but on modern systems like Linux
  * uses the pipe2() system call, which atomically creates a pipe with
  * the configured flags.  The only supported flag currently is
- * %FD_CLOEXEC.  If for example you want to configure %O_NONBLOCK, that
- * must still be done separately with fcntl().
+ * %FD_CLOEXEC.  If for example you want to configure %O_NONBLOCK,
+ * that must still be done separately with fcntl().
  *
- * <note>This function does *not* take %O_CLOEXEC, it takes %FD_CLOEXEC as if
- * for fcntl(); these are different on Linux/glibc.</note>
+ * <note>This function does *not* take %O_CLOEXEC, it takes
+ * %FD_CLOEXEC as if for fcntl(); these are different on
+ * Linux/glibc.</note>
  *
  * Returns: %TRUE on success, %FALSE if not (and errno will be set).
  *
@@ -94,8 +95,8 @@ g_unix_set_error_from_errno_saved (GError **error,
  */
 gboolean
 g_unix_open_pipe (int     *fds,
-		  int      flags,
-		  GError **error)
+                  int      flags,
+                  GError **error)
 {
   int ecode;
 
@@ -148,11 +149,13 @@ g_unix_open_pipe (int     *fds,
  * on some older ones may use %O_NDELAY.
  *
  * Returns: %TRUE if successful
+ *
+ * Since: 2.30
  */
 gboolean
-g_unix_set_fd_nonblocking (gint       fd, 
-			   gboolean   nonblock,
-			   GError   **error)
+g_unix_set_fd_nonblocking (gint       fd,
+                           gboolean   nonblock,
+                           GError   **error)
 {
 #ifdef F_GETFL
   glong fcntl_flags;
@@ -196,7 +199,7 @@ g_unix_set_fd_nonblocking (gint       fd,
  * be monitored.  Note that unlike the UNIX default, all sources which
  * have created a watch will be dispatched, regardless of which
  * underlying thread invoked g_unix_signal_create_watch().
- * 
+ *
  * For example, an effective use of this function is to handle SIGTERM
  * cleanly; flushing any outstanding files, and then calling
  * g_main_loop_quit ().  It is not safe to do any of this a regular
@@ -219,6 +222,8 @@ g_unix_set_fd_nonblocking (gint       fd,
  * executed.
  *
  * Returns: A newly created #GSource
+ *
+ * Since: 2.30
  */
 GSource *
 g_unix_signal_source_new (int signum)
@@ -242,13 +247,15 @@ g_unix_signal_source_new (int signum)
  * using g_source_remove().
  *
  * Returns: An ID (greater than 0) for the event source
+ *
+ * Since: 2.30
  */
 guint
 g_unix_signal_add_watch_full (int            signum,
-			      int            priority,
-			      GSourceFunc    handler,
-			      gpointer       user_data,
-			      GDestroyNotify notify)
+                              int            priority,
+                              GSourceFunc    handler,
+                              gpointer       user_data,
+                              GDestroyNotify notify)
 {
   guint id;
   GSource *source;
