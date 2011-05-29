@@ -107,7 +107,7 @@ struct _GRealArray
   guint   elt_size;
   guint   zero_terminated : 1;
   guint   clear : 1;
-  volatile gint ref_count;
+  gint    ref_count;
 };
 
 /**
@@ -759,7 +759,7 @@ struct _GRealPtrArray
   gpointer     *pdata;
   guint         len;
   guint         alloc;
-  volatile gint ref_count;
+  gint          ref_count;
   GDestroyNotify element_free_func;
 };
 

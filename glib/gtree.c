@@ -85,7 +85,7 @@ struct _GTree
   GDestroyNotify    value_destroy_func;
   gpointer          key_compare_data;
   guint             nnodes;
-  volatile gint     ref_count;
+  gint              ref_count;
 };
 
 struct _GTreeNode

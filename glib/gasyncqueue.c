@@ -95,7 +95,7 @@ struct _GAsyncQueue
   GQueue queue;
   GDestroyNotify item_free_func;
   guint waiting_threads;
-  volatile gint ref_count;
+  gint ref_count;
 };
 
 typedef struct {
