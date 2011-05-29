@@ -30,41 +30,41 @@
 
 G_BEGIN_DECLS
 
-gint                    g_atomic_int_get                                (volatile gint  *atomic);
-void                    g_atomic_int_set                                (volatile gint  *atomic,
-                                                                         gint            newval);
-void                    g_atomic_int_inc                                (volatile gint  *atomic);
-gboolean                g_atomic_int_dec_and_test                       (volatile gint  *atomic);
-gboolean                g_atomic_int_compare_and_exchange               (volatile gint  *atomic,
-                                                                         gint            oldval,
-                                                                         gint            newval);
-gint                    g_atomic_int_add                                (volatile gint  *atomic,
-                                                                         gint            val);
-guint                   g_atomic_int_and                                (volatile guint *atomic,
-                                                                         guint           val);
-guint                   g_atomic_int_or                                 (volatile guint *atomic,
-                                                                         guint           val);
-guint                   g_atomic_int_xor                                (volatile guint *atomic,
-                                                                         guint           val);
+gint                    g_atomic_int_get                      (volatile gint  *atomic);
+void                    g_atomic_int_set                      (volatile gint  *atomic,
+                                                               gint            newval);
+void                    g_atomic_int_inc                      (volatile gint  *atomic);
+gboolean                g_atomic_int_dec_and_test             (volatile gint  *atomic);
+gboolean                g_atomic_int_compare_and_exchange     (volatile gint  *atomic,
+                                                               gint            oldval,
+                                                               gint            newval);
+gint                    g_atomic_int_add                      (volatile gint  *atomic,
+                                                               gint            val);
+guint                   g_atomic_int_and                      (volatile guint *atomic,
+                                                               guint           val);
+guint                   g_atomic_int_or                       (volatile guint *atomic,
+                                                               guint           val);
+guint                   g_atomic_int_xor                      (volatile guint *atomic,
+                                                               guint           val);
 
-gpointer                g_atomic_pointer_get                            (volatile void  *atomic);
-void                    g_atomic_pointer_set                            (volatile void  *atomic,
-                                                                         gpointer        newval);
-gboolean                g_atomic_pointer_compare_and_exchange           (volatile void  *atomic,
-                                                                         gpointer        oldval,
-                                                                         gpointer        newval);
-gssize                  g_atomic_pointer_add                            (volatile void  *atomic,
-                                                                         gssize          val);
-gsize                   g_atomic_pointer_and                            (volatile void  *atomic,
-                                                                         gsize           val);
-gsize                   g_atomic_pointer_or                             (volatile void  *atomic,
-                                                                         gsize           val);
-gsize                   g_atomic_pointer_xor                            (volatile void  *atomic,
-                                                                         gsize           val);
+gpointer                g_atomic_pointer_get                  (volatile void  *atomic);
+void                    g_atomic_pointer_set                  (volatile void  *atomic,
+                                                               gpointer        newval);
+gboolean                g_atomic_pointer_compare_and_exchange (volatile void  *atomic,
+                                                               gpointer        oldval,
+                                                               gpointer        newval);
+gssize                  g_atomic_pointer_add                  (volatile void  *atomic,
+                                                               gssize          val);
+gsize                   g_atomic_pointer_and                  (volatile void  *atomic,
+                                                               gsize           val);
+gsize                   g_atomic_pointer_or                   (volatile void  *atomic,
+                                                               gsize           val);
+gsize                   g_atomic_pointer_xor                  (volatile void  *atomic,
+                                                               gsize           val);
 
 #ifndef G_DISABLE_DEPRECATED
-gint                    g_atomic_int_exchange_and_add                   (volatile gint  *atomic,
-                                                                         gint            val);
+gint                    g_atomic_int_exchange_and_add         (volatile gint  *atomic,
+                                                               gint            val);
 #endif
 
 G_END_DECLS
