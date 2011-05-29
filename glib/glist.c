@@ -48,7 +48,7 @@
  * pointers which link to the previous and next elements in the list.
  * Using these pointers it is possible to move through the list in both
  * directions (unlike the <link
- * linkend="glib-Singly-Linked-lists">Singly-Linked Lists</link> which
+ * linkend="glib-Singly-Linked-Lists">Singly-Linked Lists</link> which
  * only allows movement through the list in the forward direction).
  *
  * The data contained in each element can be either integer values, by

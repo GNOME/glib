@@ -55,7 +55,7 @@ typedef struct _GMemVTable GMemVTable;
 #if GLIB_SIZEOF_VOID_P > GLIB_SIZEOF_LONG
 /**
  * G_MEM_ALIGN:
- * 
+ *
  * Indicates the number of bytes to which memory will be aligned on the
  * current platform.
  */

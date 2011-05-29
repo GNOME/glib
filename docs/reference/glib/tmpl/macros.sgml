@@ -208,8 +208,7 @@ Returns the offset, in bytes, of a member of a struct.
 
 <!-- ##### MACRO G_MEM_ALIGN ##### -->
 <para>
-Indicates the number of bytes to which memory will be aligned on the
-current platform.
+
 </para>
 
 

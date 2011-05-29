@@ -3187,8 +3187,9 @@ g_key_file_has_key (GKeyFile     *key_file,
  * exists. Otherwise, @error is set and %FALSE is returned.
  *
  * Since: 2.30
+ *
  * Rename to: g_key_file_has_key
- **/
+ */
 gboolean
 g_key_file_has_key_full (GKeyFile     *key_file,
 			 const gchar  *group_name,

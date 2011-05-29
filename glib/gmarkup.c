@@ -1894,8 +1894,8 @@ g_markup_parse_context_get_position (GMarkupParseContext *context,
  * of g_markup_parse_context_push().
  *
  * Returns: the provided user_data. The returned data belongs to
- *     the markup context and will be freed when g_markup_context_free()
- *     is called.
+ *     the markup context and will be freed when
+ *     g_markup_parse_context_free() is called.
  *
  * Since: 2.18
  */

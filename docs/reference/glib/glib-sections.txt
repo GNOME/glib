@@ -337,6 +337,7 @@ G_VA_COPY
 G_STRINGIFY
 G_PASTE
 G_STATIC_ASSERT
+G_STATIC_ASSERT_EXPR
 
 <SUBSECTION>
 G_GNUC_EXTENSION
@@ -564,6 +565,7 @@ G_WIN32_MSG_HANDLE
 g_idle_funcs
 g_timeout_funcs
 g_child_watch_funcs
+GSourcePrivate
 </SECTION>
 
 <SECTION>
@@ -784,6 +786,7 @@ g_atomic_int_exchange_and_add
 
 <SUBSECTION Private>
 G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
+G_ATOMIC_OP_USE_GCC_BUILTINS
 </SECTION>
 
 <SECTION>
@@ -1945,6 +1948,8 @@ g_unix_signal_source_new
 g_unix_signal_add_watch_full
 g_unix_set_fd_nonblocking
 
+<SUBSECTION Private>
+g_unix_error_quark
 </SECTION>
 
 # Data Structures
@@ -2314,6 +2319,8 @@ g_string_down
 g_string_hash
 g_string_equal
 
+<SUBSECTION Private>
+g_string_append_c_inline
 </SECTION>
 
 <SECTION>

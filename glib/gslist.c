@@ -47,7 +47,7 @@
  * pointer which links to the next element in the list. Using this
  * pointer it is possible to move through the list in one direction
  * only (unlike the <link
- * linkend="glib-Doubly-Linked-lists">Doubly-Linked Lists</link> which
+ * linkend="glib-Doubly-Linked-Lists">Doubly-Linked Lists</link> which
  * allow movement in both directions).
  *
  * The data contained in each element can be either integer values, by
