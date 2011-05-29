@@ -839,7 +839,6 @@ GHashTable*
 g_hash_table_ref (GHashTable *hash_table)
 {
   g_return_val_if_fail (hash_table != NULL, NULL);
-  g_return_val_if_fail (hash_table->ref_count > 0, hash_table);
 
   g_atomic_int_inc (&hash_table->ref_count);
 
@@ -861,7 +860,6 @@ void
 g_hash_table_unref (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (hash_table->ref_count > 0);
 
   if (g_atomic_int_dec_and_test (&hash_table->ref_count))
     {
@@ -889,7 +887,6 @@ void
 g_hash_table_destroy (GHashTable *hash_table)
 {
   g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (hash_table->ref_count > 0);
 
   g_hash_table_remove_all (hash_table);
   g_hash_table_unref (hash_table);
@@ -995,7 +992,6 @@ g_hash_table_insert_internal (GHashTable *hash_table,
   gpointer old_value;
 
   g_return_if_fail (hash_table != NULL);
-  g_return_if_fail (hash_table->ref_count > 0);
 
   if (G_UNLIKELY (hash_table->keys == hash_table->values && key != value))
     hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
