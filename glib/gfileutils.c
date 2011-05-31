@@ -805,10 +805,10 @@ get_contents_win32 (const gchar  *filename,
 
 /**
  * g_file_get_contents:
- * @filename: name of a file to read contents from, in the GLib file name encoding
- * @contents: location to store an allocated string, use g_free() to free
+ * @filename: (type filename): name of a file to read contents from, in the GLib file name encoding
+ * @contents: (out) (array length=length) (element-type guint8): location to store an allocated string, use g_free() to free
  *     the returned string
- * @length: location to store length in bytes of the contents, or %NULL
+ * @length: (allow-none): location to store length in bytes of the contents, or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Reads an entire file into allocated memory, with good error
@@ -1042,9 +1042,9 @@ write_to_temp_file (const gchar  *contents,
 
 /**
  * g_file_set_contents:
- * @filename: name of a file to write @contents to, in the GLib file name
+ * @filename: (type filename): name of a file to write @contents to, in the GLib file name
  *   encoding
- * @contents: string to write to the file
+ * @contents: (array length=length) (element-type guint8): string to write to the file
  * @length: length of @contents, or -1 if @contents is a nul-terminated string
  * @error: return location for a #GError, or %NULL
  *
@@ -1698,7 +1698,7 @@ g_build_pathname_va (const gchar  *first_element,
 
 /**
  * g_build_filenamev:
- * @args: %NULL-terminated array of strings containing the path elements.
+ * @args: (array zero-terminated=1): %NULL-terminated array of strings containing the path elements.
  * 
  * Behaves exactly like g_build_filename(), but takes the path elements 
  * as a string array, instead of varargs. This function is mainly
