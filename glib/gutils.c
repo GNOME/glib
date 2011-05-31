@@ -1400,7 +1400,7 @@ g_unsetenv (const gchar *variable)
  *
  * Gets the names of all variables set in the environment.
  * 
- * Returns: a %NULL-terminated list of strings which must be freed
+ * Returns: (array zero-terminated=1) (transfer full): a %NULL-terminated list of strings which must be freed
  * with g_strfreev().
  *
  * Programs that want to be portable to Windows should typically use
@@ -1488,7 +1488,7 @@ g_listenv (void)
  * The return value is freshly allocated and it should be freed with
  * g_strfreev() when it is no longer needed.
  *
- * Returns: the list of environment variables
+ * Returns: (array zero-terminated=1) (transfer full): the list of environment variables
  *
  * Since: 2.28
  */
@@ -2916,7 +2916,7 @@ g_win32_get_system_data_dirs_for_module (void (*address_of_function)())
  * Note that on Windows the returned list can vary depending on where
  * this function is called.
  *
- * Return value: a %NULL-terminated array of strings owned by GLib that must 
+ * Return value: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib that must 
  *               not be modified or freed.
  * Since: 2.6
  **/
@@ -2968,7 +2968,7 @@ g_get_system_data_dirs (void)
  * of clip art, or a log file in the CSIDL_COMMON_APPDATA folder.
  * This information will not roam and is available to anyone using the computer.
  *
- * Return value: a %NULL-terminated array of strings owned by GLib that must 
+ * Return value: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib that must 
  *               not be modified or freed.
  * Since: 2.6
  **/
@@ -3226,7 +3226,7 @@ append_locale_variants (GPtrArray *array,
  * If you need the list of variants for the <emphasis>current locale</emphasis>,
  * use g_get_language_names().
  *
- * Returns: (transfer full) (array zero-terminated="1") (element-type utf8): a newly
+ * Returns: (transfer full) (array zero-terminated=1) (element-type utf8): a newly
  *   allocated array of newly allocated strings with the locale variants. Free with
  *   g_strfreev().
  *
@@ -3328,7 +3328,7 @@ language_names_cache_free (gpointer data)
  * <envar>LC_ALL</envar>, <envar>LC_MESSAGES</envar> and <envar>LANG</envar> 
  * to find the list of locales specified by the user.
  * 
- * Return value: a %NULL-terminated array of strings owned by GLib 
+ * Return value: (array zero-terminated=1) (transfer none): a %NULL-terminated array of strings owned by GLib 
  *    that must not be modified or freed.
  *
  * Since: 2.6
