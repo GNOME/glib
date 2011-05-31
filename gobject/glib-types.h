@@ -162,6 +162,15 @@ typedef gsize GType;
  */
 #define G_TYPE_IO_CONDITION (g_io_condition_get_type ())
 
+/**
+ * G_TYPE_VARIANT_BUILDER:
+ *
+ * The #GType for a boxed type holding a #GVariantBuilder.
+ *
+ * Since: 2.30
+ */
+#define G_TYPE_VARIANT_BUILDER (g_variant_builder_get_type ())
+
 GType   g_date_get_type            (void) G_GNUC_CONST;
 GType   g_strv_get_type            (void) G_GNUC_CONST;
 GType   g_gstring_get_type         (void) G_GNUC_CONST;
@@ -175,6 +184,7 @@ GType   g_error_get_type           (void) G_GNUC_CONST;
 GType   g_date_time_get_type       (void) G_GNUC_CONST;
 GType   g_io_channel_get_type      (void) G_GNUC_CONST;
 GType   g_io_condition_get_type    (void) G_GNUC_CONST;
+GType   g_variant_builder_get_type (void) G_GNUC_CONST;
 
 #if !defined(G_DISABLE_DEPRECATED) || defined(__GI_SCANNER__)
 GType   g_variant_get_gtype        (void) G_GNUC_CONST;

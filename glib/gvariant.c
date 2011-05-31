@@ -2507,7 +2507,7 @@ g_variant_compare (gconstpointer one,
 
 /* GVariantIter {{{1 */
 /**
- * GVariantIter:
+ * GVariantIter: (skip)
  *
  * #GVariantIter is an opaque data structure and can only be accessed
  * using the following functions.

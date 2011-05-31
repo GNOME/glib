@@ -138,6 +138,8 @@ GType g_regex_get_type (void) { return G_TYPE_INVALID; }
 G_DEFINE_BOXED_TYPE (GVariantType, g_variant_type, g_variant_type_copy, g_variant_type_free)
 #undef g_variant_type_get_type
 
+G_DEFINE_BOXED_TYPE (GVariantBuilder, g_variant_builder, g_variant_builder_ref, g_variant_builder_unref)
+
 G_DEFINE_BOXED_TYPE (GError, g_error, g_error_copy, g_error_free)
 
 G_DEFINE_BOXED_TYPE (GDateTime, g_date_time, g_date_time_ref, g_date_time_unref);
