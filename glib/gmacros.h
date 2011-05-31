@@ -267,7 +267,7 @@
  */
 #if defined(__GNUC__) && (__GNUC__ > 2) && defined(__OPTIMIZE__)
 #define _G_BOOLEAN_EXPR(expr)                   \
- __extension__ ({                               \
+ G_GNUC_EXTENSION ({                            \
    int _g_boolean_var_;                         \
    if (expr)                                    \
       _g_boolean_var_ = 1;                      \

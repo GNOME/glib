@@ -100,7 +100,7 @@ gpointer g_try_realloc_n  (gpointer	 mem,
  */
 #if defined (__GNUC__) && (__GNUC__ >= 2) && defined (__OPTIMIZE__)
 #  define _G_NEW(struct_type, n_structs, func) \
-	(struct_type *) (__extension__ ({			\
+	(struct_type *) (G_GNUC_EXTENSION ({			\
 	  gsize __n = (gsize) (n_structs);			\
 	  gsize __s = sizeof (struct_type);			\
 	  gpointer __p;						\
@@ -114,7 +114,7 @@ gpointer g_try_realloc_n  (gpointer	 mem,
 	  __p;							\
 	}))
 #  define _G_RENEW(struct_type, mem, n_structs, func) \
-	(struct_type *) (__extension__ ({			\
+	(struct_type *) (G_GNUC_EXTENSION ({			\
 	  gsize __n = (gsize) (n_structs);			\
 	  gsize __s = sizeof (struct_type);			\
 	  gpointer __p = (gpointer) (mem);			\

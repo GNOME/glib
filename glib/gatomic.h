@@ -72,104 +72,104 @@ G_END_DECLS
 #if defined(__GNUC__) && defined(G_ATOMIC_OP_USE_GCC_BUILTINS)
 
 #define g_atomic_int_get(atomic) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ *(atomic) : 0);                                  \
     __sync_synchronize ();                                                   \
     (gint) *(atomic);                                                        \
   }))
 #define g_atomic_int_set(atomic, newval) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (newval) : 0);                                   \
     *(atomic) = (newval);                                                    \
     __sync_synchronize ();                                                   \
   }))
 #define g_atomic_int_inc(atomic) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ *(atomic) : 0);                                  \
     (void) __sync_fetch_and_add ((atomic), 1);                               \
   }))
 #define g_atomic_int_dec_and_test(atomic) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ *(atomic) : 0);                                  \
     __sync_fetch_and_sub ((atomic), 1) == 1;                                 \
   }))
 #define g_atomic_int_compare_and_exchange(atomic, oldval, newval) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (newval) ^ (oldval) : 0);                        \
     (gboolean) __sync_bool_compare_and_swap ((atomic), (oldval), (newval));  \
   }))
 #define g_atomic_int_add(atomic, val) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (val) : 0);                                      \
     (gint) __sync_fetch_and_add ((atomic), (val));                           \
   }))
 #define g_atomic_int_and(atomic, val) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (val) : 0);                                      \
     (guint) __sync_fetch_and_and ((atomic), (val));                          \
   }))
 #define g_atomic_int_or(atomic, val) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (val) : 0);                                      \
     (guint) __sync_fetch_and_or ((atomic), (val));                           \
   }))
 #define g_atomic_int_xor(atomic, val) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gint));                     \
     (void) (0 ? *(atomic) ^ (val) : 0);                                      \
     (guint) __sync_fetch_and_xor ((atomic), (val));                          \
   }))
 
 #define g_atomic_pointer_get(atomic) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     __sync_synchronize ();                                                   \
     (gpointer) *(atomic);                                                    \
   }))
 #define g_atomic_pointer_set(atomic, newval) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : 0);                                   \
     *(atomic) = (__typeof__ (*(atomic))) (gsize) (newval);                   \
     __sync_synchronize ();                                                   \
   }))
 #define g_atomic_pointer_compare_and_exchange(atomic, oldval, newval) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : 0);                                   \
     (gboolean) __sync_bool_compare_and_swap ((atomic), (oldval), (newval));  \
   }))
 #define g_atomic_pointer_add(atomic, val) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : 0);                                   \
     (void) (0 ? (val) ^ (val) : 0);                                          \
     (gssize) __sync_fetch_and_add ((atomic), (val));                         \
   }))
 #define g_atomic_pointer_and(atomic, val) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : 0);                                   \
     (void) (0 ? (val) ^ (val) : 0);                                          \
     (gsize) __sync_fetch_and_and ((atomic), (val));                          \
   }))
 #define g_atomic_pointer_or(atomic, val) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : 0);                                   \
     (void) (0 ? (val) ^ (val) : 0);                                          \
     (gsize) __sync_fetch_and_or ((atomic), (val));                           \
   }))
 #define g_atomic_pointer_xor(atomic, val) \
-  (__extension__ ({                                                          \
+  (G_GNUC_EXTENSION ({                                                          \
     G_STATIC_ASSERT (sizeof *(atomic) == sizeof (gpointer));                 \
     (void) (0 ? (gpointer) *(atomic) : 0);                                   \
     (void) (0 ? (val) ^ (val) : 0);                                          \
