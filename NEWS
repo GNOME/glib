@@ -1,3 +1,15 @@
+Overview of changes from GLib 2.29.4 to 2.29.6
+==============================================
+
+* Atomic operations have been rewritten from scratch
+  to take care of gcc builtins where possible.
+  As a side-effect of this, calls to g_atomic_ API with explicit
+  casts may now be problematic; if that happens to you, try first
+  to remove the casts.
+  Another side-effect of the rewrite is that g_atomic_int_exchange_and_add
+  has been deprecated in favor of g_atomic_int_add.
+
+
 Overview of changes from GLib 2.29.2 to 2.29.4
 ==============================================
 
