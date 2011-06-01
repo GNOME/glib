@@ -1358,7 +1358,7 @@ g_variant_new_strv (const gchar * const *strv,
  * g_variant_get_strv:
  * @value: an array of strings #GVariant
  * @length: (out) (allow-none): the length of the result, or %NULL
- * @returns: (array length=length) (transfer container): an array of constant
+ * @returns: (array length=length zero-terminated=1) (transfer container): an array of constant
  * strings
  *
  * Gets the contents of an array of strings #GVariant.  This call
@@ -1408,7 +1408,7 @@ g_variant_get_strv (GVariant *value,
  * g_variant_dup_strv:
  * @value: an array of strings #GVariant
  * @length: (out) (allow-none): the length of the result, or %NULL
- * @returns: (array length=length) (transfer full): an array of strings
+ * @returns: (array length=length zero-terminated=1) (transfer full): an array of strings
  *
  * Gets the contents of an array of strings #GVariant.  This call
  * makes a deep copy; the return result should be released with
