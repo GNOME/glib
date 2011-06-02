@@ -27,6 +27,7 @@
 #include <string.h>
 
 #include "gparamspecs.h"
+#include "gtype-private.h"
 #include "gvaluecollector.h"
 #include "gvaluearray.h"
 
@@ -1160,7 +1161,7 @@ param_variant_values_cmp (GParamSpec   *pspec,
 GType *g_param_spec_types = NULL;
 
 void
-g_param_spec_types_init (void)	
+_g_param_spec_types_init (void)	
 {
   const guint n_types = 23;
   GType type, *spec_types, *spec_types_bound;

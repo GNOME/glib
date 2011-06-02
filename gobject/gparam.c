@@ -86,7 +86,7 @@ static gchar*	value_param_lcopy_value		(const GValue	*value,
 
 /* --- functions --- */
 void
-g_param_type_init (void)
+_g_param_type_init (void)
 {
   static const GTypeFundamentalInfo finfo = {
     (G_TYPE_FLAG_CLASSED |

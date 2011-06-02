@@ -27,6 +27,16 @@
 
 G_BEGIN_DECLS
 
+void    _g_value_c_init          (void); /* sync with gvalue.c */
+void    _g_value_types_init      (void); /* sync with gvaluetypes.c */
+void    _g_enum_types_init       (void); /* sync with genums.c */
+void    _g_param_type_init       (void); /* sync with gparam.c */
+void    _g_boxed_type_init       (void); /* sync with gboxed.c */
+void    _g_object_type_init      (void); /* sync with gobject.c */
+void    _g_param_spec_types_init (void); /* sync with gparamspecs.c */
+void    _g_value_transforms_init (void); /* sync with gvaluetransform.c */
+void    _g_signal_init           (void); /* sync with gsignal.c */
+
 /* for gboxed.c */
 gpointer        _g_type_boxed_copy      (GType          type,
                                          gpointer       value);

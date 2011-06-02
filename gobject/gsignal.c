@@ -30,10 +30,10 @@
 #include <signal.h>
 
 #include "gsignal.h"
+#include "gtype-private.h"
 #include "gbsearcharray.h"
 #include "gvaluecollector.h"
 #include "gvaluetypes.h"
-#include "gboxed.h"
 #include "gobject.h"
 #include "genums.h"
 #include "gobject_trace.h"
@@ -765,7 +765,7 @@ signal_key_cmp (gconstpointer node1,
 }
 
 void
-g_signal_init (void)
+_g_signal_init (void)
 {
   SIGNAL_LOCK ();
   if (!g_n_signal_nodes)

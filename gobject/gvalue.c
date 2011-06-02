@@ -139,7 +139,7 @@ static GBSearchConfig transform_bconfig = {
 
 /* --- functions --- */
 void
-g_value_c_init (void)
+_g_value_c_init (void)
 {
   transform_array = g_bsearch_array_create (&transform_bconfig);
 }

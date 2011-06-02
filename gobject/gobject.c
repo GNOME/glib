@@ -27,6 +27,7 @@
 #include <signal.h>
 
 #include "gobject.h"
+#include "gtype-private.h"
 #include "gvaluecollector.h"
 #include "gsignal.h"
 #include "gparamspecs.h"
@@ -235,7 +236,7 @@ debug_objects_atexit (void)
 #endif	/* G_ENABLE_DEBUG */
 
 void
-g_object_type_init (void)
+_g_object_type_init (void)
 {
   static gboolean initialized = FALSE;
   static const GTypeFundamentalInfo finfo = {

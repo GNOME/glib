@@ -75,7 +75,7 @@ value_free (GValue *value)
 }
 
 void
-g_boxed_type_init (void)
+_g_boxed_type_init (void)
 {
   static const GTypeInfo info = {
     0,                          /* class_size */

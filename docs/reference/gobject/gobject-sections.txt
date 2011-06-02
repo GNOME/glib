@@ -162,16 +162,6 @@ G_TYPE_RESERVED_USER_FIRST
 
 <SUBSECTION Private>
 GOBJECT_VAR
-g_value_c_init
-g_value_types_init
-g_enum_types_init
-g_param_type_init
-g_boxed_type_init
-g_object_type_init
-g_param_spec_types_init
-g_value_transforms_init
-g_signal_init
-g_gtype_get_type
 </SECTION>
 
 <SECTION>

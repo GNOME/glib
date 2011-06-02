@@ -28,6 +28,7 @@
 #include <stdlib.h> /* qsort() */
 
 #include "gvaluetypes.h"
+#include "gtype-private.h"
 #include "gvaluecollector.h"
 #include "gobject.h"
 #include "gparam.h"
@@ -421,7 +422,7 @@ value_lcopy_variant (const GValue *value,
 
 /* --- type initialization --- */
 void
-g_value_types_init (void)
+_g_value_types_init (void)
 {
   GTypeInfo info = {
     0,				/* class_size */

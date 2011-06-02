@@ -26,6 +26,7 @@
 #include <string.h>
 
 #include "genums.h"
+#include "gtype-private.h"
 #include "gvalue.h"
 #include "gvaluecollector.h"
 
@@ -74,7 +75,7 @@ static gchar*	value_flags_enum_lcopy_value	(const GValue	*value,
 
 /* --- functions --- */
 void
-g_enum_types_init (void)
+_g_enum_types_init (void)
 {
   static gboolean initialized = FALSE;
   static const GTypeValueTable flags_enum_value_table = {

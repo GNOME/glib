@@ -4321,7 +4321,7 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   
   G_WRITE_UNLOCK (&type_rw_lock);
   
-  g_value_c_init ();
+  _g_value_c_init ();
 
   /* G_TYPE_TYPE_PLUGIN
    */
@@ -4329,35 +4329,35 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   
   /* G_TYPE_* value types
    */
-  g_value_types_init ();
+  _g_value_types_init ();
   
   /* G_TYPE_ENUM & G_TYPE_FLAGS
    */
-  g_enum_types_init ();
+  _g_enum_types_init ();
   
   /* G_TYPE_BOXED
    */
-  g_boxed_type_init ();
+  _g_boxed_type_init ();
   
   /* G_TYPE_PARAM
    */
-  g_param_type_init ();
+  _g_param_type_init ();
   
   /* G_TYPE_OBJECT
    */
-  g_object_type_init ();
+  _g_object_type_init ();
   
   /* G_TYPE_PARAM_* pspec types
    */
-  g_param_spec_types_init ();
+  _g_param_spec_types_init ();
   
   /* Value Transformations
    */
-  g_value_transforms_init ();
+  _g_value_transforms_init ();
   
   /* Signal system
    */
-  g_signal_init ();
+  _g_signal_init ();
   
   G_UNLOCK (type_init_lock);
 }

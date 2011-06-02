@@ -337,7 +337,7 @@ G_DEFINE_TYPE (MamanBar, maman_bar, G_TYPE_OBJECT)
         <para>
           A lot of types are not instantiable by the type system and do not have
           a class. Most of these types are fundamental trivial types such as <emphasis>gchar</emphasis>, 
-          registered in <function>g_value_types_init</function> (in <filename>gvaluetypes.c</filename>).
+          registered in <function>_g_value_types_init</function> (in <filename>gvaluetypes.c</filename>).
         </para>
 
         <para>
