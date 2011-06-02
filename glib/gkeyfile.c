@@ -318,13 +318,13 @@ find_file_in_data_dirs (const gchar   *file,
 
   data_dirs = dirs;
 
-  while (data_dirs && (data_dir = *data_dirs) && fd < 0)
+  while (data_dirs && (data_dir = *data_dirs) && fd == -1)
     {
       gchar *candidate_file, *sub_dir;
 
       candidate_file = (gchar *) file;
       sub_dir = g_strdup ("");
-      while (candidate_file != NULL && fd < 0)
+      while (candidate_file != NULL && fd == -1)
         {
           gchar *p;
 
@@ -333,7 +333,7 @@ find_file_in_data_dirs (const gchar   *file,
 
           fd = g_open (path, O_RDONLY, 0);
 
-          if (fd < 0)
+          if (fd == -1)
             {
               g_free (path);
               path = NULL;
@@ -359,7 +359,7 @@ find_file_in_data_dirs (const gchar   *file,
       data_dirs++;
     }
 
-  if (fd < 0)
+  if (fd == -1)
     {
       g_set_error_literal (error, G_KEY_FILE_ERROR,
                            G_KEY_FILE_ERROR_NOT_FOUND,
@@ -487,7 +487,7 @@ g_key_file_load_from_file (GKeyFile       *key_file,
 
   fd = g_open (file, O_RDONLY, 0);
 
-  if (fd < 0)
+  if (fd == -1)
     {
       g_set_error_literal (error, G_FILE_ERROR,
                            g_file_error_from_errno (errno),
@@ -612,7 +612,7 @@ g_key_file_load_from_dirs (GKeyFile       *key_file,
       fd = find_file_in_data_dirs (file, data_dirs, &output_path,
                                    &key_file_error);
 
-      if (fd < 0)
+      if (fd == -1)
         {
           if (key_file_error)
             g_propagate_error (error, key_file_error);
