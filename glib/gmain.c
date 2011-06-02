@@ -375,7 +375,6 @@ static gboolean g_child_watch_dispatch (GSource     *source,
 #ifdef G_OS_UNIX
 static void g_unix_signal_handler (int signum);
 static void init_unix_signal_wakeup_state_unlocked (void);
-static void init_unix_signal_wakeup_state (void);
 static gboolean g_unix_signal_watch_prepare  (GSource     *source,
 					      gint        *timeout);
 static gboolean g_unix_signal_watch_check    (GSource     *source);
@@ -4394,6 +4393,10 @@ ensure_unix_signal_handler_installed_unlocked (int signum)
 
   switch (signum)
     {
+    case SIGCHLD:
+      if (unix_signal_state.sigchld_handler_installed)
+	return;
+      unix_signal_state.sigchld_handler_installed = TRUE;
     case SIGHUP:
       if (unix_signal_state.sighup_handler_installed)
 	return;
@@ -4415,7 +4418,7 @@ ensure_unix_signal_handler_installed_unlocked (int signum)
 
   action.sa_handler = g_unix_signal_handler;
   sigemptyset (&action.sa_mask);
-  action.sa_flags = 0;
+  action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
   sigaction (signum, &action, NULL);
 }
 
@@ -4424,8 +4427,6 @@ _g_main_create_unix_signal_watch (int signum)
 {
   GSource *source;
   GUnixSignalWatchSource *unix_signal_source;
-
-  init_unix_signal_wakeup_state ();
 
   source = g_source_new (&g_unix_signal_funcs, sizeof (GUnixSignalWatchSource));
   unix_signal_source = (GUnixSignalWatchSource *) source;
@@ -4648,30 +4649,10 @@ init_unix_signal_wakeup_state_unlocked (void)
 }
 
 static void
-init_unix_signal_wakeup_state (void)
-{
-  G_LOCK (unix_signal_lock);
-
-  init_unix_signal_wakeup_state_unlocked ();
-
-  G_UNLOCK (unix_signal_lock);
-}
-
-static void
 g_child_watch_source_init (void)
 {
-  init_unix_signal_wakeup_state ();
-  
   G_LOCK (unix_signal_lock);
-  if (!unix_signal_state.sigchld_handler_installed)
-    {
-      struct sigaction action;
-      action.sa_handler = g_unix_signal_handler;
-      sigemptyset (&action.sa_mask);
-      action.sa_flags = SA_RESTART | SA_NOCLDSTOP;
-      sigaction (SIGCHLD, &action, NULL);
-      unix_signal_state.sigchld_handler_installed = TRUE;
-    }
+  ensure_unix_signal_handler_installed_unlocked (SIGCHLD);
   G_UNLOCK (unix_signal_lock);
 }
 
