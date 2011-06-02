@@ -373,8 +373,8 @@ static gboolean g_child_watch_dispatch (GSource     *source,
 					GSourceFunc  callback,
 					gpointer     user_data);
 #ifdef G_OS_UNIX
+static gpointer unix_signal_helper_thread (gpointer data) G_GNUC_NORETURN;
 static void g_unix_signal_handler (int signum);
-static void init_unix_signal_wakeup_state_unlocked (void);
 static gboolean g_unix_signal_watch_prepare  (GSource     *source,
 					      gint        *timeout);
 static gboolean g_unix_signal_watch_check    (GSource     *source);
@@ -4390,6 +4390,32 @@ static void
 ensure_unix_signal_handler_installed_unlocked (int signum)
 {
   struct sigaction action;
+  GError *error = NULL;
+
+  if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED
+      || unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_SINGLE)
+    {
+      if (!g_thread_supported ())
+	{
+	  /* There is nothing to do for initializing in the non-threaded
+	   * case.
+	   */
+	  if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED)
+	    unix_signal_init_state = UNIX_SIGNAL_INITIALIZED_SINGLE;
+	}
+      else
+	{
+	  if (!g_unix_open_pipe (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
+	    g_error ("Cannot create UNIX signal wake up pipe: %s\n", error->message);
+	  g_unix_set_fd_nonblocking (unix_signal_wake_up_pipe[1], TRUE, NULL);
+	  
+	  /* We create a helper thread that polls on the wakeup pipe indefinitely */
+	  if (g_thread_create (unix_signal_helper_thread, NULL, FALSE, &error) == NULL)
+	    g_error ("Cannot create a thread to monitor UNIX signals: %s\n", error->message);
+	  
+	  unix_signal_init_state = UNIX_SIGNAL_INITIALIZED_THREADED;
+	}
+    }
 
   switch (signum)
     {
@@ -4413,8 +4439,6 @@ ensure_unix_signal_handler_installed_unlocked (int signum)
       unix_signal_state.sigterm_handler_installed = TRUE;
       break;
     }
-
-  init_unix_signal_wakeup_state_unlocked ();
 
   action.sa_handler = g_unix_signal_handler;
   sigemptyset (&action.sa_mask);
@@ -4549,8 +4573,6 @@ deliver_unix_signal (int signum)
   G_UNLOCK (unix_signal_lock);
 }
 
-static gpointer unix_signal_helper_thread (gpointer data) G_GNUC_NORETURN;
-
 /*
  * This thread is created whenever anything in GLib needs
  * to deal with UNIX signals; at present, just SIGCHLD
@@ -4617,35 +4639,6 @@ unix_signal_helper_thread (gpointer data)
 	  _g_main_wake_up_all_contexts ();
 	}
     }
-}
-
-static void
-init_unix_signal_wakeup_state_unlocked (void)
-{
-  GError *error = NULL;
-
-  if (!g_thread_supported ())
-    {
-      /* There is nothing to do for initializing in the non-threaded
-       * case.
-       */
-      if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED)
-	unix_signal_init_state = UNIX_SIGNAL_INITIALIZED_SINGLE;
-      return;
-    }
-
-  if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED)
-    return;
-
-  if (!g_unix_open_pipe (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
-    g_error ("Cannot create UNIX signal wake up pipe: %s\n", error->message);
-  g_unix_set_fd_nonblocking (unix_signal_wake_up_pipe[1], TRUE, NULL);
-
-  /* We create a helper thread that polls on the wakeup pipe indefinitely */
-  if (g_thread_create (unix_signal_helper_thread, NULL, FALSE, &error) == NULL)
-    g_error ("Cannot create a thread to monitor UNIX signals: %s\n", error->message);
-
-  unix_signal_init_state = UNIX_SIGNAL_INITIALIZED_THREADED;
 }
 
 static void
