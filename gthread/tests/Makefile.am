@@ -2,9 +2,12 @@ include $(top_srcdir)/Makefile.decl
 
 INCLUDES = -g $(gthread_INCLUDES) $(GLIB_DEBUG_FLAGS)
 
-noinst_PROGRAMS = $(TEST_PROGS)
+noinst_PROGRAMS = $(TEST_PROGS) test-spawn-echo
 progs_ldadd     = $(top_builddir)/glib/libglib-2.0.la \
 		  $(top_builddir)/gthread/libgthread-2.0.la
+
+test_spawn_echo_SOURCES = test-spawn-echo.c
+test_spawn_echo_LDADD = $(progs_ldadd)
 
 TEST_PROGS	 += 1bit-mutex
 1bit_mutex_LDADD  = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
@@ -27,3 +30,7 @@ endif
 TEST_PROGS += atomic
 atomic_SOURCES = atomic.c
 atomic_LDADD = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
+
+TEST_PROGS += spawn-multithreaded
+spawn_multithreaded_SOURCES = spawn-multithreaded.c
+spawn_multithreaded_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
