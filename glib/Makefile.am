@@ -215,12 +215,10 @@ EXTRA_libglib_2_0_la_SOURCES = \
 
 glibincludedir=$(includedir)/glib-2.0
 glibinclude_HEADERS =   \
+	glib-unix.h     \
 	glib-object.h	\
 	glib.h
 
-if OS_UNIX
-glibinclude_HEADERS += glib-unix.h
-endif
 
 glibsubincludedir=$(includedir)/glib-2.0/glib
 glibsubinclude_HEADERS =   \
@@ -290,6 +288,14 @@ glibsubinclude_HEADERS =   \
 	gvariant.h	\
 	gwin32.h	\
 	gprintf.h
+
+# This is read by gobject-introspection/misc/ and gtk-doc
+glib-public-headers.txt: Makefile
+	echo $(glibinclude_HEADERS) $(glibsubinclude_HEADERS) > $@.tmp && mv $@.tmp $@
+
+CLEANFILES += glib-public-headers.txt
+
+all-local: glib-public-headers.txt
 
 install-data-local: install-ms-lib install-def-file
 	@if test -f $(glibincludedir)/glist.h ; then					\

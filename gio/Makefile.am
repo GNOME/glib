@@ -596,6 +596,14 @@ CLEANFILES = 			\
 	$(marshal_sources)	\
 	$(NULL)
 
+# This is read by gobject-introspection/misc/ and gtk-doc
+gio-public-headers.txt: Makefile
+	echo $(gioinclude_HEADERS) > $@.tmp && mv $@.tmp $@
+
+CLEANFILES += gio-public-headers.txt
+
+all-local: gio-public-headers.txt
+
 gioenumtypes.h: $(gio_headers) gioenumtypes.h.template
 	$(AM_V_GEN) ( top_builddir=`cd $(top_builddir) && pwd`; \
 	  cd $(srcdir) && $$top_builddir/gobject/glib-mkenums --template gioenumtypes.h.template $(gio_headers) ) > \
@@ -668,7 +676,7 @@ dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj ../build/win32/vs10
 	done | sort -u >libgio.sourcefiles
 	$(CPP) -P - <$(top_srcdir)/build/win32/vs9/gio.vcprojin >$@
 	rm libgio.sourcefiles
-	
+
 ../build/win32/vs10/gio.vcxproj: $(top_srcdir)/build/win32/vs10/gio.vcxprojin
 	for F in `echo $(libgio_2_0_la_SOURCES) $(win32_actual_sources) $(win32_actual_more_sources_for_vcproj) | tr '/' '\\'`; do \
 		case $$F in \

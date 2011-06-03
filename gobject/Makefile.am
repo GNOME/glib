@@ -179,6 +179,14 @@ EXTRA_DIST += \
 	$(gobject_extra_sources) 	\
 	marshal-genstrings.pl
 
+# This is read by gobject-introspection/misc/ and gtk-doc
+gobject-public-headers.txt: Makefile
+	echo $(gobject_public_h_sources) > $@.tmp && mv $@.tmp $@
+
+CLEANFILES += gobject-public-headers.txt
+
+all-local: gobject-public-headers.txt
+
 #
 # rules to generate built sources
 #

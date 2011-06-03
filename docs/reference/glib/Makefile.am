@@ -19,34 +19,8 @@ SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" --ignore-decorators="GLI
 MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=g
 
 # Used for dependencies
-HFILE_GLOB=$(top_srcdir)/glib/*.h $(top_srcdir)/gmodule/*.h
+HFILE_GLOB=$(addprefix $(top_srcdir)/glib/,$(shell cat $(top_srcdir)/glib/glib-public-header-files.txt)) $(top_srcdir)/gmodule/*.h
 CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
-
-# Headers to ignore
-IGNORE_HFILES=			\
-	gdatasetprivate.h	\
-	glibintl.h		\
-	gbsearcharray.h		\
-	gmoduleconf.h		\
-	gunibreak.h		\
-	gunicomp.h		\
-	gunidecomp.h		\
-	gunichartables.h	\
-	glib_trace.h		\
-	libcharset.h		\
-	gdebug.h		\
-	gprintfint.h		\
-	gmirroringtable.h	\
-	gscripttable.h		\
-	glib-mirroring-tab	\
-	gnulib			\
-	pcre			\
-	update-pcre		\
-	gbufferprivate.h	\
-	gvariant-internal.h	\
-	gvariant-serialiser.h	\
-	gvariant-core.h		\
-	gvarianttypeinfo.h
 
 # Images to copy into HTML directory
 HTML_IMAGES =  				\

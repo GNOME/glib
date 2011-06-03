@@ -15,7 +15,7 @@ SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED"
 # The directory containing the source code. Relative to $(srcdir)
 DOC_SOURCE_DIR=$(top_srcdir)/gio
 
-HFILE_GLOB=$(top_srcdir)/gio/*.h
+HFILE_GLOB=$(addprefix $(top_srcdir)/gio/,$(shell cat $(top_srcdir)/gio/gio-public-header-files.txt))
 CFILE_GLOB=$(top_srcdir)/gio/*.c
 
 # Headers to ignore
