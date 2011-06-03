@@ -205,6 +205,33 @@ void
 g_bit_lock (volatile gint *address,
             gint           lock_bit)
 {
+#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+ retry:
+  asm volatile goto ("lock bts %1, (%0)\n"
+                     "jc %l[contended]"
+                     : /* no output */
+                     : "r" (address), "r" (lock_bit)
+                     : "cc", "memory"
+                     : contended);
+  return;
+
+ contended:
+  {
+    guint mask = 1u << lock_bit;
+    guint v;
+
+    v = g_atomic_int_get (address);
+    if (v & mask)
+      {
+        guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
+
+        g_atomic_int_add (&g_bit_lock_contended[class], +1);
+        g_futex_wait (address, v);
+        g_atomic_int_add (&g_bit_lock_contended[class], -1);
+      }
+  }
+  goto retry;
+#else
   guint mask = 1u << lock_bit;
   guint v;
 
@@ -221,6 +248,7 @@ g_bit_lock (volatile gint *address,
 
       goto retry;
     }
+#endif
 }
 
 /**
@@ -248,12 +276,25 @@ gboolean
 g_bit_trylock (volatile gint *address,
                gint           lock_bit)
 {
+#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+  gboolean result;
+
+  asm volatile ("lock bts %2, (%1)\n"
+                "setnc %%al\n"
+                "movzx %%al, %0"
+                : "=r" (result)
+                : "r" (address), "r" (lock_bit)
+                : "cc", "memory");
+
+  return result;
+#else
   guint mask = 1u << lock_bit;
   guint v;
 
   v = g_atomic_int_or (address, mask);
 
   return ~v & mask;
+#endif
 }
 
 /**
@@ -275,11 +316,21 @@ void
 g_bit_unlock (volatile gint *address,
               gint           lock_bit)
 {
-  guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
+#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+  asm volatile ("lock btr %1, (%0)"
+                : /* no output */
+                : "r" (address), "r" (lock_bit)
+                : "cc", "memory");
+#else
   guint mask = 1u << lock_bit;
 
   g_atomic_int_and (address, ~mask);
+#endif
 
-  if (g_atomic_int_get (&g_bit_lock_contended[class]))
-    g_futex_wake (address);
+  {
+    guint class = ((gsize) address) % G_N_ELEMENTS (g_bit_lock_contended);
+
+    if (g_atomic_int_get (&g_bit_lock_contended[class]))
+      g_futex_wake (address);
+  }
 }
