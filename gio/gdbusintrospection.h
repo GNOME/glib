@@ -44,6 +44,7 @@ G_BEGIN_DECLS
  */
 struct _GDBusAnnotationInfo
 {
+  /*< public >*/
   volatile gint         ref_count;
   gchar                *key;
   gchar                *value;
@@ -63,6 +64,7 @@ struct _GDBusAnnotationInfo
  */
 struct _GDBusArgInfo
 {
+  /*< public >*/
   volatile gint         ref_count;
   gchar                *name;
   gchar                *signature;
@@ -83,6 +85,7 @@ struct _GDBusArgInfo
  */
 struct _GDBusMethodInfo
 {
+  /*< public >*/
   volatile gint         ref_count;
   gchar                *name;
   GDBusArgInfo        **in_args;
@@ -103,6 +106,7 @@ struct _GDBusMethodInfo
  */
 struct _GDBusSignalInfo
 {
+  /*< public >*/
   volatile gint         ref_count;
   gchar                *name;
   GDBusArgInfo        **args;
@@ -123,6 +127,7 @@ struct _GDBusSignalInfo
  */
 struct _GDBusPropertyInfo
 {
+  /*< public >*/
   volatile gint             ref_count;
   gchar                    *name;
   gchar                    *signature;
@@ -145,6 +150,7 @@ struct _GDBusPropertyInfo
  */
 struct _GDBusInterfaceInfo
 {
+  /*< public >*/
   volatile gint         ref_count;
   gchar                *name;
   GDBusMethodInfo     **methods;
@@ -167,6 +173,7 @@ struct _GDBusInterfaceInfo
  */
 struct _GDBusNodeInfo
 {
+  /*< public >*/
   volatile gint         ref_count;
   gchar                *path;
   GDBusInterfaceInfo  **interfaces;
