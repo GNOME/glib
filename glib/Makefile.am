@@ -122,7 +122,7 @@ libglib_2_0_la_SOURCES = 	\
 	gbookmarkfile.c 	\
 	gbsearcharray.h		\
 	gbuffer.c		\
-	gbuffer.h		\
+	gbufferprivate.h	\
 	gcache.c		\
 	gchecksum.c		\
 	gcompletion.c		\

@@ -24,7 +24,7 @@
 #include <glib/gtestutils.h>
 #include <glib/gbitlock.h>
 #include <glib/gatomic.h>
-#include <glib/gbuffer.h>
+#include <glib/gbufferprivate.h>
 #include <glib/gslice.h>
 #include <glib/gmem.h>
 #include <string.h>

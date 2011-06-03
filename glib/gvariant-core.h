@@ -23,7 +23,7 @@
 
 #include <glib/gvarianttypeinfo.h>
 #include <glib/gvariant.h>
-#include <glib/gbuffer.h>
+#include <glib/gbufferprivate.h>
 
 /* gvariant-core.c */
 G_GNUC_INTERNAL

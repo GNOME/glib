@@ -33,7 +33,7 @@
 #include "gstrfuncs.h"
 #include "ghash.h"
 #include "gthread.h"
-#include "gbuffer.h"
+#include "gbufferprivate.h"
 
 /**
  * SECTION:timezone

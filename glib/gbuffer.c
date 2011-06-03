@@ -21,7 +21,7 @@
 
 #include "config.h"
 
-#include "gbuffer.h"
+#include "gbufferprivate.h"
 
 #include <glib/gstrfuncs.h>
 #include <glib/gatomic.h>

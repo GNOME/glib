@@ -52,7 +52,7 @@
 #include "gstdio.h"
 #include "gstrfuncs.h"
 #include "gatomic.h"
-#include "gbuffer.h"
+#include "gbufferprivate.h"
 
 #include "glibintl.h"
 
