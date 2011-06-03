@@ -293,12 +293,12 @@ gdbus-codegen --interface-prefix org.gtk.GDBus.Example.ObjectManager. \
 
   </section>
 
-  <xi:include href="../../../../gio/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
-  <xi:include href="../../../../gio/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
-  <xi:include href="ExampleAnimal.xml"/>
-  <xi:include href="ExampleCat.xml"/>
-  <xi:include href="ExampleObject.xml"/>
-  <xi:include href="ExampleObjectManagerClient.xml"/>
+  <xi:include href="../../../../gio/tests/gdbus-object-manager-example/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml"/>
+  <xi:include href="../../../../gio/tests/gdbus-object-manager-example/gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml"/>
+  <xi:include href="../gdbus-object-manager-example/xml/ExampleAnimal.xml"/>
+  <xi:include href="../gdbus-object-manager-example/xml/ExampleCat.xml"/>
+  <xi:include href="../gdbus-object-manager-example/xml/ExampleObject.xml"/>
+  <xi:include href="../gdbus-object-manager-example/xml/ExampleObjectManagerClient.xml"/>
 
   </section>
 

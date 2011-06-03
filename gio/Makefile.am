@@ -651,34 +651,6 @@ completion_SCRIPTS = \
 EXTRA_DIST += $(completion_SCRIPTS)
 
 # ------------------------------------------------------------------------
-# generate code here for the sake of gtk-doc
-
-gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c : gdbus-example-objectmanager.xml
-	$(AM_V_GEN) $(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
-		--interface-prefix org.gtk.GDBus.Example.ObjectManager.		\
-		--c-namespace Example 						\
-		--c-generate-object-manager					\
-		--generate-c-code gdbus-example-objectmanager-generated		\
-		--generate-docbook gdbus-example-objectmanager-generated	\
-		gdbus-example-objectmanager.xml					\
-		$(NULL)
-
-BUILT_SOURCES += gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
-
-noinst_LTLIBRARIES = libgdbus-example-objectmanager.la
-libgdbus_example_objectmanager_la_SOURCES  = gdbus-example-objectmanager-generated.h gdbus-example-objectmanager-generated.c
-libgdbus_example_objectmanager_la_LIBADD   = 		\
-	$(top_builddir)/glib/libglib-2.0.la		\
-	$(top_builddir)/gobject/libgobject-2.0.la	\
-	$(top_builddir)/gmodule/libgmodule-2.0.la	\
-	libgio-2.0.la					\
-	$(NULL)
-
-EXTRA_DIST += gdbus-example-objectmanager.xml
-
-CLEANFILES += gdbus-example-objectmanager-generated-*.xml
-
-# ------------------------------------------------------------------------
 
 dist-hook: $(BUILT_EXTRA_DIST) ../build/win32/vs9/gio.vcproj ../build/win32/vs10/gio.vcxproj ../build/win32/vs10/gio.vcxproj.filters
 	files='$(BUILT_EXTRA_DIST)'; \

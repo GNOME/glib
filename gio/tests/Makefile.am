@@ -3,6 +3,8 @@ BUILT_SOURCES =
 
 include $(top_srcdir)/Makefile.decl
 
+SUBDIRS = gdbus-object-manager-example
+
 INCLUDES = 			\
 	-g 			\
 	$(gio_INCLUDES)		\
@@ -445,10 +447,12 @@ proxy_LDADD   = $(progs_ldadd) \
 # -----------------------------------------------------------------------------
 
 gdbus_example_objectmanager_server_SOURCES  = gdbus-example-objectmanager-server.c
-gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/libgdbus-example-objectmanager.la $(progs_ldadd)
+gdbus_example_objectmanager_server_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
+gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(progs_ldadd)
 
 gdbus_example_objectmanager_client_SOURCES  = gdbus-example-objectmanager-client.c
-gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/libgdbus-example-objectmanager.la $(progs_ldadd)
+gdbus_example_objectmanager_client_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
+gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(progs_ldadd)
 
 # -----------------------------------------------------------------------------
 

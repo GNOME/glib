@@ -1,6 +1,8 @@
 include $(top_srcdir)/Makefile.decl
 NULL =
 
+SUBDIRS = gdbus-object-manager-example
+
 # The name of the module.
 DOC_MODULE=gio
 
@@ -128,7 +130,6 @@ GTKDOC_LIBS = \
 	$(top_builddir)/gobject/libgobject-2.0.la	\
 	$(top_builddir)/gmodule/libgmodule-2.0.la	\
 	$(top_builddir)/gio/libgio-2.0.la		\
-	$(top_builddir)/gio/libgdbus-example-objectmanager.la \
 	$(NULL)
 
 # Extra options to supply to gtkdoc-mkdb
