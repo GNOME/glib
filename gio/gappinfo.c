@@ -39,7 +39,7 @@
  * (using g_file_get_path()) when using g_app_info_launch() even if
  * the application requested an URI and not a POSIX path. For example
  * for an desktop-file based application with Exec key <literal>totem
- * %%U</literal> and a single URI,
+ * &percnt;U</literal> and a single URI,
  * <literal>sftp://foo/file.avi</literal>, then
  * <literal>/home/user/.gvfs/sftp on foo/file.avi</literal> will be
  * passed. This will only work if a set of suitable GIO extensions
@@ -313,11 +313,11 @@ g_app_info_set_as_default_for_type (GAppInfo    *appinfo,
  * @appinfo: a #GAppInfo.
  * @content_type: the content type.
  * @error: a #GError.
- * 
+ *
  * Sets the application as the last used application for a given type.
- * This will make the application appear as first in the list returned by
- * #g_app_info_get_recommended_for_type, regardless of the default application
- * for that content type.
+ * This will make the application appear as first in the list returned
+ * by g_app_info_get_recommended_for_type(), regardless of the default
+ * application for that content type.
  *
  * Returns: %TRUE on success, %FALSE on error.
  **/

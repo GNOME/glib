@@ -266,15 +266,15 @@ g_action_get_parameter_type (GAction *action)
  *
  * Queries the type of the state of @action.
  *
- * If the action is stateful (ie: was created with
- * g_action_new_stateful()) then this function returns the #GVariantType
- * of the state.  This is the type of the initial value given as the
- * state.  All calls to g_action_set_state() must give a #GVariant of
- * this type and g_action_get_state() will return a #GVariant of the
- * same type.
+ * If the action is stateful (e.g. created with
+ * g_simple_action_new_stateful()) then this function returns the
+ * #GVariantType of the state.  This is the type of the initial value
+ * given as the state. All calls to g_action_set_state() must give a
+ * #GVariant of this type and g_action_get_state() will return a
+ * #GVariant of the same type.
  *
- * If the action is not stateful (ie: created with g_action_new()) then
- * this function will return %NULL.  In that case, g_action_get_state()
+ * If the action is not stateful (e.g. created with g_simple_action_new())
+ * then this function will return %NULL. In that case, g_action_get_state()
  * will return %NULL and you must not call g_action_set_state().
  *
  * Returns: (allow-none): the state type, if the action is stateful

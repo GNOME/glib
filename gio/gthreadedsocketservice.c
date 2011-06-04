@@ -30,8 +30,8 @@
  *
  * A #GThreadedSocketService is a simple subclass of #GSocketService
  * that handles incoming connections by creating a worker thread and
- * dispatching the connection to it by emitting the ::run signal in
- * the new thread.
+ * dispatching the connection to it by emitting the
+ * #GThreadedSocketService::run signal in the new thread.
  *
  * The signal handler may perform blocking IO and need not return
  * until the connection is closed.
@@ -41,7 +41,7 @@
  * The service automatically stops the #GSocketService from accepting
  * new connections when all threads are busy.
  *
- * As with #GSocketService, you may connect to #GThreadedSocketService:run,
+ * As with #GSocketService, you may connect to #GThreadedSocketService::run,
  * or subclass and override the default handler.
  */
 

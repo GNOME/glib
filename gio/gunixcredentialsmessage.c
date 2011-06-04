@@ -321,7 +321,7 @@ g_unix_credentials_message_class_init (GUnixCredentialsMessageClass *class)
 /**
  * g_unix_credentials_message_is_supported:
  *
- * Checks if passing a #GCredential on a #GSocket is supported on this platform.
+ * Checks if passing #GCredentials on a #GSocket is supported on this platform.
  *
  * Returns: %TRUE if supported, %FALSE otherwise
  *

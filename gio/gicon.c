@@ -188,7 +188,7 @@ g_icon_to_string_tokenized (GIcon *icon, GString *s)
  *     (such as <literal>/path/to/my icon.png</literal>) without escaping
  *     if the #GFile for @icon is a native file.  If the file is not
  *     native, the returned string is the result of g_file_get_uri()
- *     (such as <literal>sftp://path/to/my%%20icon.png</literal>).
+ *     (such as <literal>sftp://path/to/my&percnt;20icon.png</literal>).
  * </para></listitem>
  * <listitem><para>
  *    If @icon is a #GThemedIcon with exactly one name, the encoding is

@@ -157,7 +157,7 @@ g_proxy_connect_async (GProxy               *proxy,
 /**
  * g_proxy_connect_finish:
  * @proxy: a #GProxy
- * @result: a #GAsyncRetult
+ * @result: a #GAsyncResult
  * @error: return #GError
  *
  * See g_proxy_connect().

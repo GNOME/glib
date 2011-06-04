@@ -2849,15 +2849,13 @@ static guint _global_filter_id = 1;
  * added as a filter more than once, in which case it will be run more
  * than once.  Filters added during a filter callback won't be run on
  * the message being processed. Filter functions are allowed to modify
- * and even drop messages - see the #GDBusMessageFilterResult
- * enumeration for details.
+ * and even drop messages.
  *
  * Note that filters are run in a dedicated message handling thread so
  * they can't block and, generally, can't do anything but signal a
  * worker thread. Also note that filters are rarely needed - use API
  * such as g_dbus_connection_send_message_with_reply(),
- * g_dbus_connection_signal_subscribe() or
- * g_dbus_connection_call() instead.
+ * g_dbus_connection_signal_subscribe() or g_dbus_connection_call() instead.
  *
  * If a filter consumes an incoming message the message is not
  * dispatched anywhere else - not even the standard dispatch machinery
@@ -6401,7 +6399,7 @@ g_bus_get (GBusType             bus_type,
  * The returned object is a singleton, that is, shared with other
  * callers of g_bus_get() and g_bus_get_sync() for @bus_type. In the
  * event that you need a private message bus connection, use
- * g_dbus_address_get_for_bus() and
+ * g_dbus_address_get_for_bus_sync() and
  * g_dbus_connection_new_for_address().
  *
  * Note that the returned #GDBusConnection object will (usually) have

@@ -41,8 +41,8 @@
  * forces' (eg: UI, incoming D-Bus messages, etc.) are supposed to have
  * with actions.  'Internal' APIs (ie: ones meant only to be accessed by
  * the action group implementation) are found on subclasses.  This is
- * why you will find -- for example -- g_action_group_get_enabled() but
- * not an equivalent <function>set()</function> call.
+ * why you will find -- for example -- g_action_group_get_action_enabled()
+ * but not an equivalent <function>set()</function> call.
  *
  * Signals are emitted on the action group in response to state changes
  * on individual actions.
@@ -69,8 +69,9 @@ g_action_group_default_init (GActionGroupInterface *class)
    * @action_group: the #GActionGroup that changed
    * @action_name: the name of the action in @action_group
    *
-   * Signals that a new action was just added to the group.  This signal
-   * is emitted after the action has been added and is now visible.
+   * Signals that a new action was just added to the group.
+   * This signal is emitted after the action has been added
+   * and is now visible.
    *
    * Since: 2.28
    **/
@@ -205,9 +206,9 @@ g_action_group_has_action (GActionGroup *action_group,
  * Queries the type of the parameter that must be given when activating
  * the named action within @action_group.
  *
- * When activating the action using g_action_group_activate(), the
- * #GVariant given to that function must be of the type returned by this
- * function.
+ * When activating the action using g_action_group_activate_action(),
+ * the #GVariant given to that function must be of the type returned
+ * by this function.
  *
  * In the case that this function returns %NULL, you must not give any
  * #GVariant, but %NULL instead.
@@ -239,13 +240,14 @@ g_action_group_get_action_parameter_type (GActionGroup *action_group,
  * @action_group.
  *
  * If the action is stateful then this function returns the
- * #GVariantType of the state.  All calls to g_action_group_set_state()
- * must give a #GVariant of this type and g_action_group_get_state()
- * will return a #GVariant of the same type.
+ * #GVariantType of the state.  All calls to
+ * g_action_group_change_action_state() must give a #GVariant of this
+ * type and g_action_group_get_action_state() will return a #GVariant
+ * of the same type.
  *
  * If the action is not stateful then this function will return %NULL.
- * In that case, g_action_group_get_state() will return %NULL and you
- * must not call g_action_group_set_state().
+ * In that case, g_action_group_get_action_state() will return %NULL
+ * and you must not call g_action_group_change_action_state().
  *
  * The state type of a particular action will never change but it is
  * possible for an action to be removed and for a new action to be added
@@ -336,7 +338,7 @@ g_action_group_get_action_enabled (GActionGroup *action_group,
  *
  * If the action is not stateful then %NULL will be returned.  If the
  * action is stateful then the type of the return value is the type
- * given by g_action_group_get_state_type().
+ * given by g_action_group_get_action_state_type().
  *
  * The return value (if non-%NULL) should be freed with
  * g_variant_unref() when it is no longer required.
@@ -365,11 +367,11 @@ g_action_group_get_action_state (GActionGroup *action_group,
  * changed to @value.
  *
  * The action must be stateful and @value must be of the correct type.
- * See g_action_group_get_state_type().
+ * See g_action_group_get_action_state_type().
  *
  * This call merely requests a change.  The action may refuse to change
  * its state or may change its state to something other than @value.
- * See g_action_group_get_state_hint().
+ * See g_action_group_get_action_state_hint().
  *
  * If the @value GVariant is floating, it is consumed.
  *
@@ -399,7 +401,7 @@ g_action_group_change_action_state (GActionGroup *action_group,
  * If the action is expecting a parameter, then the correct type of
  * parameter must be given as @parameter.  If the action is expecting no
  * parameters then @parameter must be %NULL.  See
- * g_action_group_get_parameter_type().
+ * g_action_group_get_action_parameter_type().
  *
  * Since: 2.28
  **/

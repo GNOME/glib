@@ -28,9 +28,9 @@
  * @short_description: Make it easy to implement a network service
  * @see_also: #GThreadedSocketService, #GSocketListener.
  *
- * A #GSocketService is an object that represents a service that is
- * provided to the network or over local sockets.  When a new
- * connection is made to the service the #GSocketService:incoming
+ * A #GSocketService is an object that represents a service that
+ * is provided to the network or over local sockets.  When a new
+ * connection is made to the service the #GSocketService::incoming
  * signal is emitted.
  *
  * A #GSocketService is a subclass of #GSocketListener and you need
@@ -39,7 +39,7 @@
  *
  * There are two options for implementing a network service based on
  * #GSocketService. The first is to create the service using
- * g_socket_service_new() and to connect to the #GSocketService:incoming
+ * g_socket_service_new() and to connect to the #GSocketService::incoming
  * signal. The second is to subclass #GSocketService and override the
  * default signal handler implementation.
  *
@@ -174,7 +174,7 @@ g_socket_service_is_active (GSocketService *service)
  * from the added sockets when the mainloop runs.
  *
  * This call is threadsafe, so it may be called from a thread
- * handling an incomming client request.
+ * handling an incoming client request.
  *
  * Since: 2.22
  */
@@ -204,7 +204,7 @@ g_socket_service_start (GSocketService *service)
  * from the added sockets when the mainloop runs.
  *
  * This call is threadsafe, so it may be called from a thread
- * handling an incomming client request.
+ * handling an incoming client request.
  *
  * Since: 2.22
  */
@@ -251,17 +251,17 @@ g_socket_service_class_init (GSocketServiceClass *class)
 
   /**
    * GSocketService::incoming:
-   * @service: the #GSocketService.
-   * @connection: a new #GSocketConnection object.
-   * @source_object: the source_object passed to g_socket_listener_add_address().
+   * @service: the #GSocketService
+   * @connection: a new #GSocketConnection object
+   * @source_object: the source_object passed to g_socket_listener_add_address()
    *
    * The ::incoming signal is emitted when a new incoming connection
    * to @service needs to be handled. The handler must initiate the
    * handling of @connection, but may not block; in essence,
    * asynchronous operations must be used.
    *
-   * @connection will be unreffed once the signal handler returns, so
-   * you need to ref it yourself if you are planning to use it.
+   * @connection will be unreffed once the signal handler returns,
+   * so you need to ref it yourself if you are planning to use it.
    *
    * Returns: %TRUE to stop other handlers from being called
    *

@@ -1137,7 +1137,7 @@ g_unix_mount_at (const char *mount_path,
  * Gets a #GList of #GUnixMountPoint containing the unix mount points.
  * If @time_read is set, it will be filled with the mount timestamp,
  * allowing for checking if the mounts have changed with
- * g_unix_mounts_points_changed_since().
+ * g_unix_mount_points_changed_since().
  *
  * Returns: (element-type GUnixMountPoint) (transfer full):
  *     a #GList of the UNIX mountpoints.

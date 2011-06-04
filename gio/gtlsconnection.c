@@ -195,8 +195,8 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * GTlsConnection:peer-certificate-errors:
    *
    * The errors noticed-and-ignored while verifying
-   * #GTlsConnection:peer-certificate. Normally this should be %0, but
-   * it may not be if #GTlsClientConnection::validation-flags is not
+   * #GTlsConnection:peer-certificate. Normally this should be 0, but
+   * it may not be if #GTlsClientConnection:validation-flags is not
    * %G_TLS_CERTIFICATE_VALIDATE_ALL, or if
    * #GTlsConnection::accept-certificate overrode the default
    * behavior.
@@ -569,7 +569,7 @@ g_tls_connection_set_rehandshake_mode (GTlsConnection       *conn,
  * @conn: a #GTlsConnection
  *
  * Gets @conn rehandshaking mode. See
- * g_tls_connection_set_rehandshake() for details.
+ * g_tls_connection_set_rehandshake_mode() for details.
  *
  * Return value: @conn's rehandshaking mode
  *

@@ -1954,7 +1954,7 @@ g_file_info_set_icon (GFileInfo *info,
 /**
  * g_file_info_set_content_type:
  * @info: a #GFileInfo.
- * @content_type: a content type. See #GContentType.
+ * @content_type: a content type. See <link linkend="gio-GContentType">GContentType</link>.
  *
  * Sets the content type attribute for a given #GFileInfo.
  * See %G_FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE.

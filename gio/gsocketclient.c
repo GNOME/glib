@@ -423,7 +423,7 @@ g_socket_client_set_protocol (GSocketClient   *client,
  *
  * See g_socket_client_set_local_address() for details.
  *
- * Returns: (transfer none): a #GSocketAddres or %NULL. don't free
+ * Returns: (transfer none): a #GSocketAddress or %NULL. Do not free.
  *
  * Since: 2.22
  */
@@ -1420,7 +1420,7 @@ g_socket_client_enumerator_callback (GObject      *object,
 
 /**
  * g_socket_client_connect_async:
- * @client: a #GTcpClient
+ * @client: a #GSocketClient
  * @connectable: a #GSocketConnectable specifying the remote address.
  * @cancellable: (allow-none): a #GCancellable, or %NULL
  * @callback: (scope async): a #GAsyncReadyCallback
@@ -1468,7 +1468,7 @@ g_socket_client_connect_async (GSocketClient       *client,
 
 /**
  * g_socket_client_connect_to_host_async:
- * @client: a #GTcpClient
+ * @client: a #GSocketClient
  * @host_and_port: the name and optionally the port of the host to connect to
  * @default_port: the default port to connect to
  * @cancellable: (allow-none): a #GCancellable, or %NULL

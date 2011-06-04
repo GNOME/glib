@@ -309,7 +309,7 @@ g_async_initable_real_init_finish (GAsyncInitable  *initable,
  * @...:  the value of the first property, followed by other property
  *    value pairs, and ended by %NULL.
  *
- * Helper function for constructing #GAsyncInitiable object. This is
+ * Helper function for constructing #GAsyncInitable object. This is
  * similar to g_object_new() but also initializes the object asynchronously.
  *
  * When the initialization is finished, @callback will be called. You can
@@ -349,7 +349,7 @@ g_async_initable_new_async (GType                object_type,
  *     finished
  * @user_data: the data to pass to callback function
  *
- * Helper function for constructing #GAsyncInitiable object. This is
+ * Helper function for constructing #GAsyncInitable object. This is
  * similar to g_object_newv() but also initializes the object asynchronously.
  *
  * When the initialization is finished, @callback will be called. You can
@@ -391,7 +391,7 @@ g_async_initable_newv_async (GType                object_type,
  *     finished
  * @user_data: the data to pass to callback function
  *
- * Helper function for constructing #GAsyncInitiable object. This is
+ * Helper function for constructing #GAsyncInitable object. This is
  * similar to g_object_new_valist() but also initializes the object
  * asynchronously.
  *
@@ -427,15 +427,14 @@ g_async_initable_new_valist_async (GType                object_type,
 /**
  * g_async_initable_new_finish:
  * @initable: the #GAsyncInitable from the callback
- * @res: the #GAsyncResult.from the callback
- * @error: a #GError location to store the error occuring, or %NULL to
- *     ignore.
+ * @res: the #GAsyncResult from the callback
+ * @error: return location for errors, or %NULL to ignore
  *
- * Finishes the async construction for the various g_async_initable_new calls,
- * returning the created object or %NULL on error.
+ * Finishes the async construction for the various g_async_initable_new
+ * calls, returning the created object or %NULL on error.
  *
- * Returns: (transfer full): a newly created #GObject, or %NULL on error. Free with
- *     g_object_unref().
+ * Returns: (transfer full): a newly created #GObject, or %NULL on error.
+ *     Free with g_object_unref().
  *
  * Since: 2.22
  */
