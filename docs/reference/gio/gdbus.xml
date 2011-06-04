@@ -8,7 +8,7 @@
 
 <refnamediv>
   <refname>gdbus</refname>
-  <refpurpose>Introspect and call remote objects</refpurpose>
+  <refpurpose>Tool for working with D-Bus objects</refpurpose>
 </refnamediv>
 
 <refsynopsisdiv>
@@ -56,6 +56,22 @@
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gdbus</command>
+    <arg choice="plain">emit</arg>
+    <group>
+      <arg choice="plain">--system</arg>
+      <arg choice="plain">--session</arg>
+      <arg choice="plain">--address <replaceable>address</replaceable></arg>
+    </group>
+    <arg choice="plain">--object-path <replaceable>/path/to/object</replaceable></arg>
+    <arg choice="plain">--signal <replaceable>org.project.InterfaceName.SignalName</replaceable></arg>
+    <group>
+      <arg choice="plain">--dest <replaceable>unique_bus_name</replaceable></arg>
+    </group>
+    <arg choice="plain">ARG1</arg>
+    <arg choice="plain" rep="repeat">ARG2</arg>
+  </cmdsynopsis>
+  <cmdsynopsis>
+    <command>gdbus</command>
     <arg choice="plain">help</arg>
   </cmdsynopsis>
 </refsynopsisdiv>
@@ -63,8 +79,7 @@
 <refsect1>
   <title>Description</title>
   <para>
-    <command>gdbus</command> offers a simple commandline utility for
-    introspecting and calling methods on remote objects.
+    <command>gdbus</command> is a simple tool for working with D-Bus objects.
   </para>
   <refsect2>
     <title>Commands</title>
@@ -93,6 +108,14 @@
           not need explicit quotes. The return values are printed out as
           serialized <link linkend="GVariant"><type>GVariant</type></link>
           values.
+        </para></listitem>
+      </varlistentry>
+      <varlistentry>
+        <term><option>emit</option></term>
+        <listitem><para>
+          Emits a signal. Each argument to include in the signal must be specified as a serialized
+          <link linkend="GVariant"><type>GVariant</type></link> except that strings do
+          not need explicit quotes.
         </para></listitem>
       </varlistentry>
       <varlistentry>
@@ -236,6 +259,20 @@ The name org.freedesktop.NetworkManager is owned by :1.5
 /org/freedesktop/NetworkManager/AccessPoint/4141: org.freedesktop.NetworkManager.AccessPoint.PropertiesChanged ({'Strength': &lt;byte 0x64&gt;},)
 /org/freedesktop/NetworkManager/AccessPoint/4141: org.freedesktop.NetworkManager.AccessPoint.PropertiesChanged ({'Strength': &lt;byte 0x5e&gt;},)
 /org/freedesktop/NetworkManager/AccessPoint/4141: org.freedesktop.NetworkManager.AccessPoint.PropertiesChanged ({'Strength': &lt;byte 0x64&gt;},)
+</programlisting>
+
+<para>
+  Emitting a signal:
+</para>
+<programlisting>
+$ gdbus emit --session --o /foo -s org.bar.Foo "['foo', 'bar', 'baz']"
+</programlisting>
+
+<para>
+  Emitting a signal to a specific process:
+</para>
+<programlisting>
+$ gdbus emit --session --o /foo -s org.bar.Foo someString --dest :1.3
 </programlisting>
 
 </refsect1>

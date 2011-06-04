@@ -95,6 +95,7 @@ usage (gint *argc, gchar **argv[], gboolean use_stdout)
                          "  introspect   Introspect a remote object\n"
                          "  monitor      Monitor a remote object\n"
                          "  call         Invoke a method on a remote object\n"
+                         "  emit         Emit a signal\n"
                          "\n"
                          "Use \"%s COMMAND --help\" to get help on each command.\n"),
                        program_name);
@@ -520,6 +521,196 @@ _g_variant_parse_me_harder (GVariantType   *type,
   g_free (s);
 
   return value;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static gchar *opt_emit_dest = NULL;
+static gchar *opt_emit_object_path = NULL;
+static gchar *opt_emit_signal = NULL;
+
+static const GOptionEntry emit_entries[] =
+{
+  { "dest", 'd', 0, G_OPTION_ARG_STRING, &opt_emit_dest, N_("Optional destination for signal (unique name)"), NULL},
+  { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_emit_object_path, N_("Object path to emit signal on"), NULL},
+  { "signal", 's', 0, G_OPTION_ARG_STRING, &opt_emit_signal, N_("Signal and interface name"), NULL},
+  { NULL }
+};
+
+static gboolean
+handle_emit (gint        *argc,
+             gchar      **argv[],
+             gboolean     request_completion,
+             const gchar *completion_cur,
+             const gchar *completion_prev)
+{
+  gint ret;
+  GOptionContext *o;
+  gchar *s;
+  GError *error;
+  GDBusConnection *c;
+  GVariant *parameters;
+  gchar *interface_name;
+  gchar *signal_name;
+  GVariantBuilder builder;
+  guint n;
+
+  ret = FALSE;
+  c = NULL;
+  parameters = NULL;
+  interface_name = NULL;
+  signal_name = NULL;
+
+  modify_argv0_for_command (argc, argv, "emit");
+
+  o = g_option_context_new (NULL);
+  g_option_context_set_help_enabled (o, FALSE);
+  g_option_context_set_summary (o, _("Emit a signal."));
+  g_option_context_add_main_entries (o, emit_entries, GETTEXT_PACKAGE);
+  g_option_context_add_group (o, connection_get_group ());
+
+  if (!g_option_context_parse (o, argc, argv, NULL))
+    {
+      if (!request_completion)
+        {
+          s = g_option_context_get_help (o, FALSE, NULL);
+          g_printerr ("%s", s);
+          g_free (s);
+          goto out;
+        }
+    }
+
+  error = NULL;
+  c = connection_get_dbus_connection (&error);
+  if (c == NULL)
+    {
+      if (request_completion)
+        {
+          if (g_strcmp0 (completion_prev, "--address") == 0)
+            {
+              g_print ("unix:\n"
+                       "tcp:\n"
+                       "nonce-tcp:\n");
+            }
+          else
+            {
+              g_print ("--system \n--session \n--address \n");
+            }
+        }
+      else
+        {
+          g_printerr (_("Error connecting: %s\n"), error->message);
+          g_error_free (error);
+        }
+      goto out;
+    }
+
+  /* All done with completion now */
+  if (request_completion)
+    goto out;
+
+  if (opt_emit_object_path == NULL)
+    {
+      g_printerr (_("Error: object path not specified.\n"));
+      goto out;
+    }
+  if (!g_variant_is_object_path (opt_emit_object_path))
+    {
+      g_printerr (_("Error: %s is not a valid object path\n"), opt_emit_object_path);
+      goto out;
+    }
+
+  if (opt_emit_signal == NULL)
+    {
+      g_printerr (_("Error: signal not specified.\n"));
+      goto out;
+    }
+  s = strrchr (opt_emit_signal, '.');
+  signal_name = g_strdup (s + 1);
+  interface_name = g_strndup (opt_emit_signal, s - opt_emit_signal);
+
+  if (!g_dbus_is_interface_name (interface_name))
+    {
+      g_printerr (_("Error: %s is not a valid interface name\n"), interface_name);
+      goto out;
+    }
+
+  if (!g_dbus_is_member_name (signal_name))
+    {
+      g_printerr (_("Error: %s is not a valid member name\n"), signal_name);
+      goto out;
+    }
+
+  if (opt_emit_dest != NULL && !g_dbus_is_unique_name (opt_emit_dest))
+    {
+      g_printerr (_("Error: %s is not a valid unique bus name.\n"), opt_emit_dest);
+      goto out;
+    }
+
+  /* Read parameters */
+  g_variant_builder_init (&builder, G_VARIANT_TYPE_TUPLE);
+  for (n = 1; n < (guint) *argc; n++)
+    {
+      GVariant *value;
+
+      error = NULL;
+      value = g_variant_parse (NULL,
+                               (*argv)[n],
+                               NULL,
+                               NULL,
+                               &error);
+      if (value == NULL)
+        {
+          g_error_free (error);
+          error = NULL;
+          value = _g_variant_parse_me_harder (NULL, (*argv)[n], &error);
+          if (value == NULL)
+            {
+              g_printerr (_("Error parsing parameter %d: %s\n"),
+                          n,
+                          error->message);
+              g_error_free (error);
+              g_variant_builder_clear (&builder);
+              goto out;
+            }
+        }
+      g_variant_builder_add_value (&builder, value);
+    }
+  parameters = g_variant_builder_end (&builder);
+
+  if (parameters != NULL)
+    parameters = g_variant_ref_sink (parameters);
+  if (!g_dbus_connection_emit_signal (c,
+                                      opt_emit_dest,
+                                      opt_emit_object_path,
+                                      interface_name,
+                                      signal_name,
+                                      parameters,
+                                      &error))
+    {
+      g_printerr (_("Error: %s\n"), error->message);
+      g_error_free (error);
+      goto out;
+    }
+
+  if (!g_dbus_connection_flush_sync (c, NULL, &error))
+    {
+      g_printerr (_("Error flushing connection: %s\n"), error->message);
+      g_error_free (error);
+      goto out;
+    }
+
+  ret = TRUE;
+
+ out:
+  if (c != NULL)
+    g_object_unref (c);
+  if (parameters != NULL)
+    g_variant_unref (parameters);
+  g_free (interface_name);
+  g_free (signal_name);
+  g_option_context_free (o);
+  return ret;
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1698,6 +1889,16 @@ main (gint argc, gchar *argv[])
         }
       goto out;
     }
+  else if (g_strcmp0 (command, "emit") == 0)
+    {
+      if (handle_emit (&argc,
+                       &argv,
+                       request_completion,
+                       completion_cur,
+                       completion_prev))
+        ret = 0;
+      goto out;
+    }
   else if (g_strcmp0 (command, "call") == 0)
     {
       if (handle_call (&argc,
@@ -1797,7 +1998,7 @@ main (gint argc, gchar *argv[])
     {
       if (request_completion)
         {
-          g_print ("help \ncall \nintrospect \nmonitor \n");
+          g_print ("help \nemit \ncall \nintrospect \nmonitor \n");
           ret = 0;
           goto out;
         }
