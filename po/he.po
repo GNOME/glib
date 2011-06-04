@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-04 13:43+0300\n"
-"PO-Revision-Date: 2011-06-04 13:44+0200\n"
+"POT-Creation-Date: 2011-06-05 01:04+0300\n"
+"PO-Revision-Date: 2011-06-05 01:04+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "Language: he\n"
@@ -1991,6 +1991,7 @@ msgid ""
 "  introspect   Introspect a remote object\n"
 "  monitor      Monitor a remote object\n"
 "  call         Invoke a method on a remote object\n"
+"  emit         Emit a signal\n"
 "\n"
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
@@ -1999,58 +2000,60 @@ msgstr ""
 "  introspect   Introspect a remote object\n"
 "  monitor      Monitor a remote object\n"
 "  call         Invoke a method on a remote object\n"
+"  emit         Emit a signal\n"
 "\n"
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 
-#: ../gio/gdbus-tool.c:161 ../gio/gdbus-tool.c:217 ../gio/gdbus-tool.c:289
-#: ../gio/gdbus-tool.c:313 ../gio/gdbus-tool.c:819 ../gio/gdbus-tool.c:1329
+#: ../gio/gdbus-tool.c:162 ../gio/gdbus-tool.c:218 ../gio/gdbus-tool.c:290
+#: ../gio/gdbus-tool.c:314 ../gio/gdbus-tool.c:691 ../gio/gdbus-tool.c:1010
+#: ../gio/gdbus-tool.c:1520
 #, c-format
 msgid "Error: %s\n"
 msgstr "Error: %s\n"
 
-#: ../gio/gdbus-tool.c:172 ../gio/gdbus-tool.c:230 ../gio/gdbus-tool.c:1345
+#: ../gio/gdbus-tool.c:173 ../gio/gdbus-tool.c:231 ../gio/gdbus-tool.c:1536
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Error parsing introspection XML: %s\n"
 
-#: ../gio/gdbus-tool.c:347
+#: ../gio/gdbus-tool.c:348
 msgid "Connect to the system bus"
 msgstr "Connect to the system bus"
 
-#: ../gio/gdbus-tool.c:348
+#: ../gio/gdbus-tool.c:349
 msgid "Connect to the session bus"
 msgstr "Connect to the session bus"
 
-#: ../gio/gdbus-tool.c:349
+#: ../gio/gdbus-tool.c:350
 msgid "Connect to given D-Bus address"
 msgstr "Connect to given D-Bus address"
 
-#: ../gio/gdbus-tool.c:359
+#: ../gio/gdbus-tool.c:360
 msgid "Connection Endpoint Options:"
 msgstr "Connection Endpoint Options:"
 
-#: ../gio/gdbus-tool.c:360
+#: ../gio/gdbus-tool.c:361
 msgid "Options specifying the connection endpoint"
 msgstr "Options specifying the connection endpoint"
 
-#: ../gio/gdbus-tool.c:382
+#: ../gio/gdbus-tool.c:383
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "No connection endpoint specified"
 
-#: ../gio/gdbus-tool.c:392
+#: ../gio/gdbus-tool.c:393
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Multiple connection endpoints specified"
 
-#: ../gio/gdbus-tool.c:462
+#: ../gio/gdbus-tool.c:463
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 
-#: ../gio/gdbus-tool.c:471
+#: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
@@ -2060,90 +2063,138 @@ msgstr ""
 "interface `%s'\n"
 
 #: ../gio/gdbus-tool.c:534
-msgid "Destination name to invoke method on"
-msgstr "Destination name to invoke method on"
+msgid "Optional destination for signal (unique name)"
+msgstr "Optional destination for signal (unique name)"
 
 #: ../gio/gdbus-tool.c:535
-msgid "Object path to invoke method on"
-msgstr "Object path to invoke method on"
+msgid "Object path to emit signal on"
+msgstr "Object path to emit signal on"
 
 #: ../gio/gdbus-tool.c:536
-msgid "Method and interface name"
-msgstr "Method and interface name"
+msgid "Signal and interface name"
+msgstr "Signal and interface name"
 
-#: ../gio/gdbus-tool.c:537
-msgid "Timeout in seconds"
-msgstr "Timeout in seconds"
+#: ../gio/gdbus-tool.c:568
+msgid "Emit a signal."
+msgstr "Emit a signal."
 
-#: ../gio/gdbus-tool.c:576
-msgid "Invoke a method on a remote object."
-msgstr "Invoke a method on a remote object."
-
-#: ../gio/gdbus-tool.c:631 ../gio/gdbus-tool.c:1250 ../gio/gdbus-tool.c:1510
+#: ../gio/gdbus-tool.c:602 ../gio/gdbus-tool.c:822 ../gio/gdbus-tool.c:1441
+#: ../gio/gdbus-tool.c:1701
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Error connecting: %s\n"
 
-#: ../gio/gdbus-tool.c:651 ../gio/gdbus-tool.c:1269 ../gio/gdbus-tool.c:1529
+#: ../gio/gdbus-tool.c:614
 #, c-format
-msgid "Error: Destination is not specified\n"
-msgstr "Error: Destination is not specified\n"
+msgid "Error: object path not specified.\n"
+msgstr "Error: object path not specified.\n"
 
-#: ../gio/gdbus-tool.c:672 ../gio/gdbus-tool.c:1288
-#, c-format
-msgid "Error: Object path is not specified\n"
-msgstr "Error: Object path is not specified\n"
-
-#: ../gio/gdbus-tool.c:692 ../gio/gdbus-tool.c:1308 ../gio/gdbus-tool.c:1569
+#: ../gio/gdbus-tool.c:619 ../gio/gdbus-tool.c:883 ../gio/gdbus-tool.c:1499
+#: ../gio/gdbus-tool.c:1760
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Error: %s is not a valid object path\n"
 
-#: ../gio/gdbus-tool.c:707
+#: ../gio/gdbus-tool.c:625
 #, c-format
-msgid "Error: Method name is not specified\n"
-msgstr "Error: Method name is not specified\n"
+msgid "Error: signal not specified.\n"
+msgstr "Error: signal not specified.\n"
 
-#: ../gio/gdbus-tool.c:718
+#: ../gio/gdbus-tool.c:634
 #, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Error: Method name `%s' is invalid\n"
+msgid "Error: %s is not a valid interface name\n"
+msgstr "Error: %s is not a valid interface name\n"
 
-#: ../gio/gdbus-tool.c:783
+#: ../gio/gdbus-tool.c:640
 #, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Error parsing parameter %d of type `%s': %s\n"
+msgid "Error: %s is not a valid member name\n"
+msgstr "Error: %s is not a valid member name\n"
 
-#: ../gio/gdbus-tool.c:791
+#: ../gio/gdbus-tool.c:646
+#, c-format
+msgid "Error: %s is not a valid unique bus name.\n"
+msgstr "Error: %s is not a valid unique bus name.\n"
+
+#: ../gio/gdbus-tool.c:669 ../gio/gdbus-tool.c:982
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Error parsing parameter %d: %s\n"
 
-#: ../gio/gdbus-tool.c:1167
+#: ../gio/gdbus-tool.c:698
+#, c-format
+msgid "Error flushing connection: %s\n"
+msgstr "Error flushing connection: %s\n"
+
+#: ../gio/gdbus-tool.c:725
+msgid "Destination name to invoke method on"
+msgstr "Destination name to invoke method on"
+
+#: ../gio/gdbus-tool.c:726
+msgid "Object path to invoke method on"
+msgstr "Object path to invoke method on"
+
+#: ../gio/gdbus-tool.c:727
+msgid "Method and interface name"
+msgstr "Method and interface name"
+
+#: ../gio/gdbus-tool.c:728
+msgid "Timeout in seconds"
+msgstr "Timeout in seconds"
+
+#: ../gio/gdbus-tool.c:767
+msgid "Invoke a method on a remote object."
+msgstr "Invoke a method on a remote object."
+
+#: ../gio/gdbus-tool.c:842 ../gio/gdbus-tool.c:1460 ../gio/gdbus-tool.c:1720
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr "Error: Destination is not specified\n"
+
+#: ../gio/gdbus-tool.c:863 ../gio/gdbus-tool.c:1479
+#, c-format
+msgid "Error: Object path is not specified\n"
+msgstr "Error: Object path is not specified\n"
+
+#: ../gio/gdbus-tool.c:898
+#, c-format
+msgid "Error: Method name is not specified\n"
+msgstr "Error: Method name is not specified\n"
+
+#: ../gio/gdbus-tool.c:909
+#, c-format
+msgid "Error: Method name `%s' is invalid\n"
+msgstr "Error: Method name `%s' is invalid\n"
+
+#: ../gio/gdbus-tool.c:974
+#, c-format
+msgid "Error parsing parameter %d of type `%s': %s\n"
+msgstr "Error parsing parameter %d of type `%s': %s\n"
+
+#: ../gio/gdbus-tool.c:1358
 msgid "Destination name to introspect"
 msgstr "Destination name to introspect"
 
-#: ../gio/gdbus-tool.c:1168
+#: ../gio/gdbus-tool.c:1359
 msgid "Object path to introspect"
 msgstr "Object path to introspect"
 
-#: ../gio/gdbus-tool.c:1169
+#: ../gio/gdbus-tool.c:1360
 msgid "Print XML"
 msgstr "Print XML"
 
-#: ../gio/gdbus-tool.c:1202
+#: ../gio/gdbus-tool.c:1393
 msgid "Introspect a remote object."
 msgstr "Introspect a remote object."
 
-#: ../gio/gdbus-tool.c:1428
+#: ../gio/gdbus-tool.c:1619
 msgid "Destination name to monitor"
 msgstr "Destination name to monitor"
 
-#: ../gio/gdbus-tool.c:1429
+#: ../gio/gdbus-tool.c:1620
 msgid "Object path to monitor"
 msgstr "Object path to monitor"
 
-#: ../gio/gdbus-tool.c:1462
+#: ../gio/gdbus-tool.c:1653
 msgid "Monitor a remote object."
 msgstr "corrupted object"
 
