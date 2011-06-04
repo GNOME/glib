@@ -108,13 +108,13 @@ G_BEGIN_DECLS
 #  define G_INLINE_FUNC
 #endif /* !G_INLINE_FUNC */
 
-/* Retrive static string info
- */
+#ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
 #define g_get_user_name g_get_user_name_utf8
 #define g_get_real_name g_get_real_name_utf8
 #define g_get_home_dir g_get_home_dir_utf8
 #define g_get_tmp_dir g_get_tmp_dir_utf8
+#endif
 #endif
 
 G_CONST_RETURN gchar* g_get_user_name        (void);
@@ -235,8 +235,10 @@ G_CONST_RETURN gchar* g_basename           (const gchar *file_name);
 
 #endif /* G_DISABLE_DEPRECATED */
 
+#ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
 #define g_get_current_dir g_get_current_dir_utf8
+#endif
 #endif
 
 /* The returned strings are newly allocated with g_malloc() */
@@ -249,11 +251,13 @@ void                  g_nullify_pointer    (gpointer    *nullify_location);
 
 /* return the environment string for the variable. The returned memory
  * must not be freed. */
+#ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
 #define g_getenv g_getenv_utf8
 #define g_setenv g_setenv_utf8
 #define g_unsetenv g_unsetenv_utf8
 #define g_find_program_in_path g_find_program_in_path_utf8
+#endif
 #endif
 
 G_CONST_RETURN gchar* g_getenv             (const gchar *variable);
