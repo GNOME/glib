@@ -586,7 +586,11 @@ g_rand_double (GRand* rand)
 gdouble 
 g_rand_double_range (GRand* rand, gdouble begin, gdouble end)
 {
-  return g_rand_double (rand) * (end - begin) + begin;
+  gdouble r;
+
+  r = g_rand_double (rand);
+
+  return r * end - (r - 1) * begin;
 }
 
 /**
