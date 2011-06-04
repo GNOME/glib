@@ -1,13 +1,78 @@
 Overview of changes from GLib 2.29.4 to 2.29.6
 ==============================================
 
-* Atomic operations have been rewritten from scratch
-  to take care of gcc builtins where possible.
-  As a side-effect of this, calls to g_atomic_ API with explicit
-  casts may now be problematic; if that happens to you, try first
-  to remove the casts.
-  Another side-effect of the rewrite is that g_atomic_int_exchange_and_add
+* Atomic operations have been rewritten from scratch to make use
+  of gcc builtins where possible. As a side-effect of this, calls
+  to g_atomic_ API with explicit casts may now be problematic; if
+  that happens to you, try first to remove the casts. Another
+  side-effect of the rewrite is that g_atomic_int_exchange_and_add
   has been deprecated in favor of g_atomic_int_add.
+
+* A full set of atomic operations on pointers has been added,
+  including bit locks in pointer-size locations.
+
+* Access to quarks is now lockless
+
+* GObject data scalability has been greatly improved
+
+* g_data_time_format now supports alternative digits and padding
+
+* Introspection improvements:
+ - Add a boxed type for GVariantBuilder
+ - Annotation fixes in GDBus, GVariant, g_base64_
+
+* Bugs fixed:
+ 502560 g_rand_double_range returns 'inf'
+ 612729 g_mkdir_with_parents can fail if the directory already exists
+ 617491 g_once() implementation is inefficient
+ 619418 Add a performance test for UTF-8 decoding functions
+ 619435 Make g_utf8_to_ucs4_fast() yet faster
+ 626549 G_STATIC_ASSERT_EXPR
+ 631231 bitlock: Fix detection and usage of futexes with Bionic
+ 632294 g_queue_remove() should return a boolean
+ 640518 GMainLoop has quadratic complexity when all pollfd's...
+ 642026 Race condition in g_static_private_free
+ 646635 Fix introspection of GLib
+ 648678 g_date_time_format(): support %O flags for localized numbers
+ 649480 Use MSG_CMSG_CLOEXEC in recvmsg in gio/gsocket.c
+ 649506 GTestFunc et al lacking Since tag
+ 649657 Don't return gboolean for functions that throw
+ 649775 glib-gio-gdbuscodegen-Makefile.patch
+ 649915 gsettings accepts unquoted strings longer than two characters
+ 649973 gthread: build unix tests only on unix
+ 649988 gdbus-codegen: Drop dependency on argparse
+ 650078 forkbomb building glib/tests/protocol
+ 650211 Optimization in key file parsing
+ 650236 Application over DBus implements action state incorrectly
+ 650345 g_key_file_has_key_full: New function to fix g_key_file_has_key...
+ 650458 reduce overhead in g_object_set/get_data
+ 650459 hash table consistency while calling destroy notify funcs
+ 650688 enforce rules about hash table modification
+ 650823 expand the set of atomic ops
+ 650874 codegen chokes on docs
+ 650882 use stdout instead of stderr for informational messages
+ 650884 fix compilation with gcc2
+ 650885 implement glib credentials on OpenBSD (hackish)
+ 650935 G_GNUC_MAY_ALIAS and atomic ops
+ 651009 minor documentation fix
+ 651034 Regarding g_cond_wait after g_thread_pool_push in gthreadedresolver
+ 651133 race condition in GDBusConnection's emit_signal_instance_in_idle_cb
+ 651141 hashtable infinite loop
+ 651219 fix path to true(1) on OpenBSD
+ 651223 Fix some compile warnings on OpenBSD
+ 651327 Minor fixes for the gsocket API
+ 651467 Add pointer sized bitlocks
+ 651650 gdbus: Avoid busy wait loop
+ 651725 gmain: Cleanups and a new test case
+ 651745 Switch to _ prefixing rather than G_GNUC_INTERNAL
+
+* Updated translations:
+ Catalan (Valencian)
+ Esperanto
+ Hebrew
+ Hungarian
+ Russian
+ Spanish
 
 
 Overview of changes from GLib 2.29.2 to 2.29.4
