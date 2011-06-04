@@ -102,7 +102,7 @@ g_mkdir_with_parents (const gchar *pathname,
       
       if (!g_file_test (fn, G_FILE_TEST_EXISTS))
 	{
-	  if (g_mkdir (fn, mode) == -1)
+	  if (g_mkdir (fn, mode) == -1 && errno != EEXIST)
 	    {
 	      int errno_save = errno;
 	      g_free (fn);
