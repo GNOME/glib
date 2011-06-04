@@ -1003,23 +1003,23 @@ g_tree_traverse (GTree         *tree,
 
 /**
  * g_tree_search:
- * @tree: a #GTree.
- * @search_func: a function used to search the #GTree. 
- * @user_data: the data passed as the second argument to the @search_func 
- * function.
- * 
+ * @tree: a #GTree
+ * @search_func: a function used to search the #GTree
+ * @user_data: the data passed as the second argument to @search_func
+ *
  * Searches a #GTree using @search_func.
  *
- * The @search_func is called with a pointer to the key of a key/value pair in 
- * the tree, and the passed in @user_data. If @search_func returns 0 for a 
- * key/value pair, then g_tree_search_func() will return the value of that 
- * pair. If @search_func returns -1,  searching will proceed among the 
- * key/value pairs that have a smaller key; if @search_func returns 1, 
- * searching will proceed among the key/value pairs that have a larger key.
+ * The @search_func is called with a pointer to the key of a key/value
+ * pair in the tree, and the passed in @user_data. If @search_func returns
+ * 0 for a key/value pair, then the corresponding value is returned as
+ * the result of g_tree_search(). If @search_func returns -1, searching
+ * will proceed among the key/value pairs that have a smaller key; if
+ * @search_func returns 1, searching will proceed among the key/value
+ * pairs that have a larger key.
  *
- * Return value: the value corresponding to the found key, or %NULL if the key 
- * was not found.
- **/
+ * Return value: the value corresponding to the found key, or %NULL if
+ * the key was not found.
+ */
 gpointer
 g_tree_search (GTree         *tree,
 	       GCompareFunc   search_func,

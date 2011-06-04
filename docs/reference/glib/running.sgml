@@ -58,7 +58,7 @@ variables like <envar>LANG</envar>, <envar>PATH</envar> or <envar>HOME</envar>.
   </para>
 </formalpara>
 
-<formalpara id="G_DEBUG">
+<formalpara id="G-DEBUG:CAPS">
   <title><envar>G_DEBUG</envar></title>
   <para>
     If GLib has been configured with <option>--enable-debug=yes</option>,

@@ -1061,8 +1061,8 @@ g_data_initialize (void)
  * retrieve the other.
  *
  * Quarks are used for both <link
- * linkend="glib-datasets">Datasets</link> and <link
- * linkend="glib-keyed-data-lists">Keyed Data Lists</link>.
+ * linkend="glib-Datasets">Datasets</link> and <link
+ * linkend="glib-Keyed-Data-Lists">Keyed Data Lists</link>.
  *
  * To create a new quark from a string, use g_quark_from_string() or
  * g_quark_from_static_string().

@@ -96,8 +96,7 @@ typedef struct _GRealArray  GRealArray;
  * @len: the number of elements in the #GArray not including the
  *       possible terminating zero element.
  *
- * Contains the public fields of an <link
- * linkend="glib-arrays">Array</link>.
+ * Contains the public fields of an <link linkend="glib-Arrays">Array</link>.
  **/
 struct _GRealArray
 {

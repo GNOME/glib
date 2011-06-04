@@ -724,7 +724,7 @@ g_queue_peek_nth_link (GQueue *queue,
 
 /**
  * g_queue_link_index:
- * @queue: a #Gqueue
+ * @queue: a #GQueue
  * @link_: A #GList link
  * 
  * Returns the position of @link_ in @queue.

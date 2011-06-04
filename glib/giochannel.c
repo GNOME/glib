@@ -89,7 +89,7 @@
  * increment or decrement the reference count respectively. When the
  * reference count falls to 0, the #GIOChannel is freed. (Though it
  * isn't closed automatically, unless it was created using
- * g_io_channel_new_from_file().) Using g_io_add_watch() or
+ * g_io_channel_new_file().) Using g_io_add_watch() or
  * g_io_add_watch_full() increments a channel's reference count.
  *
  * The new functions g_io_channel_read_chars(),

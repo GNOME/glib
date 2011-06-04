@@ -431,7 +431,7 @@ g_sequence_iter_compare (GSequenceIter *a,
 
 /**
  * g_sequence_append:
- * @seq: a #GSequencePointer
+ * @seq: a #GSequence
  * @data: the data for the new item
  *
  * Adds a new item to the end of @seq.
@@ -649,13 +649,15 @@ g_sequence_move_range (GSequenceIter *dest,
 /**
  * g_sequence_sort:
  * @seq: a #GSequence
- * @cmp_func: the #GCompareDataFunc used to sort @seq. This function is
- *       passed two items of @seq and should return 0 if they are equal,
- *       a negative value if the first comes before the second, and a
- *       positive value if the second comes before the first.
+ * @cmp_func: the function used to sort the sequence
  * @cmp_data: user data passed to @cmp_func
  *
  * Sorts @seq using @cmp_func.
+ *
+ * @cmp_func is passed two items of @seq and should
+ * return 0 if they are equal, a negative value if the
+ * first comes before the second, and a positive value
+ * if the second comes before the first.
  *
  * Since: 2.14
  **/
@@ -679,16 +681,17 @@ g_sequence_sort (GSequence        *seq,
  * g_sequence_insert_sorted:
  * @seq: a #GSequence
  * @data: the data to insert
- * @cmp_func: the #GCompareDataFunc used to compare items in the sequence. It
- *     is called with two items of the @seq and @user_data. It should
- *     return 0 if the items are equal, a negative value if the first
- *     item comes before the second, and a positive value if the second
- *     item comes before the first.
+ * @cmp_func: the function used to compare items in the sequence
  * @cmp_data: user data passed to @cmp_func.
  *
- * Inserts @data into @sequence using @func to determine the new position.
- * The sequence must already be sorted according to @cmp_func; otherwise the
- * new position of @data is undefined.
+ * Inserts @data into @sequence using @func to determine the new
+ * position. The sequence must already be sorted according to @cmp_func;
+ * otherwise the new position of @data is undefined.
+ *
+ * @cmp_func is called with two items of the @seq and @user_data.
+ * It should return 0 if the items are equal, a negative value
+ * if the first item comes before the second, and a positive value
+ * if the second  item comes before the first.
  *
  * Return value: a #GSequenceIter pointing to the new item.
  *
@@ -716,17 +719,18 @@ g_sequence_insert_sorted (GSequence        *seq,
 /**
  * g_sequence_sort_changed:
  * @iter: A #GSequenceIter
- * @cmp_func: the #GCompareDataFunc used to compare items in the sequence. It
- *     is called with two items of the @seq and @user_data. It should
- *     return 0 if the items are equal, a negative value if the first
- *     item comes before the second, and a positive value if the second
- *     item comes before the first.
+ * @cmp_func: the function used to compare items in the sequence
  * @cmp_data: user data passed to @cmp_func.
  *
  * Moves the data pointed to a new position as indicated by @cmp_func. This
  * function should be called for items in a sequence already sorted according
  * to @cmp_func whenever some aspect of an item changes so that @cmp_func
  * may return different values for that item.
+ *
+ * @cmp_func is called with two items of the @seq and @user_data.
+ * It should return 0 if the items are equal, a negative value if
+ * the first item comes before the second, and a positive value if
+ * the second item comes before the first.
  *
  * Since: 2.14
  **/
@@ -886,16 +890,17 @@ g_sequence_sort_iter (GSequence                *seq,
 /**
  * g_sequence_sort_changed_iter:
  * @iter: a #GSequenceIter
- * @iter_cmp: the #GSequenceItercompare used to compare iterators in the
- *     sequence. It is called with two iterators pointing into @seq. It should
- *     return 0 if the iterators are equal, a negative value if the first
- *     iterator comes before the second, and a positive value if the second
- *     iterator comes before the first.
+ * @iter_cmp: the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @cmp_func
  *
  * Like g_sequence_sort_changed(), but uses
  * a #GSequenceIterCompareFunc instead of a #GCompareDataFunc as
  * the compare function.
+ *
+ * @iter_cmp is called with two iterators pointing into @seq. It should
+ * return 0 if the iterators are equal, a negative value if the first
+ * iterator comes before the second, and a positive value if the second
+ * iterator comes before the first.
  *
  * Since: 2.14
  **/
@@ -948,16 +953,22 @@ g_sequence_sort_changed_iter (GSequenceIter            *iter,
  * g_sequence_insert_sorted_iter:
  * @seq: a #GSequence
  * @data: data for the new item
- * @iter_cmp: the #GSequenceItercompare used to compare iterators in the
- *     sequence. It is called with two iterators pointing into @seq. It should
- *     return 0 if the iterators are equal, a negative value if the first
- *     iterator comes before the second, and a positive value if the second
- *     iterator comes before the first.
+ * @iter_cmp: the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @cmp_func
  *
  * Like g_sequence_insert_sorted(), but uses
  * a #GSequenceIterCompareFunc instead of a #GCompareDataFunc as
  * the compare function.
+ *
+ * @iter_cmp is called with two iterators pointing into @seq.
+ * It should return 0 if the iterators are equal, a negative
+ * value if the first iterator comes before the second, and a
+ * positive value if the second iterator comes before the first.
+ *
+ * It is called with two iterators pointing into @seq. It should
+ * return 0 if the iterators are equal, a negative value if the
+ * first iterator comes before the second, and a positive value
+ * if the second iterator comes before the first.
  *
  * Return value: a #GSequenceIter pointing to the new item
  *
@@ -1010,22 +1021,23 @@ g_sequence_insert_sorted_iter (GSequence                *seq,
  * g_sequence_search_iter:
  * @seq: a #GSequence
  * @data: data for the new item
- * @iter_cmp: the #GSequenceIterCompare function used to compare iterators
- *     in the sequence. It is called with two iterators pointing into @seq.
- *     It should return 0 if the iterators are equal, a negative value if the
- *     first iterator comes before the second, and a positive value if the
- *     second iterator comes before the first.
+ * @iter_cmp: the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @iter_cmp
  *
- * Like g_sequence_search(), but uses
- * a #GSequenceIterCompareFunc instead of a #GCompareDataFunc as
- * the compare function.
+ * Like g_sequence_search(), but uses a #GSequenceIterCompareFunc
+ * instead of a #GCompareDataFunc as the compare function.
+ *
+ * @iter_cmp is called with two iterators pointing into @seq.
+ * It should return 0 if the iterators are equal, a negative value
+ * if the first iterator comes before the second, and a positive
+ * value if the second iterator comes before the first.
  *
  * If you are simply searching for an existing element of the sequence,
  * consider using g_sequence_lookup_iter().
  *
  * Return value: a #GSequenceIter pointing to the position in @seq
- * where @data would have been inserted according to @iter_cmp and @cmp_data.
+ *     where @data would have been inserted according to @iter_cmp
+ *     and @cmp_data.
  *
  * Since: 2.14
  **/
@@ -1064,19 +1076,20 @@ g_sequence_search_iter (GSequence                *seq,
  * g_sequence_lookup_iter:
  * @seq: a #GSequence
  * @data: data to lookup
- * @iter_cmp: the #GSequenceIterCompare function used to compare iterators
- *     in the sequence. It is called with two iterators pointing into @seq.
- *     It should return 0 if the iterators are equal, a negative value if the
- *     first iterator comes before the second, and a positive value if the
- *     second iterator comes before the first.
+ * @iter_cmp: the function used to compare iterators in the sequence
  * @cmp_data: user data passed to @iter_cmp
  *
- * Like g_sequence_lookup(), but uses
- * a #GSequenceIterCompareFunc instead of a #GCompareDataFunc as
- * the compare function.
+ * Like g_sequence_lookup(), but uses a #GSequenceIterCompareFunc
+ * instead of a #GCompareDataFunc as the compare function.
  *
- * Return value: an #GSequenceIter pointing to the position of the first item
- * found equal to @data according to @cmp_func and @cmp_data.
+ * @iter_cmp is called with two iterators pointing into @seq.
+ * It should return 0 if the iterators are equal, a negative value
+ * if the first iterator comes before the second, and a positive
+ * value if the second iterator comes before the first.
+ *
+ * Return value: an #GSequenceIter pointing to the position of
+ *     the first item found equal to @data according to @cmp_func
+ *     and @cmp_data.
  *
  * Since: 2.28
  **/

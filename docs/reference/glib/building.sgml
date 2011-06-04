@@ -276,7 +276,7 @@ How to compile GLib itself
          Turns on various amounts of debugging support. Setting this to 'no'
          disables g_assert(), g_return_if_fail(), g_return_val_if_fail() and
          all cast checks between different object types. Setting it to 'minimum'         disables only cast checks. Setting it to 'yes' enables
-         <link linkend="GLIB-Debug-Options">runtime debugging</link>.
+         <link linkend="G-DEBUG:CAPS">runtime debugging</link>.
          The default is 'minimum'.
          Note that 'no' is fast, but dangerous as it tends to destabilize
          even mostly bug-free software by changing the effect of many bugs

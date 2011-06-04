@@ -165,6 +165,7 @@ The macro should only be used once per source code line.
 @expr: a constant expression.
 @Since: 2.20
 
+
 <!-- ##### MACRO G_STATIC_ASSERT_EXPR ##### -->
 <para>
 The G_STATIC_ASSERT_EXPR macro lets the programmer check a condition at
@@ -183,6 +184,7 @@ the first argument of a comma expression.
 
 @expr: a constant expression.
 @Since: 2.30
+
 
 <!-- ##### MACRO G_GNUC_EXTENSION ##### -->
 <para>
@@ -635,8 +637,9 @@ printing values of type #guint64. See also #G_GINT16_FORMAT.
 Some platforms do not support scanning and printing 64 bit integers,
 even though the types are supported. On such platforms #G_GUINT64_FORMAT
 is not defined.  Note that scanf() may not support 64 bit integers, even
-if #G_GINT64_FORMAT is defined. Due to its weak error handling, scanf() is not 
-recommended for parsing anyway; consider using g_strtoull() instead.
+if #G_GINT64_FORMAT is defined. Due to its weak error handling, scanf()
+is not recommended for parsing anyway; consider using g_ascii_strtoull()
+instead.
 </para>
 </note>
 

@@ -4187,10 +4187,10 @@ g_timeout_add_seconds_full (gint           priority,
  * it returns %FALSE, at which point the timeout is automatically destroyed
  * and the function will not be called again.
  *
- * This internally creates a main loop source using 
- * g_timeout_source_new_seconds() and attaches it to the main loop context 
- * using g_source_attach(). You can do these steps manually if you need 
- * greater control. Also see g_timout_add_seconds_full().
+ * This internally creates a main loop source using
+ * g_timeout_source_new_seconds() and attaches it to the main loop context
+ * using g_source_attach(). You can do these steps manually if you need
+ * greater control. Also see g_timeout_add_seconds_full().
  *
  * Note that the first call of the timer may not be precise for timeouts
  * of one second. If you need finer precision and have such a timeout,

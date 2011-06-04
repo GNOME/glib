@@ -1929,7 +1929,7 @@ g_markup_parse_context_get_user_data (GMarkupParseContext *context)
  * which is why g_markup_parse_context_pop() is provided to allow "one
  * last access" to the @user_data provided to this function. In the
  * case of error, the @user_data provided here is passed directly to
- * the error callback of the subparser and g_markup_parse_context()
+ * the error callback of the subparser and g_markup_parse_context_pop()
  * should not be called. In either case, if @user_data was allocated
  * then it ought to be freed from both of these locations.
  *

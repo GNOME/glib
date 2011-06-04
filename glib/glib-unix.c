@@ -198,7 +198,7 @@ g_unix_set_fd_nonblocking (gint       fd,
  * signal @signum.  Currently only %SIGHUP, %SIGINT, and %SIGTERM can
  * be monitored.  Note that unlike the UNIX default, all sources which
  * have created a watch will be dispatched, regardless of which
- * underlying thread invoked g_unix_signal_create_watch().
+ * underlying thread invoked g_unix_signal_source_new().
  *
  * For example, an effective use of this function is to handle SIGTERM
  * cleanly; flushing any outstanding files, and then calling
