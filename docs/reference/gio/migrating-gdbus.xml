@@ -36,8 +36,8 @@
           dbus-glib models only D-Bus interfaces and does not provide
           any types for objects. GDBus models both D-Bus interfaces
           (via the #GDBusInterface, #GDBusProxy and
-          #GDBusInterfaceStub types) and objects (via the
-          #GDBusObject, #GDBusObjectStub and #GDBusObjectProxy types).
+          #GDBusInterfaceSkeleton types) and objects (via the
+          #GDBusObject, #GDBusObjectSkeleton and #GDBusObjectProxy types).
         </para></listitem>
         <listitem><para>
           GDBus includes native support for the <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-properties">org.freedesktop.DBus.Properties</ulink> (via the #GDBusProxy type) and <ulink url="http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager">org.freedesktop.DBus.ObjectManager</ulink> D-Bus interfaces, dbus-glib doesn't.
@@ -76,7 +76,7 @@
         <tbody>
           <row><entry>#DBusGConnection</entry><entry>#GDBusConnection</entry></row>
           <row><entry>#DBusGProxy</entry><entry>#GDBusProxy, #GDBusInterface - also see #GDBusObjectProxy</entry></row>
-          <row><entry>#DBusGObject</entry><entry>#GDBusInterfaceStub, #GDBusInterface - also see #GDBusObjectStub</entry></row>
+          <row><entry>#DBusGObject</entry><entry>#GDBusInterfaceSkeleton, #GDBusInterface - also see #GDBusObjectSkeleton</entry></row>
           <row><entry>#DBusGMethodInvocation</entry><entry>#GDBusMethodInvocation</entry></row>
           <row><entry>dbus_g_bus_get()</entry><entry>g_bus_get_sync(), also see
                g_bus_get()</entry></row>
