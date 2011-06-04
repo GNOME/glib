@@ -265,14 +265,14 @@ The name org.freedesktop.NetworkManager is owned by :1.5
   Emitting a signal:
 </para>
 <programlisting>
-$ gdbus emit --session --o /foo -s org.bar.Foo "['foo', 'bar', 'baz']"
+$ gdbus emit --session --object-path /foo --signal org.bar.Foo "['foo', 'bar', 'baz']"
 </programlisting>
 
 <para>
   Emitting a signal to a specific process:
 </para>
 <programlisting>
-$ gdbus emit --session --o /foo -s org.bar.Foo someString --dest :1.3
+$ gdbus emit --session --object-path /bar --signal org.bar.Bar someString --dest :1.42
 </programlisting>
 
 </refsect1>
