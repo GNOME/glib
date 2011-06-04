@@ -28,7 +28,7 @@ $(GDBUS_GENERATED) : gdbus-example-objectmanager.xml
 		--c-generate-object-manager					\
 		--generate-c-code gdbus-example-objectmanager-generated		\
 		--generate-docbook gdbus-example-objectmanager-generated	\
-		gdbus-example-objectmanager.xml					\
+		$<					\
 		$(NULL)
 
 BUILT_SOURCES += $(GDBUS_GENERATED)
