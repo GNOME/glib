@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib.HEAD.he\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-13 08:37+0300\n"
-"PO-Revision-Date: 2011-05-13 08:38+0200\n"
+"POT-Creation-Date: 2011-06-04 13:43+0300\n"
+"PO-Revision-Date: 2011-06-04 13:44+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "Language: he\n"
@@ -108,8 +108,8 @@ msgid "Could not open converter from '%s' to '%s'"
 msgstr "Could not open converter from '%s' to '%s'"
 
 #: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1575
-#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2460 ../glib/gutf8.c:992
-#: ../glib/gutf8.c:1443 ../gio/gcharsetconverter.c:345
+#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2460 ../glib/gutf8.c:979
+#: ../glib/gutf8.c:1430 ../gio/gcharsetconverter.c:345
 msgid "Invalid byte sequence in conversion input"
 msgstr "Invalid byte sequence in conversion input"
 
@@ -119,8 +119,8 @@ msgstr "Invalid byte sequence in conversion input"
 msgid "Error during conversion: %s"
 msgstr "Error during conversion: %s"
 
-#: ../glib/gconvert.c:809 ../glib/gutf8.c:988 ../glib/gutf8.c:1198
-#: ../glib/gutf8.c:1335 ../glib/gutf8.c:1439
+#: ../glib/gconvert.c:809 ../glib/gutf8.c:975 ../glib/gutf8.c:1185
+#: ../glib/gutf8.c:1322 ../glib/gutf8.c:1426
 msgid "Partial character sequence at end of input"
 msgstr "Partial character sequence at end of input"
 
@@ -1193,16 +1193,16 @@ msgstr "Unknown error executing child process \"%s\""
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Failed to read enough data from child pid pipe (%s)"
 
-#: ../glib/gutf8.c:1066
+#: ../glib/gutf8.c:1053
 msgid "Character out of range for UTF-8"
 msgstr "Character out of range for UTF-8"
 
-#: ../glib/gutf8.c:1166 ../glib/gutf8.c:1175 ../glib/gutf8.c:1305
-#: ../glib/gutf8.c:1314 ../glib/gutf8.c:1453 ../glib/gutf8.c:1549
+#: ../glib/gutf8.c:1153 ../glib/gutf8.c:1162 ../glib/gutf8.c:1292
+#: ../glib/gutf8.c:1301 ../glib/gutf8.c:1440 ../glib/gutf8.c:1536
 msgid "Invalid sequence in conversion input"
 msgstr "Invalid sequence in conversion input"
 
-#: ../glib/gutf8.c:1464 ../glib/gutf8.c:1560
+#: ../glib/gutf8.c:1451 ../glib/gutf8.c:1547
 msgid "Character out of range for UTF-16"
 msgstr "Character out of range for UTF-16"
 
@@ -1265,74 +1265,74 @@ msgstr "Missing·argument·for·%s"
 msgid "Unknown option %s"
 msgstr "Unknown option %s"
 
-#: ../glib/gkeyfile.c:363
+#: ../glib/gkeyfile.c:366
 msgid "Valid key file could not be found in search dirs"
 msgstr "Valid key file could not be found in search dirs"
 
-#: ../glib/gkeyfile.c:398
+#: ../glib/gkeyfile.c:401
 msgid "Not a regular file"
 msgstr "Not a regular file"
 
-#: ../glib/gkeyfile.c:406
+#: ../glib/gkeyfile.c:409
 msgid "File is empty"
 msgstr "File is empty"
 
-#: ../glib/gkeyfile.c:765
+#: ../glib/gkeyfile.c:768
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 
-#: ../glib/gkeyfile.c:825
+#: ../glib/gkeyfile.c:828
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Invalid group name: %s"
 
-#: ../glib/gkeyfile.c:847
+#: ../glib/gkeyfile.c:850
 msgid "Key file does not start with a group"
 msgstr "Key file does not start with a group"
 
-#: ../glib/gkeyfile.c:873
+#: ../glib/gkeyfile.c:876
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Invalid key name: %s"
 
-#: ../glib/gkeyfile.c:900
+#: ../glib/gkeyfile.c:903
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Key file contains unsupported encoding '%s'"
 
-#: ../glib/gkeyfile.c:1118 ../glib/gkeyfile.c:1280 ../glib/gkeyfile.c:2648
-#: ../glib/gkeyfile.c:2714 ../glib/gkeyfile.c:2849 ../glib/gkeyfile.c:2982
-#: ../glib/gkeyfile.c:3135 ../glib/gkeyfile.c:3322 ../glib/gkeyfile.c:3383
+#: ../glib/gkeyfile.c:1149 ../glib/gkeyfile.c:1311 ../glib/gkeyfile.c:2679
+#: ../glib/gkeyfile.c:2745 ../glib/gkeyfile.c:2880 ../glib/gkeyfile.c:3013
+#: ../glib/gkeyfile.c:3213 ../glib/gkeyfile.c:3402 ../glib/gkeyfile.c:3471
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Key file does not have group '%s'"
 
-#: ../glib/gkeyfile.c:1292
+#: ../glib/gkeyfile.c:1323
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Key file does not have key '%s'"
 
-#: ../glib/gkeyfile.c:1399 ../glib/gkeyfile.c:1514
+#: ../glib/gkeyfile.c:1430 ../glib/gkeyfile.c:1545
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Key file contains key '%s' with value '%s' which is not UTF-8"
 
-#: ../glib/gkeyfile.c:1419 ../glib/gkeyfile.c:1902
+#: ../glib/gkeyfile.c:1450 ../glib/gkeyfile.c:1933
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Key file contains key '%s' which has value that cannot be interpreted."
 
-#: ../glib/gkeyfile.c:1534
+#: ../glib/gkeyfile.c:1565
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 
-#: ../glib/gkeyfile.c:2117 ../glib/gkeyfile.c:2479
+#: ../glib/gkeyfile.c:2148 ../glib/gkeyfile.c:2510
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1341,36 +1341,36 @@ msgstr ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
 
-#: ../glib/gkeyfile.c:2663 ../glib/gkeyfile.c:2864 ../glib/gkeyfile.c:3394
+#: ../glib/gkeyfile.c:2694 ../glib/gkeyfile.c:2895 ../glib/gkeyfile.c:3482
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Key file does not have key '%s' in group '%s'"
 
-#: ../glib/gkeyfile.c:3628
+#: ../glib/gkeyfile.c:3716
 msgid "Key file contains escape character at end of line"
 msgstr "Key file contains escape character at end of line"
 
-#: ../glib/gkeyfile.c:3650
+#: ../glib/gkeyfile.c:3738
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Key file contains invalid escape sequence '%s'"
 
-#: ../glib/gkeyfile.c:3792
+#: ../glib/gkeyfile.c:3880
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Value '%s' cannot be interpreted as a number."
 
-#: ../glib/gkeyfile.c:3806
+#: ../glib/gkeyfile.c:3894
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Integer value '%s' out of range"
 
-#: ../glib/gkeyfile.c:3839
+#: ../glib/gkeyfile.c:3927
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Value '%s' cannot be interpreted as a float number."
 
-#: ../glib/gkeyfile.c:3863
+#: ../glib/gkeyfile.c:3951
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Value '%s' cannot be interpreted as a boolean."
@@ -1411,25 +1411,25 @@ msgstr "Not enough space in destination"
 msgid "Cancellable initialization not supported"
 msgstr "Cancellable initialization not supported"
 
-#: ../gio/gcontenttype.c:179
+#: ../gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "Unknown type"
 
-#: ../gio/gcontenttype.c:180
+#: ../gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "%s filetype"
 
-#: ../gio/gcontenttype.c:679
+#: ../gio/gcontenttype.c:680
 #, c-format
 msgid "%s type"
 msgstr "%s type"
 
-#: ../gio/gcredentials.c:246 ../gio/gcredentials.c:441
+#: ../gio/gcredentials.c:273 ../gio/gcredentials.c:495
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials is not implemented on this OS"
 
-#: ../gio/gcredentials.c:396
+#: ../gio/gcredentials.c:447
 msgid "There is no GCredentials support for your platform"
 msgstr "There is no GCredentials support for your platform"
 
@@ -1934,21 +1934,21 @@ msgstr "Error return with body of type `%s'"
 msgid "Error return with empty body"
 msgstr "Error return with empty body"
 
-#: ../gio/gdbusprivate.c:1769
+#: ../gio/gdbusprivate.c:1717
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Unable to load /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:1287
+#: ../gio/gdbusproxy.c:1425
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Error calling StartServiceByName for %s: "
 
-#: ../gio/gdbusproxy.c:1308
+#: ../gio/gdbusproxy.c:1446
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Unexpected reply %d from StartServiceByName(\"%s\") method"
 
-#: ../gio/gdbusproxy.c:2370 ../gio/gdbusproxy.c:2529
+#: ../gio/gdbusproxy.c:2508 ../gio/gdbusproxy.c:2667
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -3131,42 +3131,37 @@ msgstr "Path must not contain two adjacent slashes (//)\n"
 msgid "No such key '%s'\n"
 msgstr "No such key '%s'\n"
 
-#: ../gio/gsettings-tool.c:493
+#: ../gio/gsettings-tool.c:504
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "The provided value is outside of the valid range\n"
 
-#: ../gio/gsettings-tool.c:503
-#, c-format
-msgid "Failed to set value\n"
-msgstr "Failed to set value\n"
-
-#: ../gio/gsettings-tool.c:529
+#: ../gio/gsettings-tool.c:533
 msgid "Print help"
 msgstr "Print help"
 
-#: ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:539
 msgid "List the installed (non-relocatable) schemas"
 msgstr "List the installed (non-relocatable) schemas"
 
-#: ../gio/gsettings-tool.c:541
+#: ../gio/gsettings-tool.c:545
 msgid "List the installed relocatable schemas"
 msgstr "List the installed relocatable schemas"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:551
 msgid "List the keys in SCHEMA"
 msgstr "List the keys in SCHEMA"
 
-#: ../gio/gsettings-tool.c:548 ../gio/gsettings-tool.c:554
-#: ../gio/gsettings-tool.c:591
+#: ../gio/gsettings-tool.c:552 ../gio/gsettings-tool.c:558
+#: ../gio/gsettings-tool.c:595
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMA[:PATH]"
 
-#: ../gio/gsettings-tool.c:553
+#: ../gio/gsettings-tool.c:557
 msgid "List the children of SCHEMA"
 msgstr "List the children of SCHEMA"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:563
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3174,44 +3169,44 @@ msgstr ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
 
-#: ../gio/gsettings-tool.c:561
+#: ../gio/gsettings-tool.c:565
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMA[:PATH]]"
 
-#: ../gio/gsettings-tool.c:566
+#: ../gio/gsettings-tool.c:570
 msgid "Get the value of KEY"
 msgstr "Get the value of KEY"
 
-#: ../gio/gsettings-tool.c:567 ../gio/gsettings-tool.c:573
-#: ../gio/gsettings-tool.c:585 ../gio/gsettings-tool.c:597
+#: ../gio/gsettings-tool.c:571 ../gio/gsettings-tool.c:577
+#: ../gio/gsettings-tool.c:589 ../gio/gsettings-tool.c:601
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMA[:PATH] KEY"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:576
 msgid "Query the range of valid values for KEY"
 msgstr "Query the range of valid values for KEY"
 
-#: ../gio/gsettings-tool.c:578
+#: ../gio/gsettings-tool.c:582
 msgid "Set the value of KEY to VALUE"
 msgstr "Set the value of KEY to VALUE"
 
-#: ../gio/gsettings-tool.c:579
+#: ../gio/gsettings-tool.c:583
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMA[:PATH] KEY VALUE"
 
-#: ../gio/gsettings-tool.c:584
+#: ../gio/gsettings-tool.c:588
 msgid "Reset KEY to its default value"
 msgstr "Reset KEY to its default value"
 
-#: ../gio/gsettings-tool.c:590
+#: ../gio/gsettings-tool.c:594
 msgid "Reset all keys in SCHEMA to their defaults"
 msgstr "Reset all keys in SCHEMA to their defaults"
 
-#: ../gio/gsettings-tool.c:596
+#: ../gio/gsettings-tool.c:600
 msgid "Check if KEY is writable"
 msgstr "Check if KEY is writable"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:606
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
@@ -3221,11 +3216,11 @@ msgstr ""
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 
-#: ../gio/gsettings-tool.c:605
+#: ../gio/gsettings-tool.c:609
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMA[:PATH] [KEY]"
 
-#: ../gio/gsettings-tool.c:609
+#: ../gio/gsettings-tool.c:613
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -3234,7 +3229,7 @@ msgstr ""
 "Unknown command %s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:617
+#: ../gio/gsettings-tool.c:621
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3278,7 +3273,7 @@ msgstr ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:639
+#: ../gio/gsettings-tool.c:643
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3293,15 +3288,15 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:644
+#: ../gio/gsettings-tool.c:648
 msgid "Arguments:\n"
 msgstr "Arguments:\n"
 
-#: ../gio/gsettings-tool.c:648
+#: ../gio/gsettings-tool.c:652
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMMAND   The (optional) command to explain\n"
 
-#: ../gio/gsettings-tool.c:652
+#: ../gio/gsettings-tool.c:656
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3309,19 +3304,19 @@ msgstr ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 
-#: ../gio/gsettings-tool.c:657
+#: ../gio/gsettings-tool.c:661
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  KEY       The (optional) key within the schema\n"
 
-#: ../gio/gsettings-tool.c:661
+#: ../gio/gsettings-tool.c:665
 msgid "  KEY       The key within the schema\n"
 msgstr "  KEY       The key within the schema\n"
 
-#: ../gio/gsettings-tool.c:665
+#: ../gio/gsettings-tool.c:669
 msgid "  VALUE     The value to set\n"
 msgstr "  VALUE     The value to set\n"
 
-#: ../gio/gsettings-tool.c:757
+#: ../gio/gsettings-tool.c:761
 #, c-format
 msgid "Empty schema name given\n"
 msgstr "Empty schema name given\n"
@@ -3348,7 +3343,7 @@ msgstr "Socket I/O timed out"
 msgid "creating GSocket from fd: %s"
 msgstr "creating GSocket from fd: %s"
 
-#: ../gio/gsocket.c:476 ../gio/gsocket.c:492 ../gio/gsocket.c:2139
+#: ../gio/gsocket.c:476 ../gio/gsocket.c:492
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Unable to create socket: %s"
@@ -3395,7 +3390,7 @@ msgstr "Connection in progress"
 msgid "Error connecting: %s"
 msgstr "Error connecting: %s"
 
-#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3549
+#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3554
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Unable to get pending error: %s"
@@ -3409,6 +3404,11 @@ msgstr "Error receiving data: %s"
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Error sending data: %s"
+
+#: ../gio/gsocket.c:2139
+#, c-format
+msgid "Unable to shutdown socket: %s"
+msgstr "Unable to shutdown socket: %s"
 
 #: ../gio/gsocket.c:2218
 #, c-format
@@ -3434,7 +3434,7 @@ msgstr "GSocketControlMessage not supported on windows"
 msgid "Error receiving message: %s"
 msgstr "Error receiving message: %s"
 
-#: ../gio/gsocket.c:3564
+#: ../gio/gsocket.c:3573
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials not implemented for this OS"
 
@@ -3566,12 +3566,12 @@ msgstr "Could not parse PEM-encoded certificate"
 msgid "Could not parse PEM-encoded private key"
 msgstr "Could not parse PEM-encoded private key"
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:506
+#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Expecting 1 control message, got %d"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:516
+#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:531
 msgid "Unexpected type of ancillary data"
 msgstr "Unexpected type of ancillary data"
 
@@ -3584,16 +3584,16 @@ msgstr "Expecting one fd, but got %d\n"
 msgid "Received invalid fd"
 msgstr "Received invalid fd"
 
-#: ../gio/gunixconnection.c:359
+#: ../gio/gunixconnection.c:371
 msgid "Error sending credentials: "
 msgstr "Error sending data: %s"
 
-#: ../gio/gunixconnection.c:439
+#: ../gio/gunixconnection.c:452
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Error checking if SO_PASSCRED is enabled for socket: %s"
 
-#: ../gio/gunixconnection.c:448
+#: ../gio/gunixconnection.c:461
 #, c-format
 msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
@@ -3602,18 +3602,23 @@ msgstr ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
 "socket. Expected %d bytes, got %d"
 
-#: ../gio/gunixconnection.c:465
+#: ../gio/gunixconnection.c:478
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Error renaming file: %s"
 
-#: ../gio/gunixconnection.c:496
+#: ../gio/gunixconnection.c:509
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 
-#: ../gio/gunixconnection.c:539
+#: ../gio/gunixconnection.c:545
+#, c-format
+msgid "Not expecting control message, but got %d"
+msgstr "Not expecting control message, but got %d"
+
+#: ../gio/gunixconnection.c:571
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Error while disabling SO_PASSCRED: %s"
@@ -3707,6 +3712,9 @@ msgstr "Need more input"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Invalid hostname"
+
+#~ msgid "Failed to set value\n"
+#~ msgstr "Failed to set value\n"
 
 #~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 #~ msgstr "Type of return value is incorrect, got `%s', expected `%s'"
