@@ -77,11 +77,13 @@ GQuark     g_file_error_quark      (void);
 /* So other code can generate a GFileError */
 GFileError g_file_error_from_errno (gint err_no);
 
+#ifndef __GTK_DOC_IGNORE__
 #ifdef G_OS_WIN32
 #define g_file_test g_file_test_utf8
 #define g_file_get_contents g_file_get_contents_utf8
 #define g_mkstemp g_mkstemp_utf8
 #define g_file_open_tmp g_file_open_tmp_utf8
+#endif
 #endif
 
 gboolean g_file_test         (const gchar  *filename,
