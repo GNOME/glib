@@ -683,6 +683,9 @@ g_once_init_leave
 g_bit_lock
 g_bit_trylock
 g_bit_unlock
+g_pointer_bit_lock
+g_pointer_bit_trylock
+g_pointer_bit_unlock
 
 <SUBSECTION Private>
 G_THREAD_ECF
