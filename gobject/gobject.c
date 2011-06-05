@@ -404,8 +404,7 @@ install_property_internal (GType       g_type,
       return;
     }
 
-  g_param_spec_ref (pspec);
-  g_param_spec_sink (pspec);
+  g_param_spec_ref_sink (pspec);
   PARAM_SPEC_SET_PARAM_ID (pspec, property_id);
   g_param_spec_pool_insert (pspec_pool, pspec, g_type);
 }
