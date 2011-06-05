@@ -523,19 +523,6 @@ validate_array_type_blob (GITypelib     *typelib,
 			  gboolean       return_type,
 			  GError       **error)
 {
-  ArrayTypeBlob *blob;
-
-  blob = (ArrayTypeBlob*)&typelib->data[offset];
-
-  if (!blob->pointer)
-    {
-      g_set_error (error,
-		   G_TYPELIB_ERROR,
-		   G_TYPELIB_ERROR_INVALID_BLOB,
-		   "Pointer type exected for tag %d", blob->tag);
-      return FALSE;
-    }
-
   /* FIXME validate length */
 
   if (!validate_type_blob (typelib,

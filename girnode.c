@@ -1242,6 +1242,8 @@ serialize_type (GIrTypelibBuild    *build,
 				    node->has_length ? "," : "");
 
 	  g_string_append (str, "]");
+	  if (node->is_pointer)
+	    g_string_append (str, "*");
 	}
       else if (node->array_type == GI_ARRAY_TYPE_BYTE_ARRAY)
 	{
@@ -1476,7 +1478,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 		      ArrayTypeBlob *array = (ArrayTypeBlob *)&data[*offset2];
 		      guint32 pos;
 
-		      array->pointer = 1;
+		      array->pointer = type->is_pointer;
 		      array->reserved = 0;
 		      array->tag = type->tag;
 		      array->zero_terminated = type->zero_terminated;

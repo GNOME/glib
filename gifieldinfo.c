@@ -193,14 +193,7 @@ g_field_info_get_field (GIFieldInfo *field_info,
 
   if (g_type_info_is_pointer (type_info))
     {
-      if (g_type_info_get_array_type (type_info) == GI_ARRAY_TYPE_C &&
-          g_type_info_get_array_fixed_size (type_info) >= 0)
-        {
-          /* Consider fixed-size arrays as embedded inside the struct */
-	  value->v_pointer = G_STRUCT_MEMBER_P ((mem), (offset));
-	}
-      else
-	value->v_pointer = G_STRUCT_MEMBER (gpointer, mem, offset);
+      value->v_pointer = G_STRUCT_MEMBER (gpointer, mem, offset);
       result = TRUE;
     }
   else
@@ -248,9 +241,14 @@ g_field_info_get_field (GIFieldInfo *field_info,
 	  value->v_double = G_STRUCT_MEMBER (gdouble, mem, offset);
 	  result = TRUE;
 	  break;
+	case GI_TYPE_TAG_ARRAY:
+	  /* We don't check the array type and that it is fixed-size,
+	     we trust g-ir-compiler to do the right thing */
+	  value->v_pointer = G_STRUCT_MEMBER_P (mem, offset);
+	  result = TRUE;
+	  break;
 	case GI_TYPE_TAG_UTF8:
 	case GI_TYPE_TAG_FILENAME:
-	case GI_TYPE_TAG_ARRAY:
 	case GI_TYPE_TAG_GLIST:
 	case GI_TYPE_TAG_GSLIST:
 	case GI_TYPE_TAG_GHASH:
