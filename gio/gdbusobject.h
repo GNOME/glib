@@ -45,10 +45,6 @@ typedef struct _GDBusObjectIface GDBusObjectIface;
  *
  * Base object type for D-Bus objects.
  *
- * <note><para>The @lookup_with_typecheck and @peek_with_typecheck
- * virtual functions should only be used by D-Bus interface
- * implementations.</para></note>
- *
  * Since: 2.30
  */
 struct _GDBusObjectIface
