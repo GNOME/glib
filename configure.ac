@@ -614,11 +614,8 @@ main (int argc, char **argv)
     return 1;
 }]])],[glib_cv_have_qsort_r=yes],[glib_cv_have_qsort_r=no])])
 
-if test $glib_cv_have_qsort_r = yes ; then
-  AC_MSG_RESULT([yes])
-    AC_DEFINE(HAVE_QSORT_R, 1, [Define to 1 if you have the 'qsort_r' function])
-else
-  AC_MSG_RESULT([no])
+if test x$glib_cv_have_qsort_r = xyes ; then
+  AC_DEFINE(HAVE_QSORT_R, 1, [Define to 1 if you have the 'qsort_r' function])
 fi
 
 AC_CHECK_SIZEOF(char)
