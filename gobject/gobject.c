@@ -834,7 +834,7 @@ g_object_init (GObject		*object,
 	       GObjectClass	*class)
 {
   object->ref_count = 1;
-  g_datalist_init (&object->qdata);
+  object->qdata = NULL;
 
   if (CLASS_HAS_PROPS (class))
     {
