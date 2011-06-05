@@ -50,14 +50,14 @@
  * linkend="gobject-Signals"/>.
  *
  * <para id="floating-ref">
- * #GInitiallyUnowned is derived from #GObject. The only difference between
- * the two is that the initial reference of a #GInitiallyUnowned is flagged
+ * GInitiallyUnowned is derived from GObject. The only difference between
+ * the two is that the initial reference of a GInitiallyUnowned is flagged
  * as a <firstterm>floating</firstterm> reference.
  * This means that it is not specifically claimed to be "owned" by
  * any code portion. The main motivation for providing floating references is
  * C convenience. In particular, it allows code to be written as:
  * |[
- * container = create_container();
+ * container = create_container ();
  * container_add_child (container, create_child());
  * ]|
  * If <function>container_add_child()</function> will g_object_ref_sink() the
@@ -67,8 +67,8 @@
  * reference leaks, it would have to be written as:
  * |[
  * Child *child;
- * container = create_container();
- * child = create_child();
+ * container = create_container ();
+ * child = create_child ();
  * container_add_child (container, child);
  * g_object_unref (child);
  * ]|
@@ -79,24 +79,24 @@
  * a new reference.
  * Since floating references are useful almost exclusively for C convenience,
  * language bindings that provide automated reference and memory ownership
- * maintenance (such as smart pointers or garbage collection) therefore don't
- * need to expose floating references in their API.
+ * maintenance (such as smart pointers or garbage collection) should not
+ * expose floating references in their API.
  * </para>
  *
  * Some object implementations may need to save an objects floating state
- * across certain code portions (an example is #GtkMenu), to achive this, the
- * following sequence can be used:
+ * across certain code portions (an example is #GtkMenu), to achieve this,
+ * the following sequence can be used:
  *
  * |[
- * // save floating state
+ * /&ast; save floating state &ast;/
  * gboolean was_floating = g_object_is_floating (object);
  * g_object_ref_sink (object);
- * // protected code portion
+ * /&ast; protected code portion &ast;/
  * ...;
- * // restore floating state
+ * /&ast; restore floating state &ast;/
  * if (was_floating)
  *   g_object_force_floating (object);
- * g_obejct_unref (object); // release previously acquired reference
+ * g_object_unref (object); /&ast; release previously acquired reference &ast;/
  * ]|
  */
 
