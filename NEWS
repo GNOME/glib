@@ -1,3 +1,28 @@
+Overview of Changes from GLib 2.28.7 to 2.28.8
+==============================================
+
+* Bugs fixed:
+ 502560 g_rand_double_range returns 'inf'
+ 612729 g_mkdir_with_parents can fail if the directory already exists
+ 619418 Add a performance test for UTF-8 decoding functions
+ 619435 Make g_utf8_to_ucs4_fast() yet faster
+ 631231 bitlock: Fix detection and usage of futexes with Bionic
+ 638449 gtk-doc master broken on glib docs
+ 640518 GMainLoop has quadratic complexity when all pollfd's have...
+ 642026 Race condition in g_static_private_free
+ 644905 glib-compile-schemas: unistd.h include error
+ 646635 Fix introspection of GLib
+ 650882 use stdout instead of stderr for informational messages
+ 651009 minor documentation fix
+ 651034 Regarding g_cond_wait after g_thread_pool_push in gthreaded...
+ 651219 fix path to true(1) on OpenBSD
+ 651327 Minor fixes for the gsocket API
+
+* Updated translations
+ Catalan (Valencian)
+ Irish
+
+
 Overview of Changes from GLib 2.28.6 to 2.28.7
 ==============================================
 
