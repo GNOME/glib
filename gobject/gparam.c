@@ -163,7 +163,6 @@ g_param_spec_init (GParamSpec      *pspec,
   pspec->value_type = class->value_type;
   pspec->owner_type = 0;
   pspec->qdata = NULL;
-  g_datalist_init (&pspec->qdata);
   g_datalist_set_flags (&pspec->qdata, PARAM_FLOATING_FLAG);
   pspec->ref_count = 1;
   pspec->param_id = 0;
@@ -198,7 +197,6 @@ GParamSpec*
 g_param_spec_ref (GParamSpec *pspec)
 {
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
-  g_return_val_if_fail (pspec->ref_count > 0, NULL);
 
   g_atomic_int_inc ((int *)&pspec->ref_count);
 
@@ -217,7 +215,6 @@ g_param_spec_unref (GParamSpec *pspec)
   gboolean is_zero;
 
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
-  g_return_if_fail (pspec->ref_count > 0);
 
   is_zero = g_atomic_int_dec_and_test ((int *)&pspec->ref_count);
 
@@ -242,15 +239,11 @@ g_param_spec_unref (GParamSpec *pspec)
 void
 g_param_spec_sink (GParamSpec *pspec)
 {
-  gpointer oldvalue;
+  gsize oldvalue;
   g_return_if_fail (G_IS_PARAM_SPEC (pspec));
-  g_return_if_fail (pspec->ref_count > 0);
 
-  do
-    oldvalue = g_atomic_pointer_get (&pspec->qdata);
-  while (!g_atomic_pointer_compare_and_exchange ((void**) &pspec->qdata, oldvalue,
-                                                 (gpointer) ((gsize) oldvalue & ~(gsize) PARAM_FLOATING_FLAG)));
-  if ((gsize) oldvalue & PARAM_FLOATING_FLAG)
+  oldvalue = g_atomic_pointer_and (&pspec->qdata, ~(gsize)PARAM_FLOATING_FLAG);
+  if (oldvalue & PARAM_FLOATING_FLAG)
     g_param_spec_unref (pspec);
 }
 
@@ -266,11 +259,13 @@ g_param_spec_sink (GParamSpec *pspec)
 GParamSpec*
 g_param_spec_ref_sink (GParamSpec *pspec)
 {
+  gsize oldvalue;
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), NULL);
-  g_return_val_if_fail (pspec->ref_count > 0, NULL);
 
-  g_param_spec_ref (pspec);
-  g_param_spec_sink (pspec);
+  oldvalue = g_atomic_pointer_and (&pspec->qdata, ~(gsize)PARAM_FLOATING_FLAG);
+  if (!(oldvalue & PARAM_FLOATING_FLAG))
+    g_param_spec_ref (pspec);
+
   return pspec;
 }
 
@@ -919,17 +914,15 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
   
   if (pool && pspec && owner_type > 0 && pspec->owner_type == 0)
     {
-      G_SLOCK (&pool->smutex);
       for (p = pspec->name; *p; p++)
 	{
 	  if (!strchr (G_CSET_A_2_Z G_CSET_a_2_z G_CSET_DIGITS "-_", *p))
 	    {
 	      g_warning (G_STRLOC ": pspec name \"%s\" contains invalid characters", pspec->name);
-	      G_SUNLOCK (&pool->smutex);
 	      return;
 	    }
 	}
-      
+      G_SLOCK (&pool->smutex);
       pspec->owner_type = owner_type;
       g_param_spec_ref (pspec);
       g_hash_table_insert (pool->hash_table, pspec, pspec);
