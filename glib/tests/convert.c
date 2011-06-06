@@ -650,6 +650,37 @@ test_unicode_conversions (void)
   check_ucs4_to_utf16 (ucs4, 3, utf16, 0, 2);
 }
 
+static void
+test_filename_utf8 (void)
+{
+  const gchar *filename = "/my/path/to/foo";
+  gchar *utf8;
+  gchar *back;
+  GError *error;
+
+  error = NULL;
+  utf8 = g_filename_to_utf8 (filename, -1, NULL, NULL, &error);
+  g_assert_no_error (error);
+  back = g_filename_from_utf8 (utf8, -1, NULL, NULL, &error);
+  g_assert_no_error (error);
+  g_assert_cmpstr (back, ==, filename);
+
+  g_free (utf8);
+  g_free (back);
+}
+
+static void
+test_filename_display (void)
+{
+  const gchar *filename = "/my/path/to/foo";
+  char *display;
+
+  display = g_filename_display_basename (filename);
+  g_assert_cmpstr (display, ==, "foo");
+
+  g_free (display);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -659,6 +690,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/conversion/illegal-sequence", test_one_half);
   g_test_add_func ("/conversion/byte-order", test_byte_order);
   g_test_add_func ("/conversion/unicode", test_unicode_conversions);
+  g_test_add_func ("/conversion/filename-utf8", test_filename_utf8);
+  g_test_add_func ("/conversion/filename-display", test_filename_display);
 
   return g_test_run ();
 }
