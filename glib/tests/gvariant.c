@@ -4003,6 +4003,40 @@ test_lookup (void)
   g_variant_unref (dict);
 }
 
+static void
+test_compare (void)
+{
+  GVariant *a;
+  GVariant *b;
+
+  a = g_variant_new_byte (5);
+  b = g_variant_new_byte (6);
+  g_assert (g_variant_compare (a, b) < 0);
+  g_variant_unref (a);
+  g_variant_unref (b);
+  a = g_variant_new_string ("abc");
+  b = g_variant_new_string ("abd");
+  g_assert (g_variant_compare (a, b) < 0);
+  g_variant_unref (a);
+  g_variant_unref (b);
+}
+
+static void
+test_fixed_array (void)
+{
+  GVariant *a;
+  const gint32 *elts;
+  gsize n_elts;
+  gint i;
+
+  a = g_variant_new_parsed ("[1,2,3,4,5]");
+  elts = g_variant_get_fixed_array (a, &n_elts, sizeof (gint32));
+  g_assert (n_elts == 5);
+  for (i = 0; i < 5; i++)
+    g_assert (elts[i] == i + 1);
+  g_variant_unref (a);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -4045,6 +4079,8 @@ main (int argc, char **argv)
   g_test_add_func ("/gvariant/bytestring", test_bytestring);
   g_test_add_func ("/gvariant/lookup-value", test_lookup_value);
   g_test_add_func ("/gvariant/lookup", test_lookup);
+  g_test_add_func ("/gvariant/compare", test_compare);
+  g_test_add_func ("/gvariant/fixed-array", test_fixed_array);
 
   return g_test_run ();
 }
