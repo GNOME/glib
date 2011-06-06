@@ -6,6 +6,22 @@
 #endif
 
 static void
+test_basic (void)
+{
+  GMappedFile *file;
+  GError *error;
+
+  error = NULL;
+  file = g_mapped_file_new (SRCDIR "/empty", FALSE, &error);
+  g_assert_no_error (error);
+
+  g_mapped_file_ref (file);
+  g_mapped_file_unref (file);
+
+  g_mapped_file_unref (file);
+}
+
+static void
 test_empty (void)
 {
   GMappedFile *file;
@@ -75,6 +91,7 @@ main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
+  g_test_add_func ("/mappedfile/basic", test_basic);
   g_test_add_func ("/mappedfile/empty", test_empty);
   g_test_add_func ("/mappedfile/nonexisting", test_nonexisting);
   g_test_add_func ("/mappedfile/writable", test_writable);
