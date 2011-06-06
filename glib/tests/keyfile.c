@@ -589,6 +589,9 @@ test_boolean (void)
   g_key_file_get_boolean (keyfile, "invalid", "key4", &error);
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE);
 
+  g_key_file_set_boolean (keyfile, "valid", "key1", FALSE);
+  check_boolean_value (keyfile, "valid", "key1", FALSE);
+
   g_key_file_free (keyfile);
 }
 
@@ -1323,6 +1326,13 @@ test_load (void)
   g_key_file_set_comment (file, "test", NULL, "the test group", NULL);
   g_key_file_set_comment (file, NULL, NULL, "top comment", NULL);
 
+  g_key_file_free (file);
+
+  file = g_key_file_new ();
+  error = NULL;
+  g_assert (!g_key_file_load_from_data_dirs (file, "keyfile-test.ini", NULL, 0, &error));
+  g_assert_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_NOT_FOUND);
+  g_error_free (error);
   g_key_file_free (file);
 }
 
