@@ -330,6 +330,36 @@ test_uri_unescape (void)
   g_assert_cmpstr (g_uri_unescape_string (NULL,  NULL), ==, NULL);
 }
 
+static void
+test_uri_escape (void)
+{
+  gchar *s;
+
+  s = g_uri_escape_string ("abcdefgABCDEFG._~", NULL, FALSE);
+  g_assert_cmpstr (s, ==, "abcdefgABCDEFG._~");
+  g_free (s);
+  s = g_uri_escape_string (":+ \\?#", NULL, FALSE);
+  g_assert_cmpstr (s, ==, "%3A%2B%20%5C%3F%23");
+  g_free (s);
+  s = g_uri_escape_string ("a+b:c", "+", FALSE);
+  g_assert_cmpstr (s, ==, "a+b%3Ac");
+  g_free (s);
+}
+
+static void
+test_uri_scheme (void)
+{
+  gchar *s;
+
+  s = g_uri_parse_scheme ("ftp://ftp.gtk.org");
+  g_assert_cmpstr (s, ==, "ftp");
+  g_free (s);
+  s = g_uri_parse_scheme ("1bad:");
+  g_assert (s == NULL);
+  s = g_uri_parse_scheme ("bad");
+  g_assert (s == NULL);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -341,6 +371,8 @@ main (int   argc,
   g_test_add_func ("/uri/roundtrip", run_roundtrip_tests);
   g_test_add_func ("/uri/list", run_uri_list_tests);
   g_test_add_func ("/uri/unescape", test_uri_unescape);
+  g_test_add_func ("/uri/escape", test_uri_escape);
+  g_test_add_func ("/uri/scheme", test_uri_scheme);
 
   return g_test_run ();
 }
