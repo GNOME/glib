@@ -315,7 +315,6 @@ GMappedFile *
 g_mapped_file_ref (GMappedFile *file)
 {
   g_return_val_if_fail (file != NULL, NULL);
-  g_return_val_if_fail (file->ref_count > 0, file);
 
   g_atomic_int_inc (&file->ref_count);
 
@@ -337,7 +336,6 @@ void
 g_mapped_file_unref (GMappedFile *file)
 {
   g_return_if_fail (file != NULL);
-  g_return_if_fail (file->ref_count > 0);
 
   if (g_atomic_int_dec_and_test (&file->ref_count))
     g_mapped_file_destroy (file);
