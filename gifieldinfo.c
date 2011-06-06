@@ -193,8 +193,12 @@ g_field_info_get_field (GIFieldInfo *field_info,
 
   if (g_type_info_is_pointer (type_info))
     {
-      if (g_type_info_get_array_type (type_info) == GI_ARRAY_TYPE_C)
-	value->v_pointer = G_STRUCT_MEMBER_P ((mem), (offset));
+      if (g_type_info_get_array_type (type_info) == GI_ARRAY_TYPE_C &&
+          g_type_info_get_array_fixed_size (type_info) >= 0)
+        {
+          /* Consider fixed-size arrays as embedded inside the struct */
+	  value->v_pointer = G_STRUCT_MEMBER_P ((mem), (offset));
+	}
       else
 	value->v_pointer = G_STRUCT_MEMBER (gpointer, mem, offset);
       result = TRUE;
