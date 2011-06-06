@@ -1105,6 +1105,22 @@ test_z (void)
   g_free (p);
 }
 
+static void
+test_refresh (void)
+{
+  GTimeZone *zone;
+
+  zone = g_time_zone_new (NULL);
+  g_assert (zone != NULL);
+  g_time_zone_unref (zone);
+
+  g_time_zone_refresh_local ();
+
+  zone = g_time_zone_new (NULL);
+  g_assert (zone != NULL);
+  g_time_zone_unref (zone);
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -1151,6 +1167,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/dst", test_GDateTime_dst);
   g_test_add_func ("/GDateTime/test_z", test_z);
   g_test_add_func ("/GDateTime/test-all-dates", test_all_dates);
+  g_test_add_func ("/GDateTime/refresh", test_refresh);
 
   return g_test_run ();
 }
