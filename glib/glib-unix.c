@@ -50,20 +50,8 @@ g_unix_error_quark (void)
 }
 
 static gboolean
-g_unix_set_error_from_errno (GError **error)
-{
-  int saved_errno = errno;
-  g_set_error_literal (error,
-                       G_UNIX_ERROR,
-                       0,
-                       g_strerror (errno));
-  errno = saved_errno;
-  return FALSE;
-}
-
-static gboolean
-g_unix_set_error_from_errno_saved (GError **error,
-                                    int      saved_errno)
+g_unix_set_error_from_errno (GError **error,
+                             gint     saved_errno)
 {
   g_set_error_literal (error,
                        G_UNIX_ERROR,
@@ -111,7 +99,7 @@ g_unix_open_pipe (int     *fds,
     /* Atomic */
     ecode = pipe2 (fds, pipe2_flags);
     if (ecode == -1 && errno != ENOSYS)
-      return g_unix_set_error_from_errno (error);
+      return g_unix_set_error_from_errno (error, errno);
     else if (ecode == 0)
       return TRUE;
     /* Fall through on -ENOSYS, we must be running on an old kernel */
@@ -119,13 +107,13 @@ g_unix_open_pipe (int     *fds,
 #endif
   ecode = pipe (fds);
   if (ecode == -1)
-    return g_unix_set_error_from_errno (error);
+    return g_unix_set_error_from_errno (error, errno);
   ecode = fcntl (fds[0], flags);
   if (ecode == -1)
     {
       int saved_errno = errno;
       close (fds[0]);
-      return g_unix_set_error_from_errno_saved (error, saved_errno);
+      return g_unix_set_error_from_errno (error, saved_errno);
     }
   ecode = fcntl (fds[0], flags);
   if (ecode == -1)
@@ -133,7 +121,7 @@ g_unix_open_pipe (int     *fds,
       int saved_errno = errno;
       close (fds[0]);
       close (fds[1]);
-      return g_unix_set_error_from_errno_saved (error, saved_errno);
+      return g_unix_set_error_from_errno (error, saved_errno);
     }
   return TRUE;
 }
@@ -162,7 +150,7 @@ g_unix_set_fd_nonblocking (gint       fd,
   fcntl_flags = fcntl (fd, F_GETFL);
 
   if (fcntl_flags == -1)
-    return g_unix_set_error_from_errno (error);
+    return g_unix_set_error_from_errno (error, errno);
 
   if (nonblock)
     {
@@ -182,10 +170,10 @@ g_unix_set_fd_nonblocking (gint       fd,
     }
 
   if (fcntl (fd, F_SETFL, fcntl_flags) == -1)
-    return g_unix_set_error_from_errno (error);
+    return g_unix_set_error_from_errno (error, errno);
   return TRUE;
 #else
-  return g_unix_set_error_from_errno_saved (error, EINVAL);
+  return g_unix_set_error_from_errno (error, EINVAL);
 #endif
 }
 
