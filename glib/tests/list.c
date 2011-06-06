@@ -356,6 +356,47 @@ test_free_full (void)
   g_slice_free (ListItem, three);
 }
 
+static void
+test_list_copy (void)
+{
+  GList *l, *l2;
+  GList *u, *v;
+
+  l = NULL;
+  l = g_list_append (l, GINT_TO_POINTER (1));
+  l = g_list_append (l, GINT_TO_POINTER (2));
+  l = g_list_append (l, GINT_TO_POINTER (3));
+
+  l2 = g_list_copy (l);
+
+  for (u = l, v = l2; u && v; u = u->next, v = v->next)
+    {
+      g_assert (u->data == v->data);
+    }
+
+  g_list_free (l);
+  g_list_free (l2);
+}
+
+static void
+test_delete_link (void)
+{
+  GList *l, *l2;
+
+  l = NULL;
+  l = g_list_append (l, GINT_TO_POINTER (1));
+  l = g_list_append (l, GINT_TO_POINTER (2));
+  l = g_list_append (l, GINT_TO_POINTER (3));
+
+  l2 = l->next;
+
+  l = g_list_delete_link (l, l2);
+  g_assert (l->data == GINT_TO_POINTER (1));
+  g_assert (l->next->data == GINT_TO_POINTER (3));
+
+  g_list_free (l);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -379,6 +420,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/list/first-last", test_list_first_last);
   g_test_add_func ("/list/insert", test_list_insert);
   g_test_add_func ("/list/free-full", test_free_full);
+  g_test_add_func ("/list/copy", test_list_copy);
+  g_test_add_func ("/list/delete-link", test_delete_link);
 
   return g_test_run ();
 }
