@@ -593,6 +593,7 @@ test_checksum (gconstpointer d)
 {
   const ChecksumTest *test = d;
   GChecksum *checksum;
+  GChecksum *checksum2;
   const char *p;
   int chunk_length;
 
@@ -604,9 +605,12 @@ test_checksum (gconstpointer d)
 	  g_checksum_update (checksum, (const guchar *)p,
 			     MIN (chunk_length, test->length - (p - FIXED_STR)));
 	}
-
+      checksum2 = g_checksum_copy (checksum);
       g_assert_cmpstr (g_checksum_get_string (checksum), ==, test->sum);
       g_checksum_free (checksum);
+
+      g_assert_cmpstr (g_checksum_get_string (checksum2), ==, test->sum);
+      g_checksum_free (checksum2);
     }
 }
 
