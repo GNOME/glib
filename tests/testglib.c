@@ -672,8 +672,10 @@ test_info (void)
 {
   const gchar *un, *rn, *hn;
   const gchar *tmpdir, *homedir, *userdatadir, *uconfdir, *ucachedir;
-  const gchar *uddesktop, *udddocs, *uddpubshare;
+  const gchar *uddesktop, *udddocs, *uddpubshare, *uruntimedir;
   gchar **sv, *cwd, *sdatadirs, *sconfdirs, *langnames;
+  const gchar *charset;
+  gboolean charset_is_utf8;
   if (g_test_verbose())
     g_print ("TestGLib v%u.%u.%u (i:%u b:%u)\n",
              glib_major_version,
@@ -695,6 +697,10 @@ test_info (void)
     }
   g_free (cwd);
 
+  /* reload, just for fun */
+  g_reload_user_special_dirs_cache ();
+  g_reload_user_special_dirs_cache ();
+
   tmpdir = g_get_tmp_dir();
   g_assert (tmpdir != NULL);
   homedir = g_get_home_dir ();
@@ -710,6 +716,8 @@ test_info (void)
   g_assert (uddesktop != NULL);
   udddocs = g_get_user_special_dir (G_USER_DIRECTORY_DOCUMENTS);
   uddpubshare = g_get_user_special_dir (G_USER_DIRECTORY_PUBLIC_SHARE);
+  uruntimedir = g_get_user_runtime_dir ();
+  g_assert (uruntimedir != NULL);
 
   sv = (gchar **) g_get_system_data_dirs ();
   sdatadirs = g_strjoinv (G_SEARCHPATH_SEPARATOR_S, sv);
@@ -725,6 +733,7 @@ test_info (void)
       g_print ("user_data: %s\n", userdatadir);
       g_print ("user_config: %s\n", uconfdir);
       g_print ("user_cache: %s\n", ucachedir);
+      g_print ("user_runtime: %s\n", uruntimedir);
       g_print ("system_data: %s\n", sdatadirs);
       g_print ("system_config: %s\n", sconfdirs);
       g_print ("languages: %s\n", langnames);
@@ -735,15 +744,19 @@ test_info (void)
   g_free (sdatadirs);
   g_free (sconfdirs);
   g_free (langnames);
-  
+
+  charset_is_utf8 = g_get_charset ((G_CONST_RETURN char**)&charset);
+
   if (g_test_verbose())
     {
-      const gchar *charset;
-      if (g_get_charset ((G_CONST_RETURN char**)&charset))
+      if (charset_is_utf8)
         g_print ("current charset is UTF-8: %s\n", charset);
       else
         g_print ("current charset is not UTF-8: %s\n", charset);
+    }
 
+  if (g_test_verbose())
+    {
 #ifdef G_PLATFORM_WIN32
       g_print ("current locale: %s\n", g_win32_getlocale ());
 
