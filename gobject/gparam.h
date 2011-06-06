@@ -25,7 +25,7 @@
 #ifndef __G_PARAM_H__
 #define __G_PARAM_H__
 
-#include	<gobject/gvalue.h>
+#include <gobject/gvalue.h>
 
 G_BEGIN_DECLS
 
@@ -304,11 +304,16 @@ gint		g_param_values_cmp		(GParamSpec    *pspec,
 const gchar *   g_param_spec_get_name           (GParamSpec    *pspec);
 const gchar *   g_param_spec_get_nick           (GParamSpec    *pspec);
 const gchar *   g_param_spec_get_blurb          (GParamSpec    *pspec);
+
+void            g_param_spec_set_static_nick    (GParamSpec    *pspec,
+                                                 const char    *nick);
+void            g_param_spec_set_static_blurb   (GParamSpec    *pspec,
+                                                 const char    *blurb);
+
 void            g_value_set_param               (GValue	       *value,
 						 GParamSpec    *param);
 GParamSpec*     g_value_get_param               (const GValue  *value);
 GParamSpec*     g_value_dup_param               (const GValue  *value);
-
 
 void           g_value_take_param               (GValue        *value,
 					         GParamSpec    *param);

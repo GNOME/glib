@@ -336,6 +336,70 @@ g_param_spec_get_blurb (GParamSpec *pspec)
   return NULL;
 }
 
+/**
+ * g_param_spec_set_static_nick:
+ * @pspec: a #GParamSpec
+ * @nick: the user-readable, and possibly translatable, name of the
+ *   #GParamSpec
+ *
+ * Sets a static string as the name of the #GParamSpec, for introspection
+ * purposes. The @nick string should be static and exist for the duration
+ * of the process.
+ *
+ * This function can only be called once, or if no nick was passed to
+ * g_param_spec_internal().
+ *
+ * Since: 2.30
+ */
+void
+g_param_spec_set_static_nick (GParamSpec *pspec,
+                              const char *nick)
+{
+  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+  g_return_if_fail (nick != NULL);
+
+  if (pspec->_nick != NULL)
+    {
+      g_critical (G_STRLOC ": Redefining the nick of a property is not allowed");
+      return;
+    }
+
+  pspec->_nick = (gchar *) nick;
+  pspec->flags |= G_PARAM_STATIC_NICK;
+}
+
+/**
+ * g_param_spec_set_static_blurb:
+ * @pspec: a #GParamSpec
+ * @blurb: the user-readable, and possibly translatable, description of the
+ *   #GParamSpec
+ *
+ * Sets a static string as the description of the #GParamSpec, for
+ * introspection purposes. The @blurb string should be static and exist for
+ * the duration of the process.
+ *
+ * This function can only be called once, or if no blurb was passed to
+ * g_param_spec_internal().
+ *
+ * Since: 2.30
+ */
+void
+g_param_spec_set_static_blurb (GParamSpec *pspec,
+                               const char *blurb)
+{
+  g_return_if_fail (G_IS_PARAM_SPEC (pspec));
+  g_return_if_fail (blurb != NULL);
+
+  if (pspec->_blurb != NULL)
+    {
+      g_critical (G_STRLOC ": Redefining the blurb of a property is not allowed");
+      return;
+    }
+
+  pspec->_blurb = (gchar *) blurb; 
+  pspec->flags |= G_PARAM_STATIC_BLURB;
+}
+
 static void
 canonicalize_key (gchar *key)
 {

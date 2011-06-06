@@ -222,6 +222,8 @@ g_param_spec_steal_qdata
 g_param_spec_set_qdata
 g_param_spec_set_qdata_full
 g_param_spec_get_qdata
+g_param_spec_set_static_nick
+g_param_spec_set_static_blurb
 g_param_value_convert
 g_param_value_defaults
 g_param_values_cmp
