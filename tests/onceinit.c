@@ -32,7 +32,7 @@ static void
 assert_singleton_execution1 (void)
 {
   static volatile int seen_execution = 0;
-  int old_seen_execution = g_atomic_int_exchange_and_add (&seen_execution, 1);
+  int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
   if (old_seen_execution != 0)
     g_error ("%s: function executed more than once", G_STRFUNC);
 }
@@ -41,7 +41,7 @@ static void
 assert_singleton_execution2 (void)
 {
   static volatile int seen_execution = 0;
-  int old_seen_execution = g_atomic_int_exchange_and_add (&seen_execution, 1);
+  int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
   if (old_seen_execution != 0)
     g_error ("%s: function executed more than once", G_STRFUNC);
 }
@@ -50,7 +50,7 @@ static void
 assert_singleton_execution3 (void)
 {
   static volatile int seen_execution = 0;
-  int old_seen_execution = g_atomic_int_exchange_and_add (&seen_execution, 1);
+  int old_seen_execution = g_atomic_int_add (&seen_execution, 1);
   if (old_seen_execution != 0)
     g_error ("%s: function executed more than once", G_STRFUNC);
 }
@@ -102,7 +102,7 @@ tmain_call_initializer3 (gpointer user_data)
   //g_printf ("[");
   initializer3();
   //g_printf ("]\n");
-  g_atomic_int_exchange_and_add (&thread_call_count, 1);
+  g_atomic_int_add (&thread_call_count, 1);
   return NULL;
 }
 
@@ -268,7 +268,7 @@ stress_concurrent_initializers (void *user_data)
   for (i = 0; i < G_N_ELEMENTS (initializers); i++)
     {
       initializers[i]();
-      g_atomic_int_exchange_and_add (&thread_call_count, 1);
+      g_atomic_int_add (&thread_call_count, 1);
     }
   return NULL;
 }

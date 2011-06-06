@@ -23,10 +23,10 @@ main (int   argc,
   g_assert (g_atomic_int_dec_and_test (&atomic));
   g_assert (atomic == 0);
 
-  g_assert (g_atomic_int_exchange_and_add (&atomic, 5) == 0);
+  g_assert (g_atomic_int_add (&atomic, 5) == 0);
   g_assert (atomic == 5);
 
-  g_assert (g_atomic_int_exchange_and_add (&atomic, -10) == 5);
+  g_assert (g_atomic_int_add (&atomic, -10) == 5);
   g_assert (atomic == -5);
 
   g_atomic_int_add (&atomic, 20);
