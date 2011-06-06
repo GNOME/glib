@@ -33,19 +33,33 @@ test_pipe (void)
   int pipefd[2];
   char buf[1024];
   ssize_t bytes_read;
+  gboolean res;
 
-  g_unix_open_pipe (pipefd, FD_CLOEXEC, NULL);
+  res = g_unix_open_pipe (pipefd, FD_CLOEXEC, &error);
+  g_assert (res);
   g_assert_no_error (error);
-    
+
   write (pipefd[1], "hello", sizeof ("hello"));
   memset (buf, 0, sizeof (buf));
   bytes_read = read (pipefd[0], buf, sizeof(buf) - 1);
   g_assert_cmpint (bytes_read, >, 0);
-  
+
   close (pipefd[0]);
   close (pipefd[1]);
 
   g_assert (g_str_has_prefix (buf, "hello"));
+}
+
+static void
+test_error (void)
+{
+  GError *error = NULL;
+  gboolean res;
+
+  res = g_unix_set_fd_nonblocking (123456, TRUE, &error);
+  g_assert_cmpint (errno, ==, EBADF);
+  g_assert (!res);
+  g_assert_error (error, G_UNIX_ERROR, 0);
 }
 
 static gboolean sighup_received = FALSE;
@@ -133,6 +147,7 @@ main (int   argc,
 #endif
 
   g_test_add_func ("/glib-unix/pipe", test_pipe);
+  g_test_add_func ("/glib-unix/error", test_error);
   g_test_add_func ("/glib-unix/sighup", test_sighup);
   g_test_add_func ("/glib-unix/sighup_again", test_sighup);
   g_test_add_func ("/glib-unix/sighup_add_remove", test_sighup_add_remove);
