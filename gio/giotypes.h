@@ -205,11 +205,8 @@ typedef struct _GThreadedSocketService                      GThreadedSocketServi
 typedef struct _GThemedIcon                   GThemedIcon;
 typedef struct _GTlsCertificate               GTlsCertificate;
 typedef struct _GTlsClientConnection          GTlsClientConnection; /* Dummy typedef */
-typedef struct _GTlsClientContext             GTlsClientContext; /* Dummy typedef */
 typedef struct _GTlsConnection                GTlsConnection;
-typedef struct _GTlsContext                   GTlsContext;
 typedef struct _GTlsServerConnection          GTlsServerConnection; /* Dummy typedef */
-typedef struct _GTlsServerContext             GTlsServerContext; /* Dummy typedef */
 typedef struct _GVfs                          GVfs; /* Dummy typedef */
 
 /**

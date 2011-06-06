@@ -1331,7 +1331,7 @@ typedef enum {
  *   is still in the future
  * @G_TLS_CERTIFICATE_EXPIRED: The certificate has expired
  * @G_TLS_CERTIFICATE_REVOKED: The certificate has been revoked
- *   according to the #GTlsContext's certificate revocation list.
+ *   according to the #GTlsConnection's certificate revocation list.
  * @G_TLS_CERTIFICATE_INSECURE: The certificate's algorithm is
  *   considered insecure.
  * @G_TLS_CERTIFICATE_GENERIC_ERROR: Some other error occurred validating

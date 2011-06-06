@@ -259,7 +259,7 @@ g_threaded_socket_service_class_init (GThreadedSocketServiceClass *class)
  *   handling incoming clients, -1 means no limit
  *
  * Creates a new #GThreadedSocketService with no listeners. Listeners
- * must be added with g_socket_service_add_listeners().
+ * must be added with one of the #GSocketListener "add" methods.
  *
  * Returns: a new #GSocketService.
  *
