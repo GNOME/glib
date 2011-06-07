@@ -275,6 +275,9 @@
 #ifndef _MSC_VER
 #define HAVE_INTMAX_T 1
 #else /* _MSC_VER */
+#if (_MSC_VER >= 1600)
+#define HAVE_INTMAX_T 1
+#endif
 /* #undef HAVE_INTMAX_T */
 #endif /* _MSC_VER */
 
