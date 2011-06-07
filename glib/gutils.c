@@ -2324,10 +2324,6 @@ g_get_user_runtime_dir (void)
     {
       runtime_dir = g_strdup (getenv ("XDG_RUNTIME_DIR"));
       
-      if (runtime_dir == NULL)
-        g_warning ("XDG_RUNTIME_DIR variable not set.  "
-                   "Falling back to XDG cache dir.");
-
       g_once_init_leave (&initialised, 1);
     }
 
