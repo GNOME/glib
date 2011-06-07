@@ -454,6 +454,13 @@ gsize
 
 #elif defined (G_PLATFORM_WIN32)
 
+#include <windows.h>
+#if !defined(_M_AMD64) && !defined (_M_IA64) && !defined(_M_X64)
+#define InterlockedAnd _InterlockedAnd
+#define InterlockedOr _InterlockedOr
+#define InterlockedXor _InterlockedXor
+#endif
+
 /*
  * http://msdn.microsoft.com/en-us/library/ms684122(v=vs.85).aspx
  */
