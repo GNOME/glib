@@ -647,6 +647,7 @@ g_io_create_watch (GIOChannel   *channel,
  * You can do these steps manually if you need greater control.
  *
  * Returns: the event source id
+ * Rename to: g_io_add_watch
  */
 guint 
 g_io_add_watch_full (GIOChannel    *channel,

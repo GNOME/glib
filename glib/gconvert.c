@@ -837,7 +837,7 @@ g_convert_with_iconv (const gchar *str,
                    </footnote>. 
  * @to_codeset:    name of character set into which to convert @str
  * @from_codeset:  character set of @str.
- * @bytes_read:    location to store the number of bytes in the
+ * @bytes_read: (out):   location to store the number of bytes in the
  *                 input string that were successfully converted, or %NULL.
  *                 Even if the conversion was successful, this may be 
  *                 less than @len if there were partial characters
@@ -845,7 +845,7 @@ g_convert_with_iconv (const gchar *str,
  *                 #G_CONVERT_ERROR_ILLEGAL_SEQUENCE occurs, the value
  *                 stored will the byte offset after the last valid
  *                 input sequence.
- * @bytes_written: the number of bytes stored in the output buffer (not 
+ * @bytes_written: (out): the number of bytes stored in the output buffer (not 
  *                 including the terminating nul).
  * @error:         location to store the error occuring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
@@ -2007,7 +2007,7 @@ g_filename_from_uri (const gchar *uri,
  * @filename: an absolute filename specified in the GLib file name encoding,
  *            which is the on-disk file name bytes on Unix, and UTF-8 on 
  *            Windows
- * @hostname: A UTF-8 encoded hostname, or %NULL for none.
+ * @hostname: (allow-none): A UTF-8 encoded hostname, or %NULL for none.
  * @error: location to store the error occuring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError may occur.
  * 

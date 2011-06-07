@@ -1505,8 +1505,9 @@ g_key_file_set_string (GKeyFile    *key_file,
  * event that the @group_name cannot be found, %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_GROUP_NOT_FOUND.
  *
- * Return value: a %NULL-terminated string array or %NULL if the specified 
- *   key cannot be found. The array should be freed with g_strfreev().
+ * Return value: (array zero-terminated=1 length=length) (element-type utf8) (transfer full): 
+ *  a %NULL-terminated string array or %NULL if the specified 
+ *  key cannot be found. The array should be freed with g_strfreev().
  *
  * Since: 2.6
  **/
@@ -1592,7 +1593,7 @@ g_key_file_get_string_list (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @list: an array of string values
+ * @list: (array zero-terminated=1 length=length) (element-type utf8): an array of string values
  * @length: number of string values in @list
  *
  * Associates a list of string values for @key under @group_name.
@@ -1669,7 +1670,7 @@ g_key_file_set_locale_string (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @locale: a locale identifier or %NULL
+ * @locale: (allow-none): a locale identifier or %NULL
  * @error: return location for a #GError, or %NULL
  *
  * Returns the value associated with @key under @group_name
@@ -1756,8 +1757,8 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
  * @key_file: a #GKeyFile
  * @group_name: a group name
  * @key: a key
- * @locale: a locale identifier or %NULL
- * @length: return location for the number of returned strings or %NULL
+ * @locale: (allow-none): a locale identifier or %NULL
+ * @length: (out): return location for the number of returned strings or %NULL
  * @error: return location for a #GError or %NULL
  *
  * Returns the values associated with @key under @group_name
@@ -1771,7 +1772,7 @@ g_key_file_get_locale_string (GKeyFile     *key_file,
  * returned array is %NULL-terminated, so @length may optionally 
  * be %NULL.
  *
- * Return value: a newly allocated %NULL-terminated string array
+ * Return value: (array zero-terminated=1 length=length) (element-type utf8) (transfer full): a newly allocated %NULL-terminated string array
  *   or %NULL if the key isn't found. The string array should be freed
  *   with g_strfreev().
  *

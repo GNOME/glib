@@ -1506,7 +1506,7 @@ g_build_path_va (const gchar  *separator,
 /**
  * g_build_pathv:
  * @separator: a string used to separator the elements of the path.
- * @args: %NULL-terminated array of strings containing the path elements.
+ * @args: (array zero-terminated=1): %NULL-terminated array of strings containing the path elements.
  * 
  * Behaves exactly like g_build_path(), but takes the path elements 
  * as a string array, instead of varargs. This function is mainly

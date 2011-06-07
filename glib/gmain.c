@@ -3196,7 +3196,7 @@ g_main_context_iteration (GMainContext *context, gboolean may_block)
 
 /**
  * g_main_loop_new:
- * @context: a #GMainContext  (if %NULL, the default context will be used).
+ * @context: (allow-none): a #GMainContext  (if %NULL, the default context will be used).
  * @is_running: set to %TRUE to indicate that the loop is running. This
  * is not very important since calling g_main_loop_run() will set this to
  * %TRUE anyway.
@@ -4044,6 +4044,7 @@ g_timeout_source_new_seconds (guint interval)
  * do these steps manually if you need greater control.
  * 
  * Return value: the ID (greater than 0) of the event source.
+ * Rename to: g_timeout_add
  **/
 guint
 g_timeout_add_full (gint           priority,
@@ -4151,6 +4152,7 @@ g_timeout_add (guint32        interval,
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.14
+ * Rename to: g_timeout_add_seconds
  **/
 guint
 g_timeout_add_seconds_full (gint           priority,
@@ -4745,6 +4747,7 @@ g_child_watch_source_new (GPid pid)
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.4
+ * Rename to: g_child_watch_add
  **/
 guint
 g_child_watch_add_full (gint            priority,
@@ -4882,6 +4885,7 @@ g_idle_source_new (void)
  * You can do these steps manually if you need greater control.
  * 
  * Return value: the ID (greater than 0) of the event source.
+ * Rename to: g_idle_add
  **/
 guint 
 g_idle_add_full (gint           priority,

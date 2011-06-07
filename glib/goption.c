@@ -1693,8 +1693,8 @@ platform_get_argv0 (void)
 /**
  * g_option_context_parse:
  * @context: a #GOptionContext
- * @argc: a pointer to the number of command line arguments
- * @argv: a pointer to the array of command line arguments
+ * @argc: (inout) (allow-none): a pointer to the number of command line arguments
+ * @argv: (inout) (array length=argc) (allow-none): a pointer to the array of command line arguments
  * @error: a return location for errors
  *
  * Parses the command line arguments, recognizing options
