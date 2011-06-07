@@ -1261,7 +1261,7 @@ g_data_input_stream_read_until_finish (GDataInputStream  *stream,
  *     a #gsize to get the length of the string. This function will
  *     return %NULL on an error
  *
- * Since: 2.24
+ * Since: 2.26
  */
 char *
 g_data_input_stream_read_upto (GDataInputStream  *stream,
@@ -1354,7 +1354,7 @@ g_data_input_stream_read_upto (GDataInputStream  *stream,
  * can then call g_data_input_stream_read_upto_finish() to get
  * the result of the operation.
  *
- * Since: 2.24
+ * Since: 2.26
  */
 void
 g_data_input_stream_read_upto_async (GDataInputStream    *stream,
