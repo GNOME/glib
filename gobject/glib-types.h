@@ -23,6 +23,8 @@
 #ifndef __GLIB_TYPES_H__
 #define __GLIB_TYPES_H__
 
+#include <glib.h>
+
 G_BEGIN_DECLS
 
 /* A hack necesssary to preprocess this file with g-ir-scanner */
