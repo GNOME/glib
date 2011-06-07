@@ -348,7 +348,10 @@ g_output_stream_flush (GOutputStream  *stream,
  * Splices an input stream into an output stream.
  *
  * Returns: a #gssize containing the size of the data spliced, or
- *     -1 if an error occurred.
+ *     -1 if an error occurred. Note that if the number of bytes
+ *     spliced is greater than %G_MAXSSIZE, then that will be
+ *     returned, and there is no way to determine the actual number
+ *     of bytes spliced.
  **/
 gssize
 g_output_stream_splice (GOutputStream             *stream,
@@ -397,7 +400,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
 {
   GOutputStreamClass *class = G_OUTPUT_STREAM_GET_CLASS (stream);
   gssize n_read, n_written;
-  gssize bytes_copied;
+  gsize bytes_copied;
   char buffer[8192], *p;
   gboolean res;
 
@@ -437,6 +440,9 @@ g_output_stream_real_splice (GOutputStream             *stream,
 	  n_read -= n_written;
 	  bytes_copied += n_written;
 	}
+
+      if (bytes_copied > G_MAXSSIZE)
+	bytes_copied = G_MAXSSIZE;
     }
   while (res);
 
@@ -880,7 +886,10 @@ g_output_stream_splice_async (GOutputStream            *stream,
  *
  * Finishes an asynchronous stream splice operation.
  * 
- * Returns: a #gssize of the number of bytes spliced.
+ * Returns: a #gssize of the number of bytes spliced. Note that if the
+ *     number of bytes spliced is greater than %G_MAXSSIZE, then that
+ *     will be returned, and there is no way to determine the actual
+ *     number of bytes spliced.
  **/
 gssize
 g_output_stream_splice_finish (GOutputStream  *stream,
