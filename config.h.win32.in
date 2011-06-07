@@ -187,6 +187,9 @@
 /* define for working do while(0) macros */
 #define HAVE_DOWHILE_MACROS 1
 
+/* Define to 1 if using dtrace probes. */
+/* #undef HAVE_DTRACE */
+
 /* Define to 1 if you have the `endmntent' function. */
 /* #undef HAVE_ENDMNTENT */
 
@@ -222,6 +225,9 @@
 
 /* we have the futex(2) system call */
 /* #undef HAVE_FUTEX */
+
+/* Whether you have gcov */
+/* #undef HAVE_GCOV */
 
 /* Define to 1 if you have the `getcwd' function. */
 #define HAVE_GETCWD 1
@@ -305,6 +311,9 @@
 /* Define to 1 if you have the `link' function. */
 /* #undef HAVE_LINK */
 
+/* Define to 1 if you have the <linux/magic.h> header file. */
+/* #undef HAVE_LINUX_MAGIC_H */
+
 /* Define to 1 if you have the <locale.h> header file. */
 #define HAVE_LOCALE_H 1
 
@@ -351,9 +360,6 @@
 /* Have a monotonic clock */
 /* #undef HAVE_MONOTONIC_CLOCK */
 
-/* Define to 1 if you have the `nanosleep' function. */
-/* #undef HAVE_NANOSLEEP */
-
 /* Define to 1 if you have the <netdb.h> header file. */
 /* #undef HAVE_NETDB_H */
 
@@ -362,9 +368,6 @@
 
 /* Have non-POSIX function getpwuid_r */
 /* #undef HAVE_NONPOSIX_GETPWUID_R */
-
-/* Define to 1 if you have the `nsleep' function. */
-/* #undef HAVE_NSLEEP */
 
 /* Define to 1 if you have the `on_exit' function. */
 /* #undef HAVE_ON_EXIT */
@@ -507,44 +510,53 @@
 /* Define to 1 if you have the `strsignal' function. */
 /* #undef HAVE_STRSIGNAL */
 
-/* Define to 1 if `f_bavail' is member of `struct statfs'. */
+/* Define to 1 if `f_bavail' is a member of `struct statfs'. */
 /* #undef HAVE_STRUCT_STATFS_F_BAVAIL */
 
-/* Define to 1 if `f_fstypename' is member of `struct statfs'. */
+/* Define to 1 if `f_fstypename' is a member of `struct statfs'. */
 /* #undef HAVE_STRUCT_STATFS_F_FSTYPENAME */
 
-/* Define to 1 if `f_basetype' is member of `struct statvfs'. */
+/* Define to 1 if `f_basetype' is a member of `struct statvfs'. */
 /* #undef HAVE_STRUCT_STATVFS_F_BASETYPE */
 
-/* Define to 1 if `st_atimensec' is member of `struct stat'. */
+/* Define to 1 if `st_atimensec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_ATIMENSEC */
 
-/* Define to 1 if `st_atim.tv_nsec' is member of `struct stat'. */
+/* Define to 1 if `st_atim.tv_nsec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_ATIM_TV_NSEC */
 
-/* Define to 1 if `st_blksize' is member of `struct stat'. */
+/* Define to 1 if `st_blksize' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_BLKSIZE */
 
-/* Define to 1 if `st_blocks' is member of `struct stat'. */
+/* Define to 1 if `st_blocks' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_BLOCKS */
 
-/* Define to 1 if `st_ctimensec' is member of `struct stat'. */
+/* Define to 1 if `st_ctimensec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_CTIMENSEC */
 
-/* Define to 1 if `st_ctim.tv_nsec' is member of `struct stat'. */
+/* Define to 1 if `st_ctim.tv_nsec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_CTIM_TV_NSEC */
 
-/* Define to 1 if `st_mtimensec' is member of `struct stat'. */
+/* Define to 1 if `st_mtimensec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_MTIMENSEC */
 
-/* Define to 1 if `st_mtim.tv_nsec' is member of `struct stat'. */
+/* Define to 1 if `st_mtim.tv_nsec' is a member of `struct stat'. */
 /* #undef HAVE_STRUCT_STAT_ST_MTIM_TV_NSEC */
+
+/* Define to 1 if `tm_gmtoff' is a a member of `struct tm'. */
+/* #undef HAVE_STRUCT_TM_TM_GMTOFF */
+
+/* Define to 1 if `__tm_gmtoff' is a member of `struct tm'. */
+/* #undef HAVE_STRUCT_TM___TM_GMTOFF */
 
 /* Define to 1 if you have the `symlink' function. */
 /* #undef HAVE_SYMLINK */
 
 /* Define to 1 if you have the <sys/inotify.h> header file. */
 /* #undef HAVE_SYS_INOTIFY_H */
+
+/* Define to 1 if you have the <sys/mkdev.h> header file. */
+/* #undef HAVE_SYS_MKDEV_H */
 
 /* Define to 1 if you have the <sys/mntctl.h> header file. */
 /* #undef HAVE_SYS_MNTCTL_H */
@@ -660,6 +672,9 @@
 #define vsnprintf _vsnprintf
 #endif
 #else /* _MSC_VER */
+#if (_MSC_VER >= 1500)
+#define HAVE_VSNPRINTF 1
+#endif /* VS 2008+ has vsnprintf */
 /* #undef HAVE_VSNPRINTF */
 #endif /* _MSC_VER */
 
@@ -724,6 +739,9 @@
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "glib"
+
+/* Define to the home page for this package. */
+#define PACKAGE_URL ""
 
 /* Define to the version of this package. */
 #define PACKAGE_VERSION "@GLIB_MAJOR_VERSION@.@GLIB_MINOR_VERSION@.@GLIB_MICRO_VERSION@"
