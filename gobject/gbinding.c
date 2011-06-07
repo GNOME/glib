@@ -912,7 +912,7 @@ g_object_bind_property_full (gpointer               source,
   if ((flags & G_BINDING_BIDIRECTIONAL) &&
       !(pspec->flags & G_PARAM_READABLE))
     {
-      g_warning ("%s: The starget object of type %s has no writable property called '%s'",
+      g_warning ("%s: The target object of type %s has no readable property called '%s'",
                  G_STRLOC,
                  G_OBJECT_TYPE_NAME (target),
                  target_property);
