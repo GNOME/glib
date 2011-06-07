@@ -124,6 +124,7 @@ copy ..\..\..\gobject\gbinding.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\gboxed.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\gclosure.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\genums.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
+copy ..\..\..\gobject\glib-types.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\gmarshal.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\gobject.h $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;
 copy ..\..\..\gobject\gobjectnotifyqueue.c $(OutDir)\include\glib-2.0\gobject&#x0D;&#x0A;

@@ -175,6 +175,8 @@ copy ..\..\..\gobject\gclosure.h $(CopyDir)\include\glib-$(ApiVersion)\gobject
 
 copy ..\..\..\gobject\genums.h $(CopyDir)\include\glib-$(ApiVersion)\gobject
 
+copy ..\..\..\gobject\glib-types.h $(CopyDir)\include\glib-$(ApiVersion)\gobject
+
 copy ..\..\..\gobject\gmarshal.h $(CopyDir)\include\glib-$(ApiVersion)\gobject
 
 copy ..\..\..\gobject\gobject.h $(CopyDir)\include\glib-$(ApiVersion)\gobject
