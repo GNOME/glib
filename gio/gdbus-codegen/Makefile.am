@@ -16,6 +16,8 @@ codegen_PYTHON =						\
 	utils.py						\
 	$(NULL)
 
+CLEANFILES += config.pyc
+
 bin_SCRIPTS += gdbus-codegen
 CLEANFILES += gdbus-codegen
 EXTRA_DIST += gdbus-codegen.in
