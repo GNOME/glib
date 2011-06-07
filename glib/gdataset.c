@@ -176,8 +176,7 @@ struct _GDataset
 
 /* --- prototypes --- */
 static inline GDataset*	g_dataset_lookup		(gconstpointer	  dataset_location);
-static inline void	g_datalist_clear_i		(GData		**datalist, 
-							 gboolean         unlock_dataset);
+static inline void	g_datalist_clear_i		(GData		**datalist);
 static void		g_dataset_destroy_internal	(GDataset	 *dataset);
 static inline gpointer	g_data_set_internal		(GData     	**datalist,
 							 GQuark   	  key_id,
@@ -228,8 +227,8 @@ g_datalist_unlock (GData **datalist)
 /* Called with the datalist lock held, or the dataset global
  * lock for dataset lists
  */
-void
-g_datalist_clear_i (GData **datalist, gboolean unlock_dataset)
+static void
+g_datalist_clear_i (GData **datalist)
 {
   GData *data;
   gint i;
@@ -239,15 +238,13 @@ g_datalist_clear_i (GData **datalist, gboolean unlock_dataset)
 
   if (data)
     {
-      if (unlock_dataset)
-	G_UNLOCK (g_dataset_global);
+      G_UNLOCK (g_dataset_global);
       for (i = 0; i < data->len; i++)
-	{
-	  if (data->data[i].data && data->data[i].destroy)
-	    data->data[i].destroy (data->data[i].data);
-	}
-      if (unlock_dataset)
-	G_LOCK (g_dataset_global);
+        {
+          if (data->data[i].data && data->data[i].destroy)
+            data->data[i].destroy (data->data[i].data);
+        }
+      G_LOCK (g_dataset_global);
 
       g_free (data);
     }
@@ -258,19 +255,35 @@ g_datalist_clear_i (GData **datalist, gboolean unlock_dataset)
  * g_datalist_clear:
  * @datalist: a datalist.
  *
- * Frees all the data elements of the datalist. The data elements'
- * destroy functions are called if they have been set.
+ * Frees all the data elements of the datalist.
+ * The data elements' destroy functions are called
+ * if they have been set.
  **/
 void
 g_datalist_clear (GData **datalist)
 {
+  GData *data;
+  gint i;
+
   g_return_if_fail (datalist != NULL);
 
   g_datalist_lock (datalist);
 
-  g_datalist_clear_i (datalist, FALSE);
+  data = G_DATALIST_GET_POINTER (datalist);
+  G_DATALIST_SET_POINTER (datalist, NULL);
 
   g_datalist_unlock (datalist);
+
+  if (data)
+    {
+      for (i = 0; i < data->len; i++)
+        {
+          if (data->data[i].data && data->data[i].destroy)
+            data->data[i].destroy (data->data[i].data);
+        }
+
+      g_free (data);
+    }
 }
 
 /* HOLDS: g_dataset_global_lock */
@@ -307,7 +320,7 @@ g_dataset_destroy_internal (GDataset *dataset)
 	  break;
 	}
       
-      g_datalist_clear_i (&dataset->datalist, TRUE);
+      g_datalist_clear_i (&dataset->datalist);
       dataset = g_dataset_lookup (dataset_location);
     }
 }
