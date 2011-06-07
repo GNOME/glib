@@ -106,16 +106,8 @@ DEFINE_CAST (uint64_uint,       v_uint64, guint,   v_uint);
 DEFINE_CAST (uint64_long,       v_uint64, glong,   v_long);
 DEFINE_CAST (uint64_ulong,      v_uint64, gulong,  v_ulong);
 DEFINE_CAST (uint64_int64,      v_uint64, gint64,  v_int64);
-#ifdef _MSC_VER
-/* work around error C2520: conversion from unsigned __int64 to double
- * not implemented, use signed __int64
- * If it is supported don't miss to g_value_register_transform_func() below
- */
-#pragma message ("Check if cast from uint64 to double is supported with msvc 6.0")
-#else
 DEFINE_CAST (uint64_float,      v_uint64, gfloat,  v_float);
 DEFINE_CAST (uint64_double,     v_uint64, gdouble, v_double);
-#endif
 DEFINE_CAST (float_s8,          v_float,  gint8,   v_int);
 DEFINE_CAST (float_u8,          v_float,  guint8,  v_uint);
 DEFINE_CAST (float_int,         v_float,  gint,    v_int);
