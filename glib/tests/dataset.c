@@ -1,4 +1,5 @@
 #include <glib.h>
+#include <stdlib.h>
 
 static void
 test_quark_basic (void)
@@ -170,6 +171,30 @@ test_dataset_id (void)
   g_assert (ret == NULL);
 }
 
+GData *list;
+
+static void
+free_one (gpointer data)
+{
+  /* recurse */
+  g_datalist_clear (&list);
+}
+
+static void
+test_datalist_clear (void)
+{
+  if (g_test_trap_fork (1000, 0))
+    {
+      g_datalist_init (&list);
+      g_datalist_set_data_full (&list, "one", GINT_TO_POINTER (1), free_one);
+      g_datalist_set_data_full (&list, "two", GINT_TO_POINTER (2), NULL);
+      g_datalist_clear (&list);
+      g_assert (list == NULL);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -182,6 +207,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/dataset/full", test_dataset_full);
   g_test_add_func ("/dataset/foreach", test_dataset_foreach);
   g_test_add_func ("/dataset/destroy", test_dataset_destroy);
+  g_test_add_func ("/datalist/recursive-clear", test_datalist_clear);
 
   return g_test_run ();
 }
