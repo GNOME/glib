@@ -90,9 +90,9 @@ g_converter_default_init (GConverterInterface *iface)
  * When some data has successfully been converted @bytes_read and is set to
  * the number of bytes read from @inbuf, and @bytes_written is set to indicate
  * how many bytes was written to @outbuf. If there are more data to output
- * or consume (i.e. unless the G_CONVERTER_INPUT_AT_END is specified) then
- * G_CONVERTER_CONVERTED is returned, and if no more data is to be output
- * then G_CONVERTER_FINISHED is returned.
+ * or consume (i.e. unless the %G_CONVERTER_INPUT_AT_END is specified) then
+ * %G_CONVERTER_CONVERTED is returned, and if no more data is to be output
+ * then %G_CONVERTER_FINISHED is returned.
  *
  * On error %G_CONVERTER_ERROR is returned and @error is set accordingly.
  * Some errors need special handling:
