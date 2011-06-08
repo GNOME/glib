@@ -181,6 +181,12 @@ g_futex_wake (const volatile gint *address)
 #define CONTENTION_CLASSES 11
 static volatile gint g_bit_lock_contended[CONTENTION_CLASSES];
 
+#if (defined (i386) || defined (__amd64__))
+  #if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5)
+    #define USE_ASM_GOTO 1
+  #endif
+#endif
+
 /**
  * g_bit_lock:
  * @address: a pointer to an integer
@@ -206,7 +212,7 @@ void
 g_bit_lock (volatile gint *address,
             gint           lock_bit)
 {
-#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+#ifdef USE_ASM_GOTO
  retry:
   asm volatile goto ("lock bts %1, (%0)\n"
                      "jc %l[contended]"
@@ -277,7 +283,7 @@ gboolean
 g_bit_trylock (volatile gint *address,
                gint           lock_bit)
 {
-#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+#ifdef USE_ASM_GOTO
   gboolean result;
 
   asm volatile ("lock bts %2, (%1)\n"
@@ -317,7 +323,7 @@ void
 g_bit_unlock (volatile gint *address,
               gint           lock_bit)
 {
-#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+#ifdef USE_ASM_GOTO
   asm volatile ("lock btr %1, (%0)"
                 : /* no output */
                 : "r" (address), "r" (lock_bit)
@@ -393,7 +399,7 @@ void
   g_return_if_fail (lock_bit < 32);
 
   {
-#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+#ifdef USE_ASM_GOTO
  retry:
     asm volatile goto ("lock bts %1, (%0)\n"
                        "jc %l[contended]"
@@ -463,7 +469,7 @@ gboolean
   g_return_val_if_fail (lock_bit < 32, FALSE);
 
   {
-#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+#ifdef USE_ASM_GOTO
     gboolean result;
 
     asm volatile ("lock bts %2, (%1)\n"
@@ -508,7 +514,7 @@ void
   g_return_if_fail (lock_bit < 32);
 
   {
-#if defined (__GNUC__) && (defined (i386) || defined (__amd64__))
+#ifdef USE_ASM_GOTO
     asm volatile ("lock btr %1, (%0)"
                   : /* no output */
                   : "r" (address), "r" ((gsize) lock_bit)
