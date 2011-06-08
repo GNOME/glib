@@ -4628,14 +4628,16 @@ unix_signal_helper_thread (gpointer data)
 	      g_warning ("Invalid char '%c' read from child watch pipe", b[i]);
 	      break;
 	    }
-	  if (sigterm_received)
-	    deliver_unix_signal (SIGTERM);
-	  if (sigint_received)
-	    deliver_unix_signal (SIGINT);
-	  if (sighup_received)
-	    deliver_unix_signal (SIGHUP);
-	  _g_main_wake_up_all_contexts ();
 	}
+      if (sigterm_received)
+	deliver_unix_signal (SIGTERM);
+      if (sigint_received)
+	deliver_unix_signal (SIGINT);
+      if (sighup_received)
+	deliver_unix_signal (SIGHUP);
+      if (sigchld_received)
+	deliver_sigchld ();
+      _g_main_wake_up_all_contexts ();
     }
 }
 
