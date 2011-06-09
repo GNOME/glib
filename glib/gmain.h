@@ -123,6 +123,16 @@ typedef struct _GSourceFuncs            GSourceFuncs;
  * while Windows uses process handles (which are pointers).
  */
 
+/**
+ * GSourceFunc:
+ * @data: data passed to the function, set when the source was
+ *     created with one of the above functions
+ *
+ * Specifies the type of function passed to g_timeout_add(),
+ * g_timeout_add_full(), g_idle_add(), and g_idle_add_full().
+ *
+ * Returns: %FALSE if the source should be removed
+ */
 typedef gboolean (*GSourceFunc)       (gpointer data);
 
 /**
@@ -172,6 +182,12 @@ struct _GSourceCallbackFuncs
                  gpointer    *data);
 };
 
+/**
+ * GSourceDummyMarshal:
+ *
+ * This is just a placeholder for #GClosureMarshal,
+ * which cannot be used here for dependency reasons.
+ */
 typedef void (*GSourceDummyMarshal) (void);
 
 struct _GSourceFuncs
