@@ -30,6 +30,7 @@
 
 #include "gclosure.h"
 #include "gboxed.h"
+#include "genums.h"
 #include "gvalue.h"
 #include "gvaluetypes.h"
 
@@ -957,6 +958,7 @@ value_to_ffi_type (const GValue *gvalue, gpointer *value)
       break;
     case G_TYPE_UCHAR:
     case G_TYPE_UINT:
+    case G_TYPE_FLAGS:
       rettype = &ffi_type_uint;
       *value = (gpointer)&(gvalue->data[0].v_uint);
       break;
@@ -1048,6 +1050,12 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
       break;
     case G_TYPE_BOXED:
       g_value_set_boxed (gvalue, *(gpointer*)value);
+      break;
+    case G_TYPE_FLAGS:
+      g_value_set_flags (gvalue, *(guint*)value);
+      break;
+    case G_TYPE_OBJECT:
+      g_value_set_object (gvalue, *(gpointer*)value);
       break;
     default:
       g_warning ("value_from_ffi_type: Unsupported fundamental type: %s",
