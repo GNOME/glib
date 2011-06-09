@@ -1426,6 +1426,7 @@ introspect_do (GDBusConnection *c,
   node = NULL;
   result = NULL;
 
+  error = NULL;
   result = g_dbus_connection_call_sync (c,
                                         opt_introspect_dest,
                                         object_path,
