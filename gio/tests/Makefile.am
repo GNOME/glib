@@ -245,7 +245,7 @@ gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h 
 gdbus_bz627724_LDADD = $(progs_ldadd)
 
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
-	$(AM_V_GEN) PYTHONPATH=$(top_srcdir)/gio/gdbus-codegen$${PYTHONPATH:+:$$PYTHONPATH} $(top_builddir)/gio/gdbus-codegen/gdbus-codegen	 	\
+	$(AM_V_GEN) PYTHONPATH=$(top_srcdir)/gio/gdbus-codegen:$(top_builddir)/gio/gdbus-codegen:$$PYTHONPATH $(PYTHON) $(top_builddir)/gio/gdbus-codegen/codegen_main.py	 	\
 		--interface-prefix org.project.								\
 		--generate-c-code gdbus-test-codegen-generated						\
 		--c-generate-object-manager								\
