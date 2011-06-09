@@ -1049,7 +1049,11 @@ handle_call (gint        *argc,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* TODO: dump annotations */
+static gchar *opt_introspect_dest = NULL;
+static gchar *opt_introspect_object_path = NULL;
+static gboolean opt_introspect_xml = FALSE;
+static gboolean opt_introspect_recurse = FALSE;
+static gboolean opt_introspect_only_properties = FALSE;
 
 static void
 dump_annotation (const GDBusAnnotationInfo *o,
@@ -1287,13 +1291,13 @@ dump_interface (GDBusConnection          *c,
     dump_annotation (o->annotations[n], indent, FALSE);
 
   g_print ("%*sinterface %s {\n", indent, "", o->name);
-  if (o->methods != NULL)
+  if (o->methods != NULL && !opt_introspect_only_properties)
     {
       g_print ("%*s  methods:\n", indent, "");
       for (n = 0; o->methods[n] != NULL; n++)
         dump_method (o->methods[n], indent + 4);
     }
-  if (o->signals != NULL)
+  if (o->signals != NULL && !opt_introspect_only_properties)
     {
       g_print ("%*s  signals:\n", indent, "");
       for (n = 0; o->signals[n] != NULL; n++)
@@ -1315,12 +1319,18 @@ dump_interface (GDBusConnection          *c,
   g_hash_table_unref (properties);
 }
 
+static gboolean
+introspect_do (GDBusConnection *c,
+               const gchar     *object_path,
+               guint            indent);
+
 static void
 dump_node (GDBusConnection      *c,
            const gchar          *name,
            const GDBusNodeInfo  *o,
            guint                 indent,
-           const gchar          *object_path)
+           const gchar          *object_path,
+           gboolean              recurse)
 {
   guint n;
   const gchar *object_path_to_print;
@@ -1337,9 +1347,51 @@ dump_node (GDBusConnection      *c,
     {
       g_print (" {\n");
       for (n = 0; o->interfaces != NULL && o->interfaces[n] != NULL; n++)
-        dump_interface (c, name, o->interfaces[n], indent + 2, object_path);
+        {
+          if (opt_introspect_only_properties)
+            {
+              if (o->interfaces[n]->properties != NULL && o->interfaces[n]->properties[0] != NULL)
+                dump_interface (c, name, o->interfaces[n], indent + 2, object_path);
+            }
+          else
+            {
+              dump_interface (c, name, o->interfaces[n], indent + 2, object_path);
+            }
+        }
       for (n = 0; o->nodes != NULL && o->nodes[n] != NULL; n++)
-        dump_node (NULL, NULL, o->nodes[n], indent + 2, NULL);
+        {
+          if (recurse)
+            {
+              gchar *child_path;
+              if (g_variant_is_object_path (o->nodes[n]->path))
+                {
+                  child_path = g_strdup (o->nodes[n]->path);
+                  /* avoid infinite loops */
+                  if (g_str_has_prefix (child_path, object_path))
+                    {
+                      introspect_do (c, child_path, indent + 2);
+                    }
+                  else
+                    {
+                      g_print ("Skipping path %s that is not enclosed by parent %s\n",
+                               child_path, object_path);
+                    }
+                }
+              else
+                {
+                  if (g_strcmp0 (object_path, "/") == 0)
+                    child_path = g_strdup_printf ("/%s", o->nodes[n]->path);
+                  else
+                    child_path = g_strdup_printf ("%s/%s", object_path, o->nodes[n]->path);
+                  introspect_do (c, child_path, indent + 2);
+                }
+              g_free (child_path);
+            }
+          else
+            {
+              dump_node (NULL, NULL, o->nodes[n], indent + 2, NULL, recurse);
+            }
+        }
       g_print ("%*s};\n",
                indent, "");
     }
@@ -1349,17 +1401,77 @@ dump_node (GDBusConnection      *c,
     }
 }
 
-static gchar *opt_introspect_dest = NULL;
-static gchar *opt_introspect_object_path = NULL;
-static gboolean opt_introspect_xml = FALSE;
-
 static const GOptionEntry introspect_entries[] =
 {
   { "dest", 'd', 0, G_OPTION_ARG_STRING, &opt_introspect_dest, N_("Destination name to introspect"), NULL},
   { "object-path", 'o', 0, G_OPTION_ARG_STRING, &opt_introspect_object_path, N_("Object path to introspect"), NULL},
   { "xml", 'x', 0, G_OPTION_ARG_NONE, &opt_introspect_xml, N_("Print XML"), NULL},
+  { "recurse", 'r', 0, G_OPTION_ARG_NONE, &opt_introspect_recurse, N_("Introspect children"), NULL},
+  { "only-properties", 'p', 0, G_OPTION_ARG_NONE, &opt_introspect_only_properties, N_("Only print properties"), NULL},
   { NULL }
 };
+
+static gboolean
+introspect_do (GDBusConnection *c,
+               const gchar     *object_path,
+               guint            indent)
+{
+  GError *error;
+  GVariant *result;
+  GDBusNodeInfo *node;
+  gboolean ret;
+  const gchar *xml_data;
+
+  ret = FALSE;
+  node = NULL;
+  result = NULL;
+
+  result = g_dbus_connection_call_sync (c,
+                                        opt_introspect_dest,
+                                        object_path,
+                                        "org.freedesktop.DBus.Introspectable",
+                                        "Introspect",
+                                        NULL,
+                                        G_VARIANT_TYPE ("(s)"),
+                                        G_DBUS_CALL_FLAGS_NONE,
+                                        3000, /* 3 sec */
+                                        NULL,
+                                        &error);
+  if (result == NULL)
+    {
+      g_printerr (_("Error: %s\n"), error->message);
+      g_error_free (error);
+      goto out;
+    }
+  g_variant_get (result, "(&s)", &xml_data);
+
+  if (opt_introspect_xml)
+    {
+      g_print ("%s", xml_data);
+    }
+  else
+    {
+      error = NULL;
+      node = g_dbus_node_info_new_for_xml (xml_data, &error);
+      if (node == NULL)
+        {
+          g_printerr (_("Error parsing introspection XML: %s\n"), error->message);
+          g_error_free (error);
+          goto out;
+        }
+
+      dump_node (c, opt_introspect_dest, node, indent, object_path, opt_introspect_recurse);
+    }
+
+  ret = TRUE;
+
+ out:
+  if (node != NULL)
+    g_dbus_node_info_unref (node);
+  if (result != NULL)
+    g_variant_unref (result);
+  return ret;
+}
 
 static gboolean
 handle_introspect (gint        *argc,
@@ -1373,16 +1485,11 @@ handle_introspect (gint        *argc,
   gchar *s;
   GError *error;
   GDBusConnection *c;
-  GVariant *result;
-  const gchar *xml_data;
-  GDBusNodeInfo *node;
   gboolean complete_names;
   gboolean complete_paths;
 
   ret = FALSE;
   c = NULL;
-  node = NULL;
-  result = NULL;
 
   modify_argv0_for_command (argc, argv, "introspect");
 
@@ -1500,54 +1607,26 @@ handle_introspect (gint        *argc,
       goto out;
     }
 
+  if (request_completion && opt_introspect_object_path != NULL && !opt_introspect_recurse)
+    {
+      g_print ("--recurse \n");
+    }
+
+  if (request_completion && opt_introspect_object_path != NULL && !opt_introspect_only_properties)
+    {
+      g_print ("--only-properties \n");
+    }
+
   /* All done with completion now */
   if (request_completion)
     goto out;
 
-  result = g_dbus_connection_call_sync (c,
-                                        opt_introspect_dest,
-                                        opt_introspect_object_path,
-                                        "org.freedesktop.DBus.Introspectable",
-                                        "Introspect",
-                                        NULL,
-                                        G_VARIANT_TYPE ("(s)"),
-                                        G_DBUS_CALL_FLAGS_NONE,
-                                        3000, /* 3 sec */
-                                        NULL,
-                                        &error);
-  if (result == NULL)
-    {
-      g_printerr (_("Error: %s\n"), error->message);
-      g_error_free (error);
-      goto out;
-    }
-  g_variant_get (result, "(&s)", &xml_data);
-
-  if (opt_introspect_xml)
-    {
-      g_print ("%s", xml_data);
-    }
-  else
-    {
-      error = NULL;
-      node = g_dbus_node_info_new_for_xml (xml_data, &error);
-      if (node == NULL)
-        {
-          g_printerr (_("Error parsing introspection XML: %s\n"), error->message);
-          g_error_free (error);
-          goto out;
-        }
-
-      dump_node (c, opt_introspect_dest, node, 0, opt_introspect_object_path);
-    }
+  if (!introspect_do (c, opt_introspect_object_path, 0))
+    goto out;
 
   ret = TRUE;
 
  out:
-  if (node != NULL)
-    g_dbus_node_info_unref (node);
-  if (result != NULL)
-    g_variant_unref (result);
   if (c != NULL)
     g_object_unref (c);
   g_option_context_free (o);

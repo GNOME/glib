@@ -25,6 +25,12 @@
     <group>
       <arg choice="plain">--xml</arg>
     </group>
+    <group>
+      <arg choice="plain">--recurse</arg>
+    </group>
+    <group>
+      <arg choice="plain">--only-properties</arg>
+    </group>
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gdbus</command>
@@ -94,7 +100,12 @@
           <literal>org.freedesktop.DBus.Introspectable</literal> interface.
           If the <option>--xml</option> option is used, the returned
           introspection XML is printed, otherwise a parsed pretty
-          representation is printed.  </para></listitem>
+          representation is printed.
+          The <option>--recurse</option> option can be used to
+          introspect children (and their children and so on) and the
+          <option>--only-properties</option> option can be used to
+          only print the interfaces with properties.
+          </para></listitem>
       </varlistentry>
       <varlistentry>
         <term><option>monitor</option></term>
@@ -192,6 +203,40 @@ node /org/freedesktop/NetworkManager/Devices/0 {
       readonly s Driver = 'e1000e';
       readwrite s Interface = 'eth0';
       readonly s Udi = '/sys/devices/pci0000:00/0000:00:19.0/net/eth0';
+  };
+};
+</programlisting>
+<para>
+  The <option>--recurse</option> and <option>--only-properties</option> options can be useful when wanting to inspect all objects owned by a particular process:
+</para>
+<programlisting>
+$ gdbus introspect --system --dest org.freedesktop.UPower --object-path / --recurse  --only-properties 
+node / {
+  node /org {
+    node /org/freedesktop {
+      node /org/freedesktop/UPower {
+        interface org.freedesktop.UPower {
+          properties:
+            readonly b IsDocked = true;
+            readonly b LidForceSleep = false;
+            readonly b LidIsPresent = false;
+            readonly b LidIsClosed = false;
+            readonly b OnLowBattery = false;
+            readonly b OnBattery = false;
+            readonly b CanHibernate = true;
+            readonly b CanSuspend = true;
+            readonly s DaemonVersion = '0.9.10';
+        };
+        node /org/freedesktop/UPower/Policy {
+        };
+        node /org/freedesktop/UPower/Wakeups {
+          interface org.freedesktop.UPower.Wakeups {
+            properties:
+              readonly b HasCapability = true;
+          };
+        };
+      };
+    };
   };
 };
 </programlisting>
