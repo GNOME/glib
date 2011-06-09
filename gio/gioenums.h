@@ -1287,7 +1287,7 @@ typedef enum
   G_APPLICATION_HANDLES_COMMAND_LINE = (1 << 3),
   G_APPLICATION_SEND_ENVIRONMENT    =  (1 << 4),
 
-  G_APPLICATION_NON_UNIQUE =           (1 << 5),
+  G_APPLICATION_NON_UNIQUE =           (1 << 5)
 } GApplicationFlags;
 
 /**
@@ -1425,7 +1425,7 @@ typedef enum
 typedef enum
 {
   G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE = 0,
-  G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START = (1<<0),
+  G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START = (1<<0)
 } GDBusObjectManagerClientFlags;
 
 G_END_DECLS
