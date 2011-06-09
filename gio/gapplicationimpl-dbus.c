@@ -391,6 +391,9 @@ application_path_from_appid (const gchar *appid)
     {
       if (*iter == '.')
         *iter = '/';
+
+      if (*iter == '-')
+        *iter = '_';
     }
 
   return appid_path;
