@@ -1148,7 +1148,7 @@ object_set_property (GObject             *object,
   GObjectClass *class = g_type_class_peek (pspec->owner_type);
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
   GParamSpec *redirect;
-  static gchar* enable_diagnostic = NULL;
+  static const gchar * enable_diagnostic = NULL;
 
   if (class == NULL)
     {

@@ -421,7 +421,8 @@ g_param_spec_internal (GType        param_type,
 
   if (flags & G_PARAM_STATIC_NAME)
     {
-      pspec->name = g_intern_static_string (name);
+      /* pspec->name is not freed if (flags & G_PARAM_STATIC_NAME) */
+      pspec->name = (gchar *) g_intern_static_string (name);
       if (!is_canonical (pspec->name))
         g_warning ("G_PARAM_STATIC_NAME used with non-canonical pspec name: %s", pspec->name);
     }

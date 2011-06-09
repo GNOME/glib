@@ -231,8 +231,8 @@ test_signal_accumulator (GSignalInvocationHint *ihint,
 			 const GValue          *handler_return,
 			 gpointer               data)
 {
-  gchar *accu_string = g_value_get_string (return_accu);
-  gchar *new_string = g_value_get_string (handler_return);
+  const gchar *accu_string = g_value_get_string (return_accu);
+  const gchar *new_string = g_value_get_string (handler_return);
   gchar *result_string;
 
   if (accu_string)

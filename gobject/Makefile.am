@@ -18,8 +18,7 @@ AM_CPPFLAGS = 					\
 	$(GLIB_DEBUG_FLAGS)			\
 	$(THREAD_FLAGS)				\
 	-DG_DISABLE_DEPRECATED			\
-	-DGOBJECT_COMPILATION			\
-	-DG_DISABLE_CONST_RETURNS
+	-DGOBJECT_COMPILATION
 
 gobject.def: gobject.symbols
 	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DINCLUDE_VARIABLES -DINCLUDE_INTERNAL_SYMBOLS -DG_OS_WIN32 -DALL_FILES - <$(srcdir)/gobject.symbols | $(SED) -e '/^$$/d' -e 's/^/	/' -e 's/G_GNUC_[^ ]*//g' | sort) > gobject.def

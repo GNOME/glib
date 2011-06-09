@@ -151,8 +151,8 @@ struct _GBinding
   GObject *target;
 
   /* the property names are interned, so they should not be freed */
-  gchar *source_property;
-  gchar *target_property;
+  const gchar *source_property;
+  const gchar *target_property;
 
   GParamSpec *source_pspec;
   GParamSpec *target_pspec;
