@@ -579,7 +579,12 @@ AC_HEADER_STDC
 AC_FUNC_VPRINTF
 AC_FUNC_ALLOCA
 AC_CHECK_FUNCS(mmap posix_memalign memalign valloc fsync pipe2)
-AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r qsort_r)
+AC_CHECK_FUNCS(atexit on_exit timegm gmtime_r)
+
+dnl don't use AC_CHECK_FUNCS here, otherwise HAVE_QSORT_R will
+dnl be automatically defined, which we don't want to do
+dnl until we have checked this function is actually usable
+AC_CHECK_FUNC([qsort_r])
 
 # BSD has a qsort_r with wrong argument order
 if test x$ac_cv_func_qsort_r = xyes ; then
