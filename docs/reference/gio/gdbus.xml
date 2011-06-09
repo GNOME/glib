@@ -22,7 +22,9 @@
     </group>
     <arg choice="plain">--dest <replaceable>bus_name</replaceable></arg>
     <arg choice="plain">--object-path <replaceable>/path/to/object</replaceable></arg>
-    <arg choice="plain">--xml</arg>
+    <group>
+      <arg choice="plain">--xml</arg>
+    </group>
   </cmdsynopsis>
   <cmdsynopsis>
     <command>gdbus</command>
@@ -90,7 +92,9 @@
           Prints out interfaces and property values for a remote object.
           For this to work, the owner of the object needs to implement the
           <literal>org.freedesktop.DBus.Introspectable</literal> interface.
-        </para></listitem>
+          If the <option>--xml</option> option is used, the returned
+          introspection XML is printed, otherwise a parsed pretty
+          representation is printed.  </para></listitem>
       </varlistentry>
       <varlistentry>
         <term><option>monitor</option></term>
