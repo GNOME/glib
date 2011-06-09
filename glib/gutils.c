@@ -77,6 +77,15 @@
 #include "gwin32.h"
 #endif
 
+
+/**
+ * SECTION:misc_utils
+ * @title: Miscellaneous Utility Functions
+ * @short_description: a selection of portable utility functions
+ *
+ * These are portable utility functions.
+ */
+
 #ifdef	MAXPATHLEN
 #define	G_PATH_LENGTH	MAXPATHLEN
 #elif	defined (PATH_MAX)
@@ -913,6 +922,56 @@ g_path_skip_root (const gchar *file_name)
 
   return NULL;
 }
+
+/**
+ * g_bit_nth_lsf:
+ * @mask: a #gulong containing flags
+ * @nth_bit: the index of the bit to start the search from
+ *
+ * Find the position of the first bit set in @mask, searching
+ * from (but not including) @nth_bit upwards. Bits are numbered
+ * from 0 (least significant) to sizeof(#gulong) * 8 - 1 (31 or 63,
+ * usually). To start searching from the 0th bit, set @nth_bit to -1.
+ *
+ * Returns: the index of the first bit set which is higher than @nth_bit
+ */
+
+/**
+ * g_bit_nth_msf:
+ * @mask: a #gulong containing flags
+ * @nth_bit: the index of the bit to start the search from
+ *
+ * Find the position of the first bit set in @mask, searching
+ * from (but not including) @nth_bit downwards. Bits are numbered
+ * from 0 (least significant) to sizeof(#gulong) * 8 - 1 (31 or 63,
+ * usually). To start searching from the last bit, set @nth_bit to
+ * -1 or GLIB_SIZEOF_LONG * 8.
+ *
+ * Returns: the index of the first bit set which is lower than @nth_bit
+ */
+
+/**
+ * g_bit_storage:
+ * @number: a #guint
+ *
+ * Gets the number of bits used to hold @number,
+ * e.g. if @number is 4, 3 bits are needed.
+ *
+ * Returns: the number of bits used to hold @number
+ */
+
+/**
+ * g_dirname:
+ * @file_name: the name of the file
+ *
+ * Gets the directory components of a file name.
+ * If the file name has no directory components "." is returned.
+ * The returned string should be freed when no longer needed.
+ *
+ * Returns: the directory components of the file
+ *
+ * Deprecated: use g_path_get_dirname() instead
+ */
 
 /**
  * g_path_get_dirname:

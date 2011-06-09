@@ -71,16 +71,28 @@ static const guint g_primes[] =
   13845163,
 };
 
-static const guint g_nprimes = sizeof (g_primes) / sizeof (g_primes[0]);
-
+/**
+ * g_spaced_primes_closest:
+ * @num: a #guint
+ *
+ * Gets the smallest prime number from a built-in array of primes which
+ * is larger than @num. This is used within GLib to calculate the optimum
+ * size of a #GHashTable.
+ *
+ * The built-in array of primes ranges from 11 to 13845163 such that
+ * each prime is approximately 1.5-2 times the previous prime.
+ *
+ * Returns: the smallest prime number from a built-in array of primes
+ *     which is larger than @num
+ */
 guint
 g_spaced_primes_closest (guint num)
 {
   gint i;
 
-  for (i = 0; i < g_nprimes; i++)
+  for (i = 0; i < G_N_ELEMENTS (g_primes); i++)
     if (g_primes[i] > num)
       return g_primes[i];
 
-  return g_primes[g_nprimes - 1];
+  return g_primes[G_N_ELEMENTS (g_primes) - 1];
 }

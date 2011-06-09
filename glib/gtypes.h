@@ -92,6 +92,15 @@ typedef guint           (*GHashFunc)            (gconstpointer  key);
 typedef void            (*GHFunc)               (gpointer       key,
                                                  gpointer       value,
                                                  gpointer       user_data);
+
+/**
+ * GFreeFunc:
+ * @data: a data pointer
+ *
+ * Declares a type of function which takes an arbitrary
+ * data pointer argument and has no return value. It is
+ * not currently used in GLib or GTK+.
+ */
 typedef void            (*GFreeFunc)            (gpointer       data);
 
 /**

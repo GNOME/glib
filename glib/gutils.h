@@ -196,7 +196,15 @@ typedef enum {
 
 G_CONST_RETURN gchar* g_get_user_special_dir (GUserDirectory directory);
 
-typedef struct _GDebugKey	GDebugKey;
+/**
+ * GDebugKey:
+ * @key: the string
+ * @value: the flag
+ *
+ * Associates a string with a bit flag.
+ * Used in g_parse_debug_string().
+ */
+typedef struct _GDebugKey GDebugKey;
 struct _GDebugKey
 {
   const gchar *key;
@@ -226,10 +234,6 @@ G_CONST_RETURN gchar* g_path_skip_root     (const gchar *file_name);
 
 #ifndef G_DISABLE_DEPRECATED
 
-/* These two functions are deprecated and will be removed in the next
- * major release of GLib. Use g_path_get_dirname/g_path_get_basename
- * instead. Whatch out! The string returned by g_path_get_basename
- * must be g_freed, while the string returned by g_basename must not.*/
 G_CONST_RETURN gchar* g_basename           (const gchar *file_name);
 #define g_dirname g_path_get_dirname
 
@@ -272,13 +276,16 @@ gchar**               g_get_environ        (void);
 const gchar*	     _g_getenv_nomalloc	   (const gchar	*variable,
 					    gchar        buffer[1024]);
 
-/* we try to provide a useful equivalent for ATEXIT if it is
- * not defined, but use is actually abandoned. people should
- * use g_atexit() instead.
+/**
+ * GVoidFunc:
+ *
+ * Declares a type of function which takes no arguments
+ * and has no return value. It is used to specify the type
+ * function passed to g_atexit().
  */
-typedef	void		(*GVoidFunc)		(void);
+typedef void (*GVoidFunc) (void);
 #ifndef ATEXIT
-# define ATEXIT(proc)	g_ATEXIT(proc)
+# define ATEXIT(proc) g_ATEXIT(proc)
 #else
 # define G_NATIVE_ATEXIT
 #endif /* ATEXIT */
