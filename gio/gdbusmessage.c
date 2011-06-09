@@ -1184,14 +1184,15 @@ parse_value_from_blob (GMemoryInputStream    *mis,
         goto fail;
       if (!just_align)
         {
-          guint64 v;
-          gdouble *encoded;
+          union {
+            guint64 v_uint64;
+            gdouble v_double;
+          } u;
           G_STATIC_ASSERT (sizeof (gdouble) == sizeof (guint64));
-          v = g_data_input_stream_read_uint64 (dis, NULL, &local_error);
+          u.v_uint64 = g_data_input_stream_read_uint64 (dis, NULL, &local_error);
           if (local_error != NULL)
             goto fail;
-          encoded = (gdouble *) &v;
-          ret = g_variant_new_double (*encoded);
+          ret = g_variant_new_double (u.v_double);
         }
     }
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING))
@@ -1941,11 +1942,13 @@ append_value_to_blob (GVariant             *value,
       padding_added = ensure_output_padding (mos, dos, 8);
       if (value != NULL)
         {
-          guint64 *encoded;
-          gdouble v = g_variant_get_double (value);
+          union {
+            guint64 v_uint64;
+            gdouble v_double;
+          } u;
           G_STATIC_ASSERT (sizeof (gdouble) == sizeof (guint64));
-          encoded = (guint64 *) &v;
-          g_data_output_stream_put_uint64 (dos, *encoded, NULL, NULL);
+          u.v_double = g_variant_get_double (value);
+          g_data_output_stream_put_uint64 (dos, u.v_uint64, NULL, NULL);
         }
     }
   else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING))
