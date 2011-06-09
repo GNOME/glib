@@ -240,7 +240,7 @@ make_app (gboolean non_unique)
   GApplication *app;
   gboolean ok;
 
-  app = g_application_new ("org.gtk.TestApplication",
+  app = g_application_new ("org.gtk.Test-Application",
                            non_unique ? G_APPLICATION_NON_UNIQUE : 0);
   g_signal_connect (app, "activate", G_CALLBACK (nonunique_activate), NULL);
   ok = g_application_register (app, NULL, NULL);
