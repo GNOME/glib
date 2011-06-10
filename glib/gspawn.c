@@ -210,8 +210,8 @@ read_data (GString *str,
  * @flags: flags from #GSpawnFlags
  * @child_setup: (scope async) (allow-none): function to run in the child just before exec()
  * @user_data: (closure): user data for @child_setup
- * @standard_output: (out) (array zero-terminated=1) (element-type uint8) (allow-none): return location for child output, or %NULL
- * @standard_error: (out) (array zero-terminated=1) (element-type uint8) (allow-none): return location for child error messages, or %NULL
+ * @standard_output: (out) (array zero-terminated=1) (element-type guint8) (allow-none): return location for child output, or %NULL
+ * @standard_error: (out) (array zero-terminated=1) (element-type guint8) (allow-none): return location for child error messages, or %NULL
  * @exit_status: (out) (allow-none): return location for child exit status, as returned by waitpid(), or %NULL
  * @error: return location for error, or %NULL
  *
@@ -656,8 +656,8 @@ g_spawn_async_with_pipes (const gchar          *working_directory,
 /**
  * g_spawn_command_line_sync:
  * @command_line: a command line 
- * @standard_output: (out) (array zero-terminated=1) (element-type uint8) (allow-none): return location for child output
- * @standard_error: (out) (array zero-terminated=1) (element-type uint8) (allow-none): return location for child errors
+ * @standard_output: (out) (array zero-terminated=1) (element-type guint8) (allow-none): return location for child output
+ * @standard_error: (out) (array zero-terminated=1) (element-type guint8) (allow-none): return location for child errors
  * @exit_status: (out) (allow-none): return location for child exit status, as returned by waitpid()
  * @error: return location for errors
  *
