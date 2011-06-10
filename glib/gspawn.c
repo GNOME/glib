@@ -148,7 +148,10 @@ close_and_invalidate (gint *fd)
     return -1;
   else
     {
+    again:
       ret = close (*fd);
+      if (ret == -1 && errno == EINTR)
+	goto again;
       *fd = -1;
     }
 
@@ -323,9 +326,12 @@ g_spawn_sync (const gchar          *working_directory,
                     NULL, NULL,
                     NULL /* no timeout */);
 
-      if (ret < 0 && errno != EINTR)
+      if (ret < 0)
         {
           int errsv = errno;
+
+	  if (errno == EINTR)
+	    continue;
 
           failed = TRUE;
 
@@ -993,6 +999,19 @@ sane_dup2 (gint fd1, gint fd2)
   return ret;
 }
 
+static gint
+sane_open (const char *path, gint mode)
+{
+  gint ret;
+
+ retry:
+  ret = open (path, mode);
+  if (ret < 0 && errno == EINTR)
+    goto retry;
+
+  return ret;
+}
+
 enum
 {
   CHILD_CHDIR_FAILED,
@@ -1071,7 +1090,7 @@ do_exec (gint                  child_err_report_fd,
     }
   else if (stdout_to_null)
     {
-      gint write_null = open ("/dev/null", O_WRONLY);
+      gint write_null = sane_open ("/dev/null", O_WRONLY);
       sane_dup2 (write_null, 1);
       close_and_invalidate (&write_null);
     }
@@ -1089,7 +1108,7 @@ do_exec (gint                  child_err_report_fd,
     }
   else if (stderr_to_null)
     {
-      gint write_null = open ("/dev/null", O_WRONLY);
+      gint write_null = sane_open ("/dev/null", O_WRONLY);
       sane_dup2 (write_null, 2);
       close_and_invalidate (&write_null);
     }
