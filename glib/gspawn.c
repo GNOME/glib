@@ -1238,6 +1238,12 @@ fork_exec_with_pipes (gboolean              intermediate_child,
       /* Immediate child. This may or may not be the child that
        * actually execs the new process.
        */
+
+      /* Reset some signal handlers that we may use */
+      signal (SIGCHLD, SIG_DFL);
+      signal (SIGINT, SIG_DFL);
+      signal (SIGTERM, SIG_DFL);
+      signal (SIGHUP, SIG_DFL);
       
       /* Be sure we crash if the parent exits
        * and we write to the err_report_pipe
