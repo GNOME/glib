@@ -118,21 +118,26 @@ on_child_stdout (GIOChannel   *channel,
   char buf[1024];
   GError *error = NULL;
   gsize bytes_read;
+  GIOStatus status;
   SpawnAsyncMultithreadedData *data = datap;
 
-  if (condition & G_IO_IN)
+ read:
+  status = g_io_channel_read_chars (channel, buf, sizeof (buf), &bytes_read, &error);
+  if (status == G_IO_STATUS_NORMAL)
     {
-      GIOStatus status;
-      status = g_io_channel_read_chars (channel, buf, sizeof (buf), &bytes_read, &error);
-      g_assert_no_error (error);
       g_string_append_len (data->stdout_buf, buf, (gssize) bytes_read);
-      if (status == G_IO_STATUS_EOF)
-	data->stdout_done = TRUE;
+      if (bytes_read == sizeof (buf))
+	goto read;
     }
-  if (condition & G_IO_HUP)
-    data->stdout_done = TRUE;
-  if (condition & G_IO_ERR)
-    g_error ("Error reading from child stdin");
+  else if (status == G_IO_STATUS_EOF)
+    {
+      g_string_append_len (data->stdout_buf, buf, (gssize) bytes_read);
+      data->stdout_done = TRUE;
+    }
+  else if (status == G_IO_STATUS_ERROR)
+    {
+      g_error ("Error reading from child stdin: %s", error->message);
+    }
 
   if (data->child_exited && data->stdout_done)
     g_main_loop_quit (data->loop);
@@ -181,7 +186,7 @@ test_spawn_async_multithreaded_instance (gpointer thread_data)
   g_source_unref (source);
 
   channel = g_io_channel_unix_new (child_stdout_fd);
-  source = g_io_create_watch (channel, G_IO_IN | G_IO_HUP | G_IO_ERR);
+  source = g_io_create_watch (channel, G_IO_IN | G_IO_HUP);
   g_source_set_callback (source, (GSourceFunc)on_child_stdout, &data, NULL);
   g_source_attach (source, context);
   g_source_unref (source);
