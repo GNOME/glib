@@ -413,16 +413,12 @@ enum {
 };
 static gint unix_signal_init_state = UNIX_SIGNAL_UNINITIALIZED;
 typedef struct {
-  gboolean sigchld_handler_installed : 1;
-  gboolean sighup_handler_installed : 1;
-  gboolean sigint_handler_installed : 1;
-  gboolean sigterm_handler_installed : 1;
-  
   /* These are only used in the UNIX_SIGNAL_INITIALIZED_SINGLE case */
   gboolean sighup_delivered : 1;
   gboolean sigint_delivered : 1;
   gboolean sigterm_delivered : 1;
 } UnixSignalState;
+static sigset_t unix_signal_mask;
 static UnixSignalState unix_signal_state;
 static gint unix_signal_wake_up_pipe[2];
 GSList *unix_signal_watches;
@@ -4407,6 +4403,11 @@ ensure_unix_signal_handler_installed_unlocked (int signum)
   struct sigaction action;
   GError *error = NULL;
 
+  if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED)
+    {
+      sigemptyset (&unix_signal_mask);
+    }
+
   if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED
       || unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_SINGLE)
     {
@@ -4432,28 +4433,10 @@ ensure_unix_signal_handler_installed_unlocked (int signum)
 	}
     }
 
-  switch (signum)
-    {
-    case SIGCHLD:
-      if (unix_signal_state.sigchld_handler_installed)
-	return;
-      unix_signal_state.sigchld_handler_installed = TRUE;
-    case SIGHUP:
-      if (unix_signal_state.sighup_handler_installed)
-	return;
-      unix_signal_state.sighup_handler_installed = TRUE;
-      break;
-    case SIGINT:
-      if (unix_signal_state.sigint_handler_installed)
-	return;
-      unix_signal_state.sigint_handler_installed = TRUE;
-      break;
-    case SIGTERM:
-      if (unix_signal_state.sigterm_handler_installed)
-	return;
-      unix_signal_state.sigterm_handler_installed = TRUE;
-      break;
-    }
+  if (sigismember (&unix_signal_mask, signum))
+    return;
+
+  sigaddset (&unix_signal_mask, signum);
 
   action.sa_handler = g_unix_signal_handler;
   sigemptyset (&action.sa_mask);
