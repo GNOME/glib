@@ -62,23 +62,23 @@ test_error (void)
   g_assert_error (error, G_UNIX_ERROR, 0);
 }
 
-static gboolean sighup_received = FALSE;
+static gboolean sig_received = FALSE;
 
 static gboolean
-on_sighup_received (gpointer user_data)
+on_sig_received (gpointer user_data)
 {
   GMainLoop *loop = user_data;
   g_main_loop_quit (loop);
-  sighup_received = TRUE;
+  sig_received = TRUE;
   return FALSE;
 }
 
 static gboolean
-sighup_not_received (gpointer data)
+sig_not_received (gpointer data)
 {
   GMainLoop *loop = data;
   (void) loop;
-  g_error ("Timed out waiting for SIGHUP");
+  g_error ("Timed out waiting for signal");
   return FALSE;
 }
 
@@ -91,29 +91,42 @@ exit_mainloop (gpointer data)
 }
 
 static void
-test_sighup (void)
+test_signal (int signum)
 {
   GMainLoop *mainloop;
 
   mainloop = g_main_loop_new (NULL, FALSE);
 
-  sighup_received = FALSE;
-  g_unix_signal_add_watch_full (SIGHUP,
+  sig_received = FALSE;
+  g_unix_signal_add_watch_full (signum,
 				G_PRIORITY_DEFAULT,
-				on_sighup_received,
+				on_sig_received,
 				mainloop,
 				NULL);
-  kill (getpid (), SIGHUP);
-  g_assert (!sighup_received);
-  g_timeout_add (5000, sighup_not_received, mainloop);
+  kill (getpid (), signum);
+  g_assert (!sig_received);
+  g_timeout_add (5000, sig_not_received, mainloop);
   g_main_loop_run (mainloop);
-  g_assert (sighup_received);
-  sighup_received = FALSE;
+  g_assert (sig_received);
+  sig_received = FALSE;
 
   /* Ensure we don't get double delivery */
   g_timeout_add (500, exit_mainloop, mainloop);
   g_main_loop_run (mainloop);
-  g_assert (!sighup_received);
+  g_assert (!sig_received);
+
+}
+
+static void
+test_sighup (void)
+{
+  test_signal (SIGHUP);
+}
+
+static void
+test_sigterm (void)
+{
+  test_signal (SIGTERM);
 }
 
 static void
@@ -124,15 +137,15 @@ test_sighup_add_remove (void)
 
   mainloop = g_main_loop_new (NULL, FALSE);
 
-  sighup_received = FALSE;
+  sig_received = FALSE;
   id = g_unix_signal_add_watch_full (SIGHUP,
 				     G_PRIORITY_DEFAULT,
-				     on_sighup_received,
+				     on_sig_received,
 				     mainloop,
 				     NULL);
   g_source_remove (id);
   kill (getpid (), SIGHUP);
-  g_assert (!sighup_received);
+  g_assert (!sig_received);
 
 }
 
@@ -149,6 +162,7 @@ main (int   argc,
   g_test_add_func ("/glib-unix/pipe", test_pipe);
   g_test_add_func ("/glib-unix/error", test_error);
   g_test_add_func ("/glib-unix/sighup", test_sighup);
+  g_test_add_func ("/glib-unix/sigterm", test_sigterm);
   g_test_add_func ("/glib-unix/sighup_again", test_sighup);
   g_test_add_func ("/glib-unix/sighup_add_remove", test_sighup_add_remove);
 
