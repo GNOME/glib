@@ -56,6 +56,7 @@ TEST_PROGS +=	 		\
 	tls-interaction		\
 	cancellable		\
 	vfs			\
+	network-monitor		\
 	$(NULL)
 
 if OS_UNIX
@@ -491,6 +492,8 @@ tls_interaction_LDADD = $(progs_ldadd)
 cancellable_LDADD = $(progs_ldadd)
 
 vfs_LDADD = $(progs_ldadd)
+
+network_monitor_LDADD = $(progs_ldadd)
 
 # -----------------------------------------------------------------------------
 

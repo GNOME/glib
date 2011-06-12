@@ -3460,3 +3460,23 @@ G_DBUS_OBJECT_MANAGER_SERVER_GET_CLASS
 <SUBSECTION Private>
 GDBusObjectManagerServerPrivate
 </SECTION>
+
+<SECTION>
+<FILE>gnetworkmonitor</FILE>
+<TITLE>GNetworkMonitor</TITLE>
+GNetworkMonitor
+GNetworkMonitorInterface
+G_NETWORK_MONITOR_EXTENSION_POINT_NAME
+g_network_monitor_get_default
+g_network_monitor_get_network_available
+g_network_monitor_can_reach
+g_network_monitor_can_reach_async
+g_network_monitor_can_reach_finish
+<SUBSECTION Standard>
+g_network_monitor_get_type
+G_TYPE_NETWORK_MONITOR
+G_NETWORK_MONITOR
+G_IS_NETWORK_MONITOR
+G_NETWORK_MONITOR_GET_INTERFACE
+</SECTION>
+

@@ -70,6 +70,7 @@ live-g-file
 memory-input-stream
 memory-output-stream
 mimeapps
+network-monitor
 network-address
 org.gtk.test.enums.xml
 pollable

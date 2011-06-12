@@ -123,6 +123,7 @@ typedef struct _GMemoryOutputStream           GMemoryOutputStream;
 typedef struct _GMount                        GMount; /* Dummy typedef */
 typedef struct _GMountOperation               GMountOperation;
 typedef struct _GNetworkAddress               GNetworkAddress;
+typedef struct _GNetworkMonitor               GNetworkMonitor;
 typedef struct _GNetworkService               GNetworkService;
 typedef struct _GOutputStream                 GOutputStream;
 typedef struct _GIOStream                     GIOStream;

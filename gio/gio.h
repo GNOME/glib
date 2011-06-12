@@ -92,6 +92,7 @@
 #include <gio/gmountoperation.h>
 #include <gio/gnativevolumemonitor.h>
 #include <gio/gnetworkaddress.h>
+#include <gio/gnetworkmonitor.h>
 #include <gio/gnetworkservice.h>
 #include <gio/goutputstream.h>
 #include <gio/gpermission.h>

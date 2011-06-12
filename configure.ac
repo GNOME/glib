@@ -1109,6 +1109,10 @@ if test $glib_native_win32 = no; then
 fi
 AC_SUBST(NETWORK_LIBS)
 
+AC_CHECK_HEADER([linux/netlink.h],
+		[AC_DEFINE(HAVE_NETLINK, 1, [We have AF_NETLINK sockets])])
+AM_CONDITIONAL(HAVE_NETLINK, [test "$ac_cv_header_linux_netlink_h" = "yes"])
+
 case $host in
   *-*-solaris* )
      AC_DEFINE(_XOPEN_SOURCE_EXTENDED, 1, Needed to get declarations for msg_control and msg_controllen on Solaris)

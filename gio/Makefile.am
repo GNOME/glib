@@ -232,6 +232,13 @@ giounixinclude_HEADERS = \
 	gunixoutputstream.h 	\
 	gunixsocketaddress.h	\
 	$(NULL)
+
+if HAVE_NETLINK
+unix_sources +=			 \
+	gnetworkmonitornetlink.c \
+	gnetworkmonitornetlink.h \
+	$(NULL)
+endif
 endif
 
 win32_actual_sources = \
@@ -332,6 +339,9 @@ libgio_2_0_la_SOURCES =		\
 	gnativevolumemonitor.h 	\
 	gnetworkaddress.c	\
 	gnetworkingprivate.h	\
+	gnetworkmonitor.c	\
+	gnetworkmonitorbase.c	\
+	gnetworkmonitorbase.h	\
 	gnetworkservice.c	\
 	goutputstream.c 	\
 	gpermission.c 		\
@@ -498,6 +508,7 @@ gio_headers =			\
 	gmountoperation.h 	\
 	gnativevolumemonitor.h 	\
 	gnetworkaddress.h	\
+	gnetworkmonitor.h	\
 	gnetworkservice.h	\
 	goutputstream.h 	\
 	gpermission.h 		\

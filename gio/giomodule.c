@@ -771,6 +771,10 @@ extern GType _g_winhttp_vfs_get_type (void);
 
 extern GType _g_dummy_proxy_resolver_get_type (void);
 extern GType _g_dummy_tls_backend_get_type (void);
+extern GType g_network_monitor_base_get_type (void);
+#ifdef HAVE_NETLINK
+extern GType _g_network_monitor_netlink_get_type (void);
+#endif
 
 #ifdef G_PLATFORM_WIN32
 
@@ -850,6 +854,9 @@ _g_io_modules_ensure_extension_points_registered (void)
 
       ep = g_io_extension_point_register (G_TLS_BACKEND_EXTENSION_POINT_NAME);
       g_io_extension_point_set_required_type (ep, G_TYPE_TLS_BACKEND);
+
+      ep = g_io_extension_point_register (G_NETWORK_MONITOR_EXTENSION_POINT_NAME);
+      g_io_extension_point_set_required_type (ep, G_TYPE_NETWORK_MONITOR);
     }
   
   G_UNLOCK (registered_extensions);
@@ -921,6 +928,10 @@ _g_io_modules_ensure_loaded (void)
       _g_socks4_proxy_get_type ();
       _g_socks5_proxy_get_type ();
       _g_dummy_tls_backend_get_type ();
+      g_network_monitor_base_get_type ();
+#ifdef HAVE_NETLINK
+      _g_network_monitor_netlink_get_type ();
+#endif
     }
 
   G_UNLOCK (loaded_dirs);
