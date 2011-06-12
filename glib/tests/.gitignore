@@ -1,6 +1,7 @@
 array-test
 atomic
 base64
+bitlock
 bookmarkfile
 checksum
 collate
@@ -28,7 +29,6 @@ node
 option-argv0
 option-context
 pattern
-printf
 protocol
 queue
 rand
@@ -40,6 +40,7 @@ slist
 strfuncs
 string
 sort
+test-printf
 testing
 timeout
 tmpsample.xml
@@ -48,6 +49,7 @@ unix
 unix-nothreads
 uri
 utf8-misc
+utf8-performance
 utf8-pointer
 utf8-validate
 utils

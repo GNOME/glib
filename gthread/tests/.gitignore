@@ -1,3 +1,7 @@
-1bit-mutex
 1bit-emufutex
+1bit-mutex
+642026
+atomic
+spawn-multithreaded
+test-spawn-echo
 unix-multithreaded

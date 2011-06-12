@@ -8,3 +8,4 @@ gsettings
 gdbus-example-objectmanager-generated.[ch]
 gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Animal.xml
 gdbus-example-objectmanager-generated-org.gtk.GDBus.Example.ObjectManager.Cat.xml
+gio-public-headers.txt
