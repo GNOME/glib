@@ -673,6 +673,24 @@ g_desktop_app_info_get_generic_name (GDesktopAppInfo *info)
   return info->generic_name;
 }
 
+/**
+ * g_desktop_app_info_get_nodisplay:
+ * @info: a #GDesktopAppInfo
+ *
+ * Gets the value of the NoDisplay key, which helps determine if the
+ * application info should be shown in menus. See
+ * #G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY and g_app_info_should_show().
+ *
+ * Returns: The value of the NoDisplay key
+ *
+ * Since: 2.30
+ */
+const char *
+g_desktop_app_info_get_nodisplay (GDesktopAppInfo *info)
+{
+  return info->nodisplay;
+}
+
 static char *
 expand_macro_single (char macro, char *uri)
 {
@@ -1926,6 +1944,9 @@ g_desktop_app_info_ensure_saved (GDesktopAppInfo  *info,
   if (info->terminal) 
     g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
 			    G_KEY_FILE_DESKTOP_KEY_TERMINAL, TRUE);
+  if (info->nodisplay)
+    g_key_file_set_boolean (key_file, G_KEY_FILE_DESKTOP_GROUP,
+			    G_KEY_FILE_DESKTOP_KEY_NO_DISPLAY, TRUE);
 
   g_key_file_set_string (key_file, G_KEY_FILE_DESKTOP_GROUP,
 			 G_KEY_FILE_DESKTOP_KEY_EXEC, info->exec);
