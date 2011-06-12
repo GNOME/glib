@@ -1885,6 +1885,11 @@ g_socket_client_get_type
 <FILE>gsocketconnection</FILE>
 <TITLE>GSocketConnection</TITLE>
 GSocketConnection
+g_socket_connection_connect
+g_socket_connection_connect_async
+g_socket_connection_connect_finish
+<SUBSECTION>
+g_socket_connection_is_connected
 g_socket_connection_get_local_address
 g_socket_connection_get_remote_address
 g_socket_connection_get_socket

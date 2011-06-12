@@ -845,10 +845,14 @@ g_socket_client_connect (GSocketClient       *client,
 	  continue;
 	}
 
-      if (g_socket_connect (socket, address, cancellable, &last_error))
-	connection = (GIOStream *)g_socket_connection_factory_create_connection (socket);
-      else
-	clarify_connect_error (last_error, connectable, address);
+      connection = (GIOStream *)g_socket_connection_factory_create_connection (socket);
+      if (!g_socket_connection_connect (G_SOCKET_CONNECTION (connection),
+					address, cancellable, &last_error))
+	{
+	  clarify_connect_error (last_error, connectable, address);
+	  g_object_unref (connection);
+	  connection = NULL;
+	}
 
       if (connection &&
 	  G_IS_PROXY_ADDRESS (address) &&
@@ -1264,10 +1268,29 @@ g_socket_client_proxy_connect_callback (GObject      *object,
 }
 
 static void
-g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
+g_socket_client_connected_callback (GObject      *source,
+				    GAsyncResult *result,
+				    gpointer      user_data)
 {
+  GSocketClientAsyncConnectData *data = user_data;
+  GError *error = NULL;
   GProxy *proxy;
   const gchar *protocol;
+
+  if (!g_socket_connection_connect_finish (G_SOCKET_CONNECTION (source),
+					   result, &error))
+    {
+      clarify_connect_error (error, data->connectable,
+			     data->current_addr);
+      set_last_error (data, error);
+
+      /* try next one */
+      enumerator_next_async (data);
+      return;
+    }
+
+  /* wrong, but backward compatible */
+  g_socket_set_blocking (data->current_socket, TRUE);
 
   if (!data->proxy_addr)
     {
@@ -1278,7 +1301,7 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
   protocol  = g_proxy_address_get_protocol (data->proxy_addr);
   proxy = g_proxy_get_default_for_protocol (protocol);
 
-  /* The connection should not be anything else then TCP Connection,
+  /* The connection should not be anything other than TCP,
    * but let's put a safety guard in case
    */
   if (!G_IS_TCP_CONNECTION (data->connection))
@@ -1322,54 +1345,6 @@ g_socket_client_proxy_connect (GSocketClientAsyncConnectData *data)
 }
 
 static void
-g_socket_client_socket_connected (GSocketClientAsyncConnectData *data)
-{
-  g_socket_set_blocking (data->current_socket, TRUE);
-
-  data->connection = (GIOStream *)
-    g_socket_connection_factory_create_connection (data->current_socket);
-
-  g_socket_client_proxy_connect (data);
-}
-
-static gboolean
-g_socket_client_socket_callback (GSocket *socket,
-				 GIOCondition condition,
-				 GSocketClientAsyncConnectData *data)
-{
-  GError *error = NULL;
-
-  if (g_cancellable_is_cancelled (data->cancellable))
-    {
-      /* Cancelled, return done with last error being cancelled */
-      g_clear_error (&data->last_error);
-      g_cancellable_set_error_if_cancelled (data->cancellable,
-					    &data->last_error);
-
-      g_socket_client_async_connect_complete (data);
-      return FALSE;
-    }
-  else
-    {
-      /* socket is ready for writing means connect done, did it succeed? */
-      if (!g_socket_check_connect_result (data->current_socket, &error))
-	{
-	  clarify_connect_error (error, data->connectable,
-				 data->current_addr);
-	  set_last_error (data, error);
-
-	  /* try next one */
-	  enumerator_next_async (data);
-
-	  return FALSE;
-	}
-    }
-
-  g_socket_client_socket_connected (data);
-  return FALSE;
-}
-
-static void
 g_socket_client_enumerator_callback (GObject      *object,
 				     GAsyncResult *result,
 				     gpointer      user_data)
@@ -1409,44 +1384,20 @@ g_socket_client_enumerator_callback (GObject      *object,
   g_clear_error (&data->last_error);
 
   socket = create_socket (data->client, address, &data->last_error);
-  if (socket != NULL)
+  if (socket == NULL)
     {
-      g_socket_set_blocking (socket, FALSE);
-      if (g_socket_connect (socket, address, data->cancellable, &tmp_error))
-	{
-	  data->current_socket = socket;
-	  g_socket_client_socket_connected (data);
-
-	  g_object_unref (address);
-	  return;
-	}
-      else if (g_error_matches (tmp_error, G_IO_ERROR, G_IO_ERROR_PENDING))
-	{
-	  GSource *source;
-
-	  data->current_socket = socket;
-	  data->current_addr = address;
-	  g_error_free (tmp_error);
-
-	  source = g_socket_create_source (socket, G_IO_OUT,
-					   data->cancellable);
-	  g_source_set_callback (source,
-				 (GSourceFunc) g_socket_client_socket_callback,
-				 data, NULL);
-	  g_source_attach (source, g_main_context_get_thread_default ());
-	  g_source_unref (source);
-	  return;
-	}
-      else
-	{
-	  clarify_connect_error (tmp_error, data->connectable, address);
-	  data->last_error = tmp_error;
-	  g_object_unref (socket);
-	}
+      g_object_unref (address);
+      enumerator_next_async (data);
+      return;
     }
 
-  g_object_unref (address);
-  enumerator_next_async (data);
+  data->current_socket = socket;
+  data->current_addr = address;
+  data->connection = (GIOStream *) g_socket_connection_factory_create_connection (socket);
+
+  g_socket_connection_connect_async (G_SOCKET_CONNECTION (data->connection),
+				     address, data->cancellable,
+				     g_socket_client_connected_callback, data);
 }
 
 /**

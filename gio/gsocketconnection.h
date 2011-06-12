@@ -72,11 +72,26 @@ struct _GSocketConnection
 
 GType              g_socket_connection_get_type                  (void) G_GNUC_CONST;
 
+gboolean           g_socket_connection_is_connected              (GSocketConnection  *connection);
+gboolean           g_socket_connection_connect                   (GSocketConnection  *connection,
+								  GSocketAddress     *address,
+								  GCancellable       *cancellable,
+								  GError            **error);
+void               g_socket_connection_connect_async             (GSocketConnection  *connection,
+								  GSocketAddress     *address,
+								  GCancellable       *cancellable,
+								  GAsyncReadyCallback callback,
+								  gpointer            user_data);
+gboolean           g_socket_connection_connect_finish            (GSocketConnection  *connection,
+								  GAsyncResult       *result,
+								  GError            **error);
+
 GSocket           *g_socket_connection_get_socket                (GSocketConnection  *connection);
 GSocketAddress    *g_socket_connection_get_local_address         (GSocketConnection  *connection,
 								  GError            **error);
 GSocketAddress    *g_socket_connection_get_remote_address        (GSocketConnection  *connection,
 								  GError            **error);
+
 void               g_socket_connection_factory_register_type     (GType               g_type,
 								  GSocketFamily       family,
 								  GSocketType         type,
