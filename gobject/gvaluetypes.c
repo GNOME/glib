@@ -1074,7 +1074,7 @@ g_value_take_string (GValue *value,
  *
  * Returns: string content of @value
  */
-G_CONST_RETURN gchar*
+const gchar*
 g_value_get_string (const GValue *value)
 {
   g_return_val_if_fail (G_VALUE_HOLDS_STRING (value), NULL);

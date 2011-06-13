@@ -745,7 +745,7 @@ test_info (void)
   g_free (sconfdirs);
   g_free (langnames);
 
-  charset_is_utf8 = g_get_charset ((G_CONST_RETURN char**)&charset);
+  charset_is_utf8 = g_get_charset ((const char**)&charset);
 
   if (g_test_verbose())
     {
