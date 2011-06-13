@@ -22,7 +22,7 @@ GDBUS_GENERATED = 										\
 	$(NULL)
 
 $(GDBUS_GENERATED) : gdbus-example-objectmanager.xml
-	$(AM_V_GEN) PYTHONPATH=$(top_srcdir)/gio/gdbus-codegen:$(top_builddir)/gio/gdbus-codegen:$$PYTHONPATH $(PYTHON) $(top_builddir)/gio/gdbus-codegen/codegen_main.py	 	\
+	$(AM_V_GEN) PYTHONPATH=$(top_srcdir)/gio/gdbus-codegen:$(top_builddir)/gio/gdbus-codegen:$$PYTHONPATH $(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
 		--interface-prefix org.gtk.GDBus.Example.ObjectManager.		\
 		--c-namespace Example 						\
 		--c-generate-object-manager					\
