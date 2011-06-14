@@ -1469,6 +1469,8 @@ g_filename_to_utf8 (const gchar *opsysstring,
 {
   const gchar *charset;
 
+  g_return_val_if_fail (opsysstring != NULL, NULL);
+
   if (get_filename_charset (&charset))
     return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
   else
@@ -1493,6 +1495,8 @@ g_filename_to_utf8 (const gchar *opsysstring,
 		    GError     **error)
 {
   const gchar *charset;
+
+  g_return_val_if_fail (opsysstring != NULL, NULL);
 
   if (g_get_charset (&charset))
     return strdup_len (opsysstring, len, bytes_read, bytes_written, error);
