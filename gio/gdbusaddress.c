@@ -944,7 +944,7 @@ g_dbus_address_get_stream_sync (const gchar   *address,
   last_error = NULL;
 
   addr_array = g_strsplit (address, ";", 0);
-  if (addr_array[0] == NULL)
+  if (addr_array != NULL && addr_array[0] == NULL)
     {
       last_error = g_error_new_literal (G_IO_ERROR,
                                         G_IO_ERROR_INVALID_ARGUMENT,
