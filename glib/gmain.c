@@ -3774,16 +3774,11 @@ _g_main_wake_up_all_contexts (void)
   G_LOCK (main_context_list);
   for (list = main_context_list; list; list = list->next)
     {
-      GMainContext *context;
+      GMainContext *context = list->data;
 
-      context = list->data;
-      if (g_atomic_int_get (&context->ref_count) > 0)
-	/* Due to racing conditions we can find ref_count == 0, in
-	 * that case, however, the context is still not destroyed
-	 * and no poll can be active, otherwise the ref_count
-	 * wouldn't be 0
-	 */
-	g_main_context_wakeup (context);
+      LOCK_CONTEXT (context);
+      g_main_context_wakeup_unlocked (context);
+      UNLOCK_CONTEXT (context);
     }
   G_UNLOCK (main_context_list);
 }
@@ -4635,8 +4630,6 @@ unix_signal_helper_thread (gpointer data)
 	deliver_unix_signal (SIGINT);
       if (sighup_received)
 	deliver_unix_signal (SIGHUP);
-      if (sigchld_received)
-	deliver_sigchld ();
       _g_main_wake_up_all_contexts ();
     }
 }
