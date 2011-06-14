@@ -1,3 +1,31 @@
+Overview of changes from GLib 2.29.6 to 2.29.8
+==============================================
+
+* Bug fixes
+ 646608 export_symbols variable for gio dynamic library is wrong
+ 646635 Fix introspection of GLib
+ 647930 Documentation: GDataInputStream _read_upto() version
+ 651745 Switch to _ prefixing rather than G_GNUC_INTERNAL
+ 651920 Improve qsort_r detection
+ 651959 gbitlock: "asm goto" is not available in gcc < 4.5
+ 651998 gdbus-codegen: Use relative Python imports
+ 652000 Fix for gatomic.c on Windows/MSVC
+ 652002 Proposal to clean up gvaluetransform.c for MSVC
+ 652025 g_dbus_connection_register_object: error is not set...
+ 652081 Typos in a GBinding warning message
+ 652197 Improper handling of double values in GDBusMessage
+        Fix a deadlock in gobject finalization
+
+* Translation updates:
+ Czech
+ Galician
+ German
+ Hebrew
+ Norwegian bokmål
+ Spanish
+ Uighur
+
+
 Overview of changes from GLib 2.29.4 to 2.29.6
 ==============================================
 
