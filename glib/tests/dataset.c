@@ -183,7 +183,7 @@ free_one (gpointer data)
 static void
 test_datalist_clear (void)
 {
-  if (g_test_trap_fork (1000, 0))
+  if (g_test_trap_fork (500000, 0))
     {
       g_datalist_init (&list);
       g_datalist_set_data_full (&list, "one", GINT_TO_POINTER (1), free_one);
