@@ -3423,8 +3423,7 @@ emit_signal_instance_in_idle_cb (gpointer data)
                                parameters,
                                signal_instance->user_data);
 
-  if (parameters != NULL)
-    g_variant_unref (parameters);
+  g_variant_unref (parameters);
 
   return FALSE;
 }
