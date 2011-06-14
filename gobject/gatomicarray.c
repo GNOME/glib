@@ -110,6 +110,10 @@ _g_atomic_array_init (GAtomicArray *array)
  * This means you can use this to grow the
  * array part and it handles the first element
  * being added automatically.
+ *
+ * We don't support shrinking arrays, as if
+ * we then re-grow we may reuse an old pointer
+ * value and confuse the transaction check.
  */
 gpointer
 _g_atomic_array_copy (GAtomicArray *array,
@@ -118,11 +122,6 @@ _g_atomic_array_copy (GAtomicArray *array,
 {
   guint8 *new, *old;
   gsize old_size, new_size;
-
-  /* We don't support shrinking arrays, as if
-     we then re-grow we may reuse an old pointer
-     value and confuse the transaction check. */
-  g_assert (additional_element_size >= 0);
 
   G_LOCK (array);
   old = g_atomic_pointer_get (&array->data);
