@@ -111,6 +111,7 @@ _xdg_mime_parent_list_lookup (XdgParentList *list,
     {
       key.mime = (char *)mime;
       key.parents = NULL;
+      key.n_parents = 0;
 
       entry = bsearch (&key, list->parents, list->n_mimes,
 		       sizeof (XdgMimeParents), &parent_entry_cmp);
