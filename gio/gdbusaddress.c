@@ -580,7 +580,7 @@ g_dbus_address_connect (const gchar   *address_entry,
     {
       const gchar *s;
       const gchar *host;
-      guint port;
+      glong port;
       gchar *endp;
       gboolean is_nonce;
 
