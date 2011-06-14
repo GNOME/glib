@@ -685,7 +685,7 @@ g_desktop_app_info_get_generic_name (GDesktopAppInfo *info)
  *
  * Since: 2.30
  */
-const char *
+gboolean
 g_desktop_app_info_get_nodisplay (GDesktopAppInfo *info)
 {
   return info->nodisplay;
