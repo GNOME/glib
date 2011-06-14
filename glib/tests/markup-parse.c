@@ -216,7 +216,8 @@ get_expected_filename (const gchar *filename)
 
   f = g_strdup (filename);
   p = strstr (f, ".gmarkup");
-  *p = 0;
+  if (p)
+    *p = 0;
   expected = g_strconcat (f, ".expected", NULL);
   g_free (f);
 
