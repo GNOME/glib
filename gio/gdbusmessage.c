@@ -1058,6 +1058,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
   GVariant *ret;
   GError *local_error;
   gboolean is_leaf;
+  const gchar *type_string;
+
+  type_string = g_variant_type_peek_string (type);
 
 #ifdef DEBUG_SERIALIZER
   if (!just_align)
@@ -1076,8 +1079,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
 
   is_leaf = TRUE;
   local_error = NULL;
-  if (g_variant_type_equal (type, G_VARIANT_TYPE_BOOLEAN))
+  switch (type_string[0])
     {
+    case 'b': /* G_VARIANT_TYPE_BOOLEAN */
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
       if (!just_align)
@@ -1088,9 +1092,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_boolean (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_BYTE))
-    {
+      break;
+
+    case 'y': /* G_VARIANT_TYPE_BYTE */
       if (!just_align)
         {
           guchar v;
@@ -1099,9 +1103,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_byte (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT16))
-    {
+      break;
+
+    case 'n': /* G_VARIANT_TYPE_INT16 */
       if (!ensure_input_padding (mis, 2, &local_error))
         goto fail;
       if (!just_align)
@@ -1112,9 +1116,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_int16 (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_UINT16))
-    {
+      break;
+
+    case 'q': /* G_VARIANT_TYPE_UINT16 */
       if (!ensure_input_padding (mis, 2, &local_error))
         goto fail;
       if (!just_align)
@@ -1125,9 +1129,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_uint16 (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT32))
-    {
+      break;
+
+    case 'i': /* G_VARIANT_TYPE_INT32 */
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
       if (!just_align)
@@ -1138,9 +1142,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_int32 (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_UINT32))
-    {
+      break;
+
+    case 'u': /* G_VARIANT_TYPE_UINT32 */
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
       if (!just_align)
@@ -1151,9 +1155,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_uint32 (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT64))
-    {
+      break;
+
+    case 'x': /* G_VARIANT_TYPE_INT64 */
       if (!ensure_input_padding (mis, 8, &local_error))
         goto fail;
       if (!just_align)
@@ -1164,9 +1168,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_int64 (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_UINT64))
-    {
+      break;
+
+    case 't': /* G_VARIANT_TYPE_UINT64 */
       if (!ensure_input_padding (mis, 8, &local_error))
         goto fail;
       if (!just_align)
@@ -1177,9 +1181,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_uint64 (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_DOUBLE))
-    {
+      break;
+
+    case 'd': /* G_VARIANT_TYPE_DOUBLE */
       if (!ensure_input_padding (mis, 8, &local_error))
         goto fail;
       if (!just_align)
@@ -1194,9 +1198,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_double (u.v_double);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING))
-    {
+      break;
+
+    case 's': /* G_VARIANT_TYPE_STRING */
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
       if (!just_align)
@@ -1212,9 +1216,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           ret = g_variant_new_string (v);
           g_free (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_OBJECT_PATH))
-    {
+      break;
+
+    case 'o': /* G_VARIANT_TYPE_OBJECT_PATH */
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
       if (!just_align)
@@ -1240,9 +1244,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           ret = g_variant_new_object_path (v);
           g_free (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_SIGNATURE))
-    {
+      break;
+
+    case 'g': /* G_VARIANT_TYPE_SIGNATURE */
       if (!just_align)
         {
           guchar len;
@@ -1266,9 +1270,9 @@ parse_value_from_blob (GMemoryInputStream    *mis,
           ret = g_variant_new_signature (v);
           g_free (v);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_HANDLE))
-    {
+      break;
+
+    case 'h': /* G_VARIANT_TYPE_HANDLE */
       if (!ensure_input_padding (mis, 4, &local_error))
         goto fail;
       if (!just_align)
@@ -1279,231 +1283,237 @@ parse_value_from_blob (GMemoryInputStream    *mis,
             goto fail;
           ret = g_variant_new_handle (v);
         }
-    }
-  else if (g_variant_type_is_array (type))
-    {
-      guint32 array_len;
-      goffset offset;
-      goffset target;
-      const GVariantType *element_type;
-      GVariantBuilder builder;
+      break;
 
-      if (!ensure_input_padding (mis, 4, &local_error))
-        goto fail;
+    case 'a': /* G_VARIANT_TYPE_ARRAY */
+      {
+        guint32 array_len;
+        goffset offset;
+        goffset target;
+        const GVariantType *element_type;
+        GVariantBuilder builder;
 
-      if (just_align)
+        if (!ensure_input_padding (mis, 4, &local_error))
+          goto fail;
+
+        if (just_align)
+          {
+            array_len = 0;
+          }
+        else
+          {
+            array_len = g_data_input_stream_read_uint32 (dis, NULL, &local_error);
+            if (local_error != NULL)
+              goto fail;
+
+            is_leaf = FALSE;
+#ifdef DEBUG_SERIALIZER
+            g_print (": array spans 0x%04x bytes\n", array_len);
+#endif /* DEBUG_SERIALIZER */
+
+            if (array_len > (2<<26))
+              {
+                /* G_GUINT32_FORMAT doesn't work with gettext, so use u */
+                g_set_error (&local_error,
+                             G_IO_ERROR,
+                             G_IO_ERROR_INVALID_ARGUMENT,
+                             _("Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."),
+                             array_len);
+                goto fail;
+              }
+          }
+
+        g_variant_builder_init (&builder, type);
+        element_type = g_variant_type_element (type);
+
+        if (array_len == 0)
+          {
+            GVariant *item;
+            item = parse_value_from_blob (mis,
+                                          dis,
+                                          element_type,
+                                          TRUE,
+                                          indent + 2,
+                                          &local_error);
+            g_assert (item == NULL);
+          }
+        else
+          {
+            /* TODO: optimize array of primitive types */
+            offset = g_seekable_tell (G_SEEKABLE (mis));
+            target = offset + array_len;
+            while (offset < target)
+              {
+                GVariant *item;
+                item = parse_value_from_blob (mis,
+                                              dis,
+                                              element_type,
+                                              FALSE,
+                                              indent + 2,
+                                              &local_error);
+                if (item == NULL)
+                  {
+                    g_variant_builder_clear (&builder);
+                    goto fail;
+                  }
+                g_variant_builder_add_value (&builder, item);
+                g_variant_unref (item);
+                offset = g_seekable_tell (G_SEEKABLE (mis));
+              }
+          }
+
+        if (!just_align)
+          {
+            ret = g_variant_builder_end (&builder);
+          }
+        else
+          {
+            g_variant_builder_clear (&builder);
+          }
+      }
+      break;
+
+    default:
+      if (g_variant_type_is_dict_entry (type))
         {
-          array_len = 0;
-        }
-      else
-        {
-          array_len = g_data_input_stream_read_uint32 (dis, NULL, &local_error);
-          if (local_error != NULL)
+          const GVariantType *key_type;
+          const GVariantType *value_type;
+          GVariant *key;
+          GVariant *value;
+
+          if (!ensure_input_padding (mis, 8, &local_error))
             goto fail;
 
           is_leaf = FALSE;
 #ifdef DEBUG_SERIALIZER
-          g_print (": array spans 0x%04x bytes\n", array_len);
+          g_print ("\n");
 #endif /* DEBUG_SERIALIZER */
 
-          if (array_len > (2<<26))
+          if (!just_align)
             {
-              /* G_GUINT32_FORMAT doesn't work with gettext, so use u */
-              g_set_error (&local_error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."),
-                           array_len);
-              goto fail;
-            }
-        }
-
-      g_variant_builder_init (&builder, type);
-      element_type = g_variant_type_element (type);
-
-      if (array_len == 0)
-        {
-          GVariant *item;
-          item = parse_value_from_blob (mis,
-                                        dis,
-                                        element_type,
-                                        TRUE,
-                                        indent + 2,
-                                        &local_error);
-          g_assert (item == NULL);
-        }
-      else
-        {
-          /* TODO: optimize array of primitive types */
-          offset = g_seekable_tell (G_SEEKABLE (mis));
-          target = offset + array_len;
-          while (offset < target)
-            {
-              GVariant *item;
-              item = parse_value_from_blob (mis,
-                                            dis,
-                                            element_type,
-                                            FALSE,
-                                            indent + 2,
-                                            &local_error);
-              if (item == NULL)
+              key_type = g_variant_type_key (type);
+              key = parse_value_from_blob (mis,
+                                           dis,
+                                           key_type,
+                                           FALSE,
+                                           indent + 2,
+                                           &local_error);
+              if (key == NULL)
+                goto fail;
+              value_type = g_variant_type_value (type);
+              value = parse_value_from_blob (mis,
+                                             dis,
+                                             value_type,
+                                             FALSE,
+                                             indent + 2,
+                                             &local_error);
+              if (value == NULL)
                 {
-                  g_variant_builder_clear (&builder);
+                  g_variant_unref (key);
                   goto fail;
                 }
-              g_variant_builder_add_value (&builder, item);
-              g_variant_unref (item);
-              offset = g_seekable_tell (G_SEEKABLE (mis));
-            }
-        }
-
-      if (!just_align)
-        {
-          ret = g_variant_builder_end (&builder);
-        }
-      else
-        {
-          g_variant_builder_clear (&builder);
-        }
-    }
-  else if (g_variant_type_is_dict_entry (type))
-    {
-      const GVariantType *key_type;
-      const GVariantType *value_type;
-      GVariant *key;
-      GVariant *value;
-
-      if (!ensure_input_padding (mis, 8, &local_error))
-        goto fail;
-
-      is_leaf = FALSE;
-#ifdef DEBUG_SERIALIZER
-      g_print ("\n");
-#endif /* DEBUG_SERIALIZER */
-
-      if (!just_align)
-        {
-          key_type = g_variant_type_key (type);
-          key = parse_value_from_blob (mis,
-                                       dis,
-                                       key_type,
-                                       FALSE,
-                                       indent + 2,
-                                       &local_error);
-          if (key == NULL)
-            goto fail;
-          value_type = g_variant_type_value (type);
-          value = parse_value_from_blob (mis,
-                                         dis,
-                                         value_type,
-                                         FALSE,
-                                         indent + 2,
-                                         &local_error);
-          if (value == NULL)
-            {
+              ret = g_variant_new_dict_entry (key, value);
               g_variant_unref (key);
-              goto fail;
+              g_variant_unref (value);
             }
-          ret = g_variant_new_dict_entry (key, value);
-          g_variant_unref (key);
-          g_variant_unref (value);
         }
-    }
-  else if (g_variant_type_is_tuple (type))
-    {
-      if (!ensure_input_padding (mis, 8, &local_error))
-        goto fail;
+      else if (g_variant_type_is_tuple (type))
+        {
+          if (!ensure_input_padding (mis, 8, &local_error))
+            goto fail;
 
-      is_leaf = FALSE;
+          is_leaf = FALSE;
 #ifdef DEBUG_SERIALIZER
-      g_print ("\n");
+          g_print ("\n");
 #endif /* DEBUG_SERIALIZER */
 
-      if (!just_align)
-        {
-          const GVariantType *element_type;
-          GVariantBuilder builder;
-
-          g_variant_builder_init (&builder, type);
-          element_type = g_variant_type_first (type);
-          while (element_type != NULL)
+          if (!just_align)
             {
-              GVariant *item;
-              item = parse_value_from_blob (mis,
-                                            dis,
-                                            element_type,
-                                            FALSE,
-                                            indent + 2,
-                                            &local_error);
-              if (item == NULL)
+              const GVariantType *element_type;
+              GVariantBuilder builder;
+
+              g_variant_builder_init (&builder, type);
+              element_type = g_variant_type_first (type);
+              while (element_type != NULL)
                 {
-                  g_variant_builder_clear (&builder);
+                  GVariant *item;
+                  item = parse_value_from_blob (mis,
+                                                dis,
+                                                element_type,
+                                                FALSE,
+                                                indent + 2,
+                                                &local_error);
+                  if (item == NULL)
+                    {
+                      g_variant_builder_clear (&builder);
+                      goto fail;
+                    }
+                  g_variant_builder_add_value (&builder, item);
+                  g_variant_unref (item);
+
+                  element_type = g_variant_type_next (element_type);
+                }
+              ret = g_variant_builder_end (&builder);
+            }
+        }
+      else if (g_variant_type_is_variant (type))
+        {
+          is_leaf = FALSE;
+#ifdef DEBUG_SERIALIZER
+          g_print ("\n");
+#endif /* DEBUG_SERIALIZER */
+
+          if (!just_align)
+            {
+              guchar siglen;
+              gchar *sig;
+              GVariantType *variant_type;
+              GVariant *value;
+
+              siglen = g_data_input_stream_read_byte (dis, NULL, &local_error);
+              if (local_error != NULL)
+                goto fail;
+              sig = read_string (mis, dis, (gsize) siglen, &local_error);
+              if (sig == NULL)
+                goto fail;
+              if (!g_variant_is_signature (sig))
+                {
+                  g_set_error (&local_error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_INVALID_ARGUMENT,
+                               _("Parsed value `%s' for variant is not a valid D-Bus signature"),
+                               sig);
+                  g_free (sig);
                   goto fail;
                 }
-              g_variant_builder_add_value (&builder, item);
-              g_variant_unref (item);
-
-              element_type = g_variant_type_next (element_type);
-            }
-          ret = g_variant_builder_end (&builder);
-        }
-    }
-  else if (g_variant_type_is_variant (type))
-    {
-      is_leaf = FALSE;
-#ifdef DEBUG_SERIALIZER
-      g_print ("\n");
-#endif /* DEBUG_SERIALIZER */
-
-      if (!just_align)
-        {
-          guchar siglen;
-          gchar *sig;
-          GVariantType *variant_type;
-          GVariant *value;
-
-          siglen = g_data_input_stream_read_byte (dis, NULL, &local_error);
-          if (local_error != NULL)
-            goto fail;
-          sig = read_string (mis, dis, (gsize) siglen, &local_error);
-          if (sig == NULL)
-            goto fail;
-          if (!g_variant_is_signature (sig))
-            {
-              g_set_error (&local_error,
-                           G_IO_ERROR,
-                           G_IO_ERROR_INVALID_ARGUMENT,
-                           _("Parsed value `%s' for variant is not a valid D-Bus signature"),
-                           sig);
+              variant_type = g_variant_type_new (sig);
               g_free (sig);
-              goto fail;
+              value = parse_value_from_blob (mis,
+                                             dis,
+                                             variant_type,
+                                             FALSE,
+                                             indent + 2,
+                                             &local_error);
+              g_variant_type_free (variant_type);
+              if (value == NULL)
+                goto fail;
+              ret = g_variant_new_variant (value);
+              g_variant_unref (value);
             }
-          variant_type = g_variant_type_new (sig);
-          g_free (sig);
-          value = parse_value_from_blob (mis,
-                                         dis,
-                                         variant_type,
-                                         FALSE,
-                                         indent + 2,
-                                         &local_error);
-          g_variant_type_free (variant_type);
-          if (value == NULL)
-            goto fail;
-          ret = g_variant_new_variant (value);
-          g_variant_unref (value);
         }
-    }
-  else
-    {
-      gchar *s;
-      s = g_variant_type_dup_string (type);
-      g_set_error (&local_error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error deserializing GVariant with type string `%s' from the D-Bus wire format"),
-                   s);
-      g_free (s);
-      goto fail;
+      else
+        {
+          gchar *s;
+          s = g_variant_type_dup_string (type);
+          g_set_error (&local_error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Error deserializing GVariant with type string `%s' from the D-Bus wire format"),
+                       s);
+          g_free (s);
+          goto fail;
+        }
+      break;
     }
 
   g_assert ((just_align && ret == NULL) || (!just_align && ret != NULL));
@@ -1863,82 +1873,86 @@ append_value_to_blob (GVariant             *value,
                       GError              **error)
 {
   gsize padding_added;
+  const gchar *type_string;
+
+  type_string = g_variant_type_peek_string (type);
 
   padding_added = 0;
 
-  if (g_variant_type_equal (type, G_VARIANT_TYPE_BOOLEAN))
+  switch (type_string[0])
     {
+    case 'b': /* G_VARIANT_TYPE_BOOLEAN */
       padding_added = ensure_output_padding (mos, dos, 4);
       if (value != NULL)
         {
           gboolean v = g_variant_get_boolean (value);
           g_data_output_stream_put_uint32 (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_BYTE))
-    {
+      break;
+
+    case 'y': /* G_VARIANT_TYPE_BYTE */
       if (value != NULL)
         {
           guint8 v = g_variant_get_byte (value);
           g_data_output_stream_put_byte (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT16))
-    {
+      break;
+
+    case 'n': /* G_VARIANT_TYPE_INT16 */
       padding_added = ensure_output_padding (mos, dos, 2);
       if (value != NULL)
         {
           gint16 v = g_variant_get_int16 (value);
           g_data_output_stream_put_int16 (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_UINT16))
-    {
+      break;
+
+    case 'q': /* G_VARIANT_TYPE_UINT16 */
       padding_added = ensure_output_padding (mos, dos, 2);
       if (value != NULL)
         {
           guint16 v = g_variant_get_uint16 (value);
           g_data_output_stream_put_uint16 (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT32))
-    {
+      break;
+
+    case 'i': /* G_VARIANT_TYPE_INT32 */
       padding_added = ensure_output_padding (mos, dos, 4);
       if (value != NULL)
         {
           gint32 v = g_variant_get_int32 (value);
           g_data_output_stream_put_int32 (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_UINT32))
-    {
+      break;
+
+    case 'u': /* G_VARIANT_TYPE_UINT32 */
       padding_added = ensure_output_padding (mos, dos, 4);
       if (value != NULL)
         {
           guint32 v = g_variant_get_uint32 (value);
           g_data_output_stream_put_uint32 (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_INT64))
-    {
+      break;
+
+    case 'x': /* G_VARIANT_TYPE_INT64 */
       padding_added = ensure_output_padding (mos, dos, 8);
       if (value != NULL)
         {
           gint64 v = g_variant_get_int64 (value);
           g_data_output_stream_put_int64 (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_UINT64))
-    {
+      break;
+
+    case 't': /* G_VARIANT_TYPE_UINT64 */
       padding_added = ensure_output_padding (mos, dos, 8);
       if (value != NULL)
         {
           guint64 v = g_variant_get_uint64 (value);
           g_data_output_stream_put_uint64 (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_DOUBLE))
-    {
+      break;
+
+    case 'd': /* G_VARIANT_TYPE_DOUBLE */
       padding_added = ensure_output_padding (mos, dos, 8);
       if (value != NULL)
         {
@@ -1950,9 +1964,9 @@ append_value_to_blob (GVariant             *value,
           u.v_double = g_variant_get_double (value);
           g_data_output_stream_put_uint64 (dos, u.v_uint64, NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_STRING))
-    {
+      break;
+
+    case 's': /* G_VARIANT_TYPE_STRING */
       padding_added = ensure_output_padding (mos, dos, 4);
       if (value != NULL)
         {
@@ -1965,9 +1979,9 @@ append_value_to_blob (GVariant             *value,
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_OBJECT_PATH))
-    {
+      break;
+
+    case 'o': /* G_VARIANT_TYPE_OBJECT_PATH */
       padding_added = ensure_output_padding (mos, dos, 4);
       if (value != NULL)
         {
@@ -1978,9 +1992,9 @@ append_value_to_blob (GVariant             *value,
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_SIGNATURE))
-    {
+      break;
+
+    case 'g': /* G_VARIANT_TYPE_SIGNATURE */
       if (value != NULL)
         {
           gsize len;
@@ -1990,155 +2004,158 @@ append_value_to_blob (GVariant             *value,
           g_data_output_stream_put_string (dos, v, NULL, NULL);
           g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
         }
-    }
-  else if (g_variant_type_equal (type, G_VARIANT_TYPE_HANDLE))
-    {
+      break;
+
+    case 'h': /* G_VARIANT_TYPE_HANDLE */
       padding_added = ensure_output_padding (mos, dos, 4);
       if (value != NULL)
         {
           gint32 v = g_variant_get_handle (value);
           g_data_output_stream_put_int32 (dos, v, NULL, NULL);
         }
-    }
-  else if (g_variant_type_is_array (type))
-    {
-      GVariant *item;
-      GVariantIter iter;
-      goffset array_len_offset;
-      goffset array_payload_begin_offset;
-      goffset cur_offset;
-      gsize array_len;
+      break;
 
-      padding_added = ensure_output_padding (mos, dos, 4);
-      if (value != NULL)
+    case 'a': /* G_VARIANT_TYPE_ARRAY */
+      {
+        GVariant *item;
+        GVariantIter iter;
+        goffset array_len_offset;
+        goffset array_payload_begin_offset;
+        goffset cur_offset;
+        gsize array_len;
+
+        padding_added = ensure_output_padding (mos, dos, 4);
+        if (value != NULL)
+          {
+            /* array length - will be filled in later */
+            array_len_offset = g_memory_output_stream_get_data_size (mos);
+            g_data_output_stream_put_uint32 (dos, 0xF00DFACE, NULL, NULL);
+
+            /* From the D-Bus spec:
+             *
+             *   "A UINT32 giving the length of the array data in bytes,
+             *    followed by alignment padding to the alignment boundary of
+             *    the array element type, followed by each array element. The
+             *    array length is from the end of the alignment padding to
+             *    the end of the last element, i.e. it does not include the
+             *    padding after the length, or any padding after the last
+             *    element."
+             *
+             * Thus, we need to count how much padding the first element
+             * contributes and subtract that from the array length.
+             */
+            array_payload_begin_offset = g_memory_output_stream_get_data_size (mos);
+
+            if (g_variant_n_children (value) == 0)
+              {
+                gsize padding_added_for_item;
+                if (!append_value_to_blob (NULL,
+                                           g_variant_type_element (type),
+                                           mos,
+                                           dos,
+                                           &padding_added_for_item,
+                                           error))
+                  goto fail;
+                array_payload_begin_offset += padding_added_for_item;
+              }
+            else
+              {
+                guint n;
+                n = 0;
+                g_variant_iter_init (&iter, value);
+                while ((item = g_variant_iter_next_value (&iter)) != NULL)
+                  {
+                    gsize padding_added_for_item;
+                    if (!append_value_to_blob (item,
+                                               g_variant_get_type (item),
+                                               mos,
+                                               dos,
+                                               &padding_added_for_item,
+                                               error))
+                      {
+                        g_variant_unref (item);
+                        goto fail;
+                      }
+                    g_variant_unref (item);
+                    if (n == 0)
+                      {
+                        array_payload_begin_offset += padding_added_for_item;
+                      }
+                    n++;
+                  }
+              }
+
+            cur_offset = g_memory_output_stream_get_data_size (mos);
+            array_len = cur_offset - array_payload_begin_offset;
+            if (!g_seekable_seek (G_SEEKABLE (mos), array_len_offset, G_SEEK_SET, NULL, error))
+              goto fail;
+
+            g_data_output_stream_put_uint32 (dos, array_len, NULL, NULL);
+            if (!g_seekable_seek (G_SEEKABLE (mos), cur_offset, G_SEEK_SET, NULL, error))
+              goto fail;
+          }
+      }
+      break;
+
+    default:
+      if (g_variant_type_is_dict_entry (type) || g_variant_type_is_tuple (type))
         {
-          /* array length - will be filled in later */
-          array_len_offset = g_memory_output_stream_get_data_size (mos);
-          g_data_output_stream_put_uint32 (dos, 0xF00DFACE, NULL, NULL);
-
-          /* From the D-Bus spec:
-           *
-           *   "A UINT32 giving the length of the array data in bytes,
-           *    followed by alignment padding to the alignment boundary of
-           *    the array element type, followed by each array element. The
-           *    array length is from the end of the alignment padding to
-           *    the end of the last element, i.e. it does not include the
-           *    padding after the length, or any padding after the last
-           *    element."
-           *
-           * Thus, we need to count how much padding the first element
-           * contributes and subtract that from the array length.
-           */
-          array_payload_begin_offset = g_memory_output_stream_get_data_size (mos);
-
-          if (g_variant_n_children (value) == 0)
+          padding_added = ensure_output_padding (mos, dos, 8);
+          if (value != NULL)
             {
-              gsize padding_added_for_item;
-              if (!append_value_to_blob (NULL,
-                                         g_variant_type_element (type),
-                                         mos,
-                                         dos,
-                                         &padding_added_for_item,
-                                         error))
-                goto fail;
-              array_payload_begin_offset += padding_added_for_item;
-            }
-          else
-            {
-              guint n;
-              n = 0;
+              GVariant *item;
+              GVariantIter iter;
               g_variant_iter_init (&iter, value);
               while ((item = g_variant_iter_next_value (&iter)) != NULL)
                 {
-                  gsize padding_added_for_item;
                   if (!append_value_to_blob (item,
                                              g_variant_get_type (item),
                                              mos,
                                              dos,
-                                             &padding_added_for_item,
+                                             NULL,
                                              error))
                     {
                       g_variant_unref (item);
                       goto fail;
                     }
                   g_variant_unref (item);
-                  if (n == 0)
-                    {
-                      array_payload_begin_offset += padding_added_for_item;
-                    }
-                  n++;
                 }
             }
-
-          cur_offset = g_memory_output_stream_get_data_size (mos);
-
-          array_len = cur_offset - array_payload_begin_offset;
-
-          if (!g_seekable_seek (G_SEEKABLE (mos), array_len_offset, G_SEEK_SET, NULL, error))
-            goto fail;
-
-          g_data_output_stream_put_uint32 (dos, array_len, NULL, NULL);
-
-          if (!g_seekable_seek (G_SEEKABLE (mos), cur_offset, G_SEEK_SET, NULL, error))
-            goto fail;
         }
-    }
-  else if (g_variant_type_is_dict_entry (type) || g_variant_type_is_tuple (type))
-    {
-      padding_added = ensure_output_padding (mos, dos, 8);
-      if (value != NULL)
+      else if (g_variant_type_is_variant (type))
         {
-          GVariant *item;
-          GVariantIter iter;
-          g_variant_iter_init (&iter, value);
-          while ((item = g_variant_iter_next_value (&iter)) != NULL)
+          if (value != NULL)
             {
-              if (!append_value_to_blob (item,
-                                         g_variant_get_type (item),
+              GVariant *child;
+              const gchar *signature;
+              child = g_variant_get_child_value (value, 0);
+              signature = g_variant_get_type_string (child);
+              g_data_output_stream_put_byte (dos, strlen (signature), NULL, NULL);
+              g_data_output_stream_put_string (dos, signature, NULL, NULL);
+              g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
+              if (!append_value_to_blob (child,
+                                         g_variant_get_type (child),
                                          mos,
                                          dos,
                                          NULL,
                                          error))
                 {
-                  g_variant_unref (item);
+                  g_variant_unref (child);
                   goto fail;
                 }
-              g_variant_unref (item);
-            }
-        }
-    }
-  else if (g_variant_type_is_variant (type))
-    {
-      if (value != NULL)
-        {
-          GVariant *child;
-          const gchar *signature;
-          child = g_variant_get_child_value (value, 0);
-          signature = g_variant_get_type_string (child);
-          g_data_output_stream_put_byte (dos, strlen (signature), NULL, NULL);
-          g_data_output_stream_put_string (dos, signature, NULL, NULL);
-          g_data_output_stream_put_byte (dos, '\0', NULL, NULL);
-          if (!append_value_to_blob (child,
-                                     g_variant_get_type (child),
-                                     mos,
-                                     dos,
-                                     NULL,
-                                     error))
-            {
               g_variant_unref (child);
-              goto fail;
             }
-          g_variant_unref (child);
         }
-    }
-  else
-    {
-      g_set_error (error,
-                   G_IO_ERROR,
-                   G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Error serializing GVariant with type string `%s' to the D-Bus wire format"),
-                   g_variant_get_type_string (value));
-      goto fail;
+      else
+        {
+          g_set_error (error,
+                       G_IO_ERROR,
+                       G_IO_ERROR_INVALID_ARGUMENT,
+                       _("Error serializing GVariant with type string `%s' to the D-Bus wire format"),
+                       g_variant_get_type_string (value));
+          goto fail;
+        }
+      break;
     }
 
   if (out_padding_added != NULL)
