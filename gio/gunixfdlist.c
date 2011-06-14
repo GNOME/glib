@@ -113,7 +113,6 @@ dup_close_on_exec_fd (gint     fd,
       g_set_error (error, G_IO_ERROR,
                    g_io_error_from_errno (saved_errno),
                    "dup: %s", g_strerror (saved_errno));
-      close (new_fd);
 
       return -1;
     }
