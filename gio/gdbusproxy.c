@@ -1658,8 +1658,8 @@ get_connection_cb (GObject       *source_object,
 
   if (data->cancellable != NULL)
     g_object_unref (data->cancellable);
-  if (data->proxy != NULL)
-    g_object_unref (data->proxy);
+
+  g_object_unref (data->proxy);
   g_free (data);
 }
 
