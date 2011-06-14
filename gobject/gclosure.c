@@ -30,6 +30,7 @@
 
 #include "gclosure.h"
 #include "gboxed.h"
+#include "gobject.h"
 #include "genums.h"
 #include "gvalue.h"
 #include "gvaluetypes.h"
