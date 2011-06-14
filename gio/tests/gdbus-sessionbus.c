@@ -42,7 +42,7 @@ watch_parent (gint fd)
   GPollFD fds[1];
   gint num_events;
   gchar buf[512];
-  guint bytes_read;
+  gssize bytes_read;
   GArray *buses_to_kill_array;
 
   fds[0].fd = fd;
