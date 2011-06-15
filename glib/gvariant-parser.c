@@ -1886,7 +1886,7 @@ number_get_value (AST                 *ast,
     case 'q':
       if (negative || abs_val > G_MAXUINT16)
         return number_overflow (ast, type, error);
-      return g_variant_new_uint16 (negative ? -abs_val : abs_val);
+      return g_variant_new_uint16 (abs_val);
 
     case 'i':
       if (abs_val - negative > G_MAXINT32)
@@ -1896,7 +1896,7 @@ number_get_value (AST                 *ast,
     case 'u':
       if (negative || abs_val > G_MAXUINT32)
         return number_overflow (ast, type, error);
-      return g_variant_new_uint32 (negative ? -abs_val : abs_val);
+      return g_variant_new_uint32 (abs_val);
 
     case 'x':
       if (abs_val - negative > G_MAXINT64)
@@ -1906,7 +1906,7 @@ number_get_value (AST                 *ast,
     case 't':
       if (negative)
         return number_overflow (ast, type, error);
-      return g_variant_new_uint64 (negative ? -abs_val : abs_val);
+      return g_variant_new_uint64 (abs_val);
 
     case 'h':
       if (abs_val - negative > G_MAXINT32)
