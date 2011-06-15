@@ -493,9 +493,8 @@ g_module_open (const gchar    *file_name,
 	{
 	  gchar *error;
 
-	  error = g_strconcat ("GModule (", 
-                               file_name ? file_name : "NULL", 
-                               ") initialization check failed: ", 
+	  error = g_strconcat ("GModule (", file_name, ") ",
+                               "initialization check failed: ",
                                check_failed, NULL);
 	  g_module_close (module);
 	  module = NULL;
