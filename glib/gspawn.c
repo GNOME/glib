@@ -173,11 +173,10 @@ read_data (GString *str,
            gint     fd,
            GError **error)
 {
-  gssize bytes;        
-  gchar buf[4096];    
+  gssize bytes;
+  gchar buf[4096];
 
  again:
-  
   bytes = read (fd, buf, 4096);
 
   if (bytes == 0)
@@ -187,9 +186,9 @@ read_data (GString *str,
       g_string_append_len (str, buf, bytes);
       return READ_OK;
     }
-  else if (bytes < 0 && errno == EINTR)
+  else if (errno == EINTR)
     goto again;
-  else if (bytes < 0)
+  else
     {
       int errsv = errno;
 
@@ -198,11 +197,9 @@ read_data (GString *str,
                    G_SPAWN_ERROR_READ,
                    _("Failed to read data from child process (%s)"),
                    g_strerror (errsv));
-      
+
       return READ_FAILED;
     }
-  else
-    return READ_OK;
 }
 
 /**
