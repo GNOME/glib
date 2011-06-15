@@ -1289,7 +1289,7 @@ g_dbus_address_get_for_bus_sync (GBusType       bus_type,
         {
           g_print ("GDBus-debug:Address: Cannot look-up address bus type `%s': %s\n",
                    _g_dbus_enum_to_string (G_TYPE_BUS_TYPE, bus_type),
-                   local_error->message);
+                   local_error ? local_error->message : "");
         }
       _g_dbus_debug_print_unlock ();
     }
