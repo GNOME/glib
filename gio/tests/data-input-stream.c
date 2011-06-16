@@ -151,6 +151,78 @@ test_read_lines_any (void)
 }
 
 static void
+test_read_lines_LF_valid_utf8 (void)
+{
+  GInputStream *stream;
+  GInputStream *base_stream;
+  GError *error = NULL;
+  char *line;
+  guint n_lines = 0;
+	
+  base_stream = g_memory_input_stream_new ();
+  stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
+	
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (base_stream),
+				  "foo\nthis is valid UTF-8 ☺!\nbar\n", -1, NULL);
+
+  /*  Test read line */
+  error = NULL;
+  while (TRUE)
+    {
+      gsize length = -1;
+      line = g_data_input_stream_read_line_utf8 (G_DATA_INPUT_STREAM (stream), &length, NULL, &error);
+      g_assert_no_error (error);
+      if (line == NULL)
+	break;
+      n_lines++;
+      g_free (line);
+    }
+  g_assert_cmpint (n_lines, ==, 3);
+  
+  g_object_unref (base_stream);
+  g_object_unref (stream);
+}
+
+static void
+test_read_lines_LF_invalid_utf8 (void)
+{
+  GInputStream *stream;
+  GInputStream *base_stream;
+  GError *error = NULL;
+  char *line;
+  guint n_lines = 0;
+	
+  base_stream = g_memory_input_stream_new ();
+  stream = G_INPUT_STREAM (g_data_input_stream_new (base_stream));
+	
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (base_stream),
+				  "foo\nthis is not valid UTF-8 \xE5 =(\nbar\n", -1, NULL);
+
+  /*  Test read line */
+  error = NULL;
+  while (TRUE)
+    {
+      gsize length = -1;
+      line = g_data_input_stream_read_line_utf8 (G_DATA_INPUT_STREAM (stream), &length, NULL, &error);
+      if (n_lines == 0)
+	g_assert_no_error (error);
+      else
+	{
+	  g_assert (error != NULL);
+	  g_clear_error (&error);
+	  g_free (line);
+	  break;
+	}
+      n_lines++;
+      g_free (line);
+    }
+  g_assert_cmpint (n_lines, ==, 1);
+  
+  g_object_unref (base_stream);
+  g_object_unref (stream);
+}
+
+static void
 test_read_until (void)
 {
   GInputStream *stream;
@@ -417,6 +489,8 @@ main (int   argc,
 
   g_test_add_func ("/data-input-stream/basic", test_basic);
   g_test_add_func ("/data-input-stream/read-lines-LF", test_read_lines_LF);
+  g_test_add_func ("/data-input-stream/read-lines-LF-valid-utf8", test_read_lines_LF_valid_utf8);
+  g_test_add_func ("/data-input-stream/read-lines-LF-invalid-utf8", test_read_lines_LF_invalid_utf8);
   g_test_add_func ("/data-input-stream/read-lines-CR", test_read_lines_CR);
   g_test_add_func ("/data-input-stream/read-lines-CR-LF", test_read_lines_CR_LF);
   g_test_add_func ("/data-input-stream/read-lines-any", test_read_lines_any);

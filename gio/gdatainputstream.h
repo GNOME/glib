@@ -102,12 +102,20 @@ char *                 g_data_input_stream_read_line            (GDataInputStrea
                                                                  gsize                   *length,
                                                                  GCancellable            *cancellable,
                                                                  GError                 **error);
+char *                 g_data_input_stream_read_line_utf8       (GDataInputStream        *stream,
+								 gsize                   *length,
+								 GCancellable            *cancellable,
+								 GError                 **error);
 void                   g_data_input_stream_read_line_async      (GDataInputStream        *stream,
                                                                  gint                     io_priority,
                                                                  GCancellable            *cancellable,
                                                                  GAsyncReadyCallback      callback,
                                                                  gpointer                 user_data);
 char *                 g_data_input_stream_read_line_finish     (GDataInputStream        *stream,
+                                                                 GAsyncResult            *result,
+                                                                 gsize                   *length,
+                                                                 GError                 **error);
+char *                 g_data_input_stream_read_line_finish_utf8(GDataInputStream        *stream,
                                                                  GAsyncResult            *result,
                                                                  gsize                   *length,
                                                                  GError                 **error);
