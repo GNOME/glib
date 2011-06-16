@@ -734,17 +734,20 @@ scan_for_newline (GDataInputStream *stream,
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
  * @error: #GError for error reporting.
  *
- * Reads a line from the data input stream.
+ * Reads a line from the data input stream.  Note that no encoding
+ * checks or conversion is performed; the input is not guaranteed to
+ * be UTF-8, and may in fact have embedded NUL characters.
  *
  * If @cancellable is not %NULL, then the operation can be cancelled by
  * triggering the cancellable object from another thread. If the operation
  * was cancelled, the error %G_IO_ERROR_CANCELLED will be returned.
  *
- * Returns: (transfer full): a string with the line that was read in
- *     (without the newlines).  Set @length to a #gsize to get the
- *     length of the read line.  On an error, it will return %NULL and
- *     @error will be set. If there's no content to read, it will
- *     still return %NULL, but @error won't be set.
+ * Returns: (transfer full) (array zero-terminated=1) (element-type guint8): a
+ *  NUL terminated byte array with the line that was read in (without
+ *  the newlines).  Set @length to a #gsize to get the length of the
+ *  read line.  On an error, it will return %NULL and @error will be
+ *  set. If there's no content to read, it will still return %NULL,
+ *  but @error won't be set.
  **/
 char *
 g_data_input_stream_read_line (GDataInputStream  *stream,
@@ -1182,13 +1185,16 @@ g_data_input_stream_read_until_async (GDataInputStream    *stream,
  * @error: #GError for error reporting.
  *
  * Finish an asynchronous call started by
- * g_data_input_stream_read_line_async().
+ * g_data_input_stream_read_line_async().  Note the warning about
+ * string encoding in g_data_input_stream_read_line() applies here as
+ * well.
  *
- * Returns: (transfer full): a string with the line that was read in
- *     (without the newlines).  Set @length to a #gsize to get the
- *     length of the read line.  On an error, it will return %NULL and
- *     @error will be set. If there's no content to read, it will
- *     still return %NULL, but @error won't be set.
+ * Returns: (transfer full) (array zero-terminated=1) (element-type guint8):  a 
+ *  NUL-terminated byte array with the line that was read in
+ *  (without the newlines).  Set @length to a #gsize to get the
+ *  length of the read line.  On an error, it will return %NULL and
+ *  @error will be set. If there's no content to read, it will
+ *  still return %NULL, but @error won't be set.
  *
  * Since: 2.20
  */
