@@ -666,7 +666,7 @@ g_variant_get_maybe (GVariant *value)
 }
 
 /**
- * g_variant_new_variant:
+ * g_variant_new_variant: (constructor)
  * @value: a #GVariant instance
  * @returns: (transfer none): a floating reference to a new variant #GVariant instance
  *
