@@ -832,6 +832,8 @@ g_data_input_stream_read_line (GDataInputStream  *stream,
  *  return %NULL and @error will be set.  For UTF-8 conversion errors,
  *  the set error domain is %G_CONVERT_ERROR.  If there's no content to
  *  read, it will still return %NULL, but @error won't be set.
+ *
+ * Since: 2.30
  **/
 char *
 g_data_input_stream_read_line_utf8 (GDataInputStream  *stream,
@@ -1271,7 +1273,7 @@ g_data_input_stream_read_line_finish (GDataInputStream  *stream,
  *  %G_CONVERT_ERROR.  If there's no content to read, it will still
  *  return %NULL, but @error won't be set.
  *
- * Since: 2.20
+ * Since: 2.30
  */
 gchar *
 g_data_input_stream_read_line_finish_utf8 (GDataInputStream  *stream,
