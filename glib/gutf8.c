@@ -841,7 +841,8 @@ g_utf8_get_char_validated (const  gchar *p,
  * Convert a string from UTF-8 to a 32-bit fixed width
  * representation as UCS-4, assuming valid UTF-8 input.
  * This function is roughly twice as fast as g_utf8_to_ucs4()
- * but does no error checking on the input.
+ * but does no error checking on the input. A trailing 0 character
+ * will be added to the string after the converted text.
  * 
  * Return value: a pointer to a newly allocated UCS-4 string.
  *               This value must be freed with g_free().
@@ -940,7 +941,7 @@ g_utf8_to_ucs4_fast (const gchar *str,
  *         %G_CONVERT_ERROR_NO_CONVERSION may occur.
  *
  * Convert a string from UTF-8 to a 32-bit fixed width
- * representation as UCS-4. A trailing 0 will be added to the
+ * representation as UCS-4. A trailing 0 character will be added to the
  * string after the converted text.
  * 
  * Return value: a pointer to a newly allocated UCS-4 string.
