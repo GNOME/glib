@@ -805,6 +805,112 @@ g_hash_table_iter_remove (GHashTableIter *iter)
   iter_remove_or_steal ((RealIter *) iter, TRUE);
 }
 
+/*
+ * g_hash_table_insert_node:
+ * @hash_table: our #GHashTable
+ * @node_index: pointer to node to insert/replace
+ * @key_hash: key hash
+ * @key: key to replace with
+ * @value: value to replace with
+ *
+ * Inserts a value at @node_index in the hash table and updates it.
+ */
+static void
+g_hash_table_insert_node (GHashTable *hash_table,
+                          guint       node_index,
+                          guint       key_hash,
+                          gpointer    key,
+                          gpointer    value,
+                          gboolean    keep_new_key)
+{
+  guint old_hash;
+  gpointer old_key;
+  gpointer old_value;
+
+  if (G_UNLIKELY (hash_table->keys == hash_table->values && key != value))
+    hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
+
+  old_hash = hash_table->hashes[node_index];
+  old_key = hash_table->keys[node_index];
+  old_value = hash_table->values[node_index];
+
+  if (HASH_IS_REAL (old_hash))
+    {
+      if (keep_new_key)
+        hash_table->keys[node_index] = key;
+      hash_table->values[node_index] = value;
+    }
+  else
+    {
+      hash_table->keys[node_index] = key;
+      hash_table->values[node_index] = value;
+      hash_table->hashes[node_index] = key_hash;
+
+      hash_table->nnodes++;
+
+      if (HASH_IS_UNUSED (old_hash))
+        {
+          /* We replaced an empty node, and not a tombstone */
+          hash_table->noccupied++;
+          g_hash_table_maybe_resize (hash_table);
+        }
+
+#ifndef G_DISABLE_ASSERT
+      hash_table->version++;
+#endif
+    }
+
+  if (HASH_IS_REAL (old_hash))
+    {
+      if (hash_table->key_destroy_func)
+        hash_table->key_destroy_func (keep_new_key ? old_key : key);
+      if (hash_table->value_destroy_func)
+        hash_table->value_destroy_func (old_value);
+    }
+}
+
+/**
+ * g_hash_table_iter_replace:
+ * @iter: an initialized #GHashTableIter.
+ * @value: the value to replace with
+ *
+ * Replaces the value currently pointed to by the iterator
+ * from its associated #GHashTable. Can only be called after
+ * g_hash_table_iter_next() returned %TRUE.
+ *
+ * If you supplied a @value_destroy_func when creating the #GHashTable,
+ * the old value is freed using that function.
+ *
+ * Since: 2.29.9
+ **/
+void
+g_hash_table_iter_replace (GHashTableIter *iter,
+                           gpointer        value)
+{
+  RealIter *ri;
+  guint node_hash;
+  gpointer key;
+
+  ri = (RealIter *) iter;
+
+  g_return_if_fail (ri != NULL);
+#ifndef G_DISABLE_ASSERT
+  g_return_if_fail (ri->version == ri->hash_table->version);
+#endif
+  g_return_if_fail (ri->position >= 0);
+  g_return_if_fail (ri->position < ri->hash_table->size);
+
+  node_hash = ri->hash_table->hashes[ri->position];
+  key = ri->hash_table->keys[ri->position];
+
+  g_hash_table_insert_node (ri->hash_table, ri->position, node_hash, key, value, TRUE);
+
+#ifndef G_DISABLE_ASSERT
+  ri->version++;
+  ri->hash_table->version++;
+#endif
+}
+
 /**
  * g_hash_table_iter_steal:
  * @iter: an initialized #GHashTableIter.
@@ -985,56 +1091,14 @@ g_hash_table_insert_internal (GHashTable *hash_table,
                               gpointer    value,
                               gboolean    keep_new_key)
 {
-  guint node_index;
   guint key_hash;
-  guint old_hash;
-  gpointer old_key;
-  gpointer old_value;
+  guint node_index;
 
   g_return_if_fail (hash_table != NULL);
 
-  if (G_UNLIKELY (hash_table->keys == hash_table->values && key != value))
-    hash_table->values = g_memdup (hash_table->keys, sizeof (gpointer) * hash_table->size);
-
   node_index = g_hash_table_lookup_node (hash_table, key, &key_hash);
 
-  old_hash = hash_table->hashes[node_index];
-  old_key = hash_table->keys[node_index];
-  old_value = hash_table->values[node_index];
-
-  if (HASH_IS_REAL (old_hash))
-    {
-      if (keep_new_key)
-        hash_table->keys[node_index] = key;
-      hash_table->values[node_index] = value;
-    }
-  else
-    {
-      hash_table->keys[node_index] = key;
-      hash_table->values[node_index] = value;
-      hash_table->hashes[node_index] = key_hash;
-
-      hash_table->nnodes++;
-
-      if (HASH_IS_UNUSED (old_hash))
-        {
-          /* We replaced an empty node, and not a tombstone */
-          hash_table->noccupied++;
-          g_hash_table_maybe_resize (hash_table);
-        }
-
-#ifndef G_DISABLE_ASSERT
-      hash_table->version++;
-#endif
-    }
-
-  if (HASH_IS_REAL (old_hash))
-    {
-      if (hash_table->key_destroy_func)
-        hash_table->key_destroy_func (keep_new_key ? old_key : key);
-      if (hash_table->value_destroy_func)
-        hash_table->value_destroy_func (old_value);
-    }
+  g_hash_table_insert_node (hash_table, node_index, key_hash, key, value, keep_new_key);
 }
 
 /**

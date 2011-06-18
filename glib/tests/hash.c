@@ -539,6 +539,7 @@ test_hash_misc (void)
   GHashTableIter iter;
   gpointer ikey, ivalue;
   int result_array[10000];
+  int n_array[1];
 
   hash_table = g_hash_table_new (my_hash, my_hash_equal);
   fill_hash_table_and_array (hash_table);
@@ -593,6 +594,28 @@ test_hash_misc (void)
     g_assert_not_reached();
 
   g_hash_table_foreach (hash_table, my_hash_callback_remove_test, NULL);
+  g_hash_table_destroy (hash_table);
+
+  hash_table = g_hash_table_new (my_hash, my_hash_equal);
+  fill_hash_table_and_array (hash_table);
+
+  n_array[0] = 1;
+
+  g_hash_table_iter_init (&iter, hash_table);
+  for (i = 0; i < 10000; i++)
+    {
+      g_assert (g_hash_table_iter_next (&iter, &ikey, &ivalue));
+      g_hash_table_iter_replace (&iter, &n_array[0]);
+    }
+
+  g_hash_table_iter_init (&iter, hash_table);
+  for (i = 0; i < 10000; i++)
+    {
+      g_assert (g_hash_table_iter_next (&iter, &ikey, &ivalue));
+
+      g_assert (ivalue == &n_array[0]);
+    }
+
   g_hash_table_destroy (hash_table);
 }
 
