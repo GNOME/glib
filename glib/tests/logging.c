@@ -132,6 +132,43 @@ test_fatal_log_mask (void)
   g_log_set_fatal_mask ("bu", flags);
 }
 
+static gint my_print_count = 0;
+static void
+my_print_handler (const gchar *text)
+{
+  my_print_count++;
+}
+
+static void
+test_print_handler (void)
+{
+  GPrintFunc old_print_handler;
+
+  old_print_handler = g_set_print_handler (my_print_handler);
+  g_assert (old_print_handler == NULL);
+
+  my_print_count = 0;
+  g_print ("bu ba");
+  g_assert_cmpint (my_print_count, ==, 1);
+
+  g_set_print_handler (NULL);
+}
+
+static void
+test_printerr_handler (void)
+{
+  GPrintFunc old_printerr_handler;
+
+  old_printerr_handler = g_set_printerr_handler (my_print_handler);
+  g_assert (old_printerr_handler == NULL);
+
+  my_print_count = 0;
+  g_printerr ("bu ba");
+  g_assert_cmpint (my_print_count, ==, 1);
+
+  g_set_printerr_handler (NULL);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -141,6 +178,8 @@ main (int argc, char *argv[])
   g_test_add_func ("/logging/warnings", test_warnings);
   g_test_add_func ("/logging/fatal-log-mask", test_fatal_log_mask);
   g_test_add_func ("/logging/set-handler", test_set_handler);
+  g_test_add_func ("/logging/print-handler", test_print_handler);
+  g_test_add_func ("/logging/printerr-handler", test_printerr_handler);
 
   return g_test_run ();
 }
