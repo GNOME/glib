@@ -1,5 +1,6 @@
 #undef G_DISABLE_ASSERT
 #undef G_LOG_DOMAIN
+#undef G_DISABLE_DEPRECATED
 
 #include <time.h>
 #include <stdlib.h>
@@ -103,7 +104,7 @@ sort_queue (gpointer user_data)
 static void
 enter_thread (gpointer data, gpointer user_data)
 {
-  gint   len;
+  gint   len G_GNUC_UNUSED;
   gint   id;
   gulong ms;
 
@@ -126,6 +127,54 @@ enter_thread (gpointer data, gpointer user_data)
 	     id, len));
 }
 
+static gint destroy_count = 0;
+
+static void
+counting_destroy (gpointer item)
+{
+  destroy_count++;
+}
+
+static void
+basic_tests (void)
+{
+  GAsyncQueue *q;
+  gpointer item;
+
+  destroy_count = 0;
+
+  q = g_async_queue_new_full (counting_destroy);
+  g_async_queue_lock (q);
+  g_async_queue_ref (q);
+  g_async_queue_unlock (q);
+  g_async_queue_lock (q);
+  g_async_queue_ref_unlocked (q);
+  g_async_queue_unref_and_unlock (q);
+
+  item = g_async_queue_try_pop (q);
+  g_assert (item == NULL);
+
+  g_async_queue_lock (q);
+  item = g_async_queue_try_pop_unlocked (q);
+  g_async_queue_unlock (q);
+  g_assert (item == NULL);
+
+  g_async_queue_push (q, GINT_TO_POINTER (1));
+  g_async_queue_push (q, GINT_TO_POINTER (2));
+  g_async_queue_push (q, GINT_TO_POINTER (3));
+  g_assert_cmpint (destroy_count, ==, 0);
+
+  g_async_queue_unref (q);
+  g_assert_cmpint (destroy_count, ==, 0);
+
+  item = g_async_queue_pop (q);
+  g_assert_cmpint (GPOINTER_TO_INT (item), ==, 1);
+  g_assert_cmpint (destroy_count, ==, 0);
+
+  g_async_queue_unref (q);
+  g_assert_cmpint (destroy_count, ==, 2);
+}
+
 int 
 main (int argc, char *argv[])
 {
@@ -135,9 +184,11 @@ main (int argc, char *argv[])
   gint   max_unused_threads = MAX_THREADS;
   gint   sort_multiplier = MAX_SORTS;
   gint   sort_interval;
-  gchar *msg;
+  gchar *msg G_GNUC_UNUSED;
 
   g_thread_init (NULL);
+
+  basic_tests ();
 
   PRINT_MSG (("creating async queue..."));
   async_queue = g_async_queue_new ();
@@ -189,6 +240,6 @@ main (int argc, char *argv[])
   main_loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (main_loop);
 #endif
-  
+
   return EXIT_SUCCESS;
 }
