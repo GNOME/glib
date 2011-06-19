@@ -709,6 +709,7 @@ static void
 test_remove_all (void)
 {
   GHashTable *h;
+  gboolean res;
 
   h = g_hash_table_new_full (g_str_hash, g_str_equal, key_destroy, value_destroy);
   g_hash_table_insert (h, "abc", "ABC");
@@ -726,9 +727,19 @@ test_remove_all (void)
   g_hash_table_insert (h, "cde", "CDE");
   g_hash_table_insert (h, "xyz", "XYZ");
 
+  res = g_hash_table_steal (h, "nosuchkey");
+  g_assert (!res);
+  g_assert_cmpint (destroy_counter, ==, 0);
+  g_assert_cmpint (destroy_key_counter, ==, 0);
+
+  res = g_hash_table_steal (h, "xyz");
+  g_assert (res);
+  g_assert_cmpint (destroy_counter, ==, 0);
+  g_assert_cmpint (destroy_key_counter, ==, 0);
+
   g_hash_table_remove_all (h);
-  g_assert_cmpint (destroy_counter, ==, 3);
-  g_assert_cmpint (destroy_key_counter, ==, 3);
+  g_assert_cmpint (destroy_counter, ==, 2);
+  g_assert_cmpint (destroy_key_counter, ==, 2);
 
   g_hash_table_unref (h);
 }
