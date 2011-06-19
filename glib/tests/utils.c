@@ -23,6 +23,7 @@
 
 #include "glib.h"
 
+#include <stdlib.h>
 #include <stdarg.h>
 
 static gboolean
@@ -89,9 +90,10 @@ test_locale_variants (void)
 static void
 test_version (void)
 {
-  g_print ("(header %d.%d.%d library %d.%d.%d) ",
-                  GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION,
-                  glib_major_version, glib_minor_version, glib_micro_version);
+  if (g_test_verbose ())
+    g_print ("(header %d.%d.%d library %d.%d.%d) ",
+              GLIB_MAJOR_VERSION, GLIB_MINOR_VERSION, GLIB_MICRO_VERSION,
+              glib_major_version, glib_minor_version, glib_micro_version);
 
   g_assert (glib_check_version (GLIB_MAJOR_VERSION,
                                 GLIB_MINOR_VERSION,
@@ -203,6 +205,73 @@ test_bits (void)
     }
 }
 
+static void
+test_find_program (void)
+{
+  gchar *res;
+
+  res = g_find_program_in_path ("sh");
+  g_assert_cmpstr (res, ==, "/bin/sh");
+  g_free (res);
+
+  res = g_find_program_in_path ("/bin/sh");
+  g_assert_cmpstr (res, ==, "/bin/sh");
+  g_free (res);
+
+  res = g_find_program_in_path ("this_program_does_not_exit");
+  g_assert (res == NULL);
+
+  res = g_find_program_in_path ("/bin");
+  g_assert (res == NULL);
+
+  res = g_find_program_in_path ("/etc/passwd");
+  g_assert (res == NULL);
+}
+
+static void
+test_debug (void)
+{
+  GDebugKey keys[] = {
+    { "key1", 1 },
+    { "key2", 2 },
+    { "key3", 4 },
+  };
+  guint res;
+
+  res = g_parse_debug_string (NULL, keys, G_N_ELEMENTS (keys));
+  g_assert_cmpint (res, ==, 0);
+
+  res = g_parse_debug_string ("foobabla;#!%!$%112 223", keys, G_N_ELEMENTS (keys));
+  g_assert_cmpint (res, ==, 0);
+
+  res = g_parse_debug_string ("key1:key2", keys, G_N_ELEMENTS (keys));
+  g_assert_cmpint (res, ==, 3);
+
+  res = g_parse_debug_string ("key1;key2", keys, G_N_ELEMENTS (keys));
+  g_assert_cmpint (res, ==, 3);
+
+  res = g_parse_debug_string ("key1,key2", keys, G_N_ELEMENTS (keys));
+  g_assert_cmpint (res, ==, 3);
+
+  res = g_parse_debug_string ("key1   key2", keys, G_N_ELEMENTS (keys));
+  g_assert_cmpint (res, ==, 3);
+
+  res = g_parse_debug_string ("key1\tkey2", keys, G_N_ELEMENTS (keys));
+  g_assert_cmpint (res, ==, 3);
+
+  res = g_parse_debug_string ("all", keys, G_N_ELEMENTS (keys));
+  g_assert_cmpint (res, ==, 7);
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      res = g_parse_debug_string ("help", keys, G_N_ELEMENTS (keys));
+      g_assert_cmpint (res, ==, 0);
+      exit (0);
+    }
+  g_test_trap_assert_passed ();
+  g_test_trap_assert_stderr ("*Supported debug values:  key1 key2 key3*");
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -223,6 +292,8 @@ main (int   argc,
   g_test_add_func ("/utils/appname", test_appname);
   g_test_add_func ("/utils/tmpdir", test_tmpdir);
   g_test_add_func ("/utils/bits", test_bits);
+  g_test_add_func ("/utils/find-program", test_find_program);
+  g_test_add_func ("/utils/debug", test_debug);
 
   return g_test_run();
 }
