@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Label="UserMacros">
     <CopyDir>..\..\..\..\..\vs10\$(Platform)</CopyDir>
-	<DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\</DefDir>
+	<DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
     <ApiVersion>2.0</ApiVersion>
     <GlibDoInstall>
 mkdir $(CopyDir)\bin
@@ -453,7 +453,6 @@ copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-2.0\schemas
     <GlibEtcInstallRoot>..\..\..\..\..\vs10\$(Platform)</GlibEtcInstallRoot>
   </PropertyGroup>
   <PropertyGroup>
-    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
     <_PropertySheetDisplayName>glibprops</_PropertySheetDisplayName>
     <OutDir>$(SolutionDir)$(Configuration)\$(PlatformName)\bin\</OutDir>
     <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\</IntDir>
