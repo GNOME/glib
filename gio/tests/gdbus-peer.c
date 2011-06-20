@@ -1206,7 +1206,7 @@ test_nonce_tcp (void)
   g_assert_no_error (error);
   g_assert (c != NULL);
   while (data.current_connections->len < 1)
-    g_main_loop_run (loop);
+    g_thread_yield ();
   g_assert_cmpint (data.current_connections->len, ==, 1);
   g_assert_cmpint (data.num_connection_attempts, ==, 1);
   g_assert (g_dbus_connection_get_unique_name (c) == NULL);

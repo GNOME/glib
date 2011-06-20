@@ -1401,6 +1401,15 @@ _g_dbus_worker_new (GIOStream                              *stream,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
+/* called in private thread shared by all GDBusConnection instances (without read-lock held) */
+static gboolean
+unref_in_idle_cb (gpointer user_data)
+{
+  GDBusWorker *worker = user_data;
+  _g_dbus_worker_unref (worker);
+  return FALSE;
+}
+
 /* This can be called from any thread - frees worker. Note that
  * callbacks might still happen if called from another thread than the
  * worker - use your own synchronization primitive in the callbacks.
@@ -1408,9 +1417,19 @@ _g_dbus_worker_new (GIOStream                              *stream,
 void
 _g_dbus_worker_stop (GDBusWorker *worker)
 {
+  GSource *idle_source;
+
   worker->stopped = TRUE;
   g_cancellable_cancel (worker->cancellable);
-  _g_dbus_worker_unref (worker);
+
+  idle_source = g_idle_source_new ();
+  g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
+  g_source_set_callback (idle_source,
+                         unref_in_idle_cb,
+                         _g_dbus_worker_ref (worker),
+                         (GDestroyNotify) _g_dbus_worker_unref);
+  g_source_attach (idle_source, worker->shared_thread_data->context);
+  g_source_unref (idle_source);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
