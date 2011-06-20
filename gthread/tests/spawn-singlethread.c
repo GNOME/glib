@@ -162,8 +162,6 @@ test_spawn_sync (void)
   g_free (arg);
   g_free (stdout_str);
   g_ptr_array_free (argv, TRUE);
-
-  return GINT_TO_POINTER (tnum);
 }
 
 int
