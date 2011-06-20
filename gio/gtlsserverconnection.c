@@ -23,7 +23,6 @@
 
 #include "gtlsserverconnection.h"
 #include "ginitable.h"
-#include "gio-marshal.h"
 #include "gioenumtypes.h"
 #include "gsocket.h"
 #include "gtlsbackend.h"

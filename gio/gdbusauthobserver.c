@@ -23,7 +23,6 @@
 #include "config.h"
 
 #include "gdbusauthobserver.h"
-#include "gio-marshal.h"
 #include "gcredentials.h"
 #include "gioenumtypes.h"
 #include "giostream.h"
@@ -160,7 +159,7 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
                   G_STRUCT_OFFSET (GDBusAuthObserverClass, authorize_authenticated_peer),
                   _g_signal_accumulator_false_handled,
                   NULL, /* accu_data */
-                  _gio_marshal_BOOLEAN__OBJECT_OBJECT,
+                  g_cclosure_marshal_generic,
                   G_TYPE_BOOLEAN,
                   2,
                   G_TYPE_IO_STREAM,

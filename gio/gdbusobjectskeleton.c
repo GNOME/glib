@@ -25,7 +25,6 @@
 #include "gdbusobject.h"
 #include "gdbusobjectskeleton.h"
 #include "gdbusinterfaceskeleton.h"
-#include "gio-marshal.h"
 #include "gdbusprivate.h"
 #include "gdbusmethodinvocation.h"
 #include "gdbusintrospection.h"
@@ -187,7 +186,7 @@ g_dbus_object_skeleton_class_init (GDBusObjectSkeletonClass *klass)
                   G_STRUCT_OFFSET (GDBusObjectSkeletonClass, authorize_method),
                   _g_signal_accumulator_false_handled,
                   NULL,
-                  _gio_marshal_BOOLEAN__OBJECT_OBJECT,
+                  g_cclosure_marshal_generic,
                   G_TYPE_BOOLEAN,
                   2,
                   G_TYPE_DBUS_INTERFACE_SKELETON,

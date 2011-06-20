@@ -30,7 +30,6 @@
 #include "gsettings.h"
 
 #include "gioenumtypes.h"
-#include "gio-marshal.h"
 #include "gioenums.h"
 #include "gfile.h"
 
@@ -607,7 +606,7 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_OPEN] =
     g_signal_new ("open", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, open),
-                  NULL, NULL, _gio_marshal_VOID__POINTER_INT_STRING,
+                  NULL, NULL, g_cclosure_marshal_generic,
                   G_TYPE_NONE, 3, G_TYPE_POINTER, G_TYPE_INT, G_TYPE_STRING);
 
   /**
@@ -627,7 +626,7 @@ g_application_class_init (GApplicationClass *class)
     g_signal_new ("command-line", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, command_line),
                   g_signal_accumulator_first_wins, NULL,
-                  _gio_marshal_INT__OBJECT,
+                  g_cclosure_marshal_generic,
                   G_TYPE_INT, 1, G_TYPE_APPLICATION_COMMAND_LINE);
 
   g_type_class_add_private (class, sizeof (GApplicationPrivate));

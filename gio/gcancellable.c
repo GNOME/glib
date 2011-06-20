@@ -32,7 +32,6 @@
 #include <io.h>
 #endif
 #include "gcancellable.h"
-#include "gio-marshal.h"
 #include "glibintl.h"
 
 
@@ -816,7 +815,7 @@ static GSourceFuncs cancellable_source_funcs =
   cancellable_source_dispatch,
   cancellable_source_finalize,
   (GSourceFunc)cancellable_source_closure_callback,
-  (GSourceDummyMarshal)_gio_marshal_BOOLEAN__VOID,
+  (GSourceDummyMarshal)g_cclosure_marshal_generic,
 };
 
 /**

@@ -54,7 +54,6 @@
 #include "gioerror.h"
 #include "gioenums.h"
 #include "gioerror.h"
-#include "gio-marshal.h"
 #include "gnetworkingprivate.h"
 #include "gsocketaddress.h"
 #include "gsocketcontrolmessage.h"
@@ -2537,7 +2536,7 @@ static GSourceFuncs socket_source_funcs =
   socket_source_dispatch,
   socket_source_finalize,
   (GSourceFunc)socket_source_closure_callback,
-  (GSourceDummyMarshal)_gio_marshal_BOOLEAN__FLAGS,
+  (GSourceDummyMarshal)g_cclosure_marshal_generic,
 };
 
 static GSource *

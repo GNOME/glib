@@ -59,7 +59,6 @@
 #include "config.h"
 #include "gsocketservice.h"
 
-#include "gio-marshal.h"
 #include <gio/gio.h>
 #include "gsocketlistener.h"
 #include "gsocketconnection.h"
@@ -271,7 +270,7 @@ g_socket_service_class_init (GSocketServiceClass *class)
     g_signal_new ("incoming", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSocketServiceClass, incoming),
                   g_signal_accumulator_true_handled, NULL,
-                  _gio_marshal_BOOLEAN__OBJECT_OBJECT, G_TYPE_BOOLEAN,
+                  g_cclosure_marshal_generic, G_TYPE_BOOLEAN,
                   2, G_TYPE_SOCKET_CONNECTION, G_TYPE_OBJECT);
 }
 

@@ -24,7 +24,6 @@
 #include "gtlsclientconnection.h"
 #include "ginitable.h"
 #include "gioenumtypes.h"
-#include "gio-marshal.h"
 #include "gsocket.h"
 #include "gsocketconnectable.h"
 #include "gtlsbackend.h"

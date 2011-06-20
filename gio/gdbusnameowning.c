@@ -29,7 +29,6 @@
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
 #include "gdbusconnection.h"
-#include "gio-marshal.h"
 
 #include "glibintl.h"
 
@@ -649,7 +648,7 @@ own_name_data_new (GClosure *bus_acquired_closure,
       data->bus_acquired_closure = g_closure_ref (bus_acquired_closure);
       g_closure_sink (bus_acquired_closure);
       if (G_CLOSURE_NEEDS_MARSHAL (bus_acquired_closure))
-        g_closure_set_marshal (bus_acquired_closure, _gio_marshal_VOID__STRING);
+        g_closure_set_marshal (bus_acquired_closure, g_cclosure_marshal_generic);
     }
 
   if (name_acquired_closure != NULL)
@@ -657,7 +656,7 @@ own_name_data_new (GClosure *bus_acquired_closure,
       data->name_acquired_closure = g_closure_ref (name_acquired_closure);
       g_closure_sink (name_acquired_closure);
       if (G_CLOSURE_NEEDS_MARSHAL (name_acquired_closure))
-        g_closure_set_marshal (name_acquired_closure, _gio_marshal_VOID__STRING);
+        g_closure_set_marshal (name_acquired_closure, g_cclosure_marshal_generic);
     }
 
   if (name_lost_closure != NULL)
@@ -665,7 +664,7 @@ own_name_data_new (GClosure *bus_acquired_closure,
       data->name_lost_closure = g_closure_ref (name_lost_closure);
       g_closure_sink (name_lost_closure);
       if (G_CLOSURE_NEEDS_MARSHAL (name_lost_closure))
-        g_closure_set_marshal (name_lost_closure, _gio_marshal_VOID__STRING);
+        g_closure_set_marshal (name_lost_closure, g_cclosure_marshal_generic);
     }
 
   return data;

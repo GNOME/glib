@@ -121,7 +121,6 @@
 #include "gdbusmethodinvocation.h"
 #include "gdbusprivate.h"
 #include "gdbusauthobserver.h"
-#include "gio-marshal.h"
 #include "ginitable.h"
 #include "gasyncinitable.h"
 #include "giostream.h"
@@ -900,7 +899,7 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
                                          G_STRUCT_OFFSET (GDBusConnectionClass, closed),
                                          NULL,
                                          NULL,
-                                         _gio_marshal_VOID__BOOLEAN_BOXED,
+                                         g_cclosure_marshal_generic,
                                          G_TYPE_NONE,
                                          2,
                                          G_TYPE_BOOLEAN,

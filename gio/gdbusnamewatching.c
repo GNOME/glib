@@ -30,7 +30,6 @@
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
 #include "gdbusconnection.h"
-#include "gio-marshal.h"
 
 #include "glibintl.h"
 
@@ -668,7 +667,7 @@ watch_name_data_new (GClosure *name_appeared_closure,
       data->name_appeared_closure = g_closure_ref (name_appeared_closure);
       g_closure_sink (name_appeared_closure);
       if (G_CLOSURE_NEEDS_MARSHAL (name_appeared_closure))
-        g_closure_set_marshal (name_appeared_closure, _gio_marshal_VOID__STRING_STRING);
+        g_closure_set_marshal (name_appeared_closure, g_cclosure_marshal_generic);
     }
 
   if (name_vanished_closure != NULL)
@@ -676,7 +675,7 @@ watch_name_data_new (GClosure *name_appeared_closure,
       data->name_vanished_closure = g_closure_ref (name_vanished_closure);
       g_closure_sink (name_vanished_closure);
       if (G_CLOSURE_NEEDS_MARSHAL (name_vanished_closure))
-        g_closure_set_marshal (name_vanished_closure, _gio_marshal_VOID__STRING);
+        g_closure_set_marshal (name_vanished_closure, g_cclosure_marshal_generic);
     }
 
   return data;

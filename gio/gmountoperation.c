@@ -26,7 +26,6 @@
 
 #include "gmountoperation.h"
 #include "gioenumtypes.h"
-#include "gio-marshal.h"
 #include "glibintl.h"
 
 
@@ -276,7 +275,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_password),
 		  NULL, NULL,
-		  _gio_marshal_VOID__STRING_STRING_STRING_FLAGS,
+		  g_cclosure_marshal_generic,
 		  G_TYPE_NONE, 4,
 		  G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_ASK_PASSWORD_FLAGS);
 		  
@@ -299,7 +298,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, ask_question),
 		  NULL, NULL,
-		  _gio_marshal_VOID__STRING_BOXED,
+		  g_cclosure_marshal_generic,
 		  G_TYPE_NONE, 2,
 		  G_TYPE_STRING, G_TYPE_STRV);
 		  
@@ -368,7 +367,7 @@ g_mount_operation_class_init (GMountOperationClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GMountOperationClass, show_processes),
 		  NULL, NULL,
-		  _gio_marshal_VOID__STRING_BOXED_BOXED,
+		  g_cclosure_marshal_generic,
 		  G_TYPE_NONE, 3,
 		  G_TYPE_STRING, G_TYPE_ARRAY, G_TYPE_STRV);
 

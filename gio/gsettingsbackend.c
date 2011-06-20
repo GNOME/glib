@@ -26,7 +26,6 @@
 #include "gsettingsbackendinternal.h"
 #include "gsimplepermission.h"
 #include "giomodule-priv.h"
-#include "gio-marshal.h"
 
 #include <string.h>
 #include <stdlib.h>

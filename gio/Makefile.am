@@ -48,26 +48,6 @@ AM_CPPFLAGS = \
 
 lib_LTLIBRARIES = libgio-2.0.la
 
-marshal_sources = \
-        gio-marshal.h	\
-        gio-marshal.c	\
-	$(NULL)
-
-if CROSS_COMPILING
-  glib_genmarshal=$(GLIB_GENMARSHAL)
-else
-  glib_genmarshal=../gobject/glib-genmarshal
-endif
-
-gio-marshal.h: gio-marshal.list
-	$(AM_V_GEN) $(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --header --internal > $@.tmp && \
-	  mv $@.tmp $@
-
-gio-marshal.c: gio-marshal.h gio-marshal.list
-	$(AM_V_GEN) (echo "#include \"gio-marshal.h\""; \
-	$(glib_genmarshal) --prefix=_gio_marshal $(srcdir)/gio-marshal.list --body --internal) > $@.tmp && \
-	  mv $@.tmp $@
-
 gdbus_headers = 			\
 	gdbusauthobserver.h		\
 	gcredentials.h			\
@@ -572,14 +552,11 @@ gioinclude_HEADERS = 		\
 
 # these sources (also mentioned above) are generated.
 BUILT_SOURCES = 		\
-	gio-marshal.h 		\
-	gio-marshal.c 		\
 	gioenumtypes.h		\
 	gioenumtypes.c		\
 	$(NULL)
 
 EXTRA_DIST += 			\
-	gio-marshal.list	\
 	gio.symbols		\
 	gioenumtypes.h.template	\
 	gioenumtypes.c.template	\

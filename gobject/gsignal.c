@@ -3474,7 +3474,3 @@ g_signal_accumulator_first_wins (GSignalInvocationHint *ihint,
   g_value_copy (handler_return, return_accu);
   return FALSE;
 }
-
-
-/* --- compile standard marshallers --- */
-#include "gmarshal.c"

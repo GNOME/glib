@@ -26,7 +26,6 @@
 #include "gdbusobjectmanagerclient.h"
 #include "gdbusobject.h"
 #include "gdbusprivate.h"
-#include "gio-marshal.h"
 #include "gioenumtypes.h"
 #include "ginitable.h"
 #include "gasyncresult.h"
@@ -514,7 +513,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
                   G_STRUCT_OFFSET (GDBusObjectManagerClientClass, interface_proxy_signal),
                   NULL,
                   NULL,
-                  _gio_marshal_VOID__OBJECT_OBJECT_STRING_STRING_VARIANT,
+                  g_cclosure_marshal_generic,
                   G_TYPE_NONE,
                   5,
                   G_TYPE_DBUS_OBJECT_PROXY,
@@ -552,7 +551,7 @@ g_dbus_object_manager_client_class_init (GDBusObjectManagerClientClass *klass)
                   G_STRUCT_OFFSET (GDBusObjectManagerClientClass, interface_proxy_properties_changed),
                   NULL,
                   NULL,
-                  _gio_marshal_VOID__OBJECT_OBJECT_VARIANT_BOXED,
+                  g_cclosure_marshal_generic,
                   G_TYPE_NONE,
                   4,
                   G_TYPE_DBUS_OBJECT_PROXY,

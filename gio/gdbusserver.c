@@ -41,7 +41,6 @@
 #include "gioenumtypes.h"
 #include "gdbusprivate.h"
 #include "gdbusauthobserver.h"
-#include "gio-marshal.h"
 #include "ginitable.h"
 #include "gsocketservice.h"
 #include "gthreadedsocketservice.h"
@@ -426,7 +425,7 @@ g_dbus_server_class_init (GDBusServerClass *klass)
                                                   G_STRUCT_OFFSET (GDBusServerClass, new_connection),
                                                   g_signal_accumulator_true_handled,
                                                   NULL, /* accu_data */
-                                                  _gio_marshal_BOOLEAN__OBJECT,
+                                                  g_cclosure_marshal_generic,
                                                   G_TYPE_BOOLEAN,
                                                   1,
                                                   G_TYPE_DBUS_CONNECTION);

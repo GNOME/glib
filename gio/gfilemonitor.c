@@ -24,7 +24,6 @@
 #include <string.h>
 
 #include "gfilemonitor.h"
-#include "gio-marshal.h"
 #include "gioenumtypes.h"
 #include "gfile.h"
 #include "gvfs.h"
@@ -241,7 +240,7 @@ g_file_monitor_class_init (GFileMonitorClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GFileMonitorClass, changed),
 		  NULL, NULL,
-		  _gio_marshal_VOID__OBJECT_OBJECT_ENUM,
+		  g_cclosure_marshal_generic,
 		  G_TYPE_NONE, 3,
 		  G_TYPE_FILE, G_TYPE_FILE, G_TYPE_FILE_MONITOR_EVENT);
 

@@ -24,7 +24,6 @@
 #include "gtlsconnection.h"
 #include "gcancellable.h"
 #include "gioenumtypes.h"
-#include "gio-marshal.h"
 #include "gsocket.h"
 #include "gtlsbackend.h"
 #include "gtlscertificate.h"
@@ -265,7 +264,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GTlsConnectionClass, accept_certificate),
 		  g_signal_accumulator_true_handled, NULL,
-		  _gio_marshal_BOOLEAN__OBJECT_FLAGS,
+		  g_cclosure_marshal_generic,
 		  G_TYPE_BOOLEAN, 2,
 		  G_TYPE_TLS_CERTIFICATE,
 		  G_TYPE_TLS_CERTIFICATE_FLAGS);

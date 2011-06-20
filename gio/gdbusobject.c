@@ -25,7 +25,6 @@
 #include "gdbusobject.h"
 #include "gdbusinterface.h"
 #include "gdbusutils.h"
-#include "gio-marshal.h"
 
 #include "glibintl.h"
 

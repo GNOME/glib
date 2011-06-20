@@ -22,7 +22,6 @@
 #include "config.h"
 #include "gactiongroup.h"
 #include "gaction.h"
-#include "gio-marshal.h"
 #include "glibintl.h"
 
 /**
@@ -124,7 +123,7 @@ g_action_group_default_init (GActionGroupInterface *class)
                   G_STRUCT_OFFSET (GActionGroupInterface,
                                    action_enabled_changed),
                   NULL, NULL,
-                  _gio_marshal_VOID__STRING_BOOLEAN,
+                  g_cclosure_marshal_generic,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_BOOLEAN);
@@ -148,7 +147,7 @@ g_action_group_default_init (GActionGroupInterface *class)
                   G_STRUCT_OFFSET (GActionGroupInterface,
                                    action_state_changed),
                   NULL, NULL,
-                  _gio_marshal_VOID__STRING_VARIANT,
+                  g_cclosure_marshal_generic,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_VARIANT);

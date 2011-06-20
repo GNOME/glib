@@ -6,6 +6,7 @@ include $(top_srcdir)/Makefile.decl
 
 SUBDIRS = . tests
 
+BUILT_SOURCES=
 CLEANFILES=
 
 if HAVE_THREADS
@@ -95,6 +96,7 @@ gobject_public_h_sources = \
 	gboxed.h		\
 	gclosure.h		\
 	genums.h		\
+	gmarshal.h		\
 	gobject.h		\
 	gparam.h		\
 	gparamspecs.h		\
@@ -107,8 +109,7 @@ gobject_public_h_sources = \
 	gvaluearray.h		\
 	gvaluecollector.h	\
 	gvaluetypes.h		\
-	gobjectnotifyqueue.c	\
-	gmarshal.h
+	gobjectnotifyqueue.c
 
 # GObject library header files that don't get installed
 gobject_private_h_sources =     \
@@ -123,6 +124,7 @@ gobject_c_sources = \
 	gboxed.c		\
 	gclosure.c		\
 	genums.c		\
+	gmarshal.c		\
 	gobject.c		\
 	gobject_trace.h		\
 	gparam.c		\
@@ -136,9 +138,6 @@ gobject_c_sources = \
 	gvaluearray.c		\
 	gvaluetransform.c	\
 	gvaluetypes.c
-
-# these sources (also mentioned above) are generated.
-BUILT_SOURCES = gmarshal.h gmarshal.c
 
 if ENABLE_DTRACE
 gobject_probes.h: gobject_probes.d Makefile
@@ -200,28 +199,6 @@ CLEANFILES += $(gen_sources)
 # srcdir to be writable, passing --disable-rebuilds to
 # ../configure will supress all autogeneration rules.
 
-if CROSS_COMPILING
-  glib_genmarshal=$(GLIB_GENMARSHAL)
-else
-  glib_genmarshal=./glib-genmarshal
-endif
-
-gmarshal.h: stamp-gmarshal.h
-	@true
-stamp-gmarshal.h: @REBUILD@ gmarshal.list glib-genmarshal$(EXEEXT)
-	$(MAKE) glib-genmarshal$(EXEEXT)
-	$(AM_V_GEN) echo "#ifndef __G_MARSHAL_H__" > xgen-gmh \
-	&& echo "#define __G_MARSHAL_H__" >> xgen-gmh \
-	&& $(glib_genmarshal) --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --header >> xgen-gmh \
-	&& echo "#endif /* __G_MARSHAL_H__ */" >> xgen-gmh \
-	&& (cmp -s xgen-gmh gmarshal.h 2>/dev/null || cp xgen-gmh gmarshal.h) \
-	&& rm -f xgen-gmh xgen-gmh~ \
-	&& echo timestamp > $@
-
-gmarshal.c: @REBUILD@ stamp-gmarshal.h
-	$(AM_V_GEN) $(glib_genmarshal) --nostdinc --prefix=g_cclosure_marshal $(srcdir)/gmarshal.list --body >> xgen-gmc \
-	&& cp xgen-gmc gmarshal.c \
-	&& rm -f xgen-gmc xgen-gmc~
 
 gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list
 	$(AM_V_GEN) grep '^[A-Z]' $(srcdir)/gmarshal.list \
@@ -230,7 +207,6 @@ gmarshal.strings: @REBUILD@ $(srcdir)/gmarshal.list
 	&& rm -f xgen-gms xgen-gms~
 
 glib-genmarshal.o: gmarshal.strings
-gsignal.lo: gmarshal.c
 
 # target platform:
 libgobjectinclude_HEADERS = $(gobject_target_headers)
@@ -264,10 +240,7 @@ EXTRA_DIST += 			\
 
 BUILT_EXTRA_DIST = \
 	makefile.msc		\
-	gobject.rc		\
-	gmarshal.h		\
-	gmarshal.c		\
-	stamp-gmarshal.h
+	gobject.rc
 
 gobject-win32-res.o: gobject.rc
 	$(AM_V_GEN) $(WINDRES) gobject.rc $@

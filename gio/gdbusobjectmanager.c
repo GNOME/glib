@@ -24,7 +24,6 @@
 
 #include "gdbusobject.h"
 #include "gdbusobjectmanager.h"
-#include "gio-marshal.h"
 #include "gdbusinterface.h"
 #include "gdbusutils.h"
 
@@ -109,7 +108,7 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
                 G_STRUCT_OFFSET (GDBusObjectManagerIface, interface_added),
                 NULL,
                 NULL,
-                _gio_marshal_VOID__OBJECT_OBJECT,
+                g_cclosure_marshal_generic,
                 G_TYPE_NONE,
                 2,
                 G_TYPE_DBUS_OBJECT,
@@ -134,7 +133,7 @@ g_dbus_object_manager_default_init (GDBusObjectManagerIface *iface)
                 G_STRUCT_OFFSET (GDBusObjectManagerIface, interface_removed),
                 NULL,
                 NULL,
-                _gio_marshal_VOID__OBJECT_OBJECT,
+                g_cclosure_marshal_generic,
                 G_TYPE_NONE,
                 2,
                 G_TYPE_DBUS_OBJECT,

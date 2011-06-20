@@ -31,7 +31,6 @@
 #include "gdbusconnection.h"
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
-#include "gio-marshal.h"
 #include "ginitable.h"
 #include "gasyncinitable.h"
 #include "gioerror.h"
@@ -567,7 +566,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                                      G_STRUCT_OFFSET (GDBusProxyClass, g_properties_changed),
                                                      NULL,
                                                      NULL,
-                                                     _gio_marshal_VOID__VARIANT_BOXED,
+                                                     g_cclosure_marshal_generic,
                                                      G_TYPE_NONE,
                                                      2,
                                                      G_TYPE_VARIANT,
@@ -590,7 +589,7 @@ g_dbus_proxy_class_init (GDBusProxyClass *klass)
                                          G_STRUCT_OFFSET (GDBusProxyClass, g_signal),
                                          NULL,
                                          NULL,
-                                         _gio_marshal_VOID__STRING_STRING_VARIANT,
+                                         g_cclosure_marshal_generic,
                                          G_TYPE_NONE,
                                          3,
                                          G_TYPE_STRING,

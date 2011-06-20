@@ -25,7 +25,6 @@
 #include "gpollableoutputstream.h"
 #include "gasynchelper.h"
 #include "gfiledescriptorbased.h"
-#include "gio-marshal.h"
 #include "glibintl.h"
 
 /**
