@@ -954,6 +954,7 @@ value_to_ffi_type (const GValue *gvalue, gpointer *value)
     case G_TYPE_BOOLEAN:
     case G_TYPE_CHAR:
     case G_TYPE_INT:
+    case G_TYPE_ENUM:
       rettype = &ffi_type_sint;
       *value = (gpointer)&(gvalue->data[0].v_int);
       break;
@@ -966,6 +967,7 @@ value_to_ffi_type (const GValue *gvalue, gpointer *value)
     case G_TYPE_STRING:
     case G_TYPE_OBJECT:
     case G_TYPE_BOXED:
+    case G_TYPE_PARAM:
     case G_TYPE_POINTER:
     case G_TYPE_INTERFACE:
     case G_TYPE_VARIANT:
@@ -1052,8 +1054,14 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
     case G_TYPE_BOXED:
       g_value_set_boxed (gvalue, *(gpointer*)value);
       break;
+    case G_TYPE_ENUM:
+      g_value_set_enum (gvalue, *(gint*)value);
+      break;
     case G_TYPE_FLAGS:
       g_value_set_flags (gvalue, *(guint*)value);
+      break;
+    case G_TYPE_PARAM:
+      g_value_set_param (gvalue, *(gpointer*)value);
       break;
     case G_TYPE_OBJECT:
       g_value_set_object (gvalue, *(gpointer*)value);
