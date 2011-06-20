@@ -366,5 +366,6 @@ g_callable_info_free_closure (GICallableInfo *callable_info,
 {
   GIClosureWrapper *wrapper = (GIClosureWrapper *)closure;
 
+  g_free (wrapper->ffi_closure.cif->arg_types);
   ffi_closure_free (wrapper->writable_self);
 }
