@@ -49,6 +49,9 @@
 
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
+#ifdef HAVE_EVENTFD
+#include <sys/eventfd.h>
+#endif
 #endif
 
 #include <signal.h>
@@ -397,6 +400,14 @@ static GSList *main_contexts_without_pipe = NULL;
 
 #ifndef G_OS_WIN32
 
+#ifdef HAVE_EVENTFD
+typedef struct {
+  guint checked_eventfd : 1;
+  guint have_eventfd : 1;
+} EventFdState;
+EventFdState event_fd_state = { 0, 0 };
+#endif
+
 /* The UNIX signal pipe contains a single byte specifying which
  * signal was received.
  */ 
@@ -529,8 +540,10 @@ g_main_context_unref (GMainContext *context)
   if (g_thread_supported())
     {
 #ifndef G_OS_WIN32
-      close (context->wake_up_pipe[0]);
-      close (context->wake_up_pipe[1]);
+      if (context->wake_up_pipe[0] != -1)
+	close (context->wake_up_pipe[0]);
+      if (context->wake_up_pipe[1] != -1)
+	close (context->wake_up_pipe[1]);
 #else
       CloseHandle (context->wake_up_semaphore);
 #endif
@@ -556,8 +569,32 @@ g_main_context_init_pipe (GMainContext *context)
   if (context->wake_up_pipe[0] != -1)
     return;
 
+#ifdef HAVE_EVENTFD
+  if (!event_fd_state.checked_eventfd
+      || event_fd_state.have_eventfd)
+    {
+      int efd;
+
+      event_fd_state.checked_eventfd = TRUE;
+      efd = eventfd (0, EFD_CLOEXEC);
+      if (efd == -1 && errno == ENOSYS)
+	{
+	  event_fd_state.have_eventfd = FALSE;
+	  if (!g_unix_open_pipe (context->wake_up_pipe, FD_CLOEXEC, &error))
+	    g_error ("Cannot create pipe main loop wake-up: %s", error->message);
+	}
+      else if (efd >= 0)
+	{
+	  event_fd_state.have_eventfd = TRUE;
+	  context->wake_up_pipe[0] = efd;
+	}
+      else
+	g_error ("Cannot create eventfd for main loop wake-up: %s", g_strerror (errno));
+    }
+#else
   if (!g_unix_open_pipe (context->wake_up_pipe, FD_CLOEXEC, &error))
     g_error ("Cannot create pipe main loop wake-up: %s", error->message);
+#endif
 
   context->wake_up_rec.fd = context->wake_up_pipe[0];
   context->wake_up_rec.events = G_IO_IN;
@@ -580,7 +617,9 @@ g_main_context_init_pipe (GMainContext *context)
 void
 _g_main_thread_init (void)
 {
-  GSList *curr = main_contexts_without_pipe;
+  GSList *curr;
+  
+  curr = main_contexts_without_pipe;
   while (curr)
     {
       g_main_context_init_pipe ((GMainContext *)curr->data);
@@ -2942,8 +2981,18 @@ g_main_context_check (GMainContext *context,
   if (!context->poll_waiting)
     {
 #ifndef G_OS_WIN32
-      gchar a;
-      read (context->wake_up_pipe[0], &a, 1);
+#ifdef HAVE_EVENTFD
+      if (event_fd_state.have_eventfd)
+	{
+	  guint64 buf;
+	  read (context->wake_up_pipe[0], &buf, sizeof(guint64));
+        }
+      else
+#endif
+	{
+	  gchar a;
+	  read (context->wake_up_pipe[0], &a, 1);
+	}
 #endif
     }
   else
@@ -3794,7 +3843,15 @@ g_main_context_wakeup_unlocked (GMainContext *context)
     {
       context->poll_waiting = FALSE;
 #ifndef G_OS_WIN32
-      write (context->wake_up_pipe[1], "A", 1);
+#ifdef HAVE_EVENTFD
+      if (event_fd_state.have_eventfd)
+	{
+	  guint64 buf = 1;
+	  write (context->wake_up_pipe[0], &buf, sizeof(buf));
+	}
+      else
+#endif
+	write (context->wake_up_pipe[1], "A", 1);
 #else
       ReleaseSemaphore (context->wake_up_semaphore, 1, NULL);
 #endif

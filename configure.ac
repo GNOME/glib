@@ -2604,6 +2604,26 @@ main (void)
   AC_MSG_RESULT(no)
 ])
 
+AC_MSG_CHECKING([for eventfd(2) system call])
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+#include <sys/eventfd.h>
+#include <unistd.h>
+],[
+int
+main (void)
+{
+  eventfd (0, EFD_CLOEXEC);
+  return 0;
+}
+])],
+[
+  AC_MSG_RESULT(yes)
+  AC_DEFINE(HAVE_EVENTFD, 1, [we have the eventfd(2) system call])
+],
+[
+  AC_MSG_RESULT(no)
+])
+
 dnl ****************************************
 dnl *** GLib POLL* compatibility defines ***
 dnl ****************************************
