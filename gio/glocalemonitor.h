@@ -35,7 +35,6 @@ G_BEGIN_DECLS
 #define G_IS_LOCALE_MONITOR(inst)                      (G_TYPE_CHECK_INSTANCE_TYPE ((inst), G_TYPE_LOCALE_MONITOR))
 
 typedef struct _GLocaleMonitor      GLocaleMonitor;
-typedef struct _GLocaleMonitorClass GLocaleMonitorClass;
 
 GType           g_locale_monitor_get_type (void) G_GNUC_CONST;
 GLocaleMonitor *g_locale_monitor_get      (void);

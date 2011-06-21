@@ -20,6 +20,7 @@
  */
 
 #include "glocalemonitor.h"
+#include "gsettings.h"
 
 /**
  * SECTION:glocalemonitor
@@ -73,9 +74,9 @@ locale_settings_changed (GSettings   *settings,
 			 const gchar *key,
 			 gpointer     user_data)
 {
-  GLocaleMonitor = G_LOCALE_MONITOR (user_data);
+  GLocaleMonitor *monitor = G_LOCALE_MONITOR (user_data);
 
-  if (g_str_is_equal (key, "region"))
+  if (g_str_equal (key, "region"))
     {
       /* FIXME: call setlocale here? */
       g_signal_emit (monitor, g_locale_monitor_changed_signal, 0);
@@ -85,8 +86,8 @@ locale_settings_changed (GSettings   *settings,
 static void
 g_locale_monitor_init (GLocaleMonitor *monitor)
 {
-  monitor->settings = g_settings_new ("org.gnome.system.locale");
-  g_signal_connect (G_OBJECT (monitor->settings), "changed",
+  monitor->locale_settings = g_settings_new ("org.gnome.system.locale");
+  g_signal_connect (G_OBJECT (monitor->locale_settings), "changed",
 		    G_CALLBACK (locale_settings_changed), monitor);
 }
 
