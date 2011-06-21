@@ -1,6 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/Makefile.decl
 
+# http://people.gnome.org/~walters/docs/build-api.txt
+.buildapi-allow-builddir:
+
 ACLOCAL_AMFLAGS = -I m4macros ${ACLOCAL_FLAGS}
 
 SUBDIRS = . m4macros glib gmodule gthread gobject gio tests po docs

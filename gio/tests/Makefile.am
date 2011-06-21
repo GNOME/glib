@@ -259,7 +259,7 @@ gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
 		--annotate "org.project.Bar.TestPrimitiveTypes()[val_int32]" Key6 Value6  		\
 		--annotate "org.project.Bar.TestPrimitiveTypes()[ret_uint32]" Key7 Value7 		\
 		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8  		\
-		test-codegen.xml 									\
+		$(srcdir)/test-codegen.xml 									\
 		$(NULL)
 
 BUILT_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
