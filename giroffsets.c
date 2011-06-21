@@ -350,7 +350,7 @@ get_field_size_alignment (GIrTypelibBuild    *build,
   return success;
 }
 
-#define ALIGN(n, align) (((n) + (align) - 1) & ~((align) - 1))
+#define GI_ALIGN(n, align) (((n) + (align) - 1) & ~((align) - 1))
 
 static gboolean
 compute_struct_field_offsets (GIrTypelibBuild   *build,
@@ -382,7 +382,7 @@ compute_struct_field_offsets (GIrTypelibBuild   *build,
 	      if (get_field_size_alignment (build, field, node,
 					    &member_size, &member_alignment))
 		{
-		  size = ALIGN (size, member_alignment);
+		  size = GI_ALIGN (size, member_alignment);
 		  alignment = MAX (alignment, member_alignment);
 		  field->offset = size;
 		  size += member_size;
@@ -396,14 +396,14 @@ compute_struct_field_offsets (GIrTypelibBuild   *build,
 	}
       else if (member->type == G_IR_NODE_CALLBACK)
 	{
-          size = ALIGN (size, ffi_type_pointer.alignment);
+          size = GI_ALIGN (size, ffi_type_pointer.alignment);
           alignment = MAX (alignment, ffi_type_pointer.alignment);
 	  size += ffi_type_pointer.size;
 	}
     }
 
   /* Structs are tail-padded out to a multiple of their alignment */
-  size = ALIGN (size, alignment);
+  size = GI_ALIGN (size, alignment);
 
   if (!have_error)
     {
@@ -459,7 +459,7 @@ compute_union_field_offsets (GIrTypelibBuild *build,
     }
 
   /* Unions are tail-padded out to a multiple of their alignment */
-  size = ALIGN (size, alignment);
+  size = GI_ALIGN (size, alignment);
 
   if (!have_error)
     {
