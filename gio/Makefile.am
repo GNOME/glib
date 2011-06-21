@@ -398,12 +398,9 @@ libgio_2_0_la_SOURCES =		\
 	$(settings_sources) 	\
 	$(gdbus_sources) 	\
 	$(local_sources) 	\
-	$(marshal_sources) 	\
 	$(NULL)
 
 EXTRA_DIST += strinfo.c
-
-$(libgio_2_0_la_OBJECTS): $(marshal_sources)
 
 libgio_2_0_la_LIBADD = \
 	$(top_builddir)/glib/libglib-2.0.la 		\
@@ -569,15 +566,11 @@ EXTRA_DIST += 			\
 BUILT_EXTRA_DIST = 		\
 	gio.rc
 
-CLEANFILES = 			\
-	$(marshal_sources)	\
-	$(NULL)
-
 # This is read by gobject-introspection/misc/ and gtk-doc
 gio-public-headers.txt: Makefile
 	echo $(gioinclude_HEADERS) > $@.tmp && mv $@.tmp $@
 
-CLEANFILES += gio-public-headers.txt
+CLEANFILES = gio-public-headers.txt
 
 all-local: gio-public-headers.txt
 
