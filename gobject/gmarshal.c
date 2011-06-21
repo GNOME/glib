@@ -1,10 +1,4 @@
 
-#include "config.h"
-
-#include "gobject.h"
-#include "genums.h"
-#include "gboxed.h"
-#include "gvaluetypes.h"
 
 #ifdef G_ENABLE_DEBUG
 #define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)
