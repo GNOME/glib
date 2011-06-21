@@ -497,7 +497,7 @@ gio_headers =			\
 	gioscheduler.h 		\
 	giostream.h		\
 	gloadableicon.h 	\
-	glocalemonitor.c	\
+	glocalemonitor.h	\
 	gmount.h 		\
 	gmemoryinputstream.h 	\
 	gmemoryoutputstream.h 	\
