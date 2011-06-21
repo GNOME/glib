@@ -935,6 +935,22 @@ g_settings_backend_create_tree (void)
                           g_free, g_settings_backend_variant_unref0);
 }
 
+static gboolean
+g_settings_backend_verify (gpointer impl)
+{
+  GSettingsBackend *backend = impl;
+
+  if (strcmp (G_OBJECT_TYPE_NAME (backend), "GMemorySettingsBackend") == 0 &&
+      g_strcmp0 (g_getenv ("GSETTINGS_BACKEND"), "memory") != 0)
+    {
+      g_message ("Using the 'memory' GSettings backend.  Your settings "
+		 "will not be saved or shared with other applications.");
+    }
+
+  g_settings_has_backend = TRUE;
+  return TRUE;
+}
+
 /**
  * g_settings_backend_get_default:
  * @returns: (transfer full): the default #GSettingsBackend
@@ -950,49 +966,12 @@ g_settings_backend_create_tree (void)
 GSettingsBackend *
 g_settings_backend_get_default (void)
 {
-  static gsize backend;
+  GSettingsBackend *backend;
 
-  if (g_once_init_enter (&backend))
-    {
-      GSettingsBackend *instance;
-      GIOExtensionPoint *point;
-      GIOExtension *extension;
-      GType extension_type;
-      GList *extensions;
-      const gchar *env;
-
-      _g_io_modules_ensure_loaded ();
-
-      point = g_io_extension_point_lookup (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME);
-      extension = NULL;
-
-      if ((env = getenv ("GSETTINGS_BACKEND")))
-        {
-          extension = g_io_extension_point_get_extension_by_name (point, env);
-
-          if (extension == NULL)
-            g_warning ("Can't find GSettings backend '%s' given in "
-                       "GSETTINGS_BACKEND environment variable", env);
-        }
-
-      if (extension == NULL)
-        {
-          extensions = g_io_extension_point_get_extensions (point);
-          extension = extensions->data;
-
-          if (strcmp (g_io_extension_get_name (extension), "memory") == 0)
-            g_message ("Using the 'memory' GSettings backend.  Your settings "
-                       "will not be saved or shared with other applications.");
-        }
-
-      extension_type = g_io_extension_get_type (extension);
-      instance = g_object_new (extension_type, NULL);
-      g_settings_has_backend = TRUE;
-
-      g_once_init_leave (&backend, (gsize) instance);
-    }
-
-  return g_object_ref ((void *) backend);
+  backend = _g_io_module_get_default (G_SETTINGS_BACKEND_EXTENSION_POINT_NAME,
+				      "GSETTINGS_BACKEND",
+				      g_settings_backend_verify);
+  return g_object_ref (backend);
 }
 
 /*< private >

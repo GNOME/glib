@@ -50,52 +50,6 @@ g_proxy_resolver_default_init (GProxyResolverInterface *iface)
 {
 }
 
-static gpointer
-get_default_proxy_resolver (gpointer arg)
-{
-  const gchar *use_this;
-  GProxyResolver *resolver;
-  GList *l;
-  GIOExtensionPoint *ep;
-  GIOExtension *extension;
-  
-
-  use_this = g_getenv ("GIO_USE_PROXY_RESOLVER");
-  
-  /* Ensure proxy-resolver modules loaded */
-  _g_io_modules_ensure_loaded ();
-
-  ep = g_io_extension_point_lookup (G_PROXY_RESOLVER_EXTENSION_POINT_NAME);
-
-  if (use_this)
-    {
-      extension = g_io_extension_point_get_extension_by_name (ep, use_this);
-      if (extension)
-	{
-	   resolver = g_object_new (g_io_extension_get_type (extension), NULL);
-	  
-	   if (g_proxy_resolver_is_supported (resolver))
-	     return resolver;
-	  
-	  g_object_unref (resolver);
-	}
-    }
-
-  for (l = g_io_extension_point_get_extensions (ep); l != NULL; l = l->next)
-    {
-      extension = l->data;
-
-      resolver = g_object_new (g_io_extension_get_type (extension), NULL);
-
-      if (g_proxy_resolver_is_supported (resolver))
-	return resolver;
-
-      g_object_unref (resolver);
-    }
-  
-  return NULL;
-}
-
 /**
  * g_proxy_resolver_get_default:
  *
@@ -108,9 +62,9 @@ get_default_proxy_resolver (gpointer arg)
 GProxyResolver *
 g_proxy_resolver_get_default (void)
 {
-  static GOnce once_init = G_ONCE_INIT;
-
-  return g_once (&once_init, get_default_proxy_resolver, NULL);
+  return _g_io_module_get_default (G_PROXY_RESOLVER_EXTENSION_POINT_NAME,
+				   "GIO_USE_PROXY_RESOLVER",
+				   (GIOModuleVerifyFunc)g_proxy_resolver_is_supported);
 }
 
 /**

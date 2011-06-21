@@ -30,6 +30,11 @@ G_BEGIN_DECLS
 void _g_io_modules_ensure_extension_points_registered (void);
 void _g_io_modules_ensure_loaded                      (void);
 
+typedef gboolean (*GIOModuleVerifyFunc) (gpointer);
+gpointer _g_io_module_get_default (const gchar         *extension_point,
+				   const gchar         *envvar,
+				   GIOModuleVerifyFunc  verify_func);
+
 G_END_DECLS
 
 #endif /* __G_IO_MODULE_PRIV_H__ */

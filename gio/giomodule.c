@@ -630,6 +630,133 @@ g_io_modules_load_all_in_directory (const char *dirname)
   return g_io_modules_load_all_in_directory_with_scope (dirname, NULL);
 }
 
+G_LOCK_DEFINE_STATIC (default_modules);
+GHashTable *default_modules;
+
+static gpointer
+try_implementation (GIOExtension         *extension,
+		    GIOModuleVerifyFunc   verify_func)
+{
+  GType type = g_io_extension_get_type (extension);
+  gpointer impl;
+
+  if (g_type_is_a (type, G_TYPE_INITABLE))
+    return g_initable_new (type, NULL, NULL, NULL);
+  else
+    {
+      impl = g_object_new (type, NULL);
+      if (!verify_func || verify_func (impl))
+	return impl;
+
+      g_object_unref (impl);
+      return NULL;
+    }
+}
+
+/**
+ * _g_io_module_get_default:
+ * @extension_point: the name of an extension point
+ * @envvar: (allow-none): the name of an environment variable to
+ *     override the default implementation.
+ * @verify_func: (allow-none): a function to call to verify that
+ *     a given implementation is usable in the current environment.
+ *
+ * Retrieves the default object implementing @extension_point.
+ *
+ * If @envvar is not %NULL, and the environment variable with that
+ * name is set, then the implementation it specifies will be tried
+ * first. After that, or if @envvar is not set, all other
+ * implementations will be tried in order of decreasing priority.
+ *
+ * If an extension point implementation implements #GInitable, then
+ * that implementation will only be used if it initializes
+ * successfully. Otherwise, if @verify_func is not %NULL, then it will
+ * be called on each candidate implementation after construction, to
+ * check if it is actually usable or not.
+ *
+ * The result is cached after it is generated the first time, and
+ * the function is thread-safe.
+ *
+ * Return value: (transfer none): an object implementing
+ *     @extension_point, or %NULL if there are no usable
+ *     implementations.
+ */
+gpointer
+_g_io_module_get_default (const gchar         *extension_point,
+			  const gchar         *envvar,
+			  GIOModuleVerifyFunc  verify_func)
+{
+  const char *use_this;
+  GList *l;
+  GIOExtensionPoint *ep;
+  GIOExtension *extension, *preferred;
+  gpointer impl;
+
+  G_LOCK (default_modules);
+  if (default_modules)
+    {
+      gpointer key;
+
+      if (g_hash_table_lookup_extended (default_modules, extension_point,
+					&key, &impl))
+	{
+	  G_UNLOCK (default_modules);
+	  return impl;
+	}
+    }
+  else
+    {
+      default_modules = g_hash_table_new (g_str_hash, g_str_equal);
+    }
+
+  _g_io_modules_ensure_loaded ();
+  ep = g_io_extension_point_lookup (extension_point);
+
+  if (!ep)
+    {
+      g_warn_if_reached ();
+      G_UNLOCK (default_modules);
+      return NULL;
+    }
+
+  use_this = envvar ? g_getenv (envvar) : NULL;
+  if (use_this)
+    {
+      preferred = g_io_extension_point_get_extension_by_name (ep, use_this);
+      if (preferred)
+	{
+	  impl = try_implementation (preferred, verify_func);
+	  if (impl)
+	    goto done;
+	}
+      else
+	g_warning ("Can't find module '%s' specified in %s", use_this, envvar);
+    }
+  else
+    preferred = NULL;
+
+  for (l = g_io_extension_point_get_extensions (ep); l != NULL; l = l->next)
+    {
+      extension = l->data;
+      if (extension == preferred)
+	continue;
+
+      impl = try_implementation (extension, verify_func);
+      if (impl)
+	goto done;
+    }
+
+  impl = NULL;
+
+ done:
+  g_hash_table_insert (default_modules,
+		       g_strdup (extension_point),
+		       impl ? g_object_ref (impl) : NULL);
+  G_UNLOCK (default_modules);
+
+  return impl;
+}
+
 G_LOCK_DEFINE_STATIC (registered_extensions);
 G_LOCK_DEFINE_STATIC (loaded_dirs);
 
