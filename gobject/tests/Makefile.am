@@ -15,6 +15,7 @@ TEST_PROGS += 		\
 	binding		\
 	properties	\
 	reference	\
-	ifaceproperties
+	ifaceproperties	\
+	valuearray
 
 ifaceproperties_SOURCES = ifaceproperties.c testcommon.h
