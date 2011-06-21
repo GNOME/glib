@@ -85,7 +85,11 @@ main (int argc,
   g_test_init (&argc, &argv, NULL);
   g_test_bug_base ("https://bugzilla.gnome.org/show_bug.cgi?id=");
 
+#ifdef G_ERRORCHECK_MUTEXES
+  g_test_add_func ("/glib/642026-ec", testcase);
+#else
   g_test_add_func ("/glib/642026", testcase);
+#endif
 
   return g_test_run ();
 }

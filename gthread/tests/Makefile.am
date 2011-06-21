@@ -15,6 +15,11 @@ TEST_PROGS	 += 1bit-mutex
 TEST_PROGS	 += 642026
 642026_LDADD	  = $(progs_ldadd)
 
+TEST_PROGS	 += 642026-ec
+642026_ec_SOURCES = 642026.c
+642026_ec_LDADD   = $(progs_ldadd)
+642026_ec_CFLAGS  = -DG_ERRORCHECK_MUTEXES
+
 TEST_PROGS	      += 1bit-emufutex
 1bit_emufutex_SOURCES  = 1bit-mutex.c
 1bit_emufutex_CFLAGS   = -DTEST_EMULATED_FUTEX
