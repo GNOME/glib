@@ -24,6 +24,9 @@
 #include "glib.h"
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
+#ifdef HAVE_EVENTFD
+#include <sys/eventfd.h>
+#endif
 #endif
 #include <gioerror.h>
 #ifdef G_OS_WIN32
@@ -57,6 +60,7 @@ struct _GCancellablePrivate
   guint cancelled_running_waiting : 1;
 
   guint fd_refcount;
+  /* If cancel_pipe[0] is != -1 and cancel_pipe[1] is -1, it is an eventfd */
   int cancel_pipe[2];
 
 #ifdef G_OS_WIN32
@@ -194,11 +198,55 @@ g_cancellable_class_init (GCancellableClass *klass)
 #ifndef G_OS_WIN32
 
 static void
+g_cancellable_write_cancelled (GCancellable *cancellable)
+{
+  gssize c;
+  GCancellablePrivate *priv;
+  const char ch = 'x';
+
+  priv = cancellable->priv;
+
+  if (priv->cancel_pipe[0] == -1)
+    return;
+
+  g_assert (cancellable->priv->cancelled);
+
+#ifdef HAVE_EVENTFD
+  if (priv->cancel_pipe[1] == -1)
+    {
+      guint64 buf = 1;
+      
+      do 
+	c = write (priv->cancel_pipe[0], &buf, sizeof (buf));
+      while (c == -1 && errno == EINTR);
+
+      return;
+    }
+#endif
+
+  do
+    c = write (priv->cancel_pipe[1], &ch, 1);
+  while (c == -1 && errno == EINTR);
+}
+
+static void
 g_cancellable_open_pipe (GCancellable *cancellable)
 {
   GCancellablePrivate *priv;
 
   priv = cancellable->priv;
+#ifdef HAVE_EVENTFD
+  priv->cancel_pipe[0] = eventfd (0, EFD_CLOEXEC | EFD_NONBLOCK);
+  if (priv->cancel_pipe[0] >= 0)
+    {
+      if (priv->cancelled)
+	g_cancellable_write_cancelled (cancellable);
+      return;
+    }
+  else if (errno != ENOSYS)
+    return;
+  /* Fall through on ENOSYS */
+#endif
   if (g_unix_open_pipe (priv->cancel_pipe, FD_CLOEXEC, NULL))
     {
       /* Make them nonblocking, just to be sure we don't block
@@ -208,14 +256,7 @@ g_cancellable_open_pipe (GCancellable *cancellable)
       g_unix_set_fd_nonblocking (priv->cancel_pipe[1], TRUE, NULL);
       
       if (priv->cancelled)
-        {
-          const char ch = 'x';
-          gssize c;
-
-          do
-            c = write (priv->cancel_pipe[1], &ch, 1);
-          while (c == -1 && errno == EINTR);
-        }
+	g_cancellable_write_cancelled (cancellable);
     }
 }
 #endif
@@ -351,11 +392,24 @@ g_cancellable_reset (GCancellable *cancellable)
       if (priv->cancel_pipe[0] != -1)
         {
           gssize c;
-          char ch;
+#ifdef HAVE_EVENTFD
+	  if (priv->cancel_pipe[1] == -1)
+	    {
+	      guint64 buf;
 
-          do
-            c = read (priv->cancel_pipe[0], &ch, 1);
-          while (c == -1 && errno == EINTR);
+	      do
+		c = read (priv->cancel_pipe[0], &buf, sizeof(buf));
+	      while (c == -1 && errno == EINTR);
+	    }
+	  else
+#endif
+	    {
+	      char ch;
+
+	      do
+		c = read (priv->cancel_pipe[0], &ch, 1);
+	      while (c == -1 && errno == EINTR);
+	    }
         }
 
       priv->cancelled = FALSE;
@@ -604,15 +658,9 @@ g_cancellable_cancel (GCancellable *cancellable)
   if (priv->event)
     SetEvent (priv->event);
 #endif
-  if (priv->cancel_pipe[1] != -1)
-    {
-      const char ch = 'x';
-      gssize c;
+  
+  g_cancellable_write_cancelled (cancellable);
 
-      do
-        c = write (priv->cancel_pipe[1], &ch, 1);
-      while (c == -1 && errno == EINTR);
-    }
   G_UNLOCK(cancellable);
 
   g_object_ref (cancellable);
