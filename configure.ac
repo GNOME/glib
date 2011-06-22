@@ -2582,8 +2582,8 @@ AM_CONDITIONAL(HAVE_GCC_BUILTINS_FOR_ATOMIC_OPERATIONS,
 dnl ************************
 dnl ** Check for futex(2) **
 dnl ************************
-AC_MSG_CHECKING([for futex(2) system call])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+AC_CACHE_CHECK(for futex(2) system call,
+    glib_cv_futex,AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #include <linux/futex.h>
 #include <sys/syscall.h>
 #include <unistd.h>
@@ -2595,17 +2595,13 @@ main (void)
   syscall (__NR_futex, NULL, FUTEX_WAKE, FUTEX_WAIT);
   return 0;
 }
-])],
-[
-  AC_MSG_RESULT(yes)
+])],glib_cv_futex=yes,glib_cv_futex=no))
+if test x"$glib_cv_futex" = xyes; then
   AC_DEFINE(HAVE_FUTEX, 1, [we have the futex(2) system call])
-],
-[
-  AC_MSG_RESULT(no)
-])
+fi
 
-AC_MSG_CHECKING([for eventfd(2) system call])
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+AC_CACHE_CHECK(for eventfd(2) system call,
+    glib_cv_eventfd,AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
 #include <sys/eventfd.h>
 #include <unistd.h>
 ],[
@@ -2615,14 +2611,10 @@ main (void)
   eventfd (0, EFD_CLOEXEC);
   return 0;
 }
-])],
-[
-  AC_MSG_RESULT(yes)
+])],glib_cv_eventfd=yes,glib_cv_eventfd=no))
+if test x"$glib_cv_eventfd" = x"yes"; then
   AC_DEFINE(HAVE_EVENTFD, 1, [we have the eventfd(2) system call])
-],
-[
-  AC_MSG_RESULT(no)
-])
+fi
 
 dnl ****************************************
 dnl *** GLib POLL* compatibility defines ***
