@@ -226,6 +226,9 @@
 /* we have the futex(2) system call */
 /* #undef HAVE_FUTEX */
 
+/* we have the eventfd(2) system call */
+/* #undef HAVE_EVENTFD */
+
 /* Whether you have gcov */
 /* #undef HAVE_GCOV */
 
