@@ -24,6 +24,7 @@ g_byte_array_get_type
 g_error_get_type
 g_ptr_array_get_type
 g_regex_get_type
+g_match_info_get_type
 g_variant_builder_get_type
 g_variant_type_get_gtype
 g_closure_get_type

@@ -130,8 +130,10 @@ G_DEFINE_BOXED_TYPE (GByteArray, g_byte_array, g_byte_array_ref, g_byte_array_un
 
 #ifdef ENABLE_REGEX
 G_DEFINE_BOXED_TYPE (GRegex, g_regex, g_regex_ref, g_regex_unref)
+G_DEFINE_BOXED_TYPE (GMatchInfo, g_match_info, g_match_info_ref, g_match_info_unref)
 #else
 GType g_regex_get_type (void) { return G_TYPE_INVALID; }
+GType g_match_info_get_type (void) { return G_TYPE_INVALID; }
 #endif /* ENABLE_REGEX */
 
 #define g_variant_type_get_type g_variant_type_get_gtype
