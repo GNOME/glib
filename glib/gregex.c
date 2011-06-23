@@ -135,6 +135,7 @@
 
 struct _GMatchInfo
 {
+  volatile gint ref_count;      /* the ref count */
   GRegex *regex;                /* the regex */
   GRegexMatchFlags match_opts;  /* options used at match time on the regex */
   gint matches;                 /* number of matching sub patterns */
@@ -450,6 +451,7 @@ match_info_new (const GRegex *regex,
     string_len = strlen (string);
 
   match_info = g_new0 (GMatchInfo, 1);
+  match_info->ref_count = 1;
   match_info->regex = g_regex_ref ((GRegex *)regex);
   match_info->string = string;
   match_info->string_len = string_len;
@@ -520,23 +522,60 @@ g_match_info_get_string (const GMatchInfo *match_info)
 }
 
 /**
- * g_match_info_free:
+ * g_match_info_ref:
  * @match_info: a #GMatchInfo
  *
- * Frees all the memory associated with the #GMatchInfo structure.
+ * Increases reference count of @match_ifno by 1.
  *
- * Since: 2.14
+ * Returns: @match_info
+ *
+ * Since: 2.30
+ */
+GMatchInfo       *
+g_match_info_ref (GMatchInfo *match_info)
+{
+  g_return_val_if_fail (match_info != NULL, NULL);
+  g_atomic_int_inc (&match_info->ref_count);
+  return match_info;
+}
+
+/**
+ * g_match_info_unref:
+ * @match_info: a #GMatchInfo
+ *
+ * Decreases reference count of @match_info by 1. When reference count drops
+ * to zero, it frees all the memory associated with the match_info structure.
+ *
+ * Since: 2.30
  */
 void
-g_match_info_free (GMatchInfo *match_info)
+g_match_info_unref (GMatchInfo *match_info)
 {
-  if (match_info)
+  if (g_atomic_int_dec_and_test (&match_info->ref_count))
     {
       g_regex_unref (match_info->regex);
       g_free (match_info->offsets);
       g_free (match_info->workspace);
       g_free (match_info);
     }
+}
+
+/**
+ * g_match_info_free:
+ * @match_info: (allow-none): a #GMatchInfo, or %NULL
+ *
+ * If @match_info is not %NULL, calls g_match_info_unref(); otherwise does
+ * nothing.
+ *
+ * Since: 2.14
+ */
+void
+g_match_info_free (GMatchInfo *match_info)
+{
+  if (match_info == NULL)
+    return;
+
+  g_match_info_unref (match_info);
 }
 
 /**
