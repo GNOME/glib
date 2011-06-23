@@ -525,7 +525,7 @@ g_match_info_get_string (const GMatchInfo *match_info)
  * g_match_info_ref:
  * @match_info: a #GMatchInfo
  *
- * Increases reference count of @match_ifno by 1.
+ * Increases reference count of @match_info by 1.
  *
  * Returns: @match_info
  *
