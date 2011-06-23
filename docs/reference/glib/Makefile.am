@@ -19,7 +19,7 @@ SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" --ignore-decorators="GLI
 MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=g
 
 # Used for dependencies
-HFILE_GLOB=$(addprefix $(top_srcdir)/glib/,$(shell cat $(top_srcdir)/glib/glib-public-headers.txt)) $(top_srcdir)/gmodule/*.h
+HFILE_GLOB=$(addprefix $(top_srcdir)/glib/,$(shell cat $(top_builddir)/glib/glib-public-headers.txt)) $(top_srcdir)/gmodule/*.h
 CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
 
 # Images to copy into HTML directory
