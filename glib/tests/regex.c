@@ -393,6 +393,7 @@ test_match_next (gconstpointer d)
   data->expected = g_slist_append (data->expected, match);              \
   path = g_strdup_printf ("/regex/match/next4/%d", ++total);            \
   g_test_add_data_func (path, data, test_match_next);                   \
+  g_free (path);                                                        \
 }
 
 typedef struct {
