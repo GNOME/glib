@@ -35,7 +35,7 @@ G_DEFINE_TYPE_WITH_CODE (GSimpleAction, g_simple_action, G_TYPE_OBJECT,
  * @title: GSimpleAction
  * @short_description: A simple GSimpleAction
  *
- * A #GSimpleAction is the obvious simple implementation of the #GSimpleAction
+ * A #GSimpleAction is the obvious simple implementation of the #GAction
  * interface.  This is the easiest way to create an action for purposes of
  * adding it to a #GSimpleActionGroup.
  *
