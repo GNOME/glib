@@ -9,8 +9,6 @@ mkdir $(CopyDir)\bin
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
 
-if exist $(SolutionDir)$(Configuration)_ExtPCRE copy $(SolutionDir)$(Configuration)_ExtPCRE\$(Platform)\bin\*.dll $(CopyDir)\bin
-
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\glib-genmarshal.exe $(CopyDir)\bin
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\gspawn-win32-helper*.exe $(CopyDir)\bin
@@ -451,10 +449,9 @@ copy ..\..\..\glib\glibconfig.h $(CopyDir)\lib\glib-$(ApiVersion)\include
 
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
 
-if exist $(SolutionDir)$(Configuration)_ExtPCRE copy $(SolutionDir)$(Configuration)_ExtPCRE\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
-
 
 mkdir $(CopyDir)\share\glib-2.0\schemas
+
 copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-2.0\schemas
 
 </GlibDoInstall>
