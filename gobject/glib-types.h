@@ -191,7 +191,7 @@ GType   g_byte_array_get_type      (void) G_GNUC_CONST;
 GType   g_ptr_array_get_type       (void) G_GNUC_CONST;
 GType   g_variant_type_get_gtype   (void) G_GNUC_CONST;
 GType   g_regex_get_type           (void) G_GNUC_CONST;
-GType   g_mach_info_get_type       (void) G_GNUC_CONST;
+GType   g_match_info_get_type      (void) G_GNUC_CONST;
 GType   g_error_get_type           (void) G_GNUC_CONST;
 GType   g_date_time_get_type       (void) G_GNUC_CONST;
 GType   g_io_channel_get_type      (void) G_GNUC_CONST;
