@@ -54,6 +54,7 @@
 		<Configuration
 			Name="Debug_ExtPCRE|Win32"
 			InheritedPropertySheets=".\glib.vsprops"
+			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -118,6 +119,7 @@
 		<Configuration
 			Name="Debug_ExtPCRE|x64"
 			InheritedPropertySheets=".\glib.vsprops"
+			OutputDirectory="$(SolutionDir)\Debug\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			>
@@ -182,6 +184,7 @@
 		<Configuration
 			Name="Release_ExtPCRE|Win32"
 			InheritedPropertySheets=".\glib.vsprops"
+			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
@@ -246,6 +249,7 @@
 		<Configuration
 			Name="Release_ExtPCRE|x64"
 			InheritedPropertySheets=".\glib.vsprops"
+			OutputDirectory="$(SolutionDir)\Release\$(PlatformName)\bin"
 			ConfigurationType="2"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
