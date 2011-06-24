@@ -269,6 +269,38 @@ g_utf8_strlen (const gchar *p,
 }
 
 /**
+ * g_utf8_substring:
+ * @str: a UTF-8 encoded string
+ * @start_pos: a character offset within @str
+ * @end_pos: another character offset within @str
+ *
+ * Copies a substring out of a UTF-8 encoded string.
+ * The substring will contain @end_pos - @start_pos
+ * characters.
+ *
+ * Returns: a newly allocated copy of the requested
+ *     substring. Free with g_free() when no longer needed.
+ *
+ * Since: 2.30
+ */
+gchar *
+g_utf8_substring (const gchar *str,
+                  glong        start_pos,
+                  glong        end_pos)
+{
+  gchar *start, *end, *out;
+
+  start = g_utf8_offset_to_pointer (str, start_pos);
+  end = g_utf8_offset_to_pointer (start, end_pos - start_pos);
+
+  out = g_malloc (end - start + 1);
+  memcpy (out, start, end - start);
+  out[end - start] = 0;
+
+  return out;
+}
+
+/**
  * g_utf8_get_char:
  * @p: a pointer to Unicode character encoded as UTF-8
  * 

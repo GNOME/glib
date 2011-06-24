@@ -2726,6 +2726,7 @@ g_utf8_strncpy
 g_utf8_strchr
 g_utf8_strrchr
 g_utf8_strreverse
+g_utf8_substring
 g_utf8_validate
 
 <SUBSECTION>

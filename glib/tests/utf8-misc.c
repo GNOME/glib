@@ -106,8 +106,28 @@ test_utf8_reverse (void)
   r = g_utf8_strreverse ("\340\254\213\360\220\244\200\101\341\272\266", -1);
   g_assert_cmpstr (r, ==, "\341\272\266\101\360\220\244\200\340\254\213");
   g_free (r);
+}
 
+static void
+test_utf8_substring (void)
+{
+  gchar *r;
 
+  r = g_utf8_substring ("abcd", 1, 3);
+  g_assert_cmpstr (r, ==, "bc");
+  g_free (r);
+
+  r = g_utf8_substring ("abcd", 0, 4);
+  g_assert_cmpstr (r, ==, "abcd");
+  g_free (r);
+
+  r = g_utf8_substring ("abcd", 2, 2);
+  g_assert_cmpstr (r, ==, "");
+  g_free (r);
+
+  r = g_utf8_substring ("abc\xe2\x82\xa0gh\xe2\x82\xa4", 2, 5);
+  g_assert_cmpstr (r, ==, "c\xe2\x82\xa0g");
+  g_free (r);
 }
 
 static void
@@ -519,6 +539,7 @@ main (int   argc,
   g_test_add_func ("/utf8/strncpy", test_utf8_strncpy);
   g_test_add_func ("/utf8/strrchr", test_utf8_strrchr);
   g_test_add_func ("/utf8/reverse", test_utf8_reverse);
+  g_test_add_func ("/utf8/substring", test_utf8_substring);
   g_test_add_func ("/unicode/validate", test_unichar_validate);
   g_test_add_func ("/unicode/character-type", test_unichar_character_type);
   g_test_add_func ("/unicode/break-type", test_unichar_break_type);

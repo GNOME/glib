@@ -312,8 +312,12 @@ gchar*   g_utf8_find_next_char    (const gchar *p,
 gchar*   g_utf8_find_prev_char    (const gchar *str,
 				   const gchar *p) G_GNUC_PURE;
 
-glong g_utf8_strlen (const gchar *p,  
-		     gssize       max) G_GNUC_PURE;
+glong    g_utf8_strlen            (const gchar *p,
+                                   gssize       max) G_GNUC_PURE;
+
+gchar   *g_utf8_substring         (const gchar *p,
+                                   glong        start_pos,
+                                   glong        end_pos) G_GNUC_MALLOC;
 
 /* Copies n characters from src to dest */
 gchar* g_utf8_strncpy (gchar       *dest,
