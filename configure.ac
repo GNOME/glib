@@ -60,6 +60,7 @@ AC_CONFIG_MACRO_DIR([m4macros])
 cflags_set=${CFLAGS+set}
 
 AM_INIT_AUTOMAKE([1.11 no-define no-dist-gzip dist-xz tar-ustar])
+AM_MAINTAINER_MODE([enable])
 
 # Support silent build rules. Disable
 # by either passing --disable-silent-rules to configure or passing V=1
@@ -102,9 +103,6 @@ AC_SUBST(LT_CURRENT)
 AC_SUBST(LT_REVISION)
 AC_SUBST(LT_AGE)
 AC_SUBST(LT_CURRENT_MINUS_AGE)
-
-dnl Initialize maintainer mode
-AM_MAINTAINER_MODE
 
 dnl Checks for programs.
 AC_PROG_CC
