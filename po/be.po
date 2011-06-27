@@ -94,7 +94,7 @@ msgstr "Пераўтварэнне даных са знаказбору \"%s\" �
 #: ../gio/gcharsetconverter.c:462
 #, c-format
 msgid "Could not open converter from '%s' to '%s'"
-msgstr "Не ўдалося адкрыць пераўтваральнік з \"%s\" у \"%s\""
+msgstr "Не ўдалося адчыніць пераўтваральнік з \"%s\" у \"%s\""
 
 #: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1576
 #: ../glib/giochannel.c:1618 ../glib/giochannel.c:2461 ../glib/gutf8.c:1012
@@ -382,7 +382,7 @@ msgstr "нядз"
 #: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Не ўдалося адкрыць каталог \"%s\": %s"
+msgstr "Не ўдалося адчыніць каталог \"%s\": %s"
 
 #: ../glib/gfileutils.c:540 ../glib/gfileutils.c:628
 #, c-format
@@ -407,7 +407,7 @@ msgstr "Не ўдалося прачытаць з файла \"%s\": %s"
 #: ../glib/gfileutils.c:703 ../glib/gfileutils.c:790
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Не ўдалося адкрыць файл \"%s\": %s"
+msgstr "Не ўдалося адчыніць файл \"%s\": %s"
 
 #: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:169
 #, c-format
@@ -417,7 +417,7 @@ msgstr "Не ўдалося атрымаць спіс атрыбутаў фай�
 #: ../glib/gfileutils.c:754
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
-msgstr "Не ўдалося адкрыць файл \"%s\": памылка fdopen(): %s"
+msgstr "Не ўдалося адчыніць файл \"%s\": памылка fdopen(): %s"
 
 #: ../glib/gfileutils.c:862
 #, c-format
@@ -433,7 +433,7 @@ msgstr "Не ўдалося стварыць файл \"%s\": %s"
 #: ../glib/gfileutils.c:918
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
-msgstr "Не ўдалося адкрыць файл \"%s\" для запісу: памылка fdopen(): %s"
+msgstr "Не ўдалося адчыніць файл \"%s\" для запісу: памылка fdopen(): %s"
 
 #: ../glib/gfileutils.c:943
 #, c-format
@@ -453,7 +453,7 @@ msgstr "Не ўдалося запісаць файл \"%s\": памылка fsy
 #: ../glib/gfileutils.c:1027
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr "Не ўдалося закрыць файл \"%s\": памылка fclose(): %s"
+msgstr "Не ўдалося зачыніць файл \"%s\": памылка fclose(): %s"
 
 #: ../glib/gfileutils.c:1149
 #, c-format
@@ -520,7 +520,7 @@ msgstr "Сімвальныя спасылкі не падтрымліваюцц�
 #: ../glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "Не ўдалося адкрыць пераўтваральнік са знаказбору \"%s\" у \"%s\": %s"
+msgstr "Не ўдалося адчыніць пераўтваральнік са знаказбору \"%s\" у \"%s\": %s"
 
 #: ../glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -543,7 +543,7 @@ msgstr "Не ўдалося прачытаць сырыя даныя ў функ
 #: ../glib/gmappedfile.c:150
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Не ўдалося адкрыць файл \"%s\": памылка open(): %s"
+msgstr "Не ўдалося адчыніць файл \"%s\": памылка open(): %s"
 
 #: ../glib/gmappedfile.c:229
 #, c-format
@@ -1405,7 +1405,7 @@ msgstr "Надта вялікае значэнне перададзена ў %s"
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
 #: ../gio/giostream.c:306 ../gio/goutputstream.c:1197
 msgid "Stream is already closed"
-msgstr "Струмень ужо закрыты"
+msgstr "Струмень ужо зачынены"
 
 #: ../gio/gcancellable.c:454 ../gio/gdbusconnection.c:1640
 #: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
@@ -1548,7 +1548,7 @@ msgstr ""
 #: ../gio/gdbusaddress.c:688
 #, c-format
 msgid "Error opening nonce file `%s': %s"
-msgstr "Памылка адкрыцця файла таямніцы (\"nonce\") \"%s\": %s"
+msgstr "Памылка адчынення файла таямніцы (\"nonce\") \"%s\": %s"
 
 #: ../gio/gdbusaddress.c:706
 #, c-format
@@ -1660,7 +1660,7 @@ msgstr "Памылка стварэння каталога \"%s\": %s"
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
 msgid "Error opening keyring `%s' for reading: "
-msgstr "Памылка адкрыцця вязкі ключоў \"%s\" для чытання: "
+msgstr "Памылка адчынення вязкі ключоў \"%s\" для чытання: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
@@ -1701,7 +1701,7 @@ msgstr "Памылка стварэння блок-файла \"%s\": %s"
 #: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
 msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "Памылка закрыцця (выдаленага) блок-файла \"%s\": %s"
+msgstr "Памылка зачынення (выдаленага) блок-файла \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
@@ -1711,7 +1711,7 @@ msgstr "Памылка выдалення блок-файла \"%s\": %s"
 #: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
 msgid "Error opening keyring `%s' for writing: "
-msgstr "Памылка адкрыцця вязкі ключоў \"%s\" для запісу: "
+msgstr "Памылка адчынення вязкі ключоў \"%s\" для запісу: "
 
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
@@ -1722,7 +1722,7 @@ msgstr ""
 #: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
 #: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
 msgid "The connection is closed"
-msgstr "Злучэнне закрытае"
+msgstr "Злучэнне зачынена"
 
 #: ../gio/gdbusconnection.c:1684
 msgid "Timeout was reached"
@@ -2409,7 +2409,7 @@ msgstr "Няма праграм, зарэгістраваных для прац�
 
 #: ../gio/gfileenumerator.c:205
 msgid "Enumerator is closed"
-msgstr "Аб'ект пераліку закрыты"
+msgstr "Аб'ект пераліку зачынены"
 
 #: ../gio/gfileenumerator.c:212 ../gio/gfileenumerator.c:271
 #: ../gio/gfileenumerator.c:371 ../gio/gfileenumerator.c:480
@@ -2418,7 +2418,7 @@ msgstr "Аб'ект пераліку файлаў мае няскончаную 
 
 #: ../gio/gfileenumerator.c:361 ../gio/gfileenumerator.c:470
 msgid "File enumerator is already closed"
-msgstr "Аб'ект пераліку файлаў ужо закрыты"
+msgstr "Аб'ект пераліку файлаў ужо зачынены"
 
 #: ../gio/gfileicon.c:236
 #, c-format
@@ -2480,7 +2480,7 @@ msgstr "Тып %s не мае функцыі from_tokens() для інтэрфе
 
 #: ../gio/gicon.c:430
 msgid "Can't handle the supplied version the icon encoding"
-msgstr "Немагчыма апрацаваць гэтую версію кадавання значкоў"
+msgstr "Не ўдалося апрацаваць гэтую версію кадавання значкоў"
 
 #: ../gio/ginputstream.c:194
 msgid "Input stream doesn't implement read"
@@ -2824,11 +2824,11 @@ msgstr "Хібная назва файла"
 #: ../gio/glocalfile.c:1310
 #, c-format
 msgid "Error opening file: %s"
-msgstr "Памылка адкрыцця файла: %s"
+msgstr "Памылка адчынення файла: %s"
 
 #: ../gio/glocalfile.c:1326
 msgid "Can't open directory"
-msgstr "Не ўдалося адкрыць каталог"
+msgstr "Не ўдалося адчыніць каталог"
 
 #: ../gio/glocalfile.c:1451
 #, c-format
@@ -3013,7 +3013,7 @@ msgstr "Памылка пракручвання змесціва файла: %s"
 #: ../gio/glocalfileoutputstream.c:351
 #, c-format
 msgid "Error closing file: %s"
-msgstr "Памылка закрыцця файла: %s"
+msgstr "Памылка зачынення файла: %s"
 
 #: ../gio/glocalfilemonitor.c:212
 msgid "Unable to find default local file monitor type"
@@ -3051,7 +3051,7 @@ msgstr "Памылка абразання файла: %s"
 #: ../gio/glocalfileoutputstream.c:1064 ../gio/glocalfileoutputstream.c:1163
 #, c-format
 msgid "Error opening file '%s': %s"
-msgstr "Памылка адкрыцця файла \"%s\": %s"
+msgstr "Памылка адчынення файла \"%s\": %s"
 
 #: ../gio/glocalfileoutputstream.c:846
 msgid "Target file is a directory"
@@ -3168,7 +3168,7 @@ msgstr "Выхадны струмень не падтрымлівае функц
 
 #: ../gio/goutputstream.c:369 ../gio/goutputstream.c:849
 msgid "Source stream is already closed"
-msgstr "Выточны струмень ужо закрыты"
+msgstr "Выточны струмень ужо зачынены"
 
 #: ../gio/gresolver.c:779
 #, c-format
@@ -3438,7 +3438,7 @@ msgstr "Хібны сокет не ініцыяваны з наступнай п
 
 #: ../gio/gsocket.c:290
 msgid "Socket is already closed"
-msgstr "Сокет ужо закрыты"
+msgstr "Сокет ужо зачынены"
 
 #: ../gio/gsocket.c:298 ../gio/gsocket.c:2772 ../gio/gsocket.c:2816
 msgid "Socket I/O timed out"
@@ -3519,7 +3519,7 @@ msgstr "Не ўдалося спыніць працу сокета: %s"
 #: ../gio/gsocket.c:2217
 #, c-format
 msgid "Error closing socket: %s"
-msgstr "Памылка закрыцця сокета: %s"
+msgstr "Памылка зачынення сокета: %s"
 
 #: ../gio/gsocket.c:2765
 #, c-format
@@ -3559,11 +3559,11 @@ msgstr "Пратакол \"%s\" не падтрымліваецца для пр�
 
 #: ../gio/gsocketlistener.c:191
 msgid "Listener is already closed"
-msgstr "Слухач ужо закрыў сокет"
+msgstr "Слухач ужо зачыніў сокет"
 
 #: ../gio/gsocketlistener.c:232
 msgid "Added socket is closed"
-msgstr "Дададзены сокет закрыты"
+msgstr "Дададзены сокет зачынены"
 
 #: ../gio/gsocks4aproxy.c:121
 #, c-format
@@ -3747,7 +3747,7 @@ msgstr "Не ўдалося прачытаць з unix-сокета: %s"
 #: ../gio/gunixoutputstream.c:407 ../gio/gunixoutputstream.c:556
 #, c-format
 msgid "Error closing unix: %s"
-msgstr "Не ўдалося закрыць unix-сокет: %s"
+msgstr "Не ўдалося зачыніць unix-сокет: %s"
 
 #: ../gio/gunixmounts.c:1848 ../gio/gunixmounts.c:1885
 msgid "Filesystem root"
@@ -3805,7 +3805,7 @@ msgstr "Не ўдалося прачытаць з файлавага аб'ект
 #: ../gio/gwin32inputstream.c:348 ../gio/gwin32outputstream.c:348
 #, c-format
 msgid "Error closing handle: %s"
-msgstr "Не ўдалося закрыць файлавы аб'ект: %s"
+msgstr "Не ўдалося зачыніць файлавы аб'ект: %s"
 
 #: ../gio/gwin32outputstream.c:318
 #, c-format
