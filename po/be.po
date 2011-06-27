@@ -832,7 +832,7 @@ msgstr "пасля знака \"\\\" змешчаны невядомы знак"
 #: ../glib/gregex.c:274
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr ""
-"у гэтым кантэксце забаронены паслядоўнасці, якія змяняюць памер літар (\"\\l"
+"у гэтым кантэксце забаронены паслядоўнасці, якія змяняюць рэгістр (\"\\l"
 "\", \"\\L\", \"\\u\", \"\\U\")"
 
 #: ../glib/gregex.c:277
@@ -2513,7 +2513,7 @@ msgstr "пустыя назвы забаронены"
 #: ../gio/glib-compile-schemas.c:751
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr "хібная назва \"%s\": назвы мусяць пачынацца з малой літары"
+msgstr "хібная назва \"%s\": назвы мусяць пачынацца з літары ніжняга рэгістра"
 
 #: ../gio/glib-compile-schemas.c:763
 #, c-format
@@ -2521,8 +2521,8 @@ msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and dash ('-') are permitted."
 msgstr ""
-"хібная назва \"%s\": хібны знак \"%c\"; дазволены толькі малыя літары, лічбы "
-"і злучок."
+"хібная назва \"%s\": хібны знак \"%c\"; дазволены толькі літары ніжняга "
+"рэгістра, лічбы і злучок."
 
 #: ../gio/glib-compile-schemas.c:772
 #, c-format
