@@ -400,14 +400,6 @@ static GSList *main_contexts_without_pipe = NULL;
 
 #ifndef G_OS_WIN32
 
-#ifdef HAVE_EVENTFD
-typedef struct {
-  guint checked_eventfd : 1;
-  guint have_eventfd : 1;
-} EventFdState;
-EventFdState event_fd_state = { 0, 0 };
-#endif
-
 /* The UNIX signal pipe contains a single byte specifying which
  * signal was received.
  */ 
@@ -570,26 +562,22 @@ g_main_context_init_pipe (GMainContext *context)
     return;
 
 #ifdef HAVE_EVENTFD
-  if (!event_fd_state.checked_eventfd
-      || event_fd_state.have_eventfd)
-    {
-      int efd;
+  {
+    int efd;
 
-      event_fd_state.checked_eventfd = TRUE;
-      efd = eventfd (0, EFD_CLOEXEC);
-      if (efd == -1 && errno == ENOSYS)
-	{
-	  event_fd_state.have_eventfd = FALSE;
-	  if (!g_unix_open_pipe (context->wake_up_pipe, FD_CLOEXEC, &error))
-	    g_error ("Cannot create pipe main loop wake-up: %s", error->message);
-	}
-      else if (efd >= 0)
-	{
-	  event_fd_state.have_eventfd = TRUE;
-	  context->wake_up_pipe[0] = efd;
-	}
-      else
-	g_error ("Cannot create eventfd for main loop wake-up: %s", g_strerror (errno));
+    efd = eventfd (0, EFD_CLOEXEC);
+    /* Fall through on -EINVAL too in case kernel doesn't know EFD_CLOEXEC.  Bug #653570 */
+    if (efd == -1 && (errno == ENOSYS || errno == EINVAL))
+      {
+	if (!g_unix_open_pipe (context->wake_up_pipe, FD_CLOEXEC, &error))
+	  g_error ("Cannot create pipe main loop wake-up: %s", error->message);
+      }
+    else if (efd >= 0)
+      {
+	context->wake_up_pipe[0] = efd;
+      }
+    else
+      g_error ("Cannot create eventfd for main loop wake-up: %s", g_strerror (errno));
     }
 #else
   if (!g_unix_open_pipe (context->wake_up_pipe, FD_CLOEXEC, &error))
@@ -2982,7 +2970,7 @@ g_main_context_check (GMainContext *context,
     {
 #ifndef G_OS_WIN32
 #ifdef HAVE_EVENTFD
-      if (event_fd_state.have_eventfd)
+      if (context->wake_up_pipe[1] == -1)
 	{
 	  guint64 buf;
 	  read (context->wake_up_pipe[0], &buf, sizeof(guint64));
@@ -3844,7 +3832,7 @@ g_main_context_wakeup_unlocked (GMainContext *context)
       context->poll_waiting = FALSE;
 #ifndef G_OS_WIN32
 #ifdef HAVE_EVENTFD
-      if (event_fd_state.have_eventfd)
+      if (context->wake_up_pipe[1] == -1)
 	{
 	  guint64 buf = 1;
 	  write (context->wake_up_pipe[0], &buf, sizeof(buf));
