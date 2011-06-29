@@ -485,6 +485,8 @@ g_simple_action_new (const gchar        *name,
 {
   GSimpleAction *simple;
 
+  g_return_val_if_fail (name != NULL);
+
   simple = g_object_new (G_TYPE_SIMPLE_ACTION, NULL);
   simple->name = g_strdup (name);
 
@@ -519,6 +521,9 @@ g_simple_action_new_stateful (const gchar        *name,
                               GVariant           *state)
 {
   GSimpleAction *simple;
+
+  g_return_val_if_fail (name != NULL);
+  g_return_val_if_fail (state != NULL);
 
   simple = g_object_new (G_TYPE_SIMPLE_ACTION, NULL);
   simple->name = g_strdup (name);
