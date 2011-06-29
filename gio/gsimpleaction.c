@@ -485,7 +485,7 @@ g_simple_action_new (const gchar        *name,
 {
   GSimpleAction *simple;
 
-  g_return_val_if_fail (name != NULL);
+  g_return_val_if_fail (name != NULL, NULL);
 
   simple = g_object_new (G_TYPE_SIMPLE_ACTION, NULL);
   simple->name = g_strdup (name);
