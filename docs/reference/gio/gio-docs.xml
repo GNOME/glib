@@ -198,6 +198,7 @@
         <xi:include href="xml/gsimpleactiongroup.xml"/>
         <xi:include href="xml/gaction.xml"/>
         <xi:include href="xml/gsimpleaction.xml"/>
+        <xi:include href="xml/gactiongroupexporter.xml"/>
     </chapter>
     <chapter id="extending">
         <title>Extending GIO</title>

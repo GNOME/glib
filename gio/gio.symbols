@@ -1411,6 +1411,9 @@ g_action_group_has_action
 g_action_group_list_actions
 g_action_group_query_action
 g_action_group_change_action_state
+g_action_group_exporter_export
+g_action_group_exporter_query
+g_action_group_exporter_stop
 g_action_activate
 g_action_get_enabled
 g_action_get_name

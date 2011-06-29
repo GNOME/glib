@@ -31,6 +31,7 @@
 #include <gio/gaction.h>
 #include <gio/gsimpleaction.h>
 #include <gio/gactiongroup.h>
+#include <gio/gactiongroupexporter.h>
 #include <gio/gsimpleactiongroup.h>
 #include <gio/gapplication.h>
 #include <gio/gapplicationcommandline.h>

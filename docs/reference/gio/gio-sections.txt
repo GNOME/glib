@@ -2906,6 +2906,13 @@ G_ACTION_GROUP
 </SECTION>
 
 <SECTION>
+<FILE>gactiongroupexporter</FILE>
+g_action_group_exporter_export
+g_action_group_exporter_stop
+g_action_group_exporter_query
+</SECTION>
+
+<SECTION>
 <FILE>gaction</FILE>
 <TITLE>GAction</TITLE>
 GAction
