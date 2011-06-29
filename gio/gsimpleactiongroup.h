@@ -96,8 +96,12 @@ struct _GActionEntry
 
   const gchar *state;
 
+  void (* change_state) (GSimpleAction *action,
+                         GVariant      *value,
+                         gpointer       user_data);
+
   /*< private >*/
-  gsize padding[4];
+  gsize padding[3];
 };
 
 void                    g_simple_action_group_add_entries               (GSimpleActionGroup *simple,

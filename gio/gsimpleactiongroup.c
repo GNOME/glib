@@ -393,6 +393,8 @@ g_simple_action_group_remove (GSimpleActionGroup *simple,
  *         format.  The state is parsed with no extra type information,
  *         so type tags must be added to the string if they are
  *         necessary.
+ * @change_state: the callback to connect to the "change-state" signal
+ *                of the action
  *
  * This struct defines a single action.  It is for use with
  * g_simple_action_group_add_entries().
@@ -522,6 +524,10 @@ g_simple_action_group_add_entries (GSimpleActionGroup *simple,
       if (entry->activate != NULL)
         g_signal_connect (action, "activate",
                           G_CALLBACK (entry->activate), user_data);
+
+      if (entry->change_state != NULL)
+        g_signal_connect (action, "change-state",
+                          G_CALLBACK (entry->change_state), user_data);
 
       g_simple_action_group_insert (simple, G_ACTION (action));
       g_object_unref (action);
