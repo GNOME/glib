@@ -492,7 +492,8 @@ g_simple_action_new_stateful (const gchar        *name,
                          "parameter-type", parameter_type,
                          NULL);
 
-  simple->state = g_variant_ref_sink (state);
+  if (state)
+    simple->state = g_variant_ref_sink (state);
 
   return simple;
 }
