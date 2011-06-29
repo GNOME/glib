@@ -328,37 +328,49 @@ test_entries (void)
   g_object_unref (actions);
 }
 
- static void
- activate_quit (GSimpleAction *simple,
-                GVariant      *parameter,
-                gpointer       user_data)
- {
-   exit (0);
- }
 
- static void
- activate_print_string (GSimpleAction *simple,
-                        GVariant      *parameter,
-                        gpointer       user_data)
- {
-   g_print ("%s\n", g_variant_get_string (parameter, NULL));
- }
+/* /actions/change-state */
+static void
+change_volume_state (GSimpleAction *action,
+                     GVariant      *value,
+                     gpointer       user_data)
+{
+  gint requested;
 
- static GActionGroup *
- create_action_group (void)
- {
-   const GActionEntry entries[] = {
-     { "quit",         activate_quit              },
-     { "print-string", activate_print_string, "s" }
-   };
-   GSimpleActionGroup *group;
+  requested = g_variant_get_int32 (value);
 
-   group = g_simple_action_group_new ();
-   g_simple_action_group_add_entries (group, entries, G_N_ELEMENTS (entries), NULL);
+  /* Volume only goes from 0 to 10 */
+  if (0 <= requested && requested <= 10)
+    g_simple_action_set_state (action, value);
+}
 
-   return G_ACTION_GROUP (group);
- }
+static void
+test_change_state (void)
+{
+  GSimpleAction *action;
+  GVariant *state;
 
+  action = g_simple_action_new_stateful ("volume", NULL,
+                                         g_variant_new_int32 (0));
+  g_signal_connect (action, "change-state",
+                    G_CALLBACK (change_volume_state), NULL);
+
+  state = g_action_get_state (G_ACTION (action));
+  g_assert_cmpint (g_variant_get_int32 (state), ==, 0);
+  g_variant_unref (state);
+
+  /* should change */
+  g_action_change_state (G_ACTION (action), g_variant_new_int32 (7));
+  state = g_action_get_state (G_ACTION (action));
+  g_assert_cmpint (g_variant_get_int32 (state), ==, 7);
+  g_variant_unref (state);
+
+  /* should not change */
+  g_action_change_state (G_ACTION (action), g_variant_new_int32 (11));
+  state = g_action_get_state (G_ACTION (action));
+  g_assert_cmpint (g_variant_get_int32 (state), ==, 7);
+  g_variant_unref (state);
+}
 
 int
 main (int argc, char **argv)
@@ -370,6 +382,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/simplegroup", test_simple_group);
   g_test_add_func ("/actions/stateful", test_stateful);
   g_test_add_func ("/actions/entries", test_entries);
+  g_test_add_func ("/actions/change-state", test_change_state);
 
   return g_test_run ();
 }
