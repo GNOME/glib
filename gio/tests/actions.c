@@ -278,14 +278,30 @@ activate_bar (GSimpleAction *simple,
 }
 
 static void
+change_volume_state (GSimpleAction *action,
+                     GVariant      *value,
+                     gpointer       user_data)
+{
+  gint requested;
+
+  requested = g_variant_get_int32 (value);
+
+  /* Volume only goes from 0 to 10 */
+  if (0 <= requested && requested <= 10)
+    g_simple_action_set_state (action, value);
+}
+
+static void
 test_entries (void)
 {
   const GActionEntry entries[] = {
-    { "foo",    activate_foo                },
-    { "bar",    activate_bar, "s"           },
-    { "toggle", NULL,         NULL, "false" }
+    { "foo",    activate_foo                                     },
+    { "bar",    activate_bar, "s"                                },
+    { "toggle", NULL,         NULL, "false"                      },
+    { "volume", NULL,         NULL, "0",     change_volume_state }
   };
   GSimpleActionGroup *actions;
+  GVariant *state;
 
   actions = g_simple_action_group_new ();
   g_simple_action_group_add_entries (actions, entries,
@@ -325,51 +341,25 @@ test_entries (void)
     }
   g_test_trap_assert_failed ();
 
-  g_object_unref (actions);
-}
-
-
-/* /actions/change-state */
-static void
-change_volume_state (GSimpleAction *action,
-                     GVariant      *value,
-                     gpointer       user_data)
-{
-  gint requested;
-
-  requested = g_variant_get_int32 (value);
-
-  /* Volume only goes from 0 to 10 */
-  if (0 <= requested && requested <= 10)
-    g_simple_action_set_state (action, value);
-}
-
-static void
-test_change_state (void)
-{
-  GSimpleAction *action;
-  GVariant *state;
-
-  action = g_simple_action_new_stateful ("volume", NULL,
-                                         g_variant_new_int32 (0));
-  g_signal_connect (action, "change-state",
-                    G_CALLBACK (change_volume_state), NULL);
-
-  state = g_action_get_state (G_ACTION (action));
+  state = g_action_group_get_action_state (G_ACTION_GROUP (actions), "volume");
   g_assert_cmpint (g_variant_get_int32 (state), ==, 0);
   g_variant_unref (state);
 
   /* should change */
-  g_action_change_state (G_ACTION (action), g_variant_new_int32 (7));
-  state = g_action_get_state (G_ACTION (action));
+  g_action_group_change_action_state (G_ACTION_GROUP (actions), "volume",
+                                      g_variant_new_int32 (7));
+  state = g_action_group_get_action_state (G_ACTION_GROUP (actions), "volume");
   g_assert_cmpint (g_variant_get_int32 (state), ==, 7);
   g_variant_unref (state);
 
   /* should not change */
-  g_action_change_state (G_ACTION (action), g_variant_new_int32 (11));
-  state = g_action_get_state (G_ACTION (action));
+  g_action_group_change_action_state (G_ACTION_GROUP (actions), "volume",
+                                      g_variant_new_int32 (11));
+  state = g_action_group_get_action_state (G_ACTION_GROUP (actions), "volume");
   g_assert_cmpint (g_variant_get_int32 (state), ==, 7);
   g_variant_unref (state);
+
+  g_object_unref (actions);
 }
 
 int
@@ -382,7 +372,6 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/simplegroup", test_simple_group);
   g_test_add_func ("/actions/stateful", test_stateful);
   g_test_add_func ("/actions/entries", test_entries);
-  g_test_add_func ("/actions/change-state", test_change_state);
 
   return g_test_run ();
 }
