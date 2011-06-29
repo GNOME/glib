@@ -254,6 +254,112 @@ test_stateful (void)
   g_object_unref (action);
 }
 
+static gboolean foo_activated = FALSE;
+static gboolean bar_activated = FALSE;
+
+static void
+activate_foo (GSimpleAction *simple,
+              GVariant      *parameter,
+              gpointer       user_data)
+{
+  g_assert (user_data == GINT_TO_POINTER (123));
+  g_assert (parameter == NULL);
+  foo_activated = TRUE;
+}
+
+static void
+activate_bar (GSimpleAction *simple,
+              GVariant      *parameter,
+              gpointer       user_data)
+{
+  g_assert (user_data == GINT_TO_POINTER (123));
+  g_assert_cmpstr (g_variant_get_string (parameter, NULL), ==, "param");
+  bar_activated = TRUE;
+}
+
+static void
+test_entries (void)
+{
+  const GActionEntry entries[] = {
+    { "foo",    activate_foo                },
+    { "bar",    activate_bar, "s"           },
+    { "toggle", NULL,         NULL, "false" }
+  };
+  GSimpleActionGroup *actions;
+
+  actions = g_simple_action_group_new ();
+  g_simple_action_group_add_entries (actions, entries,
+                                     G_N_ELEMENTS (entries),
+                                     GINT_TO_POINTER (123));
+
+  g_assert (!foo_activated);
+  g_action_group_activate_action (G_ACTION_GROUP (actions), "foo", NULL);
+  g_assert (foo_activated);
+  foo_activated = FALSE;
+
+  g_assert (!bar_activated);
+  g_action_group_activate_action (G_ACTION_GROUP (actions), "bar",
+                                  g_variant_new_string ("param"));
+  g_assert (bar_activated);
+  g_assert (!foo_activated);
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      const GActionEntry bad_type = {
+        "bad-type", NULL, "ss"
+      };
+
+      g_simple_action_group_add_entries (actions, &bad_type, 1, NULL);
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+
+  if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
+    {
+      const GActionEntry bad_state = {
+        "bad-state", NULL, NULL, "flse"
+      };
+
+      g_simple_action_group_add_entries (actions, &bad_state, 1, NULL);
+      exit (0);
+    }
+  g_test_trap_assert_failed ();
+
+  g_object_unref (actions);
+}
+
+ static void
+ activate_quit (GSimpleAction *simple,
+                GVariant      *parameter,
+                gpointer       user_data)
+ {
+   exit (0);
+ }
+
+ static void
+ activate_print_string (GSimpleAction *simple,
+                        GVariant      *parameter,
+                        gpointer       user_data)
+ {
+   g_print ("%s\n", g_variant_get_string (parameter, NULL));
+ }
+
+ static GActionGroup *
+ create_action_group (void)
+ {
+   const GActionEntry entries[] = {
+     { "quit",         activate_quit              },
+     { "print-string", activate_print_string, "s" }
+   };
+   GSimpleActionGroup *group;
+
+   group = g_simple_action_group_new ();
+   g_simple_action_group_add_entries (group, entries, G_N_ELEMENTS (entries), NULL);
+
+   return G_ACTION_GROUP (group);
+ }
+
+
 int
 main (int argc, char **argv)
 {
@@ -263,6 +369,7 @@ main (int argc, char **argv)
   g_test_add_func ("/actions/basic", test_basic);
   g_test_add_func ("/actions/simplegroup", test_simple_group);
   g_test_add_func ("/actions/stateful", test_stateful);
+  g_test_add_func ("/actions/entries", test_entries);
 
   return g_test_run ();
 }
