@@ -7,7 +7,7 @@ the .in files needed, mainly config.h.win32.in into config.h.win32 and
 glibconfig.h.win32.in into glibconfig.h.win32. You will also need to
 expand the .vcprojin files here into .vcproj files.
 
-The required dependencies are zlib and proxy-libintl. Fetch the latest
+The required dependencies are zlib, proxy-libintl and LibFFI. Fetch the latest
 proxy-libintl-dev and zlib-dev zipfiles from
 http://ftp.gnome.org/pub/GNOME/binaries/win32/dependencies/ for 32-bit
 builds, and correspondingly
@@ -17,6 +17,12 @@ builds.
 One may wish to build his/her own ZLib-It is recommended that ZLib is
 built using the win32/Makefile.msc makefile with VS10 with the ASM routines
 to avoid linking problems-see win32/Makefile.msc in ZLib for more details.
+
+For LibFFI, please get version 3.0.10rc8 or later, as Visual C++ build support
+was added in the 3.0.10(rc) release series.  Please see the README file that
+comes with the LibFFI source package for more details on how to build LibFFI
+on Visual C++-please note that the mozilla-build package from Mozilla is needed
+in order to build LibFFI on Windows.
 
 One may optionally use his/her own PCRE installation by selecting the
 (BuildType)_ExtPCRE configuration, but please note the PCRE must be built
@@ -43,6 +49,11 @@ folder <root>:
 You should unpack the proxy-libintl-dev zip file into
 <root>\vs10\<PlatformName>, so that for instance libintl.h end up at
 <root>\vs10\<PlatformName>\include\libintl.h.
+
+For LibFFI, one should also put the generated ffi.h and ffitarget.h
+into <root>\vs10\<PlatformName>\include\ and the compiled static libffi.lib
+(or copy libffi-convenience.lib into libffi.lib) into 
+<root>\vs10\<PlatformName>\lib\.
 
 The "install" project will copy build results and headers into their
 appropriate location under <root>\vs10\<PlatformName>. For instance,
