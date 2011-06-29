@@ -402,6 +402,8 @@ g_simple_action_group_remove (GSimpleActionGroup *simple,
  * in order to leave some of the later values as %NULL.  All values
  * after @name are optional.  Additional optional fields may be added in
  * the future.
+ *
+ * See g_simple_action_group_add_entries() for an example.
  **/
 
 /**
@@ -416,6 +418,42 @@ g_simple_action_group_remove (GSimpleActionGroup *simple,
  * and adding them to the action group.
  *
  * Each action is constructed as per one #GActionEntry.
+ *
+ * <example>
+ * <title>Using g_simple_action_group_add_entries()</title>
+ * <programlisting>
+ * static void
+ * activate_quit (GSimpleAction *simple,
+ *                GVariant      *parameter,
+ *                gpointer       user_data)
+ * {
+ *   exit (0);
+ * }
+ *
+ * static void
+ * activate_print_string (GSimpleAction *simple,
+ *                        GVariant      *parameter,
+ *                        gpointer       user_data)
+ * {
+ *   g_print ("%s\n", g_variant_get_string (parameter, NULL));
+ * }
+ *
+ * static GActionGroup *
+ * create_action_group (void)
+ * {
+ *   const GActionEntry entries[] = {
+ *     { "quit",         activate_quit              },
+ *     { "print-string", activate_print_string, "s" }
+ *   };
+ *   GSimpleActionGroup *group;
+ *
+ *   group = g_simple_action_group_new ();
+ *   g_simple_action_group_add_entries (group, entries, G_N_ELEMENTS (entries), NULL);
+ *
+ *   return G_ACTION_GROUP (group);
+ * }
+ * </programlisting>
+ * </example>
  *
  * Since: 2.30
  **/
