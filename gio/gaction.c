@@ -39,7 +39,7 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
  * parameter type (which is given at construction time).
  *
  * An action may optionally have a state, in which case the state may be
- * set with g_action_set_state().  This call takes a #GVariant.  The
+ * set with g_action_change_state().  This call takes a #GVariant.  The
  * correct type for the state is determined by a static state type
  * (which is given at construction time).
  *
@@ -54,8 +54,8 @@ G_DEFINE_INTERFACE (GAction, g_action, G_TYPE_OBJECT)
  * name of the action, the parameter type, the enabled state, the
  * optional state type and the state and emitting the appropriate
  * signals when these change.  The implementor responsible for filtering
- * calls to g_action_activate() and g_action_set_state() for type safety
- * and for the state being enabled.
+ * calls to g_action_activate() and g_action_change_state() for type
+ * safety and for the state being enabled.
  *
  * Probably the only useful thing to do with a #GAction is to put it
  * inside of a #GSimpleActionGroup.
@@ -104,7 +104,7 @@ g_action_default_init (GActionInterface *iface)
    * If @action is currently enabled.
    *
    * If the action is disabled then calls to g_action_activate() and
-   * g_action_set_state() have no effect.
+   * g_action_change_state() have no effect.
    *
    * Since: 2.28
    **/
@@ -146,13 +146,12 @@ g_action_default_init (GActionInterface *iface)
                                                              P_("The state the action is in"),
                                                              G_VARIANT_TYPE_ANY,
                                                              NULL,
-                                                             G_PARAM_CONSTRUCT |
-                                                             G_PARAM_READWRITE |
+                                                             G_PARAM_READABLE |
                                                              G_PARAM_STATIC_STRINGS));
 }
 
 /**
- * g_action_set_state:
+ * g_action_change_state:
  * @action: a #GAction
  * @value: the new state
  *
@@ -167,11 +166,11 @@ g_action_default_init (GActionInterface *iface)
  *
  * If the @value GVariant is floating, it is consumed.
  *
- * Since: 2.28
+ * Since: 2.30
  **/
 void
-g_action_set_state (GAction  *action,
-                    GVariant *value)
+g_action_change_state (GAction  *action,
+                       GVariant *value)
 {
   const GVariantType *state_type;
 
@@ -184,7 +183,7 @@ g_action_set_state (GAction  *action,
   g_variant_ref_sink (value);
 
   G_ACTION_GET_IFACE (action)
-    ->set_state (action, value);
+    ->change_state (action, value);
 
   g_variant_unref (value);
 }
@@ -269,13 +268,13 @@ g_action_get_parameter_type (GAction *action)
  * If the action is stateful (e.g. created with
  * g_simple_action_new_stateful()) then this function returns the
  * #GVariantType of the state.  This is the type of the initial value
- * given as the state. All calls to g_action_set_state() must give a
+ * given as the state. All calls to g_action_change_state() must give a
  * #GVariant of this type and g_action_get_state() will return a
  * #GVariant of the same type.
  *
  * If the action is not stateful (e.g. created with g_simple_action_new())
  * then this function will return %NULL. In that case, g_action_get_state()
- * will return %NULL and you must not call g_action_set_state().
+ * will return %NULL and you must not call g_action_change_state().
  *
  * Returns: (allow-none): the state type, if the action is stateful
  *

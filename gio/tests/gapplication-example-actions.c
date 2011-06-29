@@ -23,21 +23,21 @@ activate_action (GAction  *action,
 }
 
 static void
-activate_toggle_action (GAction  *action,
-                        GVariant *parameter,
-                        gpointer  data)
+activate_toggle_action (GSimpleAction *action,
+                        GVariant      *parameter,
+                        gpointer       data)
 {
   GApplication *application = G_APPLICATION (data);
   GVariant *state;
   gboolean b;
 
-  g_print ("action %s activated\n", g_action_get_name (action));
+  g_print ("action %s activated\n", g_action_get_name (G_ACTION (action)));
 
   g_application_hold (application);
-  state = g_action_get_state (action);
+  state = g_action_get_state (G_ACTION (action));
   b = g_variant_get_boolean (state);
   g_variant_unref (state);
-  g_action_set_state (action, g_variant_new_boolean (!b));
+  g_simple_action_set_state (action, g_variant_new_boolean (!b));
   g_print ("state change %d -> %d\n", b, !b);
   g_application_release (application);
 }

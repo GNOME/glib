@@ -33,50 +33,8 @@ G_BEGIN_DECLS
 #define G_TYPE_SIMPLE_ACTION                                (g_simple_action_get_type ())
 #define G_SIMPLE_ACTION(inst)                               (G_TYPE_CHECK_INSTANCE_CAST ((inst),                     \
                                                              G_TYPE_SIMPLE_ACTION, GSimpleAction))
-#define G_SIMPLE_ACTION_CLASS(class)                        (G_TYPE_CHECK_CLASS_CAST ((class),                       \
-                                                             G_TYPE_SIMPLE_ACTION, GSimpleActionClass))
 #define G_IS_SIMPLE_ACTION(inst)                            (G_TYPE_CHECK_INSTANCE_TYPE ((inst),                     \
                                                              G_TYPE_SIMPLE_ACTION))
-#define G_IS_SIMPLE_ACTION_CLASS(class)                     (G_TYPE_CHECK_CLASS_TYPE ((class),                       \
-                                                             G_TYPE_SIMPLE_ACTION))
-#define G_SIMPLE_ACTION_GET_CLASS(inst)                     (G_TYPE_INSTANCE_GET_CLASS ((inst),                      \
-                                                             G_TYPE_SIMPLE_ACTION, GSimpleActionClass))
-
-typedef struct _GSimpleActionPrivate                        GSimpleActionPrivate;
-typedef struct _GSimpleActionClass                          GSimpleActionClass;
-
-/**
- * GSimpleAction:
- *
- * The <structname>GSimpleAction</structname> structure contains private
- * data and should only be accessed using the provided API
- *
- * Since: 2.28
- */
-struct _GSimpleAction
-{
-  /*< private >*/
-  GObject parent_instance;
-
-  GSimpleActionPrivate *priv;
-};
-
-/**
- * GSimpleActionClass:
- * @activate: the class closure for the activate signal
- *
- * Since: 2.28
- */
-struct _GSimpleActionClass
-{
-  GObjectClass parent_class;
-
-  /* signals */
-  void  (* activate)  (GSimpleAction *simple,
-                       GVariant      *parameter);
-  /*< private >*/
-  gpointer padding[6];
-};
 
 GType                   g_simple_action_get_type                        (void) G_GNUC_CONST;
 
@@ -89,6 +47,9 @@ GSimpleAction *         g_simple_action_new_stateful                    (const g
 
 void                    g_simple_action_set_enabled                     (GSimpleAction      *simple,
                                                                          gboolean            enabled);
+
+void                    g_simple_action_set_state                       (GSimpleAction      *simple,
+                                                                         GVariant           *value);
 
 G_END_DECLS
 

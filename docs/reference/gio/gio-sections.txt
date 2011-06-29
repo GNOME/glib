@@ -2832,9 +2832,9 @@ g_action_get_state_hint
 <SUBSECTION>
 g_action_get_enabled
 g_action_get_state
-g_action_set_state
 
 <SUBSECTION>
+g_action_change_state
 g_action_activate
 
 <SUBSECTION Standard>
@@ -2857,6 +2857,7 @@ g_simple_action_new_stateful
 
 <SUBSECTION>
 g_simple_action_set_enabled
+g_simple_action_set_state
 
 <SUBSECTION Standard>
 GSimpleActionPrivate

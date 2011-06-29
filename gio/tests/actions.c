@@ -232,12 +232,12 @@ test_stateful (void)
 
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      g_action_set_state (G_ACTION (action), g_variant_new_int32 (123));
+      g_simple_action_set_state (action, g_variant_new_int32 (123));
       exit (0);
     }
   g_test_trap_assert_failed ();
 
-  g_action_set_state (G_ACTION (action), g_variant_new_string ("hello"));
+  g_simple_action_set_state (action, g_variant_new_string ("hello"));
   state = g_action_get_state (G_ACTION (action));
   g_assert_cmpstr (g_variant_get_string (state, NULL), ==, "hello");
   g_variant_unref (state);
@@ -247,7 +247,7 @@ test_stateful (void)
   action = g_simple_action_new ("foo", NULL);
   if (g_test_trap_fork (0, G_TEST_TRAP_SILENCE_STDERR))
     {
-      g_action_set_state (G_ACTION (action), g_variant_new_int32 (123));
+      g_simple_action_set_state (action, g_variant_new_int32 (123));
       exit (0);
     }
   g_test_trap_assert_failed ();

@@ -148,9 +148,9 @@ g_simple_action_group_get_state (GActionGroup *group,
 }
 
 static void
-g_simple_action_group_set_state (GActionGroup *group,
-                                 const gchar  *action_name,
-                                 GVariant     *value)
+g_simple_action_group_change_state (GActionGroup *group,
+                                    const gchar  *action_name,
+                                    GVariant     *value)
 {
   GSimpleActionGroup *simple = G_SIMPLE_ACTION_GROUP (group);
   GAction *action;
@@ -160,7 +160,7 @@ g_simple_action_group_set_state (GActionGroup *group,
   if (action == NULL)
     return;
 
-  g_action_set_state (action, value);
+  g_action_change_state (action, value);
 }
 
 static void
@@ -258,7 +258,7 @@ g_simple_action_group_iface_init (GActionGroupInterface *iface)
   iface->get_action_state_hint = g_simple_action_group_get_state_hint;
   iface->get_action_enabled = g_simple_action_group_get_enabled;
   iface->get_action_state = g_simple_action_group_get_state;
-  iface->change_action_state = g_simple_action_group_set_state;
+  iface->change_action_state = g_simple_action_group_change_state;
   iface->activate_action = g_simple_action_group_activate;
 }
 
