@@ -65,6 +65,7 @@ enum
 
 enum
 {
+  SIGNAL_CHANGE_STATE,
   SIGNAL_ACTIVATE,
   NR_SIGNALS
 };
@@ -118,7 +119,15 @@ g_simple_action_change_state (GAction  *action,
 {
   GSimpleAction *simple = G_SIMPLE_ACTION (action);
 
-  g_simple_action_set_state (simple, value);
+  /* If the user connected a signal handler then they are responsible
+   * for handling state changes.
+   */
+  if (g_signal_has_handler_pending (action, g_simple_action_signals[SIGNAL_CHANGE_STATE], 0, TRUE))
+    g_signal_emit (action, g_simple_action_signals[SIGNAL_CHANGE_STATE], 0, value);
+
+  /* If not, then the default behaviour is to just set the state. */
+  else
+    g_simple_action_set_state (simple, value);
 }
 
 /**
@@ -318,6 +327,34 @@ g_simple_action_class_init (GSimpleActionClass *class)
    */
   g_simple_action_signals[SIGNAL_ACTIVATE] =
     g_signal_new (I_("activate"),
+                  G_TYPE_SIMPLE_ACTION,
+                  G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
+                  0, NULL, NULL,
+                  g_cclosure_marshal_VOID__VARIANT,
+                  G_TYPE_NONE, 1,
+                  G_TYPE_VARIANT);
+
+  /**
+   * GSimpleAction::change-state:
+   * @simple: the #GSimpleAction
+   * @value: (allow-none): the requested value for the state
+   *
+   * Indicates that the action just received a request to change its
+   * state.
+   *
+   * @value will always be of the correct state type.  In the event that
+   * an incorrect type was given, no signal will be emitted.
+   *
+   * If no handler is connected to this signal then the default
+   * behaviour is to call g_simple_action_set_state() to set the state
+   * to the requested value.  If you connect a signal handler then no
+   * default action is taken.  If the state should change then you must
+   * call g_simple_action_set_state() from the handler.
+   *
+   * Since: 2.30
+   */
+  g_simple_action_signals[SIGNAL_CHANGE_STATE] =
+    g_signal_new (I_("change-state"),
                   G_TYPE_SIMPLE_ACTION,
                   G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
                   0, NULL, NULL,
