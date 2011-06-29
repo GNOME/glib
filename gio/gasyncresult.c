@@ -51,9 +51,11 @@
  * "enumerate children" operation). If the result or error status of the
  * operation is not needed, there is no need to call the "_finish()"
  * function; GIO will take care of cleaning up the result and error
- * information after the #GAsyncReadyCallback returns. Applications may
- * also take a reference to the #GAsyncResult and call "_finish()"
- * later; however, the "_finish()" function may be called at most once.
+ * information after the #GAsyncReadyCallback returns. You can pass
+ * %NULL for the #GAsyncReadyCallback if you don't need to take any
+ * action at all after the operation completes. Applications may also
+ * take a reference to the #GAsyncResult and call "_finish()" later;
+ * however, the "_finish()" function may be called at most once.
  *
  * Example of a typical asynchronous operation flow:
  * |[
