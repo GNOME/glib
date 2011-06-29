@@ -20,6 +20,8 @@
  */
 
 #include "gsimpleactiongroup.h"
+
+#include "gsimpleaction.h"
 #include "gaction.h"
 
 /**
@@ -376,5 +378,114 @@ g_simple_action_group_remove (GSimpleActionGroup *simple,
       g_action_group_action_removed (G_ACTION_GROUP (simple), action_name);
       g_simple_action_group_disconnect (NULL, action, simple);
       g_hash_table_remove (simple->priv->table, action_name);
+    }
+}
+
+/**
+ * GActionEntry:
+ * @name: the name of the action
+ * @activate: the callback to connect to the "activate" signal of the
+ *            action
+ * @parameter_type: the type of the parameter that must be passed to the
+ *                  activate function for this action, given as a single
+ *                  GVariant type string (or %NULL for no parameter)
+ * @state: the initial state for this action, given in GVariant text
+ *         format.  The state is parsed with no extra type information,
+ *         so type tags must be added to the string if they are
+ *         necessary.
+ *
+ * This struct defines a single action.  It is for use with
+ * g_simple_action_group_add_entries().
+ *
+ * The order of the items in the structure are intended to reflect
+ * frequency of use.  It is permissible to use an incomplete initialiser
+ * in order to leave some of the later values as %NULL.  All values
+ * after @name are optional.  Additional optional fields may be added in
+ * the future.
+ **/
+
+/**
+ * g_simple_action_group_add_entries:
+ * @simple: a #GSimpleActionGroup
+ * @entries: a pointer to the first item in an array of #GActionEntry
+ *           structs
+ * @n_entries: the length of @entries, or -1
+ * @user_data: the user data for signal connections
+ *
+ * A convenience function for creating multiple #GSimpleAction instances
+ * and adding them to the action group.
+ *
+ * Each action is constructed as per one #GActionEntry.
+ *
+ * Since: 2.30
+ **/
+void
+g_simple_action_group_add_entries (GSimpleActionGroup *simple,
+                                   const GActionEntry *entries,
+                                   gint                n_entries,
+                                   gpointer            user_data)
+{
+  gint i;
+
+  g_return_if_fail (G_IS_SIMPLE_ACTION_GROUP (simple));
+  g_return_if_fail (entries != NULL || n_entries == 0);
+
+  for (i = 0; n_entries == -1 ? entries[i].name != NULL : i < n_entries; i++)
+    {
+      const GActionEntry *entry = &entries[i];
+      const GVariantType *parameter_type;
+      GSimpleAction *action;
+
+      if (entry->parameter_type)
+        {
+          if (!g_variant_type_string_is_valid (entry->parameter_type))
+            {
+              g_critical ("g_simple_action_group_add_entries: the type "
+                          "string '%s' given as the parameter type for "
+                          "action '%s' is not a valid GVariant type "
+                          "string.  This action will not be added.",
+                          entry->parameter_type, entry->name);
+              return;
+            }
+
+          parameter_type = G_VARIANT_TYPE (entry->parameter_type);
+        }
+      else
+        parameter_type = NULL;
+
+      if (entry->state)
+        {
+          GError *error = NULL;
+          GVariant *state;
+
+          state = g_variant_parse (NULL, entry->state, NULL, NULL, &error);
+          if (state == NULL)
+            {
+              g_critical ("g_simple_action_group_add_entries: GVariant could "
+                          "not parse the state value given for action '%s' "
+                          "('%s'): %s.  This action will not be added.",
+                          entry->name, entry->state, error->message);
+              g_error_free (error);
+              continue;
+            }
+
+          action = g_simple_action_new_stateful (entry->name,
+                                                 parameter_type,
+                                                 state);
+
+          g_variant_unref (state);
+        }
+      else
+        {
+          action = g_simple_action_new (entry->name,
+                                        parameter_type);
+        }
+
+      if (entry->activate != NULL)
+        g_signal_connect (action, "activate",
+                          G_CALLBACK (entry->activate), user_data);
+
+      g_simple_action_group_insert (simple, G_ACTION (action));
+      g_object_unref (action);
     }
 }

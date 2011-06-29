@@ -45,6 +45,8 @@ G_BEGIN_DECLS
 typedef struct _GSimpleActionGroupPrivate                   GSimpleActionGroupPrivate;
 typedef struct _GSimpleActionGroupClass                     GSimpleActionGroupClass;
 
+typedef struct _GActionEntry                                GActionEntry;
+
 /**
  * GSimpleActionGroup:
  *
@@ -81,6 +83,27 @@ void                    g_simple_action_group_insert                    (GSimple
 
 void                    g_simple_action_group_remove                    (GSimpleActionGroup *simple,
                                                                          const gchar        *action_name);
+
+struct _GActionEntry
+{
+  const gchar *name;
+
+  void (* activate) (GSimpleAction *action,
+                     GVariant      *parameter,
+                     gpointer       user_data);
+
+  const gchar *parameter_type;
+
+  const gchar *state;
+
+  /*< private >*/
+  gsize padding[4];
+};
+
+void                    g_simple_action_group_add_entries               (GSimpleActionGroup *simple,
+                                                                         const GActionEntry *entries,
+                                                                         gint                n_entries,
+                                                                         gpointer            user_data);
 
 G_END_DECLS
 
