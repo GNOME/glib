@@ -198,16 +198,16 @@ g_cancellable_class_init (GCancellableClass *klass)
 static void
 g_cancellable_write_cancelled (GCancellable *cancellable)
 {
-#ifdef G_OS_WIN32
-  if (priv->event)
-    SetEvent (priv->event);
-#else
   gssize c;
   GCancellablePrivate *priv;
   const char ch = 'x';
 
   priv = cancellable->priv;
 
+#ifdef G_OS_WIN32
+  if (priv->event)
+    SetEvent (priv->event);
+#else
 
   if (priv->cancel_pipe[0] == -1)
     return;
@@ -225,12 +225,12 @@ g_cancellable_write_cancelled (GCancellable *cancellable)
 
       return;
     }
-#endif
+#endif /* HAVE_EVENTFD */
 
   do
     c = write (priv->cancel_pipe[1], &ch, 1);
   while (c == -1 && errno == EINTR);
-#endif
+#endif /* G_OS_WIN32 */
 }
 
 #ifndef G_OS_WIN32
