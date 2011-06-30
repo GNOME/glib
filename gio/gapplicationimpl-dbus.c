@@ -407,6 +407,9 @@ g_application_impl_destroy (GApplicationImpl *impl)
       if (impl->object_id)
         g_dbus_connection_unregister_object (impl->session_bus,
                                              impl->object_id);
+      if (impl->action_id)
+        g_dbus_connection_unregister_object (impl->session_bus,
+                                             impl->action_id);
 
       g_dbus_connection_call (impl->session_bus,
                               "org.freedesktop.DBus",
@@ -665,6 +668,9 @@ g_application_impl_register (GApplication       *application,
           g_dbus_connection_unregister_object (impl->session_bus,
                                                impl->object_id);
           impl->object_id = 0;
+          g_dbus_connection_unregister_object (impl->session_bus,
+                                               impl->action_id);
+          impl->action_id = 0;
 
           g_object_unref (impl->session_bus);
           g_free (impl->object_path);
