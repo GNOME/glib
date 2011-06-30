@@ -1909,7 +1909,7 @@ static GHashTable *info_cache = NULL;
  * This cost of this function is O(n) in number of methods unless
  * g_dbus_interface_info_cache_build() has been used on @info.
  *
- * Returns: A #GDBusMethodInfo or %NULL if not found. Do not free, it is owned by @info.
+ * Returns: (transfer none): A #GDBusMethodInfo or %NULL if not found. Do not free, it is owned by @info.
  *
  * Since: 2.26
  */
@@ -1963,7 +1963,7 @@ g_dbus_interface_info_lookup_method (GDBusInterfaceInfo *info,
  * This cost of this function is O(n) in number of signals unless
  * g_dbus_interface_info_cache_build() has been used on @info.
  *
- * Returns: A #GDBusSignalInfo or %NULL if not found. Do not free, it is owned by @info.
+ * Returns: (transfer none): A #GDBusSignalInfo or %NULL if not found. Do not free, it is owned by @info.
  *
  * Since: 2.26
  */
@@ -2017,7 +2017,7 @@ g_dbus_interface_info_lookup_signal (GDBusInterfaceInfo *info,
  * This cost of this function is O(n) in number of properties unless
  * g_dbus_interface_info_cache_build() has been used on @info.
  *
- * Returns: A #GDBusPropertyInfo or %NULL if not found. Do not free, it is owned by @info.
+ * Returns: (transfer none): A #GDBusPropertyInfo or %NULL if not found. Do not free, it is owned by @info.
  *
  * Since: 2.26
  */
