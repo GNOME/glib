@@ -265,47 +265,46 @@ g_application_impl_destroy (GApplicationImpl *impl)
 }
 
 static void
-unwrap_fake_maybe (GVariant **value)
+remote_action_info_free (gpointer user_data)
 {
-  GVariant *tmp;
+  RemoteActionInfo *info = user_data;
 
-  if (g_variant_n_children (*value))
-    g_variant_get_child (*value, 0, "v", &tmp);
-  else
-    tmp = NULL;
+  g_free (info->name);
 
-  g_variant_unref (*value);
-  *value = tmp;
+  if (info->state)
+    g_variant_unref (info->state);
+
+  if (info->parameter_type)
+    g_variant_type_free (info->parameter_type);
+
+  g_slice_free (RemoteActionInfo, info);
 }
 
 static RemoteActionInfo *
 remote_action_info_new_from_iter (GVariantIter *iter)
 {
   RemoteActionInfo *info;
-  GVariant *param_type;
+  const gchar *param_str;
   gboolean enabled;
   GVariant *state;
   gchar *name;
 
-  if (!g_variant_iter_next (iter, "(s@avb@av)", &name,
-                            &param_type, &enabled, &state))
+  if (!g_variant_iter_next (iter, "{&s(bg@av)}", &name,
+                            &enabled, &param_str, &state))
     return NULL;
-
-  unwrap_fake_maybe (&param_type);
-  unwrap_fake_maybe (&state);
 
   info = g_slice_new (RemoteActionInfo);
   info->name = name;
   info->enabled = enabled;
-  info->state = state;
 
-  if (param_type != NULL)
-    {
-      info->parameter_type = g_variant_type_copy (
-                               g_variant_type_element (
-                                 g_variant_get_type (param_type)));
-      g_variant_unref (param_type);
-    }
+  if (g_variant_n_children (state))
+    g_variant_get_child (state, 0, "v", &info->state);
+  else
+    info->state = NULL;
+  g_variant_unref (state);
+
+  if (param_str[0])
+    info->parameter_type = g_variant_type_copy ((GVariantType *) param_str);
   else
     info->parameter_type = NULL;
 
@@ -326,76 +325,90 @@ g_application_impl_action_signal (GDBusConnection *connection,
 
   action_group = G_ACTION_GROUP (impl->app);
 
-  if (strcmp (signal_name, "Added") == 0 &&
-      g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(a(savbav))")))
+  if (g_str_equal (signal_name, "Changed") &&
+      g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(asa{sb}a{sv}a{s(bgav)})")))
     {
-      RemoteActionInfo *info;
-      GVariantIter *iter;
+      /* Removes */
+      {
+        GVariantIter *iter;
+        const gchar *name;
 
-      g_variant_get_child (parameters, 0, "a(savbav)", &iter);
+        g_variant_get_child (parameters, 0, "as", &iter);
+        while (g_variant_iter_next (iter, "&s", &name))
+          {
+            if (g_hash_table_lookup (impl->actions, name))
+              {
+                g_hash_table_remove (impl->actions, name);
+                g_action_group_action_removed (action_group, name);
+              }
+          }
+        g_variant_iter_free (iter);
+      }
 
-      while ((info = remote_action_info_new_from_iter (iter)))
-        {
-          g_hash_table_replace (impl->actions, info->name, info);
-          g_action_group_action_added (action_group, info->name);
-        }
+      /* Enable changes */
+      {
+        GVariantIter *iter;
+        const gchar *name;
+        gboolean enabled;
 
-      g_variant_iter_free (iter);
-    }
+        g_variant_get_child (parameters, 1, "a{sb}", &iter);
+        while (g_variant_iter_next (iter, "{&sb}", &name, &enabled))
+          {
+            RemoteActionInfo *info;
 
-  else if (strcmp (signal_name, "Removed") == 0 &&
-           g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(as)")))
-    {
-      GVariantIter *iter;
-      const gchar *name;
+            info = g_hash_table_lookup (impl->actions, name);
 
-      g_variant_get_child (parameters, 0, "as", &iter);
-      while (g_variant_iter_next (iter, "&s", &name))
-        if (g_hash_table_remove (impl->actions, name))
-          g_action_group_action_removed (action_group, name);
-      g_variant_iter_free (iter);
-    }
+            if (info && info->enabled != enabled)
+              {
+                info->enabled = enabled;
+                g_action_group_action_enabled_changed (action_group,
+                                                       name, enabled);
+              }
+          }
+        g_variant_iter_free (iter);
+      }
 
-  else if (strcmp (signal_name, "EnabledChanged") == 0 &&
-           g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sb)")))
-    {
-      RemoteActionInfo *info;
-      const gchar *name;
-      gboolean enabled;
+      /* State changes */
+      {
+        GVariantIter *iter;
+        const gchar *name;
+        GVariant *state;
 
-      g_variant_get (parameters, "(&sb)", &name, &enabled);
-      info = g_hash_table_lookup (impl->actions, name);
+        g_variant_get_child (parameters, 2, "a{sv}", &iter);
+        while (g_variant_iter_next (iter, "{&sv}", &name, &state))
+          {
+            RemoteActionInfo *info;
 
-      if (info && enabled != info->enabled)
-        {
-          info->enabled = enabled;
-          g_action_group_action_enabled_changed (action_group,
-                                                 info->name,
-                                                 enabled);
-        }
-    }
+            info = g_hash_table_lookup (impl->actions, name);
 
-  else if (strcmp (signal_name, "StateChanged") == 0 &&
-           g_variant_is_of_type (parameters, G_VARIANT_TYPE ("(sv)")))
-    {
-      RemoteActionInfo *info;
-      const gchar *name;
-      GVariant *state;
+            if (info && info->state && !g_variant_equal (state, info->state) &&
+                g_variant_is_of_type (state, g_variant_get_type (info->state)))
+              {
+                g_variant_unref (info->state);
+                info->state = g_variant_ref (state);
 
-      g_variant_get (parameters, "(&sv)", &name, &state);
-      info = g_hash_table_lookup (impl->actions, name);
+                g_action_group_action_state_changed (action_group, name, state);
+              }
 
-      if (info && info->state &&
-          g_variant_is_of_type (state, g_variant_get_type (info->state)) &&
-          !g_variant_equal (state, info->state))
-        {
-          g_variant_unref (info->state);
-          info->state = g_variant_ref (state);
-          g_action_group_action_state_changed (action_group,
-                                               info->name,
-                                               state);
-        }
-      g_variant_unref (state);
+            g_variant_unref (state);
+          }
+        g_variant_iter_free (iter);
+      }
+
+      /* Additions */
+      {
+        RemoteActionInfo *info;
+        GVariantIter *iter;
+
+        g_variant_get_child (parameters, 3, "a{s(bgav)}", &iter);
+        while ((info = remote_action_info_new_from_iter (iter)))
+          {
+            if (!g_hash_table_lookup (impl->actions, info->name))
+              g_hash_table_replace (impl->actions, info->name, info);
+            else
+              remote_action_info_free (info);
+          }
+      }
     }
 }
 
@@ -556,7 +569,7 @@ g_application_impl_register (GApplication       *application,
   reply = g_dbus_connection_call_sync (impl->session_bus, impl->bus_name,
                                        impl->object_path, "org.gtk.Actions",
                                        "DescribeAll", NULL,
-                                       G_VARIANT_TYPE ("(a(savbav))"),
+                                       G_VARIANT_TYPE ("(a{s(bgav)})"),
                                        G_DBUS_CALL_FLAGS_NONE, -1,
                                        cancellable, error);
 
@@ -578,16 +591,18 @@ g_application_impl_register (GApplication       *application,
     GVariant *descriptions;
     GVariantIter iter;
 
-    *remote_actions = g_hash_table_new (g_str_hash, g_str_equal);
+    impl->actions = g_hash_table_new_full (g_str_hash, g_str_equal,
+                                           NULL, remote_action_info_free);
     descriptions = g_variant_get_child_value (reply, 0);
     g_variant_iter_init (&iter, descriptions);
 
     while ((info = remote_action_info_new_from_iter (&iter)))
-      g_hash_table_insert (*remote_actions, info->name, info);
+      g_hash_table_replace (impl->actions, info->name, info);
 
     g_variant_unref (descriptions);
-  }
 
+    *remote_actions = impl->actions;
+  }
 
   return impl;
 }
