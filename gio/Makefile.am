@@ -129,6 +129,7 @@ application_headers = \
 	gsimpleactiongroup.h		\
 	gaction.h			\
 	gsimpleaction.h			\
+	gdbusactiongroup.h		\
 	gactiongroupexporter.h		\
 	gapplicationcommandline.h	\
 	gapplication.h
@@ -138,6 +139,7 @@ application_sources = \
 	gsimpleactiongroup.c			\
 	gaction.c				\
 	gsimpleaction.c				\
+	gdbusactiongroup.c			\
 	gactiongroupexporter.c			\
 	gapplicationcommandline.c		\
 	gapplicationimpl.h			\

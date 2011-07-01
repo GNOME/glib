@@ -1473,6 +1473,7 @@ typedef enum
 } GDBusObjectManagerClientFlags;
 
 /**
+<<<<<<< HEAD
  * GTlsDatabaseVerifyFlags:
  * @G_TLS_DATABASE_VERIFY_NONE: No verification flags
  *
@@ -1515,6 +1516,25 @@ typedef enum {
   G_IO_MODULE_SCOPE_NONE,
   G_IO_MODULE_SCOPE_BLOCK_DUPLICATES
 } GIOModuleScopeFlags;
+
+/* GDBusActionGroupFlags:
+ * @G_DBUS_ACTION_GROUP_FLAGS_NONE: No flags set.
+ * @G_DBUS_ACTION_GROUP_FLAGS_DO_NOT_POPULATE: Do not make the initial
+ *   D-Bus call to populate the set of actions in the group.  Instead,
+ *   actions can be added using g_dbus_action_group_inject().  Changes
+ *   are still monitored.
+ * @G_DBUS_ACTION_GROUP_FLAGS_DO_NOT_WATCH: Don't watch for changes.
+ *
+ * Flags used when constructing a #GDBusActionGroup.
+ *
+ * Since: 2.30
+ **/
+typedef enum
+{
+  G_DBUS_ACTION_GROUP_FLAGS_NONE            = 0,
+  G_DBUS_ACTION_GROUP_FLAGS_DO_NOT_POPULATE = (1<<0),
+  G_DBUS_ACTION_GROUP_FLAGS_DO_NOT_WATCH    = (1<<1)
+} GDBusActionGroupFlags;
 
 G_END_DECLS
 

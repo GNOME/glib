@@ -145,6 +145,7 @@
 #include <gio/gdbusobjectmanager.h>
 #include <gio/gdbusobjectmanagerclient.h>
 #include <gio/gdbusobjectmanagerserver.h>
+#include <gio/gdbusactiongroup.h>
 
 #undef __GIO_GIO_H_INSIDE__
 
