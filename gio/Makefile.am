@@ -623,7 +623,7 @@ gdbus_LDADD = libgio-2.0.la \
 	$(top_builddir)/gobject/libgobject-2.0.la
 
 completiondir = $(sysconfdir)/bash_completion.d
-completion_SCRIPTS = \
+completion_DATA = \
 	gdbus-bash-completion.sh		\
 	gsettings-bash-completion.sh
 EXTRA_DIST += $(completion_SCRIPTS)
