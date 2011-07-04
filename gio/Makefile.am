@@ -627,7 +627,7 @@ completiondir = $(sysconfdir)/bash_completion.d
 completion_DATA = \
 	gdbus-bash-completion.sh		\
 	gsettings-bash-completion.sh
-EXTRA_DIST += $(completion_SCRIPTS)
+EXTRA_DIST += $(completion_DATA)
 
 # ------------------------------------------------------------------------
 
