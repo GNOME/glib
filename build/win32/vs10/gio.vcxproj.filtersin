@@ -16,27 +16,6 @@
   </ItemGroup>
   <ItemGroup>
 #include "libgio.vs10.sourcefiles.filters"
-    <ClCompile Include="..\..\..\gio\gregistrysettingsbackend.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gio\gwin32appinfo.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gio\win32\gwin32directorymonitor.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gio\win32\gwinhttpfile.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gio\win32\gwinhttpfileinputstream.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gio\win32\gwinhttpfileoutputstream.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\gio\win32\gwinhttpvfs.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\..\gio\gio.rc">

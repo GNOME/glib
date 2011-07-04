@@ -175,13 +175,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
 #include "libgio.vs10.sourcefiles"
-    <ClCompile Include="..\..\..\gio\gregistrysettingsbackend.c" />
-    <ClCompile Include="..\..\..\gio\gwin32appinfo.c" />
-    <ClCompile Include="..\..\..\gio\win32\gwin32directorymonitor.c" />
-    <ClCompile Include="..\..\..\gio\win32\gwinhttpfile.c" />
-    <ClCompile Include="..\..\..\gio\win32\gwinhttpfileinputstream.c" />
-    <ClCompile Include="..\..\..\gio\win32\gwinhttpfileoutputstream.c" />
-    <ClCompile Include="..\..\..\gio\win32\gwinhttpvfs.c" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\..\gio\gio.rc" />
