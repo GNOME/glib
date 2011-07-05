@@ -1479,17 +1479,19 @@ test_child_schema (void)
 static gboolean
 glib_translations_work (void)
 {
+  gboolean works;
   gchar *locale;
   gchar *orig = "Unnamed";
-  gchar *str;
 
   locale = g_strdup (setlocale (LC_MESSAGES, NULL));
-  setlocale (LC_MESSAGES, "de");
-  str = dgettext ("glib20", orig);
+  if (!setlocale (LC_MESSAGES, "de"))
+    works = FALSE;
+  else
+    works = dgettext ("glib20", orig) != orig;
   setlocale (LC_MESSAGES, locale);
   g_free (locale);
 
-  return str != orig;
+  return works;
 }
 
 #include "../strinfo.c"
