@@ -1,3 +1,44 @@
+Overview of changes from GLib 2.29.8 to 2.29.10
+===============================================
+
+* New features:
+ - g_desktop_app_info_get_nodisplay: a function that is required
+   to port gnome-menus to GDesktopAppInfo
+ - g_hash_Table_iter_replace: new function to replace a value
+   while iterating over a hash table
+ - g_utf8_substring: convenience API to extract substrings from
+   UTF-8 strings
+ - g_action_group_add_entries: convenience API for creating lots
+   of actions quickly
+ - Use eventfd instead of pipes for waking up main contexts and
+   for cancellation when available
+ - GMatchInfo is now a refcounted boxed type
+
+* API changes in GAction:
+ - the 'set_state' entry in the GActionInterface vtable has been
+   renamed to 'change_state
+ - g_action_set_state has been renamed to g_action_change_state
+ - the 'state' property has been changed to read-only
+ - GSimpleAction can no longer be subclassed
+
+* Bug fixes
+ 647796 g_variant_new_variant is not marked as constructor
+ 652072 gmain: make use of signalfd()
+ 652168 Crosscompiling Fails if build<=2.24 and host >2.24
+ 652750 make dist fails
+ 652758 GDataInputStream: Clarify g_data_input_stream_read_line docs...
+ 652822 Add a g_hash_table_iter_replace
+ 652897 tiny docs clarification for g_utf8_to_ucs4_fast
+ 653140 gmain: use Linux eventfd() for main context wake up
+ 653429 drop AM_MAINTAINER_MODE or enable it by default
+ 653484 GAsyncCallbacks should default to allow-none
+        Add missing fundamental types to the generic marshaller
+
+* Translation updates
+ Belarusian
+ Galician
+ Russian
+
 Overview of changes from GLib 2.29.6 to 2.29.8
 ==============================================
 
