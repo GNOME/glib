@@ -40,6 +40,18 @@ G_BEGIN_DECLS
 typedef struct _GString		GString;
 typedef struct _GStringChunk	GStringChunk;
 
+/**
+ * GString:
+ * @str: points to the character data. It may move as text is added.
+ *   The @str field is null-terminated and so
+ *   can be used as an ordinary C string.
+ * @len: contains the length of the string, not including the
+ *   terminating nul byte.
+ * @allocated_len: the number of bytes that can be stored in the
+ *   string before it needs to be reallocated. May be larger than @len.
+ *
+ * The #GString struct contains the public fields of a #GString.
+ */
 struct _GString
 {
   gchar  *str;

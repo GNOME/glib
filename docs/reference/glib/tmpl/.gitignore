@@ -34,6 +34,7 @@ random_numbers.sgml
 relations.sgml
 sequence.sgml
 shell.sgml
+spawn.sgml
 string_chunks.sgml
 thread_pools.sgml
 threads.sgml

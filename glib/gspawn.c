@@ -51,6 +51,15 @@
 #include "gutils.h"
 #include "glibintl.h"
 
+
+/**
+ * SECTION:spawn
+ * @Short_description: process launching
+ * @Title: Spawning Processes
+ */
+
+
+
 static gint g_execute (const gchar  *file,
                        gchar **argv,
                        gchar **envp,
