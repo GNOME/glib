@@ -8,7 +8,7 @@ AM_CPPFLAGS = 				\
 	-DG_DISABLE_DEPRECATED
 
 gmodule.def: gmodule.symbols
-	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P - <$(srcdir)/gmodule.symbols | sed -e '/^$$/d' -e 's/^/	/') > gmodule.def
+	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P - <$(srcdir)/gmodule.symbols | sed -e '/^$$/d' -e 's/^/	/') > gmodule.def
 
 EXTRA_DIST +=				\
 		makefile.msc.in 	\

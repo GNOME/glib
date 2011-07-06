@@ -56,7 +56,7 @@ AM_CPPFLAGS = 				\
 	-DPCRE_STATIC
 
 glib.def: glib.symbols
-	$(AM_V_GEN) (echo -e EXPORTS; $(CPP) -P -DG_OS_WIN32 - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/') > glib.def
+	$(AM_V_GEN) (echo EXPORTS; $(CPP) -P -DG_OS_WIN32 - <$(srcdir)/glib.symbols | sed -e '/^$$/d' -e 's/^/	/') > glib.def
 
 if OS_LINUX
 if HAVE_GNUC_VISIBILITY
