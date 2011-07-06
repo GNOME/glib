@@ -5,5 +5,4 @@ SUBDIRS = 	\
 
 EXTRA_DIST = 		\
 	make.msc 	\
-	module.defs \
-	setup.py
+	module.defs
