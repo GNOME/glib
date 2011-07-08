@@ -286,7 +286,7 @@ See the GNU C documentation for details.
 
 @f: the intended replacement for the deprecated symbol, such as the name of a
     function
-@Since: 2.25.3
+@Since: 2.26
 
 
 <!-- ##### MACRO G_GNUC_NORETURN ##### -->
