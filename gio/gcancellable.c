@@ -249,9 +249,11 @@ g_cancellable_open_pipe (GCancellable *cancellable)
 	g_cancellable_write_cancelled (cancellable);
       return;
     }
-  else if (errno != ENOSYS)
-    return;
-  /* Fall through on ENOSYS */
+  else if (!(errno == ENOSYS || errno == EINVAL))
+    {
+      return;
+    }
+  /* Fall through on ENOSYS or EINVAL */
 #endif
   if (g_unix_open_pipe (priv->cancel_pipe, FD_CLOEXEC, NULL))
     {
