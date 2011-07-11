@@ -44,7 +44,7 @@ content_files =				\
 	gvariant-text.xml
 
 # Extra options to supply to gtkdoc-fixref
-FIXXREF_OPTIONS=
+FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../gobject/html --extra-dir=$(srcdir)/../gio/html
 
 # include common portion ...
 include $(top_srcdir)/gtk-doc.make

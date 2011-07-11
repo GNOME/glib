@@ -67,6 +67,9 @@ extra_files =			\
 	version.xml.in		\
 	gvfs-overview.odg
 
+# Extra options to supply to gtkdoc-fixref
+FIXXREF_OPTIONS=--extra-dir=$(srcdir)/../glib/html --extra-dir=$(srcdir)/../gobject/html
+
 include $(top_srcdir)/gtk-doc.make
 
 EXTRA_DIST +=			\
