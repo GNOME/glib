@@ -144,7 +144,7 @@ large_message_on_name_appeared (GDBusConnection *connection,
                                         g_variant_new ("(s)", request), /* parameters */
                                         G_VARIANT_TYPE ("(s)"),         /* return type */
                                         G_DBUS_CALL_FLAGS_NONE,
-                                        -1,
+                                        G_MAXINT,
                                         NULL,
                                         &error);
   g_assert_no_error (error);
