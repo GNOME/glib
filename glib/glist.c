@@ -212,10 +212,15 @@ g_list_free_1 (GList *list)
  */
 void
 g_list_free_full (GList          *list,
-		  GDestroyNotify  free_func)
+                  GDestroyNotify  free_func)
 {
-  g_list_foreach (list, (GFunc) free_func, NULL);
-  g_list_free (list);
+  while (list)
+    {
+      GList *next = list->next;
+      (*free_func) (list->data);
+      _g_list_free1 (list);
+      list = next;
+    }
 }
 
 /**
