@@ -2604,8 +2604,7 @@ g_settings_binding_property_changed (GObject          *object,
   if ((variant = binding->set_mapping (&value, binding->info.type,
                                        binding->user_data)))
     {
-      if (g_variant_is_floating (variant))
-        g_variant_ref_sink (variant);
+      g_variant_take_ref (variant);
 
       if (!g_settings_type_check (&binding->info, variant))
         {

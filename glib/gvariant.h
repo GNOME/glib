@@ -60,6 +60,7 @@ void                            g_variant_unref                         (GVarian
 GVariant *                      g_variant_ref                           (GVariant             *value);
 GVariant *                      g_variant_ref_sink                      (GVariant             *value);
 gboolean                        g_variant_is_floating                   (GVariant             *value);
+GVariant *                      g_variant_take_ref                      (GVariant             *value);
 
 const GVariantType *            g_variant_get_type                      (GVariant             *value);
 const gchar *                   g_variant_get_type_string               (GVariant             *value);

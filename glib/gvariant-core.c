@@ -697,6 +697,54 @@ g_variant_ref_sink (GVariant *value)
 }
 
 /**
+ * g_variant_take_ref:
+ * @value: a #GVariant
+ * @returns: the same @value
+ *
+ * If @value is floating, sink it.  Otherwise, do nothing.
+ *
+ * Typically you want to use g_variant_ref_sink() in order to
+ * automatically do the correct thing with respect to floating or
+ * non-floating references, but there is one specific scenario where
+ * this function is helpful.
+ *
+ * The situation where this function is helpful is when creating an API
+ * that allows the user to provide a callback function that returns a
+ * #GVariant.  We certainly want to allow the user the flexibility to
+ * return a non-floating reference from this callback (for the case
+ * where the value that is being returned already exists).
+ *
+ * At the same time, the style of the #GVariant API makes it likely that
+ * for newly-created #GVariant instances, the user can be saved some
+ * typing if they are allowed to return a #GVariant with a floating
+ * reference.
+ *
+ * Using this function on the return value of the user's callback allows
+ * the user to do whichever is more convenient for them.  The caller
+ * will alway receives exactly one full reference to the value: either
+ * the one that was returned in the first place, or a floating reference
+ * that has been converted to a full reference.
+ *
+ * This function has an odd interaction when combined with
+ * g_variant_ref_sink() running at the same time in another thread on
+ * the same #GVariant instance.  If g_variant_ref_sink() runs first then
+ * the result will be that the floating reference is converted to a hard
+ * reference.  If g_variant_take_ref() runs first then the result will
+ * be that the floating reference is converted to a hard reference and
+ * an additional reference on top of that one is added.  It is best to
+ * avoid this situation.
+ **/
+GVariant *
+g_variant_take_ref (GVariant *value)
+{
+  g_return_val_if_fail (value != NULL, NULL);
+
+  g_atomic_int_and (&value->state, ~STATE_FLOATING);
+
+  return value;
+}
+
+/**
  * g_variant_is_floating:
  * @value: a #GVariant
  * @returns: whether @value is floating
@@ -705,7 +753,8 @@ g_variant_ref_sink (GVariant *value)
  *
  * This function should only ever be used to assert that a given variant
  * is or is not floating, or for debug purposes. To acquire a reference
- * to a variant that might be floating, always use g_variant_ref_sink().
+ * to a variant that might be floating, always use g_variant_ref_sink()
+ * or g_variant_take_ref().
  *
  * See g_variant_ref_sink() for more information about floating reference
  * counts.
