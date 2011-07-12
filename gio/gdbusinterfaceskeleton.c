@@ -320,7 +320,7 @@ g_dbus_interface_skeleton_get_vtable (GDBusInterfaceSkeleton *interface_)
  *
  * Gets all D-Bus properties for @interface_.
  *
- * Returns: A new, floating, #GVariant of type <link linkend="G-VARIANT-TYPE-VARDICT:CAPS">'a{sv}'</link>. Free with g_variant_unref().
+ * Returns: (transfer full): A #GVariant of type <link linkend="G-VARIANT-TYPE-VARDICT:CAPS">'a{sv}'</link>. Free with g_variant_unref().
  *
  * Since: 2.30
  */
@@ -330,8 +330,7 @@ g_dbus_interface_skeleton_get_properties (GDBusInterfaceSkeleton *interface_)
   GVariant *ret;
   g_return_val_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_), NULL);
   ret = G_DBUS_INTERFACE_SKELETON_GET_CLASS (interface_)->get_properties (interface_);
-  g_warn_if_fail (g_variant_is_floating (ret));
-  return ret;
+  return g_variant_take_ref (ret);
 }
 
 /**

@@ -760,10 +760,11 @@ manager_method_call (GDBusConnection       *connection,
           g_hash_table_iter_init (&interface_iter, data->map_iface_name_to_iface);
           while (g_hash_table_iter_next (&interface_iter, NULL, (gpointer) &iface))
             {
-              g_variant_builder_add_value (&interfaces_builder,
-                                           g_variant_new ("{s@a{sv}}",
-                                                          g_dbus_interface_skeleton_get_info (iface)->name,
-                                                          g_dbus_interface_skeleton_get_properties (iface)));
+              GVariant *properties = g_dbus_interface_skeleton_get_properties (iface);
+              g_variant_builder_add (&interfaces_builder, "{s@a{sv}}",
+                                     g_dbus_interface_skeleton_get_info (iface)->name,
+                                     properties);
+              g_variant_unref (properties);
             }
           iter_object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (data->object));
           g_variant_builder_add (&array_builder,
@@ -824,12 +825,13 @@ g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *ma
   for (n = 0; interfaces[n] != NULL; n++)
     {
       GDBusInterfaceSkeleton *iface;
+      GVariant *properties;
+
       iface = g_hash_table_lookup (data->map_iface_name_to_iface, interfaces[n]);
       g_assert (iface != NULL);
-      g_variant_builder_add_value (&array_builder,
-                                   g_variant_new ("{s@a{sv}}",
-                                                  interfaces[n],
-                                                  g_dbus_interface_skeleton_get_properties (iface)));
+      properties = g_dbus_interface_skeleton_get_properties (iface);
+      g_variant_builder_add (&array_builder, "{s@a{sv}}", interfaces[n], properties);
+      g_variant_unref (properties);
     }
 
   error = NULL;

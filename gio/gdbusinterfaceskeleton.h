@@ -57,7 +57,7 @@ struct _GDBusInterfaceSkeleton
  * @parent_class: The parent class.
  * @get_info: Returns a #GDBusInterfaceInfo. See g_dbus_interface_skeleton_get_info() for details.
  * @get_vtable: Returns a #GDBusInterfaceVTable. See g_dbus_interface_skeleton_get_vtable() for details.
- * @get_properties: Returns a new, floating, #GVariant with all properties. See g_dbus_interface_skeleton_get_properties().
+ * @get_properties: Returns a #GVariant with all properties. See g_dbus_interface_skeleton_get_properties().
  * @flush: Emits outstanding changes, if any. See g_dbus_interface_skeleton_flush().
  * @g_authorize_method: Signal class handler for the #GDBusInterfaceSkeleton::g-authorize-method signal.
  *
