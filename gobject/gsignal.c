@@ -1288,8 +1288,8 @@ g_signal_query (guint         signal_id,
  *  not associate a class method slot with this signal.
  * @accumulator: the accumulator for this signal; may be %NULL.
  * @accu_data: user data for the @accumulator.
- * @c_marshaller: the function to translate arrays of parameter values to
- *  signal emissions into C language callback invocations.
+ * @c_marshaller: (allow-none): the function to translate arrays of parameter
+ *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
  *  without a return value.
  * @n_params: the number of parameter types to follow.
@@ -1309,6 +1309,9 @@ g_signal_query (guint         signal_id,
  * in their <code>class_init</code> method by doing
  * <code>super_class->signal_handler = my_signal_handler</code>. Instead they
  * will have to use g_signal_override_class_handler().
+ *
+ * If c_marshaller is %NULL @g_cclosure_marshal_generic will be used as
+ * the marshaller for this signal.
  *
  * Returns: the signal id
  */
@@ -1367,8 +1370,8 @@ g_signal_new (const gchar	 *signal_name,
  *  not associate a class method with this signal.
  * @accumulator: the accumulator for this signal; may be %NULL.
  * @accu_data: user data for the @accumulator.
- * @c_marshaller: the function to translate arrays of parameter values to
- *  signal emissions into C language callback invocations.
+ * @c_marshaller: (allow-none): the function to translate arrays of parameter
+ *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
  *  without a return value.
  * @n_params: the number of parameter types to follow.
@@ -1387,6 +1390,9 @@ g_signal_new (const gchar	 *signal_name,
  * g_signal_chain_from_overridden_handler().
  *
  * See g_signal_new() for information about signal names.
+ *
+ * If c_marshaller is %NULL @g_cclosure_marshal_generic will be used as
+ * the marshaller for this signal.
  *
  * Returns: the signal id
  *
@@ -1496,8 +1502,9 @@ signal_add_class_closure (SignalNode *node,
  * @class_closure: The closure to invoke on signal emission; may be %NULL
  * @accumulator: the accumulator for this signal; may be %NULL
  * @accu_data: user data for the @accumulator
- * @c_marshaller: the function to translate arrays of parameter values to
- *     signal emissions into C language callback invocations
+ * @c_marshaller: (allow-none): the function to translate arrays of
+ *     parameter values to signal emissions into C language callback
+ *     invocations or %NULL
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
  *     without a return value
  * @n_params: the length of @param_types
@@ -1506,6 +1513,9 @@ signal_add_class_closure (SignalNode *node,
  * Creates a new signal. (This is usually done in the class initializer.)
  *
  * See g_signal_new() for details on allowed signal names.
+ *
+ * If c_marshaller is %NULL @g_cclosure_marshal_generic will be used as
+ * the marshaller for this signal.
  *
  * Returns: the signal id
  */
@@ -1629,6 +1639,8 @@ g_signal_newv (const gchar       *signal_name,
     }
   else
     node->accumulator = NULL;
+  if (c_marshaller == NULL)
+      c_marshaller = g_cclosure_marshal_generic;
   node->c_marshaller = c_marshaller;
   node->emission_hooks = NULL;
   if (class_closure)
@@ -1658,8 +1670,8 @@ g_signal_newv (const gchar       *signal_name,
  * @class_closure: The closure to invoke on signal emission; may be %NULL.
  * @accumulator: the accumulator for this signal; may be %NULL.
  * @accu_data: user data for the @accumulator.
- * @c_marshaller: the function to translate arrays of parameter values to
- *  signal emissions into C language callback invocations.
+ * @c_marshaller: (allow-none): the function to translate arrays of parameter
+ *  values to signal emissions into C language callback invocations or %NULL.
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
  *  without a return value.
  * @n_params: the number of parameter types in @args.
@@ -1668,6 +1680,9 @@ g_signal_newv (const gchar       *signal_name,
  * Creates a new signal. (This is usually done in the class initializer.)
  *
  * See g_signal_new() for details on allowed signal names.
+ *
+ * If c_marshaller is %NULL @g_cclosure_marshal_generic will be used as
+ * the marshaller for this signal.
  *
  * Returns: the signal id
  */
