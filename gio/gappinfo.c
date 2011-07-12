@@ -579,12 +579,12 @@ g_app_info_supports_files (GAppInfo *appinfo)
  * @launch_context: (allow-none): a #GAppLaunchContext or %NULL
  * @error: a #GError
  * 
- * Launches the application. Passes @uris to the launched application
+ * Launches the application. This passes the @uris to the launched application
  * as arguments, using the optional @launch_context to get information
  * about the details of the launcher (like what screen it is on).
  * On error, @error will be set accordingly.
  *
- * To lauch the application without arguments pass a %NULL @uris list.
+ * To launch the application without arguments pass a %NULL @uris list.
  *
  * Note that even if the launch is successful the application launched
  * can fail to start if it runs into problems during startup. There is
