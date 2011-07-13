@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-07-13 23:33+0300\n"
-"PO-Revision-Date: 2011-07-13 23:32+0300\n"
+"PO-Revision-Date: 2011-07-13 23:36+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -127,7 +127,7 @@ msgstr "\"%s\" не з'яўляецца абсалютным адрасам фа
 #: ../glib/gconvert.c:1896
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
-msgstr "Адрас мясцовага файла \"%s\" не можа ўтрымліваць знак \"#\""
+msgstr "Адрас мясцовага файла \"%s\" не можа змяшчаць знак \"#\""
 
 #: ../glib/gconvert.c:1913
 #, c-format
@@ -463,12 +463,12 @@ msgstr "Не ўдалося сцерці наяўны файл \"%s\": памы�
 #: ../glib/gfileutils.c:1353
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
-msgstr "Шаблон \"%s\" хібны, бо ўтрымлівае \"%s\""
+msgstr "Шаблон \"%s\" хібны, бо змяшчае \"%s\""
 
 #: ../glib/gfileutils.c:1366
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
-msgstr "Шаблон \"%s\" не ўтрымлівае XXXXXX"
+msgstr "Шаблон \"%s\" не змяшчае XXXXXX"
 
 #: ../glib/gfileutils.c:1799
 #, c-format
@@ -916,7 +916,7 @@ msgstr "пасля \"(?(\" змешчаны хібны лік ці назва"
 
 #: ../glib/gregex.c:341
 msgid "conditional group contains more than two branches"
-msgstr "умоўная група ўтрымлівае больш за дзве галіны"
+msgstr "умоўная група змяшчае больш за дзве галіны"
 
 #: ../glib/gregex.c:344
 msgid "assertion expected after (?("
@@ -1487,7 +1487,7 @@ msgstr "Памылка ў адрасе \"%s\": хібны атрыбут пра�
 #: ../gio/gdbusaddress.c:446
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
-msgstr "Элемент адрасу \"%s\" не ўтрымлівае двукроп'я (:)"
+msgstr "Элемент адрасу \"%s\" не змяшчае двукроп'я (:)"
 
 #: ../gio/gdbusaddress.c:467
 #, c-format
@@ -1495,7 +1495,7 @@ msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr ""
-"Пара ключ-значэнне %d, \"%s\", у элеменце адрасу \"%s\", не ўтрымлівае знака "
+"Пара ключ-значэнне %d, \"%s\", у элеменце адрасу \"%s\", не змяшчае знака "
 "роўнасці"
 
 #: ../gio/gdbusaddress.c:481
@@ -2396,7 +2396,7 @@ msgstr "Функцыі сметніцы не падтрымліваюцца"
 #: ../gio/gfile.c:3626
 #, c-format
 msgid "File names cannot contain '%c'"
-msgstr "Назвы файлаў не павінны ўтрымліваць \"%c\""
+msgstr "Назвы файлаў не павінны змяшчаць \"%c\""
 
 #: ../gio/gfile.c:6003 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
@@ -3227,7 +3227,7 @@ msgstr "Сцежка мусіць канчацца скосам (\"/\")\n"
 #: ../gio/gsettings-tool.c:110
 #, c-format
 msgid "Path must not contain two adjacent slashes (//)\n"
-msgstr "Сцежка не можа ўтрымліваць два паслядоўныя скосы (\"//\")\n"
+msgstr "Сцежка не можа змяшчаць два паслядоўныя скосы (\"//\")\n"
 
 #: ../gio/gsettings-tool.c:131
 #, c-format
