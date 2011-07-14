@@ -279,6 +279,13 @@ GUnicodeBreakType g_unichar_break_type (gunichar c) G_GNUC_CONST;
 /* Returns the combining class for a given character */
 gint g_unichar_combining_class (gunichar uc) G_GNUC_CONST;
 
+gboolean g_unichar_get_mirror_char (gunichar ch,
+                                    gunichar *mirrored_ch);
+
+GUnicodeScript g_unichar_get_script (gunichar ch) G_GNUC_CONST;
+
+/* Validate a Unicode character */
+gboolean g_unichar_validate (gunichar ch) G_GNUC_CONST;
 
 /* Pairwise canonical compose/decompose */
 gboolean g_unichar_compose (gunichar  a,
@@ -300,6 +307,7 @@ void g_unicode_canonical_ordering (gunichar *string,
    length of the string.  */
 gunichar *g_unicode_canonical_decomposition (gunichar  ch,
 					     gsize    *result_len) G_GNUC_MALLOC;
+
 
 /* Array of skip-bytes-per-initial character.
  */
@@ -393,9 +401,6 @@ gboolean g_utf8_validate (const gchar  *str,
                           gssize        max_len,  
                           const gchar **end);
 
-/* Validate a Unicode character */
-gboolean g_unichar_validate (gunichar ch) G_GNUC_CONST;
-
 gchar *g_utf8_strup   (const gchar *str,
 		       gssize       len) G_GNUC_MALLOC;
 gchar *g_utf8_strdown (const gchar *str,
@@ -424,11 +429,6 @@ gchar *g_utf8_collate_key (const gchar *str,
 			   gssize       len) G_GNUC_MALLOC;
 gchar *g_utf8_collate_key_for_filename (const gchar *str,
 			                gssize       len) G_GNUC_MALLOC;
-
-gboolean g_unichar_get_mirror_char (gunichar ch,
-                                    gunichar *mirrored_ch);
-
-GUnicodeScript g_unichar_get_script (gunichar ch) G_GNUC_CONST;
 
 
 /* private */
