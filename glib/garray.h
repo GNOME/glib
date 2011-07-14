@@ -112,6 +112,8 @@ void    g_array_sort_with_data    (GArray           *array,
 GPtrArray* g_ptr_array_new                (void);
 GPtrArray* g_ptr_array_new_with_free_func (GDestroyNotify    element_free_func);
 GPtrArray* g_ptr_array_sized_new          (guint             reserved_size);
+GPtrArray* g_ptr_array_new_full           (guint             reserved_size,
+					   GDestroyNotify    element_free_func);
 gpointer*  g_ptr_array_free               (GPtrArray        *array,
 					   gboolean          free_seg);
 GPtrArray* g_ptr_array_ref                (GPtrArray        *array);
