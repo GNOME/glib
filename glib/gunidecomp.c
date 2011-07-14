@@ -568,44 +568,6 @@ decompose_hangul_step (gunichar  ch,
   return TRUE;
 }
 
-static gboolean
-compose_hangul_step (gunichar a,
-                     gunichar b,
-                     gunichar *ch)
-{
-  gint LIndex, SIndex;
-
-  /* first try L,V -> LV */
-  LIndex = a - LBase;
-  if (0 <= LIndex && LIndex < LCount)
-    {
-      gint VIndex;
-
-      VIndex = b - VBase;
-      if (0 <= VIndex && VIndex < VCount)
-        {
-          *ch = SBase + (LIndex * VCount + VIndex) * TCount;
-          return TRUE;
-        }
-    }
-
-  /* next try LV,T -> LVT */
-  SIndex = a - SBase;
-  if (0 <= SIndex && SIndex < SCount && (SIndex % TCount) == 0)
-    {
-      gint TIndex;
-
-      TIndex = b - TBase;
-      if (0 < TIndex && TIndex < TCount)
-        {
-          *ch = a + TIndex;
-          return TRUE;
-        }
-    }
-
-  return FALSE;
-}
-
 /**
  * g_unichar_decompose:
  * @ch: a Unicode character
@@ -650,6 +612,7 @@ g_unichar_decompose (gunichar  ch,
   if (decompose_hangul_step (ch, a, b))
     return TRUE;
 
+  /* TODO use bsearch() */
   if (ch >= decomp_step_table[start].ch &&
       ch <= decomp_step_table[end - 1].ch)
     {
@@ -709,34 +672,9 @@ g_unichar_compose (gunichar  a,
                    gunichar  b,
                    gunichar *ch)
 {
-  gint start = 0;
-  gint end = G_N_ELEMENTS (comp_step_table);
-
-  if (compose_hangul_step (a, b, ch))
+  if (combine (a, b, ch))
     return TRUE;
 
-  if (a >= comp_step_table[start].a &&
-      a <= comp_step_table[end - 1].a)
-    {
-      while (TRUE)
-        {
-          gint half = (start + end) / 2;
-          const decomposition_step *p = &(comp_step_table[half]);
-          if (a == p->a && b == p->b)
-            {
-              *ch = p->ch;
-              return TRUE;
-            }
-          else if (half == start)
-            break;
-          else if (a > p->a || (a == p->a && b > p->b))
-            start = half;
-          else
-            end = half;
-        }
-    }
-
   *ch = 0;
-
   return FALSE;
 }

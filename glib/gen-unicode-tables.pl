@@ -876,6 +876,7 @@ sub print_decomp
     print OUT "  gunichar b;\n";
     print OUT "} decomposition_step;\n\n";
 
+    # There's lots of room to optimize the following table...
     print OUT "static const decomposition_step decomp_step_table[] =\n{\n";
     $first = 1;
     my @steps = ();
@@ -893,20 +894,6 @@ sub print_decomp
             push @steps, [ ($count, hex($list[0]), hex($list[1])) ]
                 if hex($list[1])
         }
-    }
-    print OUT "\n};\n\n";
-
-    print OUT "static const decomposition_step comp_step_table[] =\n{\n";
-    my @inverted;
-    @inverted = sort {  @{$a}[1] <=> @{$b}[1] ||
-                        @{$a}[2] <=> @{$b}[2] } @steps;
-    $first = 1;
-    foreach my $i ( 0 .. $#inverted )
-    {
-        print OUT ",\n"
-            if ! $first;
-        $first = 0;
-        printf OUT qq(  { 0x%05x, 0x%05x, 0x%05x }), $inverted[$i][0], $inverted[$i][1], $inverted[$i][2];
     }
     print OUT "\n};\n\n";
 
