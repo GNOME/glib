@@ -1198,6 +1198,8 @@ g_tree_traverse
 g_unichar_break_type
 g_unicode_canonical_ordering
 g_unichar_combining_class
+g_unichar_compose
+g_unichar_decompose
 g_unichar_isalnum
 g_unichar_isalpha
 g_unichar_iscntrl

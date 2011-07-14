@@ -280,11 +280,20 @@ GUnicodeBreakType g_unichar_break_type (gunichar c) G_GNUC_CONST;
 gint g_unichar_combining_class (gunichar uc) G_GNUC_CONST;
 
 
+/* Pairwise canonical compose/decompose */
+gboolean g_unichar_compose (gunichar  a,
+			    gunichar  b,
+			    gunichar *ch);
+gboolean g_unichar_decompose (gunichar  ch,
+			      gunichar *a,
+			      gunichar *b);
+
 /* Compute canonical ordering of a string in-place.  This rearranges
    decomposed characters in the string according to their combining
    classes.  See the Unicode manual for more information.  */
 void g_unicode_canonical_ordering (gunichar *string,
 				   gsize     len);
+
 
 /* Compute canonical decomposition of a character.  Returns g_malloc()d
    string of Unicode characters.  RESULT_LEN is set to the resulting

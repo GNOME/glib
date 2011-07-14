@@ -152,7 +152,7 @@ decompose_hangul (gunichar s,
           r[1] = V;
         }
 
-      if (T != TBase) 
+      if (T != TBase)
         {
           if (r)
             r[2] = T;
@@ -529,4 +529,191 @@ g_utf8_normalize (const gchar    *str,
   g_free (result_wc);
 
   return result;
+}
+
+static gboolean
+decompose_hangul_step (gunichar  ch,
+                       gunichar *a,
+                       gunichar *b)
+{
+  gint SIndex;
+  gunichar L, V, T;
+
+  SIndex = ch - SBase;
+
+  if (SIndex < 0 || SIndex >= SCount)
+    return FALSE;  /* not a hangul syllable */
+
+  L = LBase + SIndex / NCount;
+  V = VBase + (SIndex % NCount) / TCount;
+  T = TBase + SIndex % TCount;
+
+  if (T != TBase)
+    {
+      gint LIndex, VIndex;
+      gunichar LV;
+
+      /* split LVT -> LV,T */
+      LIndex = L - LBase;
+      VIndex = V - VBase;
+      LV = SBase + (LIndex * VCount + VIndex) * TCount;
+
+      *a = LV;
+      *b = T;
+    }
+  else
+    {
+      /* split LV -> L,V */
+      *a = L;
+      *b = V;
+    }
+
+  return TRUE;
+}
+
+static gboolean
+compose_hangul_step (gunichar a,
+                     gunichar b,
+                     gunichar *ch)
+{
+  gint LIndex, SIndex;
+
+  /* first try L,V -> LV */
+  LIndex = a - LBase;
+  if (0 <= LIndex && LIndex < LCount)
+    {
+      gint VIndex;
+
+      VIndex = b - VBase;
+      if (0 <= VIndex && VIndex < VCount)
+        {
+          *ch = SBase + (LIndex * VCount + VIndex) * TCount;
+          return TRUE;
+        }
+    }
+
+  /* next try LV,T -> LVT */
+  SIndex = a - SBase;
+  if (0 <= SIndex && SIndex < SCount && (SIndex % TCount) == 0)
+    {
+      gint TIndex;
+
+      TIndex = b - TBase;
+      if (0 < TIndex && TIndex < TCount)
+        {
+          *ch = a + TIndex;
+          return TRUE;
+        }
+    }
+
+  return FALSE;
+}
+
+/**
+ * g_unichar_decompose:
+ * @ch: a Unicode character
+ * @a: return location for the first component of @ch
+ * @b: return location for the second component of @ch
+ *
+ * Performs a single decomposition step of the
+ * Unicode character normalization algorithm.
+ *
+ * This function does not include compatibility
+ * decompositions. It does, however, include algorithmic
+ * Hangul Jamo decomposition, as well as 'singleton'
+ * decompositions which replace a character by a single
+ * other character. In this case, *@b will be set to zero.
+ *
+ * Returns: %TRUE if the character could be decomposed
+ *
+ * Since: 2.30
+ */
+gboolean
+g_unichar_decompose (gunichar  ch,
+                     gunichar *a,
+                     gunichar *b)
+{
+  gint start = 0;
+  gint end = G_N_ELEMENTS (decomp_step_table);
+
+  if (decompose_hangul_step (ch, a, b))
+    return TRUE;
+
+  if (ch >= decomp_step_table[start].ch &&
+      ch <= decomp_step_table[end - 1].ch)
+    {
+      while (TRUE)
+        {
+          gint half = (start + end) / 2;
+          const decomposition_step *p = &(decomp_step_table[half]);
+          if (ch == p->ch)
+            {
+              *a = p->a;
+              *b = p->b;
+              return TRUE;
+            }
+          else if (half == start)
+            break;
+          else if (ch > p->ch)
+            start = half;
+          else
+            end = half;
+        }
+    }
+
+  return FALSE;
+}
+
+/**
+ * g_unichar_compose:
+ * @a: a Unicode character
+ * @b: a Unicode character
+ * @ch: return location for the composed character
+ *
+ * Performs a single composition step of the
+ * Unicode character normalization algorithm.
+ *
+ * This function does not perform algorithmic composition
+ * for Hangul characters, and does not include compatibility
+ * compositions. It does, however, include 'singleton'
+ * compositions which replace a character by a single
+ * other character. To obtain these, pass zero for @b.
+ *
+ * Returns: %TRUE if the characters could be composed
+ *
+ * Since: 2.30
+ */
+gboolean
+g_unichar_compose (gunichar  a,
+                   gunichar  b,
+                   gunichar *ch)
+{
+  gint start = 0;
+  gint end = G_N_ELEMENTS (comp_step_table);
+
+  if (compose_hangul_step (a, b, ch))
+    return TRUE;
+
+  if (a >= comp_step_table[start].a &&
+      a <= comp_step_table[end - 1].a)
+    {
+      while (TRUE)
+        {
+          gint half = (start + end) / 2;
+          const decomposition_step *p = &(comp_step_table[half]);
+          if (a == p->a && b == p->b)
+            {
+              *ch = p->ch;
+              return TRUE;
+            }
+          else if (half == start)
+            break;
+          else if (a > p->a || (a == p->a && b > p->b))
+            start = half;
+          else
+            end = half;
+        }
+    }
+
+  return FALSE;
 }

@@ -2702,6 +2702,8 @@ g_unichar_tolower
 g_unichar_totitle
 g_unichar_digit_value
 g_unichar_xdigit_value
+g_unichar_compose
+g_unichar_decompose
 GUnicodeType
 g_unichar_type
 GUnicodeBreakType

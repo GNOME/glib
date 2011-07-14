@@ -870,6 +870,46 @@ sub print_decomp
 
     printf OUT "static const gchar decomp_expansion_string[] = %s;\n\n", $decomp_string;
 
+    print OUT "typedef struct\n{\n";
+    print OUT "  gunichar ch;\n";
+    print OUT "  gunichar a;\n";
+    print OUT "  gunichar b;\n";
+    print OUT "} decomposition_step;\n\n";
+
+    print OUT "static const decomposition_step decomp_step_table[] =\n{\n";
+    $first = 1;
+    my @steps = ();
+    for ($count = 0; $count <= $last; ++$count)
+    {
+        if ((defined $decompositions[$count]) && (!$decompose_compat[$count]))
+        {
+            print OUT ",\n"
+                if ! $first;
+            $first = 0;
+            my @list;
+            @list = (split(' ', $decompositions[$count]), "0");
+            printf OUT qq(  { 0x%05x, 0x%05x, 0x%05x }), $count, hex($list[0]), hex($list[1]);
+            # don't include 1:1 in the compose table
+            push @steps, [ ($count, hex($list[0]), hex($list[1])) ]
+                if hex($list[1])
+        }
+    }
+    print OUT "\n};\n\n";
+
+    print OUT "static const decomposition_step comp_step_table[] =\n{\n";
+    my @inverted;
+    @inverted = sort {  @{$a}[1] <=> @{$b}[1] ||
+                        @{$a}[2] <=> @{$b}[2] } @steps;
+    $first = 1;
+    foreach my $i ( 0 .. $#inverted )
+    {
+        print OUT ",\n"
+            if ! $first;
+        $first = 0;
+        printf OUT qq(  { 0x%05x, 0x%05x, 0x%05x }), $inverted[$i][0], $inverted[$i][1], $inverted[$i][2];
+    }
+    print OUT "\n};\n\n";
+
     print OUT "#endif /* DECOMP_H */\n";
 
     printf STDERR "Generated %d bytes in decomp tables\n", $bytes_out;
