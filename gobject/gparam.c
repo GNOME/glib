@@ -173,9 +173,6 @@ g_param_spec_finalize (GParamSpec *pspec)
 {
   g_datalist_clear (&pspec->qdata);
 
-  if (!(pspec->flags & G_PARAM_STATIC_NAME))
-    g_free (pspec->name);
-  
   if (!(pspec->flags & G_PARAM_STATIC_NICK))
     g_free (pspec->_nick);
 
@@ -274,6 +271,9 @@ g_param_spec_ref_sink (GParamSpec *pspec)
  * @pspec: a valid #GParamSpec
  *
  * Get the name of a #GParamSpec.
+ *
+ * The name is always an "interned" string (as per g_intern_string()).
+ * This allows for pointer-value comparisons.
  *
  * Returns: the name of @pspec.
  */
@@ -428,9 +428,15 @@ g_param_spec_internal (GType        param_type,
     }
   else
     {
-      pspec->name = g_strdup (name);
-      canonicalize_key (pspec->name);
-      g_intern_string (pspec->name);
+      if (is_canonical (name))
+        pspec->name = (gchar *) g_intern_string (name);
+      else
+        {
+          gchar *tmp = g_strdup (name);
+          canonicalize_key (tmp);
+          pspec->name = (gchar *) g_intern_string (tmp);
+          g_free (tmp);
+        }
     }
 
   if (flags & G_PARAM_STATIC_NICK)

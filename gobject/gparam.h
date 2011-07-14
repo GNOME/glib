@@ -193,7 +193,7 @@ typedef struct _GParamSpecPool  GParamSpecPool;
 /**
  * GParamSpec:
  * @g_type_instance: private #GTypeInstance portion
- * @name: name of this parameter
+ * @name: name of this parameter: always an interned string
  * @flags: #GParamFlags flags for this parameter
  * @value_type: the #GValue type for this parameter
  * @owner_type: #GType type that uses (introduces) this parameter
