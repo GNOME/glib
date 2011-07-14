@@ -525,6 +525,21 @@ test_canonical_decomposition (void)
   TEST2 (0xCE20, 0x110E, 0x1173);
 }
 
+static void
+test_decompose_tail (void)
+{
+  gunichar ch, a, b, c, d;
+
+  /* Test that whenever a char ch decomposes into a and b, b itself
+   * won't decompose any further. */
+
+  for (ch = 0; ch < 0x110000; ch++)
+    if (g_unichar_decompose (ch, &a, &b))
+      g_assert (!g_unichar_decompose (b, &c, &d));
+    else
+      g_assert (a == ch && b == 0);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -543,6 +558,7 @@ main (int   argc,
   g_test_add_func ("/unicode/compose", test_compose);
   g_test_add_func ("/unicode/decompose", test_decompose);
   g_test_add_func ("/unicode/canonical-decomposition", test_canonical_decomposition);
+  g_test_add_func ("/unicode/decompose-tail", test_decompose_tail);
 
   return g_test_run();
 }

@@ -625,6 +625,13 @@ compose_hangul_step (gunichar a,
  * If @ch is not decomposable, *@a is set to @ch and *@b
  * is set to zero.
  *
+ * Note that the way Unicode decomposition pairs are
+ * defined, it is guaranteed that @b would not decompose
+ * further, but @a may itself decompose.  To get the full
+ * canonical decomposition for @ch, one would need to
+ * recursively call this function on @a.  Or use
+ * g_unicode_canonical_decomposition().
+ *
  * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
  * for details.
  *
