@@ -616,13 +616,20 @@ compose_hangul_step (gunichar a,
  * @b: return location for the second component of @ch
  *
  * Performs a single decomposition step of the
- * Unicode character normalization algorithm.
+ * Unicode canonical decomposition algorithm.
  *
  * This function does not include compatibility
  * decompositions. It does, however, include algorithmic
  * Hangul Jamo decomposition, as well as 'singleton'
  * decompositions which replace a character by a single
- * other character. In this case, *@b will be set to zero.
+ * other character. In the case of singletons *@b will
+ * be set to zero.
+ *
+ * If @ch is not decomposable, *@a is set to @ch and *@b
+ * is set to zero.
+ *
+ * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
+ * for details.
  *
  * Returns: %TRUE if the character could be decomposed
  *
@@ -661,6 +668,9 @@ g_unichar_decompose (gunichar  ch,
         }
     }
 
+  *a = ch;
+  *b = 0;
+
   return FALSE;
 }
 
@@ -671,13 +681,20 @@ g_unichar_decompose (gunichar  ch,
  * @ch: return location for the composed character
  *
  * Performs a single composition step of the
- * Unicode character normalization algorithm.
+ * Unicode canonical composition algorithm.
  *
  * This function does not perform algorithmic composition
  * for Hangul characters, and does not include compatibility
  * compositions. It does, however, include 'singleton'
  * compositions which replace a character by a single
  * other character. To obtain these, pass zero for @b.
+ *
+ * This function includes algorithmic Hangul Jamo composition.
+ *
+ * If @a and @b do not compose a new character, @ch is set to zero.
+ *
+ * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
+ * for details.
  *
  * Returns: %TRUE if the characters could be composed
  *
@@ -714,6 +731,8 @@ g_unichar_compose (gunichar  a,
             end = half;
         }
     }
+
+  *ch = 0;
 
   return FALSE;
 }

@@ -436,7 +436,6 @@ test_title (void)
   g_assert (g_unichar_istitle (0x01c5));
   g_assert (g_unichar_istitle (0x1f88));
   g_assert (g_unichar_istitle (0x1fcc));
-  g_assert (!g_unichar_ismark ('a'));
 
   g_assert (g_unichar_totitle (0x01c6) == 0x01c5);
   g_assert (g_unichar_totitle (0x01c4) == 0x01c5);
@@ -529,6 +528,109 @@ test_wide (void)
     }
 };
 
+static void
+test_compose (void)
+{
+  gunichar ch;
+
+  /* Not composable */
+  g_assert (!g_unichar_compose (0x0041, 0x0042, &ch) && ch == 0);
+  g_assert (!g_unichar_compose (0x0041, 0, &ch) && ch == 0);
+  g_assert (!g_unichar_compose (0x0066, 0x0069, &ch) && ch == 0);
+
+  /* Singletons should not compose */
+  g_assert (!g_unichar_compose (0x212B, 0, &ch) && ch == 0);
+  g_assert (!g_unichar_compose (0x00C5, 0, &ch) && ch == 0);
+  g_assert (!g_unichar_compose (0x2126, 0, &ch) && ch == 0);
+  g_assert (!g_unichar_compose (0x03A9, 0, &ch) && ch == 0);
+
+  /* Pairs */
+  g_assert (g_unichar_compose (0x0041, 0x030A, &ch) && ch == 0x00C5);
+  g_assert (g_unichar_compose (0x006F, 0x0302, &ch) && ch == 0x00F4);
+  g_assert (g_unichar_compose (0x1E63, 0x0307, &ch) && ch == 0x1E69);
+  g_assert (g_unichar_compose (0x0073, 0x0323, &ch) && ch == 0x1E63);
+  g_assert (g_unichar_compose (0x0064, 0x0307, &ch) && ch == 0x1E0B);
+  g_assert (g_unichar_compose (0x0064, 0x0323, &ch) && ch == 0x1E0D);
+
+  /* Hangul */
+  g_assert (g_unichar_compose (0xD4CC, 0x11B6, &ch) && ch == 0xD4DB);
+  g_assert (g_unichar_compose (0x1111, 0x1171, &ch) && ch == 0xD4CC);
+  g_assert (g_unichar_compose (0xCE20, 0x11B8, &ch) && ch == 0xCE31);
+  g_assert (g_unichar_compose (0x110E, 0x1173, &ch) && ch == 0xCE20);
+}
+
+static void
+test_decompose (void)
+{
+  gunichar a, b;
+
+  /* Not decomposable */
+  g_assert (!g_unichar_decompose (0x0041, &a, &b) && a == 0x0041 && b == 0);
+  g_assert (!g_unichar_decompose (0xFB01, &a, &b) && a == 0xFB01 && b == 0);
+
+  /* Singletons */
+  g_assert (g_unichar_decompose (0x212B, &a, &b) && a == 0x00C5 && b == 0);
+  g_assert (g_unichar_decompose (0x2126, &a, &b) && a == 0x03A9 && b == 0);
+
+  /* Pairs */
+  g_assert (g_unichar_decompose (0x00C5, &a, &b) && a == 0x0041 && b == 0x030A);
+  g_assert (g_unichar_decompose (0x00F4, &a, &b) && a == 0x006F && b == 0x0302);
+  g_assert (g_unichar_decompose (0x1E69, &a, &b) && a == 0x1E63 && b == 0x0307);
+  g_assert (g_unichar_decompose (0x1E63, &a, &b) && a == 0x0073 && b == 0x0323);
+  g_assert (g_unichar_decompose (0x1E0B, &a, &b) && a == 0x0064 && b == 0x0307);
+  g_assert (g_unichar_decompose (0x1E0D, &a, &b) && a == 0x0064 && b == 0x0323);
+
+  /* Hangul */
+  g_assert (g_unichar_decompose (0xD4DB, &a, &b) && a == 0xD4CC && b == 0x11B6);
+  g_assert (g_unichar_decompose (0xD4CC, &a, &b) && a == 0x1111 && b == 0x1171);
+  g_assert (g_unichar_decompose (0xCE31, &a, &b) && a == 0xCE20 && b == 0x11B8);
+  g_assert (g_unichar_decompose (0xCE20, &a, &b) && a == 0x110E && b == 0x1173);
+}
+
+static void
+test_canonical_decomposition (void)
+{
+  gunichar *decomp;
+  gsize len;
+
+#define TEST_DECOMP(ch, expected_len, a, b, c, d) \
+  decomp = g_unicode_canonical_decomposition (ch, &len); \
+  g_assert_cmpint (expected_len, ==, len); \
+  if (expected_len >= 1) g_assert_cmphex (decomp[0], ==, a); \
+  if (expected_len >= 2) g_assert_cmphex (decomp[1], ==, b); \
+  if (expected_len >= 3) g_assert_cmphex (decomp[2], ==, c); \
+  if (expected_len >= 4) g_assert_cmphex (decomp[3], ==, d); \
+  g_free (d);
+
+#define TEST0(ch)		TEST_DECOMP (ch, 1, ch, 0, 0, 0)
+#define TEST1(ch, a)		TEST_DECOMP (ch, 1, a, 0, 0, 0)
+#define TEST2(ch, a, b)		TEST_DECOMP (ch, 2, a, b, 0, 0)
+#define TEST3(ch, a, b, c)	TEST_DECOMP (ch, 3, a, b, c, 0)
+#define TEST4(ch, a, b, c, d)	TEST_DECOMP (ch, 4, a, b, c, d)
+
+  /* Not decomposable */
+  TEST0 (0x0041);
+  TEST0 (0xFB01);
+
+  /* Singletons */
+  TEST2 (0x212B, 0x0041, 0x030A);
+  TEST1 (0x2126, 0x03A9);
+
+  /* General */
+  TEST2 (0x00C5, 0x0041, 0x030A);
+  TEST2 (0x00F4, 0x006F, 0x0302);
+  TEST3 (0x1E69, 0x0073, 0x0323, 0x0307);
+  TEST2 (0x1E63, 0x0073, 0x0323);
+  TEST2 (0x1E0B, 0x0064, 0x0307);
+  TEST2 (0x1E0D, 0x0064, 0x0323);
+
+  /* Hangul */
+  TEST3 (0xD4DB, 0x1111, 0x1171, 0x11B6);
+  TEST2 (0xD4CC, 0x1111, 0x1171);
+  TEST3 (0xCE31, 0x110E, 0x1173, 0x11B8);
+  TEST2 (0xCE20, 0x110E, 0x1173);
+}
+
 int
 main (int   argc,
       char *argv[])
@@ -549,6 +651,9 @@ main (int   argc,
   g_test_add_func ("/unicode/mark", test_mark);
   g_test_add_func ("/unicode/title", test_title);
   g_test_add_func ("/unicode/wide", test_wide);
+  g_test_add_func ("/unicode/compose", test_compose);
+  g_test_add_func ("/unicode/decompose", test_decompose);
+  g_test_add_func ("/unicode/canonical-decomposition", test_canonical_decomposition);
 
   return g_test_run();
 }
