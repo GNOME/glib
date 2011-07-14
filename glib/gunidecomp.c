@@ -252,9 +252,6 @@ g_unicode_canonical_decomposition (gunichar ch,
       *result_len = 1;
     }
 
-  /* Supposedly following the Unicode 2.1.9 table means that the
-     decompositions come out in canonical order.  I haven't tested
-     this, but we rely on it here.  */
   return r;
 }
 
