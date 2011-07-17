@@ -73,9 +73,9 @@
  * main (int   argc,
  *       char *argv[])
  * {
- *   /&ast; GValues must start zero-filled &ast;/
- *   GValue a = {0};
- *   GValue b = {0};
+ *   /&ast; GValues must be initialized &ast;/
+ *   GValue a = G_VALUE_INIT;
+ *   GValue b = G_VALUE_INIT;
  *   const gchar *message;
  *
  *   g_type_init ();

@@ -161,6 +161,22 @@ void	g_value_register_transform_func	(GType		 src_type,
  */
 #define G_VALUE_NOCOPY_CONTENTS (1 << 27)
 
+/**
+ * G_VALUE_INIT:
+ *
+ * A #GValue must be initialized before it can be used.
+ * This macro can be used as initializer instead of an explicit
+ * <literal>{ 0 }</literal> when declaring a variable,
+ * but it cannot be assigned to a variable.
+ *
+ * |[
+ *   GValue value = G_VALUE_INIT;
+ * ]|
+ *
+ * Since: 2.30
+ */
+#define G_VALUE_INIT  { 0, { { 0 } } }
+
 
 G_END_DECLS
 

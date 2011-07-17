@@ -376,6 +376,7 @@ g_variant_type_get_gtype
 <SECTION>
 <TITLE>Generic values</TITLE>
 <FILE>generic_values</FILE>
+G_VALUE_INIT
 G_VALUE_HOLDS
 G_VALUE_TYPE
 G_VALUE_TYPE_NAME
