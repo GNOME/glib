@@ -5,16 +5,20 @@
 # Ilkka Tuohela <hile@iki.fi>, 2005-2009.
 # Timo Jyrinki <timo.jyrinki@iki.fi>, 2008-2010.
 # Harri Pitkänen <hatapitk [at] iki [dot] fi>, 2009.
-# Tommi Vainikainen <thv@iki.fi>, 2009-2010.
+# Tommi Vainikainen <thv@iki.fi>, 2009-2011.
+#
+# Sanasto:
+# D-Bus-metodin ”signature” = tyyppimääritys
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-14 09:37+0300\n"
-"PO-Revision-Date: 2010-09-14 09:37+0300\n"
-"Last-Translator: Timo Jyrinki <timo.jyrinki@iki.fi>\n"
+"POT-Creation-Date: 2011-07-18 00:37+0300\n"
+"PO-Revision-Date: 2011-07-18 00:46+0300\n"
+"Last-Translator: Tommi Vainikainen <thv@iki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -102,428 +106,341 @@ msgstr "Muunnos merkistöstä ”%s” merkistöön ”%s” ei ole tuettu"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Muunninta merkistöstä ”%s” merkistöön ”%s” ei voitu avata"
 
-#: ../glib/gconvert.c:768 ../glib/gconvert.c:1161 ../glib/giochannel.c:1575
-#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2461 ../glib/gutf8.c:992
-#: ../glib/gutf8.c:1447 ../gio/gcharsetconverter.c:345
 msgid "Invalid byte sequence in conversion input"
 msgstr "Virheellinen tavusarja muunnettavassa syötteessä"
 
-#: ../glib/gconvert.c:776 ../glib/gconvert.c:1086 ../glib/giochannel.c:1582
-#: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Virhe muunnoksen aikana: %s"
 
-#: ../glib/gconvert.c:808 ../glib/gutf8.c:988 ../glib/gutf8.c:1198
-#: ../glib/gutf8.c:1339 ../glib/gutf8.c:1443
 msgid "Partial character sequence at end of input"
 msgstr "Osittainen tavusarja syötteen lopussa"
 
-#: ../glib/gconvert.c:1058
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Koodausmerkkijonoa ”%s” ei voi muuntaa merkistöön ”%s”"
 
-#: ../glib/gconvert.c:1881
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI ”%s” ei ole absoluuttinen URI ”file”-muodossa"
 
-#: ../glib/gconvert.c:1891
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Paikallinen tiedosto-URI ”%s” ei saa sisältää merkkiä ”#”"
 
-#: ../glib/gconvert.c:1908
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI ”%s” on virheellinen"
 
-#: ../glib/gconvert.c:1920
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "URI:n ”%s” isäntänimi on virheellinen"
 
-#: ../glib/gconvert.c:1936
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI ”%s” sisältää virheellisesti suojattuja merkkejä"
 
-#: ../glib/gconvert.c:2031
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Polku ”%s” ei ole absoluuttinen"
 
-#: ../glib/gconvert.c:2041
 msgid "Invalid hostname"
 msgstr "Virheellinen isäntänimi"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:105
-#, fuzzy
 msgctxt "GDateTime"
 msgid "am"
-msgstr "nimi"
+msgstr "ap."
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:107
 msgctxt "GDateTime"
 msgid "AM"
-msgstr ""
+msgstr "ap."
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:109
 msgctxt "GDateTime"
 msgid "pm"
-msgstr ""
+msgstr "ip."
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:111
 msgctxt "GDateTime"
 msgid "PM"
-msgstr ""
+msgstr "ip."
 
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:120
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%-d.%-m.%Y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:123
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H.%M.%S"
 
-#: ../glib/gdatetime.c:168
 msgctxt "full month name"
 msgid "January"
 msgstr "tammikuu"
 
-#: ../glib/gdatetime.c:170
 msgctxt "full month name"
 msgid "February"
 msgstr "helmikuu"
 
-#: ../glib/gdatetime.c:172
 msgctxt "full month name"
 msgid "March"
 msgstr "maaliskuu"
 
-#: ../glib/gdatetime.c:174
 msgctxt "full month name"
 msgid "April"
 msgstr "huhtikuu"
 
-#: ../glib/gdatetime.c:176
 msgctxt "full month name"
 msgid "May"
 msgstr "toukokuu"
 
-#: ../glib/gdatetime.c:178
 msgctxt "full month name"
 msgid "June"
 msgstr "kesäkuu"
 
-#: ../glib/gdatetime.c:180
 msgctxt "full month name"
 msgid "July"
 msgstr "heinäkuu"
 
-#: ../glib/gdatetime.c:182
 msgctxt "full month name"
 msgid "August"
 msgstr "elokuu"
 
-#: ../glib/gdatetime.c:184
 msgctxt "full month name"
 msgid "September"
 msgstr "syyskuu"
 
-#: ../glib/gdatetime.c:186
 msgctxt "full month name"
 msgid "October"
 msgstr "lokakuu"
 
-#: ../glib/gdatetime.c:188
 msgctxt "full month name"
 msgid "November"
 msgstr "marraskuu"
 
-#: ../glib/gdatetime.c:190
 msgctxt "full month name"
 msgid "December"
 msgstr "joulukuu"
 
-#: ../glib/gdatetime.c:205
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "tam"
 
-#: ../glib/gdatetime.c:207
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "hel"
 
-#: ../glib/gdatetime.c:209
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "maa"
 
-#: ../glib/gdatetime.c:211
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "huh"
 
-#: ../glib/gdatetime.c:213
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "tou"
 
-#: ../glib/gdatetime.c:215
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "kes"
 
-#: ../glib/gdatetime.c:217
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "hei"
 
-#: ../glib/gdatetime.c:219
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "elo"
 
-#: ../glib/gdatetime.c:221
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "syy"
 
-#: ../glib/gdatetime.c:223
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "lok"
 
-#: ../glib/gdatetime.c:225
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "mar"
 
-#: ../glib/gdatetime.c:227
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "jou"
 
-#: ../glib/gdatetime.c:242
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "maanantai"
 
-#: ../glib/gdatetime.c:244
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "tiistai"
 
-#: ../glib/gdatetime.c:246
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "keskiviikko"
 
-#: ../glib/gdatetime.c:248
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "torstai"
 
-#: ../glib/gdatetime.c:250
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "perjantai"
 
-#: ../glib/gdatetime.c:252
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "lauantai"
 
-#: ../glib/gdatetime.c:254
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "sunnuntai"
 
-#: ../glib/gdatetime.c:269
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "ma"
 
-#: ../glib/gdatetime.c:271
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "ti"
 
-#: ../glib/gdatetime.c:273
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "ke"
 
-#: ../glib/gdatetime.c:275
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "to"
 
-#: ../glib/gdatetime.c:277
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "pe"
 
-#: ../glib/gdatetime.c:279
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "la"
 
-#: ../glib/gdatetime.c:281
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "su"
 
-#: ../glib/gdir.c:114 ../glib/gdir.c:137
 #, c-format
 msgid "Error opening directory '%s': %s"
 msgstr "Virhe hakemiston ”%s” avaamisessa: %s"
 
-#: ../glib/gfileutils.c:536 ../glib/gfileutils.c:624
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
 msgstr "Ei voitu varata %lu tavua muistia tiedoston ”%s” lukemiseksi"
 
-#: ../glib/gfileutils.c:551
 #, c-format
 msgid "Error reading file '%s': %s"
 msgstr "Virhe tiedoston ”%s” lukemisessa: %s"
 
-#: ../glib/gfileutils.c:565
 #, c-format
 msgid "File \"%s\" is too large"
 msgstr "Tiedosto ”%s” on liian suuri"
 
-#: ../glib/gfileutils.c:648
 #, c-format
 msgid "Failed to read from file '%s': %s"
 msgstr "Tiedoston ”%s” lukeminen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:699 ../glib/gfileutils.c:786
 #, c-format
 msgid "Failed to open file '%s': %s"
 msgstr "Tiedoston ”%s” avaaminen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:716 ../glib/gmappedfile.c:169
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
 "Tiedoston ”%s” ominaisuuksien lukeminen epäonnistui: fstat() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:750
 #, c-format
 msgid "Failed to open file '%s': fdopen() failed: %s"
 msgstr "Tiedoston ”%s” avaaminen epäonnistui: fdopen() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:858
 #, c-format
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Tiedoston ”%s” uudelleen nimeäminen nimelle ”%s” epäonnistui: g_rename() "
 "epäonnistui: %s"
 
-#: ../glib/gfileutils.c:900 ../glib/gfileutils.c:1369
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Tiedoston ”%s” luominen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:914
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
 "Tiedoston ”%s” avaaminen kirjoitettavaksi epäonnistui: fdopen() epäonnistui: "
 "%s"
 
-#: ../glib/gfileutils.c:939
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
 msgstr "Tiedoston ”%s” kirjoittaminen epäonnistui: fwrite() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:958
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "Tiedoston ”%s” kirjoittaminen epäonnistui: fflush() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:987
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Tiedoston ”%s” kirjoittaminen epäonnistui: fsync() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Tiedoston ”%s” sulkeminen epäonnistui: fclose() epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1127
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "Olemassa olevan tiedoston ”%s” poisto epäonnistui: g_unlink epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1331
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Malli ”%s” on virheellinen, se ei saa sisältää merkkijonoa ”%s”"
 
-#: ../glib/gfileutils.c:1344
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Malli ”%s” ei sisällä merkkijonoa XXXXXX"
 
-#: ../glib/gfileutils.c:1777
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u tavu"
 msgstr[1] "%u tavua"
 
-#: ../glib/gfileutils.c:1785
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f kt"
 
-#: ../glib/gfileutils.c:1790
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f Mt"
 
-#: ../glib/gfileutils.c:1795
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f Gt"
 
-#: ../glib/gfileutils.c:1800
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f Tt"
 
-#: ../glib/gfileutils.c:1805
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f Pt"
 
-#: ../glib/gfileutils.c:1810
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f Et"
 
-#: ../glib/gfileutils.c:1853
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Symbolisen linkin ”%s” lukeminen epäonnistui: %s"
 
-#: ../glib/gfileutils.c:1874
 msgid "Symbolic links not supported"
 msgstr "Symbolisia linkkejä ei tueta"
 
@@ -537,8 +454,6 @@ msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Funktiossa g_io_channel_read_line_string ei voi suorittaa raakalukemista"
 
-#: ../glib/giochannel.c:1799 ../glib/giochannel.c:2057
-#: ../glib/giochannel.c:2144
 msgid "Leftover unconverted data in read buffer"
 msgstr "Jäljelle jäänyt muuntamaton data lukupuskurissa"
 
@@ -560,32 +475,26 @@ msgstr "Tiedoston ”%s” avaaminen epäonnistui: open() epäonnistui: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Tiedoston ”%s” mappaaminen epäonnistui: mmap() epäonnistui: %s"
 
-#: ../glib/gmarkup.c:307 ../glib/gmarkup.c:347
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Virhe rivillä %d merkissä %d: "
 
-#: ../glib/gmarkup.c:367 ../glib/gmarkup.c:445
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Virheellinen UTF-8-koodattu teksti nimessä - epäkelpo ”%s”"
 
-#: ../glib/gmarkup.c:378
 #, c-format
 msgid "'%s' is not a valid name "
 msgstr "”%s” ei ole kelvollinen nimi"
 
-#: ../glib/gmarkup.c:394
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
 msgstr "”%s” ei ole kelvollinen nimi: ”%c” "
 
-#: ../glib/gmarkup.c:498
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Virhe rivillä %d: %s"
 
-#: ../glib/gmarkup.c:582
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -594,7 +503,6 @@ msgstr ""
 "Merkkijonon ”%-.*s” piti olla luku merkkiviitteen sisällä (esim. &#234;), "
 "mutta sen jäsentäminen epäonnistui - ehkä luku on liian suuri"
 
-#: ../glib/gmarkup.c:594
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -603,24 +511,20 @@ msgstr ""
 "Merkkiviite ei päättynyt puolipisteeseen; todennäköisesti käytit &-merkkiä "
 "aikomatta aloittaa entiteettiä - käytä merkintää &amp;"
 
-#: ../glib/gmarkup.c:620
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Merkkiviite ”%-.*s” ei ole sallitun merkin koodaus"
 
-#: ../glib/gmarkup.c:658
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "Havaittu tyhjä entiteetti ”&;”; kelvolliset ovat: &amp; &quot; &lt; &gt; "
 "&apos;"
 
-#: ../glib/gmarkup.c:666
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "Entiteetin nimi ”%-.*s” on tuntematon"
 
-#: ../glib/gmarkup.c:671
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -628,11 +532,9 @@ msgstr ""
 "Entiteetti ei päättynyt puolipisteeseen; todennäköisesti käytit &-merkkiä "
 "aikomatta aloittaa entiteettiä - käytä merkintää &amp;"
 
-#: ../glib/gmarkup.c:1018
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Asiakirjan on alettava elementillä (esim. <kirja>)"
 
-#: ../glib/gmarkup.c:1058
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -641,14 +543,12 @@ msgstr ""
 "”%s” ei ole kelvollinen merkki ”<”-merkin jälkeen; se ei voi aloittaa "
 "elementin nimeä"
 
-#: ../glib/gmarkup.c:1126
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr "Pariton merkki ”%s”, odotettiin ”>”-merkkiä päättämään elementin ”%s”"
 
-#: ../glib/gmarkup.c:1210
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -656,18 +556,16 @@ msgstr ""
 "Pariton merkki ”%1$s”, odotettiin ”=”-merkkiä elementin ”%3$s” ominaisuuden "
 "”%2$s” jälkeen"
 
-#: ../glib/gmarkup.c:1251
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"Pariton merkki ”%s”, odotettiin merkkiä ”>” tai ”/” päättämään elementin ”%"
-"s” aloituslippu, tai mahdollista ominaisuutta; käytit ehkä ominaisuuden "
+"Pariton merkki ”%s”, odotettiin merkkiä ”>” tai ”/” päättämään elementin "
+"”%s” aloituslippu, tai mahdollista ominaisuutta; käytit ehkä ominaisuuden "
 "nimessä siihen kelpaamatonta merkkiä"
 
-#: ../glib/gmarkup.c:1295
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -676,7 +574,6 @@ msgstr ""
 "Pariton merkki ”%1$s”, odotettiin avaavaa lainausmerkkiä yhtäsuuruusmerkin "
 "jälkeen annettaessa elementin ”%3$s” ominaisuuden ”%2$s” arvoa"
 
-#: ../glib/gmarkup.c:1429
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -685,7 +582,6 @@ msgstr ""
 "”%s” ei ole kelvollinen merkki merkkien ”</” jälkeen; ”%s” ei voi olla "
 "elementin nimen alussa"
 
-#: ../glib/gmarkup.c:1465
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -694,27 +590,22 @@ msgstr ""
 "”%s” ei ole kelvollinen merkki sulkuelementin ”%s” jälkeen; sallittu merkki "
 "on ”>”"
 
-#: ../glib/gmarkup.c:1476
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elementti ”%s” on suljettu, ei avoimia elementtejä"
 
-#: ../glib/gmarkup.c:1485
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
 "Elementti ”%s” on suljettu, mutta tällä hetkellä on avoinna elementti ”%s”"
 
-#: ../glib/gmarkup.c:1652
 msgid "Document was empty or contained only whitespace"
 msgstr "Asiakirja oli tyhjä tai sisälsi vain tyhjiä merkkejä"
 
-#: ../glib/gmarkup.c:1666
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr ""
 "Asiakirja loppui odottamattomasti heti avoimen kulmasulkeen ”<” jälkeen"
 
-#: ../glib/gmarkup.c:1674 ../glib/gmarkup.c:1719
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -723,7 +614,6 @@ msgstr ""
 "Asiakirja loppui odottamattomasti elementtien ollessa sulkematta - ”%s” oli "
 "viimeinen avattu elementti"
 
-#: ../glib/gmarkup.c:1682
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -732,19 +622,15 @@ msgstr ""
 "Asiakirja loppui odottamattomasti, odotettiin lipun <%s/> sulkevaa "
 "kulmasuljetta"
 
-#: ../glib/gmarkup.c:1688
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Asiakirja loppui odottamattomasti elementin nimen kohdalla"
 
-#: ../glib/gmarkup.c:1694
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Asiakirja loppui odottamattomasti ominaisuuden nimen kohdalla"
 
-#: ../glib/gmarkup.c:1699
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr "Asiakirja loppui odottamattomasti elementin avauslipun kohdalla"
 
-#: ../glib/gmarkup.c:1705
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -752,315 +638,246 @@ msgstr ""
 "Asiakirja loppui odottamattomasti ominaisuuden nimen jälkeisen "
 "yhtäsuuruusmerkin jälkeen; ominaisuudella ei ole arvoa"
 
-#: ../glib/gmarkup.c:1712
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Asiakirja loppui odottamattomasti ominaisuuden arvon kohdalla"
 
-#: ../glib/gmarkup.c:1728
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr "Asiakirja loppui odottamattomasti elementin ”%s” sulkulipun kohdalla"
 
-#: ../glib/gmarkup.c:1734
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Asiakirja loppui odottamattomasti kommentin tai käsittelykomennon kohdalla"
 
-#: ../glib/gregex.c:184
 msgid "corrupted object"
 msgstr "vioittunut kohde"
 
-#: ../glib/gregex.c:186
 msgid "internal error or corrupted object"
 msgstr "sisäinen virhe tai vioittunut kohde"
 
-#: ../glib/gregex.c:188
 msgid "out of memory"
 msgstr "muisti loppui"
 
-#: ../glib/gregex.c:193
 msgid "backtracking limit reached"
 msgstr "taakseviittausten raja saavutettu"
 
-#: ../glib/gregex.c:205 ../glib/gregex.c:213
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "malli sisältää kohtia, jotka eivät ole tuettu osittaisessa täsmäyksessä"
 
-#: ../glib/gregex.c:207 ../gio/glocalfile.c:2109
 msgid "internal error"
 msgstr "sisäinen virhe"
 
-#: ../glib/gregex.c:215
 msgid "back references as conditions are not supported for partial matching"
 msgstr "takaisinviittaukset ehtoina eivät ole tuettu osittaisissa täsmäyksissä"
 
-#: ../glib/gregex.c:224
 msgid "recursion limit reached"
 msgstr "rekursion enimmäissyvyys saavutettiin"
 
-#: ../glib/gregex.c:226
 msgid "workspace limit for empty substrings reached"
 msgstr "työtilan raja tyhjille alamerkkijonoille saavutettiin"
 
-#: ../glib/gregex.c:228
 msgid "invalid combination of newline flags"
 msgstr "virheellinen yhdistelmä rivinvaihtolippuja"
 
-#: ../glib/gregex.c:232
+msgid "bad offset"
+msgstr "virheellinen siirros"
+
+msgid "short utf8"
+msgstr "lyhyt utf8"
+
 msgid "unknown error"
 msgstr "tuntematon virhe"
 
-#: ../glib/gregex.c:252
 msgid "\\ at end of pattern"
 msgstr "\\ mallin lopussa"
 
-#: ../glib/gregex.c:255
 msgid "\\c at end of pattern"
 msgstr "\\c mallin lopussa"
 
-#: ../glib/gregex.c:258
 msgid "unrecognized character follows \\"
 msgstr "Tuntematon merkki \\:n jälkeen"
 
-#: ../glib/gregex.c:265
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr "merkkikokoa muuttavia ohjaimia (\\l, \\L, \\u, \\U) ei sallita tässä"
 
-#: ../glib/gregex.c:268
 msgid "numbers out of order in {} quantifier"
 msgstr "numerot epäjärjestyksessä {}-määreessä"
 
-#: ../glib/gregex.c:271
 msgid "number too big in {} quantifier"
 msgstr "numerot liian suuria {}-määreessä"
 
-#: ../glib/gregex.c:274
 msgid "missing terminating ] for character class"
 msgstr "merkkiluokasta puuttuu päättävä ]"
 
-#: ../glib/gregex.c:277
 msgid "invalid escape sequence in character class"
 msgstr "virheellinen escape-jono merkkiluokassa"
 
-#: ../glib/gregex.c:280
 msgid "range out of order in character class"
 msgstr "alue epäjärjestyksessä merkkijoukolle"
 
-#: ../glib/gregex.c:283
 msgid "nothing to repeat"
 msgstr "ei mitään toistettavaa"
 
-#: ../glib/gregex.c:286
 msgid "unrecognized character after (?"
 msgstr "tuntematon merkki (? jälkeen"
 
-#: ../glib/gregex.c:290
 msgid "unrecognized character after (?<"
 msgstr "tuntematon merkki (?< jälkeen"
 
-#: ../glib/gregex.c:294
 msgid "unrecognized character after (?P"
 msgstr "tuntematon merkki (?P jälkeen"
 
-#: ../glib/gregex.c:297
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX:in nimetyt luokat on tuettu vain luokan sisällä"
 
-#: ../glib/gregex.c:300
 msgid "missing terminating )"
 msgstr "päättävä ) puuttuu"
 
-#: ../glib/gregex.c:304
 msgid ") without opening ("
 msgstr ") ilman aloittavaa (-merkkiä"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:311
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R tai (?[+-]numeroita täytyy seurata )"
 
-#: ../glib/gregex.c:314
 msgid "reference to non-existent subpattern"
 msgstr "viittaus olemattomaan alitäsmäykseen"
 
-#: ../glib/gregex.c:317
 msgid "missing ) after comment"
 msgstr "puuttuva ) kommentin jälkeen"
 
-#: ../glib/gregex.c:320
 msgid "regular expression too large"
 msgstr "säännöllinen lauseke on liian suuri"
 
-#: ../glib/gregex.c:323
 msgid "failed to get memory"
 msgstr "muistia ei voitu varata"
 
-#: ../glib/gregex.c:326
 msgid "lookbehind assertion is not fixed length"
 msgstr "lookbehind-tyyppinen assert-makro ei ole kiinteäpituinen"
 
-#: ../glib/gregex.c:329
 msgid "malformed number or name after (?("
 msgstr "virheellinen numero tai nimi (?( jälkeen"
 
-#: ../glib/gregex.c:332
 msgid "conditional group contains more than two branches"
 msgstr "ehdollisessa ryhmässä on enemmän kuin kaksi haaraa"
 
-#: ../glib/gregex.c:335
 msgid "assertion expected after (?("
 msgstr "assert-makrotoiminto odotettu merkkien (?( jälkeen"
 
-#: ../glib/gregex.c:338
 msgid "unknown POSIX class name"
 msgstr "tuntematon POSIX-luokan nimi"
 
-#: ../glib/gregex.c:341
 msgid "POSIX collating elements are not supported"
 msgstr "POSIX-vertailuelementtejä ei tueta"
 
-#: ../glib/gregex.c:344
 msgid "character value in \\x{...} sequence is too large"
 msgstr "Merkin arvo sekvenssissä \\x{…} on liian suuri"
 
-#: ../glib/gregex.c:347
 msgid "invalid condition (?(0)"
 msgstr "virheellinen ehto (?(0)"
 
-#: ../glib/gregex.c:350
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C ei ole sallittu lookbehind-tyyppisissä assert-makroissa"
 
-#: ../glib/gregex.c:353
 msgid "recursive call could loop indefinitely"
 msgstr "rekursiivinen kutsu voisi olla päättymätön"
 
-#: ../glib/gregex.c:356
 msgid "missing terminator in subpattern name"
 msgstr "alimallin nimestä puuttuu päätösmerkki"
 
-#: ../glib/gregex.c:359
 msgid "two named subpatterns have the same name"
 msgstr "kahdella nimetyllä alimallilla on sama nimi"
 
-#: ../glib/gregex.c:362
 msgid "malformed \\P or \\p sequence"
 msgstr "väärin muotoiltu \\P- tai \\p-sekvenssi"
 
-#: ../glib/gregex.c:365
 msgid "unknown property name after \\P or \\p"
 msgstr "tuntematon ominaisuuden nimi \\P- tai \\p-sekvenssin jälkeen"
 
-#: ../glib/gregex.c:368
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "alimallin nimi on liian pitkä (enintään 32 merkkiä)"
 
-#: ../glib/gregex.c:371
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "liian monta nimettyä alimallia (enintään 10000)"
 
-#: ../glib/gregex.c:374
 msgid "octal value is greater than \\377"
 msgstr "oktaaliarvo on suurempi kuin \\377"
 
-#: ../glib/gregex.c:377
 msgid "DEFINE group contains more than one branch"
 msgstr "DEFINE-ryhmä sisältää useampia kuin yhden haaran"
 
-#: ../glib/gregex.c:380
 msgid "repeating a DEFINE group is not allowed"
 msgstr "DEFINE-ryhmän toisto ei ole sallittu"
 
-#: ../glib/gregex.c:383
 msgid "inconsistent NEWLINE options"
 msgstr "epäyhtenäisiä NEWLINE-valitsimia"
 
-#: ../glib/gregex.c:386
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "\\g:n jälkeen ei tule nimeä aaltosulkeissa tai nollasta poikkeavaa numeroa "
 "valinnaisesti aaltosulkeissa"
 
-#: ../glib/gregex.c:391
 msgid "unexpected repeat"
 msgstr "odottamaton toisto"
 
-#: ../glib/gregex.c:395
 msgid "code overflow"
 msgstr "koodin ylivuoto"
 
-#: ../glib/gregex.c:399
 msgid "overran compiling workspace"
 msgstr "käännöksen työalueen koko loppui kesken"
 
-#: ../glib/gregex.c:403
 msgid "previously-checked referenced subpattern not found"
 msgstr "aiemmin tarkistettua ja viitattua alimallia ei löydy"
 
-#: ../glib/gregex.c:575 ../glib/gregex.c:1696
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Virhe täsmätessä säännöllistä lauseketta %s: %s"
 
-#: ../glib/gregex.c:1151
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE-kirjasto on käännetty ilman UTF8-tukea"
 
-#: ../glib/gregex.c:1160
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE-kirjasto on käännetty ilman UTF8-ominaisuuksien tukea"
 
-#: ../glib/gregex.c:1214
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Virhe säännöllisessä lausekkeessa %s kohdassa %d: %s"
 
-#: ../glib/gregex.c:1250
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Virhe optimoitaessa säännöllistä lauseketta %s: %s"
 
-#: ../glib/gregex.c:2124
 msgid "hexadecimal digit or '}' expected"
 msgstr "odotettiin heksadesimaalista numeroa tai merkkiä ”}”"
 
-#: ../glib/gregex.c:2140
 msgid "hexadecimal digit expected"
 msgstr "odotettiin heksadesimaalista numeroa"
 
-#: ../glib/gregex.c:2180
 msgid "missing '<' in symbolic reference"
 msgstr "merkki '<' puuttuu symbolisesta viitteestä"
 
-#: ../glib/gregex.c:2189
 msgid "unfinished symbolic reference"
 msgstr "päättämätön symbolinen viite"
 
-#: ../glib/gregex.c:2196
 msgid "zero-length symbolic reference"
 msgstr "nollan mittainen symbolinen viite"
 
-#: ../glib/gregex.c:2207
 msgid "digit expected"
 msgstr "odotettiin numeroa"
 
-#: ../glib/gregex.c:2225
 msgid "illegal symbolic reference"
 msgstr "virheellinen symbolinen viite"
 
-#: ../glib/gregex.c:2287
 msgid "stray final '\\'"
 msgstr "ylimääräinen päättävä '\\'"
 
-#: ../glib/gregex.c:2291
 msgid "unknown escape sequence"
 msgstr "tuntematon escape-jono"
 
-#: ../glib/gregex.c:2301
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Virhe tulkittaessa korvaavaa tekstiä ”%s” kohdassa %lu: %s"
@@ -1196,16 +1013,12 @@ msgstr "Tuntematon virhe käynnistettäessä lapsiprosessia ”%s”"
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Lapsiprosessin pid-putkesta ei voitu lukea riittävästi dataa (%s)"
 
-#: ../glib/gutf8.c:1066
 msgid "Character out of range for UTF-8"
 msgstr "Merkki on sallitun UTF-8-välin ulkopuolella"
 
-#: ../glib/gutf8.c:1166 ../glib/gutf8.c:1175 ../glib/gutf8.c:1307
-#: ../glib/gutf8.c:1316 ../glib/gutf8.c:1457 ../glib/gutf8.c:1553
 msgid "Invalid sequence in conversion input"
 msgstr "Virheellinen sarja muunnettavassa syötteessä"
 
-#: ../glib/gutf8.c:1468 ../glib/gutf8.c:1564
 msgid "Character out of range for UTF-16"
 msgstr "Merkki on sallitun UTF-16-välin ulkopuolella"
 
@@ -1258,29 +1071,23 @@ msgstr "Double-arvo ”%s” kohteelle %s ylittää sallitun alueen"
 msgid "Error parsing option %s"
 msgstr "Virhe käsiteltäessä valitsinta %s"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1527
 #, c-format
 msgid "Missing argument for %s"
 msgstr "Puuttuva argumentti kohteelle %s"
 
-#: ../glib/goption.c:1922
 #, c-format
 msgid "Unknown option %s"
 msgstr "Tuntematon valitsin %s"
 
-#: ../glib/gkeyfile.c:362
 msgid "Valid key file could not be found in search dirs"
 msgstr "Kelvollista avaintiedostoa ei löytynyt haetuista kansioista"
 
-#: ../glib/gkeyfile.c:397
 msgid "Not a regular file"
 msgstr "Ei tavallinen tiedosto"
 
-#: ../glib/gkeyfile.c:405
 msgid "File is empty"
 msgstr "Tiedosto on tyhjä"
 
-#: ../glib/gkeyfile.c:764
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1288,57 +1095,45 @@ msgstr ""
 "Avaintiedosto sisältää rivin ”%s”, joka ei ole avain-arvopari, ryhmä tai "
 "kommentti"
 
-#: ../glib/gkeyfile.c:824
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Virheellinen ryhmän nimi: %s"
 
-#: ../glib/gkeyfile.c:846
 msgid "Key file does not start with a group"
 msgstr "Avaintiedosto ei ala ryhmällä"
 
-#: ../glib/gkeyfile.c:872
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Virheellinen avaimen nimi: %s"
 
-#: ../glib/gkeyfile.c:899
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Avaintiedosto sisältää ei-tuetun koodauksen ”%s”"
 
-#: ../glib/gkeyfile.c:1115 ../glib/gkeyfile.c:1277 ../glib/gkeyfile.c:2656
-#: ../glib/gkeyfile.c:2722 ../glib/gkeyfile.c:2857 ../glib/gkeyfile.c:2990
-#: ../glib/gkeyfile.c:3143 ../glib/gkeyfile.c:3330 ../glib/gkeyfile.c:3391
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Avaintiedostossa ei ole ryhmää ”%s”"
 
-#: ../glib/gkeyfile.c:1289
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Avaintiedostossa ei ole avainta ”%s”"
 
-#: ../glib/gkeyfile.c:1396 ../glib/gkeyfile.c:1511
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr ""
 "Avaintiedosto sisältää avaimen ”%s” arvolla ”%s”, joka ei ole UTF-8-"
 "merkkijono"
 
-#: ../glib/gkeyfile.c:1416 ../glib/gkeyfile.c:1910
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Avaintiedosto sisältää avaimen ”%s”, jonka arvoa ei voida tulkita."
 
-#: ../glib/gkeyfile.c:1531
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Avaintiedosto sisältää avaimen ”%s”, jolla on arvo, jota ei voida tulkita."
 
-#: ../glib/gkeyfile.c:2125 ../glib/gkeyfile.c:2487
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1347,57 +1142,42 @@ msgstr ""
 "Avaintiedosto sisältää avaimen ”%s”, jolla on arvo, jota ei voida tulkita, "
 "ryhmässä ”%s”."
 
-#: ../glib/gkeyfile.c:2671 ../glib/gkeyfile.c:2872 ../glib/gkeyfile.c:3402
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Avaintiedostossa ei ole avainta ”%s” ryhmässä ”%s”"
 
-#: ../glib/gkeyfile.c:3636
 msgid "Key file contains escape character at end of line"
 msgstr "Avaintiedosto sisältää escape-jonon rivin lopussa"
 
-#: ../glib/gkeyfile.c:3658
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Avaintiedostossa on virheellinen escape-jono ”%s”"
 
-#: ../glib/gkeyfile.c:3800
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Arvoa ”%s” ei voida tulkita numeroksi."
 
-#: ../glib/gkeyfile.c:3814
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Kokonaisluku ”%s” on sallitun alueen ulkopuolella"
 
-#: ../glib/gkeyfile.c:3847
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Arvoa ”%s” ei voida tulkita liukuluvuksi."
 
-#: ../glib/gkeyfile.c:3871
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Arvoa ”%s” ei voida tulkita totuusarvoksi."
 
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
-#: ../gio/ginputstream.c:556 ../gio/ginputstream.c:681
-#: ../gio/goutputstream.c:197 ../gio/goutputstream.c:724
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Liian suuri laskuriarvo välitetty kohteelle %s"
 
-#: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:891
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1199
 msgid "Stream is already closed"
 msgstr "Virta on jo suljettu"
 
-#: ../gio/gcancellable.c:432 ../gio/gdbusconnection.c:1549
-#: ../gio/gdbusconnection.c:1638 ../gio/gdbusconnection.c:1820
-#: ../gio/glocalfile.c:2102 ../gio/gsimpleasyncresult.c:755
-#: ../gio/gsimpleasyncresult.c:781
 msgid "Operation was cancelled"
 msgstr "Toiminto oli peruttu"
 
@@ -1413,31 +1193,27 @@ msgstr "Virheellinen monitavusarja syötteessä"
 msgid "Not enough space in destination"
 msgstr "Kohteessa ei ole tarpeeksi tilaa"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:810
 msgid "Cancellable initialization not supported"
 msgstr "Keskeytyskelpoinen alustus ei ole tuettu"
 
-#: ../gio/gcontenttype.c:179
 msgid "Unknown type"
 msgstr "Tuntematon tyyppi"
 
-#: ../gio/gcontenttype.c:180
 #, c-format
 msgid "%s filetype"
 msgstr "%s-tiedostotyyppi"
 
-#: ../gio/gcontenttype.c:679
 #, c-format
 msgid "%s type"
 msgstr "%s-tyyppi"
 
 #: ../gio/gcredentials.c:246 ../gio/gcredentials.c:441
 msgid "GCredentials is not implemented on this OS"
-msgstr ""
+msgstr "GCredentials ei ole toteutettu tälle käyttöjärjestelmälle"
 
 #: ../gio/gcredentials.c:396
 msgid "There is no GCredentials support for your platform"
-msgstr ""
+msgstr "Alustallesi ei ole GCredentials-tukea"
 
 #: ../gio/gdatainputstream.c:311
 msgid "Unexpected early end-of-stream"
@@ -1445,35 +1221,37 @@ msgstr "Odottamaton aikainen virran loppu"
 
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
 #: ../gio/gdbusaddress.c:304
-#, fuzzy, c-format
+#, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
-msgstr "Ei-tuettu pistokeosoite"
+msgstr "Ei-tuettu avain ”%s” osoitekentässä ”%s”"
 
 #: ../gio/gdbusaddress.c:169
 #, c-format
 msgid ""
 "Address `%s' is invalid (need exactly one of path, tmpdir or abstract keys)"
 msgstr ""
+"Osoite ”%s” on virheellinen (pitää olla täsmälleen näistä: yksi polku, "
+"tilapäishakemisto tai abstraktit avaimet)"
 
 #: ../gio/gdbusaddress.c:182
 #, c-format
 msgid "Meaningless key/value pair combination in address entry `%s'"
-msgstr ""
+msgstr "Merkityksetön avain/arvo-pariyhdistelmä osoitekentässä ”%s”"
 
 #: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:319
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
-msgstr ""
+msgstr "Virhe osoitteessa ”%s” - porttiattribuutti on epämuodostunut"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:330
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
-msgstr ""
+msgstr "Virhe osoitteessa ”%s” - perheattribuutti on epämuodostunut"
 
 #: ../gio/gdbusaddress.c:434
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
-msgstr ""
+msgstr "Osoite-elementti ”%s” ei sisällä kaksoispistettä (:)"
 
 #: ../gio/gdbusaddress.c:455
 #, c-format
@@ -1481,6 +1259,8 @@ msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr ""
+"Avain/Arvo-pari %d, ”%s” osoite-elementissä ”%s\" ei sisällä "
+"yhtäsuuruusmerkkiä"
 
 #: ../gio/gdbusaddress.c:469
 #, c-format
@@ -1488,6 +1268,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr ""
+"Virhe ohjausmerkeissä avaimessa tai arvossa Avain/Arvo-parissa %d, ”%s” "
+"osoite-elementissä ”%s”"
 
 #: ../gio/gdbusaddress.c:547
 #, c-format
@@ -1495,435 +1277,423 @@ msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 msgstr ""
+"Virhe osoitteessa ”%s” - unix-liikenne vaatii täsmälleen yhden avaimista "
+"”path” tai ”abstract” asetettuksi"
 
 #: ../gio/gdbusaddress.c:583
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr ""
+"Virhe osoitteessa ”%s” - konenimiattribuutti puuttuu tai on epämuodostunut"
 
 #: ../gio/gdbusaddress.c:597
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr ""
+"Virhe osoitteessa ”%s” - porttiattribuutti puuttuu tai on epämuodostunut"
 
 #: ../gio/gdbusaddress.c:611
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
+"Virhe osoitteessa ”%s” - kertakäyttötiedostoattribuutti puuttuu tai on "
+"epämuodostunut"
 
 #: ../gio/gdbusaddress.c:632
-#, fuzzy
 msgid "Error auto-launching: "
-msgstr "Virhe yhteydenotossa: "
+msgstr "Virhe automaattikäynnistyksessä: "
 
 #: ../gio/gdbusaddress.c:640
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
-msgstr ""
+msgstr "Tuntematon tai ei-tuettu siirtotapa ”%s” osoitteelle ”%s”"
 
 #: ../gio/gdbusaddress.c:676
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening nonce file `%s': %s"
-msgstr "Virhe avattaessa tiedostoa ”%s”: %s"
+msgstr "Virhe avattaessa kertakäyttölukujen tiedostoa ”%s”: %s"
 
 #: ../gio/gdbusaddress.c:694
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from nonce file `%s': %s"
-msgstr "Virhe tiedoston ”%s” lukemisessa: %s"
+msgstr "Virhe kertakäyttölukujen tiedoston ”%s” lukemisessa: %s"
 
 #: ../gio/gdbusaddress.c:703
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
-msgstr "Virhe tiedoston ”%s” lukemisessa: %s"
+msgstr ""
+"Virhe kertakäyttölukujen tiedoston ”%s” lukemisessa, odotettiin 16 tavua, "
+"saatiin %d"
 
 #: ../gio/gdbusaddress.c:721
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
-msgstr "Virhe kirjoitettaessa tiedostoon: %s"
+msgstr ""
+"Virhe kirjoitettaessa kertakäyttölukujen tiedoston ”%s” sisältöä virtaan:"
 
-#: ../gio/gdbusaddress.c:942
 msgid "The given address is empty"
-msgstr ""
+msgstr "Annettu osoite on tyhjä"
 
-#: ../gio/gdbusaddress.c:1011
 msgid "Cannot spawn a message bus without a machine-id: "
-msgstr ""
+msgstr "Ei voida käynnistää viestiväylää ilman tietokonetunnistetta: "
 
-#: ../gio/gdbusaddress.c:1048
-#, fuzzy, c-format
+#, c-format
 msgid "Error spawning command line `%s': "
-msgstr "Virhe tiedoston ”%s” lukemisessa: %s"
+msgstr "Virhe käynnistettäessä komentoriviä ”%s”: "
 
-#: ../gio/gdbusaddress.c:1059
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr ""
+"Epänormaali ohjelman päättyminen käynnistettäessä komentoriviä ”%s”: %s"
 
-#: ../gio/gdbusaddress.c:1073
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
-msgstr ""
+msgstr "Komentorivi ”%s” lopetti nollasta eroavaan lopetustilaan %d: %s"
 
-#: ../gio/gdbusaddress.c:1146
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
+"Ei voi päätellä istuntoväylän osoitetta (ei toteutettu tälle "
+"käyttöjärjestelmälle)"
 
-#: ../gio/gdbusaddress.c:1245 ../gio/gdbusconnection.c:6013
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
+"Ei voitu päätellä väyläosoitetta DBUS_STARTER_BUS_TYPE-ympäristömuuttujasta "
+"- tuntematon arvo ”%s”"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6022
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
+"Ei voitu päätellä väyläosoitetta, koska DBUS_STARTER_BUS_TYPE-"
+"ympäristömuuttujaa ei ole asetettu"
 
-#: ../gio/gdbusaddress.c:1264
-#, fuzzy, c-format
+#, c-format
 msgid "Unknown bus type %d"
-msgstr "Tuntematon tyyppi"
+msgstr "Tuntematon väylätyyppi %d"
 
 #: ../gio/gdbusauth.c:288
 msgid "Unexpected lack of content trying to read a line"
-msgstr ""
+msgstr "Odottamaton sisällön puute yritettäessä lukea riviä"
 
 #: ../gio/gdbusauth.c:332
 msgid "Unexpected lack of content trying to (safely) read a line"
-msgstr ""
+msgstr "Odottamaton sisällön puute yritettäessä (turvallisest) lukea riviä"
 
 #: ../gio/gdbusauth.c:503
 #, c-format
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
+"Kulutettu kaikki saatavilla olevat todennusmenetelmät (kokeiltu: %s) "
+"(saatavilla: %s)"
 
-#: ../gio/gdbusauth.c:1150
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr ""
+"Peruutus kohteen GDBusAuthObserver::authorize-authenticated-peer kautta"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
-#, fuzzy, c-format
+#, c-format
 msgid "Error statting directory `%s': %s"
-msgstr "Virhe hakemiston ”%s” avaamisessa: %s"
+msgstr "Virhe hakemiston ”%s” stat-kutsussa: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
+"Hakemiston ”%s” oikeudet ovat väärät. Odotettiin oikeuksia 0700, saatiin 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating directory `%s': %s"
-msgstr "Virhe luotaessa kansiota: %s"
+msgstr "Virhe luotaessa hakemistoa ”%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring `%s' for reading: "
-msgstr "Virhe avattaessa tiedostoa ”%s”: %s"
+msgstr "Virhe avattaessa avainrengasta ”%s” lukua varten: "
 
 #: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:715
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
-msgstr ""
+msgstr "Rivi %d avainrenkaassa polussa ”%s” sisällöllä ”%s” on epämuodostunut"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:729
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
+"Ensimmäinen sana rivillä %d avainrenkaassa polussa ”%s” sisällöllä ”%s” on "
+"epämuodostunut"
 
 #: ../gio/gdbusauthmechanismsha1.c:434 ../gio/gdbusauthmechanismsha1.c:743
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
+"Toinen sana rivillä %d avainrenkaassa polussa ”%s” sisällöllä ”%s” on "
+"epämuodostunut"
 
 #: ../gio/gdbusauthmechanismsha1.c:458
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at `%s'"
-msgstr ""
+msgstr "Ei löytynyt evästettä tunnisteella %d avainrenkaasta polusta ”%s”"
 
 #: ../gio/gdbusauthmechanismsha1.c:535
-#, fuzzy, c-format
+#, c-format
 msgid "Error deleting stale lock file `%s': %s"
-msgstr "Virhe tiedoston ”%s” lukemisessa: %s"
+msgstr "Virhe poistettaessa mätää lukkotiedostoa ”%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:566
-#, fuzzy, c-format
+#, c-format
 msgid "Error creating lock file `%s': %s"
-msgstr "Virhe tiedoston ”%s” lukemisessa: %s"
+msgstr "Virhe luotaessa lukkotiedostoa ”%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:596
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing (unlinked) lock file `%s': %s"
-msgstr "Virhe suljettaessa tiedostoa: %s"
+msgstr "Virhe suljettaessa (linkitöntä) lukkotiedostoa ”%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:606
-#, fuzzy, c-format
+#, c-format
 msgid "Error unlinking lock file `%s': %s"
-msgstr "Virhe avattaessa tiedostoa ”%s”: %s"
+msgstr "Virhe epälinkitettäessä lukkotiedostoa ”%s”: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:682
-#, fuzzy, c-format
+#, c-format
 msgid "Error opening keyring `%s' for writing: "
-msgstr "Virhe avattaessa tiedostoa ”%s”: %s"
+msgstr "Virhe avattaessa avainrengasta ”%s” kirjoitusta varten: "
 
 #: ../gio/gdbusauthmechanismsha1.c:877
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr ""
+msgstr "(Lisäksi myös tiedoston ”%s” lukon vapauttaminen epäonnistui: %s) "
 
-#: ../gio/gdbusconnection.c:1058 ../gio/gdbusconnection.c:1287
-#: ../gio/gdbusconnection.c:1326 ../gio/gdbusconnection.c:1649
 msgid "The connection is closed"
 msgstr "Yhteys on suljettu"
 
-#: ../gio/gdbusconnection.c:1593
 msgid "Timeout was reached"
 msgstr "Aikakatkaisu saavutettiin"
 
-#: ../gio/gdbusconnection.c:2170
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
-msgstr ""
+msgstr "Ei-tuettuja lippuja kohdattu muodostettaessa asiakaspuolen yhteyttä"
 
-#: ../gio/gdbusconnection.c:3596 ../gio/gdbusconnection.c:3914
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
-msgstr ""
+msgstr "Ei rajapintaa ”org.freedesktop.DBus.Properties” oliolla polussa %s"
 
-#: ../gio/gdbusconnection.c:3668
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
+"Virhe asetettaessa ominaisuutta ”%s”: Odotettiin tyyppiä ”%s” mutta saatiin "
+"”%s”"
 
-#: ../gio/gdbusconnection.c:3763
 #, c-format
 msgid "No such property `%s'"
-msgstr ""
+msgstr "Ei ominaisuutta ”%s”"
 
-#: ../gio/gdbusconnection.c:3775
-#, fuzzy, c-format
+#, c-format
 msgid "Property `%s' is not readable"
-msgstr "Typpi %s ei ole luokkatyyppi"
+msgstr "Ominaisuus ”%s” ei ole luettavissa"
 
-#: ../gio/gdbusconnection.c:3786
-#, fuzzy, c-format
+#, c-format
 msgid "Property `%s' is not writable"
-msgstr "Typpi %s ei ole luokkatyyppi"
+msgstr "Ominaisuus ”%s” ei ole kirjoitettavissa"
 
-#: ../gio/gdbusconnection.c:3856 ../gio/gdbusconnection.c:5447
 #, c-format
 msgid "No such interface `%s'"
-msgstr ""
+msgstr "Ei rajapintaa ”%s”"
 
-#: ../gio/gdbusconnection.c:4044
 msgid "No such interface"
-msgstr ""
+msgstr "Ei rajapintaa"
 
-#: ../gio/gdbusconnection.c:4260 ../gio/gdbusconnection.c:5963
 #, c-format
 msgid "No such interface `%s' on object at path %s"
-msgstr ""
+msgstr "Ei rajapintaa ”%s” oliolla polussa %s"
 
-#: ../gio/gdbusconnection.c:4312
 #, c-format
 msgid "No such method `%s'"
-msgstr ""
+msgstr "Ei metodia ”%s”"
 
-#: ../gio/gdbusconnection.c:4343
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
-msgstr ""
+msgstr "Viestin tyyppi ”%s” ei täsmää odotettuun tyyppiin ”%s”"
 
-#: ../gio/gdbusconnection.c:4562
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
-msgstr ""
+msgstr "Olio on jo viety rajapintana %s polussa %s"
 
-#: ../gio/gdbusconnection.c:4756
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
-msgstr ""
+msgstr "Metodi ”%s” palautti tyypin ”%s” mutta odotettiin ”%s”"
 
-#: ../gio/gdbusconnection.c:5558
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
-msgstr ""
+msgstr "Metodi ”%s” rajapinnassa ”%s” tyyppimäärittelyllä ”%s” ei ole olemassa"
 
-#: ../gio/gdbusconnection.c:5676
-#, fuzzy, c-format
+#, c-format
 msgid "A subtree is already exported for %s"
-msgstr "Kuuntelija on jo suljettu"
+msgstr "Alipuu on jo viety polkuun %s"
 
-#: ../gio/gdbusmessage.c:856
 msgid "type is INVALID"
-msgstr ""
+msgstr "tyyppi on VIRHEELLINEN"
 
-#: ../gio/gdbusmessage.c:867
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
-msgstr ""
+msgstr "METHOD_CALL-viesti: PATH- tai MEMBER-otsakekenttä puuttuu"
 
-#: ../gio/gdbusmessage.c:878
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr ""
+msgstr "METHOD_RETURN-viesti: REPLY_SERIAL-otsakekenttä puuttuu"
 
-#: ../gio/gdbusmessage.c:890
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
-msgstr ""
+msgstr "ERROR-viesti: REPLY_SERIAL- tai ERROR_NAME-otsakekenttä puuttuu"
 
-#: ../gio/gdbusmessage.c:903
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
-msgstr ""
+msgstr "SIGNAL-viesti: PATH-, INTERFACE- tai MEMBER-otsakekenttä puuttuu"
 
-#: ../gio/gdbusmessage.c:911
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr ""
+"SIGNAL-viesti: PATH-otsakekenttä käyttää varattua arvoa /org/freedesktop/"
+"DBus/Local"
 
-#: ../gio/gdbusmessage.c:919
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
+"SIGNAL-viesti: INTERFACE-otsakekenttä käyttää varattua arvoa org.freedesktop."
+"DBus.Local"
 
-#: ../gio/gdbusmessage.c:994
 #, c-format
 msgid "Wanted to read %lu bytes but got EOF"
-msgstr ""
+msgstr "Haluttiin lukea %lu tavua, mutta saatiin EOF"
 
-#: ../gio/gdbusmessage.c:1019
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr ""
+"Odotettiin eheää UTF-8-merkkijonoa, mutta löydettiin virheellisiä tavuja "
+"kohdassa %d (merkkijonon pituus on %d). Eheä UTF-8-merkkijono tähän kohtaan "
+"saakka oli ”%s”"
 
-#: ../gio/gdbusmessage.c:1032
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr ""
+"Odotettiin NUL-tavua merkkijonon ”%s” jälkeen, mutta löydettiin tavu %d"
 
-#: ../gio/gdbusmessage.c:1231
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
-msgstr ""
+msgstr "Jäsennetty arvo ”%s” ei ole kelvollinen D-Bus-oliopolku"
 
-#: ../gio/gdbusmessage.c:1257
-#, fuzzy, c-format
+#, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
-msgstr "”%s” ei ole kelvollinen nimi"
+msgstr "Jäsennetty arvo ”%s” ei ole kelvollinen D-Bus-tyyppimäärittely"
 
-#: ../gio/gdbusmessage.c:1311
 #, c-format
 msgid ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr ""
+"Kohdattiin %u tavua pitkä taulukko. Pituuden yläraja on 2<<26 tavua (64 MiB)."
 
-#: ../gio/gdbusmessage.c:1472
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
+"Jäsennetty arvo ”%s” variantille ei ole kelvollinen D-Bus-tyyppimäärittely"
 
-#: ../gio/gdbusmessage.c:1499
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
+"Virhe GVariantin sarjamuodon tulkinnassa tyyppikoodilla ”%s” D-Bus-"
+"piuhamuodosta"
 
-#: ../gio/gdbusmessage.c:1683
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
+"Virheellinen tavujärjestysarvo. Odotettiin joko 0x6c (’l’) tai 0x42 (’B’) "
+"mutta löydettiin arvo 0x%02x"
 
-#: ../gio/gdbusmessage.c:1697
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
+"Virheellinen yhteyskäytännön pääversio. Odotettiin 1 mutta löydettiin %d"
 
-#: ../gio/gdbusmessage.c:1754
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
+"Tyyppimääritysotsake tyyppimäärityksellä ”%s” löydettiin mutta viestin runko "
+"oli tyhjä"
 
-#: ../gio/gdbusmessage.c:1768
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr ""
+"Jäsennetty arvo ”%s” ei ole kelvollinen D-Bus-tyyppimäärittely (rungolle)"
 
-#: ../gio/gdbusmessage.c:1798
 #, c-format
 msgid "No signature header in message but the message body is %u bytes"
-msgstr ""
+msgstr "Ei tyyppimääritysotsaketta viestissä mutta viestin runko on %u tavua"
 
-#: ../gio/gdbusmessage.c:1806
 msgid "Cannot deserialize message: "
-msgstr ""
+msgstr "Ei voitu tulkita viestiä sarjamuodosta: "
 
-#: ../gio/gdbusmessage.c:2131
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
+"Virhe GVariantin sarjallistamisessa tyyppikoodilla ”%s” D-Bus-piuhamuotoon"
 
-#: ../gio/gdbusmessage.c:2272
 #, c-format
 msgid "Message has %d fds but the header field indicates %d fds"
 msgstr ""
+"Viestissä on %d tiedostokahvaa mutta otsakekenttä ilmoittaa %d tiedostokahvaa"
 
-#: ../gio/gdbusmessage.c:2280
 msgid "Cannot serialize message: "
-msgstr ""
+msgstr "Ei voitu sarjallistaa viestiä: "
 
-#: ../gio/gdbusmessage.c:2324
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
+"Viestin rungossa on tyyppimääritys ”%s” mutta siellä ei ole "
+"tyyppimääritysotsaketta"
 
-#: ../gio/gdbusmessage.c:2334
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr ""
+"Viestin rungossa on tyyppimääritys ”%s” mutta tyyppimääritys otsakekentässä "
+"on ”%s”"
 
-#: ../gio/gdbusmessage.c:2350
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
-msgstr ""
+msgstr "Viestin runko on tyhjä mutta tyyppimääritys otsakekentässä on ”(%s)”"
 
-#: ../gio/gdbusmessage.c:2907
-#, fuzzy, c-format
+#, c-format
 msgid "Error return with body of type `%s'"
-msgstr "Virhe kirjoitettaessa tiedostoon: %s"
+msgstr "Virhepaluu runkotyypillä ”%s”"
 
-#: ../gio/gdbusmessage.c:2915
 msgid "Error return with empty body"
-msgstr ""
+msgstr "Virhepaluu tyhjällä rungolla"
 
-#: ../gio/gdbusmethodinvocation.c:375
 #, c-format
 msgid "Type of return value is incorrect, got `%s', expected `%s'"
-msgstr ""
+msgstr "Paluuarvon tyyppi on väärä, saatiin ”%s”, odotettiin ”%s”"
 
-#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:2974
-#: ../gio/gsocket.c:3055
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Virhe lähetettäessä viestiä: %s"
 
-#: ../gio/gdbusprivate.c:1766
 msgid "Unable to load /var/lib/dbus/machine-id: "
-msgstr ""
+msgstr "Ei voitu ladata /var/lib/dbus/machine-id: "
 
 #: ../gio/gdbusproxy.c:714
 #, c-format
@@ -1931,50 +1701,45 @@ msgid ""
 "Trying to set property %s of type %s but according to the expected interface "
 "the type is %s"
 msgstr ""
+"Yritettiin asettaa ominaisuus %s tyyppiä %s mutta odotetun rajapinnan mukaan "
+"tyyppi on %s"
 
-#: ../gio/gdbusproxy.c:1235
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
-msgstr ""
+msgstr "Virhe kutsuttaessa StartServiceByName kohteelle %s: "
 
-#: ../gio/gdbusproxy.c:1256
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
-msgstr ""
+msgstr "Odottamaton vastaus %d metodilta StartServiceByName(”%s”)"
 
-#: ../gio/gdbusproxy.c:2315 ../gio/gdbusproxy.c:2472
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr ""
+"Ei voitu kutsua metodia; välittäjä on hyvin tunnetuille nimille ilman "
+"omistajaa ja välittäjä muodostettiin lipulla "
+"G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:715
-#, fuzzy
 msgid "Abstract name space not supported"
-msgstr "Roskakori ei ole tuettu"
+msgstr "Abstrakti nimiavaruus ei ole tuettu"
 
-#: ../gio/gdbusserver.c:805
 msgid "Cannot specify nonce file when creating a server"
-msgstr ""
+msgstr "Ei voi määrittää kertakäyttälukujen tiedostoa kun luodaan palvelinta"
 
-#: ../gio/gdbusserver.c:882
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing nonce file at `%s': %s"
-msgstr "Virhe kirjoitettaessa tiedostoon: %s"
+msgstr "Virhe kirjoitettaessa kertakäyttölukujen tiedostoon ”%s”: %s"
 
-#: ../gio/gdbusserver.c:1044
-#, fuzzy, c-format
+#, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
-msgstr "”%s” ei ole kelvollinen nimi"
+msgstr "Merkkijono ”%s” ei ole kelvollinen D-Bus GUID"
 
-#: ../gio/gdbusserver.c:1084
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
-msgstr ""
+msgstr "Ei voida kuunnella tukemattomassa liikennemuodossa ”%s”"
 
-#: ../gio/gdbus-tool.c:87 ../gio/gsettings-tool.c:76
 msgid "COMMAND"
-msgstr ""
+msgstr "KOMENTO"
 
 #: ../gio/gdbus-tool.c:92
 #, c-format
@@ -1987,55 +1752,60 @@ msgid ""
 "\n"
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
+"Komennot:\n"
+"  help         Näytä nämä tiedot\n"
+"  introspect   Katsasta etäolio\n"
+"  monitor      Monitoroi etäoliota\n"
+"  call         Suorita metodi etäoliolla object\n"
+"\n"
+"Käytä ”%s KOMENTO --help” saadaksesi ohjeen kustakin komennosta.\n"
 
 #: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
 #: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s\n"
 msgstr "Virhe: %s\n"
 
 #: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing introspection XML: %s\n"
-msgstr "Virhe käsiteltäessä valitsinta %s"
+msgstr "Virhe jäsennettäessä introspektio-XML:ää: %s\n"
 
 #: ../gio/gdbus-tool.c:346
 msgid "Connect to the system bus"
-msgstr ""
+msgstr "Yhdistä järjestelmäväylään"
 
 #: ../gio/gdbus-tool.c:347
 msgid "Connect to the session bus"
-msgstr ""
+msgstr "Yhdistä istuntoväylään"
 
 #: ../gio/gdbus-tool.c:348
-#, fuzzy
 msgid "Connect to given D-Bus address"
-msgstr "Yhteydenotto meneillään"
+msgstr "Yhdistä annettuun D-Bus-osoitteeseen"
 
 #: ../gio/gdbus-tool.c:358
-#, fuzzy
 msgid "Connection Endpoint Options:"
-msgstr "Yhteydenotto meneillään"
+msgstr "Yhteyden päätepisteen valitsimet:"
 
 #: ../gio/gdbus-tool.c:359
 msgid "Options specifying the connection endpoint"
-msgstr ""
+msgstr "Valitsimet määrittämään yhteyden päätepiste"
 
 #: ../gio/gdbus-tool.c:379
 #, c-format
 msgid "No connection endpoint specified"
-msgstr ""
+msgstr "Yhteyden päätepistettä ei määritetty"
 
 #: ../gio/gdbus-tool.c:389
 #, c-format
 msgid "Multiple connection endpoints specified"
-msgstr ""
+msgstr "Useita yhteyden päätepisteitä määritetty"
 
 #: ../gio/gdbus-tool.c:459
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
-msgstr ""
+msgstr "Varoitus: Katsastustietojen mukaan rajapintaa ”%s” ei ole olemassa\n"
 
 #: ../gio/gdbus-tool.c:468
 #, c-format
@@ -2043,120 +1813,114 @@ msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
 msgstr ""
+"Varoitus: Katsastustietojen mukaan metodia ”%s” ei ole olemassa rajapinnassa "
+"”%s”\n"
 
 #: ../gio/gdbus-tool.c:530
 msgid "Destination name to invoke method on"
-msgstr ""
+msgstr "Kohdenimi jossa metodia kutsutaan"
 
 #: ../gio/gdbus-tool.c:531
 msgid "Object path to invoke method on"
-msgstr ""
+msgstr "Oliopolku jossa metodia kutsutaan"
 
 #: ../gio/gdbus-tool.c:532
 msgid "Method and interface name"
-msgstr ""
+msgstr "Metodi ja rajapinnan nimi"
 
 #: ../gio/gdbus-tool.c:571
 msgid "Invoke a method on a remote object."
-msgstr ""
+msgstr "Kutsu metodia etäoliolla"
 
 #: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
-#, fuzzy, c-format
+#, c-format
 msgid "Error connecting: %s\n"
-msgstr "Virhe yhteydenotossa: %s"
+msgstr "Virhe yhteydenotossa: %s\n"
 
 #: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
 #, c-format
 msgid "Error: Destination is not specified\n"
-msgstr ""
+msgstr "Virhe: Kohdetta ei määritelty\n"
 
 #: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1283
 #, c-format
 msgid "Error: Object path is not specified\n"
-msgstr ""
+msgstr "Virhe: Oliopolkua ei määritelty\n"
 
 #: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid object path\n"
-msgstr "”%s” ei ole kelvollinen nimi"
+msgstr "Virhe: %s ei ole kelvollinen oliopolku\n"
 
 #: ../gio/gdbus-tool.c:702
 #, c-format
 msgid "Error: Method name is not specified\n"
-msgstr ""
+msgstr "Virhe: Metodin nimeä ei määritelty\n"
 
 #: ../gio/gdbus-tool.c:713
 #, c-format
 msgid "Error: Method name `%s' is invalid\n"
-msgstr ""
+msgstr "Virhe: Metodin nimi ”%s” on virheellinen\n"
 
 #: ../gio/gdbus-tool.c:778
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Virhe hakemiston ”%s” avaamisessa: %s"
+msgstr "Virhe jäsennettäessä parametria %d tyyppiä ”%s”: %s\n"
 
 #: ../gio/gdbus-tool.c:786
-#, fuzzy, c-format
+#, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "Virhe käsiteltäessä valitsinta %s"
+msgstr "Virhe jäsennettäessä parametriä %d: %s\n"
 
 #: ../gio/gdbus-tool.c:1162
 msgid "Destination name to introspect"
-msgstr ""
+msgstr "Kohdenimi joka katsastetaan"
 
 #: ../gio/gdbus-tool.c:1163
 msgid "Object path to introspect"
-msgstr ""
+msgstr "Oliopolku joka katsastetaan"
 
 #: ../gio/gdbus-tool.c:1164
 msgid "Print XML"
-msgstr ""
+msgstr "Tulosta XML"
 
 #: ../gio/gdbus-tool.c:1197
 msgid "Introspect a remote object."
-msgstr ""
+msgstr "Katsasta etäolio"
 
 #: ../gio/gdbus-tool.c:1423
 msgid "Destination name to monitor"
-msgstr ""
+msgstr "Kohdenimi jota monitoroidaan"
 
 #: ../gio/gdbus-tool.c:1424
 msgid "Object path to monitor"
-msgstr ""
+msgstr "Oliopolku jota monitoroidaan"
 
 #: ../gio/gdbus-tool.c:1457
-#, fuzzy
 msgid "Monitor a remote object."
-msgstr "vioittunut kohde"
+msgstr "Monitoroi etäoliota."
 
-#: ../gio/gdesktopappinfo.c:467 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Nimeämätön"
 
-#: ../gio/gdesktopappinfo.c:751
 msgid "Desktop file didn't specify Exec field"
 msgstr "Työpöytätiedosto ei määrittele Exec-kenttää"
 
-#: ../gio/gdesktopappinfo.c:944
 msgid "Unable to find terminal required for application"
 msgstr "Sovelluksen vaatimaa päätettä ei löydy"
 
-#: ../gio/gdesktopappinfo.c:1153
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Käyttäjän sovellusten asetuskansiota %s ei voi luoda: %s"
 
-#: ../gio/gdesktopappinfo.c:1157
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Käyttäjän MIME-asetusten kansiota %s ei voi luoda: %s"
 
-#: ../gio/gdesktopappinfo.c:1565
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Käyttäjän työpöytätiedostoa %s ei voi luoda"
 
-#: ../gio/gdesktopappinfo.c:1679
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Oma määrittely kohteelle %s"
@@ -2168,21 +1932,20 @@ msgstr "asema ei toteuta aseman avausta"
 #. Translators: This is an error
 #. * message for drive objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gdrive.c:443
 msgid "drive doesn't implement eject or eject_with_operation"
 msgstr "asema ei toteuta aseman avausta (eject tai eject_with_operation)"
 
-#: ../gio/gdrive.c:520
 msgid "drive doesn't implement polling for media"
 msgstr "asema ei toteuta median tarkkailua"
 
-#: ../gio/gdrive.c:725
 msgid "drive doesn't implement start"
 msgstr "asema ei toteuta käynnistystä"
 
-#: ../gio/gdrive.c:827
 msgid "drive doesn't implement stop"
 msgstr "asema ei toteuta pysäytystä"
+
+msgid "TLS support is not available"
+msgstr "TLS-tukea ei ole saatavilla"
 
 #: ../gio/gemblem.c:324
 #, c-format
@@ -2194,29 +1957,17 @@ msgstr "GEmblem-koodauksen versiota %d ei voi käsitellä"
 msgid "Malformed number of tokens (%d) in GEmblem encoding"
 msgstr "Virheellinen määrä tunnisteita (%d) GEmblem-koodauksessa"
 
-#: ../gio/gemblemedicon.c:292
 #, c-format
 msgid "Can't handle version %d of GEmblemedIcon encoding"
 msgstr "GEmblemedIcon-koodauksen versiota %d ei voi käsitellä"
 
-#: ../gio/gemblemedicon.c:302
 #, c-format
 msgid "Malformed number of tokens (%d) in GEmblemedIcon encoding"
 msgstr "Virheellinen määrä tunnisteita (%d) GEmblemedIcon-koodauksessa"
 
-#: ../gio/gemblemedicon.c:325
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Oletettiin GEmblen kohteelle GEmblemedIcon"
 
-#: ../gio/gfile.c:870 ../gio/gfile.c:1100 ../gio/gfile.c:1235
-#: ../gio/gfile.c:1471 ../gio/gfile.c:1525 ../gio/gfile.c:1582
-#: ../gio/gfile.c:1665 ../gio/gfile.c:1720 ../gio/gfile.c:1780
-#: ../gio/gfile.c:1834 ../gio/gfile.c:3304 ../gio/gfile.c:3358
-#: ../gio/gfile.c:3490 ../gio/gfile.c:3530 ../gio/gfile.c:3857
-#: ../gio/gfile.c:4259 ../gio/gfile.c:4345 ../gio/gfile.c:4434
-#: ../gio/gfile.c:4532 ../gio/gfile.c:4619 ../gio/gfile.c:4712
-#: ../gio/gfile.c:5042 ../gio/gfile.c:5322 ../gio/gfile.c:5391
-#: ../gio/gfile.c:6983 ../gio/gfile.c:7073 ../gio/gfile.c:7159
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Toiminto ei ole tuettu"
@@ -2229,58 +1980,44 @@ msgstr "Toiminto ei ole tuettu"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1356 ../gio/glocalfile.c:1059 ../gio/glocalfile.c:1070
-#: ../gio/glocalfile.c:1083
 msgid "Containing mount does not exist"
 msgstr "Yllä olevaa liitospistettä ei löydy"
 
-#: ../gio/gfile.c:2408 ../gio/glocalfile.c:2258
 msgid "Can't copy over directory"
 msgstr "Kansion päälle ei voi kopioida"
 
-#: ../gio/gfile.c:2469
 msgid "Can't copy directory over directory"
 msgstr "Kansiota ei voi kopioida kansion päälle"
 
-#: ../gio/gfile.c:2477 ../gio/glocalfile.c:2267
 msgid "Target file exists"
 msgstr "Kohdetiedosto on olemassa"
 
-#: ../gio/gfile.c:2495
 msgid "Can't recursively copy directory"
 msgstr "Kansiota ei voi kopioida rekursiivisesti"
 
-#: ../gio/gfile.c:2755
 msgid "Splice not supported"
 msgstr "Splice-operaatiota ei tueta"
 
-#: ../gio/gfile.c:2759
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Virhe suoritettaessa splice-operaatiota tiedostolle: %s"
 
-#: ../gio/gfile.c:2906
 msgid "Can't copy special file"
 msgstr "Erikoistiedostoa ei voi kopioida"
 
-#: ../gio/gfile.c:3480
 msgid "Invalid symlink value given"
 msgstr "Saatiin virheellinen symbolisen linkin arvo"
 
-#: ../gio/gfile.c:3573
 msgid "Trash not supported"
 msgstr "Roskakori ei ole tuettu"
 
-#: ../gio/gfile.c:3622
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Tiedostonimi ei voi sisältää merkkiä ”%c”"
 
-#: ../gio/gfile.c:6040 ../gio/gvolume.c:330
 msgid "volume doesn't implement mount"
 msgstr "taltio ei toteuta liittämistä"
 
-#: ../gio/gfile.c:6151
 msgid "No application is registered as handling this file"
 msgstr "Tiedoston käsittelyyn ei ole rekisteröity mitään sovellusta"
 
@@ -2306,56 +2043,43 @@ msgstr "GFileIcon-koodauksen versiota %d ei voi käsitellä"
 msgid "Malformed input data for GFileIcon"
 msgstr "Virheellistä syötetietoa GFileIcon-oliolle"
 
-#: ../gio/gfileinputstream.c:154 ../gio/gfileinputstream.c:421
 #: ../gio/gfileiostream.c:170 ../gio/gfileoutputstream.c:169
-#: ../gio/gfileoutputstream.c:524
 msgid "Stream doesn't support query_info"
 msgstr "Virta ei tue komentoa query_info"
 
-#: ../gio/gfileinputstream.c:336 ../gio/gfileiostream.c:388
-#: ../gio/gfileoutputstream.c:382
 msgid "Seek not supported on stream"
 msgstr "Virta ei tue siirtymistä"
 
-#: ../gio/gfileinputstream.c:380
 msgid "Truncate not allowed on input stream"
 msgstr "Syötevirtaa ei voi kutistaa"
 
-#: ../gio/gfileiostream.c:464 ../gio/gfileoutputstream.c:458
 msgid "Truncate not supported on stream"
 msgstr "Virta ei tue kutistamista"
 
-#: ../gio/gicon.c:285
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Väärä määrä tunnisteita (%d)"
 
-#: ../gio/gicon.c:305
 #, c-format
 msgid "No type for class name %s"
 msgstr "Luokan nimelle %s ei ole tyyppiä"
 
-#: ../gio/gicon.c:315
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "Tyyppi %s ei toteuta GIcon-määritystä"
 
-#: ../gio/gicon.c:326
 #, c-format
 msgid "Type %s is not classed"
-msgstr "Typpi %s ei ole luokkatyyppi"
+msgstr "Tyyppi %s ei ole luokkatyyppi"
 
-#: ../gio/gicon.c:340
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Virheellinen versionumero: %s"
 
-#: ../gio/gicon.c:354
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Tyyppi %s ei toteuta GIcon-määrityksen kutsua from_tokens()"
 
-#: ../gio/gicon.c:430
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Annettua kuvakkeen koodauksen versiota ei voi käsitellä"
 
@@ -2369,8 +2093,6 @@ msgstr "Syötevirta ei toteuta lukua"
 #. Translators: This is an error you get if there is
 #. * already an operation running against this stream when
 #. * you try to start one
-#: ../gio/ginputstream.c:901 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1209
 msgid "Stream has outstanding operation"
 msgstr "Virrassa on toiminto odottamassa"
 
@@ -2383,228 +2105,235 @@ msgstr "Pistokeosoitteelle ei ole tarpeeksi tilaa"
 msgid "Unsupported socket address"
 msgstr "Ei-tuettu pistokeosoite"
 
-#: ../gio/glib-compile-schemas.c:702
-#, fuzzy
 msgid "empty names are not permitted"
-msgstr "Roskakori ei ole tuettu"
+msgstr "tyhjät nimet eivät ole sallittuja"
 
-#: ../gio/glib-compile-schemas.c:712
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
-msgstr ""
+msgstr "virheellinen nimi ”%s”: nimien täytyy alkaa pienaakkosella"
 
-#: ../gio/glib-compile-schemas.c:724
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and dash ('-') are permitted."
 msgstr ""
+"virheellinen nimi ”%s”: virheellinen merkki ’%c’; vain pienaakkosia, "
+"numeroita sekä viiva (’-’) sallitaan."
 
-#: ../gio/glib-compile-schemas.c:733
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr ""
+"virheellinen nimi ”%s”: kaksi peräkkäistä viivaa (’--’) ei ole sallittu."
 
-#: ../gio/glib-compile-schemas.c:742
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
-msgstr ""
+msgstr "virheellinen nimi ”%s”: viimeinen merkki ei saa olla viiva (’-’)."
 
-#: ../gio/glib-compile-schemas.c:750
 #, c-format
 msgid "invalid name '%s': maximum length is 32"
-msgstr ""
+msgstr "virheellinen nimi ”%s”: pituuden yläraja on 32"
 
-#: ../gio/glib-compile-schemas.c:819
 #, c-format
 msgid "<child name='%s'> already specified"
-msgstr ""
+msgstr "<child name='%s'> on jo määritetty"
 
-#: ../gio/glib-compile-schemas.c:845
 msgid "can not add keys to a 'list-of' schema"
-msgstr ""
+msgstr "ei voi lisätä avaimia ”list-of”-skeemaan"
 
-#: ../gio/glib-compile-schemas.c:856
 #, c-format
 msgid "<key name='%s'> already specified"
-msgstr ""
+msgstr "<key name='%s'> on jo määritetty"
 
-#: ../gio/glib-compile-schemas.c:874
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
 "to modify value"
 msgstr ""
+"<key name='%s'> peittää <key name='%s'> skeemassa <schema id='%s'>; laita "
+"<override> muokataksesi arvoa"
 
-#: ../gio/glib-compile-schemas.c:885
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
+"täsmälleen yksi ’type’ (tyyppi), ’enum’ tai ’flags’ (liput) täytyy määrittää "
+"attribuuttina kohdassa <key>"
 
-#: ../gio/glib-compile-schemas.c:904
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
-msgstr ""
+msgstr "<%s id='%s'> ei ole (vielä) määritetty."
 
-#: ../gio/glib-compile-schemas.c:919
-#, fuzzy, c-format
+#, c-format
 msgid "invalid GVariant type string '%s'"
-msgstr "Virheellinen ominaisuustyyppi (piti olla merkkijono)"
+msgstr "virheellinen GVariant-tyyppimerkkijono ”%s”"
 
-#: ../gio/glib-compile-schemas.c:949
 msgid "<override> given but schema isn't extending anything"
-msgstr ""
+msgstr "<override> annettu mutta skeema ei laajenna mitään"
 
-#: ../gio/glib-compile-schemas.c:962
 #, c-format
 msgid "no <key name='%s'> to override"
-msgstr ""
+msgstr "ei avainta <key name='%s'> joka syrjäytettäisiin"
 
-#: ../gio/glib-compile-schemas.c:970
 #, c-format
 msgid "<override name='%s'> already specified"
-msgstr ""
+msgstr "<override name='%s'> on jo määritetty"
 
-#: ../gio/glib-compile-schemas.c:1036
 #, c-format
 msgid "<schema id='%s'> already specified"
-msgstr ""
+msgstr "<schema id='%s'> on jo määritetty"
 
-#: ../gio/glib-compile-schemas.c:1048
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> laajentaa ei vielä olemassaolevaa skeemaa ”%s”"
 
-#: ../gio/glib-compile-schemas.c:1064
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
-msgstr ""
+msgstr "<schema id='%s'> on luettelo ei vielä olemassaolevista skeemoista ”%s”"
 
-#: ../gio/glib-compile-schemas.c:1072
 #, c-format
 msgid "Can not be a list of a schema with a path"
-msgstr ""
+msgstr "Ei voi olla luettelo skeemasta polun kera"
 
-#: ../gio/glib-compile-schemas.c:1082
 #, c-format
 msgid "Can not extend a schema with a path"
-msgstr ""
+msgstr "Ei voi laajentaa skeemaa polun kera"
 
-#: ../gio/glib-compile-schemas.c:1092
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
 msgstr ""
+"<schema id='%s'> on luettelo laajentamassa skeemaa <schema id='%s'> joka ei "
+"ole luettelo"
 
-#: ../gio/glib-compile-schemas.c:1102
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
+"<schema id='%s' list-of='%s'> laajentaa skeemaa <schema id='%s' list-"
+"of='%s'> mutta ”%s” ei laajenna ”%s”"
 
-#: ../gio/glib-compile-schemas.c:1119
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
-msgstr ""
+msgstr "polku, jos annettu, täytyy aloittaa ja lopettaa kauttaviivalla"
 
-#: ../gio/glib-compile-schemas.c:1126
 #, c-format
 msgid "the path of a list must end with ':/'"
-msgstr ""
+msgstr "luettelon polun täytyy alkaa ’:/’"
 
-#: ../gio/glib-compile-schemas.c:1148
 #, c-format
 msgid "<%s id='%s'> already specified"
-msgstr ""
+msgstr "<%s id='%s'> on jo määritetty"
 
-#: ../gio/glib-compile-schemas.c:1362
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
-msgstr ""
+msgstr "Elementti <%s> ei ole sallittu elementin <%s> sisällä"
 
-#: ../gio/glib-compile-schemas.c:1366
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
-msgstr ""
+msgstr "Elementti <%s> ei ole sallittu päätasolla"
 
-#: ../gio/glib-compile-schemas.c:1460
 #, c-format
 msgid "text may not appear inside <%s>"
-msgstr ""
+msgstr "teksti ei voi esiintyä elementin <%s> sisällä"
 
-#: ../gio/glib-compile-schemas.c:1674
+#. Translators: Do not translate "--strict".
 #, c-format
-msgid "No such schema `%s' specified in override file `%s'"
-msgstr ""
+msgid "--strict was specified; exiting.\n"
+msgstr "--strict annettu; lopetetaan.\n"
 
-#: ../gio/glib-compile-schemas.c:1698
+#, c-format
+msgid "This entire file has been ignored.\n"
+msgstr "Tämä koko tiedosto on ohitettu.\n"
+
+#, c-format
+msgid "Ignoring this file.\n"
+msgstr "Ohitetaan tämä tiedosto.\n"
+
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
+"Avainta ”%s” skeemassa ”%s” ei ole määritetty syrjäytystiedostossa ”%s”"
 
-#: ../gio/glib-compile-schemas.c:1731
+#, c-format
+msgid "; ignoring override for this key.\n"
+msgstr "; ohitetaan syrjäytys tälle avaimelle.\n"
+
+#, c-format
+msgid " and --strict was specified; exiting.\n"
+msgstr " ja --strict oli määritetty; lopetetaan.\n"
+
+#, c-format
+msgid ""
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
+msgstr ""
+"virhe jäsennettäessä avainta ”%s” skeemassa ”%s” kuten määrittetty "
+"syrjäytystiedostossa ”%s”: %s.  "
+
+#, c-format
+msgid "Ignoring override for this key.\n"
+msgstr "Ohitetaan syrjäytys tälle avaimelle.\n"
+
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
+"syrjäytys avaimelle ”%s” skeemassa ”%s” syrjäytystiedostossa ”%s” on yli "
+"skeemassa annettujen rajojen"
 
-#: ../gio/glib-compile-schemas.c:1752
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
 "list of valid choices"
 msgstr ""
+"syrjäytys avaimelle ”%s” skeemassa ”%s” syrjäytystiedostossa ”%s” ei ole "
+"sallittujen vaihtoehtojen listassa"
 
-#: ../gio/glib-compile-schemas.c:1797
 msgid "where to store the gschemas.compiled file"
-msgstr ""
+msgstr "mihin tallennetaan gschemas.compiled-tiedosto"
 
-#: ../gio/glib-compile-schemas.c:1797 ../gio/glib-compile-schemas.c:1809
 msgid "DIRECTORY"
-msgstr ""
+msgstr "HAKEMISTO"
 
-#: ../gio/glib-compile-schemas.c:1798
+msgid "Abort on any errors in schemas"
+msgstr "Keskeytä minkä tahansa virheen kohdalla skeemoissa"
+
 msgid "Do not write the gschema.compiled file"
-msgstr ""
+msgstr "Älä kirjoita gschema.compiled-tiedostoa"
 
-#: ../gio/glib-compile-schemas.c:1799
 msgid "This option will be removed soon."
-msgstr ""
+msgstr "Tämä valitsin poistetaan pian."
 
-#: ../gio/glib-compile-schemas.c:1800
 msgid "Do not enforce key name restrictions"
-msgstr ""
+msgstr "Älä pakota avainnimirajoituksia"
 
-#: ../gio/glib-compile-schemas.c:1812
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
 "and the cache file is called gschemas.compiled."
 msgstr ""
+"Käännä kaikki GSettings-skeematiedostot skeema-välimuistiin.\n"
+"Skeematiedostoilla tulee olla pääte .gschema.xml ja\n"
+"välimuistitiedoston nimi on gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1828
 #, c-format
 msgid "You should give exactly one directory name\n"
-msgstr ""
+msgstr "Sinun tulisi antaa täsmälleen yksi hakemistonimi\n"
 
-#: ../gio/glib-compile-schemas.c:1867
 #, c-format
 msgid "No schema files found: "
-msgstr ""
+msgstr "Skeema-tiedostoja ei löytynyt: "
 
-#: ../gio/glib-compile-schemas.c:1870
 #, c-format
 msgid "doing nothing.\n"
-msgstr ""
+msgstr "ei tehdä mitään.\n"
 
-#: ../gio/glib-compile-schemas.c:1873
 #, c-format
 msgid "removed existing output file.\n"
-msgstr ""
+msgstr "poistettiin olemassaoleva tulostetiedosto.\n"
 
 #: ../gio/glocaldirectorymonitor.c:287
 msgid "Unable to find default local directory monitor type"
@@ -2615,110 +2344,86 @@ msgstr "Paikallista kansiontarkkailun oletustyyppiä ei voi selvittää"
 msgid "Invalid filename %s"
 msgstr "Virheellinen tiedostonimi %s"
 
-#: ../gio/glocalfile.c:967
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Virhe haettaessa tietoja tiedostojärjestelmästä: %s"
 
-#: ../gio/glocalfile.c:1105
 msgid "Can't rename root directory"
 msgstr "Juurikansiota ei voi nimetä uudestaan"
 
-#: ../gio/glocalfile.c:1125 ../gio/glocalfile.c:1151
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Virhe nimettäessä tiedostoa uudestaan: %s"
 
-#: ../gio/glocalfile.c:1134
 msgid "Can't rename file, filename already exist"
 msgstr "Tiedostoa ei voi nimetä uudestaan, tiedosto on jo olemassa"
 
-#: ../gio/glocalfile.c:1147 ../gio/glocalfile.c:2131 ../gio/glocalfile.c:2160
-#: ../gio/glocalfile.c:2320 ../gio/glocalfileoutputstream.c:571
 #: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
 #: ../gio/glocalfileoutputstream.c:1151
 msgid "Invalid filename"
 msgstr "Virheellinen tiedostonimi"
 
-#: ../gio/glocalfile.c:1308
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Virhe avattaessa tiedostoa: %s"
 
-#: ../gio/glocalfile.c:1318
 msgid "Can't open directory"
 msgstr "Kansiota ei voi avata"
 
-#: ../gio/glocalfile.c:1443
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Virhe poistettaessa tiedostoa: %s"
 
-#: ../gio/glocalfile.c:1810
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Virhe siirrettäessä tiedostoa roskakoriin: %s"
 
-#: ../gio/glocalfile.c:1833
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Roskakorikansiota %s ei voi luoda: %s"
 
-#: ../gio/glocalfile.c:1854
 msgid "Unable to find toplevel directory for trash"
 msgstr "Päätasoa roskakoria varten ei löydy"
 
-#: ../gio/glocalfile.c:1933 ../gio/glocalfile.c:1953
 msgid "Unable to find or create trash directory"
 msgstr "Roskakori kansiota ei löydy tai sitä ei voi luoda"
 
-#: ../gio/glocalfile.c:1987
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Roskakorin informaatiotiedostoa ei voi luoda: %s"
 
-#: ../gio/glocalfile.c:2016 ../gio/glocalfile.c:2021 ../gio/glocalfile.c:2101
-#: ../gio/glocalfile.c:2108
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Tiedosto ei voi siirtää roskakoriin: %s"
 
-#: ../gio/glocalfile.c:2135
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Virhe luotaessa kansiota: %s"
 
-#: ../gio/glocalfile.c:2164
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Tiedostojärjestelmä ei tue symbolisia linkkejä"
 
-#: ../gio/glocalfile.c:2168
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Virhe luotaessa symbolista linkkiä: %s"
 
-#: ../gio/glocalfile.c:2230 ../gio/glocalfile.c:2324
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Virhe siirrettäessä tiedostoa: %s"
 
-#: ../gio/glocalfile.c:2253
 msgid "Can't move directory over directory"
 msgstr "Kansiota ei voi siirtää kansion päälle"
 
-#: ../gio/glocalfile.c:2280 ../gio/glocalfileoutputstream.c:949
 #: ../gio/glocalfileoutputstream.c:963 ../gio/glocalfileoutputstream.c:978
 #: ../gio/glocalfileoutputstream.c:994 ../gio/glocalfileoutputstream.c:1008
 msgid "Backup file creation failed"
 msgstr "Varmuuskopiotiedoston luonti epäonnistui"
 
-#: ../gio/glocalfile.c:2299
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Virhe poistettaessa kohdetiedostoa: %s"
 
-#: ../gio/glocalfile.c:2313
 msgid "Move between mounts not supported"
 msgstr "Siirto liitospisteiden välillä ei ole tuettu"
 
@@ -2942,7 +2647,6 @@ msgstr "Liitospiste ei toteuta ”eject”-operaatiota (aseman avaamista)"
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of unmount or unmount_with_operation.
-#: ../gio/gmount.c:522
 msgid "mount doesn't implement \"unmount\" or \"unmount_with_operation\""
 msgstr ""
 "Liitospiste ei toteuta irrottamista (”unmount” tai ”unmount_with_operation”)"
@@ -2950,7 +2654,6 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gmount.c:609
 msgid "mount doesn't implement \"eject\" or \"eject_with_operation\""
 msgstr ""
 "Liitospiste ei toteuta aseman avaamista (”eject” tai ”eject_with_operation”)"
@@ -2958,21 +2661,18 @@ msgstr ""
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement remount.
-#: ../gio/gmount.c:698
 msgid "mount doesn't implement \"remount\""
 msgstr "Liitospiste ei toteuta uudestaanliittämistä (”remount”)"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:782
 msgid "mount doesn't implement content type guessing"
 msgstr "mount ei toteuta sisältötyypin arvausta"
 
 #. Translators: This is an error
 #. * message for mount objects that
 #. * don't implement content type guessing.
-#: ../gio/gmount.c:871
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "mount ei toteuta synkronista sisältötyypin arvausta"
 
@@ -2981,241 +2681,308 @@ msgstr "mount ei toteuta synkronista sisältötyypin arvausta"
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Isäntänimi ”%s” sisältää merkin ”[”, mutta ei ”]”"
 
-#: ../gio/goutputstream.c:206 ../gio/goutputstream.c:407
 msgid "Output stream doesn't implement write"
 msgstr "Tulostevirta ei toteuta kirjoitusta"
 
-#: ../gio/goutputstream.c:368 ../gio/goutputstream.c:848
 msgid "Source stream is already closed"
 msgstr "Lähdevirta on jo suljettu"
 
-#: ../gio/gresolver.c:735
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Virhe selvitettäessä osoitetta ”%s”: %s"
 
-#: ../gio/gresolver.c:785
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Virhe selvitettäessä käänteisosoitetta ”%s”: %s"
 
-#: ../gio/gresolver.c:820 ../gio/gresolver.c:898
 #, c-format
 msgid "No service record for '%s'"
 msgstr "Ei palvelutietuetta ”%s”"
 
-#: ../gio/gresolver.c:825 ../gio/gresolver.c:903
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Tilapäisesti ei voida selvittää palvelua ”%s”"
 
-#: ../gio/gresolver.c:830 ../gio/gresolver.c:908
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Virhe selvitettäessä palvelua ”%s”"
 
-#: ../gio/gsettings-tool.c:79
+#, c-format
+msgid "Schema '%s' is not relocatable (path must not be specified)\n"
+msgstr "Skeema ”%s” ei ole siirrettävä (polkua ei saa määrittää)\n"
+
+#, c-format
+msgid "No such schema '%s'\n"
+msgstr "Ei tällaista skeemaa ”%s”\n"
+
+#, c-format
+msgid "Schema '%s' is relocatable (path must be specified)\n"
+msgstr "Skeema ”%s” on siirrettävä (polku täytyy määrittää)\n"
+
+#, c-format
+msgid "Empty path given.\n"
+msgstr "Annettu tyhjä polku.\n"
+
+#, c-format
+msgid "Path must begin with a slash (/)\n"
+msgstr "Polun täytyy alkaa kauttaviivalla (/)\n"
+
+#, c-format
+msgid "Path must end with a slash (/)\n"
+msgstr "Polun täytyy päättyä kauttaviivaan (/)\n"
+
+#, c-format
+msgid "Path must not contain two adjacent slashes (//)\n"
+msgstr "Polku ei saa sisältää kahta perättäistä kauttaviivaa (//)\n"
+
+#, c-format
+msgid "No such key '%s'\n"
+msgstr "Ei avainta ”%s”\n"
+
+#, c-format
+msgid "The provided value is outside of the valid range\n"
+msgstr "Annettu arvo on yli sallittujen rajojen\n"
+
+msgid "Print help"
+msgstr "Tulosta ohje"
+
+msgid "List the installed (non-relocatable) schemas"
+msgstr "Luettelo asennetuista (ei-siirrettävistä) skeemoista"
+
+msgid "List the installed relocatable schemas"
+msgstr "Luettelo asennetuista siirrettävistä skeemoista"
+
+msgid "List the keys in SCHEMA"
+msgstr "Luettelo avaimsta SKEEMAssa"
+
+msgid "SCHEMA[:PATH]"
+msgstr "SKEEMA[:POLKU]"
+
+msgid "List the children of SCHEMA"
+msgstr "Luettelo SKEEMAn lapsista"
+
+msgid "List keys and values, recursively"
+msgstr "Luettelo avaimista ja arvoista rekursiivisesti"
+
+msgid "Get the value of KEY"
+msgstr "Hae avaimen AVAIN arvo"
+
+msgid "SCHEMA[:PATH] KEY"
+msgstr "SKEEMA:[POLKU] AVAIN"
+
+msgid "Query the range of valid values for KEY"
+msgstr "Kysy AVAIMEN sallittujen arvojen rajat"
+
+msgid "Set the value of KEY to VALUE"
+msgstr "Aseta avaimelle AVAIN arvoksi ARVO"
+
+msgid "SCHEMA[:PATH] KEY VALUE"
+msgstr "SKEEMA[:POLKU] AVAIN ARVO"
+
+msgid "Reset KEY to its default value"
+msgstr "Palauta AVAIN sen oletusarvoon"
+
+msgid "Check if KEY is writable"
+msgstr "Tarkista onko AVAIN kirjoitettavissa"
+
+msgid ""
+"Monitor KEY for changes.\n"
+"If no KEY is specified, monitor all keys in SCHEMA.\n"
+"Use ^C to stop monitoring.\n"
+msgstr ""
+"Monitoroi avaimen AVAIN muutoksia.\n"
+"Jos AVAIN ei ole määrietty, monitoroi kaikkia avaimia SKEEMAssa.\n"
+"Paina ^C lopettaaksesi monitorointi.\n"
+
+msgid "SCHEMA[:PATH] [KEY]"
+msgstr "SKEEMA:[POLKU] [AVAIN]"
+
 #, c-format
 msgid ""
-"Commands:\n"
-"  help        Show this information\n"
-"  get         Get the value of a key\n"
-"  set         Set the value of a key\n"
-"  reset       Reset the value of a key\n"
-"  monitor     Monitor a key for changes\n"
-"  writable    Check if a key is writable\n"
+"Unknown command %s\n"
 "\n"
-"Use '%s COMMAND --help' to get help for individual commands.\n"
 msgstr ""
+"Tuntematon komento %s\n"
+"\n"
 
-#: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
-msgid "Specify the path for the schema"
-msgstr ""
-
-#: ../gio/gsettings-tool.c:220 ../gio/gsettings-tool.c:320
-#: ../gio/gsettings-tool.c:436 ../gio/gsettings-tool.c:531
-#: ../gio/gsettings-tool.c:644
-msgid "PATH"
-msgstr ""
-
-#: ../gio/gsettings-tool.c:228 ../gio/gsettings-tool.c:539
-#: ../gio/gsettings-tool.c:652
-msgid "SCHEMA KEY"
-msgstr ""
-
-#: ../gio/gsettings-tool.c:230
-msgid "Get the value of KEY"
-msgstr ""
-
-#: ../gio/gsettings-tool.c:232 ../gio/gsettings-tool.c:448
-#: ../gio/gsettings-tool.c:543 ../gio/gsettings-tool.c:659
 msgid ""
-"Arguments:\n"
-"  SCHEMA      The id of the schema\n"
-"  KEY         The name of the key\n"
+"Usage:\n"
+"  gsettings COMMAND [ARGS...]\n"
+"\n"
+"Commands:\n"
+"  help                      Show this information\n"
+"  list-schemas              List installed schemas\n"
+"  list-relocatable-schemas  List relocatable schemas\n"
+"  list-keys                 List keys in a schema\n"
+"  list-children             List children of a schema\n"
+"  list-recursively          List keys and values, recursively\n"
+"  range                     Queries the range of a key\n"
+"  get                       Get the value of a key\n"
+"  set                       Set the value of a key\n"
+"  reset                     Reset the value of a key\n"
+"  writable                  Check if a key is writable\n"
+"  monitor                   Watch for changes\n"
+"\n"
+"Use 'gsettings help COMMAND' to get detailed help.\n"
+"\n"
 msgstr ""
+"Käyttö:\n"
+"  gsettings KOMENTO [ARGUMENTIT...]\n"
+"\n"
+"Komennot:\n"
+"  help                      Näytä tämä tieto\n"
+"  list-schemas              Luettele asennetut skeemat\n"
+"  list-relocatable-schemas  Luettele siirrettävät skeemat\n"
+"  list-keys                 Luettele avaimet skeemassa\n"
+"  list-children             Luettele skeeman lapset\n"
+"  list-recursively          Luettele avaimet ja arvot rekursiivisesti\n"
+"  range                     Kysy avaimen arvon rajat\n"
+"  get                       Hae avaimen arvo\n"
+"  set                       Aseta avaimen arvo\n"
+"  reset                     Palauta avaimen arvo oletukseksi\n"
+"  writable                  Tarkista onko avain kirjoitettavissa\n"
+"  monitor                   Tarkkaile muutoksia\n"
+"\n"
+"Komenna ”gsettings help KOMENTO” saadaksesi tarkemman ohjeen.\n"
+"\n"
 
-#: ../gio/gsettings-tool.c:328 ../gio/gsettings-tool.c:444
-msgid "SCHEMA KEY VALUE"
-msgstr ""
-
-#: ../gio/gsettings-tool.c:330
-msgid "Set the value of KEY"
-msgstr ""
-
-#: ../gio/gsettings-tool.c:332
+#, c-format
 msgid ""
-"Arguments:\n"
-"  SCHEMA      The id of the schema\n"
-"  KEY         The name of the key\n"
-"  VALUE       The value to set key to, as a serialized GVariant\n"
+"Usage:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
 msgstr ""
+"Käyttö:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
-#: ../gio/gsettings-tool.c:405
-#, fuzzy, c-format
-msgid "Key %s is not writable\n"
-msgstr "Typpi %s ei ole luokkatyyppi"
+msgid "Arguments:\n"
+msgstr "Argumentit:\n"
 
-#: ../gio/gsettings-tool.c:446
-msgid "Sets KEY to its default value"
-msgstr ""
+msgid "  COMMAND   The (optional) command to explain\n"
+msgstr "  KOMENTO   (valinnainen) selitettävä komento\n"
 
-#: ../gio/gsettings-tool.c:541
-msgid "Find out whether KEY is writable"
-msgstr ""
-
-#: ../gio/gsettings-tool.c:655
 msgid ""
-"Monitor KEY for changes and print the changed values.\n"
-"Monitoring will continue until the process is terminated."
+"  SCHEMA    The name of the schema\n"
+"  PATH      The path, for relocatable schemas\n"
 msgstr ""
+"  SKEEMA    Skeeman nimi\n"
+"  POLKU     Polku, uudelleensijoiteltaville skeemoille\n"
 
-#: ../gio/gsettings-tool.c:831
-#, fuzzy, c-format
-msgid "Unknown command '%s'\n"
-msgstr "Tuntematon valitsin %s"
+msgid "  KEY       The (optional) key within the schema\n"
+msgstr "  AVAIN     (Valinnainen) avain skeemassa\n"
 
-#: ../gio/gsocket.c:276
+msgid "  KEY       The key within the schema\n"
+msgstr "  AVAIN     Avain skeemassa\n"
+
+msgid "  VALUE     The value to set\n"
+msgstr "  ARVO      Asetettava arvo\n"
+
+#, c-format
+msgid "Empty schema name given"
+msgstr "Annettu tyhjä skeemanimi"
+
 msgid "Invalid socket, not initialized"
 msgstr "Virheellinen pistoke, alustamaton"
 
-#: ../gio/gsocket.c:283
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Virheellinen pistoke, alustus epäonnistui: %s"
 
-#: ../gio/gsocket.c:291
 msgid "Socket is already closed"
 msgstr "Pistoke on jo suljettu"
 
-#: ../gio/gsocket.c:299 ../gio/gsocket.c:2716 ../gio/gsocket.c:2760
 msgid "Socket I/O timed out"
-msgstr ""
+msgstr "Pistoke I/O:n aikakatkaisu"
 
-#: ../gio/gsocket.c:421
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "luodaan GSocket tiedostokahvasta: %s"
 
-#: ../gio/gsocket.c:455 ../gio/gsocket.c:471 ../gio/gsocket.c:2113
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Pistoketta ei voi luoda: %s"
 
-#: ../gio/gsocket.c:455
 msgid "Unknown protocol was specified"
-msgstr "Tuntematon protokolla määritetty"
+msgstr "Tuntematon yhteyskäytäntö määritetty"
 
-#: ../gio/gsocket.c:1224
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ei saatu paikallista osoitetta: %s"
 
-#: ../gio/gsocket.c:1267
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ei saatu etäosoitetta: %s"
 
-#: ../gio/gsocket.c:1328
 #, c-format
 msgid "could not listen: %s"
 msgstr "ei voitu kuunnella: %s"
 
-#: ../gio/gsocket.c:1402
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Virhe sidottaessa osoitetta: %s"
 
-#: ../gio/gsocket.c:1522
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Virhe hyväksyttäessä yhteyttä: %s"
 
-#: ../gio/gsocket.c:1639
 msgid "Error connecting: "
 msgstr "Virhe yhteydenotossa: "
 
-#: ../gio/gsocket.c:1644
 msgid "Connection in progress"
 msgstr "Yhteydenotto meneillään"
 
-#: ../gio/gsocket.c:1651
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Virhe yhteydenotossa: %s"
 
-#: ../gio/gsocket.c:1694 ../gio/gsocket.c:3479
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Ei saatu tulossa olevaa virhettä: %s"
 
-#: ../gio/gsocket.c:1826
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Virhe vastaanotettaessa dataa: %s"
 
-#: ../gio/gsocket.c:2000
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Virhe lähetettäessä dataa: %s"
 
-#: ../gio/gsocket.c:2192
+#, c-format
+msgid "Unable to shutdown socket: %s"
+msgstr "Pistoketta ei voi sammuttaa: %s"
+
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Virhe suljettaessa pistoketta: %s"
 
-#: ../gio/gsocket.c:2709
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Odotetaan pistoke-ehtoa: %s"
 
-#: ../gio/gsocket.c:2999
 msgid "GSocketControlMessage not supported on windows"
-msgstr "GSocketControlMessage ei ole tuettu windowis-alustalla"
+msgstr "GSocketControlMessage ei ole tuettu windows-alustalla"
 
-#: ../gio/gsocket.c:3258 ../gio/gsocket.c:3399
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Virhe vastaanotettaessa viestiä: %s"
 
-#: ../gio/gsocket.c:3494
 msgid "g_socket_get_credentials not implemented for this OS"
-msgstr ""
+msgstr "g_socket_get_credentials ei ole toteutettu tälle käyttöjärjestemälle"
 
-#: ../gio/gsocketclient.c:674 ../gio/gsocketclient.c:1153
 msgid "Unknown error on connect"
 msgstr "Tuntematon virhe yhteydenotossa"
 
-#: ../gio/gsocketclient.c:711 ../gio/gsocketclient.c:1038
 msgid "Trying to proxy over non-TCP connection is not supported."
-msgstr ""
+msgstr "Yritys välittää muun kuin TCP-yhteyden yli ei ole tuettu."
 
-#: ../gio/gsocketclient.c:749 ../gio/gsocketclient.c:1061
-#, fuzzy, c-format
+#, c-format
 msgid "Proxy protocol '%s' is not supported."
-msgstr "Typpi %s ei ole luokkatyyppi"
+msgstr "Välitysyhteyskäytäntö ”%s” ei ole tuettu."
 
 #: ../gio/gsocketlistener.c:191
 msgid "Listener is already closed"
@@ -3228,99 +2995,113 @@ msgstr "Lisätty pistoke on suljettu"
 #: ../gio/gsocks4aproxy.c:121
 #, c-format
 msgid "SOCKSv4 does not support IPv6 address '%s'"
-msgstr ""
+msgstr "SOCKSv4 ei tue IPv6-osoitetta ”%s”"
 
 #: ../gio/gsocks4aproxy.c:139
 #, c-format
 msgid "SOCKSv4 implementation limits username to %i characters"
-msgstr ""
+msgstr "SOCKSv4-toteutus rajoittaa käyttäjänimen %i merkkiin"
 
 #: ../gio/gsocks4aproxy.c:157
 #, c-format
 msgid "SOCKSv4a implementation limits hostname to %i characters"
-msgstr ""
+msgstr "SOCKSv4a-toteutus rajoittaa tietokonenimen %i merkkiin"
 
 #: ../gio/gsocks4aproxy.c:183
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr ""
+msgstr "Palvelin ei ole SOCKSv4-välityspalvelin."
 
 #: ../gio/gsocks4aproxy.c:190
 msgid "Connection through SOCKSv4 server was rejected"
-msgstr ""
+msgstr "Yhteys SOCKSv4-palvelimen läpi hylättiin"
 
 #: ../gio/gsocks5proxy.c:155 ../gio/gsocks5proxy.c:328
 #: ../gio/gsocks5proxy.c:338
 msgid "The server is not a SOCKSv5 proxy server."
-msgstr ""
+msgstr "Palvelin ei ole SOCKSv5-välityspalvelin"
 
 #: ../gio/gsocks5proxy.c:169
 msgid "The SOCKSv5 proxy requires authentication."
-msgstr ""
+msgstr "SOCKSv5-välityspalvelin vaatii todennuksen."
 
 #: ../gio/gsocks5proxy.c:179
 msgid ""
-"The SOCKSv5 proxy requires an authentication method that is not supported by GLib."
-msgstr ""
+"The SOCKSv5 proxy requires an authentication method that is not supported by "
+"GLib."
+msgstr "SOCKSv5-välityspalvelin vaatii todennustapaa, jota GLib ei tue."
 
 #: ../gio/gsocks5proxy.c:208
 #, c-format
 msgid "Username or password is too long for SOCKSv5 protocol (max. is %i)."
 msgstr ""
+"Liian pitkä käyttäjänimi tai salasana SOCKSv5-yhteyskäytäntöön (enintään %i)."
 
 #: ../gio/gsocks5proxy.c:239
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr ""
+"SOCKSv5-todennus epäonnistui väärän käyttäjätunnuksen tai salasanan vuoksi."
 
 #: ../gio/gsocks5proxy.c:289
 #, c-format
 msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgstr ""
+"Tietokonenimi ”%s” on liian pitkä SOCKSv5-yhteyskäytäntöön (enintään %i "
+"tavua)"
 
 #: ../gio/gsocks5proxy.c:352
 msgid "The SOCKSv5 proxy server uses unkown address type."
-msgstr ""
+msgstr "SOCKSv5-välityspalvelin käyttää tuntematonta osoitetyyppiä."
 
 #: ../gio/gsocks5proxy.c:359
 msgid "Internal SOCKSv5 proxy server error."
-msgstr ""
+msgstr "Sisäinen SOCKSv5-välityspalvelinvirhe."
 
 #: ../gio/gsocks5proxy.c:365
 msgid "SOCKSv5 connection not allowed by ruleset."
-msgstr ""
+msgstr "SOCKSv5-yhteys ei ole sallittu sääntöjoukossa."
 
 #: ../gio/gsocks5proxy.c:372
 msgid "Host unreachable through SOCKSv5 server."
-msgstr ""
+msgstr "Laitetta ei tavoitettu SOCKSv5-palvelimen kautta."
 
 #: ../gio/gsocks5proxy.c:378
 msgid "Network unreachable through SOCKSv5 proxy."
-msgstr ""
+msgstr "Verkkoa ei tavoitettu SOCKSv5-välityspalvelimen kautta."
 
 #: ../gio/gsocks5proxy.c:384
 msgid "Connection refused through SOCKSv5 proxy."
-msgstr ""
+msgstr "Yhteyden muodostus SOCKSv5-välityspalvelimen kautta evätty."
 
 #: ../gio/gsocks5proxy.c:390
 msgid "SOCKSv5 proxy does not support 'connect' command."
-msgstr ""
+msgstr "SOCKSv5-välityspalvelin ei tue ”connect”-komentoa."
 
 #: ../gio/gsocks5proxy.c:396
 msgid "SOCKSv5 proxy does not support provided address type."
-msgstr ""
+msgstr "SOCKSv5-välityspalvelin ei tue annettua osoitetyyppiä."
 
 #: ../gio/gsocks5proxy.c:402
-msgid "Unkown SOCKSv5 proxy error."
-msgstr ""
+msgid "Unknown SOCKSv5 proxy error."
+msgstr "Tuntematon SOCKSv5-välityspalvelinvirhe."
 
 #: ../gio/gthemedicon.c:498
 #, c-format
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "GThemeIcon-koodauksen versiota %d ei voi käsitellä"
 
+msgid "No PEM-encoded certificate found"
+msgstr "PEM-koodattua varmennetta ei löytynyt"
+
+msgid "Could not parse PEM-encoded certificate"
+msgstr "PEM-koodattu varmennetta ei voitu jäsentää"
+
+msgid "Could not parse PEM-encoded private key"
+msgstr "PEM-koodattua yksityistä avainta ei voitu jäsentää"
+
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
 msgid "Expecting 1 control message, got %d"
-msgstr "Odotettiin yhtä ohjausviestiä, saatuun %d"
+msgstr "Odotettiin yhtä ohjausviestiä, saatiin %d"
 
 #: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:515
 msgid "Unexpected type of ancillary data"
@@ -3336,14 +3117,13 @@ msgid "Received invalid fd"
 msgstr "Vastaanotettiin kelvoton tiedostokahva"
 
 #: ../gio/gunixconnection.c:359
-#, fuzzy
 msgid "Error sending credentials: "
-msgstr "Virhe lähetettäessä dataa: %s"
+msgstr "Virhe lähetettäessä valtuutusta: "
 
 #: ../gio/gunixconnection.c:439
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
-msgstr ""
+msgstr "Virhe tarkistettaessa onko SO_PASSCRED käytössä pistokkeelle: %s"
 
 #: ../gio/gunixconnection.c:448
 #, c-format
@@ -3351,39 +3131,37 @@ msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
 "socket. Expected %d bytes, got %d"
 msgstr ""
+"Odottamaton valitsinpituus tarkistettaessa onko SO_PASSCRED käytössä "
+"pistokkeelle. Odotettiin %d tavua, saatiin %d"
 
 #: ../gio/gunixconnection.c:465
-#, fuzzy, c-format
+#, c-format
 msgid "Error enabling SO_PASSCRED: %s"
-msgstr "Virhe nimettäessä tiedostoa uudestaan: %s"
+msgstr "Virhe otettaessa käyttöön SO_PASSCRED-lippua: %s"
 
 #: ../gio/gunixconnection.c:495
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
+"Odotettiin saada lukea yksi tavu vastaanottovaltuuksia mutta luettiin nolla "
+"tavua"
 
 #: ../gio/gunixconnection.c:538
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr ""
+msgstr "Virhe kytkettäessä pois SO_PASSCRED-lippua: %s"
 
-#: ../gio/gunixinputstream.c:353 ../gio/gunixinputstream.c:373
-#: ../gio/gunixinputstream.c:451 ../gio/gunixoutputstream.c:438
 #, c-format
 msgid "Error reading from unix: %s"
 msgstr "Virhe luettaessa UNIX:ilta: %s"
 
-#: ../gio/gunixinputstream.c:406 ../gio/gunixinputstream.c:589
-#: ../gio/gunixoutputstream.c:393 ../gio/gunixoutputstream.c:545
 #, c-format
 msgid "Error closing unix: %s"
 msgstr "Virhe suljettaessa UNIX:ia: %s"
 
-#: ../gio/gunixmounts.c:1846 ../gio/gunixmounts.c:1883
 msgid "Filesystem root"
 msgstr "Tiedostojärjestelmän juuri"
 
-#: ../gio/gunixoutputstream.c:339 ../gio/gunixoutputstream.c:360
 #, c-format
 msgid "Error writing to unix: %s"
 msgstr "Virhe käsiteltäessä UNIX:iin: %s"
@@ -3394,14 +3172,12 @@ msgstr ""
 "Abstraktit unix-domainin pistokeosoitteet eivät ole tuettuja tässä "
 "järjestelmässä"
 
-#: ../gio/gvolume.c:406
 msgid "volume doesn't implement eject"
 msgstr "taltio ei toteuta aseman avausta"
 
 #. Translators: This is an error
 #. * message for volume objects that
 #. * don't implement any of eject or eject_with_operation.
-#: ../gio/gvolume.c:485
 msgid "volume doesn't implement eject or eject_with_operation"
 msgstr "taltio ei toteuta aseman avausta (eject tai eject_with_operation)"
 
@@ -3427,19 +3203,19 @@ msgid "Association creation not supported on win32"
 msgstr "Assosiaation luonti ei ole tuettu win32-alustalla"
 
 #: ../gio/gwin32inputstream.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from handle: %s"
-msgstr "Virhe luettaessa tiedostosta: %s"
+msgstr "Virhe luettaessa kahvasta: %s"
 
 #: ../gio/gwin32inputstream.c:348 ../gio/gwin32outputstream.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing handle: %s"
-msgstr "Virhe suljettaessa tiedostoa: %s"
+msgstr "Virhe suljettaessa kahvaa: %s"
 
 #: ../gio/gwin32outputstream.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to handle: %s"
-msgstr "Virhe kirjoitettaessa tiedostoon: %s"
+msgstr "Virhe kirjoitettaessa kahvaan: %s"
 
 #: ../gio/gzlibcompressor.c:396 ../gio/gzlibdecompressor.c:349
 msgid "Not enough memory"
@@ -3457,10 +3233,6 @@ msgstr "Tarvitaan lisää syötettä"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Virheellinen pakattu data"
-
-#, fuzzy
-#~ msgid "Do not give error for empty directory"
-#~ msgstr "Kansiota ei voi siirtää kansion päälle"
 
 #~ msgid "Reached maximum data array limit"
 #~ msgstr "Tietotaulukon suurin koko tuli vastaan"
