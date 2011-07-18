@@ -445,6 +445,10 @@ launch_test (const char *binary)
       goto retry;
     }
 
+  /* count the inability to run a test as a failure */
+  if (!success && testcase_count == 0)
+    testcase_fail_count++;
+
   if (!gtester_quiet)
     g_print ("%s: %s\n", !success ? "FAIL" : "PASS", binary);
   g_timer_destroy (btimer);
