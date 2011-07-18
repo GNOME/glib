@@ -30,6 +30,7 @@ misc_utils.sgml
 option.sgml
 patterns.sgml
 quarks.sgml
+queue.sgml
 random_numbers.sgml
 relations.sgml
 sequence.sgml
@@ -42,3 +43,4 @@ trees-binary.sgml
 trees-nary.sgml
 timers.sgml
 timezone.sgml
+version.sgml

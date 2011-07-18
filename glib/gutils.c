@@ -28,6 +28,46 @@
  * MT safe for the unix part, FIXME: make the win32 part MT safe as well.
  */
 
+/**
+ * SECTION:version
+ * @Title: Version Information
+ * @Short_description: Variables and functions to check the GLib version
+ *
+ * GLib provides version information, primarily useful in configure
+ * checks for builds that have a configure script. Applications will
+ * not typically use the features described here.
+ */
+
+/**
+ * GLIB_MAJOR_VERSION:
+ *
+ * The major version number of the GLib library.
+ *
+ * Like #glib_major_version, but from the headers used at
+ * application compile time, rather than from the library
+ * linked against at application run time.
+ */
+
+/**
+ * GLIB_MINOR_VERSION:
+ *
+ * The minor version number of the GLib library.
+ *
+ * Like #gtk_minor_version, but from the headers used at
+ * application compile time, rather than from the library
+ * linked against at application run time.
+ */
+
+/**
+ * GLIB_MICRO_VERSION:
+ *
+ * The micro version number of the GLib library.
+ *
+ * Like #gtk_micro_version, but from the headers used at
+ * application compile time, rather than from the library
+ * linked against at application run time.
+ */
+
 #include "config.h"
 
 #ifdef HAVE_UNISTD_H
