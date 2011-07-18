@@ -482,19 +482,18 @@ test_decompose (void)
 }
 
 static void
-test_canonical_decomposition (void)
+test_fully_decompose_canonical (void)
 {
-  gunichar *decomp;
+  gunichar decomp[5];
   gsize len;
 
 #define TEST_DECOMP(ch, expected_len, a, b, c, d) \
-  decomp = g_unicode_canonical_decomposition (ch, &len); \
+  len = g_unichar_fully_decompose (ch, FALSE, decomp, G_N_ELEMENTS (decomp)); \
   g_assert_cmpint (expected_len, ==, len); \
   if (expected_len >= 1) g_assert_cmphex (decomp[0], ==, a); \
   if (expected_len >= 2) g_assert_cmphex (decomp[1], ==, b); \
   if (expected_len >= 3) g_assert_cmphex (decomp[2], ==, c); \
   if (expected_len >= 4) g_assert_cmphex (decomp[3], ==, d); \
-  g_free (d);
 
 #define TEST0(ch)		TEST_DECOMP (ch, 1, ch, 0, 0, 0)
 #define TEST1(ch, a)		TEST_DECOMP (ch, 1, a, 0, 0, 0)
@@ -523,6 +522,54 @@ test_canonical_decomposition (void)
   TEST2 (0xD4CC, 0x1111, 0x1171);
   TEST3 (0xCE31, 0x110E, 0x1173, 0x11B8);
   TEST2 (0xCE20, 0x110E, 0x1173);
+
+#undef TEST_DECOMP
+}
+
+static void
+test_canonical_decomposition (void)
+{
+  gunichar *decomp;
+  gsize len;
+
+#define TEST_DECOMP(ch, expected_len, a, b, c, d) \
+  decomp = g_unicode_canonical_decomposition (ch, &len); \
+  g_assert_cmpint (expected_len, ==, len); \
+  if (expected_len >= 1) g_assert_cmphex (decomp[0], ==, a); \
+  if (expected_len >= 2) g_assert_cmphex (decomp[1], ==, b); \
+  if (expected_len >= 3) g_assert_cmphex (decomp[2], ==, c); \
+  if (expected_len >= 4) g_assert_cmphex (decomp[3], ==, d); \
+  g_free (decomp);
+
+#define TEST0(ch)		TEST_DECOMP (ch, 1, ch, 0, 0, 0)
+#define TEST1(ch, a)		TEST_DECOMP (ch, 1, a, 0, 0, 0)
+#define TEST2(ch, a, b)		TEST_DECOMP (ch, 2, a, b, 0, 0)
+#define TEST3(ch, a, b, c)	TEST_DECOMP (ch, 3, a, b, c, 0)
+#define TEST4(ch, a, b, c, d)	TEST_DECOMP (ch, 4, a, b, c, d)
+
+  /* Not decomposable */
+  TEST0 (0x0041);
+  TEST0 (0xFB01);
+
+  /* Singletons */
+  TEST2 (0x212B, 0x0041, 0x030A);
+  TEST1 (0x2126, 0x03A9);
+
+  /* General */
+  TEST2 (0x00C5, 0x0041, 0x030A);
+  TEST2 (0x00F4, 0x006F, 0x0302);
+  TEST3 (0x1E69, 0x0073, 0x0323, 0x0307);
+  TEST2 (0x1E63, 0x0073, 0x0323);
+  TEST2 (0x1E0B, 0x0064, 0x0307);
+  TEST2 (0x1E0D, 0x0064, 0x0323);
+
+  /* Hangul */
+  TEST3 (0xD4DB, 0x1111, 0x1171, 0x11B6);
+  TEST2 (0xD4CC, 0x1111, 0x1171);
+  TEST3 (0xCE31, 0x110E, 0x1173, 0x11B8);
+  TEST2 (0xCE20, 0x110E, 0x1173);
+
+#undef TEST_DECOMP
 }
 
 static void
@@ -538,6 +585,21 @@ test_decompose_tail (void)
       g_assert (!g_unichar_decompose (b, &c, &d));
     else
       g_assert (a == ch && b == 0);
+}
+
+static void
+test_fully_decompose_len (void)
+{
+  gunichar ch;
+
+  /* Test that all canonical decompositions are at most 4 in length,
+   * and compatibility decompositions are at most 18 in length.
+   */
+
+  for (ch = 0; ch < 0x110000; ch++) {
+    g_assert_cmpint (g_unichar_fully_decompose (ch, FALSE, NULL, 0), <=, 4);
+    g_assert_cmpint (g_unichar_fully_decompose (ch, TRUE,  NULL, 0), <=, 18);
+  }
 }
 
 int
@@ -557,8 +619,10 @@ main (int   argc,
   g_test_add_func ("/unicode/wide", test_wide);
   g_test_add_func ("/unicode/compose", test_compose);
   g_test_add_func ("/unicode/decompose", test_decompose);
+  g_test_add_func ("/unicode/fully-decompose-canonical", test_fully_decompose_canonical);
   g_test_add_func ("/unicode/canonical-decomposition", test_canonical_decomposition);
   g_test_add_func ("/unicode/decompose-tail", test_decompose_tail);
+  g_test_add_func ("/unicode/fully-decompose-len", test_fully_decompose_len);
 
   return g_test_run();
 }

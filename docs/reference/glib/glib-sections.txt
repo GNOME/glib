@@ -2704,6 +2704,7 @@ g_unichar_digit_value
 g_unichar_xdigit_value
 g_unichar_compose
 g_unichar_decompose
+g_unichar_fully_decompose
 GUnicodeType
 g_unichar_type
 GUnicodeBreakType

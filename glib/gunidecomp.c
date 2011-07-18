@@ -127,7 +127,7 @@ g_unicode_canonical_ordering (gunichar *string,
  * only calculate the result_len; however, a buffer with space for three
  * characters will always be big enough. */
 static void
-decompose_hangul (gunichar s, 
+decompose_hangul (gunichar s,
                   gunichar *r,
                   gsize *result_len)
 {
@@ -217,6 +217,9 @@ find_decomposition (gunichar ch,
  * 
  * Return value: a newly allocated string of Unicode characters.
  *   @result_len is set to the resulting length of the string.
+ *
+ * Deprecated: 2.30: Use the more flexible g_unichar_fully_decompose()
+ *   instead.
  **/
 gunichar *
 g_unicode_canonical_decomposition (gunichar ch,
@@ -227,7 +230,7 @@ g_unicode_canonical_decomposition (gunichar ch,
   gunichar *r;
 
   /* Hangul syllable */
-  if (ch >= 0xac00 && ch <= 0xd7a3)
+  if (ch >= SBase && ch < SBase + SCount)
     {
       decompose_hangul (ch, NULL, result_len);
       r = g_malloc (*result_len * sizeof (gunichar));
@@ -363,7 +366,7 @@ _g_utf8_normalize_wc (const gchar    *str,
       const gchar *decomp;
       gunichar wc = g_utf8_get_char (p);
 
-      if (wc >= 0xac00 && wc <= 0xd7a3)
+      if (wc >= SBase && wc < SBase + SCount)
         {
           gsize result_len;
           decompose_hangul (wc, NULL, &result_len);
@@ -394,7 +397,7 @@ _g_utf8_normalize_wc (const gchar    *str,
       int cc;
       gsize old_n_wc = n_wc;
 	  
-      if (wc >= 0xac00 && wc <= 0xd7a3)
+      if (wc >= SBase && wc < SBase + SCount)
         {
           gsize result_len;
           decompose_hangul (wc, wc_buffer + n_wc, &result_len);
@@ -592,7 +595,7 @@ decompose_hangul_step (gunichar  ch,
  * further, but @a may itself decompose.  To get the full
  * canonical decomposition for @ch, one would need to
  * recursively call this function on @a.  Or use
- * g_unicode_canonical_decomposition().
+ * g_unichar_fully_decompose().
  *
  * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
  * for details.
@@ -677,4 +680,69 @@ g_unichar_compose (gunichar  a,
 
   *ch = 0;
   return FALSE;
+}
+
+/**
+ * g_unichar_fully_decompose:
+ * @ch: a Unicode character.
+ * @compat: whether perform canonical or compatibility decomposition
+ * @result: location to store decomposed result, or %NULL
+ * @result_len: length of @result
+ *
+ * Computes the canonical or compatibility decomposition of a
+ * Unicode character.  For compatibility decomposition,
+ * pass %TRUE for @compat; for canonical decomposition
+ * pass %FALSE for @compat.
+ *
+ * The decomposed sequence is placed in @result.  Only up to
+ * @result_len characters are written into @result.  The length
+ * of the full decomposition (irrespective of @result_len) is
+ * returned by the function.  For canonical decomposition, a
+ * result buffer of length 4 is always enough, whereas for
+ * compatibility decomposition, a buffer of 18 is enough.
+ *
+ * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
+ * for details.
+ *
+ * Return value: the length of the full decomposition.
+ *
+ * Since: 2.30
+ **/
+gsize
+g_unichar_fully_decompose (gunichar  ch,
+			   gboolean  compat,
+			   gunichar *result,
+			   gsize     result_len)
+{
+  const gchar *decomp;
+  const gchar *p;
+
+  /* Hangul syllable */
+  if (ch >= SBase && ch < SBase + SCount)
+    {
+      gsize len, i;
+      gunichar buffer[3];
+      decompose_hangul (ch, result ? buffer : NULL, &len);
+      if (result)
+        for (i = 0; i < len && i < result_len; i++)
+	  result[i] = buffer[i];
+      return len;
+    }
+  else if ((decomp = find_decomposition (ch, compat)) != NULL)
+    {
+      /* Found it.  */
+      gsize len, i;
+
+      len = g_utf8_strlen (decomp, -1);
+
+      for (p = decomp, i = 0; i < len && i < result_len; p = g_utf8_next_char (p), i++)
+        result[i] = g_utf8_get_char (p);
+
+      return len;
+    }
+
+  /* Does not decompose */
+  if (result && result_len >= 1)
+    *result = ch;
+  return 1;
 }

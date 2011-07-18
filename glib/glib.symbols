@@ -1196,7 +1196,6 @@ g_tree_search
 g_tree_steal
 g_tree_traverse
 g_unichar_break_type
-g_unicode_canonical_ordering
 g_unichar_combining_class
 g_unichar_compose
 g_unichar_decompose
@@ -1216,6 +1215,7 @@ g_unichar_iswide
 g_unichar_iswide_cjk
 g_unichar_isxdigit
 g_unichar_iszerowidth
+g_unichar_fully_decompose
 g_unichar_tolower
 g_unichar_totitle
 g_unichar_toupper
@@ -1226,6 +1226,7 @@ g_unichar_digit_value
 g_unichar_xdigit_value
 g_unichar_type
 g_unicode_canonical_decomposition
+g_unicode_canonical_ordering
 g_utf8_casefold
 g_utf8_collate
 g_utf8_collate_key
