@@ -38,9 +38,6 @@
 #ifdef HAVE_POLL_H
 #include <poll.h>
 #endif
-#if HAVE_SYS_STATVFS_H
-#include <sys/statvfs.h>
-#endif
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
@@ -49,6 +46,25 @@
 #include <signal.h>
 #include <gstdio.h>
 #include <dirent.h>
+
+#if HAVE_SYS_STATFS_H
+#include <sys/statfs.h>
+#endif
+#if HAVE_SYS_STATVFS_H
+#include <sys/statvfs.h>
+#endif
+#if HAVE_SYS_VFS_H
+#include <sys/vfs.h>
+#elif HAVE_SYS_MOUNT_H
+#if HAVE_SYS_PARAM_H
+#include <sys/param.h>
+#endif
+#include <sys/mount.h>
+#endif
+
+#ifndef O_BINARY
+#define O_BINARY 0
+#endif
 
 #include "gunixmounts.h"
 #include "gfile.h"
@@ -570,7 +586,13 @@ get_mtab_monitor_file (void)
 static GList *
 _g_get_unix_mounts (void)
 {
+#if defined(USE_STATFS)
   struct statfs *mntent = NULL;
+#elif defined(USE_STATVFS)
+  struct statvfs *mntent = NULL;
+#else
+  #error statfs juggling failed
+#endif
   int num_mounts, i;
   GUnixMountEntry *mount_entry;
   GList *return_list;
@@ -588,7 +610,11 @@ _g_get_unix_mounts (void)
       mount_entry->mount_path = g_strdup (mntent[i].f_mntonname);
       mount_entry->device_path = g_strdup (mntent[i].f_mntfromname);
       mount_entry->filesystem_type = g_strdup (mntent[i].f_fstypename);
+#if defined(USE_STATFS)
       if (mntent[i].f_flags & MNT_RDONLY)
+#elif defined(USE_STATVFS)
+      if (mntent[i].f_flag & MNT_RDONLY)
+#endif
 	mount_entry->is_read_only = TRUE;
 
       mount_entry->is_system_internal =

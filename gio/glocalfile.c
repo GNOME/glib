@@ -50,28 +50,6 @@
 #define O_BINARY 0
 #endif
 
-#if defined(HAVE_STATFS) && defined(HAVE_STATVFS)
-/* Some systems have both statfs and statvfs, pick the
-   most "native" for these */
-# if !defined(HAVE_STRUCT_STATFS_F_BAVAIL)
-   /* on solaris and irix, statfs doesn't even have the
-      f_bavail field */
-#  define USE_STATVFS
-# else
-  /* at least on linux, statfs is the actual syscall */
-#  define USE_STATFS
-# endif
-
-#elif defined(HAVE_STATFS)
-
-# define USE_STATFS
-
-#elif defined(HAVE_STATVFS)
-
-# define USE_STATVFS
-
-#endif
-
 #include "gfileattribute.h"
 #include "glocalfile.h"
 #include "glocalfileinfo.h"
