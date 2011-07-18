@@ -113,7 +113,7 @@ testcase_close (long double duration,
     g_print ("GTester: last random seed: %s\n", subtest_last_seed);
   if (exit_status)
     testcase_fail_count += 1;
-  if (subtest_mode_fatal && testcase_fail_count)
+  if (subtest_mode_fatal && exit_status)
     terminate();
 }
 
@@ -418,8 +418,8 @@ launch_test (const char *binary)
   gboolean success = TRUE;
   GTimer *btimer = g_timer_new();
   gboolean need_restart;
+
   testcase_count = 0;
-  testcase_fail_count = 0;
   if (!gtester_quiet)
     g_print ("TEST: %s... ", binary);
 
@@ -446,7 +446,7 @@ launch_test (const char *binary)
     }
 
   if (!gtester_quiet)
-    g_print ("%s: %s\n", testcase_fail_count || !success ? "FAIL" : "PASS", binary);
+    g_print ("%s: %s\n", !success ? "FAIL" : "PASS", binary);
   g_timer_destroy (btimer);
   if (subtest_mode_fatal && !success)
     terminate();
@@ -681,7 +681,7 @@ main (int    argc,
 
   close (log_fd);
 
-  return testcase_fail_count == 0 ? 0 : 1;
+  return testcase_fail_count == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 
 static void
