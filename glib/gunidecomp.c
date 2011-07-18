@@ -132,35 +132,22 @@ decompose_hangul (gunichar s,
                   gsize *result_len)
 {
   gint SIndex = s - SBase;
+  gint TIndex = SIndex % TCount;
 
-  /* not a hangul syllable */
-  if (SIndex < 0 || SIndex >= SCount)
+  if (r)
+    {
+      r[0] = LBase + SIndex / NCount;
+      r[1] = VBase + (SIndex % NCount) / TCount;
+    }
+
+  if (TIndex)
     {
       if (r)
-        r[0] = s;
-      *result_len = 1;
+	r[2] = TBase + TIndex;
+      *result_len = 3;
     }
   else
-    {
-      gunichar L = LBase + SIndex / NCount;
-      gunichar V = VBase + (SIndex % NCount) / TCount;
-      gunichar T = TBase + SIndex % TCount;
-
-      if (r)
-        {
-          r[0] = L;
-          r[1] = V;
-        }
-
-      if (T != TBase)
-        {
-          if (r)
-            r[2] = T;
-          *result_len = 3;
-        }
-      else
-        *result_len = 2;
-    }
+    *result_len = 2;
 }
 
 /* returns a pointer to a null-terminated UTF-8 string */
@@ -536,36 +523,25 @@ decompose_hangul_step (gunichar  ch,
                        gunichar *a,
                        gunichar *b)
 {
-  gint SIndex;
-  gunichar L, V, T;
+  gint SIndex, TIndex;
 
-  SIndex = ch - SBase;
-
-  if (SIndex < 0 || SIndex >= SCount)
+  if (ch < SBase || ch >= SBase + SCount)
     return FALSE;  /* not a hangul syllable */
 
-  L = LBase + SIndex / NCount;
-  V = VBase + (SIndex % NCount) / TCount;
-  T = TBase + SIndex % TCount;
+  SIndex = ch - SBase;
+  TIndex = SIndex % TCount;
 
-  if (T != TBase)
+  if (TIndex)
     {
-      gint LIndex, VIndex;
-      gunichar LV;
-
       /* split LVT -> LV,T */
-      LIndex = L - LBase;
-      VIndex = V - VBase;
-      LV = SBase + (LIndex * VCount + VIndex) * TCount;
-
-      *a = LV;
-      *b = T;
+      *a = ch - TIndex;
+      *b = TBase + TIndex;
     }
   else
     {
       /* split LV -> L,V */
-      *a = L;
-      *b = V;
+      *a = LBase + SIndex / NCount;
+      *b = VBase + (SIndex % NCount) / TCount;
     }
 
   return TRUE;
