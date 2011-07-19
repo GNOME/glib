@@ -31,6 +31,15 @@
 
 G_BEGIN_DECLS
 
+/**
+ * GError:
+ * @domain: error domain, e.g. #G_FILE_ERROR
+ * @code: error code, e.g. %G_FILE_ERROR_NOENT
+ * @message: human-readable informative error message
+ *
+ * The <structname>GError</structname> structure contains
+ * information about an error that has occurred.
+ */
 typedef struct _GError GError;
 
 struct _GError
