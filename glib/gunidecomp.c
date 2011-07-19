@@ -19,6 +19,29 @@
  *   Boston, MA 02111-1307, USA.
  */
 
+/**
+ * SECTION:unicode
+ * @Title: Unicode Manipulation
+ * @Short_description: functions operating on Unicode characters and
+ *     UTF-8 strings
+ * @See_also: g_locale_to_utf8(), g_locale_from_utf8()
+ *
+ * This section describes a number of functions for dealing with
+ * Unicode characters and strings.  There are analogues of the
+ * traditional <filename>ctype.h</filename> character classification
+ * and case conversion functions, UTF-8 analogues of some string utility
+ * functions, functions to perform normalization, case conversion and
+ * collation on UTF-8 strings and finally functions to convert between
+ * the UTF-8, UTF-16 and UCS-4 encodings of Unicode.
+ *
+ * The implementations of the Unicode functions in GLib are based
+ * on the Unicode Character Data tables, which are available from
+ * <ulink url="http://www.unicode.org/">www.unicode.org</ulink>.
+ * GLib 2.8 supports Unicode 4.0, GLib 2.10 supports Unicode 4.1,
+ * GLib 2.12 supports Unicode 5.0, GLib 2.16.3 supports Unicode 5.1,
+ * GLib 2.30 supports Unicode 6.0.
+ */
+
 #include "config.h"
 
 #include <stdlib.h>
