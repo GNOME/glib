@@ -264,7 +264,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 		  G_SIGNAL_RUN_LAST,
 		  G_STRUCT_OFFSET (GTlsConnectionClass, accept_certificate),
 		  g_signal_accumulator_true_handled, NULL,
-		  g_cclosure_marshal_generic,
+		  NULL,
 		  G_TYPE_BOOLEAN, 2,
 		  G_TYPE_TLS_CERTIFICATE,
 		  G_TYPE_TLS_CERTIFICATE_FLAGS);

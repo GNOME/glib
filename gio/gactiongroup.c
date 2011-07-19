@@ -123,7 +123,7 @@ g_action_group_default_init (GActionGroupInterface *class)
                   G_STRUCT_OFFSET (GActionGroupInterface,
                                    action_enabled_changed),
                   NULL, NULL,
-                  g_cclosure_marshal_generic,
+                  NULL,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_BOOLEAN);
@@ -147,7 +147,7 @@ g_action_group_default_init (GActionGroupInterface *class)
                   G_STRUCT_OFFSET (GActionGroupInterface,
                                    action_state_changed),
                   NULL, NULL,
-                  g_cclosure_marshal_generic,
+                  NULL,
                   G_TYPE_NONE, 2,
                   G_TYPE_STRING,
                   G_TYPE_VARIANT);

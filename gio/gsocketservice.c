@@ -270,7 +270,7 @@ g_socket_service_class_init (GSocketServiceClass *class)
     g_signal_new ("incoming", G_TYPE_FROM_CLASS (class), G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSocketServiceClass, incoming),
                   g_signal_accumulator_true_handled, NULL,
-                  g_cclosure_marshal_generic, G_TYPE_BOOLEAN,
+                  NULL, G_TYPE_BOOLEAN,
                   2, G_TYPE_SOCKET_CONNECTION, G_TYPE_OBJECT);
 }
 

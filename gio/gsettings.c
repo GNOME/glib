@@ -620,7 +620,7 @@ g_settings_class_init (GSettingsClass *class)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, change_event),
                   g_signal_accumulator_true_handled, NULL,
-                  g_cclosure_marshal_generic,
+                  NULL,
                   G_TYPE_BOOLEAN, 2, G_TYPE_POINTER, G_TYPE_INT);
 
   /**
@@ -674,7 +674,7 @@ g_settings_class_init (GSettingsClass *class)
                   G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GSettingsClass, writable_change_event),
                   g_signal_accumulator_true_handled, NULL,
-                  g_cclosure_marshal_generic, G_TYPE_BOOLEAN, 1, G_TYPE_UINT);
+                  NULL, G_TYPE_BOOLEAN, 1, G_TYPE_UINT);
 
   /**
    * GSettings:context:

@@ -186,7 +186,7 @@ g_dbus_object_skeleton_class_init (GDBusObjectSkeletonClass *klass)
                   G_STRUCT_OFFSET (GDBusObjectSkeletonClass, authorize_method),
                   _g_signal_accumulator_false_handled,
                   NULL,
-                  g_cclosure_marshal_generic,
+                  NULL,
                   G_TYPE_BOOLEAN,
                   2,
                   G_TYPE_DBUS_INTERFACE_SKELETON,

@@ -159,7 +159,7 @@ g_dbus_auth_observer_class_init (GDBusAuthObserverClass *klass)
                   G_STRUCT_OFFSET (GDBusAuthObserverClass, authorize_authenticated_peer),
                   _g_signal_accumulator_false_handled,
                   NULL, /* accu_data */
-                  g_cclosure_marshal_generic,
+                  NULL,
                   G_TYPE_BOOLEAN,
                   2,
                   G_TYPE_IO_STREAM,

@@ -899,7 +899,7 @@ g_dbus_connection_class_init (GDBusConnectionClass *klass)
                                          G_STRUCT_OFFSET (GDBusConnectionClass, closed),
                                          NULL,
                                          NULL,
-                                         g_cclosure_marshal_generic,
+                                         NULL,
                                          G_TYPE_NONE,
                                          2,
                                          G_TYPE_BOOLEAN,
