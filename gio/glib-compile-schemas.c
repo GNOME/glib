@@ -783,10 +783,10 @@ is_valid_keyname (const gchar  *key,
       return FALSE;
     }
 
-  if (i > 32)
+  if (i > 1024)
     {
       g_set_error (error, G_MARKUP_ERROR, G_MARKUP_ERROR_INVALID_CONTENT,
-                   _("invalid name '%s': maximum length is 32"), key);
+                   _("invalid name '%s': maximum length is 1024"), key);
       return FALSE;
     }
 
