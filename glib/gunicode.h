@@ -99,7 +99,8 @@ typedef guint16 gunichar2;
  * @G_UNICODE_CONNECT_PUNCTUATION: General category "Punctuation, Connector" (Pc)
  * @G_UNICODE_DASH_PUNCTUATION: General category "Punctuation, Dash" (Pd)
  * @G_UNICODE_CLOSE_PUNCTUATION: General category "Punctuation, Close" (Pe)
- * @G_UNICODE_FINAL_PUNCTUATION: General category "Punctuation, Final quote" (Pf)* @G_UNICODE_INITIAL_PUNCTUATION: General category "Punctuation, Initial quote" (Pi)
+ * @G_UNICODE_FINAL_PUNCTUATION: General category "Punctuation, Final quote" (Pf)
+ * @G_UNICODE_INITIAL_PUNCTUATION: General category "Punctuation, Initial quote" (Pi)
  * @G_UNICODE_OTHER_PUNCTUATION: General category "Punctuation, Other" (Po)
  * @G_UNICODE_OPEN_PUNCTUATION: General category "Punctuation, Open" (Ps)
  * @G_UNICODE_CURRENCY_SYMBOL: General category "Symbol, Currency" (Sc)
@@ -112,8 +113,7 @@ typedef guint16 gunichar2;
  *
  * These are the possible character classifications from the
  * Unicode specification.
- * See <ulink url="http://www.unicode.org/Public/UNIDATA/UnicodeData.html"
- * >http://www.unicode.org/Public/UNIDATA/UnicodeData.html</ulink>.
+ * See <ulink url="http://www.unicode.org/Public/UNIDATA/UnicodeData.html">http://www.unicode.org/Public/UNIDATA/UnicodeData.html</ulink>.
  */
 typedef enum
 {
@@ -196,8 +196,7 @@ typedef enum
  * Applications should be ready to handle unknown values.
  * They may be regarded as %G_UNICODE_BREAK_UNKNOWN.
  *
- * See <ulink url="http://www.unicode.org/unicode/reports/tr14/"
- * >http://www.unicode.org/unicode/reports/tr14/</ulink>.
+ * See <ulink url="http://www.unicode.org/unicode/reports/tr14/">http://www.unicode.org/unicode/reports/tr14/</ulink>.
  */
 typedef enum
 {
@@ -553,10 +552,11 @@ void g_unicode_canonical_ordering (gunichar *string,
                                    gsize     len);
 
 
+#ifndef G_DISABLE_DEPRECATED
 /* Deprecated.  Use g_unichar_fully_decompose() */
 gunichar *g_unicode_canonical_decomposition (gunichar  ch,
                                              gsize    *result_len) G_GNUC_MALLOC;
-
+#endif
 
 /* Array of skip-bytes-per-initial character.
  */
