@@ -1,3 +1,38 @@
+Overview of changes from GLib 2.29.10 to 2.29.12
+================================================
+
+* Add new API to do Unicode (de-)composition in atomic steps,
+  for use in Harfbuzz.
+
+* Bugs fixed:
+ 615895 (indirectly) support non-NULL-terminated regexes in GRegex
+ 617949 glib trunk fails to compile on Solaris w/ Studio 12...
+ 620423 Document the possibility to unset attributes
+ 627974 Floating reference headaches
+ 644687 Not finding cross-links in current doc set
+ 649246 g_output_stream_splice() cannot be used on 32-bit machines...
+ 653841 a helper script to build glib from git master on win32
+ 653935 g_slist_free_full/g_list_free_full iterates twice in the list
+ 654017 tests: fix glib_translations_work() in gsettings unit test
+ 654085 Don't needlessly use "echo -e" when creating .def files
+ 654195 Add g_unichar_compose() and g_unichar_decompose()
+ 654232 GCancellable eventfd problems
+ 654394 suspicious use of floating references in GDBusInterfaceSkeleton
+ 654536 GSettings: lift key name length restriction to 64
+ 654627 GParamSpec: intern property names
+ 654651 Better g_unicode_canonical_decomposition()
+ 654917 Make g_cclosure_marshal_generic the default signal handler
+
+* Translation updates:
+ Belarusian
+ Finnish
+ Korean
+ Latvian
+ Lithuanian
+ Norwegian bokmål
+ Turkish
+
+
 Overview of changes from GLib 2.29.8 to 2.29.10
 ===============================================
 
