@@ -1843,75 +1843,69 @@ gchar *
 g_format_size_full (guint64          size,
                     GFormatSizeFlags flags)
 {
-  /* Longest possibility for (2^64 - 1) is 42 characters:
-   *
-   *   "16.0 EB (18 446 744 073 709 551 615 bytes)"
-   */
-  gchar buffer[80];
-  gsize i;
+  GString *string;
+
+  string = g_string_new (NULL);
 
   if (flags & G_FORMAT_SIZE_IEC_UNITS)
     {
       if (size < KIBIBYTE_FACTOR)
         {
-          i = snprintf (buffer, sizeof buffer,
-                        g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size),
-                        (guint) size);
+          g_string_printf (string,
+                           g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size),
+                           (guint) size);
           flags &= ~G_FORMAT_SIZE_LONG_FORMAT;
         }
 
       else if (size < MEBIBYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f KiB"), (gdouble) size / (gdouble) KIBIBYTE_FACTOR);
+        g_string_printf (string, _("%.1f KiB"), (gdouble) size / (gdouble) KIBIBYTE_FACTOR);
 
       else if (size < GIBIBYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f MiB"), (gdouble) size / (gdouble) MEBIBYTE_FACTOR);
+        g_string_printf (string, _("%.1f MiB"), (gdouble) size / (gdouble) MEBIBYTE_FACTOR);
 
       else if (size < TEBIBYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f GiB"), (gdouble) size / (gdouble) GIBIBYTE_FACTOR);
+        g_string_printf (string, _("%.1f GiB"), (gdouble) size / (gdouble) GIBIBYTE_FACTOR);
 
       else if (size < PEBIBYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f TiB"), (gdouble) size / (gdouble) TEBIBYTE_FACTOR);
+        g_string_printf (string, _("%.1f TiB"), (gdouble) size / (gdouble) TEBIBYTE_FACTOR);
 
       else if (size < EXBIBYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f PiB"), (gdouble) size / (gdouble) PEBIBYTE_FACTOR);
+        g_string_printf (string, _("%.1f PiB"), (gdouble) size / (gdouble) PEBIBYTE_FACTOR);
 
       else
-        i = snprintf (buffer, sizeof buffer, _("%.1f EiB"), (gdouble) size / (gdouble) EXBIBYTE_FACTOR);
+        g_string_printf (string, _("%.1f EiB"), (gdouble) size / (gdouble) EXBIBYTE_FACTOR);
     }
   else
     {
       if (size < KILOBYTE_FACTOR)
         {
-          i = snprintf (buffer, sizeof buffer,
-                        g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size),
-                        (guint) size);
+          g_string_printf (string,
+                           g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size),
+                           (guint) size);
           flags &= ~G_FORMAT_SIZE_LONG_FORMAT;
         }
 
       else if (size < MEGABYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f kB"), (gdouble) size / (gdouble) KILOBYTE_FACTOR);
+        g_string_printf (string, _("%.1f kB"), (gdouble) size / (gdouble) KILOBYTE_FACTOR);
 
       else if (size < GIGABYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f MB"), (gdouble) size / (gdouble) MEGABYTE_FACTOR);
+        g_string_printf (string, _("%.1f MB"), (gdouble) size / (gdouble) MEGABYTE_FACTOR);
 
       else if (size < TERABYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f GB"), (gdouble) size / (gdouble) GIGABYTE_FACTOR);
+        g_string_printf (string, _("%.1f GB"), (gdouble) size / (gdouble) GIGABYTE_FACTOR);
 
       else if (size < PETABYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f TB"), (gdouble) size / (gdouble) TERABYTE_FACTOR);
+        g_string_printf (string, _("%.1f TB"), (gdouble) size / (gdouble) TERABYTE_FACTOR);
 
       else if (size < EXABYTE_FACTOR)
-        i = snprintf (buffer, sizeof buffer, _("%.1f PB"), (gdouble) size / (gdouble) PETABYTE_FACTOR);
+        g_string_printf (string, _("%.1f PB"), (gdouble) size / (gdouble) PETABYTE_FACTOR);
 
       else
-        i = snprintf (buffer, sizeof buffer, _("%.1f EB"), (gdouble) size / (gdouble) EXABYTE_FACTOR);
+        g_string_printf (string, _("%.1f EB"), (gdouble) size / (gdouble) EXABYTE_FACTOR);
     }
 
   if (flags & G_FORMAT_SIZE_LONG_FORMAT)
     {
-      buffer[i++] = ' ';
-      buffer[i++] = '(';
-
       /* First problem: we need to use the number of bytes to decide on
        * the plural form that is used for display, but the number of
        * bytes potentially exceeds the size of a guint (which is what
@@ -1940,28 +1934,21 @@ g_format_size_full (guint64          size,
        * Solution: format the number separately and use "%s bytes" on
        * all platforms.
        */
-      gchar formatted_number[40];
-      gint j;
+      const gchar *translated_format;
+      GString *formatted_number;
 
-      /* The "'" modifier is not available on Windows, so we'd better
-       * use g_snprintf().
-       */
-      j = g_snprintf (formatted_number, sizeof formatted_number,
-                      "%'"G_GUINT64_FORMAT, size);
-      g_assert (j < sizeof formatted_number);
+      /* Translators: the %s in "%s bytes" will always be replaced by a number. */
+      translated_format = g_dngettext(GETTEXT_PACKAGE, "%s byte", "%s bytes", plural_form);
 
-      /* Extra paranoia... */
-      g_assert (i < sizeof buffer - 10);
-      i += snprintf (buffer + i, sizeof buffer - i,
-                     g_dngettext(GETTEXT_PACKAGE, "%s byte", "%s bytes", plural_form),
-                     formatted_number);
-      g_assert (i < sizeof buffer - 10);
-      buffer[i++] = ')';
+      formatted_number = g_string_new (NULL);
+      g_string_printf (formatted_number, "%'"G_GUINT64_FORMAT, size);
+      g_string_append (string, " (");
+      g_string_append_printf (string, translated_format, formatted_number->str);
+      g_string_free (formatted_number, TRUE);
+      g_string_append (string, ")");
     }
 
-  buffer[i++] = '\0';
-
-  return g_memdup (buffer, i);
+  return g_string_free (string, FALSE);
 }
 
 /**
