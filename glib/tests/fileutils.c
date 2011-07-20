@@ -483,12 +483,24 @@ test_mkdir_with_parents (void)
 static void
 test_format_size_for_display (void)
 {
+  /* nobody called setlocale(), so we should get "C" behaviour... */
   check_string (g_format_size_for_display (0), "0 bytes");
   check_string (g_format_size_for_display (1), "1 byte");
   check_string (g_format_size_for_display (2), "2 bytes");
   check_string (g_format_size_for_display (1024), "1.0 KB");
   check_string (g_format_size_for_display (1024 * 1024), "1.0 MB");
   check_string (g_format_size_for_display (1024 * 1024 * 1024), "1.0 GB");
+
+  check_string (g_format_size (0), "0 bytes");
+  check_string (g_format_size (1), "1 byte");
+  check_string (g_format_size (2), "2 bytes");
+  check_string (g_format_size (1000), "1.0 kB");
+  check_string (g_format_size (1000 * 1000), "1.0 MB");
+  check_string (g_format_size (1000 * 1000 * 1000), "1.0 GB");
+
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_IEC_UNITS), "227.4 MiB");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_DEFAULT), "238.5 MB");
+  check_string (g_format_size_full (238472938, G_FORMAT_SIZE_LONG_FORMAT), "238.5 MB (238472938 bytes)");
 }
 
 int

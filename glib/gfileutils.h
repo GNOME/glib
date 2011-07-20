@@ -110,7 +110,20 @@ gint    g_file_open_tmp      (const gchar  *tmpl,
 			      gchar       **name_used,
 			      GError      **error);
 
+typedef enum
+{
+  G_FORMAT_SIZE_DEFAULT,
+  G_FORMAT_SIZE_IEC_UNITS,
+  G_FORMAT_SIZE_LONG_FORMAT
+} GFormatSizeFlags;
+
+char *  g_format_size_full   (guint64          size,
+                              GFormatSizeFlags flags);
+char *  g_format_size        (guint64          size);
+
+#ifndef G_DISABLE_DEPRECATED
 char *g_format_size_for_display (goffset size);
+#endif
 
 gchar *g_build_path     (const gchar *separator,
 			 const gchar *first_element,

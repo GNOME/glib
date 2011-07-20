@@ -1767,12 +1767,202 @@ g_build_filename (const gchar *first_element,
   return str;
 }
 
+#define KILOBYTE_FACTOR (G_GOFFSET_CONSTANT (1000))
+#define MEGABYTE_FACTOR (KILOBYTE_FACTOR * KILOBYTE_FACTOR)
+#define GIGABYTE_FACTOR (MEGABYTE_FACTOR * KILOBYTE_FACTOR)
+#define TERABYTE_FACTOR (GIGABYTE_FACTOR * KILOBYTE_FACTOR)
+#define PETABYTE_FACTOR (TERABYTE_FACTOR * KILOBYTE_FACTOR)
+#define EXABYTE_FACTOR  (PETABYTE_FACTOR * KILOBYTE_FACTOR)
+
 #define KIBIBYTE_FACTOR (G_GOFFSET_CONSTANT (1024))
 #define MEBIBYTE_FACTOR (KIBIBYTE_FACTOR * KIBIBYTE_FACTOR)
 #define GIBIBYTE_FACTOR (MEBIBYTE_FACTOR * KIBIBYTE_FACTOR)
 #define TEBIBYTE_FACTOR (GIBIBYTE_FACTOR * KIBIBYTE_FACTOR)
 #define PEBIBYTE_FACTOR (TEBIBYTE_FACTOR * KIBIBYTE_FACTOR)
 #define EXBIBYTE_FACTOR (PEBIBYTE_FACTOR * KIBIBYTE_FACTOR)
+
+/**
+ * g_format_size:
+ * @size: a size in bytes
+ *
+ * Formats a size (for example the size of a file) into a human readable
+ * string.  Sizes are rounded to the nearest size prefix (kB, MB, GB)
+ * and are displayed rounded to the nearest tenth. E.g. the file size
+ * 3292528 bytes will be converted into the string "3.2 MB".
+ *
+ * The prefix units base is 1000 (i.e. 1 kB is 1000 bytes).
+ *
+ * This string should be freed with g_free() when not needed any longer.
+ *
+ * See g_format_size_full() for more options about how the size might be
+ * formatted.
+ *
+ * Returns: a newly-allocated formatted string containing a human readable
+ *          file size.
+ *
+ * Since: 2.30
+ **/
+gchar *
+g_format_size (guint64 size)
+{
+  return g_format_size_full (size, G_FORMAT_SIZE_DEFAULT);
+}
+
+/**
+ * g_format_size_full:
+ * @size: a size in bytes
+ * @flags: #GFormatSizeFlags to modify the output
+ *
+ * Formats a size.
+ *
+ * This function is similar to g_format_size() but allows for flags that
+ * modify the output.  See #GFormatSizeFlags.
+ *
+ * Returns: a newly-allocated formatted string containing a human
+ *          readable file size.
+ *
+ * Since: 2.30
+ **/
+/**
+ * GFormatSizeFlags:
+ * @G_FORMAT_SIZE_DEFAULT: behave the same as g_format_size()
+ * @G_FORMAT_SIZE_IEC_UNITS: use IEC (base 1024) units with "KiB"-style
+ *                           suffixes.  IEC units should only be used
+ *                           for reporting things with a strong "power
+ *                           of 2" basis, like RAM sizes or RAID stripe
+ *                           sizes.  Network and storage sizes should
+ *                           be reported in the normal SI units.
+ * @G_FORMAT_SIZE_LONG_FORMAT: include the exact number of bytes as part
+ *                             of the returned string.  For example,
+ *                             "45.6 kB (45,612 bytes)".
+ *
+ * Flags to modify the format of the string returned by
+ * g_format_size_full().
+ **/
+gchar *
+g_format_size_full (guint64          size,
+                    GFormatSizeFlags flags)
+{
+  /* Longest possibility for (2^64 - 1) is 42 characters:
+   *
+   *   "16.0 EB (18 446 744 073 709 551 615 bytes)"
+   */
+  gchar buffer[80];
+  gsize i;
+
+  if (flags & G_FORMAT_SIZE_IEC_UNITS)
+    {
+      if (size < KIBIBYTE_FACTOR)
+        {
+          i = snprintf (buffer, sizeof buffer,
+                        g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size),
+                        (guint) size);
+          flags &= ~G_FORMAT_SIZE_LONG_FORMAT;
+        }
+
+      else if (size < MEBIBYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f KiB"), (gdouble) size / (gdouble) KIBIBYTE_FACTOR);
+
+      else if (size < GIBIBYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f MiB"), (gdouble) size / (gdouble) MEBIBYTE_FACTOR);
+
+      else if (size < TEBIBYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f GiB"), (gdouble) size / (gdouble) GIBIBYTE_FACTOR);
+
+      else if (size < PEBIBYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f TiB"), (gdouble) size / (gdouble) TEBIBYTE_FACTOR);
+
+      else if (size < EXBIBYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f PiB"), (gdouble) size / (gdouble) PEBIBYTE_FACTOR);
+
+      else
+        i = snprintf (buffer, sizeof buffer, _("%.1f EiB"), (gdouble) size / (gdouble) EXBIBYTE_FACTOR);
+    }
+  else
+    {
+      if (size < KILOBYTE_FACTOR)
+        {
+          i = snprintf (buffer, sizeof buffer,
+                        g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes", (guint) size),
+                        (guint) size);
+          flags &= ~G_FORMAT_SIZE_LONG_FORMAT;
+        }
+
+      else if (size < MEGABYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f kB"), (gdouble) size / (gdouble) KILOBYTE_FACTOR);
+
+      else if (size < GIGABYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f MB"), (gdouble) size / (gdouble) MEGABYTE_FACTOR);
+
+      else if (size < TERABYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f GB"), (gdouble) size / (gdouble) GIGABYTE_FACTOR);
+
+      else if (size < PETABYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f TB"), (gdouble) size / (gdouble) TERABYTE_FACTOR);
+
+      else if (size < EXABYTE_FACTOR)
+        i = snprintf (buffer, sizeof buffer, _("%.1f PB"), (gdouble) size / (gdouble) PETABYTE_FACTOR);
+
+      else
+        i = snprintf (buffer, sizeof buffer, _("%.1f EB"), (gdouble) size / (gdouble) EXABYTE_FACTOR);
+    }
+
+  if (flags & G_FORMAT_SIZE_LONG_FORMAT)
+    {
+      buffer[i++] = ' ';
+      buffer[i++] = '(';
+
+      /* First problem: we need to use the number of bytes to decide on
+       * the plural form that is used for display, but the number of
+       * bytes potentially exceeds the size of a guint (which is what
+       * ngettext() takes).
+       *
+       * From a pragmatic standpoint, it seems that all known languages
+       * base plural forms on one or both of the following:
+       *
+       *   - the lowest digits of the number
+       *
+       *   - if the number if greater than some small value
+       *
+       * Here's how we fake it:  Draw an arbitrary line at one thousand.
+       * If the number is below that, then fine.  If it is above it,
+       * then we take the modulus of the number by one thousand (in
+       * order to keep the lowest digits) and add one thousand to that
+       * (in order to ensure that 1001 is not treated the same as 1).
+       */
+      guint plural_form = size < 1000 ? size : size % 1000 + 1000;
+
+      /* Second problem: we need to translate the string "%u byte" and
+       * "%u bytes" for pluralisation, but the correct number format to
+       * use for a gsize is different depending on which architecture
+       * we're on.
+       *
+       * Solution: format the number separately and use "%s bytes" on
+       * all platforms.
+       */
+      gchar formatted_number[40];
+      gint j;
+
+      /* The "'" modifier is not available on Windows, so we'd better
+       * use g_snprintf().
+       */
+      j = g_snprintf (formatted_number, sizeof formatted_number,
+                      "%'"G_GUINT64_FORMAT, size);
+      g_assert (j < sizeof formatted_number);
+
+      /* Extra paranoia... */
+      g_assert (i < sizeof buffer - 10);
+      i += snprintf (buffer + i, sizeof buffer - i,
+                     g_dngettext(GETTEXT_PACKAGE, "%s byte", "%s bytes", plural_form),
+                     formatted_number);
+      g_assert (i < sizeof buffer - 10);
+      buffer[i++] = ')';
+    }
+
+  buffer[i++] = '\0';
+
+  return g_memdup (buffer, i);
+}
 
 /**
  * g_format_size_for_display:
@@ -1790,6 +1980,9 @@ g_build_filename (const gchar *first_element,
  * Returns: a newly-allocated formatted string containing a human readable
  *          file size.
  *
+ * Deprecated:2.30: This function is broken due to its use of SI
+ *                  suffixes to denote IEC units.  Use g_format_size()
+ *                  instead.
  * Since: 2.16
  **/
 char *

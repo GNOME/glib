@@ -346,6 +346,8 @@ g_file_open_tmp PRIVATE
 g_file_test PRIVATE
 #endif
 g_file_read_link
+g_format_size
+g_format_size_full
 g_format_size_for_display
 #ifndef _WIN64
 g_mkstemp PRIVATE
