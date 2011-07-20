@@ -4719,8 +4719,16 @@ g_variant_iter_next (GVariantIter *iter,
  *  </programlisting>
  * </example>
  *
- * If you want a slightly less magical alternative that requires more
- * typing, see g_variant_iter_next().
+ * For most cases you should use g_variant_iter_next().
+ *
+ * This function is really only useful when unpacking into #GVariant or
+ * #GVariantIter in order to allow you to skip the call to
+ * g_variant_unref() or g_variant_iter_free().
+ *
+ * For example, if you are only looping over simple integer and string
+ * types, g_variant_iter_next() is definitely preferred.  For string
+ * types, use the '&' prefix to avoid allocating any memory at all (and
+ * thereby avoiding the need to free anything as well).
  *
  * Since: 2.24
  **/
