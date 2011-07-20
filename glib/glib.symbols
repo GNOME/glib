@@ -1229,6 +1229,7 @@ g_unichar_xdigit_value
 g_unichar_type
 g_unicode_canonical_decomposition
 g_unicode_canonical_ordering
+g_unicode_script_to_iso15924
 g_utf8_casefold
 g_utf8_collate
 g_utf8_collate_key

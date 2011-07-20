@@ -475,6 +475,8 @@ typedef enum
   G_UNICODE_SCRIPT_MANDAIC                 /* Mand */
 } GUnicodeScript;
 
+guint32 g_unicode_script_to_iso15924 (GUnicodeScript script);
+
 /* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is
  * not null, sets *CHARSET to the name of the current locale's
  * charset.  This value is statically allocated, and should be copied

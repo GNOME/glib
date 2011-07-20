@@ -873,7 +873,7 @@ real_toupper (const gchar *str,
 		last_was_i = FALSE;
 	    }
 	}
-      
+
       if (locale_type == LOCALE_TURKIC && c == 'i')
 	{
 	  /* i => LATIN CAPITAL LETTER I WITH DOT ABOVE */
@@ -1315,4 +1315,148 @@ g_unichar_get_script (gunichar ch)
     return g_script_easy_table[ch];
   else 
     return g_unichar_get_script_bsearch (ch); 
+}
+
+
+/* http://unicode.org/iso15924/ */
+static const guint32 iso15924_tags[] =
+{
+#define PACK(a,b,c,d) ((guint32)((((guint8)(a))<<24)|(((guint8)(b))<<16)|(((guint8)(c))<<8)|((guint8)(d))))
+
+    PACK ('Z','y','y','y'), /* G_UNICODE_SCRIPT_COMMON */
+    PACK ('Z','i','n','h'), /* G_UNICODE_SCRIPT_INHERITED */
+    PACK ('A','r','a','b'), /* G_UNICODE_SCRIPT_ARABIC */
+    PACK ('A','r','m','n'), /* G_UNICODE_SCRIPT_ARMENIAN */
+    PACK ('B','e','n','g'), /* G_UNICODE_SCRIPT_BENGALI */
+    PACK ('B','o','p','o'), /* G_UNICODE_SCRIPT_BOPOMOFO */
+    PACK ('C','h','e','r'), /* G_UNICODE_SCRIPT_CHEROKEE */
+    PACK ('C','o','p','t'), /* G_UNICODE_SCRIPT_COPTIC */
+    PACK ('C','y','r','l'), /* G_UNICODE_SCRIPT_CYRILLIC */
+    PACK ('D','s','r','t'), /* G_UNICODE_SCRIPT_DESERET */
+    PACK ('D','e','v','a'), /* G_UNICODE_SCRIPT_DEVANAGARI */
+    PACK ('E','t','h','i'), /* G_UNICODE_SCRIPT_ETHIOPIC */
+    PACK ('G','e','o','r'), /* G_UNICODE_SCRIPT_GEORGIAN */
+    PACK ('G','o','t','h'), /* G_UNICODE_SCRIPT_GOTHIC */
+    PACK ('G','r','e','k'), /* G_UNICODE_SCRIPT_GREEK */
+    PACK ('G','u','j','r'), /* G_UNICODE_SCRIPT_GUJARATI */
+    PACK ('G','u','r','u'), /* G_UNICODE_SCRIPT_GURMUKHI */
+    PACK ('H','a','n','i'), /* G_UNICODE_SCRIPT_HAN */
+    PACK ('H','a','n','g'), /* G_UNICODE_SCRIPT_HANGUL */
+    PACK ('H','e','b','r'), /* G_UNICODE_SCRIPT_HEBREW */
+    PACK ('H','i','r','a'), /* G_UNICODE_SCRIPT_HIRAGANA */
+    PACK ('K','n','d','a'), /* G_UNICODE_SCRIPT_KANNADA */
+    PACK ('K','a','n','a'), /* G_UNICODE_SCRIPT_KATAKANA */
+    PACK ('K','h','m','r'), /* G_UNICODE_SCRIPT_KHMER */
+    PACK ('L','a','o','o'), /* G_UNICODE_SCRIPT_LAO */
+    PACK ('L','a','t','n'), /* G_UNICODE_SCRIPT_LATIN */
+    PACK ('M','l','y','m'), /* G_UNICODE_SCRIPT_MALAYALAM */
+    PACK ('M','o','n','g'), /* G_UNICODE_SCRIPT_MONGOLIAN */
+    PACK ('M','y','m','r'), /* G_UNICODE_SCRIPT_MYANMAR */
+    PACK ('O','g','a','m'), /* G_UNICODE_SCRIPT_OGHAM */
+    PACK ('I','t','a','l'), /* G_UNICODE_SCRIPT_OLD_ITALIC */
+    PACK ('O','r','y','a'), /* G_UNICODE_SCRIPT_ORIYA */
+    PACK ('R','u','n','r'), /* G_UNICODE_SCRIPT_RUNIC */
+    PACK ('S','i','n','h'), /* G_UNICODE_SCRIPT_SINHALA */
+    PACK ('S','y','r','c'), /* G_UNICODE_SCRIPT_SYRIAC */
+    PACK ('T','a','m','l'), /* G_UNICODE_SCRIPT_TAMIL */
+    PACK ('T','e','l','u'), /* G_UNICODE_SCRIPT_TELUGU */
+    PACK ('T','h','a','a'), /* G_UNICODE_SCRIPT_THAANA */
+    PACK ('T','h','a','i'), /* G_UNICODE_SCRIPT_THAI */
+    PACK ('T','i','b','t'), /* G_UNICODE_SCRIPT_TIBETAN */
+    PACK ('C','a','n','s'), /* G_UNICODE_SCRIPT_CANADIAN_ABORIGINAL */
+    PACK ('Y','i','i','i'), /* G_UNICODE_SCRIPT_YI */
+    PACK ('T','g','l','g'), /* G_UNICODE_SCRIPT_TAGALOG */
+    PACK ('H','a','n','o'), /* G_UNICODE_SCRIPT_HANUNOO */
+    PACK ('B','u','h','d'), /* G_UNICODE_SCRIPT_BUHID */
+    PACK ('T','a','g','b'), /* G_UNICODE_SCRIPT_TAGBANWA */
+
+  /* Unicode-4.0 additions */
+    PACK ('B','r','a','i'), /* G_UNICODE_SCRIPT_BRAILLE */
+    PACK ('C','p','r','t'), /* G_UNICODE_SCRIPT_CYPRIOT */
+    PACK ('L','i','m','b'), /* G_UNICODE_SCRIPT_LIMBU */
+    PACK ('O','s','m','a'), /* G_UNICODE_SCRIPT_OSMANYA */
+    PACK ('S','h','a','w'), /* G_UNICODE_SCRIPT_SHAVIAN */
+    PACK ('L','i','n','b'), /* G_UNICODE_SCRIPT_LINEAR_B */
+    PACK ('T','a','l','e'), /* G_UNICODE_SCRIPT_TAI_LE */
+    PACK ('U','g','a','r'), /* G_UNICODE_SCRIPT_UGARITIC */
+
+  /* Unicode-4.1 additions */
+    PACK ('T','a','l','u'), /* G_UNICODE_SCRIPT_NEW_TAI_LUE */
+    PACK ('B','u','g','i'), /* G_UNICODE_SCRIPT_BUGINESE */
+    PACK ('G','l','a','g'), /* G_UNICODE_SCRIPT_GLAGOLITIC */
+    PACK ('T','f','n','g'), /* G_UNICODE_SCRIPT_TIFINAGH */
+    PACK ('S','y','l','o'), /* G_UNICODE_SCRIPT_SYLOTI_NAGRI */
+    PACK ('X','p','e','o'), /* G_UNICODE_SCRIPT_OLD_PERSIAN */
+    PACK ('K','h','a','r'), /* G_UNICODE_SCRIPT_KHAROSHTHI */
+
+  /* Unicode-5.0 additions */
+    PACK ('Z','z','z','z'), /* G_UNICODE_SCRIPT_UNKNOWN */
+    PACK ('B','a','l','i'), /* G_UNICODE_SCRIPT_BALINESE */
+    PACK ('X','s','u','x'), /* G_UNICODE_SCRIPT_CUNEIFORM */
+    PACK ('P','h','n','x'), /* G_UNICODE_SCRIPT_PHOENICIAN */
+    PACK ('P','h','a','g'), /* G_UNICODE_SCRIPT_PHAGS_PA */
+    PACK ('N','k','o','o'), /* G_UNICODE_SCRIPT_NKO */
+
+  /* Unicode-5.1 additions */
+    PACK ('K','a','l','i'), /* G_UNICODE_SCRIPT_KAYAH_LI */
+    PACK ('L','e','p','c'), /* G_UNICODE_SCRIPT_LEPCHA */
+    PACK ('R','j','n','g'), /* G_UNICODE_SCRIPT_REJANG */
+    PACK ('S','u','n','d'), /* G_UNICODE_SCRIPT_SUNDANESE */
+    PACK ('S','a','u','r'), /* G_UNICODE_SCRIPT_SAURASHTRA */
+    PACK ('C','h','a','m'), /* G_UNICODE_SCRIPT_CHAM */
+    PACK ('O','l','c','k'), /* G_UNICODE_SCRIPT_OL_CHIKI */
+    PACK ('V','a','i','i'), /* G_UNICODE_SCRIPT_VAI */
+    PACK ('C','a','r','i'), /* G_UNICODE_SCRIPT_CARIAN */
+    PACK ('L','y','c','i'), /* G_UNICODE_SCRIPT_LYCIAN */
+    PACK ('L','y','d','i'), /* G_UNICODE_SCRIPT_LYDIAN */
+
+  /* Unicode-5.2 additions */
+    PACK ('A','v','s','t'), /* G_UNICODE_SCRIPT_AVESTAN */
+    PACK ('B','a','m','u'), /* G_UNICODE_SCRIPT_BAMUM */
+    PACK ('E','g','y','p'), /* G_UNICODE_SCRIPT_EGYPTIAN_HIEROGLYPHS */
+    PACK ('A','r','m','i'), /* G_UNICODE_SCRIPT_IMPERIAL_ARAMAIC */
+    PACK ('P','h','l','i'), /* G_UNICODE_SCRIPT_INSCRIPTIONAL_PAHLAVI */
+    PACK ('P','r','t','i'), /* G_UNICODE_SCRIPT_INSCRIPTIONAL_PARTHIAN */
+    PACK ('J','a','v','a'), /* G_UNICODE_SCRIPT_JAVANESE */
+    PACK ('K','t','h','i'), /* G_UNICODE_SCRIPT_KAITHI */
+    PACK ('L','i','s','u'), /* G_UNICODE_SCRIPT_LISU */
+    PACK ('M','t','e','i'), /* G_UNICODE_SCRIPT_MEETEI_MAYEK */
+    PACK ('S','a','r','b'), /* G_UNICODE_SCRIPT_OLD_SOUTH_ARABIAN */
+    PACK ('O','r','k','h'), /* G_UNICODE_SCRIPT_OLD_TURKIC */
+    PACK ('S','a','m','r'), /* G_UNICODE_SCRIPT_SAMARITAN */
+    PACK ('L','a','n','a'), /* G_UNICODE_SCRIPT_TAI_THAM */
+    PACK ('T','a','v','t'), /* G_UNICODE_SCRIPT_TAI_VIET */
+
+  /* Unicode-6.0 additions */
+    PACK ('B','a','t','k'), /* G_UNICODE_SCRIPT_BATAK */
+    PACK ('B','r','a','h'), /* G_UNICODE_SCRIPT_BRAHMI */
+    PACK ('M','a','n','d'), /* G_UNICODE_SCRIPT_MANDAIC */
+
+#undef PACK
+};
+
+/**
+ * g_unicode_script_to_iso15924:
+ * @script: a Unicode script
+ *
+ * Looks up the ISO 15924 code for @script.  ISO 15924 assigns four-letter
+ * codes to scripts.  For example, the code for Arabic is 'Arab'.  The
+ * four letter codes are encoded as a @guint32 by this function in a
+ * big-endian fashion.  That is, the code returned for Arabic is
+ * 0x41726162 (0x41 is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
+ *
+ * See <ulink url="http://unicode.org/iso15924/codelists.html">Codes for the
+ * representation of names of scripts</ulink> for details.
+ *
+ * Return value: the ISO 15924 code for @script, encoded as an integer.
+ *
+ * Since: 2.30
+ */
+guint32
+g_unicode_script_to_iso15924 (GUnicodeScript script)
+{
+  if (G_UNLIKELY (script < 0 || script >= (int) G_N_ELEMENTS (iso15924_tags)))
+    return 0;
+
+  return iso15924_tags[script];
 }
