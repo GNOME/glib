@@ -1826,15 +1826,15 @@ g_format_size (guint64 size)
 /**
  * GFormatSizeFlags:
  * @G_FORMAT_SIZE_DEFAULT: behave the same as g_format_size()
+ * @G_FORMAT_SIZE_LONG_FORMAT: include the exact number of bytes as part
+ *                             of the returned string.  For example,
+ *                             "45.6 kB (45,612 bytes)".
  * @G_FORMAT_SIZE_IEC_UNITS: use IEC (base 1024) units with "KiB"-style
  *                           suffixes.  IEC units should only be used
  *                           for reporting things with a strong "power
  *                           of 2" basis, like RAM sizes or RAID stripe
  *                           sizes.  Network and storage sizes should
  *                           be reported in the normal SI units.
- * @G_FORMAT_SIZE_LONG_FORMAT: include the exact number of bytes as part
- *                             of the returned string.  For example,
- *                             "45.6 kB (45,612 bytes)".
  *
  * Flags to modify the format of the string returned by
  * g_format_size_full().

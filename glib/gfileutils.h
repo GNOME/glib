@@ -112,9 +112,9 @@ gint    g_file_open_tmp      (const gchar  *tmpl,
 
 typedef enum
 {
-  G_FORMAT_SIZE_DEFAULT,
-  G_FORMAT_SIZE_IEC_UNITS,
-  G_FORMAT_SIZE_LONG_FORMAT
+  G_FORMAT_SIZE_DEFAULT     = 0,
+  G_FORMAT_SIZE_LONG_FORMAT = 1 << 0,
+  G_FORMAT_SIZE_IEC_UNITS   = 1 << 1
 } GFormatSizeFlags;
 
 gchar * g_format_size_full   (guint64          size,
