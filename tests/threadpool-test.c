@@ -124,10 +124,17 @@ test_thread_stop_unused (void)
    DEBUG_MSG (("[unused] stopping unused threads"));
    g_thread_pool_stop_unused_threads ();
 
-   DEBUG_MSG (("[unused] waiting ONE second for threads to die"));
+   for (i = 0; i < 5; i++)
+     {
+       if (g_thread_pool_get_num_unused_threads () == 0 &&
+           test_count_threads () == 0)
+         break;
 
-   /* Some time for threads to die. */
-   g_usleep (G_USEC_PER_SEC);
+       DEBUG_MSG (("[unused] waiting ONE second for threads to die"));
+
+       /* Some time for threads to die. */
+       g_usleep (G_USEC_PER_SEC);
+     }
 
    DEBUG_MSG (("[unused] stopped idle threads, %d remain, %d threads still exist",
 	       g_thread_pool_get_num_unused_threads (),
