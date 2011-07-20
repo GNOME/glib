@@ -1453,6 +1453,141 @@ g_variant_dup_strv (GVariant *value,
 }
 
 /**
+ * g_variant_new_objv:
+ * @strv: (array length=length) (element-type utf8): an array of strings
+ * @length: the length of @strv, or -1
+ * @returns: (transfer none): a new floating #GVariant instance
+ *
+ * Constructs an array of object paths #GVariant from the given array of
+ * strings.
+ *
+ * Each string must be a valid #GVariant object path; see
+ * g_variant_is_object_path().
+ *
+ * If @length is -1 then @strv is %NULL-terminated.
+ *
+ * Since: 2.30
+ **/
+GVariant *
+g_variant_new_objv (const gchar * const *strv,
+                    gssize               length)
+{
+  GVariant **strings;
+  gsize i;
+
+  g_return_val_if_fail (length == 0 || strv != NULL, NULL);
+
+  if (length < 0)
+    length = g_strv_length ((gchar **) strv);
+
+  strings = g_new (GVariant *, length);
+  for (i = 0; i < length; i++)
+    strings[i] = g_variant_ref_sink (g_variant_new_object_path (strv[i]));
+
+  return g_variant_new_from_children (G_VARIANT_TYPE_OBJECT_PATH_ARRAY,
+                                      strings, length, TRUE);
+}
+
+/**
+ * g_variant_get_objv:
+ * @value: an array of object paths #GVariant
+ * @length: (out) (allow-none): the length of the result, or %NULL
+ * @returns: (array length=length zero-terminated=1) (transfer container): an array of constant
+ * strings
+ *
+ * Gets the contents of an array of object paths #GVariant.  This call
+ * makes a shallow copy; the return result should be released with
+ * g_free(), but the individual strings must not be modified.
+ *
+ * If @length is non-%NULL then the number of elements in the result
+ * is stored there.  In any case, the resulting array will be
+ * %NULL-terminated.
+ *
+ * For an empty array, @length will be set to 0 and a pointer to a
+ * %NULL pointer will be returned.
+ *
+ * Since: 2.30
+ **/
+const gchar **
+g_variant_get_objv (GVariant *value,
+                    gsize    *length)
+{
+  const gchar **strv;
+  gsize n;
+  gsize i;
+
+  TYPE_CHECK (value, G_VARIANT_TYPE_OBJECT_PATH_ARRAY, NULL);
+
+  g_variant_get_data (value);
+  n = g_variant_n_children (value);
+  strv = g_new (const gchar *, n + 1);
+
+  for (i = 0; i < n; i++)
+    {
+      GVariant *string;
+
+      string = g_variant_get_child_value (value, i);
+      strv[i] = g_variant_get_string (string, NULL);
+      g_variant_unref (string);
+    }
+  strv[i] = NULL;
+
+  if (length)
+    *length = n;
+
+  return strv;
+}
+
+/**
+ * g_variant_dup_objv:
+ * @value: an array of object paths #GVariant
+ * @length: (out) (allow-none): the length of the result, or %NULL
+ * @returns: (array length=length zero-terminated=1) (transfer full): an array of strings
+ *
+ * Gets the contents of an array of object paths #GVariant.  This call
+ * makes a deep copy; the return result should be released with
+ * g_strfreev().
+ *
+ * If @length is non-%NULL then the number of elements in the result
+ * is stored there.  In any case, the resulting array will be
+ * %NULL-terminated.
+ *
+ * For an empty array, @length will be set to 0 and a pointer to a
+ * %NULL pointer will be returned.
+ *
+ * Since: 2.30
+ **/
+gchar **
+g_variant_dup_objv (GVariant *value,
+                    gsize    *length)
+{
+  gchar **strv;
+  gsize n;
+  gsize i;
+
+  TYPE_CHECK (value, G_VARIANT_TYPE_OBJECT_PATH_ARRAY, NULL);
+
+  n = g_variant_n_children (value);
+  strv = g_new (gchar *, n + 1);
+
+  for (i = 0; i < n; i++)
+    {
+      GVariant *string;
+
+      string = g_variant_get_child_value (value, i);
+      strv[i] = g_variant_dup_string (string, NULL);
+      g_variant_unref (string);
+    }
+  strv[i] = NULL;
+
+  if (length)
+    *length = n;
+
+  return strv;
+}
+
+
+/**
  * g_variant_new_bytestring:
  * @string: (array zero-terminated=1): a normal nul-terminated string in no particular encoding
  * @returns: (transfer none): a floating reference to a new bytestring #GVariant instance
@@ -3373,8 +3508,8 @@ g_variant_format_string_scan (const gchar  *string,
                     break;      /* '^a&ay' */
                 }
 
-              else if (c == 's')
-                break;          /* '^a&s' */
+              else if (c == 's' || c == 'o')
+                break;          /* '^a&s', '^a&o' */
             }
 
           else if (c == 'a')
@@ -3383,8 +3518,8 @@ g_variant_format_string_scan (const gchar  *string,
                 break;          /* '^aay' */
             }
 
-          else if (c == 's')
-            break;              /* '^as' */
+          else if (c == 's' || c == 'o')
+            break;              /* '^as', '^ao' */
 
           else if (c == 'y')
             break;              /* '^ay' */
@@ -3586,9 +3721,9 @@ g_variant_valist_free_nnp (const gchar *str,
       break;
 
     case '^':
-      if (str[2] != '&')        /* '^as' */
+      if (str[2] != '&')        /* '^as', '^ao' */
         g_strfreev (ptr);
-      else                      /* '^a&s' */
+      else                      /* '^a&s', '^a&o' */
         g_free (ptr);
       break;
 
@@ -3709,9 +3844,15 @@ g_variant_valist_new_nnp (const gchar **str,
       {
         gboolean constant;
         guint arrays;
+        gchar type;
 
-        if (g_variant_scan_convenience (str, &constant, &arrays) == 's')
+        type = g_variant_scan_convenience (str, &constant, &arrays);
+
+        if (type == 's')
           return g_variant_new_strv (ptr, -1);
+
+        if (type == 'o')
+          return g_variant_new_objv (ptr, -1);
 
         if (arrays > 1)
           return g_variant_new_bytestring_array (ptr, -1);
@@ -3780,13 +3921,24 @@ g_variant_valist_get_nnp (const gchar **str,
       {
         gboolean constant;
         guint arrays;
+        gchar type;
 
-        if (g_variant_scan_convenience (str, &constant, &arrays) == 's')
+        type = g_variant_scan_convenience (str, &constant, &arrays);
+
+        if (type == 's')
           {
             if (constant)
               return g_variant_get_strv (value, NULL);
             else
               return g_variant_dup_strv (value, NULL);
+          }
+
+        else if (type == 'o')
+          {
+            if (constant)
+              return g_variant_get_objv (value, NULL);
+            else
+              return g_variant_dup_objv (value, NULL);
           }
 
         else if (arrays > 1)

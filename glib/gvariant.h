@@ -86,6 +86,8 @@ gboolean                        g_variant_is_signature                  (const g
 GVariant *                      g_variant_new_variant                   (GVariant             *value);
 GVariant *                      g_variant_new_strv                      (const gchar * const  *strv,
                                                                          gssize                length);
+GVariant *                      g_variant_new_objv                      (const gchar * const  *strv,
+                                                                         gssize                length);
 GVariant *                      g_variant_new_bytestring                (const gchar          *string);
 GVariant *                      g_variant_new_bytestring_array          (const gchar * const  *strv,
                                                                          gssize                length);
@@ -108,6 +110,10 @@ gchar *                         g_variant_dup_string                    (GVarian
 const gchar **                  g_variant_get_strv                      (GVariant             *value,
                                                                          gsize                *length);
 gchar **                        g_variant_dup_strv                      (GVariant             *value,
+                                                                         gsize                *length);
+const gchar **                  g_variant_get_objv                      (GVariant             *value,
+                                                                         gsize                *length);
+gchar **                        g_variant_dup_objv                      (GVariant             *value,
                                                                          gsize                *length);
 const gchar *                   g_variant_get_bytestring                (GVariant             *value);
 gchar *                         g_variant_dup_bytestring                (GVariant             *value,

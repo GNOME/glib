@@ -3023,6 +3023,59 @@ test_varargs (void)
   }
 
   {
+    const gchar *strvector[] = {"/hello", "/world", NULL};
+    const gchar *test_strs[] = {"/foo", "/bar", "/baz" };
+    GVariantBuilder builder;
+    GVariantIter *array;
+    GVariantIter tuple;
+    const gchar **strv;
+    gchar **my_strv;
+    GVariant *value;
+    gchar *str;
+    gint i;
+
+    g_variant_builder_init (&builder, G_VARIANT_TYPE_OBJECT_PATH_ARRAY);
+    g_variant_builder_add (&builder, "o", "/foo");
+    g_variant_builder_add (&builder, "o", "/bar");
+    g_variant_builder_add (&builder, "o", "/baz");
+    value = g_variant_new("(ao^ao^a&o)", &builder, strvector, strvector);
+    g_variant_iter_init (&tuple, value);
+    g_variant_iter_next (&tuple, "ao", &array);
+
+    i = 0;
+    while (g_variant_iter_loop (array, "o", &str))
+      g_assert_cmpstr (str, ==, test_strs[i++]);
+    g_assert (i == 3);
+
+    g_variant_iter_free (array);
+
+    /* start over */
+    g_variant_iter_init (&tuple, value);
+    g_variant_iter_next (&tuple, "ao", &array);
+
+    i = 0;
+    while (g_variant_iter_loop (array, "&o", &str))
+      g_assert_cmpstr (str, ==, test_strs[i++]);
+    g_assert (i == 3);
+
+    g_variant_iter_free (array);
+
+    g_variant_iter_next (&tuple, "^a&o", &strv);
+    g_variant_iter_next (&tuple, "^ao", &my_strv);
+
+    g_assert_cmpstr (strv[0], ==, "/hello");
+    g_assert_cmpstr (strv[1], ==, "/world");
+    g_assert (strv[2] == NULL);
+    g_assert_cmpstr (my_strv[0], ==, "/hello");
+    g_assert_cmpstr (my_strv[1], ==, "/world");
+    g_assert (my_strv[2] == NULL);
+
+    g_variant_unref (value);
+    g_strfreev (my_strv);
+    g_free (strv);
+  }
+
+  {
     const gchar *strvector[] = { "i", "ii", "iii", "iv", "v", "vi", NULL };
     GVariantBuilder builder;
     GVariantIter iter;

@@ -2940,6 +2940,7 @@ G_VARIANT_TYPE_UNIT
 G_VARIANT_TYPE_DICT_ENTRY
 G_VARIANT_TYPE_DICTIONARY
 G_VARIANT_TYPE_STRING_ARRAY
+G_VARIANT_TYPE_OBJECT_PATH_ARRAY
 G_VARIANT_TYPE_BYTESTRING
 G_VARIANT_TYPE_BYTESTRING_ARRAY
 G_VARIANT_TYPE_VARDICT
@@ -3030,6 +3031,7 @@ g_variant_new_signature
 g_variant_is_signature
 g_variant_new_variant
 g_variant_new_strv
+g_variant_new_objv
 g_variant_new_bytestring
 g_variant_new_bytestring_array
 
@@ -3049,6 +3051,8 @@ g_variant_dup_string
 g_variant_get_variant
 g_variant_get_strv
 g_variant_dup_strv
+g_variant_get_objv
+g_variant_dup_objv
 g_variant_get_bytestring
 g_variant_dup_bytestring
 g_variant_get_bytestring_array

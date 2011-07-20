@@ -46,8 +46,8 @@
    <listitem>
     <para>
      '<literal>&amp;s</literal>' '<literal>&amp;o</literal>', '<literal>&amp;g</literal>', '<literal>^as</literal>',
-     '<literal>^a&amp;s</literal>', '<literal>^ay</literal>', '<literal>^&amp;ay</literal>', '<literal>^aay</literal>'
-     or '<literal>^a&amp;ay</literal>'.
+     '<literal>^a&amp;s</literal>', '<literal>^ao</literal>', '<literal>^a&amp;o</literal>','<literal>^ay</literal>',
+     '<literal>^&amp;ay</literal>', '<literal>^aay</literal>' or '<literal>^a&amp;ay</literal>'.
     </para>
    </listitem>
    <listitem>
@@ -1014,6 +1014,41 @@ value2 = g_variant_new ("(@(iii)*)", value1, g_variant_new_string ("foo"));
        <entry colsep='1' rowsep='1'>
         <para>
          equivalent to <link linkend='g-variant-get-strv'><function>g_variant_get_strv()</function></link>
+        </para>
+       </entry>
+      </row>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>
+          <literal>^ao</literal>
+         </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1' morerows='1'>
+        <para>
+         equivalent to <link linkend='g-variant-new-objv'><function>g_variant_new_objv()</function></link>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         equivalent to <link linkend='g-variant-dup-objv'><function>g_variant_dup_objv()</function></link>
+        </para>
+       </entry>
+      </row>
+
+      <row rowsep='1'>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         <emphasis role='strong'>
+          <literal>^a&amp;o</literal>
+         </emphasis>
+        </para>
+       </entry>
+       <entry colsep='1' rowsep='1'>
+        <para>
+         equivalent to <link linkend='g-variant-get-objv'><function>g_variant_get_objv()</function></link>
         </para>
        </entry>
       </row>

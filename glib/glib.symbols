@@ -1447,6 +1447,7 @@ g_variant_new_signature
 g_variant_is_signature
 g_variant_new_variant
 g_variant_new_strv
+g_variant_new_objv
 g_variant_new_bytestring
 g_variant_new_bytestring_array
 g_variant_get_boolean
@@ -1464,6 +1465,8 @@ g_variant_dup_string
 g_variant_get_variant
 g_variant_get_strv
 g_variant_dup_strv
+g_variant_get_objv
+g_variant_dup_objv
 g_variant_get_bytestring
 g_variant_dup_bytestring
 g_variant_get_bytestring_array

@@ -239,6 +239,13 @@ typedef struct _GVariantType GVariantType;
 #define G_VARIANT_TYPE_STRING_ARRAY         ((const GVariantType *) "as")
 
 /**
+ * G_VARIANT_TYPE_OBJECT_PATH_ARRAY:
+ *
+ * The type of an array of object paths.
+ **/
+#define G_VARIANT_TYPE_OBJECT_PATH_ARRAY    ((const GVariantType *) "ao")
+
+/**
  * G_VARIANT_TYPE_BYTESTRING:
  *
  * The type of an array of bytes.  This type is commonly used to pass
