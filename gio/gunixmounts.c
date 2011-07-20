@@ -243,6 +243,8 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
     "/home",
     "/lib",
     "/lib64",
+    "/live/cow",
+    "/live/image",
     "/media",
     "/mnt",
     "/opt",
@@ -253,7 +255,12 @@ g_unix_is_mount_path_system_internal (const char *mount_path)
     "/usr",
     "/usr/local",
     "/var",
+    "/var/crash",
+    "/var/local",
+    "/var/log",
     "/var/log/audit", /* https://bugzilla.redhat.com/show_bug.cgi?id=333041 */
+    "/var/mail",
+    "/var/run",
     "/var/tmp",       /* https://bugzilla.redhat.com/show_bug.cgi?id=335241 */
     "/proc",
     "/sbin",
