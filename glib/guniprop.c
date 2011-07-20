@@ -855,15 +855,14 @@ real_toupper (const gchar *str,
 		   * which could simplify this considerably.
 		   */
 		  gsize decomp_len, i;
-		  gunichar *decomp;
+		  gunichar decomp[4];
 
-		  decomp = g_unicode_canonical_decomposition (c, &decomp_len);
+		  decomp_len = g_unichar_fully_decompose (c, FALSE, decomp, 4);
 		  for (i=0; i < decomp_len; i++)
 		    {
 		      if (decomp[i] != 0x307 /* COMBINING DOT ABOVE */)
 			len += g_unichar_to_utf8 (g_unichar_toupper (decomp[i]), out_buffer ? out_buffer + len : NULL);
 		    }
-		  g_free (decomp);
 		  
 		  len += output_marks (&p, out_buffer ? out_buffer + len : NULL, TRUE);
 
