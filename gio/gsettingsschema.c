@@ -280,7 +280,10 @@ g_settings_schema_new (const gchar *name)
     }
 
   if (table == NULL)
-    g_error ("Settings schema '%s' is not installed\n", name);
+    {
+      g_critical ("Settings schema '%s' is not installed\n", name);
+      return NULL;
+    }
 
   schema = g_object_new (G_TYPE_SETTINGS_SCHEMA, NULL);
   schema->priv->name = g_strdup (name);

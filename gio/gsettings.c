@@ -498,18 +498,28 @@ g_settings_constructed (GObject *object)
   const gchar *schema_path;
 
   settings->priv->schema = g_settings_schema_new (settings->priv->schema_name);
+
+  if (settings->priv->schema == NULL)
+    goto broken;
+
   schema_path = g_settings_schema_get_path (settings->priv->schema);
 
   if (settings->priv->path && schema_path && strcmp (settings->priv->path, schema_path) != 0)
-    g_error ("settings object created with schema '%s' and path '%s', but "
-             "path '%s' is specified by schema",
-             settings->priv->schema_name, settings->priv->path, schema_path);
+    {
+      g_critical ("settings object created with schema '%s' and path '%s', but "
+                  "path '%s' is specified by schema",
+                  settings->priv->schema_name, settings->priv->path, schema_path);
+      goto broken;
+    }
 
   if (settings->priv->path == NULL)
     {
       if (schema_path == NULL)
-        g_error ("attempting to create schema '%s' without a path",
-                 settings->priv->schema_name);
+        {
+          g_critical ("attempting to create schema '%s' without a path",
+                       settings->priv->schema_name);
+          goto broken;
+        }
 
       settings->priv->path = g_strdup (schema_path);
     }
@@ -522,6 +532,19 @@ g_settings_constructed (GObject *object)
                             settings->priv->main_context);
   g_settings_backend_subscribe (settings->priv->backend,
                                 settings->priv->path);
+  return;
+
+broken:
+  if (settings->priv->schema != NULL)
+    g_object_unref (settings->priv->schema);
+  settings->priv->schema = NULL;
+
+  g_free (settings->priv->path);
+  settings->priv->path = NULL;
+
+  if (settings->priv->backend != NULL)
+    g_object_unref (settings->priv->backend);
+  settings->priv->backend = NULL;
 }
 
 static void
@@ -893,7 +916,7 @@ endian_fixup (GVariant **value)
 #endif
 }
 
-static void
+static gboolean
 g_settings_get_key_info (GSettingsKeyInfo *info,
                          GSettings        *settings,
                          const gchar      *key)
@@ -901,6 +924,8 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
   GVariantIter *iter;
   GVariant *data;
   guchar code;
+
+  g_return_val_if_fail (settings->priv->schema != NULL, FALSE);
 
   memset (info, 0, sizeof *info);
 
@@ -953,6 +978,8 @@ g_settings_get_key_info (GSettingsKeyInfo *info,
     }
 
   g_variant_iter_free (iter);
+
+  return TRUE;
 }
 
 static void
@@ -1260,7 +1287,9 @@ g_settings_get_value (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), NULL);
   g_return_val_if_fail (key != NULL, NULL);
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return NULL;
+
   value = g_settings_read_from_backend (&info);
 
   if (value == NULL)
@@ -1306,7 +1335,8 @@ g_settings_get_enum (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), -1);
   g_return_val_if_fail (key != NULL, -1);
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return 0;
 
   if (!info.is_enum)
     {
@@ -1361,7 +1391,8 @@ g_settings_set_enum (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return FALSE;
 
   if (!info.is_enum)
     {
@@ -1417,7 +1448,8 @@ g_settings_get_flags (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), -1);
   g_return_val_if_fail (key != NULL, -1);
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return 0;
 
   if (!info.is_flags)
     {
@@ -1473,7 +1505,8 @@ g_settings_set_flags (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return FALSE;
 
   if (!info.is_flags)
     {
@@ -1525,7 +1558,8 @@ g_settings_set_value (GSettings   *settings,
   g_return_val_if_fail (G_IS_SETTINGS (settings), FALSE);
   g_return_val_if_fail (key != NULL, FALSE);
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return FALSE;
 
   if (!g_settings_type_check (&info, value))
     {
@@ -1677,7 +1711,8 @@ g_settings_get_mapped (GSettings           *settings,
   g_return_val_if_fail (key != NULL, NULL);
   g_return_val_if_fail (mapping != NULL, NULL);
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return FALSE;
 
   if ((value = g_settings_read_from_backend (&info)))
     {
@@ -2402,7 +2437,8 @@ g_settings_get_range (GSettings   *settings,
   const gchar *type;
   GVariant *range;
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return NULL;
 
   if (info.minimum)
     {
@@ -2452,7 +2488,9 @@ g_settings_range_check (GSettings   *settings,
   GSettingsKeyInfo info;
   gboolean good;
 
-  g_settings_get_key_info (&info, settings, key);
+  if (!g_settings_get_key_info (&info, settings, key))
+    return FALSE;
+
   good = g_settings_type_check (&info, value) &&
          g_settings_key_info_range_check (&info, value);
   g_settings_free_key_info (&info);
@@ -2754,7 +2792,14 @@ g_settings_bind_with_mapping (GSettings               *settings,
   objectclass = G_OBJECT_GET_CLASS (object);
 
   binding = g_slice_new0 (GSettingsBinding);
-  g_settings_get_key_info (&binding->info, settings, key);
+  if (!g_settings_get_key_info (&binding->info, settings, key))
+    {
+      if (destroy)
+        (* destroy) (user_data);
+      g_slice_free (GSettingsBinding, binding);
+      return;
+    }
+
   binding->object = object;
   binding->property = g_object_class_find_property (objectclass, property);
   binding->user_data = user_data;
