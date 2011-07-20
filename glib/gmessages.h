@@ -226,6 +226,13 @@ g_debug (const gchar *format,
 }
 #endif  /* !__GNUC__ */
 
+/**
+ * GPrintFunc:
+ * @string: the message to output
+ *
+ * Specifies the type of the print handler functions.
+ * These are called with the complete formatted string to output.
+ */
 typedef void    (*GPrintFunc)           (const gchar    *string);
 void            g_print                 (const gchar    *format,
                                          ...) G_GNUC_PRINTF (1, 2);
@@ -234,23 +241,73 @@ void            g_printerr              (const gchar    *format,
                                          ...) G_GNUC_PRINTF (1, 2);
 GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
 
-
-/* Provide macros for graceful error handling.
- * The "return" macros will return from the current function.
- * Two different definitions are given for the macros in
- * order to support gcc's __PRETTY_FUNCTION__ capability.
+/**
+ * g_warn_if_reached:
+ *
+ * Logs a critical warning.
+ *
+ * Since: 2.16
  */
+#define g_warn_if_reached() \
+  do { \
+    g_warn_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, NULL); \
+  } while (0)
 
-#define g_warn_if_reached()     do { g_warn_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, NULL); } while (0)
-#define g_warn_if_fail(expr)    do { if G_LIKELY (expr) ; else \
-                                       g_warn_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, #expr); } while (0)
+/**
+ * g_warn_if_fail:
+ * @expr: the expression to check
+ *
+ * Logs a warning if the expression is not true.
+ *
+ * Since: 2.16
+ */
+#define g_warn_if_fail(expr) \
+  do { \
+    if G_LIKELY (expr) ; \
+    else g_warn_message (G_LOG_DOMAIN, __FILE__, __LINE__, G_STRFUNC, #expr); \
+  } while (0)
 
 #ifdef G_DISABLE_CHECKS
 
-#define g_return_if_fail(expr)			G_STMT_START{ (void)0; }G_STMT_END
-#define g_return_val_if_fail(expr,val)		G_STMT_START{ (void)0; }G_STMT_END
-#define g_return_if_reached()			G_STMT_START{ return; }G_STMT_END
-#define g_return_val_if_reached(val)		G_STMT_START{ return (val); }G_STMT_END
+/**
+ * g_return_if_fail:
+ * @expr: the expression to check
+ *
+ * Returns from the current function if the expression
+ * is not true. If the expression evaluates to %FALSE,
+ * a critical message is logged and the function returns.
+ * This can only be used in functions which do not return
+ * a value.
+ */
+#define g_return_if_fail(expr) G_STMT_START{ (void)0; }G_STMT_END
+
+/**
+ * g_return_val_if_fail:
+ * @expr: the expression to check
+ * @val: the value to return from the current function
+ *       if the expression is not true
+ *
+ * Returns from the current function, returning the value @val,
+ * if the expression is not true. If the expression evaluates
+ * to %FALSE, a critical message is logged and @val is returned.
+ */
+#define g_return_val_if_fail(expr,val) G_STMT_START{ (void)0; }G_STMT_END
+
+/**
+ * g_return_if_reached:
+ *
+ * Logs a critical message and returns from the current function.
+ * This can only be used in functions which do not return a value.
+ */
+#define g_return_if_reached() G_STMT_START{ return; }G_STMT_END
+
+/**
+ * g_return_val_if_reached:
+ * @val: the value to return from the current function
+ *
+ * Logs a critical message and returns @val.
+ */
+#define g_return_val_if_reached(val) G_STMT_START{ return (val); }G_STMT_END
 
 #else /* !G_DISABLE_CHECKS */
 

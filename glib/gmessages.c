@@ -28,6 +28,24 @@
  * MT safe
  */
 
+/**
+ * SECTION:warnings
+ * @Title: Message Output and Debugging Functions
+ * @Short_description: functions to output messages and help debug applications
+ *
+ * These functions provide support for outputting messages.
+ *
+ * The <function>g_return</function> family of macros (g_return_if_fail(),
+ * g_return_val_if_fail(), g_return_if_reached(), g_return_val_if_reached())
+ * should only be used for programming errors, a typical use case is
+ * checking for invalid parameters at the beginning of a public function.
+ * They should not be used if you just mean "if (error) return", they
+ * should only be used if you mean "if (bug in program) return".
+ * The program behavior is generally considered undefined after one
+ * of these checks fails. They are not intended for normal control
+ * flow, only to give a perhaps-helpful warning before giving up.
+ */
+
 #include "config.h"
 
 #include <stdlib.h>
@@ -986,37 +1004,65 @@ g_log_default_handler (const gchar   *log_domain,
   g_free (string);
 }
 
+/**
+ * g_set_print_handler:
+ * @func: the new print handler
+ *
+ * Sets the print handler.
+ *
+ * Any messages passed to g_print() will be output via
+ * the new handler. The default handler simply outputs
+ * the message to stdout. By providing your own handler
+ * you can redirect the output, to a GTK+ widget or a
+ * log file for example.
+ *
+ * Returns: the old print handler
+ */
 GPrintFunc
 g_set_print_handler (GPrintFunc func)
 {
   GPrintFunc old_print_func;
-  
+
   g_mutex_lock (g_messages_lock);
   old_print_func = glib_print_func;
   glib_print_func = func;
   g_mutex_unlock (g_messages_lock);
-  
+
   return old_print_func;
 }
 
+/**
+ * g_print:
+ * @format: the message format. See the printf() documentation
+ * @Varargs: the parameters to insert into the format string
+ *
+ * Outputs a formatted message via the print handler.
+ * The default print handler simply outputs the message to stdout.
+ *
+ * g_print() should not be used from within libraries for debugging
+ * messages, since it may be redirected by applications to special
+ * purpose message windows or even files. Instead, libraries should
+ * use g_log(), or the convenience functions g_message(), g_warning()
+ * and g_error().
+ */
 void
 g_print (const gchar *format,
-	 ...)
+         ...)
 {
   va_list args;
   gchar *string;
   GPrintFunc local_glib_print_func;
-  
+
   g_return_if_fail (format != NULL);
-  
+
   va_start (args, format);
   string = g_strdup_vprintf (format, args);
   va_end (args);
-  
+
   g_mutex_lock (g_messages_lock);
   local_glib_print_func = glib_print_func;
   g_mutex_unlock (g_messages_lock);
-  
+
   if (local_glib_print_func)
     local_glib_print_func (string);
   else
@@ -1024,50 +1070,76 @@ g_print (const gchar *format,
       const gchar *charset;
 
       if (g_get_charset (&charset))
-	fputs (string, stdout); /* charset is UTF-8 already */
+        fputs (string, stdout); /* charset is UTF-8 already */
       else
-	{
-	  gchar *lstring = strdup_convert (string, charset);
+        {
+          gchar *lstring = strdup_convert (string, charset);
 
-	  fputs (lstring, stdout);
-	  g_free (lstring);
-	}
+          fputs (lstring, stdout);
+          g_free (lstring);
+        }
       fflush (stdout);
     }
   g_free (string);
 }
 
+/**
+ * g_set_printerr_handler:
+ * @func: the new error message handler
+ *
+ * Sets the handler for printing error messages.
+ *
+ * Any messages passed to g_printerr() will be output via
+ * the new handler. The default handler simply outputs the
+ * message to stderr. By providing your own handler you can
+ * redirect the output, to a GTK+ widget or a log file for
+ * example.
+ *
+ * Returns: the old error message handler
+ */
 GPrintFunc
 g_set_printerr_handler (GPrintFunc func)
 {
   GPrintFunc old_printerr_func;
-  
+
   g_mutex_lock (g_messages_lock);
   old_printerr_func = glib_printerr_func;
   glib_printerr_func = func;
   g_mutex_unlock (g_messages_lock);
-  
+
   return old_printerr_func;
 }
 
+/**
+ * g_printerr:
+ * @format: the message format. See the printf() documentation
+ * @Varargs: the parameters to insert into the format string
+ *
+ * Outputs a formatted message via the error message handler.
+ * The default handler simply outputs the message to stderr.
+ *
+ * g_printerr() should not be used from within libraries.
+ * Instead g_log() should be used, or the convenience functions
+ * g_message(), g_warning() and g_error().
+ */
 void
 g_printerr (const gchar *format,
-	    ...)
+            ...)
 {
   va_list args;
   gchar *string;
   GPrintFunc local_glib_printerr_func;
-  
+
   g_return_if_fail (format != NULL);
-  
+
   va_start (args, format);
   string = g_strdup_vprintf (format, args);
   va_end (args);
-  
+
   g_mutex_lock (g_messages_lock);
   local_glib_printerr_func = glib_printerr_func;
   g_mutex_unlock (g_messages_lock);
-  
+
   if (local_glib_printerr_func)
     local_glib_printerr_func (string);
   else
@@ -1075,14 +1147,14 @@ g_printerr (const gchar *format,
       const gchar *charset;
 
       if (g_get_charset (&charset))
-	fputs (string, stderr); /* charset is UTF-8 already */
+        fputs (string, stderr); /* charset is UTF-8 already */
       else
-	{
-	  gchar *lstring = strdup_convert (string, charset);
+        {
+          gchar *lstring = strdup_convert (string, charset);
 
-	  fputs (lstring, stderr);
-	  g_free (lstring);
-	}
+          fputs (lstring, stderr);
+          g_free (lstring);
+        }
       fflush (stderr);
     }
   g_free (string);

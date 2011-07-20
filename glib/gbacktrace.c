@@ -91,6 +91,56 @@ static void stack_trace (char **args);
 extern volatile gboolean glib_on_error_halt;
 volatile gboolean glib_on_error_halt = TRUE;
 
+/**
+ * g_on_error_query:
+ * @prg_name: the program name, needed by <command>gdb</command>
+ *     for the [S]tack trace option. If @prg_name is %NULL, g_get_prgname()
+ *     is called to get the program name (which will work correctly if
+ *     gdk_init() or gtk_init() has been called)
+ *
+ * Prompts the user with
+ * <computeroutput>[E]xit, [H]alt, show [S]tack trace or [P]roceed</computeroutput>.
+ * This function is intended to be used for debugging use only.
+ * The following example shows how it can be used together with
+ * the g_log() functions.
+ *
+ * |[
+ * &num;include &lt;glib.h&gt;
+ *
+ * static void
+ * log_handler (const gchar   *log_domain,
+ *              GLogLevelFlags log_level,
+ *              const gchar   *message,
+ *              gpointer       user_data)
+ * {
+ *   g_log_default_handler (log_domain, log_level, message, user_data);
+ *
+ *   g_on_error_query (MY_PROGRAM_NAME);
+ * }
+ *
+ * int
+ * main (int argc, char *argv[])
+ * {
+ *   g_log_set_handler (MY_LOG_DOMAIN,
+ *                      G_LOG_LEVEL_WARNING |
+ *                      G_LOG_LEVEL_ERROR |
+ *                      G_LOG_LEVEL_CRITICAL,
+ *                      log_handler,
+ *                      NULL);
+ *   /&ast; ... &ast;/
+ * ]|
+ *
+ * If [E]xit is selected, the application terminates with a call
+ * to <literal>_exit(0)</literal>.
+ *
+ * If [S]tack trace is selected, g_on_error_stack_trace() is called.
+ * This invokes <command>gdb</command>, which attaches to the current
+ * process and shows a stack trace. The prompt is then shown again.
+ *
+ * If [P]roceed is selected, the function returns.
+ *
+ * This function may cause different actions on non-UNIX platforms.
+ */
 void
 g_on_error_query (const gchar *prg_name)
 {
@@ -160,6 +210,19 @@ g_on_error_query (const gchar *prg_name)
 #endif
 }
 
+/**
+ * g_on_error_stack_trace:
+ * @prg_name: the program name, needed by <command>gdb</command>
+ *     for the [S]tack trace option. If @prg_name is %NULL, g_get_prgname()
+ *     is called to get the program name (which will work correctly if
+ *     gdk_init() or gtk_init() has been called)
+ *
+ * Invokes <command>gdb</command>, which attaches to the current
+ * process and shows a stack trace. Called by g_on_error_query()
+ * when the [S]tack trace option is selected.
+ *
+ * This function may cause different actions on non-UNIX platforms.
+ */
 void
 g_on_error_stack_trace (const gchar *prg_name)
 {
