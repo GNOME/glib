@@ -117,9 +117,9 @@ typedef enum
   G_FORMAT_SIZE_LONG_FORMAT
 } GFormatSizeFlags;
 
-char *  g_format_size_full   (guint64          size,
+gchar * g_format_size_full   (guint64          size,
                               GFormatSizeFlags flags);
-char *  g_format_size        (guint64          size);
+gchar * g_format_size        (guint64          size);
 
 #ifndef G_DISABLE_DEPRECATED
 char *g_format_size_for_display (goffset size);
