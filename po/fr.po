@@ -499,32 +499,32 @@ msgstr[1] "%u octets"
 #: ../glib/gfileutils.c:1804
 #, c-format
 msgid "%.1f KB"
-msgstr "%.1f Kio"
+msgstr "%.1f Ko"
 
 #: ../glib/gfileutils.c:1809
 #, c-format
 msgid "%.1f MB"
-msgstr "%.1f Mio"
+msgstr "%.1f Mo"
 
 #: ../glib/gfileutils.c:1814
 #, c-format
 msgid "%.1f GB"
-msgstr "%.1f Gio"
+msgstr "%.1f Go"
 
 #: ../glib/gfileutils.c:1819
 #, c-format
 msgid "%.1f TB"
-msgstr "%.1f Tio"
+msgstr "%.1f To"
 
 #: ../glib/gfileutils.c:1824
 #, c-format
 msgid "%.1f PB"
-msgstr "%.1f Pio"
+msgstr "%.1f Po"
 
 #: ../glib/gfileutils.c:1829
 #, c-format
 msgid "%.1f EB"
-msgstr "%.1f Eio"
+msgstr "%.1f Eo"
 
 #: ../glib/gfileutils.c:1872
 #, c-format

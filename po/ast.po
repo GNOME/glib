@@ -253,17 +253,17 @@ msgstr[1] "%u bytes"
 #: glib/gfileutils.c:1782
 #, c-format
 msgid "%.1f KB"
-msgstr "%.1f KiB"
+msgstr "%.1f KB"
 
 #: glib/gfileutils.c:1787
 #, c-format
 msgid "%.1f MB"
-msgstr "%.1f MiB"
+msgstr "%.1f MB"
 
 #: glib/gfileutils.c:1792
 #, c-format
 msgid "%.1f GB"
-msgstr "%.1f GiB"
+msgstr "%.1f GB"
 
 #: glib/gfileutils.c:1797
 #, c-format
