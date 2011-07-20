@@ -1986,8 +1986,10 @@ g_key_file_set_boolean (GKeyFile    *key_file,
  * with @key cannot be interpreted as booleans then %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the values associated with the key as a list of
- *    booleans, or %NULL if the key was not found or could not be parsed.
+ * Return value: (array length=length) (element-type gboolean) (transfer container):
+ *    the values associated with the key as a list of booleans, or %NULL if the
+ *    key was not found or could not be parsed. The returned list of booleans
+ *    should be freed with g_free() when no longer needed.
  * 
  * Since: 2.6
  **/
@@ -2351,8 +2353,10 @@ g_key_file_set_uint64 (GKeyFile    *key_file,
  * with @key cannot be interpreted as integers then %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the values associated with the key as a list of
- *     integers, or %NULL if the key was not found or could not be parsed.
+ * Return value: (array length=length) (element-type gint) (transfer container):
+ *     the values associated with the key as a list of integers, or %NULL if
+ *     the key was not found or could not be parsed. The returned list of
+ *     integers should be freed with g_free() when no longer needed.
  *
  * Since: 2.6
  **/
@@ -2562,8 +2566,10 @@ g_key_file_set_double  (GKeyFile    *key_file,
  * with @key cannot be interpreted as doubles then %NULL is returned
  * and @error is set to #G_KEY_FILE_ERROR_INVALID_VALUE.
  *
- * Return value: the values associated with the key as a list of
- *     doubles, or %NULL if the key was not found or could not be parsed.
+ * Return value: (array length=length) (element-type gdouble) (transfer container):
+ *     the values associated with the key as a list of doubles, or %NULL if the
+ *     key was not found or could not be parsed. The returned list of doubles
+ *     should be freed with g_free() when no longer needed.
  *
  * Since: 2.12
  **/
