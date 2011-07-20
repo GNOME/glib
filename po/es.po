@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-19 14:19+0000\n"
-"PO-Revision-Date: 2011-07-20 13:40+0200\n"
+"POT-Creation-Date: 2011-07-20 20:27+0000\n"
+"PO-Revision-Date: 2011-07-20 22:32+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -480,49 +480,102 @@ msgstr "La plantilla «%s» es inválida, no debería contener un «%s»"
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "La plantilla «%s» no contiene XXXXXX"
 
-#: ../glib/gfileutils.c:1799
+#: ../glib/gfileutils.c:1855 ../glib/gfileutils.c:1883
+#: ../glib/gfileutils.c:1979
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gfileutils.c:1807
+#: ../glib/gfileutils.c:1861
 #, c-format
-msgid "%.1f KB"
+#| msgid "%.1f KB"
+msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gfileutils.c:1812
+#: ../glib/gfileutils.c:1864
+#, c-format
+#| msgid "%.1f MB"
+msgid "%.1f MiB"
+msgstr "%.1f MiB"
+
+#: ../glib/gfileutils.c:1867
+#, c-format
+#| msgid "%.1f GB"
+msgid "%.1f GiB"
+msgstr "%.1f GiB"
+
+#: ../glib/gfileutils.c:1870
+#, c-format
+#| msgid "%.1f TB"
+msgid "%.1f TiB"
+msgstr "%.1f TiB"
+
+#: ../glib/gfileutils.c:1873
+#, c-format
+#| msgid "%.1f PB"
+msgid "%.1f PiB"
+msgstr "%.1f PiB"
+
+#: ../glib/gfileutils.c:1876
+#, c-format
+#| msgid "%.1f EB"
+msgid "%.1f EiB"
+msgstr "%.1f EiB"
+
+#: ../glib/gfileutils.c:1889
+#, c-format
+#| msgid "%.1f KB"
+msgid "%.1f kB"
+msgstr "%.1f KiB"
+
+#: ../glib/gfileutils.c:1892 ../glib/gfileutils.c:1992
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MiB"
 
-#: ../glib/gfileutils.c:1817
+#: ../glib/gfileutils.c:1895 ../glib/gfileutils.c:1997
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GiB"
 
-#: ../glib/gfileutils.c:1822
+#: ../glib/gfileutils.c:1898 ../glib/gfileutils.c:2002
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TiB"
 
-#: ../glib/gfileutils.c:1827
+#: ../glib/gfileutils.c:1901 ../glib/gfileutils.c:2007
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PiB"
 
-#: ../glib/gfileutils.c:1832
+#: ../glib/gfileutils.c:1904 ../glib/gfileutils.c:2012
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EiB"
 
-#: ../glib/gfileutils.c:1875
+#. Translators: the %s in "%s bytes" will always be replaced by a number.
+#: ../glib/gfileutils.c:1941
+#, c-format
+#| msgid "%u byte"
+#| msgid_plural "%u bytes"
+msgid "%s byte"
+msgid_plural "%s bytes"
+msgstr[0] "%s byte"
+msgstr[1] "%s bytes"
+
+#: ../glib/gfileutils.c:1987
+#, c-format
+msgid "%.1f KB"
+msgstr "%.1f KiB"
+
+#: ../glib/gfileutils.c:2055
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Falló al leer el enlace simbólico «%s»: %s"
 
-#: ../glib/gfileutils.c:1896
+#: ../glib/gfileutils.c:2076
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
@@ -647,11 +700,11 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba un carácter «>» para terminar la etiqueta "
-"vacía del elemento «%s»"
+"Carácter «%s» impropio, se esperaba un carácter «>» para terminar la "
+"etiqueta vacía del elemento «%s»"
 
 #: ../glib/gmarkup.c:1270
 #, c-format
@@ -678,8 +731,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba una marca de apertura de comillas después "
-"del signo igual al darle valor al atributo «%s» del elemento «%s»"
+"Carácter «%s» impropio, se esperaba una marca de apertura de comillas "
+"después del signo igual al darle valor al atributo «%s» del elemento «%s»"
 
 #: ../glib/gmarkup.c:1488
 #, c-format
@@ -687,8 +740,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  no "
-"debe iniciar un nombre de elemento"
+"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  "
+"no debe iniciar un nombre de elemento"
 
 #: ../glib/gmarkup.c:1524
 #, c-format
@@ -708,8 +761,8 @@ msgstr "El elemento «%s» fue cerrado, no existe ningún elemento abierto"
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es «%"
-"s»"
+"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es "
+"«%s»"
 
 #: ../glib/gmarkup.c:1712
 msgid "Document was empty or contained only whitespace"
@@ -1101,14 +1154,15 @@ msgstr ""
 #: ../glib/gshell.c:559
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
+msgstr ""
+"El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
 
 #: ../glib/gshell.c:566
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"El texto terminó antes de que se encontrase la comilla correspondiente con %"
-"c. (El texto era «%s»)"
+"El texto terminó antes de que se encontrase la comilla correspondiente con "
+"%c. (El texto era «%s»)"
 
 #: ../glib/gshell.c:578
 msgid "Text was empty (or contained only whitespace)"
@@ -1514,8 +1568,8 @@ msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr ""
-"El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene un "
-"signo de igual"
+"El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene "
+"un signo de igual"
 
 #: ../gio/gdbusaddress.c:481
 #, c-format
@@ -1523,8 +1577,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr ""
-"Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en el "
-"elemento de dirección «%s»"
+"Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en "
+"el elemento de dirección «%s»"
 
 #: ../gio/gdbusaddress.c:559
 #, c-format
@@ -1605,14 +1659,15 @@ msgstr "Error al lanzar («spawn») el comando «%s»: "
 #: ../gio/gdbusaddress.c:1068
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
-msgstr "Terminación anómala de programa al lanzar («spawn») el comando «%s»: %s"
+msgstr ""
+"Terminación anómala de programa al lanzar («spawn») el comando «%s»: %s"
 
 #: ../gio/gdbusaddress.c:1082
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr ""
-"El comando de línea «%s» finalizó con un estado de salida distinto de cero %"
-"d: %s"
+"El comando de línea «%s» finalizó con un estado de salida distinto de cero "
+"%d: %s"
 
 #: ../gio/gdbusaddress.c:1155
 #, c-format
@@ -1691,23 +1746,24 @@ msgstr "Error al abrir el depósito de claves «%s» para su lectura: "
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"La línea %d del depósito de claves en «%s» con contenido «%s» está mal formada"
+"La línea %d del depósito de claves en «%s» con contenido «%s» está mal "
+"formada"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"El primer token de la línea %d del depósito de claves en «%s» con contenido «%"
-"s» está mal formado"
+"El primer token de la línea %d del depósito de claves en «%s» con contenido "
+"«%s» está mal formado"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"El segundo token de la línea %d del depósito de claves en «%s» con contenido «%"
-"s» está mal formado"
+"El segundo token de la línea %d del depósito de claves en «%s» con contenido "
+"«%s» está mal formado"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
@@ -1742,7 +1798,8 @@ msgstr "Error al abrir el depósito de claves «%s» para su escritura:"
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
+msgstr ""
+"(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
 
 #: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
 #: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
@@ -1772,8 +1829,8 @@ msgstr ""
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
-"Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se obtuvo "
-"«%s»."
+"Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se "
+"obtuvo «%s»."
 
 #: ../gio/gdbusconnection.c:3935
 #, c-format
@@ -1890,7 +1947,8 @@ msgstr ""
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr ""
-"Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte %d"
+"Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte "
+"%d"
 
 #: ../gio/gdbusmessage.c:1239
 #, c-format
@@ -1930,8 +1988,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
-"Valor endian no válido. Se esperaba 0x6c («l») o 0x42 («B»)» pero se obtuvo el "
-"valor 0x%02x"
+"Valor endian no válido. Se esperaba 0x6c («l») o 0x42 («B»)» pero se obtuvo "
+"el valor 0x%02x"
 
 #: ../gio/gdbusmessage.c:1713
 #, c-format
@@ -1969,8 +2027,8 @@ msgstr "No se puede deserializar el mensaje: "
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
-"Error al serializar GVariant con el tipo de cadena «%s» al formato de mensaje "
-"de D-Bus"
+"Error al serializar GVariant con el tipo de cadena «%s» al formato de "
+"mensaje de D-Bus"
 
 #: ../gio/gdbusmessage.c:2294
 #, c-format
@@ -1990,8 +2048,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2356
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr ""
 "El cuerpo del mensaje tiene un tipo de firma «%s» pero la firma en el campo "
 "de cabecera es «%s»"
@@ -2000,8 +2058,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
-"El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es «(%"
-"s)»"
+"El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es "
+"«(%s)»"
 
 #: ../gio/gdbusmessage.c:2929
 #, c-format
@@ -2132,7 +2190,8 @@ msgstr "Se especificaron varios puntos de conexión extremos"
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
-"Advertencia: según la introspección de los datos, la interfaz «%s» no existe\n"
+"Advertencia: según la introspección de los datos, la interfaz «%s» no "
+"existe\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
@@ -2140,8 +2199,8 @@ msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
 msgstr ""
-"Advertencia: según la introspección de los datos, el método «%s» no existe en "
-"la interfaz «%s»\n"
+"Advertencia: según la introspección de los datos, el método «%s» no existe "
+"en la interfaz «%s»\n"
 
 #: ../gio/gdbus-tool.c:534
 msgid "Optional destination for signal (unique name)"
@@ -2376,11 +2435,11 @@ msgstr "Se esperaba un GEmblem para GEmblemedIconjo"
 #: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
 #: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
 #: ../gio/gfile.c:1837 ../gio/gfile.c:3307 ../gio/gfile.c:3361
-#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3861
-#: ../gio/gfile.c:4263 ../gio/gfile.c:4349 ../gio/gfile.c:4438
-#: ../gio/gfile.c:4536 ../gio/gfile.c:4623 ../gio/gfile.c:4717
-#: ../gio/gfile.c:5038 ../gio/gfile.c:5305 ../gio/gfile.c:5370
-#: ../gio/gfile.c:6944 ../gio/gfile.c:7034 ../gio/gfile.c:7120
+#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3864
+#: ../gio/gfile.c:4266 ../gio/gfile.c:4352 ../gio/gfile.c:4441
+#: ../gio/gfile.c:4539 ../gio/gfile.c:4626 ../gio/gfile.c:4720
+#: ../gio/gfile.c:5041 ../gio/gfile.c:5308 ../gio/gfile.c:5373
+#: ../gio/gfile.c:6947 ../gio/gfile.c:7037 ../gio/gfile.c:7123
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operación no soportada"
@@ -2440,11 +2499,11 @@ msgstr "No se soporta mover a la papelera"
 msgid "File names cannot contain '%c'"
 msgstr "Los nombres de archivo no pueden contener «%c»"
 
-#: ../gio/gfile.c:6003 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6006 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "el volumen no implementa el montado"
 
-#: ../gio/gfile.c:6114
+#: ../gio/gfile.c:6117
 msgid "No application is registered as handling this file"
 msgstr "No hay ninguna aplicación registrada para manejar este archivo"
 
@@ -2564,8 +2623,8 @@ msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and dash ('-') are permitted."
 msgstr ""
-"nombre «%s» no válido: el carácter «%c» no es válido; sólo se permiten nombres "
-"en minúscula, números y guión («-»)."
+"nombre «%s» no válido: el carácter «%c» no es válido; sólo se permiten "
+"nombres en minúscula, números y guión («-»)."
 
 #: ../gio/glib-compile-schemas.c:772
 #, c-format
@@ -2579,7 +2638,6 @@ msgstr "nombre «%s» no válido: el último caracter no puede ser un guión («
 
 #: ../gio/glib-compile-schemas.c:789
 #, c-format
-#| msgid "invalid name '%s': maximum length is 32"
 msgid "invalid name '%s': maximum length is 1024"
 msgstr "nombre «%s» no válido: la longitud máxima es 1024"
 
@@ -2612,8 +2670,8 @@ msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
-"se debe especificar exactamente uno de «type», «enum» o «flags» como atributo "
-"para <key>"
+"se debe especificar exactamente uno de «type», «enum» o «flags» como "
+"atributo para <key>"
 
 #: ../gio/glib-compile-schemas.c:943
 #, c-format
@@ -2678,8 +2736,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> extiende <schema id='%s' list-of='%s'> pero «%"
-"s» no extiende «%s»"
+"<schema id='%s' list-of='%s'> extiende <schema id='%s' list-of='%s'> pero "
+"«%s» no extiende «%s»"
 
 #: ../gio/glib-compile-schemas.c:1163
 #, c-format
@@ -2732,8 +2790,8 @@ msgstr "Ignorando este archivo.\n"
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
-"No existe la clave «%s» en el esquema «%s» como se especificó en el archivo de "
-"sobreescitura «%s»"
+"No existe la clave «%s» en el esquema «%s» como se especificó en el archivo "
+"de sobreescitura «%s»"
 
 #: ../gio/glib-compile-schemas.c:1809 ../gio/glib-compile-schemas.c:1867
 #: ../gio/glib-compile-schemas.c:1895
@@ -2750,8 +2808,8 @@ msgstr "y se especificó --strict; saliendo.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
-"s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
 msgstr ""
 "error al analizar la clave «%s» en el esquema «%s» como se especificó en el "
 "archivo de sobreescritura «%s»: %s."
@@ -3806,7 +3864,7 @@ msgstr "Error al leer de unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Error al cerrar unix: %s"
 
-#: ../gio/gunixmounts.c:1874 ../gio/gunixmounts.c:1911
+#: ../gio/gunixmounts.c:1881 ../gio/gunixmounts.c:1918
 msgid "Filesystem root"
 msgstr "Sistema de archivos raíz"
 
@@ -3912,7 +3970,8 @@ msgstr "Datos comprimidos no válidos"
 
 #~ msgid "No such schema `%s' specified in override file `%s'"
 #~ msgstr ""
-#~ "No existe el esquema «%s» especificado en el archivo de sobreescritura «%s»"
+#~ "No existe el esquema «%s» especificado en el archivo de sobreescritura "
+#~ "«%s»"
 
 #~ msgid ""
 #~ "Commands:\n"
@@ -4057,8 +4116,8 @@ msgstr "Datos comprimidos no válidos"
 #~ "characters. Ignores names after the first if multiple names are given."
 #~ msgstr ""
 #~ "Indica si se debe usar los valores de reserva encontrados al acortar el "
-#~ "nombre en los caracteres «-». Si se proporcionan varios nombres los ignora "
-#~ "después del primero."
+#~ "nombre en los caracteres «-». Si se proporcionan varios nombres los "
+#~ "ignora después del primero."
 
 #~ msgid "File descriptor"
 #~ msgstr "Descriptor del archivo"
