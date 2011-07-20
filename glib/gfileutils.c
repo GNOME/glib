@@ -1767,12 +1767,12 @@ g_build_filename (const gchar *first_element,
   return str;
 }
 
-#define KILOBYTE_FACTOR (G_GOFFSET_CONSTANT (1024))
-#define MEGABYTE_FACTOR (KILOBYTE_FACTOR * KILOBYTE_FACTOR)
-#define GIGABYTE_FACTOR (MEGABYTE_FACTOR * KILOBYTE_FACTOR)
-#define TERABYTE_FACTOR (GIGABYTE_FACTOR * KILOBYTE_FACTOR)
-#define PETABYTE_FACTOR (TERABYTE_FACTOR * KILOBYTE_FACTOR)
-#define EXABYTE_FACTOR  (PETABYTE_FACTOR * KILOBYTE_FACTOR)
+#define KIBIBYTE_FACTOR (G_GOFFSET_CONSTANT (1024))
+#define MEBIBYTE_FACTOR (KIBIBYTE_FACTOR * KIBIBYTE_FACTOR)
+#define GIBIBYTE_FACTOR (MEBIBYTE_FACTOR * KIBIBYTE_FACTOR)
+#define TEBIBYTE_FACTOR (GIBIBYTE_FACTOR * KIBIBYTE_FACTOR)
+#define PEBIBYTE_FACTOR (TEBIBYTE_FACTOR * KIBIBYTE_FACTOR)
+#define EXBIBYTE_FACTOR (PEBIBYTE_FACTOR * KIBIBYTE_FACTOR)
 
 /**
  * g_format_size_for_display:
@@ -1795,40 +1795,40 @@ g_build_filename (const gchar *first_element,
 char *
 g_format_size_for_display (goffset size)
 {
-  if (size < (goffset) KILOBYTE_FACTOR)
+  if (size < (goffset) KIBIBYTE_FACTOR)
     return g_strdup_printf (g_dngettext(GETTEXT_PACKAGE, "%u byte", "%u bytes",(guint) size), (guint) size);
   else
     {
       gdouble displayed_size;
       
-      if (size < (goffset) MEGABYTE_FACTOR)
+      if (size < (goffset) MEBIBYTE_FACTOR)
 	{
-	  displayed_size = (gdouble) size / (gdouble) KILOBYTE_FACTOR;
+	  displayed_size = (gdouble) size / (gdouble) KIBIBYTE_FACTOR;
 	  return g_strdup_printf (_("%.1f KB"), displayed_size);
 	}
-      else if (size < (goffset) GIGABYTE_FACTOR)
+      else if (size < (goffset) GIBIBYTE_FACTOR)
 	{
-	  displayed_size = (gdouble) size / (gdouble) MEGABYTE_FACTOR;
+	  displayed_size = (gdouble) size / (gdouble) MEBIBYTE_FACTOR;
 	  return g_strdup_printf (_("%.1f MB"), displayed_size);
 	}
-      else if (size < (goffset) TERABYTE_FACTOR)
+      else if (size < (goffset) TEBIBYTE_FACTOR)
 	{
-	  displayed_size = (gdouble) size / (gdouble) GIGABYTE_FACTOR;
+	  displayed_size = (gdouble) size / (gdouble) GIBIBYTE_FACTOR;
 	  return g_strdup_printf (_("%.1f GB"), displayed_size);
 	}
-      else if (size < (goffset) PETABYTE_FACTOR)
+      else if (size < (goffset) PEBIBYTE_FACTOR)
 	{
-	  displayed_size = (gdouble) size / (gdouble) TERABYTE_FACTOR;
+	  displayed_size = (gdouble) size / (gdouble) TEBIBYTE_FACTOR;
 	  return g_strdup_printf (_("%.1f TB"), displayed_size);
 	}
-      else if (size < (goffset) EXABYTE_FACTOR)
+      else if (size < (goffset) EXBIBYTE_FACTOR)
 	{
-	  displayed_size = (gdouble) size / (gdouble) PETABYTE_FACTOR;
+	  displayed_size = (gdouble) size / (gdouble) PEBIBYTE_FACTOR;
 	  return g_strdup_printf (_("%.1f PB"), displayed_size);
 	}
       else
         {
-	  displayed_size = (gdouble) size / (gdouble) EXABYTE_FACTOR;
+	  displayed_size = (gdouble) size / (gdouble) EXBIBYTE_FACTOR;
 	  return g_strdup_printf (_("%.1f EB"), displayed_size);
         }
     }
