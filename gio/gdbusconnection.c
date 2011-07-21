@@ -4901,6 +4901,7 @@ static GVariant *
 decode_method_reply (GDBusMessage        *reply,
                      const gchar         *method_name,
                      const GVariantType  *reply_type,
+                     GUnixFDList        **out_fd_list,
                      GError             **error)
 {
   GVariant *result;
@@ -4934,6 +4935,18 @@ decode_method_reply (GDBusMessage        *reply,
           g_free (type_string);
           result = NULL;
         }
+
+#ifdef G_OS_UNIX
+      if (result != NULL)
+        {
+          if (out_fd_list != NULL)
+            {
+              *out_fd_list = g_dbus_message_get_unix_fd_list (reply);
+              if (*out_fd_list != NULL)
+                g_object_ref (*out_fd_list);
+            }
+        }
+#endif
       break;
 
     case G_DBUS_MESSAGE_TYPE_ERROR:
@@ -4955,18 +4968,38 @@ typedef struct
   GVariantType *reply_type;
   gchar *method_name; /* for error message */
   guint32 serial;
+
+  GVariant *value;
+#ifdef G_OS_UNIX
+  GUnixFDList *fd_list;
+#endif
 } CallState;
+
+static void
+call_state_free (CallState *state)
+{
+  g_variant_type_free (state->reply_type);
+  g_free (state->method_name);
+
+  if (state->value != NULL)
+    g_variant_unref (state->value);
+#ifdef G_OS_UNIX
+  if (state->fd_list != NULL)
+    g_object_unref (state->fd_list);
+#endif
+  g_slice_free (CallState, state);
+}
 
 static void
 g_dbus_connection_call_done (GObject      *source,
                              GAsyncResult *result,
                              gpointer      user_data)
 {
+  GSimpleAsyncResult *simple;
   GDBusConnection *connection = G_DBUS_CONNECTION (source);
   CallState *state = user_data;
   GError *error;
   GDBusMessage *reply;
-  GVariant *value;
 
   error = NULL;
   reply = g_dbus_connection_send_message_with_reply_finish (connection,
@@ -4994,29 +5027,246 @@ g_dbus_connection_call_done (GObject      *source,
       _g_dbus_debug_print_unlock ();
     }
 
-
   if (reply != NULL)
+    state->value = decode_method_reply (reply, state->method_name, state->reply_type, &state->fd_list, &error);
+
+  simple = state->simple; /* why? because state is freed before we unref simple.. */
+  if (error != NULL)
     {
-      value = decode_method_reply (reply, state->method_name,
-                                   state->reply_type, &error);
-      g_object_unref (reply);
+      g_simple_async_result_take_error (state->simple, error);
+      g_simple_async_result_complete (state->simple);
+      call_state_free (state);
     }
   else
-    value = NULL;
-
-  if (value == NULL)
-    g_simple_async_result_take_error (state->simple, error);
-  else
-    g_simple_async_result_set_op_res_gpointer (state->simple, value,
-                                               (GDestroyNotify) g_variant_unref);
-
-  g_simple_async_result_complete (state->simple);
-  g_variant_type_free (state->reply_type);
-  g_object_unref (state->simple);
-  g_free (state->method_name);
-
-  g_slice_free (CallState, state);
+    {
+      g_simple_async_result_set_op_res_gpointer (state->simple, state, (GDestroyNotify) call_state_free);
+      g_simple_async_result_complete (state->simple);
+      g_object_unref (reply);
+    }
+  g_object_unref (simple);
 }
+
+static void
+g_dbus_connection_call_internal (GDBusConnection        *connection,
+                                 const gchar            *bus_name,
+                                 const gchar            *object_path,
+                                 const gchar            *interface_name,
+                                 const gchar            *method_name,
+                                 GVariant               *parameters,
+                                 const GVariantType     *reply_type,
+                                 GDBusCallFlags          flags,
+                                 gint                    timeout_msec,
+                                 GUnixFDList            *fd_list,
+                                 GCancellable           *cancellable,
+                                 GAsyncReadyCallback     callback,
+                                 gpointer                user_data)
+{
+  GDBusMessage *message;
+  CallState *state;
+
+  g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
+  g_return_if_fail (bus_name == NULL || g_dbus_is_name (bus_name));
+  g_return_if_fail (object_path != NULL && g_variant_is_object_path (object_path));
+  g_return_if_fail (interface_name != NULL && g_dbus_is_interface_name (interface_name));
+  g_return_if_fail (method_name != NULL && g_dbus_is_member_name (method_name));
+  g_return_if_fail (timeout_msec >= 0 || timeout_msec == -1);
+  g_return_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
+  g_return_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list));
+
+  state = g_slice_new0 (CallState);
+  state->simple = g_simple_async_result_new (G_OBJECT (connection),
+                                             callback, user_data,
+                                             g_dbus_connection_call_internal);
+  state->method_name = g_strjoin (".", interface_name, method_name, NULL);
+
+  if (reply_type == NULL)
+    reply_type = G_VARIANT_TYPE_ANY;
+
+  state->reply_type = g_variant_type_copy (reply_type);
+
+  message = g_dbus_message_new_method_call (bus_name,
+                                            object_path,
+                                            interface_name,
+                                            method_name);
+  add_call_flags (message, flags);
+  if (parameters != NULL)
+    g_dbus_message_set_body (message, parameters);
+
+#ifdef G_OS_UNIX
+  if (fd_list != NULL)
+    g_dbus_message_set_unix_fd_list (message, fd_list);
+#endif
+
+  g_dbus_connection_send_message_with_reply (connection,
+                                             message,
+                                             G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                             timeout_msec,
+                                             &state->serial,
+                                             cancellable,
+                                             g_dbus_connection_call_done,
+                                             state);
+
+  if (G_UNLIKELY (_g_dbus_debug_call ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Call:\n"
+               " >>>> ASYNC %s.%s()\n"
+               "      on object %s\n"
+               "      owned by name %s (serial %d)\n",
+               interface_name,
+               method_name,
+               object_path,
+               bus_name != NULL ? bus_name : "(none)",
+               state->serial);
+      _g_dbus_debug_print_unlock ();
+    }
+
+  if (message != NULL)
+    g_object_unref (message);
+}
+
+static GVariant *
+g_dbus_connection_call_finish_internal (GDBusConnection  *connection,
+                                        GUnixFDList     **out_fd_list,
+                                        GAsyncResult     *res,
+                                        GError          **error)
+{
+  GSimpleAsyncResult *simple;
+  CallState *state;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
+  g_return_val_if_fail (g_simple_async_result_is_valid (res, G_OBJECT (connection),
+                                                        g_dbus_connection_call_internal), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  simple = G_SIMPLE_ASYNC_RESULT (res);
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    return NULL;
+
+  state = g_simple_async_result_get_op_res_gpointer (simple);
+  if (out_fd_list != NULL)
+    *out_fd_list = state->fd_list != NULL ? g_object_ref (state->fd_list) : NULL;
+  return g_variant_ref (state->value);
+}
+
+static GVariant *
+g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
+                                      const gchar             *bus_name,
+                                      const gchar             *object_path,
+                                      const gchar             *interface_name,
+                                      const gchar             *method_name,
+                                      GVariant                *parameters,
+                                      const GVariantType      *reply_type,
+                                      GDBusCallFlags           flags,
+                                      gint                     timeout_msec,
+                                      GUnixFDList             *fd_list,
+                                      GUnixFDList            **out_fd_list,
+                                      GCancellable            *cancellable,
+                                      GError                 **error)
+{
+  GDBusMessage *message;
+  GDBusMessage *reply;
+  GVariant *result;
+  GError *local_error;
+
+  message = NULL;
+  reply = NULL;
+  result = NULL;
+
+  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
+  g_return_val_if_fail (bus_name == NULL || g_dbus_is_name (bus_name), NULL);
+  g_return_val_if_fail (object_path != NULL && g_variant_is_object_path (object_path), NULL);
+  g_return_val_if_fail (interface_name != NULL && g_dbus_is_interface_name (interface_name), NULL);
+  g_return_val_if_fail (method_name != NULL && g_dbus_is_member_name (method_name), NULL);
+  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
+  g_return_val_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), NULL);
+  g_return_val_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  if (reply_type == NULL)
+    reply_type = G_VARIANT_TYPE_ANY;
+
+  message = g_dbus_message_new_method_call (bus_name,
+                                            object_path,
+                                            interface_name,
+                                            method_name);
+  add_call_flags (message, flags);
+  if (parameters != NULL)
+    g_dbus_message_set_body (message, parameters);
+
+#ifdef G_OS_UNIX
+  if (fd_list != NULL)
+    g_dbus_message_set_unix_fd_list (message, fd_list);
+#endif
+
+  if (G_UNLIKELY (_g_dbus_debug_call ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Call:\n"
+               " >>>> SYNC %s.%s()\n"
+               "      on object %s\n"
+               "      owned by name %s\n",
+               interface_name,
+               method_name,
+               object_path,
+               bus_name != NULL ? bus_name : "(none)");
+      _g_dbus_debug_print_unlock ();
+    }
+
+  local_error = NULL;
+  reply = g_dbus_connection_send_message_with_reply_sync (connection,
+                                                          message,
+							  G_DBUS_SEND_MESSAGE_FLAGS_NONE,
+                                                          timeout_msec,
+                                                          NULL, /* volatile guint32 *out_serial */
+                                                          cancellable,
+                                                          &local_error);
+
+  if (G_UNLIKELY (_g_dbus_debug_call ()))
+    {
+      _g_dbus_debug_print_lock ();
+      g_print ("========================================================================\n"
+               "GDBus-debug:Call:\n"
+               " <<<< SYNC COMPLETE %s.%s()\n"
+               "      ",
+               interface_name,
+               method_name);
+      if (reply != NULL)
+        {
+          g_print ("SUCCESS\n");
+        }
+      else
+        {
+          g_print ("FAILED: %s\n",
+                   local_error->message);
+        }
+      _g_dbus_debug_print_unlock ();
+    }
+
+  if (reply == NULL)
+    {
+      if (error != NULL)
+        *error = local_error;
+      else
+        g_error_free (local_error);
+      goto out;
+    }
+
+  result = decode_method_reply (reply, method_name, reply_type, out_fd_list, error);
+
+ out:
+  if (message != NULL)
+    g_object_unref (message);
+  if (reply != NULL)
+    g_object_unref (reply);
+
+  return result;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
 
 /**
  * g_dbus_connection_call:
@@ -5094,63 +5344,7 @@ g_dbus_connection_call (GDBusConnection        *connection,
                         GAsyncReadyCallback     callback,
                         gpointer                user_data)
 {
-  GDBusMessage *message;
-  CallState *state;
-
-  g_return_if_fail (G_IS_DBUS_CONNECTION (connection));
-  g_return_if_fail (bus_name == NULL || g_dbus_is_name (bus_name));
-  g_return_if_fail (object_path != NULL && g_variant_is_object_path (object_path));
-  g_return_if_fail (interface_name != NULL && g_dbus_is_interface_name (interface_name));
-  g_return_if_fail (method_name != NULL && g_dbus_is_member_name (method_name));
-  g_return_if_fail (timeout_msec >= 0 || timeout_msec == -1);
-  g_return_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
-
-  state = g_slice_new (CallState);
-  state->simple = g_simple_async_result_new (G_OBJECT (connection),
-                                             callback, user_data,
-                                             g_dbus_connection_call);
-  state->method_name = g_strjoin (".", interface_name, method_name, NULL);
-
-  if (reply_type == NULL)
-    reply_type = G_VARIANT_TYPE_ANY;
-
-  state->reply_type = g_variant_type_copy (reply_type);
-
-  message = g_dbus_message_new_method_call (bus_name,
-                                            object_path,
-                                            interface_name,
-                                            method_name);
-  add_call_flags (message, flags);
-  if (parameters != NULL)
-    g_dbus_message_set_body (message, parameters);
-
-  g_dbus_connection_send_message_with_reply (connection,
-                                             message,
-                                             G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-                                             timeout_msec,
-                                             &state->serial,
-                                             cancellable,
-                                             g_dbus_connection_call_done,
-                                             state);
-
-  if (G_UNLIKELY (_g_dbus_debug_call ()))
-    {
-      _g_dbus_debug_print_lock ();
-      g_print ("========================================================================\n"
-               "GDBus-debug:Call:\n"
-               " >>>> ASYNC %s.%s()\n"
-               "      on object %s\n"
-               "      owned by name %s (serial %d)\n",
-               interface_name,
-               method_name,
-               object_path,
-               bus_name != NULL ? bus_name : "(none)",
-               state->serial);
-      _g_dbus_debug_print_unlock ();
-    }
-
-  if (message != NULL)
-    g_object_unref (message);
+  return g_dbus_connection_call_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, NULL, cancellable, callback, user_data);
 }
 
 /**
@@ -5171,22 +5365,8 @@ g_dbus_connection_call_finish (GDBusConnection  *connection,
                                GAsyncResult     *res,
                                GError          **error)
 {
-  GSimpleAsyncResult *simple;
-
-  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  g_return_val_if_fail (g_simple_async_result_is_valid (res, G_OBJECT (connection),
-                                                        g_dbus_connection_call), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  simple = G_SIMPLE_ASYNC_RESULT (res);
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    return NULL;
-
-  return g_variant_ref (g_simple_async_result_get_op_res_gpointer (simple));
+  return g_dbus_connection_call_finish_internal (connection, NULL, res, error);
 }
-
-/* ---------------------------------------------------------------------------------------------------- */
 
 /**
  * g_dbus_connection_call_sync:
@@ -5259,98 +5439,127 @@ g_dbus_connection_call_sync (GDBusConnection         *connection,
                              GCancellable            *cancellable,
                              GError                 **error)
 {
-  GDBusMessage *message;
-  GDBusMessage *reply;
-  GVariant *result;
-  GError *local_error;
-
-  message = NULL;
-  reply = NULL;
-  result = NULL;
-
-  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
-  g_return_val_if_fail (bus_name == NULL || g_dbus_is_name (bus_name), NULL);
-  g_return_val_if_fail (object_path != NULL && g_variant_is_object_path (object_path), NULL);
-  g_return_val_if_fail (interface_name != NULL && g_dbus_is_interface_name (interface_name), NULL);
-  g_return_val_if_fail (method_name != NULL && g_dbus_is_member_name (method_name), NULL);
-  g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
-  g_return_val_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), NULL);
-
-  if (reply_type == NULL)
-    reply_type = G_VARIANT_TYPE_ANY;
-
-  message = g_dbus_message_new_method_call (bus_name,
-                                            object_path,
-                                            interface_name,
-                                            method_name);
-  add_call_flags (message, flags);
-  if (parameters != NULL)
-    g_dbus_message_set_body (message, parameters);
-
-  if (G_UNLIKELY (_g_dbus_debug_call ()))
-    {
-      _g_dbus_debug_print_lock ();
-      g_print ("========================================================================\n"
-               "GDBus-debug:Call:\n"
-               " >>>> SYNC %s.%s()\n"
-               "      on object %s\n"
-               "      owned by name %s\n",
-               interface_name,
-               method_name,
-               object_path,
-               bus_name != NULL ? bus_name : "(none)");
-      _g_dbus_debug_print_unlock ();
-    }
-
-  local_error = NULL;
-  reply = g_dbus_connection_send_message_with_reply_sync (connection,
-                                                          message,
-							  G_DBUS_SEND_MESSAGE_FLAGS_NONE,
-                                                          timeout_msec,
-                                                          NULL, /* volatile guint32 *out_serial */
-                                                          cancellable,
-                                                          &local_error);
-
-  if (G_UNLIKELY (_g_dbus_debug_call ()))
-    {
-      _g_dbus_debug_print_lock ();
-      g_print ("========================================================================\n"
-               "GDBus-debug:Call:\n"
-               " <<<< SYNC COMPLETE %s.%s()\n"
-               "      ",
-               interface_name,
-               method_name);
-      if (reply != NULL)
-        {
-          g_print ("SUCCESS\n");
-        }
-      else
-        {
-          g_print ("FAILED: %s\n",
-                   local_error->message);
-        }
-      _g_dbus_debug_print_unlock ();
-    }
-
-  if (reply == NULL)
-    {
-      if (error != NULL)
-        *error = local_error;
-      else
-        g_error_free (local_error);
-      goto out;
-    }
-
-  result = decode_method_reply (reply, method_name, reply_type, error);
-
- out:
-  if (message != NULL)
-    g_object_unref (message);
-  if (reply != NULL)
-    g_object_unref (reply);
-
-  return result;
+  return g_dbus_connection_call_sync_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, NULL, NULL, cancellable, error);
 }
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+#ifdef G_OS_UNIX
+
+/**
+ * g_dbus_connection_call_with_unix_fd_list:
+ * @connection: A #GDBusConnection.
+ * @bus_name: (allow-none): A unique or well-known bus name or %NULL if
+ *            @connection is not a message bus connection.
+ * @object_path: Path of remote object.
+ * @interface_name: D-Bus interface to invoke method on.
+ * @method_name: The name of the method to invoke.
+ * @parameters: (allow-none): A #GVariant tuple with parameters for the method
+ *              or %NULL if not passing parameters.
+ * @reply_type: (allow-none): The expected type of the reply, or %NULL.
+ * @flags: Flags from the #GDBusCallFlags enumeration.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
+ * @fd_list: (allow-none): A #GUnixFDList or %NULL.
+ * @cancellable: A #GCancellable or %NULL.
+ * @callback: (allow-none): A #GAsyncReadyCallback to call when the request is
+ *            satisfied or %NULL if you don't * care about the result of the
+ *            method invocation.
+ * @user_data: The data to pass to @callback.
+ *
+ * Like g_dbus_connection_call() but also takes a #GUnixFDList object.
+ *
+ * This method is only available on UNIX.
+ *
+ * Since: 2.30
+ */
+void
+g_dbus_connection_call_with_unix_fd_list (GDBusConnection        *connection,
+                                          const gchar            *bus_name,
+                                          const gchar            *object_path,
+                                          const gchar            *interface_name,
+                                          const gchar            *method_name,
+                                          GVariant               *parameters,
+                                          const GVariantType     *reply_type,
+                                          GDBusCallFlags          flags,
+                                          gint                    timeout_msec,
+                                          GUnixFDList            *fd_list,
+                                          GCancellable           *cancellable,
+                                          GAsyncReadyCallback     callback,
+                                          gpointer                user_data)
+{
+  return g_dbus_connection_call_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, cancellable, callback, user_data);
+}
+
+/**
+ * g_dbus_connection_call_with_unix_fd_list_finish:
+ * @connection: A #GDBusConnection.
+ * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.
+ * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_connection_call_with_unix_fd_list().
+ * @error: Return location for error or %NULL.
+ *
+ * Finishes an operation started with g_dbus_connection_call_with_unix_fd_list().
+ *
+ * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
+ * return values. Free with g_variant_unref().
+ *
+ * Since: 2.30
+ */
+GVariant *
+g_dbus_connection_call_with_unix_fd_list_finish (GDBusConnection  *connection,
+                                                 GUnixFDList     **out_fd_list,
+                                                 GAsyncResult     *res,
+                                                 GError          **error)
+{
+  return g_dbus_connection_call_finish_internal (connection, out_fd_list, res, error);
+}
+
+/**
+ * g_dbus_connection_call_with_unix_fd_list_sync:
+ * @connection: A #GDBusConnection.
+ * @bus_name: A unique or well-known bus name.
+ * @object_path: Path of remote object.
+ * @interface_name: D-Bus interface to invoke method on.
+ * @method_name: The name of the method to invoke.
+ * @parameters: (allow-none): A #GVariant tuple with parameters for the method
+ *              or %NULL if not passing parameters.
+ * @reply_type: (allow-none): The expected type of the reply, or %NULL.
+ * @flags: Flags from the #GDBusCallFlags enumeration.
+ * @timeout_msec: The timeout in milliseconds, -1 to use the default
+ *                timeout or %G_MAXINT for no timeout.
+ * @fd_list: (allow-none): A #GUnixFDList or %NULL.
+ * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.
+ * @cancellable: A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Like g_dbus_connection_call_sync() but also takes and returns #GUnixFDList objects.
+ *
+ * This method is only available on UNIX.
+ *
+ * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
+ * return values. Free with g_variant_unref().
+ *
+ * Since: 2.30
+ */
+GVariant *
+g_dbus_connection_call_with_unix_fd_list_sync (GDBusConnection         *connection,
+                                               const gchar             *bus_name,
+                                               const gchar             *object_path,
+                                               const gchar             *interface_name,
+                                               const gchar             *method_name,
+                                               GVariant                *parameters,
+                                               const GVariantType      *reply_type,
+                                               GDBusCallFlags           flags,
+                                               gint                     timeout_msec,
+                                               GUnixFDList             *fd_list,
+                                               GUnixFDList            **out_fd_list,
+                                               GCancellable            *cancellable,
+                                               GError                 **error)
+{
+  return g_dbus_connection_call_sync_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, out_fd_list, cancellable, error);
+}
+
+#endif /* G_OS_UNIX */
 
 /* ---------------------------------------------------------------------------------------------------- */
 

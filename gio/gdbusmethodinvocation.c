@@ -32,6 +32,10 @@
 #include "gdbuserror.h"
 #include "gdbusprivate.h"
 
+#ifdef G_OS_UNIX
+#include "gunixfdlist.h"
+#endif
+
 #include "glibintl.h"
 
 /**
@@ -335,23 +339,10 @@ _g_dbus_method_invocation_new (const gchar           *sender,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/**
- * g_dbus_method_invocation_return_value:
- * @invocation: (transfer full): A #GDBusMethodInvocation.
- * @parameters: (allow-none): A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
- *
- * Finishes handling a D-Bus method call by returning @parameters.
- * If the @parameters GVariant is floating, it is consumed.
- *
- * It is an error if @parameters is not of the right format.
- *
- * This method will free @invocation, you cannot use it afterwards.
- *
- * Since: 2.26
- */
-void
-g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
-                                       GVariant              *parameters)
+static void
+g_dbus_method_invocation_return_value_internal (GDBusMethodInvocation *invocation,
+                                                GVariant              *parameters,
+                                                GUnixFDList           *fd_list)
 {
   GDBusMessage *reply;
   GError *error;
@@ -401,6 +392,12 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
 
   reply = g_dbus_message_new_method_reply (invocation->message);
   g_dbus_message_set_body (reply, parameters);
+
+#ifdef G_OS_UNIX
+  if (fd_list != NULL)
+    g_dbus_message_set_unix_fd_list (reply, fd_list);
+#endif
+
   error = NULL;
   if (!g_dbus_connection_send_message (g_dbus_method_invocation_get_connection (invocation), reply, G_DBUS_SEND_MESSAGE_FLAGS_NONE, NULL, &error))
     {
@@ -412,6 +409,51 @@ g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
  out:
   g_object_unref (invocation);
 }
+
+/**
+ * g_dbus_method_invocation_return_value:
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ * @parameters: (allow-none): A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
+ *
+ * Finishes handling a D-Bus method call by returning @parameters.
+ * If the @parameters GVariant is floating, it is consumed.
+ *
+ * It is an error if @parameters is not of the right format.
+ *
+ * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.26
+ */
+void
+g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
+                                       GVariant              *parameters)
+{
+  return g_dbus_method_invocation_return_value_internal (invocation, parameters, NULL);
+}
+
+#ifdef G_OS_UNIX
+/**
+ * g_dbus_method_invocation_return_value_with_unix_fd_list:
+ * @invocation: (transfer full): A #GDBusMethodInvocation.
+ * @parameters: (allow-none): A #GVariant tuple with out parameters for the method or %NULL if not passing any parameters.
+ * @fd_list: (allow-none): A #GUnixFDList or %NULL.
+ *
+ * Like g_dbus_method_invocation_return_value() but also takes a #GUnixFDList.
+ *
+ * This method is only available on UNIX.
+ *
+ * This method will free @invocation, you cannot use it afterwards.
+ *
+ * Since: 2.30
+ */
+void
+g_dbus_method_invocation_return_value_with_unix_fd_list (GDBusMethodInvocation *invocation,
+                                                         GVariant              *parameters,
+                                                         GUnixFDList           *fd_list)
+{
+  return g_dbus_method_invocation_return_value_internal (invocation, parameters, fd_list);
+}
+#endif
 
 /* ---------------------------------------------------------------------------------------------------- */
 

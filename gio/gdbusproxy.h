@@ -162,6 +162,29 @@ GVariant        *g_dbus_proxy_call_sync                 (GDBusProxy          *pr
                                                          GCancellable        *cancellable,
                                                          GError             **error);
 
+void             g_dbus_proxy_call_with_unix_fd_list        (GDBusProxy          *proxy,
+                                                             const gchar         *method_name,
+                                                             GVariant            *parameters,
+                                                             GDBusCallFlags       flags,
+                                                             gint                 timeout_msec,
+                                                             GUnixFDList         *fd_list,
+                                                             GCancellable        *cancellable,
+                                                             GAsyncReadyCallback  callback,
+                                                             gpointer             user_data);
+GVariant        *g_dbus_proxy_call_with_unix_fd_list_finish (GDBusProxy          *proxy,
+                                                             GUnixFDList        **out_fd_list,
+                                                             GAsyncResult        *res,
+                                                             GError             **error);
+GVariant        *g_dbus_proxy_call_with_unix_fd_list_sync   (GDBusProxy          *proxy,
+                                                             const gchar         *method_name,
+                                                             GVariant            *parameters,
+                                                             GDBusCallFlags       flags,
+                                                             gint                 timeout_msec,
+                                                             GUnixFDList         *fd_list,
+                                                             GUnixFDList        **out_fd_list,
+                                                             GCancellable        *cancellable,
+                                                             GError             **error);
+
 G_END_DECLS
 
 #endif /* __G_DBUS_PROXY_H__ */

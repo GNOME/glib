@@ -332,6 +332,18 @@ gdbus-codegen --c-namespace MyApp                           \
       </listitem>
     </varlistentry>
 
+    <varlistentry>
+      <term><literal>org.gtk.GDBus.C.UnixFD</literal></term>
+      <listitem>
+        <para>
+          If set to a non-empty string, the generated code will
+          include parameters to exchange file descriptors using the
+          #GUnixFDList type. This annotation can be used on
+          <literal>&lt;method&gt;</literal> elements.
+        </para>
+      </listitem>
+    </varlistentry>
+
   </variablelist>
 
   <para>
@@ -744,8 +756,7 @@ on_handle_hello_world (MyAppFrobber           *interface,
     <link linkend="G-VARIANT-TYPE-INT32:CAPS">'i'</link>,
     <link linkend="G-VARIANT-TYPE-UINT32:CAPS">'u'</link>,
     <link linkend="G-VARIANT-TYPE-INT64:CAPS">'x'</link>,
-    <link linkend="G-VARIANT-TYPE-UINT64:CAPS">'t'</link>,
-    <link linkend="G-VARIANT-TYPE-HANDLE:CAPS">'h'</link> and
+    <link linkend="G-VARIANT-TYPE-UINT64:CAPS">'t'</link> and
     <link linkend="G-VARIANT-TYPE-DOUBLE:CAPS">'d'</link>)
     ),
     strings (type-strings
@@ -780,11 +791,7 @@ on_handle_hello_world (MyAppFrobber           *interface,
     The generated C functions are guaranteed to not change their ABI
     that is, if a method, signal or property does not change its
     signature in the introspection XML, the generated C functions will
-    not change its C ABI either. One exception to this guarantee is if
-    you are using type <link
-    linkend="G-VARIANT-TYPE-HANDLE:CAPS">'h'</link> for passing file
-    descriptors on Unix. Future versions of gdbus-codegen will include
-    guarantees for this type as well.
+    not change its C ABI either.
   </para>
   <para>
     The ABI of the generated #GType<!-- -->s will be preserved only if

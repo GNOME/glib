@@ -63,6 +63,11 @@ class CodeGenerator:
                      '#include "%s"\n'
                      '\n'%(self.h.name))
 
+        self.c.write('#ifdef G_OS_UNIX\n'
+                     '#  include <gio/gunixfdlist.h>\n'
+                     '#endif\n'
+                     '\n')
+
         self.c.write('typedef struct\n'
                      '{\n'
                      '  GDBusArgInfo parent_struct;\n'
@@ -74,6 +79,7 @@ class CodeGenerator:
                      '{\n'
                      '  GDBusMethodInfo parent_struct;\n'
                      '  const gchar *signal_name;\n'
+                     '  gboolean pass_fdlist;\n'
                      '} _ExtendedGDBusMethodInfo;\n'
                      '\n')
 
@@ -242,10 +248,15 @@ class CodeGenerator:
             if len(i.methods) > 0:
                 self.h.write('\n')
                 for m in i.methods:
+                    unix_fd = False
+                    if utils.lookup_annotation(m.annotations, 'org.gtk.GDBus.C.UnixFD'):
+                        unix_fd = True
                     key = (m.since, '_method_%s'%m.name_lower)
                     value  = '  gboolean (*handle_%s) (\n'%(m.name_lower)
                     value += '    %s *object,\n'%(i.camel_name)
                     value += '    GDBusMethodInvocation *invocation'%()
+                    if unix_fd:
+                        value += ',\n    GUnixFDList *fd_list'
                     for a in m.in_args:
                         value += ',\n    %s%s'%(a.ctype_in, a.name)
                     value += ');\n\n'
@@ -291,11 +302,16 @@ class CodeGenerator:
                 self.h.write('\n')
                 self.h.write('/* D-Bus method call completion functions: */\n')
                 for m in i.methods:
+                    unix_fd = False
+                    if utils.lookup_annotation(m.annotations, 'org.gtk.GDBus.C.UnixFD'):
+                        unix_fd = True
                     if m.deprecated:
                         self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('void %s_complete_%s (\n'
                                  '    %s *object,\n'
                                  '    GDBusMethodInvocation *invocation'%(i.name_lower, m.name_lower, i.camel_name))
+                    if unix_fd:
+                        self.h.write(',\n    GUnixFDList *fd_list')
                     for a in m.out_args:
                         self.h.write(',\n    %s%s'%(a.ctype_in, a.name))
                     self.h.write(');\n')
@@ -322,6 +338,9 @@ class CodeGenerator:
                 self.h.write('\n')
                 self.h.write('/* D-Bus method calls: */\n')
                 for m in i.methods:
+                    unix_fd = False
+                    if utils.lookup_annotation(m.annotations, 'org.gtk.GDBus.C.UnixFD'):
+                        unix_fd = True
                     # async begin
                     if m.deprecated:
                         self.h.write('G_GNUC_DEPRECATED ')
@@ -329,6 +348,8 @@ class CodeGenerator:
                                  '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.in_args:
                         self.h.write(',\n    %s%s'%(a.ctype_in, a.name))
+                    if unix_fd:
+                        self.h.write(',\n    GUnixFDList *fd_list')
                     self.h.write(',\n'
                                  '    GCancellable *cancellable,\n'
                                  '    GAsyncReadyCallback callback,\n'
@@ -341,6 +362,8 @@ class CodeGenerator:
                                  '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.out_args:
                         self.h.write(',\n    %sout_%s'%(a.ctype_out, a.name))
+                    if unix_fd:
+                        self.h.write(',\n    GUnixFDList **out_fd_list')
                     self.h.write(',\n'
                                  '    GAsyncResult *res,\n'
                                  '    GError **error);\n')
@@ -352,8 +375,12 @@ class CodeGenerator:
                                  '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.in_args:
                         self.h.write(',\n    %s%s'%(a.ctype_in, a.name))
+                    if unix_fd:
+                        self.h.write(',\n    GUnixFDList  *fd_list')
                     for a in m.out_args:
                         self.h.write(',\n    %sout_%s'%(a.ctype_out, a.name))
+                    if unix_fd:
+                        self.h.write(',\n    GUnixFDList **out_fd_list')
                     self.h.write(',\n'
                                  '    GCancellable *cancellable,\n'
                                  '    GError **error);\n')
@@ -749,6 +776,9 @@ class CodeGenerator:
 
             if len(i.methods) > 0:
                 for m in i.methods:
+                    unix_fd = False
+                    if utils.lookup_annotation(m.annotations, 'org.gtk.GDBus.C.UnixFD'):
+                        unix_fd = True
                     self.generate_args('_%s_method_info_%s_IN_ARG'%(i.name_lower, m.name_lower), m.in_args)
                     self.generate_args('_%s_method_info_%s_OUT_ARG'%(i.name_lower, m.name_lower), m.out_args)
 
@@ -772,8 +802,9 @@ class CodeGenerator:
                     else:
                         self.c.write('    (GDBusAnnotationInfo **) &_%s_method_%s_annotation_info_pointers\n'%(i.name_lower, m.name_lower))
                     self.c.write('  },\n'
-                                 '  "handle-%s"\n'
-                                 %(m.name_hyphen))
+                                 '  "handle-%s",\n'
+                                 '  %s\n'
+                                 %(m.name_hyphen, 'TRUE' if unix_fd else 'FALSE'))
                     self.c.write('};\n'
                                  '\n')
 
@@ -980,12 +1011,17 @@ class CodeGenerator:
         if len(i.methods) > 0:
             self.c.write('  /* GObject signals for incoming D-Bus method calls: */\n')
             for m in i.methods:
+                unix_fd = False
+                if utils.lookup_annotation(m.annotations, 'org.gtk.GDBus.C.UnixFD'):
+                    unix_fd = True
                 self.c.write(self.docbook_gen.expand(
                         '  /**\n'
                         '   * %s::handle-%s:\n'
                         '   * @object: A #%s.\n'
                         '   * @invocation: A #GDBusMethodInvocation.\n'
                         %(i.camel_name, m.name_hyphen, i.camel_name), False))
+                if unix_fd:
+                    self.c.write ('   * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
                 for a in m.in_args:
                     self.c.write ('   * @%s: Argument passed by remote caller.\n'%(a.name))
                 self.c.write(self.docbook_gen.expand(
@@ -997,6 +1033,10 @@ class CodeGenerator:
                         '   * Returns: %%TRUE if the invocation was handled, %%FALSE to let other signal handlers run.\n'
                         %(i.name, m.name, i.name_lower, m.name_lower), False))
                 self.write_gtkdoc_deprecated_and_since_and_close(m, self.c, 2)
+                if unix_fd:
+                    extra_args = 2
+                else:
+                    extra_args = 1
                 self.c.write('  g_signal_new ("handle-%s",\n'
                              '    G_TYPE_FROM_INTERFACE (iface),\n'
                              '    G_SIGNAL_RUN_LAST,\n'
@@ -1007,7 +1047,9 @@ class CodeGenerator:
                              '    G_TYPE_BOOLEAN,\n'
                              '    %d,\n'
                              '    G_TYPE_DBUS_METHOD_INVOCATION'
-                             %(m.name_hyphen, i.camel_name, m.name_lower, len(m.in_args) + 1))
+                             %(m.name_hyphen, i.camel_name, m.name_lower, len(m.in_args) + extra_args))
+                if unix_fd:
+                    self.c.write(', G_TYPE_UNIX_FD_LIST')
                 for a in m.in_args:
                     self.c.write (', %s'%(a.gtype))
                 self.c.write(');\n')
@@ -1212,6 +1254,9 @@ class CodeGenerator:
 
     def generate_method_calls(self, i):
         for m in i.methods:
+            unix_fd = False
+            if utils.lookup_annotation(m.annotations, 'org.gtk.GDBus.C.UnixFD'):
+                unix_fd = True
             # async begin
             self.c.write('/**\n'
                          ' * %s_call_%s:\n'
@@ -1219,6 +1264,8 @@ class CodeGenerator:
                          %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
                 self.c.write(' * @%s: Argument to pass with the method invocation.\n'%(a.name))
+            if unix_fd:
+                self.c.write(' * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
             self.c.write(self.docbook_gen.expand(
                     ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
                     ' * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %%NULL.\n'
@@ -1236,13 +1283,18 @@ class CodeGenerator:
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
                 self.c.write(',\n    %s%s'%(a.ctype_in, a.name))
+            if unix_fd:
+                self.c.write(',\n    GUnixFDList *fd_list')
             self.c.write(',\n'
                          '    GCancellable *cancellable,\n'
                          '    GAsyncReadyCallback callback,\n'
                          '    gpointer user_data)\n'
                          '{\n')
-            self.c.write('  g_dbus_proxy_call (G_DBUS_PROXY (proxy),\n'
-                         '    "%s",\n'
+            if unix_fd:
+                self.c.write('  g_dbus_proxy_call_with_unix_fd_list (G_DBUS_PROXY (proxy),\n')
+            else:
+                self.c.write('  g_dbus_proxy_call (G_DBUS_PROXY (proxy),\n')
+            self.c.write('    "%s",\n'
                          '    g_variant_new ("('%(m.name))
             for a in m.in_args:
                 self.c.write('%s'%(a.format_in))
@@ -1251,8 +1303,10 @@ class CodeGenerator:
                 self.c.write(',\n                   %s'%(a.name))
             self.c.write('),\n'
                          '    G_DBUS_CALL_FLAGS_NONE,\n'
-                         '    -1,\n'
-                         '    cancellable,\n'
+                         '    -1,\n')
+            if unix_fd:
+                self.c.write('    fd_list,\n')
+            self.c.write('    cancellable,\n'
                          '    callback,\n'
                          '    user_data);\n')
             self.c.write('}\n'
@@ -1264,6 +1318,8 @@ class CodeGenerator:
                          %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.out_args:
                 self.c.write(' * @out_%s: (out): Return location for return parameter or %%NULL to ignore.\n'%(a.name))
+            if unix_fd:
+                self.c.write(' * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.\n')
             self.c.write(self.docbook_gen.expand(
                     ' * @res: The #GAsyncResult obtained from the #GAsyncReadyCallback passed to %s_call_%s().\n'
                     ' * @error: Return location for error or %%NULL.\n'
@@ -1278,13 +1334,18 @@ class CodeGenerator:
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
             for a in m.out_args:
                 self.c.write(',\n    %sout_%s'%(a.ctype_out, a.name))
+            if unix_fd:
+                self.c.write(',\n    GUnixFDList **out_fd_list')
             self.c.write(',\n'
                          '    GAsyncResult *res,\n'
                          '    GError **error)\n'
                          '{\n'
-                         '  GVariant *_ret;\n'
-                         '  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);\n'
-                         '  if (_ret == NULL)\n'
+                         '  GVariant *_ret;\n')
+            if unix_fd:
+                self.c.write('  _ret = g_dbus_proxy_call_with_unix_fd_list_finish (G_DBUS_PROXY (proxy), out_fd_list, res, error);\n')
+            else:
+                self.c.write('  _ret = g_dbus_proxy_call_finish (G_DBUS_PROXY (proxy), res, error);\n')
+            self.c.write('  if (_ret == NULL)\n'
                          '    goto _out;\n')
             self.c.write('  g_variant_get (_ret,\n'
                          '                 \"(')
@@ -1308,8 +1369,12 @@ class CodeGenerator:
                          %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
                 self.c.write(' * @%s: Argument to pass with the method invocation.\n'%(a.name))
+            if unix_fd:
+                self.c.write(' * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
             for a in m.out_args:
                 self.c.write(' * @out_%s: (out): Return location for return parameter or %%NULL to ignore.\n'%(a.name))
+            if unix_fd:
+                self.c.write(' * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.\n')
             self.c.write(self.docbook_gen.expand(
                     ' * @cancellable: (allow-none): A #GCancellable or %%NULL.\n'
                     ' * @error: Return location for error or %%NULL.\n'
@@ -1326,15 +1391,22 @@ class CodeGenerator:
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
                 self.c.write(',\n    %s%s'%(a.ctype_in, a.name))
+            if unix_fd:
+                self.c.write(',\n    GUnixFDList  *fd_list')
             for a in m.out_args:
                 self.c.write(',\n    %sout_%s'%(a.ctype_out, a.name))
+            if unix_fd:
+                self.c.write(',\n    GUnixFDList **out_fd_list')
             self.c.write(',\n'
                          '    GCancellable *cancellable,\n'
                          '    GError **error)\n'
                          '{\n'
                          '  GVariant *_ret;\n')
-            self.c.write('  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),\n'
-                         '    "%s",\n'
+            if unix_fd:
+                self.c.write('  _ret = g_dbus_proxy_call_with_unix_fd_list_sync (G_DBUS_PROXY (proxy),\n')
+            else:
+                self.c.write('  _ret = g_dbus_proxy_call_sync (G_DBUS_PROXY (proxy),\n')
+            self.c.write('    "%s",\n'
                          '    g_variant_new ("('%(m.name))
             for a in m.in_args:
                 self.c.write('%s'%(a.format_in))
@@ -1343,8 +1415,11 @@ class CodeGenerator:
                 self.c.write(',\n                   %s'%(a.name))
             self.c.write('),\n'
                          '    G_DBUS_CALL_FLAGS_NONE,\n'
-                         '    -1,\n'
-                         '    cancellable,\n'
+                         '    -1,\n')
+            if unix_fd:
+                self.c.write('    fd_list,\n'
+                             '    out_fd_list,\n')
+            self.c.write('    cancellable,\n'
                          '    error);\n'
                          '  if (_ret == NULL)\n'
                          '    goto _out;\n')
@@ -1366,11 +1441,16 @@ class CodeGenerator:
 
     def generate_method_completers(self, i):
         for m in i.methods:
+            unix_fd = False
+            if utils.lookup_annotation(m.annotations, 'org.gtk.GDBus.C.UnixFD'):
+                unix_fd = True
             self.c.write('/**\n'
                          ' * %s_complete_%s:\n'
                          ' * @object: A #%s.\n'
                          ' * @invocation: (transfer full): A #GDBusMethodInvocation.\n'
                          %(i.name_lower, m.name_lower, i.camel_name))
+            if unix_fd:
+                self.c.write (' * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
             for a in m.out_args:
                 self.c.write(' * @%s: Parameter to return.\n'%(a.name))
             self.c.write(self.docbook_gen.expand(
@@ -1384,20 +1464,29 @@ class CodeGenerator:
                          '%s_complete_%s (\n'
                          '    %s *object,\n'
                          '    GDBusMethodInvocation *invocation'%(i.name_lower, m.name_lower, i.camel_name))
+            if unix_fd:
+                self.c.write(',\n    GUnixFDList *fd_list')
             for a in m.out_args:
                 self.c.write(',\n    %s%s'%(a.ctype_in, a.name))
             self.c.write(')\n'
                          '{\n')
 
-            self.c.write('  g_dbus_method_invocation_return_value (invocation,\n'
-                         '    g_variant_new ("(')
+            if unix_fd:
+                self.c.write('  g_dbus_method_invocation_return_value_with_unix_fd_list (invocation,\n'
+                             '    g_variant_new ("(')
+            else:
+                self.c.write('  g_dbus_method_invocation_return_value (invocation,\n'
+                             '    g_variant_new ("(')
             for a in m.out_args:
                 self.c.write('%s'%(a.format_in))
             self.c.write(')"')
             for a in m.out_args:
                 self.c.write(',\n                   %s'%(a.name))
-            self.c.write('));\n'
-                         '}\n'
+            if unix_fd:
+                self.c.write('),\n    fd_list);\n')
+            else:
+                self.c.write('));\n')
+            self.c.write('}\n'
                          '\n')
 
     # ---------------------------------------------------------------------------------------------------
@@ -1868,6 +1957,7 @@ class CodeGenerator:
                      '  GVariant *child;\n'
                      '  GValue *paramv;\n'
                      '  guint num_params;\n'
+                     '  guint num_extra;\n'
                      '  guint n;\n'
                      '  guint signal_id;\n'
                      '  GValue return_value = {0};\n'
@@ -1876,17 +1966,23 @@ class CodeGenerator:
                      '  g_assert (info != NULL);\n'
                      %())
         self.c.write ('  num_params = g_variant_n_children (parameters);\n'
-                      '  paramv = g_new0 (GValue, num_params + 2);\n'
-                      '  g_value_init (&paramv[0], %sTYPE_%s);\n'
-                      '  g_value_set_object (&paramv[0], skeleton);\n'
-                      '  g_value_init (&paramv[1], G_TYPE_DBUS_METHOD_INVOCATION);\n'
-                      '  g_value_set_object (&paramv[1], invocation);\n'
+                      '  num_extra = info->pass_fdlist ? 3 : 2;'
+                      '  paramv = g_new0 (GValue, num_params + num_extra);\n'
+                      '  n = 0;\n'
+                      '  g_value_init (&paramv[n], %sTYPE_%s);\n'
+                      '  g_value_set_object (&paramv[n++], skeleton);\n'
+                      '  g_value_init (&paramv[n], G_TYPE_DBUS_METHOD_INVOCATION);\n'
+                      '  g_value_set_object (&paramv[n++], invocation);\n'
+                      '  if (info->pass_fdlist)\n'
+                      '  {\n'
+                      '    g_value_init (&paramv[n], G_TYPE_UNIX_FD_LIST);\n'
+                      '    g_value_set_object (&paramv[n++], g_dbus_message_get_unix_fd_list (g_dbus_method_invocation_get_message (invocation)));\n'
+                      '  }\n'
                       %(i.ns_upper, i.name_upper))
         self.c.write('  g_variant_iter_init (&iter, parameters);\n'
-                     '  n = 2;\n'
                      '  while ((child = g_variant_iter_next_value (&iter)) != NULL)\n'
                      '    {\n'
-                     '      _ExtendedGDBusArgInfo *arg_info = (_ExtendedGDBusArgInfo *) info->parent_struct.in_args[n - 2];\n'
+                     '      _ExtendedGDBusArgInfo *arg_info = (_ExtendedGDBusArgInfo *) info->parent_struct.in_args[n - num_extra];\n'
                      '      if (arg_info->use_gvariant)\n'
                      '        {\n'
                      '          g_value_init (&paramv[n], G_TYPE_VARIANT);\n'
@@ -1906,7 +2002,7 @@ class CodeGenerator:
                      '    g_dbus_method_invocation_return_error (invocation, G_DBUS_ERROR, G_DBUS_ERROR_UNKNOWN_METHOD, "Method %s is not implemented on interface %s", method_name, interface_name);\n'
                      '  g_value_unset (&return_value);\n'
                      )
-        self.c.write('  for (n = 0; n < num_params + 2; n++)\n'
+        self.c.write('  for (n = 0; n < num_params + num_extra; n++)\n'
                      '    g_value_unset (&paramv[n]);\n'
                      '  g_free (paramv);\n')
         self.c.write('}\n'

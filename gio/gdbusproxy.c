@@ -39,6 +39,10 @@
 #include "gcancellable.h"
 #include "gdbusinterface.h"
 
+#ifdef G_OS_UNIX
+#include "gunixfdlist.h"
+#endif
+
 #include "glibintl.h"
 
 /**
@@ -2325,6 +2329,24 @@ maybe_split_method_name (const gchar  *method_name,
   return was_split;
 }
 
+typedef struct
+{
+  GVariant *value;
+#ifdef G_OS_UNIX
+  GUnixFDList *fd_list;
+#endif
+} ReplyData;
+
+static void
+reply_data_free (ReplyData *data)
+{
+  g_variant_unref (data->value);
+#ifdef G_OS_UNIX
+  if (data->fd_list != NULL)
+    g_object_unref (data->fd_list);
+#endif
+  g_slice_free (ReplyData, data);
+}
 
 static void
 reply_cb (GDBusConnection *connection,
@@ -2334,20 +2356,34 @@ reply_cb (GDBusConnection *connection,
   GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (user_data);
   GVariant *value;
   GError *error;
+#ifdef G_OS_UNIX
+  GUnixFDList *fd_list;
+#endif
 
   error = NULL;
+#ifdef G_OS_UNIX
+  value = g_dbus_connection_call_with_unix_fd_list_finish (connection,
+                                                           &fd_list,
+                                                           res,
+                                                           &error);
+#else
   value = g_dbus_connection_call_finish (connection,
                                          res,
                                          &error);
+#endif
   if (error != NULL)
     {
       g_simple_async_result_take_error (simple, error);
     }
   else
     {
-      g_simple_async_result_set_op_res_gpointer (simple,
-                                                 value,
-                                                 (GDestroyNotify) g_variant_unref);
+      ReplyData *data;
+      data = g_slice_new0 (ReplyData);
+      data->value = value;
+#ifdef G_OS_UNIX
+      data->fd_list = fd_list;
+#endif
+      g_simple_async_result_set_op_res_gpointer (simple, data, (GDestroyNotify) reply_data_free);
     }
 
   /* no need to complete in idle since the method GDBusConnection already does */
@@ -2398,6 +2434,233 @@ get_destination_for_call (GDBusProxy *proxy)
  out:
   return ret;
 }
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+static void
+g_dbus_proxy_call_internal (GDBusProxy          *proxy,
+                            const gchar         *method_name,
+                            GVariant            *parameters,
+                            GDBusCallFlags       flags,
+                            gint                 timeout_msec,
+                            GUnixFDList         *fd_list,
+                            GCancellable        *cancellable,
+                            GAsyncReadyCallback  callback,
+                            gpointer             user_data)
+{
+  GSimpleAsyncResult *simple;
+  gboolean was_split;
+  gchar *split_interface_name;
+  const gchar *split_method_name;
+  const gchar *target_method_name;
+  const gchar *target_interface_name;
+  const gchar *destination;
+  GVariantType *reply_type;
+
+  g_return_if_fail (G_IS_DBUS_PROXY (proxy));
+  g_return_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name));
+  g_return_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
+  g_return_if_fail (timeout_msec == -1 || timeout_msec >= 0);
+  g_return_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list));
+
+  reply_type = NULL;
+  split_interface_name = NULL;
+
+  simple = g_simple_async_result_new (G_OBJECT (proxy),
+                                      callback,
+                                      user_data,
+                                      g_dbus_proxy_call_internal);
+
+  was_split = maybe_split_method_name (method_name, &split_interface_name, &split_method_name);
+  target_method_name = was_split ? split_method_name : method_name;
+  target_interface_name = was_split ? split_interface_name : proxy->priv->interface_name;
+
+  /* Warn if method is unexpected (cf. :g-interface-info) */
+  if (!was_split)
+    {
+      const GDBusMethodInfo *expected_method_info;
+      expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
+      if (expected_method_info != NULL)
+        reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
+    }
+
+  destination = NULL;
+  if (proxy->priv->name != NULL)
+    {
+      destination = get_destination_for_call (proxy);
+      if (destination == NULL)
+        {
+          g_simple_async_result_set_error (simple,
+                                           G_IO_ERROR,
+                                           G_IO_ERROR_FAILED,
+                                           _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
+          goto out;
+        }
+    }
+
+#ifdef G_OS_UNIX
+  g_dbus_connection_call_with_unix_fd_list (proxy->priv->connection,
+                                            destination,
+                                            proxy->priv->object_path,
+                                            target_interface_name,
+                                            target_method_name,
+                                            parameters,
+                                            reply_type,
+                                            flags,
+                                            timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
+                                            fd_list,
+                                            cancellable,
+                                            (GAsyncReadyCallback) reply_cb,
+                                            simple);
+#else
+  g_dbus_connection_call (proxy->priv->connection,
+                          destination,
+                          proxy->priv->object_path,
+                          target_interface_name,
+                          target_method_name,
+                          parameters,
+                          reply_type,
+                          flags,
+                          timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
+                          cancellable,
+                          (GAsyncReadyCallback) reply_cb,
+                          simple);
+#endif
+
+ out:
+  if (reply_type != NULL)
+    g_variant_type_free (reply_type);
+
+  g_free (split_interface_name);
+}
+
+static GVariant *
+g_dbus_proxy_call_finish_internal (GDBusProxy    *proxy,
+                                   GUnixFDList  **out_fd_list,
+                                   GAsyncResult  *res,
+                                   GError       **error)
+{
+  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
+  GVariant *value;
+  ReplyData *data;
+
+  g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
+  g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_dbus_proxy_call_internal);
+
+  value = NULL;
+
+  if (g_simple_async_result_propagate_error (simple, error))
+    goto out;
+
+  data = g_simple_async_result_get_op_res_gpointer (simple);
+  value = g_variant_ref (data->value);
+#ifdef G_OS_UNIX
+  if (out_fd_list != NULL)
+    *out_fd_list = data->fd_list != NULL ? g_object_ref (data->fd_list) : NULL;
+#endif
+
+ out:
+  return value;
+}
+
+static GVariant *
+g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
+                                 const gchar     *method_name,
+                                 GVariant        *parameters,
+                                 GDBusCallFlags   flags,
+                                 gint             timeout_msec,
+                                 GUnixFDList     *fd_list,
+                                 GUnixFDList    **out_fd_list,
+                                 GCancellable    *cancellable,
+                                 GError         **error)
+{
+  GVariant *ret;
+  gboolean was_split;
+  gchar *split_interface_name;
+  const gchar *split_method_name;
+  const gchar *target_method_name;
+  const gchar *target_interface_name;
+  const gchar *destination;
+  GVariantType *reply_type;
+
+  g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
+  g_return_val_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name), NULL);
+  g_return_val_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), NULL);
+  g_return_val_if_fail (timeout_msec == -1 || timeout_msec >= 0, NULL);
+  g_return_val_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list), NULL);
+  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+  reply_type = NULL;
+
+  was_split = maybe_split_method_name (method_name, &split_interface_name, &split_method_name);
+  target_method_name = was_split ? split_method_name : method_name;
+  target_interface_name = was_split ? split_interface_name : proxy->priv->interface_name;
+
+  /* Warn if method is unexpected (cf. :g-interface-info) */
+  if (!was_split)
+    {
+      const GDBusMethodInfo *expected_method_info;
+      expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
+      if (expected_method_info != NULL)
+        reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
+    }
+
+  destination = NULL;
+  if (proxy->priv->name != NULL)
+    {
+      destination = get_destination_for_call (proxy);
+      if (destination == NULL)
+        {
+          g_set_error_literal (error,
+                               G_IO_ERROR,
+                               G_IO_ERROR_FAILED,
+                               _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
+          ret = NULL;
+          goto out;
+        }
+    }
+
+#ifdef G_OS_UNIX
+  ret = g_dbus_connection_call_with_unix_fd_list_sync (proxy->priv->connection,
+                                                       destination,
+                                                       proxy->priv->object_path,
+                                                       target_interface_name,
+                                                       target_method_name,
+                                                       parameters,
+                                                       reply_type,
+                                                       flags,
+                                                       timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
+                                                       fd_list,
+                                                       out_fd_list,
+                                                       cancellable,
+                                                       error);
+#else
+  ret = g_dbus_connection_call_sync (proxy->priv->connection,
+                                     destination,
+                                     proxy->priv->object_path,
+                                     target_interface_name,
+                                     target_method_name,
+                                     parameters,
+                                     reply_type,
+                                     flags,
+                                     timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
+                                     cancellable,
+                                     error);
+#endif
+
+ out:
+  if (reply_type != NULL)
+    g_variant_type_free (reply_type);
+
+  g_free (split_interface_name);
+
+  return ret;
+}
+
+/* ---------------------------------------------------------------------------------------------------- */
 
 /**
  * g_dbus_proxy_call:
@@ -2460,73 +2723,7 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
                    GAsyncReadyCallback  callback,
                    gpointer             user_data)
 {
-  GSimpleAsyncResult *simple;
-  gboolean was_split;
-  gchar *split_interface_name;
-  const gchar *split_method_name;
-  const gchar *target_method_name;
-  const gchar *target_interface_name;
-  const gchar *destination;
-  GVariantType *reply_type;
-
-  g_return_if_fail (G_IS_DBUS_PROXY (proxy));
-  g_return_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name));
-  g_return_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
-  g_return_if_fail (timeout_msec == -1 || timeout_msec >= 0);
-
-  reply_type = NULL;
-  split_interface_name = NULL;
-
-  simple = g_simple_async_result_new (G_OBJECT (proxy),
-                                      callback,
-                                      user_data,
-                                      g_dbus_proxy_call);
-
-  was_split = maybe_split_method_name (method_name, &split_interface_name, &split_method_name);
-  target_method_name = was_split ? split_method_name : method_name;
-  target_interface_name = was_split ? split_interface_name : proxy->priv->interface_name;
-
-  /* Warn if method is unexpected (cf. :g-interface-info) */
-  if (!was_split)
-    {
-      const GDBusMethodInfo *expected_method_info;
-      expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
-      if (expected_method_info != NULL)
-        reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
-    }
-
-  destination = NULL;
-  if (proxy->priv->name != NULL)
-    {
-      destination = get_destination_for_call (proxy);
-      if (destination == NULL)
-        {
-          g_simple_async_result_set_error (simple,
-                                           G_IO_ERROR,
-                                           G_IO_ERROR_FAILED,
-                                           _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
-          goto out;
-        }
-    }
-
-  g_dbus_connection_call (proxy->priv->connection,
-                          destination,
-                          proxy->priv->object_path,
-                          target_interface_name,
-                          target_method_name,
-                          parameters,
-                          reply_type,
-                          flags,
-                          timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
-                          cancellable,
-                          (GAsyncReadyCallback) reply_cb,
-                          simple);
-
- out:
-  if (reply_type != NULL)
-    g_variant_type_free (reply_type);
-
-  g_free (split_interface_name);
+  return g_dbus_proxy_call_internal (proxy, method_name, parameters, flags, timeout_msec, NULL, cancellable, callback, user_data);
 }
 
 /**
@@ -2547,24 +2744,7 @@ g_dbus_proxy_call_finish (GDBusProxy    *proxy,
                           GAsyncResult  *res,
                           GError       **error)
 {
-  GSimpleAsyncResult *simple = G_SIMPLE_ASYNC_RESULT (res);
-  GVariant *value;
-
-  g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
-  g_return_val_if_fail (G_IS_ASYNC_RESULT (res), NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  g_warn_if_fail (g_simple_async_result_get_source_tag (simple) == g_dbus_proxy_call);
-
-  value = NULL;
-
-  if (g_simple_async_result_propagate_error (simple, error))
-    goto out;
-
-  value = g_variant_ref (g_simple_async_result_get_op_res_gpointer (simple));
-
- out:
-  return value;
+  return g_dbus_proxy_call_finish_internal (proxy, NULL, res, error);
 }
 
 /**
@@ -2624,71 +2804,108 @@ g_dbus_proxy_call_sync (GDBusProxy      *proxy,
                         GCancellable    *cancellable,
                         GError         **error)
 {
-  GVariant *ret;
-  gboolean was_split;
-  gchar *split_interface_name;
-  const gchar *split_method_name;
-  const gchar *target_method_name;
-  const gchar *target_interface_name;
-  const gchar *destination;
-  GVariantType *reply_type;
-
-  g_return_val_if_fail (G_IS_DBUS_PROXY (proxy), NULL);
-  g_return_val_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name), NULL);
-  g_return_val_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), NULL);
-  g_return_val_if_fail (timeout_msec == -1 || timeout_msec >= 0, NULL);
-  g_return_val_if_fail (error == NULL || *error == NULL, NULL);
-
-  reply_type = NULL;
-
-  was_split = maybe_split_method_name (method_name, &split_interface_name, &split_method_name);
-  target_method_name = was_split ? split_method_name : method_name;
-  target_interface_name = was_split ? split_interface_name : proxy->priv->interface_name;
-
-  /* Warn if method is unexpected (cf. :g-interface-info) */
-  if (!was_split)
-    {
-      const GDBusMethodInfo *expected_method_info;
-      expected_method_info = lookup_method_info_or_warn (proxy, target_method_name);
-      if (expected_method_info != NULL)
-        reply_type = _g_dbus_compute_complete_signature (expected_method_info->out_args);
-    }
-
-  destination = NULL;
-  if (proxy->priv->name != NULL)
-    {
-      destination = get_destination_for_call (proxy);
-      if (destination == NULL)
-        {
-          g_set_error_literal (error,
-                               G_IO_ERROR,
-                               G_IO_ERROR_FAILED,
-                               _("Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"));
-          ret = NULL;
-          goto out;
-        }
-    }
-
-  ret = g_dbus_connection_call_sync (proxy->priv->connection,
-                                     destination,
-                                     proxy->priv->object_path,
-                                     target_interface_name,
-                                     target_method_name,
-                                     parameters,
-                                     reply_type,
-                                     flags,
-                                     timeout_msec == -1 ? proxy->priv->timeout_msec : timeout_msec,
-                                     cancellable,
-                                     error);
-
- out:
-  if (reply_type != NULL)
-    g_variant_type_free (reply_type);
-
-  g_free (split_interface_name);
-
-  return ret;
+  return g_dbus_proxy_call_sync_internal (proxy, method_name, parameters, flags, timeout_msec, NULL, NULL, cancellable, error);
 }
+
+/* ---------------------------------------------------------------------------------------------------- */
+
+#ifdef G_OS_UNIX
+
+/**
+ * g_dbus_proxy_call_with_unix_fd_list:
+ * @proxy: A #GDBusProxy.
+ * @method_name: Name of method to invoke.
+ * @parameters: (allow-none): A #GVariant tuple with parameters for the signal or %NULL if not passing parameters.
+ * @flags: Flags from the #GDBusCallFlags enumeration.
+ * @timeout_msec: The timeout in milliseconds (with %G_MAXINT meaning
+ *                "infinite") or -1 to use the proxy default timeout.
+ * @fd_list: (allow-none): A #GUnixFDList or %NULL.
+ * @cancellable: A #GCancellable or %NULL.
+ * @callback: A #GAsyncReadyCallback to call when the request is satisfied or %NULL if you don't
+ * care about the result of the method invocation.
+ * @user_data: The data to pass to @callback.
+ *
+ * Like g_dbus_proxy_call() but also takes a #GUnixFDList object.
+ *
+ * This method is only available on UNIX.
+ *
+ * Since: 2.30
+ */
+void
+g_dbus_proxy_call_with_unix_fd_list (GDBusProxy          *proxy,
+                                     const gchar         *method_name,
+                                     GVariant            *parameters,
+                                     GDBusCallFlags       flags,
+                                     gint                 timeout_msec,
+                                     GUnixFDList         *fd_list,
+                                     GCancellable        *cancellable,
+                                     GAsyncReadyCallback  callback,
+                                     gpointer             user_data)
+{
+  return g_dbus_proxy_call_internal (proxy, method_name, parameters, flags, timeout_msec, fd_list, cancellable, callback, user_data);
+}
+
+/**
+ * g_dbus_proxy_call_with_unix_fd_list_finish:
+ * @proxy: A #GDBusProxy.
+ * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.
+ * @res: A #GAsyncResult obtained from the #GAsyncReadyCallback passed to g_dbus_proxy_call_with_unix_fd_list().
+ * @error: Return location for error or %NULL.
+ *
+ * Finishes an operation started with g_dbus_proxy_call_with_unix_fd_list().
+ *
+ * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
+ * return values. Free with g_variant_unref().
+ *
+ * Since: 2.30
+ */
+GVariant *
+g_dbus_proxy_call_with_unix_fd_list_finish (GDBusProxy    *proxy,
+                                            GUnixFDList  **out_fd_list,
+                                            GAsyncResult  *res,
+                                            GError       **error)
+{
+  return g_dbus_proxy_call_finish_internal (proxy, out_fd_list, res, error);
+}
+
+/**
+ * g_dbus_proxy_call_with_unix_fd_list_sync:
+ * @proxy: A #GDBusProxy.
+ * @method_name: Name of method to invoke.
+ * @parameters: (allow-none): A #GVariant tuple with parameters for the signal
+ *              or %NULL if not passing parameters.
+ * @flags: Flags from the #GDBusCallFlags enumeration.
+ * @timeout_msec: The timeout in milliseconds (with %G_MAXINT meaning
+ *                "infinite") or -1 to use the proxy default timeout.
+ * @fd_list: (allow-none): A #GUnixFDList or %NULL.
+ * @out_fd_list: (out): Return location for a #GUnixFDList or %NULL.
+ * @cancellable: A #GCancellable or %NULL.
+ * @error: Return location for error or %NULL.
+ *
+ * Like g_dbus_proxy_call_sync() but also takes and returns #GUnixFDList objects.
+ *
+ * This method is only available on UNIX.
+ *
+ * Returns: %NULL if @error is set. Otherwise a #GVariant tuple with
+ * return values. Free with g_variant_unref().
+ *
+ * Since: 2.30
+ */
+GVariant *
+g_dbus_proxy_call_with_unix_fd_list_sync (GDBusProxy      *proxy,
+                                          const gchar     *method_name,
+                                          GVariant        *parameters,
+                                          GDBusCallFlags   flags,
+                                          gint             timeout_msec,
+                                          GUnixFDList     *fd_list,
+                                          GUnixFDList    **out_fd_list,
+                                          GCancellable    *cancellable,
+                                          GError         **error)
+{
+  return g_dbus_proxy_call_sync_internal (proxy, method_name, parameters, flags, timeout_msec, fd_list, out_fd_list, cancellable, error);
+}
+
+#endif /* G_OS_UNIX */
 
 /* ---------------------------------------------------------------------------------------------------- */
 
