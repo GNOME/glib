@@ -917,7 +917,7 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
 			  GParamSpec     *pspec,
 			  GType           owner_type)
 {
-  gchar *p;
+  const gchar *p;
   
   if (pool && pspec && owner_type > 0 && pspec->owner_type == 0)
     {
@@ -995,26 +995,31 @@ param_spec_ht_lookup (GHashTable  *hash_table,
 
   if (!pspec && !is_canonical (param_name))
     {
+      gchar *canonical;
+
+      canonical = g_strdup (key.name);
+      canonicalize_key (canonical);
+
       /* try canonicalized form */
-      key.name = g_strdup (param_name);
+      key.name = canonical;
       key.owner_type = owner_type;
-      
-      canonicalize_key (key.name);
+
       if (walk_ancestors)
-	do
-	  {
-	    pspec = g_hash_table_lookup (hash_table, &key);
-	    if (pspec)
-	      {
-		g_free (key.name);
-		return pspec;
-	      }
-	    key.owner_type = g_type_parent (key.owner_type);
-	  }
-	while (key.owner_type);
+        do
+          {
+            pspec = g_hash_table_lookup (hash_table, &key);
+            if (pspec)
+              {
+                g_free (canonical);
+                return pspec;
+              }
+            key.owner_type = g_type_parent (key.owner_type);
+          }
+        while (key.owner_type);
       else
-	pspec = g_hash_table_lookup (hash_table, &key);
-      g_free (key.name);
+        pspec = g_hash_table_lookup (hash_table, &key);
+
+      g_free (canonical);
     }
 
   return pspec;

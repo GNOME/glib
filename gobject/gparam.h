@@ -205,7 +205,7 @@ struct _GParamSpec
 {
   GTypeInstance  g_type_instance;
 
-  gchar         *name;
+  const gchar   *name;          /* interned string */
   GParamFlags    flags;
   GType		 value_type;
   GType		 owner_type;	/* class or interface using this property */
