@@ -682,6 +682,10 @@ GThreadFunctions g_thread_functions_for_glib_use = {
 /**
  * GPrivate:
  *
+ * <note><para>
+ * #GStaticPrivate is a better choice for most uses.
+ * </para></note>
+ *
  * The #GPrivate struct is an opaque data structure to represent a
  * thread private data key. Threads can thereby obtain and set a
  * pointer which is private to the current thread. Take our
@@ -740,6 +744,10 @@ GThreadFunctions g_thread_functions_for_glib_use = {
  * corresponding pointer keyed to this instance of #GPrivate is
  * non-%NULL, the destructor is called with this pointer as the
  * argument.
+ *
+ * <note><para>
+ * #GStaticPrivate is a better choice for most uses.
+ * </para></note>
  *
  * <note><para>@destructor is used quite differently from @notify in
  * g_static_private_set().</para></note>
