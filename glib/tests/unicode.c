@@ -432,6 +432,10 @@ test_compose (void)
   g_assert (!g_unichar_compose (0x0041, 0, &ch) && ch == 0);
   g_assert (!g_unichar_compose (0x0066, 0x0069, &ch) && ch == 0);
 
+  /* Tricky non-composable */
+  g_assert (!g_unichar_compose (0x0308, 0x0301, &ch) && ch == 0); /* !0x0344 */
+  g_assert (!g_unichar_compose (0x0F71, 0x0F72, &ch) && ch == 0); /* !0x0F73 */
+
   /* Singletons should not compose */
   g_assert (!g_unichar_compose (0x212B, 0, &ch) && ch == 0);
   g_assert (!g_unichar_compose (0x00C5, 0, &ch) && ch == 0);
@@ -465,6 +469,10 @@ test_decompose (void)
   /* Singletons */
   g_assert (g_unichar_decompose (0x212B, &a, &b) && a == 0x00C5 && b == 0);
   g_assert (g_unichar_decompose (0x2126, &a, &b) && a == 0x03A9 && b == 0);
+
+  /* Tricky pairs */
+  g_assert (g_unichar_decompose (0x0344, &a, &b) && a == 0x0308 && b == 0x0301);
+  g_assert (g_unichar_decompose (0x0F73, &a, &b) && a == 0x0F71 && b == 0x0F72);
 
   /* Pairs */
   g_assert (g_unichar_decompose (0x00C5, &a, &b) && a == 0x0041 && b == 0x030A);
@@ -508,6 +516,10 @@ test_fully_decompose_canonical (void)
   /* Singletons */
   TEST2 (0x212B, 0x0041, 0x030A);
   TEST1 (0x2126, 0x03A9);
+
+  /* Tricky pairs */
+  TEST2 (0x0344, 0x0308, 0x0301);
+  TEST2 (0x0F73, 0x0F71, 0x0F72);
 
   /* General */
   TEST2 (0x00C5, 0x0041, 0x030A);
@@ -554,6 +566,10 @@ test_canonical_decomposition (void)
   /* Singletons */
   TEST2 (0x212B, 0x0041, 0x030A);
   TEST1 (0x2126, 0x03A9);
+
+  /* Tricky pairs */
+  TEST2 (0x0344, 0x0308, 0x0301);
+  TEST2 (0x0F73, 0x0F71, 0x0F72);
 
   /* General */
   TEST2 (0x00C5, 0x0041, 0x030A);

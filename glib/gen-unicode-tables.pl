@@ -1109,6 +1109,10 @@ sub output_composition_table
 	@values = map { hex ($_) } split /\s+/, $compositions{$code};
 
         # non-starters
+	if ($cclass[$code]) {
+	    delete $compositions{$code};
+	    next;
+	}
 	if ($cclass[$values[0]]) {
 	    delete $compositions{$code};
 	    next;
