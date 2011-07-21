@@ -166,6 +166,14 @@ class Arg:
                 self.free_func = 'g_strfreev'
                 self.format_in = '^as'
                 self.format_out = '^as'
+            elif self.signature == 'ao':
+                self.ctype_in_g  = 'const gchar *const *'
+                self.ctype_in  = 'const gchar *const *'
+                self.ctype_out = 'gchar ***'
+                self.gtype = 'G_TYPE_STRV'
+                self.free_func = 'g_strfreev'
+                self.format_in = '^ao'
+                self.format_out = '^ao'
             elif self.signature == 'aay':
                 self.ctype_in_g  = 'const gchar *const *'
                 self.ctype_in  = 'const gchar *const *'

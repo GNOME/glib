@@ -461,6 +461,12 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
           g_value_take_boxed (out_gvalue, array);
           break;
 
+        case G_VARIANT_CLASS_OBJECT_PATH:
+          g_value_init (out_gvalue, G_TYPE_STRV);
+          array = g_variant_dup_objv (value, NULL);
+          g_value_take_boxed (out_gvalue, array);
+          break;
+
         case G_VARIANT_CLASS_ARRAY:
           switch (g_variant_type_peek_string (type)[2])
             {
@@ -519,7 +525,7 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_STRV</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">'as'</link> or <link linkend="G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS">'aay'</link></entry>
+ *         <entry><link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">'as'</link>, <link linkend="G-VARIANT-TYPE-OBJECT-PATH-ARRAY:CAPS">'ao'</link> or <link linkend="G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS">'aay'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_BOOLEAN</entry>
@@ -682,6 +688,13 @@ g_dbus_gvalue_to_gvariant (const GValue       *gvalue,
               if (as == NULL)
                 as = empty_strv;
               ret = g_variant_ref_sink (g_variant_new_strv (as, -1));
+              break;
+
+            case G_VARIANT_CLASS_OBJECT_PATH:
+              as = g_value_get_boxed (gvalue);
+              if (as == NULL)
+                as = empty_strv;
+              ret = g_variant_ref_sink (g_variant_new_objv (as, -1));
               break;
 
             case G_VARIANT_CLASS_ARRAY:

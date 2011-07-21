@@ -754,7 +754,8 @@ on_handle_hello_world (MyAppFrobber           *interface,
     <link linkend="G-VARIANT-TYPE-OBJECT-PATH:CAPS">'o'</link> and
     <link linkend="G-VARIANT-TYPE-SIGNATURE:CAPS">'g'</link>) and
     arrays of string (type-strings
-    <link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">'as'</link> and
+    <link linkend="G-VARIANT-TYPE-STRING-ARRAY:CAPS">'as'</link>,
+    <link linkend="G-VARIANT-TYPE-OBJECT-PATH-ARRAY:CAPS">'ao'</link> and
     <link linkend="G-VARIANT-TYPE-BYTESTRING-ARRAY:CAPS">'aay'</link>)
     are mapped to the natural types,
     e.g. #gboolean, #gdouble, #gint, <link linkend="gchararray">gchar*</link>,

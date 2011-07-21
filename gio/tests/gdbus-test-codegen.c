@@ -151,7 +151,7 @@ on_handle_test_non_primitive_types (FooBar                *object,
                                     GVariant              *dict_s_to_pairs,
                                     GVariant              *a_struct,
                                     const gchar* const    *array_of_strings,
-                                    GVariant              *array_of_objpaths,
+                                    const gchar* const    *array_of_objpaths,
                                     GVariant              *array_of_signatures,
                                     const gchar* const    *array_of_bytestrings,
                                     gpointer               user_data)
@@ -165,10 +165,10 @@ on_handle_test_non_primitive_types (FooBar                *object,
   s = g_strjoinv (", ", (gchar **) array_of_strings);
   g_string_append_printf (str, "array_of_strings: [%s] ", s);
   g_free (s);
-  s = g_variant_print (array_of_objpaths, TRUE);
-  g_string_append_printf (str, "array_of_objpaths: %s ", s);
+  s = g_strjoinv (", ", (gchar **) array_of_objpaths);
+  g_string_append_printf (str, "array_of_objpaths: [%s] ", s);
   g_free (s);
-  s = g_variant_print (array_of_objpaths, TRUE);
+  s = g_variant_print (array_of_signatures, TRUE);
   g_string_append_printf (str, "array_of_signatures: %s ", s);
   g_free (s);
   s = g_strjoinv (", ", (gchar **) array_of_bytestrings);
@@ -715,7 +715,7 @@ check_bar_proxy (FooBar    *proxy,
   gchar *val_g;
   gchar *val_ay;
   gchar **val_as;
-  GVariant *val_ao;
+  gchar **val_ao;
   GVariant *val_ag;
   gint32 val_unset_i;
   gdouble val_unset_d;
@@ -724,7 +724,7 @@ check_bar_proxy (FooBar    *proxy,
   gchar *val_unset_g;
   gchar *val_unset_ay;
   gchar **val_unset_as;
-  GVariant *val_unset_ao;
+  gchar **val_unset_ao;
   GVariant *val_unset_ag;
   GVariant *val_unset_struct;
   gchar *val_finally_normal_name;
@@ -787,7 +787,7 @@ check_bar_proxy (FooBar    *proxy,
   g_assert_cmpstr (val_ay, ==, "ABCabc");
   g_free (val_ay);
   g_strfreev (val_as);
-  g_variant_unref (val_ao);
+  g_strfreev (val_ao);
   g_variant_unref (val_ag);
   g_free (val_finally_normal_name);
   /* check empty values */
@@ -801,7 +801,7 @@ check_bar_proxy (FooBar    *proxy,
   g_free (val_unset_g);
   g_assert_cmpstr (val_unset_ay, ==, "");
   g_assert (val_unset_as[0] == NULL);
-  g_assert (g_variant_is_of_type (val_unset_ao, G_VARIANT_TYPE ("ao")));
+  g_assert (val_unset_ao[0] == NULL);
   g_assert (g_variant_is_of_type (val_unset_ag, G_VARIANT_TYPE ("ag")));
   g_assert (g_variant_is_of_type (val_unset_struct, G_VARIANT_TYPE ("(idsogayasaoag)")));
   s = g_variant_print (val_unset_struct, TRUE);
@@ -809,7 +809,7 @@ check_bar_proxy (FooBar    *proxy,
   g_free (s);
   g_free (val_unset_ay);
   g_strfreev (val_unset_as);
-  g_variant_unref (val_unset_ao);
+  g_strfreev (val_unset_ao);
   g_variant_unref (val_unset_ag);
   g_variant_unref (val_unset_struct);
 
@@ -825,14 +825,16 @@ check_bar_proxy (FooBar    *proxy,
    * is to exercise the paths that frees the references.
    */
   const gchar *array_of_strings[3] = {"one", "two", NULL};
+  const gchar *array_of_objpaths[3] = {"/one", "/one/two", NULL};
   const gchar *array_of_bytestrings[3] = {"one\xff", "two\xff", NULL};
+
   g_object_set (proxy,
                 "s", "a string",
                 "o", "/a/path",
                 "g", "asig",
                 "ay", g_variant_new_parsed ("[byte 0x65, 0x67]"),
                 "as", array_of_strings,
-                "ao", g_variant_new_parsed ("[@o '/one', '/one/two']"),
+                "ao", array_of_objpaths,
                 "ag", g_variant_new_parsed ("[@g 'ass', 'git']"),
                 NULL);
 
@@ -877,7 +879,7 @@ check_bar_proxy (FooBar    *proxy,
                                                                           "'second': (43, 43)}"),
                                                     g_variant_new_parsed ("(42, 'foo', 'bar')"),
                                                     array_of_strings,
-                                                    g_variant_new_parsed ("[@o '/one', '/one/two']"),
+                                                    array_of_objpaths,
                                                     g_variant_new_parsed ("[@g 'ass', 'git']"),
                                                     array_of_bytestrings,
                                                     &s,

@@ -1096,6 +1096,8 @@ class CodeGenerator:
                     s = 'g_param_spec_string ("%s", "%s", "%s", NULL'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'as':
                     s = 'g_param_spec_boxed ("%s", "%s", "%s", G_TYPE_STRV'%(p.name_hyphen, p.name, p.name)
+                elif p.arg.signature == 'ao':
+                    s = 'g_param_spec_boxed ("%s", "%s", "%s", G_TYPE_STRV'%(p.name_hyphen, p.name, p.name)
                 elif p.arg.signature == 'aay':
                     s = 'g_param_spec_boxed ("%s", "%s", "%s", G_TYPE_STRV'%(p.name_hyphen, p.name, p.name)
                 else:
