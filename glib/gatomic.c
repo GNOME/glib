@@ -206,6 +206,9 @@ gboolean
  *
  * This call acts as a full compiler and hardware memory barrier.
  *
+ * Before version 2.30, this function did not return a value
+ * (but g_atomic_int_exchange_and_add() did, and had the same meaning).
+ *
  * Returns: the value of @atomic before the add, signed
  *
  * Since: 2.4
