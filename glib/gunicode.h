@@ -90,7 +90,7 @@ typedef guint16 gunichar2;
  * @G_UNICODE_OTHER_LETTER: General category "Letter, Other" (Lo)
  * @G_UNICODE_TITLECASE_LETTER: General category "Letter, Titlecase" (Lt)
  * @G_UNICODE_UPPERCASE_LETTER: General category "Letter, Uppercase" (Lu)
- * @G_UNICODE_COMBINING_MARK: General category "Mark, Spacing Combining" (Mc)
+ * @G_UNICODE_SPACING_MARK: General category "Mark, Spacing" (Mc)
  * @G_UNICODE_ENCLOSING_MARK: General category "Mark, Enclosing" (Me)
  * @G_UNICODE_NON_SPACING_MARK: General category "Mark, Nonspacing" (Mn)
  * @G_UNICODE_DECIMAL_NUMBER: General category "Number, Decimal Digit" (Nd)
@@ -127,7 +127,7 @@ typedef enum
   G_UNICODE_OTHER_LETTER,
   G_UNICODE_TITLECASE_LETTER,
   G_UNICODE_UPPERCASE_LETTER,
-  G_UNICODE_COMBINING_MARK,
+  G_UNICODE_SPACING_MARK,
   G_UNICODE_ENCLOSING_MARK,
   G_UNICODE_NON_SPACING_MARK,
   G_UNICODE_DECIMAL_NUMBER,
@@ -148,6 +148,15 @@ typedef enum
   G_UNICODE_PARAGRAPH_SEPARATOR,
   G_UNICODE_SPACE_SEPARATOR
 } GUnicodeType;
+
+/**
+ * G_UNICODE_COMBINING_MARK:
+ *
+ * Older name for %G_UNICODE_SPACING_MARK.
+ *
+ * Deprecated: 2.30: Use %G_UNICODE_SPACING_MARK.
+ */
+#define G_UNICODE_COMBINING_MARK G_UNICODE_SPACING_MARK
 
 /**
  * GUnicodeBreakType:
