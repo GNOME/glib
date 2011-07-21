@@ -476,6 +476,7 @@ typedef enum
 } GUnicodeScript;
 
 guint32 g_unicode_script_to_iso15924 (GUnicodeScript script);
+GUnicodeScript g_unicode_script_from_iso15924 (guint32 iso15924);
 
 /* Returns TRUE if current locale uses UTF-8 charset.  If CHARSET is
  * not null, sets *CHARSET to the name of the current locale's

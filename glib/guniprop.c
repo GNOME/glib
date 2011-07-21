@@ -1448,15 +1448,54 @@ static const guint32 iso15924_tags[] =
  * See <ulink url="http://unicode.org/iso15924/codelists.html">Codes for the
  * representation of names of scripts</ulink> for details.
  *
- * Return value: the ISO 15924 code for @script, encoded as an integer.
+ * Return value: the ISO 15924 code for @script, encoded as an integer,
+ *   of zero if @script is %G_UNICODE_SCRIPT_INVALID_CODE or
+ *   ISO 15924 code 'Zzzz' (script code for UNKNOWN) if @script is not understood.
  *
  * Since: 2.30
  */
 guint32
 g_unicode_script_to_iso15924 (GUnicodeScript script)
 {
-  if (G_UNLIKELY (script < 0 || script >= (int) G_N_ELEMENTS (iso15924_tags)))
+  if (G_UNLIKELY (script == G_UNICODE_SCRIPT_INVALID_CODE))
     return 0;
 
+  if (G_UNLIKELY (script < 0 || script >= (int) G_N_ELEMENTS (iso15924_tags)))
+    return 0x5A7A7A7A;
+
   return iso15924_tags[script];
+}
+
+/**
+ * g_unicode_script_from_iso15924:
+ * @iso15924: a Unicode script
+ *
+ * Looks up the Unicode script for @iso15924.  ISO 15924 assigns four-letter
+ * codes to scripts.  For example, the code for Arabic is 'Arab'.
+ * This function accepts four letter codes encoded as a @guint32 in a
+ * big-endian fashion.  That is, the code expected for Arabic is
+ * 0x41726162 (0x41 is ASCII code for 'A', 0x72 is ASCII code for 'r', etc).
+ *
+ * See <ulink url="http://unicode.org/iso15924/codelists.html">Codes for the
+ * representation of names of scripts</ulink> for details.
+ *
+ * Return value: the Unicode script for @iso15924, or
+ *   of %G_UNICODE_SCRIPT_INVALID_CODE if @iso15924 is zero and
+ *   %G_UNICODE_SCRIPT_UNKNOWN if @iso15924 is unknown.
+ *
+ * Since: 2.30
+ */
+GUnicodeScript
+g_unicode_script_from_iso15924 (guint32 iso15924)
+{
+  unsigned int i;
+
+   if (!iso15924)
+     return G_UNICODE_SCRIPT_INVALID_CODE;
+
+  for (i = 0; i < G_N_ELEMENTS (iso15924_tags); i++)
+    if (iso15924_tags[i] == iso15924)
+      return (GUnicodeScript) i;
+
+  return G_UNICODE_SCRIPT_UNKNOWN;
 }

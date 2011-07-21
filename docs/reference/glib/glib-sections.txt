@@ -2720,6 +2720,7 @@ g_unicode_canonical_decomposition
 g_unichar_get_mirror_char
 GUnicodeScript
 g_unichar_get_script
+g_unicode_script_from_iso15924
 g_unicode_script_to_iso15924
 
 <SUBSECTION>

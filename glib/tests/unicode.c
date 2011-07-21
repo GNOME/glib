@@ -603,10 +603,15 @@ test_fully_decompose_len (void)
 }
 
 static void
-test_script_to_iso15924 (void)
+test_iso15924 (void)
 {
   g_assert_cmphex (0, ==, g_unicode_script_to_iso15924 (G_UNICODE_SCRIPT_INVALID_CODE));
+  g_assert_cmphex (0x5A7A7A7A, ==, g_unicode_script_to_iso15924 (1000));
   g_assert_cmphex (0x41726162, ==, g_unicode_script_to_iso15924 (G_UNICODE_SCRIPT_ARABIC));
+
+  g_assert_cmphex (G_UNICODE_SCRIPT_INVALID_CODE, ==, g_unicode_script_from_iso15924 (0));
+  g_assert_cmphex (G_UNICODE_SCRIPT_UNKNOWN, ==, g_unicode_script_from_iso15924 (0x12345678));
+  g_assert_cmphex (G_UNICODE_SCRIPT_ARABIC, ==, g_unicode_script_from_iso15924 (0x41726162));
 }
 
 int
@@ -630,7 +635,7 @@ main (int   argc,
   g_test_add_func ("/unicode/canonical-decomposition", test_canonical_decomposition);
   g_test_add_func ("/unicode/decompose-tail", test_decompose_tail);
   g_test_add_func ("/unicode/fully-decompose-len", test_fully_decompose_len);
-  g_test_add_func ("/unicode/script-to-iso15924", test_script_to_iso15924);
+  g_test_add_func ("/unicode/iso15924", test_iso15924);
 
   return g_test_run();
 }
