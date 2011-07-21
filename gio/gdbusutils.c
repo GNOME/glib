@@ -421,11 +421,6 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
       g_value_set_uint64 (out_gvalue, g_variant_get_uint64 (value));
       break;
 
-    case G_VARIANT_CLASS_HANDLE:
-      g_value_init (out_gvalue, G_TYPE_INT);
-      g_value_set_int (out_gvalue, g_variant_get_int32 (value));
-      break;
-
     case G_VARIANT_CLASS_DOUBLE:
       g_value_init (out_gvalue, G_TYPE_DOUBLE);
       g_value_set_double (out_gvalue, g_variant_get_double (value));
@@ -490,6 +485,7 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
         }
       break;
 
+    case G_VARIANT_CLASS_HANDLE:
     case G_VARIANT_CLASS_VARIANT:
     case G_VARIANT_CLASS_MAYBE:
     case G_VARIANT_CLASS_TUPLE:
@@ -550,10 +546,6 @@ g_dbus_gvariant_to_gvalue (GVariant  *value,
  *       <row>
  *         <entry>#G_TYPE_UINT64</entry>
  *         <entry><link linkend="G-VARIANT-TYPE-UINT64:CAPS">'t'</link></entry>
- *       </row>
- *       <row>
- *         <entry>#G_TYPE_INT</entry>
- *         <entry><link linkend="G-VARIANT-TYPE-HANDLE:CAPS">'h'</link></entry>
  *       </row>
  *       <row>
  *         <entry>#G_TYPE_DOUBLE</entry>
@@ -644,10 +636,6 @@ g_dbus_gvalue_to_gvariant (const GValue       *gvalue,
           ret = g_variant_ref_sink (g_variant_new_uint64 (g_value_get_uint64 (gvalue)));
           break;
 
-        case G_VARIANT_CLASS_HANDLE:
-          ret = g_variant_ref_sink (g_variant_new_handle (g_value_get_int (gvalue)));
-          break;
-
         case G_VARIANT_CLASS_DOUBLE:
           ret = g_variant_ref_sink (g_variant_new_double (g_value_get_double (gvalue)));
           break;
@@ -719,7 +707,7 @@ g_dbus_gvalue_to_gvariant (const GValue       *gvalue,
             }
           break;
 
-        default:
+        case G_VARIANT_CLASS_HANDLE:
         case G_VARIANT_CLASS_VARIANT:
         case G_VARIANT_CLASS_MAYBE:
         case G_VARIANT_CLASS_TUPLE:
