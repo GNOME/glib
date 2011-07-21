@@ -127,6 +127,9 @@ G_DEFINE_TYPE_WITH_CODE (GDesktopAppInfo, g_desktop_app_info, G_TYPE_OBJECT,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_APP_INFO,
 						g_desktop_app_info_iface_init))
 
+G_LOCK_DEFINE_STATIC (g_desktop_env);
+static gchar *g_desktop_env = NULL;
+
 static gpointer
 search_path_init (gpointer data)
 {
@@ -689,6 +692,72 @@ gboolean
 g_desktop_app_info_get_nodisplay (GDesktopAppInfo *info)
 {
   return info->nodisplay;
+}
+
+/**
+ * g_desktop_app_info_get_show_in:
+ * @info: a #GDesktopAppInfo
+ * @desktop_env: a string specifying a desktop name
+ *
+ * Checks if the application info should be shown in menus that list available
+ * applications for a specific name of the desktop, based on the
+ * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal> keys.
+ *
+ * If @desktop_env is %NULL, then the name of the desktop set with
+ * g_desktop_app_info_set_desktop_env() is used.
+ *
+ * Note that g_app_info_should_show() for @info will include this check (with
+ * %NULL for @desktop_env) as well as additional checks.
+ *
+ * Returns: %TRUE if the @info should be shown in @desktop_env according to the
+ * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal> keys, %FALSE
+ * otherwise.
+ *
+ * Since: 2.30
+ */
+gboolean
+g_desktop_app_info_get_show_in (GDesktopAppInfo *info,
+                                const gchar     *desktop_env)
+{
+  gboolean found;
+  int i;
+
+  g_return_val_if_fail (G_IS_DESKTOP_APP_INFO (info), FALSE);
+
+  if (!desktop_env) {
+    G_LOCK (g_desktop_env);
+    desktop_env = g_desktop_env;
+    G_UNLOCK (g_desktop_env);
+  }
+
+  if (info->only_show_in)
+    {
+      if (desktop_env == NULL)
+	return FALSE;
+
+      found = FALSE;
+      for (i = 0; info->only_show_in[i] != NULL; i++)
+	{
+	  if (strcmp (info->only_show_in[i], desktop_env) == 0)
+	    {
+	      found = TRUE;
+	      break;
+	    }
+	}
+      if (!found)
+	return FALSE;
+    }
+
+  if (info->not_show_in && desktop_env)
+    {
+      for (i = 0; info->not_show_in[i] != NULL; i++)
+	{
+	  if (strcmp (info->not_show_in[i], desktop_env) == 0)
+	    return FALSE;
+	}
+    }
+
+  return TRUE;
 }
 
 static char *
@@ -1376,15 +1445,13 @@ g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
 						   error);
 }
 
-G_LOCK_DEFINE_STATIC (g_desktop_env);
-static gchar *g_desktop_env = NULL;
-
 /**
  * g_desktop_app_info_set_desktop_env:
  * @desktop_env: a string specifying what desktop this is
  *
  * Sets the name of the desktop that the application is running in.
- * This is used by g_app_info_should_show() to evaluate the
+ * This is used by g_app_info_should_show() and
+ * g_desktop_app_info_get_show_in() to evaluate the
  * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal>
  * desktop entry fields.
  *
@@ -1413,45 +1480,11 @@ static gboolean
 g_desktop_app_info_should_show (GAppInfo *appinfo)
 {
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
-  gboolean found;
-  const gchar *desktop_env;
-  int i;
 
   if (info->nodisplay)
     return FALSE;
 
-  G_LOCK (g_desktop_env);
-  desktop_env = g_desktop_env;
-  G_UNLOCK (g_desktop_env);
-
-  if (info->only_show_in)
-    {
-      if (desktop_env == NULL)
-	return FALSE;
-      
-      found = FALSE;
-      for (i = 0; info->only_show_in[i] != NULL; i++)
-	{
-	  if (strcmp (info->only_show_in[i], desktop_env) == 0)
-	    {
-	      found = TRUE;
-	      break;
-	    }
-	}
-      if (!found)
-	return FALSE;
-    }
-
-  if (info->not_show_in && desktop_env)
-    {
-      for (i = 0; info->not_show_in[i] != NULL; i++)
-	{
-	  if (strcmp (info->not_show_in[i], desktop_env) == 0)
-	    return FALSE;
-	}
-    }
-  
-  return TRUE;
+  return g_desktop_app_info_get_show_in (info, NULL);
 }
 
 typedef enum {
