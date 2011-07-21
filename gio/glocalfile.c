@@ -900,11 +900,12 @@ g_local_file_query_filesystem_info (GFile         *file,
   int statfs_result = 0;
   gboolean no_size;
 #ifndef G_OS_WIN32
-  guint64 block_size;
   const char *fstype;
 #ifdef USE_STATFS
+  guint64 block_size;
   struct statfs statfs_buffer;
 #elif defined(USE_STATVFS)
+  guint64 block_size;
   struct statvfs statfs_buffer;
 #endif
 #endif
@@ -967,7 +968,9 @@ g_local_file_query_filesystem_info (GFile         *file,
         g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_FREE, (guint64)li.QuadPart);
       g_free (wdirname);
 #else
+#if defined(USE_STATFS) || defined(USE_STATVFS)
       g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_FREE, block_size * statfs_buffer.f_bavail);
+#endif
 #endif
     }
   if (!no_size &&
@@ -984,7 +987,9 @@ g_local_file_query_filesystem_info (GFile         *file,
         g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_SIZE,  (guint64)li.QuadPart);
       g_free (wdirname);
 #else
+#if defined(USE_STATFS) || defined(USE_STATVFS)
       g_file_info_set_attribute_uint64 (info, G_FILE_ATTRIBUTE_FILESYSTEM_SIZE, block_size * statfs_buffer.f_blocks);
+#endif
 #endif
     }
 #ifdef USE_STATFS
@@ -996,6 +1001,8 @@ g_local_file_query_filesystem_info (GFile         *file,
 
 #elif defined(USE_STATVFS) && defined(HAVE_STRUCT_STATVFS_F_BASETYPE)
   fstype = g_strdup(statfs_buffer.f_basetype); 
+#else
+  fstype = NULL;
 #endif
 
 #ifndef G_OS_WIN32
