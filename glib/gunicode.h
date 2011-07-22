@@ -156,7 +156,9 @@ typedef enum
  *
  * Deprecated: 2.30: Use %G_UNICODE_SPACING_MARK.
  */
+#ifndef G_DISABLE_DEPRECATED
 #define G_UNICODE_COMBINING_MARK G_UNICODE_SPACING_MARK
+#endif
 
 /**
  * GUnicodeBreakType:
