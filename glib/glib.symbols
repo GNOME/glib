@@ -35,6 +35,7 @@ g_ptr_array_free
 g_ptr_array_unref
 g_ptr_array_ref
 g_ptr_array_new
+g_ptr_array_new_full
 g_ptr_array_new_with_free_func
 g_ptr_array_set_free_func
 g_ptr_array_remove
@@ -488,7 +489,6 @@ g_key_file_get_string_list
 g_key_file_get_value
 g_key_file_has_group
 g_key_file_has_key
-g_key_file_has_key_full
 g_key_file_load_from_dirs
 g_key_file_load_from_data
 g_key_file_load_from_data_dirs
