@@ -60,6 +60,7 @@ typedef struct stat GStatBuf;
  * in a portable system header that we could include here.
  */
 
+#ifndef __GTK_DOC_IGNORE__
 #define g_chmod   chmod
 #define g_open    open
 #define g_creat   creat
@@ -71,6 +72,7 @@ typedef struct stat GStatBuf;
 #define g_fopen   fopen
 #define g_freopen freopen
 #define g_utime   utime
+#endif
 
 int g_access (const gchar *filename,
 	      int          mode);

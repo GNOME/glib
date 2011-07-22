@@ -85,8 +85,10 @@ gchar*          g_win32_error_message (gint error);
 
 #ifndef G_DISABLE_DEPRECATED
 
+#ifndef __GTK_DOC_IGNORE__
 #define g_win32_get_package_installation_directory g_win32_get_package_installation_directory_utf8
 #define g_win32_get_package_installation_subdirectory g_win32_get_package_installation_subdirectory_utf8
+#endif
 
 gchar*          g_win32_get_package_installation_directory (const gchar *package,
 							    const gchar *dll_name);
