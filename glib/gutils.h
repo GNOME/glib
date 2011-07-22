@@ -452,9 +452,8 @@ const gchar * glib_check_version (guint required_major,
  * @minor: the minor version to check for
  * @micro: the micro version to check for
  *
- * Checks the version of the GLib library.
- * Returns %TRUE if the version of the GLib header files
- * is the same as or newer than the passed-in version.
+ * Checks the version of the GLib library that is being compiled
+ * against.
  *
  * <example>
  * <title>Checking the version of the GLib library</title>
@@ -463,6 +462,11 @@ const gchar * glib_check_version (guint required_major,
  *     g_error ("GLib version 1.2.0 or above is needed");
  * </programlisting>
  * </example>
+ *
+ * See glib_check_version() for a runtime check.
+ *
+ * Returns: %TRUE if the version of the GLib header files
+ * is the same as or newer than the passed-in version.
  */
 #define GLIB_CHECK_VERSION(major,minor,micro)    \
     (GLIB_MAJOR_VERSION > (major) || \

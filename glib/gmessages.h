@@ -273,11 +273,13 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  * g_return_if_fail:
  * @expr: the expression to check
  *
- * Returns from the current function if the expression
- * is not true. If the expression evaluates to %FALSE,
- * a critical message is logged and the function returns.
- * This can only be used in functions which do not return
- * a value.
+ * Verifies that the expression evaluates to %TRUE.  If the expression
+ * evaluates to %FALSE, a critical message is logged and the current
+ * function returns.  This can only be used in functions which do not
+ * return a value.
+ *
+ * If G_DISABLE_CHECKS is defined then the check is not performed.  You
+ * should therefore not depend on any side effects of @expr.
  */
 #define g_return_if_fail(expr) G_STMT_START{ (void)0; }G_STMT_END
 
@@ -287,9 +289,12 @@ GPrintFunc      g_set_printerr_handler  (GPrintFunc      func);
  * @val: the value to return from the current function
  *       if the expression is not true
  *
- * Returns from the current function, returning the value @val,
- * if the expression is not true. If the expression evaluates
- * to %FALSE, a critical message is logged and @val is returned.
+ * Verifies that the expression evaluates to %TRUE.  If the expression
+ * evaluates to %FALSE, a critical message is logged and @val is
+ * returned from the current function.
+ *
+ * If G_DISABLE_CHECKS is defined then the check is not performed.  You
+ * should therefore not depend on any side effects of @expr.
  */
 #define g_return_val_if_fail(expr,val) G_STMT_START{ (void)0; }G_STMT_END
 
