@@ -3136,67 +3136,10 @@ g_key_file_has_group (GKeyFile    *key_file,
   return g_key_file_lookup_group (key_file, group_name) != NULL;
 }
 
-/**
- * g_key_file_has_key: (skip)
- * @key_file: a #GKeyFile
- * @group_name: a group name
- * @key: a key name
- * @error: return location for a #GError
- *
- * Looks whether the key file has the key @key in the group
- * @group_name.
- *
- * <note>This function does not follow the rules for #GError strictly;
- * the return value both carries meaning and signals an error.  To use
- * this function, you must pass a #GError pointer in @error, and check
- * whether it is not %NULL to see if an error occurred.</note>
- *
- * See g_key_file_has_key_full() for a replacement function which does
- * follow the #GError rules.
- *
- * Return value: %TRUE if @key is a part of @group_name, %FALSE
- * otherwise.
- *
- * Since: 2.6
- **/
-gboolean
-g_key_file_has_key (GKeyFile     *key_file,
-		    const gchar  *group_name,
-		    const gchar  *key,
-		    GError      **error)
-{
-  GError *temp_error = NULL;
-  gboolean has_key;
-
-  if (g_key_file_has_key_full (key_file, group_name, key, &has_key, &temp_error))
-    {
-      return has_key;
-    }
-  else
-    {
-      g_propagate_error (error, temp_error);
-      return FALSE;
-    }
-}
-
-/**
- * g_key_file_has_key_full:
- * @key_file: a #GKeyFile
- * @group_name: a group name
- * @key: a key name
- * @has_key: (out) (allow-none): Return location for whether or not key exists
- * @error: return location for a #GError
- *
- * Looks whether the key file has the key @key in the group
- * @group_name.
- *
- * Return value: %TRUE if a group with the name @group_name
- * exists. Otherwise, @error is set and %FALSE is returned.
- *
- * Rename to: g_key_file_has_key
- * Since: 2.30
+/* This code remains from a historical attempt to add a new public API
+ * which respects the GError rules.
  */
-gboolean
+static gboolean
 g_key_file_has_key_full (GKeyFile     *key_file,
 			 const gchar  *group_name,
 			 const gchar  *key,
@@ -3227,6 +3170,49 @@ g_key_file_has_key_full (GKeyFile     *key_file,
   if (has_key)
     *has_key = pair != NULL;
   return TRUE;
+}
+
+/**
+ * g_key_file_has_key: (skip)
+ * @key_file: a #GKeyFile
+ * @group_name: a group name
+ * @key: a key name
+ * @error: return location for a #GError
+ *
+ * Looks whether the key file has the key @key in the group
+ * @group_name.
+ *
+ * <note>This function does not follow the rules for #GError strictly;
+ * the return value both carries meaning and signals an error.  To use
+ * this function, you must pass a #GError pointer in @error, and check
+ * whether it is not %NULL to see if an error occurred.</note>
+ *
+ * Language bindings should use g_key_file_get_value() to test whether
+ * or not a key exists.
+ *
+ * Return value: %TRUE if @key is a part of @group_name, %FALSE
+ * otherwise.
+ *
+ * Since: 2.6
+ **/
+gboolean
+g_key_file_has_key (GKeyFile     *key_file,
+		    const gchar  *group_name,
+		    const gchar  *key,
+		    GError      **error)
+{
+  GError *temp_error = NULL;
+  gboolean has_key;
+
+  if (g_key_file_has_key_full (key_file, group_name, key, &has_key, &temp_error))
+    {
+      return has_key;
+    }
+  else
+    {
+      g_propagate_error (error, temp_error);
+      return FALSE;
+    }
 }
 
 static void

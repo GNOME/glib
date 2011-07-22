@@ -444,7 +444,6 @@ test_listing (void)
   gsize len;
   gchar *start;
   GError *error = NULL;
-  gboolean has_key;
 
   const gchar *data =
     "[group1]\n"
@@ -495,21 +494,6 @@ test_listing (void)
   g_assert (!g_key_file_has_key (keyfile, "group2", "no-such-key", NULL));
 
   g_key_file_has_key (keyfile, "no-such-group", "key", &error);
-  check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
-
-  g_assert (g_key_file_has_key_full (keyfile, "group1", "key1", &has_key, &error));
-  check_no_error (&error);
-  g_assert (has_key);
-
-  g_assert (g_key_file_has_key_full (keyfile, "group2", "key3", &has_key, &error));
-  check_no_error (&error);
-  g_assert (has_key);
-
-  g_assert (g_key_file_has_key_full (keyfile, "group2", "no-such-key", &has_key, &error));
-  g_assert (!has_key);
-  check_no_error (&error);
-
-  g_assert (!g_key_file_has_key_full (keyfile, "no-such-group", "key", &has_key, &error));
   check_error (&error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_GROUP_NOT_FOUND);
 
   g_key_file_free (keyfile);
