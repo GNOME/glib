@@ -88,7 +88,7 @@
 
 #define ISMARK(Type)	IS ((Type),				\
 			    OR (G_UNICODE_NON_SPACING_MARK,	\
-			    OR (G_UNICODE_COMBINING_MARK,	\
+			    OR (G_UNICODE_SPACING_MARK,	\
 			    OR (G_UNICODE_ENCLOSING_MARK,	0))))
 
 #define ISZEROWIDTHTYPE(Type)	IS ((Type),			\
