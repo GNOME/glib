@@ -606,7 +606,7 @@ gchar*   g_utf8_find_prev_char    (const gchar *str,
 glong    g_utf8_strlen            (const gchar *p,
                                    gssize       max) G_GNUC_PURE;
 
-gchar   *g_utf8_substring         (const gchar *p,
+gchar   *g_utf8_substring         (const gchar *str,
                                    glong        start_pos,
                                    glong        end_pos) G_GNUC_MALLOC;
 

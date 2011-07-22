@@ -827,8 +827,8 @@ g_datalist_id_get_data (GData	 **datalist,
 
 /**
  * g_datalist_get_data:
- * @dl: a datalist.
- * @k: the string identifying a data element.
+ * @datalist: a datalist.
+ * @key: the string identifying a data element.
  * @Returns: the data element, or %NULL if it is not found.
  *
  * Gets a data element, using its string identifer. This is slower than
