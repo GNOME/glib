@@ -4187,8 +4187,8 @@ g_timeout_add (guint32        interval,
  * 
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 2.14
  * Rename to: g_timeout_add_seconds
+ * Since: 2.14
  **/
 guint
 g_timeout_add_seconds_full (gint           priority,
@@ -4769,8 +4769,8 @@ g_child_watch_source_new (GPid pid)
  *
  * Return value: the ID (greater than 0) of the event source.
  *
- * Since: 2.4
  * Rename to: g_child_watch_add
+ * Since: 2.4
  **/
 guint
 g_child_watch_add_full (gint            priority,

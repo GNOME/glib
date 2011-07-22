@@ -3193,9 +3193,8 @@ g_key_file_has_key (GKeyFile     *key_file,
  * Return value: %TRUE if a group with the name @group_name
  * exists. Otherwise, @error is set and %FALSE is returned.
  *
- * Since: 2.30
- *
  * Rename to: g_key_file_has_key
+ * Since: 2.30
  */
 gboolean
 g_key_file_has_key_full (GKeyFile     *key_file,
