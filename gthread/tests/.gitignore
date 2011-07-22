@@ -1,7 +1,9 @@
 1bit-emufutex
 1bit-mutex
 642026
+642026-ec
 atomic
 spawn-multithreaded
+spawn-singlethread
 test-spawn-echo
 unix-multithreaded
