@@ -209,8 +209,7 @@ these bits, just add new ones on the end, in order to remain compatible. */
 
 /* Types */
 
-struct real_pcre;                 /* declaration; the definition is private  */
-typedef struct real_pcre pcre;
+typedef struct real_pcre pcre;    /* declaration; the definition is private  */
 
 /* When PCRE is compiled as a C++ library, the subject pointer type can be
 replaced with a custom type. For conventional use, the public interface is a
