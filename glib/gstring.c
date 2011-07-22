@@ -1455,7 +1455,7 @@ g_string_vprintf (GString     *string,
  * g_string_sprintf:
  * @string: a #GString
  * @format: the string format. See the sprintf() documentation
- * @Varargs: the parameters to insert into the format string
+ * @...: the parameters to insert into the format string
  *
  * Writes a formatted string into a #GString.
  * This is similar to the standard sprintf() function,
@@ -1470,7 +1470,7 @@ g_string_vprintf (GString     *string,
  * g_string_printf:
  * @string: a #GString
  * @format: the string format. See the printf() documentation
- * @Varargs: the parameters to insert into the format string
+ * @...: the parameters to insert into the format string
  *
  * Writes a formatted string into a #GString.
  * This is similar to the standard sprintf() function,
@@ -1496,7 +1496,7 @@ g_string_printf (GString     *string,
  * g_string_sprintfa:
  * @string: a #GString
  * @format: the string format. See the sprintf() documentation
- * @Varargs: the parameters to insert into the format string
+ * @...: the parameters to insert into the format string
  *
  * Appends a formatted string onto the end of a #GString.
  * This function is similar to g_string_sprintf() except that
@@ -1509,7 +1509,7 @@ g_string_printf (GString     *string,
  * g_string_append_printf:
  * @string: a #GString
  * @format: the string format. See the printf() documentation
- * @Varargs: the parameters to insert into the format string
+ * @...: the parameters to insert into the format string
  *
  * Appends a formatted string onto the end of a #GString.
  * This function is similar to g_string_printf() except 

@@ -280,9 +280,9 @@ g_relation_index (GRelation   *relation,
 /**
  * g_relation_insert:
  * @relation: a #GRelation.
- * @Varargs: the fields of the record to add. These must match the
- *           number of fields in the #GRelation, and of type #gpointer
- *           or #gconstpointer.
+ * @...: the fields of the record to add. These must match the
+ *       number of fields in the #GRelation, and of type #gpointer
+ *       or #gconstpointer.
  *
  * Inserts a record into a #GRelation.
  *
@@ -516,8 +516,8 @@ g_relation_count (GRelation     *relation,
 /**
  * g_relation_exists:
  * @relation: a #GRelation.
- * @Varargs: the fields of the record to compare. The number must match
- *           the number of fields in the #GRelation.
+ * @...: the fields of the record to compare. The number must match
+ *       the number of fields in the #GRelation.
  * @Returns: %TRUE if a record matches.
  *
  * Returns %TRUE if a record with the given values exists in a

@@ -259,7 +259,7 @@ g_strdup_vprintf (const gchar *format,
  * g_strdup_printf:
  * @format: a standard printf() format string, but notice
  *     <link linkend="string-precision">string precision pitfalls</link>
- * @Varargs: the parameters to insert into the format string
+ * @...: the parameters to insert into the format string
  *
  * Similar to the standard C sprintf() function but safer, since it
  * calculates the maximum space required and allocates memory to hold
@@ -285,7 +285,7 @@ g_strdup_printf (const gchar *format,
 /**
  * g_strconcat:
  * @string1: the first string to add, which must not be %NULL
- * @Varargs: a %NULL-terminated list of strings to append to the string
+ * @...: a %NULL-terminated list of strings to append to the string
  *
  * Concatenates all of the given strings into one long string.
  * The returned string should be freed with g_free() when no longer needed.
@@ -2666,7 +2666,7 @@ g_strjoinv (const gchar  *separator,
 /**
  * g_strjoin:
  * @separator: a string to insert between each of the strings, or %NULL
- * @Varargs: a %NULL-terminated list of strings to join
+ * @...: a %NULL-terminated list of strings to join
  *
  * Joins a number of strings together to form one long string, with the
  * optional @separator inserted between each of them. The returned string

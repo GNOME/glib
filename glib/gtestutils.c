@@ -407,7 +407,7 @@ parse_args (gint    *argc_p,
  *        Changed if any arguments were handled.
  * @argv: Address of the @argv parameter of main().
  *        Any parameters understood by g_test_init() stripped before return.
- * @Varargs: Reserved for future extension. Currently, you must pass %NULL.
+ * @...: Reserved for future extension. Currently, you must pass %NULL.
  *
  * Initialize the GLib testing framework, e.g. by seeding the
  * test random number generator, the name for g_get_prgname()
@@ -705,7 +705,7 @@ g_test_timer_last (void)
  * g_test_minimized_result:
  * @minimized_quantity: the reported value
  * @format: the format string of the report message
- * @Varargs: arguments to pass to the printf() function
+ * @...: arguments to pass to the printf() function
  *
  * Report the result of a performance or measurement test.
  * The test should generally strive to minimize the reported
@@ -736,7 +736,7 @@ g_test_minimized_result (double          minimized_quantity,
  * g_test_maximized_result:
  * @maximized_quantity: the reported value
  * @format: the format string of the report message
- * @Varargs: arguments to pass to the printf() function
+ * @...: arguments to pass to the printf() function
  *
  * Report the result of a performance or measurement test.
  * The test should generally strive to maximize the reported

@@ -2454,7 +2454,7 @@ g_markup_vprintf_escaped (const gchar *format,
 /**
  * g_markup_printf_escaped:
  * @format: printf() style format string
- * @Varargs: the arguments to insert in the format string
+ * @...: the arguments to insert in the format string
  *
  * Formats arguments according to @format, escaping
  * all string and character arguments in the fashion

@@ -391,7 +391,7 @@ g_error_new_valist (GQuark       domain,
  * @domain: error domain
  * @code: error code
  * @format: printf()-style format for error message
- * @Varargs: parameters for message format
+ * @...: parameters for message format
  *
  * Creates a new #GError with the given @domain and @code,
  * and a message formatted with @format.
@@ -521,7 +521,7 @@ g_error_matches (const GError *error,
  * @domain: error domain
  * @code: error code
  * @format: printf()-style format
- * @Varargs: args for @format
+ * @...: args for @format
  *
  * Does nothing if @err is %NULL; if @err is non-%NULL, then *@err
  * must be %NULL. A new #GError is created and assigned to *@err.

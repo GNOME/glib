@@ -1034,7 +1034,7 @@ g_set_print_handler (GPrintFunc func)
 /**
  * g_print:
  * @format: the message format. See the printf() documentation
- * @Varargs: the parameters to insert into the format string
+ * @...: the parameters to insert into the format string
  *
  * Outputs a formatted message via the print handler.
  * The default print handler simply outputs the message to stdout.
@@ -1113,7 +1113,7 @@ g_set_printerr_handler (GPrintFunc func)
 /**
  * g_printerr:
  * @format: the message format. See the printf() documentation
- * @Varargs: the parameters to insert into the format string
+ * @...: the parameters to insert into the format string
  *
  * Outputs a formatted message via the error message handler.
  * The default handler simply outputs the message to stderr.
