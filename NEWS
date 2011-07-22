@@ -1,3 +1,52 @@
+Overview of changes from GLib 2.29.12 to 2.29.14
+================================================
+
+* Unicode improvements
+ - add g_unicode_script_{to,from}_iso15924
+ - add G_UNICODE_SPACING_MARK define
+ - more normalisation improvements
+ - stop using deprecated g_unicode_canonical_decomposition()
+
+* GParamSpec:
+ - mark the 'name' field as 'const' and add a comment to the header to
+   help avoid future problems caused by bad hacks
+
+* Merge some (modified) patches from Debian:
+ - 03_blacklist-directories.patch
+   - add some blacklisted mount directories
+ - 60_wait-longer-for-threads-to-die.patch
+   - sleep longer in a test case, if needed to avoid failing
+
+* Units policy change: prefer use of SI units
+ - deprecate g_format_size_for_display, add g_format_size(_full)
+
+* GSettings: don't call g_error() when the schema is missing
+
+* GVariant support for arrays of object paths:
+ - new g_variant_{new,get,dup}_objv API
+ - support for g_variant_{new,get} '^ao' and '^a&o' similar to '^as'
+
+* GDBus:
+ - use new improved array-of-objects support and pass 'ao' as char**
+   instead of GVariant*
+ - improve handling of 'h' type (Unix file descriptor index)
+
+* GIO:
+ - fix compilation without USE_STATFS and USE_STATVFS
+
+* Documentation fixes
+
+* Bugs fixed:
+ 622921 Migrate from dbus-glib to glib's GDBus
+ 648271 Add g_unicode_script_to_iso15924()
+ 654948 Stop using deprecated g_unicode_canonical_decomposition()
+ 654988 g_atomic_int_add should document behaviour change
+ 655025 #define G_UNICODE_SPACING_MARK G_UNICODE_COMBINING_MARK
+ 655076 normalization misses some Full_Composition_Exclusion=True. 
+
+* Translations updated:
+ Spanish
+
 Overview of changes from GLib 2.29.10 to 2.29.12
 ================================================
 
