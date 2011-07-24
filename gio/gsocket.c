@@ -1607,7 +1607,7 @@ g_socket_accept (GSocket       *socket,
  * If the connect call needs to do network I/O it will block, unless
  * non-blocking I/O is enabled. Then %G_IO_ERROR_PENDING is returned
  * and the user can be notified of the connection finishing by waiting
- * for the G_IO_OUT condition. The result of the connection can then be
+ * for the G_IO_OUT condition. The result of the connection must then be
  * checked with g_socket_check_connect_result().
  *
  * Returns: %TRUE if connected, %FALSE on error.
@@ -1727,6 +1727,8 @@ g_socket_check_connect_result (GSocket  *socket,
         }
       return FALSE;
     }
+
+  socket->priv->connected = TRUE;
   return TRUE;
 }
 
