@@ -1538,6 +1538,8 @@ main (int   argc,
   g_thread_init (NULL);
   g_test_init (&argc, &argv, NULL);
 
+  g_unsetenv ("DBUS_SESSION_BUS_ADDRESS");
+
   introspection_data = g_dbus_node_info_new_for_xml (test_interface_introspection_xml, NULL);
   g_assert (introspection_data != NULL);
   test_interface_introspection_data = introspection_data->interfaces[0];
