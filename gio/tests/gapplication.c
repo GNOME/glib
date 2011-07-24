@@ -361,6 +361,13 @@ main (int argc, char **argv)
 
   g_test_init (&argc, &argv, NULL);
 
+  /* all the tests use a session bus with a well-known address
+   * that we can bring up and down using session_bus_up() and
+   * session_bus_down().
+   */
+  g_unsetenv ("DISPLAY");
+  g_setenv ("DBUS_SESSION_BUS_ADDRESS", session_bus_get_temporary_address (), TRUE);
+
   g_test_add_func ("/gapplication/basic", basic);
   g_test_add_func ("/gapplication/non-unique", test_nonunique);
   g_test_add_func ("/gapplication/properties", properties);
