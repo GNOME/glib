@@ -47,7 +47,7 @@
  *        distribution)
  *
  *   - (ideally) this requires D-Bus spec work because none of
- *     this has never really been specced out properly (excect
+ *     this has never really been specced out properly (except
  *     the X11 bits)
  *
  * - Related to the above, we also need to be able to launch a message bus
