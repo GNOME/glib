@@ -23,6 +23,29 @@
 
 #include "gwakeup.h"
 
+/**
+ * SECTION:gwakeup
+ * @title: GWakeup
+ * @short_description: portable cross-thread event signal mechanism
+ *
+ * #GWakeup is a simple and portable way of signaling events between
+ * different threads in a way that integrates nicely with g_poll().
+ * GLib uses it internally for cross-thread signalling in the
+ * implementation of #GMainContext and #GCancellable.
+ *
+ * You first create a #GWakeup with g_wakeup_new() and initialise a
+ * #GPollFD from it using g_wakeup_get_pollfd().  Polling on the created
+ * #GPollFD will block until g_wakeup_signal() is called, at which point
+ * it will immediately return.  Future attempts to poll will continue to
+ * return until g_wakeup_acknowledge() is called.  g_wakeup_free() is
+ * used to free a #GWakeup.
+ *
+ * On sufficiently modern Linux, this is implemented using eventfd.  On
+ * Windows it is implemented using an event handle.  On other systems it
+ * is implemented with a pair of pipes.
+ *
+ * Since: 2.30
+ **/
 #ifdef _WIN32
 
 #include <windows.h>
@@ -46,10 +69,10 @@ g_wakeup_new (void)
 
 void
 g_wakeup_get_pollfd (GWakeup *wakeup,
-                     GPollFD *fd)
+                     GPollFD *poll_fd)
 {
-  fd->fd = (gintptr) wakeup;
-  fd->events = G_IO_IN;
+  poll_fd->fd = (gintptr) wakeup;
+  poll_fd->events = G_IO_IN;
 }
 
 void
@@ -84,6 +107,17 @@ struct _GWakeup
   gint fds[2];
 };
 
+/**
+ * g_wakeup_new:
+ *
+ * Creates a new #GWakeup.
+ *
+ * You should use g_wakeup_free() to free it when you are done.
+ *
+ * Returns: a new #GWakeup
+ *
+ * Since: 2.30
+ **/
 GWakeup *
 g_wakeup_new (void)
 {
@@ -115,14 +149,40 @@ g_wakeup_new (void)
   return wakeup;
 }
 
+/**
+ * g_wakeup_get_pollfd:
+ * @wakeup: a #GWakeup
+ * @poll_fd: a #GPollFD
+ *
+ * Prepares a @poll_fd such that polling on it will succeed when
+ * g_wakeup_signal() has been called on @wakeup.
+ *
+ * @poll_fd is valid until @wakeup is freed.
+ *
+ * Since: 2.30
+ **/
 void
 g_wakeup_get_pollfd (GWakeup *wakeup,
-                     GPollFD *fd)
+                     GPollFD *poll_fd)
 {
-  fd->fd = wakeup->fds[0];
-  fd->events = G_IO_IN;
+  poll_fd->fd = wakeup->fds[0];
+  poll_fd->events = G_IO_IN;
 }
 
+/**
+ * g_wakeup_acknowledge:
+ * @wakeup: a #GWakeup
+ *
+ * Acknowledges receipt of a wakeup signal on @wakeup.
+ *
+ * You must call this after @wakeup polls as ready.  If not, it will
+ * continue to poll as ready until you do so.
+ *
+ * If you call this function and @wakeup is not signaled, nothing
+ * happens.
+ *
+ * Since: 2.30
+ **/
 void
 g_wakeup_acknowledge (GWakeup *wakeup)
 {
@@ -132,6 +192,18 @@ g_wakeup_acknowledge (GWakeup *wakeup)
   while (read (wakeup->fds[0], buffer, sizeof buffer) == sizeof buffer);
 }
 
+/**
+ * g_wakeup_signal:
+ * @wakeup: a #GWakeup
+ *
+ * Signals @wakeup.
+ *
+ * Any future (or present) polling on the #GPollFD returned by
+ * g_wakeup_get_pollfd() will immediately succeed until such a time as
+ * g_wakeup_acknowledge() is called.
+ *
+ * Since: 2.30
+ **/
 void
 g_wakeup_signal (GWakeup *wakeup)
 {
@@ -143,6 +215,15 @@ g_wakeup_signal (GWakeup *wakeup)
     write (wakeup->fds[1], &one, 1);
 }
 
+/**
+ * g_wakeup_free:
+ * @wakeup: a #GWakeup
+ *
+ * Frees @wakeup.
+ *
+ * You must not currently be polling on the #GPollFD returned by
+ * g_wakeup_get_pollfd(), or the result is undefined.
+ **/
 void
 g_wakeup_free (GWakeup *wakeup)
 {
