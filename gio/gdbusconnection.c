@@ -4970,9 +4970,7 @@ typedef struct
   guint32 serial;
 
   GVariant *value;
-#ifdef G_OS_UNIX
   GUnixFDList *fd_list;
-#endif
 } CallState;
 
 static void
@@ -4983,10 +4981,8 @@ call_state_free (CallState *state)
 
   if (state->value != NULL)
     g_variant_unref (state->value);
-#ifdef G_OS_UNIX
   if (state->fd_list != NULL)
     g_object_unref (state->fd_list);
-#endif
   g_slice_free (CallState, state);
 }
 
