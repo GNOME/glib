@@ -15,6 +15,7 @@ Makefile
 *.gcov
 *.sourcefiles
 *.stp
+*.exe
 
 # autofoo stuff here
 compile
@@ -26,6 +27,7 @@ autom4te.cache
 stamp-*
 libtool
 ltmain.sh
+mingw32-config.cache
 missing
 install-sh
 glib-gettextize
