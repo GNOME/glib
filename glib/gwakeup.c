@@ -62,9 +62,12 @@
 #ifdef _WIN32
 
 #include <windows.h>
+
+#ifdef GLIB_COMPILATION
 #include "gmessages.h"
 #include "giochannel.h"
 #include "gwin32.h"
+#endif
 
 GWakeup *
 g_wakeup_new (void)
