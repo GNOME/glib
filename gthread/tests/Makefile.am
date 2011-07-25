@@ -46,3 +46,10 @@ spawn_singlethread_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-
 
 TEST_PROGS += gwakeup
 gwakeup_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
+
+if HAVE_EVENTFD
+TEST_PROGS += gwakeup-fallback
+gwakeup_fallback_SOURCES = gwakeup.c
+gwakeup_fallback_CFLAGS = $(AM_CFLAGS) -DTEST_EVENTFD_FALLBACK
+gwakeup_fallback_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
+endif
