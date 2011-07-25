@@ -202,6 +202,8 @@ g_wakeup_acknowledge (GWakeup *wakeup)
  * g_wakeup_get_pollfd() will immediately succeed until such a time as
  * g_wakeup_acknowledge() is called.
  *
+ * This function is safe to call from a UNIX signal handler.
+ *
  * Since: 2.30
  **/
 void
