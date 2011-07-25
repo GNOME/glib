@@ -97,7 +97,7 @@
  * "user" for getting the user name of the file owner. This information is often mapped from
  * some backend specific data such as a unix UID.</entry></row>
  * <row><entry>"thumbnail"</entry><entry>The "Thumbnail" namespace. Includes
- * information about file thumbnails and their location within the file system. Exaples of
+ * information about file thumbnails and their location within the file system. Examples of
  * keys in this namespace include "path" to get the location of a thumbnail, and "failed"
  * to check if thumbnailing of the file failed.</entry></row>
  * <row><entry>"filesystem"</entry><entry>The "Filesystem" namespace. Gets information
