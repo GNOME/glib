@@ -3,6 +3,7 @@
 642026
 642026-ec
 atomic
+gwakeup
 spawn-multithreaded
 spawn-singlethread
 test-spawn-echo
