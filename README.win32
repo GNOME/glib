@@ -159,11 +159,20 @@ and libtool documentation.
 Building with Visual Studio
 ===========================
 
-In an unpacked tarball, you will find in build\win32\vs9 a solution
-file that can be used to build the GLib DLLs and some auxiliary
-programs. Read the README.txt file in that folder for more
-information. Note that you will need a libintl implementation, and
-zlib.
+Please do not build GLib in paths that contain spaces in them, as
+this may cause problems during compilation and during usage of the
+library.
+
+In an unpacked tarball, you will find in build\win32\vs9 (VS 2008) and
+build\win32\vs10 (VS 2010) a solution file that can be used to build
+the GLib DLLs and some auxiliary programs under VS 2008 and VS 2010
+(Express Edition will suffice with the needed dependencies) respectively.
+Read the README.txt file in those folders for more information.
+Note that you will need a libintl implementation and zlib.
+
+If you are building from a GIT checkout, you will first need to use some
+Unix-like environment to expand the VS 2008/2010 project files,
+the DLL resouce files and other miscellanious files required for the build.
 
 Building with MSVC and NMAKE
 ============================

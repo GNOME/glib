@@ -1,4 +1,6 @@
-Note that all this is rather experimental.
+Please do not compile this package (GLib) in paths that contain
+spaces in them-as strange problems may occur during compilation or during
+the use of the library. 
 
 This VS9 solution and the projects it includes are intented to be used
 in a GLib source tree unpacked from a tarball. In a git checkout you
