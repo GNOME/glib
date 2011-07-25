@@ -43,3 +43,6 @@ spawn_multithreaded_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread
 TEST_PROGS += spawn-singlethread
 spawn_singlethread_SOURCES = spawn-singlethread.c
 spawn_singlethread_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
+
+TEST_PROGS += gwakeup
+gwakeup_LDADD    = $(progs_ldadd) $(top_builddir)/gthread/libgthread-2.0.la
