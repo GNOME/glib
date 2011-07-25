@@ -95,7 +95,7 @@ struct _GTreeNode
   gpointer   value;       /* value stored at this node */
   GTreeNode *left;        /* left subtree */
   GTreeNode *right;       /* right subtree */
-  gint8      balance;     /* height (left) - height (right) */
+  gint8      balance;     /* height (right) - height (left) */
   guint8     left_child;
   guint8     right_child;
 };
