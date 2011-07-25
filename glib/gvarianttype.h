@@ -282,7 +282,8 @@ typedef struct _GVariantType GVariantType;
  * to ensure that @string is a valid GVariant type string.
  *
  * It is always a programmer error to use this macro with an invalid
- * type string.
+ * type string. If in doubt, use g_variant_type_string_is_valid() to
+ * check if the string is valid.
  *
  * Since 2.24
  **/
