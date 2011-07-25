@@ -3147,13 +3147,3 @@ g_hostname_is_ascii_encoded
 <SUBSECTION>
 g_hostname_is_ip_address
 </SECTION>
-
-<SECTION>
-<FILE>gwakeup</FILE>
-<TITLE>GWakeup</TITLE>
-g_wakeup_new
-g_wakeup_get_pollfd
-g_wakeup_signal
-g_wakeup_acknowledge
-g_wakeup_free
-</SECTION>

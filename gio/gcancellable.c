@@ -23,6 +23,7 @@
 #include "config.h"
 #include "glib.h"
 #include <gioerror.h>
+#include "gwakeup.h"
 #include "gcancellable.h"
 #include "glibintl.h"
 

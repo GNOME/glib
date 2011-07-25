@@ -21,6 +21,19 @@
 
 #include "config.h"
 
+
+/* gwakeup.h is special -- GIO and some test cases include it.  As such,
+ * it cannot include other glib headers without triggering the single
+ * includes warnings.  We have to manually include its dependencies here
+ * (and at all other use sites).
+ */
+#ifdef GLIB_COMPILATION
+#include "gtypes.h"
+#include "gpoll.h"
+#else
+#include <glib.h>
+#endif
+
 #include "gwakeup.h"
 
 /**
@@ -128,7 +141,11 @@ g_wakeup_new (void)
 
   /* try eventfd first, if we think we can */
 #if defined (HAVE_EVENTFD)
+#ifndef TEST_EVENTFD_FALLBACK
   wakeup->fds[0] = eventfd (0, EFD_CLOEXEC | EFD_NONBLOCK);
+#else
+  wakeup->fds[0] = -1;
+#endif
 
   if (wakeup->fds[0] != -1)
     {

@@ -1,31 +1,6 @@
 #include <unistd.h>
 #include <glib.h>
-
-#ifdef TEST_EVENTFD_FALLBACK
-  #include <errno.h>
-
-  static gboolean we_broke_eventfd;
-
-  /* We interpose over the eventfd() call in the libc to ensure that a
-   * failed call to eventfd() gives us a working fallback.
-   *
-   * We need to do this because older kernel versions don't have eventfd
-   * support, and some of them have eventfd but without support for some
-   * of the flags we use.
-   *
-   * We use the we_broke_eventfd boolean to make sure that it actually
-   * worked.
-   */
-  int eventfd (void) {
-    we_broke_eventfd = TRUE;
-    errno = EINVAL;
-
-    return -1;
-  }
-  #define TESTNAME_SUFFIX "-fallback"
-#else
-  #define TESTNAME_SUFFIX ""
-#endif
+#include <glib/gwakeup.h>
 
 #ifdef _WIN32
 void alarm (int sec) { }
@@ -58,17 +33,8 @@ test_semantics (void)
   /* prevent the test from deadlocking */
   alarm (30);
 
-#ifdef TEST_EVENTFD_FALLBACK
-  we_broke_eventfd = FALSE;
-#endif
-
   wakeup = g_wakeup_new ();
   g_assert (!check_signaled (wakeup));
-
-#ifdef TEST_EVENTFD_FALLBACK
-  /* make sure our interposed eventfd call worked */
-  g_assert (we_broke_eventfd);
-#endif
 
   g_wakeup_signal (wakeup);
   g_assert (check_signaled (wakeup));
@@ -295,6 +261,13 @@ main (int argc, char **argv)
   g_thread_init (NULL);
 
   g_test_init (&argc, &argv, NULL);
+
+#ifdef TEST_EVENTFD_FALLBACK
+#define TESTNAME_SUFFIX "-fallback"
+#else
+#define TESTNAME_SUFFIX
+#endif
+
 
   g_test_add_func ("/gwakeup/semantics" TESTNAME_SUFFIX, test_semantics);
   g_test_add_func ("/gwakeup/threaded" TESTNAME_SUFFIX, test_threaded);

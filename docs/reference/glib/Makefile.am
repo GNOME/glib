@@ -22,6 +22,9 @@ MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=g
 HFILE_GLOB=$(addprefix $(top_srcdir)/glib/,$(shell cat $(top_builddir)/glib/glib-public-headers.txt)) $(top_srcdir)/gmodule/*.h
 CFILE_GLOB=$(top_srcdir)/glib/*.c $(top_srcdir)/gmodule/*.c
 
+# Ignore some private headers
+IGNORE_HFILES = gwakeup.h
+
 # Images to copy into HTML directory
 HTML_IMAGES =  				\
 	file-name-encodings.png		\
