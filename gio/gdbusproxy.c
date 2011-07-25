@@ -2461,7 +2461,11 @@ g_dbus_proxy_call_internal (GDBusProxy          *proxy,
   g_return_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name));
   g_return_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
   g_return_if_fail (timeout_msec == -1 || timeout_msec >= 0);
+#ifdef G_OS_UNIX
   g_return_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list));
+#else
+  g_return_if_fail (fd_list == NULL);
+#endif
 
   reply_type = NULL;
   split_interface_name = NULL;
@@ -2590,7 +2594,11 @@ g_dbus_proxy_call_sync_internal (GDBusProxy      *proxy,
   g_return_val_if_fail (g_dbus_is_member_name (method_name) || g_dbus_is_interface_name (method_name), NULL);
   g_return_val_if_fail (parameters == NULL || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), NULL);
   g_return_val_if_fail (timeout_msec == -1 || timeout_msec >= 0, NULL);
+#ifdef G_OS_UNIX
   g_return_val_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list), NULL);
+#else
+  g_return_val_if_fail (fd_list == NULL, NULL);
+#endif
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   reply_type = NULL;

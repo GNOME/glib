@@ -5067,7 +5067,11 @@ g_dbus_connection_call_internal (GDBusConnection        *connection,
   g_return_if_fail (method_name != NULL && g_dbus_is_member_name (method_name));
   g_return_if_fail (timeout_msec >= 0 || timeout_msec == -1);
   g_return_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE));
+#ifdef G_OS_UNIX
   g_return_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list));
+#else
+  g_return_if_fail (fd_list == NULL);
+#endif
 
   state = g_slice_new0 (CallState);
   state->simple = g_simple_async_result_new (G_OBJECT (connection),
@@ -5178,7 +5182,11 @@ g_dbus_connection_call_sync_internal (GDBusConnection         *connection,
   g_return_val_if_fail (method_name != NULL && g_dbus_is_member_name (method_name), NULL);
   g_return_val_if_fail (timeout_msec >= 0 || timeout_msec == -1, NULL);
   g_return_val_if_fail ((parameters == NULL) || g_variant_is_of_type (parameters, G_VARIANT_TYPE_TUPLE), NULL);
+#ifdef G_OS_UNIX
   g_return_val_if_fail (fd_list == NULL || G_IS_UNIX_FD_LIST (fd_list), NULL);
+#else
+  g_return_val_if_fail (fd_list == NULL, NULL);
+#endif
   g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
   if (reply_type == NULL)
