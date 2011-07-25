@@ -198,6 +198,7 @@ libglib_2_0_la_SOURCES = 	\
 	gvarianttypeinfo.h	\
 	gvarianttypeinfo.c	\
 	gvarianttype.c		\
+	gwakeup.c		\
 	gdebug.h		\
 	gprintf.c		\
 	gprintfint.h
@@ -286,6 +287,7 @@ glibsubinclude_HEADERS =   \
 	gutils.h	\
 	gvarianttype.h	\
 	gvariant.h	\
+	gwakeup.h	\
 	gwin32.h	\
 	gprintf.h
 
