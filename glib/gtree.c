@@ -1254,7 +1254,6 @@ g_tree_node_rotate_left (GTreeNode *node)
   else
     {
       node->right_child = FALSE;
-      node->right = right;
       right->left_child = TRUE;
     }
   right->left = node;
@@ -1296,7 +1295,6 @@ g_tree_node_rotate_right (GTreeNode *node)
   else
     {
       node->left_child = FALSE;
-      node->left = left;
       left->right_child = TRUE;
     }
   left->right = node;
