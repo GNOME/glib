@@ -1199,8 +1199,8 @@ g_file_query_info_finish (GFile         *file,
  * should be gathered. It is not an error if it's not possible to read a particular
  * requested attribute from a file - it just won't be set. @attributes should
  * be a comma-separated list of attributes or attribute wildcards. The wildcard "*"
- * means all attributes, and a wildcard like "fs:*" means all attributes in the fs
- * namespace. The standard namespace for filesystem attributes is "fs".
+ * means all attributes, and a wildcard like "filesystem::*" means all attributes in the
+ * filesystem namespace. The standard namespace for filesystem attributes is "filesystem".
  * Common attributes of interest are #G_FILE_ATTRIBUTE_FILESYSTEM_SIZE
  * (the total size of the filesystem in bytes), #G_FILE_ATTRIBUTE_FILESYSTEM_FREE (number of
  * bytes available), and #G_FILE_ATTRIBUTE_FILESYSTEM_TYPE (type of the filesystem).
