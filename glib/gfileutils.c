@@ -1935,16 +1935,15 @@ g_format_size_full (guint64          size,
        * all platforms.
        */
       const gchar *translated_format;
-      GString *formatted_number;
+      gchar *formatted_number;
 
       /* Translators: the %s in "%s bytes" will always be replaced by a number. */
       translated_format = g_dngettext(GETTEXT_PACKAGE, "%s byte", "%s bytes", plural_form);
 
-      formatted_number = g_string_new (NULL);
-      g_string_printf (formatted_number, "%'"G_GUINT64_FORMAT, size);
+      formatted_number = g_strdup_printf ("%'"G_GUINT64_FORMAT, size);
       g_string_append (string, " (");
-      g_string_append_printf (string, translated_format, formatted_number->str);
-      g_string_free (formatted_number, TRUE);
+      g_string_append_printf (string, translated_format, formatted_number);
+      g_free (formatted_number);
       g_string_append (string, ")");
     }
 
