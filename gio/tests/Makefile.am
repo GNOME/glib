@@ -67,7 +67,6 @@ TEST_PROGS +=			\
 	gdbus-exit-on-close	\
 	gdbus-non-socket	\
 	gdbus-bz627724		\
-	gdbus-test-codegen	\
 	appinfo			\
 	contenttype		\
 	file			\
@@ -98,14 +97,23 @@ SAMPLE_PROGS = 				\
 	gapplication-example-cmdline2	\
 	gapplication-example-cmdline3	\
 	gapplication-example-actions	\
-	gdbus-example-objectmanager-server \
-	gdbus-example-objectmanager-client \
 	$(NULL)
 
 
 if OS_UNIX
-TEST_PROGS += live-g-file desktop-app-info unix-fd unix-streams gapplication
-SAMPLE_PROGS +=	gdbus-example-unix-fd-client
+TEST_PROGS += 			\
+	live-g-file		\
+	desktop-app-info	\
+	unix-fd 		\
+	unix-streams 		\
+	gapplication 		\
+	gdbus-test-codegen 	\
+	$(NULL)
+SAMPLE_PROGS +=					\
+	gdbus-example-unix-fd-client 		\
+	gdbus-example-objectmanager-server 	\
+	gdbus-example-objectmanager-client 	\
+	$(NULL)
 endif
 
 if OS_WIN32
@@ -244,6 +252,7 @@ gdbus_addresses_LDADD = $(progs_ldadd)
 gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_bz627724_LDADD = $(progs_ldadd)
 
+if OS_UNIX
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
 	$(AM_V_GEN) PYTHONPATH=$(top_srcdir)/gio/gdbus-codegen:$(top_builddir)/gio/gdbus-codegen:$$PYTHONPATH $(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
 		--interface-prefix org.project.								\
@@ -267,6 +276,7 @@ BUILT_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
 gdbus_test_codegen_SOURCES  = gdbus-test-codegen.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_test_codegen_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h
 gdbus_test_codegen_LDADD = $(progs_ldadd)
+endif # OS_UNIX
 
 gdbus_connection_SOURCES = gdbus-connection.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_connection_LDADD = $(progs_ldadd)
@@ -446,6 +456,7 @@ proxy_LDADD   = $(progs_ldadd) \
 
 # -----------------------------------------------------------------------------
 
+if OS_UNIX
 gdbus_example_objectmanager_server_SOURCES  = gdbus-example-objectmanager-server.c
 gdbus_example_objectmanager_server_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(progs_ldadd)
@@ -453,6 +464,7 @@ gdbus_example_objectmanager_server_LDADD    = $(top_builddir)/gio/tests/gdbus-ob
 gdbus_example_objectmanager_client_SOURCES  = gdbus-example-objectmanager-client.c
 gdbus_example_objectmanager_client_CFLAGS   = -I$(top_builddir)/gio/tests/gdbus-object-manager-example
 gdbus_example_objectmanager_client_LDADD    = $(top_builddir)/gio/tests/gdbus-object-manager-example/libgdbus-example-objectmanager.la $(progs_ldadd)
+endif OS_UNIX
 
 # -----------------------------------------------------------------------------
 
