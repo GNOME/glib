@@ -2641,6 +2641,7 @@ main (void)
 if test x"$glib_cv_eventfd" = x"yes"; then
   AC_DEFINE(HAVE_EVENTFD, 1, [we have the eventfd(2) system call])
 fi
+AM_CONDITIONAL(HAVE_EVENTFD, [test "$glib_cv_eventfd" = "yes"])
 
 dnl ****************************************
 dnl *** GLib POLL* compatibility defines ***

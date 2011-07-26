@@ -96,6 +96,8 @@
 #include "gtimer.h"
 #endif
 
+#include "gwakeup.h"
+
 /**
  * SECTION:main
  * @title: The Main Event Loop
@@ -235,14 +237,8 @@ struct _GMainContext
   GPollFD *cached_poll_array;
   guint cached_poll_array_size;
 
-#ifdef G_THREADS_ENABLED  
-#ifndef G_OS_WIN32
-/* this pipe is used to wake up the main loop when a source is added.
- */
-  gint wake_up_pipe[2];
-#else /* G_OS_WIN32 */
-  HANDLE wake_up_semaphore;
-#endif /* G_OS_WIN32 */
+#ifdef G_THREADS_ENABLED
+  GWakeup *wakeup;
 
   GPollFD wake_up_rec;
   gboolean poll_waiting;
@@ -530,16 +526,8 @@ g_main_context_unref (GMainContext *context)
   
 #ifdef G_THREADS_ENABLED
   if (g_thread_supported())
-    {
-#ifndef G_OS_WIN32
-      if (context->wake_up_pipe[0] != -1)
-	close (context->wake_up_pipe[0]);
-      if (context->wake_up_pipe[1] != -1)
-	close (context->wake_up_pipe[1]);
-#else
-      CloseHandle (context->wake_up_semaphore);
-#endif
-    } 
+    g_wakeup_free (context->wakeup);
+
   else
     main_contexts_without_pipe = g_slist_remove (main_contexts_without_pipe, 
 						 context);
@@ -547,58 +535,16 @@ g_main_context_unref (GMainContext *context)
   if (context->cond != NULL)
     g_cond_free (context->cond);
 #endif
-  
+
   g_free (context);
 }
 
 #ifdef G_THREADS_ENABLED
-static void 
+static void
 g_main_context_init_pipe (GMainContext *context)
 {
-  GError *error = NULL;
-
-# ifndef G_OS_WIN32
-  if (context->wake_up_pipe[0] != -1)
-    return;
-
-#ifdef HAVE_EVENTFD
-  {
-    int efd;
-
-    efd = eventfd (0, EFD_CLOEXEC);
-    /* Fall through on -EINVAL too in case kernel doesn't know EFD_CLOEXEC.  Bug #653570 */
-    if (efd == -1 && (errno == ENOSYS || errno == EINVAL))
-      {
-	if (!g_unix_open_pipe (context->wake_up_pipe, FD_CLOEXEC, &error))
-	  g_error ("Cannot create pipe main loop wake-up: %s", error->message);
-      }
-    else if (efd >= 0)
-      {
-	context->wake_up_pipe[0] = efd;
-      }
-    else
-      g_error ("Cannot create eventfd for main loop wake-up: %s", g_strerror (errno));
-    }
-#else
-  if (!g_unix_open_pipe (context->wake_up_pipe, FD_CLOEXEC, &error))
-    g_error ("Cannot create pipe main loop wake-up: %s", error->message);
-#endif
-
-  context->wake_up_rec.fd = context->wake_up_pipe[0];
-  context->wake_up_rec.events = G_IO_IN;
-# else
-  if (context->wake_up_semaphore != NULL)
-    return;
-  context->wake_up_semaphore = CreateSemaphore (NULL, 0, 100, NULL);
-  if (context->wake_up_semaphore == NULL)
-    g_error ("Cannot create wake-up semaphore: %s",
-	     g_win32_error_message (GetLastError ()));
-  context->wake_up_rec.fd = (gintptr) context->wake_up_semaphore;
-  context->wake_up_rec.events = G_IO_IN;
-
-  if (_g_main_poll_debug)
-    g_print ("wake-up semaphore: %p\n", context->wake_up_semaphore);
-# endif
+  context->wakeup = g_wakeup_new ();
+  g_wakeup_get_pollfd (context->wakeup, &context->wake_up_rec);
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
 }
 
@@ -648,13 +594,6 @@ g_main_context_new (void)
 
   context->owner = NULL;
   context->waiters = NULL;
-
-# ifndef G_OS_WIN32
-  context->wake_up_pipe[0] = -1;
-  context->wake_up_pipe[1] = -1;
-# else
-  context->wake_up_semaphore = NULL;
-# endif
 #endif
 
   context->ref_count = 1;
@@ -2967,22 +2906,8 @@ g_main_context_check (GMainContext *context,
   
 #ifdef G_THREADS_ENABLED
   if (!context->poll_waiting)
-    {
-#ifndef G_OS_WIN32
-#ifdef HAVE_EVENTFD
-      if (context->wake_up_pipe[1] == -1)
-	{
-	  guint64 buf;
-	  read (context->wake_up_pipe[0], &buf, sizeof(guint64));
-        }
-      else
-#endif
-	{
-	  gchar a;
-	  read (context->wake_up_pipe[0], &a, 1);
-	}
-#endif
-    }
+    g_wakeup_acknowledge (context->wakeup);
+
   else
     context->poll_waiting = FALSE;
 
@@ -3830,19 +3755,7 @@ g_main_context_wakeup_unlocked (GMainContext *context)
   if (g_thread_supported() && context->poll_waiting)
     {
       context->poll_waiting = FALSE;
-#ifndef G_OS_WIN32
-#ifdef HAVE_EVENTFD
-      if (context->wake_up_pipe[1] == -1)
-	{
-	  guint64 buf = 1;
-	  write (context->wake_up_pipe[0], &buf, sizeof(buf));
-	}
-      else
-#endif
-	write (context->wake_up_pipe[1], "A", 1);
-#else
-      ReleaseSemaphore (context->wake_up_semaphore, 1, NULL);
-#endif
+      g_wakeup_signal (context->wakeup);
     }
 #endif
 }
