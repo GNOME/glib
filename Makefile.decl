@@ -17,12 +17,12 @@ if OS_UNIX
 	    test "$$subdir" = "." -o "$$subdir" = "po" || \
 	    ( cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $@ ) || exit $? ; \
 	  done
-endif
 
 # test-nonrecursive: run tests only in cwd
 test-nonrecursive: ${TEST_PROGS}
-if OS_UNIX
 	@test -z "${TEST_PROGS}" || MALLOC_CHECK_=2 MALLOC_PERTURB_=$$(($${RANDOM:-256} % 256)) ${GTESTER} --verbose ${TEST_PROGS}
+else
+test-nonrecursive:
 endif
 
 # test-report: run tests in subdirs and generate report
