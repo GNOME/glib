@@ -108,7 +108,7 @@ test_GDateTime_new_from_unix (void)
   g_date_time_unref (dt);
 
   memset (&tm, 0, sizeof (tm));
-  tm.tm_year = 70;
+  tm.tm_year = 90;
   tm.tm_mday = 1;
   tm.tm_mon = 0;
   tm.tm_hour = 0;
@@ -117,7 +117,7 @@ test_GDateTime_new_from_unix (void)
   t = mktime (&tm);
 
   dt = g_date_time_new_from_unix_local (t);
-  g_assert_cmpint (g_date_time_get_year (dt), ==, 1970);
+  g_assert_cmpint (g_date_time_get_year (dt), ==, 1990);
   g_assert_cmpint (g_date_time_get_month (dt), ==, 1);
   g_assert_cmpint (g_date_time_get_day_of_month (dt), ==, 1);
   g_assert_cmpint (g_date_time_get_hour (dt), ==, 0);
