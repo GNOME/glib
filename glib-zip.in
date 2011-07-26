@@ -44,7 +44,7 @@ bin/glib-genmarshal.exe
 bin/glib-gettextize
 bin/glib-mkenums
 bin/gobject-query.exe
-bin/gsettings.
+bin/gsettings.exe
 etc/bash_completion.d/gdbus-bash-completion.sh
 etc/bash_completion.d/gsettings-bash-completion.sh
 include/gio-win32-2.0
