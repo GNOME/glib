@@ -209,15 +209,47 @@ g_tls_certificate_new_internal (const gchar  *certificate_pem,
 #define PEM_PRIVKEY_HEADER     "-----BEGIN RSA PRIVATE KEY-----"
 #define PEM_PRIVKEY_FOOTER     "-----END RSA PRIVATE KEY-----"
 
-static GTlsCertificate *
+gchar *
+parse_private_key (const gchar *data,
+		   gsize data_len,
+		   gboolean required,
+		   GError **error)
+{
+  const gchar *start, *end;
+
+  start = g_strstr_len (data, data_len, PEM_PRIVKEY_HEADER);
+  if (!start)
+    {
+      if (required)
+	{
+	  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+			       _("No PEM-encoded private key found"));
+	}
+      return NULL;
+    }
+
+  end = g_strstr_len (start, data_len - (data - start), PEM_PRIVKEY_FOOTER);
+  if (!end)
+    {
+      g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
+			   _("Could not parse PEM-encoded private key"));
+      return NULL;
+    }
+  end += strlen (PEM_PRIVKEY_FOOTER);
+  while (*end == '\r' || *end == '\n')
+    end++;
+
+  return g_strndup (start, end - start);
+}
+
+
+gchar *
 parse_next_pem_certificate (const gchar **data,
 			    const gchar  *data_end,
 			    gboolean      required,
 			    GError      **error)
 {
-  const gchar *start, *end, *next;
-  gchar *cert_pem, *privkey_pem = NULL;
-  GTlsCertificate *cert;
+  const gchar *start, *end;
 
   start = g_strstr_len (*data, data_end - *data, PEM_CERTIFICATE_HEADER);
   if (!start)
@@ -241,38 +273,9 @@ parse_next_pem_certificate (const gchar **data,
   while (*end == '\r' || *end == '\n')
     end++;
 
-  cert_pem = g_strndup (start, end - start);
-
   *data = end;
 
-  next = g_strstr_len (*data, data_end - *data, PEM_CERTIFICATE_HEADER);
-  start = g_strstr_len (*data, data_end - *data, PEM_PRIVKEY_HEADER);
-  if (start)
-    end = g_strstr_len (start, data_end - start, PEM_PRIVKEY_FOOTER);
-
-  if (start && (!next || start < next))
-    {
-      if (!end || (next && end > next))
-	{
-	  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_BAD_CERTIFICATE,
-			       _("Could not parse PEM-encoded private key"));
-	  return NULL;
-	}
-
-      end += strlen (PEM_PRIVKEY_FOOTER);
-      while (*end == '\r' || *end == '\n')
-	end++;
-
-      privkey_pem = g_strndup (start, end - start);
-
-      *data = end + strlen (PEM_PRIVKEY_FOOTER);
-    }
-
-  cert = g_tls_certificate_new_internal (cert_pem, privkey_pem, error);
-  g_free (cert_pem);
-  g_free (privkey_pem);
-
-  return cert;
+  return g_strndup (start, end - start);
 }
 
 /**
@@ -298,14 +301,32 @@ g_tls_certificate_new_from_pem  (const gchar  *data,
 				 GError      **error)
 {
   const gchar *data_end;
+  gchar *key_pem, *cert_pem;
+  GTlsCertificate *cert;
 
   g_return_val_if_fail (data != NULL, NULL);
 
   if (length == -1)
-    data_end = data + strlen (data);
-  else
-    data_end = data + length;
-  return parse_next_pem_certificate (&data, data_end, TRUE, error);
+    length = strlen (data);
+
+  data_end = data + length;
+
+  key_pem = parse_private_key (data, length, FALSE, error);
+  if (error && *error)
+    return NULL;
+
+  cert_pem = parse_next_pem_certificate (&data, data_end, TRUE, error);
+  if (error && *error)
+    {
+      g_free (key_pem);
+      return NULL;
+    }
+
+  cert = g_tls_certificate_new_internal (cert_pem, key_pem, error);
+  g_free (key_pem);
+  g_free (cert_pem);
+
+  return cert;
 }
 
 /**
@@ -359,18 +380,34 @@ g_tls_certificate_new_from_files (const gchar  *cert_file,
 {
   GTlsCertificate *cert;
   gchar *cert_data, *key_data;
+  gsize cert_len, key_len;
+  gchar *cert_pem, *key_pem;
+  const gchar *p;
 
-  if (!g_file_get_contents (cert_file, &cert_data, NULL, error))
+  if (!g_file_get_contents (cert_file, &cert_data, &cert_len, error))
     return NULL;
-  if (!g_file_get_contents (key_file, &key_data, NULL, error))
+  p = cert_data;
+  cert_pem = parse_next_pem_certificate (&p, p + cert_len, TRUE, error);
+  g_free (cert_data);
+  if (error && *error)
+    return NULL;
+
+  if (!g_file_get_contents (key_file, &key_data, &key_len, error))
     {
-      g_free (cert_data);
+      g_free (cert_pem);
+      return NULL;
+    }
+  key_pem = parse_private_key (key_data, key_len, TRUE, error);
+  g_free (key_data);
+  if (error && *error)
+    {
+      g_free (cert_pem);
       return NULL;
     }
 
-  cert = g_tls_certificate_new_internal (cert_data, key_data, error);
-  g_free (cert_data);
-  g_free (key_data);
+  cert = g_tls_certificate_new_internal (cert_pem, key_pem, error);
+  g_free (cert_pem);
+  g_free (key_pem);
   return cert;
 }
 
@@ -395,8 +432,7 @@ GList *
 g_tls_certificate_list_new_from_file (const gchar  *file,
 				      GError      **error)
 {
-  GTlsCertificate *cert;
-  GList *list, *l;
+  GQueue queue = G_QUEUE_INIT;
   gchar *contents, *end;
   const gchar *p;
   gsize length;
@@ -404,24 +440,30 @@ g_tls_certificate_list_new_from_file (const gchar  *file,
   if (!g_file_get_contents (file, &contents, &length, error))
     return NULL;
 
-  list = NULL;
   end = contents + length;
   p = contents;
   while (p && *p)
     {
-      cert = parse_next_pem_certificate (&p, end, FALSE, error);
+      gchar *cert_pem;
+      GTlsCertificate *cert = NULL;
+
+      cert_pem = parse_next_pem_certificate (&p, end, FALSE, error);
+      if (cert_pem)
+	{
+	  cert = g_tls_certificate_new_internal (cert_pem, NULL, error);
+	  g_free (cert_pem);
+	}
       if (!cert)
 	{
-	  for (l = list; l; l = l->next)
-	    g_object_unref (l->data);
-	  g_list_free (list);
-	  list = NULL;
+	  g_list_free_full (queue.head, g_object_unref);
+	  queue.head = NULL;
 	  break;
 	}
-      list = g_list_prepend (list, cert);
+      g_queue_push_tail (&queue, cert);
     }
 
-  return g_list_reverse (list);
+  g_free (contents);
+  return queue.head;
 }
 
 
