@@ -45,6 +45,7 @@ TEST_PROGS +=	 		\
 	gdbus-message		\
 	socket			\
 	pollable		\
+	tls-certificate         \
 	$(NULL)
 
 if OS_UNIX
@@ -411,6 +412,9 @@ schema_tests = \
 proxy_SOURCES = proxy.c
 proxy_LDADD   = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
+
+tls_certificate_SOURCES = tls-certificate.c gtesttlsbackend.c gtesttlsbackend.h
+tls_certificate_LDADD   = $(progs_ldadd)
 
 EXTRA_DIST += \
 	socket-common.c			\
