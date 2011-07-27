@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-05 17:41+0000\n"
-"PO-Revision-Date: 2011-06-07 08:06+0200\n"
+"POT-Creation-Date: 2011-07-27 20:23+0000\n"
+"PO-Revision-Date: 2011-07-27 23:01+0200\n"
 "Last-Translator: Petr Kovar <pknbe@volny.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1984,25 +1984,25 @@ msgstr ""
 "Metodu nelze vyvolat; proxy je na dobře známý název bez vlastníka a proxy "
 "byla vytvořena s příznakem G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:714
+#: ../gio/gdbusserver.c:720
 msgid "Abstract name space not supported"
 msgstr "Abstraktní jmenný prostor není podporován"
 
-#: ../gio/gdbusserver.c:804
+#: ../gio/gdbusserver.c:810
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Při vytváření serveru nelze určit soubor nonce"
 
-#: ../gio/gdbusserver.c:881
+#: ../gio/gdbusserver.c:887
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Chyba při zápisu souboru nonce na „%s“: %s"
 
-#: ../gio/gdbusserver.c:1048
+#: ../gio/gdbusserver.c:1054
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "Řetězec „%s“ není platné D-Bus GUID"
 
-#: ../gio/gdbusserver.c:1088
+#: ../gio/gdbusserver.c:1094
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Nelze naslouchat na nepodporovaném transportu „%s“"
@@ -3419,7 +3419,6 @@ msgstr "Chyba při odesílání dat: %s"
 
 #: ../gio/gsocket.c:2135
 #, c-format
-#| msgid "Unable to create socket: %s"
 msgid "Unable to shutdown socket: %s"
 msgstr "Nelze ukončit socket: %s"
 
@@ -3566,17 +3565,22 @@ msgstr "Neznámá chyba SOCKSv5 proxy."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Nelze zpracovat verzi %d kódování GThemedIcon"
 
-#: ../gio/gtlscertificate.c:228
+#: ../gio/gtlscertificate.c:226
+#| msgid "No PEM-encoded certificate found"
+msgid "No PEM-encoded private key found"
+msgstr "Nenalezen žádný soukromý klíč kódovaný jako PEM"
+
+#: ../gio/gtlscertificate.c:235
+msgid "Could not parse PEM-encoded private key"
+msgstr "Nelze analyzovat soukromý klíč kódovaný jako PEM"
+
+#: ../gio/gtlscertificate.c:260
 msgid "No PEM-encoded certificate found"
 msgstr "Nenalezen žádný certifikát kódovaný jako PEM"
 
-#: ../gio/gtlscertificate.c:237
+#: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Nelze analyzovat certifikát kódovaný jako PEM"
-
-#: ../gio/gtlscertificate.c:258
-msgid "Could not parse PEM-encoded private key"
-msgstr "Nelze analyzovat soukromý klíč kódovaný jako PEM"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
