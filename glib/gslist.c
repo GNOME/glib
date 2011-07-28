@@ -197,22 +197,17 @@ g_slist_free_1 (GSList *list)
  * @list: a pointer to a #GSList
  * @free_func: the function to be called to free each element's data
  *
- * Convenience method, which frees all the memory used by a #GSList,
- * and calls the specified destroy function on every element's data.
+ * Convenience method, which frees all the memory used by a #GSList, and
+ * calls the specified destroy function on every element's data.
  *
  * Since: 2.28
- */
+ **/
 void
 g_slist_free_full (GSList         *list,
-                   GDestroyNotify  free_func)
+		   GDestroyNotify  free_func)
 {
-  while (list)
-    {
-      GSList *next = list->next;
-      (*free_func) (list->data);
-      _g_slist_free1 (list);
-      list = next;
-    }
+  g_slist_foreach (list, (GFunc) free_func, NULL);
+  g_slist_free (list);
 }
 
 /**
