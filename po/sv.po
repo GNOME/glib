@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-12 20:25+0200\n"
-"PO-Revision-Date: 2011-06-12 20:25+0100\n"
+"POT-Creation-Date: 2011-07-29 09:43+0200\n"
+"PO-Revision-Date: 2011-07-29 09:43+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -1927,25 +1927,25 @@ msgstr "Oväntat svar %d från StartServiceByName(\"%s\")-metod"
 msgid "Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr "Kan inte anropa metod; proxy är för ett välkänt namn utan en ägare och proxy konstruerades med flaggan G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:714
+#: ../gio/gdbusserver.c:720
 msgid "Abstract name space not supported"
 msgstr "Abstrakt namnrymd stöds inte"
 
-#: ../gio/gdbusserver.c:804
+#: ../gio/gdbusserver.c:810
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Kan inte ange nonce-filen när en server skapas"
 
-#: ../gio/gdbusserver.c:881
+#: ../gio/gdbusserver.c:887
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Fel vid skrivning av nonce-fil i \"%s\": %s"
 
-#: ../gio/gdbusserver.c:1048
+#: ../gio/gdbusserver.c:1054
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "Strängen \"%s\" är inte ett giltigt D-Bus GUID"
 
-#: ../gio/gdbusserver.c:1088
+#: ../gio/gdbusserver.c:1094
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Kan inte lyssna på transport som inte stöds \"%s\""
@@ -3553,17 +3553,21 @@ msgstr "Okänt fel i SOCKSv5-proxyserver."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Kan inte hantera version %d av GThemedIcon-kodning"
 
-#: ../gio/gtlscertificate.c:228
+#: ../gio/gtlscertificate.c:226
+msgid "No PEM-encoded private key found"
+msgstr "Ingen PEM-kodad privat nyckel hittades"
+
+#: ../gio/gtlscertificate.c:235
+msgid "Could not parse PEM-encoded private key"
+msgstr "Kunde inte tolka PEM-kodad privat nyckel"
+
+#: ../gio/gtlscertificate.c:260
 msgid "No PEM-encoded certificate found"
 msgstr "Inget PEM-kodat certifikat hittades"
 
-#: ../gio/gtlscertificate.c:237
+#: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Kunde inte tolka PEM-kodat certifikat"
-
-#: ../gio/gtlscertificate.c:258
-msgid "Could not parse PEM-encoded private key"
-msgstr "Kunde inte tolka PEM-kodad privat nyckel"
 
 #: ../gio/gunixconnection.c:164
 #: ../gio/gunixconnection.c:505
