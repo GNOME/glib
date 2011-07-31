@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-23 12:53+0000\n"
-"PO-Revision-Date: 2011-07-23 18:32+0400\n"
+"POT-Creation-Date: 2011-07-29 18:00+0000\n"
+"PO-Revision-Date: 2011-07-31 21:12+0400\n"
 "Last-Translator: Yuri Kozlov <yuray@komyakino.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -484,7 +484,7 @@ msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблон «%s» не содержит XXXXXX"
 
 #: ../glib/gfileutils.c:1855 ../glib/gfileutils.c:1883
-#: ../glib/gfileutils.c:1979
+#: ../glib/gfileutils.c:1988
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -527,27 +527,27 @@ msgstr "%.1f ЭиБ"
 msgid "%.1f kB"
 msgstr "%.1f кБ"
 
-#: ../glib/gfileutils.c:1892 ../glib/gfileutils.c:1992
+#: ../glib/gfileutils.c:1892 ../glib/gfileutils.c:2001
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
-#: ../glib/gfileutils.c:1895 ../glib/gfileutils.c:1997
+#: ../glib/gfileutils.c:1895 ../glib/gfileutils.c:2006
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
-#: ../glib/gfileutils.c:1898 ../glib/gfileutils.c:2002
+#: ../glib/gfileutils.c:1898 ../glib/gfileutils.c:2011
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
-#: ../glib/gfileutils.c:1901 ../glib/gfileutils.c:2007
+#: ../glib/gfileutils.c:1901 ../glib/gfileutils.c:2016
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
-#: ../glib/gfileutils.c:1904 ../glib/gfileutils.c:2012
+#: ../glib/gfileutils.c:1904 ../glib/gfileutils.c:2021
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЭБ"
@@ -561,17 +561,17 @@ msgstr[0] "%s байт"
 msgstr[1] "%s байта"
 msgstr[2] "%s байт"
 
-#: ../glib/gfileutils.c:1987
+#: ../glib/gfileutils.c:1996
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
-#: ../glib/gfileutils.c:2055
+#: ../glib/gfileutils.c:2064
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Не удалось прочитать символьную ссылку «%s»: %s"
 
-#: ../glib/gfileutils.c:2076
+#: ../glib/gfileutils.c:2085
 msgid "Symbolic links not supported"
 msgstr "Символьные ссылки не поддерживаются"
 
@@ -842,7 +842,7 @@ msgstr ""
 "шаблон содержит элементы, которые не поддерживаются при поиске частичного "
 "совпадения"
 
-#: ../glib/gregex.c:212 ../gio/glocalfile.c:2102
+#: ../glib/gregex.c:212 ../gio/glocalfile.c:2103
 msgid "internal error"
 msgstr "внутренняя ошибка"
 
@@ -1469,9 +1469,9 @@ msgstr "Слишком большое значение количества пе
 msgid "Stream is already closed"
 msgstr "Поток уже закрыт"
 
-#: ../gio/gcancellable.c:462 ../gio/gdbusconnection.c:1640
+#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1640
 #: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
-#: ../gio/glocalfile.c:2095 ../gio/gsimpleasyncresult.c:814
+#: ../gio/glocalfile.c:2096 ../gio/gsimpleasyncresult.c:814
 #: ../gio/gsimpleasyncresult.c:840
 msgid "Operation was cancelled"
 msgstr "Действие было отменено"
@@ -1659,7 +1659,7 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Не удалось определить адрес сеансовой шины (не реализовано для этой ОС)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6404
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6408
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1668,7 +1668,7 @@ msgstr ""
 "Не удалось определить адрес шины из значения переменной окружения "
 "DBUS_STARTER_BUS_TYPE — неизвестное значение «%s»"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6413
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6417
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1819,7 +1819,7 @@ msgstr "Свойство «%s» недоступно для чтения"
 msgid "Property `%s' is not writable"
 msgstr "Свойство «%s» недоступно для записи"
 
-#: ../gio/gdbusconnection.c:4028 ../gio/gdbusconnection.c:5848
+#: ../gio/gdbusconnection.c:4028 ../gio/gdbusconnection.c:5852
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Интерфейс «%s» отсутствует"
@@ -1828,7 +1828,7 @@ msgstr "Интерфейс «%s» отсутствует"
 msgid "No such interface"
 msgstr "Интерфейс отсутствует"
 
-#: ../gio/gdbusconnection.c:4431 ../gio/gdbusconnection.c:6354
+#: ../gio/gdbusconnection.c:4431 ../gio/gdbusconnection.c:6358
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Интерфейс «%s» для пути %s объекта не найден"
@@ -1853,12 +1853,12 @@ msgstr "Объект интерфейса %s уже экспортирован �
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Метод «%s» вернул тип «%s», но ожидалось «%s»"
 
-#: ../gio/gdbusconnection.c:5959
+#: ../gio/gdbusconnection.c:5963
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Метод «%s» интерфейса «%s» с подписью «%s» не существует"
 
-#: ../gio/gdbusconnection.c:6077
+#: ../gio/gdbusconnection.c:6081
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Поддерево уже экспортировано для %s"
@@ -2044,7 +2044,7 @@ msgstr "Ошибка вызова StartServiceByName для %s: "
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Неожиданный ответ %d из метода StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2496 ../gio/gdbusproxy.c:2620
+#: ../gio/gdbusproxy.c:2500 ../gio/gdbusproxy.c:2628
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2406,12 +2406,12 @@ msgstr "Действие не поддерживается"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1046 ../gio/glocalfile.c:1057
-#: ../gio/glocalfile.c:1070
+#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1047 ../gio/glocalfile.c:1058
+#: ../gio/glocalfile.c:1071
 msgid "Containing mount does not exist"
 msgstr "Содержащая точка монтирования не существует"
 
-#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2251
+#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2252
 msgid "Can't copy over directory"
 msgstr "Нельзя скопировать поверх каталога"
 
@@ -2419,7 +2419,7 @@ msgstr "Нельзя скопировать поверх каталога"
 msgid "Can't copy directory over directory"
 msgstr "Нельзя скопировать каталог поверх каталога"
 
-#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2260
+#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2261
 msgid "Target file exists"
 msgstr "Целевой файл существует"
 
@@ -2854,105 +2854,105 @@ msgstr "Недопустимое имя файла %s"
 msgid "Error getting filesystem info: %s"
 msgstr "Произошла ошибка при получении сведений о файловой системе: %s"
 
-#: ../gio/glocalfile.c:1092
+#: ../gio/glocalfile.c:1093
 msgid "Can't rename root directory"
 msgstr "Нельзя переименовать корневой каталог"
 
-#: ../gio/glocalfile.c:1112 ../gio/glocalfile.c:1138
+#: ../gio/glocalfile.c:1113 ../gio/glocalfile.c:1139
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Произошла ошибка при переименовании файла: %s"
 
-#: ../gio/glocalfile.c:1121
+#: ../gio/glocalfile.c:1122
 msgid "Can't rename file, filename already exist"
 msgstr "Не удалось переименовать файл, такое имя файла уже есть"
 
-#: ../gio/glocalfile.c:1134 ../gio/glocalfile.c:2124 ../gio/glocalfile.c:2153
-#: ../gio/glocalfile.c:2313 ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfile.c:1135 ../gio/glocalfile.c:2125 ../gio/glocalfile.c:2154
+#: ../gio/glocalfile.c:2314 ../gio/glocalfileoutputstream.c:571
 #: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
 #: ../gio/glocalfileoutputstream.c:1157
 msgid "Invalid filename"
 msgstr "Недопустимое имя файла"
 
-#: ../gio/glocalfile.c:1295
+#: ../gio/glocalfile.c:1296
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Произошла ошибка при открытии файла: %s"
 
-#: ../gio/glocalfile.c:1311
+#: ../gio/glocalfile.c:1312
 msgid "Can't open directory"
 msgstr "Не удалось открыть каталог"
 
-#: ../gio/glocalfile.c:1436
+#: ../gio/glocalfile.c:1437
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Произошла ошибка при удалении файла: %s"
 
-#: ../gio/glocalfile.c:1803
+#: ../gio/glocalfile.c:1804
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Произошла ошибка при удалении файла в корзину: %s"
 
-#: ../gio/glocalfile.c:1826
+#: ../gio/glocalfile.c:1827
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Не удалось создать каталог корзины %s: %s"
 
-#: ../gio/glocalfile.c:1847
+#: ../gio/glocalfile.c:1848
 msgid "Unable to find toplevel directory for trash"
 msgstr "Не удалось найти каталог верхнего уровня для корзины"
 
-#: ../gio/glocalfile.c:1926 ../gio/glocalfile.c:1946
+#: ../gio/glocalfile.c:1927 ../gio/glocalfile.c:1947
 msgid "Unable to find or create trash directory"
 msgstr "Не удалось найти или создать каталог корзины"
 
-#: ../gio/glocalfile.c:1980
+#: ../gio/glocalfile.c:1981
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Не удалось создать запись о файле в корзине: %s"
 
-#: ../gio/glocalfile.c:2009 ../gio/glocalfile.c:2014 ../gio/glocalfile.c:2094
-#: ../gio/glocalfile.c:2101
+#: ../gio/glocalfile.c:2010 ../gio/glocalfile.c:2015 ../gio/glocalfile.c:2095
+#: ../gio/glocalfile.c:2102
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Не удалось удалить файл в корзину: %s"
 
-#: ../gio/glocalfile.c:2128
+#: ../gio/glocalfile.c:2129
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Произошла ошибка при создании каталога: %s"
 
-#: ../gio/glocalfile.c:2157
+#: ../gio/glocalfile.c:2158
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Файловая система не поддерживает символьные ссылки"
 
-#: ../gio/glocalfile.c:2161
+#: ../gio/glocalfile.c:2162
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Произошла ошибка при создании символьной ссылки: %s"
 
-#: ../gio/glocalfile.c:2223 ../gio/glocalfile.c:2317
+#: ../gio/glocalfile.c:2224 ../gio/glocalfile.c:2318
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Произошла ошибка при перемещении файла: %s"
 
-#: ../gio/glocalfile.c:2246
+#: ../gio/glocalfile.c:2247
 msgid "Can't move directory over directory"
 msgstr "Нельзя переместить каталог поверх каталога"
 
-#: ../gio/glocalfile.c:2273 ../gio/glocalfileoutputstream.c:955
+#: ../gio/glocalfile.c:2274 ../gio/glocalfileoutputstream.c:955
 #: ../gio/glocalfileoutputstream.c:969 ../gio/glocalfileoutputstream.c:984
 #: ../gio/glocalfileoutputstream.c:1000 ../gio/glocalfileoutputstream.c:1014
 msgid "Backup file creation failed"
 msgstr "Не удалось создать резервный файл"
 
-#: ../gio/glocalfile.c:2292
+#: ../gio/glocalfile.c:2293
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Произошла ошибка при удалении целевого файла: %s"
 
-#: ../gio/glocalfile.c:2306
+#: ../gio/glocalfile.c:2307
 msgid "Move between mounts not supported"
 msgstr "Перемещение между точками монтирования не поддерживается"
 
@@ -3496,7 +3496,7 @@ msgstr "Недопустимый сокет, инициализация не у�
 msgid "Socket is already closed"
 msgstr "Сокет уже закрыт"
 
-#: ../gio/gsocket.c:298 ../gio/gsocket.c:2772 ../gio/gsocket.c:2816
+#: ../gio/gsocket.c:298 ../gio/gsocket.c:2774 ../gio/gsocket.c:2818
 msgid "Socket I/O timed out"
 msgstr "Превышено время ожидания ввода-вывода сокета"
 
@@ -3552,51 +3552,51 @@ msgstr "Соединение выполняется"
 msgid "Error connecting: %s"
 msgstr "Произошла ошибка при соединении: %s"
 
-#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3553
+#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3555
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Не удалось получить ожидающую ошибку: %s"
 
-#: ../gio/gsocket.c:1850
+#: ../gio/gsocket.c:1852
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Произошла ошибка при получении данных: %s"
 
-#: ../gio/gsocket.c:2025
+#: ../gio/gsocket.c:2027
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Произошла ошибка при отправлении данных: %s"
 
-#: ../gio/gsocket.c:2138
+#: ../gio/gsocket.c:2140
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Не удалось выключить сокет: %s"
 
-#: ../gio/gsocket.c:2217
+#: ../gio/gsocket.c:2219
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Произошла ошибка при закрытии сокета: %s"
 
-#: ../gio/gsocket.c:2765
+#: ../gio/gsocket.c:2767
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Ожидание состояния сокета: %s"
 
-#: ../gio/gsocket.c:3030 ../gio/gsocket.c:3111
+#: ../gio/gsocket.c:3032 ../gio/gsocket.c:3113
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Произошла ошибка при отправлении сообщения: %s"
 
-#: ../gio/gsocket.c:3055
+#: ../gio/gsocket.c:3057
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage не поддерживается в Windows"
 
-#: ../gio/gsocket.c:3332 ../gio/gsocket.c:3468
+#: ../gio/gsocket.c:3334 ../gio/gsocket.c:3470
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Произошла ошибка при получении сообщения: %s"
 
-#: ../gio/gsocket.c:3572
+#: ../gio/gsocket.c:3574
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Функция g_socket_get_credentials не реализована в этой ОС"
 
@@ -3722,17 +3722,21 @@ msgstr "Неизвестная ошибка прокси SOCKSv5."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Не удалось обработать версию %d текстового представления GThemedIcon"
 
-#: ../gio/gtlscertificate.c:228
+#: ../gio/gtlscertificate.c:226
+msgid "No PEM-encoded private key found"
+msgstr "Не найден секретный ключ в формате PEM"
+
+#: ../gio/gtlscertificate.c:235
+msgid "Could not parse PEM-encoded private key"
+msgstr "Не удалось разобрать секретный ключ в формате PEM"
+
+#: ../gio/gtlscertificate.c:260
 msgid "No PEM-encoded certificate found"
 msgstr "Не найден сертификат в формате PEM"
 
-#: ../gio/gtlscertificate.c:237
+#: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Не удалось разобрать сертификат в формате PEM"
-
-#: ../gio/gtlscertificate.c:258
-msgid "Could not parse PEM-encoded private key"
-msgstr "Не удалось разобрать секретный ключ в формате PEM"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
