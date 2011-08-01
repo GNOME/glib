@@ -638,7 +638,7 @@ g_dbus_connection_real_closed (GDBusConnection *connection,
                                gboolean         remote_peer_vanished,
                                GError          *error)
 {
-  if (remote_peer_vanished && connection->exit_on_close)
+  if (remote_peer_vanished && connection->exit_on_close && connection->is_initialized)
     {
       if (error != NULL)
         {
