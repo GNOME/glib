@@ -415,6 +415,8 @@ libgio_2_0_la_LIBADD = \
 	$(XATTR_LIBS) 					\
 	$(NULL)
 
+libgio_2_0_la_CPPFLAGS = $(ZLIB_CFLAGS) $(AM_CPPFLAGS)
+
 if PLATFORM_WIN32
 no_undefined = -no-undefined
 endif
