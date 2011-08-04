@@ -1479,7 +1479,7 @@ typedef enum
  * Since: 2.30
  */
 typedef enum {
-  G_TLS_DATABASE_VERIFY_NONE = 0,
+  G_TLS_DATABASE_VERIFY_NONE = 0
 } GTlsDatabaseVerifyFlags;
 
 /**
@@ -1495,7 +1495,7 @@ typedef enum {
  */
 typedef enum {
   G_TLS_DATABASE_LOOKUP_NONE = 0,
-  G_TLS_DATABASE_LOOKUP_KEYPAIR = 1,
+  G_TLS_DATABASE_LOOKUP_KEYPAIR = 1
 } GTlsDatabaseLookupFlags;
 
 G_END_DECLS
