@@ -124,7 +124,11 @@
 #include <gio/gtlscertificate.h>
 #include <gio/gtlsclientconnection.h>
 #include <gio/gtlsconnection.h>
+#include <gio/gtlsdatabase.h>
+#include <gio/gtlsfiledatabase.h>
+#include <gio/gtlsinteraction.h>
 #include <gio/gtlsserverconnection.h>
+#include <gio/gtlspassword.h>
 #include <gio/gvfs.h>
 #include <gio/gvolume.h>
 #include <gio/gvolumemonitor.h>

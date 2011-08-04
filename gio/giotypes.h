@@ -206,6 +206,10 @@ typedef struct _GThemedIcon                   GThemedIcon;
 typedef struct _GTlsCertificate               GTlsCertificate;
 typedef struct _GTlsClientConnection          GTlsClientConnection; /* Dummy typedef */
 typedef struct _GTlsConnection                GTlsConnection;
+typedef struct _GTlsDatabase                  GTlsDatabase;
+typedef struct _GTlsFileDatabase              GTlsFileDatabase;
+typedef struct _GTlsInteraction               GTlsInteraction;
+typedef struct _GTlsPassword                  GTlsPassword;
 typedef struct _GTlsServerConnection          GTlsServerConnection; /* Dummy typedef */
 typedef struct _GVfs                          GVfs; /* Dummy typedef */
 

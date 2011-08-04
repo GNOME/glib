@@ -30,6 +30,8 @@
 #include "gtlsbackend.h"
 #include "gtlscertificate.h"
 #include "gtlsclientconnection.h"
+#include "gtlsdatabase.h"
+#include "gtlsfiledatabase.h"
 #include "gtlsserverconnection.h"
 #include "gsimpleasyncresult.h"
 
@@ -40,9 +42,11 @@
 
 static GType _g_dummy_tls_certificate_get_type (void);
 static GType _g_dummy_tls_connection_get_type (void);
+static GType _g_dummy_tls_database_get_type (void);
 
 struct _GDummyTlsBackend {
-  GObject parent_instance;
+  GObject       parent_instance;
+  GTlsDatabase *database;
 };
 
 static void g_dummy_tls_backend_iface_init (GTlsBackendInterface *iface);
@@ -67,12 +71,20 @@ g_dummy_tls_backend_class_init (GDummyTlsBackendClass *backend_class)
 {
 }
 
+static GTlsDatabase*
+g_dummy_tls_backend_get_default_database (GTlsBackend *backend)
+{
+  return g_object_new (_g_dummy_tls_database_get_type (), NULL);
+}
+
 static void
 g_dummy_tls_backend_iface_init (GTlsBackendInterface *iface)
 {
   iface->get_certificate_type = _g_dummy_tls_certificate_get_type;
   iface->get_client_connection_type = _g_dummy_tls_connection_get_type;
   iface->get_server_connection_type = _g_dummy_tls_connection_get_type;
+  iface->get_file_database_type = _g_dummy_tls_database_get_type;
+  iface->get_default_database = g_dummy_tls_backend_get_default_database;
 }
 
 /* Dummy certificate type */
@@ -188,6 +200,7 @@ enum
   PROP_CONN_REQUIRE_CLOSE_NOTIFY,
   PROP_CONN_REHANDSHAKE_MODE,
   PROP_CONN_CERTIFICATE,
+  PROP_CONN_DATABASE,
   PROP_CONN_PEER_CERTIFICATE,
   PROP_CONN_PEER_CERTIFICATE_ERRORS,
   PROP_CONN_VALIDATION_FLAGS,
@@ -251,6 +264,7 @@ g_dummy_tls_connection_class_init (GDummyTlsConnectionClass *connection_class)
   g_object_class_override_property (gobject_class, PROP_CONN_REQUIRE_CLOSE_NOTIFY, "require-close-notify");
   g_object_class_override_property (gobject_class, PROP_CONN_REHANDSHAKE_MODE, "rehandshake-mode");
   g_object_class_override_property (gobject_class, PROP_CONN_CERTIFICATE, "certificate");
+  g_object_class_override_property (gobject_class, PROP_CONN_DATABASE, "database");
   g_object_class_override_property (gobject_class, PROP_CONN_PEER_CERTIFICATE, "peer-certificate");
   g_object_class_override_property (gobject_class, PROP_CONN_PEER_CERTIFICATE_ERRORS, "peer-certificate-errors");
   g_object_class_override_property (gobject_class, PROP_CONN_VALIDATION_FLAGS, "validation-flags");
@@ -281,3 +295,92 @@ g_dummy_tls_connection_initable_iface_init (GInitableIface  *iface)
   iface->init = g_dummy_tls_connection_initable_init;
 }
 
+/* Dummy database type.
+ */
+
+typedef struct _GDummyTlsDatabase      GDummyTlsDatabase;
+typedef struct _GDummyTlsDatabaseClass GDummyTlsDatabaseClass;
+
+struct _GDummyTlsDatabase {
+  GTlsDatabase parent_instance;
+};
+
+struct _GDummyTlsDatabaseClass {
+  GTlsDatabaseClass parent_class;
+};
+
+enum
+{
+  PROP_DATABASE_0,
+
+  PROP_ANCHORS,
+};
+
+static void g_dummy_tls_database_file_database_iface_init (GTlsFileDatabaseInterface *iface);
+static void g_dummy_tls_database_initable_iface_init (GInitableIface *iface);
+
+#define g_dummy_tls_database_get_type _g_dummy_tls_database_get_type
+G_DEFINE_TYPE_WITH_CODE (GDummyTlsDatabase, g_dummy_tls_database, G_TYPE_TLS_DATABASE,
+                         G_IMPLEMENT_INTERFACE (G_TYPE_TLS_FILE_DATABASE,
+                                                g_dummy_tls_database_file_database_iface_init);
+                         G_IMPLEMENT_INTERFACE (G_TYPE_INITABLE,
+                                                g_dummy_tls_database_initable_iface_init);)
+
+
+static void
+g_dummy_tls_database_get_property (GObject    *object,
+                                   guint       prop_id,
+                                   GValue     *value,
+                                   GParamSpec *pspec)
+{
+  /* We need to define this method to make GObject happy, but it will
+   * never be possible to construct a working GDummyTlsDatabase, so
+   * it doesn't have to do anything useful.
+   */
+}
+
+static void
+g_dummy_tls_database_set_property (GObject      *object,
+                                   guint         prop_id,
+                                   const GValue *value,
+                                   GParamSpec   *pspec)
+{
+  /* Just ignore all attempts to set properties. */
+}
+
+static void
+g_dummy_tls_database_class_init (GDummyTlsDatabaseClass *database_class)
+{
+  GObjectClass *gobject_class = G_OBJECT_CLASS (database_class);
+
+  gobject_class->get_property = g_dummy_tls_database_get_property;
+  gobject_class->set_property = g_dummy_tls_database_set_property;
+
+  g_object_class_override_property (gobject_class, PROP_ANCHORS, "anchors");
+}
+
+static void
+g_dummy_tls_database_init (GDummyTlsDatabase *database)
+{
+}
+
+static void
+g_dummy_tls_database_file_database_iface_init (GTlsFileDatabaseInterface  *iface)
+{
+}
+
+static gboolean
+g_dummy_tls_database_initable_init (GInitable       *initable,
+                                    GCancellable    *cancellable,
+                                    GError         **error)
+{
+  g_set_error_literal (error, G_TLS_ERROR, G_TLS_ERROR_UNAVAILABLE,
+                       _("TLS support is not available"));
+  return FALSE;
+}
+
+static void
+g_dummy_tls_database_initable_iface_init (GInitableIface  *iface)
+{
+  iface->init = g_dummy_tls_database_initable_init;
+}

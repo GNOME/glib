@@ -110,6 +110,8 @@ g_tls_backend_get_type
 g_tls_certificate_get_type
 g_tls_client_connection_get_type
 g_tls_connection_get_type
+g_tls_database_get_type
+g_tls_file_database_get_type
 g_tls_server_connection_get_type
 g_unix_connection_get_type
 g_unix_fd_list_get_type

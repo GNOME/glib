@@ -83,13 +83,23 @@ struct _GTlsConnectionClass
 
 GType                 g_tls_connection_get_type                    (void) G_GNUC_CONST;
 
+#ifndef G_DISABLE_DEPRECATED
 void                  g_tls_connection_set_use_system_certdb       (GTlsConnection       *conn,
 								    gboolean              use_system_certdb);
 gboolean              g_tls_connection_get_use_system_certdb       (GTlsConnection       *conn);
+#endif /* G_DISABLE_DEPRECATED */
+
+void                  g_tls_connection_set_database                (GTlsConnection       *conn,
+								    GTlsDatabase         *database);
+GTlsDatabase *        g_tls_connection_get_database                (GTlsConnection       *conn);
 
 void                  g_tls_connection_set_certificate             (GTlsConnection       *conn,
-								    GTlsCertificate      *certificate);
+                                                                    GTlsCertificate      *certificate);
 GTlsCertificate      *g_tls_connection_get_certificate             (GTlsConnection       *conn);
+
+void                  g_tls_connection_set_interaction             (GTlsConnection       *conn,
+                                                                    GTlsInteraction      *interaction);
+GTlsInteraction *     g_tls_connection_get_interaction             (GTlsConnection       *conn);
 
 GTlsCertificate      *g_tls_connection_get_peer_certificate        (GTlsConnection       *conn);
 GTlsCertificateFlags  g_tls_connection_get_peer_certificate_errors (GTlsConnection       *conn);

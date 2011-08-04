@@ -1393,6 +1393,48 @@ typedef enum {
 } GTlsRehandshakeMode;
 
 /**
+ * GTlsPasswordFlags:
+ * @G_TLS_PASSWORD_NONE: No flags
+ * @G_TLS_PASSWORD_RETRY: The password was wrong, and the user should retry.
+ * @G_TLS_PASSWORD_MANY_TRIES: Hint to the user that the password has been
+ *    wrong many times, and the user may not have many chances left.
+ * @G_TLS_PASSWORD_FINAL_TRY: Hint to the user that this is the last try to get
+ *    this password right.
+ *
+ * Various flags for the password.
+ *
+ * Since: 2.30
+ */
+
+typedef enum _GTlsPasswordFlags
+{
+  G_TLS_PASSWORD_NONE = 0,
+  G_TLS_PASSWORD_RETRY = 1 << 1,
+  G_TLS_PASSWORD_MANY_TRIES = 1 << 2,
+  G_TLS_PASSWORD_FINAL_TRY = 1 << 3
+} GTlsPasswordFlags;
+
+/**
+ * GTlsInteractionResult:
+ * @G_TLS_INTERACTION_HANDLED: The interaction completed, and resulting data
+ *     is available.
+ * @G_TLS_INTERACTION_ABORTED: The user cancelled the interaction, and requested
+ *     the operation to be aborted.
+ * @G_TLS_INTERACTION_UNHANDLED: The interaction was unhandled (i.e. not
+ *     implemented).
+ *
+ * #GTlsInteractionResult is returned by various functions in #GTlsInteraction
+ * when finishing an interaction request.
+ *
+ * Since: 2.30
+ */
+typedef enum {
+  G_TLS_INTERACTION_HANDLED,
+  G_TLS_INTERACTION_ABORTED,
+  G_TLS_INTERACTION_UNHANDLED
+} GTlsInteractionResult;
+
+/**
  * GDBusInterfaceSkeletonFlags:
  * @G_DBUS_INTERFACE_SKELETON_FLAGS_NONE: No flags set.
  * @G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD: Each method invocation is handled in
@@ -1427,6 +1469,34 @@ typedef enum
   G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_NONE = 0,
   G_DBUS_OBJECT_MANAGER_CLIENT_FLAGS_DO_NOT_AUTO_START = (1<<0)
 } GDBusObjectManagerClientFlags;
+
+/**
+ * GTlsDatabaseVerifyFlags:
+ * @G_TLS_DATABASE_VERIFY_NONE: No verification flags
+ *
+ * Flags for g_tls_database_verify_chain().
+ *
+ * Since: 2.30
+ */
+typedef enum {
+  G_TLS_DATABASE_VERIFY_NONE = 0,
+} GTlsDatabaseVerifyFlags;
+
+/**
+ * GTlsDatabaseLookupFlags:
+ * @G_TLS_DATABASE_LOOKUP_NONE: No lookup flags
+ * @G_TLS_DATABASE_LOOKUP_KEYPAIR: Restrict lookup to certificates that have
+ *     a private key.
+ *
+ * Flags for g_tls_database_lookup_handle(), g_tls_database_lookup_issuer(),
+ * and g_tls_database_lookup_issued().
+ *
+ * Since: 2.30
+ */
+typedef enum {
+  G_TLS_DATABASE_LOOKUP_NONE = 0,
+  G_TLS_DATABASE_LOOKUP_KEYPAIR = 1,
+} GTlsDatabaseLookupFlags;
 
 G_END_DECLS
 

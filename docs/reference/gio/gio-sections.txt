@@ -3028,9 +3028,11 @@ GTlsBackend
 GTlsBackendInterface
 g_tls_backend_get_default
 g_tls_backend_supports_tls
+g_tls_backend_get_default_database
 g_tls_backend_get_certificate_type
 g_tls_backend_get_client_connection_type
 g_tls_backend_get_server_connection_type
+g_tls_backend_get_file_database_type
 <SUBSECTION Standard>
 G_IS_TLS_BACKEND
 G_TLS_BACKEND
@@ -3079,6 +3081,10 @@ g_tls_connection_set_rehandshake_mode
 g_tls_connection_get_rehandshake_mode
 g_tls_connection_set_use_system_certdb
 g_tls_connection_get_use_system_certdb
+g_tls_connection_get_database
+g_tls_connection_set_database
+g_tls_connection_get_interaction
+g_tls_connection_set_interaction
 <SUBSECTION>
 g_tls_connection_handshake
 g_tls_connection_handshake_async
@@ -3121,6 +3127,58 @@ g_tls_client_connection_get_type
 </SECTION>
 
 <SECTION>
+<FILE>gtlsdatabase</FILE>
+<TITLE>GTlsDatabase</TITLE>
+GTlsDatabase
+GTlsDatabaseVerifyFlags
+G_TLS_DATABASE_PURPOSE_AUTHENTICATE_SERVER
+G_TLS_DATABASE_PURPOSE_AUTHENTICATE_CLIENT
+g_tls_database_verify_chain
+g_tls_database_verify_chain_async
+g_tls_database_verify_chain_finish
+GTlsDatabaseLookupFlags
+g_tls_database_lookup_certificate_issuer
+g_tls_database_lookup_certificate_issuer_async
+g_tls_database_lookup_certificate_issuer_finish
+g_tls_database_lookup_certificates_issued_by
+g_tls_database_lookup_certificates_issued_by_async
+g_tls_database_lookup_certificates_issued_by_finish
+g_tls_database_create_certificate_handle
+g_tls_database_lookup_certificate_for_handle
+g_tls_database_lookup_certificate_for_handle_async
+g_tls_database_lookup_certificate_for_handle_finish
+<SUBSECTION Standard>
+G_IS_TLS_DATABASE
+G_IS_TLS_DATABASE_CLASS
+G_TLS_DATABASE
+G_TLS_DATABASE_CLASS
+G_TLS_DATABASE_GET_CLASS
+G_TYPE_TLS_DATABASE
+G_TYPE_TLS_DATABASE_LOOKUP_FLAGS
+G_TYPE_TLS_DATABASE_VERIFY_FLAGS
+<SUBSECTION Private>
+g_tls_database_lookup_flags_get_type
+g_tls_database_verify_flags_get_type
+g_tls_database_get_type
+GTlsDatabasePrivate
+</SECTION>
+
+<SECTION>
+<FILE>gtlsfiledatabase</FILE>
+<TITLE>GTlsFileDatabase</TITLE>
+GTlsFileDatabase
+GTlsFileDatabaseInterface
+g_tls_file_database_new
+<SUBSECTION Standard>
+G_TLS_FILE_DATABASE
+G_TLS_FILE_DATABASE_GET_INTERFACE
+G_TYPE_TLS_FILE_DATABASE
+G_IS_TLS_FILE_DATABASE
+<SUBSECTION Private>
+g_tls_file_database_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gtlsserverconnection</FILE>
 <TITLE>GTlsServerConnection</TITLE>
 GTlsServerConnection
@@ -3133,6 +3191,65 @@ G_TLS_SERVER_CONNECTION_GET_INTERFACE
 G_TYPE_TLS_SERVER_CONNECTION
 <SUBSECTION Private>
 g_tls_server_connection_get_type
+</SECTION>
+
+<SECTION>
+<FILE>gtlspassword</FILE>
+<TITLE>GTlsPassword</TITLE>
+GTlsPassword
+GTlsPasswordInterface
+GTlsPasswordFlags
+g_tls_password_new
+g_tls_password_get_value
+g_tls_password_set_value
+g_tls_password_set_value_full
+g_tls_password_get_description
+g_tls_password_set_description
+g_tls_password_get_flags
+g_tls_password_set_flags
+g_tls_password_get_warning
+g_tls_password_set_warning
+<SUBSECTION Standard>
+g_tls_password_flags_get_type
+g_tls_password_get_type
+G_IS_TLS_PASSWORD
+G_TLS_PASSWORD
+G_TLS_PASSWORD_GET_INTERFACE
+G_TYPE_TLS_PASSWORD
+G_TYPE_TLS_PASSWORD_FLAGS
+</SECTION>
+
+<SECTION>
+<FILE>gtlsinteraction</FILE>
+<TITLE>GTlsInteraction</TITLE>
+GTlsInteraction
+GTlsInteractionResult
+g_tls_interaction_ask_password
+g_tls_interaction_ask_password_async
+g_tls_interaction_ask_password_finish
+<SUBSECTION Standard>
+GTlsInteractionClass
+G_IS_TLS_INTERACTION
+G_IS_TLS_INTERACTION_CLASS
+G_TYPE_TLS_INTERACTION
+G_TLS_INTERACTION
+G_TLS_INTERACTION_CLASS
+G_TLS_INTERACTION_GET_CLASS
+G_TYPE_TLS_INTERACTION_RESULT
+<SUBSECTION Private>
+GTlsInteractionPrivate
+g_tls_interaction_get_type
+g_tls_interaction_result_get_type
+GTlsConsoleInteraction
+GTlsConsoleInteractionClass
+G_IS_TLS_CONSOLE_INTERACTION
+G_IS_TLS_CONSOLE_INTERACTION_CLASS
+g_tls_console_interaction_new
+G_TLS_CONSOLE_INTERACTION
+G_TYPE_TLS_CONSOLE_INTERACTION
+G_TLS_CONSOLE_INTERACTION_CLASS
+G_TLS_CONSOLE_INTERACTION_GET_CLASS
+g_tls_console_interaction_get_type
 </SECTION>
 
 <SECTION>

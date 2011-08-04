@@ -78,6 +78,7 @@ socket-client
 socket-server
 srvtarget
 test.mo
+tls
 unix-fd
 unix-streams
 volumemonitor

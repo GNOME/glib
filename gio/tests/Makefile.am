@@ -202,7 +202,9 @@ socket_server_SOURCES	  = socket-server.c
 socket_server_LDADD	  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 
-socket_client_SOURCES	  = socket-client.c
+socket_client_SOURCES	  = socket-client.c \
+                            gtlsconsoleinteraction.c \
+                            gtlsconsoleinteraction.h
 socket_client_LDADD	  = $(progs_ldadd) \
 	$(top_builddir)/gthread/libgthread-2.0.la
 

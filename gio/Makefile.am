@@ -382,6 +382,10 @@ libgio_2_0_la_SOURCES =		\
 	gtlscertificate.c	\
 	gtlsclientconnection.c	\
 	gtlsconnection.c	\
+	gtlsdatabase.c		\
+	gtlsfiledatabase.c	\
+	gtlsinteraction.c	\
+	gtlspassword.c		\
 	gtlsserverconnection.c	\
 	gunionvolumemonitor.c 	\
 	gunionvolumemonitor.h 	\
@@ -535,6 +539,10 @@ gio_headers =			\
 	gtlscertificate.h	\
 	gtlsclientconnection.h	\
 	gtlsconnection.h	\
+	gtlsdatabase.h		\
+	gtlsfiledatabase.h	\
+	gtlsinteraction.h	\
+	gtlspassword.h		\
 	gtlsserverconnection.h	\
 	gvfs.h 			\
 	gvolume.h 		\

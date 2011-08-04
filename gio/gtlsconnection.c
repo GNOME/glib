@@ -28,6 +28,8 @@
 #include "gtlsbackend.h"
 #include "gtlscertificate.h"
 #include "gtlsclientconnection.h"
+#include "gtlsdatabase.h"
+#include "gtlsinteraction.h"
 #include "glibintl.h"
 
 /**
@@ -77,6 +79,8 @@ enum {
   PROP_REQUIRE_CLOSE_NOTIFY,
   PROP_REHANDSHAKE_MODE,
   PROP_USE_SYSTEM_CERTDB,
+  PROP_DATABASE,
+  PROP_INTERACTION,
   PROP_CERTIFICATE,
   PROP_PEER_CERTIFICATE,
   PROP_PEER_CERTIFICATE_ERRORS
@@ -112,7 +116,7 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
    * verify peer certificates. See
    * g_tls_connection_set_use_system_certdb().
    *
-   * Since: 2.28
+   * Deprecated: 2.30: Use GTlsConnection:database instead
    */
   g_object_class_install_property (gobject_class, PROP_USE_SYSTEM_CERTDB,
 				   g_param_spec_boolean ("use-system-certdb",
@@ -122,6 +126,38 @@ g_tls_connection_class_init (GTlsConnectionClass *klass)
 							 G_PARAM_READWRITE |
 							 G_PARAM_CONSTRUCT |
 							 G_PARAM_STATIC_STRINGS));
+  /**
+   * GTlsConnection:database:
+   *
+   * The certificate database to use when verifying this TLS connection.
+   * If no cerificate database is set, then the default database will be
+   * used. See g_tls_backend_get_default_database().
+   *
+   * Since: 2.30
+   */
+  g_object_class_install_property (gobject_class, PROP_DATABASE,
+				   g_param_spec_object ("database",
+							 P_("Database"),
+							 P_("Certificate database to use for looking up or verifying certificates"),
+							 G_TYPE_TLS_DATABASE,
+							 G_PARAM_READWRITE |
+							 G_PARAM_STATIC_STRINGS));
+  /**
+   * GTlsConnection:interaction:
+   *
+   * A #GTlsInteraction object to be used when the connection or certificate
+   * database need to interact with the user. This will be used to prompt the
+   * user for passwords where necessary.
+   *
+   * Since: 2.30
+   */
+  g_object_class_install_property (gobject_class, PROP_INTERACTION,
+                                   g_param_spec_object ("interaction",
+                                                        P_("Interaction"),
+                                                        P_("Optional object for user interaction"),
+                                                        G_TYPE_TLS_INTERACTION,
+                                                        G_PARAM_READWRITE |
+                                                        G_PARAM_STATIC_STRINGS));
   /**
    * GTlsConnection:require-close-notify:
    *
@@ -306,7 +342,7 @@ g_tls_connection_set_property (GObject      *object,
  * client-side connections, unless that bit is not set in
  * #GTlsClientConnection:validation-flags).
  *
- * Since: 2.28
+ * Deprecated: 2.30: Use g_tls_connection_set_database() instead
  */
 void
 g_tls_connection_set_use_system_certdb (GTlsConnection *conn,
@@ -328,7 +364,7 @@ g_tls_connection_set_use_system_certdb (GTlsConnection *conn,
  *
  * Return value: whether @conn uses the system certificate database
  *
- * Since: 2.28
+ * Deprecated: 2.30: Use g_tls_connection_get_database() instead
  */
 gboolean
 g_tls_connection_get_use_system_certdb (GTlsConnection *conn)
@@ -341,6 +377,60 @@ g_tls_connection_get_use_system_certdb (GTlsConnection *conn)
 		"use-system-certdb", &use_system_certdb,
 		NULL);
   return use_system_certdb;
+}
+
+/**
+ * g_tls_connection_set_database:
+ * @conn: a #GTlsConnection
+ * @database: a #GTlsDatabase
+ *
+ * Sets the certificate database that is used to verify peer certificates.
+ * This is set to the default database by default. See
+ * g_tls_backend_get_default_database(). If set to %NULL, then
+ * peer certificate validation will always set the
+ * %G_TLS_CERTIFICATE_UNKNOWN_CA error (meaning
+ * #GTlsConnection::accept-certificate will always be emitted on
+ * client-side connections, unless that bit is not set in
+ * #GTlsClientConnection:validation-flags).
+ *
+ * Since: 2.30
+ */
+void
+g_tls_connection_set_database (GTlsConnection *conn,
+                               GTlsDatabase   *database)
+{
+  g_return_if_fail (G_IS_TLS_CONNECTION (conn));
+  g_return_if_fail (database == NULL || G_IS_TLS_DATABASE (database));
+
+  g_object_set (G_OBJECT (conn),
+		"database", database,
+		NULL);
+}
+
+/**
+ * g_tls_connection_get_database:
+ * @conn: a #GTlsConnection
+ *
+ * Gets the certificate database that @conn uses to verify
+ * peer certificates. See g_tls_connection_set_database().
+ *
+ * Return value: the certificate database that @conn uses or %NULL
+ *
+ * Since: 2.30
+ */
+GTlsDatabase*
+g_tls_connection_get_database (GTlsConnection *conn)
+{
+  GTlsDatabase *database = NULL;
+
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
+
+  g_object_get (G_OBJECT (conn),
+		"database", &database,
+		NULL);
+  if (database)
+    g_object_unref (database);
+  return database;
 }
 
 /**
@@ -402,6 +492,56 @@ g_tls_connection_get_certificate (GTlsConnection *conn)
     g_object_unref (certificate);
 
   return certificate;
+}
+
+/**
+ * g_tls_connection_set_interaction:
+ * @conn: a connection
+ * @interaction: (allow-none): an interaction object, or %NULL
+ *
+ * Set the object that will be used to interact with the user. It will be used
+ * for things like prompting the user for passwords.
+ *
+ * The @interaction argument will normally be a derived subclass of
+ * #GTlsInteraction. %NULL can also be provided if no user interaction
+ * should occur for this connection.
+ *
+ * Since: 2.30
+ */
+void
+g_tls_connection_set_interaction (GTlsConnection       *conn,
+                                  GTlsInteraction      *interaction)
+{
+  g_return_if_fail (G_IS_TLS_CONNECTION (conn));
+  g_return_if_fail (interaction == NULL || G_IS_TLS_INTERACTION (interaction));
+
+  g_object_set (G_OBJECT (conn), "interaction", interaction, NULL);
+}
+
+/**
+ * g_tls_connection_get_interaction:
+ * @conn: a connection
+ *
+ * Get the object that will be used to interact with the user. It will be used
+ * for things like prompting the user for passwords. If %NULL is returned, then
+ * no user interaction will occur for this connection.
+ *
+ * Returns: (transfer none): The interaction object.
+ *
+ * Since: 2.30
+ */
+GTlsInteraction *
+g_tls_connection_get_interaction (GTlsConnection       *conn)
+{
+  GTlsInteraction *interaction = NULL;
+
+  g_return_val_if_fail (G_IS_TLS_CONNECTION (conn), NULL);
+
+  g_object_get (G_OBJECT (conn), "interaction", &interaction, NULL);
+  if (interaction)
+    g_object_unref (interaction);
+
+  return interaction;
 }
 
 /**

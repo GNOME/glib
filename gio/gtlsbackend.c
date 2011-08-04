@@ -150,6 +150,28 @@ g_tls_backend_supports_tls (GTlsBackend *backend)
 }
 
 /**
+ * g_tls_backend_get_default_database:
+ * @backend: the #GTlsBackend
+ *
+ * Gets the default #GTlsDatabase used to verify TLS connections.
+ *
+ * Return value: the default database, which should be unreffed when done.
+ *
+ * Since: 2.30
+ */
+GTlsDatabase *
+g_tls_backend_get_default_database (GTlsBackend *backend)
+{
+  g_return_val_if_fail (G_IS_TLS_BACKEND (backend), NULL);
+
+  /* This method was added later, so accept the (remote) possibility it can be NULL */
+  if (!G_TLS_BACKEND_GET_INTERFACE (backend)->get_default_database)
+    return NULL;
+
+  return G_TLS_BACKEND_GET_INTERFACE (backend)->get_default_database (backend);
+}
+
+/**
  * g_tls_backend_get_certificate_type:
  * @backend: the #GTlsBackend
  *
@@ -198,4 +220,26 @@ GType
 g_tls_backend_get_server_connection_type (GTlsBackend *backend)
 {
   return G_TLS_BACKEND_GET_INTERFACE (backend)->get_server_connection_type ();
+}
+
+/**
+ * g_tls_backend_get_file_database_type:
+ * @backend: the #GTlsBackend
+ *
+ * Gets the #GTyep of @backend's #GTlsFileDatabase implementation.
+ *
+ * Return value: the #GType of backend's #GTlsFileDatabase implementation.
+ *
+ * Since: 2.30
+ */
+GType
+g_tls_backend_get_file_database_type (GTlsBackend *backend)
+{
+  g_return_val_if_fail (G_IS_TLS_BACKEND (backend), 0);
+
+  /* This method was added later, so accept the (remote) possibility it can be NULL */
+  if (!G_TLS_BACKEND_GET_INTERFACE (backend)->get_file_database_type)
+    return 0;
+
+  return G_TLS_BACKEND_GET_INTERFACE (backend)->get_file_database_type ();
 }
