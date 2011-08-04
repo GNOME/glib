@@ -68,14 +68,14 @@
 
 G_DEFINE_TYPE (GTlsInteraction, g_tls_interaction, G_TYPE_OBJECT);
 
-GTlsInteractionResult
+static GTlsInteractionResult
 g_tls_interaction_default_ask_password (GTlsInteraction    *interaction,
                                         GTlsPassword       *password)
 {
   return G_TLS_INTERACTION_UNHANDLED;
 }
 
-void
+static void
 g_tls_interaction_default_ask_password_async (GTlsInteraction    *interaction,
                                               GTlsPassword       *password,
                                               GAsyncReadyCallback callback,
@@ -89,7 +89,7 @@ g_tls_interaction_default_ask_password_async (GTlsInteraction    *interaction,
   g_object_unref (res);
 }
 
-GTlsInteractionResult
+static GTlsInteractionResult
 g_tls_interaction_default_ask_password_finish (GTlsInteraction    *interaction,
                                                GAsyncResult       *result)
 {
