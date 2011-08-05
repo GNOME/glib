@@ -78,7 +78,7 @@ socket-client
 socket-server
 srvtarget
 test.mo
-tls
+tls-certificate
 unix-fd
 unix-streams
 volumemonitor
