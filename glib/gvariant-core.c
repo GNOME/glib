@@ -801,7 +801,7 @@ g_variant_get_size (GVariant *value)
 /**
  * g_variant_get_data:
  * @value: a #GVariant instance
- * @returns: the serialised form of @value, or %NULL
+ * @returns: (transfer none): the serialised form of @value, or %NULL
  *
  * Returns a pointer to the serialised form of a #GVariant instance.
  * The returned data may not be in fully-normalised form if read from an

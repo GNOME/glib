@@ -502,8 +502,8 @@ g_variant_type_check (const GVariantType *type)
 /**
  * g_variant_type_string_scan:
  * @string: a pointer to any string
- * @limit: the end of @string, or %NULL
- * @endptr: location to store the end pointer, or %NULL
+ * @limit: (allow-none): the end of @string, or %NULL
+ * @endptr: (out) (allow-none): location to store the end pointer, or %NULL
  * @returns: %TRUE if a valid type string was found
  *
  * Scan for a single complete and valid GVariant type string in @string.

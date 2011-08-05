@@ -1045,7 +1045,8 @@ g_variant_lookup_value (GVariant           *dictionary,
  * @value: a #GVariant array with fixed-sized elements
  * @n_elements: (out): a pointer to the location to store the number of items
  * @element_size: the size of each element
- * @returns: (array length=n_elements): a pointer to the fixed array
+ * @returns: (array length=n_elements) (transfer none): a pointer to
+ *           the fixed array
  *
  * Provides access to the serialised data for an array of fixed-sized
  * items.
@@ -1589,7 +1590,8 @@ g_variant_dup_objv (GVariant *value,
 
 /**
  * g_variant_new_bytestring:
- * @string: (array zero-terminated=1): a normal nul-terminated string in no particular encoding
+ * @string: (array zero-terminated=1) (element-type guint8): a normal
+ *          nul-terminated string in no particular encoding
  * @returns: (transfer none): a floating reference to a new bytestring #GVariant instance
  *
  * Creates an array-of-bytes #GVariant with the contents of @string.
@@ -1613,7 +1615,8 @@ g_variant_new_bytestring (const gchar *string)
 /**
  * g_variant_get_bytestring:
  * @value: an array-of-bytes #GVariant instance
- * @returns: (transfer none) (array zero-terminated=1): the constant string
+ * @returns: (transfer none) (array zero-terminated=1) (element-type guint8):
+ *           the constant string
  *
  * Returns the string value of a #GVariant instance with an
  * array-of-bytes type.  The string has no particular encoding.
@@ -1656,7 +1659,8 @@ g_variant_get_bytestring (GVariant *value)
  * @value: an array-of-bytes #GVariant instance
  * @length: (out) (allow-none) (default NULL): a pointer to a #gsize, to store
  *          the length (not including the nul terminator)
- * @returns: (transfer full) (array zero-terminated=1): a newly allocated string
+ * @returns: (transfer full) (array zero-terminated=1 length=length)
+ *           (element-type guint8): a newly allocated string
  *
  * Similar to g_variant_get_bytestring() except that instead of
  * returning a constant string, the string is duplicated.
