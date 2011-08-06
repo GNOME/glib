@@ -1012,10 +1012,10 @@ AS_IF([test $ac_cv_header_sys_statfs_h  = yes], [AC_CHECK_FUNCS([statfs])])
 
 AC_MSG_CHECKING([whether to use statfs or statvfs])
 # Some systems have both statfs and statvfs, pick the most "native" for these
-AS_IF([test x$ac_cv_func_statfs = xyes && test x$ac_cv_func_statvfs = yes],
+AS_IF([test x$ac_cv_func_statfs = xyes && test x$ac_cv_func_statvfs = xyes],
    [
    # on solaris and irix, statfs doesn't even have the f_bavail field
-   AS_IF([test $ac_cv_member_struct_statfs_f_bavail = yes],
+   AS_IF([test x$ac_cv_member_struct_statfs_f_bavail = xyes],
       [ac_cv_func_statfs=no],
    # else, at least on linux, statfs is the actual syscall
       [ac_cv_func_statvfs=no])
