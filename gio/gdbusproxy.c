@@ -265,7 +265,7 @@ g_dbus_proxy_get_property (GObject    *object,
       break;
 
     case PROP_G_NAME_OWNER:
-      g_value_set_string (value, proxy->priv->name_owner);
+      g_value_take_string (value, g_dbus_proxy_get_name_owner (proxy));
       break;
 
     case PROP_G_OBJECT_PATH:
@@ -277,7 +277,7 @@ g_dbus_proxy_get_property (GObject    *object,
       break;
 
     case PROP_G_DEFAULT_TIMEOUT:
-      g_value_set_int (value, proxy->priv->timeout_msec);
+      g_value_set_int (value, g_dbus_proxy_get_default_timeout (proxy));
       break;
 
     case PROP_G_INTERFACE_INFO:
