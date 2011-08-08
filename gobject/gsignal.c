@@ -1310,7 +1310,7 @@ g_signal_query (guint         signal_id,
  * <code>super_class->signal_handler = my_signal_handler</code>. Instead they
  * will have to use g_signal_override_class_handler().
  *
- * If c_marshaller is %NULL @g_cclosure_marshal_generic will be used as
+ * If c_marshaller is %NULL, g_cclosure_marshal_generic() will be used as
  * the marshaller for this signal.
  *
  * Returns: the signal id

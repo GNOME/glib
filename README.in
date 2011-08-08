@@ -24,6 +24,14 @@ Installation
 
 See the file 'INSTALL'
 
+Notes about GLib 2.30
+=====================
+
+* GObject includes a generic marshaller, g_cclosure_marshal_generic.
+  To use it, simply specify NULL as the marshaller in g_signal_new().
+  The generic marshaller is implemented with libffi, and consequently
+  GObject depends on libffi now.
+
 Notes about GLib 2.28
 =====================
 
