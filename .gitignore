@@ -38,3 +38,5 @@ py-compile
 INSTALL
 README
 ChangeLog
+/glib-lcov.info
+/glib-lcov/
