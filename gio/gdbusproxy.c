@@ -1309,46 +1309,16 @@ async_init_get_all_cb (GDBusConnection *connection,
   async_init_data_free (data);
 }
 
-
 static void
-async_init_get_name_owner_cb (GDBusConnection *connection,
-                              GAsyncResult    *res,
-                              gpointer         user_data)
+async_init_data_set_name_owner (AsyncInitData *data,
+                                const gchar   *name_owner)
 {
-  AsyncInitData *data = user_data;
   gboolean get_all;
 
-  if (res != NULL)
+  if (name_owner != NULL)
     {
-      GError *error;
-      GVariant *result;
-
-      error = NULL;
-      result = g_dbus_connection_call_finish (connection,
-                                              res,
-                                              &error);
-      if (result == NULL)
-        {
-          if (error->domain == G_DBUS_ERROR &&
-              error->code == G_DBUS_ERROR_NAME_HAS_NO_OWNER)
-            {
-              g_error_free (error);
-            }
-          else
-            {
-              g_simple_async_result_take_error (data->simple, error);
-              g_simple_async_result_complete_in_idle (data->simple);
-              async_init_data_free (data);
-              goto out;
-            }
-        }
-      else
-        {
-          g_variant_get (result,
-                         "(s)",
-                         &data->proxy->priv->name_owner);
-          g_variant_unref (result);
-        }
+      /* it starts as NULL anyway */
+      data->proxy->priv->name_owner = g_strdup (name_owner);
     }
 
   get_all = TRUE;
@@ -1358,8 +1328,7 @@ async_init_get_name_owner_cb (GDBusConnection *connection,
       /* Don't load properties if the API user doesn't want them */
       get_all = FALSE;
     }
-  else if (data->proxy->priv->name_owner == NULL &&
-           data->proxy->priv->name != NULL)
+  else if (name_owner == NULL && data->proxy->priv->name != NULL)
     {
       /* Don't attempt to load properties if the name_owner is NULL (which
        * usually means the name isn't owned), unless name is also NULL (which
@@ -1373,7 +1342,7 @@ async_init_get_name_owner_cb (GDBusConnection *connection,
     {
       /* load all properties asynchronously */
       g_dbus_connection_call (data->proxy->priv->connection,
-                              data->proxy->priv->name_owner,
+                              name_owner,
                               data->proxy->priv->object_path,
                               "org.freedesktop.DBus.Properties",
                               "GetAll",
@@ -1390,9 +1359,45 @@ async_init_get_name_owner_cb (GDBusConnection *connection,
       g_simple_async_result_complete_in_idle (data->simple);
       async_init_data_free (data);
     }
+}
 
- out:
-  ;
+static void
+async_init_get_name_owner_cb (GDBusConnection *connection,
+                              GAsyncResult    *res,
+                              gpointer         user_data)
+{
+  AsyncInitData *data = user_data;
+  GError *error;
+  GVariant *result;
+
+  error = NULL;
+  result = g_dbus_connection_call_finish (connection,
+                                          res,
+                                          &error);
+  if (result == NULL)
+    {
+      if (error->domain == G_DBUS_ERROR &&
+          error->code == G_DBUS_ERROR_NAME_HAS_NO_OWNER)
+        {
+          g_error_free (error);
+          async_init_data_set_name_owner (data, NULL);
+        }
+      else
+        {
+          g_simple_async_result_take_error (data->simple, error);
+          g_simple_async_result_complete_in_idle (data->simple);
+          async_init_data_free (data);
+        }
+    }
+  else
+    {
+      /* borrowed from result to avoid an extra copy */
+      const gchar *name_owner;
+
+      g_variant_get (result, "(&s)", &name_owner);
+      async_init_data_set_name_owner (data, name_owner);
+      g_variant_unref (result);
+    }
 }
 
 static void
@@ -1524,12 +1529,11 @@ async_initable_init_second_async (GAsyncInitable      *initable,
   if (proxy->priv->name == NULL)
     {
       /* Do nothing */
-      async_init_get_name_owner_cb (proxy->priv->connection, NULL, data);
+      async_init_data_set_name_owner (data, NULL);
     }
   else if (g_dbus_is_unique_name (proxy->priv->name))
     {
-      proxy->priv->name_owner = g_strdup (proxy->priv->name);
-      async_init_get_name_owner_cb (proxy->priv->connection, NULL, data);
+      async_init_data_set_name_owner (data, proxy->priv->name);
     }
   else
     {
