@@ -3109,7 +3109,8 @@ is_signal_data_for_name_lost_or_acquired (SignalData *signal_data)
  * @flags: Flags describing how to subscribe to the signal (currently unused).
  * @callback: Callback to invoke when there is a signal matching the requested data.
  * @user_data: User data to pass to @callback.
- * @user_data_free_func: Function to free @user_data with when subscription is removed or %NULL.
+ * @user_data_free_func: (allow-none): Function to free @user_data with when
+ *                       subscription is removed or %NULL.
  *
  * Subscribes to signals on @connection and invokes @callback with a
  * whenever the signal is received. Note that @callback
@@ -4640,7 +4641,7 @@ obj_message_func (GDBusConnection *connection,
  * @object_path: The object path to register at.
  * @interface_info: Introspection data for the interface.
  * @vtable: (allow-none): A #GDBusInterfaceVTable to call into or %NULL.
- * @user_data: Data to pass to functions in @vtable.
+ * @user_data: (allow-none): Data to pass to functions in @vtable.
  * @user_data_free_func: Function to call when the object path is unregistered.
  * @error: Return location for error or %NULL.
  *
