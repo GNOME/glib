@@ -455,7 +455,7 @@ gsize
   return g_atomic_pointer_xor ((volatile gpointer *) atomic, val);
 }
 
-#elif defined (G_PLATFORM_WIN32)
+#elif defined (G_PLATFORM_WIN32) && defined(HAVE_WIN32_BUILTINS_FOR_ATOMIC_OPERATIONS)
 
 #include <windows.h>
 #if !defined(_M_AMD64) && !defined (_M_IA64) && !defined(_M_X64)
