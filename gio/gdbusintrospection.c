@@ -2159,7 +2159,7 @@ g_dbus_interface_info_cache_release (GDBusInterfaceInfo *info)
  *
  * This cost of this function is O(n) in number of interfaces.
  *
- * Returns: A #GDBusInterfaceInfo or %NULL if not found. Do not free, it is owned by @info.
+ * Returns: (transfer none): A #GDBusInterfaceInfo or %NULL if not found. Do not free, it is owned by @info.
  *
  * Since: 2.26
  */
