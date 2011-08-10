@@ -1151,6 +1151,8 @@ g_socket_client_tls_handshake_callback (GObject      *object,
     {
       g_object_unref (data->connection);
       data->connection = G_IO_STREAM (object);
+
+      g_socket_client_async_connect_complete (data);
     }
   else
     {
@@ -1162,8 +1164,6 @@ g_socket_client_tls_handshake_callback (GObject      *object,
 
       enumerator_next_async (data);
     }
-
-  g_socket_client_async_connect_complete (data);
 }
 
 static void
