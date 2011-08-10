@@ -97,7 +97,7 @@
  *          GEqualFunc     equal_func,
  *          GDestroyNotify destroy)
  * {
- *   return g_hash_table_new_full (hash_func, equal_func, destroy);
+ *   return g_hash_table_new_full (hash_func, equal_func, destroy, NULL);
  * }
  *
  * void
