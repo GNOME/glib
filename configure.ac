@@ -2480,25 +2480,11 @@ if test "$glib_cv_monotonic_clock" = "yes"; then
 fi
 
 
-dnl ********************************
-dnl *** g_atomic_* tests for gcc ***
-dnl ********************************
+dnl ************************
+dnl *** g_atomic_* tests ***
+dnl ************************
 
 AC_MSG_CHECKING([whether to use assembler code for atomic operations])
-
-glib_cv_gcc_has_builtin_atomic_operations=no
-if test x"$GCC" = xyes; then
-  AC_MSG_CHECKING([whether GCC supports built-in atomic intrinsics])
-  AC_TRY_LINK([],
-	      [int i;
-	       __sync_synchronize ();
-	       __sync_bool_compare_and_swap (&i, 0, 1);
-	       __sync_fetch_and_add (&i, 1);
-	      ],
-	      [glib_cv_gcc_has_builtin_atomic_operations=yes],
-	      [glib_cv_gcc_has_builtin_atomic_operations=no])
-
-  AC_MSG_RESULT($glib_cv_gcc_has_builtin_atomic_operations)
     case $host_cpu in
       i386)
         AC_MSG_RESULT([none])
@@ -2595,11 +2581,20 @@ if test x"$GCC" = xyes; then
         glib_memory_barrier_needed=yes
         ;;
     esac
-else
-  if test $glib_native_win32 = yes; then
-    # For Windows but not using gcc. No barriers needed then either.
-    glib_memory_barrier_needed=no
-  fi
+
+glib_cv_gcc_has_builtin_atomic_operations=no
+if test x"$GCC" = xyes; then
+  AC_MSG_CHECKING([whether GCC supports built-in atomic intrinsics])
+  AC_TRY_LINK([],
+	      [int i;
+	       __sync_synchronize ();
+	       __sync_bool_compare_and_swap (&i, 0, 1);
+	       __sync_fetch_and_add (&i, 1);
+	      ],
+	      [glib_cv_gcc_has_builtin_atomic_operations=yes],
+	      [glib_cv_gcc_has_builtin_atomic_operations=no])
+
+  AC_MSG_RESULT($glib_cv_gcc_has_builtin_atomic_operations)
 fi
 
 AM_CONDITIONAL(HAVE_GCC_BUILTINS_FOR_ATOMIC_OPERATIONS,
