@@ -419,7 +419,7 @@ AC_ARG_ENABLE(iconv-cache,
                               [cache iconv descriptors [default=auto]])],,
               [enable_iconv_cache=auto])
 
-AC_MSG_CHECKING([Whether to cache iconv descriptors])
+AC_MSG_CHECKING([whether to cache iconv descriptors])
 case $enable_iconv_cache in
   auto)
     if test $ac_cv_gnu_library_2_1 = yes; then
@@ -2488,7 +2488,7 @@ AC_MSG_CHECKING([whether to use assembler code for atomic operations])
 
 glib_cv_gcc_has_builtin_atomic_operations=no
 if test x"$GCC" = xyes; then
-  AC_MSG_CHECKING([whether GCC supports build-in atomic intrinsics])
+  AC_MSG_CHECKING([whether GCC supports built-in atomic intrinsics])
   AC_TRY_LINK([],
 	      [int i;
 	       __sync_synchronize ();
