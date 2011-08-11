@@ -93,6 +93,14 @@
 /* x86_64 atomic implementation */
 /* #undef G_ATOMIC_X86_64 */
 
+/* whether GCC supports built-in atomic intrinsics */
+/* #undef HAVE_GCC_BUILTINS_FOR_ATOMIC_OPERATIONS */
+
+/* Have Win32 atomic intrinsics */
+#ifdef _MSC_VER
+#define HAVE_WIN32_BUILTINS_FOR_ATOMIC_OPERATIONS 1
+#endif
+
 /* Have inline keyword */
 #ifndef _MSC_VER
 #define G_HAVE_INLINE 1
