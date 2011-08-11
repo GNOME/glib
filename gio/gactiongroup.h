@@ -104,7 +104,7 @@ struct _GActionGroupInterface
                                                         gboolean       enabled);
   void                  (* action_state_changed)       (GActionGroup   *action_group,
                                                         const gchar    *action_name,
-                                                        GVariant       *value);
+                                                        GVariant       *state);
 };
 
 GType                   g_action_group_get_type                         (void) G_GNUC_CONST;

@@ -365,7 +365,7 @@ g_tls_password_get_description (GTlsPassword *password)
 /**
  * g_tls_password_set_description:
  * @password: a #GTlsPassword object
- * @flags: The description of the password
+ * @description: The description of the password
  *
  * Set a description string about what the password will be used for.
  *
