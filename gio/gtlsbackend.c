@@ -155,7 +155,8 @@ g_tls_backend_supports_tls (GTlsBackend *backend)
  *
  * Gets the default #GTlsDatabase used to verify TLS connections.
  *
- * Return value: the default database, which should be unreffed when done.
+ * Return value: (transfer full): the default database, which should be
+ *               unreffed when done.
  *
  * Since: 2.30
  */

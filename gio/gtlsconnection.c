@@ -414,7 +414,7 @@ g_tls_connection_set_database (GTlsConnection *conn,
  * Gets the certificate database that @conn uses to verify
  * peer certificates. See g_tls_connection_set_database().
  *
- * Return value: the certificate database that @conn uses or %NULL
+ * Return value: (transfer none): the certificate database that @conn uses or %NULL
  *
  * Since: 2.30
  */

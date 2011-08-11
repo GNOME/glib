@@ -632,8 +632,9 @@ property_name_sort_func (const gchar **a,
  *
  * Gets the names of all cached properties on @proxy.
  *
- * Returns: A %NULL-terminated array of strings or %NULL if @proxy has
- * no cached properties. Free the returned array with g_strfreev().
+ * Returns: (transfer full): A %NULL-terminated array of strings or %NULL if
+ *          @proxy has no cached properties. Free the returned array with
+ *          g_strfreev().
  *
  * Since: 2.26
  */

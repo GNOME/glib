@@ -136,7 +136,7 @@ g_time_zone_monitor_class_init (GTimeZoneMonitorClass *class)
  * signals via the default #GMainContext.  There is no way to create an
  * instance that will dispatch signals using a different context.
  *
- * Returns: a reference to the #GTimeZoneMonitor.
+ * Returns: (transfer full): a reference to the #GTimeZoneMonitor.
  **/
 GTimeZoneMonitor *
 g_time_zone_monitor_get (void)
