@@ -422,6 +422,14 @@ copy ..\..\..\gio\gtlsclientconnection.h $(CopyDir)\include\glib-$(ApiVersion)\g
 
 copy ..\..\..\gio\gtlsconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
+copy ..\..\..\gio\gtlsdatabase.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gtlsfiledatabase.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gtlsinteraction.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
+copy ..\..\..\gio\gtlspassword.h $(CopyDir)\include\glib-$(ApiVersion)\gio
+
 copy ..\..\..\gio\gtlsserverconnection.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gvfs.h $(CopyDir)\include\glib-$(ApiVersion)\gio
