@@ -1975,15 +1975,19 @@ g_unix_mount_guess_should_display (GUnixMountEntry *mount_entry)
     return FALSE;
   
   /* Only display things in /media (which are generally user mountable)
-     and home dir (fuse stuff) */
+     and home dir (fuse stuff) and $XDG_RUNTIME_DIR */
   mount_path = mount_entry->mount_path;
   if (mount_path != NULL)
     {
+      gboolean is_in_runtime_dir = FALSE;
       /* Hide mounts within a dot path, suppose it was a purpose to hide this mount */
       if (g_strstr_len (mount_path, -1, "/.") != NULL)
         return FALSE;
 
-      if (g_str_has_prefix (mount_path, "/media/")) 
+      if (g_getenv ("XDG_RUNTIME_DIR") != NULL && g_str_has_prefix (mount_path, g_get_user_runtime_dir ()))
+        is_in_runtime_dir = TRUE;
+
+      if (is_in_runtime_dir || g_str_has_prefix (mount_path, "/media/"))
         {
           char *path;
           /* Avoid displaying mounts that are not accessible to the user.
