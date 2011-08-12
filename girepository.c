@@ -382,7 +382,7 @@ register_internal (GIRepository *repository,
  * form <code>namespace-version</code>.
  *
  * Note: The namespace must have already been loaded using a function
- * such as #g_irepository_require before calling this function.
+ * such as g_irepository_require() before calling this function.
  *
  * Returns: (transfer full): Zero-terminated string array of versioned dependencies
  */
@@ -447,7 +447,7 @@ g_irepository_load_typelib (GIRepository *repository,
  * Check whether a particular namespace (and optionally, a specific
  * version thereof) is currently loaded.  This function is likely to
  * only be useful in unusual circumstances; in order to act upon
- * metadata in the namespace, you should call #g_irepository_require
+ * metadata in the namespace, you should call g_irepository_require()
  * instead which will ensure the namespace is loaded, and return as
  * quickly as this function will if it has already been loaded.
  *
@@ -648,7 +648,7 @@ g_irepository_find_by_gtype (GIRepository *repository,
  *
  * Searches for a particular entry in a namespace.  Before calling
  * this function for a particular namespace, you must call
- * #g_irepository_require once to load the namespace, or otherwise
+ * g_irepository_require() once to load the namespace, or otherwise
  * ensure the namespace has already been loaded.
  *
  * Returns: (transfer full): #GIBaseInfo representing metadata about @name, or %NULL
@@ -723,7 +723,7 @@ g_irepository_get_loaded_namespaces (GIRepository *repository)
  * namespace @namespace_.
  *
  * Note: The namespace must have already been loaded using a function
- * such as #g_irepository_require before calling this function.
+ * such as g_irepository_require() before calling this function.
  *
  * Returns: Loaded version
  */
@@ -757,7 +757,7 @@ g_irepository_get_version (GIRepository *repository,
  * return %NULL.
  *
  * Note: The namespace must have already been loaded using a function
- * such as #g_irepository_require before calling this function.
+ * such as g_irepository_require() before calling this function.
  *
  * Returns: Full path to shared library, or %NULL if none associated
  */
@@ -793,7 +793,7 @@ g_irepository_get_shared_library (GIRepository *repository,
  * starts with this prefix, as well each #GType in the library.
  *
  * Note: The namespace must have already been loaded using a function
- * such as #g_irepository_require before calling this function.
+ * such as g_irepository_require() before calling this function.
  *
  * Returns: C namespace prefix, or %NULL if none associated
  */
