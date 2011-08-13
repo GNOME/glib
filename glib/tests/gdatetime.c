@@ -899,6 +899,7 @@ test_modifiers (void)
     {
       TEST_PRINTF_TIME (23, 0, 0, "%OH", "\333\262\333\263");
       TEST_PRINTF_TIME (23, 0, 0, "%OI", "\333\261\333\261");
+      TEST_PRINTF_TIME (23, 0, 0, "%OM", "\333\260");
 
       TEST_PRINTF_DATE (2011, 7, 1, "%Om", "\333\267");
       TEST_PRINTF_DATE (2011, 7, 1, "%-Om", "\333\267");
