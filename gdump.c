@@ -166,8 +166,32 @@ dump_signals (GType type, GOutputStream *out)
       sigid = sig_ids[i];
       g_signal_query (sigid, &query);
 
-      escaped_printf (out, "    <signal name=\"%s\" return=\"%s\">\n",
+      escaped_printf (out, "    <signal name=\"%s\" return=\"%s\"",
 		      query.signal_name, g_type_name (query.return_type));
+
+      if (query.signal_flags & G_SIGNAL_RUN_FIRST)
+        escaped_printf (out, " when=\"first\"");
+      else if (query.signal_flags & G_SIGNAL_RUN_LAST)
+        escaped_printf (out, " when=\"last\"");
+      else if (query.signal_flags & G_SIGNAL_RUN_CLEANUP)
+        escaped_printf (out, " when=\"cleanup\"");
+#if GLIB_CHECK_VERSION(2, 29, 15)
+      else if (query.signal_flags & G_SIGNAL_MUST_COLLECT)
+        escaped_printf (out, " when=\"must-collect\"");
+#endif
+      if (query.signal_flags & G_SIGNAL_NO_RECURSE)
+        escaped_printf (out, " no-recurse=\"1\"");
+
+      if (query.signal_flags & G_SIGNAL_DETAILED)
+        escaped_printf (out, " detailed=\"1\"");
+
+      if (query.signal_flags & G_SIGNAL_ACTION)
+        escaped_printf (out, " action=\"1\"");
+
+      if (query.signal_flags & G_SIGNAL_NO_HOOKS)
+        escaped_printf (out, " no-hooks=\"1\"");
+
+      goutput_write (out, ">\n");
 
       for (j = 0; j < query.n_params; j++)
 	{
