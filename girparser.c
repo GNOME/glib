@@ -805,6 +805,9 @@ start_function (GMarkupParseContext *context,
 	       strcmp (element_name, "method") == 0 ||
 	       strcmp (element_name, "callback") == 0);
       break;
+    case STATE_ENUM:
+      found = strcmp (element_name, "function") == 0;
+      break;
     case STATE_STRUCT_FIELD:
       found = (found || strcmp (element_name, "callback") == 0);
       break;
@@ -923,6 +926,15 @@ start_function (GMarkupParseContext *context,
 
 	  union_ = (GIrNodeUnion *)CURRENT_NODE (ctx);
 	  union_->members = g_list_append (union_->members, function);
+	}
+	break;
+      case G_IR_NODE_ENUM:
+      case G_IR_NODE_FLAGS:
+	{
+	  GIrNodeEnum *enum_;
+
+	  enum_ = (GIrNodeEnum *)CURRENT_NODE (ctx);
+	  enum_->methods = g_list_append (enum_->methods, function);
 	}
 	break;
       default:
@@ -3186,6 +3198,9 @@ end_element_handler (GMarkupParseContext *context,
 	      state_switch (ctx, STATE_STRUCT);
 	    else if (CURRENT_NODE (ctx)->type == G_IR_NODE_UNION)
 	      state_switch (ctx, STATE_UNION);
+	    else if (CURRENT_NODE (ctx)->type == G_IR_NODE_ENUM ||
+		     CURRENT_NODE (ctx)->type == G_IR_NODE_FLAGS)
+	      state_switch (ctx, STATE_ENUM);
 	    else
 	      {
 		int line_number, char_number;
@@ -3255,6 +3270,8 @@ end_element_handler (GMarkupParseContext *context,
 
     case STATE_ENUM:
       if (strcmp ("member", element_name) == 0)
+	break;
+      else if (strcmp ("function", element_name) == 0)
 	break;
       else if (require_one_of_end_elements (context, ctx,
 					    element_name, error, "enumeration",

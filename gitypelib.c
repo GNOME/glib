@@ -1428,6 +1428,7 @@ validate_enum_blob (ValidateContext *ctx,
   GITypelib *typelib = ctx->typelib;
   EnumBlob *blob;
   gint i;
+  guint32 offset2;
 
   if (typelib->len < offset + sizeof (EnumBlob))
     {
@@ -1473,7 +1474,8 @@ validate_enum_blob (ValidateContext *ctx,
     return FALSE;
 
   if (typelib->len < offset + sizeof (EnumBlob) +
-      blob->n_values * sizeof (ValueBlob))
+      blob->n_values * sizeof (ValueBlob) +
+      blob->n_methods * sizeof (FunctionBlob))
     {
       g_set_error (error,
 		   G_TYPELIB_ERROR,
@@ -1482,22 +1484,22 @@ validate_enum_blob (ValidateContext *ctx,
       return FALSE;
     }
 
+  offset2 = offset + sizeof (EnumBlob);
+
   push_context (ctx, get_string_nofail (typelib, blob->name));
 
-  for (i = 0; i < blob->n_values; i++)
+  for (i = 0; i < blob->n_values; i++, offset2 += sizeof (ValueBlob))
     {
       if (!validate_value_blob (typelib,
-				offset + sizeof (EnumBlob) +
-				i * sizeof (ValueBlob),
+				offset2,
 				error))
 	return FALSE;
 
 #if 0
-      v1 = (ValueBlob *)&typelib->data[offset + sizeof (EnumBlob) +
-                                        i * sizeof (ValueBlob)];
+      v1 = (ValueBlob *)&typelib->data[offset2];
       for (j = 0; j < i; j++)
 	{
-	  v2 = (ValueBlob *)&typelib->data[offset + sizeof (EnumBlob) +
+	  v2 = (ValueBlob *)&typelib->data[offset2 +
                                             j * sizeof (ValueBlob)];
 
 	  if (v1->value == v2->value)
@@ -1512,6 +1514,12 @@ validate_enum_blob (ValidateContext *ctx,
 	    }
 	}
 #endif
+    }
+
+  for (i = 0; i < blob->n_methods; i++, offset2 += sizeof (FunctionBlob))
+    {
+      if (!validate_function_blob (ctx, offset2, BLOB_TYPE_ENUM, error))
+	return FALSE;
     }
 
   pop_context (ctx);

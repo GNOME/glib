@@ -112,6 +112,61 @@ g_enum_info_get_value (GIEnumInfo *info,
 }
 
 /**
+ * g_enum_info_get_n_methods:
+ * @info: a #GIEnumInfo
+ *
+ * Obtain the number of methods that this enum type has.
+ *
+ * Returns: number of methods
+ */
+gint
+g_enum_info_get_n_methods (GIEnumInfo *info)
+{
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  EnumBlob *blob;
+
+  g_return_val_if_fail (info != NULL, 0);
+  g_return_val_if_fail (GI_IS_ENUM_INFO (info), 0);
+
+  blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  return blob->n_methods;
+}
+
+/**
+ * g_enum_info_get_method:
+ * @info: a #GIEnumInfo
+ * @n: index of method to get
+ *
+ * Obtain an enum type method at index @n.
+ *
+ * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
+ * g_base_info_unref() when done.
+ */
+GIFunctionInfo *
+g_enum_info_get_method (GIEnumInfo *info,
+			gint        n)
+{
+  gint offset;
+  GIRealInfo *rinfo = (GIRealInfo *)info;
+  Header *header;
+  EnumBlob *blob;
+
+  g_return_val_if_fail (info != NULL, NULL);
+  g_return_val_if_fail (GI_IS_ENUM_INFO (info), NULL);
+
+  header = (Header *)rinfo->typelib->data;
+  blob = (EnumBlob *)&rinfo->typelib->data[rinfo->offset];
+
+  offset = rinfo->offset + header->enum_blob_size
+    + blob->n_values * header->value_blob_size
+    + n * header->function_blob_size;
+
+  return (GIFunctionInfo *) g_info_new (GI_INFO_TYPE_FUNCTION, (GIBaseInfo*)info,
+					rinfo->typelib, offset);
+}
+
+/**
  * g_enum_info_get_storage_type:
  * @info: a #GIEnumInfo
  *

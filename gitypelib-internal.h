@@ -800,8 +800,10 @@ typedef struct {
  * @gtype_init: String naming the symbol which gets the runtime #GType
  * @error_domain: String naming the #GError domain this enum is
  *   associated with
- * @n_values: The lengths of the values arrays.
+ * @n_values: The length of the values array.
+ * @n_methods: The length of the methods array.
  * @values: Describes the enum values.
+ * @methods: Describes the enum methods.
  */
 typedef struct {
   guint16   blob_type;
@@ -817,11 +819,14 @@ typedef struct {
   guint32   gtype_init;
 
   guint16   n_values;
-  guint16   reserved2;
+  guint16   n_methods;
 
   guint32   error_domain;
 
   ValueBlob values[];
+#if 0
+  FunctionBlob methods[];
+#endif
 } EnumBlob;
 
 /**

@@ -288,6 +288,7 @@ struct _GIrNodeEnum
   gchar *error_domain;
 
   GList *values;
+  GList *methods;
 };
 
 struct _GIrNodeBoxed

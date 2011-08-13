@@ -333,6 +333,10 @@ _g_ir_node_free (GIrNode *node)
 	for (l = enum_->values; l; l = l->next)
 	  _g_ir_node_free ((GIrNode *)l->data);
 	g_list_free (enum_->values);
+
+	for (l = enum_->methods; l; l = l->next)
+	  _g_ir_node_free ((GIrNode *)l->data);
+	g_list_free (enum_->methods);
       }
       break;
 
@@ -466,6 +470,8 @@ _g_ir_node_get_size (GIrNode *node)
 
 	size = sizeof (EnumBlob);
 	for (l = enum_->values; l; l = l->next)
+	  size += _g_ir_node_get_size ((GIrNode *)l->data);
+	for (l = enum_->methods; l; l = l->next)
 	  size += _g_ir_node_get_size ((GIrNode *)l->data);
       }
       break;
@@ -717,6 +723,8 @@ _g_ir_node_get_full_size_internal (GIrNode *parent,
 	  size += ALIGN_VALUE (strlen (enum_->error_domain) + 1, 4);
 
 	for (l = enum_->values; l; l = l->next)
+	  size += _g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
+	for (l = enum_->methods; l; l = l->next)
 	  size += _g_ir_node_get_full_size_internal (node, (GIrNode *)l->data);
       }
       break;
@@ -2030,7 +2038,7 @@ _g_ir_node_build_typelib (GIrNode         *node,
 	  blob->error_domain = 0;
 
 	blob->n_values = 0;
-	blob->reserved2 = 0;
+	blob->n_methods = 0;
 
 	for (l = enum_->values; l; l = l->next)
 	  {
@@ -2038,6 +2046,14 @@ _g_ir_node_build_typelib (GIrNode         *node,
 
 	    blob->n_values++;
 	    _g_ir_node_build_typelib (value, node, build, offset, offset2);
+	  }
+
+	for (l = enum_->methods; l; l = l->next)
+	  {
+	    GIrNode *method = (GIrNode *)l->data;
+
+	    blob->n_methods++;
+	    _g_ir_node_build_typelib (method, node, build, offset, offset2);
 	  }
       }
       break;

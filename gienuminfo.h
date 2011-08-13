@@ -40,6 +40,9 @@ G_BEGIN_DECLS
 gint           g_enum_info_get_n_values      (GIEnumInfo  *info);
 GIValueInfo  * g_enum_info_get_value         (GIEnumInfo  *info,
 					      gint         n);
+gint              g_enum_info_get_n_methods     (GIEnumInfo  *info);
+GIFunctionInfo  * g_enum_info_get_method        (GIEnumInfo  *info,
+						 gint         n);
 GITypeTag      g_enum_info_get_storage_type  (GIEnumInfo  *info);
 const gchar *  g_enum_info_get_error_domain  (GIEnumInfo  *info);
 
