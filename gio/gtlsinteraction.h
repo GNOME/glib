@@ -55,33 +55,41 @@ struct _GTlsInteractionClass
   /* virtual methods: */
 
   GTlsInteractionResult  (* ask_password)        (GTlsInteraction    *interaction,
-                                                  GTlsPassword       *password);
+                                                  GTlsPassword       *password,
+                                                  GCancellable       *cancellable,
+                                                  GError            **error);
 
   void                   (* ask_password_async)  (GTlsInteraction    *interaction,
                                                   GTlsPassword       *password,
+                                                  GCancellable       *cancellable,
                                                   GAsyncReadyCallback callback,
                                                   gpointer            user_data);
 
   GTlsInteractionResult  (* ask_password_finish) (GTlsInteraction    *interaction,
-                                                  GAsyncResult       *result);
+                                                  GAsyncResult       *result,
+                                                  GError            **error);
 
   /*< private >*/
   /* Padding for future expansion */
-  gpointer padding[16];
+  gpointer padding[24];
 };
 
 GType                  g_tls_interaction_get_type            (void) G_GNUC_CONST;
 
 GTlsInteractionResult  g_tls_interaction_ask_password        (GTlsInteraction    *interaction,
-                                                              GTlsPassword       *password);
+                                                              GTlsPassword       *password,
+                                                              GCancellable       *cancellable,
+                                                              GError            **error);
 
 void                   g_tls_interaction_ask_password_async  (GTlsInteraction    *interaction,
                                                               GTlsPassword       *password,
+                                                              GCancellable       *cancellable,
                                                               GAsyncReadyCallback callback,
                                                               gpointer            user_data);
 
 GTlsInteractionResult  g_tls_interaction_ask_password_finish (GTlsInteraction    *interaction,
-                                                              GAsyncResult       *result);
+                                                              GAsyncResult       *result,
+                                                              GError            **error);
 
 G_END_DECLS
 

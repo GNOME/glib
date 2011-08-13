@@ -1416,12 +1416,12 @@ typedef enum _GTlsPasswordFlags
 
 /**
  * GTlsInteractionResult:
- * @G_TLS_INTERACTION_HANDLED: The interaction completed, and resulting data
- *     is available.
- * @G_TLS_INTERACTION_ABORTED: The user cancelled the interaction, and requested
- *     the operation to be aborted.
  * @G_TLS_INTERACTION_UNHANDLED: The interaction was unhandled (i.e. not
  *     implemented).
+ * @G_TLS_INTERACTION_HANDLED: The interaction completed, and resulting data
+ *     is available.
+ * @G_TLS_INTERACTION_FAILED: The interaction has failed, or was cancelled.
+ *     and the operation should be aborted.
  *
  * #GTlsInteractionResult is returned by various functions in #GTlsInteraction
  * when finishing an interaction request.
@@ -1429,9 +1429,9 @@ typedef enum _GTlsPasswordFlags
  * Since: 2.30
  */
 typedef enum {
+  G_TLS_INTERACTION_UNHANDLED,
   G_TLS_INTERACTION_HANDLED,
-  G_TLS_INTERACTION_ABORTED,
-  G_TLS_INTERACTION_UNHANDLED
+  G_TLS_INTERACTION_FAILED
 } GTlsInteractionResult;
 
 /**
