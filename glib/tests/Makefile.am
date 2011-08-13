@@ -206,6 +206,10 @@ check-am: gtester-xmllint-check
 
 endif
 
+noinst_PROGRAMS += glib-clock
+glib_clock_CFLAGS = $(INCLUDES)
+glib_clock_LDADD = $(progs_ldadd)
+
 CLEANFILES = \
 	tmpsample.xml
 

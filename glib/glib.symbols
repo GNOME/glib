@@ -293,6 +293,7 @@ g_date_time_new_now_local
 g_date_time_new_now_utc
 g_date_time_new_utc
 g_date_time_ref
+g_date_time_source_new
 g_date_time_to_local
 g_date_time_to_timeval
 g_date_time_to_timezone

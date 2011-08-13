@@ -2587,6 +2587,162 @@ bad_format:
   return NULL;
 }
 
+typedef struct _GDateTimeSource GDateTimeSource;
+struct _GDateTimeSource
+{
+  GSource     source;
+  
+  gint64      real_expiration;
+  gint64      wakeup_expiration;
+
+  gboolean    cancel_on_set;
+};
+
+static inline void
+g_datetime_source_reschedule (GDateTimeSource *datetime_source,
+			     gint64                from_monotonic)
+{
+  datetime_source->wakeup_expiration = from_monotonic + G_TIME_SPAN_SECOND;
+}
+
+static gboolean
+g_datetime_source_is_expired (GDateTimeSource *datetime_source)
+{
+  gint64 real_now;
+
+  real_now = g_get_real_time ();
+  
+  if (datetime_source->real_expiration <= real_now)
+    return TRUE;
+
+  /* We can't really detect without system support when things change;
+   * so just trigger every second.
+   */
+  if (datetime_source->cancel_on_set)
+    return TRUE;
+
+  return FALSE;
+}
+
+/* In prepare, we're just checking the monotonic time against
+ * our projected wakeup.
+ */
+static gboolean
+g_datetime_source_prepare (GSource *source,
+			  gint    *timeout)
+{
+  GDateTimeSource *datetime_source = (GDateTimeSource*)source;
+  gint64 monotonic_now = g_source_get_time (source);
+
+  if (monotonic_now < datetime_source->wakeup_expiration)
+    {
+      /* Round up to ensure that we don't try again too early */
+      *timeout = (datetime_source->wakeup_expiration - monotonic_now + 999) / 1000;
+      return FALSE;
+    }
+
+  *timeout = 0;
+  return g_datetime_source_is_expired (datetime_source);
+}
+
+/* In check, we're looking at the wall clock.
+ */
+static gboolean 
+g_datetime_source_check (GSource  *source)
+{
+  GDateTimeSource *datetime_source = (GDateTimeSource*)source;
+
+  if (g_datetime_source_is_expired (datetime_source))
+    return TRUE;
+
+  g_datetime_source_reschedule (datetime_source, g_source_get_time (source));
+  
+  return FALSE;
+}
+
+static gboolean
+g_datetime_source_dispatch (GSource    *source, 
+			   GSourceFunc callback,
+			   gpointer    user_data)
+{
+  if (!callback)
+    {
+      g_warning ("Timeout source dispatched without callback\n"
+                 "You must call g_source_set_callback().");
+      return FALSE;
+    }
+  
+  (callback) (user_data);
+
+  /* Always false as this source is documented to run once */
+  return FALSE;
+}
+
+static void
+g_datetime_source_finalize (GSource *source)
+{
+}
+
+static GSourceFuncs g_datetime_source_funcs = {
+  g_datetime_source_prepare,
+  g_datetime_source_check,
+  g_datetime_source_dispatch,
+  g_datetime_source_finalize
+};
+
+/**
+ * g_date_time_source_new:
+ * @datetime: Time to await
+ * @cancel_on_set: Also invoke callback if the system clock changes discontiguously
+ *
+ * This function is designed for programs that want to schedule an
+ * event based on real (wall clock) time, as returned by
+ * g_get_real_time().  For example, HOUR:MINUTE wall-clock displays
+ * and calendaring software.  The callback will be invoked when the
+ * specified wall clock time @datetime is reached.
+ *
+ * Compare versus g_timeout_source_new() which is defined to use
+ * monotonic time as returned by g_get_monotonic_time().
+ *
+ * If @cancel_on_set is given, the callback will also be invoked at
+ * most a second after the system clock is changed.  This includes
+ * being set backwards or forwards, and system
+ * resume from suspend.  Not all operating systems allow detecting all
+ * relevant events efficiently - this function may cause the process
+ * to wake up once a second in those cases.
+ *
+ * A wall clock display should use @cancel_on_set; a calendaring
+ * program shouldn't need to.
+ *
+ * Note that the return value from the associated callback will be
+ * ignored; this is a one time watch.
+ *
+ * <note><para>This function currently does not detect time zone
+ * changes.  On Linux, your program should also monitor the
+ * <literal>/etc/timezone</literal> file using
+ * #GFileMonitor.</para></note>
+*
+ * <example id="gdatetime-example-watch"><title>Clock example</title><programlisting><xi:include xmlns:xi="http://www.w3.org/2001/XInclude" parse="text" href="../../../../glib/tests/glib-clock.c"><xi:fallback>FIXME: MISSING XINCLUDE CONTENT</xi:fallback></xi:include></programlisting></example>
+ *
+ * Return value: A newly-constructed #GSource
+ *
+ * Since: 2.30
+ **/
+GSource *
+g_date_time_source_new (GDateTime  *datetime,
+			gboolean    cancel_on_set)
+{
+  GDateTimeSource *datetime_source;
+
+  datetime_source = (GDateTimeSource*) g_source_new (&g_datetime_source_funcs, sizeof (GDateTimeSource));
+
+  datetime_source->cancel_on_set = cancel_on_set;
+  datetime_source->real_expiration = g_date_time_to_unix (datetime) * 1000000;
+  g_datetime_source_reschedule (datetime_source, g_get_monotonic_time ());
+
+  return (GSource*)datetime_source;
+}
+
 
 /* Epilogue {{{1 */
 /* vim:set foldmethod=marker: */

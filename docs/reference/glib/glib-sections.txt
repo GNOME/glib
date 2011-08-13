@@ -1551,6 +1551,9 @@ g_date_time_to_utc
 
 <SUBSECTION>
 g_date_time_format
+
+<SUBSECTION>
+g_date_time_source_new
 </SECTION>
 
 <SECTION>
