@@ -2024,10 +2024,13 @@ g_get_real_time (void)
  * that probably involves returning the wall clock time (with at least
  * microsecond accuracy, subject to the limitations of the OS kernel).
  *
- * Note that, on Windows, "limitations of the OS kernel" is a rather
- * substantial statement.  Depending on the configuration of the system,
- * the wall clock time is updated as infrequently as 64 times a second
- * (which is approximately every 16ms).
+ * It's important to note that POSIX %CLOCK_MONOTONIC does not count
+ * time spent while the machine is suspended.
+ *
+ * On Windows, "limitations of the OS kernel" is a rather substantial
+ * statement.  Depending on the configuration of the system, the wall
+ * clock time is updated as infrequently as 64 times a second (which
+ * is approximately every 16ms).
  *
  * Returns: the monotonic time, in microseconds
  *
@@ -3918,6 +3921,9 @@ g_timeout_dispatch (GSource     *source,
  * The source will not initially be associated with any #GMainContext
  * and must be added to one with g_source_attach() before it will be
  * executed.
+ *
+ * The interval given is in terms of monotonic time, not wall clock
+ * time.  See g_get_monotonic_time().
  * 
  * Return value: the newly-created timeout source
  **/
@@ -3945,6 +3951,9 @@ g_timeout_source_new (guint interval)
  *
  * The scheduling granularity/accuracy of this timeout source will be
  * in seconds.
+ *
+ * The interval given in terms of monotonic time, not wall clock time.
+ * See g_get_monotonic_time().
  *
  * Return value: the newly-created timeout source
  *
@@ -3991,6 +4000,9 @@ g_timeout_source_new_seconds (guint interval)
  * This internally creates a main loop source using g_timeout_source_new()
  * and attaches it to the main loop context using g_source_attach(). You can
  * do these steps manually if you need greater control.
+ *
+ * The interval given in terms of monotonic time, not wall clock time.
+ * See g_get_monotonic_time().
  * 
  * Return value: the ID (greater than 0) of the event source.
  * Rename to: g_timeout_add
@@ -4047,6 +4059,9 @@ g_timeout_add_full (gint           priority,
  * and attaches it to the main loop context using g_source_attach(). You can
  * do these steps manually if you need greater control.
  * 
+ * The interval given is in terms of monotonic time, not wall clock
+ * time.  See g_get_monotonic_time().
+ * 
  * Return value: the ID (greater than 0) of the event source.
  **/
 guint
@@ -4098,6 +4113,9 @@ g_timeout_add (guint32        interval,
  * using g_source_attach(). You can do these steps manually if you need 
  * greater control.
  * 
+ * The interval given is in terms of monotonic time, not wall clock
+ * time.  See g_get_monotonic_time().
+ * 
  * Return value: the ID (greater than 0) of the event source.
  *
  * Rename to: g_timeout_add_seconds
@@ -4147,6 +4165,9 @@ g_timeout_add_seconds_full (gint           priority,
  * of one second. If you need finer precision and have such a timeout,
  * you may want to use g_timeout_add() instead.
  *
+ * The interval given is in terms of monotonic time, not wall clock
+ * time.  See g_get_monotonic_time().
+ * 
  * Return value: the ID (greater than 0) of the event source.
  *
  * Since: 2.14
