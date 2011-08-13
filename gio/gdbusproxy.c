@@ -928,6 +928,9 @@ on_properties_changed (GDBusConnection *connection,
   GVariant *value;
   guint n;
 
+  changed_properties = NULL;
+  invalidated_properties = NULL;
+
   G_LOCK (signal_subscription_lock);
   proxy = data->proxy;
   if (proxy == NULL)
@@ -940,9 +943,6 @@ on_properties_changed (GDBusConnection *connection,
       g_object_ref (proxy);
       G_UNLOCK (signal_subscription_lock);
     }
-
-  changed_properties = NULL;
-  invalidated_properties = NULL;
 
   if (!proxy->priv->initialized)
     goto out;
