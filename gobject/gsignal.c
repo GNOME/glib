@@ -1681,7 +1681,7 @@ g_signal_newv (const gchar       *signal_name,
  *
  * See g_signal_new() for details on allowed signal names.
  *
- * If c_marshaller is %NULL @g_cclosure_marshal_generic will be used as
+ * If c_marshaller is %NULL, g_cclosure_marshal_generic() will be used as
  * the marshaller for this signal.
  *
  * Returns: the signal id
