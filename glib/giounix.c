@@ -524,7 +524,13 @@ g_io_channel_new_file (const gchar *filename,
     }
 
   create_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
-  fid = open (filename, flags, create_mode);
+
+  do
+    {
+      fid = open (filename, flags, create_mode);
+    }
+  while (fid == -1 && errno == EINTR);
+
   if (fid == -1)
     {
       int err = errno;
