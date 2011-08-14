@@ -40,15 +40,17 @@
  * @title: Secure HMAC Digests
  * @short_description: Computes the HMAC for data
  *
- * HMACs should be used when producing a cookie or hash based on data and a key.
- * Simple mechanisms for using SHA1 and other algorithms to digest a key and
- * data together are vulnerable to various security issues. HMAC uses algorithms
- * like SHA1 in a secure way to produce a digest of a key and data.
+ * HMACs should be used when producing a cookie or hash based on data
+ * and a key. Simple mechanisms for using SHA1 and other algorithms to
+ * digest a key and data together are vulnerable to various security
+ * issues. <ulink url="http://en.wikipedia.org/wiki/HMAC">HMAC</ulink>
+ * uses algorithms like SHA1 in a secure way to produce a digest of a
+ * key and data.
  *
  * Both the key and data are arbitrary byte arrays of bytes or characters.
  *
- * Support for HMAC Digests has been added in GLib 2.30
- **/
+ * Support for HMAC Digests has been added in GLib 2.30.
+ */
 
 struct _GHmac
 {
@@ -180,9 +182,10 @@ g_hmac_copy (const GHmac *hmac)
 
 /**
  * g_hmac_ref:
- * @hmac: a valid #GHmac.
+ * @hmac: a valid #GHmac
  *
  * Atomically increments the reference count of @hmac by one.
+ *
  * This function is MT-safe and may be called from any thread.
  *
  * Return value: the passed in #GHmac.
@@ -204,6 +207,7 @@ g_hmac_ref (GHmac *hmac)
  * @hmac: a #GHmac
  *
  * Atomically decrements the reference count of @hmac by one.
+ *
  * If the reference count drops to 0, all keys and values will be
  * destroyed, and all memory allocated by the hash table is released.
  * This function is MT-safe and may be called from any thread.
@@ -228,11 +232,12 @@ g_hmac_unref (GHmac *hmac)
  * g_hmac_update:
  * @hmac: a #GHmac
  * @data: (array length=length): buffer used to compute the checksum
- * @length: size of the buffer, or -1 if it is a null-terminated string.
+ * @length: size of the buffer, or -1 if it is a nul-terminated string
  *
- * Feeds @data into an existing #GHmac. The HMAC must still be
- * open, that is g_hmac_get_string() or g_hmac_get_digest() must
- * not have been called on @hmac.
+ * Feeds @data into an existing #GHmac.
+ *
+ * The HMAC must still be open, that is g_hmac_get_string() or
+ * g_hmac_get_digest() must not have been called on @hmac.
  *
  * Since: 2.30
  */
@@ -283,8 +288,8 @@ g_hmac_get_string (GHmac *hmac)
  * g_checksum_get_digest:
  * @hmac: a #GHmac
  * @buffer: output buffer
- * @digest_len: an inout parameter. The caller initializes it to the size of @buffer.
- *   After the call it contains the length of the digest.
+ * @digest_len: an inout parameter. The caller initializes it to the
+ *   size of @buffer. After the call it contains the length of the digest
  *
  * Gets the digest from @checksum as a raw binary array and places it
  * into @buffer. The size of the digest depends on the type of checksum.
@@ -295,9 +300,9 @@ g_hmac_get_string (GHmac *hmac)
  * Since: 2.30
  */
 void
-g_hmac_get_digest (GHmac      *hmac,
-                   guint8     *buffer,
-                   gsize      *digest_len)
+g_hmac_get_digest (GHmac  *hmac,
+                   guint8 *buffer,
+                   gsize  *digest_len)
 {
   gsize len;
 
@@ -360,14 +365,15 @@ g_compute_hmac_for_data (GChecksumType  digest_type,
  * @key: (array length=key_len): the key to use in the HMAC
  * @key_len: the length of the key
  * @str: the string to compute the HMAC for
- * @length: the length of the string, or -1 if the string is null-terminated.
+ * @length: the length of the string, or -1 if the string is nul-terminated
  *
  * Computes the HMAC for a string.
  *
  * The hexadecimal string returned will be in lower case.
  *
- * Return value: the HMAC as a hexadecimal string. The returned string
- *   should be freed with g_free() when done using it.
+ * Return value: the HMAC as a hexadecimal string.
+ *     The returned string should be freed with g_free()
+ *     when done using it.
  *
  * Since: 2.30
  */
