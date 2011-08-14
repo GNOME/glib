@@ -1173,39 +1173,17 @@ g_file_set_contents (const gchar  *filename,
   return retval;
 }
 
-/**
- * g_mkstemp_full:
- * @tmpl: template filename
- * @flags: flags to pass to an open() call in addition to O_EXCL and
- *         O_CREAT, which are passed automatically
- * @mode: permissios to create the temporary file with
- *
- * Opens a temporary file. See the mkstemp() documentation
- * on most UNIX-like systems.
- *
- * The parameter is a string that should follow the rules for
- * mkstemp() templates, i.e. contain the string "XXXXXX".
- * g_mkstemp_full() is slightly more flexible than mkstemp()
- * in that the sequence does not have to occur at the very end of the
- * template and you can pass a @mode and additional @flags. The X
- * string will be modified to form the name of a file that didn't exist.
- * The string should be in the GLib file name encoding. Most importantly,
- * on Windows it should be in UTF-8.
- *
- * Return value: A file handle (as from open()) to the file
- *     opened for reading and writing. The file handle should be
- *     closed with close(). In case of errors, -1 is returned.
- *
- * Since: 2.22
- */
 /*
- * g_mkstemp_full based on the mkstemp implementation from the GNU C library.
+ * get_tmp_file based on the mkstemp implementation from the GNU C library.
  * Copyright (C) 1991,92,93,94,95,96,97,98,99 Free Software Foundation, Inc.
  */
-gint
-g_mkstemp_full (gchar *tmpl, 
-                int    flags,
-		int    mode)
+typedef gint (*GTmpFileCallback) (gchar *, gint, gint);
+
+static gint
+get_tmp_file (gchar            *tmpl,
+              GTmpFileCallback  f,
+              int               flags,
+              int               mode)
 {
   char *XXXXXX;
   int count, fd;
@@ -1217,7 +1195,6 @@ g_mkstemp_full (gchar *tmpl,
   static int counter = 0;
 
   g_return_val_if_fail (tmpl != NULL, -1);
-
 
   /* find the last occurrence of "XXXXXX" */
   XXXXXX = g_strrstr (tmpl, "XXXXXX");
@@ -1249,16 +1226,15 @@ g_mkstemp_full (gchar *tmpl,
       v /= NLETTERS;
       XXXXXX[5] = letters[v % NLETTERS];
 
-      /* tmpl is in UTF-8 on Windows, thus use g_open() */
-      fd = g_open (tmpl, flags | O_CREAT | O_EXCL, mode);
+      fd = f (tmpl, flags, mode);
 
       if (fd >= 0)
-	return fd;
+        return fd;
       else if (errno != EEXIST)
-	/* Any other error will apply also to other names we might
-	 *  try, and there are 2^32 or so of them, so give up now.
-	 */
-	return -1;
+        /* Any other error will apply also to other names we might
+         *  try, and there are 2^32 or so of them, so give up now.
+         */
+        return -1;
     }
 
   /* We got out of the loop because we ran out of combinations to try.  */
@@ -1266,66 +1242,142 @@ g_mkstemp_full (gchar *tmpl,
   return -1;
 }
 
+gint
+wrap_mkdir (gchar *tmpl,
+            int    flags G_GNUC_UNUSED,
+            int    mode)
+{
+  /* tmpl is in UTF-8 on Windows, thus use g_mkdir() */
+  return g_mkdir (tmpl, mode);
+}
+
+/**
+ * g_mkdtemp_full:
+ * @tmpl: template directory name
+ * @mode: permissions to create the temporary directory with
+ *
+ * Creates a temporary directory. See the mkdtemp() documentation
+ * on most UNIX-like systems.
+ *
+ * The parameter is a string that should follow the rules for
+ * mkdtemp() templates, i.e. contain the string "XXXXXX".
+ * g_mkdtemp() is slightly more flexible than mkdtemp() in that the
+ * sequence does not have to occur at the very end of the template
+ * and you can pass a @mode. The X string will be modified to form
+ * the name of a directory that didn't exist. The string should be
+ * in the GLib file name encoding. Most importantly, on Windows it
+ * should be in UTF-8.
+ *
+ * Return value: A pointer to @tmpl, which has been modified
+ *     to hold the directory name. In case of errors, %NULL is returned.
+ *
+ * Since: 2.26
+ */
+gchar *
+g_mkdtemp_full (gchar *tmpl,
+                gint   mode)
+{
+  if (get_tmp_file (tmpl, wrap_mkdir, 0, mode) == -1)
+    return NULL;
+  else
+    return tmpl;
+}
+
+/**
+ * g_mkdtemp:
+ * @tmpl: template directory name
+ *
+ * Creates a temporary directory. See the mkdtemp() documentation
+ * on most UNIX-like systems.
+ *
+ * The parameter is a string that should follow the rules for
+ * mkdtemp() templates, i.e. contain the string "XXXXXX".
+ * g_mkdtemp() is slightly more flexible than mkdtemp() in that the
+ * sequence does not have to occur at the very end of the template
+ * and you can pass a @mode and additional @flags. The X string will
+ * be modified to form the name of a directory that didn't exist.
+ * The string should be in the GLib file name encoding. Most importantly,
+ * on Windows it should be in UTF-8.
+ *
+ * Return value: A pointer to @tmpl, which has been modified
+ *     to hold the directory name.  In case of errors, NULL is returned.
+ *
+ * Since: 2.26
+ */
+gchar *
+g_mkdtemp (gchar *tmpl)
+{
+  return g_mkdtemp_full (tmpl, 0700);
+}
+
+/**
+ * g_mkstemp_full:
+ * @tmpl: template filename
+ * @flags: flags to pass to an open() call in addition to O_EXCL
+ *     and O_CREAT, which are passed automatically
+ * @mode: permissions to create the temporary file with
+ *
+ * Opens a temporary file. See the mkstemp() documentation
+ * on most UNIX-like systems.
+ *
+ * The parameter is a string that should follow the rules for
+ * mkstemp() templates, i.e. contain the string "XXXXXX".
+ * g_mkstemp_full() is slightly more flexible than mkstemp()
+ * in that the sequence does not have to occur at the very end of the
+ * template and you can pass a @mode and additional @flags. The X
+ * string will be modified to form the name of a file that didn't exist.
+ * The string should be in the GLib file name encoding. Most importantly,
+ * on Windows it should be in UTF-8.
+ *
+ * Return value: A file handle (as from open()) to the file
+ *     opened for reading and writing. The file handle should be
+ *     closed with close(). In case of errors, -1 is returned.
+ *
+ * Since: 2.22
+ */
+gint
+g_mkstemp_full (gchar *tmpl,
+                gint   flags,
+                gint   mode)
+{
+  /* tmpl is in UTF-8 on Windows, thus use g_open() */
+  return get_tmp_file (tmpl, (GTmpFileCallback) g_open,
+                       flags | O_CREAT | O_EXCL, mode);
+}
+
 /**
  * g_mkstemp:
  * @tmpl: template filename
  *
  * Opens a temporary file. See the mkstemp() documentation
- * on most UNIX-like systems. 
+ * on most UNIX-like systems.
  *
  * The parameter is a string that should follow the rules for
- * mkstemp() templates, i.e. contain the string "XXXXXX". 
- * g_mkstemp() is slightly more flexible than mkstemp()
- * in that the sequence does not have to occur at the very end of the 
- * template. The X string will 
- * be modified to form the name of a file that didn't exist.
- * The string should be in the GLib file name encoding. Most importantly, 
- * on Windows it should be in UTF-8.
+ * mkstemp() templates, i.e. contain the string "XXXXXX".
+ * g_mkstemp() is slightly more flexible than mkstemp() in that the
+ * sequence does not have to occur at the very end of the template.
+ * The X string will be modified to form the name of a file that
+ * didn't exist. The string should be in the GLib file name encoding.
+ * Most importantly, on Windows it should be in UTF-8.
  *
  * Return value: A file handle (as from open()) to the file
- * opened for reading and writing. The file is opened in binary mode
- * on platforms where there is a difference. The file handle should be
- * closed with close(). In case of errors, -1 is returned.  
- */ 
+ *     opened for reading and writing. The file is opened in binary
+ *     mode on platforms where there is a difference. The file handle
+ *     should be closed with close(). In case of errors, -1 is returned.
+ */
 gint
 g_mkstemp (gchar *tmpl)
 {
   return g_mkstemp_full (tmpl, O_RDWR | O_BINARY, 0600);
 }
 
-/**
- * g_file_open_tmp:
- * @tmpl: Template for file name, as in g_mkstemp(), basename only,
- *        or %NULL, to a default template
- * @name_used: location to store actual name used, or %NULL
- * @error: return location for a #GError
- *
- * Opens a file for writing in the preferred directory for temporary
- * files (as returned by g_get_tmp_dir()). 
- *
- * @tmpl should be a string in the GLib file name encoding containing 
- * a sequence of six 'X' characters, as the parameter to g_mkstemp().
- * However, unlike these functions, the template should only be a
- * basename, no directory components are allowed. If template is
- * %NULL, a default template is used.
- *
- * Note that in contrast to g_mkstemp() (and mkstemp()) 
- * @tmpl is not modified, and might thus be a read-only literal string.
- *
- * The actual name used is returned in @name_used if non-%NULL. This
- * string should be freed with g_free() when not needed any longer.
- * The returned name is in the GLib file name encoding.
- *
- * Return value: A file handle (as from open()) to 
- * the file opened for reading and writing. The file is opened in binary 
- * mode on platforms where there is a difference. The file handle should be
- * closed with close(). In case of errors, -1 is returned 
- * and @error will be set.
- **/
-gint
-g_file_open_tmp (const gchar  *tmpl,
-		 gchar       **name_used,
-		 GError      **error)
+static gint
+g_get_tmp_name (const gchar      *tmpl,
+                gchar           **name_used,
+                GTmpFileCallback  f,
+                gint              flags,
+                gint              mode,
+                GError          **error)
 {
   int retval;
   const char *tmpdir;
@@ -1348,23 +1400,23 @@ g_file_open_tmp (const gchar  *tmpl,
       c[1] = '\0';
 
       g_set_error (error,
-		   G_FILE_ERROR,
-		   G_FILE_ERROR_FAILED,
-		   _("Template '%s' invalid, should not contain a '%s'"),
-		   display_tmpl, c);
+                   G_FILE_ERROR,
+                   G_FILE_ERROR_FAILED,
+                   _("Template '%s' invalid, should not contain a '%s'"),
+                   display_tmpl, c);
       g_free (display_tmpl);
 
       return -1;
     }
-  
+
   if (strstr (tmpl, "XXXXXX") == NULL)
     {
       gchar *display_tmpl = g_filename_display_name (tmpl);
       g_set_error (error,
-		   G_FILE_ERROR,
-		   G_FILE_ERROR_FAILED,
-		   _("Template '%s' doesn't contain XXXXXX"),
-		   display_tmpl);
+                   G_FILE_ERROR,
+                   G_FILE_ERROR_FAILED,
+                   _("Template '%s' doesn't contain XXXXXX"),
+                   display_tmpl);
       g_free (display_tmpl);
       return -1;
     }
@@ -1378,29 +1430,116 @@ g_file_open_tmp (const gchar  *tmpl,
 
   fulltemplate = g_strconcat (tmpdir, sep, tmpl, NULL);
 
-  retval = g_mkstemp (fulltemplate);
-
+  retval = get_tmp_file (fulltemplate, f, flags, mode);
   if (retval == -1)
     {
       int save_errno = errno;
       gchar *display_fulltemplate = g_filename_display_name (fulltemplate);
 
       g_set_error (error,
-		   G_FILE_ERROR,
-		   g_file_error_from_errno (save_errno),
-		   _("Failed to create file '%s': %s"),
-		   display_fulltemplate, g_strerror (save_errno));
+                   G_FILE_ERROR,
+                   g_file_error_from_errno (save_errno),
+                   _("Failed to create file '%s': %s"),
+                   display_fulltemplate, g_strerror (save_errno));
       g_free (display_fulltemplate);
       g_free (fulltemplate);
       return -1;
     }
 
-  if (name_used)
-    *name_used = fulltemplate;
-  else
-    g_free (fulltemplate);
+  *name_used = fulltemplate;
 
   return retval;
+}
+
+/**
+ * g_file_open_tmp:
+ * @tmpl: Template for file name, as in g_mkstemp(), basename only,
+ *     or %NULL, to a default template
+ * @name_used: location to store actual name used, or %NULL
+ * @error: return location for a #GError
+ *
+ * Opens a file for writing in the preferred directory for temporary
+ * files (as returned by g_get_tmp_dir()).
+ *
+ * @tmpl should be a string in the GLib file name encoding containing
+ * a sequence of six 'X' characters, as the parameter to g_mkstemp().
+ * However, unlike these functions, the template should only be a
+ * basename, no directory components are allowed. If template is
+ * %NULL, a default template is used.
+ *
+ * Note that in contrast to g_mkstemp() (and mkstemp()) @tmpl is not
+ * modified, and might thus be a read-only literal string.
+ *
+ * Upon success, and if @name_used is non-%NULL, the actual name used
+ * is returned in @name_used. This string should be freed with g_free()
+ * when not needed any longer. The returned name is in the GLib file
+ * name encoding.
+ *
+ * Return value: A file handle (as from open()) to the file opened for
+ *     reading and writing. The file is opened in binary mode on platforms
+ *     where there is a difference. The file handle should be closed with
+ *     close(). In case of errors, -1 is returned and @error will be set.
+ */
+gint
+g_file_open_tmp (const gchar  *tmpl,
+                 gchar       **name_used,
+                 GError      **error)
+{
+  gchar *fulltemplate;
+  gint result;
+
+  result = g_get_tmp_name (tmpl, &fulltemplate,
+                           (GTmpFileCallback) g_open,
+                           O_CREAT | O_EXCL | O_RDWR | O_BINARY,
+                           0600,
+                           error);
+  if (result != -1)
+    {
+      if (name_used)
+        *name_used = fulltemplate;
+      else
+        g_free (fulltemplate);
+    }
+
+  return result;
+}
+
+/**
+ * g_dir_make_tmp:
+ * @tmpl: Template for directory name, as in g_mkdtemp(), basename only,
+ *     or %NULL, to a default template
+ * @name_used: location to store actual name used, or %NULL
+ * @error: return location for a #GError
+ *
+ * Creates a subdirectory in the preferred directory for temporary
+ * files (as returned by g_get_tmp_dir()).
+ *
+ * @tmpl should be a string in the GLib file name encoding containing
+ * a sequence of six 'X' characters, as the parameter to g_mkstemp().
+ * However, unlike these functions, the template should only be a
+ * basename, no directory components are allowed. If template is
+ * %NULL, a default template is used.
+ *
+ * Note that in contrast to g_mkdtemp() (and mkdtemp()) @tmpl is not
+ * modified, and might thus be a read-only literal string.
+ *
+ * Return value: The actual name used. This string should be freed
+ *     with g_free() when not needed any longer and is is in the GLib
+ *     file name encoding.  In case of errors, %NULL is returned
+ *     and @error will be set.
+ *
+ * Since: 2.30
+ */
+gchar *
+g_dir_make_tmp (const gchar  *tmpl,
+                GError      **error)
+{
+  gchar *fulltemplate;
+
+  if (g_get_tmp_name (tmpl, &fulltemplate, wrap_mkdir, 0, 0700, error) == -1)
+    return NULL;
+  else
+    return fulltemplate;
 }
 
 static gchar *
@@ -2143,62 +2282,11 @@ g_file_get_contents (const gchar  *filename,
 gint
 g_mkstemp (gchar *tmpl)
 {
-  char *XXXXXX;
-  int count, fd;
-  static const char letters[] =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  static const int NLETTERS = sizeof (letters) - 1;
-  glong value;
-  GTimeVal tv;
-  static int counter = 0;
-
-  /* find the last occurrence of 'XXXXXX' */
-  XXXXXX = g_strrstr (tmpl, "XXXXXX");
-
-  if (!XXXXXX)
-    {
-      errno = EINVAL;
-      return -1;
-    }
-
-  /* Get some more or less random data.  */
-  g_get_current_time (&tv);
-  value = (tv.tv_usec ^ tv.tv_sec) + counter++;
-
-  for (count = 0; count < 100; value += 7777, ++count)
-    {
-      glong v = value;
-
-      /* Fill in the random bits.  */
-      XXXXXX[0] = letters[v % NLETTERS];
-      v /= NLETTERS;
-      XXXXXX[1] = letters[v % NLETTERS];
-      v /= NLETTERS;
-      XXXXXX[2] = letters[v % NLETTERS];
-      v /= NLETTERS;
-      XXXXXX[3] = letters[v % NLETTERS];
-      v /= NLETTERS;
-      XXXXXX[4] = letters[v % NLETTERS];
-      v /= NLETTERS;
-      XXXXXX[5] = letters[v % NLETTERS];
-
-      /* This is the backward compatibility system codepage version,
-       * thus use normal open().
-       */
-      fd = open (tmpl, O_RDWR | O_CREAT | O_EXCL | O_BINARY, 0600);
-
-      if (fd >= 0)
-	return fd;
-      else if (errno != EEXIST)
-	/* Any other error will apply also to other names we might
-	 *  try, and there are 2^32 or so of them, so give up now.
-	 */
-	return -1;
-    }
-
-  /* We got out of the loop because we ran out of combinations to try.  */
-  errno = EEXIST;
-  return -1;
+  /* This is the backward compatibility system codepage version,
+   * thus use normal open().
+   */
+  return get_tmp_file (tmpl, (GTmpFileCallback) open,
+		       O_RDWR | O_CREAT | O_EXCL, 0600);
 }
 
 #undef g_file_open_tmp

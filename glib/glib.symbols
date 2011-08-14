@@ -342,6 +342,7 @@ g_file_error_quark
 g_file_get_contents PRIVATE
 #endif
 g_file_set_contents
+g_dir_make_tmp
 #ifndef _WIN64
 g_file_open_tmp PRIVATE
 g_file_test PRIVATE
@@ -353,6 +354,8 @@ g_format_size_for_display
 #ifndef _WIN64
 g_mkstemp PRIVATE
 #endif
+g_mkdtemp
+g_mkdtemp_full
 g_mkstemp_full
 g_mkdir_with_parents
 #ifdef G_OS_WIN32

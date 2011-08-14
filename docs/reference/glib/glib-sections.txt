@@ -1174,6 +1174,9 @@ g_mkstemp_full
 g_file_open_tmp
 g_file_read_link
 g_mkdir_with_parents
+g_mkdtemp
+g_mkdtemp_full
+g_dir_make_tmp
 
 <SUBSECTION>
 GDir

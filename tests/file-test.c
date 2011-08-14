@@ -43,6 +43,8 @@
 #include <unistd.h>
 #endif
 
+#include <fcntl.h>		/* For open() */
+
 #ifdef G_OS_WIN32
 #include <io.h>			/* For read(), write() etc */
 #endif
@@ -93,6 +95,55 @@ test_mkstemp (void)
 
   close (fd);
   remove (template);
+}
+
+static void
+test_mkdtemp (void)
+{
+  char template[32], *retval;
+  int fd;
+  int i;
+
+  strcpy (template, "foodir");
+  retval = g_mkdtemp (template);
+  if (retval != NULL)
+    {
+      g_warning ("g_mkdtemp works even if template doesn't contain XXXXXX");
+      g_rmdir (retval);
+    }
+
+  strcpy (template, "foodir");
+  retval = g_mkdtemp (template);
+  if (retval != NULL)
+    {
+      g_warning ("g_mkdtemp works even if template contains less than six X");
+      g_rmdir (retval);
+    }
+
+  strcpy (template, "fooXXXXXX");
+  retval = g_mkdtemp (template);
+  g_assert (retval != NULL && "g_mkdtemp didn't work for template fooXXXXXX");
+  g_assert (retval == template && "g_mkdtemp allocated the resulting string?");
+  g_assert (!g_file_test (template, G_FILE_TEST_IS_REGULAR));
+  g_assert (g_file_test (template, G_FILE_TEST_IS_DIR));
+
+  strcat (template, "/abc");
+  fd = g_open (template, O_WRONLY | O_CREAT, 0600);
+  g_assert (fd != -1 && "couldn't open file in temporary directory");
+  close (fd);
+  g_assert (g_file_test (template, G_FILE_TEST_IS_REGULAR));
+  i = g_unlink (template);
+  g_assert (i != -1 && "couldn't unlink file in temporary directory");
+
+  template[9] = '\0';
+  i = g_rmdir (template);
+  g_assert (i != -1 && "couldn't remove temporary directory");
+
+  strcpy (template, "fooXXXXXX.dir");
+  retval = g_mkdtemp (template);
+  g_assert (retval != NULL && "g_mkdtemp didn't work for template fooXXXXXX.dir");
+  g_assert (g_file_test (template, G_FILE_TEST_IS_DIR));
+  g_rmdir (template);
 }
 
 static void
@@ -173,6 +224,7 @@ int
 main (int argc, char *argv[])
 {
   test_mkstemp ();
+  test_mkdtemp ();
   test_readlink ();
   test_get_contents ();
 

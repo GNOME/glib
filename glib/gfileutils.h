@@ -99,16 +99,23 @@ gboolean g_file_set_contents (const gchar *filename,
 gchar   *g_file_read_link    (const gchar  *filename,
 			      GError      **error);
 
+/* Wrapper / workalike for mkdtemp() */
+gchar   *g_mkdtemp            (gchar        *tmpl);
+gchar   *g_mkdtemp_full       (gchar        *tmpl,
+                               gint          mode);
+
 /* Wrapper / workalike for mkstemp() */
 gint    g_mkstemp            (gchar        *tmpl);
 gint    g_mkstemp_full       (gchar        *tmpl,
-                              int           flags,
-                              int           mode);
+                              gint          flags,
+                              gint          mode);
 
-/* Wrapper for g_mkstemp */
+/* Wrappers for g_mkstemp and g_mkdtemp() */
 gint    g_file_open_tmp      (const gchar  *tmpl,
-			      gchar       **name_used,
-			      GError      **error);
+                              gchar       **name_used,
+                              GError      **error);
+gchar  *g_dir_make_tmp       (const gchar  *tmpl,
+                              GError      **error);
 
 typedef enum
 {
