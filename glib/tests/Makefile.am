@@ -113,6 +113,9 @@ unicode_LDADD     = $(progs_ldadd)
 TEST_PROGS         += checksum
 checksum_LDADD      = $(progs_ldadd)
 
+TEST_PROGS         += hmac
+hmac_LDADD          = $(progs_ldadd)
+
 TEST_PROGS         += hash
 hash_LDADD          = $(progs_ldadd)
 

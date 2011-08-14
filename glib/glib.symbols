@@ -387,6 +387,15 @@ g_hash_table_iter_get_hash_table
 g_hash_table_iter_remove
 g_hash_table_iter_replace
 g_hash_table_iter_steal
+g_hmac_new
+g_hmac_copy
+g_hmac_ref
+g_hmac_unref
+g_hmac_update
+g_hmac_get_string
+g_hmac_get_digest
+g_compute_hmac_for_data
+g_compute_hmac_for_string
 g_hook_alloc
 g_hook_compare_ids
 g_hook_destroy

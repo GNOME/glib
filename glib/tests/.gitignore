@@ -16,6 +16,7 @@ fileutils
 gdatetime
 gvariant
 hash
+hmac
 hostutils
 keyfile
 list

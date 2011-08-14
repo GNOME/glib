@@ -48,6 +48,7 @@
 #include <glib/gerror.h>
 #include <glib/gfileutils.h>
 #include <glib/ghash.h>
+#include <glib/ghmac.h>
 #include <glib/ghook.h>
 #include <glib/ghostutils.h>
 #include <glib/giochannel.h>
