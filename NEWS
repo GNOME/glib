@@ -1,3 +1,58 @@
+Overview of changes from GLib 2.29.14 to 2.29.16
+================================================
+
+* GTlsDatabase: an abstract class that provides support
+  or certificate and key lookup. An implementation will
+  be provided in glib-networking
+
+* Misc new API:
+ - g_ptr_array_add_full: creates a GPtrArray with
+   a preallocated size and a destroy function
+ - g_desktop_app_info_get_show_in: checks if a GDesktopAppInfo
+   should be shown in a given desktop environment
+
+* Unify thread wakeup implementations of GMainContext
+  and GCancellable, and use eventfd for it when available
+
+* Show mounts in $XDG_USER_DIR in addition to /media and $HOME
+
+* Bugs fixed:
+ 636572 GTlsCertificateDB
+ 644601 Some tests need a running dbus session
+ 652284 deal with small key lengths
+ 652827 glib-2.29.8 no longer builds with mingw.org's toolchain
+ 653063 PEM parser fails parsing private key when put first
+ 654078 Fail to static linking with Glib library
+ 654450 New functions: g_ptr_array_new_full()
+ 654793 Add G_VALUE_INIT
+ 655044 GDesktopAppInfo: Add g_desktop_app_info_get_show_in()
+ 655148 gdbusconnection is broken when compiling with mingw
+ 655241 glocalfile.c no longer compiles with MinGW GCC
+ 655598 g_cancellable_get_fd: silently return -1 for NULL cancellable
+ 655664 gdbus should not abort if no dbus session is available
+ 655769 Use ZLIB_CFLAGS when compiling gio
+ 656031 Improve GVariant annotations
+ 656048 glib-codegen requires Python >= 2.5
+ 656151 configure test logic inverted, doesn't match comments
+ 656152 GCC only syntax used, yet other compilers allowed by configure.
+ 656162 allow use of lcov 1.9 for coverage
+ 656282 GDBusProxy: uninitialized local variables can be freed
+ 656283 Failing tls connection cause assertion
+
+* Translation updates:
+ Bulgarian
+ French
+ Galician
+ German
+ Hebrew
+ Indonesian
+ Italian
+ Norwegian bokmål
+ Russian
+ Spanish
+ Swedish
+
+
 Overview of changes from GLib 2.29.12 to 2.29.14
 ================================================
 
