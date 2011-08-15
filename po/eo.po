@@ -201,192 +201,192 @@ msgstr "%H:%M:%S"
 #: ../glib/gdatetime.c:193
 msgctxt "full month name"
 msgid "January"
-msgstr "Januaro"
+msgstr "januaro"
 
 #: ../glib/gdatetime.c:195
 msgctxt "full month name"
 msgid "February"
-msgstr "Februaro"
+msgstr "februaro"
 
 #: ../glib/gdatetime.c:197
 msgctxt "full month name"
 msgid "March"
-msgstr "Marto"
+msgstr "marto"
 
 #: ../glib/gdatetime.c:199
 msgctxt "full month name"
 msgid "April"
-msgstr "Aprilo"
+msgstr "aprilo"
 
 #: ../glib/gdatetime.c:201
 msgctxt "full month name"
 msgid "May"
-msgstr "Majo"
+msgstr "majo"
 
 #: ../glib/gdatetime.c:203
 msgctxt "full month name"
 msgid "June"
-msgstr "Junio"
+msgstr "junio"
 
 #: ../glib/gdatetime.c:205
 msgctxt "full month name"
 msgid "July"
-msgstr "Julio"
+msgstr "julio"
 
 #: ../glib/gdatetime.c:207
 msgctxt "full month name"
 msgid "August"
-msgstr "Aŭgusto"
+msgstr "aŭgusto"
 
 #: ../glib/gdatetime.c:209
 msgctxt "full month name"
 msgid "September"
-msgstr "Septembro"
+msgstr "septembro"
 
 #: ../glib/gdatetime.c:211
 msgctxt "full month name"
 msgid "October"
-msgstr "Oktobro"
+msgstr "oktobro"
 
 #: ../glib/gdatetime.c:213
 msgctxt "full month name"
 msgid "November"
-msgstr "Novembro"
+msgstr "novembro"
 
 #: ../glib/gdatetime.c:215
 msgctxt "full month name"
 msgid "December"
-msgstr "Decembro"
+msgstr "decembro"
 
 #: ../glib/gdatetime.c:230
 msgctxt "abbreviated month name"
 msgid "Jan"
-msgstr "Jan"
+msgstr "jan"
 
 #: ../glib/gdatetime.c:232
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr "Feb"
+msgstr "feb"
 
 #: ../glib/gdatetime.c:234
 msgctxt "abbreviated month name"
 msgid "Mar"
-msgstr "Mar"
+msgstr "mar"
 
 #: ../glib/gdatetime.c:236
 msgctxt "abbreviated month name"
 msgid "Apr"
-msgstr "Apr"
+msgstr "apr"
 
 #: ../glib/gdatetime.c:238
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr "Maj"
+msgstr "maj"
 
 #: ../glib/gdatetime.c:240
 msgctxt "abbreviated month name"
 msgid "Jun"
-msgstr "Jun"
+msgstr "jun"
 
 #: ../glib/gdatetime.c:242
 msgctxt "abbreviated month name"
 msgid "Jul"
-msgstr "Jul"
+msgstr "jul"
 
 #: ../glib/gdatetime.c:244
 msgctxt "abbreviated month name"
 msgid "Aug"
-msgstr "Aŭg"
+msgstr "aŭg"
 
 #: ../glib/gdatetime.c:246
 msgctxt "abbreviated month name"
 msgid "Sep"
-msgstr "Sep"
+msgstr "sep"
 
 #: ../glib/gdatetime.c:248
 msgctxt "abbreviated month name"
 msgid "Oct"
-msgstr "Okt"
+msgstr "okt"
 
 #: ../glib/gdatetime.c:250
 msgctxt "abbreviated month name"
 msgid "Nov"
-msgstr "Nov"
+msgstr "nov"
 
 #: ../glib/gdatetime.c:252
 msgctxt "abbreviated month name"
 msgid "Dec"
-msgstr "Dec"
+msgstr "dec"
 
 #: ../glib/gdatetime.c:267
 msgctxt "full weekday name"
 msgid "Monday"
-msgstr "Lundo"
+msgstr "lundo"
 
 #: ../glib/gdatetime.c:269
 msgctxt "full weekday name"
 msgid "Tuesday"
-msgstr "Mardo"
+msgstr "mardo"
 
 #: ../glib/gdatetime.c:271
 msgctxt "full weekday name"
 msgid "Wednesday"
-msgstr "Merkredo"
+msgstr "merkredo"
 
 #: ../glib/gdatetime.c:273
 msgctxt "full weekday name"
 msgid "Thursday"
-msgstr "Ĵaŭdo"
+msgstr "ĵaŭdo"
 
 #: ../glib/gdatetime.c:275
 msgctxt "full weekday name"
 msgid "Friday"
-msgstr "Vendredo"
+msgstr "vendredo"
 
 #: ../glib/gdatetime.c:277
 msgctxt "full weekday name"
 msgid "Saturday"
-msgstr "Sabato"
+msgstr "sabato"
 
 #: ../glib/gdatetime.c:279
 msgctxt "full weekday name"
 msgid "Sunday"
-msgstr "Dimanĉo"
+msgstr "dimanĉo"
 
 #: ../glib/gdatetime.c:294
 msgctxt "abbreviated weekday name"
 msgid "Mon"
-msgstr "Lun"
+msgstr "lun"
 
 #: ../glib/gdatetime.c:296
 msgctxt "abbreviated weekday name"
 msgid "Tue"
-msgstr "Mar"
+msgstr "mar"
 
 #: ../glib/gdatetime.c:298
 msgctxt "abbreviated weekday name"
 msgid "Wed"
-msgstr "Mer"
+msgstr "mer"
 
 #: ../glib/gdatetime.c:300
 msgctxt "abbreviated weekday name"
 msgid "Thu"
-msgstr "Ĵaŭ"
+msgstr "ĵaŭ"
 
 #: ../glib/gdatetime.c:302
 msgctxt "abbreviated weekday name"
 msgid "Fri"
-msgstr "Ven"
+msgstr "ven"
 
 #: ../glib/gdatetime.c:304
 msgctxt "abbreviated weekday name"
 msgid "Sat"
-msgstr "Sab"
+msgstr "sab"
 
 #: ../glib/gdatetime.c:306
 msgctxt "abbreviated weekday name"
 msgid "Sun"
-msgstr "Dim"
+msgstr "dim"
 
 #: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
