@@ -1021,6 +1021,10 @@ signal_cb (GDBusConnection *connection,
                                                     NULL);
                 }
               /* ... and then synthesize the signal */
+              g_signal_emit_by_name (interface,
+                                     "g-properties-changed",
+                                     changed_properties,
+                                     invalidated_properties);
               g_signal_emit (manager,
                              signals[INTERFACE_PROXY_PROPERTIES_CHANGED_SIGNAL],
                              0,
@@ -1028,10 +1032,6 @@ signal_cb (GDBusConnection *connection,
                              interface,
                              changed_properties,
                              invalidated_properties);
-              g_signal_emit_by_name (interface,
-                                     "g-properties-changed",
-                                     changed_properties,
-                                     invalidated_properties);
               g_object_unref (interface);
             }
           g_variant_unref (changed_properties);
@@ -1044,6 +1044,11 @@ signal_cb (GDBusConnection *connection,
       interface = g_dbus_object_get_interface (G_DBUS_OBJECT (object_proxy), interface_name);
       if (interface != NULL)
         {
+          g_signal_emit_by_name (interface,
+                                 "g-signal",
+                                 sender_name,
+                                 signal_name,
+                                 parameters);
           g_signal_emit (manager,
                          signals[INTERFACE_PROXY_SIGNAL_SIGNAL],
                          0,
@@ -1052,11 +1057,6 @@ signal_cb (GDBusConnection *connection,
                          sender_name,
                          signal_name,
                          parameters);
-          g_signal_emit_by_name (interface,
-                                 "g-signal",
-                                 sender_name,
-                                 signal_name,
-                                 parameters);
           g_object_unref (interface);
         }
     }
