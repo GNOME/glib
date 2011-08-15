@@ -2787,6 +2787,9 @@ g_settings_bind_with_mapping (GSettings               *settings,
   GQuark binding_quark;
 
   g_return_if_fail (G_IS_SETTINGS (settings));
+  g_return_if_fail (key != NULL);
+  g_return_if_fail (G_IS_OBJECT (object));
+  g_return_if_fail (property != NULL);
   g_return_if_fail (~flags & G_SETTINGS_BIND_INVERT_BOOLEAN);
 
   objectclass = G_OBJECT_GET_CLASS (object);
