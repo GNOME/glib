@@ -1316,6 +1316,7 @@ async_init_get_name_owner_cb (GDBusConnection *connection,
                               gpointer         user_data)
 {
   AsyncInitData *data = user_data;
+  gboolean get_all;
 
   if (res != NULL)
     {
@@ -1350,7 +1351,25 @@ async_init_get_name_owner_cb (GDBusConnection *connection,
         }
     }
 
-  if (!(data->proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES))
+  get_all = TRUE;
+
+  if (data->proxy->priv->flags & G_DBUS_PROXY_FLAGS_DO_NOT_LOAD_PROPERTIES)
+    {
+      /* Don't load properties if the API user doesn't want them */
+      get_all = FALSE;
+    }
+  else if (data->proxy->priv->name_owner == NULL &&
+           data->proxy->priv->name != NULL)
+    {
+      /* Don't attempt to load properties if the name_owner is NULL (which
+       * usually means the name isn't owned), unless name is also NULL (which
+       * means we actually wanted to talk to the directly-connected process -
+       * either dbus-daemon or a peer - instead of going via dbus-daemon)
+       */
+        get_all = FALSE;
+    }
+
+  if (get_all)
     {
       /* load all properties asynchronously */
       g_dbus_connection_call (data->proxy->priv->connection,
