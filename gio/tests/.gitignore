@@ -47,6 +47,7 @@ gdbus-names
 gdbus-non-socket
 gdbus-peer
 gdbus-proxy
+gdbus-proxy-threads
 gdbus-proxy-well-known-name
 gdbus-serialization
 gdbus-test-codegen

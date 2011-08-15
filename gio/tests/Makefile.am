@@ -11,6 +11,7 @@ INCLUDES = 			\
 	$(GLIB_DEBUG_FLAGS)	\
 	-I$(top_builddir)/gio	\
 	-I$(top_srcdir)/gio	\
+	$(DBUS1_CFLAGS)		\
 	-DSRCDIR=\""$(srcdir)"\"
 
 noinst_PROGRAMS = $(TEST_PROGS) $(SAMPLE_PROGS)
@@ -59,6 +60,7 @@ TEST_PROGS +=			\
 	gdbus-connection-slow	\
 	gdbus-names		\
 	gdbus-proxy		\
+	gdbus-proxy-threads	\
 	gdbus-proxy-well-known-name \
 	gdbus-introspection	\
 	gdbus-threading		\
@@ -295,6 +297,9 @@ gdbus_names_LDADD = $(progs_ldadd)
 
 gdbus_proxy_SOURCES = gdbus-proxy.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_proxy_LDADD = $(progs_ldadd)
+
+gdbus_proxy_threads_SOURCES = gdbus-proxy-threads.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_proxy_threads_LDADD = $(progs_ldadd)
 
 gdbus_proxy_well_known_name_SOURCES = gdbus-proxy-well-known-name.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_proxy_well_known_name_LDADD = $(progs_ldadd)
