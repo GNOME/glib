@@ -5,11 +5,15 @@ Overview of changes from GLib 2.29.14 to 2.29.16
   or certificate and key lookup. An implementation will
   be provided in glib-networking
 
+* GHmac: Support or HMAC digests
+
 * Misc new API:
  - g_ptr_array_add_full: creates a GPtrArray with
    a preallocated size and a destroy function
  - g_desktop_app_info_get_show_in: checks if a GDesktopAppInfo
    should be shown in a given desktop environment
+ - g_mkdtemp, g_mkdtemp_full, g_dir_make_tmp: create
+   temporary directories
 
 * Unify thread wakeup implementations of GMainContext
   and GCancellable, and use eventfd for it when available
@@ -38,9 +42,14 @@ Overview of changes from GLib 2.29.14 to 2.29.16
  656162 allow use of lcov 1.9 for coverage
  656282 GDBusProxy: uninitialized local variables can be freed
  656283 Failing tls connection cause assertion
+ 118563 Add g_mkdtemp in the spirit of g_mkstemp
+ 636405 Add g_return_if_fail() to g_settings_bind_with_mapping()
+ 656039 race condition between GDBusProxy signals and public API
+ 656492 g_io_channel_new_file failure (open(2) behavior wrt POSIX)
 
 * Translation updates:
  Bulgarian
+ Esperanto
  French
  Galician
  German
