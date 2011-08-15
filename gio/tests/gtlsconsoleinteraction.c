@@ -22,7 +22,13 @@
 
 #include "config.h"
 
+#include <glib.h>
 #include <string.h>
+
+#ifdef G_OS_WIN32
+#include <glib/gprintf.h>
+#include <conio.h>
+#endif
 
 #include "gtlsconsoleinteraction.h"
 
@@ -33,6 +39,31 @@
  */
 
 G_DEFINE_TYPE (GTlsConsoleInteraction, g_tls_console_interaction, G_TYPE_TLS_INTERACTION);
+
+#ifdef G_OS_WIN32
+/* win32 doesn't have getpass() */
+static gchar *
+getpass (const gchar *prompt)
+{
+  static gchar buf[BUFSIZ];
+  gint i;
+
+  g_printf ("%s", prompt);
+  fflush (stdout);
+
+  for (i = 0; i < BUFSIZ - 1; ++i)
+    {
+      buf[i] = _getch ();
+      if (buf[i] == '\r')
+        break;
+    }
+  buf[i] = '\0';
+
+  g_printf ("\n");
+
+  return &buf[0];
+}
+#endif
 
 static GTlsInteractionResult
 g_tls_console_interaction_ask_password (GTlsInteraction    *interaction,
