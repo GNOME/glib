@@ -1673,7 +1673,7 @@ g_file_info_get_size (GFileInfo *info)
 /**
  * g_file_info_get_modification_time:
  * @info: a #GFileInfo.
- * @result: a #GTimeVal.
+ * @result: (out caller-allocates): a #GTimeVal.
  *
  * Gets the modification time of the current @info and sets it
  * in @result.
