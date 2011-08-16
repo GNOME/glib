@@ -2042,25 +2042,24 @@ g_get_monotonic_time (void)
 #ifdef HAVE_CLOCK_GETTIME
   /* librt clock_gettime() is our first choice */
   {
-    static int clockid = CLOCK_REALTIME;
+#ifdef HAVE_MONOTONIC_CLOCK
+    static volatile gsize clockid = 0;
+#else
+    static clockid_t clockid = CLOCK_REALTIME;
+#endif
     struct timespec ts;
 
 #ifdef HAVE_MONOTONIC_CLOCK
-    /* We have to check if we actually have monotonic clock support.
-     *
-     * There is no thread safety issue here since there is no harm if we
-     * check twice.
-     */
-    {
-      static gboolean checked;
+    if (g_once_init_enter (&clockid))
+      {
+	clockid_t best_clockid;
 
-      if G_UNLIKELY (!checked)
-        {
-          if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
-            clockid = CLOCK_MONOTONIC;
-          checked = TRUE;
-        }
-    }
+	if (sysconf (_SC_MONOTONIC_CLOCK) >= 0)
+	  best_clockid = CLOCK_MONOTONIC;
+	else
+	  best_clockid = CLOCK_REALTIME;
+	g_once_init_leave (&clockid, (gsize)best_clockid);
+      }
 #endif
 
     clock_gettime (clockid, &ts);
