@@ -493,6 +493,14 @@ EXTRA_DIST += \
 	appinfo-test-notgnome.desktop	\
 	gdbus-testserver.py		\
 	test-codegen.xml		\
+	cert1.pem			\
+	cert2.pem			\
+	cert3.pem			\
+	key.pem				\
+	key-cert.pem			\
+	cert-key.pem			\
+	cert-list.pem			\
+	nothing.pem			\
 	$(NULL)
 
 MISC_STUFF = test.mo
