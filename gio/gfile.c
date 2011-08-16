@@ -536,7 +536,7 @@ g_file_dup (GFile *file)
 
 /**
  * g_file_hash:
- * @file: #gconstpointer to a #GFile.
+ * @file: (type GFile): #gconstpointer to a #GFile.
  *
  * Creates a hash value for a #GFile.
  *
