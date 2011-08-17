@@ -481,6 +481,10 @@ g_spawn_sync (const gchar          *working_directory,
  * course the name of the program to execute. By default, the name of
  * the program must be a full path; the <envar>PATH</envar> shell variable 
  * will only be searched if you pass the %G_SPAWN_SEARCH_PATH flag.
+ * If the program name is not a full path and %G_SPAWN_SEARCH_PATH flag is not
+ * used, then the program will be run from the current directory (or
+ * %working_directory, if specified); this might be unexpected or even
+ * dangerous in some cases when the current directory is world-writable.
  *
  * On Windows, note that all the string or string vector arguments to
  * this function and the other g_spawn*() functions are in UTF-8, the
