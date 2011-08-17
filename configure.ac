@@ -2665,6 +2665,23 @@ if test x"$glib_cv_eventfd" = x"yes"; then
 fi
 AM_CONDITIONAL(HAVE_EVENTFD, [test "$glib_cv_eventfd" = "yes"])
 
+AC_CACHE_CHECK(for timerfd_create(2) system call,
+    glib_cv_timerfd,AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+#include <sys/timerfd.h>
+#include <unistd.h>
+],[
+int
+main (void)
+{
+  timerfd_create (CLOCK_MONOTONIC, TFD_CLOEXEC);
+  return 0;
+}
+])],glib_cv_timerfd=yes,glib_cv_timerfd=no))
+if test x"$glib_cv_timerfd" = x"yes"; then
+  AC_DEFINE(HAVE_TIMERFD, 1, [we have the timerfd_create(2) system call])
+fi
+AM_CONDITIONAL(HAVE_TIMERFD, [test "$glib_cv_timerfd" = "yes"])
+
 dnl ****************************************
 dnl *** GLib POLL* compatibility defines ***
 dnl ****************************************

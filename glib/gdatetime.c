@@ -63,6 +63,7 @@
 #include "gatomic.h"
 #include "gfileutils.h"
 #include "ghash.h"
+#include "giochannel.h"
 #include "gmain.h"
 #include "gmappedfile.h"
 #include "gstrfuncs.h"
@@ -75,6 +76,9 @@
 #ifndef G_OS_WIN32
 #include <sys/time.h>
 #include <time.h>
+#ifdef HAVE_TIMERFD
+#include <sys/timerfd.h>
+#endif
 #endif /* !G_OS_WIN32 */
 
 /**
@@ -2596,6 +2600,8 @@ struct _GDateTimeSource
   gint64      wakeup_expiration;
 
   gboolean    cancel_on_set;
+
+  GPollFD     pollfd;
 };
 
 static inline void
@@ -2632,7 +2638,17 @@ g_datetime_source_prepare (GSource *source,
 			  gint    *timeout)
 {
   GDateTimeSource *datetime_source = (GDateTimeSource*)source;
-  gint64 monotonic_now = g_source_get_time (source);
+  gint64 monotonic_now;
+
+#ifdef HAVE_TIMERFD
+  if (datetime_source->pollfd.fd != -1)
+    {
+      *timeout = -1;
+      return FALSE;
+    }
+#endif
+
+  monotonic_now = g_source_get_time (source);
 
   if (monotonic_now < datetime_source->wakeup_expiration)
     {
@@ -2651,6 +2667,11 @@ static gboolean
 g_datetime_source_check (GSource  *source)
 {
   GDateTimeSource *datetime_source = (GDateTimeSource*)source;
+
+#ifdef HAVE_TIMERFD
+  if (datetime_source->pollfd.fd != -1)
+    return datetime_source->pollfd.revents != 0;
+#endif
 
   if (g_datetime_source_is_expired (datetime_source))
     return TRUE;
@@ -2681,6 +2702,11 @@ g_datetime_source_dispatch (GSource    *source,
 static void
 g_datetime_source_finalize (GSource *source)
 {
+#ifdef HAVE_TIMERFD
+  GDateTimeSource *datetime_source = (GDateTimeSource*)source;
+  if (datetime_source->pollfd.fd != -1)
+    close (datetime_source->pollfd.fd);
+#endif
 }
 
 static GSourceFuncs g_datetime_source_funcs = {
@@ -2689,6 +2715,45 @@ static GSourceFuncs g_datetime_source_funcs = {
   g_datetime_source_dispatch,
   g_datetime_source_finalize
 };
+
+#ifdef HAVE_TIMERFD
+static gboolean
+g_datetime_source_init_timerfd (GDateTimeSource *datetime_source,
+				gint64           unix_seconds)
+{
+  struct itimerspec its;
+  int settime_flags;
+
+  datetime_source->pollfd.fd = timerfd_create (CLOCK_REALTIME, TFD_CLOEXEC);
+  if (datetime_source->pollfd.fd == -1)
+    return FALSE;
+
+  memset (&its, 0, sizeof (its));
+  its.it_value.tv_sec = (time_t) unix_seconds;
+
+  /* http://article.gmane.org/gmane.linux.kernel/1132138 */
+#ifndef TFD_TIMER_CANCEL_ON_SET
+#define TFD_TIMER_CANCEL_ON_SET (1 << 1)
+#endif
+
+  settime_flags = TFD_TIMER_ABSTIME;
+  if (datetime_source->cancel_on_set)
+    settime_flags |= TFD_TIMER_CANCEL_ON_SET;
+
+  if (timerfd_settime (datetime_source->pollfd.fd, settime_flags, &its, NULL) < 0)
+    {
+      close (datetime_source->pollfd.fd);
+      datetime_source->pollfd.fd = -1;
+      return FALSE;
+    }
+
+  datetime_source->pollfd.events = G_IO_IN;
+
+  g_source_add_poll ((GSource*) datetime_source, &datetime_source->pollfd);
+
+  return TRUE;
+}
+#endif
 
 /**
  * g_date_time_source_new:
@@ -2733,11 +2798,21 @@ g_date_time_source_new (GDateTime  *datetime,
 			gboolean    cancel_on_set)
 {
   GDateTimeSource *datetime_source;
+  gint64 unix_seconds;
+
+  unix_seconds = g_date_time_to_unix (datetime);
 
   datetime_source = (GDateTimeSource*) g_source_new (&g_datetime_source_funcs, sizeof (GDateTimeSource));
 
   datetime_source->cancel_on_set = cancel_on_set;
-  datetime_source->real_expiration = g_date_time_to_unix (datetime) * 1000000;
+
+#ifdef HAVE_TIMERFD
+  if (g_datetime_source_init_timerfd (datetime_source, unix_seconds))
+    return (GSource*)datetime_source;
+  /* Fall through to non-timerfd code */
+#endif
+
+  datetime_source->real_expiration = unix_seconds * 1000000;
   g_datetime_source_reschedule (datetime_source, g_get_monotonic_time ());
 
   return (GSource*)datetime_source;
