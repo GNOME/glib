@@ -3110,7 +3110,7 @@ g_value_object_lcopy_value (const GValue *value,
 /**
  * g_value_set_object:
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
- * @v_object: (type GObject.Object): object value to be set
+ * @v_object: (type GObject.Object) (allow-none): object value to be set
  *
  * Set the contents of a %G_TYPE_OBJECT derived #GValue to @v_object.
  *
@@ -3152,7 +3152,7 @@ g_value_set_object (GValue   *value,
 /**
  * g_value_set_object_take_ownership: (skip)
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
- * @v_object: object value to be set
+ * @v_object: (allow-none): object value to be set
  *
  * This is an internal function introduced mainly for C marshallers.
  *
@@ -3168,7 +3168,7 @@ g_value_set_object_take_ownership (GValue  *value,
 /**
  * g_value_take_object: (skip)
  * @value: a valid #GValue of %G_TYPE_OBJECT derived type
- * @v_object: object value to be set
+ * @v_object: (allow-none): object value to be set
  *
  * Sets the contents of a %G_TYPE_OBJECT derived #GValue to @v_object
  * and takes over the ownership of the callers reference to @v_object;

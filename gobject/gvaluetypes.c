@@ -1172,7 +1172,7 @@ g_value_get_gtype (const GValue *value)
 /**
  * g_value_set_variant:
  * @value: a valid #GValue of type %G_TYPE_VARIANT
- * @variant: a #GVariant, or %NULL
+ * @variant: (allow-none): a #GVariant, or %NULL
  *
  * Set the contents of a variant #GValue to @variant.
  * If the variant is floating, it is consumed.
@@ -1201,7 +1201,7 @@ g_value_set_variant (GValue   *value,
 /**
  * g_value_take_variant:
  * @value: a valid #GValue of type %G_TYPE_VARIANT
- * @variant: a #GVariant, or %NULL
+ * @variant: (allow-none): a #GVariant, or %NULL
  *
  * Set the contents of a variant #GValue to @variant, and takes over
  * the ownership of the caller's reference to @variant;

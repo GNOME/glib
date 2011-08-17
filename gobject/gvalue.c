@@ -326,7 +326,7 @@ g_value_peek_pointer (const GValue *value)
 /**
  * g_value_set_instance:
  * @value: An initialized #GValue structure.
- * @instance: the instance
+ * @instance: (allow-none): the instance
  *
  * Sets @value from an instantiatable type via the
  * value_table's collect_value() function.
