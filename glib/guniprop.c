@@ -855,7 +855,7 @@ real_toupper (const gchar *str,
 		   * which could simplify this considerably.
 		   */
 		  gsize decomp_len, i;
-		  gunichar decomp[4];
+		  gunichar decomp[18];
 
 		  decomp_len = g_unichar_fully_decompose (c, FALSE, decomp, 4);
 		  for (i=0; i < decomp_len; i++)

@@ -696,9 +696,12 @@ g_unichar_compose (gunichar  a,
  * The decomposed sequence is placed in @result.  Only up to
  * @result_len characters are written into @result.  The length
  * of the full decomposition (irrespective of @result_len) is
- * returned by the function.  For canonical decomposition, a
- * result buffer of length 4 is always enough, whereas for
- * compatibility decomposition, a buffer of 18 is enough.
+ * returned by the function.  For canonical decomposition,
+ * currently all decompositions are of length at most 4, but
+ * this may change in the future (very unlikely though).
+ * At any rate, Unicode does guarantee that a buffer of length
+ * 18 is always enough for both compatibility and canonical
+ * decompositions.
  *
  * See <ulink url="http://unicode.org/reports/tr15/">UAX#15</ulink>
  * for details.
