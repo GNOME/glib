@@ -5349,7 +5349,7 @@ g_dbus_connection_call (GDBusConnection        *connection,
                         GAsyncReadyCallback     callback,
                         gpointer                user_data)
 {
-  return g_dbus_connection_call_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, NULL, cancellable, callback, user_data);
+  g_dbus_connection_call_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, NULL, cancellable, callback, user_data);
 }
 
 /**
@@ -5493,7 +5493,7 @@ g_dbus_connection_call_with_unix_fd_list (GDBusConnection        *connection,
                                           GAsyncReadyCallback     callback,
                                           gpointer                user_data)
 {
-  return g_dbus_connection_call_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, cancellable, callback, user_data);
+  g_dbus_connection_call_internal (connection, bus_name, object_path, interface_name, method_name, parameters, reply_type, flags, timeout_msec, fd_list, cancellable, callback, user_data);
 }
 
 /**

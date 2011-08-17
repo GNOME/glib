@@ -428,7 +428,7 @@ void
 g_dbus_method_invocation_return_value (GDBusMethodInvocation *invocation,
                                        GVariant              *parameters)
 {
-  return g_dbus_method_invocation_return_value_internal (invocation, parameters, NULL);
+  g_dbus_method_invocation_return_value_internal (invocation, parameters, NULL);
 }
 
 #ifdef G_OS_UNIX
@@ -451,7 +451,7 @@ g_dbus_method_invocation_return_value_with_unix_fd_list (GDBusMethodInvocation *
                                                          GVariant              *parameters,
                                                          GUnixFDList           *fd_list)
 {
-  return g_dbus_method_invocation_return_value_internal (invocation, parameters, fd_list);
+  g_dbus_method_invocation_return_value_internal (invocation, parameters, fd_list);
 }
 #endif
 

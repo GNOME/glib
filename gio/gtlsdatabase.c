@@ -702,7 +702,7 @@ g_tls_database_lookup_certificate_for_handle_async (GTlsDatabase            *sel
   g_return_if_fail (interaction == NULL || G_IS_TLS_INTERACTION (interaction));
   g_return_if_fail (cancellable == NULL || G_IS_CANCELLABLE (cancellable));
   g_return_if_fail (G_TLS_DATABASE_GET_CLASS (self)->lookup_certificate_for_handle_async);
-  return G_TLS_DATABASE_GET_CLASS (self)->lookup_certificate_for_handle_async (self,
+  G_TLS_DATABASE_GET_CLASS (self)->lookup_certificate_for_handle_async (self,
                                                                                handle,
                                                                                interaction,
                                                                                flags,

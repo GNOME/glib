@@ -2841,7 +2841,7 @@ g_dbus_proxy_call (GDBusProxy          *proxy,
                    GAsyncReadyCallback  callback,
                    gpointer             user_data)
 {
-  return g_dbus_proxy_call_internal (proxy, method_name, parameters, flags, timeout_msec, NULL, cancellable, callback, user_data);
+  g_dbus_proxy_call_internal (proxy, method_name, parameters, flags, timeout_msec, NULL, cancellable, callback, user_data);
 }
 
 /**
@@ -2960,7 +2960,7 @@ g_dbus_proxy_call_with_unix_fd_list (GDBusProxy          *proxy,
                                      GAsyncReadyCallback  callback,
                                      gpointer             user_data)
 {
-  return g_dbus_proxy_call_internal (proxy, method_name, parameters, flags, timeout_msec, fd_list, cancellable, callback, user_data);
+  g_dbus_proxy_call_internal (proxy, method_name, parameters, flags, timeout_msec, fd_list, cancellable, callback, user_data);
 }
 
 /**
