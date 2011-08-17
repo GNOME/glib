@@ -2618,8 +2618,8 @@ g_variant_compare (gconstpointer one,
 
     case G_VARIANT_CLASS_UINT64:
       {
-        guint64 a_val = g_variant_get_int32 (a);
-        guint64 b_val = g_variant_get_int32 (b);
+        guint64 a_val = g_variant_get_uint64 (a);
+        guint64 b_val = g_variant_get_uint64 (b);
 
         return (a_val == b_val) ? 0 : (a_val > b_val) ? 1 : -1;
       }
