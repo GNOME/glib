@@ -118,6 +118,8 @@ g_enum_info_get_value (GIEnumInfo *info,
  * Obtain the number of methods that this enum type has.
  *
  * Returns: number of methods
+ *
+ * Since: 1.29.17
  */
 gint
 g_enum_info_get_n_methods (GIEnumInfo *info)
@@ -142,6 +144,8 @@ g_enum_info_get_n_methods (GIEnumInfo *info)
  *
  * Returns: (transfer full): the #GIFunctionInfo. Free the struct by calling
  * g_base_info_unref() when done.
+ *
+ * Since: 1.29.17
  */
 GIFunctionInfo *
 g_enum_info_get_method (GIEnumInfo *info,
