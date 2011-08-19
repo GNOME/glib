@@ -171,7 +171,7 @@ g_cancellable_init (GCancellable *cancellable)
  * and pass it to the operations.
  *
  * One #GCancellable can be used in multiple consecutive
- * operations, but not in multiple concurrent operations.
+ * operations or in multiple concurrent operations.
  *  
  * Returns: a #GCancellable.
  **/
@@ -251,7 +251,10 @@ g_cancellable_get_current  (void)
  * g_cancellable_reset:
  * @cancellable: a #GCancellable object.
  * 
- * Resets @cancellable to its uncancelled state. 
+ * Resets @cancellable to its uncancelled state.
+ *
+ * If cancellable is currently in use by any cancellable operation
+ * then the behavior of this function is undefined.
  **/
 void 
 g_cancellable_reset (GCancellable *cancellable)

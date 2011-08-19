@@ -4,6 +4,7 @@ appinfo-test
 async-close-output-stream
 buffered-input-stream
 buffered-output-stream
+cancellable
 connectable
 contenttype
 contexts
