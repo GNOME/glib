@@ -99,15 +99,18 @@ typedef void  (*GClosureNotify)		(gpointer	 data,
 /**
  * GClosureMarshal:
  * @closure: the #GClosure to which the marshaller belongs
- * @return_value: a #GValue to store the return value. May be %NULL if the
- *  callback of @closure doesn't return a value.
+ * @return_value: (allow-none): a #GValue to store the return
+ *  value. May be %NULL if the callback of @closure doesn't return a
+ *  value.
  * @n_param_values: the length of the @param_values array
- * @param_values: an array of #GValue<!-- -->s holding the arguments on
- *  which to invoke the callback of @closure
- * @invocation_hint: the invocation hint given as the last argument
- *  to g_closure_invoke()
- * @marshal_data: additional data specified when registering the marshaller,
- *  see g_closure_set_marshal() and g_closure_set_meta_marshal()
+ * @param_values: (array length=n_param_values): an array of
+ *  #GValue<!-- -->s holding the arguments on which to invoke the
+ *  callback of @closure
+ * @invocation_hint: (allow-none): the invocation hint given as the
+ *  last argument to g_closure_invoke()
+ * @marshal_data: (allow-none): additional data specified when
+ *  registering the marshaller, see g_closure_set_marshal() and
+ *  g_closure_set_meta_marshal()
  * 
  * The type used for marshaller functions.
  */
