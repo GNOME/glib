@@ -317,9 +317,23 @@ test_ip_async (GSocketFamily family)
 
   g_thread_join (data->thread);
 
-  len = g_socket_receive (client, buf, sizeof (buf), NULL, &error);
-  g_assert_no_error (error);
-  g_assert_cmpint (len, ==, 0);
+  if (family == G_SOCKET_FAMILY_IPV4)
+    {
+      /* Test that reading on a remote-closed socket gets back 0 bytes. */
+      len = g_socket_receive_with_blocking (client, buf, sizeof (buf),
+					    TRUE, NULL, &error);
+      g_assert_no_error (error);
+      g_assert_cmpint (len, ==, 0);
+    }
+  else
+    {
+      /* Test that writing to a remote-closed socket gets back CONNECTION_CLOSED. */
+      len = g_socket_send_with_blocking (client, testbuf, strlen (testbuf) + 1,
+					 TRUE, NULL, &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CONNECTION_CLOSED);
+      g_assert_cmpint (len, ==, -1);
+      g_clear_error (&error);
+    }
 
   g_socket_close (client, &error);
   g_assert_no_error (error);
@@ -406,9 +420,21 @@ test_ip_sync (GSocketFamily family)
 
   g_thread_join (data->thread);
 
-  len = g_socket_receive (client, buf, sizeof (buf), NULL, &error);
-  g_assert_no_error (error);
-  g_assert_cmpint (len, ==, 0);
+  if (family == G_SOCKET_FAMILY_IPV4)
+    {
+      /* Test that reading on a remote-closed socket gets back 0 bytes. */
+      len = g_socket_receive (client, buf, sizeof (buf), NULL, &error);
+      g_assert_no_error (error);
+      g_assert_cmpint (len, ==, 0);
+    }
+  else
+    {
+      /* Test that writing to a remote-closed socket gets back CONNECTION_CLOSED. */
+      len = g_socket_send (client, testbuf, strlen (testbuf) + 1, NULL, &error);
+      g_assert_error (error, G_IO_ERROR, G_IO_ERROR_CONNECTION_CLOSED);
+      g_assert_cmpint (len, ==, -1);
+      g_clear_error (&error);
+    }
 
   g_socket_close (client, &error);
   g_assert_no_error (error);
