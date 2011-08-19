@@ -377,7 +377,6 @@ libgio_2_0_la_SOURCES =		\
 	gthemedicon.c 		\
 	gthreadedresolver.c	\
 	gthreadedresolver.h	\
-	gtimezonemonitor.c	\
 	gtlsbackend.c		\
 	gtlscertificate.c	\
 	gtlsclientconnection.c	\
@@ -534,7 +533,6 @@ gio_headers =			\
 	gtcpwrapperconnection.h \
 	gthreadedsocketservice.h\
 	gthemedicon.h 		\
-	gtimezonemonitor.h	\
 	gtlsbackend.h		\
 	gtlscertificate.h	\
 	gtlsclientconnection.h	\

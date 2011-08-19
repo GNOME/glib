@@ -1493,8 +1493,6 @@ g_tls_password_set_value_full
 g_tls_password_set_warning
 g_tls_password_get_flags
 g_tls_password_get_description
-g_time_zone_monitor_get_type
-g_time_zone_monitor_get
 g_dbus_interface_get_info
 g_dbus_interface_get_object
 g_dbus_interface_get_type

@@ -54,8 +54,6 @@ typedef enum
   G_TIME_TYPE_UNIVERSAL
 } GTimeType;
 
-void                    g_time_zone_refresh_local                       (void);
-
 GTimeZone *             g_time_zone_new                                 (const gchar *identifier);
 GTimeZone *             g_time_zone_new_utc                             (void);
 GTimeZone *             g_time_zone_new_local                           (void);

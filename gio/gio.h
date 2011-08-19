@@ -119,7 +119,6 @@
 #include <gio/gtcpwrapperconnection.h>
 #include <gio/gthemedicon.h>
 #include <gio/gthreadedsocketservice.h>
-#include <gio/gtimezonemonitor.h>
 #include <gio/gtlsbackend.h>
 #include <gio/gtlscertificate.h>
 #include <gio/gtlsclientconnection.h>

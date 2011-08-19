@@ -300,7 +300,6 @@ g_date_time_to_unix
 g_date_time_to_utc
 g_date_time_unref
 g_time_zone_new
-g_time_zone_refresh_local
 g_time_zone_new_local
 g_time_zone_new_utc
 g_time_zone_ref

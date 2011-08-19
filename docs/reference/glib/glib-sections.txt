@@ -1448,8 +1448,6 @@ g_time_zone_new
 g_time_zone_new_local
 g_time_zone_new_utc
 <SUBSECTION>
-g_time_zone_refresh_local
-<SUBSECTION>
 GTimeType
 g_time_zone_find_interval
 g_time_zone_adjust_time
