@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.8\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-06-11 20:34+0200\n"
-"PO-Revision-Date: 2011-06-11 20:34+0200\n"
+"POT-Creation-Date: 2011-08-20 20:20+0200\n"
+"PO-Revision-Date: 2011-08-20 20:21+0200\n"
 "Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
 "Language-Team: Catalan <tradgnome@softcatala.org>\n"
 "Language: ca\n"
@@ -2080,25 +2080,25 @@ msgstr ""
 "conegut sense cap propietari i el servidor intermediari s'ha construït amb "
 "el senyalador «G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START»"
 
-#: ../gio/gdbusserver.c:714
+#: ../gio/gdbusserver.c:720
 msgid "Abstract name space not supported"
 msgstr "No es pot utilitzar l'espai de noms abstracte"
 
-#: ../gio/gdbusserver.c:804
+#: ../gio/gdbusserver.c:810
 msgid "Cannot specify nonce file when creating a server"
 msgstr "No es pot especificar el fitxer «nonce» quan es crea un servidor"
 
-#: ../gio/gdbusserver.c:881
+#: ../gio/gdbusserver.c:887
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "S'ha produït un error en escriure el fitxer «nonce» a «%s»: %s"
 
-#: ../gio/gdbusserver.c:1048
+#: ../gio/gdbusserver.c:1054
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "La cadena «%s» no és un GUID vàlid de D-Bus"
 
-#: ../gio/gdbusserver.c:1088
+#: ../gio/gdbusserver.c:1094
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "No es pot escoltar «%s», és un transport desconegut"
@@ -3700,17 +3700,21 @@ msgstr "S'ha produït un error desconegut en el servidor intermediari SOCKSv5."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "No es pot gestionar la versió %d de la codificació del GThemedIcon"
 
-#: ../gio/gtlscertificate.c:228
+#: ../gio/gtlscertificate.c:226
+msgid "No PEM-encoded private key found"
+msgstr "No s'ha trobat cap clau privada codificada amb PEM"
+
+#: ../gio/gtlscertificate.c:235
+msgid "Could not parse PEM-encoded private key"
+msgstr "No s'ha pogut analitzar la clau privada codificada amb PEM"
+
+#: ../gio/gtlscertificate.c:260
 msgid "No PEM-encoded certificate found"
 msgstr "No s'ha trobat cap certificat codificat amb PEM"
 
-#: ../gio/gtlscertificate.c:237
+#: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
 msgstr "No s'ha pogut analitzar el certificat codificat amb PEM"
-
-#: ../gio/gtlscertificate.c:258
-msgid "Could not parse PEM-encoded private key"
-msgstr "No s'ha pogut analitzar la clau privada codificada amb PEM"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
 #, c-format
