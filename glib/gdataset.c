@@ -1103,7 +1103,7 @@ g_data_initialize (void)
 
 /**
  * g_quark_try_string:
- * @string: a string.
+ * @string: (allow-none): a string.
  * @Returns: the #GQuark associated with the string, or 0 if @string is
  *           %NULL or there is no #GQuark associated with it.
  *
@@ -1182,7 +1182,7 @@ g_quark_from_string_internal (const gchar *string,
 
 /**
  * g_quark_from_string:
- * @string: a string.
+ * @string: (allow-none): a string.
  * @Returns: the #GQuark identifying the string, or 0 if @string is
  *           %NULL.
  *
@@ -1207,7 +1207,7 @@ g_quark_from_string (const gchar *string)
 
 /**
  * g_quark_from_static_string:
- * @string: a string.
+ * @string: (allow-none): a string.
  * @Returns: the #GQuark identifying the string, or 0 if @string is
  *           %NULL.
  *
@@ -1298,7 +1298,7 @@ g_quark_new (gchar *string)
 
 /**
  * g_intern_string:
- * @string: a string
+ * @string: (allow-none): a string
  * 
  * Returns a canonical representation for @string. Interned strings can
  * be compared for equality by comparing the pointers, instead of using strcmp().
@@ -1326,7 +1326,7 @@ g_intern_string (const gchar *string)
 
 /**
  * g_intern_static_string:
- * @string: a static string
+ * @string: (allow-none): a static string
  * 
  * Returns a canonical representation for @string. Interned strings can
  * be compared for equality by comparing the pointers, instead of using strcmp().
