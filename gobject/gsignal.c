@@ -1017,8 +1017,8 @@ signal_parse_name (const gchar *name,
  * g_signal_parse_name:
  * @detailed_signal: a string of the form "signal-name::detail".
  * @itype: The interface/instance type that introduced "signal-name".
- * @signal_id_p: Location to store the signal id.
- * @detail_p: Location to store the detail quark.
+ * @signal_id_p: (out): Location to store the signal id.
+ * @detail_p: (out): Location to store the detail quark.
  * @force_detail_quark: %TRUE forces creation of a #GQuark for the detail.
  *
  * Internal function to parse a signal name into its @signal_id
@@ -1164,7 +1164,7 @@ g_signal_lookup (const gchar *name,
  * created. Further information about the signals can be acquired through
  * g_signal_query().
  *
- * Returns: Newly allocated array of signal IDs.
+ * Returns: (array length=n_ids): Newly allocated array of signal IDs.
  */
 guint*
 g_signal_list_ids (GType  itype,
@@ -1240,8 +1240,8 @@ g_signal_name (guint signal_id)
 /**
  * g_signal_query:
  * @signal_id: The signal id of the signal to query information for.
- * @query: A user provided structure that is filled in with constant
- *  values upon success.
+ * @query: (out caller-allocates): A user provided structure that is
+ *  filled in with constant values upon success.
  *
  * Queries the signal system for in-depth information about a
  * specific signal. This function will fill in a user-provided
@@ -1499,8 +1499,9 @@ signal_add_class_closure (SignalNode *node,
  * @signal_flags: a combination of #GSignalFlags specifying detail of when
  *     the default handler is to be invoked. You should at least specify
  *     %G_SIGNAL_RUN_FIRST or %G_SIGNAL_RUN_LAST
- * @class_closure: The closure to invoke on signal emission; may be %NULL
- * @accumulator: the accumulator for this signal; may be %NULL
+ * @class_closure: (allow-none): The closure to invoke on signal emission;
+ *     may be %NULL
+ * @accumulator: (allow-none): the accumulator for this signal; may be %NULL
  * @accu_data: user data for the @accumulator
  * @c_marshaller: (allow-none): the function to translate arrays of
  *     parameter values to signal emissions into C language callback
@@ -1508,7 +1509,8 @@ signal_add_class_closure (SignalNode *node,
  * @return_type: the type of return value, or #G_TYPE_NONE for a signal
  *     without a return value
  * @n_params: the length of @param_types
- * @param_types: an array of types, one for each parameter
+ * @param_types: (array length=n_params): an array of types, one for
+ *     each parameter
  *
  * Creates a new signal. (This is usually done in the class initializer.)
  *
@@ -1858,9 +1860,9 @@ g_signal_override_class_handler (const gchar *signal_name,
 
 /**
  * g_signal_chain_from_overridden:
- * @instance_and_params: the argument list of the signal emission. The first
- *  element in the array is a #GValue for the instance the signal is being
- *  emitted on. The rest are any arguments to be passed to the signal.
+ * @instance_and_params: (array) the argument list of the signal emission.
+ *  The first element in the array is a #GValue for the instance the signal
+ *  is being emitted on. The rest are any arguments to be passed to the signal.
  * @return_value: Location for the return value.
  *
  * Calls the original class closure of a signal. This function should only
@@ -2098,7 +2100,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
  *
  * Returns the invocation hint of the innermost signal emission of instance.
  *
- * Returns: the invocation hint of the innermost signal emission.
+ * Returns: (transfer none): the invocation hint of the innermost signal  emission.
  */
 GSignalInvocationHint*
 g_signal_get_invocation_hint (gpointer instance)
@@ -2486,7 +2488,7 @@ g_signal_handlers_destroy (gpointer instance)
  *  and/or @data the handler has to match.
  * @signal_id: Signal the handler has to be connected to.
  * @detail: Signal detail the handler has to be connected to.
- * @closure: The closure the handler will invoke.
+ * @closure: (allow-none): The closure the handler will invoke.
  * @func: The C closure callback of the handler (useless for non-C closures).
  * @data: The closure data of the handler's closure.
  *
@@ -2566,7 +2568,7 @@ signal_handlers_foreach_matched_R (gpointer         instance,
  *  and/or @data the handlers have to match.
  * @signal_id: Signal the handlers have to be connected to.
  * @detail: Signal detail the handlers have to be connected to.
- * @closure: The closure the handlers will invoke.
+ * @closure: (allow-none): The closure the handlers will invoke.
  * @func: The C closure callback of the handlers (useless for non-C closures).
  * @data: The closure data of the handlers' closures.
  *
@@ -2613,7 +2615,7 @@ g_signal_handlers_block_matched (gpointer         instance,
  *  and/or @data the handlers have to match.
  * @signal_id: Signal the handlers have to be connected to.
  * @detail: Signal detail the handlers have to be connected to.
- * @closure: The closure the handlers will invoke.
+ * @closure: (allow-none): The closure the handlers will invoke.
  * @func: The C closure callback of the handlers (useless for non-C closures).
  * @data: The closure data of the handlers' closures.
  *
@@ -2661,7 +2663,7 @@ g_signal_handlers_unblock_matched (gpointer         instance,
  *  and/or @data the handlers have to match.
  * @signal_id: Signal the handlers have to be connected to.
  * @detail: Signal detail the handlers have to be connected to.
- * @closure: The closure the handlers will invoke.
+ * @closure: (allow-none): The closure the handlers will invoke.
  * @func: The C closure callback of the handlers (useless for non-C closures).
  * @data: The closure data of the handlers' closures.
  *
@@ -2805,10 +2807,9 @@ signal_check_skip_emission (SignalNode *node,
 
 /**
  * g_signal_emitv:
- * @instance_and_params: argument list for the signal emission. The first
- *  element in the array is a #GValue for the instance the signal is
- *  being emitted on. The rest are any arguments to be passed to the
- *  signal.
+ * @instance_and_params: (array): argument list for the signal emission.
+ *  The first element in the array is a #GValue for the instance the signal
+ *  is being emitted on. The rest are any arguments to be passed to the signal.
  * @signal_id: the signal id
  * @detail: the detail
  * @return_value: Location to store the return value of the signal emission.

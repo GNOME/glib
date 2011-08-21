@@ -48,8 +48,8 @@ typedef GClosureMarshal			 GSignalCMarshaller;
  * @ihint: Signal invocation hint, see #GSignalInvocationHint.
  * @n_param_values: the number of parameters to the function, including
  *  the instance on which the signal was emitted.
- * @param_values: the instance on which the signal was emitted, followed by the 
- *  parameters of the emission.
+ * @param_values: (array length=n_param_values): the instance on which
+ *  the signal was emitted, followed by the parameters of the emission.
  * @data: user data associated with the hook.
  * 
  * A simple function pointer to get invoked when the signal is emitted. This 
