@@ -53,6 +53,7 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+#include <langinfo.h>
 
 #include "gdatetime.h"
 
@@ -2222,6 +2223,11 @@ get_numeric_format (gchar    *fmt,
  *    a tab character
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
+ *    <literal>%%T</literal>:
+ *   </term><listitem><simpara>
+ *    the time in 24-hour notation with seconds (<literal>%%H:%%M:%%S</literal>)
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
  *    <literal>%%u</literal>:
  *   </term><listitem><simpara>
  *    the day of the week as a decimal, range 1 to 7, Monday being 1
@@ -2456,6 +2462,12 @@ g_date_time_format (GDateTime *datetime,
                   break;
                 case 't':
                   g_string_append_c (outstr, '\t');
+                  break;
+                case 'T':
+                  g_string_append_printf (outstr, "%02d:%02d:%02d",
+                                          g_date_time_get_hour (datetime),
+                                          g_date_time_get_minute (datetime),
+                                          g_date_time_get_second (datetime));
                   break;
                 case 'u':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, 0, 0);
