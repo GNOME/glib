@@ -953,8 +953,9 @@ g_io_channel_get_line_term (GIOChannel *channel,
  *                      the UNIX open() syscall).
  * @G_IO_FLAG_IS_READABLE: indicates that the io channel is readable.
  *                         This flag cannot be changed.
- * @G_IO_FLAG_IS_WRITEABLE: indicates that the io channel is writable.
+ * @G_IO_FLAG_IS_WRITABLE: indicates that the io channel is writable.
  *                          This flag cannot be changed.
+ * @G_IO_FLAG_IS_WRITEABLE: misspelled alternate to @G_IO_FLAG_IS_WRITABLE.
  * @G_IO_FLAG_IS_SEEKABLE: indicates that the io channel is seekable,
  *                         i.e. that g_io_channel_seek_position() can
  *                         be used on it.  This flag cannot be changed.
@@ -989,7 +990,7 @@ g_io_channel_set_flags (GIOChannel  *channel,
  * Gets the current flags for a #GIOChannel, including read-only
  * flags such as %G_IO_FLAG_IS_READABLE.
  *
- * The values of the flags %G_IO_FLAG_IS_READABLE and %G_IO_FLAG_IS_WRITEABLE
+ * The values of the flags %G_IO_FLAG_IS_READABLE and %G_IO_FLAG_IS_WRITABLE
  * are cached for internal use by the channel when it is created.
  * If they should change at some later point (e.g. partial shutdown
  * of a socket with the UNIX shutdown() function), the user
@@ -1014,7 +1015,7 @@ g_io_channel_get_flags (GIOChannel *channel)
   if (channel->is_readable)
     flags |= G_IO_FLAG_IS_READABLE;
   if (channel->is_writeable)
-    flags |= G_IO_FLAG_IS_WRITEABLE;
+    flags |= G_IO_FLAG_IS_WRITABLE;
 
   return flags;
 }

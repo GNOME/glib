@@ -198,8 +198,8 @@ g_win32_print_gioflags (GIOFlags flags)
     g_print ("%sNONBLOCK", bar), bar = "|";
   if (flags & G_IO_FLAG_IS_READABLE)
     g_print ("%sREADABLE", bar), bar = "|";
-  if (flags & G_IO_FLAG_IS_WRITEABLE)
-    g_print ("%sWRITEABLE", bar), bar = "|";
+  if (flags & G_IO_FLAG_IS_WRITABLE)
+    g_print ("%sWRITABLE", bar), bar = "|";
   if (flags & G_IO_FLAG_IS_SEEKABLE)
     g_print ("%sSEEKABLE", bar), bar = "|";
 }
