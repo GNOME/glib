@@ -163,6 +163,34 @@ static const guint16 days_in_year[2][13] =
   {  0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
 };
 
+#ifdef HAVE_LANGINFO_TIME
+
+#define GET_AMPM(d) ((g_date_time_get_hour (d) < 12) ? \
+                     nl_langinfo (AM_STR) : \
+                     nl_langinfo (PM_STR))
+
+#define PREFERRED_DATE_FMT nl_langinfo (D_FMT)
+#define PREFERRED_TIME_FMT nl_langinfo (T_FMT)
+
+static const gint weekday_item[2][7] =
+{
+  { ABDAY_2, ABDAY_3, ABDAY_4, ABDAY_5, ABDAY_6, ABDAY_7, ABDAY_1 },
+  { DAY_2, DAY_3, DAY_4, DAY_5, DAY_6, DAY_7, DAY_1 }
+};
+
+static const gint month_item[2][12] =
+{
+  { ABMON_1, ABMON_2, ABMON_3, ABMON_4, ABMON_5, ABMON_6, ABMON_7, ABMON_8, ABMON_9, ABMON_10, ABMON_11, ABMON_12 },
+  { MON_1, MON_2, MON_3, MON_4, MON_5, MON_6, MON_7, MON_8, MON_9, MON_10, MON_11, MON_12 },
+};
+
+#define WEEKDAY_ABBR(d) nl_langinfo (weekday_item[0][g_date_time_get_day_of_week (d) - 1])
+#define WEEKDAY_FULL(d) nl_langinfo (weekday_item[1][g_date_time_get_day_of_week (d) - 1])
+#define MONTH_ABBR(d) nl_langinfo (month_item[0][g_date_time_get_month (d) - 1])
+#define MONTH_FULL(d) nl_langinfo (month_item[1][g_date_time_get_month (d) - 1])
+
+#else
+
 #define GET_AMPM(d)          ((g_date_time_get_hour (d) < 12)  \
                                        /* Translators: 'before midday' indicator */ \
                                 ? C_("GDateTime", "am") \
@@ -175,11 +203,11 @@ static const guint16 days_in_year[2][13] =
 /* Translators: this is the preferred format for expressing the time */
 #define PREFERRED_TIME_FMT C_("GDateTime", "%H:%M:%S")
 
-#define WEEKDAY_ABBR(d)       (get_weekday_name_abbr (g_date_time_get_day_of_week (datetime)))
-#define WEEKDAY_FULL(d)       (get_weekday_name (g_date_time_get_day_of_week (datetime)))
 
-#define MONTH_ABBR(d)         (get_month_name_abbr (g_date_time_get_month (datetime)))
-#define MONTH_FULL(d)         (get_month_name (g_date_time_get_month (datetime)))
+#define WEEKDAY_ABBR(d)       (get_weekday_name_abbr (g_date_time_get_day_of_week (d)))
+#define WEEKDAY_FULL(d)       (get_weekday_name (g_date_time_get_day_of_week (d)))
+#define MONTH_ABBR(d)         (get_month_name_abbr (g_date_time_get_month (d)))
+#define MONTH_FULL(d)         (get_month_name (g_date_time_get_month (d)))
 
 static const gchar *
 get_month_name (gint month)
@@ -308,6 +336,8 @@ get_weekday_name_abbr (gint day)
 
   return NULL;
 }
+
+#endif  /* HAVE_LANGINFO_TIME */
 
 static inline gint
 ymd_to_days (gint year,

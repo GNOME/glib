@@ -1309,6 +1309,23 @@ if test x$glib_cv_langinfo_codeset = xyes; then
   AC_DEFINE(HAVE_CODESET,1,[Have nl_langinfo (CODESET)])
 fi
 
+dnl Check for nl_langinfo and LC_TIME parts that are needed in gdatetime.c
+AC_CACHE_CHECK([for nl_langinfo (PM_STR)],glib_cv_langinfo_time,[
+        AC_TRY_COMPILE([#include <langinfo.h>],
+                [char *str;
+                 str = nl_langinfo (PM_STR);
+                 str = nl_langinfo (D_FMT);
+                 str = nl_langinfo (T_FMT);
+                 str = nl_langinfo (MON_1);
+                 str = nl_langinfo (ABMON_12);
+                 str = nl_langinfo (DAY_1);
+                 str = nl_langinfo (ABDAY_7);],
+                [glib_cv_langinfo_time=yes],
+                [glib_cv_langinfo_time=no])])
+if test x$glib_cv_langinfo_time = xyes; then
+  AC_DEFINE(HAVE_LANGINFO_TIME,1,[Have nl_langinfo (PM_STR)])
+fi
+
 dnl ****************************************
 dnl *** posix_memalign                   ***
 dnl ****************************************
