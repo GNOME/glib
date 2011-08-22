@@ -145,15 +145,11 @@ struct _GDateTime
 #define JULIAN_YEAR(d)       ((d)->julian / 365.25)
 #define DAYS_PER_PERIOD      (G_GINT64_CONSTANT (2914695))
 
-#define GET_AMPM(d,l)         ((g_date_time_get_hour (d) < 12)  \
+#define GET_AMPM(d)          ((g_date_time_get_hour (d) < 12)  \
                                        /* Translators: 'before midday' indicator */ \
-                                ? (l ? C_("GDateTime", "am") \
-                                       /* Translators: 'before midday' indicator */ \
-                                     : C_("GDateTime", "AM")) \
+                                ? C_("GDateTime", "am") \
                                   /* Translators: 'after midday' indicator */ \
-                                : (l ? C_("GDateTime", "pm") \
-                                  /* Translators: 'after midday' indicator */ \
-                                     : C_("GDateTime", "PM")))
+                                : C_("GDateTime", "pm"))
 
 #define WEEKDAY_ABBR(d)       (get_weekday_name_abbr (g_date_time_get_day_of_week (datetime)))
 #define WEEKDAY_FULL(d)       (get_weekday_name (g_date_time_get_day_of_week (datetime)))
@@ -2329,6 +2325,7 @@ g_date_time_format (GDateTime *datetime,
   gboolean  pad_set = FALSE;
   gchar     pad = '\0';
   gchar     fmt[20];
+  gchar    *ampm;
 
   g_return_val_if_fail (datetime != NULL, NULL);
   g_return_val_if_fail (format != NULL, NULL);
@@ -2431,21 +2428,27 @@ g_date_time_format (GDateTime *datetime,
                   alt_digits = TRUE;
                   goto next_mod;
                 case 'p':
-                  g_string_append (outstr, GET_AMPM (datetime, FALSE));
+                  ampm = g_utf8_strup (GET_AMPM (datetime), -1);
+                  g_string_append (outstr, ampm);
+                  g_free (ampm);
                   break;
                 case 'P':
-                  g_string_append (outstr, GET_AMPM (datetime, TRUE));
+                  ampm = g_utf8_strdown (GET_AMPM (datetime), -1);
+                  g_string_append (outstr, ampm);
+                  g_free (ampm);
                   break;
                 case 'r':
                   {
                     gint hour = g_date_time_get_hour (datetime) % 12;
                     if (hour == 0)
                       hour = 12;
+                    ampm = g_utf8_strup (GET_AMPM (datetime), -1);
                     g_string_append_printf (outstr, "%02d:%02d:%02d %s",
                                             hour,
                                             g_date_time_get_minute (datetime),
                                             g_date_time_get_second (datetime),
-                                            GET_AMPM (datetime, FALSE));
+                                            ampm);
+                    g_free (ampm);
                   }
                   break;
                 case 'R':
