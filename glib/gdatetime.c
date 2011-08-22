@@ -141,33 +141,15 @@ struct _GDateTime
 #define USEC_PER_DAY         (G_GINT64_CONSTANT (86400000000))
 #define SEC_PER_DAY          (G_GINT64_CONSTANT (86400))
 
-#define GREGORIAN_LEAP(y)    ((((y) % 4) == 0) && (!((((y) % 100) == 0) && (((y) % 400) != 0))))
-#define JULIAN_YEAR(d)       ((d)->julian / 365.25)
-#define DAYS_PER_PERIOD      (G_GINT64_CONSTANT (2914695))
-
-#define GET_AMPM(d)          ((g_date_time_get_hour (d) < 12)  \
-                                       /* Translators: 'before midday' indicator */ \
-                                ? C_("GDateTime", "am") \
-                                  /* Translators: 'after midday' indicator */ \
-                                : C_("GDateTime", "pm"))
-
-#define WEEKDAY_ABBR(d)       (get_weekday_name_abbr (g_date_time_get_day_of_week (datetime)))
-#define WEEKDAY_FULL(d)       (get_weekday_name (g_date_time_get_day_of_week (datetime)))
-
-#define MONTH_ABBR(d)         (get_month_name_abbr (g_date_time_get_month (datetime)))
-#define MONTH_FULL(d)         (get_month_name (g_date_time_get_month (datetime)))
-
-/* Translators: this is the preferred format for expressing the date */
-#define PREFERRED_DATE_FMT C_("GDateTime", "%m/%d/%y")
-
-/* Translators: this is the preferred format for expressing the time */
-#define PREFERRED_TIME_FMT C_("GDateTime", "%H:%M:%S")
-
 #define SECS_PER_MINUTE (60)
 #define SECS_PER_HOUR   (60 * SECS_PER_MINUTE)
 #define SECS_PER_DAY    (24 * SECS_PER_HOUR)
 #define SECS_PER_YEAR   (365 * SECS_PER_DAY)
 #define SECS_PER_JULIAN (DAYS_PER_PERIOD * SECS_PER_DAY)
+
+#define GREGORIAN_LEAP(y)    ((((y) % 4) == 0) && (!((((y) % 100) == 0) && (((y) % 400) != 0))))
+#define JULIAN_YEAR(d)       ((d)->julian / 365.25)
+#define DAYS_PER_PERIOD      (G_GINT64_CONSTANT (2914695))
 
 static const guint16 days_in_months[2][13] =
 {
@@ -180,6 +162,24 @@ static const guint16 days_in_year[2][13] =
   {  0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 },
   {  0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
 };
+
+#define GET_AMPM(d)          ((g_date_time_get_hour (d) < 12)  \
+                                       /* Translators: 'before midday' indicator */ \
+                                ? C_("GDateTime", "am") \
+                                  /* Translators: 'after midday' indicator */ \
+                                : C_("GDateTime", "pm"))
+
+/* Translators: this is the preferred format for expressing the date */
+#define PREFERRED_DATE_FMT C_("GDateTime", "%m/%d/%y")
+
+/* Translators: this is the preferred format for expressing the time */
+#define PREFERRED_TIME_FMT C_("GDateTime", "%H:%M:%S")
+
+#define WEEKDAY_ABBR(d)       (get_weekday_name_abbr (g_date_time_get_day_of_week (datetime)))
+#define WEEKDAY_FULL(d)       (get_weekday_name (g_date_time_get_day_of_week (datetime)))
+
+#define MONTH_ABBR(d)         (get_month_name_abbr (g_date_time_get_month (datetime)))
+#define MONTH_FULL(d)         (get_month_name (g_date_time_get_month (datetime)))
 
 static const gchar *
 get_month_name (gint month)
