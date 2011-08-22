@@ -414,8 +414,6 @@ copy ..\..\..\gio\gthemedicon.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gthreadedsocketservice.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
-copy ..\..\..\gio\gtimezonemonitor.h $(CopyDir)\include\glib-$(ApiVersion)\gio
-
 copy ..\..\..\gio\gtlsbackend.h $(CopyDir)\include\glib-$(ApiVersion)\gio
 
 copy ..\..\..\gio\gtlscertificate.h $(CopyDir)\include\glib-$(ApiVersion)\gio

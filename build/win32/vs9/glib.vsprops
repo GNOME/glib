@@ -248,7 +248,6 @@ copy ..\..\..\gio\gtcpconnection.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D
 copy ..\..\..\gio\gtcpwrapperconnection.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gthemedicon.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gthreadedsocketservice.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
-copy ..\..\..\gio\gtimezonemonitor.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtlsbackend.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtlscertificate.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
 copy ..\..\..\gio\gtlsclientconnection.h $(OutDir)\include\glib-$(ApiVersion)\gio&#x0D;&#x0A;
