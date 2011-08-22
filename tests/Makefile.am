@@ -63,7 +63,8 @@ noinst_PROGRAMS = $(TEST_PROGS)	\
 	unicode-collate 	\
 	$(timeloop) 		\
 	errorcheck-mutex-test	\
-	assert-msg-test
+	assert-msg-test		\
+	datetime
 
 TEST_PROGS		+= testglib
 testglib_SOURCES         = testglib.c
@@ -80,6 +81,7 @@ if ENABLE_TIMELOOP
 timeloop_LDADD = $(libglib)
 timeloop_closure_LDADD = $(libglib) $(libgobject)
 endif
+datetime_LDADD = $(libglib)
 
 test_programs =					\
 	atomic-test				\
