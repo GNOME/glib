@@ -96,11 +96,6 @@
 /* whether GCC supports built-in atomic intrinsics */
 /* #undef HAVE_GCC_BUILTINS_FOR_ATOMIC_OPERATIONS */
 
-/* Have Win32 atomic intrinsics */
-#ifdef _MSC_VER
-#define HAVE_WIN32_BUILTINS_FOR_ATOMIC_OPERATIONS 1
-#endif
-
 /* Have inline keyword */
 #ifndef _MSC_VER
 #define G_HAVE_INLINE 1
@@ -204,6 +199,9 @@
 /* Define to 1 if you have the `endservent' function. */
 /* #undef HAVE_ENDSERVENT */
 
+/* we have the eventfd(2) system call */
+/* #undef HAVE_EVENTFD */
+
 /* Define if we have FAM */
 /* #undef HAVE_FAM */
 
@@ -233,9 +231,6 @@
 
 /* we have the futex(2) system call */
 /* #undef HAVE_FUTEX */
-
-/* we have the eventfd(2) system call */
-/* #undef HAVE_EVENTFD */
 
 /* Whether you have gcov */
 /* #undef HAVE_GCOV */
@@ -309,6 +304,9 @@
 
 /* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
 /* #undef HAVE_LANGINFO_CODESET */
+
+/* Have nl_langinfo (PM_STR) */
+/* #undef HAVE_LANGINFO_TIME */
 
 /* Define to 1 if you have the `lchmod' function. */
 /* #undef HAVE_LCHMOD */
@@ -701,6 +699,11 @@
 /* Define to 1 if you have the `wcslen' function. */
 #define HAVE_WCSLEN 1
 
+/* Have Win32 atomic intrinsics */
+#ifdef _MSC_VER
+#define HAVE_WIN32_BUILTINS_FOR_ATOMIC_OPERATIONS 1
+#endif
+
 /* Define if you have the 'wint_t' type. */
 #define HAVE_WINT_T 1
 
@@ -832,6 +835,12 @@
 
 /* Using a native implementation of iconv in a separate library */
 #define USE_LIBICONV_NATIVE 1
+
+/* Define to use statfs() */
+/* #undef USE_STATFS */
+
+/* Define to use statvfs() */
+/* #undef USE_STATVFS */
 
 /* using the system-supplied PCRE library */
 /* #undef USE_SYSTEM_PCRE */
