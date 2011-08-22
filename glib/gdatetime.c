@@ -158,10 +158,10 @@ struct _GDateTime
 #define MONTH_FULL(d)         (get_month_name (g_date_time_get_month (datetime)))
 
 /* Translators: this is the preferred format for expressing the date */
-#define GET_PREFERRED_DATE(d) (g_date_time_format ((d), C_("GDateTime", "%m/%d/%y")))
+#define PREFERRED_DATE_FMT C_("GDateTime", "%m/%d/%y")
 
 /* Translators: this is the preferred format for expressing the time */
-#define GET_PREFERRED_TIME(d) (g_date_time_format ((d), C_("GDateTime", "%H:%M:%S")))
+#define PREFERRED_TIME_FMT C_("GDateTime", "%H:%M:%S")
 
 #define SECS_PER_MINUTE (60)
 #define SECS_PER_HOUR   (60 * SECS_PER_MINUTE)
@@ -2314,8 +2314,8 @@ get_numeric_format (gchar    *fmt,
  * Since: 2.26
  */
 gchar *
-g_date_time_format (GDateTime *datetime,
-                    const gchar     *format)
+g_date_time_format (GDateTime   *datetime,
+                    const gchar *format)
 {
   GString  *outstr;
   gchar    *tmp;
@@ -2482,14 +2482,14 @@ g_date_time_format (GDateTime *datetime,
                   break;
                 case 'x':
                   {
-                    tmp = GET_PREFERRED_DATE (datetime);
+                    tmp = g_date_time_format (datetime, PREFERRED_DATE_FMT);
                     g_string_append (outstr, tmp);
                     g_free (tmp);
                   }
                   break;
                 case 'X':
                   {
-                    tmp = GET_PREFERRED_TIME (datetime);
+                    tmp = g_date_time_format (datetime, PREFERRED_TIME_FMT);
                     g_string_append (outstr, tmp);
                     g_free (tmp);
                   }
