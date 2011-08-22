@@ -65,6 +65,8 @@ copy ..\..\..\glib\gfileutils.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\ghash.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
+copy ..\..\..\glib\ghmac.h $(CopyDir)\include\glib-$(ApiVersion)\glib
+
 copy ..\..\..\glib\ghook.h $(CopyDir)\include\glib-$(ApiVersion)\glib
 
 copy ..\..\..\glib\ghostutils.h $(CopyDir)\include\glib-$(ApiVersion)\glib
@@ -458,9 +460,9 @@ copy ..\..\..\glib\glibconfig.h $(CopyDir)\lib\glib-$(ApiVersion)\include
 copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
 
 
-mkdir $(CopyDir)\share\glib-2.0\schemas
+mkdir $(CopyDir)\share\glib-$(ApiVersion)\schemas
 
-copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-2.0\schemas
+copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-$(ApiVersion)\schemas
 
 </GlibDoInstall>
     <GlibGenerateGlibDef>echo EXPORTS &gt;"$(DefDir)glib.def" &amp;&amp; cl /EP -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF -DG_GNUC_FORMAT=;G_GNUC_FORMAT ..\..\..\glib\glib.symbols &gt;&gt;"$(DefDir)glib.def"</GlibGenerateGlibDef>
@@ -470,7 +472,7 @@ copy ..\..\..\gio\gschema.dtd $(CopyDir)\share\glib-2.0\schemas
     <GlibGenerateGobjectDef>echo EXPORTS &gt;"$(DefDir)gobject.def" &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gobject\gobject.symbols &gt;&gt;"$(DefDir)gobject.def"</GlibGenerateGobjectDef>
     <GlibGenerateGioDef>echo EXPORTS &gt;"$(DefDir)gio.def" &amp;&amp; cl /EP -DINCLUDE_VARIABLES -DG_OS_WIN32 -DINCLUDE_INTERNAL_SYMBOLS -DALL_FILES -DG_GNUC_MALLOC= -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= -DG_GNUC_NORETURN= -DG_GNUC_PRINTF=;G_GNUC_PRINTF ..\..\..\gio\gio.symbols &gt;&gt;"$(DefDir)gio.def"</GlibGenerateGioDef>
     <GlibLibtoolCompatibleDllPrefix>lib</GlibLibtoolCompatibleDllPrefix>
-    <GlibLibtoolCompatibleDllSuffix>-2.0-0</GlibLibtoolCompatibleDllSuffix>
+    <GlibLibtoolCompatibleDllSuffix>-$(ApiVersion)-0</GlibLibtoolCompatibleDllSuffix>
     <GlibSeparateVS10DllPrefix />
     <GlibSeparateVS10DllSuffix>-2-vs10</GlibSeparateVS10DllSuffix>
     <GlibDllPrefix>$(GlibSeparateVS10DllPrefix)</GlibDllPrefix>
