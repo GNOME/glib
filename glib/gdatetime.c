@@ -53,7 +53,10 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+
+#ifdef HAVE_LANGINFO_TIME
 #include <langinfo.h>
+#endif
 
 #include "gdatetime.h"
 
