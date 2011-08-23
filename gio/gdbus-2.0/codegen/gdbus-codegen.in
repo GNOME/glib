@@ -25,9 +25,14 @@
 import os
 import sys
 
-path = os.path.join('@libdir@', 'gdbus-2.0', 'codegen')
-sys.path.insert(0, path)
+srcdir = os.getenv('UNINSTALLED_GLIB_SRCDIR', None)
 
-from codegen_main import codegen_main
+if srcdir is not None:
+    path = os.path.join(srcdir, 'gio', 'gdbus-2.0')
+else:
+    path = os.path.join('@libdir@', 'gdbus-2.0')
 
-sys.exit(codegen_main())
+sys.path.insert(0, os.path.abspath(path))
+from codegen import codegen_main
+
+sys.exit(codegen_main.codegen_main())

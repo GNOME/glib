@@ -22,8 +22,8 @@ GDBUS_GENERATED = 										\
 	$(NULL)
 
 $(GDBUS_GENERATED) : gdbus-example-objectmanager.xml
-	$(AM_V_GEN) UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
-		PYTHONPATH=$(top_srcdir)/gio/gdbus-2.0 \
+	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
+		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
 		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
 		--interface-prefix org.gtk.GDBus.Example.ObjectManager. \
 		--c-namespace Example \

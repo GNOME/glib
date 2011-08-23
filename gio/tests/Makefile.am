@@ -260,8 +260,8 @@ gdbus_bz627724_LDADD = $(progs_ldadd)
 
 if OS_UNIX
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
-	$(AM_V_GEN) UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
-		PYTHONPATH=$(top_srcdir)/gio/gdbus-2.0 \
+	$(AM_V_GEN) UNINSTALLED_GLIB_SRCDIR=$(top_srcdir) \
+		UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
 		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
 		--interface-prefix org.project. \
 		--generate-c-code gdbus-test-codegen-generated \
