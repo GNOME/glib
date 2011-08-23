@@ -330,6 +330,7 @@ load_async_callback (GObject      *source_object,
   g_simple_async_result_complete (simple);
   
   load_data_free (data);
+  g_object_unref (simple);
 }
 
 static void
