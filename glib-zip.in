@@ -38,6 +38,7 @@ zip -r -D $ZIP share/doc/glib-@GLIB_VERSION@
 rm $DEVZIP
 zip -r -D $DEVZIP -@ <<EOF
 bin/gdbus.exe
+bin/gdbus-codegen
 bin/gio-querymodules.exe
 bin/glib-compile-schemas.exe
 bin/glib-genmarshal.exe
@@ -49,6 +50,7 @@ etc/bash_completion.d/gdbus-bash-completion.sh
 etc/bash_completion.d/gsettings-bash-completion.sh
 include/gio-win32-2.0
 include/glib-2.0
+lib/gdbus-2.0
 lib/gio
 lib/glib-2.0
 lib/pkgconfig/glib-2.0.pc
@@ -79,6 +81,7 @@ share/aclocal/gsettings.m4
 share/glib-2.0
 share/gtk-doc/html
 share/man/man1/gdbus.1
+share/man/man1/gdbus-codegen.1
 share/man/man1/gio-querymodules.1
 share/man/man1/glib-compile-schemas.1
 share/man/man1/glib-genmarshal.1
