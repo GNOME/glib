@@ -825,6 +825,7 @@ check_bar_proxy (FooBar    *proxy,
    * is to exercise the paths that frees the references.
    */
   const gchar *array_of_strings[3] = {"one", "two", NULL};
+  const gchar *array_of_strings_2[3] = {"one2", "two2", NULL};
   const gchar *array_of_objpaths[3] = {"/one", "/one/two", NULL};
   const gchar *array_of_bytestrings[3] = {"one\xff", "two\xff", NULL};
 
@@ -919,6 +920,28 @@ check_bar_proxy (FooBar    *proxy,
   foo_bar_set_finally_normal_name (proxy, "hey back!");
   _g_assert_property_notify (proxy, "finally-normal-name");
   g_assert_cmpstr (foo_bar_get_finally_normal_name (proxy), ==, "hey back!");
+
+  /* Check that multiple calls to a strv getter works... and that
+   * updates on them works as well (See comment for "property vfuncs"
+   * in gio/gdbus-codegen/codegen.py for details)
+   */
+  const gchar *const *read_as;
+  const gchar *const *read_as2;
+  const gchar *const *read_as3;
+  read_as = foo_bar_get_as (proxy);
+  read_as2 = foo_bar_get_as (proxy);
+  g_assert_cmpint (g_strv_length ((gchar **) read_as), ==, 2);
+  g_assert_cmpstr (read_as[0], ==, "one");
+  g_assert_cmpstr (read_as[1], ==, "two");
+  g_assert (read_as == read_as2); /* this is more testing an implementation detail */
+  g_object_set (proxy,
+                "as", array_of_strings_2,
+                NULL);
+  _g_assert_property_notify (proxy, "as");
+  read_as3 = foo_bar_get_as (proxy);
+  g_assert_cmpint (g_strv_length ((gchar **) read_as3), ==, 2);
+  g_assert_cmpstr (read_as3[0], ==, "one2");
+  g_assert_cmpstr (read_as3[1], ==, "two2");
 
   /* Check that grouping changes in idle works.
    *

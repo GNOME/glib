@@ -48,11 +48,14 @@ class Arg:
         # default to GVariant
         self.ctype_in_g  = 'GVariant *'
         self.ctype_in  = 'GVariant *'
+        self.ctype_in_dup  = 'GVariant *'
         self.ctype_out = 'GVariant **'
         self.gtype = 'G_TYPE_VARIANT'
         self.free_func = 'g_variant_unref'
         self.format_in = '@' + self.signature
         self.format_out = '@' + self.signature
+        self.gvariant_get = 'XXX'
+        self.gvalue_get = 'g_value_get_variant'
         if not utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.ForceGVariant'):
             if self.signature == 'b':
                 self.ctype_in_g  = 'gboolean '
@@ -62,6 +65,8 @@ class Arg:
                 self.free_func = None
                 self.format_in = 'b'
                 self.format_out = 'b'
+                self.gvariant_get = 'g_variant_get_boolean'
+                self.gvalue_get = 'g_value_get_boolean'
             elif self.signature == 'y':
                 self.ctype_in_g  = 'guchar '
                 self.ctype_in  = 'guchar '
@@ -70,6 +75,8 @@ class Arg:
                 self.free_func = None
                 self.format_in = 'y'
                 self.format_out = 'y'
+                self.gvariant_get = 'g_variant_get_byte'
+                self.gvalue_get = 'g_value_get_uchar'
             elif self.signature == 'n':
                 self.ctype_in_g  = 'gint '
                 self.ctype_in  = 'gint16 '
@@ -78,6 +85,8 @@ class Arg:
                 self.free_func = None
                 self.format_in = 'n'
                 self.format_out = 'n'
+                self.gvariant_get = 'g_variant_get_int16'
+                self.gvalue_get = 'g_value_get_int'
             elif self.signature == 'q':
                 self.ctype_in_g  = 'guint '
                 self.ctype_in  = 'guint16 '
@@ -86,6 +95,8 @@ class Arg:
                 self.free_func = None
                 self.format_in = 'q'
                 self.format_out = 'q'
+                self.gvariant_get = 'g_variant_get_uint16'
+                self.gvalue_get = 'g_value_get_uint'
             elif self.signature == 'i':
                 self.ctype_in_g  = 'gint '
                 self.ctype_in  = 'gint '
@@ -94,6 +105,8 @@ class Arg:
                 self.free_func = None
                 self.format_in = 'i'
                 self.format_out = 'i'
+                self.gvariant_get = 'g_variant_get_int32'
+                self.gvalue_get = 'g_value_get_int'
             elif self.signature == 'u':
                 self.ctype_in_g  = 'guint '
                 self.ctype_in  = 'guint '
@@ -102,6 +115,8 @@ class Arg:
                 self.free_func = None
                 self.format_in = 'u'
                 self.format_out = 'u'
+                self.gvariant_get = 'g_variant_get_uint32'
+                self.gvalue_get = 'g_value_get_uint'
             elif self.signature == 'x':
                 self.ctype_in_g  = 'gint64 '
                 self.ctype_in  = 'gint64 '
@@ -110,6 +125,8 @@ class Arg:
                 self.free_func = None
                 self.format_in = 'x'
                 self.format_out = 'x'
+                self.gvariant_get = 'g_variant_get_int64'
+                self.gvalue_get = 'g_value_get_int64'
             elif self.signature == 't':
                 self.ctype_in_g  = 'guint64 '
                 self.ctype_in  = 'guint64 '
@@ -118,6 +135,8 @@ class Arg:
                 self.free_func = None
                 self.format_in = 't'
                 self.format_out = 't'
+                self.gvariant_get = 'g_variant_get_uint64'
+                self.gvalue_get = 'g_value_get_uint64'
             elif self.signature == 'd':
                 self.ctype_in_g  = 'gdouble '
                 self.ctype_in  = 'gdouble '
@@ -126,62 +145,85 @@ class Arg:
                 self.free_func = None
                 self.format_in = 'd'
                 self.format_out = 'd'
+                self.gvariant_get = 'g_variant_get_double'
+                self.gvalue_get = 'g_value_get_double'
             elif self.signature == 's':
                 self.ctype_in_g  = 'const gchar *'
                 self.ctype_in  = 'const gchar *'
+                self.ctype_in_dup  = 'gchar *'
                 self.ctype_out = 'gchar **'
                 self.gtype = 'G_TYPE_STRING'
                 self.free_func = 'g_free'
                 self.format_in = 's'
                 self.format_out = 's'
+                self.gvariant_get = 'g_variant_get_string'
+                self.gvalue_get = 'g_value_get_string'
             elif self.signature == 'o':
                 self.ctype_in_g  = 'const gchar *'
                 self.ctype_in  = 'const gchar *'
+                self.ctype_in_dup  = 'gchar *'
                 self.ctype_out = 'gchar **'
                 self.gtype = 'G_TYPE_STRING'
                 self.free_func = 'g_free'
                 self.format_in = 'o'
                 self.format_out = 'o'
+                self.gvariant_get = 'g_variant_get_string'
+                self.gvalue_get = 'g_value_get_string'
             elif self.signature == 'g':
                 self.ctype_in_g  = 'const gchar *'
                 self.ctype_in  = 'const gchar *'
+                self.ctype_in_dup  = 'gchar *'
                 self.ctype_out = 'gchar **'
                 self.gtype = 'G_TYPE_STRING'
                 self.free_func = 'g_free'
                 self.format_in = 'g'
                 self.format_out = 'g'
+                self.gvariant_get = 'g_variant_get_string'
+                self.gvalue_get = 'g_value_get_string'
             elif self.signature == 'ay':
                 self.ctype_in_g  = 'const gchar *'
                 self.ctype_in  = 'const gchar *'
+                self.ctype_in_dup  = 'gchar *'
                 self.ctype_out = 'gchar **'
                 self.gtype = 'G_TYPE_STRING'
                 self.free_func = 'g_free'
                 self.format_in = '^ay'
                 self.format_out = '^ay'
+                self.gvariant_get = 'g_variant_get_bytestring'
+                self.gvalue_get = 'g_value_get_string'
             elif self.signature == 'as':
                 self.ctype_in_g  = 'const gchar *const *'
                 self.ctype_in  = 'const gchar *const *'
+                self.ctype_in_dup  = 'gchar **'
                 self.ctype_out = 'gchar ***'
                 self.gtype = 'G_TYPE_STRV'
                 self.free_func = 'g_strfreev'
                 self.format_in = '^as'
                 self.format_out = '^as'
+                self.gvariant_get = 'g_variant_get_strv'
+                self.gvalue_get = 'g_value_get_boxed'
             elif self.signature == 'ao':
                 self.ctype_in_g  = 'const gchar *const *'
                 self.ctype_in  = 'const gchar *const *'
+                self.ctype_in_dup  = 'gchar **'
                 self.ctype_out = 'gchar ***'
                 self.gtype = 'G_TYPE_STRV'
                 self.free_func = 'g_strfreev'
                 self.format_in = '^ao'
                 self.format_out = '^ao'
+                self.gvariant_get = 'g_variant_get_objv'
+                self.gvalue_get = 'g_value_get_boxed'
             elif self.signature == 'aay':
                 self.ctype_in_g  = 'const gchar *const *'
                 self.ctype_in  = 'const gchar *const *'
+                self.ctype_in_dup  = 'gchar **'
                 self.ctype_out = 'gchar ***'
                 self.gtype = 'G_TYPE_STRV'
                 self.free_func = 'g_strfreev'
                 self.format_in = '^aay'
                 self.format_out = '^aay'
+                self.gvariant_get = 'g_variant_get_bytestring_array'
+                self.gvalue_get = 'g_value_get_boxed'
 
 class Method:
     def __init__(self, name):

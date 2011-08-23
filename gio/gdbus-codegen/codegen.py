@@ -233,7 +233,7 @@ class CodeGenerator:
             self.h.write('#define %sTYPE_%s (%s_get_type ())\n'%(i.ns_upper, i.name_upper, i.name_lower))
             self.h.write('#define %s%s(o) (G_TYPE_CHECK_INSTANCE_CAST ((o), %sTYPE_%s, %s))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
             self.h.write('#define %sIS_%s(o) (G_TYPE_CHECK_INSTANCE_TYPE ((o), %sTYPE_%s))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper))
-            self.h.write('#define %s%s_GET_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), %sTYPE_%s, %s))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
+            self.h.write('#define %s%s_GET_IFACE(o) (G_TYPE_INSTANCE_GET_INTERFACE ((o), %sTYPE_%s, %sIface))\n'%(i.ns_upper, i.name_upper, i.ns_upper, i.name_upper, i.camel_name))
             self.h.write('\n')
             self.h.write('struct _%s;\n'%(i.camel_name))
             self.h.write('typedef struct _%s %s;\n'%(i.camel_name, i.camel_name))
@@ -245,6 +245,7 @@ class CodeGenerator:
 
             function_pointers = {}
 
+            # vfuncs for methods
             if len(i.methods) > 0:
                 self.h.write('\n')
                 for m in i.methods:
@@ -262,6 +263,7 @@ class CodeGenerator:
                     value += ');\n\n'
                     function_pointers[key] = value
 
+            # vfuncs for signals
             if len(i.signals) > 0:
                 self.h.write('\n')
                 for s in i.signals:
@@ -271,6 +273,14 @@ class CodeGenerator:
                     for a in s.args:
                         value += ',\n    %s%s'%(a.ctype_in, a.name)
                     value += ');\n\n'
+                    function_pointers[key] = value
+
+            # vfuncs for properties
+            if len(i.properties) > 0:
+                self.h.write('\n')
+                for p in i.properties:
+                    key = (p.since, '_prop_get_%s'%p.name_lower)
+                    value = '  %s (*get_%s) (%s *object);\n\n'%(p.arg.ctype_in, p.name_lower, i.camel_name)
                     function_pointers[key] = value
 
             # Sort according to @since tag, then name.. this ensures
@@ -293,8 +303,7 @@ class CodeGenerator:
             self.h.write('GType %s_get_type (void) G_GNUC_CONST;\n'%(i.name_lower))
             self.h.write('\n')
             self.h.write('GDBusInterfaceInfo *%s_interface_info (void);\n'%(i.name_lower))
-            if len(i.properties) > 0:
-                self.h.write('guint %s_override_properties (GObjectClass *klass, guint property_id_begin);\n'%(i.name_lower))
+            self.h.write('guint %s_override_properties (GObjectClass *klass, guint property_id_begin);\n'%(i.name_lower))
             self.h.write('\n')
 
             # Then method call completion functions
@@ -396,6 +405,10 @@ class CodeGenerator:
                     if p.deprecated:
                         self.h.write('G_GNUC_DEPRECATED ')
                     self.h.write('%s%s_get_%s (%s *object);\n'%(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name))
+                    if p.arg.free_func != None:
+                        if p.deprecated:
+                            self.h.write('G_GNUC_DEPRECATED ')
+                        self.h.write('%s%s_dup_%s (%s *object);\n'%(p.arg.ctype_in_dup, i.name_lower, p.name_lower, i.camel_name))
                     # setter
                     if p.deprecated:
                         self.h.write('G_GNUC_DEPRECATED ')
@@ -936,27 +949,26 @@ class CodeGenerator:
                          '}\n'
                          '\n'%(i.name_lower, i.name_lower))
 
-            if len(i.properties) > 0:
-                self.c.write(self.docbook_gen.expand(
-                        '/**\n'
-                        ' * %s_override_properties:\n'
-                        ' * @klass: The class structure for a #GObject<!-- -->-derived class.\n'
-                        ' * @property_id_begin: The property id to assign to the first overridden property.\n'
-                        ' *\n'
-                        ' * Overrides all #GObject properties in the #%s interface for a concrete class.\n'
-                        ' * The properties are overridden in the order they are defined.\n'
-                        ' *\n'
-                        ' * Returns: The last property id.\n'
-                        %(i.name_lower, i.camel_name), False))
-                self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
-                self.c.write('guint\n'
-                             '%s_override_properties (GObjectClass *klass, guint property_id_begin)\n'
-                             '{\n'%(i.name_lower))
-                for p in i.properties:
-                    self.c.write ('  g_object_class_override_property (klass, property_id_begin++, "%s");\n'%(p.name_hyphen))
-                self.c.write('  return property_id_begin - 1;\n'
-                             '}\n'
-                             '\n')
+            self.c.write(self.docbook_gen.expand(
+                    '/**\n'
+                    ' * %s_override_properties:\n'
+                    ' * @klass: The class structure for a #GObject<!-- -->-derived class.\n'
+                    ' * @property_id_begin: The property id to assign to the first overridden property.\n'
+                    ' *\n'
+                    ' * Overrides all #GObject properties in the #%s interface for a concrete class.\n'
+                    ' * The properties are overridden in the order they are defined.\n'
+                    ' *\n'
+                    ' * Returns: The last property id.\n'
+                    %(i.name_lower, i.camel_name), False))
+            self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
+            self.c.write('guint\n'
+                         '%s_override_properties (GObjectClass *klass, guint property_id_begin)\n'
+                         '{\n'%(i.name_lower))
+            for p in i.properties:
+                self.c.write ('  g_object_class_override_property (klass, property_id_begin++, "%s");\n'%(p.name_hyphen))
+            self.c.write('  return property_id_begin - 1;\n'
+                         '}\n'
+                         '\n')
             self.c.write('\n')
 
     # ----------------------------------------------------------------------------------------------------
@@ -991,6 +1003,12 @@ class CodeGenerator:
                 key = (s.since, '_signal_%s'%s.name_lower)
                 value  = '@%s: '%(s.name_lower)
                 value += 'Handler for the #%s::%s signal.'%(i.camel_name, s.name_hyphen)
+                doc_bits[key] = value
+        if len(i.properties) > 0:
+            for p in i.properties:
+                key = (p.since, '_prop_get_%s'%p.name_lower)
+                value  = '@get_%s: '%(p.name_lower)
+                value += 'Getter for the #%s:%s property.'%(i.camel_name, p.name_hyphen)
                 doc_bits[key] = value
         keys = doc_bits.keys()
         if len(keys) > 0:
@@ -1169,30 +1187,51 @@ class CodeGenerator:
                 raise RuntimeError('Cannot handle property %s that neither readable nor writable'%(p.name))
             self.c.write(self.docbook_gen.expand(
                     '/**\n'
-                    ' * %s_get_%s:\n'
+                    ' * %s_get_%s: (skip)\n'
                     ' * @object: A #%s.\n'
                     ' *\n'
                     ' * Gets the value of the #%s:%s D-Bus property.\n'
                     ' *\n'
                     ' * %s\n'
                     ' *\n'
-                    ' * Returns: (transfer none): The property value.\n'
                     %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint), False))
+            if p.arg.free_func != None:
+                self.c.write(' * <warning>The returned value is only valid until the property changes so on the client-side it is only safe to use this function on the thread where @object was constructed. Use %s_dup_%s() if on another thread.</warning>\n'
+                             ' *\n'
+                             ' * Returns: (transfer none): The property value or %%NULL if the property is not set. Do not free the returned value, it belongs to @object.\n'
+                             %(i.name_lower, p.name_lower))
+            else:
+                self.c.write(' * Returns: The property value.\n')
             self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 0)
             self.c.write('%s\n'
                          '%s_get_%s (%s *object)\n'
-                         '{\n'
-                         '  %svalue;\n'%(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in_g))
-            self.c.write('  g_object_get (G_OBJECT (object), "%s", &value, NULL);\n'%(p.name_hyphen))
-            if p.arg.free_func:
-                self.c.write('  if (value != NULL)\n'
-                             '    g_object_set_data_full (G_OBJECT (object), "-x-memoizing-%s", (gpointer) value, (GDestroyNotify) %s);\n'
-                             '  else\n'
-                             '    g_object_set_data_full (G_OBJECT (object), "-x-memoizing-%s", (gpointer) value, NULL);\n'
-                             %(p.name_hyphen, p.arg.free_func, p.name_hyphen))
-            self.c.write('  return value;\n')
+                         '{\n'%(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name))
+            self.c.write('  return %s%s_GET_IFACE (object)->get_%s (object);\n'%(i.ns_upper, i.name_upper, p.name_lower))
             self.c.write('}\n')
             self.c.write('\n')
+            if p.arg.free_func != None:
+
+                self.c.write(self.docbook_gen.expand(
+                        '/**\n'
+                        ' * %s_dup_%s: (skip)\n'
+                        ' * @object: A #%s.\n'
+                        ' *\n'
+                        ' * Gets a copy of the #%s:%s D-Bus property.\n'
+                        ' *\n'
+                        ' * %s\n'
+                        ' *\n'
+                        ' * Returns: (transfer full): The property value or %%NULL if the property is not set. The returned value should be freed with %s().\n'
+                        %(i.name_lower, p.name_lower, i.camel_name, i.name, p.name, hint, p.arg.free_func), False))
+                self.write_gtkdoc_deprecated_and_since_and_close(p, self.c, 0)
+                self.c.write('%s\n'
+                             '%s_dup_%s (%s *object)\n'
+                             '{\n'
+                             '  %svalue;\n'%(p.arg.ctype_in_dup, i.name_lower, p.name_lower, i.camel_name, p.arg.ctype_in_dup))
+                self.c.write('  g_object_get (G_OBJECT (object), "%s", &value, NULL);\n'%(p.name_hyphen))
+                self.c.write('  return value;\n')
+                self.c.write('}\n')
+                self.c.write('\n')
+
             # setter
             if p.readable and p.writable:
                 hint = 'Since this D-Bus property is both readable and writable, it is meaningful to use this function on both the client- and service-side.'
@@ -1204,7 +1243,7 @@ class CodeGenerator:
                 raise RuntimeError('Cannot handle property %s that neither readable nor writable'%(p.name))
             self.c.write(self.docbook_gen.expand(
                     '/**\n'
-                    ' * %s_set_%s:\n'
+                    ' * %s_set_%s: (skip)\n'
                     ' * @object: A #%s.\n'
                     ' * @value: The value to set.\n'
                     ' *\n'
@@ -1515,15 +1554,25 @@ class CodeGenerator:
         self.write_gtkdoc_deprecated_and_since_and_close(i, self.c, 0)
         self.c.write('\n')
 
-        self.c.write('static void\n'
-                     '%s_proxy_iface_init (%sIface *iface)\n'
+        self.c.write('struct _%sProxyPrivate\n'
                      '{\n'
-                     '}\n'
+                     '  GData *qdata;\n'
+                     '};\n'
+                     '\n'%i.camel_name)
+
+        self.c.write('static void %s_proxy_iface_init (%sIface *iface);\n'
                      '\n'%(i.name_lower, i.camel_name))
-        self.c.write('#define %s_proxy_get_type %s_proxy_get_type\n'%(i.name_lower, i.name_lower))
         self.c.write('G_DEFINE_TYPE_WITH_CODE (%sProxy, %s_proxy, G_TYPE_DBUS_PROXY,\n'%(i.camel_name, i.name_lower))
-        self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_proxy_iface_init));\n'%(i.ns_upper, i.name_upper, i.name_lower))
-        self.c.write('#undef %s_proxy_get_type\n'
+        self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_proxy_iface_init));\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
+
+        # finalize
+        self.c.write('static void\n'
+                     '%s_proxy_finalize (GObject *object)\n'
+                     '{\n'%(i.name_lower))
+        self.c.write('  %sProxy *proxy = %s%s_PROXY (object);\n'%(i.camel_name, i.ns_upper, i.name_upper))
+        self.c.write('  g_datalist_clear (&proxy->priv->qdata);\n')
+        self.c.write('  G_OBJECT_CLASS (%s_proxy_parent_class)->finalize (object);\n'
+                     '}\n'
                      '\n'%(i.name_lower))
 
         # property accessors
@@ -1652,12 +1701,13 @@ class CodeGenerator:
 
         # property changed
         self.c.write('static void\n'
-                     '%s_proxy_g_properties_changed (GDBusProxy *proxy,\n'
+                     '%s_proxy_g_properties_changed (GDBusProxy *_proxy,\n'
                      '  GVariant *changed_properties,\n'
                      '  const gchar *const *invalidated_properties)\n'
                      '{\n'%(i.name_lower))
         # Note: info could be NULL if we are talking to a newer version of the interface
-        self.c.write('  guint n;\n'
+        self.c.write('  %sProxy *proxy = %s%s_PROXY (_proxy);\n'
+                     '  guint n;\n'
                      '  const gchar *key;\n'
                      '  GVariantIter *iter;\n'
                      '  _ExtendedGDBusPropertyInfo *info;\n'
@@ -1665,6 +1715,7 @@ class CodeGenerator:
                      '  while (g_variant_iter_next (iter, "{&sv}", &key, NULL))\n'
                      '    {\n'
                      '      info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, key);\n'
+                     '      g_datalist_remove_data (&proxy->priv->qdata, key);\n'
                      '      if (info != NULL)\n'
                      '        g_object_notify (G_OBJECT (proxy), info->hyphen_name);\n'
                      '    }\n'
@@ -1672,37 +1723,111 @@ class CodeGenerator:
                      '  for (n = 0; invalidated_properties[n] != NULL; n++)\n'
                      '    {\n'
                      '      info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, invalidated_properties[n]);\n'
+                     '      g_datalist_remove_data (&proxy->priv->qdata, key);\n'
                      '      if (info != NULL)\n'
                      '        g_object_notify (G_OBJECT (proxy), info->hyphen_name);\n'
                      '    }\n'
                      '}\n'
                      '\n'
-                     %(i.name_lower, i.name_lower))
+                     %(i.camel_name, i.ns_upper, i.name_upper,
+                       i.name_lower, i.name_lower))
+
+        # property vfuncs
+        for p in i.properties:
+            nul_value = '0'
+            if p.arg.free_func != None:
+                nul_value = 'NULL'
+            self.c.write('static %s\n'
+                         '%s_proxy_get_%s (%s *object)\n'
+                         '{\n'
+                         '  %sProxy *proxy = %s%s_PROXY (object);\n'
+                         '  GVariant *variant;\n'
+                         '  %svalue = %s;\n'%(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name,
+                                              i.camel_name, i.ns_upper, i.name_upper,
+                                              p.arg.ctype_in, nul_value))
+            # For some property types, we have to free the returned
+            # value (or part of it, e.g. the container) because of how
+            # GVariant works.. see https://bugzilla.gnome.org/show_bug.cgi?id=657100
+            # for details
+            #
+            # NOTE: Since we currently only use the qdata for this, we just use the
+            # the Quark numbers corresponding to the property number (starting
+            # from 1)
+            #
+            free_container = False;
+            if p.arg.gvariant_get == 'g_variant_get_strv' or p.arg.gvariant_get == 'g_variant_get_objpathv' or p.arg.gvariant_get == 'g_variant_get_bytestring_array':
+                free_container = True;
+            # If already using an old value for strv, objpathv, bytestring_array (see below),
+            # then just return that... that way the result from multiple consecutive calls
+            # to the getter are valid as long as they're freed
+            #
+            if free_container:
+                self.c.write('  value = g_datalist_get_data (&proxy->priv->qdata, \"%s\");\n'
+                             '  if (value != NULL)\n'
+                             '    return value;\n'
+                             %(p.name))
+            self.c.write('  variant = g_dbus_proxy_get_cached_property (G_DBUS_PROXY (proxy), \"%s\");\n'%(p.name))
+            if p.arg.gtype == 'G_TYPE_VARIANT':
+                self.c.write('  value = variant;\n')
+                self.c.write('  if (variant != NULL)\n')
+                self.c.write('    g_variant_unref (variant);\n')
+            else:
+                self.c.write('  if (variant != NULL)\n'
+                             '    {\n')
+                extra_len = ''
+                if p.arg.gvariant_get == 'g_variant_get_string' or p.arg.gvariant_get == 'g_variant_get_strv' or p.arg.gvariant_get == 'g_variant_get_objv' or p.arg.gvariant_get == 'g_variant_get_bytestring_array':
+                    extra_len = ', NULL'
+                self.c.write('      value = %s (variant%s);\n'%(p.arg.gvariant_get, extra_len))
+                if free_container:
+                    self.c.write('      g_datalist_set_data_full (&proxy->priv->qdata, \"%s\", (gpointer) value, g_free);\n'
+                                 %(p.name))
+                self.c.write('      g_variant_unref (variant);\n')
+                self.c.write('    }\n')
+            self.c.write('  return value;\n')
+            self.c.write('}\n')
+            self.c.write('\n')
 
         # class boilerplate
         self.c.write('static void\n'
                      '%s_proxy_init (%sProxy *proxy)\n'
                      '{\n'
+                     '  proxy->priv = G_TYPE_INSTANCE_GET_PRIVATE (proxy, %sTYPE_%s_PROXY, %sProxyPrivate);\n'
                      '  g_dbus_proxy_set_interface_info (G_DBUS_PROXY (proxy), %s_interface_info ());\n'
                      '}\n'
-                     '\n'%(i.name_lower, i.camel_name, i.name_lower))
+                     '\n'
+                     %(i.name_lower, i.camel_name,
+                       i.ns_upper, i.name_upper, i.camel_name,
+                       i.name_lower))
         self.c.write('static void\n'
                      '%s_proxy_class_init (%sProxyClass *klass)\n'
                      '{\n'
                      '  GObjectClass *gobject_class;\n'
                      '  GDBusProxyClass *proxy_class;\n'
                      '\n'
+                     '  g_type_class_add_private (klass, sizeof (%sProxyPrivate));\n'
+                     '\n'
                      '  gobject_class = G_OBJECT_CLASS (klass);\n'
+                     '  gobject_class->finalize     = %s_proxy_finalize;\n'
                      '  gobject_class->get_property = %s_proxy_get_property;\n'
                      '  gobject_class->set_property = %s_proxy_set_property;\n'
                      '\n'
                      '  proxy_class = G_DBUS_PROXY_CLASS (klass);\n'
                      '  proxy_class->g_signal = %s_proxy_g_signal;\n'
                      '  proxy_class->g_properties_changed = %s_proxy_g_properties_changed;\n'
-                     '\n'%(i.name_lower, i.camel_name, i.name_lower, i.name_lower, i.name_lower, i.name_lower))
+                     '\n'%(i.name_lower, i.camel_name,
+                           i.camel_name,
+                           i.name_lower, i.name_lower, i.name_lower, i.name_lower, i.name_lower))
         if len(i.properties) > 0:
             self.c.write('\n'
                          '  %s_override_properties (gobject_class, 1);\n'%(i.name_lower))
+        self.c.write('}\n'
+                     '\n')
+
+        self.c.write('static void\n'
+                     '%s_proxy_iface_init (%sIface *iface)\n'
+                     '{\n'%(i.name_lower, i.camel_name))
+        for p in i.properties:
+            self.c.write('  iface->get_%s = %s_proxy_get_%s;\n'%(p.name_lower, i.name_lower, p.name_lower))
         self.c.write('}\n'
                      '\n')
 
@@ -2199,20 +2324,11 @@ class CodeGenerator:
             self.c.write('}\n'
                          '\n')
 
-        self.c.write('static void\n'
-                     '%s_skeleton_iface_init (%sIface *iface)\n'
-                     '{\n'
+        self.c.write('static void %s_skeleton_iface_init (%sIface *iface);\n'
                      %(i.name_lower, i.camel_name))
-        for s in i.signals:
-            self.c.write('  iface->%s = _%s_on_signal_%s;\n'
-                         %(s.name_lower, i.name_lower, s.name_lower))
-        self.c.write('}\n'
-                     '\n')
-        self.c.write('#define %s_skeleton_get_type %s_skeleton_get_type\n'%(i.name_lower, i.name_lower))
+
         self.c.write('G_DEFINE_TYPE_WITH_CODE (%sSkeleton, %s_skeleton, G_TYPE_DBUS_INTERFACE_SKELETON,\n'%(i.camel_name, i.name_lower))
-        self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init));\n'%(i.ns_upper, i.name_upper, i.name_lower))
-        self.c.write('#undef %s_skeleton_get_type\n'
-                     '\n'%(i.name_lower))
+        self.c.write('                         G_IMPLEMENT_INTERFACE (%sTYPE_%s, %s_skeleton_iface_init));\n\n'%(i.ns_upper, i.name_upper, i.name_lower))
 
         # finalize
         self.c.write('static void\n'
@@ -2409,6 +2525,25 @@ class CodeGenerator:
                 n += 1
         self.c.write('}\n'
                      '\n')
+
+        # property vfuncs
+        n = 0
+        for p in i.properties:
+            self.c.write('static %s\n'
+                         '%s_skeleton_get_%s (%s *object)\n'
+                         '{\n'
+                         %(p.arg.ctype_in, i.name_lower, p.name_lower, i.camel_name))
+            self.c.write('  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'%(i.camel_name, i.ns_upper, i.name_upper))
+            self.c.write('  %svalue;\n'
+                         '  g_mutex_lock (skeleton->priv->lock);\n'
+                         '  value = %s (&(skeleton->priv->properties->values[%d]));\n'
+                         '  g_mutex_unlock (skeleton->priv->lock);\n'
+                         %(p.arg.ctype_in_g, p.arg.gvalue_get, n))
+            self.c.write('  return value;\n')
+            self.c.write('}\n')
+            self.c.write('\n')
+            n += 1
+
         self.c.write('static void\n'
                      '%s_skeleton_class_init (%sSkeletonClass *klass)\n'
                      '{\n'
@@ -2433,6 +2568,18 @@ class CodeGenerator:
         self.c.write('  skeleton_class->get_properties = %s_skeleton_dbus_interface_get_properties;\n'%(i.name_lower))
         self.c.write('  skeleton_class->flush = %s_skeleton_dbus_interface_flush;\n'%(i.name_lower))
         self.c.write('  skeleton_class->get_vtable = %s_skeleton_dbus_interface_get_vtable;\n'%(i.name_lower))
+        self.c.write('}\n'
+                     '\n')
+
+        self.c.write('static void\n'
+                     '%s_skeleton_iface_init (%sIface *iface)\n'
+                     '{\n'
+                     %(i.name_lower, i.camel_name))
+        for s in i.signals:
+            self.c.write('  iface->%s = _%s_on_signal_%s;\n'
+                         %(s.name_lower, i.name_lower, s.name_lower))
+        for p in i.properties:
+            self.c.write('  iface->get_%s = %s_skeleton_get_%s;\n'%(p.name_lower, i.name_lower, p.name_lower))
         self.c.write('}\n'
                      '\n')
 

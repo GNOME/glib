@@ -11,6 +11,7 @@ example_animal_call_poke_sync
 example_animal_complete_poke
 example_animal_emit_jumped
 example_animal_get_mood
+example_animal_dup_mood
 example_animal_set_mood
 ExampleAnimalProxy
 ExampleAnimalProxyClass
@@ -55,6 +56,7 @@ EXAMPLE_IS_ANIMAL_SKELETON_CLASS
 ExampleCat
 ExampleCatIface
 example_cat_interface_info
+example_cat_override_properties
 ExampleCatProxy
 ExampleCatProxyClass
 example_cat_proxy_new
