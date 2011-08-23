@@ -25,11 +25,11 @@ import sys
 import optparse
 
 import config
-import utils
-import dbustypes
-import parser
-import codegen
-import codegen_docbook
+from . import utils
+from . import dbustypes
+from . import parser
+from . import codegen
+from . import codegen_docbook
 
 def find_arg(arg_list, arg_name):
     for a in arg_list:

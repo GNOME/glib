@@ -25,9 +25,9 @@ import sys
 import re
 
 import config
-import utils
-import dbustypes
-import parser
+from . import utils
+from . import dbustypes
+from . import parser
 
 # ----------------------------------------------------------------------------------------------------
 

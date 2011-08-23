@@ -21,7 +21,7 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
-import utils
+from . import utils
 
 class Annotation:
     def __init__(self, key, value):

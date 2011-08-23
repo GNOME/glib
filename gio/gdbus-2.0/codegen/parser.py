@@ -21,10 +21,10 @@
 #
 # Author: David Zeuthen <davidz@redhat.com>
 
-import dbustypes
-
 import sys
 import xml.parsers.expat
+
+from . import dbustypes
 
 class DBusXMLParser:
     STATE_TOP = 'top'
