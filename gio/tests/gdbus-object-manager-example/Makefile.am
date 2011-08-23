@@ -22,13 +22,15 @@ GDBUS_GENERATED = 										\
 	$(NULL)
 
 $(GDBUS_GENERATED) : gdbus-example-objectmanager.xml
-	$(AM_V_GEN) PYTHONPATH=$(top_srcdir)/gio/gdbus-codegen:$(top_builddir)/gio/gdbus-codegen:$$PYTHONPATH $(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
-		--interface-prefix org.gtk.GDBus.Example.ObjectManager.		\
-		--c-namespace Example 						\
-		--c-generate-object-manager					\
-		--generate-c-code gdbus-example-objectmanager-generated		\
-		--generate-docbook gdbus-example-objectmanager-generated	\
-		$<					\
+	$(AM_V_GEN) UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
+		PYTHONPATH=$(top_srcdir)/gio/gdbus-2.0 \
+		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
+		--interface-prefix org.gtk.GDBus.Example.ObjectManager. \
+		--c-namespace Example \
+		--c-generate-object-manager \
+		--generate-c-code gdbus-example-objectmanager-generated \
+		--generate-docbook gdbus-example-objectmanager-generated \
+		$< \
 		$(NULL)
 
 BUILT_SOURCES += $(GDBUS_GENERATED)

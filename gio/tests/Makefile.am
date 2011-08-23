@@ -260,21 +260,23 @@ gdbus_bz627724_LDADD = $(progs_ldadd)
 
 if OS_UNIX
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
-	$(AM_V_GEN) PYTHONPATH=$(top_srcdir)/gio/gdbus-codegen:$(top_builddir)/gio/gdbus-codegen:$$PYTHONPATH $(PYTHON) $(top_srcdir)/gio/gdbus-codegen/codegen_main.py	 	\
-		--interface-prefix org.project.								\
-		--generate-c-code gdbus-test-codegen-generated						\
-		--c-generate-object-manager								\
-		--c-namespace Foo 									\
-		--generate-docbook gdbus-test-codegen-generated-doc					\
-		--annotate "org.project.Bar" Key1 Value1  						\
-		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2  				\
-		--annotate "org.project.Bar.HelloWorld()" Key3 Value3  					\
-		--annotate "org.project.Bar::TestSignal" Key4 Value4  					\
-		--annotate "org.project.Bar:ay" Key5 Value5	  					\
-		--annotate "org.project.Bar.TestPrimitiveTypes()[val_int32]" Key6 Value6  		\
-		--annotate "org.project.Bar.TestPrimitiveTypes()[ret_uint32]" Key7 Value7 		\
-		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8  		\
-		$(srcdir)/test-codegen.xml 									\
+	$(AM_V_GEN) UNINSTALLED_GLIB_BUILDDIR=$(top_builddir) \
+		PYTHONPATH=$(top_srcdir)/gio/gdbus-2.0 \
+		$(PYTHON) $(top_builddir)/gio/gdbus-2.0/codegen/gdbus-codegen \
+		--interface-prefix org.project. \
+		--generate-c-code gdbus-test-codegen-generated \
+		--c-generate-object-manager \
+		--c-namespace Foo \
+		--generate-docbook gdbus-test-codegen-generated-doc \
+		--annotate "org.project.Bar" Key1 Value1 \
+		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2 \
+		--annotate "org.project.Bar.HelloWorld()" Key3 Value3 \
+		--annotate "org.project.Bar::TestSignal" Key4 Value4 \
+		--annotate "org.project.Bar:ay" Key5 Value5 \
+		--annotate "org.project.Bar.TestPrimitiveTypes()[val_int32]" Key6 Value6 \
+		--annotate "org.project.Bar.TestPrimitiveTypes()[ret_uint32]" Key7 Value7 \
+		--annotate "org.project.Bar::TestSignal[array_of_strings]" Key8 Value8 \
+		$(srcdir)/test-codegen.xml \
 		$(NULL)
 
 BUILT_SOURCES += gdbus-test-codegen-generated.c gdbus-test-codegen-generated.h

@@ -23,7 +23,7 @@
 
 import sys
 
-import config
+from . import config
 from . import utils
 from . import dbustypes
 
