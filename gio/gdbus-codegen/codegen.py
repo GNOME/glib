@@ -1750,10 +1750,6 @@ class CodeGenerator:
             # GVariant works.. see https://bugzilla.gnome.org/show_bug.cgi?id=657100
             # for details
             #
-            # NOTE: Since we currently only use the qdata for this, we just use the
-            # the Quark numbers corresponding to the property number (starting
-            # from 1)
-            #
             free_container = False;
             if p.arg.gvariant_get == 'g_variant_get_strv' or p.arg.gvariant_get == 'g_variant_get_objpathv' or p.arg.gvariant_get == 'g_variant_get_bytestring_array':
                 free_container = True;
