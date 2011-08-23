@@ -4,7 +4,7 @@ bin_SCRIPTS =
 CLEANFILES =
 EXTRA_DIST =
 
-codegendir = $(libdir)/gdbus-codegen
+codegendir = $(libdir)/gdbus-2.0/codegen
 codegen_PYTHON =						\
 	__init__.py						\
 	codegen.py						\

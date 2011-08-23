@@ -3841,8 +3841,8 @@ gobject/tests/Makefile
 gthread/Makefile
 gthread/tests/Makefile
 gio/Makefile
-gio/gdbus-codegen/Makefile
-gio/gdbus-codegen/config.py
+gio/gdbus-2.0/codegen/Makefile
+gio/gdbus-2.0/codegen/config.py
 gio/xdgmime/Makefile
 gio/inotify/Makefile
 gio/libasyncns/Makefile

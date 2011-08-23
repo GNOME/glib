@@ -2,7 +2,7 @@ include $(top_srcdir)/Makefile.decl
 
 NULL =
 
-SUBDIRS = gdbus-codegen
+SUBDIRS = gdbus-2.0/codegen
 
 if OS_UNIX
 SUBDIRS += libasyncns xdgmime
