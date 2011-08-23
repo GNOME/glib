@@ -119,6 +119,8 @@ gio/gthreadedsocketservice.c
 gio/gtlscertificate.c
 gio/gtlsclientconnection.c
 gio/gtlsconnection.c
+gio/gtlsfiledatabase.c
+gio/gtlspassword.c
 gio/gtlsserverconnection.c
 gio/gunionvolumemonitor.c
 gio/gunixconnection.c
