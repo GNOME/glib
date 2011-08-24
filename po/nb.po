@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.29.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-10 15:11+0200\n"
-"PO-Revision-Date: 2011-08-10 15:12+0200\n"
+"POT-Creation-Date: 2011-08-24 15:37+0200\n"
+"PO-Revision-Date: 2011-08-24 15:38+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -158,227 +158,215 @@ msgid "Invalid hostname"
 msgstr "Ugyldig vertsnavn"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:149
+#: ../glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "am"
 msgstr "am"
 
-#. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:151
-msgctxt "GDateTime"
-msgid "AM"
-msgstr "AM"
-
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:153
+#: ../glib/gdatetime.c:201
 msgctxt "GDateTime"
 msgid "pm"
 msgstr "pm"
 
-#. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:155
-msgctxt "GDateTime"
-msgid "PM"
-msgstr "PM"
-
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:164
+#: ../glib/gdatetime.c:204
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d.%m.%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:167
+#: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H.%M.%S"
 
-#: ../glib/gdatetime.c:193
+#: ../glib/gdatetime.c:221
 msgctxt "full month name"
 msgid "January"
 msgstr "Januar"
 
-#: ../glib/gdatetime.c:195
+#: ../glib/gdatetime.c:223
 msgctxt "full month name"
 msgid "February"
 msgstr "Februar"
 
-#: ../glib/gdatetime.c:197
+#: ../glib/gdatetime.c:225
 msgctxt "full month name"
 msgid "March"
 msgstr "Mars"
 
-#: ../glib/gdatetime.c:199
+#: ../glib/gdatetime.c:227
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:201
+#: ../glib/gdatetime.c:229
 msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:231
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:233
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:235
 msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-#: ../glib/gdatetime.c:209
+#: ../glib/gdatetime.c:237
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:239
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:241
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:215
+#: ../glib/gdatetime.c:243
 msgctxt "full month name"
 msgid "December"
 msgstr "Desember"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:258
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:260
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:262
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:264
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:268
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:270
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:272
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:274
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:250
+#: ../glib/gdatetime.c:278
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:252
+#: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Des"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:295
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Mandag"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:297
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Tirsdag"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:299
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:301
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Fredag"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Lørdag"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Søndag"
 
-#: ../glib/gdatetime.c:294
+#: ../glib/gdatetime.c:322
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Man"
 
-#: ../glib/gdatetime.c:296
+#: ../glib/gdatetime.c:324
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Tir"
 
-#: ../glib/gdatetime.c:298
+#: ../glib/gdatetime.c:326
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Ons"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:328
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Tor"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Fre"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Lør"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:334
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Søn"
@@ -429,7 +417,7 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Feil under endring av navn på filen «%s» til «%s»: g_rename() feilet: %s"
 
-#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1391
+#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1442
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
@@ -464,103 +452,103 @@ msgstr "Kunne ikke lukke fil «%s»: fclose() feilet: %s"
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Eksisterende fil «%s» kunne ikke bli fjernet: g_unlink() feilet: %s"
 
-#: ../glib/gfileutils.c:1353
+#: ../glib/gfileutils.c:1405
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, må ikke inneholde «%s»"
 
-#: ../glib/gfileutils.c:1366
+#: ../glib/gfileutils.c:1418
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Mal «%s» inneholder ikke XXXXXX"
 
-#: ../glib/gfileutils.c:1855 ../glib/gfileutils.c:1883
-#: ../glib/gfileutils.c:1988
+#: ../glib/gfileutils.c:1994 ../glib/gfileutils.c:2022
+#: ../glib/gfileutils.c:2127
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gfileutils.c:1861
+#: ../glib/gfileutils.c:2000
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gfileutils.c:1864
+#: ../glib/gfileutils.c:2003
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gfileutils.c:1867
+#: ../glib/gfileutils.c:2006
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gfileutils.c:1870
+#: ../glib/gfileutils.c:2009
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gfileutils.c:1873
+#: ../glib/gfileutils.c:2012
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gfileutils.c:1876
+#: ../glib/gfileutils.c:2015
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gfileutils.c:1889
+#: ../glib/gfileutils.c:2028
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gfileutils.c:1892 ../glib/gfileutils.c:2001
+#: ../glib/gfileutils.c:2031 ../glib/gfileutils.c:2140
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1895 ../glib/gfileutils.c:2006
+#: ../glib/gfileutils.c:2034 ../glib/gfileutils.c:2145
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1898 ../glib/gfileutils.c:2011
+#: ../glib/gfileutils.c:2037 ../glib/gfileutils.c:2150
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:1901 ../glib/gfileutils.c:2016
+#: ../glib/gfileutils.c:2040 ../glib/gfileutils.c:2155
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:1904 ../glib/gfileutils.c:2021
+#: ../glib/gfileutils.c:2043 ../glib/gfileutils.c:2160
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gfileutils.c:1941
+#: ../glib/gfileutils.c:2080
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s byte"
 msgstr[1] "%s bytes"
 
-#: ../glib/gfileutils.c:1996
+#: ../glib/gfileutils.c:2135
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:2064
+#: ../glib/gfileutils.c:2203
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Feil under lesing av symbolsk lenke «%s»: %s"
 
-#: ../glib/gfileutils.c:2085
+#: ../glib/gfileutils.c:2224
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
@@ -1434,7 +1422,7 @@ msgstr "Tellerverdi gitt til %s er for stor"
 msgid "Stream is already closed"
 msgstr "Strømmen er allerede lukket"
 
-#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1640
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
 #: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
 #: ../gio/glocalfile.c:2096 ../gio/gsimpleasyncresult.c:814
 #: ../gio/gsimpleasyncresult.c:840
@@ -1991,17 +1979,17 @@ msgstr "Feil retur med tom kropp"
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Kan ikke laste /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:1428
+#: ../gio/gdbusproxy.c:1489
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Feil ved kall til StartServiceByName for %s: "
 
-#: ../gio/gdbusproxy.c:1449
+#: ../gio/gdbusproxy.c:1510
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Uventet svar %d fra metoden StartServiceByName(«%s»)"
 
-#: ../gio/gdbusproxy.c:2500 ../gio/gdbusproxy.c:2628
+#: ../gio/gdbusproxy.c:2600 ../gio/gdbusproxy.c:2734
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -3684,6 +3672,22 @@ msgstr "Fant ikke PEM-kodet sertifikat"
 #: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Kunne ikke lese PEM-kodet sertifikat"
+
+#: ../gio/gtlspassword.c:114
+msgid ""
+"This is the last chance to ether the password correctly before your access "
+"is locked out."
+msgstr "Dette er siste sjanse til å oppgi korrekt passord før tilgangen blir låst."
+
+#: ../gio/gtlspassword.c:116
+msgid ""
+"Several password entered have been incorrect, and your access will be locked "
+"out after further failures."
+msgstr "Passord har blitt oppgitt feil flere ganger, og tilgangen vil bli låst hvis det oppgis feil på nytt."
+
+#: ../gio/gtlspassword.c:118
+msgid "The password entered is incorrect."
+msgstr "Oppgitt passord er ikke korrekt."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
