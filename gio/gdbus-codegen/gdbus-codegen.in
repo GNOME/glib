@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!@PYTHON@
 
 # GDBus - GLib D-Bus Library
 #
