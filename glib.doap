@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:gnome="http://api.gnome.org/doap-extensions#"
+         xmlns="http://usefulinc.com/ns/doap#">
+
+  <name>GLib</name>
+  <shortname>glib</shortname>
+
+  <shortdesc xml:lang="en">Low level core library</shortdesc>
+
+  <description xml:lang="en">GLib is the low-level core library that forms the basis for projects such as GTK+ and GNOME. It provides data structure handling for C, portability wrappers, and interfaces for such runtime functionality as an event loop, threads, dynamic loading, and an object system.</description>
+
+  <homepage rdf:resource="http://www.gtk.org" />
+  <license rdf:resource="http://usefulinc.com/doap/licenses/lgpl" />
+  <bug-database rdf:resource="http://bugzilla.gnome.org/enter_bug.cgi?product=glib"/>
+  <download-page rdf:resource="http://developer.gnome.org/glib/" />
+  <mailing-list rdf:resource="mailto:gtk-devel-list@gnome.org" />
+
+  <programming-language>C</programming-language>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Matthias Clasen</foaf:name>
+      <foaf:mbox rdf:resource="mailto:mclasen@redhat.com"/>
+      <gnome:userid>matthiasc</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Tim Janik</foaf:name>
+      <foaf:mbox rdf:resource="mailto:timj@gtk.org"/>
+      <gnome:userid>timj</gnome:userid>
+    </foaf:Person>
+  </maintainer>
+
+  <repository>
+    <GitRepository>
+        <browse rdf:resource="http://git.gnome.org/browse/glib/"/>
+      <location rdf:resource="git://git.gnome.org/glib"/>
+    </GitRepository>
+  </repository>
+
+</Project>
