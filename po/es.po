@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-07-29 07:50+0000\n"
-"PO-Revision-Date: 2011-07-29 10:16+0200\n"
+"POT-Creation-Date: 2011-08-23 23:56+0000\n"
+"PO-Revision-Date: 2011-08-24 12:24+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -165,227 +165,215 @@ msgid "Invalid hostname"
 msgstr "El nombre del host es inválido"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:149
+#: ../glib/gdatetime.c:199
 msgctxt "GDateTime"
 msgid "am"
 msgstr "am"
 
-#. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:151
-msgctxt "GDateTime"
-msgid "AM"
-msgstr "AM"
-
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:153
+#: ../glib/gdatetime.c:201
 msgctxt "GDateTime"
 msgid "pm"
 msgstr "pm"
 
-#. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:155
-msgctxt "GDateTime"
-msgid "PM"
-msgstr "PM"
-
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:164
+#: ../glib/gdatetime.c:204
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:167
+#: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
-#: ../glib/gdatetime.c:193
+#: ../glib/gdatetime.c:221
 msgctxt "full month name"
 msgid "January"
 msgstr "Enero"
 
-#: ../glib/gdatetime.c:195
+#: ../glib/gdatetime.c:223
 msgctxt "full month name"
 msgid "February"
 msgstr "Febrero"
 
-#: ../glib/gdatetime.c:197
+#: ../glib/gdatetime.c:225
 msgctxt "full month name"
 msgid "March"
 msgstr "Marzo"
 
-#: ../glib/gdatetime.c:199
+#: ../glib/gdatetime.c:227
 msgctxt "full month name"
 msgid "April"
 msgstr "Abril"
 
-#: ../glib/gdatetime.c:201
+#: ../glib/gdatetime.c:229
 msgctxt "full month name"
 msgid "May"
 msgstr "Mayo"
 
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:231
 msgctxt "full month name"
 msgid "June"
 msgstr "Junio"
 
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:233
 msgctxt "full month name"
 msgid "July"
 msgstr "Julio"
 
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:235
 msgctxt "full month name"
 msgid "August"
 msgstr "Agosto"
 
-#: ../glib/gdatetime.c:209
+#: ../glib/gdatetime.c:237
 msgctxt "full month name"
 msgid "September"
 msgstr "Septiembre"
 
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:239
 msgctxt "full month name"
 msgid "October"
 msgstr "Octubre"
 
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:241
 msgctxt "full month name"
 msgid "November"
 msgstr "Noviembre"
 
-#: ../glib/gdatetime.c:215
+#: ../glib/gdatetime.c:243
 msgctxt "full month name"
 msgid "December"
 msgstr "Diciembre"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:258
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Ene"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:260
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:262
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:264
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Abr"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "May"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:268
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:270
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:272
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Ago"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:274
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Oct"
 
-#: ../glib/gdatetime.c:250
+#: ../glib/gdatetime.c:278
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:252
+#: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dic"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:295
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Lunes"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:297
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Martes"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:299
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Miércoles"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:301
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Jueves"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Viernes"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sábado"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Domingo"
 
-#: ../glib/gdatetime.c:294
+#: ../glib/gdatetime.c:322
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Lun"
 
-#: ../glib/gdatetime.c:296
+#: ../glib/gdatetime.c:324
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:298
+#: ../glib/gdatetime.c:326
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Mié"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:328
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Jue"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Vie"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sáb"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:334
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Dom"
@@ -435,7 +423,7 @@ msgstr "Falló al abrir el archivo «%s»: fdopen() falló: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Falló al renombrar el archivo «%s» a «%s»: g_rename() falló: %s"
 
-#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1391
+#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1442
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Falló al crear el archivo «%s»: %s"
@@ -470,103 +458,103 @@ msgstr "Falló al cerrar el archivo «%s»: falló fclose(): %s"
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "El archivo existente «%s» no se pudo eliminar: g_unlink() falló: %s"
 
-#: ../glib/gfileutils.c:1353
+#: ../glib/gfileutils.c:1405
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "La plantilla «%s» es inválida, no debería contener un «%s»"
 
-#: ../glib/gfileutils.c:1366
+#: ../glib/gfileutils.c:1418
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "La plantilla «%s» no contiene XXXXXX"
 
-#: ../glib/gfileutils.c:1855 ../glib/gfileutils.c:1883
-#: ../glib/gfileutils.c:1988
+#: ../glib/gfileutils.c:1994 ../glib/gfileutils.c:2022
+#: ../glib/gfileutils.c:2127
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gfileutils.c:1861
+#: ../glib/gfileutils.c:2000
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gfileutils.c:1864
+#: ../glib/gfileutils.c:2003
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gfileutils.c:1867
+#: ../glib/gfileutils.c:2006
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gfileutils.c:1870
+#: ../glib/gfileutils.c:2009
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gfileutils.c:1873
+#: ../glib/gfileutils.c:2012
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gfileutils.c:1876
+#: ../glib/gfileutils.c:2015
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gfileutils.c:1889
+#: ../glib/gfileutils.c:2028
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f KiB"
 
-#: ../glib/gfileutils.c:1892 ../glib/gfileutils.c:2001
+#: ../glib/gfileutils.c:2031 ../glib/gfileutils.c:2140
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MiB"
 
-#: ../glib/gfileutils.c:1895 ../glib/gfileutils.c:2006
+#: ../glib/gfileutils.c:2034 ../glib/gfileutils.c:2145
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GiB"
 
-#: ../glib/gfileutils.c:1898 ../glib/gfileutils.c:2011
+#: ../glib/gfileutils.c:2037 ../glib/gfileutils.c:2150
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TiB"
 
-#: ../glib/gfileutils.c:1901 ../glib/gfileutils.c:2016
+#: ../glib/gfileutils.c:2040 ../glib/gfileutils.c:2155
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PiB"
 
-#: ../glib/gfileutils.c:1904 ../glib/gfileutils.c:2021
+#: ../glib/gfileutils.c:2043 ../glib/gfileutils.c:2160
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EiB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gfileutils.c:1941
+#: ../glib/gfileutils.c:2080
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s byte"
 msgstr[1] "%s bytes"
 
-#: ../glib/gfileutils.c:1996
+#: ../glib/gfileutils.c:2135
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KiB"
 
-#: ../glib/gfileutils.c:2064
+#: ../glib/gfileutils.c:2203
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Falló al leer el enlace simbólico «%s»: %s"
 
-#: ../glib/gfileutils.c:2085
+#: ../glib/gfileutils.c:2224
 msgid "Symbolic links not supported"
 msgstr "Enlaces simbólicos no soportados"
 
@@ -1468,7 +1456,7 @@ msgstr "El valor de conteo pasado a %s es demasiado largo"
 msgid "Stream is already closed"
 msgstr "El flujo ya se cerró"
 
-#: ../gio/gcancellable.c:318 ../gio/gdbusconnection.c:1640
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
 #: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
 #: ../gio/glocalfile.c:2096 ../gio/gsimpleasyncresult.c:814
 #: ../gio/gsimpleasyncresult.c:840
@@ -1665,7 +1653,7 @@ msgstr ""
 "No se puede determinar la dirección del bus de sesión (no implementado para "
 "este SO)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6408
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1674,7 +1662,7 @@ msgstr ""
 "No se puede determinar la dirección del bus desde la variable de entorno "
 "DBUS_STARTER_BUS_TYPE; variable «%s» desconocida"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6417
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1804,7 +1792,7 @@ msgstr ""
 "Se encontraron opciones no soportadas al construir la conexión del lado del "
 "cliente"
 
-#: ../gio/gdbusconnection.c:3769 ../gio/gdbusconnection.c:4085
+#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1812,68 +1800,68 @@ msgstr ""
 "No existe la interfaz «org.freedesktop.DBus.Properties» en el objeto en la "
 "ruta %s"
 
-#: ../gio/gdbusconnection.c:3840
+#: ../gio/gdbusconnection.c:3841
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se obtuvo "
 "«%s»."
 
-#: ../gio/gdbusconnection.c:3935
+#: ../gio/gdbusconnection.c:3936
 #, c-format
 msgid "No such property `%s'"
 msgstr "No existe la propiedad «%s»"
 
-#: ../gio/gdbusconnection.c:3947
+#: ../gio/gdbusconnection.c:3948
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "No se puede leer la clave «%s»"
 
-#: ../gio/gdbusconnection.c:3958
+#: ../gio/gdbusconnection.c:3959
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "No se puede escribir la clave «%s»"
 
-#: ../gio/gdbusconnection.c:4028 ../gio/gdbusconnection.c:5852
+#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
 #, c-format
 msgid "No such interface `%s'"
 msgstr "La interfaz «%s» no existe"
 
-#: ../gio/gdbusconnection.c:4212
+#: ../gio/gdbusconnection.c:4213
 msgid "No such interface"
 msgstr "No existe tal interfaz"
 
-#: ../gio/gdbusconnection.c:4431 ../gio/gdbusconnection.c:6358
+#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "No existe la interfaz «%s» en el objeto en la ruta %s"
 
-#: ../gio/gdbusconnection.c:4483
+#: ../gio/gdbusconnection.c:4484
 #, c-format
 msgid "No such method `%s'"
 msgstr "No existe el método «%s»"
 
-#: ../gio/gdbusconnection.c:4514
+#: ../gio/gdbusconnection.c:4515
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "El tipo de mensaje, «%s», no concide con el tipo esperado «%s»"
 
-#: ../gio/gdbusconnection.c:4733
+#: ../gio/gdbusconnection.c:4734
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Ya existe un objeto exportado para la interfaz %s en %s"
 
-#: ../gio/gdbusconnection.c:4931
+#: ../gio/gdbusconnection.c:4932
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "El método «%s» devolvió el tipo «%s» pero se esperaba «%s»"
 
-#: ../gio/gdbusconnection.c:5963
+#: ../gio/gdbusconnection.c:5964
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "El método «%s» con interfaz «%s» y firma «%s» no existe"
 
-#: ../gio/gdbusconnection.c:6081
+#: ../gio/gdbusconnection.c:6082
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Ya se ha exportado un subárbol para %s"
@@ -2060,17 +2048,17 @@ msgstr "Error al devolver un cuepro vacío"
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "No se puede cargar /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:1428
+#: ../gio/gdbusproxy.c:1489
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Error al llamar StartSereviceByName para %s: "
 
-#: ../gio/gdbusproxy.c:1449
+#: ../gio/gdbusproxy.c:1510
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Respuesta %d no esperada del método StartServiceByName(«%s»)"
 
-#: ../gio/gdbusproxy.c:2500 ../gio/gdbusproxy.c:2628
+#: ../gio/gdbusproxy.c:2600 ../gio/gdbusproxy.c:2734
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2388,7 +2376,8 @@ msgstr "la unidad no implementa reproducir"
 msgid "drive doesn't implement stop"
 msgstr "la unidad no implementa detener"
 
-#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+#: ../gio/gdummytlsbackend.c:168 ../gio/gdummytlsbackend.c:288
+#: ../gio/gdummytlsbackend.c:378
 msgid "TLS support is not available"
 msgstr "El soporte de TSL no está disponible"
 
@@ -3768,7 +3757,6 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "No se puede manejar la versión %d de la codificación GThemedIcon"
 
 #: ../gio/gtlscertificate.c:226
-#| msgid "No PEM-encoded certificate found"
 msgid "No PEM-encoded private key found"
 msgstr "No se encontró ninguna clave privada codificada con PEM"
 
@@ -3783,6 +3771,26 @@ msgstr "No se encontró ningún certificado codificado con PEM"
 #: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
 msgstr "No se pudo analizar el certificado codificado con PEM"
+
+#: ../gio/gtlspassword.c:114
+msgid ""
+"This is the last chance to ether the password correctly before your access "
+"is locked out."
+msgstr ""
+"Esta es la última oportunidad para introducir la contraseña correctas antes "
+"de que el acceso se bloquee."
+
+#: ../gio/gtlspassword.c:116
+msgid ""
+"Several password entered have been incorrect, and your access will be locked "
+"out after further failures."
+msgstr ""
+"Se han introducido varias contraseñas incorrectas, y su acceso se bloqueará "
+"después de más fallos."
+
+#: ../gio/gtlspassword.c:118
+msgid "The password entered is incorrect."
+msgstr "La contraseña introducida no es correcta"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
@@ -3932,6 +3940,14 @@ msgstr "Se necesita más entrada"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Datos comprimidos no válidos"
+
+#~ msgctxt "GDateTime"
+#~ msgid "AM"
+#~ msgstr "AM"
+
+#~ msgctxt "GDateTime"
+#~ msgid "PM"
+#~ msgstr "PM"
 
 #~ msgid "Failed to set value\n"
 #~ msgstr "Falló al establecer el valor\n"
