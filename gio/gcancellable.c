@@ -286,12 +286,12 @@ g_cancellable_reset (GCancellable *cancellable)
 
 /**
  * g_cancellable_is_cancelled:
- * @cancellable: a #GCancellable or NULL.
- * 
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ *
  * Checks if a cancellable job has been cancelled.
- * 
- * Returns: %TRUE if @cancellable is cancelled, 
- * FALSE if called with %NULL or if item is not cancelled. 
+ *
+ * Returns: %TRUE if @cancellable is cancelled,
+ * FALSE if called with %NULL or if item is not cancelled.
  **/
 gboolean
 g_cancellable_is_cancelled (GCancellable *cancellable)
@@ -301,17 +301,17 @@ g_cancellable_is_cancelled (GCancellable *cancellable)
 
 /**
  * g_cancellable_set_error_if_cancelled:
- * @cancellable: a #GCancellable object.
- * @error: #GError to append error state to.
- * 
+ * @cancellable: (allow-none): a #GCancellable or %NULL
+ * @error: #GError to append error state to
+ *
  * If the @cancellable is cancelled, sets the error to notify
  * that the operation was cancelled.
- * 
- * Returns: %TRUE if @cancellable was cancelled, %FALSE if it was not.
- **/
+ *
+ * Returns: %TRUE if @cancellable was cancelled, %FALSE if it was not
+ */
 gboolean
 g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
-				      GError       **error)
+                                      GError       **error)
 {
   if (g_cancellable_is_cancelled (cancellable))
     {
@@ -321,7 +321,7 @@ g_cancellable_set_error_if_cancelled (GCancellable  *cancellable,
                            _("Operation was cancelled"));
       return TRUE;
     }
-  
+
   return FALSE;
 }
 
