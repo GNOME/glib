@@ -1779,6 +1779,13 @@ g_desktop_app_info_set_as_last_used_for_type (GAppInfo    *appinfo,
   if (!g_desktop_app_info_ensure_saved (info, error))
     return FALSE;
 
+  if (!info->desktop_id)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Application information lacks an identifier"));
+      return FALSE;
+    }
+
   /* both add support for the content type and set as last used */
   return update_mimeapps_list (info->desktop_id, content_type,
                                UPDATE_MIME_SET_NON_DEFAULT |
@@ -1794,8 +1801,15 @@ g_desktop_app_info_set_as_default_for_type (GAppInfo    *appinfo,
   GDesktopAppInfo *info = G_DESKTOP_APP_INFO (appinfo);
 
   if (!g_desktop_app_info_ensure_saved (info, error))
-    return FALSE;  
-  
+    return FALSE;
+
+  if (!info->desktop_id)
+    {
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_FAILED,
+                           _("Application information lacks an identifier"));
+      return FALSE;
+    }
+
   return update_mimeapps_list (info->desktop_id, content_type,
                                UPDATE_MIME_SET_DEFAULT,
                                error);
