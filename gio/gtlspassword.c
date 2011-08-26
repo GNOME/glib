@@ -111,7 +111,7 @@ g_tls_password_real_get_default_warning (GTlsPassword  *password)
   flags = g_tls_password_get_flags (password);
 
   if (flags & G_TLS_PASSWORD_FINAL_TRY)
-    return _("This is the last chance to ether the password correctly before your access is locked out.");
+    return _("This is the last chance to enter the password correctly before your access is locked out.");
   if (flags & G_TLS_PASSWORD_MANY_TRIES)
     return _("Several password entered have been incorrect, and your access will be locked out after further failures.");
   if (flags & G_TLS_PASSWORD_RETRY)
