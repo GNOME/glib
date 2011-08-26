@@ -32,6 +32,13 @@
 
 G_BEGIN_DECLS
 
+typedef struct _GIOModuleScope GIOModuleScope;
+
+GIOModuleScope *   g_io_module_scope_new     (GIOModuleScopeFlags  flags);
+void               g_io_module_scope_free    (GIOModuleScope      *scope);
+void               g_io_module_scope_block   (GIOModuleScope      *scope,
+                                              const gchar         *basename);
+
 #define G_IO_TYPE_MODULE         (g_io_module_get_type ())
 #define G_IO_MODULE(o)           (G_TYPE_CHECK_INSTANCE_CAST ((o), G_IO_TYPE_MODULE, GIOModule))
 #define G_IO_MODULE_CLASS(k)     (G_TYPE_CHECK_CLASS_CAST((k), G_IO_TYPE_MODULE, GIOModuleClass))
@@ -51,6 +58,11 @@ GIOModule         *g_io_module_new                            (const gchar      
 
 void               g_io_modules_scan_all_in_directory         (const char        *dirname);
 GList             *g_io_modules_load_all_in_directory         (const gchar       *dirname);
+
+void               g_io_modules_scan_all_in_directory_with_scope   (const gchar       *dirname,
+                                                                    GIOModuleScope    *scope);
+GList             *g_io_modules_load_all_in_directory_with_scope   (const gchar       *dirname,
+                                                                    GIOModuleScope    *scope);
 
 GIOExtensionPoint *g_io_extension_point_register              (const char        *name);
 GIOExtensionPoint *g_io_extension_point_lookup                (const char        *name);

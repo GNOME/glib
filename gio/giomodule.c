@@ -108,7 +108,103 @@
  *  see <link linkend="gio-querymodules">gio-querymodules</link>.
  *  You are expected to run this command after installing a
  *  GIO module.
+ *
+ *  The <envar>GIO_EXTRA_MODULES</envar> environment variable can be
+ *  used to specify additional directories to automatically load modules
+ *  from. This environment variable has the same syntax as the
+ *  <envar>PATH</envar>. If two modules have the same base name in different
+ *  directories, then the latter one will be ignored. If additional
+ *  directories are specified GIO will load modules from the built-in
+ *  directory last.
  */
+
+/**
+ * GIOModuleScope:
+ *
+ * Represents a scope for loading IO modules. A scope can be used for blocking
+ * duplicate modules, or blocking a module you don't want to load.
+ *
+ * The scope can be used with g_io_modules_load_all_in_directory_with_scope()
+ * or g_io_modules_scan_all_in_directory_with_scope().
+ *
+ * Since: 2.30
+ */
+struct _GIOModuleScope {
+  GIOModuleScopeFlags flags;
+  GHashTable *basenames;
+};
+
+/**
+ * g_io_module_scope_new:
+ * @flags: flags for the new scope
+ *
+ * Create a new scope for loading of IO modules. A scope can be used for
+ * blocking duplicate modules, or blocking a module you don't want to load.
+ *
+ * Specify the %G_IO_MODULES_SCOPE_BLOCK_DUPLICATES flag to block modules
+ * which have the same base name as a module that has already been seen
+ * in this scope.
+ *
+ * Returns: (transfer full): the new module scope
+ *
+ * Since: 2.30
+ */
+GIOModuleScope *
+g_io_module_scope_new (GIOModuleScopeFlags flags)
+{
+  GIOModuleScope *scope = g_new0 (GIOModuleScope, 1);
+  scope->flags = flags;
+  scope->basenames = g_hash_table_new_full (g_str_hash, g_str_equal, g_free, NULL);
+  return scope;
+}
+
+/**
+ * g_io_module_scope_free:
+ * @scope: a module loading scope
+ *
+ * Free a module scope.
+ *
+ * Since: 2.30
+ */
+void
+g_io_module_scope_free (GIOModuleScope *scope)
+{
+  if (!scope)
+    return;
+  g_hash_table_destroy (scope->basenames);
+  g_free (scope);
+}
+
+/**
+ * g_io_module_scope_block:
+ * @scope: a module loading scope
+ *
+ * Block modules with the given base name from being loaded when this scope
+ * is used with g_io_modules_scan_all_in_directory_with_scope() or
+ * g_io_modules_load_all_in_directory_with_scope().
+ *
+ * Since: 2.30
+ */
+void
+g_io_module_scope_block (GIOModuleScope *scope,
+                         const gchar    *basename)
+{
+  gchar *key;
+
+  g_return_if_fail (scope != NULL);
+  g_return_if_fail (basename != NULL);
+
+  key = g_strdup (basename);
+  g_hash_table_insert (scope->basenames, key, key);
+}
+
+static gboolean
+_g_io_module_scope_contains (GIOModuleScope *scope,
+                             const gchar    *basename)
+{
+  return g_hash_table_lookup (scope->basenames, basename) ? TRUE : FALSE;
+}
+
 struct _GIOModule {
   GTypeModule parent_instance;
 
@@ -253,20 +349,36 @@ g_io_module_new (const gchar *filename)
 }
 
 static gboolean
-is_valid_module_name (const gchar *basename)
+is_valid_module_name (const gchar        *basename,
+                      GIOModuleScope     *scope)
 {
+  gboolean result;
+
 #if !defined(G_OS_WIN32) && !defined(G_WITH_CYGWIN)
-  return
-    g_str_has_prefix (basename, "lib") &&
-    g_str_has_suffix (basename, ".so");
+  if (!g_str_has_prefix (basename, "lib") ||
+      !g_str_has_suffix (basename, ".so"))
+    return FALSE;
 #else
-  return g_str_has_suffix (basename, ".dll");
+  if (!g_str_has_suffix (basename, ".dll"))
+    return FALSE;
 #endif
+
+  result = TRUE;
+  if (scope)
+    {
+      result = _g_io_module_scope_contains (scope, basename) ? FALSE : TRUE;
+      if (result && (scope->flags & G_IO_MODULE_SCOPE_BLOCK_DUPLICATES))
+        g_io_module_scope_block (scope, basename);
+    }
+
+  return result;
 }
 
+
 /**
- * g_io_modules_scan_all_in_directory:
+ * g_io_modules_scan_all_in_directory_with_scope:
  * @dirname: pathname for a directory containing modules to scan.
+ * @scope: a scope to use when scanning the modules
  *
  * Scans all the modules in the specified directory, ensuring that
  * any extension point implemented by a module is registered.
@@ -280,10 +392,11 @@ is_valid_module_name (const gchar *basename)
  * If you need to guarantee that all types are loaded in all the modules,
  * use g_io_modules_load_all_in_directory().
  *
- * Since: 2.24
+ * Since: 2.30
  **/
 void
-g_io_modules_scan_all_in_directory (const char *dirname)
+g_io_modules_scan_all_in_directory_with_scope (const char     *dirname,
+                                               GIOModuleScope *scope)
 {
   const gchar *name;
   char *filename;
@@ -353,7 +466,7 @@ g_io_modules_scan_all_in_directory (const char *dirname)
 
   while ((name = g_dir_read_name (dir)))
     {
-      if (is_valid_module_name (name))
+      if (is_valid_module_name (name, scope))
 	{
 	  GIOExtensionPoint *extension_point;
 	  GIOModule *module;
@@ -404,10 +517,34 @@ g_io_modules_scan_all_in_directory (const char *dirname)
   g_free (filename);
 }
 
+/**
+ * g_io_modules_scan_all_in_directory:
+ * @dirname: pathname for a directory containing modules to scan.
+ *
+ * Scans all the modules in the specified directory, ensuring that
+ * any extension point implemented by a module is registered.
+ *
+ * This may not actually load and initialize all the types in each
+ * module, some modules may be lazily loaded and initialized when
+ * an extension point it implementes is used with e.g.
+ * g_io_extension_point_get_extensions() or
+ * g_io_extension_point_get_extension_by_name().
+ *
+ * If you need to guarantee that all types are loaded in all the modules,
+ * use g_io_modules_load_all_in_directory().
+ *
+ * Since: 2.24
+ **/
+void
+g_io_modules_scan_all_in_directory (const char *dirname)
+{
+  g_io_modules_scan_all_in_directory_with_scope (dirname, NULL);
+}
 
 /**
- * g_io_modules_load_all_in_directory:
+ * g_io_modules_load_all_in_directory_with_scope:
  * @dirname: pathname for a directory containing modules to load.
+ * @scope: a scope to use when scanning the modules.
  *
  * Loads all the modules in the specified directory.
  *
@@ -421,9 +558,12 @@ g_io_modules_scan_all_in_directory (const char *dirname)
  *      unload them (enabling on-demand loading) you must call
  *      g_type_module_unuse() on all the modules. Free the list
  *      with g_list_free().
+ *
+ * Since: 2.30
  **/
 GList *
-g_io_modules_load_all_in_directory (const char *dirname)
+g_io_modules_load_all_in_directory_with_scope (const char     *dirname,
+                                               GIOModuleScope *scope)
 {
   const gchar *name;
   GDir        *dir;
@@ -439,7 +579,7 @@ g_io_modules_load_all_in_directory (const char *dirname)
   modules = NULL;
   while ((name = g_dir_read_name (dir)))
     {
-      if (is_valid_module_name (name))
+      if (is_valid_module_name (name, scope))
         {
           GIOModule *module;
           gchar     *path;
@@ -464,6 +604,29 @@ g_io_modules_load_all_in_directory (const char *dirname)
   g_dir_close (dir);
 
   return modules;
+}
+
+/**
+ * g_io_modules_load_all_in_directory:
+ * @dirname: pathname for a directory containing modules to load.
+ *
+ * Loads all the modules in the specified directory.
+ *
+ * If don't require all modules to be initialized (and thus registering
+ * all gtypes) then you can use g_io_modules_scan_all_in_directory()
+ * which allows delayed/lazy loading of modules.
+ *
+ * Returns: (element-type GIOModule) (transfer full): a list of #GIOModules loaded
+ *      from the directory,
+ *      All the modules are loaded into memory, if you want to
+ *      unload them (enabling on-demand loading) you must call
+ *      g_type_module_unuse() on all the modules. Free the list
+ *      with g_list_free().
+ **/
+GList *
+g_io_modules_load_all_in_directory (const char *dirname)
+{
+  return g_io_modules_load_all_in_directory_with_scope (dirname, NULL);
 }
 
 G_LOCK_DEFINE_STATIC (registered_extensions);
@@ -571,6 +734,7 @@ _g_io_modules_ensure_loaded (void)
 {
   static gboolean loaded_dirs = FALSE;
   const char *module_path;
+  GIOModuleScope *scope;
 
   _g_io_modules_ensure_extension_points_registered ();
   
@@ -579,11 +743,10 @@ _g_io_modules_ensure_loaded (void)
   if (!loaded_dirs)
     {
       loaded_dirs = TRUE;
+      scope = g_io_module_scope_new (G_IO_MODULE_SCOPE_BLOCK_DUPLICATES);
 
-      g_io_modules_scan_all_in_directory (GIO_MODULE_DIR);
-
+      /* First load any overrides, extras */
       module_path = g_getenv ("GIO_EXTRA_MODULES");
-
       if (module_path)
 	{
 	  gchar **paths;
@@ -592,10 +755,17 @@ _g_io_modules_ensure_loaded (void)
 	  paths = g_strsplit (module_path, ":", 0);
 
 	  for (i = 0; paths[i] != NULL; i++)
-	    g_io_modules_scan_all_in_directory (paths[i]);
+	    {
+	      g_io_modules_scan_all_in_directory_with_scope (paths[i], scope);
+	    }
 
 	  g_strfreev (paths);
 	}
+
+      /* Then load the compiled in path */
+      g_io_modules_scan_all_in_directory_with_scope (GIO_MODULE_DIR, scope);
+
+      g_io_module_scope_free (scope);
 
       /* Initialize types from built-in "modules" */
       g_null_settings_backend_get_type ();

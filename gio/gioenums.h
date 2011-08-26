@@ -1498,6 +1498,22 @@ typedef enum {
   G_TLS_DATABASE_LOOKUP_KEYPAIR = 1
 } GTlsDatabaseLookupFlags;
 
+/**
+ * GIOModuleScopeFlags:
+ * @G_IO_MODULES_SCOPE_NONE: No module scan flags
+ * @G_IO_MODULES_SCOPE_BLOCK_DUPLICATES: When using this scope to load or
+ *     scan modules, automatically block a modules which has the same base
+ *     basename as previously loaded module.
+ *
+ * Flags for use with g_io_module_scope_new().
+ *
+ * Since: 2.30
+ */
+typedef enum {
+  G_IO_MODULE_SCOPE_NONE,
+  G_IO_MODULE_SCOPE_BLOCK_DUPLICATES
+} GIOModuleScopeFlags;
+
 G_END_DECLS
 
 #endif /* __GIO_ENUMS_H__ */
