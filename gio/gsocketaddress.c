@@ -260,7 +260,12 @@ g_socket_address_new_from_native (gpointer native,
 	}
       else if (addr->sun_path[0] == 0)
 	{
-	  if (len < sizeof (*addr))
+	  if (!g_unix_socket_address_abstract_names_supported ())
+	    {
+	      return g_unix_socket_address_new_with_type ("", 0,
+							  G_UNIX_SOCKET_ADDRESS_ANONYMOUS);
+	    }
+	  else if (len < sizeof (*addr))
 	    {
 	      return g_unix_socket_address_new_with_type (addr->sun_path + 1,
 							  path_len - 1,
