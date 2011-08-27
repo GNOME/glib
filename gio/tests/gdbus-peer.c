@@ -53,6 +53,7 @@ static gboolean is_unix = TRUE;
 static gboolean is_unix = FALSE;
 #endif
 
+static gchar *tmp_address = NULL;
 static gchar *test_guid = NULL;
 static GMainLoop *service_loop = NULL;
 static GDBusServer *server = NULL;
@@ -330,7 +331,7 @@ service_thread_func (gpointer user_data)
 
   error = NULL;
   observer = g_dbus_auth_observer_new ();
-  server = g_dbus_server_new_sync (is_unix ? "unix:tmpdir=/tmp/gdbus-test-" : "nonce-tcp:",
+  server = g_dbus_server_new_sync (tmp_address,
                                    G_DBUS_SERVER_FLAGS_NONE,
                                    test_guid,
                                    observer,
@@ -1004,7 +1005,7 @@ dmp_thread_func (gpointer user_data)
 
   error = NULL;
   guid = g_dbus_generate_guid ();
-  data->server = g_dbus_server_new_sync ("unix:tmpdir=/tmp/gdbus-test-",
+  data->server = g_dbus_server_new_sync (tmp_address,
                                          G_DBUS_SERVER_FLAGS_NONE,
                                          guid,
                                          NULL, /* GDBusAuthObserver */
@@ -1533,6 +1534,7 @@ main (int   argc,
 {
   gint ret;
   GDBusNodeInfo *introspection_data = NULL;
+  gchar *tmpdir = NULL;
 
   g_type_init ();
   g_thread_init (NULL);
@@ -1545,6 +1547,19 @@ main (int   argc,
   test_interface_introspection_data = introspection_data->interfaces[0];
 
   test_guid = g_dbus_generate_guid ();
+
+  if (is_unix)
+    {
+      if (g_unix_socket_address_abstract_names_supported ())
+	tmp_address = g_strdup ("unix:tmpdir=/tmp/gdbus-test-");
+      else
+	{
+	  tmpdir = g_dir_make_tmp ("gdbus-test-XXXXXX", NULL);
+	  tmp_address = g_strdup_printf ("unix:tmpdir=%s", tmpdir);
+	}
+    }
+  else
+    tmp_address = g_strdup ("nonce-tcp:");
 
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
@@ -1561,6 +1576,13 @@ main (int   argc,
   g_main_loop_unref (loop);
   g_free (test_guid);
   g_dbus_node_info_unref (introspection_data);
+  if (is_unix)
+    g_free (tmp_address);
+  if (tmpdir)
+    {
+      g_rmdir (tmpdir);
+      g_free (tmpdir);
+    }
 
   return ret;
 }
