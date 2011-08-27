@@ -160,7 +160,7 @@ g_unix_credentials_message_deserialize (gint     level,
       {
         goto out;
       }
-    if (size < CMSG_LEN (sizeof *cred))
+    if (size < sizeof *cred)
       {
         g_warning ("Expected a struct cmsgcred (%" G_GSIZE_FORMAT " bytes) but "
                    "got %" G_GSIZE_FORMAT " bytes of data",
