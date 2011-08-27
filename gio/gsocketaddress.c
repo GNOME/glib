@@ -241,7 +241,20 @@ g_socket_address_new_from_native (gpointer native,
       if (len < sizeof (*addr))
 	return NULL;
 
-      iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin6_addr), AF_INET6);
+      if (IN6_IS_ADDR_V4MAPPED (&(addr->sin6_addr)))
+	{
+	  struct sockaddr_in sin_addr;
+
+	  sin_addr.sin_family = AF_INET;
+	  sin_addr.sin_port = addr->sin6_port;
+	  memcpy (&(sin_addr.sin_addr.s_addr), addr->sin6_addr.s6_addr + 12, 4);
+	  iaddr = g_inet_address_new_from_bytes ((guint8 *) &(sin_addr.sin_addr), AF_INET);
+	}
+      else
+	{
+	  iaddr = g_inet_address_new_from_bytes ((guint8 *) &(addr->sin6_addr), AF_INET6);
+	}
+
       sockaddr = g_inet_socket_address_new (iaddr, g_ntohs (addr->sin6_port));
       g_object_unref (iaddr);
       return sockaddr;
