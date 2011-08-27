@@ -994,7 +994,10 @@ read_string (GMemoryInputStream    *mis,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("Wanted to read %lu bytes but got EOF"),
+                       g_dngettext (GETTEXT_PACKAGE,
+                                    "Wanted to read %lu byte but got EOF",
+                                    "Wanted to read %lu bytes but got EOF",
+                                    (gulong)to_read),
                        (gulong)to_read);
           goto fail;
         }
@@ -1317,7 +1320,10 @@ parse_value_from_blob (GMemoryInputStream    *mis,
                 g_set_error (&local_error,
                              G_IO_ERROR,
                              G_IO_ERROR_INVALID_ARGUMENT,
-                             _("Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."),
+                             g_dngettext (GETTEXT_PACKAGE,
+                                          "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB).",
+                                          "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB).",
+                                          array_len),
                              array_len);
                 goto fail;
               }
@@ -1811,7 +1817,10 @@ g_dbus_message_new_from_blob (guchar                *blob,
           g_set_error (error,
                        G_IO_ERROR,
                        G_IO_ERROR_INVALID_ARGUMENT,
-                       _("No signature header in message but the message body is %u bytes"),
+                       g_dngettext (GETTEXT_PACKAGE,
+                                    "No signature header in message but the message body is %u byte",
+                                    "No signature header in message but the message body is %u bytes",
+                                    message_body_len),
                        message_body_len);
           goto out;
         }
