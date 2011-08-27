@@ -2300,7 +2300,7 @@ g_dbus_message_to_blob (GDBusMessage          *message,
       g_set_error (error,
                    G_IO_ERROR,
                    G_IO_ERROR_INVALID_ARGUMENT,
-                   _("Message has %d fds but the header field indicates %d fds"),
+                   _("Message has %d file descriptors but the header field indicates %d file descriptors"),
                    num_fds_in_message,
                    num_fds_according_to_header);
       goto out;
