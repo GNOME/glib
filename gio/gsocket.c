@@ -2439,7 +2439,6 @@ socket_source_prepare (GSource *source,
       if (*timeout < 0)
         {
           socket_source->socket->priv->timed_out = TRUE;
-          socket_source->pollfd.revents = socket_source->condition & (G_IO_IN | G_IO_OUT);
           *timeout = 0;
           return TRUE;
         }
@@ -2476,6 +2475,8 @@ socket_source_dispatch (GSource     *source,
 #ifdef G_OS_WIN32
   socket_source->pollfd.revents = update_condition (socket_source->socket);
 #endif
+  if (socket_source->socket->priv->timed_out)
+    socket_source->pollfd.revents |= socket_source->condition & (G_IO_IN | G_IO_OUT);
 
   return (*func) (socket_source->socket,
 		  socket_source->pollfd.revents & socket_source->condition,

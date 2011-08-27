@@ -178,7 +178,7 @@ test_ip_async_timed_out (GSocket      *client,
 
   if (data->family == G_SOCKET_FAMILY_IPV4)
     {
-      g_assert_cmpint (cond, ==, 0);
+      g_assert_cmpint (cond, ==, G_IO_IN);
       len = g_socket_receive (client, buf, sizeof (buf), NULL, &error);
       g_assert_cmpint (len, ==, -1);
       g_assert_error (error, G_IO_ERROR, G_IO_ERROR_TIMED_OUT);
@@ -554,7 +554,7 @@ main (int   argc,
   g_test_add_func ("/socket/ipv4_sync", test_ipv4_sync);
   g_test_add_func ("/socket/ipv4_async", test_ipv4_async);
   g_test_add_func ("/socket/ipv6_sync", test_ipv6_sync);
-  g_test_add_func ("/socket/ipv6_sync", test_ipv6_async);
+  g_test_add_func ("/socket/ipv6_async", test_ipv6_async);
 #ifdef G_OS_UNIX
   g_test_add_func ("/socket/unix-from-fd", test_unix_from_fd);
   g_test_add_func ("/socket/unix-connection", test_unix_connection);
