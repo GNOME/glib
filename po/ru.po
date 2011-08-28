@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-23 23:56+0000\n"
-"PO-Revision-Date: 2011-08-25 18:59+0300\n"
+"POT-Creation-Date: 2011-08-28 17:08+0000\n"
+"PO-Revision-Date: 2011-08-28 22:24+0300\n"
 "Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -456,7 +456,7 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Не удалось переименовать файл «%s» в «%s»: сбой в функции g_rename(): %s"
 
 #: ../glib/gfileutils.c:904
-#: ../glib/gfileutils.c:1442
+#: ../glib/gfileutils.c:1446
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Не удалось создать файл «%s»: %s"
@@ -491,19 +491,19 @@ msgstr "Не удалось закрыть файл «%s»: сбой в функ
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Не удалось удалить существующий файл «%s»: сбой в функции g_unlink(): %s"
 
-#: ../glib/gfileutils.c:1405
+#: ../glib/gfileutils.c:1409
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Шаблон «%s» недопустим: он не должен содержать «%s»"
 
-#: ../glib/gfileutils.c:1418
+#: ../glib/gfileutils.c:1422
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Шаблон «%s» не содержит XXXXXX"
 
-#: ../glib/gfileutils.c:1994
-#: ../glib/gfileutils.c:2022
-#: ../glib/gfileutils.c:2127
+#: ../glib/gfileutils.c:1998
+#: ../glib/gfileutils.c:2026
+#: ../glib/gfileutils.c:2131
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -511,73 +511,73 @@ msgstr[0] "%u байт"
 msgstr[1] "%u байта"
 msgstr[2] "%u байт"
 
-#: ../glib/gfileutils.c:2000
+#: ../glib/gfileutils.c:2004
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f КиБ"
 
-#: ../glib/gfileutils.c:2003
+#: ../glib/gfileutils.c:2007
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f МиБ"
 
-#: ../glib/gfileutils.c:2006
+#: ../glib/gfileutils.c:2010
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f ГиБ"
 
-#: ../glib/gfileutils.c:2009
+#: ../glib/gfileutils.c:2013
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f ТиБ"
 
-#: ../glib/gfileutils.c:2012
+#: ../glib/gfileutils.c:2016
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f ПиБ"
 
-#: ../glib/gfileutils.c:2015
+#: ../glib/gfileutils.c:2019
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f ЭиБ"
 
-#: ../glib/gfileutils.c:2028
+#: ../glib/gfileutils.c:2032
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f кБ"
 
-#: ../glib/gfileutils.c:2031
-#: ../glib/gfileutils.c:2140
+#: ../glib/gfileutils.c:2035
+#: ../glib/gfileutils.c:2144
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f МБ"
 
-#: ../glib/gfileutils.c:2034
-#: ../glib/gfileutils.c:2145
+#: ../glib/gfileutils.c:2038
+#: ../glib/gfileutils.c:2149
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f ГБ"
 
-#: ../glib/gfileutils.c:2037
-#: ../glib/gfileutils.c:2150
+#: ../glib/gfileutils.c:2041
+#: ../glib/gfileutils.c:2154
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f ТБ"
 
-#: ../glib/gfileutils.c:2040
-#: ../glib/gfileutils.c:2155
+#: ../glib/gfileutils.c:2044
+#: ../glib/gfileutils.c:2159
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f ПБ"
 
-#: ../glib/gfileutils.c:2043
-#: ../glib/gfileutils.c:2160
+#: ../glib/gfileutils.c:2047
+#: ../glib/gfileutils.c:2164
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f ЭБ"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gfileutils.c:2080
+#: ../glib/gfileutils.c:2084
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
@@ -585,17 +585,17 @@ msgstr[0] "%s байт"
 msgstr[1] "%s байта"
 msgstr[2] "%s байт"
 
-#: ../glib/gfileutils.c:2135
+#: ../glib/gfileutils.c:2139
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f КБ"
 
-#: ../glib/gfileutils.c:2203
+#: ../glib/gfileutils.c:2207
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Не удалось прочитать символьную ссылку «%s»: %s"
 
-#: ../glib/gfileutils.c:2224
+#: ../glib/gfileutils.c:2228
 msgid "Symbolic links not supported"
 msgstr "Символьные ссылки не поддерживаются"
 
@@ -1831,110 +1831,125 @@ msgstr "Сообщение SIGNAL: поле заголовка PATH исполь
 msgid "SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
 msgstr "Сообщение SIGNAL: поле заголовка INTERFACE использует зарезервированное значение org.freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:997
+#: ../gio/gdbusmessage.c:998
 #, c-format
-msgid "Wanted to read %lu bytes but got EOF"
-msgstr "Требовалось прочитать %lu байт, но получен EOF"
+#| msgid "Wanted to read %lu bytes but got EOF"
+msgid "Wanted to read %lu byte but got EOF"
+msgid_plural "Wanted to read %lu bytes but got EOF"
+msgstr[0] "Требовалось прочитать %lu байт, но получен EOF"
+msgstr[1] "Требовалось прочитать %lu байта, но получен EOF"
+msgstr[2] "Требовалось прочитать %lu байт, но получен EOF"
 
-#: ../gio/gdbusmessage.c:1022
+#: ../gio/gdbusmessage.c:1025
 #, c-format
 msgid "Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr "Ожидалась корректная строка UTF-8, но обнаружены недопустимые байты (смещение %d, длина строки %d). Корректная строка UTF-8 вплоть до тех байт: «%s»"
 
-#: ../gio/gdbusmessage.c:1035
+#: ../gio/gdbusmessage.c:1038
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr "Ожидался байт NUL после строки «%s», но найден байт %d"
 
-#: ../gio/gdbusmessage.c:1239
+#: ../gio/gdbusmessage.c:1242
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "Разобранное значение «%s» не является допустимым путём объекта D-Bus"
 
-#: ../gio/gdbusmessage.c:1265
+#: ../gio/gdbusmessage.c:1268
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Разобранное значение «%s» не является допустимой подписью D-Bus"
 
-#: ../gio/gdbusmessage.c:1320
+#: ../gio/gdbusmessage.c:1324
 #, c-format
-msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr "Обнаружен массив длинной %u байт. Максимальная длина равна 2<<26 байт (64 МиБ)."
+#| msgid ""
+#| "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 "
+#| "MiB)."
+msgid "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
+msgstr[0] "Обнаружен массив длинной %u байт. Максимальная длина равна 2<<26 байт (64 МиБ)."
+msgstr[1] "Обнаружен массив длинной %u байта. Максимальная длина равна 2<<26 байт (64 МиБ)."
+msgstr[2] "Обнаружен массив длинной %u байт. Максимальная длина равна 2<<26 байт (64 МиБ)."
 
-#: ../gio/gdbusmessage.c:1484
+#: ../gio/gdbusmessage.c:1490
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "Разобранное значение «%s» для варианта не является допустимой подписью D-Bus"
 
-#: ../gio/gdbusmessage.c:1511
+#: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr "Ошибка десериализации GVariant с типом строки «%s» из формата D-Bus wire"
 
-#: ../gio/gdbusmessage.c:1699
+#: ../gio/gdbusmessage.c:1705
 #, c-format
 msgid "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x%02x"
 msgstr "Неправильный порядок байтов в значении. Ожидался 0x6c ('l') или 0x42 ('B'), но найдено значение 0x%02x"
 
-#: ../gio/gdbusmessage.c:1713
+#: ../gio/gdbusmessage.c:1719
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Неправильный старший номер версии протокола. Ожидался 1, но найден %d"
 
-#: ../gio/gdbusmessage.c:1770
+#: ../gio/gdbusmessage.c:1776
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "Найден заголовок подписи с подписью «%s», но тело сообщения пусто"
 
-#: ../gio/gdbusmessage.c:1784
+#: ../gio/gdbusmessage.c:1790
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Разобранное значение «%s» не является допустимой подписью D-Bus (для тела)"
 
-#: ../gio/gdbusmessage.c:1814
+#: ../gio/gdbusmessage.c:1821
 #, c-format
-msgid "No signature header in message but the message body is %u bytes"
-msgstr "Отсутствует заголовок подписи в сообщении, но тело сообщения занимает %u байт"
+#| msgid "No signature header in message but the message body is %u bytes"
+msgid "No signature header in message but the message body is %u byte"
+msgid_plural "No signature header in message but the message body is %u bytes"
+msgstr[0] "Отсутствует заголовок подписи в сообщении, но тело сообщения занимает %u байт"
+msgstr[1] "Отсутствует заголовок подписи в сообщении, но тело сообщения занимает %u байта"
+msgstr[2] "Отсутствует заголовок подписи в сообщении, но тело сообщения занимает %u байт"
 
-#: ../gio/gdbusmessage.c:1822
+#: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
 msgstr "Не удалось выполнить десериализацию сообщения:"
 
-#: ../gio/gdbusmessage.c:2154
+#: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr "Ошибка сериализации GVariant с типом строки «%s» в формат D-Bus wire"
 
-#: ../gio/gdbusmessage.c:2294
+#: ../gio/gdbusmessage.c:2303
 #, c-format
-msgid "Message has %d fds but the header field indicates %d fds"
-msgstr "Сообщение содержит %d fds, но в поле заголовка указано %d fds"
+#| msgid "Message has %d fds but the header field indicates %d fds"
+msgid "Message has %d file descriptors but the header field indicates %d file descriptors"
+msgstr "Сообщение содержит %d файловых дескрипторов, но в поле заголовка указано %d"
 
-#: ../gio/gdbusmessage.c:2302
+#: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
 msgstr "Не удалось сериализовать сообщение: "
 
-#: ../gio/gdbusmessage.c:2346
+#: ../gio/gdbusmessage.c:2355
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr "Тело сообщения имеет подпись «%s», но нет заголовка подписи"
 
-#: ../gio/gdbusmessage.c:2356
+#: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid "Message body has type signature `%s' but signature in the header field is `%s'"
 msgstr "Тело сообщения имеет тип подписи «%s», но значение подписи в поле заголовка равно «%s»"
 
-#: ../gio/gdbusmessage.c:2372
+#: ../gio/gdbusmessage.c:2381
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "Тело сообщения пусто, но значение подписи в поле заголовка равно «(%s)»"
 
-#: ../gio/gdbusmessage.c:2929
+#: ../gio/gdbusmessage.c:2938
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Возвращена ошибка с телом типа «%s»"
 
-#: ../gio/gdbusmessage.c:2937
+#: ../gio/gdbusmessage.c:2946
 msgid "Error return with empty body"
 msgstr "Возвращена ошибка с пустым телом"
 
@@ -3443,8 +3458,8 @@ msgid "Socket is already closed"
 msgstr "Сокет уже закрыт"
 
 #: ../gio/gsocket.c:298
-#: ../gio/gsocket.c:2774
-#: ../gio/gsocket.c:2818
+#: ../gio/gsocket.c:2775
+#: ../gio/gsocket.c:2819
 msgid "Socket I/O timed out"
 msgstr "Превышено время ожидания ввода-вывода сокета"
 
@@ -3502,7 +3517,7 @@ msgid "Error connecting: %s"
 msgstr "Произошла ошибка при соединении: %s"
 
 #: ../gio/gsocket.c:1715
-#: ../gio/gsocket.c:3555
+#: ../gio/gsocket.c:3556
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Не удалось получить ожидающую ошибку: %s"
@@ -3527,28 +3542,28 @@ msgstr "Не удалось выключить сокет: %s"
 msgid "Error closing socket: %s"
 msgstr "Произошла ошибка при закрытии сокета: %s"
 
-#: ../gio/gsocket.c:2767
+#: ../gio/gsocket.c:2768
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Ожидание состояния сокета: %s"
 
-#: ../gio/gsocket.c:3032
-#: ../gio/gsocket.c:3113
+#: ../gio/gsocket.c:3033
+#: ../gio/gsocket.c:3114
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Произошла ошибка при отправлении сообщения: %s"
 
-#: ../gio/gsocket.c:3057
+#: ../gio/gsocket.c:3058
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage не поддерживается в Windows"
 
-#: ../gio/gsocket.c:3334
-#: ../gio/gsocket.c:3470
+#: ../gio/gsocket.c:3335
+#: ../gio/gsocket.c:3471
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Произошла ошибка при получении сообщения: %s"
 
-#: ../gio/gsocket.c:3574
+#: ../gio/gsocket.c:3575
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "Функция g_socket_get_credentials не реализована в этой ОС"
 
@@ -3685,8 +3700,11 @@ msgid "Could not parse PEM-encoded certificate"
 msgstr "Не удалось разобрать сертификат в формате PEM"
 
 #: ../gio/gtlspassword.c:114
-msgid "This is the last chance to ether the password correctly before your access is locked out."
-msgstr "Это — последняя возможность правильно ввести пароль перед тем, как доступ будет заблокирован."
+#| msgid ""
+#| "This is the last chance to ether the password correctly before your "
+#| "access is locked out."
+msgid "This is the last chance to enter the password correctly before your access is locked out."
+msgstr "Это последняя возможность правильно ввести пароль перед тем, как доступ будет заблокирован."
 
 #: ../gio/gtlspassword.c:116
 msgid "Several password entered have been incorrect, and your access will be locked out after further failures."
