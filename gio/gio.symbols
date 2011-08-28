@@ -504,6 +504,7 @@ g_io_error_from_win32_error
 g_io_module_get_type
 g_io_module_new
 g_io_module_scope_block
+g_io_module_scope_flags_get_type
 g_io_module_scope_free
 g_io_module_scope_new
 g_io_modules_scan_all_in_directory
