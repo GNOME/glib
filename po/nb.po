@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.29.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-24 15:37+0200\n"
-"PO-Revision-Date: 2011-08-24 15:38+0200\n"
+"POT-Creation-Date: 2011-08-28 19:05+0200\n"
+"PO-Revision-Date: 2011-08-28 19:07+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -417,7 +417,7 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr ""
 "Feil under endring av navn på filen «%s» til «%s»: g_rename() feilet: %s"
 
-#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1442
+#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1446
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Feil under oppretting av fil «%s»: %s"
@@ -452,103 +452,103 @@ msgstr "Kunne ikke lukke fil «%s»: fclose() feilet: %s"
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Eksisterende fil «%s» kunne ikke bli fjernet: g_unlink() feilet: %s"
 
-#: ../glib/gfileutils.c:1405
+#: ../glib/gfileutils.c:1409
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mal «%s» er ugyldig, må ikke inneholde «%s»"
 
-#: ../glib/gfileutils.c:1418
+#: ../glib/gfileutils.c:1422
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Mal «%s» inneholder ikke XXXXXX"
 
-#: ../glib/gfileutils.c:1994 ../glib/gfileutils.c:2022
-#: ../glib/gfileutils.c:2127
+#: ../glib/gfileutils.c:1998 ../glib/gfileutils.c:2026
+#: ../glib/gfileutils.c:2131
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
-#: ../glib/gfileutils.c:2000
+#: ../glib/gfileutils.c:2004
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gfileutils.c:2003
+#: ../glib/gfileutils.c:2007
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gfileutils.c:2006
+#: ../glib/gfileutils.c:2010
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gfileutils.c:2009
+#: ../glib/gfileutils.c:2013
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gfileutils.c:2012
+#: ../glib/gfileutils.c:2016
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gfileutils.c:2015
+#: ../glib/gfileutils.c:2019
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gfileutils.c:2028
+#: ../glib/gfileutils.c:2032
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gfileutils.c:2031 ../glib/gfileutils.c:2140
+#: ../glib/gfileutils.c:2035 ../glib/gfileutils.c:2144
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:2034 ../glib/gfileutils.c:2145
+#: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2149
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:2037 ../glib/gfileutils.c:2150
+#: ../glib/gfileutils.c:2041 ../glib/gfileutils.c:2154
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:2040 ../glib/gfileutils.c:2155
+#: ../glib/gfileutils.c:2044 ../glib/gfileutils.c:2159
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:2043 ../glib/gfileutils.c:2160
+#: ../glib/gfileutils.c:2047 ../glib/gfileutils.c:2164
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gfileutils.c:2080
+#: ../glib/gfileutils.c:2084
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s byte"
 msgstr[1] "%s bytes"
 
-#: ../glib/gfileutils.c:2135
+#: ../glib/gfileutils.c:2139
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:2203
+#: ../glib/gfileutils.c:2207
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Feil under lesing av symbolsk lenke «%s»: %s"
 
-#: ../glib/gfileutils.c:2224
+#: ../glib/gfileutils.c:2228
 msgid "Symbolic links not supported"
 msgstr "Symbolske lenker er ikke støttet"
 
@@ -1846,12 +1846,14 @@ msgstr ""
 "SIGNAL melding: Topptekstfelt for INTERFACE bruker reservert verdi org."
 "freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:997
+#: ../gio/gdbusmessage.c:998
 #, c-format
-msgid "Wanted to read %lu bytes but got EOF"
-msgstr "Ønsket å lese %lu bytes men fikk EOF"
+msgid "Wanted to read %lu byte but got EOF"
+msgid_plural "Wanted to read %lu bytes but got EOF"
+msgstr[0] "Ønsket å lese %lu byte men fikk EOF"
+msgstr[1] "Ønsket å lese %lu bytes men fikk EOF"
 
-#: ../gio/gdbusmessage.c:1022
+#: ../gio/gdbusmessage.c:1025
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -1861,41 +1863,43 @@ msgstr ""
 "(lengden av strengen er %d). Gydldig UTF-8 streng opp til det punktet var "
 "«%s»"
 
-#: ../gio/gdbusmessage.c:1035
+#: ../gio/gdbusmessage.c:1038
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr "Forventet NUL-byte etter strengen «%s», men fant byte %d"
 
-#: ../gio/gdbusmessage.c:1239
+#: ../gio/gdbusmessage.c:1242
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "Lest verdi «%s» er ikke en gyldig objektsti for D-Bus"
 
-#: ../gio/gdbusmessage.c:1265
+#: ../gio/gdbusmessage.c:1268
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Tolket verdi «%s» er ikke en gyldig D-Bus-signatur"
 
-#: ../gio/gdbusmessage.c:1320
+#: ../gio/gdbusmessage.c:1324
 #, c-format
 msgid ""
+"Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr ""
-"Fant en array med lengde %u byte. Maksimal lengde er 2<<26 byte (64 MiB)."
+msgstr[0] "Fant en array med lengde %u byte. Maksimal lengde er 2<<26 byte (64 MiB)."
+msgstr[1] "Fant en array med lengde %u bytes. Maksimal lengde er 2<<26 byte (64 MiB)."
 
-#: ../gio/gdbusmessage.c:1484
+#: ../gio/gdbusmessage.c:1490
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "Lest verdi «%s» for variant er ikke en gyldig D-Bus-signatur"
 
-#: ../gio/gdbusmessage.c:1511
+#: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
 "Feil ved deserialisering av GVariant med strengtype «%s» fra D-Bus-format"
 
-#: ../gio/gdbusmessage.c:1699
+#: ../gio/gdbusmessage.c:1705
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -1904,55 +1908,57 @@ msgstr ""
 "Ugyldig verdi for endianness. Forventet 0x6c ('l') eller 0x42 ('B'), men "
 "fant verdien 0x%02x"
 
-#: ../gio/gdbusmessage.c:1713
+#: ../gio/gdbusmessage.c:1719
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Ugyldig hovedversjon for protokoll. Forventet en men fikk %d"
 
-#: ../gio/gdbusmessage.c:1770
+#: ../gio/gdbusmessage.c:1776
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "Signaturtopptekst med signatur «%s» funnet, men meldingskroppen er tom"
 
-#: ../gio/gdbusmessage.c:1784
+#: ../gio/gdbusmessage.c:1790
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Lest verdi «%s» er ikke en gyldig D-Bus-signatur (for kropp)"
 
-#: ../gio/gdbusmessage.c:1814
+#: ../gio/gdbusmessage.c:1821
 #, c-format
-msgid "No signature header in message but the message body is %u bytes"
-msgstr "Ingen signaturtopptekst i meldingen, men meldingskroppen er %u byte"
+msgid "No signature header in message but the message body is %u byte"
+msgid_plural "No signature header in message but the message body is %u bytes"
+msgstr[0] "Ingen signaturtopptekst i meldingen, men meldingskroppen er %u byte"
+msgstr[1] "Ingen signaturtopptekst i meldingen, men meldingskroppen er %u bytes"
 
-#: ../gio/gdbusmessage.c:1822
+#: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
 msgstr "Kan ikke deserialisere melding: "
 
-#: ../gio/gdbusmessage.c:2154
+#: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
 "Feil ved serialisering av GVariant med strengtype «%s» til D-Bus-format"
 
-#: ../gio/gdbusmessage.c:2294
+#: ../gio/gdbusmessage.c:2303
 #, c-format
-msgid "Message has %d fds but the header field indicates %d fds"
-msgstr ""
-"Melding har %d fildeskriptorer men topptekstfeltet indikerer %d "
-"fildeskriptorer"
+msgid ""
+"Message has %d file descriptors but the header field indicates %d file "
+"descriptors"
+msgstr "Meldingen har %d fildeskriptorer men topptekstfeltet indikerer %d fildeskriptorer"
 
-#: ../gio/gdbusmessage.c:2302
+#: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
 msgstr "Kan ikke serialisere melding: "
 
-#: ../gio/gdbusmessage.c:2346
+#: ../gio/gdbusmessage.c:2355
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 "Meldingskroppen har signatur «%s» men det finnes ingen signaturtopptekst"
 
-#: ../gio/gdbusmessage.c:2356
+#: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
 "Message body has type signature `%s' but signature in the header field is `"
@@ -1961,17 +1967,17 @@ msgstr ""
 "Meldingskroppen har signaturtype «%s», men signaturen i topptekstfeltet et "
 "«%s»"
 
-#: ../gio/gdbusmessage.c:2372
+#: ../gio/gdbusmessage.c:2381
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "Meldingskroppen er tom men signatur i topptekstfeltet er «(%s)»"
 
-#: ../gio/gdbusmessage.c:2929
+#: ../gio/gdbusmessage.c:2938
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Feil retur med kropp av type «%s»"
 
-#: ../gio/gdbusmessage.c:2937
+#: ../gio/gdbusmessage.c:2946
 msgid "Error return with empty body"
 msgstr "Feil retur med tom kropp"
 
@@ -3437,7 +3443,7 @@ msgstr "Ugyldig plugg, initiering feilet pga: %s"
 msgid "Socket is already closed"
 msgstr "Pluggen er allerede lukket"
 
-#: ../gio/gsocket.c:298 ../gio/gsocket.c:2774 ../gio/gsocket.c:2818
+#: ../gio/gsocket.c:298 ../gio/gsocket.c:2775 ../gio/gsocket.c:2819
 msgid "Socket I/O timed out"
 msgstr "Tidsavbrudd for I/U mot plugg"
 
@@ -3493,7 +3499,7 @@ msgstr "Tilkobling pågår"
 msgid "Error connecting: %s"
 msgstr "Feil under tilkobling: %s"
 
-#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3555
+#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3556
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kan ikke hente utestående feil: %s"
@@ -3518,26 +3524,26 @@ msgstr "Kan ikke stenge ned plugg: %s"
 msgid "Error closing socket: %s"
 msgstr "Feil ved lukking av plugg: %s"
 
-#: ../gio/gsocket.c:2767
+#: ../gio/gsocket.c:2768
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Venter på tilstand for plugg: %s"
 
-#: ../gio/gsocket.c:3032 ../gio/gsocket.c:3113
+#: ../gio/gsocket.c:3033 ../gio/gsocket.c:3114
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Feil ved sending av melding: %s"
 
-#: ../gio/gsocket.c:3057
+#: ../gio/gsocket.c:3058
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage er ikke støttet på windows"
 
-#: ../gio/gsocket.c:3334 ../gio/gsocket.c:3470
+#: ../gio/gsocket.c:3335 ../gio/gsocket.c:3471
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Feil ved mottak av melding: %s"
 
-#: ../gio/gsocket.c:3574
+#: ../gio/gsocket.c:3575
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ikke implementert for dette OSet"
 
@@ -3617,7 +3623,7 @@ msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgstr "Vertsnavn «%s» er for langt for SOCKSv5-protokollen (maks er %i bytes)"
 
 #: ../gio/gsocks5proxy.c:352
-msgid "The SOCKSv5 proxy server uses unkown address type."
+msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "SOCKSv5-proxytjener bruker ukjent adressetype."
 
 #: ../gio/gsocks5proxy.c:359
@@ -3675,15 +3681,18 @@ msgstr "Kunne ikke lese PEM-kodet sertifikat"
 
 #: ../gio/gtlspassword.c:114
 msgid ""
-"This is the last chance to ether the password correctly before your access "
+"This is the last chance to enter the password correctly before your access "
 "is locked out."
-msgstr "Dette er siste sjanse til å oppgi korrekt passord før tilgangen blir låst."
+msgstr ""
+"Dette er siste sjanse til å oppgi korrekt passord før tilgangen blir låst."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
-msgstr "Passord har blitt oppgitt feil flere ganger, og tilgangen vil bli låst hvis det oppgis feil på nytt."
+msgstr ""
+"Passord har blitt oppgitt feil flere ganger, og tilgangen vil bli låst hvis "
+"det oppgis feil på nytt."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
