@@ -5,23 +5,23 @@
 # José Antonio Salgueiro <joseantsa@eresmas.net>, 2001.
 # Germán Poo Caamaño <gpoo@ubiobio.cl>, 2002.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
-# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010, 2011.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 # 
-# Jorge González <jorgegonz@svn.gnome.org>, 2011.
+# Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010, 2011., 2011.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-27 17:20+0000\n"
-"PO-Revision-Date: 2011-08-27 11:44Centra\n"
+"POT-Creation-Date: 2011-08-28 08:08+0000\n"
+"PO-Revision-Date: 2011-08-28 10:14+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../glib/gbookmarkfile.c:780
 #, c-format
@@ -680,11 +680,11 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba un carácter «>» para terminar la etiqueta "
-"vacía del elemento «%s»"
+"Carácter «%s» impropio, se esperaba un carácter «>» para terminar la "
+"etiqueta vacía del elemento «%s»"
 
 #: ../glib/gmarkup.c:1270
 #, c-format
@@ -711,8 +711,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba una marca de apertura de comillas después "
-"del signo igual al darle valor al atributo «%s» del elemento «%s»"
+"Carácter «%s» impropio, se esperaba una marca de apertura de comillas "
+"después del signo igual al darle valor al atributo «%s» del elemento «%s»"
 
 #: ../glib/gmarkup.c:1488
 #, c-format
@@ -720,8 +720,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  no "
-"debe iniciar un nombre de elemento"
+"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  "
+"no debe iniciar un nombre de elemento"
 
 #: ../glib/gmarkup.c:1524
 #, c-format
@@ -741,8 +741,8 @@ msgstr "El elemento «%s» fue cerrado, no existe ningún elemento abierto"
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es «%"
-"s»"
+"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es "
+"«%s»"
 
 #: ../glib/gmarkup.c:1712
 msgid "Document was empty or contained only whitespace"
@@ -1134,14 +1134,15 @@ msgstr ""
 #: ../glib/gshell.c:559
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr "El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
+msgstr ""
+"El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
 
 #: ../glib/gshell.c:566
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"El texto terminó antes de que se encontrase la comilla correspondiente con %"
-"c. (El texto era «%s»)"
+"El texto terminó antes de que se encontrase la comilla correspondiente con "
+"%c. (El texto era «%s»)"
 
 #: ../glib/gshell.c:578
 msgid "Text was empty (or contained only whitespace)"
@@ -1547,8 +1548,8 @@ msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr ""
-"El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene un "
-"signo de igual"
+"El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene "
+"un signo de igual"
 
 #: ../gio/gdbusaddress.c:481
 #, c-format
@@ -1556,8 +1557,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr ""
-"Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en el "
-"elemento de dirección «%s»"
+"Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en "
+"el elemento de dirección «%s»"
 
 #: ../gio/gdbusaddress.c:559
 #, c-format
@@ -1638,14 +1639,15 @@ msgstr "Error al lanzar («spawn») el comando «%s»: "
 #: ../gio/gdbusaddress.c:1068
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
-msgstr "Terminación anómala de programa al lanzar («spawn») el comando «%s»: %s"
+msgstr ""
+"Terminación anómala de programa al lanzar («spawn») el comando «%s»: %s"
 
 #: ../gio/gdbusaddress.c:1082
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr ""
-"El comando de línea «%s» finalizó con un estado de salida distinto de cero %"
-"d: %s"
+"El comando de línea «%s» finalizó con un estado de salida distinto de cero "
+"%d: %s"
 
 #: ../gio/gdbusaddress.c:1155
 #, c-format
@@ -1724,23 +1726,24 @@ msgstr "Error al abrir el depósito de claves «%s» para su lectura: "
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"La línea %d del depósito de claves en «%s» con contenido «%s» está mal formada"
+"La línea %d del depósito de claves en «%s» con contenido «%s» está mal "
+"formada"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"El primer token de la línea %d del depósito de claves en «%s» con contenido «%"
-"s» está mal formado"
+"El primer token de la línea %d del depósito de claves en «%s» con contenido "
+"«%s» está mal formado"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"El segundo token de la línea %d del depósito de claves en «%s» con contenido «%"
-"s» está mal formado"
+"El segundo token de la línea %d del depósito de claves en «%s» con contenido "
+"«%s» está mal formado"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
@@ -1775,7 +1778,8 @@ msgstr "Error al abrir el depósito de claves «%s» para su escritura:"
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr "(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
+msgstr ""
+"(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
 
 #: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
 #: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
@@ -1805,8 +1809,8 @@ msgstr ""
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
-"Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se obtuvo "
-"«%s»."
+"Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se "
+"obtuvo «%s»."
 
 #: ../gio/gdbusconnection.c:3936
 #, c-format
@@ -1905,11 +1909,11 @@ msgstr ""
 "reservado org.freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 #| msgid "Wanted to read %lu bytes but got EOF"
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
-msgstr[0] "Se querían leer %lu bytes pero se obtuvo EOF"
+msgstr[0] "Se querían leer %lu byte pero se obtuvo EOF"
 msgstr[1] "Se querían leer %lu bytes pero se obtuvo EOF"
 
 #: ../gio/gdbusmessage.c:1025
@@ -1926,7 +1930,8 @@ msgstr ""
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr ""
-"Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte %d"
+"Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte "
+"%d"
 
 #: ../gio/gdbusmessage.c:1242
 #, c-format
@@ -1939,7 +1944,7 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "El valor analizado «%s» no es una firma de D-Bus válida"
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 #| msgid ""
 #| "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 "
 #| "MiB)."
@@ -1948,7 +1953,7 @@ msgid ""
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
-"Se encontró un array de longitud %u bytes. La longitud máxima es 2<<26 bytes "
+"Se encontró un array de longitud %u byte. La longitud máxima es 2<<26 bytes "
 "(64 MiB)."
 msgstr[1] ""
 "Se encontró un array de longitud %u bytes. La longitud máxima es 2<<26 bytes "
@@ -1974,8 +1979,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
-"Valor endian no válido. Se esperaba 0x6c («l») o 0x42 («B»)» pero se obtuvo el "
-"valor 0x%02x"
+"Valor endian no válido. Se esperaba 0x6c («l») o 0x42 («B»)» pero se obtuvo "
+"el valor 0x%02x"
 
 #: ../gio/gdbusmessage.c:1719
 #, c-format
@@ -1998,13 +2003,13 @@ msgstr ""
 "El valor analizado «%s» no es una firma de D-Bus válida (para el cuerpo)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 #| msgid "No signature header in message but the message body is %u bytes"
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
 "No existe la cabecera de firma en el mensaje pero el cuerpo del mensaje "
-"tiene %u bytes"
+"tiene %u byte"
 msgstr[1] ""
 "No existe la cabecera de firma en el mensaje pero el cuerpo del mensaje "
 "tiene %u bytes"
@@ -2018,16 +2023,18 @@ msgstr "No se puede deserializar el mensaje: "
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
-"Error al serializar GVariant con el tipo de cadena «%s» al formato de mensaje "
-"de D-Bus"
+"Error al serializar GVariant con el tipo de cadena «%s» al formato de "
+"mensaje de D-Bus"
 
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 #| msgid "Message has %d fds but the header field indicates %d fds"
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr "El mensaje tiene %d fds pero el campo de cabecera indica %d fds"
+msgstr ""
+"El mensaje tiene %d descriptores de archivo pero el campo de cabecera indica "
+"%d descriptores de archivo"
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
@@ -2042,8 +2049,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr ""
 "El cuerpo del mensaje tiene un tipo de firma «%s» pero la firma en el campo "
 "de cabecera es «%s»"
@@ -2052,8 +2059,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
-"El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es «(%"
-"s)»"
+"El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es "
+"«(%s)»"
 
 #: ../gio/gdbusmessage.c:2938
 #, c-format
@@ -2184,7 +2191,8 @@ msgstr "Se especificaron varios puntos de conexión extremos"
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
-"Advertencia: según la introspección de los datos, la interfaz «%s» no existe\n"
+"Advertencia: según la introspección de los datos, la interfaz «%s» no "
+"existe\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
@@ -2192,8 +2200,8 @@ msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
 msgstr ""
-"Advertencia: según la introspección de los datos, el método «%s» no existe en "
-"la interfaz «%s»\n"
+"Advertencia: según la introspección de los datos, el método «%s» no existe "
+"en la interfaz «%s»\n"
 
 #: ../gio/gdbus-tool.c:534
 msgid "Optional destination for signal (unique name)"
@@ -2617,8 +2625,8 @@ msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and dash ('-') are permitted."
 msgstr ""
-"nombre «%s» no válido: el carácter «%c» no es válido; sólo se permiten nombres "
-"en minúscula, números y guión («-»)."
+"nombre «%s» no válido: el carácter «%c» no es válido; sólo se permiten "
+"nombres en minúscula, números y guión («-»)."
 
 #: ../gio/glib-compile-schemas.c:772
 #, c-format
@@ -2664,8 +2672,8 @@ msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
-"se debe especificar exactamente uno de «type», «enum» o «flags» como atributo "
-"para <key>"
+"se debe especificar exactamente uno de «type», «enum» o «flags» como "
+"atributo para <key>"
 
 #: ../gio/glib-compile-schemas.c:943
 #, c-format
@@ -2730,8 +2738,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> extiende <schema id='%s' list-of='%s'> pero «%"
-"s» no extiende «%s»"
+"<schema id='%s' list-of='%s'> extiende <schema id='%s' list-of='%s'> pero "
+"«%s» no extiende «%s»"
 
 #: ../gio/glib-compile-schemas.c:1163
 #, c-format
@@ -2784,8 +2792,8 @@ msgstr "Ignorando este archivo.\n"
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
-"No existe la clave «%s» en el esquema «%s» como se especificó en el archivo de "
-"sobreescitura «%s»"
+"No existe la clave «%s» en el esquema «%s» como se especificó en el archivo "
+"de sobreescitura «%s»"
 
 #: ../gio/glib-compile-schemas.c:1809 ../gio/glib-compile-schemas.c:1867
 #: ../gio/glib-compile-schemas.c:1895
@@ -2802,8 +2810,8 @@ msgstr "y se especificó --strict; saliendo.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
-"s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
 msgstr ""
 "error al analizar la clave «%s» en el esquema «%s» como se especificó en el "
 "archivo de sobreescritura «%s»: %s."
@@ -3996,7 +4004,8 @@ msgstr "Datos comprimidos no válidos"
 
 #~ msgid "No such schema `%s' specified in override file `%s'"
 #~ msgstr ""
-#~ "No existe el esquema «%s» especificado en el archivo de sobreescritura «%s»"
+#~ "No existe el esquema «%s» especificado en el archivo de sobreescritura "
+#~ "«%s»"
 
 #~ msgid ""
 #~ "Commands:\n"
@@ -4141,8 +4150,8 @@ msgstr "Datos comprimidos no válidos"
 #~ "characters. Ignores names after the first if multiple names are given."
 #~ msgstr ""
 #~ "Indica si se debe usar los valores de reserva encontrados al acortar el "
-#~ "nombre en los caracteres «-». Si se proporcionan varios nombres los ignora "
-#~ "después del primero."
+#~ "nombre en los caracteres «-». Si se proporcionan varios nombres los "
+#~ "ignora después del primero."
 
 #~ msgid "File descriptor"
 #~ msgstr "Descriptor del archivo"
