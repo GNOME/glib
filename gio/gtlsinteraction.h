@@ -43,17 +43,17 @@ typedef struct _GTlsInteractionPrivate GTlsInteractionPrivate;
 
 struct _GTlsInteraction
 {
+  /*< private >*/
   GObject parent_instance;
-
   GTlsInteractionPrivate *priv;
 };
 
 struct _GTlsInteractionClass
 {
+  /*< private >*/
   GObjectClass parent_class;
 
-  /* virtual methods: */
-
+  /*< public >*/
   GTlsInteractionResult  (* ask_password)        (GTlsInteraction    *interaction,
                                                   GTlsPassword       *password,
                                                   GCancellable       *cancellable,
@@ -75,6 +75,12 @@ struct _GTlsInteractionClass
 };
 
 GType                  g_tls_interaction_get_type            (void) G_GNUC_CONST;
+
+GTlsInteractionResult  g_tls_interaction_invoke_ask_password (GTlsInteraction    *interaction,
+                                                              GTlsPassword       *password,
+                                                              GCancellable       *cancellable,
+                                                              GError            **error);
+
 
 GTlsInteractionResult  g_tls_interaction_ask_password        (GTlsInteraction    *interaction,
                                                               GTlsPassword       *password,

@@ -52,6 +52,7 @@ TEST_PROGS +=	 		\
 	socket			\
 	pollable		\
 	tls-certificate         \
+	tls-interaction         \
 	cancellable		\
 	$(NULL)
 
@@ -467,6 +468,8 @@ proxy_LDADD   = $(progs_ldadd) \
 
 tls_certificate_SOURCES = tls-certificate.c gtesttlsbackend.c gtesttlsbackend.h
 tls_certificate_LDADD   = $(progs_ldadd)
+
+tls_interaction_LDADD = $(progs_ldadd)
 
 cancellable_LDADD = $(progs_ldadd)
 

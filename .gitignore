@@ -40,3 +40,4 @@ README
 ChangeLog
 /glib-lcov.info
 /glib-lcov/
+/gio/tests/tls-interaction
