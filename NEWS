@@ -1,3 +1,45 @@
+Overview of changes from GLib 2.29.16 to 2.29.18
+================================================
+
+* GDateTime is now respecting LC_TIME when formatting
+
+* GTimeZoneMonitor has been removed again
+
+* Bugs fixed:
+ 628904 Add credential support for FreeBSD and fix a socket issue
+ 650763 gdbus-codegen is broken with python 2.7
+ 655129 GDateTime could provide api for implementing wall clocks
+ 656341 gtlsconsoleinteraction.c uses getpass() which isn't avail...
+ 656387 GCancellable can be used concurrently
+ 656443 Make GTlsInteraction ask_password cancellable
+ 656675 void functions should not return in glib 2.29.16
+ 656772 g_variant_compare for uint64 incorrect
+ 656914 Load GIO_EXTRA_MODULES first, and ignore duplicates
+ 657083 The header langinfo.h is not available on all systems
+ 657084 gfileutils: fix docs/annotations for temp file methods
+ 657138 Some files missing in POTFILES.in
+ 657206 GInputStream leaked in g_file_icon_load_async()
+ 657243 g_cancellable_set_error_if_cancelled() documentation
+ 657274 Use detected PYTHON variable as shebang for gdbus-codegen
+ 657336 Speling fixes for glib found with codespell
+ 657452 plural forms needed
+ 657454 Translation comment needed
+ 657540 Print out file:// URL to coverage HTML report after building
+ 657593 g_test_trap_fork calls close(-1)
+
+* Translation updates:
+ Brazilian Portuguese
+ Galician
+ Norwegian bokmål
+ Punjabi
+ Russian
+ Serbian
+ Spanish
+ Swedish
+ Traditional Chinese
+ Uighur
+
+
 Overview of changes from GLib 2.29.14 to 2.29.16
 ================================================
 
