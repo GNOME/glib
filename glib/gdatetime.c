@@ -2764,7 +2764,8 @@ g_datetime_source_init_timerfd (GDateTimeSource *datetime_source,
  * event based on real (wall clock) time, as returned by
  * g_get_real_time().  For example, HOUR:MINUTE wall-clock displays
  * and calendaring software.  The callback will be invoked when the
- * specified wall clock time @datetime is reached.
+ * specified wall clock time @datetime is reached.  This includes
+ * events such as the system clock being set past the given time.
  *
  * Compare versus g_timeout_source_new() which is defined to use
  * monotonic time as returned by g_get_monotonic_time().
