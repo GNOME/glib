@@ -1817,9 +1817,12 @@ g_test_trap_fork (guint64        usec_timeout,
                 }
             }
         }
-      close (stdout_pipe[0]);
-      close (stderr_pipe[0]);
-      close (stdtst_pipe[0]);
+      if (stdout_pipe[0] != -1)
+        close (stdout_pipe[0]);
+      if (stderr_pipe[0] != -1)
+        close (stderr_pipe[0]);
+      if (stdtst_pipe[0] != -1)
+        close (stdtst_pipe[0]);
       if (need_wait)
         {
           int status = 0;
