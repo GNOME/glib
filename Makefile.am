@@ -39,7 +39,6 @@ EXTRA_DIST += 			\
 	INSTALL.in		\
 	README.win32		\
 	HACKING			\
-	MAINTAINERS		\
 	autogen.sh		\
 	Makefile.decl		\
 	mkinstalldirs		\
