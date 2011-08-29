@@ -44,6 +44,8 @@
 
 struct _GDBusInterfaceSkeletonPrivate
 {
+  GMutex *lock;
+
   GDBusObject *object;
   GDBusInterfaceSkeletonFlags flags;
   guint registration_id;
@@ -86,6 +88,9 @@ g_dbus_interface_skeleton_finalize (GObject *object)
 
   if (interface->priv->object != NULL)
     g_object_remove_weak_pointer (G_OBJECT (interface->priv->object), (gpointer *) &interface->priv->object);
+
+  g_mutex_free (interface->priv->lock);
+
   G_OBJECT_CLASS (g_dbus_interface_skeleton_parent_class)->finalize (object);
 }
 
@@ -228,6 +233,7 @@ static void
 g_dbus_interface_skeleton_init (GDBusInterfaceSkeleton *interface)
 {
   interface->priv = G_TYPE_INSTANCE_GET_PRIVATE (interface, G_TYPE_DBUS_INTERFACE_SKELETON, GDBusInterfaceSkeletonPrivate);
+  interface->priv->lock = g_mutex_new ();
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -264,10 +270,16 @@ g_dbus_interface_skeleton_set_flags (GDBusInterfaceSkeleton      *interface_,
                                      GDBusInterfaceSkeletonFlags  flags)
 {
   g_return_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_));
+  g_mutex_lock (interface_->priv->lock);
   if (interface_->priv->flags != flags)
     {
       interface_->priv->flags = flags;
+      g_mutex_unlock (interface_->priv->lock);
       g_object_notify (G_OBJECT (interface_), "g-flags");
+    }
+  else
+    {
+      g_mutex_unlock (interface_->priv->lock);
     }
 }
 
@@ -368,7 +380,11 @@ static GDBusObject *
 g_dbus_interface_skeleton_get_object (GDBusInterface *interface_)
 {
   GDBusInterfaceSkeleton *interface = G_DBUS_INTERFACE_SKELETON (interface_);
-  return interface->priv->object;
+  GDBusObject *ret;
+  g_mutex_lock (interface->priv->lock);
+  ret = interface->priv->object;
+  g_mutex_unlock (interface->priv->lock);
+  return ret;
 }
 
 static void
@@ -376,11 +392,13 @@ g_dbus_interface_skeleton_set_object (GDBusInterface *interface_,
                                       GDBusObject    *object)
 {
   GDBusInterfaceSkeleton *interface = G_DBUS_INTERFACE_SKELETON (interface_);
+  g_mutex_lock (interface->priv->lock);
   if (interface->priv->object != NULL)
     g_object_remove_weak_pointer (G_OBJECT (interface->priv->object), (gpointer *) &interface->priv->object);
   interface->priv->object = object;
   if (object != NULL)
     g_object_add_weak_pointer (G_OBJECT (interface->priv->object), (gpointer *) &interface->priv->object);
+  g_mutex_unlock (interface->priv->lock);
 }
 
 static void
@@ -441,13 +459,22 @@ dispatch_in_thread_func (GIOSchedulerJob *job,
                          gpointer         user_data)
 {
   DispatchData *data = user_data;
+  GDBusInterfaceSkeletonFlags flags;
+  GDBusObject *object;
   gboolean authorized;
+
+  g_mutex_lock (data->interface->priv->lock);
+  flags = data->interface->priv->flags;
+  object = data->interface->priv->object;
+  if (object != NULL)
+    g_object_ref (object);
+  g_mutex_unlock (data->interface->priv->lock);
 
   /* first check on the enclosing object (if any), then the interface */
   authorized = TRUE;
-  if (data->interface->priv->object != NULL)
+  if (object != NULL)
     {
-      g_signal_emit_by_name (data->interface->priv->object,
+      g_signal_emit_by_name (object,
                              "authorize-method",
                              data->interface,
                              data->invocation,
@@ -465,7 +492,7 @@ dispatch_in_thread_func (GIOSchedulerJob *job,
   if (authorized)
     {
       gboolean run_in_thread;
-      run_in_thread = (data->interface->priv->flags & G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
+      run_in_thread = (flags & G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
       if (run_in_thread)
         {
           /* might as well just re-use the existing thread */
@@ -493,6 +520,9 @@ dispatch_in_thread_func (GIOSchedulerJob *job,
       /* do nothing */
     }
 
+  if (object != NULL)
+    g_object_unref (object);
+
   return FALSE;
 }
 
@@ -505,10 +535,19 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
   gboolean has_default_class_handler;
   gboolean emit_authorized_signal;
   gboolean run_in_thread;
+  GDBusInterfaceSkeletonFlags flags;
+  GDBusObject *object;
 
   g_return_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface));
   g_return_if_fail (method_call_func != NULL);
   g_return_if_fail (G_IS_DBUS_METHOD_INVOCATION (invocation));
+
+  g_mutex_lock (interface->priv->lock);
+  flags = interface->priv->flags;
+  object = interface->priv->object;
+  if (object != NULL)
+    g_object_ref (object);
+  g_mutex_unlock (interface->priv->lock);
 
   /* optimization for the common case where
    *
@@ -525,11 +564,11 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
   emit_authorized_signal = (has_handlers || !has_default_class_handler);
   if (!emit_authorized_signal)
     {
-      if (interface->priv->object != NULL)
-        emit_authorized_signal = _g_dbus_object_skeleton_has_authorize_method_handlers (G_DBUS_OBJECT_SKELETON (interface->priv->object));
+      if (object != NULL)
+        emit_authorized_signal = _g_dbus_object_skeleton_has_authorize_method_handlers (G_DBUS_OBJECT_SKELETON (object));
     }
 
-  run_in_thread = (interface->priv->flags & G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
+  run_in_thread = (flags & G_DBUS_INTERFACE_SKELETON_FLAGS_HANDLE_METHOD_INVOCATIONS_IN_THREAD);
   if (!emit_authorized_signal && !run_in_thread)
     {
       method_call_func (g_dbus_method_invocation_get_connection (invocation),
@@ -558,6 +597,9 @@ g_dbus_interface_method_dispatch_helper (GDBusInterfaceSkeleton       *interface
                                G_PRIORITY_DEFAULT,
                                NULL); /* GCancellable* */
     }
+
+  if (object != NULL)
+    g_object_unref (object);
 }
 
 static void
@@ -592,8 +634,12 @@ skeleton_intercept_handle_method_call (GDBusConnection       *connection,
 GDBusConnection *
 g_dbus_interface_skeleton_get_connection (GDBusInterfaceSkeleton *interface_)
 {
+  GDBusConnection *ret;
   g_return_val_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_), NULL);
-  return interface_->priv->connection;
+  g_mutex_lock (interface_->priv->lock);
+  ret = interface_->priv->connection;
+  g_mutex_unlock (interface_->priv->lock);
+  return ret;
 }
 
 /**
@@ -610,8 +656,12 @@ g_dbus_interface_skeleton_get_connection (GDBusInterfaceSkeleton *interface_)
 const gchar *
 g_dbus_interface_skeleton_get_object_path (GDBusInterfaceSkeleton *interface_)
 {
+  const gchar *ret;
   g_return_val_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_), NULL);
-  return interface_->priv->object_path;
+  g_mutex_lock (interface_->priv->lock);
+  ret = interface_->priv->object_path;
+  g_mutex_unlock (interface_->priv->lock);
+  return ret;
 }
 
 /**
@@ -642,6 +692,8 @@ g_dbus_interface_skeleton_export (GDBusInterfaceSkeleton  *interface_,
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), 0);
   g_return_val_if_fail (g_variant_is_object_path (object_path), 0);
   g_return_val_if_fail (error == NULL || *error == NULL, 0);
+
+  g_mutex_lock (interface_->priv->lock);
 
   ret = FALSE;
   if (interface_->priv->registration_id > 0)
@@ -679,6 +731,7 @@ g_dbus_interface_skeleton_export (GDBusInterfaceSkeleton  *interface_,
   ret = TRUE;
 
  out:
+  g_mutex_unlock (interface_->priv->lock);
   return ret;
 }
 
@@ -697,6 +750,8 @@ g_dbus_interface_skeleton_unexport (GDBusInterfaceSkeleton *interface_)
   g_return_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_));
   g_return_if_fail (interface_->priv->registration_id > 0);
 
+  g_mutex_lock (interface_->priv->lock);
+
   g_assert (interface_->priv->connection != NULL);
   g_assert (interface_->priv->object_path != NULL);
   g_assert (interface_->priv->hooked_vtable != NULL);
@@ -710,6 +765,8 @@ g_dbus_interface_skeleton_unexport (GDBusInterfaceSkeleton *interface_)
   interface_->priv->object_path = NULL;
   interface_->priv->hooked_vtable = NULL;
   interface_->priv->registration_id = 0;
+
+  g_mutex_unlock (interface_->priv->lock);
 }
 
 /* ---------------------------------------------------------------------------------------------------- */
