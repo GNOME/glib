@@ -47,6 +47,7 @@
 
 struct _GDBusObjectSkeletonPrivate
 {
+  GMutex *lock;
   gchar *object_path;
   GHashTable *map_name_to_iface;
 };
@@ -79,6 +80,8 @@ g_dbus_object_skeleton_finalize (GObject *_object)
   g_free (object->priv->object_path);
   g_hash_table_unref (object->priv->map_name_to_iface);
 
+  g_mutex_free (object->priv->lock);
+
   if (G_OBJECT_CLASS (g_dbus_object_skeleton_parent_class)->finalize != NULL)
     G_OBJECT_CLASS (g_dbus_object_skeleton_parent_class)->finalize (_object);
 }
@@ -94,7 +97,9 @@ g_dbus_object_skeleton_get_property (GObject    *_object,
   switch (prop_id)
     {
     case PROP_OBJECT_PATH:
+      g_mutex_lock (object->priv->lock);
       g_value_take_string (value, object->priv->object_path);
+      g_mutex_unlock (object->priv->lock);
       break;
 
     default:
@@ -199,6 +204,7 @@ static void
 g_dbus_object_skeleton_init (GDBusObjectSkeleton *object)
 {
   object->priv = G_TYPE_INSTANCE_GET_PRIVATE (object, G_TYPE_DBUS_OBJECT_SKELETON, GDBusObjectSkeletonPrivate);
+  object->priv->lock = g_mutex_new ();
   object->priv->map_name_to_iface = g_hash_table_new_full (g_str_hash,
                                                            g_str_equal,
                                                            g_free,
@@ -239,12 +245,18 @@ g_dbus_object_skeleton_set_object_path (GDBusObjectSkeleton *object,
 {
   g_return_if_fail (G_IS_DBUS_OBJECT_SKELETON (object));
   g_return_if_fail (object_path == NULL || g_variant_is_object_path (object_path));
+  g_mutex_lock (object->priv->lock);
   /* TODO: fail if object is currently exported */
   if (g_strcmp0 (object->priv->object_path, object_path) != 0)
     {
       g_free (object->priv->object_path);
       object->priv->object_path = g_strdup (object_path);
+      g_mutex_unlock (object->priv->lock);
       g_object_notify (G_OBJECT (object), "object-path");
+    }
+  else
+    {
+      g_mutex_unlock (object->priv->lock);
     }
 }
 
@@ -252,7 +264,11 @@ static const gchar *
 g_dbus_object_skeleton_get_object_path (GDBusObject *_object)
 {
   GDBusObjectSkeleton *object = G_DBUS_OBJECT_SKELETON (_object);
-  return object->priv->object_path;
+  const gchar *ret;
+  g_mutex_lock (object->priv->lock);
+  ret = object->priv->object_path;
+  g_mutex_unlock (object->priv->lock);
+  return ret;
 }
 
 /**
@@ -275,20 +291,42 @@ g_dbus_object_skeleton_add_interface (GDBusObjectSkeleton     *object,
                                       GDBusInterfaceSkeleton  *interface_)
 {
   GDBusInterfaceInfo *info;
+  GDBusInterface *interface_to_remove;
 
   g_return_if_fail (G_IS_DBUS_OBJECT_SKELETON (object));
   g_return_if_fail (G_IS_DBUS_INTERFACE_SKELETON (interface_));
 
+  g_mutex_lock (object->priv->lock);
+
   info = g_dbus_interface_skeleton_get_info (interface_);
   g_object_ref (interface_);
-  g_dbus_object_skeleton_remove_interface_by_name (object, info->name);
+
+  interface_to_remove = g_hash_table_lookup (object->priv->map_name_to_iface, info->name);
+  if (interface_to_remove != NULL)
+    {
+      g_object_ref (interface_to_remove);
+      g_warn_if_fail (g_hash_table_remove (object->priv->map_name_to_iface, info->name));
+    }
   g_hash_table_insert (object->priv->map_name_to_iface,
                        g_strdup (info->name),
-                       interface_);
+                       g_object_ref (interface_));
   g_dbus_interface_set_object (G_DBUS_INTERFACE (interface_), G_DBUS_OBJECT (object));
+
+  g_mutex_unlock (object->priv->lock);
+
+  if (interface_to_remove != NULL)
+    {
+      g_dbus_interface_set_object (interface_to_remove, NULL);
+      g_signal_emit_by_name (object,
+                             "interface-removed",
+                             interface_to_remove);
+      g_object_unref (interface_to_remove);
+    }
+
   g_signal_emit_by_name (object,
                          "interface-added",
                          interface_);
+  g_object_unref (interface_);
 }
 
 /**
@@ -310,11 +348,14 @@ g_dbus_object_skeleton_remove_interface  (GDBusObjectSkeleton    *object,
   g_return_if_fail (G_IS_DBUS_OBJECT_SKELETON (object));
   g_return_if_fail (G_IS_DBUS_INTERFACE (interface_));
 
+  g_mutex_lock (object->priv->lock);
+
   info = g_dbus_interface_skeleton_get_info (interface_);
 
   other_interface = g_hash_table_lookup (object->priv->map_name_to_iface, info->name);
   if (other_interface == NULL)
     {
+      g_mutex_unlock (object->priv->lock);
       g_warning ("Tried to remove interface with name %s from object "
                  "at path %s but no such interface exists",
                  info->name,
@@ -322,6 +363,7 @@ g_dbus_object_skeleton_remove_interface  (GDBusObjectSkeleton    *object,
     }
   else if (other_interface != interface_)
     {
+      g_mutex_unlock (object->priv->lock);
       g_warning ("Tried to remove interface %p with name %s from object "
                  "at path %s but the object has the interface %p",
                  interface_,
@@ -333,6 +375,7 @@ g_dbus_object_skeleton_remove_interface  (GDBusObjectSkeleton    *object,
     {
       g_object_ref (interface_);
       g_warn_if_fail (g_hash_table_remove (object->priv->map_name_to_iface, info->name));
+      g_mutex_unlock (object->priv->lock);
       g_dbus_interface_set_object (G_DBUS_INTERFACE (interface_), NULL);
       g_signal_emit_by_name (object,
                              "interface-removed",
@@ -363,16 +406,22 @@ g_dbus_object_skeleton_remove_interface_by_name (GDBusObjectSkeleton *object,
   g_return_if_fail (G_IS_DBUS_OBJECT_SKELETON (object));
   g_return_if_fail (g_dbus_is_interface_name (interface_name));
 
+  g_mutex_lock (object->priv->lock);
   interface = g_hash_table_lookup (object->priv->map_name_to_iface, interface_name);
   if (interface != NULL)
     {
       g_object_ref (interface);
       g_warn_if_fail (g_hash_table_remove (object->priv->map_name_to_iface, interface_name));
+      g_mutex_unlock (object->priv->lock);
       g_dbus_interface_set_object (interface, NULL);
       g_signal_emit_by_name (object,
                              "interface-removed",
                              interface);
       g_object_unref (interface);
+    }
+  else
+    {
+      g_mutex_unlock (object->priv->lock);
     }
 }
 
@@ -386,9 +435,11 @@ g_dbus_object_skeleton_get_interface (GDBusObject  *_object,
   g_return_val_if_fail (G_IS_DBUS_OBJECT_SKELETON (object), NULL);
   g_return_val_if_fail (g_dbus_is_interface_name (interface_name), NULL);
 
+  g_mutex_lock (object->priv->lock);
   ret = g_hash_table_lookup (object->priv->map_name_to_iface, interface_name);
   if (ret != NULL)
     g_object_ref (ret);
+  g_mutex_unlock (object->priv->lock);
   return ret;
 }
 
@@ -397,16 +448,15 @@ g_dbus_object_skeleton_get_interfaces (GDBusObject *_object)
 {
   GDBusObjectSkeleton *object = G_DBUS_OBJECT_SKELETON (_object);
   GList *ret;
-  GHashTableIter iter;
-  GDBusInterface *interface;
 
   g_return_val_if_fail (G_IS_DBUS_OBJECT_SKELETON (object), NULL);
 
   ret = NULL;
 
-  g_hash_table_iter_init (&iter, object->priv->map_name_to_iface);
-  while (g_hash_table_iter_next (&iter, NULL, (gpointer) &interface))
-    ret = g_list_prepend (ret, g_object_ref (interface));
+  g_mutex_lock (object->priv->lock);
+  ret = g_hash_table_get_values (object->priv->map_name_to_iface);
+  g_list_foreach (ret, (GFunc) g_object_ref, NULL);
+  g_mutex_unlock (object->priv->lock);
 
   return ret;
 }
@@ -424,14 +474,18 @@ g_dbus_object_skeleton_get_interfaces (GDBusObject *_object)
 void
 g_dbus_object_skeleton_flush (GDBusObjectSkeleton *object)
 {
-  GHashTableIter iter;
-  GDBusInterfaceSkeleton *interface_skeleton;
+  GList *to_flush, *l;
 
-  g_hash_table_iter_init (&iter, object->priv->map_name_to_iface);
-  while (g_hash_table_iter_next (&iter, NULL, (gpointer) &interface_skeleton))
-    {
-      g_dbus_interface_skeleton_flush (interface_skeleton);
-    }
+  g_mutex_lock (object->priv->lock);
+  to_flush = g_hash_table_get_values (object->priv->map_name_to_iface);
+  g_list_foreach (to_flush, (GFunc) g_object_ref, NULL);
+  g_mutex_unlock (object->priv->lock);
+
+  for (l = to_flush; l != NULL; l = l->next)
+    g_dbus_interface_skeleton_flush (G_DBUS_INTERFACE_SKELETON (l->data));
+
+  g_list_foreach (to_flush, (GFunc) g_object_unref, NULL);
+  g_list_free (to_flush);
 }
 
 static void
