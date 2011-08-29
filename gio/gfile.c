@@ -727,7 +727,7 @@ g_file_get_child_for_display_name (GFile      *file,
  * @prefix: input #GFile.
  * 
  * Checks whether @file has the prefix specified by @prefix. In other word, 
- * if the names of inital elements of @file<!-- -->s pathname match @prefix.
+ * if the names of initial elements of @file<!-- -->s pathname match @prefix.
  * Only full pathname elements are matched, so a path like /foo is not
  * considered a prefix of /foobar, only of /foo/bar.
  * 
@@ -6100,7 +6100,7 @@ g_file_query_default_handler (GFile                  *file,
   content_type = g_file_info_get_content_type (info);
   if (content_type)
     {
-      /* Don't use is_native(), as we want to support fuse paths if availible */
+      /* Don't use is_native(), as we want to support fuse paths if available */
       path = g_file_get_path (file);
       appinfo = g_app_info_get_default_for_type (content_type,
 						 path == NULL);

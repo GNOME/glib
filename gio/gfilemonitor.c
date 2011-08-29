@@ -511,7 +511,7 @@ calc_min_time (GFileMonitor *monitor,
 
   if (limiter->last_sent_change_time != 0)
     {
-      /* Set a timeout at 2*rate limit so that we can clear out the change from the hash eventualy */
+      /* Set a timeout at 2*rate limit so that we can clear out the change from the hash eventually */
       expire_at = limiter->last_sent_change_time + 2 * monitor->priv->rate_limit_msec;
 
       if (time_difference (time_now, expire_at) > 0)
@@ -719,7 +719,7 @@ g_file_monitor_emit_event (GFileMonitor      *monitor,
 	  
 	  limiter->last_sent_change_time = time_now;
 	  limiter->send_delayed_change_at = 0;
-	  /* Set a timeout of 2*rate limit so that we can clear out the change from the hash eventualy */
+	  /* Set a timeout of 2*rate limit so that we can clear out the change from the hash eventually */
 	  update_rate_limiter_timeout (monitor, time_now + 2 * monitor->priv->rate_limit_msec);
 	}
       

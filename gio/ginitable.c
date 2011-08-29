@@ -64,7 +64,7 @@ g_initable_default_init (GInitableInterface *iface)
  * g_initable_init:
  * @initable: a #GInitable.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Initializes the object implementing the interface. This must be
@@ -110,7 +110,7 @@ g_initable_init (GInitable     *initable,
  * g_initable_new:
  * @object_type: a #GType supporting #GInitable.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *    ignore.
  * @first_property_name: the name of the first property, or %NULL if no
  *     properties
@@ -150,7 +150,7 @@ g_initable_new (GType          object_type,
  * @n_parameters: the number of parameters in @parameters
  * @parameters: the parameters to use to construct the object
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.
  *
  * Helper function for constructing #GInitiable object. This is
@@ -190,7 +190,7 @@ g_initable_newv (GType          object_type,
  * the value, and other property value pairs, and ended by %NULL.
  * @var_args: The var args list generated from @first_property_name.
  * @cancellable: optional #GCancellable object, %NULL to ignore.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.
  *
  * Helper function for constructing #GInitiable object. This is

@@ -115,7 +115,7 @@ void   g_io_module_unload (GIOModule *module);
  *
  * This method will not be called in normal use, however it may be
  * called when probing existing modules and recording which extension
- * points that this modle is used for. This means we won't have to
+ * points that this model is used for. This means we won't have to
  * load and initialze this module unless its needed.
  *
  * If this function is not implemented by the module the module will

@@ -171,7 +171,7 @@ g_socket_address_get_native_size (GSocketAddress *address)
  * sockaddr</type>, which can be passed to low-level functions like
  * connect() or bind().
  *
- * If not enough space is availible, a %G_IO_ERROR_NO_SPACE error is
+ * If not enough space is available, a %G_IO_ERROR_NO_SPACE error is
  * returned. If the address type is not known on the system
  * then a %G_IO_ERROR_NOT_SUPPORTED error is returned.
  *

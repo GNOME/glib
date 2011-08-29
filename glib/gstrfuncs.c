@@ -349,7 +349,7 @@ g_strconcat (const gchar *string1, ...)
  * if the string is not completely converted it attempts the conversion
  * again with g_ascii_strtod(), and returns the best match.
  *
- * This function should seldomly be used. The normal situation when reading
+ * This function should seldom be used. The normal situation when reading
  * numbers not for human consumption is to use g_ascii_strtod(). Only when
  * you know that you must expect both locale formatted and C formatted numbers
  * should you use this. Make sure that you don't pass strings such as comma

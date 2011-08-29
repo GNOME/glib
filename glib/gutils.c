@@ -1831,7 +1831,7 @@ g_get_any_init_do (void)
 	    /* we bail out prematurely if the user id can't be found
 	     * (should be pretty rare case actually), or if the buffer
 	     * should be sufficiently big and lookups are still not
-	     * successfull.
+	     * successful.
 	     */
 	    if (error == 0 || error == ENOENT)
 	      {

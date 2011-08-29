@@ -294,7 +294,7 @@ g_value_array_remove (GValueArray *value_array,
  * @value_array: #GValueArray to sort
  * @compare_func: (scope call): function to compare elements
  *
- * Sort @value_array using @compare_func to compare the elements accoring to
+ * Sort @value_array using @compare_func to compare the elements according to
  * the semantics of #GCompareFunc.
  *
  * The current implementation uses Quick-Sort as sorting algorithm.
@@ -321,7 +321,7 @@ g_value_array_sort (GValueArray *value_array,
  * @compare_func: (scope call): function to compare elements
  * @user_data: (closure): extra data argument provided for @compare_func
  *
- * Sort @value_array using @compare_func to compare the elements accoring
+ * Sort @value_array using @compare_func to compare the elements according
  * to the semantics of #GCompareDataFunc.
  *
  * The current implementation uses Quick-Sort as sorting algorithm.

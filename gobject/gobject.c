@@ -2455,7 +2455,7 @@ g_object_ref_sink (gpointer _object)
  *
  * This function is intended for #GObject implementations to re-enforce a
  * <link linkend="floating-ref">floating</link> object reference.
- * Doing this is seldomly required: all
+ * Doing this is seldom required: all
  * #GInitiallyUnowned<!-- -->s are created with a floating reference which
  * usually just needs to be sunken by calling g_object_ref_sink().
  *

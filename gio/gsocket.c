@@ -2084,7 +2084,7 @@ g_socket_send_to (GSocket         *socket,
  *
  * Shut down part of a full-duplex connection.
  *
- * If @shutdown_read is %TRUE then the recieving side of the connection
+ * If @shutdown_read is %TRUE then the receiving side of the connection
  * is shut down, and further reading is disallowed.
  *
  * If @shutdown_write is %TRUE then the sending side of the connection

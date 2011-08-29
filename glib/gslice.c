@@ -214,7 +214,7 @@ static SliceConfig slice_config = {
 };
 static GMutex     *smc_tree_mutex = NULL; /* mutex for G_SLICE=debug-blocks */
 
-/* --- auxillary funcitons --- */
+/* --- auxiliary funcitons --- */
 void
 g_slice_set_config (GSliceConfig ckey,
                     gint64       value)
@@ -1038,7 +1038,7 @@ allocator_add_slab (Allocator *allocator,
       mem_error ("failed to allocate %u bytes (alignment: %u): %s\n",
                  (guint) (page_size - NATIVE_MALLOC_PADDING), (guint) page_size, syserr);
     }
-  /* mask page adress */
+  /* mask page address */
   addr = ((gsize) mem / page_size) * page_size;
   /* assert alignment */
   mem_assert (aligned_memory == (gpointer) addr);
@@ -1094,7 +1094,7 @@ slab_allocator_free_chunk (gsize    chunk_size,
   guint ix = SLAB_INDEX (allocator, chunk_size);
   gsize page_size = allocator_aligned_page_size (allocator, SLAB_BPAGE_SIZE (allocator, chunk_size));
   gsize addr = ((gsize) mem / page_size) * page_size;
-  /* mask page adress */
+  /* mask page address */
   guint8 *page = (guint8*) addr;
   SlabInfo *sinfo = (SlabInfo*) (page + page_size - SLAB_INFO_SIZE);
   /* assert valid chunk count */

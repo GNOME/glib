@@ -766,7 +766,7 @@ try_unix (GDBusServer  *server,
 /* ---------------------------------------------------------------------------------------------------- */
 
 /* note that address_entry has already been validated =>
- *  both host and port (guranteed to be a number in [0, 65535]) are set (family is optional)
+ *  both host and port (guaranteed to be a number in [0, 65535]) are set (family is optional)
  */
 static gboolean
 try_tcp (GDBusServer  *server,

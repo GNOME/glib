@@ -283,7 +283,7 @@ g_io_stream_has_pending (GIOStream *stream)
 /**
  * g_io_stream_set_pending:
  * @stream: a #GIOStream
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore
  *
  * Sets @stream to have actions pending. If the pending flag is
@@ -362,7 +362,7 @@ g_io_stream_real_close (GIOStream     *stream,
  * g_io_stream_close:
  * @stream: a #GIOStream
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it. This will also
  * closes the individual input and output streams, if they are not already
@@ -515,7 +515,7 @@ g_io_stream_close_async (GIOStream           *stream,
  * g_io_stream_close_finish:
  * @stream: a #GIOStream
  * @result: a #GAsyncResult
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *    ignore
  *
  * Closes a stream.
@@ -661,7 +661,7 @@ splice_close_cb (GObject      *iostream,
   ctx = g_simple_async_result_get_op_res_gpointer (simple);
   ctx->completed++;
 
-  /* Keep the first error that occured */
+  /* Keep the first error that occurred */
   if (error != NULL && ctx->error == NULL)
     ctx->error = error;
   else
@@ -695,7 +695,7 @@ splice_cb (GObject      *ostream,
        !g_cancellable_is_cancelled (ctx->cancellable)))
     g_clear_error (&error);
 
-  /* Keep the first error that occured */
+  /* Keep the first error that occurred */
   if (error != NULL && ctx->error == NULL)
     ctx->error = error;
   else
@@ -831,7 +831,7 @@ g_io_stream_splice_async (GIOStream            *stream1,
 /**
  * g_io_stream_splice_finish:
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Finishes an asynchronous io stream splice operation.

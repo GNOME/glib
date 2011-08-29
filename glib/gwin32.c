@@ -525,7 +525,7 @@ _g_win32_thread_init (void)
  * on NT-based systems, so checking whether your are running on Win9x
  * in your own software is moot. The least significant byte is 4 on
  * Windows NT 4, and 5 on Windows XP. Software that needs really
- * detailled version and feature information should use Win32 API like
+ * detailed version and feature information should use Win32 API like
  * GetVersionEx() and VerifyVersionInfo().
  *
  * Returns: The version information.

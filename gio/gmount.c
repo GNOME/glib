@@ -372,7 +372,7 @@ g_mount_unmount (GMount              *mount,
  * g_mount_unmount_finish:
  * @mount: a #GMount.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  *     ignore.
  * 
  * Finishes unmounting a mount. If any errors occurred during the operation, 
@@ -451,7 +451,7 @@ g_mount_eject (GMount              *mount,
  * g_mount_eject_finish:
  * @mount: a #GMount.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  *     ignore.
  * 
  * Finishes ejecting a mount. If any errors occurred during the operation, 
@@ -535,7 +535,7 @@ g_mount_unmount_with_operation (GMount              *mount,
  * g_mount_unmount_with_operation_finish:
  * @mount: a #GMount.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.
  *
  * Finishes unmounting a mount. If any errors occurred during the operation,
@@ -622,7 +622,7 @@ g_mount_eject_with_operation (GMount              *mount,
  * g_mount_eject_with_operation_finish:
  * @mount: a #GMount.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.
  *
  * Finishes ejecting a mount. If any errors occurred during the operation,
@@ -710,7 +710,7 @@ g_mount_remount (GMount              *mount,
  * g_mount_remount_finish:
  * @mount: a #GMount.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  *     ignore.
  * 
  * Finishes remounting a mount. If any errors occurred during the operation, 
@@ -794,10 +794,10 @@ g_mount_guess_content_type (GMount              *mount,
  * g_mount_guess_content_type_finish:
  * @mount: a #GMount
  * @result: a #GAsyncResult
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  *     ignore
  * 
- * Finishes guessing content types of @mount. If any errors occured
+ * Finishes guessing content types of @mount. If any errors occurred
  * during the operation, @error will be set to contain the errors and
  * %FALSE will be returned. In particular, you may get an 
  * %G_IO_ERROR_NOT_SUPPORTED if the mount does not support content 
@@ -835,7 +835,7 @@ g_mount_guess_content_type_finish (GMount        *mount,
  * @force_rescan: Whether to force a rescan of the content.
  *     Otherwise a cached result will be used if available
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore
  *
  * Tries to guess the type of content stored on @mount. Returns one or

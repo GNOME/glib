@@ -352,7 +352,7 @@ gboolean g_threads_got_initialized = FALSE;
 /* IMPLEMENTATION NOTE:
  *
  * g_thread_functions_for_glib_use is a global symbol that gets used by
- * most of the "primative" threading calls.  g_mutex_lock(), for
+ * most of the "primitive" threading calls.  g_mutex_lock(), for
  * example, is just a macro that calls the appropriate virtual function
  * out of this table.
  *
@@ -1258,7 +1258,7 @@ g_static_mutex_init (GStaticMutex *mutex)
  * must first allocate the normal GMutex and store it into the pointer.
  *
  * configure.ac writes macros into glibconfig.h to determine if
- * g_static_mutex_get_mutex() accesses the sturcture in memory directly
+ * g_static_mutex_get_mutex() accesses the structure in memory directly
  * (on platforms where we are able to do that) or if it ends up here,
  * where we may have to allocate the GMutex before returning it.
  */
@@ -2570,7 +2570,7 @@ g_thread_foreach (GFunc    thread_func,
   for (thread = g_thread_all_threads; thread; thread = thread->next)
     slist = g_slist_prepend (slist, thread);
   G_UNLOCK (g_thread);
-  /* walk the list, skipping non-existant threads */
+  /* walk the list, skipping non-existent threads */
   while (slist)
     {
       GSList *node = slist;

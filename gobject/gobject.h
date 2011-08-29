@@ -229,7 +229,7 @@ typedef void (*GObjectFinalizeFunc)     (GObject      *object);
  * A #GWeakNotify function can be added to an object as a callback that gets
  * triggered when the object is finalized. Since the object is already being
  * finalized when the #GWeakNotify is called, there's not much you could do 
- * with the object, apart from e.g. using its adress as hash-index or the like. 
+ * with the object, apart from e.g. using its address as hash-index or the like. 
  */
 typedef void (*GWeakNotify)		(gpointer      data,
 					 GObject      *where_the_object_was);
@@ -317,7 +317,7 @@ struct  _GObjectClass
   GSList      *construct_properties;
 
   /*< public >*/
-  /* seldomly overidden */
+  /* seldom overidden */
   GObject*   (*constructor)     (GType                  type,
                                  guint                  n_construct_properties,
                                  GObjectConstructParam *construct_properties);
@@ -332,7 +332,7 @@ struct  _GObjectClass
                                          GParamSpec     *pspec);
   void       (*dispose)			(GObject        *object);
   void       (*finalize)		(GObject        *object);
-  /* seldomly overidden */
+  /* seldom overidden */
   void       (*dispatch_properties_changed) (GObject      *object,
 					     guint	   n_pspecs,
 					     GParamSpec  **pspecs);

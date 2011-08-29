@@ -636,7 +636,7 @@ g_settings_class_init (GSettingsClass *class)
    *
    * The default handler for this signal invokes the "changed" signal
    * for each affected key.  If any other connected handler returns
-   * %TRUE then this default functionality will be supressed.
+   * %TRUE then this default functionality will be suppressed.
    */
   g_settings_signals[SIGNAL_CHANGE_EVENT] =
     g_signal_new ("change-event", G_TYPE_SETTINGS,
@@ -690,7 +690,7 @@ g_settings_class_init (GSettingsClass *class)
    * changes in writability might also imply changes in value (if for
    * example, a new mandatory setting is introduced).  If any other
    * connected handler returns %TRUE then this default functionality
-   * will be supressed.
+   * will be suppressed.
    */
   g_settings_signals[SIGNAL_WRITABLE_CHANGE_EVENT] =
     g_signal_new ("writable-change-event", G_TYPE_SETTINGS,
@@ -1482,7 +1482,7 @@ g_settings_get_flags (GSettings   *settings,
  * @returns: %TRUE, if the set succeeds
  *
  * Looks up the flags type nicks for the bits specified by @value, puts
- * them in an array of strings and writes the array to @key, withing
+ * them in an array of strings and writes the array to @key, within
  * @settings.
  *
  * It is a programmer error to give a @key that isn't contained in the

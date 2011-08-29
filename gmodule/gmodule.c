@@ -49,7 +49,7 @@
 #include "gstdio.h"
 
 /* We maintain a list of modules, so we can reference count them.
- * That's needed because some platforms don't support refernce counts on
+ * That's needed because some platforms don't support references counts on
  * modules e.g. the shl_* implementation of HP-UX
  * (http://www.stat.umn.edu/~luke/xls/projects/dlbasics/dlbasics.html).
  * Also, the module for the program itself is kept seperatedly for

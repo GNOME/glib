@@ -225,7 +225,7 @@ g_async_initable_init_async (GAsyncInitable      *initable,
  * g_async_initable_init_finish:
  * @initable: a #GAsyncInitable.
  * @res: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Finishes asynchronous initialization and returns the result.

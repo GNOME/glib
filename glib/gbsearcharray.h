@@ -30,7 +30,7 @@ G_BEGIN_DECLS   /* c++ guards */
  * implementation needs to be self-contained within this file.
  */
 
-/* convenience macro to avoid signed overflow for value comparisions */
+/* convenience macro to avoid signed overflow for value comparisons */
 #define G_BSEARCH_ARRAY_CMP(v1,v2) ((v1) > (v2) ? +1 : (v1) == (v2) ? 0 : -1)
 
 

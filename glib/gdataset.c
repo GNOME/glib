@@ -1091,7 +1091,7 @@ g_data_initialize (void)
  * g_intern_static_string(). An interned string is a canonical
  * representation for a string. One important advantage of interned
  * strings is that they can be compared for equality by a simple
- * pointer comparision, rather than using strcmp().
+ * pointer comparison, rather than using strcmp().
  **/
 
 /**

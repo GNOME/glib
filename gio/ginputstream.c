@@ -140,7 +140,7 @@ g_input_stream_init (GInputStream *stream)
  * @buffer: a buffer to read data into (which should be at least count bytes long).
  * @count: the number of bytes that will be read from the stream
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to read @count bytes from the stream into the buffer starting at
  * @buffer. Will block during this read.
@@ -218,7 +218,7 @@ g_input_stream_read  (GInputStream  *stream,
  * @count: the number of bytes that will be read from the stream
  * @bytes_read: (out): location to store the number of bytes that was read from the stream
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to read @count bytes from the stream into the buffer starting at
  * @buffer. Will block during this read.
@@ -278,7 +278,7 @@ g_input_stream_read_all (GInputStream  *stream,
  * @stream: a #GInputStream.
  * @count: the number of bytes that will be skipped from the stream
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to skip @count bytes from the stream. Will block during the operation.
  *
@@ -394,7 +394,7 @@ g_input_stream_real_skip (GInputStream  *stream,
  * g_input_stream_close:
  * @stream: A #GInputStream.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it.
  *
@@ -578,7 +578,7 @@ g_input_stream_read_async (GInputStream        *stream,
  * g_input_stream_read_finish:
  * @stream: a #GInputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Finishes an asynchronous stream read operation. 
@@ -702,7 +702,7 @@ g_input_stream_skip_async (GInputStream        *stream,
  * g_input_stream_skip_finish:
  * @stream: a #GInputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Finishes a stream skip operation.
@@ -800,7 +800,7 @@ g_input_stream_close_async (GInputStream        *stream,
  * g_input_stream_close_finish:
  * @stream: a #GInputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Finishes closing a stream asynchronously, started from g_input_stream_close_async().
@@ -868,7 +868,7 @@ g_input_stream_has_pending (GInputStream *stream)
 /**
  * g_input_stream_set_pending:
  * @stream: input stream
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Sets @stream to have actions pending. If the pending flag is

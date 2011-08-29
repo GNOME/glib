@@ -250,7 +250,7 @@ parse_key (const gchar  *key_name,
   gchar *path_name, *c;
 
   /* All key paths are treated as absolute; gsettings doesn't seem to enforce a
-   * preceeding /.
+   * preceding /.
    */
   if (key_name[0] == '/')
     key_name ++;
@@ -621,7 +621,7 @@ registry_cache_get_node_for_key (GNode       *root,
   if (key_name[0] == '/')
     key_name ++;
 
-  /* Ignore preceeding / */
+  /* Ignore preceding / */
   component = g_strdup (key_name);
   c = strchr (component, '/');
   if (c != NULL)

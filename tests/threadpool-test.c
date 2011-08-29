@@ -11,7 +11,7 @@
 #define WAIT                5    /* seconds */
 #define MAX_THREADS         10
 
-/* if > 0 the test will run continously (since the test ends when
+/* if > 0 the test will run continuously (since the test ends when
  * thread count is 0), if -1 it means no limit to unused threads
  * if 0 then no unused threads are possible */
 #define MAX_UNUSED_THREADS -1
@@ -276,7 +276,7 @@ test_thread_sort (gboolean sort)
   }
 
   /* It is important that we only have a maximum of 1 thread for this
-   * test since the results can not be guranteed to be sorted if > 1.
+   * test since the results can not be guaranteed to be sorted if > 1.
    *
    * Threads are scheduled by the operating system and are executed at
    * random. It cannot be assumed that threads are executed in the

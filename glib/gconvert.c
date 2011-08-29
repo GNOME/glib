@@ -681,7 +681,7 @@ close_converter (GIConv cd)
  *                 input sequence.
  * @bytes_written: the number of bytes stored in the output buffer (not 
  *                 including the terminating nul).
- * @error:         location to store the error occuring, or %NULL to ignore
+ * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  *
  * Converts a string from one character set to another. 
@@ -847,7 +847,7 @@ g_convert_with_iconv (const gchar *str,
  *                 input sequence.
  * @bytes_written: (out): the number of bytes stored in the output buffer (not 
  *                 including the terminating nul).
- * @error:         location to store the error occuring, or %NULL to ignore
+ * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  *
  * Converts a string from one character set to another.
@@ -916,7 +916,7 @@ g_convert (const gchar *str,
  *                at the end of the input.
  * @bytes_written: the number of bytes stored in the output buffer (not 
  *                including the terminating nul).
- * @error:        location to store the error occuring, or %NULL to ignore
+ * @error:        location to store the error occurring, or %NULL to ignore
  *                errors. Any of the errors in #GConvertError may occur.
  *
  * Converts a string from one character set to another, possibly
@@ -1197,7 +1197,7 @@ strdup_len (const gchar *string,
  *                 input sequence.
  * @bytes_written: the number of bytes stored in the output buffer (not 
  *                 including the terminating nul).
- * @error:         location to store the error occuring, or %NULL to ignore
+ * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts a string which is in the encoding used for strings by
@@ -1238,7 +1238,7 @@ g_locale_to_utf8 (const gchar  *opsysstring,
  *                 input sequence.
  * @bytes_written: the number of bytes stored in the output buffer (not 
  *                 including the terminating nul).
- * @error:         location to store the error occuring, or %NULL to ignore
+ * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts a string from UTF-8 to the encoding used for strings by
@@ -1450,7 +1450,7 @@ _g_convert_thread_init (void)
  *                 input sequence.
  * @bytes_written: the number of bytes stored in the output buffer (not 
  *                 including the terminating nul).
- * @error:         location to store the error occuring, or %NULL to ignore
+ * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts a string which is in the encoding used by GLib for
@@ -1522,7 +1522,7 @@ g_filename_to_utf8 (const gchar *opsysstring,
  *                 input sequence.
  * @bytes_written: the number of bytes stored in the output buffer (not 
  *                 including the terminating nul).
- * @error:         location to store the error occuring, or %NULL to ignore
+ * @error:         location to store the error occurring, or %NULL to ignore
  *                 errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts a string from UTF-8 to the encoding GLib uses for
@@ -1853,7 +1853,7 @@ hostname_validate (const char *hostname)
  * @hostname: Location to store hostname for the URI, or %NULL.
  *            If there is no hostname in the URI, %NULL will be
  *            stored in this location.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts an escaped ASCII-encoded URI to a local filename in the
@@ -2012,7 +2012,7 @@ g_filename_from_uri (const gchar *uri,
  *            which is the on-disk file name bytes on Unix, and UTF-8 on 
  *            Windows
  * @hostname: (allow-none): A UTF-8 encoded hostname, or %NULL for none.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *         errors. Any of the errors in #GConvertError may occur.
  * 
  * Converts an absolute filename to an escaped ASCII-encoded URI, with the path

@@ -50,7 +50,7 @@
  * for "as" (note that "s" and "v" always exist in the static array).
  *
  * The trickiest part of GVariantTypeInfo (and in fact, the major reason
- * for its existance) is the storage of somewhat magical constants that
+ * for its existence) is the storage of somewhat magical constants that
  * allow for O(1) lookups of items in tuples.  This is described below.
  *
  * 'container_class' is set to 'a' or 'r' if the GVariantTypeInfo is

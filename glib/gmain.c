@@ -3467,7 +3467,7 @@ g_main_context_poll (GMainContext *context,
  *      file descriptor is polled whenever the results may be needed.
  * 
  * Adds a file descriptor to the set of file descriptors polled for
- * this context. This will very seldomly be used directly. Instead
+ * this context. This will very seldom be used directly. Instead
  * a typical event source will use g_source_add_poll() instead.
  **/
 void

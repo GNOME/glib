@@ -455,7 +455,7 @@ g_drive_eject_with_operation (GDrive              *drive,
  * g_drive_eject_with_operation_finish:
  * @drive: a #GDrive.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.
  *
  * Finishes ejecting a drive. If any errors occurred during the operation,

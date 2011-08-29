@@ -1075,7 +1075,7 @@ write_to_temp_file (const gchar  *contents,
  * </listitem>
  * </itemizedlist>
  *
- * If the call was sucessful, it returns %TRUE. If the call was not successful,
+ * If the call was successful, it returns %TRUE. If the call was not successful,
  * it returns %FALSE and sets @error. The error domain is #G_FILE_ERROR.
  * Possible error codes are those in the #GFileError enumeration.
  *

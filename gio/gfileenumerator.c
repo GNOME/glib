@@ -174,7 +174,7 @@ g_file_enumerator_init (GFileEnumerator *enumerator)
  * g_file_enumerator_next_file:
  * @enumerator: a #GFileEnumerator.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Returns information for the next file in the enumerated object.
  * Will block until the information is available. The #GFileInfo 
@@ -239,7 +239,7 @@ g_file_enumerator_next_file (GFileEnumerator *enumerator,
  * g_file_enumerator_close:
  * @enumerator: a #GFileEnumerator.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Releases all resources used by this enumerator, making the
  * enumerator return %G_IO_ERROR_CLOSED on all calls.
@@ -385,7 +385,7 @@ g_file_enumerator_next_files_async (GFileEnumerator     *enumerator,
  * g_file_enumerator_next_files_finish:
  * @enumerator: a #GFileEnumerator.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Finishes the asynchronous operation started with g_file_enumerator_next_files_async().
@@ -494,7 +494,7 @@ g_file_enumerator_close_async (GFileEnumerator     *enumerator,
  * g_file_enumerator_close_finish:
  * @enumerator: a #GFileEnumerator.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Finishes closing a file enumerator, started from g_file_enumerator_close_async().

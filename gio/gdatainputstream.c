@@ -251,7 +251,7 @@ g_data_input_stream_get_byte_order (GDataInputStream *stream)
  * 
  * Note that using G_DATA_STREAM_NEWLINE_TYPE_ANY is slightly unsafe. If a read
  * chunk ends in "CR" we must read an additional byte to know if this is "CR" or
- * "CR LF", and this might block if there is no more data availible.
+ * "CR LF", and this might block if there is no more data available.
  *  
  **/
 void

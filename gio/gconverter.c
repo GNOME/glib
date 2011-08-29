@@ -62,7 +62,7 @@ g_converter_default_init (GConverterInterface *iface)
  * @flags: a #GConvertFlags controlling the conversion details
  * @bytes_read: (out): will be set to the number of bytes read from @inbuf on success
  * @bytes_written: (out): will be set to the number of bytes written to @outbuf on success
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * This is the main operation used when converting data. It is to be called
  * multiple times in a loop, and each time it will do some work, i.e.
@@ -126,7 +126,7 @@ g_converter_default_init (GConverterInterface *iface)
  * If the flag %G_CONVERTER_FLUSH is set then conversion is modified
  * to try to write out all internal state to the output. The application
  * has to call the function multiple times with the flag set, and when
- * the availible input has been consumed and all internal state has
+ * the available input has been consumed and all internal state has
  * been produced then %G_CONVERTER_FLUSHED (or %G_CONVERTER_FINISHED if
  * really at the end) is returned instead of %G_CONVERTER_CONVERTED.
  * This is somewhat similar to what happens at the end of the input stream,

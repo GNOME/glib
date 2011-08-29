@@ -1079,7 +1079,7 @@ type_data_make_W (TypeNode              *node,
       vtable_size += 2;
     }
    
-  if (node->is_instantiatable) /* carefull, is_instantiatable is also is_classed */
+  if (node->is_instantiatable) /* careful, is_instantiatable is also is_classed */
     {
       TypeNode *pnode = lookup_type_node_I (NODE_PARENT_TYPE (node));
 
@@ -1559,7 +1559,7 @@ g_type_interface_add_prerequisite (GType interface_type,
     {
       guint i;
       
-      /* can have at most one publically installable instantiatable prerequisite */
+      /* can have at most one publicly installable instantiatable prerequisite */
       for (i = 0; i < IFACE_NODE_N_PREREQUISITES (iface); i++)
 	{
 	  TypeNode *prnode = lookup_type_node_I (IFACE_NODE_PREREQUISITES (iface)[i]);

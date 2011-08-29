@@ -50,7 +50,7 @@
  * %G_FILE_ATTRIBUTE_TYPE_INVALID.
  *
  * The list of possible attributes for a filesystem (pointed to by a #GFile) is
- * availible as a #GFileAttributeInfoList. This list is queryable by key names
+ * available as a #GFileAttributeInfoList. This list is queryable by key names
  * as indicated earlier.
  *
  * Classes that implement #GFileIface will create a #GFileAttributeInfoList and

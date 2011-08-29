@@ -338,7 +338,7 @@ typedef struct _GMatchInfo	GMatchInfo;
  * @user_data: user data passed to g_regex_replace_eval()
  *
  * Specifies the type of the function passed to g_regex_replace_eval().
- * It is called for each occurance of the pattern in the string passed
+ * It is called for each occurrence of the pattern in the string passed
  * to g_regex_replace_eval(), and it should append the replacement to
  * @result.
  *

@@ -57,7 +57,7 @@
  * - probably want a G_DBUS_NONCE_TCP_TMPDIR environment variable
  *   to specify where the nonce is stored. This will allow people to use
  *   G_DBUS_NONCE_TCP_TMPDIR=/mnt/secure.company.server/dbus-nonce-dir
- *   to easily acheive secure RPC via nonce-tcp.
+ *   to easily achieve secure RPC via nonce-tcp.
  *
  * - need to expose an extension point for resolving D-Bus address and
  *   turning them into GIOStream objects. This will allow us to implement
@@ -1873,7 +1873,7 @@ g_dbus_connection_send_message_with_reply (GDBusConnection     *connection,
  * Finishes an operation started with g_dbus_connection_send_message_with_reply().
  *
  * Note that @error is only set if a local in-process error
- * occured. That is to say that the returned #GDBusMessage object may
+ * occurred. That is to say that the returned #GDBusMessage object may
  * be of type %G_DBUS_MESSAGE_TYPE_ERROR. Use
  * g_dbus_message_to_gerror() to transcode this to a #GError.
  *
@@ -1968,7 +1968,7 @@ send_message_with_reply_sync_cb (GDBusConnection *connection,
  * the operation fails with %G_IO_ERROR_INVALID_ARGUMENT.
  *
  * Note that @error is only set if a local in-process error
- * occured. That is to say that the returned #GDBusMessage object may
+ * occurred. That is to say that the returned #GDBusMessage object may
  * be of type %G_DBUS_MESSAGE_TYPE_ERROR. Use
  * g_dbus_message_to_gerror() to transcode this to a #GError.
  *

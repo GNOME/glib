@@ -349,7 +349,7 @@ parse_connect_reply (const guint8 *data, gint *atype, GError **error)
 
 	  default:
 	    g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-			   _("The SOCKSv5 proxy server uses unkown address type."));
+			   _("The SOCKSv5 proxy server uses unknown address type."));
 	    return FALSE;
 	  }
 	break;
@@ -444,7 +444,7 @@ g_socks5_proxy_connect (GProxy            *proxy,
 	goto error;
     }
 
-  /* Recieve SOCKS5 response and reply with authentication if required */
+  /* Receive SOCKS5 response and reply with authentication if required */
     {
       guint8 data[SOCKS5_NEGO_REP_LEN];
       gboolean must_auth = FALSE;

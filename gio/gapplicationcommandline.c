@@ -575,7 +575,7 @@ g_application_command_line_get_exit_status (GApplicationCommandLine *cmdline)
  * Gets the platform data associated with the invocation of @cmdline.
  *
  * This is a #GVariant dictionary containing information about the
- * context in which the invocation occured.  It typically contains
+ * context in which the invocation occurred.  It typically contains
  * information like the current working directory and the startup
  * notification ID.
  *

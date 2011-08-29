@@ -639,7 +639,7 @@ _g_mount_get_for_mount_path (const gchar  *mount_path,
  * blocks of a block device that is already represented by the native
  * volume monitor (for example a CD Audio file system driver). Such
  * a driver will generate its own #GMount object that needs to be
- * assoicated with the #GVolume object that represents the volume.
+ * associated with the #GVolume object that represents the volume.
  *
  * The other is for implementing a #GVolumeMonitor whose sole purpose
  * is to return #GVolume objects representing entries in the users

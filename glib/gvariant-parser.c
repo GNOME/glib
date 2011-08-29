@@ -2338,7 +2338,7 @@ parse (TokenStream  *stream,
  * is returned.
  *
  * In case of any error, %NULL will be returned.  If @error is non-%NULL
- * then it will be set to reflect the error that occured.
+ * then it will be set to reflect the error that occurred.
  *
  * Officially, the language understood by the parser is "any string
  * produced by g_variant_print()".

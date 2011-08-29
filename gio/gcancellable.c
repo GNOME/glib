@@ -186,7 +186,7 @@ g_cancellable_new (void)
  * @cancellable: a #GCancellable object
  *
  * Pushes @cancellable onto the cancellable stack. The current
- * cancellable can then be recieved using g_cancellable_get_current().
+ * cancellable can then be received using g_cancellable_get_current().
  *
  * This is useful when implementing cancellable operations in
  * code that does not allow you to pass down the cancellable object.

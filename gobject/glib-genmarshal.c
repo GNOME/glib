@@ -625,7 +625,7 @@ main (int   argc,
   else
     files = g_slist_prepend (files, "/dev/stdin");
 
-  /* setup auxillary structs */
+  /* setup auxiliary structs */
   scanner = g_scanner_new (&scanner_config_template);
   fout = stdout;
   marshallers = g_hash_table_new (g_str_hash, g_str_equal);

@@ -190,7 +190,7 @@ g_settings_backend_watch_weak_notify (gpointer  data,
  * that appears as an argument to some of the callbacks, you *must* have
  * @context as %NULL.  Otherwise, you are subject to cross-thread
  * dispatching and whatever owned @origin_tag at the time that the event
- * occured may no longer own it.  This is a problem if you consider that
+ * occurred may no longer own it.  This is a problem if you consider that
  * you may now be the new owner of that address and mistakenly think
  * that the event in question originated from yourself.
  *
@@ -378,7 +378,7 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
  * dispatching the signal later.
  *
  * The implementation may call this function at any other time it likes
- * in response to other events (such as changes occuring outside of the
+ * in response to other events (such as changes occurring outside of the
  * program).  These calls may originate from a mainloop or may originate
  * in response to any other action (including from calls to
  * g_settings_backend_write()).

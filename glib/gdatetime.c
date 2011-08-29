@@ -1635,15 +1635,15 @@ g_date_time_get_day_of_month (GDateTime *datetime)
  * within a complete week (Monday to Sunday) is contained within the
  * same week-numbering year.
  *
- * For Monday, Tuesday and Wednesday occuring near the end of the year,
+ * For Monday, Tuesday and Wednesday occurring near the end of the year,
  * this may mean that the week-numbering year is one greater than the
  * calendar year (so that these days have the same week-numbering year
- * as the Thursday occuring early in the next year).
+ * as the Thursday occurring early in the next year).
  *
- * For Friday, Saturaday and Sunday occuring near the start of the year,
+ * For Friday, Saturaday and Sunday occurring near the start of the year,
  * this may mean that the week-numbering year is one less than the
  * calendar year (so that these days have the same week-numbering year
- * as the Thursday occuring late in the previous year).
+ * as the Thursday occurring late in the previous year).
  *
  * An equivalent description is that the week-numbering year is equal to
  * the calendar year containing the majority of the days in the current
@@ -1706,7 +1706,7 @@ g_date_time_get_week_numbering_year (GDateTime *datetime)
  * that has more than 4 of its days falling within the calendar year.
  *
  * The value 0 is never returned by this function.  Days contained
- * within a year but occuring before the first ISO 8601 week of that
+ * within a year but occurring before the first ISO 8601 week of that
  * year are considered as being contained in the last week of the
  * previous year.  Similarly, the final days of a calendar year may be
  * considered as being part of the first ISO 8601 week of the next year

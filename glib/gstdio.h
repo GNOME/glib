@@ -89,7 +89,7 @@ int g_rmdir  (const gchar *filename);
  * Unix, the pathname is a file name as it literally is in the file
  * system. On well-maintained systems with consistent users who know
  * what they are doing and no exchange of files with others this would
- * be a well-defined encoding, preferrably UTF-8. On Windows, the
+ * be a well-defined encoding, preferably UTF-8. On Windows, the
  * pathname is always in UTF-8, even if that is not the on-disk
  * encoding, and not the encoding accepted by the C library or Win32
  * API.

@@ -343,7 +343,7 @@ g_volume_mount (GVolume             *volume,
  * @result: a #GAsyncResult
  * @error: a #GError location to store an error, or %NULL to ignore
  * 
- * Finishes mounting a volume. If any errors occured during the operation,
+ * Finishes mounting a volume. If any errors occurred during the operation,
  * @error will be set to contain the errors and %FALSE will be returned.
  *
  * If the mount operation succeeded, g_volume_get_mount() on @volume
@@ -419,7 +419,7 @@ g_volume_eject (GVolume             *volume,
  * @result: a #GAsyncResult.
  * @error: a #GError location to store an error, or %NULL to ignore
  * 
- * Finishes ejecting a volume. If any errors occured during the operation,
+ * Finishes ejecting a volume. If any errors occurred during the operation,
  * @error will be set to contain the errors and %FALSE will be returned.
  * 
  * Returns: %TRUE, %FALSE if operation failed.
@@ -499,7 +499,7 @@ g_volume_eject_with_operation (GVolume              *volume,
  * g_volume_eject_with_operation_finish:
  * @volume: a #GVolume.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  *     ignore.
  *
  * Finishes ejecting a volume. If any errors occurred during the operation,

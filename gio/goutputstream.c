@@ -151,7 +151,7 @@ g_output_stream_init (GOutputStream *stream)
  * @buffer: (array length=count) (element-type guint8): the buffer containing the data to write. 
  * @count: the number of bytes to write
  * @cancellable: (allow-none): optional cancellable object
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to write @count bytes from @buffer into the stream. Will block
  * during the operation.
@@ -232,7 +232,7 @@ g_output_stream_write (GOutputStream  *stream,
  * @bytes_written: (out): location to store the number of bytes that was 
  *     written to the stream
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Tries to write @count bytes from @buffer into the stream. Will block
  * during the operation.
@@ -291,7 +291,7 @@ g_output_stream_write_all (GOutputStream  *stream,
  * g_output_stream_flush:
  * @stream: a #GOutputStream.
  * @cancellable: (allow-none): optional cancellable object
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Flushed any outstanding buffers in the stream. Will block during 
  * the operation. Closing the stream will implicitly cause a flush.
@@ -342,7 +342,7 @@ g_output_stream_flush (GOutputStream  *stream,
  * @source: a #GInputStream.
  * @flags: a set of #GOutputStreamSpliceFlags.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore.
- * @error: a #GError location to store the error occuring, or %NULL to
+ * @error: a #GError location to store the error occurring, or %NULL to
  * ignore.
  *
  * Splices an input stream into an output stream.
@@ -475,7 +475,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
  * g_output_stream_close:
  * @stream: A #GOutputStream.
  * @cancellable: (allow-none): optional cancellable object
- * @error: location to store the error occuring, or %NULL to ignore
+ * @error: location to store the error occurring, or %NULL to ignore
  *
  * Closes the stream, releasing resources related to it.
  *
@@ -755,7 +755,7 @@ g_output_stream_write_async (GOutputStream       *stream,
  * g_output_stream_write_finish:
  * @stream: a #GOutputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Finishes a stream write operation.
@@ -881,7 +881,7 @@ g_output_stream_splice_async (GOutputStream            *stream,
  * g_output_stream_splice_finish:
  * @stream: a #GOutputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  *
  * Finishes an asynchronous stream splice operation.
@@ -974,12 +974,12 @@ g_output_stream_flush_async (GOutputStream       *stream,
  * g_output_stream_flush_finish:
  * @stream: a #GOutputStream.
  * @result: a GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Finishes flushing an output stream.
  * 
- * Returns: %TRUE if flush operation suceeded, %FALSE otherwise.
+ * Returns: %TRUE if flush operation succeeded, %FALSE otherwise.
  **/
 gboolean
 g_output_stream_flush_finish (GOutputStream  *stream,
@@ -1096,7 +1096,7 @@ g_output_stream_close_async (GOutputStream       *stream,
  * g_output_stream_close_finish:
  * @stream: a #GOutputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Closes an output stream.
@@ -1185,7 +1185,7 @@ g_output_stream_has_pending (GOutputStream *stream)
 /**
  * g_output_stream_set_pending:
  * @stream: a #GOutputStream.
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Sets @stream to have actions pending. If the pending flag is

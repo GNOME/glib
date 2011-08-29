@@ -131,7 +131,7 @@ next_enumerator (GProxyAddressEnumeratorPrivate *priv)
       if (priv->proxy_type == NULL)
 	continue;
 
-      /* Assumes hostnames are supported for unkown protocols */
+      /* Assumes hostnames are supported for unknown protocols */
       priv->supports_hostname = TRUE;
       proxy = g_proxy_get_default_for_protocol (priv->proxy_type);
       if (proxy)

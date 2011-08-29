@@ -62,11 +62,11 @@ typedef struct _GVariantTypeInfo GVariantTypeInfo;
  *   size, the end point is a constant addition to the start point.
  *
  *   It is clear that the starting point of a given item in the tuple is
- *   determined by the items that preceed it in the tuple.  Logically,
+ *   determined by the items that precede it in the tuple.  Logically,
  *   the start point of a particular item in a given type of tuple can
  *   be determined entirely by the end point of the nearest
  *   variable-sized item that came before it (or from the start of the
- *   container itself in case there is no preceeding variable-sized
+ *   container itself in case there is no preceding variable-sized
  *   item).  In the case of "(isis)" for example, in order to find out
  *   the start point of the last string, one must start at the end point
  *   of the first string, align to 4 (for the integer's alignment) and
@@ -84,7 +84,7 @@ typedef struct _GVariantTypeInfo GVariantTypeInfo;
  *
  * First, among the array of offets contained in the tuple, 'i' is the
  * index of the offset that refers to the end of the variable-sized item
- * preceeding the item of interest.  If no variable-sized items preceed
+ * preceding the item of interest.  If no variable-sized items precede
  * this item, then 'i' will be -1.
  *
  * Let 'prev_end' be the end offset of the previous item (or 0 in the

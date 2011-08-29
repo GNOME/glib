@@ -614,7 +614,7 @@ g_closure_unref (GClosure *closure)
  * g_closure_sink() checks to see if the object is still floating, and
  * if so, unsets the floating state and decreases the reference
  * count. If the closure is not floating, g_closure_sink() does
- * nothing. The reason for the existance of the floating state is to
+ * nothing. The reason for the existence of the floating state is to
  * prevent cumbersome code sequences like:
  * |[
  * closure = g_cclosure_new (cb_func, cb_data);
@@ -656,7 +656,7 @@ g_closure_sink (GClosure *closure)
   g_return_if_fail (closure->ref_count > 0);
 
   /* floating is basically a kludge to avoid creating closures
-   * with a ref_count of 0. so the intial ref_count a closure has
+   * with a ref_count of 0. so the initial ref_count a closure has
    * is unowned. with invoking g_closure_sink() code may
    * indicate that it takes over that intiial ref_count.
    */

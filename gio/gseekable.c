@@ -90,7 +90,7 @@ g_seekable_can_seek (GSeekable *seekable)
  * @offset: a #goffset.
  * @type: a #GSeekType.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Seeks in the stream by the given @offset, modified by @type.
@@ -144,7 +144,7 @@ g_seekable_can_truncate (GSeekable *seekable)
  * @seekable: a #GSeekable.
  * @offset: a #goffset.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  * 
  * Truncates a stream with a given #offset. 

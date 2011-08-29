@@ -113,7 +113,7 @@ g_file_input_stream_init (GFileInputStream *stream)
  * @stream: a #GFileInputStream.
  * @attributes: a file attribute query string.
  * @cancellable: (allow-none): optional #GCancellable object, %NULL to ignore. 
- * @error: a #GError location to store the error occuring, or %NULL to 
+ * @error: a #GError location to store the error occurring, or %NULL to 
  * ignore.
  *
  * Queries a file input stream the given @attributes. This function blocks 
@@ -234,7 +234,7 @@ g_file_input_stream_query_info_async (GFileInputStream    *stream,
  * g_file_input_stream_query_info_finish:
  * @stream: a #GFileInputStream.
  * @result: a #GAsyncResult.
- * @error: a #GError location to store the error occuring, 
+ * @error: a #GError location to store the error occurring, 
  *     or %NULL to ignore.
  * 
  * Finishes an asynchronous info query operation.

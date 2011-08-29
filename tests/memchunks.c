@@ -253,7 +253,7 @@ old_mem_chunk_alloc (GMemChunk *mem_chunk)
        *  (ie marked to be destroyed).
        * We check to see if all of the segments on the free list that
        *  reference this area have been removed. This occurs when
-       *  the ammount of free memory is less than the allocatable size.
+       *  the amount of free memory is less than the allocatable size.
        * If the chunk should be freed, then we place it in the "free_mem_area".
        * This is so we make sure not to free the mem area here and then
        *  allocate it again a few lines down.

@@ -120,7 +120,7 @@ _win32_get_displayname (const char *drive)
  * _g_win32_mount_new:
  * @volume_monitor: a #GVolumeMonitor.
  * @path: a win32 path.
- * @volume: ususally NULL
+ * @volume: usually NULL
  * 
  * Returns: a #GWin32Mount for the given win32 path.
  **/

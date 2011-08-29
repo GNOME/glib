@@ -243,7 +243,7 @@
  *    then although there are 9 individual values that comprise the
  *    entire dictionary (two keys, two values, two variants containing
  *    the values, two dictionary entries, plus the dictionary itself),
- *    only 1 #GVariant instance exists -- the one refering to the
+ *    only 1 #GVariant instance exists -- the one referring to the
  *    dictionary.
  *   </para>
  *   <para>

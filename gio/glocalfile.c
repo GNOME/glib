@@ -925,7 +925,7 @@ g_local_file_query_filesystem_info (GFile         *file,
   
   /* Many backends can't report free size (for instance the gvfs fuse
      backend for backend not supporting this), and set f_bfree to 0,
-     but it can be 0 for real too. We treat the availible == 0 and
+     but it can be 0 for real too. We treat the available == 0 and
      free == 0 case as "both of these are invalid".
    */
 #ifndef G_OS_WIN32

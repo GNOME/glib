@@ -263,7 +263,7 @@ struct _GParamSpecClass
  * The <structname>GParameter</structname> struct is an auxiliary structure used
  * to hand parameter name/value pairs to g_object_newv().
  */
-struct _GParameter /* auxillary structure for _setv() variants */
+struct _GParameter /* auxiliary structure for _setv() variants */
 {
   const gchar *name;
   GValue       value;

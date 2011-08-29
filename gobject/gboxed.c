@@ -297,7 +297,7 @@ g_boxed_type_register_static (const gchar   *name,
 
   type = g_type_register_static (G_TYPE_BOXED, name, &type_info, 0);
 
-  /* install proxy functions upon successfull registration */
+  /* install proxy functions upon successful registration */
   if (type)
     _g_type_boxed_init (type, boxed_copy, boxed_free);
 
@@ -340,7 +340,7 @@ g_boxed_copy (GType         boxed_type,
        * (data[0].v_pointer is the boxed struct, and
        * data[1].v_uint holds the G_VALUE_NOCOPY_CONTENTS flag,
        * rest zero).
-       * but then, we can expect that since we layed out the
+       * but then, we can expect that since we laid out the
        * g_boxed_*() API.
        * data[1].v_uint&G_VALUE_NOCOPY_CONTENTS shouldn't be set
        * after a copy.

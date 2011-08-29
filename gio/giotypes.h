@@ -106,7 +106,7 @@ typedef struct _GIOExtension                  GIOExtension;
 /**
  * GIOSchedulerJob:
  *
- * Opaque class for definining and scheduling IO jobs.
+ * Opaque class for defining and scheduling IO jobs.
  **/
 typedef struct _GIOSchedulerJob               GIOSchedulerJob;
 typedef struct _GIOStreamAdapter              GIOStreamAdapter;
