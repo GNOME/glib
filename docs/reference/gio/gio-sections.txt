@@ -1287,6 +1287,7 @@ G_IS_APP_LAUNCH_CONTEXT_CLASS
 G_TYPE_APP_LAUNCH_CONTEXT
 <SUBSECTION Private>
 g_app_info_get_type
+g_app_info_create_flags_get_type
 g_app_launch_context_get_type
 GAppLaunchContextPrivate
 </SECTION>
@@ -1322,6 +1323,7 @@ G_IS_MOUNT_OPERATION_CLASS
 G_MOUNT_OPERATION_GET_CLASS
 <SUBSECTION Private>
 g_mount_operation_get_type
+g_ask_password_flags_get_type
 GMountOperationPrivate
 </SECTION>
 
@@ -2055,6 +2057,8 @@ G_IS_CONVERTER
 G_CONVERTER_GET_IFACE
 <SUBSECTION Private>
 g_converter_get_type
+g_converter_flags_get_type
+g_converter_result_get_type
 </SECTION>
 
 <SECTION>
@@ -2316,6 +2320,7 @@ G_CREDENTIALS_GET_CLASS
 <SUBSECTION Private>
 GCredentialsPrivate
 g_credentials_get_type
+g_credentials_type_get_type
 </SECTION>
 
 <SECTION>
@@ -2509,6 +2514,7 @@ G_IS_DBUS_CONNECTION
 G_TYPE_DBUS_CONNECTION
 <SUBSECTION Private>
 g_dbus_connection_get_type
+g_bus_type_get_type
 </SECTION>
 
 <SECTION>
@@ -2551,6 +2557,9 @@ g_bus_own_name_on_connection
 g_bus_unown_name
 g_bus_own_name_with_closures
 g_bus_own_name_on_connection_with_closures
+
+<SUBSECTION Private>
+g_bus_name_owner_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -2563,6 +2572,9 @@ g_bus_watch_name_on_connection
 g_bus_unwatch_name
 g_bus_watch_name_with_closures
 g_bus_watch_name_on_connection_with_closures
+
+<SUBSECTION Private>
+g_bus_name_watcher_flags_get_type
 </SECTION>
 
 <SECTION>
@@ -2761,6 +2773,7 @@ G_APPLICATION_GET_CLASS
 <SUBSECTION Private>
 GApplicationPrivate
 g_application_get_type
+g_application_flags_get_type
 </SECTION>
 
 <SECTION>
