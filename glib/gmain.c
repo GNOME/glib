@@ -247,8 +247,6 @@ struct _GMainContext
 
   gint64   time;
   gboolean time_is_fresh;
-  gint64   real_time;
-  gboolean real_time_is_fresh;
 };
 
 struct _GSourceCallback
@@ -557,7 +555,6 @@ g_main_context_new (void)
   context->pending_dispatches = g_ptr_array_new ();
   
   context->time_is_fresh = FALSE;
-  context->real_time_is_fresh = FALSE;
   
   g_main_context_init_pipe (context);
 
@@ -2619,7 +2616,6 @@ g_main_context_prepare (GMainContext *context,
   LOCK_CONTEXT (context);
 
   context->time_is_fresh = FALSE;
-  context->real_time_is_fresh = FALSE;
 
   if (context->in_check_or_prepare)
     {
@@ -2788,10 +2784,7 @@ g_main_context_query (GMainContext *context,
     {
       *timeout = context->timeout;
       if (*timeout != 0)
-        {
-	  context->time_is_fresh = FALSE;
-	  context->real_time_is_fresh = FALSE;
-        }
+        context->time_is_fresh = FALSE;
     }
   
   UNLOCK_CONTEXT (context);
@@ -3498,12 +3491,9 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
  * g_source_get_current_time:
  * @source:  a #GSource
  * @timeval: #GTimeVal structure in which to store current time.
- * 
- * Gets the "current time" to be used when checking 
- * this source. The advantage of calling this function over
- * calling g_get_current_time() directly is that when 
- * checking multiple sources, GLib can cache a single value
- * instead of having to repeatedly get the system time.
+ *
+ * This function ignores @source and is otherwise the same as
+ * g_get_current_time().
  *
  * Deprecated: 2.28: use g_source_get_time() instead
  **/
@@ -3511,24 +3501,7 @@ void
 g_source_get_current_time (GSource  *source,
 			   GTimeVal *timeval)
 {
-  GMainContext *context;
-  
-  g_return_if_fail (source->context != NULL);
- 
-  context = source->context;
-
-  LOCK_CONTEXT (context);
-
-  if (!context->real_time_is_fresh)
-    {
-      context->real_time = g_get_real_time ();
-      context->real_time_is_fresh = TRUE;
-    }
-  
-  timeval->tv_sec = context->real_time / 1000000;
-  timeval->tv_usec = context->real_time % 1000000;
-  
-  UNLOCK_CONTEXT (context);
+  g_get_current_time (timeval);
 }
 
 /**
