@@ -178,10 +178,11 @@ g_io_module_scope_free (GIOModuleScope *scope)
 /**
  * g_io_module_scope_block:
  * @scope: a module loading scope
+ * @basename: the basename to block
  *
- * Block modules with the given base name from being loaded when this scope
- * is used with g_io_modules_scan_all_in_directory_with_scope() or
- * g_io_modules_load_all_in_directory_with_scope().
+ * Block modules with the given @basename from being loaded when
+ * this scope is used with g_io_modules_scan_all_in_directory_with_scope()
+ * or g_io_modules_load_all_in_directory_with_scope().
  *
  * Since: 2.30
  */
