@@ -1119,7 +1119,7 @@ g_local_file_set_display_name (GFile         *file,
     {
       g_set_error_literal (error, G_IO_ERROR,
                            G_IO_ERROR_EXISTS,
-                           _("Can't rename file, filename already exist"));
+                           _("Can't rename file, filename already exists"));
       return NULL;
     }
 
