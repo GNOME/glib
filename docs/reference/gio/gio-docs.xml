@@ -142,6 +142,7 @@
       <xi:include href="xml/gtlsfiledatabase.xml"/>
       <xi:include href="xml/gtlsinteraction.xml"/>
       <xi:include href="xml/gtlspassword.xml"/>
+      <xi:include href="xml/gtlsinteraction.xml"/>
     </chapter>
     <chapter id="resolver">
       <title>DNS resolution</title>
