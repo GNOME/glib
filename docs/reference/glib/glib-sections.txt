@@ -1775,7 +1775,6 @@ g_key_file_get_groups
 g_key_file_get_keys
 g_key_file_has_group
 g_key_file_has_key
-g_key_file_has_key_full
 
 <SUBSECTION>
 g_key_file_get_value
