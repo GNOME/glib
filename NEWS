@@ -5,6 +5,10 @@ Overview of changes from GLib 2.29.16 to 2.29.18
 
 * GTimeZoneMonitor has been removed again
 
+* A new API for wallclock functionality has been added:
+  g_date_time_source_new(). This API is still experimental
+  and may be changed or removed before 2.30.
+
 * Bugs fixed:
  628904 Add credential support for FreeBSD and fix a socket issue
  650763 gdbus-codegen is broken with python 2.7
@@ -26,6 +30,8 @@ Overview of changes from GLib 2.29.16 to 2.29.18
  657454 Translation comment needed
  657540 Print out file:// URL to coverage HTML report after building
  657593 g_test_trap_fork calls close(-1)
+ 646082 Addresses from GSocket should be normalized before returning
+ 657517 fix gio/tests/gdbus-peer on bsd
 
 * Translation updates:
  Brazilian Portuguese
