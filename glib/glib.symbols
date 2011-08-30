@@ -1576,8 +1576,9 @@ g_hostname_to_unicode
 g_unix_error_quark
 g_unix_open_pipe
 g_unix_set_fd_nonblocking
+g_unix_signal_add
+g_unix_signal_add_full
 g_unix_signal_source_new
-g_unix_signal_add_watch_full
 #endif
 g_ascii_table
 g_utf8_skip

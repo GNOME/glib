@@ -1958,8 +1958,9 @@ g_win32_ftruncate
 <FILE>gunix</FILE>
 G_UNIX_ERROR
 g_unix_open_pipe
+g_unix_signal_add
+g_unix_signal_add_full
 g_unix_signal_source_new
-g_unix_signal_add_watch_full
 g_unix_set_fd_nonblocking
 
 <SUBSECTION Private>

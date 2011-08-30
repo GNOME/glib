@@ -65,12 +65,16 @@ gboolean g_unix_set_fd_nonblocking (gint       fd,
                                     gboolean   nonblock,
                                     GError   **error);
 
-GSource *g_unix_signal_source_new     (gint signum);
+GSource *g_unix_signal_source_new  (gint signum);
 
-guint    g_unix_signal_add_watch_full (gint           signum,
-                                       gint           priority,
-                                       GSourceFunc    handler,
-                                       gpointer       user_data,
-                                       GDestroyNotify notify);
+guint    g_unix_signal_add_full    (gint           priority,
+                                    gint           signum,
+                                    GSourceFunc    handler,
+                                    gpointer       user_data,
+                                    GDestroyNotify notify);
+
+guint    g_unix_signal_add         (gint        signum,
+                                    GSourceFunc handler,
+                                    gpointer    user_data);
 
 #endif

@@ -98,11 +98,7 @@ test_signal (int signum)
   mainloop = g_main_loop_new (NULL, FALSE);
 
   sig_received = FALSE;
-  g_unix_signal_add_watch_full (signum,
-				G_PRIORITY_DEFAULT,
-				on_sig_received,
-				mainloop,
-				NULL);
+  g_unix_signal_add (signum, on_sig_received, mainloop);
   kill (getpid (), signum);
   g_assert (!sig_received);
   g_timeout_add (5000, sig_not_received, mainloop);
@@ -138,11 +134,7 @@ test_sighup_add_remove (void)
   mainloop = g_main_loop_new (NULL, FALSE);
 
   sig_received = FALSE;
-  id = g_unix_signal_add_watch_full (SIGHUP,
-				     G_PRIORITY_DEFAULT,
-				     on_sig_received,
-				     mainloop,
-				     NULL);
+  id = g_unix_signal_add (SIGHUP, on_sig_received, mainloop);
   g_source_remove (id);
   kill (getpid (), SIGHUP);
   g_assert (!sig_received);

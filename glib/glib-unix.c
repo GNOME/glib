@@ -223,10 +223,10 @@ g_unix_signal_source_new (int signum)
 }
 
 /**
- * g_unix_signal_add_watch_full:
- * @signum: Signal number
+ * g_unix_signal_add_full:
  * @priority: the priority of the signal source. Typically this will be in
  *            the range between #G_PRIORITY_DEFAULT and #G_PRIORITY_HIGH.
+ * @signum: Signal number
  * @handler: Callback
  * @user_data: Data for @handler
  * @notify: #GDestroyNotify for @handler
@@ -240,11 +240,11 @@ g_unix_signal_source_new (int signum)
  * Since: 2.30
  */
 guint
-g_unix_signal_add_watch_full (int            signum,
-                              int            priority,
-                              GSourceFunc    handler,
-                              gpointer       user_data,
-                              GDestroyNotify notify)
+g_unix_signal_add_full (int            priority,
+                        int            signum,
+                        GSourceFunc    handler,
+                        gpointer       user_data,
+                        GDestroyNotify notify)
 {
   guint id;
   GSource *source;
@@ -259,4 +259,26 @@ g_unix_signal_add_watch_full (int            signum,
   g_source_unref (source);
 
   return id;
+}
+
+/**
+ * g_unix_signal_add_full:
+ * @signum: Signal number
+ * @handler: Callback
+ * @user_data: Data for @handler
+ *
+ * A convenience function for g_unix_signal_source_new(), which
+ * attaches to the default #GMainContext.  You can remove the watch
+ * using g_source_remove().
+ *
+ * Returns: An ID (greater than 0) for the event source
+ *
+ * Since: 2.30
+ */
+guint
+g_unix_signal_add (int         signum,
+                   GSourceFunc handler,
+                   gpointer    user_data)
+{
+  return g_unix_signal_add_full (G_PRIORITY_DEFAULT, signum, handler, user_data, NULL);
 }
