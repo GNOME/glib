@@ -352,6 +352,9 @@ G_TYPE_PTR_ARRAY
 G_TYPE_VARIANT_TYPE
 G_TYPE_ERROR
 G_TYPE_DATE_TIME
+G_TYPE_IO_CHANNEL
+G_TYPE_IO_CONDITION
+G_TYPE_VARIANT_BUILDER
 GStrv
 
 <SUBSECTION Standard>
@@ -371,6 +374,8 @@ g_error_get_type
 g_date_time_get_type
 g_variant_get_gtype
 g_variant_type_get_gtype
+g_variant_builder_get_type
+g_gtype_get_type
 </SECTION>
 
 <SECTION>
@@ -824,8 +829,6 @@ g_closure_add_marshal_guards
 g_closure_set_meta_marshal
 g_source_set_closure
 g_source_set_dummy_callback
-G_TYPE_IO_CHANNEL
-G_TYPE_IO_CONDITION
 
 <SUBSECTION>
 g_cclosure_marshal_VOID__VOID
@@ -850,6 +853,8 @@ g_cclosure_marshal_STRING__OBJECT_POINTER
 g_cclosure_marshal_VOID__UINT_POINTER
 g_cclosure_marshal_BOOLEAN__FLAGS
 g_cclosure_marshal_BOOL__FLAGS
+g_cclosure_marshal_BOOLEAN__BOXED_BOXED
+g_cclosure_marshal_BOOL__BOXED_BOXED
 
 <SUBSECTION Private>
 GClosureNotifyData
