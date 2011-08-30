@@ -145,6 +145,9 @@ G_DEFINE_BOXED_TYPE (GVariantBuilder, g_variant_builder, g_variant_builder_ref, 
 G_DEFINE_BOXED_TYPE (GError, g_error, g_error_copy, g_error_free)
 
 G_DEFINE_BOXED_TYPE (GDateTime, g_date_time, g_date_time_ref, g_date_time_unref);
+G_DEFINE_BOXED_TYPE (GMainLoop, g_main_loop, g_main_loop_ref, g_main_loop_unref)
+G_DEFINE_BOXED_TYPE (GMainContext, g_main_context, g_main_context_ref, g_main_context_unref)
+G_DEFINE_BOXED_TYPE (GSource, g_source, g_source_ref, g_source_unref)
 
 /* This one can't use G_DEFINE_BOXED_TYPE (GStrv, g_strv, g_strdupv, g_strfreev) */
 GType

@@ -641,7 +641,7 @@ g_main_context_new (void)
  * specified, and corresponds to the "main" main loop. See also
  * g_main_context_get_thread_default().
  * 
- * Return value: the global default main context.
+ * Return value: (transfer none): the global default main context.
  **/
 GMainContext *
 g_main_context_default (void)
@@ -782,8 +782,8 @@ g_main_context_pop_thread_default (GMainContext *context)
  * non-default context, so it is not safe to assume that this will
  * always return %NULL if threads are not initialized.)
  *
- * Returns: the thread-default #GMainContext, or %NULL if the
- * thread-default context is the global default context.
+ * Returns: (transfer none): the thread-default #GMainContext, or
+ * %NULL if the thread-default context is the global default context.
  *
  * Since: 2.22
  **/
@@ -1085,9 +1085,9 @@ g_source_get_id (GSource *source)
  * Gets the #GMainContext with which the source is associated.
  * Calling this function on a destroyed source is an error.
  * 
- * Return value: the #GMainContext with which the source is associated,
- *               or %NULL if the context has not yet been added
- *               to a source.
+ * Return value: (transfer none): the #GMainContext with which the
+ *               source is associated, or %NULL if the context has not
+ *               yet been added to a source.
  **/
 GMainContext *
 g_source_get_context (GSource *source)
@@ -1740,7 +1740,7 @@ g_source_unref (GSource *source)
  * 
  * Finds a #GSource given a pair of context and ID.
  * 
- * Return value: the #GSource if found, otherwise, %NULL
+ * Return value: (transfer none): the #GSource if found, otherwise, %NULL
  **/
 GSource *
 g_main_context_find_source_by_id (GMainContext *context,
@@ -1779,7 +1779,7 @@ g_main_context_find_source_by_id (GMainContext *context,
  * multiple sources exist with the same source function and user data,
  * the first one found will be returned.
  * 
- * Return value: the source, if one was found, otherwise %NULL
+ * Return value: (transfer none): the source, if one was found, otherwise %NULL
  **/
 GSource *
 g_main_context_find_source_by_funcs_user_data (GMainContext *context,
@@ -1827,7 +1827,7 @@ g_main_context_find_source_by_funcs_user_data (GMainContext *context,
  * multiple sources exist with the same user data, the first
  * one found will be returned.
  * 
- * Return value: the source, if one was found, otherwise %NULL
+ * Return value: (transfer none): the source, if one was found, otherwise %NULL
  **/
 GSource *
 g_main_context_find_source_by_user_data (GMainContext *context,
@@ -2254,7 +2254,7 @@ g_main_depth (void)
  *
  * Returns the currently firing source for this thread.
  * 
- * Return value: The currently firing source or %NULL.
+ * Return value: (transfer none): The currently firing source or %NULL.
  *
  * Since: 2.12
  */
@@ -2807,8 +2807,9 @@ g_main_context_prepare (GMainContext *context,
  * g_main_context_query:
  * @context: a #GMainContext
  * @max_priority: maximum priority source to check
- * @timeout_: location to store timeout to be used in polling
- * @fds: location to store #GPollFD records that need to be polled.
+ * @timeout_: (out): location to store timeout to be used in polling
+ * @fds: (out caller-allocates) (array length=n_fds): location to
+ *       store #GPollFD records that need to be polled.
  * @n_fds: length of @fds.
  * 
  * Determines information necessary to poll this main loop.
@@ -2877,8 +2878,8 @@ g_main_context_query (GMainContext *context,
  * g_main_context_check:
  * @context: a #GMainContext
  * @max_priority: the maximum numerical priority of sources to check
- * @fds: array of #GPollFD's that was passed to the last call to
- *       g_main_context_query()
+ * @fds: (array length=n_fds): array of #GPollFD's that was passed to
+ *       the last call to g_main_context_query()
  * @n_fds: return value of g_main_context_query()
  * 
  * Passes the results of polling back to the main loop.
@@ -3355,7 +3356,7 @@ g_main_loop_is_running (GMainLoop *loop)
  * 
  * Returns the #GMainContext of @loop.
  * 
- * Return value: the #GMainContext of @loop
+ * Return value: (transfer none): the #GMainContext of @loop
  **/
 GMainContext *
 g_main_loop_get_context (GMainLoop *loop)
@@ -4906,7 +4907,7 @@ g_idle_remove_by_data (gpointer data)
 
 /**
  * g_main_context_invoke:
- * @context: a #GMainContext, or %NULL
+ * @context: (allow-none): a #GMainContext, or %NULL
  * @function: function to call
  * @data: data to pass to @function
  *
@@ -4946,7 +4947,7 @@ g_main_context_invoke (GMainContext *context,
 
 /**
  * g_main_context_invoke_full:
- * @context: a #GMainContext, or %NULL
+ * @context: (allow-none): a #GMainContext, or %NULL
  * @priority: the priority at which to run @function
  * @function: function to call
  * @data: data to pass to @function

@@ -125,7 +125,7 @@ typedef struct _GSourceFuncs            GSourceFuncs;
 
 /**
  * GSourceFunc:
- * @data: data passed to the function, set when the source was
+ * @user_data: data passed to the function, set when the source was
  *     created with one of the above functions
  *
  * Specifies the type of function passed to g_timeout_add(),
@@ -133,20 +133,20 @@ typedef struct _GSourceFuncs            GSourceFuncs;
  *
  * Returns: %FALSE if the source should be removed
  */
-typedef gboolean (*GSourceFunc)       (gpointer data);
+typedef gboolean (*GSourceFunc)       (gpointer user_data);
 
 /**
  * GChildWatchFunc:
  * @pid: the process id of the child process
  * @status: Status information about the child process,
  *     see waitpid(2) for more information about this field
- * @data: user data passed to g_child_watch_add()
+ * @user_data: user data passed to g_child_watch_add()
  *
  * The type of functions to be called when a child exists.
  */
 typedef void     (*GChildWatchFunc)   (GPid     pid,
                                        gint     status,
-                                       gpointer data);
+                                       gpointer user_data);
 struct _GSource
 {
   /*< private >*/
