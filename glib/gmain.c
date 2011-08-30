@@ -791,7 +791,7 @@ g_source_new (GSourceFuncs *source_funcs,
   g_return_val_if_fail (struct_size >= sizeof (GSource), NULL);
   
   source = (GSource*) g_malloc0 (struct_size);
-
+  source->priv = g_slice_new0 (GSourcePrivate);
   source->source_funcs = source_funcs;
   source->ref_count = 1;
   
@@ -812,7 +812,7 @@ g_source_list_add (GSource      *source,
 {
   GSource *tmp_source, *last_source;
   
-  if (source->priv && source->priv->parent_source)
+  if (source->priv->parent_source)
     {
       /* Put the source immediately before its parent */
       tmp_source = source->priv->parent_source;
@@ -878,14 +878,11 @@ g_source_attach_unlocked (GSource      *source,
       tmp_list = tmp_list->next;
     }
 
-  if (source->priv)
+  tmp_list = source->priv->child_sources;
+  while (tmp_list)
     {
-      tmp_list = source->priv->child_sources;
-      while (tmp_list)
-	{
-	  g_source_attach_unlocked (tmp_list->data, context);
-	  tmp_list = tmp_list->next;
-	}
+      g_source_attach_unlocked (tmp_list->data, context);
+      tmp_list = tmp_list->next;
     }
 
   return result;
@@ -968,7 +965,7 @@ g_source_destroy_internal (GSource      *source,
 	    }
 	}
 
-      if (source->priv && source->priv->child_sources)
+      if (source->priv->child_sources)
 	{
 	  /* This is safe because even if a child_source finalizer or
 	   * closure notify tried to modify source->priv->child_sources
@@ -1164,17 +1161,12 @@ g_source_add_child_source (GSource *source,
   g_return_if_fail (!SOURCE_DESTROYED (source));
   g_return_if_fail (!SOURCE_DESTROYED (child_source));
   g_return_if_fail (child_source->context == NULL);
-  g_return_if_fail (child_source->priv == NULL || child_source->priv->parent_source == NULL);
+  g_return_if_fail (child_source->priv->parent_source == NULL);
 
   context = source->context;
 
   if (context)
     LOCK_CONTEXT (context);
-
-  if (!source->priv)
-    source->priv = g_slice_new0 (GSourcePrivate);
-  if (!child_source->priv)
-    child_source->priv = g_slice_new0 (GSourcePrivate);
 
   source->priv->child_sources = g_slist_prepend (source->priv->child_sources,
 						 g_source_ref (child_source));
@@ -1206,7 +1198,7 @@ g_source_remove_child_source (GSource *source,
 
   g_return_if_fail (source != NULL);
   g_return_if_fail (child_source != NULL);
-  g_return_if_fail (child_source->priv != NULL && child_source->priv->parent_source == source);
+  g_return_if_fail (child_source->priv->parent_source == source);
   g_return_if_fail (!SOURCE_DESTROYED (source));
   g_return_if_fail (!SOURCE_DESTROYED (child_source));
 
@@ -1398,7 +1390,7 @@ g_source_set_priority_unlocked (GSource      *source,
 	}
     }
 
-  if (source->priv && source->priv->child_sources)
+  if (source->priv->child_sources)
     {
       tmp_list = source->priv->child_sources;
       while (tmp_list)
@@ -1657,11 +1649,8 @@ g_source_unref_internal (GSource      *source,
       g_slist_free (source->poll_fds);
       source->poll_fds = NULL;
 
-      if (source->priv)
-	{
-	  g_slice_free (GSourcePrivate, source->priv);
-	  source->priv = NULL;
-	}
+      g_slice_free (GSourcePrivate, source->priv);
+      source->priv = NULL;
 
       g_free (source);
     }
@@ -2845,7 +2834,7 @@ g_main_context_prepare (GMainContext *context,
 	      while (ready_source)
 		{
 		  ready_source->flags |= G_SOURCE_READY;
-		  ready_source = ready_source->priv ? ready_source->priv->parent_source : NULL;
+		  ready_source = ready_source->priv->parent_source;
 		}
 	    }
 	}
@@ -3032,7 +3021,7 @@ g_main_context_check (GMainContext *context,
 	      while (ready_source)
 		{
 		  ready_source->flags |= G_SOURCE_READY;
-		  ready_source = ready_source->priv ? ready_source->priv->parent_source : NULL;
+		  ready_source = ready_source->priv->parent_source;
 		}
 	    }
 	}
