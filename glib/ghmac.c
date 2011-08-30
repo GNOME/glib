@@ -285,7 +285,7 @@ g_hmac_get_string (GHmac *hmac)
 }
 
 /**
- * g_checksum_get_digest:
+ * g_hmac_get_digest:
  * @hmac: a #GHmac
  * @buffer: output buffer
  * @digest_len: an inout parameter. The caller initializes it to the
