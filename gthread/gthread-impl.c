@@ -60,13 +60,6 @@ static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
   ((PRIORITY_NORMAL_VALUE + PRIORITY_URGENT_VALUE * 2) / 3)
 #endif /* PRIORITY_HIGH_VALUE */
 
-void g_mutex_init (void);
-void g_mem_init (void);
-void g_messages_init (void);
-void g_convert_init (void);
-void g_rand_init (void);
-void g_main_thread_init (void);
-
 typedef struct _GMutexDebugInfo GMutexDebugInfo;
 struct _GMutexDebugInfo
 {
