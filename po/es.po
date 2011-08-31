@@ -511,32 +511,32 @@ msgstr "%.1f EiB"
 #: ../glib/gfileutils.c:2032
 #, c-format
 msgid "%.1f kB"
-msgstr "%.1f KiB"
+msgstr "%.1f kB"
 
 #: ../glib/gfileutils.c:2035 ../glib/gfileutils.c:2144
 #, c-format
 msgid "%.1f MB"
-msgstr "%.1f MiB"
+msgstr "%.1f MB"
 
 #: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2149
 #, c-format
 msgid "%.1f GB"
-msgstr "%.1f GiB"
+msgstr "%.1f GB"
 
 #: ../glib/gfileutils.c:2041 ../glib/gfileutils.c:2154
 #, c-format
 msgid "%.1f TB"
-msgstr "%.1f TiB"
+msgstr "%.1f TB"
 
 #: ../glib/gfileutils.c:2044 ../glib/gfileutils.c:2159
 #, c-format
 msgid "%.1f PB"
-msgstr "%.1f PiB"
+msgstr "%.1f PB"
 
 #: ../glib/gfileutils.c:2047 ../glib/gfileutils.c:2164
 #, c-format
 msgid "%.1f EB"
-msgstr "%.1f EiB"
+msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
 #: ../glib/gfileutils.c:2084
