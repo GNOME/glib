@@ -36,27 +36,7 @@
 #include "glib.h"
 #include "gthreadprivate.h"
 
-static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
-
 #include G_THREAD_SOURCE
-
-#ifndef PRIORITY_LOW_VALUE
-# define PRIORITY_LOW_VALUE 0
-#endif
-
-#ifndef PRIORITY_URGENT_VALUE
-# define PRIORITY_URGENT_VALUE 0
-#endif
-
-#ifndef PRIORITY_NORMAL_VALUE
-# define PRIORITY_NORMAL_VALUE						\
-  ((PRIORITY_LOW_VALUE * 6 + PRIORITY_URGENT_VALUE * 4) / 10)
-#endif /* PRIORITY_NORMAL_VALUE */
-
-#ifndef PRIORITY_HIGH_VALUE
-# define PRIORITY_HIGH_VALUE						\
-  ((PRIORITY_NORMAL_VALUE + PRIORITY_URGENT_VALUE * 2) / 3)
-#endif /* PRIORITY_HIGH_VALUE */
 
 void
 g_thread_init (GThreadFunctions *init)
@@ -76,12 +56,6 @@ g_thread_init (GThreadFunctions *init)
 #endif /* HAVE_G_THREAD_IMPL_INIT */
 
   g_thread_functions_for_glib_use = g_thread_functions_for_glib_use_default;
-
-  g_thread_priority_map [G_THREAD_PRIORITY_LOW] = PRIORITY_LOW_VALUE;
-  g_thread_priority_map [G_THREAD_PRIORITY_NORMAL] = PRIORITY_NORMAL_VALUE;
-  g_thread_priority_map [G_THREAD_PRIORITY_HIGH] = PRIORITY_HIGH_VALUE;
-  g_thread_priority_map [G_THREAD_PRIORITY_URGENT] = PRIORITY_URGENT_VALUE;
-
   g_thread_init_glib ();
 }
 

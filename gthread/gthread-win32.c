@@ -54,11 +54,6 @@
 
 #define G_MUTEX_SIZE (sizeof (gpointer))
 
-#define PRIORITY_LOW_VALUE    THREAD_PRIORITY_BELOW_NORMAL
-#define PRIORITY_NORMAL_VALUE THREAD_PRIORITY_NORMAL
-#define PRIORITY_HIGH_VALUE   THREAD_PRIORITY_ABOVE_NORMAL
-#define PRIORITY_URGENT_VALUE THREAD_PRIORITY_HIGHEST
-
 static DWORD g_thread_self_tls;
 static DWORD g_private_tls;
 static DWORD g_cond_event_tls;
@@ -380,12 +375,31 @@ static void
 g_thread_set_priority_win32_impl (gpointer thread, GThreadPriority priority)
 {
   GThreadData *target = *(GThreadData **)thread;
+  gint native_prio;
 
-  g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
-  g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
+  switch (priority)
+    {
+    case G_THREAD_PRIORITY_LOW:
+      native_prio = THREAD_PRIORITY_BELOW_NORMAL;
+      break;
 
-  win32_check_for_error (SetThreadPriority (target->thread,
-					    g_thread_priority_map [priority]));
+    case G_THREAD_PRIORITY_NORMAL:
+      native_prio = THREAD_PRIORITY_NORMAL;
+      break;
+
+    case G_THREAD_PRIORITY_HIGH:
+      native_prio = THREAD_PRIORITY_ABOVE_NORMAL;
+      break;
+
+    case G_THREAD_PRIORITY_URGENT:
+      native_prio = THREAD_PRIORITY_HIGHEST;
+      break;
+
+    default:
+      g_return_if_reached ();
+    }
+
+  win32_check_for_error (SetThreadPriority (target->thread, native_prio));
 }
 
 static void
