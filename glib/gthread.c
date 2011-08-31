@@ -925,6 +925,13 @@ G_LOCK_DEFINE_STATIC (g_thread);
 void
 g_thread_init_glib (void)
 {
+  static gboolean already_done;
+
+  if (already_done)
+    return;
+
+  already_done = TRUE;
+
   _g_thread_impl_init ();
 
   /* We let the main thread (the one that calls g_thread_init) inherit
