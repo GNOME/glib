@@ -55,12 +55,12 @@
            g_strerror (error), name);					\
   }G_STMT_END
 
-#define posix_check_cmd(cmd) posix_check_err (posix_error (cmd), #cmd)
+#define posix_check_cmd(cmd) posix_check_err (cmd, #cmd)
 
 #ifdef G_ENABLE_DEBUG
 static gboolean posix_check_cmd_prio_warned = FALSE;
 # define posix_check_cmd_prio(cmd) G_STMT_START{			\
-    int err = posix_error (cmd);					\
+    int err = (cmd);							\
     if (err == EPERM)		 		 			\
       { 	 			 				\
         if (!posix_check_cmd_prio_warned) 		 		\
@@ -75,15 +75,11 @@ static gboolean posix_check_cmd_prio_warned = FALSE;
      }G_STMT_END
 #else /* G_ENABLE_DEBUG */
 # define posix_check_cmd_prio(cmd) G_STMT_START{			\
-    int err = posix_error (cmd);					\
+    int err = (cmd);							\
     if (err != EPERM)		 		 			\
       posix_check_err (err, #cmd);					\
      }G_STMT_END
 #endif /* G_ENABLE_DEBUG */
-
-#define posix_error(what) (what)
-#define mutexattr_default NULL
-#define condattr_default NULL
 
 #if defined (POSIX_MIN_PRIORITY) && defined (POSIX_MAX_PRIORITY)
 # define HAVE_PRIORITIES 1
@@ -130,8 +126,7 @@ static GMutex *
 g_mutex_new_posix_impl (void)
 {
   GMutex *result = (GMutex *) g_new (pthread_mutex_t, 1);
-  posix_check_cmd (pthread_mutex_init ((pthread_mutex_t *) result,
-				       mutexattr_default));
+  posix_check_cmd (pthread_mutex_init ((pthread_mutex_t *) result, NULL));
   return result;
 }
 
@@ -159,7 +154,7 @@ g_mutex_trylock_posix_impl (GMutex * mutex)
   if (result == EBUSY)
     return FALSE;
 
-  posix_check_err (posix_error (result), "pthread_mutex_trylock");
+  posix_check_err (result, "pthread_mutex_trylock");
   return TRUE;
 }
 
@@ -167,8 +162,7 @@ static GCond *
 g_cond_new_posix_impl (void)
 {
   GCond *result = (GCond *) g_new (pthread_cond_t, 1);
-  posix_check_cmd (pthread_cond_init ((pthread_cond_t *) result,
-				      condattr_default));
+  posix_check_cmd (pthread_cond_init ((pthread_cond_t *) result, NULL));
   return result;
 }
 
@@ -211,7 +205,7 @@ g_cond_timed_wait_posix_impl (GCond * cond,
     }
 
   if (!timed_out)
-    posix_check_err (posix_error (result), "pthread_cond_timedwait");
+    posix_check_err (result, "pthread_cond_timedwait");
 
   return !timed_out;
 }
@@ -298,8 +292,7 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
     posix_check_cmd_prio (pthread_attr_setschedparam (&attr, &sched));
   }
 #endif /* HAVE_PRIORITIES */
-  ret = posix_error (pthread_create (thread, &attr,
-				     (void* (*)(void*))thread_func, arg));
+  ret = pthread_create (thread, &attr, (void* (*)(void*))thread_func, arg);
 
   posix_check_cmd (pthread_attr_destroy (&attr));
 
