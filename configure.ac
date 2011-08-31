@@ -1065,11 +1065,7 @@ fi
 AC_CHECK_FUNCS(getprotobyname_r endservent)
 AC_CHECK_HEADERS([netdb.h wspiapi.h arpa/nameser_compat.h])
 
-# For gio/libasyncns
 if test $glib_native_win32 = no; then
-  AC_CHECK_FUNCS(strndup setresuid setreuid)
-  AC_CHECK_HEADERS(sys/prctl.h)
-
   # We can't just use AC_CHECK_FUNC/AC_CHECK_LIB here. Bug 586150
   NETWORK_LIBS=""
   AC_MSG_CHECKING([for res_query])
@@ -3842,7 +3838,6 @@ gio/gdbus-2.0/codegen/Makefile
 gio/gdbus-2.0/codegen/config.py
 gio/xdgmime/Makefile
 gio/inotify/Makefile
-gio/libasyncns/Makefile
 gio/fen/Makefile
 gio/fam/Makefile
 gio/win32/Makefile

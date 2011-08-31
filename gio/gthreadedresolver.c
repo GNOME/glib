@@ -42,9 +42,8 @@ static void threaded_resolver_thread (gpointer thread_data, gpointer pool_data);
 static void
 g_threaded_resolver_init (GThreadedResolver *gtr)
 {
-  if (g_thread_supported ())
-    gtr->thread_pool = g_thread_pool_new (threaded_resolver_thread, gtr,
-                                          -1, FALSE, NULL);
+  gtr->thread_pool = g_thread_pool_new (threaded_resolver_thread, gtr,
+                                        -1, FALSE, NULL);
 }
 
 static void
@@ -186,8 +185,7 @@ g_threaded_resolver_request_new (GThreadedResolverResolveFunc  resolve_func,
   /* Initial refcount is 2; one for the caller and one for resolve_func */
   req->ref_count = 2;
 
-  if (g_thread_supported ())
-    req->mutex = g_mutex_new ();
+  req->mutex = g_mutex_new ();
   /* Initially locked; caller must unlock */
   g_mutex_lock (req->mutex);
 

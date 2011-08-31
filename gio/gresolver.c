@@ -31,13 +31,10 @@
 #include "ginetsocketaddress.h"
 #include "gsimpleasyncresult.h"
 #include "gsrvtarget.h"
+#include "gthreadedresolver.h"
 
 #ifdef G_OS_UNIX
-#include "gunixresolver.h"
 #include <sys/stat.h>
-#endif
-#ifdef G_OS_WIN32
-#include "gwin32resolver.h"
 #endif
 
 #include <stdlib.h>
@@ -153,18 +150,7 @@ GResolver *
 g_resolver_get_default (void)
 {
   if (!default_resolver)
-    {
-      if (g_thread_supported ())
-        default_resolver = g_object_new (G_TYPE_THREADED_RESOLVER, NULL);
-      else
-        {
-#if defined(G_OS_UNIX)
-          default_resolver = g_object_new (G_TYPE_UNIX_RESOLVER, NULL);
-#elif defined(G_OS_WIN32)
-          default_resolver = g_object_new (G_TYPE_WIN32_RESOLVER, NULL);
-#endif
-        }
-    }
+    default_resolver = g_object_new (G_TYPE_THREADED_RESOLVER, NULL);
 
   return g_object_ref (default_resolver);
 }

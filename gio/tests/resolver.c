@@ -40,13 +40,11 @@ static int nlookups = 0;
 static void G_GNUC_NORETURN
 usage (void)
 {
-	fprintf (stderr, "Usage: resolver [-t] [-s] [hostname | IP | service/protocol/domain ] ...\n");
-	fprintf (stderr, "       resolver [-t] [-s] -c NUMBER [hostname | IP | service/protocol/domain ]\n");
-	fprintf (stderr, "       Use -t to enable threading.\n");
+	fprintf (stderr, "Usage: resolver [-s] [hostname | IP | service/protocol/domain ] ...\n");
+	fprintf (stderr, "       resolver [-s] -c NUMBER [hostname | IP | service/protocol/domain ]\n");
 	fprintf (stderr, "       Use -s to do synchronous lookups.\n");
-	fprintf (stderr, "       Both together will result in simultaneous lookups in multiple threads\n");
-	fprintf (stderr, "       Use -c NUMBER(and only a single resolvable argument) to test GSocketConnectable.\n");
-	fprintf (stderr, "       The given NUMBER determines how often the connectable will be enumerated.\n");
+	fprintf (stderr, "       Use -c NUMBER (and only a single resolvable argument) to test GSocketConnectable.\n");
+	fprintf (stderr, "       The given NUMBER determines how many times the connectable will be enumerated.\n");
 	exit (1);
 }
 
@@ -198,21 +196,12 @@ lookup_thread (gpointer arg)
 }
 
 static void
-start_threaded_lookups (char **argv, int argc)
-{
-  int i;
-
-  for (i = 0; i < argc; i++)
-    g_thread_create (lookup_thread, argv[i], FALSE, NULL);
-}
-
-static void
 start_sync_lookups (char **argv, int argc)
 {
   int i;
 
   for (i = 0; i < argc; i++)
-    lookup_one_sync (argv[i]);
+    g_thread_create (lookup_thread, argv[i], FALSE, NULL);
 }
 
 static void
@@ -438,24 +427,19 @@ async_cancel (GIOChannel *source, GIOCondition cond, gpointer cancel)
 int
 main (int argc, char **argv)
 {
-  gboolean threaded = FALSE, synchronous = FALSE;
+  gboolean synchronous = FALSE;
   guint connectable_count = 0;
 #ifdef G_OS_UNIX
   GIOChannel *chan;
   guint watch;
 #endif
 
-  /* We can't use GOptionContext because we use the arguments to
-   * decide whether or not to call g_thread_init().
-   */
+  g_type_init ();
+
+  /* FIXME: use GOptionContext */
   while (argc >= 2 && argv[1][0] == '-')
     {
-      if (!strcmp (argv[1], "-t"))
-        {
-          g_thread_init (NULL);
-          threaded = TRUE;
-        }
-      else if (!strcmp (argv[1], "-s"))
+      if (!strcmp (argv[1], "-s"))
         synchronous = TRUE;
       else if (!strcmp (argv[1], "-c"))
         {
@@ -469,7 +453,6 @@ main (int argc, char **argv)
       argv++;
       argc--;
     }
-  g_type_init ();
 
   if (argc < 2 || (argc > 2 && connectable_count))
     usage ();
@@ -504,9 +487,7 @@ main (int argc, char **argv)
     }
   else
     {
-      if (threaded && synchronous)
-        start_threaded_lookups (argv + 1, argc - 1);
-      else if (synchronous)
+      if (synchronous)
         start_sync_lookups (argv + 1, argc - 1);
       else
         start_async_lookups (argv + 1, argc - 1);

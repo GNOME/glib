@@ -32,8 +32,7 @@
  * @include: gio/gio.h
  * 
  * Schedules asynchronous I/O operations. #GIOScheduler integrates 
- * into the main event loop (#GMainLoop) and may use threads if they 
- * are available.
+ * into the main event loop (#GMainLoop) and uses threads.
  * 
  * <para id="io-priority"><indexterm><primary>I/O priority</primary></indexterm>
  * Each I/O operation has a priority, and the scheduler uses the priorities
@@ -55,8 +54,6 @@ struct _GIOSchedulerJob {
   gint io_priority;
   GCancellable *cancellable;
   GMainContext *context;
-
-  guint idle_tag;
 };
 
 G_LOCK_DEFINE_STATIC(active_jobs);
@@ -188,23 +185,6 @@ io_job_thread (gpointer data,
   job_destroy (job);
 }
 
-static gboolean
-run_job_at_idle (gpointer data)
-{
-  GIOSchedulerJob *job = data;
-  gboolean result;
-
-  if (job->cancellable)
-    g_cancellable_push_current (job->cancellable);
-  
-  result = job->job_func (job, job->cancellable, job->data);
-  
-  if (job->cancellable)
-    g_cancellable_pop_current (job->cancellable);
-
-  return result;
-}
-
 /**
  * g_io_scheduler_push_job:
  * @job_func: a #GIOSchedulerJobFunc.
@@ -253,20 +233,8 @@ g_io_scheduler_push_job (GIOSchedulerJobFunc  job_func,
   job->active_link = active_jobs;
   G_UNLOCK (active_jobs);
 
-  if (g_thread_supported())
-    {
-      g_once (&once_init, init_scheduler, NULL);
-      g_thread_pool_push (job_thread_pool, job, NULL);
-    }
-  else
-    {
-      /* Threads not available, instead do the i/o sync inside a
-       * low prio idle handler
-       */
-      job->idle_tag = g_idle_add_full (io_priority,
-				       run_job_at_idle,
-				       job, job_destroy);
-    }
+  g_once (&once_init, init_scheduler, NULL);
+  g_thread_pool_push (job_thread_pool, job, NULL);
 }
 
 /**
@@ -370,17 +338,6 @@ g_io_scheduler_job_send_to_mainloop (GIOSchedulerJob *job,
   g_return_val_if_fail (job != NULL, FALSE);
   g_return_val_if_fail (func != NULL, FALSE);
 
-  if (job->idle_tag)
-    {
-      /* We just immediately re-enter in the case of idles (non-threads)
-       * Anything else would just deadlock. If you can't handle this, enable threads.
-       */
-      ret_val = func (user_data);
-      if (notify)
-	notify (user_data);
-      return ret_val;
-    }
-  
   proxy = g_new0 (MainLoopProxy, 1);
   proxy->func = func;
   proxy->data = user_data;
@@ -435,17 +392,6 @@ g_io_scheduler_job_send_to_mainloop_async (GIOSchedulerJob *job,
   g_return_if_fail (job != NULL);
   g_return_if_fail (func != NULL);
 
-  if (job->idle_tag)
-    {
-      /* We just immediately re-enter in the case of idles (non-threads)
-       * Anything else would just deadlock. If you can't handle this, enable threads.
-       */
-      func (user_data);
-      if (notify)
-	notify (user_data);
-      return;
-    }
-  
   proxy = g_new0 (MainLoopProxy, 1);
   proxy->func = func;
   proxy->data = user_data;

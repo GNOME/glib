@@ -1,7 +1,0 @@
-The sources are derived from Lennart Poettering's libasyncns library:
-
- http://0pointer.de/lennart/projects/libasyncns/
-
-The 'update.sh' script in this directory, when pointed at
-the original sources updates the files in this directory
-to the new version

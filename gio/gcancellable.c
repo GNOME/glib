@@ -79,7 +79,7 @@ g_cancellable_class_init (GCancellableClass *klass)
 
   g_type_class_add_private (klass, sizeof (GCancellablePrivate));
 
-  if (cancellable_cond == NULL && g_thread_supported ())
+  if (cancellable_cond == NULL)
     cancellable_cond = g_cond_new ();
   
   gobject_class->finalize = g_cancellable_finalize;

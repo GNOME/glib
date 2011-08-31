@@ -875,12 +875,6 @@ g_resolver_lookup_service
 g_resolver_lookup_service_async
 g_resolver_lookup_service_finish
 g_threaded_resolver_get_type
-#ifdef G_OS_UNIX
-g_unix_resolver_get_type
-#endif
-#ifdef G_OS_WIN32
-g_win32_resolver_get_type
-#endif
 g_srv_target_get_type
 g_srv_target_new
 g_srv_target_copy

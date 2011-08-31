@@ -5,7 +5,7 @@ NULL =
 SUBDIRS = gdbus-2.0/codegen
 
 if OS_UNIX
-SUBDIRS += libasyncns xdgmime
+SUBDIRS += xdgmime
 endif
 
 if OS_WIN32_AND_DLL_COMPILATION
@@ -200,8 +200,8 @@ endif
 
 if OS_UNIX
 appinfo_sources += gdesktopappinfo.c
-platform_libadd += libasyncns/libasyncns.la xdgmime/libxdgmime.la
-platform_deps += libasyncns/libasyncns.la xdgmime/libxdgmime.la
+platform_libadd += xdgmime/libxdgmime.la $(RESOLVER_LIBADD)
+platform_deps += xdgmime/libxdgmime.la
 unix_sources = \
 	gfiledescriptorbased.c  \
 	gunixconnection.c	\
@@ -211,8 +211,6 @@ unix_sources = \
 	gunixmount.c		\
 	gunixmount.h		\
 	gunixmounts.c 		\
-	gunixresolver.c		\
-	gunixresolver.h		\
 	gunixsocketaddress.c	\
 	gunixvolume.c 		\
 	gunixvolume.h 		\
@@ -241,8 +239,6 @@ endif
 win32_actual_sources = \
 	gwin32mount.c \
 	gwin32mount.h \
-	gwin32resolver.c \
-	gwin32resolver.h \
 	gwin32volumemonitor.c \
 	gwin32volumemonitor.h \
 	gwin32inputstream.c \
