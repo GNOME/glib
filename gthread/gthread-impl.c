@@ -51,10 +51,7 @@ g_thread_init (GThreadFunctions *init)
 
   already_done = TRUE;
 
-#ifdef HAVE_G_THREAD_IMPL_INIT
-  g_thread_impl_init();
-#endif /* HAVE_G_THREAD_IMPL_INIT */
-
+  g_thread_impl_init ();
   g_thread_functions_for_glib_use = g_thread_functions_for_glib_use_default;
   g_thread_init_glib ();
 }

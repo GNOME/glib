@@ -129,8 +129,6 @@ static gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
 
-#if defined(_SC_THREAD_STACK_MIN) || defined (HAVE_PRIORITIES)
-#define HAVE_G_THREAD_IMPL_INIT
 static void
 g_thread_impl_init(void)
 {
@@ -146,7 +144,6 @@ g_thread_impl_init(void)
   }
 #endif /* HAVE_PRIORITIES */
 }
-#endif /* _SC_THREAD_STACK_MIN || HAVE_PRIORITIES */
 
 static GMutex *
 g_mutex_new_posix_impl (void)

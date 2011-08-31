@@ -584,7 +584,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   NULL                             /* no equal function necessary */
 };
 
-#define HAVE_G_THREAD_IMPL_INIT
 static void
 g_thread_impl_init ()
 {
