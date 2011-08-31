@@ -15,7 +15,6 @@ EXTRA_DIST +=				\
 		makefile.msc.in		\
 		gthread-posix.c		\
 		gthread-win32.c		\
-		gthread-none.c		\
 		gthread.def		\
 		gthread.rc.in
 
