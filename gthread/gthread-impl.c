@@ -31,13 +31,6 @@
  * MT safe
  */
 
-#include "config.h"
-
-#include "glib.h"
-#include "gthreadprivate.h"
-
-#include G_THREAD_SOURCE
-
 void
 g_thread_init (GThreadFunctions *init)
 {

@@ -2419,8 +2419,6 @@ case $host in
     ;;
 esac
 
-AC_DEFINE_UNQUOTED(G_THREAD_SOURCE,"gthread-$have_threads.c",
-		   [Source file containing thread implementation])
 AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
 AC_SUBST(G_THREAD_LIBS_FOR_GTHREAD)

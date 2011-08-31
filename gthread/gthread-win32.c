@@ -35,6 +35,7 @@
 #include "config.h"
 
 #include "glib.h"
+#include "gthreadprivate.h"
 
 #define STRICT
 #define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
@@ -558,3 +559,5 @@ g_thread_impl_init ()
 			 (g_cond_event_tls = TlsAlloc ()));
   InitializeCriticalSection (&g_thread_global_spinlock);
 }
+
+#include "gthread-impl.c"

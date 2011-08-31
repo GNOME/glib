@@ -33,6 +33,9 @@
 
 #include "config.h"
 
+#include "glib.h"
+#include "gthreadprivate.h"
+
 #include <pthread.h>
 #include <errno.h>
 #include <stdlib.h>
@@ -402,3 +405,5 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_thread_self_posix_impl,
   g_thread_equal_posix_impl
 };
+
+#include "gthread-impl.c"

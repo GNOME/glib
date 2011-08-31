@@ -66,7 +66,11 @@ gthread_win32_res = gthread-win32-res.o
 gthread_win32_res_ldflag = -Wl,$(gthread_win32_res)
 endif
 
-libgthread_2_0_la_SOURCES = gthread-impl.c
+if OS_WIN32
+libgthread_2_0_la_SOURCES = gthread-win32.c
+else
+libgthread_2_0_la_SOURCES = gthread-posix.c
+endif
 libgthread_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \
 	$(gthread_win32_res_ldflag) \
 	-version-info $(LT_CURRENT):$(LT_REVISION):$(LT_AGE) \
