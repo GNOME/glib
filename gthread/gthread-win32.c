@@ -61,8 +61,6 @@ static CRITICAL_SECTION g_thread_global_spinlock;
 
 typedef BOOL (__stdcall *GTryEnterCriticalSectionFunc) (CRITICAL_SECTION *);
 
-static GTryEnterCriticalSectionFunc try_enter_critical_section = NULL;
-
 /* As noted in the docs, GPrivate is a limited resource, here we take
  * a rather low maximum to save memory, use GStaticPrivate instead. */
 #define G_PRIVATE_MAX 100
@@ -90,7 +88,7 @@ struct _GCond
 };
 
 static GMutex *
-g_mutex_new_win32_cs_impl (void)
+g_mutex_new_win32_impl (void)
 {
   CRITICAL_SECTION *cs = g_new (CRITICAL_SECTION, 1);
   gpointer *retval = g_new (gpointer, 1);
@@ -101,7 +99,7 @@ g_mutex_new_win32_cs_impl (void)
 }
 
 static void
-g_mutex_free_win32_cs_impl (GMutex *mutex)
+g_mutex_free_win32_impl (GMutex *mutex)
 {
   gpointer *ptr = (gpointer *) mutex;
   CRITICAL_SECTION *cs = (CRITICAL_SECTION *) *ptr;
@@ -115,63 +113,21 @@ g_mutex_free_win32_cs_impl (GMutex *mutex)
    functions from gmem.c and gmessages.c; */
 
 static void
-g_mutex_lock_win32_cs_impl (GMutex *mutex)
+g_mutex_lock_win32_impl (GMutex *mutex)
 {
   EnterCriticalSection (*(CRITICAL_SECTION **)mutex);
 }
 
 static gboolean
-g_mutex_trylock_win32_cs_impl (GMutex * mutex)
-{
-  return try_enter_critical_section (*(CRITICAL_SECTION **)mutex);
-}
-
-static void
-g_mutex_unlock_win32_cs_impl (GMutex *mutex)
-{
-  LeaveCriticalSection (*(CRITICAL_SECTION **)mutex);
-}
-
-static GMutex *
-g_mutex_new_win32_impl (void)
-{
-  HANDLE handle;
-  HANDLE *retval;
-  win32_check_for_error (handle = CreateMutex (NULL, FALSE, NULL));
-  retval = g_new (HANDLE, 1);
-  *retval = handle;
-  return (GMutex *) retval;
-}
-
-static void
-g_mutex_free_win32_impl (GMutex *mutex)
-{
-  win32_check_for_error (CloseHandle (*(HANDLE *) mutex));
-  g_free (mutex);
-}
-
-/* NOTE: the functions g_mutex_lock and g_mutex_unlock may not use
-   functions from gmem.c and gmessages.c; */
-
-static void
-g_mutex_lock_win32_impl (GMutex *mutex)
-{
-  WaitForSingleObject (*(HANDLE *) mutex, INFINITE);
-}
-
-static gboolean
 g_mutex_trylock_win32_impl (GMutex * mutex)
 {
-  DWORD result;
-  win32_check_for_error (WAIT_FAILED !=
-			 (result = WaitForSingleObject (*(HANDLE *)mutex, 0)));
-  return result != WAIT_TIMEOUT;
+  return TryEnterCriticalSection (*(CRITICAL_SECTION **)mutex);
 }
 
 static void
 g_mutex_unlock_win32_impl (GMutex *mutex)
 {
-  ReleaseMutex (*(HANDLE *) mutex);
+  LeaveCriticalSection (*(CRITICAL_SECTION **)mutex);
 }
 
 static GCond *
@@ -234,12 +190,12 @@ g_cond_wait_internal (GCond *cond,
   g_ptr_array_add (cond->array, event);
   LeaveCriticalSection (&cond->lock);
 
-  g_thread_functions_for_glib_use_default.mutex_unlock (entered_mutex);
+  g_mutex_unlock (entered_mutex);
 
   win32_check_for_error (WAIT_FAILED !=
 			 (retval = WaitForSingleObject (event, milliseconds)));
 
-  g_thread_functions_for_glib_use_default.mutex_lock (entered_mutex);
+  g_mutex_lock (entered_mutex);
 
   if (retval == WAIT_TIMEOUT)
     {
@@ -588,7 +544,6 @@ static void
 g_thread_impl_init ()
 {
   static gboolean beenhere = FALSE;
-  HMODULE kernel32;
 
   if (beenhere)
     return;
@@ -602,35 +557,4 @@ g_thread_impl_init ()
   win32_check_for_error (TLS_OUT_OF_INDEXES !=
 			 (g_cond_event_tls = TlsAlloc ()));
   InitializeCriticalSection (&g_thread_global_spinlock);
-
-  /* Here we are looking for TryEnterCriticalSection in KERNEL32.DLL,
-   * if it is found, we can use the in general faster critical
-   * sections instead of mutexes. See
-   * http://world.std.com/~jmhart/csmutx.htm for some discussion.
-   */
-  kernel32 = GetModuleHandle ("KERNEL32.DLL");
-  if (kernel32)
-    {
-      try_enter_critical_section = (GTryEnterCriticalSectionFunc)
-	GetProcAddress(kernel32, "TryEnterCriticalSection");
-
-      /* Even if TryEnterCriticalSection is found, it is not
-       * necessarily working..., we have to check it */
-      if (try_enter_critical_section &&
-	  try_enter_critical_section (&g_thread_global_spinlock))
-	{
-	  LeaveCriticalSection (&g_thread_global_spinlock);
-
-	  g_thread_functions_for_glib_use_default.mutex_new =
-	    g_mutex_new_win32_cs_impl;
-	  g_thread_functions_for_glib_use_default.mutex_lock =
-	    g_mutex_lock_win32_cs_impl;
-	  g_thread_functions_for_glib_use_default.mutex_trylock =
-	    g_mutex_trylock_win32_cs_impl;
-	  g_thread_functions_for_glib_use_default.mutex_unlock =
-	    g_mutex_unlock_win32_cs_impl;
-	  g_thread_functions_for_glib_use_default.mutex_free =
-	    g_mutex_free_win32_cs_impl;
-	}
-    }
 }
