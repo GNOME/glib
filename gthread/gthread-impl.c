@@ -36,7 +36,6 @@
 #include "glib.h"
 #include "gthreadprivate.h"
 
-static gboolean thread_system_already_initialized = FALSE;
 static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
 
 #include G_THREAD_SOURCE
@@ -60,66 +59,23 @@ static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
 #endif /* PRIORITY_HIGH_VALUE */
 
 void
-g_thread_init (GThreadFunctions* init)
+g_thread_init (GThreadFunctions *init)
 {
-  gboolean supported;
+  static gboolean already_done;
 
-  if (thread_system_already_initialized)
-    {
-      if (init != NULL)
-	g_warning ("GThread system already initialized, ignoring custom thread implementation.");
+  if (init != NULL)
+    g_warning ("GThread system no longer supports custom thread implementations.");
 
-      return;
-    }
+  if (already_done)
+    return;
 
-  thread_system_already_initialized = TRUE;
+  already_done = TRUE;
 
-  if (init == NULL)
-    {
 #ifdef HAVE_G_THREAD_IMPL_INIT
-      /* now do any initialization stuff required by the
-       * implementation, but only if called with a NULL argument, of
-       * course. Otherwise it's up to the user to do so. */
-      g_thread_impl_init();
+  g_thread_impl_init();
 #endif /* HAVE_G_THREAD_IMPL_INIT */
-      init = &g_thread_functions_for_glib_use_default;
-    }
-  else
-    g_thread_use_default_impl = FALSE;
 
-  g_thread_functions_for_glib_use = *init;
-
-  supported = (init->mutex_new &&
-	       init->mutex_lock &&
-	       init->mutex_trylock &&
-	       init->mutex_unlock &&
-	       init->mutex_free &&
-	       init->cond_new &&
-	       init->cond_signal &&
-	       init->cond_broadcast &&
-	       init->cond_wait &&
-	       init->cond_timed_wait &&
-	       init->cond_free &&
-	       init->private_new &&
-	       init->private_get &&
-	       init->private_set &&
-	       init->thread_create &&
-	       init->thread_yield &&
-	       init->thread_join &&
-	       init->thread_exit &&
-	       init->thread_set_priority &&
-	       init->thread_self);
-
-  /* if somebody is calling g_thread_init (), it means that he wants to
-   * have thread support, so check this
-   */
-  if (!supported)
-    {
-      if (g_thread_use_default_impl)
-	g_error ("Threads are not supported on this platform.");
-      else
-	g_error ("The supplied thread function vector is invalid.");
-    }
+  g_thread_functions_for_glib_use = g_thread_functions_for_glib_use_default;
 
   g_thread_priority_map [G_THREAD_PRIORITY_LOW] = PRIORITY_LOW_VALUE;
   g_thread_priority_map [G_THREAD_PRIORITY_NORMAL] = PRIORITY_NORMAL_VALUE;
