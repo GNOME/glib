@@ -126,15 +126,6 @@ GLIB_VAR guint64   (*g_thread_gettime) (void);
  */
 void    g_thread_init   (GThreadFunctions       *vtable);
 
-/* Errorcheck mutexes. If you define G_ERRORCHECK_MUTEXES, then all
- * mutexes will check for re-locking and re-unlocking */
-
-/* Initialize thread system with errorcheck mutexes. vtable must be
- * NULL. Do not call directly. Use #define G_ERRORCHECK_MUTEXES
- * instead.
- */
-void    g_thread_init_with_errorcheck_mutexes (GThreadFunctions* vtable);
-
 /* Checks if thread support is initialized.  Identical to the
  * g_thread_supported macro but provided for language bindings.
  */
@@ -142,10 +133,6 @@ gboolean g_thread_get_initialized (void);
 
 /* A random number to recognize debug calls to g_mutex_... */
 #define G_MUTEX_DEBUG_MAGIC 0xf8e18ad7
-
-#ifdef G_ERRORCHECK_MUTEXES
-#define g_thread_init(vtable) g_thread_init_with_errorcheck_mutexes (vtable)
-#endif
 
 /* internal function for fallback static mutex implementation */
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
