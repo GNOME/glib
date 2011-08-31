@@ -1,6 +1,11 @@
 Please do not compile this package (GLib) in paths that contain
 spaces in them-as strange problems may occur during compilation or during
-the use of the library. 
+the use of the library.
+
+A more detailed outline of building GLib with its dependencies can
+now be found in GNOME Live!:
+
+https://live.gnome.org/GTK%2B/Win32/MSVCCompilationOfGTKStack 
 
 This VS9 solution and the projects it includes are intented to be used
 in a GLib source tree unpacked from a tarball. In a git checkout you
