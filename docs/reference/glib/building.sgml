@@ -146,7 +146,7 @@ How to compile GLib itself
 	<para>
 	  A thread implementation is needed. The thread support in GLib
 	  can be based upon several native thread implementations, e.g.
-	  POSIX threads, DCE threads or Solaris threads.
+	  POSIX threads, win32 threads or Solaris threads.
 	</para>
       </listitem>
       <listitem>

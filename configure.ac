@@ -1879,7 +1879,7 @@ dnl *** g_thread checks ***
 dnl ***********************
 
 AC_ARG_WITH(threads,
-           [AC_HELP_STRING([--with-threads=@<:@posix/dce/win32@:>@],
+           [AC_HELP_STRING([--with-threads=@<:@posix/win32@:>@],
                            [specify a thread implementation to use])],
            [if test "x$with_threads" = x; then
 		want_threads=yes
@@ -1944,12 +1944,6 @@ if test "x$want_threads" = xyes || test "x$want_threads" = xposix \
                 AC_TRY_COMPILE([#include <pthread.h>],
 			[pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;],
 			have_threads=posix)
-        fi
-        if test "x$have_threads" = xno; then
-                AC_TRY_COMPILE([#include <pthread.h>],
-			[pthread_mutex_t m; 
-                         pthread_mutex_init (&m, pthread_mutexattr_default);],
-			have_threads=dce)
         fi
 	# Tru64Unix requires -pthread to find pthread.h. See #103020
 	CPPFLAGS="$CPPFLAGS -pthread"
@@ -2075,12 +2069,6 @@ if test x"$G_THREAD_CFLAGS" = x; then
 	*-dg-dgux*)  # DG/UX
 		G_THREAD_CFLAGS="-D_REENTRANT -D_POSIX4A_DRAFT10_SOURCE"
 		;;
-	*-osf*)
-		# So we are using dce threads. posix threads are already 
-		# catched above.
-		G_THREAD_CFLAGS="-threads"
-		G_THREAD_LIBS=$G_THREAD_CFLAGS
-		;;
 	*-sysv5uw7*) # UnixWare 7 
 		# We are not using gcc with -pthread. Catched above.
 		G_THREAD_CFLAGS="-Kthread"
@@ -2125,7 +2113,7 @@ dnl ******************************
 
 mutex_has_default=no
 case $have_threads in
-        posix|dce)
+        posix)
 	  glib_save_CPPFLAGS="$CPPFLAGS"
 	  CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
           if test x"$G_THREAD_LIBS" = x; then
@@ -2138,7 +2126,7 @@ case $have_threads in
               *)
                 G_THREAD_LIBS=error
 	        glib_save_LIBS="$LIBS"
-	        for thread_lib in "" pthread pthread32 pthreads thread dce; do
+	        for thread_lib in "" pthread pthread32 pthreads thread; do
 			if test x"$thread_lib" = x; then
 				add_thread_lib=""
 				IN=""
@@ -2208,12 +2196,7 @@ case $have_threads in
           mutex_default_type='pthread_mutex_t'
           mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
           mutex_header_file='pthread.h'
-	  if test "x$have_threads" = "xposix"; then
-	    g_threads_impl="POSIX"
-	  else
-	    g_threads_impl="DCE"
-	    have_threads="posix"
-	  fi
+	  g_threads_impl="POSIX"
 	  AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
           CPPFLAGS="$glib_save_CPPFLAGS"
           ;;
