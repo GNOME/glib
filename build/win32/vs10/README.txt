@@ -2,8 +2,8 @@ Please do not compile this package (GLib) in paths that contain
 spaces in them-as strange problems may occur during compilation or during
 the use of the library. 
 
-A more detailed outline of building GLib with its dependencies can
-now be found in GNOME Live!:
+Please refer to the following GNOME Live! page for more detailed
+instructions on building GLib and its dependencies with Visual C++:
 
 https://live.gnome.org/GTK%2B/Win32/MSVCCompilationOfGTKStack 
 
