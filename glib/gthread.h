@@ -116,7 +116,9 @@ GLIB_VAR GThreadFunctions       g_thread_functions_for_glib_use;
 GLIB_VAR gboolean               g_thread_use_default_impl;
 GLIB_VAR gboolean               g_threads_got_initialized;
 
+#ifndef G_DISABLE_DEPRECATED
 GLIB_VAR guint64   (*g_thread_gettime) (void);
+#endif
 
 /* initializes the mutex/cond/private implementation for glib, might
  * only be called once, and must not be called directly or indirectly

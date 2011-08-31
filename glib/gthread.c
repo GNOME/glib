@@ -42,6 +42,7 @@
 
 #include "gthread.h"
 #include "gthreadprivate.h"
+#include "gmain.h"
 
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
@@ -1918,25 +1919,7 @@ g_thread_fail (void)
 static guint64
 gettime (void)
 {
-#ifdef G_OS_WIN32
-  guint64 v;
-
-  /* Returns 100s of nanoseconds since start of 1601 */
-  GetSystemTimeAsFileTime ((FILETIME *)&v);
-
-  /* Offset to Unix epoch */
-  v -= G_GINT64_CONSTANT (116444736000000000);
-  /* Convert to nanoseconds */
-  v *= 100;
-
-  return v;
-#else
-  struct timeval tv;
-
-  gettimeofday (&tv, NULL);
-
-  return (guint64) tv.tv_sec * G_NSEC_PER_SEC + tv.tv_usec * (G_NSEC_PER_SEC / G_USEC_PER_SEC); 
-#endif
+  return g_get_monotonic_time () * 1000;
 }
 
 static gpointer

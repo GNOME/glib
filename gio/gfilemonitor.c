@@ -439,7 +439,7 @@ emit_in_idle (GFileMonitor      *monitor,
 static guint32
 get_time_msecs (void)
 {
-  return g_thread_gettime() / (1000 * 1000);
+  return g_get_monotonic_time () / G_TIME_SPAN_MILLISECOND;
 }
 
 static guint32

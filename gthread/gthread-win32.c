@@ -545,22 +545,6 @@ g_thread_join_win32_impl (gpointer thread)
   g_free (target);
 }
 
-static guint64
-g_thread_gettime_impl (void)
-{
-  guint64 v;
-
-  /* Returns 100s of nanoseconds since start of 1601 */
-  GetSystemTimeAsFileTime ((FILETIME *)&v);
-
-  /* Offset to Unix epoch */
-  v -= G_GINT64_CONSTANT (116444736000000000);
-  /* Convert to nanoseconds */
-  v *= 100;
-
-  return v;
-}
-
 static GThreadFunctions g_thread_functions_for_glib_use_default =
 {
   g_mutex_new_win32_impl,           /* mutex */
