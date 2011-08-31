@@ -466,10 +466,6 @@ test_check_start_and_stop (gpointer user_data)
 int
 main (int argc, char *argv[])
 {
-  /* Only run the test, if threads are enabled and a default thread
-     implementation is available */
-
-#if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
   g_thread_init (NULL);
 
   DEBUG_MSG (("Starting... (in one second)"));
@@ -477,7 +473,6 @@ main (int argc, char *argv[])
 
   main_loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (main_loop);
-#endif
 
   return 0;
 }

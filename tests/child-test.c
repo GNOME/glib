@@ -163,10 +163,7 @@ main (int argc, char *argv[])
       exit (STILL_ACTIVE);
     }
 #endif
-  /* Only run the test, if threads are enabled and a default thread
-   * implementation is available.
-   */
-#if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
+
 #ifdef TEST_THREAD
   g_thread_init (NULL);
 #endif
@@ -201,6 +198,5 @@ main (int argc, char *argv[])
       return 1;
     }
     
-#endif
    return 0;
 }

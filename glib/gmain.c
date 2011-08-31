@@ -188,7 +188,6 @@ typedef enum
   G_SOURCE_CAN_RECURSE = 1 << (G_HOOK_FLAG_USER_SHIFT + 1)
 } GSourceFlags;
 
-#ifdef G_THREADS_ENABLED
 typedef struct _GMainWaiter GMainWaiter;
 
 struct _GMainWaiter
@@ -196,7 +195,6 @@ struct _GMainWaiter
   GCond *cond;
   GMutex *mutex;
 };
-#endif  
 
 typedef struct _GMainDispatch GMainDispatch;
 
@@ -212,7 +210,6 @@ gboolean _g_main_poll_debug = FALSE;
 
 struct _GMainContext
 {
-#ifdef G_THREADS_ENABLED
   /* The following lock is used for both the list of sources
    * and the list of poll records
    */
@@ -221,7 +218,6 @@ struct _GMainContext
   GThread *owner;
   guint owner_count;
   GSList *waiters;
-#endif  
 
   gint ref_count;
 
@@ -237,7 +233,6 @@ struct _GMainContext
   GPollFD *cached_poll_array;
   guint cached_poll_array_size;
 
-#ifdef G_THREADS_ENABLED
   GWakeup *wakeup;
 
   GPollFD wake_up_rec;
@@ -245,7 +240,6 @@ struct _GMainContext
 
 /* Flag indicating whether the set of fd's changed during a poll */
   gboolean poll_changed;
-#endif /* G_THREADS_ENABLED */
 
   GPollFunc poll_func;
 
@@ -312,15 +306,9 @@ struct _GSourcePrivate
   GSource *parent_source;
 };
 
-#ifdef G_THREADS_ENABLED
 #define LOCK_CONTEXT(context) g_static_mutex_lock (&context->mutex)
 #define UNLOCK_CONTEXT(context) g_static_mutex_unlock (&context->mutex)
 #define G_THREAD_SELF g_thread_self ()
-#else
-#define LOCK_CONTEXT(context) (void)0
-#define UNLOCK_CONTEXT(context) (void)0
-#define G_THREAD_SELF NULL
-#endif
 
 #define SOURCE_DESTROYED(source) (((source)->flags & G_HOOK_FLAG_ACTIVE) == 0)
 #define SOURCE_BLOCKED(source) (((source)->flags & G_HOOK_FLAG_IN_CALL) != 0 && \
@@ -515,16 +503,13 @@ g_main_context_unref (GMainContext *context)
       source = next;
     }
 
-#ifdef G_THREADS_ENABLED  
   g_static_mutex_free (&context->mutex);
-#endif
 
   g_ptr_array_free (context->pending_dispatches, TRUE);
   g_free (context->cached_poll_array);
 
   poll_rec_list_free (context, context->poll_records);
   
-#ifdef G_THREADS_ENABLED
   if (g_thread_supported())
     g_wakeup_free (context->wakeup);
 
@@ -534,12 +519,10 @@ g_main_context_unref (GMainContext *context)
 
   if (context->cond != NULL)
     g_cond_free (context->cond);
-#endif
 
   g_free (context);
 }
 
-#ifdef G_THREADS_ENABLED
 static void
 g_main_context_init_pipe (GMainContext *context)
 {
@@ -562,7 +545,6 @@ _g_main_thread_init (void)
   g_slist_free (main_contexts_without_pipe);
   main_contexts_without_pipe = NULL;  
 }
-#endif /* G_THREADS_ENABLED */
 
 /**
  * g_main_context_new:
@@ -589,12 +571,10 @@ g_main_context_new (void)
   }
 #endif
 
-#ifdef G_THREADS_ENABLED
   g_static_mutex_init (&context->mutex);
 
   context->owner = NULL;
   context->waiters = NULL;
-#endif
 
   context->ref_count = 1;
 
@@ -612,13 +592,11 @@ g_main_context_new (void)
   context->time_is_fresh = FALSE;
   context->real_time_is_fresh = FALSE;
   
-#ifdef G_THREADS_ENABLED
   if (g_thread_supported ())
     g_main_context_init_pipe (context);
   else
     main_contexts_without_pipe = g_slist_prepend (main_contexts_without_pipe, 
 						  context);
-#endif
 
   G_LOCK (main_context_list);
   main_context_list = g_slist_append (main_context_list, context);
@@ -955,10 +933,8 @@ g_source_attach (GSource      *source,
 
   result = g_source_attach_unlocked (source, context);
 
-#ifdef G_THREADS_ENABLED
   /* Now wake up the main loop if it is waiting in the poll() */
   g_main_context_wakeup_unlocked (context);
-#endif
 
   UNLOCK_CONTEXT (context);
 
@@ -2518,7 +2494,6 @@ next_valid_source (GMainContext *context,
 gboolean 
 g_main_context_acquire (GMainContext *context)
 {
-#ifdef G_THREADS_ENABLED
   gboolean result = FALSE;
   GThread *self = G_THREAD_SELF;
 
@@ -2542,9 +2517,6 @@ g_main_context_acquire (GMainContext *context)
   UNLOCK_CONTEXT (context); 
   
   return result;
-#else /* !G_THREADS_ENABLED */
-  return TRUE;
-#endif /* G_THREADS_ENABLED */
 }
 
 /**
@@ -2559,7 +2531,6 @@ g_main_context_acquire (GMainContext *context)
 void
 g_main_context_release (GMainContext *context)
 {
-#ifdef G_THREADS_ENABLED
   if (context == NULL)
     context = g_main_context_default ();
   
@@ -2588,7 +2559,6 @@ g_main_context_release (GMainContext *context)
     }
 
   UNLOCK_CONTEXT (context); 
-#endif /* G_THREADS_ENABLED */
 }
 
 /**
@@ -2611,7 +2581,6 @@ g_main_context_wait (GMainContext *context,
 		     GCond        *cond,
 		     GMutex       *mutex)
 {
-#ifdef G_THREADS_ENABLED
   gboolean result = FALSE;
   GThread *self = G_THREAD_SELF;
   gboolean loop_internal_waiter;
@@ -2658,9 +2627,6 @@ g_main_context_wait (GMainContext *context,
     UNLOCK_CONTEXT (context); 
   
   return result;
-#else /* !G_THREADS_ENABLED */
-  return TRUE;
-#endif /* G_THREADS_ENABLED */
 }
 
 /**
@@ -2700,7 +2666,6 @@ g_main_context_prepare (GMainContext *context,
       return FALSE;
     }
 
-#ifdef G_THREADS_ENABLED
   if (context->poll_waiting)
     {
       g_warning("g_main_context_prepare(): main loop already active in another thread");
@@ -2709,7 +2674,6 @@ g_main_context_prepare (GMainContext *context,
     }
   
   context->poll_waiting = TRUE;
-#endif /* G_THREADS_ENABLED */
 
 #if 0
   /* If recursing, finish up current dispatch, before starting over */
@@ -2855,9 +2819,7 @@ g_main_context_query (GMainContext *context,
       n_poll++;
     }
 
-#ifdef G_THREADS_ENABLED
   context->poll_changed = FALSE;
-#endif
   
   if (timeout)
     {
@@ -2907,7 +2869,6 @@ g_main_context_check (GMainContext *context,
       return FALSE;
     }
   
-#ifdef G_THREADS_ENABLED
   if (!context->poll_waiting)
     g_wakeup_acknowledge (context->wakeup);
 
@@ -2922,7 +2883,6 @@ g_main_context_check (GMainContext *context,
       UNLOCK_CONTEXT (context);
       return FALSE;
     }
-#endif /* G_THREADS_ENABLED */
   
   pollrec = context->poll_records;
   i = 0;
@@ -3029,7 +2989,6 @@ g_main_context_iterate (GMainContext *context,
 
   UNLOCK_CONTEXT (context);
 
-#ifdef G_THREADS_ENABLED
   if (!g_main_context_acquire (context))
     {
       gboolean got_ownership;
@@ -3053,7 +3012,6 @@ g_main_context_iterate (GMainContext *context,
     }
   else
     LOCK_CONTEXT (context);
-#endif /* G_THREADS_ENABLED */
   
   if (!context->cached_poll_array)
     {
@@ -3088,9 +3046,7 @@ g_main_context_iterate (GMainContext *context,
   if (dispatch)
     g_main_context_dispatch (context);
   
-#ifdef G_THREADS_ENABLED
   g_main_context_release (context);
-#endif /* G_THREADS_ENABLED */    
 
   LOCK_CONTEXT (context);
 
@@ -3241,7 +3197,6 @@ g_main_loop_run (GMainLoop *loop)
   g_return_if_fail (loop != NULL);
   g_return_if_fail (g_atomic_int_get (&loop->ref_count) > 0);
 
-#ifdef G_THREADS_ENABLED
   if (!g_main_context_acquire (loop->context))
     {
       gboolean got_ownership = FALSE;
@@ -3282,7 +3237,6 @@ g_main_loop_run (GMainLoop *loop)
     }
   else
     LOCK_CONTEXT (loop->context);
-#endif /* G_THREADS_ENABLED */ 
 
   if (loop->context->in_check_or_prepare)
     {
@@ -3298,9 +3252,7 @@ g_main_loop_run (GMainLoop *loop)
 
   UNLOCK_CONTEXT (loop->context);
   
-#ifdef G_THREADS_ENABLED
   g_main_context_release (loop->context);
-#endif /* G_THREADS_ENABLED */    
   
   g_main_loop_unref (loop);
 }
@@ -3325,10 +3277,8 @@ g_main_loop_quit (GMainLoop *loop)
   loop->is_running = FALSE;
   g_main_context_wakeup_unlocked (loop->context);
 
-#ifdef G_THREADS_ENABLED
   if (loop->context->cond)
     g_cond_broadcast (loop->context->cond);
-#endif /* G_THREADS_ENABLED */
 
   UNLOCK_CONTEXT (loop->context);
 }
@@ -3523,12 +3473,10 @@ g_main_context_add_poll_unlocked (GMainContext *context,
 
   context->n_poll_records++;
 
-#ifdef G_THREADS_ENABLED
   context->poll_changed = TRUE;
 
   /* Now wake up the main loop if it is waiting in the poll() */
   g_main_context_wakeup_unlocked (context);
-#endif
 }
 
 /**
@@ -3587,12 +3535,10 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
       pollrec = nextrec;
     }
 
-#ifdef G_THREADS_ENABLED
   context->poll_changed = TRUE;
   
   /* Now wake up the main loop if it is waiting in the poll() */
   g_main_context_wakeup_unlocked (context);
-#endif
 }
 
 /**
@@ -3754,13 +3700,11 @@ _g_main_wake_up_all_contexts (void)
 static void
 g_main_context_wakeup_unlocked (GMainContext *context)
 {
-#ifdef G_THREADS_ENABLED
   if (g_thread_supported() && context->poll_waiting)
     {
       context->poll_waiting = FALSE;
       g_wakeup_signal (context->wakeup);
     }
-#endif
 }
 
 /**
@@ -3804,13 +3748,9 @@ g_main_context_is_owner (GMainContext *context)
   if (!context)
     context = g_main_context_default ();
 
-#ifdef G_THREADS_ENABLED
   LOCK_CONTEXT (context);
   is_owner = context->owner == G_THREAD_SELF;
   UNLOCK_CONTEXT (context);
-#else
-  is_owner = TRUE;
-#endif
 
   return is_owner;
 }

@@ -4261,10 +4261,8 @@ g_type_init_with_debug_flags (GTypeDebugFlags debug_flags)
   TypeNode *node;
   volatile GType votype;
 
-#ifdef G_THREADS_ENABLED
   if (!g_thread_get_initialized())
     g_thread_init (NULL);
-#endif
 
   G_LOCK (type_init_lock);
   

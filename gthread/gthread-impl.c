@@ -36,8 +36,6 @@
 #include "glib.h"
 #include "gthreadprivate.h"
 
-#ifdef G_THREADS_ENABLED
-
 static GSystemThread zero_thread; /* This is initialized to all zero */
 static gboolean thread_system_already_initialized = FALSE;
 static gint g_thread_priority_map [G_THREAD_PRIORITY_URGENT + 1];
@@ -359,19 +357,3 @@ g_thread_init (GThreadFunctions* init)
 
   g_thread_init_glib ();
 }
-
-#else /* !G_THREADS_ENABLED */
-
-void
-g_thread_init (GThreadFunctions* init)
-{
-  g_error ("GLib thread support is disabled.");
-}
-
-void
-g_thread_init_with_errorcheck_mutexes (GThreadFunctions* init)
-{
-  g_error ("GLib thread support is disabled.");
-}
-
-#endif /* !G_THREADS_ENABLED */

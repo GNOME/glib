@@ -384,9 +384,6 @@ int
 main (int   argc,
       char *argv[])
 {
-  /* Only run the test, if threads are enabled and a default thread
-     implementation is available */
-#if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
   g_thread_init (NULL);
   run_all_tests ();
 
@@ -397,6 +394,5 @@ main (int   argc,
   g_thread_use_default_impl = FALSE;
   run_all_tests ();
   
-#endif
   return 0;
 }

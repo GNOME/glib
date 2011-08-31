@@ -136,12 +136,9 @@
 /**
  * G_THREADS_ENABLED:
  *
- * This macro is defined if GLib was compiled with thread support. This
- * does not necessarily mean that there is a thread implementation
- * available, but it does mean that the infrastructure is in place and
- * that once you provide a thread implementation to g_thread_init(),
- * GLib will be multi-thread safe. If #G_THREADS_ENABLED is not
- * defined, then Glib is not, and cannot be, multi-thread safe.
+ * This macro is defined, for backward compatibility, to indicate that
+ * GLib has been compiled with thread support. As of glib 2.28, it is
+ * always defined.
  **/
 
 /**
@@ -886,7 +883,6 @@ G_LOCK_DEFINE_STATIC (g_thread);
 
 /* Initialisation {{{1 ---------------------------------------------------- */
 
-#ifdef G_THREADS_ENABLED
 /**
  * g_thread_init:
  * @vtable: a function table of type #GThreadFunctions, that provides
@@ -962,7 +958,6 @@ g_thread_init_glib (void)
   _g_win32_thread_init ();
 #endif
 }
-#endif /* G_THREADS_ENABLED */
 
 /* The following sections implement: GOnce, GStaticMutex, GStaticRecMutex,
  * GStaticPrivate, 

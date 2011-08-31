@@ -178,7 +178,6 @@ basic_tests (void)
 int 
 main (int argc, char *argv[])
 {
-#if defined(G_THREADS_ENABLED) && ! defined(G_THREADS_IMPL_NONE)
   gint   i;
   gint   max_threads = MAX_THREADS;
   gint   max_unused_threads = MAX_THREADS;
@@ -239,7 +238,6 @@ main (int argc, char *argv[])
 
   main_loop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (main_loop);
-#endif
 
   return EXIT_SUCCESS;
 }
