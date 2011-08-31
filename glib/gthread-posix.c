@@ -132,8 +132,8 @@ static gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
 
-static void
-g_thread_impl_init(void)
+void
+_g_thread_impl_init(void)
 {
 #ifdef _SC_THREAD_STACK_MIN
   g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);
@@ -381,7 +381,7 @@ g_thread_equal_posix_impl (gpointer thread1, gpointer thread2)
   return (pthread_equal (*(pthread_t*)thread1, *(pthread_t*)thread2) != 0);
 }
 
-static GThreadFunctions g_thread_functions_for_glib_use_default =
+GThreadFunctions g_thread_functions_for_glib_use =
 {
   g_mutex_new_posix_impl,
   (void (*)(GMutex *)) pthread_mutex_lock,
@@ -405,5 +405,3 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   g_thread_self_posix_impl,
   g_thread_equal_posix_impl
 };
-
-#include "gthread-impl.c"

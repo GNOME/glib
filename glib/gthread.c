@@ -356,7 +356,7 @@ gboolean g_threads_got_initialized = FALSE;
  *
  * For that reason, all of those macros are documented here.
  */
-GThreadFunctions g_thread_functions_for_glib_use = {
+static GThreadFunctions g_thread_functions_for_glib_use_old = {
 /* GMutex Virtual Functions {{{2 ------------------------------------------ */
 
 /**
@@ -925,6 +925,8 @@ G_LOCK_DEFINE_STATIC (g_thread);
 void
 g_thread_init_glib (void)
 {
+  _g_thread_impl_init ();
+
   /* We let the main thread (the one that calls g_thread_init) inherit
    * the static_private data set before calling g_thread_init
    */

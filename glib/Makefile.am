@@ -207,7 +207,13 @@ libglib_2_0_la_SOURCES = 	\
 
 if OS_UNIX
 libglib_2_0_la_SOURCES += glib-unix.c
-endif	
+endif
+
+if OS_WIN32
+libglib_2_0_la_SOURCES += gthread-win32.c
+else
+libglib_2_0_la_SOURCES += gthread-posix.c
+endif
 
 EXTRA_libglib_2_0_la_SOURCES = \
 	giounix.c	\
@@ -347,7 +353,7 @@ pcre_lib =
 pcre_inc =
 endif
 
-libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib) $(GLIB_RT_LIBS)
+libglib_2_0_la_LIBADD = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ @ICONV_LIBS@ @G_LIBS_EXTRA@ $(pcre_lib) $(GLIB_RT_LIBS) $(G_THREAD_LIBS_EXTRA) $(G_THREAD_LIBS_FOR_GTHREAD)
 libglib_2_0_la_DEPENDENCIES = libcharset/libcharset.la $(printf_la) @GIO@ @GSPAWN@ @PLATFORMDEP@ $(glib_win32_res) $(glib_def)
 
 libglib_2_0_la_LDFLAGS = $(GLIB_LINK_FLAGS) \

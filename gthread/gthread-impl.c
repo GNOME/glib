@@ -31,6 +31,10 @@
  * MT safe
  */
 
+#include "glib.h"
+
+#include "gthreadprivate.h"
+
 void
 g_thread_init (GThreadFunctions *init)
 {
@@ -44,8 +48,6 @@ g_thread_init (GThreadFunctions *init)
 
   already_done = TRUE;
 
-  g_thread_impl_init ();
-  g_thread_functions_for_glib_use = g_thread_functions_for_glib_use_default;
   g_thread_init_glib ();
 }
 

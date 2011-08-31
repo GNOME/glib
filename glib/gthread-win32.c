@@ -70,9 +70,6 @@ static GDestroyNotify g_private_destructors[G_PRIVATE_MAX];
 
 static guint g_private_next = 0;
 
-/* A "forward" declaration of this structure */
-static GThreadFunctions g_thread_functions_for_glib_use_default;
-
 typedef struct _GThreadData GThreadData;
 struct _GThreadData
 {
@@ -516,7 +513,7 @@ g_thread_join_win32_impl (gpointer thread)
   g_free (target);
 }
 
-static GThreadFunctions g_thread_functions_for_glib_use_default =
+GThreadFunctions g_thread_functions_for_glib_use =
 {
   g_mutex_new_win32_impl,           /* mutex */
   g_mutex_lock_win32_impl,
@@ -541,8 +538,8 @@ static GThreadFunctions g_thread_functions_for_glib_use_default =
   NULL                             /* no equal function necessary */
 };
 
-static void
-g_thread_impl_init ()
+void
+_g_thread_impl_init (void)
 {
   static gboolean beenhere = FALSE;
 
@@ -559,5 +556,3 @@ g_thread_impl_init ()
 			 (g_cond_event_tls = TlsAlloc ()));
   InitializeCriticalSection (&g_thread_global_spinlock);
 }
-
-#include "gthread-impl.c"
