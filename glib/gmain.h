@@ -533,7 +533,6 @@ guint    g_timeout_add_seconds_full (gint            priority,
 guint    g_timeout_add_seconds      (guint           interval,
                                      GSourceFunc     function,
                                      gpointer        data);
-
 guint    g_child_watch_add_full     (gint            priority,
                                      GPid            pid,
                                      GChildWatchFunc function,

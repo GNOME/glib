@@ -31,7 +31,6 @@
 #define __G_DATE_TIME_H__
 
 #include <glib/gtimezone.h>
-#include <glib/gmain.h>
 
 G_BEGIN_DECLS
 
@@ -213,8 +212,6 @@ GDateTime *             g_date_time_to_utc                              (GDateTi
 gchar *                 g_date_time_format                              (GDateTime      *datetime,
                                                                          const gchar    *format) G_GNUC_MALLOC;
 
-GSource *               g_date_time_source_new                          (GDateTime      *datetime,
-									 gboolean        cancel_on_set);
 G_END_DECLS
 
 #endif /* __G_DATE_TIME_H__ */
