@@ -98,6 +98,8 @@
 
 #include "gwakeup.h"
 
+#include "glibprivate.h"
+
 /**
  * SECTION:main
  * @title: The Main Event Loop
@@ -377,6 +379,8 @@ static gboolean g_idle_check       (GSource     *source);
 static gboolean g_idle_dispatch    (GSource     *source,
 				    GSourceFunc  callback,
 				    gpointer     user_data);
+
+static GMainContext *glib_worker_context;
 
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
@@ -4953,4 +4957,36 @@ g_main_context_invoke_full (GMainContext   *context,
           g_source_unref (source);
         }
     }
+}
+
+static gpointer
+glib_worker_main (gpointer data)
+{
+  LOCK_CONTEXT (glib_worker_context);
+
+  while (TRUE)
+    g_main_context_iterate (glib_worker_context, TRUE, TRUE, G_THREAD_SELF);
+
+  return NULL; /* worst GCC warning message ever... */
+}
+
+GMainContext *
+glib_get_worker_context (void)
+{
+  gsize initialised;
+
+  g_thread_init_glib ();
+
+  if (g_once_init_enter (&initialised))
+    {
+      GError *error = NULL;
+
+      glib_worker_context = g_main_context_new ();
+      if (g_thread_create (glib_worker_main, NULL, FALSE, &error) == NULL)
+        g_error ("Creating GLib worker thread failed: %s\n", error->message);
+
+      g_once_init_leave (&initialised, TRUE);
+    }
+
+  return glib_worker_context;
 }

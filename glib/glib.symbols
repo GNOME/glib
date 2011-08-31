@@ -1273,6 +1273,7 @@ g_utf16_to_ucs4
 g_utf16_to_utf8
 g_unichar_to_utf8
 g_unichar_validate
+glib_get_worker_context
 glib_pgettext
 glib_gettext
 #ifdef G_OS_WIN32
