@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.29.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-28 19:05+0200\n"
-"PO-Revision-Date: 2011-08-28 19:07+0200\n"
+"POT-Creation-Date: 2011-08-31 21:16+0200\n"
+"PO-Revision-Date: 2011-08-31 21:17+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -1884,8 +1884,10 @@ msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr[0] "Fant en array med lengde %u byte. Maksimal lengde er 2<<26 byte (64 MiB)."
-msgstr[1] "Fant en array med lengde %u bytes. Maksimal lengde er 2<<26 byte (64 MiB)."
+msgstr[0] ""
+"Fant en array med lengde %u byte. Maksimal lengde er 2<<26 byte (64 MiB)."
+msgstr[1] ""
+"Fant en array med lengde %u bytes. Maksimal lengde er 2<<26 byte (64 MiB)."
 
 #: ../gio/gdbusmessage.c:1490
 #, c-format
@@ -1928,7 +1930,8 @@ msgstr "Lest verdi «%s» er ikke en gyldig D-Bus-signatur (for kropp)"
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "Ingen signaturtopptekst i meldingen, men meldingskroppen er %u byte"
-msgstr[1] "Ingen signaturtopptekst i meldingen, men meldingskroppen er %u bytes"
+msgstr[1] ""
+"Ingen signaturtopptekst i meldingen, men meldingskroppen er %u bytes"
 
 #: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
@@ -1946,7 +1949,9 @@ msgstr ""
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr "Meldingen har %d fildeskriptorer men topptekstfeltet indikerer %d fildeskriptorer"
+msgstr ""
+"Meldingen har %d fildeskriptorer men topptekstfeltet indikerer %d "
+"fildeskriptorer"
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
@@ -2275,12 +2280,16 @@ msgstr "Kan ikke opprette konfigurasjonsmappe %s for brukers program: %s"
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan ikke opprette brukers konfigurasjonsmappe %s for MIME: %s"
 
-#: ../gio/gdesktopappinfo.c:2019
+#: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
+msgid "Application information lacks an identifier"
+msgstr "Programinformasjonen mangler en identifikator"
+
+#: ../gio/gdesktopappinfo.c:2033
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan ikke opprette brukers desktop-fil %s"
 
-#: ../gio/gdesktopappinfo.c:2135
+#: ../gio/gdesktopappinfo.c:2149
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Egendefinert definisjon for %s"
@@ -2818,7 +2827,7 @@ msgid "Error renaming file: %s"
 msgstr "Feil under endring av navn på fil: %s"
 
 #: ../gio/glocalfile.c:1122
-msgid "Can't rename file, filename already exist"
+msgid "Can't rename file, filename already exists"
 msgstr "Kan ikke endre navn på filen. Filnavnet eksisterer allerede"
 
 #: ../gio/glocalfile.c:1135 ../gio/glocalfile.c:2125 ../gio/glocalfile.c:2154
