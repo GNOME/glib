@@ -384,7 +384,6 @@ static GMainContext *glib_worker_context;
 
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
-static GSList *main_contexts_without_pipe = NULL;
 
 #ifndef G_OS_WIN32
 
@@ -397,20 +396,8 @@ static GSList *main_contexts_without_pipe = NULL;
 #define _UNIX_SIGNAL_PIPE_SIGTERM_CHAR 'T'
 /* Guards all the data below */ 
 G_LOCK_DEFINE_STATIC (unix_signal_lock);
-enum {
-  UNIX_SIGNAL_UNINITIALIZED = 0,
-  UNIX_SIGNAL_INITIALIZED_SINGLE,
-  UNIX_SIGNAL_INITIALIZED_THREADED
-};
-static gint unix_signal_init_state = UNIX_SIGNAL_UNINITIALIZED;
-typedef struct {
-  /* These are only used in the UNIX_SIGNAL_INITIALIZED_SINGLE case */
-  gboolean sighup_delivered : 1;
-  gboolean sigint_delivered : 1;
-  gboolean sigterm_delivered : 1;
-} UnixSignalState;
+static gboolean unix_signal_initialized;
 static sigset_t unix_signal_mask;
-static UnixSignalState unix_signal_state;
 static gint unix_signal_wake_up_pipe[2];
 GSList *unix_signal_watches;
 
@@ -513,13 +500,8 @@ g_main_context_unref (GMainContext *context)
   g_free (context->cached_poll_array);
 
   poll_rec_list_free (context, context->poll_records);
-  
-  if (g_thread_supported())
-    g_wakeup_free (context->wakeup);
 
-  else
-    main_contexts_without_pipe = g_slist_remove (main_contexts_without_pipe, 
-						 context);
+  g_wakeup_free (context->wakeup);
 
   if (context->cond != NULL)
     g_cond_free (context->cond);
@@ -535,21 +517,6 @@ g_main_context_init_pipe (GMainContext *context)
   g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
 }
 
-void
-_g_main_thread_init (void)
-{
-  GSList *curr;
-  
-  curr = main_contexts_without_pipe;
-  while (curr)
-    {
-      g_main_context_init_pipe ((GMainContext *)curr->data);
-      curr = curr->next;
-    }
-  g_slist_free (main_contexts_without_pipe);
-  main_contexts_without_pipe = NULL;  
-}
-
 /**
  * g_main_context_new:
  * 
@@ -560,7 +527,11 @@ _g_main_thread_init (void)
 GMainContext *
 g_main_context_new (void)
 {
-  GMainContext *context = g_new0 (GMainContext, 1);
+  GMainContext *context;
+
+  g_thread_init_glib ();
+
+  context = g_new0 (GMainContext, 1);
 
 #ifdef G_MAIN_POLL_DEBUG
   {
@@ -596,11 +567,7 @@ g_main_context_new (void)
   context->time_is_fresh = FALSE;
   context->real_time_is_fresh = FALSE;
   
-  if (g_thread_supported ())
-    g_main_context_init_pipe (context);
-  else
-    main_contexts_without_pipe = g_slist_prepend (main_contexts_without_pipe, 
-						  context);
+  g_main_context_init_pipe (context);
 
   G_LOCK (main_context_list);
   main_context_list = g_slist_append (main_context_list, context);
@@ -2999,8 +2966,6 @@ g_main_context_iterate (GMainContext *context,
 
       LOCK_CONTEXT (context);
 
-      g_return_val_if_fail (g_thread_supported (), FALSE);
-
       if (!block)
 	return FALSE;
 
@@ -3206,13 +3171,6 @@ g_main_loop_run (GMainLoop *loop)
       gboolean got_ownership = FALSE;
       
       /* Another thread owns this context */
-      if (!g_thread_supported ())
-	{
-	  g_warning ("g_main_loop_run() was called from second thread but "
-		     "g_thread_init() was never called.");
-	  return;
-	}
-      
       LOCK_CONTEXT (loop->context);
 
       g_atomic_int_inc (&loop->ref_count);
@@ -3704,7 +3662,7 @@ _g_main_wake_up_all_contexts (void)
 static void
 g_main_context_wakeup_unlocked (GMainContext *context)
 {
-  if (g_thread_supported() && context->poll_waiting)
+  if (context->poll_waiting)
     {
       context->poll_waiting = FALSE;
       g_wakeup_signal (context->wakeup);
@@ -4227,30 +4185,8 @@ check_for_signal_delivery (GSource *source)
   gboolean delivered;
 
   G_LOCK (unix_signal_lock);
-  if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_SINGLE)
-    {
-      switch (unix_signal_source->signum)
-	{
-	case SIGHUP:
-	  delivered = unix_signal_state.sighup_delivered;
-	  break;
-	case SIGINT:
-	  delivered = unix_signal_state.sigint_delivered;
-	  break;
-	case SIGTERM:
-	  delivered = unix_signal_state.sigterm_delivered;
-	  break;
-	default:
-	  g_assert_not_reached ();
-	  delivered = FALSE;
-	  break;
-	}
-    }
-  else
-    {
-      g_assert (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED);
-      delivered = unix_signal_source->pending;
-    }
+  g_assert (unix_signal_initialized);
+  delivered = unix_signal_source->pending;
   G_UNLOCK (unix_signal_lock);
 
   return delivered;
@@ -4288,28 +4224,10 @@ g_unix_signal_watch_dispatch (GSource    *source,
     }
 
   (callback) (user_data);
-  
+
   G_LOCK (unix_signal_lock);
-  if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_SINGLE)
-    {
-      switch (unix_signal_source->signum)
-	{
-	case SIGHUP:
-	  unix_signal_state.sighup_delivered = FALSE;
-	  break;
-	case SIGINT:
-	  unix_signal_state.sigint_delivered = FALSE;
-	  break;
-	case SIGTERM:
-	  unix_signal_state.sigterm_delivered = FALSE;
-	  break;
-	}
-    }
-  else
-    {
-      g_assert (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED);
-      unix_signal_source->pending = FALSE;
-    }
+  g_assert (unix_signal_initialized);
+  unix_signal_source->pending = FALSE;
   G_UNLOCK (unix_signal_lock);
 
   return TRUE;
@@ -4321,34 +4239,19 @@ ensure_unix_signal_handler_installed_unlocked (int signum)
   struct sigaction action;
   GError *error = NULL;
 
-  if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED)
+  if (!unix_signal_initialized)
     {
       sigemptyset (&unix_signal_mask);
-    }
 
-  if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED
-      || unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_SINGLE)
-    {
-      if (!g_thread_supported ())
-	{
-	  /* There is nothing to do for initializing in the non-threaded
-	   * case.
-	   */
-	  if (unix_signal_init_state == UNIX_SIGNAL_UNINITIALIZED)
-	    unix_signal_init_state = UNIX_SIGNAL_INITIALIZED_SINGLE;
-	}
-      else
-	{
-	  if (!g_unix_open_pipe (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
-	    g_error ("Cannot create UNIX signal wake up pipe: %s\n", error->message);
-	  g_unix_set_fd_nonblocking (unix_signal_wake_up_pipe[1], TRUE, NULL);
-	  
-	  /* We create a helper thread that polls on the wakeup pipe indefinitely */
-	  if (g_thread_create (unix_signal_helper_thread, NULL, FALSE, &error) == NULL)
-	    g_error ("Cannot create a thread to monitor UNIX signals: %s\n", error->message);
-	  
-	  unix_signal_init_state = UNIX_SIGNAL_INITIALIZED_THREADED;
-	}
+      if (!g_unix_open_pipe (unix_signal_wake_up_pipe, FD_CLOEXEC, &error))
+        g_error ("Cannot create UNIX signal wake up pipe: %s\n", error->message);
+      g_unix_set_fd_nonblocking (unix_signal_wake_up_pipe[1], TRUE, NULL);
+
+      /* We create a helper thread that polls on the wakeup pipe indefinitely */
+      if (g_thread_create (unix_signal_helper_thread, NULL, FALSE, &error) == NULL)
+        g_error ("Cannot create a thread to monitor UNIX signals: %s\n", error->message);
+
+      unix_signal_initialized = TRUE;
     }
 
   if (sigismember (&unix_signal_mask, signum))
@@ -4423,51 +4326,27 @@ g_unix_signal_handler (int signum)
   if (signum == SIGCHLD)
     child_watch_count ++;
 
-  if (unix_signal_init_state == UNIX_SIGNAL_INITIALIZED_THREADED)
+  char buf[1];
+  switch (signum)
     {
-      char buf[1];
-      switch (signum)
-	{
-	case SIGCHLD:
-	  buf[0] = _UNIX_SIGNAL_PIPE_SIGCHLD_CHAR;
-	  break;
-	case SIGHUP:
-	  buf[0] = _UNIX_SIGNAL_PIPE_SIGHUP_CHAR;
-	  break;
-	case SIGINT:
-	  buf[0] = _UNIX_SIGNAL_PIPE_SIGINT_CHAR;
-	  break;
-	case SIGTERM:
-	  buf[0] = _UNIX_SIGNAL_PIPE_SIGTERM_CHAR;
-	  break;
-	default:
-	  /* Shouldn't happen */
-	  return;
-	}
-      write (unix_signal_wake_up_pipe[1], buf, 1);
+    case SIGCHLD:
+      buf[0] = _UNIX_SIGNAL_PIPE_SIGCHLD_CHAR;
+      break;
+    case SIGHUP:
+      buf[0] = _UNIX_SIGNAL_PIPE_SIGHUP_CHAR;
+      break;
+    case SIGINT:
+      buf[0] = _UNIX_SIGNAL_PIPE_SIGINT_CHAR;
+      break;
+    case SIGTERM:
+      buf[0] = _UNIX_SIGNAL_PIPE_SIGTERM_CHAR;
+      break;
+    default:
+      /* Shouldn't happen */
+      return;
     }
-  else
-    {
-      /* We count on the signal interrupting the poll in the same thread. */
-      switch (signum)
-	{
-	case SIGCHLD:
-	  /* Nothing to do - the handler will call waitpid() */
-	  break;
-	case SIGHUP:
-	  unix_signal_state.sighup_delivered = TRUE;
-	  break;
-	case SIGINT:
-	  unix_signal_state.sigint_delivered = TRUE;
-	  break;
-	case SIGTERM:
-	  unix_signal_state.sigterm_delivered = TRUE;
-	  break;
-	default:
-	  g_assert_not_reached ();
-	  break;
-	}
-    }
+
+  write (unix_signal_wake_up_pipe[1], buf, 1);
 }
  
 static void

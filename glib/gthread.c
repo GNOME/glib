@@ -960,7 +960,6 @@ g_thread_init_glib (void)
 
   /* we may run full-fledged initializers from here */
   _g_convert_thread_init ();
-  _g_main_thread_init ();
   _g_utils_thread_init ();
 }
 
