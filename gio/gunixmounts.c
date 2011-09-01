@@ -73,7 +73,9 @@
 #include "gthemedicon.h"
 
 
+#ifdef HAVE_MNTENT_H
 static const char *_resolve_dev_root (void);
+#endif
 
 /**
  * SECTION:gunixmounts
@@ -187,7 +189,7 @@ G_DEFINE_TYPE (GUnixMountMonitor, g_unix_mount_monitor, G_TYPE_OBJECT);
 #include <fshelp.h>
 #endif
 
-#if defined(HAVE_GETMNTINFO) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
+#if (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
 #include <sys/ucred.h>
 #include <sys/mount.h>
 #include <fstab.h>
@@ -582,7 +584,7 @@ _g_get_unix_mounts (void)
   return g_list_reverse (return_list);
 }
 
-#elif defined(HAVE_GETMNTINFO) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
+#elif (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
 
 static char *
 get_mtab_monitor_file (void)
@@ -593,19 +595,35 @@ get_mtab_monitor_file (void)
 static GList *
 _g_get_unix_mounts (void)
 {
-#if defined(USE_STATFS)
-  struct statfs *mntent = NULL;
-#elif defined(USE_STATVFS)
+#if defined(HAVE_GETVFSSTAT)
   struct statvfs *mntent = NULL;
+#elif defined(HAVE_GETFSSTAT)
+  struct statfs *mntent = NULL;
 #else
   #error statfs juggling failed
 #endif
+  size_t bufsize;
   int num_mounts, i;
   GUnixMountEntry *mount_entry;
   GList *return_list;
   
-  /* Pass MNT_NOWAIT to avoid blocking trying to update NFS mounts. */
-  if ((num_mounts = getmntinfo (&mntent, MNT_NOWAIT)) == 0)
+  /* Pass NOWAIT to avoid blocking trying to update NFS mounts. */
+#if defined(HAVE_GETVFSSTAT)
+  num_mounts = getvfsstat (NULL, 0, ST_NOWAIT);
+#elif defined(HAVE_GETFSSTAT)
+  num_mounts = getfsstat (NULL, 0, MNT_NOWAIT);
+#endif
+  if (num_mounts == -1)
+    return NULL;
+
+  bufsize = num_mounts * sizeof (*mntent);
+  mntent = g_malloc (bufsize);
+#if defined(HAVE_GETVFSSTAT)
+  num_mounts = getvfsstat (mntent, bufsize, ST_NOWAIT);
+#elif defined(HAVE_GETFSSTAT)
+  num_mounts = getfsstat (mntent, bufsize, MNT_NOWAIT);
+#endif
+  if (num_mounts == -1)
     return NULL;
   
   return_list = NULL;
@@ -617,20 +635,22 @@ _g_get_unix_mounts (void)
       mount_entry->mount_path = g_strdup (mntent[i].f_mntonname);
       mount_entry->device_path = g_strdup (mntent[i].f_mntfromname);
       mount_entry->filesystem_type = g_strdup (mntent[i].f_fstypename);
-#if defined(USE_STATFS)
+#if defined(HAVE_GETVFSSTAT)
+      if (mntent[i].f_flag & ST_RDONLY)
+#elif defined(HAVE_GETFSSTAT)
       if (mntent[i].f_flags & MNT_RDONLY)
-#elif defined(USE_STATVFS)
-      if (mntent[i].f_flag & MNT_RDONLY)
 #endif
-	mount_entry->is_read_only = TRUE;
+        mount_entry->is_read_only = TRUE;
 
       mount_entry->is_system_internal =
-	guess_system_internal (mount_entry->mount_path,
-			       mount_entry->filesystem_type,
-			       mount_entry->device_path);
+        guess_system_internal (mount_entry->mount_path,
+                               mount_entry->filesystem_type,
+                               mount_entry->device_path);
       
       return_list = g_list_prepend (return_list, mount_entry);
     }
+
+  g_free (mntent);
   
   return g_list_reverse (return_list);
 }
@@ -993,7 +1013,7 @@ _g_get_unix_mount_points (void)
   return g_list_reverse (return_list);
 }
 
-#elif defined(HAVE_GETMNTINFO) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
+#elif (defined(HAVE_GETVFSSTAT) || defined(HAVE_GETFSSTAT)) && defined(HAVE_FSTAB_H) && defined(HAVE_SYS_MOUNT_H)
 
 static GList *
 _g_get_unix_mount_points (void)
@@ -1003,7 +1023,6 @@ _g_get_unix_mount_points (void)
   GList *return_list;
 #ifdef HAVE_SYS_SYSCTL_H
   int usermnt = 0;
-  size_t len = sizeof(usermnt);
   struct stat sb;
 #endif
   
@@ -2047,7 +2066,7 @@ g_unix_mount_point_guess_can_eject (GUnixMountPoint *mount_point)
   return FALSE;
 }
 
-
+#ifdef HAVE_MNTENT_H
 /* borrowed from gtk/gtkfilesystemunix.c in GTK+ on 02/23/2006 */
 static void
 _canonicalize_filename (gchar *filename)
@@ -2154,7 +2173,6 @@ _resolve_symlink (const char *file)
   return f;
 }
 
-#ifdef HAVE_MNTENT_H
 static const char *
 _resolve_dev_root (void)
 {

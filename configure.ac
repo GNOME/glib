@@ -931,6 +931,7 @@ AC_CHECK_MEMBERS([struct stat.st_blksize, struct stat.st_blocks, struct statfs.f
 #endif])
 # struct statvfs.f_basetype is available on Solaris but not for Linux. 
 AC_CHECK_MEMBERS([struct statvfs.f_basetype],,, [#include <sys/statvfs.h>])
+AC_CHECK_MEMBERS([struct statvfs.f_fstypename],,, [#include <sys/statvfs.h>])
 AC_CHECK_MEMBERS([struct tm.tm_gmtoff, struct tm.__tm_gmtoff],,,[#include <time.h>])
 
 # Checks for libcharset
@@ -1001,14 +1002,14 @@ AC_MSG_RESULT(unsigned $glib_size_type)
 # Check for some functions
 AC_CHECK_FUNCS(lstat strerror strsignal memmove vsnprintf stpcpy strcasecmp strncasecmp poll getcwd vasprintf setenv unsetenv getc_unlocked readlink symlink fdwalk memmem)
 AC_CHECK_FUNCS(chown lchmod lchown fchmod fchown link utimes getgrgid getpwuid)
-AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getmntinfo)
+AC_CHECK_FUNCS(getmntent_r setmntent endmntent hasmntopt getfsstat getvfsstat)
 # Check for high-resolution sleep functions
 AC_CHECK_FUNCS(splice)
 
 # To avoid finding a compatibility unusable statfs, which typically
 # successfully compiles, but warns to use the newer statvfs interface:
 AS_IF([test $ac_cv_header_sys_statvfs_h = yes], [AC_CHECK_FUNCS([statvfs])])
-AS_IF([test $ac_cv_header_sys_statfs_h  = yes], [AC_CHECK_FUNCS([statfs])])
+AS_IF([test $ac_cv_header_sys_statfs_h  = yes -o $ac_cv_header_sys_mount_h = yes], [AC_CHECK_FUNCS([statfs])])
 
 AC_MSG_CHECKING([whether to use statfs or statvfs])
 # Some systems have both statfs and statvfs, pick the most "native" for these
