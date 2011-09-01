@@ -174,7 +174,7 @@ def codegen_main():
     if opts.annotate != None:
         apply_annotations(all_ifaces, opts.annotate)
 
-    for i in parsed_ifaces:
+    for i in all_ifaces:
         i.post_process(opts.interface_prefix, opts.c_namespace)
 
     docbook = opts.generate_docbook
