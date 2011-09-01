@@ -624,34 +624,11 @@ parse_args (gint    *argc_p,
   *argc_p = e;
 }
 
-static gboolean
-do_nothing (gpointer data)
-{
-  return TRUE;
-}
-
 int
 main (int    argc,
       char **argv)
 {
   guint ui;
-
-  /* See #578295 */
-  g_timeout_add_seconds (5, do_nothing, NULL);
-
-  /* some unices need SA_RESTART for SIGCHLD to return -EAGAIN for io.
-   * we must fiddle with sigaction() *before* glib is used, otherwise
-   * we could revoke signal hanmdler setups from glib initialization code.
-   */
-  if (TRUE)
-    {
-      struct sigaction sa;
-      struct sigaction osa;
-      sa.sa_handler = SIG_DFL;
-      sigfillset (&sa.sa_mask);
-      sa.sa_flags = SA_RESTART;
-      sigaction (SIGCHLD, &sa, &osa);
-    }
 
   g_set_prgname (argv[0]);
   parse_args (&argc, &argv);
