@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-24 09:17+0200\n"
-"PO-Revision-Date: 2011-08-24 09:19+0100\n"
+"POT-Creation-Date: 2011-09-01 16:08+0200\n"
+"PO-Revision-Date: 2011-09-01 22:22+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -451,7 +451,7 @@ msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Misslyckades med att byta namn på filen \"%s\" till \"%s\": g_rename() misslyckades: %s"
 
 #: ../glib/gfileutils.c:904
-#: ../glib/gfileutils.c:1442
+#: ../glib/gfileutils.c:1446
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Misslyckades med att skapa filen \"%s\": %s"
@@ -486,109 +486,109 @@ msgstr "Misslyckades med att stänga filen \"%s\": fclose() misslyckades: %s"
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Befintliga filen \"%s\" kunde inte tas bort: g_unlink() misslyckades: %s"
 
-#: ../glib/gfileutils.c:1405
+#: ../glib/gfileutils.c:1409
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Mallen \"%s\" är ogiltig, den får inte innehålla ett \"%s\""
 
-#: ../glib/gfileutils.c:1418
+#: ../glib/gfileutils.c:1422
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Mallen \"%s\" innehåller inte XXXXXX"
 
-#: ../glib/gfileutils.c:1994
-#: ../glib/gfileutils.c:2022
-#: ../glib/gfileutils.c:2127
+#: ../glib/gfileutils.c:1998
+#: ../glib/gfileutils.c:2026
+#: ../glib/gfileutils.c:2131
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
 msgstr[0] "%u byte"
 msgstr[1] "%u byte"
 
-#: ../glib/gfileutils.c:2000
+#: ../glib/gfileutils.c:2004
 #, c-format
 msgid "%.1f KiB"
 msgstr "%.1f KiB"
 
-#: ../glib/gfileutils.c:2003
+#: ../glib/gfileutils.c:2007
 #, c-format
 msgid "%.1f MiB"
 msgstr "%.1f MiB"
 
-#: ../glib/gfileutils.c:2006
+#: ../glib/gfileutils.c:2010
 #, c-format
 msgid "%.1f GiB"
 msgstr "%.1f GiB"
 
-#: ../glib/gfileutils.c:2009
+#: ../glib/gfileutils.c:2013
 #, c-format
 msgid "%.1f TiB"
 msgstr "%.1f TiB"
 
-#: ../glib/gfileutils.c:2012
+#: ../glib/gfileutils.c:2016
 #, c-format
 msgid "%.1f PiB"
 msgstr "%.1f PiB"
 
-#: ../glib/gfileutils.c:2015
+#: ../glib/gfileutils.c:2019
 #, c-format
 msgid "%.1f EiB"
 msgstr "%.1f EiB"
 
-#: ../glib/gfileutils.c:2028
+#: ../glib/gfileutils.c:2032
 #, c-format
 msgid "%.1f kB"
 msgstr "%.1f kB"
 
-#: ../glib/gfileutils.c:2031
-#: ../glib/gfileutils.c:2140
+#: ../glib/gfileutils.c:2035
+#: ../glib/gfileutils.c:2144
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:2034
-#: ../glib/gfileutils.c:2145
+#: ../glib/gfileutils.c:2038
+#: ../glib/gfileutils.c:2149
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:2037
-#: ../glib/gfileutils.c:2150
+#: ../glib/gfileutils.c:2041
+#: ../glib/gfileutils.c:2154
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:2040
-#: ../glib/gfileutils.c:2155
+#: ../glib/gfileutils.c:2044
+#: ../glib/gfileutils.c:2159
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:2043
-#: ../glib/gfileutils.c:2160
+#: ../glib/gfileutils.c:2047
+#: ../glib/gfileutils.c:2164
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
-#: ../glib/gfileutils.c:2080
+#: ../glib/gfileutils.c:2084
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
 msgstr[0] "%s byte"
 msgstr[1] "%s byte"
 
-#: ../glib/gfileutils.c:2135
+#: ../glib/gfileutils.c:2139
 #, c-format
 msgid "%.1f KB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:2203
+#: ../glib/gfileutils.c:2207
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Misslyckades med att läsa den symboliska länken \"%s\": %s"
 
-#: ../glib/gfileutils.c:2224
+#: ../glib/gfileutils.c:2228
 msgid "Symbolic links not supported"
 msgstr "Symboliska länkar stöds inte"
 
@@ -1824,110 +1824,116 @@ msgstr "SIGNAL-meddelande: Rubrikfältet PATH använder det reserverade värdet 
 msgid "SIGNAL message: The INTERFACE header field is using the reserved value org.freedesktop.DBus.Local"
 msgstr "SIGNAL-meddelande: Rubrikfältet INTERFACE använder det reserverade värdet org.freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:997
+#: ../gio/gdbusmessage.c:998
 #, c-format
-msgid "Wanted to read %lu bytes but got EOF"
-msgstr "Ville läsa %lu byte men fick EOF (slut på fil)"
+msgid "Wanted to read %lu byte but got EOF"
+msgid_plural "Wanted to read %lu bytes but got EOF"
+msgstr[0] "Ville läsa %lu byte men fick EOF (slut på fil)"
+msgstr[1] "Ville läsa %lu byte men fick EOF (slut på fil)"
 
-#: ../gio/gdbusmessage.c:1022
+#: ../gio/gdbusmessage.c:1025
 #, c-format
 msgid "Expected valid UTF-8 string but found invalid bytes at byte offset %d (length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr "Förväntade giltig UTF-8-sträng men hittade ogiltiga byte vid byte-offset %d (längd av strängen är %d). Den giltiga UTF-8-strängen fram till den punkten var \"%s\""
 
-#: ../gio/gdbusmessage.c:1035
+#: ../gio/gdbusmessage.c:1038
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr "Förväntade NUL byte efter strängen \"%s\" men hittade byte %d"
 
-#: ../gio/gdbusmessage.c:1239
+#: ../gio/gdbusmessage.c:1242
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "Tolkat värde \"%s\" är inte en giltig D-Bus-objektsökväg"
 
-#: ../gio/gdbusmessage.c:1265
+#: ../gio/gdbusmessage.c:1268
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Tolkat värde \"%s\" är inte en giltig D-Bus-signatur "
 
-#: ../gio/gdbusmessage.c:1320
+#: ../gio/gdbusmessage.c:1324
 #, c-format
-msgid "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr "Påträffade array med längden %u byte. Maximal längd är 2<<26 byte (64 MiB)."
+msgid "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
+msgstr[0] "Påträffade array med längden %u byte. Maximal längd är 2<<26 byte (64 MiB)."
+msgstr[1] "Påträffade array med längden %u byte. Maximal längd är 2<<26 byte (64 MiB)."
 
-#: ../gio/gdbusmessage.c:1484
+#: ../gio/gdbusmessage.c:1490
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "Tolkat värde \"%s\" för variant är inte en giltig D-Bus-signatur"
 
-#: ../gio/gdbusmessage.c:1511
+#: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr "Fel vid deserialisering av GVariant med typsträngen \"%s\" från D-Bus-wireformatet"
 
-#: ../gio/gdbusmessage.c:1699
+#: ../gio/gdbusmessage.c:1705
 #, c-format
 msgid "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value 0x%02x"
 msgstr "Ogiltigt värde för bitordning. Förväntade 0x6c ('l') eller 0x42 ('B') men hittade värdet 0x%02x"
 
-#: ../gio/gdbusmessage.c:1713
+#: ../gio/gdbusmessage.c:1719
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Ogiltig större protokollversion. Förväntade 1 men hittade %d"
 
-#: ../gio/gdbusmessage.c:1770
+#: ../gio/gdbusmessage.c:1776
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "Signaturrubrik med signaturen \"%s\" hittades med meddelandetexten är tom"
 
-#: ../gio/gdbusmessage.c:1784
+#: ../gio/gdbusmessage.c:1790
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Tolkat värde \"%s\" är inte en giltig D-Bus-signatur (för kropp)"
 
-#: ../gio/gdbusmessage.c:1814
+#: ../gio/gdbusmessage.c:1821
 #, c-format
-msgid "No signature header in message but the message body is %u bytes"
-msgstr "Ingen signaturrubrik i meddelande men meddelandetexten är %u byte"
+msgid "No signature header in message but the message body is %u byte"
+msgid_plural "No signature header in message but the message body is %u bytes"
+msgstr[0] "Ingen signaturrubrik i meddelande men meddelandetexten är %u byte"
+msgstr[1] "Ingen signaturrubrik i meddelande men meddelandetexten är %u byte"
 
-#: ../gio/gdbusmessage.c:1822
+#: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
 msgstr "Kan inte deserialisera meddelande: "
 
-#: ../gio/gdbusmessage.c:2154
+#: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr "Fel vid serialisering av GVariant med typsträngen \"%s\" till D-Bus-wireformatet"
 
-#: ../gio/gdbusmessage.c:2294
+#: ../gio/gdbusmessage.c:2303
 #, c-format
-msgid "Message has %d fds but the header field indicates %d fds"
-msgstr "Meddelandet har %d fds men rubrikfältet indikerar %d fds"
+msgid "Message has %d file descriptors but the header field indicates %d file descriptors"
+msgstr "Meddelandet har %d filhandtag men rubrikfältet indikerar %d filhandtag"
 
-#: ../gio/gdbusmessage.c:2302
+#: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
 msgstr "Kan inte serialisera meddelandet: "
 
-#: ../gio/gdbusmessage.c:2346
+#: ../gio/gdbusmessage.c:2355
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr "Meddelandetexten har signaturen \"%s\" men det finns ingen signaturrubrik"
 
-#: ../gio/gdbusmessage.c:2356
+#: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid "Message body has type signature `%s' but signature in the header field is `%s'"
 msgstr "Meddelandetexten har typsignaturen \"%s\" men signaturen i rubrikfältet är \"%s\""
 
-#: ../gio/gdbusmessage.c:2372
+#: ../gio/gdbusmessage.c:2381
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "Meddelandetexten är tom men signaturen i rubrikfältet är \"(%s)\""
 
-#: ../gio/gdbusmessage.c:2929
+#: ../gio/gdbusmessage.c:2938
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Fel returnerades med meddelande av typen \"%s\""
 
-#: ../gio/gdbusmessage.c:2937
+#: ../gio/gdbusmessage.c:2946
 msgid "Error return with empty body"
 msgstr "Fel returnerade med tom text"
 
@@ -2231,12 +2237,17 @@ msgstr "Kan inte skapa programkonfigurationsmapp för användare %s: %s"
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Kan inte skapa MIME-konfigurationsmapp för användare %s: %s"
 
-#: ../gio/gdesktopappinfo.c:2019
+#: ../gio/gdesktopappinfo.c:1785
+#: ../gio/gdesktopappinfo.c:1809
+msgid "Application information lacks an identifier"
+msgstr "Programinformation saknar en identifierare"
+
+#: ../gio/gdesktopappinfo.c:2033
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Kan inte skapa skrivbordsfil för användare %s"
 
-#: ../gio/gdesktopappinfo.c:2135
+#: ../gio/gdesktopappinfo.c:2149
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Anpassad definition för %s"
@@ -2781,7 +2792,7 @@ msgid "Error renaming file: %s"
 msgstr "Fel vid namnbyte av fil: %s"
 
 #: ../gio/glocalfile.c:1122
-msgid "Can't rename file, filename already exist"
+msgid "Can't rename file, filename already exists"
 msgstr "Kan inte byta namn på filen, filnamnet finns redan"
 
 #: ../gio/glocalfile.c:1135
@@ -3436,8 +3447,8 @@ msgid "Socket is already closed"
 msgstr "Uttaget är redan stängt"
 
 #: ../gio/gsocket.c:298
-#: ../gio/gsocket.c:2774
-#: ../gio/gsocket.c:2818
+#: ../gio/gsocket.c:2775
+#: ../gio/gsocket.c:2819
 msgid "Socket I/O timed out"
 msgstr "Tidsgräns för in/ut på uttaget överstegs"
 
@@ -3495,7 +3506,7 @@ msgid "Error connecting: %s"
 msgstr "Fel vid anslutning: %s"
 
 #: ../gio/gsocket.c:1715
-#: ../gio/gsocket.c:3555
+#: ../gio/gsocket.c:3556
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Kunde inte få tag på väntande fel: %s"
@@ -3520,28 +3531,28 @@ msgstr "Kunde inte stänga ner uttag: %s"
 msgid "Error closing socket: %s"
 msgstr "Fel vid stängning av uttag: %s"
 
-#: ../gio/gsocket.c:2767
+#: ../gio/gsocket.c:2768
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Väntar på uttagstillstånd: %s"
 
-#: ../gio/gsocket.c:3032
-#: ../gio/gsocket.c:3113
+#: ../gio/gsocket.c:3033
+#: ../gio/gsocket.c:3114
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Fel vid sändning av meddelande: %s"
 
-#: ../gio/gsocket.c:3057
+#: ../gio/gsocket.c:3058
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage stöds inte på Windows"
 
-#: ../gio/gsocket.c:3334
-#: ../gio/gsocket.c:3470
+#: ../gio/gsocket.c:3335
+#: ../gio/gsocket.c:3471
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Fel vid mottagning av meddelande: %s"
 
-#: ../gio/gsocket.c:3574
+#: ../gio/gsocket.c:3575
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials har inte implementerats för detta operativsystem"
 
@@ -3621,7 +3632,7 @@ msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgstr "Värdnamnet \"%s\" är för långt för SOCKSv5-protokollet (maximum är %i byte)"
 
 #: ../gio/gsocks5proxy.c:352
-msgid "The SOCKSv5 proxy server uses unkown address type."
+msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "SOCKSv5-proxyservern använder en okänd adresstyp."
 
 #: ../gio/gsocks5proxy.c:359
@@ -3678,8 +3689,8 @@ msgid "Could not parse PEM-encoded certificate"
 msgstr "Kunde inte tolka PEM-kodat certifikat"
 
 #: ../gio/gtlspassword.c:114
-msgid "This is the last chance to ether the password correctly before your access is locked out."
-msgstr "Detta är sista chansen att ange ett korrekt lösenord innan du blir utlåst."
+msgid "This is the last chance to enter the password correctly before your access is locked out."
+msgstr "Detta är sista chansen att ange ett korrekt lösenord innan ditt konto blir låst."
 
 #: ../gio/gtlspassword.c:116
 msgid "Several password entered have been incorrect, and your access will be locked out after further failures."
