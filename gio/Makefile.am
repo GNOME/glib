@@ -278,7 +278,6 @@ libgio_2_0_la_SOURCES =		\
 	gasyncresult.c 		\
 	gbufferedinputstream.c 	\
 	gbufferedoutputstream.c \
-	../glib/gwakeup.c	\
 	gcancellable.c 		\
 	gcontenttype.c 		\
 	gcontenttypeprivate.h 	\

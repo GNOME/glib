@@ -23,7 +23,7 @@
 #include "config.h"
 #include "glib.h"
 #include <gioerror.h>
-#include "gwakeup.h"
+#include "glib-private.h"
 #include "gcancellable.h"
 #include "glibintl.h"
 
@@ -67,7 +67,7 @@ g_cancellable_finalize (GObject *object)
   GCancellable *cancellable = G_CANCELLABLE (object);
 
   if (cancellable->priv->wakeup)
-    g_wakeup_free (cancellable->priv->wakeup);
+    GLIB_PRIVATE_CALL (g_wakeup_free) (cancellable->priv->wakeup);
 
   G_OBJECT_CLASS (g_cancellable_parent_class)->finalize (object);
 }
@@ -277,7 +277,7 @@ g_cancellable_reset (GCancellable *cancellable)
   if (priv->cancelled)
     {
       if (priv->wakeup)
-        g_wakeup_acknowledge (priv->wakeup);
+        GLIB_PRIVATE_CALL (g_wakeup_acknowledge) (priv->wakeup);
 
       priv->cancelled = FALSE;
     }
@@ -406,13 +406,13 @@ g_cancellable_make_pollfd (GCancellable *cancellable, GPollFD *pollfd)
 
   if (cancellable->priv->wakeup == NULL)
     {
-      cancellable->priv->wakeup = g_wakeup_new ();
+      cancellable->priv->wakeup = GLIB_PRIVATE_CALL (g_wakeup_new) ();
 
       if (cancellable->priv->cancelled)
-        g_wakeup_signal (cancellable->priv->wakeup);
+        GLIB_PRIVATE_CALL (g_wakeup_signal) (cancellable->priv->wakeup);
     }
 
-  g_wakeup_get_pollfd (cancellable->priv->wakeup, pollfd);
+  GLIB_PRIVATE_CALL (g_wakeup_get_pollfd) (cancellable->priv->wakeup, pollfd);
 
   G_UNLOCK(cancellable);
 
@@ -452,7 +452,7 @@ g_cancellable_release_fd (GCancellable *cancellable)
   priv->fd_refcount--;
   if (priv->fd_refcount == 0)
     {
-      g_wakeup_free (priv->wakeup);
+      GLIB_PRIVATE_CALL (g_wakeup_free) (priv->wakeup);
       priv->wakeup = NULL;
     }
   G_UNLOCK (cancellable);
@@ -499,7 +499,7 @@ g_cancellable_cancel (GCancellable *cancellable)
   priv->cancelled_running = TRUE;
 
   if (priv->wakeup)
-    g_wakeup_signal (priv->wakeup);
+    GLIB_PRIVATE_CALL (g_wakeup_signal) (priv->wakeup);
 
   G_UNLOCK(cancellable);
 

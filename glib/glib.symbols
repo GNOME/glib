@@ -1344,6 +1344,7 @@ g_get_user_name PRIVATE
 g_get_user_name_utf8
 #endif
 glib_check_version
+glib__private__
 g_nullify_pointer
 g_parse_debug_string
 g_path_get_basename
