@@ -2839,12 +2839,11 @@ g_main_context_check (GMainContext *context,
       UNLOCK_CONTEXT (context);
       return FALSE;
     }
-  
-  if (!context->poll_waiting)
+
+  if (context->wake_up_rec.events)
     g_wakeup_acknowledge (context->wakeup);
 
-  else
-    context->poll_waiting = FALSE;
+  context->poll_waiting = FALSE;
 
   /* If the set of poll file descriptors changed, bail out
    * and let the main loop rerun
