@@ -2446,7 +2446,7 @@ g_date_time_format (GDateTime   *datetime,
                   g_string_append_printf (outstr, fmt, g_date_time_get_day_of_month (datetime));
                   break;
                 case 'e':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : 0, 2);
+                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : ' ', 2);
                   g_string_append_printf (outstr, fmt, g_date_time_get_day_of_month (datetime));
                   break;
                 case 'g':
@@ -2568,7 +2568,7 @@ g_date_time_format (GDateTime   *datetime,
                   }
                   break;
                 case 'W':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, 0, 0);
+                  get_numeric_format (fmt, sizeof(fmt), alt_digits, '0', 2);
                   g_string_append_printf (outstr, fmt, g_date_time_get_day_of_year (datetime) / 7);
                   break;
                 case 'x':

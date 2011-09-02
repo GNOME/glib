@@ -861,7 +861,7 @@ test_modifiers (void)
   TEST_PRINTF_DATE (2009, 1, 21, "%-d", "21");
   TEST_PRINTF_DATE (2009, 1, 21, "%0d", "21");
 
-  TEST_PRINTF_DATE (2009, 1,  1,  "%e", "1");
+  TEST_PRINTF_DATE (2009, 1,  1,  "%e", " 1");
   TEST_PRINTF_DATE (2009, 1,  1, "%_e", " 1");
   TEST_PRINTF_DATE (2009, 1,  1, "%-e", "1");
   TEST_PRINTF_DATE (2009, 1,  1, "%0e", "01");
