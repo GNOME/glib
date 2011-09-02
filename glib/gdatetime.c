@@ -2178,6 +2178,17 @@ get_numeric_format (gchar    *fmt,
  *    format)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
+ *    <literal>%%g</literal>:
+ *   </term><listitem><simpara>
+ *    the last two digits of the ISO week-based year as a decimal number
+ *    (00-99).
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
+ *    <literal>%%G</literal>:
+ *   </term><listitem><simpara>
+ *    the ISO week-based year as a decimal number
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
  *    <literal>%%h</literal>:
  *   </term><listitem><simpara>
  *    equivalent to <literal>%%b</literal>
@@ -2437,6 +2448,12 @@ g_date_time_format (GDateTime   *datetime,
                 case 'e':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : 0, 2);
                   g_string_append_printf (outstr, fmt, g_date_time_get_day_of_month (datetime));
+                  break;
+                case 'g':
+                  g_string_append_printf (outstr, "%02d", g_date_time_get_week_numbering_year (datetime) % 100);
+                  break;
+                case 'G':
+                  g_string_append_printf (outstr, "%d", g_date_time_get_week_numbering_year (datetime));
                   break;
                 case 'F':
                   g_string_append_printf (outstr, "%d-%02d-%02d",
