@@ -2262,6 +2262,13 @@ get_numeric_format (gchar    *fmt,
  *    the day of the week as a decimal, range 1 to 7, Monday being 1
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
+ *    <literal>%%V</literal>:
+ *   </term><listitem><simpara>
+ *    the ISO 8601 week number of the current year as a decimal number,
+ *    range 01 to 53, where week 1 is the  first  week that  has  at least
+ *    4 days in the new year. See g_date_time_get_week_of_year().
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
  *    <literal>%%W</literal>:
  *   </term><listitem><simpara>
  *    the week number of the current year as a decimal number
@@ -2508,6 +2515,10 @@ g_date_time_format (GDateTime   *datetime,
                 case 'u':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, 0, 0);
                   g_string_append_printf (outstr, fmt, g_date_time_get_day_of_week (datetime));
+                  break;
+                case 'V':
+                  get_numeric_format (fmt, sizeof(fmt), alt_digits, '0', 2);
+                  g_string_append_printf (outstr, fmt, g_date_time_get_week_of_year (datetime));
                   break;
                 case 'W':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, 0, 0);
