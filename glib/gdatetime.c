@@ -172,6 +172,7 @@ static const guint16 days_in_year[2][13] =
                      nl_langinfo (AM_STR) : \
                      nl_langinfo (PM_STR))
 
+#define PREFERRED_DATE_TIME_FMT nl_langinfo (D_T_FMT)
 #define PREFERRED_DATE_FMT nl_langinfo (D_FMT)
 #define PREFERRED_TIME_FMT nl_langinfo (T_FMT)
 
@@ -199,6 +200,9 @@ static const gint month_item[2][12] =
                                 ? C_("GDateTime", "am") \
                                   /* Translators: 'after midday' indicator */ \
                                 : C_("GDateTime", "pm"))
+
+/* Translators: this is the preferred format for expressing the date and the time */
+#define PREFERRED_DATE_TIME_FMT C_("GDateTime", "%a %b %e %H:%M:%S %Y")
 
 /* Translators: this is the preferred format for expressing the date */
 #define PREFERRED_DATE_FMT C_("GDateTime", "%m/%d/%y")
@@ -2148,6 +2152,11 @@ get_numeric_format (gchar    *fmt,
  *    the full month name according to the current locale
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
+ *    <literal>%%c</literal>:
+ *   </term><listitem><simpara>
+ *    the  preferred  date  and  time  representation  for the current locale
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
  *    <literal>%%d</literal>:
  *   </term><listitem><simpara>
  *    the day of the month as a decimal number (range 01 to 31)
@@ -2405,6 +2414,13 @@ g_date_time_format (GDateTime   *datetime,
                   break;
                 case 'B':
                   g_string_append (outstr, MONTH_FULL (datetime));
+                  break;
+                case 'c':
+                  {
+                    tmp = g_date_time_format (datetime, PREFERRED_DATE_TIME_FMT);
+                    g_string_append (outstr, tmp);
+                    g_free (tmp);
+                  }
                   break;
                 case 'd':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
