@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-10 09:19+0000\n"
-"PO-Revision-Date: 2011-06-10 20:06+0100\n"
-"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"POT-Creation-Date: 2011-08-31 14:28+0000\n"
+"PO-Revision-Date: 2011-09-02 11:18+0100\n"
+"Last-Translator: Martin Srebotnjak  <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1932,25 +1932,25 @@ msgstr "Nepričakovan odgovor %d iz načina StartServiceByName(\"%s\")"
 msgid "Cannot invoke method; proxy is for a well-known name without an owner and proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
 msgstr "Ni mogoče klicati načina; posredniški strežnik za znano ime brez lastnika je bil zgrajen z zastavico  G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:714
+#: ../gio/gdbusserver.c:720
 msgid "Abstract name space not supported"
 msgstr "Abstraktni imenski prostor ni podprt"
 
-#: ../gio/gdbusserver.c:804
+#: ../gio/gdbusserver.c:810
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Med ustvarjanjem strežnika ni bilo mogoče določiti datoteke nonce"
 
-#: ../gio/gdbusserver.c:881
+#: ../gio/gdbusserver.c:887
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Napaka med pisanjem datoteke nonce na `%s': %s"
 
-#: ../gio/gdbusserver.c:1048
+#: ../gio/gdbusserver.c:1054
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "Niz `%s' ni veljaven D-Bus GUID"
 
-#: ../gio/gdbusserver.c:1088
+#: ../gio/gdbusserver.c:1094
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Na nepodprtem načinu prenosa `%s' ni mogoče poslušati"
@@ -3415,7 +3415,6 @@ msgstr "Napaka med pošiljanjem podatkov: %s"
 
 #: ../gio/gsocket.c:2135
 #, c-format
-#| msgid "Unable to create socket: %s"
 msgid "Unable to shutdown socket: %s"
 msgstr "Ni mogoče izklopiti vtiča: %s"
 
@@ -3559,17 +3558,22 @@ msgstr "Neznana posredniška napaka SOCKSv5."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Ni mogoče upravljati z različico %d kodiranja GThemedIcon"
 
-#: ../gio/gtlscertificate.c:228
+#: ../gio/gtlscertificate.c:226
+#| msgid "No PEM-encoded certificate found"
+msgid "No PEM-encoded private key found"
+msgstr "S PEM kodiranega zasebnega ključa ni mogoče najti"
+
+#: ../gio/gtlscertificate.c:235
+msgid "Could not parse PEM-encoded private key"
+msgstr "Ni mogoče razčleniti s PEM kodiran zasebni ključ"
+
+#: ../gio/gtlscertificate.c:260
 msgid "No PEM-encoded certificate found"
 msgstr "S PEM kodiranega potrdila ni mogoče najti"
 
-#: ../gio/gtlscertificate.c:237
+#: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Ni mogoče razčleniti s PEM kodiranega potrdila"
-
-#: ../gio/gtlscertificate.c:258
-msgid "Could not parse PEM-encoded private key"
-msgstr "Ni mogoče razčleniti s PEM kodiran zasebni ključ"
 
 #: ../gio/gunixconnection.c:164
 #: ../gio/gunixconnection.c:505
@@ -3718,54 +3722,3 @@ msgstr "Zahteva več vhoda"
 msgid "Invalid compressed data"
 msgstr "Neveljavni stisnjeni podatki"
 
-#~ msgid "No such schema `%s' specified in override file `%s'"
-#~ msgstr "Shema `%s' določena v datoteki prepisa `%s' ne obstaja"
-
-#~ msgid ""
-#~ "Commands:\n"
-#~ "  help        Show this information\n"
-#~ "  get         Get the value of a key\n"
-#~ "  set         Set the value of a key\n"
-#~ "  reset       Reset the value of a key\n"
-#~ "  monitor     Monitor a key for changes\n"
-#~ "  writable    Check if a key is writable\n"
-#~ "\n"
-#~ "Use '%s COMMAND --help' to get help for individual commands.\n"
-#~ msgstr ""
-#~ "Ukazi:\n"
-#~ "  help        Prikaže te podrobnosti\n"
-#~ "  get         Pridobi vrednost ključa\n"
-#~ "  set         Nastavi vrednost ključa\n"
-#~ "  reset       Ponastavi vrednost ključa\n"
-#~ "  monitor     Nadzoruje spremembe vrednosti ključa\n"
-#~ "  writable    Preveri ali je ključ zapisljiv\n"
-#~ "\n"
-#~ "Uporabite '%s UKAZ --help' za izpis pomoči o posameznih ukazih.\n"
-
-#~ msgid "Specify the path for the schema"
-#~ msgstr "Določite pot sheme"
-
-#~ msgid "PATH"
-#~ msgstr "POT"
-
-#~ msgid ""
-#~ "Arguments:\n"
-#~ "  SCHEMA      The id of the schema\n"
-#~ "  KEY         The name of the key\n"
-#~ "  VALUE       The value to set key to, as a serialized GVariant\n"
-#~ msgstr ""
-#~ "Argumenti:\n"
-#~ "  SCHEMA      Id sheme\n"
-#~ "  KEY         Ime ključa\n"
-#~ "  VALUE       Vrednost, ki se pripiše ključu, kot GVariant združena v "
-#~ "zaporedje\n"
-
-#~ msgid "Key %s is not writable\n"
-#~ msgstr "Ključ %s ni zapisljiv\n"
-
-#~ msgid ""
-#~ "Monitor KEY for changes and print the changed values.\n"
-#~ "Monitoring will continue until the process is terminated."
-#~ msgstr ""
-#~ "Nadzoruj spremembe vrednosti KEY in jih izpiši.\n"
-#~ "Nadzor se bo nadaljeval dokler se opravilo ne dokonča."
