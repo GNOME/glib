@@ -3857,14 +3857,14 @@ g_key_file_parse_value_as_integer (GKeyFile     *key_file,
 				   const gchar  *value,
 				   GError      **error)
 {
-  gchar *end_of_valid_int;
- glong long_value;
+  gchar *eof_int;
+  glong long_value;
   gint int_value;
 
   errno = 0;
-  long_value = strtol (value, &end_of_valid_int, 10);
+  long_value = strtol (value, &eof_int, 10);
 
-  if (*value == '\0' || *end_of_valid_int != '\0')
+  if (*value == '\0' || (*eof_int != '\0' && !g_ascii_isspace(*eof_int)))
     {
       gchar *value_utf8 = _g_utf8_make_valid (value);
       g_set_error (error, G_KEY_FILE_ERROR,
