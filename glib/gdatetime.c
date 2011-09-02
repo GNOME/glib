@@ -2222,11 +2222,6 @@ get_numeric_format (gchar    *fmt,
  *    the minute as a decimal number (range 00 to 59)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%N</literal>:
- *   </term><listitem><simpara>
- *    the micro-seconds as a decimal number
- *  </simpara></listitem></varlistentry>
- *  <varlistentry><term>
  *    <literal>%%p</literal>:
  *   </term><listitem><simpara>
  *    either "AM" or "PM" according to the given time value, or the
@@ -2489,9 +2484,6 @@ g_date_time_format (GDateTime   *datetime,
                 case 'M':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
                   g_string_append_printf (outstr, fmt, g_date_time_get_minute (datetime));
-                  break;
-                case 'N':
-                  g_string_append_printf (outstr, "%"G_GUINT64_FORMAT, datetime->usec % USEC_PER_SECOND);
                   break;
                 case 'O':
                   alt_digits = TRUE;
