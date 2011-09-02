@@ -28,8 +28,8 @@ One may wish to build his/her own ZLib-It is recommended that ZLib is
 built using the win32/Makefile.msc makefile with VS10 with the ASM routines
 to avoid linking problems-see win32/Makefile.msc in ZLib for more details.
 
-For LibFFI, please get version 3.0.10rc8 or later, as Visual C++ build support
-was added in the 3.0.10(rc) release series.  Please see the README file that
+For LibFFI, please get version 3.0.10 or later, as Visual C++ build support
+was added in the 3.0.10 release series.  Please see the README file that
 comes with the LibFFI source package for more details on how to build LibFFI
 on Visual C++-please note that the mozilla-build package from Mozilla is needed
 in order to build LibFFI on Windows.
