@@ -2157,6 +2157,11 @@ get_numeric_format (gchar    *fmt,
  *    the  preferred  date  and  time  representation  for the current locale
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
+ *    <literal>%%C</literal>:
+ *   </term><listitem><simpara>
+ *    The century number (year/100) as a 2-digit integer (00-99)
+ *  </simpara></listitem></varlistentry>
+ *  <varlistentry><term>
  *    <literal>%%d</literal>:
  *   </term><listitem><simpara>
  *    the day of the month as a decimal number (range 01 to 31)
@@ -2422,6 +2427,9 @@ g_date_time_format (GDateTime   *datetime,
                     g_free (tmp);
                   }
                   break;
+                case 'C':
+                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
+                  g_string_append_printf (outstr, fmt, g_date_time_get_year (datetime) / 100);
                 case 'd':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
                   g_string_append_printf (outstr, fmt, g_date_time_get_day_of_month (datetime));
