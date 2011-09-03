@@ -2184,13 +2184,14 @@ get_numeric_format (gchar    *fmt,
  *  <varlistentry><term>
  *    <literal>%%g</literal>:
  *   </term><listitem><simpara>
- *    the last two digits of the ISO week-based year as a decimal number
- *    (00-99).
+ *    the last two digits of the ISO 8601 week-based year as a decimal
+ *    number (00-99).  This works well with %%V and %%u.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
  *    <literal>%%G</literal>:
  *   </term><listitem><simpara>
- *    the ISO week-based year as a decimal number
+ *    the ISO 8601 week-based year as a decimal number.  This works well
+ *    with %%V and %%u.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
  *    <literal>%%h</literal>:
@@ -2283,19 +2284,22 @@ get_numeric_format (gchar    *fmt,
  *  <varlistentry><term>
  *    <literal>%%u</literal>:
  *   </term><listitem><simpara>
- *    the day of the week as a decimal, range 1 to 7, Monday being 1
+ *    the ISO 8601 standard day of the week as a decimal, range 1 to 7,
+ *    Monday being 1.  This works well with %%G and %%V.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
  *    <literal>%%V</literal>:
  *   </term><listitem><simpara>
- *    the ISO 8601 week number of the current year as a decimal number,
- *    range 01 to 53, where week 1 is the  first  week that  has  at least
- *    4 days in the new year. See g_date_time_get_week_of_year().
+ *    the ISO 8601 standard week number of the current year as a decimal
+ *    number, range 01 to 53, where week 1 is the first week that has at
+ *    least 4 days in the new year. See g_date_time_get_week_of_year().
+ *    This works well with %%G and %%u.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
  *    <literal>%%w</literal>:
  *   </term><listitem><simpara>
- *    the day of the week as a decimal, range 0 to 6, Sunday being  0
+ *    the day of the week as a decimal, range 0 to 6, Sunday being 0.
+ *    This is not the ISO 8601 standard format -- use %%u instead.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
  *    <literal>%%W</literal>:
