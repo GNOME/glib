@@ -1084,6 +1084,8 @@ test_all_dates (void)
                 else
                   week_num++;
               }
+
+            g_date_time_unref (dt);
           }
     }
 
@@ -1103,6 +1105,7 @@ test_z (void)
   gchar *p = g_date_time_format (dt, "%z");
   g_assert_cmpstr (p, ==, "-0800");
   g_date_time_unref (dt);
+  g_time_zone_unref (tz);
   g_free (p);
 }
 
