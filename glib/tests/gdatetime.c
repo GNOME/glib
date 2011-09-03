@@ -849,7 +849,7 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
 static void
 test_modifiers (void)
 {
-  const gchar *oldlocale;
+  gchar *oldlocale;
 
   TEST_PRINTF_DATE (2009, 1,  1,  "%d", "01");
   TEST_PRINTF_DATE (2009, 1,  1, "%_d", " 1");
@@ -892,7 +892,8 @@ test_modifiers (void)
   TEST_PRINTF_TIME ( 1, 0, 0, "%-k", "1");
   TEST_PRINTF_TIME ( 1, 0, 0, "%0k", "01");
 
-  oldlocale = setlocale (LC_ALL, "fa_IR.UTF-8");
+  oldlocale = g_strdup (setlocale (LC_ALL, NULL));
+  setlocale (LC_ALL, "fa_IR.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "fa_IR") != NULL)
     {
       TEST_PRINTF_TIME (23, 0, 0, "%OH", "\333\262\333\263");
@@ -910,6 +911,7 @@ test_modifiers (void)
   else
     g_test_message ("locale fa_IR not available, skipping O modifier tests");
   setlocale (LC_ALL, oldlocale);
+  g_free (oldlocale);
 }
 
 static void
