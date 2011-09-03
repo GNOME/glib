@@ -309,7 +309,7 @@ g_socket_details_from_fd (GSocket *socket)
   gint fd;
   guint addrlen;
   guint optlen;
-  int value;
+  int value, family;
   int errsv;
 #ifdef G_OS_WIN32
   /* See bug #611756 */
@@ -370,9 +370,31 @@ g_socket_details_from_fd (GSocket *socket)
       goto err;
     }
 
-  g_assert (G_STRUCT_OFFSET (struct sockaddr, sa_family) +
-	    sizeof address.ss_family <= addrlen);
-  switch (address.ss_family)
+  if (addrlen > 0)
+    {
+      g_assert (G_STRUCT_OFFSET (struct sockaddr, sa_family) +
+		sizeof address.ss_family <= addrlen);
+      family = address.ss_family;
+    }
+  else
+    {
+      /* On Solaris, this happens if the socket is not yet connected.
+       * But we can use SO_DOMAIN as a workaround there.
+       */
+#ifdef SO_DOMAIN
+      optlen = sizeof family;
+      if (getsockopt (fd, SOL_SOCKET, SO_DOMAIN, (void *)&family, &optlen) != 0)
+	{
+	  errsv = get_socket_errno ();
+	  goto err;
+	}
+#else
+      errsv = ENOTSUP;
+      goto err;
+#endif
+    }
+
+  switch (family)
     {
      case G_SOCKET_FAMILY_IPV4:
      case G_SOCKET_FAMILY_IPV6:
