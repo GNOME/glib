@@ -279,8 +279,7 @@ g_network_address_new (const gchar *hostname,
  * address, an IPv4 address, or a domain name (in which case a DNS
  * lookup is performed). Quoting with [] is supported for all address
  * types. A port override may be specified in the usual way with a
- * colon. Ports may be given as decimal numbers or symbolic names (in
- * which case an /etc/services lookup is performed).
+ * colon.
  *
  * If no port is specified in @host_and_port then @default_port will be
  * used as the port number to connect to.
@@ -288,6 +287,11 @@ g_network_address_new (const gchar *hostname,
  * In general, @host_and_port is expected to be provided by the user
  * (allowing them to give the hostname, and a port overide if necessary)
  * and @default_port is expected to be provided by the application.
+ *
+ * (The port component of @host_and_port can also be specified as a
+ * service name rather than as a numeric port, but this functionality
+ * is deprecated, because it depends on the contents of /etc/services,
+ * which is generally quite sparse on platforms other than Linux.)
  *
  * Return value: (transfer full): the new #GNetworkAddress, or %NULL on error
  *
