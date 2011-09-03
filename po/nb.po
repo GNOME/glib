@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.29.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-08-31 21:16+0200\n"
-"PO-Revision-Date: 2011-08-31 21:17+0200\n"
+"POT-Creation-Date: 2011-09-03 13:37+0200\n"
+"PO-Revision-Date: 2011-09-03 13:47+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -158,215 +158,221 @@ msgid "Invalid hostname"
 msgstr "Ugyldig vertsnavn"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:199
+#: ../glib/gdatetime.c:200
 msgctxt "GDateTime"
 msgid "am"
 msgstr "am"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:201
+#: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "pm"
 msgstr "pm"
 
+#. Translators: this is the preferred format for expressing the date and the time
+#: ../glib/gdatetime.c:205
+msgctxt "GDateTime"
+msgid "%a %b %e %H:%M:%S %Y"
+msgstr "%a %e %b %H.%M.%S"
+
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:204
+#: ../glib/gdatetime.c:208
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d.%m.%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:211
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H.%M.%S"
 
-#: ../glib/gdatetime.c:221
+#: ../glib/gdatetime.c:225
 msgctxt "full month name"
 msgid "January"
 msgstr "Januar"
 
-#: ../glib/gdatetime.c:223
+#: ../glib/gdatetime.c:227
 msgctxt "full month name"
 msgid "February"
 msgstr "Februar"
 
-#: ../glib/gdatetime.c:225
+#: ../glib/gdatetime.c:229
 msgctxt "full month name"
 msgid "March"
 msgstr "Mars"
 
-#: ../glib/gdatetime.c:227
+#: ../glib/gdatetime.c:231
 msgctxt "full month name"
 msgid "April"
 msgstr "April"
 
-#: ../glib/gdatetime.c:229
+#: ../glib/gdatetime.c:233
 msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:231
+#: ../glib/gdatetime.c:235
 msgctxt "full month name"
 msgid "June"
 msgstr "Juni"
 
-#: ../glib/gdatetime.c:233
+#: ../glib/gdatetime.c:237
 msgctxt "full month name"
 msgid "July"
 msgstr "Juli"
 
-#: ../glib/gdatetime.c:235
+#: ../glib/gdatetime.c:239
 msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-#: ../glib/gdatetime.c:237
+#: ../glib/gdatetime.c:241
 msgctxt "full month name"
 msgid "September"
 msgstr "September"
 
-#: ../glib/gdatetime.c:239
+#: ../glib/gdatetime.c:243
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktober"
 
-#: ../glib/gdatetime.c:241
+#: ../glib/gdatetime.c:245
 msgctxt "full month name"
 msgid "November"
 msgstr "November"
 
-#: ../glib/gdatetime.c:243
+#: ../glib/gdatetime.c:247
 msgctxt "full month name"
 msgid "December"
 msgstr "Desember"
 
-#: ../glib/gdatetime.c:258
+#: ../glib/gdatetime.c:262
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:260
+#: ../glib/gdatetime.c:264
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:262
+#: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:264
+#: ../glib/gdatetime.c:268
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:266
+#: ../glib/gdatetime.c:270
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:268
+#: ../glib/gdatetime.c:272
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jun"
 
-#: ../glib/gdatetime.c:270
+#: ../glib/gdatetime.c:274
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jul"
 
-#: ../glib/gdatetime.c:272
+#: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:274
+#: ../glib/gdatetime.c:278
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:276
+#: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Okt"
 
-#: ../glib/gdatetime.c:278
+#: ../glib/gdatetime.c:282
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:280
+#: ../glib/gdatetime.c:284
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Des"
 
-#: ../glib/gdatetime.c:295
+#: ../glib/gdatetime.c:299
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Mandag"
 
-#: ../glib/gdatetime.c:297
+#: ../glib/gdatetime.c:301
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Tirsdag"
 
-#: ../glib/gdatetime.c:299
+#: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Onsdag"
 
-#: ../glib/gdatetime.c:301
+#: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Torsdag"
 
-#: ../glib/gdatetime.c:303
+#: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Fredag"
 
-#: ../glib/gdatetime.c:305
+#: ../glib/gdatetime.c:309
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Lørdag"
 
-#: ../glib/gdatetime.c:307
+#: ../glib/gdatetime.c:311
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Søndag"
 
-#: ../glib/gdatetime.c:322
+#: ../glib/gdatetime.c:326
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Man"
 
-#: ../glib/gdatetime.c:324
+#: ../glib/gdatetime.c:328
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Tir"
 
-#: ../glib/gdatetime.c:326
+#: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Ons"
 
-#: ../glib/gdatetime.c:328
+#: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Tor"
 
-#: ../glib/gdatetime.c:330
+#: ../glib/gdatetime.c:334
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Fre"
 
-#: ../glib/gdatetime.c:332
+#: ../glib/gdatetime.c:336
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Lør"
 
-#: ../glib/gdatetime.c:334
+#: ../glib/gdatetime.c:338
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Søn"
