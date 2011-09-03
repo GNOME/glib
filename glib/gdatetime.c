@@ -2171,10 +2171,6 @@ get_numeric_format (gchar    *fmt,
  *   </term><listitem><simpara>
  *    the day of the month as a decimal number (range 01 to 31)
  *  </simpara></listitem></varlistentry>
- *    <literal>%%D</literal>:
- *   </term><listitem><simpara>
- *    equivalent to <literal>%%m/%%d/%%y</literal>
- *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
  *    <literal>%%e</literal>:
  *   </term><listitem><simpara>
@@ -2453,12 +2449,6 @@ g_date_time_format (GDateTime   *datetime,
                 case 'd':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
                   g_string_append_printf (outstr, fmt, g_date_time_get_day_of_month (datetime));
-                  break;
-                case 'D':
-                  g_string_append_printf (outstr, "%02d/%02d/%02d",
-                                          g_date_time_get_month (datetime),
-                                          g_date_time_get_day_of_month (datetime),
-                                          g_date_time_get_year (datetime));
                   break;
                 case 'e':
                   get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : ' ', 2);
