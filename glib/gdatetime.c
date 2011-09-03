@@ -2123,10 +2123,15 @@ get_numeric_format (gchar    *fmt,
  * Creates a newly allocated string representing the requested @format.
  *
  * The format strings understood by this function are a subset of the
- * strftime() format language. In contrast to strftime(), this function
- * always produces a UTF-8 string, regardless of the current locale.
- * Note that the rendering of many formats is locale-dependent and may
- * not match the strftime() output exactly.
+ * strftime() format language as specified by C99.  The %%D, %%U and %%W
+ * conversions are not supported, nor is the 'E' modifier.  The GNU
+ * extensions %%k, %%l, %%s and %%P are supported, however, as are the
+ * '0', '_' and '-' modifiers.
+ *
+ * In contrast to strftime(), this function always produces a UTF-8
+ * string, regardless of the current locale.  Note that the rendering of
+ * many formats is locale-dependent and may not match the strftime()
+ * output exactly.
  *
  * The following format specifiers are supported:
  *
