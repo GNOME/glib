@@ -834,7 +834,6 @@ GDateTime *__dt = g_date_time_new_local (2009, 10, 24, 0, 0, 0);\
   //TEST_PRINTF ("%s", t_str);
   TEST_PRINTF ("%S", "00");
   TEST_PRINTF ("%t", "	");
-  TEST_PRINTF ("%W", "42");
   TEST_PRINTF ("%u", "6");
   TEST_PRINTF ("%x", "10/24/09");
   TEST_PRINTF ("%X", "00:00:00");

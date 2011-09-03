@@ -2302,11 +2302,6 @@ get_numeric_format (gchar    *fmt,
  *    This is not the ISO 8601 standard format -- use %%u instead.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%W</literal>:
- *   </term><listitem><simpara>
- *    the week number of the current year as a decimal number
- *  </simpara></listitem></varlistentry>
- *  <varlistentry><term>
  *    <literal>%%x</literal>:
  *   </term><listitem><simpara>
  *    the preferred date representation for the current locale without
@@ -2584,10 +2579,6 @@ g_date_time_format (GDateTime   *datetime,
                     get_numeric_format (fmt, sizeof(fmt), alt_digits, 0, 0);
                     g_string_append_printf (outstr, fmt, day_of_week);
                   }
-                  break;
-                case 'W':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_day_of_year (datetime) / 7);
                   break;
                 case 'x':
                   {
