@@ -1109,6 +1109,31 @@ test_z (void)
   g_free (p);
 }
 
+static void
+test_strftime (void)
+{
+  /* this is probably going to cause various buggy libcs to explode... */
+#define TEST_FORMAT \
+  "a%a A%A b%b B%B c%c C%C d%d e%e F%F g%g G%G h%h H%H I%I j%j m%m M%M " \
+  "n%n p%p r%r R%R S%S t%t T%T u%u V%V w%w x%x X%X y%y Y%Y z%z Z%Z %%"
+  time_t t;
+
+  /* 127997 is prime, 1315005118 is now */
+  for (t = 0; t < 1315005118; t += 127997)
+    {
+      GDateTime *date_time;
+      gchar c_str[1000];
+      gchar *dt_str;
+
+      date_time = g_date_time_new_from_unix_local (t);
+      dt_str = g_date_time_format (date_time, TEST_FORMAT);
+      strftime (c_str, sizeof c_str, TEST_FORMAT, localtime (&t));
+      g_assert_cmpstr (c_str, ==, dt_str);
+      g_date_time_unref (date_time);
+      g_free (dt_str);
+    }
+}
+
 gint
 main (gint   argc,
       gchar *argv[])
@@ -1146,6 +1171,7 @@ main (gint   argc,
   g_test_add_func ("/GDateTime/new_full", test_GDateTime_new_full);
   g_test_add_func ("/GDateTime/now", test_GDateTime_now);
   g_test_add_func ("/GDateTime/printf", test_GDateTime_printf);
+  g_test_add_func ("/GDateTime/strftime", test_strftime);
   g_test_add_func ("/GDateTime/modifiers", test_modifiers);
   g_test_add_func ("/GDateTime/to_local", test_GDateTime_to_local);
   g_test_add_func ("/GDateTime/to_unix", test_GDateTime_to_unix);
