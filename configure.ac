@@ -1069,39 +1069,43 @@ if $glib_failed ; then
 fi
 
 AC_CHECK_FUNCS(getprotobyname_r endservent)
-AC_CHECK_HEADERS([netdb.h wspiapi.h])
+AC_CHECK_HEADERS([netdb.h wspiapi.h arpa/nameser_compat.h])
 
 # For gio/libasyncns
-if test $glib_native_win32 = no; then
-  AC_CHECK_FUNCS(strndup setresuid setreuid)
-  AC_CHECK_HEADERS(sys/prctl.h arpa/nameser_compat.h)
+AC_CHECK_FUNCS(strndup setresuid setreuid)
+AC_CHECK_HEADERS(sys/prctl.h)
 
-  # We can't just use AC_CHECK_FUNC/AC_CHECK_LIB here. Bug 586150
-  AC_MSG_CHECKING([for res_query])
-  AC_TRY_LINK([#include <sys/types.h>
-#include <netinet/in.h>
-#include <arpa/nameser.h>
-#include <resolv.h>],
-              [res_query("test", 0, 0, (void *)0, 0);],
-              [AC_MSG_RESULT([yes])],
-              [save_libs="$LIBS"
-               LIBS="-lresolv $LIBS"
-               AC_TRY_LINK([#include <sys/types.h>
-#include <netinet/in.h>
-#include <arpa/nameser.h>
-#include <resolv.h>],
-                           [res_query("test", 0, 0, (void *)0, 0);],
-                           [AC_MSG_RESULT([in -lresolv])
-                            LIBASYNCNS_LIBADD="-lresolv"],
-                           [LIBS="-lbind $save_libs"
-                            AC_TRY_LINK([#include <resolv.h>],
-                                        [res_query("test", 0, 0, (void *)0, 0);],
-                                        [AC_MSG_RESULT([in -lbind])
-                                         LIBASYNCNS_LIBADD="-lbind"],
-                                        [AC_MSG_ERROR(not found)])])
-               LIBS="$save_libs"])
-  AC_SUBST(LIBASYNCNS_LIBADD)
-fi
+# We can't just use AC_CHECK_FUNC/AC_CHECK_LIB here. Bug 586150
+NETWORK_LIBS=""
+AC_MSG_CHECKING([for res_query])
+AC_TRY_LINK([#include <sys/types.h>
+	     #include <netinet/in.h>
+	     #include <arpa/nameser.h>
+	     #include <resolv.h>
+            ],[
+	     res_query("test", 0, 0, (void *)0, 0);
+            ],[AC_MSG_RESULT([yes])],
+            [save_libs="$LIBS"
+             LIBS="-lresolv $LIBS"
+             AC_TRY_LINK([#include <sys/types.h>
+			  #include <netinet/in.h>
+			  #include <arpa/nameser.h>
+			  #include <resolv.h>
+			 ],[
+			  res_query("test", 0, 0, (void *)0, 0);
+			 ],[AC_MSG_RESULT([in -lresolv])
+                            NETWORK_LIBS="-lresolv $NETWORK_LIBS"],
+                         [LIBS="-lbind $save_libs"
+                          AC_TRY_LINK([#include <resolv.h>],
+                                      [res_query("test", 0, 0, (void *)0, 0);],
+                                      [AC_MSG_RESULT([in -lbind])
+                                       NETWORK_LIBS="-lbind $NETWORK_LIBS"],
+                                      [AC_MSG_ERROR(not found)])])
+             LIBS="$save_libs"])
+AC_CHECK_FUNC(socket, :, AC_CHECK_LIB(socket, socket,
+				      [NETWORK_LIBS="-lsocket $NETWORK_LIBS"],
+				      [AC_MSG_ERROR(Could not find socket())]))
+AC_SUBST(NETWORK_LIBS)
 
 case $host in
   *-*-solaris* )

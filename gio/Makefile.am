@@ -416,6 +416,7 @@ libgio_2_0_la_LIBADD = \
 	$(SELINUX_LIBS) 				\
 	$(GLIB_LIBS) 					\
 	$(XATTR_LIBS) 					\
+	$(NETWORK_LIBS)					\
 	$(NULL)
 
 libgio_2_0_la_CPPFLAGS = $(ZLIB_CFLAGS) $(AM_CPPFLAGS)

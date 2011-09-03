@@ -10,6 +10,6 @@ libasyncns_la_SOURCES = \
 	asyncns.h \
 	g-asyncns.h
 
-libasyncns_la_LIBADD = $(LIBASYNCNS_LIBADD)
+libasyncns_la_LIBADD = $(NETWORK_LIBS)
 
 EXTRA_DIST += README update.sh
