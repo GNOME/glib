@@ -31,13 +31,20 @@
 #include "gcancellable.h"
 #include "gpollableinputstream.h"
 #include "gioerror.h"
-
+#include "gfiledescriptorbased.h"
 
 static void g_socket_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface);
+#ifdef G_OS_UNIX
+static void g_socket_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
+#endif
 
 #define g_socket_input_stream_get_type _g_socket_input_stream_get_type
 G_DEFINE_TYPE_WITH_CODE (GSocketInputStream, g_socket_input_stream, G_TYPE_INPUT_STREAM,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_INPUT_STREAM, g_socket_input_stream_pollable_iface_init)
+#ifdef G_OS_UNIX
+
+			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_input_stream_file_descriptor_based_iface_init)
+#endif
 			 )
 
 enum
@@ -248,6 +255,16 @@ g_socket_input_stream_pollable_read_nonblocking (GPollableInputStream  *pollable
 					 NULL, error);
 }
 
+#ifdef G_OS_UNIX
+static int
+g_socket_input_stream_get_fd (GFileDescriptorBased *fd_based)
+{
+  GSocketInputStream *input_stream = G_SOCKET_INPUT_STREAM (fd_based);
+
+  return g_socket_get_fd (input_stream->priv->socket);
+}
+#endif
+
 static void
 g_socket_input_stream_class_init (GSocketInputStreamClass *klass)
 {
@@ -271,6 +288,14 @@ g_socket_input_stream_class_init (GSocketInputStreamClass *klass)
 							G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
+
+#ifdef G_OS_UNIX
+static void
+g_socket_input_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
+{
+  iface->get_fd = g_socket_input_stream_get_fd;
+}
+#endif
 
 static void
 g_socket_input_stream_pollable_iface_init (GPollableInputStreamInterface *iface)

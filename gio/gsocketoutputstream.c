@@ -27,6 +27,7 @@
 #include "goutputstream.h"
 #include "gsocketoutputstream.h"
 #include "gsocket.h"
+#include "glibintl.h"
 
 #include "gsimpleasyncresult.h"
 #include "gcancellable.h"
@@ -34,14 +35,20 @@
 #include "gpollableoutputstream.h"
 #include "gioerror.h"
 #include "glibintl.h"
-
+#include "gfiledescriptorbased.h"
 
 static void g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
+#ifdef G_OS_UNIX
+static void g_socket_output_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
+#endif
 
 #define g_socket_output_stream_get_type _g_socket_output_stream_get_type
 G_DEFINE_TYPE_WITH_CODE (GSocketOutputStream, g_socket_output_stream, G_TYPE_OUTPUT_STREAM,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM, g_socket_output_stream_pollable_iface_init)
-			 )
+#ifdef G_OS_UNIX
+			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED, g_socket_output_stream_file_descriptor_based_iface_init)
+#endif
+);
 
 enum
 {
@@ -251,6 +258,16 @@ g_socket_output_stream_pollable_write_nonblocking (GPollableOutputStream  *polla
 				      NULL, error);
 }
 
+#ifdef G_OS_UNIX
+static int
+g_socket_output_stream_get_fd (GFileDescriptorBased *fd_based)
+{
+  GSocketOutputStream *output_stream = G_SOCKET_OUTPUT_STREAM (fd_based);
+
+  return g_socket_get_fd (output_stream->priv->socket);
+}
+#endif
+
 static void
 g_socket_output_stream_class_init (GSocketOutputStreamClass *klass)
 {
@@ -274,6 +291,14 @@ g_socket_output_stream_class_init (GSocketOutputStreamClass *klass)
 							G_TYPE_SOCKET, G_PARAM_CONSTRUCT_ONLY |
 							G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
 }
+
+#ifdef G_OS_UNIX
+static void
+g_socket_output_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
+{
+  iface->get_fd = g_socket_output_stream_get_fd;
+}
+#endif
 
 static void
 g_socket_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface)

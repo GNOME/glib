@@ -36,6 +36,7 @@
 #include "gcancellable.h"
 #include "gsimpleasyncresult.h"
 #include "gasynchelper.h"
+#include "gfiledescriptorbased.h"
 #include "glibintl.h"
 
 
@@ -61,11 +62,14 @@ enum {
 };
 
 static void g_unix_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface);
+static void g_unix_output_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface);
 
 G_DEFINE_TYPE_WITH_CODE (GUnixOutputStream, g_unix_output_stream, G_TYPE_OUTPUT_STREAM,
 			 G_IMPLEMENT_INTERFACE (G_TYPE_POLLABLE_OUTPUT_STREAM,
 						g_unix_output_stream_pollable_iface_init)
-			 );
+			 G_IMPLEMENT_INTERFACE (G_TYPE_FILE_DESCRIPTOR_BASED,
+						g_unix_output_stream_file_descriptor_based_iface_init)
+			 )
 
 struct _GUnixOutputStreamPrivate {
   int fd;
@@ -172,6 +176,12 @@ g_unix_output_stream_pollable_iface_init (GPollableOutputStreamInterface *iface)
 {
   iface->is_writable = g_unix_output_stream_pollable_is_writable;
   iface->create_source = g_unix_output_stream_pollable_create_source;
+}
+
+static void
+g_unix_output_stream_file_descriptor_based_iface_init (GFileDescriptorBasedIface *iface)
+{
+  iface->get_fd = (int (*) (GFileDescriptorBased *))g_unix_output_stream_get_fd;
 }
 
 static void
