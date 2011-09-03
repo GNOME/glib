@@ -431,6 +431,8 @@ dump_error_quark (GQuark quark, const char *symbol, GOutputStream *out)
  */
 #ifndef G_IREPOSITORY_COMPILATION
 static gboolean
+dump_irepository (const char *arg, GError **error) G_GNUC_UNUSED;
+static gboolean
 dump_irepository (const char *arg, GError **error)
 #else
 gboolean
