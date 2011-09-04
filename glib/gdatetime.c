@@ -175,6 +175,8 @@ static const guint16 days_in_year[2][13] =
 #define PREFERRED_DATE_TIME_FMT nl_langinfo (D_T_FMT)
 #define PREFERRED_DATE_FMT nl_langinfo (D_FMT)
 #define PREFERRED_TIME_FMT nl_langinfo (T_FMT)
+#define PREFERRED_TIME_FMT nl_langinfo (T_FMT)
+#define PREFERRED_12HR_TIME_FMT nl_langinfo (T_FMT_AMPM)
 
 static const gint weekday_item[2][7] =
 {
@@ -210,6 +212,8 @@ static const gint month_item[2][12] =
 /* Translators: this is the preferred format for expressing the time */
 #define PREFERRED_TIME_FMT C_("GDateTime", "%H:%M:%S")
 
+/* Translators: this is the preferred format for expressing 12 hour time */
+#define PREFERRED_12HR_TIME_FMT C_("GDateTime", "%I:%M:%S %p")
 
 #define WEEKDAY_ABBR(d)       (get_weekday_name_abbr (g_date_time_get_day_of_week (d)))
 #define WEEKDAY_FULL(d)       (get_weekday_name (g_date_time_get_day_of_week (d)))
@@ -2535,16 +2539,9 @@ g_date_time_format (GDateTime   *datetime,
                   break;
                 case 'r':
                   {
-                    gint hour = g_date_time_get_hour (datetime) % 12;
-                    if (hour == 0)
-                      hour = 12;
-                    ampm = g_utf8_strup (GET_AMPM (datetime), -1);
-                    g_string_append_printf (outstr, "%02d:%02d:%02d %s",
-                                            hour,
-                                            g_date_time_get_minute (datetime),
-                                            g_date_time_get_second (datetime),
-                                            ampm);
-                    g_free (ampm);
+                    tmp = g_date_time_format (datetime, PREFERRED_12HR_TIME_FMT);
+                    g_string_append (outstr, tmp);
+                    g_free (tmp);
                   }
                   break;
                 case 'R':

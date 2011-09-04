@@ -1323,8 +1323,10 @@ AC_CACHE_CHECK([for nl_langinfo (PM_STR)],glib_cv_langinfo_time,[
         AC_TRY_COMPILE([#include <langinfo.h>],
                 [char *str;
                  str = nl_langinfo (PM_STR);
+                 str = nl_langinfo (D_T_FMT);
                  str = nl_langinfo (D_FMT);
                  str = nl_langinfo (T_FMT);
+                 str = nl_langinfo (T_FMT_AMPM);
                  str = nl_langinfo (MON_1);
                  str = nl_langinfo (ABMON_12);
                  str = nl_langinfo (DAY_1);
