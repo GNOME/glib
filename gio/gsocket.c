@@ -389,7 +389,8 @@ g_socket_details_from_fd (GSocket *socket)
 	  goto err;
 	}
 #else
-      errsv = ENOTSUP;
+      /* This will translate to G_IO_ERROR_FAILED on either unix or windows */
+      errsv = -1;
       goto err;
 #endif
     }
