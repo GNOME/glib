@@ -27,6 +27,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#ifdef __linux
 static void
 test_platform_argv0 (void)
 {
@@ -45,6 +46,7 @@ test_platform_argv0 (void)
   g_assert (strcmp (g_get_prgname(), "option-argv0") == 0
 	    || strcmp (g_get_prgname (), "lt-option-argv0") == 0);
 }
+#endif
 
 int
 main (int   argc,
