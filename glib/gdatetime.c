@@ -2076,42 +2076,61 @@ g_date_time_to_utc (GDateTime *datetime)
 /* Format {{{1 */
 
 static void
-get_numeric_format (gchar    *fmt,
-                    gsize     len,
-                    gboolean  alt_digits,
-                    gchar     pad,
-                    gint      width)
+format_number (GString  *str,
+               gboolean  use_alt_digits,
+               gchar     pad,
+               gint      width,
+               guint32   number)
 {
-  const gchar *width_str;
+  const gunichar ascii_digits[10] = {
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
+  };
+  const gunichar *digits = ascii_digits;
+  gunichar tmp[10];
+  gint i = 0;
 
-  if (pad == 0)
-    width_str = "";
-  else
+  g_return_if_fail (width <= 10);
+
+#ifdef HAVE_LANGINFO_OUTDIGIT
+  if (use_alt_digits)
     {
-      switch (width)
-        {
-        case 0:
-          width_str = "";
-          break;
-        default:
-          g_warning ("get_numeric_format: width %d not handled", width);
-          /* fall thru */
-        case 2:
-          if (pad == '0')
-            width_str = "02";
-          else
-            width_str = "2";
-          break;
-        case 3:
-          if (pad == '0')
-            width_str = "03";
-          else
-            width_str = "3";
-          break;
-        }
-    }
+      static gunichar alt_digits[10];
+      static gsize initialised;
+      /* 2^32 has 10 digits */
 
-  g_snprintf (fmt, len, "%%%s%sd", alt_digits ? "I": "", width_str);
+      if G_UNLIKELY (g_once_init_enter (&initialised))
+        {
+#define DO_DIGIT(n) \
+      {                                                                     \
+        union { guint integer; char *pointer; } val;                        \
+        val.pointer = nl_langinfo (_NL_CTYPE_OUTDIGIT## n ##_WC);           \
+        alt_digits[n] = val.integer;                                        \
+      }
+          DO_DIGIT(0); DO_DIGIT(1); DO_DIGIT(2); DO_DIGIT(3); DO_DIGIT(4);
+          DO_DIGIT(5); DO_DIGIT(6); DO_DIGIT(7); DO_DIGIT(8); DO_DIGIT(9);
+#undef DO_DIGIT
+          g_once_init_leave (&initialised, TRUE);
+        }
+
+      digits = alt_digits;
+    }
+#endif /* HAVE_LANGINFO_OUTDIGIT */
+
+  do
+    {
+      tmp[i++] = digits[number % 10];
+      number /= 10;
+    }
+  while (number);
+
+  while (pad && i < width)
+    tmp[i++] = pad == '0' ? digits[0] : pad;
+
+  /* should really be impossible */
+  g_assert (i <= 10);
+
+  while (i)
+    g_string_append_unichar (str, tmp[--i]);
 }
 
 /**
@@ -2393,7 +2412,6 @@ g_date_time_format (GDateTime   *datetime,
   gboolean  alt_digits = FALSE;
   gboolean  pad_set = FALSE;
   gchar     pad = '\0';
-  gchar     fmt[20];
   gchar    *ampm;
 
   g_return_val_if_fail (datetime != NULL, NULL);
@@ -2443,16 +2461,16 @@ g_date_time_format (GDateTime   *datetime,
                   }
                   break;
                 case 'C':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_year (datetime) / 100);
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_year (datetime) / 100);
                   break;
                 case 'd':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_day_of_month (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_day_of_month (datetime));
                   break;
                 case 'e':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : ' ', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_day_of_month (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : ' ', 2,
+                                 g_date_time_get_day_of_month (datetime));
                   break;
                 case 'F':
                   g_string_append_printf (outstr, "%d-%02d-%02d",
@@ -2461,54 +2479,46 @@ g_date_time_format (GDateTime   *datetime,
                                           g_date_time_get_day_of_month (datetime));
                   break;
                 case 'g':
-                  g_string_append_printf (outstr, "%02d", g_date_time_get_week_numbering_year (datetime) % 100);
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_week_numbering_year (datetime) % 100);
                   break;
                 case 'G':
-                  g_string_append_printf (outstr, "%d", g_date_time_get_week_numbering_year (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : 0, 0,
+                                 g_date_time_get_week_numbering_year (datetime));
                   break;
                 case 'h':
                   g_string_append (outstr, MONTH_ABBR (datetime));
                   break;
                 case 'H':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_hour (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_hour (datetime));
                   break;
                 case 'I':
-                  {
-                    gint hour = g_date_time_get_hour (datetime) % 12;
-                    if (hour == 0)
-                      hour = 12;
-                    get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
-                    g_string_append_printf (outstr, fmt, hour);
-                  }
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 (g_date_time_get_hour (datetime) + 11) % 12 + 1);
                   break;
                 case 'j':
-                  get_numeric_format (fmt, sizeof(fmt), FALSE, pad_set ? pad : '0', 3);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_day_of_year (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 3,
+                                 g_date_time_get_day_of_year (datetime));
                   break;
                 case 'k':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : ' ', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_hour (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : ' ', 2,
+                                 g_date_time_get_hour (datetime));
                   break;
                 case 'l':
-                  {
-                    gint hour = g_date_time_get_hour (datetime) % 12;
-                    if (hour == 0)
-                      hour = 12;
-                    get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : ' ', 2);
-                    g_string_append_printf (outstr, fmt, hour);
-                  }
+                  format_number (outstr, alt_digits, pad_set ? pad : ' ', 2,
+                                 (g_date_time_get_hour (datetime) + 11) % 12 + 1);
                   break;
                 case 'n':
                   g_string_append_c (outstr, '\n');
                   break;
                 case 'm':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_month (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_month (datetime));
                   break;
                 case 'M':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_minute (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_minute (datetime));
                   break;
                 case 'O':
                   alt_digits = TRUE;
@@ -2546,8 +2556,8 @@ g_date_time_format (GDateTime   *datetime,
                   g_string_append_printf (outstr, "%" G_GINT64_FORMAT, g_date_time_to_unix (datetime));
                   break;
                 case 'S':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_second (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_second (datetime));
                   break;
                 case 't':
                   g_string_append_c (outstr, '\t');
@@ -2559,21 +2569,16 @@ g_date_time_format (GDateTime   *datetime,
                                           g_date_time_get_second (datetime));
                   break;
                 case 'u':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, 0, 0);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_day_of_week (datetime));
+                  format_number (outstr, alt_digits, 0, 0,
+                                 g_date_time_get_day_of_week (datetime));
                   break;
                 case 'V':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_week_of_year (datetime));
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_week_of_year (datetime));
                   break;
                 case 'w':
-                  {
-                    gint day_of_week = g_date_time_get_day_of_week (datetime);
-                    if (day_of_week == 7)
-                      day_of_week = 0;
-                    get_numeric_format (fmt, sizeof(fmt), alt_digits, 0, 0);
-                    g_string_append_printf (outstr, fmt, day_of_week);
-                  }
+                  format_number (outstr, alt_digits, 0, 0,
+                                 g_date_time_get_day_of_week (datetime) % 7);
                   break;
                 case 'x':
                   {
@@ -2590,12 +2595,12 @@ g_date_time_format (GDateTime   *datetime,
                   }
                   break;
                 case 'y':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, pad_set ? pad : '0', 2);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_year (datetime) % 100);
+                  format_number (outstr, alt_digits, pad_set ? pad : '0', 2,
+                                 g_date_time_get_year (datetime) % 100);
                   break;
                 case 'Y':
-                  get_numeric_format (fmt, sizeof(fmt), alt_digits, 0, 0);
-                  g_string_append_printf (outstr, fmt, g_date_time_get_year (datetime));
+                  format_number (outstr, alt_digits, 0, 0,
+                                 g_date_time_get_year (datetime));
                   break;
                 case 'z':
                   if (datetime->tz != NULL)

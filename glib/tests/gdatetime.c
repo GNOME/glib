@@ -896,17 +896,14 @@ test_modifiers (void)
   setlocale (LC_ALL, "fa_IR.utf-8");
   if (strstr (setlocale (LC_ALL, NULL), "fa_IR") != NULL)
     {
-      TEST_PRINTF_TIME (23, 0, 0, "%OH", "\333\262\333\263");
-      TEST_PRINTF_TIME (23, 0, 0, "%OI", "\333\261\333\261");
-      TEST_PRINTF_TIME (23, 0, 0, "%OM", "\333\260");
+      TEST_PRINTF_TIME (23, 0, 0, "%OH", "\333\262\333\263");    /* '23' */
+      TEST_PRINTF_TIME (23, 0, 0, "%OI", "\333\261\333\261");    /* '11' */
+      TEST_PRINTF_TIME (23, 0, 0, "%OM", "\333\260\333\260");    /* '00' */
 
-      TEST_PRINTF_DATE (2011, 7, 1, "%Om", "\333\267");
-      TEST_PRINTF_DATE (2011, 7, 1, "%-Om", "\333\267");
-/* These do not currently work as expected, since glib's printf
-   counts arabic digits as two characters for some reason
-      TEST_PRINTF_DATE (2011, 7, 1, "%0Om", "0\333\267");
-      TEST_PRINTF_DATE (2011, 7, 1, "%_Om", " \333\267");
-*/
+      TEST_PRINTF_DATE (2011, 7, 1, "%Om", "\333\260\333\267");  /* '07' */
+      TEST_PRINTF_DATE (2011, 7, 1, "%0Om", "\333\260\333\267"); /* '07' */
+      TEST_PRINTF_DATE (2011, 7, 1, "%-Om", "\333\267");         /* '7' */
+      TEST_PRINTF_DATE (2011, 7, 1, "%_Om", " \333\267");        /* ' 7' */
     }
   else
     g_test_message ("locale fa_IR not available, skipping O modifier tests");
