@@ -409,14 +409,14 @@ thread_loop (gpointer user_data)
   g_assert (test->loop == NULL);
   test->loop = g_main_loop_new (context, TRUE);
 
+  g_main_context_acquire (context);
   g_cond_signal (closure->loop_started);
   g_mutex_unlock (closure->loop_mutex);
 
   while (g_main_loop_is_running (test->loop))
     g_main_context_iteration (context, TRUE);
 
-  g_main_loop_unref (test->loop);
-  test->loop = NULL;
+  g_main_context_release (context);
   return test;
 }
 
@@ -459,7 +459,7 @@ teardown_with_thread_loop (Test            *test,
   g_assert (check == test);
   test->loop_thread = NULL;
 
-  g_assert (test->loop == NULL);
+  g_main_loop_unref (test->loop);
 
   teardown_without_loop (test, unused);
 }
