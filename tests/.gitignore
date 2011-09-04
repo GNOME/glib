@@ -12,6 +12,7 @@ collate.out
 completion-test
 convert-test
 cxx-test
+datetime
 deftype
 dirname-test
 env-test
