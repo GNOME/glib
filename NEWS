@@ -1,3 +1,52 @@
+Overview of changes from GLib 2.29.18 to 2.29.90
+================================================
+
+* API/ABI changes:
+ - unix signal watches now match the API of all of the other sources
+ - revert the addition of g_date_time_source_new () from last release
+
+* networking and other fixes for Solaris
+ - we no longer support symbolic port names (ie: from /etc/services)
+ - check if -lsocket is needed
+ - fix g_socket_details_from_fd()
+ - avoid getmntinfo
+ - fix some harmless warnings
+
+* GDateTime improvements:
+ - generally improved standards compliance (with C99)
+ - support C99-specified format strings: %g, %G, %V, %c, %C, %w
+ - consult the locale for the preferred 12-hour time format (%r)
+ - drop support for non-standard %N and broken %W
+ - better support for formatting non-POSIX (eg: Arabic) numerals
+ - locale-related test case fixups, and fix some leaks
+
+* GTlsInteraction: add interaction method invocation guarantees
+
+* gdbus-codegen: post-process all interfaces when parsing >1 file
+
+* make GMainLoop, GMainContext and GSource boxed types
+
+* fix a race condition in the first use of g_get_monotonic_time()
+
+* lots gtk-doc cleanups
+
+* better intltool compatibility when generating pot file
+
+* avoid GCC-specific compiler options when not using GCC
+
+* Translation updates:
+ Belarusian
+ Brazilian Portuguese
+ Canadian English
+ Galician
+ Indonesian
+ Korean
+ Lithuanian
+ Norwegian bokmål
+ Portuguese
+ Spanish
+ Swedish
+
 Overview of changes from GLib 2.29.16 to 2.29.18
 ================================================
 
