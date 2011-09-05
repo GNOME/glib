@@ -175,7 +175,7 @@ msgstr "چ ك"
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr ""
+msgstr "%Y-%m-%dT%T %Z"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210

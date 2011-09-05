@@ -190,10 +190,9 @@ msgstr "%r"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%r"
+msgstr "%I:%M:%S %p"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"

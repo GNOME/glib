@@ -195,19 +195,19 @@ msgstr ""
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr ""
+msgstr "%a %d %b %Y %T"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr ""
+msgstr "%d.%m.%Y"
 
 #. Translators: this is the preferred format for expressing the time
 #: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr ""
+msgstr "%T"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
@@ -218,37 +218,37 @@ msgstr ""
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
 msgid "January"
-msgstr ""
+msgstr "Studzień"
 
 #: ../glib/gdatetime.c:231
 msgctxt "full month name"
 msgid "February"
-msgstr ""
+msgstr "Luty"
 
 #: ../glib/gdatetime.c:233
 msgctxt "full month name"
 msgid "March"
-msgstr ""
+msgstr "Sakavik"
 
 #: ../glib/gdatetime.c:235
 msgctxt "full month name"
 msgid "April"
-msgstr ""
+msgstr "Krasavik"
 
 #: ../glib/gdatetime.c:237
 msgctxt "full month name"
 msgid "May"
-msgstr ""
+msgstr "Travień"
 
 #: ../glib/gdatetime.c:239
 msgctxt "full month name"
 msgid "June"
-msgstr ""
+msgstr "Červień"
 
 #: ../glib/gdatetime.c:241
 msgctxt "full month name"
 msgid "July"
-msgstr ""
+msgstr "Lipień"
 
 #: ../glib/gdatetime.c:243
 msgctxt "full month name"
@@ -278,37 +278,37 @@ msgstr ""
 #: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
 msgid "Jan"
-msgstr ""
+msgstr "Stu"
 
 #: ../glib/gdatetime.c:268
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr ""
+msgstr "Lut"
 
 #: ../glib/gdatetime.c:270
 msgctxt "abbreviated month name"
 msgid "Mar"
-msgstr ""
+msgstr "Sak"
 
 #: ../glib/gdatetime.c:272
 msgctxt "abbreviated month name"
 msgid "Apr"
-msgstr ""
+msgstr "Kra"
 
 #: ../glib/gdatetime.c:274
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr ""
+msgstr "Tra"
 
 #: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"
 msgid "Jun"
-msgstr ""
+msgstr "Čer"
 
 #: ../glib/gdatetime.c:278
 msgctxt "abbreviated month name"
 msgid "Jul"
-msgstr ""
+msgstr "Lip"
 
 #: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
@@ -338,72 +338,72 @@ msgstr ""
 #: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Monday"
-msgstr ""
+msgstr "Paniadziełak"
 
 #: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
 msgid "Tuesday"
-msgstr ""
+msgstr "Aŭtorak"
 
 #: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Wednesday"
-msgstr ""
+msgstr "Sierada"
 
 #: ../glib/gdatetime.c:309
 msgctxt "full weekday name"
 msgid "Thursday"
-msgstr ""
+msgstr "Čaćvier"
 
 #: ../glib/gdatetime.c:311
 msgctxt "full weekday name"
 msgid "Friday"
-msgstr ""
+msgstr "Piatnica"
 
 #: ../glib/gdatetime.c:313
 msgctxt "full weekday name"
 msgid "Saturday"
-msgstr ""
+msgstr "Subota"
 
 #: ../glib/gdatetime.c:315
 msgctxt "full weekday name"
 msgid "Sunday"
-msgstr ""
+msgstr "Niadziela"
 
 #: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Mon"
-msgstr ""
+msgstr "Pan"
 
 #: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
 msgid "Tue"
-msgstr ""
+msgstr "Aŭt"
 
 #: ../glib/gdatetime.c:334
 msgctxt "abbreviated weekday name"
 msgid "Wed"
-msgstr ""
+msgstr "Sie"
 
 #: ../glib/gdatetime.c:336
 msgctxt "abbreviated weekday name"
 msgid "Thu"
-msgstr ""
+msgstr "Čać"
 
 #: ../glib/gdatetime.c:338
 msgctxt "abbreviated weekday name"
 msgid "Fri"
-msgstr ""
+msgstr "Pia"
 
 #: ../glib/gdatetime.c:340
 msgctxt "abbreviated weekday name"
 msgid "Sat"
-msgstr ""
+msgstr "Sub"
 
 #: ../glib/gdatetime.c:342
 msgctxt "abbreviated weekday name"
 msgid "Sun"
-msgstr ""
+msgstr "Nia"
 
 # glib/gdir.c:79
 #: ../glib/gdir.c:115 ../glib/gdir.c:138

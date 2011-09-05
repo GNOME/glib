@@ -181,7 +181,7 @@ msgstr "DU"
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr ""
+msgstr "%Y. %b. %e., %A, %H.%M.%S %Z"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210
@@ -197,10 +197,9 @@ msgstr "%k.%M.%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%k.%M.%S"
+msgstr "%H.%M.%S"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"

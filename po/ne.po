@@ -167,72 +167,72 @@ msgstr "अवैध होस्टनाम "
 #: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "AM"
-msgstr ""
+msgstr "पूर्वाह्न"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:204
 msgctxt "GDateTime"
 msgid "PM"
-msgstr ""
+msgstr "अपराह्न"
 
 #. Translators: this is the preferred format for expressing the date and the time
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr ""
+msgstr "%A %d %b %Y %I:%M:%S %p %Z"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr ""
+msgstr "%A %d %b %Y"
 
 #. Translators: this is the preferred format for expressing the time
 #: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr ""
+msgstr "%I:%M:%S  %Z"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr ""
+msgstr "%I:%M:%S %p %Z"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
 msgid "January"
-msgstr ""
+msgstr "जनवरी"
 
 #: ../glib/gdatetime.c:231
 msgctxt "full month name"
 msgid "February"
-msgstr ""
+msgstr "फ़रवरी"
 
 #: ../glib/gdatetime.c:233
 msgctxt "full month name"
 msgid "March"
-msgstr ""
+msgstr "मार्च"
 
 #: ../glib/gdatetime.c:235
 msgctxt "full month name"
 msgid "April"
-msgstr ""
+msgstr "अप्रेल"
 
 #: ../glib/gdatetime.c:237
 msgctxt "full month name"
 msgid "May"
-msgstr ""
+msgstr "मई"
 
 #: ../glib/gdatetime.c:239
 msgctxt "full month name"
 msgid "June"
-msgstr ""
+msgstr "जून"
 
 #: ../glib/gdatetime.c:241
 msgctxt "full month name"
 msgid "July"
-msgstr ""
+msgstr "जुलाई"
 
 #: ../glib/gdatetime.c:243
 msgctxt "full month name"
@@ -262,37 +262,37 @@ msgstr ""
 #: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
 msgid "Jan"
-msgstr ""
+msgstr "जनवरी"
 
 #: ../glib/gdatetime.c:268
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr ""
+msgstr "फ़रवरी"
 
 #: ../glib/gdatetime.c:270
 msgctxt "abbreviated month name"
 msgid "Mar"
-msgstr ""
+msgstr "मार्च"
 
 #: ../glib/gdatetime.c:272
 msgctxt "abbreviated month name"
 msgid "Apr"
-msgstr ""
+msgstr "अप्रेल"
 
 #: ../glib/gdatetime.c:274
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr ""
+msgstr "मई"
 
 #: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"
 msgid "Jun"
-msgstr ""
+msgstr "जून"
 
 #: ../glib/gdatetime.c:278
 msgctxt "abbreviated month name"
 msgid "Jul"
-msgstr ""
+msgstr "जुलाई"
 
 #: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
@@ -322,72 +322,72 @@ msgstr ""
 #: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Monday"
-msgstr ""
+msgstr "सोमबार "
 
 #: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
 msgid "Tuesday"
-msgstr ""
+msgstr "मंगलबार "
 
 #: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Wednesday"
-msgstr ""
+msgstr "बुधबार "
 
 #: ../glib/gdatetime.c:309
 msgctxt "full weekday name"
 msgid "Thursday"
-msgstr ""
+msgstr "बिहिबार "
 
 #: ../glib/gdatetime.c:311
 msgctxt "full weekday name"
 msgid "Friday"
-msgstr ""
+msgstr "शुक्रबार "
 
 #: ../glib/gdatetime.c:313
 msgctxt "full weekday name"
 msgid "Saturday"
-msgstr ""
+msgstr "शनिबार"
 
 #: ../glib/gdatetime.c:315
 msgctxt "full weekday name"
 msgid "Sunday"
-msgstr ""
+msgstr "आइतबार "
 
 #: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Mon"
-msgstr ""
+msgstr "सोम "
 
 #: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
 msgid "Tue"
-msgstr ""
+msgstr "मंगल "
 
 #: ../glib/gdatetime.c:334
 msgctxt "abbreviated weekday name"
 msgid "Wed"
-msgstr ""
+msgstr "बुध "
 
 #: ../glib/gdatetime.c:336
 msgctxt "abbreviated weekday name"
 msgid "Thu"
-msgstr ""
+msgstr "बिहि "
 
 #: ../glib/gdatetime.c:338
 msgctxt "abbreviated weekday name"
 msgid "Fri"
-msgstr ""
+msgstr "शुक्र "
 
 #: ../glib/gdatetime.c:340
 msgctxt "abbreviated weekday name"
 msgid "Sat"
-msgstr ""
+msgstr "शनि"
 
 #: ../glib/gdatetime.c:342
 msgctxt "abbreviated weekday name"
 msgid "Sun"
-msgstr ""
+msgstr "आइत "
 
 #: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format

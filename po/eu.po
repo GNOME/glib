@@ -179,7 +179,7 @@ msgstr "PM"
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr ""
+msgstr "%y-%m-%d %T %Z"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210
@@ -281,10 +281,9 @@ msgid "Apr"
 msgstr "Apr."
 
 #: ../glib/gdatetime.c:274
-#, fuzzy
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr "Maiatza"
+msgstr "mai"
 
 #: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"

@@ -173,19 +173,19 @@ msgstr ""
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr ""
+msgstr "‫%A %Oe %B %Oy، %OH:%OM:%OS‬"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
-msgstr ""
+msgstr "%Oy/%Om/%Od"
 
 #. Translators: this is the preferred format for expressing the time
 #: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
-msgstr ""
+msgstr "%OH:%OM:%OS"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
@@ -196,37 +196,37 @@ msgstr ""
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
 msgid "January"
-msgstr ""
+msgstr "ژانویه"
 
 #: ../glib/gdatetime.c:231
 msgctxt "full month name"
 msgid "February"
-msgstr ""
+msgstr "فوریه"
 
 #: ../glib/gdatetime.c:233
 msgctxt "full month name"
 msgid "March"
-msgstr ""
+msgstr "مارس"
 
 #: ../glib/gdatetime.c:235
 msgctxt "full month name"
 msgid "April"
-msgstr ""
+msgstr "آوریل"
 
 #: ../glib/gdatetime.c:237
 msgctxt "full month name"
 msgid "May"
-msgstr ""
+msgstr "مه"
 
 #: ../glib/gdatetime.c:239
 msgctxt "full month name"
 msgid "June"
-msgstr ""
+msgstr "ژوئن"
 
 #: ../glib/gdatetime.c:241
 msgctxt "full month name"
 msgid "July"
-msgstr ""
+msgstr "ژوئیه"
 
 #: ../glib/gdatetime.c:243
 msgctxt "full month name"
@@ -256,37 +256,37 @@ msgstr ""
 #: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
 msgid "Jan"
-msgstr ""
+msgstr "ژانویه"
 
 #: ../glib/gdatetime.c:268
 msgctxt "abbreviated month name"
 msgid "Feb"
-msgstr ""
+msgstr "فوریه"
 
 #: ../glib/gdatetime.c:270
 msgctxt "abbreviated month name"
 msgid "Mar"
-msgstr ""
+msgstr "مارس"
 
 #: ../glib/gdatetime.c:272
 msgctxt "abbreviated month name"
 msgid "Apr"
-msgstr ""
+msgstr "آوریل"
 
 #: ../glib/gdatetime.c:274
 msgctxt "abbreviated month name"
 msgid "May"
-msgstr ""
+msgstr "مه"
 
 #: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"
 msgid "Jun"
-msgstr ""
+msgstr "ژوئن"
 
 #: ../glib/gdatetime.c:278
 msgctxt "abbreviated month name"
 msgid "Jul"
-msgstr ""
+msgstr "ژوئیه"
 
 #: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
@@ -316,72 +316,72 @@ msgstr ""
 #: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Monday"
-msgstr ""
+msgstr "دوشنبه"
 
 #: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
 msgid "Tuesday"
-msgstr ""
+msgstr "سه‌شنبه"
 
 #: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Wednesday"
-msgstr ""
+msgstr "چهارشنبه"
 
 #: ../glib/gdatetime.c:309
 msgctxt "full weekday name"
 msgid "Thursday"
-msgstr ""
+msgstr "پنجشنبه"
 
 #: ../glib/gdatetime.c:311
 msgctxt "full weekday name"
 msgid "Friday"
-msgstr ""
+msgstr "جمعه"
 
 #: ../glib/gdatetime.c:313
 msgctxt "full weekday name"
 msgid "Saturday"
-msgstr ""
+msgstr "شنبه"
 
 #: ../glib/gdatetime.c:315
 msgctxt "full weekday name"
 msgid "Sunday"
-msgstr ""
+msgstr "یکشنبه"
 
 #: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Mon"
-msgstr ""
+msgstr "دوشنبه"
 
 #: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
 msgid "Tue"
-msgstr ""
+msgstr "سه‌شنبه"
 
 #: ../glib/gdatetime.c:334
 msgctxt "abbreviated weekday name"
 msgid "Wed"
-msgstr ""
+msgstr "چهارشنبه"
 
 #: ../glib/gdatetime.c:336
 msgctxt "abbreviated weekday name"
 msgid "Thu"
-msgstr ""
+msgstr "پنجشنبه"
 
 #: ../glib/gdatetime.c:338
 msgctxt "abbreviated weekday name"
 msgid "Fri"
-msgstr ""
+msgstr "جمعه"
 
 #: ../glib/gdatetime.c:340
 msgctxt "abbreviated weekday name"
 msgid "Sat"
-msgstr ""
+msgstr "شنبه"
 
 #: ../glib/gdatetime.c:342
 msgctxt "abbreviated weekday name"
 msgid "Sun"
-msgstr ""
+msgstr "یکشنبه"
 
 #: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
