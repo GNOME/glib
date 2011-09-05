@@ -788,7 +788,6 @@ g_atomic_pointer_xor
 g_atomic_int_exchange_and_add
 
 <SUBSECTION Private>
-G_ATOMIC_OP_MEMORY_BARRIER_NEEDED
 G_ATOMIC_OP_USE_GCC_BUILTINS
 </SECTION>
 
@@ -2713,6 +2712,7 @@ g_unichar_compose
 g_unichar_decompose
 g_unichar_fully_decompose
 GUnicodeType
+G_UNICODE_COMBINING_MARK
 g_unichar_type
 GUnicodeBreakType
 g_unichar_break_type

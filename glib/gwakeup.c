@@ -36,7 +36,7 @@
 
 #include "gwakeup.h"
 
-/**
+/*< private >
  * SECTION:gwakeup
  * @title: GWakeup
  * @short_description: portable cross-thread event signal mechanism
