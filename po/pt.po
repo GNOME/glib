@@ -5,11 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 3.0\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-03-02 01:05+0000\n"
+"Project-Id-Version: 3.2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-05 22:16+0100\n"
+"PO-Revision-Date: 2011-09-05 22:20+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: Portuguese <gnome_pt@yahoogroups.com>\n"
 "Language: pt\n"
@@ -191,10 +190,9 @@ msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%H:%M:%S"
+msgstr "%I:%M:%S %p"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
@@ -485,39 +483,39 @@ msgstr[0] "%u byte"
 msgstr[1] "%u bytes"
 
 #: ../glib/gfileutils.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f KiB"
-msgstr "%.1f KB"
+msgstr "%.1f KiB"
 
 #: ../glib/gfileutils.c:2010
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MiB"
-msgstr "%.1f MB"
+msgstr "%.1f MiB"
 
 #: ../glib/gfileutils.c:2013
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f GiB"
-msgstr "%.1f GB"
+msgstr "%.1f GiB"
 
 #: ../glib/gfileutils.c:2016
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f TiB"
-msgstr "%.1f TB"
+msgstr "%.1f TiB"
 
 #: ../glib/gfileutils.c:2019
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f PiB"
-msgstr "%.1f PB"
+msgstr "%.1f PiB"
 
 #: ../glib/gfileutils.c:2022
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f EiB"
-msgstr "%.1f EB"
+msgstr "%.1f EiB"
 
 #: ../glib/gfileutils.c:2035
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f kB"
-msgstr "%.1f KB"
+msgstr "%.1f kB"
 
 #: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2147
 #, c-format
@@ -546,11 +544,11 @@ msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
 #: ../glib/gfileutils.c:2087
-#, fuzzy, c-format
+#, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
-msgstr[0] "%u byte"
-msgstr[1] "%u bytes"
+msgstr[0] "%s byte"
+msgstr[1] "%s bytes"
 
 #: ../glib/gfileutils.c:2142
 #, c-format
@@ -1152,17 +1150,17 @@ msgstr "Texto estava vazio (ou apenas continha espaços)"
 msgid "Failed to read data from child process"
 msgstr "Falha ao ler dados de processo filho"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com processo filho (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Falha ao ir para directório '%s' (%s)"
@@ -1222,32 +1220,32 @@ msgstr "Erro inesperado no select() ao ler dados de processo filho (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erro inesperado em waitpid() (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Falha ao efectuar fork (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Falha ao executar o processo filho \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Falha ao redireccionar saída ou entrada de processo filho (%s)"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Falha ao efectuar fork de processo filho (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erro desconhecido ao executar processo filho \"%s\""
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Incapaz de ler dados suficientes de canal pid do filho (%s)"
@@ -1883,10 +1881,10 @@ msgstr ""
 "reservado org.freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
-msgstr[0] "Tentativa de ler %lu bytes mas obtido EOF"
+msgstr[0] "Tentativa de ler %lu byte mas obtido EOF"
 msgstr[1] "Tentativa de ler %lu bytes mas obtido EOF"
 
 #: ../gio/gdbusmessage.c:1025
@@ -1915,16 +1913,16 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Valor processado `%s' não é uma assinatura D-Bus válida"
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
-"Encontrado um vector de comprimento %u bytes. Tamanho máximo é 2<<26 bytes "
+"Encontrado um vector de %u byte de comprimento. Tamanho máximo é 2<<26 bytes "
 "(64MiB)."
 msgstr[1] ""
-"Encontrado um vector de comprimento %u bytes. Tamanho máximo é 2<<26 bytes "
+"Encontrado um vector de %u bytes de comprimento. Tamanho máximo é 2<<26 bytes "
 "(64MiB)."
 
 #: ../gio/gdbusmessage.c:1490
@@ -1967,12 +1965,12 @@ msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Valor processado `%s' não é uma assinatura D-Bus válida (para corpo)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
 "Nenhum cabeçalho de assinatura na mensagem mas o corpo da mensagem tem %u "
-"bytes"
+"byte"
 msgstr[1] ""
 "Nenhum cabeçalho de assinatura na mensagem mas o corpo da mensagem tem %u "
 "bytes"
@@ -1990,11 +1988,12 @@ msgstr ""
 "ligação D-Bus"
 
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr "Mensagem tem %d fds mas o campo de cabeçalho indica %d fds"
+msgstr "Mensagem tem %d descritores de ficheiros mas o campo de cabeçalho "
+"indica %d descritores de ficheiros"
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
@@ -2082,7 +2081,7 @@ msgid "COMMAND"
 msgstr "COMANDO"
 
 #: ../gio/gdbus-tool.c:93
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
@@ -2098,6 +2097,7 @@ msgstr ""
 "  introspect   Realiza introspecção de um objecto remoto\n"
 "  monitor      Monitoriza um objecto remoto\n"
 "  call         Invoca um método num objecto remoto\n"
+"  emit         Emite um sinal\n"
 "\n"
 "Utilize \"%s COMMAND --help\" para obter ajuda sobre cada comando.\n"
 
@@ -2161,21 +2161,19 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:534
 msgid "Optional destination for signal (unique name)"
-msgstr ""
+msgstr "Destino opcional para o sinal (nome único)"
 
 #: ../gio/gdbus-tool.c:535
-#, fuzzy
 msgid "Object path to emit signal on"
-msgstr "Caminho do objecto a monitorizar"
+msgstr "Caminho do objecto sobre o qual emitir sinal"
 
 #: ../gio/gdbus-tool.c:536
-#, fuzzy
 msgid "Signal and interface name"
-msgstr "Método e nome de interface"
+msgstr "Nome do sinal e da interface"
 
 #: ../gio/gdbus-tool.c:568
 msgid "Emit a signal."
-msgstr ""
+msgstr "Emitir um sinal."
 
 #: ../gio/gdbus-tool.c:602 ../gio/gdbus-tool.c:822 ../gio/gdbus-tool.c:1549
 #: ../gio/gdbus-tool.c:1781
@@ -2184,9 +2182,9 @@ msgid "Error connecting: %s\n"
 msgstr "Erro ao se ligar: %s\n"
 
 #: ../gio/gdbus-tool.c:614
-#, fuzzy, c-format
+#, c-format
 msgid "Error: object path not specified.\n"
-msgstr "Erro: Caminho de objecto não está especificado\n"
+msgstr "Erro: caminho de objecto não especificado.\n"
 
 #: ../gio/gdbus-tool.c:619 ../gio/gdbus-tool.c:883 ../gio/gdbus-tool.c:1607
 #: ../gio/gdbus-tool.c:1840
@@ -2195,24 +2193,24 @@ msgid "Error: %s is not a valid object path\n"
 msgstr "Erro: %s não é um caminho de objecto válido\n"
 
 #: ../gio/gdbus-tool.c:625
-#, fuzzy, c-format
+#, c-format
 msgid "Error: signal not specified.\n"
-msgstr "Erro: Destino não está especificado\n"
+msgstr "Erro: sinal não especificado.\n"
 
 #: ../gio/gdbus-tool.c:634
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid interface name\n"
-msgstr "Erro: %s não é um caminho de objecto válido\n"
+msgstr "Erro: %s não é um nome de interface válido\n"
 
 #: ../gio/gdbus-tool.c:640
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid member name\n"
-msgstr "Erro: %s não é um caminho de objecto válido\n"
+msgstr "Erro: %s não é um nome de membro válido\n"
 
 #: ../gio/gdbus-tool.c:646
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
-msgstr "Erro: %s não é um caminho de objecto válido\n"
+msgstr "Erro: %s não é um nome único de canal (bus) válido.\n"
 
 #: ../gio/gdbus-tool.c:669 ../gio/gdbus-tool.c:982
 #, c-format
@@ -2220,9 +2218,9 @@ msgid "Error parsing parameter %d: %s\n"
 msgstr "Erro ao processar o parâmetro %d: %s\n"
 
 #: ../gio/gdbus-tool.c:698
-#, fuzzy, c-format
+#, c-format
 msgid "Error flushing connection: %s\n"
-msgstr "Erro ao aceitar a ligação: %s"
+msgstr "Erro ao despejar a ligação: %s\n"
 
 #: ../gio/gdbus-tool.c:725
 msgid "Destination name to invoke method on"
@@ -2237,9 +2235,8 @@ msgid "Method and interface name"
 msgstr "Método e nome de interface"
 
 #: ../gio/gdbus-tool.c:728
-#, fuzzy
 msgid "Timeout in seconds"
-msgstr "Foi atingido o tempo limite de espera"
+msgstr "Tempo limite em segundos"
 
 #: ../gio/gdbus-tool.c:767
 msgid "Invoke a method on a remote object."
@@ -2284,11 +2281,11 @@ msgstr "Imprimir XML"
 
 #: ../gio/gdbus-tool.c:1409
 msgid "Introspect children"
-msgstr ""
+msgstr "Realizar introspecção dos filhos"
 
 #: ../gio/gdbus-tool.c:1410
 msgid "Only print properties"
-msgstr ""
+msgstr "Apenas imprimir propriedades"
 
 #: ../gio/gdbus-tool.c:1501
 msgid "Introspect a remote object."
@@ -2331,7 +2328,7 @@ msgstr "Incapaz de criar a pasta de configurações MIME do utilizador %s: %s"
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "Informação da aplicação não possui um identificador"
 
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
@@ -2600,9 +2597,9 @@ msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "nome '%s' inválido: o último caracter não pode ser um traço ('-')."
 
 #: ../gio/glib-compile-schemas.c:789
-#, fuzzy, c-format
+#, c-format
 msgid "invalid name '%s': maximum length is 1024"
-msgstr "nome '%s' inválido: tamanho máximo é 32"
+msgstr "nome '%s' inválido: tamanho máximo é 1024"
 
 #: ../gio/glib-compile-schemas.c:858
 #, c-format
@@ -2878,7 +2875,6 @@ msgid "Error renaming file: %s"
 msgstr "Erro ao renomear o ficheiro: %s"
 
 #: ../gio/glocalfile.c:1126
-#, fuzzy
 msgid "Can't rename file, filename already exists"
 msgstr "Incapaz de renomear o ficheiro, o nome já existe"
 
@@ -3372,7 +3368,7 @@ msgstr "Repor o valor por omissão de CHAVE"
 
 #: ../gio/gsettings-tool.c:594
 msgid "Reset all keys in SCHEMA to their defaults"
-msgstr ""
+msgstr "Repor todas as chaves no ESQUEMA para os seus valores por omissão"
 
 #: ../gio/gsettings-tool.c:600
 msgid "Check if KEY is writable"
@@ -3402,7 +3398,6 @@ msgstr ""
 "\n"
 
 #: ../gio/gsettings-tool.c:621
-#, fuzzy
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3439,6 +3434,7 @@ msgstr ""
 "  get                       Obtém o valor de uma chave\n"
 "  set                       Define o valor de uma chave\n"
 "  reset                     Repõe o valor por omissão de uma chave\n"
+"  reset-recursively         Repor todos os valores de um esquema\n"
 "  writable                  Verifica se é possível alterar a chave\n"
 "  monitor                   Monitoriza por alterações\n"
 "\n"
@@ -3579,9 +3575,9 @@ msgid "Error sending data: %s"
 msgstr "Erro ao enviar os dados: %s"
 
 #: ../gio/gsocket.c:2163
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "Incapaz de criar socket: %s"
+msgstr "Incapaz de desligar o socket: %s"
 
 #: ../gio/gsocket.c:2242
 #, c-format
@@ -3689,7 +3685,6 @@ msgstr ""
 "bytes)"
 
 #: ../gio/gsocks5proxy.c:352
-#, fuzzy
 msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "O servidor de proxy SOCKSv5 utiliza um tipo de endereço desconhecido."
 
@@ -3731,9 +3726,8 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Incapaz de manipular a versão %d da codificação GThemedIcon"
 
 #: ../gio/gtlscertificate.c:226
-#, fuzzy
 msgid "No PEM-encoded private key found"
-msgstr "Incapaz de encontrar um certificado codificado PEM"
+msgstr "Incapaz de encontrar uma chave privada codificada PEM"
 
 #: ../gio/gtlscertificate.c:235
 msgid "Could not parse PEM-encoded private key"
@@ -3752,16 +3746,20 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
+"Esta é a última oportunidade para introduzir correctamente a senha antes de "
+"lhe ser vedado o acesso."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"Foram introduzidas várias senhas incorrectas e o seu acesso será vedado após "
+"falhas adicionais."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "A senha introduzida está incorrecta."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
@@ -3811,9 +3809,9 @@ msgstr ""
 "Deveria ler um único byte para receber credenciais mas foram lidos zero bytes"
 
 #: ../gio/gunixconnection.c:545
-#, fuzzy, c-format
+#, c-format
 msgid "Not expecting control message, but got %d"
-msgstr "Era esperada 1 mensagem de controlo, %d recebidas"
+msgstr "Não eram esperadas mensagens de controlo, mas foram recebidas %d"
 
 #: ../gio/gunixconnection.c:571
 #, c-format
