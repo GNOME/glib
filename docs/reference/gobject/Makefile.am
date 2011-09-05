@@ -20,8 +20,15 @@ SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED" \
 MKDB_OPTIONS=--sgml-mode --output-format=xml --name-space=g
 
 # Used for dependencies
-HFILE_GLOB=$(addprefix $(top_srcdir)/gobject/,$(shell cat $(top_builddir)/gobject/gobject-public-headers.txt))
+HFILE_GLOB=$(top_srcdir)/gobject/*.h
 CFILE_GLOB=$(top_srcdir)/gobject/*.c
+
+# Headers to ignore
+IGNORE_HFILES = \
+	tests			\
+	gobject_trace.h		\
+	gatomicarray.h
+
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.

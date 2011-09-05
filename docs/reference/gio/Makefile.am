@@ -16,7 +16,7 @@ SCAN_OPTIONS=--deprecated-guards="G_DISABLE_DEPRECATED"
 DOC_SOURCE_DIR=$(top_srcdir)/gio
 
 BUILT_HFILES=gioenumtypes.h
-HFILE_GLOB=$(filter-out $(addprefix %/, $(BUILT_HFILES)), $(addprefix $(top_srcdir)/gio/,$(shell cat $(top_builddir)/gio/gio-public-headers.txt))) $(addprefix $(top_builddir)/gio/,$(BUILT_HFILES))
+HFILE_GLOB=$(top_srcdir)/gio/*.h
 CFILE_GLOB=$(top_srcdir)/gio/*.c
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
