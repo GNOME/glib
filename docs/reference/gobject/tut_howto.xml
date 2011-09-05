@@ -183,7 +183,7 @@ struct _MamanBar
 struct _MamanBarPrivate
 {
   int hsize;
-}
+};
 
 static void
 maman_bar_class_init (MamanBarClass *klass)
