@@ -74,6 +74,7 @@ synchronize their operation.
       <xi:include href="xml/unicode.xml" />
       <xi:include href="xml/base64.xml" />
       <xi:include href="xml/checksum.xml" />
+      <xi:include href="xml/hmac.xml" />
       <xi:include href="xml/i18n.xml" />
       <xi:include href="xml/date.xml" />
       <xi:include href="xml/timezone.xml" />
