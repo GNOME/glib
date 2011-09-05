@@ -93,7 +93,8 @@ all-yes: $(CATALOGS)
 all-no:
 
 $(srcdir)/$(GETTEXT_PACKAGE).pot: $(POTFILES)
-	$(XGETTEXT) --default-domain=$(GETTEXT_PACKAGE) --directory=$(top_srcdir) \
+	$(XGETTEXT) --default-domain=$(GETTEXT_PACKAGE) \
+	  --msgid-bugs-address='http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general' \
 	  --add-comments --keyword=_ --keyword=N_ \
 	  --keyword=C_:1c,2 \
 	  --keyword=NC_:1c,2 \
@@ -119,7 +120,7 @@ $(srcdir)/$(GETTEXT_PACKAGE).pot: $(POTFILES)
           --flag=g_snprintf:3:c-format \
           --flag=g_scanner_error:2:c-format \
           --flag=g_scanner_warn:2:c-format \
-	  --files-from=$(srcdir)/POTFILES.in \
+	  $(POTFILES) \
 	&& test ! -f $(GETTEXT_PACKAGE).po \
 	   || ( rm -f $(srcdir)/$(GETTEXT_PACKAGE).pot \
 		&& mv $(GETTEXT_PACKAGE).po $(srcdir)/$(GETTEXT_PACKAGE).pot )
