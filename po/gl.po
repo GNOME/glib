@@ -16,10 +16,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-09-04 18:37+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-05 11:54+0200\n"
+"PO-Revision-Date: 2011-09-05 11:55+0200\n"
 "Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galego <gnome-l10n-gl@gnome.org>\n"
 "Language: gl\n"
@@ -204,10 +203,9 @@ msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%H:%M:%S"
+msgstr "%I:%M:%S %p"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
