@@ -178,7 +178,7 @@ msgstr "ਸ਼ਾਮ"
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "و %H:%M:%S %Z ت %d %B %Y"
+msgstr "%A %d %b %Y %I:%M:%S %p %Z"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210
@@ -196,7 +196,7 @@ msgstr "%H:%M:%S"
 #: ../glib/gdatetime.c:216
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%P %I:%M:%S"
+msgstr "%I:%M:%S %p %Z"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
