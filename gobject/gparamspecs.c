@@ -2287,7 +2287,7 @@ g_param_spec_boxed (const gchar *name,
  * @blurb: description of the property specified
  * @flags: flags for the property specified
  *
- * Creates a new #GParamSpecPoiner instance specifying a pointer property.
+ * Creates a new #GParamSpecPointer instance specifying a pointer property.
  *
  * See g_param_spec_internal() for details on property names.
  *

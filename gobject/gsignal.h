@@ -230,8 +230,8 @@ struct _GSignalInvocationHint
  *  effective callback signature is:
  *  <programlisting>
  *  @return_type callback (#gpointer     data1,
- *  [#param_types param_names,]
- *  #gpointer     data2);
+ *  [param_types param_names,]
+ *  gpointer     data2);
  *  </programlisting>
  * 
  * A structure holding in-depth information for a specific signal. It is

@@ -619,8 +619,7 @@ g_value_unset (&amp;val);
   
     <para>
       <function><link linkend="g-object-set-property">g_object_set_property</link></function> first ensures a property
-      with this name was registered in bar's class_init handler. If so, it calls
-      <function><link linkend="object-set-property">object_set_property</link></function> which first walks the class hierarchy,
+      with this name was registered in bar's class_init handler. If so it walks the class hierarchy,
       from bottom, most derived type, to top, fundamental type to find the class
       which registered that property. It then tries to convert the user-provided GValue
       into a GValue whose type is that of the associated property.
@@ -662,7 +661,7 @@ g_value_unset (&amp;val);
       <footnote>
         <para>
           It should be noted that the param_id used here need only to uniquely identify each 
-          <link linkend="GParamSpec"><type>GParamSpec</type></link> within the <link linkend="FooClass"><type>FooClass</type></link> such that the switch
+          <link linkend="GParamSpec"><type>GParamSpec</type></link> within the <type>FooClass</type> such that the switch
           used in the set and get methods actually works. Of course, this locally-unique 
           integer is purely an optimization: it would have been possible to use a set of 
           <emphasis>if (strcmp (a, b) == 0) {} else if (strcmp (a, b) == 0) {}</emphasis> statements.
@@ -674,8 +673,7 @@ g_value_unset (&amp;val);
   
     <para>
       Once the property has been set by the object's set_property class method, the code path
-      returns to <function><link linkend="g-object-set-property">g_object_set_property</link></function> which calls 
-      <function><link linkend="g-object-notify-queue-thaw">g_object_notify_queue_thaw</link></function>. This function makes sure that
+      returns to <function><link linkend="g-object-set-property">g_object_set_property</link></function> which makes sure that
       the "notify" signal is emitted on the object's instance with the changed property as
       parameter unless notifications were frozen by <function><link linkend="g-object-freeze-notify">g_object_freeze_notify</link></function>.
     </para>

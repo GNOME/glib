@@ -2787,9 +2787,9 @@ g_type_register_dynamic (GType        parent_type,
  * @info: The #GInterfaceInfo structure for this
  *        (@instance_type, @interface_type) combination.
  *
- * Adds the static @interface_type to @instantiable_type.  The information
- * contained in the #GTypeInterfaceInfo structure pointed to by @info
- * is used to manage the relationship.
+ * Adds the static @interface_type to @instantiable_type.  The
+ * information contained in the #GInterfaceInfo structure pointed to by
+ * @info is used to manage the relationship.
  */
 void
 g_type_add_interface_static (GType                 instance_type,

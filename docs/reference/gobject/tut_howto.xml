@@ -825,8 +825,8 @@ void maman_ibaz_do_action (MamanIbaz *self);
     <itemizedlist>
       <listitem><para>
         The <function>_GET_CLASS</function> macro is called <function>_GET_INTERFACE</function>
-                  and not implemented with <function><link linkend="G_TYPE_INSTANCE_GET_CLASS">G_TYPE_INSTANCE_GET_CLASS</link></function>
-                  but with <function><link linkend="G_TYPE_INSTANCE_GET_INTERFACE">G_TYPE_INSTANCE_GET_INTERFACE</link></function>.
+                  and not implemented with <function><link linkend="G-TYPE-INSTANCE-GET-CLASS:CAPS">G_TYPE_INSTANCE_GET_CLASS</link></function>
+                  but with <function><link linkend="G-TYPE-INSTANCE-GET-INTERFACE:CAPS">G_TYPE_INSTANCE_GET_INTERFACE</link></function>.
       </para></listitem>
       <listitem><para>
         The instance type, <type>MamanIbaz</type> is not fully defined: it is

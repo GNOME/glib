@@ -1125,10 +1125,11 @@ struct _GInterfaceInfo
  *  It should be noted, that it is generally a bad idea to follow the
  *  #G_VALUE_NOCOPY_CONTENTS hint for reference counted types. Due to
  *  reentrancy requirements and reference count assertions performed
- *  by the #GSignal code, reference counts should always be incremented
- *  for reference counted contents stored in the value->data array.
- *  To deviate from our string example for a moment, and taking a look
- *  at an exemplary implementation for collect_value() of #GObject:
+ *  by the signal emission code, reference counts should always be
+ *  incremented for reference counted contents stored in the value->data
+ *  array.  To deviate from our string example for a moment, and taking
+ *  a look at an exemplary implementation for collect_value() of
+ *  #GObject:
  *  |[
  *  if (collect_values[0].v_pointer)
  *  {

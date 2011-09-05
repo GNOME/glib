@@ -21,7 +21,6 @@
 /**
  * SECTION:value_collection
  * @Short_description: Converting varargs to generic values
- * @See_also:#GValueTable
  * @Title: Varargs Value Collection
  * 
  * The macros in this section provide the varargs parsing support needed

@@ -2525,7 +2525,7 @@ toggle_refs_notify (GObject *object,
  * true) or weak to strong (@is_last_ref false).
  *
  * Since a (normal) reference must be held to the object before
- * calling g_object_toggle_ref(), the initial state of the reverse
+ * calling g_object_add_toggle_ref(), the initial state of the reverse
  * link is always strong.
  *
  * Multiple toggle references may be added to the same gobject,
@@ -3242,7 +3242,7 @@ g_value_dup_object (const GValue *value)
  * @detailed_signal: a string of the form "signal-name::detail".
  * @c_handler: the #GCallback to connect.
  * @gobject: the object to pass as data to @c_handler.
- * @connect_flags: a combination of #GConnnectFlags.
+ * @connect_flags: a combination of #GConnectFlags.
  *
  * This is similar to g_signal_connect_data(), but uses a closure which
  * ensures that the @gobject stays alive during the call to @c_handler

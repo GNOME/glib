@@ -396,9 +396,10 @@ void g_signal_emitv (const GValue *instance_and_params,
 	  </para>
   
 	  <para>
-		If, at any point during emission (except in RUN_CLEANUP state), one of the 
-		closures or emission hook stops the signal emission with 
-		<function><link linkend="g-signal-stop">g_signal_stop</link></function>, emission jumps to CLEANUP state.
+		If, at any point during emission (except in RUN_CLEANUP state), one of the
+		closures or emission hook stops the signal emission with
+		<function><link linkend="g-signal-stop-emission">g_signal_stop_emission</link></function>,
+		emission jumps to CLEANUP state.
 	  </para>
   
 	  <para>

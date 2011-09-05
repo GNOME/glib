@@ -228,7 +228,7 @@ struct _GParamSpec
  *  g_param_value_set_default().
  * @value_validate: Ensures that the contents of @value comply with the 
  *  specifications set out by this type (optional), see 
- *  g_param_value_set_validate().
+ *  g_param_value_validate().
  * @values_cmp: Compares @value1 with @value2 according to this type
  *  (recommended, the default is memcmp()), see g_param_values_cmp().
  * 
@@ -331,7 +331,7 @@ typedef struct _GParamSpecTypeInfo GParamSpecTypeInfo;
  *  g_param_value_set_default().
  * @value_validate: Ensures that the contents of @value comply with the 
  *  specifications set out by @pspec (optional), see 
- *  g_param_value_set_validate().
+ *  g_param_value_validate().
  * @values_cmp: Compares @value1 with @value2 according to @pspec 
  *  (recommended, the default is memcmp()), see g_param_values_cmp().
  * 
