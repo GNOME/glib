@@ -50,6 +50,39 @@ struct _GIRepositoryPrivate
 
 G_DEFINE_TYPE (GIRepository, g_irepository, G_TYPE_OBJECT);
 
+#ifdef G_PLATFORM_WIN32
+
+#include <windows.h>
+
+static HMODULE girepository_dll = NULL;
+
+#ifdef DLL_EXPORT
+
+BOOL WINAPI
+DllMain (HINSTANCE hinstDLL,
+	 DWORD     fdwReason,
+	 LPVOID    lpvReserved)
+{
+  if (fdwReason == DLL_PROCESS_ATTACH)
+      girepository_dll = hinstDLL;
+
+  return TRUE;
+}
+
+#endif
+
+#undef GOBJECT_INTROSPECTION_LIBDIR
+
+/* GOBJECT_INTROSPECTION_LIBDIR is used only in code called just once,
+ * so no problem leaking this
+ */
+#define GOBJECT_INTROSPECTION_LIBDIR \
+  g_build_filename (g_win32_get_package_installation_directory_of_module (girepository_dll), \
+		    "lib", \
+		    NULL)
+
+#endif
+
 static void
 g_irepository_init (GIRepository *repository)
 {
