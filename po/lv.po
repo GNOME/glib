@@ -6,12 +6,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
-"cgi?product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-06-29 05:52+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-04 23:56-0400\n"
 "PO-Revision-Date: 2011-07-11 00:56+0300\n"
 "Last-Translator: Rūdofls Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
+"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -159,227 +160,228 @@ msgid "Invalid hostname"
 msgstr "Nepareizs hostdatora nosaukums"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:149
-msgctxt "GDateTime"
-msgid "am"
-msgstr "am"
-
-#. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:151
+#: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:153
-msgctxt "GDateTime"
-msgid "pm"
-msgstr "pm"
-
-#. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:155
+#: ../glib/gdatetime.c:204
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
 
+#. Translators: this is the preferred format for expressing the date and the time
+#: ../glib/gdatetime.c:207
+msgctxt "GDateTime"
+msgid "%a %b %e %H:%M:%S %Y"
+msgstr ""
+
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:164
+#: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d.%m.%Y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:167
+#: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
-#: ../glib/gdatetime.c:193
+#. Translators: this is the preferred format for expressing 12 hour time
+#: ../glib/gdatetime.c:216
+#, fuzzy
+msgctxt "GDateTime"
+msgid "%I:%M:%S %p"
+msgstr "%H:%M:%S"
+
+#: ../glib/gdatetime.c:229
 msgctxt "full month name"
 msgid "January"
 msgstr "Janvāris"
 
-#: ../glib/gdatetime.c:195
+#: ../glib/gdatetime.c:231
 msgctxt "full month name"
 msgid "February"
 msgstr "Februāris"
 
-#: ../glib/gdatetime.c:197
+#: ../glib/gdatetime.c:233
 msgctxt "full month name"
 msgid "March"
 msgstr "Marts"
 
-#: ../glib/gdatetime.c:199
+#: ../glib/gdatetime.c:235
 msgctxt "full month name"
 msgid "April"
 msgstr "Aprīlis"
 
-#: ../glib/gdatetime.c:201
+#: ../glib/gdatetime.c:237
 msgctxt "full month name"
 msgid "May"
 msgstr "Maijs"
 
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:239
 msgctxt "full month name"
 msgid "June"
 msgstr "Jūnijs"
 
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:241
 msgctxt "full month name"
 msgid "July"
 msgstr "Jūlijs"
 
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:243
 msgctxt "full month name"
 msgid "August"
 msgstr "Augusts"
 
-#: ../glib/gdatetime.c:209
+#: ../glib/gdatetime.c:245
 msgctxt "full month name"
 msgid "September"
 msgstr "Septembris"
 
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:247
 msgctxt "full month name"
 msgid "October"
 msgstr "Oktobris"
 
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:249
 msgctxt "full month name"
 msgid "November"
 msgstr "Novembris"
 
-#: ../glib/gdatetime.c:215
+#: ../glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "December"
 msgstr "Decembris"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Jan"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:268
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:270
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:272
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:274
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Jūn"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:278
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Jūl"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:282
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:284
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Oct"
 
-#: ../glib/gdatetime.c:250
+#: ../glib/gdatetime.c:286
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Nov"
 
-#: ../glib/gdatetime.c:252
+#: ../glib/gdatetime.c:288
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dec"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Pirmdiena"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Otrdiena"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Trešdiena"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:309
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Ceturdiena"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:311
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Piektdiena"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:313
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sestdiena"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:315
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Svētdiena"
 
-#: ../glib/gdatetime.c:294
+#: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Pr"
 
-#: ../glib/gdatetime.c:296
+#: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Ot"
 
-#: ../glib/gdatetime.c:298
+#: ../glib/gdatetime.c:334
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Tr"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:336
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Ct"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:338
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Pk"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:340
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Se"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:342
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Sv"
@@ -429,7 +431,7 @@ msgstr "Nevarēju atvērt '%s': fdopen() neizdevās: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Nevarēja pārsaukt failu'%s' uz '%s': g_rename() neizdevās: %s"
 
-#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1391
+#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Neizdevās izveidot failu '%s': %s"
@@ -454,27 +456,28 @@ msgstr "Neizdevās rakstīt failā '%s': fflush() neizdevās: %s"
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Neizdevās rakstīt failā '%s': fsync() neizdevās: %s"
 
-#: ../glib/gfileutils.c:1027
+#: ../glib/gfileutils.c:1030
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Neizdevās aizvērt failu '%s': fclose() neizdevās: %s"
 
-#: ../glib/gfileutils.c:1149
+#: ../glib/gfileutils.c:1152
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Nevarēja izdzēst esošo failu '%s': g_unlink() neizdevās: %s"
 
-#: ../glib/gfileutils.c:1353
+#: ../glib/gfileutils.c:1412
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Veidne '%s' nepareizs, nedrīkstētu saturēt '%s'"
 
-#: ../glib/gfileutils.c:1366
+#: ../glib/gfileutils.c:1425
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Veidne '%s' nesatur XXXXXX"
 
-#: ../glib/gfileutils.c:1799
+#: ../glib/gfileutils.c:2001 ../glib/gfileutils.c:2029
+#: ../glib/gfileutils.c:2134
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -482,42 +485,86 @@ msgstr[0] "%u baits"
 msgstr[1] "%u baiti"
 msgstr[2] "%u baitu"
 
-#: ../glib/gfileutils.c:1807
-#, c-format
-msgid "%.1f KB"
+#: ../glib/gfileutils.c:2007
+#, fuzzy, c-format
+msgid "%.1f KiB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1812
+#: ../glib/gfileutils.c:2010
+#, fuzzy, c-format
+msgid "%.1f MiB"
+msgstr "%.1f MB"
+
+#: ../glib/gfileutils.c:2013
+#, fuzzy, c-format
+msgid "%.1f GiB"
+msgstr "%.1f GB"
+
+#: ../glib/gfileutils.c:2016
+#, fuzzy, c-format
+msgid "%.1f TiB"
+msgstr "%.1f TB"
+
+#: ../glib/gfileutils.c:2019
+#, fuzzy, c-format
+msgid "%.1f PiB"
+msgstr "%.1f PB"
+
+#: ../glib/gfileutils.c:2022
+#, fuzzy, c-format
+msgid "%.1f EiB"
+msgstr "%.1f EB"
+
+#: ../glib/gfileutils.c:2035
+#, fuzzy, c-format
+msgid "%.1f kB"
+msgstr "%.1f KB"
+
+#: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2147
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1817
+#: ../glib/gfileutils.c:2041 ../glib/gfileutils.c:2152
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1822
+#: ../glib/gfileutils.c:2044 ../glib/gfileutils.c:2157
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:1827
+#: ../glib/gfileutils.c:2047 ../glib/gfileutils.c:2162
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:1832
+#: ../glib/gfileutils.c:2050 ../glib/gfileutils.c:2167
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#: ../glib/gfileutils.c:1875
+#. Translators: the %s in "%s bytes" will always be replaced by a number.
+#: ../glib/gfileutils.c:2087
+#, fuzzy, c-format
+msgid "%s byte"
+msgid_plural "%s bytes"
+msgstr[0] "%u baits"
+msgstr[1] "%u baiti"
+msgstr[2] "%u baitu"
+
+#: ../glib/gfileutils.c:2142
+#, c-format
+msgid "%.1f KB"
+msgstr "%.1f KB"
+
+#: ../glib/gfileutils.c:2210
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Neizdevās nolasīt simbolisko saiti '%s': %s"
 
-#: ../glib/gfileutils.c:1896
+#: ../glib/gfileutils.c:2231
 msgid "Symbolic links not supported"
 msgstr "Simboliskās saites nav atbalstītas"
 
@@ -637,8 +684,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "Savāda rakstzīme '%s'. Tika gaidīta '>' rakstzīme, kas nobeigtu sākuma birku "
 "elementam '%s'"
@@ -778,7 +825,7 @@ msgstr "atpakaļ izsekošanas limits ir sasniegts"
 msgid "the pattern contains items not supported for partial matching"
 msgstr "raksts satur elementus, kurus neatbalsta daļējā atbilstība"
 
-#: ../glib/gregex.c:212 ../gio/glocalfile.c:2117
+#: ../glib/gregex.c:212 ../gio/glocalfile.c:2107
 msgid "internal error"
 msgstr "iekšēja kļūda"
 
@@ -1091,17 +1138,17 @@ msgstr "Teksts bija tukšs (vai saturēja tikai tukšumus)"
 msgid "Failed to read data from child process"
 msgstr "Nevarēju nolasīt datus no bērnprocesa"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1508
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nevarēju izveidot programkanālu komunikācijai ar bērnprocesu (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1161
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nevarēju nolasīt no bērna programkanāla (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1374
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nevarēju pāriet uz direktoriju '%s' (%s)"
@@ -1145,47 +1192,47 @@ msgid ""
 msgstr ""
 "Negaidīta kļūda iekš g_io_channel_win32_poll(), lasot datus no bērnprocesa"
 
-#: ../glib/gspawn.c:198
+#: ../glib/gspawn.c:207
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nevarēju nolasīt datus no bērnprocesa (%s)"
 
-#: ../glib/gspawn.c:338
+#: ../glib/gspawn.c:347
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Negaidīta kļūda iekš select(), lasot datus no bērnprocesa (%s)"
 
-#: ../glib/gspawn.c:423
+#: ../glib/gspawn.c:432
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Negaidīta kļūda waitpid() (%s)"
 
-#: ../glib/gspawn.c:1228
+#: ../glib/gspawn.c:1237
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neizdevās sadalīt (%s)"
 
-#: ../glib/gspawn.c:1384
+#: ../glib/gspawn.c:1393
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nevarēju izpildīt bērnprocesu \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1394
+#: ../glib/gspawn.c:1403
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nevarēju novadīt bērnprocesa (%s) izvadi vai ievadi"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1412
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nevarēju sazarot bērnprocesu (%s)"
 
-#: ../glib/gspawn.c:1411
+#: ../glib/gspawn.c:1420
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nezināma kļūda, izpildot bērnprocesu \"%s\""
 
-#: ../glib/gspawn.c:1435
+#: ../glib/gspawn.c:1444
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -1302,9 +1349,9 @@ msgstr "Nederīgs atslēgas nosaukums: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Atslēgas fails satur neatbalstītu kodējumu '%s'"
 
-#: ../glib/gkeyfile.c:1149 ../glib/gkeyfile.c:1311 ../glib/gkeyfile.c:2680
-#: ../glib/gkeyfile.c:2746 ../glib/gkeyfile.c:2881 ../glib/gkeyfile.c:3014
-#: ../glib/gkeyfile.c:3214 ../glib/gkeyfile.c:3403 ../glib/gkeyfile.c:3472
+#: ../glib/gkeyfile.c:1149 ../glib/gkeyfile.c:1311 ../glib/gkeyfile.c:2686
+#: ../glib/gkeyfile.c:2752 ../glib/gkeyfile.c:2887 ../glib/gkeyfile.c:3020
+#: ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3394 ../glib/gkeyfile.c:3463
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Atslēgas failam nav grupa '%s'"
@@ -1332,7 +1379,7 @@ msgid ""
 msgstr ""
 "Atslēgas fails satur atslēgu '%s'. kurai ir vērtība, kuru nevar interpretēt."
 
-#: ../glib/gkeyfile.c:2149 ../glib/gkeyfile.c:2511
+#: ../glib/gkeyfile.c:2151 ../glib/gkeyfile.c:2515
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1341,36 +1388,36 @@ msgstr ""
 "Atslēgas fails satur atslēgu '%s' grupā '%s' kurai ir vērtība, ko nevar "
 "interpretēt."
 
-#: ../glib/gkeyfile.c:2695 ../glib/gkeyfile.c:2896 ../glib/gkeyfile.c:3483
+#: ../glib/gkeyfile.c:2701 ../glib/gkeyfile.c:2902 ../glib/gkeyfile.c:3474
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Atslēgas failam nav atslēgas '%s' grupā '%s'"
 
-#: ../glib/gkeyfile.c:3717
+#: ../glib/gkeyfile.c:3708
 msgid "Key file contains escape character at end of line"
 msgstr "Atslēgas fails satur atsoļa rakstzīme rindas beigās"
 
-#: ../glib/gkeyfile.c:3739
+#: ../glib/gkeyfile.c:3730
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Atslēgas fails satur nederīgu atsoļa sekvenci '%s'"
 
-#: ../glib/gkeyfile.c:3881
+#: ../glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Vērtību '%s' nevar interpretēt kā skaitli."
 
-#: ../glib/gkeyfile.c:3895
+#: ../glib/gkeyfile.c:3886
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Veselā skaitļa '%s' vērtība ir ārpus apgabala"
 
-#: ../glib/gkeyfile.c:3928
+#: ../glib/gkeyfile.c:3919
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Vērtību '%s' nevar interpretēt kā peldošo komatu."
 
-#: ../glib/gkeyfile.c:3952
+#: ../glib/gkeyfile.c:3943
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Vērtību '%s' nevar interpretēt kā būla vērtību."
@@ -1378,19 +1425,19 @@ msgstr "Vērtību '%s' nevar interpretēt kā būla vērtību."
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:726
+#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:732
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Pārāk liela vērtība tika padota %s"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1197
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1206
 msgid "Stream is already closed"
 msgstr "Plūsma jau ir aizvērta"
 
-#: ../gio/gcancellable.c:460 ../gio/gdbusconnection.c:1640
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
 #: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
-#: ../gio/glocalfile.c:2110 ../gio/gsimpleasyncresult.c:814
+#: ../gio/glocalfile.c:2100 ../gio/gsimpleasyncresult.c:814
 #: ../gio/gsimpleasyncresult.c:840
 msgid "Operation was cancelled"
 msgstr "Darbība tika atcelta"
@@ -1407,7 +1454,7 @@ msgstr "Nepilnīga vairāku baitu sekvence ievadē"
 msgid "Not enough space in destination"
 msgstr "Mērķī nepietiek brīvās vietas"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:831
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:854
 msgid "Cancellable initialization not supported"
 msgstr "Atsaucama inicializācija nav atbalstīta"
 
@@ -1570,7 +1617,7 @@ msgstr "Komandrinda `%s' izgāja ar nenulles iziešanas statusu %d: %s"
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "Nevar noteikt sesijas kopnes adresi (nav implementēts šai OS)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6197
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1579,7 +1626,7 @@ msgstr ""
 "Nevar noteikt kopnes adresi no DBUS_STARTER_BUS_TYPE vides mainīgā - "
 "nezināma vērtība `%s'"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6206
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1706,7 +1753,7 @@ msgstr ""
 "Sastapās ar neatbalstītiem slēdžiem (flag), veidojot klienta puses "
 "savienojumu"
 
-#: ../gio/gdbusconnection.c:3769 ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1733,31 +1780,31 @@ msgstr "Īpašība `%s' nav lasāma"
 msgid "Property `%s' is not writable"
 msgstr "Īpašība `%s' nav rakstāma"
 
-#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5641
+#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Nav tādas saskarnes `%s'"
 
-#: ../gio/gdbusconnection.c:4214
+#: ../gio/gdbusconnection.c:4213
 msgid "No such interface"
 msgstr "Nav tādas saskarnes"
 
-#: ../gio/gdbusconnection.c:4433 ../gio/gdbusconnection.c:6147
+#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Nav tādas saskarnes `%s' uz objekta ceļa %s"
 
-#: ../gio/gdbusconnection.c:4485
+#: ../gio/gdbusconnection.c:4484
 #, c-format
 msgid "No such method `%s'"
 msgstr "Nav tādas metodes `%s'"
 
-#: ../gio/gdbusconnection.c:4516
+#: ../gio/gdbusconnection.c:4515
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Ziņojuma tips `%s neatbilda gaidītajam tipam `%s'"
 
-#: ../gio/gdbusconnection.c:4735
+#: ../gio/gdbusconnection.c:4734
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Objekts jau ir eksportēts saskarnei %s pie %s"
@@ -1767,12 +1814,12 @@ msgstr "Objekts jau ir eksportēts saskarnei %s pie %s"
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Metode `%s' atgrieza tipu `%s', bet gaidīja `%s'"
 
-#: ../gio/gdbusconnection.c:5752
+#: ../gio/gdbusconnection.c:5964
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Metode `%s' uz saskarnes `%s' ar parakstu `%s' neeksistē"
 
-#: ../gio/gdbusconnection.c:5870
+#: ../gio/gdbusconnection.c:6082
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "%s apakškoks jau ir eksportēts "
@@ -1813,56 +1860,67 @@ msgstr ""
 "SIGNAL ziņojums: INTERFACE galvenes fails izmanto rezervēto vērtību org."
 "freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:997
-#, c-format
-msgid "Wanted to read %lu bytes but got EOF"
-msgstr "Vēlējās lasīt %lu baitus, bet saņēma EOF"
+#: ../gio/gdbusmessage.c:998
+#, fuzzy, c-format
+msgid "Wanted to read %lu byte but got EOF"
+msgid_plural "Wanted to read %lu bytes but got EOF"
+msgstr[0] "Vēlējās lasīt %lu baitus, bet saņēma EOF"
+msgstr[1] "Vēlējās lasīt %lu baitus, bet saņēma EOF"
+msgstr[2] "Vēlējās lasīt %lu baitus, bet saņēma EOF"
 
-#: ../gio/gdbusmessage.c:1022
+#: ../gio/gdbusmessage.c:1025
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr ""
-"Gaidīja derīgu UTF-8 virkni, bet atrada nederīgus baitus pie baitu nobīdes %"
-"d (virknes garums ir %d). Derīgā UTF-8 virkne līdz tai vietai bija `%s'"
+"Gaidīja derīgu UTF-8 virkni, bet atrada nederīgus baitus pie baitu nobīdes "
+"%d (virknes garums ir %d). Derīgā UTF-8 virkne līdz tai vietai bija `%s'"
 
-#: ../gio/gdbusmessage.c:1035
+#: ../gio/gdbusmessage.c:1038
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr "Gaidīja NUL baitu pēc virknes `%s', bet atrada baitu %d"
 
-#: ../gio/gdbusmessage.c:1239
+#: ../gio/gdbusmessage.c:1242
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "Pasētā vērtība `%s' nav derīgs D-Bus objekta ceļš"
 
-#: ../gio/gdbusmessage.c:1265
+#: ../gio/gdbusmessage.c:1268
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Pasētā vērtība `%s' nav derīgs D-Bus objekta paraksts"
 
-#: ../gio/gdbusmessage.c:1320
-#, c-format
+#: ../gio/gdbusmessage.c:1324
+#, fuzzy, c-format
 msgid ""
+"Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr ""
+msgstr[0] ""
+"Saskārās ar %u baitu garu masīvu.  Maksimālais garums ir 2<<26 baiti (64 "
+"MiB)."
+msgstr[1] ""
+"Saskārās ar %u baitu garu masīvu.  Maksimālais garums ir 2<<26 baiti (64 "
+"MiB)."
+msgstr[2] ""
 "Saskārās ar %u baitu garu masīvu.  Maksimālais garums ir 2<<26 baiti (64 "
 "MiB)."
 
-#: ../gio/gdbusmessage.c:1484
+#: ../gio/gdbusmessage.c:1490
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "Parsētā vērtība `%s' variantam nav derīgs D-Bus paraksts"
 
-#: ../gio/gdbusmessage.c:1511
+#: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
 msgstr ""
 "Kļūda, deserializējot GVariant ar tipa virkni `%s' no D-Bus vadu formāta"
 
-#: ../gio/gdbusmessage.c:1699
+#: ../gio/gdbusmessage.c:1705
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -1871,71 +1929,79 @@ msgstr ""
 "Nederīga secības (endian) vērtība. Gaidīja 0x6c ('l') vai 0x42 ('B'), bet "
 "atrada vērību 0x%02x"
 
-#: ../gio/gdbusmessage.c:1713
+#: ../gio/gdbusmessage.c:1719
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Nederīga lielā protokola vērtība. Gaidīja 1, bet saņēma %d"
 
-#: ../gio/gdbusmessage.c:1770
+#: ../gio/gdbusmessage.c:1776
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 "Paraksta galvene ar parakstu `%s' atrasta, bet vēstules pamatteksts ir tukšs"
 
-#: ../gio/gdbusmessage.c:1784
+#: ../gio/gdbusmessage.c:1790
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Parsētā vērtība `%s' nav derīgs D-Bus paraksts (pamattekstam)"
 
-#: ../gio/gdbusmessage.c:1814
-#, c-format
-msgid "No signature header in message but the message body is %u bytes"
-msgstr "Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baiti"
+#: ../gio/gdbusmessage.c:1821
+#, fuzzy, c-format
+msgid "No signature header in message but the message body is %u byte"
+msgid_plural "No signature header in message but the message body is %u bytes"
+msgstr[0] ""
+"Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baiti"
+msgstr[1] ""
+"Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baiti"
+msgstr[2] ""
+"Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baiti"
 
-#: ../gio/gdbusmessage.c:1822
+#: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
 msgstr "Nevar deserializēt ziņojumu: "
 
-#: ../gio/gdbusmessage.c:2154
+#: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr "Kļūda, serializējot GVariant ar tipa virkni `%s' uz D-Bus vadu formātu"
 
-#: ../gio/gdbusmessage.c:2294
-#, c-format
-msgid "Message has %d fds but the header field indicates %d fds"
+#: ../gio/gdbusmessage.c:2303
+#, fuzzy, c-format
+msgid ""
+"Message has %d file descriptors but the header field indicates %d file "
+"descriptors"
 msgstr "Ziņojumam ir %d fds, bet galvenes lauks norāda %d fds"
 
-#: ../gio/gdbusmessage.c:2302
+#: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
 msgstr "Nevar serializēt ziņojumu: "
 
-#: ../gio/gdbusmessage.c:2346
+#: ../gio/gdbusmessage.c:2355
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr "Ziņojuma pamattekstam ir paraksts `%s', bet nav paraksta galvenes"
 
-#: ../gio/gdbusmessage.c:2356
+#: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr ""
 "Vēstules pamattekstam ir tipa paraksts `%s', bet paraksts galvenes laukā ir `"
 "%s'"
 
-#: ../gio/gdbusmessage.c:2372
+#: ../gio/gdbusmessage.c:2381
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "Ziņojuma pamatteksts ir tukšs, bet paraksta galvenes lauks ir `(%s)'"
 
-#: ../gio/gdbusmessage.c:2929
+#: ../gio/gdbusmessage.c:2938
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Kļūdas atgriešana ar pamattekstu ar tipu `%s'"
 
-#: ../gio/gdbusmessage.c:2937
+#: ../gio/gdbusmessage.c:2946
 msgid "Error return with empty body"
 msgstr "Kļūdas atgriešana ar tukšu pamattekstu"
 
@@ -1943,17 +2009,17 @@ msgstr "Kļūdas atgriešana ar tukšu pamattekstu"
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Nevarēja ielādēt /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:1424
+#: ../gio/gdbusproxy.c:1489
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Kļūda, izsaucot StartServiceByName priekš %s: "
 
-#: ../gio/gdbusproxy.c:1445
+#: ../gio/gdbusproxy.c:1510
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Negaidīta atbilde %d no StartServiceByName(\"%s\") metodes"
 
-#: ../gio/gdbusproxy.c:2507 ../gio/gdbusproxy.c:2666
+#: ../gio/gdbusproxy.c:2600 ../gio/gdbusproxy.c:2734
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2107,19 +2173,16 @@ msgstr "Kļūda: nav norādīts signāls.\n"
 
 #: ../gio/gdbus-tool.c:634
 #, c-format
-#| msgid "Character '%s' is not valid inside an entity name"
 msgid "Error: %s is not a valid interface name\n"
 msgstr "Kļūda: %s nav derīgs saskarnes nosaukums.\n"
 
 #: ../gio/gdbus-tool.c:640
 #, c-format
-#| msgid "Character '%s' is not valid inside an entity name"
 msgid "Error: %s is not a valid member name\n"
 msgstr "Kļūda: %s nav derīgs dalībnieka nosaukums.\n"
 
 #: ../gio/gdbus-tool.c:646
 #, c-format
-#| msgid "Character '%s' is not valid inside an entity name"
 msgid "Error: %s is not a valid unique bus name.\n"
 msgstr "Kļūda: %s nav derīgs unikāls kopnes nosaukums.\n"
 
@@ -2214,34 +2277,38 @@ msgstr "Objekta ceļš uz pārraugu"
 msgid "Monitor a remote object."
 msgstr "Pārraudzīt attālinātu objektu."
 
-#: ../gio/gdesktopappinfo.c:569 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:572 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Nenosaukts"
 
-#: ../gio/gdesktopappinfo.c:900
+#: ../gio/gdesktopappinfo.c:969
 msgid "Desktop file didn't specify Exec field"
 msgstr "Desktop fails nenorādīja Exec lauku"
 
-#: ../gio/gdesktopappinfo.c:1181
+#: ../gio/gdesktopappinfo.c:1250
 msgid "Unable to find terminal required for application"
 msgstr "Nevarēja atrast termināli, kas ir nepieciešams lietotnei"
 
-#: ../gio/gdesktopappinfo.c:1482
+#: ../gio/gdesktopappinfo.c:1515
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Nevar izveidot lietotāja lietotnes konfigurācijas mapi %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1486
+#: ../gio/gdesktopappinfo.c:1519
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Nevar izveidot lietotāja MIME konfigurācijas mapi %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1986
+#: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
+msgid "Application information lacks an identifier"
+msgstr ""
+
+#: ../gio/gdesktopappinfo.c:2033
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Nevar izveidot lietotāja darbvirsmas failu %s"
 
-#: ../gio/gdesktopappinfo.c:2102
+#: ../gio/gdesktopappinfo.c:2149
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Pielāgotas %s definīcijas"
@@ -2269,7 +2336,8 @@ msgstr "dzinis neatbalsta startēšanu"
 msgid "drive doesn't implement stop"
 msgstr "dzinis neatbalsta apturēšanu"
 
-#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+#: ../gio/gdummytlsbackend.c:168 ../gio/gdummytlsbackend.c:288
+#: ../gio/gdummytlsbackend.c:378
 msgid "TLS support is not available"
 msgstr "TLS atbalsts nav pieejams"
 
@@ -2301,11 +2369,11 @@ msgstr "Gaidīja GEmblem priekš GEmblemedIcon"
 #: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
 #: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
 #: ../gio/gfile.c:1837 ../gio/gfile.c:3307 ../gio/gfile.c:3361
-#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3861
-#: ../gio/gfile.c:4263 ../gio/gfile.c:4349 ../gio/gfile.c:4438
-#: ../gio/gfile.c:4536 ../gio/gfile.c:4623 ../gio/gfile.c:4717
-#: ../gio/gfile.c:5038 ../gio/gfile.c:5305 ../gio/gfile.c:5370
-#: ../gio/gfile.c:6944 ../gio/gfile.c:7034 ../gio/gfile.c:7120
+#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3864
+#: ../gio/gfile.c:4266 ../gio/gfile.c:4352 ../gio/gfile.c:4441
+#: ../gio/gfile.c:4539 ../gio/gfile.c:4626 ../gio/gfile.c:4720
+#: ../gio/gfile.c:5041 ../gio/gfile.c:5308 ../gio/gfile.c:5373
+#: ../gio/gfile.c:6947 ../gio/gfile.c:7037 ../gio/gfile.c:7123
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Darbība nav atbalstīta"
@@ -2318,12 +2386,12 @@ msgstr "Darbība nav atbalstīta"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1061 ../gio/glocalfile.c:1072
-#: ../gio/glocalfile.c:1085
+#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1051 ../gio/glocalfile.c:1062
+#: ../gio/glocalfile.c:1075
 msgid "Containing mount does not exist"
 msgstr "Saturošais montēšanas punkts neeksistē"
 
-#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2266
+#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2256
 msgid "Can't copy over directory"
 msgstr "Nevar kopēt virsū mapei"
 
@@ -2331,7 +2399,7 @@ msgstr "Nevar kopēt virsū mapei"
 msgid "Can't copy directory over directory"
 msgstr "Nevar uzkopēt mapi virsū mapei"
 
-#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2275
+#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2265
 msgid "Target file exists"
 msgstr "Mērķa fails eksistē"
 
@@ -2365,11 +2433,11 @@ msgstr "Miskaste nav atbalstīta"
 msgid "File names cannot contain '%c'"
 msgstr "Failu nosaukums nevar saturēt '%c'"
 
-#: ../gio/gfile.c:6003 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6006 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "sējums neatbalsta montēšanu"
 
-#: ../gio/gfile.c:6114
+#: ../gio/gfile.c:6117
 msgid "No application is registered as handling this file"
 msgstr "Neviena lietotne nav reģistrēta, kā šī faila apstrādājoša"
 
@@ -2459,7 +2527,7 @@ msgstr "Ievades plūsma neatbalsta lasīšanu"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:898 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1207
+#: ../gio/goutputstream.c:1216
 msgid "Stream has outstanding operation"
 msgstr "Plūsmai ir neizpildīta darbība"
 
@@ -2501,8 +2569,8 @@ msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "nederīgs nosaukums '%s': pēdējā rakstzīme nevar būt defise ('-')."
 
 #: ../gio/glib-compile-schemas.c:789
-#, c-format
-msgid "invalid name '%s': maximum length is 32"
+#, fuzzy, c-format
+msgid "invalid name '%s': maximum length is 1024"
 msgstr "nederīgs nosaukuma '%s': maksimālais garums ir 32"
 
 #: ../gio/glib-compile-schemas.c:858
@@ -2599,8 +2667,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> paplašina <schema id='%s' list-of='%s'> bet '%"
-"s' nepaplašina '%s'"
+"<schema id='%s' list-of='%s'> paplašina <schema id='%s' list-of='%s'> bet "
+"'%s' nepaplašina '%s'"
 
 #: ../gio/glib-compile-schemas.c:1163
 #, c-format
@@ -2670,11 +2738,11 @@ msgstr " un tika norādīts --strict; iziet.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
-"s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
 msgstr ""
-"kļūda, parsējot atslēgu `%s' shēmā `%s' kā norādīts pārrakstīšanas failā `%"
-"s': %s.  "
+"kļūda, parsējot atslēgu `%s' shēmā `%s' kā norādīts pārrakstīšanas failā `"
+"%s': %s.  "
 
 #: ../gio/glib-compile-schemas.c:1839
 #, c-format
@@ -2757,115 +2825,116 @@ msgstr "izņēma esošo izvades failu.\n"
 msgid "Unable to find default local directory monitor type"
 msgstr "Nevar atrast noklusēto lokālo mapi novērošanas tipu"
 
-#: ../gio/glocalfile.c:593 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:571 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nederīgs faila nosaukums %s"
 
-#: ../gio/glocalfile.c:969
+#: ../gio/glocalfile.c:948
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Kļūda, saņemot failu sistēmas informāciju: %s"
 
-#: ../gio/glocalfile.c:1107
+#: ../gio/glocalfile.c:1097
 msgid "Can't rename root directory"
 msgstr "Nevar pārsaukt saknes mapi"
 
-#: ../gio/glocalfile.c:1127 ../gio/glocalfile.c:1153
+#: ../gio/glocalfile.c:1117 ../gio/glocalfile.c:1143
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Kļūda, pārsaucot failu: %s"
 
-#: ../gio/glocalfile.c:1136
-msgid "Can't rename file, filename already exist"
+#: ../gio/glocalfile.c:1126
+#, fuzzy
+msgid "Can't rename file, filename already exists"
 msgstr "Nevar pārsaukt failu, fails jau eksistē"
 
-#: ../gio/glocalfile.c:1149 ../gio/glocalfile.c:2139 ../gio/glocalfile.c:2168
-#: ../gio/glocalfile.c:2328 ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfile.c:1139 ../gio/glocalfile.c:2129 ../gio/glocalfile.c:2158
+#: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:571
 #: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
 #: ../gio/glocalfileoutputstream.c:1157
 msgid "Invalid filename"
 msgstr "Nederīgs faila nosaukums"
 
-#: ../gio/glocalfile.c:1310
+#: ../gio/glocalfile.c:1300
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Kļūda, atverot failu: %s"
 
-#: ../gio/glocalfile.c:1326
+#: ../gio/glocalfile.c:1316
 msgid "Can't open directory"
 msgstr "Nevar atvērt mapi"
 
-#: ../gio/glocalfile.c:1451
+#: ../gio/glocalfile.c:1441
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Kļūda, dzēšot failu: %s"
 
-#: ../gio/glocalfile.c:1818
+#: ../gio/glocalfile.c:1808
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Kļūda, izmetot failu miskastē: %s"
 
-#: ../gio/glocalfile.c:1841
+#: ../gio/glocalfile.c:1831
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Nevar izveidot miskastes mapi %s: %s"
 
-#: ../gio/glocalfile.c:1862
+#: ../gio/glocalfile.c:1852
 msgid "Unable to find toplevel directory for trash"
 msgstr "Nevar atrast augšējā līmeņa mapi miskastei"
 
-#: ../gio/glocalfile.c:1941 ../gio/glocalfile.c:1961
+#: ../gio/glocalfile.c:1931 ../gio/glocalfile.c:1951
 msgid "Unable to find or create trash directory"
 msgstr "Nevar atrast vai izveidot miskastes mapi"
 
-#: ../gio/glocalfile.c:1995
+#: ../gio/glocalfile.c:1985
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Nevar izveidot miskastes informācijas failu: %s"
 
-#: ../gio/glocalfile.c:2024 ../gio/glocalfile.c:2029 ../gio/glocalfile.c:2109
-#: ../gio/glocalfile.c:2116
+#: ../gio/glocalfile.c:2014 ../gio/glocalfile.c:2019 ../gio/glocalfile.c:2099
+#: ../gio/glocalfile.c:2106
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Nevar izmest failu miskastē: %s"
 
-#: ../gio/glocalfile.c:2143
+#: ../gio/glocalfile.c:2133
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Kļūda, izveidojot mapi: %s"
 
-#: ../gio/glocalfile.c:2172
+#: ../gio/glocalfile.c:2162
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Failu sistēma neatbalsta simboliskās saites"
 
-#: ../gio/glocalfile.c:2176
+#: ../gio/glocalfile.c:2166
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Kļūda, veidojot simbolisko saiti: %s"
 
-#: ../gio/glocalfile.c:2238 ../gio/glocalfile.c:2332
+#: ../gio/glocalfile.c:2228 ../gio/glocalfile.c:2322
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Kļūda, pārvietojot failu: %s"
 
-#: ../gio/glocalfile.c:2261
+#: ../gio/glocalfile.c:2251
 msgid "Can't move directory over directory"
 msgstr "Nevar pārvietot mapi virsū mapei"
 
-#: ../gio/glocalfile.c:2288 ../gio/glocalfileoutputstream.c:955
+#: ../gio/glocalfile.c:2278 ../gio/glocalfileoutputstream.c:955
 #: ../gio/glocalfileoutputstream.c:969 ../gio/glocalfileoutputstream.c:984
 #: ../gio/glocalfileoutputstream.c:1000 ../gio/glocalfileoutputstream.c:1014
 msgid "Backup file creation failed"
 msgstr "Neizdevās izveidot rezerves kopijas failu"
 
-#: ../gio/glocalfile.c:2307
+#: ../gio/glocalfile.c:2297
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Kļūda, dzēšot mērķa failu: %s"
 
-#: ../gio/glocalfile.c:2321
+#: ../gio/glocalfile.c:2311
 msgid "Move between mounts not supported"
 msgstr "Pārvietošana starp montētiem sējumiem nav atbalstīta"
 
@@ -3122,16 +3191,16 @@ msgstr "montējums neatbalsta satura tipa minēšanu"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "montējums neatbalsta sinhrono satura tipa minēšanu"
 
-#: ../gio/gnetworkaddress.c:318
+#: ../gio/gnetworkaddress.c:322
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Datora nosaukums '%s' satur '[' bet ne ']'"
 
-#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:408
+#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
 msgstr "Izvades plūsma neatbalsta rakstīšanu"
 
-#: ../gio/goutputstream.c:369 ../gio/goutputstream.c:849
+#: ../gio/goutputstream.c:372 ../gio/goutputstream.c:855
 msgid "Source stream is already closed"
 msgstr "Avota plūsma jau ir aizvērta"
 
@@ -3403,107 +3472,107 @@ msgstr "Nederīga ligzda, inicializācija neizdevās, jo: %s"
 msgid "Socket is already closed"
 msgstr "Ligzda jau ir aizvērta"
 
-#: ../gio/gsocket.c:298 ../gio/gsocket.c:2772 ../gio/gsocket.c:2816
+#: ../gio/gsocket.c:298 ../gio/gsocket.c:2798 ../gio/gsocket.c:2842
 msgid "Socket I/O timed out"
 msgstr "Ligzdai I/O iestājās noildze"
 
-#: ../gio/gsocket.c:441
+#: ../gio/gsocket.c:464
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "izveido GSocket no fd: %s"
 
-#: ../gio/gsocket.c:475 ../gio/gsocket.c:491
+#: ../gio/gsocket.c:498 ../gio/gsocket.c:514
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nevarēja izveidot ligzdu: %s"
 
-#: ../gio/gsocket.c:475
+#: ../gio/gsocket.c:498
 msgid "Unknown protocol was specified"
 msgstr "Tika norādīts nezināms protokols"
 
-#: ../gio/gsocket.c:1245
+#: ../gio/gsocket.c:1268
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nevarēja iegūt lokālo adresi: %s"
 
-#: ../gio/gsocket.c:1288
+#: ../gio/gsocket.c:1311
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nevarēja iegūt attālināto adresi: %s"
 
-#: ../gio/gsocket.c:1349
+#: ../gio/gsocket.c:1372
 #, c-format
 msgid "could not listen: %s"
 msgstr "nevar klausīties: %s"
 
-#: ../gio/gsocket.c:1423
+#: ../gio/gsocket.c:1446
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Kļūda, sasaistoties ar adresi: %s"
 
-#: ../gio/gsocket.c:1543
+#: ../gio/gsocket.c:1566
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Kļūda, pieņemot savienojumu: %s"
 
-#: ../gio/gsocket.c:1660
+#: ../gio/gsocket.c:1683
 msgid "Error connecting: "
 msgstr "Kļūda savienojoties: "
 
-#: ../gio/gsocket.c:1665
+#: ../gio/gsocket.c:1688
 msgid "Connection in progress"
 msgstr "Notiek savienošanās"
 
-#: ../gio/gsocket.c:1672
+#: ../gio/gsocket.c:1695
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Kļūda savienojoties: %s"
 
-#: ../gio/gsocket.c:1715 ../gio/gsocket.c:3553
+#: ../gio/gsocket.c:1738 ../gio/gsocket.c:3579
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Nevar saņemt izpildes gaidīšanas kļūdu: %s"
 
-#: ../gio/gsocket.c:1850
+#: ../gio/gsocket.c:1875
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Kļūda, saņemot datus: %s"
 
-#: ../gio/gsocket.c:2025
+#: ../gio/gsocket.c:2050
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Kļūda, sūtot datus: %s"
 
-#: ../gio/gsocket.c:2138
+#: ../gio/gsocket.c:2163
 #, c-format
 msgid "Unable to shutdown socket: %s"
 msgstr "Neizdevās izslēgt soketu: %s"
 
-#: ../gio/gsocket.c:2217
+#: ../gio/gsocket.c:2242
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Kļūda, aizverot ligzdu: %s"
 
-#: ../gio/gsocket.c:2765
+#: ../gio/gsocket.c:2791
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Gaida ligzdas nosacījumu: %s"
 
-#: ../gio/gsocket.c:3030 ../gio/gsocket.c:3111
+#: ../gio/gsocket.c:3056 ../gio/gsocket.c:3137
 #, c-format
 msgid "Error sending message: %s"
 msgstr "Kļūda, sūtot ziņojumu: %s"
 
-#: ../gio/gsocket.c:3055
+#: ../gio/gsocket.c:3081
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage nav atbalstīts uz windows"
 
-#: ../gio/gsocket.c:3332 ../gio/gsocket.c:3468
+#: ../gio/gsocket.c:3358 ../gio/gsocket.c:3494
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Kļūda, saņemot ziņojumu: %s"
 
-#: ../gio/gsocket.c:3572
+#: ../gio/gsocket.c:3598
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials nav implementēts šai OS"
 
@@ -3517,7 +3586,6 @@ msgstr "Starpnieka mēģināšana caur ne-TCP savienojumu nav atbalstīta."
 
 #: ../gio/gsocketclient.c:858 ../gio/gsocketclient.c:1277
 #, c-format
-#| msgid "Conversion from character set '%s' to '%s' is not supported"
 msgid "Proxy protocol '%s' is not supported."
 msgstr "Starpnieka protokols '%s' nav atbalstīts."
 
@@ -3587,7 +3655,8 @@ msgstr ""
 "baiti)"
 
 #: ../gio/gsocks5proxy.c:352
-msgid "The SOCKSv5 proxy server uses unkown address type."
+#, fuzzy
+msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "SOCKSv5 starpnieka serveris izmanto nezināmu adreses tipu."
 
 #: ../gio/gsocks5proxy.c:359
@@ -3627,17 +3696,38 @@ msgstr "Nezināma SOCKSv5 starpnieka kļūda."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Nevar apstrādāt GThemedIcon versijas %d kodējumu"
 
-#: ../gio/gtlscertificate.c:228
+#: ../gio/gtlscertificate.c:226
+#, fuzzy
+msgid "No PEM-encoded private key found"
+msgstr "Nav atrasts PEM-iekodēts sertifikāts"
+
+#: ../gio/gtlscertificate.c:235
+msgid "Could not parse PEM-encoded private key"
+msgstr "Nevarēja parsēt PEM-iekodētu privāto atslēgu"
+
+#: ../gio/gtlscertificate.c:260
 msgid "No PEM-encoded certificate found"
 msgstr "Nav atrasts PEM-iekodēts sertifikāts"
 
-#: ../gio/gtlscertificate.c:237
+#: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
 msgstr "Nevarēja parsēt PEM-iekodētu sertifikātu"
 
-#: ../gio/gtlscertificate.c:258
-msgid "Could not parse PEM-encoded private key"
-msgstr "Nevarēja parsēt PEM-iekodētu privāto atslēgu"
+#: ../gio/gtlspassword.c:114
+msgid ""
+"This is the last chance to enter the password correctly before your access "
+"is locked out."
+msgstr ""
+
+#: ../gio/gtlspassword.c:116
+msgid ""
+"Several password entered have been incorrect, and your access will be locked "
+"out after further failures."
+msgstr ""
+
+#: ../gio/gtlspassword.c:118
+msgid "The password entered is incorrect."
+msgstr ""
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
@@ -3709,7 +3799,7 @@ msgstr "Kļūda, lasot no unix: %s"
 msgid "Error closing unix: %s"
 msgstr "Kļūda, aizverot unix: %s"
 
-#: ../gio/gunixmounts.c:1848 ../gio/gunixmounts.c:1885
+#: ../gio/gunixmounts.c:1900 ../gio/gunixmounts.c:1937
 msgid "Filesystem root"
 msgstr "Failu sistēmas sakne"
 
@@ -3786,6 +3876,14 @@ msgstr "Vajag vairāk ievades"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Nederīgi saspiestie dati"
+
+#~ msgctxt "GDateTime"
+#~ msgid "am"
+#~ msgstr "am"
+
+#~ msgctxt "GDateTime"
+#~ msgid "pm"
+#~ msgstr "pm"
 
 #, fuzzy
 #~ msgid "Invalid UTF-8 sequence in input"

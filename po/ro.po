@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&k"
-"eywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-03-14 19:50+0000\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-04 23:56-0400\n"
 "PO-Revision-Date: 2011-03-15 14:06+0200\n"
 "Last-Translator: Lucian Adrian Grijincu <lucian.grijincu@gmail.com>\n"
 "Language-Team: Romanian Gnome Team <gnomero-list@lists.sourceforge.net>\n"
@@ -93,7 +93,7 @@ msgstr ""
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Nu s-a putut expanda linia de comandă „%s” cu URI-ul %s"
 
-#: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1403
+#: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1404
 #: ../gio/gcharsetconverter.c:458
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -105,20 +105,21 @@ msgstr "Conversia de la setul de caractere „%s” la „%s” nu este implemen
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Nu s-a putut deschide convertorul de la „%s” la „%s”"
 
-#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1575
-#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2460 ../glib/gutf8.c:992
-#: ../glib/gutf8.c:1447 ../gio/gcharsetconverter.c:345
+#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1576
+#: ../glib/giochannel.c:1618 ../glib/giochannel.c:2461 ../glib/gutf8.c:1012
+#: ../glib/gutf8.c:1463 ../gio/gcharsetconverter.c:345
+#: ../gio/gdatainputstream.c:854 ../gio/gdatainputstream.c:1291
 msgid "Invalid byte sequence in conversion input"
 msgstr "Secvență de octeți incorectă în inputul conversiei"
 
-#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1582
-#: ../glib/giochannel.c:2472 ../gio/gcharsetconverter.c:350
+#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1583
+#: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Eroare în timpul conversiei: %s"
 
-#: ../glib/gconvert.c:809 ../glib/gutf8.c:988 ../glib/gutf8.c:1198
-#: ../glib/gutf8.c:1339 ../glib/gutf8.c:1443
+#: ../glib/gconvert.c:809 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
+#: ../glib/gutf8.c:1355 ../glib/gutf8.c:1459
 msgid "Partial character sequence at end of input"
 msgstr "Secvență parțială de caractere la sfârșitul inputului"
 
@@ -127,262 +128,263 @@ msgstr "Secvență parțială de caractere la sfârșitul inputului"
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Nu se poate converti rezerva „%s” la setul de caractere „%s”"
 
-#: ../glib/gconvert.c:1882
+#: ../glib/gconvert.c:1886
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "URI-ul „%s” nu este un URI absolut folosind schema „file”"
 
-#: ../glib/gconvert.c:1892
+#: ../glib/gconvert.c:1896
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "URI-ul fișierului local „%s” nu poate include un „#”"
 
-#: ../glib/gconvert.c:1909
+#: ../glib/gconvert.c:1913
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "URI-ul „%s” este nevalid"
 
-#: ../glib/gconvert.c:1921
+#: ../glib/gconvert.c:1925
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Numele din URI-ul „%s” este nevalid"
 
-#: ../glib/gconvert.c:1937
+#: ../glib/gconvert.c:1941
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "URI-ul „%s” conține caractere „escaped” incorecte"
 
-#: ../glib/gconvert.c:2032
+#: ../glib/gconvert.c:2036
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Calea „%s” nu este o cale absolută"
 
-#: ../glib/gconvert.c:2042
+#: ../glib/gconvert.c:2046
 msgid "Invalid hostname"
 msgstr "Nume nevalid"
 
 #. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:149
-msgctxt "GDateTime"
-msgid "am"
-msgstr "am"
-
-#. Translators: 'before midday' indicator
-#: ../glib/gdatetime.c:151
+#: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "AM"
 msgstr "AM"
 
 #. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:153
-msgctxt "GDateTime"
-msgid "pm"
-msgstr "pm"
-
-#. Translators: 'after midday' indicator
-#: ../glib/gdatetime.c:155
+#: ../glib/gdatetime.c:204
 msgctxt "GDateTime"
 msgid "PM"
 msgstr "PM"
 
+#. Translators: this is the preferred format for expressing the date and the time
+#: ../glib/gdatetime.c:207
+msgctxt "GDateTime"
+msgid "%a %b %e %H:%M:%S %Y"
+msgstr ""
+
 #. Translators: this is the preferred format for expressing the date
-#: ../glib/gdatetime.c:164
+#: ../glib/gdatetime.c:210
 msgctxt "GDateTime"
 msgid "%m/%d/%y"
 msgstr "%d/%m/%y"
 
 #. Translators: this is the preferred format for expressing the time
-#: ../glib/gdatetime.c:167
+#: ../glib/gdatetime.c:213
 msgctxt "GDateTime"
 msgid "%H:%M:%S"
 msgstr "%H:%M:%S"
 
-#: ../glib/gdatetime.c:193
+#. Translators: this is the preferred format for expressing 12 hour time
+#: ../glib/gdatetime.c:216
+#, fuzzy
+msgctxt "GDateTime"
+msgid "%I:%M:%S %p"
+msgstr "%H:%M:%S"
+
+#: ../glib/gdatetime.c:229
 msgctxt "full month name"
 msgid "January"
 msgstr "Ianuarie"
 
-#: ../glib/gdatetime.c:195
+#: ../glib/gdatetime.c:231
 msgctxt "full month name"
 msgid "February"
 msgstr "Februarie"
 
-#: ../glib/gdatetime.c:197
+#: ../glib/gdatetime.c:233
 msgctxt "full month name"
 msgid "March"
 msgstr "Martie"
 
-#: ../glib/gdatetime.c:199
+#: ../glib/gdatetime.c:235
 msgctxt "full month name"
 msgid "April"
 msgstr "Aprilie"
 
-#: ../glib/gdatetime.c:201
+#: ../glib/gdatetime.c:237
 msgctxt "full month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:203
+#: ../glib/gdatetime.c:239
 msgctxt "full month name"
 msgid "June"
 msgstr "Iunie"
 
-#: ../glib/gdatetime.c:205
+#: ../glib/gdatetime.c:241
 msgctxt "full month name"
 msgid "July"
 msgstr "Iulie"
 
-#: ../glib/gdatetime.c:207
+#: ../glib/gdatetime.c:243
 msgctxt "full month name"
 msgid "August"
 msgstr "August"
 
-#: ../glib/gdatetime.c:209
+#: ../glib/gdatetime.c:245
 msgctxt "full month name"
 msgid "September"
 msgstr "Septembrie"
 
-#: ../glib/gdatetime.c:211
+#: ../glib/gdatetime.c:247
 msgctxt "full month name"
 msgid "October"
 msgstr "Octombrie"
 
-#: ../glib/gdatetime.c:213
+#: ../glib/gdatetime.c:249
 msgctxt "full month name"
 msgid "November"
 msgstr "Noiembrie"
 
-#: ../glib/gdatetime.c:215
+#: ../glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "December"
 msgstr "Decembrie"
 
-#: ../glib/gdatetime.c:230
+#: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
 msgid "Jan"
 msgstr "Ian"
 
-#: ../glib/gdatetime.c:232
+#: ../glib/gdatetime.c:268
 msgctxt "abbreviated month name"
 msgid "Feb"
 msgstr "Feb"
 
-#: ../glib/gdatetime.c:234
+#: ../glib/gdatetime.c:270
 msgctxt "abbreviated month name"
 msgid "Mar"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:236
+#: ../glib/gdatetime.c:272
 msgctxt "abbreviated month name"
 msgid "Apr"
 msgstr "Apr"
 
-#: ../glib/gdatetime.c:238
+#: ../glib/gdatetime.c:274
 msgctxt "abbreviated month name"
 msgid "May"
 msgstr "Mai"
 
-#: ../glib/gdatetime.c:240
+#: ../glib/gdatetime.c:276
 msgctxt "abbreviated month name"
 msgid "Jun"
 msgstr "Iun"
 
-#: ../glib/gdatetime.c:242
+#: ../glib/gdatetime.c:278
 msgctxt "abbreviated month name"
 msgid "Jul"
 msgstr "Iul"
 
-#: ../glib/gdatetime.c:244
+#: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
 msgid "Aug"
 msgstr "Aug"
 
-#: ../glib/gdatetime.c:246
+#: ../glib/gdatetime.c:282
 msgctxt "abbreviated month name"
 msgid "Sep"
 msgstr "Sep"
 
-#: ../glib/gdatetime.c:248
+#: ../glib/gdatetime.c:284
 msgctxt "abbreviated month name"
 msgid "Oct"
 msgstr "Oct"
 
-#: ../glib/gdatetime.c:250
+#: ../glib/gdatetime.c:286
 msgctxt "abbreviated month name"
 msgid "Nov"
 msgstr "Noi"
 
-#: ../glib/gdatetime.c:252
+#: ../glib/gdatetime.c:288
 msgctxt "abbreviated month name"
 msgid "Dec"
 msgstr "Dec"
 
-#: ../glib/gdatetime.c:267
+#: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
 msgid "Monday"
 msgstr "Luni"
 
-#: ../glib/gdatetime.c:269
+#: ../glib/gdatetime.c:305
 msgctxt "full weekday name"
 msgid "Tuesday"
 msgstr "Marți"
 
-#: ../glib/gdatetime.c:271
+#: ../glib/gdatetime.c:307
 msgctxt "full weekday name"
 msgid "Wednesday"
 msgstr "Miercuri"
 
-#: ../glib/gdatetime.c:273
+#: ../glib/gdatetime.c:309
 msgctxt "full weekday name"
 msgid "Thursday"
 msgstr "Joi"
 
-#: ../glib/gdatetime.c:275
+#: ../glib/gdatetime.c:311
 msgctxt "full weekday name"
 msgid "Friday"
 msgstr "Vineri"
 
-#: ../glib/gdatetime.c:277
+#: ../glib/gdatetime.c:313
 msgctxt "full weekday name"
 msgid "Saturday"
 msgstr "Sâmbătă"
 
-#: ../glib/gdatetime.c:279
+#: ../glib/gdatetime.c:315
 msgctxt "full weekday name"
 msgid "Sunday"
 msgstr "Duminică"
 
-#: ../glib/gdatetime.c:294
+#: ../glib/gdatetime.c:330
 msgctxt "abbreviated weekday name"
 msgid "Mon"
 msgstr "Lun"
 
-#: ../glib/gdatetime.c:296
+#: ../glib/gdatetime.c:332
 msgctxt "abbreviated weekday name"
 msgid "Tue"
 msgstr "Mar"
 
-#: ../glib/gdatetime.c:298
+#: ../glib/gdatetime.c:334
 msgctxt "abbreviated weekday name"
 msgid "Wed"
 msgstr "Mie"
 
-#: ../glib/gdatetime.c:300
+#: ../glib/gdatetime.c:336
 msgctxt "abbreviated weekday name"
 msgid "Thu"
 msgstr "Joi"
 
-#: ../glib/gdatetime.c:302
+#: ../glib/gdatetime.c:338
 msgctxt "abbreviated weekday name"
 msgid "Fri"
 msgstr "Vin"
 
-#: ../glib/gdatetime.c:304
+#: ../glib/gdatetime.c:340
 msgctxt "abbreviated weekday name"
 msgid "Sat"
 msgstr "Sâm"
 
-#: ../glib/gdatetime.c:306
+#: ../glib/gdatetime.c:342
 msgctxt "abbreviated weekday name"
 msgid "Sun"
 msgstr "Dum"
@@ -432,7 +434,7 @@ msgstr "Nu s-a putut deschide fișierul „%s”: fdopen() a eșuat: %s"
 msgid "Failed to rename file '%s' to '%s': g_rename() failed: %s"
 msgstr "Nu s-a putut redenumi fișierul „%s” în „%s”: g_rename() a eșuat: %s"
 
-#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1388
+#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Nu s-a putut crea fișierul „%s”: %s"
@@ -453,32 +455,33 @@ msgstr "Nu s-a putut scrie fișierul „%s”: fwrite() a eșuat: %s"
 msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr "Nu s-a putut scrie fișierul „%s”: fflush() eșuat: %s"
 
-#: ../glib/gfileutils.c:1005
+#: ../glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr "Nu s-a putut scrie fișierul „%s”: fsync() a eșuat: %s"
 
-#: ../glib/gfileutils.c:1025
+#: ../glib/gfileutils.c:1030
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Nu s-a putut închide fișierul „%s”: fclose() a eșuat: %s"
 
-#: ../glib/gfileutils.c:1146
+#: ../glib/gfileutils.c:1152
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr "Fișierul existent „%s” nu a putut fi șters: g_unlink() a eșuat: %s"
 
-#: ../glib/gfileutils.c:1350
+#: ../glib/gfileutils.c:1412
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "Șablonul „%s” este incorect, n-ar trebui să conțină un „%s”"
 
-#: ../glib/gfileutils.c:1363
+#: ../glib/gfileutils.c:1425
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "Șablonul „%s” nu conține XXXXXX"
 
-#: ../glib/gfileutils.c:1796
+#: ../glib/gfileutils.c:2001 ../glib/gfileutils.c:2029
+#: ../glib/gfileutils.c:2134
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
@@ -486,64 +489,108 @@ msgstr[0] "%u octet"
 msgstr[1] "%u octeți"
 msgstr[2] "%u de octeți"
 
-#: ../glib/gfileutils.c:1804
-#, c-format
-msgid "%.1f KB"
+#: ../glib/gfileutils.c:2007
+#, fuzzy, c-format
+msgid "%.1f KiB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1809
+#: ../glib/gfileutils.c:2010
+#, fuzzy, c-format
+msgid "%.1f MiB"
+msgstr "%.1f MB"
+
+#: ../glib/gfileutils.c:2013
+#, fuzzy, c-format
+msgid "%.1f GiB"
+msgstr "%.1f GB"
+
+#: ../glib/gfileutils.c:2016
+#, fuzzy, c-format
+msgid "%.1f TiB"
+msgstr "%.1f TB"
+
+#: ../glib/gfileutils.c:2019
+#, fuzzy, c-format
+msgid "%.1f PiB"
+msgstr "%.1f PB"
+
+#: ../glib/gfileutils.c:2022
+#, fuzzy, c-format
+msgid "%.1f EiB"
+msgstr "%.1f EB"
+
+#: ../glib/gfileutils.c:2035
+#, fuzzy, c-format
+msgid "%.1f kB"
+msgstr "%.1f KB"
+
+#: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2147
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1814
+#: ../glib/gfileutils.c:2041 ../glib/gfileutils.c:2152
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1819
+#: ../glib/gfileutils.c:2044 ../glib/gfileutils.c:2157
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:1824
+#: ../glib/gfileutils.c:2047 ../glib/gfileutils.c:2162
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:1829
+#: ../glib/gfileutils.c:2050 ../glib/gfileutils.c:2167
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#: ../glib/gfileutils.c:1872
+#. Translators: the %s in "%s bytes" will always be replaced by a number.
+#: ../glib/gfileutils.c:2087
+#, fuzzy, c-format
+msgid "%s byte"
+msgid_plural "%s bytes"
+msgstr[0] "%u octet"
+msgstr[1] "%u octeți"
+msgstr[2] "%u de octeți"
+
+#: ../glib/gfileutils.c:2142
+#, c-format
+msgid "%.1f KB"
+msgstr "%.1f KB"
+
+#: ../glib/gfileutils.c:2210
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Nu s-a putut citi legătura simbolică „%s”: %s"
 
-#: ../glib/gfileutils.c:1893
+#: ../glib/gfileutils.c:2231
 msgid "Symbolic links not supported"
 msgstr "Legăturile simbolice nu sunt implementate"
 
-#: ../glib/giochannel.c:1407
+#: ../glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Nu s-a putut iniția conversia de la „%s” la „%s”: %s"
 
-#: ../glib/giochannel.c:1752
+#: ../glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Nu s-au putut citi datele brute din g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1799 ../glib/giochannel.c:2056
-#: ../glib/giochannel.c:2143
+#: ../glib/giochannel.c:1800 ../glib/giochannel.c:2057
+#: ../glib/giochannel.c:2144
 msgid "Leftover unconverted data in read buffer"
 msgstr "Date neconvertite rămase în memoria tampon pentru citire"
 
-#: ../glib/giochannel.c:1880 ../glib/giochannel.c:1957
+#: ../glib/giochannel.c:1881 ../glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "Canalul se termină cu un caracter parțial"
 
-#: ../glib/giochannel.c:1943
+#: ../glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Nu s-au putut citi datele brute din g_io_channel_read_to_end"
 
@@ -557,32 +604,32 @@ msgstr "Nu s-a putut deschide fișierul „%s”: open() a eșuat: %s"
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Nu s-a putut mapa fișierul „%s”: mmap() a eșuat: %s"
 
-#: ../glib/gmarkup.c:354 ../glib/gmarkup.c:395
+#: ../glib/gmarkup.c:355 ../glib/gmarkup.c:396
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Eroare în linia %d, caracterul %d: "
 
-#: ../glib/gmarkup.c:417 ../glib/gmarkup.c:500
+#: ../glib/gmarkup.c:418 ../glib/gmarkup.c:501
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "Text codat UTF-8 incorect în nume - „%s” nevalid"
 
-#: ../glib/gmarkup.c:428
+#: ../glib/gmarkup.c:429
 #, c-format
 msgid "'%s' is not a valid name "
 msgstr "„%s” nu este un nume valid "
 
-#: ../glib/gmarkup.c:444
+#: ../glib/gmarkup.c:445
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
 msgstr "„%s” nu este un nume valid: „%c” "
 
-#: ../glib/gmarkup.c:553
+#: ../glib/gmarkup.c:554
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Eroare în linia %d: %s"
 
-#: ../glib/gmarkup.c:637
+#: ../glib/gmarkup.c:638
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -591,7 +638,7 @@ msgstr ""
 "Nu s-a putut parsa „%-.*s”, care ar fi trebuit să fie o cifră într-un "
 "caracter referință (de exemplu &#234;). Poate cifra este prea mare"
 
-#: ../glib/gmarkup.c:649
+#: ../glib/gmarkup.c:650
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -600,24 +647,24 @@ msgstr ""
 "Referința caracter nu s-a terminat cu punct și virgulă. Probabil ați folosit "
 "un caracter ampersand fără intenția de a începe o entitate. Utilizați &amp;"
 
-#: ../glib/gmarkup.c:675
+#: ../glib/gmarkup.c:676
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr "Referința caracterului „%-.*s” nu codează un caracter permis"
 
-#: ../glib/gmarkup.c:713
+#: ../glib/gmarkup.c:714
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "S-a depistat o entitate nulă „&;”. Entitățile valide sunt: &amp; &quot; &lt; "
 "&gt; &apos;"
 
-#: ../glib/gmarkup.c:721
+#: ../glib/gmarkup.c:722
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "Numele entității „%-.*s” nu este cunoscut"
 
-#: ../glib/gmarkup.c:726
+#: ../glib/gmarkup.c:727
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -625,11 +672,11 @@ msgstr ""
 "Entitatea nu s-a terminat cu punct și virgulă. Probabil că ați folosit un "
 "caracter ampersand fără intenția de a începe o entitate. Utilizați &amp;"
 
-#: ../glib/gmarkup.c:1077
+#: ../glib/gmarkup.c:1078
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Documentul trebuie să înceapă cu un element (de ex. <book>)"
 
-#: ../glib/gmarkup.c:1117
+#: ../glib/gmarkup.c:1118
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -638,16 +685,16 @@ msgstr ""
 "„%s” nu este un caracter valid după caracterul „<”; nu poate începe numele "
 "unui element"
 
-#: ../glib/gmarkup.c:1185
+#: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "Caracter neobișnuit „%s”, se aștepta un „>” pentru a termina eticheta de "
 "element gol „%s”"
 
-#: ../glib/gmarkup.c:1269
+#: ../glib/gmarkup.c:1270
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -655,7 +702,7 @@ msgstr ""
 "Caracter neobișnuit „%s”, se aștepta un „=” după numele atributului „%s” al "
 "elementului „%s”"
 
-#: ../glib/gmarkup.c:1310
+#: ../glib/gmarkup.c:1311
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -666,7 +713,7 @@ msgstr ""
 "eticheta de început a elementului „%s” sau opțional un atribut. Poate ați "
 "utilizat un caracter incorect în numele atributului"
 
-#: ../glib/gmarkup.c:1354
+#: ../glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -675,7 +722,7 @@ msgstr ""
 "Caracter neobișnuit „%s”, se așteptau ghilimele de deschidere după semnul "
 "egal pentru a da valoarea atributului „%s” al elementului „%s”"
 
-#: ../glib/gmarkup.c:1487
+#: ../glib/gmarkup.c:1488
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -684,7 +731,7 @@ msgstr ""
 "„%s” nu este un caracter valid după caracterele „</”. „%s” nu poate începe "
 "un nume de element"
 
-#: ../glib/gmarkup.c:1523
+#: ../glib/gmarkup.c:1524
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -693,34 +740,34 @@ msgstr ""
 "„%s” nu este un caracter valid după numele elementului de închidere „%s”. "
 "Caracterul permis este „>”"
 
-#: ../glib/gmarkup.c:1534
+#: ../glib/gmarkup.c:1535
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "Elementul „%s” a fost închis, nici un element nu este curent deschis"
 
-#: ../glib/gmarkup.c:1543
+#: ../glib/gmarkup.c:1544
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "Elementul „%s” a fost închis, dar elementul deschis curent este „%s”"
 
-#: ../glib/gmarkup.c:1711
+#: ../glib/gmarkup.c:1712
 msgid "Document was empty or contained only whitespace"
 msgstr "Documentul era gol sau conținea doar spațiu gol"
 
-#: ../glib/gmarkup.c:1725
+#: ../glib/gmarkup.c:1726
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Documentul s-a terminat în mod neașteptat imediat după un caracter „<”"
 
-#: ../glib/gmarkup.c:1733 ../glib/gmarkup.c:1778
+#: ../glib/gmarkup.c:1734 ../glib/gmarkup.c:1779
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"Documentul s-a terminat în mod neașteptat cu unele elemente încă deschise. „%"
-"s” a fost ultimul element deschis"
+"Documentul s-a terminat în mod neașteptat cu unele elemente încă deschise. "
+"„%s” a fost ultimul element deschis"
 
-#: ../glib/gmarkup.c:1741
+#: ../glib/gmarkup.c:1742
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -729,23 +776,23 @@ msgstr ""
 "Documentul s-a terminat în mod neașteptat, se aștepta un caracter „>” care "
 "să încheie eticheta <%s/>"
 
-#: ../glib/gmarkup.c:1747
+#: ../glib/gmarkup.c:1748
 msgid "Document ended unexpectedly inside an element name"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul numelui unui element"
 
-#: ../glib/gmarkup.c:1753
+#: ../glib/gmarkup.c:1754
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul numele unui atribut"
 
-#: ../glib/gmarkup.c:1758
+#: ../glib/gmarkup.c:1759
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadul unei etichete ce "
 "deschidea un element"
 
-#: ../glib/gmarkup.c:1764
+#: ../glib/gmarkup.c:1765
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -753,331 +800,331 @@ msgstr ""
 "Documentul s-a terminat în mod neașteptat după semnul egal ce urma unui nume "
 "atribut. Nici o valoare pentru atribut"
 
-#: ../glib/gmarkup.c:1771
+#: ../glib/gmarkup.c:1772
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul valorii unui atribut"
 
-#: ../glib/gmarkup.c:1787
+#: ../glib/gmarkup.c:1788
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul etichetei de închidere a "
 "elementului „%s”"
 
-#: ../glib/gmarkup.c:1793
+#: ../glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Documentul s-a terminat în mod neașteptat în cadrul unui comentariu sau a "
 "unei instrucțiuni de procesare"
 
-#: ../glib/gregex.c:188
+#: ../glib/gregex.c:189
 msgid "corrupted object"
 msgstr "obiect corupt"
 
-#: ../glib/gregex.c:190
+#: ../glib/gregex.c:191
 msgid "internal error or corrupted object"
 msgstr "eroare internă sau obiect corupt"
 
-#: ../glib/gregex.c:192
+#: ../glib/gregex.c:193
 msgid "out of memory"
 msgstr "memorie insuficientă"
 
-#: ../glib/gregex.c:197
+#: ../glib/gregex.c:198
 msgid "backtracking limit reached"
 msgstr "s-a atins limita de „backtracking”"
 
-#: ../glib/gregex.c:209 ../glib/gregex.c:217
+#: ../glib/gregex.c:210 ../glib/gregex.c:218
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "modelul de căutare conține elemente pentru care nu se pot face comparații "
 "parțiale"
 
-#: ../glib/gregex.c:211 ../gio/glocalfile.c:2111
+#: ../glib/gregex.c:212 ../gio/glocalfile.c:2107
 msgid "internal error"
 msgstr "eroare internă"
 
-#: ../glib/gregex.c:219
+#: ../glib/gregex.c:220
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "pentru condițiile de tip „back reference” nu se pot face comparații parțiale"
 
-#: ../glib/gregex.c:228
+#: ../glib/gregex.c:229
 msgid "recursion limit reached"
 msgstr "s-a atins limita de recursivitate"
 
-#: ../glib/gregex.c:230
+#: ../glib/gregex.c:231
 msgid "workspace limit for empty substrings reached"
 msgstr "s-a atins limita maximă pentru subșiruri nule"
 
-#: ../glib/gregex.c:232
+#: ../glib/gregex.c:233
 msgid "invalid combination of newline flags"
 msgstr "combinație incorectă de indicatori de linie nouă"
 
-#: ../glib/gregex.c:234
+#: ../glib/gregex.c:235
 msgid "bad offset"
 msgstr "deplasament greșit"
 
-#: ../glib/gregex.c:236
+#: ../glib/gregex.c:237
 msgid "short utf8"
 msgstr "utf8 scurt"
 
-#: ../glib/gregex.c:240
+#: ../glib/gregex.c:241
 msgid "unknown error"
 msgstr "eroare necunoscută"
 
-#: ../glib/gregex.c:260
+#: ../glib/gregex.c:261
 msgid "\\ at end of pattern"
 msgstr "\\ la sfârșitul unui model"
 
-#: ../glib/gregex.c:263
+#: ../glib/gregex.c:264
 msgid "\\c at end of pattern"
 msgstr "\\c la sfârșitul unui model"
 
-#: ../glib/gregex.c:266
+#: ../glib/gregex.c:267
 msgid "unrecognized character follows \\"
 msgstr "după \\ urmează un caracter necunoscut"
 
-#: ../glib/gregex.c:273
+#: ../glib/gregex.c:274
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr ""
 "nu se permite aici trecerea la majuscule sau invers prin folosirea de "
 "caractere „escape” (\\l, \\L, \\u, \\U)"
 
-#: ../glib/gregex.c:276
+#: ../glib/gregex.c:277
 msgid "numbers out of order in {} quantifier"
 msgstr "numere neordonate în cuantificatorul {}"
 
-#: ../glib/gregex.c:279
+#: ../glib/gregex.c:280
 msgid "number too big in {} quantifier"
 msgstr "număr prea mare în cuantificatorul {}"
 
-#: ../glib/gregex.c:282
+#: ../glib/gregex.c:283
 msgid "missing terminating ] for character class"
 msgstr "lipsește un ] de închidere pentru clasa caracter"
 
-#: ../glib/gregex.c:285
+#: ../glib/gregex.c:286
 msgid "invalid escape sequence in character class"
 msgstr "secvență incorectă de tip „escape” în clasa caracter"
 
-#: ../glib/gregex.c:288
+#: ../glib/gregex.c:289
 msgid "range out of order in character class"
 msgstr "interval depășit în clasa caracter"
 
-#: ../glib/gregex.c:291
+#: ../glib/gregex.c:292
 msgid "nothing to repeat"
 msgstr "nimic de repetat"
 
-#: ../glib/gregex.c:294
+#: ../glib/gregex.c:295
 msgid "unrecognized character after (?"
 msgstr "caracter nerecunoscut după (?"
 
-#: ../glib/gregex.c:298
+#: ../glib/gregex.c:299
 msgid "unrecognized character after (?<"
 msgstr "caracter nerecunoscut după (?<"
 
-#: ../glib/gregex.c:302
+#: ../glib/gregex.c:303
 msgid "unrecognized character after (?P"
 msgstr "caracter nerecunoscut după (?P"
 
-#: ../glib/gregex.c:305
+#: ../glib/gregex.c:306
 msgid "POSIX named classes are supported only within a class"
 msgstr "clasele cu nume POSIX sunt implementate doar înăuntrul altei clase"
 
-#: ../glib/gregex.c:308
+#: ../glib/gregex.c:309
 msgid "missing terminating )"
 msgstr "lipsește un ) de închidere"
 
-#: ../glib/gregex.c:312
+#: ../glib/gregex.c:313
 msgid ") without opening ("
 msgstr ") fără un ( în față"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:319
+#: ../glib/gregex.c:320
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R sau (?[+-]digiți trebuie urmați de )"
 
-#: ../glib/gregex.c:322
+#: ../glib/gregex.c:323
 msgid "reference to non-existent subpattern"
 msgstr "referință la un submodel inexistent"
 
-#: ../glib/gregex.c:325
+#: ../glib/gregex.c:326
 msgid "missing ) after comment"
 msgstr "lipsește un ) după comentariu"
 
-#: ../glib/gregex.c:328
+#: ../glib/gregex.c:329
 msgid "regular expression too large"
 msgstr "expresie regulată prea lungă"
 
-#: ../glib/gregex.c:331
+#: ../glib/gregex.c:332
 msgid "failed to get memory"
 msgstr "nu s-a putut aloca memoria"
 
-#: ../glib/gregex.c:334
+#: ../glib/gregex.c:335
 msgid "lookbehind assertion is not fixed length"
 msgstr "aserțiunea „lookbehind” nu e de lungime fixă"
 
-#: ../glib/gregex.c:337
+#: ../glib/gregex.c:338
 msgid "malformed number or name after (?("
 msgstr "număr greșit formatat sau nume după (?("
 
-#: ../glib/gregex.c:340
+#: ../glib/gregex.c:341
 msgid "conditional group contains more than two branches"
 msgstr "grupul de condiții conține mai mult de două ramuri"
 
-#: ../glib/gregex.c:343
+#: ../glib/gregex.c:344
 msgid "assertion expected after (?("
 msgstr "se așteaptă o aserțiune după (?("
 
-#: ../glib/gregex.c:346
+#: ../glib/gregex.c:347
 msgid "unknown POSIX class name"
 msgstr "nume necunoscut de clasă POSIX"
 
-#: ../glib/gregex.c:349
+#: ../glib/gregex.c:350
 msgid "POSIX collating elements are not supported"
 msgstr "elementele POSIX de unire nu sunt implementate"
 
-#: ../glib/gregex.c:352
+#: ../glib/gregex.c:353
 msgid "character value in \\x{...} sequence is too large"
 msgstr "valoarea caracterului în secvența \\x{...} este prea mare"
 
-#: ../glib/gregex.c:355
+#: ../glib/gregex.c:356
 msgid "invalid condition (?(0)"
 msgstr "condiție nevalidă (?(0)"
 
-#: ../glib/gregex.c:358
+#: ../glib/gregex.c:359
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C nu este permis în aserțiunea „lookbehind”"
 
-#: ../glib/gregex.c:361
+#: ../glib/gregex.c:362
 msgid "recursive call could loop indefinitely"
 msgstr "apelul recursiv ar putea intra în buclă infinită"
 
-#: ../glib/gregex.c:364
+#: ../glib/gregex.c:365
 msgid "missing terminator in subpattern name"
 msgstr "terminator lipsă în numele de submodel"
 
-#: ../glib/gregex.c:367
+#: ../glib/gregex.c:368
 msgid "two named subpatterns have the same name"
 msgstr "două submodele au același nume"
 
-#: ../glib/gregex.c:370
+#: ../glib/gregex.c:371
 msgid "malformed \\P or \\p sequence"
 msgstr "secvență malformată \\P sau \\p"
 
-#: ../glib/gregex.c:373
+#: ../glib/gregex.c:374
 msgid "unknown property name after \\P or \\p"
 msgstr "nume necunoscut de proprietate după \\P ori \\p"
 
-#: ../glib/gregex.c:376
+#: ../glib/gregex.c:377
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "nume de submodel prea lung (sunt permise cel mult 32 de caractere)"
 
-#: ../glib/gregex.c:379
+#: ../glib/gregex.c:380
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "prea multe nume de submodeluri (sunt permise cel mult 10.000)"
 
-#: ../glib/gregex.c:382
+#: ../glib/gregex.c:383
 msgid "octal value is greater than \\377"
 msgstr "valoarea octală este mai mare decât \\377"
 
-#: ../glib/gregex.c:385
+#: ../glib/gregex.c:386
 msgid "DEFINE group contains more than one branch"
 msgstr "grupul DEFINE conține mai mult de o ramură"
 
-#: ../glib/gregex.c:388
+#: ../glib/gregex.c:389
 msgid "repeating a DEFINE group is not allowed"
 msgstr "nu se permite repetarea unui grup DEFINE"
 
-#: ../glib/gregex.c:391
+#: ../glib/gregex.c:392
 msgid "inconsistent NEWLINE options"
 msgstr "opțiuni NEWLINE inconsistente"
 
-#: ../glib/gregex.c:394
+#: ../glib/gregex.c:395
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "\\g nu este urmat de un nume între acolade sau un număr diferit de zero, "
 "opțional între acolade"
 
-#: ../glib/gregex.c:399
+#: ../glib/gregex.c:400
 msgid "unexpected repeat"
 msgstr "repetare neașteptată"
 
-#: ../glib/gregex.c:403
+#: ../glib/gregex.c:404
 msgid "code overflow"
 msgstr "„overflow” în cod"
 
-#: ../glib/gregex.c:407
+#: ../glib/gregex.c:408
 msgid "overran compiling workspace"
 msgstr "spațiul de compilare a fost depășit"
 
-#: ../glib/gregex.c:411
+#: ../glib/gregex.c:412
 msgid "previously-checked referenced subpattern not found"
 msgstr "nu s-a găsit submodelul referit și verificat anterior"
 
-#: ../glib/gregex.c:591 ../glib/gregex.c:1714
+#: ../glib/gregex.c:630 ../glib/gregex.c:1753
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Eroare la compararea expresiei regulate %s: %s"
 
-#: ../glib/gregex.c:1167
+#: ../glib/gregex.c:1206
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "Biblioteca PCRE este compilată cu suport UTF-8"
 
-#: ../glib/gregex.c:1176
+#: ../glib/gregex.c:1215
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "Biblioteca PCRE este compilată fără suport pentru proprietăți UTF-8"
 
-#: ../glib/gregex.c:1232
+#: ../glib/gregex.c:1271
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Eroare la parsarea expresiei regulate %s la caracterul %d: %s"
 
-#: ../glib/gregex.c:1268
+#: ../glib/gregex.c:1307
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Eroare la optimizarea expresiei regulate %s: %s"
 
-#: ../glib/gregex.c:2144
+#: ../glib/gregex.c:2183
 msgid "hexadecimal digit or '}' expected"
 msgstr "se aștepta un digit hexadecimal or „}”"
 
-#: ../glib/gregex.c:2160
+#: ../glib/gregex.c:2199
 msgid "hexadecimal digit expected"
 msgstr "se aștepta un digit hexadecimal"
 
-#: ../glib/gregex.c:2200
+#: ../glib/gregex.c:2239
 msgid "missing '<' in symbolic reference"
 msgstr "„<” lipsă în referința simbolică"
 
-#: ../glib/gregex.c:2209
+#: ../glib/gregex.c:2248
 msgid "unfinished symbolic reference"
 msgstr "referință simbolică neterminată"
 
-#: ../glib/gregex.c:2216
+#: ../glib/gregex.c:2255
 msgid "zero-length symbolic reference"
 msgstr "referință simbolică de lungime zero"
 
-#: ../glib/gregex.c:2227
+#: ../glib/gregex.c:2266
 msgid "digit expected"
 msgstr "se aștepta un digit"
 
-#: ../glib/gregex.c:2245
+#: ../glib/gregex.c:2284
 msgid "illegal symbolic reference"
 msgstr "referință simbolică ilegală"
 
-#: ../glib/gregex.c:2307
+#: ../glib/gregex.c:2346
 msgid "stray final '\\'"
 msgstr "„\\” inutil la final"
 
-#: ../glib/gregex.c:2311
+#: ../glib/gregex.c:2350
 msgid "unknown escape sequence"
 msgstr "secvență „escape” necunoscută"
 
-#: ../glib/gregex.c:2321
+#: ../glib/gregex.c:2360
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Eroare la prelucrarea textului de înlocuire „%s” la caracterul %lu: %s"
@@ -1110,18 +1157,18 @@ msgstr "Textul era gol (sau conținea doar spațiu gol)"
 msgid "Failed to read data from child process"
 msgstr "Nu s-au putut citi datele de la procesul copil"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1486
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Nu s-a putut crea conectorul „pipe” pentru comunicarea cu procesul copil (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1145
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nu s-au putut citi datele din conectorul „pipe” copil (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1352
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nu s-a putut schimba directorul curent în directorul „%s” (%s)"
@@ -1166,62 +1213,62 @@ msgstr ""
 "Eroare neașteptată în g_io_channel_win32_poll() la citirea datelor de la "
 "procesul copil"
 
-#: ../glib/gspawn.c:196
+#: ../glib/gspawn.c:207
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Nu s-au putut citi datele din procesul copil (%s)"
 
-#: ../glib/gspawn.c:335
+#: ../glib/gspawn.c:347
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr ""
 "Eroare neașteptată în select() la citirea datelor din procesul copil (%s)"
 
-#: ../glib/gspawn.c:420
+#: ../glib/gspawn.c:432
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Eroare neașteptată în waitpid() (%s)"
 
-#: ../glib/gspawn.c:1212
+#: ../glib/gspawn.c:1237
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Nu s-a putut clona procesul (%s)"
 
-#: ../glib/gspawn.c:1362
+#: ../glib/gspawn.c:1393
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nu s-a putut executa procesul „%s” (%s)"
 
-#: ../glib/gspawn.c:1372
+#: ../glib/gspawn.c:1403
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nu s-a putut redirecta ieșirea sau inputul procesului copil (%s)"
 
-#: ../glib/gspawn.c:1381
+#: ../glib/gspawn.c:1412
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nu s-a putut clona procesul copil (%s)"
 
-#: ../glib/gspawn.c:1389
+#: ../glib/gspawn.c:1420
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Eroare necunoscută la lansarea în execuție a procesului copil „%s”"
 
-#: ../glib/gspawn.c:1413
+#: ../glib/gspawn.c:1444
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Nu s-au putut citi date suficiente de la procesul copil (%s)"
 
-#: ../glib/gutf8.c:1066
+#: ../glib/gutf8.c:1086
 msgid "Character out of range for UTF-8"
 msgstr "Caracter în afara limitelor standardului UTF-8"
 
-#: ../glib/gutf8.c:1166 ../glib/gutf8.c:1175 ../glib/gutf8.c:1307
-#: ../glib/gutf8.c:1316 ../glib/gutf8.c:1457 ../glib/gutf8.c:1553
+#: ../glib/gutf8.c:1186 ../glib/gutf8.c:1195 ../glib/gutf8.c:1325
+#: ../glib/gutf8.c:1334 ../glib/gutf8.c:1473 ../glib/gutf8.c:1569
 msgid "Invalid sequence in conversion input"
 msgstr "Secvență incorectă în inputul conversiei"
 
-#: ../glib/gutf8.c:1468 ../glib/gutf8.c:1564
+#: ../glib/gutf8.c:1484 ../glib/gutf8.c:1580
 msgid "Character out of range for UTF-16"
 msgstr "Caracter în afara limitelor standardului UTF-16"
 
@@ -1279,24 +1326,24 @@ msgstr "Eroare la prelucrarea opțiunii %s"
 msgid "Missing argument for %s"
 msgstr "Argument lipsă pentru %s"
 
-#: ../glib/goption.c:1921
+#: ../glib/goption.c:1957
 #, c-format
 msgid "Unknown option %s"
 msgstr "Opțiune necunoscută %s"
 
-#: ../glib/gkeyfile.c:363
+#: ../glib/gkeyfile.c:366
 msgid "Valid key file could not be found in search dirs"
 msgstr "Nu s-a găsit un fișier cheie valid în directoarele de căutare"
 
-#: ../glib/gkeyfile.c:398
+#: ../glib/gkeyfile.c:401
 msgid "Not a regular file"
 msgstr "Nu e un fișier obișnuit"
 
-#: ../glib/gkeyfile.c:406
+#: ../glib/gkeyfile.c:409
 msgid "File is empty"
 msgstr "Fișierul e gol"
 
-#: ../glib/gkeyfile.c:765
+#: ../glib/gkeyfile.c:768
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1304,54 +1351,54 @@ msgstr ""
 "Fișierul-cheie conține linia „%s” care nu este o pereche cheie-valoare, un "
 "grup sau un comentariu"
 
-#: ../glib/gkeyfile.c:825
+#: ../glib/gkeyfile.c:828
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Nume incorect de grup: %s"
 
-#: ../glib/gkeyfile.c:847
+#: ../glib/gkeyfile.c:850
 msgid "Key file does not start with a group"
 msgstr "Fișierul cheie nu începe cu un grup"
 
-#: ../glib/gkeyfile.c:873
+#: ../glib/gkeyfile.c:876
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Nume incorect de cheie: %s"
 
-#: ../glib/gkeyfile.c:900
+#: ../glib/gkeyfile.c:903
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Fișierul cheie are o codare neimplementată de tip „%s”"
 
-#: ../glib/gkeyfile.c:1118 ../glib/gkeyfile.c:1280 ../glib/gkeyfile.c:2648
-#: ../glib/gkeyfile.c:2714 ../glib/gkeyfile.c:2849 ../glib/gkeyfile.c:2982
-#: ../glib/gkeyfile.c:3135 ../glib/gkeyfile.c:3322 ../glib/gkeyfile.c:3383
+#: ../glib/gkeyfile.c:1149 ../glib/gkeyfile.c:1311 ../glib/gkeyfile.c:2686
+#: ../glib/gkeyfile.c:2752 ../glib/gkeyfile.c:2887 ../glib/gkeyfile.c:3020
+#: ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3394 ../glib/gkeyfile.c:3463
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Fișierul cheie nu are grupul „%s”"
 
-#: ../glib/gkeyfile.c:1292
+#: ../glib/gkeyfile.c:1323
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Fișierul cheie nu are cheia „%s”"
 
-#: ../glib/gkeyfile.c:1399 ../glib/gkeyfile.c:1514
+#: ../glib/gkeyfile.c:1430 ../glib/gkeyfile.c:1546
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Fișierul cheie conține cheia „%s”, cu valoarea „%s”, ce nu este UTF-8"
 
-#: ../glib/gkeyfile.c:1419 ../glib/gkeyfile.c:1902
+#: ../glib/gkeyfile.c:1450 ../glib/gkeyfile.c:1934
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Fișierul cheie conține cheia „%s”, ce are o valoare neinterpretabilă."
 
-#: ../glib/gkeyfile.c:1534
+#: ../glib/gkeyfile.c:1566
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr "Fișierul cheie conține cheia „%s” ce are o valoare neinterpretabilă."
 
-#: ../glib/gkeyfile.c:2117 ../glib/gkeyfile.c:2479
+#: ../glib/gkeyfile.c:2151 ../glib/gkeyfile.c:2515
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1360,36 +1407,36 @@ msgstr ""
 "Fișierul cheie conține cheia „%s” în grupul „%s”, care are o valoare ce nu "
 "poate fi interpretată"
 
-#: ../glib/gkeyfile.c:2663 ../glib/gkeyfile.c:2864 ../glib/gkeyfile.c:3394
+#: ../glib/gkeyfile.c:2701 ../glib/gkeyfile.c:2902 ../glib/gkeyfile.c:3474
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Fișierul cheie nu are cheia „%s” în grupul „%s”"
 
-#: ../glib/gkeyfile.c:3628
+#: ../glib/gkeyfile.c:3708
 msgid "Key file contains escape character at end of line"
 msgstr "Fișieul cheie conține caractere „escape” la sfârșit de linie"
 
-#: ../glib/gkeyfile.c:3650
+#: ../glib/gkeyfile.c:3730
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "URI-ul „%s” conține secvențe „escaped” incorecte"
 
-#: ../glib/gkeyfile.c:3792
+#: ../glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "Valoarea „%s” nu poate fi interpretată ca un număr."
 
-#: ../glib/gkeyfile.c:3806
+#: ../glib/gkeyfile.c:3886
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Valoarea întregului „%s” este în afara limitelor"
 
-#: ../glib/gkeyfile.c:3839
+#: ../glib/gkeyfile.c:3919
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "Valoarea „%s” nu poate fi interpretată ca un număr flotant."
 
-#: ../glib/gkeyfile.c:3863
+#: ../glib/gkeyfile.c:3943
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "Valoarea „%s” nu poate fi interpretată ca o valoare booleană."
@@ -1397,20 +1444,20 @@ msgstr "Valoarea „%s” nu poate fi interpretată ca o valoare booleană."
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:726
+#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:732
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "S-a pasat o valoare prea mare către %s"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1197
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1206
 msgid "Stream is already closed"
 msgstr "Flux deja închis"
 
-#: ../gio/gcancellable.c:433 ../gio/gdbusconnection.c:1637
-#: ../gio/gdbusconnection.c:1726 ../gio/gdbusconnection.c:1912
-#: ../gio/glocalfile.c:2104 ../gio/gsimpleasyncresult.c:810
-#: ../gio/gsimpleasyncresult.c:836
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
+#: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
+#: ../gio/glocalfile.c:2100 ../gio/gsimpleasyncresult.c:814
+#: ../gio/gsimpleasyncresult.c:840
 msgid "Operation was cancelled"
 msgstr "Operațiunea a fost anulată"
 
@@ -1426,29 +1473,29 @@ msgstr "Secvență de octeți incompletă la intrare"
 msgid "Not enough space in destination"
 msgstr "Spațiu insuficient în destinație"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:832
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:854
 msgid "Cancellable initialization not supported"
 msgstr "Inițializarea întreruptibilă nu este implementată"
 
-#: ../gio/gcontenttype.c:179
+#: ../gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "Tip necunoscută"
 
-#: ../gio/gcontenttype.c:180
+#: ../gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "tip de fișier %s"
 
-#: ../gio/gcontenttype.c:679
+#: ../gio/gcontenttype.c:680
 #, c-format
 msgid "%s type"
 msgstr "tip %s"
 
-#: ../gio/gcredentials.c:246 ../gio/gcredentials.c:441
+#: ../gio/gcredentials.c:273 ../gio/gcredentials.c:495
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials nu este implementat pe acest sistem de operare"
 
-#: ../gio/gcredentials.c:396
+#: ../gio/gcredentials.c:447
 msgid "There is no GCredentials support for your platform"
 msgstr "Nu există suport pentru GCredentials pe platforma dumneavoastră"
 
@@ -1457,7 +1504,7 @@ msgid "Unexpected early end-of-stream"
 msgstr "Flux terminat neașteptat de repede"
 
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
-#: ../gio/gdbusaddress.c:304
+#: ../gio/gdbusaddress.c:311
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Cheie „%s” nesuportată în intrarea de adresă „%s”"
@@ -1475,22 +1522,22 @@ msgstr ""
 msgid "Meaningless key/value pair combination in address entry `%s'"
 msgstr "Pereche cheie/valoare fără sens în intrarea de adresă „%s”"
 
-#: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:319
+#: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Eroare în adresa „%s” - atributul port este greșit"
 
-#: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:330
+#: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Eroare în adresa „%s” - atributul familie este greșit"
 
-#: ../gio/gdbusaddress.c:434
+#: ../gio/gdbusaddress.c:446
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "Elementul de adresă „%s” nu conține două puncte (:)"
 
-#: ../gio/gdbusaddress.c:455
+#: ../gio/gdbusaddress.c:467
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
@@ -1499,7 +1546,7 @@ msgstr ""
 "Perechea cheie/valoare %d, „%s”, in elementul de adresă „%s”, nu conține un "
 "semn de egalitate"
 
-#: ../gio/gdbusaddress.c:469
+#: ../gio/gdbusaddress.c:481
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -1508,93 +1555,93 @@ msgstr ""
 "Eroare la conversia din format „escaped” a cheii sau valorii din perechea "
 "Cheie/Valoare %d, „%s”, în elementul de adresă „%s”"
 
-#: ../gio/gdbusaddress.c:547
+#: ../gio/gdbusaddress.c:559
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
 "`path' or `abstract' to be set"
 msgstr ""
-"Eroare în adresa „%s” - transportul unix necesită exact una din cheile „path” sau "
-"„abstract” să fie setată"
+"Eroare în adresa „%s” - transportul unix necesită exact una din cheile "
+"„path” sau „abstract” să fie setată"
 
-#: ../gio/gdbusaddress.c:583
+#: ../gio/gdbusaddress.c:595
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr "Eroare în adresa „%s” - atributul gazdă este greșit"
 
-#: ../gio/gdbusaddress.c:597
+#: ../gio/gdbusaddress.c:609
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr "Eroare la adresa „%s” - atributul port este greșit sau lipsește"
 
-#: ../gio/gdbusaddress.c:611
+#: ../gio/gdbusaddress.c:623
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr "Eroare în adresa „%s” - atributul noncefile este greșit sau lipsește"
 
-#: ../gio/gdbusaddress.c:632
+#: ../gio/gdbusaddress.c:644
 msgid "Error auto-launching: "
 msgstr "Eroare la auto-lansare: "
 
-#: ../gio/gdbusaddress.c:640
+#: ../gio/gdbusaddress.c:652
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "Transport „%s” necunoscut sau nesuportat pentru adresa „%s”"
 
-#: ../gio/gdbusaddress.c:676
+#: ../gio/gdbusaddress.c:688
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Eroare la deschiderea fișierului nonce „%s”: %s"
 
-#: ../gio/gdbusaddress.c:694
+#: ../gio/gdbusaddress.c:706
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Eroare la citirea fișierului nonce „%s”: %s"
 
-#: ../gio/gdbusaddress.c:703
+#: ../gio/gdbusaddress.c:715
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
-"Eroare la citirea fișierului nonce „%s”, se așteptau 16 octeți, s-au primit %"
-"d"
+"Eroare la citirea fișierului nonce „%s”, se așteptau 16 octeți, s-au primit "
+"%d"
 
-#: ../gio/gdbusaddress.c:721
+#: ../gio/gdbusaddress.c:733
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Eroare la scrierea conținutului fișierului nonce „%s” în flux:"
 
-#: ../gio/gdbusaddress.c:939
+#: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
 msgstr "Adresa oferită este goală"
 
-#: ../gio/gdbusaddress.c:1008
+#: ../gio/gdbusaddress.c:1020
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr ""
 "Nu se poate lansa o magistrală de mesaje fără un identificator de mașină: "
 
-#: ../gio/gdbusaddress.c:1045
+#: ../gio/gdbusaddress.c:1057
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Eroare la lansarea liniei de comandă „%s”: "
 
-#: ../gio/gdbusaddress.c:1056
+#: ../gio/gdbusaddress.c:1068
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Eroare la lansarea liniei de comandă „%s” s-a terminat anormal: %s"
 
-#: ../gio/gdbusaddress.c:1070
+#: ../gio/gdbusaddress.c:1082
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "Linia de comandă „%s” s-a încheiat cu un cod non-zero de eroare %d: %s"
 
-#: ../gio/gdbusaddress.c:1143
+#: ../gio/gdbusaddress.c:1155
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Nu se poate determina adresa magistralei de sesiune (neimplementat pe acest "
 "sistem de operare)"
 
-#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6186
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1603,7 +1650,7 @@ msgstr ""
 "Nu s-a putut determina adresa magistralei din variabila de mediu "
 "DBUS_STARTER_BUS_TYPE - valoare necunoscută „%s”"
 
-#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6195
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1611,7 +1658,7 @@ msgstr ""
 "Nu s-a putut determina adresa magistralei pentru că variabila de mediu "
 "DBUS_STARTER_BUS_TYPE nu este setată"
 
-#: ../gio/gdbusaddress.c:1261
+#: ../gio/gdbusaddress.c:1273
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "Tip de magistrală %d necunoscut"
@@ -1634,7 +1681,7 @@ msgstr ""
 "S-au epuizat toate mecanismele de autentificare disponibile (încercat: %s) "
 "(disponibile: %s)"
 
-#: ../gio/gdbusauth.c:1150
+#: ../gio/gdbusauth.c:1159
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Anulat via GDBusAuthObserver::authorize-authenticated-peer"
 
@@ -1660,12 +1707,12 @@ msgstr "Eroare la crearea dosarului „%s”: %s"
 msgid "Error opening keyring `%s' for reading: "
 msgstr "Eroare la deschiderea fișierului „%s” pentru citire: "
 
-#: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:715
+#: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr "Linia %d a inelului de chei de la „%s” cu conținutul „%s” este greșită"
 
-#: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:729
+#: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
@@ -1673,68 +1720,68 @@ msgstr ""
 "Primul element al liniei %d a inelului de chei de la „%s” cu conținutul „%s” "
 "este greșit"
 
-#: ../gio/gdbusauthmechanismsha1.c:434 ../gio/gdbusauthmechanismsha1.c:743
+#: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"Al doilea element al liniei %d a inelului de chei de la „%s” cu conținutul „%"
-"s” este greșit"
+"Al doilea element al liniei %d a inelului de chei de la „%s” cu conținutul "
+"„%s” este greșit"
 
-#: ../gio/gdbusauthmechanismsha1.c:458
+#: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at `%s'"
 msgstr ""
 "Nu s-a găsit un cookie cu identificatorul %d în inelul de chei de la „%s”"
 
-#: ../gio/gdbusauthmechanismsha1.c:535
+#: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
 msgid "Error deleting stale lock file `%s': %s"
 msgstr "Eroare la ștergerea fișierului de blocare învechit „%s”: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:566
+#: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
 msgid "Error creating lock file `%s': %s"
 msgstr "Eroare la citirea fișierului de blocare „%s”: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:596
+#: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
 msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr ""
 "Eroare la închiderea fișierului de blocare (fără legături deschise) „%s”: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:606
+#: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
 msgid "Error unlinking lock file `%s': %s"
 msgstr "Eroare la ștergerea fișierului fișierului de blocare „%s”: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:682
+#: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
 msgid "Error opening keyring `%s' for writing: "
 msgstr "Eroare la deschiderea pentru scriere a inelului de chei „%s”: "
 
-#: ../gio/gdbusauthmechanismsha1.c:877
+#: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(În plus, a eșuat și deblocarea fișierului de blocare „%s”: %s)"
 
-#: ../gio/gdbusconnection.c:1148 ../gio/gdbusconnection.c:1374
-#: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1737
+#: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
+#: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
 msgid "The connection is closed"
 msgstr "Conexiunea este închisă"
 
-#: ../gio/gdbusconnection.c:1681
+#: ../gio/gdbusconnection.c:1684
 msgid "Timeout was reached"
 msgstr "Limita de timp a fost atinsă"
 
-#: ../gio/gdbusconnection.c:2300
+#: ../gio/gdbusconnection.c:2306
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "yuS-au întâlnit flag-uri nesuportate când se construia partea de client a "
 "conexiunii"
 
-#: ../gio/gdbusconnection.c:3752 ../gio/gdbusconnection.c:4070
+#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1742,68 +1789,68 @@ msgstr ""
 "Nu există interfața „org.freedesktop.DBus.Properties” în obiectul aflat la "
 "calea %s"
 
-#: ../gio/gdbusconnection.c:3824
+#: ../gio/gdbusconnection.c:3841
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Eroare la setarea proprietății „%s”: Se aștepta tipul „%s”, dar s-a primit "
 "„%s”"
 
-#: ../gio/gdbusconnection.c:3919
+#: ../gio/gdbusconnection.c:3936
 #, c-format
 msgid "No such property `%s'"
 msgstr "Nu există proprietatea „%s”"
 
-#: ../gio/gdbusconnection.c:3931
+#: ../gio/gdbusconnection.c:3948
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Proprietatea „%s” nu poate fi citită"
 
-#: ../gio/gdbusconnection.c:3942
+#: ../gio/gdbusconnection.c:3959
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Proprietatea „%s” nu poate fi scrisă"
 
-#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5620
+#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Nu există interfața „%s”"
 
-#: ../gio/gdbusconnection.c:4200
+#: ../gio/gdbusconnection.c:4213
 msgid "No such interface"
 msgstr "Nu există interfața"
 
-#: ../gio/gdbusconnection.c:4419 ../gio/gdbusconnection.c:6136
+#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Nu există proprietatea „%s” în obiectul de la calea %s"
 
-#: ../gio/gdbusconnection.c:4471
+#: ../gio/gdbusconnection.c:4484
 #, c-format
 msgid "No such method `%s'"
 msgstr "Nu există metoda „%s”"
 
-#: ../gio/gdbusconnection.c:4502
+#: ../gio/gdbusconnection.c:4515
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Tipul mesajului, „%s”, nu se potrivește cu cel așteptat „%s”"
 
-#: ../gio/gdbusconnection.c:4721
+#: ../gio/gdbusconnection.c:4734
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Există deja un obiect exportat pentru interfața %s de la %s"
 
-#: ../gio/gdbusconnection.c:4915
+#: ../gio/gdbusconnection.c:4932
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Metoda „%s” a întors tipul „%s”, dar se aștepta „%s”"
 
-#: ../gio/gdbusconnection.c:5731
+#: ../gio/gdbusconnection.c:5964
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Metoda „%s” din interfața „%s” cu semnătura „%s” nu există"
 
-#: ../gio/gdbusconnection.c:5849
+#: ../gio/gdbusconnection.c:6082
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Un subarbore este deja exporta pentru %s"
@@ -1848,12 +1895,15 @@ msgstr ""
 "mesaj SIGNAL: câmpul de antet INTERFACE utilizează valoarea rezervată org."
 "freedesktop.DBus.Local"
 
-#: ../gio/gdbusmessage.c:997
-#, c-format
-msgid "Wanted to read %lu bytes but got EOF"
-msgstr "S-a încercat să se citească %lu octeți, dar s-a întâlnit EOF"
+#: ../gio/gdbusmessage.c:998
+#, fuzzy, c-format
+msgid "Wanted to read %lu byte but got EOF"
+msgid_plural "Wanted to read %lu bytes but got EOF"
+msgstr[0] "S-a încercat să se citească %lu octeți, dar s-a întâlnit EOF"
+msgstr[1] "S-a încercat să se citească %lu octeți, dar s-a întâlnit EOF"
+msgstr[2] "S-a încercat să se citească %lu octeți, dar s-a întâlnit EOF"
 
-#: ../gio/gdbusmessage.c:1022
+#: ../gio/gdbusmessage.c:1025
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -1862,35 +1912,43 @@ msgstr ""
 "Se aștepta un șir UTF-8 valid, dar s-au găsit octeți nevalizi la poziția %d "
 "(lungimea șirului este %d). Șirul UTF-8 valid până la acel punct a fost „%s”"
 
-#: ../gio/gdbusmessage.c:1035
+#: ../gio/gdbusmessage.c:1038
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr "Se aștepta un octet NUL după șirul „%s”, dar s-a octetul „%d”"
 
-#: ../gio/gdbusmessage.c:1234
+#: ../gio/gdbusmessage.c:1242
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr "Valoarea parsată „%s” nu este o cale de obiect D-Bus validă"
 
-#: ../gio/gdbusmessage.c:1260
+#: ../gio/gdbusmessage.c:1268
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Valoarea parsată „%s” nu este o semnătură D-Bus validă"
 
-#: ../gio/gdbusmessage.c:1314
-#, c-format
+#: ../gio/gdbusmessage.c:1324
+#, fuzzy, c-format
 msgid ""
+"Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr ""
+msgstr[0] ""
+"S-a întâlnit un vector de %u octeți. Lungimea maximă este de 2<<26 octeți "
+"(64 MiB)."
+msgstr[1] ""
+"S-a întâlnit un vector de %u octeți. Lungimea maximă este de 2<<26 octeți "
+"(64 MiB)."
+msgstr[2] ""
 "S-a întâlnit un vector de %u octeți. Lungimea maximă este de 2<<26 octeți "
 "(64 MiB)."
 
-#: ../gio/gdbusmessage.c:1475
+#: ../gio/gdbusmessage.c:1490
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr "Valoarea parsată „%s” nu este o semnătură D-Bus validă"
 
-#: ../gio/gdbusmessage.c:1502
+#: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
@@ -1898,7 +1956,7 @@ msgstr ""
 "Eroare la deserializarea GVariant cu șirul-tip „%s” din formatul de rețea D-"
 "Bus"
 
-#: ../gio/gdbusmessage.c:1686
+#: ../gio/gdbusmessage.c:1705
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
@@ -1907,111 +1965,97 @@ msgstr ""
 "Valoare de endianness nevalidă. Se aștepta 0x6c („l”) sau 0x42 („B”), dar s-"
 "a găsit valoarea 0x%02x"
 
-#: ../gio/gdbusmessage.c:1700
+#: ../gio/gdbusmessage.c:1719
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr "Versiune majoră de protocol nevalidă. Se aștepta 1 dar s-a găsit %d"
 
-#: ../gio/gdbusmessage.c:1757
+#: ../gio/gdbusmessage.c:1776
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr "S-a găsit un antet cu semnătura „%s”, dar corpul mesajului este vid"
 
-#: ../gio/gdbusmessage.c:1771
+#: ../gio/gdbusmessage.c:1790
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Valoarea parsată „%s” nu este o semnătură D-Bus validă (pentru corp)"
 
-#: ../gio/gdbusmessage.c:1801
-#, c-format
-msgid "No signature header in message but the message body is %u bytes"
-msgstr ""
+#: ../gio/gdbusmessage.c:1821
+#, fuzzy, c-format
+msgid "No signature header in message but the message body is %u byte"
+msgid_plural "No signature header in message but the message body is %u bytes"
+msgstr[0] ""
+"Niciun antet de semnătură în mesaj, dar corpul mesajului este de %u octeți"
+msgstr[1] ""
+"Niciun antet de semnătură în mesaj, dar corpul mesajului este de %u octeți"
+msgstr[2] ""
 "Niciun antet de semnătură în mesaj, dar corpul mesajului este de %u octeți"
 
-#: ../gio/gdbusmessage.c:1809
+#: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
 msgstr "Nu se poate deserializa mesajul:"
 
-#: ../gio/gdbusmessage.c:2134
+#: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
 "Eroare la serializarea GVariant cu șirul-tip „%s” în formatul de rețea D-Bus"
 
-#: ../gio/gdbusmessage.c:2275
-#, c-format
-msgid "Message has %d fds but the header field indicates %d fds"
+#: ../gio/gdbusmessage.c:2303
+#, fuzzy, c-format
+msgid ""
+"Message has %d file descriptors but the header field indicates %d file "
+"descriptors"
 msgstr "Mesajul are %d fds, dar câmpul antet indică %d fds"
 
-#: ../gio/gdbusmessage.c:2283
+#: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
 msgstr "Nu se poate serializa mesajul:"
 
-#: ../gio/gdbusmessage.c:2327
+#: ../gio/gdbusmessage.c:2355
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 "Corpul mesajului are semnătura „%s”, dar nu există nicio semnătură de antet"
 
-#: ../gio/gdbusmessage.c:2337
+#: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr ""
 "Corpul mesajului are semnătura „%s”, dar semnătura din câmpul antet este „%s”"
 
-#: ../gio/gdbusmessage.c:2353
+#: ../gio/gdbusmessage.c:2381
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr "Corpul mesajului este vid, dar semnătura din câmpul antet este „(%s)”"
 
-#: ../gio/gdbusmessage.c:2910
+#: ../gio/gdbusmessage.c:2938
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Rezultat de eroare cu corp de tipul „%s”"
 
-#: ../gio/gdbusmessage.c:2918
+#: ../gio/gdbusmessage.c:2946
 msgid "Error return with empty body"
 msgstr "Rezultat de eroare cu corp vid"
 
-#: ../gio/gdbusmethodinvocation.c:375
-#, c-format
-msgid "Type of return value is incorrect, got `%s', expected `%s'"
-msgstr ""
-"Tipul valorii rezultatului nu este corect, s-a primit „%s”, se aștepta „%s”"
-
-#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:3027
-#: ../gio/gsocket.c:3108
-#, c-format
-msgid "Error sending message: %s"
-msgstr "Eroare la trimiterea mesajului: %s"
-
-#: ../gio/gdbusprivate.c:1768
+#: ../gio/gdbusprivate.c:1736
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Nu s-a putut încărca /var/lib/dbus/machine-id: "
 
-#: ../gio/gdbusproxy.c:715
-#, c-format
-msgid ""
-"Trying to set property %s of type %s but according to the expected interface "
-"the type is %s"
-msgstr ""
-"S-a încercat setarea proprietății %s cu tipul %s, dar conform interfeței "
-"așteptate tipul este %s"
-
-#: ../gio/gdbusproxy.c:1235
+#: ../gio/gdbusproxy.c:1489
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Eroare la apelul StartServiceByName pentru %s:"
 
-#: ../gio/gdbusproxy.c:1256
+#: ../gio/gdbusproxy.c:1510
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Răspuns neașteptat %d de la metoda StartServiceByName(\"%s\")"
 
-#: ../gio/gdbusproxy.c:2312 ../gio/gdbusproxy.c:2470
+#: ../gio/gdbusproxy.c:2600 ../gio/gdbusproxy.c:2734
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -2019,25 +2063,25 @@ msgstr ""
 "Nu se poate invoca metoda; proxy-ul este pentru un nume cunoscut fără "
 "proprietar și a fost construit utilizând G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START"
 
-#: ../gio/gdbusserver.c:715
+#: ../gio/gdbusserver.c:711
 msgid "Abstract name space not supported"
 msgstr "Spațiul de nume abstract nu este suportat"
 
-#: ../gio/gdbusserver.c:805
+#: ../gio/gdbusserver.c:798
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Nu se poate specifica un fișier nonce când se creează un server"
 
-#: ../gio/gdbusserver.c:882
+#: ../gio/gdbusserver.c:875
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Eroare la citirea fișierului nonce la „%s”: %s"
 
-#: ../gio/gdbusserver.c:1044
+#: ../gio/gdbusserver.c:1042
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "Șirul „%s” nu este un GUID D-Bus valid"
 
-#: ../gio/gdbusserver.c:1084
+#: ../gio/gdbusserver.c:1082
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Nu se poate asculta pe transportul nesuportat „%s”"
@@ -2047,13 +2091,14 @@ msgid "COMMAND"
 msgstr "COMANDĂ"
 
 #: ../gio/gdbus-tool.c:93
-#, c-format
+#, fuzzy, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
 "  introspect   Introspect a remote object\n"
 "  monitor      Monitor a remote object\n"
 "  call         Invoke a method on a remote object\n"
+"  emit         Emit a signal\n"
 "\n"
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
@@ -2066,55 +2111,56 @@ msgstr ""
 "Utilizați \"%s COMANDĂ --help\" pentru a primi ajutor pentru fiecare "
 "comandă.\n"
 
-#: ../gio/gdbus-tool.c:161 ../gio/gdbus-tool.c:217 ../gio/gdbus-tool.c:289
-#: ../gio/gdbus-tool.c:313 ../gio/gdbus-tool.c:817 ../gio/gdbus-tool.c:1327
+#: ../gio/gdbus-tool.c:162 ../gio/gdbus-tool.c:218 ../gio/gdbus-tool.c:290
+#: ../gio/gdbus-tool.c:314 ../gio/gdbus-tool.c:691 ../gio/gdbus-tool.c:1010
+#: ../gio/gdbus-tool.c:1443
 #, c-format
 msgid "Error: %s\n"
 msgstr "Eroare: %s\n"
 
-#: ../gio/gdbus-tool.c:172 ../gio/gdbus-tool.c:230 ../gio/gdbus-tool.c:1343
+#: ../gio/gdbus-tool.c:173 ../gio/gdbus-tool.c:231 ../gio/gdbus-tool.c:1459
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Eroare la parsarea introspecției XML: %s\n"
 
-#: ../gio/gdbus-tool.c:347
+#: ../gio/gdbus-tool.c:348
 msgid "Connect to the system bus"
 msgstr "Conectare la magistrala sistemului"
 
-#: ../gio/gdbus-tool.c:348
+#: ../gio/gdbus-tool.c:349
 msgid "Connect to the session bus"
 msgstr "Conectare la magistrala de sesiune"
 
-#: ../gio/gdbus-tool.c:349
+#: ../gio/gdbus-tool.c:350
 msgid "Connect to given D-Bus address"
 msgstr "Conectare la adresa D-Bus dată"
 
-#: ../gio/gdbus-tool.c:359
+#: ../gio/gdbus-tool.c:360
 msgid "Connection Endpoint Options:"
 msgstr "Opțiuni ale capătului conexiunii:"
 
-#: ../gio/gdbus-tool.c:360
+#: ../gio/gdbus-tool.c:361
 msgid "Options specifying the connection endpoint"
 msgstr "Opțiuni care specifică capătul conexiunii"
 
-#: ../gio/gdbus-tool.c:382
+#: ../gio/gdbus-tool.c:383
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Niciun capăt de conexiune specificat"
 
-#: ../gio/gdbus-tool.c:392
+#: ../gio/gdbus-tool.c:393
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Mai multe capete de conexiune specificate"
 
-#: ../gio/gdbus-tool.c:462
+#: ../gio/gdbus-tool.c:463
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
 "Avertisment: Conform datelor de introspecție, interfața „%s” nu există\n"
 
-#: ../gio/gdbus-tool.c:471
+#: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
@@ -2123,118 +2169,185 @@ msgstr ""
 "Avertisment: Conform datelor de introspecție, metoda „%s” nu există în "
 "interfața „%s”\n"
 
-#: ../gio/gdbus-tool.c:533
-msgid "Destination name to invoke method on"
-msgstr "Numele destinației pe care se va invoca metoda"
-
 #: ../gio/gdbus-tool.c:534
-msgid "Object path to invoke method on"
-msgstr "Calea către obiectul pe care se va invoca metoda"
+msgid "Optional destination for signal (unique name)"
+msgstr ""
 
 #: ../gio/gdbus-tool.c:535
-msgid "Method and interface name"
+#, fuzzy
+msgid "Object path to emit signal on"
+msgstr "Calea către obiectul de monitorizat"
+
+#: ../gio/gdbus-tool.c:536
+#, fuzzy
+msgid "Signal and interface name"
 msgstr "Metoda și numele interfeței"
 
-#: ../gio/gdbus-tool.c:574
-msgid "Invoke a method on a remote object."
-msgstr "Invocă o metodă pe un obiect la distanță."
+#: ../gio/gdbus-tool.c:568
+msgid "Emit a signal."
+msgstr ""
 
-#: ../gio/gdbus-tool.c:629 ../gio/gdbus-tool.c:1248 ../gio/gdbus-tool.c:1508
+#: ../gio/gdbus-tool.c:602 ../gio/gdbus-tool.c:822 ../gio/gdbus-tool.c:1549
+#: ../gio/gdbus-tool.c:1781
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Eroare la conectare: %s\n"
 
-#: ../gio/gdbus-tool.c:649 ../gio/gdbus-tool.c:1267 ../gio/gdbus-tool.c:1527
-#, c-format
-msgid "Error: Destination is not specified\n"
-msgstr "Eroare: destinația nu a fost specificată\n"
-
-#: ../gio/gdbus-tool.c:670 ../gio/gdbus-tool.c:1286
-#, c-format
-msgid "Error: Object path is not specified\n"
+#: ../gio/gdbus-tool.c:614
+#, fuzzy, c-format
+msgid "Error: object path not specified.\n"
 msgstr "Eroare: calea către obiect nu a fost specificată\n"
 
-#: ../gio/gdbus-tool.c:690 ../gio/gdbus-tool.c:1306 ../gio/gdbus-tool.c:1567
+#: ../gio/gdbus-tool.c:619 ../gio/gdbus-tool.c:883 ../gio/gdbus-tool.c:1607
+#: ../gio/gdbus-tool.c:1840
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Eroare: calea %s către obiect nu este validă\n"
 
-#: ../gio/gdbus-tool.c:705
-#, c-format
-msgid "Error: Method name is not specified\n"
-msgstr "Eroare: numele metodei nu a fost specificat\n"
+#: ../gio/gdbus-tool.c:625
+#, fuzzy, c-format
+msgid "Error: signal not specified.\n"
+msgstr "Eroare: destinația nu a fost specificată\n"
 
-#: ../gio/gdbus-tool.c:716
-#, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Eroare: numele metodei „%s” nu este valid\n"
+#: ../gio/gdbus-tool.c:634
+#, fuzzy, c-format
+msgid "Error: %s is not a valid interface name\n"
+msgstr "Eroare: calea %s către obiect nu este validă\n"
 
-#: ../gio/gdbus-tool.c:781
-#, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Eroare la parsarea parametrului %d cu tipul „%s”: %s\n"
+#: ../gio/gdbus-tool.c:640
+#, fuzzy, c-format
+msgid "Error: %s is not a valid member name\n"
+msgstr "Eroare: calea %s către obiect nu este validă\n"
 
-#: ../gio/gdbus-tool.c:789
+#: ../gio/gdbus-tool.c:646
+#, fuzzy, c-format
+msgid "Error: %s is not a valid unique bus name.\n"
+msgstr "Eroare: calea %s către obiect nu este validă\n"
+
+#: ../gio/gdbus-tool.c:669 ../gio/gdbus-tool.c:982
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Eroare la parsarea parametrului %d: %s\n"
 
-#: ../gio/gdbus-tool.c:1165
+#: ../gio/gdbus-tool.c:698
+#, fuzzy, c-format
+msgid "Error flushing connection: %s\n"
+msgstr "Eroare la acceptarea conexiunii: %s"
+
+#: ../gio/gdbus-tool.c:725
+msgid "Destination name to invoke method on"
+msgstr "Numele destinației pe care se va invoca metoda"
+
+#: ../gio/gdbus-tool.c:726
+msgid "Object path to invoke method on"
+msgstr "Calea către obiectul pe care se va invoca metoda"
+
+#: ../gio/gdbus-tool.c:727
+msgid "Method and interface name"
+msgstr "Metoda și numele interfeței"
+
+#: ../gio/gdbus-tool.c:728
+#, fuzzy
+msgid "Timeout in seconds"
+msgstr "Limita de timp a fost atinsă"
+
+#: ../gio/gdbus-tool.c:767
+msgid "Invoke a method on a remote object."
+msgstr "Invocă o metodă pe un obiect la distanță."
+
+#: ../gio/gdbus-tool.c:842 ../gio/gdbus-tool.c:1568 ../gio/gdbus-tool.c:1800
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr "Eroare: destinația nu a fost specificată\n"
+
+#: ../gio/gdbus-tool.c:863 ../gio/gdbus-tool.c:1587
+#, c-format
+msgid "Error: Object path is not specified\n"
+msgstr "Eroare: calea către obiect nu a fost specificată\n"
+
+#: ../gio/gdbus-tool.c:898
+#, c-format
+msgid "Error: Method name is not specified\n"
+msgstr "Eroare: numele metodei nu a fost specificat\n"
+
+#: ../gio/gdbus-tool.c:909
+#, c-format
+msgid "Error: Method name `%s' is invalid\n"
+msgstr "Eroare: numele metodei „%s” nu este valid\n"
+
+#: ../gio/gdbus-tool.c:974
+#, c-format
+msgid "Error parsing parameter %d of type `%s': %s\n"
+msgstr "Eroare la parsarea parametrului %d cu tipul „%s”: %s\n"
+
+#: ../gio/gdbus-tool.c:1406
 msgid "Destination name to introspect"
 msgstr "Numele destinației de introspectat"
 
-#: ../gio/gdbus-tool.c:1166
+#: ../gio/gdbus-tool.c:1407
 msgid "Object path to introspect"
 msgstr "Calea obiectului de introspectat"
 
-#: ../gio/gdbus-tool.c:1167
+#: ../gio/gdbus-tool.c:1408
 msgid "Print XML"
 msgstr "Afișează XML"
 
-#: ../gio/gdbus-tool.c:1200
+#: ../gio/gdbus-tool.c:1409
+msgid "Introspect children"
+msgstr ""
+
+#: ../gio/gdbus-tool.c:1410
+msgid "Only print properties"
+msgstr ""
+
+#: ../gio/gdbus-tool.c:1501
 msgid "Introspect a remote object."
 msgstr "Introspectează un obiect la distanță."
 
-#: ../gio/gdbus-tool.c:1426
+#: ../gio/gdbus-tool.c:1699
 msgid "Destination name to monitor"
 msgstr "Numele destinației de monitorizat"
 
-#: ../gio/gdbus-tool.c:1427
+#: ../gio/gdbus-tool.c:1700
 msgid "Object path to monitor"
 msgstr "Calea către obiectul de monitorizat"
 
-#: ../gio/gdbus-tool.c:1460
+#: ../gio/gdbus-tool.c:1733
 msgid "Monitor a remote object."
 msgstr "Monitorizează un obiect la distanță."
 
-#: ../gio/gdesktopappinfo.c:480 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:572 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Nedenumit"
 
-#: ../gio/gdesktopappinfo.c:764
+#: ../gio/gdesktopappinfo.c:969
 msgid "Desktop file didn't specify Exec field"
 msgstr "Fișierul desktop nu are specificat un câmp „Exec”"
 
-#: ../gio/gdesktopappinfo.c:1045
+#: ../gio/gdesktopappinfo.c:1250
 msgid "Unable to find terminal required for application"
 msgstr "Nu s-a găsit un terminal pentru pornirea aplicației"
 
-#: ../gio/gdesktopappinfo.c:1344
+#: ../gio/gdesktopappinfo.c:1515
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr "Nu se poate crea dosarul pentru opțiunile aplicației %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1348
+#: ../gio/gdesktopappinfo.c:1519
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Nu se poate crea dosarul pentru opțiunile MIME %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1841
+#: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
+msgid "Application information lacks an identifier"
+msgstr ""
+
+#: ../gio/gdesktopappinfo.c:2033
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Nu se poate crea fișierul desktop %s"
 
-#: ../gio/gdesktopappinfo.c:1957
+#: ../gio/gdesktopappinfo.c:2149
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definiție personalizată pentru %s"
@@ -2262,7 +2375,8 @@ msgstr "unitatea nu implementează comanda „start”"
 msgid "drive doesn't implement stop"
 msgstr "unitatea nu implementează comanda „stop”"
 
-#: ../gio/gdummytlsbackend.c:156 ../gio/gdummytlsbackend.c:274
+#: ../gio/gdummytlsbackend.c:168 ../gio/gdummytlsbackend.c:288
+#: ../gio/gdummytlsbackend.c:378
 msgid "TLS support is not available"
 msgstr "Suportul TLS nu este disponibil"
 
@@ -2290,15 +2404,15 @@ msgstr "Număr de elemente greșit formatat (%d) în codarea GEmblemedIcon"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "Se aștepta un GEmblem pentru GEmblemedIcon"
 
-#: ../gio/gfile.c:872 ../gio/gfile.c:1103 ../gio/gfile.c:1238
-#: ../gio/gfile.c:1475 ../gio/gfile.c:1529 ../gio/gfile.c:1586
-#: ../gio/gfile.c:1669 ../gio/gfile.c:1724 ../gio/gfile.c:1784
-#: ../gio/gfile.c:1838 ../gio/gfile.c:3308 ../gio/gfile.c:3362
-#: ../gio/gfile.c:3494 ../gio/gfile.c:3535 ../gio/gfile.c:3862
-#: ../gio/gfile.c:4264 ../gio/gfile.c:4350 ../gio/gfile.c:4439
-#: ../gio/gfile.c:4537 ../gio/gfile.c:4624 ../gio/gfile.c:4718
-#: ../gio/gfile.c:5039 ../gio/gfile.c:5306 ../gio/gfile.c:5371
-#: ../gio/gfile.c:6945 ../gio/gfile.c:7035 ../gio/gfile.c:7121
+#: ../gio/gfile.c:871 ../gio/gfile.c:1102 ../gio/gfile.c:1237
+#: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
+#: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
+#: ../gio/gfile.c:1837 ../gio/gfile.c:3307 ../gio/gfile.c:3361
+#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3864
+#: ../gio/gfile.c:4266 ../gio/gfile.c:4352 ../gio/gfile.c:4441
+#: ../gio/gfile.c:4539 ../gio/gfile.c:4626 ../gio/gfile.c:4720
+#: ../gio/gfile.c:5041 ../gio/gfile.c:5308 ../gio/gfile.c:5373
+#: ../gio/gfile.c:6947 ../gio/gfile.c:7037 ../gio/gfile.c:7123
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Operațiune neimplementată"
@@ -2311,58 +2425,58 @@ msgstr "Operațiune neimplementată"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1359 ../gio/glocalfile.c:1061 ../gio/glocalfile.c:1072
-#: ../gio/glocalfile.c:1085
+#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1051 ../gio/glocalfile.c:1062
+#: ../gio/glocalfile.c:1075
 msgid "Containing mount does not exist"
 msgstr "Montarea conținută nu există"
 
-#: ../gio/gfile.c:2412 ../gio/glocalfile.c:2260
+#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2256
 msgid "Can't copy over directory"
 msgstr "Nu se poate copia peste director"
 
-#: ../gio/gfile.c:2473
+#: ../gio/gfile.c:2472
 msgid "Can't copy directory over directory"
 msgstr "Nu se poate copia un director peste un alt director"
 
-#: ../gio/gfile.c:2481 ../gio/glocalfile.c:2269
+#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2265
 msgid "Target file exists"
 msgstr "Fișierul destinație există deja"
 
-#: ../gio/gfile.c:2499
+#: ../gio/gfile.c:2498
 msgid "Can't recursively copy directory"
 msgstr "Nu se poate copia recursiv directorul"
 
-#: ../gio/gfile.c:2759
+#: ../gio/gfile.c:2758
 msgid "Splice not supported"
 msgstr "Nu există suport pentru funcția „splice”"
 
-#: ../gio/gfile.c:2763
+#: ../gio/gfile.c:2762
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Eroare la aplicarea funcției „splice” fișierului: %s"
 
-#: ../gio/gfile.c:2910
+#: ../gio/gfile.c:2909
 msgid "Can't copy special file"
 msgstr "Nu se poate copia fișierul special"
 
-#: ../gio/gfile.c:3484
+#: ../gio/gfile.c:3483
 msgid "Invalid symlink value given"
 msgstr "S-a primit o valoare incorectă pentru legătura simbolică"
 
-#: ../gio/gfile.c:3578
+#: ../gio/gfile.c:3577
 msgid "Trash not supported"
 msgstr "Nu există o implementare pentru coșul de gunoi"
 
-#: ../gio/gfile.c:3627
+#: ../gio/gfile.c:3626
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Numele de fișiere nu pot conține „%c”"
 
-#: ../gio/gfile.c:6004 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6006 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "volumul nu implementează montarea"
 
-#: ../gio/gfile.c:6115
+#: ../gio/gfile.c:6117
 msgid "No application is registered as handling this file"
 msgstr "Nu există o aplicație înregistrată pentru deschiderea acestui fișier"
 
@@ -2407,37 +2521,37 @@ msgstr "Nu se permite trunchierea fluxului de intrare"
 msgid "Truncate not supported on stream"
 msgstr "Trunchierea fluxului nu este implementată"
 
-#: ../gio/gicon.c:287
+#: ../gio/gicon.c:284
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Număr greșit de elemente (%d)"
 
-#: ../gio/gicon.c:307
+#: ../gio/gicon.c:304
 #, c-format
 msgid "No type for class name %s"
 msgstr "Niciun tip pentru numele clasei %s"
 
-#: ../gio/gicon.c:317
+#: ../gio/gicon.c:314
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "Tipul %s nu implementează interfața GIcon"
 
-#: ../gio/gicon.c:328
+#: ../gio/gicon.c:325
 #, c-format
 msgid "Type %s is not classed"
 msgstr "Tipul %s nu este clasificat"
 
-#: ../gio/gicon.c:342
+#: ../gio/gicon.c:339
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Număr malformat de versiune: %s"
 
-#: ../gio/gicon.c:356
+#: ../gio/gicon.c:353
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "Tipul %s nu implementează from_tokens() în interfața GIcon"
 
-#: ../gio/gicon.c:432
+#: ../gio/gicon.c:430
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Nu se poate gestiona versiunea furnizată pentru codarea iconiței"
 
@@ -2452,7 +2566,7 @@ msgstr "Fluxul de input nu are implementată o funcție de citire"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:898 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1207
+#: ../gio/goutputstream.c:1216
 msgid "Stream has outstanding operation"
 msgstr "Asupra fluxului se execută deja o operațiune"
 
@@ -2465,16 +2579,16 @@ msgstr "Spațiu insuficient pentru adresa socket-ului"
 msgid "Unsupported socket address"
 msgstr "Adresă nesuportată de socket"
 
-#: ../gio/glib-compile-schemas.c:713
+#: ../gio/glib-compile-schemas.c:741
 msgid "empty names are not permitted"
 msgstr "numele vide nu sunt permise"
 
-#: ../gio/glib-compile-schemas.c:723
+#: ../gio/glib-compile-schemas.c:751
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "nume nevalid „%s”: numele trebuie să înceapă cu o literă mică"
 
-#: ../gio/glib-compile-schemas.c:735
+#: ../gio/glib-compile-schemas.c:763
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
@@ -2483,36 +2597,36 @@ msgstr ""
 "nume nevalid „%s”: caracter nevalid „%c”; doar literele mici, numerele și "
 "liniuța ('-') sunt permise."
 
-#: ../gio/glib-compile-schemas.c:744
+#: ../gio/glib-compile-schemas.c:772
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr "nume nevalid „%s”: două liniuțe consecutive ('--') nu sunt permise."
 
-#: ../gio/glib-compile-schemas.c:753
+#: ../gio/glib-compile-schemas.c:781
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "nume nevalid „%s”: ultimul caracter nu poate fi o liniuță ('-')."
 
-#: ../gio/glib-compile-schemas.c:761
-#, c-format
-msgid "invalid name '%s': maximum length is 32"
+#: ../gio/glib-compile-schemas.c:789
+#, fuzzy, c-format
+msgid "invalid name '%s': maximum length is 1024"
 msgstr "nume nevalid „%s”: lungimea maximă este 32"
 
-#: ../gio/glib-compile-schemas.c:830
+#: ../gio/glib-compile-schemas.c:858
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> deja specificat"
 
-#: ../gio/glib-compile-schemas.c:856
+#: ../gio/glib-compile-schemas.c:884
 msgid "can not add keys to a 'list-of' schema"
 msgstr "nu se pot adăuga chei unei scheme de tip „list-of”"
 
-#: ../gio/glib-compile-schemas.c:867
+#: ../gio/glib-compile-schemas.c:895
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> deja specificat"
 
-#: ../gio/glib-compile-schemas.c:885
+#: ../gio/glib-compile-schemas.c:913
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2521,7 +2635,7 @@ msgstr ""
 "<key name='%s'> ascunde <key name='%s'> în <schema id='%s'>; utilizați "
 "<override> pentru a modifica valoarea"
 
-#: ../gio/glib-compile-schemas.c:896
+#: ../gio/glib-compile-schemas.c:924
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
@@ -2530,56 +2644,56 @@ msgstr ""
 "exact una dintre valorile „type”, „enum” sau „flags” trebuie specificată "
 "unui atribut al <key>"
 
-#: ../gio/glib-compile-schemas.c:915
+#: ../gio/glib-compile-schemas.c:943
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> nu este (încă) definit."
 
-#: ../gio/glib-compile-schemas.c:930
+#: ../gio/glib-compile-schemas.c:958
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "șir-tip GVariant nevalid „%s”"
 
-#: ../gio/glib-compile-schemas.c:960
+#: ../gio/glib-compile-schemas.c:988
 msgid "<override> given but schema isn't extending anything"
 msgstr "<override> a fost specificat, dar schema nu extinde nimic"
 
-#: ../gio/glib-compile-schemas.c:973
+#: ../gio/glib-compile-schemas.c:1001
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "niciun element <key name='%s'> de suprascris"
 
-#: ../gio/glib-compile-schemas.c:981
+#: ../gio/glib-compile-schemas.c:1009
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> deja specificat"
 
-#: ../gio/glib-compile-schemas.c:1052
+#: ../gio/glib-compile-schemas.c:1080
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> deja specificat"
 
-#: ../gio/glib-compile-schemas.c:1064
+#: ../gio/glib-compile-schemas.c:1092
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> extinde o schemă „%s” ce încă nu există"
 
-#: ../gio/glib-compile-schemas.c:1080
+#: ../gio/glib-compile-schemas.c:1108
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> este o listă de a unei scheme inexistente „%s”"
 
-#: ../gio/glib-compile-schemas.c:1088
+#: ../gio/glib-compile-schemas.c:1116
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "Nu poate fi o listă a unei scheme cu o cale"
 
-#: ../gio/glib-compile-schemas.c:1098
+#: ../gio/glib-compile-schemas.c:1126
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "Nu se poate extinde o schemă cu o cale"
 
-#: ../gio/glib-compile-schemas.c:1108
+#: ../gio/glib-compile-schemas.c:1136
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
@@ -2587,98 +2701,98 @@ msgstr ""
 "<schema id='%s'> este o listă, ce extinde <schema id='%s'> care nu este o "
 "listă"
 
-#: ../gio/glib-compile-schemas.c:1118
+#: ../gio/glib-compile-schemas.c:1146
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> extinde <schema id='%s' list-of='%s'>, dar „%"
-"s” nu extinde „%s”"
+"<schema id='%s' list-of='%s'> extinde <schema id='%s' list-of='%s'>, dar "
+"„%s” nu extinde „%s”"
 
-#: ../gio/glib-compile-schemas.c:1135
+#: ../gio/glib-compile-schemas.c:1163
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr ""
 "dacă este specificată, calea trebuie să înceapă și să se termine cu o bară "
 "oblică („/”)"
 
-#: ../gio/glib-compile-schemas.c:1142
+#: ../gio/glib-compile-schemas.c:1170
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "calea unei liste trebuie să se termine cu „:/”"
 
-#: ../gio/glib-compile-schemas.c:1168
+#: ../gio/glib-compile-schemas.c:1196
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> deja specificat"
 
-#: ../gio/glib-compile-schemas.c:1387
+#: ../gio/glib-compile-schemas.c:1416
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "Elementul <%s> nu este permis în <%s>"
 
-#: ../gio/glib-compile-schemas.c:1391
+#: ../gio/glib-compile-schemas.c:1420
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "Elementul <%s> nu este permis la nivelul cel mai de sus"
 
-#: ../gio/glib-compile-schemas.c:1485
+#: ../gio/glib-compile-schemas.c:1511
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "textul nu are voie să apară în <%s>"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1654 ../gio/glib-compile-schemas.c:1725
-#: ../gio/glib-compile-schemas.c:1801
+#: ../gio/glib-compile-schemas.c:1696 ../gio/glib-compile-schemas.c:1767
+#: ../gio/glib-compile-schemas.c:1843
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "--strict a fost specificat; se iese.\n"
 
-#: ../gio/glib-compile-schemas.c:1662
+#: ../gio/glib-compile-schemas.c:1704
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "Întregul fișier a fost ignorat.\n"
 
-#: ../gio/glib-compile-schemas.c:1721
+#: ../gio/glib-compile-schemas.c:1763
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "Se ignoră acest fișier.\n"
 
-#: ../gio/glib-compile-schemas.c:1761
+#: ../gio/glib-compile-schemas.c:1803
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
 "Nu există cheia „%s” în schema „%s” specificată în fișierul de suprascriere "
 "„%s”"
 
-#: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
-#: ../gio/glib-compile-schemas.c:1853
+#: ../gio/glib-compile-schemas.c:1809 ../gio/glib-compile-schemas.c:1867
+#: ../gio/glib-compile-schemas.c:1895
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; se ignoră suprascrierea pentru această cheie.\n"
 
-#: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
-#: ../gio/glib-compile-schemas.c:1857
+#: ../gio/glib-compile-schemas.c:1813 ../gio/glib-compile-schemas.c:1871
+#: ../gio/glib-compile-schemas.c:1899
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr "și --strict a fost specificat; se iese.\n"
 
-#: ../gio/glib-compile-schemas.c:1787
+#: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
-"s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
 msgstr ""
 "eroare la parsarea cheii „%s” în schema „%s” specificată în fișierul de "
 "suprascriere „%s”: %s."
 
-#: ../gio/glib-compile-schemas.c:1797
+#: ../gio/glib-compile-schemas.c:1839
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "Se ignoră suprascrierea pentru această cheie.\n"
 
-#: ../gio/glib-compile-schemas.c:1815
+#: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -2687,7 +2801,7 @@ msgstr ""
 "suprascrierea cheii „%s” în schema „%s” din fișierul de suprascriere „%s” nu "
 "este în intervalul specificat de schemă"
 
-#: ../gio/glib-compile-schemas.c:1843
+#: ../gio/glib-compile-schemas.c:1885
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -2696,31 +2810,31 @@ msgstr ""
 "suprascrierea cheii „%s” în schema „%s” din fișierul de suprascriere „%s” nu "
 "este în lista de valori valide"
 
-#: ../gio/glib-compile-schemas.c:1897
+#: ../gio/glib-compile-schemas.c:1939
 msgid "where to store the gschemas.compiled file"
 msgstr "unde se stochează fișierul gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1923
+#: ../gio/glib-compile-schemas.c:1939 ../gio/glib-compile-schemas.c:1970
 msgid "DIRECTORY"
 msgstr "DOSAR"
 
-#: ../gio/glib-compile-schemas.c:1898
+#: ../gio/glib-compile-schemas.c:1940
 msgid "Abort on any errors in schemas"
 msgstr "Abandonează execuția la detectarea oricăror erori în scheme"
 
-#: ../gio/glib-compile-schemas.c:1899
+#: ../gio/glib-compile-schemas.c:1941
 msgid "Do not write the gschema.compiled file"
 msgstr "Nu scrie fișierul gschemas.compiled"
 
-#: ../gio/glib-compile-schemas.c:1900
+#: ../gio/glib-compile-schemas.c:1942
 msgid "This option will be removed soon."
 msgstr "Această opțiune va fi eliminată în curând."
 
-#: ../gio/glib-compile-schemas.c:1901
+#: ../gio/glib-compile-schemas.c:1943
 msgid "Do not enforce key name restrictions"
 msgstr "Nu impune restricții numelor cheilor"
 
-#: ../gio/glib-compile-schemas.c:1926
+#: ../gio/glib-compile-schemas.c:1973
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2730,22 +2844,22 @@ msgstr ""
 "Fișierele schemă trebuie să aibă extensia .gschema.xml,\n"
 "iar fișierul cache se numește gschemas.compiled."
 
-#: ../gio/glib-compile-schemas.c:1942
+#: ../gio/glib-compile-schemas.c:1989
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Trebuie să dați exact un nume de dosar\n"
 
-#: ../gio/glib-compile-schemas.c:1981
+#: ../gio/glib-compile-schemas.c:2028
 #, c-format
 msgid "No schema files found: "
 msgstr "Nu s-a găsit niciun fișier schemă: "
 
-#: ../gio/glib-compile-schemas.c:1984
+#: ../gio/glib-compile-schemas.c:2031
 #, c-format
 msgid "doing nothing.\n"
 msgstr "nu se face nimic.\n"
 
-#: ../gio/glib-compile-schemas.c:1987
+#: ../gio/glib-compile-schemas.c:2034
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "s-a șters fișierul de ieșire existent.\n"
@@ -2755,212 +2869,213 @@ msgid "Unable to find default local directory monitor type"
 msgstr ""
 "Nu s-a putut identifica tipul implicit de monitorizare a directoarelor locale"
 
-#: ../gio/glocalfile.c:593 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:571 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "Nume incorect de fișier: %s"
 
-#: ../gio/glocalfile.c:969
+#: ../gio/glocalfile.c:948
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Eroare la citirea detaliilor sistemului de fișiere: %s"
 
-#: ../gio/glocalfile.c:1107
+#: ../gio/glocalfile.c:1097
 msgid "Can't rename root directory"
 msgstr "Nu se poate redenumi directorul rădăcină"
 
-#: ../gio/glocalfile.c:1127 ../gio/glocalfile.c:1153
+#: ../gio/glocalfile.c:1117 ../gio/glocalfile.c:1143
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Eroare la redenumirea fișierului: %s"
 
-#: ../gio/glocalfile.c:1136
-msgid "Can't rename file, filename already exist"
+#: ../gio/glocalfile.c:1126
+#, fuzzy
+msgid "Can't rename file, filename already exists"
 msgstr "Nu se poate redenumi fișierul, numele de fișier există deja"
 
-#: ../gio/glocalfile.c:1149 ../gio/glocalfile.c:2133 ../gio/glocalfile.c:2162
-#: ../gio/glocalfile.c:2322 ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfile.c:1139 ../gio/glocalfile.c:2129 ../gio/glocalfile.c:2158
+#: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:571
 #: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
-#: ../gio/glocalfileoutputstream.c:1151
+#: ../gio/glocalfileoutputstream.c:1157
 msgid "Invalid filename"
 msgstr "Nume nevalid de fișier"
 
-#: ../gio/glocalfile.c:1310
+#: ../gio/glocalfile.c:1300
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Eroare la deschiderea fișierului: %s"
 
-#: ../gio/glocalfile.c:1320
+#: ../gio/glocalfile.c:1316
 msgid "Can't open directory"
 msgstr "Nu se poate deschide directorul"
 
-#: ../gio/glocalfile.c:1445
+#: ../gio/glocalfile.c:1441
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Eroare la ștergerea fișierului: %s"
 
-#: ../gio/glocalfile.c:1812
+#: ../gio/glocalfile.c:1808
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Eroare la mutarea la coșul de gunoi a fișierului: %s"
 
-#: ../gio/glocalfile.c:1835
+#: ../gio/glocalfile.c:1831
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Nu s-a putut crea directorul coșului de gunoi „%s”: %s"
 
-#: ../gio/glocalfile.c:1856
+#: ../gio/glocalfile.c:1852
 msgid "Unable to find toplevel directory for trash"
 msgstr "Nu s-a găsit directorul de top pentru coșul de gunoi"
 
-#: ../gio/glocalfile.c:1935 ../gio/glocalfile.c:1955
+#: ../gio/glocalfile.c:1931 ../gio/glocalfile.c:1951
 msgid "Unable to find or create trash directory"
 msgstr "Nu s-a putut găsi ori crea directorul coșului de gunoi"
 
-#: ../gio/glocalfile.c:1989
+#: ../gio/glocalfile.c:1985
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr ""
 "Nu s-a putut crea fișierul cu detalii despre mutarea la coșul de gunoi: %s"
 
-#: ../gio/glocalfile.c:2018 ../gio/glocalfile.c:2023 ../gio/glocalfile.c:2103
-#: ../gio/glocalfile.c:2110
+#: ../gio/glocalfile.c:2014 ../gio/glocalfile.c:2019 ../gio/glocalfile.c:2099
+#: ../gio/glocalfile.c:2106
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Nu s-a putut muta la coș fișierul: %s"
 
-#: ../gio/glocalfile.c:2137
+#: ../gio/glocalfile.c:2133
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Eroare la crearea directorului: %s"
 
-#: ../gio/glocalfile.c:2166
+#: ../gio/glocalfile.c:2162
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Sistemul de fișiere nu suportă legături simbolice"
 
-#: ../gio/glocalfile.c:2170
+#: ../gio/glocalfile.c:2166
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Eroare la crearea legăturii simbolice: %s"
 
-#: ../gio/glocalfile.c:2232 ../gio/glocalfile.c:2326
+#: ../gio/glocalfile.c:2228 ../gio/glocalfile.c:2322
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Eroare la mutarea fișierului: %s"
 
-#: ../gio/glocalfile.c:2255
+#: ../gio/glocalfile.c:2251
 msgid "Can't move directory over directory"
 msgstr "Nu se poate muta un director peste un alt director"
 
-#: ../gio/glocalfile.c:2282 ../gio/glocalfileoutputstream.c:949
-#: ../gio/glocalfileoutputstream.c:963 ../gio/glocalfileoutputstream.c:978
-#: ../gio/glocalfileoutputstream.c:994 ../gio/glocalfileoutputstream.c:1008
+#: ../gio/glocalfile.c:2278 ../gio/glocalfileoutputstream.c:955
+#: ../gio/glocalfileoutputstream.c:969 ../gio/glocalfileoutputstream.c:984
+#: ../gio/glocalfileoutputstream.c:1000 ../gio/glocalfileoutputstream.c:1014
 msgid "Backup file creation failed"
 msgstr "Crearea fișierului de rezervă a eșuat"
 
-#: ../gio/glocalfile.c:2301
+#: ../gio/glocalfile.c:2297
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Eroare la ștergerea fișierului destinație: %s"
 
-#: ../gio/glocalfile.c:2315
+#: ../gio/glocalfile.c:2311
 msgid "Move between mounts not supported"
 msgstr ""
 "Operațiunea de mutare între două dispozitive montate nu este implementată"
 
-#: ../gio/glocalfileinfo.c:720
+#: ../gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "Valoarea atributului trebuie să fie diferită de NULL"
 
-#: ../gio/glocalfileinfo.c:727
+#: ../gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "Tip incorect de atribut (se aștepta un șir)"
 
-#: ../gio/glocalfileinfo.c:734
+#: ../gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "Nume incorect de atribut extins"
 
-#: ../gio/glocalfileinfo.c:774
+#: ../gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Eroare la setarea atributului extins „%s”: %s"
 
-#: ../gio/glocalfileinfo.c:1483 ../gio/glocalfileoutputstream.c:833
+#: ../gio/glocalfileinfo.c:1482 ../gio/glocalfileoutputstream.c:833
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Eroare la citirea detaliilor fișierului „%s”: %s"
 
-#: ../gio/glocalfileinfo.c:1567
+#: ../gio/glocalfileinfo.c:1566
 msgid " (invalid encoding)"
 msgstr " (codare incorectă)"
 
-#: ../gio/glocalfileinfo.c:1769
+#: ../gio/glocalfileinfo.c:1768
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Eroare la citirea descriptorilor fișierului: %s"
 
-#: ../gio/glocalfileinfo.c:1814
+#: ../gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Tip incorect de atribut (se aștepta o valoare uint32)"
 
-#: ../gio/glocalfileinfo.c:1832
+#: ../gio/glocalfileinfo.c:1831
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Tip incorect de atribut (se aștepta o valoare uint64)"
 
-#: ../gio/glocalfileinfo.c:1851 ../gio/glocalfileinfo.c:1870
+#: ../gio/glocalfileinfo.c:1850 ../gio/glocalfileinfo.c:1869
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Tip incorect de atribut (se aștepta un șir de octeți)"
 
-#: ../gio/glocalfileinfo.c:1905
+#: ../gio/glocalfileinfo.c:1904
 msgid "Cannot set permissions on symlinks"
 msgstr "Nu se pot defini drepturi pentru legături simbolice"
 
-#: ../gio/glocalfileinfo.c:1921
+#: ../gio/glocalfileinfo.c:1920
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Eroare la definirea drepturilor: %s"
 
-#: ../gio/glocalfileinfo.c:1972
+#: ../gio/glocalfileinfo.c:1971
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Eroare la definirea deținătorului: %s"
 
-#: ../gio/glocalfileinfo.c:1995
+#: ../gio/glocalfileinfo.c:1994
 msgid "symlink must be non-NULL"
 msgstr "legătura simbolică trebuie să fie diferită de NULL"
 
-#: ../gio/glocalfileinfo.c:2005 ../gio/glocalfileinfo.c:2024
-#: ../gio/glocalfileinfo.c:2035
+#: ../gio/glocalfileinfo.c:2004 ../gio/glocalfileinfo.c:2023
+#: ../gio/glocalfileinfo.c:2034
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Eroare la definirea legăturii simbolice: %s"
 
-#: ../gio/glocalfileinfo.c:2014
+#: ../gio/glocalfileinfo.c:2013
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Eroare la definirea legăturii simbolice: fișierul nu este o legătură "
 "simbolică"
 
-#: ../gio/glocalfileinfo.c:2140
+#: ../gio/glocalfileinfo.c:2139
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Eroare la schimbarea datei de acces ori modificare: %s"
 
-#: ../gio/glocalfileinfo.c:2163
+#: ../gio/glocalfileinfo.c:2162
 msgid "SELinux context must be non-NULL"
 msgstr "Contextul SELinux trebuie să fie diferit de NULL"
 
-#: ../gio/glocalfileinfo.c:2178
+#: ../gio/glocalfileinfo.c:2177
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Eroare la definirea contextului SELinux: %s"
 
-#: ../gio/glocalfileinfo.c:2185
+#: ../gio/glocalfileinfo.c:2184
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux nu este activat pentru acest sistem"
 
-#: ../gio/glocalfileinfo.c:2277
+#: ../gio/glocalfileinfo.c:2276
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "Definirea atributului %s nu este implementată"
@@ -2972,7 +3087,7 @@ msgstr "Eroare la citirea din fișier: %s"
 
 #: ../gio/glocalfileinputstream.c:216 ../gio/glocalfileinputstream.c:228
 #: ../gio/glocalfileinputstream.c:340 ../gio/glocalfileoutputstream.c:470
-#: ../gio/glocalfileoutputstream.c:1026
+#: ../gio/glocalfileoutputstream.c:1032
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Eroare la căutarea în fișier: %s"
@@ -3008,14 +3123,14 @@ msgstr "Eroare la crearea copiei de backup: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Eroare la redenumirea fișierului temporar: %s"
 
-#: ../gio/glocalfileoutputstream.c:516 ../gio/glocalfileoutputstream.c:1077
+#: ../gio/glocalfileoutputstream.c:516 ../gio/glocalfileoutputstream.c:1083
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Eroare la trunchierea fișierului: %s"
 
 #: ../gio/glocalfileoutputstream.c:577 ../gio/glocalfileoutputstream.c:630
 #: ../gio/glocalfileoutputstream.c:675 ../gio/glocalfileoutputstream.c:815
-#: ../gio/glocalfileoutputstream.c:1058 ../gio/glocalfileoutputstream.c:1157
+#: ../gio/glocalfileoutputstream.c:1064 ../gio/glocalfileoutputstream.c:1163
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Eroare la deschiderea fișierului „%s”: %s"
@@ -3032,7 +3147,7 @@ msgstr "Fișierul destinație nu este un fișier obișnuit"
 msgid "The file was externally modified"
 msgstr "Fișierul a fost modificat de o terță parte"
 
-#: ../gio/glocalfileoutputstream.c:1042
+#: ../gio/glocalfileoutputstream.c:1048
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Eroare la ștergerea vechiului fișier: %s"
@@ -3125,40 +3240,40 @@ msgstr ""
 "obiectul montat nu implementează detecția automată și sincronizată a "
 "conținutului"
 
-#: ../gio/gnetworkaddress.c:318
+#: ../gio/gnetworkaddress.c:322
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "Numele de gazdă „%s” conține „[” dar nu și „]”"
 
-#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:408
+#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
 msgstr "Fluxul de ieșire nu implementează scrierea"
 
-#: ../gio/goutputstream.c:369 ../gio/goutputstream.c:849
+#: ../gio/goutputstream.c:372 ../gio/goutputstream.c:855
 msgid "Source stream is already closed"
 msgstr "Sursa fluxului este deja închisă"
 
-#: ../gio/gresolver.c:737
+#: ../gio/gresolver.c:779
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Eroare la rezolvarea „%s”: %s"
 
-#: ../gio/gresolver.c:787
+#: ../gio/gresolver.c:829
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Eroare la rezolvarea inversă „%s”: %s"
 
-#: ../gio/gresolver.c:822 ../gio/gresolver.c:900
+#: ../gio/gresolver.c:864 ../gio/gresolver.c:943
 #, c-format
 msgid "No service record for '%s'"
 msgstr "Nu există înregistrări de serviciu pentru „%s”"
 
-#: ../gio/gresolver.c:827 ../gio/gresolver.c:905
+#: ../gio/gresolver.c:869 ../gio/gresolver.c:948
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Eroare temporară la rezolvarea „%s”"
 
-#: ../gio/gresolver.c:832 ../gio/gresolver.c:910
+#: ../gio/gresolver.c:874 ../gio/gresolver.c:953
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Eroare la rezolvarea „%s”"
@@ -3203,40 +3318,37 @@ msgstr "Calea trebuie să nu conțină două bare oblice adiacente (//)\n"
 msgid "No such key '%s'\n"
 msgstr "Nu există cheia „%s”\n"
 
-#: ../gio/gsettings-tool.c:444
+#: ../gio/gsettings-tool.c:504
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Valoarea furnizată este în afara intervalului valid\n"
 
-#: ../gio/gsettings-tool.c:473
-#| msgid "Print XML"
+#: ../gio/gsettings-tool.c:533
 msgid "Print help"
 msgstr "Afișează ajutorul"
 
-#: ../gio/gsettings-tool.c:479
+#: ../gio/gsettings-tool.c:539
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Listează schemele (nerelocalizabile) instalate"
 
-#: ../gio/gsettings-tool.c:485
+#: ../gio/gsettings-tool.c:545
 msgid "List the installed relocatable schemas"
 msgstr "Listează schemele relocalizabile instalate"
 
-#: ../gio/gsettings-tool.c:491
-#| msgid "Lists the keys in SCHEMA"
+#: ../gio/gsettings-tool.c:551
 msgid "List the keys in SCHEMA"
 msgstr "Listează cheile din SCHEMĂ"
 
-#: ../gio/gsettings-tool.c:492 ../gio/gsettings-tool.c:498
+#: ../gio/gsettings-tool.c:552 ../gio/gsettings-tool.c:558
+#: ../gio/gsettings-tool.c:595
 msgid "SCHEMA[:PATH]"
 msgstr "SCHEMĂ[:CALE]"
 
-#: ../gio/gsettings-tool.c:497
-#| msgid "Lists the children of SCHEMA"
+#: ../gio/gsettings-tool.c:557
 msgid "List the children of SCHEMA"
 msgstr "Listează copiii SCHEMEI"
 
-#: ../gio/gsettings-tool.c:503
-#| msgid "List keys and values, recursively"
+#: ../gio/gsettings-tool.c:563
 msgid ""
 "List keys and values, recursively\n"
 "If no SCHEMA is given, list all keys\n"
@@ -3244,64 +3356,59 @@ msgstr ""
 "Listează chei și valori, recursiv\n"
 "Dacă nu a fost furnizată nicio SCHEMĂ, listează toate cheile\n"
 
-#: ../gio/gsettings-tool.c:505
-#| msgid "SCHEMA[:PATH]"
+#: ../gio/gsettings-tool.c:565
 msgid "[SCHEMA[:PATH]]"
 msgstr "[SCHEMĂ[:CALE]]"
 
-#: ../gio/gsettings-tool.c:510
-#| msgid "Gets the value of KEY"
+#: ../gio/gsettings-tool.c:570
 msgid "Get the value of KEY"
 msgstr "Obține valoarea CHEII"
 
-#: ../gio/gsettings-tool.c:511 ../gio/gsettings-tool.c:517
-#: ../gio/gsettings-tool.c:529 ../gio/gsettings-tool.c:535
+#: ../gio/gsettings-tool.c:571 ../gio/gsettings-tool.c:577
+#: ../gio/gsettings-tool.c:589 ../gio/gsettings-tool.c:601
 msgid "SCHEMA[:PATH] KEY"
 msgstr "SCHEMĂ[:CALE] CHEIE"
 
-#: ../gio/gsettings-tool.c:516
-#| msgid "Queries the range of valid values for KEY"
+#: ../gio/gsettings-tool.c:576
 msgid "Query the range of valid values for KEY"
 msgstr "Interoghează intervalul valorilor valide pentru CHEIE"
 
-#: ../gio/gsettings-tool.c:522
-#| msgid "Sets the value of KEY to VALUE"
+#: ../gio/gsettings-tool.c:582
 msgid "Set the value of KEY to VALUE"
 msgstr "Setează valoarea CHEII la VALOARE"
 
-#: ../gio/gsettings-tool.c:523
+#: ../gio/gsettings-tool.c:583
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "SCHEMĂ[:CALE] CHEIE VALOARE"
 
-#: ../gio/gsettings-tool.c:528
-#| msgid "Resets KEY to its default value"
+#: ../gio/gsettings-tool.c:588
 msgid "Reset KEY to its default value"
 msgstr "Resetează CHEIA la valoarea ei implicită"
 
-#: ../gio/gsettings-tool.c:534
-#| msgid "Checks if KEY is writable"
+#: ../gio/gsettings-tool.c:594
+msgid "Reset all keys in SCHEMA to their defaults"
+msgstr ""
+
+#: ../gio/gsettings-tool.c:600
 msgid "Check if KEY is writable"
 msgstr "Verifică dacă CHEIA poate fi scrisă"
 
-#: ../gio/gsettings-tool.c:540
-#| msgid ""
-#| "Monitors KEY for changes.\n"
-#| "If no KEY is specified, monitor all keys in SCHEMA.\n"
-#| "Use ^C to stop monitoring.\n"
+#: ../gio/gsettings-tool.c:606
 msgid ""
 "Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
 "Monitorizează CHEIA pentru modificări.\n"
-"Dacă nicio CHEIE nu este specificată, monitorizează toate cheile din SCHEMĂ.\n"
+"Dacă nicio CHEIE nu este specificată, monitorizează toate cheile din "
+"SCHEMĂ.\n"
 "Folosiți ^C pentru a opri monitorizarea.\n"
 
-#: ../gio/gsettings-tool.c:543
+#: ../gio/gsettings-tool.c:609
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "SCHEMĂ[:CALE] [CHEIE]"
 
-#: ../gio/gsettings-tool.c:547
+#: ../gio/gsettings-tool.c:613
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -3310,7 +3417,8 @@ msgstr ""
 "Comandă necunoscută %s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:555
+#: ../gio/gsettings-tool.c:621
+#, fuzzy
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3326,6 +3434,7 @@ msgid ""
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
+"  reset-recursively         Reset all values in a given schema\n"
 "  writable                  Check if a key is writable\n"
 "  monitor                   Watch for changes\n"
 "\n"
@@ -3352,7 +3461,7 @@ msgstr ""
 "Folosiți comanda „gsettings help COMANDĂ” pentru a obține ajutor detaliat.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:576
+#: ../gio/gsettings-tool.c:643
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3367,15 +3476,15 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:581
+#: ../gio/gsettings-tool.c:648
 msgid "Arguments:\n"
 msgstr "Argumente:\n"
 
-#: ../gio/gsettings-tool.c:585
+#: ../gio/gsettings-tool.c:652
 msgid "  COMMAND   The (optional) command to explain\n"
 msgstr "  COMANDĂ   Comandă (opțională) de explicat\n"
 
-#: ../gio/gsettings-tool.c:589
+#: ../gio/gsettings-tool.c:656
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3383,128 +3492,137 @@ msgstr ""
 "  SCHEMĂ    Numele schemei\n"
 "  CALE      Calea, pentru schemele relocalizabile\n"
 
-#: ../gio/gsettings-tool.c:594
+#: ../gio/gsettings-tool.c:661
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  CHEIE     Cheia (opțională) din schemă\n"
 
-#: ../gio/gsettings-tool.c:598
+#: ../gio/gsettings-tool.c:665
 msgid "  KEY       The key within the schema\n"
 msgstr "  CHEIE     Cheia din schemă\n"
 
-#: ../gio/gsettings-tool.c:602
+#: ../gio/gsettings-tool.c:669
 msgid "  VALUE     The value to set\n"
 msgstr "  VALOARE   Valoarea de setat\n"
 
-#: ../gio/gsettings-tool.c:691
+#: ../gio/gsettings-tool.c:766
 #, c-format
-#| msgid "Empty schema name given"
 msgid "Empty schema name given\n"
 msgstr "Numele schemei dat este gol \n"
 
-#: ../gio/gsocket.c:277
+#: ../gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr "Socket nevalid (neinițializat)"
 
-#: ../gio/gsocket.c:284
+#: ../gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Socket nevalid, inițializarea a eșuat din următoarea cauză: %s"
 
-#: ../gio/gsocket.c:292
+#: ../gio/gsocket.c:290
 msgid "Socket is already closed"
 msgstr "Socket-ul este deja închis"
 
-#: ../gio/gsocket.c:300 ../gio/gsocket.c:2769 ../gio/gsocket.c:2813
+#: ../gio/gsocket.c:298 ../gio/gsocket.c:2798 ../gio/gsocket.c:2842
 msgid "Socket I/O timed out"
 msgstr "A expirat limita de timp la I/O pe socket"
 
-#: ../gio/gsocket.c:443
+#: ../gio/gsocket.c:464
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "se creează GSocket din fd: %s"
 
-#: ../gio/gsocket.c:477 ../gio/gsocket.c:493 ../gio/gsocket.c:2135
+#: ../gio/gsocket.c:498 ../gio/gsocket.c:514
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Nu s-a putut crea socket-ul: %s"
 
-#: ../gio/gsocket.c:477
+#: ../gio/gsocket.c:498
 msgid "Unknown protocol was specified"
 msgstr "S-a specificat un protocol necunoscut"
 
-#: ../gio/gsocket.c:1246
+#: ../gio/gsocket.c:1268
 #, c-format
 msgid "could not get local address: %s"
 msgstr "nu s-a putut obține adresa locală: %s"
 
-#: ../gio/gsocket.c:1289
+#: ../gio/gsocket.c:1311
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "nu s-a putut obține adresa la distanță: %s"
 
-#: ../gio/gsocket.c:1350
+#: ../gio/gsocket.c:1372
 #, c-format
 msgid "could not listen: %s"
 msgstr "nu s-a putut asculta: %s"
 
-#: ../gio/gsocket.c:1424
+#: ../gio/gsocket.c:1446
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Eroare la asocierea adresei: %s"
 
-#: ../gio/gsocket.c:1544
+#: ../gio/gsocket.c:1566
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Eroare la acceptarea conexiunii: %s"
 
-#: ../gio/gsocket.c:1661
+#: ../gio/gsocket.c:1683
 msgid "Error connecting: "
 msgstr "Eroare la conectare: "
 
-#: ../gio/gsocket.c:1666
+#: ../gio/gsocket.c:1688
 msgid "Connection in progress"
 msgstr "Conectare în progres"
 
-#: ../gio/gsocket.c:1673
+#: ../gio/gsocket.c:1695
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Eroare la conectare: %s"
 
-#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3532
+#: ../gio/gsocket.c:1738 ../gio/gsocket.c:3579
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Nu s-a putut obține eroarea în așteptare: %s"
 
-#: ../gio/gsocket.c:1848
+#: ../gio/gsocket.c:1875
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Eroare la primirea datelor: %s"
 
-#: ../gio/gsocket.c:2022
+#: ../gio/gsocket.c:2050
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Eroare la trimiterea datelor: %s"
 
-#: ../gio/gsocket.c:2214
+#: ../gio/gsocket.c:2163
+#, fuzzy, c-format
+msgid "Unable to shutdown socket: %s"
+msgstr "Nu s-a putut crea socket-ul: %s"
+
+#: ../gio/gsocket.c:2242
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Eroare la închiderea socket-ului: %s"
 
-#: ../gio/gsocket.c:2762
+#: ../gio/gsocket.c:2791
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Se așteaptă condiția socket-ului: %s"
 
-#: ../gio/gsocket.c:3052
+#: ../gio/gsocket.c:3056 ../gio/gsocket.c:3137
+#, c-format
+msgid "Error sending message: %s"
+msgstr "Eroare la trimiterea mesajului: %s"
+
+#: ../gio/gsocket.c:3081
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage nu e implementat în Windows"
 
-#: ../gio/gsocket.c:3311 ../gio/gsocket.c:3452
+#: ../gio/gsocket.c:3358 ../gio/gsocket.c:3494
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Eroare la primirea mesajului: %s"
 
-#: ../gio/gsocket.c:3547
+#: ../gio/gsocket.c:3598
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr ""
 "g_socket_get_credentials nu este implementat pe acest sistem de operare"
@@ -3590,7 +3708,8 @@ msgstr ""
 "maximă este de %i octeți)."
 
 #: ../gio/gsocks5proxy.c:352
-msgid "The SOCKSv5 proxy server uses unkown address type."
+#, fuzzy
+msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "Serverul proxy SOCKSv5 utilizează un tip de adresă necunoscut."
 
 #: ../gio/gsocks5proxy.c:359
@@ -3630,24 +3749,45 @@ msgstr "Eroare necunoscută a proxy-ului SOCKSv5."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Nu se poate gestiona versiunea %d a codării GThemedIcon"
 
-#: ../gio/gtlscertificate.c:228
-msgid "No PEM-encoded certificate found"
+#: ../gio/gtlscertificate.c:226
+#, fuzzy
+msgid "No PEM-encoded private key found"
 msgstr "Nu s-a găsit niciun certificat codificat PEM"
 
-#: ../gio/gtlscertificate.c:237
-msgid "Could not parse PEM-encoded certificate"
-msgstr "Nu s-a putut parsa certificatul codificat PEM"
-
-#: ../gio/gtlscertificate.c:258
+#: ../gio/gtlscertificate.c:235
 msgid "Could not parse PEM-encoded private key"
 msgstr "Nu s-a putut parsa cheia privată codificată PEM"
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
+#: ../gio/gtlscertificate.c:260
+msgid "No PEM-encoded certificate found"
+msgstr "Nu s-a găsit niciun certificat codificat PEM"
+
+#: ../gio/gtlscertificate.c:269
+msgid "Could not parse PEM-encoded certificate"
+msgstr "Nu s-a putut parsa certificatul codificat PEM"
+
+#: ../gio/gtlspassword.c:114
+msgid ""
+"This is the last chance to enter the password correctly before your access "
+"is locked out."
+msgstr ""
+
+#: ../gio/gtlspassword.c:116
+msgid ""
+"Several password entered have been incorrect, and your access will be locked "
+"out after further failures."
+msgstr ""
+
+#: ../gio/gtlspassword.c:118
+msgid "The password entered is incorrect."
+msgstr ""
+
+#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "S-a așteptat un mesaj de control, dar s-au primit %d"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:515
+#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:531
 msgid "Unexpected type of ancillary data"
 msgstr "Tip neașteptat de date auxiliare"
 
@@ -3660,16 +3800,16 @@ msgstr "S-a așteptat un fd, dar s-a primit %d\n"
 msgid "Received invalid fd"
 msgstr "S-a primit un fd nevalid"
 
-#: ../gio/gunixconnection.c:359
+#: ../gio/gunixconnection.c:371
 msgid "Error sending credentials: "
 msgstr "Eroare la trimiterea credențialelor: "
 
-#: ../gio/gunixconnection.c:439
+#: ../gio/gunixconnection.c:452
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Eroare la verificarea dacă SO_PASSCRED este activat pe socket: %s"
 
-#: ../gio/gunixconnection.c:448
+#: ../gio/gunixconnection.c:461
 #, c-format
 msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
@@ -3678,19 +3818,24 @@ msgstr ""
 "Lungime de opțiune neașteptată în timp ce se verifica dacă SO_PASSCRED este "
 "activat pe socket. Se așteptau %d octeți, s-a primit %d"
 
-#: ../gio/gunixconnection.c:465
+#: ../gio/gunixconnection.c:478
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Eroare la activarea SO_PASSCRED: %s"
 
-#: ../gio/gunixconnection.c:495
+#: ../gio/gunixconnection.c:509
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Se aștepta să se citească un singur octet pentru a primi credențialele, dar "
 "s-au citi zero octeți"
 
-#: ../gio/gunixconnection.c:538
+#: ../gio/gunixconnection.c:545
+#, fuzzy, c-format
+msgid "Not expecting control message, but got %d"
+msgstr "S-a așteptat un mesaj de control, dar s-au primit %d"
+
+#: ../gio/gunixconnection.c:571
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Eroare la dezactivarea SO_PASSCRED: %s"
@@ -3707,7 +3852,7 @@ msgstr "Eroare la citirea din „unix”: %s"
 msgid "Error closing unix: %s"
 msgstr "Eroare la închiderea „unix”: %s"
 
-#: ../gio/gunixmounts.c:1848 ../gio/gunixmounts.c:1885
+#: ../gio/gunixmounts.c:1900 ../gio/gunixmounts.c:1937
 msgid "Filesystem root"
 msgstr "Rădăcina sistemului de fișiere"
 
@@ -3786,6 +3931,26 @@ msgstr "Sunt necesare date suplimentare de la intrare"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Date comprimate nevalid"
+
+#~ msgctxt "GDateTime"
+#~ msgid "am"
+#~ msgstr "am"
+
+#~ msgctxt "GDateTime"
+#~ msgid "pm"
+#~ msgstr "pm"
+
+#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
+#~ msgstr ""
+#~ "Tipul valorii rezultatului nu este corect, s-a primit „%s”, se aștepta "
+#~ "„%s”"
+
+#~ msgid ""
+#~ "Trying to set property %s of type %s but according to the expected "
+#~ "interface the type is %s"
+#~ msgstr ""
+#~ "S-a încercat setarea proprietății %s cu tipul %s, dar conform interfeței "
+#~ "așteptate tipul este %s"
 
 #~ msgid "No such schema `%s' specified in override file `%s'"
 #~ msgstr "Nu există schema „%s” specificată în fișierul de suprascriere „%s”"

@@ -8,11 +8,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: eu_to_be_translate\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-12 22:22+0100\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-04 23:56-0400\n"
 "PO-Revision-Date: 2011-01-12 22:22+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
+"Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -91,7 +93,7 @@ msgstr "'%s' izeneko aplikaziorik ez du erregistratu laster-markarik '%s'(e)n"
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Huts egin du '%s' exekuzioko lerroa '%s' URIarekin hedatzean"
 
-#: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1403
+#: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1404
 #: ../gio/gcharsetconverter.c:458
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -103,62 +105,291 @@ msgstr "'%s' karaktere-multzoa '%s' bihurtzea ez da onartzen"
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Ezin izan da '%s'(e)tik %s(e)rako bihurtzailea ireki"
 
-#: ../glib/gconvert.c:768 ../glib/gconvert.c:1161 ../glib/giochannel.c:1575
-#: ../glib/giochannel.c:1617 ../glib/giochannel.c:2460 ../glib/gutf8.c:992
-#: ../glib/gutf8.c:1447 ../gio/gcharsetconverter.c:345
+#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1576
+#: ../glib/giochannel.c:1618 ../glib/giochannel.c:2461 ../glib/gutf8.c:1012
+#: ../glib/gutf8.c:1463 ../gio/gcharsetconverter.c:345
+#: ../gio/gdatainputstream.c:854 ../gio/gdatainputstream.c:1291
 msgid "Invalid byte sequence in conversion input"
 msgstr "Byteen sekuentzia baliogabea bihurketa-sarreran"
 
-#: ../glib/gconvert.c:776 ../glib/gconvert.c:1086 ../glib/giochannel.c:1582
-#: ../glib/giochannel.c:2472 ../gio/gcharsetconverter.c:350
+#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1583
+#: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Errorea bihurtzean: %s"
 
-#: ../glib/gconvert.c:808 ../glib/gutf8.c:988 ../glib/gutf8.c:1198
-#: ../glib/gutf8.c:1339 ../glib/gutf8.c:1443
+#: ../glib/gconvert.c:809 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
+#: ../glib/gutf8.c:1355 ../glib/gutf8.c:1459
 msgid "Partial character sequence at end of input"
 msgstr "Karaktere-sekuentzia partziala sarreraren amaieran"
 
-#: ../glib/gconvert.c:1058
+#: ../glib/gconvert.c:1059
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Ezin da '%s' atzerapena '%s' kode-multzo bihurtu"
 
-#: ../glib/gconvert.c:1881
+#: ../glib/gconvert.c:1886
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "'%s' URIa ez da \"fitxategi\"-eskema erabiltzen duen URI absolutua"
 
-#: ../glib/gconvert.c:1891
+#: ../glib/gconvert.c:1896
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Baliteke '%s' URI fitxategi lokalak '#' ez edukitzea"
 
-#: ../glib/gconvert.c:1908
+#: ../glib/gconvert.c:1913
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "'%s' URI baliogabea da"
 
-#: ../glib/gconvert.c:1920
+#: ../glib/gconvert.c:1925
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "'%s' URIaren ostalari-izena baliogabea da"
 
-#: ../glib/gconvert.c:1936
+#: ../glib/gconvert.c:1941
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "'%s' URIak ihes-karaktere baliogabeak ditu"
 
-#: ../glib/gconvert.c:2031
+#: ../glib/gconvert.c:2036
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "'%s' bide-izena ez da bide-izen absolutua"
 
 #
-#: ../glib/gconvert.c:2041
+#: ../glib/gconvert.c:2046
 msgid "Invalid hostname"
 msgstr "Ostalari-izen baliogabea"
+
+#. Translators: 'before midday' indicator
+#: ../glib/gdatetime.c:202
+msgctxt "GDateTime"
+msgid "AM"
+msgstr "AM"
+
+#. Translators: 'after midday' indicator
+#: ../glib/gdatetime.c:204
+msgctxt "GDateTime"
+msgid "PM"
+msgstr "PM"
+
+#. Translators: this is the preferred format for expressing the date and the time
+#: ../glib/gdatetime.c:207
+msgctxt "GDateTime"
+msgid "%a %b %e %H:%M:%S %Y"
+msgstr ""
+
+#. Translators: this is the preferred format for expressing the date
+#: ../glib/gdatetime.c:210
+msgctxt "GDateTime"
+msgid "%m/%d/%y"
+msgstr "%y/%m/%d"
+
+#. Translators: this is the preferred format for expressing the time
+#: ../glib/gdatetime.c:213
+msgctxt "GDateTime"
+msgid "%H:%M:%S"
+msgstr "%H:%M:%S"
+
+#. Translators: this is the preferred format for expressing 12 hour time
+#: ../glib/gdatetime.c:216
+#, fuzzy
+msgctxt "GDateTime"
+msgid "%I:%M:%S %p"
+msgstr "%H:%M:%S"
+
+#: ../glib/gdatetime.c:229
+msgctxt "full month name"
+msgid "January"
+msgstr "Urtarrila"
+
+#: ../glib/gdatetime.c:231
+msgctxt "full month name"
+msgid "February"
+msgstr "Otsaila"
+
+#: ../glib/gdatetime.c:233
+msgctxt "full month name"
+msgid "March"
+msgstr "Martxoa"
+
+#: ../glib/gdatetime.c:235
+msgctxt "full month name"
+msgid "April"
+msgstr "Apirila"
+
+#: ../glib/gdatetime.c:237
+msgctxt "full month name"
+msgid "May"
+msgstr "Maiatza"
+
+#: ../glib/gdatetime.c:239
+msgctxt "full month name"
+msgid "June"
+msgstr "Ekaina"
+
+#: ../glib/gdatetime.c:241
+msgctxt "full month name"
+msgid "July"
+msgstr "Uztaila"
+
+#: ../glib/gdatetime.c:243
+msgctxt "full month name"
+msgid "August"
+msgstr "Abuztua"
+
+#: ../glib/gdatetime.c:245
+msgctxt "full month name"
+msgid "September"
+msgstr "Iraila"
+
+#: ../glib/gdatetime.c:247
+msgctxt "full month name"
+msgid "October"
+msgstr "Urria"
+
+#: ../glib/gdatetime.c:249
+msgctxt "full month name"
+msgid "November"
+msgstr "Azaroa"
+
+#: ../glib/gdatetime.c:251
+msgctxt "full month name"
+msgid "December"
+msgstr "Abendua"
+
+#: ../glib/gdatetime.c:266
+msgctxt "abbreviated month name"
+msgid "Jan"
+msgstr "Urt."
+
+#: ../glib/gdatetime.c:268
+msgctxt "abbreviated month name"
+msgid "Feb"
+msgstr "Ots."
+
+#: ../glib/gdatetime.c:270
+msgctxt "abbreviated month name"
+msgid "Mar"
+msgstr "Mar."
+
+#: ../glib/gdatetime.c:272
+msgctxt "abbreviated month name"
+msgid "Apr"
+msgstr "Apr."
+
+#: ../glib/gdatetime.c:274
+#, fuzzy
+msgctxt "abbreviated month name"
+msgid "May"
+msgstr "Maiatza"
+
+#: ../glib/gdatetime.c:276
+msgctxt "abbreviated month name"
+msgid "Jun"
+msgstr "Eka."
+
+#: ../glib/gdatetime.c:278
+msgctxt "abbreviated month name"
+msgid "Jul"
+msgstr "Uzt."
+
+#: ../glib/gdatetime.c:280
+msgctxt "abbreviated month name"
+msgid "Aug"
+msgstr "Abu."
+
+#: ../glib/gdatetime.c:282
+msgctxt "abbreviated month name"
+msgid "Sep"
+msgstr "Ira."
+
+#: ../glib/gdatetime.c:284
+msgctxt "abbreviated month name"
+msgid "Oct"
+msgstr "Urr."
+
+#: ../glib/gdatetime.c:286
+msgctxt "abbreviated month name"
+msgid "Nov"
+msgstr "Aza."
+
+#: ../glib/gdatetime.c:288
+msgctxt "abbreviated month name"
+msgid "Dec"
+msgstr "Abe."
+
+#: ../glib/gdatetime.c:303
+msgctxt "full weekday name"
+msgid "Monday"
+msgstr "Astelehena"
+
+#: ../glib/gdatetime.c:305
+msgctxt "full weekday name"
+msgid "Tuesday"
+msgstr "Asteartea"
+
+#: ../glib/gdatetime.c:307
+msgctxt "full weekday name"
+msgid "Wednesday"
+msgstr "Asteazkena"
+
+#: ../glib/gdatetime.c:309
+msgctxt "full weekday name"
+msgid "Thursday"
+msgstr "Osteguna"
+
+#: ../glib/gdatetime.c:311
+msgctxt "full weekday name"
+msgid "Friday"
+msgstr "Ostirala"
+
+#: ../glib/gdatetime.c:313
+msgctxt "full weekday name"
+msgid "Saturday"
+msgstr "Larunbata"
+
+#: ../glib/gdatetime.c:315
+msgctxt "full weekday name"
+msgid "Sunday"
+msgstr "Igandea"
+
+#: ../glib/gdatetime.c:330
+msgctxt "abbreviated weekday name"
+msgid "Mon"
+msgstr "Al."
+
+#: ../glib/gdatetime.c:332
+msgctxt "abbreviated weekday name"
+msgid "Tue"
+msgstr "Ar."
+
+#: ../glib/gdatetime.c:334
+msgctxt "abbreviated weekday name"
+msgid "Wed"
+msgstr "Az."
+
+#: ../glib/gdatetime.c:336
+msgctxt "abbreviated weekday name"
+msgid "Thu"
+msgstr "Og."
+
+#: ../glib/gdatetime.c:338
+msgctxt "abbreviated weekday name"
+msgid "Fri"
+msgstr "Or."
+
+#: ../glib/gdatetime.c:340
+msgctxt "abbreviated weekday name"
+msgid "Sat"
+msgstr "Lr."
+
+#: ../glib/gdatetime.c:342
+msgctxt "abbreviated weekday name"
+msgid "Sun"
+msgstr "Ig."
 
 #: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
@@ -210,7 +441,7 @@ msgstr ""
 "Ezin izan da '%s' fitxategia '%s' gisa berrizendatu, g_rename() funtzioak "
 "huts egin du: %s"
 
-#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1388
+#: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to create file '%s': %s"
 msgstr "Ezin izan da '%s' fitxategia sortu: %s"
@@ -234,91 +465,142 @@ msgid "Failed to write file '%s': fflush() failed: %s"
 msgstr ""
 "Huts egin du '%s' fitxategia idaztean: fflush() funtzioak huts egin du: %s"
 
-#: ../glib/gfileutils.c:1005
+#: ../glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
 msgstr ""
 "Huts egin du '%s' fitxategia idaztean: fsync() funtzioak huts egin du: %s"
 
-#: ../glib/gfileutils.c:1025
+#: ../glib/gfileutils.c:1030
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
 msgstr "Ezin izan da '%s' fitxategia itxi, fclose() funtzioak huts egin du: %s"
 
-#: ../glib/gfileutils.c:1146
+#: ../glib/gfileutils.c:1152
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
 "'%s' fitxategia ezin izan da kendu, g_unlik() funtzioak huts egin du: %s"
 
-#: ../glib/gfileutils.c:1350
+#: ../glib/gfileutils.c:1412
 #, c-format
 msgid "Template '%s' invalid, should not contain a '%s'"
 msgstr "'%s' txantiloia baliogabea da, ez luke '%s' eduki behar"
 
-#: ../glib/gfileutils.c:1363
+#: ../glib/gfileutils.c:1425
 #, c-format
 msgid "Template '%s' doesn't contain XXXXXX"
 msgstr "'%s' txantiloiak ez dauka: XXXXXX"
 
-#: ../glib/gfileutils.c:1804
+#: ../glib/gfileutils.c:2001 ../glib/gfileutils.c:2029
+#: ../glib/gfileutils.c:2134
 #, c-format
-msgid "%.1f KB"
+msgid "%u byte"
+msgid_plural "%u bytes"
+msgstr[0] "byte %u"
+msgstr[1] "%u byte"
+
+#: ../glib/gfileutils.c:2007
+#, fuzzy, c-format
+msgid "%.1f KiB"
 msgstr "%.1f KB"
 
-#: ../glib/gfileutils.c:1809
+#: ../glib/gfileutils.c:2010
+#, fuzzy, c-format
+msgid "%.1f MiB"
+msgstr "%.1f MB"
+
+#: ../glib/gfileutils.c:2013
+#, fuzzy, c-format
+msgid "%.1f GiB"
+msgstr "%.1f GB"
+
+#: ../glib/gfileutils.c:2016
+#, fuzzy, c-format
+msgid "%.1f TiB"
+msgstr "%.1f TB"
+
+#: ../glib/gfileutils.c:2019
+#, fuzzy, c-format
+msgid "%.1f PiB"
+msgstr "%.1f PB"
+
+#: ../glib/gfileutils.c:2022
+#, fuzzy, c-format
+msgid "%.1f EiB"
+msgstr "%.1f EB"
+
+#: ../glib/gfileutils.c:2035
+#, fuzzy, c-format
+msgid "%.1f kB"
+msgstr "%.1f KB"
+
+#: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2147
 #, c-format
 msgid "%.1f MB"
 msgstr "%.1f MB"
 
-#: ../glib/gfileutils.c:1814
+#: ../glib/gfileutils.c:2041 ../glib/gfileutils.c:2152
 #, c-format
 msgid "%.1f GB"
 msgstr "%.1f GB"
 
-#: ../glib/gfileutils.c:1819
+#: ../glib/gfileutils.c:2044 ../glib/gfileutils.c:2157
 #, c-format
 msgid "%.1f TB"
 msgstr "%.1f TB"
 
-#: ../glib/gfileutils.c:1824
+#: ../glib/gfileutils.c:2047 ../glib/gfileutils.c:2162
 #, c-format
 msgid "%.1f PB"
 msgstr "%.1f PB"
 
-#: ../glib/gfileutils.c:1829
+#: ../glib/gfileutils.c:2050 ../glib/gfileutils.c:2167
 #, c-format
 msgid "%.1f EB"
 msgstr "%.1f EB"
 
-#: ../glib/gfileutils.c:1872
+#. Translators: the %s in "%s bytes" will always be replaced by a number.
+#: ../glib/gfileutils.c:2087
+#, fuzzy, c-format
+msgid "%s byte"
+msgid_plural "%s bytes"
+msgstr[0] "byte %u"
+msgstr[1] "%u byte"
+
+#: ../glib/gfileutils.c:2142
+#, c-format
+msgid "%.1f KB"
+msgstr "%.1f KB"
+
+#: ../glib/gfileutils.c:2210
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
 msgstr "Ezin izan da '%s' esteka sinbolikorik irakurri: %s"
 
-#: ../glib/gfileutils.c:1893
+#: ../glib/gfileutils.c:2231
 msgid "Symbolic links not supported"
 msgstr "Esteka sinbolikoak ez dira onartzen"
 
-#: ../glib/giochannel.c:1407
+#: ../glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Ezin izan da `%s'(e)tik `%s'(e)rako bihurtzailea ireki: %s"
 
-#: ../glib/giochannel.c:1752
+#: ../glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr "Ezin dira datu gordinak irakurri 'g_io_channel_read_line_string'-en"
 
-#: ../glib/giochannel.c:1799 ../glib/giochannel.c:2056
-#: ../glib/giochannel.c:2143
+#: ../glib/giochannel.c:1800 ../glib/giochannel.c:2057
+#: ../glib/giochannel.c:2144
 msgid "Leftover unconverted data in read buffer"
 msgstr "Irakurketa-bufferrean geratu diren bihurtu gabeko datuak"
 
-#: ../glib/giochannel.c:1880 ../glib/giochannel.c:1957
+#: ../glib/giochannel.c:1881 ../glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
 msgstr "Kanala karaktere partzial batean bukatzen da"
 
-#: ../glib/giochannel.c:1943
+#: ../glib/giochannel.c:1944
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Ezin dira datu gordinak irakurri 'g_io_channel_read_to_end'-etik"
 
@@ -333,32 +615,32 @@ msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr ""
 "Ezin izan da '%s' fitxategi-mapa ireki, mmap() funtzioak huts egin du: %s"
 
-#: ../glib/gmarkup.c:307 ../glib/gmarkup.c:347
+#: ../glib/gmarkup.c:355 ../glib/gmarkup.c:396
 #, c-format
 msgid "Error on line %d char %d: "
 msgstr "Errorea %d lerroko %d karakterean: "
 
-#: ../glib/gmarkup.c:367 ../glib/gmarkup.c:445
+#: ../glib/gmarkup.c:418 ../glib/gmarkup.c:501
 #, c-format
 msgid "Invalid UTF-8 encoded text in name - not valid '%s'"
 msgstr "UTF-8 gisa kodetutako testu baliogabea izenean - '%s' ez da baliozkoa"
 
-#: ../glib/gmarkup.c:378
+#: ../glib/gmarkup.c:429
 #, c-format
 msgid "'%s' is not a valid name "
 msgstr "'%s' ez da baliozko izena "
 
-#: ../glib/gmarkup.c:394
+#: ../glib/gmarkup.c:445
 #, c-format
 msgid "'%s' is not a valid name: '%c' "
 msgstr "'%s' ez da baliozko izena: '%c' "
 
-#: ../glib/gmarkup.c:498
+#: ../glib/gmarkup.c:554
 #, c-format
 msgid "Error on line %d: %s"
 msgstr "Errorea %d lerroan: %s"
 
-#: ../glib/gmarkup.c:582
+#: ../glib/gmarkup.c:638
 #, c-format
 msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
@@ -367,7 +649,7 @@ msgstr ""
 "Ezin izan da '%-.*s' analizatu, digitu bat izan behar zuen karaktere-"
 "erreferentzia baten barruan (&#234; adibidez); agian digitua handiegia da"
 
-#: ../glib/gmarkup.c:594
+#: ../glib/gmarkup.c:650
 msgid ""
 "Character reference did not end with a semicolon; most likely you used an "
 "ampersand character without intending to start an entity - escape ampersand "
@@ -377,25 +659,25 @@ msgstr ""
 "erabiliko zenuen entitatea hasteko asmorik gabe. Izendatu & karakterea &amp; "
 "gisa;"
 
-#: ../glib/gmarkup.c:620
+#: ../glib/gmarkup.c:676
 #, c-format
 msgid "Character reference '%-.*s' does not encode a permitted character"
 msgstr ""
 "'%-.*s' karaktere-erreferentziak ez du baimendutako karaktere bat kodetzen"
 
-#: ../glib/gmarkup.c:658
+#: ../glib/gmarkup.c:714
 msgid ""
 "Empty entity '&;' seen; valid entities are: &amp; &quot; &lt; &gt; &apos;"
 msgstr ""
 "'&;' entitatea hutsik dago; baliozko entitateak hauek dira: &amp; &quot; "
 "&lt; &gt; &apos;"
 
-#: ../glib/gmarkup.c:666
+#: ../glib/gmarkup.c:722
 #, c-format
 msgid "Entity name '%-.*s' is not known"
 msgstr "'%-.*s' entitate-izena ezezaguna da"
 
-#: ../glib/gmarkup.c:671
+#: ../glib/gmarkup.c:727
 msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
@@ -403,11 +685,11 @@ msgstr ""
 "Entitatea ez da puntu eta komaz bukatzen; normalean & ikurra erabiltzen da "
 "entitatea hasteko asmorik gabe; izendatu & karakterea &amp; gisa;"
 
-#: ../glib/gmarkup.c:1018
+#: ../glib/gmarkup.c:1078
 msgid "Document must begin with an element (e.g. <book>)"
 msgstr "Dokumentuak elementu batez hasi behar du (adibidez, <book>)"
 
-#: ../glib/gmarkup.c:1058
+#: ../glib/gmarkup.c:1118
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
@@ -416,16 +698,16 @@ msgstr ""
 "'%s' ez da karaktere balioduna '<' karakterearen atzetik; baliteke elementu "
 "baten izena ez hastea"
 
-#: ../glib/gmarkup.c:1126
+#: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag '%"
-"s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag "
+"'%s'"
 msgstr ""
 "'%s' karaktere bitxia, '>' karakterea espero zen '%s' elementuaren etiketa "
 "hutsa amaitzeko"
 
-#: ../glib/gmarkup.c:1210
+#: ../glib/gmarkup.c:1270
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
@@ -433,7 +715,7 @@ msgstr ""
 "'%s' karaktere bitxia, '=' espero zen '$2%s' elementuaren '$1%s' "
 "atributuaren ondoren"
 
-#: ../glib/gmarkup.c:1251
+#: ../glib/gmarkup.c:1311
 #, c-format
 msgid ""
 "Odd character '%s', expected a '>' or '/' character to end the start tag of "
@@ -444,7 +726,7 @@ msgstr ""
 "hasiera-etiketa bukatzeko, edo bestela atributu bat. Agian karaktere "
 "baliogabea erabili duzu atributu-izen batean"
 
-#: ../glib/gmarkup.c:1295
+#: ../glib/gmarkup.c:1355
 #, c-format
 msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
@@ -453,7 +735,7 @@ msgstr ""
 "'%s' karaktere bitxia, komatxo irekia espero zen berdin ikurraren ondoren "
 "'$2%s' elementuaren '$1%s' atributuari balioa ematean"
 
-#: ../glib/gmarkup.c:1429
+#: ../glib/gmarkup.c:1488
 #, c-format
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
@@ -462,7 +744,7 @@ msgstr ""
 "'%s' ez da karaktere balioduna '</'; karaktereen atzetik; baliteke '%s'e(k) "
 "elementu baten izena ez hastea"
 
-#: ../glib/gmarkup.c:1465
+#: ../glib/gmarkup.c:1524
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
@@ -471,25 +753,25 @@ msgstr ""
 "'%s' karaktere baliogabea da '%s' itxiera-elementuaren izenaren atzetik; "
 "baimendutako karakterea '>' da"
 
-#: ../glib/gmarkup.c:1476
+#: ../glib/gmarkup.c:1535
 #, c-format
 msgid "Element '%s' was closed, no element is currently open"
 msgstr "'%s' elementua itxi egin da, unean ez dago elementurik irekita"
 
-#: ../glib/gmarkup.c:1485
+#: ../glib/gmarkup.c:1544
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr "'%s' elementua itxi egin da, baina unean '%s' elementua dago irekita"
 
-#: ../glib/gmarkup.c:1652
+#: ../glib/gmarkup.c:1712
 msgid "Document was empty or contained only whitespace"
 msgstr "Dokumentua hutsik dago edo zuriuneak bakarrik ditu"
 
-#: ../glib/gmarkup.c:1666
+#: ../glib/gmarkup.c:1726
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
 msgstr "Dokumentua ustekabean itxi da angelu-parentesi ireki baten ondoren '<'"
 
-#: ../glib/gmarkup.c:1674 ../glib/gmarkup.c:1719
+#: ../glib/gmarkup.c:1734 ../glib/gmarkup.c:1779
 #, c-format
 msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
@@ -498,7 +780,7 @@ msgstr ""
 "Dokumentua ustekabean amaitu da oraindik irekita zeuden elementuekin. '%s' "
 "irekitako azken elementua da"
 
-#: ../glib/gmarkup.c:1682
+#: ../glib/gmarkup.c:1742
 #, c-format
 msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
@@ -507,20 +789,20 @@ msgstr ""
 "Dokumentua ustekabean amaitu da, angelu-parentesi itxia ikustea espero nuen <"
 "%s/> etiketa amaitzen"
 
-#: ../glib/gmarkup.c:1688
+#: ../glib/gmarkup.c:1748
 msgid "Document ended unexpectedly inside an element name"
 msgstr "Dokumentua ustekabean amaitu da elementu-izen baten barruan"
 
-#: ../glib/gmarkup.c:1694
+#: ../glib/gmarkup.c:1754
 msgid "Document ended unexpectedly inside an attribute name"
 msgstr "Dokumentua ustekabean amaitu da atributu-izen baten barruan"
 
-#: ../glib/gmarkup.c:1699
+#: ../glib/gmarkup.c:1759
 msgid "Document ended unexpectedly inside an element-opening tag."
 msgstr ""
 "Dokumentua ustekabean amaitu da elementua irekitzeko etiketa baten barruan."
 
-#: ../glib/gmarkup.c:1705
+#: ../glib/gmarkup.c:1765
 msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
@@ -528,321 +810,329 @@ msgstr ""
 "Dokumentua ustekabean amaitu da atributu-izen baten ondorengo berdin "
 "ikurraren atzetik; ez dago atributu-baliorik"
 
-#: ../glib/gmarkup.c:1712
+#: ../glib/gmarkup.c:1772
 msgid "Document ended unexpectedly while inside an attribute value"
 msgstr "Dokumentua ustekabean amaitu da atributu-balio baten barruan"
 
-#: ../glib/gmarkup.c:1728
+#: ../glib/gmarkup.c:1788
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
 msgstr ""
 "Dokumentua ustekabean amaitu da '%s' elementuaren itxiera-etiketaren barruan"
 
-#: ../glib/gmarkup.c:1734
+#: ../glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside a comment or processing instruction"
 msgstr ""
 "Dokumentua ustekabean amaitu da iruzkin baten barruan edo prozesatzen ari "
 "zen instrukzio baten barruan"
 
-#: ../glib/gregex.c:188
+#: ../glib/gregex.c:189
 msgid "corrupted object"
 msgstr "hondatutako objektua"
 
-#: ../glib/gregex.c:190
+#: ../glib/gregex.c:191
 msgid "internal error or corrupted object"
 msgstr "barneko errorea edo hondatutako objektua"
 
-#: ../glib/gregex.c:192
+#: ../glib/gregex.c:193
 msgid "out of memory"
 msgstr "Memoriarik ez"
 
-#: ../glib/gregex.c:197
+#: ../glib/gregex.c:198
 msgid "backtracking limit reached"
 msgstr "atzera-jotzearen mugara gainditua"
 
-#: ../glib/gregex.c:209 ../glib/gregex.c:217
+#: ../glib/gregex.c:210 ../glib/gregex.c:218
 msgid "the pattern contains items not supported for partial matching"
 msgstr ""
 "ereduak zenbait elementu ditu bat etortze partzialetan onartzen ez direnak"
 
-#: ../glib/gregex.c:211 ../gio/glocalfile.c:2111
+#: ../glib/gregex.c:212 ../gio/glocalfile.c:2107
 msgid "internal error"
 msgstr "barneko errorea"
 
-#: ../glib/gregex.c:219
+#: ../glib/gregex.c:220
 msgid "back references as conditions are not supported for partial matching"
 msgstr ""
 "aurreko erreferentziak baldintza gisa ez daude onartuta bat etortze "
 "partzialetan"
 
-#: ../glib/gregex.c:228
+#: ../glib/gregex.c:229
 msgid "recursion limit reached"
 msgstr "errekurtsioaren muga gainditua"
 
-#: ../glib/gregex.c:230
+#: ../glib/gregex.c:231
 msgid "workspace limit for empty substrings reached"
 msgstr "azpikate hutsen lan arearen muga gainditua"
 
-#: ../glib/gregex.c:232
+#: ../glib/gregex.c:233
 msgid "invalid combination of newline flags"
 msgstr "lerro-jauzien banderen baliogabeko konbinazioa"
 
-#: ../glib/gregex.c:236
+#: ../glib/gregex.c:235
+msgid "bad offset"
+msgstr ""
+
+#: ../glib/gregex.c:237
+msgid "short utf8"
+msgstr ""
+
+#: ../glib/gregex.c:241
 msgid "unknown error"
 msgstr "errore ezezaguna"
 
-#: ../glib/gregex.c:256
+#: ../glib/gregex.c:261
 msgid "\\ at end of pattern"
 msgstr "\\ ereduaren amaieran"
 
-#: ../glib/gregex.c:259
+#: ../glib/gregex.c:264
 msgid "\\c at end of pattern"
 msgstr "\\c ereduaren amaieran"
 
-#: ../glib/gregex.c:262
+#: ../glib/gregex.c:267
 msgid "unrecognized character follows \\"
 msgstr "karaktere ezezagunak jarraitzen dio \\ karaktereari"
 
-#: ../glib/gregex.c:269
+#: ../glib/gregex.c:274
 msgid "case-changing escapes (\\l, \\L, \\u, \\U) are not allowed here"
 msgstr ""
 "hemen ez dira ihesdun letrak (\\l, \\L, \\u, \\U) erabiltzen uzten "
 "(maiuskulaz eta minuskulaz)"
 
-#: ../glib/gregex.c:272
+#: ../glib/gregex.c:277
 msgid "numbers out of order in {} quantifier"
 msgstr "zenbakiak barrutitik kanpo {} kuantifikatzailean"
 
-#: ../glib/gregex.c:275
+#: ../glib/gregex.c:280
 msgid "number too big in {} quantifier"
 msgstr "zenbaki handiegiak {} kuantifikatzaileak"
 
-#: ../glib/gregex.c:278
+#: ../glib/gregex.c:283
 msgid "missing terminating ] for character class"
 msgstr "karaktere-klasearen amaierako ] falta da"
 
-#: ../glib/gregex.c:281
+#: ../glib/gregex.c:286
 msgid "invalid escape sequence in character class"
 msgstr "karaktere-klasean baliogabeko ihes sekuentzia"
 
-#: ../glib/gregex.c:284
+#: ../glib/gregex.c:289
 msgid "range out of order in character class"
 msgstr "karaktere-klaseko barrutia barrutitik kanpo"
 
-#: ../glib/gregex.c:287
+#: ../glib/gregex.c:292
 msgid "nothing to repeat"
 msgstr "ezer ez errepikatzeko"
 
-#: ../glib/gregex.c:290
+#: ../glib/gregex.c:295
 msgid "unrecognized character after (?"
 msgstr "karaktere ezezaguna (? karaktereen atzetik"
 
-#: ../glib/gregex.c:294
+#: ../glib/gregex.c:299
 msgid "unrecognized character after (?<"
 msgstr "karaktere ezezaguna (?< karaktereen atzetik"
 
-#: ../glib/gregex.c:298
+#: ../glib/gregex.c:303
 msgid "unrecognized character after (?P"
 msgstr "karaktere ezezaguna (?P karaktereen atzetik"
 
-#: ../glib/gregex.c:301
+#: ../glib/gregex.c:306
 msgid "POSIX named classes are supported only within a class"
 msgstr "POSIX izeneko klaseak soilik onartzen dira klase baten barruan"
 
-#: ../glib/gregex.c:304
+#: ../glib/gregex.c:309
 msgid "missing terminating )"
 msgstr "amaierako ) falta da"
 
-#: ../glib/gregex.c:308
+#: ../glib/gregex.c:313
 msgid ") without opening ("
 msgstr ") dago irekierako ( gabe"
 
 #. translators: '(?R' and '(?[+-]digits' are both meant as (groups of)
 #. * sequences here, '(?-54' would be an example for the second group.
 #.
-#: ../glib/gregex.c:315
+#: ../glib/gregex.c:320
 msgid "(?R or (?[+-]digits must be followed by )"
 msgstr "(?R edo (?[+-] digituak )-rekin jarraitu behar dira"
 
-#: ../glib/gregex.c:318
+#: ../glib/gregex.c:323
 msgid "reference to non-existent subpattern"
 msgstr "existitzen ez den azpieredu baten erreferentzia"
 
-#: ../glib/gregex.c:321
+#: ../glib/gregex.c:326
 msgid "missing ) after comment"
 msgstr "iruzkinaren ondoren ) falta da"
 
-#: ../glib/gregex.c:324
+#: ../glib/gregex.c:329
 msgid "regular expression too large"
 msgstr "adierazpen erregularra luzeegia"
 
-#: ../glib/gregex.c:327
+#: ../glib/gregex.c:332
 msgid "failed to get memory"
 msgstr "huts egin du memoria lortzean"
 
-#: ../glib/gregex.c:330
+#: ../glib/gregex.c:335
 msgid "lookbehind assertion is not fixed length"
 msgstr "'lookbehind' baieztapenak ez du luzera finkorik"
 
-#: ../glib/gregex.c:333
+#: ../glib/gregex.c:338
 msgid "malformed number or name after (?("
 msgstr "gaizki osatutako zenbakia edo izena (?(-ren atzetik"
 
-#: ../glib/gregex.c:336
+#: ../glib/gregex.c:341
 msgid "conditional group contains more than two branches"
 msgstr "baldintza taldeak bi adar baino gehiago ditu"
 
-#: ../glib/gregex.c:339
+#: ../glib/gregex.c:344
 msgid "assertion expected after (?("
 msgstr "baieztapena espero zen (?)-ren atzetik"
 
-#: ../glib/gregex.c:342
+#: ../glib/gregex.c:347
 msgid "unknown POSIX class name"
 msgstr "POSIX klasearen izen ezezaguna"
 
-#: ../glib/gregex.c:345
+#: ../glib/gregex.c:350
 msgid "POSIX collating elements are not supported"
 msgstr "Tartekatutako POSIX elementuak ez daude onartuta"
 
-#: ../glib/gregex.c:348
+#: ../glib/gregex.c:353
 msgid "character value in \\x{...} sequence is too large"
 msgstr "\\x{...} sekuentziako karaktere-balioa luzeegia da"
 
-#: ../glib/gregex.c:351
+#: ../glib/gregex.c:356
 msgid "invalid condition (?(0)"
 msgstr "baliogabeko (?(0) baldintza"
 
-#: ../glib/gregex.c:354
+#: ../glib/gregex.c:359
 msgid "\\C not allowed in lookbehind assertion"
 msgstr "\\C ez dago baimenduta 'lookbehind' baieztapenean"
 
-#: ../glib/gregex.c:357
+#: ../glib/gregex.c:362
 msgid "recursive call could loop indefinitely"
 msgstr "dei errekurtsiboa amaierarik gabeko begiztan sar daiteke"
 
-#: ../glib/gregex.c:360
+#: ../glib/gregex.c:365
 msgid "missing terminator in subpattern name"
 msgstr "amaierako karakterea falta da azpiereduko izenean"
 
-#: ../glib/gregex.c:363
+#: ../glib/gregex.c:368
 msgid "two named subpatterns have the same name"
 msgstr "bi azpiereduk izen berdina dute"
 
-#: ../glib/gregex.c:366
+#: ../glib/gregex.c:371
 msgid "malformed \\P or \\p sequence"
 msgstr "gaizki osatutako \\P edo \\p sekuentzia"
 
-#: ../glib/gregex.c:369
+#: ../glib/gregex.c:374
 msgid "unknown property name after \\P or \\p"
 msgstr "propietate-izen ezezaguna \\P edo \\p atzetik"
 
-#: ../glib/gregex.c:372
+#: ../glib/gregex.c:377
 msgid "subpattern name is too long (maximum 32 characters)"
 msgstr "azpiereduaren izena luzeegia (32 karaktere gehienez)"
 
-#: ../glib/gregex.c:375
+#: ../glib/gregex.c:380
 msgid "too many named subpatterns (maximum 10,000)"
 msgstr "izendun azpieredu gehiegi (10.000 gehienez)"
 
-#: ../glib/gregex.c:378
+#: ../glib/gregex.c:383
 msgid "octal value is greater than \\377"
 msgstr "balio zortzitarra \\377 baino handiagoa"
 
-#: ../glib/gregex.c:381
+#: ../glib/gregex.c:386
 msgid "DEFINE group contains more than one branch"
 msgstr "DEFINE taldeak adar bat baino gehiago ditu"
 
-#: ../glib/gregex.c:384
+#: ../glib/gregex.c:389
 msgid "repeating a DEFINE group is not allowed"
 msgstr "DEFINE taldea errepikatzea ez dago onartuta"
 
-#: ../glib/gregex.c:387
+#: ../glib/gregex.c:392
 msgid "inconsistent NEWLINE options"
 msgstr "NEWLINE aukera kontraesankorra"
 
-#: ../glib/gregex.c:390
+#: ../glib/gregex.c:395
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
 msgstr ""
 "\\g ez da prestatutako izenarekin edo zero ez den aukerazko prestatutako "
 "zenbaki batekin jarraitzen"
 
-#: ../glib/gregex.c:395
+#: ../glib/gregex.c:400
 msgid "unexpected repeat"
 msgstr "ustekabeko begizta"
 
-#: ../glib/gregex.c:399
+#: ../glib/gregex.c:404
 msgid "code overflow"
 msgstr "kodea gainezkatua"
 
-#: ../glib/gregex.c:403
+#: ../glib/gregex.c:408
 msgid "overran compiling workspace"
 msgstr "konpilazioaren laneko area gainezkatua"
 
-#: ../glib/gregex.c:407
+#: ../glib/gregex.c:412
 msgid "previously-checked referenced subpattern not found"
 msgstr "ez da aurrez egiaztatutako erreferentziatutako azpieredua aurkitu"
 
-#: ../glib/gregex.c:579 ../glib/gregex.c:1700
+#: ../glib/gregex.c:630 ../glib/gregex.c:1753
 #, c-format
 msgid "Error while matching regular expression %s: %s"
 msgstr "Errorea %s adierazpen erregularra bilatzean: %s"
 
-#: ../glib/gregex.c:1155
+#: ../glib/gregex.c:1206
 msgid "PCRE library is compiled without UTF8 support"
 msgstr "PCRE liburutegia UTF8 euskarri gabe konpilatua"
 
-#: ../glib/gregex.c:1164
+#: ../glib/gregex.c:1215
 msgid "PCRE library is compiled without UTF8 properties support"
 msgstr "PCRE liburutegia UTF8 propietateen euskarri gabe konpilatua"
 
-#: ../glib/gregex.c:1218
+#: ../glib/gregex.c:1271
 #, c-format
 msgid "Error while compiling regular expression %s at char %d: %s"
 msgstr "Errorea %s adierazpen erregularra %d karakterean konpilatzean: %s"
 
-#: ../glib/gregex.c:1254
+#: ../glib/gregex.c:1307
 #, c-format
 msgid "Error while optimizing regular expression %s: %s"
 msgstr "Errorea %s adierazpen erregularra optimizatzean: %s"
 
-#: ../glib/gregex.c:2128
+#: ../glib/gregex.c:2183
 msgid "hexadecimal digit or '}' expected"
 msgstr "digitu hamaseitarra edo '}' espero zen"
 
-#: ../glib/gregex.c:2144
+#: ../glib/gregex.c:2199
 msgid "hexadecimal digit expected"
 msgstr "digitu hamaseitarra espero zen"
 
-#: ../glib/gregex.c:2184
+#: ../glib/gregex.c:2239
 msgid "missing '<' in symbolic reference"
 msgstr "'<' falta da erreferentzia sinbolikoan"
 
-#: ../glib/gregex.c:2193
+#: ../glib/gregex.c:2248
 msgid "unfinished symbolic reference"
 msgstr "amaitu gabeko erreferentzia sinbolikoa"
 
-#: ../glib/gregex.c:2200
+#: ../glib/gregex.c:2255
 msgid "zero-length symbolic reference"
 msgstr "zero luzerako erreferentzia sinbolikoa"
 
-#: ../glib/gregex.c:2211
+#: ../glib/gregex.c:2266
 msgid "digit expected"
 msgstr "digitua espero zen"
 
-#: ../glib/gregex.c:2229
+#: ../glib/gregex.c:2284
 msgid "illegal symbolic reference"
 msgstr "erreferentzia sinboliko ilegala"
 
-#: ../glib/gregex.c:2291
+#: ../glib/gregex.c:2346
 msgid "stray final '\\'"
 msgstr "'\\' katearen amaieran"
 
-#: ../glib/gregex.c:2295
+#: ../glib/gregex.c:2350
 msgid "unknown escape sequence"
 msgstr "ihes-sekuentzi ezezaguna"
 
-#: ../glib/gregex.c:2305
+#: ../glib/gregex.c:2360
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr "Errorea ordezko \"%s\" testua analizatzean %lu karakterean: %s"
@@ -876,17 +1166,17 @@ msgstr "Testua hutsik dago (edo zuriuneak bakarrik ditu)"
 msgid "Failed to read data from child process"
 msgstr "Ezin izan da daturik irakurri prozesu umetik"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1486
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Ezin izan da kanalizazioa sortu prozesu umearekin komunikatzeko (%s) "
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1145
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Ezin izan da kanalizazio umetik irakurri (%s) "
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1352
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Ezin izan da '%s' direktoriora aldatu (%s)"
@@ -933,61 +1223,61 @@ msgstr ""
 "Ustekabeko errorea gertatu da 'g_io_channel_win32_poll()'-en prozesu umetik "
 "datuak irakurtzean"
 
-#: ../glib/gspawn.c:196
+#: ../glib/gspawn.c:207
 #, c-format
 msgid "Failed to read data from child process (%s)"
 msgstr "Ezin izan da daturik irakurri prozesu umetik (%s)"
 
-#: ../glib/gspawn.c:335
+#: ../glib/gspawn.c:347
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
 msgstr "Ustekabeko errorea select()-en, datuak prozesu umetik irakurtzen (%s)"
 
-#: ../glib/gspawn.c:420
+#: ../glib/gspawn.c:432
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Ustekabeko errorea waitpid()-en (%s)"
 
-#: ../glib/gspawn.c:1212
+#: ../glib/gspawn.c:1237
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Ezin da sardetu (%s)"
 
-#: ../glib/gspawn.c:1362
+#: ../glib/gspawn.c:1393
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Ezin izan da \"%s\" prozesu umea exekutatu (%s)"
 
-#: ../glib/gspawn.c:1372
+#: ../glib/gspawn.c:1403
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Ezin izan da prozesu umearen irteera edo sarrera birbideratu (%s)"
 
-#: ../glib/gspawn.c:1381
+#: ../glib/gspawn.c:1412
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Ezin izan da prozesu umea sardetu (%s)"
 
-#: ../glib/gspawn.c:1389
+#: ../glib/gspawn.c:1420
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Errore ezezaguna \"%s\" prozesu umea exekutatzean"
 
-#: ../glib/gspawn.c:1413
+#: ../glib/gspawn.c:1444
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Ezin izan da nahikoa datu irakurri pid kanalizazio umetik (%s)"
 
-#: ../glib/gutf8.c:1066
+#: ../glib/gutf8.c:1086
 msgid "Character out of range for UTF-8"
 msgstr "Karakterea UTF-8 barrutitik kanpo"
 
-#: ../glib/gutf8.c:1166 ../glib/gutf8.c:1175 ../glib/gutf8.c:1307
-#: ../glib/gutf8.c:1316 ../glib/gutf8.c:1457 ../glib/gutf8.c:1553
+#: ../glib/gutf8.c:1186 ../glib/gutf8.c:1195 ../glib/gutf8.c:1325
+#: ../glib/gutf8.c:1334 ../glib/gutf8.c:1473 ../glib/gutf8.c:1569
 msgid "Invalid sequence in conversion input"
 msgstr "Sekuentzia baliogabea bihurketa-sarreran"
 
-#: ../glib/gutf8.c:1468 ../glib/gutf8.c:1564
+#: ../glib/gutf8.c:1484 ../glib/gutf8.c:1580
 msgid "Character out of range for UTF-16"
 msgstr "Karakterea UTF-16 barrutitik kanpo"
 
@@ -1040,29 +1330,29 @@ msgstr "%2$s(r)en '%1$s' balio bikoitza barrutitik kanpo"
 msgid "Error parsing option %s"
 msgstr "Errorea %s aukera analizatzean"
 
-#: ../glib/goption.c:1413 ../glib/goption.c:1527
+#: ../glib/goption.c:1413 ../glib/goption.c:1526
 #, c-format
 msgid "Missing argument for %s"
 msgstr "%s(e)ko argumentua falta da"
 
-#: ../glib/goption.c:1922
+#: ../glib/goption.c:1957
 #, c-format
 msgid "Unknown option %s"
 msgstr "%s aukera ezezaguna"
 
-#: ../glib/gkeyfile.c:363
+#: ../glib/gkeyfile.c:366
 msgid "Valid key file could not be found in search dirs"
 msgstr "Ezin izan da baliozko gakoa datuen direktorioan aurkitu"
 
-#: ../glib/gkeyfile.c:398
+#: ../glib/gkeyfile.c:401
 msgid "Not a regular file"
 msgstr "Ez da fitxategi arrunta"
 
-#: ../glib/gkeyfile.c:406
+#: ../glib/gkeyfile.c:409
 msgid "File is empty"
 msgstr "Fitxategia hutsik dago"
 
-#: ../glib/gkeyfile.c:765
+#: ../glib/gkeyfile.c:768
 #, c-format
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
@@ -1071,51 +1361,51 @@ msgstr ""
 "ez daukalarik"
 
 #
-#: ../glib/gkeyfile.c:825
+#: ../glib/gkeyfile.c:828
 #, c-format
 msgid "Invalid group name: %s"
 msgstr "Taldearen izen baliogabea: %s"
 
-#: ../glib/gkeyfile.c:847
+#: ../glib/gkeyfile.c:850
 msgid "Key file does not start with a group"
 msgstr "Gako-fitxategiak ez da talde batekin hasten"
 
 #
-#: ../glib/gkeyfile.c:873
+#: ../glib/gkeyfile.c:876
 #, c-format
 msgid "Invalid key name: %s"
 msgstr "Gakoaren izen baliogabea: %s"
 
-#: ../glib/gkeyfile.c:900
+#: ../glib/gkeyfile.c:903
 #, c-format
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Gako-fitxategiak onartzen ez den '%s' kodeketa du"
 
-#: ../glib/gkeyfile.c:1116 ../glib/gkeyfile.c:1278 ../glib/gkeyfile.c:2646
-#: ../glib/gkeyfile.c:2712 ../glib/gkeyfile.c:2847 ../glib/gkeyfile.c:2980
-#: ../glib/gkeyfile.c:3133 ../glib/gkeyfile.c:3320 ../glib/gkeyfile.c:3381
+#: ../glib/gkeyfile.c:1149 ../glib/gkeyfile.c:1311 ../glib/gkeyfile.c:2686
+#: ../glib/gkeyfile.c:2752 ../glib/gkeyfile.c:2887 ../glib/gkeyfile.c:3020
+#: ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3394 ../glib/gkeyfile.c:3463
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Gako-fitxategiak ez dauka '%s' taldea"
 
-#: ../glib/gkeyfile.c:1290
+#: ../glib/gkeyfile.c:1323
 #, c-format
 msgid "Key file does not have key '%s'"
 msgstr "Gako-fitxategiak ez dauka '%s' gakoa"
 
-#: ../glib/gkeyfile.c:1397 ../glib/gkeyfile.c:1512
+#: ../glib/gkeyfile.c:1430 ../glib/gkeyfile.c:1546
 #, c-format
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Gako-fitxategiak '%s' gakoa dauka (%s balioduna) baina ez da UTF-8"
 
-#: ../glib/gkeyfile.c:1417 ../glib/gkeyfile.c:1900
+#: ../glib/gkeyfile.c:1450 ../glib/gkeyfile.c:1934
 #, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr ""
 "Gako-fitxategiak '%s' gakoa dauka, baina dagokion balioa ezin da "
 "interpretatu."
 
-#: ../glib/gkeyfile.c:1532
+#: ../glib/gkeyfile.c:1566
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
@@ -1123,7 +1413,7 @@ msgstr ""
 "Gako-fitxategiak '%s' gakoa dauka, baina ezin den interpretatu balio bat "
 "dauka."
 
-#: ../glib/gkeyfile.c:2115 ../glib/gkeyfile.c:2477
+#: ../glib/gkeyfile.c:2151 ../glib/gkeyfile.c:2515
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
@@ -1132,36 +1422,36 @@ msgstr ""
 "Gako-fitxategiak '%s' gakoa dauka ('%s taldean), baina dagokion balioa ezin "
 "da interpretatu."
 
-#: ../glib/gkeyfile.c:2661 ../glib/gkeyfile.c:2862 ../glib/gkeyfile.c:3392
+#: ../glib/gkeyfile.c:2701 ../glib/gkeyfile.c:2902 ../glib/gkeyfile.c:3474
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Gako-fitxategiak ez dauka '%s' gakoa ('%s' taldean)"
 
-#: ../glib/gkeyfile.c:3626
+#: ../glib/gkeyfile.c:3708
 msgid "Key file contains escape character at end of line"
 msgstr "Gako-fitxategiak ihes-karakterea dauka lerro amaieran"
 
-#: ../glib/gkeyfile.c:3648
+#: ../glib/gkeyfile.c:3730
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Gako-fitxategiak '%s' ihes-sekuentzia baliogabea dauka"
 
-#: ../glib/gkeyfile.c:3790
+#: ../glib/gkeyfile.c:3872
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "'%s' balioa ezin da zenbaki gisa interpretatu"
 
-#: ../glib/gkeyfile.c:3804
+#: ../glib/gkeyfile.c:3886
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "'%s' osoko balioa barrutitik kanpo"
 
-#: ../glib/gkeyfile.c:3837
+#: ../glib/gkeyfile.c:3919
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "'%s' balioa ezin da zenbaki mugikor gisa interpretatu."
 
-#: ../glib/gkeyfile.c:3861
+#: ../glib/gkeyfile.c:3943
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "'%s' balioa ezin da boolear gisa interpretatu"
@@ -1169,20 +1459,20 @@ msgstr "'%s' balioa ezin da boolear gisa interpretatu"
 #: ../gio/gbufferedinputstream.c:411 ../gio/gbufferedinputstream.c:492
 #: ../gio/ginputstream.c:185 ../gio/ginputstream.c:317
 #: ../gio/ginputstream.c:556 ../gio/ginputstream.c:680
-#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:726
+#: ../gio/goutputstream.c:198 ../gio/goutputstream.c:732
 #, c-format
 msgid "Too large count value passed to %s"
 msgstr "Zenbaketaren balio handiegia honi pasatuta: %s"
 
 #: ../gio/gbufferedinputstream.c:881 ../gio/ginputstream.c:888
-#: ../gio/giostream.c:306 ../gio/goutputstream.c:1197
+#: ../gio/giostream.c:306 ../gio/goutputstream.c:1206
 msgid "Stream is already closed"
 msgstr "Korrontea jadanik itxita dago"
 
-#: ../gio/gcancellable.c:433 ../gio/gdbusconnection.c:1637
-#: ../gio/gdbusconnection.c:1726 ../gio/gdbusconnection.c:1912
-#: ../gio/glocalfile.c:2104 ../gio/gsimpleasyncresult.c:810
-#: ../gio/gsimpleasyncresult.c:836
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
+#: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
+#: ../gio/glocalfile.c:2100 ../gio/gsimpleasyncresult.c:814
+#: ../gio/gsimpleasyncresult.c:840
 msgid "Operation was cancelled"
 msgstr "Eragiketa bertan behera utzi da"
 
@@ -1198,29 +1488,29 @@ msgstr "Byteen sekuentzia baliogabea sarreran"
 msgid "Not enough space in destination"
 msgstr "Ez dago nahikoa lekurik helburuan"
 
-#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:832
+#: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:854
 msgid "Cancellable initialization not supported"
 msgstr "Hasieratzea bertan behera uztea ez dago onartuta"
 
-#: ../gio/gcontenttype.c:179
+#: ../gio/gcontenttype.c:180
 msgid "Unknown type"
 msgstr "Mota ezezaguna"
 
-#: ../gio/gcontenttype.c:180
+#: ../gio/gcontenttype.c:181
 #, c-format
 msgid "%s filetype"
 msgstr "%s fitxategi mota"
 
-#: ../gio/gcontenttype.c:679
+#: ../gio/gcontenttype.c:680
 #, c-format
 msgid "%s type"
 msgstr "%s mota"
 
-#: ../gio/gcredentials.c:246 ../gio/gcredentials.c:441
+#: ../gio/gcredentials.c:273 ../gio/gcredentials.c:495
 msgid "GCredentials is not implemented on this OS"
 msgstr "GCredentials ez dago inplementatuta S.E. honetan"
 
-#: ../gio/gcredentials.c:396
+#: ../gio/gcredentials.c:447
 msgid "There is no GCredentials support for your platform"
 msgstr "Ez dago GCredentials euskarririk plataforma honetan"
 
@@ -1229,7 +1519,7 @@ msgid "Unexpected early end-of-stream"
 msgstr "Ustekabeko korronte-amaiera azkarregia"
 
 #: ../gio/gdbusaddress.c:142 ../gio/gdbusaddress.c:230
-#: ../gio/gdbusaddress.c:304
+#: ../gio/gdbusaddress.c:311
 #, c-format
 msgid "Unsupported key `%s' in address entry `%s'"
 msgstr "Onartu gabeko '%s' gakoa helbidearen '%s' sarreran"
@@ -1249,22 +1539,22 @@ msgstr ""
 "Zentzurik gabeko gakoa/balioa bikotearen konbinazioa '%s' helbidearen "
 "sarreran"
 
-#: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:319
+#: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
 msgstr "Errorea '%s' helbidean - atakaren atributua gaizki osatuta dago"
 
-#: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:330
+#: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
 msgid "Error in address `%s' - the family attribute is malformed"
 msgstr "Errorea '%s' helbidean - familiaren atributua gaizki osatuta dago"
 
-#: ../gio/gdbusaddress.c:434
+#: ../gio/gdbusaddress.c:446
 #, c-format
 msgid "Address element `%s', does not contain a colon (:)"
 msgstr "'%s' helbidearen elementuak ez dauka bi punturik (:)"
 
-#: ../gio/gdbusaddress.c:455
+#: ../gio/gdbusaddress.c:467
 #, c-format
 msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
@@ -1273,7 +1563,7 @@ msgstr ""
 "%d. gakoa/balioa bikoteak, '%s', '%s' helbidearen elementuan, ez dauka "
 "berdina (=) ikurrik"
 
-#: ../gio/gdbusaddress.c:469
+#: ../gio/gdbusaddress.c:481
 #, c-format
 msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
@@ -1282,7 +1572,7 @@ msgstr ""
 "Errorea gakoa edo balioa iheseko modutik kentzean %d. gakoa/balioa bikotean, "
 "'%s', '%s' helbidearen elementuan"
 
-#: ../gio/gdbusaddress.c:547
+#: ../gio/gdbusaddress.c:559
 #, c-format
 msgid ""
 "Error in address `%s' - the unix transport requires exactly one of the keys "
@@ -1291,87 +1581,87 @@ msgstr ""
 "Errorea '%s' helbidean - unix-eko garraioak 'path' edo 'abstract' "
 "gakoetariko bat behar du hain zuzen."
 
-#: ../gio/gdbusaddress.c:583
+#: ../gio/gdbusaddress.c:595
 #, c-format
 msgid "Error in address `%s' - the host attribute is missing or malformed"
 msgstr ""
 "Errorea '%s' helbidean - ostalariaren atributua falta da edo gaizki osatuta "
 "dago"
 
-#: ../gio/gdbusaddress.c:597
+#: ../gio/gdbusaddress.c:609
 #, c-format
 msgid "Error in address `%s' - the port attribute is missing or malformed"
 msgstr ""
 "Errorea '%s' helbidean - atakaren atributua falta da edo gaizki osatuta dago"
 
-#: ../gio/gdbusaddress.c:611
+#: ../gio/gdbusaddress.c:623
 #, c-format
 msgid "Error in address `%s' - the noncefile attribute is missing or malformed"
 msgstr ""
 "Errorea '%s' helbidean - izendapenaren fitxategiaren atributua falta da edo "
 "gaizki osatuta dago"
 
-#: ../gio/gdbusaddress.c:632
+#: ../gio/gdbusaddress.c:644
 msgid "Error auto-launching: "
 msgstr "Errorea automatikoki abiaraztean: "
 
-#: ../gio/gdbusaddress.c:640
+#: ../gio/gdbusaddress.c:652
 #, c-format
 msgid "Unknown or unsupported transport `%s' for address `%s'"
 msgstr "'%2$s' helbidearen '%1$s' garraioa ezezaguna edo onartu gabea"
 
-#: ../gio/gdbusaddress.c:676
+#: ../gio/gdbusaddress.c:688
 #, c-format
 msgid "Error opening nonce file `%s': %s"
 msgstr "Errorea '%s' izendapeneko fitxategia irekitzean: %s"
 
-#: ../gio/gdbusaddress.c:694
+#: ../gio/gdbusaddress.c:706
 #, c-format
 msgid "Error reading from nonce file `%s': %s"
 msgstr "Errorea '%s' izendapeneko fitxategitik irakurtzean: %s"
 
-#: ../gio/gdbusaddress.c:703
+#: ../gio/gdbusaddress.c:715
 #, c-format
 msgid "Error reading from nonce file `%s', expected 16 bytes, got %d"
 msgstr ""
 "Errorea '%s' izendapeneko fitxategitik irakurtzean: 16 byte espero ziren, "
 "baina %d lortu dira"
 
-#: ../gio/gdbusaddress.c:721
+#: ../gio/gdbusaddress.c:733
 #, c-format
 msgid "Error writing contents of nonce file `%s' to stream:"
 msgstr "Errorea '%s' izendapeneko fitxategiko edukia korrontean idaztean:"
 
-#: ../gio/gdbusaddress.c:939
+#: ../gio/gdbusaddress.c:951
 msgid "The given address is empty"
 msgstr "Emandako helbidea hutsik dago"
 
-#: ../gio/gdbusaddress.c:1008
+#: ../gio/gdbusaddress.c:1020
 msgid "Cannot spawn a message bus without a machine-id: "
 msgstr "Ezin da mezuaren deia abiarazi makinaren IDrik gabe: "
 
-#: ../gio/gdbusaddress.c:1045
+#: ../gio/gdbusaddress.c:1057
 #, c-format
 msgid "Error spawning command line `%s': "
 msgstr "Errorea '%s' komando-lerroa abiaraztean: "
 
-#: ../gio/gdbusaddress.c:1056
+#: ../gio/gdbusaddress.c:1068
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
 msgstr "Ustekabeko programaren amaiera '%s' komando-lerroa abiaraztean: %s"
 
-#: ../gio/gdbusaddress.c:1070
+#: ../gio/gdbusaddress.c:1082
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr "'%s' komando-lerroa zero ez den %d egoerarekin irten da: %s"
 
-#: ../gio/gdbusaddress.c:1143
+#: ../gio/gdbusaddress.c:1155
 #, c-format
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "Ezin da saioaren bus-eko helbidea zehaztu (ez dago S.E. honetan garatuta)"
 
-#: ../gio/gdbusaddress.c:1242 ../gio/gdbusconnection.c:6168
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1380,7 +1670,7 @@ msgstr ""
 "Ezin da bus-aren helbidea zehaztua inguruneko DBUS_STARTER_BUS_TYPE "
 "aldagaitik. '%s' balio ezezaguna"
 
-#: ../gio/gdbusaddress.c:1251 ../gio/gdbusconnection.c:6177
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1388,7 +1678,7 @@ msgstr ""
 "Ezin da bus-aren helbidea zehaztua, inguruneko DBUS_STARTER_BUS_TYPE "
 "aldagaia ezarri gabe dagoelako"
 
-#: ../gio/gdbusaddress.c:1261
+#: ../gio/gdbusaddress.c:1273
 #, c-format
 msgid "Unknown bus type %d"
 msgstr "%d bus mota ezezaguna"
@@ -1408,7 +1698,7 @@ msgid ""
 msgstr ""
 "Autentifikazioko metodo guztiak agortuta (saiatuta: %s) (erabilgarri: %s)"
 
-#: ../gio/gdbusauth.c:1150
+#: ../gio/gdbusauth.c:1159
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr ""
 "Bertan behera utzita GDBusAuthObserver::authorize-authenticated-peer erabiliz"
@@ -1436,14 +1726,14 @@ msgstr "Errorea '%s' direktorioa sortzean: %s"
 msgid "Error opening keyring `%s' for reading: "
 msgstr "Errorea '%s' gako sorta irakurtzeko irekitzean: "
 
-#: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:715
+#: ../gio/gdbusauthmechanismsha1.c:406 ../gio/gdbusauthmechanismsha1.c:718
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
 "'%2$s'(e)ngo gako sortako %1$d. lerroa ('%3$s' edukiarekin) gaizki osatuta "
 "dago"
 
-#: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:729
+#: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
@@ -1451,7 +1741,7 @@ msgstr ""
 "'%2$s'(e)ngo gako sortako %1$d. lerroko aurreneko tokena ('%3$s' "
 "edukiarekin) gaizki osatuta dago"
 
-#: ../gio/gdbusauthmechanismsha1.c:434 ../gio/gdbusauthmechanismsha1.c:743
+#: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
@@ -1459,57 +1749,57 @@ msgstr ""
 "'%2$s'(e)ngo gako sortako %1$d. lerroko bigarren tokena ('%3$s' edukiarekin) "
 "gaizki osatuta dago"
 
-#: ../gio/gdbusauthmechanismsha1.c:458
+#: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
 msgid "Didn't find cookie with id %d in the keyring at `%s'"
 msgstr "Ez da %d IDko cookie-rik aurkitu '%s'(e)ngo gako sortan"
 
-#: ../gio/gdbusauthmechanismsha1.c:535
+#: ../gio/gdbusauthmechanismsha1.c:536
 #, c-format
 msgid "Error deleting stale lock file `%s': %s"
 msgstr "Errorea blokeoaren '%s' fitxategi zaharkitua ezabatzean: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:566
+#: ../gio/gdbusauthmechanismsha1.c:568
 #, c-format
 msgid "Error creating lock file `%s': %s"
 msgstr "Errorea blokeoko '%s' fitxategia sortzean: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:596
+#: ../gio/gdbusauthmechanismsha1.c:598
 #, c-format
 msgid "Error closing (unlinked) lock file `%s': %s"
 msgstr "Errorea blokeoko (estekatu gabeko) '%s' fitxategia ixtean: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:606
+#: ../gio/gdbusauthmechanismsha1.c:608
 #, c-format
 msgid "Error unlinking lock file `%s': %s"
 msgstr "Errorea blokeoko '%s' fitxategia desestekatzean: %s"
 
-#: ../gio/gdbusauthmechanismsha1.c:682
+#: ../gio/gdbusauthmechanismsha1.c:685
 #, c-format
 msgid "Error opening keyring `%s' for writing: "
 msgstr "Errorea '%s' gako sorta idazteko irekitzean: "
 
-#: ../gio/gdbusauthmechanismsha1.c:877
+#: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Gainera, '%s'(r)en blokeoa askatzeak ere huts egin du: %s) "
 
-#: ../gio/gdbusconnection.c:1148 ../gio/gdbusconnection.c:1374
-#: ../gio/gdbusconnection.c:1413 ../gio/gdbusconnection.c:1737
+#: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
+#: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
 msgid "The connection is closed"
 msgstr "Konexioa itxi egin da"
 
-#: ../gio/gdbusconnection.c:1681
+#: ../gio/gdbusconnection.c:1684
 msgid "Timeout was reached"
 msgstr "Denbora-mugara iritsi da"
 
-#: ../gio/gdbusconnection.c:2300
+#: ../gio/gdbusconnection.c:2306
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "Onartu gabeko banderak aurkitu dira bezeroaren aldeko konexioa eraikitzean"
 
-#: ../gio/gdbusconnection.c:3752 ../gio/gdbusconnection.c:4070
+#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1517,93 +1807,93 @@ msgstr ""
 "Ez dago 'org.freedesktop.DBus.Properties' bezalako interfazerik '%s' bide-"
 "izeneko objektuan"
 
-#: ../gio/gdbusconnection.c:3824
+#: ../gio/gdbusconnection.c:3841
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Errorea '%s' propietatea ezartzean: '%s' mota espero zen, baina '%s' lortu da"
 
-#: ../gio/gdbusconnection.c:3919
+#: ../gio/gdbusconnection.c:3936
 #, c-format
 msgid "No such property `%s'"
 msgstr "Ez dago '%s' bezalako propietaterik"
 
-#: ../gio/gdbusconnection.c:3931
+#: ../gio/gdbusconnection.c:3948
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "%s propietatea ez da irakurgarria"
 
-#: ../gio/gdbusconnection.c:3942
+#: ../gio/gdbusconnection.c:3959
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "%s propietatea ez da idazgarria"
 
-#: ../gio/gdbusconnection.c:4012 ../gio/gdbusconnection.c:5602
+#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Ez dago '%s' bezalako interfazerik"
 
-#: ../gio/gdbusconnection.c:4200
+#: ../gio/gdbusconnection.c:4213
 msgid "No such interface"
 msgstr "Ez dago halako interfazerik"
 
-#: ../gio/gdbusconnection.c:4416 ../gio/gdbusconnection.c:6118
+#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Ez dago '%s' bezalako interfazerik '%s' bide-izeneko objektuan"
 
-#: ../gio/gdbusconnection.c:4468
+#: ../gio/gdbusconnection.c:4484
 #, c-format
 msgid "No such method `%s'"
 msgstr "Ez dago '%s' bezalako metodorik"
 
-#: ../gio/gdbusconnection.c:4499
+#: ../gio/gdbusconnection.c:4515
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "'%s' mezu mota ez dator bat espero zen '%s' motarekin"
 
-#: ../gio/gdbusconnection.c:4718
+#: ../gio/gdbusconnection.c:4734
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Jadanik objektu bat esportatuta dago %s interfazearentzako %s(e)n"
 
-#: ../gio/gdbusconnection.c:4912
+#: ../gio/gdbusconnection.c:4932
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "'%s' metodoak '%s' mota itzuli du, baina '%s' espero zen"
 
-#: ../gio/gdbusconnection.c:5713
+#: ../gio/gdbusconnection.c:5964
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 "'%2$s' interfazeko '%1$s' metodoa '%3$s' sinadurarekin ez da existitzen"
 
-#: ../gio/gdbusconnection.c:5831
+#: ../gio/gdbusconnection.c:6082
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Azpizuhaitza jadanik %s(e)ra esportatuta"
 
-#: ../gio/gdbusmessage.c:856
+#: ../gio/gdbusmessage.c:859
 msgid "type is INVALID"
 msgstr "mota baliogabea da"
 
-#: ../gio/gdbusmessage.c:867
+#: ../gio/gdbusmessage.c:870
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr "METHOD_CALL-en mezua: goiburuko PATH edo MEMBER eremua falta da"
 
-#: ../gio/gdbusmessage.c:878
+#: ../gio/gdbusmessage.c:881
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
 msgstr "METHOD_RETURN-en mezua: goiburuko REPLY_SERIAL eremua falta da"
 
-#: ../gio/gdbusmessage.c:890
+#: ../gio/gdbusmessage.c:893
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr "ERROR-en mezua: goiburuko REPLY_SERIAL edo ERROR_NAME eremua falta da"
 
-#: ../gio/gdbusmessage.c:903
+#: ../gio/gdbusmessage.c:906
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr "SIGNAL-en mezua: goiburuko PATH, INTERFACE edo MEMBER eremua falta da"
 
-#: ../gio/gdbusmessage.c:911
+#: ../gio/gdbusmessage.c:914
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
@@ -1611,7 +1901,7 @@ msgstr ""
 "SIGNAL-en mezua: goiburuko PATH eremua '/org/freedesktop/DBus/Local' balio "
 "erreserbatua erabiltzen ari da"
 
-#: ../gio/gdbusmessage.c:919
+#: ../gio/gdbusmessage.c:922
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
@@ -1619,13 +1909,16 @@ msgstr ""
 "SIGNAL-en mezua: goiburuko INTERFACE eremua '/org/freedesktop/DBus/Local' "
 "balio erreserbatua erabiltzen ari da"
 
-#: ../gio/gdbusmessage.c:994
-#, c-format
-msgid "Wanted to read %lu bytes but got EOF"
-msgstr ""
+#: ../gio/gdbusmessage.c:998
+#, fuzzy, c-format
+msgid "Wanted to read %lu byte but got EOF"
+msgid_plural "Wanted to read %lu bytes but got EOF"
+msgstr[0] ""
+"%lu byte irakurtzea nahi ziren, baina fitxategiaren amaiera (EOF) lortu da"
+msgstr[1] ""
 "%lu byte irakurtzea nahi ziren, baina fitxategiaren amaiera (EOF) lortu da"
 
-#: ../gio/gdbusmessage.c:1019
+#: ../gio/gdbusmessage.c:1025
 #, c-format
 msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
@@ -1635,38 +1928,43 @@ msgstr ""
 "byteen %d desplazamenduan (katearen luzera: %d). Ordurarteko baliozko UTF-8 "
 "katea honakoa zen: '%s'"
 
-#: ../gio/gdbusmessage.c:1032
+#: ../gio/gdbusmessage.c:1038
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr ""
 "NUL bytea espero zen '%s' katearen ondoren, baina '%d' bytea aurkitu da"
 
-#: ../gio/gdbusmessage.c:1231
+#: ../gio/gdbusmessage.c:1242
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus object path"
 msgstr ""
 "Analizatutako '%s' balioa ez da baliozko D-Bus objektuaren bide-izen bat"
 
-#: ../gio/gdbusmessage.c:1257
+#: ../gio/gdbusmessage.c:1268
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Analizatutako '%s' balioa ez da baliozko D-Bus sinadura"
 
-#: ../gio/gdbusmessage.c:1311
-#, c-format
+#: ../gio/gdbusmessage.c:1324
+#, fuzzy, c-format
 msgid ""
+"Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
+msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr ""
+msgstr[0] ""
+"%u byte luzerako matrizea aurkituta. Gehienezko luzera 2<<26 byte da (64 "
+"MiB)."
+msgstr[1] ""
 "%u byte luzerako matrizea aurkituta. Gehienezko luzera 2<<26 byte da (64 "
 "MiB)."
 
-#: ../gio/gdbusmessage.c:1472
+#: ../gio/gdbusmessage.c:1490
 #, c-format
 msgid "Parsed value `%s' for variant is not a valid D-Bus signature"
 msgstr ""
 "Analizatutako '%s' balioa aldagaiarentzat ez da baliozko D-Bus sinadura bat"
 
-#: ../gio/gdbusmessage.c:1499
+#: ../gio/gdbusmessage.c:1517
 #, c-format
 msgid ""
 "Error deserializing GVariant with type string `%s' from the D-Bus wire format"
@@ -1674,45 +1972,48 @@ msgstr ""
 "Errorea GVariant deserializatzean '%s' kate motarekin D-Bus konexioko "
 "formatutik"
 
-#: ../gio/gdbusmessage.c:1683
+#: ../gio/gdbusmessage.c:1705
 #, c-format
 msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
-"Baliogabeko endian balioa. 0x6c ('l') edo 0x42 ('B') espero zen, baina 0x%"
-"02x balioa aurkitu da."
+"Baliogabeko endian balioa. 0x6c ('l') edo 0x42 ('B') espero zen, baina 0x"
+"%02x balioa aurkitu da."
 
-#: ../gio/gdbusmessage.c:1697
+#: ../gio/gdbusmessage.c:1719
 #, c-format
 msgid "Invalid major protocol version. Expected 1 but found %d"
 msgstr ""
 "Protokoloaren bertsio nagusia baliogabea. 1 espero zen, baina %d aurkitu da"
 
-#: ../gio/gdbusmessage.c:1754
+#: ../gio/gdbusmessage.c:1776
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
 "Sinaduraren goiburua '%s' sinadurarekin aurkitu da, baina gorputza hutsik "
 "dago"
 
-#: ../gio/gdbusmessage.c:1768
+#: ../gio/gdbusmessage.c:1790
 #, c-format
 msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr ""
 "Analizatutako '%s' balioa ez da baliozko D-Bus sinadura (gorputzarentzako)"
 
-#: ../gio/gdbusmessage.c:1798
-#, c-format
-msgid "No signature header in message but the message body is %u bytes"
-msgstr ""
+#: ../gio/gdbusmessage.c:1821
+#, fuzzy, c-format
+msgid "No signature header in message but the message body is %u byte"
+msgid_plural "No signature header in message but the message body is %u bytes"
+msgstr[0] ""
+"Ez dago sinaduraren goibururik mezuan, baina mezuaren gorputzak %u byte ditu"
+msgstr[1] ""
 "Ez dago sinaduraren goibururik mezuan, baina mezuaren gorputzak %u byte ditu"
 
-#: ../gio/gdbusmessage.c:1806
+#: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
 msgstr "Ezin da mezua deserializatu: "
 
-#: ../gio/gdbusmessage.c:2131
+#: ../gio/gdbusmessage.c:2163
 #, c-format
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
@@ -1720,81 +2021,62 @@ msgstr ""
 "Errorea GVariant serializatzean '%s' kate motarekin D-Bus konexioaren "
 "formatura"
 
-#: ../gio/gdbusmessage.c:2272
-#, c-format
-msgid "Message has %d fds but the header field indicates %d fds"
+#: ../gio/gdbusmessage.c:2303
+#, fuzzy, c-format
+msgid ""
+"Message has %d file descriptors but the header field indicates %d file "
+"descriptors"
 msgstr "Mezuak %d fds ditu baina goiburuko eremuak %d fds adierazten du"
 
-#: ../gio/gdbusmessage.c:2280
+#: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
 msgstr "Ezin da mezua serializatu: "
 
-#: ../gio/gdbusmessage.c:2324
+#: ../gio/gdbusmessage.c:2355
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
 "Mezuaren gorputzak '%s' sinadura du, baina ez dago sinaduraren goibururik"
 
-#: ../gio/gdbusmessage.c:2334
+#: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `%"
-"s'"
+"Message body has type signature `%s' but signature in the header field is `"
+"%s'"
 msgstr ""
 "Mezuaren gorputzak '%s' sinadura mota du, baina goiburuaren eremuko sinadura "
 "'%s' da"
 
-#: ../gio/gdbusmessage.c:2350
+#: ../gio/gdbusmessage.c:2381
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
 "Mezuaren gorputza hutsik dago, baina goiburuaren eremuko sinadura '(%s)' da"
 
-#: ../gio/gdbusmessage.c:2907
+#: ../gio/gdbusmessage.c:2938
 #, c-format
 msgid "Error return with body of type `%s'"
 msgstr "Errorearen itzulera '%s' motako gorputzarekin "
 
-#: ../gio/gdbusmessage.c:2915
+#: ../gio/gdbusmessage.c:2946
 msgid "Error return with empty body"
 msgstr "Errorearen itzulera gorputz hutsarekin"
 
-#: ../gio/gdbusmethodinvocation.c:375
-#, c-format
-msgid "Type of return value is incorrect, got `%s', expected `%s'"
-msgstr ""
-"Itzulerako balioaren mota ez da zuzena: '%s' jaso da, baina '%s' espero zen"
-
-#: ../gio/gdbusmethodinvocation.c:406 ../gio/gsocket.c:3027
-#: ../gio/gsocket.c:3108
-#, c-format
-msgid "Error sending message: %s"
-msgstr "Errorea mezua bidaltzean: %s"
-
-#: ../gio/gdbusprivate.c:1768
+#: ../gio/gdbusprivate.c:1736
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Ezin da /var/lib/dbus/machine-id kargatu: "
 
-#: ../gio/gdbusproxy.c:714
-#, c-format
-msgid ""
-"Trying to set property %s of type %s but according to the expected interface "
-"the type is %s"
-msgstr ""
-"'%2$s' motaren '%1$s' propietatea ezartzen saiatzen, baina espero zen "
-"interfazearen arabera, mota '%3$s' da"
-
-#: ../gio/gdbusproxy.c:1234
+#: ../gio/gdbusproxy.c:1489
 #, c-format
 msgid "Error calling StartServiceByName for %s: "
 msgstr "Errorea %s(r)en StartServiceByName deia egitean: "
 
-#: ../gio/gdbusproxy.c:1255
+#: ../gio/gdbusproxy.c:1510
 #, c-format
 msgid "Unexpected reply %d from StartServiceByName(\"%s\") method"
 msgstr "Ustekabeko %d erantzuna StartServiceByName(\"%s\") metodotik"
 
-#: ../gio/gdbusproxy.c:2311 ../gio/gdbusproxy.c:2469
+#: ../gio/gdbusproxy.c:2600 ../gio/gdbusproxy.c:2734
 msgid ""
 "Cannot invoke method; proxy is for a well-known name without an owner and "
 "proxy was constructed with the G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START flag"
@@ -1802,41 +2084,42 @@ msgstr ""
 "Ezin da metodoari deitu: proxy-ak jaberik gabeko izen ezaguna du eta "
 "G_DBUS_PROXY_FLAGS_DO_NOT_AUTO_START banderarekin eraiki zen"
 
-#: ../gio/gdbusserver.c:715
+#: ../gio/gdbusserver.c:711
 msgid "Abstract name space not supported"
 msgstr "Izen abstraktuen lekua ez dago onartuta"
 
-#: ../gio/gdbusserver.c:805
+#: ../gio/gdbusserver.c:798
 msgid "Cannot specify nonce file when creating a server"
 msgstr "Ezin da izendapeneko fitxategia zehaztu zerbitzari bat sortzean"
 
-#: ../gio/gdbusserver.c:882
+#: ../gio/gdbusserver.c:875
 #, c-format
 msgid "Error writing nonce file at `%s': %s"
 msgstr "Errorea '%s' izendapeneko fitxategian idaztean: %s"
 
-#: ../gio/gdbusserver.c:1044
+#: ../gio/gdbusserver.c:1042
 #, c-format
 msgid "The string `%s' is not a valid D-Bus GUID"
 msgstr "'%s' katea ez da baliozko D-Bus GUID bat"
 
-#: ../gio/gdbusserver.c:1084
+#: ../gio/gdbusserver.c:1082
 #, c-format
 msgid "Cannot listen on unsupported transport `%s'"
 msgstr "Ezin da onartu gabeko '%s' garraioa entzun"
 
-#: ../gio/gdbus-tool.c:87
+#: ../gio/gdbus-tool.c:88
 msgid "COMMAND"
 msgstr "KOMANDOA"
 
-#: ../gio/gdbus-tool.c:92
-#, c-format
+#: ../gio/gdbus-tool.c:93
+#, fuzzy, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
 "  introspect   Introspect a remote object\n"
 "  monitor      Monitor a remote object\n"
 "  call         Invoke a method on a remote object\n"
+"  emit         Emit a signal\n"
 "\n"
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
@@ -1849,55 +2132,56 @@ msgstr ""
 "Erabili\"%s KOMANDOA --help\" komando bakoitzari dagokion laguntza "
 "lortzeko.\n"
 
-#: ../gio/gdbus-tool.c:160 ../gio/gdbus-tool.c:216 ../gio/gdbus-tool.c:288
-#: ../gio/gdbus-tool.c:312 ../gio/gdbus-tool.c:814 ../gio/gdbus-tool.c:1324
+#: ../gio/gdbus-tool.c:162 ../gio/gdbus-tool.c:218 ../gio/gdbus-tool.c:290
+#: ../gio/gdbus-tool.c:314 ../gio/gdbus-tool.c:691 ../gio/gdbus-tool.c:1010
+#: ../gio/gdbus-tool.c:1443
 #, c-format
 msgid "Error: %s\n"
 msgstr "Errorea: %s\n"
 
-#: ../gio/gdbus-tool.c:171 ../gio/gdbus-tool.c:229 ../gio/gdbus-tool.c:1340
+#: ../gio/gdbus-tool.c:173 ../gio/gdbus-tool.c:231 ../gio/gdbus-tool.c:1459
 #, c-format
 msgid "Error parsing introspection XML: %s\n"
 msgstr "Errorea introspekzioko XMLa analizatzean: %s\n"
 
-#: ../gio/gdbus-tool.c:346
+#: ../gio/gdbus-tool.c:348
 msgid "Connect to the system bus"
 msgstr "Konektatu sistemako bus-arekin"
 
-#: ../gio/gdbus-tool.c:347
+#: ../gio/gdbus-tool.c:349
 msgid "Connect to the session bus"
 msgstr "Konektatu saioko bus-arekin"
 
-#: ../gio/gdbus-tool.c:348
+#: ../gio/gdbus-tool.c:350
 msgid "Connect to given D-Bus address"
 msgstr "Konektatu emandako D-Bus helbidera"
 
-#: ../gio/gdbus-tool.c:358
+#: ../gio/gdbus-tool.c:360
 msgid "Connection Endpoint Options:"
 msgstr "Konexioaren amaierako puntuaren aukerak:"
 
-#: ../gio/gdbus-tool.c:359
+#: ../gio/gdbus-tool.c:361
 msgid "Options specifying the connection endpoint"
 msgstr "Aukerak konexioaren amaierako puntua zehaztuz"
 
-#: ../gio/gdbus-tool.c:379
+#: ../gio/gdbus-tool.c:383
 #, c-format
 msgid "No connection endpoint specified"
 msgstr "Ez da konexioaren amaierako punturik zehaztu"
 
-#: ../gio/gdbus-tool.c:389
+#: ../gio/gdbus-tool.c:393
 #, c-format
 msgid "Multiple connection endpoints specified"
 msgstr "Konexioaren hainbat amaierako puntu zehaztu dira"
 
-#: ../gio/gdbus-tool.c:459
+#: ../gio/gdbus-tool.c:463
 #, c-format
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
 "Abisua: introspekzioko datuen arabera, '%s' interfazea ez da existitzen\n"
 
-#: ../gio/gdbus-tool.c:468
+#: ../gio/gdbus-tool.c:472
 #, c-format
 msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
@@ -1906,119 +2190,186 @@ msgstr ""
 "Abisua: introspekzioko datuen arabera, '%s' metodoa ez da existitzen '%s' "
 "interfazean\n"
 
-#: ../gio/gdbus-tool.c:530
-msgid "Destination name to invoke method on"
-msgstr "Helburuaren izena metodoari deitzeko"
+#: ../gio/gdbus-tool.c:534
+msgid "Optional destination for signal (unique name)"
+msgstr ""
 
-#: ../gio/gdbus-tool.c:531
-msgid "Object path to invoke method on"
-msgstr "Objektuaren bide-izena metodoari deitzeko"
+#: ../gio/gdbus-tool.c:535
+#, fuzzy
+msgid "Object path to emit signal on"
+msgstr "Objektuaren bide-izena monitorizatzeko"
 
-#: ../gio/gdbus-tool.c:532
-msgid "Method and interface name"
+#: ../gio/gdbus-tool.c:536
+#, fuzzy
+msgid "Signal and interface name"
 msgstr "Metodo eta interfazearen izena"
 
-#: ../gio/gdbus-tool.c:571
-msgid "Invoke a method on a remote object."
-msgstr "Deitu metodo bati urruneko objektu batean."
+#: ../gio/gdbus-tool.c:568
+msgid "Emit a signal."
+msgstr ""
 
-#: ../gio/gdbus-tool.c:626 ../gio/gdbus-tool.c:1245 ../gio/gdbus-tool.c:1505
+#: ../gio/gdbus-tool.c:602 ../gio/gdbus-tool.c:822 ../gio/gdbus-tool.c:1549
+#: ../gio/gdbus-tool.c:1781
 #, c-format
 msgid "Error connecting: %s\n"
 msgstr "Errorea konektatzean: %s\n"
 
-#: ../gio/gdbus-tool.c:646 ../gio/gdbus-tool.c:1264 ../gio/gdbus-tool.c:1524
-#, c-format
-msgid "Error: Destination is not specified\n"
-msgstr "Errorea: helburua ez dago zehaztuta\n"
-
-#: ../gio/gdbus-tool.c:667 ../gio/gdbus-tool.c:1283
-#, c-format
-msgid "Error: Object path is not specified\n"
+#: ../gio/gdbus-tool.c:614
+#, fuzzy, c-format
+msgid "Error: object path not specified.\n"
 msgstr "Errorea: objektuaren bide-izena ez dago zehaztuta\n"
 
-#: ../gio/gdbus-tool.c:687 ../gio/gdbus-tool.c:1303 ../gio/gdbus-tool.c:1564
+#: ../gio/gdbus-tool.c:619 ../gio/gdbus-tool.c:883 ../gio/gdbus-tool.c:1607
+#: ../gio/gdbus-tool.c:1840
 #, c-format
 msgid "Error: %s is not a valid object path\n"
 msgstr "Errorea: '%s' ez da objektuaren baliozko bide-izena\n"
 
-#: ../gio/gdbus-tool.c:702
-#, c-format
-msgid "Error: Method name is not specified\n"
-msgstr "Errorea: metodoaren izena ez dago zehaztuta\n"
+#: ../gio/gdbus-tool.c:625
+#, fuzzy, c-format
+msgid "Error: signal not specified.\n"
+msgstr "Errorea: helburua ez dago zehaztuta\n"
 
-#: ../gio/gdbus-tool.c:713
-#, c-format
-msgid "Error: Method name `%s' is invalid\n"
-msgstr "Errorea: '%s' metodoaren izena baliogabea da\n"
+#: ../gio/gdbus-tool.c:634
+#, fuzzy, c-format
+msgid "Error: %s is not a valid interface name\n"
+msgstr "Errorea: '%s' ez da objektuaren baliozko bide-izena\n"
 
-#: ../gio/gdbus-tool.c:778
-#, c-format
-msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "Errorea '%2$s' motako %1$d parametroa analizatzean: %3$s\n"
+#: ../gio/gdbus-tool.c:640
+#, fuzzy, c-format
+msgid "Error: %s is not a valid member name\n"
+msgstr "Errorea: '%s' ez da objektuaren baliozko bide-izena\n"
 
-#: ../gio/gdbus-tool.c:786
+#: ../gio/gdbus-tool.c:646
+#, fuzzy, c-format
+msgid "Error: %s is not a valid unique bus name.\n"
+msgstr "Errorea: '%s' ez da objektuaren baliozko bide-izena\n"
+
+#: ../gio/gdbus-tool.c:669 ../gio/gdbus-tool.c:982
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
 msgstr "Errorea %d parametroa analizatzean: %s\n"
 
-#: ../gio/gdbus-tool.c:1162
+#: ../gio/gdbus-tool.c:698
+#, fuzzy, c-format
+msgid "Error flushing connection: %s\n"
+msgstr "Errorea konexioa onartzean: %s"
+
+#: ../gio/gdbus-tool.c:725
+msgid "Destination name to invoke method on"
+msgstr "Helburuaren izena metodoari deitzeko"
+
+#: ../gio/gdbus-tool.c:726
+msgid "Object path to invoke method on"
+msgstr "Objektuaren bide-izena metodoari deitzeko"
+
+#: ../gio/gdbus-tool.c:727
+msgid "Method and interface name"
+msgstr "Metodo eta interfazearen izena"
+
+#: ../gio/gdbus-tool.c:728
+#, fuzzy
+msgid "Timeout in seconds"
+msgstr "Denbora-mugara iritsi da"
+
+#: ../gio/gdbus-tool.c:767
+msgid "Invoke a method on a remote object."
+msgstr "Deitu metodo bati urruneko objektu batean."
+
+#: ../gio/gdbus-tool.c:842 ../gio/gdbus-tool.c:1568 ../gio/gdbus-tool.c:1800
+#, c-format
+msgid "Error: Destination is not specified\n"
+msgstr "Errorea: helburua ez dago zehaztuta\n"
+
+#: ../gio/gdbus-tool.c:863 ../gio/gdbus-tool.c:1587
+#, c-format
+msgid "Error: Object path is not specified\n"
+msgstr "Errorea: objektuaren bide-izena ez dago zehaztuta\n"
+
+#: ../gio/gdbus-tool.c:898
+#, c-format
+msgid "Error: Method name is not specified\n"
+msgstr "Errorea: metodoaren izena ez dago zehaztuta\n"
+
+#: ../gio/gdbus-tool.c:909
+#, c-format
+msgid "Error: Method name `%s' is invalid\n"
+msgstr "Errorea: '%s' metodoaren izena baliogabea da\n"
+
+#: ../gio/gdbus-tool.c:974
+#, c-format
+msgid "Error parsing parameter %d of type `%s': %s\n"
+msgstr "Errorea '%2$s' motako %1$d parametroa analizatzean: %3$s\n"
+
+#: ../gio/gdbus-tool.c:1406
 msgid "Destination name to introspect"
 msgstr "Helburuko izena introspekzioa egiteko"
 
-#: ../gio/gdbus-tool.c:1163
+#: ../gio/gdbus-tool.c:1407
 msgid "Object path to introspect"
 msgstr "Objektuaren bide-izena introspekzioa egiteko"
 
-#: ../gio/gdbus-tool.c:1164
+#: ../gio/gdbus-tool.c:1408
 msgid "Print XML"
 msgstr "Inprimatu XML"
 
-#: ../gio/gdbus-tool.c:1197
+#: ../gio/gdbus-tool.c:1409
+msgid "Introspect children"
+msgstr ""
+
+#: ../gio/gdbus-tool.c:1410
+msgid "Only print properties"
+msgstr ""
+
+#: ../gio/gdbus-tool.c:1501
 msgid "Introspect a remote object."
 msgstr "Urruneko objektu baten introspekzioa egin."
 
-#: ../gio/gdbus-tool.c:1423
+#: ../gio/gdbus-tool.c:1699
 msgid "Destination name to monitor"
 msgstr "Helburuko izena monitorizatzeko"
 
-#: ../gio/gdbus-tool.c:1424
+#: ../gio/gdbus-tool.c:1700
 msgid "Object path to monitor"
 msgstr "Objektuaren bide-izena monitorizatzeko"
 
-#: ../gio/gdbus-tool.c:1457
+#: ../gio/gdbus-tool.c:1733
 msgid "Monitor a remote object."
 msgstr "Monitorizatu urruneko objektu bat."
 
-#: ../gio/gdesktopappinfo.c:480 ../gio/gwin32appinfo.c:221
+#: ../gio/gdesktopappinfo.c:572 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
 msgstr "Izengabea"
 
-#: ../gio/gdesktopappinfo.c:764
+#: ../gio/gdesktopappinfo.c:969
 msgid "Desktop file didn't specify Exec field"
 msgstr "Mahaigaineko fitxategiak ez du Exec eremua zehaztu"
 
-#: ../gio/gdesktopappinfo.c:1031
+#: ../gio/gdesktopappinfo.c:1250
 msgid "Unable to find terminal required for application"
 msgstr "Ezin izan da aplikazioak eskatzen duen terminala aurkitu"
 
-#: ../gio/gdesktopappinfo.c:1323
+#: ../gio/gdesktopappinfo.c:1515
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Ezin da erabiltzailearen aplikazioaren %s konfigurazio-karpeta sortu: %s"
 
-#: ../gio/gdesktopappinfo.c:1327
+#: ../gio/gdesktopappinfo.c:1519
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Ezin da erabiltzailearen MIMEren %s konfigurazio-karpeta sortu: %s"
 
-#: ../gio/gdesktopappinfo.c:1820
+#: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
+msgid "Application information lacks an identifier"
+msgstr ""
+
+#: ../gio/gdesktopappinfo.c:2033
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Ezin da erabiltzailearen mahaigaineko %s fitxategia sortu"
 
-#: ../gio/gdesktopappinfo.c:1936
+#: ../gio/gdesktopappinfo.c:2149
 #, c-format
 msgid "Custom definition for %s"
 msgstr "%s(r)en definizio pertsonalizatua"
@@ -2046,6 +2397,11 @@ msgstr "gailuak ez dauka 'abiatu' inplementatuta"
 msgid "drive doesn't implement stop"
 msgstr "gailuak ez dauka 'gelditu' inplementatuta"
 
+#: ../gio/gdummytlsbackend.c:168 ../gio/gdummytlsbackend.c:288
+#: ../gio/gdummytlsbackend.c:378
+msgid "TLS support is not available"
+msgstr ""
+
 #: ../gio/gemblem.c:324
 #, c-format
 msgid "Can't handle version %d of GEmblem encoding"
@@ -2070,15 +2426,15 @@ msgstr "Gaizki osatutako token kopurua (%d) GEmblemedIcon kodeketan"
 msgid "Expected a GEmblem for GEmblemedIcon"
 msgstr "GEmblen espero zen GEmblemedIcon-entzako"
 
-#: ../gio/gfile.c:872 ../gio/gfile.c:1103 ../gio/gfile.c:1238
-#: ../gio/gfile.c:1475 ../gio/gfile.c:1529 ../gio/gfile.c:1586
-#: ../gio/gfile.c:1669 ../gio/gfile.c:1724 ../gio/gfile.c:1784
-#: ../gio/gfile.c:1838 ../gio/gfile.c:3308 ../gio/gfile.c:3362
-#: ../gio/gfile.c:3494 ../gio/gfile.c:3535 ../gio/gfile.c:3862
-#: ../gio/gfile.c:4264 ../gio/gfile.c:4350 ../gio/gfile.c:4439
-#: ../gio/gfile.c:4537 ../gio/gfile.c:4624 ../gio/gfile.c:4718
-#: ../gio/gfile.c:5039 ../gio/gfile.c:5306 ../gio/gfile.c:5371
-#: ../gio/gfile.c:6945 ../gio/gfile.c:7035 ../gio/gfile.c:7121
+#: ../gio/gfile.c:871 ../gio/gfile.c:1102 ../gio/gfile.c:1237
+#: ../gio/gfile.c:1474 ../gio/gfile.c:1528 ../gio/gfile.c:1585
+#: ../gio/gfile.c:1668 ../gio/gfile.c:1723 ../gio/gfile.c:1783
+#: ../gio/gfile.c:1837 ../gio/gfile.c:3307 ../gio/gfile.c:3361
+#: ../gio/gfile.c:3493 ../gio/gfile.c:3534 ../gio/gfile.c:3864
+#: ../gio/gfile.c:4266 ../gio/gfile.c:4352 ../gio/gfile.c:4441
+#: ../gio/gfile.c:4539 ../gio/gfile.c:4626 ../gio/gfile.c:4720
+#: ../gio/gfile.c:5041 ../gio/gfile.c:5308 ../gio/gfile.c:5373
+#: ../gio/gfile.c:6947 ../gio/gfile.c:7037 ../gio/gfile.c:7123
 #: ../gio/win32/gwinhttpfile.c:439
 msgid "Operation not supported"
 msgstr "Eragiketa ez dago onartuta"
@@ -2091,58 +2447,58 @@ msgstr "Eragiketa ez dago onartuta"
 #. Translators: This is an error message when trying to find
 #. * the enclosing (user visible) mount of a file, but none
 #. * exists.
-#: ../gio/gfile.c:1359 ../gio/glocalfile.c:1061 ../gio/glocalfile.c:1072
-#: ../gio/glocalfile.c:1085
+#: ../gio/gfile.c:1358 ../gio/glocalfile.c:1051 ../gio/glocalfile.c:1062
+#: ../gio/glocalfile.c:1075
 msgid "Containing mount does not exist"
 msgstr "Ontziaren muntaia ez da existitzen"
 
-#: ../gio/gfile.c:2412 ../gio/glocalfile.c:2260
+#: ../gio/gfile.c:2411 ../gio/glocalfile.c:2256
 msgid "Can't copy over directory"
 msgstr "Ezin da direktorioaren gainean kopiatu"
 
-#: ../gio/gfile.c:2473
+#: ../gio/gfile.c:2472
 msgid "Can't copy directory over directory"
 msgstr "Ezin da direktorioa kopiatu direktorio gainean"
 
-#: ../gio/gfile.c:2481 ../gio/glocalfile.c:2269
+#: ../gio/gfile.c:2480 ../gio/glocalfile.c:2265
 msgid "Target file exists"
 msgstr "Helburuko fitxategia existitzen da"
 
-#: ../gio/gfile.c:2499
+#: ../gio/gfile.c:2498
 msgid "Can't recursively copy directory"
 msgstr "Ezin da direktorioa errekurtsiboki kopiatu"
 
-#: ../gio/gfile.c:2759
+#: ../gio/gfile.c:2758
 msgid "Splice not supported"
 msgstr "Lotura ez da onartzen"
 
-#: ../gio/gfile.c:2763
+#: ../gio/gfile.c:2762
 #, c-format
 msgid "Error splicing file: %s"
 msgstr "Errorea fitxategia batzean: %s"
 
-#: ../gio/gfile.c:2910
+#: ../gio/gfile.c:2909
 msgid "Can't copy special file"
 msgstr "Ezin da fitxategi berezia kopiatu"
 
-#: ../gio/gfile.c:3484
+#: ../gio/gfile.c:3483
 msgid "Invalid symlink value given"
 msgstr "Esteka sinbolikoaren baliogabeko balioa eman da"
 
-#: ../gio/gfile.c:3578
+#: ../gio/gfile.c:3577
 msgid "Trash not supported"
 msgstr "Zakarrontzira botatzea ez dago onartuta"
 
-#: ../gio/gfile.c:3627
+#: ../gio/gfile.c:3626
 #, c-format
 msgid "File names cannot contain '%c'"
 msgstr "Fitxategi-izenek ezin dute '%c' eduki"
 
-#: ../gio/gfile.c:6004 ../gio/gvolume.c:332
+#: ../gio/gfile.c:6006 ../gio/gvolume.c:332
 msgid "volume doesn't implement mount"
 msgstr "bolumenak ez dauka muntatzea inplementatuta"
 
-#: ../gio/gfile.c:6115
+#: ../gio/gfile.c:6117
 msgid "No application is registered as handling this file"
 msgstr "Ez da aplikaziorik erregistratu fitxategi hau kudeatzeko"
 
@@ -2187,37 +2543,37 @@ msgstr "Trunkatzea ez da baimentzen sarrerako korrontean"
 msgid "Truncate not supported on stream"
 msgstr "Trunkatzea ez da onartzen korrontean"
 
-#: ../gio/gicon.c:287
+#: ../gio/gicon.c:284
 #, c-format
 msgid "Wrong number of tokens (%d)"
 msgstr "Okerreko token kopurua (%d)"
 
-#: ../gio/gicon.c:307
+#: ../gio/gicon.c:304
 #, c-format
 msgid "No type for class name %s"
 msgstr "Ez dago %s klasearen izen motarik"
 
-#: ../gio/gicon.c:317
+#: ../gio/gicon.c:314
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
 msgstr "%s motak ez du GIcon interfazea inplementatzen"
 
-#: ../gio/gicon.c:328
+#: ../gio/gicon.c:325
 #, c-format
 msgid "Type %s is not classed"
 msgstr "%s mota ez du klaserik"
 
-#: ../gio/gicon.c:342
+#: ../gio/gicon.c:339
 #, c-format
 msgid "Malformed version number: %s"
 msgstr "Gaizko osatutako bertsio zenbakia: %s"
 
-#: ../gio/gicon.c:356
+#: ../gio/gicon.c:353
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr "%s motak ez du from_tokens() inplementatzen GIcon interfazean"
 
-#: ../gio/gicon.c:432
+#: ../gio/gicon.c:430
 msgid "Can't handle the supplied version the icon encoding"
 msgstr "Ezin da ikonoaren kodeketaren emandako bertsioa kudeatu"
 
@@ -2232,7 +2588,7 @@ msgstr "Sarrerako korronteak ez dauka irakurtzea inplementatuta"
 #. * already an operation running against this stream when
 #. * you try to start one
 #: ../gio/ginputstream.c:898 ../gio/giostream.c:316
-#: ../gio/goutputstream.c:1207
+#: ../gio/goutputstream.c:1216
 msgid "Stream has outstanding operation"
 msgstr "Korronteak eragiketa bat du lanean"
 
@@ -2245,16 +2601,16 @@ msgstr "Ez dago nahikoa lekurik socket helbideentzako"
 msgid "Unsupported socket address"
 msgstr "Onartu gabeko socket helbidea"
 
-#: ../gio/glib-compile-schemas.c:713
+#: ../gio/glib-compile-schemas.c:741
 msgid "empty names are not permitted"
 msgstr "izen hutsak ez daude baimenduta"
 
-#: ../gio/glib-compile-schemas.c:723
+#: ../gio/glib-compile-schemas.c:751
 #, c-format
 msgid "invalid name '%s': names must begin with a lowercase letter"
 msgstr "'%s' izena baliogabea: izenak letra minuskula batekin hasi behar dira"
 
-#: ../gio/glib-compile-schemas.c:735
+#: ../gio/glib-compile-schemas.c:763
 #, c-format
 msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
@@ -2263,36 +2619,36 @@ msgstr ""
 "'%s' izena baliogabea: '%c' karakterea baliogabea. soilik letra minuskulak, "
 "zenbakiak eta marratxoa (-) onartzen dira."
 
-#: ../gio/glib-compile-schemas.c:744
+#: ../gio/glib-compile-schemas.c:772
 #, c-format
 msgid "invalid name '%s': two successive dashes ('--') are not permitted."
 msgstr "'%s' izena baliogabea: bi marratxo jarraian (--) ez dago onartuta."
 
-#: ../gio/glib-compile-schemas.c:753
+#: ../gio/glib-compile-schemas.c:781
 #, c-format
 msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "'%s' izena baliogabea: azken karakterea ezin da marratxoa (-) izan."
 
-#: ../gio/glib-compile-schemas.c:761
-#, c-format
-msgid "invalid name '%s': maximum length is 32"
+#: ../gio/glib-compile-schemas.c:789
+#, fuzzy, c-format
+msgid "invalid name '%s': maximum length is 1024"
 msgstr "'%s' izena baliogabea: gehienezko luzera 32 da"
 
-#: ../gio/glib-compile-schemas.c:830
+#: ../gio/glib-compile-schemas.c:858
 #, c-format
 msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> jadanik zehaztuta"
 
-#: ../gio/glib-compile-schemas.c:856
+#: ../gio/glib-compile-schemas.c:884
 msgid "can not add keys to a 'list-of' schema"
 msgstr "ezin zaio gakorik gehitu 'list-of' eskema bati"
 
-#: ../gio/glib-compile-schemas.c:867
+#: ../gio/glib-compile-schemas.c:895
 #, c-format
 msgid "<key name='%s'> already specified"
 msgstr "<key name='%s'> jadanik zehaztuta"
 
-#: ../gio/glib-compile-schemas.c:885
+#: ../gio/glib-compile-schemas.c:913
 #, c-format
 msgid ""
 "<key name='%s'> shadows <key name='%s'> in <schema id='%s'>; use <override> "
@@ -2301,7 +2657,7 @@ msgstr ""
 "<key name='%s'>-ek <key name='%s'> iluntzen du <schema id='%s'>-en; erabili "
 "<override> balioa aldatzeko"
 
-#: ../gio/glib-compile-schemas.c:896
+#: ../gio/glib-compile-schemas.c:924
 #, c-format
 msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
@@ -2310,56 +2666,56 @@ msgstr ""
 "<key>-rentzako hauetariko bat zehaztu behar da atributu gisa: 'type', 'enum' "
 "edo 'flags'"
 
-#: ../gio/glib-compile-schemas.c:915
+#: ../gio/glib-compile-schemas.c:943
 #, c-format
 msgid "<%s id='%s'> not (yet) defined."
 msgstr "<%s id='%s'> ez dago (oraindik) definituta."
 
-#: ../gio/glib-compile-schemas.c:930
+#: ../gio/glib-compile-schemas.c:958
 #, c-format
 msgid "invalid GVariant type string '%s'"
 msgstr "baliogabeko GVariant motako '%s' katea"
 
-#: ../gio/glib-compile-schemas.c:960
+#: ../gio/glib-compile-schemas.c:988
 msgid "<override> given but schema isn't extending anything"
 msgstr "<override> eman da, baina eskema ez da ezer hedatzen ari"
 
-#: ../gio/glib-compile-schemas.c:973
+#: ../gio/glib-compile-schemas.c:1001
 #, c-format
 msgid "no <key name='%s'> to override"
 msgstr "ez dago <key name='%s'>(e)rik gainidazteko"
 
-#: ../gio/glib-compile-schemas.c:981
+#: ../gio/glib-compile-schemas.c:1009
 #, c-format
 msgid "<override name='%s'> already specified"
 msgstr "<override name='%s'> jadanik zehaztuta"
 
-#: ../gio/glib-compile-schemas.c:1052
+#: ../gio/glib-compile-schemas.c:1080
 #, c-format
 msgid "<schema id='%s'> already specified"
 msgstr "<schema id='%s'> jadanik zehaztuta"
 
-#: ../gio/glib-compile-schemas.c:1064
+#: ../gio/glib-compile-schemas.c:1092
 #, c-format
 msgid "<schema id='%s'> extends not yet existing schema '%s'"
 msgstr "<schema id='%s'> oraindik existitzen ez den '%s' eskemara hedatzen da"
 
-#: ../gio/glib-compile-schemas.c:1080
+#: ../gio/glib-compile-schemas.c:1108
 #, c-format
 msgid "<schema id='%s'> is list of not yet existing schema '%s'"
 msgstr "<schema id='%s'> oraindik existitzen ez den '%s' eskemaren zerrenda da"
 
-#: ../gio/glib-compile-schemas.c:1088
+#: ../gio/glib-compile-schemas.c:1116
 #, c-format
 msgid "Can not be a list of a schema with a path"
 msgstr "Ezin da bide-izena duen eskema baten zerrenda izan"
 
-#: ../gio/glib-compile-schemas.c:1098
+#: ../gio/glib-compile-schemas.c:1126
 #, c-format
 msgid "Can not extend a schema with a path"
 msgstr "Ezin da eskema bat bide-izen batekin hedatu"
 
-#: ../gio/glib-compile-schemas.c:1108
+#: ../gio/glib-compile-schemas.c:1136
 #, c-format
 msgid ""
 "<schema id='%s'> is a list, extending <schema id='%s'> which is not a list"
@@ -2367,7 +2723,7 @@ msgstr ""
 "<schema id='%s'> zerrenda bat da, zerrenda ez den <schema id='%s'> hedatzen "
 "duena"
 
-#: ../gio/glib-compile-schemas.c:1118
+#: ../gio/glib-compile-schemas.c:1146
 #, c-format
 msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
@@ -2376,87 +2732,87 @@ msgstr ""
 "<schema id='%s' list-of='%s'>(e)k <schema id='%s' list-of='%s'> hedatzen du, "
 "baina '%s'(e)k ez du '%s' hedatzen"
 
-#: ../gio/glib-compile-schemas.c:1135
+#: ../gio/glib-compile-schemas.c:1163
 #, c-format
 msgid "a path, if given, must begin and end with a slash"
 msgstr "bide-izen bat ematen bada, barra batekin (/) hasi eta amaitu behar da"
 
-#: ../gio/glib-compile-schemas.c:1142
+#: ../gio/glib-compile-schemas.c:1170
 #, c-format
 msgid "the path of a list must end with ':/'"
 msgstr "zerrenda bateko bide-izena ':/'-rekin amaitu behar da"
 
-#: ../gio/glib-compile-schemas.c:1168
+#: ../gio/glib-compile-schemas.c:1196
 #, c-format
 msgid "<%s id='%s'> already specified"
 msgstr "<%s id='%s'> jadanik zehaztuta"
 
-#: ../gio/glib-compile-schemas.c:1387
+#: ../gio/glib-compile-schemas.c:1416
 #, c-format
 msgid "Element <%s> not allowed inside <%s>"
 msgstr "<%s> elementua ez da <%s>(r)en barruan onartzen"
 
-#: ../gio/glib-compile-schemas.c:1391
+#: ../gio/glib-compile-schemas.c:1420
 #, c-format
 msgid "Element <%s> not allowed at toplevel"
 msgstr "<%s> elementua ez da maila gorenean onartzen"
 
-#: ../gio/glib-compile-schemas.c:1485
+#: ../gio/glib-compile-schemas.c:1511
 #, c-format
 msgid "text may not appear inside <%s>"
 msgstr "testua ezin da <%s>(r)en barruan egon"
 
 #. Translators: Do not translate "--strict".
-#: ../gio/glib-compile-schemas.c:1654 ../gio/glib-compile-schemas.c:1725
-#: ../gio/glib-compile-schemas.c:1801
+#: ../gio/glib-compile-schemas.c:1696 ../gio/glib-compile-schemas.c:1767
+#: ../gio/glib-compile-schemas.c:1843
 #, c-format
 msgid "--strict was specified; exiting.\n"
 msgstr "--strict zehaztu da; irtetzen.\n"
 
-#: ../gio/glib-compile-schemas.c:1662
+#: ../gio/glib-compile-schemas.c:1704
 #, c-format
 msgid "This entire file has been ignored.\n"
 msgstr "Fitxategi oso honi ezikusi egin zaio.\n"
 
-#: ../gio/glib-compile-schemas.c:1721
+#: ../gio/glib-compile-schemas.c:1763
 #, c-format
 msgid "Ignoring this file.\n"
 msgstr "Fitxategi honi ezikusi egiten.\n"
 
-#: ../gio/glib-compile-schemas.c:1761
+#: ../gio/glib-compile-schemas.c:1803
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
 "Ez dago '%s' bezalako gakorik '%s' eskeman gainidazteko '%s' fitxategian "
 "ageri den bezala"
 
-#: ../gio/glib-compile-schemas.c:1767 ../gio/glib-compile-schemas.c:1825
-#: ../gio/glib-compile-schemas.c:1853
+#: ../gio/glib-compile-schemas.c:1809 ../gio/glib-compile-schemas.c:1867
+#: ../gio/glib-compile-schemas.c:1895
 #, c-format
 msgid "; ignoring override for this key.\n"
 msgstr "; gainidazketari ezikusi egiten gako honentzako.\n"
 
-#: ../gio/glib-compile-schemas.c:1771 ../gio/glib-compile-schemas.c:1829
-#: ../gio/glib-compile-schemas.c:1857
+#: ../gio/glib-compile-schemas.c:1813 ../gio/glib-compile-schemas.c:1871
+#: ../gio/glib-compile-schemas.c:1899
 #, c-format
 msgid " and --strict was specified; exiting.\n"
 msgstr " eta --strict zehaztu da; irtetzen.\n"
 
-#: ../gio/glib-compile-schemas.c:1787
+#: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
-"s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': "
+"%s.  "
 msgstr ""
 "errorea '%2$s' eskemako '%1$s' gakoa analizatzean gainidazteko '%3$s' "
 "fitxategian ageri den bezala: %4$s.  "
 
-#: ../gio/glib-compile-schemas.c:1797
+#: ../gio/glib-compile-schemas.c:1839
 #, c-format
 msgid "Ignoring override for this key.\n"
 msgstr "Gainidazketari ezikusi egiten gako honentzako.\n"
 
-#: ../gio/glib-compile-schemas.c:1815
+#: ../gio/glib-compile-schemas.c:1857
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
@@ -2465,7 +2821,7 @@ msgstr ""
 "gainidazteko '%3$s' fitxategiko '%2$s' eskemako '%1$s' gakoa gainidaztea "
 "barrutitik kanpo dago emandako eskeman"
 
-#: ../gio/glib-compile-schemas.c:1843
+#: ../gio/glib-compile-schemas.c:1885
 #, c-format
 msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is not in the "
@@ -2474,31 +2830,31 @@ msgstr ""
 "gainidazteko '%3$s' fitxategiko '%2$s' eskemako '%1$s' gakoa gainidaztea ez "
 "dago baliozko aukeren zerrendan"
 
-#: ../gio/glib-compile-schemas.c:1897
+#: ../gio/glib-compile-schemas.c:1939
 msgid "where to store the gschemas.compiled file"
 msgstr "non gorde gschemas.compiled fitxategia"
 
-#: ../gio/glib-compile-schemas.c:1897 ../gio/glib-compile-schemas.c:1910
+#: ../gio/glib-compile-schemas.c:1939 ../gio/glib-compile-schemas.c:1970
 msgid "DIRECTORY"
 msgstr "DIREKTORIOA"
 
-#: ../gio/glib-compile-schemas.c:1898
+#: ../gio/glib-compile-schemas.c:1940
 msgid "Abort on any errors in schemas"
 msgstr "Abortatu eskemetan edozer motako erroreak agertzean"
 
-#: ../gio/glib-compile-schemas.c:1899
+#: ../gio/glib-compile-schemas.c:1941
 msgid "Do not write the gschema.compiled file"
 msgstr "Ez idatzi gschema.compiled fitxategia"
 
-#: ../gio/glib-compile-schemas.c:1900
+#: ../gio/glib-compile-schemas.c:1942
 msgid "This option will be removed soon."
 msgstr "Aukera hau laster kenduko da."
 
-#: ../gio/glib-compile-schemas.c:1901
+#: ../gio/glib-compile-schemas.c:1943
 msgid "Do not enforce key name restrictions"
 msgstr "Ez derrigortu gako-izenen murriztapenik"
 
-#: ../gio/glib-compile-schemas.c:1913
+#: ../gio/glib-compile-schemas.c:1973
 msgid ""
 "Compile all GSettings schema files into a schema cache.\n"
 "Schema files are required to have the extension .gschema.xml,\n"
@@ -2508,22 +2864,22 @@ msgstr ""
 "Eskemen fitxategiek .gschema.xml luzapena eduki behar dute,\n"
 "eta cache-ko fitxategia gschemas.compiled deitzen da."
 
-#: ../gio/glib-compile-schemas.c:1929
+#: ../gio/glib-compile-schemas.c:1989
 #, c-format
 msgid "You should give exactly one directory name\n"
 msgstr "Direktorio baten izena bakarrik eman behar duzu\n"
 
-#: ../gio/glib-compile-schemas.c:1968
+#: ../gio/glib-compile-schemas.c:2028
 #, c-format
 msgid "No schema files found: "
 msgstr "Ez da eskemen fitxategirik aurkitu: "
 
-#: ../gio/glib-compile-schemas.c:1971
+#: ../gio/glib-compile-schemas.c:2031
 #, c-format
 msgid "doing nothing.\n"
 msgstr "ezer ez da egiten ari.\n"
 
-#: ../gio/glib-compile-schemas.c:1974
+#: ../gio/glib-compile-schemas.c:2034
 #, c-format
 msgid "removed existing output file.\n"
 msgstr "existitzen den irteerako fitxategia kenduta.\n"
@@ -2533,210 +2889,211 @@ msgid "Unable to find default local directory monitor type"
 msgstr "Ezin da lokaleko direktorio lehenetsiaren monitorizazio mota aurkitu"
 
 #
-#: ../gio/glocalfile.c:593 ../gio/win32/gwinhttpfile.c:422
+#: ../gio/glocalfile.c:571 ../gio/win32/gwinhttpfile.c:422
 #, c-format
 msgid "Invalid filename %s"
 msgstr "%s fitxategi-izen baliogabea"
 
-#: ../gio/glocalfile.c:969
+#: ../gio/glocalfile.c:948
 #, c-format
 msgid "Error getting filesystem info: %s"
 msgstr "Errorea fitxategi-sistemako informazioa lortzean: %s"
 
-#: ../gio/glocalfile.c:1107
+#: ../gio/glocalfile.c:1097
 msgid "Can't rename root directory"
 msgstr "Ezin da erroko direktorioa izenez aldatu"
 
-#: ../gio/glocalfile.c:1127 ../gio/glocalfile.c:1153
+#: ../gio/glocalfile.c:1117 ../gio/glocalfile.c:1143
 #, c-format
 msgid "Error renaming file: %s"
 msgstr "Errorea fitxategia izenez aldatzean: %s"
 
-#: ../gio/glocalfile.c:1136
-msgid "Can't rename file, filename already exist"
+#: ../gio/glocalfile.c:1126
+#, fuzzy
+msgid "Can't rename file, filename already exists"
 msgstr "Ezin da fitxategia izenez aldatu, fitxategi-izena badago lehendik ere"
 
 #
-#: ../gio/glocalfile.c:1149 ../gio/glocalfile.c:2133 ../gio/glocalfile.c:2162
-#: ../gio/glocalfile.c:2322 ../gio/glocalfileoutputstream.c:571
+#: ../gio/glocalfile.c:1139 ../gio/glocalfile.c:2129 ../gio/glocalfile.c:2158
+#: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:571
 #: ../gio/glocalfileoutputstream.c:624 ../gio/glocalfileoutputstream.c:669
-#: ../gio/glocalfileoutputstream.c:1151
+#: ../gio/glocalfileoutputstream.c:1157
 msgid "Invalid filename"
 msgstr "Fitxategi-izen baliogabea"
 
-#: ../gio/glocalfile.c:1310
+#: ../gio/glocalfile.c:1300
 #, c-format
 msgid "Error opening file: %s"
 msgstr "Errorea fitxategia irekitzean: %s"
 
-#: ../gio/glocalfile.c:1320
+#: ../gio/glocalfile.c:1316
 msgid "Can't open directory"
 msgstr "Ezin da direktorioa ireki"
 
-#: ../gio/glocalfile.c:1445
+#: ../gio/glocalfile.c:1441
 #, c-format
 msgid "Error removing file: %s"
 msgstr "Errorea fitxategia kentzean: %s"
 
-#: ../gio/glocalfile.c:1812
+#: ../gio/glocalfile.c:1808
 #, c-format
 msgid "Error trashing file: %s"
 msgstr "Errorea fitxategia zakarrontzira botatzean: %s"
 
-#: ../gio/glocalfile.c:1835
+#: ../gio/glocalfile.c:1831
 #, c-format
 msgid "Unable to create trash dir %s: %s"
 msgstr "Ezin izan da zakarrontziaren '%s' direktorioa sortu: %s"
 
-#: ../gio/glocalfile.c:1856
+#: ../gio/glocalfile.c:1852
 msgid "Unable to find toplevel directory for trash"
 msgstr "Ezin da zakarrontziaren goi-mailako direktorioa aurkitu"
 
-#: ../gio/glocalfile.c:1935 ../gio/glocalfile.c:1955
+#: ../gio/glocalfile.c:1931 ../gio/glocalfile.c:1951
 msgid "Unable to find or create trash directory"
 msgstr "Ezin da zakarrontziaren direktorioa aurkitu edo sortu"
 
-#: ../gio/glocalfile.c:1989
+#: ../gio/glocalfile.c:1985
 #, c-format
 msgid "Unable to create trashing info file: %s"
 msgstr "Ezin da zakarrontziaren informazio-fitxategia sortu: %s"
 
-#: ../gio/glocalfile.c:2018 ../gio/glocalfile.c:2023 ../gio/glocalfile.c:2103
-#: ../gio/glocalfile.c:2110
+#: ../gio/glocalfile.c:2014 ../gio/glocalfile.c:2019 ../gio/glocalfile.c:2099
+#: ../gio/glocalfile.c:2106
 #, c-format
 msgid "Unable to trash file: %s"
 msgstr "Ezin da fitxategia zakarrontzira bota: %s"
 
-#: ../gio/glocalfile.c:2137
+#: ../gio/glocalfile.c:2133
 #, c-format
 msgid "Error creating directory: %s"
 msgstr "Errorea direktorioa sortzean: %s"
 
-#: ../gio/glocalfile.c:2166
+#: ../gio/glocalfile.c:2162
 #, c-format
 msgid "Filesystem does not support symbolic links"
 msgstr "Fitxategi-sistemak ez ditu esteka sinbolikorik onartzen"
 
-#: ../gio/glocalfile.c:2170
+#: ../gio/glocalfile.c:2166
 #, c-format
 msgid "Error making symbolic link: %s"
 msgstr "Errorea esteka sinbolikoa sortzean: %s"
 
-#: ../gio/glocalfile.c:2232 ../gio/glocalfile.c:2326
+#: ../gio/glocalfile.c:2228 ../gio/glocalfile.c:2322
 #, c-format
 msgid "Error moving file: %s"
 msgstr "Errorea fitxategia lekuz aldatzean: %s"
 
-#: ../gio/glocalfile.c:2255
+#: ../gio/glocalfile.c:2251
 msgid "Can't move directory over directory"
 msgstr "Ezin da direktorioa lekuz aldatu direktorioaren gainera"
 
-#: ../gio/glocalfile.c:2282 ../gio/glocalfileoutputstream.c:949
-#: ../gio/glocalfileoutputstream.c:963 ../gio/glocalfileoutputstream.c:978
-#: ../gio/glocalfileoutputstream.c:994 ../gio/glocalfileoutputstream.c:1008
+#: ../gio/glocalfile.c:2278 ../gio/glocalfileoutputstream.c:955
+#: ../gio/glocalfileoutputstream.c:969 ../gio/glocalfileoutputstream.c:984
+#: ../gio/glocalfileoutputstream.c:1000 ../gio/glocalfileoutputstream.c:1014
 msgid "Backup file creation failed"
 msgstr "Huts egin du babeskopia sortzean"
 
-#: ../gio/glocalfile.c:2301
+#: ../gio/glocalfile.c:2297
 #, c-format
 msgid "Error removing target file: %s"
 msgstr "Errorea helburuko fitxategia kentzean: %s"
 
-#: ../gio/glocalfile.c:2315
+#: ../gio/glocalfile.c:2311
 msgid "Move between mounts not supported"
 msgstr "Muntaien artean lekuz aldatzea ez dago onartuta"
 
-#: ../gio/glocalfileinfo.c:720
+#: ../gio/glocalfileinfo.c:719
 msgid "Attribute value must be non-NULL"
 msgstr "Atributuaren balioa NULL ezin da izan"
 
-#: ../gio/glocalfileinfo.c:727
+#: ../gio/glocalfileinfo.c:726
 msgid "Invalid attribute type (string expected)"
 msgstr "Atributu mota baliogabea (katea espero zen)"
 
-#: ../gio/glocalfileinfo.c:734
+#: ../gio/glocalfileinfo.c:733
 msgid "Invalid extended attribute name"
 msgstr "Atributu hedatuaren izen baliogabea"
 
-#: ../gio/glocalfileinfo.c:774
+#: ../gio/glocalfileinfo.c:773
 #, c-format
 msgid "Error setting extended attribute '%s': %s"
 msgstr "Errorea '%s' atributu hedatua ezartzean: %s"
 
-#: ../gio/glocalfileinfo.c:1483 ../gio/glocalfileoutputstream.c:833
+#: ../gio/glocalfileinfo.c:1482 ../gio/glocalfileoutputstream.c:833
 #, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Errorea '%s' fitxategiaren egoera irakurtzean: %s"
 
-#: ../gio/glocalfileinfo.c:1567
+#: ../gio/glocalfileinfo.c:1566
 msgid " (invalid encoding)"
 msgstr " (baliogabeko kodeketa)"
 
-#: ../gio/glocalfileinfo.c:1769
+#: ../gio/glocalfileinfo.c:1768
 #, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Errorea fitxategiaren deskriptorearen egoera irakurtzean: %s "
 
-#: ../gio/glocalfileinfo.c:1814
+#: ../gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint32 expected)"
 msgstr "Baliogabeko atributu mota (uint32 espero zen)"
 
-#: ../gio/glocalfileinfo.c:1832
+#: ../gio/glocalfileinfo.c:1831
 msgid "Invalid attribute type (uint64 expected)"
 msgstr "Baliogabeko atributu mota (uint64 espero zen)"
 
-#: ../gio/glocalfileinfo.c:1851 ../gio/glocalfileinfo.c:1870
+#: ../gio/glocalfileinfo.c:1850 ../gio/glocalfileinfo.c:1869
 msgid "Invalid attribute type (byte string expected)"
 msgstr "Baliogabeko atributu mota (byte katea espero zen)"
 
-#: ../gio/glocalfileinfo.c:1905
+#: ../gio/glocalfileinfo.c:1904
 msgid "Cannot set permissions on symlinks"
 msgstr "Ezin da baimenik ezarri esteka sinbolikoetan"
 
-#: ../gio/glocalfileinfo.c:1921
+#: ../gio/glocalfileinfo.c:1920
 #, c-format
 msgid "Error setting permissions: %s"
 msgstr "Errorea baimenak ezartzean: %s"
 
-#: ../gio/glocalfileinfo.c:1972
+#: ../gio/glocalfileinfo.c:1971
 #, c-format
 msgid "Error setting owner: %s"
 msgstr "Errorea jabea ezartzean: %s"
 
-#: ../gio/glocalfileinfo.c:1995
+#: ../gio/glocalfileinfo.c:1994
 msgid "symlink must be non-NULL"
 msgstr "esteka sinbolikoak NULL-en desberdina izan behar du"
 
-#: ../gio/glocalfileinfo.c:2005 ../gio/glocalfileinfo.c:2024
-#: ../gio/glocalfileinfo.c:2035
+#: ../gio/glocalfileinfo.c:2004 ../gio/glocalfileinfo.c:2023
+#: ../gio/glocalfileinfo.c:2034
 #, c-format
 msgid "Error setting symlink: %s"
 msgstr "Errorea esteka sinbolikoa ezartzean: %s"
 
-#: ../gio/glocalfileinfo.c:2014
+#: ../gio/glocalfileinfo.c:2013
 msgid "Error setting symlink: file is not a symlink"
 msgstr ""
 "Errorea esteka sinbolikoa ezartzean: fitxategia ez da esteka sinboliko bat"
 
-#: ../gio/glocalfileinfo.c:2140
+#: ../gio/glocalfileinfo.c:2139
 #, c-format
 msgid "Error setting modification or access time: %s"
 msgstr "Errorea eraldaketa edo atzipen ordua ezartzean: %s"
 
-#: ../gio/glocalfileinfo.c:2163
+#: ../gio/glocalfileinfo.c:2162
 msgid "SELinux context must be non-NULL"
 msgstr "SELinux testuinguruak NULL-en desberdina izan behar du"
 
-#: ../gio/glocalfileinfo.c:2178
+#: ../gio/glocalfileinfo.c:2177
 #, c-format
 msgid "Error setting SELinux context: %s"
 msgstr "Errorea SELinux testuingurua ezartzean: %s"
 
-#: ../gio/glocalfileinfo.c:2185
+#: ../gio/glocalfileinfo.c:2184
 msgid "SELinux is not enabled on this system"
 msgstr "SELinux ez dago gaituta sistema honetan"
 
-#: ../gio/glocalfileinfo.c:2277
+#: ../gio/glocalfileinfo.c:2276
 #, c-format
 msgid "Setting attribute %s not supported"
 msgstr "%s atributuaren ezarpena ez dago onartuta"
@@ -2748,7 +3105,7 @@ msgstr "Errorea fitxategitik irakurtzean: %s "
 
 #: ../gio/glocalfileinputstream.c:216 ../gio/glocalfileinputstream.c:228
 #: ../gio/glocalfileinputstream.c:340 ../gio/glocalfileoutputstream.c:470
-#: ../gio/glocalfileoutputstream.c:1026
+#: ../gio/glocalfileoutputstream.c:1032
 #, c-format
 msgid "Error seeking in file: %s"
 msgstr "Errorea fitxategian bilatzean: %s"
@@ -2784,14 +3141,14 @@ msgstr "Errorea babeskopiaren kopia sortzean: %s"
 msgid "Error renaming temporary file: %s"
 msgstr "Errorea aldi baterako fitxategia izenez aldatzean: %s"
 
-#: ../gio/glocalfileoutputstream.c:516 ../gio/glocalfileoutputstream.c:1077
+#: ../gio/glocalfileoutputstream.c:516 ../gio/glocalfileoutputstream.c:1083
 #, c-format
 msgid "Error truncating file: %s"
 msgstr "Errorea fitxategia trunkatzean: %s"
 
 #: ../gio/glocalfileoutputstream.c:577 ../gio/glocalfileoutputstream.c:630
 #: ../gio/glocalfileoutputstream.c:675 ../gio/glocalfileoutputstream.c:815
-#: ../gio/glocalfileoutputstream.c:1058 ../gio/glocalfileoutputstream.c:1157
+#: ../gio/glocalfileoutputstream.c:1064 ../gio/glocalfileoutputstream.c:1163
 #, c-format
 msgid "Error opening file '%s': %s"
 msgstr "Errorea '%s' fitxategia irekitzean: %s"
@@ -2808,7 +3165,7 @@ msgstr "Helburuko fitxategia ez da fitxategi arrunta"
 msgid "The file was externally modified"
 msgstr "Fitxategia kanpotik aldatu da"
 
-#: ../gio/glocalfileoutputstream.c:1042
+#: ../gio/glocalfileoutputstream.c:1048
 #, c-format
 msgid "Error removing old file: %s"
 msgstr "Errorea fitxategi zaharra kentzean: %s"
@@ -2903,40 +3260,40 @@ msgstr "muntaiak ez dauka eduki mota sinkronoa asmatzea inplementatuta"
 msgid "mount doesn't implement synchronous content type guessing"
 msgstr "muntaiak ez dauka eduki mota sinkronoa asmatzea inplementatuta"
 
-#: ../gio/gnetworkaddress.c:318
+#: ../gio/gnetworkaddress.c:322
 #, c-format
 msgid "Hostname '%s' contains '[' but not ']'"
 msgstr "'%s' ostalariak '['baina ez']' dauka"
 
-#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:408
+#: ../gio/goutputstream.c:207 ../gio/goutputstream.c:411
 msgid "Output stream doesn't implement write"
 msgstr "Irteerako korronteak ez dauka idaztea inplementatuta"
 
-#: ../gio/goutputstream.c:369 ../gio/goutputstream.c:849
+#: ../gio/goutputstream.c:372 ../gio/goutputstream.c:855
 msgid "Source stream is already closed"
 msgstr "Iturburuko korrontea jadanik itxi da"
 
-#: ../gio/gresolver.c:737
+#: ../gio/gresolver.c:779
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Errorea '%s' ebaztean: %s"
 
-#: ../gio/gresolver.c:787
+#: ../gio/gresolver.c:829
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Errorea '%s' alderantziz ebaztean: %s"
 
-#: ../gio/gresolver.c:822 ../gio/gresolver.c:900
+#: ../gio/gresolver.c:864 ../gio/gresolver.c:943
 #, c-format
 msgid "No service record for '%s'"
 msgstr "Ez dago '%s' zerbitzuaren erregistrorik"
 
-#: ../gio/gresolver.c:827 ../gio/gresolver.c:905
+#: ../gio/gresolver.c:869 ../gio/gresolver.c:948
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Ezin da '%s' ebatzi aldi batean"
 
-#: ../gio/gresolver.c:832 ../gio/gresolver.c:910
+#: ../gio/gresolver.c:874 ../gio/gresolver.c:953
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Errorea '%s' ebaztean"
@@ -2981,68 +3338,93 @@ msgstr "Bide-izenak ezin ditu bi barra jarraian eduki (//)\n"
 msgid "No such key '%s'\n"
 msgstr "Ez dago '%s' bezalako gakorik\n"
 
-#: ../gio/gsettings-tool.c:429
+#: ../gio/gsettings-tool.c:504
 #, c-format
 msgid "The provided value is outside of the valid range\n"
 msgstr "Emandako balioa baliozko barrutitik kanpo dago\n"
 
-#: ../gio/gsettings-tool.c:458
+#: ../gio/gsettings-tool.c:533
+#, fuzzy
+msgid "Print help"
+msgstr "Inprimatu XML"
+
+#: ../gio/gsettings-tool.c:539
 msgid "List the installed (non-relocatable) schemas"
 msgstr "Zerrendatu instalatutako eskemak (lekuz ezin direnak aldatu)"
 
-#: ../gio/gsettings-tool.c:464
+#: ../gio/gsettings-tool.c:545
 msgid "List the installed relocatable schemas"
 msgstr "Zerrendatu instalatutako eskemak (lekuz alda daitezkeenak)"
 
-#: ../gio/gsettings-tool.c:470
-msgid "Lists the keys in SCHEMA"
+#: ../gio/gsettings-tool.c:551
+#, fuzzy
+msgid "List the keys in SCHEMA"
 msgstr "ESKEMAko gakoak zerrendatzen ditu"
 
-#: ../gio/gsettings-tool.c:471 ../gio/gsettings-tool.c:477
-#: ../gio/gsettings-tool.c:483
+#: ../gio/gsettings-tool.c:552 ../gio/gsettings-tool.c:558
+#: ../gio/gsettings-tool.c:595
 msgid "SCHEMA[:PATH]"
 msgstr "ESKEMA[:bide-izena]"
 
-#: ../gio/gsettings-tool.c:476
-msgid "Lists the children of SCHEMA"
+#: ../gio/gsettings-tool.c:557
+#, fuzzy
+msgid "List the children of SCHEMA"
 msgstr "ESKEMAren umeak zerrendatzen ditu"
 
-#: ../gio/gsettings-tool.c:482
-msgid "List keys and values, recursively"
+#: ../gio/gsettings-tool.c:563
+#, fuzzy
+msgid ""
+"List keys and values, recursively\n"
+"If no SCHEMA is given, list all keys\n"
 msgstr "Zerrendatu gako eta balioak, errekurtsiboki"
 
-#: ../gio/gsettings-tool.c:488
-msgid "Gets the value of KEY"
+#: ../gio/gsettings-tool.c:565
+#, fuzzy
+msgid "[SCHEMA[:PATH]]"
+msgstr "ESKEMA[:bide-izena]"
+
+#: ../gio/gsettings-tool.c:570
+#, fuzzy
+msgid "Get the value of KEY"
 msgstr "Lortu GAKOAren balioa"
 
-#: ../gio/gsettings-tool.c:489 ../gio/gsettings-tool.c:495
-#: ../gio/gsettings-tool.c:507 ../gio/gsettings-tool.c:513
+#: ../gio/gsettings-tool.c:571 ../gio/gsettings-tool.c:577
+#: ../gio/gsettings-tool.c:589 ../gio/gsettings-tool.c:601
 msgid "SCHEMA[:PATH] KEY"
 msgstr "ESKEMA[:BIDE-IZENA] GAKOA"
 
-#: ../gio/gsettings-tool.c:494
-msgid "Queries the range of valid values for KEY"
+#: ../gio/gsettings-tool.c:576
+#, fuzzy
+msgid "Query the range of valid values for KEY"
 msgstr "GAKOArentzako baliozko balioen barrutiari buruz kontsultatzen du"
 
-#: ../gio/gsettings-tool.c:500
-msgid "Sets the value of KEY to VALUE"
+#: ../gio/gsettings-tool.c:582
+#, fuzzy
+msgid "Set the value of KEY to VALUE"
 msgstr "Ezarri GAKOAren balioa BALIOArekin"
 
-#: ../gio/gsettings-tool.c:501
+#: ../gio/gsettings-tool.c:583
 msgid "SCHEMA[:PATH] KEY VALUE"
 msgstr "ESKEMA[:BIDE-IZENA] GAKOA BALIOA"
 
-#: ../gio/gsettings-tool.c:506
-msgid "Resets KEY to its default value"
+#: ../gio/gsettings-tool.c:588
+#, fuzzy
+msgid "Reset KEY to its default value"
 msgstr "GAKOA bere balio lehenetsira ezartzen du"
 
-#: ../gio/gsettings-tool.c:512
-msgid "Checks if KEY is writable"
+#: ../gio/gsettings-tool.c:594
+msgid "Reset all keys in SCHEMA to their defaults"
+msgstr ""
+
+#: ../gio/gsettings-tool.c:600
+#, fuzzy
+msgid "Check if KEY is writable"
 msgstr "Begiratu GAKOA idazgarria den edo ez"
 
-#: ../gio/gsettings-tool.c:518
+#: ../gio/gsettings-tool.c:606
+#, fuzzy
 msgid ""
-"Monitors KEY for changes.\n"
+"Monitor KEY for changes.\n"
 "If no KEY is specified, monitor all keys in SCHEMA.\n"
 "Use ^C to stop monitoring.\n"
 msgstr ""
@@ -3050,11 +3432,11 @@ msgstr ""
 "Ez bada GAKOA zehazten, ESKEMAko gako guztiak monitorizatuko ditu.\n"
 "Erabili ^C monitorizazioa gelditzeko.\n"
 
-#: ../gio/gsettings-tool.c:521
+#: ../gio/gsettings-tool.c:609
 msgid "SCHEMA[:PATH] [KEY]"
 msgstr "ESKEMA[:BIDE-IZENA] GAKOA"
 
-#: ../gio/gsettings-tool.c:525
+#: ../gio/gsettings-tool.c:613
 #, c-format
 msgid ""
 "Unknown command %s\n"
@@ -3063,7 +3445,8 @@ msgstr ""
 "'%s' komando ezezaguna\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:533
+#: ../gio/gsettings-tool.c:621
+#, fuzzy
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3079,6 +3462,7 @@ msgid ""
 "  get                       Get the value of a key\n"
 "  set                       Set the value of a key\n"
 "  reset                     Reset the value of a key\n"
+"  reset-recursively         Reset all values in a given schema\n"
 "  writable                  Check if a key is writable\n"
 "  monitor                   Watch for changes\n"
 "\n"
@@ -3105,7 +3489,7 @@ msgstr ""
 "Erabili 'gsettings help KOMANDOA' laguntza xehea lortzeko.\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:554
+#: ../gio/gsettings-tool.c:643
 #, c-format
 msgid ""
 "Usage:\n"
@@ -3120,11 +3504,15 @@ msgstr ""
 "%s\n"
 "\n"
 
-#: ../gio/gsettings-tool.c:559
+#: ../gio/gsettings-tool.c:648
 msgid "Arguments:\n"
 msgstr "Argumentuak:\n"
 
-#: ../gio/gsettings-tool.c:563
+#: ../gio/gsettings-tool.c:652
+msgid "  COMMAND   The (optional) command to explain\n"
+msgstr ""
+
+#: ../gio/gsettings-tool.c:656
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
@@ -3132,127 +3520,137 @@ msgstr ""
 "  ESKEMA            Eskemaren izena\n"
 "  BIDE-IZENA       Bide-izena, lekuz alda daitezkeen eskementzako\n"
 
-#: ../gio/gsettings-tool.c:568
+#: ../gio/gsettings-tool.c:661
 msgid "  KEY       The (optional) key within the schema\n"
 msgstr "  GAKOA       Eskema barruko (aukerako) gakoa\n"
 
-#: ../gio/gsettings-tool.c:572
+#: ../gio/gsettings-tool.c:665
 msgid "  KEY       The key within the schema\n"
 msgstr "  GAKOA       Eskema barruko gakoa\n"
 
-#: ../gio/gsettings-tool.c:576
+#: ../gio/gsettings-tool.c:669
 msgid "  VALUE     The value to set\n"
 msgstr "  BALIOA     Ezarriko den balioa\n"
 
-#: ../gio/gsettings-tool.c:652
-#, c-format
-msgid "Empty schema name given"
+#: ../gio/gsettings-tool.c:766
+#, fuzzy, c-format
+msgid "Empty schema name given\n"
 msgstr "Eskemaren izen hutsa eman da"
 
-#: ../gio/gsocket.c:277
+#: ../gio/gsocket.c:275
 msgid "Invalid socket, not initialized"
 msgstr "Baliogabeko socket-a, hasieratu gabe dago"
 
-#: ../gio/gsocket.c:284
+#: ../gio/gsocket.c:282
 #, c-format
 msgid "Invalid socket, initialization failed due to: %s"
 msgstr "Baliogabeko socket-a, hasieratzeak huts egin du: %s"
 
-#: ../gio/gsocket.c:292
+#: ../gio/gsocket.c:290
 msgid "Socket is already closed"
 msgstr "Socket-a jadanik itxita dago"
 
-#: ../gio/gsocket.c:300 ../gio/gsocket.c:2769 ../gio/gsocket.c:2813
+#: ../gio/gsocket.c:298 ../gio/gsocket.c:2798 ../gio/gsocket.c:2842
 msgid "Socket I/O timed out"
 msgstr "S/Iko socket-aren denbora-muga gaindituta"
 
-#: ../gio/gsocket.c:443
+#: ../gio/gsocket.c:464
 #, c-format
 msgid "creating GSocket from fd: %s"
 msgstr "GSocket sortzen fd-tik: %s"
 
-#: ../gio/gsocket.c:477 ../gio/gsocket.c:493 ../gio/gsocket.c:2135
+#: ../gio/gsocket.c:498 ../gio/gsocket.c:514
 #, c-format
 msgid "Unable to create socket: %s"
 msgstr "Ezin da socket-a sortu: %s"
 
-#: ../gio/gsocket.c:477
+#: ../gio/gsocket.c:498
 msgid "Unknown protocol was specified"
 msgstr "Protokolo ezezaguna zehaztu da"
 
-#: ../gio/gsocket.c:1246
+#: ../gio/gsocket.c:1268
 #, c-format
 msgid "could not get local address: %s"
 msgstr "ezin izan da lokaleko helbidea lortu: %s"
 
-#: ../gio/gsocket.c:1289
+#: ../gio/gsocket.c:1311
 #, c-format
 msgid "could not get remote address: %s"
 msgstr "ezin izan da urruneko helbidea lortu: %s"
 
-#: ../gio/gsocket.c:1350
+#: ../gio/gsocket.c:1372
 #, c-format
 msgid "could not listen: %s"
 msgstr "ezin izan da entzun: %s"
 
-#: ../gio/gsocket.c:1424
+#: ../gio/gsocket.c:1446
 #, c-format
 msgid "Error binding to address: %s"
 msgstr "Errorea helbidea lotzean: %s"
 
-#: ../gio/gsocket.c:1544
+#: ../gio/gsocket.c:1566
 #, c-format
 msgid "Error accepting connection: %s"
 msgstr "Errorea konexioa onartzean: %s"
 
-#: ../gio/gsocket.c:1661
+#: ../gio/gsocket.c:1683
 msgid "Error connecting: "
 msgstr "Errorea konektatzean: "
 
-#: ../gio/gsocket.c:1666
+#: ../gio/gsocket.c:1688
 msgid "Connection in progress"
 msgstr "Konexioa lantzen"
 
-#: ../gio/gsocket.c:1673
+#: ../gio/gsocket.c:1695
 #, c-format
 msgid "Error connecting: %s"
 msgstr "Errorea konektatzean: %s"
 
-#: ../gio/gsocket.c:1716 ../gio/gsocket.c:3532
+#: ../gio/gsocket.c:1738 ../gio/gsocket.c:3579
 #, c-format
 msgid "Unable to get pending error: %s"
 msgstr "Ezin da falta diren erroreak lortu: %s"
 
-#: ../gio/gsocket.c:1848
+#: ../gio/gsocket.c:1875
 #, c-format
 msgid "Error receiving data: %s"
 msgstr "Errorea datuak jasotzean: %s"
 
-#: ../gio/gsocket.c:2022
+#: ../gio/gsocket.c:2050
 #, c-format
 msgid "Error sending data: %s"
 msgstr "Errorea datuak bidaltzean: %s"
 
-#: ../gio/gsocket.c:2214
+#: ../gio/gsocket.c:2163
+#, fuzzy, c-format
+msgid "Unable to shutdown socket: %s"
+msgstr "Ezin da socket-a sortu: %s"
+
+#: ../gio/gsocket.c:2242
 #, c-format
 msgid "Error closing socket: %s"
 msgstr "Errorea socket-a ixtean: %s"
 
-#: ../gio/gsocket.c:2762
+#: ../gio/gsocket.c:2791
 #, c-format
 msgid "Waiting for socket condition: %s"
 msgstr "Socket-aren baldintzen zai: %s"
 
-#: ../gio/gsocket.c:3052
+#: ../gio/gsocket.c:3056 ../gio/gsocket.c:3137
+#, c-format
+msgid "Error sending message: %s"
+msgstr "Errorea mezua bidaltzean: %s"
+
+#: ../gio/gsocket.c:3081
 msgid "GSocketControlMessage not supported on windows"
 msgstr "GSocketControlMessage ez da windows sisteman onartzen"
 
-#: ../gio/gsocket.c:3311 ../gio/gsocket.c:3452
+#: ../gio/gsocket.c:3358 ../gio/gsocket.c:3494
 #, c-format
 msgid "Error receiving message: %s"
 msgstr "Errorea mezua jasotzean: %s"
 
-#: ../gio/gsocket.c:3547
+#: ../gio/gsocket.c:3598
 msgid "g_socket_get_credentials not implemented for this OS"
 msgstr "g_socket_get_credentials ez dago S.E. honetan inplementatuta"
 
@@ -3339,7 +3737,8 @@ msgstr ""
 "'%s' ostalari-izena luzeegia da SOCKSv5 protokoloarentzako (gehien. %i byte)"
 
 #: ../gio/gsocks5proxy.c:352
-msgid "The SOCKSv5 proxy server uses unkown address type."
+#, fuzzy
+msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "SOCKSv5 proxy zerbitzariak helbide mota ezezagunak erabiltzen ditu."
 
 #: ../gio/gsocks5proxy.c:359
@@ -3379,24 +3778,45 @@ msgstr "SOCKSv5 proxy-aren errore ezezaguna."
 msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Ezin da GThemedIcon kodeketaren %d bertsioa kudeatu"
 
-#: ../gio/gtlscertificate.c:228
-msgid "No PEM-encoded certificate found"
+#: ../gio/gtlscertificate.c:226
+#, fuzzy
+msgid "No PEM-encoded private key found"
 msgstr "Ez da PEMekin kodetutako ziurtagirik aurkitu"
 
-#: ../gio/gtlscertificate.c:237
-msgid "Could not parse PEM-encoded certificate"
-msgstr "Ezin izan da PEMekin kodetutako ziurtagiririk analizatu"
-
-#: ../gio/gtlscertificate.c:258
+#: ../gio/gtlscertificate.c:235
 msgid "Could not parse PEM-encoded private key"
 msgstr "Ezin izan da PEMekin kodetutako gako pribatua analizatu"
 
-#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:505
+#: ../gio/gtlscertificate.c:260
+msgid "No PEM-encoded certificate found"
+msgstr "Ez da PEMekin kodetutako ziurtagirik aurkitu"
+
+#: ../gio/gtlscertificate.c:269
+msgid "Could not parse PEM-encoded certificate"
+msgstr "Ezin izan da PEMekin kodetutako ziurtagiririk analizatu"
+
+#: ../gio/gtlspassword.c:114
+msgid ""
+"This is the last chance to enter the password correctly before your access "
+"is locked out."
+msgstr ""
+
+#: ../gio/gtlspassword.c:116
+msgid ""
+"Several password entered have been incorrect, and your access will be locked "
+"out after further failures."
+msgstr ""
+
+#: ../gio/gtlspassword.c:118
+msgid "The password entered is incorrect."
+msgstr ""
+
+#: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
 msgid "Expecting 1 control message, got %d"
 msgstr "Kontroleko mezu 1 espero zen, %d lortu dira"
 
-#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:515
+#: ../gio/gunixconnection.c:177 ../gio/gunixconnection.c:531
 msgid "Unexpected type of ancillary data"
 msgstr "Ustekabeko datu-laguntzaile mota"
 
@@ -3409,16 +3829,16 @@ msgstr "fd bat espero zen, baina %d lortuta\n"
 msgid "Received invalid fd"
 msgstr "Baliogabeko fd jasota"
 
-#: ../gio/gunixconnection.c:359
+#: ../gio/gunixconnection.c:371
 msgid "Error sending credentials: "
 msgstr "Errorea kredentzialak bidaltzean: "
 
-#: ../gio/gunixconnection.c:439
+#: ../gio/gunixconnection.c:452
 #, c-format
 msgid "Error checking if SO_PASSCRED is enabled for socket: %s"
 msgstr "Errorea SO_PASSCRED gaituta dagoen begiratzean socket-arentzako: %s"
 
-#: ../gio/gunixconnection.c:448
+#: ../gio/gunixconnection.c:461
 #, c-format
 msgid ""
 "Unexpected option length while checking if SO_PASSCRED is enabled for "
@@ -3427,19 +3847,24 @@ msgstr ""
 "Ustekabeko aukeraren luzera SO_PASSCRED gaituta dagoen begiratzean socket-"
 "arentzako. %d byte espero ziren, baina %d lortu dira"
 
-#: ../gio/gunixconnection.c:465
+#: ../gio/gunixconnection.c:478
 #, c-format
 msgid "Error enabling SO_PASSCRED: %s"
 msgstr "Errorea SO_PASSCRED gaitzean: %s"
 
-#: ../gio/gunixconnection.c:495
+#: ../gio/gunixconnection.c:509
 msgid ""
 "Expecting to read a single byte for receiving credentials but read zero bytes"
 msgstr ""
 "Harrerako kredentzialentzako byte bakar bat irakurtzea espero zen, baina "
 "zero byte irakurri dira."
 
-#: ../gio/gunixconnection.c:538
+#: ../gio/gunixconnection.c:545
+#, fuzzy, c-format
+msgid "Not expecting control message, but got %d"
+msgstr "Kontroleko mezu 1 espero zen, %d lortu dira"
+
+#: ../gio/gunixconnection.c:571
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
 msgstr "Errorea SO_PASSCRED desgaitzean: %s"
@@ -3456,7 +3881,7 @@ msgstr "Errorea UNIXetik irakurtzean: %s"
 msgid "Error closing unix: %s"
 msgstr "Errorea UNIX ixtean: %s"
 
-#: ../gio/gunixmounts.c:1848 ../gio/gunixmounts.c:1885
+#: ../gio/gunixmounts.c:1900 ../gio/gunixmounts.c:1937
 msgid "Filesystem root"
 msgstr "Fitxategi-sistemaren erroa"
 
@@ -3537,6 +3962,18 @@ msgstr "Sarrera gehiago behar dira"
 msgid "Invalid compressed data"
 msgstr "Konprimitutako datu baliogabeak"
 
+#~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
+#~ msgstr ""
+#~ "Itzulerako balioaren mota ez da zuzena: '%s' jaso da, baina '%s' espero "
+#~ "zen"
+
+#~ msgid ""
+#~ "Trying to set property %s of type %s but according to the expected "
+#~ "interface the type is %s"
+#~ msgstr ""
+#~ "'%2$s' motaren '%1$s' propietatea ezartzen saiatzen, baina espero zen "
+#~ "interfazearen arabera, mota '%3$s' da"
+
 #~ msgid "No such schema `%s' specified in override file `%s'"
 #~ msgstr ""
 #~ "Ez da '%s' bezalako eskemarik zehaztu gainidazketako '%s' fitxategian"
@@ -3597,174 +4034,5 @@ msgstr "Konprimitutako datu baliogabeak"
 #~ msgstr "am"
 
 #~ msgctxt "GDateTime"
-#~ msgid "AM"
-#~ msgstr "AM"
-
-#~ msgctxt "GDateTime"
 #~ msgid "pm"
 #~ msgstr "pm"
-
-#~ msgctxt "GDateTime"
-#~ msgid "PM"
-#~ msgstr "PM"
-
-#~ msgctxt "GDateTime"
-#~ msgid "%m/%d/%y"
-#~ msgstr "%y/%m/%d"
-
-#~ msgctxt "GDateTime"
-#~ msgid "%H:%M:%S"
-#~ msgstr "%H:%M:%S"
-
-#~ msgctxt "full month name"
-#~ msgid "January"
-#~ msgstr "Urtarrila"
-
-#~ msgctxt "full month name"
-#~ msgid "February"
-#~ msgstr "Otsaila"
-
-#~ msgctxt "full month name"
-#~ msgid "March"
-#~ msgstr "Martxoa"
-
-#~ msgctxt "full month name"
-#~ msgid "April"
-#~ msgstr "Apirila"
-
-#~ msgctxt "full month name"
-#~ msgid "May"
-#~ msgstr "Maiatza"
-
-#~ msgctxt "full month name"
-#~ msgid "June"
-#~ msgstr "Ekaina"
-
-#~ msgctxt "full month name"
-#~ msgid "July"
-#~ msgstr "Uztaila"
-
-#~ msgctxt "full month name"
-#~ msgid "August"
-#~ msgstr "Abuztua"
-
-#~ msgctxt "full month name"
-#~ msgid "September"
-#~ msgstr "Iraila"
-
-#~ msgctxt "full month name"
-#~ msgid "October"
-#~ msgstr "Urria"
-
-#~ msgctxt "full month name"
-#~ msgid "November"
-#~ msgstr "Azaroa"
-
-#~ msgctxt "full month name"
-#~ msgid "December"
-#~ msgstr "Abendua"
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Jan"
-#~ msgstr "Urt."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Feb"
-#~ msgstr "Ots."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Mar"
-#~ msgstr "Mar."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Apr"
-#~ msgstr "Apr."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Jun"
-#~ msgstr "Eka."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Jul"
-#~ msgstr "Uzt."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Aug"
-#~ msgstr "Abu."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Sep"
-#~ msgstr "Ira."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Oct"
-#~ msgstr "Urr."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Nov"
-#~ msgstr "Aza."
-
-#~ msgctxt "abbreviated month name"
-#~ msgid "Dec"
-#~ msgstr "Abe."
-
-#~ msgctxt "full weekday name"
-#~ msgid "Monday"
-#~ msgstr "Astelehena"
-
-#~ msgctxt "full weekday name"
-#~ msgid "Tuesday"
-#~ msgstr "Asteartea"
-
-#~ msgctxt "full weekday name"
-#~ msgid "Wednesday"
-#~ msgstr "Asteazkena"
-
-#~ msgctxt "full weekday name"
-#~ msgid "Thursday"
-#~ msgstr "Osteguna"
-
-#~ msgctxt "full weekday name"
-#~ msgid "Friday"
-#~ msgstr "Ostirala"
-
-#~ msgctxt "full weekday name"
-#~ msgid "Saturday"
-#~ msgstr "Larunbata"
-
-#~ msgctxt "full weekday name"
-#~ msgid "Sunday"
-#~ msgstr "Igandea"
-
-#~ msgctxt "abbreviated weekday name"
-#~ msgid "Mon"
-#~ msgstr "Al."
-
-#~ msgctxt "abbreviated weekday name"
-#~ msgid "Tue"
-#~ msgstr "Ar."
-
-#~ msgctxt "abbreviated weekday name"
-#~ msgid "Wed"
-#~ msgstr "Az."
-
-#~ msgctxt "abbreviated weekday name"
-#~ msgid "Thu"
-#~ msgstr "Og."
-
-#~ msgctxt "abbreviated weekday name"
-#~ msgid "Fri"
-#~ msgstr "Or."
-
-#~ msgctxt "abbreviated weekday name"
-#~ msgid "Sat"
-#~ msgstr "Lr."
-
-#~ msgctxt "abbreviated weekday name"
-#~ msgid "Sun"
-#~ msgstr "Ig."
-
-#~ msgid "%u byte"
-#~ msgid_plural "%u bytes"
-#~ msgstr[0] "byte %u"
-#~ msgstr[1] "%u byte"
