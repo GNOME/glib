@@ -2875,7 +2875,6 @@ G_ACTION
 <FILE>gsimpleaction</FILE>
 <TITLE>GSimpleAction</TITLE>
 GSimpleAction
-GSimpleActionClass
 
 <SUBSECTION>
 g_simple_action_new
@@ -3215,7 +3214,7 @@ g_tls_server_connection_get_type
 <FILE>gtlspassword</FILE>
 <TITLE>GTlsPassword</TITLE>
 GTlsPassword
-GTlsPasswordInterface
+GTlsPasswordClass
 GTlsPasswordFlags
 g_tls_password_new
 g_tls_password_get_value

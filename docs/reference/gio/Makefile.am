@@ -19,6 +19,17 @@ BUILT_HFILES=gioenumtypes.h
 HFILE_GLOB=$(top_srcdir)/gio/*.h
 CFILE_GLOB=$(top_srcdir)/gio/*.c
 
+IGNORE_HFILES = \
+	fam		\
+	fen		\
+	gdbus-2.0	\
+	gvdb		\
+	inotify		\
+	libasyncns	\
+	tests		\
+	win32		\
+	xdgmime
+
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
 INCLUDES = \
