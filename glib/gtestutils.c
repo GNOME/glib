@@ -801,7 +801,7 @@ g_test_message (const char *format,
  * case only.
  * Bug URIs are constructed by appending a bug specific URI
  * portion to @uri_pattern, or by replacing the special string
- * '%s' within @uri_pattern if that is present.
+ * '\%s' within @uri_pattern if that is present.
  *
  * Since: 2.16
  */

@@ -2146,9 +2146,9 @@ format_number (GString  *str,
  * Creates a newly allocated string representing the requested @format.
  *
  * The format strings understood by this function are a subset of the
- * strftime() format language as specified by C99.  The %%D, %%U and %%W
+ * strftime() format language as specified by C99.  The \%D, \%U and \%W
  * conversions are not supported, nor is the 'E' modifier.  The GNU
- * extensions %%k, %%l, %%s and %%P are supported, however, as are the
+ * extensions \%k, \%l, \%s and \%P are supported, however, as are the
  * '0', '_' and '-' modifiers.
  *
  * In contrast to strftime(), this function always produces a UTF-8
@@ -2160,207 +2160,207 @@ format_number (GString  *str,
  *
  * <variablelist>
  *  <varlistentry><term>
- *    <literal>%%a</literal>:
+ *    <literal>\%a</literal>:
  *   </term><listitem><simpara>
  *    the abbreviated weekday name according to the current locale
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%A</literal>:
+ *    <literal>\%A</literal>:
  *   </term><listitem><simpara>
  *    the full weekday name according to the current locale
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%b</literal>:
+ *    <literal>\%b</literal>:
  *   </term><listitem><simpara>
  *    the abbreviated month name according to the current locale
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%B</literal>:
+ *    <literal>\%B</literal>:
  *   </term><listitem><simpara>
  *    the full month name according to the current locale
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%c</literal>:
+ *    <literal>\%c</literal>:
  *   </term><listitem><simpara>
  *    the  preferred  date  and  time  representation  for the current locale
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%C</literal>:
+ *    <literal>\%C</literal>:
  *   </term><listitem><simpara>
  *    The century number (year/100) as a 2-digit integer (00-99)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%d</literal>:
+ *    <literal>\%d</literal>:
  *   </term><listitem><simpara>
  *    the day of the month as a decimal number (range 01 to 31)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%e</literal>:
+ *    <literal>\%e</literal>:
  *   </term><listitem><simpara>
  *    the day of the month as a decimal number (range  1 to 31)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%F</literal>:
+ *    <literal>\%F</literal>:
  *   </term><listitem><simpara>
- *    equivalent to <literal>%%Y-%%m-%%d</literal> (the ISO 8601 date
+ *    equivalent to <literal>\%Y-\%m-\%d</literal> (the ISO 8601 date
  *    format)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%g</literal>:
+ *    <literal>\%g</literal>:
  *   </term><listitem><simpara>
  *    the last two digits of the ISO 8601 week-based year as a decimal
- *    number (00-99).  This works well with %%V and %%u.
+ *    number (00-99).  This works well with \%V and \%u.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%G</literal>:
+ *    <literal>\%G</literal>:
  *   </term><listitem><simpara>
  *    the ISO 8601 week-based year as a decimal number.  This works well
- *    with %%V and %%u.
+ *    with \%V and \%u.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%h</literal>:
+ *    <literal>\%h</literal>:
  *   </term><listitem><simpara>
- *    equivalent to <literal>%%b</literal>
+ *    equivalent to <literal>\%b</literal>
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%H</literal>:
+ *    <literal>\%H</literal>:
  *   </term><listitem><simpara>
  *    the hour as a decimal number using a 24-hour clock (range 00 to
  *    23)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%I</literal>:
+ *    <literal>\%I</literal>:
  *   </term><listitem><simpara>
  *    the hour as a decimal number using a 12-hour clock (range 01 to
  *    12)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%j</literal>:
+ *    <literal>\%j</literal>:
  *   </term><listitem><simpara>
  *    the day of the year as a decimal number (range 001 to 366)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%k</literal>:
+ *    <literal>\%k</literal>:
  *   </term><listitem><simpara>
  *    the hour (24-hour clock) as a decimal number (range 0 to 23);
  *    single digits are preceded by a blank
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%l</literal>:
+ *    <literal>\%l</literal>:
  *   </term><listitem><simpara>
  *    the hour (12-hour clock) as a decimal number (range 1 to 12);
  *    single digits are preceded by a blank
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%m</literal>:
+ *    <literal>\%m</literal>:
  *   </term><listitem><simpara>
  *    the month as a decimal number (range 01 to 12)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%M</literal>:
+ *    <literal>\%M</literal>:
  *   </term><listitem><simpara>
  *    the minute as a decimal number (range 00 to 59)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%p</literal>:
+ *    <literal>\%p</literal>:
  *   </term><listitem><simpara>
  *    either "AM" or "PM" according to the given time value, or the
  *    corresponding  strings for the current locale.  Noon is treated as
  *    "PM" and midnight as "AM".
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%P</literal>:
+ *    <literal>\%P</literal>:
  *   </term><listitem><simpara>
- *    like %%p but lowercase: "am" or "pm" or a corresponding string for
+ *    like \%p but lowercase: "am" or "pm" or a corresponding string for
  *    the current locale
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%r</literal>:
+ *    <literal>\%r</literal>:
  *   </term><listitem><simpara>
  *    the time in a.m. or p.m. notation
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%R</literal>:
+ *    <literal>\%R</literal>:
  *   </term><listitem><simpara>
- *    the time in 24-hour notation (<literal>%%H:%%M</literal>)
+ *    the time in 24-hour notation (<literal>\%H:\%M</literal>)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%s</literal>:
+ *    <literal>\%s</literal>:
  *   </term><listitem><simpara>
  *    the number of seconds since the Epoch, that is, since 1970-01-01
  *    00:00:00 UTC
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%S</literal>:
+ *    <literal>\%S</literal>:
  *   </term><listitem><simpara>
  *    the second as a decimal number (range 00 to 60)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%t</literal>:
+ *    <literal>\%t</literal>:
  *   </term><listitem><simpara>
  *    a tab character
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%T</literal>:
+ *    <literal>\%T</literal>:
  *   </term><listitem><simpara>
- *    the time in 24-hour notation with seconds (<literal>%%H:%%M:%%S</literal>)
+ *    the time in 24-hour notation with seconds (<literal>\%H:\%M:\%S</literal>)
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%u</literal>:
+ *    <literal>\%u</literal>:
  *   </term><listitem><simpara>
  *    the ISO 8601 standard day of the week as a decimal, range 1 to 7,
- *    Monday being 1.  This works well with %%G and %%V.
+ *    Monday being 1.  This works well with \%G and \%V.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%V</literal>:
+ *    <literal>\%V</literal>:
  *   </term><listitem><simpara>
  *    the ISO 8601 standard week number of the current year as a decimal
  *    number, range 01 to 53, where week 1 is the first week that has at
  *    least 4 days in the new year. See g_date_time_get_week_of_year().
- *    This works well with %%G and %%u.
+ *    This works well with \%G and \%u.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%w</literal>:
+ *    <literal>\%w</literal>:
  *   </term><listitem><simpara>
  *    the day of the week as a decimal, range 0 to 6, Sunday being 0.
- *    This is not the ISO 8601 standard format -- use %%u instead.
+ *    This is not the ISO 8601 standard format -- use \%u instead.
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%x</literal>:
+ *    <literal>\%x</literal>:
  *   </term><listitem><simpara>
  *    the preferred date representation for the current locale without
  *    the time
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%X</literal>:
+ *    <literal>\%X</literal>:
  *   </term><listitem><simpara>
  *    the preferred time representation for the current locale without
  *    the date
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%y</literal>:
+ *    <literal>\%y</literal>:
  *   </term><listitem><simpara>
  *    the year as a decimal number without the century
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%Y</literal>:
+ *    <literal>\%Y</literal>:
  *   </term><listitem><simpara>
  *    the year as a decimal number including the century
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%z</literal>:
+ *    <literal>\%z</literal>:
  *   </term><listitem><simpara>
  *    the time-zone as hour offset from UTC
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%Z</literal>:
+ *    <literal>\%Z</literal>:
  *   </term><listitem><simpara>
  *    the time zone or name or abbreviation
  *  </simpara></listitem></varlistentry>
  *  <varlistentry><term>
- *    <literal>%%%</literal>:
+ *    <literal>\%\%</literal>:
  *   </term><listitem><simpara>
- *    a literal <literal>%%</literal> character
+ *    a literal <literal>\%</literal> character
  *  </simpara></listitem></varlistentry>
  * </variablelist>
  *

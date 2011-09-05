@@ -3788,7 +3788,7 @@ g_main_context_wakeup (GMainContext *context)
  * @context: a #GMainContext
  * 
  * Determines whether this thread holds the (recursive)
- * ownership of this #GMaincontext. This is useful to
+ * ownership of this #GMainContext. This is useful to
  * know before waiting on another thread that may be
  * blocking to get ownership of @context.
  *

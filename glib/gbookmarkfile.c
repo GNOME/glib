@@ -3208,9 +3208,9 @@ g_bookmark_file_has_application (GBookmarkFile  *bookmark,
  *
  * @name can be any UTF-8 encoded string used to identify an
  * application.
- * @exec can have one of these two modifiers: "%f", which will
+ * @exec can have one of these two modifiers: "\%f", which will
  * be expanded as the local file name retrieved from the bookmark's
- * URI; "%u", which will be expanded as the bookmark's URI.
+ * URI; "\%u", which will be expanded as the bookmark's URI.
  * The expansion is done automatically when retrieving the stored
  * command line using the g_bookmark_file_get_app_info() function.
  * @count is the number of times the application has registered the

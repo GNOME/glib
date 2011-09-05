@@ -49,8 +49,8 @@ G_BEGIN_DECLS
  * letters, prefixed by the string "U+". Leading zeros are omitted,
  * unless the code point would have fewer than four hexadecimal digits.
  * For example, "U+0041 LATIN CAPITAL LETTER A". To print a code point
- * in the U+-notation, use the format string "U+%04"G_GINT32_FORMAT"X".
- * To scan, use the format string "U+%06"G_GINT32_FORMAT"X".
+ * in the U+-notation, use the format string "U+\%04"G_GINT32_FORMAT"X".
+ * To scan, use the format string "U+\%06"G_GINT32_FORMAT"X".
  *
  * |[
  * gunichar c;

@@ -1297,7 +1297,7 @@ g_unichar_get_script_bsearch (gunichar ch)
  * @ch: a Unicode character
  * 
  * Looks up the #GUnicodeScript for a particular character (as defined 
- * by Unicode Standard Annex #24). No check is made for @ch being a
+ * by Unicode Standard Annex \#24). No check is made for @ch being a
  * valid Unicode character; if you pass in invalid character, the
  * result is undefined.
  *

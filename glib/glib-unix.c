@@ -262,7 +262,7 @@ g_unix_signal_add_full (int            priority,
 }
 
 /**
- * g_unix_signal_add_full:
+ * g_unix_signal_add:
  * @signum: Signal number
  * @handler: Callback
  * @user_data: Data for @handler
