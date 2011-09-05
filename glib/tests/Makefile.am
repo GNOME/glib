@@ -191,7 +191,10 @@ unix_nothreads_SOURCES = unix.c
 unix_nothreads_LDADD  = $(progs_ldadd)
 
 noinst_PROGRAMS += atomic
-atomic_CFLAGS = -Wstrict-aliasing=2 $(INCLUDES)
+atomic_CFLAGS = $(INCLUDES)
+if HAVE_GCC
+atomic_CFLAGS += -Wstrict-aliasing=2
+endif
 atomic_LDADD = $(progs_ldadd)
 
 TEST_PROGS    += bitlock

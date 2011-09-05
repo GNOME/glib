@@ -108,6 +108,8 @@ dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CPP
 
+AM_CONDITIONAL(HAVE_GCC, [test "$GCC" = "yes"])
+
 AC_CANONICAL_HOST
 
 AC_MSG_CHECKING([for the BeOS])
