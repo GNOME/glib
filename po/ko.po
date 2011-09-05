@@ -162,13 +162,13 @@ msgstr "잘못된 호스트 이름"
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:200
 msgctxt "GDateTime"
-msgid "am"
+msgid "AM"
 msgstr "오전"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
-msgid "pm"
+msgid "PM"
 msgstr "오후"
 
 #. Translators: this is the preferred format for expressing the date and the time

@@ -197,9 +197,9 @@ static const gint month_item[2][12] =
 
 #define GET_AMPM(d)          ((g_date_time_get_hour (d) < 12)  \
                                        /* Translators: 'before midday' indicator */ \
-                                ? C_("GDateTime", "am") \
+                                ? C_("GDateTime", "AM") \
                                   /* Translators: 'after midday' indicator */ \
-                                : C_("GDateTime", "pm"))
+                                : C_("GDateTime", "PM"))
 
 /* Translators: this is the preferred format for expressing the date and the time */
 #define PREFERRED_DATE_TIME_FMT C_("GDateTime", "%a %b %e %H:%M:%S %Y")

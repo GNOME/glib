@@ -156,13 +156,13 @@ msgstr "Хібная назва машыны"
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:200
 msgctxt "GDateTime"
-msgid "am"
+msgid "AM"
 msgstr "да поўдня"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
-msgid "pm"
+msgid "PM"
 msgstr "пасля поўдня"
 
 #. Translators: this is the preferred format for expressing the date and the time
@@ -3913,9 +3913,9 @@ msgid "Invalid compressed data"
 msgstr "Хібныя сціснутыя даныя"
 
 #~ msgctxt "GDateTime"
-#~ msgid "AM"
+#~ msgid "am"
 #~ msgstr "да поўдня"
 
 #~ msgctxt "GDateTime"
-#~ msgid "PM"
+#~ msgid "pm"
 #~ msgstr "пасля поўдня"

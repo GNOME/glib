@@ -160,14 +160,14 @@ msgstr "Ogiltigt värdnamn"
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:199
 msgctxt "GDateTime"
-msgid "am"
-msgstr "am"
+msgid "AM"
+msgstr "AM"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:201
 msgctxt "GDateTime"
-msgid "pm"
-msgstr "pm"
+msgid "PM"
+msgstr "PM"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:204
@@ -3886,12 +3886,12 @@ msgid "Invalid compressed data"
 msgstr "Ogiltigt komprimerat data"
 
 #~ msgctxt "GDateTime"
-#~ msgid "AM"
-#~ msgstr "AM"
+#~ msgid "am"
+#~ msgstr "am"
 
 #~ msgctxt "GDateTime"
-#~ msgid "PM"
-#~ msgstr "PM"
+#~ msgid "pm"
+#~ msgstr "pm"
 
 #~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 #~ msgstr "Typ av returvärde är felaktigt, fick \"%s\", förväntade \"%s\""

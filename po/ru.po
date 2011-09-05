@@ -195,13 +195,13 @@ msgstr "Недопустимое имя узла"
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:199
 msgctxt "GDateTime"
-msgid "am"
+msgid "AM"
 msgstr "д. п."
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:201
 msgctxt "GDateTime"
-msgid "pm"
+msgid "PM"
 msgstr "п. п."
 
 #. Translators: this is the preferred format for expressing the date

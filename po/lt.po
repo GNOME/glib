@@ -196,14 +196,14 @@ msgstr "Klaidingas kompiuterio vardas"
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:200
 msgctxt "GDateTime"
-msgid "am"
-msgstr "am"
+msgid "AM"
+msgstr "AM"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
-msgid "pm"
-msgstr "pm"
+msgid "PM"
+msgstr "PM"
 
 #. Translators: this is the preferred format for expressing the date and the time
 #: ../glib/gdatetime.c:205
@@ -3888,12 +3888,12 @@ msgstr "Netinkami suspausti duomenys"
 
 #~ msgctxt "GDateTime"
 
-#~ msgid "AM"
-#~ msgstr "AM"
+#~ msgid "am"
+#~ msgstr "am"
 #~ msgctxt "GDateTime"
 
-#~ msgid "PM"
-#~ msgstr "PM"
+#~ msgid "pm"
+#~ msgstr "pm"
 
 #~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 #~ msgstr "Neteisingas grąžinamos reikšmės tipas, gautas „%s“, lauktas „%s“"

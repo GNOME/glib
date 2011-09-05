@@ -162,13 +162,13 @@ msgstr "主機名稱無效"
 #. Translators: 'before midday' indicator
 #: ../glib/gdatetime.c:199
 msgctxt "GDateTime"
-msgid "am"
+msgid "AM"
 msgstr "上午"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:201
 msgctxt "GDateTime"
-msgid "pm"
+msgid "PM"
 msgstr "下午"
 
 #. Translators: this is the preferred format for expressing the date
@@ -3732,11 +3732,11 @@ msgid "Invalid compressed data"
 msgstr "無效的壓縮資料"
 
 #~ msgctxt "GDateTime"
-#~ msgid "AM"
+#~ msgid "am"
 #~ msgstr "上午"
 
 #~ msgctxt "GDateTime"
-#~ msgid "PM"
+#~ msgid "pm"
 #~ msgstr "下午"
 
 #~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
