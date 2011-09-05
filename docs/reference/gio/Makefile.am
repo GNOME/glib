@@ -20,15 +20,63 @@ HFILE_GLOB=$(top_srcdir)/gio/*.h
 CFILE_GLOB=$(top_srcdir)/gio/*.c
 
 IGNORE_HFILES = \
-	fam		\
-	fen		\
-	gdbus-2.0	\
-	gvdb		\
-	inotify		\
-	libasyncns	\
-	tests		\
-	win32		\
-	xdgmime
+	fam				\
+	fen				\
+	gdbus-2.0			\
+	gvdb				\
+	inotify				\
+	libasyncns			\
+	tests				\
+	win32				\
+	xdgmime				\
+	gapplicationimpl.h		\
+	gasynchelper.h			\
+	gcontenttypeprivate.h		\
+	gdbusauth.h			\
+	gdbusauthmechanismanon.h	\
+	gdbusauthmechanismexternal.h	\
+	gdbusauthmechanism.h		\
+	gdbusauthmechanismsha1.h	\
+	gdbusprivate.h			\
+	gdelayedsettingsbackend.h	\
+	gdummyfile.h			\
+	gdummyproxyresolver.h		\
+	gdummytlsbackend.h		\
+	gfileattribute-priv.h		\
+	gfileinfo-priv.h		\
+	giomodule-priv.h		\
+	glocaldirectorymonitor.h	\
+	glocalfileenumerator.h		\
+	glocalfile.h			\
+	glocalfileinfo.h		\
+	glocalfileinputstream.h		\
+	glocalfileiostream.h		\
+	glocalfilemonitor.h		\
+	glocalfileoutputstream.h	\
+	glocalvfs.h			\
+	gmountprivate.h			\
+	gnetworkingprivate.h		\
+	gpollfilemonitor.h		\
+	gregistrysettingsbackend.h	\
+	gsettingsbackendinternal.h	\
+	gsettings-mapping.h		\
+	gsettingsschema.h		\
+	gsocketinputstream.h		\
+	gsocketoutputstream.h		\
+	gsocks4aproxy.h			\
+	gsocks4proxy.h			\
+	gsocks5proxy.h			\
+	gthreadedresolver.h		\
+	gunionvolumemonitor.h		\
+	gunixmount.h			\
+	gunixresolver.h			\
+	gunixvolume.h			\
+	gunixvolumemonitor.h		\
+	gwin32appinfo.h			\
+	gwin32mount.h			\
+	gwin32resolver.h		\
+	gwin32volumemonitor.h
+
 
 # CFLAGS and LDFLAGS for compiling scan program. Only needed
 # if $(DOC_MODULE).types is non-empty.
