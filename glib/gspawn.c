@@ -527,16 +527,15 @@ g_spawn_sync (const gchar          *working_directory,
  * parent's environment.
  *
  * @flags should be the bitwise OR of any flags you want to affect the
- * function's behaviour. The %G_SPAWN_DO_NOT_REAP_CHILD means that 
- * the child will not automatically be reaped; you must use a
- * #GChildWatch source to be notified about the death of the child 
- * process. Eventually you must call g_spawn_close_pid() on the
- * @child_pid, in order to free resources which may be associated
- * with the child process. (On Unix, using a #GChildWatch source is
- * equivalent to calling waitpid() or handling the %SIGCHLD signal 
- * manually. On Windows, calling g_spawn_close_pid() is equivalent
- * to calling CloseHandle() on the process handle returned in 
- * @child_pid).
+ * function's behaviour. The %G_SPAWN_DO_NOT_REAP_CHILD means that the
+ * child will not automatically be reaped; you must use a child watch to
+ * be notified about the death of the child process. Eventually you must
+ * call g_spawn_close_pid() on the @child_pid, in order to free
+ * resources which may be associated with the child process. (On Unix,
+ * using a child watch is equivalent to calling waitpid() or handling
+ * the %SIGCHLD signal manually. On Windows, calling g_spawn_close_pid()
+ * is equivalent to calling CloseHandle() on the process handle returned
+ * in @child_pid).  See g_child_watch_add().
  *
  * %G_SPAWN_LEAVE_DESCRIPTORS_OPEN means that the parent's open file
  * descriptors will be inherited by the child; otherwise all
