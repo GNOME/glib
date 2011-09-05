@@ -6,12 +6,10 @@
 #undef ELAPSED_TIME_IN_uSECONDS
 #endif
 
-#ifdef WIN32
-// include headers to use gettimeofday
-#else
-	#ifdef __GNUC__
+#ifdef __GNUC__
 	#include <sys/time.h>
-	#include <sys/resource.h>
+	#ifndef WIN32
+		#include <sys/resource.h>
 	#endif
 #endif
 
