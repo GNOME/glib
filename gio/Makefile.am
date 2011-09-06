@@ -579,7 +579,7 @@ BUILT_EXTRA_DIST = 		\
 
 # This is read by gobject-introspection/misc/ and gtk-doc
 gio-public-headers.txt: Makefile
-	echo $(gioinclude_HEADERS) > $@.tmp && mv $@.tmp $@
+	echo $(gioinclude_HEADERS) $(giowin32include_HEADERS) $(giounixinclude_HEADERS) > $@.tmp && mv $@.tmp $@
 
 CLEANFILES = gio-public-headers.txt
 

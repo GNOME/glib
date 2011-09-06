@@ -2318,7 +2318,6 @@ G_CREDENTIALS_CLASS
 G_IS_CREDENTIALS_CLASS
 G_CREDENTIALS_GET_CLASS
 <SUBSECTION Private>
-GCredentialsPrivate
 g_credentials_get_type
 g_credentials_type_get_type
 </SECTION>
@@ -2836,7 +2835,6 @@ g_action_group_action_state_changed
 
 <SUBSECTION Standard>
 g_action_group_get_type
-GActionGroupPrivate
 G_TYPE_ACTION_GROUP
 G_IS_ACTION_GROUP
 G_ACTION_GROUP_GET_IFACE
@@ -2885,13 +2883,9 @@ g_simple_action_set_enabled
 g_simple_action_set_state
 
 <SUBSECTION Standard>
-GSimpleActionPrivate
 g_simple_action_get_type
 G_TYPE_SIMPLE_ACTION
 G_IS_SIMPLE_ACTION
-G_SIMPLE_ACTION_CLASS
-G_SIMPLE_ACTION_GET_CLASS
-G_IS_SIMPLE_ACTION_CLASS
 G_SIMPLE_ACTION
 </SECTION>
 
@@ -3231,7 +3225,6 @@ g_tls_password_flags_get_type
 g_tls_password_get_type
 G_IS_TLS_PASSWORD
 G_TLS_PASSWORD
-G_TLS_PASSWORD_GET_INTERFACE
 G_TYPE_TLS_PASSWORD
 G_TYPE_TLS_PASSWORD_FLAGS
 </SECTION>
@@ -3257,16 +3250,6 @@ G_TYPE_TLS_INTERACTION_RESULT
 GTlsInteractionPrivate
 g_tls_interaction_get_type
 g_tls_interaction_result_get_type
-GTlsConsoleInteraction
-GTlsConsoleInteractionClass
-G_IS_TLS_CONSOLE_INTERACTION
-G_IS_TLS_CONSOLE_INTERACTION_CLASS
-g_tls_console_interaction_new
-G_TLS_CONSOLE_INTERACTION
-G_TYPE_TLS_CONSOLE_INTERACTION
-G_TLS_CONSOLE_INTERACTION_CLASS
-G_TLS_CONSOLE_INTERACTION_GET_CLASS
-g_tls_console_interaction_get_type
 </SECTION>
 
 <SECTION>
@@ -3283,9 +3266,6 @@ G_IS_DBUS_INTERFACE
 G_TYPE_DBUS_INTERFACE
 g_dbus_interface_get_type
 G_DBUS_INTERFACE_GET_IFACE
-<SUBSECTION Private>
-g_dbus_object_lookup_with_typecheck
-g_dbus_object_peek_with_typecheck
 </SECTION>
 
 

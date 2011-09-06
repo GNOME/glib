@@ -25,7 +25,7 @@
 #include "gasynchelper.h"
 
 
-/**
+/*< private >
  * SECTION:gasynchelper
  * @short_description: Asynchronous Helper Functions
  * @include: gio/gio.h

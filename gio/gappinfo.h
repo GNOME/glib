@@ -79,6 +79,7 @@ typedef struct _GAppLaunchContextPrivate GAppLaunchContextPrivate;
  * @do_delete: Deletes a #GAppInfo. Since 2.20
  * @get_commandline: Gets the commandline for the #GAppInfo. Since 2.20
  * @get_display_name: Gets the display name for the #GAppInfo. Since 2.24
+ * @set_as_last_used_for_type: Sets the application as the last used. See g_app_info_set_as_last_used_for_type().
  *
  * Application Information interface, for operating system portability.
  */

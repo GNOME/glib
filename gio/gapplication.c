@@ -895,8 +895,6 @@ g_application_get_inactivity_timeout (GApplication *application)
  * used for next time g_application_release() drops the use count to
  * zero.  Any timeouts currently in progress are not impacted.
  *
- * Returns: the timeout, in milliseconds
- *
  * Since: 2.28
  **/
 void
