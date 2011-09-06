@@ -247,6 +247,35 @@ A test to perform on a file using g_file_test().
 @Returns: 
 
 
+<!-- ##### FUNCTION g_mkdtemp ##### -->
+<para>
+
+</para>
+
+@tmpl: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_mkdtemp_full ##### -->
+<para>
+
+</para>
+
+@tmpl: 
+@mode: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_dir_make_tmp ##### -->
+<para>
+
+</para>
+
+@tmpl: 
+@error: 
+@Returns: 
+
+
 <!-- ##### STRUCT GDir ##### -->
 <para>
 An opaque structure representing an opened directory.

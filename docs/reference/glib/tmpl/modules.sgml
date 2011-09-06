@@ -147,7 +147,7 @@ used, though that is not recommended.
 prefix and suffix. This should be freed when no longer needed.
 
 
-<!-- ##### FUNCTION g_module_open ##### -->
+<!-- ##### MACRO g_module_open ##### -->
 <para>
 Opens a module. If the module has already been opened, its reference
 count is incremented. 
@@ -164,11 +164,12 @@ appended and g_module_open() tries to open the corresponding module. If
 eventually that fails as well, %NULL is returned.
 </para>
 
+@Returns: a #GModule on success, or %NULL on failure.
+<!-- # Unused Parameters # -->
 @file_name: the name of the file containing the module, or %NULL to obtain
   a #GModule representing the main program itself.
 @flags: the flags used for opening the module. This can be the logical
 OR of any of the #GModuleFlags.
-@Returns: a #GModule on success, or %NULL on failure.
 
 
 <!-- ##### ENUM GModuleFlags ##### -->
@@ -199,14 +200,15 @@ Note that a valid symbol can be %NULL.
 @Returns: %TRUE on success.
 
 
-<!-- ##### FUNCTION g_module_name ##### -->
+<!-- ##### MACRO g_module_name ##### -->
 <para>
 Gets the filename from a #GModule.
 </para>
 
-@module: a #GModule.
 @Returns: the filename of the module, or "main" if the module is the main
 program itself.
+<!-- # Unused Parameters # -->
+@module: a #GModule.
 
 
 <!-- ##### FUNCTION g_module_make_resident ##### -->

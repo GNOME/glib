@@ -198,6 +198,14 @@ Returns %TRUE if tests are run in quiet mode.
 @fteardown: 
 
 
+<!-- ##### FUNCTION g_test_fail ##### -->
+<para>
+
+</para>
+
+@void: 
+
+
 <!-- ##### FUNCTION g_test_message ##### -->
 <para>
 

@@ -137,13 +137,23 @@ length of the sleep.
 @Returns: 
 
 
-<!-- ##### STRUCT GTimeSpec ##### -->
+<!-- ##### FUNCTION g_get_monotonic_time ##### -->
 <para>
 
 </para>
 
-@tv_sec: 
-@tv_nsec: 
+@void: 
+@Returns: 
+
+
+<!-- ##### FUNCTION g_get_real_time ##### -->
+<para>
+
+</para>
+
+@void: 
+@Returns: 
+
 
 <!-- ##### STRUCT GDate ##### -->
 <para>

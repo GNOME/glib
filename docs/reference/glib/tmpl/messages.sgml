@@ -117,18 +117,15 @@ documentation.
 @args: the parameters to insert into the format string.
 
 
-<!-- ##### FUNCTION g_message ##### -->
+<!-- ##### MACRO g_message ##### -->
 <para>
 A convenience function/macro to log a normal message.
 </para>
 
-@format: 
-@Varargs: 
-<!-- # Unused Parameters # -->
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
 
-<!-- ##### FUNCTION g_warning ##### -->
+<!-- ##### MACRO g_warning ##### -->
 <para>
 A convenience function/macro to log a warning message.
 </para>
@@ -138,13 +135,10 @@ You can make warnings fatal at runtime by setting the %G_DEBUG environment
 variable (see <ulink url="glib-running.html">Running GLib Applications</ulink>).
 </para>
 
-@format: 
-@Varargs: 
-<!-- # Unused Parameters # -->
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
 
-<!-- ##### FUNCTION g_critical ##### -->
+<!-- ##### MACRO g_critical ##### -->
 <para>
 Logs a "critical warning" (#G_LOG_LEVEL_CRITICAL). It's more or less
 application-defined what constitutes a critical vs. a regular
@@ -159,13 +153,10 @@ the %G_DEBUG environment variable (see
 <ulink url="glib-running.html">Running GLib Applications</ulink>).
 </para>
 
-@format: 
-@Varargs: 
-<!-- # Unused Parameters # -->
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
 
-<!-- ##### FUNCTION g_error ##### -->
+<!-- ##### MACRO g_error ##### -->
 <para>
 A convenience function/macro to log an error message.
 Error messages are always fatal, resulting in a call to
@@ -175,22 +166,16 @@ expect. Using this function indicates a bug in your program, i.e. an
 assertion failure.
 </para>
 
-@format: 
-@Varargs: 
-<!-- # Unused Parameters # -->
 @...: format string, followed by parameters to insert into the format string (as with printf())
 
 
-<!-- ##### FUNCTION g_debug ##### -->
+<!-- ##### MACRO g_debug ##### -->
 <para>
 A convenience function/macro to log a debug message.
 </para>
 
-@format: 
-@Varargs: 
-@Since: 2.6
-<!-- # Unused Parameters # -->
 @...: format string, followed by parameters to insert into the format string (as with printf())
+@Since: 2.6
 
 
 <!-- ##### FUNCTION g_log_set_handler ##### -->

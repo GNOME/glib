@@ -234,6 +234,14 @@ the end of the string.
 @G_MATCH_EXACT: a pattern matching exactly one string.
 @G_MATCH_LAST: 
 
+<!-- ##### STRUCT GTimeSpec ##### -->
+<para>
+
+</para>
+
+@tv_sec: 
+@tv_nsec: 
+
 <!-- ##### USER_FUNCTION GWarningFunc ##### -->
 <para>
 Specifies the type of function passed to g_set_warning_handler().
