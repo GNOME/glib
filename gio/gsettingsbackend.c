@@ -676,7 +676,6 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
                                  GTree            *tree,
                                  gpointer          origin_tag)
 {
-  GSettingsBackendWatch *watch;
   const gchar **keys;
   gchar *path;
 
@@ -696,10 +695,7 @@ g_settings_backend_changed_tree (GSettingsBackend *backend,
   }
 #endif
 
-  for (watch = backend->priv->watches; watch; watch = watch->next)
-    watch->vtable->keys_changed (watch->target, backend,
-                                 path, keys, origin_tag);
-
+  g_settings_backend_keys_changed (backend, path, keys, origin_tag);
   g_free (path);
   g_free (keys);
 }
