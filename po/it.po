@@ -19,15 +19,15 @@ msgstr ""
 "Project-Id-Version: glib 2.29.x\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-07-23 14:51+0200\n"
+"POT-Creation-Date: 2011-09-06 19:49+0000\n"
+"PO-Revision-Date: 2011-09-06 23:26+0200\n"
 "Last-Translator: Luca Ferretti <lferrett@gnome.org>\n"
-"Language-Team: Italian <tp@lists.linux.it>\n"
-"Language: it\n"
+"Language-Team: Italiano <tp@lists.linux.it>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Language: it\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: ../glib/gbookmarkfile.c:780
 #, c-format
@@ -196,7 +196,7 @@ msgstr "P.M."
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a %d %b %Y %T %Z"
+msgstr "%a %e %b %Y %-H.%M.%S"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210
@@ -212,10 +212,9 @@ msgstr "%-H.%M.%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%-H.%M.%S"
+msgstr "%-I.%M.%S %p"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
@@ -441,8 +440,8 @@ msgstr "Apertura del file \"%s\" non riuscita: %s"
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
-"Lettura degli attributi del file \"%s\" non riuscita: fstat() non riuscita: "
-"%s"
+"Lettura degli attributi del file \"%s\" non riuscita: fstat() non riuscita: %"
+"s"
 
 #: ../glib/gfileutils.c:754
 #, c-format
@@ -718,8 +717,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Carattere '%s' spaiato, era atteso un carattere '>' per terminare il tag "
 "dell'elemento-vuoto \"%s\""
@@ -1187,8 +1186,8 @@ msgstr "sequenza di escape sconosciuta"
 #, c-format
 msgid "Error while parsing replacement text \"%s\" at char %lu: %s"
 msgstr ""
-"Errore durante l'analisi del testo di sostituzione \"%s\" al carattere %lu: "
-"%s"
+"Errore durante l'analisi del testo di sostituzione \"%s\" al carattere %lu: %"
+"s"
 
 #: ../glib/gshell.c:91
 msgid "Quoted text doesn't begin with a quotation mark"
@@ -1221,20 +1220,20 @@ msgid "Failed to read data from child process"
 msgstr "Lettura di dati dal processo figlio non riuscita"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr ""
 "Creazione della pipe per comunicare con il processo figlio non riuscita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Lettura dalla pipe figlia non riuscita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Cambio della directory in \"%s\" non riuscito (%s)"
@@ -1301,36 +1300,36 @@ msgid "Unexpected error in waitpid() (%s)"
 msgstr "Errore inatteso in waitpid() (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Esecuzione di fork non riuscita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Esecuzione del processo figlio \"%s\" non riuscita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Ridirezione dell'output o input del processo figlio non riuscita (%s)"
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Esecuzione del fork per processo figlio non riuscita (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Errore sconosciuto nell'eseguire il processo figlio \"%s\""
 
 # (%s) è in fondo perché risolto in g_strerror (gint)
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -1988,9 +1987,8 @@ msgstr ""
 "messaggio SIGNAL: il campo header INTERFACE sta usando il valore riservato "
 "org.freedestkop.DBus.Local"
 
-# FIXME plular form
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
 msgstr[0] "Si volevano leggere %lu byte ma si è ottenuto EOF"
@@ -2023,7 +2021,7 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Il valore \"%s\" analizzato non è una firma D-Bus valida"
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
@@ -2080,7 +2078,7 @@ msgstr ""
 "Il valore \"%s\" analizzato non è una signature D-Bus valida (per il corpo)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
@@ -2102,11 +2100,13 @@ msgstr ""
 
 # fds == plurale per file descriptor (I suppose)
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr "Il messaggio presentava %d FD, ma il campo header indica %d FD"
+msgstr ""
+"Il messaggio presentava %d file descriptor, ma il campo header indica %d "
+"file descriptor"
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
@@ -2122,8 +2122,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "Il corpo del messaggio presenta la signature \"%s\", ma la signature nel "
 "campo header è \"%s\""
@@ -2453,7 +2453,7 @@ msgstr "Impossibile creare la cartella utente di configurazione MIME (%s): %s"
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "Manca un identificatore nelle informazioni dell'applicazione"
 
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
@@ -2905,8 +2905,8 @@ msgstr " ed è stato specificato --strict; uscita.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 "errore nell'analizzare la chiave \"%s\" nello schema \"%s\" come specificato "
 "nel file di override \"%s\": %s."
@@ -3015,7 +3015,6 @@ msgid "Error renaming file: %s"
 msgstr "Errore nel rinominare il file: %s"
 
 #: ../gio/glocalfile.c:1126
-#, fuzzy
 msgid "Can't rename file, filename already exists"
 msgstr "Impossibile rinominare il file, il nome di file esiste già"
 
@@ -3833,8 +3832,8 @@ msgstr ""
 #, c-format
 msgid "Username or password is too long for SOCKSv5 protocol (max. is %i)."
 msgstr ""
-"Il nome utente o la password sono troppo lunghi per il protocollo SOCKSv5 "
-"(%i al massimo)."
+"Il nome utente o la password sono troppo lunghi per il protocollo SOCKSv5 (%"
+"i al massimo)."
 
 #: ../gio/gsocks5proxy.c:239
 msgid "SOCKSv5 authentication failed due to wrong username or password."
@@ -3850,7 +3849,6 @@ msgstr ""
 "byte)"
 
 #: ../gio/gsocks5proxy.c:352
-#, fuzzy
 msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "Il proxy server SOCKSv5 utilizza un tipo di indirizzo sconosciuto."
 
@@ -3892,9 +3890,8 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Impossibile gestire la versione %d della codifica GThemedIcon"
 
 #: ../gio/gtlscertificate.c:226
-#, fuzzy
 msgid "No PEM-encoded private key found"
-msgstr "Non è stato trovato alcun certificato codificato con PEM"
+msgstr "Non è stato trovata alcuna chiave privata codificata con PEM"
 
 #: ../gio/gtlscertificate.c:235
 msgid "Could not parse PEM-encoded private key"
@@ -3913,16 +3910,20 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
+"Questa è l'ultima opportunità di inserire la password correta prima che "
+"venga bloccato l'accesso."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"Sono state inserite diverse password non corrette, altri errori e l'accesso "
+"verrà bloccato."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "La password inserita non è corretta."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
