@@ -7,10 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib 2.29.x\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-09-03 13:47+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-06 21:49+0200\n"
+"PO-Revision-Date: 2011-09-06 21:49+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language:\n"
@@ -190,7 +189,6 @@ msgstr "%H.%M.%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%H.%M.%S"
@@ -1138,17 +1136,17 @@ msgstr "Teksten var tom (eller inneholdt kun blanke tegn)"
 msgid "Failed to read data from child process"
 msgstr "Feil under lesing av data fra underprosess"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Feil under oppretting av rør for kommunikasjon med underprosess (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Feil under lesing fra \"child pipe\" (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Feil ved skifte til katalog «%s» (%s)"
@@ -1208,32 +1206,32 @@ msgstr "Uventet feil i select() ved lesing av data fra underprosess (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Uventet feil i waitpid() (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Feil under kjøring av fork (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Feil under kjøring av underprosess «%s» (%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Feil under omdirigering av utdata eller inndata for underprosess (%s)"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Feil under kjøring av fork() for underprosess (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Ukjent feil under kjøring av underprosess «%s»"
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Klarte ikke å lese nok data fra underprosessens pid-rør (%s)"
