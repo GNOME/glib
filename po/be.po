@@ -1,10 +1,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-09-04 18:52+0300\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-07 01:29+0300\n"
+"PO-Revision-Date: 2011-09-07 01:28+0300\n"
 "Last-Translator: Ігар Грачышка <ihar.hrachyshka@gmail.com>\n"
 "Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
 "Language: be\n"
@@ -186,7 +185,6 @@ msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
 msgstr "%H:%M:%S"
@@ -1148,17 +1146,17 @@ msgstr "Тэкст пусты (або змяшчаў толькі прабель
 msgid "Failed to read data from child process"
 msgstr "Не ўдалося прачытаць даныя ад працэсу-нашчадка"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Не ўсталяваць стварыць канал сувязі з працэсам-нашчадкам (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Не ўдалося прачыць з канала сувязі з нашчадкам (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Не ўдалося перайсці ў каталог \"%s\" (%s)"
@@ -1220,32 +1218,32 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Нечаканая памылка ў функцыі waitpid() (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Не ўдалося разгалінаваць працэс (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Не ўдалося запусціць працэс-нашчадак \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Не ўдалося перанакіраваць вывад ці ўвод працэсу-нашчадка (%s)"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Не ўдалося адгалінаваць працэс-нашчадак (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Невядомая памылка запуску працэсу-нашчадка \"%s\""
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -3676,6 +3674,8 @@ msgid ""
 "The SOCKSv5 proxy requires an authentication method that is not supported by "
 "GLib."
 msgstr ""
+"Гэты SOCKSv5 проксі-сервер патрабуе такога спосабу ідэнтыфікацыі, які не "
+"падтрымліваецца бібліятэкай GLib."
 
 #: ../gio/gsocks5proxy.c:208
 #, c-format
@@ -3758,13 +3758,15 @@ msgstr "Не ўдалося разабраць сертыфікат, закад�
 msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
-msgstr ""
+msgstr "Гэта апошні шанец увесці правільны пароль да блакіравання доступу."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"Вы некалькі разоў уводзілі хібныя паролі, і калі вы працягнеце ўводзіць "
+"хібныя паролі, дык будзеце заблакіраваны."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
