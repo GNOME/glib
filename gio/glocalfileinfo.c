@@ -1479,7 +1479,7 @@ _g_local_file_info_get (const char             *basename,
           g_object_unref (info);
           g_set_error (error, G_IO_ERROR,
 		       g_io_error_from_errno (errsv),
-		       _("Error stating file '%s': %s"),
+		       _("Error when getting information for file '%s': %s"),
 		       display_name, g_strerror (errsv));
           g_free (display_name);
           return NULL;
@@ -1765,7 +1765,7 @@ _g_local_file_info_get_from_fd (int         fd,
 
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
-		   _("Error stating file descriptor: %s"),
+		   _("Error when getting information for file descriptor: %s"),
 		   g_strerror (errsv));
       return NULL;
     }

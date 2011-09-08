@@ -263,7 +263,7 @@ ensure_keyring_directory (GError **error)
               g_set_error (error,
                            G_IO_ERROR,
                            g_io_error_from_errno (errno),
-                           _("Error statting directory `%s': %s"),
+                           _("Error when getting information for directory `%s': %s"),
                            path,
                            strerror (errno));
               g_free (path);

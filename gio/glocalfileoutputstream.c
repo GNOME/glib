@@ -830,7 +830,7 @@ handle_overwrite_open (const char    *filename,
       char *display_name = g_filename_display_name (filename);
       g_set_error (error, G_IO_ERROR,
 		   g_io_error_from_errno (errsv),
-		   _("Error stating file '%s': %s"),
+		   _("Error when getting information for file '%s': %s"),
 		   display_name, g_strerror (errsv));
       g_free (display_name);
       goto err_out;
