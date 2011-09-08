@@ -391,8 +391,8 @@ g_simple_action_class_init (GSimpleActionClass *class)
    *
    * If @action is currently enabled.
    *
-   * If the action is disabled then calls to g_simple_action_activate() and
-   * g_simple_action_change_state() have no effect.
+   * If the action is disabled then calls to g_action_activate() and
+   * g_action_change_state() have no effect.
    *
    * Since: 2.28
    **/
