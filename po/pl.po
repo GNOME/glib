@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-08 20:43+0200\n"
-"PO-Revision-Date: 2011-09-08 20:44+0200\n"
+"POT-Creation-Date: 2011-09-08 21:07+0200\n"
+"PO-Revision-Date: 2011-09-08 21:08+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -180,7 +180,7 @@ msgstr "PM"
 #: ../glib/gdatetime.c:207
 msgctxt "GDateTime"
 msgid "%a %b %e %H:%M:%S %Y"
-msgstr "%a %e %b, %H:%M:%S %Y"
+msgstr "%a %-d %b %Y, %T"
 
 #. Translators: this is the preferred format for expressing the date
 #: ../glib/gdatetime.c:210
