@@ -378,10 +378,13 @@ struct GDBusWorker
   gboolean                            output_pending;
   /* used for writing */
   GMutex                             *write_lock;
+  /* queue of MessageToWriteData, protected by write_lock */
   GQueue                             *write_queue;
+  /* protected by write_lock */
   guint64                             write_num_messages_written;
+  /* list of FlushData, protected by write_lock */
   GList                              *write_pending_flushes;
-  /* list of CloseData */
+  /* list of CloseData, protected by write_lock */
   GList                              *pending_close_attempts;
 };
 
@@ -860,7 +863,11 @@ message_to_write_data_free (MessageToWriteData *data)
 
 static void write_message_continue_writing (MessageToWriteData *data);
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending is true on entry
+ */
 static void
 write_message_async_cb (GObject      *source_object,
                         GAsyncResult *res,
@@ -906,7 +913,11 @@ write_message_async_cb (GObject      *source_object,
   ;
 }
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending is true on entry
+ */
 static gboolean
 on_socket_ready (GSocket      *socket,
                  GIOCondition  condition,
@@ -917,7 +928,11 @@ on_socket_ready (GSocket      *socket,
   return FALSE; /* remove source */
 }
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending is true on entry
+ */
 static void
 write_message_continue_writing (MessageToWriteData *data)
 {
@@ -1050,7 +1065,11 @@ write_message_continue_writing (MessageToWriteData *data)
   ;
 }
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending is true on entry
+ */
 static void
 write_message_async (GDBusWorker         *worker,
                      MessageToWriteData  *data,
@@ -1104,7 +1123,11 @@ flush_data_list_complete (const GList  *flushers,
     }
 }
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending is true on entry
+ */
 static void
 ostream_flush_cb (GObject      *source_object,
                   GAsyncResult *res,
@@ -1152,7 +1175,11 @@ ostream_flush_cb (GObject      *source_object,
   g_free (data);
 }
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending is false on entry
+ */
 static void
 message_written (GDBusWorker *worker,
                  MessageToWriteData *message_data)
@@ -1224,7 +1251,11 @@ message_written (GDBusWorker *worker,
     }
 }
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending is true on entry
+ */
 static void
 write_message_cb (GObject       *source_object,
                   GAsyncResult  *res,
@@ -1325,7 +1356,11 @@ iostream_close_cb (GObject      *source_object,
   _g_dbus_worker_unref (worker);
 }
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending must be false on entry
+ */
 static void
 maybe_write_next_message (GDBusWorker *worker)
 {
@@ -1420,7 +1455,11 @@ maybe_write_next_message (GDBusWorker *worker)
     }
 }
 
-/* called in private thread shared by all GDBusConnection instances (without write-lock held) */
+/* called in private thread shared by all GDBusConnection instances
+ *
+ * write-lock is not held on entry
+ * output_pending may be true or false
+ */
 static gboolean
 write_message_in_idle_cb (gpointer user_data)
 {
@@ -1476,7 +1515,11 @@ schedule_write_in_worker_thread (GDBusWorker        *worker,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-/* can be called from any thread - steals blob */
+/* can be called from any thread - steals blob
+ *
+ * write_lock is not held on entry
+ * output_pending may be true or false
+ */
 void
 _g_dbus_worker_send_message (GDBusWorker    *worker,
                              GDBusMessage   *message,
@@ -1581,6 +1624,9 @@ _g_dbus_worker_close (GDBusWorker         *worker,
 /* This can be called from any thread - frees worker. Note that
  * callbacks might still happen if called from another thread than the
  * worker - use your own synchronization primitive in the callbacks.
+ *
+ * write_lock is not held on entry
+ * output_pending may be true or false
  */
 void
 _g_dbus_worker_stop (GDBusWorker *worker)
@@ -1604,6 +1650,9 @@ _g_dbus_worker_stop (GDBusWorker *worker)
 /* can be called from any thread (except the worker thread) - blocks
  * calling thread until all queued outgoing messages are written and
  * the transport has been flushed
+ *
+ * write_lock is not held on entry
+ * output_pending may be true or false
  */
 gboolean
 _g_dbus_worker_flush_sync (GDBusWorker    *worker,
