@@ -20,10 +20,8 @@
 #ifndef __GLIB_PRIVATE_H__
 #define __GLIB_PRIVATE_H__
 
+#include <glib.h>
 #include "gwakeup.h"
-#include "gmain.h"
-
-G_BEGIN_DECLS
 
 G_GNUC_INTERNAL
 GMainContext *          g_get_worker_context            (void);
@@ -45,8 +43,5 @@ typedef struct {
 } GLibPrivateVTable;
 
 GLibPrivateVTable *glib__private__ (void);
-
-
-G_END_DECLS
 
 #endif /* __G_MAIN_H__ */
