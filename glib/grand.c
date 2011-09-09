@@ -133,6 +133,8 @@ get_random_version (void)
   static gsize initialized = FALSE;
   static guint random_version;
 
+  g_thread_init_glib ();
+
   if (g_once_init_enter (&initialized))
     {
       const gchar *version_string = g_getenv ("G_RANDOM_VERSION");
