@@ -1187,7 +1187,7 @@ g_regex_new (const gchar         *pattern,
   gint erroffset;
   gint errcode;
   gboolean optimize = FALSE;
-  static gboolean initialized = FALSE;
+  static gsize initialised;
   unsigned long int pcre_compile_options;
 
   g_return_val_if_fail (pattern != NULL, NULL);
@@ -1195,7 +1195,7 @@ g_regex_new (const gchar         *pattern,
   g_return_val_if_fail ((compile_options & ~G_REGEX_COMPILE_MASK) == 0, NULL);
   g_return_val_if_fail ((match_options & ~G_REGEX_MATCH_MASK) == 0, NULL);
 
-  if (!initialized)
+  if (g_once_init_enter (&initialised))
     {
       gint support;
       const gchar *msg;
@@ -1218,7 +1218,7 @@ g_regex_new (const gchar         *pattern,
           return NULL;
         }
 
-      initialized = TRUE;
+      g_once_init_leave (&initialised, TRUE);
     }
 
   /* G_REGEX_OPTIMIZE has the same numeric value of PCRE_NO_UTF8_CHECK,
