@@ -130,10 +130,10 @@ static GRand* global_random = NULL;
 static guint
 get_random_version (void)
 {
-  static gboolean initialized = FALSE;
+  static gsize initialized = FALSE;
   static guint random_version;
-  
-  if (!initialized)
+
+  if (g_once_init_enter (&initialized))
     {
       const gchar *version_string = g_getenv ("G_RANDOM_VERSION");
       if (!version_string || version_string[0] == '\000' || 
@@ -147,19 +147,10 @@ get_random_version (void)
 		     version_string);
 	  random_version = 22;
 	}
-      initialized = TRUE;
+      g_once_init_leave (&initialized, TRUE);
     }
   
   return random_version;
-}
-
-/* This is called from g_thread_init(). It's used to
- * initialize some static data in a threadsafe way.
- */
-void 
-_g_rand_thread_init (void)
-{
-  (void)get_random_version ();
 }
 
 struct _GRand
