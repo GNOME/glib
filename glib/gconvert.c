@@ -1425,16 +1425,6 @@ get_filename_charset (const gchar **filename_charset)
   return is_utf8;
 }
 
-/* This is called from g_thread_init(). It's used to
- * initialize some static data in a threadsafe way.
- */
-void 
-_g_convert_thread_init (void)
-{
-  const gchar **dummy;
-  (void) g_get_filename_charsets (&dummy);
-}
-
 /**
  * g_filename_to_utf8:
  * @opsysstring:   a string in the encoding for filenames

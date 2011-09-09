@@ -957,10 +957,6 @@ g_thread_init_glib (void)
 
   /* accomplish log system initialization to enable messaging */
   _g_messages_thread_init_nomessage ();
-
-  /* we may run full-fledged initializers from here */
-  _g_convert_thread_init ();
-  _g_utils_thread_init ();
 }
 
 /* The following sections implement: GOnce, GStaticMutex, GStaticRecMutex,

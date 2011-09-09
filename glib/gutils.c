@@ -3648,15 +3648,6 @@ g_get_codeset (void)
   return g_strdup (charset);
 }
 
-/* This is called from g_thread_init(). It's used to
- * initialize some static data in a threadsafe way.
- */
-void
-_g_utils_thread_init (void)
-{
-  g_get_language_names ();
-}
-
 #ifdef G_OS_WIN32
 
 /**
@@ -3707,11 +3698,13 @@ _glib_get_locale_dir (void)
 #endif /* G_OS_WIN32 */
 
 static void
-ensure_gettext_initialized(void)
+ensure_gettext_initialized (void)
 {
-  static gboolean _glib_gettext_initialized = FALSE;
+  static gsize initialised;
 
-  if (!_glib_gettext_initialized)
+  g_thread_init_glib ();
+
+  if (g_once_init_enter (&initialised))
     {
 #ifdef G_OS_WIN32
       gchar *tmp = _glib_get_locale_dir ();
@@ -3723,7 +3716,7 @@ ensure_gettext_initialized(void)
 #    ifdef HAVE_BIND_TEXTDOMAIN_CODESET
       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #    endif
-      _glib_gettext_initialized = TRUE;
+      g_once_init_leave (&initialised, TRUE);
     }
 }
 

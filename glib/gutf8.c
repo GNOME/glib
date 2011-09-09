@@ -597,7 +597,9 @@ g_get_charset (const char **charset)
       g_static_private_set (&cache_private, cache, charset_cache_free);
     }
 
+  G_LOCK (aliases);
   raw = _g_locale_charset_raw ();
+  G_UNLOCK (aliases);
   
   if (!(cache->raw && strcmp (cache->raw, raw) == 0))
     {
