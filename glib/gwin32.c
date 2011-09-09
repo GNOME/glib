@@ -52,6 +52,7 @@
 #endif /* _MSC_VER || __DMC__ */
 
 #include "glib.h"
+#include "gthreadprivate.h"
 
 #ifdef G_WITH_CYGWIN
 #include <sys/cygwin.h>
@@ -492,29 +493,6 @@ g_win32_get_package_installation_subdirectory (const gchar *package,
 
 #endif
 
-static guint windows_version;
-
-static void 
-g_win32_windows_version_init (void)
-{
-  static gboolean beenhere = FALSE;
-
-  if (!beenhere)
-    {
-      beenhere = TRUE;
-      windows_version = GetVersion ();
-
-      if (windows_version & 0x80000000)
-	g_error ("This version of GLib requires NT-based Windows.");
-    }
-}
-
-void 
-_g_win32_thread_init (void)
-{
-  g_win32_windows_version_init ();
-}
-
 /**
  * g_win32_get_windows_version:
  *
@@ -535,8 +513,13 @@ _g_win32_thread_init (void)
 guint
 g_win32_get_windows_version (void)
 {
-  g_win32_windows_version_init ();
-  
+  static gsize windows_version;
+
+  g_thread_init_glib ();
+
+  if (g_once_init_enter (&windows_version))
+    g_once_init_leave (&windows_version, GetVersion ());
+
   return windows_version;
 }
 

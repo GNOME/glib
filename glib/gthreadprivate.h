@@ -61,10 +61,6 @@ G_GNUC_INTERNAL void _g_utils_thread_init (void);
 G_GNUC_INTERNAL void _g_futex_thread_init (void);
 G_GNUC_INTERNAL void _g_thread_impl_init  (void);
 
-#ifdef G_OS_WIN32
-G_GNUC_INTERNAL void _g_win32_thread_init (void);
-#endif /* G_OS_WIN32 */
-
 G_END_DECLS
 
 #endif /* __G_THREADPRIVATE_H__ */
