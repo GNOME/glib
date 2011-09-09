@@ -22,6 +22,8 @@
 #ifndef __G_WAKEUP_H__
 #define __G_WAKEUP_H__
 
+#include <glib/gpoll.h>
+
 typedef struct _GWakeup GWakeup;
 
 G_GNUC_INTERNAL GWakeup *       g_wakeup_new            (void);
