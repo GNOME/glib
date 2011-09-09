@@ -58,7 +58,6 @@ G_GNUC_INTERNAL void _g_rand_thread_init (void);
 G_GNUC_INTERNAL void _g_main_thread_init (void);
 G_GNUC_INTERNAL void _g_atomic_thread_init (void);
 G_GNUC_INTERNAL void _g_utils_thread_init (void);
-G_GNUC_INTERNAL void _g_futex_thread_init (void);
 G_GNUC_INTERNAL void _g_thread_impl_init  (void);
 
 G_END_DECLS

@@ -963,7 +963,6 @@ g_thread_init_glib (void)
   _g_rand_thread_init ();
   _g_main_thread_init ();
   _g_utils_thread_init ();
-  _g_futex_thread_init ();
 }
 
 /* The following sections implement: GOnce, GStaticMutex, GStaticRecMutex,

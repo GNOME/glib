@@ -42,7 +42,6 @@
   #define g_pointer_bit_lock    _emufutex_g_pointer_bit_lock
   #define g_pointer_bit_trylock _emufutex_g_pointer_bit_trylock
   #define g_pointer_bit_unlock  _emufutex_g_pointer_bit_unlock
-  #define _g_futex_thread_init  _emufutex_g_futex_thread_init
 
   #define G_BIT_LOCK_FORCE_FUTEX_EMULATION
 
@@ -121,13 +120,12 @@ testcase (gconstpointer data)
   g_thread_init (NULL);
 
 #ifdef TEST_EMULATED_FUTEX
-  _g_futex_thread_init ();
   #define SUFFIX "-emufutex"
 
   /* ensure that we are using the emulated futex by checking
-   * (at compile-time) for the existance of 'g_futex_mutex'
+   * (at compile-time) for the existance of 'g_futex_address_list'
    */
-  g_assert (g_futex_mutex != NULL);
+  g_assert (g_futex_address_list == NULL);
 #else
   #define SUFFIX ""
 #endif

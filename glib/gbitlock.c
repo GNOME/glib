@@ -36,16 +36,9 @@
 #endif
 
 #ifndef HAVE_FUTEX
+static GStaticMutex g_futex_mutex = G_STATIC_MUTEX_INIT;
 static GSList *g_futex_address_list = NULL;
-static GMutex *g_futex_mutex = NULL;
 #endif
-
-void
-_g_futex_thread_init (void) {
-#ifndef HAVE_FUTEX
-  g_futex_mutex = g_mutex_new ();
-#endif
-}
 
 #ifdef HAVE_FUTEX
 /*
@@ -131,7 +124,7 @@ static void
 g_futex_wait (const volatile gint *address,
               gint                 value)
 {
-  g_mutex_lock (g_futex_mutex);
+  g_static_mutex_lock (&g_futex_mutex);
   if G_LIKELY (g_atomic_int_get (address) == value)
     {
       WaitAddress *waiter;
@@ -147,7 +140,7 @@ g_futex_wait (const volatile gint *address,
         }
 
       waiter->ref_count++;
-      g_cond_wait (waiter->wait_queue, g_futex_mutex);
+      g_cond_wait (waiter->wait_queue, g_static_mutex_get_mutex (&g_futex_mutex));
 
       if (!--waiter->ref_count)
         {
@@ -157,7 +150,7 @@ g_futex_wait (const volatile gint *address,
           g_slice_free (WaitAddress, waiter);
         }
     }
-  g_mutex_unlock (g_futex_mutex);
+  g_static_mutex_unlock (&g_futex_mutex);
 }
 
 static void
@@ -171,10 +164,10 @@ g_futex_wake (const volatile gint *address)
    *   2) need to -stay- locked until the end to ensure a wake()
    *      in another thread doesn't cause 'waiter' to stop existing
    */
-  g_mutex_lock (g_futex_mutex);
+  g_static_mutex_lock (&g_futex_mutex);
   if ((waiter = g_futex_find_address (address)))
     g_cond_signal (waiter->wait_queue);
-  g_mutex_unlock (g_futex_mutex);
+  g_static_mutex_unlock (&g_futex_mutex);
 }
 #endif
 
