@@ -113,7 +113,6 @@ uninstall-ms-lib:
 
 libglib_2_0_la_SOURCES = 	\
 	glib_probes.d		\
-	glibprivate.h		\
 	garray.c		\
 	gasyncqueue.c		\
 	gatomic.c		\
