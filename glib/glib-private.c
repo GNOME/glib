@@ -19,7 +19,6 @@
  * Author: Colin Walters <walters@verbum.org>
  */
 
-#include "gutils.h"
 #include "glib-private.h"
 
 /**
@@ -37,9 +36,11 @@ glib__private__ (void)
     g_wakeup_free,
     g_wakeup_get_pollfd,
     g_wakeup_signal,
-    g_wakeup_acknowledge
+    g_wakeup_acknowledge,
+
+    g_get_worker_context
   };
- 
+
   return &table;
 }
 

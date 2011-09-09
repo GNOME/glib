@@ -20,24 +20,28 @@
 #ifndef __GLIB_PRIVATE_H__
 #define __GLIB_PRIVATE_H__
 
-#include <glib.h>
-
 #include "gwakeup.h"
+#include "gmain.h"
 
 G_BEGIN_DECLS
+
+G_GNUC_INTERNAL
+GMainContext *          g_get_worker_context            (void);
 
 #define GLIB_PRIVATE_CALL(symbol) (glib__private__()->symbol)
 
 typedef struct {
   /* See gwakeup.c */
-  GWakeup *   (*g_wakeup_new)         (void);
-  void        (*g_wakeup_free)        (GWakeup *wakeup);
-  void        (*g_wakeup_get_pollfd)  (GWakeup *wakeup,
-				       GPollFD *poll_fd);
-  void        (*g_wakeup_signal)      (GWakeup *wakeup);
-  void        (*g_wakeup_acknowledge) (GWakeup *wakeup);
+  GWakeup *             (* g_wakeup_new)                (void);
+  void                  (* g_wakeup_free)               (GWakeup *wakeup);
+  void                  (* g_wakeup_get_pollfd)         (GWakeup *wakeup,
+                                                        GPollFD *poll_fd);
+  void                  (* g_wakeup_signal)             (GWakeup *wakeup);
+  void                  (* g_wakeup_acknowledge)        (GWakeup *wakeup);
 
-  /* Add other private functions here, initialize them in gutils.c */
+  /* See gmain.c */
+  GMainContext *        (* g_get_worker_context)        (void);
+  /* Add other private functions here, initialize them in glib-private.c */
 } GLibPrivateVTable;
 
 GLibPrivateVTable *glib__private__ (void);

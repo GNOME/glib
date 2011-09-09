@@ -98,7 +98,7 @@
 
 #include "gwakeup.h"
 
-#include "glibprivate.h"
+#include "glib-private.h"
 
 /**
  * SECTION:main
@@ -4250,7 +4250,7 @@ ensure_unix_signal_handler_installed_unlocked (int signum)
   if (!initialized)
     {
       sigemptyset (&installed_signal_mask);
-      glib_get_worker_context ();
+      g_get_worker_context ();
       initialized = TRUE;
     }
 
@@ -4754,7 +4754,7 @@ glib_worker_main (gpointer data)
 }
 
 GMainContext *
-glib_get_worker_context (void)
+g_get_worker_context (void)
 {
   static gsize initialised;
 
