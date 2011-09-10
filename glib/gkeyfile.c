@@ -766,8 +766,8 @@ g_key_file_parse_line (GKeyFile     *key_file,
       g_set_error (error, G_KEY_FILE_ERROR,
                    G_KEY_FILE_ERROR_PARSE,
                    _("Key file contains line '%s' which is not "
-                     "a key-value pair, group, or comment"), 
-		   line_utf8);
+                     "a key-value pair, group, or comment"),
+                   line_utf8);
       g_free (line_utf8);
 
       return;
@@ -1448,7 +1448,7 @@ g_key_file_get_string (GKeyFile     *key_file,
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
                        _("Key file contains key '%s' "
-                         "which has value that cannot be interpreted."),
+                         "which has a value that cannot be interpreted."),
                        key);
           g_error_free (key_file_error);
         }
@@ -1932,7 +1932,7 @@ g_key_file_get_boolean (GKeyFile     *key_file,
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
                        _("Key file contains key '%s' "
-                         "which has value that cannot be interpreted."),
+                         "which has a value that cannot be interpreted."),
                        key);
           g_error_free (key_file_error);
         }
@@ -2149,8 +2149,8 @@ g_key_file_get_integer (GKeyFile     *key_file,
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
                        _("Key file contains key '%s' in group '%s' "
-                         "which has value that cannot be interpreted."), key, 
-                       group_name);
+                         "which has a value that cannot be interpreted."),
+                         key, group_name);
           g_error_free (key_file_error);
         }
       else
@@ -2226,8 +2226,9 @@ g_key_file_get_int64 (GKeyFile     *key_file,
   if (*s == '\0' || *end != '\0')
     {
       g_set_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE,
-          "Key '%s' in group '%s' has value '%s' where int64 was expected",
-          key, group_name, s);
+                   _("Key '%s' in group '%s' has value '%s' "
+                     "where %s was expected"),
+                   key, group_name, s, "int64");
       return 0;
     }
 
@@ -2301,8 +2302,9 @@ g_key_file_get_uint64 (GKeyFile     *key_file,
   if (*s == '\0' || *end != '\0')
     {
       g_set_error (error, G_KEY_FILE_ERROR, G_KEY_FILE_ERROR_INVALID_VALUE,
-          "Key '%s' in group '%s' has value '%s' where uint64 was expected",
-          key, group_name, s);
+                   _("Key '%s' in group '%s' has value '%s' "
+                     "where %s was expected"),
+                   key, group_name, s, "uint64");
       return 0;
     }
 
@@ -2513,8 +2515,8 @@ g_key_file_get_double  (GKeyFile     *key_file,
           g_set_error (error, G_KEY_FILE_ERROR,
                        G_KEY_FILE_ERROR_INVALID_VALUE,
                        _("Key file contains key '%s' in group '%s' "
-                         "which has value that cannot be interpreted."), key,
-                       group_name);
+                         "which has a value that cannot be interpreted."),
+                       key, group_name);
           g_error_free (key_file_error);
         }
       else
