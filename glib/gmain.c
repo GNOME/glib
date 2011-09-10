@@ -497,14 +497,6 @@ g_main_context_unref (GMainContext *context)
   g_free (context);
 }
 
-static void
-g_main_context_init_pipe (GMainContext *context)
-{
-  context->wakeup = g_wakeup_new ();
-  g_wakeup_get_pollfd (context->wakeup, &context->wake_up_rec);
-  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
-}
-
 /**
  * g_main_context_new:
  * 
@@ -554,7 +546,9 @@ g_main_context_new (void)
   
   context->time_is_fresh = FALSE;
   
-  g_main_context_init_pipe (context);
+  context->wakeup = g_wakeup_new ();
+  g_wakeup_get_pollfd (context->wakeup, &context->wake_up_rec);
+  g_main_context_add_poll_unlocked (context, 0, &context->wake_up_rec);
 
   G_LOCK (main_context_list);
   main_context_list = g_slist_append (main_context_list, context);
