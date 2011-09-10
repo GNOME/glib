@@ -238,7 +238,6 @@ struct _GMainContext
   GWakeup *wakeup;
 
   GPollFD wake_up_rec;
-  gboolean poll_waiting;
 
 /* Flag indicating whether the set of fd's changed during a poll */
   gboolean poll_changed;
@@ -343,7 +342,6 @@ static void g_main_context_add_poll_unlocked    (GMainContext *context,
 						 GPollFD      *fd);
 static void g_main_context_remove_poll_unlocked (GMainContext *context,
 						 GPollFD      *fd);
-static void g_main_context_wakeup_unlocked      (GMainContext *context);
 
 static gboolean g_timeout_prepare  (GSource     *source,
 				    gint        *timeout);
@@ -893,8 +891,11 @@ g_source_attach (GSource      *source,
 
   result = g_source_attach_unlocked (source, context);
 
-  /* Now wake up the main loop if it is waiting in the poll() */
-  g_main_context_wakeup_unlocked (context);
+  /* If another thread has acquired the context, wake it up since it
+   * might be in poll() right now.
+   */
+  if (context->owner && context->owner != G_THREAD_SELF)
+    g_wakeup_signal (context->wakeup);
 
   UNLOCK_CONTEXT (context);
 
@@ -2625,15 +2626,6 @@ g_main_context_prepare (GMainContext *context,
       return FALSE;
     }
 
-  if (context->poll_waiting)
-    {
-      g_warning("g_main_context_prepare(): main loop already active in another thread");
-      UNLOCK_CONTEXT (context);
-      return FALSE;
-    }
-  
-  context->poll_waiting = TRUE;
-
 #if 0
   /* If recursing, finish up current dispatch, before starting over */
   if (context->pending_dispatches)
@@ -2827,8 +2819,6 @@ g_main_context_check (GMainContext *context,
 
   if (context->wake_up_rec.events)
     g_wakeup_acknowledge (context->wakeup);
-
-  context->poll_waiting = FALSE;
 
   /* If the set of poll file descriptors changed, bail out
    * and let the main loop rerun
@@ -3221,7 +3211,7 @@ g_main_loop_quit (GMainLoop *loop)
 
   LOCK_CONTEXT (loop->context);
   loop->is_running = FALSE;
-  g_main_context_wakeup_unlocked (loop->context);
+  g_wakeup_signal (loop->context->wakeup);
 
   if (loop->context->cond)
     g_cond_broadcast (loop->context->cond);
@@ -3422,7 +3412,7 @@ g_main_context_add_poll_unlocked (GMainContext *context,
   context->poll_changed = TRUE;
 
   /* Now wake up the main loop if it is waiting in the poll() */
-  g_main_context_wakeup_unlocked (context);
+  g_wakeup_signal (context->wakeup);
 }
 
 /**
@@ -3484,7 +3474,7 @@ g_main_context_remove_poll_unlocked (GMainContext *context,
   context->poll_changed = TRUE;
   
   /* Now wake up the main loop if it is waiting in the poll() */
-  g_main_context_wakeup_unlocked (context);
+  g_wakeup_signal (context->wakeup);
 }
 
 /**
@@ -3602,18 +3592,6 @@ g_main_context_get_poll_func (GMainContext *context)
   return result;
 }
 
-/* HOLDS: context's lock */
-/* Wake the main loop up from a poll() */
-static void
-g_main_context_wakeup_unlocked (GMainContext *context)
-{
-  if (context->poll_waiting)
-    {
-      context->poll_waiting = FALSE;
-      g_wakeup_signal (context->wakeup);
-    }
-}
-
 /**
  * g_main_context_wakeup:
  * @context: a #GMainContext
@@ -3626,12 +3604,10 @@ g_main_context_wakeup (GMainContext *context)
 {
   if (!context)
     context = g_main_context_default ();
-  
+
   g_return_if_fail (g_atomic_int_get (&context->ref_count) > 0);
 
-  LOCK_CONTEXT (context);
-  g_main_context_wakeup_unlocked (context);
-  UNLOCK_CONTEXT (context);
+  g_wakeup_signal (context->wakeup);
 }
 
 /**
