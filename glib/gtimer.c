@@ -328,7 +328,7 @@ mktime_utc (struct tm *tm)
 /**
  * g_time_val_from_iso8601:
  * @iso_date: an ISO 8601 encoded date string
- * @time_: a #GTimeVal
+ * @time_: (out): a #GTimeVal
  *
  * Converts a string containing an ISO 8601 encoded date and time
  * to a #GTimeVal and puts it into @time_.
