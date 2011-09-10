@@ -256,6 +256,9 @@ main (int argc,
 
   g_type_init ();
 
+  address = NULL;
+  connection = NULL;
+
   context = g_option_context_new (" <hostname>[:port] - Test GSocket client stuff");
   g_option_context_add_main_entries (context, cmd_entries, NULL);
   if (!g_option_context_parse (context, &argc, &argv, &error))
