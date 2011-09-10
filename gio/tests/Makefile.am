@@ -74,6 +74,7 @@ TEST_PROGS +=			\
 	gdbus-bz627724		\
 	appinfo			\
 	contenttype		\
+	mimeapps		\
 	file			\
 	$(NULL)
 endif
@@ -368,6 +369,9 @@ appinfo_test_LDADD   = $(progs_ldadd)
 contenttype_SOURCES = contenttype.c
 contenttype_LDADD   = $(progs_ldadd)
 
+mimeapps_SOURCES = mimeapps.c
+mimeapps_LDADD   = $(progs_ldadd)
+
 file_SOURCES = file.c
 file_LDADD   = $(progs_ldadd)
 
@@ -527,3 +531,6 @@ DISTCLEANFILES = \
 	test.mo				\
 	gsettings.store			\
 	gschemas.compiled
+
+distclean-local:
+	rm -r xdgdatahome
