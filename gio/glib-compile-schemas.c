@@ -463,7 +463,7 @@ key_state_start_choices (KeyState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           "<choices> can not be specified for keys "
+                           "<choices> cannot be specified for keys "
                            "tagged as having an enumerated type");
       return;
     }
@@ -881,7 +881,7 @@ schema_state_add_key (SchemaState  *state,
     {
       g_set_error_literal (error, G_MARKUP_ERROR,
                            G_MARKUP_ERROR_INVALID_CONTENT,
-                           _("can not add keys to a 'list-of' schema"));
+                           _("cannot add keys to a 'list-of' schema"));
       return NULL;
     }
 
