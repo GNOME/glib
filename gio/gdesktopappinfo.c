@@ -1455,14 +1455,16 @@ g_desktop_app_info_launch_uris_as_manager (GDesktopAppInfo            *appinfo,
  * <literal>OnlyShowIn</literal> and <literal>NotShowIn</literal>
  * desktop entry fields.
  *
- * The <ulink url="http://standards.freedesktop.org/menu-spec/latest/">Desktop 
+ * The <ulink url="http://standards.freedesktop.org/menu-spec/latest/">Desktop
  * Menu specification</ulink> recognizes the following:
  * <simplelist>
  *   <member>GNOME</member>
  *   <member>KDE</member>
  *   <member>ROX</member>
  *   <member>XFCE</member>
- *   <member>Old</member> 
+ *   <member>LXDE</member>
+ *   <member>Unity</member>
+ *   <member>Old</member>
  * </simplelist>
  *
  * Should be called only once; subsequent calls are ignored.
