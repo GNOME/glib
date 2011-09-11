@@ -533,10 +533,11 @@ void           g_type_free_instance   (GTypeInstance *instance);
           </para>
 
           <para>
-            If this is the first instance of the object ever created, the type system must create
-            a class structure: it allocates a buffer to hold the object's class structure and
-            initializes it. It first copies the parent's class structure over this structure
-            (if there is no parent, it initializes it to zero). It then invokes the 
+            If this is the first instance of the object ever created, the type system must create a class structure.
+            It allocates a buffer to hold the object's class structure and initializes it. The first part of the
+            class structure (ie: the embedded parent class structure) is initialized by copying the contents from
+            the class structure of the parent class. The rest of class structure is initialized to zero.  If there
+            is no parent, the entire class structure is initialized to zero. The type system then invokes the
             base_class_initialization functions (<link linkend="GBaseInitFunc"><type>GBaseInitFunc</type></link>) from topmost 
             fundamental object to bottom-most most derived object. The object's class_init 
             (<link linkend="GClassInitFunc"><type>GClassInitFunc</type></link>) function is invoked afterwards to complete
