@@ -6,16 +6,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-07-11 00:56+0300\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-06 15:07+0000\n"
+"PO-Revision-Date: 2011-09-07 02:38+0300\n"
 "Last-Translator: Rūdofls Mazurs <rudolfs.mazurs@gmail.com>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
-"Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: lv\n"
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
 "2);\n"
@@ -191,10 +191,9 @@ msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%H:%M:%S"
+msgstr "%I:%M:%S %p"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
@@ -486,39 +485,39 @@ msgstr[1] "%u baiti"
 msgstr[2] "%u baitu"
 
 #: ../glib/gfileutils.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f KiB"
-msgstr "%.1f KB"
+msgstr "%.1f KiB"
 
 #: ../glib/gfileutils.c:2010
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MiB"
-msgstr "%.1f MB"
+msgstr "%.1f MiB"
 
 #: ../glib/gfileutils.c:2013
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f GiB"
-msgstr "%.1f GB"
+msgstr "%.1f GiB"
 
 #: ../glib/gfileutils.c:2016
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f TiB"
-msgstr "%.1f TB"
+msgstr "%.1f TiB"
 
 #: ../glib/gfileutils.c:2019
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f PiB"
-msgstr "%.1f PB"
+msgstr "%.1f PiB"
 
 #: ../glib/gfileutils.c:2022
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f EiB"
-msgstr "%.1f EB"
+msgstr "%.1f EiB"
 
 #: ../glib/gfileutils.c:2035
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f kB"
-msgstr "%.1f KB"
+msgstr "%.1f kB"
 
 #: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2147
 #, c-format
@@ -547,12 +546,12 @@ msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
 #: ../glib/gfileutils.c:2087
-#, fuzzy, c-format
+#, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
-msgstr[0] "%u baits"
-msgstr[1] "%u baiti"
-msgstr[2] "%u baitu"
+msgstr[0] "%s baits"
+msgstr[1] "%s baiti"
+msgstr[2] "%s baitu"
 
 #: ../glib/gfileutils.c:2142
 #, c-format
@@ -684,8 +683,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Savāda rakstzīme '%s'. Tika gaidīta '>' rakstzīme, kas nobeigtu sākuma birku "
 "elementam '%s'"
@@ -1138,17 +1137,17 @@ msgstr "Teksts bija tukšs (vai saturēja tikai tukšumus)"
 msgid "Failed to read data from child process"
 msgstr "Nevarēju nolasīt datus no bērnprocesa"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Nevarēju izveidot programkanālu komunikācijai ar bērnprocesu (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Nevarēju nolasīt no bērna programkanāla (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Nevarēju pāriet uz direktoriju '%s' (%s)"
@@ -1207,32 +1206,32 @@ msgstr "Negaidīta kļūda iekš select(), lasot datus no bērnprocesa (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Negaidīta kļūda waitpid() (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Neizdevās sadalīt (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Nevarēju izpildīt bērnprocesu \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Nevarēju novadīt bērnprocesa (%s) izvadi vai ievadi"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Nevarēju sazarot bērnprocesu (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Nezināma kļūda, izpildot bērnprocesu \"%s\""
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
@@ -1861,12 +1860,12 @@ msgstr ""
 "freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
-msgstr[0] "Vēlējās lasīt %lu baitus, bet saņēma EOF"
+msgstr[0] "Vēlējās lasīt %lu baitu, bet saņēma EOF"
 msgstr[1] "Vēlējās lasīt %lu baitus, bet saņēma EOF"
-msgstr[2] "Vēlējās lasīt %lu baitus, bet saņēma EOF"
+msgstr[2] "Vēlējās lasīt %lu baitu, bet saņēma EOF"
 
 #: ../gio/gdbusmessage.c:1025
 #, c-format
@@ -1874,8 +1873,8 @@ msgid ""
 "Expected valid UTF-8 string but found invalid bytes at byte offset %d "
 "(length of string is %d). The valid UTF-8 string up until that point was `%s'"
 msgstr ""
-"Gaidīja derīgu UTF-8 virkni, bet atrada nederīgus baitus pie baitu nobīdes "
-"%d (virknes garums ir %d). Derīgā UTF-8 virkne līdz tai vietai bija `%s'"
+"Gaidīja derīgu UTF-8 virkni, bet atrada nederīgus baitus pie baitu nobīdes %"
+"d (virknes garums ir %d). Derīgā UTF-8 virkne līdz tai vietai bija `%s'"
 
 #: ../gio/gdbusmessage.c:1038
 #, c-format
@@ -1893,7 +1892,7 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Pasētā vērtība `%s' nav derīgs D-Bus objekta paraksts"
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
@@ -1946,15 +1945,15 @@ msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Parsētā vērtība `%s' nav derīgs D-Bus paraksts (pamattekstam)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
-"Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baiti"
+"Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baits"
 msgstr[1] ""
 "Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baiti"
 msgstr[2] ""
-"Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baiti"
+"Ziņojumā nav paraksta galvenes, bet ziņojuma pamatteksts ir %u baitu"
 
 #: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
@@ -1967,11 +1966,13 @@ msgid ""
 msgstr "Kļūda, serializējot GVariant ar tipa virkni `%s' uz D-Bus vadu formātu"
 
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr "Ziņojumam ir %d fds, bet galvenes lauks norāda %d fds"
+msgstr ""
+"Ziņojumam ir %d faila deskriptoru, bet galvenes lauks norāda %d faila "
+"deskriptorus"
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
@@ -1985,8 +1986,8 @@ msgstr "Ziņojuma pamattekstam ir paraksts `%s', bet nav paraksta galvenes"
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "Vēstules pamattekstam ir tipa paraksts `%s', bet paraksts galvenes laukā ir `"
 "%s'"
@@ -2301,7 +2302,7 @@ msgstr "Nevar izveidot lietotāja MIME konfigurācijas mapi %s: %s"
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "Lietotnes informācijai trūkst identifikatora"
 
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
@@ -2569,9 +2570,9 @@ msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "nederīgs nosaukums '%s': pēdējā rakstzīme nevar būt defise ('-')."
 
 #: ../gio/glib-compile-schemas.c:789
-#, fuzzy, c-format
+#, c-format
 msgid "invalid name '%s': maximum length is 1024"
-msgstr "nederīgs nosaukuma '%s': maksimālais garums ir 32"
+msgstr "nederīgs nosaukums '%s': maksimālais garums ir 1024"
 
 #: ../gio/glib-compile-schemas.c:858
 #, c-format
@@ -2667,8 +2668,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> paplašina <schema id='%s' list-of='%s'> bet "
-"'%s' nepaplašina '%s'"
+"<schema id='%s' list-of='%s'> paplašina <schema id='%s' list-of='%s'> bet '%"
+"s' nepaplašina '%s'"
 
 #: ../gio/glib-compile-schemas.c:1163
 #, c-format
@@ -2738,11 +2739,11 @@ msgstr " un tika norādīts --strict; iziet.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
-"kļūda, parsējot atslēgu `%s' shēmā `%s' kā norādīts pārrakstīšanas failā `"
-"%s': %s.  "
+"kļūda, parsējot atslēgu `%s' shēmā `%s' kā norādīts pārrakstīšanas failā `%"
+"s': %s.  "
 
 #: ../gio/glib-compile-schemas.c:1839
 #, c-format
@@ -2845,9 +2846,8 @@ msgid "Error renaming file: %s"
 msgstr "Kļūda, pārsaucot failu: %s"
 
 #: ../gio/glocalfile.c:1126
-#, fuzzy
 msgid "Can't rename file, filename already exists"
-msgstr "Nevar pārsaukt failu, fails jau eksistē"
+msgstr "Nevar pārsaukt failu, faila nosaukums jau eksistē"
 
 #: ../gio/glocalfile.c:1139 ../gio/glocalfile.c:2129 ../gio/glocalfile.c:2158
 #: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:571
@@ -3655,7 +3655,6 @@ msgstr ""
 "baiti)"
 
 #: ../gio/gsocks5proxy.c:352
-#, fuzzy
 msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "SOCKSv5 starpnieka serveris izmanto nezināmu adreses tipu."
 
@@ -3697,9 +3696,8 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "Nevar apstrādāt GThemedIcon versijas %d kodējumu"
 
 #: ../gio/gtlscertificate.c:226
-#, fuzzy
 msgid "No PEM-encoded private key found"
-msgstr "Nav atrasts PEM-iekodēts sertifikāts"
+msgstr "Nav atrasts PEM iekodēta privāta atslēga"
 
 #: ../gio/gtlscertificate.c:235
 msgid "Could not parse PEM-encoded private key"
@@ -3718,16 +3716,20 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
+"Šī ir pēdējā iespēja ievadīt pareizu paroli, pirms jums tiek bloķēta pieeja."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"Vairākas ievadītās paroles ir bijušas nepareizas, un jūs tiksiet izslēgts "
+"pēc "
+"turpmākām neveiksmēm."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "Ievadītā parole ir nepareiza."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
