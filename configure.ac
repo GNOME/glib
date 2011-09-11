@@ -251,7 +251,7 @@ dnl location to install runtime libraries, e.g. ../../lib to install
 dnl to /lib if libdir is /usr/lib
 AC_ARG_WITH(runtime-libdir,
            [AC_HELP_STRING([--with-runtime-libdir=RELPATH],
-                           [Install runtime libraries relative to libdir])],
+                           [install runtime libraries relative to libdir])],
            [],
 	   [with_runtime_libdir=""])
 GLIB_RUNTIME_LIBDIR="$with_runtime_libdir"
@@ -1694,8 +1694,8 @@ dnl *** Directory for GIO modules ***
 dnl *********************************
 
 AC_ARG_WITH(gio-module-dir,
-           [AC_HELP_STRING([--with-gio-module-dir=PATH],
-                           [Load gio modules from this directory [LIBDIR/gio/modules]])],
+           [AC_HELP_STRING([--with-gio-module-dir=DIR],
+                           [load gio modules from this directory [LIBDIR/gio/modules]])],
            [],
 	   [with_gio_module_dir='${libdir}/gio/modules'])
 GIO_MODULE_DIR=$with_gio_module_dir
@@ -1704,7 +1704,9 @@ AC_SUBST(GIO_MODULE_DIR)
 dnl **********************************
 dnl *** Check for libselinux (GIO) ***
 dnl **********************************
-AC_ARG_ENABLE(selinux, [  --disable-selinux       build without selinux support])
+AC_ARG_ENABLE(selinux,
+              AC_HELP_STRING([--disable-selinux],
+                             [build without selinux support]))
 msg_selinux=no
 SELINUX_LIBS=
 if test "x$enable_selinux" != "xno"; then
@@ -1754,11 +1756,12 @@ dnl ****************************
 
 should_disable_fam=no
 
-AC_ARG_ENABLE(fam, [  --disable-fam          build without enabling fam for file system monitoring],
+AC_ARG_ENABLE(fam,
+              AC_HELP_STRING([--disable-fam],
+                             [don't use fam for file system monitoring]),
                          [
                                 if test "x$enable_fam" = "xno"; then
                                         should_disable_fam=yes
-                                        echo "Not building FAM support"
                                 fi
                          ]
                          )
@@ -1782,7 +1785,8 @@ AM_CONDITIONAL(HAVE_FAM, [test "$fam_support" = "yes"])
 dnl *****************************
 dnl *** Check for xattr (GIO) ***
 dnl *****************************
-AC_ARG_ENABLE(xattr, [  --disable-xattr           build without xattr support])
+AC_ARG_ENABLE(xattr,
+              AC_HELP_STRING([--disable-xattr], [build without xattr support]))
 msg_xattr=no
 XATTR_LIBS=
 if test "x$enable_xattr" != "xno"; then
@@ -2707,7 +2711,7 @@ PCRE_REQUIRED_VERSION=8.11
 
 # Check if we should compile GRegex
 AC_ARG_ENABLE(regex, AC_HELP_STRING([--disable-regex],
-              [disable the compilation of GRegex]),
+                                    [disable the compilation of GRegex]),
 [case "${enableval}" in
   yes) enable_regex=true ;;
   no)  enable_regex=false ;;
@@ -2722,8 +2726,7 @@ if test x$enable_regex = xtrue; then
   # Check if we should use the internal or the system-supplied pcre
   AC_ARG_WITH(pcre,
              [AC_HELP_STRING([--with-pcre=@<:@internal/system@:>@],
-                             [specify whether to use the internal or the
-                              system-supplied PCRE library])])
+                             [whether to use system PCRE [default=internal]])])
 
   AM_CONDITIONAL(USE_SYSTEM_PCRE, [test "x$with_pcre" = xsystem])
 
@@ -2858,7 +2861,7 @@ dnl
 
 AC_ARG_ENABLE([dtrace],
              [AS_HELP_STRING([--enable-dtrace],
-                              [Enable inclusion of dtrace trace support])])
+                              [include tracing support for dtrace])])
 have_dtrace=no
 AC_MSG_CHECKING([whether to include dtrace tracing support])
 if test "x$enable_dtrace" != xno; then
@@ -2889,7 +2892,7 @@ AM_CONDITIONAL([ENABLE_DTRACE], [test x$have_dtrace = xyes ])
 AC_MSG_CHECKING([whether to include systemtap tracing support])
 AC_ARG_ENABLE([systemtap],
              [AS_HELP_STRING([--enable-systemtap],
-                              [Enable inclusion of systemtap trace support])])
+                              [include tracing support for systemtap])])
 have_systemtap=no
 if test "x$enable_systemtap" != xno -a "x$have_dtrace" = xyes; then
   have_systemtap=yes
@@ -2899,8 +2902,8 @@ AC_MSG_RESULT(${have_systemtap})
 AM_CONDITIONAL([ENABLE_SYSTEMTAP], [test x$have_systemtap = xyes])
 
 AC_ARG_WITH([tapset-install-dir],
-            [AS_HELP_STRING([--with-tapset-install-dir],
-            [The absolute path where the systemtap tapsets will be installed])],
+            AS_HELP_STRING([--with-tapset-install-dir=DIR],
+                            [path where systemtap tapsets are installed [DATADIR/systemtap/tapset]]),
             [if test "x${withval}" = x; then
 	       ABS_TAPSET_DIR="\$(datadir)/systemtap/tapset"
 	     else
@@ -2915,7 +2918,7 @@ dnl ************************************
 
 AC_ARG_ENABLE(gcov,
   AS_HELP_STRING([--enable-gcov],
-		 [Enable gcov]),
+		 [enable coverage testing with gcov]),
   [use_gcov=$enableval], [use_gcov=no])
 
 if test "x$use_gcov" = "xyes"; then
