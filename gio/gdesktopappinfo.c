@@ -2201,7 +2201,7 @@ app_info_in_list (GAppInfo *info,
  * those applications which claim to support the given content type exactly,
  * and not by MIME type subclassing.
  * Note that the first application of the list is the last used one, i.e.
- * the last one for which #g_app_info_set_as_last_used_for_type has been
+ * the last one for which g_app_info_set_as_last_used_for_type() has been
  * called.
  *
  * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfos
