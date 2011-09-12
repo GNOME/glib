@@ -1606,6 +1606,8 @@ _g_dbus_worker_thread_begin_func (gpointer user_data)
 
   /* begin reading */
   _g_dbus_worker_do_read (worker);
+
+  _g_dbus_worker_unref (worker);
 }
 
 GDBusWorker *
@@ -1646,7 +1648,8 @@ _g_dbus_worker_new (GIOStream                              *stream,
   if (G_IS_SOCKET_CONNECTION (worker->stream))
     worker->socket = g_socket_connection_get_socket (G_SOCKET_CONNECTION (worker->stream));
 
-  _g_dbus_shared_thread_ref (_g_dbus_worker_thread_begin_func, worker);
+  _g_dbus_shared_thread_ref (_g_dbus_worker_thread_begin_func,
+                             _g_dbus_worker_ref (worker));
 
   return worker;
 }
