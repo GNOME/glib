@@ -93,7 +93,7 @@ djb_hash (const gchar *key)
   guint32 hash_value = 5381;
 
   while (*key)
-    hash_value = hash_value * 33 + *key++;
+    hash_value = hash_value * 33 + *(signed char *)key++;
 
   return hash_value;
 }
