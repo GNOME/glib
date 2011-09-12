@@ -2292,8 +2292,11 @@ g_app_info_get_fallback_for_type (const gchar *content_type)
 /**
  * g_app_info_get_all_for_type:
  * @content_type: the content type to find a #GAppInfo for
- * 
- * Gets a list of all #GAppInfos for a given content type.
+ *
+ * Gets a list of all #GAppInfos for a given content type,
+ * including the recommended and fallback #GAppInfos. See
+ * g_app_info_get_recommended_for_type() and
+ * g_app_info_get_fallback_for_type().
  *
  * Returns: (element-type GAppInfo) (transfer full): #GList of #GAppInfos
  *     for given @content_type or %NULL on error.
@@ -2344,12 +2347,13 @@ g_app_info_get_all_for_type (const char *content_type)
 
 /**
  * g_app_info_reset_type_associations:
- * @content_type: a content type 
+ * @content_type: a content type
  *
  * Removes all changes to the type associations done by
- * g_app_info_set_as_default_for_type(), 
- * g_app_info_set_as_default_for_extension(), 
- * g_app_info_add_supports_type() or g_app_info_remove_supports_type().
+ * g_app_info_set_as_default_for_type(),
+ * g_app_info_set_as_default_for_extension(),
+ * g_app_info_add_supports_type() or
+ * g_app_info_remove_supports_type().
  *
  * Since: 2.20
  */
@@ -2366,12 +2370,12 @@ g_app_info_reset_type_associations (const char *content_type)
  * @content_type: the content type to find a #GAppInfo for
  * @must_support_uris: if %TRUE, the #GAppInfo is expected to
  *     support URIs
- * 
- * Gets the #GAppInfo that corresponds to a given content type.
+ *
+ * Gets the default #GAppInfo for a given content type.
  *
  * Returns: (transfer full): #GAppInfo for given @content_type or
  *     %NULL on error.
- **/
+ */
 GAppInfo *
 g_app_info_get_default_for_type (const char *content_type,
 				 gboolean    must_support_uris)
@@ -2437,13 +2441,13 @@ g_app_info_get_default_for_type (const char *content_type,
  * g_app_info_get_default_for_uri_scheme:
  * @uri_scheme: a string containing a URI scheme.
  *
- * Gets the default application for launching applications 
- * using this URI scheme. A URI scheme is the initial part 
- * of the URI, up to but not including the ':', e.g. "http", 
+ * Gets the default application for handling URIs with
+ * the given URI scheme. A URI scheme is the initial part
+ * of the URI, up to but not including the ':', e.g. "http",
  * "ftp" or "sip".
- * 
+ *
  * Returns: (transfer full): #GAppInfo for given @uri_scheme or %NULL on error.
- **/
+ */
 GAppInfo *
 g_app_info_get_default_for_uri_scheme (const char *uri_scheme)
 {
