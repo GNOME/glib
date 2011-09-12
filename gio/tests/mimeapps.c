@@ -73,6 +73,8 @@ test_mimeapps (void)
   GKeyFile *keyfile;
   gchar *str;
   gboolean res;
+  GAppInfo *def;
+  GList *list;
 
   dir = g_get_current_dir ();
   xdgdir = g_build_filename (dir, "xdgdatahome", NULL);
@@ -106,6 +108,16 @@ test_mimeapps (void)
   g_app_info_add_supports_type (appinfo, "application/pdf", &error);
   g_assert_no_error (error);
 
+  /* check api results */
+  def = g_app_info_get_default_for_type ("application/pdf", FALSE);
+  list = g_app_info_get_recommended_for_type ("application/pdf");
+  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_cmpint (g_list_length (list), ==, 1);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* check mimeapps.list */
   keyfile = g_key_file_new ();
   g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
@@ -127,6 +139,17 @@ test_mimeapps (void)
   g_app_info_add_supports_type (appinfo2, "application/pdf", &error);
   g_assert_no_error (error);
 
+  /* check api results */
+  def = g_app_info_get_default_for_type ("application/pdf", FALSE);
+  list = g_app_info_get_recommended_for_type ("application/pdf");
+  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* check mimeapps.list */
   keyfile = g_key_file_new ();
   g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
@@ -146,6 +169,17 @@ test_mimeapps (void)
   g_app_info_set_as_default_for_type (appinfo, "application/pdf", &error);
   g_assert_no_error (error);
 
+  /* check api results */
+  def = g_app_info_get_default_for_type ("application/pdf", FALSE);
+  list = g_app_info_get_recommended_for_type ("application/pdf");
+  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo2));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* check mimeapps.list */
   keyfile = g_key_file_new ();
   g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
@@ -165,6 +199,17 @@ test_mimeapps (void)
   g_app_info_set_as_last_used_for_type (appinfo2, "application/pdf", &error);
   g_assert_no_error (error);
 
+  /* check api results */
+  def = g_app_info_get_default_for_type ("application/pdf", FALSE);
+  list = g_app_info_get_recommended_for_type ("application/pdf");
+  g_assert (g_app_info_equal (def, appinfo));
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo2));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* check mimeapps.list */
   keyfile = g_key_file_new ();
   g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
@@ -179,6 +224,13 @@ test_mimeapps (void)
   /* 5. reset everything */
   g_app_info_reset_type_associations ("application/pdf");
 
+  /* check api results */
+  def = g_app_info_get_default_for_type ("application/pdf", FALSE);
+  list = g_app_info_get_recommended_for_type ("application/pdf");
+  g_assert (def == NULL);
+  g_assert (list == NULL);
+
+  /* check mimeapps.list */
   keyfile = g_key_file_new ();
   g_key_file_load_from_file (keyfile, mimeapps, G_KEY_FILE_NONE, &error);
   g_assert_no_error (error);
