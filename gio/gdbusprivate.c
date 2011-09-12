@@ -340,7 +340,8 @@ struct GDBusWorker
 
   SharedThreadData                   *shared_thread_data;
 
-  gboolean                            stopped;
+  /* really a boolean, but GLib 2.28 lacks atomic boolean ops */
+  volatile gint                       stopped;
 
   /* TODO: frozen (e.g. G_DBUS_CONNECTION_FLAGS_DELAY_MESSAGE_PROCESSING) currently
    * only affects messages received from the other peer (since GDBusServer is the
@@ -472,7 +473,7 @@ _g_dbus_worker_emit_disconnected (GDBusWorker  *worker,
                                   gboolean      remote_peer_vanished,
                                   GError       *error)
 {
-  if (!worker->stopped)
+  if (!g_atomic_int_get (&worker->stopped))
     worker->disconnected_callback (worker, remote_peer_vanished, error, worker->user_data);
 }
 
@@ -480,7 +481,7 @@ static void
 _g_dbus_worker_emit_message_received (GDBusWorker  *worker,
                                       GDBusMessage *message)
 {
-  if (!worker->stopped)
+  if (!g_atomic_int_get (&worker->stopped))
     worker->message_received_callback (worker, message, worker->user_data);
 }
 
@@ -489,7 +490,7 @@ _g_dbus_worker_emit_message_about_to_be_sent (GDBusWorker  *worker,
                                               GDBusMessage *message)
 {
   GDBusMessage *ret;
-  if (!worker->stopped)
+  if (!g_atomic_int_get (&worker->stopped))
     ret = worker->message_about_to_be_sent_callback (worker, message, worker->user_data);
   else
     ret = message;
@@ -571,7 +572,7 @@ _g_dbus_worker_do_read_cb (GInputStream  *input_stream,
   g_mutex_lock (worker->read_lock);
 
   /* If already stopped, don't even process the reply */
-  if (worker->stopped)
+  if (g_atomic_int_get (&worker->stopped))
     goto out;
 
   error = NULL;
@@ -1631,7 +1632,7 @@ _g_dbus_worker_close (GDBusWorker         *worker,
 void
 _g_dbus_worker_stop (GDBusWorker *worker)
 {
-  worker->stopped = TRUE;
+  g_atomic_int_set (&worker->stopped, TRUE);
 
   /* Cancel any pending operations and schedule a close of the underlying I/O
    * stream in the worker thread
