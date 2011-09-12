@@ -1947,6 +1947,10 @@ start_type (GMarkupParseContext *context,
           const char *cp = ctype + strlen(ctype) - 1;
           while (cp > ctype && *cp-- == '*')
             pointer_depth++;
+
+	  if (g_str_has_prefix (ctype, "gpointer")
+	      || g_str_has_prefix (ctype, "gconstpointer"))
+	    pointer_depth++;
         }
 
       if (ctx->current_typed->type == G_IR_NODE_PARAM &&
