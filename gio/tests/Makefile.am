@@ -1,3 +1,4 @@
+
 NULL =
 BUILT_SOURCES =
 
@@ -58,6 +59,7 @@ TEST_PROGS +=	 		\
 
 if OS_UNIX
 TEST_PROGS +=			\
+	gdbus-close-pending	\
 	gdbus-connection	\
 	gdbus-connection-slow	\
 	gdbus-names		\
@@ -260,6 +262,9 @@ gdbus_addresses_LDADD = $(progs_ldadd)
 
 gdbus_bz627724_SOURCES = gdbus-bz627724.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
 gdbus_bz627724_LDADD = $(progs_ldadd)
+
+gdbus_close_pending_SOURCES = gdbus-close-pending.c gdbus-sessionbus.c gdbus-sessionbus.h gdbus-tests.h gdbus-tests.c
+gdbus_close_pending_LDADD = $(progs_ldadd)
 
 if OS_UNIX
 gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
