@@ -1590,8 +1590,8 @@ _g_dbus_worker_new (GIOStream                              *stream,
   g_source_set_priority (idle_source, G_PRIORITY_DEFAULT);
   g_source_set_callback (idle_source,
                          _g_dbus_worker_do_initial_read,
-                         worker,
-                         NULL);
+                         _g_dbus_worker_ref (worker),
+                         (GDestroyNotify) _g_dbus_worker_unref);
   g_source_attach (idle_source, worker->shared_thread_data->context);
   g_source_unref (idle_source);
 
