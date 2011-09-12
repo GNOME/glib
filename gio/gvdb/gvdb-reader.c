@@ -254,7 +254,7 @@ gvdb_table_lookup (GvdbTable   *file,
     return NULL;
 
   for (key_length = 0; key[key_length]; key_length++)
-    hash_value = (hash_value * 33) + key[key_length];
+    hash_value = (hash_value * 33) + ((signed char *) key)[key_length];
 
   if (!gvdb_table_bloom_filter (file, hash_value))
     return NULL;
