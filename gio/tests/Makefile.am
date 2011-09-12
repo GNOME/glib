@@ -533,4 +533,4 @@ DISTCLEANFILES = \
 	gschemas.compiled
 
 distclean-local:
-	rm -r xdgdatahome
+	rm -r xdgdatahome xdgdatadir
