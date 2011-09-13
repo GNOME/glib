@@ -76,6 +76,11 @@ gboolean     _g_dbus_worker_flush_sync   (GDBusWorker    *worker,
                                           GCancellable   *cancellable,
                                           GError        **error);
 
+/* can be called from any thread */
+void         _g_dbus_worker_close        (GDBusWorker         *worker,
+                                          GCancellable        *cancellable,
+                                          GSimpleAsyncResult  *result);
+
 /* ---------------------------------------------------------------------------------------------------- */
 
 void _g_dbus_initialize (void);
