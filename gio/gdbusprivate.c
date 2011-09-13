@@ -370,13 +370,17 @@ struct GDBusWorker
   GSocketControlMessage             **read_ancillary_messages;
   gint                                read_num_ancillary_messages;
 
+  /* TRUE if an async write or flush is pending.
+   * Only the worker thread may change its value, and only with the write_lock.
+   * Other threads may read its value when holding the write_lock.
+   * The worker thread may read its value at any time.
+   */
+  gboolean                            output_pending;
   /* used for writing */
-  gint                                num_writes_pending;
   GMutex                             *write_lock;
   GQueue                             *write_queue;
   guint64                             write_num_messages_written;
   GList                              *write_pending_flushes;
-  gboolean                            flush_pending;
 };
 
 /* ---------------------------------------------------------------------------------------------------- */
@@ -1107,7 +1111,8 @@ ostream_flush_cb (GObject      *source_object,
   /* Make sure we tell folks that we don't have additional
      flushes pending */
   g_mutex_lock (data->worker->write_lock);
-  data->worker->flush_pending = FALSE;
+  g_assert (data->worker->output_pending);
+  data->worker->output_pending = FALSE;
   g_mutex_unlock (data->worker->write_lock);
 
   /* OK, cool, finally kick off the next write */
@@ -1164,7 +1169,8 @@ message_written (GDBusWorker *worker,
     }
   if (flushers != NULL)
     {
-      worker->flush_pending = TRUE;
+      g_assert (!worker->output_pending);
+      worker->output_pending = TRUE;
     }
   g_mutex_unlock (worker->write_lock);
 
@@ -1198,7 +1204,8 @@ write_message_cb (GObject       *source_object,
   GError *error;
 
   g_mutex_lock (data->worker->write_lock);
-  data->worker->num_writes_pending -= 1;
+  g_assert (data->worker->output_pending);
+  data->worker->output_pending = FALSE;
   g_mutex_unlock (data->worker->write_lock);
 
   error = NULL;
@@ -1225,15 +1232,17 @@ maybe_write_next_message (GDBusWorker *worker)
   MessageToWriteData *data;
 
  write_next:
+  /* we mustn't try to write two things at once */
+  g_assert (!worker->output_pending);
 
   g_mutex_lock (worker->write_lock);
   data = g_queue_pop_head (worker->write_queue);
   if (data != NULL)
-    worker->num_writes_pending += 1;
+    worker->output_pending = TRUE;
   g_mutex_unlock (worker->write_lock);
 
   /* Note that write_lock is only used for protecting the @write_queue
-   * and @num_writes_pending fields of the GDBusWorker struct ... which we
+   * and @output_pending fields of the GDBusWorker struct ... which we
    * need to modify from arbitrary threads in _g_dbus_worker_send_message().
    *
    * Therefore, it's fine to drop it here when calling back into user
@@ -1257,7 +1266,7 @@ maybe_write_next_message (GDBusWorker *worker)
         {
           /* filters dropped message */
           g_mutex_lock (worker->write_lock);
-          worker->num_writes_pending -= 1;
+          worker->output_pending = FALSE;
           g_mutex_unlock (worker->write_lock);
           message_to_write_data_free (data);
           goto write_next;
@@ -1300,8 +1309,13 @@ static gboolean
 write_message_in_idle_cb (gpointer user_data)
 {
   GDBusWorker *worker = user_data;
-  if (worker->num_writes_pending == 0 && !worker->flush_pending)
+
+  /* Because this is the worker thread, we can read this struct member
+   * without holding the lock: no other thread ever modifies it.
+   */
+  if (!worker->output_pending)
     maybe_write_next_message (worker);
+
   return FALSE;
 }
 
@@ -1328,7 +1342,7 @@ _g_dbus_worker_send_message (GDBusWorker    *worker,
 
   g_mutex_lock (worker->write_lock);
   g_queue_push_tail (worker->write_queue, data);
-  if (worker->num_writes_pending == 0)
+  if (!worker->output_pending)
     {
       GSource *idle_source;
       idle_source = g_idle_source_new ();
@@ -1373,7 +1387,7 @@ _g_dbus_worker_new (GIOStream                              *stream,
   worker->stream = g_object_ref (stream);
   worker->capabilities = capabilities;
   worker->cancellable = g_cancellable_new ();
-  worker->flush_pending = FALSE;
+  worker->output_pending = FALSE;
 
   worker->frozen = initially_frozen;
   worker->received_messages_while_frozen = g_queue_new ();
