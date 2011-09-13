@@ -465,7 +465,8 @@ g_app_info_remove_supports_type (GAppInfo    *appinfo,
  * 
  * Gets the icon for the application.
  *
- * Returns: (transfer none): the default #GIcon for @appinfo.
+ * Returns: (transfer none): the default #GIcon for @appinfo or %NULL
+ * if there is no default icon.
  **/
 GIcon *
 g_app_info_get_icon (GAppInfo *appinfo)
