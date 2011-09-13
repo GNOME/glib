@@ -514,12 +514,6 @@ g_dbus_connection_finalize (GObject *object)
 
   if (connection->stream != NULL)
     {
-      /* We don't really care if closing the stream succeeds or not */
-      g_io_stream_close_async (connection->stream,
-                               G_PRIORITY_DEFAULT,
-                               NULL,  /* GCancellable */
-                               NULL,  /* GAsyncReadyCallback */
-                               NULL); /* userdata */
       g_object_unref (connection->stream);
       connection->stream = NULL;
     }
@@ -1223,20 +1217,6 @@ set_closed_unlocked (GDBusConnection *connection,
 
 /* ---------------------------------------------------------------------------------------------------- */
 
-static void
-close_in_thread_func (GSimpleAsyncResult *res,
-                      GObject            *object,
-                      GCancellable       *cancellable)
-{
-  GError *error;
-
-  error = NULL;
-  if (!g_dbus_connection_close_sync (G_DBUS_CONNECTION (object),
-                                     cancellable,
-                                     &error))
-    g_simple_async_result_take_error (res, error);
-}
-
 /**
  * g_dbus_connection_close:
  * @connection: A #GDBusConnection.
@@ -1286,10 +1266,7 @@ g_dbus_connection_close (GDBusConnection     *connection,
                                       callback,
                                       user_data,
                                       g_dbus_connection_close);
-  g_simple_async_result_run_in_thread (simple,
-                                       close_in_thread_func,
-                                       G_PRIORITY_DEFAULT,
-                                       cancellable);
+  _g_dbus_worker_close (connection->worker, cancellable, simple);
   g_object_unref (simple);
 }
 
@@ -1330,6 +1307,22 @@ g_dbus_connection_close_finish (GDBusConnection  *connection,
   return ret;
 }
 
+typedef struct {
+    GMainLoop *loop;
+    GAsyncResult *result;
+} SyncCloseData;
+
+static void
+sync_close_cb (GObject *source_object,
+               GAsyncResult *res,
+               gpointer user_data)
+{
+  SyncCloseData *data = user_data;
+
+  data->result = g_object_ref (res);
+  g_main_loop_quit (data->loop);
+}
+
 /**
  * g_dbus_connection_close_sync:
  * @connection: A #GDBusConnection.
@@ -1360,11 +1353,24 @@ g_dbus_connection_close_sync (GDBusConnection     *connection,
   CONNECTION_LOCK (connection);
   if (!connection->closed)
     {
-      ret = g_io_stream_close (connection->stream,
-                               cancellable,
-                               error);
-      if (ret)
-        set_closed_unlocked (connection, FALSE, NULL);
+      GMainContext *context;
+      SyncCloseData data;
+
+      context = g_main_context_new ();
+      g_main_context_push_thread_default (context);
+      data.loop = g_main_loop_new (context, TRUE);
+      data.result = NULL;
+
+      CONNECTION_UNLOCK (connection);
+      g_dbus_connection_close (connection, cancellable, sync_close_cb, &data);
+      g_main_loop_run (data.loop);
+      ret = g_dbus_connection_close_finish (connection, data.result, error);
+      CONNECTION_LOCK (connection);
+
+      g_object_unref (data.result);
+      g_main_loop_unref (data.loop);
+      g_main_context_pop_thread_default (context);
+      g_main_context_unref (context);
     }
   else
     {
