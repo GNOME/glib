@@ -49,6 +49,7 @@
 
 #ifdef G_OS_UNIX
 #include "glib-unix.h"
+#include <pthread.h>
 #ifdef HAVE_EVENTFD
 #include <sys/eventfd.h>
 #endif
@@ -174,6 +175,10 @@
  * <graphic fileref="mainloop-states.gif" format="GIF"></graphic>
  * </figure>
  * </refsect2>
+ *
+ * On Unix, the GLib mainloop is incompatible with fork().  Any program
+ * using the mainloop must either exec() or exit() from the child
+ * without returning to the mainloop.
  */
 
 /* Types */
@@ -374,6 +379,7 @@ static gboolean g_idle_dispatch    (GSource     *source,
 				    gpointer     user_data);
 
 static GMainContext *glib_worker_context;
+static gboolean      g_main_context_fork_detected;
 
 G_LOCK_DEFINE_STATIC (main_loop);
 static GMainContext *default_main_context;
@@ -497,6 +503,14 @@ g_main_context_unref (GMainContext *context)
   g_free (context);
 }
 
+#ifdef G_OS_UNIX
+static void
+g_main_context_forked (void)
+{
+  g_main_context_fork_detected = TRUE;
+}
+#endif
+
 /**
  * g_main_context_new:
  * 
@@ -507,24 +521,26 @@ g_main_context_unref (GMainContext *context)
 GMainContext *
 g_main_context_new (void)
 {
+  static gsize initialised;
   GMainContext *context;
 
   g_thread_init_glib ();
 
-  context = g_new0 (GMainContext, 1);
-
+  if (g_once_init_enter (&initialised))
+    {
 #ifdef G_MAIN_POLL_DEBUG
-  {
-    static gboolean beenhere = FALSE;
-
-    if (!beenhere)
-      {
-	if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
-	  _g_main_poll_debug = TRUE;
-	beenhere = TRUE;
-      }
-  }
+      if (getenv ("G_MAIN_POLL_DEBUG") != NULL)
+        _g_main_poll_debug = TRUE;
 #endif
+
+#ifdef G_OS_UNIX
+      pthread_atfork (NULL, NULL, g_main_context_forked);
+#endif
+
+      g_once_init_leave (&initialised, TRUE);
+    }
+
+  context = g_new0 (GMainContext, 1);
 
   g_static_mutex_init (&context->mutex);
 
@@ -2976,6 +2992,7 @@ g_main_context_iterate (GMainContext *context,
   if (!block)
     timeout = 0;
   
+  g_assert (!g_main_context_fork_detected);
   g_main_context_poll (context, timeout, max_priority, fds, nfds);
   
   some_ready = g_main_context_check (context, max_priority, fds, nfds);
