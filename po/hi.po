@@ -1,26 +1,27 @@
-# translation of glib.master.po to Hindi
+# translation of glib.glib-2-30.po to Hindi
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
 #
 # Ravishankar Shrivastava <raviratlami@yahoo.com>, 2004.
-# Rajesh Ranjan <rranjan@redhat.com>, 2005, 2006, 2008, 2009.
+# Rajesh Ranjan <rranjan@redhat.com>, 2005, 2006, 2008, 2009, 2011.
 # Rajesh Ranjan <rajesh672@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: glib.master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2009-09-11 15:59+0530\n"
-"Last-Translator: Rajesh Ranjan <rajesh672@gmail.com>\n"
-"Language-Team: Hindi <hindi.sf.net>\n"
-"Language: hi\n"
+"Project-Id-Version: glib.glib-2-30\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
+"cgi?product=glib&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2011-09-06 15:07+0000\n"
+"PO-Revision-Date: 2011-09-13 13:58+0530\n"
+"Last-Translator: Rajesh <rranjan>\n"
+"Language-Team: Hindi <hindi>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"Language: hi\n"
+"X-Generator: Lokalize 1.2\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -141,7 +142,8 @@ msgstr "फालबैक '%s' को कोड सेट '%s' में पर
 #: ../glib/gconvert.c:1886
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
-msgstr "\"file\" योजना का उपयोग करने वाली यूआरआई '%s' एक निरपेक्ष यूआरआई नहीं है"
+msgstr ""
+"\"file\" योजना का उपयोग करने वाली यूआरआई '%s' एक निरपेक्ष यूआरआई नहीं है"
 
 #: ../glib/gconvert.c:1896
 #, c-format
@@ -246,27 +248,27 @@ msgstr "जुलाई"
 #: ../glib/gdatetime.c:243
 msgctxt "full month name"
 msgid "August"
-msgstr ""
+msgstr "अगस्त"
 
 #: ../glib/gdatetime.c:245
 msgctxt "full month name"
 msgid "September"
-msgstr ""
+msgstr "सितम्बर"
 
 #: ../glib/gdatetime.c:247
 msgctxt "full month name"
 msgid "October"
-msgstr ""
+msgstr "अक्टूबर"
 
 #: ../glib/gdatetime.c:249
 msgctxt "full month name"
 msgid "November"
-msgstr ""
+msgstr "नवम्बर"
 
 #: ../glib/gdatetime.c:251
 msgctxt "full month name"
 msgid "December"
-msgstr ""
+msgstr "दिसम्बर"
 
 #: ../glib/gdatetime.c:266
 msgctxt "abbreviated month name"
@@ -306,27 +308,27 @@ msgstr "जुलाई"
 #: ../glib/gdatetime.c:280
 msgctxt "abbreviated month name"
 msgid "Aug"
-msgstr ""
+msgstr "अग."
 
 #: ../glib/gdatetime.c:282
 msgctxt "abbreviated month name"
 msgid "Sep"
-msgstr ""
+msgstr "सित."
 
 #: ../glib/gdatetime.c:284
 msgctxt "abbreviated month name"
 msgid "Oct"
-msgstr ""
+msgstr "अक्तू."
 
 #: ../glib/gdatetime.c:286
 msgctxt "abbreviated month name"
 msgid "Nov"
-msgstr ""
+msgstr "नवं."
 
 #: ../glib/gdatetime.c:288
 msgctxt "abbreviated month name"
 msgid "Dec"
-msgstr ""
+msgstr "दिसं."
 
 #: ../glib/gdatetime.c:303
 msgctxt "full weekday name"
@@ -493,43 +495,43 @@ msgstr "टैम्पलेट '%s' में XXXXXX समाहित नह
 #, c-format
 msgid "%u byte"
 msgid_plural "%u bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%u बाइट"
+msgstr[1] "%u बाइट"
 
 #: ../glib/gfileutils.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f KiB"
-msgstr "%.1f कि.बा."
+msgstr "%.1f KiB"
 
 #: ../glib/gfileutils.c:2010
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MiB"
-msgstr "%.1f मे.बा."
+msgstr "%.1f MiB"
 
 #: ../glib/gfileutils.c:2013
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f GiB"
-msgstr "%.1f गी.बा."
+msgstr "%.1f GiB"
 
 #: ../glib/gfileutils.c:2016
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f TiB"
-msgstr "%.1f कि.बा."
+msgstr "%.1f TiB"
 
 #: ../glib/gfileutils.c:2019
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f PiB"
-msgstr "%.1f कि.बा."
+msgstr "%.1f PiB"
 
 #: ../glib/gfileutils.c:2022
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f EiB"
-msgstr "%.1f कि.बा."
+msgstr "%.1f EiB"
 
 #: ../glib/gfileutils.c:2035
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f kB"
-msgstr "%.1f कि.बा."
+msgstr "%.1f kB"
 
 #: ../glib/gfileutils.c:2038 ../glib/gfileutils.c:2147
 #, c-format
@@ -542,27 +544,27 @@ msgid "%.1f GB"
 msgstr "%.1f गी.बा."
 
 #: ../glib/gfileutils.c:2044 ../glib/gfileutils.c:2157
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f TB"
-msgstr "%.1f कि.बा."
+msgstr "%.1f TB"
 
 #: ../glib/gfileutils.c:2047 ../glib/gfileutils.c:2162
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f PB"
-msgstr "%.1f कि.बा."
+msgstr "%.1f PB"
 
 #: ../glib/gfileutils.c:2050 ../glib/gfileutils.c:2167
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f EB"
-msgstr "%.1f कि.बा."
+msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
 #: ../glib/gfileutils.c:2087
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s byte"
+msgstr[1] "%s bytes"
 
 #: ../glib/gfileutils.c:2142
 #, c-format
@@ -641,7 +643,8 @@ msgid ""
 "Failed to parse '%-.*s', which should have been a digit inside a character "
 "reference (&#234; for example) - perhaps the digit is too large"
 msgstr ""
-"'%-.*s' के विश्लेषण करने में असफल, जो कि वर्ण संदर्भ के भीतर एक अंक होना चाहिए (उदाहरण "
+"'%-.*s' के विश्लेषण करने में असफल, जो कि वर्ण संदर्भ के भीतर एक अंक होना "
+"चाहिए (उदाहरण "
 "के लिए, &#234) - शायद अंक काफी बड़ा है"
 
 #: ../glib/gmarkup.c:650
@@ -650,8 +653,10 @@ msgid ""
 "ampersand character without intending to start an entity - escape ampersand "
 "as &amp;"
 msgstr ""
-"वर्ण संदर्भ अर्धविराम चिन्ह के साथ समाप्त नहीं होता है; बहुत संभव है कि आपने एक एम्परसेंड "
-"वर्ण का उपयोग किया है पर एक एंटिटी को प्रारंभ करना नहीं चाहते - एम्परसेंड को एस्केप करें "
+"वर्ण संदर्भ अर्धविराम चिन्ह के साथ समाप्त नहीं होता है; बहुत संभव है कि आपने "
+"एक एम्परसेंड "
+"वर्ण का उपयोग किया है पर एक एंटिटी को प्रारंभ करना नहीं चाहते - एम्परसेंड को "
+"एस्केप करें "
 "ऐसे &amp;"
 
 #: ../glib/gmarkup.c:676
@@ -674,32 +679,38 @@ msgid ""
 "Entity did not end with a semicolon; most likely you used an ampersand "
 "character without intending to start an entity - escape ampersand as &amp;"
 msgstr ""
-"एंटिटी अर्धविराम पर समाप्त नहीं होता, बहुत संभव है कि आपने एम्परसेन्ड वर्ण का प्रयोग किया "
+"एंटिटी अर्धविराम पर समाप्त नहीं होता, बहुत संभव है कि आपने एम्परसेन्ड वर्ण का "
+"प्रयोग किया "
 "है और एक एंटिटी प्रारंभ नहीं करना चाहते- एम्परसेंड को ऐसे एस्केप करें: &amp;"
 
 #: ../glib/gmarkup.c:1078
 msgid "Document must begin with an element (e.g. <book>)"
-msgstr "दस्तावेज़ एक अवयव के नाम से प्रारंभ होना चाहिए (उदाहरण के लिए- <पुस्तक>)"
+msgstr ""
+"दस्तावेज़ एक अवयव के नाम से प्रारंभ होना चाहिए (उदाहरण के लिए- <पुस्तक>)"
 
 #: ../glib/gmarkup.c:1118
 #, c-format
 msgid ""
 "'%s' is not a valid character following a '<' character; it may not begin an "
 "element name"
-msgstr "< के पश्चात आया '%s' एक वैध वर्ण नहीं है; यह अवयव नाम से प्रारंभ नहीं होता"
+msgstr ""
+"< के पश्चात आया '%s' एक वैध वर्ण नहीं है; यह अवयव नाम से प्रारंभ नहीं होता"
 
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
-msgstr "'%s' विसम वर्ण, एक '>' संप्रतीक प्रत्याशित रिक्त तत्व टैग '%s' समाप्त करने के लिए"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
+msgstr ""
+"'%s' विसम वर्ण, एक '>' संप्रतीक प्रत्याशित रिक्त तत्व टैग '%s' समाप्त करने के "
+"लिए"
 
 #: ../glib/gmarkup.c:1270
 #, c-format
 msgid ""
 "Odd character '%s', expected a '=' after attribute name '%s' of element '%s'"
-msgstr "विसम वर्ण '%s', प्रत्याशित है एक '=' लक्षण नाम '%s' अवयव '%s' के पश्चात्"
+msgstr ""
+"विसम वर्ण '%s', प्रत्याशित है एक '=' लक्षण नाम '%s' अवयव '%s' के पश्चात्"
 
 #: ../glib/gmarkup.c:1311
 #, c-format
@@ -708,8 +719,10 @@ msgid ""
 "element '%s', or optionally an attribute; perhaps you used an invalid "
 "character in an attribute name"
 msgstr ""
-"'%s' विसम संप्रतीक, एक '>' या '/' संप्रतीक को '%s' तत्व के आरंभ टैग को खत्म करना "
-"प्रत्याशित, या विकल्पतः एक गुण; शायद आपने गुण नाम में एक अमान्य संप्रतीक का प्रयोग किया है"
+"'%s' विसम संप्रतीक, एक '>' या '/' संप्रतीक को '%s' तत्व के आरंभ टैग को खत्म "
+"करना "
+"प्रत्याशित, या विकल्पतः एक गुण; शायद आपने गुण नाम में एक अमान्य संप्रतीक का "
+"प्रयोग किया है"
 
 #: ../glib/gmarkup.c:1355
 #, c-format
@@ -717,7 +730,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"पुराना वर्ण '%s', जब विशेषता '%s', अवयव '%s' का मान दिया जाता है तो बराबर चिह्न के "
+"पुराना वर्ण '%s', जब विशेषता '%s', अवयव '%s' का मान दिया जाता है तो बराबर "
+"चिह्न के "
 "बाद एक खुला कोट चिह्न वांछित है"
 
 #: ../glib/gmarkup.c:1488
@@ -725,14 +739,17 @@ msgstr ""
 msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
-msgstr "'%s' एक वैध वर्ण नहीं है वर्ण '</' के बाद; '%s' एक अवयव नाम से प्रारंभ नहीं होता"
+msgstr ""
+"'%s' एक वैध वर्ण नहीं है वर्ण '</' के बाद; '%s' एक अवयव नाम से प्रारंभ नहीं "
+"होता"
 
 #: ../glib/gmarkup.c:1524
 #, c-format
 msgid ""
 "'%s' is not a valid character following the close element name '%s'; the "
 "allowed character is '>'"
-msgstr "'%s' एक वैध वर्ण नहीं है क्लोज़ अवयव नाम '%s' के बाद; स्वीकार्य वर्ण है '>'"
+msgstr ""
+"'%s' एक वैध वर्ण नहीं है क्लोज़ अवयव नाम '%s' के बाद; स्वीकार्य वर्ण है '>'"
 
 #: ../glib/gmarkup.c:1535
 #, c-format
@@ -750,7 +767,9 @@ msgstr "दस्तावेज़ खाली था या उसमें �
 
 #: ../glib/gmarkup.c:1726
 msgid "Document ended unexpectedly just after an open angle bracket '<'"
-msgstr "दस्तावेज़ का अंत अप्रत्याशित रूप से एक खुला एंगल ब्रेकेट '<' के पश्चात ही हो गया"
+msgstr ""
+"दस्तावेज़ का अंत अप्रत्याशित रूप से एक खुला एंगल ब्रेकेट '<' के पश्चात ही हो "
+"गया"
 
 #: ../glib/gmarkup.c:1734 ../glib/gmarkup.c:1779
 #, c-format
@@ -758,7 +777,8 @@ msgid ""
 "Document ended unexpectedly with elements still open - '%s' was the last "
 "element opened"
 msgstr ""
-"दस्तावेज़ का अंत अप्रत्याशित रूप से अवयवों के खुला होने पर भी हो गया - '%s' अंतिम खुला हुआ "
+"दस्तावेज़ का अंत अप्रत्याशित रूप से अवयवों के खुला होने पर भी हो गया - '%s' "
+"अंतिम खुला हुआ "
 "अवयव था"
 
 #: ../glib/gmarkup.c:1742
@@ -767,7 +787,8 @@ msgid ""
 "Document ended unexpectedly, expected to see a close angle bracket ending "
 "the tag <%s/>"
 msgstr ""
-"दस्तावेज़ का अंत अप्रत्याशित रूप से हो गया, वांछित था देखना एक क्लोज़ एंगल ब्रेकेट टैग को बन्द "
+"दस्तावेज़ का अंत अप्रत्याशित रूप से हो गया, वांछित था देखना एक क्लोज़ एंगल "
+"ब्रेकेट टैग को बन्द "
 "करता हुआ <%s/>"
 
 #: ../glib/gmarkup.c:1748
@@ -787,7 +808,8 @@ msgid ""
 "Document ended unexpectedly after the equals sign following an attribute "
 "name; no attribute value"
 msgstr ""
-"दस्तावेज़ का अंत अप्रत्याशित रूप से बराबर के चिह्न के बाद एक विशेषता नाम के पश्चात् हो गया; "
+"दस्तावेज़ का अंत अप्रत्याशित रूप से बराबर के चिह्न के बाद एक विशेषता नाम के "
+"पश्चात् हो गया; "
 "कोई विशेषता मूल्य नहीं"
 
 #: ../glib/gmarkup.c:1772
@@ -797,11 +819,14 @@ msgstr "दस्तावेज़ का अंत अप्रत्याश
 #: ../glib/gmarkup.c:1788
 #, c-format
 msgid "Document ended unexpectedly inside the close tag for element '%s'"
-msgstr "दस्तावेज़ का अंत अप्रत्याशित रूप से अवयव '%s' हेतु बन्द टैग के भीतर हो गया"
+msgstr ""
+"दस्तावेज़ का अंत अप्रत्याशित रूप से अवयव '%s' हेतु बन्द टैग के भीतर हो गया"
 
 #: ../glib/gmarkup.c:1794
 msgid "Document ended unexpectedly inside a comment or processing instruction"
-msgstr "दस्तावेज़ का अंत अप्रत्याशित रूप से टिप्पणी या प्रक्रिया निर्देश के भीतर हो गया"
+msgstr ""
+"दस्तावेज़ का अंत अप्रत्याशित रूप से टिप्पणी या प्रक्रिया निर्देश के भीतर हो "
+"गया"
 
 #: ../glib/gregex.c:189
 msgid "corrupted object"
@@ -821,7 +846,8 @@ msgstr "बैकट्रैकिंग सीमा पहुँच गई"
 
 #: ../glib/gregex.c:210 ../glib/gregex.c:218
 msgid "the pattern contains items not supported for partial matching"
-msgstr "प्रारूप में वे वस्तुएँ समाहित हैं जो आंशिक मिलान के लिए समर्थित नहीं हैं"
+msgstr ""
+"प्रारूप में वे वस्तुएँ समाहित हैं जो आंशिक मिलान के लिए समर्थित नहीं हैं"
 
 #: ../glib/gregex.c:212 ../gio/glocalfile.c:2107
 msgid "internal error"
@@ -845,11 +871,11 @@ msgstr "न्यूलाइन फ्लैग का अवैध संय�
 
 #: ../glib/gregex.c:235
 msgid "bad offset"
-msgstr ""
+msgstr "बुरा ऑफसेट"
 
 #: ../glib/gregex.c:237
 msgid "short utf8"
-msgstr ""
+msgstr "छोटा utf8"
 
 #: ../glib/gregex.c:241
 msgid "unknown error"
@@ -1025,7 +1051,8 @@ msgstr "असंगत न्यूलाइन विकल्प"
 #: ../glib/gregex.c:395
 msgid ""
 "\\g is not followed by a braced name or an optionally braced non-zero number"
-msgstr "\\g कोष्ठित नाम के बाद नहीं आता है या वैकल्पिक रूप से कोष्ठित गैर शून्य संख्या"
+msgstr ""
+"\\g कोष्ठित नाम के बाद नहीं आता है या वैकल्पिक रूप से कोष्ठित गैर शून्य संख्या"
 
 #: ../glib/gregex.c:400
 msgid "unexpected repeat"
@@ -1133,17 +1160,17 @@ msgstr "पाठ खाली था (या उसमें सिर्फ �
 msgid "Failed to read data from child process"
 msgstr "संतति प्रक्रिया से डेटा पढ़ने में असफल"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "संतति प्रक्रिया (%s) से संचारण हेतु पाइप बनाने में असफल"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "संतति पाइप (%s) से पढ़ने में असफल"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "निर्देशिका '%s' (%s) पर बदलने में असफल"
@@ -1184,7 +1211,9 @@ msgstr "हेल्पर प्रोग्राम (%s) कार्या�
 msgid ""
 "Unexpected error in g_io_channel_win32_poll() reading data from a child "
 "process"
-msgstr "एक संतति प्रक्रिया से डेटा पढ़ने में g_io_channel_win32_poll() में अप्रत्याशित त्रुटि"
+msgstr ""
+"एक संतति प्रक्रिया से डेटा पढ़ने में g_io_channel_win32_poll() में "
+"अप्रत्याशित त्रुटि"
 
 #: ../glib/gspawn.c:207
 #, c-format
@@ -1194,39 +1223,40 @@ msgstr "संतति प्रक्रिया (%s) से डेटा प
 #: ../glib/gspawn.c:347
 #, c-format
 msgid "Unexpected error in select() reading data from a child process (%s)"
-msgstr "एक संतति प्रक्रिया (%s) से चुनें() पढ़ने का डेटा में अप्रत्याशित त्रुटि हुई"
+msgstr ""
+"एक संतति प्रक्रिया (%s) से चुनें() पढ़ने का डेटा में अप्रत्याशित त्रुटि हुई"
 
 #: ../glib/gspawn.c:432
 #, c-format
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() (%s) में अप्रत्याशित त्रुटि"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "(%s) फॉर्क करने में असफल"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "संतति प्रक्रिया \"%s\" (%s) कार्यान्वित करने में असफल"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "आउटपुट या संतति प्रक्रिया (%s) के इनपुट को अनुप्रेषित करने में असफल"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "संतति प्रक्रिया (%s) फॉर्क करने में असफल"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "संतति प्रक्रिया \"%s\" कार्यान्वित करने में अज्ञात त्रुटि"
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "संतति पीआईडी पाइप (%s) से पर्याप्त डेटा पढ़ने में असफल"
@@ -1320,7 +1350,8 @@ msgstr "फ़ाइल खाली है"
 msgid ""
 "Key file contains line '%s' which is not a key-value pair, group, or comment"
 msgstr ""
-"कुंजी फ़ाइल में '%s' पंक्ति समाहित है जो कि एक कुंजी मान जोड़ा, समूह, या टिप्पणी नहीं है"
+"कुंजी फ़ाइल में '%s' पंक्ति समाहित है जो कि एक कुंजी मान जोड़ा, समूह, या "
+"टिप्पणी नहीं है"
 
 #: ../glib/gkeyfile.c:828
 #, c-format
@@ -1367,14 +1398,18 @@ msgstr "कुंजी फ़ाइल में '%s' कुंजी है �
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
-msgstr "कुंजी फ़ाइल में '%s' कुंजी है जिसमें स्थित मान का विश्लेषण नहीं किया जा सकता है."
+msgstr ""
+"कुंजी फ़ाइल में '%s' कुंजी है जिसमें स्थित मान का विश्लेषण नहीं किया जा सकता "
+"है."
 
 #: ../glib/gkeyfile.c:2151 ../glib/gkeyfile.c:2515
 #, c-format
 msgid ""
 "Key file contains key '%s' in group '%s' which has value that cannot be "
 "interpreted."
-msgstr "कुंजी फ़ाइल में '%s' कुंजी है '%s' समूह में जिसके मान का विश्लेषण नहीं किया जा सकता."
+msgstr ""
+"कुंजी फ़ाइल में '%s' कुंजी है '%s' समूह में जिसके मान का विश्लेषण नहीं किया "
+"जा सकता."
 
 #: ../glib/gkeyfile.c:2701 ../glib/gkeyfile.c:2902 ../glib/gkeyfile.c:3474
 #, c-format
@@ -1431,9 +1466,8 @@ msgid "Operation was cancelled"
 msgstr "ऑपरेशन रद्द था"
 
 #: ../gio/gcharsetconverter.c:263
-#, fuzzy
 msgid "Invalid object, not initialized"
-msgstr "अवैध सॉकेट, आरंभीकृत नहीं"
+msgstr "अवैध वस्तु, आरंभीकृत नहीं"
 
 #: ../gio/gcharsetconverter.c:284 ../gio/gcharsetconverter.c:312
 #, fuzzy
@@ -1934,8 +1968,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 
 #: ../gio/gdbusmessage.c:2381
@@ -1998,7 +2032,7 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:88
 msgid "COMMAND"
-msgstr ""
+msgstr "कमांड"
 
 #: ../gio/gdbus-tool.c:93
 #, c-format
@@ -2012,13 +2046,21 @@ msgid ""
 "\n"
 "Use \"%s COMMAND --help\" to get help on each command.\n"
 msgstr ""
+"Commands:\n"
+"  help         Shows this information\n"
+"  introspect   Introspect a remote object\n"
+"  monitor      Monitor a remote object\n"
+"  call         Invoke a method on a remote object\n"
+"  emit         Emit a signal\n"
+"\n"
+"Use \"%s COMMAND --help\" to get help on each command.\n"
 
 #: ../gio/gdbus-tool.c:162 ../gio/gdbus-tool.c:218 ../gio/gdbus-tool.c:290
 #: ../gio/gdbus-tool.c:314 ../gio/gdbus-tool.c:691 ../gio/gdbus-tool.c:1010
 #: ../gio/gdbus-tool.c:1443
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s\n"
-msgstr "पंक्ति %d: पर त्रुटि %s"
+msgstr "त्रुटि: %s\n"
 
 #: ../gio/gdbus-tool.c:173 ../gio/gdbus-tool.c:231 ../gio/gdbus-tool.c:1459
 #, fuzzy, c-format
@@ -2188,7 +2230,7 @@ msgstr ""
 
 #: ../gio/gdbus-tool.c:1408
 msgid "Print XML"
-msgstr ""
+msgstr "प्रिंट XML"
 
 #: ../gio/gdbus-tool.c:1409
 msgid "Introspect children"
@@ -2668,8 +2710,8 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1839
@@ -2697,7 +2739,7 @@ msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1939 ../gio/glib-compile-schemas.c:1970
 msgid "DIRECTORY"
-msgstr ""
+msgstr "DIRECTORY"
 
 #: ../gio/glib-compile-schemas.c:1940
 msgid "Abort on any errors in schemas"
@@ -3215,7 +3257,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:552 ../gio/gsettings-tool.c:558
 #: ../gio/gsettings-tool.c:595
 msgid "SCHEMA[:PATH]"
-msgstr ""
+msgstr "SCHEMA[:PATH]"
 
 #: ../gio/gsettings-tool.c:557
 msgid "List the children of SCHEMA"
@@ -3229,7 +3271,7 @@ msgstr ""
 
 #: ../gio/gsettings-tool.c:565
 msgid "[SCHEMA[:PATH]]"
-msgstr ""
+msgstr "[SCHEMA[:PATH]]"
 
 #: ../gio/gsettings-tool.c:570
 msgid "Get the value of KEY"
@@ -3238,7 +3280,7 @@ msgstr ""
 #: ../gio/gsettings-tool.c:571 ../gio/gsettings-tool.c:577
 #: ../gio/gsettings-tool.c:589 ../gio/gsettings-tool.c:601
 msgid "SCHEMA[:PATH] KEY"
-msgstr ""
+msgstr "SCHEMA[:PATH] KEY"
 
 #: ../gio/gsettings-tool.c:576
 msgid "Query the range of valid values for KEY"
@@ -3250,7 +3292,7 @@ msgstr ""
 
 #: ../gio/gsettings-tool.c:583
 msgid "SCHEMA[:PATH] KEY VALUE"
-msgstr ""
+msgstr "SCHEMA[:PATH] KEY VALUE"
 
 #: ../gio/gsettings-tool.c:588
 msgid "Reset KEY to its default value"
@@ -3262,7 +3304,7 @@ msgstr ""
 
 #: ../gio/gsettings-tool.c:600
 msgid "Check if KEY is writable"
-msgstr ""
+msgstr "जाँचे यदि कुंजी लिखने योग्य है"
 
 #: ../gio/gsettings-tool.c:606
 msgid ""
@@ -3273,14 +3315,16 @@ msgstr ""
 
 #: ../gio/gsettings-tool.c:609
 msgid "SCHEMA[:PATH] [KEY]"
-msgstr ""
+msgstr "SCHEMA[:PATH] [KEY]"
 
 #: ../gio/gsettings-tool.c:613
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unknown command %s\n"
 "\n"
-msgstr "अनजान विकल्प %s"
+msgstr ""
+"अनजान कमांड %s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:621
 msgid ""
@@ -3305,6 +3349,26 @@ msgid ""
 "Use 'gsettings help COMMAND' to get detailed help.\n"
 "\n"
 msgstr ""
+"प्रयोग:\n"
+"  gsettings COMMAND [ARGS...]\n"
+"\n"
+"Commands:\n"
+"  help                      Show this information\n"
+"  list-schemas              List installed schemas\n"
+"  list-relocatable-schemas  List relocatable schemas\n"
+"  list-keys                 List keys in a schema\n"
+"  list-children             List children of a schema\n"
+"  list-recursively          List keys and values, recursively\n"
+"  range                     Queries the range of a key\n"
+"  get                       Get the value of a key\n"
+"  set                       Set the value of a key\n"
+"  reset                     Reset the value of a key\n"
+"  reset-recursively         Reset all values in a given schema\n"
+"  writable                  Check if a key is writable\n"
+"  monitor                   Watch for changes\n"
+"\n"
+"Use 'gsettings help COMMAND' to get detailed help.\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:643
 #, c-format
@@ -3315,32 +3379,39 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"प्रयोग:\n"
+"  gsettings %s %s\n"
+"\n"
+"%s\n"
+"\n"
 
 #: ../gio/gsettings-tool.c:648
 msgid "Arguments:\n"
-msgstr ""
+msgstr "वितर्क:\n"
 
 #: ../gio/gsettings-tool.c:652
 msgid "  COMMAND   The (optional) command to explain\n"
-msgstr ""
+msgstr "  COMMAND   The (optional) command to explain\n"
 
 #: ../gio/gsettings-tool.c:656
 msgid ""
 "  SCHEMA    The name of the schema\n"
 "  PATH      The path, for relocatable schemas\n"
 msgstr ""
+"  SCHEMA    The name of the schema\n"
+"  PATH      The path, for relocatable schemas\n"
 
 #: ../gio/gsettings-tool.c:661
 msgid "  KEY       The (optional) key within the schema\n"
-msgstr ""
+msgstr "  KEY       The (optional) key within the schema\n"
 
 #: ../gio/gsettings-tool.c:665
 msgid "  KEY       The key within the schema\n"
-msgstr ""
+msgstr "  KEY       The key within the schema\n"
 
 #: ../gio/gsettings-tool.c:669
 msgid "  VALUE     The value to set\n"
-msgstr ""
+msgstr "  VALUE     The value to set\n"
 
 #: ../gio/gsettings-tool.c:766
 #, c-format
@@ -3362,7 +3433,7 @@ msgstr "सॉकेट पहले से बंद है"
 
 #: ../gio/gsocket.c:298 ../gio/gsocket.c:2798 ../gio/gsocket.c:2842
 msgid "Socket I/O timed out"
-msgstr ""
+msgstr "सॉकेट I/O समय समाप्त"
 
 #: ../gio/gsocket.c:464
 #, c-format
@@ -3432,9 +3503,9 @@ msgid "Error sending data: %s"
 msgstr "आंकड़ा भेजने में त्रुटि: %s"
 
 #: ../gio/gsocket.c:2163
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "सॉकेट बनाने में असमर्थ: %s"
+msgstr "सॉकेट शटडाउन करने में असमर्थ: %s"
 
 #: ../gio/gsocket.c:2242
 #, c-format
@@ -3462,7 +3533,7 @@ msgstr "संदेश पाने में त्रुटि: %s"
 
 #: ../gio/gsocket.c:3598
 msgid "g_socket_get_credentials not implemented for this OS"
-msgstr ""
+msgstr "g_socket_get_credentials इस OS के लिए लागू नहीं"
 
 #: ../gio/gsocketclient.c:798 ../gio/gsocketclient.c:1368
 msgid "Unknown error on connect"
@@ -3502,7 +3573,7 @@ msgstr ""
 
 #: ../gio/gsocks4aproxy.c:183
 msgid "The server is not a SOCKSv4 proxy server."
-msgstr ""
+msgstr "सर्वर SOCKSv4 प्रॉक्सी सर्वर त्रुटि नहीं है."
 
 #: ../gio/gsocks4aproxy.c:190
 msgid "Connection through SOCKSv4 server was rejected"
@@ -3543,7 +3614,7 @@ msgstr ""
 
 #: ../gio/gsocks5proxy.c:359
 msgid "Internal SOCKSv5 proxy server error."
-msgstr ""
+msgstr "आंतरिक SOCKSv5 प्रॉक्सी सर्वर त्रुटि."
 
 #: ../gio/gsocks5proxy.c:365
 msgid "SOCKSv5 connection not allowed by ruleset."
@@ -3551,15 +3622,15 @@ msgstr ""
 
 #: ../gio/gsocks5proxy.c:372
 msgid "Host unreachable through SOCKSv5 server."
-msgstr ""
+msgstr "SOCKSv5 सर्वर के द्वारा मेजबान अपहुँचयोग्य."
 
 #: ../gio/gsocks5proxy.c:378
 msgid "Network unreachable through SOCKSv5 proxy."
-msgstr ""
+msgstr "SOCKSv5 प्रॉक्सी के द्वारा संजाल अपहुँचयोग्य"
 
 #: ../gio/gsocks5proxy.c:384
 msgid "Connection refused through SOCKSv5 proxy."
-msgstr ""
+msgstr "SOCKSv5 प्रॉक्सी के द्वारा कनेक्शन अस्वीकृत."
 
 #: ../gio/gsocks5proxy.c:390
 msgid "SOCKSv5 proxy does not support 'connect' command."
@@ -3571,7 +3642,7 @@ msgstr ""
 
 #: ../gio/gsocks5proxy.c:402
 msgid "Unknown SOCKSv5 proxy error."
-msgstr ""
+msgstr "अनजान SOCKSv5 प्रॉक्सी त्रुटि."
 
 #: ../gio/gthemedicon.c:498
 #, c-format
@@ -3580,19 +3651,19 @@ msgstr "GThemedIcon एन्कोडिंग का %d संस्करण 
 
 #: ../gio/gtlscertificate.c:226
 msgid "No PEM-encoded private key found"
-msgstr ""
+msgstr "PEM-एन्कोडेड निजी कुंजी नहीं मिला"
 
 #: ../gio/gtlscertificate.c:235
 msgid "Could not parse PEM-encoded private key"
-msgstr ""
+msgstr "PEM-एन्कोडेड निजी कुंजी नहीं कर सका"
 
 #: ../gio/gtlscertificate.c:260
 msgid "No PEM-encoded certificate found"
-msgstr ""
+msgstr "PEM-एन्कोडेड प्रमाणपत्र नहीं मिला"
 
 #: ../gio/gtlscertificate.c:269
 msgid "Could not parse PEM-encoded certificate"
-msgstr ""
+msgstr "PEM-एन्कोडेड प्रमाणपत्र विश्लेषित नहीं कर सका"
 
 #: ../gio/gtlspassword.c:114
 msgid ""
@@ -3608,7 +3679,7 @@ msgstr ""
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "दर्ज कूटशब्द गलत है."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
@@ -3629,9 +3700,8 @@ msgid "Received invalid fd"
 msgstr "अवैध fd पाया"
 
 #: ../gio/gunixconnection.c:371
-#, fuzzy
 msgid "Error sending credentials: "
-msgstr "आंकड़ा भेजने में त्रुटि: %s"
+msgstr "श्रेय भेजने में त्रुटि:"
 
 #: ../gio/gunixconnection.c:452
 #, c-format
@@ -3646,9 +3716,9 @@ msgid ""
 msgstr ""
 
 #: ../gio/gunixconnection.c:478
-#, fuzzy, c-format
+#, c-format
 msgid "Error enabling SO_PASSCRED: %s"
-msgstr "फ़ाइल का नाम बदलने में त्रुटि: %s"
+msgstr "SO_PASSCRED सक्रिय करने में त्रुटि: %s"
 
 #: ../gio/gunixconnection.c:509
 msgid ""
@@ -3656,14 +3726,14 @@ msgid ""
 msgstr ""
 
 #: ../gio/gunixconnection.c:545
-#, fuzzy, c-format
+#, c-format
 msgid "Not expecting control message, but got %d"
-msgstr "1 नियंत्रण संदेश की आशा कर रहा है, %d पाया"
+msgstr "नियंत्रण संदेश की आशा नहीं कर रहा है, %d पाया"
 
 #: ../gio/gunixconnection.c:571
 #, c-format
 msgid "Error while disabling SO_PASSCRED: %s"
-msgstr ""
+msgstr "SO_PASSCRED निष्क्रिय करने के दौरान त्रुटि: %s"
 
 #: ../gio/gunixinputstream.c:368 ../gio/gunixinputstream.c:388
 #: ../gio/gunixinputstream.c:466
@@ -3724,59 +3794,35 @@ msgid "Association creation not supported on win32"
 msgstr "win32 पर संगठन निर्माण समर्थित नहीं"
 
 #: ../gio/gwin32inputstream.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "Error reading from handle: %s"
-msgstr "फ़ाइल से पढ़ने के दौरान त्रुटि: %s"
+msgstr "हैंडल से पढ़ने के दौरान त्रुटि: %s"
 
 #: ../gio/gwin32inputstream.c:348 ../gio/gwin32outputstream.c:348
-#, fuzzy, c-format
+#, c-format
 msgid "Error closing handle: %s"
-msgstr "फ़ाइल बंद करने में त्रुटि: %s"
+msgstr "हैंडल बंद करने में त्रुटि: %s"
 
 #: ../gio/gwin32outputstream.c:318
-#, fuzzy, c-format
+#, c-format
 msgid "Error writing to handle: %s"
-msgstr "फ़ाइल में लिखने में त्रुटि: %s"
+msgstr "हैंडल लिखने में त्रुटि: %s"
 
 #: ../gio/gzlibcompressor.c:396 ../gio/gzlibdecompressor.c:349
-#, fuzzy
 msgid "Not enough memory"
-msgstr "स्मृति के बाहर"
+msgstr "पर्याप्त स्मृति नहीं है"
 
 #: ../gio/gzlibcompressor.c:403 ../gio/gzlibdecompressor.c:356
-#, fuzzy, c-format
+#, c-format
 msgid "Internal error: %s"
-msgstr "आंतरिक त्रुटि"
+msgstr "आंतरिक त्रुटि: %s"
 
 #: ../gio/gzlibcompressor.c:416 ../gio/gzlibdecompressor.c:370
 msgid "Need more input"
-msgstr ""
+msgstr "और इनपुट चाहिए"
 
 #: ../gio/gzlibdecompressor.c:342
-#, fuzzy
 msgid "Invalid compressed data"
-msgstr "अवैध होस्ट-नाम"
+msgstr "अवैध संकुचित डाटा"
 
-#, fuzzy
-#~ msgid "Do not give error for empty directory"
-#~ msgstr "निर्देशिका पर निर्देशिका नहीं खिसका सकता है"
 
-#, fuzzy
-#~ msgid "Key %s is not writable\n"
-#~ msgstr "%s प्रकार वर्गीकृत नहीं है"
-
-#, fuzzy
-#~ msgid "Invalid UTF-8 sequence in input"
-#~ msgstr "परिवर्तन इनपुट में अवैध अनुक्रम"
-
-#~ msgid "Reached maximum data array limit"
-#~ msgstr "अधिकतम आँकड़ा सरणी सीमा पर पहुँचा"
-
-#~ msgid "do not hide entries"
-#~ msgstr "प्रविष्टि मत छुपाएँ"
-
-#~ msgid "use a long listing format"
-#~ msgstr "लंबी सूची प्रारूप का प्रयोग करें"
-
-#~ msgid "[FILE...]"
-#~ msgstr "[फ़ाइल...]"
