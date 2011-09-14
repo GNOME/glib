@@ -1723,7 +1723,7 @@ class CodeGenerator:
                      '  for (n = 0; invalidated_properties[n] != NULL; n++)\n'
                      '    {\n'
                      '      info = (_ExtendedGDBusPropertyInfo *) g_dbus_interface_info_lookup_property ((GDBusInterfaceInfo *) &_%s_interface_info, invalidated_properties[n]);\n'
-                     '      g_datalist_remove_data (&proxy->priv->qdata, key);\n'
+                     '      g_datalist_remove_data (&proxy->priv->qdata, invalidated_properties[n]);\n'
                      '      if (info != NULL)\n'
                      '        g_object_notify (G_OBJECT (proxy), info->hyphen_name);\n'
                      '    }\n'
