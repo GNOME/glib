@@ -15,16 +15,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-08-13 22:12-0300\n"
-"Last-Translator: Adorilson Bezerra <adorilson@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-14 09:05-0400\n"
+"PO-Revision-Date: 2011-09-13 22:03-0300\n"
+"Last-Translator: Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
 "Language-Team: Brazilian Portugueses <gnome-pt_br-list@gnome.org>\n"
-"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-Language: Portuguese\n"
@@ -204,10 +203,9 @@ msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%H:%M:%S"
+msgstr "%I:%M:%S %p"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
@@ -698,8 +696,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Caractere estranho \"%s\", esperado um caractere \">\" para finalizar a "
 "marca \"%s\" de elemento vazio"
@@ -1163,17 +1161,17 @@ msgstr "Texto estava vazio (ou apenas continha espaços)"
 msgid "Failed to read data from child process"
 msgstr "Falha ao ler dados de processo filho"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com processo filho (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Falha ao ir para diretório \"%s\" (%s)"
@@ -1233,32 +1231,32 @@ msgstr "Erro inesperado no select() ao ler dados de processo filho (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erro inesperado em waitpid() (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Falha no fork (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Falha ao executar processo filho \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Falha ao redirecionar saída ou entrada do processo filho (%s)"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Falha no fork de processo filho (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erro desconhecido ao executar processo filho \"%s\""
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Falha ao ler dados suficientes de canal pid do filho (%s)"
@@ -2041,8 +2039,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "O corpo da mensagem tem o tipo de assinatura \"%s\", mas a assinatura no "
 "campo de cabeçalho é \"%s\""
@@ -2051,8 +2049,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
-"O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é "
-"\"(%s)\""
+"O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é \"(%"
+"s)\""
 
 #: ../gio/gdbusmessage.c:2938
 #, c-format
@@ -2801,8 +2799,8 @@ msgstr " e --strict foi especificado; saindo.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 "erro analisando chave \"%s\" no esquema \"%s\" como especificado no arquivo "
 "de sobrescrita \"%s\": %s."
@@ -2818,8 +2816,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
-"sobrescrita para chave \"%s\" no esquema \"%s\" no arquivo de sobrescrita "
-"\"%s\" está fora dos limites dado pelo esquema"
+"sobrescrita para chave \"%s\" no esquema \"%s\" no arquivo de sobrescrita \"%"
+"s\" está fora dos limites dado pelo esquema"
 
 #: ../gio/glib-compile-schemas.c:1885
 #, c-format
@@ -3954,8 +3952,8 @@ msgstr "Dados comprimidos inválidos"
 
 #~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 #~ msgstr ""
-#~ "O tipo do valor de retorno está incorreto, obtido \"%s\", era esperado "
-#~ "\"%s\""
+#~ "O tipo do valor de retorno está incorreto, obtido \"%s\", era esperado \"%"
+#~ "s\""
 
 #~ msgid ""
 #~ "Trying to set property %s of type %s but according to the expected "
