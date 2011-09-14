@@ -5,7 +5,7 @@
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2006-2009.
 # Vladimir Melo <vmelo@gnome.org>, 2007, 2009.
 # Luiz Armesto <luiz.armesto@gmail.com>, 2008.
-# Og Maciel <ogmaciel@gnome.org>, 2008-2009.
+# Og Maciel <ogmaciel@gnome.org>, 2008-2009, 2011.
 # Henrique P Machado <zehrique@gmail.com>, 2008-2009.
 # Fábio Nogueira <fnogueira@gnome.org>, 2009.
 # Jonh Wendell <jwendell@gnome.org>, 2009, 2010.
@@ -15,16 +15,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: glib\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-08-13 22:12-0300\n"
-"Last-Translator: Adorilson Bezerra <adorilson@gmail.com>\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-14 09:06-0400\n"
+"PO-Revision-Date: 2011-09-14 09:06-0400\n"
+"Last-Translator: Og Maciel <ogmaciel@gnome.org>\n"
 "Language-Team: Brazilian Portugueses <gnome-pt_br-list@gnome.org>\n"
-"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pt_BR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-Language: Portuguese\n"
@@ -101,7 +100,7 @@ msgstr "Nenhum aplicativo chamado \"%s\" registrou um marcador para \"%s\""
 msgid "Failed to expand exec line '%s' with URI '%s'"
 msgstr "Falha em expandir linha de execução \"%s\" com URI \"%s\""
 
-#: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1404
+#: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1405
 #: ../gio/gcharsetconverter.c:458
 #, c-format
 msgid "Conversion from character set '%s' to '%s' is not supported"
@@ -114,21 +113,21 @@ msgstr ""
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Não foi possível abrir conversor de \"%s\" para \"%s\""
 
-#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1576
-#: ../glib/giochannel.c:1618 ../glib/giochannel.c:2461 ../glib/gutf8.c:1012
-#: ../glib/gutf8.c:1463 ../gio/gcharsetconverter.c:345
+#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1577
+#: ../glib/giochannel.c:1619 ../glib/giochannel.c:2462 ../glib/gutf8.c:1014
+#: ../glib/gutf8.c:1465 ../gio/gcharsetconverter.c:345
 #: ../gio/gdatainputstream.c:854 ../gio/gdatainputstream.c:1291
 msgid "Invalid byte sequence in conversion input"
 msgstr "Sequência de bytes inválida na entrada de conversão"
 
-#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1583
-#: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
+#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1584
+#: ../glib/giochannel.c:2474 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Erro durante a conversão: %s"
 
-#: ../glib/gconvert.c:809 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
-#: ../glib/gutf8.c:1355 ../glib/gutf8.c:1459
+#: ../glib/gconvert.c:809 ../glib/gutf8.c:1010 ../glib/gutf8.c:1220
+#: ../glib/gutf8.c:1357 ../glib/gutf8.c:1461
 msgid "Partial character sequence at end of input"
 msgstr "Sequência de caracteres parcial no final da entrada"
 
@@ -138,37 +137,37 @@ msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Não é possível converter a sequência \"%s\" para conjunto caracteres \"%s\""
 
-#: ../glib/gconvert.c:1886
+#: ../glib/gconvert.c:1876
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "O URI \"%s\" não é um URI absoluto que utilize o esquema \"file\""
 
-#: ../glib/gconvert.c:1896
+#: ../glib/gconvert.c:1886
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "O URI de arquivo local \"%s\" não pode incluir um \"#\""
 
-#: ../glib/gconvert.c:1913
+#: ../glib/gconvert.c:1903
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "O URI \"%s\" é inválido"
 
-#: ../glib/gconvert.c:1925
+#: ../glib/gconvert.c:1915
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "O nome de servidor do URI \"%s\" é inválido"
 
-#: ../glib/gconvert.c:1941
+#: ../glib/gconvert.c:1931
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "O URI \"%s\" contém caracteres com escape inválido"
 
-#: ../glib/gconvert.c:2036
+#: ../glib/gconvert.c:2026
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "O nome de caminho \"%s\" não é um caminho absoluto"
 
-#: ../glib/gconvert.c:2046
+#: ../glib/gconvert.c:2036
 msgid "Invalid hostname"
 msgstr "Nome de servidor inválido"
 
@@ -204,10 +203,9 @@ msgstr "%H:%M:%S"
 
 #. Translators: this is the preferred format for expressing 12 hour time
 #: ../glib/gdatetime.c:216
-#, fuzzy
 msgctxt "GDateTime"
 msgid "%I:%M:%S %p"
-msgstr "%H:%M:%S"
+msgstr "%I:%M:%S %p"
 
 #: ../glib/gdatetime.c:229
 msgctxt "full month name"
@@ -579,26 +577,26 @@ msgstr "Falha ao ler link simbólico \"%s\": %s"
 msgid "Symbolic links not supported"
 msgstr "Não há suporte a links simbólicos"
 
-#: ../glib/giochannel.c:1408
+#: ../glib/giochannel.c:1409
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
 msgstr "Não foi possível abrir conversor de \"%s\" para \"%s\": %s"
 
-#: ../glib/giochannel.c:1753
+#: ../glib/giochannel.c:1754
 msgid "Can't do a raw read in g_io_channel_read_line_string"
 msgstr ""
 "Não é possível fazer uma leitura em bruto em g_io_channel_read_line_string"
 
-#: ../glib/giochannel.c:1800 ../glib/giochannel.c:2057
-#: ../glib/giochannel.c:2144
+#: ../glib/giochannel.c:1801 ../glib/giochannel.c:2058
+#: ../glib/giochannel.c:2145
 msgid "Leftover unconverted data in read buffer"
 msgstr "Dados residuais não convertidos no buffer de leitura"
 
-#: ../glib/giochannel.c:1881 ../glib/giochannel.c:1958
+#: ../glib/giochannel.c:1882 ../glib/giochannel.c:1959
 msgid "Channel terminates in a partial character"
 msgstr "Canal termina em um caractere parcial"
 
-#: ../glib/giochannel.c:1944
+#: ../glib/giochannel.c:1945
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Não é possível fazer uma leitura em bruto de g_io_channel_read_to_end"
 
@@ -698,8 +696,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Caractere estranho \"%s\", esperado um caractere \">\" para finalizar a "
 "marca \"%s\" de elemento vazio"
@@ -1163,17 +1161,17 @@ msgstr "Texto estava vazio (ou apenas continha espaços)"
 msgid "Failed to read data from child process"
 msgstr "Falha ao ler dados de processo filho"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Falha ao criar canal para comunicar com processo filho (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Falha ao ler de canal filho (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Falha ao ir para diretório \"%s\" (%s)"
@@ -1233,46 +1231,46 @@ msgstr "Erro inesperado no select() ao ler dados de processo filho (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Erro inesperado em waitpid() (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Falha no fork (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Falha ao executar processo filho \"%s\" (%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Falha ao redirecionar saída ou entrada do processo filho (%s)"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Falha no fork de processo filho (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Erro desconhecido ao executar processo filho \"%s\""
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Falha ao ler dados suficientes de canal pid do filho (%s)"
 
-#: ../glib/gutf8.c:1086
+#: ../glib/gutf8.c:1088
 msgid "Character out of range for UTF-8"
 msgstr "Caractere fora do limite para UTF-8"
 
-#: ../glib/gutf8.c:1186 ../glib/gutf8.c:1195 ../glib/gutf8.c:1325
-#: ../glib/gutf8.c:1334 ../glib/gutf8.c:1473 ../glib/gutf8.c:1569
+#: ../glib/gutf8.c:1188 ../glib/gutf8.c:1197 ../glib/gutf8.c:1327
+#: ../glib/gutf8.c:1336 ../glib/gutf8.c:1475 ../glib/gutf8.c:1571
 msgid "Invalid sequence in conversion input"
 msgstr "Sequência inválida na conversão da entrada"
 
-#: ../glib/gutf8.c:1484 ../glib/gutf8.c:1580
+#: ../glib/gutf8.c:1486 ../glib/gutf8.c:1582
 msgid "Character out of range for UTF-16"
 msgstr "Caractere fora do limite para UTF-16"
 
@@ -1376,9 +1374,9 @@ msgstr "Nome de chave inválido: %s"
 msgid "Key file contains unsupported encoding '%s'"
 msgstr "Arquivo de chave contém codificação \"%s\" sem suporte"
 
-#: ../glib/gkeyfile.c:1149 ../glib/gkeyfile.c:1311 ../glib/gkeyfile.c:2686
-#: ../glib/gkeyfile.c:2752 ../glib/gkeyfile.c:2887 ../glib/gkeyfile.c:3020
-#: ../glib/gkeyfile.c:3162 ../glib/gkeyfile.c:3394 ../glib/gkeyfile.c:3463
+#: ../glib/gkeyfile.c:1149 ../glib/gkeyfile.c:1311 ../glib/gkeyfile.c:2688
+#: ../glib/gkeyfile.c:2754 ../glib/gkeyfile.c:2889 ../glib/gkeyfile.c:3022
+#: ../glib/gkeyfile.c:3164 ../glib/gkeyfile.c:3396 ../glib/gkeyfile.c:3465
 #, c-format
 msgid "Key file does not have group '%s'"
 msgstr "Arquivo de chave não tem grupo \"%s\""
@@ -1393,59 +1391,58 @@ msgstr "Arquivo de chave não tem chave \"%s\""
 msgid "Key file contains key '%s' with value '%s' which is not UTF-8"
 msgstr "Arquivo de chave contém chave \"%s\" com valor \"%s\" que não é UTF-8"
 
-#: ../glib/gkeyfile.c:1450 ../glib/gkeyfile.c:1934
-#, c-format
-msgid "Key file contains key '%s' which has value that cannot be interpreted."
-msgstr ""
-"Arquivo de chave contém chave \"%s\" que tem valor que não pode ser "
-"interpretado."
-
-#: ../glib/gkeyfile.c:1566
+#: ../glib/gkeyfile.c:1450 ../glib/gkeyfile.c:1566 ../glib/gkeyfile.c:1934
 #, c-format
 msgid ""
 "Key file contains key '%s' which has a value that cannot be interpreted."
 msgstr ""
 "Arquivo de chave contém chave \"%s\" cujo valor não pode ser interpretado."
 
-#: ../glib/gkeyfile.c:2151 ../glib/gkeyfile.c:2515
+#: ../glib/gkeyfile.c:2151 ../glib/gkeyfile.c:2517
 #, c-format
 msgid ""
-"Key file contains key '%s' in group '%s' which has value that cannot be "
+"Key file contains key '%s' in group '%s' which has a value that cannot be "
 "interpreted."
 msgstr ""
-"Arquivo de chave contém chave \"%s\" no grupo \"%s\" que tem valor que não "
+"Arquivo de chave contém chave \"%s\" no grupo \"%s\" que tem um valor que não "
 "pode ser interpretado."
 
-#: ../glib/gkeyfile.c:2701 ../glib/gkeyfile.c:2902 ../glib/gkeyfile.c:3474
+#: ../glib/gkeyfile.c:2229 ../glib/gkeyfile.c:2305
+#, c-format
+msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
+msgstr ""
+"Chave \"%s\" no grupo \"%s\" tem o valor \"%s\" onde %s era esperado"
+
+#: ../glib/gkeyfile.c:2703 ../glib/gkeyfile.c:2904 ../glib/gkeyfile.c:3476
 #, c-format
 msgid "Key file does not have key '%s' in group '%s'"
 msgstr "Arquivo de chave não tem chave \"%s\" no grupo \"%s\""
 
-#: ../glib/gkeyfile.c:3708
+#: ../glib/gkeyfile.c:3710
 msgid "Key file contains escape character at end of line"
 msgstr "Arquivo de chave contém caractere de escape no fim da linha"
 
-#: ../glib/gkeyfile.c:3730
+#: ../glib/gkeyfile.c:3732
 #, c-format
 msgid "Key file contains invalid escape sequence '%s'"
 msgstr "Arquivo de chave contém sequência de escape \"%s\" inválida"
 
-#: ../glib/gkeyfile.c:3872
+#: ../glib/gkeyfile.c:3874
 #, c-format
 msgid "Value '%s' cannot be interpreted as a number."
 msgstr "O valor \"%s\" não pode ser interpretado como um número."
 
-#: ../glib/gkeyfile.c:3886
+#: ../glib/gkeyfile.c:3888
 #, c-format
 msgid "Integer value '%s' out of range"
 msgstr "Valor inteiro \"%s\" fora dos limites"
 
-#: ../glib/gkeyfile.c:3919
+#: ../glib/gkeyfile.c:3921
 #, c-format
 msgid "Value '%s' cannot be interpreted as a float number."
 msgstr "O valor \"%s\" não pode ser interpretado como ponto flutuante."
 
-#: ../glib/gkeyfile.c:3943
+#: ../glib/gkeyfile.c:3945
 #, c-format
 msgid "Value '%s' cannot be interpreted as a boolean."
 msgstr "O valor \"%s\" não pode ser interpretado como um booleano."
@@ -1697,8 +1694,8 @@ msgstr "Cancelado via GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
-msgid "Error statting directory `%s': %s"
-msgstr "Erro ao avaliar o diretório \"%s\": %s"
+msgid "Error when getting information for directory `%s': %s"
+msgstr "Erro ao obter informação para o diretório \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
@@ -2041,8 +2038,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "O corpo da mensagem tem o tipo de assinatura \"%s\", mas a assinatura no "
 "campo de cabeçalho é \"%s\""
@@ -2051,8 +2048,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
-"O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é "
-"\"(%s)\""
+"O corpo da mensagem está vazio, mas a assinatura no campo de cabeçalho é \"(%"
+"s)\""
 
 #: ../gio/gdbusmessage.c:2938
 #, c-format
@@ -2348,27 +2345,27 @@ msgstr "O arquivo da área de trabalho não especifica o campo Exec"
 msgid "Unable to find terminal required for application"
 msgstr "Não é possível localizar o terminal requerido para o aplicativo"
 
-#: ../gio/gdesktopappinfo.c:1515
+#: ../gio/gdesktopappinfo.c:1517
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
 msgstr ""
 "Não é possível criar pasta de configuração do aplicativo do usuário %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1519
+#: ../gio/gdesktopappinfo.c:1521
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "Não é possível criar pasta de configuração MIME do usuário %s: %s"
 
-#: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
+#: ../gio/gdesktopappinfo.c:1787 ../gio/gdesktopappinfo.c:1811
 msgid "Application information lacks an identifier"
 msgstr "A informação do aplicativo não possui um identificador"
 
-#: ../gio/gdesktopappinfo.c:2033
+#: ../gio/gdesktopappinfo.c:2035
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "Não é possível criar arquivo %s da área de trabalho do usuário"
 
-#: ../gio/gdesktopappinfo.c:2149
+#: ../gio/gdesktopappinfo.c:2151
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definição personalizada para %s"
@@ -2641,7 +2638,7 @@ msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> já especificado"
 
 #: ../gio/glib-compile-schemas.c:884
-msgid "can not add keys to a 'list-of' schema"
+msgid "cannot add keys to a 'list-of' schema"
 msgstr "não é possível adicionar chaves ao esquema \"list-of\""
 
 #: ../gio/glib-compile-schemas.c:895
@@ -2801,8 +2798,8 @@ msgstr " e --strict foi especificado; saindo.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 "erro analisando chave \"%s\" no esquema \"%s\" como especificado no arquivo "
 "de sobrescrita \"%s\": %s."
@@ -2818,8 +2815,8 @@ msgid ""
 "override for key `%s' in schema `%s' in override file `%s' is out of the "
 "range given in the schema"
 msgstr ""
-"sobrescrita para chave \"%s\" no esquema \"%s\" no arquivo de sobrescrita "
-"\"%s\" está fora dos limites dado pelo esquema"
+"sobrescrita para chave \"%s\" no esquema \"%s\" no arquivo de sobrescrita \"%"
+"s\" está fora dos limites dado pelo esquema"
 
 #: ../gio/glib-compile-schemas.c:1885
 #, c-format
@@ -3019,8 +3016,8 @@ msgstr "Erro ao definir atributo estendido \"%s\": %s"
 
 #: ../gio/glocalfileinfo.c:1482 ../gio/glocalfileoutputstream.c:833
 #, c-format
-msgid "Error stating file '%s': %s"
-msgstr "Erro ao iniciar arquivo \"%s\": %s"
+msgid "Error when getting information for file '%s': %s"
+msgstr "Erro ao obter informação para o arquivo \"%s\": %s"
 
 #: ../gio/glocalfileinfo.c:1566
 msgid " (invalid encoding)"
@@ -3028,8 +3025,8 @@ msgstr " (codificação inválida)"
 
 #: ../gio/glocalfileinfo.c:1768
 #, c-format
-msgid "Error stating file descriptor: %s"
-msgstr "Erro ao iniciar descritor de arquivo: %s"
+msgid "Error when getting information for file descriptor: %s"
+msgstr "Erro ao obter informação para o descritor de arquivo: %s"
 
 #: ../gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint32 expected)"
@@ -3267,27 +3264,27 @@ msgstr "Fluxo de saída não implementa escrita"
 msgid "Source stream is already closed"
 msgstr "A fonte do fluxo já está fechada"
 
-#: ../gio/gresolver.c:779
+#: ../gio/gresolver.c:765
 #, c-format
 msgid "Error resolving '%s': %s"
 msgstr "Erro ao resolver \"%s\": %s"
 
-#: ../gio/gresolver.c:829
+#: ../gio/gresolver.c:815
 #, c-format
 msgid "Error reverse-resolving '%s': %s"
 msgstr "Erro ao resolver reversamente \"%s\": %s"
 
-#: ../gio/gresolver.c:864 ../gio/gresolver.c:943
+#: ../gio/gresolver.c:850 ../gio/gresolver.c:929
 #, c-format
 msgid "No service record for '%s'"
 msgstr "Nenhum serviço de registro para \"%s\""
 
-#: ../gio/gresolver.c:869 ../gio/gresolver.c:948
+#: ../gio/gresolver.c:855 ../gio/gresolver.c:934
 #, c-format
 msgid "Temporarily unable to resolve '%s'"
 msgstr "Temporariamente sem condições de resolver \"%s\""
 
-#: ../gio/gresolver.c:874 ../gio/gresolver.c:953
+#: ../gio/gresolver.c:860 ../gio/gresolver.c:939
 #, c-format
 msgid "Error resolving '%s'"
 msgstr "Erro ao resolver \"%s\""
@@ -3944,6 +3941,15 @@ msgstr "Precisa de mais entrada"
 msgid "Invalid compressed data"
 msgstr "Dados comprimidos inválidos"
 
+#~ msgid ""
+#~ "Key file contains key '%s' which has value that cannot be interpreted."
+#~ msgstr ""
+#~ "Arquivo de chave contém chave \"%s\" que tem valor que não pode ser "
+#~ "interpretado."
+
+#~ msgid "Error stating file '%s': %s"
+#~ msgstr "Erro ao iniciar arquivo \"%s\": %s"
+
 #~ msgctxt "GDateTime"
 #~ msgid "am"
 #~ msgstr "am"
@@ -3954,8 +3960,8 @@ msgstr "Dados comprimidos inválidos"
 
 #~ msgid "Type of return value is incorrect, got `%s', expected `%s'"
 #~ msgstr ""
-#~ "O tipo do valor de retorno está incorreto, obtido \"%s\", era esperado "
-#~ "\"%s\""
+#~ "O tipo do valor de retorno está incorreto, obtido \"%s\", era esperado \"%"
+#~ "s\""
 
 #~ msgid ""
 #~ "Trying to set property %s of type %s but according to the expected "
