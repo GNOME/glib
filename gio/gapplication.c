@@ -157,6 +157,8 @@ struct _GApplicationPrivate
 
   guint              is_registered : 1;
   guint              is_remote : 1;
+  guint              did_startup : 1;
+  guint              did_shutdown : 1;
 
   GHashTable        *remote_actions;  /* string -> RemoteActionInfo */
   GApplicationImpl  *impl;
@@ -207,11 +209,13 @@ g_application_real_after_emit (GApplication *application,
 static void
 g_application_real_startup (GApplication *application)
 {
+  application->priv->did_startup = TRUE;
 }
 
 static void
 g_application_real_shutdown (GApplication *application)
 {
+  application->priv->did_shutdown = TRUE;
 }
 
 static void
@@ -1041,7 +1045,14 @@ g_application_register (GApplication  *application,
       g_object_notify (G_OBJECT (application), "is-registered");
 
       if (!application->priv->is_remote)
-        g_signal_emit (application, g_application_signals[SIGNAL_STARTUP], 0);
+        {
+          g_signal_emit (application, g_application_signals[SIGNAL_STARTUP], 0);
+
+          if (!application->priv->did_startup)
+            g_critical ("GApplication subclass '%s' failed to chain up on"
+                        " ::startup (from start of override function)",
+                        G_OBJECT_TYPE_NAME (application));
+        }
     }
 
   return TRUE;
@@ -1342,9 +1353,16 @@ g_application_run (GApplication  *application,
         ->run_mainloop (application);
       status = 0;
     }
-    
-  if (application->priv->is_registered)
-    g_signal_emit (application, g_application_signals[SIGNAL_SHUTDOWN], 0);
+
+  if (!application->priv->is_remote)
+    {
+      g_signal_emit (application, g_application_signals[SIGNAL_SHUTDOWN], 0);
+
+      if (!application->priv->did_shutdown)
+        g_critical ("GApplication subclass '%s' failed to chain up on"
+                    " ::shutdown (from end of override function)",
+                    G_OBJECT_TYPE_NAME (application));
+    }
 
   if (application->priv->impl)
     g_application_impl_flush (application->priv->impl);
