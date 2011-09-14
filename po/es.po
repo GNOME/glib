@@ -5,25 +5,25 @@
 # José Antonio Salgueiro <joseantsa@eresmas.net>, 2001.
 # Germán Poo Caamaño <gpoo@ubiobio.cl>, 2002.
 # Francisco Javier F. Serrador <serrador@cvs.gnome.org>, 2004, 2005, 2006.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011.
 # 
 # 
 # Jorge González <jorgegonz@svn.gnome.org>, 2007, 2008, 2009, 2010, 2011., 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2010, 2011., 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: glib.master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-10 12:42+0000\n"
-"PO-Revision-Date: 2011-09-11 11:03+0200\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-09-14 13:06+0000\n"
+"PO-Revision-Date: 2011-09-14 17:27+0200\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../glib/gbookmarkfile.c:780
 #, c-format
@@ -51,8 +51,8 @@ msgstr "Etiqueta «%s» inesperada dentro de «%s»"
 #: ../glib/gbookmarkfile.c:1834
 msgid "No valid bookmark file found in data dirs"
 msgstr ""
-"No se pudo encontrar ningún archivo de marcadores válido en los directorios "
-"de datos"
+"No se pudo encontrar ningún archivo de marcadores válido en las carpetas de "
+"datos"
 
 #: ../glib/gbookmarkfile.c:2035
 #, c-format
@@ -396,7 +396,7 @@ msgstr "Dom"
 #: ../glib/gdir.c:115 ../glib/gdir.c:138
 #, c-format
 msgid "Error opening directory '%s': %s"
-msgstr "Falló al abrir el directorio «%s»: %s"
+msgstr "Falló al abrir la carpeta «%s»: %s"
 
 #: ../glib/gfileutils.c:540 ../glib/gfileutils.c:628
 #, c-format
@@ -694,11 +694,11 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba un carácter «>» para terminar la "
-"etiqueta vacía del elemento «%s»"
+"Carácter «%s» impropio, se esperaba un carácter «>» para terminar la etiqueta "
+"vacía del elemento «%s»"
 
 #: ../glib/gmarkup.c:1270
 #, c-format
@@ -725,8 +725,8 @@ msgid ""
 "Odd character '%s', expected an open quote mark after the equals sign when "
 "giving value for attribute '%s' of element '%s'"
 msgstr ""
-"Carácter «%s» impropio, se esperaba una marca de apertura de comillas "
-"después del signo igual al darle valor al atributo «%s» del elemento «%s»"
+"Carácter «%s» impropio, se esperaba una marca de apertura de comillas después "
+"del signo igual al darle valor al atributo «%s» del elemento «%s»"
 
 #: ../glib/gmarkup.c:1488
 #, c-format
@@ -734,8 +734,8 @@ msgid ""
 "'%s' is not a valid character following the characters '</'; '%s' may not "
 "begin an element name"
 msgstr ""
-"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  "
-"no debe iniciar un nombre de elemento"
+"«%s» no es un carácter válido a continuación de los caracteres '</'; «%s»  no "
+"debe iniciar un nombre de elemento"
 
 #: ../glib/gmarkup.c:1524
 #, c-format
@@ -755,8 +755,8 @@ msgstr "El elemento «%s» fue cerrado, no existe ningún elemento abierto"
 #, c-format
 msgid "Element '%s' was closed, but the currently open element is '%s'"
 msgstr ""
-"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es "
-"«%s»"
+"Se cerró el elemento «%s», pero el elemento que está abierto actualmente es «%"
+"s»"
 
 #: ../glib/gmarkup.c:1712
 msgid "Document was empty or contained only whitespace"
@@ -1148,15 +1148,14 @@ msgstr ""
 #: ../glib/gshell.c:559
 #, c-format
 msgid "Text ended just after a '\\' character. (The text was '%s')"
-msgstr ""
-"El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
+msgstr "El texto termina justo después de un carácter '\\'. (El texto era «%s»)"
 
 #: ../glib/gshell.c:566
 #, c-format
 msgid "Text ended before matching quote was found for %c. (The text was '%s')"
 msgstr ""
-"El texto terminó antes de que se encontrase la comilla correspondiente con "
-"%c. (El texto era «%s»)"
+"El texto terminó antes de que se encontrase la comilla correspondiente con %"
+"c. (El texto era «%s»)"
 
 #: ../glib/gshell.c:578
 msgid "Text was empty (or contained only whitespace)"
@@ -1181,7 +1180,7 @@ msgstr "Falló al leer desde el conducto hijo (%s)"
 #: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Falló al cambiar al directorio «%s» (%s)"
+msgstr "Falló al cambiar a la carpeta «%s» (%s)"
 
 #: ../glib/gspawn-win32.c:375 ../glib/gspawn-win32.c:494
 #, c-format
@@ -1208,7 +1207,7 @@ msgstr "Cadena inválida en el entorno: %s"
 #: ../glib/gspawn-win32.c:718 ../glib/gspawn-win32.c:1259
 #, c-format
 msgid "Invalid working directory: %s"
-msgstr "Directorio de trabajo inválido: %s"
+msgstr "Carpeta de trabajo no válida: %s"
 
 #: ../glib/gspawn-win32.c:783
 #, c-format
@@ -1343,8 +1342,7 @@ msgstr "Opción desconocida %s"
 #: ../glib/gkeyfile.c:366
 msgid "Valid key file could not be found in search dirs"
 msgstr ""
-"No se pudo encontrar la clave de archivo válida en los directorios de "
-"búsqueda"
+"No se pudo encontrar la clave de archivo válida en las carpetas de búsqueda"
 
 #: ../glib/gkeyfile.c:401
 msgid "Not a regular file"
@@ -1562,8 +1560,8 @@ msgid ""
 "Key/Value pair %d, `%s', in address element `%s', does not contain an equal "
 "sign"
 msgstr ""
-"El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene "
-"un signo de igual"
+"El par clave/valor %d, «%s», en el elemento de dirección «%s», no contiene un "
+"signo de igual"
 
 #: ../gio/gdbusaddress.c:481
 #, c-format
@@ -1571,8 +1569,8 @@ msgid ""
 "Error unescaping key or value in Key/Value pair %d, `%s', in address element "
 "`%s'"
 msgstr ""
-"Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en "
-"el elemento de dirección «%s»"
+"Error al desescapar la clave o el valor en el par clave/valor %d, «%s», en el "
+"elemento de dirección «%s»"
 
 #: ../gio/gdbusaddress.c:559
 #, c-format
@@ -1653,15 +1651,14 @@ msgstr "Error al lanzar («spawn») el comando «%s»: "
 #: ../gio/gdbusaddress.c:1068
 #, c-format
 msgid "Abnormal program termination spawning command line `%s': %s"
-msgstr ""
-"Terminación anómala de programa al lanzar («spawn») el comando «%s»: %s"
+msgstr "Terminación anómala de programa al lanzar («spawn») el comando «%s»: %s"
 
 #: ../gio/gdbusaddress.c:1082
 #, c-format
 msgid "Command line `%s' exited with non-zero exit status %d: %s"
 msgstr ""
-"El comando de línea «%s» finalizó con un estado de salida distinto de cero "
-"%d: %s"
+"El comando de línea «%s» finalizó con un estado de salida distinto de cero %"
+"d: %s"
 
 #: ../gio/gdbusaddress.c:1155
 #, c-format
@@ -1716,20 +1713,20 @@ msgstr "Cancelado a través de GDBusAuthObserver::authorize-authenticated-peer"
 #: ../gio/gdbusauthmechanismsha1.c:266
 #, c-format
 msgid "Error statting directory `%s': %s"
-msgstr "Error al mostrar la información del estado del directorio «%s»: %s"
+msgstr "Error al mostrar la información del estado de la carpeta «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"Los permisos del directorio «%s» están mal formados. Se esperaba el modo "
-"0700, se obtuvo 0%o"
+"Los permisos de la carpeta «%s» están mal formados. Se esperaba el modo 0700, "
+"se obtuvo 0%o"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
 msgid "Error creating directory `%s': %s"
-msgstr "Error al crear el directorio «%s»: %s"
+msgstr "Error al crear la carpeta «%s»: %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:382
 #, c-format
@@ -1740,24 +1737,23 @@ msgstr "Error al abrir el depósito de claves «%s» para su lectura: "
 #, c-format
 msgid "Line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"La línea %d del depósito de claves en «%s» con contenido «%s» está mal "
-"formada"
+"La línea %d del depósito de claves en «%s» con contenido «%s» está mal formada"
 
 #: ../gio/gdbusauthmechanismsha1.c:420 ../gio/gdbusauthmechanismsha1.c:732
 #, c-format
 msgid ""
 "First token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"El primer token de la línea %d del depósito de claves en «%s» con contenido "
-"«%s» está mal formado"
+"El primer token de la línea %d del depósito de claves en «%s» con contenido «%"
+"s» está mal formado"
 
 #: ../gio/gdbusauthmechanismsha1.c:435 ../gio/gdbusauthmechanismsha1.c:746
 #, c-format
 msgid ""
 "Second token of line %d of the keyring at `%s' with content `%s' is malformed"
 msgstr ""
-"El segundo token de la línea %d del depósito de claves en «%s» con contenido "
-"«%s» está mal formado"
+"El segundo token de la línea %d del depósito de claves en «%s» con contenido «%"
+"s» está mal formado"
 
 #: ../gio/gdbusauthmechanismsha1.c:459
 #, c-format
@@ -1792,8 +1788,7 @@ msgstr "Error al abrir el depósito de claves «%s» para su escritura:"
 #: ../gio/gdbusauthmechanismsha1.c:882
 #, c-format
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
-msgstr ""
-"(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
+msgstr "(Adicionalmente, también falló la liberación del bloqueo para «%s»: %s)"
 
 #: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
 #: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
@@ -1823,8 +1818,8 @@ msgstr ""
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
-"Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se "
-"obtuvo «%s»."
+"Error al establecer la propiedad «%s». Se esperaba el tipo «%s» pero se obtuvo "
+"«%s»."
 
 #: ../gio/gdbusconnection.c:3936
 #, c-format
@@ -1943,8 +1938,7 @@ msgstr ""
 #, c-format
 msgid "Expected NUL byte after the string `%s' but found byte %d"
 msgstr ""
-"Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte "
-"%d"
+"Se esperaba el byte NULL después de la cadena «%s» pero se encontró el byte %d"
 
 #: ../gio/gdbusmessage.c:1242
 #, c-format
@@ -1989,8 +1983,8 @@ msgid ""
 "Invalid endianness value. Expected 0x6c ('l') or 0x42 ('B') but found value "
 "0x%02x"
 msgstr ""
-"Valor endian no válido. Se esperaba 0x6c («l») o 0x42 («B»)» pero se obtuvo "
-"el valor 0x%02x"
+"Valor endian no válido. Se esperaba 0x6c («l») o 0x42 («B»)» pero se obtuvo el "
+"valor 0x%02x"
 
 #: ../gio/gdbusmessage.c:1719
 #, c-format
@@ -2032,8 +2026,8 @@ msgstr "No se puede deserializar el mensaje: "
 msgid ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 msgstr ""
-"Error al serializar GVariant con el tipo de cadena «%s» al formato de "
-"mensaje de D-Bus"
+"Error al serializar GVariant con el tipo de cadena «%s» al formato de mensaje "
+"de D-Bus"
 
 #: ../gio/gdbusmessage.c:2303
 #, c-format
@@ -2057,8 +2051,8 @@ msgstr ""
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
 "El cuerpo del mensaje tiene un tipo de firma «%s» pero la firma en el campo "
 "de cabecera es «%s»"
@@ -2067,8 +2061,8 @@ msgstr ""
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
-"El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es "
-"«(%s)»"
+"El cuerpo del mensaje está vacío pero la firma en el campo de cabecera es «(%"
+"s)»"
 
 #: ../gio/gdbusmessage.c:2938
 #, c-format
@@ -2199,8 +2193,7 @@ msgstr "Se especificaron varios puntos de conexión extremos"
 msgid ""
 "Warning: According to introspection data, interface `%s' does not exist\n"
 msgstr ""
-"Advertencia: según la introspección de los datos, la interfaz «%s» no "
-"existe\n"
+"Advertencia: según la introspección de los datos, la interfaz «%s» no existe\n"
 
 #: ../gio/gdbus-tool.c:472
 #, c-format
@@ -2208,8 +2201,8 @@ msgid ""
 "Warning: According to introspection data, method `%s' does not exist on "
 "interface `%s'\n"
 msgstr ""
-"Advertencia: según la introspección de los datos, el método «%s» no existe "
-"en la interfaz «%s»\n"
+"Advertencia: según la introspección de los datos, el método «%s» no existe en "
+"la interfaz «%s»\n"
 
 #: ../gio/gdbus-tool.c:534
 msgid "Optional destination for signal (unique name)"
@@ -2379,16 +2372,16 @@ msgstr ""
 msgid "Can't create user MIME configuration folder %s: %s"
 msgstr "No se puede crear la carpeta de configuración MIME %s del usuario: %s"
 
-#: ../gio/gdesktopappinfo.c:1796 ../gio/gdesktopappinfo.c:1820
+#: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
 msgstr "La información de la aplicación carece de un identificador"
 
-#: ../gio/gdesktopappinfo.c:2044
+#: ../gio/gdesktopappinfo.c:2033
 #, c-format
 msgid "Can't create user desktop file %s"
 msgstr "No se puede crear el archivo de escritorio %s del usuario"
 
-#: ../gio/gdesktopappinfo.c:2160
+#: ../gio/gdesktopappinfo.c:2149
 #, c-format
 msgid "Custom definition for %s"
 msgstr "Definición personalizada para %s"
@@ -2473,11 +2466,11 @@ msgstr "El punto de montaje contenido no existe"
 
 #: ../gio/gfile.c:2411 ../gio/glocalfile.c:2256
 msgid "Can't copy over directory"
-msgstr "No se puede copiar sobre el directorio"
+msgstr "No se puede copiar sobre la carpeta"
 
 #: ../gio/gfile.c:2472
 msgid "Can't copy directory over directory"
-msgstr "No se puede copiar directorio sobre directorio"
+msgstr "No se puede copiar carpeta sobre carpeta"
 
 #: ../gio/gfile.c:2480 ../gio/glocalfile.c:2265
 msgid "Target file exists"
@@ -2485,7 +2478,7 @@ msgstr "El archivo destino ya existe"
 
 #: ../gio/gfile.c:2498
 msgid "Can't recursively copy directory"
-msgstr "No se puede copiar el directorio recursivamente"
+msgstr "No se puede copiar la carpeta recursivamente"
 
 #: ../gio/gfile.c:2758
 msgid "Splice not supported"
@@ -2637,8 +2630,8 @@ msgid ""
 "invalid name '%s': invalid character '%c'; only lowercase letters, numbers "
 "and dash ('-') are permitted."
 msgstr ""
-"nombre «%s» no válido: el carácter «%c» no es válido; sólo se permiten "
-"nombres en minúscula, números y guión («-»)."
+"nombre «%s» no válido: el carácter «%c» no es válido; sólo se permiten nombres "
+"en minúscula, números y guión («-»)."
 
 #: ../gio/glib-compile-schemas.c:772
 #, c-format
@@ -2684,8 +2677,8 @@ msgid ""
 "exactly one of 'type', 'enum' or 'flags' must be specified as an attribute "
 "to <key>"
 msgstr ""
-"se debe especificar exactamente uno de «type», «enum» o «flags» como "
-"atributo para <key>"
+"se debe especificar exactamente uno de «type», «enum» o «flags» como atributo "
+"para <key>"
 
 #: ../gio/glib-compile-schemas.c:943
 #, c-format
@@ -2750,8 +2743,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> extiende <schema id='%s' list-of='%s'> pero "
-"«%s» no extiende «%s»"
+"<schema id='%s' list-of='%s'> extiende <schema id='%s' list-of='%s'> pero «%"
+"s» no extiende «%s»"
 
 #: ../gio/glib-compile-schemas.c:1163
 #, c-format
@@ -2804,8 +2797,8 @@ msgstr "Ignorando este archivo.\n"
 #, c-format
 msgid "No such key `%s' in schema `%s' as specified in override file `%s'"
 msgstr ""
-"No existe la clave «%s» en el esquema «%s» como se especificó en el archivo "
-"de sobreescitura «%s»"
+"No existe la clave «%s» en el esquema «%s» como se especificó en el archivo de "
+"sobreescitura «%s»"
 
 #: ../gio/glib-compile-schemas.c:1809 ../gio/glib-compile-schemas.c:1867
 #: ../gio/glib-compile-schemas.c:1895
@@ -2822,8 +2815,8 @@ msgstr "y se especificó --strict; saliendo.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 "error al analizar la clave «%s» en el esquema «%s» como se especificó en el "
 "archivo de sobreescritura «%s»: %s."
@@ -2857,7 +2850,7 @@ msgstr "dónde almacenar el archivo gschemas.compiled"
 
 #: ../gio/glib-compile-schemas.c:1939 ../gio/glib-compile-schemas.c:1970
 msgid "DIRECTORY"
-msgstr "DIRECTORIO"
+msgstr "CARPETA"
 
 #: ../gio/glib-compile-schemas.c:1940
 msgid "Abort on any errors in schemas"
@@ -2889,7 +2882,7 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1989
 #, c-format
 msgid "You should give exactly one directory name\n"
-msgstr "Deberá proporcionar exactamente un nombre de directorio\n"
+msgstr "Deberá proporcionar exactamente un nombre de carpeta\n"
 
 #: ../gio/glib-compile-schemas.c:2028
 #, c-format
@@ -2909,7 +2902,7 @@ msgstr "se quitó el archivo de salida existente.\n"
 #: ../gio/glocaldirectorymonitor.c:287
 msgid "Unable to find default local directory monitor type"
 msgstr ""
-"No se pudo encontrar el tipo de monitorización del directorio local "
+"No se pudo encontrar el tipo de monitorización de la carpeta local "
 "predeterminado"
 
 #: ../gio/glocalfile.c:571 ../gio/win32/gwinhttpfile.c:422
@@ -2924,7 +2917,7 @@ msgstr "Error al obtener la información del sistema de archivos: %s"
 
 #: ../gio/glocalfile.c:1097
 msgid "Can't rename root directory"
-msgstr "No se puede renombrar el directorio raíz"
+msgstr "No se puede renombrar la carpeta raíz"
 
 #: ../gio/glocalfile.c:1117 ../gio/glocalfile.c:1143
 #, c-format
@@ -2949,7 +2942,7 @@ msgstr "Error al abrir el archivo: %s"
 
 #: ../gio/glocalfile.c:1316
 msgid "Can't open directory"
-msgstr "No se puede abrir el directorio"
+msgstr "No se puede abrir la carpeta"
 
 #: ../gio/glocalfile.c:1441
 #, c-format
@@ -2964,16 +2957,16 @@ msgstr "Error al mover a la papelera el archivo: %s"
 #: ../gio/glocalfile.c:1831
 #, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr "No se pudo crear el directorio papelera %s: %s"
+msgstr "No se pudo crear la carpeta papelera %s: %s"
 
 #: ../gio/glocalfile.c:1852
 msgid "Unable to find toplevel directory for trash"
 msgstr ""
-"No se pudo encontrar el directorio de nivel superior para mover a la papelera"
+"No se pudo encontrarla carpeta de nivel superior para mover a la papelera"
 
 #: ../gio/glocalfile.c:1931 ../gio/glocalfile.c:1951
 msgid "Unable to find or create trash directory"
-msgstr "No se pudo encontrar o crear el directorio de la papelera"
+msgstr "No se pudo encontrar o crear la carpeta de la papelera"
 
 #: ../gio/glocalfile.c:1985
 #, c-format
@@ -2989,7 +2982,7 @@ msgstr "No se pudo enviar a la papelera el archivo: %s"
 #: ../gio/glocalfile.c:2133
 #, c-format
 msgid "Error creating directory: %s"
-msgstr "Error al crear el directorio: %s"
+msgstr "Error al crear la carpeta: %s"
 
 #: ../gio/glocalfile.c:2162
 #, c-format
@@ -3008,7 +3001,7 @@ msgstr "Error al mover el archivo: %s"
 
 #: ../gio/glocalfile.c:2251
 msgid "Can't move directory over directory"
-msgstr "No se puede mover un directorio sobre un directoro"
+msgstr "No se puede mover una carpeta sobre una carpeta"
 
 #: ../gio/glocalfile.c:2278 ../gio/glocalfileoutputstream.c:955
 #: ../gio/glocalfileoutputstream.c:969 ../gio/glocalfileoutputstream.c:984
@@ -3180,7 +3173,7 @@ msgstr "Error al abrir el archivo «%s»: %s"
 
 #: ../gio/glocalfileoutputstream.c:846
 msgid "Target file is a directory"
-msgstr "El archivo destino es un directorio"
+msgstr "El archivo destino es una carpeta"
 
 #: ../gio/glocalfileoutputstream.c:851
 msgid "Target file is not a regular file"
@@ -4016,8 +4009,7 @@ msgstr "Datos comprimidos no válidos"
 
 #~ msgid "No such schema `%s' specified in override file `%s'"
 #~ msgstr ""
-#~ "No existe el esquema «%s» especificado en el archivo de sobreescritura "
-#~ "«%s»"
+#~ "No existe el esquema «%s» especificado en el archivo de sobreescritura «%s»"
 
 #~ msgid ""
 #~ "Commands:\n"
@@ -4162,8 +4154,8 @@ msgstr "Datos comprimidos no válidos"
 #~ "characters. Ignores names after the first if multiple names are given."
 #~ msgstr ""
 #~ "Indica si se debe usar los valores de reserva encontrados al acortar el "
-#~ "nombre en los caracteres «-». Si se proporcionan varios nombres los "
-#~ "ignora después del primero."
+#~ "nombre en los caracteres «-». Si se proporcionan varios nombres los ignora "
+#~ "después del primero."
 
 #~ msgid "File descriptor"
 #~ msgstr "Descriptor del archivo"
