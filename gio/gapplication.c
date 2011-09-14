@@ -149,7 +149,6 @@ struct _GApplicationPrivate
   gchar             *id;
 
   GActionGroup      *actions;
-  GMainLoop         *mainloop;
 
   guint              inactivity_timeout_id;
   guint              inactivity_timeout;
@@ -364,22 +363,6 @@ g_application_real_add_platform_data (GApplication    *application,
 {
 }
 
-static void
-g_application_real_quit_mainloop (GApplication *application)
-{
-  if (application->priv->mainloop != NULL)
-    g_main_loop_quit (application->priv->mainloop);
-}
-
-static void
-g_application_real_run_mainloop (GApplication *application)
-{
-  if (application->priv->mainloop == NULL)
-    application->priv->mainloop = g_main_loop_new (NULL, FALSE);
-
-  g_main_loop_run (application->priv->mainloop);
-}
-
 /* GObject implementation stuff {{{1 */
 static void
 g_application_set_property (GObject      *object,
@@ -502,9 +485,6 @@ g_application_finalize (GObject *object)
     g_application_impl_destroy (application->priv->impl);
   g_free (application->priv->id);
 
-  if (application->priv->mainloop)
-    g_main_loop_unref (application->priv->mainloop);
-
   G_OBJECT_CLASS (g_application_parent_class)
     ->finalize (object);
 }
@@ -536,8 +516,6 @@ g_application_class_init (GApplicationClass *class)
   class->command_line = g_application_real_command_line;
   class->local_command_line = g_application_real_local_command_line;
   class->add_platform_data = g_application_real_add_platform_data;
-  class->quit_mainloop = g_application_real_quit_mainloop;
-  class->run_mainloop = g_application_real_run_mainloop;
 
   g_object_class_install_property (object_class, PROP_APPLICATION_ID,
     g_param_spec_string ("application-id",
@@ -1088,8 +1066,7 @@ inactivity_timeout_expired (gpointer data)
 {
   GApplication *application = G_APPLICATION (data);
 
-  G_APPLICATION_GET_CLASS (application)
-    ->quit_mainloop (application);
+  application->priv->inactivity_timeout_id = 0;
 
   return FALSE;
 }
@@ -1111,17 +1088,9 @@ g_application_release (GApplication *application)
 {
   application->priv->use_count--;
 
-  if (application->priv->use_count == 0)
-    {
-      if (application->priv->inactivity_timeout)
-        application->priv->inactivity_timeout_id =
-          g_timeout_add (application->priv->inactivity_timeout,
-                         inactivity_timeout_expired, application);
-
-      else
-        G_APPLICATION_GET_CLASS (application)
-          ->quit_mainloop (application);
-    }
+  if (application->priv->use_count == 0 && application->priv->inactivity_timeout)
+    application->priv->inactivity_timeout_id = g_timeout_add (application->priv->inactivity_timeout,
+                                                              inactivity_timeout_expired, application);
 }
 
 /* Activate, Open {{{1 */
@@ -1346,11 +1315,9 @@ g_application_run (GApplication  *application,
         g_timeout_add (10000, inactivity_timeout_expired, application);
     }
 
-  if (application->priv->use_count ||
-      application->priv->inactivity_timeout_id)
+  while (application->priv->use_count || application->priv->inactivity_timeout_id)
     {
-      G_APPLICATION_GET_CLASS (application)
-        ->run_mainloop (application);
+      g_main_context_iteration (NULL, TRUE);
       status = 0;
     }
 
