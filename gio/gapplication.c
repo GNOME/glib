@@ -176,6 +176,7 @@ enum
 enum
 {
   SIGNAL_STARTUP,
+  SIGNAL_SHUTDOWN,
   SIGNAL_ACTIVATE,
   SIGNAL_OPEN,
   SIGNAL_ACTION,
@@ -205,6 +206,11 @@ g_application_real_after_emit (GApplication *application,
 
 static void
 g_application_real_startup (GApplication *application)
+{
+}
+
+static void
+g_application_real_shutdown (GApplication *application)
 {
 }
 
@@ -520,6 +526,7 @@ g_application_class_init (GApplicationClass *class)
   class->before_emit = g_application_real_before_emit;
   class->after_emit = g_application_real_after_emit;
   class->startup = g_application_real_startup;
+  class->shutdown = g_application_real_shutdown;
   class->activate = g_application_real_activate;
   class->open = g_application_real_open;
   class->command_line = g_application_real_command_line;
@@ -578,6 +585,18 @@ g_application_class_init (GApplicationClass *class)
   g_application_signals[SIGNAL_STARTUP] =
     g_signal_new ("startup", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
                   G_STRUCT_OFFSET (GApplicationClass, startup),
+                  NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
+
+  /**
+   * GApplication::shutdown:
+   * @application: the application
+   *
+   * The ::shutdown signal is emitted only on the registered primary instance
+   * immediately after the main loop terminates.
+   */
+  g_application_signals[SIGNAL_SHUTDOWN] =
+    g_signal_new ("shutdown", G_TYPE_APPLICATION, G_SIGNAL_RUN_LAST,
+                  G_STRUCT_OFFSET (GApplicationClass, shutdown),
                   NULL, NULL, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE, 0);
 
   /**
@@ -1323,6 +1342,9 @@ g_application_run (GApplication  *application,
         ->run_mainloop (application);
       status = 0;
     }
+    
+  if (application->priv->is_registered)
+    g_signal_emit (application, g_application_signals[SIGNAL_SHUTDOWN], 0);
 
   if (application->priv->impl)
     g_application_impl_flush (application->priv->impl);

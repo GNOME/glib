@@ -62,6 +62,8 @@ struct _GApplication
 /**
  * GApplicationClass:
  * @startup: invoked on the primary instance immediately after registration
+ * @shutdown: invoked only on the registered primary instance immediately
+ *      after the main loop terminates
  * @activate: invoked on the primary instance when an activation occurs
  * @open: invoked on the primary instance when there are files to open
  * @command_line: invoked on the primary instance when a command-line is
@@ -118,9 +120,10 @@ struct _GApplicationClass
                                                      GVariantBuilder           *builder);
   void                      (* quit_mainloop)       (GApplication              *application);
   void                      (* run_mainloop)        (GApplication              *application);
+  void                      (* shutdown)            (GApplication              *application);
 
   /*< private >*/
-  gpointer padding[12];
+  gpointer padding[11];
 };
 
 GType                   g_application_get_type                          (void) G_GNUC_CONST;
