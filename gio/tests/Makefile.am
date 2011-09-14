@@ -113,6 +113,7 @@ TEST_PROGS += 			\
 	unix-fd 		\
 	unix-streams 		\
 	gapplication 		\
+	basic-application	\
 	gdbus-test-codegen 	\
 	$(NULL)
 SAMPLE_PROGS +=					\
@@ -377,6 +378,8 @@ file_LDADD   = $(progs_ldadd)
 
 gapplication_SOURCES = gapplication.c gdbus-sessionbus.c
 gapplication_LDADD = $(progs_ldadd)
+
+basic_application_LDADD = $(progs_ldadd)
 
 gapplication_example_open_SOURCES = gapplication-example-open.c
 gapplication_example_open_LDADD   = $(progs_ldadd)

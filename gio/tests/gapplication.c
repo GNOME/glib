@@ -1,92 +1,9 @@
 #include <gio/gio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include "gdbus-sessionbus.h"
 
-static void
-activate (GApplication *application)
-{
-  g_application_hold (application);
-  g_print ("activated\n");
-  g_application_release (application);
-}
-
-static void
-open (GApplication  *application,
-      GFile        **files,
-      gint           n_files,
-      const gchar   *hint)
-{
-  gint i;
-
-  g_application_hold (application);
-  g_print ("open");
-
-  for (i = 0; i < n_files; i++)
-    {
-      gchar *uri = g_file_get_uri (files[i]);
-      g_print (" %s", uri);
-      g_free (uri);
-    }
-  g_application_release (application);
-
-  g_print ("\n");
-}
-
-static int
-command_line (GApplication            *application,
-              GApplicationCommandLine *cmdline)
-{
-  gchar **argv;
-  gint argc;
-
-  argv = g_application_command_line_get_arguments (cmdline, &argc);
-
-  g_application_command_line_print (cmdline, "%d + %d = %d\n", 40, 2, 42);
-
-  g_assert_cmpint (argc, ==, 3);
-  g_assert_cmpstr (argv[0], ==, "./cmd");
-  g_assert_cmpstr (argv[1], ==, "40 +");
-  g_assert_cmpstr (argv[2], ==, "2");
-  g_assert (argv[3] == NULL);
-  g_print ("cmdline '%s' '%s'\n", argv[1], argv[2]);
-  g_strfreev (argv);
-
-  return 42;
-}
-
-static int
-app_main (int argc, char **argv)
-{
-  GApplication *app;
-  int status;
-
-  app = g_application_new ("org.gtk.TestApplication",
-                           G_APPLICATION_HANDLES_OPEN |
-                           (strcmp (argv[0], "./cmd") == 0 ?
-                             G_APPLICATION_HANDLES_COMMAND_LINE
-                           : 0));
-  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
-  g_signal_connect (app, "open", G_CALLBACK (open), NULL);
-  g_signal_connect (app, "command-line", G_CALLBACK (command_line), NULL);
-#ifdef STANDALONE
-  g_application_set_inactivity_timeout (app, 10000);
-#else
-  g_application_set_inactivity_timeout (app, 1000);
-#endif
-  status = g_application_run (app, argc, argv);
-  g_object_unref (app);
-
-  return status;
-}
-
-#ifdef STANDALONE
-int
-main (int argc, char **argv)
-{
-  return app_main (argc - 1, argv + 1);
-}
-#else
 static gint outstanding_watches;
 static GMainLoop *main_loop;
 
@@ -135,57 +52,33 @@ spawn (const gchar *expected_stdout,
        const gchar *first_arg,
        ...)
 {
-  gint pipefd[2];
+  GError *error = NULL;
+  const gchar *arg;
+  GPtrArray *array;
+  ChildData *data;
+  gchar **args;
+  va_list ap;
   GPid pid;
-  int s;
 
-  /* We assume that the child will not produce enough stdout
-   * to deadlock by filling the pipe.
-   */
-  s = pipe (pipefd);
-  g_assert_cmpint (s, ==, 0);
+  va_start (ap, first_arg);
+  array = g_ptr_array_new ();
+  g_ptr_array_add (array, g_strdup ("./basic-application"));
+  for (arg = first_arg; arg; arg = va_arg (ap, const gchar *))
+    g_ptr_array_add (array, g_strdup (arg));
+  g_ptr_array_add (array, NULL);
+  args = (gchar **) g_ptr_array_free (array, FALSE);
 
-  pid = fork ();
+  data = g_slice_new (ChildData);
+  data->expected_stdout = expected_stdout;
 
-  if (pid == 0)
-    {
-      const gchar *arg;
-      GPtrArray *array;
-      gchar **args;
-      int status;
-      va_list ap;
+  g_spawn_async_with_pipes (NULL, args, NULL,
+                            G_SPAWN_DO_NOT_REAP_CHILD,
+                            NULL, NULL, &pid, NULL,
+                            &data->stdout_pipe, NULL, &error);
+  g_assert_no_error (error);
 
-      dup2 (pipefd[1], 1);
-      close (pipefd[0]);
-      close (pipefd[1]);
-
-      va_start (ap, first_arg);
-      array = g_ptr_array_new ();
-      for (arg = first_arg; arg; arg = va_arg (ap, const gchar *))
-        g_ptr_array_add (array, g_strdup (arg));
-      g_ptr_array_add (array, NULL);
-      args = (gchar **) g_ptr_array_free (array, FALSE);
-
-      status = app_main (g_strv_length (args), args);
-      g_strfreev (args);
-
-      g_print ("exit status: %d\n", status);
-      exit (0);
-    }
-  else if (pid > 0)
-    {
-      ChildData *data;
-
-      data = g_slice_new (ChildData);
-      data->expected_stdout = expected_stdout;
-      data->stdout_pipe = pipefd[0];
-      close (pipefd[1]);
-
-      g_child_watch_add (pid, child_quit, data);
-      outstanding_watches++;
-    }
-  else
-    g_assert_not_reached ();
+  g_child_watch_add (pid, child_quit, data);
+  outstanding_watches++;
 }
 
 static void
@@ -375,4 +268,3 @@ main (int argc, char **argv)
 
   return g_test_run ();
 }
-#endif
