@@ -652,13 +652,13 @@ g_unichar_decompose (gunichar  ch,
  * Performs a single composition step of the
  * Unicode canonical composition algorithm.
  *
- * This function does not perform algorithmic composition
- * for Hangul characters, and does not include compatibility
- * compositions. It does, however, include 'singleton'
- * compositions which replace a character by a single
- * other character. To obtain these, pass zero for @b.
- *
- * This function includes algorithmic Hangul Jamo composition.
+ * This function includes algorithmic Hangul Jamo composition,
+ * but it is not exactly the inverse of g_unichar_decompose().
+ * No composition can have either of @a or @b equal to zero.
+ * To be precise, this function composes if and only if
+ * there exists a Primary Composite P which is canonically
+ * equivalent to the sequence <@a,@b>.  See the Unicode
+ * Standard for the definition of Primary Composite.
  *
  * If @a and @b do not compose a new character, @ch is set to zero.
  *
