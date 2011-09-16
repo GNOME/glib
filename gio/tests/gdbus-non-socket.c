@@ -347,7 +347,8 @@ main (int   argc,
   /* all the tests rely on a shared main loop */
   loop = g_main_loop_new (NULL, FALSE);
 
-  g_test_add_func ("/gdbus/non-socket", test_non_socket);
+  /* Disabled: see https://bugzilla.gnome.org/show_bug.cgi?id=658999
+   * g_test_add_func ("/gdbus/non-socket", test_non_socket); */
 
   ret = g_test_run();
 
