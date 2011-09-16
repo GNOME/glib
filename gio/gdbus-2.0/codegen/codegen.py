@@ -38,8 +38,13 @@ class CodeGenerator:
         self.c = c
         self.namespace = namespace
         if len(namespace) > 0:
-            self.ns_upper = utils.camel_case_to_uscore(namespace).upper() + '_'
-            self.ns_lower = utils.camel_case_to_uscore(namespace).lower() + '_'
+            if utils.is_ugly_case(namespace):
+                self.namespace = namespace.replace('_', '')
+                self.ns_upper = namespace.upper() + '_'
+                self.ns_lower = namespace.lower() + '_'
+            else:
+                self.ns_upper = utils.camel_case_to_uscore(namespace).upper() + '_'
+                self.ns_lower = utils.camel_case_to_uscore(namespace).lower() + '_'
         else:
             self.ns_upper = ''
             self.ns_lower = ''

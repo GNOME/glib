@@ -37,7 +37,7 @@ class Arg:
         self.doc_string = ''
         self.since = ''
 
-    def post_process(self, interface_prefix, c_namespace, arg_number):
+    def post_process(self, interface_prefix, cns, cns_upper, cns_lower, arg_number):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
         if len(self.since) == 0:
@@ -235,7 +235,7 @@ class Method:
         self.since = ''
         self.deprecated = False
 
-    def post_process(self, interface_prefix, c_namespace):
+    def post_process(self, interface_prefix, cns, cns_upper, cns_lower):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
         if len(self.since) == 0:
@@ -253,11 +253,11 @@ class Method:
 
         arg_count = 0
         for a in self.in_args:
-            a.post_process(interface_prefix, c_namespace, arg_count)
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, arg_count)
             arg_count += 1
 
         for a in self.out_args:
-            a.post_process(interface_prefix, c_namespace, arg_count)
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, arg_count)
             arg_count += 1
 
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
@@ -272,7 +272,7 @@ class Signal:
         self.since = ''
         self.deprecated = False
 
-    def post_process(self, interface_prefix, c_namespace):
+    def post_process(self, interface_prefix, cns, cns_upper, cns_lower):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
         if len(self.since) == 0:
@@ -290,7 +290,7 @@ class Signal:
 
         arg_count = 0
         for a in self.args:
-            a.post_process(interface_prefix, c_namespace, arg_count)
+            a.post_process(interface_prefix, cns, cns_upper, cns_lower, arg_count)
             arg_count += 1
 
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
@@ -319,7 +319,7 @@ class Property:
         self.since = ''
         self.deprecated = False
 
-    def post_process(self, interface_prefix, c_namespace):
+    def post_process(self, interface_prefix, cns, cns_upper, cns_lower):
         if len(self.doc_string) == 0:
             self.doc_string = utils.lookup_docs(self.annotations)
         if len(self.since) == 0:
@@ -339,7 +339,7 @@ class Property:
 
         # recalculate arg
         self.arg.annotations = self.annotations
-        self.arg.post_process(interface_prefix, c_namespace, 0)
+        self.arg.post_process(interface_prefix, cns, cns_upper, cns_lower, 0)
 
         if utils.lookup_annotation(self.annotations, 'org.freedesktop.DBus.Deprecated') == 'true':
             self.deprecated = True
@@ -364,18 +364,28 @@ class Interface:
         if len(self.since) == 0:
             self.since = utils.lookup_since(self.annotations)
 
+        if len(c_namespace) > 0:
+            if utils.is_ugly_case(c_namespace):
+                cns = c_namespace.replace('_', '')
+                cns_upper = c_namespace.upper() + '_'
+                cns_lower = c_namespace.lower() + '_'
+            else:
+                cns = c_namespace
+                cns_upper = utils.camel_case_to_uscore(c_namespace).upper() + '_'
+                cns_lower = utils.camel_case_to_uscore(c_namespace).lower() + '_'
+        else:
+            cns = ''
+            cns_upper = ''
+            cns_lower = ''
+
         overridden_name = utils.lookup_annotation(self.annotations, 'org.gtk.GDBus.C.Name')
         if utils.is_ugly_case(overridden_name):
             name = overridden_name.replace('_', '')
-            name_with_ns = c_namespace + name
+            name_with_ns = cns + name
             self.name_without_prefix = name
             self.camel_name = name_with_ns
-            if len(c_namespace) > 0:
-                self.ns_upper = utils.camel_case_to_uscore(c_namespace).upper() + '_'
-                self.name_lower = utils.camel_case_to_uscore(c_namespace) + '_' + overridden_name.lower()
-            else:
-                self.ns_upper = ''
-                self.name_lower = overridden_name.lower()
+            self.ns_upper = cns_upper
+            self.name_lower = cns_lower + overridden_name.lower()
             self.name_upper = overridden_name.upper()
 
             #raise RuntimeError('handle Ugly_Case ', overridden_name)
@@ -388,15 +398,10 @@ class Interface:
                     name = name[len(interface_prefix):]
             self.name_without_prefix = name
             name = utils.strip_dots(name)
-            name_with_ns = utils.strip_dots(c_namespace + '.' + name)
-
+            name_with_ns = utils.strip_dots(cns + '.' + name)
             self.camel_name = name_with_ns
-            if len(c_namespace) > 0:
-                self.ns_upper = utils.camel_case_to_uscore(c_namespace).upper() + '_'
-                self.name_lower = utils.camel_case_to_uscore(c_namespace) + '_' + utils.camel_case_to_uscore(name)
-            else:
-                self.ns_upper = ''
-                self.name_lower = utils.camel_case_to_uscore(name_with_ns)
+            self.ns_upper = cns_upper
+            self.name_lower = cns_lower + utils.camel_case_to_uscore(name)
             self.name_upper = utils.camel_case_to_uscore(name).upper()
 
         self.name_hyphen = self.name_upper.lower().replace('_', '-')
@@ -405,10 +410,10 @@ class Interface:
             self.deprecated = True
 
         for m in self.methods:
-            m.post_process(interface_prefix, c_namespace)
+            m.post_process(interface_prefix, cns, cns_upper, cns_lower)
 
         for s in self.signals:
-            s.post_process(interface_prefix, c_namespace)
+            s.post_process(interface_prefix, cns, cns_upper, cns_lower)
 
         for p in self.properties:
-            p.post_process(interface_prefix, c_namespace)
+            p.post_process(interface_prefix, cns, cns_upper, cns_lower)
