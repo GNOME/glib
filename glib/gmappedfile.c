@@ -173,7 +173,11 @@ g_mapped_file_new (const gchar  *filename,
       goto out;
     }
 
-  if (st.st_size == 0)
+  /* mmap() on size 0 will fail with EINVAL, so we avoid calling mmap()
+   * in that case -- but only if we have a regular file; we still want
+   * attempts to mmap a character device to fail, for example.
+   */
+  if (st.st_size == 0 && S_ISREG (st.st_mode))
     {
       file->length = 0;
       file->contents = NULL;

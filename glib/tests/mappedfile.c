@@ -37,6 +37,18 @@ test_empty (void)
 }
 
 static void
+test_device (void)
+{
+  GError *error = NULL;
+  GMappedFile *file;
+
+  file = g_mapped_file_new ("/dev/null", FALSE, &error);
+  g_assert (file == NULL);
+  g_assert (error != NULL);
+  g_error_free (error);
+}
+
+static void
 test_nonexisting (void)
 {
   GMappedFile *file;
@@ -93,6 +105,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/mappedfile/basic", test_basic);
   g_test_add_func ("/mappedfile/empty", test_empty);
+  g_test_add_func ("/mappedfile/device", test_device);
   g_test_add_func ("/mappedfile/nonexisting", test_nonexisting);
   g_test_add_func ("/mappedfile/writable", test_writable);
 
