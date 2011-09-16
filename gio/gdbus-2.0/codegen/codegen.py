@@ -37,7 +37,7 @@ class CodeGenerator:
         self.h = h
         self.c = c
         self.namespace = namespace
-        if len(namespace) > 1:
+        if len(namespace) > 0:
             self.ns_upper = utils.camel_case_to_uscore(namespace).upper() + '_'
             self.ns_lower = utils.camel_case_to_uscore(namespace).lower() + '_'
         else:
