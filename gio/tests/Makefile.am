@@ -274,7 +274,7 @@ gdbus-test-codegen-generated.h gdbus-test-codegen-generated.c : test-codegen.xml
 		--interface-prefix org.project. \
 		--generate-c-code gdbus-test-codegen-generated \
 		--c-generate-object-manager \
-		--c-namespace Foo \
+		--c-namespace Foo_iGen \
 		--generate-docbook gdbus-test-codegen-generated-doc \
 		--annotate "org.project.Bar" Key1 Value1 \
 		--annotate "org.project.Bar" org.gtk.GDBus.Internal Value2 \
