@@ -47,8 +47,6 @@ struct _Chunk {
   guint8         *data;
   gsize           len;
   GDestroyNotify  destroy;
-  gpointer        user_data;
-  GDestroyNotify  user_data_destroy;
 };
 
 struct _GMemoryInputStreamPrivate {
@@ -150,9 +148,6 @@ free_chunk (gpointer data,
   if (chunk->destroy)
     chunk->destroy (chunk->data);
 
-  if (chunk->user_data_destroy)
-    chunk->user_data_destroy (chunk->user_data);
-
   g_slice_free (Chunk, chunk);
 }
 
@@ -221,42 +216,12 @@ g_memory_input_stream_new_from_data (const void     *data,
                                      gssize          len,
                                      GDestroyNotify  destroy)
 {
-  return g_memory_input_stream_new_from_data_full (data, len, destroy, NULL, NULL);
-}
-
-/**
- * g_memory_input_stream_new_from_data_full:
- * @data: (array length=len) (element-type guint8): input data
- * @len: length of the data, may be -1 if @data is a nul-terminated string
- * @destroy: (allow-none): function that is called to free @data, or %NULL
- * @user_data: extra state pointer related to the chunk of data
- * @user_data_destroy: function that is called to free @user_data, or %NULL
- *
- * Creates a new #GMemoryInputStream with data in memory of a given size.
- * 
- * This function differs from g_memory_input_stream_new_from_data() only
- * because it allows a pointer to some additional state related to
- * the data chunk to be stored (this can be used to properly manage
- * the life cycle of data chunks from language bindings).
- *
- * Returns: new #GInputStream read from @data of @len bytes.
- *
- * Since: 2.30
- **/
-GInputStream *
-g_memory_input_stream_new_from_data_full (const void     *data, 
-					  gssize          len,
-					  GDestroyNotify  destroy,
-					  gpointer        user_data,
-					  GDestroyNotify  user_data_destroy)
-{
   GInputStream *stream;
 
   stream = g_memory_input_stream_new ();
 
-  g_memory_input_stream_add_data_full (G_MEMORY_INPUT_STREAM (stream),
-				       data, len, destroy, 
-				       user_data, user_data_destroy);
+  g_memory_input_stream_add_data (G_MEMORY_INPUT_STREAM (stream),
+                                  data, len, destroy);
 
   return stream;
 }
@@ -276,35 +241,6 @@ g_memory_input_stream_add_data (GMemoryInputStream *stream,
                                 gssize              len,
                                 GDestroyNotify      destroy)
 {
-  g_memory_input_stream_add_data_full (stream, data, len, destroy, NULL, NULL);
-}
-
-/**
- * g_memory_input_stream_add_data_full:
- * @stream: a #GMemoryInputStream
- * @data: (array length=len) (element-type guint8): input data
- * @len: length of the data, may be -1 if @data is a nul-terminated string
- * @destroy: (allow-none): function that is called to free @data, or %NULL
- * @user_data: extra state pointer related to the chunk of data
- * @user_data_destroy: function that is called to free @user_data, or %NULL
- *
- * Appends @data to data that can be read from the input stream
- *
- * This function differs from g_memory_input_stream_add_data() only
- * because it allows a pointer to some additional state related to
- * the data chunk to be stored (this can be used to properly manage
- * the life cycle of data chunks from language bindings).
- *
- * Since: 2.30
- */
-void
-g_memory_input_stream_add_data_full (GMemoryInputStream *stream,
-				     const void         *data,
-				     gssize              len,
-				     GDestroyNotify      destroy,
-				     gpointer            user_data,
-				     GDestroyNotify      user_data_destroy)
-{
   GMemoryInputStreamPrivate *priv;
   Chunk *chunk;
  
@@ -320,8 +256,6 @@ g_memory_input_stream_add_data_full (GMemoryInputStream *stream,
   chunk->data = (guint8 *)data;
   chunk->len = len;
   chunk->destroy = destroy;
-  chunk->user_data = user_data;
-  chunk->user_data_destroy = user_data_destroy;
 
   priv->chunks = g_slist_append (priv->chunks, chunk);
   priv->len += chunk->len;
