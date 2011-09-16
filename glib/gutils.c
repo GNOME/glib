@@ -201,7 +201,10 @@ DllMain (HINSTANCE hinstDLL,
 	 LPVOID    lpvReserved)
 {
   if (fdwReason == DLL_PROCESS_ATTACH)
+    {
       glib_dll = hinstDLL;
+      g_thread_DllMain ();
+    }
 
   return TRUE;
 }

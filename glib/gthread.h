@@ -73,6 +73,37 @@ typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
 typedef struct _GStaticPrivate  GStaticPrivate;
 
+#ifdef G_OS_WIN32
+
+#define G_MUTEX_INIT { NULL }
+struct _GMutex
+{
+    gpointer impl;
+};
+
+#define G_COND_INIT { NULL }
+struct _GCond
+{
+    gpointer impl;
+};
+#else
+
+#include <pthread.h>
+
+#define G_MUTEX_INIT { PTHREAD_MUTEX_INITIALIZER }
+struct _GMutex
+{
+  pthread_mutex_t impl;
+};
+
+#define G_COND_INIT { PTHREAD_COND_INITIALIZER }
+struct _GCond
+{
+  pthread_cond_t impl;
+};
+
+#endif
+
 typedef struct _GThreadFunctions GThreadFunctions;
 struct _GThreadFunctions
 {
@@ -153,49 +184,13 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
       (*g_thread_functions_for_glib_use . op))				\
      (mutex, G_MUTEX_DEBUG_MAGIC, G_STRLOC) : (fail))
 
-#ifndef G_ERRORCHECK_MUTEXES
-# define g_mutex_lock(mutex)						\
-    G_THREAD_CF (mutex_lock,     (void)0, (mutex))
-# define g_mutex_trylock(mutex)						\
-    G_THREAD_CF (mutex_trylock,  TRUE,    (mutex))
-# define g_mutex_unlock(mutex)						\
-    G_THREAD_CF (mutex_unlock,   (void)0, (mutex))
-# define g_mutex_free(mutex)						\
-    G_THREAD_CF (mutex_free,     (void)0, (mutex))
-# define g_cond_wait(cond, mutex)					\
-    G_THREAD_CF (cond_wait,      (void)0, (cond, mutex))
-# define g_cond_timed_wait(cond, mutex, abs_time)			\
-    G_THREAD_CF (cond_timed_wait, TRUE,   (cond, mutex, abs_time))
-#else /* G_ERRORCHECK_MUTEXES */
-# define g_mutex_lock(mutex)						\
-    G_THREAD_ECF (mutex_lock,    (void)0, (mutex), void)
-# define g_mutex_trylock(mutex)						\
-    G_THREAD_ECF (mutex_trylock, TRUE,    (mutex), gboolean)
-# define g_mutex_unlock(mutex)						\
-    G_THREAD_ECF (mutex_unlock,  (void)0, (mutex), void)
-# define g_mutex_free(mutex)						\
-    G_THREAD_ECF (mutex_free,    (void)0, (mutex), void)
-# define g_cond_wait(cond, mutex)					\
-    (g_thread_supported () ? ((void(*)(GCond*, GMutex*, gulong, gchar*))\
-      g_thread_functions_for_glib_use.cond_wait)			\
-        (cond, mutex, G_MUTEX_DEBUG_MAGIC, G_STRLOC) : (void) 0)
-# define g_cond_timed_wait(cond, mutex, abs_time)			\
-    (g_thread_supported () ?						\
-      ((gboolean(*)(GCond*, GMutex*, GTimeVal*, gulong, gchar*))	\
-        g_thread_functions_for_glib_use.cond_timed_wait)		\
-          (cond, mutex, abs_time, G_MUTEX_DEBUG_MAGIC, G_STRLOC) : TRUE)
-#endif /* G_ERRORCHECK_MUTEXES */
+
 
 #if defined(G_THREADS_MANDATORY)
 #define g_thread_supported()     1
 #else
 #define g_thread_supported()    (g_threads_got_initialized)
 #endif
-#define g_mutex_new()            G_THREAD_UF (mutex_new,      ())
-#define g_cond_new()             G_THREAD_UF (cond_new,       ())
-#define g_cond_signal(cond)      G_THREAD_CF (cond_signal,    (void)0, (cond))
-#define g_cond_broadcast(cond)   G_THREAD_CF (cond_broadcast, (void)0, (cond))
-#define g_cond_free(cond)        G_THREAD_CF (cond_free,      (void)0, (cond))
 #define g_private_new(destructor) G_THREAD_UF (private_new, (destructor))
 #define g_private_get(private_key) G_THREAD_CF (private_get, \
                                                 ((gpointer)private_key), \
@@ -381,6 +376,33 @@ extern void glib_dummy_decl (void);
 #  define G_UNLOCK(name) g_static_mutex_unlock   (&G_LOCK_NAME (name))
 #  define G_TRYLOCK(name) g_static_mutex_trylock (&G_LOCK_NAME (name))
 #endif /* !G_DEBUG_LOCKS */
+
+
+void                    g_mutex_init                                    (GMutex         *mutex);
+void                    g_mutex_clear                                   (GMutex         *mutex);
+
+void                    g_mutex_lock                                    (GMutex         *mutex);
+void                    g_mutex_unlock                                  (GMutex         *mutex);
+gboolean                g_mutex_trylock                                 (GMutex         *mutex);
+
+void                    g_cond_init                                     (GCond          *cond);
+void                    g_cond_clear                                    (GCond          *cond);
+
+void                    g_cond_wait                                     (GCond          *cond,
+                                                                         GMutex         *mutex);
+void                    g_cond_signal                                   (GCond          *cond);
+void                    g_cond_broadcast                                (GCond          *cond);
+gboolean                g_cond_timed_wait                               (GCond          *cond,
+                                                                         GMutex         *mutex,
+                                                                         GTimeVal       *timeval);
+gboolean                g_cond_timedwait                                (GCond          *cond,
+                                                                         GMutex         *mutex,
+                                                                         gint64          abs_time);
+
+GMutex *                g_mutex_new                                     (void);
+void                    g_mutex_free                                    (GMutex         *mutex);
+GCond *                 g_cond_new                                      (void);
+void                    g_cond_free                                     (GCond          *cond);
 
 G_END_DECLS
 

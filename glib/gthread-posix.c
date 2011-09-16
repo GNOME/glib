@@ -27,11 +27,247 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/*
- * MT safe
+/* The GMutex and GCond implementations in this file are some of the
+ * lowest-level code in GLib.  All other parts of GLib (messages,
+ * memory, slices, etc) assume that they can freely use these facilities
+ * without risking recursion.
+ *
+ * As such, these functions are NOT permitted to call any other part of
+ * GLib.
+ *
+ * The thread manipulation functions (create, exit, join, etc.) have
+ * more freedom -- they can do as they please.
  */
 
 #include "config.h"
+
+#include "gthread.h"
+
+#include <pthread.h>
+#include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <stdio.h>
+
+static void
+g_thread_abort (gint         status,
+                const gchar *function)
+{
+  fprintf (stderr, "GLib (gthread-posix.c): Unexpected error from C library during '%s': %s.  Aborting.\n",
+           strerror (status), function);
+  abort ();
+}
+
+/* {{{1 GMutex */
+void
+g_mutex_init (GMutex *mutex)
+{
+  gint status;
+
+  if G_UNLIKELY ((status = pthread_mutex_init (&mutex->impl, NULL)) != 0)
+    g_thread_abort (status, "pthread_mutex_init");
+}
+
+void
+g_mutex_clear (GMutex *mutex)
+{
+  gint status;
+
+  if G_UNLIKELY ((status = pthread_mutex_destroy (&mutex->impl)) != 0)
+    g_thread_abort (status, "pthread_mutex_destroy");
+}
+
+void
+g_mutex_lock (GMutex *mutex)
+{
+  gint status;
+
+  /* temporary until we fix libglib */
+  if (mutex == NULL)
+    return;
+
+  if G_UNLIKELY ((status = pthread_mutex_lock (&mutex->impl)) != 0)
+    g_thread_abort (status, "pthread_mutex_lock");
+}
+
+void
+g_mutex_unlock (GMutex *mutex)
+{
+  gint status;
+
+  /* temporary until we fix libglib */
+  if (mutex == NULL)
+    return;
+
+  if G_UNLIKELY ((status = pthread_mutex_unlock (&mutex->impl)) != 0)
+    g_thread_abort (status, "pthread_mutex_lock");
+}
+
+gboolean
+g_mutex_trylock (GMutex *mutex)
+{
+  gint status;
+
+  /* temporary until we fix libglib */
+  if (mutex == NULL)
+    return TRUE;
+
+  if G_LIKELY ((status = pthread_mutex_trylock (&mutex->impl)) == 0)
+    return TRUE;
+
+  if G_UNLIKELY (status != EBUSY)
+    g_thread_abort (status, "pthread_mutex_trylock");
+
+  return FALSE;
+}
+
+/* {{{1 GCond */
+
+void
+g_cond_init (GCond *cond)
+{
+  gint status;
+
+  if G_UNLIKELY ((status = pthread_cond_init (&cond->impl, NULL)) != 0)
+    g_thread_abort (status, "pthread_cond_init");
+}
+
+void
+g_cond_clear (GCond *cond)
+{
+  gint status;
+
+  if G_UNLIKELY ((status = pthread_cond_destroy (&cond->impl)) != 0)
+    g_thread_abort (status, "pthread_cond_destroy");
+}
+
+void
+g_cond_wait (GCond  *cond,
+             GMutex *mutex)
+{
+  gint status;
+
+  if G_UNLIKELY ((status = pthread_cond_wait (&cond->impl, &mutex->impl)) != 0)
+    g_thread_abort (status, "pthread_cond_wait");
+}
+
+void
+g_cond_signal (GCond *cond)
+{
+  gint status;
+
+  /* temporary until we fix libglib */
+  if (cond == NULL)
+    return;
+
+  if G_UNLIKELY ((status = pthread_cond_signal (&cond->impl)) != 0)
+    g_thread_abort (status, "pthread_cond_signal");
+}
+
+void
+g_cond_broadcast (GCond *cond)
+{
+  gint status;
+
+  /* temporary until we fix libglib */
+  if (cond == NULL)
+    return;
+
+  if G_UNLIKELY ((status = pthread_cond_broadcast (&cond->impl)) != 0)
+    g_thread_abort (status, "pthread_cond_broadcast");
+}
+
+gboolean
+g_cond_timed_wait (GCond    *cond,
+                   GMutex   *mutex,
+                   GTimeVal *abs_time)
+{
+  struct timespec end_time;
+  gint status;
+
+  if (abs_time == NULL)
+    {
+      g_cond_wait (cond, mutex);
+      return TRUE;
+    }
+
+  end_time.tv_sec = abs_time->tv_sec;
+  end_time.tv_nsec = abs_time->tv_usec * 1000;
+
+  if ((status = pthread_cond_timedwait (&cond->impl, &mutex->impl, &end_time)) == 0)
+    return TRUE;
+
+  if G_UNLIKELY (status != ETIMEDOUT)
+    g_thread_abort (status, "pthread_cond_timedwait");
+
+  return FALSE;
+}
+
+gboolean
+g_cond_timedwait (GCond  *cond,
+                  GMutex *mutex,
+                  gint64  abs_time)
+{
+  struct timespec end_time;
+  gint status;
+
+  end_time.tv_sec = abs_time / 1000000;
+  end_time.tv_nsec = (abs_time % 1000000) * 1000;
+
+  if ((status = pthread_cond_timedwait (&cond->impl, &mutex->impl, &end_time)) == 0)
+    return TRUE;
+
+  if G_UNLIKELY (status != ETIMEDOUT)
+    g_thread_abort (status, "pthread_cond_timedwait");
+
+  return FALSE;
+}
+
+/* {{{1 new/free API */
+
+GMutex *
+g_mutex_new (void)
+{
+  GMutex *mutex;
+
+  /* malloc() is temporary until all libglib users are ported away */
+  mutex = malloc (sizeof (GMutex));
+  if G_UNLIKELY (mutex == NULL)
+    g_thread_abort (errno, "malloc");
+  g_mutex_init (mutex);
+
+  return mutex;
+}
+
+void
+g_mutex_free (GMutex *mutex)
+{
+  g_mutex_clear (mutex);
+  free (mutex);
+}
+
+GCond *
+g_cond_new (void)
+{
+  GCond *cond;
+
+  /* malloc() is temporary until all libglib users are ported away */
+  cond = malloc (sizeof (GCond));
+  if G_UNLIKELY (cond == NULL)
+    g_thread_abort (errno, "malloc");
+  g_cond_init (cond);
+
+  return cond;
+}
+
+void
+g_cond_free (GCond *cond)
+{
+  g_cond_clear (cond);
+  free (cond);
+}
+
+/* {{{1 GPrivate */
 
 #include "glib.h"
 #include "gthreadprivate.h"
@@ -148,101 +384,6 @@ _g_thread_impl_init(void)
 #endif /* HAVE_PRIORITIES */
 }
 
-static GMutex *
-g_mutex_new_posix_impl (void)
-{
-  GMutex *result = (GMutex *) g_new (pthread_mutex_t, 1);
-  posix_check_cmd (pthread_mutex_init ((pthread_mutex_t *) result, NULL));
-  return result;
-}
-
-static void
-g_mutex_free_posix_impl (GMutex * mutex)
-{
-  posix_check_cmd (pthread_mutex_destroy ((pthread_mutex_t *) mutex));
-  g_free (mutex);
-}
-
-/* NOTE: the functions g_mutex_lock and g_mutex_unlock may not use
-   functions from gmem.c and gmessages.c; */
-
-/* pthread_mutex_lock, pthread_mutex_unlock can be taken directly, as
-   signature and semantic are right, but without error check then!!!!,
-   we might want to change this therefore. */
-
-static gboolean
-g_mutex_trylock_posix_impl (GMutex * mutex)
-{
-  int result;
-
-  result = pthread_mutex_trylock ((pthread_mutex_t *) mutex);
-
-  if (result == EBUSY)
-    return FALSE;
-
-  posix_check_err (result, "pthread_mutex_trylock");
-  return TRUE;
-}
-
-static GCond *
-g_cond_new_posix_impl (void)
-{
-  GCond *result = (GCond *) g_new (pthread_cond_t, 1);
-  posix_check_cmd (pthread_cond_init ((pthread_cond_t *) result, NULL));
-  return result;
-}
-
-/* pthread_cond_signal, pthread_cond_broadcast and pthread_cond_wait
-   can be taken directly, as signature and semantic are right, but
-   without error check then!!!!, we might want to change this
-   therefore. */
-
-#define G_NSEC_PER_SEC 1000000000
-
-static gboolean
-g_cond_timed_wait_posix_impl (GCond * cond,
-			      GMutex * entered_mutex,
-			      GTimeVal * abs_time)
-{
-  int result;
-  struct timespec end_time;
-  gboolean timed_out;
-
-  g_return_val_if_fail (cond != NULL, FALSE);
-  g_return_val_if_fail (entered_mutex != NULL, FALSE);
-
-  if (!abs_time)
-    {
-      result = pthread_cond_wait ((pthread_cond_t *)cond,
-                                  (pthread_mutex_t *) entered_mutex);
-      timed_out = FALSE;
-    }
-  else
-    {
-      end_time.tv_sec = abs_time->tv_sec;
-      end_time.tv_nsec = abs_time->tv_usec * (G_NSEC_PER_SEC / G_USEC_PER_SEC);
-
-      g_return_val_if_fail (end_time.tv_nsec < G_NSEC_PER_SEC, TRUE);
-
-      result = pthread_cond_timedwait ((pthread_cond_t *) cond,
-                                       (pthread_mutex_t *) entered_mutex,
-                                       &end_time);
-      timed_out = (result == ETIMEDOUT);
-    }
-
-  if (!timed_out)
-    posix_check_err (result, "pthread_cond_timedwait");
-
-  return !timed_out;
-}
-
-static void
-g_cond_free_posix_impl (GCond * cond)
-{
-  posix_check_cmd (pthread_cond_destroy ((pthread_cond_t *) cond));
-  g_free (cond);
-}
-
 static GPrivate *
 g_private_new_posix_impl (GDestroyNotify destructor)
 {
@@ -270,6 +411,9 @@ g_private_get_posix_impl (GPrivate * private_key)
 
   return pthread_getspecific (*(pthread_key_t *) private_key);
 }
+
+/* {{{1 GThread */
+
 
 static void
 g_thread_create_posix_impl (GThreadFunc thread_func,
@@ -381,19 +525,20 @@ g_thread_equal_posix_impl (gpointer thread1, gpointer thread2)
   return (pthread_equal (*(pthread_t*)thread1, *(pthread_t*)thread2) != 0);
 }
 
+/* {{{1 Epilogue */
 GThreadFunctions g_thread_functions_for_glib_use =
 {
-  g_mutex_new_posix_impl,
-  (void (*)(GMutex *)) pthread_mutex_lock,
-  g_mutex_trylock_posix_impl,
-  (void (*)(GMutex *)) pthread_mutex_unlock,
-  g_mutex_free_posix_impl,
-  g_cond_new_posix_impl,
-  (void (*)(GCond *)) pthread_cond_signal,
-  (void (*)(GCond *)) pthread_cond_broadcast,
-  (void (*)(GCond *, GMutex *)) pthread_cond_wait,
-  g_cond_timed_wait_posix_impl,
-  g_cond_free_posix_impl,
+  g_mutex_new,
+  g_mutex_lock,
+  g_mutex_trylock,
+  g_mutex_unlock,
+  g_mutex_free,
+  g_cond_new,
+  g_cond_signal,
+  g_cond_broadcast,
+  g_cond_wait,
+  g_cond_timed_wait,
+  g_cond_free,
   g_private_new_posix_impl,
   g_private_get_posix_impl,
   g_private_set_posix_impl,
@@ -405,3 +550,5 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_thread_self_posix_impl,
   g_thread_equal_posix_impl
 };
+
+/* vim:set foldmethod=marker: */
