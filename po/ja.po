@@ -27,14 +27,14 @@ msgstr ""
 "Project-Id-Version: glib glib-2-28\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-04-04 21:25+0900\n"
-"Last-Translator: Takayuki KUSANO <AE5T-KSN@asahi-net.or.jp>\n"
+"POT-Creation-Date: 2011-09-16 16:15+0000\n"
+"PO-Revision-Date: 2011-09-11 00:28+0900\n"
+"Last-Translator: Jiro Matsuzawa <jmatsuzawa@src.gnome.org>\n"
 "Language-Team: Japanese <gnome-translation@gnome.gr.jp>\n"
-"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../glib/gbookmarkfile.c:780
@@ -484,8 +484,8 @@ msgstr "'%s' をクローズできません: fclose() に失敗しました: %s"
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
-"'%s' という既存のファイルを削除できませんでした: g_unlink() に失敗しました: "
-"%s"
+"'%s' という既存のファイルを削除できませんでした: g_unlink() に失敗しました: %"
+"s"
 
 #: ../glib/gfileutils.c:1412
 #, c-format
@@ -588,7 +588,7 @@ msgstr "シンボリックリンクはサポートしていません"
 #: ../glib/giochannel.c:1408
 #, c-format
 msgid "Could not open converter from '%s' to '%s': %s"
-msgstr "'%s' から '%s' へ変換するコンバータを開けませんでした: %s"
+msgstr "'%s' から '%s' へ変換するコンバーターを開けませんでした: %s"
 
 #: ../glib/giochannel.c:1753
 msgid "Can't do a raw read in g_io_channel_read_line_string"
@@ -597,7 +597,7 @@ msgstr "g_io_channel_read_line_string では raw モードで読めません"
 #: ../glib/giochannel.c:1800 ../glib/giochannel.c:2057
 #: ../glib/giochannel.c:2144
 msgid "Leftover unconverted data in read buffer"
-msgstr "変換されていないデータが読みこみバッファに残っています"
+msgstr "変換されていないデータが読みこみバッファーに残っています"
 
 #: ../glib/giochannel.c:1881 ../glib/giochannel.c:1958
 msgid "Channel terminates in a partial character"
@@ -703,8 +703,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "おかしな文字 '%s' があります。空の要素のタグ '%s' の最後は '>' でなくてはなり"
 "ません"
@@ -1158,17 +1158,17 @@ msgstr "テキストが空です (あるいは空白のみ)"
 msgid "Failed to read data from child process"
 msgstr "子プロセスからデータを取得できませんでした"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "子プロセスとの通信用のパイプを作成できませんでした (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "子のパイプからデータを取得できませんでした (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "'%s' というディレクトリへ移動できませんでした (%s)"
@@ -1187,7 +1187,7 @@ msgstr "プログラム名が無効です: %s"
 #: ../glib/gspawn-win32.c:1278
 #, c-format
 msgid "Invalid string in argument vector at %d: %s"
-msgstr "%d の引数ベクタに不正な文字列があります: %s"
+msgstr "%d の引数ベクターに不正な文字列があります: %s"
 
 #: ../glib/gspawn-win32.c:465 ../glib/gspawn-win32.c:737
 #: ../glib/gspawn-win32.c:1311
@@ -1227,32 +1227,32 @@ msgstr "子プロセスからデータを読み出す際に select() で想定�
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() で想定外のエラー (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失敗 (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "%s を子プロセスとして起動できませんでした: %s"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "子プロセスの出力または入力をリダイレクトできません (%s)"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "子プロセスを fork できません (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "子プロセスの実行時に不明なエラー \"%s\""
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "子プロセスのパイプから十分なデータを取得できません (%s)"
@@ -1451,10 +1451,11 @@ msgstr "%s に引き渡した値が大きすぎます"
 msgid "Stream is already closed"
 msgstr "既にストリームは閉じています"
 
-#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
-#: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
-#: ../gio/glocalfile.c:2100 ../gio/gsimpleasyncresult.c:814
-#: ../gio/gsimpleasyncresult.c:840
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1646
+#: ../gio/gdbusconnection.c:1735 ../gio/gdbusconnection.c:1922
+#: ../gio/gdbusprivate.c:1352 ../gio/glocalfile.c:2100
+#: ../gio/gsimpleasyncresult.c:814 ../gio/gsimpleasyncresult.c:840
+#, c-format
 msgid "Operation was cancelled"
 msgstr "操作がキャンセルされました"
 
@@ -1637,16 +1638,16 @@ msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr ""
 "セッションバスのアドレスを決定できません (このOSでは実装されていません)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6415
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr ""
-"DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません - 不明な値 "
-"'%s'"
+"DBUS_STARTER_BUS_TYPE 環境変数からバスアドレスを決定できません - 不明な値 '%"
+"s'"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6424
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1689,8 +1690,8 @@ msgstr "ディレクトリ '%s' の stat 時にエラー: %s"
 msgid ""
 "Permissions on directory `%s' are malformed. Expected mode 0700, got 0%o"
 msgstr ""
-"ディレクトリ '%s' が不正なパーミッションです。0700 モードを期待しましたが、"
-"0%o でした"
+"ディレクトリ '%s' が不正なパーミッションです。0700 モードを期待しましたが、0%"
+"o でした"
 
 #: ../gio/gdbusauthmechanismsha1.c:299
 #, c-format
@@ -1756,23 +1757,23 @@ msgstr "キーリング '%s' を書き込み用にオープンする際にエラ
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(さらに、'%s' のロックの解放も失敗しました: %s) "
 
-#: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
-#: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
+#: ../gio/gdbusconnection.c:1144 ../gio/gdbusconnection.c:1382
+#: ../gio/gdbusconnection.c:1421 ../gio/gdbusconnection.c:1746
 msgid "The connection is closed"
 msgstr "接続が閉じています"
 
-#: ../gio/gdbusconnection.c:1684
+#: ../gio/gdbusconnection.c:1690
 msgid "Timeout was reached"
 msgstr "タイムアウトしました"
 
-#: ../gio/gdbusconnection.c:2306
+#: ../gio/gdbusconnection.c:2312
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr ""
 "クライアントサイドの接続を作成しようとしましたがサポートしていないフラグに遭"
 "遇しました"
 
-#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:3776 ../gio/gdbusconnection.c:4092
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
@@ -1780,69 +1781,69 @@ msgstr ""
 "パス %s のオブジェクト上にインターフェイス 'org.freedesktop.DBus.Properties' "
 "がありません"
 
-#: ../gio/gdbusconnection.c:3841
+#: ../gio/gdbusconnection.c:3847
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "プロパティ '%s' の設定時にエラー: 期待した型は '%s' ですが '%s' でした"
 
-#: ../gio/gdbusconnection.c:3936
+#: ../gio/gdbusconnection.c:3942
 #, c-format
 msgid "No such property `%s'"
 msgstr "'%s' というプロパティが存在しません"
 
-#: ../gio/gdbusconnection.c:3948
+#: ../gio/gdbusconnection.c:3954
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "プロパティ '%s' が読み込み可能ではありません"
 
-#: ../gio/gdbusconnection.c:3959
+#: ../gio/gdbusconnection.c:3965
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "プロパティ '%s' が書き込み可能ではありません"
 
-#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
+#: ../gio/gdbusconnection.c:4035 ../gio/gdbusconnection.c:5859
 #, c-format
 msgid "No such interface `%s'"
 msgstr "'%s' というインターフェイスがありません"
 
-#: ../gio/gdbusconnection.c:4213
+#: ../gio/gdbusconnection.c:4219
 msgid "No such interface"
 msgstr "そのようなインターフェイスがありません"
 
-#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
+#: ../gio/gdbusconnection.c:4438 ../gio/gdbusconnection.c:6365
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "パス %2$s のオブジェクト上にインターフェイス '%1$s' がありません"
 
-#: ../gio/gdbusconnection.c:4484
+#: ../gio/gdbusconnection.c:4490
 #, c-format
 msgid "No such method `%s'"
 msgstr "'%s' というメソッドがありません"
 
-#: ../gio/gdbusconnection.c:4515
+#: ../gio/gdbusconnection.c:4521
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "メッセージの型 '%s' は期待した型 '%s' に一致しません"
 
-#: ../gio/gdbusconnection.c:4734
+#: ../gio/gdbusconnection.c:4740
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr ""
 "%2$s のインターフェイス %1$s にオブジェクトは既にエクスポートされています"
 
-#: ../gio/gdbusconnection.c:4932
+#: ../gio/gdbusconnection.c:4938
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "メソッド '%s' は '%s' 型を返しましたが、'%s' を期待していました"
 
-#: ../gio/gdbusconnection.c:5964
+#: ../gio/gdbusconnection.c:5970
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr ""
 "シグネチャ '%3$s' を持ったインターフェイス '%2$s' にメソッド '%1$s' が存在し"
 "ません"
 
-#: ../gio/gdbusconnection.c:6082
+#: ../gio/gdbusconnection.c:6088
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "サブツリーは既に %s に export されています"
@@ -1854,39 +1855,39 @@ msgstr "型が INVALID"
 #: ../gio/gdbusmessage.c:870
 msgid "METHOD_CALL message: PATH or MEMBER header field is missing"
 msgstr ""
-"METHOD_CALL メッセージ: PATH または MEMBER ヘッダフィールドがありません"
+"METHOD_CALL メッセージ: PATH または MEMBER ヘッダーフィールドがありません"
 
 #: ../gio/gdbusmessage.c:881
 msgid "METHOD_RETURN message: REPLY_SERIAL header field is missing"
-msgstr "METHOD_RETURN メッセージ: REPLY_SERIAL ヘッダフィールドがありません"
+msgstr "METHOD_RETURN メッセージ: REPLY_SERIAL ヘッダーフィールドがありません"
 
 #: ../gio/gdbusmessage.c:893
 msgid "ERROR message: REPLY_SERIAL or ERROR_NAME header field is missing"
 msgstr ""
-"エラー: METHOD_CALL メッセージ: REPLY_SERIAL または ERROR_NAME ヘッダフィール"
-"ドがありません"
+"エラー: METHOD_CALL メッセージ: REPLY_SERIAL または ERROR_NAME ヘッダーフィー"
+"ルドがありません"
 
 #: ../gio/gdbusmessage.c:906
 msgid "SIGNAL message: PATH, INTERFACE or MEMBER header field is missing"
 msgstr ""
-"SIGNAL メッセージ: PATH、INTERFACE あるいは MEMBER ヘッダフィールドがありませ"
-"ん"
+"SIGNAL メッセージ: PATH、INTERFACE あるいは MEMBER ヘッダーフィールドがありま"
+"せん"
 
 #: ../gio/gdbusmessage.c:914
 msgid ""
 "SIGNAL message: The PATH header field is using the reserved value /org/"
 "freedesktop/DBus/Local"
 msgstr ""
-"SIGNAL メッセージ: PATH ヘッダフィールドが予約された値 /org/freedesktop/DBus/"
-"Local を使っています"
+"SIGNAL メッセージ: PATH ヘッダーフィールドが予約された値 /org/freedesktop/"
+"DBus/Local を使っています"
 
 #: ../gio/gdbusmessage.c:922
 msgid ""
 "SIGNAL message: The INTERFACE header field is using the reserved value org."
 "freedesktop.DBus.Local"
 msgstr ""
-"SIGNAL メッセージ: INTERFACE ヘッダフィールドが予約された値 org.freedesktop."
-"DBus.Local を使っています"
+"SIGNAL メッセージ: INTERFACE ヘッダーフィールドが予約された値 org."
+"freedesktop.DBus.Local を使っています"
 
 #: ../gio/gdbusmessage.c:998
 #, fuzzy, c-format
@@ -1962,8 +1963,8 @@ msgstr ""
 #, c-format
 msgid "Signature header with signature `%s' found but message body is empty"
 msgstr ""
-"シグネチャ '%s' のシグネチャヘッダが見つかりましたが、メッセージボディが空で"
-"す"
+"シグネチャ '%s' のシグネチャヘッダーが見つかりましたが、メッセージボディが空"
+"です"
 
 #: ../gio/gdbusmessage.c:1790
 #, c-format
@@ -1976,8 +1977,8 @@ msgstr ""
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] ""
-"メッセージ中にシグネチャヘッダがありませんが、メッセージボディが %u バイトあ"
-"ります"
+"メッセージ中にシグネチャヘッダーがありませんが、メッセージボディが %u バイト"
+"あります"
 
 #: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
@@ -1997,7 +1998,7 @@ msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
 msgstr ""
-"メッセージには %d 個の fd が含まれていますが、ヘッダフィールドでは %d 個の "
+"メッセージには %d 個の fd が含まれていますが、ヘッダーフィールドでは %d 個の "
 "fd があることになってます"
 
 #: ../gio/gdbusmessage.c:2311
@@ -2008,23 +2009,23 @@ msgstr "メッセージをシリアライズできません: "
 #, c-format
 msgid "Message body has signature `%s' but there is no signature header"
 msgstr ""
-"メッセージボディにはシグネチャ '%s' がありますが、シグネチャのヘッダがありま"
-"せん"
+"メッセージボディにはシグネチャ '%s' がありますが、シグネチャのヘッダーがあり"
+"ません"
 
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr ""
-"メッセージボディには型シグネチャ '%s' がありますが、ヘッダフィールド中のシグ"
-"ネチャは '%s' です"
+"メッセージボディには型シグネチャ '%s' がありますが、ヘッダーフィールド中のシ"
+"グネチャは '%s' です"
 
 #: ../gio/gdbusmessage.c:2381
 #, c-format
 msgid "Message body is empty but signature in the header field is `(%s)'"
 msgstr ""
-"メッセージボディは空ですが、ヘッダフィールド中のシグネチャは '(%s)' です"
+"メッセージボディは空ですが、ヘッダーフィールド中のシグネチャは '(%s)' です"
 
 #: ../gio/gdbusmessage.c:2938
 #, c-format
@@ -2035,7 +2036,7 @@ msgstr "型 '%s' のボディでエラーが返りました"
 msgid "Error return with empty body"
 msgstr "空のボディでエラーが返りました"
 
-#: ../gio/gdbusprivate.c:1736
+#: ../gio/gdbusprivate.c:1953
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "/var/lib/dbus/machine-id を読みこめません: "
 
@@ -2063,7 +2064,7 @@ msgstr "抽象名前空間はサポートされていません"
 
 #: ../gio/gdbusserver.c:798
 msgid "Cannot specify nonce file when creating a server"
-msgstr "サーバを作成する際、nonce ファイルを指定できません"
+msgstr "サーバーを作成する際、nonce ファイルを指定できません"
 
 #: ../gio/gdbusserver.c:875
 #, c-format
@@ -2099,7 +2100,7 @@ msgstr ""
 "コマンド:\n"
 "  help         この情報を表示\n"
 "  introspect   リモートオブジェクトをイントロスペクト\n"
-"  monitor      リモートオブジェクトをモニタ\n"
+"  monitor      リモートオブジェクトをモニター\n"
 "  call         リモートオブジェクトでメソッドを起動\n"
 "\n"
 "\"%s COMMAND --help\" を使えば、それぞれのコマンドのヘルプを表示できます。\n"
@@ -2170,7 +2171,7 @@ msgstr ""
 #: ../gio/gdbus-tool.c:535
 #, fuzzy
 msgid "Object path to emit signal on"
-msgstr "モニタするオブジェクトパス"
+msgstr "モニターするオブジェクトパス"
 
 #: ../gio/gdbus-tool.c:536
 #, fuzzy
@@ -2221,7 +2222,7 @@ msgstr "エラー: %s は妥当なオブジェクトのパス名ではありま�
 #: ../gio/gdbus-tool.c:669 ../gio/gdbus-tool.c:982
 #, c-format
 msgid "Error parsing parameter %d: %s\n"
-msgstr "パラメータ %d の解析中にエラー: %s\n"
+msgstr "パラメーター %d の解析中にエラー: %s\n"
 
 #: ../gio/gdbus-tool.c:698
 #, fuzzy, c-format
@@ -2272,7 +2273,7 @@ msgstr "エラー: メソッド名 '%s' が正しくありません\n"
 #: ../gio/gdbus-tool.c:974
 #, c-format
 msgid "Error parsing parameter %d of type `%s': %s\n"
-msgstr "型 %2$s のパラメータ %1$d を解析中にエラー: %3$s\n"
+msgstr "型 %2$s のパラメーター %1$d を解析中にエラー: %3$s\n"
 
 #: ../gio/gdbus-tool.c:1406
 msgid "Destination name to introspect"
@@ -2300,15 +2301,15 @@ msgstr "リモートオブジェクトをイントロスペクト。"
 
 #: ../gio/gdbus-tool.c:1699
 msgid "Destination name to monitor"
-msgstr "モニタする対象の名前"
+msgstr "モニターする対象の名前"
 
 #: ../gio/gdbus-tool.c:1700
 msgid "Object path to monitor"
-msgstr "モニタするオブジェクトパス"
+msgstr "モニターするオブジェクトパス"
 
 #: ../gio/gdbus-tool.c:1733
 msgid "Monitor a remote object."
-msgstr "リモートのオブジェクトをモニタします。"
+msgstr "リモートのオブジェクトをモニターします。"
 
 #: ../gio/gdesktopappinfo.c:572 ../gio/gwin32appinfo.c:221
 msgid "Unnamed"
@@ -2325,12 +2326,12 @@ msgstr "アプリケーションで必要な端末が見つかりませんでし
 #: ../gio/gdesktopappinfo.c:1515
 #, c-format
 msgid "Can't create user application configuration folder %s: %s"
-msgstr "ユーザのアプリケーション設定フォルダ %s を生成できません: %s"
+msgstr "ユーザーのアプリケーション設定フォルダー %s を生成できません: %s"
 
 #: ../gio/gdesktopappinfo.c:1519
 #, c-format
 msgid "Can't create user MIME configuration folder %s: %s"
-msgstr "ユーザの MIME 型設定フォルダ %s を生成できません: %s"
+msgstr "ユーザーの MIME 型設定フォルダー %s を生成できません: %s"
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
@@ -2339,7 +2340,7 @@ msgstr ""
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
 msgid "Can't create user desktop file %s"
-msgstr "ユーザのデスクトップ・ファイル %s を生成できません"
+msgstr "ユーザーのデスクトップ・ファイル %s を生成できません"
 
 #: ../gio/gdesktopappinfo.c:2149
 #, c-format
@@ -2530,7 +2531,7 @@ msgstr "%s というクラス名の型がありません"
 #: ../gio/gicon.c:314
 #, c-format
 msgid "Type %s does not implement the GIcon interface"
-msgstr "%s という型は GIcon のインタフェースを実装していません"
+msgstr "%s という型は GIcon のインターフェースを実装していません"
 
 #: ../gio/gicon.c:325
 #, c-format
@@ -2546,7 +2547,7 @@ msgstr "バージョン番号が間違っています: %s"
 #, c-format
 msgid "Type %s does not implement from_tokens() on the GIcon interface"
 msgstr ""
-"%s という型は GIcon のインタフェースで from_tokens() を実装していません"
+"%s という型は GIcon のインターフェースで from_tokens() を実装していません"
 
 #: ../gio/gicon.c:430
 msgid "Can't handle the supplied version the icon encoding"
@@ -2774,8 +2775,8 @@ msgstr ""
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 
 #: ../gio/glib-compile-schemas.c:1839
@@ -2851,7 +2852,7 @@ msgstr ""
 #: ../gio/glocaldirectorymonitor.c:287
 msgid "Unable to find default local directory monitor type"
 msgstr ""
-"ローカル・ディレクトリを監視するデフォルト・モニタの種類が見つかりません"
+"ローカル・ディレクトリを監視するデフォルト・モニターの種類が見つかりません"
 
 #: ../gio/glocalfile.c:571 ../gio/win32/gwinhttpfile.c:422
 #, c-format
@@ -2995,7 +2996,7 @@ msgstr " (無効なエンコーディング)"
 #: ../gio/glocalfileinfo.c:1768
 #, c-format
 msgid "Error stating file descriptor: %s"
-msgstr "ファイル・ディスクリプタの状態を取得する際にエラー: %s"
+msgstr "ファイル・ディスクリプターの状態を取得する際にエラー: %s"
 
 #: ../gio/glocalfileinfo.c:1813
 msgid "Invalid attribute type (uint32 expected)"
@@ -3080,7 +3081,7 @@ msgstr "ファイルを閉じる際にエラー: %s"
 
 #: ../gio/glocalfilemonitor.c:212
 msgid "Unable to find default local file monitor type"
-msgstr "ローカルファイルを監視するデフォルト・モニタの種類が見つかりません"
+msgstr "ローカルファイルを監視するデフォルト・モニターの種類が見つかりません"
 
 #: ../gio/glocalfileoutputstream.c:202 ../gio/glocalfileoutputstream.c:235
 #: ../gio/glocalfileoutputstream.c:743
@@ -3487,7 +3488,7 @@ msgstr ""
 #: ../gio/gsocket.c:464
 #, c-format
 msgid "creating GSocket from fd: %s"
-msgstr "ファイルディスクリプタ GSocket を作成: %s"
+msgstr "ファイルディスクリプター GSocket を作成: %s"
 
 #: ../gio/gsocket.c:498 ../gio/gsocket.c:514
 #, c-format
@@ -3742,11 +3743,11 @@ msgstr "想定してない種類の補助データです"
 #: ../gio/gunixconnection.c:195
 #, c-format
 msgid "Expecting one fd, but got %d\n"
-msgstr "ファイルディスクリプタを一つ待ち受けていましたが、%d 受信しました\n"
+msgstr "ファイルディスクリプターを一つ待ち受けていましたが、%d 受信しました\n"
 
 #: ../gio/gunixconnection.c:211
 msgid "Received invalid fd"
-msgstr "無効なファイルディスクリプタを受けとりました"
+msgstr "無効なファイルディスクリプターを受けとりました"
 
 #: ../gio/gunixconnection.c:371
 msgid "Error sending credentials: "
@@ -4000,16 +4001,16 @@ msgstr "無効な圧縮データです"
 #~ "します)"
 
 #~ msgid "File descriptor"
-#~ msgstr "ファイル・ディスクリプタ"
+#~ msgstr "ファイル・ディスクリプター"
 
 #~ msgid "The file descriptor to read from"
-#~ msgstr "読み込むファイルのファイル・ディスクリプタです"
+#~ msgstr "読み込むファイルのファイル・ディスクリプターです"
 
 #~ msgid "Close file descriptor"
-#~ msgstr "ファイル・ディスクリプタを閉じるかどうか"
+#~ msgstr "ファイル・ディスクリプターを閉じるかどうか"
 
 #~ msgid "Whether to close the file descriptor when the stream is closed"
-#~ msgstr "ストリームが閉じたらファイル・ディスクリプタを閉じるかどうかです"
+#~ msgstr "ストリームが閉じたらファイル・ディスクリプターを閉じるかどうかです"
 
 #~ msgid "The file descriptor to write to"
-#~ msgstr "書き込むファイルのファイル・ディスクリプタです"
+#~ msgstr "書き込むファイルのファイル・ディスクリプターです"
