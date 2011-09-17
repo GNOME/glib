@@ -30,7 +30,7 @@
 struct _GDelayedSettingsBackendPrivate
 {
   GSettingsBackend *backend;
-  GStaticMutex lock;
+  GMutex lock;
   GTree *delayed;
 
   GMainContext *owner_context;
@@ -56,7 +56,7 @@ g_delayed_settings_backend_notify_unapplied (GDelayedSettingsBackend *delayed)
   GMainContext *target_context;
   GObject *target;
 
-  g_static_mutex_lock (&delayed->priv->lock);
+  g_mutex_lock (&delayed->priv->lock);
   if (delayed->priv->owner)
     {
       target_context = delayed->priv->owner_context;
@@ -67,7 +67,7 @@ g_delayed_settings_backend_notify_unapplied (GDelayedSettingsBackend *delayed)
       target_context = NULL;
       target = NULL;
     }
-  g_static_mutex_unlock (&delayed->priv->lock);
+  g_mutex_unlock (&delayed->priv->lock);
 
   if (target != NULL)
     g_main_context_invoke (target_context, invoke_notify_unapplied, target);
@@ -85,7 +85,7 @@ g_delayed_settings_backend_read (GSettingsBackend   *backend,
 
   if (!default_value)
     {
-      g_static_mutex_lock (&delayed->priv->lock);
+      g_mutex_lock (&delayed->priv->lock);
       if (g_tree_lookup_extended (delayed->priv->delayed, key, NULL, &result))
         {
           /* NULL in the tree means we should consult the default value */
@@ -94,7 +94,7 @@ g_delayed_settings_backend_read (GSettingsBackend   *backend,
           else
             default_value = TRUE;
         }
-      g_static_mutex_unlock (&delayed->priv->lock);
+      g_mutex_unlock (&delayed->priv->lock);
     }
 
   if (result == NULL)
@@ -113,11 +113,11 @@ g_delayed_settings_backend_write (GSettingsBackend *backend,
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
   gboolean was_empty;
 
-  g_static_mutex_lock (&delayed->priv->lock);
+  g_mutex_lock (&delayed->priv->lock);
   was_empty = g_tree_nnodes (delayed->priv->delayed) == 0;
   g_tree_insert (delayed->priv->delayed, g_strdup (key),
                  g_variant_ref_sink (value));
-  g_static_mutex_unlock (&delayed->priv->lock);
+  g_mutex_unlock (&delayed->priv->lock);
 
   g_settings_backend_changed (backend, key, origin_tag);
 
@@ -144,11 +144,11 @@ g_delayed_settings_backend_write_tree (GSettingsBackend *backend,
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
   gboolean was_empty;
 
-  g_static_mutex_lock (&delayed->priv->lock);
+  g_mutex_lock (&delayed->priv->lock);
   was_empty = g_tree_nnodes (delayed->priv->delayed) == 0;
 
   g_tree_foreach (tree, add_to_tree, delayed->priv->delayed);
-  g_static_mutex_unlock (&delayed->priv->lock);
+  g_mutex_unlock (&delayed->priv->lock);
 
   g_settings_backend_changed_tree (backend, tree, origin_tag);
 
@@ -175,10 +175,10 @@ g_delayed_settings_backend_reset (GSettingsBackend *backend,
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (backend);
   gboolean was_empty;
 
-  g_static_mutex_lock (&delayed->priv->lock);
+  g_mutex_lock (&delayed->priv->lock);
   was_empty = g_tree_nnodes (delayed->priv->delayed) == 0;
   g_tree_insert (delayed->priv->delayed, g_strdup (key), NULL);
-  g_static_mutex_unlock (&delayed->priv->lock);
+  g_mutex_unlock (&delayed->priv->lock);
 
   if (was_empty)
     g_delayed_settings_backend_notify_unapplied (delayed);
@@ -229,12 +229,12 @@ g_delayed_settings_backend_apply (GDelayedSettingsBackend *delayed)
       gboolean success;
       GTree *tmp;
 
-      g_static_mutex_lock (&delayed->priv->lock);
+      g_mutex_lock (&delayed->priv->lock);
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
       success = g_settings_backend_write_tree (delayed->priv->backend,
                                                tmp, delayed->priv);
-      g_static_mutex_unlock (&delayed->priv->lock);
+      g_mutex_unlock (&delayed->priv->lock);
 
       if (!success)
         g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed),
@@ -253,10 +253,10 @@ g_delayed_settings_backend_revert (GDelayedSettingsBackend *delayed)
     {
       GTree *tmp;
 
-      g_static_mutex_lock (&delayed->priv->lock);
+      g_mutex_lock (&delayed->priv->lock);
       tmp = delayed->priv->delayed;
       delayed->priv->delayed = g_settings_backend_create_tree ();
-      g_static_mutex_unlock (&delayed->priv->lock);
+      g_mutex_unlock (&delayed->priv->lock);
       g_settings_backend_changed_tree (G_SETTINGS_BACKEND (delayed), tmp, NULL);
       g_tree_unref (tmp);
 
@@ -313,7 +313,7 @@ delayed_backend_writable_changed (GObject          *target,
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (target);
   gboolean last_one = FALSE;
 
-  g_static_mutex_lock (&delayed->priv->lock);
+  g_mutex_lock (&delayed->priv->lock);
 
   if (g_tree_lookup (delayed->priv->delayed, key) != NULL &&
       !g_settings_backend_get_writable (delayed->priv->backend, key))
@@ -332,7 +332,7 @@ delayed_backend_writable_changed (GObject          *target,
       last_one = g_tree_nnodes (delayed->priv->delayed) == 0;
     }
 
-  g_static_mutex_unlock (&delayed->priv->lock);
+  g_mutex_unlock (&delayed->priv->lock);
 
   if (last_one)
     g_delayed_settings_backend_notify_unapplied (delayed);
@@ -371,7 +371,7 @@ delayed_backend_path_writable_changed (GObject          *target,
   gboolean last_one = FALSE;
   gsize n_keys;
 
-  g_static_mutex_lock (&delayed->priv->lock);
+  g_mutex_lock (&delayed->priv->lock);
 
   n_keys = g_tree_nnodes (delayed->priv->delayed);
 
@@ -397,7 +397,7 @@ delayed_backend_path_writable_changed (GObject          *target,
       last_one = g_tree_nnodes (delayed->priv->delayed) == 0;
     }
 
-  g_static_mutex_unlock (&delayed->priv->lock);
+  g_mutex_unlock (&delayed->priv->lock);
 
   if (last_one)
     g_delayed_settings_backend_notify_unapplied (delayed);
@@ -411,7 +411,7 @@ g_delayed_settings_backend_finalize (GObject *object)
 {
   GDelayedSettingsBackend *delayed = G_DELAYED_SETTINGS_BACKEND (object);
 
-  g_static_mutex_free (&delayed->priv->lock);
+  g_mutex_clear (&delayed->priv->lock);
   g_object_unref (delayed->priv->backend);
   g_tree_unref (delayed->priv->delayed);
 
@@ -450,7 +450,7 @@ g_delayed_settings_backend_init (GDelayedSettingsBackend *delayed)
                                  GDelayedSettingsBackendPrivate);
 
   delayed->priv->delayed = g_settings_backend_create_tree ();
-  g_static_mutex_init (&delayed->priv->lock);
+  g_mutex_init (&delayed->priv->lock);
 }
 
 static void
@@ -459,10 +459,10 @@ g_delayed_settings_backend_disown (gpointer  data,
 {
   GDelayedSettingsBackend *delayed = data;
 
-  g_static_mutex_lock (&delayed->priv->lock);
+  g_mutex_lock (&delayed->priv->lock);
   delayed->priv->owner_context = NULL;
   delayed->priv->owner = NULL;
-  g_static_mutex_unlock (&delayed->priv->lock);
+  g_mutex_unlock (&delayed->priv->lock);
 }
 
 GDelayedSettingsBackend *

@@ -41,7 +41,7 @@ typedef struct _GSettingsBackendWatch   GSettingsBackendWatch;
 struct _GSettingsBackendPrivate
 {
   GSettingsBackendWatch *watches;
-  GStaticMutex lock;
+  GMutex lock;
 };
 
 /* For g_settings_backend_sync_default(), we only want to actually do
@@ -156,7 +156,7 @@ g_settings_backend_watch_weak_notify (gpointer  data,
   GSettingsBackendWatch **ptr;
 
   /* search and remove */
-  g_static_mutex_lock (&backend->priv->lock);
+  g_mutex_lock (&backend->priv->lock);
   for (ptr = &backend->priv->watches; *ptr; ptr = &(*ptr)->next)
     if ((*ptr)->target == where_the_object_was)
       {
@@ -165,7 +165,7 @@ g_settings_backend_watch_weak_notify (gpointer  data,
         *ptr = tmp->next;
         g_slice_free (GSettingsBackendWatch, tmp);
 
-        g_static_mutex_unlock (&backend->priv->lock);
+        g_mutex_unlock (&backend->priv->lock);
         return;
       }
 
@@ -246,10 +246,10 @@ g_settings_backend_watch (GSettingsBackend              *backend,
   g_object_weak_ref (target, g_settings_backend_watch_weak_notify, backend);
 
   /* linked list prepend */
-  g_static_mutex_lock (&backend->priv->lock);
+  g_mutex_lock (&backend->priv->lock);
   watch->next = backend->priv->watches;
   backend->priv->watches = watch;
-  g_static_mutex_unlock (&backend->priv->lock);
+  g_mutex_unlock (&backend->priv->lock);
 }
 
 void
@@ -323,11 +323,11 @@ g_settings_backend_dispatch_signal (GSettingsBackend *backend,
    * count dropping -- so just add a reference to everything in the
    * suffix.
    */
-  g_static_mutex_lock (&backend->priv->lock);
+  g_mutex_lock (&backend->priv->lock);
   suffix = backend->priv->watches;
   for (watch = suffix; watch; watch = watch->next)
     g_object_ref (watch->target);
-  g_static_mutex_unlock (&backend->priv->lock);
+  g_mutex_unlock (&backend->priv->lock);
 
   /* The suffix is now immutable, so this is safe. */
   for (watch = suffix; watch; watch = next)
@@ -879,7 +879,7 @@ g_settings_backend_finalize (GObject *object)
 {
   GSettingsBackend *backend = G_SETTINGS_BACKEND (object);
 
-  g_static_mutex_unlock (&backend->priv->lock);
+  g_mutex_clear (&backend->priv->lock);
 
   G_OBJECT_CLASS (g_settings_backend_parent_class)
     ->finalize (object);
@@ -897,7 +897,7 @@ g_settings_backend_init (GSettingsBackend *backend)
   backend->priv = G_TYPE_INSTANCE_GET_PRIVATE (backend,
                                                G_TYPE_SETTINGS_BACKEND,
                                                GSettingsBackendPrivate);
-  g_static_mutex_init (&backend->priv->lock);
+  g_mutex_init (&backend->priv->lock);
 }
 
 static void
