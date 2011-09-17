@@ -55,9 +55,6 @@
 #define PARAM_FLOATING_FLAG                     0x2
 #define	G_PARAM_USER_MASK			(~0 << G_PARAM_USER_SHIFT)
 #define PSPEC_APPLIES_TO_VALUE(pspec, value)	(G_TYPE_CHECK_VALUE_TYPE ((value), G_PARAM_SPEC_VALUE_TYPE (pspec)))
-#define	G_SLOCK(mutex)				g_static_mutex_lock (mutex)
-#define	G_SUNLOCK(mutex)			g_static_mutex_unlock (mutex)
-
 
 /* --- prototypes --- */
 static void	g_param_spec_class_base_init	 (GParamSpecClass	*class);
@@ -849,7 +846,7 @@ value_param_lcopy_value (const GValue *value,
  */
 struct _GParamSpecPool
 {
-  GStaticMutex smutex;
+  GMutex       mutex;
   gboolean     type_prefixing;
   GHashTable  *hash_table;
 };
@@ -894,10 +891,10 @@ param_spec_pool_equals (gconstpointer key_spec_1,
 GParamSpecPool*
 g_param_spec_pool_new (gboolean type_prefixing)
 {
-  static GStaticMutex init_smutex = G_STATIC_MUTEX_INIT;
+  static GMutex init_mutex = G_MUTEX_INIT;
   GParamSpecPool *pool = g_new (GParamSpecPool, 1);
 
-  memcpy (&pool->smutex, &init_smutex, sizeof (init_smutex));
+  memcpy (&pool->mutex, &init_mutex, sizeof (init_mutex));
   pool->type_prefixing = type_prefixing != FALSE;
   pool->hash_table = g_hash_table_new (param_spec_pool_hash, param_spec_pool_equals);
 
@@ -929,11 +926,11 @@ g_param_spec_pool_insert (GParamSpecPool *pool,
 	      return;
 	    }
 	}
-      G_SLOCK (&pool->smutex);
+      g_mutex_lock (&pool->mutex);
       pspec->owner_type = owner_type;
       g_param_spec_ref (pspec);
       g_hash_table_insert (pool->hash_table, pspec, pspec);
-      G_SUNLOCK (&pool->smutex);
+      g_mutex_unlock (&pool->mutex);
     }
   else
     {
@@ -957,12 +954,12 @@ g_param_spec_pool_remove (GParamSpecPool *pool,
 {
   if (pool && pspec)
     {
-      G_SLOCK (&pool->smutex);
+      g_mutex_lock (&pool->mutex);
       if (g_hash_table_remove (pool->hash_table, pspec))
 	g_param_spec_unref (pspec);
       else
 	g_warning (G_STRLOC ": attempt to remove unknown pspec `%s' from pool", pspec->name);
-      G_SUNLOCK (&pool->smutex);
+      g_mutex_unlock (&pool->mutex);
     }
   else
     {
@@ -1053,7 +1050,7 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
       g_return_val_if_fail (param_name != NULL, NULL);
     }
 
-  G_SLOCK (&pool->smutex);
+  g_mutex_lock (&pool->mutex);
 
   delim = pool->type_prefixing ? strchr (param_name, ':') : NULL;
 
@@ -1061,7 +1058,7 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
   if (!delim)
     {
       pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
-      G_SUNLOCK (&pool->smutex);
+      g_mutex_unlock (&pool->mutex);
 
       return pspec;
     }
@@ -1083,21 +1080,21 @@ g_param_spec_pool_lookup (GParamSpecPool *pool,
 	  /* sanity check, these cases don't make a whole lot of sense */
 	  if ((!walk_ancestors && type != owner_type) || !g_type_is_a (owner_type, type))
 	    {
-	      G_SUNLOCK (&pool->smutex);
+	      g_mutex_unlock (&pool->mutex);
 
 	      return NULL;
 	    }
 	  owner_type = type;
 	  param_name += l + 2;
 	  pspec = param_spec_ht_lookup (pool->hash_table, param_name, owner_type, walk_ancestors);
-	  G_SUNLOCK (&pool->smutex);
+	  g_mutex_unlock (&pool->mutex);
 
 	  return pspec;
 	}
     }
   /* malformed param_name */
 
-  G_SUNLOCK (&pool->smutex);
+  g_mutex_unlock (&pool->mutex);
 
   return NULL;
 }
@@ -1136,11 +1133,11 @@ g_param_spec_pool_list_owned (GParamSpecPool *pool,
   g_return_val_if_fail (pool != NULL, NULL);
   g_return_val_if_fail (owner_type > 0, NULL);
   
-  G_SLOCK (&pool->smutex);
+  g_mutex_lock (&pool->mutex);
   data[0] = NULL;
   data[1] = (gpointer) owner_type;
   g_hash_table_foreach (pool->hash_table, pool_list, &data);
-  G_SUNLOCK (&pool->smutex);
+  g_mutex_unlock (&pool->mutex);
 
   return data[0];
 }
@@ -1283,7 +1280,7 @@ g_param_spec_pool_list (GParamSpecPool *pool,
   g_return_val_if_fail (owner_type > 0, NULL);
   g_return_val_if_fail (n_pspecs_p != NULL, NULL);
   
-  G_SLOCK (&pool->smutex);
+  g_mutex_lock (&pool->mutex);
   *n_pspecs_p = 0;
   d = g_type_depth (owner_type);
   slists = g_new0 (GSList*, d);
@@ -1309,7 +1306,7 @@ g_param_spec_pool_list (GParamSpecPool *pool,
     }
   *p++ = NULL;
   g_free (slists);
-  G_SUNLOCK (&pool->smutex);
+  g_mutex_unlock (&pool->mutex);
 
   return pspecs;
 }
