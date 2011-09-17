@@ -136,30 +136,18 @@ g_mutex_clear (GMutex *mutex)
 void
 g_mutex_lock (GMutex *mutex)
 {
-  /* temporary until we fix libglib */
-  if (mutex == NULL)
-    return;
-
   g_thread_impl_vtable.AcquireSRWLockExclusive (mutex);
 }
 
 gboolean
 g_mutex_trylock (GMutex *mutex)
 {
-  /* temporary until we fix libglib */
-  if (mutex == NULL)
-    return TRUE;
-
   return g_thread_impl_vtable.TryAcquireSRWLockExclusive (mutex);
 }
 
 void
 g_mutex_unlock (GMutex *mutex)
 {
-  /* temporary until we fix libglib */
-  if (mutex == NULL)
-    return;
-
   g_thread_impl_vtable.ReleaseSRWLockExclusive (mutex);
 }
 
@@ -180,20 +168,12 @@ g_cond_clear (GCond *cond)
 void
 g_cond_signal (GCond *cond)
 {
-  /* temporary until we fix libglib */
-  if (cond == NULL)
-    return;
-
   g_thread_impl_vtable.WakeConditionVariable (cond);
 }
 
 void
 g_cond_broadcast (GCond *cond)
 {
-  /* temporary until we fix libglib */
-  if (cond == NULL)
-    return;
-
   g_thread_impl_vtable.WakeAllConditionVariable (cond);
 }
 

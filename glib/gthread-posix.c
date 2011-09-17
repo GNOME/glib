@@ -82,10 +82,6 @@ g_mutex_lock (GMutex *mutex)
 {
   gint status;
 
-  /* temporary until we fix libglib */
-  if (mutex == NULL)
-    return;
-
   if G_UNLIKELY ((status = pthread_mutex_lock (&mutex->impl)) != 0)
     g_thread_abort (status, "pthread_mutex_lock");
 }
@@ -95,10 +91,6 @@ g_mutex_unlock (GMutex *mutex)
 {
   gint status;
 
-  /* temporary until we fix libglib */
-  if (mutex == NULL)
-    return;
-
   if G_UNLIKELY ((status = pthread_mutex_unlock (&mutex->impl)) != 0)
     g_thread_abort (status, "pthread_mutex_lock");
 }
@@ -107,10 +99,6 @@ gboolean
 g_mutex_trylock (GMutex *mutex)
 {
   gint status;
-
-  /* temporary until we fix libglib */
-  if (mutex == NULL)
-    return TRUE;
 
   if G_LIKELY ((status = pthread_mutex_trylock (&mutex->impl)) == 0)
     return TRUE;
@@ -156,10 +144,6 @@ g_cond_signal (GCond *cond)
 {
   gint status;
 
-  /* temporary until we fix libglib */
-  if (cond == NULL)
-    return;
-
   if G_UNLIKELY ((status = pthread_cond_signal (&cond->impl)) != 0)
     g_thread_abort (status, "pthread_cond_signal");
 }
@@ -168,10 +152,6 @@ void
 g_cond_broadcast (GCond *cond)
 {
   gint status;
-
-  /* temporary until we fix libglib */
-  if (cond == NULL)
-    return;
 
   if G_UNLIKELY ((status = pthread_cond_broadcast (&cond->impl)) != 0)
     g_thread_abort (status, "pthread_cond_broadcast");
