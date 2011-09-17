@@ -270,8 +270,7 @@ g_cancellable_reset (GCancellable *cancellable)
   while (priv->cancelled_running)
     {
       priv->cancelled_running_waiting = TRUE;
-      g_cond_wait (cancellable_cond,
-                   g_static_mutex_get_mutex (& G_LOCK_NAME (cancellable)));
+      g_cond_wait (cancellable_cond, &G_LOCK_NAME (cancellable));
     }
 
   if (priv->cancelled)
@@ -619,8 +618,7 @@ g_cancellable_disconnect (GCancellable  *cancellable,
   while (priv->cancelled_running)
     {
       priv->cancelled_running_waiting = TRUE;
-      g_cond_wait (cancellable_cond,
-                   g_static_mutex_get_mutex (& G_LOCK_NAME (cancellable)));
+      g_cond_wait (cancellable_cond, &G_LOCK_NAME (cancellable));
     }
 
   g_signal_handler_disconnect (cancellable, handler_id);
