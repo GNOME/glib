@@ -31,9 +31,8 @@
 #include "gthreadprivate.h"
 #include "config.h"
 
-
-#ifdef G_BIT_LOCK_FORCE_FUTEX_EMULATION
 #undef HAVE_FUTEX
+#ifdef G_BIT_LOCK_FORCE_FUTEX_EMULATION
 #endif
 
 #ifndef HAVE_FUTEX
@@ -102,7 +101,7 @@ typedef struct
 {
   const volatile gint *address;
   gint                 ref_count;
-  GCond               *wait_queue;
+  GCond                wait_queue;
 } WaitAddress;
 
 static WaitAddress *
@@ -134,20 +133,20 @@ g_futex_wait (const volatile gint *address,
         {
           waiter = g_slice_new (WaitAddress);
           waiter->address = address;
-          waiter->wait_queue = g_cond_new ();
+          g_cond_init (&waiter->wait_queue);
           waiter->ref_count = 0;
           g_futex_address_list =
             g_slist_prepend (g_futex_address_list, waiter);
         }
 
       waiter->ref_count++;
-      g_cond_wait (waiter->wait_queue, &g_futex_mutex);
+      g_cond_wait (&waiter->wait_queue, &g_futex_mutex);
 
       if (!--waiter->ref_count)
         {
           g_futex_address_list =
             g_slist_remove (g_futex_address_list, waiter);
-          g_cond_free (waiter->wait_queue);
+          g_cond_clear (&waiter->wait_queue);
           g_slice_free (WaitAddress, waiter);
         }
     }
@@ -167,7 +166,7 @@ g_futex_wake (const volatile gint *address)
    */
   g_mutex_lock (&g_futex_mutex);
   if ((waiter = g_futex_find_address (address)))
-    g_cond_signal (waiter->wait_queue);
+    g_cond_signal (&waiter->wait_queue);
   g_mutex_unlock (&g_futex_mutex);
 }
 #endif

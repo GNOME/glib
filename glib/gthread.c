@@ -875,7 +875,7 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
 /* Local Data {{{1 -------------------------------------------------------- */
 
 static GMutex    g_once_mutex = G_MUTEX_INIT;
-static GCond    *g_once_cond = NULL;
+static GCond     g_once_cond = G_COND_INIT;
 static GPrivate *g_thread_specific_private = NULL;
 static GRealThread *g_thread_all_threads = NULL;
 static GSList   *g_thread_free_indices = NULL;
@@ -939,9 +939,6 @@ g_thread_init_glib (void)
    * the static_private data set before calling g_thread_init
    */
   GRealThread* main_thread = (GRealThread*) g_thread_self ();
-
-  /* mutex and cond creation works without g_threads_got_initialized */
-  g_once_cond = g_cond_new ();
 
   /* we may only create mutex and cond in here */
   _g_mem_thread_init_noprivate_nomessage ();
@@ -1049,7 +1046,7 @@ g_once_impl (GOnce       *once,
   g_mutex_lock (&g_once_mutex);
 
   while (once->status == G_ONCE_STATUS_PROGRESS)
-    g_cond_wait (g_once_cond, &g_once_mutex);
+    g_cond_wait (&g_once_cond, &g_once_mutex);
 
   if (once->status != G_ONCE_STATUS_READY)
     {
@@ -1060,7 +1057,7 @@ g_once_impl (GOnce       *once,
 
       g_mutex_lock (&g_once_mutex);
       once->status = G_ONCE_STATUS_READY;
-      g_cond_broadcast (g_once_cond);
+      g_cond_broadcast (&g_once_cond);
     }
 
   g_mutex_unlock (&g_once_mutex);
@@ -1116,7 +1113,7 @@ g_once_init_enter_impl (volatile gsize *value_location)
         }
       else
         do
-          g_cond_wait (g_once_cond, &g_once_mutex);
+          g_cond_wait (&g_once_cond, &g_once_mutex);
         while (g_slist_find (g_once_init_list, (void*) value_location));
     }
   g_mutex_unlock (&g_once_mutex);
@@ -1148,7 +1145,7 @@ g_once_init_leave (volatile gsize *value_location,
   g_atomic_pointer_set (value_location, initialization_value);
   g_mutex_lock (&g_once_mutex);
   g_once_init_list = g_slist_remove (g_once_init_list, (void*) value_location);
-  g_cond_broadcast (g_once_cond);
+  g_cond_broadcast (&g_once_cond);
   g_mutex_unlock (&g_once_mutex);
 }
 
