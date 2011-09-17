@@ -253,27 +253,6 @@ g_cond_timed_wait (GCond    *cond,
 }
 
 /* {{{1 new/free API */
-GMutex *
-g_mutex_new (void)
-{
-  GMutex *mutex;
-
-  /* malloc() is temporary until all libglib users are ported away */
-  mutex = malloc (sizeof (GMutex));
-  if G_UNLIKELY (mutex == NULL)
-    g_thread_abort (errno, "malloc");
-  g_mutex_init (mutex);
-
-  return mutex;
-}
-
-void
-g_mutex_free (GMutex *mutex)
-{
-  g_mutex_clear (mutex);
-  free (mutex);
-}
-
 GCond *
 g_cond_new (void)
 {

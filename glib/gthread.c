@@ -42,6 +42,7 @@
 
 #include "gthread.h"
 #include "gthreadprivate.h"
+#include "gslice.h"
 #include "gmain.h"
 
 #ifdef HAVE_UNISTD_H
@@ -2574,4 +2575,22 @@ gboolean
 g_thread_get_initialized ()
 {
   return g_thread_supported ();
+}
+
+GMutex *
+g_mutex_new (void)
+{
+  GMutex *mutex;
+
+  mutex = g_slice_new (GMutex);
+  g_mutex_init (mutex);
+
+  return mutex;
+}
+
+void
+g_mutex_free (GMutex *mutex)
+{
+  g_mutex_clear (mutex);
+  g_slice_free (GMutex, mutex);
 }
