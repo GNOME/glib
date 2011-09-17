@@ -80,8 +80,8 @@ differences in when a system will report a given error, etc.
      couldn't find the device.  This can mean that the device file was
      installed incorrectly, or that the physical device is missing or
      not correctly attached to the computer.
-@G_FILE_ERROR_NODEV: This file is of a type that doesn't support
-     mapping.
+@G_FILE_ERROR_NODEV: The  underlying  file system of the specified file
+     does not support memory mapping.
 @G_FILE_ERROR_ROFS: The directory containing the new link can't be
           modified because it's on a read-only file system.
 @G_FILE_ERROR_TXTBSY: Text file busy.

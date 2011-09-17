@@ -43,8 +43,8 @@ test_device (void)
   GMappedFile *file;
 
   file = g_mapped_file_new ("/dev/null", FALSE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
   g_assert (file == NULL);
-  g_assert (error != NULL);
   g_error_free (error);
 }
 
