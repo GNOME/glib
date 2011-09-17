@@ -220,7 +220,7 @@ struct _GMainContext
   /* The following lock is used for both the list of sources
    * and the list of poll records
    */
-  GStaticMutex mutex;
+  GMutex mutex;
   GCond *cond;
   GThread *owner;
   guint owner_count;
@@ -309,8 +309,8 @@ struct _GSourcePrivate
   GSource *parent_source;
 };
 
-#define LOCK_CONTEXT(context) g_static_mutex_lock (&context->mutex)
-#define UNLOCK_CONTEXT(context) g_static_mutex_unlock (&context->mutex)
+#define LOCK_CONTEXT(context) g_mutex_lock (&context->mutex)
+#define UNLOCK_CONTEXT(context) g_mutex_unlock (&context->mutex)
 #define G_THREAD_SELF g_thread_self ()
 
 #define SOURCE_DESTROYED(source) (((source)->flags & G_HOOK_FLAG_ACTIVE) == 0)
@@ -488,7 +488,7 @@ g_main_context_unref (GMainContext *context)
       source = next;
     }
 
-  g_static_mutex_free (&context->mutex);
+  g_mutex_clear (&context->mutex);
 
   g_ptr_array_free (context->pending_dispatches, TRUE);
   g_free (context->cached_poll_array);
@@ -542,7 +542,7 @@ g_main_context_new (void)
 
   context = g_new0 (GMainContext, 1);
 
-  g_static_mutex_init (&context->mutex);
+  g_mutex_init (&context->mutex);
 
   context->owner = NULL;
   context->waiters = NULL;
@@ -2515,8 +2515,7 @@ g_main_context_release (GMainContext *context)
       if (context->waiters)
 	{
 	  GMainWaiter *waiter = context->waiters->data;
-	  gboolean loop_internal_waiter =
-	    (waiter->mutex == g_static_mutex_get_mutex (&context->mutex));
+	  gboolean loop_internal_waiter = (waiter->mutex == &context->mutex);
 	  context->waiters = g_slist_delete_link (context->waiters,
 						  context->waiters);
 	  if (!loop_internal_waiter)
@@ -2559,7 +2558,7 @@ g_main_context_wait (GMainContext *context,
   if (context == NULL)
     context = g_main_context_default ();
 
-  loop_internal_waiter = (mutex == g_static_mutex_get_mutex (&context->mutex));
+  loop_internal_waiter = (mutex == &context->mutex);
   
   if (!loop_internal_waiter)
     LOCK_CONTEXT (context);
@@ -2958,7 +2957,7 @@ g_main_context_iterate (GMainContext *context,
 
       got_ownership = g_main_context_wait (context,
 					   context->cond,
-					   g_static_mutex_get_mutex (&context->mutex));
+					   &context->mutex);
 
       if (!got_ownership)
 	return FALSE;
@@ -3169,7 +3168,7 @@ g_main_loop_run (GMainLoop *loop)
       while (loop->is_running && !got_ownership)
 	got_ownership = g_main_context_wait (loop->context,
 					     loop->context->cond,
-					     g_static_mutex_get_mutex (&loop->context->mutex));
+					     &loop->context->mutex);
       
       if (!loop->is_running)
 	{
