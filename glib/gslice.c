@@ -170,14 +170,14 @@ typedef struct {
   SliceConfig   config;
   gsize         max_slab_chunk_size_for_magazine_cache;
   /* magazine cache */
-  GMutex       *magazine_mutex;
+  GMutex        magazine_mutex;
   ChunkLink   **magazines;                /* array of MAX_SLAB_INDEX (allocator) */
   guint        *contention_counters;      /* array of MAX_SLAB_INDEX (allocator) */
   gint          mutex_counter;
   guint         stamp_counter;
   guint         last_stamp;
   /* slab allocator */
-  GMutex       *slab_mutex;
+  GMutex        slab_mutex;
   SlabInfo    **slab_stack;                /* array of MAX_SLAB_INDEX (allocator) */
   guint        color_accu;
 } Allocator;
@@ -212,7 +212,7 @@ static SliceConfig slice_config = {
   15 * 1000,    /* working_set_msecs */
   1,            /* color increment, alt: 0x7fffffff */
 };
-static GMutex     *smc_tree_mutex = NULL; /* mutex for G_SLICE=debug-blocks */
+static GMutex      smc_tree_mutex = G_MUTEX_INIT; /* mutex for G_SLICE=debug-blocks */
 
 /* --- auxiliary funcitons --- */
 void
@@ -346,11 +346,11 @@ g_slice_init_nomessage (void)
       allocator->slab_stack = g_new0 (SlabInfo*, MAX_SLAB_INDEX (allocator));
     }
 
-  allocator->magazine_mutex = NULL;     /* _g_slice_thread_init_nomessage() */
+  g_mutex_init (&allocator->magazine_mutex);
   allocator->mutex_counter = 0;
   allocator->stamp_counter = MAX_STAMP_COUNTER; /* force initial update */
   allocator->last_stamp = 0;
-  allocator->slab_mutex = NULL;         /* _g_slice_thread_init_nomessage() */
+  g_mutex_init (&allocator->slab_mutex);
   allocator->color_accu = 0;
   magazine_cache_update_stamp();
   /* values cached for performance reasons */
@@ -399,10 +399,6 @@ _g_slice_thread_init_nomessage (void)
        */
     }
   private_thread_memory = g_private_new (private_thread_memory_cleanup);
-  allocator->magazine_mutex = g_mutex_new();
-  allocator->slab_mutex = g_mutex_new();
-  if (allocator->config.debug_blocks)
-    smc_tree_mutex = g_mutex_new();
 }
 
 static inline void
@@ -444,7 +440,7 @@ thread_memory_from_self (void)
       static ThreadMemory *single_thread_memory = NULL;   /* remember single-thread info for multi-threaded case */
       if (single_thread_memory && g_thread_supported ())
         {
-          g_mutex_lock (allocator->slab_mutex);
+          g_mutex_lock (&allocator->slab_mutex);
           if (single_thread_memory)
             {
               /* GSlice has been used before g_thread_init(), and now
@@ -454,7 +450,7 @@ thread_memory_from_self (void)
               tmem = single_thread_memory;
               single_thread_memory = NULL;      /* slab_mutex protected when multi-threaded */
             }
-          g_mutex_unlock (allocator->slab_mutex);
+          g_mutex_unlock (&allocator->slab_mutex);
         }
       if (!tmem)
 	{
@@ -615,12 +611,12 @@ magazine_cache_trim (Allocator *allocator,
         }
       current = prev;
     }
-  g_mutex_unlock (allocator->magazine_mutex);
+  g_mutex_unlock (&allocator->magazine_mutex);
   /* free trash */
   if (trash)
     {
       const gsize chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
-      g_mutex_lock (allocator->slab_mutex);
+      g_mutex_lock (&allocator->slab_mutex);
       while (trash)
         {
           current = trash;
@@ -632,7 +628,7 @@ magazine_cache_trim (Allocator *allocator,
               slab_allocator_free_chunk (chunk_size, chunk);
             }
         }
-      g_mutex_unlock (allocator->slab_mutex);
+      g_mutex_unlock (&allocator->slab_mutex);
     }
 }
 
@@ -643,7 +639,7 @@ magazine_cache_push_magazine (guint      ix,
 {
   ChunkLink *current = magazine_chain_prepare_fields (magazine_chunks);
   ChunkLink *next, *prev;
-  g_mutex_lock (allocator->magazine_mutex);
+  g_mutex_lock (&allocator->magazine_mutex);
   /* add magazine at head */
   next = allocator->magazines[ix];
   if (next)
@@ -668,14 +664,14 @@ static ChunkLink*
 magazine_cache_pop_magazine (guint  ix,
                              gsize *countp)
 {
-  g_mutex_lock_a (allocator->magazine_mutex, &allocator->contention_counters[ix]);
+  g_mutex_lock_a (&allocator->magazine_mutex, &allocator->contention_counters[ix]);
   if (!allocator->magazines[ix])
     {
       guint magazine_threshold = allocator_get_magazine_threshold (allocator, ix);
       gsize i, chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
       ChunkLink *chunk, *head;
-      g_mutex_unlock (allocator->magazine_mutex);
-      g_mutex_lock (allocator->slab_mutex);
+      g_mutex_unlock (&allocator->magazine_mutex);
+      g_mutex_lock (&allocator->slab_mutex);
       head = slab_allocator_alloc_chunk (chunk_size);
       head->data = NULL;
       chunk = head;
@@ -686,7 +682,7 @@ magazine_cache_pop_magazine (guint  ix,
           chunk->data = NULL;
         }
       chunk->next = NULL;
-      g_mutex_unlock (allocator->slab_mutex);
+      g_mutex_unlock (&allocator->slab_mutex);
       *countp = i;
       return head;
     }
@@ -699,7 +695,7 @@ magazine_cache_pop_magazine (guint  ix,
       magazine_chain_next (prev) = next;
       magazine_chain_prev (next) = prev;
       allocator->magazines[ix] = next == current ? NULL : next;
-      g_mutex_unlock (allocator->magazine_mutex);
+      g_mutex_unlock (&allocator->magazine_mutex);
       /* clear special fields and hand out */
       *countp = (gsize) magazine_chain_count (current);
       magazine_chain_prev (current) = NULL;
@@ -731,13 +727,13 @@ private_thread_memory_cleanup (gpointer data)
           else
             {
               const gsize chunk_size = SLAB_CHUNK_SIZE (allocator, ix);
-              g_mutex_lock (allocator->slab_mutex);
+              g_mutex_lock (&allocator->slab_mutex);
               while (mag->chunks)
                 {
                   ChunkLink *chunk = magazine_chain_pop_head (&mag->chunks);
                   slab_allocator_free_chunk (chunk_size, chunk);
                 }
-              g_mutex_unlock (allocator->slab_mutex);
+              g_mutex_unlock (&allocator->slab_mutex);
             }
         }
     }
@@ -834,9 +830,9 @@ g_slice_alloc (gsize mem_size)
     }
   else if (acat == 2)           /* allocate through slab allocator */
     {
-      g_mutex_lock (allocator->slab_mutex);
+      g_mutex_lock (&allocator->slab_mutex);
       mem = slab_allocator_alloc_chunk (chunk_size);
-      g_mutex_unlock (allocator->slab_mutex);
+      g_mutex_unlock (&allocator->slab_mutex);
     }
   else                          /* delegate to system malloc */
     mem = g_malloc (mem_size);
@@ -896,9 +892,9 @@ g_slice_free1 (gsize    mem_size,
     {
       if (G_UNLIKELY (g_mem_gc_friendly))
         memset (mem_block, 0, chunk_size);
-      g_mutex_lock (allocator->slab_mutex);
+      g_mutex_lock (&allocator->slab_mutex);
       slab_allocator_free_chunk (chunk_size, mem_block);
-      g_mutex_unlock (allocator->slab_mutex);
+      g_mutex_unlock (&allocator->slab_mutex);
     }
   else                                  /* delegate to system malloc */
     {
@@ -956,7 +952,7 @@ g_slice_free_chain_with_offset (gsize    mem_size,
     }
   else if (acat == 2)                   /* allocate through slab allocator */
     {
-      g_mutex_lock (allocator->slab_mutex);
+      g_mutex_lock (&allocator->slab_mutex);
       while (slice)
         {
           guint8 *current = slice;
@@ -968,7 +964,7 @@ g_slice_free_chain_with_offset (gsize    mem_size,
             memset (current, 0, chunk_size);
           slab_allocator_free_chunk (chunk_size, current);
         }
-      g_mutex_unlock (allocator->slab_mutex);
+      g_mutex_unlock (&allocator->slab_mutex);
     }
   else                                  /* delegate to system malloc */
     while (slice)
@@ -1354,7 +1350,7 @@ smc_tree_insert (SmcKType key,
   unsigned int ix0, ix1;
   SmcEntry *entry;
 
-  g_mutex_lock (smc_tree_mutex);
+  g_mutex_lock (&smc_tree_mutex);
   ix0 = SMC_TRUNK_HASH (key);
   ix1 = SMC_BRANCH_HASH (key);
   if (!smc_tree_root)
@@ -1376,7 +1372,7 @@ smc_tree_insert (SmcKType key,
     entry = smc_tree_branch_grow_L (&smc_tree_root[ix0][ix1], entry - smc_tree_root[ix0][ix1].entries);
   entry->key = key;
   entry->value = value;
-  g_mutex_unlock (smc_tree_mutex);
+  g_mutex_unlock (&smc_tree_mutex);
 }
 
 static gboolean
@@ -1387,7 +1383,7 @@ smc_tree_lookup (SmcKType  key,
   unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
   gboolean found_one = FALSE;
   *value_p = 0;
-  g_mutex_lock (smc_tree_mutex);
+  g_mutex_lock (&smc_tree_mutex);
   if (smc_tree_root && smc_tree_root[ix0])
     {
       entry = smc_tree_branch_lookup_nearest_L (&smc_tree_root[ix0][ix1], key);
@@ -1399,7 +1395,7 @@ smc_tree_lookup (SmcKType  key,
           *value_p = entry->value;
         }
     }
-  g_mutex_unlock (smc_tree_mutex);
+  g_mutex_unlock (&smc_tree_mutex);
   return found_one;
 }
 
@@ -1408,7 +1404,7 @@ smc_tree_remove (SmcKType key)
 {
   unsigned int ix0 = SMC_TRUNK_HASH (key), ix1 = SMC_BRANCH_HASH (key);
   gboolean found_one = FALSE;
-  g_mutex_lock (smc_tree_mutex);
+  g_mutex_lock (&smc_tree_mutex);
   if (smc_tree_root && smc_tree_root[ix0])
     {
       SmcEntry *entry = smc_tree_branch_lookup_nearest_L (&smc_tree_root[ix0][ix1], key);
@@ -1428,7 +1424,7 @@ smc_tree_remove (SmcKType key)
           found_one = TRUE;
         }
     }
-  g_mutex_unlock (smc_tree_mutex);
+  g_mutex_unlock (&smc_tree_mutex);
   return found_one;
 }
 
@@ -1436,7 +1432,7 @@ smc_tree_remove (SmcKType key)
 void
 g_slice_debug_tree_statistics (void)
 {
-  g_mutex_lock (smc_tree_mutex);
+  g_mutex_lock (&smc_tree_mutex);
   if (smc_tree_root)
     {
       unsigned int i, j, t = 0, o = 0, b = 0, su = 0, ex = 0, en = 4294967295u;
@@ -1468,7 +1464,7 @@ g_slice_debug_tree_statistics (void)
     }
   else
     fprintf (stderr, "GSlice: MemChecker: root=NULL\n");
-  g_mutex_unlock (smc_tree_mutex);
+  g_mutex_unlock (&smc_tree_mutex);
   
   /* sample statistics (beast + GSLice + 24h scripted core & GUI activity):
    *  PID %CPU %MEM   VSZ  RSS      COMMAND

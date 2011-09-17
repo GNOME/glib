@@ -102,7 +102,7 @@ struct _GLogHandler
 
 
 /* --- variables --- */
-static GMutex        *g_messages_lock = NULL;
+static GMutex         g_messages_lock = G_MUTEX_INIT;
 static GLogDomain    *g_log_domains = NULL;
 static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static GPrintFunc     glib_print_func = NULL;
@@ -328,10 +328,10 @@ g_log_set_always_fatal (GLogLevelFlags fatal_mask)
   /* remove bogus flag */
   fatal_mask &= ~G_LOG_FLAG_FATAL;
 
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
   old_mask = g_log_always_fatal;
   g_log_always_fatal = fatal_mask;
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
 
   return old_mask;
 }
@@ -351,7 +351,7 @@ g_log_set_fatal_mask (const gchar   *log_domain,
   /* remove bogus flag */
   fatal_mask &= ~G_LOG_FLAG_FATAL;
   
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
 
   domain = g_log_find_domain_L (log_domain);
   if (!domain)
@@ -361,7 +361,7 @@ g_log_set_fatal_mask (const gchar   *log_domain,
   domain->fatal_mask = fatal_mask;
   g_log_domain_check_free_L (domain);
 
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
 
   return old_flags;
 }
@@ -384,7 +384,7 @@ g_log_set_handler (const gchar	 *log_domain,
 
   handler = g_new (GLogHandler, 1);
 
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
 
   domain = g_log_find_domain_L (log_domain);
   if (!domain)
@@ -397,7 +397,7 @@ g_log_set_handler (const gchar	 *log_domain,
   handler->next = domain->handlers;
   domain->handlers = handler;
 
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
   
   return handler_id;
 }
@@ -408,11 +408,11 @@ g_log_set_default_handler (GLogFunc log_func,
 {
   GLogFunc old_log_func;
   
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
   old_log_func = default_log_func;
   default_log_func = log_func;
   default_log_data = user_data;
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
   
   return old_log_func;
 }
@@ -444,10 +444,10 @@ void
 g_test_log_set_fatal_handler (GTestLogFatalFunc log_func,
                               gpointer          user_data)
 {
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
   fatal_log_func = log_func;
   fatal_log_data = user_data;
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
 }
 
 void
@@ -461,7 +461,7 @@ g_log_remove_handler (const gchar *log_domain,
   if (!log_domain)
     log_domain = "";
   
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
   domain = g_log_find_domain_L (log_domain);
   if (domain)
     {
@@ -478,7 +478,7 @@ g_log_remove_handler (const gchar *log_domain,
 	      else
 		domain->handlers = work->next;
 	      g_log_domain_check_free_L (domain); 
-	      g_mutex_unlock (g_messages_lock);
+	      g_mutex_unlock (&g_messages_lock);
 	      g_free (work);
 	      return;
 	    }
@@ -486,7 +486,7 @@ g_log_remove_handler (const gchar *log_domain,
 	  work = last->next;
 	}
     } 
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
   g_warning ("%s: could not find handler with id `%d' for domain \"%s\"",
 	     G_STRLOC, handler_id, log_domain);
 }
@@ -525,7 +525,7 @@ g_logv (const gchar   *log_domain,
 	    test_level |= G_LOG_FLAG_RECURSION;
 
 	  /* check recursion and lookup handler */
-	  g_mutex_lock (g_messages_lock);
+	  g_mutex_lock (&g_messages_lock);
 	  domain = g_log_find_domain_L (log_domain ? log_domain : "");
 	  if (depth)
 	    test_level |= G_LOG_FLAG_RECURSION;
@@ -538,7 +538,7 @@ g_logv (const gchar   *log_domain,
 	  else
 	    log_func = g_log_domain_get_handler_L (domain, test_level, &data);
 	  domain = NULL;
-	  g_mutex_unlock (g_messages_lock);
+	  g_mutex_unlock (&g_messages_lock);
 
 	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
 
@@ -553,11 +553,11 @@ g_logv (const gchar   *log_domain,
 	      if (test_level != orig_test_level)
 		{
 		  /* need a relookup, not nice, but not too bad either */
-		  g_mutex_lock (g_messages_lock);
+		  g_mutex_lock (&g_messages_lock);
 		  domain = g_log_find_domain_L (log_domain ? log_domain : "");
 		  log_func = g_log_domain_get_handler_L (domain, test_level, &data);
 		  domain = NULL;
-		  g_mutex_unlock (g_messages_lock);
+		  g_mutex_unlock (&g_messages_lock);
 		}
 	    }
 
@@ -1066,10 +1066,10 @@ g_set_print_handler (GPrintFunc func)
 {
   GPrintFunc old_print_func;
 
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
   old_print_func = glib_print_func;
   glib_print_func = func;
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
 
   return old_print_func;
 }
@@ -1102,9 +1102,9 @@ g_print (const gchar *format,
   string = g_strdup_vprintf (format, args);
   va_end (args);
 
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
   local_glib_print_func = glib_print_func;
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
 
   if (local_glib_print_func)
     local_glib_print_func (string);
@@ -1145,10 +1145,10 @@ g_set_printerr_handler (GPrintFunc func)
 {
   GPrintFunc old_printerr_func;
 
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
   old_printerr_func = glib_printerr_func;
   glib_printerr_func = func;
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
 
   return old_printerr_func;
 }
@@ -1179,9 +1179,9 @@ g_printerr (const gchar *format,
   string = g_strdup_vprintf (format, args);
   va_end (args);
 
-  g_mutex_lock (g_messages_lock);
+  g_mutex_lock (&g_messages_lock);
   local_glib_printerr_func = glib_printerr_func;
-  g_mutex_unlock (g_messages_lock);
+  g_mutex_unlock (&g_messages_lock);
 
   if (local_glib_printerr_func)
     local_glib_printerr_func (string);
@@ -1214,7 +1214,6 @@ g_printf_string_upper_bound (const gchar *format,
 void
 _g_messages_thread_init_nomessage (void)
 {
-  g_messages_lock = g_mutex_new ();
   g_log_depth = g_private_new (NULL);
   g_messages_prefixed_init ();
   g_debug_init ();

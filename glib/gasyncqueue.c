@@ -90,7 +90,7 @@
  */
 struct _GAsyncQueue
 {
-  GMutex *mutex;
+  GMutex mutex;
   GCond *cond;
   GQueue queue;
   GDestroyNotify item_free_func;
@@ -114,7 +114,7 @@ GAsyncQueue*
 g_async_queue_new (void)
 {
   GAsyncQueue* retval = g_new (GAsyncQueue, 1);
-  retval->mutex = g_mutex_new ();
+  g_mutex_init (&retval->mutex);
   retval->cond = NULL;
   g_queue_init (&retval->queue);
   retval->waiting_threads = 0;
@@ -198,7 +198,7 @@ g_async_queue_unref_and_unlock (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
 
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
   g_async_queue_unref (queue);
 }
 
@@ -220,7 +220,7 @@ g_async_queue_unref (GAsyncQueue *queue)
   if (g_atomic_int_dec_and_test (&queue->ref_count))
     {
       g_return_if_fail (queue->waiting_threads == 0);
-      g_mutex_free (queue->mutex);
+      g_mutex_clear (&queue->mutex);
       if (queue->cond)
 	g_cond_free (queue->cond);
       if (queue->item_free_func)
@@ -243,7 +243,7 @@ g_async_queue_lock (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
 
-  g_mutex_lock (queue->mutex);
+  g_mutex_lock (&queue->mutex);
 }
 
 /**
@@ -257,7 +257,7 @@ g_async_queue_unlock (GAsyncQueue *queue)
 {
   g_return_if_fail (queue);
 
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
 }
 
 /**
@@ -273,9 +273,9 @@ g_async_queue_push (GAsyncQueue* queue, gpointer data)
   g_return_if_fail (queue);
   g_return_if_fail (data);
 
-  g_mutex_lock (queue->mutex);
+  g_mutex_lock (&queue->mutex);
   g_async_queue_push_unlocked (queue, data);
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
 }
 
 /**
@@ -329,9 +329,9 @@ g_async_queue_push_sorted (GAsyncQueue      *queue,
 {
   g_return_if_fail (queue != NULL);
 
-  g_mutex_lock (queue->mutex);
+  g_mutex_lock (&queue->mutex);
   g_async_queue_push_sorted_unlocked (queue, data, func, user_data);
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
 }
 
 static gint 
@@ -405,14 +405,14 @@ g_async_queue_pop_intern_unlocked (GAsyncQueue *queue,
         {
           queue->waiting_threads++;
 	  while (!g_queue_peek_tail_link (&queue->queue))
-            g_cond_wait (queue->cond, queue->mutex);
+            g_cond_wait (queue->cond, &queue->mutex);
           queue->waiting_threads--;
         }
       else
         {
           queue->waiting_threads++;
           while (!g_queue_peek_tail_link (&queue->queue))
-            if (!g_cond_timed_wait (queue->cond, queue->mutex, end_time))
+            if (!g_cond_timed_wait (queue->cond, &queue->mutex, end_time))
               break;
           queue->waiting_threads--;
           if (!g_queue_peek_tail_link (&queue->queue))
@@ -443,9 +443,9 @@ g_async_queue_pop (GAsyncQueue* queue)
 
   g_return_val_if_fail (queue, NULL);
 
-  g_mutex_lock (queue->mutex);
+  g_mutex_lock (&queue->mutex);
   retval = g_async_queue_pop_intern_unlocked (queue, FALSE, NULL);
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
 
   return retval;
 }
@@ -485,9 +485,9 @@ g_async_queue_try_pop (GAsyncQueue* queue)
 
   g_return_val_if_fail (queue, NULL);
 
-  g_mutex_lock (queue->mutex);
+  g_mutex_lock (&queue->mutex);
   retval = g_async_queue_pop_intern_unlocked (queue, TRUE, NULL);
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
 
   return retval;
 }
@@ -532,9 +532,9 @@ g_async_queue_timed_pop (GAsyncQueue* queue, GTimeVal *end_time)
 
   g_return_val_if_fail (queue, NULL);
 
-  g_mutex_lock (queue->mutex);
+  g_mutex_lock (&queue->mutex);
   retval = g_async_queue_pop_intern_unlocked (queue, FALSE, end_time);
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
 
   return retval;  
 }
@@ -583,9 +583,9 @@ g_async_queue_length (GAsyncQueue* queue)
 
   g_return_val_if_fail (queue, 0);
 
-  g_mutex_lock (queue->mutex);
+  g_mutex_lock (&queue->mutex);
   retval = queue->queue.length - queue->waiting_threads;
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
 
   return retval;
 }
@@ -651,9 +651,9 @@ g_async_queue_sort (GAsyncQueue      *queue,
   g_return_if_fail (queue != NULL);
   g_return_if_fail (func != NULL);
 
-  g_mutex_lock (queue->mutex);
+  g_mutex_lock (&queue->mutex);
   g_async_queue_sort_unlocked (queue, func, user_data);
-  g_mutex_unlock (queue->mutex);
+  g_mutex_unlock (&queue->mutex);
 }
 
 /**
@@ -700,5 +700,5 @@ _g_async_queue_get_mutex (GAsyncQueue* queue)
 {
   g_return_val_if_fail (queue, NULL);
 
-  return queue->mutex;
+  return &queue->mutex;
 }

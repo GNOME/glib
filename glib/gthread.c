@@ -873,7 +873,7 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
 
 /* Local Data {{{1 -------------------------------------------------------- */
 
-static GMutex   *g_once_mutex = NULL;
+static GMutex    g_once_mutex = G_MUTEX_INIT;
 static GCond    *g_once_cond = NULL;
 static GPrivate *g_thread_specific_private = NULL;
 static GRealThread *g_thread_all_threads = NULL;
@@ -940,7 +940,6 @@ g_thread_init_glib (void)
   GRealThread* main_thread = (GRealThread*) g_thread_self ();
 
   /* mutex and cond creation works without g_threads_got_initialized */
-  g_once_mutex = g_mutex_new ();
   g_once_cond = g_cond_new ();
 
   /* we may only create mutex and cond in here */
@@ -1046,24 +1045,24 @@ g_once_impl (GOnce       *once,
 	     GThreadFunc  func,
 	     gpointer     arg)
 {
-  g_mutex_lock (g_once_mutex);
+  g_mutex_lock (&g_once_mutex);
 
   while (once->status == G_ONCE_STATUS_PROGRESS)
-    g_cond_wait (g_once_cond, g_once_mutex);
+    g_cond_wait (g_once_cond, &g_once_mutex);
 
   if (once->status != G_ONCE_STATUS_READY)
     {
       once->status = G_ONCE_STATUS_PROGRESS;
-      g_mutex_unlock (g_once_mutex);
+      g_mutex_unlock (&g_once_mutex);
 
       once->retval = func (arg);
 
-      g_mutex_lock (g_once_mutex);
+      g_mutex_lock (&g_once_mutex);
       once->status = G_ONCE_STATUS_READY;
       g_cond_broadcast (g_once_cond);
     }
 
-  g_mutex_unlock (g_once_mutex);
+  g_mutex_unlock (&g_once_mutex);
 
   return once->retval;
 }
@@ -1106,7 +1105,7 @@ gboolean
 g_once_init_enter_impl (volatile gsize *value_location)
 {
   gboolean need_init = FALSE;
-  g_mutex_lock (g_once_mutex);
+  g_mutex_lock (&g_once_mutex);
   if (g_atomic_pointer_get (value_location) == NULL)
     {
       if (!g_slist_find (g_once_init_list, (void*) value_location))
@@ -1116,10 +1115,10 @@ g_once_init_enter_impl (volatile gsize *value_location)
         }
       else
         do
-          g_cond_wait (g_once_cond, g_once_mutex);
+          g_cond_wait (g_once_cond, &g_once_mutex);
         while (g_slist_find (g_once_init_list, (void*) value_location));
     }
-  g_mutex_unlock (g_once_mutex);
+  g_mutex_unlock (&g_once_mutex);
   return need_init;
 }
 
@@ -1146,10 +1145,10 @@ g_once_init_leave (volatile gsize *value_location,
   g_return_if_fail (g_once_init_list != NULL);
 
   g_atomic_pointer_set (value_location, initialization_value);
-  g_mutex_lock (g_once_mutex);
+  g_mutex_lock (&g_once_mutex);
   g_once_init_list = g_slist_remove (g_once_init_list, (void*) value_location);
   g_cond_broadcast (g_once_cond);
-  g_mutex_unlock (g_once_mutex);
+  g_mutex_unlock (&g_once_mutex);
 }
 
 /* GStaticMutex {{{1 ------------------------------------------------------ */
@@ -1279,9 +1278,7 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
 
   if (!result)
     {
-      g_assert (g_once_mutex);
-
-      g_mutex_lock (g_once_mutex);
+      g_mutex_lock (&g_once_mutex);
 
       result = *mutex;
       if (!result)
@@ -1290,7 +1287,7 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
           g_atomic_pointer_set (mutex, result);
         }
 
-      g_mutex_unlock (g_once_mutex);
+      g_mutex_unlock (&g_once_mutex);
     }
 
   return result;

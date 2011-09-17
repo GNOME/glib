@@ -600,7 +600,7 @@ static guint *profile_data = NULL;
 static gsize profile_allocs = 0;
 static gsize profile_zinit = 0;
 static gsize profile_frees = 0;
-static GMutex *gmem_profile_mutex = NULL;
+static GMutex gmem_profile_mutex = G_MUTEX_INIT;
 #ifdef  G_ENABLE_DEBUG
 static volatile gsize g_trap_free_size = 0;
 static volatile gsize g_trap_realloc_size = 0;
@@ -614,14 +614,14 @@ profiler_log (ProfilerJob job,
 	      gsize       n_bytes,
 	      gboolean    success)
 {
-  g_mutex_lock (gmem_profile_mutex);
+  g_mutex_lock (&gmem_profile_mutex);
   if (!profile_data)
     {
       profile_data = standard_calloc ((MEM_PROFILE_TABLE_SIZE + 1) * 8, 
                                       sizeof (profile_data[0]));
       if (!profile_data)	/* memory system kiddin' me, eh? */
 	{
-	  g_mutex_unlock (gmem_profile_mutex);
+	  g_mutex_unlock (&gmem_profile_mutex);
 	  return;
 	}
     }
@@ -645,7 +645,7 @@ profiler_log (ProfilerJob job,
       else
         profile_frees += n_bytes;
     }
-  g_mutex_unlock (gmem_profile_mutex);
+  g_mutex_unlock (&gmem_profile_mutex);
 }
 
 static void
@@ -711,7 +711,7 @@ g_mem_profile (void)
   if (G_UNLIKELY (!g_mem_initialized))
     g_mem_init_nomessage();
 
-  g_mutex_lock (gmem_profile_mutex);
+  g_mutex_lock (&gmem_profile_mutex);
 
   local_allocs = profile_allocs;
   local_zinit = profile_zinit;
@@ -719,14 +719,14 @@ g_mem_profile (void)
 
   if (!profile_data)
     {
-      g_mutex_unlock (gmem_profile_mutex);
+      g_mutex_unlock (&gmem_profile_mutex);
       return;
     }
 
   memcpy (local_data, profile_data, 
 	  (MEM_PROFILE_TABLE_SIZE + 1) * 8 * sizeof (profile_data[0]));
   
-  g_mutex_unlock (gmem_profile_mutex);
+  g_mutex_unlock (&gmem_profile_mutex);
 
   g_print ("GLib Memory statistics (successful operations):\n");
   profile_print_locked (local_data, TRUE);
@@ -950,7 +950,4 @@ _g_mem_thread_init_noprivate_nomessage (void)
    * unlocking a mutex does not yet work.
    */
   g_mem_init_nomessage();
-#ifndef G_DISABLE_CHECKS
-  gmem_profile_mutex = g_mutex_new ();
-#endif
 }
