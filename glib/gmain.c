@@ -4028,7 +4028,6 @@ g_child_watch_prepare (GSource *source,
   return FALSE;
 }
 
-
 static gboolean 
 g_child_watch_check (GSource  *source)
 {
@@ -4062,6 +4061,11 @@ g_child_watch_check (GSource  *source)
     }
 
   return child_exited;
+}
+
+static void
+g_child_watch_finalize (GSource *source)
+{
 }
 
 #else /* G_OS_WIN32 */
@@ -4275,15 +4279,13 @@ _g_main_create_unix_signal_watch (int signum)
   return source;
 }
 
-static void 
+static void
 g_unix_signal_watch_finalize (GSource    *source)
 {
   G_LOCK (unix_signal_lock);
   unix_signal_watches = g_slist_remove (unix_signal_watches, source);
   G_UNLOCK (unix_signal_lock);
 }
-
-#endif /* G_OS_WIN32 */
 
 static void
 g_child_watch_finalize (GSource *source)
@@ -4292,6 +4294,8 @@ g_child_watch_finalize (GSource *source)
   unix_child_watches = g_slist_remove (unix_child_watches, source);
   G_UNLOCK (unix_signal_lock);
 }
+
+#endif /* G_OS_WIN32 */
 
 static gboolean
 g_child_watch_dispatch (GSource    *source, 
@@ -4733,8 +4737,10 @@ glib_worker_main (gpointer data)
     {
       g_main_context_iteration (glib_worker_context, TRUE);
 
+#ifdef G_OS_UNIX
       if (any_unix_signal_pending)
         dispatch_unix_signals ();
+#endif
     }
 
   return NULL; /* worst GCC warning message ever... */
