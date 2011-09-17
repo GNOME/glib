@@ -10,6 +10,7 @@
 # Tao Wang <dancefire@gmail.com>, 2010.
 # Aron Xu <aronxu@gnome.org>, 2010.
 # wei Li <lw124124@gmail.com>, 2011.
+# Lele Long <schemacs@gmail.com>, 2011.
 #
 #     Note:"fd" is abbr. of "File Descriptor", 文件描述符
 #
@@ -18,14 +19,14 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-03-28 10:21+0000\n"
-"Last-Translator: liwei <lw124124@gmail.com>\n"
+"POT-Creation-Date: 2011-09-17 02:30+0000\n"
+"PO-Revision-Date: 2011-09-18 00:15+0800\n"
+"Last-Translator: Lele Long <schemacs@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
-"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 
 #: ../glib/gbookmarkfile.c:780
@@ -491,37 +492,37 @@ msgid_plural "%u bytes"
 msgstr[0] "%u 字节"
 
 #: ../glib/gfileutils.c:2007
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f KiB"
-msgstr "%.1f KB"
+msgstr "%.1f KiB"
 
 #: ../glib/gfileutils.c:2010
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f MiB"
-msgstr "%.1f MB"
+msgstr "%.1f MiB"
 
 #: ../glib/gfileutils.c:2013
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f GiB"
-msgstr "%.1f GB"
+msgstr "%.1f GiB"
 
 #: ../glib/gfileutils.c:2016
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f TiB"
-msgstr "%.1f TB"
+msgstr "%.1f TiB"
 
 #: ../glib/gfileutils.c:2019
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f PiB"
-msgstr "%.1f PB"
+msgstr "%.1f PiB"
 
 #: ../glib/gfileutils.c:2022
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f EiB"
-msgstr "%.1f EB"
+msgstr "%.1f EiB"
 
 #: ../glib/gfileutils.c:2035
-#, fuzzy, c-format
+#, c-format
 msgid "%.1f kB"
 msgstr "%.1f KB"
 
@@ -552,10 +553,10 @@ msgstr "%.1f EB"
 
 #. Translators: the %s in "%s bytes" will always be replaced by a number.
 #: ../glib/gfileutils.c:2087
-#, fuzzy, c-format
+#, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
-msgstr[0] "%u 字节"
+msgstr[0] "%s 字节"
 
 #: ../glib/gfileutils.c:2142
 #, c-format
@@ -682,8 +683,8 @@ msgstr "“%s”出现在字符“<”后是无效字符；它不能作为元素
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr "字符“%s”无效，应该以字符“>”来结束空元素标记“%s”"
 
 #: ../glib/gmarkup.c:1270
@@ -1116,17 +1117,17 @@ msgstr "文本为空(或仅含空白字符)"
 msgid "Failed to read data from child process"
 msgstr "从子进程中读取数据失败"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "创建与子进程通讯的管道失败(%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "从子管道中读取失败(%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "更改到目录“%s”失败(%s)"
@@ -1184,32 +1185,32 @@ msgstr "select() 在从子进程中读取数据时出现异常错误 (%s)"
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "waitpid() 出现异常错误 (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "fork 失败(%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "执行子进程“%s”失败(%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "重定向子进程(%s)的输入或输出失败"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "fork 子进程失败 (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "执行子进程“%s”时出现未知错误"
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "从子进程管道中读取足够的数据失败(%s)"
@@ -1405,10 +1406,11 @@ msgstr "传递给 %s 的计数值太大了"
 msgid "Stream is already closed"
 msgstr "流已经关闭"
 
-#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
-#: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
-#: ../gio/glocalfile.c:2100 ../gio/gsimpleasyncresult.c:814
-#: ../gio/gsimpleasyncresult.c:840
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1646
+#: ../gio/gdbusconnection.c:1735 ../gio/gdbusconnection.c:1922
+#: ../gio/gdbusprivate.c:1352 ../gio/glocalfile.c:2100
+#: ../gio/gsimpleasyncresult.c:814 ../gio/gsimpleasyncresult.c:840
+#, c-format
 msgid "Operation was cancelled"
 msgstr "操作被取消"
 
@@ -1422,7 +1424,7 @@ msgstr "输入中有不完整的多字节序列"
 
 #: ../gio/gcharsetconverter.c:318 ../gio/gcharsetconverter.c:327
 msgid "Not enough space in destination"
-msgstr "目标没有足够的空间"
+msgstr "目标位置没有足够的空间"
 
 #: ../gio/gcharsetconverter.c:447 ../gio/gsocket.c:854
 msgid "Cancellable initialization not supported"
@@ -1579,14 +1581,14 @@ msgstr "命令 %s 以非零状态数 %d 退出：%s"
 msgid "Cannot determine session bus address (not implemented for this OS)"
 msgstr "无法确定会话总线地址(尚未在此操作系统上实现)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6415
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
 "- unknown value `%s'"
 msgstr "无法从 DBUS_STARTER_BUS_TYPE 环境变量确定总线地址 - 未知的值“%s”"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6424
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1688,86 +1690,86 @@ msgstr "打开钥匙环“%s”以写入出错："
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(此外，释放 %s 的锁失败：%s)"
 
-#: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
-#: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
+#: ../gio/gdbusconnection.c:1144 ../gio/gdbusconnection.c:1382
+#: ../gio/gdbusconnection.c:1421 ../gio/gdbusconnection.c:1746
 msgid "The connection is closed"
 msgstr "连接已关闭"
 
-#: ../gio/gdbusconnection.c:1684
+#: ../gio/gdbusconnection.c:1690
 msgid "Timeout was reached"
 msgstr "已到超时限制"
 
-#: ../gio/gdbusconnection.c:2306
+#: ../gio/gdbusconnection.c:2312
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "构建客户端连接时遇到不支持的标志"
 
-#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:3776 ../gio/gdbusconnection.c:4092
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "路径 %s 的对象上没有 org.freedesktop.DBus.Properties 接口"
 
-#: ../gio/gdbusconnection.c:3841
+#: ../gio/gdbusconnection.c:3847
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr "设置属性 %s 出错：期望 %s 类型但得到 %s 类型"
 
-#: ../gio/gdbusconnection.c:3936
+#: ../gio/gdbusconnection.c:3942
 #, c-format
 msgid "No such property `%s'"
 msgstr "无此属性：%s"
 
-#: ../gio/gdbusconnection.c:3948
+#: ../gio/gdbusconnection.c:3954
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "属性 %s 不可读"
 
-#: ../gio/gdbusconnection.c:3959
+#: ../gio/gdbusconnection.c:3965
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "属性 %s 不可写"
 
-#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
+#: ../gio/gdbusconnection.c:4035 ../gio/gdbusconnection.c:5859
 #, c-format
 msgid "No such interface `%s'"
 msgstr "无此接口：%s"
 
-#: ../gio/gdbusconnection.c:4213
+#: ../gio/gdbusconnection.c:4219
 msgid "No such interface"
 msgstr "无此接口"
 
-#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
+#: ../gio/gdbusconnection.c:4438 ../gio/gdbusconnection.c:6365
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "在路径 %s 的对象上没有 %s 接口"
 
-#: ../gio/gdbusconnection.c:4484
+#: ../gio/gdbusconnection.c:4490
 #, c-format
 msgid "No such method `%s'"
 msgstr "无此方法：%s"
 
-#: ../gio/gdbusconnection.c:4515
+#: ../gio/gdbusconnection.c:4521
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "消息的类型“%s”，与预期的类型“%s”不匹配"
 
-#: ../gio/gdbusconnection.c:4734
+#: ../gio/gdbusconnection.c:4740
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "%2$s 处的接口 %1$s 已经导出了一个对象"
 
-#: ../gio/gdbusconnection.c:4932
+#: ../gio/gdbusconnection.c:4938
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "方法“%s”返回类型“%s”，但预期的是“%s”"
 
-#: ../gio/gdbusconnection.c:5964
+#: ../gio/gdbusconnection.c:5970
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "带有 %3$s 签名的接口 %2$s 上不存在 %1$s 方法"
 
-#: ../gio/gdbusconnection.c:6082
+#: ../gio/gdbusconnection.c:6088
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "已经为 %s 导出一个子树"
@@ -1805,7 +1807,7 @@ msgid ""
 msgstr "信号消息：INTERFACE 头域正在使用保留值 org.freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
 msgstr[0] "期望读取 %lu 字节但得到 EOF"
@@ -1835,12 +1837,12 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "已解析的值 %s 不是有效的 D-Bus 签名"
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
-msgstr[0] "以外得到长度为 %u 字节的数组，最大长度应为 2<<26 字节(64 MiB)。"
+msgstr[0] "得到长度为 %u 字节的数组，最大长度应为 2<<26 字节(64 MiB)。"
 
 #: ../gio/gdbusmessage.c:1490
 #, c-format
@@ -1876,7 +1878,7 @@ msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "已解析的值 %s 不是有效的 D-Bus 签名(针对消息主体)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
 msgstr[0] "消息中没有签名的头部，但消息主体为 %u 字节"
@@ -1892,7 +1894,7 @@ msgid ""
 msgstr "在以 D-Bus 线格式用类型字符串“%s”序列化 GVariant 时发生错误"
 
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
@@ -1910,8 +1912,8 @@ msgstr "消息主体有签名 %s 但头部没有签名"
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr "消息主体有类型签名 %s 但头部的签名为 %s"
 
 #: ../gio/gdbusmessage.c:2381
@@ -1928,7 +1930,7 @@ msgstr "返回主体类型 %s 出错"
 msgid "Error return with empty body"
 msgstr "返回空主体出错"
 
-#: ../gio/gdbusprivate.c:1736
+#: ../gio/gdbusprivate.c:1953
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "无法加载 /var/lib/dbus/machine-id："
 
@@ -1978,7 +1980,7 @@ msgid "COMMAND"
 msgstr "命令"
 
 #: ../gio/gdbus-tool.c:93
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Commands:\n"
 "  help         Shows this information\n"
@@ -2054,21 +2056,19 @@ msgstr "警告：根据 Introspection 数据，在接口“%s”中方法“%s�
 
 #: ../gio/gdbus-tool.c:534
 msgid "Optional destination for signal (unique name)"
-msgstr ""
+msgstr "信号的可选目标位置(唯一名字)"
 
 #: ../gio/gdbus-tool.c:535
-#, fuzzy
 msgid "Object path to emit signal on"
-msgstr "要监视的对象路径"
+msgstr "要触发信号的对象路径"
 
 #: ../gio/gdbus-tool.c:536
-#, fuzzy
 msgid "Signal and interface name"
-msgstr "方法和接口名称"
+msgstr "信号和接口名称"
 
 #: ../gio/gdbus-tool.c:568
 msgid "Emit a signal."
-msgstr ""
+msgstr "发射信号。"
 
 #: ../gio/gdbus-tool.c:602 ../gio/gdbus-tool.c:822 ../gio/gdbus-tool.c:1549
 #: ../gio/gdbus-tool.c:1781
@@ -2077,9 +2077,9 @@ msgid "Error connecting: %s\n"
 msgstr "连接时出错：%s\n"
 
 #: ../gio/gdbus-tool.c:614
-#, fuzzy, c-format
+#, c-format
 msgid "Error: object path not specified.\n"
-msgstr "错误：没有指定目标路径\n"
+msgstr "错误：没有指定对象路径。\n"
 
 #: ../gio/gdbus-tool.c:619 ../gio/gdbus-tool.c:883 ../gio/gdbus-tool.c:1607
 #: ../gio/gdbus-tool.c:1840
@@ -2088,24 +2088,24 @@ msgid "Error: %s is not a valid object path\n"
 msgstr "错误：%s 不是有效的对象路径\n"
 
 #: ../gio/gdbus-tool.c:625
-#, fuzzy, c-format
+#, c-format
 msgid "Error: signal not specified.\n"
-msgstr "错误：没有指定目标\n"
+msgstr "错误：没有指定对象。\n"
 
 #: ../gio/gdbus-tool.c:634
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid interface name\n"
-msgstr "错误：%s 不是有效的对象路径\n"
+msgstr "错误：%s 不是有效的接口名字。\n"
 
 #: ../gio/gdbus-tool.c:640
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid member name\n"
-msgstr "错误：%s 不是有效的对象路径\n"
+msgstr "错误：%s 不是有效的成员名字。\n"
 
 #: ../gio/gdbus-tool.c:646
-#, fuzzy, c-format
+#, c-format
 msgid "Error: %s is not a valid unique bus name.\n"
-msgstr "错误：%s 不是有效的对象路径\n"
+msgstr "错误：%s 不是有效的唯一总线名。\n"
 
 #: ../gio/gdbus-tool.c:669 ../gio/gdbus-tool.c:982
 #, c-format
@@ -2113,13 +2113,13 @@ msgid "Error parsing parameter %d: %s\n"
 msgstr "解析第 %d 个选项出错：%s\n"
 
 #: ../gio/gdbus-tool.c:698
-#, fuzzy, c-format
+#, c-format
 msgid "Error flushing connection: %s\n"
-msgstr "接受连接时出错：%s"
+msgstr "清空连接接时出错：%s\n"
 
 #: ../gio/gdbus-tool.c:725
 msgid "Destination name to invoke method on"
-msgstr "调用方法的目标名称"
+msgstr "调用方法的目标位置名称"
 
 #: ../gio/gdbus-tool.c:726
 msgid "Object path to invoke method on"
@@ -2130,9 +2130,8 @@ msgid "Method and interface name"
 msgstr "方法和接口名称"
 
 #: ../gio/gdbus-tool.c:728
-#, fuzzy
 msgid "Timeout in seconds"
-msgstr "已到超时限制"
+msgstr "超时(以秒为单位)"
 
 #: ../gio/gdbus-tool.c:767
 msgid "Invoke a method on a remote object."
@@ -2141,12 +2140,12 @@ msgstr "在远程对象上调用一个方法。"
 #: ../gio/gdbus-tool.c:842 ../gio/gdbus-tool.c:1568 ../gio/gdbus-tool.c:1800
 #, c-format
 msgid "Error: Destination is not specified\n"
-msgstr "错误：没有指定目标\n"
+msgstr "错误：没有指定目标位置名称\n"
 
 #: ../gio/gdbus-tool.c:863 ../gio/gdbus-tool.c:1587
 #, c-format
 msgid "Error: Object path is not specified\n"
-msgstr "错误：没有指定目标路径\n"
+msgstr "错误：没有指定对象路径\n"
 
 #: ../gio/gdbus-tool.c:898
 #, c-format
@@ -2165,7 +2164,7 @@ msgstr "解析 %2$s 类型的参数 %1$d 时发生错误：%3$s\n"
 
 #: ../gio/gdbus-tool.c:1406
 msgid "Destination name to introspect"
-msgstr "要 Introspect 的目标名"
+msgstr "要 Introspect 的目标位置名称"
 
 #: ../gio/gdbus-tool.c:1407
 msgid "Object path to introspect"
@@ -2177,11 +2176,11 @@ msgstr "输出 XML"
 
 #: ../gio/gdbus-tool.c:1409
 msgid "Introspect children"
-msgstr ""
+msgstr "Introspect 子对象"
 
 #: ../gio/gdbus-tool.c:1410
 msgid "Only print properties"
-msgstr ""
+msgstr "只打印属性"
 
 #: ../gio/gdbus-tool.c:1501
 msgid "Introspect a remote object."
@@ -2189,7 +2188,7 @@ msgstr "Introspect 远程对象。"
 
 #: ../gio/gdbus-tool.c:1699
 msgid "Destination name to monitor"
-msgstr "要监视的目标"
+msgstr "要监视的目标位置名称"
 
 #: ../gio/gdbus-tool.c:1700
 msgid "Object path to monitor"
@@ -2223,7 +2222,7 @@ msgstr "无法创建用户 MIME 配置文件夹 %s：%s"
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "应用程序信息缺少标志符。"
 
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
@@ -2489,9 +2488,9 @@ msgid "invalid name '%s': the last character may not be a dash ('-')."
 msgstr "无效名称 %s：最后一个字符串不应为横线(“-”)。"
 
 #: ../gio/glib-compile-schemas.c:789
-#, fuzzy, c-format
+#, c-format
 msgid "invalid name '%s': maximum length is 1024"
-msgstr "无效名称 %s：最大长度为 32"
+msgstr "无效名称 %s：最大长度为 1024"
 
 #: ../gio/glib-compile-schemas.c:858
 #, c-format
@@ -2654,8 +2653,8 @@ msgstr "并且指定了 --strict；退出。\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr "解析覆盖文件 %3$s 中指定的 %2$s 中的键 %1$s 出错：%4$s。"
 
 #: ../gio/glib-compile-schemas.c:1839
@@ -2755,7 +2754,6 @@ msgid "Error renaming file: %s"
 msgstr "重命名文件时出错：%s"
 
 #: ../gio/glocalfile.c:1126
-#, fuzzy
 msgid "Can't rename file, filename already exists"
 msgstr "无法重命名文件，该文件名已存在"
 
@@ -3244,7 +3242,7 @@ msgstr "将 KEY 重设为默认值"
 
 #: ../gio/gsettings-tool.c:594
 msgid "Reset all keys in SCHEMA to their defaults"
-msgstr ""
+msgstr "重置 SCHEMA 中所有键为默认值"
 
 #: ../gio/gsettings-tool.c:600
 msgid "Check if KEY is writable"
@@ -3274,7 +3272,6 @@ msgstr ""
 "\n"
 
 #: ../gio/gsettings-tool.c:621
-#, fuzzy
 msgid ""
 "Usage:\n"
 "  gsettings COMMAND [ARGS...]\n"
@@ -3314,7 +3311,7 @@ msgstr ""
 "  writable                  检查某个键是否可写\n"
 "  monitor                   监视更改\n"
 "\n"
-"使用 'gsettings help 命令' 查询详细的帮助。\n"
+"使用 'gsettings help 命令' 查看详细的帮助。\n"
 "\n"
 
 #: ../gio/gsettings-tool.c:643
@@ -3450,9 +3447,9 @@ msgid "Error sending data: %s"
 msgstr "发送数据出错：%s"
 
 #: ../gio/gsocket.c:2163
-#, fuzzy, c-format
+#, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "无法创建套接字：%s"
+msgstr "无法关闭套接字：%s"
 
 #: ../gio/gsocket.c:2242
 #, c-format
@@ -3556,7 +3553,6 @@ msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgstr "主机名 %s 对于 SOCKSv5 协议太长(最大长度为 %i)。"
 
 #: ../gio/gsocks5proxy.c:352
-#, fuzzy
 msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "SOCKSv5 代理服务器使用未知地址类型。"
 
@@ -3598,9 +3594,8 @@ msgid "Can't handle version %d of GThemedIcon encoding"
 msgstr "无法处理 GThemedIcon 编码的版本 %d"
 
 #: ../gio/gtlscertificate.c:226
-#, fuzzy
 msgid "No PEM-encoded private key found"
-msgstr "未找到 PEM 加密的证书"
+msgstr "未找到 PEM 加密的私钥"
 
 #: ../gio/gtlscertificate.c:235
 msgid "Could not parse PEM-encoded private key"
@@ -3618,17 +3613,17 @@ msgstr "无法解析 PEM 加密的证书"
 msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
-msgstr ""
+msgstr "这是您的访问被锁定前最后一次机会输入正确的密码。"
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
-msgstr ""
+msgstr "密码多次输入错误，您的访问将在下一次错误输入后锁定。"
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "输入的密码不正确。"
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
@@ -3675,9 +3670,9 @@ msgid ""
 msgstr "期望为接收证书读到单个字节但是只读到了 0 字节"
 
 #: ../gio/gunixconnection.c:545
-#, fuzzy, c-format
+#, c-format
 msgid "Not expecting control message, but got %d"
-msgstr "期望一个控制信息，却得到 %d 个"
+msgstr "未期望控制信息，却得到 %d 个"
 
 #: ../gio/gunixconnection.c:571
 #, c-format
