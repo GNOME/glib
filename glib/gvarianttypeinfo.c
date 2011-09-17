@@ -254,11 +254,11 @@ g_variant_type_info_query (GVariantTypeInfo *info,
 }
 
 /* == array == */
-#define ARRAY_INFO_CLASS 'a'
+#define GV_ARRAY_INFO_CLASS 'a'
 static ArrayInfo *
-ARRAY_INFO (GVariantTypeInfo *info)
+GV_ARRAY_INFO (GVariantTypeInfo *info)
 {
-  g_variant_type_info_check (info, ARRAY_INFO_CLASS);
+  g_variant_type_info_check (info, GV_ARRAY_INFO_CLASS);
 
   return (ArrayInfo *) info;
 }
@@ -268,7 +268,7 @@ array_info_free (GVariantTypeInfo *info)
 {
   ArrayInfo *array_info;
 
-  g_assert (info->container_class == ARRAY_INFO_CLASS);
+  g_assert (info->container_class == GV_ARRAY_INFO_CLASS);
   array_info = (ArrayInfo *) info;
 
   g_variant_type_info_unref (array_info->element);
@@ -281,7 +281,7 @@ array_info_new (const GVariantType *type)
   ArrayInfo *info;
 
   info = g_slice_new (ArrayInfo);
-  info->container.info.container_class = ARRAY_INFO_CLASS;
+  info->container.info.container_class = GV_ARRAY_INFO_CLASS;
 
   info->element = g_variant_type_info_get (g_variant_type_element (type));
   info->container.info.alignment = info->element->alignment;
@@ -300,7 +300,7 @@ array_info_new (const GVariantType *type)
 GVariantTypeInfo *
 g_variant_type_info_element (GVariantTypeInfo *info)
 {
-  return ARRAY_INFO (info)->element;
+  return GV_ARRAY_INFO (info)->element;
 }
 
 /* < private >
@@ -318,16 +318,16 @@ g_variant_type_info_query_element (GVariantTypeInfo *info,
                                    guint            *alignment,
                                    gsize            *fixed_size)
 {
-  g_variant_type_info_query (ARRAY_INFO (info)->element,
+  g_variant_type_info_query (GV_ARRAY_INFO (info)->element,
                              alignment, fixed_size);
 }
 
 /* == tuple == */
-#define TUPLE_INFO_CLASS 'r'
+#define GV_TUPLE_INFO_CLASS 'r'
 static TupleInfo *
-TUPLE_INFO (GVariantTypeInfo *info)
+GV_TUPLE_INFO (GVariantTypeInfo *info)
 {
-  g_variant_type_info_check (info, TUPLE_INFO_CLASS);
+  g_variant_type_info_check (info, GV_TUPLE_INFO_CLASS);
 
   return (TupleInfo *) info;
 }
@@ -338,7 +338,7 @@ tuple_info_free (GVariantTypeInfo *info)
   TupleInfo *tuple_info;
   gint i;
 
-  g_assert (info->container_class == TUPLE_INFO_CLASS);
+  g_assert (info->container_class == GV_TUPLE_INFO_CLASS);
   tuple_info = (TupleInfo *) info;
 
   for (i = 0; i < tuple_info->n_members; i++)
@@ -662,7 +662,7 @@ tuple_info_new (const GVariantType *type)
   TupleInfo *info;
 
   info = g_slice_new (TupleInfo);
-  info->container.info.container_class = TUPLE_INFO_CLASS;
+  info->container.info.container_class = GV_TUPLE_INFO_CLASS;
 
   tuple_allocate_members (type, &info->members, &info->n_members);
   tuple_generate_table (info);
@@ -681,7 +681,7 @@ tuple_info_new (const GVariantType *type)
 gsize
 g_variant_type_info_n_members (GVariantTypeInfo *info)
 {
-  return TUPLE_INFO (info)->n_members;
+  return GV_TUPLE_INFO (info)->n_members;
 }
 
 /* < private >
@@ -700,7 +700,7 @@ const GVariantMemberInfo *
 g_variant_type_info_member_info (GVariantTypeInfo *info,
                                  gsize             index)
 {
-  TupleInfo *tuple_info = TUPLE_INFO (info);
+  TupleInfo *tuple_info = GV_TUPLE_INFO (info);
 
   if (index < tuple_info->n_members)
     return &tuple_info->members[index];
@@ -848,10 +848,10 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
 
           g_free (container->type_string);
 
-          if (info->container_class == ARRAY_INFO_CLASS)
+          if (info->container_class == GV_ARRAY_INFO_CLASS)
             array_info_free (info);
 
-          else if (info->container_class == TUPLE_INFO_CLASS)
+          else if (info->container_class == GV_TUPLE_INFO_CLASS)
             tuple_info_free (info);
 
           else
