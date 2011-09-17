@@ -78,7 +78,7 @@ struct token
 struct context
 {
   GSList *pending_tokens;
-  GStaticMutex lock;
+  GMutex lock;
   GWakeup *wakeup;
   gboolean quit;
 };
@@ -95,10 +95,8 @@ static volatile gint tokens_alive;
 static void
 context_init (struct context *ctx)
 {
-  GStaticMutex lock = G_STATIC_MUTEX_INIT;
-
   ctx->pending_tokens = NULL;
-  ctx->lock = lock;
+  g_mutex_init (&ctx->lock);
   ctx->wakeup = g_wakeup_new ();
   ctx->quit = FALSE;
 }
@@ -124,11 +122,11 @@ context_pop_token (struct context *ctx)
 {
   struct token *token;
 
-  g_static_mutex_lock (&ctx->lock);
+  g_mutex_lock (&ctx->lock);
   token = ctx->pending_tokens->data;
   ctx->pending_tokens = g_slist_remove_link (ctx->pending_tokens,
                                              ctx->pending_tokens);
-  g_static_mutex_unlock (&ctx->lock);
+  g_mutex_unlock (&ctx->lock);
 
   return token;
 }
@@ -139,9 +137,9 @@ context_push_token (struct context *ctx,
 {
   g_assert (token->owner == ctx);
 
-  g_static_mutex_lock (&ctx->lock);
+  g_mutex_lock (&ctx->lock);
   ctx->pending_tokens = g_slist_prepend (ctx->pending_tokens, token);
-  g_static_mutex_unlock (&ctx->lock);
+  g_mutex_unlock (&ctx->lock);
 
   g_wakeup_signal (ctx->wakeup);
 }
