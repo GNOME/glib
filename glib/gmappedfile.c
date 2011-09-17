@@ -112,14 +112,19 @@ g_mapped_file_destroy (GMappedFile *file)
  * Maps a file into memory. On UNIX, this is using the mmap() function.
  *
  * If @writable is %TRUE, the mapped buffer may be modified, otherwise
- * it is an error to modify the mapped buffer. Modifications to the buffer 
- * are not visible to other processes mapping the same file, and are not 
+ * it is an error to modify the mapped buffer. Modifications to the buffer
+ * are not visible to other processes mapping the same file, and are not
  * written back to the file.
  *
  * Note that modifications of the underlying file might affect the contents
- * of the #GMappedFile. Therefore, mapping should only be used if the file 
+ * of the #GMappedFile. Therefore, mapping should only be used if the file
  * will not be modified, or if all modifications of the file are done
- * atomically (e.g. using g_file_set_contents()). 
+ * atomically (e.g. using g_file_set_contents()).
+ *
+ * If @filename is the name of an empty, regular file, the function
+ * will successfully return an empty #GMappedFile. In other cases of
+ * size 0 (e.g. device files such as /dev/null), @error will be set
+ * to the #GFileError value #G_FILE_ERROR_INVAL.
  *
  * Return value: a newly allocated #GMappedFile which must be unref'd
  *    with g_mapped_file_unref(), or %NULL if the mapping failed.

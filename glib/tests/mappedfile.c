@@ -37,6 +37,18 @@ test_empty (void)
 }
 
 static void
+test_device (void)
+{
+  GError *error = NULL;
+  GMappedFile *file;
+
+  file = g_mapped_file_new ("/dev/null", FALSE, &error);
+  g_assert_error (error, G_FILE_ERROR, G_FILE_ERROR_INVAL);
+  g_assert (file == NULL);
+  g_error_free (error);
+}
+
+static void
 test_nonexisting (void)
 {
   GMappedFile *file;
