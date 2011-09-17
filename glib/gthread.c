@@ -2591,3 +2591,21 @@ g_mutex_free (GMutex *mutex)
   g_mutex_clear (mutex);
   g_slice_free (GMutex, mutex);
 }
+
+GCond *
+g_cond_new (void)
+{
+  GCond *cond;
+
+  cond = g_slice_new (GCond);
+  g_cond_init (cond);
+
+  return cond;
+}
+
+void
+g_cond_free (GCond *cond)
+{
+  g_cond_clear (cond);
+  g_slice_free (GCond, cond);
+}

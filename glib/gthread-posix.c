@@ -223,29 +223,6 @@ g_cond_timedwait (GCond  *cond,
   return FALSE;
 }
 
-/* {{{1 new/free API */
-
-GCond *
-g_cond_new (void)
-{
-  GCond *cond;
-
-  /* malloc() is temporary until all libglib users are ported away */
-  cond = malloc (sizeof (GCond));
-  if G_UNLIKELY (cond == NULL)
-    g_thread_abort (errno, "malloc");
-  g_cond_init (cond);
-
-  return cond;
-}
-
-void
-g_cond_free (GCond *cond)
-{
-  g_cond_clear (cond);
-  free (cond);
-}
-
 /* {{{1 GPrivate */
 
 #include "glib.h"
