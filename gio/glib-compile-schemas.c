@@ -1929,7 +1929,6 @@ main (int argc, char **argv)
   gchar *srcdir;
   gchar *targetdir = NULL;
   gchar *target;
-  gboolean uninstall = FALSE;
   gboolean dry_run = FALSE;
   gboolean strict = FALSE;
   gchar **schema_files = NULL;
@@ -1939,7 +1938,6 @@ main (int argc, char **argv)
     { "targetdir", 0, 0, G_OPTION_ARG_FILENAME, &targetdir, N_("where to store the gschemas.compiled file"), N_("DIRECTORY") },
     { "strict", 0, 0, G_OPTION_ARG_NONE, &strict, N_("Abort on any errors in schemas"), NULL },
     { "dry-run", 0, 0, G_OPTION_ARG_NONE, &dry_run, N_("Do not write the gschema.compiled file"), NULL },
-    { "uninstall", 0, 0, G_OPTION_ARG_NONE, &uninstall, N_("This option will be removed soon.") },
     { "allow-any-name", 0, 0, G_OPTION_ARG_NONE, &allow_any_name, N_("Do not enforce key name restrictions") },
 
     /* These options are only for use in the gschema-compile tests */
