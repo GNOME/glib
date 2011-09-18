@@ -147,6 +147,7 @@ libglib_2_0_la_SOURCES = 	\
 	gkeyfile.c		\
 	glibintl.h		\
 	glib_trace.h		\
+	glib-ctor.h		\
 	glib-private.h		\
 	glib-private.c		\
 	glist.c			\
