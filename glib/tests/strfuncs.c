@@ -910,6 +910,7 @@ check_strtod_number (gdouble num, gchar *fmt, gchar *str)
 
   for (l = 0; l < G_N_ELEMENTS (locales); l++)
     {
+      setlocale (LC_ALL, locales[l]);
       g_ascii_formatd (buf, G_ASCII_DTOSTR_BUF_SIZE, fmt, num);
       g_assert_cmpstr (buf, ==, str);
     }
