@@ -1,3 +1,40 @@
+Overview of changes from GLib 2.29.90 to 2.29.92
+================================================
+
+This release contains only bugfixes, docs changes and translations
+updates.  Translation will continue, but otherwise this should be
+considered a release candidate for 2.30.0.
+
+* GDBus bug fixes
+ - fix segfault when remote property is invalidated (#659070)
+ - take more care in connection teardown to avoid use-after-free (#651268)
+
+* GMappedFile: return an error when trying to map a device (#659212)
+
+* GSettings: always deliver signals to the correct thread (#657255)
+
+* some small documentation changes
+
+* Translation updates:
+ Belarusian
+ Brazilian Portuguese
+ British English
+ French
+ Hindi
+ Hungarian
+ Italian
+ Japanese
+ Latvian
+ Norwegian bokmål
+ Persian
+ Polish
+ Punjabi
+ Russian
+ Simplified Chinese
+ Spanish
+ Swedish
+ Tamil
+
 Overview of changes from GLib 2.29.18 to 2.29.90
 ================================================
 
