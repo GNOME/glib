@@ -940,9 +940,6 @@ g_thread_init_glib (void)
    */
   GRealThread* main_thread = (GRealThread*) g_thread_self ();
 
-  /* we may only create mutex and cond in here */
-  _g_mem_thread_init_noprivate_nomessage ();
-
   /* setup the basic threading system */
   g_threads_got_initialized = TRUE;
   g_private_init (&g_thread_specific_private, g_thread_cleanup);

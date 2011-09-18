@@ -41,6 +41,7 @@
 #include "gtestutils.h"
 #include "gthread.h"
 #include "glib_trace.h"
+#include "glib-ctor.h"
 
 
 #define MEM_PROFILE_TABLE_SIZE 4096
@@ -55,10 +56,35 @@
  * g_mem_gc_friendly is TRUE, freed memory should be 0-wiped.
  */
 
-/* --- prototypes --- */
-static gboolean g_mem_initialized = FALSE;
-static void     g_mem_init_nomessage (void);
+#ifdef ENABLE_GC_FRIENDLY_DEFAULT
+gboolean g_mem_gc_friendly = TRUE;
+#else
+/**
+ * g_mem_gc_friendly:
+ * 
+ * This variable is %TRUE if the <envar>G_DEBUG</envar> environment variable
+ * includes the key <link linkend="G_DEBUG">gc-friendly</link>.
+ */
+gboolean g_mem_gc_friendly = FALSE;
+#endif
 
+GLIB_CTOR (g_mem_init_nomessage)
+{
+  gchar buffer[1024];
+  const gchar *val;
+  const GDebugKey keys[] = {
+    { "gc-friendly", 1 },
+  };
+  gint flags;
+
+  /* don't use g_malloc/g_message here */
+  val = _g_getenv_nomalloc ("G_DEBUG", buffer);
+  flags = !val ? 0 : g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
+  if (flags & 1)        /* gc-friendly */
+    {
+      g_mem_gc_friendly = TRUE;
+    }
+}
 
 /* --- malloc wrappers --- */
 #ifndef	REALLOC_0_WORKS
@@ -156,8 +182,8 @@ static GMemVTable glib_mem_vtable = {
 gpointer
 g_malloc (gsize n_bytes)
 {
-  if (G_UNLIKELY (!g_mem_initialized))
-    g_mem_init_nomessage();
+  GLIB_ENSURE_CTOR (g_mem_init_nomessage);
+
   if (G_LIKELY (n_bytes))
     {
       gpointer mem;
@@ -188,8 +214,8 @@ g_malloc (gsize n_bytes)
 gpointer
 g_malloc0 (gsize n_bytes)
 {
-  if (G_UNLIKELY (!g_mem_initialized))
-    g_mem_init_nomessage();
+  GLIB_ENSURE_CTOR (g_mem_init_nomessage);
+
   if (G_LIKELY (n_bytes))
     {
       gpointer mem;
@@ -227,8 +253,8 @@ g_realloc (gpointer mem,
 {
   gpointer newmem;
 
-  if (G_UNLIKELY (!g_mem_initialized))
-    g_mem_init_nomessage();
+  GLIB_ENSURE_CTOR (g_mem_init_nomessage);
+
   if (G_LIKELY (n_bytes))
     {
       newmem = glib_mem_vtable.realloc (mem, n_bytes);
@@ -258,8 +284,8 @@ g_realloc (gpointer mem,
 void
 g_free (gpointer mem)
 {
-  if (G_UNLIKELY (!g_mem_initialized))
-    g_mem_init_nomessage();
+  GLIB_ENSURE_CTOR (g_mem_init_nomessage);
+
   if (G_LIKELY (mem))
     glib_mem_vtable.free (mem);
   TRACE(GLIB_MEM_FREE((void*) mem));
@@ -279,8 +305,8 @@ g_try_malloc (gsize n_bytes)
 {
   gpointer mem;
 
-  if (G_UNLIKELY (!g_mem_initialized))
-    g_mem_init_nomessage();
+  GLIB_ENSURE_CTOR (g_mem_init_nomessage);
+
   if (G_LIKELY (n_bytes))
     mem = glib_mem_vtable.try_malloc (n_bytes);
   else
@@ -306,8 +332,8 @@ g_try_malloc0 (gsize n_bytes)
 {
   gpointer mem;
 
-  if (G_UNLIKELY (!g_mem_initialized))
-    g_mem_init_nomessage();
+  GLIB_ENSURE_CTOR (g_mem_init_nomessage);
+
   if (G_LIKELY (n_bytes))
     mem = glib_mem_vtable.try_malloc (n_bytes);
   else
@@ -336,8 +362,8 @@ g_try_realloc (gpointer mem,
 {
   gpointer newmem;
 
-  if (G_UNLIKELY (!g_mem_initialized))
-    g_mem_init_nomessage();
+  GLIB_ENSURE_CTOR (g_mem_init_nomessage);
+
   if (G_LIKELY (n_bytes))
     newmem = glib_mem_vtable.try_realloc (mem, n_bytes);
   else
@@ -372,8 +398,7 @@ g_malloc_n (gsize n_blocks,
 {
   if (SIZE_OVERFLOWS (n_blocks, n_block_bytes))
     {
-      if (G_UNLIKELY (!g_mem_initialized))
-	g_mem_init_nomessage();
+      GLIB_ENSURE_CTOR (g_mem_init_nomessage);
 
       g_error ("%s: overflow allocating %"G_GSIZE_FORMAT"*%"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_blocks, n_block_bytes);
@@ -399,8 +424,7 @@ g_malloc0_n (gsize n_blocks,
 {
   if (SIZE_OVERFLOWS (n_blocks, n_block_bytes))
     {
-      if (G_UNLIKELY (!g_mem_initialized))
-	g_mem_init_nomessage();
+      GLIB_ENSURE_CTOR (g_mem_init_nomessage);
 
       g_error ("%s: overflow allocating %"G_GSIZE_FORMAT"*%"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_blocks, n_block_bytes);
@@ -428,8 +452,7 @@ g_realloc_n (gpointer mem,
 {
   if (SIZE_OVERFLOWS (n_blocks, n_block_bytes))
     {
-      if (G_UNLIKELY (!g_mem_initialized))
-	g_mem_init_nomessage();
+      GLIB_ENSURE_CTOR (g_mem_init_nomessage);
 
       g_error ("%s: overflow allocating %"G_GSIZE_FORMAT"*%"G_GSIZE_FORMAT" bytes",
                G_STRLOC, n_blocks, n_block_bytes);
@@ -708,8 +731,7 @@ g_mem_profile (void)
   gsize local_zinit;
   gsize local_frees;
 
-  if (G_UNLIKELY (!g_mem_initialized))
-    g_mem_init_nomessage();
+  GLIB_ENSURE_CTOR (g_mem_init_nomessage);
 
   g_mutex_lock (&gmem_profile_mutex);
 
@@ -909,45 +931,3 @@ static GMemVTable profiler_table = {
 GMemVTable *glib_mem_profiler_table = &profiler_table;
 
 #endif	/* !G_DISABLE_CHECKS */
-
-#ifdef ENABLE_GC_FRIENDLY_DEFAULT
-gboolean g_mem_gc_friendly = TRUE;
-#else
-/**
- * g_mem_gc_friendly:
- * 
- * This variable is %TRUE if the <envar>G_DEBUG</envar> environment variable
- * includes the key <link linkend="G_DEBUG">gc-friendly</link>.
- */
-gboolean g_mem_gc_friendly = FALSE;
-#endif
-
-static void
-g_mem_init_nomessage (void)
-{
-  gchar buffer[1024];
-  const gchar *val;
-  const GDebugKey keys[] = {
-    { "gc-friendly", 1 },
-  };
-  gint flags;
-  if (g_mem_initialized)
-    return;
-  /* don't use g_malloc/g_message here */
-  val = _g_getenv_nomalloc ("G_DEBUG", buffer);
-  flags = !val ? 0 : g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
-  if (flags & 1)        /* gc-friendly */
-    {
-      g_mem_gc_friendly = TRUE;
-    }
-  g_mem_initialized = TRUE;
-}
-
-void
-_g_mem_thread_init_noprivate_nomessage (void)
-{
-  /* we may only create mutexes here, locking/
-   * unlocking a mutex does not yet work.
-   */
-  g_mem_init_nomessage();
-}

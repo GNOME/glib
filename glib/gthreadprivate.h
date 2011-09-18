@@ -46,8 +46,6 @@ G_BEGIN_DECLS
 /* Is called from gthread/gthread-impl.c */
 void g_thread_init_glib (void);
 
-/* base initializers, may only use g_mutex_new(), g_cond_new() */
-G_GNUC_INTERNAL void _g_mem_thread_init_noprivate_nomessage (void);
 /* initializers that may also use g_private_new() */
 G_GNUC_INTERNAL void _g_messages_thread_init_nomessage      (void);
 
