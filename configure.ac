@@ -2117,7 +2117,6 @@ CPPFLAGS="$CPPFLAGS $G_THREAD_CFLAGS"
 dnl determination of G_THREAD_LIBS
 dnl ******************************
 
-mutex_has_default=no
 case $have_threads in
         posix)
 	  glib_save_CPPFLAGS="$CPPFLAGS"
@@ -2198,10 +2197,6 @@ case $have_threads in
             fi
 	  done
 	  LIBS="$glib_save_LIBS"
-          mutex_has_default=yes
-          mutex_default_type='pthread_mutex_t'
-          mutex_default_init='PTHREAD_MUTEX_INITIALIZER'
-          mutex_header_file='pthread.h'
 	  g_threads_impl="POSIX"
 	  AC_SUBST(GTHREAD_COMPILE_IMPL_DEFINES)
           CPPFLAGS="$glib_save_CPPFLAGS"
@@ -2429,32 +2424,6 @@ AC_SUBST(G_THREAD_CFLAGS)
 AC_SUBST(G_THREAD_LIBS)
 AC_SUBST(G_THREAD_LIBS_FOR_GTHREAD)
 AC_SUBST(G_THREAD_LIBS_EXTRA)
-
-dnl **********************************************
-dnl *** GDefaultMutex setup and initialization ***
-dnl **********************************************
-dnl
-dnl if mutex_has_default = yes, we also got
-dnl mutex_default_type, mutex_default_init and mutex_header_file
-if test $mutex_has_default = yes ; then
-	glib_save_CPPFLAGS="$CPPFLAGS"
-	glib_save_LIBS="$LIBS"
-	LIBS="$G_THREAD_LIBS $LIBS"
-	CPPFLAGS="$CPPFLAGS $GTHREAD_COMPILE_IMPL_DEFINES"
-	GLIB_SIZEOF([#include <$mutex_header_file>],
-                    $mutex_default_type,
-                    gmutex)
-	GLIB_BYTE_CONTENTS([#include <$mutex_header_file>],
-			   $mutex_default_type,
-			   gmutex,
-			   $glib_cv_sizeof_gmutex,
-			   $mutex_default_init)
-	if test x"$glib_cv_byte_contents_gmutex" = xno; then
-		mutex_has_default=no
-	fi
-	CPPFLAGS="$glib_save_CPPFLAGS"
-	LIBS="$glib_save_LIBS"
-fi
 
 AC_CHECK_FUNCS(clock_gettime, [], [
   AC_CHECK_LIB(rt, clock_gettime, [
@@ -3250,38 +3219,11 @@ _______EOF
 #endif 
 _______EOF
 
-
 	echo >>$outfile
-	if test x$g_mutex_has_default = xyes; then
-		cat >>$outfile <<_______EOF
+	cat >>$outfile <<_______EOF
 #define G_THREADS_ENABLED
 #define G_THREADS_IMPL_$g_threads_impl_def
-typedef struct _GStaticMutex GStaticMutex;
-struct _GStaticMutex
-{
-  struct _GMutex *runtime_mutex;
-  union {
-    char   pad[[$g_mutex_sizeof]];
-    double dummy_double;
-    void  *dummy_pointer;
-    long   dummy_long;
-  } static_mutex;
-};
-#define	G_STATIC_MUTEX_INIT	{ NULL, { { $g_mutex_contents} } }
-#define	g_static_mutex_get_mutex(mutex) \\
-  (g_thread_use_default_impl ? ((GMutex*)(gpointer) ((mutex)->static_mutex.pad)) : \\
-   g_static_mutex_get_mutex_impl_shortcut (&((mutex)->runtime_mutex)))
 _______EOF
-	else
-		cat >>$outfile <<_______EOF
-#define G_THREADS_ENABLED
-#define G_THREADS_IMPL_$g_threads_impl_def
-typedef struct _GMutex* GStaticMutex;
-#define G_STATIC_MUTEX_INIT NULL
-#define g_static_mutex_get_mutex(mutex) \\
-  (g_static_mutex_get_mutex_impl_shortcut (mutex))
-_______EOF
-	fi
 
 	cat >>$outfile <<_______EOF
 /* This represents a system thread as used by the implementation. An
@@ -3670,10 +3612,7 @@ g_have_eilseq=$have_eilseq
 
 g_threads_impl_def=$g_threads_impl
 
-g_mutex_has_default="$mutex_has_default"
-g_mutex_sizeof="$glib_cv_sizeof_gmutex"
 g_system_thread_sizeof="$glib_cv_sizeof_system_thread"
-g_mutex_contents="$glib_cv_byte_contents_gmutex"
 
 g_memory_barrier_needed="$glib_memory_barrier_needed"
 g_gcc_atomic_ops="$glib_cv_gcc_has_builtin_atomic_operations"

@@ -168,10 +168,6 @@ gboolean g_thread_get_initialized (void);
 /* internal function for fallback static mutex implementation */
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
-#define g_static_mutex_get_mutex_impl_shortcut(mutex) \
-  (g_atomic_pointer_get (mutex) ? *(mutex) : \
-   g_static_mutex_get_mutex_impl (mutex))
-
 /* shorthands for conditional and unconditional function calls */
 
 #define G_THREAD_UF(op, arglist)					\
@@ -219,11 +215,19 @@ gpointer g_thread_join         (GThread               *thread);
 void     g_thread_set_priority (GThread               *thread,
                                 GThreadPriority        priority);
 
-/* GStaticMutexes can be statically initialized with the value
- * G_STATIC_MUTEX_INIT, and then they can directly be used, that is
- * much easier, than having to explicitly allocate the mutex before
- * use
- */
+#ifdef G_OS_WIN32
+typedef GMutex * GStaticMutex;
+#define G_STATIC_MUTEX_INIT NULL
+#define g_static_mutex_get_mutex g_static_mutex_get_mutex_impl
+#else /* G_OS_WIN32 */
+typedef struct {
+  struct _GMutex *unused;
+  GMutex mutex;
+} GStaticMutex;
+#define G_STATIC_MUTEX_INIT { NULL, G_MUTEX_INIT }
+#define g_static_mutex_get_mutex(s) (&(s)->mutex)
+#endif /* G_OS_WIN32 */
+
 #define g_static_mutex_lock(mutex) \
     g_mutex_lock (g_static_mutex_get_mutex (mutex))
 #define g_static_mutex_trylock(mutex) \
