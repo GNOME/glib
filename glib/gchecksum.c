@@ -24,6 +24,7 @@
 
 #include "gchecksum.h"
 
+#include "gslice.h"
 #include "gmem.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"

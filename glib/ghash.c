@@ -37,6 +37,7 @@
 #include "gstrfuncs.h"
 #include "gatomic.h"
 #include "gtestutils.h"
+#include "gslice.h"
 
 
 /**

@@ -36,6 +36,7 @@
 #include "ghook.h"
 
 #include "gtestutils.h"
+#include "gslice.h"
 
 
 /* --- functions --- */

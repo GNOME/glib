@@ -24,6 +24,7 @@
 
 #include "gmem.h"
 #include "gtestutils.h"
+#include "gslice.h"
 /**
  * SECTION:sequence
  * @title: Sequences

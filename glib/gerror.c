@@ -352,6 +352,7 @@
 
 #include "gerror.h"
 
+#include "gslice.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"
 

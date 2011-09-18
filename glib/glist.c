@@ -31,6 +31,7 @@
 #include "config.h"
 
 #include "glist.h"
+#include "gslice.h"
 
 #include "gtestutils.h"
 

@@ -37,6 +37,7 @@
 #include "gdataset.h"
 #include "gbitlock.h"
 
+#include "gslice.h"
 #include "gdatasetprivate.h"
 #include "ghash.h"
 #include "gquark.h"

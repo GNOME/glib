@@ -32,6 +32,7 @@
 
 #include "gcache.h"
 
+#include "gslice.h"
 #include "ghash.h"
 #include "gtestutils.h"
 

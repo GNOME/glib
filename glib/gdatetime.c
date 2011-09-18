@@ -60,6 +60,7 @@
 
 #include "gdatetime.h"
 
+#include "gslice.h"
 #include "gatomic.h"
 #include "gfileutils.h"
 #include "ghash.h"

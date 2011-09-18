@@ -35,6 +35,7 @@
 
 #include "garray.h"
 
+#include "gslice.h"
 #include "gmem.h"
 #include "gthread.h"
 #include "gmessages.h"

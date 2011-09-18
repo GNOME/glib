@@ -34,6 +34,7 @@
 #include "ghash.h"
 #include "gthread.h"
 #include "gbufferprivate.h"
+#include "gslice.h"
 
 /**
  * SECTION:timezone

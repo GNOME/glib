@@ -29,6 +29,7 @@
 #include <glib/gvariant-core.h>
 #include <glib/gtestutils.h>
 #include <glib/gstrfuncs.h>
+#include <glib/gslice.h>
 #include <glib/ghash.h>
 #include <glib/gmem.h>
 

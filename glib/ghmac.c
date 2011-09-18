@@ -28,6 +28,7 @@
 
 #include "glib/galloca.h"
 #include "gatomic.h"
+#include "gslice.h"
 #include "gmem.h"
 #include "gstrfuncs.h"
 #include "gtestutils.h"

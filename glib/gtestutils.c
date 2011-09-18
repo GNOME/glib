@@ -48,6 +48,7 @@
 #include "grand.h"
 #include "gstrfuncs.h"
 #include "gtimer.h"
+#include "gslice.h"
 
 
 /* Global variable for storing assertion messages; this is the counterpart to

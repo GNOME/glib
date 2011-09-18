@@ -25,8 +25,8 @@
 
 #include <glib/gstrfuncs.h>
 #include <glib/gatomic.h>
+#include <glib/gslice.h>
 #include <glib/gmem.h>
-
 
 typedef struct
 {

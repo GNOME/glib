@@ -35,6 +35,8 @@
 
 #include "gnode.h"
 
+#include "gslice.h"
+
 #include "gtestutils.h"
 
 /**

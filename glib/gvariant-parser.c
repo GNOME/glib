@@ -32,6 +32,7 @@
 #include "gtestutils.h"
 #include "gvariant.h"
 #include "gvarianttype.h"
+#include "gslice.h"
 
 /*
  * two-pass algorithm

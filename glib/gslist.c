@@ -31,7 +31,9 @@
 #include "config.h"
 
 #include "gslist.h"
+
 #include "gtestutils.h"
+#include "gslice.h"
 
 /**
  * SECTION:linked_lists_single

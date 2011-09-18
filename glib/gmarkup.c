@@ -29,6 +29,7 @@
 
 #include "gmarkup.h"
 
+#include "gslice.h"
 #include "galloca.h"
 #include "gstrfuncs.h"
 #include "gstring.h"

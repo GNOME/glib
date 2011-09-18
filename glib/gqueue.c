@@ -54,6 +54,7 @@
 #include "gqueue.h"
 
 #include "gtestutils.h"
+#include "gslice.h"
 
 /**
  * g_queue_new:

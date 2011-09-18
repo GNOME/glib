@@ -26,8 +26,8 @@
 
 #include <glib/gtestutils.h>
 #include <glib/gthread.h>
+#include <glib/gslice.h>
 #include <glib/ghash.h>
-
 
 /* < private >
  * GVariantTypeInfo:
