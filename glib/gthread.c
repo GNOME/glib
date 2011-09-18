@@ -949,9 +949,6 @@ g_thread_init_glib (void)
   g_private_set (&g_thread_specific_private, main_thread);
   G_THREAD_UF (thread_self, (&main_thread->system_thread));
 
-  /* complete memory system initialization, g_private_*() works now */
-  _g_slice_thread_init_nomessage ();
-
   /* accomplish log system initialization to enable messaging */
   _g_messages_thread_init_nomessage ();
 }

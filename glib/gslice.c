@@ -52,6 +52,7 @@
 #include "gthread.h"
 #include "gthreadprivate.h"
 #include "glib_trace.h"
+#include "glib-ctor.h"
 
 /* the GSlice allocator is split up into 4 layers, roughly modelled after the slab
  * allocator and magazine extensions as outlined in:
@@ -297,8 +298,7 @@ slice_config_init (SliceConfig *config)
     config->debug_blocks = TRUE;
 }
 
-static void
-g_slice_init_nomessage (void)
+GLIB_CTOR (g_slice_init_nomessage)
 {
   /* we may not use g_error() or friends here */
   mem_assert (sys_page_size == 0);
@@ -360,21 +360,18 @@ g_slice_init_nomessage (void)
   /* at this point, g_mem_gc_friendly() should be initialized, this
    * should have been accomplished by the above g_malloc/g_new calls
    */
+  g_private_init (&private_thread_memory, private_thread_memory_cleanup);
 }
 
 static inline guint
 allocator_categorize (gsize aligned_chunk_size)
 {
+  GLIB_ENSURE_CTOR (g_slice_init_nomessage);
+
   /* speed up the likely path */
   if (G_LIKELY (aligned_chunk_size && aligned_chunk_size <= allocator->max_slab_chunk_size_for_magazine_cache))
     return 1;           /* use magazine cache */
 
-  /* the above will fail (max_slab_chunk_size_for_magazine_cache == 0) if the
-   * allocator is still uninitialized, or if we are not configured to use the
-   * magazine cache.
-   */
-  if (!sys_page_size)
-    g_slice_init_nomessage ();
   if (!allocator->config.always_malloc &&
       aligned_chunk_size &&
       aligned_chunk_size <= MAX_SLAB_CHUNK_SIZE (allocator))
@@ -384,21 +381,6 @@ allocator_categorize (gsize aligned_chunk_size)
       return 1;         /* use magazine cache */
     }
   return 0;             /* use malloc() */
-}
-
-void
-_g_slice_thread_init_nomessage (void)
-{
-  /* we may not use g_error() or friends here */
-  if (!sys_page_size)
-    g_slice_init_nomessage();
-  else
-    {
-      /* g_slice_init_nomessage() has been called already, probably due
-       * to a g_slice_alloc1() before g_thread_init().
-       */
-    }
-  g_private_init (&private_thread_memory, private_thread_memory_cleanup);
 }
 
 static inline void
