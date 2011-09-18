@@ -763,20 +763,18 @@ g_convert_with_iconv (const gchar *str,
 	      }
 	      break;
 	    case EILSEQ:
-	      if (error)
-		g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
-                                     _("Invalid byte sequence in conversion input"));
+              g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_ILLEGAL_SEQUENCE,
+                                   _("Invalid byte sequence in conversion input"));
 	      have_error = TRUE;
 	      break;
 	    default:
-	      if (error)
-                {
-                  int errsv = errno;
+              {
+                int errsv = errno;
 
-                  g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
-                               _("Error during conversion: %s"),
-                               g_strerror (errsv));
-                }
+                g_set_error (error, G_CONVERT_ERROR, G_CONVERT_ERROR_FAILED,
+                             _("Error during conversion: %s"),
+                             g_strerror (errsv));
+              }
 	      have_error = TRUE;
 	      break;
 	    }
@@ -804,9 +802,8 @@ g_convert_with_iconv (const gchar *str,
 	{
           if (!have_error)
             {
-	      if (error)
-		g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
-                                     _("Partial character sequence at end of input"));
+              g_set_error_literal (error, G_CONVERT_ERROR, G_CONVERT_ERROR_PARTIAL_INPUT,
+                                   _("Partial character sequence at end of input"));
               have_error = TRUE;
             }
 	}
