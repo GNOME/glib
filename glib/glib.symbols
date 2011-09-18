@@ -1610,3 +1610,6 @@ g_mutex_lock
 g_mutex_new
 g_mutex_trylock
 g_mutex_unlock
+g_private_new
+g_private_get
+g_private_set

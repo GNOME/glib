@@ -408,6 +408,11 @@ void                    g_mutex_free                                    (GMutex 
 GCond *                 g_cond_new                                      (void);
 void                    g_cond_free                                     (GCond          *cond);
 
+GPrivate *              (g_private_new)                                 (GDestroyNotify  notify);
+gpointer                (g_private_get)                                 (GPrivate       *key);
+void                    (g_private_set)                                 (GPrivate       *key,
+                                                                         gpointer        value);
+
 G_END_DECLS
 
 #endif /* __G_THREAD_H__ */

@@ -27,8 +27,8 @@
  * GLib at ftp://ftp.gtk.org/pub/gtk/.
  */
 
-/* The GMutex and GCond implementations in this file are some of the
- * lowest-level code in GLib.  All other parts of GLib (messages,
+/* The GMutex, GCond and GPrivate implementations in this file are some
+ * of the lowest-level code in GLib.  All other parts of GLib (messages,
  * memory, slices, etc) assume that they can freely use these facilities
  * without risking recursion.
  *
@@ -42,6 +42,7 @@
 #include "config.h"
 
 #include "gthread.h"
+#include "gthreadprivate.h"
 
 #include <pthread.h>
 #include <stdlib.h>
@@ -205,6 +206,45 @@ g_cond_timedwait (GCond  *cond,
 
 /* {{{1 GPrivate */
 
+GPrivate *
+(g_private_new) (GDestroyNotify notify)
+{
+  GPrivate *key;
+
+  key = malloc (sizeof (GPrivate));
+  if G_UNLIKELY (key == NULL)
+    g_thread_abort (errno, "malloc");
+  g_private_init (key, notify);
+
+  return key;
+}
+
+void
+g_private_init (GPrivate       *key,
+                GDestroyNotify  notify)
+{
+  pthread_key_create (&key->key, notify);
+}
+
+gpointer
+(g_private_get) (GPrivate *key)
+{
+  /* quote POSIX: No errors are returned from pthread_getspecific(). */
+  return pthread_getspecific (key->key);
+}
+
+void
+(g_private_set) (GPrivate *key,
+                 gpointer  value)
+{
+  gint status;
+
+  if G_UNLIKELY ((status = pthread_setspecific (key->key, value)) != 0)
+    g_thread_abort (status, "pthread_setspecific");
+}
+
+/* {{{1 GThread */
+
 #include "glib.h"
 #include "gthreadprivate.h"
 
@@ -319,37 +359,6 @@ _g_thread_impl_init(void)
   }
 #endif /* HAVE_PRIORITIES */
 }
-
-static GPrivate *
-g_private_new_posix_impl (GDestroyNotify destructor)
-{
-  GPrivate *result = (GPrivate *) g_new (pthread_key_t, 1);
-  posix_check_cmd (pthread_key_create ((pthread_key_t *) result, destructor));
-  return result;
-}
-
-/* NOTE: the functions g_private_get and g_private_set may not use
-   functions from gmem.c and gmessages.c */
-
-static void
-g_private_set_posix_impl (GPrivate * private_key, gpointer value)
-{
-  if (!private_key)
-    return;
-  pthread_setspecific (*(pthread_key_t *) private_key, value);
-}
-
-static gpointer
-g_private_get_posix_impl (GPrivate * private_key)
-{
-  if (!private_key)
-    return NULL;
-
-  return pthread_getspecific (*(pthread_key_t *) private_key);
-}
-
-/* {{{1 GThread */
-
 
 static void
 g_thread_create_posix_impl (GThreadFunc thread_func,
@@ -475,9 +484,9 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_cond_wait,
   g_cond_timed_wait,
   g_cond_free,
-  g_private_new_posix_impl,
-  g_private_get_posix_impl,
-  g_private_set_posix_impl,
+  g_private_new,
+  g_private_get,
+  g_private_set,
   g_thread_create_posix_impl,
   g_thread_yield_posix_impl,
   g_thread_join_posix_impl,

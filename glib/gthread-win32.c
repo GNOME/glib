@@ -43,8 +43,8 @@
 #include "config.h"
 
 #include "gthread.h"
+#include "gthreadprivate.h"
 
-#define _WIN32_WINDOWS 0x0401 /* to get IsDebuggerPresent */
 #include <windows.h>
 
 #include <process.h>
@@ -234,6 +234,64 @@ g_cond_timed_wait (GCond    *cond,
 
 /* {{{1 GPrivate */
 
+typedef struct _GPrivateDestructor GPrivateDestructor;
+
+struct _GPrivateDestructor
+{
+  DWORD               index;
+  GDestroyNotify      notify;
+  GPrivateDestructor *next;
+};
+
+static GPrivateDestructor * volatile g_private_destructors;
+
+GPrivate *
+(g_private_new) (GDestroyNotify notify)
+{
+  GPrivate *key;
+
+  key = malloc (sizeof (GPrivate));
+  if G_UNLIKELY (key == NULL)
+    g_thread_abort (errno, "malloc");
+  g_private_init (key, notify);
+
+  return key;
+}
+
+void
+g_private_init (GPrivate       *key,
+                GDestroyNotify  notify)
+{
+  GPrivateDestructor *destructor;
+
+  key->index = TlsAlloc ();
+
+  destructor = malloc (sizeof (GPrivateDestructor));
+  if G_UNLIKELY (destructor == NULL)
+    g_thread_abort (errno, "malloc");
+  destructor->index = key->index;
+  destructor->notify = notify;
+
+  do
+    destructor->next = g_private_destructors;
+  while (InterlockedCompareExchangePointer (&g_private_destructors, destructor->next, destructor) != destructor->next);
+}
+
+gpointer
+(g_private_get) (GPrivate *key)
+{
+  return TlsGetValue (key->index);
+}
+
+void
+(g_private_set) (GPrivate *key,
+               gpointer  value)
+{
+  TlsSetValue (key->index, value);
+}
+
+/* {{{1 GThread */
+
 #include "glib.h"
 #include "gthreadprivate.h"
 
@@ -248,17 +306,8 @@ g_cond_timed_wait (GCond    *cond,
 
 static DWORD g_thread_self_tls;
 static DWORD g_private_tls;
-static CRITICAL_SECTION g_thread_global_spinlock;
 
 typedef BOOL (__stdcall *GTryEnterCriticalSectionFunc) (CRITICAL_SECTION *);
-
-/* As noted in the docs, GPrivate is a limited resource, here we take
- * a rather low maximum to save memory, use GStaticPrivate instead. */
-#define G_PRIVATE_MAX 100
-
-static GDestroyNotify g_private_destructors[G_PRIVATE_MAX];
-
-static guint g_private_next = 0;
 
 typedef struct _GThreadData GThreadData;
 struct _GThreadData
@@ -269,64 +318,6 @@ struct _GThreadData
   gboolean joinable;
 };
 
-static GPrivate *
-g_private_new_win32_impl (GDestroyNotify destructor)
-{
-  GPrivate *result;
-  EnterCriticalSection (&g_thread_global_spinlock);
-  if (g_private_next >= G_PRIVATE_MAX)
-    {
-      char buf[100];
-      sprintf (buf,
-	       "Too many GPrivate allocated. Their number is limited to %d.",
-	       G_PRIVATE_MAX);
-      MessageBox (NULL, buf, NULL, MB_ICONERROR|MB_SETFOREGROUND);
-      if (IsDebuggerPresent ())
-	G_BREAKPOINT ();
-      abort ();
-    }
-  g_private_destructors[g_private_next] = destructor;
-  result = GUINT_TO_POINTER (g_private_next);
-  g_private_next++;
-  LeaveCriticalSection (&g_thread_global_spinlock);
-
-  return result;
-}
-
-/* NOTE: the functions g_private_get and g_private_set may not use
-   functions from gmem.c and gmessages.c */
-
-static void
-g_private_set_win32_impl (GPrivate * private_key, gpointer value)
-{
-  gpointer* array = TlsGetValue (g_private_tls);
-  guint index = GPOINTER_TO_UINT (private_key);
-
-  if (index >= G_PRIVATE_MAX)
-      return;
-
-  if (!array)
-    {
-      array = (gpointer*) calloc (G_PRIVATE_MAX, sizeof (gpointer));
-      TlsSetValue (g_private_tls, array);
-    }
-
-  array[index] = value;
-}
-
-static gpointer
-g_private_get_win32_impl (GPrivate * private_key)
-{
-  gpointer* array = TlsGetValue (g_private_tls);
-  guint index = GPOINTER_TO_UINT (private_key);
-
-  if (index >= G_PRIVATE_MAX || !array)
-    return NULL;
-
-  return array[index];
-}
-
-/* {{{1 GThread */
 
 static void
 g_thread_set_priority_win32_impl (gpointer thread, GThreadPriority priority)
@@ -386,38 +377,36 @@ static void
 g_thread_exit_win32_impl (void)
 {
   GThreadData *self = TlsGetValue (g_thread_self_tls);
-  guint i, private_max;
-  gpointer *array = TlsGetValue (g_private_tls);
+  gboolean dtors_called;
 
-  EnterCriticalSection (&g_thread_global_spinlock);
-  private_max = g_private_next;
-  LeaveCriticalSection (&g_thread_global_spinlock);
-
-  if (array)
+  do
     {
-      gboolean some_data_non_null;
+      GPrivateDestructor *dtor;
 
-      do {
-	some_data_non_null = FALSE;
-	for (i = 0; i < private_max; i++)
-	  {
-	    GDestroyNotify destructor = g_private_destructors[i];
-	    GDestroyNotify data = array[i];
+      /* We go by the POSIX book on this one.
+       *
+       * If we call a destructor then there is a chance that some new
+       * TLS variables got set by code called in that destructor.
+       *
+       * Loop until nothing is left.
+       */
+      dtors_called = FALSE;
 
-	    if (data)
-	      some_data_non_null = TRUE;
+      for (dtor = g_private_destructors; dtor; dtor = dtor->next)
+        {
+          gpointer value;
 
-	    array[i] = NULL;
-
-	    if (destructor && data)
-	      destructor (data);
-	  }
-      } while (some_data_non_null);
-
-      free (array);
-
-      win32_check_for_error (TlsSetValue (g_private_tls, NULL));
+          value = TlsGetValue (dtor->index);
+          if (value != NULL && dtor->notify != NULL)
+            {
+              /* POSIX says to clear this before the call */
+              TlsSetValue (dtor->index, NULL);
+              dtor->notify (value);
+              dtors_called = TRUE;
+            }
+        }
     }
+  while (dtors_called);
 
   if (self)
     {
@@ -514,8 +503,8 @@ g_thread_join_win32_impl (gpointer thread)
 
 /* {{{1 SRWLock and CONDITION_VARIABLE emulation (for Windows XP) */
 
-static DWORD            g_thread_xp_waiter_tls;
 static CRITICAL_SECTION g_thread_xp_lock;
+static DWORD            g_thread_xp_waiter_tls;
 
 /* {{{2 GThreadWaiter utility class for CONDITION_VARIABLE emulation */
 typedef struct _GThreadXpWaiter GThreadXpWaiter;
@@ -807,9 +796,9 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_cond_wait,
   g_cond_timed_wait,
   g_cond_free,
-  g_private_new_win32_impl,         /* private thread data */
-  g_private_get_win32_impl,
-  g_private_set_win32_impl,
+  g_private_new,         /* private thread data */
+  g_private_get,
+  g_private_set,
   g_thread_create_win32_impl,       /* thread */
   g_thread_yield_win32_impl,
   g_thread_join_win32_impl,
@@ -834,7 +823,6 @@ _g_thread_impl_init (void)
 			 (g_thread_self_tls = TlsAlloc ()));
   win32_check_for_error (TLS_OUT_OF_INDEXES !=
 			 (g_private_tls = TlsAlloc ()));
-  InitializeCriticalSection (&g_thread_global_spinlock);
 }
 
 static gboolean
