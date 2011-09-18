@@ -57,6 +57,8 @@ G_GNUC_INTERNAL void _g_thread_impl_init  (void);
 
 struct _GPrivate
 {
+  gpointer single_value;
+  gboolean ready;
 #ifdef G_OS_WIN32
   gint index;
 #else

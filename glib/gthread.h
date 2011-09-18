@@ -187,14 +187,6 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 #else
 #define g_thread_supported()    (g_threads_got_initialized)
 #endif
-#define g_private_new(destructor) G_THREAD_UF (private_new, (destructor))
-#define g_private_get(private_key) G_THREAD_CF (private_get, \
-                                                ((gpointer)private_key), \
-                                                (private_key))
-#define g_private_set(private_key, value) G_THREAD_CF (private_set, \
-                                                       (void) (private_key = \
-                                                        (GPrivate*) (value)), \
-                                                       (private_key, value))
 #define g_thread_yield()              G_THREAD_CF (thread_yield, (void)0, ())
 
 #define g_thread_create(func, data, joinable, error)			\
@@ -408,9 +400,9 @@ void                    g_mutex_free                                    (GMutex 
 GCond *                 g_cond_new                                      (void);
 void                    g_cond_free                                     (GCond          *cond);
 
-GPrivate *              (g_private_new)                                 (GDestroyNotify  notify);
-gpointer                (g_private_get)                                 (GPrivate       *key);
-void                    (g_private_set)                                 (GPrivate       *key,
+GPrivate *              g_private_new                                   (GDestroyNotify  notify);
+gpointer                g_private_get                                   (GPrivate       *key);
+void                    g_private_set                                   (GPrivate       *key,
                                                                          gpointer        value);
 
 G_END_DECLS

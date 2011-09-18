@@ -876,7 +876,7 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
 
 static GMutex    g_once_mutex = G_MUTEX_INIT;
 static GCond     g_once_cond = G_COND_INIT;
-static GPrivate *g_thread_specific_private = NULL;
+static GPrivate  g_thread_specific_private;
 static GRealThread *g_thread_all_threads = NULL;
 static GSList   *g_thread_free_indices = NULL;
 static GSList*   g_once_init_list = NULL;
@@ -945,8 +945,8 @@ g_thread_init_glib (void)
 
   /* setup the basic threading system */
   g_threads_got_initialized = TRUE;
-  g_thread_specific_private = g_private_new (g_thread_cleanup);
-  g_private_set (g_thread_specific_private, main_thread);
+  g_private_init (&g_thread_specific_private, g_thread_cleanup);
+  g_private_set (&g_thread_specific_private, main_thread);
   G_THREAD_UF (thread_self, (&main_thread->system_thread));
 
   /* complete memory system initialization, g_private_*() works now */
@@ -1924,7 +1924,7 @@ g_thread_create_proxy (gpointer data)
   g_assert (data);
 
   /* This has to happen before G_LOCK, as that might call g_thread_self */
-  g_private_set (g_thread_specific_private, data);
+  g_private_set (&g_thread_specific_private, data);
 
   /* the lock makes sure, that thread->system_thread is written,
      before thread->thread.func is called. See g_thread_create. */
@@ -2147,7 +2147,7 @@ g_thread_set_priority (GThread* thread,
 GThread*
 g_thread_self (void)
 {
-  GRealThread* thread = g_private_get (g_thread_specific_private);
+  GRealThread* thread = g_private_get (&g_thread_specific_private);
 
   if (!thread)
     {
@@ -2165,7 +2165,7 @@ g_thread_self (void)
       if (g_thread_supported ())
 	G_THREAD_UF (thread_self, (&thread->system_thread));
 
-      g_private_set (g_thread_specific_private, thread);
+      g_private_set (&g_thread_specific_private, thread);
 
       G_LOCK (g_thread);
       thread->next = g_thread_all_threads;

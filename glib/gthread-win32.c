@@ -246,7 +246,7 @@ struct _GPrivateDestructor
 static GPrivateDestructor * volatile g_private_destructors;
 
 GPrivate *
-(g_private_new) (GDestroyNotify notify)
+g_private_new (GDestroyNotify notify)
 {
   GPrivate *key;
 
@@ -275,18 +275,29 @@ g_private_init (GPrivate       *key,
   do
     destructor->next = g_private_destructors;
   while (InterlockedCompareExchangePointer (&g_private_destructors, destructor->next, destructor) != destructor->next);
+
+  key->ready = TRUE;
 }
 
 gpointer
-(g_private_get) (GPrivate *key)
+g_private_get (GPrivate *key)
 {
+  if (!key->ready)
+    return key->single_value;
+
   return TlsGetValue (key->index);
 }
 
 void
-(g_private_set) (GPrivate *key,
+g_private_set (GPrivate *key,
                gpointer  value)
 {
+  if (!key->ready)
+    {
+      key->single_value = value;
+      return;
+    }
+
   TlsSetValue (key->index, value);
 }
 

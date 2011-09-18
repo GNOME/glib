@@ -202,7 +202,7 @@ static int      smc_notify_free   (void   *pointer,
                                    size_t  size);
 
 /* --- variables --- */
-static GPrivate   *private_thread_memory = NULL;
+static GPrivate    private_thread_memory;
 static gsize       sys_page_size = 0;
 static Allocator   allocator[1] = { { 0, }, };
 static SliceConfig slice_config = {
@@ -398,7 +398,7 @@ _g_slice_thread_init_nomessage (void)
        * to a g_slice_alloc1() before g_thread_init().
        */
     }
-  private_thread_memory = g_private_new (private_thread_memory_cleanup);
+  g_private_init (&private_thread_memory, private_thread_memory_cleanup);
 }
 
 static inline void
@@ -434,7 +434,7 @@ g_mutex_lock_a (GMutex *mutex,
 static inline ThreadMemory*
 thread_memory_from_self (void)
 {
-  ThreadMemory *tmem = g_private_get (private_thread_memory);
+  ThreadMemory *tmem = g_private_get (&private_thread_memory);
   if (G_UNLIKELY (!tmem))
     {
       static ThreadMemory *single_thread_memory = NULL;   /* remember single-thread info for multi-threaded case */
@@ -463,7 +463,7 @@ thread_memory_from_self (void)
        * threaded case. but not *across* g_thread_init(), after multi-thread
        * initialization it returns NULL for previously set single-thread data.
        */
-      g_private_set (private_thread_memory, tmem);
+      g_private_set (&private_thread_memory, tmem);
       /* save single-thread thread memory structure, in case we need to
        * pick it up again after multi-thread initialization happened.
        */

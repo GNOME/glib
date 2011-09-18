@@ -207,7 +207,7 @@ g_cond_timedwait (GCond  *cond,
 /* {{{1 GPrivate */
 
 GPrivate *
-(g_private_new) (GDestroyNotify notify)
+g_private_new (GDestroyNotify notify)
 {
   GPrivate *key;
 
@@ -224,20 +224,30 @@ g_private_init (GPrivate       *key,
                 GDestroyNotify  notify)
 {
   pthread_key_create (&key->key, notify);
+  key->ready = TRUE;
 }
 
 gpointer
-(g_private_get) (GPrivate *key)
+g_private_get (GPrivate *key)
 {
+  if (!key->ready)
+    return key->single_value;
+
   /* quote POSIX: No errors are returned from pthread_getspecific(). */
   return pthread_getspecific (key->key);
 }
 
 void
-(g_private_set) (GPrivate *key,
-                 gpointer  value)
+g_private_set (GPrivate *key,
+               gpointer  value)
 {
   gint status;
+
+  if (!key->ready)
+    {
+      key->single_value = value;
+      return;
+    }
 
   if G_UNLIKELY ((status = pthread_setspecific (key->key, value)) != 0)
     g_thread_abort (status, "pthread_setspecific");

@@ -107,7 +107,7 @@ static GLogDomain    *g_log_domains = NULL;
 static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
-static GPrivate	     *g_log_depth = NULL;
+static GPrivate       g_log_depth;
 static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
 static GLogFunc       default_log_func = g_log_default_handler;
 static gpointer       default_log_data = NULL;
@@ -512,7 +512,7 @@ g_logv (const gchar   *log_domain,
       test_level = 1 << i;
       if (log_level & test_level)
 	{
-	  guint depth = GPOINTER_TO_UINT (g_private_get (g_log_depth));
+	  guint depth = GPOINTER_TO_UINT (g_private_get (&g_log_depth));
 	  GLogDomain *domain;
 	  GLogFunc log_func;
 	  GLogLevelFlags domain_fatal_mask;
@@ -540,7 +540,7 @@ g_logv (const gchar   *log_domain,
 	  domain = NULL;
 	  g_mutex_unlock (&g_messages_lock);
 
-	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
+	  g_private_set (&g_log_depth, GUINT_TO_POINTER (depth));
 
 	  /* had to defer debug initialization until we can keep track of recursion */
 	  if (!(test_level & G_LOG_FLAG_RECURSION) && !g_debug_initialized)
@@ -617,7 +617,7 @@ g_logv (const gchar   *log_domain,
 	    }
 	  
 	  depth--;
-	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
+	  g_private_set (&g_log_depth, GUINT_TO_POINTER (depth));
 	}
     }
 }
@@ -1214,7 +1214,7 @@ g_printf_string_upper_bound (const gchar *format,
 void
 _g_messages_thread_init_nomessage (void)
 {
-  g_log_depth = g_private_new (NULL);
+  g_private_init (&g_log_depth, NULL);
   g_messages_prefixed_init ();
   g_debug_init ();
 }
