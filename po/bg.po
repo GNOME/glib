@@ -7,11 +7,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: glib master\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-08-11 20:54+0300\n"
+"Project-Id-Version: glib glib-2-30\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2011-09-18 08:36+0300\n"
+"PO-Revision-Date: 2011-09-18 08:35+0300\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@fsa-bg.org>\n"
 "Language: bg\n"
@@ -88,7 +87,7 @@ msgstr "Никоя програма „%s“ не е регистрирала о
 #: ../glib/gbookmarkfile.c:3458
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "Неуспех при дописването на реда за изпълнение „%s“ с адреса „%s“"
+msgstr "Неуспешно дописване на реда за изпълнение „%s“ с адреса „%s“"
 
 #: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1404
 #: ../gio/gcharsetconverter.c:458
@@ -102,63 +101,63 @@ msgstr "Преобразуването от набора знаци „%s“ к�
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не може да се отвори конвертор от „%s“ към „%s“"
 
-#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1576
+#: ../glib/gconvert.c:767 ../glib/gconvert.c:1159 ../glib/giochannel.c:1576
 #: ../glib/giochannel.c:1618 ../glib/giochannel.c:2461 ../glib/gutf8.c:1012
 #: ../glib/gutf8.c:1463 ../gio/gcharsetconverter.c:345
 #: ../gio/gdatainputstream.c:854 ../gio/gdatainputstream.c:1291
 msgid "Invalid byte sequence in conversion input"
 msgstr "Грешна байтова последователност на входа за преобразуване"
 
-#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1583
+#: ../glib/gconvert.c:775 ../glib/gconvert.c:1084 ../glib/giochannel.c:1583
 #: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
 msgstr "Грешка по време на преобразуване: %s"
 
-#: ../glib/gconvert.c:809 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
+#: ../glib/gconvert.c:806 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
 #: ../glib/gutf8.c:1355 ../glib/gutf8.c:1459
 msgid "Partial character sequence at end of input"
 msgstr "Непълна знакова последователност в края на входните данни"
 
-#: ../glib/gconvert.c:1059
+#: ../glib/gconvert.c:1056
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr ""
 "Заместващият знак „%s“ не може да бъде преобразуван към знак от набора „%s“"
 
-#: ../glib/gconvert.c:1886
+#: ../glib/gconvert.c:1883
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr ""
 "Адресът „%s“ не е абсолютен при използване на схемата „file“ (файлова "
 "система)"
 
-#: ../glib/gconvert.c:1896
+#: ../glib/gconvert.c:1893
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Адресът „%s“ на локален файл не може да включва „#“"
 
-#: ../glib/gconvert.c:1913
+#: ../glib/gconvert.c:1910
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Адресът „%s“ е неправилен"
 
-#: ../glib/gconvert.c:1925
+#: ../glib/gconvert.c:1922
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Името на хоста в адреса „%s“ е неправилно"
 
-#: ../glib/gconvert.c:1941
+#: ../glib/gconvert.c:1938
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Адресът „%s“ съдържа грешни екраниращи последователности"
 
-#: ../glib/gconvert.c:2036
+#: ../glib/gconvert.c:2033
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Пътят „%s“ не е абсолютен"
 
-#: ../glib/gconvert.c:2046
+#: ../glib/gconvert.c:2043
 msgid "Invalid hostname"
 msgstr "Неправилно име на хост"
 
@@ -396,7 +395,7 @@ msgstr "Грешка при отваряне на папка „%s“: %s"
 #: ../glib/gfileutils.c:540 ../glib/gfileutils.c:628
 #, c-format
 msgid "Could not allocate %lu bytes to read file \"%s\""
-msgstr "Неуспех при заделянето на %lu байта за четене на файла „%s“"
+msgstr "Неуспешно заделяне на %lu байта за четене на файла „%s“"
 
 #: ../glib/gfileutils.c:555
 #, c-format
@@ -411,14 +410,14 @@ msgstr "Файлът „%s“ е прекалено голям"
 #: ../glib/gfileutils.c:652
 #, c-format
 msgid "Failed to read from file '%s': %s"
-msgstr "Неуспех при четене от файл „%s“: %s"
+msgstr "Неуспешно четене от файл „%s“: %s"
 
 #: ../glib/gfileutils.c:703 ../glib/gfileutils.c:790
 #, c-format
 msgid "Failed to open file '%s': %s"
-msgstr "Неуспех при отваряне на файл „%s“: %s"
+msgstr "Неуспешно отваряне на файл „%s“: %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:169
+#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:174
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr ""
@@ -441,41 +440,40 @@ msgstr ""
 #: ../glib/gfileutils.c:904 ../glib/gfileutils.c:1449
 #, c-format
 msgid "Failed to create file '%s': %s"
-msgstr "Неуспех при създаване на файл „%s“: %s"
+msgstr "Неуспешно създаване на файл „%s“: %s"
 
 #: ../glib/gfileutils.c:918
 #, c-format
 msgid "Failed to open file '%s' for writing: fdopen() failed: %s"
 msgstr ""
-"Неуспех при отваряне на файл „%s“ за писане: неуспешно изпълнение на fdopen"
-"(): %s"
+"Неуспешно отваряне на файл „%s“ за писане: неуспешно изпълнение на fdopen(): "
+"%s"
 
 #: ../glib/gfileutils.c:943
 #, c-format
 msgid "Failed to write file '%s': fwrite() failed: %s"
-msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fwrite(): %s"
+msgstr "Неуспешен запис на файл „%s“: неуспешно изпълнение на fwrite(): %s"
 
 #: ../glib/gfileutils.c:962
 #, c-format
 msgid "Failed to write file '%s': fflush() failed: %s"
-msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fflush(): %s"
+msgstr "Неуспешен запис на файл „%s“: неуспешно изпълнение на fflush(): %s"
 
 #: ../glib/gfileutils.c:1006
 #, c-format
 msgid "Failed to write file '%s': fsync() failed: %s"
-msgstr "Неуспех при запис на файл „%s“: неуспешно изпълнение на fsync(): %s"
+msgstr "Неуспешен запис на файл „%s“: неуспешно изпълнение на fsync(): %s"
 
 #: ../glib/gfileutils.c:1030
 #, c-format
 msgid "Failed to close file '%s': fclose() failed: %s"
-msgstr ""
-"Неуспех при затваряне на файл „%s“: неуспешно изпълнение на fclose(): %s"
+msgstr "Неуспешно затваряне на файл „%s“: неуспешно изпълнение на fclose(): %s"
 
 #: ../glib/gfileutils.c:1152
 #, c-format
 msgid "Existing file '%s' could not be removed: g_unlink() failed: %s"
 msgstr ""
-"Неуспех при изтриването на съществуващия файл „%s“: неуспешно изпълнение на "
+"Неуспешно изтриване на съществуващия файл „%s“: неуспешно изпълнение на "
 "g_unlink(): %s"
 
 #: ../glib/gfileutils.c:1412
@@ -572,7 +570,7 @@ msgstr "%.1f KB"
 #: ../glib/gfileutils.c:2210
 #, c-format
 msgid "Failed to read the symbolic link '%s': %s"
-msgstr "Неуспех при четене на символната връзка „%s“: %s"
+msgstr "Неуспешно четене на символната връзка „%s“: %s"
 
 #: ../glib/gfileutils.c:2231
 msgid "Symbolic links not supported"
@@ -600,17 +598,16 @@ msgstr "Каналът прекъсна на непълен знак"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Не може да се чете от g_io_channel_read_to_end"
 
-#: ../glib/gmappedfile.c:150
+#: ../glib/gmappedfile.c:155
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
-msgstr "Неуспех при отваряне на файл „%s“: неуспешно изпълнение на open(): %s"
+msgstr "Неуспешно отваряне на файл „%s“: неуспешно изпълнение на open(): %s"
 
-#: ../glib/gmappedfile.c:229
+#: ../glib/gmappedfile.c:238
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr ""
-"Неуспех при отваряне на файл в паметта „%s“: неуспешно изпълнение на mmap(): "
-"%s"
+"Неуспешно отваряне на файл в паметта „%s“: неуспешно изпълнение на mmap(): %s"
 
 #: ../glib/gmarkup.c:355 ../glib/gmarkup.c:396
 #, c-format
@@ -959,7 +956,7 @@ msgstr "регулярният израз е прекалено голям"
 
 #: ../glib/gregex.c:332
 msgid "failed to get memory"
-msgstr "неуспех при получаването на памет"
+msgstr "неуспешно получаване на памет"
 
 #: ../glib/gregex.c:335
 msgid "lookbehind assertion is not fixed length"
@@ -1154,27 +1151,27 @@ msgstr "Текстът е празен (или съдържа само праз�
 
 #: ../glib/gspawn-win32.c:282
 msgid "Failed to read data from child process"
-msgstr "Неуспех при четене на данни от дъщерен процес"
+msgstr "Неуспешно четене на данни от дъщерен процес"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
-msgstr "Неуспех при създаването на канал за комуникация с дъщерен процес (%s)"
+msgstr "Неуспешно създаване на канал за комуникация с дъщерен процес (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
-msgstr "Неуспех при четене от дъщерен канал (%s)"
+msgstr "Неуспешно четене от дъщерен канал (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
-msgstr "Неуспех при промяна към папка „%s“ (%s)"
+msgstr "Неуспешна промяна към папка „%s“ (%s)"
 
 #: ../glib/gspawn-win32.c:375 ../glib/gspawn-win32.c:494
 #, c-format
 msgid "Failed to execute child process (%s)"
-msgstr "Неуспех при изпълнение на дъщерен процес (%s)"
+msgstr "Неуспешно изпълнение на дъщерен процес (%s)"
 
 #: ../glib/gspawn-win32.c:444
 #, c-format
@@ -1201,7 +1198,7 @@ msgstr "Неправилна работна папка: %s"
 #: ../glib/gspawn-win32.c:783
 #, c-format
 msgid "Failed to execute helper program (%s)"
-msgstr "Неуспех при изпълнение на програмата за помощта (%s)"
+msgstr "Неуспешно изпълнение на програмата за помощта (%s)"
 
 #: ../glib/gspawn-win32.c:997
 msgid ""
@@ -1214,7 +1211,7 @@ msgstr ""
 #: ../glib/gspawn.c:207
 #, c-format
 msgid "Failed to read data from child process (%s)"
-msgstr "Неуспех при четене на данни от дъщерен процес (%s)"
+msgstr "Неуспешно четене на данни от дъщерен процес (%s)"
 
 #: ../glib/gspawn.c:347
 #, c-format
@@ -1227,36 +1224,36 @@ msgstr ""
 msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочаквана грешка в waitpid() (%s)"
 
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Неуспешно разклоняване (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
-msgstr "Неуспех при изпълнение на дъщерен процес „%s“ (%s)"
+msgstr "Неуспешно изпълнение на дъщерен процес „%s“ (%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
-msgstr "Неуспех при пренасочване на изхода или входа на дъщерен процес (%s)"
+msgstr "Неуспешно пренасочване на изхода или входа на дъщерен процес (%s)"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
-msgstr "Неуспех при разклоняване на дъщерен процес (%s)"
+msgstr "Неуспешно разклоняване на дъщерен процес (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Неизвестна грешка при изпълнение на дъщерен процес „%s“"
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr ""
-"Неуспех при четенето на достатъчно данни от канала на дъщерен процес (с "
+"Неуспешно четене на достатъчно данни от канала на дъщерен процес (с "
 "идентификатор %s)"
 
 #: ../glib/gutf8.c:1086
@@ -1463,10 +1460,11 @@ msgstr "Подадена е прекалено голяма стойност н�
 msgid "Stream is already closed"
 msgstr "Потокът вече е затворен"
 
-#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
-#: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
-#: ../gio/glocalfile.c:2100 ../gio/gsimpleasyncresult.c:814
-#: ../gio/gsimpleasyncresult.c:840
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1646
+#: ../gio/gdbusconnection.c:1735 ../gio/gdbusconnection.c:1922
+#: ../gio/gdbusprivate.c:1352 ../gio/glocalfile.c:2100
+#: ../gio/gsimpleasyncresult.c:814 ../gio/gsimpleasyncresult.c:840
+#, c-format
 msgid "Operation was cancelled"
 msgstr "Действието е прекратено"
 
@@ -1651,7 +1649,7 @@ msgstr ""
 "Адресът на шината на сесията не може да се определи (липсва реализация за "
 "тази операционна система)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6415
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1660,13 +1658,13 @@ msgstr ""
 "Адресът на шината не може да се определи от променливата на обкръжението "
 "DBUS_STARTER_BUS_TYPE — непозната стойност „%s“"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6424
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
 msgstr ""
 "Адресът на шината не може да се определи, защото променливата "
-"DBUS_STARTER_BUS_TYPE липсво в обкръжението"
+"DBUS_STARTER_BUS_TYPE липсва в обкръжението"
 
 #: ../gio/gdbusaddress.c:1273
 #, c-format
@@ -1770,87 +1768,87 @@ msgstr "Грешка при отваряне на ключодържателя �
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Допълнително, отключването на „%s“ бе също неуспешно: %s) "
 
-#: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
-#: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
+#: ../gio/gdbusconnection.c:1144 ../gio/gdbusconnection.c:1382
+#: ../gio/gdbusconnection.c:1421 ../gio/gdbusconnection.c:1746
 msgid "The connection is closed"
 msgstr "Връзката е прекъсната"
 
-#: ../gio/gdbusconnection.c:1684
+#: ../gio/gdbusconnection.c:1690
 msgid "Timeout was reached"
 msgstr "Времето за изчакване е просрочено"
 
-#: ../gio/gdbusconnection.c:2306
+#: ../gio/gdbusconnection.c:2312
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Неподдържани флагове при създаване на изходяща връзка"
 
-#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:3776 ../gio/gdbusconnection.c:4092
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr "Обектът в %s няма интерфейс „org.freedesktop.DBus.Properties“"
 
-#: ../gio/gdbusconnection.c:3841
+#: ../gio/gdbusconnection.c:3847
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Грешка при промяна на свойството „%s“: Очакван е вид „%s“, а е получен „%s“"
 
-#: ../gio/gdbusconnection.c:3936
+#: ../gio/gdbusconnection.c:3942
 #, c-format
 msgid "No such property `%s'"
 msgstr "Липсва свойство „%s“"
 
-#: ../gio/gdbusconnection.c:3948
+#: ../gio/gdbusconnection.c:3954
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Свойството „%s“ не поддържа четене"
 
-#: ../gio/gdbusconnection.c:3959
+#: ../gio/gdbusconnection.c:3965
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Свойството „%s“ не поддържа запис"
 
-#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
+#: ../gio/gdbusconnection.c:4035 ../gio/gdbusconnection.c:5859
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Липсва интерфейс „%s“"
 
-#: ../gio/gdbusconnection.c:4213
+#: ../gio/gdbusconnection.c:4219
 msgid "No such interface"
 msgstr "Липсва такъв интерфейс"
 
-#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
+#: ../gio/gdbusconnection.c:4438 ../gio/gdbusconnection.c:6365
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Липсва интерфейс „%s“ към обекта в %s"
 
-#: ../gio/gdbusconnection.c:4484
+#: ../gio/gdbusconnection.c:4490
 #, c-format
 msgid "No such method `%s'"
 msgstr "Липсва метод „%s“"
 
-#: ../gio/gdbusconnection.c:4515
+#: ../gio/gdbusconnection.c:4521
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Видът на съобщението („%s“) не съвпада с очаквания („%s“)"
 
-#: ../gio/gdbusconnection.c:4734
+#: ../gio/gdbusconnection.c:4740
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Вече е наличен обект за интерфейса %s в %s"
 
-#: ../gio/gdbusconnection.c:4932
+#: ../gio/gdbusconnection.c:4938
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Методът „%s“ върна тип „%s“, а се очаква „%s“"
 
-#: ../gio/gdbusconnection.c:5964
+#: ../gio/gdbusconnection.c:5970
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Не съществува метод „%s“ на интерфейса „%s“ със сигнатура „%s“"
 
-#: ../gio/gdbusconnection.c:6082
+#: ../gio/gdbusconnection.c:6088
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Вече има поддърво за %s"
@@ -1895,10 +1893,10 @@ msgstr ""
 "стойност org.freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
-msgstr[0] "Достигнат е край на файл при опит за четене на %lu байта"
+msgstr[0] "Достигнат е край на файл при опит за четене на %lu байт"
 msgstr[1] "Достигнат е край на файл при опит за четене на %lu байта"
 
 #: ../gio/gdbusmessage.c:1025
@@ -1927,13 +1925,13 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Прочетената стойност „%s“ не е допустима сигнатура в D-Bus"
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
-"Срещнат е масив с дължина %u байта. Максималната дължина е 2²⁶ (64МБ)"
+"Срещнат е масив с дължина %u байт. Максималната дължина е 2²⁶ (64МБ)"
 msgstr[1] ""
 "Срещнат е масив с дължина %u байта. Максималната дължина е 2²⁶ (64МБ)"
 
@@ -1976,17 +1974,16 @@ msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Разчетената стойност „%s“ не е допустима сигнатура в D-Bus (за тяло)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
-msgstr[0] ""
-"В заглавната част на съобщението няма сигнатура, а тялото е %u байта"
+msgstr[0] "В заглавната част на съобщението няма сигнатура, а тялото е %u байт"
 msgstr[1] ""
 "В заглавната част на съобщението няма сигнатура, а тялото е %u байта"
 
 #: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
-msgstr "Неуспех при декодиране на съобщение: "
+msgstr "Неуспешно декодиране на съобщение: "
 
 #: ../gio/gdbusmessage.c:2163
 #, c-format
@@ -1995,7 +1992,7 @@ msgid ""
 msgstr "Грешка при кодиране на GVariant от вид „%s“ в машинния формат на D-Bus"
 
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
@@ -2004,7 +2001,7 @@ msgstr ""
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
-msgstr "Неуспех при кодиране на съобщението:"
+msgstr "Неуспешно кодиране на съобщението:"
 
 #: ../gio/gdbusmessage.c:2355
 #, c-format
@@ -2037,9 +2034,9 @@ msgstr "Връщане на грешка с тяло от вид „%s“"
 msgid "Error return with empty body"
 msgstr "Връщане на грешка с празно тяло на съобщението"
 
-#: ../gio/gdbusprivate.c:1736
+#: ../gio/gdbusprivate.c:1953
 msgid "Unable to load /var/lib/dbus/machine-id: "
-msgstr "Неуспех при зареждане на /var/lib/dbus/machine-id: "
+msgstr "Неуспешно зареждане на /var/lib/dbus/machine-id: "
 
 #: ../gio/gdbusproxy.c:1489
 #, c-format
@@ -2334,7 +2331,7 @@ msgstr "Не може да се създаде папката с настрой�
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "В информацията за програма липсва идентификатор"
 
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
@@ -2819,7 +2816,7 @@ msgstr "Без запис на файл gschema.compiled"
 
 #: ../gio/glib-compile-schemas.c:1942
 msgid "This option will be removed soon."
-msgstr "Тази опция скоро ще бъде премахната"
+msgstr "Тази опция скоро ще бъде премахната."
 
 #: ../gio/glib-compile-schemas.c:1943
 msgid "Do not enforce key name restrictions"
@@ -2880,7 +2877,6 @@ msgid "Error renaming file: %s"
 msgstr "Грешка при преименуване на файл: %s"
 
 #: ../gio/glocalfile.c:1126
-#, fuzzy
 msgid "Can't rename file, filename already exists"
 msgstr "Файлът не може да се преименува — съществува друг файл с такова име"
 
@@ -2913,7 +2909,7 @@ msgstr "Грешка при преместване на файл в кошчет
 #: ../gio/glocalfile.c:1831
 #, c-format
 msgid "Unable to create trash dir %s: %s"
-msgstr "Неуспех при създаване на папката за кошче „%s“: %s"
+msgstr "Неуспешно създаване на папката за кошче „%s“: %s"
 
 #: ../gio/glocalfile.c:1852
 msgid "Unable to find toplevel directory for trash"
@@ -2926,13 +2922,13 @@ msgstr "Не може да се създаде папката за кошче"
 #: ../gio/glocalfile.c:1985
 #, c-format
 msgid "Unable to create trashing info file: %s"
-msgstr "Неуспех при създаване на файл с информация за кошчето: %s"
+msgstr "Неуспешно създаване на файл с информация за кошчето: %s"
 
 #: ../gio/glocalfile.c:2014 ../gio/glocalfile.c:2019 ../gio/glocalfile.c:2099
 #: ../gio/glocalfile.c:2106
 #, c-format
 msgid "Unable to trash file: %s"
-msgstr "Неуспех при преместване на файл в кошчето: %s"
+msgstr "Неуспешно преместване на файл в кошчето: %s"
 
 #: ../gio/glocalfile.c:2133
 #, c-format
@@ -3157,7 +3153,7 @@ msgstr "Изходящият поток в паметта не може да б�
 
 #: ../gio/gmemoryoutputstream.c:512
 msgid "Failed to resize memory output stream"
-msgstr "Неуспех при преоразмеряването на изходящия поток в паметта"
+msgstr "Неуспешно преоразмеряване на изходящия поток в паметта"
 
 #: ../gio/gmemoryoutputstream.c:600
 msgid ""
@@ -3524,7 +3520,7 @@ msgstr "създаване на GSocket от файлов дескриптор: 
 #: ../gio/gsocket.c:498 ../gio/gsocket.c:514
 #, c-format
 msgid "Unable to create socket: %s"
-msgstr "Неуспех при създаване на гнездо: %s"
+msgstr "Неуспешно създаване на гнездо: %s"
 
 #: ../gio/gsocket.c:498
 msgid "Unknown protocol was specified"
@@ -3571,7 +3567,7 @@ msgstr "Грешка при свързване: %s"
 #: ../gio/gsocket.c:1738 ../gio/gsocket.c:3579
 #, c-format
 msgid "Unable to get pending error: %s"
-msgstr "Неуспех при получаване на текущата грешка: %s"
+msgstr "Неуспешно получаване на текущата грешка: %s"
 
 #: ../gio/gsocket.c:1875
 #, c-format
@@ -3586,7 +3582,7 @@ msgstr "Грешка при изпращане на данни: %s"
 #: ../gio/gsocket.c:2163
 #, c-format
 msgid "Unable to shutdown socket: %s"
-msgstr "Неуспех при изключване на гнездо: %s"
+msgstr "Неуспешно изключване на гнездо: %s"
 
 #: ../gio/gsocket.c:2242
 #, c-format
@@ -3698,7 +3694,6 @@ msgstr ""
 "е %i байта)"
 
 #: ../gio/gsocks5proxy.c:352
-#, fuzzy
 msgid "The SOCKSv5 proxy server uses unknown address type."
 msgstr "Сървърът посредник за SOCKSv5 използва непознат вид адрес."
 
@@ -3760,16 +3755,20 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
+"Това е последният ви шанс да въведете правилна парола, преди машината да се "
+"заключи."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"Няколко пъти сте въвели неправилна парола. Ако отново сгрешите, машината ще "
+"се заключи за достъп."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "Въведената парола е неправилна."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
@@ -3918,11 +3917,3 @@ msgstr "Необходими са още данни от входа"
 #: ../gio/gzlibdecompressor.c:342
 msgid "Invalid compressed data"
 msgstr "Неправилни, компресирани данни"
-
-#~ msgctxt "GDateTime"
-#~ msgid "am"
-#~ msgstr "пр. об."
-
-#~ msgctxt "GDateTime"
-#~ msgid "pm"
-#~ msgstr "сл. об."
