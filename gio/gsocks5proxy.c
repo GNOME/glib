@@ -204,10 +204,9 @@ set_auth_msg (guint8	  *msg,
 
   if (ulen > SOCKS5_MAX_LEN || plen > SOCKS5_MAX_LEN)
     {
-      g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-		   _("Username or password is too long for SOCKSv5 "
-		     "protocol (max. is %i)."),
-		   SOCKS5_MAX_LEN);
+      g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+			   _("Username or password is too long for SOCKSv5 "
+			     "protocol)."));
       return FALSE;
     }
 
@@ -286,9 +285,8 @@ set_connect_msg (guint8       *msg,
       if (host_len > SOCKS5_MAX_LEN)
 	{
 	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-		       _("Hostname '%s' too long for SOCKSv5 protocol "
-			 "(maximum is %i bytes)"),
-		       hostname, SOCKS5_MAX_LEN);
+		       _("Hostname '%s' is too long for SOCKSv5 protocol"),
+		       hostname);
 	  return -1;
 	}
 

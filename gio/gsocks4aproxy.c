@@ -135,9 +135,8 @@ set_connect_msg (guint8      *msg,
 
       if (user_len > SOCKS4_MAX_LEN)
 	{
-	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-		       _("SOCKSv4 implementation limits username to %i characters"),
-		       SOCKS4_MAX_LEN);
+	  g_set_error_literal (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
+			       _("Username is too long for SOCKSv4 protocol"));
 	  return -1;
 	}
 
@@ -154,8 +153,8 @@ set_connect_msg (guint8      *msg,
       if (host_len > SOCKS4_MAX_LEN)
 	{
 	  g_set_error (error, G_IO_ERROR, G_IO_ERROR_PROXY_FAILED,
-		       _("SOCKSv4a implementation limits hostname to %i characters"),
-		       SOCKS4_MAX_LEN);
+		       _("Hostname '%s' is too long for SOCKSv4 protocol"),
+		       hostname);
 	  return -1;
 	}
 
