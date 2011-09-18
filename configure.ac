@@ -1030,6 +1030,8 @@ AS_IF([test x$ac_cv_func_statfs = xyes],
 AC_CHECK_HEADERS(crt_externs.h)
 AC_CHECK_FUNCS(_NSGetEnviron)
 
+AC_CHECK_FUNCS(newlocale uselocale strtod_l strtoll_l strtoull_l)
+
 AC_FUNC_VSNPRINTF_C99
 AC_FUNC_PRINTF_UNIX98
 

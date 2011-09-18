@@ -33,6 +33,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <string.h>
 #include <locale.h>
 #include <errno.h>
@@ -46,6 +47,7 @@
 #include "gprintf.h"
 #include "gprintfint.h"
 #include "glibintl.h"
+#include "gthreadprivate.h"
 
 
 #ifdef G_OS_WIN32
@@ -77,6 +79,25 @@ static const guint16 ascii_table_data[256] = {
 };
 
 const guint16 * const g_ascii_table = ascii_table_data;
+
+#ifdef HAVE_NEWLOCALE
+static locale_t
+get_C_locale (void)
+{
+  static gsize initialized = FALSE;
+  static locale_t C_locale = NULL;
+
+  g_thread_init_glib ();
+
+  if (g_once_init_enter (&initialized))
+    {
+      C_locale = newlocale (LC_ALL_MASK, "C", NULL);
+      g_once_init_leave (&initialized, TRUE);
+    }
+
+  return C_locale;
+}
+#endif
 
 /**
  * g_strdup:
@@ -427,6 +448,9 @@ gdouble
 g_ascii_strtod (const gchar *nptr,
                 gchar      **endptr)
 {
+#ifdef HAVE_STRTOD_L
+  return strtod_l (nptr, endptr, get_C_locale ());
+#else
   gchar *fail_pos;
   gdouble val;
   struct lconv *locale_data;
@@ -571,6 +595,7 @@ g_ascii_strtod (const gchar *nptr,
   errno = strtod_errno;
 
   return val;
+#endif
 }
 
 
@@ -623,6 +648,15 @@ g_ascii_formatd (gchar       *buffer,
                  const gchar *format,
                  gdouble      d)
 {
+#ifdef HAVE_USELOCALE
+  locale_t old_locale;
+
+  old_locale = uselocale (get_C_locale ());
+  _g_snprintf (buffer, buf_len, format, d);
+  uselocale (old_locale);
+
+  return buffer;
+#else
   struct lconv *locale_data;
   const char *decimal_point;
   int decimal_point_len;
@@ -688,7 +722,18 @@ g_ascii_formatd (gchar       *buffer,
     }
 
   return buffer;
+#endif
 }
+
+#define ISSPACE(c)              ((c) == ' ' || (c) == '\f' || (c) == '\n' || \
+                                 (c) == '\r' || (c) == '\t' || (c) == '\v')
+#define ISUPPER(c)              ((c) >= 'A' && (c) <= 'Z')
+#define ISLOWER(c)              ((c) >= 'a' && (c) <= 'z')
+#define ISALPHA(c)              (ISUPPER (c) || ISLOWER (c))
+#define TOUPPER(c)              (ISLOWER (c) ? (c) - 'a' + 'A' : (c))
+#define TOLOWER(c)              (ISUPPER (c) ? (c) - 'A' + 'a' : (c))
+
+#if !defined(HAVE_STRTOLL_L) || !defined(HAVE_STRTOULL_L)
 
 static guint64
 g_parse_long_long (const gchar  *nptr,
@@ -702,13 +747,6 @@ g_parse_long_long (const gchar  *nptr,
    * Copyright (C) 1991,92,94,95,96,97,98,99,2000,01,02
    *        Free Software Foundation, Inc.
    */
-#define ISSPACE(c)              ((c) == ' ' || (c) == '\f' || (c) == '\n' || \
-                                 (c) == '\r' || (c) == '\t' || (c) == '\v')
-#define ISUPPER(c)              ((c) >= 'A' && (c) <= 'Z')
-#define ISLOWER(c)              ((c) >= 'a' && (c) <= 'z')
-#define ISALPHA(c)              (ISUPPER (c) || ISLOWER (c))
-#define TOUPPER(c)              (ISLOWER (c) ? (c) - 'a' + 'A' : (c))
-#define TOLOWER(c)              (ISUPPER (c) ? (c) - 'A' + 'a' : (c))
   gboolean overflow;
   guint64 cutoff;
   guint64 cutlim;
@@ -820,6 +858,7 @@ g_parse_long_long (const gchar  *nptr,
     }
   return 0;
 }
+#endif
 
 /**
  * g_ascii_strtoull:
@@ -854,6 +893,9 @@ g_ascii_strtoull (const gchar *nptr,
                   gchar      **endptr,
                   guint        base)
 {
+#ifdef HAVE_STRTOULL_L
+  return strtoull_l (nptr, endptr, base, get_C_locale ());
+#else
   gboolean negative;
   guint64 result;
 
@@ -861,6 +903,7 @@ g_ascii_strtoull (const gchar *nptr,
 
   /* Return the result of the appropriate sign.  */
   return negative ? -result : result;
+#endif
 }
 
 /**
@@ -896,6 +939,9 @@ g_ascii_strtoll (const gchar *nptr,
                  gchar      **endptr,
                  guint        base)
 {
+#ifdef HAVE_STRTOLL_L
+  return strtoll_l (nptr, endptr, base, get_C_locale ());
+#else
   gboolean negative;
   guint64 result;
 
@@ -915,6 +961,7 @@ g_ascii_strtoll (const gchar *nptr,
     return - (gint64) result;
   else
     return (gint64) result;
+#endif
 }
 
 /**
