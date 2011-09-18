@@ -63,7 +63,6 @@
 
 #include "gbacktrace.h"
 #include "gconvert.h"
-#include "gdebug.h"
 #include "gmem.h"
 #include "gprintfint.h"
 #include "gtestutils.h"
@@ -114,6 +113,8 @@ static GLogFunc       default_log_func = g_log_default_handler;
 static gpointer       default_log_data = NULL;
 static GTestLogFatalFunc fatal_log_func = NULL;
 static gpointer          fatal_log_data;
+static gboolean       g_debug_initialized = FALSE;
+
 
 /* --- functions --- */
 #ifdef G_OS_WIN32
@@ -183,6 +184,48 @@ g_messages_prefixed_init (void)
 	  
 	  g_log_msg_prefix = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
 	}
+    }
+}
+
+void
+g_debug_init (void)
+{
+  typedef enum {
+    G_DEBUG_FATAL_WARNINGS  = 1 << 0,
+    G_DEBUG_FATAL_CRITICALS = 1 << 1
+  } GDebugFlag;
+  const gchar *val;
+  guint flags = 0;
+
+  g_debug_initialized = TRUE;
+
+  val = g_getenv ("G_DEBUG");
+  if (val != NULL)
+    {
+      const GDebugKey keys[] = {
+        {"fatal_warnings", G_DEBUG_FATAL_WARNINGS},
+        {"fatal_criticals", G_DEBUG_FATAL_CRITICALS}
+      };
+
+      flags = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
+    }
+
+  if (flags & G_DEBUG_FATAL_WARNINGS)
+    {
+      GLogLevelFlags fatal_mask;
+
+      fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
+      fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
+      g_log_set_always_fatal (fatal_mask);
+    }
+
+  if (flags & G_DEBUG_FATAL_CRITICALS)
+    {
+      GLogLevelFlags fatal_mask;
+
+      fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
+      fatal_mask |= G_LOG_LEVEL_CRITICAL;
+      g_log_set_always_fatal (fatal_mask);
     }
 }
 
@@ -500,11 +543,11 @@ g_logv (const gchar   *log_domain,
 	  g_private_set (g_log_depth, GUINT_TO_POINTER (depth));
 
 	  /* had to defer debug initialization until we can keep track of recursion */
-	  if (!(test_level & G_LOG_FLAG_RECURSION) && !_g_debug_initialized)
+	  if (!(test_level & G_LOG_FLAG_RECURSION) && !g_debug_initialized)
 	    {
 	      GLogLevelFlags orig_test_level = test_level;
 
-	      _g_debug_init ();
+	      g_debug_init ();
 	      if ((domain_fatal_mask | g_log_always_fatal) & test_level)
 		test_level |= G_LOG_FLAG_FATAL;
 	      if (test_level != orig_test_level)
@@ -1174,45 +1217,7 @@ _g_messages_thread_init_nomessage (void)
   g_messages_lock = g_mutex_new ();
   g_log_depth = g_private_new (NULL);
   g_messages_prefixed_init ();
-  _g_debug_init ();
+  g_debug_init ();
 }
 
-gboolean _g_debug_initialized = FALSE;
-guint _g_debug_flags = 0;
 
-void
-_g_debug_init (void) 
-{
-  const gchar *val;
-  
-  _g_debug_initialized = TRUE;
-  
-  val = g_getenv ("G_DEBUG");
-  if (val != NULL)
-    {
-      const GDebugKey keys[] = {
-	{"fatal_warnings", G_DEBUG_FATAL_WARNINGS},
-	{"fatal_criticals", G_DEBUG_FATAL_CRITICALS}
-      };
-      
-      _g_debug_flags = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
-    }
-  
-  if (_g_debug_flags & G_DEBUG_FATAL_WARNINGS) 
-    {
-      GLogLevelFlags fatal_mask;
-      
-      fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
-      fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
-      g_log_set_always_fatal (fatal_mask);
-    }
-  
-  if (_g_debug_flags & G_DEBUG_FATAL_CRITICALS) 
-    {
-      GLogLevelFlags fatal_mask;
-      
-      fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
-      fatal_mask |= G_LOG_LEVEL_CRITICAL;
-      g_log_set_always_fatal (fatal_mask);
-    }
-}

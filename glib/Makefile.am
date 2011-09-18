@@ -207,7 +207,6 @@ libglib_2_0_la_SOURCES = 	\
 	gvarianttype.c		\
 	gwakeup.h		\
 	gwakeup.c		\
-	gdebug.h		\
 	gprintf.c		\
 	gprintfint.h
 
