@@ -2162,8 +2162,7 @@ g_thread_self (void)
       thread->thread.data = NULL;
       thread->private_data = NULL;
 
-      if (g_thread_supported ())
-	G_THREAD_UF (thread_self, (&thread->system_thread));
+      G_THREAD_UF (thread_self, (&thread->system_thread));
 
       g_private_set (&g_thread_specific_private, thread);
 
