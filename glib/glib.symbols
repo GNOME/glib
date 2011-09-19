@@ -1098,6 +1098,7 @@ g_thread_exit
 g_thread_join
 g_thread_self
 g_thread_set_priority
+g_thread_yield
 g_static_mutex_free
 g_static_mutex_get_mutex_impl
 g_static_mutex_init

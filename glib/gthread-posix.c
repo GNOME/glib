@@ -434,7 +434,7 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
 static void
 g_thread_yield_posix_impl (void)
 {
-  POSIX_YIELD_FUNC;
+  sched_yield ();
 }
 
 static void

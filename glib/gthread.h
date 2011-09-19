@@ -187,7 +187,6 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 #else
 #define g_thread_supported()    (g_threads_got_initialized)
 #endif
-#define g_thread_yield()              G_THREAD_CF (thread_yield, (void)0, ())
 
 #define g_thread_create(func, data, joinable, error)			\
   (g_thread_create_full (func, data, 0, joinable, FALSE, 		\
@@ -203,6 +202,7 @@ GThread* g_thread_create_full  (GThreadFunc            func,
 GThread* g_thread_self         (void);
 void     g_thread_exit         (gpointer               retval);
 gpointer g_thread_join         (GThread               *thread);
+void     g_thread_yield        (void);
 
 void     g_thread_set_priority (GThread               *thread,
                                 GThreadPriority        priority);
