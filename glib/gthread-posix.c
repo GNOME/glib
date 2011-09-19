@@ -519,13 +519,6 @@ g_system_thread_create (GThreadFunc       thread_func,
     }
 #endif /* HAVE_PTHREAD_ATTR_SETSTACKSIZE */
 
-#ifdef PTHREAD_SCOPE_SYSTEM
-  if (bound)
-    /* No error check here, because some systems can't do it and we
-     * simply don't want threads to fail because of that. */
-    pthread_attr_setscope (&attr, PTHREAD_SCOPE_SYSTEM);
-#endif /* PTHREAD_SCOPE_SYSTEM */
-
   posix_check_cmd (pthread_attr_setdetachstate (&attr,
           joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED));
 

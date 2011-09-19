@@ -1683,7 +1683,7 @@ g_thread_create_proxy (gpointer data)
  * @data: an argument to supply to the new thread.
  * @stack_size: a stack size for the new thread.
  * @joinable: should this thread be joinable?
- * @bound: should this thread be bound to a system thread?
+ * @bound: ignored
  * @priority: ignored
  * @error: return location for error.
  * @Returns: the new #GThread on success.
@@ -1695,11 +1695,7 @@ g_thread_create_proxy (gpointer data)
  *
  * If @joinable is %TRUE, you can wait for this threads termination
  * calling g_thread_join(). Otherwise the thread will just disappear
- * when it terminates. If @bound is %TRUE, this thread will be
- * scheduled in the system scope, otherwise the implementation is free
- * to do scheduling in the process scope. The first variant is more
- * expensive resource-wise, but generally faster. On some systems (e.g.
- * Linux) all threads are bound.
+ * when it terminates.
  *
  * The new thread executes the function @func with the argument @data.
  * If the thread was created successfully, it is returned.
@@ -1733,7 +1729,7 @@ g_thread_create_full (GThreadFunc       func,
   result->private_data = NULL;
   G_LOCK (g_thread);
   g_system_thread_create (g_thread_create_proxy, result,
-                          stack_size, joinable, bound, 0,
+                          stack_size, joinable, 0, 0,
                           &result->system_thread, &local_error);
   if (!local_error)
     {
