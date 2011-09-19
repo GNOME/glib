@@ -245,19 +245,6 @@ struct _GPrivateDestructor
 
 static GPrivateDestructor * volatile g_private_destructors;
 
-GPrivate *
-g_private_new (GDestroyNotify notify)
-{
-  GPrivate *key;
-
-  key = malloc (sizeof (GPrivate));
-  if G_UNLIKELY (key == NULL)
-    g_thread_abort (errno, "malloc");
-  g_private_init (key, notify);
-
-  return key;
-}
-
 void
 g_private_init (GPrivate       *key,
                 GDestroyNotify  notify)

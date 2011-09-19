@@ -2438,3 +2438,40 @@ g_cond_free (GCond *cond)
   g_cond_clear (cond);
   g_slice_free (GCond, cond);
 }
+
+/**
+ * g_private_new:
+ * @destructor: a function to destroy the data keyed to
+ *     the #GPrivate when a thread ends
+ *
+ * Creates a new #GPrivate. If @destructor is non-%NULL, it is a
+ * pointer to a destructor function. Whenever a thread ends and the
+ * corresponding pointer keyed to this instance of #GPrivate is
+ * non-%NULL, the destructor is called with this pointer as the
+ * argument.
+ *
+ * <note><para>
+ * #GStaticPrivate is a better choice for most uses.
+ * </para></note>
+ *
+ * <note><para>@destructor is used quite differently from @notify in
+ * g_static_private_set().</para></note>
+ *
+ * <note><para>A #GPrivate cannot be freed. Reuse it instead, if you
+ * can, to avoid shortage, or use #GStaticPrivate.</para></note>
+ *
+ * <note><para>This function will abort if g_thread_init() has not been
+ * called yet.</para></note>
+ *
+ * Returns: a newly allocated #GPrivate
+ */
+GPrivate *
+g_private_new (GDestroyNotify notify)
+{
+  GPrivate *key;
+
+  key = malloc (sizeof (GPrivate));
+  g_private_init (key, notify);
+
+  return key;
+}
