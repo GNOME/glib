@@ -50,26 +50,7 @@ typedef enum
 
 typedef gpointer (*GThreadFunc) (gpointer data);
 
-/* This is "deprecated", but we can't actually remove it since
- * g_thread_create_full takes it.
- */
-typedef enum
-{
-  G_THREAD_PRIORITY_LOW,
-  G_THREAD_PRIORITY_NORMAL,
-  G_THREAD_PRIORITY_HIGH,
-  G_THREAD_PRIORITY_URGENT
-} GThreadPriority;
-
 typedef struct _GThread         GThread;
-struct  _GThread
-{
-  /*< private >*/
-  GThreadFunc func;
-  gpointer data;
-  gboolean joinable;
-  GThreadPriority priority;
-};
 
 typedef struct _GMutex          GMutex;
 typedef struct _GCond           GCond;
@@ -107,53 +88,6 @@ struct _GCond
 
 #endif
 
-typedef struct _GThreadFunctions GThreadFunctions;
-struct _GThreadFunctions
-{
-  GMutex*  (*mutex_new)           (void);
-  void     (*mutex_lock)          (GMutex               *mutex);
-  gboolean (*mutex_trylock)       (GMutex               *mutex);
-  void     (*mutex_unlock)        (GMutex               *mutex);
-  void     (*mutex_free)          (GMutex               *mutex);
-  GCond*   (*cond_new)            (void);
-  void     (*cond_signal)         (GCond                *cond);
-  void     (*cond_broadcast)      (GCond                *cond);
-  void     (*cond_wait)           (GCond                *cond,
-                                   GMutex               *mutex);
-  gboolean (*cond_timed_wait)     (GCond                *cond,
-                                   GMutex               *mutex,
-                                   GTimeVal             *end_time);
-  void      (*cond_free)          (GCond                *cond);
-  GPrivate* (*private_new)        (GDestroyNotify        destructor);
-  gpointer  (*private_get)        (GPrivate             *private_key);
-  void      (*private_set)        (GPrivate             *private_key,
-                                   gpointer              data);
-  void      (*thread_create)      (GThreadFunc           func,
-                                   gpointer              data,
-                                   gulong                stack_size,
-                                   gboolean              joinable,
-                                   gboolean              bound,
-                                   GThreadPriority       priority,
-                                   gpointer              thread,
-                                   GError              **error);
-  void      (*thread_yield)       (void);
-  void      (*thread_join)        (gpointer              thread);
-  void      (*thread_exit)        (void);
-  void      (*thread_set_priority)(gpointer              thread,
-                                   GThreadPriority       priority);
-  void      (*thread_self)        (gpointer              thread);
-  gboolean  (*thread_equal)       (gpointer              thread1,
-				   gpointer              thread2);
-};
-
-GLIB_VAR GThreadFunctions       g_thread_functions_for_glib_use;
-GLIB_VAR gboolean               g_thread_use_default_impl;
-GLIB_VAR gboolean               g_threads_got_initialized;
-
-#ifndef G_DISABLE_DEPRECATED
-GLIB_VAR guint64   (*g_thread_gettime) (void);
-#endif
-
 /* initializes the mutex/cond/private implementation for glib, might
  * only be called once, and must not be called directly or indirectly
  * from another glib-function, e.g. as a callback.
@@ -165,6 +99,8 @@ void    g_thread_init   (gpointer vtable);
  */
 gboolean g_thread_get_initialized (void);
 
+GLIB_VAR gboolean               g_threads_got_initialized;
+
 /* internal function for fallback static mutex implementation */
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
@@ -172,16 +108,6 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 #define g_thread_supported()     1
 #else
 #define g_thread_supported()    (g_threads_got_initialized)
-#endif
-
-#ifndef G_DISABLE_DEPRECATED
-GThread* g_thread_create_full  (GThreadFunc            func,
-                                gpointer               data,
-                                gulong                 stack_size,
-                                gboolean               joinable,
-                                gboolean               bound,
-                                GThreadPriority        priority,
-                                GError               **error);
 #endif
 
 GThread *       g_thread_create                 (GThreadFunc   func,
@@ -199,11 +125,6 @@ GThread* g_thread_self         (void);
 void     g_thread_exit         (gpointer               retval);
 gpointer g_thread_join         (GThread               *thread);
 void     g_thread_yield        (void);
-
-#ifndef G_DISABLE_DEPRECATED
-void     g_thread_set_priority (GThread               *thread,
-                                GThreadPriority        priority);
-#endif
 
 #ifdef G_OS_WIN32
 typedef GMutex * GStaticMutex;

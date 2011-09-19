@@ -97,6 +97,7 @@
 #include <glib/deprecated/gallocator.h>
 #include <glib/deprecated/gcompletion.h>
 #include <glib/deprecated/grel.h>
+#include <glib/deprecated/gthread.h>
 #endif
 
 #undef __GLIB_H_INSIDE__
