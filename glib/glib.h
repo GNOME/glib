@@ -69,7 +69,6 @@
 #include <glib/gquark.h>
 #include <glib/gqueue.h>
 #include <glib/grand.h>
-#include <glib/grel.h>
 #include <glib/gregex.h>
 #include <glib/gscanner.h>
 #include <glib/gsequence.h>
@@ -97,6 +96,7 @@
 
 #ifndef G_DISABLE_DEPRECATED
 #include <glib/deprecated/gallocator.h>
+#include <glib/deprecated/grel.h>
 #endif
 
 #undef __GLIB_H_INSIDE__

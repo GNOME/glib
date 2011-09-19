@@ -112,7 +112,8 @@ uninstall-ms-lib:
 	$(uninstall_ms_lib_cmd)
 
 deprecated_sources = \
-	deprecated/gallocator.c
+	deprecated/gallocator.c		\
+	deprecated/grel.c
 
 libglib_2_0_la_SOURCES = 	\
 	$(deprecated_sources)	\
@@ -163,7 +164,6 @@ libglib_2_0_la_SOURCES = 	\
 	gprimes.c		\
 	gqsort.c		\
 	gqueue.c		\
-	grel.c			\
 	grand.c			\
 	$(gregex_c)		\
 	gscanner.c		\
@@ -236,7 +236,8 @@ glibinclude_HEADERS =   \
 
 deprecatedincludedir=$(includedir)/glib-2.0/glib/deprecated
 deprecatedinclude_HEADERS = \
-	deprecated/gallocator.h
+	deprecated/gallocator.h		\
+	deprecated/grel.h
 
 glibsubincludedir=$(includedir)/glib-2.0/glib
 glibsubinclude_HEADERS =   \
@@ -283,7 +284,6 @@ glibsubinclude_HEADERS =   \
 	gqueue.h	\
 	grand.h		\
 	$(gregex_h)	\
-	grel.h		\
 	gscanner.h	\
 	gsequence.h	\
 	gshell.h	\

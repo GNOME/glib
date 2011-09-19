@@ -29,17 +29,16 @@
 
 #include "config.h"
 
+#include "grel.h"
+
+#include <glib/gmessages.h>
+#include <glib/gtestutils.h>
+#include <glib/gstring.h>
+#include <glib/gslice.h>
+#include <glib/ghash.h>
+
 #include <stdarg.h>
 #include <string.h>
-
-#include "ghash.h"
-#include "gmessages.h"
-#include "gtestutils.h"
-#include "gstring.h"
-
-#undef G_DISABLE_DEPRECATED
-
-#include "grel.h"
 
 /**
  * SECTION:relations

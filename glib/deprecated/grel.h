@@ -66,8 +66,6 @@ struct _GTuples
  * g_relation_count() counts ...
  */
 
-#ifndef G_DISABLE_DEPRECATED
-
 GRelation* g_relation_new     (gint         fields);
 void       g_relation_destroy (GRelation   *relation);
 void       g_relation_index   (GRelation   *relation,
@@ -93,8 +91,6 @@ void       g_tuples_destroy   (GTuples     *tuples);
 gpointer   g_tuples_index     (GTuples     *tuples,
                                gint         index_,
                                gint         field);
-
-#endif
 
 G_END_DECLS
 
