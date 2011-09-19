@@ -171,20 +171,6 @@ gboolean g_thread_get_initialized (void);
 /* internal function for fallback static mutex implementation */
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
-/* shorthands for conditional and unconditional function calls */
-
-#define G_THREAD_UF(op, arglist)					\
-    (*g_thread_functions_for_glib_use . op) arglist
-#define G_THREAD_CF(op, fail, arg)					\
-    (g_thread_supported () ? G_THREAD_UF (op, arg) : (fail))
-#define G_THREAD_ECF(op, fail, mutex, type)				\
-    (g_thread_supported () ? 						\
-      ((type(*)(GMutex*, const gulong, gchar const*))			\
-      (*g_thread_functions_for_glib_use . op))				\
-     (mutex, G_MUTEX_DEBUG_MAGIC, G_STRLOC) : (fail))
-
-
-
 #if defined(G_THREADS_MANDATORY)
 #define g_thread_supported()     1
 #else
