@@ -293,6 +293,8 @@ extern void glib_dummy_decl (void);
 #endif /* !G_DEBUG_LOCKS */
 
 
+GMutex *                g_mutex_new                                     (void);
+void                    g_mutex_free                                    (GMutex         *mutex);
 void                    g_mutex_init                                    (GMutex         *mutex);
 void                    g_mutex_clear                                   (GMutex         *mutex);
 
@@ -300,6 +302,8 @@ void                    g_mutex_lock                                    (GMutex 
 void                    g_mutex_unlock                                  (GMutex         *mutex);
 gboolean                g_mutex_trylock                                 (GMutex         *mutex);
 
+GCond *                 g_cond_new                                      (void);
+void                    g_cond_free                                     (GCond          *cond);
 void                    g_cond_init                                     (GCond          *cond);
 void                    g_cond_clear                                    (GCond          *cond);
 
@@ -313,11 +317,6 @@ gboolean                g_cond_timed_wait                               (GCond  
 gboolean                g_cond_timedwait                                (GCond          *cond,
                                                                          GMutex         *mutex,
                                                                          gint64          abs_time);
-
-GMutex *                g_mutex_new                                     (void);
-void                    g_mutex_free                                    (GMutex         *mutex);
-GCond *                 g_cond_new                                      (void);
-void                    g_cond_free                                     (GCond          *cond);
 
 GPrivate *              g_private_new                                   (GDestroyNotify  notify);
 gpointer                g_private_get                                   (GPrivate       *key);
