@@ -165,9 +165,6 @@ void    g_thread_init   (GThreadFunctions       *vtable);
  */
 gboolean g_thread_get_initialized (void);
 
-/* A random number to recognize debug calls to g_mutex_... */
-#define G_MUTEX_DEBUG_MAGIC 0xf8e18ad7
-
 /* internal function for fallback static mutex implementation */
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
