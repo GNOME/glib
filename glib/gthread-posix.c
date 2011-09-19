@@ -604,10 +604,10 @@ GThreadFunctions g_thread_functions_for_glib_use =
   NULL,
   g_thread_yield,
   NULL,
-  g_system_thread_exit,
   NULL,
   NULL,
-  g_system_thread_equal,
+  NULL,
+  NULL,
 };
 
 /* vim:set foldmethod=marker: */

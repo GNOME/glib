@@ -771,10 +771,10 @@ GThreadFunctions g_thread_functions_for_glib_use =
   NULL,                  /* thread */
   g_thread_yield,
   NULL,
-  g_system_thread_exit,
   NULL,
   NULL,
-  g_system_thread_equal
+  NULL,
+  NULL
 };
 
 void
