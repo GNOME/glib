@@ -99,22 +99,22 @@ g_thread_abort (gint         status,
  */
 typedef struct
 {
-  void     (* CallThisOnThreadExit)        (void);              /* fake */
+  void     (__stdcall * CallThisOnThreadExit)        (void);              /* fake */
 
-  void     (* InitializeSRWLock)           (gpointer lock);
-  void     (* DeleteSRWLock)               (gpointer lock);     /* fake */
-  void     (* AcquireSRWLockExclusive)     (gpointer lock);
-  BOOLEAN  (* TryAcquireSRWLockExclusive)  (gpointer lock);
-  void     (* ReleaseSRWLockExclusive)     (gpointer lock);
+  void     (__stdcall * InitializeSRWLock)           (gpointer lock);
+  void     (__stdcall * DeleteSRWLock)               (gpointer lock);     /* fake */
+  void     (__stdcall * AcquireSRWLockExclusive)     (gpointer lock);
+  BOOLEAN  (__stdcall * TryAcquireSRWLockExclusive)  (gpointer lock);
+  void     (__stdcall * ReleaseSRWLockExclusive)     (gpointer lock);
 
-  void     (* InitializeConditionVariable) (gpointer cond);
-  void     (* DeleteConditionVariable)     (gpointer cond);     /* fake */
-  BOOL     (* SleepConditionVariableSRW)   (gpointer cond,
-                                            gpointer lock,
-                                            DWORD    timeout,
-                                            ULONG    flags);
-  void     (* WakeAllConditionVariable)    (gpointer cond);
-  void     (* WakeConditionVariable)       (gpointer cond);
+  void     (__stdcall * InitializeConditionVariable) (gpointer cond);
+  void     (__stdcall * DeleteConditionVariable)     (gpointer cond);     /* fake */
+  BOOL     (__stdcall * SleepConditionVariableSRW)   (gpointer cond,
+                                                      gpointer lock,
+                                                      DWORD    timeout,
+                                                      ULONG    flags);
+  void     (__stdcall * WakeAllConditionVariable)    (gpointer cond);
+  void     (__stdcall * WakeConditionVariable)       (gpointer cond);
 } GThreadImplVtable;
 
 static GThreadImplVtable g_thread_impl_vtable;
@@ -534,7 +534,7 @@ g_thread_xp_waiter_get (void)
   return waiter;
 }
 
-static void
+static void __stdcall
 g_thread_xp_CallThisOnThreadExit (void)
 {
   GThreadXpWaiter *waiter;
@@ -555,13 +555,13 @@ typedef struct
   CRITICAL_SECTION critical_section;
 } GThreadSRWLock;
 
-static void
+static void __stdcall
 g_thread_xp_InitializeSRWLock (gpointer mutex)
 {
   *(GThreadSRWLock * volatile *) mutex = NULL;
 }
 
-static void
+static void __stdcall
 g_thread_xp_DeleteSRWLock (gpointer mutex)
 {
   GThreadSRWLock *lock = *(GThreadSRWLock * volatile *) mutex;
@@ -573,7 +573,7 @@ g_thread_xp_DeleteSRWLock (gpointer mutex)
     }
 }
 
-static GThreadSRWLock *
+static GThreadSRWLock * __stdcall
 g_thread_xp_get_srwlock (GThreadSRWLock * volatile *lock)
 {
   GThreadSRWLock *result;
@@ -603,7 +603,7 @@ g_thread_xp_get_srwlock (GThreadSRWLock * volatile *lock)
   return result;
 }
 
-static void
+static void __stdcall
 g_thread_xp_AcquireSRWLockExclusive (gpointer mutex)
 {
   GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
@@ -611,7 +611,7 @@ g_thread_xp_AcquireSRWLockExclusive (gpointer mutex)
   EnterCriticalSection (&lock->critical_section);
 }
 
-static BOOLEAN
+static BOOLEAN __stdcall
 g_thread_xp_TryAcquireSRWLockExclusive (gpointer mutex)
 {
   GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
@@ -619,7 +619,7 @@ g_thread_xp_TryAcquireSRWLockExclusive (gpointer mutex)
   return TryEnterCriticalSection (&lock->critical_section);
 }
 
-static void
+static void __stdcall
 g_thread_xp_ReleaseSRWLockExclusive (gpointer mutex)
 {
   GThreadSRWLock *lock = *(GThreadSRWLock * volatile *) mutex;
@@ -638,13 +638,13 @@ typedef struct
   volatile GThreadXpWaiter **last_ptr;
 } GThreadXpCONDITION_VARIABLE;
 
-static void
+static void __stdcall
 g_thread_xp_InitializeConditionVariable (gpointer cond)
 {
   *(GThreadXpCONDITION_VARIABLE * volatile *) cond = NULL;
 }
 
-static void
+static void __stdcall
 g_thread_xp_DeleteConditionVariable (gpointer cond)
 {
   GThreadXpCONDITION_VARIABLE *cv = *(GThreadXpCONDITION_VARIABLE * volatile *) cond;
@@ -653,7 +653,7 @@ g_thread_xp_DeleteConditionVariable (gpointer cond)
     free (cv);
 }
 
-static GThreadXpCONDITION_VARIABLE *
+static GThreadXpCONDITION_VARIABLE * __stdcall
 g_thread_xp_get_condition_variable (GThreadXpCONDITION_VARIABLE * volatile *cond)
 {
   GThreadXpCONDITION_VARIABLE *result;
@@ -685,7 +685,7 @@ g_thread_xp_get_condition_variable (GThreadXpCONDITION_VARIABLE * volatile *cond
   return result;
 }
 
-static BOOL
+static BOOL __stdcall
 g_thread_xp_SleepConditionVariableSRW (gpointer cond,
                                        gpointer mutex,
                                        DWORD    timeout,
@@ -713,7 +713,7 @@ g_thread_xp_SleepConditionVariableSRW (gpointer cond,
   return status == WAIT_OBJECT_0;
 }
 
-static void
+static void __stdcall
 g_thread_xp_WakeConditionVariable (gpointer cond)
 {
   GThreadXpCONDITION_VARIABLE *cv = g_thread_xp_get_condition_variable (cond);
@@ -733,7 +733,7 @@ g_thread_xp_WakeConditionVariable (gpointer cond)
     SetEvent (waiter->event);
 }
 
-static void
+static void __stdcall
 g_thread_xp_WakeAllConditionVariable (gpointer cond)
 {
   GThreadXpCONDITION_VARIABLE *cv = g_thread_xp_get_condition_variable (cond);
@@ -854,12 +854,9 @@ g_thread_lookup_native_funcs (void)
 G_GNUC_INTERNAL void
 g_thread_DllMain (void)
 {
-  /* XXX This is broken right now for some unknown reason...
-
   if (g_thread_lookup_native_funcs ())
     fprintf (stderr, "(debug) GThread using native mode\n");
   else
-*/
     {
       fprintf (stderr, "(debug) GThread using Windows XP mode\n");
       g_thread_xp_init ();
