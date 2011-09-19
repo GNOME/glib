@@ -1196,7 +1196,7 @@ g_static_rec_mutex_lock (GStaticRecMutex* mutex)
 
   G_THREAD_UF (thread_self, (&self));
 
-  if (g_system_thread_equal (self, mutex->owner))
+  if (g_system_thread_equal (&self, &mutex->owner))
     {
       mutex->depth++;
       return;
@@ -1229,7 +1229,7 @@ g_static_rec_mutex_trylock (GStaticRecMutex* mutex)
 
   G_THREAD_UF (thread_self, (&self));
 
-  if (g_system_thread_equal (self, mutex->owner))
+  if (g_system_thread_equal (&self, &mutex->owner))
     {
       mutex->depth++;
       return TRUE;
@@ -1293,7 +1293,7 @@ g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
 
   G_THREAD_UF (thread_self, (&self));
 
-  if (g_system_thread_equal (self, mutex->owner))
+  if (g_system_thread_equal (&self, &mutex->owner))
     {
       mutex->depth += depth;
       return;
@@ -1859,8 +1859,7 @@ g_thread_join (GThread* thread)
 
   g_return_val_if_fail (thread, NULL);
   g_return_val_if_fail (thread->joinable, NULL);
-  g_return_val_if_fail (!g_system_thread_equal (real->system_thread,
-						zero_thread), NULL);
+  g_return_val_if_fail (!g_system_thread_equal (&real->system_thread, &zero_thread), NULL);
 
   G_THREAD_UF (thread_join, (&real->system_thread));
 
@@ -1913,7 +1912,7 @@ g_thread_set_priority (GThread* thread,
   GRealThread* real = (GRealThread*) thread;
 
   g_return_if_fail (thread);
-  g_return_if_fail (!g_system_thread_equal (real->system_thread, zero_thread));
+  g_return_if_fail (!g_system_thread_equal (&real->system_thread, &zero_thread));
   g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
   g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
 
