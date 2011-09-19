@@ -158,7 +158,7 @@ GLIB_VAR guint64   (*g_thread_gettime) (void);
  * only be called once, and must not be called directly or indirectly
  * from another glib-function, e.g. as a callback.
  */
-void    g_thread_init   (GThreadFunctions       *vtable);
+void    g_thread_init   (gpointer vtable);
 
 /* Checks if thread support is initialized.  Identical to the
  * g_thread_supported macro but provided for language bindings.

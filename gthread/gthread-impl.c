@@ -36,7 +36,7 @@
 #include "gthreadprivate.h"
 
 void
-g_thread_init (GThreadFunctions *init)
+g_thread_init (gpointer init)
 {
   static gboolean already_done;
 
@@ -52,7 +52,7 @@ g_thread_init (GThreadFunctions *init)
 }
 
 void
-g_thread_init_with_errorcheck_mutexes (GThreadFunctions *vtable)
+g_thread_init_with_errorcheck_mutexes (gpointer vtable)
 {
   g_assert (vtable == NULL);
 
