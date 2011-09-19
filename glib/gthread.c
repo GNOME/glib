@@ -455,82 +455,12 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  * #GStaticMutex instead.
  *
  * A #GMutex should only be accessed via the following functions.
- *
- * <note><para>All of the <function>g_mutex_*</function> functions are
- * actually macros. Apart from taking their addresses, you can however
- * use them as if they were functions.</para></note>
  **/
 
-/**
- * g_mutex_new:
- * @Returns: a new #GMutex.
- *
- * Creates a new #GMutex.
- *
- * <note><para>This function will abort if g_thread_init() has not been
- * called yet.</para></note>
- **/
   (GMutex*(*)())g_thread_fail,
-
-/**
- * g_mutex_lock:
- * @mutex: a #GMutex.
- *
- * Locks @mutex. If @mutex is already locked by another thread, the
- * current thread will block until @mutex is unlocked by the other
- * thread.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will do nothing.
- *
- * <note><para>#GMutex is neither guaranteed to be recursive nor to be
- * non-recursive, i.e. a thread could deadlock while calling
- * g_mutex_lock(), if it already has locked @mutex. Use
- * #GStaticRecMutex, if you need recursive mutexes.</para></note>
- **/
   NULL,
-
-/**
- * g_mutex_trylock:
- * @mutex: a #GMutex.
- * @Returns: %TRUE, if @mutex could be locked.
- *
- * Tries to lock @mutex. If @mutex is already locked by another thread,
- * it immediately returns %FALSE. Otherwise it locks @mutex and returns
- * %TRUE.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will immediately return %TRUE.
- *
- * <note><para>#GMutex is neither guaranteed to be recursive nor to be
- * non-recursive, i.e. the return value of g_mutex_trylock() could be
- * both %FALSE or %TRUE, if the current thread already has locked
- * @mutex. Use #GStaticRecMutex, if you need recursive
- * mutexes.</para></note>
- **/
   NULL,
-
-/**
- * g_mutex_unlock:
- * @mutex: a #GMutex.
- *
- * Unlocks @mutex. If another thread is blocked in a g_mutex_lock()
- * call for @mutex, it will be woken and can lock @mutex itself.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will do nothing.
- **/
   NULL,
-
-/**
- * g_mutex_free:
- * @mutex: a #GMutex.
- *
- * Destroys @mutex.
- *
- * <note><para>Calling g_mutex_free() on a locked mutex may result in
- * undefined behaviour.</para></note>
- **/
   NULL,
 
 /* GCond Virtual Functions {{{2 ------------------------------------------ */
@@ -593,87 +523,13 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  * #GMutex, like above.</para></note>
  *
  * A #GCond should only be accessed via the following functions.
- *
- * <note><para>All of the <function>g_cond_*</function> functions are
- * actually macros. Apart from taking their addresses, you can however
- * use them as if they were functions.</para></note>
- **/
+ */
 
-/**
- * g_cond_new:
- * @Returns: a new #GCond.
- *
- * Creates a new #GCond. This function will abort, if g_thread_init()
- * has not been called yet.
- **/
   (GCond*(*)())g_thread_fail,
-
-/**
- * g_cond_signal:
- * @cond: a #GCond.
- *
- * If threads are waiting for @cond, exactly one of them is woken up.
- * It is good practice to hold the same lock as the waiting thread
- * while calling this function, though not required.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will do nothing.
- **/
   NULL,
-
-/**
- * g_cond_broadcast:
- * @cond: a #GCond.
- *
- * If threads are waiting for @cond, all of them are woken up. It is
- * good practice to lock the same mutex as the waiting threads, while
- * calling this function, though not required.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will do nothing.
- **/
   NULL,
-
-/**
- * g_cond_wait:
- * @cond: a #GCond.
- * @mutex: a #GMutex, that is currently locked.
- *
- * Waits until this thread is woken up on @cond. The @mutex is unlocked
- * before falling asleep and locked again before resuming.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will immediately return.
- **/
   NULL,
-
-/**
- * g_cond_timed_wait:
- * @cond: a #GCond.
- * @mutex: a #GMutex that is currently locked.
- * @abs_time: a #GTimeVal, determining the final time.
- * @Returns: %TRUE if @cond was signalled, or %FALSE on timeout.
- *
- * Waits until this thread is woken up on @cond, but not longer than
- * until the time specified by @abs_time. The @mutex is unlocked before
- * falling asleep and locked again before resuming.
- *
- * If @abs_time is %NULL, g_cond_timed_wait() acts like g_cond_wait().
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will immediately return %TRUE.
- *
- * To easily calculate @abs_time a combination of g_get_current_time()
- * and g_time_val_add() can be used.
- **/
   NULL,
-
-/**
- * g_cond_free:
- * @cond: a #GCond.
- *
- * Destroys the #GCond.
- **/
   NULL,
 
 /* GPrivate Virtual Functions {{{2 --------------------------------------- */
@@ -732,64 +588,8 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  * use them as if they were functions.</para></note>
  **/
 
-/**
- * g_private_new:
- * @destructor: a function to destroy the data keyed to #GPrivate when
- *              a thread ends.
- * @Returns: a new #GPrivate.
- *
- * Creates a new #GPrivate. If @destructor is non-%NULL, it is a
- * pointer to a destructor function. Whenever a thread ends and the
- * corresponding pointer keyed to this instance of #GPrivate is
- * non-%NULL, the destructor is called with this pointer as the
- * argument.
- *
- * <note><para>
- * #GStaticPrivate is a better choice for most uses.
- * </para></note>
- *
- * <note><para>@destructor is used quite differently from @notify in
- * g_static_private_set().</para></note>
- *
- * <note><para>A #GPrivate cannot be freed. Reuse it instead, if you
- * can, to avoid shortage, or use #GStaticPrivate.</para></note>
- *
- * <note><para>This function will abort if g_thread_init() has not been
- * called yet.</para></note>
- **/
   (GPrivate*(*)(GDestroyNotify))g_thread_fail,
-
-/**
- * g_private_get:
- * @private_key: a #GPrivate.
- * @Returns: the corresponding pointer.
- *
- * Returns the pointer keyed to @private_key for the current thread. If
- * g_private_set() hasn't been called for the current @private_key and
- * thread yet, this pointer will be %NULL.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will return the value of @private_key
- * casted to #gpointer. Note however, that private data set
- * <emphasis>before</emphasis> g_thread_init() will
- * <emphasis>not</emphasis> be retained <emphasis>after</emphasis> the
- * call. Instead, %NULL will be returned in all threads directly after
- * g_thread_init(), regardless of any g_private_set() calls issued
- * before threading system intialization.
- **/
   NULL,
-
-/**
- * g_private_set:
- * @private_key: a #GPrivate.
- * @data: the new pointer.
- *
- * Sets the pointer keyed to @private_key for the current thread.
- *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will set @private_key to @data casted to
- * #GPrivate*. See g_private_get() for resulting caveats.
- **/
   NULL,
 
 /* GThread Virtual Functions {{{2 ---------------------------------------- */
@@ -830,26 +630,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  * try to avoid being dependent on priorities.</para></note>
  **/
 
-/**
- * g_thread_create:
- * @func: a function to execute in the new thread.
- * @data: an argument to supply to the new thread.
- * @joinable: should this thread be joinable?
- * @error: return location for error.
- * @Returns: the new #GThread on success.
- *
- * This function creates a new thread with the default priority.
- *
- * If @joinable is %TRUE, you can wait for this threads termination
- * calling g_thread_join(). Otherwise the thread will just disappear
- * when it terminates.
- *
- * The new thread executes the function @func with the argument @data.
- * If the thread was created successfully, it is returned.
- *
- * @error can be %NULL to ignore errors, or non-%NULL to report errors.
- * The error is set, if and only if the function returns %NULL.
- **/
   (void(*)(GThreadFunc, gpointer, gulong,
 	   gboolean, gboolean, GThreadPriority,
 	   gpointer, GError**))g_thread_fail,
@@ -1921,6 +1701,28 @@ g_thread_create_proxy (gpointer data)
 }
 
 /**
+ * g_thread_create:
+ * @func: a function to execute in the new thread
+ * @data: an argument to supply to the new thread
+ * @joinable: should this thread be joinable?
+ * @error: return location for error, or %NULL
+ *
+ * This function creates a new thread with the default priority.
+ *
+ * If @joinable is %TRUE, you can wait for this threads termination
+ * calling g_thread_join(). Otherwise the thread will just disappear
+ * when it terminates.
+ *
+ * The new thread executes the function @func with the argument @data.
+ * If the thread was created successfully, it is returned.
+ *
+ * @error can be %NULL to ignore errors, or non-%NULL to report errors.
+ * The error is set, if and only if the function returns %NULL.
+ *
+ * Returns: the new #GThread on success
+ */
+
+/**
  * g_thread_create_full:
  * @func: a function to execute in the new thread.
  * @data: an argument to supply to the new thread.
@@ -2558,7 +2360,7 @@ g_thread_foreach (GFunc    thread_func,
 }
 
 /**
- * g_thread_get_initialized
+ * g_thread_get_initialized:
  *
  * Indicates if g_thread_init() has been called.
  *
@@ -2572,6 +2374,13 @@ g_thread_get_initialized ()
   return g_thread_supported ();
 }
 
+/**
+ * g_mutex_new:
+ *
+ * Creates a new #GMutex.
+ *
+ * Returns: a newly allocated #GMutex. Use g_mutex_free() to free
+ */
 GMutex *
 g_mutex_new (void)
 {
@@ -2583,6 +2392,15 @@ g_mutex_new (void)
   return mutex;
 }
 
+/**
+ * g_mutex_free:
+ * @mutex: a #GMutex
+ *
+ * Destroys a @mutex that has been created with g_mutex_new().
+ *
+ * <note>Calling g_mutex_free() on a locked mutex may result
+ * in undefined behaviour.</note>
+ */
 void
 g_mutex_free (GMutex *mutex)
 {
@@ -2590,6 +2408,13 @@ g_mutex_free (GMutex *mutex)
   g_slice_free (GMutex, mutex);
 }
 
+/**
+ * g_cond_new:
+ *
+ * Creates a new #GCond.
+ *
+ * Returns: a newly allocated #GCond. Free with g_cond_free()
+ */
 GCond *
 g_cond_new (void)
 {
@@ -2601,6 +2426,12 @@ g_cond_new (void)
   return cond;
 }
 
+/**
+ * g_cond_free:
+ * @cond: a #GCond
+ *
+ * Destroys a #GCond that has been created with g_cond_new().
+ */
 void
 g_cond_free (GCond *cond)
 {
