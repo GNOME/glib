@@ -281,7 +281,6 @@ struct _GStaticPrivateNode
 };
 
 static void    g_thread_cleanup (gpointer data);
-static void    g_thread_fail (void);
 static guint64 gettime (void);
 
 guint64        (*g_thread_gettime) (void) = gettime;
@@ -1619,12 +1618,6 @@ g_thread_cleanup (gpointer data)
           g_free (thread);
 	}
     }
-}
-
-static void
-g_thread_fail (void)
-{
-  g_error ("The thread system is not yet initialized.");
 }
 
 #define G_NSEC_PER_SEC 1000000000
