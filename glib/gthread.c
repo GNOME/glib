@@ -2425,3 +2425,28 @@ g_private_new (GDestroyNotify notify)
 
   return key;
 }
+
+GThreadFunctions g_thread_functions_for_glib_use =
+{
+  g_mutex_new,
+  g_mutex_lock,
+  g_mutex_trylock,
+  g_mutex_unlock,
+  g_mutex_free,
+  g_cond_new,
+  g_cond_signal,
+  g_cond_broadcast,
+  g_cond_wait,
+  g_cond_timed_wait,
+  g_cond_free,
+  g_private_new,
+  g_private_get,
+  g_private_set,
+  NULL,
+  g_thread_yield,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+  NULL,
+};
