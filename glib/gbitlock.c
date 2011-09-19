@@ -26,6 +26,7 @@
 #include <glib/gatomic.h>
 #include <glib/gslist.h>
 #include <glib/gthread.h>
+#include <glib/gslice.h>
 
 #include "gthreadprivate.h"
 #include "config.h"
