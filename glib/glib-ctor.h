@@ -1,6 +1,6 @@
 #ifndef __GLIB_CTOR_H__
 
-#ifdef __GNUC__
+#if defined (__GNUC__) && !defined (_WIN32)
 #define GLIB_CTOR(func) \
   __attribute__((constructor)) static void func (void)
 #define GLIB_ENSURE_CTOR(func) G_STMT_START { } G_STMT_END
