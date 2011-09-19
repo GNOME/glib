@@ -39,7 +39,6 @@
 #include <glib/gbookmarkfile.h>
 #include <glib/gcache.h>
 #include <glib/gchecksum.h>
-#include <glib/gcompletion.h>
 #include <glib/gconvert.h>
 #include <glib/gdataset.h>
 #include <glib/gdate.h>
@@ -96,6 +95,7 @@
 
 #ifndef G_DISABLE_DEPRECATED
 #include <glib/deprecated/gallocator.h>
+#include <glib/deprecated/gcompletion.h>
 #include <glib/deprecated/grel.h>
 #endif
 

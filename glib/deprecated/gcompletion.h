@@ -56,8 +56,6 @@ struct _GCompletion
   GCompletionStrncmpFunc strncmp_func;
 };
 
-#ifndef G_DISABLE_DEPRECATED
-
 GCompletion* g_completion_new           (GCompletionFunc func);
 void         g_completion_add_items     (GCompletion*    cmp,
                                          GList*          items);
@@ -73,8 +71,6 @@ GList*       g_completion_complete_utf8 (GCompletion  *cmp,
 void         g_completion_set_compare   (GCompletion *cmp,
 				         GCompletionStrncmpFunc strncmp_func);
 void         g_completion_free          (GCompletion*    cmp);
-
-#endif
 
 G_END_DECLS
 

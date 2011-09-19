@@ -30,15 +30,13 @@
 
 #include "config.h"
 
-#include <string.h>
-
-#include "gstrfuncs.h"
-#include "gmessages.h"
-#include "gunicode.h"
-
-#undef G_DISABLE_DEPRECATED
-
 #include "gcompletion.h"
+
+#include <glib/gstrfuncs.h>
+#include <glib/gmessages.h>
+#include <glib/gunicode.h>
+
+#include <string.h>
 
 /**
  * SECTION:completion
