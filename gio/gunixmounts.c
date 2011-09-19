@@ -1023,6 +1023,7 @@ _g_get_unix_mount_points (void)
   GList *return_list;
 #ifdef HAVE_SYS_SYSCTL_H
   int usermnt = 0;
+  size_t len = sizeof(usermnt);
   struct stat sb;
 #endif
   
