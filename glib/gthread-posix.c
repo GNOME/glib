@@ -629,8 +629,8 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
   posix_check_err (ret, "pthread_create");
 }
 
-static void
-g_thread_yield_posix_impl (void)
+void
+g_thread_yield (void)
 {
   sched_yield ();
 }
@@ -696,7 +696,7 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_private_get,
   g_private_set,
   g_thread_create_posix_impl,
-  g_thread_yield_posix_impl,
+  g_thread_yield,
   g_thread_join_posix_impl,
   g_thread_exit_posix_impl,
   g_thread_set_priority_posix_impl,

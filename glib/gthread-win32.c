@@ -479,8 +479,8 @@ g_thread_create_win32_impl (GThreadFunc func,
   g_thread_set_priority_win32_impl (thread, priority);
 }
 
-static void
-g_thread_yield_win32_impl (void)
+void
+g_thread_yield (void)
 {
   Sleep(0);
 }
@@ -798,7 +798,7 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_private_get,
   g_private_set,
   g_thread_create_win32_impl,       /* thread */
-  g_thread_yield_win32_impl,
+  g_thread_yield,
   g_thread_join_win32_impl,
   g_thread_exit_win32_impl,
   g_thread_set_priority_win32_impl,

@@ -1961,21 +1961,6 @@ g_thread_self (void)
   return (GThread*)thread;
 }
 
-/**
- * g_thread_yield:
- *
- * Gives way to other threads waiting to be scheduled.
- *
- * This function is often used as a method to make busy wait less evil.
- * But in most cases you will encounter, there are better methods to do
- * that. So in general you shouldn't use this function.
- */
-void
-g_thread_yield (void)
-{
-  G_THREAD_UF (thread_yield, ());
-}
-
 /* GStaticRWLock {{{1 ----------------------------------------------------- */
 
 /**
