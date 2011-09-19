@@ -629,6 +629,15 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
   posix_check_err (ret, "pthread_create");
 }
 
+/**
+ * g_thread_yield:
+ *
+ * Gives way to other threads waiting to be scheduled.
+ *
+ * This function is often used as a method to make busy wait less evil.
+ * But in most cases you will encounter, there are better methods to do
+ * that. So in general you shouldn't use this function.
+ */
 void
 g_thread_yield (void)
 {
