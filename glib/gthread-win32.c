@@ -316,38 +316,6 @@ struct _GThreadData
   gboolean joinable;
 };
 
-
-static void
-g_thread_set_priority_win32_impl (gpointer thread, GThreadPriority priority)
-{
-  GThreadData *target = *(GThreadData **)thread;
-  gint native_prio;
-
-  switch (priority)
-    {
-    case G_THREAD_PRIORITY_LOW:
-      native_prio = THREAD_PRIORITY_BELOW_NORMAL;
-      break;
-
-    case G_THREAD_PRIORITY_NORMAL:
-      native_prio = THREAD_PRIORITY_NORMAL;
-      break;
-
-    case G_THREAD_PRIORITY_HIGH:
-      native_prio = THREAD_PRIORITY_ABOVE_NORMAL;
-      break;
-
-    case G_THREAD_PRIORITY_URGENT:
-      native_prio = THREAD_PRIORITY_HIGHEST;
-      break;
-
-    default:
-      g_return_if_reached ();
-    }
-
-  win32_check_for_error (SetThreadPriority (target->thread, native_prio));
-}
-
 static void
 g_thread_self_win32_impl (gpointer thread)
 {
@@ -452,8 +420,6 @@ g_thread_create_win32_impl (GThreadFunc func,
   GThreadData *retval;
 
   g_return_if_fail (func);
-  g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
-  g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
 
   retval = g_new(GThreadData, 1);
   retval->func = func;
@@ -475,8 +441,6 @@ g_thread_create_win32_impl (GThreadFunc func,
     }
 
   *(GThreadData **)thread = retval;
-
-  g_thread_set_priority_win32_impl (thread, priority);
 }
 
 void
@@ -808,7 +772,7 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_thread_yield,
   g_thread_join_win32_impl,
   g_system_thread_exit,
-  g_thread_set_priority_win32_impl,
+  NULL,
   g_thread_self_win32_impl,
   g_system_thread_equal
 };

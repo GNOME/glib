@@ -480,74 +480,6 @@ g_private_set (GPrivate *key,
 
 #define posix_check_cmd(cmd) posix_check_err (cmd, #cmd)
 
-#ifdef G_ENABLE_DEBUG
-static gboolean posix_check_cmd_prio_warned = FALSE;
-# define posix_check_cmd_prio(cmd) G_STMT_START{			\
-    int err = (cmd);							\
-    if (err == EPERM)		 		 			\
-      { 	 			 				\
-        if (!posix_check_cmd_prio_warned) 		 		\
-          { 	 				 			\
-            posix_check_cmd_prio_warned = TRUE;		 		\
-            g_warning ("Priorities can only be changed " 		\
-                        "(resp. increased) by root."); 			\
-          }			 					\
-      }			 						\
-    else  		 						\
-      posix_check_err (err, #cmd);					\
-     }G_STMT_END
-#else /* G_ENABLE_DEBUG */
-# define posix_check_cmd_prio(cmd) G_STMT_START{			\
-    int err = (cmd);							\
-    if (err != EPERM)		 		 			\
-      posix_check_err (err, #cmd);					\
-     }G_STMT_END
-#endif /* G_ENABLE_DEBUG */
-
-#if defined (POSIX_MIN_PRIORITY) && defined (POSIX_MAX_PRIORITY)
-# define HAVE_PRIORITIES 1
-static gint priority_normal_value;
-# ifdef __FreeBSD__
-   /* FreeBSD threads use different priority values from the POSIX_
-    * defines so we just set them here. The corresponding macros
-    * PTHREAD_MIN_PRIORITY and PTHREAD_MAX_PRIORITY are implied to be
-    * exported by the docs, but they aren't.
-    */
-#  define PRIORITY_LOW_VALUE      0
-#  define PRIORITY_URGENT_VALUE   31
-# else /* !__FreeBSD__ */
-#  define PRIORITY_LOW_VALUE      POSIX_MIN_PRIORITY
-#  define PRIORITY_URGENT_VALUE   POSIX_MAX_PRIORITY
-# endif /* !__FreeBSD__ */
-# define PRIORITY_NORMAL_VALUE    priority_normal_value
-
-# define PRIORITY_HIGH_VALUE \
-    ((PRIORITY_NORMAL_VALUE + PRIORITY_URGENT_VALUE * 2) / 3)
-
-static gint
-g_thread_priority_map (GThreadPriority priority)
-{
-  switch (priority)
-    {
-    case G_THREAD_PRIORITY_LOW:
-      return PRIORITY_LOW_VALUE;
-
-    case G_THREAD_PRIORITY_NORMAL:
-      return PRIORITY_NORMAL_VALUE;
-
-    case G_THREAD_PRIORITY_HIGH:
-      return PRIORITY_HIGH_VALUE;
-
-    case G_THREAD_PRIORITY_URGENT:
-      return PRIORITY_URGENT_VALUE;
-
-    default:
-      g_assert_not_reached ();
-    }
-}
-
-#endif /* POSIX_MIN_PRIORITY && POSIX_MAX_PRIORITY */
-
 static gulong g_thread_min_stack_size = 0;
 
 #define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
@@ -558,14 +490,6 @@ _g_thread_impl_init(void)
 #ifdef _SC_THREAD_STACK_MIN
   g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);
 #endif /* _SC_THREAD_STACK_MIN */
-#ifdef HAVE_PRIORITIES
-  {
-    struct sched_param sched;
-    int policy;
-    posix_check_cmd (pthread_getschedparam (pthread_self(), &policy, &sched));
-    priority_normal_value = sched.sched_priority;
-  }
-#endif /* HAVE_PRIORITIES */
 }
 
 static void
@@ -582,8 +506,6 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
   gint ret;
 
   g_return_if_fail (thread_func);
-  g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
-  g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
 
   posix_check_cmd (pthread_attr_init (&attr));
 
@@ -607,14 +529,6 @@ g_thread_create_posix_impl (GThreadFunc thread_func,
   posix_check_cmd (pthread_attr_setdetachstate (&attr,
           joinable ? PTHREAD_CREATE_JOINABLE : PTHREAD_CREATE_DETACHED));
 
-#ifdef HAVE_PRIORITIES
-  {
-    struct sched_param sched;
-    posix_check_cmd (pthread_attr_getschedparam (&attr, &sched));
-    sched.sched_priority = g_thread_priority_map (priority);
-    posix_check_cmd_prio (pthread_attr_setschedparam (&attr, &sched));
-  }
-#endif /* HAVE_PRIORITIES */
   ret = pthread_create (thread, &attr, (void* (*)(void*))thread_func, arg);
 
   posix_check_cmd (pthread_attr_destroy (&attr));
@@ -658,24 +572,6 @@ g_system_thread_exit (void)
 }
 
 static void
-g_thread_set_priority_posix_impl (gpointer thread, GThreadPriority priority)
-{
-  g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
-  g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
-#ifdef HAVE_PRIORITIES
-  {
-    struct sched_param sched;
-    int policy;
-    posix_check_cmd (pthread_getschedparam (*(pthread_t*)thread, &policy,
-					    &sched));
-    sched.sched_priority = g_thread_priority_map (priority);
-    posix_check_cmd_prio (pthread_setschedparam (*(pthread_t*)thread, policy,
-						 &sched));
-  }
-#endif /* HAVE_PRIORITIES */
-}
-
-static void
 g_thread_self_posix_impl (gpointer thread)
 {
   *(pthread_t*)thread = pthread_self();
@@ -709,7 +605,7 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_thread_yield,
   g_thread_join_posix_impl,
   g_system_thread_exit,
-  g_thread_set_priority_posix_impl,
+  NULL,
   g_thread_self_posix_impl,
   g_system_thread_equal,
 };

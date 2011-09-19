@@ -50,6 +50,9 @@ typedef enum
 
 typedef gpointer (*GThreadFunc) (gpointer data);
 
+/* This is "deprecated", but we can't actually remove it since
+ * g_thread_create_full takes it.
+ */
 typedef enum
 {
   G_THREAD_PRIORITY_LOW,
@@ -188,9 +191,8 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 #define g_thread_supported()    (g_threads_got_initialized)
 #endif
 
-#define g_thread_create(func, data, joinable, error)			\
-  (g_thread_create_full (func, data, 0, joinable, FALSE, 		\
-                         G_THREAD_PRIORITY_NORMAL, error))
+#define g_thread_create(func, data, joinable, error) \
+  (g_thread_create_full (func, data, 0, joinable, FALSE, 0, error))
 
 GThread* g_thread_create_full  (GThreadFunc            func,
                                 gpointer               data,
@@ -204,8 +206,10 @@ void     g_thread_exit         (gpointer               retval);
 gpointer g_thread_join         (GThread               *thread);
 void     g_thread_yield        (void);
 
+#ifndef G_DISABLE_DEPRECATED
 void     g_thread_set_priority (GThread               *thread,
                                 GThreadPriority        priority);
+#endif
 
 #ifdef G_OS_WIN32
 typedef GMutex * GStaticMutex;

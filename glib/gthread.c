@@ -621,13 +621,7 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  * @G_THREAD_PRIORITY_HIGH: a priority higher than normal
  * @G_THREAD_PRIORITY_URGENT: the highest priority
  *
- * Specifies the priority of a thread.
- *
- * <note><para>It is not guaranteed that threads with different priorities
- * really behave accordingly. On some systems (e.g. Linux) there are no
- * thread priorities. On other systems (e.g. Solaris) there doesn't
- * seem to be different scheduling for different priorities. All in all
- * try to avoid being dependent on priorities.</para></note>
+ * Deprecated:2.32: thread priorities no longer have any effect.
  **/
 
   (void(*)(GThreadFunc, gpointer, gulong,
@@ -1707,7 +1701,7 @@ g_thread_create_proxy (gpointer data)
  * @joinable: should this thread be joinable?
  * @error: return location for error, or %NULL
  *
- * This function creates a new thread with the default priority.
+ * This function creates a new thread.
  *
  * If @joinable is %TRUE, you can wait for this threads termination
  * calling g_thread_join(). Otherwise the thread will just disappear
@@ -1729,14 +1723,14 @@ g_thread_create_proxy (gpointer data)
  * @stack_size: a stack size for the new thread.
  * @joinable: should this thread be joinable?
  * @bound: should this thread be bound to a system thread?
- * @priority: a priority for the thread.
+ * @priority: ignored
  * @error: return location for error.
  * @Returns: the new #GThread on success.
  *
- * This function creates a new thread with the priority @priority. If
- * the underlying thread implementation supports it, the thread gets a
- * stack size of @stack_size or the default value for the current
- * platform, if @stack_size is 0.
+ * This function creates a new thread. If the underlying thread
+ * implementation supports it, the thread gets a stack size of
+ * @stack_size or the default value for the current platform, if
+ * @stack_size is 0.
  *
  * If @joinable is %TRUE, you can wait for this threads termination
  * calling g_thread_join(). Otherwise the thread will just disappear
@@ -1751,13 +1745,6 @@ g_thread_create_proxy (gpointer data)
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
- *
- * <note><para>It is not guaranteed that threads with different priorities
- * really behave accordingly. On some systems (e.g. Linux) there are no
- * thread priorities. On other systems (e.g. Solaris) there doesn't
- * seem to be different scheduling for different priorities. All in all
- * try to avoid being dependent on priorities. Use
- * %G_THREAD_PRIORITY_NORMAL here as a default.</para></note>
  *
  * <note><para>Only use g_thread_create_full() if you really can't use
  * g_thread_create() instead. g_thread_create() does not take
@@ -1776,19 +1763,16 @@ g_thread_create_full (GThreadFunc       func,
   GRealThread* result;
   GError *local_error = NULL;
   g_return_val_if_fail (func, NULL);
-  g_return_val_if_fail (priority >= G_THREAD_PRIORITY_LOW, NULL);
-  g_return_val_if_fail (priority <= G_THREAD_PRIORITY_URGENT, NULL);
 
   result = g_new0 (GRealThread, 1);
 
   result->thread.joinable = joinable;
-  result->thread.priority = priority;
   result->thread.func = func;
   result->thread.data = data;
   result->private_data = NULL;
   G_LOCK (g_thread);
   G_THREAD_UF (thread_create, (g_thread_create_proxy, result,
-			       stack_size, joinable, bound, priority,
+			       stack_size, joinable, bound, 0,
 			       &result->system_thread, &local_error));
   if (!local_error)
     {
@@ -1894,31 +1878,16 @@ g_thread_join (GThread* thread)
 /**
  * g_thread_set_priority:
  * @thread: a #GThread.
- * @priority: a new priority for @thread.
+ * @priority: ignored
  *
- * Changes the priority of @thread to @priority.
+ * This function does nothing.
  *
- * <note><para>It is not guaranteed that threads with different
- * priorities really behave accordingly. On some systems (e.g. Linux)
- * there are no thread priorities. On other systems (e.g. Solaris) there
- * doesn't seem to be different scheduling for different priorities. All
- * in all try to avoid being dependent on priorities.</para></note>
+ * Deprecated:2.32: Thread priorities no longer have any effect.
  **/
 void
-g_thread_set_priority (GThread* thread,
-		       GThreadPriority priority)
+g_thread_set_priority (GThread         *thread,
+                       GThreadPriority  priority)
 {
-  GRealThread* real = (GRealThread*) thread;
-
-  g_return_if_fail (thread);
-  g_return_if_fail (!g_system_thread_equal (&real->system_thread, &zero_thread));
-  g_return_if_fail (priority >= G_THREAD_PRIORITY_LOW);
-  g_return_if_fail (priority <= G_THREAD_PRIORITY_URGENT);
-
-  thread->priority = priority;
-
-  G_THREAD_CF (thread_set_priority, (void)0,
-	       (&real->system_thread, priority));
 }
 
 /**
@@ -1940,8 +1909,6 @@ g_thread_self (void)
          created by GLib. */
       thread = g_new0 (GRealThread, 1);
       thread->thread.joinable = FALSE; /* This is a save guess */
-      thread->thread.priority = G_THREAD_PRIORITY_NORMAL; /* This is
-							     just a guess */
       thread->thread.func = NULL;
       thread->thread.data = NULL;
       thread->private_data = NULL;
