@@ -40,8 +40,6 @@ G_GNUC_INTERNAL void     g_system_thread_create (GThreadFunc       func,
                                                  gpointer          data,
                                                  gulong            stack_size,
                                                  gboolean          joinable,
-                                                 gboolean          bound,
-                                                 GThreadPriority   priority,
                                                  gpointer          thread,
                                                  GError          **error);
 G_GNUC_INTERNAL gboolean g_system_thread_equal (gpointer thread1,

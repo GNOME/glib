@@ -411,8 +411,6 @@ g_system_thread_create (GThreadFunc       func,
                         gpointer          data,
                         gulong            stack_size,
                         gboolean          joinable,
-                        gboolean          bound,
-                        GThreadPriority   priority,
                         gpointer          thread,
                         GError          **error)
 {

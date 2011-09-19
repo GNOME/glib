@@ -1729,7 +1729,7 @@ g_thread_create_full (GThreadFunc       func,
   result->private_data = NULL;
   G_LOCK (g_thread);
   g_system_thread_create (g_thread_create_proxy, result,
-                          stack_size, joinable, 0, 0,
+                          stack_size, joinable,
                           &result->system_thread, &local_error);
   if (!local_error)
     {
