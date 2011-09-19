@@ -595,6 +595,7 @@ GThreadFunc
 GThreadPriority
 GThread
 g_thread_create
+g_thread_create_with_stack_size
 g_thread_create_full
 g_thread_self
 g_thread_join

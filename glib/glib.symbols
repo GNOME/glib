@@ -1092,6 +1092,8 @@ g_thread_functions_for_glib_use
 g_threads_got_initialized
 g_thread_use_default_impl
 g_thread_gettime
+g_thread_create
+g_thread_create_with_stack_size
 g_thread_create_full
 g_thread_error_quark
 g_thread_exit

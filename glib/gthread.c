@@ -1669,15 +1669,21 @@ g_thread_create_proxy (gpointer data)
  *
  * Returns: the new #GThread on success
  */
+GThread *
+g_thread_create (GThreadFunc   func,
+                 gpointer      data,
+                 gboolean      joinable,
+                 GError      **error)
+{
+  return g_thread_create_with_stack_size (func, data, joinable, 0, error);
+}
 
 /**
- * g_thread_create_full:
+ * g_thread_create_with_stack_size:
  * @func: a function to execute in the new thread.
  * @data: an argument to supply to the new thread.
- * @stack_size: a stack size for the new thread.
  * @joinable: should this thread be joinable?
- * @bound: ignored
- * @priority: ignored
+ * @stack_size: a stack size for the new thread.
  * @error: return location for error.
  * @Returns: the new #GThread on success.
  *
@@ -1696,19 +1702,19 @@ g_thread_create_proxy (gpointer data)
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
  *
- * <note><para>Only use g_thread_create_full() if you really can't use
- * g_thread_create() instead. g_thread_create() does not take
- * @stack_size, @bound, and @priority as arguments, as they should only
- * be used in cases in which it is unavoidable.</para></note>
+ * <note><para>
+ *   Only use g_thread_create_with_stack_size() if you really can't use
+ *   g_thread_create() instead. g_thread_create() does not take
+ *   @stack_size, as it should only be used in cases in which it is
+ *   unavoidable.
+ * </para></note>
  **/
 GThread*
-g_thread_create_full (GThreadFunc       func,
-		      gpointer          data,
-		      gulong            stack_size,
-		      gboolean          joinable,
-		      gboolean 	        bound,
-		      GThreadPriority   priority,
-		      GError          **error)
+g_thread_create_with_stack_size (GThreadFunc   func,
+                                 gpointer      data,
+                                 gboolean      joinable,
+                                 gsize         stack_size,
+                                 GError      **error)
 {
   GRealThread* result;
   GError *local_error = NULL;
@@ -1739,6 +1745,34 @@ g_thread_create_full (GThreadFunc       func,
     }
 
   return (GThread*) result;
+}
+
+/**
+ * g_thread_create_full:
+ * @func: a function to execute in the new thread.
+ * @data: an argument to supply to the new thread.
+ * @stack_size: a stack size for the new thread.
+ * @joinable: should this thread be joinable?
+ * @bound: ignored
+ * @priority: ignored
+ * @error: return location for error.
+ * @Returns: the new #GThread on success.
+ *
+ * This function creates a new thread.
+ *
+ * Deprecated:2.32: The @bound and @priority arguments are now ignored.
+ * Use g_thread_create() or g_thread_create_with_stack_size() instead.
+ **/
+GThread *
+g_thread_create_full (GThreadFunc       func,
+                      gpointer          data,
+                      gulong            stack_size,
+                      gboolean          joinable,
+                      gboolean          bound,
+                      GThreadPriority   priority,
+                      GError          **error)
+{
+  return g_thread_create_with_stack_size (func, data, joinable, stack_size, error);
 }
 
 /**

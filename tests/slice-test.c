@@ -282,12 +282,12 @@ main (int   argc,
     threads = g_alloca (sizeof(GThread*) * n_threads);
     if (!use_memchunks)
       for (i = 0; i < n_threads; i++)
-        threads[i] = g_thread_create_full (test_sliced_mem_thread, seedp, 0, TRUE, FALSE, 0, NULL);
+        threads[i] = g_thread_create (test_sliced_mem_thread, seedp, TRUE, NULL);
     else
       {
         old_mem_chunks_init();
         for (i = 0; i < n_threads; i++)
-          threads[i] = g_thread_create_full (test_memchunk_thread, seedp, 0, TRUE, FALSE, 0, NULL);
+          threads[i] = g_thread_create (test_memchunk_thread, seedp, TRUE, NULL);
       }
     for (i = 0; i < n_threads; i++)
       g_thread_join (threads[i]);

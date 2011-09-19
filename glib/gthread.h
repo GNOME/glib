@@ -174,9 +174,7 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 #define g_thread_supported()    (g_threads_got_initialized)
 #endif
 
-#define g_thread_create(func, data, joinable, error) \
-  (g_thread_create_full (func, data, 0, joinable, FALSE, 0, error))
-
+#ifndef G_DISABLE_DEPRECATED
 GThread* g_thread_create_full  (GThreadFunc            func,
                                 gpointer               data,
                                 gulong                 stack_size,
@@ -184,6 +182,19 @@ GThread* g_thread_create_full  (GThreadFunc            func,
                                 gboolean               bound,
                                 GThreadPriority        priority,
                                 GError               **error);
+#endif
+
+GThread *       g_thread_create                 (GThreadFunc   func,
+                                                 gpointer      data,
+                                                 gboolean      joinable,
+                                                 GError      **error);
+
+GThread *       g_thread_create_with_stack_size (GThreadFunc   func,
+                                                 gpointer      data,
+                                                 gboolean      joinable,
+                                                 gsize         stack_size,
+                                                 GError      **error);
+
 GThread* g_thread_self         (void);
 void     g_thread_exit         (gpointer               retval);
 gpointer g_thread_join         (GThread               *thread);
