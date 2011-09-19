@@ -105,6 +105,7 @@ main (int argc, char *argv[])
 
   g_test_add_func ("/mappedfile/basic", test_basic);
   g_test_add_func ("/mappedfile/empty", test_empty);
+  g_test_add_func ("/mappedfile/device", test_device);
   g_test_add_func ("/mappedfile/nonexisting", test_nonexisting);
   g_test_add_func ("/mappedfile/writable", test_writable);
 
