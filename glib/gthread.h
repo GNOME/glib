@@ -250,16 +250,6 @@ g_once_init_enter (volatile gsize *value_location)
 }
 #endif /* G_CAN_INLINE || __G_THREAD_C__ */
 
-/* these are some convenience macros that expand to nothing if GLib
- * was configured with --disable-threads. for using StaticMutexes,
- * you define them with G_LOCK_DEFINE_STATIC (name) or G_LOCK_DEFINE (name)
- * if you need to export the mutex. With G_LOCK_EXTERN (name) you can
- * declare such an globally defined lock. name is a unique identifier
- * for the protected varibale or code portion. locking, testing and
- * unlocking of such mutexes can be done with G_LOCK(), G_UNLOCK() and
- * G_TRYLOCK() respectively.
- */
-extern void glib_dummy_decl (void);
 #define G_LOCK_NAME(name)               g__ ## name ## _lock
 #define G_LOCK_DEFINE_STATIC(name)    static G_LOCK_DEFINE (name)
 #define G_LOCK_DEFINE(name)           \
