@@ -69,7 +69,8 @@ static void unexport_all (GDBusObjectManagerServer *manager, gboolean only_manag
 
 static void g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *manager,
                                                          RegistrationData   *data,
-                                                         const gchar *const *interfaces);
+                                                         const gchar *const *interfaces,
+                                                         const gchar *object_path);
 
 static void g_dbus_object_manager_server_emit_interfaces_removed (GDBusObjectManagerServer *manager,
                                                            RegistrationData   *data,
@@ -329,13 +330,11 @@ g_dbus_object_manager_server_get_connection (GDBusObjectManagerServer *manager)
 
 static void
 registration_data_export_interface (RegistrationData        *data,
-                                    GDBusInterfaceSkeleton  *interface_skeleton)
+                                    GDBusInterfaceSkeleton  *interface_skeleton,
+                                    const gchar             *object_path)
 {
   GDBusInterfaceInfo *info;
   GError *error;
-  const gchar *object_path;
-
-  object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (data->object));
 
   info = g_dbus_interface_skeleton_get_info (interface_skeleton);
   error = NULL;
@@ -367,7 +366,7 @@ registration_data_export_interface (RegistrationData        *data,
       /* emit InterfacesAdded on the ObjectManager object */
       interfaces[0] = info->name;
       interfaces[1] = NULL;
-      g_dbus_object_manager_server_emit_interfaces_added (data->manager, data, interfaces);
+      g_dbus_object_manager_server_emit_interfaces_added (data->manager, data, interfaces, object_path);
     }
 }
 
@@ -406,8 +405,10 @@ on_interface_added (GDBusObject    *object,
                     gpointer        user_data)
 {
   RegistrationData *data = user_data;
+  const gchar *object_path;
   g_mutex_lock (data->manager->priv->lock);
-  registration_data_export_interface (data, G_DBUS_INTERFACE_SKELETON (interface));
+  object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (data->object));
+  registration_data_export_interface (data, G_DBUS_INTERFACE_SKELETON (interface), object_path);
   g_mutex_unlock (data->manager->priv->lock);
 }
 
@@ -493,7 +494,7 @@ g_dbus_object_manager_server_export_unlocked (GDBusObjectManagerServer  *manager
   for (l = existing_interfaces; l != NULL; l = l->next)
     {
       GDBusInterfaceSkeleton *interface_skeleton = G_DBUS_INTERFACE_SKELETON (l->data);
-      registration_data_export_interface (data, interface_skeleton);
+      registration_data_export_interface (data, interface_skeleton, object_path);
       g_ptr_array_add (interface_names, g_dbus_interface_skeleton_get_info (interface_skeleton)->name);
     }
   g_list_foreach (existing_interfaces, (GFunc) g_object_unref, NULL);
@@ -503,7 +504,7 @@ g_dbus_object_manager_server_export_unlocked (GDBusObjectManagerServer  *manager
   data->exported = TRUE;
 
   /* now emit InterfacesAdded() for all the interfaces */
-  g_dbus_object_manager_server_emit_interfaces_added (manager, data, (const gchar *const *) interface_names->pdata);
+  g_dbus_object_manager_server_emit_interfaces_added (manager, data, (const gchar *const *) interface_names->pdata, object_path);
   g_ptr_array_unref (interface_names);
 
   g_hash_table_insert (manager->priv->map_object_path_to_data,
@@ -866,12 +867,12 @@ g_dbus_object_manager_server_constructed (GObject *object)
 static void
 g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *manager,
                                                     RegistrationData   *data,
-                                                    const gchar *const *interfaces)
+                                                    const gchar *const *interfaces,
+                                                    const gchar *object_path)
 {
   GVariantBuilder array_builder;
   GError *error;
   guint n;
-  const gchar *object_path;
 
   if (data->manager->priv->connection == NULL)
     goto out;
@@ -890,7 +891,6 @@ g_dbus_object_manager_server_emit_interfaces_added (GDBusObjectManagerServer *ma
     }
 
   error = NULL;
-  object_path = g_dbus_object_get_object_path (G_DBUS_OBJECT (data->object));
   g_dbus_connection_emit_signal (data->manager->priv->connection,
                                  NULL, /* destination_bus_name */
                                  manager->priv->object_path,
