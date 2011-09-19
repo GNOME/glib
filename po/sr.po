@@ -13,16 +13,17 @@ msgstr ""
 "Project-Id-Version: 2.8\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-08-13 00:55+0200\n"
+"POT-Creation-Date: 2011-09-18 05:38+0000\n"
+"PO-Revision-Date: 2011-09-18 11:42+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
-"Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 :    n"
-"%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"Language: sr\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 :    n%"
+"10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Virtaal 0.7.0-beta5\n"
 "X-Project-Style: gnome\n"
 
 #: ../glib/gbookmarkfile.c:780
@@ -40,7 +41,7 @@ msgstr "Својство „%s“ елемента „%s“ није прона�
 #: ../glib/gbookmarkfile.c:1278 ../glib/gbookmarkfile.c:1288
 #, c-format
 msgid "Unexpected tag '%s', tag '%s' expected"
-msgstr "Неочекивана ознака „%s“, очекивано је „%s“"
+msgstr "Неочекивана ознака „%s“, очекивана је „%s“"
 
 #: ../glib/gbookmarkfile.c:1174 ../glib/gbookmarkfile.c:1188
 #: ../glib/gbookmarkfile.c:1256 ../glib/gbookmarkfile.c:1308
@@ -57,7 +58,7 @@ msgstr ""
 #: ../glib/gbookmarkfile.c:2035
 #, c-format
 msgid "A bookmark for URI '%s' already exists"
-msgstr "Обележивач ка „%s“ већ постоји"
+msgstr "Обележивач за адресу „%s“ већ постоји"
 
 #: ../glib/gbookmarkfile.c:2081 ../glib/gbookmarkfile.c:2239
 #: ../glib/gbookmarkfile.c:2324 ../glib/gbookmarkfile.c:2404
@@ -70,32 +71,32 @@ msgstr "Обележивач ка „%s“ већ постоји"
 #: ../glib/gbookmarkfile.c:3732
 #, c-format
 msgid "No bookmark found for URI '%s'"
-msgstr "Није пронађен обележивач ка „%s“"
+msgstr "Није пронађен обележивач за адресу „%s“"
 
 #: ../glib/gbookmarkfile.c:2413
 #, c-format
 msgid "No MIME type defined in the bookmark for URI '%s'"
-msgstr "У обележивачу ка „%s“ није одређена МИМЕ врста"
+msgstr "У обележивачу за адресу „%s“ није одређена МИМЕ врста"
 
 #: ../glib/gbookmarkfile.c:2498
 #, c-format
 msgid "No private flag has been defined in bookmark for URI '%s'"
-msgstr "У обележивачу ка „%s“ није одређена приватна заставица"
+msgstr "У обележивачу за адресу „%s“ није одређена приватна заставица"
 
 #: ../glib/gbookmarkfile.c:2877
 #, c-format
 msgid "No groups set in bookmark for URI '%s'"
-msgstr "У обележивачу ка „%s“ нису одређене групе"
+msgstr "У обележивачу за адресу „%s“ нису одређене групе"
 
 #: ../glib/gbookmarkfile.c:3278 ../glib/gbookmarkfile.c:3435
 #, c-format
 msgid "No application with name '%s' registered a bookmark for '%s'"
-msgstr "Програм „%s“ није регистровао обележивач ка „%s“"
+msgstr "Програм „%s“ није регистровао обележивач за „%s“"
 
 #: ../glib/gbookmarkfile.c:3458
 #, c-format
 msgid "Failed to expand exec line '%s' with URI '%s'"
-msgstr "Не могу да проширим комадну линију „%s“ са везом ка „%s“"
+msgstr "Не могу да проширим комадну линију „%s“ са адресом „%s“"
 
 #: ../glib/gconvert.c:567 ../glib/gconvert.c:645 ../glib/giochannel.c:1404
 #: ../gio/gcharsetconverter.c:458
@@ -109,61 +110,61 @@ msgstr "Претварање из скупа знакова „%s“ у „%s“
 msgid "Could not open converter from '%s' to '%s'"
 msgstr "Не могу да покренем претварање из „%s“ у „%s“"
 
-#: ../glib/gconvert.c:768 ../glib/gconvert.c:1162 ../glib/giochannel.c:1576
+#: ../glib/gconvert.c:767 ../glib/gconvert.c:1159 ../glib/giochannel.c:1576
 #: ../glib/giochannel.c:1618 ../glib/giochannel.c:2461 ../glib/gutf8.c:1012
 #: ../glib/gutf8.c:1463 ../gio/gcharsetconverter.c:345
 #: ../gio/gdatainputstream.c:854 ../gio/gdatainputstream.c:1291
 msgid "Invalid byte sequence in conversion input"
 msgstr "Неисправан низ бајтова у улазу који претварам"
 
-#: ../glib/gconvert.c:777 ../glib/gconvert.c:1087 ../glib/giochannel.c:1583
+#: ../glib/gconvert.c:775 ../glib/gconvert.c:1084 ../glib/giochannel.c:1583
 #: ../glib/giochannel.c:2473 ../gio/gcharsetconverter.c:350
 #, c-format
 msgid "Error during conversion: %s"
-msgstr "Грешка при претварању: %s"
+msgstr "Грешка приликом претварања: %s"
 
-#: ../glib/gconvert.c:809 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
+#: ../glib/gconvert.c:806 ../glib/gutf8.c:1008 ../glib/gutf8.c:1218
 #: ../glib/gutf8.c:1355 ../glib/gutf8.c:1459
 msgid "Partial character sequence at end of input"
 msgstr "Непотпун низ знакова на крају улаза"
 
 # ово претпостављам да се односи на делимичан УТФ8 запис
-#: ../glib/gconvert.c:1059
+#: ../glib/gconvert.c:1056
 #, c-format
 msgid "Cannot convert fallback '%s' to codeset '%s'"
 msgstr "Не може претворити резерву „%s“ у запис „%s“"
 
-#: ../glib/gconvert.c:1886
+#: ../glib/gconvert.c:1883
 #, c-format
 msgid "The URI '%s' is not an absolute URI using the \"file\" scheme"
 msgstr "Адреса „%s“ није апсолутна адреса помоћу „file“ шеме"
 
-#: ../glib/gconvert.c:1896
+#: ../glib/gconvert.c:1893
 #, c-format
 msgid "The local file URI '%s' may not include a '#'"
 msgstr "Адреса локалне датотеке „%s“ не сме садржати „#“"
 
-#: ../glib/gconvert.c:1913
+#: ../glib/gconvert.c:1910
 #, c-format
 msgid "The URI '%s' is invalid"
 msgstr "Адреса „%s“ је неисправна"
 
-#: ../glib/gconvert.c:1925
+#: ../glib/gconvert.c:1922
 #, c-format
 msgid "The hostname of the URI '%s' is invalid"
 msgstr "Име домаћина из адресе „%s“ је неисправно"
 
-#: ../glib/gconvert.c:1941
+#: ../glib/gconvert.c:1938
 #, c-format
 msgid "The URI '%s' contains invalidly escaped characters"
 msgstr "Адреса „%s“ садржи неисправно назначене знаке"
 
-#: ../glib/gconvert.c:2036
+#: ../glib/gconvert.c:2033
 #, c-format
 msgid "The pathname '%s' is not an absolute path"
 msgstr "Путања „%s“ није апсолутна путања"
 
-#: ../glib/gconvert.c:2046
+#: ../glib/gconvert.c:2043
 msgid "Invalid hostname"
 msgstr "Неисправно име домаћина"
 
@@ -171,13 +172,13 @@ msgstr "Неисправно име домаћина"
 #: ../glib/gdatetime.c:202
 msgctxt "GDateTime"
 msgid "AM"
-msgstr "AM"
+msgstr "ПрП"
 
 #. Translators: 'after midday' indicator
 #: ../glib/gdatetime.c:204
 msgctxt "GDateTime"
 msgid "PM"
-msgstr "PM"
+msgstr "ПоП"
 
 #. Translators: this is the preferred format for expressing the date and the time
 #: ../glib/gdatetime.c:207
@@ -424,7 +425,7 @@ msgstr "Не могу да прочитам из датотеке „%s“: %s"
 msgid "Failed to open file '%s': %s"
 msgstr "Не могу да отворим датотеку „%s“: %s"
 
-#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:169
+#: ../glib/gfileutils.c:720 ../glib/gmappedfile.c:174
 #, c-format
 msgid "Failed to get attributes of file '%s': fstat() failed: %s"
 msgstr "Не могу да сазнам особине датотеке „%s“: неуспешан fstat(): %s"
@@ -492,7 +493,7 @@ msgid_plural "%u bytes"
 msgstr[0] "%u бајт"
 msgstr[1] "%u бајта"
 msgstr[2] "%u бајта"
-msgstr[3] "један бајт"
+msgstr[3] "Један бајт"
 
 #: ../glib/gfileutils.c:2007
 #, c-format
@@ -562,7 +563,7 @@ msgid_plural "%s bytes"
 msgstr[0] "%s бајт"
 msgstr[1] "%s бајта"
 msgstr[2] "%s бајтова"
-msgstr[3] "један бајт"
+msgstr[3] "Један бајт"
 
 #: ../glib/gfileutils.c:2142
 #, c-format
@@ -600,12 +601,12 @@ msgstr "Канал се завршава делимичним знаком"
 msgid "Can't do a raw read in g_io_channel_read_to_end"
 msgstr "Не могу да читам без обраде у g_io_channel_read_to_end"
 
-#: ../glib/gmappedfile.c:150
+#: ../glib/gmappedfile.c:155
 #, c-format
 msgid "Failed to open file '%s': open() failed: %s"
 msgstr "Не могу да отворим датотеку „%s“: неуспешан open(): %s"
 
-#: ../glib/gmappedfile.c:229
+#: ../glib/gmappedfile.c:238
 #, c-format
 msgid "Failed to map file '%s': mmap() failed: %s"
 msgstr "Не могу да мапирам датотеку „%s“: неуспешан mmap(): %s"
@@ -695,8 +696,8 @@ msgstr ""
 #: ../glib/gmarkup.c:1186
 #, c-format
 msgid ""
-"Odd character '%s', expected a '>' character to end the empty-element tag "
-"'%s'"
+"Odd character '%s', expected a '>' character to end the empty-element tag '%"
+"s'"
 msgstr ""
 "Чудан знак „%s“, а очекиван је „>“ знак ради окончања ознаке празног "
 "елемента „%s“"
@@ -924,7 +925,7 @@ msgstr "непознат знак након (?P"
 
 #: ../glib/gregex.c:306
 msgid "POSIX named classes are supported only within a class"
-msgstr "класе именоване POSIX-ом су подржане само унутар класе"
+msgstr "класе именоване ПОСИКС-ом су подржане само унутар класе"
 
 #: ../glib/gregex.c:309
 msgid "missing terminating )"
@@ -975,11 +976,11 @@ msgstr "очекивана је тврдња након (?("
 
 #: ../glib/gregex.c:347
 msgid "unknown POSIX class name"
-msgstr "непознат назив POSIX класе"
+msgstr "непознат назив ПОСИКС класе"
 
 #: ../glib/gregex.c:350
 msgid "POSIX collating elements are not supported"
-msgstr "нису подржани POSIX колациони елементи"
+msgstr "нису подржани ПОСИКС колациони елементи"
 
 #: ../glib/gregex.c:353
 msgid "character value in \\x{...} sequence is too large"
@@ -1065,7 +1066,7 @@ msgstr "Грешка приликом претраживања регуларн�
 
 #: ../glib/gregex.c:1206
 msgid "PCRE library is compiled without UTF8 support"
-msgstr "PCRE библиотека је преведена без подршка за УТФ8"
+msgstr "PCRE библиотека је преведена без подршке за УТФ8"
 
 #: ../glib/gregex.c:1215
 msgid "PCRE library is compiled without UTF8 properties support"
@@ -1150,17 +1151,17 @@ msgstr "Садржај празан (или садржи само белине)"
 msgid "Failed to read data from child process"
 msgstr "Није успело читање података из потпроцеса"
 
-#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1517
+#: ../glib/gspawn-win32.c:299 ../glib/gspawn.c:1516
 #, c-format
 msgid "Failed to create pipe for communicating with child process (%s)"
 msgstr "Није успело стварање цевке за везу са потпроцесом (%s)"
 
-#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1170
+#: ../glib/gspawn-win32.c:338 ../glib/gspawn-win32.c:346 ../glib/gspawn.c:1169
 #, c-format
 msgid "Failed to read from child pipe (%s)"
 msgstr "Није успело читање из подређене цевке (%s)"
 
-#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1383
+#: ../glib/gspawn-win32.c:369 ../glib/gspawn.c:1382
 #, c-format
 msgid "Failed to change to directory '%s' (%s)"
 msgstr "Није успело приступање директоријуму „%s“ (%s)"
@@ -1221,32 +1222,32 @@ msgid "Unexpected error in waitpid() (%s)"
 msgstr "Неочекивана грешка у waitpid() (%s)"
 
 # за сада овако, можда гранање, умножавање? виљушкање ;-)
-#: ../glib/gspawn.c:1237
+#: ../glib/gspawn.c:1236
 #, c-format
 msgid "Failed to fork (%s)"
 msgstr "Није успео fork() (%s)"
 
-#: ../glib/gspawn.c:1393
+#: ../glib/gspawn.c:1392
 #, c-format
 msgid "Failed to execute child process \"%s\" (%s)"
 msgstr "Није успело извршавање потпроцеса „%s“ (%s)"
 
-#: ../glib/gspawn.c:1403
+#: ../glib/gspawn.c:1402
 #, c-format
 msgid "Failed to redirect output or input of child process (%s)"
 msgstr "Није успело преусмеравање улаза или излаза потпроцеса (%s)"
 
-#: ../glib/gspawn.c:1412
+#: ../glib/gspawn.c:1411
 #, c-format
 msgid "Failed to fork child process (%s)"
 msgstr "Није успео fork() потпроцеса (%s)"
 
-#: ../glib/gspawn.c:1420
+#: ../glib/gspawn.c:1419
 #, c-format
 msgid "Unknown error executing child process \"%s\""
 msgstr "Непозната грешка при извршавању потпроцеса „%s“"
 
-#: ../glib/gspawn.c:1444
+#: ../glib/gspawn.c:1443
 #, c-format
 msgid "Failed to read enough data from child pid pipe (%s)"
 msgstr "Није успео да прочита довољно података из цевке ка потпроцесу (%s)"
@@ -1446,10 +1447,11 @@ msgstr "Превелика бројчана вредност је прослеђ
 msgid "Stream is already closed"
 msgstr "Ток је већ затворен"
 
-#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1640
-#: ../gio/gdbusconnection.c:1729 ../gio/gdbusconnection.c:1916
-#: ../gio/glocalfile.c:2100 ../gio/gsimpleasyncresult.c:814
-#: ../gio/gsimpleasyncresult.c:840
+#: ../gio/gcancellable.c:321 ../gio/gdbusconnection.c:1646
+#: ../gio/gdbusconnection.c:1735 ../gio/gdbusconnection.c:1922
+#: ../gio/gdbusprivate.c:1352 ../gio/glocalfile.c:2100
+#: ../gio/gsimpleasyncresult.c:814 ../gio/gsimpleasyncresult.c:840
+#, c-format
 msgid "Operation was cancelled"
 msgstr "Радња је прекинута"
 
@@ -1637,7 +1639,7 @@ msgstr ""
 "Не могу да одредим адресу магистрале сесије (није направљено за овај "
 "оперативни систем)"
 
-#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6409
+#: ../gio/gdbusaddress.c:1254 ../gio/gdbusconnection.c:6415
 #, c-format
 msgid ""
 "Cannot determine bus address from DBUS_STARTER_BUS_TYPE environment variable "
@@ -1646,7 +1648,7 @@ msgstr ""
 "Не могу да одредим адресу магистрале сесије из променљиве окружења "
 "DBUS_STARTER_BUS_TYPE — непозната вредност „%s“"
 
-#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6418
+#: ../gio/gdbusaddress.c:1263 ../gio/gdbusconnection.c:6424
 msgid ""
 "Cannot determine bus address because the DBUS_STARTER_BUS_TYPE environment "
 "variable is not set"
@@ -1672,8 +1674,8 @@ msgstr "Неочекивани недостатак садржаја при (с�
 msgid ""
 "Exhausted all available authentication mechanisms (tried: %s) (available: %s)"
 msgstr ""
-"Истрошени су сви доступни механизми пријављивања (покушано: %s) (доступно: "
-"%s)"
+"Истрошени су сви доступни механизми пријављивања (покушано: %s) (доступно: %"
+"s)"
 
 #: ../gio/gdbusauth.c:1159
 msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
@@ -1757,89 +1759,89 @@ msgstr "Грешка приликом отварања привеска кључ
 msgid "(Additionally, releasing the lock for `%s' also failed: %s) "
 msgstr "(Додатно, отпуштање кључа са „%s“ такође није успело: %s)"
 
-#: ../gio/gdbusconnection.c:1150 ../gio/gdbusconnection.c:1376
-#: ../gio/gdbusconnection.c:1415 ../gio/gdbusconnection.c:1740
+#: ../gio/gdbusconnection.c:1144 ../gio/gdbusconnection.c:1382
+#: ../gio/gdbusconnection.c:1421 ../gio/gdbusconnection.c:1746
 msgid "The connection is closed"
 msgstr "Веза је затворена"
 
-#: ../gio/gdbusconnection.c:1684
+#: ../gio/gdbusconnection.c:1690
 msgid "Timeout was reached"
 msgstr "Време је истекло"
 
-#: ../gio/gdbusconnection.c:2306
+#: ../gio/gdbusconnection.c:2312
 msgid ""
 "Unsupported flags encountered when constructing a client-side connection"
 msgstr "Наишао сам на неподржане ознаке при изградњи клијентског дела везе"
 
-#: ../gio/gdbusconnection.c:3770 ../gio/gdbusconnection.c:4086
+#: ../gio/gdbusconnection.c:3776 ../gio/gdbusconnection.c:4092
 #, c-format
 msgid ""
 "No such interface `org.freedesktop.DBus.Properties' on object at path %s"
 msgstr ""
 "Нема интерфејса „org.freedesktop.DBus.Properties“ у објекту на путањи %s"
 
-#: ../gio/gdbusconnection.c:3841
+#: ../gio/gdbusconnection.c:3847
 #, c-format
 msgid "Error setting property `%s': Expected type `%s' but got `%s'"
 msgstr ""
 "Грешка при постављању особине „%s“: Очекивани тип је био „%s“, а добијен је "
 "„%s“"
 
-#: ../gio/gdbusconnection.c:3936
+#: ../gio/gdbusconnection.c:3942
 #, c-format
 msgid "No such property `%s'"
 msgstr "Нема особине „%s“"
 
-#: ../gio/gdbusconnection.c:3948
+#: ../gio/gdbusconnection.c:3954
 #, c-format
 msgid "Property `%s' is not readable"
 msgstr "Особина „%s“ није читљива"
 
-#: ../gio/gdbusconnection.c:3959
+#: ../gio/gdbusconnection.c:3965
 #, c-format
 msgid "Property `%s' is not writable"
 msgstr "Није могуће писање особине „%s“"
 
-#: ../gio/gdbusconnection.c:4029 ../gio/gdbusconnection.c:5853
+#: ../gio/gdbusconnection.c:4035 ../gio/gdbusconnection.c:5859
 #, c-format
 msgid "No such interface `%s'"
 msgstr "Нема интерфејса „%s“"
 
-#: ../gio/gdbusconnection.c:4213
+#: ../gio/gdbusconnection.c:4219
 msgid "No such interface"
 msgstr "Нема таквог интерфејса"
 
-#: ../gio/gdbusconnection.c:4432 ../gio/gdbusconnection.c:6359
+#: ../gio/gdbusconnection.c:4438 ../gio/gdbusconnection.c:6365
 #, c-format
 msgid "No such interface `%s' on object at path %s"
 msgstr "Нема интерфејса „%s“ у објекту на путањи %s"
 
-#: ../gio/gdbusconnection.c:4484
+#: ../gio/gdbusconnection.c:4490
 #, c-format
 msgid "No such method `%s'"
 msgstr "Нема метода „%s“"
 
-#: ../gio/gdbusconnection.c:4515
+#: ../gio/gdbusconnection.c:4521
 #, c-format
 msgid "Type of message, `%s', does not match expected type `%s'"
 msgstr "Тпи поруке, „%s“, не одговара очекиваном типу „%s“"
 
-#: ../gio/gdbusconnection.c:4734
+#: ../gio/gdbusconnection.c:4740
 #, c-format
 msgid "An object is already exported for the interface %s at %s"
 msgstr "Објекат је већ извезен за интерфејс %s на %s"
 
-#: ../gio/gdbusconnection.c:4932
+#: ../gio/gdbusconnection.c:4938
 #, c-format
 msgid "Method `%s' returned type `%s', but expected `%s'"
 msgstr "Метод „%s“ је вратио тип „%s“, али је био очекиван „%s“"
 
-#: ../gio/gdbusconnection.c:5964
+#: ../gio/gdbusconnection.c:5970
 #, c-format
 msgid "Method `%s' on interface `%s' with signature `%s' does not exist"
 msgstr "Метод „%s“ на интерфејсу „%s“ са потписом „%s“ не постоји"
 
-#: ../gio/gdbusconnection.c:6082
+#: ../gio/gdbusconnection.c:6088
 #, c-format
 msgid "A subtree is already exported for %s"
 msgstr "Поддрво је већ извезено за %s"
@@ -1881,13 +1883,13 @@ msgstr ""
 "freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
-msgstr[0] "Покушао сам да читам %lu бајтова, али сам добио EOF"
-msgstr[1] "Покушао сам да читам %lu бајтова, али сам добио EOF"
-msgstr[2] "Покушао сам да читам %lu бајтова, али сам добио EOF"
-msgstr[3] "Покушао сам да читам %lu бајтова, али сам добио EOF"
+msgstr[0] "Покушао сам да читам %lu бајт, али сам добио ЕОФ"
+msgstr[1] "Покушао сам да читам %lu бајта, али сам добио ЕОФ"
+msgstr[2] "Покушао сам да читам %lu бајтова, али сам добио ЕОФ"
+msgstr[3] "Покушао сам да читам један бајт, али сам добио ЕОФ"
 
 #: ../gio/gdbusmessage.c:1025
 #, c-format
@@ -1914,22 +1916,20 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "Рашчлањена вредност „%s“ није исправан Д-бус потпис"
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
-"Наишао сам на низ дужине %u бајтова. Највећа дужина је 2<<26 бајтова (64 "
-"MiB)."
+"Наишао сам на низ дужине %u бајт. Највећа дужина је 2<<26 бајта (64 MiB)."
 msgstr[1] ""
-"Наишао сам на низ дужине %u бајтова. Највећа дужина је 2<<26 бајтова (64 "
-"MiB)."
+"Наишао сам на низ дужине %u бајта. Највећа дужина је 2<<26 бајта (64 MiB)."
 msgstr[2] ""
 "Наишао сам на низ дужине %u бајтова. Највећа дужина је 2<<26 бајтова (64 "
 "MiB)."
 msgstr[3] ""
-"Наишао сам на низ дужине %u бајтова. Највећа дужина је 2<<26 бајтова (64 "
+"Наишао сам на низ дужине једног бајта. Највећа дужина је 2<<26 бајтова (64 "
 "MiB)."
 
 #: ../gio/gdbusmessage.c:1490
@@ -1970,13 +1970,13 @@ msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Рашчлањена вредност „%s“ није исправан Д-бус потпис (за тело поруке)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
-msgstr[0] "Нема потписа заглавља у поруци, али тело поруке има %u бајтова"
-msgstr[1] "Нема потписа заглавља у поруци, али тело поруке има %u бајтова"
-msgstr[2] "Нема потписа заглавља у поруци, али тело поруке има %u бајтова"
-msgstr[3] "Нема потписа заглавља у поруци, али тело поруке има %u бајтова"
+msgstr[0] "Нема заглавља потписа у поруци, али тело поруке има %u бајт"
+msgstr[1] "Нема заглавља потписа у поруци, али тело поруке има %u бајта"
+msgstr[2] "Нема заглавља потписа у поруци, али тело поруке има %u бајтова"
+msgstr[3] "Нема заглавља потписа у поруци, али тело поруке има један бајт"
 
 #: ../gio/gdbusmessage.c:1831
 msgid "Cannot deserialize message: "
@@ -1990,11 +1990,13 @@ msgstr ""
 "Грешка при серијализацији GVariant-а са типом ниске „%s“ у Д-бус жични формат"
 
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr "Порука има %d fds-а, али заглавље указује на %d fds-а"
+msgstr ""
+"Порука има %d описивача датотеке, али заглавље указује на %d описивача "
+"датотеке"
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
@@ -2008,8 +2010,8 @@ msgstr "Тело поруке има потпис „%s“, али недост�
 #: ../gio/gdbusmessage.c:2365
 #, c-format
 msgid ""
-"Message body has type signature `%s' but signature in the header field is `"
-"%s'"
+"Message body has type signature `%s' but signature in the header field is `%"
+"s'"
 msgstr "Тело поруке има тип потписа „%s“, али потпис у пољу заглавља је „%s“"
 
 #: ../gio/gdbusmessage.c:2381
@@ -2026,7 +2028,7 @@ msgstr "Добијена је грешка са телом поруке типа
 msgid "Error return with empty body"
 msgstr "Добијена је грешка са празним телом поруке"
 
-#: ../gio/gdbusprivate.c:1736
+#: ../gio/gdbusprivate.c:1953
 msgid "Unable to load /var/lib/dbus/machine-id: "
 msgstr "Не могу да учитам /var/lib/dbus/machine-id: "
 
@@ -2325,7 +2327,7 @@ msgstr "Не могу да направим фасциклу за корисни
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "Подацима о програму недостаје идентификатор"
 
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
@@ -2691,8 +2693,8 @@ msgid ""
 "<schema id='%s' list-of='%s'> extends <schema id='%s' list-of='%s'> but '%s' "
 "does not extend '%s'"
 msgstr ""
-"<schema id='%s' list-of='%s'> проширује <schema id='%s' list-of='%s'> али "
-"„%s“ не проширује „%s“"
+"<schema id='%s' list-of='%s'> проширује <schema id='%s' list-of='%s'> али „%"
+"s“ не проширује „%s“"
 
 #: ../gio/glib-compile-schemas.c:1163
 #, c-format
@@ -2762,8 +2764,8 @@ msgstr " и „--strict“ је наведено; излазим.\n"
 #: ../gio/glib-compile-schemas.c:1829
 #, c-format
 msgid ""
-"error parsing key `%s' in schema `%s' as specified in override file `%s': "
-"%s.  "
+"error parsing key `%s' in schema `%s' as specified in override file `%s': %"
+"s.  "
 msgstr ""
 "грешка у анализи кључа „%s“ у шеми „%s“ као што је наведено у датотеци "
 "замене „%s“: %s.  "
@@ -2869,9 +2871,8 @@ msgid "Error renaming file: %s"
 msgstr "Грешка у преименовању датотеке: %s"
 
 #: ../gio/glocalfile.c:1126
-#, fuzzy
 msgid "Can't rename file, filename already exists"
-msgstr "Не могу да преименујем датотеку, јер она већ посотоји"
+msgstr "Не могу да преименујем датотеку, јер назив датотеке већ посотоји"
 
 #: ../gio/glocalfile.c:1139 ../gio/glocalfile.c:2129 ../gio/glocalfile.c:2158
 #: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:571
@@ -3674,9 +3675,8 @@ msgstr ""
 "Име домаћина „%s“ је предугачко за SOCKSv5 протокол (максимум је %i бајтова)"
 
 #: ../gio/gsocks5proxy.c:352
-#, fuzzy
 msgid "The SOCKSv5 proxy server uses unknown address type."
-msgstr "Овај SOCKSv5 сервер посредник користи непознати тип адресе."
+msgstr "Овај СОЦКСв5 сервер посредник користи непознати тип адресе."
 
 #: ../gio/gsocks5proxy.c:359
 msgid "Internal SOCKSv5 proxy server error."
@@ -3736,16 +3736,20 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
+"Ово је последња прилика да исправно унесете лозинку пре него што ваш приступ "
+"буде закључан."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"Неколико унешених лозинки је било неисправно, и зато ће ваш приступ бити "
+"закључан након будућих неуспеха."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "Унешена лозинка је погрешна."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
