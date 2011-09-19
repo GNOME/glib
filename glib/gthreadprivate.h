@@ -37,6 +37,8 @@ G_BEGIN_DECLS
 G_GNUC_INTERNAL gboolean g_system_thread_equal (gpointer thread1,
                                                 gpointer thread2);
 
+G_GNUC_INTERNAL void     g_system_thread_exit  (void);
+
 /* Is called from gthread/gthread-impl.c */
 void g_thread_init_glib (void);
 

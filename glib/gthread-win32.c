@@ -371,8 +371,8 @@ g_thread_self_win32_impl (gpointer thread)
   *(GThreadData **)thread = self;
 }
 
-static void
-g_thread_exit_win32_impl (void)
+void
+g_system_thread_exit (void)
 {
   GThreadData *self = TlsGetValue (g_thread_self_tls);
   gboolean dtors_called;
@@ -431,7 +431,7 @@ g_thread_proxy (gpointer data)
 
   self->func (self->data);
 
-  g_thread_exit_win32_impl ();
+  g_system_thread_exit ();
 
   g_assert_not_reached ();
 
@@ -807,10 +807,10 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_thread_create_win32_impl,       /* thread */
   g_thread_yield,
   g_thread_join_win32_impl,
-  g_thread_exit_win32_impl,
+  g_system_thread_exit,
   g_thread_set_priority_win32_impl,
   g_thread_self_win32_impl,
-  NULL                             /* no equal function necessary */
+  g_system_thread_equal
 };
 
 void

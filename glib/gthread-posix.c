@@ -651,8 +651,8 @@ g_thread_join_posix_impl (gpointer thread)
   posix_check_cmd (pthread_join (*(pthread_t*)thread, &ignore));
 }
 
-static void
-g_thread_exit_posix_impl (void)
+void
+g_system_thread_exit (void)
 {
   pthread_exit (NULL);
 }
@@ -708,7 +708,7 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_thread_create_posix_impl,
   g_thread_yield,
   g_thread_join_posix_impl,
-  g_thread_exit_posix_impl,
+  g_system_thread_exit,
   g_thread_set_priority_posix_impl,
   g_thread_self_posix_impl,
   g_system_thread_equal,

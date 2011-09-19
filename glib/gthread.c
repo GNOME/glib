@@ -1817,11 +1817,9 @@ g_thread_create_full (GThreadFunc       func,
  * of g_thread_join(). If the current thread is not joinable, @retval
  * is ignored. Calling
  *
- * <informalexample>
- *  <programlisting>
+ * |[
  *   g_thread_exit (retval);
- *  </programlisting>
- * </informalexample>
+ * ]|
  *
  * is equivalent to returning @retval from the function @func, as given
  * to g_thread_create().
@@ -1835,7 +1833,8 @@ g_thread_exit (gpointer retval)
 {
   GRealThread* real = (GRealThread*) g_thread_self ();
   real->retval = retval;
-  G_THREAD_CF (thread_exit, (void)0, ());
+
+  g_system_thread_exit ();
 }
 
 /**
