@@ -95,6 +95,9 @@ static void     g_output_stream_real_close_async   (GOutputStream             *s
 static gboolean g_output_stream_real_close_finish  (GOutputStream             *stream,
 						    GAsyncResult              *result,
 						    GError                   **error);
+static gboolean _g_output_stream_close_internal    (GOutputStream             *stream,
+                                                    GCancellable              *cancellable,
+                                                    GError                   **error);
 
 static void
 g_output_stream_finalize (GObject *object)
@@ -459,9 +462,7 @@ g_output_stream_real_splice (GOutputStream             *stream,
   if (flags & G_OUTPUT_STREAM_SPLICE_CLOSE_TARGET)
     {
       /* But write errors on close are bad! */
-      if (class->close_fn &&
-	  !class->close_fn (stream, cancellable, error))
-	res = FALSE;
+      res = _g_output_stream_close_internal (stream, cancellable, error);
     }
 
   if (res)
@@ -470,6 +471,54 @@ g_output_stream_real_splice (GOutputStream             *stream,
   return -1;
 }
 
+/* Must always be called inside
+ * g_output_stream_set_pending()/g_output_stream_clear_pending(). */
+static gboolean
+_g_output_stream_close_internal (GOutputStream  *stream,
+                                 GCancellable   *cancellable,
+                                 GError        **error)
+{
+  GOutputStreamClass *class;
+  gboolean res;
+
+  if (stream->priv->closed)
+    return TRUE;
+
+  class = G_OUTPUT_STREAM_GET_CLASS (stream);
+
+  stream->priv->closing = TRUE;
+
+  if (cancellable)
+    g_cancellable_push_current (cancellable);
+
+  if (class->flush)
+    res = class->flush (stream, cancellable, error);
+  else
+    res = TRUE;
+
+  if (!res)
+    {
+      /* flushing caused the error that we want to return,
+       * but we still want to close the underlying stream if possible
+       */
+      if (class->close_fn)
+        class->close_fn (stream, cancellable, NULL);
+    }
+  else
+    {
+      res = TRUE;
+      if (class->close_fn)
+        res = class->close_fn (stream, cancellable, error);
+    }
+
+  if (cancellable)
+    g_cancellable_pop_current (cancellable);
+
+  stream->priv->closing = FALSE;
+  stream->priv->closed = TRUE;
+
+  return res;
+}
 
 /**
  * g_output_stream_close:
@@ -514,12 +563,9 @@ g_output_stream_close (GOutputStream  *stream,
 		       GCancellable   *cancellable,
 		       GError        **error)
 {
-  GOutputStreamClass *class;
   gboolean res;
 
   g_return_val_if_fail (G_IS_OUTPUT_STREAM (stream), FALSE);
-
-  class = G_OUTPUT_STREAM_GET_CLASS (stream);
 
   if (stream->priv->closed)
     return TRUE;
@@ -527,36 +573,8 @@ g_output_stream_close (GOutputStream  *stream,
   if (!g_output_stream_set_pending (stream, error))
     return FALSE;
 
-  stream->priv->closing = TRUE;
+  res = _g_output_stream_close_internal (stream, cancellable, error);
 
-  if (cancellable)
-    g_cancellable_push_current (cancellable);
-
-  if (class->flush)
-    res = class->flush (stream, cancellable, error);
-  else
-    res = TRUE;
-  
-  if (!res)
-    {
-      /* flushing caused the error that we want to return,
-       * but we still want to close the underlying stream if possible
-       */
-      if (class->close_fn)
-	class->close_fn (stream, cancellable, NULL);
-    }
-  else
-    {
-      res = TRUE;
-      if (class->close_fn)
-	res = class->close_fn (stream, cancellable, error);
-    }
-  
-  if (cancellable)
-    g_cancellable_pop_current (cancellable);
-
-  stream->priv->closing = FALSE;
-  stream->priv->closed = TRUE;
   g_output_stream_clear_pending (stream);
   
   return res;
