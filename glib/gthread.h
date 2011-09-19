@@ -110,21 +110,24 @@ GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 #define g_thread_supported()    (g_threads_got_initialized)
 #endif
 
-GThread *       g_thread_create                 (GThreadFunc   func,
-                                                 gpointer      data,
-                                                 gboolean      joinable,
-                                                 GError      **error);
+GThread *g_thread_create                 (GThreadFunc   func,
+                                          gpointer      data,
+                                          gboolean      joinable,
+                                          GError      **error);
 
-GThread *       g_thread_create_with_stack_size (GThreadFunc   func,
-                                                 gpointer      data,
-                                                 gboolean      joinable,
-                                                 gsize         stack_size,
-                                                 GError      **error);
+GThread *g_thread_create_with_stack_size (GThreadFunc   func,
+                                          gpointer      data,
+                                          gboolean      joinable,
+                                          gsize         stack_size,
+                                          GError      **error);
 
-GThread* g_thread_self         (void);
-void     g_thread_exit         (gpointer               retval);
-gpointer g_thread_join         (GThread               *thread);
-void     g_thread_yield        (void);
+GThread* g_thread_self                   (void);
+void     g_thread_exit                   (gpointer      retval);
+gpointer g_thread_join                   (GThread      *thread);
+void     g_thread_yield                  (void);
+
+void     g_thread_foreach                (GFunc         thread_func,
+                                          gpointer      user_data);
 
 #ifdef G_OS_WIN32
 typedef GMutex * GStaticMutex;
@@ -203,9 +206,6 @@ void      g_static_rw_lock_writer_lock    (GStaticRWLock* lock);
 gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
 void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
 void      g_static_rw_lock_free           (GStaticRWLock* lock);
-
-void	  g_thread_foreach         	  (GFunc    	  thread_func,
-					   gpointer 	  user_data);
 
 typedef enum
 {
