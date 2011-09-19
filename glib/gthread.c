@@ -348,16 +348,6 @@ gboolean g_threads_got_initialized = FALSE;
  * doing.</para></note>
  **/
 
-/* IMPLEMENTATION NOTE:
- *
- * g_thread_functions_for_glib_use is a global symbol that gets used by
- * most of the "primitive" threading calls.  g_mutex_lock(), for
- * example, is just a macro that calls the appropriate virtual function
- * out of this table.
- *
- * For that reason, all of those macros are documented here.
- */
-static GThreadFunctions g_thread_functions_for_glib_use_old = {
 /* GMutex Virtual Functions {{{2 ------------------------------------------ */
 
 /**
@@ -457,12 +447,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  * A #GMutex should only be accessed via the following functions.
  **/
 
-  (GMutex*(*)())g_thread_fail,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-
 /* GCond Virtual Functions {{{2 ------------------------------------------ */
 
 /**
@@ -525,13 +509,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  * A #GCond should only be accessed via the following functions.
  */
 
-  (GCond*(*)())g_thread_fail,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-  NULL,
-
 /* GPrivate Virtual Functions {{{2 --------------------------------------- */
 
 /**
@@ -588,10 +565,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  * use them as if they were functions.</para></note>
  **/
 
-  (GPrivate*(*)(GDestroyNotify))g_thread_fail,
-  NULL,
-  NULL,
-
 /* GThread Virtual Functions {{{2 ---------------------------------------- */
 /**
  * GThread:
@@ -623,18 +596,6 @@ static GThreadFunctions g_thread_functions_for_glib_use_old = {
  *
  * Deprecated:2.32: thread priorities no longer have any effect.
  **/
-
-  (void(*)(GThreadFunc, gpointer, gulong,
-	   gboolean, gboolean, GThreadPriority,
-	   gpointer, GError**))g_thread_fail,
-
-  NULL,                                        /* thread_yield */
-  NULL,                                        /* thread_join */
-  NULL,                                        /* thread_exit */
-  NULL,                                        /* thread_set_priority */
-  NULL,                                        /* thread_self */
-  NULL                                         /* thread_equal */
-};
 
 /* Local Data {{{1 -------------------------------------------------------- */
 
