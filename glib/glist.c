@@ -112,39 +112,6 @@
  * A convenience macro to get the next element in a #GList.
  **/
 
-
-
-/**
- * g_list_push_allocator:
- * @allocator: the #GAllocator to use when allocating #GList elements.
- *
- * Sets the allocator to use to allocate #GList elements. Use
- * g_list_pop_allocator() to restore the previous allocator.
- *
- * Note that this function is not available if GLib has been compiled
- * with <option>--disable-mem-pools</option>
- *
- * Deprecated:2.10: It does nothing, since #GList has been converted
- *                  to the <link linkend="glib-Memory-Slices">slice
- *                  allocator</link>
- **/
-void g_list_push_allocator (gpointer dummy) { /* present for binary compat only */ }
-
-/**
- * g_list_pop_allocator:
- *
- * Restores the previous #GAllocator, used when allocating #GList
- * elements.
- *
- * Note that this function is not available if GLib has been compiled
- * with <option>--disable-mem-pools</option>
- *
- * Deprecated:2.10: It does nothing, since #GList has been converted
- *                  to the <link linkend="glib-Memory-Slices">slice
- *                  allocator</link>
- **/
-void g_list_pop_allocator  (void)           { /* present for binary compat only */ }
-
 #define _g_list_alloc()         g_slice_new (GList)
 #define _g_list_alloc0()        g_slice_new0 (GList)
 #define _g_list_free1(list)     g_slice_free (GList, list)

@@ -104,7 +104,6 @@ synchronize their operation.
   <chapter id="glib-data-types">
     <title>GLib Data Types</title>
       <xi:include href="xml/memory_slices.xml" />
-      <xi:include href="xml/memory_chunks.xml" />
       <xi:include href="xml/linked_lists_double.xml" />
       <xi:include href="xml/linked_lists_single.xml" />
       <xi:include href="xml/queue.xml" />
@@ -123,7 +122,6 @@ synchronize their operation.
       <xi:include href="xml/datasets.xml" />
       <xi:include href="xml/relations.xml" />
       <xi:include href="xml/caches.xml" />
-      <xi:include href="xml/allocators.xml" />
       <xi:include href="xml/gvarianttype.xml"/>
       <xi:include href="xml/gvariant.xml"/>
       <xi:include href="gvariant-varargs.xml"/>

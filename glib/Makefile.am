@@ -111,7 +111,11 @@ install-ms-lib:
 uninstall-ms-lib:
 	$(uninstall_ms_lib_cmd)
 
+deprecated_sources = \
+	deprecated/gallocator.c
+
 libglib_2_0_la_SOURCES = 	\
+	$(deprecated_sources)	\
 	glib_probes.d		\
 	garray.c		\
 	gasyncqueue.c		\
@@ -230,6 +234,9 @@ glibinclude_HEADERS =   \
 	glib-object.h	\
 	glib.h
 
+deprecatedincludedir=$(includedir)/glib-2.0/glib/deprecated
+deprecatedinclude_HEADERS = \
+	deprecated/gallocator.h
 
 glibsubincludedir=$(includedir)/glib-2.0/glib
 glibsubinclude_HEADERS =   \

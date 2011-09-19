@@ -103,38 +103,6 @@
  * A convenience macro to get the next element in a #GSList.
  **/
 
-
-/**
- * g_slist_push_allocator:
- * @dummy: the #GAllocator to use when allocating #GSList elements.
- *
- * Sets the allocator to use to allocate #GSList elements. Use
- * g_slist_pop_allocator() to restore the previous allocator.
- *
- * Note that this function is not available if GLib has been compiled
- * with <option>--disable-mem-pools</option>
- *
- * Deprecated: 2.10: It does nothing, since #GSList has been converted
- *                   to the <link linkend="glib-Memory-Slices">slice
- *                   allocator</link>
- **/
-void g_slist_push_allocator (gpointer dummy) { /* present for binary compat only */ }
-
-/**
- * g_slist_pop_allocator:
- *
- * Restores the previous #GAllocator, used when allocating #GSList
- * elements.
- *
- * Note that this function is not available if GLib has been compiled
- * with <option>--disable-mem-pools</option>
- *
- * Deprecated: 2.10: It does nothing, since #GSList has been converted
- *                   to the <link linkend="glib-Memory-Slices">slice
- *                   allocator</link>
- **/
-void g_slist_pop_allocator  (void)           { /* present for binary compat only */ }
-
 #define _g_slist_alloc0()       g_slice_new0 (GSList)
 #define _g_slist_alloc()        g_slice_new (GSList)
 #define _g_slist_free1(slist)   g_slice_free (GSList, slist)

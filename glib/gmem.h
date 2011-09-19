@@ -260,50 +260,6 @@ GLIB_VAR gboolean g_mem_gc_friendly;
 GLIB_VAR GMemVTable	*glib_mem_profiler_table;
 void	g_mem_profile	(void);
 
-
-/* deprecated memchunks and allocators */
-#if !defined (G_DISABLE_DEPRECATED) || defined (GTK_COMPILATION) || defined (GDK_COMPILATION)
-typedef struct _GAllocator GAllocator;
-typedef struct _GMemChunk  GMemChunk;
-#define g_mem_chunk_create(type, pre_alloc, alloc_type)	( \
-  g_mem_chunk_new (#type " mem chunks (" #pre_alloc ")", \
-		   sizeof (type), \
-		   sizeof (type) * (pre_alloc), \
-		   (alloc_type)) \
-)
-#define g_chunk_new(type, chunk)	( \
-  (type *) g_mem_chunk_alloc (chunk) \
-)
-#define g_chunk_new0(type, chunk)	( \
-  (type *) g_mem_chunk_alloc0 (chunk) \
-)
-#define g_chunk_free(mem, mem_chunk)	G_STMT_START { \
-  g_mem_chunk_free ((mem_chunk), (mem)); \
-} G_STMT_END
-#define G_ALLOC_ONLY	  1
-#define G_ALLOC_AND_FREE  2
-GMemChunk* g_mem_chunk_new     (const gchar *name,
-				gint         atom_size,
-				gsize        area_size,
-				gint         type);
-void       g_mem_chunk_destroy (GMemChunk   *mem_chunk);
-gpointer   g_mem_chunk_alloc   (GMemChunk   *mem_chunk);
-gpointer   g_mem_chunk_alloc0  (GMemChunk   *mem_chunk);
-void       g_mem_chunk_free    (GMemChunk   *mem_chunk,
-				gpointer     mem);
-void       g_mem_chunk_clean   (GMemChunk   *mem_chunk);
-void       g_mem_chunk_reset   (GMemChunk   *mem_chunk);
-void       g_mem_chunk_print   (GMemChunk   *mem_chunk);
-void       g_mem_chunk_info    (void);
-void	   g_blow_chunks       (void);
-GAllocator*g_allocator_new     (const gchar  *name,
-				guint         n_preallocs);
-void       g_allocator_free    (GAllocator   *allocator);
-#define	G_ALLOCATOR_LIST       (1)
-#define	G_ALLOCATOR_SLIST      (2)
-#define	G_ALLOCATOR_NODE       (3)
-#endif /* G_DISABLE_DEPRECATED */
-
 G_END_DECLS
 
 #endif /* __G_MEM_H__ */

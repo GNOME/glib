@@ -1970,37 +1970,6 @@ g_unix_error_quark
 # Data Structures
 
 <SECTION>
-<TITLE>Memory Chunks</TITLE>
-<FILE>memory_chunks</FILE>
-GMemChunk
-G_ALLOC_AND_FREE
-G_ALLOC_ONLY
-
-<SUBSECTION>
-g_mem_chunk_new
-g_mem_chunk_alloc
-g_mem_chunk_alloc0
-g_mem_chunk_free
-g_mem_chunk_destroy
-
-<SUBSECTION>
-g_mem_chunk_create
-g_chunk_new
-g_chunk_new0
-g_chunk_free
-
-<SUBSECTION>
-g_mem_chunk_reset
-g_mem_chunk_clean
-g_blow_chunks
-
-<SUBSECTION>
-g_mem_chunk_info
-g_mem_chunk_print
-
-</SECTION>
-
-<SECTION>
 <TITLE>Memory Slices</TITLE>
 <FILE>memory_slices</FILE>
 g_slice_alloc
@@ -2073,10 +2042,6 @@ g_list_find
 g_list_find_custom
 g_list_position
 g_list_index
-
-<SUBSECTION>
-g_list_push_allocator
-g_list_pop_allocator
 </SECTION>
 
 <SECTION>
@@ -2121,10 +2086,6 @@ g_slist_find
 g_slist_find_custom
 g_slist_position
 g_slist_index
-
-<SUBSECTION>
-g_slist_push_allocator
-g_slist_pop_allocator
 </SECTION>
 
 <SECTION>
@@ -2504,10 +2465,6 @@ g_node_max_height
 <SUBSECTION>
 g_node_unlink
 g_node_destroy
-
-<SUBSECTION>
-g_node_push_allocator
-g_node_pop_allocator
 </SECTION>
 
 
@@ -2616,19 +2573,6 @@ g_cache_value_foreach
 GCacheDestroyFunc
 GCacheDupFunc
 GCacheNewFunc
-</SECTION>
-
-<SECTION>
-<TITLE>Memory Allocators</TITLE>
-<FILE>allocators</FILE>
-GAllocator
-g_allocator_new
-g_allocator_free
-
-<SUBSECTION Private>
-G_ALLOCATOR_LIST
-G_ALLOCATOR_NODE
-G_ALLOCATOR_SLIST
 </SECTION>
 
 <SECTION>

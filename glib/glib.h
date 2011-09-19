@@ -95,6 +95,10 @@
 #include <glib/gwin32.h>
 #endif
 
+#ifndef G_DISABLE_DEPRECATED
+#include <glib/deprecated/gallocator.h>
+#endif
+
 #undef __GLIB_H_INSIDE__
 
 #endif /* __G_LIB_H__ */

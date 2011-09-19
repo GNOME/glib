@@ -89,37 +89,6 @@
  * <link linkend="glib-N-ary-Trees">N-ary Tree</link>. fields
  **/
 
-/**
- * g_node_push_allocator:
- * @dummy: the #GAllocator to use when allocating #GNode elements.
- *
- * Sets the allocator to use to allocate #GNode elements. Use
- * g_node_pop_allocator() to restore the previous allocator.
- *
- * Note that this function is not available if GLib has been compiled
- * with <option>--disable-mem-pools</option>
- *
- * Deprecated:2.10: It does nothing, since #GNode has been converted to
- *                  the <link linkend="glib-Memory-Slices">slice
- *                  allocator</link>
- **/
-void g_node_push_allocator (gpointer dummy) { /* present for binary compat only */ }
-
-/**
- * g_node_pop_allocator:
- *
- * Restores the previous #GAllocator, used when allocating #GNode
- * elements.
- *
- * Note that this function is not available if GLib has been compiled
- * with <option>--disable-mem-pools</option>
- *
- * Deprecated:2.10: It does nothing, since #GNode has been converted to
- *                  the <link linkend="glib-Memory-Slices">slice
- *                  allocator</link>
- **/
-void g_node_pop_allocator  (void)           { /* present for binary compat only */ }
-
 #define g_node_alloc0()         g_slice_new0 (GNode)
 #define g_node_free(node)       g_slice_free (GNode, node)
 

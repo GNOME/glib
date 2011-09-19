@@ -280,11 +280,6 @@ GNode*	 g_node_last_sibling	 (GNode		  *node);
 #define	 g_node_first_child(node)	((node) ? \
 					 ((GNode*) (node))->children : NULL)
 
-#ifndef G_DISABLE_DEPRECATED
-void     g_node_push_allocator  (gpointer          dummy);
-void     g_node_pop_allocator   (void);
-#endif
-
 G_END_DECLS
 
 #endif /* __G_NODE_H__ */
