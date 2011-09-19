@@ -288,7 +288,6 @@ guint64        (*g_thread_gettime) (void) = gettime;
 /* Global Variables {{{1 -------------------------------------------------- */
 
 static GSystemThread zero_thread; /* This is initialized to all zero */
-gboolean g_thread_use_default_impl = TRUE;
 
 /**
  * g_thread_supported:
