@@ -1643,6 +1643,13 @@ om_on_signal (GDBusConnection *connection,
       om_data->state = 104;
       g_main_loop_quit (om_data->loop);
       break;
+
+    case 200:
+      om_check_interfaces_added (signal_name, parameters, "/managed/first_1",
+                                 "com.acme.Coyote", NULL);
+      om_data->state = 201;
+      g_main_loop_quit (om_data->loop);
+      break;
     }
 }
 
@@ -1731,6 +1738,7 @@ check_object_manager (void)
 {
   FooiGenObjectSkeleton *o;
   FooiGenObjectSkeleton *o2;
+  FooiGenObjectSkeleton *o3;
   GDBusInterfaceSkeleton *i;
   GDBusConnection *c;
   GDBusObjectManagerServer *manager;
@@ -2095,11 +2103,30 @@ check_object_manager (void)
   om_check_get_all (c, loop,
                     "({objectpath '/managed/first': {'com.acme.Coyote': {'Mood': <''>}}},)");
 
+  /* -------------------------------------------------- */
+
+  /* Check that export_uniquely() works */
+
+  o3 = foo_igen_object_skeleton_new ("/managed/first");
+  i = G_DBUS_INTERFACE_SKELETON (foo_igen_com_acme_coyote_skeleton_new ());
+  foo_igen_com_acme_coyote_set_mood (FOO_IGEN_COM_ACME_COYOTE (i), "indifferent");
+  foo_igen_object_skeleton_set_com_acme_coyote (o3, FOO_IGEN_COM_ACME_COYOTE (i));
+  g_object_unref (i);
+  g_dbus_object_manager_server_export_uniquely (manager, G_DBUS_OBJECT_SKELETON (o3));
+  /* ... check we get the InterfacesAdded signal */
+  om_data->state = 200;
+  g_main_loop_run (om_data->loop);
+  g_assert_cmpint (om_data->state, ==, 201);
+
+  om_check_get_all (c, loop,
+                    "({objectpath '/managed/first': {'com.acme.Coyote': {'Mood': <''>}}, '/managed/first_1': {'com.acme.Coyote': {'Mood': <'indifferent'>}}},)");
+
   //g_main_loop_run (loop); /* TODO: tmp */
 
   g_main_loop_unref (loop);
 
   g_dbus_connection_signal_unsubscribe (c, om_signal_id);
+  g_object_unref (o3);
   g_object_unref (o2);
   g_object_unref (o);
   g_object_unref (manager);
