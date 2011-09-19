@@ -708,7 +708,7 @@ g_thread_init_glib (void)
   g_threads_got_initialized = TRUE;
   g_private_init (&g_thread_specific_private, g_thread_cleanup);
   g_private_set (&g_thread_specific_private, main_thread);
-  G_THREAD_UF (thread_self, (&main_thread->system_thread));
+  g_system_thread_self (&main_thread->system_thread);
 
   /* accomplish log system initialization to enable messaging */
   _g_messages_thread_init_nomessage ();
@@ -1188,7 +1188,7 @@ g_static_rec_mutex_lock (GStaticRecMutex* mutex)
   if (!g_thread_supported ())
     return;
 
-  G_THREAD_UF (thread_self, (&self));
+  g_system_thread_self (&self);
 
   if (g_system_thread_equal (&self, &mutex->owner))
     {
@@ -1221,7 +1221,7 @@ g_static_rec_mutex_trylock (GStaticRecMutex* mutex)
   if (!g_thread_supported ())
     return TRUE;
 
-  G_THREAD_UF (thread_self, (&self));
+  g_system_thread_self (&self);
 
   if (g_system_thread_equal (&self, &mutex->owner))
     {
@@ -1285,7 +1285,7 @@ g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
   if (depth == 0)
     return;
 
-  G_THREAD_UF (thread_self, (&self));
+  g_system_thread_self (&self);
 
   if (g_system_thread_equal (&self, &mutex->owner))
     {
@@ -1771,9 +1771,9 @@ g_thread_create_full (GThreadFunc       func,
   result->thread.data = data;
   result->private_data = NULL;
   G_LOCK (g_thread);
-  G_THREAD_UF (thread_create, (g_thread_create_proxy, result,
-			       stack_size, joinable, bound, 0,
-			       &result->system_thread, &local_error));
+  g_system_thread_create (g_thread_create_proxy, result,
+                          stack_size, joinable, bound, 0,
+                          &result->system_thread, &local_error);
   if (!local_error)
     {
       result->next = g_thread_all_threads;
@@ -1844,7 +1844,7 @@ g_thread_join (GThread* thread)
   g_return_val_if_fail (thread->joinable, NULL);
   g_return_val_if_fail (!g_system_thread_equal (&real->system_thread, &zero_thread), NULL);
 
-  G_THREAD_UF (thread_join, (&real->system_thread));
+  g_system_thread_join (&real->system_thread);
 
   retval = real->retval;
 
@@ -1913,7 +1913,7 @@ g_thread_self (void)
       thread->thread.data = NULL;
       thread->private_data = NULL;
 
-      G_THREAD_UF (thread_self, (&thread->system_thread));
+      g_system_thread_self (&thread->system_thread);
 
       g_private_set (&g_thread_specific_private, thread);
 

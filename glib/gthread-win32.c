@@ -316,8 +316,8 @@ struct _GThreadData
   gboolean joinable;
 };
 
-static void
-g_thread_self_win32_impl (gpointer thread)
+void
+g_system_thread_self (gpointer thread)
 {
   GThreadData *self = TlsGetValue (g_thread_self_tls);
 
@@ -406,15 +406,15 @@ g_thread_proxy (gpointer data)
   return 0;
 }
 
-static void
-g_thread_create_win32_impl (GThreadFunc func,
-			    gpointer data,
-			    gulong stack_size,
-			    gboolean joinable,
-			    gboolean bound,
-			    GThreadPriority priority,
-			    gpointer thread,
-			    GError **error)
+void
+g_system_thread_create (GThreadFunc       func,
+                        gpointer          data,
+                        gulong            stack_size,
+                        gboolean          joinable,
+                        gboolean          bound,
+                        GThreadPriority   priority,
+                        gpointer          thread,
+                        GError          **error)
 {
   guint ignore;
   GThreadData *retval;
@@ -449,8 +449,8 @@ g_thread_yield (void)
   Sleep(0);
 }
 
-static void
-g_thread_join_win32_impl (gpointer thread)
+void
+g_system_thread_join (gpointer thread)
 {
   GThreadData *target = *(GThreadData **)thread;
 
@@ -768,12 +768,12 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_private_new,         /* private thread data */
   g_private_get,
   g_private_set,
-  g_thread_create_win32_impl,       /* thread */
+  NULL,                  /* thread */
   g_thread_yield,
-  g_thread_join_win32_impl,
+  NULL,
   g_system_thread_exit,
   NULL,
-  g_thread_self_win32_impl,
+  NULL,
   g_system_thread_equal
 };
 

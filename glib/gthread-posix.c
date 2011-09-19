@@ -492,15 +492,15 @@ _g_thread_impl_init(void)
 #endif /* _SC_THREAD_STACK_MIN */
 }
 
-static void
-g_thread_create_posix_impl (GThreadFunc thread_func,
-			    gpointer arg,
-			    gulong stack_size,
-			    gboolean joinable,
-			    gboolean bound,
-			    GThreadPriority priority,
-			    gpointer thread,
-			    GError **error)
+void
+g_system_thread_create (GThreadFunc       thread_func,
+                        gpointer          arg,
+                        gulong            stack_size,
+                        gboolean          joinable,
+                        gboolean          bound,
+                        GThreadPriority   priority,
+                        gpointer          thread,
+                        GError          **error)
 {
   pthread_attr_t attr;
   gint ret;
@@ -558,8 +558,8 @@ g_thread_yield (void)
   sched_yield ();
 }
 
-static void
-g_thread_join_posix_impl (gpointer thread)
+void
+g_system_thread_join (gpointer thread)
 {
   gpointer ignore;
   posix_check_cmd (pthread_join (*(pthread_t*)thread, &ignore));
@@ -571,8 +571,8 @@ g_system_thread_exit (void)
   pthread_exit (NULL);
 }
 
-static void
-g_thread_self_posix_impl (gpointer thread)
+void
+g_system_thread_self (gpointer thread)
 {
   *(pthread_t*)thread = pthread_self();
 }
@@ -601,12 +601,12 @@ GThreadFunctions g_thread_functions_for_glib_use =
   g_private_new,
   g_private_get,
   g_private_set,
-  g_thread_create_posix_impl,
+  NULL,
   g_thread_yield,
-  g_thread_join_posix_impl,
+  NULL,
   g_system_thread_exit,
   NULL,
-  g_thread_self_posix_impl,
+  NULL,
   g_system_thread_equal,
 };
 
