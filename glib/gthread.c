@@ -2455,7 +2455,7 @@ g_private_new (GDestroyNotify notify)
 {
   GPrivate *key;
 
-  key = malloc (sizeof (GPrivate));
+  key = g_slice_new (GPrivate);
   g_private_init (key, notify);
 
   return key;
