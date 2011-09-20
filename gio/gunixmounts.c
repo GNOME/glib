@@ -763,7 +763,8 @@ _g_get_unix_mount_points (void)
 #endif
     {
       if ((strcmp (mntent->mnt_dir, "ignore") == 0) ||
-	  (strcmp (mntent->mnt_dir, "swap") == 0))
+          (strcmp (mntent->mnt_dir, "swap") == 0) ||
+          (strcmp (mntent->mnt_dir, "none") == 0))
 	continue;
 
       mount_entry = g_new0 (GUnixMountPoint, 1);
@@ -829,7 +830,8 @@ _g_get_unix_mount_points (void)
   while (! getmntent (file, &mntent))
     {
       if ((strcmp (mntent.mnt_mountp, "ignore") == 0) ||
-	  (strcmp (mntent.mnt_mountp, "swap") == 0))
+          (strcmp (mntent.mnt_mountp, "swap") == 0) ||
+          (strcmp (mntent.mnt_mountp, "none") == 0))
 	continue;
       
       mount_entry = g_new0 (GUnixMountPoint, 1);
