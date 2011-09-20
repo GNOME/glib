@@ -593,10 +593,10 @@ msgstr "%.1f EB"
 #, c-format
 msgid "%s byte"
 msgid_plural "%s bytes"
-msgstr[0] "%u bajtov"
-msgstr[1] "%u bajt"
-msgstr[2] "%u bajta"
-msgstr[3] "%u bajti"
+msgstr[0] "%s bajtov"
+msgstr[1] "%s bajt"
+msgstr[2] "%s bajta"
+msgstr[3] "%s bajti"
 
 #: ../glib/gfileutils.c:2142
 #, c-format
@@ -1391,7 +1391,7 @@ msgstr "Datoteka s ključem vsebuje ključ '%s' v skupini '%s' z vrednostjo, ki 
 #: ../glib/gkeyfile.c:2305
 #, c-format
 msgid "Key '%s' in group '%s' has value '%s' where %s was expected"
-msgstr "Datoteka s ključem vsebuje ključ '%s' v skupini '%s' z vrednostjo, ki je ni mogoče obravnavati."
+msgstr "Ključ '%s' v skupini '%s' ima vrednost '%s', pričakovana pa je vrednost %s."
 
 #: ../glib/gkeyfile.c:2703
 #: ../glib/gkeyfile.c:2904
@@ -2728,7 +2728,7 @@ msgstr "napaka razčlenjevanja ključa `%s' v shemi `%s' kot je določen v datot
 #: ../gio/glib-compile-schemas.c:1839
 #, c-format
 msgid "Ignoring override for this key.\n"
-msgstr "Prepis za ta ključ je prezrt."
+msgstr "Prepis za ta ključ je prezrt.\n"
 
 #: ../gio/glib-compile-schemas.c:1857
 #, c-format
@@ -3643,7 +3643,7 @@ msgstr "SOCKSv5 zahteva overitveni način, ki ni podprt v GLib."
 
 #: ../gio/gsocks5proxy.c:208
 msgid "Username or password is too long for SOCKSv5 protocol)."
-msgstr "Uporabniško ime ali geslo za protokol SOCKSv5 je predolgo (največ %i)"
+msgstr "Uporabniško ime ali geslo za protokol SOCKSv5 je predolgo."
 
 #: ../gio/gsocks5proxy.c:238
 msgid "SOCKSv5 authentication failed due to wrong username or password."
@@ -3652,7 +3652,7 @@ msgstr "Overitev strežnika SOCKSv5 ni uspela zaradi napačnega uporabniškega i
 #: ../gio/gsocks5proxy.c:288
 #, c-format
 msgid "Hostname '%s' is too long for SOCKSv5 protocol"
-msgstr "Ime gostitelja `%s' je predolgo za protokol SOCKSv5 (največ %i bajtov)"
+msgstr "Ime gostitelja '%s' je predolgo za protokol SOCKSv5"
 
 #: ../gio/gsocks5proxy.c:350
 msgid "The SOCKSv5 proxy server uses unknown address type."
