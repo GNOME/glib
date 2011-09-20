@@ -585,7 +585,10 @@ g_thread_xp_TryAcquireSRWLockExclusive (gpointer mutex)
 {
   GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
 
-  return TryEnterCriticalSection (&lock->writer_lock);
+  if (!TryEnterCriticalSection (&lock->writer_lock))
+    return FALSE;
+
+  return TRUE;
 }
 
 static void __stdcall
