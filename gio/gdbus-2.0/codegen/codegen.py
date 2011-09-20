@@ -49,7 +49,7 @@ class CodeGenerator:
             self.ns_upper = ''
             self.ns_lower = ''
         self.interface_prefix = interface_prefix
-        self.header_guard = self.h.name.upper().replace('.', '_').replace('-', '_')
+        self.header_guard = self.h.name.upper().replace('.', '_').replace('-', '_').replace('/', '_')
 
     # ----------------------------------------------------------------------------------------------------
 
@@ -2767,22 +2767,22 @@ class CodeGenerator:
                      '}\n'
                      '\n'%(self.ns_lower, self.namespace))
         self.c.write('static void\n'
-                     '%sobject_proxy_set_property (GObject      *_object,\n'
+                     '%sobject_proxy_set_property (GObject      *gobject,\n'
                      '  guint         prop_id,\n'
                      '  const GValue *value,\n'
                      '  GParamSpec   *pspec)\n'
                      '{\n'
-                     '  G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);\n'
+                     '  G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);\n'
                      %(self.ns_lower))
         self.c.write('}\n'
                      '\n'%())
         self.c.write('static void\n'
-                     '%sobject_proxy_get_property (GObject      *_object,\n'
+                     '%sobject_proxy_get_property (GObject      *gobject,\n'
                      '  guint         prop_id,\n'
                      '  GValue       *value,\n'
                      '  GParamSpec   *pspec)\n'
                      '{\n'
-                     '  %sObjectProxy *object = %sOBJECT_PROXY (_object);\n'
+                     '  %sObjectProxy *object = %sOBJECT_PROXY (gobject);\n'
                      '  GDBusInterface *interface;\n'
                      '\n'
                      '  switch (prop_id)\n'
@@ -2798,7 +2798,7 @@ class CodeGenerator:
                          %(n, i.name))
             n += 1
         self.c.write('    default:\n'
-                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);\n'
+                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);\n'
                      '      break;\n'
                      '  }\n'
                      '}\n'
@@ -2887,12 +2887,12 @@ class CodeGenerator:
                      '}\n'
                      '\n'%(self.ns_lower, self.namespace))
         self.c.write('static void\n'
-                     '%sobject_skeleton_set_property (GObject      *_object,\n'
+                     '%sobject_skeleton_set_property (GObject      *gobject,\n'
                      '  guint         prop_id,\n'
                      '  const GValue *value,\n'
                      '  GParamSpec   *pspec)\n'
                      '{\n'
-                     '  %sObjectSkeleton *object = %sOBJECT_SKELETON (_object);\n'
+                     '  %sObjectSkeleton *object = %sOBJECT_SKELETON (gobject);\n'
                      '  GDBusInterfaceSkeleton *interface;\n'
                      '\n'
                      '  switch (prop_id)\n'
@@ -2916,18 +2916,18 @@ class CodeGenerator:
                          %(n, self.ns_upper, i.name_upper, i.name))
             n += 1
         self.c.write('    default:\n'
-                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);\n'
+                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);\n'
                      '      break;\n'
                      '  }\n'
                      '}\n'
                      '\n'%())
         self.c.write('static void\n'
-                     '%sobject_skeleton_get_property (GObject      *_object,\n'
+                     '%sobject_skeleton_get_property (GObject      *gobject,\n'
                      '  guint         prop_id,\n'
                      '  GValue       *value,\n'
                      '  GParamSpec   *pspec)\n'
                      '{\n'
-                     '  %sObjectSkeleton *object = %sOBJECT_SKELETON (_object);\n'
+                     '  %sObjectSkeleton *object = %sOBJECT_SKELETON (gobject);\n'
                      '  GDBusInterface *interface;\n'
                      '\n'
                      '  switch (prop_id)\n'
@@ -2943,7 +2943,7 @@ class CodeGenerator:
                          %(n, i.name))
             n += 1
         self.c.write('    default:\n'
-                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (_object, prop_id, pspec);\n'
+                     '      G_OBJECT_WARN_INVALID_PROPERTY_ID (gobject, prop_id, pspec);\n'
                      '      break;\n'
                      '  }\n'
                      '}\n'
