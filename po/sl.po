@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: glib master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-20 17:05+0000\n"
-"PO-Revision-Date: 2011-09-20 20:28+0100\n"
+"PO-Revision-Date: 2011-09-20 20:33+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -1376,7 +1376,7 @@ msgstr "Datoteka s ključem vsebuje ključ '%s' z vrednostjo '%s', ki ni zapisan
 
 #: ../glib/gkeyfile.c:1450
 #: ../glib/gkeyfile.c:1934
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains key '%s' which has value that cannot be interpreted."
 msgstr "Datoteka s ključem vsebuje ključ '%s' z vrednostjo, ki je ni mogoče obravnavati."
 
@@ -1387,7 +1387,7 @@ msgstr "Datoteka s ključem vsebuje ključ '%s' z vrednostjo, ki je ni mogoče o
 
 #: ../glib/gkeyfile.c:2151
 #: ../glib/gkeyfile.c:2515
-#, fuzzy, c-format
+#, c-format
 msgid "Key file contains key '%s' in group '%s' which has value that cannot be interpreted."
 msgstr "Datoteka s ključem vsebuje ključ '%s' v skupini '%s' z vrednostjo, ki je ni mogoče obravnavati."
 
@@ -1659,9 +1659,9 @@ msgid "Cancelled via GDBusAuthObserver::authorize-authenticated-peer"
 msgstr "Prekinjeno s strani GDBusAuthObserver::authorize-authenticated-peer"
 
 #: ../gio/gdbusauthmechanismsha1.c:266
-#, fuzzy, c-format
+#, c-format
 msgid "Error statting directory `%s': %s"
-msgstr "Napaka med odstranjevanjem mape \"%s\": %s"
+msgstr "Napaka med preverjanjem mape \"%s\": %s"
 
 #: ../gio/gdbusauthmechanismsha1.c:278
 #, c-format
@@ -2574,9 +2574,8 @@ msgid "<child name='%s'> already specified"
 msgstr "<child name='%s'> je že določeno"
 
 #: ../gio/glib-compile-schemas.c:884
-#, fuzzy
 msgid "can not add keys to a 'list-of' schema"
-msgstr "Uporabnika ni mogoče pooblastiti v načinu brez povezave."
+msgstr "ni mogoče dodati ključev na 'seznam' sheme."
 
 #: ../gio/glib-compile-schemas.c:895
 #, c-format
@@ -2757,7 +2756,6 @@ msgid "Do not write the gschema.compiled file"
 msgstr "Ne zapiši datoteke gschema.compiled"
 
 #: ../gio/glib-compile-schemas.c:1942
-#, fuzzy
 msgid "This option will be removed soon."
 msgstr "Možnost bo kmalu opuščena."
 
@@ -2943,7 +2941,7 @@ msgstr "Napaka med določanjem razširjenega atributa '%s': %s"
 
 #: ../gio/glocalfileinfo.c:1482
 #: ../gio/glocalfileoutputstream.c:833
-#, fuzzy, c-format
+#, c-format
 msgid "Error stating file '%s': %s"
 msgstr "Napaka med potrjevanjem datoteke '%s': %s"
 
@@ -2952,7 +2950,7 @@ msgid " (invalid encoding)"
 msgstr " (neveljavni nabor znakov)"
 
 #: ../gio/glocalfileinfo.c:1768
-#, fuzzy, c-format
+#, c-format
 msgid "Error stating file descriptor: %s"
 msgstr "Napaka med potrjevanjem opisovalnika datoteke: %s"
 
@@ -3617,12 +3615,12 @@ msgstr "SOCKSv4 nima podpore za naslove IPv6 '%s'"
 #: ../gio/gsocks4aproxy.c:139
 #, c-format
 msgid "SOCKSv4 implementation limits username to %i characters"
-msgstr ""
+msgstr "Podpora za SOCKSv4a ima omejeno uporabniško ime na %i znakov."
 
 #: ../gio/gsocks4aproxy.c:157
 #, c-format
 msgid "SOCKSv4a implementation limits hostname to %i characters"
-msgstr ""
+msgstr "Podpora za SOCKSv4a ima omejeno ime gostitelja na %i znakov."
 
 #: ../gio/gsocks4aproxy.c:183
 msgid "The server is not a SOCKSv4 proxy server."
@@ -3647,18 +3645,18 @@ msgid "The SOCKSv5 proxy requires an authentication method that is not supported
 msgstr "SOCKSv5 zahteva overitveni način, ki ni podprt v GLib."
 
 #: ../gio/gsocks5proxy.c:208
-#, fuzzy, c-format
+#, c-format
 msgid "Username or password is too long for SOCKSv5 protocol (max. is %i)."
-msgstr "Uporabniško ime ali geslo za protokol SOCKSv5 je predolgo."
+msgstr "Uporabniško ime ali geslo za protokol SOCKSv5 je predolgo (največ %i znakov)."
 
 #: ../gio/gsocks5proxy.c:239
 msgid "SOCKSv5 authentication failed due to wrong username or password."
 msgstr "Overitev strežnika SOCKSv5 ni uspela zaradi napačnega uporabniškega imena ali gesla."
 
 #: ../gio/gsocks5proxy.c:289
-#, fuzzy, c-format
+#, c-format
 msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
-msgstr "Ime gostitelja '%s' je predolgo za protokol SOCKSv5"
+msgstr "Ime gostitelja '%s' je predolgo za protokol SOCKSv5 (največ %i bajtov)."
 
 #: ../gio/gsocks5proxy.c:352
 msgid "The SOCKSv5 proxy server uses unknown address type."
