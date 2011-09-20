@@ -233,7 +233,7 @@ g_threaded_resolver_request_unref (GThreadedResolverRequest *req)
 
 static void
 g_threaded_resolver_request_complete (GThreadedResolverRequest *req,
-				      gboolean                  cancelled)
+				      GError                   *error)
 {
   g_mutex_lock (req->mutex);
   if (req->complete)
@@ -242,18 +242,18 @@ g_threaded_resolver_request_complete (GThreadedResolverRequest *req,
        * well. But we have nowhere to send the result, so just return.
        */
       g_mutex_unlock (req->mutex);
+      g_clear_error (&error);
       return;
     }
 
   req->complete = TRUE;
   g_mutex_unlock (req->mutex);
 
+  if (error)
+    g_propagate_error (&req->error, error);
+
   if (req->cancellable)
     {
-      /* Possibly propagate a cancellation error */
-      if (cancelled && !req->error)
-        g_cancellable_set_error_if_cancelled (req->cancellable, &req->error);
-
       /* Drop the signal handler's ref on @req */
       g_signal_handlers_disconnect_by_func (req->cancellable, request_cancelled, req);
       g_object_unref (req->cancellable);
@@ -281,8 +281,10 @@ request_cancelled (GCancellable *cancellable,
                    gpointer      user_data)
 {
   GThreadedResolverRequest *req = user_data;
+  GError *error = NULL;
 
-  g_threaded_resolver_request_complete (req, TRUE);
+  g_cancellable_set_error_if_cancelled (req->cancellable, &error);
+  g_threaded_resolver_request_complete (req, error);
 
   /* We can't actually cancel the resolver thread; it will eventually
    * complete on its own and call request_complete() again, which will
@@ -302,9 +304,10 @@ threaded_resolver_thread (gpointer thread_data,
                           gpointer pool_data)
 {
   GThreadedResolverRequest *req = thread_data;
+  GError *error = NULL;
 
-  req->resolve_func (req, &req->error);
-  g_threaded_resolver_request_complete (req, FALSE);
+  req->resolve_func (req, &error);
+  g_threaded_resolver_request_complete (req, error);
   g_threaded_resolver_request_unref (req);
 }
 
