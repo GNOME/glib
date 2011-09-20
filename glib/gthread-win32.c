@@ -521,7 +521,7 @@ g_thread_xp_CallThisOnThreadExit (void)
 /* {{{2 SRWLock emulation */
 typedef struct
 {
-  CRITICAL_SECTION critical_section;
+  CRITICAL_SECTION  writer_lock;
 } GThreadSRWLock;
 
 static void __stdcall
@@ -537,7 +537,7 @@ g_thread_xp_DeleteSRWLock (gpointer mutex)
 
   if (lock)
     {
-      DeleteCriticalSection (&lock->critical_section);
+      DeleteCriticalSection (&lock->writer_lock);
       free (lock);
     }
 }
@@ -563,7 +563,7 @@ g_thread_xp_get_srwlock (GThreadSRWLock * volatile *lock)
       if (result == NULL)
         g_thread_abort (errno, "malloc");
 
-      InitializeCriticalSection (&result->critical_section);
+      InitializeCriticalSection (&result->writer_lock);
       *lock = result;
 
       LeaveCriticalSection (&g_thread_xp_lock);
@@ -577,7 +577,7 @@ g_thread_xp_AcquireSRWLockExclusive (gpointer mutex)
 {
   GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
 
-  EnterCriticalSection (&lock->critical_section);
+  EnterCriticalSection (&lock->writer_lock);
 }
 
 static BOOLEAN __stdcall
@@ -585,7 +585,7 @@ g_thread_xp_TryAcquireSRWLockExclusive (gpointer mutex)
 {
   GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
 
-  return TryEnterCriticalSection (&lock->critical_section);
+  return TryEnterCriticalSection (&lock->writer_lock);
 }
 
 static void __stdcall
@@ -597,7 +597,7 @@ g_thread_xp_ReleaseSRWLockExclusive (gpointer mutex)
    * unlock freshly-allocated mutexes.
    */
   if (lock != NULL)
-    LeaveCriticalSection (&lock->critical_section);
+    LeaveCriticalSection (&lock->writer_lock);
 }
 
 /* {{{2 CONDITION_VARIABLE emulation */
