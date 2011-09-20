@@ -106,6 +106,9 @@ typedef struct
   void     (__stdcall * AcquireSRWLockExclusive)     (gpointer lock);
   BOOLEAN  (__stdcall * TryAcquireSRWLockExclusive)  (gpointer lock);
   void     (__stdcall * ReleaseSRWLockExclusive)     (gpointer lock);
+  void     (__stdcall * AcquireSRWLockShared)        (gpointer lock);
+  BOOLEAN  (__stdcall * TryAcquireSRWLockShared)     (gpointer lock);
+  void     (__stdcall * ReleaseSRWLockShared)        (gpointer lock);
 
   void     (__stdcall * InitializeConditionVariable) (gpointer cond);
   void     (__stdcall * DeleteConditionVariable)     (gpointer cond);     /* fake */
@@ -522,6 +525,12 @@ g_thread_xp_CallThisOnThreadExit (void)
 typedef struct
 {
   CRITICAL_SECTION  writer_lock;
+  gboolean          ever_shared;    /* protected by writer_lock */
+
+  /* below is only ever touched if ever_shared becomes true */
+  CRITICAL_SECTION  atomicity;
+  GThreadXpWaiter  *queued_writer; /* protected by atomicity lock */
+  gint              num_readers;   /* protected by atomicity lock */
 } GThreadSRWLock;
 
 static void __stdcall
@@ -537,6 +546,9 @@ g_thread_xp_DeleteSRWLock (gpointer mutex)
 
   if (lock)
     {
+      if (lock->ever_shared)
+        DeleteCriticalSection (&lock->atomicity);
+
       DeleteCriticalSection (&lock->writer_lock);
       free (lock);
     }
@@ -564,6 +576,7 @@ g_thread_xp_get_srwlock (GThreadSRWLock * volatile *lock)
         g_thread_abort (errno, "malloc");
 
       InitializeCriticalSection (&result->writer_lock);
+      result->ever_shared = FALSE;
       *lock = result;
 
       LeaveCriticalSection (&g_thread_xp_lock);
@@ -578,6 +591,21 @@ g_thread_xp_AcquireSRWLockExclusive (gpointer mutex)
   GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
 
   EnterCriticalSection (&lock->writer_lock);
+
+  if (lock->ever_shared)
+    {
+      GThreadXpWaiter *waiter = NULL;
+
+      EnterCriticalSection (&lock->atomicity);
+      if (lock->num_readers > 0)
+        lock->queued_writer = waiter = g_thread_xp_waiter_get ();
+      LeaveCriticalSection (&lock->atomicity);
+
+      if (waiter != NULL)
+        WaitForSingleObject (waiter->event, INFINITE);
+
+      lock->queued_writer = NULL;
+    }
 }
 
 static BOOLEAN __stdcall
@@ -587,6 +615,21 @@ g_thread_xp_TryAcquireSRWLockExclusive (gpointer mutex)
 
   if (!TryEnterCriticalSection (&lock->writer_lock))
     return FALSE;
+
+  if (lock->ever_shared)
+    {
+      gboolean available;
+
+      EnterCriticalSection (&lock->atomicity);
+      available = lock->num_readers == 0;
+      LeaveCriticalSection (&lock->atomicity);
+
+      if (!available)
+        {
+          LeaveCriticalSection (&lock->writer_lock);
+          return FALSE;
+        }
+    }
 
   return TRUE;
 }
@@ -601,6 +644,65 @@ g_thread_xp_ReleaseSRWLockExclusive (gpointer mutex)
    */
   if (lock != NULL)
     LeaveCriticalSection (&lock->writer_lock);
+}
+
+static void
+g_thread_xp_srwlock_become_reader (GThreadSRWLock *lock)
+{
+  if G_UNLIKELY (!lock->ever_shared)
+    {
+      InitializeCriticalSection (&lock->atomicity);
+      lock->queued_writer = NULL;
+      lock->num_readers = 0;
+
+      lock->ever_shared = TRUE;
+    }
+
+  EnterCriticalSection (&lock->atomicity);
+  lock->num_readers++;
+  LeaveCriticalSection (&lock->atomicity);
+}
+
+static void __stdcall
+g_thread_xp_AcquireSRWLockShared (gpointer mutex)
+{
+  GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
+
+  EnterCriticalSection (&lock->writer_lock);
+
+  g_thread_xp_srwlock_become_reader (lock);
+
+  LeaveCriticalSection (&lock->writer_lock);
+}
+
+static BOOLEAN __stdcall
+g_thread_xp_TryAcquireSRWLockShared (gpointer mutex)
+{
+  GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
+
+  if (!TryEnterCriticalSection (&lock->writer_lock))
+    return FALSE;
+
+  g_thread_xp_srwlock_become_reader (lock);
+
+  LeaveCriticalSection (&lock->writer_lock);
+
+  return TRUE;
+}
+
+static void __stdcall
+g_thread_xp_ReleaseSRWLockShared (gpointer mutex)
+{
+  GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
+
+  EnterCriticalSection (&lock->atomicity);
+
+  lock->num_readers--;
+
+  if (lock->num_readers == 0 && lock->queued_writer)
+    SetEvent (lock->queued_writer->event);
+
+  LeaveCriticalSection (&lock->atomicity);
 }
 
 /* {{{2 CONDITION_VARIABLE emulation */
@@ -738,6 +840,9 @@ g_thread_xp_init (void)
     g_thread_xp_AcquireSRWLockExclusive,
     g_thread_xp_TryAcquireSRWLockExclusive,
     g_thread_xp_ReleaseSRWLockExclusive,
+    g_thread_xp_AcquireSRWLockShared,
+    g_thread_xp_TryAcquireSRWLockShared,
+    g_thread_xp_ReleaseSRWLockShared,
     g_thread_xp_InitializeConditionVariable,
     g_thread_xp_DeleteConditionVariable,
     g_thread_xp_SleepConditionVariableSRW,
@@ -786,6 +891,9 @@ g_thread_lookup_native_funcs (void)
   GET_FUNC(AcquireSRWLockExclusive);
   GET_FUNC(TryAcquireSRWLockExclusive);
   GET_FUNC(ReleaseSRWLockExclusive);
+  GET_FUNC(AcquireSRWLockShared);
+  GET_FUNC(TryAcquireSRWLockShared);
+  GET_FUNC(ReleaseSRWLockShared);
 
   GET_FUNC(InitializeConditionVariable);
   GET_FUNC(SleepConditionVariableSRW);
