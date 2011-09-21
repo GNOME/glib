@@ -2838,7 +2838,7 @@ class CodeGenerator:
                      '{\n'
                      '  g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);\n'
                      '  g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);\n'
-                     '  return %sOBJECT_PROXY (g_object_new (%sTYPE_OBJECT_PROXY, "connection", connection, "object-path", object_path, NULL));\n'
+                     '  return %sOBJECT_PROXY (g_object_new (%sTYPE_OBJECT_PROXY, "g-connection", connection, "g-object-path", object_path, NULL));\n'
                      '}\n'
                      '\n'%(self.namespace, self.ns_lower, self.ns_upper, self.ns_upper))
 
@@ -2979,7 +2979,7 @@ class CodeGenerator:
                      '%sobject_skeleton_new (const gchar *object_path)\n'
                      '{\n'
                      '  g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);\n'
-                     '  return %sOBJECT_SKELETON (g_object_new (%sTYPE_OBJECT_SKELETON, "object-path", object_path, NULL));\n'
+                     '  return %sOBJECT_SKELETON (g_object_new (%sTYPE_OBJECT_SKELETON, "g-object-path", object_path, NULL));\n'
                      '}\n'
                      '\n'%(self.namespace, self.ns_lower, self.ns_upper, self.ns_upper))
         for i in self.ifaces:

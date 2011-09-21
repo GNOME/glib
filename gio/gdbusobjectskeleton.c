@@ -55,7 +55,7 @@ struct _GDBusObjectSkeletonPrivate
 enum
 {
   PROP_0,
-  PROP_OBJECT_PATH
+  PROP_G_OBJECT_PATH
 };
 
 enum
@@ -96,7 +96,7 @@ g_dbus_object_skeleton_get_property (GObject    *_object,
 
   switch (prop_id)
     {
-    case PROP_OBJECT_PATH:
+    case PROP_G_OBJECT_PATH:
       g_mutex_lock (object->priv->lock);
       g_value_take_string (value, object->priv->object_path);
       g_mutex_unlock (object->priv->lock);
@@ -118,7 +118,7 @@ g_dbus_object_skeleton_set_property (GObject       *_object,
 
   switch (prop_id)
     {
-    case PROP_OBJECT_PATH:
+    case PROP_G_OBJECT_PATH:
       g_dbus_object_skeleton_set_object_path (object, g_value_get_string (value));
       break;
 
@@ -148,15 +148,15 @@ g_dbus_object_skeleton_class_init (GDBusObjectSkeletonClass *klass)
   klass->authorize_method = g_dbus_object_skeleton_authorize_method_default;
 
   /**
-   * GDBusObjectSkeleton:object-path:
+   * GDBusObjectSkeleton:g-object-path:
    *
    * The object path where the object is exported.
    *
    * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_OBJECT_PATH,
-                                   g_param_spec_string ("object-path",
+                                   PROP_G_OBJECT_PATH,
+                                   g_param_spec_string ("g-object-path",
                                                         "Object Path",
                                                         "The object path where the object is exported",
                                                         NULL,
@@ -226,7 +226,7 @@ g_dbus_object_skeleton_new (const gchar *object_path)
 {
   g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);
   return G_DBUS_OBJECT_SKELETON (g_object_new (G_TYPE_DBUS_OBJECT_SKELETON,
-                                               "object-path", object_path,
+                                               "g-object-path", object_path,
                                                NULL));
 }
 
@@ -252,7 +252,7 @@ g_dbus_object_skeleton_set_object_path (GDBusObjectSkeleton *object,
       g_free (object->priv->object_path);
       object->priv->object_path = g_strdup (object_path);
       g_mutex_unlock (object->priv->lock);
-      g_object_notify (G_OBJECT (object), "object-path");
+      g_object_notify (G_OBJECT (object), "g-object-path");
     }
   else
     {
