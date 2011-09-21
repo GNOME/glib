@@ -103,15 +103,15 @@
  */
 
 #ifdef LOCK_DEBUG
-#define G_READ_LOCK(rw_lock)    do { g_printerr (G_STRLOC ": readL++\n"); g_static_rw_lock_reader_lock (rw_lock); } while (0)
-#define G_READ_UNLOCK(rw_lock)  do { g_printerr (G_STRLOC ": readL--\n"); g_static_rw_lock_reader_unlock (rw_lock); } while (0)
-#define G_WRITE_LOCK(rw_lock)   do { g_printerr (G_STRLOC ": writeL++\n"); g_static_rw_lock_writer_lock (rw_lock); } while (0)
-#define G_WRITE_UNLOCK(rw_lock) do { g_printerr (G_STRLOC ": writeL--\n"); g_static_rw_lock_writer_unlock (rw_lock); } while (0)
+#define G_READ_LOCK(rw_lock)    do { g_printerr (G_STRLOC ": readL++\n"); g_rw_lock_reader_lock (rw_lock); } while (0)
+#define G_READ_UNLOCK(rw_lock)  do { g_printerr (G_STRLOC ": readL--\n"); g_rw_lock_reader_unlock (rw_lock); } while (0)
+#define G_WRITE_LOCK(rw_lock)   do { g_printerr (G_STRLOC ": writeL++\n"); g_rw_lock_writer_lock (rw_lock); } while (0)
+#define G_WRITE_UNLOCK(rw_lock) do { g_printerr (G_STRLOC ": writeL--\n"); g_rw_lock_writer_unlock (rw_lock); } while (0)
 #else
-#define G_READ_LOCK(rw_lock)    g_static_rw_lock_reader_lock (rw_lock)
-#define G_READ_UNLOCK(rw_lock)  g_static_rw_lock_reader_unlock (rw_lock)
-#define G_WRITE_LOCK(rw_lock)   g_static_rw_lock_writer_lock (rw_lock)
-#define G_WRITE_UNLOCK(rw_lock) g_static_rw_lock_writer_unlock (rw_lock)
+#define G_READ_LOCK(rw_lock)    g_rw_lock_reader_lock (rw_lock)
+#define G_READ_UNLOCK(rw_lock)  g_rw_lock_reader_unlock (rw_lock)
+#define G_WRITE_LOCK(rw_lock)   g_rw_lock_writer_lock (rw_lock)
+#define G_WRITE_UNLOCK(rw_lock) g_rw_lock_writer_unlock (rw_lock)
 #endif
 #define	INVALID_RECURSION(func, arg, type_name) G_STMT_START{ \
     static const gchar _action[] = " invalidly modified type ";  \
@@ -368,7 +368,7 @@ typedef struct {
 
 
 /* --- variables --- */
-static GStaticRWLock   type_rw_lock = G_STATIC_RW_LOCK_INIT;
+static GRWLock         type_rw_lock = G_RW_LOCK_INIT;
 static GRecMutex       class_init_rec_mutex = G_REC_MUTEX_INIT;
 static guint           static_n_class_cache_funcs = 0;
 static ClassCacheFunc *static_class_cache_funcs = NULL;
