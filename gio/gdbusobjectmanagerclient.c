@@ -1444,8 +1444,8 @@ add_interfaces (GDBusObjectManagerClient *manager,
           object_proxy_type = G_TYPE_DBUS_OBJECT_PROXY;
         }
       op = g_object_new (object_proxy_type,
-                         "connection", manager->priv->connection,
-                         "object-path", object_path,
+                         "g-connection", manager->priv->connection,
+                         "g-object-path", object_path,
                          NULL);
       added = TRUE;
     }

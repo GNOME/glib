@@ -55,8 +55,8 @@ struct _GDBusObjectProxyPrivate
 enum
 {
   PROP_0,
-  PROP_OBJECT_PATH,
-  PROP_CONNECTION
+  PROP_G_OBJECT_PATH,
+  PROP_G_CONNECTION
 };
 
 static void dbus_object_interface_init (GDBusObjectIface *iface);
@@ -87,13 +87,13 @@ g_dbus_object_proxy_get_property (GObject    *object,
 
   switch (prop_id)
     {
-    case PROP_OBJECT_PATH:
+    case PROP_G_OBJECT_PATH:
       g_mutex_lock (proxy->priv->lock);
       g_value_set_string (value, proxy->priv->object_path);
       g_mutex_unlock (proxy->priv->lock);
       break;
 
-    case PROP_CONNECTION:
+    case PROP_G_CONNECTION:
       g_value_set_object (value, g_dbus_object_proxy_get_connection (proxy));
       break;
 
@@ -113,13 +113,13 @@ g_dbus_object_proxy_set_property (GObject       *object,
 
   switch (prop_id)
     {
-    case PROP_OBJECT_PATH:
+    case PROP_G_OBJECT_PATH:
       g_mutex_lock (proxy->priv->lock);
       proxy->priv->object_path = g_value_dup_string (value);
       g_mutex_unlock (proxy->priv->lock);
       break;
 
-    case PROP_CONNECTION:
+    case PROP_G_CONNECTION:
       g_mutex_lock (proxy->priv->lock);
       proxy->priv->connection = g_value_dup_object (value);
       g_mutex_unlock (proxy->priv->lock);
@@ -141,15 +141,15 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
   gobject_class->get_property = g_dbus_object_proxy_get_property;
 
   /**
-   * GDBusObjectProxy:object-path:
+   * GDBusObjectProxy:g-object-path:
    *
    * The object path of the proxy.
    *
    * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_OBJECT_PATH,
-                                   g_param_spec_string ("object-path",
+                                   PROP_G_OBJECT_PATH,
+                                   g_param_spec_string ("g-object-path",
                                                         "Object Path",
                                                         "The object path of the proxy",
                                                         NULL,
@@ -158,15 +158,15 @@ g_dbus_object_proxy_class_init (GDBusObjectProxyClass *klass)
                                                         G_PARAM_STATIC_STRINGS));
 
   /**
-   * GDBusObjectProxy:connection:
+   * GDBusObjectProxy:g-connection:
    *
    * The connection of the proxy.
    *
    * Since: 2.30
    */
   g_object_class_install_property (gobject_class,
-                                   PROP_CONNECTION,
-                                   g_param_spec_object ("connection",
+                                   PROP_G_CONNECTION,
+                                   g_param_spec_object ("g-connection",
                                                         "Connection",
                                                         "The connection of the proxy",
                                                         G_TYPE_DBUS_CONNECTION,
@@ -281,8 +281,8 @@ g_dbus_object_proxy_new (GDBusConnection *connection,
   g_return_val_if_fail (G_IS_DBUS_CONNECTION (connection), NULL);
   g_return_val_if_fail (g_variant_is_object_path (object_path), NULL);
   return G_DBUS_OBJECT_PROXY (g_object_new (G_TYPE_DBUS_OBJECT_PROXY,
-                                            "object-path", object_path,
-                                            "connection", connection,
+                                            "g-object-path", object_path,
+                                            "g-connection", connection,
                                             NULL));
 }
 
