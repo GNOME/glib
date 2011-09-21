@@ -636,6 +636,7 @@ g_timeout_add_seconds_full
 g_timeout_source_new
 g_timeout_source_new_seconds
 g_mapped_file_new
+g_mapped_file_new_from_fd
 g_mapped_file_get_length
 g_mapped_file_get_contents
 g_mapped_file_ref

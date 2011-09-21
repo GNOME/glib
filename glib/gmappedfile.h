@@ -35,6 +35,9 @@ typedef struct _GMappedFile GMappedFile;
 GMappedFile *g_mapped_file_new          (const gchar  *filename,
 				         gboolean      writable,
 				         GError      **error) G_GNUC_MALLOC;
+GMappedFile *g_mapped_file_new_from_fd  (gint          fd,
+					 gboolean      writable,
+					 GError      **error) G_GNUC_MALLOC;
 gsize        g_mapped_file_get_length   (GMappedFile  *file);
 gchar       *g_mapped_file_get_contents (GMappedFile  *file);
 GMappedFile *g_mapped_file_ref          (GMappedFile  *file);
