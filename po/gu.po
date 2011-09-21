@@ -8,7 +8,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug."
 "cgi?product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-16 16:15+0000\n"
-"PO-Revision-Date: 2011-09-20 13:23+0000\n"
+"PO-Revision-Date: 2011-09-21 12:14+0000\n"
 "Last-Translator: \n"
 "Language-Team: gu_IN <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -1484,7 +1484,7 @@ msgstr ""
 #: ../gio/gdbusaddress.c:245 ../gio/gdbusaddress.c:326
 #, c-format
 msgid "Error in address `%s' - the port attribute is malformed"
-msgstr ""
+msgstr "સરનામું `%s' માં ભૂલ - પોર્ટ ગુણધર્મ મેલફોર્મ થયેલ છે"
 
 #: ../gio/gdbusaddress.c:256 ../gio/gdbusaddress.c:337
 #, c-format
