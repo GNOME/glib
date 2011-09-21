@@ -369,7 +369,7 @@ typedef struct {
 
 /* --- variables --- */
 static GStaticRWLock   type_rw_lock = G_STATIC_RW_LOCK_INIT;
-static GStaticRecMutex class_init_rec_mutex = G_STATIC_REC_MUTEX_INIT;
+static GRecMutex       class_init_rec_mutex = G_REC_MUTEX_INIT;
 static guint           static_n_class_cache_funcs = 0;
 static ClassCacheFunc *static_class_cache_funcs = NULL;
 static guint           static_n_iface_check_funcs = 0;
@@ -2416,11 +2416,11 @@ type_data_unref_U (TypeNode *node,
 
       g_assert (current > 0);
 
-      g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+      g_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
       G_WRITE_LOCK (&type_rw_lock);
       type_data_last_unref_Wm (node, uncached);
       G_WRITE_UNLOCK (&type_rw_lock);
-      g_static_rec_mutex_unlock (&class_init_rec_mutex);
+      g_rec_mutex_unlock (&class_init_rec_mutex);
       return;
     }
   } while (!g_atomic_int_compare_and_exchange ((int *) &node->ref_count, current, current - 1));
@@ -2804,7 +2804,7 @@ g_type_add_interface_static (GType                 instance_type,
    * class initialized, however this function is rarely enough called to take
    * the simple route and always acquire class_init_rec_mutex.
    */
-  g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+  g_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
   G_WRITE_LOCK (&type_rw_lock);
   if (check_add_interface_L (instance_type, interface_type))
     {
@@ -2814,7 +2814,7 @@ g_type_add_interface_static (GType                 instance_type,
         type_add_interface_Wm (node, iface, info, NULL);
     }
   G_WRITE_UNLOCK (&type_rw_lock);
-  g_static_rec_mutex_unlock (&class_init_rec_mutex);
+  g_rec_mutex_unlock (&class_init_rec_mutex);
 }
 
 /**
@@ -2842,7 +2842,7 @@ g_type_add_interface_dynamic (GType        instance_type,
     return;
 
   /* see comment in g_type_add_interface_static() about class_init_rec_mutex */
-  g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+  g_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
   G_WRITE_LOCK (&type_rw_lock);
   if (check_add_interface_L (instance_type, interface_type))
     {
@@ -2850,7 +2850,7 @@ g_type_add_interface_dynamic (GType        instance_type,
       type_add_interface_Wm (node, iface, NULL, plugin);
     }
   G_WRITE_UNLOCK (&type_rw_lock);
-  g_static_rec_mutex_unlock (&class_init_rec_mutex);
+  g_rec_mutex_unlock (&class_init_rec_mutex);
 }
 
 
@@ -2897,7 +2897,7 @@ g_type_class_ref (GType type)
    * node->data->class.init_state == INITIALIZED, because any
    * concurrently running initialization was guarded by class_init_rec_mutex.
    */
-  g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+  g_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
 
   /* we need an initialized parent class for initializing derived classes */
   ptype = NODE_PARENT_TYPE (node);
@@ -2916,7 +2916,7 @@ g_type_class_ref (GType type)
   if (pclass)
     g_type_class_unref (pclass);
 
-  g_static_rec_mutex_unlock (&class_init_rec_mutex);
+  g_rec_mutex_unlock (&class_init_rec_mutex);
 
   return node->data->class.class;
 }
@@ -3188,12 +3188,12 @@ g_type_default_interface_ref (GType g_type)
   if (!node->data || !node->data->iface.dflt_vtable)
     {
       G_WRITE_UNLOCK (&type_rw_lock);
-      g_static_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
+      g_rec_mutex_lock (&class_init_rec_mutex); /* required locking order: 1) class_init_rec_mutex, 2) type_rw_lock */
       G_WRITE_LOCK (&type_rw_lock);
       node = lookup_type_node_I (g_type);
       type_data_ref_Wm (node);
       type_iface_ensure_dflt_vtable_Wm (node);
-      g_static_rec_mutex_unlock (&class_init_rec_mutex);
+      g_rec_mutex_unlock (&class_init_rec_mutex);
     }
   else
     type_data_ref_Wm (node); /* ref_count >= 1 already */

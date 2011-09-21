@@ -326,7 +326,7 @@ _g_module_debug_init (void)
   module_debug_initialized = TRUE;
 }
 
-static GStaticRecMutex g_module_global_lock = G_STATIC_REC_MUTEX_INIT;
+static GRecMutex g_module_global_lock = G_REC_MUTEX_INIT;
 
 GModule*
 g_module_open (const gchar    *file_name,
@@ -338,7 +338,7 @@ g_module_open (const gchar    *file_name,
   
   SUPPORT_OR_RETURN (NULL);
   
-  g_static_rec_mutex_lock (&g_module_global_lock);
+  g_rec_mutex_lock (&g_module_global_lock);
 
   if (G_UNLIKELY (!module_debug_initialized))
     _g_module_debug_init ();
@@ -368,7 +368,7 @@ g_module_open (const gchar    *file_name,
       else
 	main_module->ref_count++;
 
-      g_static_rec_mutex_unlock (&g_module_global_lock);
+      g_rec_mutex_unlock (&g_module_global_lock);
       return main_module;
     }
   
@@ -378,7 +378,7 @@ g_module_open (const gchar    *file_name,
     {
       module->ref_count++;
       
-      g_static_rec_mutex_unlock (&g_module_global_lock);
+      g_rec_mutex_unlock (&g_module_global_lock);
       return module;
     }
 
@@ -461,7 +461,7 @@ g_module_open (const gchar    *file_name,
 	  module->ref_count++;
 	  g_module_set_error (NULL);
 	  
-	  g_static_rec_mutex_unlock (&g_module_global_lock);
+	  g_rec_mutex_unlock (&g_module_global_lock);
 	  return module;
 	}
       
@@ -511,7 +511,7 @@ g_module_open (const gchar    *file_name,
       (module_debug_flags & G_MODULE_DEBUG_RESIDENT_MODULES))
     g_module_make_resident (module);
 
-  g_static_rec_mutex_unlock (&g_module_global_lock);
+  g_rec_mutex_unlock (&g_module_global_lock);
   return module;
 }
 
@@ -541,7 +541,7 @@ g_module_close (GModule	       *module)
   g_return_val_if_fail (module != NULL, FALSE);
   g_return_val_if_fail (module->ref_count > 0, FALSE);
   
-  g_static_rec_mutex_lock (&g_module_global_lock);
+  g_rec_mutex_lock (&g_module_global_lock);
 
   module->ref_count--;
   
@@ -585,7 +585,7 @@ g_module_close (GModule	       *module)
       g_free (module);
     }
   
-  g_static_rec_mutex_unlock (&g_module_global_lock);
+  g_rec_mutex_unlock (&g_module_global_lock);
   return g_module_error() == NULL;
 }
 
@@ -618,7 +618,7 @@ g_module_symbol (GModule	*module,
   g_return_val_if_fail (symbol_name != NULL, FALSE);
   g_return_val_if_fail (symbol != NULL, FALSE);
   
-  g_static_rec_mutex_lock (&g_module_global_lock);
+  g_rec_mutex_lock (&g_module_global_lock);
 
 #ifdef	G_MODULE_NEED_USCORE
   {
@@ -643,7 +643,7 @@ g_module_symbol (GModule	*module,
       *symbol = NULL;
     }
   
-  g_static_rec_mutex_unlock (&g_module_global_lock);
+  g_rec_mutex_unlock (&g_module_global_lock);
   return !module_error;
 }
 

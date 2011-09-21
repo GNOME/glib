@@ -709,7 +709,7 @@ g_variant_type_info_member_info (GVariantTypeInfo *info,
 }
 
 /* == new/ref/unref == */
-static GStaticRecMutex g_variant_type_info_lock = G_STATIC_REC_MUTEX_INIT;
+static GRecMutex g_variant_type_info_lock = G_REC_MUTEX_INIT;
 static GHashTable *g_variant_type_info_table;
 
 /* < private >
@@ -742,7 +742,7 @@ g_variant_type_info_get (const GVariantType *type)
 
       type_string = g_variant_type_dup_string (type);
 
-      g_static_rec_mutex_lock (&g_variant_type_info_lock);
+      g_rec_mutex_lock (&g_variant_type_info_lock);
 
       if (g_variant_type_info_table == NULL)
         g_variant_type_info_table = g_hash_table_new (g_str_hash,
@@ -773,7 +773,7 @@ g_variant_type_info_get (const GVariantType *type)
       else
         g_variant_type_info_ref (info);
 
-      g_static_rec_mutex_unlock (&g_variant_type_info_lock);
+      g_rec_mutex_unlock (&g_variant_type_info_lock);
       g_variant_type_info_check (info, 0);
       g_free (type_string);
 
@@ -834,7 +834,7 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
     {
       ContainerInfo *container = (ContainerInfo *) info;
 
-      g_static_rec_mutex_lock (&g_variant_type_info_lock);
+      g_rec_mutex_lock (&g_variant_type_info_lock);
       if (g_atomic_int_dec_and_test (&container->ref_count))
         {
           g_hash_table_remove (g_variant_type_info_table,
@@ -844,7 +844,7 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
               g_hash_table_unref (g_variant_type_info_table);
               g_variant_type_info_table = NULL;
             }
-          g_static_rec_mutex_unlock (&g_variant_type_info_lock);
+          g_rec_mutex_unlock (&g_variant_type_info_lock);
 
           g_free (container->type_string);
 
@@ -858,7 +858,7 @@ g_variant_type_info_unref (GVariantTypeInfo *info)
             g_assert_not_reached ();
         }
       else
-        g_static_rec_mutex_unlock (&g_variant_type_info_lock);
+        g_rec_mutex_unlock (&g_variant_type_info_lock);
     }
 }
 
