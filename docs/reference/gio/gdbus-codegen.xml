@@ -63,6 +63,46 @@
     #GDBusConnection either directly or via a
     #GDBusObjectManagerServer instance.
   </para>
+  <para>
+    The name of each generated C type is derived from the D-Bus
+    interface name stripped with the prefix given with
+    <option>--interface-prefix</option> and with the dots removed and
+    initial characters capitalized. For example, for the D-Bus
+    interface <literal>com.acme.Coyote</literal> the name used is
+    <literal>ComAcmeCoyote</literal>. For the D-Bus interface
+    <literal>org.project.Bar.Frobnicator</literal> with
+    <option>--interface-prefix</option>
+    <literal>org.project.</literal>, the name used is
+    <literal>BarFrobnicator</literal>.
+  </para>
+  <para>
+    For methods, signals and properties, if not specified, the name
+    defaults to the name of the method, signal or property.
+  </para>
+  <para>
+    Two forms of the name are used - the CamelCase form and the
+    lower-case form. The CamelCase form is used for the #GType and
+    struct name, while lower-case form is used in function names. The
+    lower-case form is calculated by converting from CamelCase to
+    lower-case and inserting underscores at word boundaries (using
+    certain heuristics).
+  </para>
+  <para>
+    If the value given by the <literal>org.gtk.GDBus.C.Name</literal>
+    annotation or the <option>--c-namespace</option> option contains
+    an underscore (sometimes called <emphasis>Ugly_Case</emphasis>),
+    then the camel-case name is derived by removing all underscores,
+    and the lower-case name is derived by lower-casing the
+    string. This is useful in some situations where abbreviations are
+    used. For example, if the annotation is used on the interface
+    <literal>net.MyCorp.MyApp.iSCSITarget</literal> with the value
+    <literal>iSCSI_Target</literal> the CamelCase form is
+    <literal>iSCSITarget</literal> while the lower-case form is
+    <literal>iscsi_target</literal>. If the annotation is used on the
+    method <literal>EjectTheiPod</literal> with the value
+    <literal>Eject_The_iPod</literal>, the lower-case form is
+    <literal>eject_the_ipod</literal>.
+  </para>
 </refsect1>
 
 <refsect1>
@@ -122,8 +162,10 @@
       <term><option>--c-namespace</option> <replaceable>YourProject</replaceable></term>
       <listitem>
         <para>
-          The namespace to use for generated C code. This must be
-          provided in CamelCase format.
+          The namespace to use for generated C code. This is expected
+          to be in <ulink
+          url="http://en.wikipedia.org/wiki/CamelCase">CamelCase</ulink>
+          or <emphasis>Ugly_Case</emphasis> (see above).
         </para>
       </listitem>
     </varlistentry>
@@ -268,50 +310,10 @@ gdbus-codegen --c-namespace MyApp                           \
           <literal>&lt;method&gt;</literal>,
           <literal>&lt;signal&gt;</literal> and
           <literal>&lt;property&gt;</literal> element to specify the
-          name to use when generating C code. The value is always
-          expected to be in <ulink
+          name to use when generating C code. The value is expected to
+          be in <ulink
           url="http://en.wikipedia.org/wiki/CamelCase">CamelCase</ulink>
-          or <emphasis>Ugly_Case</emphasis> (see below).
-        </para>
-        <para>
-          For interfaces, if not specified, the name defaults to the
-          D-Bus interface name stripped with the prefix given with
-          <option>--interface-prefix</option> and with the dots
-          removed and initial characters capitalized. For example, for
-          the D-Bus interface <literal>com.acme.Coyote</literal> the
-          name used is <literal>ComAcmeCoyote</literal>. For the D-Bus
-          interface <literal>org.project.Bar.Frobnicator</literal>
-          with <option>--interface-prefix</option>
-          <literal>org.project.</literal>, the name used is
-          <literal>BarFrobnicator</literal>.
-        </para>
-        <para>
-          For methods, signals and properties, if not specified, the
-          name defaults to the name of the method, signal or property.
-        </para>
-        <para>
-          Two forms of the name are used - the CamelCase form and
-          the lower-case form. The CamelCase form is used for the #GType
-          and struct name, while lower-case form is used in function
-          names. The lower-case form is calculated by converting from
-          CamelCase to lower-case and inserting underscores at word
-          boundaries (using certain heuristics).
-        </para>
-        <para>
-          If the value given by the annotation contains an underscore
-          (sometimes called <emphasis>Ugly_Case</emphasis>), then the
-          camel-case name is derived by removing all underscores, and
-          the lower-case name is derived by lower-casing the
-          string. This is useful in some situations where
-          abbreviations are used. For example, if the annotation is
-          used on the interface
-          <literal>net.MyCorp.MyApp.iSCSITarget</literal> with the
-          value <literal>iSCSI_Target</literal> the CamelCase form is
-          <literal>iSCSITarget</literal> while the lower-case form is
-          <literal>iscsi_target</literal>. If the annotation is used
-          on the method <literal>EjectTheiPod</literal> with the value
-          <literal>Eject_The_iPod</literal>, the lower-case form is
-          <literal>eject_the_ipod</literal>.
+          or <emphasis>Ugly_Case</emphasis> (see above).
         </para>
       </listitem>
     </varlistentry>
