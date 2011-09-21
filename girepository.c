@@ -929,7 +929,7 @@ g_irepository_get_c_prefix (GIRepository *repository,
   g_return_val_if_fail (typelib != NULL, NULL);
 
   header = (Header *) typelib->data;
-  if (header->shared_library)
+  if (header->c_prefix)
     return g_typelib_get_string (typelib, header->c_prefix);
   else
     return NULL;
