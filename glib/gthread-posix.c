@@ -480,17 +480,7 @@ g_private_set (GPrivate *key,
 
 #define posix_check_cmd(cmd) posix_check_err (cmd, #cmd)
 
-static gulong g_thread_min_stack_size = 0;
-
 #define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
-
-void
-_g_thread_impl_init(void)
-{
-#ifdef _SC_THREAD_STACK_MIN
-  g_thread_min_stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), 0);
-#endif /* _SC_THREAD_STACK_MIN */
-}
 
 void
 g_system_thread_create (GThreadFunc       thread_func,
@@ -510,7 +500,9 @@ g_system_thread_create (GThreadFunc       thread_func,
 #ifdef HAVE_PTHREAD_ATTR_SETSTACKSIZE
   if (stack_size)
     {
-      stack_size = MAX (g_thread_min_stack_size, stack_size);
+#ifdef _SC_THREAD_STACK_MIN
+      stack_size = MAX (sysconf (_SC_THREAD_STACK_MIN), stack_size);
+#endif /* _SC_THREAD_STACK_MIN */
       /* No error check here, because some systems can't do it and
        * we simply don't want threads to fail because of that. */
       pthread_attr_setstacksize (&attr, stack_size);

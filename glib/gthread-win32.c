@@ -858,23 +858,6 @@ g_thread_xp_init (void)
 
 /* {{{1 Epilogue */
 
-void
-_g_thread_impl_init (void)
-{
-  static gboolean beenhere = FALSE;
-
-  if (beenhere)
-    return;
-
-  beenhere = TRUE;
-
-  printf ("thread init\n");
-  win32_check_for_error (TLS_OUT_OF_INDEXES !=
-			 (g_thread_self_tls = TlsAlloc ()));
-  win32_check_for_error (TLS_OUT_OF_INDEXES !=
-			 (g_private_tls = TlsAlloc ()));
-}
-
 static gboolean
 g_thread_lookup_native_funcs (void)
 {
@@ -916,6 +899,9 @@ g_thread_DllMain (void)
       fprintf (stderr, "(debug) GThread using Windows XP mode\n");
       g_thread_xp_init ();
     }
+
+  win32_check_for_error (TLS_OUT_OF_INDEXES != (g_thread_self_tls = TlsAlloc ()));
+  win32_check_for_error (TLS_OUT_OF_INDEXES != (g_private_tls = TlsAlloc ()));
 }
 
 /* vim:set foldmethod=marker: */

@@ -657,8 +657,6 @@ g_thread_init_glib (void)
 
   already_done = TRUE;
 
-  _g_thread_impl_init ();
-
   /* We let the main thread (the one that calls g_thread_init) inherit
    * the static_private data set before calling g_thread_init
    */
