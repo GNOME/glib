@@ -107,6 +107,71 @@ GThread* g_thread_create_full  (GThreadFunc            func,
                                 GThreadPriority        priority,
                                 GError               **error);
 
+#ifdef G_OS_WIN32
+typedef GMutex * GStaticMutex;
+#define G_STATIC_MUTEX_INIT NULL
+#define g_static_mutex_get_mutex g_static_mutex_get_mutex_impl
+#else /* G_OS_WIN32 */
+typedef struct {
+  struct _GMutex *unused;
+  GMutex mutex;
+} GStaticMutex;
+#define G_STATIC_MUTEX_INIT { NULL, G_MUTEX_INIT }
+#define g_static_mutex_get_mutex(s) (&(s)->mutex)
+#endif /* G_OS_WIN32 */
+
+#define g_static_mutex_lock(mutex) \
+    g_mutex_lock (g_static_mutex_get_mutex (mutex))
+#define g_static_mutex_trylock(mutex) \
+    g_mutex_trylock (g_static_mutex_get_mutex (mutex))
+#define g_static_mutex_unlock(mutex) \
+    g_mutex_unlock (g_static_mutex_get_mutex (mutex))
+void g_static_mutex_init (GStaticMutex *mutex);
+void g_static_mutex_free (GStaticMutex *mutex);
+
+typedef struct _GStaticRecMutex GStaticRecMutex;
+struct _GStaticRecMutex
+{
+  /*< private >*/
+  GStaticMutex mutex;
+  guint depth;
+  GSystemThread owner;
+};
+
+#define G_STATIC_REC_MUTEX_INIT { G_STATIC_MUTEX_INIT, 0, {{0, 0, 0, 0}} }
+void     g_static_rec_mutex_init        (GStaticRecMutex *mutex);
+void     g_static_rec_mutex_lock        (GStaticRecMutex *mutex);
+gboolean g_static_rec_mutex_trylock     (GStaticRecMutex *mutex);
+void     g_static_rec_mutex_unlock      (GStaticRecMutex *mutex);
+void     g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
+                                         guint            depth);
+guint    g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex);
+void     g_static_rec_mutex_free        (GStaticRecMutex *mutex);
+
+typedef struct _GStaticRWLock GStaticRWLock;
+struct _GStaticRWLock
+{
+  /*< private >*/
+  GStaticMutex mutex;
+  GCond *read_cond;
+  GCond *write_cond;
+  guint read_counter;
+  gboolean have_writer;
+  guint want_to_read;
+  guint want_to_write;
+};
+
+#define G_STATIC_RW_LOCK_INIT { G_STATIC_MUTEX_INIT, NULL, NULL, 0, FALSE, 0, 0 }
+
+void      g_static_rw_lock_init           (GStaticRWLock* lock);
+void      g_static_rw_lock_reader_lock    (GStaticRWLock* lock);
+gboolean  g_static_rw_lock_reader_trylock (GStaticRWLock* lock);
+void      g_static_rw_lock_reader_unlock  (GStaticRWLock* lock);
+void      g_static_rw_lock_writer_lock    (GStaticRWLock* lock);
+gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
+void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
+void      g_static_rw_lock_free           (GStaticRWLock* lock);
+
 G_END_DECLS
 
 #endif /* __G_DEPRECATED_THREAD_H__ */
