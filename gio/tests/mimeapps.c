@@ -57,9 +57,32 @@ const gchar *myapp3_data =
   "Exec=my_app3 %f\n"
   "Name=my app 3\n";
 
+const gchar *myapp4_data =
+  "[Desktop Entry]\n"
+  "Encoding=UTF-8\n"
+  "Version=1.0\n"
+  "Type=Application\n"
+  "Exec=my_app4 %f\n"
+  "Name=my app 4\n"
+  "MimeType=image/bmp;";
+
+const gchar *myapp5_data =
+  "[Desktop Entry]\n"
+  "Encoding=UTF-8\n"
+  "Version=1.0\n"
+  "Type=Application\n"
+  "Exec=my_app5 %f\n"
+  "Name=my app 5\n"
+  "MimeType=image/bmp;";
+
 const gchar *defaults_data =
   "[Default Applications]\n"
+  "image/bmp=myapp4.desktop;\n"
   "image/png=myapp3.desktop;\n";
+
+const gchar *mimecache_data =
+  "[MIME Cache]\n"
+  "image/bmp=myapp4.desktop;myapp5.desktop;\n";
 
 /* Set up XDG_DATA_HOME and XDG_DATA_DIRS.
  * XDG_DATA_DIRS/applications will contain defaults.list
@@ -121,9 +144,27 @@ setup (void)
   g_assert_no_error (error);
   g_free (name);
 
+  name = g_build_filename (apphome, "myapp4.desktop", NULL);
+  g_test_message ("creating '%s'\n", name);
+  g_file_set_contents (name, myapp4_data, -1, &error);
+  g_assert_no_error (error);
+  g_free (name);
+
+  name = g_build_filename (apphome, "myapp5.desktop", NULL);
+  g_test_message ("creating '%s'\n", name);
+  g_file_set_contents (name, myapp5_data, -1, &error);
+  g_assert_no_error (error);
+  g_free (name);
+
   mimeapps = g_build_filename (apphome, "mimeapps.list", NULL);
   g_test_message ("removing '%s'\n", mimeapps);
   g_remove (mimeapps);
+
+  name = g_build_filename (apphome, "mimeinfo.cache", NULL);
+  g_test_message ("creating '%s'\n", name);
+  g_file_set_contents (name, mimecache_data, -1, &error);
+  g_assert_no_error (error);
+  g_free (name);
 
   g_free (dir);
   g_free (xdgdatahome);
@@ -421,6 +462,106 @@ test_mime_default (void)
   g_object_unref (appinfo3);
 }
 
+/* test interaction between mimeinfo.cache, defaults.list and mimeapps.list
+ * to ensure g_app_info_set_as_last_used_for_type doesn't incorrectly
+ * change the default
+ */
+static void
+test_mime_default_last_used (void)
+{
+  GAppInfo *appinfo4;
+  GAppInfo *appinfo5;
+  GError *error = NULL;
+  GAppInfo *def;
+  GList *list;
+  const gchar *contenttype = "image/bmp";
+
+  /* clear things out */
+  g_app_info_reset_type_associations (contenttype);
+
+  appinfo4 = (GAppInfo*)g_desktop_app_info_new ("myapp4.desktop");
+  appinfo5 = (GAppInfo*)g_desktop_app_info_new ("myapp5.desktop");
+
+  /* myapp4 is set as the default in defaults.list */
+  /* myapp4 and myapp5 can both handle image/bmp */
+  def = g_app_info_get_default_for_type (contenttype, FALSE);
+  list = g_app_info_get_recommended_for_type (contenttype);
+  g_assert (g_app_info_equal (def, appinfo4));
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* 1. set default (myapp4) as last used */
+  g_app_info_set_as_last_used_for_type (appinfo4, contenttype, &error);
+  g_assert_no_error (error);
+
+  def = g_app_info_get_default_for_type (contenttype, FALSE);
+  list = g_app_info_get_recommended_for_type (contenttype);
+  g_assert (g_app_info_equal (def, appinfo4)); /* default is unaffected */
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* 2. set other (myapp5) as last used */
+  g_app_info_set_as_last_used_for_type (appinfo5, contenttype, &error);
+  g_assert_no_error (error);
+
+  def = g_app_info_get_default_for_type (contenttype, FALSE);
+  list = g_app_info_get_recommended_for_type (contenttype);
+  g_assert (g_app_info_equal (def, appinfo4));
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* 3. change the default to myapp5 */
+  g_app_info_set_as_default_for_type (appinfo5, contenttype, &error);
+  g_assert_no_error (error);
+
+  def = g_app_info_get_default_for_type (contenttype, FALSE);
+  list = g_app_info_get_recommended_for_type (contenttype);
+  g_assert (g_app_info_equal (def, appinfo5));
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* 4. set myapp4 as last used */
+  g_app_info_set_as_last_used_for_type (appinfo4, contenttype, &error);
+  g_assert_no_error (error);
+
+  def = g_app_info_get_default_for_type (contenttype, FALSE);
+  list = g_app_info_get_recommended_for_type (contenttype);
+  g_assert (g_app_info_equal (def, appinfo5));
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo4));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo5));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  /* 5. set myapp5 as last used again */
+  g_app_info_set_as_last_used_for_type (appinfo5, contenttype, &error);
+  g_assert_no_error (error);
+
+  def = g_app_info_get_default_for_type (contenttype, FALSE);
+  list = g_app_info_get_recommended_for_type (contenttype);
+  g_assert (g_app_info_equal (def, appinfo5));
+  g_assert_cmpint (g_list_length (list), ==, 2);
+  g_assert (g_app_info_equal ((GAppInfo*)list->data, appinfo5));
+  g_assert (g_app_info_equal ((GAppInfo*)list->next->data, appinfo4));
+  g_object_unref (def);
+  g_list_free_full (list, g_object_unref);
+
+  g_object_unref (appinfo4);
+  g_object_unref (appinfo5);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -432,6 +573,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/appinfo/mime/api", test_mime_api);
   g_test_add_func ("/appinfo/mime/default", test_mime_default);
   g_test_add_func ("/appinfo/mime/file", test_mime_file);
+  g_test_add_func ("/appinfo/mime/default_last_used", test_mime_default_last_used);
 
   return g_test_run ();
 }
