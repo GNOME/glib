@@ -22,11 +22,9 @@
     <group choice="plain" rep="repeat">
       <arg>
         <option>--annotate</option>
-        <replaceable>element</replaceable>
-        <option>--key</option>
-        <replaceable>key</replaceable>
-        <option>--value</option>
-        <replaceable>key</replaceable>
+        <replaceable>ELEMENT</replaceable>
+        <replaceable>KEY</replaceable>
+        <replaceable>VALUE</replaceable>
       </arg>
     </group>
     <arg choice="plain">FILE</arg>
@@ -142,34 +140,32 @@
     </varlistentry>
 
     <varlistentry>
-      <term><option>--annotate</option> <option>--key</option> <replaceable>KEY</replaceable> <option>--value</option> <replaceable>VALUE</replaceable></term>
+      <term><option>--annotate</option> <replaceable>ELEMENT</replaceable> <replaceable>KEY</replaceable> <replaceable>VALUE</replaceable></term>
       <listitem>
         <para>
-          Used together with <option>--key</option> and
-          <option>--value</option> to annotate the given XML files (for each <option>--annotate</option>, there must be exactly one <option>--key</option> and <option>--value</option>). It
-          can be used with interfaces, methods, signals, properties
-          and arguments in the following way:
+          Used to inject D-Bus annotations into the given XML
+          files. It can be used with interfaces, methods, signals,
+          properties and arguments in the following way:
         </para>
 <informalexample><programlisting><![CDATA[
 gdbus-codegen --c-namespace MyApp                           \
   --generate-c-code myapp-generated                         \
   --annotate "org.project.InterfaceName"                    \
-    --key org.gtk.GDBus.C.Name --value MyFrobnicator        \
+    org.gtk.GDBus.C.Name MyFrobnicator                      \
   --annotate "org.project.InterfaceName:Property"           \
-    --key bar --value bat                                   \
+    bar bat                                                 \
   --annotate "org.project.InterfaceName.Method()"           \
-    --key org.freedesktop.DBus.Deprecated --value true      \
+    org.freedesktop.DBus.Deprecated true                    \
   --annotate "org.project.InterfaceName.Method()[arg_name]" \
-    --key snake --value hiss                                \
+    snake hiss                                              \
   --annotate "org.project.InterfaceName::Signal"            \
-    --key cat --value meow                                  \
+    cat meow                                                \
   --annotate "org.project.InterfaceName::Signal[arg_name]"  \
-    --key dog --value wuff                                  \
+    dog wuff                                                \
   myapp-dbus-interfaces.xml
 ]]></programlisting></informalexample>
         <para>
-          Any UTF-8 string can be used for the value of
-          <option>--key</option> and <option>--value</option>.
+          Any UTF-8 string can be used for <replaceable>KEY</replaceable> and <replaceable>VALUE</replaceable>.
         </para>
       </listitem>
     </varlistentry>
