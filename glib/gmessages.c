@@ -187,7 +187,7 @@ g_messages_prefixed_init (void)
     }
 }
 
-void
+static void
 g_debug_init (void)
 {
   typedef enum {
