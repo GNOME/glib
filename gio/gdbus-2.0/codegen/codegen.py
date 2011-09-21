@@ -264,7 +264,7 @@ class CodeGenerator:
                     if unix_fd:
                         value += ',\n    GUnixFDList *fd_list'
                     for a in m.in_args:
-                        value += ',\n    %s%s'%(a.ctype_in, a.name)
+                        value += ',\n    %sarg_%s'%(a.ctype_in, a.name)
                     value += ');\n\n'
                     function_pointers[key] = value
 
@@ -276,7 +276,7 @@ class CodeGenerator:
                     value  = '  void (*%s) (\n'%(s.name_lower)
                     value += '    %s *object'%(i.camel_name)
                     for a in s.args:
-                        value += ',\n    %s%s'%(a.ctype_in, a.name)
+                        value += ',\n    %sarg_%s'%(a.ctype_in, a.name)
                     value += ');\n\n'
                     function_pointers[key] = value
 
@@ -342,7 +342,7 @@ class CodeGenerator:
                     self.h.write('void %s_emit_%s (\n'
                                  '    %s *object'%(i.name_lower, s.name_lower, i.camel_name))
                     for a in s.args:
-                        self.h.write(',\n    %s%s'%(a.ctype_in, a.name))
+                        self.h.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
                     self.h.write(');\n')
                     self.h.write('\n')
                 self.h.write('\n')
@@ -361,7 +361,7 @@ class CodeGenerator:
                     self.h.write('void %s_call_%s (\n'
                                  '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.in_args:
-                        self.h.write(',\n    %s%s'%(a.ctype_in, a.name))
+                        self.h.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
                     if unix_fd:
                         self.h.write(',\n    GUnixFDList *fd_list')
                     self.h.write(',\n'
@@ -388,7 +388,7 @@ class CodeGenerator:
                     self.h.write('gboolean %s_call_%s_sync (\n'
                                  '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
                     for a in m.in_args:
-                        self.h.write(',\n    %s%s'%(a.ctype_in, a.name))
+                        self.h.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
                     if unix_fd:
                         self.h.write(',\n    GUnixFDList  *fd_list')
                     for a in m.out_args:
@@ -1046,7 +1046,7 @@ class CodeGenerator:
                 if unix_fd:
                     self.c.write ('   * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
                 for a in m.in_args:
-                    self.c.write ('   * @%s: Argument passed by remote caller.\n'%(a.name))
+                    self.c.write ('   * @arg_%s: Argument passed by remote caller.\n'%(a.name))
                 self.c.write(self.docbook_gen.expand(
                         '   *\n'
                         '   * Signal emitted when a remote caller is invoking the %s.%s() D-Bus method.\n'
@@ -1087,7 +1087,7 @@ class CodeGenerator:
                         '   * @object: A #%s.\n'
                         %(i.camel_name, s.name_hyphen, i.camel_name), False))
                 for a in s.args:
-                    self.c.write ('   * @%s: Argument.\n'%(a.name))
+                    self.c.write ('   * @arg_%s: Argument.\n'%(a.name))
                 self.c.write(self.docbook_gen.expand(
                         '   *\n'
                         '   * On the client-side, this signal is emitted whenever the D-Bus signal #%s::%s is received.\n'
@@ -1274,7 +1274,7 @@ class CodeGenerator:
                     ' * @object: A #%s.\n'
                     %(i.name_lower, s.name_lower, i.camel_name), False))
             for a in s.args:
-                self.c.write(' * @%s: Argument to pass with the signal.\n'%(a.name))
+                self.c.write(' * @arg_%s: Argument to pass with the signal.\n'%(a.name))
             self.c.write(self.docbook_gen.expand(
                     ' *\n'
                     ' * Emits the #%s::%s D-Bus signal.\n'
@@ -1284,12 +1284,12 @@ class CodeGenerator:
                          '%s_emit_%s (\n'
                          '    %s *object'%(i.name_lower, s.name_lower, i.camel_name))
             for a in s.args:
-                self.c.write(',\n    %s%s'%(a.ctype_in, a.name))
+                self.c.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
             self.c.write(')\n'
                          '{\n'
                          '  g_signal_emit_by_name (object, "%s"'%(s.name_hyphen))
             for a in s.args:
-                self.c.write(', %s'%a.name)
+                self.c.write(', arg_%s'%a.name)
             self.c.write(');\n')
             self.c.write('}\n'
                          '\n')
@@ -1307,7 +1307,7 @@ class CodeGenerator:
                          ' * @proxy: A #%sProxy.\n'
                          %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
-                self.c.write(' * @%s: Argument to pass with the method invocation.\n'%(a.name))
+                self.c.write(' * @arg_%s: Argument to pass with the method invocation.\n'%(a.name))
             if unix_fd:
                 self.c.write(' * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
             self.c.write(self.docbook_gen.expand(
@@ -1326,7 +1326,7 @@ class CodeGenerator:
                          '%s_call_%s (\n'
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
-                self.c.write(',\n    %s%s'%(a.ctype_in, a.name))
+                self.c.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
             if unix_fd:
                 self.c.write(',\n    GUnixFDList *fd_list')
             self.c.write(',\n'
@@ -1344,7 +1344,7 @@ class CodeGenerator:
                 self.c.write('%s'%(a.format_in))
             self.c.write(')"')
             for a in m.in_args:
-                self.c.write(',\n                   %s'%(a.name))
+                self.c.write(',\n                   arg_%s'%(a.name))
             self.c.write('),\n'
                          '    G_DBUS_CALL_FLAGS_NONE,\n'
                          '    -1,\n')
@@ -1412,7 +1412,7 @@ class CodeGenerator:
                          ' * @proxy: A #%sProxy.\n'
                          %(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
-                self.c.write(' * @%s: Argument to pass with the method invocation.\n'%(a.name))
+                self.c.write(' * @arg_%s: Argument to pass with the method invocation.\n'%(a.name))
             if unix_fd:
                 self.c.write(' * @fd_list: (allow-none): A #GUnixFDList or %NULL.\n')
             for a in m.out_args:
@@ -1434,7 +1434,7 @@ class CodeGenerator:
                          '%s_call_%s_sync (\n'
                          '    %s *proxy'%(i.name_lower, m.name_lower, i.camel_name))
             for a in m.in_args:
-                self.c.write(',\n    %s%s'%(a.ctype_in, a.name))
+                self.c.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
             if unix_fd:
                 self.c.write(',\n    GUnixFDList  *fd_list')
             for a in m.out_args:
@@ -1456,7 +1456,7 @@ class CodeGenerator:
                 self.c.write('%s'%(a.format_in))
             self.c.write(')"')
             for a in m.in_args:
-                self.c.write(',\n                   %s'%(a.name))
+                self.c.write(',\n                   arg_%s'%(a.name))
             self.c.write('),\n'
                          '    G_DBUS_CALL_FLAGS_NONE,\n'
                          '    -1,\n')
@@ -2304,7 +2304,7 @@ class CodeGenerator:
                          '_%s_on_signal_%s (\n'
                          '    %s *object'%(i.name_lower, s.name_lower, i.camel_name))
             for a in s.args:
-                self.c.write(',\n    %s%s'%(a.ctype_in, a.name))
+                self.c.write(',\n    %sarg_%s'%(a.ctype_in, a.name))
             self.c.write(')\n'
                          '{\n'
                          '  %sSkeleton *skeleton = %s%s_SKELETON (object);\n'
@@ -2320,7 +2320,7 @@ class CodeGenerator:
                 self.c.write('%s'%(a.format_in))
             self.c.write(')"')
             for a in s.args:
-                self.c.write(',\n                   %s'%(a.name))
+                self.c.write(',\n                   arg_%s'%(a.name))
             self.c.write('), NULL);\n')
             self.c.write('}\n'
                          '\n')
