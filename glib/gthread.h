@@ -53,6 +53,7 @@ typedef gpointer (*GThreadFunc) (gpointer data);
 typedef struct _GThread         GThread;
 
 typedef struct _GMutex          GMutex;
+typedef struct _GRWLock         GRWLock;
 typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
 typedef struct _GStaticPrivate  GStaticPrivate;
@@ -62,13 +63,19 @@ typedef struct _GStaticPrivate  GStaticPrivate;
 #define G_MUTEX_INIT { NULL }
 struct _GMutex
 {
-    gpointer impl;
+  gpointer impl;
+};
+
+#define G_RW_LOCK_INIT { NULL }
+struct _GRWLock
+{
+  gpointer impl;
 };
 
 #define G_COND_INIT { NULL }
 struct _GCond
 {
-    gpointer impl;
+  gpointer impl;
 };
 #else
 
@@ -78,6 +85,12 @@ struct _GCond
 struct _GMutex
 {
   pthread_mutex_t impl;
+};
+
+#define G_RW_LOCK_INIT { PTHREAD_RWLOCK_INITIALIZER }
+struct _GRWLock
+{
+  pthread_rwlock_t impl;
 };
 
 #define G_COND_INIT { PTHREAD_COND_INITIALIZER }
@@ -291,6 +304,15 @@ void                    g_mutex_clear                                   (GMutex 
 void                    g_mutex_lock                                    (GMutex         *mutex);
 void                    g_mutex_unlock                                  (GMutex         *mutex);
 gboolean                g_mutex_trylock                                 (GMutex         *mutex);
+
+void                    g_rw_lock_init                                  (GRWLock        *lock);
+void                    g_rw_lock_clear                                 (GRWLock        *lock);
+void                    g_rw_lock_writer_lock                           (GRWLock        *lock);
+gboolean                g_rw_lock_writer_trylock                        (GRWLock        *lock);
+void                    g_rw_lock_writer_unlock                         (GRWLock        *lock);
+void                    g_rw_lock_reader_lock                           (GRWLock        *lock);
+gboolean                g_rw_lock_reader_trylock                        (GRWLock        *lock);
+void                    g_rw_lock_reader_unlock                         (GRWLock        *lock);
 
 GCond *                 g_cond_new                                      (void);
 void                    g_cond_free                                     (GCond          *cond);

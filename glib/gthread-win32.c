@@ -154,6 +154,57 @@ g_mutex_unlock (GMutex *mutex)
   g_thread_impl_vtable.ReleaseSRWLockExclusive (mutex);
 }
 
+/* {{{1 GRWLock */
+
+void
+g_rw_lock_init (GRWLock *lock)
+{
+  g_thread_impl_vtable.InitializeSRWLock (lock);
+}
+
+void
+g_rw_lock_clear (GRWLock *lock)
+{
+  if (g_thread_impl_vtable.DeleteSRWLock != NULL)
+    g_thread_impl_vtable.DeleteSRWLock (lock);
+}
+
+void
+g_rw_lock_writer_lock (GRWLock *lock)
+{
+  g_thread_impl_vtable.AcquireSRWLockExclusive (lock);
+}
+
+gboolean
+g_rw_lock_writer_trylock (GRWLock *lock)
+{
+  return g_thread_impl_vtable.TryAcquireSRWLockExclusive (lock);
+}
+
+void
+g_rw_lock_writer_unlock (GRWLock *lock)
+{
+  g_thread_impl_vtable.ReleaseSRWLockExclusive (lock);
+}
+
+void
+g_rw_lock_reader_lock (GRWLock *lock)
+{
+  g_thread_impl_vtable.AcquireSRWLockShared (lock);
+}
+
+gboolean
+g_rw_lock_reader_trylock (GRWLock *lock)
+{
+  return g_thread_impl_vtable.TryAcquireSRWLockShared (lock);
+}
+
+void
+g_rw_lock_reader_unlock (GRWLock *lock)
+{
+  g_thread_impl_vtable.ReleaseSRWLockShared (lock);
+}
+
 /* {{{1 GCond */
 void
 g_cond_init (GCond *cond)

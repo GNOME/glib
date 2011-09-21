@@ -197,6 +197,56 @@ g_mutex_trylock (GMutex *mutex)
   return FALSE;
 }
 
+/* {{{1 GRWLock */
+
+void
+g_rw_lock_init (GRWLock *lock)
+{
+  pthread_rwlock_init (&lock->impl, NULL);
+}
+
+void
+g_rw_lock_clear (GRWLock *lock)
+{
+  pthread_rwlock_destroy (&lock->impl);
+}
+
+void
+g_rw_lock_writer_lock (GRWLock *lock)
+{
+  pthread_rwlock_wrlock (&lock->impl);
+}
+
+gboolean
+g_rw_lock_writer_trylock (GRWLock *lock)
+{
+  return pthread_rwlock_trywrlock (&lock->impl);
+}
+
+void
+g_rw_lock_writer_unlock (GRWLock *lock)
+{
+  pthread_rwlock_unlock (&lock->impl);
+}
+
+void
+g_rw_lock_reader_lock (GRWLock *lock)
+{
+  pthread_rwlock_rdlock (&lock->impl);
+}
+
+gboolean
+g_rw_lock_reader_trylock (GRWLock *lock)
+{
+  return pthread_rwlock_tryrdlock (&lock->impl);
+}
+
+void
+g_rw_lock_reader_unlock (GRWLock *lock)
+{
+  pthread_rwlock_unlock (&lock->impl);
+}
+
 /* {{{1 GCond */
 
 /**

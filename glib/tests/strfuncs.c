@@ -19,7 +19,6 @@
  * if advised of the possibility of such damage.
  */
 
-#define _XOPEN_SOURCE
 #include <ctype.h>
 #include <errno.h>
 #include <locale.h>
