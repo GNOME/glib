@@ -53,6 +53,7 @@ typedef gpointer (*GThreadFunc) (gpointer data);
 typedef struct _GThread         GThread;
 
 typedef struct _GMutex          GMutex;
+typedef struct _GRecMutex       GRecMutex;
 typedef struct _GRWLock         GRWLock;
 typedef struct _GCond           GCond;
 typedef struct _GPrivate        GPrivate;
@@ -100,6 +101,12 @@ struct _GCond
 };
 
 #endif
+
+#define G_REC_MUTEX_INIT { NULL }
+struct _GRecMutex
+{
+  gpointer impl;
+};
 
 /* initializes the mutex/cond/private implementation for glib, might
  * only be called once, and must not be called directly or indirectly
@@ -313,6 +320,12 @@ void                    g_rw_lock_writer_unlock                         (GRWLock
 void                    g_rw_lock_reader_lock                           (GRWLock        *lock);
 gboolean                g_rw_lock_reader_trylock                        (GRWLock        *lock);
 void                    g_rw_lock_reader_unlock                         (GRWLock        *lock);
+
+void                    g_rec_mutex_init                                (GRecMutex      *rec_mutex);
+void                    g_rec_mutex_clear                               (GRecMutex      *rec_mutex);
+void                    g_rec_mutex_lock                                (GRecMutex      *rec_mutex);
+gboolean                g_rec_mutex_trylock                             (GRecMutex      *rec_mutex);
+void                    g_rec_mutex_unlock                              (GRecMutex      *rec_mutex);
 
 GCond *                 g_cond_new                                      (void);
 void                    g_cond_free                                     (GCond          *cond);

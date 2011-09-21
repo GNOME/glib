@@ -44,6 +44,7 @@
 
 #include "gthread.h"
 #include "gthreadprivate.h"
+#include "gslice.h"
 
 #include <windows.h>
 
@@ -152,6 +153,73 @@ void
 g_mutex_unlock (GMutex *mutex)
 {
   g_thread_impl_vtable.ReleaseSRWLockExclusive (mutex);
+}
+
+/* {{{1 GRecMutex */
+
+static CRITICAL_SECTION *
+g_rec_mutex_impl_new (void)
+{
+  CRITICAL_SECTION *cs;
+
+  cs = g_slice_new (CRITICAL_SECTION);
+  InitializeCriticalSection (cs);
+
+  return cs;
+}
+
+static void
+g_rec_mutex_impl_free (CRITICAL_SECTION *cs)
+{
+  DeleteCriticalSection (cs);
+  g_slice_free (CRITICAL_SECTION, cs);
+}
+
+static CRITICAL_SECTION *
+g_rec_mutex_get_impl (GRecMutex *mutex)
+{
+  CRITICAL_SECTION *impl = mutex->impl;
+
+  if G_UNLIKELY (mutex->impl == NULL)
+    {
+      impl = g_rec_mutex_impl_new ();
+      if (InterlockedCompareExchangePointer (&mutex->impl, impl, NULL) != NULL)
+        g_rec_mutex_impl_free (impl);
+      impl = mutex->impl;
+    }
+
+  return impl;
+}
+
+void
+g_rec_mutex_init (GRecMutex *mutex)
+{
+  mutex->impl = g_rec_mutex_impl_new ();
+}
+
+void
+g_rec_mutex_clear (GRecMutex *mutex)
+{
+  if (mutex->impl)
+    g_rec_mutex_impl_free (mutex->impl);
+}
+
+void
+g_rec_mutex_lock (GRecMutex *mutex)
+{
+  EnterCriticalSection (g_rec_mutex_get_impl (mutex));
+}
+
+void
+g_rec_mutex_unlock (GRecMutex *mutex)
+{
+  LeaveCriticalSection (mutex->impl);
+}
+
+gboolean
+g_rec_mutex_trylock (GRecMutex *mutex)
+{
+  return TryEnterCriticalSection (g_rec_mutex_get_impl (mutex));
 }
 
 /* {{{1 GRWLock */

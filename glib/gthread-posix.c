@@ -43,6 +43,7 @@
 
 #include "gthread.h"
 #include "gthreadprivate.h"
+#include "gslice.h"
 
 #include <pthread.h>
 #include <stdlib.h>
@@ -195,6 +196,77 @@ g_mutex_trylock (GMutex *mutex)
     g_thread_abort (status, "pthread_mutex_trylock");
 
   return FALSE;
+}
+
+/* {{{1 GRecMutex */
+
+static pthread_mutex_t *
+g_rec_mutex_impl_new (void)
+{
+  pthread_mutexattr_t attr;
+  pthread_mutex_t *mutex;
+
+  mutex = g_slice_new (pthread_mutex_t);
+  pthread_mutexattr_init (&attr);
+  pthread_mutexattr_settype (&attr, PTHREAD_MUTEX_RECURSIVE);
+  pthread_mutex_init (mutex, &attr);
+  pthread_mutexattr_destroy (&attr);
+
+  return mutex;
+}
+
+static void
+g_rec_mutex_impl_free (pthread_mutex_t *mutex)
+{
+  pthread_mutex_destroy (mutex);
+  g_slice_free (pthread_mutex_t, mutex);
+}
+
+static pthread_mutex_t *
+g_rec_mutex_get_impl (GRecMutex *mutex)
+{
+  pthread_mutex_t *impl = mutex->impl;
+
+  if G_UNLIKELY (mutex->impl == NULL)
+    {
+      impl = g_rec_mutex_impl_new ();
+      if (!g_atomic_pointer_compare_and_exchange (&mutex->impl, NULL, impl))
+        g_rec_mutex_impl_free (impl);
+      impl = mutex->impl;
+    }
+
+  return impl;
+}
+
+void
+g_rec_mutex_init (GRecMutex *mutex)
+{
+  mutex->impl = g_rec_mutex_impl_new ();
+}
+
+void
+g_rec_mutex_clear (GRecMutex *mutex)
+{
+  if (mutex->impl)
+    g_rec_mutex_impl_free (mutex->impl);
+}
+
+void
+g_rec_mutex_lock (GRecMutex *mutex)
+{
+  pthread_mutex_lock (g_rec_mutex_get_impl (mutex));
+}
+
+void
+g_rec_mutex_unlock (GRecMutex *mutex)
+{
+  pthread_mutex_unlock (mutex->impl);
+}
+
+gboolean
+g_rec_mutex_trylock (GRecMutex *mutex)
+{
+  return pthread_mutex_trylock (g_rec_mutex_get_impl (mutex));
 }
 
 /* {{{1 GRWLock */
