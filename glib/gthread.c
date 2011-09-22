@@ -84,15 +84,14 @@
  * The aim of the thread related functions in GLib is to provide a
  * portable means for writing multi-threaded software. There are
  * primitives for mutexes to protect the access to portions of memory
- * (#GMutex, #GStaticMutex, #G_LOCK_DEFINE, #GStaticRecMutex and
- * #GStaticRWLock). There is a facility to use individual bits for
- * locks (g_bit_lock()). There are primitives for condition variables to
- * allow synchronization of threads (#GCond).  There are primitives for
- * thread-private data - data that every thread has a private instance
- * of (#GPrivate, #GStaticPrivate). There are facilities for one-time
- * initialization (#GOnce, g_once_init_enter()). Last but definitely
- * not least there are primitives to portably create and manage
- * threads (#GThread).
+ * (#GMutex, #GRecMutex and #GRWLock). There is a facility to use
+ * individual bits for locks (g_bit_lock()). There are primitives
+ * for condition variables to allow synchronization of threads (#GCond).
+ * There are primitives for thread-private data - data that every thread
+ * has a private instance of (#GPrivate, #GStaticPrivate). There are
+ * facilities for one-time initialization (#GOnce, g_once_init_enter()).
+ * Last but definitely not least there are primitives to portably create
+ * and manage threads (#GThread).
  *
  * The threading system is initialized with g_thread_init(), which
  * takes an optional custom thread implementation or %NULL for the
@@ -118,16 +117,11 @@
  * global data is automatically locked), but individual data structure
  * instances are not automatically locked for performance reasons. So,
  * for example you must coordinate accesses to the same #GHashTable
- * from multiple threads.  The two notable exceptions from this rule
+ * from multiple threads. The two notable exceptions from this rule
  * are #GMainLoop and #GAsyncQueue, which <emphasis>are</emphasis>
  * threadsafe and need no further application-level locking to be
  * accessed from multiple threads.
- *
- * To help debugging problems in multithreaded applications, GLib
- * supports error-checking mutexes that will give you helpful error
- * messages on common problems. To use error-checking mutexes, define
- * the symbol #G_ERRORCHECK_MUTEXES when compiling the application.
- **/
+ */
 
 /**
  * G_THREADS_IMPL_POSIX:
@@ -436,12 +430,27 @@ gboolean g_threads_got_initialized = FALSE;
  *  </programlisting>
  * </example>
  *
- * #GStaticMutex provides a simpler and safer way of doing this.
+ * A statically initialized #GMutex provides an even simpler and safer
+ * way of doing this:
  *
- * If you want to use a mutex, and your code should also work without
- * calling g_thread_init() first, then you cannot use a #GMutex, as
- * g_mutex_new() requires that the thread system be initialized. Use a
- * #GStaticMutex instead.
+ * <example>
+ *  <title>Using a statically allocated mutex</title>
+ *  <programlisting>
+ *   int
+ *   give_me_next_number (void)
+ *   {
+ *     static GMutex mutex = G_MUTEX_INITIALIZER;
+ *     static int current_number = 0;
+ *     int ret_val;
+ *
+ *     g_mutex_lock (&amp;mutex);
+ *     ret_val = current_number = calc_next_number (current_number);
+ *     g_mutex_unlock (&amp;mutex);
+ *
+ *     return ret_val;
+ *   }
+ *  </programlisting>
+ * </example>
  *
  * A #GMutex should only be accessed via the following functions.
  **/
@@ -492,9 +501,9 @@ gboolean g_threads_got_initialized = FALSE;
  *  </programlisting>
  * </example>
  *
- * Whenever a thread calls <function>pop_data()</function> now, it will
- * wait until current_data is non-%NULL, i.e. until some other thread
- * has called <function>push_data()</function>.
+ * Whenever a thread calls pop_data() now, it will wait until
+ * current_data is non-%NULL, i.e. until some other thread
+ * has called push_data().
  *
  * <note><para>It is important to use the g_cond_wait() and
  * g_cond_timed_wait() functions only inside a loop which checks for the
@@ -870,11 +879,14 @@ g_once_init_leave (volatile gsize *value_location,
 /**
  * GStaticMutex:
  *
- * A #GStaticMutex works like a #GMutex, but it has one significant
- * advantage. It doesn't need to be created at run-time like a #GMutex,
- * but can be defined at compile-time. Here is a shorter, easier and
- * safer version of our <function>give_me_next_number()</function>
- * example:
+ * A #GStaticMutex works like a #GMutex.
+ * Prior to GLib 2.32, GStaticMutex had the significant advantage
+ * that it doesn't need to be created at run-time, but can be defined
+ * at compile-time. Since 2.32, #GMutex can be statically allocated
+ * as well, and GStaticMutex has been deprecated.
+ *
+ * Here is a version of our give_me_next_number() example using
+ * a GStaticMutex.
  *
  * <example>
  *  <title>
@@ -930,20 +942,20 @@ g_once_init_leave (volatile gsize *value_location,
  * cannot be assigned to a variable. In that case you have to use
  * g_static_mutex_init().
  *
- * <informalexample>
- *  <programlisting>
- *   GStaticMutex my_mutex = G_STATIC_MUTEX_INIT;
- *  </programlisting>
- * </informalexample>
+ * |[
+ * GStaticMutex my_mutex = G_STATIC_MUTEX_INIT;
+ * ]|
  **/
 
 /**
  * g_static_mutex_init:
  * @mutex: a #GStaticMutex to be initialized.
  *
- * Initializes @mutex. Alternatively you can initialize it with
- * #G_STATIC_MUTEX_INIT.
- **/
+ * Initializes @mutex.
+ * Alternatively you can initialize it with #G_STATIC_MUTEX_INIT.
+ *
+ * Deprecated: 2.32: Use g_mutex_init()
+ */
 void
 g_static_mutex_init (GStaticMutex *mutex)
 {
@@ -979,7 +991,9 @@ g_static_mutex_init (GStaticMutex *mutex)
  * For some operations (like g_cond_wait()) you must have a #GMutex
  * instead of a #GStaticMutex. This function will return the
  * corresponding #GMutex for @mutex.
- **/
+ *
+ * Deprecated: 2.32: Just use a #GMutex
+ */
 GMutex *
 g_static_mutex_get_mutex_impl (GMutex** mutex)
 {
@@ -1020,7 +1034,9 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
  * @mutex: a #GStaticMutex.
  *
  * Works like g_mutex_lock(), but for a #GStaticMutex.
- **/
+ *
+ * Deprecated: 2.32: Use g_mutex_lock()
+ */
 
 /**
  * g_static_mutex_trylock:
@@ -1028,14 +1044,18 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
  * @Returns: %TRUE, if the #GStaticMutex could be locked.
  *
  * Works like g_mutex_trylock(), but for a #GStaticMutex.
- **/
+ *
+ * Deprecated: 2.32: Use g_mutex_trylock()
+ */
 
 /**
  * g_static_mutex_unlock:
  * @mutex: a #GStaticMutex.
  *
  * Works like g_mutex_unlock(), but for a #GStaticMutex.
- **/
+ *
+ * Deprecated: 2.32: Use g_mutex_unlock()
+ */
 
 /**
  * g_static_mutex_free:
@@ -1050,7 +1070,9 @@ g_static_mutex_get_mutex_impl (GMutex** mutex)
  *
  * <note><para>Calling g_static_mutex_free() on a locked mutex may
  * result in undefined behaviour.</para></note>
- **/
+ *
+ * Deprecated: 2.32: Use g_mutex_free()
+ */
 void
 g_static_mutex_free (GStaticMutex* mutex)
 {
@@ -1083,7 +1105,8 @@ g_static_mutex_free (GStaticMutex* mutex)
  * unlock a #GStaticRecMutex completely returning the depth, (i.e. the
  * number of times this mutex was locked). The depth can later be used
  * to restore the state of the #GStaticRecMutex by calling
- * g_static_rec_mutex_lock_full().
+ * g_static_rec_mutex_lock_full(). In GLib 2.32, #GStaticRecMutex has
+ * been deprecated in favor of #GRecMutex.
  *
  * Even though #GStaticRecMutex is not opaque, it should only be used
  * with the following functions.
@@ -1102,12 +1125,10 @@ g_static_mutex_free (GStaticMutex* mutex)
  * cannot be assigned to a variable. In that case you have to use
  * g_static_rec_mutex_init().
  *
- * <informalexample>
- *  <programlisting>
+ * |[
  *   GStaticRecMutex my_mutex = G_STATIC_REC_MUTEX_INIT;
- * </programlisting>
- </informalexample>
- **/
+ * ]|
+ */
 
 /**
  * g_static_rec_mutex_init:
@@ -1116,7 +1137,9 @@ g_static_mutex_free (GStaticMutex* mutex)
  * A #GStaticRecMutex must be initialized with this function before it
  * can be used. Alternatively you can initialize it with
  * #G_STATIC_REC_MUTEX_INIT.
- **/
+ *
+ * Deprecated: 2.32: Use g_rec_mutex_init()
+ */
 void
 g_static_rec_mutex_init (GStaticRecMutex *mutex)
 {
@@ -1135,7 +1158,9 @@ g_static_rec_mutex_init (GStaticRecMutex *mutex)
  * current thread will block until @mutex is unlocked by the other
  * thread. If @mutex is already locked by the calling thread, this
  * functions increases the depth of @mutex and returns immediately.
- **/
+ *
+ * Deprecated: 2.32: Use g_rec_mutex_lock()
+ */
 void
 g_static_rec_mutex_lock (GStaticRecMutex* mutex)
 {
@@ -1168,7 +1193,9 @@ g_static_rec_mutex_lock (GStaticRecMutex* mutex)
  * %TRUE. If @mutex is already locked by the calling thread, this
  * functions increases the depth of @mutex and immediately returns
  * %TRUE.
- **/
+ *
+ * Deprecated: 2.32: Use g_rec_mutex_trylock()
+ */
 gboolean
 g_static_rec_mutex_trylock (GStaticRecMutex* mutex)
 {
@@ -1204,7 +1231,9 @@ g_static_rec_mutex_trylock (GStaticRecMutex* mutex)
  * before. If @mutex is completely unlocked and another thread is
  * blocked in a g_static_rec_mutex_lock() call for @mutex, it will be
  * woken and can lock @mutex itself.
- **/
+ *
+ * Deprecated: 2.32: Use g_rec_mutex_unlock()
+ */
 void
 g_static_rec_mutex_unlock (GStaticRecMutex* mutex)
 {
@@ -1229,7 +1258,9 @@ g_static_rec_mutex_unlock (GStaticRecMutex* mutex)
  *         completely unlocked.
  *
  * Works like calling g_static_rec_mutex_lock() for @mutex @depth times.
- **/
+ *
+ * Deprecated: 2.32: Use g_rec_mutex_lock()
+ */
 void
 g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
 				guint            depth)
@@ -1268,7 +1299,9 @@ g_static_rec_mutex_lock_full   (GStaticRecMutex *mutex,
  * before the call to g_static_rec_mutex_unlock_full() you can call
  * g_static_rec_mutex_lock_full() with the depth returned by this
  * function.
- **/
+ *
+ * Deprecated: 2.32: Use g_rec_mutex_unlock()
+ */
 guint
 g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
 {
@@ -1298,7 +1331,9 @@ g_static_rec_mutex_unlock_full (GStaticRecMutex *mutex)
  * unbounded lifetime, i.e. objects declared 'static', but if you have
  * a #GStaticRecMutex as a member of a structure and the structure is
  * freed, you should also free the #GStaticRecMutex.
- **/
+ *
+ * Deprecated: 2.32: Use g_rec_mutex_clear()
+ */
 void
 g_static_rec_mutex_free (GStaticRecMutex *mutex)
 {
@@ -1349,12 +1384,10 @@ g_static_rec_mutex_free (GStaticRecMutex *mutex)
  * Every #GStaticPrivate must be initialized with this macro, before it
  * can be used.
  *
- * <informalexample>
- *  <programlisting>
+ * |[
  *   GStaticPrivate my_private = G_STATIC_PRIVATE_INIT;
- *  </programlisting>
- * </informalexample>
- **/
+ * ]|
+ */
 
 /**
  * g_static_private_init:
@@ -1377,7 +1410,7 @@ g_static_private_init (GStaticPrivate *private_key)
  * Works like g_private_get() only for a #GStaticPrivate.
  *
  * This function works even if g_thread_init() has not yet been called.
- **/
+ */
 gpointer
 g_static_private_get (GStaticPrivate *private_key)
 {
@@ -1416,7 +1449,7 @@ g_static_private_get (GStaticPrivate *private_key)
  *
  * <note><para>@notify is used quite differently from @destructor in
  * g_private_new().</para></note>
- **/
+ */
 void
 g_static_private_set (GStaticPrivate *private_key,
 		      gpointer        data,
@@ -1486,7 +1519,7 @@ g_static_private_set (GStaticPrivate *private_key,
  * unbounded lifetime, i.e. objects declared 'static', but if you have
  * a #GStaticPrivate as a member of a structure and the structure is
  * freed, you should also free the #GStaticPrivate.
- **/
+ */
 void
 g_static_private_free (GStaticPrivate *private_key)
 {
@@ -1760,7 +1793,7 @@ g_thread_create_with_stack_size (GThreadFunc   func,
  *
  * Deprecated:2.32: The @bound and @priority arguments are now ignored.
  * Use g_thread_create() or g_thread_create_with_stack_size() instead.
- **/
+ */
 GThread *
 g_thread_create_full (GThreadFunc       func,
                       gpointer          data,
@@ -2001,12 +2034,10 @@ g_thread_self (void)
  * cannot be assigned to a variable. In that case you have to use
  * g_static_rw_lock_init().
  *
- * <informalexample>
- *  <programlisting>
+ * |[
  *   GStaticRWLock my_lock = G_STATIC_RW_LOCK_INIT;
- *  </programlisting>
- * </informalexample>
- **/
+ * ]|
+ */
 
 /**
  * g_static_rw_lock_init:
