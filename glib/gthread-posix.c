@@ -96,9 +96,20 @@ void
 g_mutex_init (GMutex *mutex)
 {
   gint status;
+  pthread_mutexattr_t *pattr = NULL;
+#ifdef PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP
+  pthread_mutexattr_t attr;
+  pthread_mutexattr_init (&attr);
+  pthread_mutexattr_settype (&attr, PTHREAD_MUTEX_ADAPTIVE_NP);
+  pattr = &attr;
+#endif
 
-  if G_UNLIKELY ((status = pthread_mutex_init (&mutex->impl, NULL)) != 0)
+  if G_UNLIKELY ((status = pthread_mutex_init (&mutex->impl, pattr)) != 0)
     g_thread_abort (status, "pthread_mutex_init");
+
+#ifdef PTHREAD_ADAPTIVE_MUTEX_NP
+  pthread_mutexattr_destroy (&attr);
+#endif
 }
 
 /**

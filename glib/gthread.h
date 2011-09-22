@@ -82,7 +82,11 @@ struct _GCond
 
 #include <pthread.h>
 
+#ifdef PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP
+#define G_MUTEX_INIT { PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP }
+#else
 #define G_MUTEX_INIT { PTHREAD_MUTEX_INITIALIZER }
+#endif
 struct _GMutex
 {
   pthread_mutex_t impl;
