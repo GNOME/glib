@@ -724,7 +724,7 @@ test_GDateTime_to_utc (void)
     memcpy (&tm, tmp, sizeof (struct tm));
   }
 #endif
-  dt2 = g_date_time_new_now_local ();
+  dt2 = g_date_time_new_from_unix_local (t);
   dt = g_date_time_to_utc (dt2);
   g_assert_cmpint (tm.tm_year + 1900, ==, g_date_time_get_year (dt));
   g_assert_cmpint (tm.tm_mon + 1, ==, g_date_time_get_month (dt));
