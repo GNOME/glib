@@ -636,6 +636,7 @@ _g_value_types_init (void)
  * @v_char: character value to be set
  *
  * Set the contents of a %G_TYPE_CHAR #GValue to @v_char.
+ * Deprecated: 2.32: This function's input type is broken, see g_value_set_schar()
  */
 void
 g_value_set_char (GValue *value,
@@ -650,12 +651,51 @@ g_value_set_char (GValue *value,
  * g_value_get_char:
  * @value: a valid #GValue of type %G_TYPE_CHAR
  *
- * Get the contents of a %G_TYPE_CHAR #GValue.
+ * Do not use this function; it is broken on platforms where the %char
+ * type is unsigned, such as ARM and PowerPC.  See g_value_get_schar().
+ *
+ * Get the contents of a %G_TYPE_CHAR #GValue.  
  * 
  * Returns: character contents of @value
+ * Deprecated: 2.32: This function's return type is broken, see g_value_get_schar()
  */
 gchar
 g_value_get_char (const GValue *value)
+{
+  g_return_val_if_fail (G_VALUE_HOLDS_CHAR (value), 0);
+  
+  return value->data[0].v_int;
+}
+
+/**
+ * g_value_set_schar:
+ * @value: a valid #GValue of type %G_TYPE_CHAR
+ * @v_char: signed 8 bit integer to be set
+ *
+ * Set the contents of a %G_TYPE_CHAR #GValue to @v_char.
+ *
+ * Since: 2.32
+ */
+void
+g_value_set_schar (GValue *value,
+		   gint8   v_char)
+{
+  g_return_if_fail (G_VALUE_HOLDS_CHAR (value));
+  
+  value->data[0].v_int = v_char;
+}
+
+/**
+ * g_value_get_schar:
+ * @value: a valid #GValue of type %G_TYPE_CHAR
+ *
+ * Get the contents of a %G_TYPE_CHAR #GValue.
+ * 
+ * Returns: signed 8 bit integer contents of @value
+ * Since: 2.32
+ */
+gint8
+g_value_get_schar (const GValue *value)
 {
   g_return_val_if_fail (G_VALUE_HOLDS_CHAR (value), 0);
   

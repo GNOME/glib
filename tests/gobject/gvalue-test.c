@@ -50,6 +50,7 @@ test_enum_transformation (void)
  g_value_init (&xform, G_TYPE_CHAR); 
  g_value_transform (&orig, &xform); 
  g_assert (g_value_get_char (&xform) == 1);
+ g_assert (g_value_get_schar (&xform) == 1);
 
  memset (&xform, 0, sizeof (GValue));
  g_value_init (&xform, G_TYPE_UCHAR); 

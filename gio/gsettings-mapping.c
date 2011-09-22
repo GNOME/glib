@@ -346,7 +346,7 @@ g_settings_set_mapping (const GValue       *value,
       if (g_variant_type_equal (expected_type, G_VARIANT_TYPE_BYTE))
         {
           if (G_VALUE_HOLDS_CHAR (value))
-            return g_variant_new_byte (g_value_get_char (value));
+            return g_variant_new_byte (g_value_get_schar (value));
           else
             return g_variant_new_byte (g_value_get_uchar (value));
         }
@@ -453,7 +453,7 @@ g_settings_get_mapping (GValue   *value,
       if (G_VALUE_HOLDS_UCHAR (value))
         g_value_set_uchar (value, g_variant_get_byte (variant));
       else if (G_VALUE_HOLDS_CHAR (value))
-        g_value_set_char (value, (gchar) g_variant_get_byte (variant));
+        g_value_set_schar (value, (gint8)g_variant_get_byte (variant));
       else
         return FALSE;
       return TRUE;

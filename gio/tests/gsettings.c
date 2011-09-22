@@ -718,7 +718,7 @@ typedef struct
 
   gboolean bool_prop;
   gboolean anti_bool_prop;
-  gchar byte_prop;
+  gint8 byte_prop;
   gint int16_prop;
   guint16 uint16_prop;
   gint int_prop;
@@ -771,7 +771,7 @@ test_object_get_property (GObject    *object,
       g_value_set_boolean (value, test_object->anti_bool_prop);
       break;
     case PROP_BYTE:
-      g_value_set_char (value, test_object->byte_prop);
+      g_value_set_schar (value, test_object->byte_prop);
       break;
     case PROP_UINT16:
       g_value_set_uint (value, test_object->uint16_prop);
@@ -829,7 +829,7 @@ test_object_set_property (GObject      *object,
       test_object->anti_bool_prop = g_value_get_boolean (value);
       break;
     case PROP_BYTE:
-      test_object->byte_prop = g_value_get_char (value);
+      test_object->byte_prop = g_value_get_schar (value);
       break;
     case PROP_INT16:
       test_object->int16_prop = g_value_get_int (value);

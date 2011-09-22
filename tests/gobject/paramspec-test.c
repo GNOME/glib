@@ -67,6 +67,22 @@ test_param_spec_char (void)
   modified = g_param_value_validate (pspec, &value);
   g_assert (modified && g_value_get_char (&value) == 40);
 
+  g_value_set_schar (&value, 0);
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_schar (&value) == 20);
+
+  g_value_set_schar (&value, 20);
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (!modified && g_value_get_schar (&value) == 20);
+
+  g_value_set_schar (&value, 40);
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (!modified && g_value_get_schar (&value) == 40);
+
+  g_value_set_schar (&value, 60);
+  modified = g_param_value_validate (pspec, &value);
+  g_assert (modified && g_value_get_schar (&value) == 40);
+
   g_param_spec_unref (pspec);
 }
 

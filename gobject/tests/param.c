@@ -145,8 +145,15 @@ test_value_transform (void)
   g_value_unset (&src);                                                 \
   g_value_unset (&dest);
 
-  CHECK_INT_CONVERSION(G_TYPE_CHAR, char, -124)
+  /* Keep a check for an integer in the range of 0-127 so we're
+   * still testing g_value_get_char().  See
+   * https://bugzilla.gnome.org/show_bug.cgi?id=659870
+   * for why it is broken.
+   */
   CHECK_INT_CONVERSION(G_TYPE_CHAR, char, 124)
+
+  CHECK_INT_CONVERSION(G_TYPE_CHAR, schar, -124)
+  CHECK_INT_CONVERSION(G_TYPE_CHAR, schar, 124)
   CHECK_INT_CONVERSION(G_TYPE_UCHAR, uchar, 0)
   CHECK_INT_CONVERSION(G_TYPE_UCHAR, uchar, 255)
   CHECK_INT_CONVERSION(G_TYPE_INT, int, -12345)
@@ -378,9 +385,9 @@ test_value_transform (void)
   g_value_init (&src, G_TYPE_STRING);
   g_value_init (&dest, G_TYPE_CHAR);
   g_value_set_static_string (&src, "bla");
-  g_value_set_char (&dest, 'c');
+  g_value_set_schar (&dest, 'c');
   g_assert (!g_value_transform (&src, &dest));
-  g_assert_cmpint (g_value_get_char (&dest), ==, 'c');
+  g_assert_cmpint (g_value_get_schar (&dest), ==, 'c');
   g_value_unset (&src);
   g_value_unset (&dest);
 }

@@ -1029,7 +1029,7 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
       g_value_set_string (gvalue, *(gchar**)value);
       break;
     case G_TYPE_CHAR:
-      g_value_set_char (gvalue, *(gchar*)value);
+      g_value_set_schar (gvalue, *(gint8*)value);
       break;
     case G_TYPE_UCHAR:
       g_value_set_uchar (gvalue, *(guchar*)value);

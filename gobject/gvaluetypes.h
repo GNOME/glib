@@ -177,9 +177,14 @@ G_BEGIN_DECLS
 
 
 /* --- prototypes --- */
+#ifndef G_DISABLE_DEPRECATED
 void		      g_value_set_char		(GValue	      *value,
 						 gchar	       v_char);
 gchar		      g_value_get_char		(const GValue *value);
+#endif
+void		      g_value_set_schar		(GValue	      *value,
+						 gint8	       v_char);
+gint8		      g_value_get_schar		(const GValue *value);
 void		      g_value_set_uchar		(GValue	      *value,
 						 guchar	       v_uchar);
 guchar		      g_value_get_uchar		(const GValue *value);

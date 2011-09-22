@@ -134,7 +134,7 @@ put_marshal_value_getters (void)
   fputs ("\n", fout);
   fputs ("#ifdef G_ENABLE_DEBUG\n", fout);
   fputs ("#define g_marshal_value_peek_boolean(v)  g_value_get_boolean (v)\n", fout);
-  fputs ("#define g_marshal_value_peek_char(v)     g_value_get_char (v)\n", fout);
+  fputs ("#define g_marshal_value_peek_char(v)     g_value_get_schar (v)\n", fout);
   fputs ("#define g_marshal_value_peek_uchar(v)    g_value_get_uchar (v)\n", fout);
   fputs ("#define g_marshal_value_peek_int(v)      g_value_get_int (v)\n", fout);
   fputs ("#define g_marshal_value_peek_uint(v)     g_value_get_uint (v)\n", fout);
