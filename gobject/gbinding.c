@@ -771,9 +771,9 @@ g_binding_get_target_property (GBinding *binding)
 
 /**
  * g_object_bind_property_full:
- * @source: the source #GObject
+ * @source: (type GObject.Object): the source #GObject
  * @source_property: the property on @source to bind
- * @target: the target #GObject
+ * @target: (type GObject.Object): the target #GObject
  * @target_property: the property on @target to bind
  * @flags: flags to pass to #GBinding
  * @transform_to: (scope notified) (allow-none): the transformation function
@@ -961,9 +961,9 @@ g_object_bind_property_full (gpointer               source,
 
 /**
  * g_object_bind_property:
- * @source: the source #GObject
+ * @source: (type GObject.Object): the source #GObject
  * @source_property: the property on @source to bind
- * @target: the target #GObject
+ * @target: (type GObject.Object): the target #GObject
  * @target_property: the property on @target to bind
  * @flags: flags to pass to #GBinding
  *
@@ -1121,9 +1121,9 @@ bind_with_closures_free_func (gpointer data)
 
 /**
  * g_object_bind_property_with_closures:
- * @source: the source #GObject
+ * @source: (type GObject.Object): the source #GObject
  * @source_property: the property on @source to bind
- * @target: the target #GObject
+ * @target: (type GObject.Object): the target #GObject
  * @target_property: the property on @target to bind
  * @flags: flags to pass to #GBinding
  * @transform_to: a #GClosure wrapping the transformation function
