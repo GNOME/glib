@@ -666,6 +666,7 @@ debug_key_matches (const gchar *key,
 		   const gchar *token,
 		   guint        length)
 {
+  /* may not call GLib functions: see note in g_parse_debug_string() */
   for (; length; length--, key++, token++)
     {
       char k = (*key   == '_') ? '-' : tolower (*key  );
@@ -708,17 +709,20 @@ g_parse_debug_string  (const gchar     *string,
   if (string == NULL)
     return 0;
 
-  /* this function is used by gmem.c/gslice.c initialization code,
-   * so introducing malloc dependencies here would require adaptions
-   * of those code portions.
+  /* this function is used during the initialisation of gmessages, gmem
+   * and gslice, so it may not do anything that causes memory to be
+   * allocated or risks messages being emitted.
+   *
+   * this means, more or less, that this code may not call anything
+   * inside GLib.
    */
-  
-  if (!g_ascii_strcasecmp (string, "all"))
+
+  if (!strcasecmp (string, "all"))
     {
       for (i=0; i<nkeys; i++)
 	result |= keys[i].value;
     }
-  else if (!g_ascii_strcasecmp (string, "help"))
+  else if (!strcasecmp (string, "help"))
     {
       /* using stdio directly for the reason stated above */
       fprintf (stderr, "Supported debug values: ");

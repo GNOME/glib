@@ -186,46 +186,44 @@ g_messages_prefixed_init (void)
     }
 }
 
+static guint
+g_parse_debug_envvar (const gchar     *envvar,
+                      const GDebugKey *keys,
+                      gint             n_keys)
+{
+  const gchar *value;
+
+#ifdef OS_WIN32
+  /* "fatal-warnings,fatal-criticals,all,help" is pretty short */
+  gchar buffer[80];
+
+  if (GetEnvironmentVariable (envvar, buffer, 100) < 100)
+    value = buffer;
+  else
+    return 0;
+#else
+  value = getenv (envvar);
+#endif
+
+  return g_parse_debug_string (value, keys, n_keys);
+}
+
 static void
 g_debug_init (void)
 {
-  typedef enum {
-    G_DEBUG_FATAL_WARNINGS  = 1 << 0,
-    G_DEBUG_FATAL_CRITICALS = 1 << 1
-  } GDebugFlag;
-  const gchar *val;
-  guint flags = 0;
+  const GDebugKey keys[] = {
+    {"fatal-warnings",  G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL },
+    {"fatal-criticals", G_LOG_LEVEL_CRITICAL }
+  };
+  GLogLevelFlags flags;
+
+  flags = g_parse_debug_envvar ("G_DEBUG", keys, G_N_ELEMENTS (keys));
+
+  g_mutex_lock (&g_messages_lock);
+  g_log_always_fatal |= flags;
+  g_mutex_unlock (&g_messages_lock);
 
   g_debug_initialized = TRUE;
-
-  val = g_getenv ("G_DEBUG");
-  if (val != NULL)
-    {
-      const GDebugKey keys[] = {
-        {"fatal_warnings", G_DEBUG_FATAL_WARNINGS},
-        {"fatal_criticals", G_DEBUG_FATAL_CRITICALS}
-      };
-
-      flags = g_parse_debug_string (val, keys, G_N_ELEMENTS (keys));
-    }
-
-  if (flags & G_DEBUG_FATAL_WARNINGS)
-    {
-      GLogLevelFlags fatal_mask;
-
-      fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
-      fatal_mask |= G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL;
-      g_log_set_always_fatal (fatal_mask);
-    }
-
-  if (flags & G_DEBUG_FATAL_CRITICALS)
-    {
-      GLogLevelFlags fatal_mask;
-
-      fatal_mask = g_log_set_always_fatal (G_LOG_FATAL_MASK);
-      fatal_mask |= G_LOG_LEVEL_CRITICAL;
-      g_log_set_always_fatal (fatal_mask);
-    }
 }
 
 static GLogDomain*
@@ -500,6 +498,9 @@ g_logv (const gchar   *log_domain,
   gboolean was_recursion = (log_level & G_LOG_FLAG_RECURSION) != 0;
   gint i;
 
+  if (!g_debug_initialized)
+    g_debug_init ();
+
   log_level &= G_LOG_LEVEL_MASK;
   if (!log_level)
     return;
@@ -542,24 +543,6 @@ g_logv (const gchar   *log_domain,
 
 	  g_private_set (&g_log_depth, GUINT_TO_POINTER (depth));
 
-	  /* had to defer debug initialization until we can keep track of recursion */
-	  if (!(test_level & G_LOG_FLAG_RECURSION) && !g_debug_initialized)
-	    {
-	      GLogLevelFlags orig_test_level = test_level;
-
-	      g_debug_init ();
-	      if ((domain_fatal_mask | g_log_always_fatal) & test_level)
-		test_level |= G_LOG_FLAG_FATAL;
-	      if (test_level != orig_test_level)
-		{
-		  /* need a relookup, not nice, but not too bad either */
-		  g_mutex_lock (&g_messages_lock);
-		  domain = g_log_find_domain_L (log_domain ? log_domain : "");
-		  log_func = g_log_domain_get_handler_L (domain, test_level, &data);
-		  domain = NULL;
-		  g_mutex_unlock (&g_messages_lock);
-		}
-	    }
 
 	  if (test_level & G_LOG_FLAG_RECURSION)
 	    {
