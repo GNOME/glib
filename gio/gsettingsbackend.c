@@ -978,10 +978,6 @@ g_settings_backend_get_default (void)
       if (extension == NULL)
         {
           extensions = g_io_extension_point_get_extensions (point);
-
-          if (extensions == NULL)
-            g_error ("No GSettingsBackend implementations exist.");
-
           extension = extensions->data;
 
           if (strcmp (g_io_extension_get_name (extension), "memory") == 0)
