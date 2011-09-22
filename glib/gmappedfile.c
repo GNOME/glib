@@ -41,6 +41,10 @@
 #define fstat(a,b) _fstati64(a,b)
 #define stat _stati64
 
+#ifndef S_ISREG
+#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+#endif
+
 #endif
 
 #include "gconvert.h"
