@@ -114,8 +114,7 @@ uninstall-ms-lib:
 deprecated_sources = \
 	deprecated/gallocator.c		\
 	deprecated/gcompletion.c	\
-	deprecated/grel.c		\
-	deprecated/gthread.h
+	deprecated/grel.c
 
 libglib_2_0_la_SOURCES = 	\
 	$(deprecated_sources)	\
@@ -239,7 +238,8 @@ deprecatedincludedir=$(includedir)/glib-2.0/glib/deprecated
 deprecatedinclude_HEADERS = \
 	deprecated/gallocator.h		\
 	deprecated/gcompletion.h	\
-	deprecated/grel.h
+	deprecated/grel.h		\
+	deprecated/gthread.h
 
 glibsubincludedir=$(includedir)/glib-2.0/glib
 glibsubinclude_HEADERS =   \
