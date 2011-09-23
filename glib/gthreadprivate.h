@@ -67,6 +67,10 @@ struct _GPrivate
 G_GNUC_INTERNAL void g_private_init (GPrivate       *key,
                                      GDestroyNotify  notify);
 
+#ifdef G_OS_WIN32
+G_GNUC_INTERNAL void g_thread_DllMain (void);
+#endif
+
 G_END_DECLS
 
 #endif /* __G_THREADPRIVATE_H__ */

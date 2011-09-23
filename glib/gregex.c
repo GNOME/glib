@@ -36,6 +36,7 @@
 #include "gmessages.h"
 #include "gstrfuncs.h"
 #include "gatomic.h"
+#include "gthread.h"
 
 /**
  * SECTION:gregex
