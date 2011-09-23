@@ -667,6 +667,7 @@ void
 g_thread_init_glib (void)
 {
   static gboolean already_done;
+  GRealThread* main_thread;
 
   if (already_done)
     return;
@@ -676,7 +677,7 @@ g_thread_init_glib (void)
   /* We let the main thread (the one that calls g_thread_init) inherit
    * the static_private data set before calling g_thread_init
    */
-  GRealThread* main_thread = (GRealThread*) g_thread_self ();
+  main_thread = (GRealThread*) g_thread_self ();
 
   /* setup the basic threading system */
   g_threads_got_initialized = TRUE;
