@@ -148,19 +148,6 @@ g_io_stream_get_property (GObject    *object,
 }
 
 static void
-g_io_stream_set_property (GObject      *object,
-			  guint         prop_id,
-			  const GValue *value,
-			  GParamSpec   *pspec)
-{
-  switch (prop_id)
-    {
-    default:
-      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
-    }
-}
-
-static void
 g_io_stream_class_init (GIOStreamClass *klass)
 {
   GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
@@ -169,7 +156,6 @@ g_io_stream_class_init (GIOStreamClass *klass)
 
   gobject_class->finalize = g_io_stream_finalize;
   gobject_class->dispose = g_io_stream_dispose;
-  gobject_class->set_property = g_io_stream_set_property;
   gobject_class->get_property = g_io_stream_get_property;
 
   klass->close_fn = g_io_stream_real_close;
@@ -181,7 +167,7 @@ g_io_stream_class_init (GIOStreamClass *klass)
                                                          P_("Closed"),
                                                          P_("Is the stream closed"),
                                                          FALSE,
-                                                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS));
+                                                         G_PARAM_READABLE | G_PARAM_STATIC_STRINGS));
 
   g_object_class_install_property (gobject_class, PROP_INPUT_STREAM,
 				   g_param_spec_object ("input-stream",
