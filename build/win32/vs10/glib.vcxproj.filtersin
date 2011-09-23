@@ -31,6 +31,9 @@
     <ClCompile Include="..\..\..\glib\gspawn-win32.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\glib\gthread-win32.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\glib\gwin32.c">
       <Filter>Source Files</Filter>
     </ClCompile>
