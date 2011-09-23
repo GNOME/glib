@@ -64,6 +64,91 @@ test_rec_mutex3 (void)
   g_rec_mutex_clear (&mutex);
 }
 
+#define LOCKS      48
+#define ITERATIONS 10000
+#define THREADS    100
+
+
+GThread   *owners[LOCKS];
+GRecMutex  locks[LOCKS];
+
+static void
+acquire (gint nr)
+{
+  GThread *self;
+
+  self = g_thread_self ();
+
+  if (owners[nr] != NULL && owners[nr] != self)
+    {
+      if (g_test_verbose ())
+        g_print ("thread %p going to block on lock %d\n", self, nr);
+
+    }
+
+  g_rec_mutex_lock (&locks[nr]);
+
+  g_assert (owners[nr] == NULL);   /* hopefully nobody else is here */
+  owners[nr] = self;
+
+  /* let some other threads try to ruin our day */
+  g_thread_yield ();
+  g_thread_yield ();
+
+  g_assert (owners[nr] == self);   /* hopefully this is still us... */
+
+  g_rec_mutex_lock (&locks[nr]);  /* we're recursive, after all */
+
+  g_assert (owners[nr] == self);   /* hopefully this is still us... */
+
+  g_rec_mutex_unlock (&locks[nr]);
+
+  g_thread_yield ();
+  g_thread_yield ();
+
+  g_assert (owners[nr] == self);   /* hopefully this is still us... */
+  owners[nr] = NULL;               /* make way for the next guy */
+
+  g_rec_mutex_unlock (&locks[nr]);
+}
+
+static gpointer
+thread_func (gpointer data)
+{
+  gint i;
+  GRand *rand;
+
+  rand = g_rand_new ();
+
+  for (i = 0; i < ITERATIONS; i++)
+    acquire (g_rand_int_range (rand, 0, LOCKS));
+
+  g_rand_free (rand);
+
+  return NULL;
+}
+
+static void
+test_rec_mutex4 (void)
+{
+  gint i;
+  GThread *threads[THREADS];
+
+  for (i = 0; i < LOCKS; i++)
+    g_rec_mutex_init (&locks[i]);
+
+  for (i = 0; i < THREADS; i++)
+    threads[i] = g_thread_create (thread_func, NULL, TRUE, NULL);
+
+  for (i = 0; i < THREADS; i++)
+    g_thread_join (threads[i]);
+
+  for (i = 0; i < LOCKS; i++)
+    g_rec_mutex_clear (&locks[i]);
+
+  for (i = 0; i < LOCKS; i++)
+    g_assert (owners[i] == NULL);
+}
 
 int
 main (int argc, char *argv[])
@@ -73,6 +158,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/rec-mutex1", test_rec_mutex1);
   g_test_add_func ("/thread/rec-mutex2", test_rec_mutex2);
   g_test_add_func ("/thread/rec-mutex3", test_rec_mutex3);
+  g_test_add_func ("/thread/rec-mutex4", test_rec_mutex4);
 
   return g_test_run ();
 }
