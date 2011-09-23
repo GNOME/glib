@@ -277,7 +277,10 @@ g_rec_mutex_unlock (GRecMutex *mutex)
 gboolean
 g_rec_mutex_trylock (GRecMutex *mutex)
 {
-  return pthread_mutex_trylock (g_rec_mutex_get_impl (mutex));
+  if (pthread_mutex_trylock (g_rec_mutex_get_impl (mutex)) != 0)
+    return FALSE;
+
+  return TRUE;
 }
 
 /* {{{1 GRWLock */
