@@ -306,7 +306,10 @@ g_rw_lock_writer_lock (GRWLock *lock)
 gboolean
 g_rw_lock_writer_trylock (GRWLock *lock)
 {
-  return pthread_rwlock_trywrlock (&lock->impl);
+  if (pthread_rwlock_trywrlock (&lock->impl) != 0)
+    return FALSE;
+
+  return TRUE;
 }
 
 void
@@ -324,7 +327,10 @@ g_rw_lock_reader_lock (GRWLock *lock)
 gboolean
 g_rw_lock_reader_trylock (GRWLock *lock)
 {
-  return pthread_rwlock_tryrdlock (&lock->impl);
+  if (pthread_rwlock_tryrdlock (&lock->impl) != 0)
+    return FALSE;
+
+  return TRUE;
 }
 
 void
