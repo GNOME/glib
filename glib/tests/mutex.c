@@ -84,7 +84,6 @@ test_mutex4 (void)
 
 GThread *owners[LOCKS];
 GMutex   locks[LOCKS];
-gpointer ptrs[LOCKS];
 
 static void
 acquire (gint nr)
