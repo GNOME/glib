@@ -77,6 +77,82 @@ test_mutex4 (void)
   g_mutex_clear (&mutex);
 }
 
+#define LOCKS      48
+#define ITERATIONS 10000
+#define THREADS    100
+
+
+GThread *owners[LOCKS];
+GMutex   locks[LOCKS];
+gpointer ptrs[LOCKS];
+
+static void
+acquire (gint nr)
+{
+  GThread *self;
+
+  self = g_thread_self ();
+
+  if (!g_mutex_trylock (&locks[nr]))
+    {
+      if (g_test_verbose ())
+        g_print ("thread %p going to block on lock %d\n", self, nr);
+
+      g_mutex_lock (&locks[nr]);
+    }
+
+  g_assert (owners[nr] == NULL);   /* hopefully nobody else is here */
+  owners[nr] = self;
+
+  /* let some other threads try to ruin our day */
+  g_thread_yield ();
+  g_thread_yield ();
+  g_thread_yield ();
+
+  g_assert (owners[nr] == self);   /* hopefully this is still us... */
+  owners[nr] = NULL;               /* make way for the next guy */
+
+  g_mutex_unlock (&locks[nr]);
+}
+
+static gpointer
+thread_func (gpointer data)
+{
+  gint i;
+  GRand *rand;
+
+  rand = g_rand_new ();
+
+  for (i = 0; i < ITERATIONS; i++)
+    acquire (g_rand_int_range (rand, 0, LOCKS));
+
+  g_rand_free (rand);
+
+  return NULL;
+}
+
+static void
+test_mutex5 (void)
+{
+  gint i;
+  GThread *threads[THREADS];
+
+  for (i = 0; i < LOCKS; i++)
+    g_mutex_init (&locks[i]);
+
+  for (i = 0; i < THREADS; i++)
+    threads[i] = g_thread_create (thread_func, NULL, TRUE, NULL);
+
+  for (i = 0; i < THREADS; i++)
+    g_thread_join (threads[i]);
+
+  for (i = 0; i < LOCKS; i++)
+    g_mutex_clear (&locks[i]);
+
+  for (i = 0; i < LOCKS; i++)
+    g_assert (owners[i] == NULL);
+}
+
 
 int
 main (int argc, char *argv[])
@@ -87,6 +163,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/mutex2", test_mutex2);
   g_test_add_func ("/thread/mutex3", test_mutex3);
   g_test_add_func ("/thread/mutex4", test_mutex4);
+  g_test_add_func ("/thread/mutex5", test_mutex5);
 
   return g_test_run ();
 }
