@@ -91,7 +91,10 @@ GVariant *                      g_variant_new_objv                      (const g
 GVariant *                      g_variant_new_bytestring                (const gchar          *string);
 GVariant *                      g_variant_new_bytestring_array          (const gchar * const  *strv,
                                                                          gssize                length);
-
+GVariant *                      g_variant_new_fixed_array               (const GVariantType   *element_type,
+                                                                         gconstpointer         elements,
+                                                                         gsize                 num_elements,
+                                                                         gsize                 element_size);
 gboolean                        g_variant_get_boolean                   (GVariant             *value);
 guchar                          g_variant_get_byte                      (GVariant             *value);
 gint16                          g_variant_get_int16                     (GVariant             *value);

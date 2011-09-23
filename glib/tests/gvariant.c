@@ -4078,15 +4078,29 @@ static void
 test_fixed_array (void)
 {
   GVariant *a;
+  gint32 values[5];
   const gint32 *elts;
   gsize n_elts;
   gint i;
 
+  n_elts = 0;
   a = g_variant_new_parsed ("[1,2,3,4,5]");
   elts = g_variant_get_fixed_array (a, &n_elts, sizeof (gint32));
   g_assert (n_elts == 5);
   for (i = 0; i < 5; i++)
-    g_assert (elts[i] == i + 1);
+    g_assert_cmpint (elts[i], ==, i + 1);
+  g_variant_unref (a);
+
+  n_elts = 0;
+  for (i = 0; i < 5; i++)
+    values[i] = i + 1;
+  a = g_variant_new_fixed_array (G_VARIANT_TYPE_INT32, values,
+                                 G_N_ELEMENTS (values), sizeof (values[0]));
+  g_assert_cmpstr (g_variant_get_type_string (a), ==, "ai");
+  elts = g_variant_get_fixed_array (a, &n_elts, sizeof (gint32));
+  g_assert (n_elts == 5);
+  for (i = 0; i < 5; i++)
+    g_assert_cmpint (elts[i], ==, i + 1);
   g_variant_unref (a);
 }
 

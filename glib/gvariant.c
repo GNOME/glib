@@ -1114,6 +1114,71 @@ g_variant_get_fixed_array (GVariant *value,
   return NULL;
 }
 
+/**
+ * g_variant_new_fixed_array:
+ * @element_type: the #GVariantType of each element
+ * @elements: a pointer to the fixed array of contiguous elements
+ * @n_elements: the number of elements
+ * @element_size: the size of each element
+ * @returns: (transfer none): a floating reference to a new array #GVariant instance
+ *
+ * Provides access to the serialised data for an array of fixed-sized
+ * items.
+ *
+ * @value must be an array with fixed-sized elements.  Numeric types are
+ * fixed-size as are tuples containing only other fixed-sized types.
+ *
+ * @element_size must be the size of a single element in the array.  For
+ * example, if calling this function for an array of 32 bit integers,
+ * you might say <code>sizeof (gint32)</code>.  This value isn't used
+ * except for the purpose of a double-check that the form of the
+ * seralised data matches the caller's expectation.
+ *
+ * @n_elements, which must be non-%NULL is set equal to the number of
+ * items in the array.
+ *
+ * Since: 2.32
+ **/
+GVariant *
+g_variant_new_fixed_array (const GVariantType  *element_type,
+                           gconstpointer        elements,
+                           gsize                n_elements,
+                           gsize                element_size)
+{
+  GVariantType *array_type;
+  gsize array_element_size;
+  GVariantTypeInfo *array_info;
+  GVariant *value;
+  gpointer data;
+
+  g_return_val_if_fail (g_variant_type_is_definite (element_type), NULL);
+  g_return_val_if_fail (element_size > 0, NULL);
+
+  array_type = g_variant_type_new_array (element_type);
+  array_info = g_variant_type_info_get (array_type);
+  g_variant_type_info_query_element (array_info, NULL, &array_element_size);
+  if G_UNLIKELY (array_element_size != element_size)
+    {
+      if (array_element_size)
+        g_critical ("g_variant_new_fixed_array: array size %" G_GSIZE_FORMAT
+                    " does not match given element_size %" G_GSIZE_FORMAT ".",
+                    array_element_size, element_size);
+      else
+        g_critical ("g_variant_get_fixed_array: array does not have fixed size.");
+      return NULL;
+    }
+
+  data = g_memdup (elements, n_elements * element_size);
+  value = g_variant_new_from_data (array_type, data,
+                                   n_elements * element_size,
+                                   FALSE, g_free, data);
+
+  g_variant_type_free (array_type);
+  g_variant_type_info_unref (array_info);
+
+  return value;
+}
+
 /* String type constructor/getters/validation {{{1 */
 /**
  * g_variant_new_string:

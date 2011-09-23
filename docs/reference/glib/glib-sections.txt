@@ -3060,6 +3060,7 @@ g_variant_new_maybe
 g_variant_new_array
 g_variant_new_tuple
 g_variant_new_dict_entry
+g_variant_new_fixed_array
 
 <SUBSECTION>
 g_variant_get_maybe
