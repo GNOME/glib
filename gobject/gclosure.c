@@ -944,20 +944,41 @@ g_signal_type_cclosure_new (GType    itype,
 
 #include <ffi.h>
 static ffi_type *
-value_to_ffi_type (const GValue *gvalue, gpointer *value)
+value_to_ffi_type (const GValue *gvalue,
+                   gpointer *value,
+                   gint *enum_tmpval,
+                   gboolean *tmpval_used)
 {
   ffi_type *rettype = NULL;
   GType type = g_type_fundamental (G_VALUE_TYPE (gvalue));
   g_assert (type != G_TYPE_INVALID);
+
+  if (enum_tmpval)
+    {
+      g_assert (tmpval_used != NULL);
+      *tmpval_used = FALSE;
+    }
 
   switch (type)
     {
     case G_TYPE_BOOLEAN:
     case G_TYPE_CHAR:
     case G_TYPE_INT:
-    case G_TYPE_ENUM:
       rettype = &ffi_type_sint;
       *value = (gpointer)&(gvalue->data[0].v_int);
+      break;
+    case G_TYPE_ENUM:
+      /* enums are stored in v_long even though they are integers, which makes
+       * marshalling through libffi somewhat complicated.  They need to be
+       * marshalled as signed ints, but we need to use a temporary int sized
+       * value to pass to libffi otherwise it'll pull the wrong value on
+       * BE machines with 32-bit integers when treating v_long as 32-bit int.
+       */
+      g_assert (enum_tmpval != NULL);
+      rettype = &ffi_type_sint;
+      *enum_tmpval = g_value_get_enum (gvalue);
+      *value = enum_tmpval;
+      *tmpval_used = TRUE;
       break;
     case G_TYPE_UCHAR:
     case G_TYPE_UINT:
@@ -1011,10 +1032,12 @@ value_to_ffi_type (const GValue *gvalue, gpointer *value)
 static void
 value_from_ffi_type (GValue *gvalue, gpointer *value)
 {
+  ffi_arg *int_val = value;
+
   switch (g_type_fundamental (G_VALUE_TYPE (gvalue)))
     {
     case G_TYPE_INT:
-      g_value_set_int (gvalue, *(gint*)value);
+      g_value_set_int (gvalue, (gint) *int_val);
       break;
     case G_TYPE_FLOAT:
       g_value_set_float (gvalue, *(gfloat*)value);
@@ -1023,43 +1046,43 @@ value_from_ffi_type (GValue *gvalue, gpointer *value)
       g_value_set_double (gvalue, *(gdouble*)value);
       break;
     case G_TYPE_BOOLEAN:
-      g_value_set_boolean (gvalue, *(gboolean*)value);
+      g_value_set_boolean (gvalue, (gboolean) *int_val);
       break;
     case G_TYPE_STRING:
       g_value_set_string (gvalue, *(gchar**)value);
       break;
     case G_TYPE_CHAR:
-      g_value_set_schar (gvalue, *(gint8*)value);
+      g_value_set_schar (gvalue, (gint8) *int_val);
       break;
     case G_TYPE_UCHAR:
-      g_value_set_uchar (gvalue, *(guchar*)value);
+      g_value_set_uchar (gvalue, (guchar) *int_val);
       break;
     case G_TYPE_UINT:
-      g_value_set_uint (gvalue, *(guint*)value);
+      g_value_set_uint (gvalue, (guint) *int_val);
       break;
     case G_TYPE_POINTER:
       g_value_set_pointer (gvalue, *(gpointer*)value);
       break;
     case G_TYPE_LONG:
-      g_value_set_long (gvalue, *(glong*)value);
+      g_value_set_long (gvalue, (glong) *int_val);
       break;
     case G_TYPE_ULONG:
-      g_value_set_ulong (gvalue, *(gulong*)value);
+      g_value_set_ulong (gvalue, (gulong) *int_val);
       break;
     case G_TYPE_INT64:
-      g_value_set_int64 (gvalue, *(gint64*)value);
+      g_value_set_int64 (gvalue, (gint64) *int_val);
       break;
     case G_TYPE_UINT64:
-      g_value_set_uint64 (gvalue, *(guint64*)value);
+      g_value_set_uint64 (gvalue, (guint64) *int_val);
       break;
     case G_TYPE_BOXED:
       g_value_set_boxed (gvalue, *(gpointer*)value);
       break;
     case G_TYPE_ENUM:
-      g_value_set_enum (gvalue, *(gint*)value);
+      g_value_set_enum (gvalue, (gint) *int_val);
       break;
     case G_TYPE_FLAGS:
-      g_value_set_flags (gvalue, *(guint*)value);
+      g_value_set_flags (gvalue, (guint) *int_val);
       break;
     case G_TYPE_PARAM:
       g_value_set_param (gvalue, *(gpointer*)value);
@@ -1108,10 +1131,13 @@ g_cclosure_marshal_generic (GClosure     *closure,
   int i;
   ffi_cif cif;
   GCClosure *cc = (GCClosure*) closure;
+  gint *enum_tmpval;
+  gboolean tmpval_used = FALSE;
 
+  enum_tmpval = g_alloca (sizeof (gint));
   if (return_gvalue && G_VALUE_TYPE (return_gvalue))
     {
-      rtype = value_to_ffi_type (return_gvalue, &rvalue);
+      rtype = value_to_ffi_type (return_gvalue, &rvalue, enum_tmpval, &tmpval_used);
     }
   else
     {
@@ -1124,22 +1150,38 @@ g_cclosure_marshal_generic (GClosure     *closure,
   atypes = g_alloca (sizeof (ffi_type *) * n_args);
   args =  g_alloca (sizeof (gpointer) * n_args);
 
+  if (tmpval_used)
+    enum_tmpval = g_alloca (sizeof (gint));
+
   if (G_CCLOSURE_SWAP_DATA (closure))
     {
       atypes[n_args-1] = value_to_ffi_type (param_values + 0,
-                                            &args[n_args-1]);
+                                            &args[n_args-1],
+                                            enum_tmpval,
+                                            &tmpval_used);
       atypes[0] = &ffi_type_pointer;
       args[0] = &closure->data;
     }
   else
     {
-      atypes[0] = value_to_ffi_type (param_values + 0, &args[0]);
+      atypes[0] = value_to_ffi_type (param_values + 0,
+                                     &args[0],
+                                     enum_tmpval,
+                                     &tmpval_used);
       atypes[n_args-1] = &ffi_type_pointer;
       args[n_args-1] = &closure->data;
     }
 
   for (i = 1; i < n_args - 1; i++)
-    atypes[i] = value_to_ffi_type (param_values + i, &args[i]);
+    {
+      if (tmpval_used)
+        enum_tmpval = g_alloca (sizeof (gint));
+
+      atypes[i] = value_to_ffi_type (param_values + i,
+                                     &args[i],
+                                     enum_tmpval,
+                                     &tmpval_used);
+    }
 
   if (ffi_prep_cif (&cif, FFI_DEFAULT_ABI, n_args, rtype, atypes) != FFI_OK)
     return;
