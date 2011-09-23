@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=glib&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-09-04 23:56-0400\n"
-"PO-Revision-Date: 2011-08-06 16:02+0200\n"
+"PO-Revision-Date: 2011-09-23 08:22+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Gezer (Hebrew)\n"
 "Language: he\n"
@@ -1856,10 +1856,10 @@ msgstr ""
 "freedesktop.DBus.Local"
 
 #: ../gio/gdbusmessage.c:998
-#, fuzzy, c-format
+#, c-format
 msgid "Wanted to read %lu byte but got EOF"
 msgid_plural "Wanted to read %lu bytes but got EOF"
-msgstr[0] "Wanted to read %lu bytes but got EOF"
+msgstr[0] "Wanted to read %lu byte but got EOF"
 msgstr[1] "Wanted to read %lu bytes but got EOF"
 
 #: ../gio/gdbusmessage.c:1025
@@ -1887,13 +1887,13 @@ msgid "Parsed value `%s' is not a valid D-Bus signature"
 msgstr "'%s' is not a valid name "
 
 #: ../gio/gdbusmessage.c:1324
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgid_plural ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[0] ""
-"Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
+"Encountered array of length %u byte. Maximum length is 2<<26 bytes (64 MiB)."
 msgstr[1] ""
 "Encountered array of length %u bytes. Maximum length is 2<<26 bytes (64 MiB)."
 
@@ -1934,10 +1934,10 @@ msgid "Parsed value `%s' is not a valid D-Bus signature (for body)"
 msgstr "Parsed value `%s' is not a valid D-Bus signature (for body)"
 
 #: ../gio/gdbusmessage.c:1821
-#, fuzzy, c-format
+#, c-format
 msgid "No signature header in message but the message body is %u byte"
 msgid_plural "No signature header in message but the message body is %u bytes"
-msgstr[0] "No signature header in message but the message body is %u bytes"
+msgstr[0] "No signature header in message but the message body is %u byte"
 msgstr[1] "No signature header in message but the message body is %u bytes"
 
 #: ../gio/gdbusmessage.c:1831
@@ -1952,11 +1952,13 @@ msgstr ""
 "Error serializing GVariant with type string `%s' to the D-Bus wire format"
 
 #: ../gio/gdbusmessage.c:2303
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Message has %d file descriptors but the header field indicates %d file "
 "descriptors"
-msgstr "Message has %d fds but the header field indicates %d fds"
+msgstr ""
+"Message has %d file descriptors but the header field indicates %d file "
+"descriptors"
 
 #: ../gio/gdbusmessage.c:2311
 msgid "Cannot serialize message: "
@@ -2286,7 +2288,7 @@ msgstr "Can't create user MIME configuration folder %s: %s"
 
 #: ../gio/gdesktopappinfo.c:1785 ../gio/gdesktopappinfo.c:1809
 msgid "Application information lacks an identifier"
-msgstr ""
+msgstr "Application information lacks an identifier"
 
 #: ../gio/gdesktopappinfo.c:2033
 #, c-format
@@ -2829,9 +2831,8 @@ msgid "Error renaming file: %s"
 msgstr "Error renaming file: %s"
 
 #: ../gio/glocalfile.c:1126
-#, fuzzy
 msgid "Can't rename file, filename already exists"
-msgstr "Can't rename file, filename already exist"
+msgstr "Can't rename file, filename already exists"
 
 #: ../gio/glocalfile.c:1139 ../gio/glocalfile.c:2129 ../gio/glocalfile.c:2158
 #: ../gio/glocalfile.c:2318 ../gio/glocalfileoutputstream.c:571
@@ -3635,9 +3636,8 @@ msgid "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 msgstr "Hostname '%s' too long for SOCKSv5 protocol (maximum is %i bytes)"
 
 #: ../gio/gsocks5proxy.c:352
-#, fuzzy
 msgid "The SOCKSv5 proxy server uses unknown address type."
-msgstr "The SOCKSv5 proxy server uses unkown address type."
+msgstr "The SOCKSv5 proxy server uses unknown address type."
 
 #: ../gio/gsocks5proxy.c:359
 msgid "Internal SOCKSv5 proxy server error."
@@ -3697,16 +3697,20 @@ msgid ""
 "This is the last chance to enter the password correctly before your access "
 "is locked out."
 msgstr ""
+"This is the last chance to enter the password correctly before your access "
+"is locked out."
 
 #: ../gio/gtlspassword.c:116
 msgid ""
 "Several password entered have been incorrect, and your access will be locked "
 "out after further failures."
 msgstr ""
+"Several password entered have been incorrect, and your access will be locked "
+"out after further failures."
 
 #: ../gio/gtlspassword.c:118
 msgid "The password entered is incorrect."
-msgstr ""
+msgstr "The password entered is incorrect."
 
 #: ../gio/gunixconnection.c:164 ../gio/gunixconnection.c:521
 #, c-format
