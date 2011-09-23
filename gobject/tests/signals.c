@@ -1,6 +1,7 @@
 #include <glib-object.h>
 
 typedef enum {
+  TEST_ENUM_NEGATIVE = -30,
   TEST_ENUM_NONE = 0,
   TEST_ENUM_FOO = 1,
   TEST_ENUM_BAR = 2
@@ -19,6 +20,7 @@ test_enum_get_type (void)
   if (g_once_init_enter (&g_define_type_id__volatile))
     {
       static const GFlagsValue values[] = {
+        { TEST_ENUM_NEGATIVE, "TEST_ENUM_NEGATIVE", "negative" },
         { TEST_ENUM_NONE, "TEST_ENUM_NONE", "none" },
         { TEST_ENUM_FOO, "TEST_ENUM_FOO", "foo" },
         { TEST_ENUM_BAR, "TEST_ENUM_BAR", "bar" },
@@ -97,6 +99,22 @@ test_class_init (TestClass *klass)
                 G_TYPE_NONE,
                 5,
                 G_TYPE_INT, test_enum_get_type(), G_TYPE_INT, test_unsigned_enum_get_type (), G_TYPE_INT);
+  g_signal_new ("generic-marshaller-enum-return-signed",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
+                0,
+                NULL, NULL,
+                NULL,
+                test_enum_get_type(),
+                0);
+  g_signal_new ("generic-marshaller-enum-return-unsigned",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
+                0,
+                NULL, NULL,
+                NULL,
+                test_unsigned_enum_get_type(),
+                0);
   g_signal_new ("variant-changed-no-slot",
                 G_TYPE_FROM_CLASS (klass),
                 G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
@@ -209,6 +227,92 @@ test_generic_marshaller_signal_2 (void)
   g_object_unref (test);
 }
 
+static TestEnum
+on_generic_marshaller_enum_return_signed_1 (Test *obj)
+{
+  return TEST_ENUM_NEGATIVE;
+}
+
+static TestEnum
+on_generic_marshaller_enum_return_signed_2 (Test *obj)
+{
+  return TEST_ENUM_BAR;
+}
+
+static void
+test_generic_marshaller_signal_enum_return_signed (void)
+{
+  Test *test;
+  guint id;
+  TestEnum retval = 0;
+
+  test = g_object_new (test_get_type (), NULL);
+
+  /* Test return value NEGATIVE */
+  id = g_signal_connect (test,
+                         "generic-marshaller-enum-return-signed",
+                         G_CALLBACK (on_generic_marshaller_enum_return_signed_1),
+                         NULL);
+  g_signal_emit_by_name (test, "generic-marshaller-enum-return-signed", &retval);
+  g_assert_cmpint (retval, ==, TEST_ENUM_NEGATIVE);
+  g_signal_handler_disconnect (test, id);
+
+  /* Test return value BAR */
+  retval = 0;
+  id = g_signal_connect (test,
+                         "generic-marshaller-enum-return-signed",
+                         G_CALLBACK (on_generic_marshaller_enum_return_signed_2),
+                         NULL);
+  g_signal_emit_by_name (test, "generic-marshaller-enum-return-signed", &retval);
+  g_assert_cmpint (retval, ==, TEST_ENUM_BAR);
+  g_signal_handler_disconnect (test, id);
+
+  g_object_unref (test);
+}
+
+static TestUnsignedEnum
+on_generic_marshaller_enum_return_unsigned_1 (Test *obj)
+{
+  return TEST_UNSIGNED_ENUM_FOO;
+}
+
+static TestUnsignedEnum
+on_generic_marshaller_enum_return_unsigned_2 (Test *obj)
+{
+  return TEST_UNSIGNED_ENUM_BAR;
+}
+
+static void
+test_generic_marshaller_signal_enum_return_unsigned (void)
+{
+  Test *test;
+  guint id;
+  TestUnsignedEnum retval = 0;
+
+  test = g_object_new (test_get_type (), NULL);
+
+  /* Test return value FOO */
+  id = g_signal_connect (test,
+                         "generic-marshaller-enum-return-unsigned",
+                         G_CALLBACK (on_generic_marshaller_enum_return_unsigned_1),
+                         NULL);
+  g_signal_emit_by_name (test, "generic-marshaller-enum-return-unsigned", &retval);
+  g_assert_cmpint (retval, ==, TEST_UNSIGNED_ENUM_FOO);
+  g_signal_handler_disconnect (test, id);
+
+  /* Test return value BAR */
+  retval = 0;
+  id = g_signal_connect (test,
+                         "generic-marshaller-enum-return-unsigned",
+                         G_CALLBACK (on_generic_marshaller_enum_return_unsigned_2),
+                         NULL);
+  g_signal_emit_by_name (test, "generic-marshaller-enum-return-unsigned", &retval);
+  g_assert_cmpint (retval, ==, TEST_UNSIGNED_ENUM_BAR);
+  g_signal_handler_disconnect (test, id);
+
+  g_object_unref (test);
+}
+
 /* --- */
 
 int
@@ -222,6 +326,8 @@ main (int argc,
   g_test_add_func ("/gobject/signals/variant", test_variant_signal);
   g_test_add_func ("/gobject/signals/generic-marshaller-1", test_generic_marshaller_signal_1);
   g_test_add_func ("/gobject/signals/generic-marshaller-2", test_generic_marshaller_signal_2);
+  g_test_add_func ("/gobject/signals/generic-marshaller-enum-return-signed", test_generic_marshaller_signal_enum_return_signed);
+  g_test_add_func ("/gobject/signals/generic-marshaller-enum-return-unsigned", test_generic_marshaller_signal_enum_return_unsigned);
 
   return g_test_run ();
 }
