@@ -65,6 +65,14 @@
 #define MAP_FAILED ((void *) -1)
 #endif
 
+#ifdef G_OS_WIN32
+
+#ifndef S_ISREG
+#define S_ISREG(m) (((m) & _S_IFMT) == _S_IFREG)
+#endif
+
+#endif
+
 struct _GMappedFile 
 {
   gchar *contents;
