@@ -187,6 +187,93 @@ test_rwlock7 (void)
     g_assert (owners[i] == NULL);
 }
 
+static gint even;
+static GRWLock even_lock;
+GThread *writers[2];
+GThread *readers[10];
+
+static void
+change_even (gpointer data)
+{
+  g_rw_lock_writer_lock (&even_lock);
+
+  g_assert (even % 2 == 0);
+
+  even += 1;
+
+  if (GPOINTER_TO_INT (data) == 0)
+    even += 1;
+  else
+    even -= 1;
+
+  g_assert (even % 2 == 0);
+
+  g_rw_lock_writer_unlock (&even_lock);
+}
+
+static void
+verify_even (gpointer data)
+{
+  g_rw_lock_reader_lock (&even_lock);
+
+  g_assert (even % 2 == 0);
+
+  g_rw_lock_reader_unlock (&even_lock);
+}
+
+static gpointer
+writer_func (gpointer data)
+{
+  gint i;
+
+  for (i = 0; i < 100000; i++)
+    change_even (data);
+
+  return NULL;
+}
+
+static gpointer
+reader_func (gpointer data)
+{
+  gint i;
+
+  for (i = 0; i < 100000; i++)
+    verify_even (data);
+
+  return NULL;
+}
+
+/* This test has 2 writers and 10 readers.
+ * The writers modify an integer multiple times,
+ * but always leave it with an even value.
+ * The readers verify that they can only observe
+ * even values
+ */
+static void
+test_rwlock8 (void)
+{
+  gint i;
+
+  even = 0;
+  g_rw_lock_init (&even_lock);
+
+  for (i = 0; i < 2; i++)
+    writers[i] = g_thread_create (writer_func, GINT_TO_POINTER (i), TRUE, NULL);
+
+  for (i = 0; i < 10; i++)
+    readers[i] = g_thread_create (reader_func, NULL, TRUE, NULL);
+
+  for (i = 0; i < 2; i++)
+    g_thread_join (writers[i]);
+
+  for (i = 0; i < 10; i++)
+    g_thread_join (readers[i]);
+
+  g_assert (even % 2 == 0);
+
+  g_rw_lock_clear (&even_lock);
+}
+
 int
 main (int argc, char *argv[])
 {
@@ -199,6 +286,7 @@ main (int argc, char *argv[])
   g_test_add_func ("/thread/rwlock5", test_rwlock5);
   g_test_add_func ("/thread/rwlock6", test_rwlock6);
   g_test_add_func ("/thread/rwlock7", test_rwlock7);
+  g_test_add_func ("/thread/rwlock8", test_rwlock8);
 
   return g_test_run ();
 }
