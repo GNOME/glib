@@ -127,7 +127,13 @@
  * G_THREADS_IMPL_POSIX:
  *
  * This macro is defined if POSIX style threads are used.
- **/
+ */
+
+/**
+ * G_THREADS_IMPL_WIN32:
+ *
+ * This macro is defined if Windows style threads are used.
+ */
 
 /**
  * G_THREADS_ENABLED:
