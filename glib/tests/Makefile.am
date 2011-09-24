@@ -209,6 +209,9 @@ rec_mutex_LDADD  = $(progs_ldadd)
 TEST_PROGS      += rwlock
 rwlock_LDADD     = $(progs_ldadd)
 
+TEST_PROGS      += once
+once_LDADD       = $(progs_ldadd)
+
 # some testing of gtester funcitonality
 XMLLINT=xmllint
 gtester-xmllint-check: # check testreport xml with xmllint if present
