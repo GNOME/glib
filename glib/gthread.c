@@ -21,6 +21,7 @@
  * Boston, MA 02111-1307, USA.
  */
 
+/* {{{1 Prelude */
 /* Prelude {{{1 ----------------------------------------------------------- */
 
 /*
@@ -67,8 +68,8 @@
 /**
  * SECTION:threads
  * @title: Threads
- * @short_description: thread abstraction; including threads, different
- *                     mutexes, conditions and thread private data
+ * @short_description: portable support for threads, mutexes, locks,
+ *     conditions and thread private data
  * @see_also: #GThreadPool, #GAsyncQueue
  *
  * Threads act almost like processes, but unlike processes all threads
@@ -81,7 +82,7 @@
  * threads can be made, unless order is explicitly forced by the
  * programmer through synchronization primitives.
  *
- * The aim of the thread related functions in GLib is to provide a
+ * The aim of the thread-related functions in GLib is to provide a
  * portable means for writing multi-threaded software. There are
  * primitives for mutexes to protect the access to portions of memory
  * (#GMutex, #GRecMutex and #GRWLock). There is a facility to use
@@ -90,8 +91,7 @@
  * There are primitives for thread-private data - data that every thread
  * has a private instance of (#GPrivate, #GStaticPrivate). There are
  * facilities for one-time initialization (#GOnce, g_once_init_enter()).
- * Last but definitely not least there are primitives to portably create
- * and manage threads (#GThread).
+ * Finally there are primitives to create and manage threads (#GThread).
  *
  * The threading system is initialized with g_thread_init(), which
  * takes an optional custom thread implementation or %NULL for the
@@ -109,7 +109,7 @@
  *
  * Please note that since version 2.24 the GObject initialization
  * function g_type_init() initializes threads (with a %NULL argument),
- * so most applications, including those using Gtk+ will run with
+ * so most applications, including those using GTK+ will run with
  * threads enabled. If you want a special thread implementation, make
  * sure you call g_thread_init() before g_type_init() is called.
  *
@@ -133,7 +133,7 @@
  * G_THREADS_ENABLED:
  *
  * This macro is defined, for backward compatibility, to indicate that
- * GLib has been compiled with thread support. As of glib 2.28, it is
+ * GLib has been compiled with thread support. As of GLib 2.28, it is
  * always defined.
  **/
 
@@ -439,7 +439,7 @@ gboolean g_threads_got_initialized = FALSE;
  *   int
  *   give_me_next_number (void)
  *   {
- *     static GMutex mutex = G_MUTEX_INITIALIZER;
+ *     static GMutex mutex = G_MUTEX_INIT;
  *     static int current_number = 0;
  *     int ret_val;
  *
@@ -452,7 +452,8 @@ gboolean g_threads_got_initialized = FALSE;
  *  </programlisting>
  * </example>
  *
- * A #GMutex should only be accessed via the following functions.
+ * A #GMutex should only be accessed via <function>g_mutex_</function>
+ * functions.
  **/
 
 /* GCond Virtual Functions {{{2 ------------------------------------------ */
@@ -880,6 +881,7 @@ g_once_init_leave (volatile gsize *value_location,
  * GStaticMutex:
  *
  * A #GStaticMutex works like a #GMutex.
+ *
  * Prior to GLib 2.32, GStaticMutex had the significant advantage
  * that it doesn't need to be created at run-time, but can be defined
  * at compile-time. Since 2.32, #GMutex can be statically allocated
@@ -1898,7 +1900,7 @@ g_thread_join (GThread* thread)
  * This function does nothing.
  *
  * Deprecated:2.32: Thread priorities no longer have any effect.
- **/
+ */
 void
 g_thread_set_priority (GThread         *thread,
                        GThreadPriority  priority)
@@ -2024,6 +2026,8 @@ g_thread_self (void)
  * keep the lock for a considerable time justify a #GStaticRWLock. The
  * above example most probably would fare better with a
  * #GStaticMutex.</para></note>
+ *
+ * Deprecated: 2.32: Use a #GRWLock instead
  **/
 
 /**
@@ -2046,7 +2050,9 @@ g_thread_self (void)
  * A #GStaticRWLock must be initialized with this function before it
  * can be used. Alternatively you can initialize it with
  * #G_STATIC_RW_LOCK_INIT.
- **/
+ *
+ * Deprecated: 2.32: Use g_rw_lock_init() instead
+ */
 void
 g_static_rw_lock_init (GStaticRWLock* lock)
 {
@@ -2089,7 +2095,9 @@ g_static_rw_lock_signal (GStaticRWLock* lock)
  * #GStaticRWLock is not recursive. It might seem to be possible to
  * recursively lock for reading, but that can result in a deadlock, due
  * to writer preference.
- **/
+ *
+ * Deprecated: 2.32: Use g_rw_lock_reader_lock() instead
+ */
 void
 g_static_rw_lock_reader_lock (GStaticRWLock* lock)
 {
@@ -2117,7 +2125,9 @@ g_static_rw_lock_reader_lock (GStaticRWLock* lock)
  * lock @lock for writing, immediately returns %FALSE. Otherwise locks
  * @lock for reading and returns %TRUE. This lock has to be unlocked by
  * g_static_rw_lock_reader_unlock().
- **/
+ *
+ * Deprectated: 2.32: Use g_rw_lock_reader_trylock() instead
+ */
 gboolean
 g_static_rw_lock_reader_trylock (GStaticRWLock* lock)
 {
@@ -2145,7 +2155,9 @@ g_static_rw_lock_reader_trylock (GStaticRWLock* lock)
  * Unlocks @lock. If a thread waits to lock @lock for writing and all
  * locks for reading have been unlocked, the waiting thread is woken up
  * and can lock @lock for writing.
- **/
+ *
+ * Deprectated: 2.32: Use g_rw_lock_reader_unlock() instead
+ */
 void
 g_static_rw_lock_reader_unlock  (GStaticRWLock* lock)
 {
@@ -2172,7 +2184,9 @@ g_static_rw_lock_reader_unlock  (GStaticRWLock* lock)
  * reading. When @lock is locked for writing, no other thread can lock
  * @lock (neither for reading nor writing). This lock has to be
  * unlocked by g_static_rw_lock_writer_unlock().
- **/
+ *
+ * Deprectated: 2.32: Use g_rw_lock_writer_lock() instead
+ */
 void
 g_static_rw_lock_writer_lock (GStaticRWLock* lock)
 {
@@ -2199,7 +2213,9 @@ g_static_rw_lock_writer_lock (GStaticRWLock* lock)
  * either reading or writing) by another thread, it immediately returns
  * %FALSE. Otherwise it locks @lock for writing and returns %TRUE. This
  * lock has to be unlocked by g_static_rw_lock_writer_unlock().
- **/
+ *
+ * Deprectated: 2.32: Use g_rw_lock_writer_trylock() instead
+ */
 gboolean
 g_static_rw_lock_writer_trylock (GStaticRWLock* lock)
 {
@@ -2230,7 +2246,9 @@ g_static_rw_lock_writer_trylock (GStaticRWLock* lock)
  * lock @lock for writing, and some thread or threads are waiting to
  * lock @lock for reading, the waiting threads are woken up and can
  * lock @lock for reading.
- **/
+ *
+ * Deprectated: 2.32: Use g_rw_lock_writer_unlock() instead
+ */
 void
 g_static_rw_lock_writer_unlock (GStaticRWLock* lock)
 {
@@ -2255,7 +2273,9 @@ g_static_rw_lock_writer_unlock (GStaticRWLock* lock)
  * unbounded lifetime, i.e. objects declared 'static', but if you have
  * a #GStaticRWLock as a member of a structure, and the structure is
  * freed, you should also free the #GStaticRWLock.
- **/
+ *
+ * Deprecated: 2.32: Use a #GRWLock instead
+ */
 void
 g_static_rw_lock_free (GStaticRWLock* lock)
 {
@@ -2340,7 +2360,7 @@ g_thread_get_initialized ()
 /**
  * g_mutex_new:
  *
- * Creates a new #GMutex.
+ * Allocated and initializes a new #GMutex.
  *
  * Returns: a newly allocated #GMutex. Use g_mutex_free() to free
  */
@@ -2361,8 +2381,8 @@ g_mutex_new (void)
  *
  * Destroys a @mutex that has been created with g_mutex_new().
  *
- * <note>Calling g_mutex_free() on a locked mutex may result
- * in undefined behaviour.</note>
+ * Calling g_mutex_free() on a locked mutex may result
+ * in undefined behaviour.
  */
 void
 g_mutex_free (GMutex *mutex)
@@ -2374,7 +2394,7 @@ g_mutex_free (GMutex *mutex)
 /**
  * g_cond_new:
  *
- * Creates a new #GCond.
+ * Allocates and initializes a new #GCond.
  *
  * Returns: a newly allocated #GCond. Free with g_cond_free()
  */
@@ -2463,3 +2483,5 @@ GThreadFunctions g_thread_functions_for_glib_use =
   NULL,
   NULL,
 };
+
+/* vim: set foldmethod=marker: */

@@ -107,6 +107,9 @@ GThread* g_thread_create_full  (GThreadFunc            func,
                                 GThreadPriority        priority,
                                 GError               **error);
 
+void g_thread_set_priority     (GThread         *thread,
+                                GThreadPriority  priority);
+
 #ifdef G_OS_WIN32
 typedef GMutex * GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL

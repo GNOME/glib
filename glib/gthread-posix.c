@@ -63,6 +63,19 @@ g_thread_abort (gint         status,
 /* {{{1 GMutex */
 
 /**
+ * G_MUTEX_INIT:
+ *
+ * Initializer for statically allocated #GMutexes.
+ * Alternatively, g_mutex_init() can be used.
+ *
+ * |[
+ *   GMutex mutex = G_MUTEX_INIT;
+ * ]|
+ *
+ * Since: 2.32
+ */
+
+/**
  * g_mutex_init:
  * @mutex: an uninitialized #GMutex
  *
@@ -71,24 +84,26 @@ g_thread_abort (gint         status,
  * This function is useful to initialize a mutex that has been
  * allocated on the stack, or as part of a larger structure.
  * It is not necessary to initialize a mutex that has been
- * created with g_mutex_new(). Also see #G_MUTEX_INITIALIZER
- * for an alternative way to initialize statically allocated mutexes.
+ * created with g_mutex_new(). Also see #G_MUTEX_INIT for an
+ * alternative way to initialize statically allocated mutexes.
  *
  * |[
  *   typedef struct {
  *     GMutex m;
- *     /&ast; ... &ast;/
+ *     ...
  *   } Blob;
  *
  * Blob *b;
  *
  * b = g_new (Blob, 1);
  * g_mutex_init (&b->m);
- * /&ast; ... &ast;/
  * ]|
  *
  * To undo the effect of g_mutex_init() when a mutex is no longer
  * needed, use g_mutex_clear().
+ *
+ * Calling g_mutex_init() on an already initialized #GMutex leads
+ * to undefined behaviour.
  *
  * Since: 2.32
  */
@@ -121,6 +136,9 @@ g_mutex_init (GMutex *mutex)
  * #GMutexes that have have been created with g_mutex_new() should
  * be freed with g_mutex_free() instead.
  *
+ * Calling g_mutex_clear() on a locked mutex leads to undefined
+ * behaviour.
+ *
  * Sine: 2.32
  */
 void
@@ -146,7 +164,7 @@ g_mutex_clear (GMutex *mutex)
  * <note>#GMutex is neither guaranteed to be recursive nor to be
  * non-recursive, i.e. a thread could deadlock while calling
  * g_mutex_lock(), if it already has locked @mutex. Use
- * #GStaticRecMutex, if you need recursive mutexes.</note>
+ * #GRecMutex if you need recursive mutexes.</note>
  */
 void
 g_mutex_lock (GMutex *mutex)
@@ -162,7 +180,10 @@ g_mutex_lock (GMutex *mutex)
  * @mutex: a #GMutex
  *
  * Unlocks @mutex. If another thread is blocked in a g_mutex_lock()
- * call for @mutex, it will be woken and can lock @mutex itself.
+ * call for @mutex, it will become unblocked and can lock @mutex itself.
+ *
+ * Calling g_mutex_unlock() on a mutex that is not locked by the
+ * current thread leads to undefined behaviour.
  *
  * This function can be used even if g_thread_init() has not yet been
  * called, and, in that case, will do nothing.
@@ -190,10 +211,9 @@ g_mutex_unlock (GMutex *mutex)
  * <note>#GMutex is neither guaranteed to be recursive nor to be
  * non-recursive, i.e. the return value of g_mutex_trylock() could be
  * both %FALSE or %TRUE, if the current thread already has locked
- * @mutex. Use #GStaticRecMutex, if you need recursive
- * mutexes.</note>
+ * @mutex. Use #GRecMutex if you need recursive mutexes.</note>
 
- * Returns: %TRUE, if @mutex could be locked
+ * Returns: %TRUE if @mutex could be locked
  */
 gboolean
 g_mutex_trylock (GMutex *mutex)
@@ -210,6 +230,23 @@ g_mutex_trylock (GMutex *mutex)
 }
 
 /* {{{1 GRecMutex */
+
+/**
+ * GRecMutex:
+ *
+ * The GRecMutex struct is an opaque data structure to represent a
+ * recursive mutex. It is similar to a #GMutex with the difference
+ * that it is possible to lock a GRecMutex multiple times in the same
+ * thread without deadlock. When doing so, care has to be taken to
+ * unlock the recursive mutex as often as it has been locked.
+ *
+ * A GRecMutex should only be accessed with the
+ * <function>g_rec_mutex_</function> functions. Before a GRecMutex
+ * can be used, it has to be initialized with #G_REC_MUTEX_INIT or
+ * g_rec_mutex_init().
+ *
+ * Since: 2.32
+ */
 
 static pthread_mutex_t *
 g_rec_mutex_impl_new (void)
@@ -249,35 +286,135 @@ g_rec_mutex_get_impl (GRecMutex *mutex)
   return impl;
 }
 
+/**
+ * G_REC_MUTEX_INIT:
+ *
+ * Initializer for statically allocated #GRecMutexes.
+ * Alternatively, g_rec_mutex_init() can be used.
+ *
+ * |[
+ *   GRecMutex mutex = G_REC_MUTEX_INIT;
+ * ]|
+ *
+ * Since: 2.32
+ */
+
+/**
+ * g_rec_mutex_init:
+ * @rec_mutex: an uninitialized #GRecMutex
+ *
+ * Initializes a #GRecMutex so that it can be used.
+ *
+ * This function is useful to initialize a recursive mutex
+ * that has been allocated on the stack, or as part of a larger
+ * structure.
+ * It is not necessary to initialize a recursive mutex that has
+ * been created with g_rec_mutex_new(). Also see #G_REC_MUTEX_INIT
+ * for an alternative way to initialize statically allocated
+ * recursive mutexes.
+ *
+ * |[
+ *   typedef struct {
+ *     GRecMutex m;
+ *     ...
+ *   } Blob;
+ *
+ * Blob *b;
+ *
+ * b = g_new (Blob, 1);
+ * g_rec_mutex_init (&b->m);
+ * ]|
+ *
+ * Calling g_rec_mutex_init() on an already initialized #GRecMutex
+ * leads to undefined behaviour.
+ *
+ * To undo the effect of g_rec_mutex_init() when a recursive mutex
+ * is no longer needed, use g_rec_mutex_clear().
+ *
+ * Since: 2.32
+ */
 void
-g_rec_mutex_init (GRecMutex *mutex)
+g_rec_mutex_init (GRecMutex *rec_mutex)
 {
-  mutex->impl = g_rec_mutex_impl_new ();
+  rec_mutex->impl = g_rec_mutex_impl_new ();
 }
 
+/**
+ * g_rec_mutex_clear:
+ * @rec_mutex: an initialized #GRecMutex
+ *
+ * Frees the resources allocated to a recursive mutex with
+ * g_rec_mutex_init().
+ *
+ * #GRecMutexes that have have been created with g_rec_mutex_new()
+ * should be freed with g_rec_mutex_free() instead.
+ *
+ * Calling g_rec_mutex_clear() on a locked recursive mutex leads
+ * to undefined behaviour.
+ *
+ * Sine: 2.32
+ */
 void
-g_rec_mutex_clear (GRecMutex *mutex)
+g_rec_mutex_clear (GRecMutex *rec_mutex)
 {
-  if (mutex->impl)
-    g_rec_mutex_impl_free (mutex->impl);
+  if (rec_mutex->impl)
+    g_rec_mutex_impl_free (rec_mutex->impl);
 }
 
+/**
+ * g_rec_mutex_lock:
+ * @rec_mutex: a #GRecMutex
+ *
+ * Locks @rec_mutex. If @rec_mutex is already locked by another
+ * thread, the current thread will block until @rec_mutex is
+ * unlocked by the other thread. If @rec_mutex is already locked
+ * by the current thread, the 'lock count' of @rec_mutex is increased.
+ * The mutex will only become available again when it is unlocked
+ * as many times as it has been locked.
+ *
+ * Since: 2.32
+ */
 void
 g_rec_mutex_lock (GRecMutex *mutex)
 {
   pthread_mutex_lock (g_rec_mutex_get_impl (mutex));
 }
 
+/**
+ * g_rec_mutex_unlock:
+ * @rec_mutex: a #RecGMutex
+ *
+ * Unlocks @rec_mutex. If another thread is blocked in a
+ * g_rec_mutex_lock() call for @rec_mutex, it will become unblocked
+ * and can lock @rec_mutex itself.
+ *
+ * Calling g_rec_mutex_unlock() on a recursive mutex that is not
+ * locked by the current thread leads to undefined behaviour.
+ *
+ * Since: 2.32
+ */
 void
-g_rec_mutex_unlock (GRecMutex *mutex)
+g_rec_mutex_unlock (GRecMutex *rec_mutex)
 {
-  pthread_mutex_unlock (mutex->impl);
+  pthread_mutex_unlock (rec_mutex->impl);
 }
 
+/**
+ * g_rec_mutex_trylock:
+ * @rec_mutex: a #GRecMutex
+ *
+ * Tries to lock @rec_mutex. If @rec_mutex is already locked
+ * by another thread, it immediately returns %FALSE. Otherwise
+ * it locks @rec_mutex and returns %TRUE.
+ *
+ * Returns: %TRUE if @rec_mutex could be locked
+ *
+ * Since: 2.32
+ */
 gboolean
-g_rec_mutex_trylock (GRecMutex *mutex)
+g_rec_mutex_trylock (GRecMutex *rec_mutex)
 {
-  if (pthread_mutex_trylock (g_rec_mutex_get_impl (mutex)) != 0)
+  if (pthread_mutex_trylock (g_rec_mutex_get_impl (rec_mutex)) != 0)
     return FALSE;
 
   return TRUE;
@@ -285,24 +422,170 @@ g_rec_mutex_trylock (GRecMutex *mutex)
 
 /* {{{1 GRWLock */
 
+/**
+ * GRWLock:
+ *
+ * The GRWLock struct is an opaque data structure to represent a
+ * reader-writer lock. It is similar to a #GMutex in that it allows
+ * multiple threads to coordinate access to a shared resource.
+ *
+ * The difference to a mutex is that a reader-writer lock discriminates
+ * between read-only ('reader') and full ('writer') access. While only
+ * one thread at a time is allowed write access (by holding the 'writer'
+ * lock via g_rw_lock_writer_lock()), multiple threads can gain
+ * simultaneous read-only access (by holding the 'reader' lock via
+ * g_rw_lock_reader_lock()).
+ *
+ * <example>
+ *  <title>An array with access functions</title>
+ *  <programlisting>
+ *   GRWLock lock = G_RW_LOCK_INIT;
+ *   GPtrArray *array;
+ *
+ *   gpointer
+ *   my_array_get (guint index)
+ *   {
+ *     gpointer retval = NULL;
+ *
+ *     if (!array)
+ *       return NULL;
+ *
+ *     g_rw_lock_reader_lock (&amp;lock);
+ *     if (index &lt; array->len)
+ *       retval = g_ptr_array_index (array, index);
+ *     g_rw_lock_reader_unlock (&amp;lock);
+ *
+ *     return retval;
+ *   }
+ *
+ *   void
+ *   my_array_set (guint index, gpointer data)
+ *   {
+ *     g_rw_lock_writer_lock (&amp;lock);
+ *
+ *     if (!array)
+ *       array = g_ptr_array_new (<!-- -->);
+ *
+ *     if (index >= array->len)
+ *       g_ptr_array_set_size (array, index+1);
+ *     g_ptr_array_index (array, index) = data;
+ *
+ *     g_rw_lock_writer_unlock (&amp;lock);
+ *   }
+ *  </programlisting>
+ *  <para>
+ *    This example shows an array which can be accessed by many readers
+ *    (the <function>my_array_get()</function> function) simultaneously,
+ *    whereas the writers (the <function>my_array_set()</function>
+ *    function) will only be allowed once at a time and only if no readers
+ *    currently access the array. This is because of the potentially
+ *    dangerous resizing of the array. Using these functions is fully
+ *    multi-thread safe now.
+ *  </para>
+ * </example>
+ *
+ * A GRWLock should only be accessed with the
+ * <function>g_rw_lock_</function> functions. Before it can be used,
+ * it has to be initialized with #G_RW_LOCK_INIT or g_rw_lock_init().
+ *
+ * Since: 2.32
+ */
+
+/**
+ * G_RW_LOCK_INIT:
+ *
+ * Initializer for statically allocated #GRWLocks.
+ * Alternatively, g_rw_lock_init_init() can be used.
+ *
+ * |[
+ *   GRWLock lock = G_RW_LOCK_INIT;
+ * ]|
+ *
+ * Since: 2.32
+ */
+
+/**
+ * g_rw_lock_init:
+ * @lock: an uninitialized #GRWLock
+ *
+ * Initializes a #GRWLock so that it can be used.
+ *
+ * This function is useful to initialize a lock that has been
+ * allocated on the stack, or as part of a larger structure.
+ * Also see #G_RW_LOCK_INIT for an alternative way to initialize
+ * statically allocated locks.
+ *
+ * |[
+ *   typedef struct {
+ *     GRWLock l;
+ *     ...
+ *   } Blob;
+ *
+ * Blob *b;
+ *
+ * b = g_new (Blob, 1);
+ * g_rw_lock_init (&b->l);
+ * ]|
+ *
+ * To undo the effect of g_rw_lock_init() when a lock is no longer
+ * needed, use g_rw_lock_clear().
+ *
+ * Calling g_rw_lock_init() on an already initialized #GRWLock leads
+ * to undefined behaviour.
+ *
+ * Since: 2.32
+ */
 void
 g_rw_lock_init (GRWLock *lock)
 {
   pthread_rwlock_init (&lock->impl, NULL);
 }
 
+/**
+ * g_rw_lock_clear:
+ * @lock: an initialized #GRWLock
+ *
+ * Frees the resources allocated to a lock with g_rw_lock_init().
+ *
+ * Calling g_rw_lock_clear() when any thread holds the lock
+ * leads to undefined behaviour.
+ *
+ * Sine: 2.32
+ */
 void
 g_rw_lock_clear (GRWLock *lock)
 {
   pthread_rwlock_destroy (&lock->impl);
 }
 
+/**
+ * g_rw_lock_writer_lock:
+ * @lock: a #GRWLock
+ *
+ * Obtain a write lock on @lock. If any thread already holds
+ * a read or write lock on @lock, the current thread will block
+ * until all other threads have dropped their locks on @lock.
+ *
+ * Since: 2.32
+ */
 void
 g_rw_lock_writer_lock (GRWLock *lock)
 {
   pthread_rwlock_wrlock (&lock->impl);
 }
 
+/**
+ * g_rw_lock_writer_trylock:
+ * @lock: a #GRWLock
+ *
+ * Tries to obtain a write lock on @lock. If any other thread holds
+ * a read or write lock on @lock, it immediately returns %FALSE.
+ * Otherwise it locks @lock and returns %TRUE.
+ *
+ * Returns: %TRUE if @lock could be locked
+ *
+ * Since: 2.32
+ */
 gboolean
 g_rw_lock_writer_trylock (GRWLock *lock)
 {
@@ -312,18 +595,54 @@ g_rw_lock_writer_trylock (GRWLock *lock)
   return TRUE;
 }
 
+/**
+ * g_rw_lock_writer_unlock:
+ * @lock: a #GRWLock
+ *
+ * Release a write lock on @lock.
+ *
+ * Calling g_rw_lock_writer_unlock() on a lock that is not held
+ * by the current thread leads to undefined behaviour.
+ *
+ * Since: 2.32
+ */
 void
 g_rw_lock_writer_unlock (GRWLock *lock)
 {
   pthread_rwlock_unlock (&lock->impl);
 }
 
+/**
+ * g_rw_lock_reader_lock:
+ * @lock: a #GRWLock
+ *
+ * Obtain a read lock on @lock. If another thread currently holds
+ * the write lock on @lock or blocks waiting for it, the current
+ * thread will block. Read locks can be taken recursively.
+ *
+ * It is implementation-defined how many threads are allowed to
+ * hold read locks on the same lock simultaneously.
+ *
+ * Since: 2.32
+ */
 void
 g_rw_lock_reader_lock (GRWLock *lock)
 {
   pthread_rwlock_rdlock (&lock->impl);
 }
 
+/**
+ * g_rw_lock_reader_trylock:
+ * @lock: a #GRWLock
+ *
+ * Tries to obtain a read lock on @lock and returns %TRUE if
+ * the read lock was successfully obtained. Otherwise it
+ * returns %FALSE.
+ *
+ * Returns: %TRUE if @lock could be locked
+ *
+ * Since: 2.32
+ */
 gboolean
 g_rw_lock_reader_trylock (GRWLock *lock)
 {
@@ -333,6 +652,17 @@ g_rw_lock_reader_trylock (GRWLock *lock)
   return TRUE;
 }
 
+/**
+ * g_rw_lock_reader_unlock:
+ * @lock: a #GRWLock
+ *
+ * Release a read lock on @lock.
+ *
+ * Calling g_rw_lock_reader_unlock() on a lock that is not held
+ * by the current thread leads to undefined behaviour.
+ *
+ * Since: 2.32
+ */
 void
 g_rw_lock_reader_unlock (GRWLock *lock)
 {
@@ -340,6 +670,19 @@ g_rw_lock_reader_unlock (GRWLock *lock)
 }
 
 /* {{{1 GCond */
+
+/**
+ * G_COND_INIT:
+ *
+ * Initializer for statically allocated #GConds.
+ * Alternatively, g_cond_init() can be used.
+ *
+ * |[
+ *   GCond cond = G_COND_INIT;
+ * ]|
+ *
+ * Since: 2.32
+ */
 
 /**
  * g_cond_init:
@@ -350,9 +693,14 @@ g_rw_lock_reader_unlock (GRWLock *lock)
  * This function is useful to initialize a #GCond that has been
  * allocated on the stack, or as part of a larger structure.
  * It is not necessary to initialize a #GCond that has been
- * created with g_cond_new(). Also see #G_COND_INITIALIZER
- * for an alternative way to initialize statically allocated
- * #GConds.
+ * created with g_cond_new(). Also see #G_COND_INIT for an
+ * alternative way to initialize statically allocated #GConds.
+ *
+ * To undo the effect of g_cond_init() when a #GCond is no longer
+ * needed, use g_cond_clear().
+ *
+ * Calling g_cond_init() on an already initialized #GCond leads
+ * to undefined behaviour.
  *
  * Since: 2.32
  */
@@ -369,10 +717,13 @@ g_cond_init (GCond *cond)
  * g_cond_clear:
  * @cond: an initialized #GCond
  *
- * Frees the resources allocated ot a #GCond with g_cond_init().
+ * Frees the resources allocated to a #GCond with g_cond_init().
  *
  * #GConds that have been created with g_cond_new() should
  * be freed with g_cond_free() instead.
+ *
+ * Calling g_cond_clear() for a #GCond on which threads are
+ * blocking leads to undefined behaviour.
  *
  * Since: 2.32
  */
@@ -390,9 +741,8 @@ g_cond_clear (GCond *cond)
  * @cond: a #GCond
  * @mutex: a #GMutex that is currently locked
  *
- * Waits until this thread is woken up on @cond.
- * The @mutex is unlocked before falling asleep
- * and locked again before resuming.
+ * Waits until this thread is woken up on @cond. The @mutex is unlocked
+ * before falling asleep and locked again before resuming.
  *
  * This function can be used even if g_thread_init() has not yet been
  * called, and, in that case, will immediately return.
@@ -411,7 +761,8 @@ g_cond_wait (GCond  *cond,
  * g_cond_signal:
  * @cond: a #GCond
  *
- * If threads are waiting for @cond, exactly one of them is woken up.
+ * If threads are waiting for @cond, at least one of them is unblocked.
+ * If no threads are waiting for @cond, this function has no effect.
  * It is good practice to hold the same lock as the waiting thread
  * while calling this function, though not required.
  *
@@ -431,7 +782,8 @@ g_cond_signal (GCond *cond)
  * g_cond_broadcast:
  * @cond: a #GCond
  *
- * If threads are waiting for @cond, all of them are woken up.
+ * If threads are waiting for @cond, all of them are unblocked.
+ * If no threads are waiting for @cond, this function has no effect.
  * It is good practice to lock the same mutex as the waiting threads
  * while calling this function, though not required.
  *
