@@ -42,14 +42,28 @@
 #include "config.h"
 
 #include "gthread.h"
+
 #include "gthreadprivate.h"
 #include "gslice.h"
+#include "gmessages.h"
+#include "gstrfuncs.h"
 
-#include <pthread.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <errno.h>
-#include <stdio.h>
+#include <pthread.h>
+
+#ifdef HAVE_SYS_TIME_H
+# include <sys/time.h>
+#endif
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+#ifdef HAVE_SCHED_H
+#include <sched.h>
+#endif
+
 
 static void
 g_thread_abort (gint         status,
@@ -947,23 +961,6 @@ g_private_set (GPrivate *key,
 
 /* {{{1 GThread */
 
-#include "glib.h"
-#include "gthreadprivate.h"
-
-#include <pthread.h>
-#include <errno.h>
-#include <stdlib.h>
-#ifdef HAVE_SYS_TIME_H
-# include <sys/time.h>
-#endif
-#ifdef HAVE_UNISTD_H
-# include <unistd.h>
-#endif
-
-#ifdef HAVE_SCHED_H
-#include <sched.h>
-#endif
-
 #define posix_check_err(err, name) G_STMT_START{			\
   int error = (err); 							\
   if (error)	 		 		 			\
@@ -973,8 +970,6 @@ g_private_set (GPrivate *key,
   }G_STMT_END
 
 #define posix_check_cmd(cmd) posix_check_err (cmd, #cmd)
-
-#define G_MUTEX_SIZE (sizeof (pthread_mutex_t))
 
 void
 g_system_thread_create (GThreadFunc       thread_func,
