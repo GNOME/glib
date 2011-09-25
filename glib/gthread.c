@@ -143,14 +143,6 @@
  * always defined.
  **/
 
-/**
- * G_THREADS_IMPL_NONE:
- *
- * This macro is defined if no thread implementation is used. You can,
- * however, provide one to g_thread_init() to make GLib multi-thread
- * safe.
- **/
-
 /* G_LOCK Documentation {{{1 ---------------------------------------------- */
 
 /* IMPLEMENTATION NOTE:
