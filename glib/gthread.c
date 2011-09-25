@@ -720,6 +720,21 @@ g_thread_init_glib (void)
   _g_messages_thread_init_nomessage ();
 }
 
+/**
+ * g_thread_get_initialized:
+ *
+ * Indicates if g_thread_init() has been called.
+ *
+ * Returns: %TRUE if threads have been initialized.
+ *
+ * Since: 2.20
+ */
+gboolean
+g_thread_get_initialized (void)
+{
+  return g_thread_supported ();
+}
+
 /* GOnce {{{1 ------------------------------------------------------------- */
 
 /**
@@ -1166,7 +1181,7 @@ g_static_private_free (GStaticPrivate *private_key)
     }
 }
 
-/* GThread Extra Functions {{{1 ------------------------------------------- */
+/* GThread {{{1 -------------------------------------------------------- */
 
 static void
 g_thread_cleanup (gpointer data)
@@ -1442,11 +1457,12 @@ g_thread_self (void)
 
   if (!thread)
     {
-      /* If no thread data is available, provide and set one.  This
-         can happen for the main thread and for threads, that are not
-         created by GLib. */
+      /* If no thread data is available, provide and set one.
+       * This can happen for the main thread and for threads
+       * that are not created by GLib.
+       */
       thread = g_new0 (GRealThread, 1);
-      thread->thread.joinable = FALSE; /* This is a save guess */
+      thread->thread.joinable = FALSE; /* This is a safe guess */
       thread->thread.func = NULL;
       thread->thread.data = NULL;
       thread->private_data = NULL;
@@ -1463,8 +1479,6 @@ g_thread_self (void)
 
   return (GThread*)thread;
 }
-
- /* Unsorted {{{1 ---------------------------------------------------------- */
 
 /**
  * g_thread_foreach:
@@ -1512,20 +1526,7 @@ g_thread_foreach (GFunc    thread_func,
     }
 }
 
-/**
- * g_thread_get_initialized:
- *
- * Indicates if g_thread_init() has been called.
- *
- * Returns: %TRUE if threads have been initialized.
- *
- * Since: 2.20
- */
-gboolean
-g_thread_get_initialized (void)
-{
-  return g_thread_supported ();
-}
+/* GMutex {{{1 ------------------------------------------------------ */
 
 /**
  * g_mutex_new:
@@ -1561,6 +1562,8 @@ g_mutex_free (GMutex *mutex)
   g_slice_free (GMutex, mutex);
 }
 
+/* GCond {{{1 ------------------------------------------------------ */
+
 /**
  * g_cond_new:
  *
@@ -1591,6 +1594,8 @@ g_cond_free (GCond *cond)
   g_cond_clear (cond);
   g_slice_free (GCond, cond);
 }
+
+/* GPrivate {{{1 ------------------------------------------------------ */
 
 /**
  * g_private_new:
@@ -1629,4 +1634,4 @@ g_private_new (GDestroyNotify notify)
   return key;
 }
 
-/* vim: set foldmethod=marker: */
+ /* vim: set foldmethod=marker: */
