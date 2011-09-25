@@ -47,6 +47,9 @@ G_GNUC_INTERNAL gboolean g_system_thread_equal (gpointer thread1,
 
 G_GNUC_INTERNAL void     g_system_thread_exit  (void);
 
+G_GNUC_INTERNAL GSystemThread zero_thread;
+G_GNUC_INTERNAL GMutex g_once_mutex;
+
 /* Is called from gthread/gthread-impl.c */
 void g_thread_init_glib (void);
 
