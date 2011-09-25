@@ -21,7 +21,6 @@
  * Boston, MA 02111-1307, USA.
  */
 
-/* {{{1 Prelude */
 /* Prelude {{{1 ----------------------------------------------------------- */
 
 /*
@@ -342,8 +341,137 @@
  *
  * A #GMutex should only be accessed via <function>g_mutex_</function>
  * functions.
- **/
- 
+ */
+
+/**
+ * G_MUTEX_INIT:
+ *
+ * Initializer for statically allocated #GMutexes.
+ * Alternatively, g_mutex_init() can be used.
+ *
+ * |[
+ *   GMutex mutex = G_MUTEX_INIT;
+ * ]|
+ *
+ * Since: 2.32
+ */
+
+/* GRecMutex Documentation {{{1 -------------------------------------- */
+
+/**
+ * GRecMutex:
+ *
+ * The GRecMutex struct is an opaque data structure to represent a
+ * recursive mutex. It is similar to a #GMutex with the difference
+ * that it is possible to lock a GRecMutex multiple times in the same
+ * thread without deadlock. When doing so, care has to be taken to
+ * unlock the recursive mutex as often as it has been locked.
+ *
+ * A GRecMutex should only be accessed with the
+ * <function>g_rec_mutex_</function> functions. Before a GRecMutex
+ * can be used, it has to be initialized with #G_REC_MUTEX_INIT or
+ * g_rec_mutex_init().
+ *
+ * Since: 2.32
+ */
+
+/**
+ * G_REC_MUTEX_INIT:
+ *
+ * Initializer for statically allocated #GRecMutexes.
+ * Alternatively, g_rec_mutex_init() can be used.
+ *
+ * |[
+ *   GRecMutex mutex = G_REC_MUTEX_INIT;
+ * ]|
+ *
+ * Since: 2.32
+ */
+
+/* GRWLock Documentation {{{1 ---------------------------------------- */
+
+/**
+ * GRWLock:
+ *
+ * The GRWLock struct is an opaque data structure to represent a
+ * reader-writer lock. It is similar to a #GMutex in that it allows
+ * multiple threads to coordinate access to a shared resource.
+ *
+ * The difference to a mutex is that a reader-writer lock discriminates
+ * between read-only ('reader') and full ('writer') access. While only
+ * one thread at a time is allowed write access (by holding the 'writer'
+ * lock via g_rw_lock_writer_lock()), multiple threads can gain
+ * simultaneous read-only access (by holding the 'reader' lock via
+ * g_rw_lock_reader_lock()).
+ *
+ * <example>
+ *  <title>An array with access functions</title>
+ *  <programlisting>
+ *   GRWLock lock = G_RW_LOCK_INIT;
+ *   GPtrArray *array;
+ *
+ *   gpointer
+ *   my_array_get (guint index)
+ *   {
+ *     gpointer retval = NULL;
+ *
+ *     if (!array)
+ *       return NULL;
+ *
+ *     g_rw_lock_reader_lock (&amp;lock);
+ *     if (index &lt; array->len)
+ *       retval = g_ptr_array_index (array, index);
+ *     g_rw_lock_reader_unlock (&amp;lock);
+ *
+ *     return retval;
+ *   }
+ *
+ *   void
+ *   my_array_set (guint index, gpointer data)
+ *   {
+ *     g_rw_lock_writer_lock (&amp;lock);
+ *
+ *     if (!array)
+ *       array = g_ptr_array_new (<!-- -->);
+ *
+ *     if (index >= array->len)
+ *       g_ptr_array_set_size (array, index+1);
+ *     g_ptr_array_index (array, index) = data;
+ *
+ *     g_rw_lock_writer_unlock (&amp;lock);
+ *   }
+ *  </programlisting>
+ *  <para>
+ *    This example shows an array which can be accessed by many readers
+ *    (the <function>my_array_get()</function> function) simultaneously,
+ *    whereas the writers (the <function>my_array_set()</function>
+ *    function) will only be allowed once at a time and only if no readers
+ *    currently access the array. This is because of the potentially
+ *    dangerous resizing of the array. Using these functions is fully
+ *    multi-thread safe now.
+ *  </para>
+ * </example>
+ *
+ * A GRWLock should only be accessed with the
+ * <function>g_rw_lock_</function> functions. Before it can be used,
+ * it has to be initialized with #G_RW_LOCK_INIT or g_rw_lock_init().
+ *
+ * Since: 2.32
+ */
+
+/**
+ * G_RW_LOCK_INIT:
+ *
+ * Initializer for statically allocated #GRWLocks.
+ * Alternatively, g_rw_lock_init_init() can be used.
+ *
+ * |[
+ *   GRWLock lock = G_RW_LOCK_INIT;
+ * ]|
+ *
+ * Since: 2.32
+ */
+
 /* GCond Documentation {{{1 ------------------------------------------ */
 
 /**
@@ -403,7 +531,21 @@
  * to be woken up, even if the condition itself is protected by a
  * #GMutex, like above.</para></note>
  *
- * A #GCond should only be accessed via the following functions.
+ * A #GCond should only be accessed via the <function>g_cond_</function>
+ * functions.
+ */
+
+/**
+ * G_COND_INIT:
+ *
+ * Initializer for statically allocated #GConds.
+ * Alternatively, g_cond_init() can be used.
+ *
+ * |[
+ *   GCond cond = G_COND_INIT;
+ * ]|
+ *
+ * Since: 2.32
  */
 
 /* GPrivate Documentation {{{1 --------------------------------------- */
@@ -454,13 +596,9 @@
  * memory to the pointer and write the pointer back. Now we have an
  * integer value that is private to the current thread.
  *
- * The #GPrivate struct should only be accessed via the following
- * functions.
- *
- * <note><para>All of the <function>g_private_*</function> functions are
- * actually macros. Apart from taking their addresses, you can however
- * use them as if they were functions.</para></note>
- **/
+ * The #GPrivate struct should only be accessed via the
+ * <function>g_private_</function> functions.
+ */
 
 /* GThread Documentation {{{1 ---------------------------------------- */
 /**
@@ -503,7 +641,7 @@ g_thread_error_quark (void)
 {
   return g_quark_from_static_string ("g_thread_error");
 }
- 
+
 /* Miscellaneous Structures {{{1 ------------------------------------------ */
 
 typedef struct _GRealThread GRealThread;
@@ -1119,7 +1257,8 @@ g_thread_create_proxy (gpointer data)
   g_private_set (&g_thread_specific_private, data);
 
   /* the lock makes sure, that thread->system_thread is written,
-     before thread->thread.func is called. See g_thread_create. */
+   * before thread->thread.func is called. See g_thread_create.
+   */
   G_LOCK (g_thread);
   G_UNLOCK (g_thread);
 

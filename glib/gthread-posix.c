@@ -77,19 +77,6 @@ g_thread_abort (gint         status,
 /* {{{1 GMutex */
 
 /**
- * G_MUTEX_INIT:
- *
- * Initializer for statically allocated #GMutexes.
- * Alternatively, g_mutex_init() can be used.
- *
- * |[
- *   GMutex mutex = G_MUTEX_INIT;
- * ]|
- *
- * Since: 2.32
- */
-
-/**
  * g_mutex_init:
  * @mutex: an uninitialized #GMutex
  *
@@ -245,23 +232,6 @@ g_mutex_trylock (GMutex *mutex)
 
 /* {{{1 GRecMutex */
 
-/**
- * GRecMutex:
- *
- * The GRecMutex struct is an opaque data structure to represent a
- * recursive mutex. It is similar to a #GMutex with the difference
- * that it is possible to lock a GRecMutex multiple times in the same
- * thread without deadlock. When doing so, care has to be taken to
- * unlock the recursive mutex as often as it has been locked.
- *
- * A GRecMutex should only be accessed with the
- * <function>g_rec_mutex_</function> functions. Before a GRecMutex
- * can be used, it has to be initialized with #G_REC_MUTEX_INIT or
- * g_rec_mutex_init().
- *
- * Since: 2.32
- */
-
 static pthread_mutex_t *
 g_rec_mutex_impl_new (void)
 {
@@ -299,19 +269,6 @@ g_rec_mutex_get_impl (GRecMutex *mutex)
 
   return impl;
 }
-
-/**
- * G_REC_MUTEX_INIT:
- *
- * Initializer for statically allocated #GRecMutexes.
- * Alternatively, g_rec_mutex_init() can be used.
- *
- * |[
- *   GRecMutex mutex = G_REC_MUTEX_INIT;
- * ]|
- *
- * Since: 2.32
- */
 
 /**
  * g_rec_mutex_init:
@@ -435,88 +392,6 @@ g_rec_mutex_trylock (GRecMutex *rec_mutex)
 }
 
 /* {{{1 GRWLock */
-
-/**
- * GRWLock:
- *
- * The GRWLock struct is an opaque data structure to represent a
- * reader-writer lock. It is similar to a #GMutex in that it allows
- * multiple threads to coordinate access to a shared resource.
- *
- * The difference to a mutex is that a reader-writer lock discriminates
- * between read-only ('reader') and full ('writer') access. While only
- * one thread at a time is allowed write access (by holding the 'writer'
- * lock via g_rw_lock_writer_lock()), multiple threads can gain
- * simultaneous read-only access (by holding the 'reader' lock via
- * g_rw_lock_reader_lock()).
- *
- * <example>
- *  <title>An array with access functions</title>
- *  <programlisting>
- *   GRWLock lock = G_RW_LOCK_INIT;
- *   GPtrArray *array;
- *
- *   gpointer
- *   my_array_get (guint index)
- *   {
- *     gpointer retval = NULL;
- *
- *     if (!array)
- *       return NULL;
- *
- *     g_rw_lock_reader_lock (&amp;lock);
- *     if (index &lt; array->len)
- *       retval = g_ptr_array_index (array, index);
- *     g_rw_lock_reader_unlock (&amp;lock);
- *
- *     return retval;
- *   }
- *
- *   void
- *   my_array_set (guint index, gpointer data)
- *   {
- *     g_rw_lock_writer_lock (&amp;lock);
- *
- *     if (!array)
- *       array = g_ptr_array_new (<!-- -->);
- *
- *     if (index >= array->len)
- *       g_ptr_array_set_size (array, index+1);
- *     g_ptr_array_index (array, index) = data;
- *
- *     g_rw_lock_writer_unlock (&amp;lock);
- *   }
- *  </programlisting>
- *  <para>
- *    This example shows an array which can be accessed by many readers
- *    (the <function>my_array_get()</function> function) simultaneously,
- *    whereas the writers (the <function>my_array_set()</function>
- *    function) will only be allowed once at a time and only if no readers
- *    currently access the array. This is because of the potentially
- *    dangerous resizing of the array. Using these functions is fully
- *    multi-thread safe now.
- *  </para>
- * </example>
- *
- * A GRWLock should only be accessed with the
- * <function>g_rw_lock_</function> functions. Before it can be used,
- * it has to be initialized with #G_RW_LOCK_INIT or g_rw_lock_init().
- *
- * Since: 2.32
- */
-
-/**
- * G_RW_LOCK_INIT:
- *
- * Initializer for statically allocated #GRWLocks.
- * Alternatively, g_rw_lock_init_init() can be used.
- *
- * |[
- *   GRWLock lock = G_RW_LOCK_INIT;
- * ]|
- *
- * Since: 2.32
- */
 
 /**
  * g_rw_lock_init:
@@ -684,19 +559,6 @@ g_rw_lock_reader_unlock (GRWLock *lock)
 }
 
 /* {{{1 GCond */
-
-/**
- * G_COND_INIT:
- *
- * Initializer for statically allocated #GConds.
- * Alternatively, g_cond_init() can be used.
- *
- * |[
- *   GCond cond = G_COND_INIT;
- * ]|
- *
- * Since: 2.32
- */
 
 /**
  * g_cond_init:
