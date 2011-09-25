@@ -112,27 +112,19 @@ struct _GRecMutex
   gpointer impl;
 };
 
-/* initializes the mutex/cond/private implementation for glib, might
- * only be called once, and must not be called directly or indirectly
- * from another glib-function, e.g. as a callback.
- */
-void    g_thread_init   (gpointer vtable);
+void     g_thread_init   (gpointer vtable);
 
-/* Checks if thread support is initialized.  Identical to the
- * g_thread_supported macro but provided for language bindings.
- */
 gboolean g_thread_get_initialized (void);
 
-GLIB_VAR gboolean               g_threads_got_initialized;
-
-/* internal function for fallback static mutex implementation */
-GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
+GLIB_VAR gboolean g_threads_got_initialized;
 
 #if defined(G_THREADS_MANDATORY)
 #define g_thread_supported()     1
 #else
 #define g_thread_supported()    (g_threads_got_initialized)
 #endif
+
+GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
 GThread *g_thread_create                 (GThreadFunc   func,
                                           gpointer      data,
@@ -170,7 +162,7 @@ typedef enum
 {
   G_ONCE_STATUS_NOTCALLED,
   G_ONCE_STATUS_PROGRESS,
-  G_ONCE_STATUS_READY  
+  G_ONCE_STATUS_READY
 } GOnceStatus;
 
 typedef struct _GOnce GOnce;

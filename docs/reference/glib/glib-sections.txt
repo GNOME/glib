@@ -576,7 +576,6 @@ GSourcePrivate
 <TITLE>Threads</TITLE>
 <FILE>threads</FILE>
 <SUBSECTION>
-G_THREADS_ENABLED
 G_THREADS_IMPL_POSIX
 G_THREADS_IMPL_WIN32
 
@@ -721,6 +720,7 @@ g_pointer_bit_trylock
 g_pointer_bit_unlock
 
 <SUBSECTION Private>
+G_THREADS_ENABLED
 g_static_mutex_get_mutex_impl
 g_static_mutex_get_mutex_impl_shortcut
 G_LOCK_NAME

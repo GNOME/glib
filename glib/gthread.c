@@ -92,32 +92,24 @@
  * facilities for one-time initialization (#GOnce, g_once_init_enter()).
  * Finally there are primitives to create and manage threads (#GThread).
  *
- * The threading system is initialized with g_thread_init(), which
- * takes an optional custom thread implementation or %NULL for the
- * default implementation. If you want to call g_thread_init() with a
- * non-%NULL argument this must be done before executing any other GLib
- * functions (except g_mem_set_vtable()). This is a requirement even if
- * no threads are in fact ever created by the process.
- *
- * Calling g_thread_init() with a %NULL argument is somewhat more
- * relaxed. You may call any other glib functions in the main thread
- * before g_thread_init() as long as g_thread_init() is not called from
- * a glib callback, or with any locks held. However, many libraries
- * above glib does not support late initialization of threads, so doing
- * this should be avoided if possible.
+ * The threading system is initialized with g_thread_init().
+ * You may call any other glib functions in the main thread before
+ * g_thread_init() as long as g_thread_init() is not called from
+ * a GLib callback, or with any locks held. However, many libraries
+ * above GLib does not support late initialization of threads, so
+ * doing this should be avoided if possible.
  *
  * Please note that since version 2.24 the GObject initialization
- * function g_type_init() initializes threads (with a %NULL argument),
- * so most applications, including those using GTK+ will run with
- * threads enabled. If you want a special thread implementation, make
- * sure you call g_thread_init() before g_type_init() is called.
+ * function g_type_init() initializes threads. Since 2.32, creating
+ * a mainloop will do so too. As a consequence, most applications,
+ * including those using GTK+ will run with threads enabled.
  *
- * After calling g_thread_init(), GLib is completely thread safe (all
- * global data is automatically locked), but individual data structure
- * instances are not automatically locked for performance reasons. So,
- * for example you must coordinate accesses to the same #GHashTable
- * from multiple threads. The two notable exceptions from this rule
- * are #GMainLoop and #GAsyncQueue, which <emphasis>are</emphasis>
+ * After calling g_thread_init(), GLib is completely thread safe
+ * (all global data is automatically locked), but individual data
+ * structure instances are not automatically locked for performance
+ * reasons. So, for example you must coordinate accesses to the same
+ * #GHashTable from multiple threads. The two notable exceptions from
+ * this rule are #GMainLoop and #GAsyncQueue, which <emphasis>are</emphasis>
  * threadsafe and need no further application-level locking to be
  * accessed from multiple threads.
  */
@@ -134,21 +126,7 @@
  * This macro is defined if Windows style threads are used.
  */
 
-/**
- * G_THREADS_ENABLED:
- *
- * This macro is defined, for backward compatibility, to indicate that
- * GLib has been compiled with thread support. As of GLib 2.28, it is
- * always defined.
- **/
-
 /* G_LOCK Documentation {{{1 ---------------------------------------------- */
-
-/* IMPLEMENTATION NOTE:
- *
- * G_LOCK_DEFINE and friends are convenience macros defined in
- * gthread.h.  Their documentation lives here.
- */
 
 /**
  * G_LOCK_DEFINE:
@@ -185,14 +163,14 @@
  *   }
  *  </programlisting>
  * </example>
- **/
+ */
 
 /**
  * G_LOCK_DEFINE_STATIC:
  * @name: the name of the lock.
  *
  * This works like #G_LOCK_DEFINE, but it creates a static object.
- **/
+ */
 
 /**
  * G_LOCK_EXTERN:
@@ -200,7 +178,7 @@
  *
  * This declares a lock, that is defined with #G_LOCK_DEFINE in another
  * module.
- **/
+ */
 
 /**
  * G_LOCK:
@@ -208,7 +186,7 @@
  *
  * Works like g_mutex_lock(), but for a lock defined with
  * #G_LOCK_DEFINE.
- **/
+ */
 
 /**
  * G_TRYLOCK:
@@ -217,7 +195,7 @@
  *
  * Works like g_mutex_trylock(), but for a lock defined with
  * #G_LOCK_DEFINE.
- **/
+ */
 
 /**
  * G_UNLOCK:
@@ -225,8 +203,7 @@
  *
  * Works like g_mutex_unlock(), but for a lock defined with
  * #G_LOCK_DEFINE.
- **/
-
+ */
 
 /* GMutex Documentation {{{1 ------------------------------------------ */
 
@@ -601,26 +578,37 @@
  */
 
 /* GThread Documentation {{{1 ---------------------------------------- */
+
 /**
  * GThread:
  *
- * The #GThread struct represents a running thread. It has three public
- * read-only members, but the underlying struct is bigger, so you must
- * not copy this struct.
+ * The #GThread struct represents a running thread.
  *
- * <note><para>Resources for a joinable thread are not fully released
- * until g_thread_join() is called for that thread.</para></note>
- **/
+ * Resources for a joinable thread are not fully released
+ * until g_thread_join() is called for that thread.
+ */
 
 /**
  * GThreadFunc:
- * @data: data passed to the thread.
+ * @data: data passed to the thread
  * @Returns: the return value of the thread, which will be returned by
- *           g_thread_join().
+ *     g_thread_join()
  *
  * Specifies the type of the @func functions passed to
  * g_thread_create() or g_thread_create_full().
- **/
+ */
+
+/**
+ * g_thread_supported:
+ *
+ * This macro returns %TRUE if the thread system is initialized,
+ * and %FALSE if it is not.
+ *
+ * For language bindings, g_thread_get_initialized() provides
+ * the same functionality as a function.
+ *
+ * Returns: %TRUE, if the thread system is initialized
+ */
 
 /* GThreadError {{{1 ------------------------------------------------------- */
 /**
@@ -648,8 +636,10 @@ typedef struct _GRealThread GRealThread;
 struct  _GRealThread
 {
   GThread thread;
-  /* Bit 0 protects private_data. To avoid deadlocks, do not block while
-   * holding this (particularly on the g_thread lock). */
+  /* Bit 0 protects private_data. To avoid deadlocks,
+   * do not block while holding this (particularly on
+   * the g_thread lock).
+   */
   volatile gint private_data_lock;
   GArray *private_data;
   GRealThread *next;
@@ -660,19 +650,6 @@ struct  _GRealThread
 #define LOCK_PRIVATE_DATA(self)   g_bit_lock (&(self)->private_data_lock, 0)
 #define UNLOCK_PRIVATE_DATA(self) g_bit_unlock (&(self)->private_data_lock, 0)
 
-static void    g_thread_cleanup (gpointer data);
-
-/**
- * g_thread_supported:
- * @Returns: %TRUE, if the thread system is initialized.
- *
- * This function returns %TRUE if the thread system is initialized, and
- * %FALSE if it is not.
- *
- * <note><para>This function is actually a macro. Apart from taking the
- * address of it you can however use it as if it was a
- * function.</para></note>
- **/
 /* Local Data {{{1 -------------------------------------------------------- */
 
 gboolean         g_threads_got_initialized = FALSE;
@@ -715,6 +692,8 @@ G_LOCK_DEFINE_STATIC (g_thread);
  * having to link with the thread libraries.</para></note>
  */
 
+static void g_thread_cleanup (gpointer data);
+
 void
 g_thread_init_glib (void)
 {
@@ -754,21 +733,19 @@ g_thread_init_glib (void)
  * struct.
  *
  * Since: 2.4
- **/
+ */
 
 /**
  * G_ONCE_INIT:
  *
  * A #GOnce must be initialized with this macro before it can be used.
  *
- * <informalexample>
- *  <programlisting>
+ * |[
  *   GOnce my_once = G_ONCE_INIT;
- *  </programlisting>
- * </informalexample>
+ * ]|
  *
  * Since: 2.4
- **/
+ */
 
 /**
  * GOnceStatus:
@@ -780,7 +757,7 @@ g_thread_init_glib (void)
  * controlled by a #GOnce struct.
  *
  * Since: 2.4
- **/
+ */
 
 /**
  * g_once:
@@ -800,11 +777,10 @@ g_thread_init_glib (void)
  * exactly once. In a threaded environment, calling g_once() ensures
  * that the initialization is serialized across multiple threads.
  *
- * <note><para>Calling g_once() recursively on the same #GOnce struct in
- * @func will lead to a deadlock.</para></note>
+ * Calling g_once() recursively on the same #GOnce struct in
+ * @func will lead to a deadlock.
  *
- * <informalexample>
- *  <programlisting>
+ * |[
  *   gpointer
  *   get_debug_flags (void)
  *   {
@@ -814,11 +790,10 @@ g_thread_init_glib (void)
  *
  *     return my_once.retval;
  *   }
- *  </programlisting>
- * </informalexample>
+ * ]|
  *
  * Since: 2.4
- **/
+ */
 gpointer
 g_once_impl (GOnce       *once,
 	     GThreadFunc  func,
@@ -849,9 +824,7 @@ g_once_impl (GOnce       *once,
 /**
  * g_once_init_enter:
  * @value_location: location of a static initializable variable
- *                  containing 0.
- * @Returns: %TRUE if the initialization section should be entered,
- *           %FALSE and blocks otherwise
+ *     containing 0
  *
  * Function to be called when starting a critical initialization
  * section. The argument @value_location must point to a static
@@ -863,23 +836,24 @@ g_once_impl (GOnce       *once,
  * blocked until initialization completed. To be used in constructs
  * like this:
  *
- * <informalexample>
- *  <programlisting>
+ * |[
  *   static gsize initialization_value = 0;
  *
  *   if (g_once_init_enter (&amp;initialization_value))
  *     {
- *       gsize setup_value = 42; /<!-- -->* initialization code here *<!-- -->/
+ *       gsize setup_value = 42; /&ast;* initialization code here *&ast;/
  *
  *       g_once_init_leave (&amp;initialization_value, setup_value);
  *     }
  *
- *   /<!-- -->* use initialization_value here *<!-- -->/
- *  </programlisting>
- * </informalexample>
+ *   /&ast;* use initialization_value here *&ast;/
+ * ]|
+ *
+ * Returns: %TRUE if the initialization section should be entered,
+ *     %FALSE and blocks otherwise
  *
  * Since: 2.14
- **/
+ */
 gboolean
 g_once_init_enter_impl (volatile gsize *value_location)
 {
@@ -904,8 +878,8 @@ g_once_init_enter_impl (volatile gsize *value_location)
 /**
  * g_once_init_leave:
  * @value_location: location of a static initializable variable
- *                  containing 0.
- * @initialization_value: new non-0 value for *@value_location.
+ *     containing 0
+ * @initialization_value: new non-0 value for *@value_location
  *
  * Counterpart to g_once_init_enter(). Expects a location of a static
  * 0-initialized initialization variable, and an initialization value
@@ -914,7 +888,7 @@ g_once_init_enter_impl (volatile gsize *value_location)
  * initialization variable.
  *
  * Since: 2.14
- **/
+ */
 void
 g_once_init_leave (volatile gsize *value_location,
                    gsize           initialization_value)
@@ -971,7 +945,7 @@ struct _GStaticPrivateNode
  *   }
  *  </programlisting>
  * </example>
- **/
+ */
 
 /**
  * G_STATIC_PRIVATE_INIT:
@@ -986,11 +960,11 @@ struct _GStaticPrivateNode
 
 /**
  * g_static_private_init:
- * @private_key: a #GStaticPrivate to be initialized.
+ * @private_key: a #GStaticPrivate to be initialized
  *
  * Initializes @private_key. Alternatively you can initialize it with
  * #G_STATIC_PRIVATE_INIT.
- **/
+ */
 void
 g_static_private_init (GStaticPrivate *private_key)
 {
@@ -999,12 +973,13 @@ g_static_private_init (GStaticPrivate *private_key)
 
 /**
  * g_static_private_get:
- * @private_key: a #GStaticPrivate.
- * @Returns: the corresponding pointer.
+ * @private_key: a #GStaticPrivate
  *
  * Works like g_private_get() only for a #GStaticPrivate.
  *
  * This function works even if g_thread_init() has not yet been called.
+ *
+ * Returns: the corresponding pointer
  */
 gpointer
 g_static_private_get (GStaticPrivate *private_key)
@@ -1027,10 +1002,10 @@ g_static_private_get (GStaticPrivate *private_key)
 
 /**
  * g_static_private_set:
- * @private_key: a #GStaticPrivate.
- * @data: the new pointer.
+ * @private_key: a #GStaticPrivate
+ * @data: the new pointer
  * @notify: a function to be called with the pointer whenever the
- *          current thread ends or sets this pointer again.
+ *     current thread ends or sets this pointer again
  *
  * Sets the pointer keyed to @private_key for the current thread and
  * the function @notify to be called with that pointer (%NULL or
@@ -1106,7 +1081,7 @@ g_static_private_set (GStaticPrivate *private_key,
 
 /**
  * g_static_private_free:
- * @private_key: a #GStaticPrivate to be freed.
+ * @private_key: a #GStaticPrivate to be freed
  *
  * Releases all resources allocated to @private_key.
  *
@@ -1192,6 +1167,7 @@ g_static_private_free (GStaticPrivate *private_key)
 }
 
 /* GThread Extra Functions {{{1 ------------------------------------------- */
+
 static void
 g_thread_cleanup (gpointer data)
 {
@@ -1219,8 +1195,9 @@ g_thread_cleanup (gpointer data)
 	  g_array_free (array, TRUE);
 	}
 
-      /* We only free the thread structure, if it isn't joinable. If
-         it is, the structure is freed in g_thread_join */
+      /* We only free the thread structure if it isn't joinable.
+       * If it is, the structure is freed in g_thread_join()
+       */
       if (!thread->thread.joinable)
 	{
 	  GRealThread *t, *p;
@@ -1256,8 +1233,8 @@ g_thread_create_proxy (gpointer data)
   /* This has to happen before G_LOCK, as that might call g_thread_self */
   g_private_set (&g_thread_specific_private, data);
 
-  /* the lock makes sure, that thread->system_thread is written,
-   * before thread->thread.func is called. See g_thread_create.
+  /* The lock makes sure that thread->system_thread is written,
+   * before thread->thread.func is called. See g_thread_create().
    */
   G_LOCK (g_thread);
   G_UNLOCK (g_thread);
@@ -1299,12 +1276,11 @@ g_thread_create (GThreadFunc   func,
 
 /**
  * g_thread_create_with_stack_size:
- * @func: a function to execute in the new thread.
- * @data: an argument to supply to the new thread.
+ * @func: a function to execute in the new thread
+ * @data: an argument to supply to the new thread
  * @joinable: should this thread be joinable?
- * @stack_size: a stack size for the new thread.
- * @error: return location for error.
- * @Returns: the new #GThread on success.
+ * @stack_size: a stack size for the new thread
+ * @error: return location for error
  *
  * This function creates a new thread. If the underlying thread
  * implementation supports it, the thread gets a stack size of
@@ -1321,13 +1297,13 @@ g_thread_create (GThreadFunc   func,
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
  *
- * <note><para>
- *   Only use g_thread_create_with_stack_size() if you really can't use
- *   g_thread_create() instead. g_thread_create() does not take
- *   @stack_size, as it should only be used in cases in which it is
- *   unavoidable.
- * </para></note>
- **/
+ * <note><para>Only use g_thread_create_with_stack_size() if you
+ * really can't use g_thread_create() instead. g_thread_create()
+ * does not take @stack_size, as it should only be used in cases
+ * in which it is unavoidable.</para></note>
+ *
+ * Returns: the new #GThread on success
+ */
 GThread*
 g_thread_create_with_stack_size (GThreadFunc   func,
                                  gpointer      data,
@@ -1368,7 +1344,7 @@ g_thread_create_with_stack_size (GThreadFunc   func,
 
 /**
  * g_thread_exit:
- * @retval: the return value of this thread.
+ * @retval: the return value of this thread
  *
  * Exits the current thread. If another thread is waiting for that
  * thread using g_thread_join() and the current thread is joinable, the
@@ -1386,7 +1362,7 @@ g_thread_create_with_stack_size (GThreadFunc   func,
  * <note><para>Never call g_thread_exit() from within a thread of a
  * #GThreadPool, as that will mess up the bookkeeping and lead to funny
  * and unwanted results.</para></note>
- **/
+ */
 void
 g_thread_exit (gpointer retval)
 {
@@ -1398,8 +1374,7 @@ g_thread_exit (gpointer retval)
 
 /**
  * g_thread_join:
- * @thread: a #GThread to be waited for.
- * @Returns: the return value of the thread.
+ * @thread: a #GThread to be waited for
  *
  * Waits until @thread finishes, i.e. the function @func, as given to
  * g_thread_create(), returns or g_thread_exit() is called by @thread.
@@ -1407,7 +1382,9 @@ g_thread_exit (gpointer retval)
  * @thread must have been created with @joinable=%TRUE in
  * g_thread_create(). The value returned by @func or given to
  * g_thread_exit() by @thread is returned by this function.
- **/
+ *
+ * Returns: the return value of the thread
+ */
 gpointer
 g_thread_join (GThread* thread)
 {
@@ -1452,11 +1429,12 @@ g_thread_join (GThread* thread)
 
 /**
  * g_thread_self:
- * @Returns: the current thread.
  *
  * This functions returns the #GThread corresponding to the calling
  * thread.
- **/
+ *
+ * Returns: the current thread
+ */
 GThread*
 g_thread_self (void)
 {
@@ -1486,19 +1464,19 @@ g_thread_self (void)
   return (GThread*)thread;
 }
 
-/* Unsorted {{{1 ---------------------------------------------------------- */
+ /* Unsorted {{{1 ---------------------------------------------------------- */
 
 /**
- * g_thread_foreach
- * @thread_func: function to call for all GThread structures
- * @user_data:   second argument to @thread_func
+ * g_thread_foreach:
+ * @thread_func: function to call for all #GThread structures
+ * @user_data: second argument to @thread_func
  *
- * Call @thread_func on all existing #GThread structures. Note that
- * threads may decide to exit while @thread_func is running, so
- * without intimate knowledge about the lifetime of foreign threads,
- * @thread_func shouldn't access the GThread* pointer passed in as
- * first argument. However, @thread_func will not be called for threads
- * which are known to have exited already.
+ * Call @thread_func on all existing #GThread structures.
+ * Note that threads may decide to exit while @thread_func is
+ * running, so without intimate knowledge about the lifetime of
+ * foreign threads, @thread_func shouldn't access the GThread*
+ * pointer passed in as first argument. However, @thread_func will
+ * not be called for threads which are known to have exited already.
  *
  * Due to thread lifetime checks, this function has an execution complexity
  * which is quadratic in the number of existing threads.
@@ -1544,7 +1522,7 @@ g_thread_foreach (GFunc    thread_func,
  * Since: 2.20
  */
 gboolean
-g_thread_get_initialized ()
+g_thread_get_initialized (void)
 {
   return g_thread_supported ();
 }
