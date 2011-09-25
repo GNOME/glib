@@ -620,41 +620,29 @@ G_LOCK_DEFINE_STATIC (g_thread);
 /**
  * g_thread_init:
  * @vtable: a function table of type #GThreadFunctions, that provides
- *          the entry points to the thread system to be used.
+ *     the entry points to the thread system to be used. Since 2.32,
+ *     this parameter is ignored and should always be %NULL
  *
  * If you use GLib from more than one thread, you must initialize the
- * thread system by calling g_thread_init(). Most of the time you will
- * only have to call <literal>g_thread_init (NULL)</literal>.
+ * thread system by calling g_thread_init().
  *
- * <note><para>Do not call g_thread_init() with a non-%NULL parameter unless
- * you really know what you are doing.</para></note>
+ * Since version 2.24, calling g_thread_init() multiple times is allowed,
+ * but nothing happens except for the first call.
  *
- * <note><para>g_thread_init() must not be called directly or indirectly as a
- * callback from GLib. Also no mutexes may be currently locked while
+ * Since version 2.32, GLib does not support custom thread implementations
+ * anymore and the @vtable parameter is ignored and you should pass %NULL.
+ *
+ * <note><para>g_thread_init() must not be called directly or indirectly
+ * in a callback from GLib. Also no mutexes may be currently locked while
  * calling g_thread_init().</para></note>
  *
- * <note><para>g_thread_init() changes the way in which #GTimer measures
- * elapsed time. As a consequence, timers that are running while
- * g_thread_init() is called may report unreliable times.</para></note>
- *
- * Calling g_thread_init() multiple times is allowed (since version
- * 2.24), but nothing happens except for the first call. If the
- * argument is non-%NULL on such a call a warning will be printed, but
- * otherwise the argument is ignored.
- *
- * If no thread system is available and @vtable is %NULL or if not all
- * elements of @vtable are non-%NULL, then g_thread_init() will abort.
- *
- * <note><para>To use g_thread_init() in your program, you have to link with
- * the libraries that the command <command>pkg-config --libs
+ * <note><para>To use g_thread_init() in your program, you have to link
+ * with the libraries that the command <command>pkg-config --libs
  * gthread-2.0</command> outputs. This is not the case for all the
- * other thread related functions of GLib. Those can be used without
+ * other thread-related functions of GLib. Those can be used without
  * having to link with the thread libraries.</para></note>
- **/
-
-/* This must be called only once, before any threads are created.
- * It will only be called from g_thread_init() in -lgthread.
  */
+
 void
 g_thread_init_glib (void)
 {
@@ -682,7 +670,7 @@ g_thread_init_glib (void)
 }
 
 /* The following sections implement: GOnce, GStaticMutex, GStaticRecMutex,
- * GStaticPrivate, 
+ * GStaticPrivate,
  **/
 
 /* GOnce {{{1 ------------------------------------------------------------- */
