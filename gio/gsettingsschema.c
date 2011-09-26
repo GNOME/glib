@@ -349,7 +349,7 @@ g_settings_schema_list (GSettingsSchema *schema,
       gint len;
 
       list = gvdb_table_list (schema->priv->table, "");
-      len = g_strv_length (list);
+      len = list ? g_strv_length (list) : 0;
 
       schema->priv->items = g_new (GQuark, len);
       j = 0;
