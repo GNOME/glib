@@ -769,7 +769,8 @@ complete_in_idle_cb (gpointer data)
  *
  * Completes an asynchronous function in an idle handler in the <link
  * linkend="g-main-context-push-thread-default">thread-default main
- * loop</link> of the thread that @simple was initially created in.
+ * loop</link> of the thread that @simple was initially created in
+ * (and re-pushes that context around the invocation of the callback).
  *
  * Calling this function takes a reference to @simple for as long as
  * is needed to complete the call.
