@@ -19,7 +19,7 @@ test_enum_get_type (void)
 
   if (g_once_init_enter (&g_define_type_id__volatile))
     {
-      static const GFlagsValue values[] = {
+      static const GEnumValue values[] = {
         { TEST_ENUM_NEGATIVE, "TEST_ENUM_NEGATIVE", "negative" },
         { TEST_ENUM_NONE, "TEST_ENUM_NONE", "none" },
         { TEST_ENUM_FOO, "TEST_ENUM_FOO", "foo" },
@@ -27,7 +27,7 @@ test_enum_get_type (void)
         { 0, NULL, NULL }
       };
       GType g_define_type_id =
-        g_flags_register_static (g_intern_static_string ("TestEnum"), values);
+        g_enum_register_static (g_intern_static_string ("TestEnum"), values);
       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
@@ -41,13 +41,13 @@ test_unsigned_enum_get_type (void)
 
   if (g_once_init_enter (&g_define_type_id__volatile))
     {
-      static const GFlagsValue values[] = {
+      static const GEnumValue values[] = {
         { TEST_UNSIGNED_ENUM_FOO, "TEST_UNSIGNED_ENUM_FOO", "foo" },
         { TEST_UNSIGNED_ENUM_BAR, "TEST_UNSIGNED_ENUM_BAR", "bar" },
         { 0, NULL, NULL }
       };
       GType g_define_type_id =
-        g_flags_register_static (g_intern_static_string ("TestUnsignedEnum"), values);
+        g_enum_register_static (g_intern_static_string ("TestUnsignedEnum"), values);
       g_once_init_leave (&g_define_type_id__volatile, g_define_type_id);
     }
 
