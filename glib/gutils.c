@@ -1331,6 +1331,16 @@ _g_getenv_nomalloc (const gchar *variable,
  * Note that on some systems, when variables are overwritten, the memory 
  * used for the previous variables and its value isn't reclaimed.
  *
+ * <warning><para>
+ * Environment variable handling in UNIX is not thread-safe, and your
+ * program may crash if one thread calls g_setenv() while another
+ * thread is calling getenv(). (And note that many functions, such as
+ * gettext(), call getenv() internally.) This function is only safe to
+ * use at the very start of your program, before creating any other
+ * threads (or creating objects that create worker threads of their
+ * own).
+ * </para></warning>
+ *
  * Returns: %FALSE if the environment variable couldn't be set.
  *
  * Since: 2.4
@@ -1430,8 +1440,16 @@ extern char **environ;
  *
  * Note that on some systems, when variables are overwritten, the memory 
  * used for the previous variables and its value isn't reclaimed.
- * Furthermore, this function can't be guaranteed to operate in a 
- * threadsafe way.
+ *
+ * <warning><para>
+ * Environment variable handling in UNIX is not thread-safe, and your
+ * program may crash if one thread calls g_unsetenv() while another
+ * thread is calling getenv(). (And note that many functions, such as
+ * gettext(), call getenv() internally.) This function is only safe to
+ * use at the very start of your program, before creating any other
+ * threads (or creating objects that create worker threads of their
+ * own).
+ * </para></warning>
  *
  * Since: 2.4 
  **/
