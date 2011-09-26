@@ -181,15 +181,6 @@ dataset_LDADD  = $(progs_ldadd)
 TEST_PROGS    += sort
 sort_LDADD     = $(progs_ldadd)
 
-if OS_UNIX
-
-TEST_PROGS    += unix
-unix_LDADD  = $(progs_ldadd)
-
-TEST_PROGS    += unix-nothreads
-unix_nothreads_SOURCES = unix.c
-unix_nothreads_LDADD  = $(progs_ldadd)
-
 noinst_PROGRAMS += atomic
 atomic_CFLAGS = $(INCLUDES)
 if HAVE_GCC
@@ -214,6 +205,15 @@ once_LDADD       = $(progs_ldadd)
 
 TEST_PROGS      += cond
 cond_LDADD       = $(progs_ldadd)
+
+if OS_UNIX
+
+TEST_PROGS    += unix
+unix_LDADD  = $(progs_ldadd)
+
+TEST_PROGS    += unix-nothreads
+unix_nothreads_SOURCES = unix.c
+unix_nothreads_LDADD  = $(progs_ldadd)
 
 #TEST_PROGS      += include
 #include_LDADD    = $(progs_ldadd)
