@@ -645,6 +645,7 @@ typedef struct
 {
   CRITICAL_SECTION  writer_lock;
   gboolean          ever_shared;    /* protected by writer_lock */
+  gboolean          writer_locked;  /* protected by writer_lock */
 
   /* below is only ever touched if ever_shared becomes true */
   CRITICAL_SECTION  atomicity;
@@ -695,6 +696,7 @@ g_thread_xp_get_srwlock (GThreadSRWLock * volatile *lock)
         g_thread_abort (errno, "malloc");
 
       InitializeCriticalSection (&result->writer_lock);
+      result->writer_locked = FALSE;
       result->ever_shared = FALSE;
       *lock = result;
 
@@ -710,6 +712,12 @@ g_thread_xp_AcquireSRWLockExclusive (gpointer mutex)
   GThreadSRWLock *lock = g_thread_xp_get_srwlock (mutex);
 
   EnterCriticalSection (&lock->writer_lock);
+
+  /* CRITICAL_SECTION is reentrant, but SRWLock is not.
+   * Detect the deadlock that would occur on later Windows version.
+   */
+  g_assert (!lock->writer_locked);
+  lock->writer_locked = TRUE;
 
   if (lock->ever_shared)
     {
@@ -735,6 +743,17 @@ g_thread_xp_TryAcquireSRWLockExclusive (gpointer mutex)
   if (!TryEnterCriticalSection (&lock->writer_lock))
     return FALSE;
 
+  /* CRITICAL_SECTION is reentrant, but SRWLock is not.
+   * Ensure that this properly returns FALSE (as SRWLock would).
+   */
+  if G_UNLIKELY (lock->writer_locked)
+    {
+      LeaveCriticalSection (&lock->writer_lock);
+      return FALSE;
+    }
+
+  lock->writer_locked = TRUE;
+
   if (lock->ever_shared)
     {
       gboolean available;
@@ -757,6 +776,8 @@ static void __stdcall
 g_thread_xp_ReleaseSRWLockExclusive (gpointer mutex)
 {
   GThreadSRWLock *lock = *(GThreadSRWLock * volatile *) mutex;
+
+  lock->writer_locked = FALSE;
 
   /* We need this until we fix some weird parts of GLib that try to
    * unlock freshly-allocated mutexes.
@@ -789,6 +810,9 @@ g_thread_xp_AcquireSRWLockShared (gpointer mutex)
 
   EnterCriticalSection (&lock->writer_lock);
 
+  /* See g_thread_xp_AcquireSRWLockExclusive */
+  g_assert (!lock->writer_locked);
+
   g_thread_xp_srwlock_become_reader (lock);
 
   LeaveCriticalSection (&lock->writer_lock);
@@ -801,6 +825,13 @@ g_thread_xp_TryAcquireSRWLockShared (gpointer mutex)
 
   if (!TryEnterCriticalSection (&lock->writer_lock))
     return FALSE;
+
+  /* See g_thread_xp_AcquireSRWLockExclusive */
+  if G_UNLIKELY (lock->writer_locked)
+    {
+      LeaveCriticalSection (&lock->writer_lock);
+      return FALSE;
+    }
 
   g_thread_xp_srwlock_become_reader (lock);
 
