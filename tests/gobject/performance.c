@@ -560,7 +560,7 @@ test_type_check_teardown (PerformanceTest *test,
 }
 
 /*************************************************************
- * Test signal emissions performance
+ * Test signal unhandled emissions performance
  *************************************************************/
 
 #define NUM_EMISSIONS_PER_ROUND 10000
@@ -569,8 +569,9 @@ struct EmissionTest {
   GObject *object;
   int n_checks;
 };
+
 static gpointer
-test_emission_setup (PerformanceTest *test)
+test_emission_unhandled_setup (PerformanceTest *test)
 {
   struct EmissionTest *data;
 
@@ -581,9 +582,9 @@ test_emission_setup (PerformanceTest *test)
 }
 
 static void
-test_emission_init (PerformanceTest *test,
-		    gpointer _data,
-		    double factor)
+test_emission_unhandled_init (PerformanceTest *test,
+                              gpointer _data,
+                              double factor)
 {
   struct EmissionTest *data = _data;
 
@@ -591,8 +592,8 @@ test_emission_init (PerformanceTest *test,
 }
 
 static void
-test_emission_run (PerformanceTest *test,
-		   gpointer _data)
+test_emission_unhandled_run (PerformanceTest *test,
+                             gpointer _data)
 {
   struct EmissionTest *data = _data;
   GObject *object = data->object;
@@ -605,15 +606,15 @@ test_emission_run (PerformanceTest *test,
 }
 
 static void
-test_emission_finish (PerformanceTest *test,
-		      gpointer data)
+test_emission_unhandled_finish (PerformanceTest *test,
+                                gpointer data)
 {
 }
 
 static void
-test_emission_print_result (PerformanceTest *test,
-			    gpointer _data,
-			    double time)
+test_emission_unhandled_print_result (PerformanceTest *test,
+                                      gpointer _data,
+                                      double time)
 {
   struct EmissionTest *data = _data;
 
@@ -622,8 +623,8 @@ test_emission_print_result (PerformanceTest *test,
 }
 
 static void
-test_emission_teardown (PerformanceTest *test,
-			gpointer _data)
+test_emission_unhandled_teardown (PerformanceTest *test,
+                                  gpointer _data)
 {
   struct EmissionTest *data = _data;
 
@@ -631,7 +632,79 @@ test_emission_teardown (PerformanceTest *test,
   g_free (data);
 }
 
+/*************************************************************
+ * Test signal handled emissions performance
+ *************************************************************/
 
+static void
+test_emission_handled_handler (ComplexObject *obj, gpointer data)
+{
+}
+
+static gpointer
+test_emission_handled_setup (PerformanceTest *test)
+{
+  struct EmissionTest *data;
+
+  data = g_new0 (struct EmissionTest, 1);
+  data->object = g_object_new (COMPLEX_TYPE_OBJECT, NULL);
+  g_signal_connect (data->object, "signal",
+                    G_CALLBACK (test_emission_handled_handler),
+                    NULL);
+
+  return data;
+}
+
+static void
+test_emission_handled_init (PerformanceTest *test,
+                            gpointer _data,
+                            double factor)
+{
+  struct EmissionTest *data = _data;
+
+  data->n_checks = factor * NUM_EMISSIONS_PER_ROUND;
+}
+
+static void
+test_emission_handled_run (PerformanceTest *test,
+                           gpointer _data)
+{
+  struct EmissionTest *data = _data;
+  GObject *object = data->object;
+  int i;
+
+  for (i = 0; i < data->n_checks; i++)
+    g_signal_emit (object,
+		   complex_signals[COMPLEX_SIGNAL],
+		   0);
+}
+
+static void
+test_emission_handled_finish (PerformanceTest *test,
+                              gpointer data)
+{
+}
+
+static void
+test_emission_handled_print_result (PerformanceTest *test,
+                                    gpointer _data,
+                                    double time)
+{
+  struct EmissionTest *data = _data;
+
+  g_print ("Emissions per second: %.0f\n",
+	   data->n_checks / time);
+}
+
+static void
+test_emission_handled_teardown (PerformanceTest *test,
+                                gpointer _data)
+{
+  struct EmissionTest *data = _data;
+
+  g_object_unref (data->object);
+  g_free (data);
+}
 
 /*************************************************************
  * Main test code
@@ -669,14 +742,24 @@ static PerformanceTest tests[] = {
     test_type_check_print_result
   },
   {
-    "emit",
+    "emit-unhandled",
     NULL,
-    test_emission_setup,
-    test_emission_init,
-    test_emission_run,
-    test_emission_finish,
-    test_emission_teardown,
-    test_emission_print_result
+    test_emission_unhandled_setup,
+    test_emission_unhandled_init,
+    test_emission_unhandled_run,
+    test_emission_unhandled_finish,
+    test_emission_unhandled_teardown,
+    test_emission_unhandled_print_result
+  },
+  {
+    "emit-handled",
+    NULL,
+    test_emission_handled_setup,
+    test_emission_handled_init,
+    test_emission_handled_run,
+    test_emission_handled_finish,
+    test_emission_handled_teardown,
+    test_emission_handled_print_result
   }
 };
 
