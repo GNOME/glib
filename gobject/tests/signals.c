@@ -115,6 +115,22 @@ test_class_init (TestClass *klass)
                 NULL,
                 test_unsigned_enum_get_type(),
                 0);
+  g_signal_new ("generic-marshaller-int-return",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
+                0,
+                NULL, NULL,
+                NULL,
+                G_TYPE_INT,
+                0);
+  g_signal_new ("generic-marshaller-uint-return",
+                G_TYPE_FROM_CLASS (klass),
+                G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
+                0,
+                NULL, NULL,
+                NULL,
+                G_TYPE_UINT,
+                0);
   g_signal_new ("variant-changed-no-slot",
                 G_TYPE_FROM_CLASS (klass),
                 G_SIGNAL_RUN_LAST | G_SIGNAL_MUST_COLLECT,
@@ -313,6 +329,92 @@ test_generic_marshaller_signal_enum_return_unsigned (void)
   g_object_unref (test);
 }
 
+/**********************/
+
+static gint
+on_generic_marshaller_int_return_signed_1 (Test *obj)
+{
+  return -30;
+}
+
+static gint
+on_generic_marshaller_int_return_signed_2 (Test *obj)
+{
+  return 2;
+}
+
+static void
+test_generic_marshaller_signal_int_return (void)
+{
+  Test *test;
+  guint id;
+  gint retval = 0;
+
+  test = g_object_new (test_get_type (), NULL);
+
+  /* Test return value -30 */
+  id = g_signal_connect (test,
+                         "generic-marshaller-int-return",
+                         G_CALLBACK (on_generic_marshaller_int_return_signed_1),
+                         NULL);
+  g_signal_emit_by_name (test, "generic-marshaller-int-return", &retval);
+  g_assert_cmpint (retval, ==, -30);
+  g_signal_handler_disconnect (test, id);
+
+  /* Test return value positive */
+  retval = 0;
+  id = g_signal_connect (test,
+                         "generic-marshaller-int-return",
+                         G_CALLBACK (on_generic_marshaller_int_return_signed_2),
+                         NULL);
+  g_signal_emit_by_name (test, "generic-marshaller-int-return", &retval);
+  g_assert_cmpint (retval, ==, 2);
+  g_signal_handler_disconnect (test, id);
+
+  g_object_unref (test);
+}
+
+static guint
+on_generic_marshaller_uint_return_1 (Test *obj)
+{
+  return 1;
+}
+
+static guint
+on_generic_marshaller_uint_return_2 (Test *obj)
+{
+  return G_MAXUINT;
+}
+
+static void
+test_generic_marshaller_signal_uint_return (void)
+{
+  Test *test;
+  guint id;
+  guint retval = 0;
+
+  test = g_object_new (test_get_type (), NULL);
+
+  id = g_signal_connect (test,
+                         "generic-marshaller-uint-return",
+                         G_CALLBACK (on_generic_marshaller_uint_return_1),
+                         NULL);
+  g_signal_emit_by_name (test, "generic-marshaller-uint-return", &retval);
+  g_assert_cmpint (retval, ==, 1);
+  g_signal_handler_disconnect (test, id);
+
+  retval = 0;
+  id = g_signal_connect (test,
+                         "generic-marshaller-uint-return",
+                         G_CALLBACK (on_generic_marshaller_uint_return_2),
+                         NULL);
+  g_signal_emit_by_name (test, "generic-marshaller-uint-return", &retval);
+  g_assert_cmpint (retval, ==, G_MAXUINT);
+  g_signal_handler_disconnect (test, id);
+
+  g_object_unref (test);
+}
+
 /* --- */
 
 int
@@ -328,6 +430,8 @@ main (int argc,
   g_test_add_func ("/gobject/signals/generic-marshaller-2", test_generic_marshaller_signal_2);
   g_test_add_func ("/gobject/signals/generic-marshaller-enum-return-signed", test_generic_marshaller_signal_enum_return_signed);
   g_test_add_func ("/gobject/signals/generic-marshaller-enum-return-unsigned", test_generic_marshaller_signal_enum_return_unsigned);
+  g_test_add_func ("/gobject/signals/generic-marshaller-int-return", test_generic_marshaller_signal_int_return);
+  g_test_add_func ("/gobject/signals/generic-marshaller-uint-return", test_generic_marshaller_signal_uint_return);
 
   return g_test_run ();
 }
