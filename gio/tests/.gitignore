@@ -26,6 +26,7 @@ gapplication-example-cmdline3
 gapplication-example-actions
 gdbus-addresses
 gdbus-bz627724
+gdbus-close-pending
 gdbus-connection
 gdbus-connection-slow
 gdbus-connection-flush-helper
@@ -67,6 +68,7 @@ io-stream
 live-g-file
 memory-input-stream
 memory-output-stream
+mimeapps
 network-address
 org.gtk.test.enums.xml
 pollable
@@ -85,3 +87,5 @@ tls-certificate
 unix-fd
 unix-streams
 volumemonitor
+xdgdatadir
+xdgdatahome

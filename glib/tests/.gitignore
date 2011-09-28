@@ -6,6 +6,7 @@ bookmarkfile
 cache
 checksum
 collate
+cond
 convert
 dataset
 date
@@ -27,14 +28,18 @@ markup-escape
 markup-parse
 markup-subparser
 mem-overflow
+mutex
 node
+once
 option-argv0
 option-context
 pattern
 protocol
 queue
 rand
+rec-mutex
 regex
+rwlock
 scannerapi
 sequence
 shell
