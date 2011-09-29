@@ -837,6 +837,10 @@ g_dbus_error_encode_gerror (const GError *error)
        * hex-encode it for transport across the wire.
        */
       domain_as_string = g_quark_to_string (error->domain);
+
+      /* 0 is not a domain; neither are non-quark integers */
+      g_return_val_if_fail (domain_as_string != NULL, NULL);
+
       s = g_string_new ("org.gtk.GDBus.UnmappedGError.Quark._");
       for (n = 0; domain_as_string[n] != 0; n++)
         {
