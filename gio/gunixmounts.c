@@ -136,7 +136,6 @@ struct _GUnixMountMonitor {
   GFileMonitor *fstab_monitor;
   GFileMonitor *mtab_monitor;
 
-  GIOChannel *proc_mounts_channel;
   GSource *proc_mounts_watch_source;
 };
 
@@ -1199,8 +1198,6 @@ g_unix_mount_monitor_finalize (GObject *object)
       g_object_unref (monitor->fstab_monitor);
     }
   
-  if (monitor->proc_mounts_channel != NULL)
-    g_io_channel_unref (monitor->proc_mounts_channel);
   if (monitor->proc_mounts_watch_source != NULL)
     g_source_destroy (monitor->proc_mounts_watch_source);
 
@@ -1296,10 +1293,8 @@ proc_mounts_changed (GIOChannel   *channel,
                      gpointer      user_data)
 {
   GUnixMountMonitor *mount_monitor = G_UNIX_MOUNT_MONITOR (user_data);
-  if (cond & ~G_IO_ERR)
-    goto out;
-  g_signal_emit (mount_monitor, signals[MOUNTS_CHANGED], 0);
- out:
+  if (cond & G_IO_ERR)
+    g_signal_emit (mount_monitor, signals[MOUNTS_CHANGED], 0);
   return TRUE;
 }
 
@@ -1322,22 +1317,36 @@ g_unix_mount_monitor_init (GUnixMountMonitor *monitor)
       const gchar *mtab_path;
 
       mtab_path = get_mtab_monitor_file ();
-      /* /proc/mounts monitoring is special - can't just use GFileMonitor */
+      /* /proc/mounts monitoring is special - can't just use GFileMonitor.
+       * See 'man proc' for more details.
+       */
       if (g_strcmp0 (mtab_path, "/proc/mounts") == 0)
         {
-          monitor->proc_mounts_channel = g_io_channel_new_file ("/proc/mounts", "r", NULL);
-          monitor->proc_mounts_watch_source = g_io_create_watch (monitor->proc_mounts_channel, G_IO_ERR);
-          g_source_set_callback (monitor->proc_mounts_watch_source,
-                                 (GSourceFunc) proc_mounts_changed,
-                                 monitor,
-                                 NULL);
-          g_source_attach (monitor->proc_mounts_watch_source,
-                           g_main_context_get_thread_default ());
-          g_source_unref (monitor->proc_mounts_watch_source);
+          GIOChannel *proc_mounts_channel;
+          GError *error = NULL;
+          proc_mounts_channel = g_io_channel_new_file ("/proc/mounts", "r", &error);
+          if (proc_mounts_channel == NULL)
+            {
+              g_warning ("Error creating IO channel for /proc/mounts: %s (%s, %d)",
+                         error->message, g_quark_to_string (error->domain), error->code);
+              g_error_free (error);
+            }
+          else
+            {
+              monitor->proc_mounts_watch_source = g_io_create_watch (proc_mounts_channel, G_IO_ERR);
+              g_source_set_callback (monitor->proc_mounts_watch_source,
+                                     (GSourceFunc) proc_mounts_changed,
+                                     monitor,
+                                     NULL);
+              g_source_attach (monitor->proc_mounts_watch_source,
+                               g_main_context_get_thread_default ());
+              g_source_unref (monitor->proc_mounts_watch_source);
+              g_io_channel_unref (proc_mounts_channel);
+            }
         }
       else
         {
-          file = g_file_new_for_path (get_mtab_monitor_file ());
+          file = g_file_new_for_path (mtab_path);
           monitor->mtab_monitor = g_file_monitor_file (file, 0, NULL, NULL);
           g_object_unref (file);
           g_signal_connect (monitor->mtab_monitor, "changed", (GCallback)mtab_file_changed, monitor);
