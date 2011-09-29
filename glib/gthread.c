@@ -132,13 +132,13 @@
  * G_LOCK_DEFINE:
  * @name: the name of the lock.
  *
- * The %G_LOCK_* macros provide a convenient interface to #GStaticMutex
+ * The %G_LOCK_* macros provide a convenient interface to #GMutex
  * with the advantage that they will expand to nothing in programs
  * compiled against a thread-disabled GLib, saving code and memory
  * there. #G_LOCK_DEFINE defines a lock. It can appear anywhere
  * variable definitions may appear in programs, i.e. in the first block
  * of a function or outside of functions. The @name parameter will be
- * mangled to get the name of the #GStaticMutex. This means that you
+ * mangled to get the name of the #GMutex. This means that you
  * can use names of existing variables as the parameter - e.g. the name
  * of the variable you intent to protect with the lock. Look at our
  * <function>give_me_next_number()</function> example using the
