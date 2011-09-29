@@ -100,7 +100,7 @@ sleepy_stream_read (GInputStream  *stream,
     {
       if (sleepy->built_to_fail)
         {
-          g_set_error (error, 0, 0, "fail");
+          g_set_error (error, G_IO_ERROR, G_IO_ERROR_FAILED, "fail");
           return -1;
         }
       else
