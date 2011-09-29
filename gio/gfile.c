@@ -5855,7 +5855,8 @@ g_file_real_copy_finish (GFile        *file,
  * fails, but the returned object might not support any I/O
  * operation if @path is malformed.
  * 
- * Returns: (transfer full): a new #GFile for the given @path. 
+ * Returns: (transfer full): a new #GFile for the given @path.
+ *   Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_new_for_path (const char *path)
@@ -5874,7 +5875,8 @@ g_file_new_for_path (const char *path)
  * operation if @uri is malformed or if the uri type is 
  * not supported.
  * 
- * Returns: (transfer full): a #GFile for the given @uri.
+ * Returns: (transfer full): a new #GFile for the given @uri.
+ *   Free the returned object with g_object_unref().
  **/ 
 GFile *
 g_file_new_for_uri (const char *uri)
@@ -5938,7 +5940,8 @@ has_valid_scheme (const char *uri)
  * This operation never fails, but the returned object might not support any
  * I/O operation if @arg points to a malformed path.
  *
- * Returns: (transfer full): a new #GFile. 
+ * Returns: (transfer full): a new #GFile.
+ *  Free the returned object with g_object_unref().
  **/
 GFile *
 g_file_new_for_commandline_arg (const char *arg)
