@@ -603,7 +603,7 @@ maman_bar_class_init (MamanBarClass *klass)
 /************************************************/
 
 GObject *bar;
-GValue val = { 0, };
+GValue val = G_VALUE_INIT;
 
 bar = g_object_new (MAMAN_TYPE_SUBBAR, NULL);
 

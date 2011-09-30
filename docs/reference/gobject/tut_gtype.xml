@@ -136,8 +136,8 @@ GType g_type_register_fundamental (GType                       type_id,
 <programlisting>
 static void test_int (void)
 {
-  GValue a_value = {0, }; 
-  GValue b_value = {0, };
+  GValue a_value = G_VALUE_INIT;
+  GValue b_value = G_VALUE_INIT;
   guint64 a, b;
 
   a = 0xdeadbeaf;
@@ -160,8 +160,8 @@ static void test_int (void)
 static void test_object (void)
 {
   GObject *obj;
-  GValue obj_vala = {0, };
-  GValue obj_valb = {0, };
+  GValue obj_vala = G_VALUE_INIT;
+  GValue obj_valb = G_VALUE_INIT;
   obj = g_object_new (MAMAN_TYPE_BAR, NULL);
 
   g_value_init (&amp;obj_vala, MAMAN_TYPE_BAR);
