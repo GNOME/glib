@@ -14,7 +14,7 @@ test_enum_basic (void)
   GType type;
   GEnumClass *class;
   GEnumValue *val;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   type = g_enum_register_static ("MyEnum", my_enum_values);
 
@@ -65,7 +65,7 @@ test_flags_basic (void)
   GType type;
   GFlagsClass *class;
   GFlagsValue *val;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   type = g_flags_register_static ("MyFlags", my_flag_values);
 

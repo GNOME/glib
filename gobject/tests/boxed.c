@@ -61,7 +61,7 @@ test_define_boxed (void)
 static void
 test_boxed_ownership (void)
 {
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   static MyBoxed boxed = { 10, "bla" };
 
   g_value_init (&value, MY_TYPE_BOXED);
@@ -104,7 +104,7 @@ test_boxed_closure (void)
 {
   GClosure *closure;
   GClosure *closure2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_CLOSURE);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -128,7 +128,7 @@ test_boxed_date (void)
 {
   GDate *date;
   GDate *date2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_DATE);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -150,9 +150,9 @@ test_boxed_date (void)
 static void
 test_boxed_value (void)
 {
-  GValue value1 = { 0, };
+  GValue value1 = G_VALUE_INIT;
   GValue *value2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_VALUE);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -179,7 +179,7 @@ test_boxed_string (void)
 {
   GString *v;
   GString *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_GSTRING);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -203,7 +203,7 @@ test_boxed_hashtable (void)
 {
   GHashTable *v;
   GHashTable *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_HASH_TABLE);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -226,7 +226,7 @@ test_boxed_array (void)
 {
   GArray *v;
   GArray *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_ARRAY);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -249,7 +249,7 @@ test_boxed_ptrarray (void)
 {
   GPtrArray *v;
   GPtrArray *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_PTR_ARRAY);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -272,7 +272,7 @@ test_boxed_regex (void)
 {
   GRegex *v;
   GRegex *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_REGEX);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -295,7 +295,7 @@ test_boxed_varianttype (void)
 {
   GVariantType *v;
   GVariantType *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_VARIANT_TYPE);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -319,7 +319,7 @@ test_boxed_datetime (void)
 {
   GDateTime *v;
   GDateTime *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_DATE_TIME);
   g_assert (G_VALUE_HOLDS_BOXED (&value));
@@ -342,7 +342,7 @@ test_boxed_error (void)
 {
   GError *v;
   GError *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_ERROR);
   g_assert (G_VALUE_HOLDS_BOXED (&value));

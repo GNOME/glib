@@ -6,7 +6,7 @@ test_param_value (void)
 {
   GParamSpec *p, *p2;
   GParamSpec *pp;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_PARAM);
   g_assert (G_VALUE_HOLDS_PARAM (&value));
@@ -66,7 +66,7 @@ static void
 test_param_validate (void)
 {
   GParamSpec *p;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   p = g_param_spec_int ("my-int", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
 
@@ -111,8 +111,8 @@ static void
 test_param_convert (void)
 {
   GParamSpec *p;
-  GValue v1 = { 0, };
-  GValue v2 = { 0, };
+  GValue v1 = G_VALUE_INIT;
+  GValue v2 = G_VALUE_INIT;
 
   p = g_param_spec_int ("my-int", "My Int", "Blurb", 0, 20, 10, G_PARAM_READWRITE);
   g_value_init (&v1, G_TYPE_UINT);
@@ -133,8 +133,8 @@ test_param_convert (void)
 static void
 test_value_transform (void)
 {
-  GValue src = { 0, };
-  GValue dest = { 0, };
+  GValue src = G_VALUE_INIT;
+  GValue dest = G_VALUE_INIT;
 
 #define CHECK_INT_CONVERSION(type, getter, value)                       \
   g_assert (g_value_type_transformable (G_TYPE_INT, type));             \

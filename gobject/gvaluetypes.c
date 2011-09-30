@@ -1355,7 +1355,7 @@ g_strdup_value_contents (const GValue *value)
     }
   else if (g_value_type_transformable (G_VALUE_TYPE (value), G_TYPE_STRING))
     {
-      GValue tmp_value = { 0, };
+      GValue tmp_value = G_VALUE_INIT;
       gchar *s;
 
       g_value_init (&tmp_value, G_TYPE_STRING);

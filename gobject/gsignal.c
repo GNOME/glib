@@ -2049,7 +2049,7 @@ g_signal_chain_from_overridden_handler (gpointer instance,
         }
       else
         {
-          GValue return_value = { 0, };
+          GValue return_value = G_VALUE_INIT;
           gchar *error = NULL;
           GType rtype = signal_return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
           gboolean static_scope = signal_return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
@@ -3003,7 +3003,7 @@ g_signal_emit_valist (gpointer instance,
     signal_emit_unlocked_R (node, detail, instance, NULL, instance_and_params);
   else
     {
-      GValue return_value = { 0, };
+      GValue return_value = G_VALUE_INIT;
       gchar *error = NULL;
       GType rtype = signal_return_type & ~G_SIGNAL_TYPE_STATIC_SCOPE;
       gboolean static_scope = signal_return_type & G_SIGNAL_TYPE_STATIC_SCOPE;
@@ -3130,7 +3130,7 @@ signal_emit_unlocked_R (SignalNode   *node,
   GClosure *class_closure;
   HandlerList *hlist;
   Handler *handler_list = NULL;
-  GValue *return_accu, accu = { 0, };
+  GValue *return_accu, accu = G_VALUE_INIT;
   guint signal_id;
   gulong max_sequential_handler_number;
   gboolean return_value_altered = FALSE;

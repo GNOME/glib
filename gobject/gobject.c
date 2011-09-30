@@ -1144,7 +1144,7 @@ object_set_property (GObject             *object,
 		     const GValue        *value,
 		     GObjectNotifyQueue  *nqueue)
 {
-  GValue tmp_value = { 0, };
+  GValue tmp_value = G_VALUE_INIT;
   GObjectClass *class = g_type_class_peek (pspec->owner_type);
   guint param_id = PARAM_SPEC_PARAM_ID (pspec);
   GParamSpec *redirect;
@@ -1683,7 +1683,7 @@ g_object_set_valist (GObject	 *object,
   name = first_property_name;
   while (name)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       GParamSpec *pspec;
       gchar *error = NULL;
       
@@ -1764,7 +1764,7 @@ g_object_get_valist (GObject	 *object,
   
   while (name)
     {
-      GValue value = { 0, };
+      GValue value = G_VALUE_INIT;
       GParamSpec *pspec;
       gchar *error;
       
@@ -1977,7 +1977,7 @@ g_object_get_property (GObject	   *object,
                G_OBJECT_TYPE_NAME (object));
   else
     {
-      GValue *prop_value, tmp_value = { 0, };
+      GValue *prop_value, tmp_value = G_VALUE_INIT;
       
       /* auto-conversion of the callers value type
        */

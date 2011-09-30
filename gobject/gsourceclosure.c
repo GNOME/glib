@@ -80,8 +80,8 @@ io_watch_closure_callback (GIOChannel   *channel,
 {
   GClosure *closure = data;
 
-  GValue params[2] = { { 0, }, { 0, } };
-  GValue result_value = { 0, };
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
+  GValue result_value = G_VALUE_INIT;
   gboolean result;
 
   g_value_init (&result_value, G_TYPE_BOOLEAN);
@@ -105,7 +105,7 @@ static gboolean
 source_closure_callback (gpointer data)
 {
   GClosure *closure = data;
-  GValue result_value = { 0, };
+  GValue result_value = G_VALUE_INIT;
   gboolean result;
 
   g_value_init (&result_value, G_TYPE_BOOLEAN);

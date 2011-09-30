@@ -154,8 +154,8 @@ base_object_constructor (GType                  type,
   /* The constructor is the one place where a GParamSpecOverride is visible
    * to the outside world, so we do a bunch of checks here
    */
-  GValue value1 = { 0, };
-  GValue value2 = { 0, };
+  GValue value1 = G_VALUE_INIT;
+  GValue value2 = G_VALUE_INIT;
   GParamSpec *pspec;
 
   g_assert (n_construct_properties == 1);

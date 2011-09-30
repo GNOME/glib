@@ -157,7 +157,7 @@ test_object_value (void)
 {
   GObject *v;
   GObject *v2;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_OBJECT);
 

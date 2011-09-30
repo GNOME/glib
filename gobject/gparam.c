@@ -605,7 +605,7 @@ gboolean
 g_param_value_defaults (GParamSpec *pspec,
 			GValue     *value)
 {
-  GValue dflt_value = { 0, };
+  GValue dflt_value = G_VALUE_INIT;
   gboolean defaults;
 
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
@@ -679,7 +679,7 @@ g_param_value_convert (GParamSpec   *pspec,
 		       GValue       *dest_value,
 		       gboolean	     strict_validation)
 {
-  GValue tmp_value = { 0, };
+  GValue tmp_value = G_VALUE_INIT;
 
   g_return_val_if_fail (G_IS_PARAM_SPEC (pspec), FALSE);
   g_return_val_if_fail (G_IS_VALUE (src_value), FALSE);

@@ -14,7 +14,7 @@ test_basic (void)
 {
   GValueArray *a;
   GValueArray *a2;
-  GValue v = { 0, };
+  GValue v = G_VALUE_INIT;
   GValue *p;
   gint i;
 
