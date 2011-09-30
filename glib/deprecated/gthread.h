@@ -175,6 +175,9 @@ gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
 void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
 void      g_static_rw_lock_free           (GStaticRWLock* lock);
 
+
+GPrivate *      g_private_new             (GDestroyNotify  notify);
+
 G_END_DECLS
 
 #endif /* __G_DEPRECATED_THREAD_H__ */

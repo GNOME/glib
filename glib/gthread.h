@@ -112,6 +112,14 @@ struct _GRecMutex
   gpointer impl;
 };
 
+#define G_PRIVATE_INIT(notify) { NULL, (notify), { NULL, NULL } }
+struct _GPrivate
+{
+  gpointer       p;
+  GDestroyNotify notify;
+  gpointer future[2];
+};
+
 void     g_thread_init   (gpointer vtable);
 
 gboolean g_thread_get_initialized (void);
@@ -274,9 +282,10 @@ gboolean                g_cond_timedwait                                (GCond  
                                                                          GMutex         *mutex,
                                                                          gint64          abs_time);
 
-GPrivate *              g_private_new                                   (GDestroyNotify  notify);
 gpointer                g_private_get                                   (GPrivate       *key);
 void                    g_private_set                                   (GPrivate       *key,
+                                                                         gpointer        value);
+void                    g_private_replace                               (GPrivate       *key,
                                                                          gpointer        value);
 
 G_END_DECLS

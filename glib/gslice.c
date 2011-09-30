@@ -50,7 +50,6 @@
 #include "gutils.h"
 #include "gtestutils.h"
 #include "gthread.h"
-#include "gthreadprivate.h"
 #include "glib_trace.h"
 #include "glib-ctor.h"
 
@@ -203,7 +202,7 @@ static int      smc_notify_free   (void   *pointer,
                                    size_t  size);
 
 /* --- variables --- */
-static GPrivate    private_thread_memory;
+static GPrivate    private_thread_memory = G_PRIVATE_INIT (private_thread_memory_cleanup);
 static gsize       sys_page_size = 0;
 static Allocator   allocator[1] = { { 0, }, };
 static SliceConfig slice_config = {
@@ -360,7 +359,6 @@ GLIB_CTOR (g_slice_init_nomessage)
   /* at this point, g_mem_gc_friendly() should be initialized, this
    * should have been accomplished by the above g_malloc/g_new calls
    */
-  g_private_init (&private_thread_memory, private_thread_memory_cleanup);
 }
 
 static inline guint

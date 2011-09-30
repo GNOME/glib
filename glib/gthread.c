@@ -523,58 +523,6 @@
  * Since: 2.32
  */
 
-/* GPrivate Documentation {{{1 --------------------------------------- */
-
-/**
- * GPrivate:
- *
- * <note><para>
- * #GStaticPrivate is a better choice for most uses.
- * </para></note>
- *
- * The #GPrivate struct is an opaque data structure to represent a
- * thread private data key. Threads can thereby obtain and set a
- * pointer which is private to the current thread. Take our
- * <function>give_me_next_number(<!-- -->)</function> example from
- * above.  Suppose we don't want <literal>current_number</literal> to be
- * shared between the threads, but instead to be private to each thread.
- * This can be done as follows:
- *
- * <example>
- *  <title>Using GPrivate for per-thread data</title>
- *  <programlisting>
- *   GPrivate* current_number_key = NULL; /<!-- -->* Must be initialized somewhere
- *                                           with g_private_new (g_free); *<!-- -->/
- *
- *   int
- *   give_me_next_number (void)
- *   {
- *     int *current_number = g_private_get (current_number_key);
- *
- *     if (!current_number)
- *       {
- *         current_number = g_new (int, 1);
- *         *current_number = 0;
- *         g_private_set (current_number_key, current_number);
- *       }
- *
- *     *current_number = calc_next_number (*current_number);
- *
- *     return *current_number;
- *   }
- *  </programlisting>
- * </example>
- *
- * Here the pointer belonging to the key
- * <literal>current_number_key</literal> is read. If it is %NULL, it has
- * not been set yet. Then get memory for an integer value, assign this
- * memory to the pointer and write the pointer back. Now we have an
- * integer value that is private to the current thread.
- *
- * The #GPrivate struct should only be accessed via the
- * <function>g_private_</function> functions.
- */
-
 /* GThread Documentation {{{1 ---------------------------------------- */
 
 /**
@@ -649,7 +597,8 @@ GMutex           g_once_mutex = G_MUTEX_INIT;
 static GCond     g_once_cond = G_COND_INIT;
 static GSList   *g_once_init_list = NULL;
 
-static GPrivate     g_thread_specific_private;
+static void g_thread_cleanup (gpointer data);
+static GPrivate     g_thread_specific_private = G_PRIVATE_INIT (g_thread_cleanup);
 static GRealThread *g_thread_all_threads = NULL;
 static GSList      *g_thread_free_indices = NULL;
 
@@ -684,8 +633,6 @@ G_LOCK_DEFINE_STATIC (g_thread);
  * having to link with the thread libraries.</para></note>
  */
 
-static void g_thread_cleanup (gpointer data);
-
 void
 g_thread_init_glib (void)
 {
@@ -704,7 +651,6 @@ g_thread_init_glib (void)
 
   /* setup the basic threading system */
   g_threads_got_initialized = TRUE;
-  g_private_init (&g_thread_specific_private, g_thread_cleanup);
   g_private_set (&g_thread_specific_private, main_thread);
   g_system_thread_self (&main_thread->system_thread);
 
@@ -1537,43 +1483,5 @@ g_cond_free (GCond *cond)
   g_slice_free (GCond, cond);
 }
 
-/* GPrivate {{{1 ------------------------------------------------------ */
-
-/**
- * g_private_new:
- * @destructor: a function to destroy the data keyed to
- *     the #GPrivate when a thread ends
- *
- * Creates a new #GPrivate. If @destructor is non-%NULL, it is a
- * pointer to a destructor function. Whenever a thread ends and the
- * corresponding pointer keyed to this instance of #GPrivate is
- * non-%NULL, the destructor is called with this pointer as the
- * argument.
- *
- * <note><para>
- * #GStaticPrivate is a better choice for most uses.
- * </para></note>
- *
- * <note><para>@destructor is used quite differently from @notify in
- * g_static_private_set().</para></note>
- *
- * <note><para>A #GPrivate cannot be freed. Reuse it instead, if you
- * can, to avoid shortage, or use #GStaticPrivate.</para></note>
- *
- * <note><para>This function will abort if g_thread_init() has not been
- * called yet.</para></note>
- *
- * Returns: a newly allocated #GPrivate
- */
-GPrivate *
-g_private_new (GDestroyNotify notify)
-{
-  GPrivate *key;
-
-  key = g_slice_new (GPrivate);
-  g_private_init (key, notify);
-
-  return key;
-}
-
- /* vim: set foldmethod=marker: */
+/* Epilogue {{{1 */
+/* vim: set foldmethod=marker: */

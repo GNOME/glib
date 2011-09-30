@@ -757,53 +757,158 @@ g_cond_timedwait (GCond  *cond,
 
 /* {{{1 GPrivate */
 
-void
-g_private_init (GPrivate       *key,
-                GDestroyNotify  notify)
+/**
+ * GPrivate:
+ *
+ * The #GPrivate struct is an opaque data structure to represent a
+ * thread-local data key.  It is approximately equivalent to the
+ * <function>pthread_setspecific()</function>/<function>pthread_getspecific()</function>
+ * APIs on POSIX and to
+ * <function>TlsSetValue()</function>/<function>TlsGetValue<()/function> on
+ * Windows.
+ *
+ * If you don't already know why you might want this functionality, then
+ * you probably don't need it.
+ *
+ * #GPrivate is a very limited resource (as far as 128 per program,
+ * shared between all libraries).  It is also not possible to destroy a
+ * #GPrivate after it has been used. As such, it is only ever acceptable
+ * to use #GPrivate in static scope, and even then sparingly so.
+ *
+ * See G_PRIVATE_INIT() for a couple of examples.
+ *
+ * The #GPrivate structure should be considered opaque.  It should only
+ * be accessed via the <function>g_private_</function> functions.
+ */
+
+/**
+ * G_PRIVATE_INIT:
+ * @notify: a #GDestroyNotify
+ *
+ * A macro to assist with the static initialisation of a #GPrivate.
+ *
+ * This macro is useful for the case that a #GDestroyNotify function
+ * should be associated the key.  This is needed when the key will be
+ * used to point at memory that should be deallocated when the thread
+ * exits.
+ *
+ * Additionally, the #GDestroyNotify will also be called on the previous
+ * value stored in the key when g_private_replace() is used.
+ *
+ * If no #GDestroyNotify is needed, then use of this macro is not
+ * required -- if the #GPrivate is declared in static scope then it will
+ * be properly initialised by default (ie: to all zeros).  See the
+ * examples below.
+ *
+ * |[
+ * static GPrivate name_key = G_PRIVATE_INIT (g_free);
+ *
+ * // return value should not be freed
+ * const gchar *
+ * get_local_name (void)
+ * {
+ *   return g_private_get (&name_key);
+ * }
+ *
+ * void
+ * set_local_name (const gchar *name)
+ * {
+ *   g_private_replace (&name_key, g_strdup (name));
+ * }
+ *
+ *
+ * static GPrivate count_key;   // no free function
+ *
+ * gint
+ * get_local_count (void)
+ * {
+ *   return GPOINTER_TO_INT (g_private_get (&count_key));
+ * }
+ *
+ * void
+ * set_local_count (gint count)
+ * {
+ *   g_private_set (&count_key, GINT_TO_POINTER (count));
+ * }
+ * ]|
+ *
+ * Since: 2.32
+ **/
+
+static pthread_key_t *
+g_private_impl_new (GDestroyNotify notify)
 {
-  pthread_key_create (&key->key, notify);
-  key->ready = TRUE;
+  pthread_key_t *key;
+  gint status;
+
+  key = malloc (sizeof (pthread_key_t));
+  if G_UNLIKELY (key == NULL)
+    g_thread_abort (errno, "malloc");
+  status = pthread_key_create (key, notify);
+  if G_UNLIKELY (status != 0)
+    g_thread_abort (status, "pthread_key_create");
+
+  return key;
+}
+
+static void
+g_private_impl_free (pthread_key_t *key)
+{
+  gint status;
+
+  status = pthread_key_delete (*key);
+  if G_UNLIKELY (status != 0)
+    g_thread_abort (status, "pthread_key_delete");
+  free (key);
+}
+
+static pthread_key_t *
+g_private_get_impl (GPrivate *key)
+{
+  pthread_key_t *impl = key->p;
+
+  if G_UNLIKELY (impl == NULL)
+    {
+      impl = g_private_impl_new (key->notify);
+      if (!g_atomic_pointer_compare_and_exchange (&key->p, NULL, impl))
+        {
+          g_private_impl_free (impl);
+          impl = key->p;
+        }
+    }
+
+  return impl;
 }
 
 /**
  * g_private_get:
- * @private_key: a #GPrivate
+ * @key: a #GPrivate
  *
- * Returns the pointer keyed to @private_key for the current thread. If
- * g_private_set() hasn't been called for the current @private_key and
- * thread yet, this pointer will be %NULL.
+ * Returns the current value of the thread local variable @key.
  *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will return the value of @private_key
- * casted to #gpointer. Note however, that private data set
- * <emphasis>before</emphasis> g_thread_init() will
- * <emphasis>not</emphasis> be retained <emphasis>after</emphasis> the
- * call. Instead, %NULL will be returned in all threads directly after
- * g_thread_init(), regardless of any g_private_set() calls issued
- * before threading system initialization.
+ * If the value has not yet been set in this thread, %NULL is returned.
+ * Values are never copied between threads (when a new thread is
+ * created, for example).
  *
- * Returns: the corresponding pointer
+ * Returns: the thread-local value
  */
 gpointer
 g_private_get (GPrivate *key)
 {
-  if (!key->ready)
-    return key->single_value;
-
   /* quote POSIX: No errors are returned from pthread_getspecific(). */
-  return pthread_getspecific (key->key);
+  return pthread_getspecific (*g_private_get_impl (key));
 }
 
 /**
  * g_private_set:
- * @private_key: a #GPrivate
- * @data: the new pointer
+ * @key: a #GPrivate
+ * @value: the new value
  *
- * Sets the pointer keyed to @private_key for the current thread.
+ * Sets the thread local variable @key to have the value @value in the
+ * current thread.
  *
- * This function can be used even if g_thread_init() has not yet been
- * called, and, in that case, will set @private_key to @data casted to
- * #GPrivate*. See g_private_get() for resulting caveats.
+ * This function differs from g_private_replace() in the following way:
+ * the #GDestroyNotify for @key is not called on the old value.
  */
 void
 g_private_set (GPrivate *key,
@@ -811,13 +916,37 @@ g_private_set (GPrivate *key,
 {
   gint status;
 
-  if (!key->ready)
-    {
-      key->single_value = value;
-      return;
-    }
+  if G_UNLIKELY ((status = pthread_setspecific (*g_private_get_impl (key), value)) != 0)
+    g_thread_abort (status, "pthread_setspecific");
+}
 
-  if G_UNLIKELY ((status = pthread_setspecific (key->key, value)) != 0)
+/**
+ * g_private_replace:
+ * @key: a #GPrivate
+ * @value: the new value
+ *
+ * Sets the thread local variable @key to have the value @value in the
+ * current thread.
+ *
+ * This function differs from g_private_set() in the following way: if
+ * the previous value was non-%NULL then the #GDestroyNotify handler for
+ * @key is run on it.
+ *
+ * Since: 2.32
+ **/
+void
+g_private_replace (GPrivate *key,
+                   gpointer  value)
+{
+  pthread_key_t *impl = g_private_get_impl (key);
+  gpointer old;
+  gint status;
+
+  old = pthread_getspecific (*impl);
+  if (old && key->notify)
+    key->notify (old);
+
+  if G_UNLIKELY ((status = pthread_setspecific (*impl, value)) != 0)
     g_thread_abort (status, "pthread_setspecific");
 }
 

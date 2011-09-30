@@ -67,7 +67,6 @@
 #include "gprintfint.h"
 #include "gtestutils.h"
 #include "gthread.h"
-#include "gthreadprivate.h"
 #include "gstrfuncs.h"
 #include "gstring.h"
 
@@ -108,7 +107,6 @@ static GLogLevelFlags g_log_always_fatal = G_LOG_FATAL_MASK;
 static GPrintFunc     glib_print_func = NULL;
 static GPrintFunc     glib_printerr_func = NULL;
 static GPrivate       g_log_depth;
-static gboolean       g_log_depth_initialised;
 static GLogLevelFlags g_log_msg_prefix = G_LOG_LEVEL_ERROR | G_LOG_LEVEL_WARNING | G_LOG_LEVEL_CRITICAL | G_LOG_LEVEL_DEBUG;
 static GLogFunc       default_log_func = g_log_default_handler;
 static gpointer       default_log_data = NULL;
@@ -527,11 +525,6 @@ g_logv (const gchar   *log_domain,
 
 	  /* check recursion and lookup handler */
 	  g_mutex_lock (&g_messages_lock);
-          if (!g_log_depth_initialised)
-            {
-              g_private_init (&g_log_depth, NULL);
-              g_log_depth_initialised = TRUE;
-            }
           depth = GPOINTER_TO_UINT (g_private_get (&g_log_depth));
 	  domain = g_log_find_domain_L (log_domain ? log_domain : "");
 	  if (depth)

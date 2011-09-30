@@ -366,48 +366,80 @@ struct _GPrivateDestructor
 };
 
 static GPrivateDestructor * volatile g_private_destructors;
+static CRITICAL_SECTION g_private_lock;
 
-void
-g_private_init (GPrivate       *key,
-                GDestroyNotify  notify)
+static DWORD
+g_private_get_impl (GPrivate *key)
 {
-  GPrivateDestructor *destructor;
+  DWORD impl = (DWORD) key->p;
 
-  key->index = TlsAlloc ();
+  if G_UNLIKELY (impl == 0)
+    {
+      EnterCriticalSection (&g_private_lock);
+      impl = (DWORD) key->p;
+      if (impl == 0)
+        {
+          GPrivateDestructor *destructor;
 
-  destructor = malloc (sizeof (GPrivateDestructor));
-  if G_UNLIKELY (destructor == NULL)
-    g_thread_abort (errno, "malloc");
-  destructor->index = key->index;
-  destructor->notify = notify;
+          impl = TlsAlloc ();
 
-  do
-    destructor->next = g_private_destructors;
-  while (InterlockedCompareExchangePointer (&g_private_destructors, destructor->next, destructor) != destructor->next);
+          if (impl == TLS_OUT_OF_INDEXES)
+            g_thread_abort (0, "TlsAlloc");
 
-  key->ready = TRUE;
+          if (key->notify != NULL)
+            {
+              destructor = malloc (sizeof (GPrivateDestructor));
+              if G_UNLIKELY (destructor == NULL)
+                g_thread_abort (errno, "malloc");
+              destructor->index = impl;
+              destructor->notify = key->notify;
+              destructor->next = g_private_destructors;
+
+              /* We need to do an atomic store due to the unlocked
+               * access to the destructor list from the thread exit
+               * function.
+               *
+               * It can double as a sanity check...
+               */
+              if (InterlockedCompareExchangePointer (&g_private_destructors, destructor,
+                                                     destructor->next) != destructor->next)
+                g_thread_abort (0, "g_private_get_impl(1)");
+            }
+
+          /* Ditto, due to the unlocked access on the fast path */
+          if (InterlockedCompareExchangePointer (&key->p, impl, NULL) != NULL)
+            g_thread_abort (0, "g_private_get_impl(2)");
+        }
+      LeaveCriticalSection (&g_private_lock);
+    }
+
+  return impl;
 }
 
 gpointer
 g_private_get (GPrivate *key)
 {
-  if (!key->ready)
-    return key->single_value;
-
-  return TlsGetValue (key->index);
+  return TlsGetValue (g_private_get_impl (key));
 }
 
 void
 g_private_set (GPrivate *key,
                gpointer  value)
 {
-  if (!key->ready)
-    {
-      key->single_value = value;
-      return;
-    }
+  TlsSetValue (g_private_get_impl (key), value);
+}
 
-  TlsSetValue (key->index, value);
+void
+g_private_replace (GPrivate *key,
+                   gpointer  value)
+{
+  DWORD impl = g_private_get_impl (key);
+  gpointer old;
+
+  old = TlsGetValue (impl, value);
+  if (old && key->notify)
+    key->notify (old);
+  TlsSetValue (impl, value);
 }
 
 /* {{{1 GThread */
@@ -425,7 +457,6 @@ g_private_set (GPrivate *key,
 #define G_MUTEX_SIZE (sizeof (gpointer))
 
 static DWORD g_thread_self_tls;
-static DWORD g_private_tls;
 
 typedef BOOL (__stdcall *GTryEnterCriticalSectionFunc) (CRITICAL_SECTION *);
 
@@ -1051,7 +1082,7 @@ g_thread_DllMain (void)
     }
 
   win32_check_for_error (TLS_OUT_OF_INDEXES != (g_thread_self_tls = TlsAlloc ()));
-  win32_check_for_error (TLS_OUT_OF_INDEXES != (g_private_tls = TlsAlloc ()));
+  InitializeCriticalSection (&g_private_lock);
 }
 
 /* vim:set foldmethod=marker: */

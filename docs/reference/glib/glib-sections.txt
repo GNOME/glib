@@ -691,9 +691,13 @@ g_cond_broadcast
 
 <SUBSECTION>
 GPrivate
-g_private_new
+G_PRIVATE_INIT
 g_private_get
 g_private_set
+g_private_replace
+
+<SUBSECTION>
+g_private_new
 
 <SUBSECTION>
 GStaticPrivate

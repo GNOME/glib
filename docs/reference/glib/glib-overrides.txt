@@ -172,24 +172,10 @@ GCond *cond
 </FUNCTION>
 
 # GPrivate
-
-<FUNCTION>
-<NAME>g_private_new</NAME>
-<RETURNS>GPrivate*</RETURNS>
-GDestroyNotify destructor
-</FUNCTION>
-
-<FUNCTION>
-<NAME>g_private_get</NAME>
-<RETURNS>gpointer</RETURNS>
-GPrivate *private_key
-</FUNCTION>
-
-<FUNCTION>
-<NAME>g_private_set</NAME>
-<RETURNS>void</RETURNS>
-GPrivate *private_key, gpointer data
-</FUNCTION>
+<MACRO>
+<NAME>G_PRIVATE_INIT</NAME>
+#define G_PRIVATE_INIT(notify)
+</MACRO>
 
 # GStaticPrivate
 

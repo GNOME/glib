@@ -24,6 +24,7 @@
 #include "config.h"
 
 #include "gmessages.h"
+#include "gslice.h"
 #include "gmain.h"
 #include "gthread.h"
 #include "gthreadprivate.h"
@@ -973,5 +974,28 @@ g_static_rw_lock_free (GStaticRWLock* lock)
   g_static_mutex_free (&lock->mutex);
 }
 
-/* vim: set foldmethod=marker: */
+/* GPrivate {{{1 ------------------------------------------------------ */
 
+/**
+ * g_private_new:
+ * @notify: a #GDestroyNotify
+ *
+ * Deprecated:2.32: dynamic allocation of #GPrivate is a bad idea.  Use
+ *                  static storage and G_PRIVATE_INIT() instead.
+ *
+ * Returns: a newly allocated #GPrivate (which can never be destroyed)
+ */
+GPrivate *
+g_private_new (GDestroyNotify notify)
+{
+  GPrivate tmp = G_PRIVATE_INIT (notify);
+  GPrivate *key;
+
+  key = g_slice_new (GPrivate);
+  *key = tmp;
+
+  return key;
+}
+
+/* Epilogue {{{1 */
+/* vim: set foldmethod=marker: */

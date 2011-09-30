@@ -1617,6 +1617,7 @@ g_mutex_trylock
 g_mutex_unlock
 g_private_new
 g_private_get
+g_private_replace
 g_private_set
 g_rw_lock_clear
 g_rw_lock_init

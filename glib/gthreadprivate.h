@@ -56,20 +56,6 @@ void g_thread_init_glib (void);
 /* initializers that may also use g_private_new() */
 G_GNUC_INTERNAL void _g_messages_thread_init_nomessage      (void);
 
-struct _GPrivate
-{
-  gpointer single_value;
-  gboolean ready;
-#ifdef G_OS_WIN32
-  gint index;
-#else
-  pthread_key_t key;
-#endif
-};
-
-G_GNUC_INTERNAL void g_private_init (GPrivate       *key,
-                                     GDestroyNotify  notify);
-
 #ifdef G_OS_WIN32
 G_GNUC_INTERNAL void g_thread_DllMain (void);
 #endif
