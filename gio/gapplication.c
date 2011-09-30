@@ -474,6 +474,9 @@ g_application_constructed (GObject *object)
   GApplication *application = G_APPLICATION (object);
 
   g_assert (application->priv->id != NULL);
+
+  if (g_application_get_default () == NULL)
+    g_application_set_default (application);
 }
 
 static void
@@ -484,6 +487,9 @@ g_application_finalize (GObject *object)
   if (application->priv->impl)
     g_application_impl_destroy (application->priv->impl);
   g_free (application->priv->id);
+
+  if (g_application_get_default () == application)
+    g_application_set_default (NULL);
 
   G_OBJECT_CLASS (g_application_parent_class)
     ->finalize (object);
@@ -1482,6 +1488,49 @@ g_application_action_group_iface_init (GActionGroupInterface *iface)
   iface->query_action = g_application_query_action;
   iface->change_action_state = g_application_change_action_state;
   iface->activate_action = g_application_activate_action;
+}
+
+/* Default Application {{{1 */
+
+static GApplication *default_app;
+
+/**
+ * g_application_get_default:
+ * @returns: (transfer none): the default application for this process, or %NULL
+ *
+ * Returns the default #GApplication instance for this process.
+ *
+ * Normally there is only one #GApplication per process and it becomes
+ * the default when it is created.  You can exercise more control over
+ * this by using g_application_set_default().
+ *
+ * If there is no default application then %NULL is returned.
+ *
+ * Since: 2.32
+ **/
+GApplication *
+g_application_get_default (void)
+{
+  return default_app;
+}
+
+/**
+ * g_application_set_default:
+ * @application: the application to set as default, or %NULL
+ *
+ * Sets or unsets the default application for the process, as returned
+ * by g_application_get_default().
+ *
+ * This function does not take its own reference on @application.  If
+ * @application is destroyed then the default application will revert
+ * back to %NULL.
+ *
+ * Since: 2.32
+ **/
+void
+g_application_set_default (GApplication *application)
+{
+  default_app = application;
 }
 
 /* Epilogue {{{1 */
