@@ -135,6 +135,7 @@ struct _GUnixMountPoint {
   char *mount_path;
   char *device_path;
   char *filesystem_type;
+  char *options;
   gboolean is_read_only;
   gboolean is_user_mountable;
   gboolean is_loopback;
@@ -780,6 +781,7 @@ _g_get_unix_mount_points (void)
       else
         mount_entry->device_path = g_strdup (mntent->mnt_fsname);
       mount_entry->filesystem_type = g_strdup (mntent->mnt_type);
+      mount_entry->options = g_strdup (mntent->mnt_opts);
       
 #ifdef HAVE_HASMNTOPT
       if (hasmntopt (mntent, MNTOPT_RO) != NULL)
@@ -845,6 +847,7 @@ _g_get_unix_mount_points (void)
       mount_entry->mount_path = g_strdup (mntent.mnt_mountp);
       mount_entry->device_path = g_strdup (mntent.mnt_special);
       mount_entry->filesystem_type = g_strdup (mntent.mnt_fstype);
+      mount_entry->options = g_strdup (mntent.mnt_mntopts);
       
 #ifdef HAVE_HASMNTOPT
       if (hasmntopt (&mntent, MNTOPT_RO) != NULL)
@@ -1009,6 +1012,7 @@ _g_get_unix_mount_points (void)
 	  mount_entry->mount_path = g_strdup (mntent.mnt_mount);
 	  mount_entry->device_path = g_strdup (mntent.mnt_special);
 	  mount_entry->filesystem_type = g_strdup (mntent.mnt_fstype);
+	  mount_entry->options = g_strdup (mntent.mnt_options);
 	  mount_entry->is_read_only = TRUE;
 	  mount_entry->is_user_mountable = TRUE;
 	  
@@ -1072,6 +1076,7 @@ _g_get_unix_mount_points (void)
       mount_entry->mount_path = g_strdup (fstab->fs_file);
       mount_entry->device_path = g_strdup (fstab->fs_spec);
       mount_entry->filesystem_type = g_strdup (fstab->fs_vfstype);
+      mount_entry->options = g_strdup (fstab->fs_mntops);
       
       if (strcmp (fstab->fs_type, "ro") == 0)
 	mount_entry->is_read_only = TRUE;
@@ -1486,6 +1491,7 @@ g_unix_mount_point_free (GUnixMountPoint *mount_point)
   g_free (mount_point->mount_path);
   g_free (mount_point->device_path);
   g_free (mount_point->filesystem_type);
+  g_free (mount_point->options);
   g_free (mount_point);
 }
 
@@ -1636,6 +1642,10 @@ g_unix_mount_point_compare (GUnixMountPoint *mount1,
   if (res != 0) 
     return res;
 
+  res = g_strcmp0 (mount1->options, mount2->options);
+  if (res != 0) 
+    return res;
+
   res =  mount1->is_read_only - mount2->is_read_only;
   if (res != 0) 
     return res;
@@ -1697,6 +1707,24 @@ g_unix_mount_point_get_fs_type (GUnixMountPoint *mount_point)
   g_return_val_if_fail (mount_point != NULL, NULL);
 
   return mount_point->filesystem_type;
+}
+
+/**
+ * g_unix_mount_point_get_options:
+ * @mount_point: a #GUnixMountPoint.
+ * 
+ * Gets the options for the mount point.
+ * 
+ * Returns: a string containing the options.
+ *
+ * Since: 2.32
+ */
+const gchar *
+g_unix_mount_point_get_options (GUnixMountPoint *mount_point)
+{
+  g_return_val_if_fail (mount_point != NULL, NULL);
+
+  return mount_point->options;
 }
 
 /**
