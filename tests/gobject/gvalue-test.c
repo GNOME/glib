@@ -37,8 +37,8 @@ static void
 test_enum_transformation (void)
 { 
   GType type; 
-  GValue orig = { 0, };
-  GValue xform = { 0, }; 
+  GValue orig = G_VALUE_INIT;
+  GValue xform = G_VALUE_INIT;
   GEnumValue values[] = { {0,"0","0"}, {1,"1","1"}}; 
   
  type = g_enum_register_static ("TestEnum", values); 
@@ -93,8 +93,8 @@ static void
 test_gtype_value (void)
 {
   GType type;
-  GValue value = { 0, };
-  GValue copy = { 0, };
+  GValue value = G_VALUE_INIT;
+  GValue copy = G_VALUE_INIT;
 
   g_value_init (&value, G_TYPE_GTYPE);
 
@@ -141,7 +141,7 @@ lcopy (GValue *value, ...)
 static void
 test_collection (void)
 {
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   gchar *error;
   
   g_value_init (&value, G_TYPE_CHAR);
@@ -234,7 +234,7 @@ test_collection (void)
 static void
 test_copying (void)
 {
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   gchar *error;
 
   {
