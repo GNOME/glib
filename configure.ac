@@ -2455,100 +2455,14 @@ dnl ************************
 dnl *** g_atomic_* tests ***
 dnl ************************
 
-AC_MSG_CHECKING([whether to use assembler code for atomic operations])
     case $host_cpu in
-      i386)
-        AC_MSG_RESULT([none])
+      i?86|x86_64|s390|s390x|arm*|crisv32*|etrax*)
         glib_memory_barrier_needed=no
         ;;
-      i?86)
-        AC_MSG_RESULT([i486])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_I486, 1,
-			   [i486 atomic implementation])
-        glib_memory_barrier_needed=no
-        ;;
-      sparc*)
-        SPARCV9_WARNING="Try to rerun configure with CFLAGS='-mcpu=v9',
-			 when you are using a sparc with v9 instruction set (most
-			 sparcs nowadays). This will make the code for atomic
-			 operations much faster. The resulting code will not run
-			 on very old sparcs though."
-
-        AC_LINK_IFELSE([AC_LANG_SOURCE([[
-          main ()
-          {
-            int tmp1, tmp2, tmp3;
-            __asm__ __volatile__("casx [%2], %0, %1"
-                                 : "=&r" (tmp1), "=&r" (tmp2) : "r" (&tmp3));
-          }]])],
-          AC_MSG_RESULT([sparcv9])
-          AC_DEFINE_UNQUOTED(G_ATOMIC_SPARCV9, 1,
-			     [sparcv9 atomic implementation]),
-          AC_MSG_RESULT([no])
-          AC_MSG_WARN([[$SPARCV9_WARNING]]))
+      sparc*|alpha*|powerpc*|ia64)
         glib_memory_barrier_needed=yes
-        ;;
-      alpha*)
-        AC_MSG_RESULT([alpha])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_ALPHA, 1,
-			   [alpha atomic implementation])
-        glib_memory_barrier_needed=yes
-        ;;
-      x86_64)
-        AC_MSG_RESULT([x86_64])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_X86_64, 1,
-			   [x86_64 atomic implementation])
-        glib_memory_barrier_needed=no
-       ;;
-      powerpc*)
-        AC_MSG_RESULT([powerpc])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_POWERPC, 1,
-			   [powerpc atomic implementation])
-        glib_memory_barrier_needed=yes
-        AC_MSG_CHECKING([whether asm supports numbered local labels])
-        AC_TRY_COMPILE(
-		       ,[
-		       __asm__ __volatile__ ("1:       nop\n"
-			       "         bne-    1b")
-		       ],[
-		       AC_DEFINE_UNQUOTED(ASM_NUMERIC_LABELS, 1, [define if asm blocks can use numeric local labels])
-		       AC_MSG_RESULT([yes])
-		       ],[
-		       AC_MSG_RESULT([no])
-		       ])
-        ;;
-      ia64)
-        AC_MSG_RESULT([ia64])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_IA64, 1,
-			   [ia64 atomic implementation])
-        glib_memory_barrier_needed=yes
-        ;;
-      s390|s390x)
-        AC_MSG_RESULT([s390])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_S390, 1,
-			   [s390 atomic implementation])
-        glib_memory_barrier_needed=no
-        ;;
-      arm*)
-        AC_MSG_RESULT([arm])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_ARM, 1,
-			   [arm atomic implementation])
-        glib_memory_barrier_needed=no
-        ;;
-      crisv32*|etraxfs*)
-        AC_MSG_RESULT([crisv32])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_CRISV32, 1,
-			   [crisv32 atomic implementation])
-        glib_memory_barrier_needed=no
-        ;;
-      cris*|etrax*)
-        AC_MSG_RESULT([cris])
-        AC_DEFINE_UNQUOTED(G_ATOMIC_CRIS, 1,
-			   [cris atomic implementation])
-        glib_memory_barrier_needed=no
         ;;
       *)
-        AC_MSG_RESULT([none])
         glib_memory_barrier_needed=yes
         ;;
     esac
