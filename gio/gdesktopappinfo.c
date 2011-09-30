@@ -1555,7 +1555,10 @@ update_mimeapps_list (const char  *desktop_id,
 
   key_file = g_key_file_new ();
   load_succeeded = g_key_file_load_from_file (key_file, filename, G_KEY_FILE_NONE, NULL);
-  if (!load_succeeded || !g_key_file_has_group (key_file, ADDED_ASSOCIATIONS_GROUP))
+  if (!load_succeeded ||
+      (!g_key_file_has_group (key_file, ADDED_ASSOCIATIONS_GROUP) &&
+       !g_key_file_has_group (key_file, REMOVED_ASSOCIATIONS_GROUP) &&
+       !g_key_file_has_group (key_file, DEFAULT_APPLICATIONS_GROUP)))
     {
       g_key_file_free (key_file);
       key_file = g_key_file_new ();
@@ -1727,18 +1730,18 @@ update_mimeapps_list (const char  *desktop_id,
       g_strfreev (list);
     }
 
-  g_strfreev (content_types);  
+  g_strfreev (content_types);
 
   data = g_key_file_to_data (key_file, &data_size, error);
   g_key_file_free (key_file);
-  
+
   res = g_file_set_contents (filename, data, data_size, error);
 
   mime_info_cache_reload (NULL);
-			  
+
   g_free (filename);
   g_free (data);
-  
+
   return res;
 }
 
