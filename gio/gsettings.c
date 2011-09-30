@@ -2522,7 +2522,7 @@ g_settings_binding_key_changed (GSettings   *settings,
                                 gpointer     user_data)
 {
   GSettingsBinding *binding = user_data;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   GVariant *variant;
 
   g_assert (settings == binding->info.settings);
@@ -2582,7 +2582,7 @@ g_settings_binding_property_changed (GObject          *object,
                                      gpointer          user_data)
 {
   GSettingsBinding *binding = user_data;
-  GValue value = { 0, };
+  GValue value = G_VALUE_INIT;
   GVariant *variant;
 
   g_assert (object == binding->object);

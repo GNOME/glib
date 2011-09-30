@@ -246,8 +246,8 @@ pollable_source_closure_callback (GObject  *stream,
 {
   GClosure *closure = data;
 
-  GValue param = { 0, };
-  GValue result_value = { 0, };
+  GValue param = G_VALUE_INIT;
+  GValue result_value = G_VALUE_INIT;
   gboolean result;
 
   g_value_init (&result_value, G_TYPE_BOOLEAN);

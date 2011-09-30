@@ -687,7 +687,7 @@ watch_with_closures_on_name_appeared (GDBusConnection *connection,
                                       gpointer         user_data)
 {
   WatchNameData *data = user_data;
-  GValue params[3] = { { 0, }, { 0, }, { 0, } };
+  GValue params[3] = { G_VALUE_INIT, G_VALUE_INIT, G_VALUE_INIT };
 
   g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
   g_value_set_object (&params[0], connection);
@@ -711,7 +711,7 @@ watch_with_closures_on_name_vanished (GDBusConnection *connection,
                                       gpointer         user_data)
 {
   WatchNameData *data = user_data;
-  GValue params[2] = { { 0, }, { 0, } };
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
 
   g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
   g_value_set_object (&params[0], connection);

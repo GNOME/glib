@@ -675,7 +675,7 @@ own_with_closures_on_bus_acquired (GDBusConnection *connection,
                                    gpointer         user_data)
 {
   OwnNameData *data = user_data;
-  GValue params[2] = { { 0, }, { 0, } };
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
 
   g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
   g_value_set_object (&params[0], connection);
@@ -695,7 +695,7 @@ own_with_closures_on_name_acquired (GDBusConnection *connection,
                                     gpointer         user_data)
 {
   OwnNameData *data = user_data;
-  GValue params[2] = { { 0, }, { 0, } };
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
 
   g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
   g_value_set_object (&params[0], connection);
@@ -715,7 +715,7 @@ own_with_closures_on_name_lost (GDBusConnection *connection,
                                 gpointer         user_data)
 {
   OwnNameData *data = user_data;
-  GValue params[2] = { { 0, }, { 0, } };
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
 
   g_value_init (&params[0], G_TYPE_DBUS_CONNECTION);
   g_value_set_object (&params[0], connection);

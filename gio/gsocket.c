@@ -2536,8 +2536,8 @@ socket_source_closure_callback (GSocket      *socket,
 {
   GClosure *closure = data;
 
-  GValue params[2] = { { 0, }, { 0, } };
-  GValue result_value = { 0, };
+  GValue params[2] = { G_VALUE_INIT, G_VALUE_INIT };
+  GValue result_value = G_VALUE_INIT;
   gboolean result;
 
   g_value_init (&result_value, G_TYPE_BOOLEAN);
