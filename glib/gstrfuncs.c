@@ -1610,7 +1610,7 @@ extern const char *strsignal(int);
 
 /* Functions g_strlcpy and g_strlcat were originally developed by
  * Todd C. Miller <Todd.Miller@courtesan.com> to simplify writing secure code.
- * See ftp://ftp.openbsd.org/pub/OpenBSD/src/lib/libc/string/strlcpy.3
+ * See http://www.openbsd.org/cgi-bin/man.cgi?query=strlcpy 
  * for more information.
  */
 
