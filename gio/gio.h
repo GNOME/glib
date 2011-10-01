@@ -75,6 +75,7 @@
 #include <gio/gfilteroutputstream.h>
 #include <gio/gicon.h>
 #include <gio/ginetaddress.h>
+#include <gio/ginetaddressmask.h>
 #include <gio/ginetsocketaddress.h>
 #include <gio/ginitable.h>
 #include <gio/ginputstream.h>

@@ -107,6 +107,7 @@
       <title>Lowlevel network support</title>
       <xi:include href="xml/gsocket.xml"/>
       <xi:include href="xml/ginetaddress.xml"/>
+      <xi:include href="xml/ginetaddressmask.xml"/>
       <xi:include href="xml/gsocketaddress.xml"/>
       <xi:include href="xml/ginetsocketaddress.xml"/>
       <xi:include href="xml/gunixsocketaddress.xml"/>

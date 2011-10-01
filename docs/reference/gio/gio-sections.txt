@@ -1538,6 +1538,31 @@ g_inet_address_get_type
 </SECTION>
 
 <SECTION>
+<FILE>ginetaddressmask</FILE>
+<TITLE>GInetAddressMask</TITLE>
+GInetAddressMask
+g_inet_address_mask_new
+g_inet_address_mask_new_from_string
+g_inet_address_mask_to_string
+g_inet_address_mask_get_family
+g_inet_address_mask_get_address
+g_inet_address_mask_get_length
+g_inet_address_mask_matches
+g_inet_address_mask_equal
+<SUBSECTION Standard>
+GInetAddressMaskClass
+GInetAddressMaskPrivate
+G_INET_ADDRESS_MASK
+G_INET_ADDRESS_MASK_CLASS
+G_INET_ADDRESS_MASK_GET_CLASS
+G_IS_INET_ADDRESS_MASK
+G_IS_INET_ADDRESS_MASK_CLASS
+G_TYPE_INET_ADDRESS_MASK
+<SUBSECTION Private>
+g_inet_address_mask_get_type
+</SECTION>
+
+<SECTION>
 <FILE>gsocketaddress</FILE>
 <TITLE>GSocketAddress</TITLE>
 GSocketAddress
