@@ -1318,6 +1318,8 @@ g_thread_create (GThreadFunc   func,
  * in which it is unavoidable.</para></note>
  *
  * Returns: the new #GThread on success
+ *
+ * Since: 2.32
  */
 GThread*
 g_thread_create_with_stack_size (GThreadFunc   func,
