@@ -122,6 +122,7 @@ libglib_2_0_la_SOURCES = 	\
 	glib_probes.d		\
 	garray.c		\
 	gasyncqueue.c		\
+	gasyncqueueprivate.h	\
 	gatomic.c		\
 	gbacktrace.c		\
 	gbase64.c		\
@@ -178,9 +179,9 @@ libglib_2_0_la_SOURCES = 	\
 	gstrfuncs.c		\
 	gstring.c		\
 	gtestutils.c		\
-	gthread.c       	\
+	gthread.c		\
 	gthreadprivate.h	\
-	gthreadpool.c   	\
+	gthreadpool.c		\
 	gtimer.c		\
 	gtimezone.c	 	\
 	gtree.c			\

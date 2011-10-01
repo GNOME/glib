@@ -27,6 +27,7 @@
 #include "config.h"
 
 #include "gasyncqueue.h"
+#include "gasyncqueueprivate.h"
 
 #include "gmem.h"
 #include "gqueue.h"

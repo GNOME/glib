@@ -29,6 +29,7 @@
 #include "gthreadpool.h"
 
 #include "gasyncqueue.h"
+#include "gasyncqueueprivate.h"
 #include "gmain.h"
 #include "gtestutils.h"
 #include "gtimer.h"
@@ -88,7 +89,7 @@ typedef struct _GRealThreadPool GRealThreadPool;
 struct _GRealThreadPool
 {
   GThreadPool pool;
-  GAsyncQueue* queue;
+  GAsyncQueue *queue;
   GCond *cond;
   gint max_threads;
   gint num_threads;
@@ -175,8 +176,7 @@ g_thread_pool_wait_for_new_pool (void)
       else
         {
           /* If no maximal idle time is given, wait indefinitely. */
-          DEBUG_MSG (("thread %p waiting in global pool.",
-                      g_thread_self ()));
+          DEBUG_MSG (("thread %p waiting in global pool.", g_thread_self ()));
           pool = g_async_queue_pop (unused_thread_queue);
         }
 
@@ -489,6 +489,8 @@ g_thread_pool_new (GFunc      func,
   retval->max_threads = max_threads;
   retval->num_threads = 0;
   retval->running = TRUE;
+  retval->immediate = FALSE;
+  retval->waiting = FALSE;
   retval->sort_func = NULL;
   retval->sort_user_data = NULL;
 
@@ -524,12 +526,13 @@ g_thread_pool_new (GFunc      func,
  * @data: a new task for @pool
  * @error: return location for error, or %NULL
  *
- * Inserts @data into the list of tasks to be executed by @pool. When
- * the number of currently running threads is lower than the maximal
- * allowed number of threads, a new thread is started (or reused) with
- * the properties given to g_thread_pool_new (). Otherwise @data stays
- * in the queue until a thread in this pool finishes its previous task
- * and processes @data.
+ * Inserts @data into the list of tasks to be executed by @pool.
+ *
+ * When the number of currently running threads is lower than the
+ * maximal allowed number of threads, a new thread is started (or
+ * reused) with the properties given to g_thread_pool_new().
+ * Otherwise, @data stays in the queue until a thread in this pool
+ * finishes its previous task and processes @data.
  *
  * @error can be %NULL to ignore errors, or non-%NULL to report
  * errors. An error can only occur when a new thread couldn't be
@@ -735,7 +738,7 @@ g_thread_pool_unprocessed (GThreadPool *pool)
  *
  * If @immediate is %TRUE, no new task is processed for @pool.
  * Otherwise @pool is not freed before the last task is processed.
- * Note however, that no thread of this pool is interrupted, while
+ * Note however, that no thread of this pool is interrupted while
  * processing a task. Instead at least all still running threads
  * can finish their tasks before the @pool is freed.
  *

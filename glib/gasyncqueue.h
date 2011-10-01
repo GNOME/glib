@@ -112,9 +112,6 @@ void         g_async_queue_sort_unlocked        (GAsyncQueue      *queue,
 						 GCompareDataFunc  func,
 						 gpointer          user_data);
 
-/* Private API */
-GMutex*      _g_async_queue_get_mutex           (GAsyncQueue      *queue);
-
 G_END_DECLS
 
 #endif /* __G_ASYNCQUEUE_H__ */
