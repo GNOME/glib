@@ -40,8 +40,10 @@
 
 #include "config.h"
 
-#include "deprecated/gthread.h"
+#include "gthread.h"
 #include "gthreadprivate.h"
+#include "deprecated/gthread.h"
+
 #include "gslice.h"
 #include "gmain.h"
 
