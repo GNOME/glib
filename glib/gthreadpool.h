@@ -8,7 +8,7 @@
  *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
  *
  * You should have received a copy of the GNU Lesser General Public
@@ -35,7 +35,7 @@
 
 G_BEGIN_DECLS
 
-typedef struct _GThreadPool     GThreadPool;
+typedef struct _GThreadPool GThreadPool;
 
 /* Thread Pools
  */
@@ -47,31 +47,32 @@ struct _GThreadPool
   gboolean exclusive;
 };
 
-GThreadPool*    g_thread_pool_new             (GFunc            func,
-                                               gpointer         user_data,
-                                               gint             max_threads,
-                                               gboolean         exclusive,
-                                               GError         **error);
-void            g_thread_pool_push            (GThreadPool     *pool,
-                                               gpointer         data,
-                                               GError         **error);
-void            g_thread_pool_set_max_threads (GThreadPool     *pool,
-                                               gint             max_threads,
-                                               GError         **error);
-gint            g_thread_pool_get_max_threads (GThreadPool     *pool);
-guint           g_thread_pool_get_num_threads (GThreadPool     *pool);
-guint           g_thread_pool_unprocessed     (GThreadPool     *pool);
-void            g_thread_pool_free            (GThreadPool     *pool,
-                                               gboolean         immediate,
-                                               gboolean         wait_);
-void            g_thread_pool_set_max_unused_threads (gint      max_threads);
+GThreadPool *   g_thread_pool_new               (GFunc            func,
+                                                 gpointer         user_data,
+                                                 gint             max_threads,
+                                                 gboolean         exclusive,
+                                                 GError         **error);
+void            g_thread_pool_free              (GThreadPool     *pool,
+                                                 gboolean         immediate,
+                                                 gboolean         wait_);
+gboolean        g_thread_pool_push              (GThreadPool     *pool,
+                                                 gpointer         data,
+                                                 GError         **error);
+guint           g_thread_pool_unprocessed       (GThreadPool     *pool);
+void            g_thread_pool_set_sort_function (GThreadPool      *pool,
+                                                 GCompareDataFunc  func,
+                                                 gpointer          user_data);
+gboolean        g_thread_pool_set_max_threads   (GThreadPool     *pool,
+                                                 gint             max_threads,
+                                                 GError         **error);
+gint            g_thread_pool_get_max_threads   (GThreadPool     *pool);
+guint           g_thread_pool_get_num_threads   (GThreadPool     *pool);
+
+void            g_thread_pool_set_max_unused_threads (gint  max_threads);
 gint            g_thread_pool_get_max_unused_threads (void);
 guint           g_thread_pool_get_num_unused_threads (void);
 void            g_thread_pool_stop_unused_threads    (void);
-void            g_thread_pool_set_sort_function      (GThreadPool      *pool,
-		                                      GCompareDataFunc  func,
-						      gpointer          user_data);
-void            g_thread_pool_set_max_idle_time      (guint             interval);
+void            g_thread_pool_set_max_idle_time      (guint interval);
 guint           g_thread_pool_get_max_idle_time      (void);
 
 G_END_DECLS
