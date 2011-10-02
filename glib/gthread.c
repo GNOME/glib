@@ -584,6 +584,7 @@ struct  _GRealThread
   GThread thread;
   GArray *private_data;
   GRealThread *next;
+  const gchar *name;
   gpointer retval;
   GSystemThread system_thread;
 };
@@ -1116,7 +1117,6 @@ g_thread_cleanup (gpointer data)
                 }
             }
           G_UNLOCK (g_thread);
-
           /* Just to make sure, this isn't used any more */
           g_system_thread_assign (thread->system_thread, zero_thread);
           g_free (thread);
@@ -1146,13 +1146,18 @@ g_thread_create_proxy (gpointer data)
 }
 
 /**
- * g_thread_create:
+ * g_thread_new:
+ * @name: a name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
  * @joinable: should this thread be joinable?
- * @error: return location for error, or %NULL
+ * @error: return location for error
  *
  * This function creates a new thread.
+ *
+ * The @name can be useful for discriminating threads in
+ * a debugger. Some systems restrict the length of @name to
+ * 16 bytes.
  *
  * If @joinable is %TRUE, you can wait for this threads termination
  * calling g_thread_join(). Otherwise the thread will just disappear
@@ -1165,28 +1170,37 @@ g_thread_create_proxy (gpointer data)
  * The error is set, if and only if the function returns %NULL.
  *
  * Returns: the new #GThread on success
+ *
+ * Since: 2.32
  */
 GThread *
-g_thread_create (GThreadFunc   func,
-                 gpointer      data,
-                 gboolean      joinable,
-                 GError      **error)
+g_thread_new (const gchar  *name,
+              GThreadFunc   func,
+              gpointer      data,
+              gboolean      joinable,
+              GError      **error)
 {
-  return g_thread_create_with_stack_size (func, data, joinable, 0, error);
+  return g_thread_new_full (name, func, data, joinable, 0, error);
 }
 
 /**
- * g_thread_create_with_stack_size:
+ * g_thread_new_full:
+ * @name: a name for the new thread
  * @func: a function to execute in the new thread
  * @data: an argument to supply to the new thread
  * @joinable: should this thread be joinable?
  * @stack_size: a stack size for the new thread
  * @error: return location for error
  *
- * This function creates a new thread. If the underlying thread
- * implementation supports it, the thread gets a stack size of
- * @stack_size or the default value for the current platform, if
- * @stack_size is 0.
+ * This function creates a new thread.
+ *
+ * The @name can be useful for discriminating threads in
+ * a debugger. Some systems restrict the length of @name to
+ * 16 bytes.
+ *
+ * If the underlying thread implementation supports it, the thread
+ * gets a stack size of @stack_size or the default value for the
+ * current platform, if @stack_size is 0.
  *
  * If @joinable is %TRUE, you can wait for this threads termination
  * calling g_thread_join(). Otherwise the thread will just disappear
@@ -1198,8 +1212,8 @@ g_thread_create (GThreadFunc   func,
  * @error can be %NULL to ignore errors, or non-%NULL to report errors.
  * The error is set, if and only if the function returns %NULL.
  *
- * <note><para>Only use g_thread_create_with_stack_size() if you
- * really can't use g_thread_create() instead. g_thread_create()
+ * <note><para>Only use a non-zero @stack_size if you
+ * really can't use the default instead. g_thread_new()
  * does not take @stack_size, as it should only be used in cases
  * in which it is unavoidable.</para></note>
  *
@@ -1207,12 +1221,13 @@ g_thread_create (GThreadFunc   func,
  *
  * Since: 2.32
  */
-GThread*
-g_thread_create_with_stack_size (GThreadFunc   func,
-                                 gpointer      data,
-                                 gboolean      joinable,
-                                 gsize         stack_size,
-                                 GError      **error)
+GThread *
+g_thread_new_full (const gchar  *name,
+                   GThreadFunc   func,
+                   gpointer      data,
+                   gboolean      joinable,
+                   gsize         stack_size,
+                   GError      **error)
 {
   GRealThread* result;
   GError *local_error = NULL;
@@ -1224,6 +1239,7 @@ g_thread_create_with_stack_size (GThreadFunc   func,
   result->thread.func = func;
   result->thread.data = data;
   result->private_data = NULL;
+  result->name = name;
   G_LOCK (g_thread);
   g_system_thread_create (g_thread_create_proxy, result,
                           stack_size, joinable,
@@ -1316,7 +1332,6 @@ g_thread_join (GThread* thread)
         }
     }
   G_UNLOCK (g_thread);
-
   /* Just to make sure, this isn't used any more */
   thread->joinable = 0;
   g_system_thread_assign (real->system_thread, zero_thread);

@@ -127,6 +127,38 @@ g_thread_set_priority (GThread         *thread,
 }
 
 /**
+ * g_thread_create:
+ * @func: a function to execute in the new thread
+ * @data: an argument to supply to the new thread
+ * @joinable: should this thread be joinable?
+ * @error: return location for error, or %NULL
+ *
+ * This function creates a new thread.
+ *
+ * If @joinable is %TRUE, you can wait for this threads termination
+ * calling g_thread_join(). Otherwise the thread will just disappear
+ * when it terminates.
+ *
+ * The new thread executes the function @func with the argument @data.
+ * If the thread was created successfully, it is returned.
+ *
+ * @error can be %NULL to ignore errors, or non-%NULL to report errors.
+ * The error is set, if and only if the function returns %NULL.
+ *
+ * Returns: the new #GThread on success
+ *
+ * Deprecated:2.32: Use g_thread_new() instead
+ */
+GThread *
+g_thread_create (GThreadFunc   func,
+                 gpointer      data,
+                 gboolean      joinable,
+                 GError      **error)
+{
+  return g_thread_new_full (NULL, func, data, joinable, 0, error);
+}
+
+/**
  * g_thread_create_full:
  * @func: a function to execute in the new thread.
  * @data: an argument to supply to the new thread.
@@ -140,7 +172,7 @@ g_thread_set_priority (GThread         *thread,
  * This function creates a new thread.
  *
  * Deprecated:2.32: The @bound and @priority arguments are now ignored.
- * Use g_thread_create() or g_thread_create_with_stack_size() instead.
+ * Use g_thread_new() or g_thread_new_full() instead.
  */
 GThread *
 g_thread_create_full (GThreadFunc       func,
@@ -151,7 +183,7 @@ g_thread_create_full (GThreadFunc       func,
                       GThreadPriority   priority,
                       GError          **error)
 {
-  return g_thread_create_with_stack_size (func, data, joinable, stack_size, error);
+  return g_thread_new_full (NULL, func, data, joinable, stack_size, error);
 }
 
 /* GStaticMutex {{{1 ------------------------------------------------------ */

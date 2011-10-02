@@ -99,6 +99,10 @@ GLIB_VAR guint64   (*g_thread_gettime) (void);
 /* internal function for fallback static mutex implementation */
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
+GThread* g_thread_create       (GThreadFunc            func,
+                                gpointer               data,
+                                gboolean               joinable,
+                                GError               **error);
 GThread* g_thread_create_full  (GThreadFunc            func,
                                 gpointer               data,
                                 gulong                 stack_size,

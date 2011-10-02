@@ -4757,7 +4757,7 @@ g_get_worker_context (void)
       GError *error = NULL;
 
       glib_worker_context = g_main_context_new ();
-      if (g_thread_create (glib_worker_main, NULL, FALSE, &error) == NULL)
+      if (g_thread_new ("gmain", glib_worker_main, NULL, FALSE, &error) == NULL)
         g_error ("Creating GLib worker thread failed: %s\n", error->message);
 
       g_once_init_leave (&initialised, TRUE);

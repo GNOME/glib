@@ -134,12 +134,14 @@ GLIB_VAR gboolean g_threads_got_initialized;
 
 GMutex* g_static_mutex_get_mutex_impl   (GMutex **mutex);
 
-GThread *g_thread_create                 (GThreadFunc   func,
+GThread *g_thread_new                    (const gchar  *name,
+                                          GThreadFunc   func,
                                           gpointer      data,
                                           gboolean      joinable,
                                           GError      **error);
 
-GThread *g_thread_create_with_stack_size (GThreadFunc   func,
+GThread *g_thread_new_full               (const gchar  *name,
+                                          GThreadFunc   func,
                                           gpointer      data,
                                           gboolean      joinable,
                                           gsize         stack_size,

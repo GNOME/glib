@@ -414,7 +414,7 @@ g_thread_pool_start_thread (GRealThreadPool  *pool,
       GError *local_error = NULL;
 
       /* No thread was found, we have to start a new one */
-      if (!g_thread_create (g_thread_pool_thread_proxy, pool, FALSE, &local_error))
+      if (!g_thread_new ("pool", g_thread_pool_thread_proxy, pool, FALSE, &local_error))
         {
           g_propagate_error (error, local_error);
           return FALSE;
