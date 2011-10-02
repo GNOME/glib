@@ -585,6 +585,7 @@ struct  _GRealThread
   GArray *private_data;
   GRealThread *next;
   const gchar *name;
+  gboolean enumerable;
   gpointer retval;
   GSystemThread system_thread;
 };
@@ -1102,21 +1103,24 @@ g_thread_cleanup (gpointer data)
        */
       if (!thread->thread.joinable)
         {
-          GRealThread *t, *p;
-
-          G_LOCK (g_thread);
-          for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
+          if (thread->enumerable)
             {
-              if (t == thread)
+              GRealThread *t, *p;
+
+              G_LOCK (g_thread);
+              for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
                 {
-                  if (p)
-                    p->next = t->next;
-                  else
-                    g_thread_all_threads = t->next;
-                  break;
+                  if (t == thread)
+                    {
+                      if (p)
+                        p->next = t->next;
+                      else
+                        g_thread_all_threads = t->next;
+                      break;
+                    }
                 }
+              G_UNLOCK (g_thread);
             }
-          G_UNLOCK (g_thread);
           /* Just to make sure, this isn't used any more */
           g_system_thread_assign (thread->system_thread, zero_thread);
           g_free (thread);
@@ -1183,7 +1187,7 @@ g_thread_new (const gchar  *name,
               gboolean      joinable,
               GError      **error)
 {
-  return g_thread_new_full (name, func, data, joinable, 0, error);
+  return g_thread_new_internal (name, func, data, joinable, 0, FALSE, error);
 }
 
 /**
@@ -1232,7 +1236,19 @@ g_thread_new_full (const gchar  *name,
                    gsize         stack_size,
                    GError      **error)
 {
-  GRealThread* result;
+  return g_thread_new_internal (name, func, data, joinable, stack_size, FALSE, error);
+}
+
+GThread *
+g_thread_new_internal (const gchar  *name,
+                       GThreadFunc   func,
+                       gpointer      data,
+                       gboolean      joinable,
+                       gsize         stack_size,
+                       gboolean      enumerable,
+                       GError      **error)
+{
+  GRealThread *result;
   GError *local_error = NULL;
   g_return_val_if_fail (func, NULL);
 
@@ -1242,12 +1258,13 @@ g_thread_new_full (const gchar  *name,
   result->thread.func = func;
   result->thread.data = data;
   result->private_data = NULL;
+  result->enumerable = enumerable;
   result->name = name;
   G_LOCK (g_thread);
   g_system_thread_create (g_thread_create_proxy, result,
                           stack_size, joinable,
                           &result->system_thread, &local_error);
-  if (!local_error)
+  if (enumerable && !local_error)
     {
       result->next = g_thread_all_threads;
       g_thread_all_threads = result;
@@ -1308,9 +1325,9 @@ g_thread_exit (gpointer retval)
  * Returns: the return value of the thread
  */
 gpointer
-g_thread_join (GThread* thread)
+g_thread_join (GThread *thread)
 {
-  GRealThread* real = (GRealThread*) thread;
+  GRealThread *real = (GRealThread*) thread;
   GRealThread *p, *t;
   gpointer retval;
 
@@ -1322,19 +1339,22 @@ g_thread_join (GThread* thread)
 
   retval = real->retval;
 
-  G_LOCK (g_thread);
-  for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
+  if (real->enumerable)
     {
-      if (t == (GRealThread*) thread)
+      G_LOCK (g_thread);
+      for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
         {
-          if (p)
-            p->next = t->next;
-          else
-            g_thread_all_threads = t->next;
-          break;
+          if (t == real)
+            {
+              if (p)
+                p->next = t->next;
+              else
+                g_thread_all_threads = t->next;
+              break;
+            }
         }
+      G_UNLOCK (g_thread);
     }
-  G_UNLOCK (g_thread);
   /* Just to make sure, this isn't used any more */
   thread->joinable = 0;
   g_system_thread_assign (real->system_thread, zero_thread);
@@ -1372,15 +1392,11 @@ g_thread_self (void)
       thread->thread.func = NULL;
       thread->thread.data = NULL;
       thread->private_data = NULL;
+      thread->enumerable = FALSE;
 
       g_system_thread_self (&thread->system_thread);
 
       g_private_set (&g_thread_specific_private, thread);
-
-      G_LOCK (g_thread);
-      thread->next = g_thread_all_threads;
-      g_thread_all_threads = thread;
-      G_UNLOCK (g_thread);
     }
 
   return (GThread*)thread;

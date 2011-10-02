@@ -48,6 +48,14 @@ G_GNUC_INTERNAL gboolean g_system_thread_equal (gpointer thread1,
 G_GNUC_INTERNAL void     g_system_thread_exit  (void);
 G_GNUC_INTERNAL void     g_system_thread_set_name (const gchar *name);
 
+G_GNUC_INTERNAL GThread *g_thread_new_internal (const gchar  *name,
+                                                GThreadFunc   func,
+                                                gpointer      data,
+                                                gboolean      joinable,
+                                                gsize         stack_size,
+                                                gboolean      enumerable,
+                                                GError      **error);
+
 G_GNUC_INTERNAL GSystemThread zero_thread;
 G_GNUC_INTERNAL GMutex g_once_mutex;
 

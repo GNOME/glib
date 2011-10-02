@@ -155,7 +155,7 @@ g_thread_create (GThreadFunc   func,
                  gboolean      joinable,
                  GError      **error)
 {
-  return g_thread_new_full (NULL, func, data, joinable, 0, error);
+  return g_thread_new_internal (NULL, func, data, joinable, 0, TRUE, error);
 }
 
 /**
@@ -183,7 +183,7 @@ g_thread_create_full (GThreadFunc       func,
                       GThreadPriority   priority,
                       GError          **error)
 {
-  return g_thread_new_full (NULL, func, data, joinable, stack_size, error);
+  return g_thread_new_internal (NULL, func, data, joinable, stack_size, TRUE, error);
 }
 
 /* GStaticMutex {{{1 ------------------------------------------------------ */
