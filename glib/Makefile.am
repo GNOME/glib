@@ -178,6 +178,7 @@ libglib_2_0_la_SOURCES = 	\
 	gstdio.c		\
 	gstrfuncs.c		\
 	gstring.c		\
+	gstringchunk.c		\
 	gtestutils.c		\
 	gthread.c		\
 	gthreadprivate.h	\
@@ -297,6 +298,7 @@ glibsubinclude_HEADERS =   \
 	gstrfuncs.h	\
 	gtestutils.h	\
 	gstring.h	\
+	gstringchunk.h	\
 	gthread.h	\
 	gthreadpool.h	\
 	gtimer.h	\
