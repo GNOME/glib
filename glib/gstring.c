@@ -44,83 +44,6 @@
 #include "gprintf.h"
 
 
-/* Hash Functions.
- */
-
-/**
- * g_str_equal:
- * @v1: a key
- * @v2: a key to compare with @v1
- *
- * Compares two strings for byte-by-byte equality and returns %TRUE
- * if they are equal. It can be passed to g_hash_table_new() as the
- * @key_equal_func parameter, when using strings as keys in a #GHashTable.
- *
- * Note that this function is primarily meant as a hash table comparison
- * function. For a general-purpose, %NULL-safe string comparison function,
- * see g_strcmp0().
- *
- * Returns: %TRUE if the two keys match
- */
-gboolean
-g_str_equal (gconstpointer v1,
-             gconstpointer v2)
-{
-  const gchar *string1 = v1;
-  const gchar *string2 = v2;
-
-  return strcmp (string1, string2) == 0;
-}
-
-/**
- * g_str_hash:
- * @v: a string key
- *
- * Converts a string to a hash value.
- *
- * This function implements the widely used "djb" hash apparently posted
- * by Daniel Bernstein to comp.lang.c some time ago.  The 32 bit
- * unsigned hash value starts at 5381 and for each byte 'c' in the
- * string, is updated: <literal>hash = hash * 33 + c</literal>.  This
- * function uses the signed value of each byte.
- *
- * It can be passed to g_hash_table_new() as the @hash_func parameter,
- * when using strings as keys in a #GHashTable.
- *
- * Returns: a hash value corresponding to the key
- */
-guint
-g_str_hash (gconstpointer v)
-{
-  const signed char *p;
-  guint32 h = 5381;
-
-  for (p = v; *p != '\0'; p++)
-    h = (h << 5) + h + *p;
-
-  return h;
-}
-
-#define MY_MAXSIZE ((gsize)-1)
-
-static inline gsize
-nearest_power (gsize base, gsize num)
-{
-  if (num > MY_MAXSIZE / 2)
-    {
-      return MY_MAXSIZE;
-    }
-  else
-    {
-      gsize n = base;
-
-      while (n < num)
-        n <<= 1;
-
-      return n;
-    }
-}
-
 /**
  * SECTION:strings
  * @title: Strings
@@ -148,6 +71,26 @@ nearest_power (gsize base, gsize num)
  * The GString struct contains the public fields of a GString.
  */
 
+
+#define MY_MAXSIZE ((gsize)-1)
+
+static inline gsize
+nearest_power (gsize base, gsize num)
+{
+  if (num > MY_MAXSIZE / 2)
+    {
+      return MY_MAXSIZE;
+    }
+  else
+    {
+      gsize n = base;
+
+      while (n < num)
+        n <<= 1;
+
+      return n;
+    }
+}
 
 static void
 g_string_maybe_expand (GString *string,
