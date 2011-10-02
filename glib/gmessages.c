@@ -1210,9 +1210,19 @@ g_printerr (const gchar *format,
   g_free (string);
 }
 
+/**
+ * g_printf_string_upper_bound:
+ * @format: the format string. See the printf() documentation
+ * @args: the parameters to be inserted into the format string
+ *
+ * Calculates the maximum space needed to store the output
+ * of the sprintf() function.
+ *
+ * Returns: the maximum space needed to store the formatted string
+ */
 gsize
 g_printf_string_upper_bound (const gchar *format,
-			     va_list      args)
+                             va_list      args)
 {
   gchar c;
   return _g_vsnprintf (&c, 1, format, args) + 1;
