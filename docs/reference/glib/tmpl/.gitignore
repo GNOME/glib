@@ -41,6 +41,7 @@ sequence.sgml
 shell.sgml
 spawn.sgml
 string_chunks.sgml
+string_utils.sgml
 testing.sgml
 thread_pools.sgml
 threads.sgml

@@ -42,6 +42,12 @@
 #include <signal.h>
 #endif
 
+#ifdef G_OS_WIN32
+#include <windows.h>
+#endif
+
+/* do not include <unistd.h> here, it may interfere with g_strsignal() */
+
 #include "gstrfuncs.h"
 
 #include "gprintf.h"
@@ -50,12 +56,242 @@
 #include "gthreadprivate.h"
 
 
-#ifdef G_OS_WIN32
-#include <windows.h>
-#endif
+/**
+ * SECTION:string_utils
+ * @title: String Utility Functions
+ * @short_description: various string-related functions
+ *
+ * This section describes a number of utility functions for creating,
+ * duplicating, and manipulating strings.
+ *
+ * Note that the functions g_printf(), g_fprintf(), g_sprintf(),
+ * g_snprintf(), g_vprintf(), g_vfprintf(), g_vsprintf() and g_vsnprintf()
+ * are declared in the header <filename>gprintf.h</filename> which is
+ * <emphasis>not</emphasis> included in <filename>glib.h</filename>
+ * (otherwise using <filename>glib.h</filename> would drag in
+ * <filename>stdio.h</filename>), so you'll have to explicitly include
+ * <literal>&lt;glib/gprintf.h&gt;</literal> in order to use the GLib
+ * printf() functions.
+ *
+ * <para id="string-precision">While you may use the printf() functions
+ * to format UTF-8 strings, notice that the precision of a
+ * <literal>&percnt;Ns</literal> parameter is interpreted as the
+ * number of <emphasis>bytes</emphasis>, not <emphasis>characters</emphasis>
+ * to print. On top of that, the GNU libc implementation of the printf()
+ * functions has the "feature" that it checks that the string given for
+ * the <literal>&percnt;Ns</literal> parameter consists of a whole number
+ * of characters in the current encoding. So, unless you are sure you are
+ * always going to be in an UTF-8 locale or your know your text is restricted
+ * to ASCII, avoid using <literal>&percnt;Ns</literal>. If your intention is
+ * to format strings for a certain number of columns, then
+ * <literal>&percnt;Ns</literal> is not a correct solution anyway, since it
+ * fails to take wide characters (see g_unichar_iswide()) into account.
+ * </para>
+ */
 
-/* do not include <unistd.h> in this place since it
- * interferes with g_strsignal() on some OSes
+/**
+ * g_ascii_isalnum:
+ * @c: any character
+ *
+ * Determines whether a character is alphanumeric.
+ *
+ * Unlike the standard C library isalnum() function, this only
+ * recognizes standard ASCII letters and ignores the locale,
+ * returning %FALSE for all non-ASCII characters. Also, unlike
+ * the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * cast to #guchar before passing a possibly non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII alphanumeric character
+ */
+
+/**
+ * g_ascii_isalpha:
+ * @c: any character
+ *
+ * Determines whether a character is alphabetic (i.e. a letter).
+ *
+ * Unlike the standard C library isalpha() function, this only
+ * recognizes standard ASCII letters and ignores the locale,
+ * returning %FALSE for all non-ASCII characters. Also, unlike
+ * the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * cast to #guchar before passing a possibly non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII alphabetic character
+ */
+
+/**
+ * g_ascii_iscntrl:
+ * @c: any character
+ *
+ * Determines whether a character is a control character.
+ *
+ * Unlike the standard C library iscntrl() function, this only
+ * recognizes standard ASCII control characters and ignores the
+ * locale, returning %FALSE for all non-ASCII characters. Also,
+ * unlike the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * cast to #guchar before passing a possibly non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII control character.
+ */
+
+/**
+ * g_ascii_isdigit:
+ * @c: any character
+ *
+ * Determines whether a character is digit (0-9).
+ *
+ * Unlike the standard C library isdigit() function, this takes
+ * a <type>char</type>, not an <type>int</type>, so don't call it
+ * on %EOF, but no need to cast to #guchar before passing a possibly
+ * non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII digit.
+ */
+
+/**
+ * g_ascii_isgraph:
+ * @c: any character
+ *
+ * Determines whether a character is a printing character and not a space.
+ *
+ * Unlike the standard C library isgraph() function, this only
+ * recognizes standard ASCII characters and ignores the locale,
+ * returning %FALSE for all non-ASCII characters. Also, unlike
+ * the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need
+ * to cast to #guchar before passing a possibly non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII printing character other than space.
+ */
+
+/**
+ * g_ascii_islower:
+ * @c: any character
+ *
+ * Determines whether a character is an ASCII lower case letter.
+ *
+ * Unlike the standard C library islower() function, this only
+ * recognizes standard ASCII letters and ignores the locale,
+ * returning %FALSE for all non-ASCII characters. Also, unlike
+ * the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need
+ * to worry about casting to #guchar before passing a possibly
+ * non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII lower case letter
+ */
+
+/**
+ * g_ascii_isprint:
+ * @c: any character
+ *
+ * Determines whether a character is a printing character.
+ *
+ * Unlike the standard C library isprint() function, this only
+ * recognizes standard ASCII characters and ignores the locale,
+ * returning %FALSE for all non-ASCII characters. Also, unlike
+ * the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need
+ * to cast to #guchar before passing a possibly non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII printing character.
+ */
+
+/**
+ * g_ascii_ispunct:
+ * @c: any character
+ *
+ * Determines whether a character is a punctuation character.
+ *
+ * Unlike the standard C library ispunct() function, this only
+ * recognizes standard ASCII letters and ignores the locale,
+ * returning %FALSE for all non-ASCII characters. Also, unlike
+ * the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * cast to #guchar before passing a possibly non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII punctuation character.
+ */
+
+/**
+ * g_ascii_isspace:
+ * @c: any character
+ *
+ * Determines whether a character is a white-space character.
+ *
+ * Unlike the standard C library isspace() function, this only
+ * recognizes standard ASCII white-space and ignores the locale,
+ * returning %FALSE for all non-ASCII characters. Also, unlike
+ * the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * cast to #guchar before passing a possibly non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII white-space character
+ */
+
+/**
+ * g_ascii_isupper:
+ * @c: any character
+ *
+ * Determines whether a character is an ASCII upper case letter.
+ *
+ * Unlike the standard C library isupper() function, this only
+ * recognizes standard ASCII letters and ignores the locale,
+ * returning %FALSE for all non-ASCII characters. Also, unlike
+ * the standard library function, this takes a <type>char</type>,
+ * not an <type>int</type>, so don't call it on %EOF, but no need to
+ * worry about casting to #guchar before passing a possibly non-ASCII
+ * character in.
+ *
+ * Returns: %TRUE if @c is an ASCII upper case letter
+ */
+
+/**
+ * g_ascii_isxdigit:
+ * @c: any character
+ *
+ * Determines whether a character is a hexadecimal-digit character.
+ *
+ * Unlike the standard C library isxdigit() function, this takes
+ * a <type>char</type>, not an <type>int</type>, so don't call it
+ * on %EOF, but no need to cast to #guchar before passing a
+ * possibly non-ASCII character in.
+ *
+ * Returns: %TRUE if @c is an ASCII hexadecimal-digit character.
+ */
+
+/**
+ * G_ASCII_DTOSTR_BUF_SIZE:
+ *
+ * A good size for a buffer to be passed into g_ascii_dtostr().
+ * It is guaranteed to be enough for all output of that function
+ * on systems with 64bit IEEE-compatible doubles.
+ *
+ * The typical usage would be something like:
+ * |[
+ *   char buf[G_ASCII_DTOSTR_BUF_SIZE];
+ *
+ *   fprintf (out, "value=&percnt;s\n", g_ascii_dtostr (buf, sizeof (buf), value));
+ * ]|
+ */
+
+/**
+ * g_strstrip:
+ * @string: a string to remove the leading and trailing whitespace from
+ *
+ * Removes leading and trailing whitespace from a string.
+ * See g_strchomp() and g_strchug().
+ *
+ * Returns: @string
+ */
+
+/**
+ * G_STR_DELIMITERS:
+ *
+ * The standard delimiters, used in g_strdelimit().
  */
 
 static const guint16 ascii_table_data[256] = {
@@ -2210,7 +2446,25 @@ g_strncasecmp (const gchar *s1,
 #endif
 }
 
-gchar*
+/**
+ * g_strdelimit:
+ * @string: the string to convert
+ * @delimiters: a string containing the current delimiters, or %NULL
+ *     to use the standard delimiters defined in #G_STR_DELIMITERS
+ * @new_delimiter: the new delimiter character
+ *
+ * Converts any delimiter characters in @string to @new_delimiter.
+ * Any characters in @string which are found in @delimiters are
+ * changed to the @new_delimiter character. Modifies @string in place,
+ * and returns @string itself, not a copy. The return value is to
+ * allow nesting such as
+ * |[
+ *   g_ascii_strup (g_strdelimit (str, "abc", '?'))
+ * ]|
+ *
+ * Returns: @string
+ */
+gchar *
 g_strdelimit (gchar       *string,
               const gchar *delimiters,
               gchar        new_delim)
@@ -2231,7 +2485,23 @@ g_strdelimit (gchar       *string,
   return string;
 }
 
-gchar*
+/**
+ * g_strcanon:
+ * @string: a nul-terminated array of bytes
+ * @valid_chars: bytes permitted in @string
+ * @substitutor: replacement character for disallowed bytes
+ *
+ * For each character in @string, if the character is not in
+ * @valid_chars, replaces the character with @substitutor.
+ * Modifies @string in place, and return @string itself, not
+ * a copy. The return value is to allow nesting such as
+ * |[
+ *   g_ascii_strup (g_strcanon (str, "abc", '?'))
+ * ]|
+ *
+ * Returns: @string
+ */
+gchar *
 g_strcanon (gchar       *string,
             const gchar *valid_chars,
             gchar        substitutor)
@@ -2250,7 +2520,18 @@ g_strcanon (gchar       *string,
   return string;
 }
 
-gchar*
+/**
+ * g_strcompress:
+ * @source: a string to compress
+ *
+ * Replaces all escaped characters with their one byte equivalent.
+ *
+ * This function does the reverse conversion of g_strescape().
+ *
+ * Returns: a newly-allocated copy of @source with all escaped
+ *     character compressed
+ */
+gchar *
 g_strcompress (const gchar *source)
 {
   const gchar *p = source, *octal;
@@ -2309,6 +2590,23 @@ out:
   return dest;
 }
 
+/**
+ * g_strescape:
+ * @source: a string to escape
+ * @exceptions: a string of characters not to escape in @source
+ *
+ * Escapes the special characters '\b', '\f', '\n', '\r', '\t', '\'
+ * and '&quot;' in the string @source by inserting a '\' before
+ * them. Additionally all characters in the range 0x01-0x1F (everything
+ * below SPACE) and in the range 0x7F-0xFF (all non-ASCII chars) are
+ * replaced with a '\' followed by their octal representation.
+ * Characters supplied in @exceptions are not escaped.
+ *
+ * g_strcompress() does the reverse conversion.
+ *
+ * Returns: a newly-allocated copy of @source with certain
+ *     characters escaped. See above.
+ */
 gchar *
 g_strescape (const gchar *source,
              const gchar *exceptions)
@@ -2391,7 +2689,22 @@ g_strescape (const gchar *source,
   return dest;
 }
 
-gchar*
+/**
+ * g_strchug:
+ * @string: a string to remove the leading whitespace from
+ *
+ * Removes leading whitespace from a string, by moving the rest
+ * of the characters forward.
+ *
+ * This function doesn't allocate or reallocate any memory;
+ * it modifies @string in place. The pointer to @string is
+ * returned to allow the nesting of functions.
+ *
+ * Also see g_strchomp() and g_strstrip().
+ *
+ * Returns: @string
+ */
+gchar *
 g_strchug (gchar *string)
 {
   guchar *start;
@@ -2406,7 +2719,21 @@ g_strchug (gchar *string)
   return string;
 }
 
-gchar*
+/**
+ * g_strchomp:
+ * @string: a string to remove the trailing whitespace from
+ *
+ * Removes trailing whitespace from a string.
+ *
+ * This function doesn't allocate or reallocate any memory;
+ * it modifies @string in place. The pointer to @string is
+ * returned to allow the nesting of functions.
+ *
+ * Also see g_strchug() and g_strstrip().
+ *
+ * Returns: @string.
+ */
+gchar *
 g_strchomp (gchar *string)
 {
   gsize len;
@@ -2427,16 +2754,16 @@ g_strchomp (gchar *string)
 
 /**
  * g_strsplit:
- * @string: a string to split.
- * @delimiter: a string which specifies the places at which to split the string.
- *     The delimiter is not included in any of the resulting strings, unless
- *     @max_tokens is reached.
- * @max_tokens: the maximum number of pieces to split @string into. If this is
- *              less than 1, the string is split completely.
+ * @string: a string to split
+ * @delimiter: a string which specifies the places at which to split
+ *     the string. The delimiter is not included in any of the resulting
+ *     strings, unless @max_tokens is reached.
+ * @max_tokens: the maximum number of pieces to split @string into.
+ *     If this is less than 1, the string is split completely.
  *
  * Splits a string into a maximum of @max_tokens pieces, using the given
- * @delimiter. If @max_tokens is reached, the remainder of @string is appended
- * to the last token.
+ * @delimiter. If @max_tokens is reached, the remainder of @string is
+ * appended to the last token.
  *
  * As a special case, the result of splitting the empty string "" is an empty
  * vector, not a vector containing a single string. The reason for this
@@ -2447,7 +2774,7 @@ g_strchomp (gchar *string)
  *
  * Return value: a newly-allocated %NULL-terminated array of strings. Use
  *    g_strfreev() to free it.
- **/
+ */
 gchar**
 g_strsplit (const gchar *string,
             const gchar *delimiter,
@@ -2504,9 +2831,9 @@ g_strsplit (const gchar *string,
  * g_strsplit_set:
  * @string: The string to be tokenized
  * @delimiters: A nul-terminated string containing bytes that are used
- *              to split the string.
+ *     to split the string.
  * @max_tokens: The maximum number of tokens to split @string into.
- *              If this is less than 1, the string is split completely
+ *     If this is less than 1, the string is split completely
  *
  * Splits @string into a number of tokens not containing any of the characters
  * in @delimiter. A token is the (possibly empty) longest string that does not
@@ -2600,7 +2927,7 @@ g_strsplit_set (const gchar *string,
 
 /**
  * g_strfreev:
- * @str_array: a %NULL-terminated array of strings to free.
+ * @str_array: a %NULL-terminated array of strings to free
 
  * Frees a %NULL-terminated array of strings, and the array itself.
  * If called on a %NULL value, g_strfreev() simply returns.
@@ -2621,7 +2948,7 @@ g_strfreev (gchar **str_array)
 
 /**
  * g_strdupv:
- * @str_array: %NULL-terminated array of strings.
+ * @str_array: a %NULL-terminated array of strings
  *
  * Copies %NULL-terminated array of strings. The copy is a deep copy;
  * the new array should be freed by first freeing each string, then
@@ -2629,7 +2956,7 @@ g_strfreev (gchar **str_array)
  * on a %NULL value, g_strdupv() simply returns %NULL.
  *
  * Return value: a new %NULL-terminated array of strings.
- **/
+ */
 gchar**
 g_strdupv (gchar **str_array)
 {
@@ -2723,7 +3050,7 @@ g_strjoinv (const gchar  *separator,
  *     together, with @separator between them
  */
 gchar*
-g_strjoin (const gchar  *separator,
+g_strjoin (const gchar *separator,
            ...)
 {
   gchar *string, *s;
@@ -2781,11 +3108,11 @@ g_strjoin (const gchar  *separator,
 
 /**
  * g_strstr_len:
- * @haystack: a string.
+ * @haystack: a string
  * @haystack_len: the maximum length of @haystack. Note that -1 is
- * a valid length, if @haystack is nul-terminated, meaning it will
- * search through the whole string.
- * @needle: the string to search for.
+ *     a valid length, if @haystack is nul-terminated, meaning it will
+ *     search through the whole string.
+ * @needle: the string to search for
  *
  * Searches the string @haystack for the first occurrence
  * of the string @needle, limiting the length of the search
@@ -2793,7 +3120,7 @@ g_strjoin (const gchar  *separator,
  *
  * Return value: a pointer to the found occurrence, or
  *    %NULL if not found.
- **/
+ */
 gchar *
 g_strstr_len (const gchar *haystack,
               gssize       haystack_len,
@@ -2837,15 +3164,15 @@ g_strstr_len (const gchar *haystack,
 
 /**
  * g_strrstr:
- * @haystack: a nul-terminated string.
- * @needle: the nul-terminated string to search for.
+ * @haystack: a nul-terminated string
+ * @needle: the nul-terminated string to search for
  *
  * Searches the string @haystack for the last occurrence
  * of the string @needle.
  *
  * Return value: a pointer to the found occurrence, or
  *    %NULL if not found.
- **/
+ */
 gchar *
 g_strrstr (const gchar *haystack,
            const gchar *needle)
@@ -2886,9 +3213,9 @@ g_strrstr (const gchar *haystack,
 
 /**
  * g_strrstr_len:
- * @haystack: a nul-terminated string.
- * @haystack_len: the maximum length of @haystack.
- * @needle: the nul-terminated string to search for.
+ * @haystack: a nul-terminated string
+ * @haystack_len: the maximum length of @haystack
+ * @needle: the nul-terminated string to search for
  *
  * Searches the string @haystack for the last occurrence
  * of the string @needle, limiting the length of the search
@@ -2896,7 +3223,7 @@ g_strrstr (const gchar *haystack,
  *
  * Return value: a pointer to the found occurrence, or
  *    %NULL if not found.
- **/
+ */
 gchar *
 g_strrstr_len (const gchar *haystack,
                gssize        haystack_len,
@@ -2941,18 +3268,18 @@ g_strrstr_len (const gchar *haystack,
 
 /**
  * g_str_has_suffix:
- * @str: a nul-terminated string.
- * @suffix: the nul-terminated suffix to look for.
+ * @str: a nul-terminated string
+ * @suffix: the nul-terminated suffix to look for
  *
  * Looks whether the string @str ends with @suffix.
  *
  * Return value: %TRUE if @str end with @suffix, %FALSE otherwise.
  *
  * Since: 2.2
- **/
+ */
 gboolean
-g_str_has_suffix (const gchar  *str,
-                  const gchar  *suffix)
+g_str_has_suffix (const gchar *str,
+                  const gchar *suffix)
 {
   int str_len;
   int suffix_len;
@@ -2971,18 +3298,18 @@ g_str_has_suffix (const gchar  *str,
 
 /**
  * g_str_has_prefix:
- * @str: a nul-terminated string.
- * @prefix: the nul-terminated prefix to look for.
+ * @str: a nul-terminated string
+ * @prefix: the nul-terminated prefix to look for
  *
  * Looks whether the string @str begins with @prefix.
  *
  * Return value: %TRUE if @str begins with @prefix, %FALSE otherwise.
  *
  * Since: 2.2
- **/
+ */
 gboolean
-g_str_has_prefix (const gchar  *str,
-                  const gchar  *prefix)
+g_str_has_prefix (const gchar *str,
+                  const gchar *prefix)
 {
   int str_len;
   int prefix_len;
@@ -3012,7 +3339,7 @@ g_str_has_prefix (const gchar  *str,
  *   the first '|' character is returned.
  *
  * Since: 2.4
- **/
+ */
 const gchar *
 g_strip_context  (const gchar *msgid,
                   const gchar *msgval)
@@ -3030,7 +3357,7 @@ g_strip_context  (const gchar *msgid,
 
 /**
  * g_strv_length:
- * @str_array: a %NULL-terminated array of strings.
+ * @str_array: a %NULL-terminated array of strings
  *
  * Returns the length of the given %NULL-terminated
  * string array @str_array.
@@ -3130,7 +3457,7 @@ g_dpgettext (const gchar *domain,
  * '\004' character to separate the message context and
  * message id in @msgctxtid.
  *
- * This uses g_dgettext() internally.  See that functions for differences
+ * This uses g_dgettext() internally. See that functions for differences
  * with dgettext() proper.
  *
  * This function differs from C_() in that it is not a macro and
