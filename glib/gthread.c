@@ -58,7 +58,6 @@
 #endif /* G_OS_WIN32 */
 
 #include "garray.h"
-#include "gbitlock.h"
 #include "gslice.h"
 #include "gslist.h"
 #include "gtestutils.h"
@@ -648,12 +647,13 @@ GSystemThread    zero_thread; /* This is initialized to all zero */
 
 GMutex           g_once_mutex = G_MUTEX_INIT;
 static GCond     g_once_cond = G_COND_INIT;
-static GSList*   g_once_init_list = NULL;
+static GSList   *g_once_init_list = NULL;
 
 static GPrivate     g_thread_specific_private;
 static GRealThread *g_thread_all_threads = NULL;
 static GSList      *g_thread_free_indices = NULL;
 
+/* Protects g_thread_all_threads and g_thread_free_indices */
 G_LOCK_DEFINE_STATIC (g_thread);
 
 /* Initialisation {{{1 ---------------------------------------------------- */
@@ -1003,6 +1003,12 @@ g_static_private_get (GStaticPrivate *private_key)
       GStaticPrivateNode *node;
 
       node = &g_array_index (array, GStaticPrivateNode, private_key->index - 1);
+
+      /* Deal with the possibility that the GStaticPrivate which used
+       * to have this index got freed and the index got allocated to
+       * a new one. In this case, the data in the node is stale, so
+       * free it and return NULL.
+       */
       if (G_UNLIKELY (node->owner != private_key))
         {
           if (node->destroy)
@@ -1108,6 +1114,10 @@ g_static_private_free (GStaticPrivate *private_key)
 
   private_key->index = 0;
 
+  /* Freeing the per-thread data is deferred to either the
+   * thread end or the next g_static_private_get() call for
+   * the same index.
+   */
   G_LOCK (g_thread);
   g_thread_free_indices = g_slist_prepend (g_thread_free_indices,
                                            GUINT_TO_POINTER (idx));
