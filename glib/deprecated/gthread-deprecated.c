@@ -109,6 +109,14 @@ gettime (void)
 
 guint64 (*g_thread_gettime) (void) = gettime;
 
+/* Internal variables {{{1 */
+
+static GRealThread *g_thread_all_threads = NULL;
+static GSList      *g_thread_free_indices = NULL;
+
+/* Protects g_thread_all_threads and g_thread_free_indices */
+G_LOCK_DEFINE_STATIC (g_thread);
+
 /* Misc. GThread functions {{{1 */
 
 /**
@@ -184,6 +192,88 @@ g_thread_create_full (GThreadFunc       func,
                       GError          **error)
 {
   return g_thread_new_internal (NULL, func, data, joinable, stack_size, TRUE, error);
+}
+
+/**
+ * g_thread_foreach:
+ * @thread_func: function to call for all #GThread structures
+ * @user_data: second argument to @thread_func
+ *
+ * Call @thread_func on all #GThreads that have been
+ * created with g_thread_create().
+ *
+ * Note that threads may decide to exit while @thread_func is
+ * running, so without intimate knowledge about the lifetime of
+ * foreign threads, @thread_func shouldn't access the GThread*
+ * pointer passed in as first argument. However, @thread_func will
+ * not be called for threads which are known to have exited already.
+ *
+ * Due to thread lifetime checks, this function has an execution complexity
+ * which is quadratic in the number of existing threads.
+ *
+ * Since: 2.10
+ *
+ * Deprecated:2.32: There are not very many interesting things you can
+ *     do with a #GThread, except comparing it with one that was returned
+ *     from g_thread_create(). There are better ways to find out if your
+ *     thread is still alive.
+ */
+void
+g_thread_foreach (GFunc    thread_func,
+                  gpointer user_data)
+{
+  GSList *slist = NULL;
+  GRealThread *thread;
+  g_return_if_fail (thread_func != NULL);
+  /* snapshot the list of threads for iteration */
+  G_LOCK (g_thread);
+  for (thread = g_thread_all_threads; thread; thread = thread->next)
+    slist = g_slist_prepend (slist, thread);
+  G_UNLOCK (g_thread);
+  /* walk the list, skipping non-existent threads */
+  while (slist)
+    {
+      GSList *node = slist;
+      slist = node->next;
+      /* check whether the current thread still exists */
+      G_LOCK (g_thread);
+      for (thread = g_thread_all_threads; thread; thread = thread->next)
+        if (thread == node->data)
+          break;
+      G_UNLOCK (g_thread);
+      if (thread)
+        thread_func (thread, user_data);
+      g_slist_free_1 (node);
+    }
+}
+
+void
+g_enumerable_thread_add (GRealThread *thread)
+{
+  G_LOCK (g_thread);
+  thread->next = g_thread_all_threads;
+  g_thread_all_threads = thread;
+  G_UNLOCK (g_thread);
+}
+
+void
+g_enumerable_thread_remove (GRealThread *thread)
+{
+  GRealThread *t, *p;
+
+  G_LOCK (g_thread);
+  for (t = g_thread_all_threads, p = NULL; t; p = t, t = t->next)
+    {
+      if (t == thread)
+        {
+          if (p)
+            p->next = t->next;
+          else
+            g_thread_all_threads = t->next;
+          break;
+        }
+    }
+  G_UNLOCK (g_thread);
 }
 
 /* GStaticMutex {{{1 ------------------------------------------------------ */
@@ -1029,5 +1119,237 @@ g_private_new (GDestroyNotify notify)
   return key;
 }
 
-/* Epilogue {{{1 */
+/* {{{1 GStaticPrivate */
+
+typedef struct _GStaticPrivateNode GStaticPrivateNode;
+struct _GStaticPrivateNode
+{
+  gpointer        data;
+  GDestroyNotify  destroy;
+  GStaticPrivate *owner;
+};
+
+/**
+ * GStaticPrivate:
+ *
+ * A #GStaticPrivate works almost like a #GPrivate, but it has one
+ * significant advantage. It doesn't need to be created at run-time
+ * like a #GPrivate, but can be defined at compile-time. This is
+ * similar to the difference between #GMutex and #GStaticMutex. Now
+ * look at our <function>give_me_next_number()</function> example with
+ * #GStaticPrivate:
+ *
+ * <example>
+ *  <title>Using GStaticPrivate for per-thread data</title>
+ *  <programlisting>
+ *   int
+ *   give_me_next_number (<!-- -->)
+ *   {
+ *     static GStaticPrivate current_number_key = G_STATIC_PRIVATE_INIT;
+ *     int *current_number = g_static_private_get (&amp;current_number_key);
+ *
+ *     if (!current_number)
+ *       {
+ *         current_number = g_new (int,1);
+ *         *current_number = 0;
+ *         g_static_private_set (&amp;current_number_key, current_number, g_free);
+ *       }
+ *
+ *     *current_number = calc_next_number (*current_number);
+ *
+ *     return *current_number;
+ *   }
+ *  </programlisting>
+ * </example>
+ */
+
+/**
+ * G_STATIC_PRIVATE_INIT:
+ *
+ * Every #GStaticPrivate must be initialized with this macro, before it
+ * can be used.
+ *
+ * |[
+ *   GStaticPrivate my_private = G_STATIC_PRIVATE_INIT;
+ * ]|
+ */
+
+/**
+ * g_static_private_init:
+ * @private_key: a #GStaticPrivate to be initialized
+ *
+ * Initializes @private_key. Alternatively you can initialize it with
+ * #G_STATIC_PRIVATE_INIT.
+ */
+void
+g_static_private_init (GStaticPrivate *private_key)
+{
+  private_key->index = 0;
+}
+
+/**
+ * g_static_private_get:
+ * @private_key: a #GStaticPrivate
+ *
+ * Works like g_private_get() only for a #GStaticPrivate.
+ *
+ * This function works even if g_thread_init() has not yet been called.
+ *
+ * Returns: the corresponding pointer
+ */
+gpointer
+g_static_private_get (GStaticPrivate *private_key)
+{
+  GRealThread *self = (GRealThread*) g_thread_self ();
+  GArray *array;
+  gpointer ret = NULL;
+  array = self->private_data;
+
+  if (array && private_key->index != 0 && private_key->index <= array->len)
+    {
+      GStaticPrivateNode *node;
+
+      node = &g_array_index (array, GStaticPrivateNode, private_key->index - 1);
+
+      /* Deal with the possibility that the GStaticPrivate which used
+       * to have this index got freed and the index got allocated to
+       * a new one. In this case, the data in the node is stale, so
+       * free it and return NULL.
+       */
+      if (G_UNLIKELY (node->owner != private_key))
+        {
+          if (node->destroy)
+            node->destroy (node->data);
+          node->destroy = NULL;
+          node->data = NULL;
+          node->owner = NULL;
+        }
+      ret = node->data;
+    }
+
+  return ret;
+}
+
+/**
+ * g_static_private_set:
+ * @private_key: a #GStaticPrivate
+ * @data: the new pointer
+ * @notify: a function to be called with the pointer whenever the
+ *     current thread ends or sets this pointer again
+ *
+ * Sets the pointer keyed to @private_key for the current thread and
+ * the function @notify to be called with that pointer (%NULL or
+ * non-%NULL), whenever the pointer is set again or whenever the
+ * current thread ends.
+ *
+ * This function works even if g_thread_init() has not yet been called.
+ * If g_thread_init() is called later, the @data keyed to @private_key
+ * will be inherited only by the main thread, i.e. the one that called
+ * g_thread_init().
+ *
+ * <note><para>@notify is used quite differently from @destructor in
+ * g_private_new().</para></note>
+ */
+void
+g_static_private_set (GStaticPrivate *private_key,
+                      gpointer        data,
+                      GDestroyNotify  notify)
+{
+  GRealThread *self = (GRealThread*) g_thread_self ();
+  GArray *array;
+  static guint next_index = 0;
+  GStaticPrivateNode *node;
+
+  if (!private_key->index)
+    {
+      G_LOCK (g_thread);
+
+      if (!private_key->index)
+        {
+          if (g_thread_free_indices)
+            {
+              private_key->index = GPOINTER_TO_UINT (g_thread_free_indices->data);
+              g_thread_free_indices = g_slist_delete_link (g_thread_free_indices,
+                                                           g_thread_free_indices);
+            }
+          else
+            private_key->index = ++next_index;
+        }
+
+      G_UNLOCK (g_thread);
+    }
+
+  array = self->private_data;
+  if (!array)
+    {
+      array = g_array_new (FALSE, TRUE, sizeof (GStaticPrivateNode));
+      self->private_data = array;
+    }
+  if (private_key->index > array->len)
+    g_array_set_size (array, private_key->index);
+
+  node = &g_array_index (array, GStaticPrivateNode, private_key->index - 1);
+
+  if (node->destroy)
+    node->destroy (node->data);
+
+  node->data = data;
+  node->destroy = notify;
+  node->owner = private_key;
+}
+
+/**
+ * g_static_private_free:
+ * @private_key: a #GStaticPrivate to be freed
+ *
+ * Releases all resources allocated to @private_key.
+ *
+ * You don't have to call this functions for a #GStaticPrivate with an
+ * unbounded lifetime, i.e. objects declared 'static', but if you have
+ * a #GStaticPrivate as a member of a structure and the structure is
+ * freed, you should also free the #GStaticPrivate.
+ */
+void
+g_static_private_free (GStaticPrivate *private_key)
+{
+  guint idx = private_key->index;
+
+  if (!idx)
+    return;
+
+  private_key->index = 0;
+
+  /* Freeing the per-thread data is deferred to either the
+   * thread end or the next g_static_private_get() call for
+   * the same index.
+   */
+  G_LOCK (g_thread);
+  g_thread_free_indices = g_slist_prepend (g_thread_free_indices,
+                                           GUINT_TO_POINTER (idx));
+  G_UNLOCK (g_thread);
+}
+
+void
+g_static_private_cleanup (GRealThread *thread)
+{
+  GArray *array;
+
+  array = thread->private_data;
+  thread->private_data = NULL;
+
+  if (array)
+    {
+      guint i;
+
+      for (i = 0; i < array->len; i++ )
+        {
+          GStaticPrivateNode *node = &g_array_index (array, GStaticPrivateNode, i);
+          if (node->destroy)
+            node->destroy (node->data);
+        }
+      g_array_free (array, TRUE);
+    }
+}
+
+/* {{{1 Epilogue */
 /* vim: set foldmethod=marker: */

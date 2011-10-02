@@ -23,6 +23,10 @@
 #ifndef __G_THREADPRIVATE_H__
 #define __G_THREADPRIVATE_H__
 
+#include "deprecated/gthread.h"
+#include "garray.h"
+#include "gslist.h"
+
 G_BEGIN_DECLS
 
 /* System thread identifier comparison and assignment */
@@ -56,8 +60,24 @@ G_GNUC_INTERNAL GThread *g_thread_new_internal (const gchar  *name,
                                                 gboolean      enumerable,
                                                 GError      **error);
 
+typedef struct _GRealThread GRealThread;
+struct  _GRealThread
+{
+  GThread thread;
+  GArray *private_data;
+  GRealThread *next;
+  const gchar *name;
+  gboolean enumerable;
+  gpointer retval;
+  GSystemThread system_thread;
+};
+
 G_GNUC_INTERNAL GSystemThread zero_thread;
 G_GNUC_INTERNAL GMutex g_once_mutex;
+
+G_GNUC_INTERNAL void g_static_private_cleanup   (GRealThread *thread);
+G_GNUC_INTERNAL void g_enumerable_thread_add    (GRealThread *thread);
+G_GNUC_INTERNAL void g_enumerable_thread_remove (GRealThread *thread);
 
 /* Is called from gthread/gthread-impl.c */
 void g_thread_init_glib (void);

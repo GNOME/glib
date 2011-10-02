@@ -114,6 +114,9 @@ GThread* g_thread_create_full  (GThreadFunc            func,
 void g_thread_set_priority     (GThread         *thread,
                                 GThreadPriority  priority);
 
+void     g_thread_foreach      (GFunc         thread_func,
+                                gpointer      user_data);
+
 #ifdef G_OS_WIN32
 typedef GMutex * GStaticMutex;
 #define G_STATIC_MUTEX_INIT NULL
@@ -179,8 +182,21 @@ gboolean  g_static_rw_lock_writer_trylock (GStaticRWLock* lock);
 void      g_static_rw_lock_writer_unlock  (GStaticRWLock* lock);
 void      g_static_rw_lock_free           (GStaticRWLock* lock);
 
-
 GPrivate *      g_private_new             (GDestroyNotify  notify);
+
+struct _GStaticPrivate
+{
+  /*< private >*/
+  guint index;
+};
+
+#define G_STATIC_PRIVATE_INIT { 0 }
+void     g_static_private_init           (GStaticPrivate   *private_key);
+gpointer g_static_private_get            (GStaticPrivate   *private_key);
+void     g_static_private_set            (GStaticPrivate   *private_key,
+                                          gpointer          data,
+                                          GDestroyNotify    notify);
+void     g_static_private_free           (GStaticPrivate   *private_key);
 
 G_END_DECLS
 
