@@ -125,12 +125,107 @@ test_cond1 (void)
   g_assert_cmpint (total, ==, acc1 + acc2);
 }
 
+typedef struct
+{
+  GMutex mutex;
+  GCond  cond;
+  gint   limit;
+  gint   count;
+} Barrier;
+
+static void
+barrier_init (Barrier *barrier,
+              gint     limit)
+{
+  g_mutex_init (&barrier->mutex);
+  g_cond_init (&barrier->cond);
+  barrier->limit = limit;
+  barrier->count = limit;
+}
+
+static gint
+barrier_wait (Barrier *barrier)
+{
+  gint ret;
+
+  g_mutex_lock (&barrier->mutex);
+  barrier->count--;
+  if (barrier->count == 0)
+    {
+      ret = -1;
+      barrier->count = barrier->limit;
+      g_cond_broadcast (&barrier->cond);
+    }
+  else
+    {
+      ret = 0;
+      while (barrier->count != barrier->limit)
+        g_cond_wait (&barrier->cond, &barrier->mutex);
+    }
+  g_mutex_unlock (&barrier->mutex);
+
+  return ret;
+}
+
+static Barrier b;
+static gint check;
+
+gpointer
+cond2_func (gpointer data)
+{
+  gint value = GPOINTER_TO_INT (data);
+  gint ret;
+
+  g_atomic_int_inc (&check);
+
+  if (g_test_verbose ())
+    g_print ("thread %d starting, check %d\n", value, g_atomic_int_get (&check));
+
+  g_usleep (10000 * value);
+
+  g_atomic_int_inc (&check);
+
+  if (g_test_verbose ())
+    g_print ("thread %d reaching barrier, check %d\n", value, g_atomic_int_get (&check));
+
+  ret = barrier_wait (&b);
+
+  g_assert_cmpint (g_atomic_int_get (&check), ==, 10);
+
+  if (g_test_verbose ())
+    g_print ("thread %d leaving barrier (%d), check %d\n", value, ret, g_atomic_int_get (&check));
+
+  return NULL;
+}
+
+/* this test demonstrates how to use a condition variable
+ * to implement a barrier
+ */
+static void
+test_cond2 (void)
+{
+  gint i;
+  GThread *threads[5];
+
+  g_atomic_int_set (&check, 0);
+
+  barrier_init (&b, 5);
+  for (i = 0; i < 5; i++)
+    threads[i] = g_thread_create (cond2_func, GINT_TO_POINTER (i), TRUE, NULL);
+
+  for (i = 0; i < 5; i++)
+    g_thread_join (threads[i]);
+
+  g_assert_cmpint (g_atomic_int_get (&check), ==, 10);
+}
+
 int
 main (int argc, char *argv[])
 {
   g_test_init (&argc, &argv, NULL);
 
   g_test_add_func ("/thread/cond1", test_cond1);
+  g_test_add_func ("/thread/cond2", test_cond2);
 
   return g_test_run ();
 }
